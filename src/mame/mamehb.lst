@@ -1,0 +1,38 @@
+/****************************************************************************
+
+    mamehb.lst
+
+    This is an unofficial version based on MAME.
+    Please do not send any reports from this build to the MAME team.
+
+****************************************************************************/
+
+#ifndef NCP
+// Homebrew
+vantris			// http://web.utanet.at/nkehrer
+#endif // !NCP
+
+// Neo Geo homebrew
+neonopon                // (c) 2002 Blastar
+neopong                 // (c) 2002 Neodev
+columnsn                // http://www.neobitz.com
+beast                   // http://www.neobitz.com
+poknight                // http://www.neobitz.com
+neo2500                 // (c) 2004 Blastar
+syscheck                // (c) 2004 Blastar
+ltora                   // (c) 2005 Blastar
+frogfest                // (c) 2006 Rastersoft
+cnbe                    // (c) 2006 Blastar
+ngem2k                  // (c) 2006 Blastar
+totcarib                // (c) 2011 Le Cortex
+neothndr                // (c) 2012 Sebastian Mihai
+neotet                  // (c) 2013 Crim / Stephen
+cphd                    // (c) 2013 Le Cortex
+timesupd                // (c) 2012 NGF Dev. Inc.
+bbbuster                // (c) 2011 Le Cortex
+
+// Neo Geo hack
+kof96ae                 // 2007 EGHT hack
+kof96ae20               // 2009 EGHT hack
+kf2k2ps2                // 2007 EGHT hack
+samsho5x                // 2003 hack
