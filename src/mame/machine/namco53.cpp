@@ -59,13 +59,19 @@
 
 
 #define VERBOSE 0
+<<<<<<< HEAD
 #define LOG(x) do { if (VERBOSE) logerror x; } while (0)
+=======
+#include "logmacro.h"
+
+>>>>>>> upstream/master
 
 READ8_MEMBER( namco_53xx_device::K_r )
 {
 	return m_k(0);
 }
 
+<<<<<<< HEAD
 READ8_MEMBER( namco_53xx_device::Rx_r )
 {
 	switch(offset) {
@@ -76,11 +82,35 @@ READ8_MEMBER( namco_53xx_device::Rx_r )
 		default : return 0xff;
 	}
 
+=======
+READ8_MEMBER( namco_53xx_device::R0_r )
+{
+	return m_in[0](0);
+}
+
+READ8_MEMBER( namco_53xx_device::R1_r )
+{
+	return m_in[1](0);
+}
+
+READ8_MEMBER( namco_53xx_device::R2_r )
+{
+	return m_in[2](0);
+}
+
+READ8_MEMBER( namco_53xx_device::R3_r )
+{
+	return m_in[3](0);
+>>>>>>> upstream/master
 }
 
 WRITE8_MEMBER( namco_53xx_device::O_w )
 {
+<<<<<<< HEAD
 	UINT8 out = (data & 0x0f);
+=======
+	uint8_t out = (data & 0x0f);
+>>>>>>> upstream/master
 	if (data & 0x10)
 		m_portO = (m_portO & 0x0f) | (out << 4);
 	else
@@ -112,7 +142,11 @@ WRITE_LINE_MEMBER(namco_53xx_device::read_request)
 
 READ8_MEMBER( namco_53xx_device::read )
 {
+<<<<<<< HEAD
 	UINT8 res = m_portO;
+=======
+	uint8_t res = m_portO;
+>>>>>>> upstream/master
 
 	read_request(0);
 
@@ -124,6 +158,7 @@ READ8_MEMBER( namco_53xx_device::read )
     DEVICE INTERFACE
 ***************************************************************************/
 
+<<<<<<< HEAD
 static ADDRESS_MAP_START( namco_53xx_map_io, AS_IO, 8,namco_53xx_device )
 	AM_RANGE(MB88_PORTK,  MB88_PORTK)  AM_READ(K_r)
 	AM_RANGE(MB88_PORTO,  MB88_PORTO)  AM_WRITE(O_w)
@@ -138,11 +173,14 @@ static MACHINE_CONFIG_FRAGMENT( namco_53xx )
 MACHINE_CONFIG_END
 
 
+=======
+>>>>>>> upstream/master
 ROM_START( namco_53xx )
 	ROM_REGION( 0x400, "mcu", 0 )
 	ROM_LOAD( "53xx.bin",     0x0000, 0x0400, CRC(b326fecb) SHA1(758d8583d658e4f1df93184009d86c3eb8713899) )
 ROM_END
 
+<<<<<<< HEAD
 const device_type NAMCO_53XX = &device_creator<namco_53xx_device>;
 
 namco_53xx_device::namco_53xx_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
@@ -154,6 +192,16 @@ namco_53xx_device::namco_53xx_device(const machine_config &mconfig, const char *
 	m_in_1(*this),
 	m_in_2(*this),
 	m_in_3(*this),
+=======
+DEFINE_DEVICE_TYPE(NAMCO_53XX, namco_53xx_device, "namco53", "Namco 53xx")
+
+namco_53xx_device::namco_53xx_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: device_t(mconfig, NAMCO_53XX, tag, owner, clock),
+	m_cpu(*this, "mcu"),
+	m_portO(0),
+	m_k(*this),
+	m_in{ { *this }, { *this }, { *this }, { *this } },
+>>>>>>> upstream/master
 	m_p(*this)
 {
 }
@@ -165,16 +213,22 @@ void namco_53xx_device::device_start()
 {
 	/* resolve our read/write callbacks */
 	m_k.resolve_safe(0);
+<<<<<<< HEAD
 	m_in_0.resolve_safe(0);
 	m_in_1.resolve_safe(0);
 	m_in_2.resolve_safe(0);
 	m_in_3.resolve_safe(0);
+=======
+	for (devcb_read8 &cb : m_in)
+		cb.resolve_safe(0);
+>>>>>>> upstream/master
 	m_p.resolve_safe();
 
 	save_item(NAME(m_portO));
 }
 
 //-------------------------------------------------
+<<<<<<< HEAD
 //  device_mconfig_additions - return a pointer to
 //  the device's machine fragment
 //-------------------------------------------------
@@ -183,13 +237,32 @@ machine_config_constructor namco_53xx_device::device_mconfig_additions() const
 {
 	return MACHINE_CONFIG_NAME( namco_53xx  );
 }
+=======
+//  device_add_mconfig - add device configuration
+//-------------------------------------------------
+
+MACHINE_CONFIG_MEMBER( namco_53xx_device::device_add_mconfig )
+	MCFG_CPU_ADD("mcu", MB8843, DERIVED_CLOCK(1,1))     /* parent clock, internally divided by 6 */
+	MCFG_MB88XX_READ_K_CB(READ8(namco_53xx_device, K_r))
+	MCFG_MB88XX_WRITE_O_CB(WRITE8(namco_53xx_device, O_w))
+	MCFG_MB88XX_WRITE_P_CB(WRITE8(namco_53xx_device, P_w))
+	MCFG_MB88XX_READ_R0_CB(READ8(namco_53xx_device, R0_r))
+	MCFG_MB88XX_READ_R1_CB(READ8(namco_53xx_device, R1_r))
+	MCFG_MB88XX_READ_R2_CB(READ8(namco_53xx_device, R2_r))
+	MCFG_MB88XX_READ_R3_CB(READ8(namco_53xx_device, R3_r))
+MACHINE_CONFIG_END
+>>>>>>> upstream/master
 
 //-------------------------------------------------
 //  device_rom_region - return a pointer to the
 //  the device's ROM definitions
 //-------------------------------------------------
 
+<<<<<<< HEAD
 const rom_entry *namco_53xx_device::device_rom_region() const
+=======
+const tiny_rom_entry *namco_53xx_device::device_rom_region() const
+>>>>>>> upstream/master
 {
 	return ROM_NAME(namco_53xx );
 }

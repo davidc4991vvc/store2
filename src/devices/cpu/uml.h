@@ -51,11 +51,19 @@ namespace uml
 	const int MAPVAR_END = MAPVAR_M0 + MAPVAR_COUNT;
 
 	// flag definitions
+<<<<<<< HEAD
 	const UINT8 FLAG_C = 0x01;      // carry flag
 	const UINT8 FLAG_V = 0x02;      // overflow flag (defined for integer only)
 	const UINT8 FLAG_Z = 0x04;      // zero flag
 	const UINT8 FLAG_S = 0x08;      // sign flag (defined for integer only)
 	const UINT8 FLAG_U = 0x10;      // unordered flag (defined for FP only)
+=======
+	const uint8_t FLAG_C = 0x01;      // carry flag
+	const uint8_t FLAG_V = 0x02;      // overflow flag (defined for integer only)
+	const uint8_t FLAG_Z = 0x04;      // zero flag
+	const uint8_t FLAG_S = 0x08;      // sign flag (defined for integer only)
+	const uint8_t FLAG_U = 0x10;      // unordered flag (defined for FP only)
+>>>>>>> upstream/master
 
 	// testable conditions; note that these are defined such that (condition ^ 1) is
 	// always the opposite
@@ -189,6 +197,10 @@ namespace uml
 		OP_OR,                      // OR      dst,src1,src2[,f]
 		OP_XOR,                     // XOR     dst,src1,src2[,f]
 		OP_LZCNT,                   // LZCNT   dst,src
+<<<<<<< HEAD
+=======
+		OP_TZCNT,                   // TZCNT   dst,src
+>>>>>>> upstream/master
 		OP_BSWAP,                   // BSWAP   dst,src
 		OP_SHL,                     // SHL     dst,src,count[,f]
 		OP_SHR,                     // SHR     dst,src,count[,f]
@@ -218,11 +230,20 @@ namespace uml
 		OP_FSQRT,                   // FSQRT   dst,src1
 		OP_FRECIP,                  // FRECIP  dst,src1
 		OP_FRSQRT,                  // FRSQRT  dst,src1
+<<<<<<< HEAD
+=======
+		OP_FCOPYI,                  // FCOPYI  dst,src
+		OP_ICOPYF,                  // ICOPYF  dst,src
+>>>>>>> upstream/master
 
 		OP_MAX
 	};
 
+<<<<<<< HEAD
 	// C function callback deinition
+=======
+	// C function callback definition
+>>>>>>> upstream/master
 	typedef void (*c_function)(void *ptr);
 
 	// class describing a global code handle
@@ -257,14 +278,22 @@ namespace uml
 	{
 	public:
 		// construction
+<<<<<<< HEAD
 		code_label(UINT32 label = 0) : m_label(label) { }
 
 		// operators
 		operator UINT32 &() { return m_label; }
+=======
+		code_label(uint32_t label = 0) : m_label(label) { }
+
+		// operators
+		operator uint32_t &() { return m_label; }
+>>>>>>> upstream/master
 		bool operator==(const code_label &rhs) const { return (m_label == rhs.m_label); }
 		bool operator!=(const code_label &rhs) const { return (m_label != rhs.m_label); }
 
 		// getters
+<<<<<<< HEAD
 		UINT32 label() const { return m_label; }
 
 	private:
@@ -272,6 +301,15 @@ namespace uml
 	};
 
 	// a parameter for a UML instructon is encoded like this
+=======
+		uint32_t label() const { return m_label; }
+
+	private:
+		uint32_t m_label;
+	};
+
+	// a parameter for a UML instruction is encoded like this
+>>>>>>> upstream/master
 	class parameter
 	{
 	public:
@@ -297,12 +335,20 @@ namespace uml
 		};
 
 		// represents the value of an opcode parameter
+<<<<<<< HEAD
 		typedef UINT64 parameter_value;
+=======
+		typedef uint64_t parameter_value;
+>>>>>>> upstream/master
 
 		// construction
 		parameter() : m_type(PTYPE_NONE), m_value(0) { }
 		parameter(const parameter &param) : m_type(param.m_type), m_value(param.m_value) { }
+<<<<<<< HEAD
 		parameter(UINT64 val) : m_type(PTYPE_IMMEDIATE), m_value(val) { }
+=======
+		parameter(uint64_t val) : m_type(PTYPE_IMMEDIATE), m_value(val) { }
+>>>>>>> upstream/master
 		parameter(operand_size size, memory_scale scale) : m_type(PTYPE_SIZE_SCALE), m_value((scale << 4) | size) { assert(size >= SIZE_BYTE && size <= SIZE_DQWORD); assert(scale >= SCALE_x1 && scale <= SCALE_x8); }
 		parameter(operand_size size, memory_space space) : m_type(PTYPE_SIZE_SPACE), m_value((space << 4) | size) { assert(size >= SIZE_BYTE && size <= SIZE_DQWORD); assert(space >= SPACE_PROGRAM && space <= SPACE_IO); }
 		parameter(code_handle &handle) : m_type(PTYPE_CODE_HANDLE), m_value(reinterpret_cast<parameter_value>(&handle)) { }
@@ -326,7 +372,11 @@ namespace uml
 
 		// getters
 		parameter_type type() const { return m_type; }
+<<<<<<< HEAD
 		UINT64 immediate() const { assert(m_type == PTYPE_IMMEDIATE); return m_value; }
+=======
+		uint64_t immediate() const { assert(m_type == PTYPE_IMMEDIATE); return m_value; }
+>>>>>>> upstream/master
 		int ireg() const { assert(m_type == PTYPE_INT_REGISTER); assert(m_value >= REG_I0 && m_value < REG_I_END); return m_value; }
 		int freg() const { assert(m_type == PTYPE_FLOAT_REGISTER); assert(m_value >= REG_F0 && m_value < REG_F_END); return m_value; }
 		int vreg() const { assert(m_type == PTYPE_VECTOR_REGISTER); assert(m_value >= REG_V0 && m_value < REG_V_END); return m_value; }
@@ -358,7 +408,11 @@ namespace uml
 		bool is_string() const { return (m_type == PTYPE_STRING); }
 
 		// other queries
+<<<<<<< HEAD
 		bool is_immediate_value(UINT64 value) const { return (m_type == PTYPE_IMMEDIATE && m_value == value); }
+=======
+		bool is_immediate_value(uint64_t value) const { return (m_type == PTYPE_IMMEDIATE && m_value == value); }
+>>>>>>> upstream/master
 
 	private:
 		// private constructor
@@ -374,13 +428,20 @@ namespace uml
 	{
 		struct parameter_info
 		{
+<<<<<<< HEAD
 			UINT8               output;         // input or output?
 			UINT8               size;           // size of the parameter
 			UINT16              typemask;       // types allowed
+=======
+			uint8_t               output;         // input or output?
+			uint8_t               size;           // size of the parameter
+			uint16_t              typemask;       // types allowed
+>>>>>>> upstream/master
 		};
 
 		opcode_t            opcode;             // the opcode itself
 		const char *        mnemonic;           // mnemonic string
+<<<<<<< HEAD
 		UINT8               sizes;              // allowed sizes
 		bool                condition;          // conditions allowed?
 		UINT8               inflags;            // input flags
@@ -390,6 +451,17 @@ namespace uml
 	};
 
 	// a single UML instructon is encoded like this
+=======
+		uint8_t               sizes;              // allowed sizes
+		bool                condition;          // conditions allowed?
+		uint8_t               inflags;            // input flags
+		uint8_t               outflags;           // output flags
+		uint8_t               modflags;           // modified flags
+		parameter_info      param[4];           // information about parameters
+	};
+
+	// a single UML instruction is encoded like this
+>>>>>>> upstream/master
 	class instruction
 	{
 	public:
@@ -399,6 +471,7 @@ namespace uml
 		// getters
 		opcode_t opcode() const { return m_opcode; }
 		condition_t condition() const { return m_condition; }
+<<<<<<< HEAD
 		UINT8 flags() const { return m_flags; }
 		UINT8 size() const { return m_size; }
 		UINT8 numparams() const { return m_numparams; }
@@ -413,10 +486,27 @@ namespace uml
 		UINT8 input_flags() const;
 		UINT8 output_flags() const;
 		UINT8 modified_flags() const;
+=======
+		uint8_t flags() const { return m_flags; }
+		uint8_t size() const { return m_size; }
+		uint8_t numparams() const { return m_numparams; }
+		const parameter &param(int index) const { assert(index < m_numparams); return m_param[index]; }
+
+		// setters
+		void set_flags(uint8_t flags) { m_flags = flags; }
+		void set_mapvar(int paramnum, uint32_t value) { assert(paramnum < m_numparams); assert(m_param[paramnum].is_mapvar()); m_param[paramnum] = value; }
+
+		// misc
+		std::string disasm(drcuml_state *drcuml = nullptr) const;
+		uint8_t input_flags() const;
+		uint8_t output_flags() const;
+		uint8_t modified_flags() const;
+>>>>>>> upstream/master
 		void simplify();
 
 		// compile-time opcodes
 		void handle(code_handle &hand) { configure(OP_HANDLE, 4, hand); }
+<<<<<<< HEAD
 		void hash(UINT32 mode, UINT32 pc) { configure(OP_HASH, 4, mode, pc); }
 		void label(code_label lab) { configure(OP_LABEL, 4, lab); }
 		void comment(const char *string) { configure(OP_COMMENT, 4, parameter::make_string(string)); }
@@ -425,6 +515,16 @@ namespace uml
 		// control flow operations
 		void nop() { configure(OP_NOP, 4); }
 		void debug(UINT32 pc) { configure(OP_DEBUG, 4, pc); }
+=======
+		void hash(uint32_t mode, uint32_t pc) { configure(OP_HASH, 4, mode, pc); }
+		void label(code_label lab) { configure(OP_LABEL, 4, lab); }
+		void comment(const char *string) { configure(OP_COMMENT, 4, parameter::make_string(string)); }
+		void mapvar(parameter mapvar, uint32_t value) { assert(mapvar.is_mapvar()); configure(OP_MAPVAR, 4, mapvar, value); }
+
+		// control flow operations
+		void nop() { configure(OP_NOP, 4); }
+		void debug(uint32_t pc) { configure(OP_DEBUG, 4, pc); }
+>>>>>>> upstream/master
 		void exit(parameter param) { configure(OP_EXIT, 4, param); }
 		void exit(condition_t cond, parameter param) { configure(OP_EXIT, 4, param, cond); }
 		void hashjmp(parameter mode, parameter pc, code_handle &handle) { configure(OP_HASHJMP, 4, mode, pc, handle); }
@@ -444,7 +544,11 @@ namespace uml
 		void setfmod(parameter mode) { configure(OP_SETFMOD, 4, mode); }
 		void getfmod(parameter dst) { configure(OP_GETFMOD, 4, dst); }
 		void getexp(parameter dst) { configure(OP_GETEXP, 4, dst); }
+<<<<<<< HEAD
 		void getflgs(parameter dst, UINT32 flags) { configure(OP_GETFLGS, 4, dst, flags); }
+=======
+		void getflgs(parameter dst, uint32_t flags) { configure(OP_GETFLGS, 4, dst, flags); }
+>>>>>>> upstream/master
 		void save(drcuml_machine_state *dst) { configure(OP_SAVE, 4, parameter::make_memory(dst)); }
 		void restore(drcuml_machine_state *src) { configure(OP_RESTORE, 4, parameter::make_memory(src)); }
 
@@ -477,6 +581,10 @@ namespace uml
 		void _or(parameter dst, parameter src1, parameter src2) { configure(OP_OR, 4, dst, src1, src2); }
 		void _xor(parameter dst, parameter src1, parameter src2) { configure(OP_XOR, 4, dst, src1, src2); }
 		void lzcnt(parameter dst, parameter src) { configure(OP_LZCNT, 4, dst, src); }
+<<<<<<< HEAD
+=======
+		void tzcnt(parameter dst, parameter src) { configure(OP_TZCNT, 4, dst, src); }
+>>>>>>> upstream/master
 		void bswap(parameter dst, parameter src) { configure(OP_BSWAP, 4, dst, src); }
 		void shl(parameter dst, parameter src, parameter count) { configure(OP_SHL, 4, dst, src, count); }
 		void shr(parameter dst, parameter src, parameter count) { configure(OP_SHR, 4, dst, src, count); }
@@ -515,6 +623,10 @@ namespace uml
 		void dor(parameter dst, parameter src1, parameter src2) { configure(OP_OR, 8, dst, src1, src2); }
 		void dxor(parameter dst, parameter src1, parameter src2) { configure(OP_XOR, 8, dst, src1, src2); }
 		void dlzcnt(parameter dst, parameter src) { configure(OP_LZCNT, 8, dst, src); }
+<<<<<<< HEAD
+=======
+		void dtzcnt(parameter dst, parameter src) { configure(OP_TZCNT, 8, dst, src); }
+>>>>>>> upstream/master
 		void dbswap(parameter dst, parameter src) { configure(OP_BSWAP, 8, dst, src); }
 		void dshl(parameter dst, parameter src, parameter count) { configure(OP_SHL, 8, dst, src, count); }
 		void dshr(parameter dst, parameter src, parameter count) { configure(OP_SHR, 8, dst, src, count); }
@@ -544,6 +656,11 @@ namespace uml
 		void fssqrt(parameter dst, parameter src1) { configure(OP_FSQRT, 4, dst, src1); }
 		void fsrecip(parameter dst, parameter src1) { configure(OP_FRECIP, 4, dst, src1); }
 		void fsrsqrt(parameter dst, parameter src1) { configure(OP_FRSQRT, 4, dst, src1); }
+<<<<<<< HEAD
+=======
+		void fscopyi(parameter dst, parameter src) { configure(OP_FCOPYI, 4, dst, src); }
+		void icopyfs(parameter dst, parameter src) { configure(OP_ICOPYF, 4, dst, src); }
+>>>>>>> upstream/master
 
 		// 64-bit floating point operations
 		void fdload(parameter dst, const void *base, parameter index) { configure(OP_FLOAD, 8, dst, parameter::make_memory(base), index); }
@@ -566,12 +683,18 @@ namespace uml
 		void fdsqrt(parameter dst, parameter src1) { configure(OP_FSQRT, 8, dst, src1); }
 		void fdrecip(parameter dst, parameter src1) { configure(OP_FRECIP, 8, dst, src1); }
 		void fdrsqrt(parameter dst, parameter src1) { configure(OP_FRSQRT, 8, dst, src1); }
+<<<<<<< HEAD
+=======
+		void fdcopyi(parameter dst, parameter src) { configure(OP_FCOPYI, 8, dst, src); }
+		void icopyfd(parameter dst, parameter src) { configure(OP_ICOPYF, 8, dst, src); }
+>>>>>>> upstream/master
 
 		// constants
 		static const int MAX_PARAMS = 4;
 
 	private:
 		// internal configuration
+<<<<<<< HEAD
 		void configure(opcode_t op, UINT8 size, condition_t cond = COND_ALWAYS);
 		void configure(opcode_t op, UINT8 size, parameter p0, condition_t cond = COND_ALWAYS);
 		void configure(opcode_t op, UINT8 size, parameter p0, parameter p1, condition_t cond = COND_ALWAYS);
@@ -581,14 +704,31 @@ namespace uml
 		// opcode validation and simplification
 		void validate();
 		void convert_to_mov_immediate(UINT64 immediate) { m_opcode = OP_MOV; m_numparams = 2; m_param[1] = immediate; }
+=======
+		void configure(opcode_t op, uint8_t size, condition_t cond = COND_ALWAYS);
+		void configure(opcode_t op, uint8_t size, parameter p0, condition_t cond = COND_ALWAYS);
+		void configure(opcode_t op, uint8_t size, parameter p0, parameter p1, condition_t cond = COND_ALWAYS);
+		void configure(opcode_t op, uint8_t size, parameter p0, parameter p1, parameter p2, condition_t cond = COND_ALWAYS);
+		void configure(opcode_t op, uint8_t size, parameter p0, parameter p1, parameter p2, parameter p3, condition_t cond = COND_ALWAYS);
+
+		// opcode validation and simplification
+		void validate();
+		void convert_to_mov_immediate(uint64_t immediate) { m_opcode = OP_MOV; m_numparams = 2; m_param[1] = immediate; }
+>>>>>>> upstream/master
 		void convert_to_mov_param(int pnum) { m_opcode = OP_MOV; m_numparams = 2; m_param[1] = m_param[pnum]; }
 
 		// internal state
 		opcode_t            m_opcode;           // opcode
 		condition_t         m_condition;        // condition
+<<<<<<< HEAD
 		UINT8               m_flags;            // flags
 		UINT8               m_size;             // operation size
 		UINT8               m_numparams;        // number of parameters
+=======
+		uint8_t               m_flags;            // flags
+		uint8_t               m_size;             // operation size
+		uint8_t               m_numparams;        // number of parameters
+>>>>>>> upstream/master
 		parameter           m_param[MAX_PARAMS];// up to 4 parameters
 
 		static const opcode_info s_opcode_info_table[OP_MAX];
@@ -597,9 +737,15 @@ namespace uml
 	// structure describing rules for parameter encoding
 	struct parameter_info
 	{
+<<<<<<< HEAD
 		UINT8               output;             // input or output?
 		UINT8               size;               // size of the parameter
 		UINT16              typemask;           // types allowed
+=======
+		uint8_t               output;             // input or output?
+		uint8_t               size;               // size of the parameter
+		uint16_t              typemask;           // types allowed
+>>>>>>> upstream/master
 	};
 
 	// global inline functions to specify a register parameter by index

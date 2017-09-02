@@ -6,14 +6,25 @@
 
 **********************************************************************/
 
+<<<<<<< HEAD
+=======
+#include "emu.h"
+>>>>>>> upstream/master
 #include "user.h"
 
 // class pet_user_port_device
 
+<<<<<<< HEAD
 const device_type PET_USER_PORT = &device_creator<pet_user_port_device>;
 
 pet_user_port_device::pet_user_port_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock) :
 	device_t(mconfig, PET_USER_PORT, "PET user port", tag, owner, clock, "pet_user_port", __FILE__),
+=======
+DEFINE_DEVICE_TYPE(PET_USER_PORT, pet_user_port_device, "pet_user_port", "PET user port")
+
+pet_user_port_device::pet_user_port_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock) :
+	device_t(mconfig, PET_USER_PORT, tag, owner, clock),
+>>>>>>> upstream/master
 	device_slot_interface(mconfig, *this),
 	m_2_handler(*this),
 	m_3_handler(*this),
@@ -34,7 +45,11 @@ pet_user_port_device::pet_user_port_device(const machine_config &mconfig, const 
 	m_k_handler(*this),
 	m_l_handler(*this),
 	m_m_handler(*this),
+<<<<<<< HEAD
 	m_card(NULL)
+=======
+	m_card(nullptr)
+>>>>>>> upstream/master
 {
 }
 
@@ -85,6 +100,7 @@ void pet_user_port_device::device_start()
 	m_m_handler(1);
 }
 
+<<<<<<< HEAD
 WRITE_LINE_MEMBER( pet_user_port_device::write_2 ) { if (m_card != NULL) m_card->input_2(state); }
 WRITE_LINE_MEMBER( pet_user_port_device::write_3 ) { if (m_card != NULL) m_card->input_3(state); }
 WRITE_LINE_MEMBER( pet_user_port_device::write_4 ) { if (m_card != NULL) m_card->input_4(state); }
@@ -104,6 +120,27 @@ WRITE_LINE_MEMBER( pet_user_port_device::write_j ) { if (m_card != NULL) m_card-
 WRITE_LINE_MEMBER( pet_user_port_device::write_k ) { if (m_card != NULL) m_card->input_k(state); }
 WRITE_LINE_MEMBER( pet_user_port_device::write_l ) { if (m_card != NULL) m_card->input_l(state); }
 WRITE_LINE_MEMBER( pet_user_port_device::write_m ) { if (m_card != NULL) m_card->input_m(state); }
+=======
+WRITE_LINE_MEMBER( pet_user_port_device::write_2 ) { if (m_card != nullptr) m_card->input_2(state); }
+WRITE_LINE_MEMBER( pet_user_port_device::write_3 ) { if (m_card != nullptr) m_card->input_3(state); }
+WRITE_LINE_MEMBER( pet_user_port_device::write_4 ) { if (m_card != nullptr) m_card->input_4(state); }
+WRITE_LINE_MEMBER( pet_user_port_device::write_5 ) { if (m_card != nullptr) m_card->input_5(state); }
+WRITE_LINE_MEMBER( pet_user_port_device::write_6 ) { if (m_card != nullptr) m_card->input_6(state); }
+WRITE_LINE_MEMBER( pet_user_port_device::write_7 ) { if (m_card != nullptr) m_card->input_7(state); }
+WRITE_LINE_MEMBER( pet_user_port_device::write_8 ) { if (m_card != nullptr) m_card->input_8(state); }
+WRITE_LINE_MEMBER( pet_user_port_device::write_9 ) { if (m_card != nullptr) m_card->input_9(state); }
+WRITE_LINE_MEMBER( pet_user_port_device::write_10 ) { if (m_card != nullptr) m_card->input_10(state); }
+WRITE_LINE_MEMBER( pet_user_port_device::write_b ) { if (m_card != nullptr) m_card->input_b(state); }
+WRITE_LINE_MEMBER( pet_user_port_device::write_c ) { if (m_card != nullptr) m_card->input_c(state); }
+WRITE_LINE_MEMBER( pet_user_port_device::write_d ) { if (m_card != nullptr) m_card->input_d(state); }
+WRITE_LINE_MEMBER( pet_user_port_device::write_e ) { if (m_card != nullptr) m_card->input_e(state); }
+WRITE_LINE_MEMBER( pet_user_port_device::write_f ) { if (m_card != nullptr) m_card->input_f(state); }
+WRITE_LINE_MEMBER( pet_user_port_device::write_h ) { if (m_card != nullptr) m_card->input_h(state); }
+WRITE_LINE_MEMBER( pet_user_port_device::write_j ) { if (m_card != nullptr) m_card->input_j(state); }
+WRITE_LINE_MEMBER( pet_user_port_device::write_k ) { if (m_card != nullptr) m_card->input_k(state); }
+WRITE_LINE_MEMBER( pet_user_port_device::write_l ) { if (m_card != nullptr) m_card->input_l(state); }
+WRITE_LINE_MEMBER( pet_user_port_device::write_m ) { if (m_card != nullptr) m_card->input_m(state); }
+>>>>>>> upstream/master
 
 
 // class device_pet_user_port_interface
@@ -122,9 +159,17 @@ device_pet_user_port_interface::~device_pet_user_port_interface()
 #include "diag.h"
 #include "petuja.h"
 #include "cb2snd.h"
+<<<<<<< HEAD
+=======
+#include "2joysnd.h"
+>>>>>>> upstream/master
 
 SLOT_INTERFACE_START( pet_user_port_cards )
 	SLOT_INTERFACE("diag", PET_USERPORT_DIAGNOSTIC_CONNECTOR)
 	SLOT_INTERFACE("petuja", PET_USERPORT_JOYSTICK_ADAPTER)
 	SLOT_INTERFACE("cb2snd", PET_USERPORT_CB2_SOUND_DEVICE)
+<<<<<<< HEAD
+=======
+	SLOT_INTERFACE("2joysnd", PET_USERPORT_JOYSTICK_AND_SOUND_DEVICE)
+>>>>>>> upstream/master
 SLOT_INTERFACE_END

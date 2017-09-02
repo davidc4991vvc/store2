@@ -12,7 +12,11 @@
 
 TILE_GET_INFO_MEMBER(cbasebal_state::get_bg_tile_info)
 {
+<<<<<<< HEAD
 	UINT8 attr = m_scrollram[2 * tile_index + 1];
+=======
+	uint8_t attr = m_scrollram[2 * tile_index + 1];
+>>>>>>> upstream/master
 	SET_TILE_INFO_MEMBER(1,
 			m_scrollram[2 * tile_index] + ((attr & 0x07) << 8) + 0x800 * m_tilebank,
 			(attr & 0xf0) >> 4,
@@ -21,7 +25,11 @@ TILE_GET_INFO_MEMBER(cbasebal_state::get_bg_tile_info)
 
 TILE_GET_INFO_MEMBER(cbasebal_state::get_fg_tile_info)
 {
+<<<<<<< HEAD
 	UINT8 attr = m_textram[tile_index + 0x800];
+=======
+	uint8_t attr = m_textram[tile_index + 0x800];
+>>>>>>> upstream/master
 	SET_TILE_INFO_MEMBER(0,
 			m_textram[tile_index] + ((attr & 0xf0) << 4),
 			attr & 0x07,
@@ -38,6 +46,7 @@ TILE_GET_INFO_MEMBER(cbasebal_state::get_fg_tile_info)
 
 void cbasebal_state::video_start()
 {
+<<<<<<< HEAD
 	m_textram = auto_alloc_array(machine(), UINT8, 0x1000);
 	m_scrollram = auto_alloc_array(machine(), UINT8, 0x1000);
 
@@ -48,6 +57,18 @@ void cbasebal_state::video_start()
 
 	save_pointer(NAME(m_textram), 0x1000);
 	save_pointer(NAME(m_scrollram), 0x1000);
+=======
+	m_textram = std::make_unique<uint8_t[]>(0x1000);
+	m_scrollram = std::make_unique<uint8_t[]>(0x1000);
+
+	m_bg_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(cbasebal_state::get_bg_tile_info),this), TILEMAP_SCAN_ROWS, 16, 16, 64, 32);
+	m_fg_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(cbasebal_state::get_fg_tile_info),this), TILEMAP_SCAN_ROWS, 8, 8, 64, 32);
+
+	m_fg_tilemap->set_transparent_pen(3);
+
+	save_pointer(NAME(m_textram.get()), 0x1000);
+	save_pointer(NAME(m_scrollram.get()), 0x1000);
+>>>>>>> upstream/master
 }
 
 
@@ -132,7 +153,11 @@ WRITE8_MEMBER(cbasebal_state::cbasebal_scrolly_w)
 
 void cbasebal_state::draw_sprites( bitmap_ind16 &bitmap, const rectangle &cliprect )
 {
+<<<<<<< HEAD
 	UINT8 *spriteram = m_spriteram;
+=======
+	uint8_t *spriteram = m_spriteram;
+>>>>>>> upstream/master
 	int offs, sx, sy;
 
 	/* the last entry is not a sprite, we skip it otherwise spang shows a bubble */
@@ -163,7 +188,11 @@ void cbasebal_state::draw_sprites( bitmap_ind16 &bitmap, const rectangle &clipre
 	}
 }
 
+<<<<<<< HEAD
 UINT32 cbasebal_state::screen_update_cbasebal(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+=======
+uint32_t cbasebal_state::screen_update_cbasebal(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+>>>>>>> upstream/master
 {
 	if (m_bg_on)
 		m_bg_tilemap->draw(screen, bitmap, cliprect, 0, 0);

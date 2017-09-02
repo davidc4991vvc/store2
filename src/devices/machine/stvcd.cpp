@@ -25,7 +25,11 @@
 
 #include "emu.h"
 #include "imagedev/chd_cd.h"
+<<<<<<< HEAD
 #include "includes/stv.h"
+=======
+#include "includes/saturn.h"
+>>>>>>> upstream/master
 #include "cdrom.h"
 #include "sound/cdda.h"
 #include "debugger.h"
@@ -79,10 +83,17 @@ int saturn_state::get_timing_command(void)
 }
 
 /* FIXME: assume Saturn CD-ROMs to have a 2 secs pre-gap for now. */
+<<<<<<< HEAD
 int saturn_state::get_track_index(UINT32 fad)
 {
 	UINT32 rel_fad;
 	UINT8 track;
+=======
+int saturn_state::get_track_index(uint32_t fad)
+{
+	uint32_t rel_fad;
+	uint8_t track;
+>>>>>>> upstream/master
 
 	if(cdrom_get_track_type(cdrom, cdrom_get_track(cdrom, fad)) != CD_TRACK_AUDIO)
 		return 1;
@@ -102,12 +113,20 @@ int saturn_state::sega_cdrom_get_adr_control(cdrom_file *file, int track)
 	return BITSWAP8(cdrom_get_adr_control(file, cur_track),3,2,1,0,7,6,5,4);
 }
 
+<<<<<<< HEAD
 void saturn_state::cr_standard_return(UINT16 cur_status)
+=======
+void saturn_state::cr_standard_return(uint16_t cur_status)
+>>>>>>> upstream/master
 {
 	if ((cd_stat & 0x0f00) == CD_STAT_SEEK)
 	{
 		/* During seek state, values returned are from the target position */
+<<<<<<< HEAD
 		UINT8 seek_track = cdrom_get_track(cdrom, cd_fad_seek-150);
+=======
+		uint8_t seek_track = cdrom_get_track(cdrom, cd_fad_seek-150);
+>>>>>>> upstream/master
 
 		cr1 = cur_status | (playtype << 7) | 0x00 | (cdda_repeat_count & 0xf);
 		cr2 =  (seek_track == 0xff) ? 0xffff : ((sega_cdrom_get_adr_control(cdrom, seek_track)<<8) | seek_track);
@@ -129,14 +148,22 @@ void saturn_state::cr_standard_return(UINT16 cur_status)
 
 void saturn_state::cd_exec_command( void )
 {
+<<<<<<< HEAD
 	UINT32 temp;
+=======
+	uint32_t temp;
+>>>>>>> upstream/master
 
 	if(cr1 != 0 &&
 		((cr1 & 0xff00) != 0x5100) &&
 		((cr1 & 0xff00) != 0x5200) &&
 		((cr1 & 0xff00) != 0x5300) &&
 		1)
+<<<<<<< HEAD
 		printf("CD: command exec %04x %04x %04x %04x %04x (stat %04x)\n", hirqreg, cr1, cr2, cr3, cr4, cd_stat);
+=======
+		logerror("CD: command exec %04x %04x %04x %04x %04x (stat %04x)\n", hirqreg, cr1, cr2, cr3, cr4, cd_stat);
+>>>>>>> upstream/master
 
 	switch ((cr1 >> 8) & 0xff)
 	{
@@ -258,7 +285,11 @@ void saturn_state::cd_exec_command( void )
 				#endif
 
 				/* reset CD device connection */
+<<<<<<< HEAD
 				//cddevice = (filterT *)NULL;
+=======
+				//cddevice = (filterT *)nullptr;
+>>>>>>> upstream/master
 			}
 
 			hirqreg |= (CMOK|ESEL);
@@ -267,7 +298,11 @@ void saturn_state::cd_exec_command( void )
 			break;
 
 		case 0x06:    // end data transfer (TODO: needs to be worked on!)
+<<<<<<< HEAD
 				// returns # of bytes transfered (24 bits) in
+=======
+				// returns # of bytes transferred (24 bits) in
+>>>>>>> upstream/master
 				// low byte of cr1 (MSB) and cr2 (middle byte, LSB)
 			CDROM_LOG(("%s:CD: End data transfer (%d bytes xfer'd)\n", machine().describe_context(), xferdnum))
 
@@ -283,7 +318,11 @@ void saturn_state::cd_exec_command( void )
 			}
 			else
 			{
+<<<<<<< HEAD
 				printf("No xferdnum error\n");
+=======
+				logerror("No xferdnum error\n");
+>>>>>>> upstream/master
 				cr1 = (cd_stat) | (0xff);   // is this right?
 				cr2 = 0xffff;
 				cr3 = 0;
@@ -301,7 +340,11 @@ void saturn_state::cd_exec_command( void )
 				case XFERTYPE32_GETDELETESECTOR:
 					if (transpart->size > 0)
 					{
+<<<<<<< HEAD
 						INT32 i;
+=======
+						int32_t i;
+>>>>>>> upstream/master
 
 						xfertype32 = XFERTYPE32_INVALID;
 
@@ -309,7 +352,11 @@ void saturn_state::cd_exec_command( void )
 						for (i = xfersectpos; i < xfersectpos+xfersectnum; i++)
 						{
 							cd_free_block(transpart->blocks[i]);
+<<<<<<< HEAD
 							transpart->blocks[i] = (blockT *)NULL;
+=======
+							transpart->blocks[i] = (blockT *)nullptr;
+>>>>>>> upstream/master
 							transpart->bnum[i] = 0xff;
 						}
 
@@ -342,8 +389,13 @@ void saturn_state::cd_exec_command( void )
 			break;
 
 		case 0x10: // Play Disc.  FAD is in lowest 7 bits of cr1 and all of cr2.
+<<<<<<< HEAD
 			UINT32 start_pos,end_pos;
 			UINT8 play_mode;
+=======
+			uint32_t start_pos,end_pos;
+			uint8_t play_mode;
+>>>>>>> upstream/master
 
 			CDROM_LOG(("%s:CD: Play Disc\n",   machine().describe_context()))
 			cd_stat = CD_STAT_PLAY;
@@ -360,7 +412,11 @@ void saturn_state::cd_exec_command( void )
 					if (start_pos != 0xffffff)
 						cd_curfad = start_pos & 0xfffff;
 
+<<<<<<< HEAD
 					printf("fad mode\n");
+=======
+					logerror("fad mode\n");
+>>>>>>> upstream/master
 					cur_track = cdrom_get_track(cdrom, cd_curfad-150);
 				}
 				else
@@ -392,7 +448,11 @@ void saturn_state::cd_exec_command( void )
 				}
 				else
 				{
+<<<<<<< HEAD
 					UINT8 end_track;
+=======
+					uint8_t end_track;
+>>>>>>> upstream/master
 
 					end_track = (end_pos)>>8;
 					fadstoplay = cdrom_get_track_start(cdrom, end_track) - cd_fad_seek;
@@ -415,7 +475,11 @@ void saturn_state::cd_exec_command( void )
 						else
 							fadstoplay = (cdrom_get_track_start(cdrom, (end_pos & 0xff00) >> 8)) - cd_curfad;
 					}
+<<<<<<< HEAD
 					printf("track mode %08x %08x\n",cd_curfad,fadstoplay);
+=======
+					logerror("track mode %08x %08x\n",cd_curfad,fadstoplay);
+>>>>>>> upstream/master
 				}
 				else
 				{
@@ -428,7 +492,11 @@ void saturn_state::cd_exec_command( void )
 						cd_curfad = cdrom_get_track_start(cdrom, cur_track-1);
 						fadstoplay = cdrom_get_track_start(cdrom, cur_track) - cd_curfad;
 					}
+<<<<<<< HEAD
 					printf("track resume %08x %08x\n",cd_curfad,fadstoplay);
+=======
+					logerror("track resume %08x %08x\n",cd_curfad,fadstoplay);
+>>>>>>> upstream/master
 				}
 			}
 
@@ -515,8 +583,13 @@ void saturn_state::cd_exec_command( void )
 			{
 				case 0: // Get Q
 				{
+<<<<<<< HEAD
 					UINT32 msf_abs,msf_rel;
 					UINT8 track;
+=======
+					uint32_t msf_abs,msf_rel;
+					uint8_t track;
+>>>>>>> upstream/master
 					cr1 = cd_stat | 0;
 					cr2 = 10/2;
 					cr3 = 0;
@@ -584,7 +657,11 @@ void saturn_state::cd_exec_command( void )
 
 		case 0x30:    // Set CD Device connection
 			{
+<<<<<<< HEAD
 				UINT8 parm;
+=======
+				uint8_t parm;
+>>>>>>> upstream/master
 
 				// get operation
 				parm = cr3>>8;
@@ -595,7 +672,11 @@ void saturn_state::cd_exec_command( void )
 
 				if (parm == 0xff)
 				{
+<<<<<<< HEAD
 					cddevice = (filterT *)NULL;
+=======
+					cddevice = (filterT *)nullptr;
+>>>>>>> upstream/master
 				}
 				else
 				{
@@ -630,7 +711,11 @@ void saturn_state::cd_exec_command( void )
 						// cr1 low + cr2 = FAD0, cr3 low + cr4 = FAD1
 						// cr3 hi = filter num.
 			{
+<<<<<<< HEAD
 				UINT8 fnum = (cr3>>8)&0xff;
+=======
+				uint8_t fnum = (cr3>>8)&0xff;
+>>>>>>> upstream/master
 
 				CDROM_LOG(("%s:CD: Set Filter Range\n",   machine().describe_context()))
 
@@ -652,7 +737,11 @@ void saturn_state::cd_exec_command( void )
 
 		case 0x42:    // Set Filter Subheader conditions
 			{
+<<<<<<< HEAD
 				UINT8 fnum = (cr3>>8)&0xff;
+=======
+				uint8_t fnum = (cr3>>8)&0xff;
+>>>>>>> upstream/master
 
 				CDROM_LOG(("%s:CD: Set Filter Subheader conditions %x => chan %x masks %x fid %x vals %x\n", machine().describe_context(), fnum, cr1&0xff, cr2, cr3&0xff, cr4))
 
@@ -671,7 +760,11 @@ void saturn_state::cd_exec_command( void )
 
 		case 0x43:    // Get Filter Subheader conditions
 			{
+<<<<<<< HEAD
 				UINT8 fnum = (cr3>>8)&0xff;
+=======
+				uint8_t fnum = (cr3>>8)&0xff;
+>>>>>>> upstream/master
 
 				CDROM_LOG(("%s:CD: Set Filter Subheader conditions %x => chan %x masks %x fid %x vals %x\n", machine().describe_context(), fnum, cr1&0xff, cr2, cr3&0xff, cr4))
 
@@ -687,8 +780,13 @@ void saturn_state::cd_exec_command( void )
 
 		case 0x44:    // Set Filter Mode
 			{
+<<<<<<< HEAD
 				UINT8 fnum = (cr3>>8)&0xff;
 				UINT8 mode = (cr1 & 0xff);
+=======
+				uint8_t fnum = (cr3>>8)&0xff;
+				uint8_t mode = (cr1 & 0xff);
+>>>>>>> upstream/master
 
 				// initialize filter?
 				if (mode & 0x80)
@@ -709,7 +807,11 @@ void saturn_state::cd_exec_command( void )
 
 		case 0x45:    // Get Filter Mode
 			{
+<<<<<<< HEAD
 				UINT8 fnum = (cr3>>8)&0xff;
+=======
+				uint8_t fnum = (cr3>>8)&0xff;
+>>>>>>> upstream/master
 
 				cr1 = cd_stat | (filters[fnum].mode & 0xff);
 				cr2 = 0;
@@ -724,7 +826,11 @@ void saturn_state::cd_exec_command( void )
 		case 0x46:    // Set Filter Connection
 			{
 				/* TODO: maybe condition false is cr3 low? */
+<<<<<<< HEAD
 				UINT8 fnum = (cr3>>8)&0xff;
+=======
+				uint8_t fnum = (cr3>>8)&0xff;
+>>>>>>> upstream/master
 
 				CDROM_LOG(("%s:CD: Set Filter Connection %x => mode %x parm %04x\n", machine().describe_context(), fnum, cr1 & 0xf, cr2))
 
@@ -748,14 +854,22 @@ void saturn_state::cd_exec_command( void )
 
 			if((cr1 & 0xff) == 0x00)
 			{
+<<<<<<< HEAD
 				UINT8 bufnum = cr3>>8;
+=======
+				uint8_t bufnum = cr3>>8;
+>>>>>>> upstream/master
 
 				if(bufnum < MAX_FILTERS)
 				{
 					for (i = 0; i < MAX_BLOCKS; i++)
 					{
 						cd_free_block(partitions[bufnum].blocks[i]);
+<<<<<<< HEAD
 						partitions[bufnum].blocks[i] = (blockT *)NULL;
+=======
+						partitions[bufnum].blocks[i] = (blockT *)nullptr;
+>>>>>>> upstream/master
 						partitions[bufnum].bnum[i] = 0xff;
 					}
 
@@ -813,7 +927,11 @@ void saturn_state::cd_exec_command( void )
 					for (j = 0; j < MAX_BLOCKS; j++)
 					{
 						cd_free_block(partitions[i].blocks[j]);
+<<<<<<< HEAD
 						partitions[i].blocks[j] = (blockT *)NULL;
+=======
+						partitions[i].blocks[j] = (blockT *)nullptr;
+>>>>>>> upstream/master
 						partitions[i].bnum[j] = 0xff;
 					}
 
@@ -842,7 +960,11 @@ void saturn_state::cd_exec_command( void )
 
 		case 0x51:    // get # sectors used in a buffer
 			{
+<<<<<<< HEAD
 				UINT32 bufnum = cr3>>8;
+=======
+				uint32_t bufnum = cr3>>8;
+>>>>>>> upstream/master
 
 				CDROM_LOG(("%s:CD: Get Sector Number (bufno %d) = %d blocks\n",   machine().describe_context(), bufnum, cr4))
 				cr1 = cd_stat;
@@ -873,16 +995,26 @@ void saturn_state::cd_exec_command( void )
 
 		case 0x52:    // calculate actual size
 			{
+<<<<<<< HEAD
 				UINT32 bufnum = cr3>>8;
 				UINT32 sectoffs = cr2;
 				UINT32 numsect = cr4;
+=======
+				uint32_t bufnum = cr3>>8;
+				uint32_t sectoffs = cr2;
+				uint32_t numsect = cr4;
+>>>>>>> upstream/master
 
 				CDROM_LOG(("%s:CD: Calculate actual size: buf %x offs %x numsect %x\n", machine().describe_context(), bufnum, sectoffs, numsect))
 
 				calcsize = 0;
 				if (partitions[bufnum].size != -1)
 				{
+<<<<<<< HEAD
 					INT32 i;
+=======
+					int32_t i;
+>>>>>>> upstream/master
 
 					for (i = 0; i < numsect; i++)
 					{
@@ -911,8 +1043,13 @@ void saturn_state::cd_exec_command( void )
 
 		case 0x54:    // get sector info
 			{
+<<<<<<< HEAD
 				UINT32 sectoffs = cr2 & 0xff;
 				UINT32 bufnum = cr3>>8;
+=======
+				uint32_t sectoffs = cr2 & 0xff;
+				uint32_t bufnum = cr3>>8;
+>>>>>>> upstream/master
 
 				if (bufnum >= MAX_FILTERS || !partitions[bufnum].blocks[sectoffs])
 				{
@@ -974,9 +1111,15 @@ void saturn_state::cd_exec_command( void )
 
 		case 0x61:    // get sector data
 			{
+<<<<<<< HEAD
 				UINT32 sectnum = cr4;
 				UINT32 sectofs = cr2;
 				UINT32 bufnum = cr3>>8;
+=======
+				uint32_t sectnum = cr4;
+				uint32_t sectofs = cr2;
+				uint32_t bufnum = cr3>>8;
+>>>>>>> upstream/master
 
 				CDROM_LOG(("%s:CD: Get sector data (SN %d SO %d BN %d)\n",   machine().describe_context(), sectnum, sectofs, bufnum))
 
@@ -1016,10 +1159,17 @@ void saturn_state::cd_exec_command( void )
 
 		case 0x62:    // delete sector data
 			{
+<<<<<<< HEAD
 				UINT32 sectnum = cr4;
 				UINT32 sectofs = cr2;
 				UINT32 bufnum = cr3>>8;
 				INT32 i;
+=======
+				uint32_t sectnum = cr4;
+				uint32_t sectofs = cr2;
+				uint32_t bufnum = cr3>>8;
+				int32_t i;
+>>>>>>> upstream/master
 
 				CDROM_LOG(("%s:CD: Delete sector data (SN %d SO %d BN %d)\n",   machine().describe_context(), sectnum, sectofs, bufnum))
 
@@ -1047,7 +1197,11 @@ void saturn_state::cd_exec_command( void )
 				{
 					partitions[bufnum].size -= partitions[bufnum].blocks[i]->size;
 					cd_free_block(partitions[bufnum].blocks[i]);
+<<<<<<< HEAD
 					partitions[bufnum].blocks[i] = (blockT *)NULL;
+=======
+					partitions[bufnum].blocks[i] = (blockT *)nullptr;
+>>>>>>> upstream/master
 					partitions[bufnum].bnum[i] = 0xff;
 				}
 
@@ -1069,9 +1223,15 @@ void saturn_state::cd_exec_command( void )
 
 		case 0x63:    // get then delete sector data
 			{
+<<<<<<< HEAD
 				UINT32 sectnum = cr4;
 				UINT32 sectofs = cr2;
 				UINT32 bufnum = cr3>>8;
+=======
+				uint32_t sectnum = cr4;
+				uint32_t sectofs = cr2;
+				uint32_t bufnum = cr3>>8;
+>>>>>>> upstream/master
 
 				CDROM_LOG(("%s:CD: Get and delete sector data (SN %d SO %d BN %d)\n",   machine().describe_context(), sectnum, sectofs, bufnum))
 
@@ -1113,9 +1273,15 @@ void saturn_state::cd_exec_command( void )
 		case 0x64:    // put sector data
 			/* After Burner 2, Out Run, Fantasy Zone and Dungeon Master Nexus trips this */
 			{
+<<<<<<< HEAD
 				UINT32 sectnum = cr4 & 0xff;
 				UINT32 sectofs = cr2;
 				UINT32 bufnum = cr3>>8;
+=======
+				uint32_t sectnum = cr4 & 0xff;
+				uint32_t sectofs = cr2;
+				uint32_t bufnum = cr3>>8;
+>>>>>>> upstream/master
 
 				xfertype32 = XFERTYPE32_PUTSECTOR;
 
@@ -1156,9 +1322,15 @@ void saturn_state::cd_exec_command( void )
 		case 0x66:    // copy sector data
 			/* TODO: Sword & Sorcery / Riglord Saga 2 */
 			{
+<<<<<<< HEAD
 				UINT32 src_filter = (cr3>>8)&0xff;
 				UINT32 dst_filter = cr1&0xff;
 				UINT32 sectnum = cr4 & 0xff;
+=======
+				uint32_t src_filter = (cr3>>8)&0xff;
+				uint32_t dst_filter = cr1&0xff;
+				uint32_t sectnum = cr4 & 0xff;
+>>>>>>> upstream/master
 
 				//cd_stat |= CD_STAT_TRANS;
 				//transpart = &partitions[dst_filter];
@@ -1179,7 +1351,11 @@ void saturn_state::cd_exec_command( void )
 					//deallocate the src blocks
 					//partitions[src_filter].size -= partitions[src_filter].blocks[i]->size;
 					//cd_free_block(partitions[src_filter].blocks[i]);
+<<<<<<< HEAD
 					//partitions[src_filter].blocks[i] = (blockT *)NULL;
+=======
+					//partitions[src_filter].blocks[i] = (blockT *)nullptr;
+>>>>>>> upstream/master
 					//partitions[src_filter].bnum[i] = 0xff;
 				}
 
@@ -1193,7 +1369,11 @@ void saturn_state::cd_exec_command( void )
 
 		case 0x67:    // get copy error
 			CDROM_LOG(("%s:CD: Get copy error\n",   machine().describe_context()))
+<<<<<<< HEAD
 			printf("Get copy error\n");
+=======
+			logerror("Get copy error\n");
+>>>>>>> upstream/master
 			cr1 = cd_stat;
 			cr2 = 0;
 			cr3 = 0;
@@ -1216,14 +1396,22 @@ void saturn_state::cd_exec_command( void )
 
 		case 0x71:    // Read directory entry
 			CDROM_LOG(("%s:CD: Read Directory Entry\n",   machine().describe_context()))
+<<<<<<< HEAD
 //          UINT32 read_dir;
+=======
+//          uint32_t read_dir;
+>>>>>>> upstream/master
 
 //          read_dir = ((cr3&0xff)<<16)|cr4;
 
 			if((cr3 >> 8) < 0x24)
 				cddevice = &filters[cr3 >> 8];
 			else
+<<<<<<< HEAD
 				cddevice = (filterT *)NULL;
+=======
+				cddevice = (filterT *)nullptr;
+>>>>>>> upstream/master
 
 			/* TODO:  */
 			//read_new_dir(read_dir - 2);
@@ -1305,7 +1493,11 @@ void saturn_state::cd_exec_command( void )
 
 		case 0x74:    // Read File
 			CDROM_LOG(("%s:CD: Read File\n",   machine().describe_context()))
+<<<<<<< HEAD
 			UINT16 file_offset,file_filter,file_id,file_size;
+=======
+			uint16_t file_offset,file_filter,file_id,file_size;
+>>>>>>> upstream/master
 
 			file_offset = ((cr1 & 0xff)<<8)|(cr2 & 0xff); /* correct? */
 			file_filter = cr3 >> 8;
@@ -1318,7 +1510,11 @@ void saturn_state::cd_exec_command( void )
 			if(file_filter < 0x24)
 				cddevice = &filters[file_filter];
 			else
+<<<<<<< HEAD
 				cddevice = (filterT *)NULL;
+=======
+				cddevice = (filterT *)nullptr;
+>>>>>>> upstream/master
 
 			printf("Read file %08x (%08x %08x) %02x %d\n",curdir[file_id].firstfad,cd_curfad,fadstoplay,file_filter,sectlenin);
 
@@ -1421,7 +1617,11 @@ TIMER_DEVICE_CALLBACK_MEMBER( saturn_state::stv_sector_cb )
 // global functions
 void saturn_state::stvcd_reset( void )
 {
+<<<<<<< HEAD
 	INT32 i, j;
+=======
+	int32_t i, j;
+>>>>>>> upstream/master
 
 	hirqmask = 0xffff;
 	hirqreg = 0xffff;
@@ -1455,7 +1655,11 @@ void saturn_state::stvcd_reset( void )
 
 		for (j = 0; j < MAX_BLOCKS; j++)
 		{
+<<<<<<< HEAD
 			partitions[i].blocks[j] = (blockT *)NULL;
+=======
+			partitions[i].blocks[j] = (blockT *)nullptr;
+>>>>>>> upstream/master
 			partitions[i].bnum[j] = 0xff;
 		}
 	}
@@ -1471,11 +1675,19 @@ void saturn_state::stvcd_reset( void )
 	if (cdrom)
 	{
 		cdrom_close(cdrom);
+<<<<<<< HEAD
 		cdrom = (cdrom_file *)NULL;
 	}
 
 	cdrom_image_device *cddevice = machine().device<cdrom_image_device>("cdrom");
 	if (cddevice!=NULL)
+=======
+		cdrom = (cdrom_file *)nullptr;
+	}
+
+	cdrom_image_device *cddevice = machine().device<cdrom_image_device>("cdrom");
+	if (cddevice!=nullptr)
+>>>>>>> upstream/master
 	{
 		// MESS case
 		cdrom = cddevice->get_cdrom_file();
@@ -1483,7 +1695,11 @@ void saturn_state::stvcd_reset( void )
 	else
 	{
 		// MAME case
+<<<<<<< HEAD
 		cdrom = cdrom_open(get_disk_handle(machine(), "cdrom"));
+=======
+		cdrom = cdrom_open(machine().rom_load().get_disk_handle("cdrom"));
+>>>>>>> upstream/master
 	}
 
 	machine().device<cdda_device>("cdda")->set_cdrom(cdrom);
@@ -1507,9 +1723,15 @@ void saturn_state::stvcd_reset( void )
 	sh1_timer = machine().device<timer_device>("sh1_cmd");
 }
 
+<<<<<<< HEAD
 saturn_state::blockT *saturn_state::cd_alloc_block(UINT8 *blknum)
 {
 	INT32 i;
+=======
+saturn_state::blockT *saturn_state::cd_alloc_block(uint8_t *blknum)
+{
+	int32_t i;
+>>>>>>> upstream/master
 
 	// search the 200 available blocks for a free one
 	for (i = 0; i < 200; i++)
@@ -1533,16 +1755,28 @@ saturn_state::blockT *saturn_state::cd_alloc_block(UINT8 *blknum)
 	}
 
 	buffull = 1;
+<<<<<<< HEAD
 	return (blockT *)NULL;
+=======
+	return (blockT *)nullptr;
+>>>>>>> upstream/master
 }
 
 void saturn_state::cd_free_block(blockT *blktofree)
 {
+<<<<<<< HEAD
 	INT32 i;
 
 	CDROM_LOG(("cd_free_block: %x\n", (UINT32)(FPTR)blktofree))
 
 	if(blktofree == NULL)
+=======
+	int32_t i;
+
+	CDROM_LOG(("cd_free_block: %x\n", (uint32_t)(uintptr_t)blktofree))
+
+	if(blktofree == nullptr)
+>>>>>>> upstream/master
 	{
 		return;
 	}
@@ -1561,7 +1795,11 @@ void saturn_state::cd_free_block(blockT *blktofree)
 	hirqreg &= ~BFUL;
 }
 
+<<<<<<< HEAD
 void saturn_state::cd_getsectoroffsetnum(UINT32 bufnum, UINT32 *sectoffs, UINT32 *sectnum)
+=======
+void saturn_state::cd_getsectoroffsetnum(uint32_t bufnum, uint32_t *sectoffs, uint32_t *sectnum)
+>>>>>>> upstream/master
 {
 	if (*sectoffs == 0xffff)
 	{
@@ -1576,15 +1814,25 @@ void saturn_state::cd_getsectoroffsetnum(UINT32 bufnum, UINT32 *sectoffs, UINT32
 
 void saturn_state::cd_defragblocks(partitionT *part)
 {
+<<<<<<< HEAD
 	UINT32 i, j;
 	blockT *temp;
 	UINT8 temp2;
+=======
+	uint32_t i, j;
+	blockT *temp;
+	uint8_t temp2;
+>>>>>>> upstream/master
 
 	for (i = 0; i < (MAX_BLOCKS-1); i++)
 	{
 		for (j = i+1; j < MAX_BLOCKS; j++)
 		{
+<<<<<<< HEAD
 			if ((part->blocks[i] == (blockT *)NULL) && (part->blocks[j] != (blockT *)NULL))
+=======
+			if ((part->blocks[i] == (blockT *)nullptr) && (part->blocks[j] != (blockT *)nullptr))
+>>>>>>> upstream/master
 			{
 				temp = part->blocks[i];
 				part->blocks[i] = part->blocks[j];
@@ -1598,9 +1846,15 @@ void saturn_state::cd_defragblocks(partitionT *part)
 	}
 }
 
+<<<<<<< HEAD
 UINT16 saturn_state::cd_readWord(UINT32 addr)
 {
 	UINT16 rv;
+=======
+uint16_t saturn_state::cd_readWord(uint32_t addr)
+{
+	uint16_t rv;
+>>>>>>> upstream/master
 
 	switch (addr & 0xffff)
 	{
@@ -1692,7 +1946,11 @@ UINT16 saturn_state::cd_readWord(UINT32 addr)
 				case XFERTYPE_FILEINFO_254: // Lunar 2
 					if((xfercount % (6 * 2)) == 0)
 					{
+<<<<<<< HEAD
 						UINT32 temp = 2 + (xfercount / (0x6 * 2));
+=======
+						uint32_t temp = 2 + (xfercount / (0x6 * 2));
+>>>>>>> upstream/master
 
 						// first 4 bytes = FAD
 						finfbuf[0] = (curdir[temp].firstfad>>24)&0xff;
@@ -1764,9 +2022,15 @@ UINT16 saturn_state::cd_readWord(UINT32 addr)
 
 }
 
+<<<<<<< HEAD
 UINT32 saturn_state::cd_readLong(UINT32 addr)
 {
 	UINT32 rv = 0;
+=======
+uint32_t saturn_state::cd_readLong(uint32_t addr)
+{
+	uint32_t rv = 0;
+>>>>>>> upstream/master
 
 	switch (addr & 0xffff)
 	{
@@ -1800,7 +2064,11 @@ UINT32 saturn_state::cd_readLong(UINT32 addr)
 					{
 						if (xfertype32 == XFERTYPE32_GETDELETESECTOR)
 						{
+<<<<<<< HEAD
 							INT32 i;
+=======
+							int32_t i;
+>>>>>>> upstream/master
 
 							CDROM_LOG(("Killing sectors in done\n"))
 
@@ -1808,7 +2076,11 @@ UINT32 saturn_state::cd_readLong(UINT32 addr)
 							for (i = xfersectpos; i < xfersectpos+xfersectnum; i++)
 							{
 								cd_free_block(transpart->blocks[i]);
+<<<<<<< HEAD
 								transpart->blocks[i] = (blockT *)NULL;
+=======
+								transpart->blocks[i] = (blockT *)nullptr;
+>>>>>>> upstream/master
 								transpart->bnum[i] = 0xff;
 							}
 
@@ -1838,7 +2110,11 @@ UINT32 saturn_state::cd_readLong(UINT32 addr)
 	}
 }
 
+<<<<<<< HEAD
 void saturn_state::cd_writeLong(UINT32 addr, UINT32 data)
+=======
+void saturn_state::cd_writeLong(uint32_t addr, uint32_t data)
+>>>>>>> upstream/master
 {
 	switch (addr & 0xffff)
 	{
@@ -1885,7 +2161,11 @@ void saturn_state::cd_writeLong(UINT32 addr, UINT32 data)
 	}
 }
 
+<<<<<<< HEAD
 void saturn_state::cd_writeWord(UINT32 addr, UINT16 data)
+=======
+void saturn_state::cd_writeWord(uint32_t addr, uint16_t data)
+>>>>>>> upstream/master
 {
 	switch(addr & 0xffff)
 	{
@@ -1947,7 +2227,11 @@ void saturn_state::cd_writeWord(UINT32 addr, UINT16 data)
 
 READ32_MEMBER( saturn_state::stvcd_r )
 {
+<<<<<<< HEAD
 	UINT32 rv = 0;
+=======
+	uint32_t rv = 0;
+>>>>>>> upstream/master
 
 	offset <<= 2;
 
@@ -2057,11 +2341,19 @@ WRITE32_MEMBER( saturn_state::stvcd_w )
 }
 
 // iso9660 parsing
+<<<<<<< HEAD
 void saturn_state::read_new_dir(UINT32 fileno)
 {
 	int foundpd, i;
 	UINT32 cfad;//, dirfad;
 	UINT8 sect[2048];
+=======
+void saturn_state::read_new_dir(uint32_t fileno)
+{
+	int foundpd, i;
+	uint32_t cfad;//, dirfad;
+	uint8_t sect[2048];
+>>>>>>> upstream/master
 
 	if (fileno == 0xffffff)
 	{
@@ -2138,11 +2430,19 @@ void saturn_state::read_new_dir(UINT32 fileno)
 }
 
 // makes the directory pointed to by FAD current
+<<<<<<< HEAD
 void saturn_state::make_dir_current(UINT32 fad)
 {
 	int i;
 	UINT32 nextent, numentries;
 	dynamic_buffer sect(MAX_DIR_SIZE);
+=======
+void saturn_state::make_dir_current(uint32_t fad)
+{
+	uint32_t i;
+	uint32_t nextent, numentries;
+	std::vector<uint8_t> sect(MAX_DIR_SIZE);
+>>>>>>> upstream/master
 	direntryT *curentry;
 
 	memset(&sect[0], 0, MAX_DIR_SIZE);
@@ -2243,11 +2543,19 @@ void saturn_state::stvcd_exit( void )
 	if (cdrom)
 	{
 		cdrom_image_device *cddevice = machine().device<cdrom_image_device>("cdrom");
+<<<<<<< HEAD
 		if (cddevice==NULL)
 		{
 			cdrom_close(cdrom);
 		}
 		cdrom = (cdrom_file *)NULL;
+=======
+		if (cddevice==nullptr)
+		{
+			cdrom_close(cdrom);
+		}
+		cdrom = (cdrom_file *)nullptr;
+>>>>>>> upstream/master
 	}
 }
 
@@ -2343,10 +2651,17 @@ void saturn_state::cd_readTOC(void)
 	tocbuf[tocptr+11] = fad&0xff;
 }
 
+<<<<<<< HEAD
 saturn_state::partitionT *saturn_state::cd_filterdata(filterT *flt, int trktype, UINT8 *p_ok)
 {
 	int match, keepgoing;
 	partitionT *filterprt = (partitionT *)NULL;
+=======
+saturn_state::partitionT *saturn_state::cd_filterdata(filterT *flt, int trktype, uint8_t *p_ok)
+{
+	int match, keepgoing;
+	partitionT *filterprt;
+>>>>>>> upstream/master
 
 	CDROM_LOG(("cd_filterdata, trktype %d\n", trktype))
 	match = 1;
@@ -2428,7 +2743,11 @@ saturn_state::partitionT *saturn_state::cd_filterdata(filterT *flt, int trktype,
 			if ((lastbuf == 0xff) || (keepgoing == 0))
 			{
 				*p_ok = 0;
+<<<<<<< HEAD
 				return (partitionT *)NULL;
+=======
+				return (partitionT *)nullptr;
+>>>>>>> upstream/master
 			}
 
 			// try again using the filter that was on the "false" connector
@@ -2446,10 +2765,17 @@ saturn_state::partitionT *saturn_state::cd_filterdata(filterT *flt, int trktype,
 	filterprt->blocks[filterprt->numblks] = cd_alloc_block(&filterprt->bnum[filterprt->numblks]);
 
 	// did the allocation succeed?
+<<<<<<< HEAD
 	if (filterprt->blocks[filterprt->numblks] == (blockT *)NULL)
 	{
 		*p_ok = 0;
 		return (partitionT *)NULL;
+=======
+	if (filterprt->blocks[filterprt->numblks] == (blockT *)nullptr)
+	{
+		*p_ok = 0;
+		return (partitionT *)nullptr;
+>>>>>>> upstream/master
 	}
 
 	// copy working block to the newly allocated one
@@ -2499,11 +2825,19 @@ saturn_state::partitionT *saturn_state::cd_filterdata(filterT *flt, int trktype,
 }
 
 // read a single sector off the CD, applying the current filter(s) as necessary
+<<<<<<< HEAD
 saturn_state::partitionT *saturn_state::cd_read_filtered_sector(INT32 fad, UINT8 *p_ok)
 {
 	int trktype;
 
 	if ((cddevice != NULL) && (!buffull))
+=======
+saturn_state::partitionT *saturn_state::cd_read_filtered_sector(int32_t fad, uint8_t *p_ok)
+{
+	int trktype;
+
+	if ((cddevice != nullptr) && (!buffull))
+>>>>>>> upstream/master
 	{
 		// find out the track's type
 		trktype = cdrom_get_track_type(cdrom, cdrom_get_track(cdrom, fad-150));
@@ -2544,7 +2878,11 @@ saturn_state::partitionT *saturn_state::cd_read_filtered_sector(INT32 fad, UINT8
 	}
 
 	*p_ok = 0;
+<<<<<<< HEAD
 	return (partitionT *)NULL;
+=======
+	return (partitionT *)nullptr;
+>>>>>>> upstream/master
 }
 
 // loads in data set up by a CD-block PLAY command
@@ -2552,7 +2890,11 @@ void saturn_state::cd_playdata( void )
 {
 	if ((cd_stat & 0x0f00) == CD_STAT_SEEK)
 	{
+<<<<<<< HEAD
 		INT32 fad_diff;
+=======
+		int32_t fad_diff;
+>>>>>>> upstream/master
 		//printf("PRE %08x %08x %08x %d\n",cd_curfad,cd_fad_seek,cd_stat,cd_fad_seek - cd_curfad);
 
 		fad_diff = (cd_fad_seek - cd_curfad);
@@ -2588,7 +2930,11 @@ void saturn_state::cd_playdata( void )
 
 			if (cdrom)
 			{
+<<<<<<< HEAD
 				UINT8 p_ok;
+=======
+				uint8_t p_ok;
+>>>>>>> upstream/master
 
 				if(cdrom_get_track_type(cdrom, cdrom_get_track(cdrom, cd_curfad)) != CD_TRACK_AUDIO)
 				{
@@ -2639,7 +2985,11 @@ void saturn_state::cd_playdata( void )
 }
 
 // loads a single sector off the CD, anywhere from FAD 150 on up
+<<<<<<< HEAD
 void saturn_state::cd_readblock(UINT32 fad, UINT8 *dat)
+=======
+void saturn_state::cd_readblock(uint32_t fad, uint8_t *dat)
+>>>>>>> upstream/master
 {
 	if (cdrom)
 	{
@@ -2655,7 +3005,11 @@ void saturn_state::stvcd_set_tray_open( void )
 	hirqreg |= DCHG;
 	cd_stat = CD_STAT_OPEN;
 
+<<<<<<< HEAD
 	cdrom = (cdrom_file *)NULL;
+=======
+	cdrom = (cdrom_file *)nullptr;
+>>>>>>> upstream/master
 	tray_is_closed = 0;
 
 	popmessage("Tray Open");
@@ -2670,7 +3024,11 @@ void saturn_state::stvcd_set_tray_close( void )
 	hirqreg |= DCHG;
 
 	cdrom_image_device *cddevice = machine().device<cdrom_image_device>("cdrom");
+<<<<<<< HEAD
 	if (cddevice!=NULL)
+=======
+	if (cddevice!=nullptr)
+>>>>>>> upstream/master
 	{
 		// MESS case
 		cdrom = cddevice->get_cdrom_file();
@@ -2678,7 +3036,11 @@ void saturn_state::stvcd_set_tray_close( void )
 	else
 	{
 		// MAME case
+<<<<<<< HEAD
 		cdrom = cdrom_open(get_disk_handle(machine(), "cdrom"));
+=======
+		cdrom = cdrom_open(machine().rom_load().get_disk_handle("cdrom"));
+>>>>>>> upstream/master
 	}
 
 	machine().device<cdda_device>("cdda")->set_cdrom(cdrom);

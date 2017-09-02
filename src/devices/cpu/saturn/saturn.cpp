@@ -10,9 +10,16 @@
  *****************************************************************************/
 
 #include "emu.h"
+<<<<<<< HEAD
 #include "debugger.h"
 
 #include "saturn.h"
+=======
+#include "saturn.h"
+
+#include "debugger.h"
+
+>>>>>>> upstream/master
 
 #define R0 0
 #define R1 1
@@ -26,9 +33,14 @@
 #define I 9 // invalid
 
 
+<<<<<<< HEAD
 #define VERBOSE 0
 
 #define LOG(x)  do { if (VERBOSE) logerror x; } while (0)
+=======
+//#define VERBOSE 1
+#include "logmacro.h"
+>>>>>>> upstream/master
 
 
 // Hardware status bits
@@ -39,11 +51,19 @@
 
 
 
+<<<<<<< HEAD
 const device_type SATURN = &device_creator<saturn_device>;
 
 
 saturn_device::saturn_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
 	: cpu_device(mconfig, SATURN, "HP Saturn", tag, owner, clock, "saturn_cpu", __FILE__)
+=======
+DEFINE_DEVICE_TYPE(SATURN, saturn_device, "saturn_cpu", "HP Saturn")
+
+
+saturn_device::saturn_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: cpu_device(mconfig, SATURN, tag, owner, clock)
+>>>>>>> upstream/master
 	, m_program_config("program", ENDIANNESS_LITTLE, 8, 20, 0)
 	, m_out_func(*this)
 	, m_in_func(*this)
@@ -57,11 +77,26 @@ saturn_device::saturn_device(const machine_config &mconfig, const char *tag, dev
 {
 }
 
+<<<<<<< HEAD
 
 offs_t saturn_device::disasm_disassemble(char *buffer, offs_t pc, const UINT8 *oprom, const UINT8 *opram, UINT32 options)
 {
 	extern CPU_DISASSEMBLE( saturn );
 	return CPU_DISASSEMBLE_NAME(saturn)(this, buffer, pc, oprom, opram, options);
+=======
+device_memory_interface::space_config_vector saturn_device::memory_space_config() const
+{
+	return space_config_vector {
+		std::make_pair(AS_PROGRAM, &m_program_config)
+	};
+}
+
+
+offs_t saturn_device::disasm_disassemble(std::ostream &stream, offs_t pc, const uint8_t *oprom, const uint8_t *opram, uint32_t options)
+{
+	extern CPU_DISASSEMBLE( saturn );
+	return CPU_DISASSEMBLE_NAME(saturn)(this, stream, pc, oprom, opram, options);
+>>>>>>> upstream/master
 }
 
 
@@ -69,8 +104,13 @@ offs_t saturn_device::disasm_disassemble(char *buffer, offs_t pc, const UINT8 *o
  * include the opcode macros, functions and tables
  ***************************************************************/
 
+<<<<<<< HEAD
 #include "satops.inc"
 #include "sattable.inc"
+=======
+#include "satops.hxx"
+#include "sattable.hxx"
+>>>>>>> upstream/master
 
 /*****************************************************************************
  *
@@ -164,12 +204,20 @@ void saturn_device::device_start()
 	state_add( SATURN_SLEEPING, "sleep", m_sleeping).formatstr("%1X");
 
 	state_add( STATE_GENPC, "GENPC", m_pc ).noshow();
+<<<<<<< HEAD
+=======
+	state_add( STATE_GENPCBASE, "CURPC", m_pc ).noshow();
+>>>>>>> upstream/master
 	state_add( STATE_GENFLAGS, "GENFLAGS", m_debugger_temp).formatstr("%2s").noshow();
 
 	m_icountptr = &m_icount;
 }
 
+<<<<<<< HEAD
 void saturn_device::state_string_export(const device_state_entry &entry, std::string &str)
+=======
+void saturn_device::state_string_export(const device_state_entry &entry, std::string &str) const
+>>>>>>> upstream/master
 {
 #define Reg64Data(s) s[15],s[14],s[13],s[12],s[11],s[10],s[9],s[8],s[7],s[6],s[5],s[4],s[3],s[2],s[1],s[0]
 #define Reg64Format "%x %x%x%x%x%x%x%x %x%x%x %x%x%x%x%x"
@@ -177,6 +225,7 @@ void saturn_device::state_string_export(const device_state_entry &entry, std::st
 	switch (entry.index())
 	{
 		case SATURN_A:
+<<<<<<< HEAD
 			strprintf(str,  Reg64Format, Reg64Data(m_reg[A]) );
 			break;
 
@@ -218,6 +267,49 @@ void saturn_device::state_string_export(const device_state_entry &entry, std::st
 
 		case STATE_GENFLAGS:
 			strprintf(str,  "%c%c", m_decimal?'D':'.', m_carry ? 'C':'.' );
+=======
+			str = string_format( Reg64Format, Reg64Data(m_reg[A]) );
+			break;
+
+		case SATURN_B:
+			str = string_format( Reg64Format, Reg64Data(m_reg[B]) );
+			break;
+
+		case SATURN_C:
+			str = string_format( Reg64Format, Reg64Data(m_reg[C]) );
+			break;
+
+		case SATURN_D:
+			str = string_format( Reg64Format, Reg64Data(m_reg[D]) );
+			break;
+
+		case SATURN_R0:
+			str = string_format( Reg64Format, Reg64Data(m_reg[R0]) );
+			break;
+
+		case SATURN_R1:
+			str = string_format( Reg64Format, Reg64Data(m_reg[R1]) );
+			break;
+
+		case SATURN_R2:
+			str = string_format( Reg64Format, Reg64Data(m_reg[R2]) );
+			break;
+
+		case SATURN_R3:
+			str = string_format( Reg64Format, Reg64Data(m_reg[R3]) );
+			break;
+
+		case SATURN_R4:
+			str = string_format( Reg64Format, Reg64Data(m_reg[R4]) );
+			break;
+
+		case SATURN_IRQ_STATE:
+			str = string_format( "%c%c%c%i", m_in_irq?'S':'.', m_irq_enable?'e':'.', m_pending_irq?'p':'.', m_irq_state );
+			break;
+
+		case STATE_GENFLAGS:
+			str = string_format( "%c%c", m_decimal?'D':'.', m_carry ? 'C':'.' );
+>>>>>>> upstream/master
 			break;
 	}
 }
@@ -325,7 +417,11 @@ void saturn_device::saturn_take_irq()
 	saturn_push(m_pc);
 	m_pc=IRQ_ADDRESS;
 
+<<<<<<< HEAD
 	LOG(("Saturn '%s' takes IRQ ($%04x)\n", tag(), m_pc));
+=======
+	LOG("SATURN takes IRQ ($%04x)\n", m_pc);
+>>>>>>> upstream/master
 
 	standard_irq_callback(SATURN_IRQ_LINE);
 }
@@ -366,7 +462,11 @@ void saturn_device::execute_set_input(int inputnum, int state)
 			m_nmi_state = state;
 			if ( state != CLEAR_LINE )
 			{
+<<<<<<< HEAD
 				LOG(( "SATURN '%s' set_nmi_line(ASSERT)\n", tag()));
+=======
+				LOG("SATURN set_nmi_line(ASSERT)\n");
+>>>>>>> upstream/master
 				m_pending_irq = 1;
 			}
 			break;
@@ -376,7 +476,11 @@ void saturn_device::execute_set_input(int inputnum, int state)
 			m_irq_state = state;
 			if ( state != CLEAR_LINE && m_irq_enable )
 			{
+<<<<<<< HEAD
 				LOG(( "SATURN '%s' set_irq_line(ASSERT)\n", tag()));
+=======
+				LOG("SATURN set_irq_line(ASSERT)\n");
+>>>>>>> upstream/master
 				m_pending_irq = 1;
 			}
 			break;
@@ -384,7 +488,11 @@ void saturn_device::execute_set_input(int inputnum, int state)
 		case SATURN_WAKEUP_LINE:
 			if (m_sleeping && state==1)
 			{
+<<<<<<< HEAD
 				LOG(( "SATURN '%s' set_wakeup_line(ASSERT)\n", tag()));
+=======
+				LOG("SATURN set_wakeup_line(ASSERT)\n");
+>>>>>>> upstream/master
 				standard_irq_callback(SATURN_WAKEUP_LINE);
 				m_sleeping = 0;
 			}
@@ -393,7 +501,11 @@ void saturn_device::execute_set_input(int inputnum, int state)
 }
 
 
+<<<<<<< HEAD
 void saturn_device::IntReg64(Saturn64 r, INT64 d)
+=======
+void saturn_device::IntReg64(Saturn64 r, int64_t d)
+>>>>>>> upstream/master
 {
 	int i;
 	for (i=0; i<16; i++)
@@ -401,11 +513,20 @@ void saturn_device::IntReg64(Saturn64 r, INT64 d)
 }
 
 
+<<<<<<< HEAD
 INT64 saturn_device::Reg64Int(Saturn64 r)
 {
 	INT64 x = 0;
 	int i;
 	for (i=0; i<16; i++)
 		x |= (INT64) r[i] << (4*i);
+=======
+int64_t saturn_device::Reg64Int(Saturn64 r)
+{
+	int64_t x = 0;
+	int i;
+	for (i=0; i<16; i++)
+		x |= (int64_t) r[i] << (4*i);
+>>>>>>> upstream/master
 	return x;
 }

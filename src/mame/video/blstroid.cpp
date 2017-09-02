@@ -21,7 +21,11 @@
 
 TILE_GET_INFO_MEMBER(blstroid_state::get_playfield_tile_info)
 {
+<<<<<<< HEAD
 	UINT16 data = tilemap.basemem_read(tile_index);
+=======
+	uint16_t data = m_playfield_tilemap->basemem_read(tile_index);
+>>>>>>> upstream/master
 	int code = data & 0x1fff;
 	int color = (data >> 13) & 0x07;
 	SET_TILE_INFO_MEMBER(0, code, color, 0);
@@ -71,6 +75,11 @@ const atari_motion_objects_config blstroid_state::s_mob_config =
 
 VIDEO_START_MEMBER(blstroid_state,blstroid)
 {
+<<<<<<< HEAD
+=======
+	m_irq_off_timer = timer_alloc(TIMER_IRQ_OFF);
+	m_irq_on_timer = timer_alloc(TIMER_IRQ_ON);
+>>>>>>> upstream/master
 }
 
 
@@ -93,7 +102,11 @@ void blstroid_state::device_timer(emu_timer &timer, device_timer_id id, int para
 			break;
 		case TIMER_IRQ_ON:
 			/* generate the interrupt */
+<<<<<<< HEAD
 			scanline_int_gen(m_maincpu);
+=======
+			scanline_int_gen(*m_maincpu);
+>>>>>>> upstream/master
 			update_interrupts();
 			break;
 		default:
@@ -123,8 +136,13 @@ void blstroid_state::scanline_update(screen_device &screen, int scanline)
 			attotime period_on  = screen.time_until_pos(vpos + 7, width * 0.9);
 			attotime period_off = screen.time_until_pos(vpos + 8, width * 0.9);
 
+<<<<<<< HEAD
 			timer_set(period_on, TIMER_IRQ_ON);
 			timer_set(period_off, TIMER_IRQ_OFF);
+=======
+			m_irq_on_timer->adjust(period_on);
+			m_irq_off_timer->adjust(period_off);
+>>>>>>> upstream/master
 		}
 }
 
@@ -136,7 +154,11 @@ void blstroid_state::scanline_update(screen_device &screen, int scanline)
  *
  *************************************/
 
+<<<<<<< HEAD
 UINT32 blstroid_state::screen_update_blstroid(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+=======
+uint32_t blstroid_state::screen_update_blstroid(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+>>>>>>> upstream/master
 {
 	// start drawing
 	m_mob->draw_async(cliprect);
@@ -146,11 +168,19 @@ UINT32 blstroid_state::screen_update_blstroid(screen_device &screen, bitmap_ind1
 
 	/* draw and merge the MO */
 	bitmap_ind16 &mobitmap = m_mob->bitmap();
+<<<<<<< HEAD
 	for (const sparse_dirty_rect *rect = m_mob->first_dirty_rect(cliprect); rect != NULL; rect = rect->next())
 		for (int y = rect->min_y; y <= rect->max_y; y++)
 		{
 			UINT16 *mo = &mobitmap.pix16(y);
 			UINT16 *pf = &bitmap.pix16(y);
+=======
+	for (const sparse_dirty_rect *rect = m_mob->first_dirty_rect(cliprect); rect != nullptr; rect = rect->next())
+		for (int y = rect->min_y; y <= rect->max_y; y++)
+		{
+			uint16_t *mo = &mobitmap.pix16(y);
+			uint16_t *pf = &bitmap.pix16(y);
+>>>>>>> upstream/master
 			for (int x = rect->min_x; x <= rect->max_x; x++)
 				if (mo[x] != 0xffff)
 				{

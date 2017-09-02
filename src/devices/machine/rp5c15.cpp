@@ -16,17 +16,29 @@
 
 */
 
+<<<<<<< HEAD
 #include "rp5c15.h"
 
+=======
+#include "emu.h"
+#include "rp5c15.h"
+
+//#define VERBOSE 1
+#include "logmacro.h"
+
+>>>>>>> upstream/master
 
 
 //**************************************************************************
 //  MACROS / CONSTANTS
 //**************************************************************************
 
+<<<<<<< HEAD
 #define LOG 0
 
 
+=======
+>>>>>>> upstream/master
 // registers
 enum
 {
@@ -105,7 +117,11 @@ enum
 //**************************************************************************
 
 // devices
+<<<<<<< HEAD
 const device_type RP5C15 = &device_creator<rp5c15_device>;
+=======
+DEFINE_DEVICE_TYPE(RP5C15, rp5c15_device, "rp5c15", "Ricoh RP5C15 RTC")
+>>>>>>> upstream/master
 
 
 
@@ -125,7 +141,11 @@ inline void rp5c15_device::set_alarm_line()
 
 	if (m_alarm != alarm)
 	{
+<<<<<<< HEAD
 		if (LOG) logerror("RP5C15 '%s' Alarm %u\n", tag(), alarm);
+=======
+		LOG("RP5C15 Alarm %u\n", alarm);
+>>>>>>> upstream/master
 
 		m_out_alarm_cb(alarm);
 		m_alarm = alarm;
@@ -182,8 +202,13 @@ inline void rp5c15_device::check_alarm()
 //  rp5c15_device - constructor
 //-------------------------------------------------
 
+<<<<<<< HEAD
 rp5c15_device::rp5c15_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
 	: device_t(mconfig, RP5C15, "RP5C15", tag, owner, clock, "rp5c15", __FILE__),
+=======
+rp5c15_device::rp5c15_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: device_t(mconfig, RP5C15, tag, owner, clock),
+>>>>>>> upstream/master
 		device_rtc_interface(mconfig, *this),
 		m_out_alarm_cb(*this),
 		m_out_clkout_cb(*this),
@@ -238,6 +263,7 @@ void rp5c15_device::device_start()
 
 
 //-------------------------------------------------
+<<<<<<< HEAD
 //  device_reset - device-specific reset
 //-------------------------------------------------
 
@@ -248,6 +274,8 @@ void rp5c15_device::device_reset()
 
 
 //-------------------------------------------------
+=======
+>>>>>>> upstream/master
 //  device_timer - handler timer events
 //-------------------------------------------------
 
@@ -304,7 +332,11 @@ void rp5c15_device::rtc_clock_updated(int year, int month, int day, int day_of_w
 
 READ8_MEMBER( rp5c15_device::read )
 {
+<<<<<<< HEAD
 	UINT8 data = 0;
+=======
+	uint8_t data = 0;
+>>>>>>> upstream/master
 	offset &= 0x0f;
 
 	switch (offset)
@@ -323,7 +355,11 @@ READ8_MEMBER( rp5c15_device::read )
 		break;
 	}
 
+<<<<<<< HEAD
 	if (LOG) logerror("RP5C15 '%s' Register %u Read %02x\n", tag(), offset, data);
+=======
+	LOG("RP5C15 Register %u Read %02x\n", offset, data);
+>>>>>>> upstream/master
 
 	return data & 0x0f;
 }
@@ -343,6 +379,7 @@ WRITE8_MEMBER( rp5c15_device::write )
 	case REGISTER_MODE:
 		m_mode = data;
 
+<<<<<<< HEAD
 		if (LOG)
 		{
 			logerror("RP5C15 '%s' Mode %u\n", tag(), data & MODE_MASK);
@@ -353,6 +390,15 @@ WRITE8_MEMBER( rp5c15_device::write )
 
 	case REGISTER_TEST:
 		if (LOG) logerror("RP5C15 '%s' Test %u not supported!\n", tag(), data);
+=======
+		LOG("RP5C15 Mode %u\n", data & MODE_MASK);
+		LOG("RP5C15 Timer %s\n", (data & MODE_TIMER_EN) ? "enabled" : "disabled");
+		LOG("RP5C15 Alarm %s\n", (data & MODE_ALARM_EN) ? "enabled" : "disabled");
+		break;
+
+	case REGISTER_TEST:
+		LOG("RP5C15 Test %u not supported!\n", data);
+>>>>>>> upstream/master
 		break;
 
 	case REGISTER_RESET:
@@ -367,6 +413,7 @@ WRITE8_MEMBER( rp5c15_device::write )
 			}
 		}
 
+<<<<<<< HEAD
 		if (LOG)
 		{
 			if (data & RESET_ALARM) logerror("RP5C15 '%s' Alarm Reset\n", tag());
@@ -374,6 +421,12 @@ WRITE8_MEMBER( rp5c15_device::write )
 			logerror("RP5C15 '%s' 16Hz Signal %s\n", tag(), (data & RESET_16_HZ) ? "disabled" : "enabled");
 			logerror("RP5C15 '%s' 1Hz Signal %s\n", tag(), (data & RESET_1_HZ) ? "disabled" : "enabled");
 		}
+=======
+		if (data & RESET_ALARM) LOG("RP5C15 Alarm Reset\n");
+		if (data & RESET_TIMER) LOG("RP5C15 Timer Reset not supported!\n");
+		LOG("RP5C15 16Hz Signal %s\n", (data & RESET_16_HZ) ? "disabled" : "enabled");
+		LOG("RP5C15 1Hz Signal %s\n", (data & RESET_1_HZ) ? "disabled" : "enabled");
+>>>>>>> upstream/master
 		break;
 
 	default:
@@ -441,7 +494,11 @@ WRITE8_MEMBER( rp5c15_device::write )
 			break;
 		}
 
+<<<<<<< HEAD
 		if (LOG) logerror("RP5C15 '%s' Register %u Write %02x\n", tag(), offset, data);
+=======
+		LOG("RP5C15 Register %u Write %02x\n", offset, data);
+>>>>>>> upstream/master
 		break;
 	}
 }

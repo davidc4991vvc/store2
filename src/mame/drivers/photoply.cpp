@@ -27,10 +27,17 @@ public:
 	{
 	}
 
+<<<<<<< HEAD
 	UINT8 m_vga_address;
 
 	DECLARE_DRIVER_INIT(photoply);
 	virtual void machine_start();
+=======
+	uint8_t m_vga_address;
+
+	DECLARE_DRIVER_INIT(photoply);
+	virtual void machine_start() override;
+>>>>>>> upstream/master
 };
 
 
@@ -114,7 +121,11 @@ static GFXDECODE_START( photoply )
 	//there's also a 8x16 entry (just after the 8x8)
 GFXDECODE_END
 
+<<<<<<< HEAD
 static MACHINE_CONFIG_START( photoply, photoply_state )
+=======
+static MACHINE_CONFIG_START( photoply )
+>>>>>>> upstream/master
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", I486, 75000000) /* I486DX4, 75 or 100 Mhz */
 	MCFG_CPU_PROGRAM_MAP(photoply_map)
@@ -125,7 +136,11 @@ static MACHINE_CONFIG_START( photoply, photoply_state )
 
 	MCFG_GFXDECODE_ADD("gfxdecode", "palette", photoply )
 
+<<<<<<< HEAD
 	MCFG_IDE_CONTROLLER_ADD("ide", ata_devices, "hdd", NULL, true)
+=======
+	MCFG_IDE_CONTROLLER_ADD("ide", ata_devices, "hdd", nullptr, true)
+>>>>>>> upstream/master
 	MCFG_ATA_INTERFACE_IRQ_HANDLER(DEVWRITELINE("pic8259_2", pic8259_device, ir6_w))
 
 	MCFG_FRAGMENT_ADD( pcvideo_vga )

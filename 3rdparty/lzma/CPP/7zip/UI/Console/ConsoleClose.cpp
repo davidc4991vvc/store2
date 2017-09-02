@@ -4,11 +4,23 @@
 
 #include "ConsoleClose.h"
 
+<<<<<<< HEAD
 static int g_BreakCounter = 0;
 static const int kBreakAbortThreshold = 2;
 
 namespace NConsoleClose {
 
+=======
+#if !defined(UNDER_CE) && defined(_WIN32)
+#include "../../../Common/MyWindows.h"
+#endif
+
+namespace NConsoleClose {
+
+unsigned g_BreakCounter = 0;
+static const unsigned kBreakAbortThreshold = 2;
+
+>>>>>>> upstream/master
 #if !defined(UNDER_CE) && defined(_WIN32)
 static BOOL WINAPI HandlerRoutine(DWORD ctrlType)
 {
@@ -23,7 +35,11 @@ static BOOL WINAPI HandlerRoutine(DWORD ctrlType)
     return TRUE;
   return FALSE;
   /*
+<<<<<<< HEAD
   switch(ctrlType)
+=======
+  switch (ctrlType)
+>>>>>>> upstream/master
   {
     case CTRL_C_EVENT:
     case CTRL_BREAK_EVENT:
@@ -35,6 +51,7 @@ static BOOL WINAPI HandlerRoutine(DWORD ctrlType)
 }
 #endif
 
+<<<<<<< HEAD
 bool TestBreakSignal()
 {
   #ifdef UNDER_CE
@@ -48,16 +65,27 @@ bool TestBreakSignal()
   #endif
 }
 
+=======
+/*
+>>>>>>> upstream/master
 void CheckCtrlBreak()
 {
   if (TestBreakSignal())
     throw CCtrlBreakException();
 }
+<<<<<<< HEAD
+=======
+*/
+>>>>>>> upstream/master
 
 CCtrlHandlerSetter::CCtrlHandlerSetter()
 {
   #if !defined(UNDER_CE) && defined(_WIN32)
+<<<<<<< HEAD
   if(!SetConsoleCtrlHandler(HandlerRoutine, TRUE))
+=======
+  if (!SetConsoleCtrlHandler(HandlerRoutine, TRUE))
+>>>>>>> upstream/master
     throw "SetConsoleCtrlHandler fails";
   #endif
 }
@@ -65,8 +93,16 @@ CCtrlHandlerSetter::CCtrlHandlerSetter()
 CCtrlHandlerSetter::~CCtrlHandlerSetter()
 {
   #if !defined(UNDER_CE) && defined(_WIN32)
+<<<<<<< HEAD
   if(!SetConsoleCtrlHandler(HandlerRoutine, FALSE))
     throw "SetConsoleCtrlHandler fails";
+=======
+  if (!SetConsoleCtrlHandler(HandlerRoutine, FALSE))
+  {
+    // warning for throw in destructor.
+    // throw "SetConsoleCtrlHandler fails";
+  }
+>>>>>>> upstream/master
   #endif
 }
 

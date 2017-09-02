@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 // license:???
+=======
+// license:BSD-3-Clause
+>>>>>>> upstream/master
 // copyright-holders:Stefan Jokisch
 /***************************************************************************
 
@@ -7,9 +11,16 @@ Atari Tank 8 driver
 ***************************************************************************/
 
 #include "emu.h"
+<<<<<<< HEAD
 #include "cpu/m6800/m6800.h"
 #include "includes/tank8.h"
 #include "sound/discrete.h"
+=======
+#include "includes/tank8.h"
+#include "cpu/m6800/m6800.h"
+#include "sound/discrete.h"
+#include "speaker.h"
+>>>>>>> upstream/master
 
 
 
@@ -34,7 +45,11 @@ READ8_MEMBER(tank8_state::collision_r)
 
 WRITE8_MEMBER(tank8_state::lockout_w)
 {
+<<<<<<< HEAD
 	coin_lockout_w(machine(), offset, ~data & 1);
+=======
+	machine().bookkeeping().coin_lockout_w(offset, ~data & 1);
+>>>>>>> upstream/master
 }
 
 
@@ -325,7 +340,11 @@ static GFXDECODE_START( tank8 )
 GFXDECODE_END
 
 
+<<<<<<< HEAD
 static MACHINE_CONFIG_START( tank8, tank8_state )
+=======
+static MACHINE_CONFIG_START( tank8 )
+>>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", M6800, 11055000 / 10) /* ? */
@@ -340,7 +359,11 @@ static MACHINE_CONFIG_START( tank8, tank8_state )
 	MCFG_SCREEN_SIZE(512, 524)
 	MCFG_SCREEN_VISIBLE_AREA(16, 495, 0, 463)
 	MCFG_SCREEN_UPDATE_DRIVER(tank8_state, screen_update)
+<<<<<<< HEAD
 	MCFG_SCREEN_VBLANK_DRIVER(tank8_state, screen_eof)
+=======
+	MCFG_SCREEN_VBLANK_CALLBACK(WRITELINE(tank8_state, screen_vblank))
+>>>>>>> upstream/master
 	MCFG_SCREEN_PALETTE("palette")
 
 	MCFG_GFXDECODE_ADD("gfxdecode", "palette", tank8)
@@ -462,10 +485,17 @@ ROM_END
 
 DRIVER_INIT_MEMBER(tank8_state,decode)
 {
+<<<<<<< HEAD
 	const UINT8* DECODE = memregion("user1")->base();
 
 	UINT8* p1 = memregion("maincpu")->base() + 0x00000;
 	UINT8* p2 = memregion("maincpu")->base() + 0x10000;
+=======
+	const uint8_t* DECODE = memregion("user1")->base();
+
+	uint8_t* p1 = memregion("maincpu")->base() + 0x00000;
+	uint8_t* p2 = memregion("maincpu")->base() + 0x10000;
+>>>>>>> upstream/master
 
 	int i;
 
@@ -480,8 +510,16 @@ DRIVER_INIT_MEMBER(tank8_state,decode)
 }
 
 
+<<<<<<< HEAD
 GAME( 1976, tank8,    0,        tank8,    tank8, driver_device,    0,         ROT0, "Atari (Kee Games)", "Tank 8 (set 1)", MACHINE_SUPPORTS_SAVE)
 GAME( 1976, tank8a,   tank8,    tank8,    tank8, tank8_state,    decode,   ROT0, "Atari (Kee Games)", "Tank 8 (set 2)",  MACHINE_NOT_WORKING | MACHINE_SUPPORTS_SAVE )
 GAME( 1976, tank8b,   tank8,    tank8,    tank8, tank8_state,    decode,   ROT0, "Atari (Kee Games)", "Tank 8 (set 3)",  MACHINE_NOT_WORKING | MACHINE_SUPPORTS_SAVE )
 GAME( 1976, tank8c,   tank8,    tank8,    tank8, driver_device,    0,        ROT0, "Atari (Kee Games)", "Tank 8 (set 4)",  MACHINE_NOT_WORKING | MACHINE_SUPPORTS_SAVE )
 GAME( 1976, tank8d,   tank8,    tank8,    tank8, driver_device,    0,        ROT0, "Atari (Kee Games)", "Tank 8 (set 5)",  MACHINE_NOT_WORKING | MACHINE_SUPPORTS_SAVE )
+=======
+GAME( 1976, tank8,    0,        tank8,    tank8, tank8_state,    0,        ROT0, "Atari (Kee Games)", "Tank 8 (set 1)",  MACHINE_SUPPORTS_SAVE)
+GAME( 1976, tank8a,   tank8,    tank8,    tank8, tank8_state,    decode,   ROT0, "Atari (Kee Games)", "Tank 8 (set 2)",  MACHINE_NOT_WORKING | MACHINE_SUPPORTS_SAVE )
+GAME( 1976, tank8b,   tank8,    tank8,    tank8, tank8_state,    decode,   ROT0, "Atari (Kee Games)", "Tank 8 (set 3)",  MACHINE_NOT_WORKING | MACHINE_SUPPORTS_SAVE )
+GAME( 1976, tank8c,   tank8,    tank8,    tank8, tank8_state,    0,        ROT0, "Atari (Kee Games)", "Tank 8 (set 4)",  MACHINE_NOT_WORKING | MACHINE_SUPPORTS_SAVE )
+GAME( 1976, tank8d,   tank8,    tank8,    tank8, tank8_state,    0,        ROT0, "Atari (Kee Games)", "Tank 8 (set 5)",  MACHINE_NOT_WORKING | MACHINE_SUPPORTS_SAVE )
+>>>>>>> upstream/master

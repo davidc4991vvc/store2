@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 // license:LGPL-2.1+
+=======
+// license:BSD-3-Clause
+>>>>>>> upstream/master
 // copyright-holders:Tomasz Slanina
 class ssrj_state : public driver_device
 {
@@ -18,17 +22,29 @@ public:
 	required_device<gfxdecode_device> m_gfxdecode;
 	required_device<palette_device> m_palette;
 
+<<<<<<< HEAD
 	required_shared_ptr<UINT8> m_vram1;
 	required_shared_ptr<UINT8> m_vram2;
 	required_shared_ptr<UINT8> m_vram3;
 	required_shared_ptr<UINT8> m_vram4;
 	required_shared_ptr<UINT8> m_scrollram;
+=======
+	required_shared_ptr<uint8_t> m_vram1;
+	required_shared_ptr<uint8_t> m_vram2;
+	required_shared_ptr<uint8_t> m_vram3;
+	required_shared_ptr<uint8_t> m_vram4;
+	required_shared_ptr<uint8_t> m_scrollram;
+>>>>>>> upstream/master
 
 	int m_oldport;
 	tilemap_t *m_tilemap1;
 	tilemap_t *m_tilemap2;
 	tilemap_t *m_tilemap4;
+<<<<<<< HEAD
 	UINT8 *m_buffer_spriteram;
+=======
+	std::unique_ptr<uint8_t[]> m_buffer_spriteram;
+>>>>>>> upstream/master
 
 	DECLARE_READ8_MEMBER(wheel_r);
 	DECLARE_WRITE8_MEMBER(vram1_w);
@@ -39,6 +55,7 @@ public:
 	TILE_GET_INFO_MEMBER(get_tile_info2);
 	TILE_GET_INFO_MEMBER(get_tile_info4);
 
+<<<<<<< HEAD
 	virtual void machine_start();
 	virtual void machine_reset();
 	virtual void video_start();
@@ -46,5 +63,14 @@ public:
 
 	UINT32 screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
 	void screen_eof(screen_device &screen, bool state);
+=======
+	virtual void machine_start() override;
+	virtual void machine_reset() override;
+	virtual void video_start() override;
+	DECLARE_PALETTE_INIT(ssrj);
+
+	uint32_t screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
+	DECLARE_WRITE_LINE_MEMBER(screen_vblank);
+>>>>>>> upstream/master
 	void draw_objects(bitmap_ind16 &bitmap, const rectangle &cliprect );
 };

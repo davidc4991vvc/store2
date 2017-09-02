@@ -35,7 +35,10 @@
 
     Looking for ROMs for these:
         * Euro Stocker
+<<<<<<< HEAD
         * Team Hat Trick
+=======
+>>>>>>> upstream/master
 
     Known bugs:
         * CEM3394 emulation is not perfect
@@ -227,12 +230,24 @@ DIP locations verified for:
 ***************************************************************************/
 
 #include "emu.h"
+<<<<<<< HEAD
 #include "cpu/z80/z80.h"
 #include "cpu/m6809/m6809.h"
 #include "cpu/m68000/m68000.h"
 #include "includes/balsente.h"
 #include "sound/cem3394.h"
 #include "machine/nvram.h"
+=======
+#include "includes/balsente.h"
+
+#include "cpu/z80/z80.h"
+#include "cpu/m6809/m6809.h"
+#include "cpu/m68000/m68000.h"
+#include "sound/cem3394.h"
+#include "machine/nvram.h"
+#include "machine/watchdog.h"
+#include "speaker.h"
+>>>>>>> upstream/master
 
 #include "stocker.lh"
 
@@ -254,7 +269,11 @@ static ADDRESS_MAP_START( cpu1_map, AS_PROGRAM, 8, balsente_state )
 	AM_RANGE(0x9880, 0x989f) AM_WRITE(balsente_random_reset_w)
 	AM_RANGE(0x98a0, 0x98bf) AM_WRITE(balsente_rombank_select_w)
 	AM_RANGE(0x98c0, 0x98df) AM_WRITE(balsente_palette_select_w)
+<<<<<<< HEAD
 	AM_RANGE(0x98e0, 0x98ff) AM_WRITE(watchdog_reset_w)
+=======
+	AM_RANGE(0x98e0, 0x98ff) AM_DEVWRITE("watchdog", watchdog_timer_device, reset_w)
+>>>>>>> upstream/master
 	AM_RANGE(0x9900, 0x9900) AM_READ_PORT("SWH")
 	AM_RANGE(0x9901, 0x9901) AM_READ_PORT("SWG")
 	AM_RANGE(0x9902, 0x9902) AM_READ_PORT("IN0")
@@ -526,6 +545,100 @@ static INPUT_PORTS_START( hattrick )
 	UNUSED_ANALOG
 INPUT_PORTS_END
 
+<<<<<<< HEAD
+=======
+static INPUT_PORTS_START( teamht )
+	PORT_INCLUDE( sentetst )
+
+	PORT_MODIFY("SWH")
+	PORT_DIPNAME( 0x03, 0x01, DEF_STR( Coinage ) )      PORT_DIPLOCATION("H1:1,2")
+	PORT_DIPSETTING(    0x03, DEF_STR( 2C_1C ) )
+	PORT_DIPSETTING(    0x01, DEF_STR( 1C_1C ) )
+	PORT_DIPSETTING(    0x02, DEF_STR( 1C_2C ) )
+	PORT_DIPSETTING(    0x00, DEF_STR( Free_Play ) )
+	PORT_DIPNAME( 0x1c, 0x00, "Bonus Coin" )    PORT_DIPLOCATION("H1:3,4,5")
+	PORT_DIPSETTING(    0x00, "None" )
+	PORT_DIPSETTING(    0x04, "2 Coins +1" )
+	PORT_DIPSETTING(    0x08, "3 Coins +1" )
+	PORT_DIPSETTING(    0x0c, "4 Coins +1" )
+	PORT_DIPSETTING(    0x10, "4 Coins +2" )
+	PORT_DIPSETTING(    0x14, "5 Coins +1" )
+	PORT_DIPSETTING(    0x18, "5 Coins +2" )
+	PORT_DIPSETTING(    0x1c, "5 Coins +3" )
+	PORT_DIPNAME( 0x20, 0x00, "Left Multiplier" )    PORT_DIPLOCATION("H1:6")
+	PORT_DIPSETTING(    0x00, "1" )
+	PORT_DIPSETTING(    0x20, "2" )
+	PORT_DIPNAME( 0xc0, 0x00, "Right Multiplier" )    PORT_DIPLOCATION("H1:7,8")
+	PORT_DIPSETTING(    0x00, "1" )
+	PORT_DIPSETTING(    0x40, "4" )
+	PORT_DIPSETTING(    0x80, "5" )
+	PORT_DIPSETTING(    0xc0, "6" )
+
+	PORT_MODIFY("SWG")
+	PORT_DIPNAME( 0x07, 0x02, DEF_STR( Game_Time ) )    PORT_DIPLOCATION("G1:1,2,3")
+	PORT_DIPSETTING(    0x00, "1:15" )
+	PORT_DIPSETTING(    0x01, "1:30" )
+	PORT_DIPSETTING(    0x02, "1:45" )
+	PORT_DIPSETTING(    0x03, "2:00" )
+	PORT_DIPSETTING(    0x04, "2:15" )
+	PORT_DIPSETTING(    0x05, "2:30" )
+	PORT_DIPSETTING(    0x06, "2:45" )
+	PORT_DIPSETTING(    0x07, "3:00" )
+	PORT_DIPUNUSED_DIPLOC( 0x08, 0x08, "G1:4" )
+	PORT_DIPUNUSED_DIPLOC( 0x10, 0x10, "G1:5" )
+	PORT_DIPUNUSED_DIPLOC( 0x20, 0x20, "G1:6" )
+	PORT_DIPUNUSED_DIPLOC( 0x40, 0x40, "G1:7" )
+
+	PORT_MODIFY("IN0")
+	PORT_BIT( 0x01, IP_ACTIVE_LOW, IPT_BUTTON1 ) PORT_PLAYER(1)
+	PORT_BIT( 0x02, IP_ACTIVE_LOW, IPT_BUTTON1 ) PORT_PLAYER(2)
+	PORT_BIT( 0x04, IP_ACTIVE_LOW, IPT_BUTTON1 ) PORT_PLAYER(3)
+	PORT_BIT( 0x08, IP_ACTIVE_LOW, IPT_BUTTON1 ) PORT_PLAYER(4)
+	PORT_BIT( 0x10, IP_ACTIVE_LOW, IPT_UNUSED )
+	PORT_BIT( 0x20, IP_ACTIVE_LOW, IPT_UNUSED )
+
+	PORT_MODIFY("IN1")
+	PORT_BIT( 0x04, IP_ACTIVE_LOW, IPT_UNUSED )
+	PORT_BIT( 0x08, IP_ACTIVE_LOW, IPT_UNUSED )
+	PORT_BIT( 0x10, IP_ACTIVE_LOW, IPT_UNUSED )
+	PORT_BIT( 0x20, IP_ACTIVE_LOW, IPT_UNUSED )
+
+	PORT_MODIFY("AN2")
+	UNUSED_ANALOG
+
+	PORT_MODIFY("AN3")
+	UNUSED_ANALOG
+
+	PORT_START("EX0")
+	PORT_BIT( 0x0f, IP_ACTIVE_LOW, IPT_UNUSED )
+	PORT_BIT( 0x10, IP_ACTIVE_LOW, IPT_JOYSTICK_UP ) PORT_PLAYER(1)
+	PORT_BIT( 0x20, IP_ACTIVE_LOW, IPT_JOYSTICK_DOWN ) PORT_PLAYER(1)
+	PORT_BIT( 0x40, IP_ACTIVE_LOW, IPT_JOYSTICK_RIGHT ) PORT_PLAYER(1)
+	PORT_BIT( 0x80, IP_ACTIVE_LOW, IPT_JOYSTICK_LEFT ) PORT_PLAYER(1)
+
+	PORT_START("EX1")
+	PORT_BIT( 0x0f, IP_ACTIVE_LOW, IPT_UNUSED )
+	PORT_BIT( 0x10, IP_ACTIVE_LOW, IPT_JOYSTICK_UP ) PORT_PLAYER(2)
+	PORT_BIT( 0x20, IP_ACTIVE_LOW, IPT_JOYSTICK_DOWN ) PORT_PLAYER(2)
+	PORT_BIT( 0x40, IP_ACTIVE_LOW, IPT_JOYSTICK_RIGHT ) PORT_PLAYER(2)
+	PORT_BIT( 0x80, IP_ACTIVE_LOW, IPT_JOYSTICK_LEFT ) PORT_PLAYER(2)
+
+	PORT_START("EX2")
+	PORT_BIT( 0x0f, IP_ACTIVE_LOW, IPT_UNUSED )
+	PORT_BIT( 0x10, IP_ACTIVE_LOW, IPT_JOYSTICK_UP ) PORT_PLAYER(3)
+	PORT_BIT( 0x20, IP_ACTIVE_LOW, IPT_JOYSTICK_DOWN ) PORT_PLAYER(3)
+	PORT_BIT( 0x40, IP_ACTIVE_LOW, IPT_JOYSTICK_RIGHT ) PORT_PLAYER(3)
+	PORT_BIT( 0x80, IP_ACTIVE_LOW, IPT_JOYSTICK_LEFT ) PORT_PLAYER(3)
+
+	PORT_START("EX3")
+	PORT_BIT( 0x0f, IP_ACTIVE_LOW, IPT_UNUSED )
+	PORT_BIT( 0x10, IP_ACTIVE_LOW, IPT_JOYSTICK_UP ) PORT_PLAYER(4)
+	PORT_BIT( 0x20, IP_ACTIVE_LOW, IPT_JOYSTICK_DOWN ) PORT_PLAYER(4)
+	PORT_BIT( 0x40, IP_ACTIVE_LOW, IPT_JOYSTICK_RIGHT ) PORT_PLAYER(4)
+	PORT_BIT( 0x80, IP_ACTIVE_LOW, IPT_JOYSTICK_LEFT ) PORT_PLAYER(4)
+INPUT_PORTS_END
+
+>>>>>>> upstream/master
 
 static INPUT_PORTS_START( otwalls )
 	PORT_INCLUDE( sentetst )
@@ -879,7 +992,11 @@ static INPUT_PORTS_START( nstocker )
 	PORT_DIPUNUSED_DIPLOC( 0x40, 0x40, "G1:7" )
 
 	PORT_MODIFY("IN0")
+<<<<<<< HEAD
 	PORT_BIT( 0x0f, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, balsente_state,nstocker_bits_r, NULL)
+=======
+	PORT_BIT( 0x0f, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, balsente_state,nstocker_bits_r, nullptr)
+>>>>>>> upstream/master
 
 	/* cheese alert -- we have to map this to player 2 so that it doesn't interfere with
 	   the crosshair controls */
@@ -1183,7 +1300,11 @@ INPUT_PORTS_END
  *
  *************************************/
 
+<<<<<<< HEAD
 static MACHINE_CONFIG_START( balsente, balsente_state )
+=======
+static MACHINE_CONFIG_START( balsente )
+>>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", M6809, XTAL_20MHz/16) /* xtal verified but not speed */
@@ -1198,6 +1319,11 @@ static MACHINE_CONFIG_START( balsente, balsente_state )
 
 	MCFG_NVRAM_ADD_0FILL("nvram")
 
+<<<<<<< HEAD
+=======
+	MCFG_WATCHDOG_ADD("watchdog")
+
+>>>>>>> upstream/master
 	MCFG_TIMER_DRIVER_ADD("scan_timer", balsente_state, balsente_interrupt_timer)
 	MCFG_TIMER_DRIVER_ADD("8253_0_timer", balsente_state, balsente_clock_counter_0_ff)
 	MCFG_TIMER_DRIVER_ADD("8253_1_timer", balsente_state, balsente_counter_callback)
@@ -1295,7 +1421,11 @@ ROM_END
 
 ROM_START( cshift )
 	ROM_REGION( 0x40000, "maincpu", 0 )     /* 64k for code for the first CPU, plus 128k of banked ROMs */
+<<<<<<< HEAD
 	ROM_LOAD( "cs-ab0.bin", 0x10000, 0x2000, CRC(d2069e75) SHA1(17d5719e6e1976cebb332932cf3e900a88136928) )
+=======
+	ROM_LOAD( "cs-ab0.bin", 0x10000, 0x2000, CRC(d2069e75) SHA1(17d5719e6e1976cebb332932cf3e900a88136928) ) /* Labeled as CHICKEN SHIFT, then name (like AB0) & dated 11/23/84 */
+>>>>>>> upstream/master
 	ROM_LOAD( "cs-ab1.bin", 0x12000, 0x2000, CRC(198f25a8) SHA1(5ca25fe57e94d8362896c903196e0080efd35ef5) )
 	ROM_LOAD( "cs-ab2.bin", 0x14000, 0x2000, CRC(2e2b2b82) SHA1(a540f3ff2a0a10b19aafe1528b7dcaeae9b7393d) )
 	ROM_LOAD( "cs-ab3.bin", 0x16000, 0x2000, CRC(b97fc520) SHA1(f45c5ec93eab1bfd1f9533df7ac624c2e99f6573) )
@@ -1344,8 +1474,13 @@ ROM_END
 
 ROM_START( hattrick )
 	ROM_REGION( 0x40000, "maincpu", 0 )     /* 64k for code for the first CPU, plus 128k of banked ROMs */
+<<<<<<< HEAD
 	ROM_LOAD( "rom-ab0.u9a", 0x10000, 0x2000, CRC(f25c1b99) SHA1(43b2334be7cfb8091eea963e10547295362372d3) ) /* The Hat Trick cartridge does not have any PAL's */
 	ROM_LOAD( "rom-ab1.u8a", 0x12000, 0x2000, CRC(c1df3d1f) SHA1(754f537d12efe8891638fd11a2ee8a5b234fb079) )
+=======
+	ROM_LOAD( "rom-ab0.u9a", 0x10000, 0x2000, CRC(f25c1b99) SHA1(43b2334be7cfb8091eea963e10547295362372d3) ) /* Labeled as HAT TRK, then name (like AB0) & dated 11/12/84 */
+	ROM_LOAD( "rom-ab1.u8a", 0x12000, 0x2000, CRC(c1df3d1f) SHA1(754f537d12efe8891638fd11a2ee8a5b234fb079) ) /* The Hat Trick cartridge does not have any PAL's */
+>>>>>>> upstream/master
 	ROM_LOAD( "rom-ab2.u7a", 0x14000, 0x2000, CRC(f6c41257) SHA1(05f5e71d08241c559da3bfc286c76cbb22710586) )
 	ROM_LOAD( "rom-cd.u3a",  0x2c000, 0x2000, CRC(fc44f36c) SHA1(227d0c93c579d743b615b1fa6da56128e8202e51) )
 	ROM_LOAD( "rom-ef.u2a",  0x2e000, 0x2000, CRC(d8f910fb) SHA1(b74a305dd848c7bf574e4b0aa32147b8d5c89e9e) )
@@ -1360,6 +1495,24 @@ ROM_START( hattrick )
 ROM_END
 
 
+<<<<<<< HEAD
+=======
+ROM_START( teamht )
+	ROM_REGION( 0x40000, "maincpu", 0 )     /* 64k for code for the first CPU, plus 128k of banked ROMs */
+	ROM_LOAD( "HATTRK.U8A", 0x10000, 0x4000, CRC(cb746de8) SHA1(b0e5003370b65f2aed4dc9ccb2a2d3eb29050245) )
+	ROM_LOAD( "HATTRK.U7A", 0x14000, 0x4000, CRC(5f2a0b24) SHA1(da1950a7e11014e47438a7c5831433390c1b1fd3) )
+	ROM_LOAD( "HATTRK.U1A", 0x2c000, 0x4000, CRC(6c6cf2be) SHA1(80e82ae4bd129000e74c4a5fd06d2109d5417e39) )
+
+	SOUNDBOARD_ROMS
+
+	ROM_REGION( 0x10000, "gfx1", 0 )        /* up to 64k of sprites */
+	ROM_LOAD( "HATTRK.U6B", 0x00000, 0x4000, CRC(6e299728) SHA1(f10fc020fdf8f61d059ac57306b0353ac7dbfb24) )
+
+	MOTHERBOARD_PALS
+ROM_END
+
+
+>>>>>>> upstream/master
 ROM_START( otwalls )
 	ROM_REGION( 0x40000, "maincpu", 0 )     /* 64k for code for the first CPU, plus 128k of banked ROMs */
 	ROM_LOAD( "otw-ab0.bin", 0x10000, 0x2000, CRC(474441c7) SHA1(16fb5be9f94e072d4f3003abcc9dcf6d7af2359a) )
@@ -1556,7 +1709,11 @@ ROM_END
 
 ROM_START( triviag2 )
 	ROM_REGION( 0x40000, "maincpu", 0 )     /* 64k for code for the first CPU, plus 128k of banked ROMs */
+<<<<<<< HEAD
 	ROM_LOAD( "ab01.bin",  0x10000, 0x4000, CRC(4fca20c5) SHA1(595b32ff035036cafbf49d75aa170f39e9f52b38) )
+=======
+	ROM_LOAD( "ab01.bin",  0x10000, 0x4000, CRC(4fca20c5) SHA1(595b32ff035036cafbf49d75aa170f39e9f52b38) ) /* Labeled as GENUS II, then name (like ROM AB01R) & dated 3/22/85 */
+>>>>>>> upstream/master
 	ROM_LOAD( "ab23.bin",  0x14000, 0x4000, CRC(6cf2ddeb) SHA1(0d6667babd9ab70820cf165900d90003f0893be7) )
 	ROM_LOAD( "ab45.bin",  0x18000, 0x4000, CRC(a7ff789c) SHA1(a3421ae46dadd6f514cfc514ff07dfcca2cb1478) )
 	ROM_LOAD( "ab67.bin",  0x1c000, 0x4000, CRC(cc5c68ef) SHA1(38713796e07f84c9a1b21d8c66f76e620132d77e) )
@@ -1660,7 +1817,11 @@ ROM_END
 
 ROM_START( gimeabrk )
 	ROM_REGION( 0x40000, "maincpu", 0 )     /* 64k for code for the first CPU, plus 128k of banked ROMs */
+<<<<<<< HEAD
 	ROM_LOAD( "ab01.u8a",  0x10000, 0x4000, CRC(18cc53db) SHA1(3bb47c349b3ab7b81e3557e3b4877617fb549c9e) )
+=======
+	ROM_LOAD( "ab01.u8a",  0x10000, 0x4000, CRC(18cc53db) SHA1(3bb47c349b3ab7b81e3557e3b4877617fb549c9e) ) /* Labeled as GimmeABreak, then name (like AB01) & dated 7/7/85 */
+>>>>>>> upstream/master
 	ROM_LOAD( "ab23.u7a",  0x14000, 0x4000, CRC(6bd4190a) SHA1(b6562b3575dc8265c01719cfbcb554b69bc1b37f) )
 	ROM_LOAD( "ab45.u6a",  0x18000, 0x4000, CRC(5dca4f33) SHA1(aa45d5a960491c85f332f22cffe61999fe3db826) )
 	ROM_LOAD( "cd6ef.u1a", 0x2c000, 0x4000, CRC(5e2b3510) SHA1(e3501b9bd73bc724aee0436700625bd2af94f72d) )
@@ -1773,7 +1934,11 @@ ROM_END
 
 ROM_START( nametune2 )
 	ROM_REGION( 0x70000, "maincpu", 0 )     /* 64k for code for the first CPU, plus 128k of banked ROMs */
+<<<<<<< HEAD
 	ROM_LOAD( "ab 01.u8a",   0x10000, 0x4000, CRC(4044891d) SHA1(4e1e7cb9846939e03b035b95ba04f62a78719bb2) )
+=======
+	ROM_LOAD( "ab 01.u8a",   0x10000, 0x4000, CRC(4044891d) SHA1(4e1e7cb9846939e03b035b95ba04f62a78719bb2) ) /* Labeled as NMETNEUR, then name (like AB 01) & dated 3/23/86 */
+>>>>>>> upstream/master
 	ROM_CONTINUE(                     0x40000, 0x4000 )
 	ROM_LOAD( "ab 23.u7a",   0x14000, 0x4000, CRC(df3454bc) SHA1(82faf87ca8974629e546b6854718908721b64ad0) )
 	ROM_CONTINUE(                     0x44000, 0x4000 )
@@ -1810,7 +1975,11 @@ ROM_END
 
 ROM_START( nstocker )
 	ROM_REGION( 0x40000, "maincpu", 0 )     /* 64k for code for the first CPU, plus 128k of banked ROMs */
+<<<<<<< HEAD
 	ROM_LOAD( "ab01.u8a",  0x10000, 0x4000, CRC(a635f973) SHA1(edb12469818a3114fb97d21e11c63eb37678a07b) )
+=======
+	ROM_LOAD( "ab01.u8a",  0x10000, 0x4000, CRC(a635f973) SHA1(edb12469818a3114fb97d21e11c63eb37678a07b) ) /* Labeled as NIGHT STOCKER, then name (like AB 01) & dated 10/06/86 */
+>>>>>>> upstream/master
 	ROM_LOAD( "ab23.u7a",  0x14000, 0x4000, CRC(223acbb2) SHA1(195ebd349722cce323616c81cc4e86f0a9c6fa13) )
 	ROM_LOAD( "ab45.u6a",  0x18000, 0x4000, CRC(27a728b5) SHA1(c72634112a04d58a695fb43bf30f44e3f7ba7de2) )
 	ROM_LOAD( "ab67.u5a",  0x1c000, 0x4000, CRC(2999cdf2) SHA1(a64ae04f264ad286a87069cfb176e7511df08e78) )
@@ -1841,7 +2010,11 @@ ROM_END
 
 ROM_START( nstocker2 )
 	ROM_REGION( 0x40000, "maincpu", 0 )     /* 64k for code for the first CPU, plus 128k of banked ROMs */
+<<<<<<< HEAD
 	ROM_LOAD( "ab01.u8a",  0x10000, 0x4000, CRC(a635f973) SHA1(edb12469818a3114fb97d21e11c63eb37678a07b) )
+=======
+	ROM_LOAD( "ab01.u8a",  0x10000, 0x4000, CRC(a635f973) SHA1(edb12469818a3114fb97d21e11c63eb37678a07b) ) /* Labeled as NIGHT STOCKER, then name (like AB 01) & dated 8/27/86 */
+>>>>>>> upstream/master
 	ROM_LOAD( "ab23.u7a",  0x14000, 0x4000, CRC(223acbb2) SHA1(195ebd349722cce323616c81cc4e86f0a9c6fa13) )
 	ROM_LOAD( "ab45.u6a",  0x18000, 0x4000, CRC(27a728b5) SHA1(c72634112a04d58a695fb43bf30f44e3f7ba7de2) )
 	ROM_LOAD( "ab67.u5a",  0x1c000, 0x4000, CRC(2999cdf2) SHA1(a64ae04f264ad286a87069cfb176e7511df08e78) )
@@ -1873,7 +2046,11 @@ ROM_END
 
 ROM_START( sfootbal )
 	ROM_REGION( 0x40000, "maincpu", 0 )     /* 64k for code for the first CPU, plus 128k of banked ROMs */
+<<<<<<< HEAD
 	ROM_LOAD( "ab01.u8a",  0x10000, 0x4000, CRC(2a69803f) SHA1(ca86c9d079fbebae4c93c889d98a8573facc05da) )
+=======
+	ROM_LOAD( "ab01.u8a",  0x10000, 0x4000, CRC(2a69803f) SHA1(ca86c9d079fbebae4c93c889d98a8573facc05da) ) /* Labeled as STREET FOOTBALL, then name (like AB 01) & dated 11/12/86 */
+>>>>>>> upstream/master
 	ROM_LOAD( "ab23.u7a",  0x14000, 0x4000, CRC(89f157c2) SHA1(59701b7770dce7ec01d0feb01d67450943e6cfbb) )
 	ROM_LOAD( "ab45.u6a",  0x18000, 0x4000, CRC(91ad42c5) SHA1(0b6fc3ed3a633c825809668d49f209c130f3e978) )
 	ROM_LOAD( "cd6ef.u1a", 0x2c000, 0x4000, CRC(bf80bb1a) SHA1(2b70b36d946c36e3f354c7edfd3e34784ffce406) )
@@ -2088,13 +2265,18 @@ ROM_END
 #define EXPAND_NONE     0x3f
 #define SWAP_HALVES     0x80
 
+<<<<<<< HEAD
 void balsente_state::expand_roms(UINT8 cd_rom_mask)
+=======
+void balsente_state::expand_roms(uint8_t cd_rom_mask)
+>>>>>>> upstream/master
 {
 	/* load AB bank data from 0x10000-0x20000 */
 	/* load CD bank data from 0x20000-0x2e000 */
 	/* load EF           from 0x2e000-0x30000 */
 	/* ROM region must be 0x40000 total */
 
+<<<<<<< HEAD
 	dynamic_buffer temp(0x20000);
 	{
 		UINT8 *rom = memregion("maincpu")->base();
@@ -2108,6 +2290,21 @@ void balsente_state::expand_roms(UINT8 cd_rom_mask)
 			UINT8 *cd_common = &temp[0x1c000];
 			UINT8 *ef_common = &temp[0x1e000];
 			UINT32 dest;
+=======
+	std::vector<uint8_t> temp(0x20000);
+	{
+		uint8_t *rom = memregion("maincpu")->base();
+		uint32_t len = memregion("maincpu")->bytes();
+		uint32_t base;
+
+		for (base = 0x10000; base < len; base += 0x30000)
+		{
+			uint8_t *ab_base = &temp[0x00000];
+			uint8_t *cd_base = &temp[0x10000];
+			uint8_t *cd_common = &temp[0x1c000];
+			uint8_t *ef_common = &temp[0x1e000];
+			uint32_t dest;
+>>>>>>> upstream/master
 
 			for (dest = 0x00000; dest < 0x20000; dest += 0x02000)
 			{
@@ -2152,12 +2349,17 @@ void balsente_state::expand_roms(UINT8 cd_rom_mask)
 	}
 }
 
+<<<<<<< HEAD
 inline void balsente_state::config_shooter_adc(UINT8 shooter, UINT8 adc_shift)
+=======
+inline void balsente_state::config_shooter_adc(uint8_t shooter, uint8_t adc_shift)
+>>>>>>> upstream/master
 {
 	m_shooter = shooter;
 	m_adc_shift = adc_shift;
 }
 
+<<<<<<< HEAD
 DRIVER_INIT_MEMBER(balsente_state,sentetst)  { expand_roms(EXPAND_ALL);  config_shooter_adc(FALSE, 0 /* noanalog */); }
 DRIVER_INIT_MEMBER(balsente_state,cshift)    { expand_roms(EXPAND_ALL);  config_shooter_adc(FALSE, 0 /* noanalog */); }
 DRIVER_INIT_MEMBER(balsente_state,gghost)    { expand_roms(EXPAND_ALL);  config_shooter_adc(FALSE, 1); }
@@ -2179,43 +2381,102 @@ DRIVER_INIT_MEMBER(balsente_state,gimeabrk)  { expand_roms(EXPAND_ALL);  config_
 DRIVER_INIT_MEMBER(balsente_state,minigolf)  { expand_roms(EXPAND_NONE); config_shooter_adc(FALSE, 2); }
 DRIVER_INIT_MEMBER(balsente_state,minigolf2) { expand_roms(0x0c);        config_shooter_adc(FALSE, 2); }
 DRIVER_INIT_MEMBER(balsente_state,toggle)    { expand_roms(EXPAND_ALL);  config_shooter_adc(FALSE, 0 /* noanalog */); }
+=======
+DRIVER_INIT_MEMBER(balsente_state,sentetst)  { expand_roms(EXPAND_ALL);  config_shooter_adc(false, 0 /* noanalog */); }
+DRIVER_INIT_MEMBER(balsente_state,cshift)    { expand_roms(EXPAND_ALL);  config_shooter_adc(false, 0 /* noanalog */); }
+DRIVER_INIT_MEMBER(balsente_state,gghost)    { expand_roms(EXPAND_ALL);  config_shooter_adc(false, 1); }
+DRIVER_INIT_MEMBER(balsente_state,hattrick)  { expand_roms(EXPAND_ALL);  config_shooter_adc(false, 0 /* noanalog */); }
+DRIVER_INIT_MEMBER(balsente_state,teamht)
+{
+	address_space &space = m_maincpu->space(AS_PROGRAM);
+	expand_roms(EXPAND_ALL);
+	config_shooter_adc(false, 0 /* noanalog */);
+	space.install_read_handler(0x9404, 0x9404, read8_delegate(FUNC(balsente_state::teamht_extra_r),this));
+	space.install_write_handler(0x9000, 0x9007, write8_delegate(FUNC(balsente_state::teamht_multiplex_select_w),this));
+
+}
+
+DRIVER_INIT_MEMBER(balsente_state,otwalls)   { expand_roms(EXPAND_ALL);  config_shooter_adc(false, 0); }
+DRIVER_INIT_MEMBER(balsente_state,snakepit)  { expand_roms(EXPAND_ALL);  config_shooter_adc(false, 1); }
+DRIVER_INIT_MEMBER(balsente_state,snakjack)  { expand_roms(EXPAND_ALL);  config_shooter_adc(false, 1); }
+DRIVER_INIT_MEMBER(balsente_state,stocker)   { expand_roms(EXPAND_ALL);  config_shooter_adc(false, 0); }
+DRIVER_INIT_MEMBER(balsente_state,triviag1)  { expand_roms(EXPAND_ALL);  config_shooter_adc(false, 0 /* noanalog */); }
+DRIVER_INIT_MEMBER(balsente_state,triviag2)
+{
+	uint8_t *rom = memregion("maincpu")->base();
+	memcpy(&rom[0x20000], &rom[0x28000], 0x4000);
+	memcpy(&rom[0x24000], &rom[0x28000], 0x4000);
+	expand_roms(EXPAND_NONE); config_shooter_adc(false, 0 /* noanalog */);
+}
+DRIVER_INIT_MEMBER(balsente_state,triviaes)  { expand_roms(EXPAND_NONE | SWAP_HALVES); config_shooter_adc(false, 0 /* noanalog */); }
+DRIVER_INIT_MEMBER(balsente_state,gimeabrk)  { expand_roms(EXPAND_ALL);  config_shooter_adc(false, 1); }
+DRIVER_INIT_MEMBER(balsente_state,minigolf)  { expand_roms(EXPAND_NONE); config_shooter_adc(false, 2); }
+DRIVER_INIT_MEMBER(balsente_state,minigolf2) { expand_roms(0x0c);        config_shooter_adc(false, 2); }
+DRIVER_INIT_MEMBER(balsente_state,toggle)    { expand_roms(EXPAND_ALL);  config_shooter_adc(false, 0 /* noanalog */); }
+>>>>>>> upstream/master
 DRIVER_INIT_MEMBER(balsente_state,nametune)
 {
 	address_space &space = m_maincpu->space(AS_PROGRAM);
 	space.install_write_handler(0x9f00, 0x9f00, write8_delegate(FUNC(balsente_state::balsente_rombank2_select_w),this));
+<<<<<<< HEAD
 	expand_roms(EXPAND_NONE | SWAP_HALVES); config_shooter_adc(FALSE, 0 /* noanalog */);
+=======
+	expand_roms(EXPAND_NONE | SWAP_HALVES); config_shooter_adc(false, 0 /* noanalog */);
+>>>>>>> upstream/master
 }
 DRIVER_INIT_MEMBER(balsente_state,nstocker)
 {
 	address_space &space = m_maincpu->space(AS_PROGRAM);
 	space.install_write_handler(0x9f00, 0x9f00, write8_delegate(FUNC(balsente_state::balsente_rombank2_select_w),this));
+<<<<<<< HEAD
 	expand_roms(EXPAND_NONE | SWAP_HALVES); config_shooter_adc(TRUE, 1);
+=======
+	expand_roms(EXPAND_NONE | SWAP_HALVES); config_shooter_adc(true, 1);
+>>>>>>> upstream/master
 }
 DRIVER_INIT_MEMBER(balsente_state,sfootbal)
 {
 	address_space &space = m_maincpu->space(AS_PROGRAM);
 	space.install_write_handler(0x9f00, 0x9f00, write8_delegate(FUNC(balsente_state::balsente_rombank2_select_w),this));
+<<<<<<< HEAD
 	expand_roms(EXPAND_ALL  | SWAP_HALVES); config_shooter_adc(FALSE, 0);
+=======
+	expand_roms(EXPAND_ALL  | SWAP_HALVES); config_shooter_adc(false, 0);
+>>>>>>> upstream/master
 }
 DRIVER_INIT_MEMBER(balsente_state,spiker)
 {
 	address_space &space = m_maincpu->space(AS_PROGRAM);
 	space.install_readwrite_handler(0x9f80, 0x9f8f, read8_delegate(FUNC(balsente_state::spiker_expand_r),this), write8_delegate(FUNC(balsente_state::spiker_expand_w),this));
 	space.install_write_handler(0x9f00, 0x9f00, write8_delegate(FUNC(balsente_state::balsente_rombank2_select_w),this));
+<<<<<<< HEAD
 	expand_roms(EXPAND_ALL  | SWAP_HALVES); config_shooter_adc(FALSE, 1);
+=======
+	expand_roms(EXPAND_ALL  | SWAP_HALVES); config_shooter_adc(false, 1);
+>>>>>>> upstream/master
 }
 DRIVER_INIT_MEMBER(balsente_state,stompin)
 {
 	address_space &space = m_maincpu->space(AS_PROGRAM);
 	space.install_write_handler(0x9f00, 0x9f00, write8_delegate(FUNC(balsente_state::balsente_rombank2_select_w),this));
+<<<<<<< HEAD
 	expand_roms(0x0c | SWAP_HALVES); config_shooter_adc(FALSE, 32);
 }
 DRIVER_INIT_MEMBER(balsente_state,rescraid)  { expand_roms(EXPAND_NONE); config_shooter_adc(FALSE, 0 /* noanalog */); }
+=======
+	expand_roms(0x0c | SWAP_HALVES); config_shooter_adc(false, 32);
+}
+DRIVER_INIT_MEMBER(balsente_state,rescraid)  { expand_roms(EXPAND_NONE); config_shooter_adc(false, 0 /* noanalog */); }
+>>>>>>> upstream/master
 DRIVER_INIT_MEMBER(balsente_state,grudge)
 {
 	address_space &space = m_maincpu->space(AS_PROGRAM);
 	space.install_read_handler(0x9400, 0x9400, read8_delegate(FUNC(balsente_state::grudge_steering_r),this));
+<<<<<<< HEAD
 	expand_roms(EXPAND_NONE); config_shooter_adc(FALSE, 0);
+=======
+	expand_roms(EXPAND_NONE); config_shooter_adc(false, 0);
+>>>>>>> upstream/master
 }
 DRIVER_INIT_MEMBER(balsente_state,shrike)
 {
@@ -2224,7 +2485,11 @@ DRIVER_INIT_MEMBER(balsente_state,shrike)
 	space.install_write_handler(0x9e01, 0x9e01, write8_delegate(FUNC(balsente_state::shrike_sprite_select_w),this));
 	m_68k->space(AS_PROGRAM).install_readwrite_handler(0x10000, 0x1001f, read16_delegate(FUNC(balsente_state::shrike_io_68k_r),this), write16_delegate(FUNC(balsente_state::shrike_io_68k_w),this));
 
+<<<<<<< HEAD
 	expand_roms(EXPAND_ALL);  config_shooter_adc(FALSE, 32);
+=======
+	expand_roms(EXPAND_ALL);  config_shooter_adc(false, 32);
+>>>>>>> upstream/master
 }
 
 
@@ -2237,24 +2502,40 @@ DRIVER_INIT_MEMBER(balsente_state,shrike)
 
 /* Board: Unknown */
 GAME( 1984, sentetst, 0,        balsente, sentetst, balsente_state, sentetst, ROT0, "Bally/Sente",  "Sente Diagnostic Cartridge", MACHINE_SUPPORTS_SAVE )
+<<<<<<< HEAD
 GAME( 1984, cshift,   0,        balsente, cshift, balsente_state,   cshift,   ROT0, "Bally/Sente",  "Chicken Shift", MACHINE_SUPPORTS_SAVE )
 GAME( 1984, gghost,   0,        balsente, gghost, balsente_state,   gghost,   ROT0, "Bally/Sente",  "Goalie Ghost", MACHINE_SUPPORTS_SAVE )
+=======
+GAME( 1984, cshift,   0,        balsente, cshift,   balsente_state, cshift,   ROT0, "Bally/Sente",  "Chicken Shift", MACHINE_SUPPORTS_SAVE )
+GAME( 1984, gghost,   0,        balsente, gghost,   balsente_state, gghost,   ROT0, "Bally/Sente",  "Goalie Ghost", MACHINE_SUPPORTS_SAVE )
+>>>>>>> upstream/master
 
 /* Board: 006-8003-01-0D Rev D */
 GAME( 1984, hattrick, 0,        balsente, hattrick, balsente_state, hattrick, ROT0, "Bally/Sente",  "Hat Trick", MACHINE_SUPPORTS_SAVE )
 GAME( 1984, trivia12, triviag1, balsente, triviag1, balsente_state, triviag1, ROT0, "Bally/Sente",  "Trivial Pursuit (Think Tank - Genus Edition) (12/14/84)", MACHINE_SUPPORTS_SAVE )
 
 /* Board: Unknown (From a picture on eBay Snacks'n Jaxson does not match any documented types here.) */
+<<<<<<< HEAD
 GAME( 1984, otwalls,  0,        balsente, otwalls, balsente_state,  otwalls,  ROT0, "Bally/Sente",  "Off the Wall (Sente)", MACHINE_SUPPORTS_SAVE )
+=======
+GAME( 1984, otwalls,  0,        balsente, otwalls,  balsente_state, otwalls,  ROT0, "Bally/Sente",  "Off the Wall (Sente)", MACHINE_SUPPORTS_SAVE )
+>>>>>>> upstream/master
 GAME( 1984, snakepit, 0,        balsente, sentetst, balsente_state, snakepit, ROT0, "Bally/Sente",  "Snake Pit", MACHINE_SUPPORTS_SAVE )
 GAME( 1984, snakepit2,snakepit, balsente, sentetst, balsente_state, snakepit, ROT0, "Sente Technologies Inc.", "Snake Pit (9/14/84)", MACHINE_SUPPORTS_SAVE ) // 1984, even though titlescreen says 1983
 GAME( 1984, snakjack, 0,        balsente, snakjack, balsente_state, snakjack, ROT0, "Bally/Sente",  "Snacks'n Jaxson", MACHINE_SUPPORTS_SAVE )
 
 /* Board: 006-8025-01-0B Rev B */
+<<<<<<< HEAD
 GAMEL(1984, stocker,  0,        balsente, stocker, balsente_state,  stocker,  ROT0, "Bally/Sente",  "Stocker (3/19/85)", MACHINE_SUPPORTS_SAVE, layout_stocker ) // date from ROM chips
 GAME( 1985, gimeabrk, 0,        balsente, gimeabrk, balsente_state, gimeabrk, ROT0, "Bally/Sente",  "Gimme A Break (7/7/85)", MACHINE_SUPPORTS_SAVE )
 GAME( 1985, minigolf, 0,        balsente, minigolf, balsente_state, minigolf, ROT0, "Bally/Sente",  "Mini Golf (11/25/85)", MACHINE_SUPPORTS_SAVE )
 GAME( 1985, minigolf2,minigolf, balsente, minigolf2, balsente_state,minigolf2,ROT0, "Bally/Sente",  "Mini Golf (10/8/85)", MACHINE_SUPPORTS_SAVE )
+=======
+GAMEL(1984, stocker,  0,        balsente, stocker,  balsente_state, stocker,  ROT0, "Bally/Sente",  "Stocker (3/19/85)", MACHINE_SUPPORTS_SAVE, layout_stocker ) // date from ROM chips
+GAME( 1985, gimeabrk, 0,        balsente, gimeabrk, balsente_state, gimeabrk, ROT0, "Bally/Sente",  "Gimme A Break (7/7/85)", MACHINE_SUPPORTS_SAVE )
+GAME( 1985, minigolf, 0,        balsente, minigolf, balsente_state, minigolf, ROT0, "Bally/Sente",  "Mini Golf (11/25/85)", MACHINE_SUPPORTS_SAVE )
+GAME( 1985, minigolf2,minigolf, balsente, minigolf2,balsente_state, minigolf2,ROT0, "Bally/Sente",  "Mini Golf (10/8/85)", MACHINE_SUPPORTS_SAVE )
+>>>>>>> upstream/master
 GAME( 1984, triviabb, 0,        balsente, triviag1, balsente_state, triviag2, ROT0, "Bally/Sente",  "Trivial Pursuit (Baby Boomer Edition) (3/20/85)", MACHINE_SUPPORTS_SAVE )
 
 /* Board: Unknown  */
@@ -2263,7 +2544,11 @@ GAME( 1984, triviag2, 0,        balsente, triviag1, balsente_state, triviag2, RO
 GAME( 1984, triviasp, 0,        balsente, triviag1, balsente_state, triviag2, ROT0, "Bally/Sente",  "Trivial Pursuit (All Star Sports Edition)", MACHINE_SUPPORTS_SAVE )
 GAME( 1984, triviayp, 0,        balsente, triviag1, balsente_state, triviag2, ROT0, "Bally/Sente",  "Trivial Pursuit (Young Players Edition)", MACHINE_SUPPORTS_SAVE )
 GAME( 1987, triviaes, 0,        balsente, triviaes, balsente_state, triviaes, ROT0, "Bally/Sente",  "Trivial Pursuit (Spanish)", MACHINE_SUPPORTS_SAVE )
+<<<<<<< HEAD
 GAME( 1985, toggle,   0,        balsente, toggle, balsente_state,   toggle,   ROT0, "Bally/Sente",  "Toggle (prototype)", MACHINE_SUPPORTS_SAVE )
+=======
+GAME( 1985, toggle,   0,        balsente, toggle,   balsente_state, toggle,   ROT0, "Bally/Sente",  "Toggle (prototype)", MACHINE_SUPPORTS_SAVE )
+>>>>>>> upstream/master
 GAME( 1986, nametune, 0,        balsente, nametune, balsente_state, nametune, ROT0, "Bally/Sente",  "Name That Tune (set 1)", MACHINE_SUPPORTS_SAVE )
 
 /* Board: 006-8030-01-0A Rev A */
@@ -2273,15 +2558,29 @@ GAME( 1986, nametune2,nametune, balsente, nametune, balsente_state, nametune, RO
 GAME( 1986, nstocker, 0,        balsente, nstocker, balsente_state, nstocker, ROT0, "Bally/Sente",  "Night Stocker (10/6/86)", MACHINE_SUPPORTS_SAVE )
 GAME( 1986, nstocker2,nstocker, balsente, nstocker, balsente_state, nstocker, ROT0, "Bally/Sente",  "Night Stocker (8/27/86)", MACHINE_SUPPORTS_SAVE )
 GAME( 1986, sfootbal, 0,        balsente, sfootbal, balsente_state, sfootbal, ROT0, "Bally/Sente",  "Street Football (11/12/86)", MACHINE_SUPPORTS_SAVE )
+<<<<<<< HEAD
 GAME( 1986, spiker,   0,        balsente, spiker, balsente_state,   spiker,   ROT0, "Bally/Sente",  "Spiker", MACHINE_SUPPORTS_SAVE )
 GAME( 1986, spiker2,  spiker,   balsente, spiker, balsente_state,   spiker,   ROT0, "Bally/Sente",  "Spiker (5/5/86)", MACHINE_SUPPORTS_SAVE )
 GAME( 1986, spiker3,  spiker,   balsente, spiker, balsente_state,   spiker,   ROT0, "Bally/Sente",  "Spiker (6/9/86)", MACHINE_SUPPORTS_SAVE )
 GAME( 1986, stompin,  0,        balsente, stompin, balsente_state,  stompin,  ROT0, "Bally/Sente",  "Stompin' (4/4/86)", MACHINE_SUPPORTS_SAVE )
+=======
+GAME( 1986, spiker,   0,        balsente, spiker,   balsente_state, spiker,   ROT0, "Bally/Sente",  "Spiker", MACHINE_SUPPORTS_SAVE )
+GAME( 1986, spiker2,  spiker,   balsente, spiker,   balsente_state, spiker,   ROT0, "Bally/Sente",  "Spiker (5/5/86)", MACHINE_SUPPORTS_SAVE )
+GAME( 1986, spiker3,  spiker,   balsente, spiker,   balsente_state, spiker,   ROT0, "Bally/Sente",  "Spiker (6/9/86)", MACHINE_SUPPORTS_SAVE )
+GAME( 1986, stompin,  0,        balsente, stompin,  balsente_state, stompin,  ROT0, "Bally/Sente",  "Stompin' (4/4/86)", MACHINE_SUPPORTS_SAVE )
+>>>>>>> upstream/master
 
 /* Board: A084-91889-A000 (Not a cartridge, but dedicated board) */
 GAME( 1987, rescraid, 0,        balsente, rescraid, balsente_state, rescraid, ROT0, "Bally Midway", "Rescue Raider (5/11/87) (non-cartridge)", MACHINE_SUPPORTS_SAVE )
 
 /* Board: Unknown */
+<<<<<<< HEAD
 GAME( 1986, shrike,   0,        shrike,   shrike, balsente_state,   shrike,   ROT0, "Bally/Sente",  "Shrike Avenger (prototype)", MACHINE_SUPPORTS_SAVE )
 GAME( 1987, rescraida,rescraid, balsente, rescraid, balsente_state, rescraid, ROT0, "Bally Midway", "Rescue Raider (stand-alone)", MACHINE_SUPPORTS_SAVE )
 GAME( 198?, grudge,   0,        balsente, grudge, balsente_state,   grudge,   ROT0, "Bally Midway", "Grudge Match (prototype)", MACHINE_SUPPORTS_SAVE )
+=======
+GAME( 1986, shrike,   0,        shrike,   shrike,   balsente_state, shrike,   ROT0, "Bally/Sente",  "Shrike Avenger (prototype)", MACHINE_SUPPORTS_SAVE )
+GAME( 1987, rescraida,rescraid, balsente, rescraid, balsente_state, rescraid, ROT0, "Bally Midway", "Rescue Raider (stand-alone)", MACHINE_SUPPORTS_SAVE )
+GAME( 198?, grudge,   0,        balsente, grudge,   balsente_state, grudge,   ROT0, "Bally Midway", "Grudge Match (prototype)", MACHINE_SUPPORTS_SAVE )
+GAME( 1985, teamht,   0,        balsente, teamht,   balsente_state, teamht,   ROT0, "Bally/Sente",  "Team Hat Trick", MACHINE_SUPPORTS_SAVE )
+>>>>>>> upstream/master

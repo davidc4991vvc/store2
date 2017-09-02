@@ -11,7 +11,11 @@
 
 
 // device type definition
+<<<<<<< HEAD
 const device_type GRIDLEE = &device_creator<gridlee_sound_device>;
+=======
+DEFINE_DEVICE_TYPE(GRIDLEE, gridlee_sound_device, "gridlee_sound", "Gridlee Audio Custom")
+>>>>>>> upstream/master
 
 
 //**************************************************************************
@@ -22,17 +26,30 @@ const device_type GRIDLEE = &device_creator<gridlee_sound_device>;
 //  gridlee_sound_device - constructor
 //-------------------------------------------------
 
+<<<<<<< HEAD
 gridlee_sound_device::gridlee_sound_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
 	: device_t(mconfig, GRIDLEE, "Gridlee Audio Custom", tag, owner, clock, "gridlee_sound", __FILE__),
+=======
+gridlee_sound_device::gridlee_sound_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: device_t(mconfig, GRIDLEE, tag, owner, clock),
+>>>>>>> upstream/master
 		device_sound_interface(mconfig, *this),
 		m_tone_step(0),
 		m_tone_fraction(0),
 		m_tone_volume(0),
+<<<<<<< HEAD
 		m_stream(NULL),
 		m_samples(NULL),
 		m_freq_to_step(0.0)
 {
 	memset(m_sound_data, 0, sizeof(UINT8)*24);
+=======
+		m_stream(nullptr),
+		m_samples(nullptr),
+		m_freq_to_step(0.0)
+{
+	memset(m_sound_data, 0, sizeof(uint8_t)*24);
+>>>>>>> upstream/master
 }
 
 
@@ -72,7 +89,11 @@ void gridlee_sound_device::sound_stream_update(sound_stream &stream, stream_samp
 
 WRITE8_MEMBER( gridlee_sound_device::gridlee_sound_w )
 {
+<<<<<<< HEAD
 	UINT8 *sound_data = m_sound_data;
+=======
+	uint8_t *sound_data = m_sound_data;
+>>>>>>> upstream/master
 	samples_device *samples = m_samples;
 
 	m_stream->update();

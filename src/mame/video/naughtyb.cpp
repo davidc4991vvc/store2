@@ -61,7 +61,11 @@ static const res_net_info naughtyb_net_info =
 
 PALETTE_INIT_MEMBER(naughtyb_state, naughtyb)
 {
+<<<<<<< HEAD
 	const UINT8 *color_prom = memregion("proms")->base();
+=======
+	const uint8_t *color_prom = memregion("proms")->base();
+>>>>>>> upstream/master
 	static const int resistances[2] = { 270, 130 };
 	double weights[2];
 
@@ -69,7 +73,11 @@ PALETTE_INIT_MEMBER(naughtyb_state, naughtyb)
 	compute_resistor_weights(0, 255, -1.0,
 			2, resistances, weights, 0, 0,
 			2, resistances, weights, 0, 0,
+<<<<<<< HEAD
 			0, 0, 0, 0, 0);
+=======
+			0, nullptr, nullptr, 0, 0);
+>>>>>>> upstream/master
 
 	for (int i = 0;i < palette.entries(); i++)
 	{
@@ -186,7 +194,11 @@ WRITE8_MEMBER(naughtyb_state::popflame_videoreg_w)
 
 
 ***************************************************************************/
+<<<<<<< HEAD
 UINT32 naughtyb_state::screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+=======
+uint32_t naughtyb_state::screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+>>>>>>> upstream/master
 {
 	const rectangle scrollvisiblearea(2*8, 34*8-1, 0*8, 28*8-1);
 	const rectangle leftvisiblearea(0*8, 2*8-1, 0*8, 28*8-1);
@@ -246,7 +258,11 @@ UINT32 naughtyb_state::screen_update(screen_device &screen, bitmap_ind16 &bitmap
 		copybitmap(bitmap,m_tmpbitmap,0,0,-30*8,0,rightvisiblearea);
 
 		scrollx = ( m_cocktail ) ? *m_scrollreg - 239 : -*m_scrollreg + 16;
+<<<<<<< HEAD
 		copyscrollbitmap(bitmap,m_tmpbitmap,1,&scrollx,0,0,scrollvisiblearea);
+=======
+		copyscrollbitmap(bitmap,m_tmpbitmap,1,&scrollx,0,nullptr,scrollvisiblearea);
+>>>>>>> upstream/master
 	}
 	return 0;
 }

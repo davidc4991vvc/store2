@@ -10,6 +10,10 @@
 
 #include "emu.h"
 #include "includes/galaga.h"
+<<<<<<< HEAD
+=======
+#include "includes/bosco.h"
+>>>>>>> upstream/master
 
 
 #define MAX_STARS 252
@@ -18,7 +22,11 @@
 
 PALETTE_INIT_MEMBER(bosco_state,bosco)
 {
+<<<<<<< HEAD
 	const UINT8 *color_prom = memregion("proms")->base();
+=======
+	const uint8_t *color_prom = memregion("proms")->base();
+>>>>>>> upstream/master
 	int i;
 
 	/* core palette */
@@ -94,7 +102,11 @@ TILEMAP_MAPPER_MEMBER(bosco_state::fg_tilemap_scan )
 
 inline void bosco_state::get_tile_info_bosco(tile_data &tileinfo,int tile_index,int ram_offs)
 {
+<<<<<<< HEAD
 	UINT8 attr = m_videoram[ram_offs + tile_index + 0x800];
+=======
+	uint8_t attr = m_videoram[ram_offs + tile_index + 0x800];
+>>>>>>> upstream/master
 	tileinfo.category = (attr & 0x20) >> 5;
 	tileinfo.group = attr & 0x3f;
 	SET_TILE_INFO_MEMBER(0,
@@ -123,8 +135,13 @@ TILE_GET_INFO_MEMBER(bosco_state::fg_get_tile_info )
 
 VIDEO_START_MEMBER(bosco_state,bosco)
 {
+<<<<<<< HEAD
 	m_bg_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(bosco_state::bg_get_tile_info),this),TILEMAP_SCAN_ROWS,8,8,32,32);
 	m_fg_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(bosco_state::fg_get_tile_info),this),tilemap_mapper_delegate(FUNC(bosco_state::fg_tilemap_scan),this),  8,8, 8,32);
+=======
+	m_bg_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(bosco_state::bg_get_tile_info),this),TILEMAP_SCAN_ROWS,8,8,32,32);
+	m_fg_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(bosco_state::fg_get_tile_info),this),tilemap_mapper_delegate(FUNC(bosco_state::fg_tilemap_scan),this),  8,8, 8,32);
+>>>>>>> upstream/master
 
 	m_bg_tilemap->configure_groups(*m_gfxdecode->gfx(0), 0x1f);
 	m_fg_tilemap->configure_groups(*m_gfxdecode->gfx(0), 0x1f);
@@ -182,8 +199,13 @@ WRITE8_MEMBER( bosco_state::bosco_starclr_w )
 
 void bosco_state::draw_sprites(bitmap_ind16 &bitmap, const rectangle &cliprect, int flip)
 {
+<<<<<<< HEAD
 	UINT8 *spriteram = m_spriteram;
 	UINT8 *spriteram_2 = m_spriteram2;
+=======
+	uint8_t *spriteram = m_spriteram;
+	uint8_t *spriteram_2 = m_spriteram2;
+>>>>>>> upstream/master
 	int offs;
 
 	for (offs = 0;offs < m_spriteram_size;offs += 2)
@@ -238,8 +260,13 @@ void bosco_state::draw_stars(bitmap_ind16 &bitmap, const rectangle &cliprect, in
 		int set_a, set_b;
 
 		/* two sets of stars controlled by these bits */
+<<<<<<< HEAD
 		set_a = (m_bosco_starblink[0] & 1);
 		set_b = (m_bosco_starblink[1] & 1) | 2;
+=======
+		set_a = m_videolatch->q4_r();
+		set_b = m_videolatch->q5_r() | 2;
+>>>>>>> upstream/master
 
 		for (star_cntr = 0;star_cntr < MAX_STARS;star_cntr++)
 		{
@@ -264,7 +291,11 @@ void bosco_state::draw_stars(bitmap_ind16 &bitmap, const rectangle &cliprect, in
 }
 
 
+<<<<<<< HEAD
 UINT32 bosco_state::screen_update_bosco(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+=======
+uint32_t bosco_state::screen_update_bosco(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+>>>>>>> upstream/master
 {
 	/* the radar tilemap is just 8x32. We rely on the tilemap code to repeat it across
 	   the screen, and clip it to only the position where it is supposed to be shown */
@@ -300,7 +331,11 @@ UINT32 bosco_state::screen_update_bosco(screen_device &screen, bitmap_ind16 &bit
 }
 
 
+<<<<<<< HEAD
 void bosco_state::screen_eof_bosco(screen_device &screen, bool state)
+=======
+WRITE_LINE_MEMBER(bosco_state::screen_vblank_bosco)
+>>>>>>> upstream/master
 {
 	// falling edge
 	if (!state)

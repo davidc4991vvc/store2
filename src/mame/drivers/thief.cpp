@@ -15,8 +15,11 @@ Credits:
     Shark Driver by Victor Trucco and Mike Balfour
     Driver for Thief and NATO Defense by Phil Stroffolino
 
+<<<<<<< HEAD
 - 8255 emulation (ports 0x30..0x3f) could be better abstracted
 
+=======
+>>>>>>> upstream/master
 - minor blitting glitches in playfield of Thief (XOR vs copy?)
 
 - Nato Defense gfx ROMs may be hooked up wrong;
@@ -25,12 +28,23 @@ Credits:
 ******************************************************************/
 
 #include "emu.h"
+<<<<<<< HEAD
 #include "cpu/z80/z80.h"
 #include "sound/ay8910.h"
 #include "sound/samples.h"
 #include "includes/thief.h"
 
 #define MASTER_CLOCK    XTAL_20MHz
+=======
+#include "includes/thief.h"
+
+#include "cpu/z80/z80.h"
+#include "machine/i8255.h"
+#include "sound/ay8910.h"
+#include "sound/samples.h"
+#include "screen.h"
+#include "speaker.h"
+>>>>>>> upstream/master
 
 
 
@@ -94,11 +108,16 @@ void thief_state::tape_set_motor( int bOn )
 
 /***********************************************************/
 
+<<<<<<< HEAD
 WRITE8_MEMBER(thief_state::thief_input_select_w)
+=======
+WRITE8_MEMBER( thief_state::thief_input_select_w )
+>>>>>>> upstream/master
 {
 	m_input_select = data;
 }
 
+<<<<<<< HEAD
 WRITE8_MEMBER(thief_state::tape_control_w)
 {
 	switch( data )
@@ -148,6 +167,37 @@ READ8_MEMBER(thief_state::thief_io_r)
 		case 0x08: return ioport("P2")->read();
 	}
 	return 0x00;
+=======
+WRITE8_MEMBER( thief_state::tape_control_w )
+{
+	// avoid bogus coin counts after reset
+	if (data == 0x00)
+		return;
+
+	// 7---32-0  not used
+	// -6------  speaker right (crash track)
+	// --5-----  tape motor
+	// ---4----  speaker left (talk track)
+	// ------1-  coin meter
+
+	machine().bookkeeping().coin_counter_w(0, BIT(data, 1) ? 0 : 1);
+
+	tape_set_audio(kTalkTrack, BIT(data, 4) ? 0 : 1);
+	tape_set_motor(BIT(data, 5) ? 0 : 1);
+	tape_set_audio(kCrashTrack, BIT(data, 6) ? 0 : 1);
+}
+
+READ8_MEMBER( thief_state::thief_io_r )
+{
+	uint8_t data = 0xff;
+
+	if (BIT(m_input_select, 0)) data &= ioport("DSW1")->read();
+	if (BIT(m_input_select, 1)) data &= ioport("DSW2")->read();
+	if (BIT(m_input_select, 2)) data &= ioport("P1")->read();
+	if (BIT(m_input_select, 3)) data &= ioport("P2")->read();
+
+	return data;
+>>>>>>> upstream/master
 }
 
 static ADDRESS_MAP_START( sharkatt_main_map, AS_PROGRAM, 8, thief_state )
@@ -173,9 +223,13 @@ static ADDRESS_MAP_START( io_map, AS_IO, 8, thief_state )
 	ADDRESS_MAP_GLOBAL_MASK(0xff)
 	AM_RANGE(0x00, 0x00) AM_WRITENOP /* watchdog */
 	AM_RANGE(0x10, 0x10) AM_WRITE(thief_video_control_w)
+<<<<<<< HEAD
 	AM_RANGE(0x30, 0x30) AM_WRITE(thief_input_select_w) /* 8255 */
 	AM_RANGE(0x31, 0x31) AM_READ(thief_io_r)    /* 8255 */
 	AM_RANGE(0x33, 0x33) AM_WRITE(tape_control_w)
+=======
+	AM_RANGE(0x30, 0x33) AM_MIRROR(0x0c) AM_DEVREADWRITE("ppi", i8255_device, read, write)
+>>>>>>> upstream/master
 	AM_RANGE(0x40, 0x41) AM_DEVWRITE("ay1", ay8910_device, address_data_w)
 	AM_RANGE(0x41, 0x41) AM_DEVREAD("ay1", ay8910_device, data_r)
 	AM_RANGE(0x42, 0x43) AM_DEVWRITE("ay2", ay8910_device, address_data_w)
@@ -385,7 +439,11 @@ static const char *const sharkatt_sample_names[] =
 	"*sharkatt",
 	"talk",
 	"crash",
+<<<<<<< HEAD
 	0   /* end of array */
+=======
+	nullptr   /* end of array */
+>>>>>>> upstream/master
 };
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
@@ -395,7 +453,11 @@ static const char *const thief_sample_names[] =
 	"*thief",
 	"talk",
 	"crash",
+<<<<<<< HEAD
 	0   /* end of array */
+=======
+	nullptr   /* end of array */
+>>>>>>> upstream/master
 };
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
@@ -405,6 +467,7 @@ static const char *const natodef_sample_names[] =
 	"*natodef",
 	"talk",
 	"crash",
+<<<<<<< HEAD
 	0   /* end of array */
 };
 
@@ -451,11 +514,28 @@ static MACHINE_CONFIG_START( thief, thief_state )
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", Z80, 4000000) /* 4 MHz? */
+=======
+	nullptr   /* end of array */
+};
+
+
+static MACHINE_CONFIG_START( thief )
+	MCFG_CPU_ADD("maincpu", Z80, XTAL_8MHz/2)
+>>>>>>> upstream/master
 	MCFG_CPU_PROGRAM_MAP(thief_main_map)
 	MCFG_CPU_IO_MAP(io_map)
 	MCFG_CPU_VBLANK_INT_DRIVER("screen", thief_state,  thief_interrupt)
 
+<<<<<<< HEAD
 	/* video hardware */
+=======
+	MCFG_DEVICE_ADD("ppi", I8255A, 0)
+	MCFG_I8255_OUT_PORTA_CB(WRITE8(thief_state, thief_input_select_w))
+	MCFG_I8255_IN_PORTB_CB(READ8(thief_state, thief_io_r))
+	MCFG_I8255_OUT_PORTC_CB(WRITE8(thief_state, tape_control_w))
+
+	// video hardware
+>>>>>>> upstream/master
 	MCFG_SCREEN_ADD("screen", RASTER)
 	MCFG_SCREEN_REFRESH_RATE(60)
 	MCFG_SCREEN_VBLANK_TIME(ATTOSECONDS_IN_USEC(0))
@@ -464,11 +544,16 @@ static MACHINE_CONFIG_START( thief, thief_state )
 	MCFG_SCREEN_UPDATE_DRIVER(thief_state, screen_update_thief)
 	MCFG_SCREEN_PALETTE("palette")
 
+<<<<<<< HEAD
 	MCFG_DEVICE_ADD("tms", TMS9927, MASTER_CLOCK/4)
+=======
+	MCFG_DEVICE_ADD("tms", TMS9927, XTAL_20MHz/4)
+>>>>>>> upstream/master
 	MCFG_TMS9927_CHAR_WIDTH(8)
 
 	MCFG_PALETTE_ADD("palette", 16)
 
+<<<<<<< HEAD
 	/* sound hardware */
 	MCFG_SPEAKER_STANDARD_MONO("mono")
 
@@ -476,6 +561,15 @@ static MACHINE_CONFIG_START( thief, thief_state )
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 0.50)
 
 	MCFG_SOUND_ADD("ay2", AY8910, 4000000/4)
+=======
+	// sound hardware
+	MCFG_SPEAKER_STANDARD_MONO("mono")
+
+	MCFG_SOUND_ADD("ay1", AY8910, XTAL_8MHz/2/4)
+	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 0.50)
+
+	MCFG_SOUND_ADD("ay2", AY8910, XTAL_8MHz/2/4)
+>>>>>>> upstream/master
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 0.50)
 
 	MCFG_SOUND_ADD("samples", SAMPLES, 0)
@@ -484,6 +578,7 @@ static MACHINE_CONFIG_START( thief, thief_state )
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 0.50)
 MACHINE_CONFIG_END
 
+<<<<<<< HEAD
 
 static MACHINE_CONFIG_START( natodef, thief_state )
 
@@ -522,6 +617,25 @@ static MACHINE_CONFIG_START( natodef, thief_state )
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 0.50)
 MACHINE_CONFIG_END
 
+=======
+static MACHINE_CONFIG_DERIVED( sharkatt, thief )
+	MCFG_CPU_MODIFY("maincpu")
+	MCFG_CPU_PROGRAM_MAP(sharkatt_main_map)
+
+	MCFG_SCREEN_MODIFY("screen")
+	MCFG_SCREEN_VISIBLE_AREA(0*8, 32*8-1, 0*8, 24*8-1)
+
+	MCFG_DEVICE_MODIFY("samples")
+	MCFG_SAMPLES_NAMES(sharkatt_sample_names)
+MACHINE_CONFIG_END
+
+static MACHINE_CONFIG_DERIVED( natodef, thief )
+	MCFG_DEVICE_MODIFY("samples")
+	MCFG_SAMPLES_NAMES(natodef_sample_names)
+MACHINE_CONFIG_END
+
+
+>>>>>>> upstream/master
 /**********************************************************/
 
 ROM_START( sharkatt )
@@ -619,15 +733,27 @@ ROM_END
 
 DRIVER_INIT_MEMBER(thief_state,thief)
 {
+<<<<<<< HEAD
 	UINT8 *dest = memregion( "maincpu" )->base();
 	const UINT8 *source = memregion( "cpu1" )->base();
+=======
+	uint8_t *dest = memregion( "maincpu" )->base();
+	const uint8_t *source = memregion( "cpu1" )->base();
+>>>>>>> upstream/master
 
 	/* C8 is mapped (banked) in CPU1's address space; it contains Z80 code */
 	memcpy( &dest[0xe010], &source[0x290], 0x20 );
 }
 
 
+<<<<<<< HEAD
 GAME( 1980, sharkatt, 0,       sharkatt, sharkatt, driver_device, 0,     ROT0, "Pacific Novelty", "Shark Attack", 0 )
 GAME( 1981, thief,    0,       thief,    thief, thief_state,    thief, ROT0, "Pacific Novelty", "Thief", 0 )
 GAME( 1982, natodef,  0,       natodef,  natodef, thief_state,  thief, ROT0, "Pacific Novelty", "NATO Defense" , 0 )
 GAME( 1982, natodefa, natodef, natodef,  natodef, thief_state,  thief, ROT0, "Pacific Novelty", "NATO Defense (alternate mazes)" , 0 )
+=======
+GAME( 1980, sharkatt, 0,       sharkatt, sharkatt, thief_state, 0,     ROT0, "Pacific Novelty", "Shark Attack",                    0 )
+GAME( 1981, thief,    0,       thief,    thief,    thief_state, thief, ROT0, "Pacific Novelty", "Thief",                           0 )
+GAME( 1982, natodef,  0,       natodef,  natodef,  thief_state, thief, ROT0, "Pacific Novelty", "NATO Defense" ,                   0 )
+GAME( 1982, natodefa, natodef, natodef,  natodef,  thief_state, thief, ROT0, "Pacific Novelty", "NATO Defense (alternate mazes)" , 0 )
+>>>>>>> upstream/master

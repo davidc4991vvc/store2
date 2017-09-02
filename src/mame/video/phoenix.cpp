@@ -1,8 +1,16 @@
+<<<<<<< HEAD
 // license:???
 // copyright-holders:Richard Davies
 /***************************************************************************
 
   video.c
+=======
+// license:BSD-3-Clause
+// copyright-holders:Richard Davies
+/***************************************************************************
+
+  phoenix.cpp
+>>>>>>> upstream/master
 
   Functions to emulate the video hardware of the machine.
 
@@ -79,7 +87,11 @@ static const res_net_info survival_net_info =
 
 PALETTE_INIT_MEMBER(phoenix_state,phoenix)
 {
+<<<<<<< HEAD
 	const UINT8 *color_prom = memregion("proms")->base();
+=======
+	const uint8_t *color_prom = memregion("proms")->base();
+>>>>>>> upstream/master
 	int i;
 	std::vector<rgb_t> rgb;
 
@@ -96,7 +108,11 @@ PALETTE_INIT_MEMBER(phoenix_state,phoenix)
 
 PALETTE_INIT_MEMBER(phoenix_state,survival)
 {
+<<<<<<< HEAD
 	const UINT8 *color_prom = memregion("proms")->base();
+=======
+	const uint8_t *color_prom = memregion("proms")->base();
+>>>>>>> upstream/master
 	int i;
 	std::vector<rgb_t> rgb;
 
@@ -113,7 +129,11 @@ PALETTE_INIT_MEMBER(phoenix_state,survival)
 
 PALETTE_INIT_MEMBER(phoenix_state,pleiads)
 {
+<<<<<<< HEAD
 	const UINT8 *color_prom = memregion("proms")->base();
+=======
+	const uint8_t *color_prom = memregion("proms")->base();
+>>>>>>> upstream/master
 	int i;
 	std::vector<rgb_t> rgb;
 
@@ -168,6 +188,7 @@ TILE_GET_INFO_MEMBER(phoenix_state::get_bg_tile_info)
 
 VIDEO_START_MEMBER(phoenix_state,phoenix)
 {
+<<<<<<< HEAD
 	m_videoram_pg[0] = auto_alloc_array(machine(), UINT8, 0x1000);
 	memset(m_videoram_pg[0], 0x00, 0x1000 * sizeof(UINT8));
 	m_videoram_pg[1] = auto_alloc_array(machine(), UINT8, 0x1000);
@@ -175,12 +196,22 @@ VIDEO_START_MEMBER(phoenix_state,phoenix)
 
 	membank("bank1")->configure_entry(0, m_videoram_pg[0]);
 	membank("bank1")->configure_entry(1, m_videoram_pg[1]);
+=======
+	m_videoram_pg[0] = std::make_unique<uint8_t[]>(0x1000);
+	memset(m_videoram_pg[0].get(), 0x00, 0x1000 * sizeof(uint8_t));
+	m_videoram_pg[1] = std::make_unique<uint8_t[]>(0x1000);
+	memset(m_videoram_pg[1].get(), 0x00, 0x1000 * sizeof(uint8_t));
+
+	membank("bank1")->configure_entry(0, m_videoram_pg[0].get());
+	membank("bank1")->configure_entry(1, m_videoram_pg[1].get());
+>>>>>>> upstream/master
 	membank("bank1")->set_entry(0);
 
 	m_videoram_pg_index = 0;
 	m_palette_bank = 0;
 	m_cocktail_mode = 0;
 
+<<<<<<< HEAD
 	m_fg_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(phoenix_state::get_fg_tile_info),this),TILEMAP_SCAN_ROWS,8,8,32,32);
 	m_bg_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(phoenix_state::get_bg_tile_info),this),TILEMAP_SCAN_ROWS,8,8,32,32);
 
@@ -193,6 +224,15 @@ VIDEO_START_MEMBER(phoenix_state,phoenix)
 
 	save_pointer(NAME(m_videoram_pg[0]), 0x1000);
 	save_pointer(NAME(m_videoram_pg[1]), 0x1000);
+=======
+	m_fg_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(phoenix_state::get_fg_tile_info),this),TILEMAP_SCAN_ROWS,8,8,32,32);
+	m_bg_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(phoenix_state::get_bg_tile_info),this),TILEMAP_SCAN_ROWS,8,8,32,32);
+
+	m_fg_tilemap->set_transparent_pen(0);
+
+	save_pointer(NAME(m_videoram_pg[0].get()), 0x1000);
+	save_pointer(NAME(m_videoram_pg[1].get()), 0x1000);
+>>>>>>> upstream/master
 	save_item(NAME(m_videoram_pg_index));
 	save_item(NAME(m_palette_bank));
 	save_item(NAME(m_cocktail_mode));
@@ -221,7 +261,11 @@ VIDEO_START_MEMBER(phoenix_state,phoenix)
 
 WRITE8_MEMBER(phoenix_state::phoenix_videoram_w)
 {
+<<<<<<< HEAD
 	UINT8 *rom = memregion("maincpu")->base();
+=======
+	uint8_t *rom = memregion("maincpu")->base();
+>>>>>>> upstream/master
 
 	m_videoram_pg[m_videoram_pg_index][offset] = data;
 
@@ -233,7 +277,11 @@ WRITE8_MEMBER(phoenix_state::phoenix_videoram_w)
 			m_fg_tilemap->mark_tile_dirty(offset & 0x3ff);
 	}
 
+<<<<<<< HEAD
 	/* as part of the protecion, Survival executes code from $43a4 */
+=======
+	/* as part of the protection, Survival executes code from $43a4 */
+>>>>>>> upstream/master
 	rom[offset + 0x4000] = data;
 }
 
@@ -278,7 +326,11 @@ WRITE8_MEMBER(phoenix_state::pleiads_videoreg_w)
 
 	/* the palette table is at $0420-$042f and is set by $06bc.
 	   Four palette changes by level.  The palette selection is
+<<<<<<< HEAD
 	   wrong, but the same paletter is used for both layers. */
+=======
+	   wrong, but the same palette is used for both layers. */
+>>>>>>> upstream/master
 
 	if (m_palette_bank != ((data >> 1) & 3))
 	{
@@ -360,7 +412,16 @@ CUSTOM_INPUT_MEMBER(phoenix_state::pleiads_protection_r)
 #define REMAP_JS(js) ((ret & 0xf) | ( (js & 0xf)  << 4))
 READ8_MEMBER(phoenix_state::survival_input_port_0_r)
 {
+<<<<<<< HEAD
 	UINT8 ret = ~ioport("IN0")->read();
+=======
+	uint8_t ret;
+
+	if (m_cocktail_mode)
+		ret = ~ioport("IN1")->read();
+	else
+		ret = ~ioport("IN0")->read();
+>>>>>>> upstream/master
 
 	if( m_survival_input_readc++ == 2 )
 	{
@@ -439,7 +500,11 @@ READ_LINE_MEMBER(phoenix_state::survival_sid_callback)
 
 ***************************************************************************/
 
+<<<<<<< HEAD
 UINT32 phoenix_state::screen_update_phoenix(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+=======
+uint32_t phoenix_state::screen_update_phoenix(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+>>>>>>> upstream/master
 {
 	m_bg_tilemap->draw(screen, bitmap, cliprect, 0,0);
 	m_fg_tilemap->draw(screen, bitmap, cliprect, 0,0);

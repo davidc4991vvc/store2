@@ -8,10 +8,15 @@ pre, code {
 }
 
 span.apii {
+<<<<<<< HEAD
+=======
+	color: gray ;
+>>>>>>> upstream/master
 	float: right ;
 	font-family: inherit ;
 	font-style: normal ;
 	font-size: small ;
+<<<<<<< HEAD
 	color: gray ;
 }
 
@@ -24,4 +29,11 @@ p+h1, ul+h1 {
 	background-color: #D0D0FF ;
 	border-radius: 8px ;
 	border: solid #000080 1px ;
+=======
+}
+
+h2:before {
+	content: "" ;
+	padding-right: 0em ;
+>>>>>>> upstream/master
 }

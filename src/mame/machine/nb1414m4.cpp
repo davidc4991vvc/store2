@@ -13,7 +13,10 @@ TODO:
 - first byte meaning is completely unknown;
 - Ninja Emaki triggers unknown commands 0x8000 & 0xff20;
 - Ninja Emaki continue screen is corrupt;
+<<<<<<< HEAD
 - How to NOT draw the params?
+=======
+>>>>>>> upstream/master
 
 Notes:
 - Just before any string in the "MCU" rom, there's a control byte, this meaning is as follows:
@@ -29,6 +32,7 @@ Notes:
 
 #include "emu.h"
 #include "includes/nb1414m4.h"
+<<<<<<< HEAD
 
 const device_type NB1414M4 = &device_creator<nb1414m4_device>;
 
@@ -36,6 +40,16 @@ nb1414m4_device::nb1414m4_device(const machine_config &mconfig, const char *tag,
 	: device_t(mconfig, NB1414M4, "NB1414M4 Mahjong Custom", tag, owner, clock, "nb1414m4", __FILE__),
 	device_video_interface(mconfig, *this),
 	m_data(NULL)
+=======
+#include "screen.h"
+
+DEFINE_DEVICE_TYPE(NB1414M4, nb1414m4_device, "nb1414m4", "NB1414M4 Mahjong Custom")
+
+nb1414m4_device::nb1414m4_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: device_t(mconfig, NB1414M4, tag, owner, clock)
+	, device_video_interface(mconfig, *this)
+	, m_data(*this, DEVICE_SELF)
+>>>>>>> upstream/master
 {
 }
 
@@ -46,7 +60,10 @@ nb1414m4_device::nb1414m4_device(const machine_config &mconfig, const char *tag,
 
 void nb1414m4_device::device_start()
 {
+<<<<<<< HEAD
 	m_data = region()->base();
+=======
+>>>>>>> upstream/master
 }
 
 //-------------------------------------------------
@@ -61,7 +78,11 @@ void nb1414m4_device::device_reset()
     DEVICE HANDLERS
 *****************************************************************************/
 
+<<<<<<< HEAD
 void nb1414m4_device::dma(UINT16 src, UINT16 dst, UINT16 size, UINT8 condition, UINT8 *vram)
+=======
+void nb1414m4_device::dma(uint16_t src, uint16_t dst, uint16_t size, uint8_t condition, uint8_t *vram)
+>>>>>>> upstream/master
 {
 	int i;
 
@@ -76,7 +97,11 @@ void nb1414m4_device::dma(UINT16 src, UINT16 dst, UINT16 size, UINT8 condition, 
 	}
 }
 
+<<<<<<< HEAD
 void nb1414m4_device::fill(UINT16 dst, UINT8 tile, UINT8 pal, UINT8 *vram)
+=======
+void nb1414m4_device::fill(uint16_t dst, uint8_t tile, uint8_t pal, uint8_t *vram)
+>>>>>>> upstream/master
 {
 	int i;
 
@@ -90,11 +115,19 @@ void nb1414m4_device::fill(UINT16 dst, UINT8 tile, UINT8 pal, UINT8 *vram)
 	}
 }
 
+<<<<<<< HEAD
 void nb1414m4_device::insert_coin_msg(UINT8 *vram)
 {
 	int credit_count = (vram[0xf] & 0xff);
 	UINT8 fl_cond = m_screen->frame_number() & 0x10; /* for insert coin "flickering" */
 	UINT16 dst;
+=======
+void nb1414m4_device::insert_coin_msg(uint8_t *vram)
+{
+	int credit_count = (vram[0xf] & 0xff);
+	uint8_t fl_cond = m_screen->frame_number() & 0x10; /* for insert coin "flickering" */
+	uint16_t dst;
+>>>>>>> upstream/master
 
 	if(credit_count == 0)
 	{
@@ -110,11 +143,19 @@ void nb1414m4_device::insert_coin_msg(UINT8 *vram)
 	}
 }
 
+<<<<<<< HEAD
 void nb1414m4_device::credit_msg(UINT8 *vram)
 {
 	int credit_count = (vram[0xf] & 0xff);
 	UINT8 fl_cond = m_screen->frame_number() & 0x10; /* for insert coin "flickering" */
 	UINT16 dst;
+=======
+void nb1414m4_device::credit_msg(uint8_t *vram)
+{
+	int credit_count = (vram[0xf] & 0xff);
+	uint8_t fl_cond = m_screen->frame_number() & 0x10; /* for insert coin "flickering" */
+	uint16_t dst;
+>>>>>>> upstream/master
 
 	dst = ((m_data[0x023]<<8)|(m_data[0x024]&0xff)) & 0x3fff;
 	dma(0x0025,dst,0x10,1,vram); /* credit */
@@ -136,11 +177,19 @@ void nb1414m4_device::credit_msg(UINT8 *vram)
 	}
 }
 
+<<<<<<< HEAD
 void nb1414m4_device::kozure_score_msg(UINT16 dst, UINT8 src_base, UINT8 *vram)
 {
 	int i;
 	UINT8 first_digit;
 	UINT8 res;
+=======
+void nb1414m4_device::kozure_score_msg(uint16_t dst, uint8_t src_base, uint8_t *vram)
+{
+	int i;
+	uint8_t first_digit;
+	uint8_t res;
+>>>>>>> upstream/master
 
 	first_digit = 0;
 
@@ -166,9 +215,15 @@ void nb1414m4_device::kozure_score_msg(UINT16 dst, UINT8 src_base, UINT8 *vram)
 
 }
 
+<<<<<<< HEAD
 void nb1414m4_device::_0200(UINT16 mcu_cmd, UINT8 *vram)
 {
 	UINT16 dst;
+=======
+void nb1414m4_device::_0200(uint16_t mcu_cmd, uint8_t *vram)
+{
+	uint16_t dst;
+>>>>>>> upstream/master
 
 	dst = (m_data[0x330+((mcu_cmd & 0xf)*2)]<<8)|(m_data[0x331+((mcu_cmd & 0xf)*2)]&0xff);
 
@@ -210,9 +265,15 @@ void nb1414m4_device::_0200(UINT16 mcu_cmd, UINT8 *vram)
 [0x10] coinage B
 [0x11] sound test num
 */
+<<<<<<< HEAD
 void nb1414m4_device::_0600(UINT8 is2p, UINT8 *vram)
 {
 	UINT16 dst;
+=======
+void nb1414m4_device::_0600(uint8_t is2p, uint8_t *vram)
+{
+	uint16_t dst;
+>>>>>>> upstream/master
 	int i;
 
 	dst = ((m_data[0x1f5]<<8)|(m_data[0x1f6]&0xff)) & 0x3fff;
@@ -265,9 +326,15 @@ void nb1414m4_device::_0600(UINT8 is2p, UINT8 *vram)
 		dma(0x310 + (((vram[0x06] >> (7-i)) & 1) * 6),dst + (i * 0x20),0x3,1,vram);
 }
 
+<<<<<<< HEAD
 void nb1414m4_device::_0e00(UINT16 mcu_cmd, UINT8 *vram)
 {
 	UINT16 dst;
+=======
+void nb1414m4_device::_0e00(uint16_t mcu_cmd, uint8_t *vram)
+{
+	uint16_t dst;
+>>>>>>> upstream/master
 
 	dst = ((m_data[0xdf]<<8)|(m_data[0xe0]&0xff)) & 0x3fff;
 	dma(0x00e1,dst,8,1,vram); /* hi-score */
@@ -296,7 +363,11 @@ void nb1414m4_device::_0e00(UINT16 mcu_cmd, UINT8 *vram)
 	}
 }
 
+<<<<<<< HEAD
 void nb1414m4_device::exec(UINT16 mcu_cmd, UINT8 *vram, UINT16 &scrollx, UINT16 &scrolly, tilemap_t *tilemap)
+=======
+void nb1414m4_device::exec(uint16_t mcu_cmd, uint8_t *vram, uint16_t &scrollx, uint16_t &scrolly, tilemap_t *tilemap)
+>>>>>>> upstream/master
 {
 	/* latch fg scroll values */
 	scrollx = (vram[0x0d] & 0xff) | ((vram[0x0e] & 0xff) << 8);

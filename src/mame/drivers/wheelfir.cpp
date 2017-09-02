@@ -10,15 +10,22 @@ driver by
 
 
 TODO:
+<<<<<<< HEAD
 - sound comms
 - eeprom
+=======
+- analogue accelerator is really slow
+>>>>>>> upstream/master
 - various gfx size/pos glitches (gaps, extra rows of pixels here and there)
 - real gfx zoom, based on the zoom params, not lookup table
 - apply double buffering (sometimes gfx is displayed at y+256 every other frame (extra bits are currently masked out))
 - fix road/sky (extra bits in the scroll reg. are there two bitmap buffers? )
 - bitmap layer clearing
 - fix wrong coords of sprites rendered into the bitmap layer (intro car)
+<<<<<<< HEAD
 - is toggle_bit really a vblank  bit ? or somethign else (blitter status ?)
+=======
+>>>>>>> upstream/master
 - implement(and find) layer enable/disable bits
 
 
@@ -208,11 +215,23 @@ suspicious code:
 
 */
 
+<<<<<<< HEAD
 
 #include "emu.h"
 #include "machine/eepromser.h"
 #include "cpu/m68000/m68000.h"
 #include "sound/dac.h"
+=======
+#include "emu.h"
+#include "cpu/m68000/m68000.h"
+#include "machine/eepromser.h"
+#include "machine/gen_latch.h"
+#include "sound/dac.h"
+#include "sound/volt_reg.h"
+#include "screen.h"
+#include "speaker.h"
+
+>>>>>>> upstream/master
 
 static const int ZOOM_TABLE_SIZE=1<<14;
 static const int NUM_SCANLINES=256-8;
@@ -223,7 +242,11 @@ static const int NUM_COLORS=256;
 
 struct scroll_info
 {
+<<<<<<< HEAD
 		INT32 x,y,unkbits;
+=======
+		int32_t x,y,unkbits;
+>>>>>>> upstream/master
 };
 
 
@@ -234,11 +257,16 @@ public:
 		: driver_device(mconfig, type, tag),
 		m_maincpu(*this, "maincpu"),
 		m_subcpu(*this, "subcpu"),
+<<<<<<< HEAD
+=======
+		m_eeprom(*this, "eeprom"),
+>>>>>>> upstream/master
 		m_screen(*this, "screen"),
 		m_palette(*this, "palette") { }
 
 	required_device<cpu_device> m_maincpu;
 	required_device<cpu_device> m_subcpu;
+<<<<<<< HEAD
 	required_device<screen_device> m_screen;
 	required_device<palette_device> m_palette;
 
@@ -266,6 +294,32 @@ public:
 	bitmap_ind16 *m_tmp_bitmap[2];
 
 	INT32 get_scale(INT32 index)
+=======
+	required_device<eeprom_serial_93cxx_device> m_eeprom;
+	required_device<screen_device> m_screen;
+	required_device<palette_device> m_palette;
+
+	std::unique_ptr<int32_t[]> m_zoom_table;
+	std::unique_ptr<uint16_t[]> m_blitter_data;
+
+	std::unique_ptr<uint8_t[]> m_palette_ptr;
+	int32_t m_palpos;
+
+	scroll_info *m_scanlines;
+
+	int32_t m_direct_write_x0;
+	int32_t m_direct_write_x1;
+	int32_t m_direct_write_y0;
+	int32_t m_direct_write_y1;
+	int32_t m_direct_write_idx;
+
+	int16_t m_scanline_cnt;
+
+
+	std::unique_ptr<bitmap_ind16> m_tmp_bitmap[2];
+
+	int32_t get_scale(int32_t index)
+>>>>>>> upstream/master
 	{
 		while(index<ZOOM_TABLE_SIZE)
 		{
@@ -277,12 +331,16 @@ public:
 		}
 		return 0;
 	}
+<<<<<<< HEAD
 	DECLARE_READ16_MEMBER(wheelfir_status_r);
+=======
+>>>>>>> upstream/master
 	DECLARE_WRITE16_MEMBER(wheelfir_scanline_cnt_w);
 	DECLARE_WRITE16_MEMBER(wheelfir_blit_w);
 	DECLARE_WRITE16_MEMBER(pal_reset_pos_w);
 	DECLARE_WRITE16_MEMBER(pal_data_w);
 	DECLARE_WRITE16_MEMBER(wheelfir_7c0000_w);
+<<<<<<< HEAD
 	DECLARE_WRITE16_MEMBER(wheelfir_snd_w);
 	DECLARE_READ16_MEMBER(wheelfir_snd_r);
 	DECLARE_WRITE16_MEMBER(coin_cnt_w);
@@ -292,10 +350,21 @@ public:
 	virtual void video_start();
 	UINT32 screen_update_wheelfir(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
 	void screen_eof_wheelfir(screen_device &screen, bool state);
+=======
+	DECLARE_READ16_MEMBER(wheelfir_7c0000_r);
+	DECLARE_WRITE16_MEMBER(wheelfir_snd_w);
+	DECLARE_READ16_MEMBER(wheelfir_snd_r);
+	DECLARE_WRITE16_MEMBER(coin_cnt_w);
+	virtual void machine_start() override;
+	virtual void video_start() override;
+	uint32_t screen_update_wheelfir(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
+	DECLARE_WRITE_LINE_MEMBER(screen_vblank_wheelfir);
+>>>>>>> upstream/master
 	TIMER_DEVICE_CALLBACK_MEMBER(scanline_timer_callback);
 };
 
 
+<<<<<<< HEAD
 READ16_MEMBER(wheelfir_state::wheelfir_status_r)
 {
 /*
@@ -310,6 +379,8 @@ READ16_MEMBER(wheelfir_state::wheelfir_status_r)
 	return m_toggle_bit| (machine().rand()&0x2000);
 }
 
+=======
+>>>>>>> upstream/master
 WRITE16_MEMBER(wheelfir_state::wheelfir_scanline_cnt_w)
 {
 	COMBINE_DATA(&m_scanline_cnt);
@@ -350,6 +421,7 @@ WRITE16_MEMBER(wheelfir_state::wheelfir_blit_w)
 
 	}
 
+<<<<<<< HEAD
 	int yscroll=-1;
 	int xscroll=-1;
 
@@ -384,12 +456,18 @@ WRITE16_MEMBER(wheelfir_state::wheelfir_blit_w)
 	}
 
 
+=======
+>>>>>>> upstream/master
 	if(offset==0xf && data==0xffff)
 	{
 		m_maincpu->set_input_line(1, HOLD_LINE);
 
 		{
+<<<<<<< HEAD
 			UINT8 *rom = memregion("gfx1")->base();
+=======
+			uint8_t *rom = memregion("gfx1")->base();
+>>>>>>> upstream/master
 
 			int width = m_screen->width();
 			int height = m_screen->height();
@@ -557,7 +635,11 @@ WRITE16_MEMBER(wheelfir_state::wheelfir_blit_w)
 					}
 					else
 					{
+<<<<<<< HEAD
 						screen_y&=0xff;
+=======
+						if (vpage == LAYER_FG) screen_y&=0xff;
+>>>>>>> upstream/master
 
 						if(pix && screen_x >0 && screen_y >0 && screen_x < width && screen_y <height)
 						{
@@ -572,6 +654,7 @@ WRITE16_MEMBER(wheelfir_state::wheelfir_blit_w)
 
 void wheelfir_state::video_start()
 {
+<<<<<<< HEAD
 	m_tmp_bitmap[0] = auto_bitmap_ind16_alloc(machine(), 512, 512);
 	m_tmp_bitmap[1] = auto_bitmap_ind16_alloc(machine(), 512, 512);
 }
@@ -589,6 +672,24 @@ UINT32 wheelfir_state::screen_update_wheelfir(screen_device &screen, bitmap_ind1
 		{
 			dest[x] = source[ (x+(m_scanlines[y].x)) &511];
 
+=======
+	m_tmp_bitmap[0] = std::make_unique<bitmap_ind16>(512, 512);
+	m_tmp_bitmap[1] = std::make_unique<bitmap_ind16>(512, 512);
+}
+
+uint32_t wheelfir_state::screen_update_wheelfir(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+{
+	bitmap.fill(0, cliprect);
+
+	for(int y=cliprect.min_y; y < cliprect.max_y; y++)
+	{
+		uint16_t *source = &m_tmp_bitmap[LAYER_BG]->pix16(( (m_scanlines[y].y)&511));
+		uint16_t *dest = &bitmap.pix16(y);
+
+		for (int x = cliprect.min_x; x < cliprect.max_x; x++)
+		{
+			dest[x] = source[ (x+(m_scanlines[y].x)) &511];
+>>>>>>> upstream/master
 		}
 	}
 
@@ -604,12 +705,20 @@ UINT32 wheelfir_state::screen_update_wheelfir(screen_device &screen, bitmap_ind1
 	return 0;
 }
 
+<<<<<<< HEAD
 void wheelfir_state::screen_eof_wheelfir(screen_device &screen, bool state)
+=======
+WRITE_LINE_MEMBER(wheelfir_state::screen_vblank_wheelfir)
+>>>>>>> upstream/master
 {
 	// rising edge
 	if (state)
 	{
+<<<<<<< HEAD
 		m_tmp_bitmap[LAYER_FG]->fill(0, screen.visible_area());
+=======
+		m_tmp_bitmap[LAYER_FG]->fill(0, m_screen->visible_area());
+>>>>>>> upstream/master
 	}
 }
 
@@ -638,6 +747,7 @@ WRITE16_MEMBER(wheelfir_state::pal_data_w)
 
 WRITE16_MEMBER(wheelfir_state::wheelfir_7c0000_w)
 {
+<<<<<<< HEAD
 	/* seems to be scanline width/2 (used for scanline int timing ? or real width of scanline ?) */
 }
 
@@ -651,16 +761,59 @@ WRITE16_MEMBER(wheelfir_state::wheelfir_snd_w)
 READ16_MEMBER(wheelfir_state::wheelfir_snd_r)
 {
 	return m_soundlatch;
+=======
+	if (ACCESSING_BITS_8_15)
+	{
+		//{uint16_t x = data & 0xf800; static int y = -1; if (x != y) { y = x; printf("%s wheelfir_7c0000_w %d%d%d%d%d\n", machine().describe_context(), BIT(data, 15), BIT(data, 14), BIT(data, 13), BIT(data, 12), BIT(data, 11)); }}
+		//{uint16_t x = data & 0x0700; static int y = -1; if (x != y) { y = x; printf("%s eeprom write %d%d%d\n", machine().describe_context(), BIT(data, 10), BIT(data, 9), BIT(data, 8)); }}
+		m_eeprom->di_write(BIT(data, 9));
+		m_eeprom->clk_write(BIT(data, 8));
+		m_eeprom->cs_write(BIT(data, 10));
+	}
+
+	if (ACCESSING_BITS_0_7)
+	{
+		/// alternates between ac & ff
+		//printf("7c0001 %02x\n", data & 0xff);
+		/* seems to be scanline width/2 (used for scanline int timing ? or real width of scanline ?) */
+	}
+}
+
+READ16_MEMBER(wheelfir_state::wheelfir_7c0000_r)
+{
+	uint16_t data = 0;
+
+	if (ACCESSING_BITS_8_15)
+	{
+		data |= (machine().rand() & 0x2000); // ?
+		data |= m_eeprom->do_read() << 15;
+		//printf("%s eeprom read %04x %04x\n", machine().describe_context(), data, mem_mask);
+	}
+
+	if (ACCESSING_BITS_0_7)
+	{
+		//printf("unknown read %04x %04x\n", data, mem_mask);
+	}
+
+	return data;
+>>>>>>> upstream/master
 }
 
 WRITE16_MEMBER(wheelfir_state::coin_cnt_w)
 {
 	/* bits 0/1 coin counters */
+<<<<<<< HEAD
 	coin_counter_w(machine(), 0, data & 0x01);
 	coin_counter_w(machine(), 1, data & 0x02);
 }
 
 
+=======
+	machine().bookkeeping().coin_counter_w(0, data & 0x01);
+	machine().bookkeeping().coin_counter_w(1, data & 0x02);
+}
+
+>>>>>>> upstream/master
 static ADDRESS_MAP_START( wheelfir_main, AS_PROGRAM, 16, wheelfir_state )
 	AM_RANGE(0x000000, 0x0fffff) AM_ROM
 	AM_RANGE(0x200000, 0x20ffff) AM_RAM
@@ -669,6 +822,7 @@ static ADDRESS_MAP_START( wheelfir_main, AS_PROGRAM, 16, wheelfir_state )
 	AM_RANGE(0x720000, 0x720001) AM_WRITE(pal_reset_pos_w)
 	AM_RANGE(0x720002, 0x720003) AM_WRITE(pal_data_w)
 	AM_RANGE(0x720004, 0x720005) AM_WRITENOP // always ffff?
+<<<<<<< HEAD
 	AM_RANGE(0x740000, 0x740001) AM_WRITE(wheelfir_snd_w)
 	AM_RANGE(0x780000, 0x78000f) AM_READNOP /* net comms ? */
 	AM_RANGE(0x760000, 0x760001) AM_WRITE(coin_cnt_w)
@@ -681,14 +835,36 @@ static ADDRESS_MAP_START( wheelfir_main, AS_PROGRAM, 16, wheelfir_state )
 
 
 /* sub is sound cpu? the program roms contain lots of samples */
+=======
+	AM_RANGE(0x740000, 0x740001) AM_DEVWRITE("soundlatch", generic_latch_16_device, write)
+	AM_RANGE(0x760000, 0x760001) AM_WRITE(coin_cnt_w)
+	AM_RANGE(0x780000, 0x780005) AM_WRITENOP // Start ADC0808 conversion
+	AM_RANGE(0x780000, 0x780001) AM_READ_PORT("STEERING")
+	AM_RANGE(0x780002, 0x780003) AM_READ_PORT("ACCELERATOR")
+	AM_RANGE(0x780004, 0x780005) AM_READ_PORT("BRAKE")
+	AM_RANGE(0x7a0000, 0x7a0001) AM_WRITE(wheelfir_scanline_cnt_w)
+	AM_RANGE(0x7c0000, 0x7c0001) AM_READWRITE(wheelfir_7c0000_r, wheelfir_7c0000_w)
+	AM_RANGE(0x7e0000, 0x7e0001) AM_READ_PORT("P1")
+	AM_RANGE(0x7e0002, 0x7e0003) AM_READ_PORT("P2")
+ADDRESS_MAP_END
+
+
+>>>>>>> upstream/master
 static ADDRESS_MAP_START( wheelfir_sub, AS_PROGRAM, 16, wheelfir_state )
 	AM_RANGE(0x000000, 0x0fffff) AM_ROM
 	AM_RANGE(0x200000, 0x20ffff) AM_RAM
 
+<<<<<<< HEAD
 	AM_RANGE(0x780000, 0x780001) AM_READ(wheelfir_snd_r)
 
 	AM_RANGE(0x700000, 0x700001) AM_DEVWRITE8("dac1", dac_device, write_unsigned8, 0xff00) //guess for now
 	AM_RANGE(0x740000, 0x740001) AM_DEVWRITE8("dac2", dac_device, write_unsigned8, 0xff00)
+=======
+	AM_RANGE(0x780000, 0x780001) AM_DEVREAD("soundlatch", generic_latch_16_device, read)
+
+	AM_RANGE(0x700000, 0x700001) AM_DEVWRITE("ldac", dac_word_interface, write)
+	AM_RANGE(0x740000, 0x740001) AM_DEVWRITE("rdac", dac_word_interface, write)
+>>>>>>> upstream/master
 ADDRESS_MAP_END
 
 
@@ -706,9 +882,13 @@ static INPUT_PORTS_START( wheelfir )
 	PORT_BIT( 0x0200, IP_ACTIVE_LOW, IPT_START2 )
 	PORT_BIT( 0x0400, IP_ACTIVE_LOW, IPT_COIN1 )
 	PORT_BIT( 0x0800, IP_ACTIVE_LOW, IPT_COIN2 )
+<<<<<<< HEAD
 	PORT_DIPNAME( 0x1000, 0x1000, "Test / Game?"  )
 	PORT_DIPSETTING(      0x1000, DEF_STR( Off ) )
 	PORT_DIPSETTING(      0x0000, DEF_STR( On ) )
+=======
+	PORT_BIT( 0x1000, IP_ACTIVE_LOW, IPT_SERVICE ) PORT_NAME( "Test" )
+>>>>>>> upstream/master
 	PORT_BIT( 0x2000, IP_ACTIVE_LOW, IPT_UNUSED ) /* net comm flag ? */
 	PORT_BIT( 0x4000, IP_ACTIVE_LOW, IPT_UNUSED )
 	PORT_BIT( 0x8000, IP_ACTIVE_LOW, IPT_UNUSED )
@@ -723,10 +903,23 @@ static INPUT_PORTS_START( wheelfir )
 	PORT_BIT( 0x0040, IP_ACTIVE_LOW, IPT_BUTTON3 ) PORT_PLAYER(2)
 	PORT_BIT( 0x0080, IP_ACTIVE_LOW, IPT_UNUSED )
 	PORT_BIT( 0xff00, IP_ACTIVE_LOW, IPT_UNUSED )
+<<<<<<< HEAD
+=======
+
+	PORT_START("STEERING")
+	PORT_BIT(0xff, 0x80, IPT_PADDLE) PORT_INVERT PORT_SENSITIVITY(100) PORT_KEYDELTA(10) PORT_NAME("Steering Wheel") PORT_REVERSE
+
+	PORT_START("ACCELERATOR")
+	PORT_BIT(0xff, 0x00, IPT_PEDAL)  PORT_INVERT PORT_SENSITIVITY(100) PORT_KEYDELTA(10) PORT_NAME("Accelerator Pedal") PORT_MINMAX(0x00, 0xff) PORT_REVERSE
+
+	PORT_START("BRAKE")
+	PORT_BIT(0xff, 0x00, IPT_PEDAL2) PORT_INVERT PORT_SENSITIVITY(100) PORT_KEYDELTA(10) PORT_NAME("Brake Pedal") PORT_MINMAX(0x00, 0xff) PORT_REVERSE
+>>>>>>> upstream/master
 INPUT_PORTS_END
 
 TIMER_DEVICE_CALLBACK_MEMBER(wheelfir_state::scanline_timer_callback)
 {
+<<<<<<< HEAD
 	machine().scheduler().synchronize();
 	m_current_scanline=param;
 
@@ -774,6 +967,47 @@ void wheelfir_state::machine_start()
 
 	m_scanlines = reinterpret_cast<scroll_info*>(auto_alloc_array(machine(), UINT8, sizeof(scroll_info)*(NUM_SCANLINES+NUM_VBLANK_LINES)));
 	m_palette_ptr = auto_alloc_array(machine(), UINT8, NUM_COLORS*3);
+=======
+	if(param<NUM_SCANLINES)
+	{
+		//copy scanline offset
+		int xscroll = (m_blitter_data[0xa] & 0x00ff) | (m_blitter_data[0x8] & 0x0040) << 2;
+		int yscroll = (m_blitter_data[0xb] & 0x00ff) | (m_blitter_data[0x8] & 0x0080) << 1;
+
+		m_scanlines[param].x = xscroll;
+		m_scanlines[param].y = yscroll;
+		m_scanlines[param].unkbits = m_blitter_data[0x8] & 0xff;
+
+		m_blitter_data[0xb]++;
+
+		//visible scanline
+		m_scanline_cnt--;
+		if(m_scanline_cnt==0)
+		{
+			m_maincpu->set_input_line(5, HOLD_LINE); // raster IRQ, changes scroll values for road
+		}
+		//m_screen->update_partial(param);
+	}
+	else
+	{
+		if(param==NUM_SCANLINES) /* vblank */
+		{
+			m_maincpu->set_input_line(3, HOLD_LINE);
+		}
+	}
+
+	m_subcpu->set_input_line(1, HOLD_LINE);
+}
+
+
+void wheelfir_state::machine_start()
+{
+	m_zoom_table = std::make_unique<int32_t[]>(ZOOM_TABLE_SIZE);
+	m_blitter_data = std::make_unique<uint16_t[]>(16);
+
+	m_scanlines = reinterpret_cast<scroll_info*>(auto_alloc_array(machine(), uint8_t, sizeof(scroll_info)*(NUM_SCANLINES+NUM_VBLANK_LINES)));
+	m_palette_ptr = std::make_unique<uint8_t[]>(NUM_COLORS*3);
+>>>>>>> upstream/master
 
 
 	for(int i=0;i<(ZOOM_TABLE_SIZE);++i)
@@ -781,7 +1015,11 @@ void wheelfir_state::machine_start()
 		m_zoom_table[i]=-1;
 	}
 
+<<<<<<< HEAD
 	UINT16 *ROM = (UINT16 *)memregion("maincpu")->base();
+=======
+	uint16_t *ROM = (uint16_t *)memregion("maincpu")->base();
+>>>>>>> upstream/master
 
 	for(int j=0;j<400;++j)
 	{
@@ -801,16 +1039,25 @@ void wheelfir_state::machine_start()
 }
 
 
+<<<<<<< HEAD
 static MACHINE_CONFIG_START( wheelfir, wheelfir_state )
+=======
+static MACHINE_CONFIG_START( wheelfir )
+>>>>>>> upstream/master
 
 	MCFG_CPU_ADD("maincpu", M68000, 32000000/2)
 	MCFG_CPU_PROGRAM_MAP(wheelfir_main)
 
 	MCFG_CPU_ADD("subcpu", M68000, 32000000/2)
 	MCFG_CPU_PROGRAM_MAP(wheelfir_sub)
+<<<<<<< HEAD
 	//MCFG_CPU_PERIODIC_INT_DRIVER(wheelfir_state, irq1_line_hold, 256*60)
 
 	MCFG_QUANTUM_TIME(attotime::from_hz(12000))
+=======
+
+	//MCFG_QUANTUM_TIME(attotime::from_hz(12000))
+>>>>>>> upstream/master
 
 
 	MCFG_TIMER_DRIVER_ADD_SCANLINE("scan_timer", wheelfir_state, scanline_timer_callback, "screen", 0, 1)
@@ -820,13 +1067,18 @@ static MACHINE_CONFIG_START( wheelfir, wheelfir_state )
 	MCFG_SCREEN_SIZE(336, NUM_SCANLINES+NUM_VBLANK_LINES)
 	MCFG_SCREEN_VISIBLE_AREA(0,335, 0, NUM_SCANLINES-1)
 	MCFG_SCREEN_UPDATE_DRIVER(wheelfir_state, screen_update_wheelfir)
+<<<<<<< HEAD
 	MCFG_SCREEN_VBLANK_DRIVER(wheelfir_state, screen_eof_wheelfir)
+=======
+	MCFG_SCREEN_VBLANK_CALLBACK(WRITELINE(wheelfir_state, screen_vblank_wheelfir))
+>>>>>>> upstream/master
 	MCFG_SCREEN_PALETTE("palette")
 
 	MCFG_PALETTE_ADD("palette", NUM_COLORS)
 
 	MCFG_EEPROM_SERIAL_93C46_ADD("eeprom")
 
+<<<<<<< HEAD
 
 
 	/* sound hardware */
@@ -836,6 +1088,17 @@ static MACHINE_CONFIG_START( wheelfir, wheelfir_state )
 	MCFG_DAC_ADD("dac2")
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 1.0)
 
+=======
+	MCFG_GENERIC_LATCH_16_ADD("soundlatch")
+
+	/* sound hardware */
+	MCFG_SPEAKER_STANDARD_STEREO("lspeaker", "rspeaker")
+	MCFG_SOUND_ADD("ldac", DAC_10BIT_R2R, 0) MCFG_SOUND_ROUTE(ALL_OUTPUTS, "lspeaker", 1.0) // unknown DAC
+	MCFG_SOUND_ADD("rdac", DAC_10BIT_R2R, 0) MCFG_SOUND_ROUTE(ALL_OUTPUTS, "rspeaker", 1.0) // unknown DAC
+	MCFG_DEVICE_ADD("vref", VOLTAGE_REGULATOR, 0) MCFG_VOLTAGE_REGULATOR_OUTPUT(5.0)
+	MCFG_SOUND_ROUTE_EX(0, "ldac", 1.0, DAC_VREF_POS_INPUT) MCFG_SOUND_ROUTE_EX(0, "ldac", -1.0, DAC_VREF_NEG_INPUT)
+	MCFG_SOUND_ROUTE_EX(0, "rdac", 1.0, DAC_VREF_POS_INPUT) MCFG_SOUND_ROUTE_EX(0, "rdac", -1.0, DAC_VREF_NEG_INPUT)
+>>>>>>> upstream/master
 MACHINE_CONFIG_END
 
 
@@ -857,6 +1120,7 @@ ROM_START( wheelfir )
 	ROM_LOAD( "tch9.u57", 0x280000, 0x80000, CRC(83c66de3) SHA1(50deaf3338d590340b928f891548c47ba8f3ca38) )
 	ROM_LOAD( "tch10.u58",0x300000, 0x80000, CRC(2036ed80) SHA1(910381e2ccdbc2d06f873021d8af02795d22f595) )
 	ROM_LOAD( "tch12.u59",0x380000, 0x80000, CRC(cce2e675) SHA1(f3d8916077b2e057169d0f254005cd959789a3b3) )
+<<<<<<< HEAD
 ROM_END
 
 DRIVER_INIT_MEMBER(wheelfir_state,wheelfir)
@@ -866,3 +1130,11 @@ DRIVER_INIT_MEMBER(wheelfir_state,wheelfir)
 }
 
 GAME( 199?, wheelfir,    0, wheelfir,    wheelfir, wheelfir_state,    wheelfir, ROT0,  "TCH", "Wheels & Fire", MACHINE_NOT_WORKING|MACHINE_NO_SOUND )
+=======
+
+	ROM_REGION16_BE(0x80, "eeprom", 0)
+	ROM_LOAD16_WORD_SWAP( "eeprom", 0x000000, 0x000080, CRC(961e4bc9) SHA1(8944504bf56a272e9aa08185e73c6b4212d52383) )
+ROM_END
+
+GAME( 199?, wheelfir,    0, wheelfir,    wheelfir, wheelfir_state, 0, ROT0,  "TCH", "Wheels & Fire", MACHINE_IMPERFECT_GRAPHICS)
+>>>>>>> upstream/master

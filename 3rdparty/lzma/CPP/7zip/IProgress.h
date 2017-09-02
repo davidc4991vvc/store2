@@ -1,10 +1,18 @@
+<<<<<<< HEAD
 // Interface/IProgress.h
+=======
+// IProgress.h
+>>>>>>> upstream/master
 
 #ifndef __IPROGRESS_H
 #define __IPROGRESS_H
 
+<<<<<<< HEAD
 #include "../Common/MyUnknown.h"
 #include "../Common/Types.h"
+=======
+#include "../Common/MyTypes.h"
+>>>>>>> upstream/master
 
 #include "IDecl.h"
 
@@ -17,6 +25,7 @@ DECL_INTERFACE(IProgress, 0, 5)
   INTERFACE_IProgress(PURE)
 };
 
+<<<<<<< HEAD
 /*
 // {23170F69-40C1-278A-0000-000000050002}
 DEFINE_GUID(IID_IProgress2,
@@ -30,4 +39,6 @@ public:
 };
 */
 
+=======
+>>>>>>> upstream/master
 #endif

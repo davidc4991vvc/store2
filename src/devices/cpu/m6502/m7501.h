@@ -8,8 +8,13 @@
 
 ***************************************************************************/
 
+<<<<<<< HEAD
 #ifndef __M7501_H__
 #define __M7501_H__
+=======
+#ifndef MAME_CPU_M6502_M7501_H
+#define MAME_CPU_M6502_M7501_H
+>>>>>>> upstream/master
 
 #include "m6510.h"
 
@@ -21,7 +26,11 @@
 
 class m7501_device : public m6510_device {
 public:
+<<<<<<< HEAD
 	m7501_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
+=======
+	m7501_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
+>>>>>>> upstream/master
 };
 
 enum {
@@ -31,4 +40,8 @@ enum {
 
 extern const device_type M7501;
 
+<<<<<<< HEAD
 #endif
+=======
+#endif // MAME_CPU_M6502_M7501_H
+>>>>>>> upstream/master

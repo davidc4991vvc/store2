@@ -5,6 +5,10 @@
     Vendetta
 
 *************************************************************************/
+<<<<<<< HEAD
+=======
+#include "machine/bankdev.h"
+>>>>>>> upstream/master
 #include "machine/k053252.h"
 #include "video/k053246_k053247_k055673.h"
 #include "video/k054000.h"
@@ -29,10 +33,17 @@ public:
 		m_k053251(*this, "k053251"),
 		m_k053252(*this, "k053252"),
 		m_k054000(*this, "k054000"),
+<<<<<<< HEAD
 		m_palette(*this, "palette") { }
 
 	/* memory pointers */
 	std::vector<UINT8> m_paletteram;
+=======
+		m_palette(*this, "palette"),
+		m_videobank0(*this, "videobank0"),
+		m_videobank1(*this, "videobank1") { }
+
+>>>>>>> upstream/master
 
 	/* video-related */
 	int        m_layer_colorbase[3];
@@ -41,7 +52,10 @@ public:
 
 	/* misc */
 	int        m_irq_enabled;
+<<<<<<< HEAD
 	offs_t     m_video_banking_base;
+=======
+>>>>>>> upstream/master
 
 	/* devices */
 	required_device<cpu_device> m_maincpu;
@@ -52,6 +66,7 @@ public:
 	optional_device<k053252_device> m_k053252;
 	optional_device<k054000_device> m_k054000;
 	required_device<palette_device> m_palette;
+<<<<<<< HEAD
 	DECLARE_WRITE8_MEMBER(vendetta_eeprom_w);
 	DECLARE_READ8_MEMBER(vendetta_K052109_r);
 	DECLARE_WRITE8_MEMBER(vendetta_K052109_w);
@@ -66,11 +81,36 @@ public:
 	UINT32 screen_update_vendetta(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
 	INTERRUPT_GEN_MEMBER(vendetta_irq);
 	void vendetta_video_banking( int select );
+=======
+
+	required_device<address_map_bank_device> m_videobank0;
+	required_device<address_map_bank_device> m_videobank1;
+
+	DECLARE_WRITE8_MEMBER(eeprom_w);
+	DECLARE_READ8_MEMBER(K052109_r);
+	DECLARE_WRITE8_MEMBER(K052109_w);
+	DECLARE_WRITE8_MEMBER(_5fe0_w);
+	DECLARE_WRITE8_MEMBER(z80_arm_nmi_w);
+	DECLARE_WRITE8_MEMBER(z80_irq_w);
+	DECLARE_READ8_MEMBER(z80_irq_r);
+
+	virtual void machine_start() override;
+	virtual void machine_reset() override;
+
+	uint32_t screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
+
+	INTERRUPT_GEN_MEMBER(irq);
+
+>>>>>>> upstream/master
 	K052109_CB_MEMBER(vendetta_tile_callback);
 	K052109_CB_MEMBER(esckids_tile_callback);
 	DECLARE_WRITE8_MEMBER(banking_callback);
 	K053246_CB_MEMBER(sprite_callback);
 
 protected:
+<<<<<<< HEAD
 	virtual void device_timer(emu_timer &timer, device_timer_id id, int param, void *ptr);
+=======
+	virtual void device_timer(emu_timer &timer, device_timer_id id, int param, void *ptr) override;
+>>>>>>> upstream/master
 };

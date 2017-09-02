@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 // license:???
+=======
+// license:BSD-3-Clause
+>>>>>>> upstream/master
 // copyright-holders:Hau
 /*
 
@@ -28,7 +32,11 @@ ENSONIQ 5701,5510,5505
 OSC1:16MHz
 OSC2:30.47618MHz
 ----------------------------------------------------------
+<<<<<<< HEAD
 based on driver from drivers/gunbustr.c by Bryan McPhail & David Graves
+=======
+based on driver from drivers/gunbustr.cpp by Bryan McPhail & David Graves
+>>>>>>> upstream/master
 Written by Hau
 07/03/2008
 
@@ -42,6 +50,10 @@ $305.b invincibility
 #include "emu.h"
 #include "cpu/m68000/m68000.h"
 #include "machine/eepromser.h"
+<<<<<<< HEAD
+=======
+#include "machine/taitoio.h"
+>>>>>>> upstream/master
 #include "sound/es5506.h"
 #include "audio/taito_en.h"
 #include "includes/galastrm.h"
@@ -49,6 +61,15 @@ $305.b invincibility
 
 /*********************************************************************/
 
+<<<<<<< HEAD
+=======
+void galastrm_state::machine_start()
+{
+	m_interrupt6_timer = timer_alloc(TIMER_GALASTRM_INTERRUPT6);
+}
+
+
+>>>>>>> upstream/master
 INTERRUPT_GEN_MEMBER(galastrm_state::galastrm_interrupt)
 {
 	m_frame_counter ^= 1;
@@ -63,7 +84,11 @@ void galastrm_state::device_timer(emu_timer &timer, device_timer_id id, int para
 		m_maincpu->set_input_line(6, HOLD_LINE);
 		break;
 	default:
+<<<<<<< HEAD
 		assert_always(FALSE, "Unknown id in galastrm_state::device_timer");
+=======
+		assert_always(false, "Unknown id in galastrm_state::device_timer");
+>>>>>>> upstream/master
 	}
 }
 
@@ -98,6 +123,7 @@ CUSTOM_INPUT_MEMBER(galastrm_state::frame_counter_r)
 	return m_frame_counter;
 }
 
+<<<<<<< HEAD
 CUSTOM_INPUT_MEMBER(galastrm_state::coin_word_r)
 {
 	return m_coin_word;
@@ -147,6 +173,14 @@ popmessage(t);
 //logerror("CPU #0 PC %06x: write input %06x\n",device->safe_pc(),offset);
 		}
 	}
+=======
+WRITE8_MEMBER(galastrm_state::coin_word_w)
+{
+	machine().bookkeeping().coin_lockout_w(0, ~data & 0x01);
+	machine().bookkeeping().coin_lockout_w(1, ~data & 0x02);
+	machine().bookkeeping().coin_counter_w(0, data & 0x04);
+	machine().bookkeeping().coin_counter_w(1, data & 0x04);
+>>>>>>> upstream/master
 }
 
 READ32_MEMBER(galastrm_state::galastrm_adstick_ctrl_r)
@@ -163,7 +197,11 @@ READ32_MEMBER(galastrm_state::galastrm_adstick_ctrl_r)
 
 WRITE32_MEMBER(galastrm_state::galastrm_adstick_ctrl_w)
 {
+<<<<<<< HEAD
 	timer_set(downcast<cpu_device *>(&space.device())->cycles_to_attotime(1000), TIMER_GALASTRM_INTERRUPT6);
+=======
+	m_interrupt6_timer->adjust(m_maincpu->cycles_to_attotime(1000));
+>>>>>>> upstream/master
 }
 
 /***********************************************************
@@ -174,12 +212,19 @@ static ADDRESS_MAP_START( galastrm_map, AS_PROGRAM, 32, galastrm_state )
 	AM_RANGE(0x000000, 0x0fffff) AM_ROM
 	AM_RANGE(0x200000, 0x21ffff) AM_RAM AM_SHARE("ram")                             /* main CPUA ram */
 	AM_RANGE(0x300000, 0x303fff) AM_RAM AM_SHARE("spriteram")
+<<<<<<< HEAD
 	AM_RANGE(0x400000, 0x400003) AM_READ_PORT("IN0")
 	AM_RANGE(0x400004, 0x400007) AM_READ_PORT("IN1")
 	AM_RANGE(0x400000, 0x400007) AM_WRITE(galastrm_input_w)                                 /* eerom etc. */
 	AM_RANGE(0x40fff0, 0x40fff3) AM_WRITENOP
 	AM_RANGE(0x500000, 0x500007) AM_READWRITE(galastrm_adstick_ctrl_r, galastrm_adstick_ctrl_w)
 	AM_RANGE(0x600000, 0x6007ff) AM_RAM AM_SHARE("snd_shared")                              /* Sound shared ram */
+=======
+	AM_RANGE(0x400000, 0x400007) AM_DEVREADWRITE8("tc0510nio", tc0510nio_device, read, write, 0xffffffff)
+	AM_RANGE(0x40fff0, 0x40fff3) AM_WRITENOP
+	AM_RANGE(0x500000, 0x500007) AM_READWRITE(galastrm_adstick_ctrl_r, galastrm_adstick_ctrl_w)
+	AM_RANGE(0x600000, 0x6007ff) AM_DEVREADWRITE8("taito_en:dpram", mb8421_device, left_r, left_w, 0xffffffff) /* Sound shared ram */
+>>>>>>> upstream/master
 	AM_RANGE(0x800000, 0x80ffff) AM_DEVREADWRITE("tc0480scp", tc0480scp_device, long_r, long_w)        /* tilemaps */
 	AM_RANGE(0x830000, 0x83002f) AM_DEVREADWRITE("tc0480scp", tc0480scp_device, ctrl_long_r, ctrl_long_w)
 	AM_RANGE(0x900000, 0x900003) AM_WRITE(galastrm_palette_w)                               /* TC0110PCR */
@@ -195,6 +240,7 @@ ADDRESS_MAP_END
 
 static INPUT_PORTS_START( galastrm )
 	PORT_START("IN0")
+<<<<<<< HEAD
 //  PORT_BIT( 0x00000001, IP_ACTIVE_HIGH, IPT_BUTTON3 ) PORT_PLAYER(1)  /* Freeze input */
 	PORT_BIT( 0x00000002, IP_ACTIVE_LOW, IPT_UNKNOWN )
 	PORT_BIT( 0x00000004, IP_ACTIVE_LOW, IPT_UNKNOWN )
@@ -231,6 +277,36 @@ static INPUT_PORTS_START( galastrm )
 	PORT_BIT( 0x00004000, IP_ACTIVE_LOW, IPT_UNKNOWN )
 	PORT_BIT( 0x00008000, IP_ACTIVE_LOW, IPT_UNKNOWN )
 	PORT_BIT( 0xffff0000, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, galastrm_state,coin_word_r, NULL)
+=======
+	PORT_BIT( 0x01, IP_ACTIVE_LOW, IPT_START1 )
+	PORT_BIT( 0x02, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, galastrm_state,frame_counter_r, nullptr)
+	PORT_BIT( 0x04, IP_ACTIVE_LOW, IPT_UNKNOWN )
+	PORT_BIT( 0x08, IP_ACTIVE_LOW, IPT_UNKNOWN )
+	PORT_BIT( 0x10, IP_ACTIVE_LOW, IPT_UNKNOWN )
+	PORT_BIT( 0x20, IP_ACTIVE_LOW, IPT_UNKNOWN )
+	PORT_BIT( 0x40, IP_ACTIVE_LOW, IPT_UNKNOWN )
+	PORT_BIT( 0x80, IP_ACTIVE_LOW, IPT_UNKNOWN )
+
+	PORT_START("IN1")
+//  PORT_BIT( 0x01, IP_ACTIVE_HIGH, IPT_BUTTON3 ) PORT_PLAYER(1)  /* Freeze input */
+	PORT_BIT( 0x02, IP_ACTIVE_LOW, IPT_UNKNOWN )
+	PORT_BIT( 0x04, IP_ACTIVE_LOW, IPT_UNKNOWN )
+	PORT_BIT( 0x08, IP_ACTIVE_LOW, IPT_UNKNOWN )
+	PORT_BIT( 0x10, IP_ACTIVE_LOW, IPT_UNKNOWN )
+	PORT_BIT( 0x20, IP_ACTIVE_LOW, IPT_UNKNOWN )
+	PORT_BIT( 0x40, IP_ACTIVE_LOW, IPT_UNKNOWN )
+	PORT_BIT( 0x80, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_READ_LINE_DEVICE_MEMBER("eeprom", eeprom_serial_93cxx_device, do_read)
+
+	PORT_START("IN2")
+	PORT_SERVICE_NO_TOGGLE( 0x01, IP_ACTIVE_LOW )
+	PORT_BIT( 0x02, IP_ACTIVE_LOW, IPT_SERVICE1 )
+	PORT_BIT( 0x04, IP_ACTIVE_LOW, IPT_COIN1 )
+	PORT_BIT( 0x08, IP_ACTIVE_LOW, IPT_COIN2 )
+	PORT_BIT( 0x10, IP_ACTIVE_LOW, IPT_BUTTON1 ) PORT_PLAYER(1)
+	PORT_BIT( 0x20, IP_ACTIVE_LOW, IPT_BUTTON2 ) PORT_PLAYER(1)
+	PORT_BIT( 0x40, IP_ACTIVE_LOW, IPT_BUTTON3 ) PORT_PLAYER(1)
+	PORT_BIT( 0x80, IP_ACTIVE_LOW, IPT_BUTTON4 ) PORT_PLAYER(1)
+>>>>>>> upstream/master
 
 	PORT_START("STICKX")
 	PORT_BIT( 0xff, 0x80, IPT_AD_STICK_X ) PORT_SENSITIVITY(60) PORT_KEYDELTA(15) PORT_PLAYER(1)
@@ -252,7 +328,11 @@ static const gfx_layout tile16x16_layout =
 	{ 0, 8, 16, 24 },
 	{ 32, 33, 34, 35, 36, 37, 38, 39, 0, 1, 2, 3, 4, 5, 6, 7 },
 	{ 0*64, 1*64,  2*64,  3*64,  4*64,  5*64,  6*64,  7*64,
+<<<<<<< HEAD
 	  8*64, 9*64, 10*64, 11*64, 12*64, 13*64, 14*64, 15*64 },
+=======
+		8*64, 9*64, 10*64, 11*64, 12*64, 13*64, 14*64, 15*64 },
+>>>>>>> upstream/master
 	64*16   /* every sprite takes 128 consecutive bytes */
 };
 
@@ -279,7 +359,11 @@ GFXDECODE_END
 
 /***************************************************************************/
 
+<<<<<<< HEAD
 static MACHINE_CONFIG_START( galastrm, galastrm_state )
+=======
+static MACHINE_CONFIG_START( galastrm )
+>>>>>>> upstream/master
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", M68EC020, 16000000) /* 16 MHz */
 	MCFG_CPU_PROGRAM_MAP(galastrm_map)
@@ -287,6 +371,18 @@ static MACHINE_CONFIG_START( galastrm, galastrm_state )
 
 	MCFG_EEPROM_SERIAL_93C46_ADD("eeprom")
 
+<<<<<<< HEAD
+=======
+	MCFG_DEVICE_ADD("tc0510nio", TC0510NIO, 0)
+	MCFG_TC0510NIO_READ_2_CB(IOPORT("IN0"))
+	MCFG_TC0510NIO_READ_3_CB(IOPORT("IN1"))
+	MCFG_TC0510NIO_WRITE_3_CB(DEVWRITELINE("eeprom", eeprom_serial_93cxx_device, clk_write)) MCFG_DEVCB_BIT(5)
+	MCFG_DEVCB_CHAIN_OUTPUT(DEVWRITELINE("eeprom", eeprom_serial_93cxx_device, di_write)) MCFG_DEVCB_BIT(6)
+	MCFG_DEVCB_CHAIN_OUTPUT(DEVWRITELINE("eeprom", eeprom_serial_93cxx_device, cs_write)) MCFG_DEVCB_BIT(4)
+	MCFG_TC0510NIO_WRITE_4_CB(WRITE8(galastrm_state, coin_word_w))
+	MCFG_TC0510NIO_READ_7_CB(IOPORT("IN2"))
+
+>>>>>>> upstream/master
 	/* video hardware */
 	MCFG_SCREEN_ADD("screen", RASTER)
 	MCFG_SCREEN_REFRESH_RATE(60)
@@ -311,10 +407,16 @@ static MACHINE_CONFIG_START( galastrm, galastrm_state )
 	MCFG_TC0480SCP_TX_REGION(3)
 	MCFG_TC0480SCP_OFFSETS(-40, -3)
 	MCFG_TC0480SCP_GFXDECODE("gfxdecode")
+<<<<<<< HEAD
 	MCFG_TC0480SCP_PALETTE("palette")
 
 	/* sound hardware */
 	MCFG_FRAGMENT_ADD(taito_en_sound)
+=======
+
+	/* sound hardware */
+	MCFG_DEVICE_ADD("taito_en", TAITO_EN, 0)
+>>>>>>> upstream/master
 MACHINE_CONFIG_END
 
 /***************************************************************************/
@@ -326,7 +428,11 @@ ROM_START( galastrm )
 	ROM_LOAD32_BYTE( "c99_13.ic103", 0x00002, 0x40000,  CRC(885fcb35) SHA1(be10e109c461c1f776e98efa1b2a4d588aa0c41c) )
 	ROM_LOAD32_BYTE( "c99_14.ic104", 0x00003, 0x40000,  CRC(457ef6b1) SHA1(06c2613d46addacd380a0f2413cd795b17ac9474) )
 
+<<<<<<< HEAD
 	ROM_REGION( 0x180000, "audiocpu", 0 )
+=======
+	ROM_REGION( 0x180000, "taito_en:audiocpu", 0 )
+>>>>>>> upstream/master
 	ROM_LOAD16_BYTE( "c99_23.ic8",  0x100000, 0x20000,  CRC(5718ee92) SHA1(33cfa60c5bceb1525498f27b598067d2dc620431) )
 	ROM_LOAD16_BYTE( "c99_22.ic7",  0x100001, 0x20000,  CRC(b90f7c42) SHA1(e2fa9ee10ad61ae1a672c3357c0072b79ec7fbcb) )
 
@@ -357,4 +463,8 @@ ROM_START( galastrm )
 ROM_END
 
 
+<<<<<<< HEAD
 GAME( 1992, galastrm, 0, galastrm, galastrm, driver_device, 0, ROT0, "Taito Corporation", "Galactic Storm (Japan)", MACHINE_IMPERFECT_GRAPHICS )
+=======
+GAME( 1992, galastrm, 0, galastrm, galastrm, galastrm_state, 0, ROT0, "Taito Corporation", "Galactic Storm (Japan)", MACHINE_IMPERFECT_GRAPHICS )
+>>>>>>> upstream/master

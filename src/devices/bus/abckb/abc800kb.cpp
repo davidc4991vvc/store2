@@ -68,6 +68,10 @@ XR22-050-3B Pinout
 
 */
 
+<<<<<<< HEAD
+=======
+#include "emu.h"
+>>>>>>> upstream/master
 #include "abc800kb.h"
 
 
@@ -84,7 +88,11 @@ XR22-050-3B Pinout
 //  DEVICE DEFINITIONS
 //**************************************************************************
 
+<<<<<<< HEAD
 const device_type ABC800_KEYBOARD = &device_creator<abc800_keyboard_device>;
+=======
+DEFINE_DEVICE_TYPE(ABC800_KEYBOARD, abc800_keyboard_device, "abc800kb", "ABC-800 Keyboard")
+>>>>>>> upstream/master
 
 
 //-------------------------------------------------
@@ -101,13 +109,18 @@ ROM_END
 //  rom_region - device-specific ROM region
 //-------------------------------------------------
 
+<<<<<<< HEAD
 const rom_entry *abc800_keyboard_device::device_rom_region() const
+=======
+const tiny_rom_entry *abc800_keyboard_device::device_rom_region() const
+>>>>>>> upstream/master
 {
 	return ROM_NAME( abc800_keyboard );
 }
 
 
 //-------------------------------------------------
+<<<<<<< HEAD
 //  ADDRESS_MAP( abc800_keyboard_io )
 //-------------------------------------------------
 
@@ -125,10 +138,22 @@ ADDRESS_MAP_END
 static MACHINE_CONFIG_FRAGMENT( abc800_keyboard )
 	MCFG_CPU_ADD(I8048_TAG, I8048, XTAL_5_9904MHz)
 	MCFG_CPU_IO_MAP(abc800_keyboard_io)
+=======
+//  device_add_mconfig - add device configuration
+//-------------------------------------------------
+
+MACHINE_CONFIG_MEMBER( abc800_keyboard_device::device_add_mconfig )
+	MCFG_CPU_ADD(I8048_TAG, I8048, XTAL_5_9904MHz)
+	MCFG_MCS48_PORT_P1_IN_CB(READ8(abc800_keyboard_device, kb_p1_r))
+	MCFG_MCS48_PORT_P1_OUT_CB(WRITE8(abc800_keyboard_device, kb_p1_w))
+	MCFG_MCS48_PORT_P2_OUT_CB(WRITE8(abc800_keyboard_device, kb_p2_w))
+	MCFG_MCS48_PORT_T1_IN_CB(READLINE(abc800_keyboard_device, kb_t1_r))
+>>>>>>> upstream/master
 MACHINE_CONFIG_END
 
 
 //-------------------------------------------------
+<<<<<<< HEAD
 //  machine_config_additions - device-specific
 //  machine configurations
 //-------------------------------------------------
@@ -140,6 +165,8 @@ machine_config_constructor abc800_keyboard_device::device_mconfig_additions() co
 
 
 //-------------------------------------------------
+=======
+>>>>>>> upstream/master
 //  INPUT_PORTS( abc800_keyboard )
 //-------------------------------------------------
 
@@ -332,6 +359,7 @@ inline void abc800_keyboard_device::key_down(int state)
 //  abc800_keyboard_device - constructor
 //-------------------------------------------------
 
+<<<<<<< HEAD
 abc800_keyboard_device::abc800_keyboard_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
 	: device_t(mconfig, ABC800_KEYBOARD, "ABC-800 Keyboard", tag, owner, clock, "abc800kb", __FILE__),
 		abc_keyboard_interface(mconfig, *this),
@@ -353,6 +381,19 @@ abc800_keyboard_device::abc800_keyboard_device(const machine_config &mconfig, co
 		m_clk(0),
 		m_stb(1),
 		m_keydown(1), m_serial_timer(nullptr)
+=======
+abc800_keyboard_device::abc800_keyboard_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock) :
+	device_t(mconfig, ABC800_KEYBOARD, tag, owner, clock),
+	abc_keyboard_interface(mconfig, *this),
+	m_maincpu(*this, I8048_TAG),
+	m_x(*this, "X%u", 0),
+	m_row(0),
+	m_txd(1),
+	m_clk(0),
+	m_stb(1),
+	m_keydown(1),
+	m_serial_timer(nullptr)
+>>>>>>> upstream/master
 {
 }
 
@@ -411,6 +452,7 @@ void abc800_keyboard_device::txd_w(int state)
 
 READ8_MEMBER( abc800_keyboard_device::kb_p1_r )
 {
+<<<<<<< HEAD
 	UINT8 data = 0xff;
 
 	if (m_stb)
@@ -429,6 +471,15 @@ READ8_MEMBER( abc800_keyboard_device::kb_p1_r )
 		case 9: data = m_x9->read(); break;
 		case 10: data = m_x10->read(); break;
 		case 11: data = m_x11->read(); break;
+=======
+	uint8_t data = 0xff;
+
+	if (m_stb)
+	{
+		if (m_row < 12)
+		{
+			data = m_x[m_row]->read();
+>>>>>>> upstream/master
 		}
 	}
 
@@ -501,7 +552,11 @@ WRITE8_MEMBER( abc800_keyboard_device::kb_p2_w )
 //  kb_t1_r - keyboard T1 timer read
 //-------------------------------------------------
 
+<<<<<<< HEAD
 READ8_MEMBER( abc800_keyboard_device::kb_t1_r )
+=======
+READ_LINE_MEMBER( abc800_keyboard_device::kb_t1_r )
+>>>>>>> upstream/master
 {
 	return m_clk;
 }

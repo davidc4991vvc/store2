@@ -7,6 +7,7 @@
 //  SDLMAME by Olivier Galibert and R. Belmont
 //
 //============================================================
+<<<<<<< HEAD
 
 #ifdef SDLMAME_X11
 #include <X11/extensions/Xinerama.h>
@@ -35,11 +36,18 @@
 #endif
 
 #include "sdlinc.h"
+=======
+#include <SDL2/SDL.h>
+>>>>>>> upstream/master
 
 // MAME headers
 #include "emu.h"
 #include "rendutil.h"
+<<<<<<< HEAD
 #include "ui/ui.h"
+=======
+#include "ui/uimain.h"
+>>>>>>> upstream/master
 #include "emuopts.h"
 #include "uiinput.h"
 
@@ -47,7 +55,10 @@
 // MAMEOS headers
 #include "video.h"
 #include "window.h"
+<<<<<<< HEAD
 #include "input.h"
+=======
+>>>>>>> upstream/master
 #include "osdsdl.h"
 #include "modules/lib/osdlib.h"
 
@@ -62,10 +73,13 @@
 
 osd_video_config video_config;
 
+<<<<<<< HEAD
 // monitor info
 osd_monitor_info *osd_monitor_info::list = NULL;
 
 
+=======
+>>>>>>> upstream/master
 //============================================================
 //  LOCAL VARIABLES
 //============================================================
@@ -77,7 +91,10 @@ osd_monitor_info *osd_monitor_info::list = NULL;
 
 static void check_osd_inputs(running_machine &machine);
 
+<<<<<<< HEAD
 static float get_aspect(const char *defdata, const char *data, int report_error);
+=======
+>>>>>>> upstream/master
 static void get_resolution(const char *defdata, const char *data, osd_window_config *config, int report_error);
 
 
@@ -92,9 +109,12 @@ bool sdl_osd_interface::video_init()
 	// extract data from the options
 	extract_video_config();
 
+<<<<<<< HEAD
 	// set up monitors first
 	sdl_monitor_info::init();
 
+=======
+>>>>>>> upstream/master
 	// we need the beam width in a float, contrary to what the core does.
 	video_config.beamwidth = options().beam_width_min();
 
@@ -107,10 +127,17 @@ bool sdl_osd_interface::video_init()
 	{
 		osd_window_config conf;
 		memset(&conf, 0, sizeof(conf));
+<<<<<<< HEAD
 		get_resolution(options().resolution(), options().resolution(index), &conf, TRUE);
 
 		// create window ...
 		sdl_window_info *win = global_alloc(sdl_window_info(machine(), index, sdl_monitor_info::pick_monitor(options(), index), &conf));
+=======
+		get_resolution(options().resolution(), options().resolution(index), &conf, true);
+
+		// create window ...
+		std::shared_ptr<sdl_window_info> win = std::make_shared<sdl_window_info>(machine(), index, m_monitor_module->pick_monitor(reinterpret_cast<osd_options &>(options()), index), &conf);
+>>>>>>> upstream/master
 
 		if (win->window_init())
 			return false;
@@ -119,7 +146,10 @@ bool sdl_osd_interface::video_init()
 	return true;
 }
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> upstream/master
 //============================================================
 //  video_exit
 //============================================================
@@ -127,6 +157,7 @@ bool sdl_osd_interface::video_init()
 void sdl_osd_interface::video_exit()
 {
 	window_exit();
+<<<<<<< HEAD
 	sdl_monitor_info::exit();
 }
 
@@ -295,34 +326,52 @@ float osd_monitor_info::aspect()
 
 
 
+=======
+}
+
+>>>>>>> upstream/master
 //============================================================
 //  update
 //============================================================
 
 void sdl_osd_interface::update(bool skip_redraw)
 {
+<<<<<<< HEAD
 	sdl_window_info *window;
 
 	if (m_watchdog != NULL)
 		m_watchdog->reset();
+=======
+	osd_common_t::update(skip_redraw);
+>>>>>>> upstream/master
 
 	// if we're not skipping this redraw, update all windows
 	if (!skip_redraw)
 	{
 //      profiler_mark(PROFILER_BLIT);
+<<<<<<< HEAD
 		for (window = sdl_window_list; window != NULL; window = window->m_next)
+=======
+		for (auto window : osd_common_t::s_window_list)
+>>>>>>> upstream/master
 			window->update();
 //      profiler_mark(PROFILER_END);
 	}
 
 	// poll the joystick values here
+<<<<<<< HEAD
 	sdlinput_poll(machine());
+=======
+	downcast<sdl_osd_interface&>(machine().osd()).poll_inputs(machine());
+
+>>>>>>> upstream/master
 	check_osd_inputs(machine());
 	// if we're running, disable some parts of the debugger
 	if ((machine().debug_flags & DEBUG_FLAG_OSD_ENABLED) != 0)
 		debugger_update();
 }
 
+<<<<<<< HEAD
 
 //============================================================
 //  add_primary_monitor
@@ -500,12 +549,15 @@ finishit:
 }
 
 
+=======
+>>>>>>> upstream/master
 //============================================================
 //  check_osd_inputs
 //============================================================
 
 static void check_osd_inputs(running_machine &machine)
 {
+<<<<<<< HEAD
 	sdl_window_info *window = sdlinput_get_focus_window();
 
 	// check for toggling fullscreen mode
@@ -537,17 +589,57 @@ static void check_osd_inputs(running_machine &machine)
 	#if (USE_OPENGL || SDLMAME_SDL2)
 		//FIXME: on a per window basis
 		if (ui_input_pressed(machine, IPT_OSD_5))
+=======
+	// check for toggling fullscreen mode
+	if (machine.ui_input().pressed(IPT_OSD_1))
+	{
+		for (auto curwin : osd_common_t::s_window_list)
+			std::static_pointer_cast<sdl_window_info>(curwin)->toggle_full_screen();
+	}
+
+	auto window = osd_common_t::s_window_list.front();
+	if (machine.ui_input().pressed(IPT_OSD_2))
+	{
+		//FIXME: on a per window basis
+		video_config.fullstretch = !video_config.fullstretch;
+		window->target()->set_scale_mode(video_config.fullstretch? SCALE_FRACTIONAL : SCALE_INTEGER);
+		machine.ui().popup_time(1, "Uneven stretch %s", video_config.fullstretch? "enabled":"disabled");
+	}
+
+	if (machine.ui_input().pressed(IPT_OSD_4))
+	{
+		//FIXME: on a per window basis
+		video_config.keepaspect = !video_config.keepaspect;
+		window->target()->set_keepaspect(video_config.keepaspect);
+		machine.ui().popup_time(1, "Keepaspect %s", video_config.keepaspect? "enabled":"disabled");
+	}
+
+	#if (USE_OPENGL)
+		//FIXME: on a per window basis
+		if (machine.ui_input().pressed(IPT_OSD_5))
+>>>>>>> upstream/master
 		{
 			video_config.filter = !video_config.filter;
 			machine.ui().popup_time(1, "Filter %s", video_config.filter? "enabled":"disabled");
 		}
 	#endif
 
+<<<<<<< HEAD
 	if (ui_input_pressed(machine, IPT_OSD_6))
 		window->modify_prescale(-1);
 
 	if (ui_input_pressed(machine, IPT_OSD_7))
 		window->modify_prescale(1);
+=======
+	if (machine.ui_input().pressed(IPT_OSD_6))
+		std::static_pointer_cast<sdl_window_info>(window)->modify_prescale(-1);
+
+	if (machine.ui_input().pressed(IPT_OSD_7))
+		std::static_pointer_cast<sdl_window_info>(window)->modify_prescale(1);
+
+	if (machine.ui_input().pressed(IPT_OSD_8))
+		window->renderer().record();
+>>>>>>> upstream/master
 }
 
 //============================================================
@@ -573,7 +665,11 @@ void sdl_osd_interface::extract_video_config()
 
 	// if we are in debug mode, never go full screen
 	if (machine().debug_flags & DEBUG_FLAG_OSD_ENABLED)
+<<<<<<< HEAD
 		video_config.windowed = TRUE;
+=======
+		video_config.windowed = true;
+>>>>>>> upstream/master
 
 	// default to working video please
 	video_config.novideo = 0;
@@ -584,6 +680,11 @@ void sdl_osd_interface::extract_video_config()
 	{
 #if (defined SDLMAME_MACOSX || defined SDLMAME_WIN32)
 		stemp = "opengl";
+<<<<<<< HEAD
+=======
+#elif (defined __STEAMLINK__)
+		stemp = "bgfx";
+>>>>>>> upstream/master
 #else
 		stemp = "soft";
 #endif
@@ -595,6 +696,7 @@ void sdl_osd_interface::extract_video_config()
 		video_config.mode = VIDEO_MODE_SOFT;
 		video_config.novideo = 1;
 
+<<<<<<< HEAD
 		if (options().seconds_to_run() == 0)
 			osd_printf_warning("Warning: -video none doesn't make much sense without -seconds_to_run\n");
 	}
@@ -605,11 +707,27 @@ void sdl_osd_interface::extract_video_config()
 		video_config.mode = VIDEO_MODE_SDL2ACCEL;
 	}
 #ifdef USE_BGFX
+=======
+		if (!emulator_info::standalone() && options().seconds_to_run() == 0)
+			osd_printf_warning("Warning: -video none doesn't make much sense without -seconds_to_run\n");
+	}
+#if (USE_OPENGL)
+	else if (strcmp(stemp, SDLOPTVAL_OPENGL) == 0)
+		video_config.mode = VIDEO_MODE_OPENGL;
+#endif
+	else if ((strcmp(stemp, SDLOPTVAL_SDL2ACCEL) == 0))
+	{
+		video_config.mode = VIDEO_MODE_SDL2ACCEL;
+	}
+>>>>>>> upstream/master
 	else if (strcmp(stemp, SDLOPTVAL_BGFX) == 0)
 	{
 		video_config.mode = VIDEO_MODE_BGFX;
 	}
+<<<<<<< HEAD
 #endif
+=======
+>>>>>>> upstream/master
 	else
 	{
 		osd_printf_warning("Invalid video value %s; reverting to software\n", stemp);
@@ -623,7 +741,11 @@ void sdl_osd_interface::extract_video_config()
 	video_config.syncrefresh   = options().sync_refresh();
 	if (!video_config.waitvsync && video_config.syncrefresh)
 	{
+<<<<<<< HEAD
 		osd_printf_warning("-syncrefresh specified without -waitsync. Reverting to -nosyncrefresh\n");
+=======
+		osd_printf_warning("-syncrefresh specified without -waitvsync. Reverting to -nosyncrefresh\n");
+>>>>>>> upstream/master
 		video_config.syncrefresh = 0;
 	}
 
@@ -656,7 +778,11 @@ void sdl_osd_interface::extract_video_config()
 					strcpy(video_config.glsl_shader_mamebm[i], stemp);
 					video_config.glsl_shader_mamebm_num++;
 				} else {
+<<<<<<< HEAD
 					video_config.glsl_shader_mamebm[i] = NULL;
+=======
+					video_config.glsl_shader_mamebm[i] = nullptr;
+>>>>>>> upstream/master
 				}
 			}
 
@@ -671,7 +797,11 @@ void sdl_osd_interface::extract_video_config()
 					strcpy(video_config.glsl_shader_scrn[i], stemp);
 					video_config.glsl_shader_scrn_num++;
 				} else {
+<<<<<<< HEAD
 					video_config.glsl_shader_scrn[i] = NULL;
+=======
+					video_config.glsl_shader_scrn[i] = nullptr;
+>>>>>>> upstream/master
 				}
 			}
 		} else {
@@ -680,12 +810,20 @@ void sdl_osd_interface::extract_video_config()
 			video_config.glsl_shader_mamebm_num=0;
 			for(i=0; i<GLSL_SHADER_MAX; i++)
 			{
+<<<<<<< HEAD
 				video_config.glsl_shader_mamebm[i] = NULL;
+=======
+				video_config.glsl_shader_mamebm[i] = nullptr;
+>>>>>>> upstream/master
 			}
 			video_config.glsl_shader_scrn_num=0;
 			for(i=0; i<GLSL_SHADER_MAX; i++)
 			{
+<<<<<<< HEAD
 				video_config.glsl_shader_scrn[i] = NULL;
+=======
+				video_config.glsl_shader_scrn[i] = nullptr;
+>>>>>>> upstream/master
 			}
 		}
 
@@ -693,6 +831,7 @@ void sdl_osd_interface::extract_video_config()
 	// misc options: sanity check values
 
 	// global options: sanity check values
+<<<<<<< HEAD
 #if (!SDLMAME_SDL2)
 	if (video_config.numscreens < 1 || video_config.numscreens > 1) //MAX_VIDEO_WINDOWS)
 	{
@@ -700,12 +839,17 @@ void sdl_osd_interface::extract_video_config()
 		video_config.numscreens = 1;
 	}
 #else
+=======
+>>>>>>> upstream/master
 	if (video_config.numscreens < 1 || video_config.numscreens > MAX_VIDEO_WINDOWS)
 	{
 		osd_printf_warning("Invalid numscreens value %d; reverting to 1\n", video_config.numscreens);
 		video_config.numscreens = 1;
 	}
+<<<<<<< HEAD
 #endif
+=======
+>>>>>>> upstream/master
 	// yuv settings ...
 	stemp = options().scale_mode();
 	video_config.scale_mode = drawsdl_scale_mode(stemp);
@@ -723,6 +867,7 @@ void sdl_osd_interface::extract_video_config()
 
 
 //============================================================
+<<<<<<< HEAD
 //  get_aspect
 //============================================================
 
@@ -743,6 +888,8 @@ static float get_aspect(const char *defdata, const char *data, int report_error)
 
 
 //============================================================
+=======
+>>>>>>> upstream/master
 //  get_resolution
 //============================================================
 

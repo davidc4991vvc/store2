@@ -13,9 +13,15 @@
 
 
 #include "emu.h"
+<<<<<<< HEAD
 #include "sound/samples.h"
 #include "includes/snk6502.h"
 #include "sound/discrete.h"
+=======
+#include "audio/snk6502.h"
+
+#include "sound/sn76477.h"
+>>>>>>> upstream/master
 
 
 #ifndef M_LN2
@@ -39,7 +45,11 @@ const char *const sasuke_sample_names[] =
 	"shot",
 	"boss_attack",
 
+<<<<<<< HEAD
 	0
+=======
+	nullptr
+>>>>>>> upstream/master
 };
 
 const char *const vanguard_sample_names[] =
@@ -68,7 +78,11 @@ const char *const vanguard_sample_names[] =
 	"vg_voi-e",
 	"vg_voi-f",
 
+<<<<<<< HEAD
 	0
+=======
+	nullptr
+>>>>>>> upstream/master
 };
 
 
@@ -90,7 +104,11 @@ const char *const fantasy_sample_names[] =
 	"ft_voi-a",
 	"ft_voi-b",
 
+<<<<<<< HEAD
 	0
+=======
+	nullptr
+>>>>>>> upstream/master
 };
 
 
@@ -128,17 +146,30 @@ DISCRETE_SOUND_START( fantasy )
 DISCRETE_SOUND_END
 
 
+<<<<<<< HEAD
 const device_type SNK6502 = &device_creator<snk6502_sound_device>;
 
 snk6502_sound_device::snk6502_sound_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
 	: device_t(mconfig, SNK6502, "SNK6502 Audio Custom", tag, owner, clock, "snk6502_sound", __FILE__),
+=======
+DEFINE_DEVICE_TYPE(SNK6502, snk6502_sound_device, "snk6502_sound", "SNK6502 Audio Custom")
+
+snk6502_sound_device::snk6502_sound_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: device_t(mconfig, SNK6502, tag, owner, clock),
+>>>>>>> upstream/master
 		device_sound_interface(mconfig, *this),
 		//m_tone_channels[CHANNELS],
 		m_tone_clock_expire(0),
 		m_tone_clock(0),
+<<<<<<< HEAD
 		m_tone_stream(NULL),
 		m_samples(*this, ":samples"),
 		m_ROM(NULL),
+=======
+		m_tone_stream(nullptr),
+		m_samples(*this, ":samples"),
+		m_ROM(nullptr),
+>>>>>>> upstream/master
 		m_Sound0StopOnRollover(0),
 		m_LastPort1(0),
 		m_hd38880_cmd(0),
@@ -189,7 +220,11 @@ inline void snk6502_sound_device::validate_tone_channel(int channel)
 {
 	if (!m_tone_channels[channel].mute)
 	{
+<<<<<<< HEAD
 		UINT8 romdata = m_ROM[m_tone_channels[channel].base + m_tone_channels[channel].offset];
+=======
+		uint8_t romdata = m_ROM[m_tone_channels[channel].base + m_tone_channels[channel].offset];
+>>>>>>> upstream/master
 
 		if (romdata != 0xff)
 			m_tone_channels[channel].sample_step = m_tone_channels[channel].sample_rate / (256 - romdata);
@@ -711,8 +746,11 @@ WRITE8_MEMBER( snk6502_sound_device::fantasy_sound_w )
 		/* select tune in ROM based on sound command byte */
 		m_tone_channels[2].base = 0x1000 + ((data & 0x70) << 4);
 		m_tone_channels[2].mask = 0xff;
+<<<<<<< HEAD
 		snk6502_state *drvstate = space.machine().driver_data<snk6502_state>();
 		drvstate->flipscreen_w(space, 0, data);
+=======
+>>>>>>> upstream/master
 		break;
 	}
 }
@@ -743,7 +781,11 @@ WRITE8_MEMBER( snk6502_sound_device::fantasy_sound_w )
 #define HD68880_SYBS    0x0f
 
 
+<<<<<<< HEAD
 void snk6502_sound_device::speech_w(UINT8 data, const UINT16 *table, int start)
+=======
+void snk6502_sound_device::speech_w(uint8_t data, const uint16_t *table, int start)
+>>>>>>> upstream/master
 {
 	/*
 	    bit description
@@ -886,7 +928,11 @@ void snk6502_sound_device::speech_w(UINT8 data, const UINT16 *table, int start)
 
 WRITE8_MEMBER( snk6502_sound_device::vanguard_speech_w )
 {
+<<<<<<< HEAD
 	static const UINT16 vanguard_table[16] =
+=======
+	static const uint16_t vanguard_table[16] =
+>>>>>>> upstream/master
 	{
 		0x04000,
 		0x04325,
@@ -911,7 +957,11 @@ WRITE8_MEMBER( snk6502_sound_device::vanguard_speech_w )
 
 WRITE8_MEMBER( snk6502_sound_device::fantasy_speech_w )
 {
+<<<<<<< HEAD
 	static const UINT16 fantasy_table[16] =
+=======
+	static const uint16_t fantasy_table[16] =
+>>>>>>> upstream/master
 	{
 		0x04000,
 		0x04297,
@@ -949,12 +999,20 @@ void snk6502_sound_device::sound_stream_update(sound_stream &stream, stream_samp
 
 	while (samples-- > 0)
 	{
+<<<<<<< HEAD
 		INT32 data = 0;
+=======
+		int32_t data = 0;
+>>>>>>> upstream/master
 
 		for (i = 0; i < CHANNELS; i++)
 		{
 			TONE *voice = &m_tone_channels[i];
+<<<<<<< HEAD
 			INT16 *form = voice->form;
+=======
+			int16_t *form = voice->form;
+>>>>>>> upstream/master
 
 			if (!voice->mute && voice->sample_step)
 			{
@@ -963,8 +1021,13 @@ void snk6502_sound_device::sound_stream_update(sound_stream &stream, stream_samp
 				int cur = form[(cur_pos >> FRAC_BITS) & 15];
 
 				/* interpolate */
+<<<<<<< HEAD
 				data += ((INT32)prev * (FRAC_ONE - (cur_pos & FRAC_MASK))
 						+ (INT32)cur * (cur_pos & FRAC_MASK)) >> FRAC_BITS;
+=======
+				data += ((int32_t)prev * (FRAC_ONE - (cur_pos & FRAC_MASK))
+						+ (int32_t)cur * (cur_pos & FRAC_MASK)) >> FRAC_BITS;
+>>>>>>> upstream/master
 
 				voice->sample_cur = cur_pos;
 			}

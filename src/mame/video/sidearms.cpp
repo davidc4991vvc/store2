@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 // license:???
+=======
+// license:BSD-3-Clause
+>>>>>>> upstream/master
 // copyright-holders:Paul Leaman, Curt Coder
 /***************************************************************************
 
@@ -26,12 +30,18 @@ WRITE8_MEMBER(sidearms_state::colorram_w)
 WRITE8_MEMBER(sidearms_state::c804_w)
 {
 	/* bits 0 and 1 are coin counters */
+<<<<<<< HEAD
 	coin_counter_w(machine(), 0, data & 0x01);
 	coin_counter_w(machine(), 1, data & 0x02);
+=======
+	machine().bookkeeping().coin_counter_w(0, data & 0x01);
+	machine().bookkeeping().coin_counter_w(1, data & 0x02);
+>>>>>>> upstream/master
 
 	/* bit 2 and 3 lock the coin chutes */
 	if (!m_gameid || m_gameid==3)
 	{
+<<<<<<< HEAD
 		coin_lockout_w(machine(), 0, !(data & 0x04));
 		coin_lockout_w(machine(), 1, !(data & 0x08));
 	}
@@ -39,6 +49,15 @@ WRITE8_MEMBER(sidearms_state::c804_w)
 	{
 		coin_lockout_w(machine(), 0, data & 0x04);
 		coin_lockout_w(machine(), 1, data & 0x08);
+=======
+		machine().bookkeeping().coin_lockout_w(0, !(data & 0x04));
+		machine().bookkeeping().coin_lockout_w(1, !(data & 0x08));
+	}
+	else
+	{
+		machine().bookkeeping().coin_lockout_w(0, data & 0x04);
+		machine().bookkeeping().coin_lockout_w(1, data & 0x08);
+>>>>>>> upstream/master
 	}
 
 	/* bit 4 resets the sound CPU */
@@ -75,7 +94,11 @@ WRITE8_MEMBER(sidearms_state::gfxctrl_w)
 
 WRITE8_MEMBER(sidearms_state::star_scrollx_w)
 {
+<<<<<<< HEAD
 	UINT32 last_state = m_hcount_191;
+=======
+	uint32_t last_state = m_hcount_191;
+>>>>>>> upstream/master
 
 	m_hcount_191++;
 	m_hcount_191 &= 0x1ff;
@@ -142,17 +165,28 @@ void sidearms_state::video_start()
 
 	if (!m_gameid)
 	{
+<<<<<<< HEAD
 		m_bg_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(sidearms_state::get_sidearms_bg_tile_info),this), tilemap_mapper_delegate(FUNC(sidearms_state::tilemap_scan),this),
+=======
+		m_bg_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(sidearms_state::get_sidearms_bg_tile_info),this), tilemap_mapper_delegate(FUNC(sidearms_state::tilemap_scan),this),
+>>>>>>> upstream/master
 				32, 32, 128, 128);
 
 		m_bg_tilemap->set_transparent_pen(15);
 	}
 	else
 	{
+<<<<<<< HEAD
 		m_bg_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(sidearms_state::get_philko_bg_tile_info),this), tilemap_mapper_delegate(FUNC(sidearms_state::tilemap_scan),this), 32, 32, 128, 128);
 	}
 
 	m_fg_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(sidearms_state::get_fg_tile_info),this), TILEMAP_SCAN_ROWS,
+=======
+		m_bg_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(sidearms_state::get_philko_bg_tile_info),this), tilemap_mapper_delegate(FUNC(sidearms_state::tilemap_scan),this), 32, 32, 128, 128);
+	}
+
+	m_fg_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(sidearms_state::get_fg_tile_info),this), TILEMAP_SCAN_ROWS,
+>>>>>>> upstream/master
 			8, 8, 64, 64);
 
 	m_fg_tilemap->set_transparent_pen(3);
@@ -175,7 +209,11 @@ void sidearms_state::video_start()
 
 void sidearms_state::draw_sprites_region(bitmap_ind16 &bitmap, const rectangle &cliprect, int start_offset, int end_offset )
 {
+<<<<<<< HEAD
 	UINT8 *buffered_spriteram = m_spriteram->buffer();
+=======
+	uint8_t *buffered_spriteram = m_spriteram->buffer();
+>>>>>>> upstream/master
 	gfx_element *gfx = m_gfxdecode->gfx(2);
 	int offs, attr, color, code, x, y, flipx, flipy;
 
@@ -208,9 +246,15 @@ void sidearms_state::draw_sprites_region(bitmap_ind16 &bitmap, const rectangle &
 void sidearms_state::draw_starfield( bitmap_ind16 &bitmap )
 {
 	int x, y, i;
+<<<<<<< HEAD
 	UINT32 hadd_283, vadd_283, _hflop_74a_n, _hcount_191, _vcount_191;
 	UINT8 *sf_rom;
 	UINT16 *lineptr;
+=======
+	uint32_t hadd_283, vadd_283, _hflop_74a_n, _hcount_191, _vcount_191;
+	uint8_t *sf_rom;
+	uint16_t *lineptr;
+>>>>>>> upstream/master
 	int pixadv, lineadv;
 
 	// clear starfield background
@@ -270,7 +314,11 @@ void sidearms_state::draw_starfield( bitmap_ind16 &bitmap )
 
 			if ((~((latch_374^hadd_283)^1) & 0x1f)) continue; // logic rejection 3
 
+<<<<<<< HEAD
 			*lineptr = (UINT16)(latch_374>>5 | 0x378); // to color mixer
+=======
+			*lineptr = (uint16_t)(latch_374>>5 | 0x378); // to color mixer
+>>>>>>> upstream/master
 		}
 		lineptr += lineadv;
 	}
@@ -321,7 +369,11 @@ void sidearms_state::draw_starfield( bitmap_ind16 &bitmap )
 
 			if ((~((m_latch_374^hadd_283)^1) & 0x1f)) continue; // logic rejection 3
 
+<<<<<<< HEAD
 			*lineptr = (UINT16)(m_latch_374>>5 | 0x378); // to color mixer
+=======
+			*lineptr = (uint16_t)(m_latch_374>>5 | 0x378); // to color mixer
+>>>>>>> upstream/master
 		}
 		lineptr += lineadv;
 	}
@@ -341,7 +393,11 @@ void sidearms_state::draw_sprites(bitmap_ind16 &bitmap, const rectangle &cliprec
 	}
 }
 
+<<<<<<< HEAD
 UINT32 sidearms_state::screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+=======
+uint32_t sidearms_state::screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+>>>>>>> upstream/master
 {
 	draw_starfield(bitmap);
 

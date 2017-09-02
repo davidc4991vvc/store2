@@ -51,9 +51,16 @@
 
 */
 
+<<<<<<< HEAD
 #include "e01.h"
 #include "bus/scsi/scsihd.h"
 
+=======
+#include "emu.h"
+#include "e01.h"
+#include "bus/scsi/scsihd.h"
+#include "softlist.h"
+>>>>>>> upstream/master
 
 
 //**************************************************************************
@@ -74,11 +81,21 @@
 //  DEVICE DEFINITIONS
 //**************************************************************************
 
+<<<<<<< HEAD
 const device_type E01 = &device_creator<e01_device>;
 const device_type E01S = &device_creator<e01s_device>;
 
 e01s_device::e01s_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
 	:e01_device(mconfig, E01S, "Acorn FileStore E01S", tag, owner, clock, "e01s", __FILE__) { m_variant = TYPE_E01S; }
+=======
+DEFINE_DEVICE_TYPE(ECONET_E01,  econet_e01_device,  "econet_e01",  "Acorn FileStore E01")
+DEFINE_DEVICE_TYPE(ECONET_E01S, econet_e01s_device, "econet_e01s", "Acorn FileStore E01S")
+
+econet_e01s_device::econet_e01s_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: econet_e01_device(mconfig, ECONET_E01S, tag, owner, clock, TYPE_E01S)
+{
+}
+>>>>>>> upstream/master
 
 
 //-------------------------------------------------
@@ -112,7 +129,11 @@ ROM_END
 //  rom_region - device-specific ROM region
 //-------------------------------------------------
 
+<<<<<<< HEAD
 const rom_entry *e01_device::device_rom_region() const
+=======
+const tiny_rom_entry *econet_e01_device::device_rom_region() const
+>>>>>>> upstream/master
 {
 	switch (m_variant)
 	{
@@ -130,7 +151,11 @@ const rom_entry *e01_device::device_rom_region() const
 //  MC146818_INTERFACE( rtc_intf )
 //-------------------------------------------------
 
+<<<<<<< HEAD
 WRITE_LINE_MEMBER( e01_device::rtc_irq_w )
+=======
+WRITE_LINE_MEMBER(econet_e01_device::rtc_irq_w)
+>>>>>>> upstream/master
 {
 	m_rtc_irq = state;
 
@@ -142,49 +167,84 @@ WRITE_LINE_MEMBER( e01_device::rtc_irq_w )
 //  mc6854_interface adlc_intf
 //-------------------------------------------------
 
+<<<<<<< HEAD
 WRITE_LINE_MEMBER( e01_device::adlc_irq_w )
+=======
+WRITE_LINE_MEMBER( econet_e01_device::adlc_irq_w )
+>>>>>>> upstream/master
 {
 	m_adlc_irq = state;
 
 	update_interrupts();
 }
 
+<<<<<<< HEAD
 WRITE_LINE_MEMBER( e01_device::econet_data_w )
+=======
+WRITE_LINE_MEMBER( econet_e01_device::econet_data_w )
+>>>>>>> upstream/master
 {
 	m_econet->data_w(this, state);
 }
 
+<<<<<<< HEAD
 WRITE_LINE_MEMBER( e01_device::via_irq_w )
+=======
+WRITE_LINE_MEMBER(econet_e01_device::via_irq_w)
+>>>>>>> upstream/master
 {
 	m_via_irq = state;
 
 	update_interrupts();
 }
 
+<<<<<<< HEAD
 WRITE_LINE_MEMBER( e01_device::clk_en_w )
+=======
+WRITE_LINE_MEMBER( econet_e01_device::clk_en_w )
+>>>>>>> upstream/master
 {
 	m_clk_en = state;
 }
 
+<<<<<<< HEAD
+=======
+FLOPPY_FORMATS_MEMBER( econet_e01_device::floppy_formats_afs )
+	FLOPPY_AFS_FORMAT
+FLOPPY_FORMATS_END0
+
+>>>>>>> upstream/master
 static SLOT_INTERFACE_START( e01_floppies )
 	SLOT_INTERFACE( "35dd", FLOPPY_35_DD ) // NEC FD1036 A
 SLOT_INTERFACE_END
 
+<<<<<<< HEAD
 WRITE_LINE_MEMBER( e01_device::fdc_irq_w )
+=======
+WRITE_LINE_MEMBER( econet_e01_device::fdc_irq_w )
+>>>>>>> upstream/master
 {
 	m_fdc_irq = state;
 
 	update_interrupts();
 }
 
+<<<<<<< HEAD
 WRITE_LINE_MEMBER( e01_device::fdc_drq_w )
+=======
+WRITE_LINE_MEMBER( econet_e01_device::fdc_drq_w )
+>>>>>>> upstream/master
 {
 	m_fdc_drq = state;
 
 	update_interrupts();
 }
 
+<<<<<<< HEAD
 WRITE_LINE_MEMBER( e01_device::scsi_bsy_w )
+=======
+WRITE_LINE_MEMBER( econet_e01_device::scsi_bsy_w )
+>>>>>>> upstream/master
 {
 	m_scsi_ctrl_in->write_bit1(state);
 
@@ -194,7 +254,11 @@ WRITE_LINE_MEMBER( e01_device::scsi_bsy_w )
 	}
 }
 
+<<<<<<< HEAD
 WRITE_LINE_MEMBER( e01_device::scsi_req_w )
+=======
+WRITE_LINE_MEMBER( econet_e01_device::scsi_req_w )
+>>>>>>> upstream/master
 {
 	m_scsi_ctrl_in->write_bit5(state);
 
@@ -212,12 +276,20 @@ WRITE_LINE_MEMBER( e01_device::scsi_req_w )
 //  ADDRESS_MAP( e01_mem )
 //-------------------------------------------------
 
+<<<<<<< HEAD
 static ADDRESS_MAP_START( e01_mem, AS_PROGRAM, 8, e01_device )
+=======
+static ADDRESS_MAP_START( e01_mem, AS_PROGRAM, 8, econet_e01_device )
+>>>>>>> upstream/master
 	AM_RANGE(0x0000, 0xffff) AM_READWRITE(read, write)
 	AM_RANGE(0xfc00, 0xfc00) AM_MIRROR(0x00c3) AM_READWRITE(rtc_address_r, rtc_address_w)
 	AM_RANGE(0xfc04, 0xfc04) AM_MIRROR(0x00c3) AM_READWRITE(rtc_data_r, rtc_data_w)
 	AM_RANGE(0xfc08, 0xfc08) AM_MIRROR(0x00c0) AM_READ(ram_select_r) AM_WRITE(floppy_w)
+<<<<<<< HEAD
 	AM_RANGE(0xfc0c, 0xfc0f) AM_MIRROR(0x00c0) AM_DEVREADWRITE(WD2793_TAG, wd2793_t, read, write)
+=======
+	AM_RANGE(0xfc0c, 0xfc0f) AM_MIRROR(0x00c0) AM_DEVREADWRITE(WD2793_TAG, wd2793_device, read, write)
+>>>>>>> upstream/master
 	AM_RANGE(0xfc10, 0xfc1f) AM_MIRROR(0x00c0) AM_DEVREADWRITE(R6522_TAG, via6522_device, read, write)
 	AM_RANGE(0xfc20, 0xfc23) AM_MIRROR(0x00c0) AM_DEVREADWRITE(MC6854_TAG, mc6854_device, read, write)
 	AM_RANGE(0xfc24, 0xfc24) AM_MIRROR(0x00c3) AM_READWRITE(network_irq_disable_r, network_irq_disable_w)
@@ -231,15 +303,23 @@ ADDRESS_MAP_END
 
 
 //-------------------------------------------------
+<<<<<<< HEAD
 //  MACHINE_DRIVER( e01 )
 //-------------------------------------------------
 
 static MACHINE_CONFIG_FRAGMENT( e01 )
+=======
+//  device_add_mconfig - add device configuration
+//-------------------------------------------------
+
+MACHINE_CONFIG_MEMBER( econet_e01_device::device_add_mconfig )
+>>>>>>> upstream/master
 	// basic machine hardware
 	MCFG_CPU_ADD(R65C102_TAG, M65C02, XTAL_8MHz/4) // Rockwell R65C102P3
 	MCFG_CPU_PROGRAM_MAP(e01_mem)
 
 	MCFG_MC146818_ADD(HD146818_TAG, XTAL_32_768kHz)
+<<<<<<< HEAD
 	MCFG_MC146818_IRQ_HANDLER(WRITELINE(e01_device, rtc_irq_w))
 
 	// devices
@@ -255,6 +335,24 @@ static MACHINE_CONFIG_FRAGMENT( e01 )
 	MCFG_WD_FDC_DRQ_CALLBACK(WRITELINE(e01_device, fdc_drq_w))
 	MCFG_FLOPPY_DRIVE_ADD(WD2793_TAG":0", e01_floppies, "35dd", floppy_image_device::default_floppy_formats)
 	MCFG_FLOPPY_DRIVE_ADD(WD2793_TAG":1", e01_floppies, "35dd", floppy_image_device::default_floppy_formats)
+=======
+	MCFG_MC146818_IRQ_HANDLER(WRITELINE(econet_e01_device, rtc_irq_w))
+
+	// devices
+	MCFG_DEVICE_ADD(R6522_TAG, VIA6522, XTAL_8MHz / 4)
+	MCFG_VIA6522_WRITEPA_HANDLER(DEVWRITE8("cent_data_out", output_latch_device, write))
+	MCFG_VIA6522_IRQ_HANDLER(WRITELINE(econet_e01_device, via_irq_w))
+
+	MCFG_DEVICE_ADD(MC6854_TAG, MC6854, 0)
+	MCFG_MC6854_OUT_IRQ_CB(WRITELINE(econet_e01_device, adlc_irq_w))
+	MCFG_MC6854_OUT_TXD_CB(WRITELINE(econet_e01_device, econet_data_w))
+	MCFG_WD2793_ADD(WD2793_TAG, XTAL_8MHz/4)
+	MCFG_WD_FDC_INTRQ_CALLBACK(WRITELINE(econet_e01_device, fdc_irq_w))
+	MCFG_WD_FDC_DRQ_CALLBACK(WRITELINE(econet_e01_device, fdc_drq_w))
+	MCFG_FLOPPY_DRIVE_ADD(WD2793_TAG":0", e01_floppies, "35dd", floppy_formats_afs)
+	MCFG_FLOPPY_DRIVE_ADD(WD2793_TAG":1", e01_floppies, "35dd", floppy_formats_afs)
+	MCFG_SOFTWARE_LIST_ADD("flop_ls_e01", "e01_flop")
+>>>>>>> upstream/master
 
 	MCFG_CENTRONICS_ADD(CENTRONICS_TAG, centronics_devices, "printer")
 	MCFG_CENTRONICS_ACK_HANDLER(DEVWRITELINE(R6522_TAG, via6522_device, write_ca1))
@@ -264,11 +362,19 @@ static MACHINE_CONFIG_FRAGMENT( e01 )
 	MCFG_DEVICE_ADD(SCSIBUS_TAG, SCSI_PORT, 0)
 	MCFG_SCSI_DATA_INPUT_BUFFER("scsi_data_in")
 	MCFG_SCSI_MSG_HANDLER(DEVWRITELINE("scsi_ctrl_in", input_buffer_device, write_bit0))
+<<<<<<< HEAD
 	MCFG_SCSI_BSY_HANDLER(WRITELINE(e01_device, scsi_bsy_w)) // bit1
 	// bit 2 0
 	// bit 3 0
 	// bit 4 NIRQ
 	MCFG_SCSI_REQ_HANDLER(WRITELINE(e01_device, scsi_req_w)) // bit5
+=======
+	MCFG_SCSI_BSY_HANDLER(WRITELINE(econet_e01_device, scsi_bsy_w)) // bit1
+	// bit 2 0
+	// bit 3 0
+	// bit 4 NIRQ
+	MCFG_SCSI_REQ_HANDLER(WRITELINE(econet_e01_device, scsi_req_w)) // bit5
+>>>>>>> upstream/master
 	MCFG_SCSI_IO_HANDLER(DEVWRITELINE("scsi_ctrl_in", input_buffer_device, write_bit6))
 	MCFG_SCSI_CD_HANDLER(DEVWRITELINE("scsi_ctrl_in", input_buffer_device, write_bit7))
 	MCFG_SCSIDEV_ADD(SCSIBUS_TAG ":" SCSI_PORT_DEVICE1, "harddisk", SCSIHD, SCSI_ID_0)
@@ -284,6 +390,7 @@ MACHINE_CONFIG_END
 
 
 //-------------------------------------------------
+<<<<<<< HEAD
 //  machine_config_additions - device-specific
 //  machine configurations
 //-------------------------------------------------
@@ -295,6 +402,8 @@ machine_config_constructor e01_device::device_mconfig_additions() const
 
 
 //-------------------------------------------------
+=======
+>>>>>>> upstream/master
 //  INPUT_PORTS( e01 )
 //-------------------------------------------------
 
@@ -314,7 +423,11 @@ INPUT_PORTS_END
 //  input_ports - device-specific input ports
 //-------------------------------------------------
 
+<<<<<<< HEAD
 ioport_constructor e01_device::device_input_ports() const
+=======
+ioport_constructor econet_e01_device::device_input_ports() const
+>>>>>>> upstream/master
 {
 	return INPUT_PORTS_NAME( e01 );
 }
@@ -329,13 +442,22 @@ ioport_constructor e01_device::device_input_ports() const
 //  update_interrupts - update interrupt state
 //-------------------------------------------------
 
+<<<<<<< HEAD
 inline void e01_device::update_interrupts()
+=======
+inline void econet_e01_device::update_interrupts()
+>>>>>>> upstream/master
 {
 	int irq = (m_via_irq || (m_hdc_ie & m_hdc_irq) || m_rtc_irq) ? ASSERT_LINE : CLEAR_LINE;
 	int nmi = (m_fdc_irq || m_fdc_drq || (m_adlc_ie & m_adlc_irq)) ? ASSERT_LINE : CLEAR_LINE;
 
+<<<<<<< HEAD
 	m_maincpu->set_input_line(INPUT_LINE_IRQ0, irq);
 	m_maincpu->set_input_line(INPUT_LINE_NMI, nmi);
+=======
+	m_maincpu->set_input_line(M6502_IRQ_LINE, irq);
+	m_maincpu->set_input_line(M6502_NMI_LINE, nmi);
+>>>>>>> upstream/master
 }
 
 
@@ -343,7 +465,11 @@ inline void e01_device::update_interrupts()
 //   network_irq_enable - network interrupt enable
 //-------------------------------------------------
 
+<<<<<<< HEAD
 inline void e01_device::network_irq_enable(int enabled)
+=======
+inline void econet_e01_device::network_irq_enable(int enabled)
+>>>>>>> upstream/master
 {
 	m_adlc_ie = enabled;
 
@@ -355,7 +481,11 @@ inline void e01_device::network_irq_enable(int enabled)
 //   hdc_irq_enable - hard disk interrupt enable
 //-------------------------------------------------
 
+<<<<<<< HEAD
 inline void e01_device::hdc_irq_enable(int enabled)
+=======
+inline void econet_e01_device::hdc_irq_enable(int enabled)
+>>>>>>> upstream/master
 {
 	m_hdc_ie = enabled;
 
@@ -369,6 +499,7 @@ inline void e01_device::hdc_irq_enable(int enabled)
 //**************************************************************************
 
 //-------------------------------------------------
+<<<<<<< HEAD
 //  e01_device - constructor
 //-------------------------------------------------
 
@@ -428,6 +559,45 @@ e01_device::e01_device(const machine_config &mconfig, device_type type, const ch
 		m_adlc_irq(CLEAR_LINE),
 		m_clk_en(0), m_ram_en(false),
 		m_variant(TYPE_E01), m_clk_timer(nullptr)
+=======
+//  econet_e01_device - constructor
+//-------------------------------------------------
+
+econet_e01_device::econet_e01_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: econet_e01_device(mconfig, ECONET_E01, tag, owner, clock, TYPE_E01)
+{
+}
+
+
+econet_e01_device::econet_e01_device(const machine_config &mconfig, device_type type, const char *tag, device_t *owner, uint32_t clock, int variant)
+	: device_t(mconfig, type, tag, owner, clock)
+	, device_econet_interface(mconfig, *this)
+	, m_maincpu(*this, R65C102_TAG)
+	, m_fdc(*this, WD2793_TAG)
+	, m_adlc(*this, MC6854_TAG)
+	, m_rtc(*this, HD146818_TAG)
+	, m_ram(*this, RAM_TAG)
+	, m_scsibus(*this, SCSIBUS_TAG)
+	, m_scsi_data_out(*this, "scsi_data_out")
+	, m_scsi_data_in(*this, "scsi_data_in")
+	, m_scsi_ctrl_in(*this, "scsi_ctrl_in")
+	, m_floppy0(*this, WD2793_TAG":0")
+	, m_floppy1(*this, WD2793_TAG":1")
+	, m_rom(*this, R65C102_TAG)
+	, m_centronics(*this, CENTRONICS_TAG)
+	, m_adlc_ie(0)
+	, m_hdc_ie(0)
+	, m_rtc_irq(CLEAR_LINE)
+	, m_via_irq(CLEAR_LINE)
+	, m_hdc_irq(CLEAR_LINE)
+	, m_fdc_irq(CLEAR_LINE)
+	, m_fdc_drq(CLEAR_LINE)
+	, m_adlc_irq(CLEAR_LINE)
+	, m_clk_en(0)
+	, m_ram_en(false)
+	, m_variant(variant)
+	, m_clk_timer(nullptr)
+>>>>>>> upstream/master
 {
 }
 
@@ -435,7 +605,11 @@ e01_device::e01_device(const machine_config &mconfig, device_type type, const ch
 //  device_start - device-specific startup
 //-------------------------------------------------
 
+<<<<<<< HEAD
 void e01_device::device_start()
+=======
+void econet_e01_device::device_start()
+>>>>>>> upstream/master
 {
 	// allocate timers
 	m_clk_timer = timer_alloc();
@@ -455,7 +629,11 @@ void e01_device::device_start()
 //  device_reset - device-specific reset
 //-------------------------------------------------
 
+<<<<<<< HEAD
 void e01_device::device_reset()
+=======
+void econet_e01_device::device_reset()
+>>>>>>> upstream/master
 {
 	m_clk_timer->adjust(attotime::zero, 0, attotime::from_hz(200000));
 	m_ram_en = false;
@@ -466,7 +644,11 @@ void e01_device::device_reset()
 //  device_timer - handler timer events
 //-------------------------------------------------
 
+<<<<<<< HEAD
 void e01_device::device_timer(emu_timer &timer, device_timer_id id, int param, void *ptr)
+=======
+void econet_e01_device::device_timer(emu_timer &timer, device_timer_id id, int param, void *ptr)
+>>>>>>> upstream/master
 {
 	if (m_clk_en)
 	{
@@ -480,9 +662,15 @@ void e01_device::device_timer(emu_timer &timer, device_timer_id id, int param, v
 //  read -
 //-------------------------------------------------
 
+<<<<<<< HEAD
 READ8_MEMBER( e01_device::read )
 {
 	UINT8 data = 0;
+=======
+READ8_MEMBER( econet_e01_device::read )
+{
+	uint8_t data;
+>>>>>>> upstream/master
 
 	if (m_ram_en)
 	{
@@ -501,7 +689,11 @@ READ8_MEMBER( e01_device::read )
 //  write -
 //-------------------------------------------------
 
+<<<<<<< HEAD
 WRITE8_MEMBER( e01_device::write )
+=======
+WRITE8_MEMBER( econet_e01_device::write )
+>>>>>>> upstream/master
 {
 	m_ram->pointer()[offset] = data;
 }
@@ -511,7 +703,11 @@ WRITE8_MEMBER( e01_device::write )
 //  eprom_r - ROM/RAM select read
 //-------------------------------------------------
 
+<<<<<<< HEAD
 READ8_MEMBER( e01_device::ram_select_r )
+=======
+READ8_MEMBER( econet_e01_device::ram_select_r )
+>>>>>>> upstream/master
 {
 	m_ram_en = true;
 
@@ -523,7 +719,11 @@ READ8_MEMBER( e01_device::ram_select_r )
 //  floppy_w - floppy control write
 //-------------------------------------------------
 
+<<<<<<< HEAD
 WRITE8_MEMBER( e01_device::floppy_w )
+=======
+WRITE8_MEMBER( econet_e01_device::floppy_w )
+>>>>>>> upstream/master
 {
 	/*
 
@@ -541,7 +741,11 @@ WRITE8_MEMBER( e01_device::floppy_w )
 	*/
 
 	// floppy select
+<<<<<<< HEAD
 	floppy_image_device *floppy = NULL;
+=======
+	floppy_image_device *floppy = nullptr;
+>>>>>>> upstream/master
 
 	if (!BIT(data, 0)) floppy = m_floppy0->get_device();
 	if (!BIT(data, 1)) floppy = m_floppy1->get_device();
@@ -563,7 +767,11 @@ WRITE8_MEMBER( e01_device::floppy_w )
 	// TODO floppy test
 
 	// mode LED
+<<<<<<< HEAD
 	output_set_value("led_0", BIT(data, 7));
+=======
+	machine().output().set_value("led_0", BIT(data, 7));
+>>>>>>> upstream/master
 }
 
 
@@ -571,7 +779,11 @@ WRITE8_MEMBER( e01_device::floppy_w )
 //  network_irq_disable_r -
 //-------------------------------------------------
 
+<<<<<<< HEAD
 READ8_MEMBER( e01_device::network_irq_disable_r )
+=======
+READ8_MEMBER( econet_e01_device::network_irq_disable_r )
+>>>>>>> upstream/master
 {
 	network_irq_enable(0);
 
@@ -583,7 +795,11 @@ READ8_MEMBER( e01_device::network_irq_disable_r )
 //  network_irq_disable_w -
 //-------------------------------------------------
 
+<<<<<<< HEAD
 WRITE8_MEMBER( e01_device::network_irq_disable_w )
+=======
+WRITE8_MEMBER( econet_e01_device::network_irq_disable_w )
+>>>>>>> upstream/master
 {
 	network_irq_enable(0);
 }
@@ -593,7 +809,11 @@ WRITE8_MEMBER( e01_device::network_irq_disable_w )
 //  network_irq_enable_r -
 //-------------------------------------------------
 
+<<<<<<< HEAD
 READ8_MEMBER( e01_device::network_irq_enable_r )
+=======
+READ8_MEMBER( econet_e01_device::network_irq_enable_r )
+>>>>>>> upstream/master
 {
 	network_irq_enable(1);
 
@@ -605,7 +825,11 @@ READ8_MEMBER( e01_device::network_irq_enable_r )
 //  network_irq_enable_w -
 //-------------------------------------------------
 
+<<<<<<< HEAD
 WRITE8_MEMBER( e01_device::network_irq_enable_w )
+=======
+WRITE8_MEMBER( econet_e01_device::network_irq_enable_w )
+>>>>>>> upstream/master
 {
 	network_irq_enable(1);
 }
@@ -615,9 +839,15 @@ WRITE8_MEMBER( e01_device::network_irq_enable_w )
 //  hdc_data_r -
 //-------------------------------------------------
 
+<<<<<<< HEAD
 READ8_MEMBER( e01_device::hdc_data_r )
 {
 	UINT8 data = m_scsi_data_in->read();
+=======
+READ8_MEMBER( econet_e01_device::hdc_data_r )
+{
+	uint8_t data = m_scsi_data_in->read();
+>>>>>>> upstream/master
 
 	m_scsibus->write_ack(1);
 
@@ -629,7 +859,11 @@ READ8_MEMBER( e01_device::hdc_data_r )
 //  hdc_data_w -
 //-------------------------------------------------
 
+<<<<<<< HEAD
 WRITE8_MEMBER( e01_device::hdc_data_w )
+=======
+WRITE8_MEMBER( econet_e01_device::hdc_data_w )
+>>>>>>> upstream/master
 {
 	m_scsi_data_out->write(data);
 
@@ -641,7 +875,11 @@ WRITE8_MEMBER( e01_device::hdc_data_w )
 //  hdc_select_w -
 //-------------------------------------------------
 
+<<<<<<< HEAD
 WRITE8_MEMBER( e01_device::hdc_select_w )
+=======
+WRITE8_MEMBER( econet_e01_device::hdc_select_w )
+>>>>>>> upstream/master
 {
 	m_scsibus->write_sel(1);
 }
@@ -651,7 +889,11 @@ WRITE8_MEMBER( e01_device::hdc_select_w )
 //  hdc_irq_enable_w -
 //-------------------------------------------------
 
+<<<<<<< HEAD
 WRITE8_MEMBER( e01_device::hdc_irq_enable_w )
+=======
+WRITE8_MEMBER( econet_e01_device::hdc_irq_enable_w )
+>>>>>>> upstream/master
 {
 	hdc_irq_enable(BIT(data, 0));
 }
@@ -661,7 +903,11 @@ WRITE8_MEMBER( e01_device::hdc_irq_enable_w )
 //  rtc_address_r -
 //-------------------------------------------------
 
+<<<<<<< HEAD
 READ8_MEMBER( e01_device::rtc_address_r )
+=======
+READ8_MEMBER( econet_e01_device::rtc_address_r )
+>>>>>>> upstream/master
 {
 	return m_rtc->read(space, 0);
 }
@@ -671,7 +917,11 @@ READ8_MEMBER( e01_device::rtc_address_r )
 //  rtc_address_w -
 //-------------------------------------------------
 
+<<<<<<< HEAD
 WRITE8_MEMBER( e01_device::rtc_address_w )
+=======
+WRITE8_MEMBER( econet_e01_device::rtc_address_w )
+>>>>>>> upstream/master
 {
 	m_rtc->write(space, 0, data);
 }
@@ -681,7 +931,11 @@ WRITE8_MEMBER( e01_device::rtc_address_w )
 //  rtc_data_r -
 //-------------------------------------------------
 
+<<<<<<< HEAD
 READ8_MEMBER( e01_device::rtc_data_r )
+=======
+READ8_MEMBER( econet_e01_device::rtc_data_r )
+>>>>>>> upstream/master
 {
 	return m_rtc->read(space, 1);
 }
@@ -691,7 +945,11 @@ READ8_MEMBER( e01_device::rtc_data_r )
 //  rtc_data_w -
 //-------------------------------------------------
 
+<<<<<<< HEAD
 WRITE8_MEMBER( e01_device::rtc_data_w )
+=======
+WRITE8_MEMBER( econet_e01_device::rtc_data_w )
+>>>>>>> upstream/master
 {
 	m_rtc->write(space, 1, data);
 }
@@ -701,7 +959,11 @@ WRITE8_MEMBER( e01_device::rtc_data_w )
 //  econet_clk_w -
 //-------------------------------------------------
 
+<<<<<<< HEAD
 void e01_device::econet_data(int state)
+=======
+void econet_e01_device::econet_data(int state)
+>>>>>>> upstream/master
 {
 	m_adlc->set_rx(state);
 }
@@ -711,7 +973,11 @@ void e01_device::econet_data(int state)
 //  econet_clk_w -
 //-------------------------------------------------
 
+<<<<<<< HEAD
 void e01_device::econet_clk(int state)
+=======
+void econet_e01_device::econet_clk(int state)
+>>>>>>> upstream/master
 {
 	m_adlc->rxc_w(state);
 	m_adlc->txc_w(state);

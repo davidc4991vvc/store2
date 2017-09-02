@@ -1,6 +1,10 @@
 /*
  * Copyright 2013 Jeremie Roy. All rights reserved.
+<<<<<<< HEAD
  * License: http://www.opensource.org/licenses/BSD-2-Clause
+=======
+ * License: https://github.com/bkaradzic/bgfx#license-bsd-2-clause
+>>>>>>> upstream/master
  */
 
 #ifndef FONT_MANAGER_H_HEADER_GUARD
@@ -33,7 +37,11 @@ struct FontInfo
 	float descender;
 	/// The spacing in pixels between one row's descent and the next row's ascent.
 	float lineGap;
+<<<<<<< HEAD
 	/// This field gives the maximum horizontal cursor advance for all glyphs in the font. 
+=======
+	/// This field gives the maximum horizontal cursor advance for all glyphs in the font.
+>>>>>>> upstream/master
 	float maxAdvanceWidth;
 	/// The thickness of the under/hover/strike-trough line in pixels.
 	float underlineThickness;
@@ -100,12 +108,20 @@ struct GlyphInfo
 	float offset_y;
 
 	/// For horizontal text layouts, this is the unscaled horizontal
+<<<<<<< HEAD
 	/// distance in pixels used to increment the pen position when the 
+=======
+	/// distance in pixels used to increment the pen position when the
+>>>>>>> upstream/master
 	/// glyph is drawn as part of a string of text.
 	float advance_x;
 
 	/// For vertical text layouts, this is the unscaled vertical distance
+<<<<<<< HEAD
 	/// in pixels used to increment the pen position when the glyph is 
+=======
+	/// in pixels used to increment the pen position when the glyph is
+>>>>>>> upstream/master
 	/// drawn as part of a string of text.
 	float advance_y;
 
@@ -125,7 +141,11 @@ public:
 
 	/// Create the font manager and create the texture cube as BGRA8 with
 	/// linear filtering.
+<<<<<<< HEAD
 	FontManager(uint32_t _textureSideWidth = 512);
+=======
+	FontManager(uint16_t _textureSideWidth = 512);
+>>>>>>> upstream/master
 
 	~FontManager();
 
@@ -135,7 +155,11 @@ public:
 		return m_atlas;
 	}
 
+<<<<<<< HEAD
 	/// Load a TrueType font from a given buffer. The buffer is copied and 
+=======
+	/// Load a TrueType font from a given buffer. The buffer is copied and
+>>>>>>> upstream/master
 	/// thus can be freed or reused after this call.
 	///
 	/// @return invalid handle if the loading fail
@@ -155,7 +179,11 @@ public:
 
 	/// Preload a set of glyphs from a TrueType file.
 	///
+<<<<<<< HEAD
 	/// @return True if every glyph could be preloaded, false otherwise if 
+=======
+	/// @return True if every glyph could be preloaded, false otherwise if
+>>>>>>> upstream/master
 	///   the Font is a baked font, this only do validation on the characters.
 	bool preloadGlyph(FontHandle _handle, const wchar_t* _string);
 
@@ -167,7 +195,11 @@ public:
 	/// @remark the handle is required to be valid
 	const FontInfo& getFontInfo(FontHandle _handle) const;
 
+<<<<<<< HEAD
 	/// Return the rendering informations about the glyph region. Load the 
+=======
+	/// Return the rendering informations about the glyph region. Load the
+>>>>>>> upstream/master
 	/// glyph from a TrueType font if possible
 	///
 	const GlyphInfo* getGlyphInfo(FontHandle _handle, CodePoint _codePoint);

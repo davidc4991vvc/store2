@@ -8,12 +8,20 @@
 
 ***************************************************************************/
 
+<<<<<<< HEAD
 #pragma once
 
 #ifndef __DMAC_H__
 #define __DMAC_H__
 
 #include "emu.h"
+=======
+#ifndef MAME_MACHINE_DMAC_H
+#define MAME_MACHINE_DMAC_H
+
+#pragma once
+
+>>>>>>> upstream/master
 #include "autoconfig.h"
 
 
@@ -22,6 +30,7 @@
 //**************************************************************************
 
 #define MCFG_DMAC_ADD(_tag, _clock) \
+<<<<<<< HEAD
 	MCFG_DEVICE_ADD(_tag, DMAC, _clock)
 #define MCFG_DMAC_CFGOUT_HANDLER(_devcb) \
 	devcb = &dmac_device::set_cfgout_handler(*device, DEVCB_##_devcb);
@@ -43,12 +52,36 @@
 
 #define MCFG_DMAC_IO_WRITE_HANDLER(_devcb) \
 	devcb = &dmac_device::set_io_write_handler(*device, DEVCB_##_devcb);
+=======
+	MCFG_DEVICE_ADD(_tag, AMIGA_DMAC, _clock)
+#define MCFG_DMAC_CFGOUT_HANDLER(_devcb) \
+	devcb = &amiga_dmac_device::set_cfgout_handler(*device, DEVCB_##_devcb);
+
+#define MCFG_DMAC_INT_HANDLER(_devcb) \
+	devcb = &amiga_dmac_device::set_int_handler(*device, DEVCB_##_devcb);
+
+#define MCFG_DMAC_XDACK_HANDLER(_devcb) \
+	devcb = &amiga_dmac_device::set_xdack_handler(*device, DEVCB_##_devcb);
+
+#define MCFG_DMAC_SCSI_READ_HANDLER(_devcb) \
+	devcb = &amiga_dmac_device::set_scsi_read_handler(*device, DEVCB_##_devcb);
+
+#define MCFG_DMAC_SCSI_WRITE_HANDLER(_devcb) \
+	devcb = &amiga_dmac_device::set_scsi_write_handler(*device, DEVCB_##_devcb);
+
+#define MCFG_DMAC_IO_READ_HANDLER(_devcb) \
+	devcb = &amiga_dmac_device::set_io_read_handler(*device, DEVCB_##_devcb);
+
+#define MCFG_DMAC_IO_WRITE_HANDLER(_devcb) \
+	devcb = &amiga_dmac_device::set_io_write_handler(*device, DEVCB_##_devcb);
+>>>>>>> upstream/master
 
 
 //**************************************************************************
 //  TYPE DEFINITIONS
 //**************************************************************************
 
+<<<<<<< HEAD
 // ======================> dmac_device
 
 class dmac_device : public device_t, public amiga_autoconfig
@@ -82,6 +115,41 @@ public:
 	void set_address_space(address_space *space) { m_space = space; };
 	void set_rom(UINT8 *rom) { m_rom = rom; };
 	void set_ram(UINT8 *ram) { m_ram = ram; };
+=======
+// ======================> amiga_dmac_device
+
+class amiga_dmac_device : public device_t, public amiga_autoconfig
+{
+public:
+	// construction/destruction
+	amiga_dmac_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
+
+	// callbacks
+	template <class Object> static devcb_base &set_cfgout_handler(device_t &device, Object &&cb)
+	{ return downcast<amiga_dmac_device &>(device).m_cfgout_handler.set_callback(std::forward<Object>(cb)); }
+
+	template <class Object> static devcb_base &set_int_handler(device_t &device, Object &&cb)
+	{ return downcast<amiga_dmac_device &>(device).m_int_handler.set_callback(std::forward<Object>(cb)); }
+
+	template <class Object> static devcb_base &set_xdack_handler(device_t &device, Object &&cb)
+	{ return downcast<amiga_dmac_device &>(device).m_xdack_handler.set_callback(std::forward<Object>(cb)); }
+
+	template <class Object> static devcb_base &set_scsi_read_handler(device_t &device, Object &&cb)
+	{ return downcast<amiga_dmac_device &>(device).m_scsi_read_handler.set_callback(std::forward<Object>(cb)); }
+
+	template <class Object> static devcb_base &set_scsi_write_handler(device_t &device, Object &&cb)
+	{ return downcast<amiga_dmac_device &>(device).m_scsi_write_handler.set_callback(std::forward<Object>(cb)); }
+
+	template <class Object> static devcb_base &set_io_read_handler(device_t &device, Object &&cb)
+	{ return downcast<amiga_dmac_device &>(device).m_io_read_handler.set_callback(std::forward<Object>(cb)); }
+
+	template <class Object> static devcb_base &set_io_write_handler(device_t &device, Object &&cb)
+	{ return downcast<amiga_dmac_device &>(device).m_io_write_handler.set_callback(std::forward<Object>(cb)); }
+
+	void set_address_space(address_space *space) { m_space = space; }
+	void set_rom(uint8_t *rom) { m_rom = rom; }
+	void set_ram(uint8_t *ram) { m_ram = ram; }
+>>>>>>> upstream/master
 
 	// input lines
 	DECLARE_WRITE_LINE_MEMBER( configin_w );
@@ -96,6 +164,7 @@ public:
 
 protected:
 	// device-level overrides
+<<<<<<< HEAD
 	virtual void device_start();
 	virtual void device_reset();
 
@@ -104,6 +173,15 @@ protected:
 
 private:
 
+=======
+	virtual void device_start() override;
+	virtual void device_reset() override;
+
+	// amiga_autoconfig overrides
+	virtual void autoconfig_base_address(offs_t address) override;
+
+private:
+>>>>>>> upstream/master
 	// control register flags
 	enum
 	{
@@ -128,7 +206,11 @@ private:
 		ISTR_FE_FLG = 0x001     // fifo-empty flag
 	};
 
+<<<<<<< HEAD
 	static const int ISTR_INT_MASK = 0x1fc;
+=======
+	static constexpr int ISTR_INT_MASK = 0x1ec;
+>>>>>>> upstream/master
 
 	// callbacks
 	devcb_write_line m_cfgout_handler;
@@ -140,8 +222,13 @@ private:
 	devcb_write8 m_io_write_handler;
 
 	address_space *m_space;
+<<<<<<< HEAD
 	UINT8 *m_rom;
 	UINT8 *m_ram;
+=======
+	uint8_t *m_rom;
+	uint8_t *m_ram;
+>>>>>>> upstream/master
 	int m_ram_size;
 
 	// autoconfig state
@@ -151,10 +238,17 @@ private:
 	int m_rst;
 
 	// register
+<<<<<<< HEAD
 	UINT16 m_cntr;  // control register
 	UINT16 m_istr;  // interrupt status register
 	UINT32 m_wtc;   // word transfer count
 	UINT32 m_acr;   // address control register
+=======
+	uint16_t m_cntr;  // control register
+	uint16_t m_istr;  // interrupt status register
+	uint32_t m_wtc;   // word transfer count
+	uint32_t m_acr;   // address control register
+>>>>>>> upstream/master
 
 	bool m_dma_active;
 
@@ -165,7 +259,13 @@ private:
 
 
 // device type definition
+<<<<<<< HEAD
 extern const device_type DMAC;
 
 
 #endif  /* __DMAC_H__ */
+=======
+DECLARE_DEVICE_TYPE(AMIGA_DMAC, amiga_dmac_device)
+
+#endif // MAME_MACHINE_DMAC_H
+>>>>>>> upstream/master

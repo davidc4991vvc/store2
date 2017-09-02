@@ -8,6 +8,7 @@
 //
 //============================================================
 
+<<<<<<< HEAD
 #ifndef __EIVC__
 #define __EIVC__
 
@@ -36,6 +37,15 @@ extern "C" unsigned char _BitScanReverse(unsigned long *Index, unsigned long Mas
 #if (_MSC_VER >= 1310)
 #pragma intrinsic(_BitScanReverse)
 #endif
+=======
+#ifndef MAME_OSD_EIVC_H
+#define MAME_OSD_EIVC_H
+
+#pragma once
+
+#include <intrin.h>
+#pragma intrinsic(_BitScanReverse)
+>>>>>>> upstream/master
 
 
 /***************************************************************************
@@ -49,10 +59,17 @@ extern "C" unsigned char _BitScanReverse(unsigned long *Index, unsigned long Mas
 
 #ifndef count_leading_zeros
 #define count_leading_zeros _count_leading_zeros
+<<<<<<< HEAD
 INLINE UINT8 _count_leading_zeros(UINT32 value)
 {
 	UINT32 index;
 	return _BitScanReverse((unsigned long *)&index, value) ? (index ^ 31) : 32;
+=======
+inline uint8_t _count_leading_zeros(uint32_t value)
+{
+	unsigned long index;
+	return _BitScanReverse(&index, value) ? (index ^ 31) : 32;
+>>>>>>> upstream/master
 }
 #endif
 
@@ -64,6 +81,7 @@ INLINE UINT8 _count_leading_zeros(UINT32 value)
 
 #ifndef count_leading_ones
 #define count_leading_ones _count_leading_ones
+<<<<<<< HEAD
 INLINE UINT8 _count_leading_ones(UINT32 value)
 {
 	UINT32 index;
@@ -172,3 +190,13 @@ INLINE INT32 _atomic_decrement32(INT32 volatile *ptr)
 
 
 #endif /* __EIVC__ */
+=======
+inline uint8_t _count_leading_ones(uint32_t value)
+{
+	unsigned long index;
+	return _BitScanReverse(&index, ~value) ? (index ^ 31) : 32;
+}
+#endif
+
+#endif // MAME_OSD_EIVC_H
+>>>>>>> upstream/master

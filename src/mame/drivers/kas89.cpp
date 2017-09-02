@@ -1,11 +1,19 @@
 // license:BSD-3-Clause
 // copyright-holders:Roberto Fresca
+<<<<<<< HEAD
+=======
+// thanks-to:Iris Falbala,Rob Ragon
+>>>>>>> upstream/master
 /*************************************************************************************
 
   /\/\<< Kasino '89 >>/\/\
 
   6-players electronic roulette.
+<<<<<<< HEAD
   Video field + phisical LEDs roulette.
+=======
+  Video field + physical LEDs roulette.
+>>>>>>> upstream/master
 
   Driver by Roberto Fresca.
 
@@ -33,7 +41,11 @@
   1x Z80 (audio) @ 3.578 MHz.
   AY-3-8910 @ 1789 kHz.
 
+<<<<<<< HEAD
   1x Unknown metallick brick (Yamaha MSX2 VDP inside).
+=======
+  1x Unknown metallic brick (Yamaha MSX2 VDP inside).
+>>>>>>> upstream/master
 
   1x 8 DIP switches bank.
 
@@ -188,6 +200,7 @@
 *************************************************************************************/
 
 
+<<<<<<< HEAD
 #define MASTER_CLOCK        XTAL_21_4772MHz
 #define VDP_MEM             0x40000
 
@@ -200,6 +213,23 @@
 #include "kas89.lh"
 
 
+=======
+#include "emu.h"
+#include "cpu/z80/z80.h"
+#include "machine/gen_latch.h"
+#include "machine/nvram.h"
+#include "sound/ay8910.h"
+#include "video/v9938.h"
+#include "speaker.h"
+
+#include "kas89.lh"
+
+
+#define MASTER_CLOCK        XTAL_21_4772MHz
+#define VDP_MEM             0x40000
+
+
+>>>>>>> upstream/master
 class kas89_state : public driver_device
 {
 public:
@@ -208,6 +238,10 @@ public:
 		m_maincpu(*this, "maincpu"),
 		m_audiocpu(*this, "audiocpu"),
 		m_v9938(*this, "v9938"),
+<<<<<<< HEAD
+=======
+		m_soundlatch(*this, "soundlatch"),
+>>>>>>> upstream/master
 		m_pl1(*this, "PL1"),
 		m_pl2(*this, "PL2"),
 		m_pl3(*this, "PL3"),
@@ -219,16 +253,29 @@ public:
 		m_unk(*this, "UNK")
 	{ }
 
+<<<<<<< HEAD
 	UINT8 m_mux_data;
 	UINT8 m_main_nmi_enable;
 
 	UINT8 m_leds_mux_selector;
 	UINT8 m_leds_mux_data;
 	UINT8 m_outdata;            /* Muxed with the sound latch. Output to a sign? */
+=======
+	uint8_t m_mux_data;
+	uint8_t m_main_nmi_enable;
+
+	uint8_t m_leds_mux_selector;
+	uint8_t m_leds_mux_data;
+	uint8_t m_outdata;            /* Muxed with the sound latch. Output to a sign? */
+>>>>>>> upstream/master
 
 	required_device<cpu_device> m_maincpu;
 	required_device<cpu_device> m_audiocpu;
 	required_device<v9938_device> m_v9938;
+<<<<<<< HEAD
+=======
+	required_device<generic_latch_8_device> m_soundlatch;
+>>>>>>> upstream/master
 	required_ioport m_pl1;
 	required_ioport m_pl2;
 	required_ioport m_pl3;
@@ -247,6 +294,7 @@ public:
 	DECLARE_WRITE8_MEMBER(led_mux_data_w);
 	DECLARE_WRITE8_MEMBER(led_mux_select_w);
 	DECLARE_DRIVER_INIT(kas89);
+<<<<<<< HEAD
 	virtual void machine_start();
 	virtual void machine_reset();
 	TIMER_DEVICE_CALLBACK_MEMBER(kas89_nmi_cb);
@@ -265,13 +313,26 @@ WRITE_LINE_MEMBER(kas89_state::kas89_vdp_interrupt)
 }
 
 
+=======
+	virtual void machine_start() override;
+	virtual void machine_reset() override;
+	TIMER_DEVICE_CALLBACK_MEMBER(kas89_nmi_cb);
+	TIMER_DEVICE_CALLBACK_MEMBER(kas89_sound_nmi_cb);
+};
+
+
+>>>>>>> upstream/master
 /*************************************
 *       Machine Start & Reset        *
 *************************************/
 
 void kas89_state::machine_start()
 {
+<<<<<<< HEAD
 	output_set_lamp_value(37, 0);   /* turning off the operator led */
+=======
+	output().set_lamp_value(37, 0);   /* turning off the operator led */
+>>>>>>> upstream/master
 }
 
 void kas89_state::machine_reset()
@@ -308,7 +369,11 @@ READ8_MEMBER(kas89_state::mux_r)
 		case 0x20: return m_pl6->read();
 		case 0x40:
 		{
+<<<<<<< HEAD
 			output_set_lamp_value(37, 1 - ((m_svc->read() >> 5) & 1));  /* Operator Key LAMP */
+=======
+			output().set_lamp_value(37, 1 - ((m_svc->read() >> 5) & 1));  /* Operator Key LAMP */
+>>>>>>> upstream/master
 			return m_svc->read();
 		}
 		case 0x80: return m_dsw->read();    /* Polled at $162a through NMI routine */
@@ -344,8 +409,13 @@ WRITE8_MEMBER(kas89_state::control_w)
 
 	m_main_nmi_enable = data & 0x40;
 
+<<<<<<< HEAD
 	coin_counter_w(machine(), 0, (data ^ 0xff) & 0x01); /* Credits In counter */
 	coin_counter_w(machine(), 1, (data ^ 0xff) & 0x02); /* Credits Out counter */
+=======
+	machine().bookkeeping().coin_counter_w(0, (data ^ 0xff) & 0x01); /* Credits In counter */
+	machine().bookkeeping().coin_counter_w(1, (data ^ 0xff) & 0x02); /* Credits Out counter */
+>>>>>>> upstream/master
 }
 
 WRITE8_MEMBER(kas89_state::sound_comm_w)
@@ -371,10 +441,17 @@ WRITE8_MEMBER(kas89_state::sound_comm_w)
 
 		if (m_outdata == 0x3f)
 		{
+<<<<<<< HEAD
 			UINT8 i;
 			for ( i = 0; i < 37; i++ )
 			{
 				output_set_lamp_value(i, 0);    /* All roulette LEDs OFF */
+=======
+			uint8_t i;
+			for ( i = 0; i < 37; i++ )
+			{
+				output().set_lamp_value(i, 0);    /* All roulette LEDs OFF */
+>>>>>>> upstream/master
 			}
 		}
 
@@ -383,7 +460,11 @@ WRITE8_MEMBER(kas89_state::sound_comm_w)
 
 	else
 	{
+<<<<<<< HEAD
 		soundlatch_byte_w(space, 0, data);
+=======
+		m_soundlatch->write(space, 0, data);
+>>>>>>> upstream/master
 		m_audiocpu->set_input_line(0, ASSERT_LINE );
 	}
 }
@@ -417,10 +498,17 @@ WRITE8_MEMBER(kas89_state::led_mux_select_w)
 
 	m_leds_mux_selector = data;
 
+<<<<<<< HEAD
 	UINT8 i;
 	for ( i = 0; i < 37; i++ )
 	{
 		output_set_lamp_value(i, 0);    /* All LEDs OFF */
+=======
+	uint8_t i;
+	for ( i = 0; i < 37; i++ )
+	{
+		output().set_lamp_value(i, 0);    /* All LEDs OFF */
+>>>>>>> upstream/master
 	}
 
 	switch(data)
@@ -429,12 +517,17 @@ WRITE8_MEMBER(kas89_state::led_mux_select_w)
 		{
 			for ( i = 0; i < 37; i++ )
 			{
+<<<<<<< HEAD
 				output_set_lamp_value(i, 0);    /* All LEDs OFF */
+=======
+				output().set_lamp_value(i, 0);    /* All LEDs OFF */
+>>>>>>> upstream/master
 			}
 		}
 
 		case 0x01:
 		{
+<<<<<<< HEAD
 			output_set_lamp_value(11, (m_leds_mux_data >> 0) & 1);  /* Number 11 LED */
 			output_set_lamp_value(36, (m_leds_mux_data >> 1) & 1);  /* Number 36 LED */
 			output_set_lamp_value(13, (m_leds_mux_data >> 2) & 1);  /* Number 13 LED */
@@ -443,11 +536,22 @@ WRITE8_MEMBER(kas89_state::led_mux_select_w)
 			output_set_lamp_value(34, (m_leds_mux_data >> 5) & 1);  /* Number 34 LED */
 			output_set_lamp_value(17, (m_leds_mux_data >> 6) & 1);  /* Number 17 LED */
 			output_set_lamp_value(25, (m_leds_mux_data >> 7) & 1);  /* Number 25 LED */
+=======
+			output().set_lamp_value(11, (m_leds_mux_data >> 0) & 1);  /* Number 11 LED */
+			output().set_lamp_value(36, (m_leds_mux_data >> 1) & 1);  /* Number 36 LED */
+			output().set_lamp_value(13, (m_leds_mux_data >> 2) & 1);  /* Number 13 LED */
+			output().set_lamp_value(27, (m_leds_mux_data >> 3) & 1);  /* Number 27 LED */
+			output().set_lamp_value(06, (m_leds_mux_data >> 4) & 1);  /* Number  6 LED */
+			output().set_lamp_value(34, (m_leds_mux_data >> 5) & 1);  /* Number 34 LED */
+			output().set_lamp_value(17, (m_leds_mux_data >> 6) & 1);  /* Number 17 LED */
+			output().set_lamp_value(25, (m_leds_mux_data >> 7) & 1);  /* Number 25 LED */
+>>>>>>> upstream/master
 			break;
 		}
 
 		case 0x02:
 		{
+<<<<<<< HEAD
 			output_set_lamp_value( 2, (m_leds_mux_data >> 0) & 1);  /* Number  2 LED */
 			output_set_lamp_value(21, (m_leds_mux_data >> 1) & 1);  /* Number 21 LED */
 			output_set_lamp_value( 4, (m_leds_mux_data >> 2) & 1);  /* Number  4 LED */
@@ -456,11 +560,22 @@ WRITE8_MEMBER(kas89_state::led_mux_select_w)
 			output_set_lamp_value(32, (m_leds_mux_data >> 5) & 1);  /* Number 32 LED */
 			output_set_lamp_value( 0, (m_leds_mux_data >> 6) & 1);  /* Number  0 LED */
 			output_set_lamp_value(26, (m_leds_mux_data >> 7) & 1);  /* Number 26 LED */
+=======
+			output().set_lamp_value( 2, (m_leds_mux_data >> 0) & 1);  /* Number  2 LED */
+			output().set_lamp_value(21, (m_leds_mux_data >> 1) & 1);  /* Number 21 LED */
+			output().set_lamp_value( 4, (m_leds_mux_data >> 2) & 1);  /* Number  4 LED */
+			output().set_lamp_value(19, (m_leds_mux_data >> 3) & 1);  /* Number 19 LED */
+			output().set_lamp_value(15, (m_leds_mux_data >> 4) & 1);  /* Number 15 LED */
+			output().set_lamp_value(32, (m_leds_mux_data >> 5) & 1);  /* Number 32 LED */
+			output().set_lamp_value( 0, (m_leds_mux_data >> 6) & 1);  /* Number  0 LED */
+			output().set_lamp_value(26, (m_leds_mux_data >> 7) & 1);  /* Number 26 LED */
+>>>>>>> upstream/master
 			break;
 		}
 
 		case 0x04:
 		{
+<<<<<<< HEAD
 			output_set_lamp_value( 3, (m_leds_mux_data >> 0) & 1);  /* Number  3 LED */
 			output_set_lamp_value(35, (m_leds_mux_data >> 1) & 1);  /* Number 35 LED */
 			output_set_lamp_value(12, (m_leds_mux_data >> 2) & 1);  /* Number 12 LED */
@@ -468,11 +583,21 @@ WRITE8_MEMBER(kas89_state::led_mux_select_w)
 			output_set_lamp_value( 7, (m_leds_mux_data >> 4) & 1);  /* Number  7 LED */
 			output_set_lamp_value(29, (m_leds_mux_data >> 5) & 1);  /* Number 29 LED */
 			output_set_lamp_value(18, (m_leds_mux_data >> 6) & 1);  /* Number 18 LED */
+=======
+			output().set_lamp_value( 3, (m_leds_mux_data >> 0) & 1);  /* Number  3 LED */
+			output().set_lamp_value(35, (m_leds_mux_data >> 1) & 1);  /* Number 35 LED */
+			output().set_lamp_value(12, (m_leds_mux_data >> 2) & 1);  /* Number 12 LED */
+			output().set_lamp_value(28, (m_leds_mux_data >> 3) & 1);  /* Number 28 LED */
+			output().set_lamp_value( 7, (m_leds_mux_data >> 4) & 1);  /* Number  7 LED */
+			output().set_lamp_value(29, (m_leds_mux_data >> 5) & 1);  /* Number 29 LED */
+			output().set_lamp_value(18, (m_leds_mux_data >> 6) & 1);  /* Number 18 LED */
+>>>>>>> upstream/master
 			break;
 		}
 
 		case 0x08:
 		{
+<<<<<<< HEAD
 			output_set_lamp_value(22, (m_leds_mux_data >> 0) & 1);  /* Number 22 LED */
 			output_set_lamp_value( 9, (m_leds_mux_data >> 1) & 1);  /* Number  9 LED */
 			output_set_lamp_value(31, (m_leds_mux_data >> 2) & 1);  /* Number 31 LED */
@@ -480,11 +605,21 @@ WRITE8_MEMBER(kas89_state::led_mux_select_w)
 			output_set_lamp_value(20, (m_leds_mux_data >> 4) & 1);  /* Number 20 LED */
 			output_set_lamp_value( 1, (m_leds_mux_data >> 5) & 1);  /* Number  1 LED */
 			output_set_lamp_value(33, (m_leds_mux_data >> 6) & 1);  /* Number 33 LED */
+=======
+			output().set_lamp_value(22, (m_leds_mux_data >> 0) & 1);  /* Number 22 LED */
+			output().set_lamp_value( 9, (m_leds_mux_data >> 1) & 1);  /* Number  9 LED */
+			output().set_lamp_value(31, (m_leds_mux_data >> 2) & 1);  /* Number 31 LED */
+			output().set_lamp_value(14, (m_leds_mux_data >> 3) & 1);  /* Number 14 LED */
+			output().set_lamp_value(20, (m_leds_mux_data >> 4) & 1);  /* Number 20 LED */
+			output().set_lamp_value( 1, (m_leds_mux_data >> 5) & 1);  /* Number  1 LED */
+			output().set_lamp_value(33, (m_leds_mux_data >> 6) & 1);  /* Number 33 LED */
+>>>>>>> upstream/master
 			break;
 		}
 
 		case 0x10:
 		{
+<<<<<<< HEAD
 			output_set_lamp_value(16, (m_leds_mux_data >> 0) & 1);  /* Number 16 LED */
 			output_set_lamp_value(24, (m_leds_mux_data >> 1) & 1);  /* Number 24 LED */
 			output_set_lamp_value( 5, (m_leds_mux_data >> 2) & 1);  /* Number  5 LED */
@@ -492,6 +627,15 @@ WRITE8_MEMBER(kas89_state::led_mux_select_w)
 			output_set_lamp_value(23, (m_leds_mux_data >> 4) & 1);  /* Number 23 LED */
 			output_set_lamp_value( 8, (m_leds_mux_data >> 5) & 1);  /* Number  8 LED */
 			output_set_lamp_value(30, (m_leds_mux_data >> 6) & 1);  /* Number 30 LED */
+=======
+			output().set_lamp_value(16, (m_leds_mux_data >> 0) & 1);  /* Number 16 LED */
+			output().set_lamp_value(24, (m_leds_mux_data >> 1) & 1);  /* Number 24 LED */
+			output().set_lamp_value( 5, (m_leds_mux_data >> 2) & 1);  /* Number  5 LED */
+			output().set_lamp_value(10, (m_leds_mux_data >> 3) & 1);  /* Number 10 LED */
+			output().set_lamp_value(23, (m_leds_mux_data >> 4) & 1);  /* Number 23 LED */
+			output().set_lamp_value( 8, (m_leds_mux_data >> 5) & 1);  /* Number  8 LED */
+			output().set_lamp_value(30, (m_leds_mux_data >> 6) & 1);  /* Number 30 LED */
+>>>>>>> upstream/master
 			break;
 		}
 
@@ -499,7 +643,11 @@ WRITE8_MEMBER(kas89_state::led_mux_select_w)
 		{
 			for ( i = 0; i < 37; i++ )
 			{
+<<<<<<< HEAD
 				output_set_lamp_value(i, 1);    /* All LEDs ON */
+=======
+				output().set_lamp_value(i, 1);    /* All LEDs ON */
+>>>>>>> upstream/master
 			}
 		}
 	}
@@ -582,7 +730,11 @@ ADDRESS_MAP_END
 static ADDRESS_MAP_START( audio_io, AS_IO, 8, kas89_state )
 	ADDRESS_MAP_GLOBAL_MASK(0xff)
 	AM_RANGE(0x00, 0x00) AM_WRITE(int_ack_w)    // comm out (1st Z80). seems to write here the value previously read through soundlatch (port 0x02).
+<<<<<<< HEAD
 	AM_RANGE(0x02, 0x02) AM_READ(soundlatch_byte_r)
+=======
+	AM_RANGE(0x02, 0x02) AM_DEVREAD("soundlatch", generic_latch_8_device, read)
+>>>>>>> upstream/master
 	AM_RANGE(0x04, 0x04) AM_DEVREAD("aysnd", ay8910_device, data_r)
 	AM_RANGE(0x04, 0x05) AM_DEVWRITE("aysnd", ay8910_device, data_address_w)
 ADDRESS_MAP_END
@@ -757,7 +909,11 @@ INPUT_PORTS_END
 *           Machine Driver            *
 **************************************/
 
+<<<<<<< HEAD
 static MACHINE_CONFIG_START( kas89, kas89_state )
+=======
+static MACHINE_CONFIG_START( kas89 )
+>>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", Z80, MASTER_CLOCK/6)    /* Confirmed */
@@ -774,11 +930,21 @@ static MACHINE_CONFIG_START( kas89, kas89_state )
 
 	/* video hardware */
 	MCFG_V9938_ADD("v9938", "screen", VDP_MEM, MASTER_CLOCK)
+<<<<<<< HEAD
 	MCFG_V99X8_INTERRUPT_CALLBACK(WRITELINE(kas89_state,kas89_vdp_interrupt))
+=======
+	MCFG_V99X8_INTERRUPT_CALLBACK(INPUTLINE("maincpu", 0))
+>>>>>>> upstream/master
 	MCFG_V99X8_SCREEN_ADD_NTSC("screen", "v9938", MASTER_CLOCK)
 
 	/* sound hardware */
 	MCFG_SPEAKER_STANDARD_MONO("mono")
+<<<<<<< HEAD
+=======
+
+	MCFG_GENERIC_LATCH_8_ADD("soundlatch")
+
+>>>>>>> upstream/master
 	MCFG_SOUND_ADD("aysnd", AY8910, MASTER_CLOCK/12)    /* Confirmed */
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 1.0)
 MACHINE_CONFIG_END
@@ -836,7 +1002,11 @@ ROM_END
 DRIVER_INIT_MEMBER(kas89_state,kas89)
 {
 	int i;
+<<<<<<< HEAD
 	UINT8 *mem = memregion("maincpu")->base();
+=======
+	uint8_t *mem = memregion("maincpu")->base();
+>>>>>>> upstream/master
 	int memsize = memregion("maincpu")->bytes();
 
 	/* Unscrambling data lines */
@@ -846,7 +1016,11 @@ DRIVER_INIT_MEMBER(kas89_state,kas89)
 	}
 
 	/* Unscrambling address lines */
+<<<<<<< HEAD
 	dynamic_buffer buf(memsize);
+=======
+	std::vector<uint8_t> buf(memsize);
+>>>>>>> upstream/master
 	memcpy(&buf[0], mem, memsize);
 	for ( i = 0; i < memsize; i++ )
 	{
@@ -859,5 +1033,9 @@ DRIVER_INIT_MEMBER(kas89_state,kas89)
 *           Game Driver(s)            *
 **************************************/
 
+<<<<<<< HEAD
 /*     YEAR  NAME    PARENT  MACHINE  INPUT  STATE        INIT   ROT     COMPANY       FULLNAME     FLAGS                 LAYOUT */
+=======
+//     YEAR  NAME    PARENT  MACHINE  INPUT  STATE        INIT   ROT    COMPANY       FULLNAME      FLAGS                    LAYOUT
+>>>>>>> upstream/master
 GAMEL( 1989, kas89,  0,      kas89,   kas89, kas89_state, kas89, ROT90, "SFC S.R.L.", "Kasino '89", MACHINE_IMPERFECT_SOUND, layout_kas89 )

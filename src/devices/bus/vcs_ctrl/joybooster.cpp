@@ -7,6 +7,10 @@
 
 **********************************************************************/
 
+<<<<<<< HEAD
+=======
+#include "emu.h"
+>>>>>>> upstream/master
 #include "joybooster.h"
 
 
@@ -15,7 +19,11 @@
 //  DEVICE DEFINITIONS
 //**************************************************************************
 
+<<<<<<< HEAD
 const device_type VCS_JOYSTICK_BOOSTER = &device_creator<vcs_joystick_booster_device>;
+=======
+DEFINE_DEVICE_TYPE(VCS_JOYSTICK_BOOSTER, vcs_joystick_booster_device, "vcs_joystick_booster", "Atari / CBM Digital joystick with Boostergrip")
+>>>>>>> upstream/master
 
 
 static INPUT_PORTS_START( vcs_joystick_booster )
@@ -56,8 +64,13 @@ ioport_constructor vcs_joystick_booster_device::device_input_ports() const
 //  vcs_joystick_booster_device - constructor
 //-------------------------------------------------
 
+<<<<<<< HEAD
 vcs_joystick_booster_device::vcs_joystick_booster_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock) :
 	device_t(mconfig, VCS_JOYSTICK_BOOSTER, "Atari / CBM Digital joystick with Boostergrip", tag, owner, clock, "vcs_joystick_booster", __FILE__),
+=======
+vcs_joystick_booster_device::vcs_joystick_booster_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock) :
+	device_t(mconfig, VCS_JOYSTICK_BOOSTER, tag, owner, clock),
+>>>>>>> upstream/master
 	device_vcs_control_port_interface(mconfig, *this),
 	m_joy(*this, "JOY"),
 	m_potx(*this, "POTX"),
@@ -79,17 +92,29 @@ void vcs_joystick_booster_device::device_start()
 //  vcs_joy_r - joystick read
 //-------------------------------------------------
 
+<<<<<<< HEAD
 UINT8 vcs_joystick_booster_device::vcs_joy_r()
+=======
+uint8_t vcs_joystick_booster_device::vcs_joy_r()
+>>>>>>> upstream/master
 {
 	return m_joy->read();
 }
 
+<<<<<<< HEAD
 UINT8 vcs_joystick_booster_device::vcs_pot_x_r()
+=======
+uint8_t vcs_joystick_booster_device::vcs_pot_x_r()
+>>>>>>> upstream/master
 {
 	return m_potx->read();
 }
 
+<<<<<<< HEAD
 UINT8 vcs_joystick_booster_device::vcs_pot_y_r()
+=======
+uint8_t vcs_joystick_booster_device::vcs_pot_y_r()
+>>>>>>> upstream/master
 {
 	return m_poty->read();
 }

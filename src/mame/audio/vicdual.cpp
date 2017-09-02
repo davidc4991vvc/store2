@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 // license:???
+=======
+// license:BSD-3-Clause
+>>>>>>> upstream/master
 // copyright-holders:Derrick Renaud, Couriersud
 /*************************************************************************
 
@@ -107,11 +111,19 @@ static const char *const frogs_sample_names[] =
 	"hop",
 	"splash",
 	"zip",
+<<<<<<< HEAD
 	0
 };
 
 
 MACHINE_CONFIG_FRAGMENT( frogs_audio )
+=======
+	nullptr
+};
+
+
+MACHINE_CONFIG_START( frogs_audio )
+>>>>>>> upstream/master
 	MCFG_SOUND_ADD("samples", SAMPLES, 0)
 	MCFG_SAMPLES_CHANNELS(5)
 	MCFG_SAMPLES_NAMES(frogs_sample_names)
@@ -445,7 +457,11 @@ static DISCRETE_SOUND_START(headon)
 
 DISCRETE_SOUND_END
 
+<<<<<<< HEAD
 MACHINE_CONFIG_FRAGMENT( headon_audio )
+=======
+MACHINE_CONFIG_START( headon_audio )
+>>>>>>> upstream/master
 
 	MCFG_SOUND_ADD("discrete", DISCRETE, 0)
 	MCFG_DISCRETE_INTF(headon)
@@ -454,7 +470,11 @@ MACHINE_CONFIG_END
 
 WRITE8_MEMBER( vicdual_state::headon_audio_w )
 {
+<<<<<<< HEAD
 	if (m_discrete == NULL)
+=======
+	if (m_discrete == nullptr)
+>>>>>>> upstream/master
 		return;
 	m_discrete->write(space, HEADON_HISPEED_PC_EN, data & 0x01);
 	m_discrete->write(space, HEADON_SCREECH1_EN, data & 0x02);
@@ -468,7 +488,11 @@ WRITE8_MEMBER( vicdual_state::headon_audio_w )
 
 WRITE8_MEMBER( vicdual_state::invho2_audio_w )
 {
+<<<<<<< HEAD
 	if (m_discrete == NULL)
+=======
+	if (m_discrete == nullptr)
+>>>>>>> upstream/master
 		return;
 	m_discrete->write(space, HEADON_HISPEED_PC_EN, data & 0x10);
 	m_discrete->write(space, HEADON_SCREECH1_EN, data & 0x08);

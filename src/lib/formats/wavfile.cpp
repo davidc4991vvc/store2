@@ -23,40 +23,69 @@ static const char data_tag_id[4] = { 'd', 'a', 't', 'a' };
 
 
 
+<<<<<<< HEAD
 static UINT32 get_leuint32(const void *ptr)
 {
 	UINT32 value;
 	memcpy(&value, ptr, sizeof(value));
 	return LITTLE_ENDIANIZE_INT32(value);
+=======
+static uint32_t get_leuint32(const void *ptr)
+{
+	uint32_t value;
+	memcpy(&value, ptr, sizeof(value));
+	return little_endianize_int32(value);
+>>>>>>> upstream/master
 }
 
 
 
+<<<<<<< HEAD
 static UINT16 get_leuint16(const void *ptr)
 {
 	UINT16 value;
 	memcpy(&value, ptr, sizeof(value));
 	return LITTLE_ENDIANIZE_INT16(value);
+=======
+static uint16_t get_leuint16(const void *ptr)
+{
+	uint16_t value;
+	memcpy(&value, ptr, sizeof(value));
+	return little_endianize_int16(value);
+>>>>>>> upstream/master
 }
 
 
 
+<<<<<<< HEAD
 static void put_leuint32(void *ptr, UINT32 value)
 {
 	value = LITTLE_ENDIANIZE_INT32(value);
+=======
+static void put_leuint32(void *ptr, uint32_t value)
+{
+	value = little_endianize_int32(value);
+>>>>>>> upstream/master
 	memcpy(ptr, &value, sizeof(value));
 }
 
 
 
+<<<<<<< HEAD
 static void put_leuint16(void *ptr, UINT16 value)
 {
 	value = LITTLE_ENDIANIZE_INT16(value);
+=======
+static void put_leuint16(void *ptr, uint16_t value)
+{
+	value = little_endianize_int16(value);
+>>>>>>> upstream/master
 	memcpy(ptr, &value, sizeof(value));
 }
 
 
 
+<<<<<<< HEAD
 static casserr_t wavfile_process(cassette_image *cassette, struct CassetteOptions *opts,
 	int read_waveform)
 {
@@ -73,6 +102,24 @@ static casserr_t wavfile_process(cassette_image *cassette, struct CassetteOption
 	UINT16 format_type = 0;
 	UINT32 bytes_per_second = 0;
 //  UINT16 block_align = 0;
+=======
+static cassette_image::error wavfile_process(cassette_image *cassette, struct CassetteOptions *opts,
+	bool read_waveform)
+{
+	uint8_t file_header[12];
+	uint8_t tag_header[8];
+	uint8_t format_tag[16];
+	uint32_t stated_size;
+	uint64_t file_size;
+	uint32_t tag_size;
+	uint32_t tag_samples;
+	uint64_t offset;
+	bool format_specified = false;
+
+	uint16_t format_type = 0;
+	uint32_t bytes_per_second = 0;
+//  uint16_t block_align = 0;
+>>>>>>> upstream/master
 	int waveform_flags = 0;
 
 	/* read header */
@@ -81,15 +128,25 @@ static casserr_t wavfile_process(cassette_image *cassette, struct CassetteOption
 
 	/* check magic numbers */
 	if (memcmp(&file_header[0], magic1, 4))
+<<<<<<< HEAD
 		return CASSETTE_ERROR_INVALIDIMAGE;
 	if (memcmp(&file_header[8], magic2, 4))
 		return CASSETTE_ERROR_INVALIDIMAGE;
+=======
+		return cassette_image::error::INVALID_IMAGE;
+	if (memcmp(&file_header[8], magic2, 4))
+		return cassette_image::error::INVALID_IMAGE;
+>>>>>>> upstream/master
 
 	/* read and sanity check size */
 	stated_size = get_leuint32(&file_header[4]) + 8;
 	file_size = cassette_image_size(cassette);
 	if (stated_size > file_size)
+<<<<<<< HEAD
 		stated_size = (UINT32) file_size;
+=======
+		stated_size = (uint32_t) file_size;
+>>>>>>> upstream/master
 
 	while(offset < stated_size)
 	{
@@ -101,8 +158,13 @@ static casserr_t wavfile_process(cassette_image *cassette, struct CassetteOption
 		{
 			/* format tag */
 			if (format_specified || (tag_size < sizeof(format_tag)))
+<<<<<<< HEAD
 				return CASSETTE_ERROR_INVALIDIMAGE;
 			format_specified = TRUE;
+=======
+				return cassette_image::error::INVALID_IMAGE;
+			format_specified = true;
+>>>>>>> upstream/master
 
 			cassette_image_read(cassette, format_tag, offset, sizeof(format_tag));
 
@@ -114,9 +176,15 @@ static casserr_t wavfile_process(cassette_image *cassette, struct CassetteOption
 			opts->bits_per_sample   = get_leuint16(&format_tag[14]);
 
 			if (format_type != WAV_FORMAT_PCM)
+<<<<<<< HEAD
 				return CASSETTE_ERROR_INVALIDIMAGE;
 			if (opts->sample_frequency * opts->bits_per_sample * opts->channels / 8 != bytes_per_second)
 				return CASSETTE_ERROR_INVALIDIMAGE;
+=======
+				return cassette_image::error::INVALID_IMAGE;
+			if (opts->sample_frequency * opts->bits_per_sample * opts->channels / 8 != bytes_per_second)
+				return cassette_image::error::INVALID_IMAGE;
+>>>>>>> upstream/master
 
 			switch(opts->bits_per_sample)
 			{
@@ -130,14 +198,22 @@ static casserr_t wavfile_process(cassette_image *cassette, struct CassetteOption
 					waveform_flags = CASSETTE_WAVEFORM_32BITLE;
 					break;
 				default:
+<<<<<<< HEAD
 					return CASSETTE_ERROR_INVALIDIMAGE;
+=======
+					return cassette_image::error::INVALID_IMAGE;
+>>>>>>> upstream/master
 			}
 		}
 		else if (!memcmp(tag_header, data_tag_id, 4))
 		{
 			/* data tag */
 			if (!format_specified)
+<<<<<<< HEAD
 				return CASSETTE_ERROR_INVALIDIMAGE;
+=======
+				return cassette_image::error::INVALID_IMAGE;
+>>>>>>> upstream/master
 
 			if (read_waveform)
 			{
@@ -153,27 +229,46 @@ static casserr_t wavfile_process(cassette_image *cassette, struct CassetteOption
 		offset += tag_size;
 	}
 
+<<<<<<< HEAD
 	return CASSETTE_ERROR_SUCCESS;
+=======
+	return cassette_image::error::SUCCESS;
+>>>>>>> upstream/master
 }
 
 
 
+<<<<<<< HEAD
 static casserr_t wavfile_identify(cassette_image *cassette, struct CassetteOptions *opts)
 {
 	return wavfile_process(cassette, opts, FALSE);
+=======
+static cassette_image::error wavfile_identify(cassette_image *cassette, struct CassetteOptions *opts)
+{
+	return wavfile_process(cassette, opts, false);
+>>>>>>> upstream/master
 }
 
 
 
+<<<<<<< HEAD
 static casserr_t wavfile_load(cassette_image *cassette)
 {
 	struct CassetteOptions opts;
 	memset(&opts, 0, sizeof(opts));
 	return wavfile_process(cassette, &opts, TRUE);
+=======
+static cassette_image::error wavfile_load(cassette_image *cassette)
+{
+	struct CassetteOptions opts;
+	memset(&opts, 0, sizeof(opts));
+	return wavfile_process(cassette, &opts, true);
+>>>>>>> upstream/master
 }
 
 
 
+<<<<<<< HEAD
 static casserr_t wavfile_save(cassette_image *cassette, const struct CassetteInfo *info)
 {
 	casserr_t err;
@@ -195,6 +290,29 @@ static casserr_t wavfile_save(cassette_image *cassette, const struct CassetteInf
 	data_size = (UINT32) (info->sample_count * bytes_per_sample * info->channels);
 	file_size = data_size + sizeof(consolidated_header) - 8;
 	block_align = (UINT16) (bytes_per_sample * info->channels);
+=======
+static cassette_image::error wavfile_save(cassette_image *cassette, const struct CassetteInfo *info)
+{
+	cassette_image::error err;
+	uint8_t consolidated_header[12 + 8 + 16 + 8];
+	uint8_t *header               = &consolidated_header[0];
+	uint8_t *format_tag_header    = &consolidated_header[12];
+	uint8_t *format_tag_data      = &consolidated_header[12 + 8];
+	uint8_t *data_tag_header      = &consolidated_header[12 + 8 + 16];
+	uint32_t file_size;
+	uint32_t bytes_per_second;
+	uint16_t bits_per_sample;
+	uint32_t data_size;
+	size_t bytes_per_sample = 2;
+	int waveform_flags = CASSETTE_WAVEFORM_16BITLE;
+	uint16_t block_align;
+
+	bits_per_sample = (uint16_t) (bytes_per_sample * 8);
+	bytes_per_second = info->sample_frequency * bytes_per_sample * info->channels;
+	data_size = (uint32_t) (info->sample_count * bytes_per_sample * info->channels);
+	file_size = data_size + sizeof(consolidated_header) - 8;
+	block_align = (uint16_t) (bytes_per_sample * info->channels);
+>>>>>>> upstream/master
 
 	/* set up header */
 	memcpy(&header[0],                  magic1, 4);
@@ -222,10 +340,17 @@ static casserr_t wavfile_save(cassette_image *cassette, const struct CassetteInf
 	err = cassette_write_samples(cassette, info->channels, 0.0, info->sample_count
 		/ (double) info->sample_frequency, info->sample_count, sizeof(consolidated_header),
 		waveform_flags);
+<<<<<<< HEAD
 	if (err)
 		return err;
 
 	return CASSETTE_ERROR_SUCCESS;
+=======
+	if (err != cassette_image::error::SUCCESS)
+		return err;
+
+	return cassette_image::error::SUCCESS;
+>>>>>>> upstream/master
 }
 
 
@@ -257,8 +382,13 @@ void wavfile_testload(const char *fname)
 	FILE *f;
 	long offset;
 	int freq, samples, i;
+<<<<<<< HEAD
 	INT32 cassamp;
 	INT16 wavsamp;
+=======
+	int32_t cassamp;
+	int16_t wavsamp;
+>>>>>>> upstream/master
 
 	f = fopen(fname, "rb");
 	if (!f)
@@ -280,7 +410,11 @@ void wavfile_testload(const char *fname)
 
 		fseek(f, offset + i * 2, SEEK_SET);
 		fread(&wavsamp, 1, 2, f);
+<<<<<<< HEAD
 		assert(cassamp == (((UINT32) wavsamp) << 16));
+=======
+		assert(cassamp == (((uint32_t) wavsamp) << 16));
+>>>>>>> upstream/master
 	}
 
 	cassette_close(cassette);

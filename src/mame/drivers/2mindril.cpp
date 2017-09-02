@@ -35,9 +35,18 @@ DAC               -26.6860Mhz
 */
 
 #include "emu.h"
+<<<<<<< HEAD
 #include "cpu/m68000/m68000.h"
 #include "sound/2610intf.h"
 #include "includes/taito_f3.h"
+=======
+#include "includes/taito_f3.h"
+
+#include "cpu/m68000/m68000.h"
+#include "machine/taitoio.h"
+#include "sound/2610intf.h"
+#include "speaker.h"
+>>>>>>> upstream/master
 
 
 class _2mindril_state : public taito_f3_state
@@ -45,6 +54,7 @@ class _2mindril_state : public taito_f3_state
 public:
 	_2mindril_state(const machine_config &mconfig, device_type type, const char *tag)
 		: taito_f3_state(mconfig, type, tag),
+<<<<<<< HEAD
 		m_iodata(*this, "iodata") { }
 
 	/* memory pointers */
@@ -58,6 +68,20 @@ public:
 	/* devices */
 	DECLARE_READ16_MEMBER(drill_io_r);
 	DECLARE_WRITE16_MEMBER(drill_io_w);
+=======
+		m_in0(*this, "IN0") { }
+
+	/* input-related */
+	required_ioport m_in0;
+	uint8_t         m_defender_sensor;
+	uint8_t         m_shutter_sensor;
+	uint16_t        m_irq_reg;
+
+	/* devices */
+	DECLARE_READ8_MEMBER(arm_pwr_r);
+	DECLARE_READ8_MEMBER(sensors_r);
+	DECLARE_WRITE8_MEMBER(coins_w);
+>>>>>>> upstream/master
 	DECLARE_WRITE16_MEMBER(sensors_w);
 	DECLARE_READ16_MEMBER(drill_irq_r);
 	DECLARE_WRITE16_MEMBER(drill_irq_w);
@@ -81,6 +105,7 @@ protected:
 };
 
 
+<<<<<<< HEAD
 READ16_MEMBER(_2mindril_state::drill_io_r)
 {
 //  if (offset * 2 == 0x4)
@@ -125,6 +150,31 @@ WRITE16_MEMBER(_2mindril_state::drill_io_w)
 
 //  if(data != 0 && offset != 8)
 //  printf("PC=%08x [%04x] <- %04x W\n", space.device().safe_pc(), offset * 2, data);
+=======
+READ8_MEMBER(_2mindril_state::arm_pwr_r)
+{
+	int arm_pwr = m_in0->read();//throw
+	//popmessage("PC=%08x %02x",space.device().safe_pc(),arm_pwr);
+
+	if(arm_pwr > 0xe0) return ~0x18;
+	if(arm_pwr > 0xc0) return ~0x14;
+	if(arm_pwr > 0x80) return ~0x12;
+	if(arm_pwr > 0x40) return ~0x10;
+	else return ~0x00;
+}
+
+READ8_MEMBER(_2mindril_state::sensors_r)
+{
+	return (m_defender_sensor) | (m_shutter_sensor);
+}
+
+WRITE8_MEMBER(_2mindril_state::coins_w)
+{
+	machine().bookkeeping().coin_counter_w(0, data & 0x04);
+	machine().bookkeeping().coin_counter_w(1, data & 0x08);
+	machine().bookkeeping().coin_lockout_w(0, ~data & 0x01);
+	machine().bookkeeping().coin_lockout_w(1, ~data & 0x02);
+>>>>>>> upstream/master
 }
 
 /*
@@ -153,7 +203,11 @@ void _2mindril_state::device_timer(emu_timer &timer, device_timer_id id, int par
 			m_defender_sensor = param;
 			break;
 	default:
+<<<<<<< HEAD
 			assert_always(FALSE, "Unknown id in _2mindril_state::device_timer");
+=======
+			assert_always(false, "Unknown id in _2mindril_state::device_timer");
+>>>>>>> upstream/master
 	}
 }
 #endif
@@ -164,6 +218,7 @@ WRITE16_MEMBER(_2mindril_state::sensors_w)
 	/*---- ---- ---- -x-- lamp*/
 	if (data & 1)
 	{
+<<<<<<< HEAD
 		//timer_set( attotime::from_seconds(2), TIMER_SHUTTER_REQ, 0x100);
 		m_shutter_sensor = 0x100;
 	}
@@ -171,10 +226,20 @@ WRITE16_MEMBER(_2mindril_state::sensors_w)
 	{
 		//timer_set( attotime::from_seconds(2), TIMER_SHUTTER_REQ, 0x200);
 		m_shutter_sensor = 0x200;
+=======
+		//timer_set( attotime::from_seconds(2), TIMER_SHUTTER_REQ, 0x01);
+		m_shutter_sensor = 0x01;
+	}
+	else if (data & 2)
+	{
+		//timer_set( attotime::from_seconds(2), TIMER_SHUTTER_REQ, 0x02);
+		m_shutter_sensor = 0x02;
+>>>>>>> upstream/master
 	}
 
 	if (data & 0x1000 || data & 0x4000)
 	{
+<<<<<<< HEAD
 		//timer_set( attotime::from_seconds(2), TIMER_DEFENDER_REQ, 0x800);
 		m_defender_sensor = 0x800;
 	}
@@ -182,6 +247,15 @@ WRITE16_MEMBER(_2mindril_state::sensors_w)
 	{
 		//timer_set( attotime::from_seconds(2), TIMER_DEFENDER_REQ, 0x400);
 		m_defender_sensor = 0x400;
+=======
+		//timer_set( attotime::from_seconds(2), TIMER_DEFENDER_REQ, 0x08);
+		m_defender_sensor = 0x08;
+	}
+	else if (data & 0x2000 || data & 0x8000)
+	{
+		//timer_set( attotime::from_seconds(2), TIMER_DEFENDER_REQ, 0x04);
+		m_defender_sensor = 0x04;
+>>>>>>> upstream/master
 	}
 }
 
@@ -227,12 +301,17 @@ static ADDRESS_MAP_START( drill_map, AS_PROGRAM, 16, _2mindril_state )
 	AM_RANGE(0x600000, 0x600007) AM_DEVREADWRITE8("ymsnd", ym2610_device, read, write, 0x00ff)
 	AM_RANGE(0x60000c, 0x60000d) AM_READWRITE(drill_irq_r,drill_irq_w)
 	AM_RANGE(0x60000e, 0x60000f) AM_RAM // unknown purpose, zeroed at start-up and nothing else
+<<<<<<< HEAD
 	AM_RANGE(0x700000, 0x70000f) AM_READWRITE(drill_io_r,drill_io_w) AM_SHARE("iodata") // i/o
+=======
+	AM_RANGE(0x700000, 0x70000f) AM_DEVREADWRITE8("tc0510nio", tc0510nio_device, read, write, 0xff00)
+>>>>>>> upstream/master
 	AM_RANGE(0x800000, 0x800001) AM_WRITE(sensors_w)
 ADDRESS_MAP_END
 
 static INPUT_PORTS_START( drill )
 	PORT_START("DSW")//Dip-Switches
+<<<<<<< HEAD
 	PORT_DIPNAME( 0x0001, 0x0001, "DSW" )
 	PORT_DIPSETTING(      0x0001, DEF_STR( Off ) )
 	PORT_DIPSETTING(      0x0000, DEF_STR( On ) )
@@ -281,10 +360,37 @@ static INPUT_PORTS_START( drill )
 	PORT_DIPNAME( 0x8000, 0x8000, DEF_STR( Unknown ) )
 	PORT_DIPSETTING(      0x8000, DEF_STR( Off ) )
 	PORT_DIPSETTING(      0x0000, DEF_STR( On ) )
+=======
+	PORT_DIPNAME( 0x01, 0x01, "DSW" )
+	PORT_DIPSETTING(    0x01, DEF_STR( Off ) )
+	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
+	PORT_DIPNAME( 0x02, 0x02, DEF_STR( Unknown ) )
+	PORT_DIPSETTING(    0x02, DEF_STR( Off ) )
+	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
+	PORT_DIPNAME( 0x04, 0x04, DEF_STR( Unknown ) )
+	PORT_DIPSETTING(    0x04, DEF_STR( Off ) )
+	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
+	PORT_DIPNAME( 0x08, 0x08, DEF_STR( Unknown ) )
+	PORT_DIPSETTING(    0x08, DEF_STR( Off ) )
+	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
+	PORT_DIPNAME( 0x10, 0x10, DEF_STR( Unknown ) )
+	PORT_DIPSETTING(    0x10, DEF_STR( Off ) )
+	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
+	PORT_DIPNAME( 0x20, 0x20, DEF_STR( Unknown ) )
+	PORT_DIPSETTING(    0x20, DEF_STR( Off ) )
+	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
+	PORT_DIPNAME( 0x40, 0x40, DEF_STR( Unknown ) )
+	PORT_DIPSETTING(    0x40, DEF_STR( Off ) )
+	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
+	PORT_DIPNAME( 0x80, 0x80, DEF_STR( Unknown ) )
+	PORT_DIPSETTING(    0x80, DEF_STR( Off ) )
+	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
+>>>>>>> upstream/master
 
 	PORT_START("IN0")//sensors
 	PORT_BIT( 0xff, 0x00, IPT_DIAL ) PORT_SENSITIVITY(25) PORT_KEYDELTA(20)
 
+<<<<<<< HEAD
 	PORT_START("IN1")
 	PORT_DIPNAME( 0x0001, 0x0000, "IN1" )
 	PORT_DIPSETTING(      0x0000, DEF_STR( Off ) )
@@ -345,6 +451,17 @@ static INPUT_PORTS_START( drill )
 	PORT_BIT( 0x2000, IP_ACTIVE_LOW, IPT_BUTTON2 ) PORT_NAME("Select SW-2")
 	PORT_BIT( 0x4000, IP_ACTIVE_LOW, IPT_BUTTON3 ) PORT_NAME("Select SW-3")
 	PORT_BIT( 0x8000, IP_ACTIVE_LOW, IPT_BUTTON4 ) PORT_NAME("Select SW-4")
+=======
+	PORT_START("COINS")
+	PORT_BIT( 0x01, IP_ACTIVE_LOW, IPT_SERVICE )
+	PORT_BIT( 0x02, IP_ACTIVE_LOW, IPT_SERVICE1 )
+	PORT_BIT( 0x04, IP_ACTIVE_LOW, IPT_COIN1 )
+	PORT_BIT( 0x08, IP_ACTIVE_LOW, IPT_UNUSED )
+	PORT_BIT( 0x10, IP_ACTIVE_LOW, IPT_BUTTON1 ) PORT_NAME("Select SW-1")
+	PORT_BIT( 0x20, IP_ACTIVE_LOW, IPT_BUTTON2 ) PORT_NAME("Select SW-2")
+	PORT_BIT( 0x40, IP_ACTIVE_LOW, IPT_BUTTON3 ) PORT_NAME("Select SW-3")
+	PORT_BIT( 0x80, IP_ACTIVE_LOW, IPT_BUTTON4 ) PORT_NAME("Select SW-4")
+>>>>>>> upstream/master
 INPUT_PORTS_END
 
 static const gfx_layout charlayout =
@@ -403,10 +520,17 @@ static const gfx_layout tile_layout =
 };
 
 static GFXDECODE_START( 2mindril )
+<<<<<<< HEAD
 	GFXDECODE_ENTRY( NULL,   0x000000, charlayout,       0x0000, 0x0400>>4 ) /* Dynamically modified */
 	GFXDECODE_ENTRY( "gfx2", 0x000000, tile_layout,      0x0000, 0x2000>>4 ) /* Tiles area */
 	GFXDECODE_ENTRY( "gfx1", 0x000000, spriteram_layout, 0x1000, 0x1000>>4 ) /* Sprites area */
 	GFXDECODE_ENTRY( NULL,   0x000000, pivotlayout,      0x0000,  0x400>>4 ) /* Dynamically modified */
+=======
+	GFXDECODE_ENTRY( nullptr,   0x000000, charlayout,       0x0000, 0x0400>>4 ) /* Dynamically modified */
+	GFXDECODE_ENTRY( "gfx2", 0x000000, tile_layout,      0x0000, 0x2000>>4 ) /* Tiles area */
+	GFXDECODE_ENTRY( "gfx1", 0x000000, spriteram_layout, 0x1000, 0x1000>>4 ) /* Sprites area */
+	GFXDECODE_ENTRY( nullptr,   0x000000, pivotlayout,      0x0000,  0x400>>4 ) /* Dynamically modified */
+>>>>>>> upstream/master
 GFXDECODE_END
 
 
@@ -443,7 +567,11 @@ MACHINE_RESET_MEMBER(_2mindril_state,drill)
 	m_irq_reg = 0;
 }
 
+<<<<<<< HEAD
 static MACHINE_CONFIG_START( drill, _2mindril_state )
+=======
+static MACHINE_CONFIG_START( drill )
+>>>>>>> upstream/master
 
 	MCFG_CPU_ADD("maincpu", M68000, 16000000 )
 	MCFG_CPU_PROGRAM_MAP(drill_map)
@@ -451,6 +579,16 @@ static MACHINE_CONFIG_START( drill, _2mindril_state )
 	//MCFG_CPU_PERIODIC_INT_DRIVER(_2mindril_state, drill_device_irq, 60)
 	MCFG_GFXDECODE_ADD("gfxdecode", "palette", 2mindril)
 
+<<<<<<< HEAD
+=======
+	MCFG_DEVICE_ADD("tc0510nio", TC0510NIO, 0)
+	MCFG_TC0510NIO_READ_0_CB(IOPORT("DSW"))
+	MCFG_TC0510NIO_READ_1_CB(READ8(_2mindril_state, arm_pwr_r))
+	MCFG_TC0510NIO_READ_2_CB(READ8(_2mindril_state, sensors_r))
+	MCFG_TC0510NIO_WRITE_4_CB(WRITE8(_2mindril_state, coins_w))
+	MCFG_TC0510NIO_READ_7_CB(IOPORT("COINS"))
+
+>>>>>>> upstream/master
 	MCFG_MACHINE_START_OVERRIDE(_2mindril_state,drill)
 	MCFG_MACHINE_RESET_OVERRIDE(_2mindril_state,drill)
 
@@ -460,7 +598,11 @@ static MACHINE_CONFIG_START( drill, _2mindril_state )
 	MCFG_SCREEN_SIZE(40*8+48*2, 32*8)
 	MCFG_SCREEN_VISIBLE_AREA(46, 40*8-1 + 46, 24, 24+224-1)
 	MCFG_SCREEN_UPDATE_DRIVER(_2mindril_state, screen_update_f3)
+<<<<<<< HEAD
 	MCFG_SCREEN_VBLANK_DRIVER(_2mindril_state, screen_eof_f3)
+=======
+	MCFG_SCREEN_VBLANK_CALLBACK(WRITELINE(_2mindril_state, screen_vblank_f3))
+>>>>>>> upstream/master
 
 	MCFG_PALETTE_ADD("palette", 0x2000)
 	MCFG_PALETTE_FORMAT(RRRRGGGGBBBBRGBx)
@@ -497,9 +639,15 @@ ROM_END
 
 void _2mindril_state::tile_decode()
 {
+<<<<<<< HEAD
 	UINT8 lsb,msb;
 	UINT32 offset,i;
 	UINT8 *gfx = memregion("gfx2")->base();
+=======
+	uint8_t lsb,msb;
+	uint32_t offset,i;
+	uint8_t *gfx = memregion("gfx2")->base();
+>>>>>>> upstream/master
 	int size=memregion("gfx2")->bytes();
 	int data;
 

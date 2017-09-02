@@ -33,19 +33,34 @@
 ***************************************************************************/
 
 #include "emu.h"
+<<<<<<< HEAD
 #include "cpu/m68000/m68000.h"
 #include "machine/eepromser.h"
 #include "includes/taito_f3.h"
 #include "sound/es5506.h"
 #include "audio/taito_en.h"
 #include "sound/okim6295.h"
+=======
+#include "includes/taito_f3.h"
+#include "audio/taito_en.h"
+
+#include "cpu/m68000/m68000.h"
+#include "machine/eepromser.h"
+#include "sound/es5506.h"
+#include "sound/okim6295.h"
+#include "speaker.h"
+>>>>>>> upstream/master
 
 
 /******************************************************************************/
 
 CUSTOM_INPUT_MEMBER(taito_f3_state::f3_analog_r)
 {
+<<<<<<< HEAD
 	int num = (FPTR)param;
+=======
+	int num = (uintptr_t)param;
+>>>>>>> upstream/master
 	int data = m_dial[num]->read();
 	return ((data & 0xf)<<12) | ((data & 0xff0)>>4);
 }
@@ -53,7 +68,11 @@ CUSTOM_INPUT_MEMBER(taito_f3_state::f3_analog_r)
 
 CUSTOM_INPUT_MEMBER(taito_f3_state::f3_coin_r)
 {
+<<<<<<< HEAD
 	int num = (FPTR)param;
+=======
+	int num = (uintptr_t)param;
+>>>>>>> upstream/master
 	return m_coin_word[num];
 }
 
@@ -71,16 +90,27 @@ WRITE32_MEMBER(taito_f3_state::f3_control_w)
 	switch (offset)
 	{
 		case 0x00: /* Watchdog */
+<<<<<<< HEAD
 			machine().watchdog_reset();
+=======
+			m_watchdog->watchdog_reset();
+>>>>>>> upstream/master
 			return;
 
 		case 0x01: /* Coin counters & lockouts */
 			if (ACCESSING_BITS_24_31)
 			{
+<<<<<<< HEAD
 				coin_lockout_w(machine(), 0,~data & 0x01000000);
 				coin_lockout_w(machine(), 1,~data & 0x02000000);
 				coin_counter_w(machine(), 0, data & 0x04000000);
 				coin_counter_w(machine(), 1, data & 0x08000000);
+=======
+				machine().bookkeeping().coin_lockout_w(0,~data & 0x01000000);
+				machine().bookkeeping().coin_lockout_w(1,~data & 0x02000000);
+				machine().bookkeeping().coin_counter_w(0, data & 0x04000000);
+				machine().bookkeeping().coin_counter_w(1, data & 0x08000000);
+>>>>>>> upstream/master
 				m_coin_word[0]=(data>>16)&0xffff;
 			}
 			return;
@@ -95,10 +125,17 @@ WRITE32_MEMBER(taito_f3_state::f3_control_w)
 		case 0x05:  /* Player 3 & 4 coin counters */
 			if (ACCESSING_BITS_24_31)
 			{
+<<<<<<< HEAD
 				coin_lockout_w(machine(), 2,~data & 0x01000000);
 				coin_lockout_w(machine(), 3,~data & 0x02000000);
 				coin_counter_w(machine(), 2, data & 0x04000000);
 				coin_counter_w(machine(), 3, data & 0x08000000);
+=======
+				machine().bookkeeping().coin_lockout_w(2,~data & 0x01000000);
+				machine().bookkeeping().coin_lockout_w(3,~data & 0x02000000);
+				machine().bookkeeping().coin_counter_w(2, data & 0x04000000);
+				machine().bookkeeping().coin_counter_w(3, data & 0x08000000);
+>>>>>>> upstream/master
 				m_coin_word[1]=(data>>16)&0xffff;
 			}
 			return;
@@ -119,8 +156,13 @@ WRITE32_MEMBER(taito_f3_state::f3_sound_reset_1_w)
 WRITE32_MEMBER(taito_f3_state::f3_sound_bankswitch_w)
 {
 	if (m_f3_game==KIRAMEKI) {
+<<<<<<< HEAD
 		UINT16 *rom = (UINT16 *)memregion("audiocpu")->base();
 		UINT32 idx;
+=======
+		uint16_t *rom = (uint16_t *)memregion("taito_en:audiocpu")->base();
+		uint32_t idx;
+>>>>>>> upstream/master
 
 		idx = (offset << 1) & 0x1e;
 		if (ACCESSING_BITS_0_15)
@@ -131,7 +173,11 @@ WRITE32_MEMBER(taito_f3_state::f3_sound_bankswitch_w)
 
 		/* Banks are 0x20000 bytes each, divide by two to get data16
 		pointer rather than byte pointer */
+<<<<<<< HEAD
 		membank("bank2")->set_base(&rom[(idx*0x20000)/2 + 0x80000]);
+=======
+		membank("taito_en:bank2")->set_base(&rom[(idx*0x20000)/2 + 0x80000]);
+>>>>>>> upstream/master
 
 	} else {
 		logerror("Sound bankswitch in unsupported game\n");
@@ -199,11 +245,37 @@ static ADDRESS_MAP_START( f3_map, AS_PROGRAM, 32, taito_f3_state )
 	AM_RANGE(0x630000, 0x63ffff) AM_READWRITE16(f3_pivot_r,f3_pivot_w,0xffffffff)           //AM_SHARE("f3_pivot_ram")
 	AM_RANGE(0x660000, 0x66000f) AM_WRITE16(f3_control_0_w,0xffffffff)
 	AM_RANGE(0x660010, 0x66001f) AM_WRITE16(f3_control_1_w,0xffffffff)
+<<<<<<< HEAD
 	AM_RANGE(0xc00000, 0xc007ff) AM_RAM AM_SHARE("snd_shared")
+=======
+	AM_RANGE(0xc00000, 0xc007ff) AM_DEVREADWRITE8("taito_en:dpram", mb8421_device, left_r, left_w, 0xffffffff)
+>>>>>>> upstream/master
 	AM_RANGE(0xc80000, 0xc80003) AM_WRITE(f3_sound_reset_0_w)
 	AM_RANGE(0xc80100, 0xc80103) AM_WRITE(f3_sound_reset_1_w)
 ADDRESS_MAP_END
 
+<<<<<<< HEAD
+=======
+static ADDRESS_MAP_START( bubsympb_map, AS_PROGRAM, 32, taito_f3_state )
+	AM_RANGE(0x000000, 0x1fffff) AM_ROM
+	AM_RANGE(0x300000, 0x30007f) AM_WRITE(f3_sound_bankswitch_w)
+	AM_RANGE(0x400000, 0x41ffff) AM_MIRROR(0x20000) AM_RAM AM_SHARE("f3_ram")
+	AM_RANGE(0x440000, 0x447fff) AM_RAM_WRITE(f3_palette_24bit_w) AM_SHARE("paletteram")
+	AM_RANGE(0x4a0000, 0x4a001b) AM_READWRITE(f3_control_r,  f3_control_w)
+	AM_RANGE(0x4a001c, 0x4a001f) AM_READWRITE(bubsympb_oki_r, bubsympb_oki_w)
+	AM_RANGE(0x4c0000, 0x4c0003) AM_WRITE16(f3_unk_w,0xffffffff)
+	AM_RANGE(0x600000, 0x60ffff) AM_READWRITE16(f3_spriteram_r,f3_spriteram_w,0xffffffff) //AM_SHARE("spriteram")
+	AM_RANGE(0x610000, 0x61bfff) AM_READWRITE16(f3_pf_data_r,f3_pf_data_w,0xffffffff)       //AM_SHARE("f3_pf_data")
+	AM_RANGE(0x61c000, 0x61dfff) AM_READWRITE16(f3_videoram_r,f3_videoram_w,0xffffffff)     //AM_SHARE("videoram")
+	AM_RANGE(0x61e000, 0x61ffff) AM_READWRITE16(f3_vram_r,f3_vram_w,0xffffffff)             //AM_SHARE("f3_vram")
+	AM_RANGE(0x620000, 0x62ffff) AM_READWRITE16(f3_lineram_r,f3_lineram_w,0xffffffff)       //AM_SHARE("f3_line_ram")
+	AM_RANGE(0x630000, 0x63ffff) AM_READWRITE16(f3_pivot_r,f3_pivot_w,0xffffffff)           //AM_SHARE("f3_pivot_ram")
+	AM_RANGE(0x660000, 0x66000f) AM_WRITE16(f3_control_0_w,0xffffffff)
+	AM_RANGE(0x660010, 0x66001f) AM_WRITE16(f3_control_1_w,0xffffffff)
+	AM_RANGE(0xc00000, 0xc007ff) AM_RAM
+ADDRESS_MAP_END
+
+>>>>>>> upstream/master
 
 
 /******************************************************************************/
@@ -233,8 +305,13 @@ static INPUT_PORTS_START( f3 )
 	PORT_BIT( 0x00002000, IP_ACTIVE_LOW, IPT_START2 )
 	PORT_BIT( 0x00004000, IP_ACTIVE_LOW, IPT_START3 )
 	PORT_BIT( 0x00008000, IP_ACTIVE_LOW, IPT_START4 )
+<<<<<<< HEAD
 	PORT_BIT( 0x00ff0000, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, taito_f3_state,eeprom_read, (void *)0)
 	PORT_BIT( 0xff000000, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, taito_f3_state,eeprom_read, (void *)0)
+=======
+	PORT_BIT( 0x00ff0000, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, taito_f3_state,eeprom_read, nullptr)
+	PORT_BIT( 0xff000000, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, taito_f3_state,eeprom_read, nullptr)
+>>>>>>> upstream/master
 
 	/* MSW: Coin counters/lockouts are readable, LSW: Joysticks (Player 1 & 2) */
 	PORT_START("IN.1")
@@ -386,10 +463,17 @@ static const gfx_layout tile_layout =
 };
 
 static GFXDECODE_START( taito_f3 )
+<<<<<<< HEAD
 	GFXDECODE_ENTRY( NULL,   0x000000, charlayout,       0x0000, 0x0400>>4 ) /* Dynamically modified */
 	GFXDECODE_ENTRY( "gfx2", 0x000000, tile_layout,      0x0000, 0x2000>>4 ) /* Tiles area */
 	GFXDECODE_ENTRY( "gfx1", 0x000000, spriteram_layout, 0x1000, 0x1000>>4 ) /* Sprites area */
 	GFXDECODE_ENTRY( NULL,   0x000000, pivotlayout,      0x0000,  0x400>>4 ) /* Dynamically modified */
+=======
+	GFXDECODE_ENTRY( nullptr,   0x000000, charlayout,       0x0000, 0x0400>>4 ) /* Dynamically modified */
+	GFXDECODE_ENTRY( "gfx2", 0x000000, tile_layout,      0x0000, 0x2000>>4 ) /* Tiles area */
+	GFXDECODE_ENTRY( "gfx1", 0x000000, spriteram_layout, 0x1000, 0x1000>>4 ) /* Sprites area */
+	GFXDECODE_ENTRY( nullptr,   0x000000, pivotlayout,      0x0000,  0x400>>4 ) /* Dynamically modified */
+>>>>>>> upstream/master
 GFXDECODE_END
 
 /******************************************************************************/
@@ -402,17 +486,28 @@ void taito_f3_state::device_timer(emu_timer &timer, device_timer_id id, int para
 		m_maincpu->set_input_line(3, HOLD_LINE);    // some signal from video hardware?
 		break;
 	default:
+<<<<<<< HEAD
 		assert_always(FALSE, "Unknown id in taito_f3_state::device_timer");
+=======
+		assert_always(false, "Unknown id in taito_f3_state::device_timer");
+>>>>>>> upstream/master
 	}
 }
 
 INTERRUPT_GEN_MEMBER(taito_f3_state::f3_interrupt2)
 {
 	device.execute().set_input_line(2, HOLD_LINE);  // vblank
+<<<<<<< HEAD
 	timer_set(downcast<cpu_device *>(&device)->cycles_to_attotime(10000), TIMER_F3_INTERRUPT3);
 }
 
 static const UINT16 recalh_eeprom[64] = {
+=======
+	m_interrupt3_timer->adjust(m_maincpu->cycles_to_attotime(10000));
+}
+
+static const uint16_t recalh_eeprom[64] = {
+>>>>>>> upstream/master
 	0x8554,0x0000,0x3000,0x0000,0x0000,0x0000,0x0000,0xf335,
 	0x0001,0x86a0,0x0013,0x0413,0x0000,0xc350,0x0019,0x000a,
 	0x0000,0x4e20,0x0003,0x180d,0x0000,0x2710,0x0005,0x1418,
@@ -423,8 +518,15 @@ static const UINT16 recalh_eeprom[64] = {
 	0xffff,0xffff,0xffff,0xffff,0xffff,0xffff,0xffff,0xffff
 };
 
+<<<<<<< HEAD
 MACHINE_START_MEMBER(taito_f3_state,f3)
 {
+=======
+void taito_f3_state::machine_start()
+{
+	m_interrupt3_timer = timer_alloc(TIMER_F3_INTERRUPT3);
+
+>>>>>>> upstream/master
 	save_item(NAME(m_coin_word));
 }
 
@@ -434,18 +536,30 @@ MACHINE_RESET_MEMBER(taito_f3_state,f3)
 	m_audiocpu->set_input_line(INPUT_LINE_RESET, ASSERT_LINE);
 }
 
+<<<<<<< HEAD
 static MACHINE_CONFIG_START( f3, taito_f3_state )
+=======
+static MACHINE_CONFIG_START( f3 )
+>>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", M68EC020, XTAL_16MHz)
 	MCFG_CPU_PROGRAM_MAP(f3_map)
 	MCFG_CPU_VBLANK_INT_DRIVER("screen", taito_f3_state,  f3_interrupt2)
 
+<<<<<<< HEAD
 	MCFG_MACHINE_START_OVERRIDE(taito_f3_state,f3)
+=======
+>>>>>>> upstream/master
 	MCFG_MACHINE_RESET_OVERRIDE(taito_f3_state,f3)
 
 	MCFG_EEPROM_SERIAL_93C46_ADD("eeprom")
 
+<<<<<<< HEAD
+=======
+	MCFG_WATCHDOG_ADD("watchdog")
+
+>>>>>>> upstream/master
 	/* video hardware */
 	MCFG_SCREEN_ADD("screen", RASTER)
 	MCFG_SCREEN_REFRESH_RATE(58.97)
@@ -453,7 +567,11 @@ static MACHINE_CONFIG_START( f3, taito_f3_state )
 	MCFG_SCREEN_SIZE(40*8+48*2, 32*8)
 	MCFG_SCREEN_VISIBLE_AREA(46, 40*8-1 + 46, 24, 24+232-1)
 	MCFG_SCREEN_UPDATE_DRIVER(taito_f3_state, screen_update_f3)
+<<<<<<< HEAD
 	MCFG_SCREEN_VBLANK_DRIVER(taito_f3_state, screen_eof_f3)
+=======
+	MCFG_SCREEN_VBLANK_CALLBACK(WRITELINE(taito_f3_state, screen_vblank_f3))
+>>>>>>> upstream/master
 
 	MCFG_GFXDECODE_ADD("gfxdecode", "palette", taito_f3)
 	MCFG_PALETTE_ADD("palette", 0x2000)
@@ -461,7 +579,11 @@ static MACHINE_CONFIG_START( f3, taito_f3_state )
 	MCFG_VIDEO_START_OVERRIDE(taito_f3_state,f3)
 
 	/* sound hardware */
+<<<<<<< HEAD
 	MCFG_FRAGMENT_ADD(taito_en_sound)
+=======
+	MCFG_DEVICE_ADD("taito_en", TAITO_EN, 0)
+>>>>>>> upstream/master
 MACHINE_CONFIG_END
 
 /* These games reprogram the video output registers to display different scanlines,
@@ -523,6 +645,7 @@ static const gfx_layout bubsympb_tile_layout =
 
 
 static GFXDECODE_START( bubsympb )
+<<<<<<< HEAD
 	GFXDECODE_ENTRY( NULL,           0x000000, charlayout,          0,  64 ) /* Dynamically modified */
 	GFXDECODE_ENTRY( "gfx2", 0x000000, bubsympb_tile_layout, 0, 512 ) /* Tiles area */
 	GFXDECODE_ENTRY( "gfx1", 0x000000, bubsympb_sprite_layout, 4096, 256 ) /* Sprites area */
@@ -539,6 +662,24 @@ static MACHINE_CONFIG_START( bubsympb, taito_f3_state )
 
 	MCFG_EEPROM_SERIAL_93C46_ADD("eeprom")
 
+=======
+	GFXDECODE_ENTRY( nullptr,           0x000000, charlayout,          0,  64 ) /* Dynamically modified */
+	GFXDECODE_ENTRY( "gfx2", 0x000000, bubsympb_tile_layout, 0, 512 ) /* Tiles area */
+	GFXDECODE_ENTRY( "gfx1", 0x000000, bubsympb_sprite_layout, 4096, 256 ) /* Sprites area */
+	GFXDECODE_ENTRY( nullptr,           0x000000, pivotlayout,         0,  64 ) /* Dynamically modified */
+GFXDECODE_END
+
+static MACHINE_CONFIG_START( bubsympb )
+	/* basic machine hardware */
+	MCFG_CPU_ADD("maincpu", M68EC020, XTAL_16MHz)
+	MCFG_CPU_PROGRAM_MAP(bubsympb_map)
+	MCFG_CPU_VBLANK_INT_DRIVER("screen", taito_f3_state, f3_interrupt2)
+
+	MCFG_EEPROM_SERIAL_93C46_ADD("eeprom")
+
+	MCFG_WATCHDOG_ADD("watchdog")
+
+>>>>>>> upstream/master
 	/* video hardware */
 	MCFG_SCREEN_ADD("screen", RASTER)
 	MCFG_SCREEN_REFRESH_RATE(58.97)
@@ -546,7 +687,11 @@ static MACHINE_CONFIG_START( bubsympb, taito_f3_state )
 	MCFG_SCREEN_SIZE(40*8+48*2, 32*8)
 	MCFG_SCREEN_VISIBLE_AREA(46, 40*8-1 + 46, 31, 31+224-1)
 	MCFG_SCREEN_UPDATE_DRIVER(taito_f3_state, screen_update_f3)
+<<<<<<< HEAD
 	MCFG_SCREEN_VBLANK_DRIVER(taito_f3_state, screen_eof_f3)
+=======
+	MCFG_SCREEN_VBLANK_CALLBACK(WRITELINE(taito_f3_state, screen_vblank_f3))
+>>>>>>> upstream/master
 
 	MCFG_GFXDECODE_ADD("gfxdecode", "palette", bubsympb)
 	MCFG_PALETTE_ADD("palette", 8192)
@@ -556,7 +701,11 @@ static MACHINE_CONFIG_START( bubsympb, taito_f3_state )
 	/* sound hardware */
 	MCFG_SPEAKER_STANDARD_MONO("mono")
 
+<<<<<<< HEAD
 	MCFG_OKIM6295_ADD("oki", 1000000 , OKIM6295_PIN7_HIGH) // not verified
+=======
+	MCFG_OKIM6295_ADD("oki", 1000000 , PIN7_HIGH) // not verified
+>>>>>>> upstream/master
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 1.0)
 MACHINE_CONFIG_END
 
@@ -573,15 +722,25 @@ ROM_START( ringrage )
 	ROM_LOAD16_BYTE("d21-02.66", 0x000000, 0x200000, CRC(facd3a02) SHA1(360c6e65d01dd2c33495ba928ef9986f754b3694) )
 	ROM_LOAD16_BYTE("d21-03.67", 0x000001, 0x200000, CRC(6f653e68) SHA1(840905f012c37d58160cc554c036ad25218ce3e6) )
 	ROM_LOAD       ("d21-04.68", 0x600000, 0x200000, CRC(9dcdceca) SHA1(e12bab5307ebe4c3b5f9284c91f3bf7ba4c8e9bc) )
+<<<<<<< HEAD
 	ROM_FILL       (             0x400000, 0x200000, 0 )
+=======
+	ROM_FILL       (             0x400000, 0x200000, 0x00 )
+>>>>>>> upstream/master
 
 	ROM_REGION(0x200000, "gfx2" , 0 ) /* Tiles */
 	ROM_LOAD16_BYTE("d21-06.49", 0x000000, 0x080000, CRC(92d4a720) SHA1(81dc58c58d5f4f20ceeb5d6b90491f1efcbc67d3) )
 	ROM_LOAD16_BYTE("d21-07.50", 0x000001, 0x080000, CRC(6da696e9) SHA1(74332090b0de4193a669cd5242fd655e7b90f772) )
 	ROM_LOAD       ("d21-08.51", 0x180000, 0x080000, CRC(a0d95be9) SHA1(1746097e827ac10906f012c5c4f93c388a30f4b3) )
+<<<<<<< HEAD
 	ROM_FILL       (             0x100000, 0x080000, 0 )
 
 	ROM_REGION(0x140000, "audiocpu", 0) /* sound CPU */
+=======
+	ROM_FILL       (             0x100000, 0x080000, 0x00 )
+
+	ROM_REGION(0x140000, "taito_en:audiocpu", 0) /* sound CPU */
+>>>>>>> upstream/master
 	ROM_LOAD16_BYTE("d21-18.5", 0x100000, 0x20000, CRC(133b55d0) SHA1(feb5c9d0b1adcae3b16eb206c8ac4e73fd88bef4) )
 	ROM_LOAD16_BYTE("d21-19.6", 0x100001, 0x20000, CRC(1f98908f) SHA1(972c8f7e4e417831466714efd0b4cadca1f3e8e5) )
 
@@ -602,15 +761,25 @@ ROM_START( ringrageu )
 	ROM_LOAD16_BYTE("d21-02.66", 0x000000, 0x200000, CRC(facd3a02) SHA1(360c6e65d01dd2c33495ba928ef9986f754b3694) )
 	ROM_LOAD16_BYTE("d21-03.67", 0x000001, 0x200000, CRC(6f653e68) SHA1(840905f012c37d58160cc554c036ad25218ce3e6) )
 	ROM_LOAD       ("d21-04.68", 0x600000, 0x200000, CRC(9dcdceca) SHA1(e12bab5307ebe4c3b5f9284c91f3bf7ba4c8e9bc) )
+<<<<<<< HEAD
 	ROM_FILL       (             0x400000, 0x200000, 0 )
+=======
+	ROM_FILL       (             0x400000, 0x200000, 0x00 )
+>>>>>>> upstream/master
 
 	ROM_REGION(0x200000, "gfx2" , 0 ) /* Tiles */
 	ROM_LOAD16_BYTE("d21-06.49", 0x000000, 0x080000, CRC(92d4a720) SHA1(81dc58c58d5f4f20ceeb5d6b90491f1efcbc67d3) )
 	ROM_LOAD16_BYTE("d21-07.50", 0x000001, 0x080000, CRC(6da696e9) SHA1(74332090b0de4193a669cd5242fd655e7b90f772) )
 	ROM_LOAD       ("d21-08.51", 0x180000, 0x080000, CRC(a0d95be9) SHA1(1746097e827ac10906f012c5c4f93c388a30f4b3) )
+<<<<<<< HEAD
 	ROM_FILL       (             0x100000, 0x080000, 0 )
 
 	ROM_REGION(0x140000, "audiocpu", 0) /* sound CPU */
+=======
+	ROM_FILL       (             0x100000, 0x080000, 0x00 )
+
+	ROM_REGION(0x140000, "taito_en:audiocpu", 0) /* sound CPU */
+>>>>>>> upstream/master
 	ROM_LOAD16_BYTE("d21-18.5", 0x100000, 0x20000, CRC(133b55d0) SHA1(feb5c9d0b1adcae3b16eb206c8ac4e73fd88bef4) )
 	ROM_LOAD16_BYTE("d21-19.6", 0x100001, 0x20000, CRC(1f98908f) SHA1(972c8f7e4e417831466714efd0b4cadca1f3e8e5) )
 
@@ -631,15 +800,25 @@ ROM_START( ringragej )
 	ROM_LOAD16_BYTE("d21-02.66", 0x000000, 0x200000, CRC(facd3a02) SHA1(360c6e65d01dd2c33495ba928ef9986f754b3694) )
 	ROM_LOAD16_BYTE("d21-03.67", 0x000001, 0x200000, CRC(6f653e68) SHA1(840905f012c37d58160cc554c036ad25218ce3e6) )
 	ROM_LOAD       ("d21-04.68", 0x600000, 0x200000, CRC(9dcdceca) SHA1(e12bab5307ebe4c3b5f9284c91f3bf7ba4c8e9bc) )
+<<<<<<< HEAD
 	ROM_FILL       (             0x400000, 0x200000, 0 )
+=======
+	ROM_FILL       (             0x400000, 0x200000, 0x00 )
+>>>>>>> upstream/master
 
 	ROM_REGION(0x200000, "gfx2" , 0 ) /* Tiles */
 	ROM_LOAD16_BYTE("d21-06.49", 0x000000, 0x080000, CRC(92d4a720) SHA1(81dc58c58d5f4f20ceeb5d6b90491f1efcbc67d3) )
 	ROM_LOAD16_BYTE("d21-07.50", 0x000001, 0x080000, CRC(6da696e9) SHA1(74332090b0de4193a669cd5242fd655e7b90f772) )
 	ROM_LOAD       ("d21-08.51", 0x180000, 0x080000, CRC(a0d95be9) SHA1(1746097e827ac10906f012c5c4f93c388a30f4b3) )
+<<<<<<< HEAD
 	ROM_FILL       (             0x100000, 0x080000, 0 )
 
 	ROM_REGION(0x140000, "audiocpu", 0) /* sound CPU */
+=======
+	ROM_FILL       (             0x100000, 0x080000, 0x00 )
+
+	ROM_REGION(0x140000, "taito_en:audiocpu", 0) /* sound CPU */
+>>>>>>> upstream/master
 	ROM_LOAD16_BYTE("d21-18.5", 0x100000, 0x20000, CRC(133b55d0) SHA1(feb5c9d0b1adcae3b16eb206c8ac4e73fd88bef4) )
 	ROM_LOAD16_BYTE("d21-19.6", 0x100001, 0x20000, CRC(1f98908f) SHA1(972c8f7e4e417831466714efd0b4cadca1f3e8e5) )
 
@@ -660,15 +839,25 @@ ROM_START( arabianm )
 	ROM_LOAD16_BYTE("d29-03.ic66", 0x000000, 0x100000, CRC(aeaff456) SHA1(e70d0089e69d33d213be8195c31891f38fbcb53a) )
 	ROM_LOAD16_BYTE("d29-04.ic67", 0x000001, 0x100000, CRC(01711cfe) SHA1(26da4cc9dcb8d38bdf8c93015f77e58ffc9d1ba9) )
 	ROM_LOAD       ("d29-05.ic68", 0x300000, 0x100000, CRC(9b5f7a17) SHA1(89d9faedc7b55df6237f2c2ebb43de7de685cb66) )
+<<<<<<< HEAD
 	ROM_FILL       (               0x200000, 0x100000, 0 )
+=======
+	ROM_FILL       (               0x200000, 0x100000, 0x00 )
+>>>>>>> upstream/master
 
 	ROM_REGION(0x200000, "gfx2" , 0) /* Tiles */
 	ROM_LOAD16_BYTE("d29-06.ic49", 0x000000, 0x080000, CRC(eea07bf3) SHA1(7860a2c0c592af000b56e59bd39d67b086fe3606) )
 	ROM_LOAD16_BYTE("d29-07.ic50", 0x000001, 0x080000, CRC(db3c094d) SHA1(5b60f0fa1054bf93ce51d310376b1abdb3022541) )
 	ROM_LOAD       ("d29-08.ic51", 0x180000, 0x080000, CRC(d7562851) SHA1(91d86e75ba7a590ca298b932b4cf8fa9228f115e) )
+<<<<<<< HEAD
 	ROM_FILL       (               0x100000, 0x080000, 0 )
 
 	ROM_REGION(0x140000, "audiocpu", 0) /* sound CPU */
+=======
+	ROM_FILL       (               0x100000, 0x080000, 0x00 )
+
+	ROM_REGION(0x140000, "taito_en:audiocpu", 0) /* sound CPU */
+>>>>>>> upstream/master
 	ROM_LOAD16_BYTE("d29-18.ic5", 0x100000, 0x20000, CRC(d97780df) SHA1(d0f9d2fd7ce13f620bb44083bf012f67dda4b10b) )
 	ROM_LOAD16_BYTE("d29-19.ic6", 0x100001, 0x20000, CRC(b1ad365c) SHA1(1cd26d8feaaa06b50dfee32e9b7950b8ee92ac55) )
 
@@ -678,6 +867,7 @@ ROM_START( arabianm )
 	ROM_LOAD16_BYTE("d29-02.ic18", 0x600000, 0x100000, CRC(ed894fe1) SHA1(5bf2fb6abdcf25bc525a2c3b29dbf7aca0b18fea) )   // -std-
 
 	ROM_REGION( 0x1200, "plds", 0 )
+<<<<<<< HEAD
 	ROM_LOAD( "palce20v8h.1",  0x0000, 0x0157, CRC(5dd5c8f9) SHA1(5e6153d9e08985b2326dfd6d73f7b90136a7a4b1) ) /* D29-11 */
 	ROM_LOAD( "pal20l8b.2",    0x0200, 0x0144, CRC(c91437e2) SHA1(5bd6fb57fd7e0ff957a6ef9509b8f2e35a8ca29a) ) /* D29-12 */
 	ROM_LOAD( "palce20v8h.3",  0x0400, 0x0157, CRC(74d61d36) SHA1(c34d8b2d227f69c167d1516dea53e4bcb76491d1) ) /* D29-13 */
@@ -687,6 +877,17 @@ ROM_START( arabianm )
 	ROM_LOAD( "pal16l8b.62",   0x0c00, 0x0104, CRC(7093e2f3) SHA1(62bb0085ed93cc8a5fb3a1b08ce9c8071ebda657) ) /* D29-10 */
 	ROM_LOAD( "palce20v8h.69", 0x0e00, 0x0157, CRC(25d205d5) SHA1(8859fd498e4d84a55424899d23db470be217eaba) ) /* D29-14 */
 	ROM_LOAD( "pal20l8b.70",   0x1000, 0x0144, CRC(92b5b97c) SHA1(653ab0467f71d93eceb8143b124cdedaf1ede750) ) /* D29-15 */
+=======
+	ROM_LOAD( "D29-11.IC15.bin", 0x0000, 0x0157, CRC(5dd5c8f9) SHA1(5e6153d9e08985b2326dfd6d73f7b90136a7a4b1) ) // palce20v8h.1
+	ROM_LOAD( "pal20l8b.2",      0x0200, 0x0144, CRC(c91437e2) SHA1(5bd6fb57fd7e0ff957a6ef9509b8f2e35a8ca29a) ) /* D29-12 */
+	ROM_LOAD( "D29-13.IC14.bin", 0x0400, 0x0157, CRC(74d61d36) SHA1(c34d8b2d227f69c167d1516dea53e4bcb76491d1) ) // palce20v8h.3
+	ROM_LOAD( "palce16v8h.11",   0x0600, 0x0117, CRC(51088324) SHA1(b985835b92c9d1e1dae6ae7cba9fa83c4db58bbb) ) /* D29-16 */
+	ROM_LOAD( "pal16l8b.22",     0x0800, 0x0104, CRC(3e01e854) SHA1(72f48982673ac8337dac3358b7a79e45c60b9601) ) /* D29-09 */
+	ROM_LOAD( "palce16v8h.31",   0x0a00, 0x0117, CRC(e0789727) SHA1(74add02cd194741de5ca6e36a99f9dd3e756fbdf) ) /* D29-17 */
+	ROM_LOAD( "pal16l8b.62",     0x0c00, 0x0104, CRC(7093e2f3) SHA1(62bb0085ed93cc8a5fb3a1b08ce9c8071ebda657) ) /* D29-10 */
+	ROM_LOAD( "D29-14.IC28.bin", 0x0e00, 0x0157, CRC(25d205d5) SHA1(8859fd498e4d84a55424899d23db470be217eaba) ) // palce20v8h.69
+	ROM_LOAD( "pal20l8b.70",     0x1000, 0x0144, CRC(92b5b97c) SHA1(653ab0467f71d93eceb8143b124cdedaf1ede750) ) /* D29-15 */
+>>>>>>> upstream/master
 ROM_END
 
 ROM_START( arabianmj )
@@ -700,15 +901,25 @@ ROM_START( arabianmj )
 	ROM_LOAD16_BYTE("d29-03.ic66", 0x000000, 0x100000, CRC(aeaff456) SHA1(e70d0089e69d33d213be8195c31891f38fbcb53a) )
 	ROM_LOAD16_BYTE("d29-04.ic67", 0x000001, 0x100000, CRC(01711cfe) SHA1(26da4cc9dcb8d38bdf8c93015f77e58ffc9d1ba9) )
 	ROM_LOAD       ("d29-05.ic68", 0x300000, 0x100000, CRC(9b5f7a17) SHA1(89d9faedc7b55df6237f2c2ebb43de7de685cb66) )
+<<<<<<< HEAD
 	ROM_FILL       (               0x200000, 0x100000, 0 )
+=======
+	ROM_FILL       (               0x200000, 0x100000, 0x00 )
+>>>>>>> upstream/master
 
 	ROM_REGION(0x200000, "gfx2" , 0) /* Tiles */
 	ROM_LOAD16_BYTE("d29-06.ic49", 0x000000, 0x080000, CRC(eea07bf3) SHA1(7860a2c0c592af000b56e59bd39d67b086fe3606) )
 	ROM_LOAD16_BYTE("d29-07.ic50", 0x000001, 0x080000, CRC(db3c094d) SHA1(5b60f0fa1054bf93ce51d310376b1abdb3022541) )
 	ROM_LOAD       ("d29-08.ic51", 0x180000, 0x080000, CRC(d7562851) SHA1(91d86e75ba7a590ca298b932b4cf8fa9228f115e) )
+<<<<<<< HEAD
 	ROM_FILL       (               0x100000, 0x080000, 0 )
 
 	ROM_REGION(0x140000, "audiocpu", 0) /* sound CPU */
+=======
+	ROM_FILL       (               0x100000, 0x080000, 0x00 )
+
+	ROM_REGION(0x140000, "taito_en:audiocpu", 0) /* sound CPU */
+>>>>>>> upstream/master
 	ROM_LOAD16_BYTE("d29-18.ic5", 0x100000, 0x20000, CRC(d97780df) SHA1(d0f9d2fd7ce13f620bb44083bf012f67dda4b10b) )
 	ROM_LOAD16_BYTE("d29-19.ic6", 0x100001, 0x20000, CRC(b1ad365c) SHA1(1cd26d8feaaa06b50dfee32e9b7950b8ee92ac55) )
 
@@ -718,6 +929,7 @@ ROM_START( arabianmj )
 	ROM_LOAD16_BYTE("d29-02.ic18", 0x600000, 0x100000, CRC(ed894fe1) SHA1(5bf2fb6abdcf25bc525a2c3b29dbf7aca0b18fea) )   // -std-
 
 	ROM_REGION( 0x1200, "plds", 0 )
+<<<<<<< HEAD
 	ROM_LOAD( "palce20v8h.1",  0x0000, 0x0157, CRC(5dd5c8f9) SHA1(5e6153d9e08985b2326dfd6d73f7b90136a7a4b1) ) /* D29-11 */
 	ROM_LOAD( "pal20l8b.2",    0x0200, 0x0144, CRC(c91437e2) SHA1(5bd6fb57fd7e0ff957a6ef9509b8f2e35a8ca29a) ) /* D29-12 */
 	ROM_LOAD( "palce20v8h.3",  0x0400, 0x0157, CRC(74d61d36) SHA1(c34d8b2d227f69c167d1516dea53e4bcb76491d1) ) /* D29-13 */
@@ -727,6 +939,17 @@ ROM_START( arabianmj )
 	ROM_LOAD( "pal16l8b.62",   0x0c00, 0x0104, CRC(7093e2f3) SHA1(62bb0085ed93cc8a5fb3a1b08ce9c8071ebda657) ) /* D29-10 */
 	ROM_LOAD( "palce20v8h.69", 0x0e00, 0x0157, CRC(25d205d5) SHA1(8859fd498e4d84a55424899d23db470be217eaba) ) /* D29-14 */
 	ROM_LOAD( "pal20l8b.70",   0x1000, 0x0144, CRC(92b5b97c) SHA1(653ab0467f71d93eceb8143b124cdedaf1ede750) ) /* D29-15 */
+=======
+	ROM_LOAD( "D29-11.IC15.bin", 0x0000, 0x0157, CRC(5dd5c8f9) SHA1(5e6153d9e08985b2326dfd6d73f7b90136a7a4b1) ) // palce20v8h.1
+	ROM_LOAD( "pal20l8b.2",      0x0200, 0x0144, CRC(c91437e2) SHA1(5bd6fb57fd7e0ff957a6ef9509b8f2e35a8ca29a) ) /* D29-12 */
+	ROM_LOAD( "D29-13.IC14.bin", 0x0400, 0x0157, CRC(74d61d36) SHA1(c34d8b2d227f69c167d1516dea53e4bcb76491d1) ) // palce20v8h.3
+	ROM_LOAD( "palce16v8h.11",   0x0600, 0x0117, CRC(51088324) SHA1(b985835b92c9d1e1dae6ae7cba9fa83c4db58bbb) ) /* D29-16 */
+	ROM_LOAD( "pal16l8b.22",     0x0800, 0x0104, CRC(3e01e854) SHA1(72f48982673ac8337dac3358b7a79e45c60b9601) ) /* D29-09 */
+	ROM_LOAD( "palce16v8h.31",   0x0a00, 0x0117, CRC(e0789727) SHA1(74add02cd194741de5ca6e36a99f9dd3e756fbdf) ) /* D29-17 */
+	ROM_LOAD( "pal16l8b.62",     0x0c00, 0x0104, CRC(7093e2f3) SHA1(62bb0085ed93cc8a5fb3a1b08ce9c8071ebda657) ) /* D29-10 */
+	ROM_LOAD( "D29-14.IC28.bin", 0x0e00, 0x0157, CRC(25d205d5) SHA1(8859fd498e4d84a55424899d23db470be217eaba) ) // palce20v8h.69
+	ROM_LOAD( "pal20l8b.70",     0x1000, 0x0144, CRC(92b5b97c) SHA1(653ab0467f71d93eceb8143b124cdedaf1ede750) ) /* D29-15 */
+>>>>>>> upstream/master
 ROM_END
 
 ROM_START( arabianmu )
@@ -740,15 +963,25 @@ ROM_START( arabianmu )
 	ROM_LOAD16_BYTE("d29-03.ic66", 0x000000, 0x100000, CRC(aeaff456) SHA1(e70d0089e69d33d213be8195c31891f38fbcb53a) )
 	ROM_LOAD16_BYTE("d29-04.ic67", 0x000001, 0x100000, CRC(01711cfe) SHA1(26da4cc9dcb8d38bdf8c93015f77e58ffc9d1ba9) )
 	ROM_LOAD       ("d29-05.ic68", 0x300000, 0x100000, CRC(9b5f7a17) SHA1(89d9faedc7b55df6237f2c2ebb43de7de685cb66) )
+<<<<<<< HEAD
 	ROM_FILL       (               0x200000, 0x100000, 0 )
+=======
+	ROM_FILL       (               0x200000, 0x100000, 0x00 )
+>>>>>>> upstream/master
 
 	ROM_REGION(0x200000, "gfx2" , 0) /* Tiles */
 	ROM_LOAD16_BYTE("d29-06.ic49", 0x000000, 0x080000, CRC(eea07bf3) SHA1(7860a2c0c592af000b56e59bd39d67b086fe3606) )
 	ROM_LOAD16_BYTE("d29-07.ic50", 0x000001, 0x080000, CRC(db3c094d) SHA1(5b60f0fa1054bf93ce51d310376b1abdb3022541) )
 	ROM_LOAD       ("d29-08.ic51", 0x180000, 0x080000, CRC(d7562851) SHA1(91d86e75ba7a590ca298b932b4cf8fa9228f115e) )
+<<<<<<< HEAD
 	ROM_FILL       (               0x100000, 0x080000, 0 )
 
 	ROM_REGION(0x140000, "audiocpu", 0) /* sound CPU */
+=======
+	ROM_FILL       (               0x100000, 0x080000, 0x00 )
+
+	ROM_REGION(0x140000, "taito_en:audiocpu", 0) /* sound CPU */
+>>>>>>> upstream/master
 	ROM_LOAD16_BYTE("d29-18.ic5", 0x100000, 0x20000, CRC(d97780df) SHA1(d0f9d2fd7ce13f620bb44083bf012f67dda4b10b) )
 	ROM_LOAD16_BYTE("d29-19.ic6", 0x100001, 0x20000, CRC(b1ad365c) SHA1(1cd26d8feaaa06b50dfee32e9b7950b8ee92ac55) )
 
@@ -758,6 +991,7 @@ ROM_START( arabianmu )
 	ROM_LOAD16_BYTE("d29-02.ic18", 0x600000, 0x100000, CRC(ed894fe1) SHA1(5bf2fb6abdcf25bc525a2c3b29dbf7aca0b18fea) )   // -std-
 
 	ROM_REGION( 0x1200, "plds", 0 )
+<<<<<<< HEAD
 	ROM_LOAD( "palce20v8h.1",  0x0000, 0x0157, CRC(5dd5c8f9) SHA1(5e6153d9e08985b2326dfd6d73f7b90136a7a4b1) ) /* D29-11 */
 	ROM_LOAD( "pal20l8b.2",    0x0200, 0x0144, CRC(c91437e2) SHA1(5bd6fb57fd7e0ff957a6ef9509b8f2e35a8ca29a) ) /* D29-12 */
 	ROM_LOAD( "palce20v8h.3",  0x0400, 0x0157, CRC(74d61d36) SHA1(c34d8b2d227f69c167d1516dea53e4bcb76491d1) ) /* D29-13 */
@@ -767,6 +1001,17 @@ ROM_START( arabianmu )
 	ROM_LOAD( "pal16l8b.62",   0x0c00, 0x0104, CRC(7093e2f3) SHA1(62bb0085ed93cc8a5fb3a1b08ce9c8071ebda657) ) /* D29-10 */
 	ROM_LOAD( "palce20v8h.69", 0x0e00, 0x0157, CRC(25d205d5) SHA1(8859fd498e4d84a55424899d23db470be217eaba) ) /* D29-14 */
 	ROM_LOAD( "pal20l8b.70",   0x1000, 0x0144, CRC(92b5b97c) SHA1(653ab0467f71d93eceb8143b124cdedaf1ede750) ) /* D29-15 */
+=======
+	ROM_LOAD( "D29-11.IC15.bin", 0x0000, 0x0157, CRC(5dd5c8f9) SHA1(5e6153d9e08985b2326dfd6d73f7b90136a7a4b1) ) // palce20v8h.1
+	ROM_LOAD( "pal20l8b.2",      0x0200, 0x0144, CRC(c91437e2) SHA1(5bd6fb57fd7e0ff957a6ef9509b8f2e35a8ca29a) ) /* D29-12 */
+	ROM_LOAD( "D29-13.IC14.bin", 0x0400, 0x0157, CRC(74d61d36) SHA1(c34d8b2d227f69c167d1516dea53e4bcb76491d1) ) // palce20v8h.3
+	ROM_LOAD( "palce16v8h.11",   0x0600, 0x0117, CRC(51088324) SHA1(b985835b92c9d1e1dae6ae7cba9fa83c4db58bbb) ) /* D29-16 */
+	ROM_LOAD( "pal16l8b.22",     0x0800, 0x0104, CRC(3e01e854) SHA1(72f48982673ac8337dac3358b7a79e45c60b9601) ) /* D29-09 */
+	ROM_LOAD( "palce16v8h.31",   0x0a00, 0x0117, CRC(e0789727) SHA1(74add02cd194741de5ca6e36a99f9dd3e756fbdf) ) /* D29-17 */
+	ROM_LOAD( "pal16l8b.62",     0x0c00, 0x0104, CRC(7093e2f3) SHA1(62bb0085ed93cc8a5fb3a1b08ce9c8071ebda657) ) /* D29-10 */
+	ROM_LOAD( "D29-14.IC28.bin", 0x0e00, 0x0157, CRC(25d205d5) SHA1(8859fd498e4d84a55424899d23db470be217eaba) ) // palce20v8h.69
+	ROM_LOAD( "pal20l8b.70",     0x1000, 0x0144, CRC(92b5b97c) SHA1(653ab0467f71d93eceb8143b124cdedaf1ede750) ) /* D29-15 */
+>>>>>>> upstream/master
 ROM_END
 
 ROM_START( ridingf )
@@ -779,14 +1024,24 @@ ROM_START( ridingf )
 	ROM_REGION(0x800000, "gfx1" , 0) /* Sprites */
 	ROM_LOAD16_BYTE("d34-01.66", 0x000000, 0x200000, CRC(7974e6aa) SHA1(f3f697d0e2f52011046aa2db2df25a4b55a631d5) )
 	ROM_LOAD16_BYTE("d34-02.67", 0x000001, 0x200000, CRC(f4422370) SHA1(27ba051e0dc27b39652ff1d940a2dd29965c6528) )
+<<<<<<< HEAD
 	ROM_FILL       (             0x400000, 0x400000, 0 )
+=======
+	ROM_FILL       (             0x400000, 0x400000, 0x00 )
+>>>>>>> upstream/master
 
 	ROM_REGION(0x200000, "gfx2" , 0) /* Tiles */
 	ROM_LOAD16_BYTE("d34-05.49", 0x000000, 0x080000, CRC(72e3ee4b) SHA1(2b69487338c18ced7a2ac4f280e8e22aa7209eb3) )
 	ROM_LOAD16_BYTE("d34-06.50", 0x000001, 0x080000, CRC(edc9b9f3) SHA1(c57bec1c8882d95388c3fae7cb5a321bdb202737) )
+<<<<<<< HEAD
 	ROM_FILL       (             0x100000, 0x100000, 0 )
 
 	ROM_REGION(0x140000, "audiocpu", 0) /* sound CPU */
+=======
+	ROM_FILL       (             0x100000, 0x100000, 0x00 )
+
+	ROM_REGION(0x140000, "taito_en:audiocpu", 0) /* sound CPU */
+>>>>>>> upstream/master
 	ROM_LOAD16_BYTE("d34-07.5", 0x100000, 0x20000, CRC(67239e2b) SHA1(8e0268fab53d26cde5c1928326c4787533dc6ffe) )
 	ROM_LOAD16_BYTE("d34-08.6", 0x100001, 0x20000, CRC(2cf20323) SHA1(b2bbac3714ecfd75506ae000c7eec603dfe3e13d) )
 
@@ -806,14 +1061,24 @@ ROM_START( ridingfj )
 	ROM_REGION(0x800000, "gfx1" , 0) /* Sprites */
 	ROM_LOAD16_BYTE("d34-01.66", 0x000000, 0x200000, CRC(7974e6aa) SHA1(f3f697d0e2f52011046aa2db2df25a4b55a631d5) )
 	ROM_LOAD16_BYTE("d34-02.67", 0x000001, 0x200000, CRC(f4422370) SHA1(27ba051e0dc27b39652ff1d940a2dd29965c6528) )
+<<<<<<< HEAD
 	ROM_FILL       (             0x400000, 0x400000, 0 )
+=======
+	ROM_FILL       (             0x400000, 0x400000, 0x00 )
+>>>>>>> upstream/master
 
 	ROM_REGION(0x200000, "gfx2" , 0) /* Tiles */
 	ROM_LOAD16_BYTE("d34-05.49", 0x000000, 0x080000, CRC(72e3ee4b) SHA1(2b69487338c18ced7a2ac4f280e8e22aa7209eb3) )
 	ROM_LOAD16_BYTE("d34-06.50", 0x000001, 0x080000, CRC(edc9b9f3) SHA1(c57bec1c8882d95388c3fae7cb5a321bdb202737) )
+<<<<<<< HEAD
 	ROM_FILL       (             0x100000, 0x100000, 0 )
 
 	ROM_REGION(0x140000, "audiocpu", 0) /* sound CPU */
+=======
+	ROM_FILL       (             0x100000, 0x100000, 0x00 )
+
+	ROM_REGION(0x140000, "taito_en:audiocpu", 0) /* sound CPU */
+>>>>>>> upstream/master
 	ROM_LOAD16_BYTE("d34-07.5", 0x100000, 0x20000, CRC(67239e2b) SHA1(8e0268fab53d26cde5c1928326c4787533dc6ffe) )
 	ROM_LOAD16_BYTE("d34-08.6", 0x100001, 0x20000, CRC(2cf20323) SHA1(b2bbac3714ecfd75506ae000c7eec603dfe3e13d) )
 
@@ -833,14 +1098,24 @@ ROM_START( ridingfu )
 	ROM_REGION(0x800000, "gfx1" , 0) /* Sprites */
 	ROM_LOAD16_BYTE("d34-01.66", 0x000000, 0x200000, CRC(7974e6aa) SHA1(f3f697d0e2f52011046aa2db2df25a4b55a631d5) )
 	ROM_LOAD16_BYTE("d34-02.67", 0x000001, 0x200000, CRC(f4422370) SHA1(27ba051e0dc27b39652ff1d940a2dd29965c6528) )
+<<<<<<< HEAD
 	ROM_FILL       (             0x400000, 0x400000, 0 )
+=======
+	ROM_FILL       (             0x400000, 0x400000, 0x00 )
+>>>>>>> upstream/master
 
 	ROM_REGION(0x200000, "gfx2" , 0) /* Tiles */
 	ROM_LOAD16_BYTE("d34-05.49", 0x000000, 0x080000, CRC(72e3ee4b) SHA1(2b69487338c18ced7a2ac4f280e8e22aa7209eb3) )
 	ROM_LOAD16_BYTE("d34-06.50", 0x000001, 0x080000, CRC(edc9b9f3) SHA1(c57bec1c8882d95388c3fae7cb5a321bdb202737) )
+<<<<<<< HEAD
 	ROM_FILL       (             0x100000, 0x100000, 0 )
 
 	ROM_REGION(0x140000, "audiocpu", 0) /* sound CPU */
+=======
+	ROM_FILL       (             0x100000, 0x100000, 0x00 )
+
+	ROM_REGION(0x140000, "taito_en:audiocpu", 0) /* sound CPU */
+>>>>>>> upstream/master
 	ROM_LOAD16_BYTE("d34-07.5", 0x100000, 0x20000, CRC(67239e2b) SHA1(8e0268fab53d26cde5c1928326c4787533dc6ffe) )
 	ROM_LOAD16_BYTE("d34-08.6", 0x100001, 0x20000, CRC(2cf20323) SHA1(b2bbac3714ecfd75506ae000c7eec603dfe3e13d) )
 
@@ -864,14 +1139,24 @@ ROM_START( gseeker )
 	ROM_LOAD16_BYTE("d40_15.rom", 0x000000, 0x080000, CRC(50555125) SHA1(587cdfb2e027c1d96ecc46d2612956deca5fd36f) )
 	ROM_LOAD16_BYTE("d40_16.rom", 0x000001, 0x080000, CRC(3f9bbe1e) SHA1(6d9b2d2d893257ad096c276eff4077f60a81921f) )
 	/* Taito manufactured mask roms 3 + 4 wrong, and later added 15 + 16 as a patch */
+<<<<<<< HEAD
 	ROM_FILL       (              0x200000, 0x200000, 0 )
+=======
+	ROM_FILL       (              0x200000, 0x200000, 0x00 )
+>>>>>>> upstream/master
 
 	ROM_REGION(0x400000, "gfx2" , 0) /* Tiles */
 	ROM_LOAD16_BYTE("d40_05.rom", 0x000000, 0x100000, CRC(be6eec8f) SHA1(725e5e09f6ee60bd4c38fa223c4dea202c56f75f) )
 	ROM_LOAD16_BYTE("d40_06.rom", 0x000001, 0x100000, CRC(a822abe4) SHA1(1a0dd9dcb8e24daab6eb1661307ef0e10f7e4d4e) )
+<<<<<<< HEAD
 	ROM_FILL       (              0x200000, 0x200000, 0 )
 
 	ROM_REGION(0x140000, "audiocpu", 0) /* sound CPU */
+=======
+	ROM_FILL       (              0x200000, 0x200000, 0x00 )
+
+	ROM_REGION(0x140000, "taito_en:audiocpu", 0) /* sound CPU */
+>>>>>>> upstream/master
 	ROM_LOAD16_BYTE("d40_07.rom", 0x100000, 0x20000, CRC(7e9b26c2) SHA1(d88ad39a9d70b4a5bd3f83e0d4d0725f659f1d2a) )
 	ROM_LOAD16_BYTE("d40_08.rom", 0x100001, 0x20000, CRC(9c926a28) SHA1(9d9ee75eb895edc381c3ab4df5af941f84cd2073) )
 
@@ -895,14 +1180,24 @@ ROM_START( gseekerj )
 	ROM_LOAD16_BYTE("d40_15.rom", 0x000000, 0x080000, CRC(50555125) SHA1(587cdfb2e027c1d96ecc46d2612956deca5fd36f) )
 	ROM_LOAD16_BYTE("d40_16.rom", 0x000001, 0x080000, CRC(3f9bbe1e) SHA1(6d9b2d2d893257ad096c276eff4077f60a81921f) )
 	/* Taito manufactured mask roms 3 + 4 wrong, and later added 15 + 16 as a patch */
+<<<<<<< HEAD
 	ROM_FILL       (              0x200000, 0x200000, 0 )
+=======
+	ROM_FILL       (              0x200000, 0x200000, 0x00 )
+>>>>>>> upstream/master
 
 	ROM_REGION(0x400000, "gfx2" , 0) /* Tiles */
 	ROM_LOAD16_BYTE("d40_05.rom", 0x000000, 0x100000, CRC(be6eec8f) SHA1(725e5e09f6ee60bd4c38fa223c4dea202c56f75f) )
 	ROM_LOAD16_BYTE("d40_06.rom", 0x000001, 0x100000, CRC(a822abe4) SHA1(1a0dd9dcb8e24daab6eb1661307ef0e10f7e4d4e) )
+<<<<<<< HEAD
 	ROM_FILL       (              0x200000, 0x200000, 0 )
 
 	ROM_REGION(0x140000, "audiocpu", 0) /* sound CPU */
+=======
+	ROM_FILL       (              0x200000, 0x200000, 0x00 )
+
+	ROM_REGION(0x140000, "taito_en:audiocpu", 0) /* sound CPU */
+>>>>>>> upstream/master
 	ROM_LOAD16_BYTE("d40_07.rom", 0x100000, 0x20000, CRC(7e9b26c2) SHA1(d88ad39a9d70b4a5bd3f83e0d4d0725f659f1d2a) )
 	ROM_LOAD16_BYTE("d40_08.rom", 0x100001, 0x20000, CRC(9c926a28) SHA1(9d9ee75eb895edc381c3ab4df5af941f84cd2073) )
 
@@ -926,14 +1221,24 @@ ROM_START( gseekeru )
 	ROM_LOAD16_BYTE("d40_15.rom", 0x000000, 0x080000, CRC(50555125) SHA1(587cdfb2e027c1d96ecc46d2612956deca5fd36f) )
 	ROM_LOAD16_BYTE("d40_16.rom", 0x000001, 0x080000, CRC(3f9bbe1e) SHA1(6d9b2d2d893257ad096c276eff4077f60a81921f) )
 	/* Taito manufactured mask roms 3 + 4 wrong, and later added 15 + 16 as a patch */
+<<<<<<< HEAD
 	ROM_FILL       (              0x200000, 0x200000, 0 )
+=======
+	ROM_FILL       (              0x200000, 0x200000, 0x00 )
+>>>>>>> upstream/master
 
 	ROM_REGION(0x400000, "gfx2" , 0) /* Tiles */
 	ROM_LOAD16_BYTE("d40_05.rom", 0x000000, 0x100000, CRC(be6eec8f) SHA1(725e5e09f6ee60bd4c38fa223c4dea202c56f75f) )
 	ROM_LOAD16_BYTE("d40_06.rom", 0x000001, 0x100000, CRC(a822abe4) SHA1(1a0dd9dcb8e24daab6eb1661307ef0e10f7e4d4e) )
+<<<<<<< HEAD
 	ROM_FILL       (              0x200000, 0x200000, 0 )
 
 	ROM_REGION(0x140000, "audiocpu", 0) /* sound CPU */
+=======
+	ROM_FILL       (              0x200000, 0x200000, 0x00 )
+
+	ROM_REGION(0x140000, "taito_en:audiocpu", 0) /* sound CPU */
+>>>>>>> upstream/master
 	ROM_LOAD16_BYTE("d40_07.rom", 0x100000, 0x20000, CRC(7e9b26c2) SHA1(d88ad39a9d70b4a5bd3f83e0d4d0725f659f1d2a) )
 	ROM_LOAD16_BYTE("d40_08.rom", 0x100001, 0x20000, CRC(9c926a28) SHA1(9d9ee75eb895edc381c3ab4df5af941f84cd2073) )
 
@@ -957,15 +1262,25 @@ ROM_START( commandw )
 	ROM_LOAD16_BYTE("cw_objm1.bin",  0x400001, 0x200000, CRC(504b1bf5) SHA1(7b8ff7834907a9cdab5416bf713487bf71b9070e) )
 	ROM_LOAD       ("cw_objh0.bin",  0xc00000, 0x200000, CRC(83d7e0ae) SHA1(774a07d0cadc2c8f5ec155270bf927e4462654e2) )
 	ROM_LOAD       ("cw_objh1.bin",  0xe00000, 0x200000, CRC(324f5832) SHA1(ff91243c5d09c4c46904640fe278a7485db70577) )
+<<<<<<< HEAD
 	ROM_FILL       (                 0x800000, 0x400000, 0 )
+=======
+	ROM_FILL       (                 0x800000, 0x400000, 0x00 )
+>>>>>>> upstream/master
 
 	ROM_REGION(0x400000, "gfx2" , 0) /* Tiles */
 	ROM_LOAD16_BYTE("cw_scr_l.bin", 0x000000, 0x100000, CRC(4d202323) SHA1(0150bcba6d2bf2c3cde88bb519f57f3b58314244) )
 	ROM_LOAD16_BYTE("cw_scr_m.bin", 0x000001, 0x100000, CRC(537b1c7d) SHA1(bc61aa61891366cbea4b8ecb820d93e28d01f8d2) )
 	ROM_LOAD       ("cw_scr_h.bin", 0x300000, 0x100000, CRC(001f85dd) SHA1(2532377c0b54bc964ea4e74911ff62fea2d53975) )
+<<<<<<< HEAD
 	ROM_FILL       (                0x200000, 0x100000, 0 )
 
 	ROM_REGION(0x140000, "audiocpu", 0) /* sound CPU */
+=======
+	ROM_FILL       (                0x200000, 0x100000, 0x00 )
+
+	ROM_REGION(0x140000, "taito_en:audiocpu", 0) /* sound CPU */
+>>>>>>> upstream/master
 	ROM_LOAD16_BYTE("cw_spr1.bin", 0x100000, 0x20000, CRC(c8f81c25) SHA1(1c914053826587cc2d5d2c0220a3e29a641fe6f9) )
 	ROM_LOAD16_BYTE("cw_spr0.bin", 0x100001, 0x20000, CRC(2aaa9dfb) SHA1(6d4c36ff54a84035c0ddf40e4f3eafd2adc15a5e) )
 
@@ -988,15 +1303,25 @@ ROM_START( cupfinal )
 	ROM_LOAD16_BYTE("d49-07.7",  0x400001, 0x100000, CRC(e5655b8f) SHA1(2c21745370bfe9dbf0e95f7ce42ed34a162bff64) )
 	ROM_LOAD       ("d49-03.4",  0x900000, 0x200000, CRC(cf9a8727) SHA1(f21787fdcdd8be2009c2d481a9b2d7fc03ce782e) )
 	ROM_LOAD       ("d49-08.3",  0xb00000, 0x100000, CRC(7d3c6536) SHA1(289b4bf79ebd9cbdf64ab956784d226e6d546654) )
+<<<<<<< HEAD
 	ROM_FILL       (             0x600000, 0x300000, 0 )
+=======
+	ROM_FILL       (             0x600000, 0x300000, 0x00 )
+>>>>>>> upstream/master
 
 	ROM_REGION(0x200000, "gfx2" , 0) /* Tiles */
 	ROM_LOAD16_BYTE("d49-09.47", 0x000000, 0x080000, CRC(257ede01) SHA1(c36397d95706c5e68a7738c84829a51c5e8f5ef7) )
 	ROM_LOAD16_BYTE("d49-10.45", 0x000001, 0x080000, CRC(f587b787) SHA1(22db4904c134756ddd0f753f197419d27e60a827) )
 	ROM_LOAD       ("d49-11.43", 0x180000, 0x080000, CRC(11318b26) SHA1(a7153f9f406d52189f59cbe58d65f88f4e2e6fcc) )
+<<<<<<< HEAD
 	ROM_FILL       (             0x100000, 0x080000, 0 )
 
 	ROM_REGION(0x140000, "audiocpu", 0) /* 68000 sound CPU */
+=======
+	ROM_FILL       (             0x100000, 0x080000, 0x00 )
+
+	ROM_REGION(0x140000, "taito_en:audiocpu", 0) /* 68000 sound CPU */
+>>>>>>> upstream/master
 	ROM_LOAD16_BYTE("d49-17.32", 0x100000, 0x20000, CRC(f2058eba) SHA1(7faaa94fadf02b6304287b61fb9613f9f4169fef) )
 	ROM_LOAD16_BYTE("d49-18.33", 0x100001, 0x20000, CRC(a0fdd270) SHA1(9b5a2c8d35ea3bc6842e3c328447c3bf641b9237) )
 
@@ -1011,7 +1336,11 @@ ROM_START( hthero93 )
 	ROM_LOAD32_BYTE("d49-13.20", 0x000000, 0x20000, CRC(ccee5e73) SHA1(5273e3b9bc6fc4fa0c63d9c62aa6b638e9780c24) )
 	ROM_LOAD32_BYTE("d49-14.19", 0x000001, 0x20000, CRC(2323bf2e) SHA1(e43f9eac6887e39d5c0f39264aa914a5d5f84cca) )
 	ROM_LOAD32_BYTE("d49-16.18", 0x000002, 0x20000, CRC(8e73f739) SHA1(620a4d52abc00908cd1393babdc600b929019a51) )
+<<<<<<< HEAD
 	ROM_LOAD32_BYTE("d49-19.17",  0x000003, 0x20000, CRC(f0925800) SHA1(e8d91b216a0409080b77cc1e832b7d15c66a5eef) )
+=======
+	ROM_LOAD32_BYTE("d49-19.17", 0x000003, 0x20000, CRC(f0925800) SHA1(e8d91b216a0409080b77cc1e832b7d15c66a5eef) ) /* Need to verify chip ID#: D49-19 is US and follows correct numbering scheme, should be D49-15 */
+>>>>>>> upstream/master
 
 	ROM_REGION(0xc00000, "gfx1" , 0) /* Sprites */
 	ROM_LOAD16_BYTE("d49-01.12", 0x000000, 0x200000, CRC(1dc89f1c) SHA1(9597b1d8c9b447080ca9401aee83bb4a64bb8332) )
@@ -1020,15 +1349,25 @@ ROM_START( hthero93 )
 	ROM_LOAD16_BYTE("d49-07.7",  0x400001, 0x100000, CRC(e5655b8f) SHA1(2c21745370bfe9dbf0e95f7ce42ed34a162bff64) )
 	ROM_LOAD       ("d49-03.4",  0x900000, 0x200000, CRC(cf9a8727) SHA1(f21787fdcdd8be2009c2d481a9b2d7fc03ce782e) )
 	ROM_LOAD       ("d49-08.3",  0xb00000, 0x100000, CRC(7d3c6536) SHA1(289b4bf79ebd9cbdf64ab956784d226e6d546654) )
+<<<<<<< HEAD
 	ROM_FILL       (             0x600000, 0x300000, 0 )
+=======
+	ROM_FILL       (             0x600000, 0x300000, 0x00 )
+>>>>>>> upstream/master
 
 	ROM_REGION(0x200000, "gfx2" , 0) /* Tiles */
 	ROM_LOAD16_BYTE("d49-09.47", 0x000000, 0x080000, CRC(257ede01) SHA1(c36397d95706c5e68a7738c84829a51c5e8f5ef7) )
 	ROM_LOAD16_BYTE("d49-10.45", 0x000001, 0x080000, CRC(f587b787) SHA1(22db4904c134756ddd0f753f197419d27e60a827) )
 	ROM_LOAD       ("d49-11.43", 0x180000, 0x080000, CRC(11318b26) SHA1(a7153f9f406d52189f59cbe58d65f88f4e2e6fcc) )
+<<<<<<< HEAD
 	ROM_FILL       (             0x100000, 0x080000, 0 )
 
 	ROM_REGION(0x140000, "audiocpu", 0) /* 68000 sound CPU */
+=======
+	ROM_FILL       (             0x100000, 0x080000, 0x00 )
+
+	ROM_REGION(0x140000, "taito_en:audiocpu", 0) /* 68000 sound CPU */
+>>>>>>> upstream/master
 	ROM_LOAD16_BYTE("d49-17.32", 0x100000, 0x20000, CRC(f2058eba) SHA1(7faaa94fadf02b6304287b61fb9613f9f4169fef) )
 	ROM_LOAD16_BYTE("d49-18.33", 0x100001, 0x20000, CRC(a0fdd270) SHA1(9b5a2c8d35ea3bc6842e3c328447c3bf641b9237) )
 
@@ -1038,6 +1377,57 @@ ROM_START( hthero93 )
 	ROM_LOAD16_BYTE("d49-05.41", 0x600000, 0x100000, CRC(ed894fe1) SHA1(5bf2fb6abdcf25bc525a2c3b29dbf7aca0b18fea) ) // -std-
 ROM_END
 
+<<<<<<< HEAD
+=======
+ROM_START( hthero93u )
+	ROM_REGION(0x200000, "maincpu", 0) /* 68020 code */
+	ROM_LOAD32_BYTE("d49-13.24", 0x000000, 0x20000, CRC(ccee5e73) SHA1(5273e3b9bc6fc4fa0c63d9c62aa6b638e9780c24) ) /* Dumped from the single board PCB, not a stardard F3 cart */
+	ROM_LOAD32_BYTE("d49-14.26", 0x000001, 0x20000, CRC(2323bf2e) SHA1(e43f9eac6887e39d5c0f39264aa914a5d5f84cca) )
+	ROM_LOAD32_BYTE("d49-16.37", 0x000002, 0x20000, CRC(8e73f739) SHA1(620a4d52abc00908cd1393babdc600b929019a51) )
+	ROM_LOAD32_BYTE("d49-19.35", 0x000003, 0x20000, CRC(699b09ba) SHA1(b8bf24571cdc0c4b295e0f3d2fdaa1e28ff111e3) )
+
+	ROM_REGION(0xc00000, "gfx1" , 0) /* Sprites */
+	ROM_LOAD16_BYTE("d49-01.12", 0x000000, 0x200000, CRC(1dc89f1c) SHA1(9597b1d8c9b447080ca9401aee83bb4a64bb8332) )
+	ROM_LOAD16_BYTE("d49-02.8",  0x000001, 0x200000, CRC(1e4c374f) SHA1(512edc6a934578d0e7371410a041150d3b13aaad) )
+	ROM_LOAD16_BYTE("d49-06.11", 0x400000, 0x100000, CRC(71ef4ee1) SHA1(1d7729dbc77f7201ff574e8aef65a55bd81c25a7) )
+	ROM_LOAD16_BYTE("d49-07.7",  0x400001, 0x100000, CRC(e5655b8f) SHA1(2c21745370bfe9dbf0e95f7ce42ed34a162bff64) )
+	ROM_LOAD       ("d49-03.4",  0x900000, 0x200000, CRC(cf9a8727) SHA1(f21787fdcdd8be2009c2d481a9b2d7fc03ce782e) )
+	ROM_LOAD       ("d49-08.3",  0xb00000, 0x100000, CRC(7d3c6536) SHA1(289b4bf79ebd9cbdf64ab956784d226e6d546654) )
+	ROM_FILL       (             0x600000, 0x300000, 0x00 )
+
+	ROM_REGION(0x200000, "gfx2" , 0) /* Tiles */
+	ROM_LOAD16_BYTE("d49-09.47", 0x000000, 0x080000, CRC(257ede01) SHA1(c36397d95706c5e68a7738c84829a51c5e8f5ef7) )
+	ROM_LOAD16_BYTE("d49-10.45", 0x000001, 0x080000, CRC(f587b787) SHA1(22db4904c134756ddd0f753f197419d27e60a827) )
+	ROM_LOAD       ("d49-11.43", 0x180000, 0x080000, CRC(11318b26) SHA1(a7153f9f406d52189f59cbe58d65f88f4e2e6fcc) )
+	ROM_FILL       (             0x100000, 0x080000, 0x00 )
+
+	ROM_REGION(0x140000, "taito_en:audiocpu", 0) /* 68000 sound CPU */
+	ROM_LOAD16_BYTE("d49-17.32", 0x100000, 0x20000, CRC(f2058eba) SHA1(7faaa94fadf02b6304287b61fb9613f9f4169fef) )
+	ROM_LOAD16_BYTE("d49-18.33", 0x100001, 0x20000, CRC(a0fdd270) SHA1(9b5a2c8d35ea3bc6842e3c328447c3bf641b9237) )
+
+	ROM_REGION16_BE(0x800000, "ensoniq.0" , ROMREGION_ERASE00 ) // V1: 2 banks
+	ROM_LOAD16_BYTE("d49-04.38", 0x000000, 0x200000, CRC(44b365a9) SHA1(14c4a6b193a0069360406c74c500ba24f2a55b62) ) // C8 C9 CA CB
+	// half empty
+	ROM_LOAD16_BYTE("d49-05.41", 0x600000, 0x100000, CRC(ed894fe1) SHA1(5bf2fb6abdcf25bc525a2c3b29dbf7aca0b18fea) ) // -std-
+
+	ROM_REGION(0x800000, "palsgame" , ROMREGION_ERASE00 ) // all unprotected / unlocked (dumped from single PCB version of game)
+	ROM_LOAD ("D49-12.IC60.bin", 0x000, 0x104, CRC(aa4cff37) SHA1(58e67e3807a32c403b1ef145d4bc5f91e1537554) )
+	ROM_LOAD ("D49-21.IC17.bin", 0x000, 0x104, CRC(821775d4) SHA1(f066cf6ee2118dd57c904fcff3bb287d57e16367) )
+
+	ROM_REGION(0x800000, "palsbase" , ROMREGION_ERASE00 ) // all unprotected / unlocked (dumped from single PCB version of game)
+	// these should be the same on this and Arabian Magic, but the dumps don't match in all cases, maybe the AM ones were protected?
+	ROM_LOAD ("D29-11.IC15.bin", 0x000000, 0x157, CRC(5dd5c8f9) SHA1(5e6153d9e08985b2326dfd6d73f7b90136a7a4b1) )
+	ROM_LOAD ("D29-12.IC12.bin", 0x000000, 0x144, CRC(c872f1fd) SHA1(6bcf766f76d83c18fa1c095716a1298581aa06c2) )
+	ROM_LOAD ("D29-13.IC14.bin", 0x000000, 0x157, CRC(74d61d36) SHA1(c34d8b2d227f69c167d1516dea53e4bcb76491d1) )
+	ROM_LOAD ("D29-14.IC28.bin", 0x000000, 0x157, CRC(25d205d5) SHA1(8859fd498e4d84a55424899d23db470be217eaba) )
+	ROM_LOAD ("D29-15.IC29.bin", 0x000000, 0x157, CRC(692eb582) SHA1(db40eb294cecc65d4a0d65e75b6daef75dcc2fb7) )
+	ROM_LOAD ("D29-16.IC7.bin",  0x000000, 0x117, CRC(11875f52) SHA1(2c3a7a15b3184421ca1bc88383eeccf49ee0d22c) )
+	ROM_LOAD ("D29-17.IC16.bin", 0x000000, 0x117, CRC(a0f74b51) SHA1(9d19e9099be965152a3cfbc5593e6abedb7c9d71) )
+
+ROM_END
+
+
+>>>>>>> upstream/master
 ROM_START( trstar )
 	ROM_REGION(0x200000, "maincpu", 0) /* 68020 code */
 	ROM_LOAD32_BYTE("d53-15-1.24", 0x000000, 0x40000, CRC(098bba94) SHA1(b77990213ac790d15bdc0dc1e8f7adf04fe5e952) )
@@ -1052,15 +1442,25 @@ ROM_START( trstar )
 	ROM_LOAD16_BYTE("d53-07.65", 0x400001, 0x100000, CRC(2f4773c3) SHA1(17cef13de0836923743b336cc5a64f7452629486) )
 	ROM_LOAD       ("d53-05.47", 0x900000, 0x200000, CRC(b9b68b15) SHA1(c3783b09b22954a959188b80e537fa84d827ac47) )
 	ROM_LOAD       ("d53-08.66", 0xb00000, 0x100000, CRC(ad13a1ee) SHA1(341112055b6bee33072c262f4ea7c4d0970888a6) )
+<<<<<<< HEAD
 	ROM_FILL       (             0x600000, 0x300000, 0 )
+=======
+	ROM_FILL       (             0x600000, 0x300000, 0x00 )
+>>>>>>> upstream/master
 
 	ROM_REGION(0x400000, "gfx2" , 0) /* Tiles */
 	ROM_LOAD16_BYTE("d53-09.48", 0x000000, 0x100000, CRC(690554d3) SHA1(113afd8fe7b77a30c2e3c5baca3f19d74902625b) )
 	ROM_LOAD16_BYTE("d53-10.49", 0x000001, 0x100000, CRC(0ec05dc5) SHA1(781a6362ef963417fb6383a62dcc70d6f5b3131b) )
 	ROM_LOAD       ("d53-11.50", 0x300000, 0x100000, CRC(39c0a546) SHA1(53f03586f6586032fc3b4f90e987c1128edbb0a7) )
+<<<<<<< HEAD
 	ROM_FILL       (             0x200000, 0x100000, 0 )
 
 	ROM_REGION(0x140000, "audiocpu", 0) /* 68000 sound CPU */
+=======
+	ROM_FILL       (             0x200000, 0x100000, 0x00 )
+
+	ROM_REGION(0x140000, "taito_en:audiocpu", 0) /* 68000 sound CPU */
+>>>>>>> upstream/master
 	ROM_LOAD16_BYTE("d53-13.10", 0x100000, 0x20000, CRC(877f0361) SHA1(eda58d71fb06f739bee1451d7aa7e7e6dee10e03) )
 	ROM_LOAD16_BYTE("d53-14.23", 0x100001, 0x20000, CRC(a8664867) SHA1(dffddca469019abac33a1abe41c3fe83fbf553ce) )
 
@@ -1083,15 +1483,25 @@ ROM_START( trstarj )
 	ROM_LOAD16_BYTE("d53-07.65", 0x400001, 0x100000, CRC(2f4773c3) SHA1(17cef13de0836923743b336cc5a64f7452629486) )
 	ROM_LOAD       ("d53-05.47", 0x900000, 0x200000, CRC(b9b68b15) SHA1(c3783b09b22954a959188b80e537fa84d827ac47) )
 	ROM_LOAD       ("d53-08.66", 0xb00000, 0x100000, CRC(ad13a1ee) SHA1(341112055b6bee33072c262f4ea7c4d0970888a6) )
+<<<<<<< HEAD
 	ROM_FILL       (             0x600000, 0x300000, 0 )
+=======
+	ROM_FILL       (             0x600000, 0x300000, 0x00 )
+>>>>>>> upstream/master
 
 	ROM_REGION(0x400000, "gfx2" , 0) /* Tiles */
 	ROM_LOAD16_BYTE("d53-09.48", 0x000000, 0x100000, CRC(690554d3) SHA1(113afd8fe7b77a30c2e3c5baca3f19d74902625b) )
 	ROM_LOAD16_BYTE("d53-10.49", 0x000001, 0x100000, CRC(0ec05dc5) SHA1(781a6362ef963417fb6383a62dcc70d6f5b3131b) )
 	ROM_LOAD       ("d53-11.50", 0x300000, 0x100000, CRC(39c0a546) SHA1(53f03586f6586032fc3b4f90e987c1128edbb0a7) )
+<<<<<<< HEAD
 	ROM_FILL       (             0x200000, 0x100000, 0 )
 
 	ROM_REGION(0x140000, "audiocpu", 0) /* 68000 sound CPU */
+=======
+	ROM_FILL       (             0x200000, 0x100000, 0x00 )
+
+	ROM_REGION(0x140000, "taito_en:audiocpu", 0) /* 68000 sound CPU */
+>>>>>>> upstream/master
 	ROM_LOAD16_BYTE("d53-13.10", 0x100000, 0x20000, CRC(877f0361) SHA1(eda58d71fb06f739bee1451d7aa7e7e6dee10e03) )
 	ROM_LOAD16_BYTE("d53-14.23", 0x100001, 0x20000, CRC(a8664867) SHA1(dffddca469019abac33a1abe41c3fe83fbf553ce) )
 
@@ -1114,15 +1524,25 @@ ROM_START( prmtmfgt )
 	ROM_LOAD16_BYTE("d53-07.65", 0x400001, 0x100000, CRC(2f4773c3) SHA1(17cef13de0836923743b336cc5a64f7452629486) )
 	ROM_LOAD       ("d53-05.47", 0x900000, 0x200000, CRC(b9b68b15) SHA1(c3783b09b22954a959188b80e537fa84d827ac47) )
 	ROM_LOAD       ("d53-08.66", 0xb00000, 0x100000, CRC(ad13a1ee) SHA1(341112055b6bee33072c262f4ea7c4d0970888a6) )
+<<<<<<< HEAD
 	ROM_FILL       (             0x600000, 0x300000, 0 )
+=======
+	ROM_FILL       (             0x600000, 0x300000, 0x00 )
+>>>>>>> upstream/master
 
 	ROM_REGION(0x400000, "gfx2" , 0) /* Tiles */
 	ROM_LOAD16_BYTE("d53-09.48", 0x000000, 0x100000, CRC(690554d3) SHA1(113afd8fe7b77a30c2e3c5baca3f19d74902625b) )
 	ROM_LOAD16_BYTE("d53-10.49", 0x000001, 0x100000, CRC(0ec05dc5) SHA1(781a6362ef963417fb6383a62dcc70d6f5b3131b) )
 	ROM_LOAD       ("d53-11.50", 0x300000, 0x100000, CRC(39c0a546) SHA1(53f03586f6586032fc3b4f90e987c1128edbb0a7) )
+<<<<<<< HEAD
 	ROM_FILL       (             0x200000, 0x100000, 0 )
 
 	ROM_REGION(0x140000, "audiocpu", 0) /* 68000 sound CPU */
+=======
+	ROM_FILL       (             0x200000, 0x100000, 0x00 )
+
+	ROM_REGION(0x140000, "taito_en:audiocpu", 0) /* 68000 sound CPU */
+>>>>>>> upstream/master
 	ROM_LOAD16_BYTE("d53-13.10", 0x100000, 0x20000, CRC(877f0361) SHA1(eda58d71fb06f739bee1451d7aa7e7e6dee10e03) )
 	ROM_LOAD16_BYTE("d53-14.23", 0x100001, 0x20000, CRC(a8664867) SHA1(dffddca469019abac33a1abe41c3fe83fbf553ce) )
 
@@ -1145,15 +1565,25 @@ ROM_START( trstaro )
 	ROM_LOAD16_BYTE("d53-07.65", 0x400001, 0x100000, CRC(2f4773c3) SHA1(17cef13de0836923743b336cc5a64f7452629486) )
 	ROM_LOAD       ("d53-05.47", 0x900000, 0x200000, CRC(b9b68b15) SHA1(c3783b09b22954a959188b80e537fa84d827ac47) )
 	ROM_LOAD       ("d53-08.66", 0xb00000, 0x100000, CRC(ad13a1ee) SHA1(341112055b6bee33072c262f4ea7c4d0970888a6) )
+<<<<<<< HEAD
 	ROM_FILL       (             0x600000, 0x300000, 0 )
+=======
+	ROM_FILL       (             0x600000, 0x300000, 0x00 )
+>>>>>>> upstream/master
 
 	ROM_REGION(0x400000, "gfx2" , 0) /* Tiles */
 	ROM_LOAD16_BYTE("d53-09.48", 0x000000, 0x100000, CRC(690554d3) SHA1(113afd8fe7b77a30c2e3c5baca3f19d74902625b) )
 	ROM_LOAD16_BYTE("d53-10.49", 0x000001, 0x100000, CRC(0ec05dc5) SHA1(781a6362ef963417fb6383a62dcc70d6f5b3131b) )
 	ROM_LOAD       ("d53-11.50", 0x300000, 0x100000, CRC(39c0a546) SHA1(53f03586f6586032fc3b4f90e987c1128edbb0a7) )
+<<<<<<< HEAD
 	ROM_FILL       (             0x200000, 0x100000, 0 )
 
 	ROM_REGION(0x140000, "audiocpu", 0) /* 68000 sound CPU */
+=======
+	ROM_FILL       (             0x200000, 0x100000, 0x00 )
+
+	ROM_REGION(0x140000, "taito_en:audiocpu", 0) /* 68000 sound CPU */
+>>>>>>> upstream/master
 	ROM_LOAD16_BYTE("d53-13.10", 0x100000, 0x20000, CRC(877f0361) SHA1(eda58d71fb06f739bee1451d7aa7e7e6dee10e03) )
 	ROM_LOAD16_BYTE("d53-14.23", 0x100001, 0x20000, CRC(a8664867) SHA1(dffddca469019abac33a1abe41c3fe83fbf553ce) )
 
@@ -1176,15 +1606,25 @@ ROM_START( trstaroj )
 	ROM_LOAD16_BYTE("d53-07.65", 0x400001, 0x100000, CRC(2f4773c3) SHA1(17cef13de0836923743b336cc5a64f7452629486) )
 	ROM_LOAD       ("d53-05.47", 0x900000, 0x200000, CRC(b9b68b15) SHA1(c3783b09b22954a959188b80e537fa84d827ac47) )
 	ROM_LOAD       ("d53-08.66", 0xb00000, 0x100000, CRC(ad13a1ee) SHA1(341112055b6bee33072c262f4ea7c4d0970888a6) )
+<<<<<<< HEAD
 	ROM_FILL       (             0x600000, 0x300000, 0 )
+=======
+	ROM_FILL       (             0x600000, 0x300000, 0x00 )
+>>>>>>> upstream/master
 
 	ROM_REGION(0x400000, "gfx2" , 0) /* Tiles */
 	ROM_LOAD16_BYTE("d53-09.48", 0x000000, 0x100000, CRC(690554d3) SHA1(113afd8fe7b77a30c2e3c5baca3f19d74902625b) )
 	ROM_LOAD16_BYTE("d53-10.49", 0x000001, 0x100000, CRC(0ec05dc5) SHA1(781a6362ef963417fb6383a62dcc70d6f5b3131b) )
 	ROM_LOAD       ("d53-11.50", 0x300000, 0x100000, CRC(39c0a546) SHA1(53f03586f6586032fc3b4f90e987c1128edbb0a7) )
+<<<<<<< HEAD
 	ROM_FILL       (             0x200000, 0x100000, 0 )
 
 	ROM_REGION(0x140000, "audiocpu", 0) /* 68000 sound CPU */
+=======
+	ROM_FILL       (             0x200000, 0x100000, 0x00 )
+
+	ROM_REGION(0x140000, "taito_en:audiocpu", 0) /* 68000 sound CPU */
+>>>>>>> upstream/master
 	ROM_LOAD16_BYTE("d53-13.10", 0x100000, 0x20000, CRC(877f0361) SHA1(eda58d71fb06f739bee1451d7aa7e7e6dee10e03) )
 	ROM_LOAD16_BYTE("d53-14.23", 0x100001, 0x20000, CRC(a8664867) SHA1(dffddca469019abac33a1abe41c3fe83fbf553ce) )
 
@@ -1207,15 +1647,25 @@ ROM_START( prmtmfgto )
 	ROM_LOAD16_BYTE("d53-07.65", 0x400001, 0x100000, CRC(2f4773c3) SHA1(17cef13de0836923743b336cc5a64f7452629486) )
 	ROM_LOAD       ("d53-05.47", 0x900000, 0x200000, CRC(b9b68b15) SHA1(c3783b09b22954a959188b80e537fa84d827ac47) )
 	ROM_LOAD       ("d53-08.66", 0xb00000, 0x100000, CRC(ad13a1ee) SHA1(341112055b6bee33072c262f4ea7c4d0970888a6) )
+<<<<<<< HEAD
 	ROM_FILL       (             0x600000, 0x300000, 0 )
+=======
+	ROM_FILL       (             0x600000, 0x300000, 0x00 )
+>>>>>>> upstream/master
 
 	ROM_REGION(0x400000, "gfx2" , 0) /* Tiles */
 	ROM_LOAD16_BYTE("d53-09.48", 0x000000, 0x100000, CRC(690554d3) SHA1(113afd8fe7b77a30c2e3c5baca3f19d74902625b) )
 	ROM_LOAD16_BYTE("d53-10.49", 0x000001, 0x100000, CRC(0ec05dc5) SHA1(781a6362ef963417fb6383a62dcc70d6f5b3131b) )
 	ROM_LOAD       ("d53-11.50", 0x300000, 0x100000, CRC(39c0a546) SHA1(53f03586f6586032fc3b4f90e987c1128edbb0a7) )
+<<<<<<< HEAD
 	ROM_FILL       (             0x200000, 0x100000, 0 )
 
 	ROM_REGION(0x140000, "audiocpu", 0) /* 68000 sound CPU */
+=======
+	ROM_FILL       (             0x200000, 0x100000, 0x00 )
+
+	ROM_REGION(0x140000, "taito_en:audiocpu", 0) /* 68000 sound CPU */
+>>>>>>> upstream/master
 	ROM_LOAD16_BYTE("d53-13.10", 0x100000, 0x20000, CRC(877f0361) SHA1(eda58d71fb06f739bee1451d7aa7e7e6dee10e03) )
 	ROM_LOAD16_BYTE("d53-14.23", 0x100001, 0x20000, CRC(a8664867) SHA1(dffddca469019abac33a1abe41c3fe83fbf553ce) )
 
@@ -1235,15 +1685,25 @@ ROM_START( gunlock )
 	ROM_LOAD16_BYTE("d66-03.ic45", 0x000000, 0x100000, CRC(e7a4a491) SHA1(87837e8dd1c9a1db5e540b678233634bd52328f0) )
 	ROM_LOAD16_BYTE("d66-04.ic46", 0x000001, 0x100000, CRC(c1c7aaa7) SHA1(f929516cf50d82b2d1d1b4c49a0eb1dea819aae1) )
 	ROM_LOAD       ("d66-05.ic47", 0x300000, 0x100000, CRC(a3cefe04) SHA1(dd4f47a814853f4512ce25c5f25121c53ee4ada1) )
+<<<<<<< HEAD
 	ROM_FILL       (               0x200000, 0x100000, 0 )
+=======
+	ROM_FILL       (               0x200000, 0x100000, 0x00 )
+>>>>>>> upstream/master
 
 	ROM_REGION(0x400000, "gfx2" , 0) /* Tiles */
 	ROM_LOAD16_BYTE("d66-06.ic48", 0x000000, 0x100000, CRC(b3d8126d) SHA1(3cbb44f396973c36abdf3fdf391becb22bb6d661) )
 	ROM_LOAD16_BYTE("d66-07.ic49", 0x000001, 0x100000, CRC(a6da9be7) SHA1(b528505ab925db75acf31bfbed2035cbe36e7a74) )
 	ROM_LOAD       ("d66-08.ic49", 0x300000, 0x100000, CRC(9959f30b) SHA1(64bf2bf995c283c00d968e3c078b824de4084d3d) )
+<<<<<<< HEAD
 	ROM_FILL       (               0x200000, 0x100000, 0 )
 
 	ROM_REGION(0x180000, "audiocpu", 0) /* 68000 code */
+=======
+	ROM_FILL       (               0x200000, 0x100000, 0x00 )
+
+	ROM_REGION(0x180000, "taito_en:audiocpu", 0) /* 68000 code */
+>>>>>>> upstream/master
 	ROM_LOAD16_BYTE("d66-23.ic10", 0x100000, 0x40000, CRC(57fb7c49) SHA1(f8709fd1e9ea7cee10ee2288d13339f675a7d3ae) )
 	ROM_LOAD16_BYTE("d66-22.ic23", 0x100001, 0x40000, CRC(83dd7f9b) SHA1(dae21f64232d3e268f22b5e9899e0b726fdc9a9f) )
 
@@ -1263,15 +1723,25 @@ ROM_START( rayforce )
 	ROM_LOAD16_BYTE("d66-03.ic45", 0x000000, 0x100000, CRC(e7a4a491) SHA1(87837e8dd1c9a1db5e540b678233634bd52328f0) )
 	ROM_LOAD16_BYTE("d66-04.ic46", 0x000001, 0x100000, CRC(c1c7aaa7) SHA1(f929516cf50d82b2d1d1b4c49a0eb1dea819aae1) )
 	ROM_LOAD       ("d66-05.ic47", 0x300000, 0x100000, CRC(a3cefe04) SHA1(dd4f47a814853f4512ce25c5f25121c53ee4ada1) )
+<<<<<<< HEAD
 	ROM_FILL       (               0x200000, 0x100000, 0 )
+=======
+	ROM_FILL       (               0x200000, 0x100000, 0x00 )
+>>>>>>> upstream/master
 
 	ROM_REGION(0x400000, "gfx2" , 0) /* Tiles */
 	ROM_LOAD16_BYTE("d66-06.ic48", 0x000000, 0x100000, CRC(b3d8126d) SHA1(3cbb44f396973c36abdf3fdf391becb22bb6d661) )
 	ROM_LOAD16_BYTE("d66-07.ic49", 0x000001, 0x100000, CRC(a6da9be7) SHA1(b528505ab925db75acf31bfbed2035cbe36e7a74) )
 	ROM_LOAD       ("d66-08.ic49", 0x300000, 0x100000, CRC(9959f30b) SHA1(64bf2bf995c283c00d968e3c078b824de4084d3d) )
+<<<<<<< HEAD
 	ROM_FILL       (               0x200000, 0x100000, 0 )
 
 	ROM_REGION(0x180000, "audiocpu", 0) /* 68000 code */
+=======
+	ROM_FILL       (               0x200000, 0x100000, 0x00 )
+
+	ROM_REGION(0x180000, "taito_en:audiocpu", 0) /* 68000 code */
+>>>>>>> upstream/master
 	ROM_LOAD16_BYTE("d66-23.ic10", 0x100000, 0x40000, CRC(57fb7c49) SHA1(f8709fd1e9ea7cee10ee2288d13339f675a7d3ae) )
 	ROM_LOAD16_BYTE("d66-22.ic23", 0x100001, 0x40000, CRC(83dd7f9b) SHA1(dae21f64232d3e268f22b5e9899e0b726fdc9a9f) )
 
@@ -1291,15 +1761,25 @@ ROM_START( rayforcej )
 	ROM_LOAD16_BYTE("d66-03.ic45", 0x000000, 0x100000, CRC(e7a4a491) SHA1(87837e8dd1c9a1db5e540b678233634bd52328f0) )
 	ROM_LOAD16_BYTE("d66-04.ic46", 0x000001, 0x100000, CRC(c1c7aaa7) SHA1(f929516cf50d82b2d1d1b4c49a0eb1dea819aae1) )
 	ROM_LOAD       ("d66-05.ic47", 0x300000, 0x100000, CRC(a3cefe04) SHA1(dd4f47a814853f4512ce25c5f25121c53ee4ada1) )
+<<<<<<< HEAD
 	ROM_FILL       (               0x200000, 0x100000, 0 )
+=======
+	ROM_FILL       (               0x200000, 0x100000, 0x00 )
+>>>>>>> upstream/master
 
 	ROM_REGION(0x400000, "gfx2" , 0) /* Tiles */
 	ROM_LOAD16_BYTE("d66-06.ic48", 0x000000, 0x100000, CRC(b3d8126d) SHA1(3cbb44f396973c36abdf3fdf391becb22bb6d661) )
 	ROM_LOAD16_BYTE("d66-07.ic49", 0x000001, 0x100000, CRC(a6da9be7) SHA1(b528505ab925db75acf31bfbed2035cbe36e7a74) )
 	ROM_LOAD       ("d66-08.ic49", 0x300000, 0x100000, CRC(9959f30b) SHA1(64bf2bf995c283c00d968e3c078b824de4084d3d) )
+<<<<<<< HEAD
 	ROM_FILL       (               0x200000, 0x100000, 0 )
 
 	ROM_REGION(0x180000, "audiocpu", 0) /* 68000 code */
+=======
+	ROM_FILL       (               0x200000, 0x100000, 0x00 )
+
+	ROM_REGION(0x180000, "taito_en:audiocpu", 0) /* 68000 code */
+>>>>>>> upstream/master
 	ROM_LOAD16_BYTE("d66-23.ic10", 0x100000, 0x40000, CRC(57fb7c49) SHA1(f8709fd1e9ea7cee10ee2288d13339f675a7d3ae) )
 	ROM_LOAD16_BYTE("d66-22.ic23", 0x100001, 0x40000, CRC(83dd7f9b) SHA1(dae21f64232d3e268f22b5e9899e0b726fdc9a9f) )
 
@@ -1322,15 +1802,25 @@ ROM_START( scfinals ) /* This is the single PCB version */
 	ROM_LOAD16_BYTE("d49-07.7",  0x400001, 0x100000, CRC(e5655b8f) SHA1(2c21745370bfe9dbf0e95f7ce42ed34a162bff64) )
 	ROM_LOAD       ("d49-03.4",  0x900000, 0x200000, CRC(cf9a8727) SHA1(f21787fdcdd8be2009c2d481a9b2d7fc03ce782e) )
 	ROM_LOAD       ("d49-08.3",  0xb00000, 0x100000, CRC(7d3c6536) SHA1(289b4bf79ebd9cbdf64ab956784d226e6d546654) )
+<<<<<<< HEAD
 	ROM_FILL       (             0x600000, 0x300000, 0 )
+=======
+	ROM_FILL       (             0x600000, 0x300000, 0x00 )
+>>>>>>> upstream/master
 
 	ROM_REGION(0x200000, "gfx2" , 0) /* Tiles */
 	ROM_LOAD16_BYTE("d49-09.47", 0x000000, 0x080000, CRC(257ede01) SHA1(c36397d95706c5e68a7738c84829a51c5e8f5ef7) ) /* Single PCB version locations may differ */
 	ROM_LOAD16_BYTE("d49-10.45", 0x000001, 0x080000, CRC(f587b787) SHA1(22db4904c134756ddd0f753f197419d27e60a827) )
 	ROM_LOAD       ("d49-11.43", 0x180000, 0x080000, CRC(11318b26) SHA1(a7153f9f406d52189f59cbe58d65f88f4e2e6fcc) )
+<<<<<<< HEAD
 	ROM_FILL       (             0x100000, 0x080000, 0 )
 
 	ROM_REGION(0x140000, "audiocpu", 0) /* 68000 sound CPU */
+=======
+	ROM_FILL       (             0x100000, 0x080000, 0x00 )
+
+	ROM_REGION(0x140000, "taito_en:audiocpu", 0) /* 68000 sound CPU */
+>>>>>>> upstream/master
 	ROM_LOAD16_BYTE("d49-17.ic5", 0x100000, 0x20000, CRC(f2058eba) SHA1(7faaa94fadf02b6304287b61fb9613f9f4169fef) )
 	ROM_LOAD16_BYTE("d49-18.ic6", 0x100001, 0x20000, CRC(a0fdd270) SHA1(9b5a2c8d35ea3bc6842e3c328447c3bf641b9237) )
 
@@ -1357,15 +1847,25 @@ ROM_START( scfinalso ) /* Cart version */
 	ROM_LOAD16_BYTE("d49-07.7",  0x400001, 0x100000, CRC(e5655b8f) SHA1(2c21745370bfe9dbf0e95f7ce42ed34a162bff64) )
 	ROM_LOAD       ("d49-03.4",  0x900000, 0x200000, CRC(cf9a8727) SHA1(f21787fdcdd8be2009c2d481a9b2d7fc03ce782e) )
 	ROM_LOAD       ("d49-08.3",  0xb00000, 0x100000, CRC(7d3c6536) SHA1(289b4bf79ebd9cbdf64ab956784d226e6d546654) )
+<<<<<<< HEAD
 	ROM_FILL       (             0x600000, 0x300000, 0 )
+=======
+	ROM_FILL       (             0x600000, 0x300000, 0x00 )
+>>>>>>> upstream/master
 
 	ROM_REGION(0x200000, "gfx2" , 0) /* Tiles */
 	ROM_LOAD16_BYTE("d49-09.47", 0x000000, 0x080000, CRC(257ede01) SHA1(c36397d95706c5e68a7738c84829a51c5e8f5ef7) )
 	ROM_LOAD16_BYTE("d49-10.45", 0x000001, 0x080000, CRC(f587b787) SHA1(22db4904c134756ddd0f753f197419d27e60a827) )
 	ROM_LOAD       ("d49-11.43", 0x180000, 0x080000, CRC(11318b26) SHA1(a7153f9f406d52189f59cbe58d65f88f4e2e6fcc) )
+<<<<<<< HEAD
 	ROM_FILL       (             0x100000, 0x080000, 0 )
 
 	ROM_REGION(0x140000, "audiocpu", 0) /* 68000 sound CPU */
+=======
+	ROM_FILL       (             0x100000, 0x080000, 0x00 )
+
+	ROM_REGION(0x140000, "taito_en:audiocpu", 0) /* 68000 sound CPU */
+>>>>>>> upstream/master
 	ROM_LOAD16_BYTE("d49-17.32", 0x100000, 0x20000, CRC(f2058eba) SHA1(7faaa94fadf02b6304287b61fb9613f9f4169fef) )
 	ROM_LOAD16_BYTE("d49-18.33", 0x100001, 0x20000, CRC(a0fdd270) SHA1(9b5a2c8d35ea3bc6842e3c328447c3bf641b9237) )
 
@@ -1392,15 +1892,25 @@ ROM_START( lightbr )
 	ROM_LOAD16_BYTE("d69-10.bin", 0x400001, 0x100000, CRC(36aa80c6) SHA1(aeb5f7632810564426761b5798539bf4c4a0c64c) )
 	ROM_LOAD       ("d69-08.bin", 0x900000, 0x200000, CRC(5b68d7d8) SHA1(f2ee3dd7100a3c9d8f402fe36dae2bc66cb17be3) )
 	ROM_LOAD       ("d69-11.bin", 0xb00000, 0x100000, CRC(c11adf92) SHA1(ee9ce49a43b419c4f44ac1aea8d0a12d7b289244) )
+<<<<<<< HEAD
 	ROM_FILL       (              0x600000, 0x300000, 0 )
+=======
+	ROM_FILL       (              0x600000, 0x300000, 0x00 )
+>>>>>>> upstream/master
 
 	ROM_REGION(0x800000, "gfx2" , 0) /* Tiles */
 	ROM_LOAD16_BYTE("d69-03.bin", 0x000000, 0x200000, CRC(6999c86f) SHA1(8a91930edfc0b5d23e59f8c3b43131db6edb4d37) )
 	ROM_LOAD16_BYTE("d69-04.bin", 0x000001, 0x200000, CRC(cc91dcb7) SHA1(97f510b1e1a3adf49efe82babdd7abce3756ce4b) )
 	ROM_LOAD       ("d69-05.bin", 0x600000, 0x200000, CRC(f9f5433c) SHA1(d3de66385d883c72967c44bc29983d7a79f665d1) )
+<<<<<<< HEAD
 	ROM_FILL       (              0x400000, 0x200000, 0 )
 
 	ROM_REGION(0x140000, "audiocpu", 0) /* 68000 sound CPU */
+=======
+	ROM_FILL       (              0x400000, 0x200000, 0x00 )
+
+	ROM_REGION(0x140000, "taito_en:audiocpu", 0) /* 68000 sound CPU */
+>>>>>>> upstream/master
 	ROM_LOAD16_BYTE("d69-18.bin", 0x100000, 0x20000, CRC(04600d7b) SHA1(666cfab09b61fd6e0bc4ff277018ebf1cda01b0e) )
 	ROM_LOAD16_BYTE("d69-19.bin", 0x100001, 0x20000, CRC(1484e853) SHA1(4459c18ba005786483c652857e527c6093efb036) )
 
@@ -1423,15 +1933,25 @@ ROM_START( dungeonm )
 	ROM_LOAD16_BYTE("d69-10.bin", 0x400001, 0x100000, CRC(36aa80c6) SHA1(aeb5f7632810564426761b5798539bf4c4a0c64c) )
 	ROM_LOAD       ("d69-08.bin", 0x900000, 0x200000, CRC(5b68d7d8) SHA1(f2ee3dd7100a3c9d8f402fe36dae2bc66cb17be3) )
 	ROM_LOAD       ("d69-11.bin", 0xb00000, 0x100000, CRC(c11adf92) SHA1(ee9ce49a43b419c4f44ac1aea8d0a12d7b289244) )
+<<<<<<< HEAD
 	ROM_FILL       (              0x600000, 0x300000, 0 )
+=======
+	ROM_FILL       (              0x600000, 0x300000, 0x00 )
+>>>>>>> upstream/master
 
 	ROM_REGION(0x800000, "gfx2" , 0) /* Tiles */
 	ROM_LOAD16_BYTE("d69-03.bin", 0x000000, 0x200000, CRC(6999c86f) SHA1(8a91930edfc0b5d23e59f8c3b43131db6edb4d37) )
 	ROM_LOAD16_BYTE("d69-04.bin", 0x000001, 0x200000, CRC(cc91dcb7) SHA1(97f510b1e1a3adf49efe82babdd7abce3756ce4b) )
 	ROM_LOAD       ("d69-05.bin", 0x600000, 0x200000, CRC(f9f5433c) SHA1(d3de66385d883c72967c44bc29983d7a79f665d1) )
+<<<<<<< HEAD
 	ROM_FILL       (              0x400000, 0x200000, 0 )
 
 	ROM_REGION(0x140000, "audiocpu", 0) /* 68000 sound CPU */
+=======
+	ROM_FILL       (              0x400000, 0x200000, 0x00 )
+
+	ROM_REGION(0x140000, "taito_en:audiocpu", 0) /* 68000 sound CPU */
+>>>>>>> upstream/master
 	ROM_LOAD16_BYTE("d69-18.bin", 0x100000, 0x20000, CRC(04600d7b) SHA1(666cfab09b61fd6e0bc4ff277018ebf1cda01b0e) )
 	ROM_LOAD16_BYTE("d69-19.bin", 0x100001, 0x20000, CRC(1484e853) SHA1(4459c18ba005786483c652857e527c6093efb036) )
 
@@ -1454,15 +1974,25 @@ ROM_START( dungeonmu )
 	ROM_LOAD16_BYTE("d69-10.bin", 0x400001, 0x100000, CRC(36aa80c6) SHA1(aeb5f7632810564426761b5798539bf4c4a0c64c) )
 	ROM_LOAD       ("d69-08.bin", 0x900000, 0x200000, CRC(5b68d7d8) SHA1(f2ee3dd7100a3c9d8f402fe36dae2bc66cb17be3) )
 	ROM_LOAD       ("d69-11.bin", 0xb00000, 0x100000, CRC(c11adf92) SHA1(ee9ce49a43b419c4f44ac1aea8d0a12d7b289244) )
+<<<<<<< HEAD
 	ROM_FILL       (              0x600000, 0x300000, 0 )
+=======
+	ROM_FILL       (              0x600000, 0x300000, 0x00 )
+>>>>>>> upstream/master
 
 	ROM_REGION(0x800000, "gfx2" , 0) /* Tiles */
 	ROM_LOAD16_BYTE("d69-03.bin", 0x000000, 0x200000, CRC(6999c86f) SHA1(8a91930edfc0b5d23e59f8c3b43131db6edb4d37) )
 	ROM_LOAD16_BYTE("d69-04.bin", 0x000001, 0x200000, CRC(cc91dcb7) SHA1(97f510b1e1a3adf49efe82babdd7abce3756ce4b) )
 	ROM_LOAD       ("d69-05.bin", 0x600000, 0x200000, CRC(f9f5433c) SHA1(d3de66385d883c72967c44bc29983d7a79f665d1) )
+<<<<<<< HEAD
 	ROM_FILL       (              0x400000, 0x200000, 0 )
 
 	ROM_REGION(0x140000, "audiocpu", 0) /* 68000 sound CPU */
+=======
+	ROM_FILL       (              0x400000, 0x200000, 0x00 )
+
+	ROM_REGION(0x140000, "taito_en:audiocpu", 0) /* 68000 sound CPU */
+>>>>>>> upstream/master
 	ROM_LOAD16_BYTE("d69-18.bin", 0x100000, 0x20000, CRC(04600d7b) SHA1(666cfab09b61fd6e0bc4ff277018ebf1cda01b0e) )
 	ROM_LOAD16_BYTE("d69-19.bin", 0x100001, 0x20000, CRC(1484e853) SHA1(4459c18ba005786483c652857e527c6093efb036) )
 
@@ -1545,15 +2075,25 @@ ROM_START( lightbrj )
 	ROM_LOAD16_BYTE("d69-10.bin", 0x400001, 0x100000, CRC(36aa80c6) SHA1(aeb5f7632810564426761b5798539bf4c4a0c64c) )
 	ROM_LOAD       ("d69-08.bin", 0x900000, 0x200000, CRC(5b68d7d8) SHA1(f2ee3dd7100a3c9d8f402fe36dae2bc66cb17be3) )
 	ROM_LOAD       ("d69-11.bin", 0xb00000, 0x100000, CRC(c11adf92) SHA1(ee9ce49a43b419c4f44ac1aea8d0a12d7b289244) )
+<<<<<<< HEAD
 	ROM_FILL       (              0x600000, 0x300000, 0 )
+=======
+	ROM_FILL       (              0x600000, 0x300000, 0x00 )
+>>>>>>> upstream/master
 
 	ROM_REGION(0x800000, "gfx2" , 0) /* Tiles */
 	ROM_LOAD16_BYTE("d69-03.bin", 0x000000, 0x200000, CRC(6999c86f) SHA1(8a91930edfc0b5d23e59f8c3b43131db6edb4d37) )
 	ROM_LOAD16_BYTE("d69-04.bin", 0x000001, 0x200000, CRC(cc91dcb7) SHA1(97f510b1e1a3adf49efe82babdd7abce3756ce4b) )
 	ROM_LOAD       ("d69-05.bin", 0x600000, 0x200000, CRC(f9f5433c) SHA1(d3de66385d883c72967c44bc29983d7a79f665d1) )
+<<<<<<< HEAD
 	ROM_FILL       (              0x400000, 0x200000, 0 )
 
 	ROM_REGION(0x140000, "audiocpu", 0) /* 68000 sound CPU */
+=======
+	ROM_FILL       (              0x400000, 0x200000, 0x00 )
+
+	ROM_REGION(0x140000, "taito_en:audiocpu", 0) /* 68000 sound CPU */
+>>>>>>> upstream/master
 	ROM_LOAD16_BYTE("d69-18.bin", 0x100000, 0x20000, CRC(04600d7b) SHA1(666cfab09b61fd6e0bc4ff277018ebf1cda01b0e) )
 	ROM_LOAD16_BYTE("d69-19.bin", 0x100001, 0x20000, CRC(1484e853) SHA1(4459c18ba005786483c652857e527c6093efb036) )
 
@@ -1576,15 +2116,25 @@ ROM_START( intcup94 )
 	ROM_LOAD16_BYTE("d49-07.7",  0x400001, 0x100000, CRC(e5655b8f) SHA1(2c21745370bfe9dbf0e95f7ce42ed34a162bff64) )
 	ROM_LOAD       ("d49-03.4",  0x900000, 0x200000, CRC(cf9a8727) SHA1(f21787fdcdd8be2009c2d481a9b2d7fc03ce782e) )
 	ROM_LOAD       ("d49-08.3",  0xb00000, 0x100000, CRC(7d3c6536) SHA1(289b4bf79ebd9cbdf64ab956784d226e6d546654) )
+<<<<<<< HEAD
 	ROM_FILL       (             0x600000, 0x300000, 0 )
+=======
+	ROM_FILL       (             0x600000, 0x300000, 0x00 )
+>>>>>>> upstream/master
 
 	ROM_REGION(0x200000, "gfx2" , 0) /* Tiles */
 	ROM_LOAD16_BYTE("d78-01.47", 0x000000, 0x080000, CRC(543f8967) SHA1(2efa935e7d0fd317bbbad2758a618d408a56317c) )
 	ROM_LOAD16_BYTE("d78-02.45", 0x000001, 0x080000, CRC(e8289394) SHA1(b9957675f868f772943678b6a19fcc21dfd97a8d) )
 	ROM_LOAD       ("d78-03.43", 0x180000, 0x080000, CRC(a8bc36e5) SHA1(5777b9457292e8a9cbb4e8226ba939530ffab07c) )
+<<<<<<< HEAD
 	ROM_FILL       (             0x100000, 0x080000, 0 )
 
 	ROM_REGION(0x180000, "audiocpu", 0) /* 68000 sound CPU */
+=======
+	ROM_FILL       (             0x100000, 0x080000, 0x00 )
+
+	ROM_REGION(0x180000, "taito_en:audiocpu", 0) /* 68000 sound CPU */
+>>>>>>> upstream/master
 	ROM_LOAD16_BYTE("d78-08.32", 0x100000, 0x20000, CRC(a629d07c) SHA1(b2904e106633a3960ceb2bc58b600ea60034ff0b) )
 	ROM_LOAD16_BYTE("d78-09.33", 0x100001, 0x20000, CRC(1f0efe01) SHA1(7bff748b9fcee170e430d90ee07eb9975d8fba59) )
 
@@ -1608,15 +2158,25 @@ ROM_START( hthero94 )
 	ROM_LOAD16_BYTE("d49-07.7",  0x400001, 0x100000, CRC(e5655b8f) SHA1(2c21745370bfe9dbf0e95f7ce42ed34a162bff64) )
 	ROM_LOAD       ("d49-03.4",  0x900000, 0x200000, CRC(cf9a8727) SHA1(f21787fdcdd8be2009c2d481a9b2d7fc03ce782e) )
 	ROM_LOAD       ("d49-08.3",  0xb00000, 0x100000, CRC(7d3c6536) SHA1(289b4bf79ebd9cbdf64ab956784d226e6d546654) )
+<<<<<<< HEAD
 	ROM_FILL       (             0x600000, 0x300000, 0 )
+=======
+	ROM_FILL       (             0x600000, 0x300000, 0x00 )
+>>>>>>> upstream/master
 
 	ROM_REGION(0x200000, "gfx2" , 0) /* Tiles */
 	ROM_LOAD16_BYTE("d78-01.47", 0x000000, 0x080000, CRC(543f8967) SHA1(2efa935e7d0fd317bbbad2758a618d408a56317c) )
 	ROM_LOAD16_BYTE("d78-02.45", 0x000001, 0x080000, CRC(e8289394) SHA1(b9957675f868f772943678b6a19fcc21dfd97a8d) )
 	ROM_LOAD       ("d78-03.43", 0x180000, 0x080000, CRC(a8bc36e5) SHA1(5777b9457292e8a9cbb4e8226ba939530ffab07c) )
+<<<<<<< HEAD
 	ROM_FILL       (             0x100000, 0x080000, 0 )
 
 	ROM_REGION(0x180000, "audiocpu", 0) /* 68000 sound CPU */
+=======
+	ROM_FILL       (             0x100000, 0x080000, 0x00 )
+
+	ROM_REGION(0x180000, "taito_en:audiocpu", 0) /* 68000 sound CPU */
+>>>>>>> upstream/master
 	ROM_LOAD16_BYTE("d78-08.32", 0x100000, 0x20000, CRC(a629d07c) SHA1(b2904e106633a3960ceb2bc58b600ea60034ff0b) )
 	ROM_LOAD16_BYTE("d78-09.33", 0x100001, 0x20000, CRC(1f0efe01) SHA1(7bff748b9fcee170e430d90ee07eb9975d8fba59) )
 
@@ -1636,14 +2196,24 @@ ROM_START( recalh )
 	ROM_REGION(0x400000, "gfx1" , 0) /* Sprites */
 	ROM_LOAD16_BYTE("rh_objl.bin", 0x000000, 0x100000, CRC(c1772b55) SHA1(f9a04b968c63e61fa8ca60d6f331f6df0d7dd10a) )
 	ROM_LOAD16_BYTE("rh_objm.bin", 0x000001, 0x100000, CRC(ef87c0fd) SHA1(63e99f331d05a1ff4faf0ea94019393fe2117f54) )
+<<<<<<< HEAD
 	ROM_FILL       (               0x200000, 0x200000, 0 )
+=======
+	ROM_FILL       (               0x200000, 0x200000, 0x00 )
+>>>>>>> upstream/master
 
 	ROM_REGION(0x400000, "gfx2" , 0) /* Tiles */
 	ROM_LOAD16_BYTE("rh_scrl.bin", 0x000000, 0x100000, CRC(1e3f6b79) SHA1(fef029def6393a13f4a638686a7ec7c13851a5c0) )
 	ROM_LOAD16_BYTE("rh_scrm.bin", 0x000001, 0x100000, CRC(37200968) SHA1(4a8d5a17af7eb732f481bf174099845e8d8d6b87) )
+<<<<<<< HEAD
 	ROM_FILL       (               0x200000, 0x200000, 0 )
 
 	ROM_REGION(0x140000, "audiocpu", 0) /* sound CPU */
+=======
+	ROM_FILL       (               0x200000, 0x200000, 0x00 )
+
+	ROM_REGION(0x140000, "taito_en:audiocpu", 0) /* sound CPU */
+>>>>>>> upstream/master
 	ROM_LOAD16_BYTE("rh_spr1.bin", 0x100000, 0x20000, CRC(504cbc1d) SHA1(35a775c1ebc8107c553e43b9d84eb735446c26fd) )
 	ROM_LOAD16_BYTE("rh_spr0.bin", 0x100001, 0x20000, CRC(78fba467) SHA1(4586b061724be7ec413784b820c33cc0d6bbcd0c) )
 
@@ -1673,7 +2243,11 @@ ROM_START( kaiserkn )
 	ROM_LOAD       ("d84-08.rom", 0x1580000, 0x200000, CRC(07347bf1) SHA1(34bd359933acdec7fd1ce047092a30d1177afc2c) )
 	ROM_LOAD       ("d84-11.rom", 0x1780000, 0x200000, CRC(a062c1d4) SHA1(158912aa3dd75c3961bf738f9ac9034f0b005b60) )
 	ROM_LOAD       ("d84-21.rom", 0x1980000, 0x080000, CRC(89f68b66) SHA1(95916f02f71357324effe59da4f847f2f30ea34a) )
+<<<<<<< HEAD
 	ROM_FILL       (              0x0d00000, 0x680000, 0 )
+=======
+	ROM_FILL       (              0x0d00000, 0x680000, 0x00 )
+>>>>>>> upstream/master
 
 	ROM_REGION(0xc00000, "gfx2" , 0) /* Tiles */
 	ROM_LOAD16_BYTE("d84-12.rom", 0x000000, 0x200000, CRC(66a7a9aa) SHA1(a7d21f8b6370d16de3c1569019f2ad71d36e7a61) )
@@ -1682,9 +2256,15 @@ ROM_START( kaiserkn )
 	ROM_LOAD16_BYTE("d84-17.rom", 0x400001, 0x100000, CRC(0be37cc3) SHA1(b10c10b93858cad0c962ef614cfd6daea712ef6b) )
 	ROM_LOAD       ("d84-14.rom", 0x900000, 0x200000, CRC(2b2e693e) SHA1(03eb37fa7dc68d54bf0f1800b8c0b581c344a40f) )
 	ROM_LOAD       ("d84-18.rom", 0xb00000, 0x100000, CRC(e812bcc5) SHA1(3574e4a99232d9fc7989ec5d1e8fe76b4b30784a) )
+<<<<<<< HEAD
 	ROM_FILL       (              0x600000, 0x300000, 0 )
 
 	ROM_REGION(0x180000, "audiocpu", 0) /* 68000 sound CPU */
+=======
+	ROM_FILL       (              0x600000, 0x300000, 0x00 )
+
+	ROM_REGION(0x180000, "taito_en:audiocpu", 0) /* 68000 sound CPU */
+>>>>>>> upstream/master
 	ROM_LOAD16_BYTE("d84-26.32", 0x100000, 0x40000, CRC(4f5b8563) SHA1(1d4e06cbea7bc73a99d6e30be714fff420151bbc) )
 	ROM_LOAD16_BYTE("d84-27.33", 0x100001, 0x40000, CRC(fb0cb1ba) SHA1(16a79b53651a6131f7636db19738b456b7c28bff) )
 
@@ -1716,7 +2296,11 @@ ROM_START( kaiserknj )
 	ROM_LOAD       ("d84-08.rom", 0x1580000, 0x200000, CRC(07347bf1) SHA1(34bd359933acdec7fd1ce047092a30d1177afc2c) )
 	ROM_LOAD       ("d84-11.rom", 0x1780000, 0x200000, CRC(a062c1d4) SHA1(158912aa3dd75c3961bf738f9ac9034f0b005b60) )
 	ROM_LOAD       ("d84-21.rom", 0x1980000, 0x080000, CRC(89f68b66) SHA1(95916f02f71357324effe59da4f847f2f30ea34a) )
+<<<<<<< HEAD
 	ROM_FILL       (              0x0d00000, 0x680000, 0 )
+=======
+	ROM_FILL       (              0x0d00000, 0x680000, 0x00 )
+>>>>>>> upstream/master
 
 	ROM_REGION(0xc00000, "gfx2" , 0) /* Tiles */
 	ROM_LOAD16_BYTE("d84-12.rom", 0x000000, 0x200000, CRC(66a7a9aa) SHA1(a7d21f8b6370d16de3c1569019f2ad71d36e7a61) )
@@ -1725,9 +2309,15 @@ ROM_START( kaiserknj )
 	ROM_LOAD16_BYTE("d84-17.rom", 0x400001, 0x100000, CRC(0be37cc3) SHA1(b10c10b93858cad0c962ef614cfd6daea712ef6b) )
 	ROM_LOAD       ("d84-14.rom", 0x900000, 0x200000, CRC(2b2e693e) SHA1(03eb37fa7dc68d54bf0f1800b8c0b581c344a40f) )
 	ROM_LOAD       ("d84-18.rom", 0xb00000, 0x100000, CRC(e812bcc5) SHA1(3574e4a99232d9fc7989ec5d1e8fe76b4b30784a) )
+<<<<<<< HEAD
 	ROM_FILL       (              0x600000, 0x300000, 0 )
 
 	ROM_REGION(0x180000, "audiocpu", 0) /* 68000 sound CPU */
+=======
+	ROM_FILL       (              0x600000, 0x300000, 0x00 )
+
+	ROM_REGION(0x180000, "taito_en:audiocpu", 0) /* 68000 sound CPU */
+>>>>>>> upstream/master
 	ROM_LOAD16_BYTE("d84-26.32", 0x100000, 0x40000, CRC(4f5b8563) SHA1(1d4e06cbea7bc73a99d6e30be714fff420151bbc) )
 	ROM_LOAD16_BYTE("d84-27.33", 0x100001, 0x40000, CRC(fb0cb1ba) SHA1(16a79b53651a6131f7636db19738b456b7c28bff) )
 
@@ -1759,7 +2349,11 @@ ROM_START( gblchmp )
 	ROM_LOAD       ("d84-08.rom", 0x1580000, 0x200000, CRC(07347bf1) SHA1(34bd359933acdec7fd1ce047092a30d1177afc2c) )
 	ROM_LOAD       ("d84-11.rom", 0x1780000, 0x200000, CRC(a062c1d4) SHA1(158912aa3dd75c3961bf738f9ac9034f0b005b60) )
 	ROM_LOAD       ("d84-21.rom", 0x1980000, 0x080000, CRC(89f68b66) SHA1(95916f02f71357324effe59da4f847f2f30ea34a) )
+<<<<<<< HEAD
 	ROM_FILL       (              0x0d00000, 0x680000, 0 )
+=======
+	ROM_FILL       (              0x0d00000, 0x680000, 0x00 )
+>>>>>>> upstream/master
 
 	ROM_REGION(0xc00000, "gfx2" , 0) /* Tiles */
 	ROM_LOAD16_BYTE("d84-12.rom", 0x000000, 0x200000, CRC(66a7a9aa) SHA1(a7d21f8b6370d16de3c1569019f2ad71d36e7a61) )
@@ -1768,9 +2362,15 @@ ROM_START( gblchmp )
 	ROM_LOAD16_BYTE("d84-17.rom", 0x400001, 0x100000, CRC(0be37cc3) SHA1(b10c10b93858cad0c962ef614cfd6daea712ef6b) )
 	ROM_LOAD       ("d84-14.rom", 0x900000, 0x200000, CRC(2b2e693e) SHA1(03eb37fa7dc68d54bf0f1800b8c0b581c344a40f) )
 	ROM_LOAD       ("d84-18.rom", 0xb00000, 0x100000, CRC(e812bcc5) SHA1(3574e4a99232d9fc7989ec5d1e8fe76b4b30784a) )
+<<<<<<< HEAD
 	ROM_FILL       (              0x600000, 0x300000, 0 )
 
 	ROM_REGION(0x180000, "audiocpu", 0) /* 68000 sound CPU */
+=======
+	ROM_FILL       (              0x600000, 0x300000, 0x00 )
+
+	ROM_REGION(0x180000, "taito_en:audiocpu", 0) /* 68000 sound CPU */
+>>>>>>> upstream/master
 	ROM_LOAD16_BYTE("d84-26.32", 0x100000, 0x40000, CRC(4f5b8563) SHA1(1d4e06cbea7bc73a99d6e30be714fff420151bbc) )
 	ROM_LOAD16_BYTE("d84-27.33", 0x100001, 0x40000, CRC(fb0cb1ba) SHA1(16a79b53651a6131f7636db19738b456b7c28bff) )
 
@@ -1802,7 +2402,11 @@ ROM_START( dankuga )
 	ROM_LOAD       ("d84-08.rom", 0x1580000, 0x200000, CRC(07347bf1) SHA1(34bd359933acdec7fd1ce047092a30d1177afc2c) )
 	ROM_LOAD       ("d84-11.rom", 0x1780000, 0x200000, CRC(a062c1d4) SHA1(158912aa3dd75c3961bf738f9ac9034f0b005b60) )
 	ROM_LOAD       ("d84-21.rom", 0x1980000, 0x080000, CRC(89f68b66) SHA1(95916f02f71357324effe59da4f847f2f30ea34a) )
+<<<<<<< HEAD
 	ROM_FILL       (              0x0d00000, 0x680000, 0 )
+=======
+	ROM_FILL       (              0x0d00000, 0x680000, 0x00 )
+>>>>>>> upstream/master
 
 	ROM_REGION(0xc00000, "gfx2" , 0) /* Tiles */
 	ROM_LOAD16_BYTE("d84-12.rom", 0x000000, 0x200000, CRC(66a7a9aa) SHA1(a7d21f8b6370d16de3c1569019f2ad71d36e7a61) )
@@ -1811,9 +2415,15 @@ ROM_START( dankuga )
 	ROM_LOAD16_BYTE("d84-17.rom", 0x400001, 0x100000, CRC(0be37cc3) SHA1(b10c10b93858cad0c962ef614cfd6daea712ef6b) )
 	ROM_LOAD       ("d84-14.rom", 0x900000, 0x200000, CRC(2b2e693e) SHA1(03eb37fa7dc68d54bf0f1800b8c0b581c344a40f) )
 	ROM_LOAD       ("d84-18.rom", 0xb00000, 0x100000, CRC(e812bcc5) SHA1(3574e4a99232d9fc7989ec5d1e8fe76b4b30784a) )
+<<<<<<< HEAD
 	ROM_FILL       (              0x600000, 0x300000, 0 )
 
 	ROM_REGION(0x180000, "audiocpu", 0) /* 68000 sound CPU */
+=======
+	ROM_FILL       (              0x600000, 0x300000, 0x00 )
+
+	ROM_REGION(0x180000, "taito_en:audiocpu", 0) /* 68000 sound CPU */
+>>>>>>> upstream/master
 	ROM_LOAD16_BYTE("d84-26.32", 0x100000, 0x40000, CRC(4f5b8563) SHA1(1d4e06cbea7bc73a99d6e30be714fff420151bbc) )
 	ROM_LOAD16_BYTE("d84-27.33", 0x100001, 0x40000, CRC(fb0cb1ba) SHA1(16a79b53651a6131f7636db19738b456b7c28bff) )
 
@@ -1836,15 +2446,25 @@ ROM_START( dariusg )
 	ROM_LOAD16_BYTE("d87-03.bin", 0x000000, 0x200000, CRC(4be1666e) SHA1(35ba7bcf29ec7a8f8b6944ee3544693d4df1bfc2) )
 	ROM_LOAD16_BYTE("d87-04.bin", 0x000001, 0x200000, CRC(2616002c) SHA1(003f98b740a697274385b8da03c78f3c6f7b5e89) )
 	ROM_LOAD       ("d87-05.bin", 0x600000, 0x200000, CRC(4e5891a9) SHA1(fd08d848079841c9237fa359a850980fd00114d8) )
+<<<<<<< HEAD
 	ROM_FILL       (              0x400000, 0x200000, 0 )
+=======
+	ROM_FILL       (              0x400000, 0x200000, 0x00 )
+>>>>>>> upstream/master
 
 	ROM_REGION(0x800000, "gfx2" , 0) /* Tiles */
 	ROM_LOAD16_BYTE("d87-06.bin", 0x000000, 0x200000, CRC(3b97a07c) SHA1(72cdeffedeab0c1bd0e47f03172085390a2be393) )
 	ROM_LOAD16_BYTE("d87-17.bin", 0x000001, 0x200000, CRC(e601d63e) SHA1(256a6aeb5633fe1db407fad567169a9d0c911219) )
 	ROM_LOAD       ("d87-08.bin", 0x600000, 0x200000, CRC(76d23602) SHA1(ca53ea6641182c44a4038bbeaa5effb1687f1980) )
+<<<<<<< HEAD
 	ROM_FILL       (              0x400000, 0x200000, 0 )
 
 	ROM_REGION(0x180000, "audiocpu", 0) /* 68000 sound CPU */
+=======
+	ROM_FILL       (              0x400000, 0x200000, 0x00 )
+
+	ROM_REGION(0x180000, "taito_en:audiocpu", 0) /* 68000 sound CPU */
+>>>>>>> upstream/master
 	ROM_LOAD16_BYTE("d87-13.bin", 0x100000, 0x40000, CRC(15b1fff4) SHA1(28692b731ae98a47c2c5e11a8a71b61a813d9a64) )
 	ROM_LOAD16_BYTE("d87-14.bin", 0x100001, 0x40000, CRC(eecda29a) SHA1(6eb238e47bc7bf635ffbdbb25fb06a37db980ef8) )
 
@@ -1864,15 +2484,25 @@ ROM_START( dariusgj )
 	ROM_LOAD16_BYTE("d87-03.bin", 0x000000, 0x200000, CRC(4be1666e) SHA1(35ba7bcf29ec7a8f8b6944ee3544693d4df1bfc2) )
 	ROM_LOAD16_BYTE("d87-04.bin", 0x000001, 0x200000, CRC(2616002c) SHA1(003f98b740a697274385b8da03c78f3c6f7b5e89) )
 	ROM_LOAD       ("d87-05.bin", 0x600000, 0x200000, CRC(4e5891a9) SHA1(fd08d848079841c9237fa359a850980fd00114d8) )
+<<<<<<< HEAD
 	ROM_FILL       (              0x400000, 0x200000, 0 )
+=======
+	ROM_FILL       (              0x400000, 0x200000, 0x00 )
+>>>>>>> upstream/master
 
 	ROM_REGION(0x800000, "gfx2" , 0) /* Tiles */
 	ROM_LOAD16_BYTE("d87-06.bin", 0x000000, 0x200000, CRC(3b97a07c) SHA1(72cdeffedeab0c1bd0e47f03172085390a2be393) )
 	ROM_LOAD16_BYTE("d87-17.bin", 0x000001, 0x200000, CRC(e601d63e) SHA1(256a6aeb5633fe1db407fad567169a9d0c911219) )
 	ROM_LOAD       ("d87-08.bin", 0x600000, 0x200000, CRC(76d23602) SHA1(ca53ea6641182c44a4038bbeaa5effb1687f1980) )
+<<<<<<< HEAD
 	ROM_FILL       (              0x400000, 0x200000, 0 )
 
 	ROM_REGION(0x180000, "audiocpu", 0) /* 68000 sound CPU */
+=======
+	ROM_FILL       (              0x400000, 0x200000, 0x00 )
+
+	ROM_REGION(0x180000, "taito_en:audiocpu", 0) /* 68000 sound CPU */
+>>>>>>> upstream/master
 	ROM_LOAD16_BYTE("d87-13.bin", 0x100000, 0x40000, CRC(15b1fff4) SHA1(28692b731ae98a47c2c5e11a8a71b61a813d9a64) )
 	ROM_LOAD16_BYTE("d87-14.bin", 0x100001, 0x40000, CRC(eecda29a) SHA1(6eb238e47bc7bf635ffbdbb25fb06a37db980ef8) )
 
@@ -1892,15 +2522,25 @@ ROM_START( dariusgu )
 	ROM_LOAD16_BYTE("d87-03.bin", 0x000000, 0x200000, CRC(4be1666e) SHA1(35ba7bcf29ec7a8f8b6944ee3544693d4df1bfc2) )
 	ROM_LOAD16_BYTE("d87-04.bin", 0x000001, 0x200000, CRC(2616002c) SHA1(003f98b740a697274385b8da03c78f3c6f7b5e89) )
 	ROM_LOAD       ("d87-05.bin", 0x600000, 0x200000, CRC(4e5891a9) SHA1(fd08d848079841c9237fa359a850980fd00114d8) )
+<<<<<<< HEAD
 	ROM_FILL       (              0x400000, 0x200000, 0 )
+=======
+	ROM_FILL       (              0x400000, 0x200000, 0x00 )
+>>>>>>> upstream/master
 
 	ROM_REGION(0x800000, "gfx2" , 0) /* Tiles */
 	ROM_LOAD16_BYTE("d87-06.bin", 0x000000, 0x200000, CRC(3b97a07c) SHA1(72cdeffedeab0c1bd0e47f03172085390a2be393) )
 	ROM_LOAD16_BYTE("d87-17.bin", 0x000001, 0x200000, CRC(e601d63e) SHA1(256a6aeb5633fe1db407fad567169a9d0c911219) )
 	ROM_LOAD       ("d87-08.bin", 0x600000, 0x200000, CRC(76d23602) SHA1(ca53ea6641182c44a4038bbeaa5effb1687f1980) )
+<<<<<<< HEAD
 	ROM_FILL       (              0x400000, 0x200000, 0 )
 
 	ROM_REGION(0x180000, "audiocpu", 0) /* 68000 sound CPU */
+=======
+	ROM_FILL       (              0x400000, 0x200000, 0x00 )
+
+	ROM_REGION(0x180000, "taito_en:audiocpu", 0) /* 68000 sound CPU */
+>>>>>>> upstream/master
 	ROM_LOAD16_BYTE("d87-13.bin", 0x100000, 0x40000, CRC(15b1fff4) SHA1(28692b731ae98a47c2c5e11a8a71b61a813d9a64) )
 	ROM_LOAD16_BYTE("d87-14.bin", 0x100001, 0x40000, CRC(eecda29a) SHA1(6eb238e47bc7bf635ffbdbb25fb06a37db980ef8) )
 
@@ -1920,15 +2560,25 @@ ROM_START( dariusgx )
 	ROM_LOAD16_BYTE("d87-03.bin", 0x000000, 0x200000, CRC(4be1666e) SHA1(35ba7bcf29ec7a8f8b6944ee3544693d4df1bfc2) )
 	ROM_LOAD16_BYTE("d87-04.bin", 0x000001, 0x200000, CRC(2616002c) SHA1(003f98b740a697274385b8da03c78f3c6f7b5e89) )
 	ROM_LOAD       ("d87-05.bin", 0x600000, 0x200000, CRC(4e5891a9) SHA1(fd08d848079841c9237fa359a850980fd00114d8) )
+<<<<<<< HEAD
 	ROM_FILL       (              0x400000, 0x200000, 0 )
+=======
+	ROM_FILL       (              0x400000, 0x200000, 0x00 )
+>>>>>>> upstream/master
 
 	ROM_REGION(0x800000, "gfx2" , 0) /* Tiles */
 	ROM_LOAD16_BYTE("d87-06.bin", 0x000000, 0x200000, CRC(3b97a07c) SHA1(72cdeffedeab0c1bd0e47f03172085390a2be393) )
 	ROM_LOAD16_BYTE("d87-17.bin", 0x000001, 0x200000, CRC(e601d63e) SHA1(256a6aeb5633fe1db407fad567169a9d0c911219) )
 	ROM_LOAD       ("d87-08.bin", 0x600000, 0x200000, CRC(76d23602) SHA1(ca53ea6641182c44a4038bbeaa5effb1687f1980) )
+<<<<<<< HEAD
 	ROM_FILL       (              0x400000, 0x200000, 0 )
 
 	ROM_REGION(0x180000, "audiocpu", 0) /* 68000 sound CPU */
+=======
+	ROM_FILL       (              0x400000, 0x200000, 0x00 )
+
+	ROM_REGION(0x180000, "taito_en:audiocpu", 0) /* 68000 sound CPU */
+>>>>>>> upstream/master
 	ROM_LOAD16_BYTE("d87-13.bin", 0x100000, 0x40000, CRC(15b1fff4) SHA1(28692b731ae98a47c2c5e11a8a71b61a813d9a64) )
 	ROM_LOAD16_BYTE("d87-14.bin", 0x100001, 0x40000, CRC(eecda29a) SHA1(6eb238e47bc7bf635ffbdbb25fb06a37db980ef8) )
 
@@ -1949,15 +2599,25 @@ ROM_START( bublbob2 )
 	ROM_LOAD16_BYTE("d90-03", 0x000000, 0x100000, CRC(6fa894a1) SHA1(7c33e6d41e8928029b92d66557a3712b51c49c67) )
 	ROM_LOAD16_BYTE("d90-02", 0x000001, 0x100000, CRC(5ab04ca2) SHA1(6d87e7ca3167ff81a041cfedbbed84d51da997de) )
 	ROM_LOAD       ("d90-01", 0x300000, 0x100000, CRC(8aedb9e5) SHA1(fb49330f7985a829c9544ecfd0bc672494f29cf6) )
+<<<<<<< HEAD
 	ROM_FILL       (          0x200000, 0x100000, 0 )
+=======
+	ROM_FILL       (          0x200000, 0x100000, 0x00 )
+>>>>>>> upstream/master
 
 	ROM_REGION(0x400000, "gfx2" , 0) /* Tiles */
 	ROM_LOAD16_BYTE("d90-08", 0x000000, 0x100000, CRC(25a4fb2c) SHA1(c8bf6fe2291c05386b32cd26bfcb379da756d7b5) )
 	ROM_LOAD16_BYTE("d90-07", 0x000001, 0x100000, CRC(b436b42d) SHA1(559827120273733147b260e0723054d926dbea5e) )
 	ROM_LOAD       ("d90-06", 0x300000, 0x100000, CRC(166a72b8) SHA1(7f70b8c960794322e1dc88e6600a2d13d948d873) )
+<<<<<<< HEAD
 	ROM_FILL       (          0x200000, 0x100000, 0 )
 
 	ROM_REGION(0x180000, "audiocpu", 0) /* sound CPU */
+=======
+	ROM_FILL       (          0x200000, 0x100000, 0x00 )
+
+	ROM_REGION(0x180000, "taito_en:audiocpu", 0) /* sound CPU */
+>>>>>>> upstream/master
 	ROM_LOAD16_BYTE("d90-13.ic32", 0x100000, 0x40000, CRC(6762bd90) SHA1(771db0382bc8dab2caf13d0fc20648366c685829) )
 	ROM_LOAD16_BYTE("d90-14.ic33", 0x100001, 0x40000, CRC(8e33357e) SHA1(68b81693c22e6357e37244f2a416818a81338138) )
 
@@ -1983,15 +2643,25 @@ ROM_START( bublbob2o )
 	ROM_LOAD16_BYTE("d90-03", 0x000000, 0x100000, CRC(6fa894a1) SHA1(7c33e6d41e8928029b92d66557a3712b51c49c67) )
 	ROM_LOAD16_BYTE("d90-02", 0x000001, 0x100000, CRC(5ab04ca2) SHA1(6d87e7ca3167ff81a041cfedbbed84d51da997de) )
 	ROM_LOAD       ("d90-01", 0x300000, 0x100000, CRC(8aedb9e5) SHA1(fb49330f7985a829c9544ecfd0bc672494f29cf6) )
+<<<<<<< HEAD
 	ROM_FILL       (          0x200000, 0x100000, 0 )
+=======
+	ROM_FILL       (          0x200000, 0x100000, 0x00 )
+>>>>>>> upstream/master
 
 	ROM_REGION(0x400000, "gfx2" , 0) /* Tiles */
 	ROM_LOAD16_BYTE("d90-08", 0x000000, 0x100000, CRC(25a4fb2c) SHA1(c8bf6fe2291c05386b32cd26bfcb379da756d7b5) )
 	ROM_LOAD16_BYTE("d90-07", 0x000001, 0x100000, CRC(b436b42d) SHA1(559827120273733147b260e0723054d926dbea5e) )
 	ROM_LOAD       ("d90-06", 0x300000, 0x100000, CRC(166a72b8) SHA1(7f70b8c960794322e1dc88e6600a2d13d948d873) )
+<<<<<<< HEAD
 	ROM_FILL       (          0x200000, 0x100000, 0 )
 
 	ROM_REGION(0x180000, "audiocpu", 0) /* sound CPU */
+=======
+	ROM_FILL       (          0x200000, 0x100000, 0x00 )
+
+	ROM_REGION(0x180000, "taito_en:audiocpu", 0) /* sound CPU */
+>>>>>>> upstream/master
 	ROM_LOAD16_BYTE("d90-13.ic32", 0x100000, 0x40000, CRC(6762bd90) SHA1(771db0382bc8dab2caf13d0fc20648366c685829) )
 	ROM_LOAD16_BYTE("d90-14.ic33", 0x100001, 0x40000, CRC(8e33357e) SHA1(68b81693c22e6357e37244f2a416818a81338138) )
 
@@ -2021,7 +2691,11 @@ ROM_START( bublbob2p )
 	ROM_LOAD32_BYTE("cq80-scr3-4266.ic4", 0x000003, 0x080000, CRC(c114583f) SHA1(ec85e8f4135e48607bb84b810d57d570ef56b228) )
 	ROM_LOAD16_BYTE("cq80-scr4-7fe1.ic3", 0x300000, 0x080000, CRC(2bba1728) SHA1(cdd2e651c233a185fcbb3fd8f5eabee2af30f781) )
 
+<<<<<<< HEAD
 	ROM_REGION(0x180000, "audiocpu", 0) /* sound CPU */
+=======
+	ROM_REGION(0x180000, "taito_en:audiocpu", 0) /* sound CPU */
+>>>>>>> upstream/master
 	ROM_LOAD16_BYTE("snd-h-348f.ic66", 0x100000, 0x20000, CRC(f66e60f2) SHA1(b94c97ccde179a69811137c77730c91924236bfe))
 	ROM_LOAD16_BYTE("snd-l-4ec1.ic65", 0x100001, 0x20000, CRC(d302d8bc) SHA1(02a2e69d0f4406578b12b05ab25d2abdf5bbba3c) )
 
@@ -2058,15 +2732,25 @@ ROM_START( bubsymphe )
 	ROM_LOAD16_BYTE("d90-03", 0x000000, 0x100000, CRC(6fa894a1) SHA1(7c33e6d41e8928029b92d66557a3712b51c49c67) )
 	ROM_LOAD16_BYTE("d90-02", 0x000001, 0x100000, CRC(5ab04ca2) SHA1(6d87e7ca3167ff81a041cfedbbed84d51da997de) )
 	ROM_LOAD       ("d90-01", 0x300000, 0x100000, CRC(8aedb9e5) SHA1(fb49330f7985a829c9544ecfd0bc672494f29cf6) )
+<<<<<<< HEAD
 	ROM_FILL       (          0x200000, 0x100000, 0 )
+=======
+	ROM_FILL       (          0x200000, 0x100000, 0x00 )
+>>>>>>> upstream/master
 
 	ROM_REGION(0x400000, "gfx2" , 0) /* Tiles */
 	ROM_LOAD16_BYTE("d90-08", 0x000000, 0x100000, CRC(25a4fb2c) SHA1(c8bf6fe2291c05386b32cd26bfcb379da756d7b5) )
 	ROM_LOAD16_BYTE("d90-07", 0x000001, 0x100000, CRC(b436b42d) SHA1(559827120273733147b260e0723054d926dbea5e) )
 	ROM_LOAD       ("d90-06", 0x300000, 0x100000, CRC(166a72b8) SHA1(7f70b8c960794322e1dc88e6600a2d13d948d873) )
+<<<<<<< HEAD
 	ROM_FILL       (          0x200000, 0x100000, 0 )
 
 	ROM_REGION(0x180000, "audiocpu", 0) /* sound CPU */
+=======
+	ROM_FILL       (          0x200000, 0x100000, 0x00 )
+
+	ROM_REGION(0x180000, "taito_en:audiocpu", 0) /* sound CPU */
+>>>>>>> upstream/master
 	ROM_LOAD16_BYTE("d90-13.ic32", 0x100000, 0x40000, CRC(6762bd90) SHA1(771db0382bc8dab2caf13d0fc20648366c685829) )
 	ROM_LOAD16_BYTE("d90-14.ic33", 0x100001, 0x40000, CRC(8e33357e) SHA1(68b81693c22e6357e37244f2a416818a81338138) )
 
@@ -2086,15 +2770,25 @@ ROM_START( bubsymphj )
 	ROM_LOAD16_BYTE("d90-03", 0x000000, 0x100000, CRC(6fa894a1) SHA1(7c33e6d41e8928029b92d66557a3712b51c49c67) )
 	ROM_LOAD16_BYTE("d90-02", 0x000001, 0x100000, CRC(5ab04ca2) SHA1(6d87e7ca3167ff81a041cfedbbed84d51da997de) )
 	ROM_LOAD       ("d90-01", 0x300000, 0x100000, CRC(8aedb9e5) SHA1(fb49330f7985a829c9544ecfd0bc672494f29cf6) )
+<<<<<<< HEAD
 	ROM_FILL       (          0x200000, 0x100000, 0 )
+=======
+	ROM_FILL       (          0x200000, 0x100000, 0x00 )
+>>>>>>> upstream/master
 
 	ROM_REGION(0x400000, "gfx2" , 0) /* Tiles */
 	ROM_LOAD16_BYTE("d90-08", 0x000000, 0x100000, CRC(25a4fb2c) SHA1(c8bf6fe2291c05386b32cd26bfcb379da756d7b5) )
 	ROM_LOAD16_BYTE("d90-07", 0x000001, 0x100000, CRC(b436b42d) SHA1(559827120273733147b260e0723054d926dbea5e) )
 	ROM_LOAD       ("d90-06", 0x300000, 0x100000, CRC(166a72b8) SHA1(7f70b8c960794322e1dc88e6600a2d13d948d873) )
+<<<<<<< HEAD
 	ROM_FILL       (          0x200000, 0x100000, 0 )
 
 	ROM_REGION(0x180000, "audiocpu", 0) /* sound CPU */
+=======
+	ROM_FILL       (          0x200000, 0x100000, 0x00 )
+
+	ROM_REGION(0x180000, "taito_en:audiocpu", 0) /* sound CPU */
+>>>>>>> upstream/master
 	ROM_LOAD16_BYTE("d90-13.ic32", 0x100000, 0x40000, CRC(6762bd90) SHA1(771db0382bc8dab2caf13d0fc20648366c685829) )
 	ROM_LOAD16_BYTE("d90-14.ic33", 0x100001, 0x40000, CRC(8e33357e) SHA1(68b81693c22e6357e37244f2a416818a81338138) )
 
@@ -2145,7 +2839,11 @@ ROM_START( bubsymphb )
 	ROM_LOAD32_BYTE("bsb_d15.bin", 0x000003, 0x40000, CRC(014cf8e0) SHA1(5e91fc6665c1d472d0651c06108ea6a8eb5ae8b4) )
 
 	ROM_REGION(0x300000, "gfx1" , 0) /* Sprites (5bpp) */
+<<<<<<< HEAD
 	ROM_FILL       (        0x000000, 0x080000, 0 )
+=======
+	ROM_FILL       (        0x000000, 0x080000, 0x00 )
+>>>>>>> upstream/master
 	ROM_LOAD("bsb_d18.bin", 0x080000, 0x080000, CRC(22d7eeb5) SHA1(30aa4493c5bc98d9256817b9e3341b20d2b76f1f) )
 	ROM_LOAD("bsb_d19.bin", 0x100000, 0x080000, CRC(d36801fd) SHA1(5dc00942dbd9bb29214c206ea192f158b71b09dc) )
 	ROM_LOAD("bsb_d20.bin", 0x180000, 0x080000, CRC(20222e15) SHA1(41f2f94afd65d0c106752f254f20b593906cba28) )
@@ -2175,15 +2873,25 @@ ROM_START( bubsymphu )
 	ROM_LOAD16_BYTE("d90-03", 0x000000, 0x100000, CRC(6fa894a1) SHA1(7c33e6d41e8928029b92d66557a3712b51c49c67) )
 	ROM_LOAD16_BYTE("d90-02", 0x000001, 0x100000, CRC(5ab04ca2) SHA1(6d87e7ca3167ff81a041cfedbbed84d51da997de) )
 	ROM_LOAD       ("d90-01", 0x300000, 0x100000, CRC(8aedb9e5) SHA1(fb49330f7985a829c9544ecfd0bc672494f29cf6) )
+<<<<<<< HEAD
 	ROM_FILL       (          0x200000, 0x100000, 0 )
+=======
+	ROM_FILL       (          0x200000, 0x100000, 0x00 )
+>>>>>>> upstream/master
 
 	ROM_REGION(0x400000, "gfx2" , 0) /* Tiles */
 	ROM_LOAD16_BYTE("d90-08", 0x000000, 0x100000, CRC(25a4fb2c) SHA1(c8bf6fe2291c05386b32cd26bfcb379da756d7b5) )
 	ROM_LOAD16_BYTE("d90-07", 0x000001, 0x100000, CRC(b436b42d) SHA1(559827120273733147b260e0723054d926dbea5e) )
 	ROM_LOAD       ("d90-06", 0x300000, 0x100000, CRC(166a72b8) SHA1(7f70b8c960794322e1dc88e6600a2d13d948d873) )
+<<<<<<< HEAD
 	ROM_FILL       (          0x200000, 0x100000, 0 )
 
 	ROM_REGION(0x180000, "audiocpu", 0) /* sound CPU */
+=======
+	ROM_FILL       (          0x200000, 0x100000, 0x00 )
+
+	ROM_REGION(0x180000, "taito_en:audiocpu", 0) /* sound CPU */
+>>>>>>> upstream/master
 	ROM_LOAD16_BYTE("d90-13.ic32", 0x100000, 0x40000, CRC(6762bd90) SHA1(771db0382bc8dab2caf13d0fc20648366c685829) )
 	ROM_LOAD16_BYTE("d90-14.ic33", 0x100001, 0x40000, CRC(8e33357e) SHA1(68b81693c22e6357e37244f2a416818a81338138) )
 
@@ -2202,14 +2910,24 @@ ROM_START( spcinvdj )
 	ROM_REGION(0x200000, "gfx1" , 0) /* Sprites */
 	ROM_LOAD16_BYTE("d93-07.12", 0x000000, 0x80000, CRC(8cf5b972) SHA1(75e383aed8548f4ac7d38f1f08bf33fae2a93064) )
 	ROM_LOAD16_BYTE("d93-08.08", 0x000001, 0x80000, CRC(4c11af2b) SHA1(e332372ab0d1322faa8d6d98f8a6e3bbf51d2008) )
+<<<<<<< HEAD
 	ROM_FILL       (             0x100000, 0x100000,0 )
+=======
+	ROM_FILL       (             0x100000, 0x100000,0x00 )
+>>>>>>> upstream/master
 
 	ROM_REGION(0x80000, "gfx2" , 0) /* Tiles */
 	ROM_LOAD16_BYTE("d93-09.47", 0x000000, 0x20000, CRC(9076f663) SHA1(c94e93e40926df33b6bb528e0ef30381631913d7) )
 	ROM_LOAD16_BYTE("d93-10.45", 0x000001, 0x20000, CRC(8a3f531b) SHA1(69f9971c45971018108a5d312d5bbcfd3caf9bd0) )
+<<<<<<< HEAD
 	ROM_FILL       (             0x040000, 0x40000, 0 )
 
 	ROM_REGION(0x140000, "audiocpu", 0) /* 68000 sound CPU */
+=======
+	ROM_FILL       (             0x040000, 0x40000, 0x00 )
+
+	ROM_REGION(0x140000, "taito_en:audiocpu", 0) /* 68000 sound CPU */
+>>>>>>> upstream/master
 	ROM_LOAD16_BYTE("d93-05.bin", 0x100000, 0x20000, CRC(ff365596) SHA1(4cf2e0d6f42cf3fb69796be6092eff8a47f7f8b9) )
 	ROM_LOAD16_BYTE("d93-06.bin", 0x100001, 0x20000, CRC(ef7ad400) SHA1(01be403d575a543f089b910a5a8c381a6603e67e) )
 
@@ -2237,15 +2955,25 @@ ROM_START( pwrgoal )
 	ROM_LOAD       ("d94-03.bin", 0x1200000, 0x200000, CRC(95e32072) SHA1(9797f65ecadc6b0f209bf262396315b61855c433) )
 	ROM_LOAD       ("d94-02.bin", 0x1400000, 0x200000, CRC(f460b9ac) SHA1(e36a812791bd0360380f397b1bc6c357391f585a) )
 	ROM_LOAD       ("d94-01.bin", 0x1600000, 0x200000, CRC(410ffccd) SHA1(0cab00c8e9de92ad81ac61f25bbe8bfd60f45ae0) )
+<<<<<<< HEAD
 	ROM_FILL       (              0xc00000, 0x600000,0 )
+=======
+	ROM_FILL       (              0xc00000, 0x600000,0x00 )
+>>>>>>> upstream/master
 
 	ROM_REGION(0x400000, "gfx2" , 0) /* Tiles */
 	ROM_LOAD16_BYTE("d94-14.bin", 0x000000, 0x100000, CRC(b8ba5761) SHA1(7966ef3166d7d6b9913478eaef5dd4a2bf7d5a06) )
 	ROM_LOAD16_BYTE("d94-13.bin", 0x000001, 0x100000, CRC(cafc68ce) SHA1(5c1f49951e83d812f0c7697751f4876ab1d08141) )
 	ROM_LOAD       ("d94-12.bin", 0x300000, 0x100000, CRC(47064189) SHA1(99ceeb326dcc2e1c3acba8ac14d94dcb17c6e032) )
+<<<<<<< HEAD
 	ROM_FILL       (              0x200000, 0x100000,0 )
 
 	ROM_REGION(0x180000, "audiocpu", 0) /* 68000 sound CPU */
+=======
+	ROM_FILL       (              0x200000, 0x100000,0x00 )
+
+	ROM_REGION(0x180000, "taito_en:audiocpu", 0) /* 68000 sound CPU */
+>>>>>>> upstream/master
 	ROM_LOAD16_BYTE("d94-19.bin", 0x100000, 0x40000, CRC(c93dbcf4) SHA1(413520e652d809651aff9b1b74e6353112d34c12) ) /* Over dump?? 0x20000-0x3ffff == 0xFF */
 	ROM_LOAD16_BYTE("d94-20.bin", 0x100001, 0x40000, CRC(f232bf64) SHA1(bbfeae0785fc49c12aa6d9b1bd6ff7c8515f8fe7) ) /* Over dump?? 0x20000-0x3ffff == 0xFF */
 
@@ -2271,15 +2999,25 @@ ROM_START( hthero95 )
 	ROM_LOAD       ("d94-03.bin", 0x1200000, 0x200000, CRC(95e32072) SHA1(9797f65ecadc6b0f209bf262396315b61855c433) )
 	ROM_LOAD       ("d94-02.bin", 0x1400000, 0x200000, CRC(f460b9ac) SHA1(e36a812791bd0360380f397b1bc6c357391f585a) )
 	ROM_LOAD       ("d94-01.bin", 0x1600000, 0x200000, CRC(410ffccd) SHA1(0cab00c8e9de92ad81ac61f25bbe8bfd60f45ae0) )
+<<<<<<< HEAD
 	ROM_FILL       (              0xc00000, 0x600000,0 )
+=======
+	ROM_FILL       (              0xc00000, 0x600000,0x00 )
+>>>>>>> upstream/master
 
 	ROM_REGION(0x400000, "gfx2" , 0) /* Tiles */
 	ROM_LOAD16_BYTE("d94-14.bin", 0x000000, 0x100000, CRC(b8ba5761) SHA1(7966ef3166d7d6b9913478eaef5dd4a2bf7d5a06) )
 	ROM_LOAD16_BYTE("d94-13.bin", 0x000001, 0x100000, CRC(cafc68ce) SHA1(5c1f49951e83d812f0c7697751f4876ab1d08141) )
 	ROM_LOAD       ("d94-12.bin", 0x300000, 0x100000, CRC(47064189) SHA1(99ceeb326dcc2e1c3acba8ac14d94dcb17c6e032) )
+<<<<<<< HEAD
 	ROM_FILL       (              0x200000, 0x100000,0 )
 
 	ROM_REGION(0x180000, "audiocpu", 0) /* 68000 sound CPU */
+=======
+	ROM_FILL       (              0x200000, 0x100000,0x00 )
+
+	ROM_REGION(0x180000, "taito_en:audiocpu", 0) /* 68000 sound CPU */
+>>>>>>> upstream/master
 	ROM_LOAD16_BYTE("d94-19.bin", 0x100000, 0x40000, CRC(c93dbcf4) SHA1(413520e652d809651aff9b1b74e6353112d34c12) ) /* Over dump?? 0x20000-0x3ffff == 0xFF */
 	ROM_LOAD16_BYTE("d94-20.bin", 0x100001, 0x40000, CRC(f232bf64) SHA1(bbfeae0785fc49c12aa6d9b1bd6ff7c8515f8fe7) ) /* Over dump?? 0x20000-0x3ffff == 0xFF */
 
@@ -2305,15 +3043,25 @@ ROM_START( hthero95u )
 	ROM_LOAD       ("d94-03.bin", 0x1200000, 0x200000, CRC(95e32072) SHA1(9797f65ecadc6b0f209bf262396315b61855c433) )
 	ROM_LOAD       ("d94-02.bin", 0x1400000, 0x200000, CRC(f460b9ac) SHA1(e36a812791bd0360380f397b1bc6c357391f585a) )
 	ROM_LOAD       ("d94-01.bin", 0x1600000, 0x200000, CRC(410ffccd) SHA1(0cab00c8e9de92ad81ac61f25bbe8bfd60f45ae0) )
+<<<<<<< HEAD
 	ROM_FILL       (              0xc00000, 0x600000,0 )
+=======
+	ROM_FILL       (              0xc00000, 0x600000,0x00 )
+>>>>>>> upstream/master
 
 	ROM_REGION(0x400000, "gfx2" , 0) /* Tiles */
 	ROM_LOAD16_BYTE("d94-14.bin", 0x000000, 0x100000, CRC(b8ba5761) SHA1(7966ef3166d7d6b9913478eaef5dd4a2bf7d5a06) )
 	ROM_LOAD16_BYTE("d94-13.bin", 0x000001, 0x100000, CRC(cafc68ce) SHA1(5c1f49951e83d812f0c7697751f4876ab1d08141) )
 	ROM_LOAD       ("d94-12.bin", 0x300000, 0x100000, CRC(47064189) SHA1(99ceeb326dcc2e1c3acba8ac14d94dcb17c6e032) )
+<<<<<<< HEAD
 	ROM_FILL       (              0x200000, 0x100000,0 )
 
 	ROM_REGION(0x180000, "audiocpu", 0) /* 68000 sound CPU */
+=======
+	ROM_FILL       (              0x200000, 0x100000,0x00 )
+
+	ROM_REGION(0x180000, "taito_en:audiocpu", 0) /* 68000 sound CPU */
+>>>>>>> upstream/master
 	ROM_LOAD16_BYTE("d94-19.bin", 0x100000, 0x40000, CRC(c93dbcf4) SHA1(413520e652d809651aff9b1b74e6353112d34c12) ) /* Over dump?? 0x20000-0x3ffff == 0xFF */
 	ROM_LOAD16_BYTE("d94-20.bin", 0x100001, 0x40000, CRC(f232bf64) SHA1(bbfeae0785fc49c12aa6d9b1bd6ff7c8515f8fe7) ) /* Over dump?? 0x20000-0x3ffff == 0xFF */
 
@@ -2332,14 +3080,24 @@ ROM_START( qtheater )
 	ROM_REGION(0x800000, "gfx1" , 0) /* Sprites */
 	ROM_LOAD16_BYTE("d95-02.12", 0x000000, 0x200000, CRC(74ce6f3e) SHA1(eb03f44889bd2d5705e9d8cda6516b39758d9554) )
 	ROM_LOAD16_BYTE("d95-01.8",  0x000001, 0x200000, CRC(141beb7d) SHA1(bba91f47f68367e2bb3d89298cb62fac2d4edf7b) )
+<<<<<<< HEAD
 	ROM_FILL       (             0x400000, 0x400000, 0 )
+=======
+	ROM_FILL       (             0x400000, 0x400000, 0x00 )
+>>>>>>> upstream/master
 
 	ROM_REGION(0x800000, "gfx2" , 0) /* Tiles */
 	ROM_LOAD16_BYTE("d95-06.47", 0x000000, 0x200000, CRC(70a0dcbb) SHA1(b1abe6a9a4afe55201229a62bae11ad1d96ca244) )
 	ROM_LOAD16_BYTE("d95-05.45", 0x000001, 0x200000, CRC(1a1a852b) SHA1(89827485a31af4e2457775a5d16f747a764b6d67) )
+<<<<<<< HEAD
 	ROM_FILL       (             0x400000, 0x400000, 0 )
 
 	ROM_REGION(0x180000, "audiocpu", 0) /* 68000 sound CPU */
+=======
+	ROM_FILL       (             0x400000, 0x400000, 0x00 )
+
+	ROM_REGION(0x180000, "taito_en:audiocpu", 0) /* 68000 sound CPU */
+>>>>>>> upstream/master
 	ROM_LOAD16_BYTE("d95-07.32", 0x100000, 0x40000, CRC(3c201d70) SHA1(89fe4d363f4e1a847ba7d2894a2092708b287a33) )
 	ROM_LOAD16_BYTE("d95-08.33", 0x100001, 0x40000, CRC(01c23354) SHA1(7b332edc844b1b1c1513e879215089987645fa3f) )
 
@@ -2359,15 +3117,25 @@ ROM_START( spcinv95u )
 	ROM_LOAD16_BYTE("e06-03", 0x000000, 0x100000, CRC(a24070ef) SHA1(9b6ac7852114c606e871a08cfb3b9e1081ac7030) )
 	ROM_LOAD16_BYTE("e06-02", 0x000001, 0x100000, CRC(8f646dea) SHA1(07cd79671f36df1a5bbf2434e92a601351a36259) )
 	ROM_LOAD       ("e06-01", 0x300000, 0x100000, CRC(51721b15) SHA1(448a9a7f3631072d8987351f5c0b8dd2c908d266) )
+<<<<<<< HEAD
 	ROM_FILL       (          0x200000, 0x100000, 0 )
+=======
+	ROM_FILL       (          0x200000, 0x100000, 0x00 )
+>>>>>>> upstream/master
 
 	ROM_REGION(0x400000, "gfx2" , 0) /* Tiles */
 	ROM_LOAD16_BYTE("e06-08", 0x000000, 0x100000, CRC(72ae2fbf) SHA1(7fa7ec94a8031342a2446fb8eca0d89ecfd2fa4f) )
 	ROM_LOAD16_BYTE("e06-07", 0x000001, 0x100000, CRC(4b02e8f5) SHA1(02d8a97da52f9ba4033b8f0c3f455a908a9dce89) )
 	ROM_LOAD       ("e06-06", 0x300000, 0x100000, CRC(9380db3c) SHA1(83f5a46a01b9c15499e0dc2222df496d26baa0d4) )
+<<<<<<< HEAD
 	ROM_FILL       (          0x200000, 0x100000, 0 )
 
 	ROM_REGION(0x180000, "audiocpu", 0) /* 68000 sound CPU */
+=======
+	ROM_FILL       (          0x200000, 0x100000, 0x00 )
+
+	ROM_REGION(0x180000, "taito_en:audiocpu", 0) /* 68000 sound CPU */
+>>>>>>> upstream/master
 	ROM_LOAD16_BYTE("e06-09.32", 0x100000, 0x40000, CRC(9bcafc87) SHA1(10b3f6da00a41550fe6a705232f0e33fda3c7e7c) )
 	ROM_LOAD16_BYTE("e06-10.33", 0x100001, 0x40000, CRC(b752b61f) SHA1(e948a8af19c70ba8b8e908c869bc88ed0cac8420) )
 
@@ -2394,15 +3162,25 @@ ROM_START( spcinv95 )
 	ROM_LOAD16_BYTE("e06-03", 0x000000, 0x100000, CRC(a24070ef) SHA1(9b6ac7852114c606e871a08cfb3b9e1081ac7030) )
 	ROM_LOAD16_BYTE("e06-02", 0x000001, 0x100000, CRC(8f646dea) SHA1(07cd79671f36df1a5bbf2434e92a601351a36259) )
 	ROM_LOAD       ("e06-01", 0x300000, 0x100000, CRC(51721b15) SHA1(448a9a7f3631072d8987351f5c0b8dd2c908d266) )
+<<<<<<< HEAD
 	ROM_FILL       (          0x200000, 0x100000, 0 )
+=======
+	ROM_FILL       (          0x200000, 0x100000, 0x00 )
+>>>>>>> upstream/master
 
 	ROM_REGION(0x400000, "gfx2" , 0) /* Tiles */
 	ROM_LOAD16_BYTE("e06-08", 0x000000, 0x100000, CRC(72ae2fbf) SHA1(7fa7ec94a8031342a2446fb8eca0d89ecfd2fa4f) )
 	ROM_LOAD16_BYTE("e06-07", 0x000001, 0x100000, CRC(4b02e8f5) SHA1(02d8a97da52f9ba4033b8f0c3f455a908a9dce89) )
 	ROM_LOAD       ("e06-06", 0x300000, 0x100000, CRC(9380db3c) SHA1(83f5a46a01b9c15499e0dc2222df496d26baa0d4) )
+<<<<<<< HEAD
 	ROM_FILL       (          0x200000, 0x100000, 0 )
 
 	ROM_REGION(0x180000, "audiocpu", 0) /* 68000 sound CPU */
+=======
+	ROM_FILL       (          0x200000, 0x100000, 0x00 )
+
+	ROM_REGION(0x180000, "taito_en:audiocpu", 0) /* 68000 sound CPU */
+>>>>>>> upstream/master
 	ROM_LOAD16_BYTE("e06-09.32", 0x100000, 0x40000, CRC(9bcafc87) SHA1(10b3f6da00a41550fe6a705232f0e33fda3c7e7c) )
 	ROM_LOAD16_BYTE("e06-10.33", 0x100001, 0x40000, CRC(b752b61f) SHA1(e948a8af19c70ba8b8e908c869bc88ed0cac8420) )
 
@@ -2429,15 +3207,25 @@ ROM_START( akkanvdr )
 	ROM_LOAD16_BYTE("e06-03", 0x000000, 0x100000, CRC(a24070ef) SHA1(9b6ac7852114c606e871a08cfb3b9e1081ac7030) )
 	ROM_LOAD16_BYTE("e06-02", 0x000001, 0x100000, CRC(8f646dea) SHA1(07cd79671f36df1a5bbf2434e92a601351a36259) )
 	ROM_LOAD       ("e06-01", 0x300000, 0x100000, CRC(51721b15) SHA1(448a9a7f3631072d8987351f5c0b8dd2c908d266) )
+<<<<<<< HEAD
 	ROM_FILL       (          0x200000, 0x100000, 0 )
+=======
+	ROM_FILL       (          0x200000, 0x100000, 0x00 )
+>>>>>>> upstream/master
 
 	ROM_REGION(0x400000, "gfx2" , 0) /* Tiles */
 	ROM_LOAD16_BYTE("e06-08", 0x000000, 0x100000, CRC(72ae2fbf) SHA1(7fa7ec94a8031342a2446fb8eca0d89ecfd2fa4f) )
 	ROM_LOAD16_BYTE("e06-07", 0x000001, 0x100000, CRC(4b02e8f5) SHA1(02d8a97da52f9ba4033b8f0c3f455a908a9dce89) )
 	ROM_LOAD       ("e06-06", 0x300000, 0x100000, CRC(9380db3c) SHA1(83f5a46a01b9c15499e0dc2222df496d26baa0d4) )
+<<<<<<< HEAD
 	ROM_FILL       (          0x200000, 0x100000, 0 )
 
 	ROM_REGION(0x180000, "audiocpu", 0) /* 68000 sound CPU */
+=======
+	ROM_FILL       (          0x200000, 0x100000, 0x00 )
+
+	ROM_REGION(0x180000, "taito_en:audiocpu", 0) /* 68000 sound CPU */
+>>>>>>> upstream/master
 	ROM_LOAD16_BYTE("e06-09.32", 0x100000, 0x40000, CRC(9bcafc87) SHA1(10b3f6da00a41550fe6a705232f0e33fda3c7e7c) )
 	ROM_LOAD16_BYTE("e06-10.33", 0x100001, 0x40000, CRC(b752b61f) SHA1(e948a8af19c70ba8b8e908c869bc88ed0cac8420) )
 
@@ -2542,15 +3330,25 @@ ROM_START( elvactr )
 	ROM_LOAD16_BYTE("e02-03.12", 0x000000, 0x200000, CRC(c884ebb5) SHA1(49009056bfdc564eac0ae6b7b49f070f05dc4ee3) )
 	ROM_LOAD16_BYTE("e02-02.8",  0x000001, 0x200000, CRC(c8e06cfb) SHA1(071d095a4930ce18a782c577811b553a9705fbd7) )
 	ROM_LOAD       ("e02-01.4",  0x600000, 0x200000, CRC(2ba94726) SHA1(3e9cdd076338e0e5358571ce4f97576f1a6a12a7) )
+<<<<<<< HEAD
 	ROM_FILL       (             0x400000, 0x200000, 0 )
+=======
+	ROM_FILL       (             0x400000, 0x200000, 0x00 )
+>>>>>>> upstream/master
 
 	ROM_REGION(0x800000, "gfx2", 0 ) /* Tiles */
 	ROM_LOAD16_BYTE("e02-08.47", 0x000000, 0x200000, CRC(29c9bd02) SHA1(a5b552ae7ac15f514ee6105410ec3e6e34ea0adb) )
 	ROM_LOAD16_BYTE("e02-07.45", 0x000001, 0x200000, CRC(5eeee925) SHA1(d302da28df8ac6d406ef45f1d282ee22ce243857) )
 	ROM_LOAD       ("e02-06.43", 0x600000, 0x200000, CRC(4c8726e9) SHA1(8ce2320a087f43c49428a39dafffec8c40d61b03) )
+<<<<<<< HEAD
 	ROM_FILL       (             0x400000, 0x200000, 0 )
 
 	ROM_REGION(0x180000, "audiocpu", 0) /* 68000 sound CPU */
+=======
+	ROM_FILL       (             0x400000, 0x200000, 0x00 )
+
+	ROM_REGION(0x180000, "taito_en:audiocpu", 0) /* 68000 sound CPU */
+>>>>>>> upstream/master
 	ROM_LOAD16_BYTE("e02-13.32", 0x100000, 0x40000, CRC(80932702) SHA1(c468234d03aa31b2aa0c3bd6bec32034216c2ae4) )
 	ROM_LOAD16_BYTE("e02-14.33", 0x100001, 0x40000, CRC(706671a5) SHA1(1ac90647d617e73f12a67274a025ae43a6b3a316) )
 
@@ -2579,15 +3377,25 @@ ROM_START( elvactrj )
 	ROM_LOAD16_BYTE("e02-03.12", 0x000000, 0x200000, CRC(c884ebb5) SHA1(49009056bfdc564eac0ae6b7b49f070f05dc4ee3) )
 	ROM_LOAD16_BYTE("e02-02.8",  0x000001, 0x200000, CRC(c8e06cfb) SHA1(071d095a4930ce18a782c577811b553a9705fbd7) )
 	ROM_LOAD       ("e02-01.4",  0x600000, 0x200000, CRC(2ba94726) SHA1(3e9cdd076338e0e5358571ce4f97576f1a6a12a7) )
+<<<<<<< HEAD
 	ROM_FILL       (             0x400000, 0x200000, 0 )
+=======
+	ROM_FILL       (             0x400000, 0x200000, 0x00 )
+>>>>>>> upstream/master
 
 	ROM_REGION(0x800000, "gfx2", 0 ) /* Tiles */
 	ROM_LOAD16_BYTE("e02-08.47", 0x000000, 0x200000, CRC(29c9bd02) SHA1(a5b552ae7ac15f514ee6105410ec3e6e34ea0adb) )
 	ROM_LOAD16_BYTE("e02-07.45", 0x000001, 0x200000, CRC(5eeee925) SHA1(d302da28df8ac6d406ef45f1d282ee22ce243857) )
 	ROM_LOAD       ("e02-06.43", 0x600000, 0x200000, CRC(4c8726e9) SHA1(8ce2320a087f43c49428a39dafffec8c40d61b03) )
+<<<<<<< HEAD
 	ROM_FILL       (             0x400000, 0x200000, 0 )
 
 	ROM_REGION(0x180000, "audiocpu", 0) /* 68000 sound CPU */
+=======
+	ROM_FILL       (             0x400000, 0x200000, 0x00 )
+
+	ROM_REGION(0x180000, "taito_en:audiocpu", 0) /* 68000 sound CPU */
+>>>>>>> upstream/master
 	ROM_LOAD16_BYTE("e02-13.32", 0x100000, 0x40000, CRC(80932702) SHA1(c468234d03aa31b2aa0c3bd6bec32034216c2ae4) )
 	ROM_LOAD16_BYTE("e02-14.33", 0x100001, 0x40000, CRC(706671a5) SHA1(1ac90647d617e73f12a67274a025ae43a6b3a316) )
 
@@ -2607,15 +3415,25 @@ ROM_START( elvact2u )
 	ROM_LOAD16_BYTE("e02-03.12", 0x000000, 0x200000, CRC(c884ebb5) SHA1(49009056bfdc564eac0ae6b7b49f070f05dc4ee3) )
 	ROM_LOAD16_BYTE("e02-02.8",  0x000001, 0x200000, CRC(c8e06cfb) SHA1(071d095a4930ce18a782c577811b553a9705fbd7) )
 	ROM_LOAD       ("e02-01.4",  0x600000, 0x200000, CRC(2ba94726) SHA1(3e9cdd076338e0e5358571ce4f97576f1a6a12a7) )
+<<<<<<< HEAD
 	ROM_FILL       (             0x400000, 0x200000, 0 )
+=======
+	ROM_FILL       (             0x400000, 0x200000, 0x00 )
+>>>>>>> upstream/master
 
 	ROM_REGION(0x800000, "gfx2", 0 ) /* Tiles */
 	ROM_LOAD16_BYTE("e02-08.47", 0x000000, 0x200000, CRC(29c9bd02) SHA1(a5b552ae7ac15f514ee6105410ec3e6e34ea0adb) )
 	ROM_LOAD16_BYTE("e02-07.45", 0x000001, 0x200000, CRC(5eeee925) SHA1(d302da28df8ac6d406ef45f1d282ee22ce243857) )
 	ROM_LOAD       ("e02-06.43", 0x600000, 0x200000, CRC(4c8726e9) SHA1(8ce2320a087f43c49428a39dafffec8c40d61b03) )
+<<<<<<< HEAD
 	ROM_FILL       (             0x400000, 0x200000, 0 )
 
 	ROM_REGION(0x180000, "audiocpu", 0) /* 68000 sound CPU */
+=======
+	ROM_FILL       (             0x400000, 0x200000, 0x00 )
+
+	ROM_REGION(0x180000, "taito_en:audiocpu", 0) /* 68000 sound CPU */
+>>>>>>> upstream/master
 	ROM_LOAD16_BYTE("e02-13.32", 0x100000, 0x40000, CRC(80932702) SHA1(c468234d03aa31b2aa0c3bd6bec32034216c2ae4) )
 	ROM_LOAD16_BYTE("e02-14.33", 0x100001, 0x40000, CRC(706671a5) SHA1(1ac90647d617e73f12a67274a025ae43a6b3a316) )
 
@@ -2634,7 +3452,11 @@ ROM_START( twinqix )
 	ROM_REGION(0x200000, "gfx1" , 0 ) /* Sprites */
 	ROM_LOAD16_BYTE("obj0-0.a08", 0x000000, 0x080000, CRC(c6ea845c) SHA1(9df710637e8f64f7fec232b5ebbede588e07c2db) )
 	ROM_LOAD16_BYTE("obj0-1.a20", 0x000001, 0x080000, CRC(8c12b7fb) SHA1(8a52870fb9f508148619763fb6f37dd74b5386ca) )
+<<<<<<< HEAD
 	ROM_FILL       (              0x100000, 0x100000, 0 )
+=======
+	ROM_FILL       (              0x100000, 0x100000, 0x00 )
+>>>>>>> upstream/master
 
 	ROM_REGION(0x400000, "gfx2" , 0 ) /* Tiles */
 	ROM_LOAD32_BYTE("scr0-0.b07",  0x000000, 0x080000, CRC(9a1b9b34) SHA1(ddf9c6ba0f9c340b580573e1d96ac76b1cd35beb) )
@@ -2644,7 +3466,11 @@ ROM_START( twinqix )
 	ROM_LOAD16_BYTE("scr0-4.b03",  0x300000, 0x080000, CRC(d32280fe) SHA1(56b120128c5e4b8c6598a1de51269e6702a63175) )
 	ROM_LOAD16_BYTE("scr0-5.b02",  0x300001, 0x080000, CRC(fdd1a85b) SHA1(1d94a4858baef3e78c456049dc58249a574205fe) )
 
+<<<<<<< HEAD
 	ROM_REGION(0x180000, "audiocpu", 0) /* sound CPU */
+=======
+	ROM_REGION(0x180000, "taito_en:audiocpu", 0) /* sound CPU */
+>>>>>>> upstream/master
 	ROM_LOAD16_BYTE("spr0-1.b66", 0x100000, 0x40000, CRC(4b20e99d) SHA1(faf184daea0f1131bafa50edb48bd470d4c0b141) )
 	ROM_LOAD16_BYTE("spr0-0.b65", 0x100001, 0x40000, CRC(2569eb30) SHA1(ec804131025e600198cd8342925823340e7ef458) )
 
@@ -2678,15 +3504,25 @@ ROM_START( quizhuhu )
 	ROM_LOAD16_BYTE("e08-03.7",  0x400001, 0x100000, CRC(07b9ab6a) SHA1(db205822233c385e1dbe4a9d40b311df9bca7053) )
 	ROM_LOAD       ("e08-02.4",  0x900000, 0x200000, CRC(d89eb067) SHA1(bd8e1cf4c2046894c629d927fa05806b9b73505d) )
 	ROM_LOAD       ("e08-01.3",  0xb00000, 0x100000, CRC(90223c06) SHA1(f07dae563946908d471ae89db74a2e55c5ab5890) )
+<<<<<<< HEAD
 	ROM_FILL       (             0x600000, 0x300000, 0 )
+=======
+	ROM_FILL       (             0x600000, 0x300000, 0x00 )
+>>>>>>> upstream/master
 
 	ROM_REGION(0x400000, "gfx2" , 0) /* Tiles */
 	ROM_LOAD16_BYTE("e08-12.47", 0x000000, 0x100000, CRC(6c711d36) SHA1(3fbff7783323d968ade72ac53531a7bcf7b9d234) )
 	ROM_LOAD16_BYTE("e08-11.45", 0x000001, 0x100000, CRC(56775a60) SHA1(8bb8190101f2e8487ebb707022ff89d97bb7b39a) )
 	ROM_LOAD       ("e08-10.43", 0x300000, 0x100000, CRC(60abc71b) SHA1(f4aa906920c6134c33a4dfb51724f3adbd3d7de4) )
+<<<<<<< HEAD
 	ROM_FILL       (             0x200000, 0x100000, 0 )
 
 	ROM_REGION(0x140000, "audiocpu", 0) /* 68000 sound CPU */
+=======
+	ROM_FILL       (             0x200000, 0x100000, 0x00 )
+
+	ROM_REGION(0x140000, "taito_en:audiocpu", 0) /* 68000 sound CPU */
+>>>>>>> upstream/master
 	ROM_LOAD16_BYTE("e08-18.32", 0x100000, 0x20000, CRC(e695497e) SHA1(9d845b4c0bd9b40471fb4b5ab2f9240058bc324f) )
 	ROM_LOAD16_BYTE("e08-17.33", 0x100001, 0x20000, CRC(fafc7e4e) SHA1(26f46d5900fbf26d25651e7e818e486fc7a878ec) )
 
@@ -2708,15 +3544,25 @@ ROM_START( pbobble2 )
 	ROM_REGION(0x400000, "gfx1" , 0) /* Sprites */
 	ROM_LOAD16_BYTE("e10-02.rom", 0x000000, 0x100000, CRC(c0564490) SHA1(cbe9f880192c08f4d1db21d5ba14073b97e5f1d3) )
 	ROM_LOAD16_BYTE("e10-01.rom", 0x000001, 0x100000, CRC(8c26ff49) SHA1(cbb514c061106003d2ae2b6c43958b24feaad656) )
+<<<<<<< HEAD
 	ROM_FILL       (              0x200000, 0x200000, 0 )
+=======
+	ROM_FILL       (              0x200000, 0x200000, 0x00 )
+>>>>>>> upstream/master
 
 	ROM_REGION(0x400000, "gfx2" , 0) /* Tiles */
 	ROM_LOAD16_BYTE("e10-07.rom", 0x000000, 0x100000, CRC(dcb3c29b) SHA1(b80c3a8ce53d696c57675e654c9927ef8687759e) )
 	ROM_LOAD16_BYTE("e10-06.rom", 0x000001, 0x100000, CRC(1b0f20e2) SHA1(66b44d059c2896abac2f0e7fc932489dee440ba0) )
 	ROM_LOAD       ("e10-05.rom", 0x300000, 0x100000, CRC(81266151) SHA1(aa3b144f32995425db97efce440e234a3c7a6715) )
+<<<<<<< HEAD
 	ROM_FILL       (              0x200000, 0x100000, 0 )
 
 	ROM_REGION(0x180000, "audiocpu", 0) /* 68000 sound CPU */
+=======
+	ROM_FILL       (              0x200000, 0x100000, 0x00 )
+
+	ROM_REGION(0x180000, "taito_en:audiocpu", 0) /* 68000 sound CPU */
+>>>>>>> upstream/master
 	ROM_LOAD16_BYTE("e10-12.32", 0x100000, 0x40000, CRC(b92dc8ad) SHA1(0c1428d313507b1ae5a2af3b2fbaaa5650135e1e) )
 	ROM_LOAD16_BYTE("e10-13.33", 0x100001, 0x40000, CRC(87842c13) SHA1(d15b47c7430e677ae172f86fd5be595e4fe72e42) )
 
@@ -2740,15 +3586,25 @@ ROM_START( pbobble2o )
 	ROM_REGION(0x400000, "gfx1" , 0) /* Sprites */
 	ROM_LOAD16_BYTE("e10-02.rom", 0x000000, 0x100000, CRC(c0564490) SHA1(cbe9f880192c08f4d1db21d5ba14073b97e5f1d3) )
 	ROM_LOAD16_BYTE("e10-01.rom", 0x000001, 0x100000, CRC(8c26ff49) SHA1(cbb514c061106003d2ae2b6c43958b24feaad656) )
+<<<<<<< HEAD
 	ROM_FILL       (              0x200000, 0x200000, 0 )
+=======
+	ROM_FILL       (              0x200000, 0x200000, 0x00 )
+>>>>>>> upstream/master
 
 	ROM_REGION(0x400000, "gfx2" , 0) /* Tiles */
 	ROM_LOAD16_BYTE("e10-07.rom", 0x000000, 0x100000, CRC(dcb3c29b) SHA1(b80c3a8ce53d696c57675e654c9927ef8687759e) )
 	ROM_LOAD16_BYTE("e10-06.rom", 0x000001, 0x100000, CRC(1b0f20e2) SHA1(66b44d059c2896abac2f0e7fc932489dee440ba0) )
 	ROM_LOAD       ("e10-05.rom", 0x300000, 0x100000, CRC(81266151) SHA1(aa3b144f32995425db97efce440e234a3c7a6715) )
+<<<<<<< HEAD
 	ROM_FILL       (              0x200000, 0x100000, 0 )
 
 	ROM_REGION(0x180000, "audiocpu", 0) /* 68000 sound CPU */
+=======
+	ROM_FILL       (              0x200000, 0x100000, 0x00 )
+
+	ROM_REGION(0x180000, "taito_en:audiocpu", 0) /* 68000 sound CPU */
+>>>>>>> upstream/master
 	ROM_LOAD16_BYTE("e10-12.32", 0x100000, 0x40000, CRC(b92dc8ad) SHA1(0c1428d313507b1ae5a2af3b2fbaaa5650135e1e) )
 	ROM_LOAD16_BYTE("e10-13.33", 0x100001, 0x40000, CRC(87842c13) SHA1(d15b47c7430e677ae172f86fd5be595e4fe72e42) )
 
@@ -2767,15 +3623,25 @@ ROM_START( pbobble2j )
 	ROM_REGION(0x400000, "gfx1" , 0) /* Sprites */
 	ROM_LOAD16_BYTE("e10-02.rom", 0x000000, 0x100000, CRC(c0564490) SHA1(cbe9f880192c08f4d1db21d5ba14073b97e5f1d3) )
 	ROM_LOAD16_BYTE("e10-01.rom", 0x000001, 0x100000, CRC(8c26ff49) SHA1(cbb514c061106003d2ae2b6c43958b24feaad656) )
+<<<<<<< HEAD
 	ROM_FILL       (              0x200000, 0x200000, 0 )
+=======
+	ROM_FILL       (              0x200000, 0x200000, 0x00 )
+>>>>>>> upstream/master
 
 	ROM_REGION(0x400000, "gfx2" , 0) /* Tiles */
 	ROM_LOAD16_BYTE("e10-07.rom", 0x000000, 0x100000, CRC(dcb3c29b) SHA1(b80c3a8ce53d696c57675e654c9927ef8687759e) )
 	ROM_LOAD16_BYTE("e10-06.rom", 0x000001, 0x100000, CRC(1b0f20e2) SHA1(66b44d059c2896abac2f0e7fc932489dee440ba0) )
 	ROM_LOAD       ("e10-05.rom", 0x300000, 0x100000, CRC(81266151) SHA1(aa3b144f32995425db97efce440e234a3c7a6715) )
+<<<<<<< HEAD
 	ROM_FILL       (              0x200000, 0x100000, 0 )
 
 	ROM_REGION(0x180000, "audiocpu", 0) /* 68000 sound CPU */
+=======
+	ROM_FILL       (              0x200000, 0x100000, 0x00 )
+
+	ROM_REGION(0x180000, "taito_en:audiocpu", 0) /* 68000 sound CPU */
+>>>>>>> upstream/master
 	ROM_LOAD16_BYTE("e10-12.32", 0x100000, 0x40000, CRC(b92dc8ad) SHA1(0c1428d313507b1ae5a2af3b2fbaaa5650135e1e) )
 	ROM_LOAD16_BYTE("e10-13.33", 0x100001, 0x40000, CRC(87842c13) SHA1(d15b47c7430e677ae172f86fd5be595e4fe72e42) )
 
@@ -2794,15 +3660,25 @@ ROM_START( pbobble2u )
 	ROM_REGION(0x400000, "gfx1" , 0) /* Sprites */
 	ROM_LOAD16_BYTE("e10-02.rom", 0x000000, 0x100000, CRC(c0564490) SHA1(cbe9f880192c08f4d1db21d5ba14073b97e5f1d3) )
 	ROM_LOAD16_BYTE("e10-01.rom", 0x000001, 0x100000, CRC(8c26ff49) SHA1(cbb514c061106003d2ae2b6c43958b24feaad656) )
+<<<<<<< HEAD
 	ROM_FILL       (              0x200000, 0x200000, 0 )
+=======
+	ROM_FILL       (              0x200000, 0x200000, 0x00 )
+>>>>>>> upstream/master
 
 	ROM_REGION(0x400000, "gfx2" , 0) /* Tiles */
 	ROM_LOAD16_BYTE("e10-07.rom", 0x000000, 0x100000, CRC(dcb3c29b) SHA1(b80c3a8ce53d696c57675e654c9927ef8687759e) )
 	ROM_LOAD16_BYTE("e10-06.rom", 0x000001, 0x100000, CRC(1b0f20e2) SHA1(66b44d059c2896abac2f0e7fc932489dee440ba0) )
 	ROM_LOAD       ("e10-05.rom", 0x300000, 0x100000, CRC(81266151) SHA1(aa3b144f32995425db97efce440e234a3c7a6715) )
+<<<<<<< HEAD
 	ROM_FILL       (              0x200000, 0x100000, 0 )
 
 	ROM_REGION(0x180000, "audiocpu", 0) /* 68000 sound CPU */
+=======
+	ROM_FILL       (              0x200000, 0x100000, 0x00 )
+
+	ROM_REGION(0x180000, "taito_en:audiocpu", 0) /* 68000 sound CPU */
+>>>>>>> upstream/master
 	ROM_LOAD16_BYTE("e10-16.32", 0x100000, 0x40000, CRC(765ce77a) SHA1(e2723bd6238da91d28307081909a7172a1825c83) )
 	ROM_LOAD16_BYTE("e10-17.33", 0x100001, 0x40000, CRC(0aec3b1e) SHA1(a76a020cefcfbf86b0d893a6eb8ff93cb571abeb) )
 
@@ -2821,15 +3697,25 @@ ROM_START( pbobble2x )
 	ROM_REGION(0x400000, "gfx1" , 0) /* Sprites */
 	ROM_LOAD16_BYTE("e10-02.rom", 0x000000, 0x100000, CRC(c0564490) SHA1(cbe9f880192c08f4d1db21d5ba14073b97e5f1d3) )
 	ROM_LOAD16_BYTE("e10-01.rom", 0x000001, 0x100000, CRC(8c26ff49) SHA1(cbb514c061106003d2ae2b6c43958b24feaad656) )
+<<<<<<< HEAD
 	ROM_FILL       (              0x200000, 0x200000, 0 )
+=======
+	ROM_FILL       (              0x200000, 0x200000, 0x00 )
+>>>>>>> upstream/master
 
 	ROM_REGION(0x400000, "gfx2" , 0) /* Tiles */
 	ROM_LOAD16_BYTE("e10-07.rom", 0x000000, 0x100000, CRC(dcb3c29b) SHA1(b80c3a8ce53d696c57675e654c9927ef8687759e) )
 	ROM_LOAD16_BYTE("e10-06.rom", 0x000001, 0x100000, CRC(1b0f20e2) SHA1(66b44d059c2896abac2f0e7fc932489dee440ba0) )
 	ROM_LOAD       ("e10-05.rom", 0x300000, 0x100000, CRC(81266151) SHA1(aa3b144f32995425db97efce440e234a3c7a6715) )
+<<<<<<< HEAD
 	ROM_FILL       (              0x200000, 0x100000, 0 )
 
 	ROM_REGION(0x180000, "audiocpu", 0) /* 68000 sound CPU */
+=======
+	ROM_FILL       (              0x200000, 0x100000, 0x00 )
+
+	ROM_REGION(0x180000, "taito_en:audiocpu", 0) /* 68000 sound CPU */
+>>>>>>> upstream/master
 	ROM_LOAD16_BYTE("e10-30.32", 0x100000, 0x40000, CRC(bb090c1e) SHA1(af2ff23d6f9bd56c25530cb9bf9f452b6f5210f5) )
 	ROM_LOAD16_BYTE("e10-31.33", 0x100001, 0x40000, CRC(f4b88d65) SHA1(c74dcb4bed979039fad1d5c7528c14ce4db1d5ec) )
 
@@ -2856,15 +3742,25 @@ ROM_START( gekiridn )
 	ROM_LOAD16_BYTE("e11-03.ic12", 0x000000, 0x200000, CRC(f73877c5) SHA1(1f6b7c0b8a0aaab3e5427d21de7fad3d3cbf737a) )
 	ROM_LOAD16_BYTE("e11-02.ic8",  0x000001, 0x200000, CRC(5722a83b) SHA1(823c20a33016a5506ca5415ec615c3d2546ca9ab) )
 	ROM_LOAD       ("e11-01.ic4",  0x600000, 0x200000, CRC(c2cd1069) SHA1(9744dd3d8a6d9200cea4429dafce5620b60e2960) )
+<<<<<<< HEAD
 	ROM_FILL       (               0x400000, 0x200000, 0 )
+=======
+	ROM_FILL       (               0x400000, 0x200000, 0x00 )
+>>>>>>> upstream/master
 
 	ROM_REGION(0x800000, "gfx2" , 0) /* Tiles */
 	ROM_LOAD16_BYTE("e11-08.ic47", 0x000000, 0x200000, CRC(907f69d3) SHA1(0899ed58edcae22144625c349c9d2fe4d46d11e3) )
 	ROM_LOAD16_BYTE("e11-07.ic45", 0x000001, 0x200000, CRC(ef018607) SHA1(61b602b13754c3be21caf76acbfc10c87518ba47) )
 	ROM_LOAD       ("e11-06.ic43", 0x600000, 0x200000, CRC(200ce305) SHA1(c80a0b96510913a6411e6763fb72bf413fb792da) )
+<<<<<<< HEAD
 	ROM_FILL       (               0x400000, 0x200000, 0 )
 
 	ROM_REGION(0x180000, "audiocpu", 0) /* 68000 sound CPU */
+=======
+	ROM_FILL       (               0x400000, 0x200000, 0x00 )
+
+	ROM_REGION(0x180000, "taito_en:audiocpu", 0) /* 68000 sound CPU */
+>>>>>>> upstream/master
 	ROM_LOAD16_BYTE("e11-13.ic32", 0x100000, 0x40000, CRC(f5c5486a) SHA1(4091f3ddb1e6cbc9dc89485e1e784a4b6fa191b7) )
 	ROM_LOAD16_BYTE("e11-14.ic33", 0x100001, 0x40000, CRC(7fa10f96) SHA1(50efefd890535e952022a494c5b4e9b33bb90fad) )
 
@@ -2884,15 +3780,25 @@ ROM_START( gekiridnj )
 	ROM_LOAD16_BYTE("e11-03.ic12", 0x000000, 0x200000, CRC(f73877c5) SHA1(1f6b7c0b8a0aaab3e5427d21de7fad3d3cbf737a) )
 	ROM_LOAD16_BYTE("e11-02.ic8",  0x000001, 0x200000, CRC(5722a83b) SHA1(823c20a33016a5506ca5415ec615c3d2546ca9ab) )
 	ROM_LOAD       ("e11-01.ic4",  0x600000, 0x200000, CRC(c2cd1069) SHA1(9744dd3d8a6d9200cea4429dafce5620b60e2960) )
+<<<<<<< HEAD
 	ROM_FILL       (               0x400000, 0x200000, 0 )
+=======
+	ROM_FILL       (               0x400000, 0x200000, 0x00 )
+>>>>>>> upstream/master
 
 	ROM_REGION(0x800000, "gfx2" , 0) /* Tiles */
 	ROM_LOAD16_BYTE("e11-08.ic47", 0x000000, 0x200000, CRC(907f69d3) SHA1(0899ed58edcae22144625c349c9d2fe4d46d11e3) )
 	ROM_LOAD16_BYTE("e11-07.ic45", 0x000001, 0x200000, CRC(ef018607) SHA1(61b602b13754c3be21caf76acbfc10c87518ba47) )
 	ROM_LOAD       ("e11-06.ic43", 0x600000, 0x200000, CRC(200ce305) SHA1(c80a0b96510913a6411e6763fb72bf413fb792da) )
+<<<<<<< HEAD
 	ROM_FILL       (               0x400000, 0x200000, 0 )
 
 	ROM_REGION(0x180000, "audiocpu", 0) /* 68000 sound CPU */
+=======
+	ROM_FILL       (               0x400000, 0x200000, 0x00 )
+
+	ROM_REGION(0x180000, "taito_en:audiocpu", 0) /* 68000 sound CPU */
+>>>>>>> upstream/master
 	ROM_LOAD16_BYTE("e11-13.ic32", 0x100000, 0x40000, CRC(f5c5486a) SHA1(4091f3ddb1e6cbc9dc89485e1e784a4b6fa191b7) )
 	ROM_LOAD16_BYTE("e11-14.ic33", 0x100001, 0x40000, CRC(7fa10f96) SHA1(50efefd890535e952022a494c5b4e9b33bb90fad) )
 
@@ -2917,16 +3823,26 @@ ROM_START( tcobra2 )
 	ROM_LOAD16_BYTE("e15-02.ic8",  0x000001, 0x200000, CRC(bf1232aa) SHA1(1381bae2a18ed62f4ca28bcdaf07debfc9bf21af) )
 	ROM_LOAD16_BYTE("e15-03.ic11", 0x400000, 0x100000, CRC(be45a52f) SHA1(5d9735a774233b43003057cbab6ae7d6e0195dd2) )
 	ROM_LOAD16_BYTE("e15-01.ic7",  0x400001, 0x100000, CRC(85421aac) SHA1(327e72f0107e024ec9fc9dc20d381e2e20f36248) )
+<<<<<<< HEAD
 	ROM_FILL       (               0x600000, 0x600000, 0 )
+=======
+	ROM_FILL       (               0x600000, 0x600000, 0x00 )
+>>>>>>> upstream/master
 
 	ROM_REGION(0xc00000, "gfx2" , 0) /* Tiles */
 	ROM_LOAD16_BYTE("e15-10.ic47", 0x000000, 0x200000, CRC(d8c96b00) SHA1(9cd275abb66b3475433ea2649dc872d7d35eb5b8) )
 	ROM_LOAD16_BYTE("e15-08.ic45", 0x000001, 0x200000, CRC(4bdb2bf3) SHA1(1146b7a5d9f26d3173a7c64768e55d53a0ab7b8e) )
 	ROM_LOAD16_BYTE("e15-09.ic46", 0x400000, 0x100000, CRC(07c29f60) SHA1(3ca0f632e7047cc50ee3ce24cd6c0c8c7252a278) )
 	ROM_LOAD16_BYTE("e15-07.ic44", 0x400001, 0x100000, CRC(8164f7ee) SHA1(4550521f820e93ec08b86d148135966d016cbf22) )
+<<<<<<< HEAD
 	ROM_FILL       (               0x600000, 0x600000, 0 )
 
 	ROM_REGION(0x140000, "audiocpu", 0) /* 68000 sound CPU */
+=======
+	ROM_FILL       (               0x600000, 0x600000, 0x00 )
+
+	ROM_REGION(0x140000, "taito_en:audiocpu", 0) /* 68000 sound CPU */
+>>>>>>> upstream/master
 	ROM_LOAD16_BYTE("e15-15.ic32", 0x100000, 0x20000, CRC(22126dfb) SHA1(a1af17e5c3440f1bab50d79f92c251f1a4536ca0) )
 	ROM_LOAD16_BYTE("e15-16.ic33", 0x100001, 0x20000, CRC(f8b58ea0) SHA1(c9e196620765efc4c7b535793a5d1f586698ce55) )
 
@@ -2954,16 +3870,26 @@ ROM_START( tcobra2u )
 	ROM_LOAD16_BYTE("e15-02.ic8",  0x000001, 0x200000, CRC(bf1232aa) SHA1(1381bae2a18ed62f4ca28bcdaf07debfc9bf21af) )
 	ROM_LOAD16_BYTE("e15-03.ic11", 0x400000, 0x100000, CRC(be45a52f) SHA1(5d9735a774233b43003057cbab6ae7d6e0195dd2) )
 	ROM_LOAD16_BYTE("e15-01.ic7",  0x400001, 0x100000, CRC(85421aac) SHA1(327e72f0107e024ec9fc9dc20d381e2e20f36248) )
+<<<<<<< HEAD
 	ROM_FILL       (               0x600000, 0x600000, 0 )
+=======
+	ROM_FILL       (               0x600000, 0x600000, 0x00 )
+>>>>>>> upstream/master
 
 	ROM_REGION(0xc00000, "gfx2" , 0) /* Tiles */
 	ROM_LOAD16_BYTE("e15-10.ic47", 0x000000, 0x200000, CRC(d8c96b00) SHA1(9cd275abb66b3475433ea2649dc872d7d35eb5b8) )
 	ROM_LOAD16_BYTE("e15-08.ic45", 0x000001, 0x200000, CRC(4bdb2bf3) SHA1(1146b7a5d9f26d3173a7c64768e55d53a0ab7b8e) )
 	ROM_LOAD16_BYTE("e15-09.ic46", 0x400000, 0x100000, CRC(07c29f60) SHA1(3ca0f632e7047cc50ee3ce24cd6c0c8c7252a278) )
 	ROM_LOAD16_BYTE("e15-07.ic44", 0x400001, 0x100000, CRC(8164f7ee) SHA1(4550521f820e93ec08b86d148135966d016cbf22) )
+<<<<<<< HEAD
 	ROM_FILL       (               0x600000, 0x600000, 0 )
 
 	ROM_REGION(0x140000, "audiocpu", 0) /* 68000 sound CPU */
+=======
+	ROM_FILL       (               0x600000, 0x600000, 0x00 )
+
+	ROM_REGION(0x140000, "taito_en:audiocpu", 0) /* 68000 sound CPU */
+>>>>>>> upstream/master
 	ROM_LOAD16_BYTE("e15-15.ic32", 0x100000, 0x20000, CRC(22126dfb) SHA1(a1af17e5c3440f1bab50d79f92c251f1a4536ca0) )
 	ROM_LOAD16_BYTE("e15-16.ic33", 0x100001, 0x20000, CRC(f8b58ea0) SHA1(c9e196620765efc4c7b535793a5d1f586698ce55) )
 
@@ -2991,16 +3917,26 @@ ROM_START( ktiger2 )
 	ROM_LOAD16_BYTE("e15-02.ic8",  0x000001, 0x200000, CRC(bf1232aa) SHA1(1381bae2a18ed62f4ca28bcdaf07debfc9bf21af) )
 	ROM_LOAD16_BYTE("e15-03.ic11", 0x400000, 0x100000, CRC(be45a52f) SHA1(5d9735a774233b43003057cbab6ae7d6e0195dd2) )
 	ROM_LOAD16_BYTE("e15-01.ic7",  0x400001, 0x100000, CRC(85421aac) SHA1(327e72f0107e024ec9fc9dc20d381e2e20f36248) )
+<<<<<<< HEAD
 	ROM_FILL       (               0x600000, 0x600000, 0 )
+=======
+	ROM_FILL       (               0x600000, 0x600000, 0x00 )
+>>>>>>> upstream/master
 
 	ROM_REGION(0xc00000, "gfx2" , 0) /* Tiles */
 	ROM_LOAD16_BYTE("e15-10.ic47", 0x000000, 0x200000, CRC(d8c96b00) SHA1(9cd275abb66b3475433ea2649dc872d7d35eb5b8) )
 	ROM_LOAD16_BYTE("e15-08.ic45", 0x000001, 0x200000, CRC(4bdb2bf3) SHA1(1146b7a5d9f26d3173a7c64768e55d53a0ab7b8e) )
 	ROM_LOAD16_BYTE("e15-09.ic46", 0x400000, 0x100000, CRC(07c29f60) SHA1(3ca0f632e7047cc50ee3ce24cd6c0c8c7252a278) )
 	ROM_LOAD16_BYTE("e15-07.ic44", 0x400001, 0x100000, CRC(8164f7ee) SHA1(4550521f820e93ec08b86d148135966d016cbf22) )
+<<<<<<< HEAD
 	ROM_FILL       (               0x600000, 0x600000, 0 )
 
 	ROM_REGION(0x140000, "audiocpu", 0) /* 68000 sound CPU */
+=======
+	ROM_FILL       (               0x600000, 0x600000, 0x00 )
+
+	ROM_REGION(0x140000, "taito_en:audiocpu", 0) /* 68000 sound CPU */
+>>>>>>> upstream/master
 	ROM_LOAD16_BYTE("e15-15.ic32", 0x100000, 0x20000, CRC(22126dfb) SHA1(a1af17e5c3440f1bab50d79f92c251f1a4536ca0) )
 	ROM_LOAD16_BYTE("e15-16.ic33", 0x100001, 0x20000, CRC(f8b58ea0) SHA1(c9e196620765efc4c7b535793a5d1f586698ce55) )
 
@@ -3026,15 +3962,25 @@ ROM_START( bubblem )
 	ROM_REGION(0x800000, "gfx1" , 0) /* Sprites */
 	ROM_LOAD16_BYTE("e21-02.rom", 0x000000, 0x200000, CRC(b7cb9232) SHA1(ba71cb98d49eadebb26d9f53bbaec1dc211077f5) )
 	ROM_LOAD16_BYTE("e21-01.rom", 0x000001, 0x200000, CRC(a11f2f99) SHA1(293c5996600cad05bf98f936f5f820d93d546099) )
+<<<<<<< HEAD
 	ROM_FILL       (              0x400000, 0x400000, 0 )
+=======
+	ROM_FILL       (              0x400000, 0x400000, 0x00 )
+>>>>>>> upstream/master
 
 	ROM_REGION(0x400000, "gfx2" , 0) /* Tiles */
 	ROM_LOAD16_BYTE("e21-07.rom", 0x000000, 0x100000, CRC(7789bf7c) SHA1(bc8ef1696adac99a1fabae9b79afcd3461cf323b) )
 	ROM_LOAD16_BYTE("e21-06.rom", 0x000001, 0x100000, CRC(997fc0d7) SHA1(58a546f739072fedebfe7c972fe85f72107726b2) )
 	ROM_LOAD       ("e21-05.rom", 0x300000, 0x100000, CRC(07eab58f) SHA1(ae2d7b839b39d88d11652df74804a39230674467) )
+<<<<<<< HEAD
 	ROM_FILL       (              0x200000, 0x100000, 0 )
 
 	ROM_REGION(0x180000, "audiocpu", 0) /* Sound CPU */
+=======
+	ROM_FILL       (              0x200000, 0x100000, 0x00 )
+
+	ROM_REGION(0x180000, "taito_en:audiocpu", 0) /* Sound CPU */
+>>>>>>> upstream/master
 	ROM_LOAD16_BYTE("e21-12.32", 0x100000, 0x40000, CRC(34093de1) SHA1(d69d6b5f10b8fe86f727d739ed5aecceb15e01f7) )
 	ROM_LOAD16_BYTE("e21-13.33", 0x100001, 0x40000, CRC(9e9ec437) SHA1(b0265b688846c642d240b2f3677d2330d31eaa87) )
 
@@ -3056,15 +4002,25 @@ ROM_START( bubblemj )
 	ROM_REGION(0x800000, "gfx1" , 0) /* Sprites */
 	ROM_LOAD16_BYTE("e21-02.rom", 0x000000, 0x200000, CRC(b7cb9232) SHA1(ba71cb98d49eadebb26d9f53bbaec1dc211077f5) )
 	ROM_LOAD16_BYTE("e21-01.rom", 0x000001, 0x200000, CRC(a11f2f99) SHA1(293c5996600cad05bf98f936f5f820d93d546099) )
+<<<<<<< HEAD
 	ROM_FILL       (              0x400000, 0x400000, 0 )
+=======
+	ROM_FILL       (              0x400000, 0x400000, 0x00 )
+>>>>>>> upstream/master
 
 	ROM_REGION(0x400000, "gfx2" , 0) /* Tiles */
 	ROM_LOAD16_BYTE("e21-07.rom", 0x000000, 0x100000, CRC(7789bf7c) SHA1(bc8ef1696adac99a1fabae9b79afcd3461cf323b) )
 	ROM_LOAD16_BYTE("e21-06.rom", 0x000001, 0x100000, CRC(997fc0d7) SHA1(58a546f739072fedebfe7c972fe85f72107726b2) )
 	ROM_LOAD       ("e21-05.rom", 0x300000, 0x100000, CRC(07eab58f) SHA1(ae2d7b839b39d88d11652df74804a39230674467) )
+<<<<<<< HEAD
 	ROM_FILL       (              0x200000, 0x100000, 0 )
 
 	ROM_REGION(0x180000, "audiocpu", 0) /* Sound CPU */
+=======
+	ROM_FILL       (              0x200000, 0x100000, 0x00 )
+
+	ROM_REGION(0x180000, "taito_en:audiocpu", 0) /* Sound CPU */
+>>>>>>> upstream/master
 	ROM_LOAD16_BYTE("e21-12.32", 0x100000, 0x40000, CRC(34093de1) SHA1(d69d6b5f10b8fe86f727d739ed5aecceb15e01f7) )
 	ROM_LOAD16_BYTE("e21-13.33", 0x100001, 0x40000, CRC(9e9ec437) SHA1(b0265b688846c642d240b2f3677d2330d31eaa87) )
 
@@ -3086,15 +4042,25 @@ ROM_START( cleopatr )
 	ROM_REGION(0x200000, "gfx1" , 0) /* Sprites */
 	ROM_LOAD16_BYTE("e28-02.bin", 0x000000, 0x080000, CRC(b20d47cb) SHA1(6888e5564688840fed1c123ab38467066cd59c7f) )
 	ROM_LOAD16_BYTE("e28-01.bin", 0x000001, 0x080000, CRC(4440e659) SHA1(71dece81bac8d638473c6531fed5c32798096af9) )
+<<<<<<< HEAD
 	ROM_FILL       (              0x100000, 0x100000, 0 )
+=======
+	ROM_FILL       (              0x100000, 0x100000, 0x00 )
+>>>>>>> upstream/master
 
 	ROM_REGION(0x400000, "gfx2" , 0) /* Tiles */
 	ROM_LOAD16_BYTE("e28-06.bin", 0x000000, 0x100000, CRC(21d0c454) SHA1(f4c815984b19321cfab303fa6f21d9cad35b09f2) )
 	ROM_LOAD16_BYTE("e28-05.bin", 0x000001, 0x100000, CRC(2870dbbc) SHA1(4e412b90cbd9a05956cde3d8cff615ebadca9db6) )
 	ROM_LOAD       ("e28-04.bin", 0x300000, 0x100000, CRC(57aef029) SHA1(5c07209015d4749d1ffb3e9c1a890e6cfeec8cb0) )
+<<<<<<< HEAD
 	ROM_FILL       (              0x200000, 0x100000, 0 )
 
 	ROM_REGION(0x140000, "audiocpu", 0) /* Sound CPU */
+=======
+	ROM_FILL       (              0x200000, 0x100000, 0x00 )
+
+	ROM_REGION(0x140000, "taito_en:audiocpu", 0) /* Sound CPU */
+>>>>>>> upstream/master
 	ROM_LOAD16_BYTE("e28-11.bin", 0x100000, 0x20000, CRC(01a06950) SHA1(94d22cd839f9027e9d45264c366e0cb5d698e0b6) )
 	ROM_LOAD16_BYTE("e28-12.bin", 0x100001, 0x20000, CRC(dc19260f) SHA1(fa0ca03a236326652e4f9898d07cd837c1507a9d) )
 
@@ -3112,15 +4078,25 @@ ROM_START( pbobble3 )
 	ROM_REGION(0x400000, "gfx1" , 0 ) /* Sprites */
 	ROM_LOAD16_BYTE("e29-02.rom", 0x000000, 0x100000, CRC(437391d3) SHA1(b3cc64c68553d37e0bd09e0dece14901d8df5866) )
 	ROM_LOAD16_BYTE("e29-01.rom", 0x000001, 0x100000, CRC(52547c77) SHA1(d0cc8b8915cec1506c9733a1ce1638038ea93d25) )
+<<<<<<< HEAD
 	ROM_FILL       (              0x200000, 0x200000, 0 )
+=======
+	ROM_FILL       (              0x200000, 0x200000, 0x00 )
+>>>>>>> upstream/master
 
 	ROM_REGION(0x400000, "gfx2" , 0 ) /* Tiles */
 	ROM_LOAD16_BYTE("e29-08.rom", 0x000000, 0x100000, CRC(7040a3d5) SHA1(ea284ec530aac20348f84122e38a508bbc283f44) )
 	ROM_LOAD16_BYTE("e29-07.rom", 0x000001, 0x100000, CRC(fca2ea9b) SHA1(a87ebedd0d16657288df434a70b8933fafe0ca25) )
 	ROM_LOAD       ("e29-06.rom", 0x300000, 0x100000, CRC(c16184f8) SHA1(ded417d9d116b5a2f7518fa404bc2dda1c6a6366) )
+<<<<<<< HEAD
 	ROM_FILL       (              0x200000, 0x100000, 0 )
 
 	ROM_REGION(0x180000, "audiocpu", 0) /* 68000 code */
+=======
+	ROM_FILL       (              0x200000, 0x100000, 0x00 )
+
+	ROM_REGION(0x180000, "taito_en:audiocpu", 0) /* 68000 code */
+>>>>>>> upstream/master
 	ROM_LOAD16_BYTE("e29-13.rom", 0x100000, 0x40000, CRC(1ef551ef) SHA1(527defe8f35314304adb4b483285b08cd6ebe865) )
 	ROM_LOAD16_BYTE("e29-14.rom", 0x100001, 0x40000, CRC(7ee7e688) SHA1(d65aa9c449e1d64f10d1be9727a9d93ab1571e65) )
 
@@ -3141,15 +4117,25 @@ ROM_START( pbobble3u )
 	ROM_REGION(0x400000, "gfx1" , 0 ) /* Sprites */
 	ROM_LOAD16_BYTE("e29-02.rom", 0x000000, 0x100000, CRC(437391d3) SHA1(b3cc64c68553d37e0bd09e0dece14901d8df5866) )
 	ROM_LOAD16_BYTE("e29-01.rom", 0x000001, 0x100000, CRC(52547c77) SHA1(d0cc8b8915cec1506c9733a1ce1638038ea93d25) )
+<<<<<<< HEAD
 	ROM_FILL       (              0x200000, 0x200000, 0 )
+=======
+	ROM_FILL       (              0x200000, 0x200000, 0x00 )
+>>>>>>> upstream/master
 
 	ROM_REGION(0x400000, "gfx2" , 0 ) /* Tiles */
 	ROM_LOAD16_BYTE("e29-08.rom", 0x000000, 0x100000, CRC(7040a3d5) SHA1(ea284ec530aac20348f84122e38a508bbc283f44) )
 	ROM_LOAD16_BYTE("e29-07.rom", 0x000001, 0x100000, CRC(fca2ea9b) SHA1(a87ebedd0d16657288df434a70b8933fafe0ca25) )
 	ROM_LOAD       ("e29-06.rom", 0x300000, 0x100000, CRC(c16184f8) SHA1(ded417d9d116b5a2f7518fa404bc2dda1c6a6366) )
+<<<<<<< HEAD
 	ROM_FILL       (              0x200000, 0x100000, 0 )
 
 	ROM_REGION(0x180000, "audiocpu", 0) /* 68000 code */
+=======
+	ROM_FILL       (              0x200000, 0x100000, 0x00 )
+
+	ROM_REGION(0x180000, "taito_en:audiocpu", 0) /* 68000 code */
+>>>>>>> upstream/master
 	ROM_LOAD16_BYTE("e29-13.rom", 0x100000, 0x40000, CRC(1ef551ef) SHA1(527defe8f35314304adb4b483285b08cd6ebe865) )
 	ROM_LOAD16_BYTE("e29-14.rom", 0x100001, 0x40000, CRC(7ee7e688) SHA1(d65aa9c449e1d64f10d1be9727a9d93ab1571e65) )
 
@@ -3170,15 +4156,25 @@ ROM_START( pbobble3j )
 	ROM_REGION(0x400000, "gfx1" , 0 ) /* Sprites */
 	ROM_LOAD16_BYTE("e29-02.ic8",  0x000000, 0x100000, CRC(437391d3) SHA1(b3cc64c68553d37e0bd09e0dece14901d8df5866) )
 	ROM_LOAD16_BYTE("e29-01.ic12", 0x000001, 0x100000, CRC(52547c77) SHA1(d0cc8b8915cec1506c9733a1ce1638038ea93d25) )
+<<<<<<< HEAD
 	ROM_FILL       (               0x200000, 0x200000, 0 )
+=======
+	ROM_FILL       (               0x200000, 0x200000, 0x00 )
+>>>>>>> upstream/master
 
 	ROM_REGION(0x400000, "gfx2" , 0 ) /* Tiles */
 	ROM_LOAD16_BYTE("e29-08.ic47", 0x000000, 0x100000, CRC(7040a3d5) SHA1(ea284ec530aac20348f84122e38a508bbc283f44) )
 	ROM_LOAD16_BYTE("e29-07.ic45", 0x000001, 0x100000, CRC(fca2ea9b) SHA1(a87ebedd0d16657288df434a70b8933fafe0ca25) )
 	ROM_LOAD       ("e29-06.ic43", 0x300000, 0x100000, CRC(c16184f8) SHA1(ded417d9d116b5a2f7518fa404bc2dda1c6a6366) )
+<<<<<<< HEAD
 	ROM_FILL       (               0x200000, 0x100000, 0 )
 
 	ROM_REGION(0x180000, "audiocpu", 0) /* 68000 code */
+=======
+	ROM_FILL       (               0x200000, 0x100000, 0x00 )
+
+	ROM_REGION(0x180000, "taito_en:audiocpu", 0) /* 68000 code */
+>>>>>>> upstream/master
 	ROM_LOAD16_BYTE("e29-13.ic32", 0x100000, 0x40000, CRC(1ef551ef) SHA1(527defe8f35314304adb4b483285b08cd6ebe865) )
 	ROM_LOAD16_BYTE("e29-14.ic33", 0x100001, 0x40000, CRC(7ee7e688) SHA1(d65aa9c449e1d64f10d1be9727a9d93ab1571e65) )
 
@@ -3203,7 +4199,11 @@ ROM_START( arkretrn )
 	ROM_LOAD32_BYTE("e36-09.18", 0x000002, 0x040000, CRC(f16985e0) SHA1(a74cfee8f958e7a32354d4353eeb199a7fb1ce64) )
 	ROM_LOAD32_BYTE("e36-15.17", 0x000003, 0x040000, CRC(4467ff37) SHA1(509a0d516def02d86d81b9868de0d9593539e65c) )
 
+<<<<<<< HEAD
 	ROM_REGION(0x180000, "audiocpu", 0) /* Sound CPU */
+=======
+	ROM_REGION(0x180000, "taito_en:audiocpu", 0) /* Sound CPU */
+>>>>>>> upstream/master
 	ROM_LOAD16_BYTE("e36-12.32", 0x100000, 0x40000, CRC(3bae39be) SHA1(777142ecc24799b934ed51ac4cd8700bb6da7e3c) )
 	ROM_LOAD16_BYTE("e36-13.33", 0x100001, 0x40000, CRC(94448e82) SHA1(d7766490318623be770545918391c5e6144dd619) )
 
@@ -3211,13 +4211,21 @@ ROM_START( arkretrn )
 	ROM_LOAD16_BYTE("e36-03.12", 0x000000, 0x040000, CRC(1ea8558b) SHA1(b8ea4d6e1fb551b3c47f336a5e60ec33f7be525f) )
 	ROM_LOAD16_BYTE("e36-02.8",  0x000001, 0x040000, CRC(694eda31) SHA1(1a6f85057395052571491f85c633d5632ab64865) )
 	ROM_LOAD       ("e36-01.4",  0x0c0000, 0x040000, CRC(54b9b2cd) SHA1(55ae964ea1d2cc40a6578c5339754a270096f01f) )
+<<<<<<< HEAD
 	ROM_FILL       (             0x080000, 0x040000, 0 )
+=======
+	ROM_FILL       (             0x080000, 0x040000, 0x00 )
+>>>>>>> upstream/master
 
 	ROM_REGION(0x200000, "gfx2" , 0) /* Tiles */
 	ROM_LOAD16_BYTE("e36-07.47", 0x000000, 0x080000, CRC(266bf1c1) SHA1(489549478d7016400af2e643d4b98bf605237d34) )
 	ROM_LOAD16_BYTE("e36-06.45", 0x000001, 0x080000, CRC(110ab729) SHA1(0ccc0a5abbcfd79a069daf5162cd344a5fb225d5) )
 	ROM_LOAD       ("e36-05.43", 0x180000, 0x080000, CRC(db18bce2) SHA1(b6653facc7f5c624f5710a51f2b2abfe640177e2) )
+<<<<<<< HEAD
 	ROM_FILL       (          0x100000, 0x080000, 0 )
+=======
+	ROM_FILL       (          0x100000, 0x080000, 0x00 )
+>>>>>>> upstream/master
 
 	ROM_REGION16_BE(0x400000, "ensoniq.0" , ROMREGION_ERASE00 ) // V2: 4 banks, only 1 populated
 	ROM_LOAD16_BYTE("e36-04.38", 0x000000, 0x200000, CRC(2250959b) SHA1(06943f1b72bdf325485356a01278d88aeae93d87) )    // C8 C9 CA CB
@@ -3237,7 +4245,11 @@ ROM_START( arkretrnu )
 	ROM_LOAD32_BYTE("e36-09.18", 0x000002, 0x040000, CRC(f16985e0) SHA1(a74cfee8f958e7a32354d4353eeb199a7fb1ce64) )
 	ROM_LOAD32_BYTE("e36-14.17", 0x000003, 0x040000, CRC(3360cfa1) SHA1(b06afc392b3864a895aed3a406d5d9886b1d0894) )
 
+<<<<<<< HEAD
 	ROM_REGION(0x180000, "audiocpu", 0) /* Sound CPU */
+=======
+	ROM_REGION(0x180000, "taito_en:audiocpu", 0) /* Sound CPU */
+>>>>>>> upstream/master
 	ROM_LOAD16_BYTE("e36-12.32", 0x100000, 0x40000, CRC(3bae39be) SHA1(777142ecc24799b934ed51ac4cd8700bb6da7e3c) )
 	ROM_LOAD16_BYTE("e36-13.33", 0x100001, 0x40000, CRC(94448e82) SHA1(d7766490318623be770545918391c5e6144dd619) )
 
@@ -3245,13 +4257,21 @@ ROM_START( arkretrnu )
 	ROM_LOAD16_BYTE("e36-03.12", 0x000000, 0x040000, CRC(1ea8558b) SHA1(b8ea4d6e1fb551b3c47f336a5e60ec33f7be525f) )
 	ROM_LOAD16_BYTE("e36-02.8",  0x000001, 0x040000, CRC(694eda31) SHA1(1a6f85057395052571491f85c633d5632ab64865) )
 	ROM_LOAD       ("e36-01.4",  0x0c0000, 0x040000, CRC(54b9b2cd) SHA1(55ae964ea1d2cc40a6578c5339754a270096f01f) )
+<<<<<<< HEAD
 	ROM_FILL       (             0x080000, 0x040000, 0 )
+=======
+	ROM_FILL       (             0x080000, 0x040000, 0x00 )
+>>>>>>> upstream/master
 
 	ROM_REGION(0x200000, "gfx2" , 0) /* Tiles */
 	ROM_LOAD16_BYTE("e36-07.47", 0x000000, 0x080000, CRC(266bf1c1) SHA1(489549478d7016400af2e643d4b98bf605237d34) )
 	ROM_LOAD16_BYTE("e36-06.45", 0x000001, 0x080000, CRC(110ab729) SHA1(0ccc0a5abbcfd79a069daf5162cd344a5fb225d5) )
 	ROM_LOAD       ("e36-05.43", 0x180000, 0x080000, CRC(db18bce2) SHA1(b6653facc7f5c624f5710a51f2b2abfe640177e2) )
+<<<<<<< HEAD
 	ROM_FILL       (          0x100000, 0x080000, 0 )
+=======
+	ROM_FILL       (          0x100000, 0x080000, 0x00 )
+>>>>>>> upstream/master
 
 	ROM_REGION16_BE(0x400000, "ensoniq.0" , ROMREGION_ERASE00 ) // V2: 4 banks, only 1 populated
 	ROM_LOAD16_BYTE("e36-04.38", 0x000000, 0x200000, CRC(2250959b) SHA1(06943f1b72bdf325485356a01278d88aeae93d87) )    // C8 C9 CA CB
@@ -3271,7 +4291,11 @@ ROM_START( arkretrnj )
 	ROM_LOAD32_BYTE("e36-09.18", 0x000002, 0x040000, CRC(f16985e0) SHA1(a74cfee8f958e7a32354d4353eeb199a7fb1ce64) )
 	ROM_LOAD32_BYTE("e36-08.17", 0x000003, 0x040000, CRC(aa699e1b) SHA1(6bde0759940e0f238e4fa5bd228115574ff927d8) )
 
+<<<<<<< HEAD
 	ROM_REGION(0x180000, "audiocpu", 0) /* Sound CPU */
+=======
+	ROM_REGION(0x180000, "taito_en:audiocpu", 0) /* Sound CPU */
+>>>>>>> upstream/master
 	ROM_LOAD16_BYTE("e36-12.32", 0x100000, 0x40000, CRC(3bae39be) SHA1(777142ecc24799b934ed51ac4cd8700bb6da7e3c) )
 	ROM_LOAD16_BYTE("e36-13.33", 0x100001, 0x40000, CRC(94448e82) SHA1(d7766490318623be770545918391c5e6144dd619) )
 
@@ -3279,13 +4303,21 @@ ROM_START( arkretrnj )
 	ROM_LOAD16_BYTE("e36-03.12", 0x000000, 0x040000, CRC(1ea8558b) SHA1(b8ea4d6e1fb551b3c47f336a5e60ec33f7be525f) )
 	ROM_LOAD16_BYTE("e36-02.8",  0x000001, 0x040000, CRC(694eda31) SHA1(1a6f85057395052571491f85c633d5632ab64865) )
 	ROM_LOAD       ("e36-01.4",  0x0c0000, 0x040000, CRC(54b9b2cd) SHA1(55ae964ea1d2cc40a6578c5339754a270096f01f) )
+<<<<<<< HEAD
 	ROM_FILL       (             0x080000, 0x040000, 0 )
+=======
+	ROM_FILL       (             0x080000, 0x040000, 0x00 )
+>>>>>>> upstream/master
 
 	ROM_REGION(0x200000, "gfx2" , 0) /* Tiles */
 	ROM_LOAD16_BYTE("e36-07.47", 0x000000, 0x080000, CRC(266bf1c1) SHA1(489549478d7016400af2e643d4b98bf605237d34) )
 	ROM_LOAD16_BYTE("e36-06.45", 0x000001, 0x080000, CRC(110ab729) SHA1(0ccc0a5abbcfd79a069daf5162cd344a5fb225d5) )
 	ROM_LOAD       ("e36-05.43", 0x180000, 0x080000, CRC(db18bce2) SHA1(b6653facc7f5c624f5710a51f2b2abfe640177e2) )
+<<<<<<< HEAD
 	ROM_FILL       (          0x100000, 0x080000, 0 )
+=======
+	ROM_FILL       (          0x100000, 0x080000, 0x00 )
+>>>>>>> upstream/master
 
 	ROM_REGION16_BE(0x400000, "ensoniq.0" , ROMREGION_ERASE00 ) // V2: 4 banks, only 1 populated
 	ROM_LOAD16_BYTE("e36-04.38", 0x000000, 0x200000, CRC(2250959b) SHA1(06943f1b72bdf325485356a01278d88aeae93d87) )    // C8 C9 CA CB
@@ -3312,7 +4344,11 @@ ROM_START( kirameki )
 	ROM_LOAD16_BYTE("e44-03.7",  0x0800001, 0x200000, CRC(d9e63fb0) SHA1(f2d8c30a4aaa2090673d5d2b1071e586a05c0236) )
 	ROM_LOAD       ("e44-02.4",  0x1200000, 0x400000, CRC(5481efde) SHA1(560a1b8acf672781e912dca51599b5aa4d69520a) )
 	ROM_LOAD       ("e44-01.3",  0x1600000, 0x200000, CRC(c4bdf727) SHA1(793a22a30ef44db818cfac96ff8e9d2f99cb672f) )
+<<<<<<< HEAD
 	ROM_FILL       (             0x0c00000, 0x600000, 0 )
+=======
+	ROM_FILL       (             0x0c00000, 0x600000, 0x00 )
+>>>>>>> upstream/master
 
 	ROM_REGION(0xc00000, "gfx2" , 0) /* Tiles */
 	ROM_LOAD16_BYTE("e44-14.47", 0x000000, 0x200000, CRC(4597c034) SHA1(3c16c20969df9e439d42a89e649146319df1b996) )
@@ -3321,9 +4357,15 @@ ROM_START( kirameki )
 	ROM_LOAD16_BYTE("e44-11.44", 0x400001, 0x100000, CRC(34d84143) SHA1(d553ab2da9188b1881f70802637d46574a42787e) )
 	ROM_LOAD       ("e44-10.43", 0x900000, 0x200000, CRC(326f738e) SHA1(29c0c870341345eba10993446fecee08b6f13027) )
 	ROM_LOAD       ("e44-09.42", 0xb00000, 0x100000, CRC(a8e68eb7) SHA1(843bbb8a61bd4b9cbb14c7242281ce0c83c432ff) )
+<<<<<<< HEAD
 	ROM_FILL       (             0x600000, 0x300000, 0 )
 
 	ROM_REGION(0x400000, "audiocpu", 0) /* 68000 sound CPU */
+=======
+	ROM_FILL       (             0x600000, 0x300000, 0x00 )
+
+	ROM_REGION(0x400000, "taito_en:audiocpu", 0) /* 68000 sound CPU */
+>>>>>>> upstream/master
 	ROM_LOAD16_BYTE("e44-20.51",      0x100000, 0x080000, CRC(4df7e051) SHA1(db0f5758458764a1c04116d5d5bbb20d4d36c875) )
 	ROM_LOAD16_BYTE("e44-21.52",      0x100001, 0x080000, CRC(d31b94b8) SHA1(41ee381d10254dc6e7163c5f353568539a96fc20) )
 	ROM_LOAD16_WORD_SWAP("e44-15.53", 0x200000, 0x200000, CRC(5043b608) SHA1(a328b8cc27ba1620a75a17cdf8571e217c42b9fd) ) /* Banked data */
@@ -3347,15 +4389,25 @@ ROM_START( puchicar )
 	ROM_LOAD16_BYTE("e46-03", 0x400001, 0x200000, CRC(eb768193) SHA1(1d48334c0dfb9f72484717c267ac9b9b8d887fc8) )
 	ROM_LOAD       ("e46-02", 0xc00000, 0x200000, CRC(fb046018) SHA1(48d9c582ec9ef59dcc7538598fbd7ea2117896af) )
 	ROM_LOAD       ("e46-01", 0xe00000, 0x200000, CRC(34fc2103) SHA1(dca199bbd0ad28a11960101cda8d110943b10822) )
+<<<<<<< HEAD
 	ROM_FILL       (          0x800000, 0x400000, 0 )
+=======
+	ROM_FILL       (          0x800000, 0x400000, 0x00 )
+>>>>>>> upstream/master
 
 	ROM_REGION(0x400000, "gfx2" , 0) /* Tiles */
 	ROM_LOAD16_BYTE("e46-12", 0x000000, 0x100000, CRC(1f3a9851) SHA1(c8711e2ef0096b41cc9b4c41e521d44b824f7181) )
 	ROM_LOAD16_BYTE("e46-11", 0x000001, 0x100000, CRC(e9f10bf1) SHA1(4ee9be3846b262dc0992c904c40580353b164d46) )
 	ROM_LOAD       ("e46-10", 0x300000, 0x100000, CRC(1999b76a) SHA1(83d6d2efe250bf3b119982bbf701f9b9d856af2d) )
+<<<<<<< HEAD
 	ROM_FILL       (          0x200000, 0x100000, 0 )
 
 	ROM_REGION(0x180000, "audiocpu", 0) /* 68000 sound CPU */
+=======
+	ROM_FILL       (          0x200000, 0x100000, 0x00 )
+
+	ROM_REGION(0x180000, "taito_en:audiocpu", 0) /* 68000 sound CPU */
+>>>>>>> upstream/master
 	ROM_LOAD16_BYTE("e46-21", 0x100000, 0x40000, CRC(b466cff6) SHA1(0757984f15a6ac9939c1e8625d5b9bfcbc788acc) )
 	ROM_LOAD16_BYTE("e46-22", 0x100001, 0x40000, CRC(c67b767e) SHA1(19f3db6615d7a6ed4d2636b6beabe2f3ed6d0c38) )
 
@@ -3387,15 +4439,25 @@ ROM_START( puchicarj )
 	ROM_LOAD16_BYTE("e46-03", 0x400001, 0x200000, CRC(eb768193) SHA1(1d48334c0dfb9f72484717c267ac9b9b8d887fc8) )
 	ROM_LOAD       ("e46-02", 0xc00000, 0x200000, CRC(fb046018) SHA1(48d9c582ec9ef59dcc7538598fbd7ea2117896af) )
 	ROM_LOAD       ("e46-01", 0xe00000, 0x200000, CRC(34fc2103) SHA1(dca199bbd0ad28a11960101cda8d110943b10822) )
+<<<<<<< HEAD
 	ROM_FILL       (          0x800000, 0x400000, 0 )
+=======
+	ROM_FILL       (          0x800000, 0x400000, 0x00 )
+>>>>>>> upstream/master
 
 	ROM_REGION(0x400000, "gfx2" , 0) /* Tiles */
 	ROM_LOAD16_BYTE("e46-12", 0x000000, 0x100000, CRC(1f3a9851) SHA1(c8711e2ef0096b41cc9b4c41e521d44b824f7181) )
 	ROM_LOAD16_BYTE("e46-11", 0x000001, 0x100000, CRC(e9f10bf1) SHA1(4ee9be3846b262dc0992c904c40580353b164d46) )
 	ROM_LOAD       ("e46-10", 0x300000, 0x100000, CRC(1999b76a) SHA1(83d6d2efe250bf3b119982bbf701f9b9d856af2d) )
+<<<<<<< HEAD
 	ROM_FILL       (          0x200000, 0x100000, 0 )
 
 	ROM_REGION(0x180000, "audiocpu", 0) /* 68000 sound CPU */
+=======
+	ROM_FILL       (          0x200000, 0x100000, 0x00 )
+
+	ROM_REGION(0x180000, "taito_en:audiocpu", 0) /* 68000 sound CPU */
+>>>>>>> upstream/master
 	ROM_LOAD16_BYTE("e46-19", 0x100000, 0x40000, CRC(2624eba0) SHA1(ba0b13bda241c648c7f8520106acd8c0c888fe29) )
 	ROM_LOAD16_BYTE("e46-20", 0x100001, 0x40000, CRC(065e934f) SHA1(0ec1b5ae33b1c43776b9327c9d380787d64ed5f9) )
 
@@ -3423,15 +4485,25 @@ ROM_START( pbobble4 )
 	ROM_REGION(0x400000, "gfx1" , 0) /* Sprites */
 	ROM_LOAD16_BYTE("e49-02", 0x000000, 0x100000, CRC(c7d2f40b) SHA1(cc6813189d6b31d7db099e49443af395f137462c) )
 	ROM_LOAD16_BYTE("e49-01", 0x000001, 0x100000, CRC(a3dd5f85) SHA1(2b305fdc18806bb5d7c3de0ac6a6eb07f98b4d3d) )
+<<<<<<< HEAD
 	ROM_FILL       (          0x200000, 0x200000, 0 )
+=======
+	ROM_FILL       (          0x200000, 0x200000, 0x00 )
+>>>>>>> upstream/master
 
 	ROM_REGION(0x400000, "gfx2" , 0) /* Tiles */
 	ROM_LOAD16_BYTE("e49-08", 0x000000, 0x100000, CRC(87408106) SHA1(6577568ab4b92d6a81f43cf9ea2f0e30e17e2742) )
 	ROM_LOAD16_BYTE("e49-07", 0x000001, 0x100000, CRC(1e1e8e1c) SHA1(9c3b994064c6af62b6a24cab85089a74fd92cf7f) )
 	ROM_LOAD       ("e49-06", 0x300000, 0x100000, CRC(ec85f7ce) SHA1(9fead68c38fc9ca84d34d70343b13665978c362b) )
+<<<<<<< HEAD
 	ROM_FILL       (          0x200000, 0x100000, 0 )
 
 	ROM_REGION(0x180000, "audiocpu", 0) /* 68000 code */
+=======
+	ROM_FILL       (          0x200000, 0x100000, 0x00 )
+
+	ROM_REGION(0x180000, "taito_en:audiocpu", 0) /* 68000 code */
+>>>>>>> upstream/master
 	ROM_LOAD16_BYTE("e49-13.32", 0x100000, 0x40000, CRC(83536f7f) SHA1(2252cee00ae260954cc76d92af8eb2a87d23cbfb) )
 	ROM_LOAD16_BYTE("e49-14.33", 0x100001, 0x40000, CRC(19815bdb) SHA1(38ad682236c7df0710055dd8dbdec30d5da0839d) )
 
@@ -3459,15 +4531,25 @@ ROM_START( pbobble4j )
 	ROM_REGION(0x400000, "gfx1" , 0) /* Sprites */
 	ROM_LOAD16_BYTE("e49-02", 0x000000, 0x100000, CRC(c7d2f40b) SHA1(cc6813189d6b31d7db099e49443af395f137462c) )
 	ROM_LOAD16_BYTE("e49-01", 0x000001, 0x100000, CRC(a3dd5f85) SHA1(2b305fdc18806bb5d7c3de0ac6a6eb07f98b4d3d) )
+<<<<<<< HEAD
 	ROM_FILL       (          0x200000, 0x200000, 0 )
+=======
+	ROM_FILL       (          0x200000, 0x200000, 0x00 )
+>>>>>>> upstream/master
 
 	ROM_REGION(0x400000, "gfx2" , 0) /* Tiles */
 	ROM_LOAD16_BYTE("e49-08", 0x000000, 0x100000, CRC(87408106) SHA1(6577568ab4b92d6a81f43cf9ea2f0e30e17e2742) )
 	ROM_LOAD16_BYTE("e49-07", 0x000001, 0x100000, CRC(1e1e8e1c) SHA1(9c3b994064c6af62b6a24cab85089a74fd92cf7f) )
 	ROM_LOAD       ("e49-06", 0x300000, 0x100000, CRC(ec85f7ce) SHA1(9fead68c38fc9ca84d34d70343b13665978c362b) )
+<<<<<<< HEAD
 	ROM_FILL       (          0x200000, 0x100000, 0 )
 
 	ROM_REGION(0x180000, "audiocpu", 0) /* 68000 code */
+=======
+	ROM_FILL       (          0x200000, 0x100000, 0x00 )
+
+	ROM_REGION(0x180000, "taito_en:audiocpu", 0) /* 68000 code */
+>>>>>>> upstream/master
 	ROM_LOAD16_BYTE("e49-13.32", 0x100000, 0x40000, CRC(83536f7f) SHA1(2252cee00ae260954cc76d92af8eb2a87d23cbfb) )
 	ROM_LOAD16_BYTE("e49-14.33", 0x100001, 0x40000, CRC(19815bdb) SHA1(38ad682236c7df0710055dd8dbdec30d5da0839d) )
 
@@ -3495,15 +4577,25 @@ ROM_START( pbobble4u )
 	ROM_REGION(0x400000, "gfx1" , 0) /* Sprites */
 	ROM_LOAD16_BYTE("e49-02", 0x000000, 0x100000, CRC(c7d2f40b) SHA1(cc6813189d6b31d7db099e49443af395f137462c) )
 	ROM_LOAD16_BYTE("e49-01", 0x000001, 0x100000, CRC(a3dd5f85) SHA1(2b305fdc18806bb5d7c3de0ac6a6eb07f98b4d3d) )
+<<<<<<< HEAD
 	ROM_FILL       (          0x200000, 0x200000, 0 )
+=======
+	ROM_FILL       (          0x200000, 0x200000, 0x00 )
+>>>>>>> upstream/master
 
 	ROM_REGION(0x400000, "gfx2" , 0) /* Tiles */
 	ROM_LOAD16_BYTE("e49-08", 0x000000, 0x100000, CRC(87408106) SHA1(6577568ab4b92d6a81f43cf9ea2f0e30e17e2742) )
 	ROM_LOAD16_BYTE("e49-07", 0x000001, 0x100000, CRC(1e1e8e1c) SHA1(9c3b994064c6af62b6a24cab85089a74fd92cf7f) )
 	ROM_LOAD       ("e49-06", 0x300000, 0x100000, CRC(ec85f7ce) SHA1(9fead68c38fc9ca84d34d70343b13665978c362b) )
+<<<<<<< HEAD
 	ROM_FILL       (          0x200000, 0x100000, 0 )
 
 	ROM_REGION(0x180000, "audiocpu", 0) /* 68000 code */
+=======
+	ROM_FILL       (          0x200000, 0x100000, 0x00 )
+
+	ROM_REGION(0x180000, "taito_en:audiocpu", 0) /* 68000 code */
+>>>>>>> upstream/master
 	ROM_LOAD16_BYTE("e49-13.32", 0x100000, 0x40000, CRC(83536f7f) SHA1(2252cee00ae260954cc76d92af8eb2a87d23cbfb) )
 	ROM_LOAD16_BYTE("e49-14.33", 0x100001, 0x40000, CRC(19815bdb) SHA1(38ad682236c7df0710055dd8dbdec30d5da0839d) )
 
@@ -3532,15 +4624,25 @@ ROM_START( popnpopj )
 	ROM_LOAD16_BYTE("e51-03.12",0x000000, 0x100000, CRC(a24c4607) SHA1(2396fa927446568ad8d98ad6756813e2f30523dd) )
 	ROM_LOAD16_BYTE("e51-02.8", 0x000001, 0x100000, CRC(6aa8b96c) SHA1(aaf7917dce5fed43c68cd3065538b58666ef3dbc) )
 	ROM_LOAD       ("e51-01.4", 0x300000, 0x100000, CRC(70347e24) SHA1(6b4ab90f0209e50eac7bee3abcf40afb71ab950a) )
+<<<<<<< HEAD
 	ROM_FILL       (            0x200000, 0x100000, 0 )
+=======
+	ROM_FILL       (            0x200000, 0x100000, 0x00 )
+>>>>>>> upstream/master
 
 	ROM_REGION(0x800000, "gfx2" , 0) /* Tiles */
 	ROM_LOAD16_BYTE("e51-08.47", 0x000000, 0x200000, CRC(3ad41f02) SHA1(a4959113c01062003df41cdf6146e8a034917ee2) )
 	ROM_LOAD16_BYTE("e51-07.45", 0x000001, 0x200000, CRC(95873e46) SHA1(02504cbd920c8dbcb5abec6388305eff38f7efe0) )
 	ROM_LOAD       ("e51-06.43", 0x600000, 0x200000, CRC(c240d6c8) SHA1(6f3b5224b7eb8783893375d432bbbfc37f81c230) )
+<<<<<<< HEAD
 	ROM_FILL       (             0x400000, 0x200000, 0 )
 
 	ROM_REGION(0x180000, "audiocpu", 0) /* 68000 sound CPU */
+=======
+	ROM_FILL       (             0x400000, 0x200000, 0x00 )
+
+	ROM_REGION(0x180000, "taito_en:audiocpu", 0) /* 68000 sound CPU */
+>>>>>>> upstream/master
 	ROM_LOAD16_BYTE("e51-13.32", 0x100000, 0x40000, CRC(3b9e3986) SHA1(26340bda0ad2ea580e2395135617966676a71ad5) )
 	ROM_LOAD16_BYTE("e51-14.33", 0x100001, 0x40000, CRC(1f9a5015) SHA1(5da38c5fe2a50bcde6bd46ab1cb9a56dbab1a882) )
 
@@ -3567,15 +4669,25 @@ ROM_START( popnpop )
 	ROM_LOAD16_BYTE("e51-03.12",0x000000, 0x100000, CRC(a24c4607) SHA1(2396fa927446568ad8d98ad6756813e2f30523dd) )
 	ROM_LOAD16_BYTE("e51-02.8", 0x000001, 0x100000, CRC(6aa8b96c) SHA1(aaf7917dce5fed43c68cd3065538b58666ef3dbc) )
 	ROM_LOAD       ("e51-01.4", 0x300000, 0x100000, CRC(70347e24) SHA1(6b4ab90f0209e50eac7bee3abcf40afb71ab950a) )
+<<<<<<< HEAD
 	ROM_FILL       (            0x200000, 0x100000, 0 )
+=======
+	ROM_FILL       (            0x200000, 0x100000, 0x00 )
+>>>>>>> upstream/master
 
 	ROM_REGION(0x800000, "gfx2" , 0) /* Tiles */
 	ROM_LOAD16_BYTE("e51-08.47", 0x000000, 0x200000, CRC(3ad41f02) SHA1(a4959113c01062003df41cdf6146e8a034917ee2) )
 	ROM_LOAD16_BYTE("e51-07.45", 0x000001, 0x200000, CRC(95873e46) SHA1(02504cbd920c8dbcb5abec6388305eff38f7efe0) )
 	ROM_LOAD       ("e51-06.43", 0x600000, 0x200000, CRC(c240d6c8) SHA1(6f3b5224b7eb8783893375d432bbbfc37f81c230) )
+<<<<<<< HEAD
 	ROM_FILL       (             0x400000, 0x200000, 0 )
 
 	ROM_REGION(0x180000, "audiocpu", 0) /* 68000 sound CPU */
+=======
+	ROM_FILL       (             0x400000, 0x200000, 0x00 )
+
+	ROM_REGION(0x180000, "taito_en:audiocpu", 0) /* 68000 sound CPU */
+>>>>>>> upstream/master
 	ROM_LOAD16_BYTE("e51-13.32", 0x100000, 0x40000, CRC(3b9e3986) SHA1(26340bda0ad2ea580e2395135617966676a71ad5) )
 	ROM_LOAD16_BYTE("e51-14.33", 0x100001, 0x40000, CRC(1f9a5015) SHA1(5da38c5fe2a50bcde6bd46ab1cb9a56dbab1a882) )
 
@@ -3602,15 +4714,25 @@ ROM_START( popnpopu )
 	ROM_LOAD16_BYTE("e51-03.12",0x000000, 0x100000, CRC(a24c4607) SHA1(2396fa927446568ad8d98ad6756813e2f30523dd) )
 	ROM_LOAD16_BYTE("e51-02.8", 0x000001, 0x100000, CRC(6aa8b96c) SHA1(aaf7917dce5fed43c68cd3065538b58666ef3dbc) )
 	ROM_LOAD       ("e51-01.4", 0x300000, 0x100000, CRC(70347e24) SHA1(6b4ab90f0209e50eac7bee3abcf40afb71ab950a) )
+<<<<<<< HEAD
 	ROM_FILL       (            0x200000, 0x100000, 0 )
+=======
+	ROM_FILL       (            0x200000, 0x100000, 0x00 )
+>>>>>>> upstream/master
 
 	ROM_REGION(0x800000, "gfx2" , 0) /* Tiles */
 	ROM_LOAD16_BYTE("e51-08.47", 0x000000, 0x200000, CRC(3ad41f02) SHA1(a4959113c01062003df41cdf6146e8a034917ee2) )
 	ROM_LOAD16_BYTE("e51-07.45", 0x000001, 0x200000, CRC(95873e46) SHA1(02504cbd920c8dbcb5abec6388305eff38f7efe0) )
 	ROM_LOAD       ("e51-06.43", 0x600000, 0x200000, CRC(c240d6c8) SHA1(6f3b5224b7eb8783893375d432bbbfc37f81c230) )
+<<<<<<< HEAD
 	ROM_FILL       (             0x400000, 0x200000, 0 )
 
 	ROM_REGION(0x180000, "audiocpu", 0) /* 68000 sound CPU */
+=======
+	ROM_FILL       (             0x400000, 0x200000, 0x00 )
+
+	ROM_REGION(0x180000, "taito_en:audiocpu", 0) /* 68000 sound CPU */
+>>>>>>> upstream/master
 	ROM_LOAD16_BYTE("e51-13.32", 0x100000, 0x40000, CRC(3b9e3986) SHA1(26340bda0ad2ea580e2395135617966676a71ad5) )
 	ROM_LOAD16_BYTE("e51-14.33", 0x100001, 0x40000, CRC(1f9a5015) SHA1(5da38c5fe2a50bcde6bd46ab1cb9a56dbab1a882) )
 
@@ -3679,17 +4801,29 @@ ROM_START( landmakr )
 	ROM_LOAD16_BYTE("e61-03.12",0x000000, 0x200000, CRC(e8abfc46) SHA1(fbde006f9822af3ed8debec525270d329981ea21) )
 	ROM_LOAD16_BYTE("e61-02.08",0x000001, 0x200000, CRC(1dc4a164) SHA1(33b412d9653099aaff8ed5e62d1ba4fc30aa9058) )
 	ROM_LOAD       ("e61-01.04",0x600000, 0x200000, CRC(6cdd8311) SHA1(7810a5a81f3b5a730d2088c79b12fffd77659b5b) )
+<<<<<<< HEAD
 	ROM_FILL       (            0x400000, 0x200000, 0 )
+=======
+	ROM_FILL       (            0x400000, 0x200000, 0x00 )
+>>>>>>> upstream/master
 
 	ROM_REGION(0x800000, "gfx2" , 0) /* Tiles */
 	ROM_LOAD16_BYTE("e61-09.47", 0x000000, 0x200000, CRC(6ba29987) SHA1(b63c12523e19da66b3ca07c3548ac81bf57b59a1) )
 	ROM_LOAD16_BYTE("e61-08.45", 0x000001, 0x200000, CRC(76c98e14) SHA1(c021c325ab4ae410fa54e2eab61d34318867432b) )
 	ROM_LOAD       ("e61-07.43", 0x600000, 0x200000, CRC(4a57965d) SHA1(8e80788e0f47fb242da9af3aa19077dc0ec829b8) )
+<<<<<<< HEAD
 	ROM_FILL       (             0x400000, 0x200000, 0 )
 
 
 
 	ROM_REGION(0x140000, "audiocpu", 0) /* 68000 sound CPU */
+=======
+	ROM_FILL       (             0x400000, 0x200000, 0x00 )
+
+
+
+	ROM_REGION(0x140000, "taito_en:audiocpu", 0) /* 68000 sound CPU */
+>>>>>>> upstream/master
 	ROM_LOAD16_BYTE("e61-14.32", 0x100000, 0x20000, CRC(b905f4a7) SHA1(613b954e3e129fd44b4ce64958f16e5636012d6e) )
 	ROM_LOAD16_BYTE("e61-15.33", 0x100001, 0x20000, CRC(87909869) SHA1(7b90c23899a673966cac3352d375d17b83e66596) )
 
@@ -3720,7 +4854,11 @@ ROM_START( landmakrp )
 	ROM_LOAD       ("obj1-2.31",0x680000, 0x080000, CRC(c2757722) SHA1(83a921647eb0375e10c7f76c08ebe66f2a6fdcd9) )
 	ROM_LOAD       ("obj2-2.30",0x700000, 0x080000, CRC(934556ff) SHA1(aca8585680e66635b8872259cfd38edc96e92066) )
 	ROM_LOAD       ("obj3-2.29",0x780000, 0x080000, CRC(97f0f777) SHA1(787a33b91cb262cc3983a46ba259dd9b153d532a) )
+<<<<<<< HEAD
 	ROM_FILL       (            0x400000, 0x200000, 0 )
+=======
+	ROM_FILL       (            0x400000, 0x200000, 0x00 )
+>>>>>>> upstream/master
 
 	ROM_REGION(0x800000, "gfx2" , 0) /* Tiles */
 	ROM_LOAD32_BYTE("scr0-0.7", 0x000000, 0x080000, CRC(da6ba562) SHA1(6aefd249d3491380837e04583a0069ed9c495d05) )
@@ -3735,11 +4873,19 @@ ROM_START( landmakrp )
 	ROM_LOAD16_BYTE("scr0-5.2", 0x600001, 0x080000, CRC(8e1ea0fe) SHA1(aa815d1d67bf72be6a0c4076490dfd36f28a82ab) )
 	ROM_LOAD16_BYTE("scr1-4.15",0x700000, 0x080000, CRC(783b6d10) SHA1(eab2c7b19890c1f6c13f0062978db5b81988499b) )
 	ROM_LOAD16_BYTE("scr1-5.14",0x700001, 0x080000, CRC(24aba128) SHA1(b03804c738d86bfafc1f8fb91f8e77e878d2dc83) )
+<<<<<<< HEAD
 	ROM_FILL       (            0x400000, 0x200000, 0 )
 
 
 
 	ROM_REGION(0x180000, "audiocpu", 0) /* 68000 sound CPU */
+=======
+	ROM_FILL       (            0x400000, 0x200000, 0x00 )
+
+
+
+	ROM_REGION(0x180000, "taito_en:audiocpu", 0) /* 68000 sound CPU */
+>>>>>>> upstream/master
 	ROM_LOAD16_BYTE("spro-1.66", 0x100000, 0x40000, CRC(18961bbb) SHA1(df054def35a49c0754356c15ec15336cbf28b063) )
 	ROM_LOAD16_BYTE("spro-0.65", 0x100001, 0x40000, CRC(2c64557a) SHA1(768007162d5d2cbe650c735bc1af2c10ed13b046) )
 
@@ -3763,9 +4909,15 @@ ROM_END
 
 static void tile_decode(running_machine &machine)
 {
+<<<<<<< HEAD
 	UINT8 lsb,msb;
 	UINT32 offset,i;
 	UINT8 *gfx = machine.root_device().memregion("gfx2")->base();
+=======
+	uint8_t lsb,msb;
+	uint32_t offset,i;
+	uint8_t *gfx = machine.root_device().memregion("gfx2")->base();
+>>>>>>> upstream/master
 	int size=machine.root_device().memregion("gfx2")->bytes();
 	int data;
 
@@ -3941,7 +5093,11 @@ WRITE32_MEMBER(taito_f3_state::bubsympb_oki_w)
 	//if (mem_mask==0x000000ff) downcast<okim6295_device *>(device)->write(0,data&0xff);
 	if (ACCESSING_BITS_16_23)
 	{
+<<<<<<< HEAD
 		UINT8 *snd = memregion("oki")->base();
+=======
+		uint8_t *snd = memregion("oki")->base();
+>>>>>>> upstream/master
 		int bank = (data & 0x000f0000) >> 16;
 		// almost certainly wrong
 		memcpy(snd+0x30000, snd+0x80000+0x30000+bank*0x10000, 0x10000);
@@ -3961,11 +5117,19 @@ DRIVER_INIT_MEMBER(taito_f3_state,bubsympb)
 	/* expand gfx rom */
 	{
 		int i;
+<<<<<<< HEAD
 		UINT8 *gfx = memregion("gfx2")->base();
 
 		for (i=0x200000;i<0x400000; i+=4)
 		{
 			UINT8 byte = gfx[i];
+=======
+		uint8_t *gfx = memregion("gfx2")->base();
+
+		for (i=0x200000;i<0x400000; i+=4)
+		{
+			uint8_t byte = gfx[i];
+>>>>>>> upstream/master
 			gfx[i+0] = (byte & 0x80)? 1<<4 : 0<<4;
 			gfx[i+0]|= (byte & 0x40)? 1<<0 : 0<<0;
 			gfx[i+1] = (byte & 0x20)? 1<<4 : 0<<4;
@@ -3976,9 +5140,12 @@ DRIVER_INIT_MEMBER(taito_f3_state,bubsympb)
 			gfx[i+3]|= (byte & 0x01)? 1<<0 : 0<<0;
 		}
 	}
+<<<<<<< HEAD
 
 	m_maincpu->space(AS_PROGRAM).install_read_handler(0x4a001c, 0x4a001f, read32_delegate(FUNC(taito_f3_state::bubsympb_oki_r),this));
 	m_maincpu->space(AS_PROGRAM).install_write_handler(0x4a001c, 0x4a001f, write32_delegate(FUNC(taito_f3_state::bubsympb_oki_w),this));
+=======
+>>>>>>> upstream/master
 }
 
 
@@ -4008,7 +5175,11 @@ DRIVER_INIT_MEMBER(taito_f3_state,landmakr)
 
 DRIVER_INIT_MEMBER(taito_f3_state,landmkrp)
 {
+<<<<<<< HEAD
 	UINT32 *RAM = (UINT32 *)memregion("maincpu")->base();
+=======
+	uint32_t *RAM = (uint32_t *)memregion("maincpu")->base();
+>>>>>>> upstream/master
 
 	/* For some reason the least significant byte in the last 2 long words of
 	ROM is swapped.  As the roms have been verified ok, I assume this is some
@@ -4051,7 +5222,11 @@ DRIVER_INIT_MEMBER(taito_f3_state,pbobbl2p)
 	// which eventually causes the game to crash
 	//  -- protection check?? or some kind of checksum fail?
 
+<<<<<<< HEAD
 	UINT32 *ROM = (UINT32 *)memregion("maincpu")->base();
+=======
+	uint32_t *ROM = (uint32_t *)memregion("maincpu")->base();
+>>>>>>> upstream/master
 
 	/* protection? */
 	ROM[0x40090/4]=0x00004e71|(ROM[0x40090/4]&0xffff0000);
@@ -4135,6 +5310,10 @@ GAME( 1992, commandw, 0,        f3_224b, f3, taito_f3_state, commandw, ROT0,   "
 /* Most of the football games share some GFX roms but shouldn't be considered clones unless they have the same Taito game code for the program roms */
 GAME( 1993, cupfinal, 0,        f3_224a, f3, taito_f3_state, cupfinal, ROT0,   "Taito Corporation Japan",   "Taito Cup Finals (Ver 1.0O 1993/02/28)", 0 )
 GAME( 1993, hthero93, cupfinal, f3_224a, f3, taito_f3_state, cupfinal, ROT0,   "Taito Corporation",         "Hat Trick Hero '93 (Ver 1.0J 1993/02/28)", 0 )
+<<<<<<< HEAD
+=======
+GAME( 1993, hthero93u,cupfinal, f3_224a, f3, taito_f3_state, cupfinal, ROT0,   "Taito Corporation",         "Hat Trick Hero '93 (Ver 1.0A 1993/02/28)", 0 )
+>>>>>>> upstream/master
 GAME( 1993, trstar,   0,        f3,      f3, taito_f3_state, trstaroj, ROT0,   "Taito Corporation Japan",   "Top Ranking Stars (Ver 2.1O 1993/05/21) (New Version)", 0 )
 GAME( 1993, trstarj,  trstar,   f3,      f3, taito_f3_state, trstaroj, ROT0,   "Taito Corporation",         "Top Ranking Stars (Ver 2.1J 1993/05/21) (New Version)", 0 )
 GAME( 1993, trstaro,  trstar,   f3,      f3, taito_f3_state, trstaroj, ROT0,   "Taito Corporation Japan",   "Top Ranking Stars (Ver 2.1O 1993/05/21) (Old Version)", 0 )
@@ -4155,11 +5334,19 @@ GAME( 1994, hthero94, intcup94, f3_224a, f3, taito_f3_state, intcup94, ROT0,   "
 GAME( 1994, kaiserkn, 0,        f3_224a, kn, taito_f3_state, kaiserkn, ROT0,   "Taito Corporation Japan",   "Kaiser Knuckle (Ver 2.1O 1994/07/29)", 0 )
 GAME( 1994, kaiserknj,kaiserkn, f3_224a, kn, taito_f3_state, kaiserkn, ROT0,   "Taito Corporation",         "Kaiser Knuckle (Ver 2.1J 1994/07/29)", 0 )
 GAME( 1994, gblchmp,  kaiserkn, f3_224a, kn, taito_f3_state, kaiserkn, ROT0,   "Taito America Corporation", "Global Champion (Ver 2.1A 1994/07/29)", 0 )
+<<<<<<< HEAD
 GAME( 1994, dankuga,  kaiserkn, f3_224a, kn, taito_f3_state, kaiserkn, ROT0,   "Taito Corporation",         "Dan-Ku-Ga (Ver 0.0J 1994/12/13, prototype)", 0 )
 GAME( 1994, dariusg,  0,        f3,      f3, taito_f3_state, dariusg,  ROT0,   "Taito Corporation Japan",   "Darius Gaiden - Silver Hawk (Ver 2.5O 1994/09/19)", 0 )
 GAME( 1994, dariusgj, dariusg,  f3,      f3, taito_f3_state, dariusg,  ROT0,   "Taito Corporation",         "Darius Gaiden - Silver Hawk (Ver 2.5J 1994/09/19)", 0 )
 GAME( 1994, dariusgu, dariusg,  f3,      f3, taito_f3_state, dariusg,  ROT0,   "Taito America Corporation", "Darius Gaiden - Silver Hawk (Ver 2.5A 1994/09/19)", 0 )
 GAME( 1994, dariusgx, dariusg,  f3,      f3, taito_f3_state, dariusg,  ROT0,   "Taito Corporation",         "Darius Gaiden - Silver Hawk Extra Version (Ver 2.7J 1995/03/06) (Official Hack)", 0 )
+=======
+GAME( 1994, dankuga,  0,        f3_224a, kn, taito_f3_state, kaiserkn, ROT0,   "Taito Corporation",         "Dan-Ku-Ga (Ver 0.0J 1994/12/13, prototype)", 0 )
+GAME( 1994, dariusg,  0,        f3,      f3, taito_f3_state, dariusg,  ROT0,   "Taito Corporation Japan",   "Darius Gaiden - Silver Hawk (Ver 2.5O 1994/09/19)", 0 )
+GAME( 1994, dariusgj, dariusg,  f3,      f3, taito_f3_state, dariusg,  ROT0,   "Taito Corporation",         "Darius Gaiden - Silver Hawk (Ver 2.5J 1994/09/19)", 0 )
+GAME( 1994, dariusgu, dariusg,  f3,      f3, taito_f3_state, dariusg,  ROT0,   "Taito America Corporation", "Darius Gaiden - Silver Hawk (Ver 2.5A 1994/09/19)", 0 )
+GAME( 1994, dariusgx, 0,        f3,      f3, taito_f3_state, dariusg,  ROT0,   "Taito Corporation",         "Darius Gaiden - Silver Hawk Extra Version (Ver 2.7J 1995/03/06) (Official Hack)", 0 )
+>>>>>>> upstream/master
 GAME( 1994, bublbob2, 0,        f3_224a, f3, taito_f3_state, bubsymph, ROT0,   "Taito Corporation Japan",   "Bubble Bobble II (Ver 2.6O 1994/12/16)", 0 )
 GAME( 1994, bublbob2o,bublbob2, f3_224a, f3, taito_f3_state, bubsymph, ROT0,   "Taito Corporation Japan",   "Bubble Bobble II (Ver 2.5O 1994/10/05)", 0 )
 GAME( 1994, bublbob2p,bublbob2, f3_224a, f3, taito_f3_state, bubsymph, ROT0,   "Taito Corporation Japan",   "Bubble Bobble II (Ver 0.0J 1993/12/13, prototype)", 0 )

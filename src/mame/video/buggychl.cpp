@@ -63,8 +63,13 @@ WRITE8_MEMBER(buggychl_state::buggychl_ctrl_w)
 
 	m_sprite_color_base = (data & 0x10) ? 1 * 16 : 3 * 16;
 
+<<<<<<< HEAD
 	coin_lockout_global_w(machine(), (~data & 0x40) >> 6);
 	set_led_status(machine(), 0, ~data & 0x80);
+=======
+	machine().bookkeeping().coin_lockout_global_w((~data & 0x40) >> 6);
+	output().set_led_value(0, ~data & 0x80);
+>>>>>>> upstream/master
 }
 
 WRITE8_MEMBER(buggychl_state::buggychl_bg_scrollx_w)
@@ -120,7 +125,11 @@ void buggychl_state::draw_bg( bitmap_ind16 &bitmap, const rectangle &cliprect )
 	for (offs = 0; offs < 256; offs++)
 		scroll[offs] = -m_scrollh[offs];
 
+<<<<<<< HEAD
 	copyscrollbitmap_trans(bitmap, m_tmp_bitmap2, 256, scroll, 0, 0, clip, 32);
+=======
+	copyscrollbitmap_trans(bitmap, m_tmp_bitmap2, 256, scroll, 0, nullptr, clip, 32);
+>>>>>>> upstream/master
 }
 
 
@@ -155,7 +164,11 @@ void buggychl_state::draw_fg( bitmap_ind16 &bitmap, const rectangle &cliprect )
 void buggychl_state::draw_sprites( bitmap_ind16 &bitmap, const rectangle &cliprect )
 {
 	int offs;
+<<<<<<< HEAD
 	const UINT8 *gfx;
+=======
+	const uint8_t *gfx;
+>>>>>>> upstream/master
 
 	g_profiler.start(PROFILER_USER1);
 
@@ -163,8 +176,13 @@ void buggychl_state::draw_sprites( bitmap_ind16 &bitmap, const rectangle &clipre
 	for (offs = 0; offs < m_spriteram.bytes(); offs += 4)
 	{
 		int sx, sy, flipy, zoom, ch, x, px, y;
+<<<<<<< HEAD
 		const UINT8 *lookup;
 		const UINT8 *zoomx_rom, *zoomy_rom;
+=======
+		const uint8_t *lookup;
+		const uint8_t *zoomx_rom, *zoomy_rom;
+>>>>>>> upstream/master
 
 		sx = m_spriteram[offs + 3] - ((m_spriteram[offs + 2] & 0x80) << 1);
 		sy = 256 - 64 - m_spriteram[offs] + ((m_spriteram[offs + 1] & 0x80) << 1);
@@ -192,7 +210,11 @@ void buggychl_state::draw_sprites( bitmap_ind16 &bitmap, const rectangle &clipre
 				for (ch = 0; ch < 4; ch++)
 				{
 					int pos, code, realflipy;
+<<<<<<< HEAD
 					const UINT8 *pendata;
+=======
+					const uint8_t *pendata;
+>>>>>>> upstream/master
 
 					pos = base_pos + 2 * ch;
 					code = 8 * (lookup[pos] | ((lookup[pos + 1] & 0x07) << 8));
@@ -223,7 +245,11 @@ void buggychl_state::draw_sprites( bitmap_ind16 &bitmap, const rectangle &clipre
 }
 
 
+<<<<<<< HEAD
 UINT32 buggychl_state::screen_update_buggychl(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+=======
+uint32_t buggychl_state::screen_update_buggychl(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+>>>>>>> upstream/master
 {
 	if (m_sky_on)
 		draw_sky(bitmap, cliprect);

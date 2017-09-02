@@ -1,13 +1,21 @@
 // license:BSD-3-Clause
+<<<<<<< HEAD
 // copyright-holders:Aaron Giles
 /***************************************************************************
 
     Midway MCR system
+=======
+// copyright-holders:Aaron Giles, Bryan McPhail
+/***************************************************************************
+
+    Midway MCR-68k system
+>>>>>>> upstream/master
 
 ***************************************************************************/
 
 #include "emu.h"
 #include "audio/midway.h"
+<<<<<<< HEAD
 #include "includes/mcr.h"
 #include "includes/mcr68.h"
 
@@ -38,6 +46,11 @@ READ8_MEMBER(mcr68_state::zwackery_port_3_r)
 
 	return ret;
 }
+=======
+#include "includes/mcr68.h"
+
+#define VERBOSE 0
+>>>>>>> upstream/master
 
 
 
@@ -49,6 +62,7 @@ READ8_MEMBER(mcr68_state::zwackery_port_3_r)
 
 MACHINE_START_MEMBER(mcr68_state,mcr68)
 {
+<<<<<<< HEAD
 	int i;
 
 	for (i = 0; i < 3; i++)
@@ -99,12 +113,15 @@ void mcr68_state::mcr68_common_init()
 
 	/* initialize the clock */
 	m_m6840_internal_counter_period = attotime::from_hz(m_maincpu->unscaled_clock() / 10);
+=======
+>>>>>>> upstream/master
 }
 
 
 MACHINE_RESET_MEMBER(mcr68_state,mcr68)
 {
 	/* for the most part all MCR/68k games are the same */
+<<<<<<< HEAD
 	mcr68_common_init();
 	m_v493_callback = timer_expired_delegate(FUNC(mcr68_state::mcr68_493_callback),this);
 
@@ -129,12 +146,16 @@ MACHINE_RESET_MEMBER(mcr68_state,zwackery)
 	/* vectors are 5 and 6 */
 	m_v493_irq_vector = 5;
 	m_m6840_irq_vector = 6;
+=======
+	m_v493_callback = timer_expired_delegate(FUNC(mcr68_state::mcr68_493_callback),this);
+>>>>>>> upstream/master
 }
 
 
 
 /*************************************
  *
+<<<<<<< HEAD
  *  Generic MCR interrupt handler
  *
  *************************************/
@@ -151,6 +172,32 @@ INTERRUPT_GEN_MEMBER(mcr68_state::mcr68_interrupt)
 	/* the timing of this is crucial for Blasted and Tri-Sports, which check the timing of */
 	/* VBLANK and 493 using counter 2 */
 	machine().scheduler().timer_set(attotime::from_hz(30) - m_timing_factor, m_v493_callback);
+=======
+ *  Scanline callback
+ *
+ *************************************/
+
+TIMER_DEVICE_CALLBACK_MEMBER( mcr68_state::scanline_cb )
+{
+	// VSYNC
+	if (param == 0)
+	{
+		if (VERBOSE)
+			logerror("--- VBLANK ---\n");
+
+		m_ptm->set_c1(0);
+		m_ptm->set_c1(1);
+
+		/* also set a timer to generate the 493 signal at a specific time before the next VBLANK */
+		/* the timing of this is crucial for Blasted and Tri-Sports, which check the timing of */
+		/* VBLANK and 493 using counter 2 */
+		machine().scheduler().timer_set(attotime::from_hz(30) - m_timing_factor, m_v493_callback);
+	}
+
+	// HSYNC
+	m_ptm->set_c3(0);
+	m_ptm->set_c3(1);
+>>>>>>> upstream/master
 }
 
 
@@ -161,6 +208,7 @@ INTERRUPT_GEN_MEMBER(mcr68_state::mcr68_interrupt)
  *
  *************************************/
 
+<<<<<<< HEAD
 void mcr68_state::update_mcr68_interrupts()
 {
 	m_maincpu->set_input_line(m_v493_irq_vector, m_v493_irq_state ? ASSERT_LINE : CLEAR_LINE);
@@ -172,11 +220,17 @@ TIMER_CALLBACK_MEMBER(mcr68_state::mcr68_493_off_callback)
 {
 	m_v493_irq_state = 0;
 	update_mcr68_interrupts();
+=======
+TIMER_CALLBACK_MEMBER(mcr68_state::mcr68_493_off_callback)
+{
+	m_maincpu->set_input_line(1, CLEAR_LINE);
+>>>>>>> upstream/master
 }
 
 
 TIMER_CALLBACK_MEMBER(mcr68_state::mcr68_493_callback)
 {
+<<<<<<< HEAD
 	m_v493_irq_state = 1;
 	update_mcr68_interrupts();
 	machine().scheduler().timer_set(m_screen->scan_period(), timer_expired_delegate(FUNC(mcr68_state::mcr68_493_off_callback),this));
@@ -543,4 +597,11 @@ READ16_MEMBER(mcr68_state::mcr68_6840_upper_r)
 READ16_MEMBER(mcr68_state::mcr68_6840_lower_r)
 {
 	return mcr68_6840_r_common(space,offset,0) | 0xff00;
+=======
+	m_maincpu->set_input_line(1, ASSERT_LINE);
+	machine().scheduler().timer_set(m_screen->scan_period(), timer_expired_delegate(FUNC(mcr68_state::mcr68_493_off_callback),this));
+
+	if (VERBOSE)
+		logerror("--- (INT1) ---\n");
+>>>>>>> upstream/master
 }

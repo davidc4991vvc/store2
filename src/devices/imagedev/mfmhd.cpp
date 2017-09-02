@@ -154,7 +154,11 @@
 
     There are two data transfer methods:
 
+<<<<<<< HEAD
     - read(attotime &from_when, const attotime &limit, UINT16 &data)
+=======
+    - read(attotime &from_when, const attotime &limit, uint16_t &data)
+>>>>>>> upstream/master
 
       Delivers the MFM cells at the given point in time. The cells are returned
       in the data parameter. The behavior depends on the chosen encoding:
@@ -167,7 +171,11 @@
 
       When the limit is exceeded, the method returns true, otherwise false.
 
+<<<<<<< HEAD
     - write(attotime &from_when, const attotime &limit, UINT16 cdata, bool wpcom=false, bool reduced_wc=false)
+=======
+    - write(attotime &from_when, const attotime &limit, uint16_t cdata, bool wpcom=false, bool reduced_wc=false)
+>>>>>>> upstream/master
 
       Writes the MFM cells at the given point in time. cdata contains the
       cells according to the encoding (see above). The controller also has
@@ -307,6 +315,7 @@ std::string mfm_harddisk_device::tts(const attotime &t)
 	return buf;
 }
 
+<<<<<<< HEAD
 mfm_harddisk_device::mfm_harddisk_device(const machine_config &mconfig, device_type type, const char *name, const char *tag, device_t *owner, UINT32 clock, const char *shortname, const char *source)
 	: harddisk_image_device(mconfig, type, name, tag, owner, clock, shortname, source),
 		device_slot_card_interface(mconfig, *this),
@@ -314,6 +323,15 @@ mfm_harddisk_device::mfm_harddisk_device(const machine_config &mconfig, device_t
 		m_spinup_timer(NULL),
 		m_seek_timer(NULL),
 		m_cache_timer(NULL),
+=======
+mfm_harddisk_device::mfm_harddisk_device(const machine_config &mconfig, device_type type, const char *tag, device_t *owner, uint32_t clock)
+	: harddisk_image_device(mconfig, type, tag, owner, clock),
+		device_slot_card_interface(mconfig, *this),
+		m_index_timer(nullptr),
+		m_spinup_timer(nullptr),
+		m_seek_timer(nullptr),
+		m_cache_timer(nullptr),
+>>>>>>> upstream/master
 		m_precomp_cyl(0),
 		m_redwc_cyl(0),
 		m_encoding(),
@@ -327,7 +345,11 @@ mfm_harddisk_device::mfm_harddisk_device(const machine_config &mconfig, device_t
 		m_autotruncation(false),
 		m_recalibrated(false),
 		m_step_line(),
+<<<<<<< HEAD
 		m_format(NULL)
+=======
+		m_format(nullptr)
+>>>>>>> upstream/master
 {
 	m_spinupms = 10000;
 	m_cachelines = 5;
@@ -337,7 +359,11 @@ mfm_harddisk_device::mfm_harddisk_device(const machine_config &mconfig, device_t
 	m_cell_size = 100;
 	m_rpm = 3600;           // MFM drives have a revolution rate of 3600 rpm (i.e. 60/sec)
 	m_trackimage_size = (int)((60000000000ULL / (m_rpm * m_cell_size)) / 16 + 1);
+<<<<<<< HEAD
 	m_cache = NULL;
+=======
+	m_cache = nullptr;
+>>>>>>> upstream/master
 	// We will calculate default values from the time specs later.
 	m_seeknext_time = 0;
 	m_maxseek_time = 0;
@@ -367,6 +393,35 @@ void mfm_harddisk_device::device_start()
 
 	// In 5 second periods, check whether the cache has dirty lines
 	m_cache_timer->adjust(attotime::from_msec(5000), 0, attotime::from_msec(5000));
+<<<<<<< HEAD
+=======
+
+	save_item(NAME(m_max_cylinders));
+	save_item(NAME(m_phys_cylinders));
+	save_item(NAME(m_actual_cylinders));
+	save_item(NAME(m_max_heads));
+	save_item(NAME(m_landing_zone));
+	save_item(NAME(m_precomp_cyl));
+	save_item(NAME(m_redwc_cyl));
+	save_item(NAME(m_maxseek_time));
+	save_item(NAME(m_seeknext_time));
+	save_item(NAME(m_cell_size));
+	save_item(NAME(m_trackimage_size));
+	save_item(NAME(m_spinupms));
+	save_item(NAME(m_rpm));
+	save_item(NAME(m_interleave));
+	save_item(NAME(m_cachelines));
+	save_item(NAME(m_ready));
+	save_item(NAME(m_current_cylinder));
+	save_item(NAME(m_current_head));
+	save_item(NAME(m_track_delta));
+	save_item(NAME(m_step_phase));
+	save_item(NAME(m_seek_complete));
+	save_item(NAME(m_seek_inward));
+	save_item(NAME(m_autotruncation));
+	save_item(NAME(m_recalibrated));
+	save_item(NAME(m_spinup_time));
+>>>>>>> upstream/master
 }
 
 void mfm_harddisk_device::device_reset()
@@ -382,7 +437,11 @@ void mfm_harddisk_device::device_reset()
 
 void mfm_harddisk_device::device_stop()
 {
+<<<<<<< HEAD
 	if (m_cache!=NULL) global_free(m_cache);
+=======
+	if (m_cache!=nullptr) global_free(m_cache);
+>>>>>>> upstream/master
 }
 
 /*
@@ -390,39 +449,65 @@ void mfm_harddisk_device::device_stop()
     because we need the number of cylinders, and for generic drives we get
     them from the CHD.
 */
+<<<<<<< HEAD
 bool mfm_harddisk_device::call_load()
 {
 	bool loaded = harddisk_image_device::call_load();
+=======
+image_init_result mfm_harddisk_device::call_load()
+{
+	image_init_result loaded = harddisk_image_device::call_load();
+>>>>>>> upstream/master
 
 	std::string devtag(tag());
 	devtag += ":format";
 
 	m_format->set_tag(devtag);
 
+<<<<<<< HEAD
 	if (loaded==IMAGE_INIT_PASS)
+=======
+	if (loaded==image_init_result::PASS)
+>>>>>>> upstream/master
 	{
 		std::string metadata;
 		chd_file* chdfile = get_chd_file();
 
+<<<<<<< HEAD
 		if (chdfile==NULL)
 		{
 			logerror("%s: chdfile is null\n", tag());
 			return IMAGE_INIT_FAIL;
+=======
+		if (chdfile==nullptr)
+		{
+			logerror("chdfile is null\n");
+			return image_init_result::FAIL;
+>>>>>>> upstream/master
 		}
 
 		// Read the hard disk metadata
 		chd_error state = chdfile->read_metadata(HARD_DISK_METADATA_TAG, 0, metadata);
 		if (state != CHDERR_NONE)
 		{
+<<<<<<< HEAD
 			logerror("%s: Failed to read CHD metadata\n", tag());
 			return IMAGE_INIT_FAIL;
 		}
 
 		if (TRACE_CONFIG) logerror("%s: CHD metadata: %s\n", tag(), metadata.c_str());
+=======
+			logerror("Failed to read CHD metadata\n");
+			return image_init_result::FAIL;
+		}
+
+		if (TRACE_CONFIG) logerror("CHD metadata: %s\n", metadata.c_str());
+>>>>>>> upstream/master
 
 		// Parse the metadata
 		mfmhd_layout_params param;
 		param.encoding = m_encoding;
+<<<<<<< HEAD
 		if (TRACE_CONFIG) logerror("%s: Set encoding to %d\n", tag(), m_encoding);
 
 		if (sscanf(metadata.c_str(), HARD_DISK_METADATA_FORMAT, &param.cylinders, &param.heads, &param.sectors_per_track, &param.sector_size) != 4)
@@ -432,6 +517,17 @@ bool mfm_harddisk_device::call_load()
 		}
 
 		if (TRACE_CONFIG) logerror("%s: CHD image has geometry cyl=%d, head=%d, sect=%d, size=%d\n", tag(), param.cylinders, param.heads, param.sectors_per_track, param.sector_size);
+=======
+		if (TRACE_CONFIG) logerror("Set encoding to %d\n", m_encoding);
+
+		if (sscanf(metadata.c_str(), HARD_DISK_METADATA_FORMAT, &param.cylinders, &param.heads, &param.sectors_per_track, &param.sector_size) != 4)
+		{
+			logerror("Invalid CHD metadata\n");
+			return image_init_result::FAIL;
+		}
+
+		if (TRACE_CONFIG) logerror("CHD image has geometry cyl=%d, head=%d, sect=%d, size=%d\n", param.cylinders, param.heads, param.sectors_per_track, param.sector_size);
+>>>>>>> upstream/master
 
 		if (m_max_cylinders != 0 && (param.cylinders != m_max_cylinders || param.heads != m_max_heads))
 		{
@@ -448,7 +544,11 @@ bool mfm_harddisk_device::call_load()
 		state = chdfile->read_metadata(MFM_HARD_DISK_METADATA_TAG, 0, metadata);
 		if (state != CHDERR_NONE)
 		{
+<<<<<<< HEAD
 			logerror("%s: Failed to read CHD sector arrangement/recording specs, applying defaults\n", tag());
+=======
+			logerror("Failed to read CHD sector arrangement/recording specs, applying defaults\n");
+>>>>>>> upstream/master
 		}
 		else
 		{
@@ -457,17 +557,30 @@ bool mfm_harddisk_device::call_load()
 
 		if (!param.sane_rec())
 		{
+<<<<<<< HEAD
 			if (TRACE_CONFIG) logerror("%s: Sector arrangement/recording specs have invalid values, applying defaults\n", tag());
 			param.reset_rec();
 		}
 		else
 			if (TRACE_CONFIG) logerror("%s: MFM HD rec specs: interleave=%d, cylskew=%d, headskew=%d, wpcom=%d, rwc=%d\n",
 				tag(), param.interleave, param.cylskew, param.headskew, param.write_precomp_cylinder, param.reduced_wcurr_cylinder);
+=======
+			if (TRACE_CONFIG) logerror("Sector arrangement/recording specs have invalid values, applying defaults\n");
+			param.reset_rec();
+		}
+		else
+			if (TRACE_CONFIG) logerror("MFM HD rec specs: interleave=%d, cylskew=%d, headskew=%d, wpcom=%d, rwc=%d\n",
+				param.interleave, param.cylskew, param.headskew, param.write_precomp_cylinder, param.reduced_wcurr_cylinder);
+>>>>>>> upstream/master
 
 		state = chdfile->read_metadata(MFM_HARD_DISK_METADATA_TAG, 1, metadata);
 		if (state != CHDERR_NONE)
 		{
+<<<<<<< HEAD
 			logerror("%s: Failed to read CHD track gap specs, applying defaults\n", tag());
+=======
+			logerror("Failed to read CHD track gap specs, applying defaults\n");
+>>>>>>> upstream/master
 		}
 		else
 		{
@@ -476,12 +589,21 @@ bool mfm_harddisk_device::call_load()
 
 		if (!param.sane_gap())
 		{
+<<<<<<< HEAD
 			if (TRACE_CONFIG) logerror("%s: MFM HD gap specs have invalid values, applying defaults\n", tag());
 			param.reset_gap();
 		}
 		else
 			if (TRACE_CONFIG) logerror("%s: MFM HD gap specs: gap1=%d, gap2=%d, gap3=%d, sync=%d, headerlen=%d, ecctype=%d\n",
 				tag(), param.gap1, param.gap2, param.gap3, param.sync, param.headerlen, param.ecctype);
+=======
+			if (TRACE_CONFIG) logerror("MFM HD gap specs have invalid values, applying defaults\n");
+			param.reset_gap();
+		}
+		else
+			if (TRACE_CONFIG) logerror("MFM HD gap specs: gap1=%d, gap2=%d, gap3=%d, sync=%d, headerlen=%d, ecctype=%d\n",
+				param.gap1, param.gap2, param.gap3, param.sync, param.headerlen, param.ecctype);
+>>>>>>> upstream/master
 
 		m_format->set_layout_params(param);
 
@@ -501,7 +623,11 @@ bool mfm_harddisk_device::call_load()
 		float realmax = (m_maxseek_time==0)? (m_actual_cylinders * 0.2) : (m_maxseek_time * 0.8);
 		float settle_us = ((m_actual_cylinders-1.0) * realnext - realmax) / (m_actual_cylinders-2.0) * 1000;
 		float step_us = realnext * 1000 - settle_us;
+<<<<<<< HEAD
 		if (TRACE_CONFIG) logerror("%s: Calculated settle time: %0.2f ms, step: %d us\n", tag(), settle_us/1000, (int)step_us);
+=======
+		if (TRACE_CONFIG) logerror("Calculated settle time: %0.2f ms, step: %d us\n", settle_us/1000, (int)step_us);
+>>>>>>> upstream/master
 
 		m_settle_time = attotime::from_usec((int)settle_us);
 		m_step_time = attotime::from_usec((int)step_us);
@@ -510,7 +636,11 @@ bool mfm_harddisk_device::call_load()
 	}
 	else
 	{
+<<<<<<< HEAD
 		logerror("%s: Could not load CHD\n", tag());
+=======
+		logerror("Could not load CHD\n");
+>>>>>>> upstream/master
 	}
 	return loaded;
 }
@@ -523,12 +653,17 @@ void mfm_harddisk_device::call_unload()
 	mfmhd_layout_params* params = m_format->get_current_params();
 	mfmhd_layout_params* oldparams = m_format->get_initial_params();
 
+<<<<<<< HEAD
 	if (m_cache!=NULL)
+=======
+	if (m_cache!=nullptr)
+>>>>>>> upstream/master
 	{
 		m_cache->cleanup();
 
 		if (m_format->save_param(MFMHD_IL) && !params->equals_rec(oldparams))
 		{
+<<<<<<< HEAD
 			logerror("%s: MFM HD sector arrangement and recording specs have changed; updating CHD metadata\n", tag());
 			chd_file* chdfile = get_chd_file();
 			std::string metadata;
@@ -539,11 +674,21 @@ void mfm_harddisk_device::call_unload()
 			if (err != CHDERR_NONE)
 			{
 				logerror("%s: Failed to save MFM HD sector arrangement/recording specs to CHD\n", tag());
+=======
+			logerror("MFM HD sector arrangement and recording specs have changed; updating CHD metadata\n");
+			chd_file* chdfile = get_chd_file();
+
+			chd_error err = chdfile->write_metadata(MFM_HARD_DISK_METADATA_TAG, 0, string_format(MFMHD_REC_METADATA_FORMAT, params->interleave, params->cylskew, params->headskew, params->write_precomp_cylinder, params->reduced_wcurr_cylinder), 0);
+			if (err != CHDERR_NONE)
+			{
+				logerror("Failed to save MFM HD sector arrangement/recording specs to CHD\n");
+>>>>>>> upstream/master
 			}
 		}
 
 		if (m_format->save_param(MFMHD_GAP1) && !params->equals_gap(oldparams))
 		{
+<<<<<<< HEAD
 			logerror("%s: MFM HD track gap specs have changed; updating CHD metadata\n", tag());
 			chd_file* chdfile = get_chd_file();
 			std::string metadata;
@@ -554,6 +699,15 @@ void mfm_harddisk_device::call_unload()
 			if (err != CHDERR_NONE)
 			{
 				logerror("%s: Failed to save MFM HD track gap specs to CHD\n", tag());
+=======
+			logerror("MFM HD track gap specs have changed; updating CHD metadata\n");
+			chd_file* chdfile = get_chd_file();
+
+			chd_error err = chdfile->write_metadata(MFM_HARD_DISK_METADATA_TAG, 1, string_format(MFMHD_GAP_METADATA_FORMAT, params->gap1, params->gap2, params->gap3, params->sync, params->headerlen, params->ecctype), 0);
+			if (err != CHDERR_NONE)
+			{
+				logerror("Failed to save MFM HD track gap specs to CHD\n");
+>>>>>>> upstream/master
 			}
 		}
 	}
@@ -592,7 +746,11 @@ attotime mfm_harddisk_device::track_end_time()
 	if (!m_revolution_start_time.is_never())
 	{
 		endtime = m_revolution_start_time + nexttime;
+<<<<<<< HEAD
 		if (TRACE_TIMING) logerror("%s: Track start time = %s, end time = %s\n", tag(), tts(m_revolution_start_time).c_str(), tts(endtime).c_str());
+=======
+		if (TRACE_TIMING) logerror("Track start time = %s, end time = %s\n", tts(m_revolution_start_time).c_str(), tts(endtime).c_str());
+>>>>>>> upstream/master
 	}
 	return endtime;
 }
@@ -634,7 +792,11 @@ void mfm_harddisk_device::device_timer(emu_timer &timer, device_timer_id id, int
 				// Start the settle timer
 				m_step_phase = STEP_SETTLE;
 				m_seek_timer->adjust(m_settle_time);
+<<<<<<< HEAD
 				if (TRACE_STEPS && TRACE_DETAIL) logerror("%s: Arrived at target cylinder %d, settling ...\n", tag(), m_current_cylinder);
+=======
+				if (TRACE_STEPS && TRACE_DETAIL) logerror("Arrived at target cylinder %d, settling ...\n", m_current_cylinder);
+>>>>>>> upstream/master
 			}
 			else
 			{
@@ -652,12 +814,20 @@ void mfm_harddisk_device::device_timer(emu_timer &timer, device_timer_id id, int
 				{
 					m_ready = true;
 					m_recalibrated = true;
+<<<<<<< HEAD
 					if (TRACE_STATE) logerror("%s: Spinup complete, drive recalibrated and positioned at cylinder %d; drive is READY\n", tag(), m_current_cylinder);
+=======
+					if (TRACE_STATE) logerror("Spinup complete, drive recalibrated and positioned at cylinder %d; drive is READY\n", m_current_cylinder);
+>>>>>>> upstream/master
 					if (!m_ready_cb.isnull()) m_ready_cb(this, ASSERT_LINE);
 				}
 				else
 				{
+<<<<<<< HEAD
 					if (TRACE_SIGNALS) logerror("%s: Settling done at cylinder %d, seek complete\n", tag(), m_current_cylinder);
+=======
+					if (TRACE_SIGNALS) logerror("Settling done at cylinder %d, seek complete\n", m_current_cylinder);
+>>>>>>> upstream/master
 				}
 				m_seek_complete = true;
 				if (!m_seek_complete_cb.isnull()) m_seek_complete_cb(this, ASSERT_LINE);
@@ -670,7 +840,11 @@ void mfm_harddisk_device::device_timer(emu_timer &timer, device_timer_id id, int
 
 void mfm_harddisk_device::recalibrate()
 {
+<<<<<<< HEAD
 	if (TRACE_STEPS) logerror("%s: Recalibrate to track 0\n", tag());
+=======
+	if (TRACE_STEPS) logerror("Recalibrate to track 0\n");
+>>>>>>> upstream/master
 	direction_in_w(CLEAR_LINE);
 	while (-m_track_delta  < m_phys_cylinders)
 	{
@@ -683,13 +857,21 @@ void mfm_harddisk_device::head_move()
 {
 	int steps = m_track_delta;
 	if (steps < 0) steps = -steps;
+<<<<<<< HEAD
 	if (TRACE_STEPS) logerror("%s: Moving head by %d step(s) %s\n", tag(), steps, (m_track_delta<0)? "outward" : "inward");
+=======
+	if (TRACE_STEPS) logerror("Moving head by %d step(s) %s\n", steps, (m_track_delta<0)? "outward" : "inward");
+>>>>>>> upstream/master
 
 	// We simulate the head movement by pausing for n*step_time with n being the cylinder delta
 	m_step_phase = STEP_MOVING;
 	m_seek_timer->adjust(m_step_time * steps);
 
+<<<<<<< HEAD
 	if (TRACE_TIMING) logerror("%s: Head movement takes %s time\n", tag(), tts(m_step_time * steps).c_str());
+=======
+	if (TRACE_TIMING) logerror("Head movement takes %s time\n", tts(m_step_time * steps).c_str());
+>>>>>>> upstream/master
 	// We pretend that we already arrived
 	// TODO: Check auto truncation?
 	m_current_cylinder += m_track_delta;
@@ -701,7 +883,11 @@ void mfm_harddisk_device::head_move()
 void mfm_harddisk_device::direction_in_w(line_state line)
 {
 	m_seek_inward = (line == ASSERT_LINE);
+<<<<<<< HEAD
 	if (TRACE_STEPS && TRACE_DETAIL) logerror("%s: Setting seek direction %s\n", tag(), m_seek_inward? "inward" : "outward");
+=======
+	if (TRACE_STEPS && TRACE_DETAIL) logerror("Setting seek direction %s\n", m_seek_inward? "inward" : "outward");
+>>>>>>> upstream/master
 }
 
 /*
@@ -752,10 +938,17 @@ void mfm_harddisk_device::step_w(line_state line)
 
 		// Counter will be adjusted according to the direction (+-1)
 		m_track_delta += (m_seek_inward)? +1 : -1;
+<<<<<<< HEAD
 		if (TRACE_STEPS && TRACE_DETAIL) logerror("%s: Got seek pulse; track delta %d\n", tag(), m_track_delta);
 		if (m_track_delta < -m_phys_cylinders || m_track_delta > m_phys_cylinders)
 		{
 			if (TRACE_STEPS) logerror("%s: Excessive step pulses - doing auto-truncation\n", tag());
+=======
+		if (TRACE_STEPS && TRACE_DETAIL) logerror("Got seek pulse; track delta %d\n", m_track_delta);
+		if (m_track_delta < -m_phys_cylinders || m_track_delta > m_phys_cylinders)
+		{
+			if (TRACE_STEPS) logerror("Excessive step pulses - doing auto-truncation\n");
+>>>>>>> upstream/master
 			m_autotruncation = true;
 		}
 		m_seek_timer->adjust(attotime::from_usec(250));  // Start step collect timer
@@ -771,7 +964,11 @@ void mfm_harddisk_device::step_w(line_state line)
 bool mfm_harddisk_device::find_position(attotime &from_when, const attotime &limit, int &bytepos, int &bit)
 {
 	// Frequency
+<<<<<<< HEAD
 	UINT32 freq = 1000000000/m_cell_size;
+=======
+	uint32_t freq = 1000000000/m_cell_size;
+>>>>>>> upstream/master
 
 	// As we stop some few cells early each track, we adjust our position
 	// to the track start
@@ -788,7 +985,11 @@ bool mfm_harddisk_device::find_position(attotime &from_when, const attotime &lim
 	// Reached the end
 	if (bytepos >= m_trackimage_size)
 	{
+<<<<<<< HEAD
 		if (TRACE_TIMING) logerror("%s: Reached end: rev_start = %s, live = %s\n", tag(), tts(m_revolution_start_time).c_str(), tts(from_when).c_str());
+=======
+		if (TRACE_TIMING) logerror("Reached end: rev_start = %s, live = %s\n", tts(m_revolution_start_time).c_str(), tts(from_when).c_str());
+>>>>>>> upstream/master
 		m_revolution_start_time += m_rev_time;
 		cell = (from_when - m_revolution_start_time).as_ticks(freq);
 		bytepos = cell / 16;
@@ -796,7 +997,11 @@ bool mfm_harddisk_device::find_position(attotime &from_when, const attotime &lim
 
 	if (bytepos < 0)
 	{
+<<<<<<< HEAD
 		if (TRACE_TIMING) logerror("%s: Negative cell number: rev_start = %s, live = %s\n", tag(), tts(m_revolution_start_time).c_str(), tts(from_when).c_str());
+=======
+		if (TRACE_TIMING) logerror("Negative cell number: rev_start = %s, live = %s\n", tts(m_revolution_start_time).c_str(), tts(from_when).c_str());
+>>>>>>> upstream/master
 		bytepos = 0;
 	}
 	bit = cell % 16;
@@ -810,11 +1015,19 @@ bool mfm_harddisk_device::find_position(attotime &from_when, const attotime &lim
     Returns true if the time limit will be exceeded before reading the bit or complete byte.
     Otherwise returns the bit at the given position, or the complete data byte with the clock byte.
 */
+<<<<<<< HEAD
 bool mfm_harddisk_device::read(attotime &from_when, const attotime &limit, UINT16 &cdata)
 {
 	UINT16* track = m_cache->get_trackimage(m_current_cylinder, m_current_head);
 
 	if (track==NULL)
+=======
+bool mfm_harddisk_device::read(attotime &from_when, const attotime &limit, uint16_t &cdata)
+{
+	uint16_t* track = m_cache->get_trackimage(m_current_cylinder, m_current_head);
+
+	if (track==nullptr)
+>>>>>>> upstream/master
 	{
 		// What shall we do in this case?
 		throw emu_fatalerror("Cannot read CHD image");
@@ -833,12 +1046,20 @@ bool mfm_harddisk_device::read(attotime &from_when, const attotime &limit, UINT1
 	{
 		// We will deliver a single bit
 		cdata = ((track[bytepos] << bitpos) & 0x8000) >> 15;
+<<<<<<< HEAD
 		if (TRACE_BITS) logerror("%s: Reading (c=%d,h=%d,bit=%d) at cell %d [%s] = %d\n", tag(), m_current_cylinder, m_current_head, bitpos, ((bytepos<<4) + bitpos), tts(fw).c_str(), cdata);
+=======
+		if (TRACE_BITS) logerror("Reading (c=%d,h=%d,bit=%d) at cell %d [%s] = %d\n", m_current_cylinder, m_current_head, bitpos, ((bytepos<<4) + bitpos), tts(fw).c_str(), cdata);
+>>>>>>> upstream/master
 	}
 	else
 	{
 		// We will deliver a whole byte
+<<<<<<< HEAD
 		if (TRACE_READ) logerror("%s: Reading (c=%d,h=%d) at position %d\n", tag(), m_current_cylinder, m_current_head, bytepos);
+=======
+		if (TRACE_READ) logerror("Reading (c=%d,h=%d) at position %d\n", m_current_cylinder, m_current_head, bytepos);
+>>>>>>> upstream/master
 		cdata = track[bytepos];
 	}
 	return false;
@@ -849,11 +1070,19 @@ bool mfm_harddisk_device::read(attotime &from_when, const attotime &limit, UINT1
 
     Returns true if the time limit will be exceeded before writing the bit or complete byte.
 */
+<<<<<<< HEAD
 bool mfm_harddisk_device::write(attotime &from_when, const attotime &limit, UINT16 cdata, bool wpcom, bool reduced_wc)
 {
 	UINT16* track = m_cache->get_trackimage(m_current_cylinder, m_current_head);
 
 	if (track==NULL)
+=======
+bool mfm_harddisk_device::write(attotime &from_when, const attotime &limit, uint16_t cdata, bool wpcom, bool reduced_wc)
+{
+	uint16_t* track = m_cache->get_trackimage(m_current_cylinder, m_current_head);
+
+	if (track==nullptr)
+>>>>>>> upstream/master
 	{
 		// What shall we do in this case?
 		throw emu_fatalerror("Cannot read CHD image");
@@ -891,17 +1120,29 @@ bool mfm_harddisk_device::write(attotime &from_when, const attotime &limit, UINT
 	if (wpcom && (params->write_precomp_cylinder == -1 || m_current_cylinder < params->write_precomp_cylinder))
 		params->write_precomp_cylinder = m_current_cylinder;
 
+<<<<<<< HEAD
 	if (TRACE_WRITE) if ((bitpos&0x0f)==0) logerror("%s: Wrote data=%04x (c=%d,h=%d) at position %04x, wpcom=%d, rwc=%d\n", tag(), track[bytepos], m_current_cylinder, m_current_head, bytepos, wpcom, reduced_wc);
 	return false;
 }
 
 chd_error mfm_harddisk_device::load_track(UINT16* data, int cylinder, int head)
+=======
+	if (TRACE_WRITE) if ((bitpos&0x0f)==0) logerror("Wrote data=%04x (c=%d,h=%d) at position %04x, wpcom=%d, rwc=%d\n", track[bytepos], m_current_cylinder, m_current_head, bytepos, wpcom, reduced_wc);
+	return false;
+}
+
+chd_error mfm_harddisk_device::load_track(uint16_t* data, int cylinder, int head)
+>>>>>>> upstream/master
 {
 	chd_error state = m_format->load(m_chd, data, m_trackimage_size, cylinder, head);
 	return state;
 }
 
+<<<<<<< HEAD
 void mfm_harddisk_device::write_track(UINT16* data, int cylinder, int head)
+=======
+void mfm_harddisk_device::write_track(uint16_t* data, int cylinder, int head)
+>>>>>>> upstream/master
 {
 	m_format->save(m_chd, data, m_trackimage_size, cylinder, head);
 }
@@ -914,18 +1155,32 @@ int mfm_harddisk_device::get_actual_heads()
 /*
     The generic HD takes any kind of CHD HD image and magically creates enough heads and cylinders.
 */
+<<<<<<< HEAD
 mfm_hd_generic_device::mfm_hd_generic_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
 : mfm_harddisk_device(mconfig, MFMHD_GENERIC, "Generic MFM hard disk", tag, owner, clock, "mfm_harddisk", __FILE__)
 {
 }
 
 const device_type MFMHD_GENERIC = &device_creator<mfm_hd_generic_device>;
+=======
+mfm_hd_generic_device::mfm_hd_generic_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+: mfm_harddisk_device(mconfig, MFMHD_GENERIC, tag, owner, clock)
+{
+}
+
+DEFINE_DEVICE_TYPE(MFMHD_GENERIC, mfm_hd_generic_device, "mfm_harddisk", "Generic MFM hard disk")
+>>>>>>> upstream/master
 
 /*
     Various models.
 */
+<<<<<<< HEAD
 mfm_hd_st213_device::mfm_hd_st213_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
 : mfm_harddisk_device(mconfig, MFMHD_ST213, "Seagate ST-213 MFM hard disk", tag, owner, clock, "mfm_hd_st213", __FILE__)
+=======
+mfm_hd_st213_device::mfm_hd_st213_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+: mfm_harddisk_device(mconfig, MFMHD_ST213, tag, owner, clock)
+>>>>>>> upstream/master
 {
 	m_phys_cylinders = 670;
 	m_max_cylinders = 615;      // 0..614
@@ -935,10 +1190,17 @@ mfm_hd_st213_device::mfm_hd_st213_device(const machine_config &mconfig, const ch
 	m_maxseek_time = 150;
 }
 
+<<<<<<< HEAD
 const device_type MFMHD_ST213 = &device_creator<mfm_hd_st213_device>;
 
 mfm_hd_st225_device::mfm_hd_st225_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
 : mfm_harddisk_device(mconfig, MFMHD_ST225, "Seagate ST-225 MFM hard disk", tag, owner, clock, "mfm_hd_st225", __FILE__)
+=======
+DEFINE_DEVICE_TYPE(MFMHD_ST213, mfm_hd_st213_device, "mfm_hd_st213", "Seagate ST-213 MFM hard disk")
+
+mfm_hd_st225_device::mfm_hd_st225_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+: mfm_harddisk_device(mconfig, MFMHD_ST225, tag, owner, clock)
+>>>>>>> upstream/master
 {
 	m_phys_cylinders = 670;
 	m_max_cylinders = 615;
@@ -948,10 +1210,17 @@ mfm_hd_st225_device::mfm_hd_st225_device(const machine_config &mconfig, const ch
 	m_maxseek_time = 150;
 }
 
+<<<<<<< HEAD
 const device_type MFMHD_ST225 = &device_creator<mfm_hd_st225_device>;
 
 mfm_hd_st251_device::mfm_hd_st251_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
 : mfm_harddisk_device(mconfig, MFMHD_ST251, "Seagate ST-251 MFM hard disk", tag, owner, clock, "mfm_hd_st251", __FILE__)
+=======
+DEFINE_DEVICE_TYPE(MFMHD_ST225, mfm_hd_st225_device, "mfm_hd_st225", "Seagate ST-225 MFM hard disk")
+
+mfm_hd_st251_device::mfm_hd_st251_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+: mfm_harddisk_device(mconfig, MFMHD_ST251, tag, owner, clock)
+>>>>>>> upstream/master
 {
 	m_phys_cylinders = 821;
 	m_max_cylinders = 820;
@@ -961,7 +1230,11 @@ mfm_hd_st251_device::mfm_hd_st251_device(const machine_config &mconfig, const ch
 	m_maxseek_time = 70;
 }
 
+<<<<<<< HEAD
 const device_type MFMHD_ST251 = &device_creator<mfm_hd_st251_device>;
+=======
+DEFINE_DEVICE_TYPE(MFMHD_ST251, mfm_hd_st251_device, "mfm_hd_st251", "Seagate ST-251 MFM hard disk")
+>>>>>>> upstream/master
 
 // ===========================================================
 //   Track cache
@@ -970,8 +1243,13 @@ const device_type MFMHD_ST251 = &device_creator<mfm_hd_st251_device>;
 // ===========================================================
 
 mfmhd_trackimage_cache::mfmhd_trackimage_cache(running_machine &machine):
+<<<<<<< HEAD
 	m_mfmhd(NULL),
 	m_tracks(NULL),
+=======
+	m_mfmhd(nullptr),
+	m_tracks(nullptr),
+>>>>>>> upstream/master
 	m_machine(machine)
 {
 }
@@ -979,9 +1257,15 @@ mfmhd_trackimage_cache::mfmhd_trackimage_cache(running_machine &machine):
 mfmhd_trackimage_cache::~mfmhd_trackimage_cache()
 {
 	mfmhd_trackimage* current = m_tracks;
+<<<<<<< HEAD
 	if (TRACE_CACHE) m_machine.logerror("%s: MFM HD cache destroy\n", m_mfmhd->tag());
 
 	while (current != NULL)
+=======
+	if (TRACE_CACHE) m_machine.logerror("[%s:cache] MFM HD cache destroy\n", m_mfmhd->tag());
+
+	while (current != nullptr)
+>>>>>>> upstream/master
 	{
 		global_free_array(current->encdata);
 		mfmhd_trackimage* currenttmp = current->next;
@@ -994,7 +1278,11 @@ void mfmhd_trackimage_cache::write_back_one()
 {
 	mfmhd_trackimage* current = m_tracks;
 
+<<<<<<< HEAD
 	while (current != NULL)
+=======
+	while (current != nullptr)
+>>>>>>> upstream/master
 	{
 		if (current->dirty)
 		{
@@ -1010,12 +1298,21 @@ void mfmhd_trackimage_cache::write_back_one()
 void mfmhd_trackimage_cache::cleanup()
 {
 	mfmhd_trackimage* current = m_tracks;
+<<<<<<< HEAD
 	if (TRACE_CACHE) m_machine.logerror("%s: MFM HD cache cleanup\n", m_mfmhd->tag());
 
 	// Still dirty?
 	while (current != NULL)
 	{
 		if (TRACE_CACHE) m_machine.logerror("%s: MFM HD cache: evict line cylinder=%d head=%d\n", m_mfmhd->tag(), current->cylinder, current->head);
+=======
+	if (TRACE_CACHE) m_machine.logerror("[%s:cache] MFM HD cache cleanup\n", m_mfmhd->tag());
+
+	// Still dirty?
+	while (current != nullptr)
+	{
+		if (TRACE_CACHE) m_machine.logerror("[%s:cache] MFM HD cache: evict line cylinder=%d head=%d\n", m_mfmhd->tag(), current->cylinder, current->head);
+>>>>>>> upstream/master
 		if (current->dirty)
 		{
 			m_mfmhd->write_track(current->encdata, current->cylinder, current->head);
@@ -1042,12 +1339,20 @@ const char *encnames[] = { "MFM_BITS","MFM_BYTE","SEPARATE","SSIMPLE " };
 */
 void mfmhd_trackimage_cache::init(mfm_harddisk_device* mfmhd, int tracksize, int trackslots)
 {
+<<<<<<< HEAD
 	if (TRACE_CACHE) m_machine.logerror("%s: MFM HD cache init; cache size is %d tracks\n", mfmhd->tag(), trackslots);
+=======
+	if (TRACE_CACHE) m_machine.logerror("[%s:cache] MFM HD cache init; cache size is %d tracks\n", mfmhd->tag(), trackslots);
+>>>>>>> upstream/master
 
 	chd_error state;
 
 	mfmhd_trackimage* previous;
+<<<<<<< HEAD
 	mfmhd_trackimage* current = NULL;
+=======
+	mfmhd_trackimage* current = nullptr;
+>>>>>>> upstream/master
 
 	m_mfmhd = mfmhd;
 
@@ -1058,10 +1363,17 @@ void mfmhd_trackimage_cache::init(mfm_harddisk_device* mfmhd, int tracksize, int
 
 	while (track < trackslots)
 	{
+<<<<<<< HEAD
 		if (TRACE_CACHE && TRACE_DETAIL) m_machine.logerror("%s: MFM HD allocate cache slot\n", mfmhd->tag());
 		previous = current;
 		current = global_alloc(mfmhd_trackimage);
 		current->encdata = global_alloc_array(UINT16, tracksize);
+=======
+		if (TRACE_CACHE && TRACE_DETAIL) m_machine.logerror("[%s:cache] MFM HD allocate cache slot\n", mfmhd->tag());
+		previous = current;
+		current = global_alloc(mfmhd_trackimage);
+		current->encdata = global_alloc_array(uint16_t, tracksize);
+>>>>>>> upstream/master
 
 		// Load the first tracks into the slots
 		state = m_mfmhd->load_track(current->encdata, cylinder, head);
@@ -1077,9 +1389,15 @@ void mfmhd_trackimage_cache::init(mfm_harddisk_device* mfmhd, int tracksize, int
 			head = 0;
 			cylinder++;
 		}
+<<<<<<< HEAD
 		current->next = NULL;
 
 		if (previous != NULL)
+=======
+		current->next = nullptr;
+
+		if (previous != nullptr)
+>>>>>>> upstream/master
 			previous->next = current;
 		else
 			// Head
@@ -1096,11 +1414,19 @@ void mfmhd_trackimage_cache::init(mfm_harddisk_device* mfmhd, int tracksize, int
     the CHD, convert it, and evict the least recently used line.
     The searched track will be the first in m_tracks.
 */
+<<<<<<< HEAD
 UINT16* mfmhd_trackimage_cache::get_trackimage(int cylinder, int head)
 {
 	// Search the cached track images
 	mfmhd_trackimage* current = m_tracks;
 	mfmhd_trackimage* previous = NULL;
+=======
+uint16_t* mfmhd_trackimage_cache::get_trackimage(int cylinder, int head)
+{
+	// Search the cached track images
+	mfmhd_trackimage* current = m_tracks;
+	mfmhd_trackimage* previous = nullptr;
+>>>>>>> upstream/master
 
 	chd_error state = CHDERR_NONE;
 
@@ -1109,13 +1435,21 @@ UINT16* mfmhd_trackimage_cache::get_trackimage(int cylinder, int head)
 	while (state == CHDERR_NONE)
 	{
 		// A simple linear search
+<<<<<<< HEAD
 		while (current != NULL)
+=======
+		while (current != nullptr)
+>>>>>>> upstream/master
 		{
 			if (current->cylinder == cylinder && current->head == head)
 			{
 				// found it
 				// move it to the front of the chain for LRU
+<<<<<<< HEAD
 				if (previous != NULL)
+=======
+				if (previous != nullptr)
+>>>>>>> upstream/master
 				{
 					previous->next = current->next;  // pull out here
 					current->next = m_tracks;  // put the previous head into the next field
@@ -1126,7 +1460,11 @@ UINT16* mfmhd_trackimage_cache::get_trackimage(int cylinder, int head)
 			else
 			{
 				// Don't lose the pointer to the next tail
+<<<<<<< HEAD
 				if (current->next != NULL) previous = current;
+=======
+				if (current->next != nullptr) previous = current;
+>>>>>>> upstream/master
 				current = current->next;
 			}
 		}
@@ -1137,7 +1475,11 @@ UINT16* mfmhd_trackimage_cache::get_trackimage(int cylinder, int head)
 
 		// previous points to the second to last element
 		current = previous->next;
+<<<<<<< HEAD
 		if (TRACE_CACHE) m_machine.logerror("%s: MFM HD cache: evict line (c=%d,h=%d)\n", m_mfmhd->tag(), current->cylinder, current->head);
+=======
+		if (TRACE_CACHE) m_machine.logerror("[%s:cache] evict line (c=%d,h=%d)\n", m_mfmhd->tag(), current->cylinder, current->head);
+>>>>>>> upstream/master
 
 		if (current->dirty)
 		{
@@ -1152,18 +1494,31 @@ UINT16* mfmhd_trackimage_cache::get_trackimage(int cylinder, int head)
 		current->head = head;
 	}
 	// If we are here we have a CHD error.
+<<<<<<< HEAD
 	return NULL;
+=======
+	return nullptr;
+>>>>>>> upstream/master
 }
 
 // ================================================================
 
+<<<<<<< HEAD
 mfm_harddisk_connector::mfm_harddisk_connector(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock):
 	device_t(mconfig, MFM_HD_CONNECTOR, "MFM hard disk connector", tag, owner, clock, "mfm_hd_connector", __FILE__),
+=======
+mfm_harddisk_connector::mfm_harddisk_connector(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock):
+	device_t(mconfig, MFM_HD_CONNECTOR, tag, owner, clock),
+>>>>>>> upstream/master
 	device_slot_interface(mconfig, *this),
 	m_encoding(),
 	m_spinupms(0),
 	m_cachesize(0),
+<<<<<<< HEAD
 	m_format(NULL)
+=======
+	m_format(nullptr)
+>>>>>>> upstream/master
 {
 }
 
@@ -1171,6 +1526,15 @@ mfm_harddisk_connector::~mfm_harddisk_connector()
 {
 }
 
+<<<<<<< HEAD
+=======
+void mfm_harddisk_connector::device_start()
+{
+	save_item(NAME(m_spinupms));
+	save_item(NAME(m_cachesize));
+}
+
+>>>>>>> upstream/master
 mfm_harddisk_device* mfm_harddisk_connector::get_device()
 {
 	return dynamic_cast<mfm_harddisk_device *>(get_card_device());
@@ -1187,7 +1551,11 @@ void mfm_harddisk_connector::configure(mfmhd_enc_t encoding, int spinupms, int c
 void mfm_harddisk_connector::device_config_complete()
 {
 	mfm_harddisk_device *dev = get_device();
+<<<<<<< HEAD
 	if (dev != NULL)
+=======
+	if (dev != nullptr)
+>>>>>>> upstream/master
 	{
 		dev->set_encoding(m_encoding);
 		dev->set_spinup_time(m_spinupms);
@@ -1196,4 +1564,8 @@ void mfm_harddisk_connector::device_config_complete()
 	}
 }
 
+<<<<<<< HEAD
 const device_type MFM_HD_CONNECTOR = &device_creator<mfm_harddisk_connector>;
+=======
+DEFINE_DEVICE_TYPE(MFM_HD_CONNECTOR, mfm_harddisk_connector, "mfm_hd_connector", "MFM hard disk connector")
+>>>>>>> upstream/master

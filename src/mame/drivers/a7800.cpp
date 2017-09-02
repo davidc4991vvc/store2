@@ -103,7 +103,13 @@
 #include "machine/mos6530n.h"
 #include "video/maria.h"
 #include "bus/a7800/a78_carts.h"
+<<<<<<< HEAD
 #include "softlist.h"
+=======
+#include "screen.h"
+#include "softlist.h"
+#include "speaker.h"
+>>>>>>> upstream/master
 
 #define A7800_NTSC_Y1   XTAL_14_31818MHz
 #define CLK_PAL 1773447
@@ -135,6 +141,7 @@ public:
 	int m_bios_enabled;
 
 	DECLARE_READ8_MEMBER(bios_or_cart_r);
+<<<<<<< HEAD
 	DECLARE_WRITE8_MEMBER(ram0_w);
 	DECLARE_READ8_MEMBER(tia_r);
 	DECLARE_WRITE8_MEMBER(tia_w);
@@ -144,6 +151,14 @@ public:
 	DECLARE_DRIVER_INIT(a7800_ntsc);
 	virtual void machine_start();
 	virtual void machine_reset();
+=======
+	DECLARE_READ8_MEMBER(tia_r);
+	DECLARE_WRITE8_MEMBER(tia_w);
+	DECLARE_DRIVER_INIT(a7800_pal);
+	DECLARE_DRIVER_INIT(a7800_ntsc);
+	virtual void machine_start() override;
+	virtual void machine_reset() override;
+>>>>>>> upstream/master
 	DECLARE_PALETTE_INIT(a7800);
 	DECLARE_PALETTE_INIT(a7800p);
 	TIMER_DEVICE_CALLBACK_MEMBER(interrupt);
@@ -161,7 +176,11 @@ protected:
 	required_ioport m_io_console_buttons;
 	required_device<a78_cart_slot_device> m_cart;
 	required_device<screen_device> m_screen;
+<<<<<<< HEAD
 	required_region_ptr<UINT8> m_bios;
+=======
+	required_region_ptr<uint8_t> m_bios;
+>>>>>>> upstream/master
 };
 
 
@@ -284,8 +303,13 @@ static ADDRESS_MAP_START( a7800_mem, AS_PROGRAM, 8, a7800_state )
 	AM_RANGE(0x0020, 0x003f) AM_MIRROR(0x300) AM_DEVREADWRITE("maria", atari_maria_device, read, write)
 	AM_RANGE(0x0040, 0x00ff) AM_RAMBANK("zpmirror") // mirror of 0x2040-0x20ff, for zero page
 	AM_RANGE(0x0140, 0x01ff) AM_RAMBANK("spmirror") // mirror of 0x2140-0x21ff, for stack page
+<<<<<<< HEAD
 	AM_RANGE(0x0280, 0x029f) AM_MIRROR(0x160) AM_DEVICE("riot", mos6532_t, io_map)
 	AM_RANGE(0x0480, 0x04ff) AM_MIRROR(0x100) AM_DEVICE("riot", mos6532_t, ram_map)
+=======
+	AM_RANGE(0x0280, 0x029f) AM_MIRROR(0x160) AM_DEVICE("riot", mos6532_new_device, io_map)
+	AM_RANGE(0x0480, 0x04ff) AM_MIRROR(0x100) AM_DEVICE("riot", mos6532_new_device, ram_map)
+>>>>>>> upstream/master
 	AM_RANGE(0x1800, 0x1fff) AM_RAM AM_SHARE("6116_1")
 	AM_RANGE(0x2000, 0x27ff) AM_RAM AM_SHARE("6116_2")
 								// According to the official Software Guide, the RAM at 0x2000 is
@@ -448,7 +472,11 @@ upon display type.
 
 #define NTSC_ORANGE \
 	rgb_t(0x31,0x00,0x00), rgb_t(0x42,0x06,0x00), rgb_t(0x53,0x17,0x00), rgb_t(0x64,0x28,0x00), \
+<<<<<<< HEAD
 	rgb_t(0x75,0x39,0x00), rgb_t(0x86,0X4A,0x00), rgb_t(0x97,0x5B,0x0A), rgb_t(0xA8,0x6C,0x1B), \
+=======
+	rgb_t(0x75,0x39,0x00), rgb_t(0x86,0x4A,0x00), rgb_t(0x97,0x5B,0x0A), rgb_t(0xA8,0x6C,0x1B), \
+>>>>>>> upstream/master
 	rgb_t(0xB9,0x7D,0x2C), rgb_t(0xCA,0x8E,0x3D), rgb_t(0xDB,0x9F,0x4E), rgb_t(0xEC,0xB0,0x5F), \
 	rgb_t(0xFD,0xC1,0x70), rgb_t(0xFF,0xD2,0x85), rgb_t(0xFF,0xE3,0x9C), rgb_t(0xFF,0xF4,0xB2   )
 
@@ -1310,7 +1338,11 @@ void a7800_state::machine_start()
 	save_item(NAME(m_maria_flag));
 
 	// set up RAM mirrors
+<<<<<<< HEAD
 	UINT8 *ram = reinterpret_cast<UINT8 *>(memshare("6116_2")->ptr());
+=======
+	uint8_t *ram = reinterpret_cast<uint8_t *>(memshare("6116_2")->ptr());
+>>>>>>> upstream/master
 	membank("zpmirror")->set_base(ram + 0x0040);
 	membank("spmirror")->set_base(ram + 0x0140);
 
@@ -1352,7 +1384,11 @@ void a7800_state::machine_reset()
 	m_bios_enabled = 0;
 }
 
+<<<<<<< HEAD
 static MACHINE_CONFIG_START( a7800_ntsc, a7800_state )
+=======
+static MACHINE_CONFIG_START( a7800_ntsc )
+>>>>>>> upstream/master
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", M6502, A7800_NTSC_Y1/8) /* 1.79 MHz (switches to 1.19 MHz on TIA or RIOT access) */
 	MCFG_CPU_PROGRAM_MAP(a7800_mem)
@@ -1376,12 +1412,20 @@ static MACHINE_CONFIG_START( a7800_ntsc, a7800_state )
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 1.00)
 
 	/* devices */
+<<<<<<< HEAD
 	MCFG_DEVICE_ADD("riot", MOS6532n, A7800_NTSC_Y1/8)
+=======
+	MCFG_DEVICE_ADD("riot", MOS6532_NEW, A7800_NTSC_Y1/8)
+>>>>>>> upstream/master
 	MCFG_MOS6530n_IN_PA_CB(READ8(a7800_state, riot_joystick_r))
 	MCFG_MOS6530n_IN_PB_CB(READ8(a7800_state, riot_console_button_r))
 	MCFG_MOS6530n_OUT_PB_CB(WRITE8(a7800_state, riot_button_pullup_w))
 
+<<<<<<< HEAD
 	MCFG_A78_CARTRIDGE_ADD("cartslot", a7800_cart, NULL)
+=======
+	MCFG_A78_CARTRIDGE_ADD("cartslot", a7800_cart, nullptr)
+>>>>>>> upstream/master
 
 	/* software lists */
 	MCFG_SOFTWARE_LIST_ADD("cart_list","a7800")
@@ -1403,7 +1447,11 @@ static MACHINE_CONFIG_DERIVED( a7800_pal, a7800_ntsc )
 
 	/* devices */
 	MCFG_DEVICE_REMOVE("riot")
+<<<<<<< HEAD
 	MCFG_DEVICE_ADD("riot", MOS6532n, CLK_PAL)
+=======
+	MCFG_DEVICE_ADD("riot", MOS6532_NEW, CLK_PAL)
+>>>>>>> upstream/master
 	MCFG_MOS6530n_IN_PA_CB(READ8(a7800_state, riot_joystick_r))
 	MCFG_MOS6530n_IN_PB_CB(READ8(a7800_state, riot_console_button_r))
 	MCFG_MOS6530n_OUT_PB_CB(WRITE8(a7800_state, riot_button_pullup_w))
@@ -1439,7 +1487,11 @@ ROM_END
 
 DRIVER_INIT_MEMBER(a7800_state,a7800_ntsc)
 {
+<<<<<<< HEAD
 	m_ispal = FALSE;
+=======
+	m_ispal = false;
+>>>>>>> upstream/master
 	m_lines = 263;
 	m_p1_one_button = 1;
 	m_p2_one_button = 1;
@@ -1448,7 +1500,11 @@ DRIVER_INIT_MEMBER(a7800_state,a7800_ntsc)
 
 DRIVER_INIT_MEMBER(a7800_state,a7800_pal)
 {
+<<<<<<< HEAD
 	m_ispal = TRUE;
+=======
+	m_ispal = true;
+>>>>>>> upstream/master
 	m_lines = 313;
 	m_p1_one_button = 1;
 	m_p2_one_button = 1;
@@ -1459,6 +1515,12 @@ DRIVER_INIT_MEMBER(a7800_state,a7800_pal)
     GAME DRIVERS
 ***************************************************************************/
 
+<<<<<<< HEAD
 /*    YEAR  NAME      PARENT    COMPAT  MACHINE     INPUT     INIT          COMPANY   FULLNAME */
 CONS( 1986, a7800,    0,        0,      a7800_ntsc, a7800, a7800_state,    a7800_ntsc,  "Atari",  "Atari 7800 (NTSC)" , 0)
 CONS( 1986, a7800p,   a7800,    0,      a7800_pal,  a7800, a7800_state,    a7800_pal,   "Atari",  "Atari 7800 (PAL)" , 0)
+=======
+/*    YEAR  NAME      PARENT    COMPAT  MACHINE     INPUT  STATE         INIT         COMPANY   FULLNAME */
+CONS( 1986, a7800,    0,        0,      a7800_ntsc, a7800, a7800_state,  a7800_ntsc,  "Atari",  "Atari 7800 (NTSC)" , 0)
+CONS( 1986, a7800p,   a7800,    0,      a7800_pal,  a7800, a7800_state,  a7800_pal,   "Atari",  "Atari 7800 (PAL)" , 0)
+>>>>>>> upstream/master

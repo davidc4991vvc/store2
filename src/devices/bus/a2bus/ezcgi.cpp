@@ -25,6 +25,7 @@
 //  GLOBAL VARIABLES
 //**************************************************************************
 
+<<<<<<< HEAD
 const device_type A2BUS_EZCGI = &device_creator<a2bus_ezcgi_device>;
 const device_type A2BUS_EZCGI_9938 = &device_creator<a2bus_ezcgi_9938_device>;
 const device_type A2BUS_EZCGI_9958 = &device_creator<a2bus_ezcgi_9958_device>;
@@ -36,6 +37,11 @@ MACHINE_CONFIG_FRAGMENT( ezcgi )
 	MCFG_TMS9928A_SCREEN_ADD_NTSC( SCREEN_TAG )
 	MCFG_SCREEN_UPDATE_DEVICE( TMS_TAG, tms9918a_device, screen_update )
 MACHINE_CONFIG_END
+=======
+DEFINE_DEVICE_TYPE(A2BUS_EZCGI,      a2bus_ezcgi_device,      "a2ezcgi",  "E-Z Color Graphics Interface")
+DEFINE_DEVICE_TYPE(A2BUS_EZCGI_9938, a2bus_ezcgi_9938_device, "a2ezcgi3", "E-Z Color Graphics Interface (TMS9938)")
+DEFINE_DEVICE_TYPE(A2BUS_EZCGI_9958, a2bus_ezcgi_9958_device, "a2ezcgi5", "E-Z Color Graphics Interface (TMS9958)")
+>>>>>>> upstream/master
 
 #define MSX2_XBORDER_PIXELS     16
 #define MSX2_YBORDER_PIXELS     28
@@ -44,7 +50,23 @@ MACHINE_CONFIG_END
 #define MSX2_VISIBLE_XBORDER_PIXELS 8 * 2
 #define MSX2_VISIBLE_YBORDER_PIXELS 14 * 2
 
+<<<<<<< HEAD
 MACHINE_CONFIG_FRAGMENT( ezcgi9938 )
+=======
+//-------------------------------------------------
+//  device_add_mconfig - add device configuration
+//-------------------------------------------------
+
+MACHINE_CONFIG_MEMBER( a2bus_ezcgi_device::device_add_mconfig )
+	MCFG_DEVICE_ADD( TMS_TAG, TMS9918A, XTAL_10_738635MHz / 2 )
+	MCFG_TMS9928A_VRAM_SIZE(0x4000) // 16k of VRAM
+	MCFG_TMS9928A_OUT_INT_LINE_CB(WRITELINE(a2bus_ezcgi_device, tms_irq_w))
+	MCFG_TMS9928A_SCREEN_ADD_NTSC( SCREEN_TAG )
+	MCFG_SCREEN_UPDATE_DEVICE( TMS_TAG, tms9918a_device, screen_update )
+MACHINE_CONFIG_END
+
+MACHINE_CONFIG_MEMBER( a2bus_ezcgi_9938_device::device_add_mconfig )
+>>>>>>> upstream/master
 	MCFG_V9938_ADD(TMS_TAG, SCREEN_TAG, 0x30000, XTAL_21_4772MHz)    // 192K of VRAM / typical 9938 clock, not verified
 	MCFG_V99X8_INTERRUPT_CALLBACK(WRITELINE(a2bus_ezcgi_9938_device, tms_irq_w))
 
@@ -55,10 +77,17 @@ MACHINE_CONFIG_FRAGMENT( ezcgi9938 )
 	MCFG_SCREEN_UPDATE_DEVICE(TMS_TAG, v9938_device, screen_update)
 	MCFG_SCREEN_SIZE(MSX2_TOTAL_XRES_PIXELS, 262*2)
 	MCFG_SCREEN_VISIBLE_AREA(MSX2_XBORDER_PIXELS - MSX2_VISIBLE_XBORDER_PIXELS, MSX2_TOTAL_XRES_PIXELS - MSX2_XBORDER_PIXELS + MSX2_VISIBLE_XBORDER_PIXELS - 1, MSX2_YBORDER_PIXELS - MSX2_VISIBLE_YBORDER_PIXELS, MSX2_TOTAL_YRES_PIXELS - MSX2_YBORDER_PIXELS + MSX2_VISIBLE_YBORDER_PIXELS - 1)
+<<<<<<< HEAD
 	MCFG_SCREEN_PALETTE("ezcgi_tms:palette")
 MACHINE_CONFIG_END
 
 MACHINE_CONFIG_FRAGMENT( ezcgi9958 )
+=======
+	MCFG_SCREEN_PALETTE(TMS_TAG)
+MACHINE_CONFIG_END
+
+MACHINE_CONFIG_MEMBER( a2bus_ezcgi_9958_device::device_add_mconfig )
+>>>>>>> upstream/master
 	MCFG_V9958_ADD(TMS_TAG, SCREEN_TAG, 0x30000, XTAL_21_4772MHz)    // 192K of VRAM / typcial 9938/9958 clock, not verified
 	MCFG_V99X8_INTERRUPT_CALLBACK(WRITELINE(a2bus_ezcgi_9958_device, tms_irq_w))
 
@@ -69,6 +98,7 @@ MACHINE_CONFIG_FRAGMENT( ezcgi9958 )
 	MCFG_SCREEN_UPDATE_DEVICE(TMS_TAG, v9938_device, screen_update)
 	MCFG_SCREEN_SIZE(MSX2_TOTAL_XRES_PIXELS, 262*2)
 	MCFG_SCREEN_VISIBLE_AREA(MSX2_XBORDER_PIXELS - MSX2_VISIBLE_XBORDER_PIXELS, MSX2_TOTAL_XRES_PIXELS - MSX2_XBORDER_PIXELS + MSX2_VISIBLE_XBORDER_PIXELS - 1, MSX2_YBORDER_PIXELS - MSX2_VISIBLE_YBORDER_PIXELS, MSX2_TOTAL_YRES_PIXELS - MSX2_YBORDER_PIXELS + MSX2_VISIBLE_YBORDER_PIXELS - 1)
+<<<<<<< HEAD
 	MCFG_SCREEN_PALETTE("ezcgi_tms:palette")
 MACHINE_CONFIG_END
 
@@ -92,10 +122,16 @@ machine_config_constructor a2bus_ezcgi_9958_device::device_mconfig_additions() c
 	return MACHINE_CONFIG_NAME( ezcgi9958 );
 }
 
+=======
+	MCFG_SCREEN_PALETTE(TMS_TAG)
+MACHINE_CONFIG_END
+
+>>>>>>> upstream/master
 //**************************************************************************
 //  LIVE DEVICE
 //**************************************************************************
 
+<<<<<<< HEAD
 a2bus_ezcgi_device::a2bus_ezcgi_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock) :
 	device_t(mconfig, A2BUS_EZCGI, "E-Z Color Graphics Interface", tag, owner, clock, "a2ezcgi", __FILE__),
 	device_a2bus_card_interface(mconfig, *this),
@@ -105,11 +141,21 @@ a2bus_ezcgi_device::a2bus_ezcgi_device(const machine_config &mconfig, const char
 
 a2bus_ezcgi_device::a2bus_ezcgi_device(const machine_config &mconfig, device_type type, const char *name, const char *tag, device_t *owner, UINT32 clock, const char *shortname, const char *source) :
 	device_t(mconfig, type, name, tag, owner, clock, shortname, source),
+=======
+a2bus_ezcgi_device::a2bus_ezcgi_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock) :
+	a2bus_ezcgi_device(mconfig, A2BUS_EZCGI, tag, owner, clock)
+{
+}
+
+a2bus_ezcgi_device::a2bus_ezcgi_device(const machine_config &mconfig, device_type type, const char *tag, device_t *owner, uint32_t clock) :
+	device_t(mconfig, type, tag, owner, clock),
+>>>>>>> upstream/master
 	device_a2bus_card_interface(mconfig, *this),
 	m_tms(*this, TMS_TAG)
 {
 }
 
+<<<<<<< HEAD
 a2bus_ezcgi_9938_device::a2bus_ezcgi_9938_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock) :
 	device_t(mconfig, A2BUS_EZCGI_9938, "E-Z Color Graphics Interface (TMS9938)", tag, owner, clock, "a2ezcgi3", __FILE__),
 	device_a2bus_card_interface(mconfig, *this),
@@ -119,11 +165,21 @@ a2bus_ezcgi_9938_device::a2bus_ezcgi_9938_device(const machine_config &mconfig, 
 
 a2bus_ezcgi_9938_device::a2bus_ezcgi_9938_device(const machine_config &mconfig, device_type type, const char *name, const char *tag, device_t *owner, UINT32 clock, const char *shortname, const char *source) :
 	device_t(mconfig, type, name, tag, owner, clock, shortname, source),
+=======
+a2bus_ezcgi_9938_device::a2bus_ezcgi_9938_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock) :
+	a2bus_ezcgi_9938_device(mconfig, A2BUS_EZCGI_9938, tag, owner, clock)
+{
+}
+
+a2bus_ezcgi_9938_device::a2bus_ezcgi_9938_device(const machine_config &mconfig, device_type type, const char *tag, device_t *owner, uint32_t clock) :
+	device_t(mconfig, type, tag, owner, clock),
+>>>>>>> upstream/master
 	device_a2bus_card_interface(mconfig, *this),
 	m_tms(*this, TMS_TAG)
 {
 }
 
+<<<<<<< HEAD
 a2bus_ezcgi_9958_device::a2bus_ezcgi_9958_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock) :
 	device_t(mconfig, A2BUS_EZCGI_9958, "E-Z Color Graphics Interface (TMS9958)", tag, owner, clock, "a2ezcgi5", __FILE__),
 	device_a2bus_card_interface(mconfig, *this),
@@ -133,6 +189,15 @@ a2bus_ezcgi_9958_device::a2bus_ezcgi_9958_device(const machine_config &mconfig, 
 
 a2bus_ezcgi_9958_device::a2bus_ezcgi_9958_device(const machine_config &mconfig, device_type type, const char *name, const char *tag, device_t *owner, UINT32 clock, const char *shortname, const char *source) :
 	device_t(mconfig, type, name, tag, owner, clock, shortname, source),
+=======
+a2bus_ezcgi_9958_device::a2bus_ezcgi_9958_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock) :
+	a2bus_ezcgi_9958_device(mconfig, A2BUS_EZCGI_9958, tag, owner, clock)
+{
+}
+
+a2bus_ezcgi_9958_device::a2bus_ezcgi_9958_device(const machine_config &mconfig, device_type type, const char *tag, device_t *owner, uint32_t clock) :
+	device_t(mconfig, type, tag, owner, clock),
+>>>>>>> upstream/master
 	device_a2bus_card_interface(mconfig, *this),
 	m_tms(*this, TMS_TAG)
 {
@@ -178,7 +243,11 @@ void a2bus_ezcgi_9958_device::device_reset()
     1 - TMS write
 */
 
+<<<<<<< HEAD
 UINT8 a2bus_ezcgi_device::read_c0nx(address_space &space, UINT8 offset)
+=======
+uint8_t a2bus_ezcgi_device::read_c0nx(address_space &space, uint8_t offset)
+>>>>>>> upstream/master
 {
 	switch (offset)
 	{
@@ -192,7 +261,11 @@ UINT8 a2bus_ezcgi_device::read_c0nx(address_space &space, UINT8 offset)
 	return 0xff;
 }
 
+<<<<<<< HEAD
 void a2bus_ezcgi_device::write_c0nx(address_space &space, UINT8 offset, UINT8 data)
+=======
+void a2bus_ezcgi_device::write_c0nx(address_space &space, uint8_t offset, uint8_t data)
+>>>>>>> upstream/master
 {
 	switch (offset)
 	{
@@ -206,7 +279,11 @@ void a2bus_ezcgi_device::write_c0nx(address_space &space, UINT8 offset, UINT8 da
 	}
 }
 
+<<<<<<< HEAD
 UINT8 a2bus_ezcgi_9938_device::read_c0nx(address_space &space, UINT8 offset)
+=======
+uint8_t a2bus_ezcgi_9938_device::read_c0nx(address_space &space, uint8_t offset)
+>>>>>>> upstream/master
 {
 	switch (offset)
 	{
@@ -220,7 +297,11 @@ UINT8 a2bus_ezcgi_9938_device::read_c0nx(address_space &space, UINT8 offset)
 	return 0xff;
 }
 
+<<<<<<< HEAD
 void a2bus_ezcgi_9938_device::write_c0nx(address_space &space, UINT8 offset, UINT8 data)
+=======
+void a2bus_ezcgi_9938_device::write_c0nx(address_space &space, uint8_t offset, uint8_t data)
+>>>>>>> upstream/master
 {
 	switch (offset)
 	{
@@ -242,7 +323,11 @@ void a2bus_ezcgi_9938_device::write_c0nx(address_space &space, UINT8 offset, UIN
 	}
 }
 
+<<<<<<< HEAD
 UINT8 a2bus_ezcgi_9958_device::read_c0nx(address_space &space, UINT8 offset)
+=======
+uint8_t a2bus_ezcgi_9958_device::read_c0nx(address_space &space, uint8_t offset)
+>>>>>>> upstream/master
 {
 	switch (offset)
 	{
@@ -256,7 +341,11 @@ UINT8 a2bus_ezcgi_9958_device::read_c0nx(address_space &space, UINT8 offset)
 	return 0xff;
 }
 
+<<<<<<< HEAD
 void a2bus_ezcgi_9958_device::write_c0nx(address_space &space, UINT8 offset, UINT8 data)
+=======
+void a2bus_ezcgi_9958_device::write_c0nx(address_space &space, uint8_t offset, uint8_t data)
+>>>>>>> upstream/master
 {
 	switch (offset)
 	{

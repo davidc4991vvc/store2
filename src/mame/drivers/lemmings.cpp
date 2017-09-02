@@ -18,11 +18,23 @@
 ***************************************************************************/
 
 #include "emu.h"
+<<<<<<< HEAD
 #include "cpu/m6809/m6809.h"
 #include "cpu/m68000/m68000.h"
 #include "sound/2151intf.h"
 #include "sound/okim6295.h"
 #include "includes/lemmings.h"
+=======
+#include "includes/lemmings.h"
+
+#include "cpu/m6809/m6809.h"
+#include "cpu/m68000/m68000.h"
+#include "sound/ym2151.h"
+#include "sound/okim6295.h"
+#include "screen.h"
+#include "speaker.h"
+
+>>>>>>> upstream/master
 
 WRITE16_MEMBER(lemmings_state::lemmings_control_w)
 {
@@ -48,9 +60,15 @@ READ16_MEMBER(lemmings_state::lemmings_trackball_r)
 
 
 
+<<<<<<< HEAD
 void lemmings_state::lemmings_sound_cb( address_space &space, UINT16 data, UINT16 mem_mask )
 {
 	soundlatch_byte_w(space, 0, data & 0xff);
+=======
+void lemmings_state::lemmings_sound_cb( address_space &space, uint16_t data, uint16_t mem_mask )
+{
+	m_soundlatch->write(space, 0, data & 0xff);
+>>>>>>> upstream/master
 	m_audiocpu->set_input_line(1, HOLD_LINE);
 }
 
@@ -63,8 +81,13 @@ READ16_MEMBER( lemmings_state::lem_protection_region_0_146_r )
 {
 	int real_address = 0 + (offset *2);
 	int deco146_addr = BITSWAP32(real_address, /* NC */31,30,29,28,27,26,25,24,23,22,21,20,19,18, 13,12,11,/**/      17,16,15,14,    10,9,8, 7,6,5,4, 3,2,1,0) & 0x7fff;
+<<<<<<< HEAD
 	UINT8 cs = 0;
 	UINT16 data = m_deco146->read_data( deco146_addr, mem_mask, cs );
+=======
+	uint8_t cs = 0;
+	uint16_t data = m_deco146->read_data( deco146_addr, mem_mask, cs );
+>>>>>>> upstream/master
 	return data;
 }
 
@@ -72,7 +95,11 @@ WRITE16_MEMBER( lemmings_state::lem_protection_region_0_146_w )
 {
 	int real_address = 0 + (offset *2);
 	int deco146_addr = BITSWAP32(real_address, /* NC */31,30,29,28,27,26,25,24,23,22,21,20,19,18, 13,12,11,/**/      17,16,15,14,    10,9,8, 7,6,5,4, 3,2,1,0) & 0x7fff;
+<<<<<<< HEAD
 	UINT8 cs = 0;
+=======
+	uint8_t cs = 0;
+>>>>>>> upstream/master
 	m_deco146->write_data( space, deco146_addr, data, mem_mask, cs );
 }
 
@@ -102,7 +129,11 @@ static ADDRESS_MAP_START( sound_map, AS_PROGRAM, 8, lemmings_state )
 	AM_RANGE(0x0000, 0x07ff) AM_RAM
 	AM_RANGE(0x0800, 0x0801) AM_DEVREADWRITE("ymsnd", ym2151_device,read,write)
 	AM_RANGE(0x1000, 0x1000) AM_DEVREADWRITE("oki", okim6295_device, read, write)
+<<<<<<< HEAD
 	AM_RANGE(0x1800, 0x1800) AM_READ(soundlatch_byte_r) AM_WRITE(lemmings_sound_ack_w)
+=======
+	AM_RANGE(0x1800, 0x1800) AM_DEVREAD("soundlatch", generic_latch_8_device, read) AM_WRITE(lemmings_sound_ack_w)
+>>>>>>> upstream/master
 	AM_RANGE(0x8000, 0xffff) AM_ROM
 ADDRESS_MAP_END
 
@@ -220,7 +251,11 @@ static const gfx_layout sprite_layout =
 static GFXDECODE_START( lemmings )
 	GFXDECODE_ENTRY( "gfx1", 0, sprite_layout,  0, 16 ) /* Sprites 16x16 */
 	GFXDECODE_ENTRY( "gfx2", 0, sprite_layout,  0, 16 ) /* Sprites 16x16 */
+<<<<<<< HEAD
 	GFXDECODE_ENTRY( NULL,           0, charlayout,         0, 16 ) /* Dynamically modified */
+=======
+	GFXDECODE_ENTRY( nullptr,           0, charlayout,         0, 16 ) /* Dynamically modified */
+>>>>>>> upstream/master
 GFXDECODE_END
 
 /******************************************************************************/
@@ -229,7 +264,11 @@ void lemmings_state::machine_start()
 {
 }
 
+<<<<<<< HEAD
 static MACHINE_CONFIG_START( lemmings, lemmings_state )
+=======
+static MACHINE_CONFIG_START( lemmings )
+>>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", M68000, 14000000)
@@ -250,7 +289,11 @@ static MACHINE_CONFIG_START( lemmings, lemmings_state )
 	MCFG_SCREEN_SIZE(40*8, 32*8)
 	MCFG_SCREEN_VISIBLE_AREA(0*8, 40*8-1, 2*8, 30*8-1)
 	MCFG_SCREEN_UPDATE_DRIVER(lemmings_state, screen_update_lemmings)
+<<<<<<< HEAD
 	MCFG_SCREEN_VBLANK_DRIVER(lemmings_state, screen_eof_lemmings)
+=======
+	MCFG_SCREEN_VBLANK_CALLBACK(WRITELINE(lemmings_state, screen_vblank_lemmings))
+>>>>>>> upstream/master
 
 	MCFG_GFXDECODE_ADD("gfxdecode", "palette", lemmings)
 	MCFG_PALETTE_ADD("palette", 1024)
@@ -260,26 +303,46 @@ static MACHINE_CONFIG_START( lemmings, lemmings_state )
 	MCFG_DEVICE_ADD("spritegen", DECO_SPRITE, 0)
 	MCFG_DECO_SPRITE_GFX_REGION(1)
 	MCFG_DECO_SPRITE_GFXDECODE("gfxdecode")
+<<<<<<< HEAD
 	MCFG_DECO_SPRITE_PALETTE("palette")
+=======
+>>>>>>> upstream/master
 
 	MCFG_DEVICE_ADD("spritegen2", DECO_SPRITE, 0)
 	MCFG_DECO_SPRITE_GFX_REGION(0)
 	MCFG_DECO_SPRITE_GFXDECODE("gfxdecode")
+<<<<<<< HEAD
 	MCFG_DECO_SPRITE_PALETTE("palette")
 
 	MCFG_DECO146_ADD("ioprot")
+=======
+
+	MCFG_DECO146_ADD("ioprot")
+	MCFG_DECO146_IN_PORTA_CB(IOPORT("INPUTS"))
+	MCFG_DECO146_IN_PORTB_CB(IOPORT("SYSTEM"))
+	MCFG_DECO146_IN_PORTC_CB(IOPORT("DSW"))
+>>>>>>> upstream/master
 	MCFG_DECO146_SET_USE_MAGIC_ADDRESS_XOR
 	MCFG_DECO146_SET_SOUNDLATCH_CALLBACK(lemmings_state, lemmings_sound_cb)
 
 	/* sound hardware */
 	MCFG_SPEAKER_STANDARD_STEREO("lspeaker", "rspeaker")
 
+<<<<<<< HEAD
+=======
+	MCFG_GENERIC_LATCH_8_ADD("soundlatch")
+
+>>>>>>> upstream/master
 	MCFG_YM2151_ADD("ymsnd", 32220000/9)
 	MCFG_YM2151_IRQ_HANDLER(INPUTLINE("audiocpu", 0))
 	MCFG_SOUND_ROUTE(0, "lspeaker", 0.45)
 	MCFG_SOUND_ROUTE(1, "rspeaker", 0.45)
 
+<<<<<<< HEAD
 	MCFG_OKIM6295_ADD("oki", 1023924, OKIM6295_PIN7_HIGH) // clock frequency & pin 7 not verified
+=======
+	MCFG_OKIM6295_ADD("oki", 1023924, PIN7_HIGH) // clock frequency & pin 7 not verified
+>>>>>>> upstream/master
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "lspeaker", 0.50)
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "rspeaker", 0.50)
 MACHINE_CONFIG_END
@@ -304,13 +367,21 @@ ROM_START( lemmings )
 	ROM_LOAD( "lemmings.9",  0x000000, 0x10000, CRC(e06442f5) SHA1(d9c8b681cce1d0257a0446bc820c7d679e2a1168) )
 	ROM_LOAD( "lemmings.10", 0x010000, 0x10000, CRC(36398848) SHA1(6c6956607f889c35367e6df4a32359042fad695e) )
 	ROM_LOAD( "lemmings.11", 0x020000, 0x10000, CRC(b46a54e5) SHA1(53b053346f80357aecff4ab888a8562f99cb318f) )
+<<<<<<< HEAD
 	ROM_FILL(                0x030000, 0x10000, 0 ) /* 3bpp data but sprite chip expects 4 */
+=======
+	ROM_FILL(                0x030000, 0x10000, 0x00 ) /* 3bpp data but sprite chip expects 4 */
+>>>>>>> upstream/master
 
 	ROM_REGION( 0x40000, "gfx2", 0 )
 	ROM_LOAD( "lemmings.12", 0x000000, 0x10000, CRC(dc9047ff) SHA1(1bbe573fa51127a9e8b970a353f3cceab00f486a) )
 	ROM_LOAD( "lemmings.13", 0x010000, 0x10000, CRC(7cc15491) SHA1(73c1c11b2738f6679c70cae8ac4c55cdc9b8fc27) )
 	ROM_LOAD( "lemmings.14", 0x020000, 0x10000, CRC(c162788f) SHA1(e1f669efa59699cd1b7da71b112701ee79240c18) )
+<<<<<<< HEAD
 	ROM_FILL(                0x030000, 0x10000, 0 ) /* 3bpp data but sprite chip expects 4 */
+=======
+	ROM_FILL(                0x030000, 0x10000, 0x00 ) /* 3bpp data but sprite chip expects 4 */
+>>>>>>> upstream/master
 
 	ROM_REGION( 0x40000, "oki", 0 ) /* ADPCM samples */
 	ROM_LOAD( "lemmings.16",    0x00000, 0x20000, CRC(f747847c) SHA1(00880fa6dff979e5d15daea61938bd18c768c92f) )
@@ -318,4 +389,8 @@ ROM_END
 
 /******************************************************************************/
 
+<<<<<<< HEAD
 GAME( 1991, lemmings, 0, lemmings, lemmings, driver_device, 0, ROT0, "Data East USA", "Lemmings (US prototype)", MACHINE_SUPPORTS_SAVE )
+=======
+GAME( 1991, lemmings, 0, lemmings, lemmings, lemmings_state, 0, ROT0, "Data East USA", "Lemmings (US prototype)", MACHINE_SUPPORTS_SAVE )
+>>>>>>> upstream/master

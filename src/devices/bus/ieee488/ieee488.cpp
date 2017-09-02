@@ -7,6 +7,10 @@
 
 **********************************************************************/
 
+<<<<<<< HEAD
+=======
+#include "emu.h"
+>>>>>>> upstream/master
 #include "ieee488.h"
 
 
@@ -26,8 +30,13 @@ static const char *const SIGNAL_NAME[] = { "EOI", "DAV", "NRFD", "NDAC", "IFC", 
 //  DEVICE DEFINITIONS
 //**************************************************************************
 
+<<<<<<< HEAD
 const device_type IEEE488 = &device_creator<ieee488_device>;
 const device_type IEEE488_SLOT = &device_creator<ieee488_slot_device>;
+=======
+DEFINE_DEVICE_TYPE(IEEE488,      ieee488_device,      "ieee488",      "IEEE-488 bus")
+DEFINE_DEVICE_TYPE(IEEE488_SLOT, ieee488_slot_device, "ieee488_slot", "IEEE-488 slot")
+>>>>>>> upstream/master
 
 
 
@@ -40,7 +49,11 @@ const device_type IEEE488_SLOT = &device_creator<ieee488_slot_device>;
 //-------------------------------------------------
 
 device_ieee488_interface::device_ieee488_interface(const machine_config &mconfig, device_t &device)
+<<<<<<< HEAD
 	: device_slot_card_interface(mconfig, device), m_next(nullptr), m_bus(nullptr), m_slot(nullptr)
+=======
+	: device_slot_card_interface(mconfig, device), m_bus(nullptr), m_slot(nullptr), m_next(nullptr)
+>>>>>>> upstream/master
 {
 }
 
@@ -63,9 +76,16 @@ device_ieee488_interface::~device_ieee488_interface()
 //  ieee488_slot_device - constructor
 //-------------------------------------------------
 
+<<<<<<< HEAD
 ieee488_slot_device::ieee488_slot_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock) :
 		device_t(mconfig, IEEE488_SLOT, "IEEE-488 slot", tag, owner, clock, "ieee488_slot", __FILE__),
 		device_slot_interface(mconfig, *this), m_address(0)
+=======
+ieee488_slot_device::ieee488_slot_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock) :
+	device_t(mconfig, IEEE488_SLOT, tag, owner, clock),
+	device_slot_interface(mconfig, *this),
+	m_address(0)
+>>>>>>> upstream/master
 {
 }
 
@@ -76,12 +96,21 @@ ieee488_slot_device::ieee488_slot_device(const machine_config &mconfig, const ch
 
 void ieee488_slot_device::device_start()
 {
+<<<<<<< HEAD
 	ieee488_device* bus = NULL;
 
 	for (device_t *device = owner(); device != NULL; device = device->owner())
 	{
 		bus = device->subdevice<ieee488_device>(IEEE488_TAG);
 		if (bus != NULL) break;
+=======
+	ieee488_device* bus = nullptr;
+
+	for (device_t *device = owner(); device != nullptr; device = device->owner())
+	{
+		bus = device->subdevice<ieee488_device>(IEEE488_TAG);
+		if (bus != nullptr) break;
+>>>>>>> upstream/master
 	}
 
 	assert(bus);
@@ -100,6 +129,7 @@ void ieee488_slot_device::device_start()
 //  ieee488_device - constructor
 //-------------------------------------------------
 
+<<<<<<< HEAD
 ieee488_device::ieee488_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
 	: device_t(mconfig, IEEE488, "IEEE-488 bus", tag, owner, clock, "ieee488", __FILE__),
 		m_write_eoi(*this),
@@ -115,6 +145,23 @@ ieee488_device::ieee488_device(const machine_config &mconfig, const char *tag, d
 	for (int i = 0; i < SIGNAL_COUNT; i++)
 	{
 		m_line[i] = 1;
+=======
+ieee488_device::ieee488_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock) :
+	device_t(mconfig, IEEE488, tag, owner, clock),
+	m_write_eoi(*this),
+	m_write_dav(*this),
+	m_write_nrfd(*this),
+	m_write_ndac(*this),
+	m_write_ifc(*this),
+	m_write_srq(*this),
+	m_write_atn(*this),
+	m_write_ren(*this),
+	m_dio(0xff)
+{
+	for (auto & elem : m_line)
+	{
+		elem = 1;
+>>>>>>> upstream/master
 	}
 }
 
@@ -153,7 +200,11 @@ void ieee488_device::device_stop()
 
 void ieee488_device::add_device(ieee488_slot_device *slot, device_t *target)
 {
+<<<<<<< HEAD
 	daisy_entry *entry = global_alloc(daisy_entry(target));
+=======
+	auto entry = global_alloc(daisy_entry(target));
+>>>>>>> upstream/master
 
 	entry->m_interface->m_bus = this;
 	entry->m_interface->m_slot = slot;
@@ -167,6 +218,7 @@ void ieee488_device::add_device(ieee488_slot_device *slot, device_t *target)
 //-------------------------------------------------
 
 ieee488_device::daisy_entry::daisy_entry(device_t *device)
+<<<<<<< HEAD
 	: m_next(NULL),
 		m_device(device),
 		m_interface(NULL),
@@ -175,6 +227,16 @@ ieee488_device::daisy_entry::daisy_entry(device_t *device)
 	for (int i = 0; i < SIGNAL_COUNT; i++)
 	{
 		m_line[i] = 1;
+=======
+	: m_next(nullptr),
+		m_device(device),
+		m_interface(nullptr),
+		m_dio(0xff)
+{
+	for (auto & elem : m_line)
+	{
+		elem = 1;
+>>>>>>> upstream/master
 	}
 
 	device->interface(m_interface);
@@ -188,6 +250,10 @@ ieee488_device::daisy_entry::daisy_entry(device_t *device)
 void ieee488_device::set_signal(device_t *device, int signal, int state)
 {
 	bool changed = false;
+<<<<<<< HEAD
+=======
+	int old_state = get_signal(signal);
+>>>>>>> upstream/master
 
 	if (device == this)
 	{
@@ -218,8 +284,18 @@ void ieee488_device::set_signal(device_t *device, int signal, int state)
 		}
 	}
 
+<<<<<<< HEAD
 	if (changed)
 	{
+=======
+	if (!changed) {
+		return;
+	}
+
+	state = get_signal(signal);
+
+	if (old_state != state) {
+>>>>>>> upstream/master
 		switch (signal)
 		{
 		case EOI:   m_write_eoi(state);  break;
@@ -289,6 +365,7 @@ int ieee488_device::get_signal(int signal)
 {
 	int state = m_line[signal];
 
+<<<<<<< HEAD
 	if (state)
 	{
 		daisy_entry *entry = m_device_list.first();
@@ -304,6 +381,20 @@ int ieee488_device::get_signal(int signal)
 			entry = entry->next();
 		}
 	}
+=======
+	daisy_entry *entry = m_device_list.first();
+
+	while (state && entry)
+		{
+			if (!entry->m_line[signal])
+				{
+					state = 0;
+					break;
+				}
+
+			entry = entry->next();
+		}
+>>>>>>> upstream/master
 
 	return state;
 }
@@ -313,7 +404,11 @@ int ieee488_device::get_signal(int signal)
 //  set_data -
 //-------------------------------------------------
 
+<<<<<<< HEAD
 void ieee488_device::set_data(device_t *device, UINT8 data)
+=======
+void ieee488_device::set_data(device_t *device, uint8_t data)
+>>>>>>> upstream/master
 {
 	if (device == this)
 	{
@@ -346,6 +441,7 @@ void ieee488_device::set_data(device_t *device, UINT8 data)
 //  get_data -
 //-------------------------------------------------
 
+<<<<<<< HEAD
 UINT8 ieee488_device::get_data()
 {
 	UINT8 data = m_dio;
@@ -353,6 +449,15 @@ UINT8 ieee488_device::get_data()
 	daisy_entry *entry = m_device_list.first();
 
 	while (entry)
+=======
+uint8_t ieee488_device::get_data()
+{
+	uint8_t data = m_dio;
+
+	daisy_entry *entry = m_device_list.first();
+
+	while (data && entry)
+>>>>>>> upstream/master
 	{
 		data &= entry->m_dio;
 
@@ -391,6 +496,23 @@ SLOT_INTERFACE_START( cbm_ieee488_devices )
 	SLOT_INTERFACE("d9090", D9090)
 	SLOT_INTERFACE("softbox", SOFTBOX)
 	SLOT_INTERFACE("hardbox", HARDBOX)
+<<<<<<< HEAD
 	SLOT_INTERFACE("shark", SHARK)
 	SLOT_INTERFACE("c4023", C4023)
 SLOT_INTERFACE_END
+=======
+	SLOT_INTERFACE("shark", MSHARK)
+	SLOT_INTERFACE("c4023", C4023)
+SLOT_INTERFACE_END
+
+//-------------------------------------------------
+//  SLOT_INTERFACE( hp_ieee488_devices )
+//-------------------------------------------------
+
+// slot devices
+#include "hp9895.h"
+
+SLOT_INTERFACE_START(hp_ieee488_devices)
+	SLOT_INTERFACE("hp9895", HP9895)
+SLOT_INTERFACE_END
+>>>>>>> upstream/master

@@ -51,8 +51,13 @@ WRITE8_MEMBER(commando_state::commando_scrolly_w)
 WRITE8_MEMBER(commando_state::commando_c804_w)
 {
 	// bits 0 and 1 are coin counters
+<<<<<<< HEAD
 	coin_counter_w(machine(), 0, data & 0x01);
 	coin_counter_w(machine(), 1, data & 0x02);
+=======
+	machine().bookkeeping().coin_counter_w(0, data & 0x01);
+	machine().bookkeeping().coin_counter_w(1, data & 0x02);
+>>>>>>> upstream/master
 
 	// bit 4 resets the sound CPU
 	m_audiocpu->set_input_line(INPUT_LINE_RESET, (data & 0x10) ? ASSERT_LINE : CLEAR_LINE);
@@ -83,15 +88,24 @@ TILE_GET_INFO_MEMBER(commando_state::get_fg_tile_info)
 
 void commando_state::video_start()
 {
+<<<<<<< HEAD
 	m_bg_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(commando_state::get_bg_tile_info),this), TILEMAP_SCAN_COLS, 16, 16, 32, 32);
 	m_fg_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(commando_state::get_fg_tile_info),this), TILEMAP_SCAN_ROWS, 8, 8, 32, 32);
+=======
+	m_bg_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(commando_state::get_bg_tile_info),this), TILEMAP_SCAN_COLS, 16, 16, 32, 32);
+	m_fg_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(commando_state::get_fg_tile_info),this), TILEMAP_SCAN_ROWS, 8, 8, 32, 32);
+>>>>>>> upstream/master
 
 	m_fg_tilemap->set_transparent_pen(3);
 }
 
 void commando_state::draw_sprites( bitmap_ind16 &bitmap, const rectangle &cliprect )
 {
+<<<<<<< HEAD
 	UINT8 *buffered_spriteram = m_spriteram->buffer();
+=======
+	uint8_t *buffered_spriteram = m_spriteram->buffer();
+>>>>>>> upstream/master
 	int offs;
 
 	for (offs = m_spriteram->bytes() - 4; offs >= 0; offs -= 4)
@@ -119,7 +133,11 @@ void commando_state::draw_sprites( bitmap_ind16 &bitmap, const rectangle &clipre
 	}
 }
 
+<<<<<<< HEAD
 UINT32 commando_state::screen_update_commando(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+=======
+uint32_t commando_state::screen_update_commando(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+>>>>>>> upstream/master
 {
 	m_bg_tilemap->draw(screen, bitmap, cliprect, 0, 0);
 	draw_sprites(bitmap, cliprect);

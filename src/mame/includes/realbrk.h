@@ -1,6 +1,10 @@
 // license:BSD-3-Clause
 // copyright-holders:Luca Elia
 #include "machine/tmp68301.h"
+<<<<<<< HEAD
+=======
+#include "screen.h"
+>>>>>>> upstream/master
 
 class realbrk_state : public driver_device
 {
@@ -28,6 +32,7 @@ public:
 	required_device<screen_device> m_screen;
 	required_device<palette_device> m_palette;
 
+<<<<<<< HEAD
 	required_shared_ptr<UINT16> m_spriteram;
 	required_shared_ptr<UINT16> m_vram_0;
 	required_shared_ptr<UINT16> m_vram_1;
@@ -40,6 +45,20 @@ public:
 
 	bitmap_ind16 *m_tmpbitmap0;
 	bitmap_ind16 *m_tmpbitmap1;
+=======
+	required_shared_ptr<uint16_t> m_spriteram;
+	required_shared_ptr<uint16_t> m_vram_0;
+	required_shared_ptr<uint16_t> m_vram_1;
+	required_shared_ptr<uint16_t> m_vram_2;
+	required_shared_ptr<uint16_t> m_vregs;
+	optional_shared_ptr<uint16_t> m_dsw_select;
+	optional_shared_ptr<uint16_t> m_backup_ram;
+	optional_shared_ptr<uint16_t> m_vram_0ras;
+	optional_shared_ptr<uint16_t> m_vram_1ras;
+
+	std::unique_ptr<bitmap_ind16> m_tmpbitmap0;
+	std::unique_ptr<bitmap_ind16> m_tmpbitmap1;
+>>>>>>> upstream/master
 	int m_disable_video;
 	tilemap_t *m_tilemap_0;
 	tilemap_t *m_tilemap_1;
@@ -67,10 +86,17 @@ public:
 	TILE_GET_INFO_MEMBER(get_tile_info_1);
 	TILE_GET_INFO_MEMBER(get_tile_info_2);
 
+<<<<<<< HEAD
 	virtual void video_start();
 
 	UINT32 screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
 	UINT32 screen_update_dai2kaku(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
+=======
+	virtual void video_start() override;
+
+	uint32_t screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
+	uint32_t screen_update_dai2kaku(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
+>>>>>>> upstream/master
 	void draw_sprites(bitmap_ind16 &bitmap,const rectangle &cliprect);
 	void dai2kaku_draw_sprites(bitmap_ind16 &bitmap,const rectangle &cliprect, int layer);
 

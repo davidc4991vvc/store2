@@ -20,6 +20,7 @@ they are internally.
 */
 
 #include "emu.h"
+<<<<<<< HEAD
 #include "debugger.h"
 #include "sm8500.h"
 
@@ -28,23 +29,53 @@ const device_type SM8500 = &device_creator<sm8500_cpu_device>;
 
 
 static const UINT8 sm8500_b2w[8] = {
+=======
+#include "sm8500.h"
+#include "debugger.h"
+
+
+DEFINE_DEVICE_TYPE(SM8500, sm8500_cpu_device, "sm8500", "SM8500")
+
+
+static constexpr uint8_t sm8500_b2w[8] = {
+>>>>>>> upstream/master
 		0, 8, 2, 10, 4, 12, 6, 14
 };
 
 
+<<<<<<< HEAD
 sm8500_cpu_device::sm8500_cpu_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
 	: cpu_device(mconfig, SM8500, "SM8500", tag, owner, clock, "sm8500", __FILE__)
+=======
+sm8500_cpu_device::sm8500_cpu_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: cpu_device(mconfig, SM8500, tag, owner, clock)
+>>>>>>> upstream/master
 	, m_program_config("program", ENDIANNESS_BIG, 8, 16, 0)
 	, m_dma_func(*this)
 	, m_timer_func(*this)
 	, m_PC(0), m_IE0(0), m_IE1(0), m_IR0(0), m_IR1(0)
+<<<<<<< HEAD
 		, m_SYS(0), m_CKC(0), m_clock_changed(0)
 		, m_SP(0)
+=======
+	, m_SYS(0), m_CKC(0), m_clock_changed(0)
+	, m_SP(0)
+>>>>>>> upstream/master
 	, m_PS0(0)
 	, m_PS1(0), m_IFLAGS(0), m_CheckInterrupts(0), m_halted(0), m_icount(0), m_program(nullptr), m_oldpc(0)
 {
 }
 
+<<<<<<< HEAD
+=======
+device_memory_interface::space_config_vector sm8500_cpu_device::memory_space_config() const
+{
+	return space_config_vector {
+		std::make_pair(AS_PROGRAM, &m_program_config),
+	};
+}
+
+>>>>>>> upstream/master
 
 void sm8500_cpu_device::get_sp()
 {
@@ -53,7 +84,11 @@ void sm8500_cpu_device::get_sp()
 }
 
 
+<<<<<<< HEAD
 UINT8 sm8500_cpu_device::mem_readbyte( UINT32 offset )
+=======
+uint8_t sm8500_cpu_device::mem_readbyte( uint32_t offset ) const
+>>>>>>> upstream/master
 {
 	offset &= 0xffff;
 	if ( offset < 0x10)
@@ -65,9 +100,15 @@ UINT8 sm8500_cpu_device::mem_readbyte( UINT32 offset )
 }
 
 
+<<<<<<< HEAD
 void sm8500_cpu_device::mem_writebyte( UINT32 offset, UINT8 data )
 {
 	UINT8 i;
+=======
+void sm8500_cpu_device::mem_writebyte( uint32_t offset, uint8_t data )
+{
+	uint8_t i;
+>>>>>>> upstream/master
 	offset &= 0xffff;
 	if (offset < 0x10)
 	{
@@ -134,18 +175,28 @@ void sm8500_cpu_device::device_start()
 	state_add(SM8500_RR10, "RR10", m_PC ).callimport().callexport().formatstr("%04s");
 	state_add(SM8500_RR12, "RR12", m_PC ).callimport().callexport().formatstr("%04s");
 	state_add(SM8500_RR14, "RR14", m_PC ).callimport().callexport().formatstr("%04s");
+<<<<<<< HEAD
 	state_add(STATE_GENPC, "curpc", m_PC).callimport().callexport().formatstr("%8s").noshow();
+=======
+	state_add(STATE_GENPC, "GENPC", m_PC).formatstr("%8s").noshow();
+	state_add(STATE_GENPCBASE, "CURPC", m_PC).formatstr("%8s").noshow();
+>>>>>>> upstream/master
 	state_add(STATE_GENFLAGS, "GENFLAGS", m_PS1).formatstr("%8s").noshow();
 
 	m_icountptr = &m_icount;
 }
 
 
+<<<<<<< HEAD
 void sm8500_cpu_device::state_string_export(const device_state_entry &entry, std::string &str)
+=======
+void sm8500_cpu_device::state_string_export(const device_state_entry &entry, std::string &str) const
+>>>>>>> upstream/master
 {
 	switch (entry.index())
 	{
 		case SM8500_PS:
+<<<<<<< HEAD
 			strprintf(str,  "%04X", ( m_PS0 << 8 ) | m_PS1 );
 			break;
 
@@ -183,6 +234,45 @@ void sm8500_cpu_device::state_string_export(const device_state_entry &entry, std
 
 		case STATE_GENFLAGS:
 			strprintf(str,  "%c%c%c%c%c%c%c%c",
+=======
+			str = string_format("%04X", ( m_PS0 << 8 ) | m_PS1 );
+			break;
+
+		case SM8500_RR0:
+			str = string_format("%04X", mem_readword( 0x00 ) );
+			break;
+
+		case SM8500_RR2:
+			str = string_format("%04X", mem_readword( 0x02 ) );
+			break;
+
+		case SM8500_RR4:
+			str = string_format("%04X", mem_readword( 0x04 ) );
+			break;
+
+		case SM8500_RR6:
+			str = string_format("%04X", mem_readword( 0x06 ) );
+			break;
+
+		case SM8500_RR8:
+			str = string_format("%04X", mem_readword( 0x08 ) );
+			break;
+
+		case SM8500_RR10:
+			str = string_format("%04X", mem_readword( 0x0a ) );
+			break;
+
+		case SM8500_RR12:
+			str = string_format("%04X", mem_readword( 0x0c ) );
+			break;
+
+		case SM8500_RR14:
+			str = string_format("%04X", mem_readword( 0x0e ) );
+			break;
+
+		case STATE_GENFLAGS:
+			str = string_format("%c%c%c%c%c%c%c%c",
+>>>>>>> upstream/master
 				m_PS1 & FLAG_C ? 'C' : '.',
 				m_PS1 & FLAG_Z ? 'Z' : '.',
 				m_PS1 & FLAG_S ? 'S' : '.',
@@ -198,9 +288,15 @@ void sm8500_cpu_device::state_string_export(const device_state_entry &entry, std
 
 void sm8500_cpu_device::device_reset()
 {
+<<<<<<< HEAD
 	for ( int i = 0; i < 0x108; i++ )
 	{
 		m_register_ram[i] = 0;
+=======
+	for (auto & elem : m_register_ram)
+	{
+		elem = 0;
+>>>>>>> upstream/master
 	}
 
 	m_PC = 0x1020;
@@ -226,7 +322,11 @@ void sm8500_cpu_device::device_reset()
 			mem_writebyte( m_SP, X );
 
 
+<<<<<<< HEAD
 void sm8500_cpu_device::take_interrupt(UINT16 vector)
+=======
+void sm8500_cpu_device::take_interrupt(uint16_t vector)
+>>>>>>> upstream/master
 {
 	/* Get regs from ram */
 	get_sp();
@@ -340,10 +440,17 @@ void sm8500_cpu_device::process_interrupts()
 }
 
 
+<<<<<<< HEAD
 offs_t sm8500_cpu_device::disasm_disassemble(char *buffer, offs_t pc, const UINT8 *oprom, const UINT8 *opram, UINT32 options)
 {
 	extern CPU_DISASSEMBLE( sm8500 );
 	return CPU_DISASSEMBLE_NAME(sm8500)(this, buffer, pc, oprom, opram, options);
+=======
+offs_t sm8500_cpu_device::disasm_disassemble(std::ostream &stream, offs_t pc, const uint8_t *oprom, const uint8_t *opram, uint32_t options)
+{
+	extern CPU_DISASSEMBLE( sm8500 );
+	return CPU_DISASSEMBLE_NAME(sm8500)(this, stream, pc, oprom, opram, options);
+>>>>>>> upstream/master
 }
 
 
@@ -352,16 +459,27 @@ void sm8500_cpu_device::execute_run()
 	do
 	{
 		int     mycycles = 0;
+<<<<<<< HEAD
 		UINT8   r1,r2;
 		UINT16  s1,s2;
 		UINT32  d1,d2;
 		UINT32  res;
+=======
+		uint8_t   r1,r2;
+		uint16_t  s1,s2;
+		uint32_t  d1,d2;
+		uint32_t  res;
+>>>>>>> upstream/master
 
 		debugger_instruction_hook(this, m_PC);
 		m_oldpc = m_PC;
 		process_interrupts();
 		if ( !m_halted ) {
+<<<<<<< HEAD
 			UINT8 op = mem_readbyte( m_PC++ );
+=======
+			uint8_t op = mem_readbyte( m_PC++ );
+>>>>>>> upstream/master
 			m_SYS = m_program->read_byte(0x19);
 			m_PS0 = m_program->read_byte(0x1e);
 			m_PS1 = m_program->read_byte(0x1f);

@@ -3,10 +3,17 @@
 /* */
 
 
+<<<<<<< HEAD
 #pragma once
 
 #ifndef __INDER_AUDIO__
 #define __INDER_AUDIO__
+=======
+#ifndef MAME_MACHINE_INDER_SB_H
+#define MAME_MACHINE_INDER_SB_H
+
+#pragma once
+>>>>>>> upstream/master
 
 #include "cpu/z80/z80.h"
 #include "machine/z80ctc.h"
@@ -14,7 +21,11 @@
 #include "sound/dac.h"
 
 
+<<<<<<< HEAD
 extern const device_type INDER_AUDIO;
+=======
+DECLARE_DEVICE_TYPE(INDER_AUDIO, inder_sb_device)
+>>>>>>> upstream/master
 
 #define MCFG_INDER_AUDIO_ADD(_tag) \
 	MCFG_DEVICE_ADD(_tag, INDER_AUDIO, 0)
@@ -25,6 +36,7 @@ class inder_sb_device :  public device_t,
 {
 public:
 	// construction/destruction
+<<<<<<< HEAD
 	inder_sb_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
 
 	required_device<cpu_device> m_audiocpu;
@@ -33,11 +45,18 @@ public:
 	required_device<dac_device> m_dac1;
 	required_device<dac_device> m_dac2;
 	required_device<dac_device> m_dac3;
+=======
+	inder_sb_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
+
+	required_device<cpu_device> m_audiocpu;
+	required_device<z80ctc_device> m_ctc;
+>>>>>>> upstream/master
 
 	DECLARE_READ8_MEMBER(megaphx_sound_sent_r);
 	DECLARE_READ8_MEMBER(megaphx_sound_cmd_r);
 	DECLARE_WRITE8_MEMBER(megaphx_sound_to_68k_w);
 
+<<<<<<< HEAD
 
 	DECLARE_WRITE8_MEMBER(dac0_value_write);
 	DECLARE_WRITE8_MEMBER(dac0_gain_write);
@@ -48,16 +67,21 @@ public:
 	DECLARE_WRITE8_MEMBER(dac3_value_write);
 	DECLARE_WRITE8_MEMBER(dac3_gain_write);
 
+=======
+>>>>>>> upstream/master
 	DECLARE_WRITE8_MEMBER(dac0_rombank_write);
 	DECLARE_WRITE8_MEMBER(dac1_rombank_write);
 	DECLARE_WRITE8_MEMBER(dac2_rombank_write);
 	DECLARE_WRITE8_MEMBER(dac3_rombank_write);
 
+<<<<<<< HEAD
 	DECLARE_WRITE_LINE_MEMBER(z80ctc_ch0);
 	DECLARE_WRITE_LINE_MEMBER(z80ctc_ch1);
 	DECLARE_WRITE_LINE_MEMBER(z80ctc_ch2);
 	DECLARE_WRITE_LINE_MEMBER(z80ctc_ch3);
 
+=======
+>>>>>>> upstream/master
 	DECLARE_READ8_MEMBER(megaphx_02cc_hack_r);
 	DECLARE_READ8_MEMBER(megaphx_02e6_hack_r);
 	DECLARE_READ8_MEMBER(megaphx_0309_hack_r);
@@ -67,6 +91,7 @@ public:
 	DECLARE_READ16_MEMBER(megaphx_0x050002_r);
 	DECLARE_WRITE16_MEMBER(megaphx_0x050000_w);
 
+<<<<<<< HEAD
 	UINT8 dac_gain[4];
 	UINT8 m_soundbank[4];
 
@@ -74,10 +99,13 @@ public:
 	UINT8 m_sounddata;
 	UINT8 m_soundback;
 
+=======
+>>>>>>> upstream/master
 	void install_sound_hacks(void);
 	void update_sound_irqs(void);
 
 protected:
+<<<<<<< HEAD
 	virtual machine_config_constructor device_mconfig_additions() const;
 	virtual void device_start();
 	virtual void device_reset();
@@ -92,3 +120,25 @@ private:
 };
 
 #endif
+=======
+	virtual void device_add_mconfig(machine_config &config) override;
+	virtual void device_start() override;
+	virtual void device_reset() override;
+
+private:
+	uint8_t m_soundbank[4];
+
+	int m_soundsent;
+	uint8_t m_sounddata;
+	uint8_t m_soundback;
+
+	int m_soundirq;
+
+	DECLARE_WRITE_LINE_MEMBER(z80ctc_ch0);
+	DECLARE_WRITE_LINE_MEMBER(z80ctc_ch1);
+	DECLARE_WRITE_LINE_MEMBER(z80ctc_ch2);
+	DECLARE_WRITE_LINE_MEMBER(z80ctc_ch3);
+};
+
+#endif // MAME_MACHINE_INDER_SB_H
+>>>>>>> upstream/master

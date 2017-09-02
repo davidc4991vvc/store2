@@ -2,7 +2,11 @@
 // copyright-holders:Nathan Woods
 /***************************************************************************
 
+<<<<<<< HEAD
     MSM6242 / Epson RTC 62421 / 62423 Real Time Clock
+=======
+    MSM6242 / Epson RTC 62421 / 62423 / 72421 / 72423 Real Time Clock
+>>>>>>> upstream/master
 
     TODO:
     - Stop timer callbacks on every single tick
@@ -16,6 +20,21 @@
 #include "emu.h"
 #include "machine/msm6242.h"
 
+<<<<<<< HEAD
+=======
+#define LOG_GENERAL     (1U << 0)
+#define LOG_UNMAPPED    (1U << 1)
+#define LOG_IRQ         (1U << 2)
+#define LOG_IRQ_ENABLE  (1U << 3)
+
+//#define VERBOSE (LOG_GENERAL | LOG_UNMAPPED | LOG_IRQ | LOG_IRQ_ENABLE)
+#include "logmacro.h"
+
+#define LOGUNMAPPED(...)    LOGMASKED(LOG_UNMAPPED, __VA_ARGS__)
+#define LOGIRQ(...)         LOGMASKED(LOG_IRQ, __VA_ARGS__)
+#define LOGIRQENABLE(...)   LOGMASKED(LOG_IRQ_ENABLE, __VA_ARGS__)
+
+>>>>>>> upstream/master
 
 //**************************************************************************
 //  CONSTANTS
@@ -43,18 +62,30 @@ enum
 
 #define TIMER_RTC_CALLBACK      1
 
+<<<<<<< HEAD
 #define LOG_UNMAPPED            0
 #define LOG_IRQ                 0
 #define LOG_IRQ_ENABLE          0
 
+=======
+>>>>>>> upstream/master
 
 
 //**************************************************************************
 //  GLOBAL VARIABLES
 //**************************************************************************
 
+<<<<<<< HEAD
 // device type definition
 const device_type MSM6242 = &device_creator<msm6242_device>;
+=======
+// device type definitions
+DEFINE_DEVICE_TYPE(MSM6242,  msm6242_device,  "msm6242",  "OKI MSM6242 RTC")
+DEFINE_DEVICE_TYPE(RTC62421, rtc62421_device, "rtc62421", "Epson RTC-62421 RTC")
+DEFINE_DEVICE_TYPE(RTC62423, rtc62423_device, "rtc62423", "Epson RTC-62423 RTC")
+DEFINE_DEVICE_TYPE(RTC72421, rtc72421_device, "rtc72421", "Epson RTC-72421 RTC")
+DEFINE_DEVICE_TYPE(RTC72423, rtc72423_device, "rtc72423", "Epson RTC-72423 RTC")
+>>>>>>> upstream/master
 
 
 //**************************************************************************
@@ -65,10 +96,22 @@ const device_type MSM6242 = &device_creator<msm6242_device>;
 //  msm6242_device - constructor
 //-------------------------------------------------
 
+<<<<<<< HEAD
 msm6242_device::msm6242_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
 	: device_t(mconfig, MSM6242, "MSM6242 RTC", tag, owner, clock, "msm6242", __FILE__),
 		device_rtc_interface(mconfig, *this),
 		m_out_int_handler(*this)
+=======
+msm6242_device::msm6242_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: msm6242_device(mconfig, MSM6242, tag, owner, clock)
+{
+}
+
+msm6242_device::msm6242_device(const machine_config &mconfig, device_type type, const char *tag, device_t *owner, uint32_t clock)
+	: device_t(mconfig, type, tag, owner, clock)
+	, device_rtc_interface(mconfig, *this)
+	, m_out_int_handler(*this)
+>>>>>>> upstream/master
 {
 }
 
@@ -86,9 +129,12 @@ void msm6242_device::device_start()
 	m_timer = timer_alloc(TIMER_RTC_CALLBACK);
 	m_timer->adjust(attotime::zero);
 
+<<<<<<< HEAD
 	// get real time from system
 	set_current_time(machine());
 
+=======
+>>>>>>> upstream/master
 	// set up registers
 	m_tick = 0;
 	m_irq_flag = 0;
@@ -171,14 +217,22 @@ void msm6242_device::device_timer(emu_timer &timer, device_timer_id id, int para
 //  irq
 //-------------------------------------------------
 
+<<<<<<< HEAD
 void msm6242_device::irq(UINT8 irq_type)
+=======
+void msm6242_device::irq(uint8_t irq_type)
+>>>>>>> upstream/master
 {
 	// are we actually raising this particular IRQ?
 	if (m_irq_flag == 1 && m_irq_type == irq_type)
 	{
 		// log if appropriate
+<<<<<<< HEAD
 		if (LOG_IRQ)
 			logerror("%s: MSM6242 logging IRQ #%d\n", machine().describe_context(), (int) irq_type);
+=======
+		LOGIRQ("%s: MSM6242 logging IRQ #%u\n", machine().describe_context(), irq_type);
+>>>>>>> upstream/master
 
 		// ...and assert the output line
 		if (!m_out_int_handler.isnull())
@@ -192,26 +246,44 @@ void msm6242_device::irq(UINT8 irq_type)
 //  bump
 //-------------------------------------------------
 
+<<<<<<< HEAD
 UINT64 msm6242_device::bump(int rtc_register, UINT64 delta, UINT64 register_min, UINT64 register_range)
 {
 	UINT64 carry = 0;
+=======
+uint64_t msm6242_device::bump(int rtc_register, uint64_t delta, uint64_t register_min, uint64_t register_range)
+{
+	uint64_t carry = 0;
+>>>>>>> upstream/master
 
 	if (delta > 0)
 	{
 		// get the register value
+<<<<<<< HEAD
 		UINT64 register_value = (rtc_register == RTC_TICKS)
+=======
+		uint64_t register_value = (rtc_register == RTC_TICKS)
+>>>>>>> upstream/master
 			? m_tick
 			: get_clock_register(rtc_register);
 
 		// increment the value
+<<<<<<< HEAD
 		UINT64 new_register_value = ((register_value - register_min + delta) % register_range) + register_min;
+=======
+		uint64_t new_register_value = ((register_value - register_min + delta) % register_range) + register_min;
+>>>>>>> upstream/master
 
 		// calculate the cary
 		carry = ((register_value - register_min) + delta) / register_range;
 
 		// store the new register value
 		if (rtc_register == RTC_TICKS)
+<<<<<<< HEAD
 			m_tick = (UINT16) new_register_value;
+=======
+			m_tick = (uint16_t) new_register_value;
+>>>>>>> upstream/master
 		else
 			set_clock_register(rtc_register, (int) new_register_value);
 	}
@@ -225,7 +297,11 @@ UINT64 msm6242_device::bump(int rtc_register, UINT64 delta, UINT64 register_min,
 //  current_time
 //-------------------------------------------------
 
+<<<<<<< HEAD
 UINT64 msm6242_device::current_time()
+=======
+uint64_t msm6242_device::current_time()
+>>>>>>> upstream/master
 {
 	return machine().time().as_ticks(clock());
 }
@@ -239,10 +315,17 @@ UINT64 msm6242_device::current_time()
 void msm6242_device::update_rtc_registers()
 {
 	// get the absolute current time, in ticks
+<<<<<<< HEAD
 	UINT64 curtime = current_time();
 
 	// how long as it been since we last updated?
 	UINT64 delta = curtime - m_last_update_time;
+=======
+	uint64_t curtime = current_time();
+
+	// how long as it been since we last updated?
+	uint64_t delta = curtime - m_last_update_time;
+>>>>>>> upstream/master
 
 	// set current time
 	m_last_update_time = curtime;
@@ -289,7 +372,11 @@ void msm6242_device::update_rtc_registers()
 
 void msm6242_device::update_timer()
 {
+<<<<<<< HEAD
 	UINT64 callback_ticks = 0;
+=======
+	uint64_t callback_ticks = 0;
+>>>>>>> upstream/master
 	attotime callback_time = attotime::never;
 
 	// we only need to call back if the IRQ flag is on, and we have a handler
@@ -319,10 +406,17 @@ void msm6242_device::update_timer()
 	if (callback_ticks > 0)
 	{
 		// get the current time
+<<<<<<< HEAD
 		UINT64 curtime = current_time();
 
 		// we need the absolute callback time, in ticks
 		UINT64 absolute_callback_ticks = curtime + callback_ticks;
+=======
+		uint64_t curtime = current_time();
+
+		// we need the absolute callback time, in ticks
+		uint64_t absolute_callback_ticks = curtime + callback_ticks;
+>>>>>>> upstream/master
 
 		// convert that to an attotime
 		attotime absolute_callback_time = attotime::from_ticks(absolute_callback_ticks, clock());
@@ -363,11 +457,19 @@ void msm6242_device::rtc_timer_callback()
 //  get_clock_nibble
 //-------------------------------------------------
 
+<<<<<<< HEAD
 UINT8 msm6242_device::get_clock_nibble(int rtc_register, bool high)
 {
 	int value = get_clock_register(rtc_register);
 	value /= high ? 10 : 1;
 	return (UINT8) ((value % 10) & 0x0F);
+=======
+uint8_t msm6242_device::get_clock_nibble(int rtc_register, bool high)
+{
+	int value = get_clock_register(rtc_register);
+	value /= high ? 10 : 1;
+	return (uint8_t) ((value % 10) & 0x0F);
+>>>>>>> upstream/master
 }
 
 
@@ -376,7 +478,11 @@ UINT8 msm6242_device::get_clock_nibble(int rtc_register, bool high)
 //  get_clock_nibble
 //-------------------------------------------------
 
+<<<<<<< HEAD
 const char *msm6242_device::irq_type_string(UINT8 irq_type)
+=======
+const char *msm6242_device::irq_type_string(uint8_t irq_type)
+>>>>>>> upstream/master
 {
 	switch(irq_type)
 	{
@@ -401,7 +507,11 @@ const char *msm6242_device::irq_type_string(UINT8 irq_type)
 READ8_MEMBER( msm6242_device::read )
 {
 	int hour, pm;
+<<<<<<< HEAD
 	UINT8 result;
+=======
+	uint8_t result;
+>>>>>>> upstream/master
 
 	// update the registers; they may have changed
 	update_rtc_registers();
@@ -472,7 +582,11 @@ READ8_MEMBER( msm6242_device::read )
 			break;
 
 		case MSM6242_REG_W:
+<<<<<<< HEAD
 			result = (UINT8) (get_clock_register(RTC_DAY_OF_WEEK) - 1);
+=======
+			result = (uint8_t) (get_clock_register(RTC_DAY_OF_WEEK) - 1);
+>>>>>>> upstream/master
 			break;
 
 		case MSM6242_REG_CD:
@@ -483,8 +597,12 @@ READ8_MEMBER( msm6242_device::read )
 
 		default:
 			result = 0x00;
+<<<<<<< HEAD
 			if (LOG_UNMAPPED)
 				logerror("%s: MSM6242 unmapped offset %02x read\n", machine().describe_context(), offset);
+=======
+			LOGUNMAPPED("%s: MSM6242 unmapped offset %02x read\n", machine().describe_context(), offset);
+>>>>>>> upstream/master
 			break;
 	}
 
@@ -519,8 +637,12 @@ WRITE8_MEMBER( msm6242_device::write )
 				m_irq_flag = 1;
 				m_irq_type = (data & 0xc) >> 2;
 
+<<<<<<< HEAD
 				if (LOG_IRQ_ENABLE)
 					logerror("%s: MSM6242 enabling irq '%s'\n", machine().describe_context(), irq_type_string(m_irq_type));
+=======
+				LOGIRQENABLE("%s: MSM6242 enabling irq '%s'\n", machine().describe_context(), irq_type_string(m_irq_type));
+>>>>>>> upstream/master
 			}
 			else
 			{
@@ -528,8 +650,12 @@ WRITE8_MEMBER( msm6242_device::write )
 				if ( !m_out_int_handler.isnull() )
 					m_out_int_handler( CLEAR_LINE );
 
+<<<<<<< HEAD
 				if (LOG_IRQ_ENABLE)
 					logerror("%s: MSM6242 disabling irq\n", machine().describe_context());
+=======
+				LOGIRQENABLE("%s: MSM6242 disabling irq\n", machine().describe_context());
+>>>>>>> upstream/master
 			}
 			break;
 
@@ -547,11 +673,58 @@ WRITE8_MEMBER( msm6242_device::write )
 			break;
 
 		default:
+<<<<<<< HEAD
 			if (LOG_UNMAPPED)
 				logerror("%s: MSM6242 unmapped offset %02x written with %02x\n", machine().describe_context(), offset, data);
+=======
+			LOGUNMAPPED("%s: MSM6242 unmapped offset %02x written with %02x\n", machine().describe_context(), offset, data);
+>>>>>>> upstream/master
 			break;
 	}
 
 	// update the timer variable in response to potential changes
 	update_timer();
 }
+<<<<<<< HEAD
+=======
+
+
+//-------------------------------------------------
+//  rtc62421_device - constructor
+//-------------------------------------------------
+
+rtc62421_device::rtc62421_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: msm6242_device(mconfig, RTC62421, tag, owner, clock)
+{
+}
+
+
+//-------------------------------------------------
+//  rtc62423_device - constructor
+//-------------------------------------------------
+
+rtc62423_device::rtc62423_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: msm6242_device(mconfig, RTC62423, tag, owner, clock)
+{
+}
+
+
+//-------------------------------------------------
+//  rtc72421_device - constructor
+//-------------------------------------------------
+
+rtc72421_device::rtc72421_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: msm6242_device(mconfig, RTC72421, tag, owner, clock)
+{
+}
+
+
+//-------------------------------------------------
+//  rtc72423_device - constructor
+//-------------------------------------------------
+
+rtc72423_device::rtc72423_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: msm6242_device(mconfig, RTC72423, tag, owner, clock)
+{
+}
+>>>>>>> upstream/master

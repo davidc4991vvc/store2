@@ -39,12 +39,20 @@
 
 *****************************************************************************/
 
+<<<<<<< HEAD
 #pragma once
 
 #ifndef __TTL7474_H__
 #define __TTL7474_H__
 
 #include "emu.h"
+=======
+#ifndef MAME_MACHINE_TTL7474_H
+#define MAME_MACHINE_TTL7474_H
+
+#pragma once
+
+>>>>>>> upstream/master
 
 
 
@@ -69,11 +77,19 @@ class ttl7474_device : public device_t
 {
 public:
 	// construction/destruction
+<<<<<<< HEAD
 	ttl7474_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
 
 	// static configuration helpers
 	template<class _Object> static devcb_base &set_output_cb(device_t &device, _Object object) { return downcast<ttl7474_device &>(device).m_output_func.set_callback(object); }
 	template<class _Object> static devcb_base &set_comp_output_cb(device_t &device, _Object object) { return downcast<ttl7474_device &>(device).m_comp_output_func.set_callback(object); }
+=======
+	ttl7474_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
+
+	// static configuration helpers
+	template <class Object> static devcb_base &set_output_cb(device_t &device, Object &&cb) { return downcast<ttl7474_device &>(device).m_output_func.set_callback(std::forward<Object>(cb)); }
+	template <class Object> static devcb_base &set_comp_output_cb(device_t &device, Object &&cb) { return downcast<ttl7474_device &>(device).m_comp_output_func.set_callback(std::forward<Object>(cb)); }
+>>>>>>> upstream/master
 
 	// public interfaces
 	DECLARE_WRITE_LINE_MEMBER( clear_w );
@@ -85,16 +101,25 @@ public:
 
 protected:
 	// device-level overrides
+<<<<<<< HEAD
 	virtual void device_start();
 	virtual void device_reset();
 	virtual void device_post_load() { }
 	virtual void device_clock_changed() { }
+=======
+	virtual void device_start() override;
+	virtual void device_reset() override;
+	virtual void device_post_load() override { }
+	virtual void device_clock_changed() override { }
+
+>>>>>>> upstream/master
 private:
 	// callbacks
 	devcb_write_line m_output_func;
 	devcb_write_line m_comp_output_func;
 
 	// inputs
+<<<<<<< HEAD
 	UINT8 m_clear;              // pin 1/13
 	UINT8 m_preset;             // pin 4/10
 	UINT8 m_clk;                // pin 3/11
@@ -108,6 +133,21 @@ private:
 	UINT8 m_last_clock;
 	UINT8 m_last_output;
 	UINT8 m_last_output_comp;
+=======
+	uint8_t m_clear;              // pin 1/13
+	uint8_t m_preset;             // pin 4/10
+	uint8_t m_clk;                // pin 3/11
+	uint8_t m_d;                  // pin 2/12
+
+	// outputs
+	uint8_t m_output;             // pin 5/9
+	uint8_t m_output_comp;        // pin 6/8
+
+	// internal
+	uint8_t m_last_clock;
+	uint8_t m_last_output;
+	uint8_t m_last_output_comp;
+>>>>>>> upstream/master
 
 	void update();
 	void init();
@@ -115,7 +155,13 @@ private:
 
 
 // device type definition
+<<<<<<< HEAD
 extern const device_type TTL7474;
 
 
 #endif /* __TTL7474_H__ */
+=======
+DECLARE_DEVICE_TYPE(TTL7474, ttl7474_device)
+
+#endif // MAME_MACHINE_TTL7474_H
+>>>>>>> upstream/master

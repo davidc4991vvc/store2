@@ -1,5 +1,12 @@
 // license:BSD-3-Clause
 // copyright-holders:Takahiro Nogi, David Haywood
+<<<<<<< HEAD
+=======
+#ifndef MAME_INCLUDES_GOMOKU_H
+#define MAME_INCLUDES_GOMOKU_H
+
+#include "screen.h"
+>>>>>>> upstream/master
 
 class gomoku_state : public driver_device
 {
@@ -9,32 +16,56 @@ public:
 		m_videoram(*this, "videoram"),
 		m_colorram(*this, "colorram"),
 		m_bgram(*this, "bgram"),
+<<<<<<< HEAD
+=======
+		m_inputs(*this, {"IN0", "IN1", "DSW", "UNUSED0", "UNUSED1", "UNUSED2", "UNUSED3", "UNUSED4"}),
+>>>>>>> upstream/master
 		m_maincpu(*this, "maincpu"),
 		m_gfxdecode(*this, "gfxdecode"),
 		m_screen(*this, "screen") { }
 
+<<<<<<< HEAD
 	required_shared_ptr<UINT8> m_videoram;
 	required_shared_ptr<UINT8> m_colorram;
 	required_shared_ptr<UINT8> m_bgram;
+=======
+	required_shared_ptr<uint8_t> m_videoram;
+	required_shared_ptr<uint8_t> m_colorram;
+	required_shared_ptr<uint8_t> m_bgram;
+>>>>>>> upstream/master
 	int m_flipscreen;
 	int m_bg_dispsw;
 	tilemap_t *m_fg_tilemap;
 	bitmap_ind16 m_bg_bitmap;
+<<<<<<< HEAD
+=======
+	optional_ioport_array<8> m_inputs;
+>>>>>>> upstream/master
 	DECLARE_READ8_MEMBER(input_port_r);
 	DECLARE_WRITE8_MEMBER(gomoku_videoram_w);
 	DECLARE_WRITE8_MEMBER(gomoku_colorram_w);
 	DECLARE_WRITE8_MEMBER(gomoku_bgram_w);
+<<<<<<< HEAD
 	DECLARE_WRITE8_MEMBER(gomoku_flipscreen_w);
 	DECLARE_WRITE8_MEMBER(gomoku_bg_dispsw_w);
 	TILE_GET_INFO_MEMBER(get_fg_tile_info);
 	virtual void video_start();
 	DECLARE_PALETTE_INIT(gomoku);
 	UINT32 screen_update_gomoku(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
+=======
+	DECLARE_WRITE_LINE_MEMBER(flipscreen_w);
+	DECLARE_WRITE_LINE_MEMBER(bg_dispsw_w);
+	TILE_GET_INFO_MEMBER(get_fg_tile_info);
+	virtual void video_start() override;
+	DECLARE_PALETTE_INIT(gomoku);
+	uint32_t screen_update_gomoku(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
+>>>>>>> upstream/master
 	required_device<cpu_device> m_maincpu;
 	required_device<gfxdecode_device> m_gfxdecode;
 	required_device<screen_device> m_screen;
 };
 
+<<<<<<< HEAD
 
 /*----------- defined in audio/gomoku.c -----------*/
 
@@ -107,3 +138,6 @@ private:
 };
 
 extern const device_type GOMOKU;
+=======
+#endif // MAME_INCLUDES_GOMOKU_H
+>>>>>>> upstream/master

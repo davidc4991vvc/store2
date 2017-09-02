@@ -7,6 +7,7 @@
 //============================================================
 
 // standard windows headers
+<<<<<<< HEAD
 #define WIN32_LEAN_AND_MEAN
 #include <windows.h>
 
@@ -51,11 +52,38 @@ file_error win_error_to_file_error(DWORD error)
 			break;
 	}
 	return filerr;
+=======
+#include <windows.h>
+#include <direct.h>
+
+// MAME headers
+#include "emu.h"
+
+// MAMEOS headers
+#include "winutil.h"
+#include "strconv.h"
+#include "timeconv.h"
+
+
+//============================================================
+//  win_attributes_to_entry_type
+//============================================================
+
+osd::directory::entry::entry_type win_attributes_to_entry_type(DWORD attributes)
+{
+	if (attributes == 0xFFFFFFFF)
+		return osd::directory::entry::entry_type::NONE;
+	else if (attributes & FILE_ATTRIBUTE_DIRECTORY)
+		return osd::directory::entry::entry_type::DIR;
+	else
+		return osd::directory::entry::entry_type::FILE;
+>>>>>>> upstream/master
 }
 
 
 
 //============================================================
+<<<<<<< HEAD
 //  win_attributes_to_entry_type
 //============================================================
 
@@ -67,6 +95,15 @@ osd_dir_entry_type win_attributes_to_entry_type(DWORD attributes)
 		return ENTTYPE_DIR;
 	else
 		return ENTTYPE_FILE;
+=======
+//  win_time_point_from_filetime
+//============================================================
+
+std::chrono::system_clock::time_point win_time_point_from_filetime(LPFILETIME file_time)
+{
+	auto converted_file_time = util::ntfs_duration_from_filetime(file_time->dwHighDateTime, file_time->dwLowDateTime);
+	return util::system_clock_time_point_from_ntfs_duration(converted_file_time);
+>>>>>>> upstream/master
 }
 
 
@@ -122,6 +159,25 @@ BOOL win_is_gui_application(void)
 	return is_gui_frontend;
 }
 
+<<<<<<< HEAD
+=======
+//============================================================
+//  osd_subst_env
+//============================================================
+void osd_subst_env(std::string &dst, const std::string &src)
+{
+	TCHAR buffer[MAX_PATH];
+
+	osd::text::tstring t_src = osd::text::to_tstring(src);
+#if !defined(WINAPI_FAMILY) || (WINAPI_FAMILY == WINAPI_FAMILY_DESKTOP_APP)
+	ExpandEnvironmentStrings(t_src.c_str(), buffer, ARRAY_LENGTH(buffer));
+#else
+	wcsncpy(buffer, t_src.c_str(), ARRAY_LENGTH(buffer));
+#endif
+	osd::text::from_tstring(dst, buffer);
+}
+
+>>>>>>> upstream/master
 //-------------------------------------------------
 //  Universal way to get module handle
 //-------------------------------------------------

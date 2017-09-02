@@ -55,7 +55,11 @@ typedef enum {
  * @param s1 is the next state
  * @return returns the next state and probably modified Q output
  */
+<<<<<<< HEAD
 static inline jkff_t update_jkff(UINT8 s0, UINT8 s1, const char* jkff_name)
+=======
+static inline jkff_t update_jkff(uint8_t s0, uint8_t s1, const char* jkff_name)
+>>>>>>> upstream/master
 {
 	switch (s1 & (JKFF_C | JKFF_S))
 	{
@@ -133,7 +137,11 @@ static inline jkff_t update_jkff(UINT8 s0, UINT8 s1, const char* jkff_name)
  * @param s1 is the next state
  * @return returns the next state and probably modified Q output
  */
+<<<<<<< HEAD
 static inline jkff_t update_jkff(UINT8 s0, UINT8 s1, const char*)
+=======
+static inline jkff_t update_jkff(uint8_t s0, uint8_t s1, const char*)
+>>>>>>> upstream/master
 {
 	switch (s1 & (JKFF_C | JKFF_S))
 	{

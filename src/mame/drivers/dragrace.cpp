@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 // license:???
+=======
+// license:BSD-3-Clause
+>>>>>>> upstream/master
 // copyright-holders:Stefan Jokisch
 /***************************************************************************
 
@@ -7,9 +11,17 @@
 ***************************************************************************/
 
 #include "emu.h"
+<<<<<<< HEAD
 #include "cpu/m6800/m6800.h"
 #include "includes/dragrace.h"
 #include "sound/discrete.h"
+=======
+#include "includes/dragrace.h"
+#include "cpu/m6800/m6800.h"
+#include "machine/74259.h"
+#include "sound/discrete.h"
+#include "speaker.h"
+>>>>>>> upstream/master
 
 #include "dragrace.lh"
 
@@ -29,6 +41,7 @@ TIMER_DEVICE_CALLBACK_MEMBER(dragrace_state::dragrace_frame_callback)
 			case 0x10: m_gear[i] = 0; break;
 		}
 	}
+<<<<<<< HEAD
 	output_set_value("P1gear", m_gear[0]);
 	output_set_value("P2gear", m_gear[1]);
 
@@ -113,6 +126,44 @@ WRITE8_MEMBER(dragrace_state::dragrace_misc_clear_w)
 	m_misc_flags &= (~mask);
 	logerror("Clear %#6x, Mask=%#10x, Flag=%#10x, Data=%x\n", 0x0920 + offset, mask, m_misc_flags, data & 0x01);
 	dragrace_update_misc_flags(space);
+=======
+	output().set_value("P1gear", m_gear[0]);
+	output().set_value("P2gear", m_gear[1]);
+
+	/* watchdog is disabled during service mode */
+	m_watchdog->watchdog_enable(ioport("IN0")->read() & 0x20);
+}
+
+
+WRITE8_MEMBER(dragrace_state::speed1_w)
+{
+	unsigned freq = ~data & 0x1f;
+	m_discrete->write(machine().dummy_space(), DRAGRACE_MOTOR1_DATA, freq);
+
+	// the tachometers are driven from the same frequency generator that creates the engine sound
+	output().set_value("tachometer", freq);
+}
+
+WRITE8_MEMBER(dragrace_state::speed2_w)
+{
+	unsigned freq = ~data & 0x1f;
+	m_discrete->write(machine().dummy_space(), DRAGRACE_MOTOR2_DATA, freq);
+
+	// the tachometers are driven from the same frequency generator that creates the engine sound
+	output().set_value("tachometer2", freq);
+}
+
+WRITE_LINE_MEMBER(dragrace_state::p1_start_w)
+{
+	// set Player 1 Start Lamp
+	output().set_led_value(0, state);
+}
+
+WRITE_LINE_MEMBER(dragrace_state::p2_start_w)
+{
+	// set Player 2 Start Lamp
+	output().set_led_value(1, state);
+>>>>>>> upstream/master
 }
 
 READ8_MEMBER(dragrace_state::dragrace_input_r)
@@ -120,8 +171,13 @@ READ8_MEMBER(dragrace_state::dragrace_input_r)
 	int val = ioport("IN2")->read();
 	static const char *const portnames[] = { "IN0", "IN1" };
 
+<<<<<<< HEAD
 	UINT8 maskA = 1 << (offset % 8);
 	UINT8 maskB = 1 << (offset / 8);
+=======
+	uint8_t maskA = 1 << (offset % 8);
+	uint8_t maskB = 1 << (offset / 8);
+>>>>>>> upstream/master
 
 	for (int i = 0; i < 2; i++)
 	{
@@ -167,13 +223,28 @@ READ8_MEMBER(dragrace_state::dragrace_scanline_r)
 static ADDRESS_MAP_START( dragrace_map, AS_PROGRAM, 8, dragrace_state )
 	AM_RANGE(0x0080, 0x00ff) AM_RAM
 	AM_RANGE(0x0800, 0x083f) AM_READ(dragrace_input_r)
+<<<<<<< HEAD
 	AM_RANGE(0x0900, 0x091f) AM_WRITE(dragrace_misc_w)
 	AM_RANGE(0x0920, 0x093f) AM_WRITE(dragrace_misc_clear_w)
+=======
+	AM_RANGE(0x0900, 0x0907) AM_DEVWRITE("latch_f5", addressable_latch_device, write_d0)
+	AM_RANGE(0x0908, 0x090f) AM_DEVWRITE("latch_a5", addressable_latch_device, write_d0)
+	AM_RANGE(0x0910, 0x0917) AM_DEVWRITE("latch_h5", addressable_latch_device, write_d0)
+	AM_RANGE(0x0918, 0x091f) AM_DEVWRITE("latch_e5", addressable_latch_device, write_d0)
+	AM_RANGE(0x0920, 0x0927) AM_DEVWRITE("latch_f5", addressable_latch_device, clear)
+	AM_RANGE(0x0928, 0x092f) AM_DEVWRITE("latch_a5", addressable_latch_device, clear)
+	AM_RANGE(0x0930, 0x0937) AM_DEVWRITE("latch_h5", addressable_latch_device, clear)
+	AM_RANGE(0x0938, 0x093f) AM_DEVWRITE("latch_e5", addressable_latch_device, clear)
+>>>>>>> upstream/master
 	AM_RANGE(0x0a00, 0x0aff) AM_WRITEONLY AM_SHARE("playfield_ram")
 	AM_RANGE(0x0b00, 0x0bff) AM_WRITEONLY AM_SHARE("position_ram")
 	AM_RANGE(0x0c00, 0x0c00) AM_READ(dragrace_steering_r)
 	AM_RANGE(0x0d00, 0x0d00) AM_READ(dragrace_scanline_r)
+<<<<<<< HEAD
 	AM_RANGE(0x0e00, 0x0eff) AM_WRITE(watchdog_reset_w)
+=======
+	AM_RANGE(0x0e00, 0x0eff) AM_DEVWRITE("watchdog", watchdog_timer_device, reset_w)
+>>>>>>> upstream/master
 	AM_RANGE(0x1000, 0x1fff) AM_ROM /* program */
 	AM_RANGE(0xf800, 0xffff) AM_ROM /* program mirror */
 ADDRESS_MAP_END
@@ -313,24 +384,40 @@ PALETTE_INIT_MEMBER(dragrace_state, dragrace)
 
 void dragrace_state::machine_start()
 {
+<<<<<<< HEAD
 	save_item(NAME(m_misc_flags));
+=======
+>>>>>>> upstream/master
 	save_item(NAME(m_gear));
 }
 
 void dragrace_state::machine_reset()
 {
+<<<<<<< HEAD
 	m_misc_flags = 0;
+=======
+>>>>>>> upstream/master
 	m_gear[0] = 0;
 	m_gear[1] = 0;
 }
 
+<<<<<<< HEAD
 static MACHINE_CONFIG_START( dragrace, dragrace_state )
+=======
+static MACHINE_CONFIG_START( dragrace )
+>>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", M6800, XTAL_12_096MHz / 12)
 	MCFG_CPU_PROGRAM_MAP(dragrace_map)
 	MCFG_CPU_PERIODIC_INT_DRIVER(dragrace_state, irq0_line_hold,  4*60)
+<<<<<<< HEAD
 	MCFG_WATCHDOG_VBLANK_INIT(8)
+=======
+
+	MCFG_WATCHDOG_ADD("watchdog")
+	MCFG_WATCHDOG_VBLANK_INIT("screen", 8)
+>>>>>>> upstream/master
 
 	MCFG_TIMER_DRIVER_ADD_PERIODIC("frame_timer", dragrace_state, dragrace_frame_callback, attotime::from_hz(60))
 
@@ -353,6 +440,32 @@ static MACHINE_CONFIG_START( dragrace, dragrace_state )
 	MCFG_DISCRETE_INTF(dragrace)
 	MCFG_SOUND_ROUTE(0, "lspeaker", 1.0)
 	MCFG_SOUND_ROUTE(1, "rspeaker", 1.0)
+<<<<<<< HEAD
+=======
+
+	MCFG_DEVICE_ADD("latch_f5", F9334, 0) // F5
+	MCFG_ADDRESSABLE_LATCH_PARALLEL_OUT_CB(WRITE8(dragrace_state, speed1_w)) MCFG_DEVCB_MASK(0x1f) // set 3SPEED1-7SPEED1
+	MCFG_ADDRESSABLE_LATCH_Q5_OUT_CB(DEVWRITELINE("discrete", discrete_device, write_line<DRAGRACE_EXPLODE1_EN>)) // Explosion1 enable
+	MCFG_ADDRESSABLE_LATCH_Q6_OUT_CB(DEVWRITELINE("discrete", discrete_device, write_line<DRAGRACE_SCREECH1_EN>)) // Screech1 enable
+
+	MCFG_DEVICE_ADD("latch_a5", F9334, 0) // A5
+	MCFG_ADDRESSABLE_LATCH_Q1_OUT_CB(DEVWRITELINE("discrete", discrete_device, write_line<DRAGRACE_KLEXPL1_EN>)) // KLEXPL1 enable
+	MCFG_ADDRESSABLE_LATCH_Q3_OUT_CB(DEVWRITELINE("discrete", discrete_device, write_line<DRAGRACE_MOTOR1_EN>)) // Motor1 enable
+	MCFG_ADDRESSABLE_LATCH_Q4_OUT_CB(DEVWRITELINE("discrete", discrete_device, write_line<DRAGRACE_ATTRACT_EN>)) // Attract enable
+	MCFG_ADDRESSABLE_LATCH_Q5_OUT_CB(DEVWRITELINE("discrete", discrete_device, write_line<DRAGRACE_LOTONE_EN>)) // LoTone enable
+	MCFG_ADDRESSABLE_LATCH_Q7_OUT_CB(WRITELINE(dragrace_state, p1_start_w))
+
+	MCFG_DEVICE_ADD("latch_h5", F9334, 0) // H5
+	MCFG_ADDRESSABLE_LATCH_PARALLEL_OUT_CB(WRITE8(dragrace_state, speed2_w)) MCFG_DEVCB_MASK(0x1f) // set 3SPEED2-7SPEED2
+	MCFG_ADDRESSABLE_LATCH_Q5_OUT_CB(DEVWRITELINE("discrete", discrete_device, write_line<DRAGRACE_EXPLODE2_EN>)) // Explosion2 enable
+	MCFG_ADDRESSABLE_LATCH_Q6_OUT_CB(DEVWRITELINE("discrete", discrete_device, write_line<DRAGRACE_SCREECH2_EN>)) // Screech2 enable
+
+	MCFG_DEVICE_ADD("latch_e5", F9334, 0) // E5
+	MCFG_ADDRESSABLE_LATCH_Q1_OUT_CB(DEVWRITELINE("discrete", discrete_device, write_line<DRAGRACE_KLEXPL2_EN>)) // KLEXPL2 enable
+	MCFG_ADDRESSABLE_LATCH_Q3_OUT_CB(DEVWRITELINE("discrete", discrete_device, write_line<DRAGRACE_MOTOR2_EN>)) // Motor2 enable
+	MCFG_ADDRESSABLE_LATCH_Q5_OUT_CB(DEVWRITELINE("discrete", discrete_device, write_line<DRAGRACE_HITONE_EN>)) // HiTone enable
+	MCFG_ADDRESSABLE_LATCH_Q7_OUT_CB(WRITELINE(dragrace_state, p2_start_w))
+>>>>>>> upstream/master
 MACHINE_CONFIG_END
 
 
@@ -378,4 +491,8 @@ ROM_START( dragrace )
 ROM_END
 
 
+<<<<<<< HEAD
 GAMEL(1977, dragrace, 0, dragrace, dragrace, driver_device, 0, 0, "Atari (Kee Games)", "Drag Race", MACHINE_SUPPORTS_SAVE, layout_dragrace )
+=======
+GAMEL(1977, dragrace, 0, dragrace, dragrace, dragrace_state, 0, 0, "Atari (Kee Games)", "Drag Race", MACHINE_SUPPORTS_SAVE, layout_dragrace )
+>>>>>>> upstream/master

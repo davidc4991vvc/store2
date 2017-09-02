@@ -16,6 +16,7 @@ public:
 	required_device<gfxdecode_device> m_gfxdecode;
 	required_device<palette_device> m_palette;
 
+<<<<<<< HEAD
 	required_shared_ptr<UINT8> m_spriteram;
 	required_shared_ptr<UINT8> m_colorram;
 	required_shared_ptr<UINT8> m_videoram;
@@ -23,6 +24,15 @@ public:
 	int m_palettebank;
 	tilemap_t *m_bg_tilemap;
 	UINT8 m_nmi_enable;
+=======
+	required_shared_ptr<uint8_t> m_spriteram;
+	required_shared_ptr<uint8_t> m_colorram;
+	required_shared_ptr<uint8_t> m_videoram;
+
+	int m_palettebank;
+	tilemap_t *m_bg_tilemap;
+	uint8_t m_nmi_enable;
+>>>>>>> upstream/master
 
 	DECLARE_WRITE8_MEMBER(videoram_w);
 	DECLARE_WRITE8_MEMBER(colorram_w);
@@ -32,10 +42,17 @@ public:
 
 	TILE_GET_INFO_MEMBER(get_bg_tile_info);
 
+<<<<<<< HEAD
 	virtual void video_start();
 	DECLARE_PALETTE_INIT(shaolins);
 
 	UINT32 screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
+=======
+	virtual void video_start() override;
+	DECLARE_PALETTE_INIT(shaolins);
+
+	uint32_t screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
+>>>>>>> upstream/master
 	void draw_sprites(bitmap_ind16 &bitmap, const rectangle &cliprect);
 
 	TIMER_DEVICE_CALLBACK_MEMBER(interrupt);

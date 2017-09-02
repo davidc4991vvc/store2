@@ -49,6 +49,7 @@
 #ifndef NLD_74123_H_
 #define NLD_74123_H_
 
+<<<<<<< HEAD
 #include "nl_base.h"
 #include "nld_system.h"
 #include "analog/nld_twoterm.h"
@@ -107,11 +108,28 @@ NETLIB_DEVICE(9602_dip,
 	NETLIB_NAME(74123) m_2;
 
 );
+=======
+#include "../nl_setup.h"
+
+#define TTL_74123(name)                                                         \
+		NET_REGISTER_DEV(TTL_74123, name)
+
+#define TTL_74123_DIP(name)                                                     \
+		NET_REGISTER_DEV(TTL_74123_DIP, name)
+
+/* The 9602 is very similar to the 123. Input triggering is slightly different
+ * The 9602 uses an OR gate instead of an AND gate.
+ */
+
+#define TTL_9602_DIP(name)                                                      \
+		NET_REGISTER_DEV(TTL_9602_DIP, name)
+>>>>>>> upstream/master
 
 /*
  * The CD4538 is pretty similar to the 9602
  */
 
+<<<<<<< HEAD
 #define CD4538_DIP(_name)                                                         \
 		NET_REGISTER_DEV(CD4538_DIP, _name)
 
@@ -123,5 +141,9 @@ NETLIB_DEVICE(4538_dip,
 
 NETLIB_NAMESPACE_DEVICES_END()
 
+=======
+#define CD4538_DIP(name)                                                        \
+		NET_REGISTER_DEV(CD4538_DIP, name)
+>>>>>>> upstream/master
 
 #endif /* NLD_74123_H_ */

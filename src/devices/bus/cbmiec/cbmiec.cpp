@@ -189,6 +189,10 @@ C64 SERIAL BUS
     5)  Tei minimum must be 80us for external device to be a listener.
 */
 
+<<<<<<< HEAD
+=======
+#include "emu.h"
+>>>>>>> upstream/master
 #include "cbmiec.h"
 
 
@@ -208,8 +212,13 @@ static const char *const SIGNAL_NAME[] = { "SRQ", "ATN", "CLK", "DATA", "RESET" 
 //  DEVICE DEFINITIONS
 //**************************************************************************
 
+<<<<<<< HEAD
 const device_type CBM_IEC = &device_creator<cbm_iec_device>;
 const device_type CBM_IEC_SLOT = &device_creator<cbm_iec_slot_device>;
+=======
+DEFINE_DEVICE_TYPE(CBM_IEC,      cbm_iec_device,      "cbm_iec",      "CBM IEC bus")
+DEFINE_DEVICE_TYPE(CBM_IEC_SLOT, cbm_iec_slot_device, "cbm_iec_slot", "CBM IEC slot")
+>>>>>>> upstream/master
 
 
 
@@ -245,8 +254,13 @@ device_cbm_iec_interface::~device_cbm_iec_interface()
 //  cbm_iec_slot_device - constructor
 //-------------------------------------------------
 
+<<<<<<< HEAD
 cbm_iec_slot_device::cbm_iec_slot_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock) :
 		device_t(mconfig, CBM_IEC_SLOT, "CBM IEC slot", tag, owner, clock, "cbm_iec_slot", __FILE__),
+=======
+cbm_iec_slot_device::cbm_iec_slot_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock) :
+		device_t(mconfig, CBM_IEC_SLOT, tag, owner, clock),
+>>>>>>> upstream/master
 		device_slot_interface(mconfig, *this), m_address(0)
 {
 }
@@ -258,12 +272,21 @@ cbm_iec_slot_device::cbm_iec_slot_device(const machine_config &mconfig, const ch
 
 void cbm_iec_slot_device::device_start()
 {
+<<<<<<< HEAD
 	cbm_iec_device* bus = NULL;
 
 	for (device_t *device = owner(); device != NULL; device = device->owner())
 	{
 		bus = device->subdevice<cbm_iec_device>(CBM_IEC_TAG);
 		if (bus != NULL) break;
+=======
+	cbm_iec_device* bus = nullptr;
+
+	for (device_t *device = owner(); device != nullptr; device = device->owner())
+	{
+		bus = device->subdevice<cbm_iec_device>(CBM_IEC_TAG);
+		if (bus != nullptr) break;
+>>>>>>> upstream/master
 	}
 
 	assert(bus);
@@ -282,17 +305,28 @@ void cbm_iec_slot_device::device_start()
 //  cbm_iec_device - constructor
 //-------------------------------------------------
 
+<<<<<<< HEAD
 cbm_iec_device::cbm_iec_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
 	: device_t(mconfig, CBM_IEC, "CBM IEC bus", tag, owner, clock, "cbm_iec", __FILE__),
+=======
+cbm_iec_device::cbm_iec_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: device_t(mconfig, CBM_IEC, tag, owner, clock),
+>>>>>>> upstream/master
 		m_write_srq(*this),
 		m_write_atn(*this),
 		m_write_clk(*this),
 		m_write_data(*this),
 		m_write_reset(*this)
 {
+<<<<<<< HEAD
 	for (int i = 0; i < SIGNAL_COUNT; i++)
 	{
 		m_line[i] = 1;
+=======
+	for (auto & elem : m_line)
+	{
+		elem = 1;
+>>>>>>> upstream/master
 	}
 }
 
@@ -339,7 +373,11 @@ void cbm_iec_device::device_stop()
 
 void cbm_iec_device::add_device(cbm_iec_slot_device *slot, device_t *target)
 {
+<<<<<<< HEAD
 	daisy_entry *entry = global_alloc(daisy_entry(target));
+=======
+	auto entry = global_alloc(daisy_entry(target));
+>>>>>>> upstream/master
 
 	entry->m_interface->m_slot = slot;
 	entry->m_interface->m_bus = this;
@@ -353,6 +391,7 @@ void cbm_iec_device::add_device(cbm_iec_slot_device *slot, device_t *target)
 //-------------------------------------------------
 
 cbm_iec_device::daisy_entry::daisy_entry(device_t *device)
+<<<<<<< HEAD
 	: m_next(NULL),
 		m_device(device),
 		m_interface(NULL)
@@ -360,6 +399,15 @@ cbm_iec_device::daisy_entry::daisy_entry(device_t *device)
 	for (int i = 0; i < SIGNAL_COUNT; i++)
 	{
 		m_line[i] = 1;
+=======
+	: m_next(nullptr),
+		m_device(device),
+		m_interface(nullptr)
+{
+	for (auto & elem : m_line)
+	{
+		elem = 1;
+>>>>>>> upstream/master
 	}
 
 	device->interface(m_interface);
@@ -522,5 +570,8 @@ SLOT_INTERFACE_START( cbm_iec_devices )
 	SLOT_INTERFACE("vic1515", VIC1515)
 	SLOT_INTERFACE("vic1520", VIC1520)
 	SLOT_INTERFACE("c1526", C1526)
+<<<<<<< HEAD
 	SLOT_INTERFACE("mps802", MPS802)
+=======
+>>>>>>> upstream/master
 SLOT_INTERFACE_END

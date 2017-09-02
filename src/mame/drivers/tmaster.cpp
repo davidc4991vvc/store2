@@ -2,17 +2,26 @@
 // copyright-holders:Luca Elia, Mariusz Wojcieszek, Peter Ferrie
 /***************************************************************************
 
+<<<<<<< HEAD
                       -= Touch Master / Galaxy Games =-
+=======
+                           -= Touch Master Games =-
+>>>>>>> upstream/master
 
          driver by Luca Elia (l.elia@tin.it) and Mariusz Wojcieszek
 
 
 CPU:    68000
+<<<<<<< HEAD
 Video:  Blitter, double framebuffer
 Sound:  OKI6295
 
 [Touch Master]
 
+=======
+Video:  Blitter with two layers and double buffering (Xilinx FPGA)
+Sound:  OKI M6295
+>>>>>>> upstream/master
 Input:  Microtouch touch screen
 Other:  Dallas NVRAM + optional RTC
 
@@ -91,6 +100,7 @@ Chips:
         CY7C128A-55PC (x2 used for serial communication)
         W241024AJ-15 (x4 used for blitter frame buffer)
 
+<<<<<<< HEAD
 ******************************************************************
 
 [Galaxy Games]
@@ -101,16 +111,30 @@ To Do:
 
 - Coin optics
 
+=======
+>>>>>>> upstream/master
 ***************************************************************************/
 
 #include "emu.h"
 #include "cpu/m68000/m68000.h"
+<<<<<<< HEAD
 #include "sound/okim6295.h"
 #include "machine/eepromser.h"
 #include "machine/microtch.h"
 #include "machine/mc68681.h"
 #include "machine/nvram.h"
 #include "machine/ds1204.h"
+=======
+#include "machine/ds1204.h"
+#include "machine/mc68681.h"
+#include "machine/microtch.h"
+#include "machine/nvram.h"
+#include "machine/watchdog.h"
+#include "sound/okim6295.h"
+#include "video/cesblit.h"
+#include "screen.h"
+#include "speaker.h"
+>>>>>>> upstream/master
 
 /***************************************************************************
 
@@ -123,6 +147,7 @@ class tmaster_state : public driver_device
 public:
 	tmaster_state(const machine_config &mconfig, device_type type, const char *tag)
 		: driver_device(mconfig, type, tag),
+<<<<<<< HEAD
 		m_maincpu(*this,"maincpu"),
 		m_microtouch(*this,"microtouch"),
 		m_regs(*this, "regs"),
@@ -191,6 +216,63 @@ public:
 	void galgames_update_rombank(UINT32 cart);
 };
 
+=======
+		m_maincpu(*this, "maincpu"),
+		m_screen(*this, "screen"),
+		m_palette(*this, "palette"),
+		m_blitter(*this, "blitter"),
+		m_oki(*this, "oki"),
+		m_microtouch(*this,"microtouch"),
+		m_duart(*this, "duart68681")
+	{ }
+
+	DECLARE_WRITE_LINE_MEMBER(blitter_irq_callback);
+
+	TIMER_DEVICE_CALLBACK_MEMBER(scanline_interrupt);
+	uint32_t screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
+
+	DECLARE_WRITE_LINE_MEMBER(write_oki_bank0);
+	DECLARE_WRITE_LINE_MEMBER(write_oki_bank1);
+
+	DECLARE_WRITE_LINE_MEMBER(duart_irq_handler);
+
+	DECLARE_READ16_MEMBER(rtc_r);
+	DECLARE_WRITE16_MEMBER(rtc_w);
+
+	DECLARE_READ_LINE_MEMBER(read_rand);
+
+protected:
+	required_device<cpu_device> m_maincpu;
+	required_device<screen_device> m_screen;
+	required_device<palette_device> m_palette;
+	required_device<cesblit_device> m_blitter;
+	required_device<okim6295_device> m_oki;
+	required_device<microtouch_device> m_microtouch;
+	required_device<mc68681_device> m_duart;
+
+	int m_okibank;
+
+	uint8_t m_rtc_ram[8];
+};
+
+WRITE_LINE_MEMBER(tmaster_state::blitter_irq_callback)
+{
+//  logerror("%s: Blitter IRQ callback state = %x\n", machine().describe_context(), state);
+	m_maincpu->set_input_line(2, state);
+}
+
+/***************************************************************************
+
+                                   Video
+
+***************************************************************************/
+
+uint32_t tmaster_state::screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+{
+	bitmap.fill(m_palette->black_pen(), cliprect);
+	return m_blitter->screen_update(screen, bitmap, cliprect);
+}
+>>>>>>> upstream/master
 
 /***************************************************************************
 
@@ -205,7 +287,11 @@ WRITE_LINE_MEMBER(tmaster_state::write_oki_bank0)
 	else
 		m_okibank &= ~1;
 
+<<<<<<< HEAD
 	m_oki->set_bank_base(m_okibank * 0x40000);
+=======
+	m_oki->set_rom_bank(m_okibank);
+>>>>>>> upstream/master
 }
 
 WRITE_LINE_MEMBER(tmaster_state::write_oki_bank1)
@@ -215,7 +301,11 @@ WRITE_LINE_MEMBER(tmaster_state::write_oki_bank1)
 	else
 		m_okibank &= ~2;
 
+<<<<<<< HEAD
 	m_oki->set_bank_base(m_okibank * 0x40000);
+=======
+	m_oki->set_rom_bank(m_okibank);
+>>>>>>> upstream/master
 }
 
 /***************************************************************************
@@ -235,12 +325,19 @@ WRITE_LINE_MEMBER(tmaster_state::duart_irq_handler)
 
 ***************************************************************************/
 
+<<<<<<< HEAD
 
 UINT8 tmaster_state::binary_to_BCD(UINT8 data)
 {
 	data %= 100;
 
 	return ((data / 10) << 4) | (data %10);
+=======
+uint8_t binary_to_bcd(uint8_t data)
+{
+	data %= 100;
+	return ((data / 10) << 4) | (data % 10);
+>>>>>>> upstream/master
 }
 
 READ16_MEMBER(tmaster_state::rtc_r)
@@ -248,6 +345,7 @@ READ16_MEMBER(tmaster_state::rtc_r)
 	system_time systime;
 
 	machine().current_datetime(systime);
+<<<<<<< HEAD
 	m_rtc_ram[0x1] = binary_to_BCD(systime.local_time.second);
 	m_rtc_ram[0x2] = binary_to_BCD(systime.local_time.minute);
 	m_rtc_ram[0x3] = binary_to_BCD(systime.local_time.hour);
@@ -255,6 +353,15 @@ READ16_MEMBER(tmaster_state::rtc_r)
 	m_rtc_ram[0x5] = binary_to_BCD(systime.local_time.mday);
 	m_rtc_ram[0x6] = binary_to_BCD(systime.local_time.month+1);
 	m_rtc_ram[0x7] = binary_to_BCD(systime.local_time.year % 100);
+=======
+	m_rtc_ram[0x1] = binary_to_bcd(systime.local_time.second);
+	m_rtc_ram[0x2] = binary_to_bcd(systime.local_time.minute);
+	m_rtc_ram[0x3] = binary_to_bcd(systime.local_time.hour);
+	m_rtc_ram[0x4] = binary_to_bcd(systime.local_time.weekday);
+	m_rtc_ram[0x5] = binary_to_bcd(systime.local_time.mday);
+	m_rtc_ram[0x6] = binary_to_bcd(systime.local_time.month+1);
+	m_rtc_ram[0x7] = binary_to_bcd(systime.local_time.year % 100);
+>>>>>>> upstream/master
 
 	return m_rtc_ram[offset];
 }
@@ -267,6 +374,7 @@ WRITE16_MEMBER(tmaster_state::rtc_w)
 	}
 }
 
+<<<<<<< HEAD
 
 /***************************************************************************
 
@@ -509,12 +617,15 @@ READ16_MEMBER(tmaster_state::tmaster_blitter_r)
 	return 0x0000;  // bit 7 = 1 -> blitter busy
 }
 
+=======
+>>>>>>> upstream/master
 /***************************************************************************
 
                                 Memory Maps
 
 ***************************************************************************/
 
+<<<<<<< HEAD
 /***************************************************************************
                                 Touch Master
 ***************************************************************************/
@@ -522,6 +633,11 @@ READ16_MEMBER(tmaster_state::tmaster_blitter_r)
 READ_LINE_MEMBER(tmaster_state::read_rand)
 {
 	return machine().rand()&1;
+=======
+READ_LINE_MEMBER(tmaster_state::read_rand)
+{
+	return machine().rand() & 1;
+>>>>>>> upstream/master
 }
 
 static ADDRESS_MAP_START( tmaster_map, AS_PROGRAM, 16, tmaster_state )
@@ -536,10 +652,17 @@ static ADDRESS_MAP_START( tmaster_map, AS_PROGRAM, 16, tmaster_state )
 
 	AM_RANGE( 0x300040, 0x300041 ) AM_WRITE_PORT("OUT")
 
+<<<<<<< HEAD
 	AM_RANGE( 0x300070, 0x300071 ) AM_WRITE(tmaster_addr_w )
 
 	AM_RANGE( 0x500000, 0x500011 ) AM_WRITE(tmaster_blitter_w ) AM_SHARE("regs")
 	AM_RANGE( 0x500010, 0x500011 ) AM_READ(tmaster_blitter_r )
+=======
+	AM_RANGE( 0x300070, 0x300071 ) AM_DEVWRITE("blitter", cesblit_device, addr_hi_w )
+
+	AM_RANGE( 0x500000, 0x500011 ) AM_DEVWRITE("blitter", cesblit_device, regs_w )
+	AM_RANGE( 0x500010, 0x500011 ) AM_DEVREAD( "blitter", cesblit_device, status_r )
+>>>>>>> upstream/master
 
 	AM_RANGE( 0x580000, 0x580001 ) AM_WRITENOP // often
 
@@ -547,6 +670,7 @@ static ADDRESS_MAP_START( tmaster_map, AS_PROGRAM, 16, tmaster_state )
 
 	AM_RANGE( 0x800000, 0x800001 ) AM_DEVREADWRITE8("oki", okim6295_device, read, write, 0x00ff )
 
+<<<<<<< HEAD
 	AM_RANGE( 0x800010, 0x800011 ) AM_WRITE(tmaster_color_w )
 ADDRESS_MAP_END
 
@@ -769,11 +893,17 @@ static ADDRESS_MAP_START( galgames_map, AS_PROGRAM, 16, tmaster_state )
 ADDRESS_MAP_END
 
 
+=======
+	AM_RANGE( 0x800010, 0x800011 ) AM_DEVWRITE("blitter", cesblit_device, color_w )
+ADDRESS_MAP_END
+
+>>>>>>> upstream/master
 /***************************************************************************
 
                                 Input Ports
 
 ***************************************************************************/
+<<<<<<< HEAD
 static INPUT_PORTS_START( tm )
 	PORT_START("COIN")
 	PORT_BIT( 0x0001, IP_ACTIVE_LOW, IPT_COIN5 )    // "M. Coin 1 Input"
@@ -792,6 +922,27 @@ static INPUT_PORTS_START( tm )
 	PORT_BIT( 0x2000, IP_ACTIVE_LOW, IPT_COIN2 )    // "E. Coin 2" (ECA?) rather than m. coin
 	PORT_BIT( 0x4000, IP_ACTIVE_LOW, IPT_COIN3 )    // "E. Coin 3" (ECA?) so they're coin1-coin4
 	PORT_BIT( 0x8000, IP_ACTIVE_LOW, IPT_COIN4 )    // "E. Coin 4" (ECA?)
+=======
+
+static INPUT_PORTS_START( tm )
+	PORT_START("COIN")
+	PORT_BIT( 0x0001, IP_ACTIVE_LOW,  IPT_COIN5    )    // "M. Coin 1 Input"
+	PORT_BIT( 0x0002, IP_ACTIVE_LOW,  IPT_COIN6    )    // "M. Coin 2 Input"
+	PORT_BIT( 0x0004, IP_ACTIVE_LOW,  IPT_BILL1    ) PORT_IMPULSE(2)    // "DBV Input"
+	PORT_BIT( 0x0008, IP_ACTIVE_LOW,  IPT_UNKNOWN  )
+	PORT_BIT( 0x0010, IP_ACTIVE_LOW,  IPT_UNKNOWN  )    // service coin?
+	PORT_SERVICE_NO_TOGGLE( 0x0020, IP_ACTIVE_LOW  )
+	PORT_BIT( 0x0040, IP_ACTIVE_LOW,  IPT_SERVICE1 )    // "Calibrate"
+	PORT_BIT( 0x0080, IP_ACTIVE_LOW,  IPT_UNKNOWN  )
+	PORT_BIT( 0x0100, IP_ACTIVE_LOW,  IPT_UNKNOWN  )
+	PORT_BIT( 0x0200, IP_ACTIVE_LOW,  IPT_UNKNOWN  )
+	PORT_BIT( 0x0400, IP_ACTIVE_LOW,  IPT_UNKNOWN  )
+	PORT_BIT( 0x0800, IP_ACTIVE_HIGH, IPT_SPECIAL  ) PORT_READ_LINE_DEVICE_MEMBER( DEVICE_SELF, tmaster_state, read_rand )
+	PORT_BIT( 0x1000, IP_ACTIVE_LOW,  IPT_COIN1    )    // "E. Coin 1" (ECA?) tmaster defaults to e. coin,
+	PORT_BIT( 0x2000, IP_ACTIVE_LOW,  IPT_COIN2    )    // "E. Coin 2" (ECA?) rather than m. coin
+	PORT_BIT( 0x4000, IP_ACTIVE_LOW,  IPT_COIN3    )    // "E. Coin 3" (ECA?) so they're coin1-coin4
+	PORT_BIT( 0x8000, IP_ACTIVE_LOW,  IPT_COIN4    )    // "E. Coin 4" (ECA?)
+>>>>>>> upstream/master
 
 	PORT_START("OUT")
 	//0800?
@@ -804,6 +955,11 @@ static INPUT_PORTS_START( tm2k )
 	PORT_INCLUDE( tm )
 
 	PORT_MODIFY("COIN")
+<<<<<<< HEAD
+=======
+	PORT_BIT( 0x0001, IP_ACTIVE_LOW, IPT_COIN1 )    // "M. Coin 1 Input"
+	PORT_BIT( 0x0002, IP_ACTIVE_LOW, IPT_COIN2 )    // "M. Coin 2 Input"
+>>>>>>> upstream/master
 	PORT_BIT( 0x1000, IP_ACTIVE_LOW, IPT_COIN3 )    // "E. Coin 1" (ECA mech) The rest of the tm games
 	PORT_BIT( 0x2000, IP_ACTIVE_LOW, IPT_COIN4 )    // "E. Coin 2" (ECA mech) Default to m. coin
 	PORT_BIT( 0x4000, IP_ACTIVE_LOW, IPT_COIN5 )    // "E. Coin 3" (ECA mech) So these are coin3-coin6
@@ -818,6 +974,7 @@ static INPUT_PORTS_START( tm4k )
 
 	PORT_MODIFY( "OUT" )
 	PORT_BIT( 0x1000, IP_ACTIVE_HIGH, IPT_OUTPUT ) PORT_WRITE_LINE_DEVICE_MEMBER( "ds1204", ds1204_device, write_rst )
+<<<<<<< HEAD
 	PORT_BIT( 0x2000, IP_ACTIVE_LOW, IPT_OUTPUT ) PORT_WRITE_LINE_DEVICE_MEMBER( "ds1204", ds1204_device, write_dq )
 	PORT_BIT( 0x4000, IP_ACTIVE_HIGH, IPT_OUTPUT ) PORT_WRITE_LINE_DEVICE_MEMBER( "ds1204", ds1204_device, write_clk )
 INPUT_PORTS_END
@@ -870,12 +1027,19 @@ static INPUT_PORTS_START( galgames )
 INPUT_PORTS_END
 
 
+=======
+	PORT_BIT( 0x2000, IP_ACTIVE_LOW,  IPT_OUTPUT ) PORT_WRITE_LINE_DEVICE_MEMBER( "ds1204", ds1204_device, write_dq )
+	PORT_BIT( 0x4000, IP_ACTIVE_HIGH, IPT_OUTPUT ) PORT_WRITE_LINE_DEVICE_MEMBER( "ds1204", ds1204_device, write_clk )
+INPUT_PORTS_END
+
+>>>>>>> upstream/master
 /***************************************************************************
 
                                Machine Drivers
 
 ***************************************************************************/
 
+<<<<<<< HEAD
 MACHINE_RESET_MEMBER(tmaster_state,tmaster)
 {
 	m_gfx_offs = 0;
@@ -890,17 +1054,38 @@ TIMER_DEVICE_CALLBACK_MEMBER(tmaster_state::tm3k_interrupt)
 	if(scanline == 0) // vblank, FIXME
 		m_maincpu->set_input_line(3, HOLD_LINE);
 	else if((scanline % 16) == 0)
+=======
+TIMER_DEVICE_CALLBACK_MEMBER(tmaster_state::scanline_interrupt)
+{
+	int scanline = param;
+
+	if (scanline == 0) // vblank, FIXME
+		m_maincpu->set_input_line(3, HOLD_LINE);
+	else if ((scanline % 16) == 0)
+>>>>>>> upstream/master
 		m_maincpu->set_input_line(1, HOLD_LINE);
 
 	// lev 2 triggered at the end of the blit
 }
 
+<<<<<<< HEAD
 static MACHINE_CONFIG_START( tm, tmaster_state )
 	MCFG_CPU_ADD("maincpu", M68000, XTAL_24MHz / 2) /* 12MHz */
 	MCFG_CPU_PROGRAM_MAP(tmaster_map)
 	MCFG_TIMER_DRIVER_ADD_SCANLINE("scantimer", tmaster_state, tm3k_interrupt, "screen", 0, 1)
 
 	MCFG_MACHINE_RESET_OVERRIDE(tmaster_state,tmaster)
+=======
+int tmaster_compute_addr(uint16_t reg_low, uint16_t reg_mid, uint16_t reg_high)
+{
+	return (reg_low & 0xff) | ((reg_mid & 0x1ff) << 8) | (reg_high << 17);
+}
+
+static MACHINE_CONFIG_START( tm )
+	MCFG_CPU_ADD("maincpu", M68000, XTAL_24MHz / 2) /* 12MHz */
+	MCFG_CPU_PROGRAM_MAP(tmaster_map)
+	MCFG_TIMER_DRIVER_ADD_SCANLINE("scantimer", tmaster_state, scanline_interrupt, "screen", 0, 1)
+>>>>>>> upstream/master
 
 	MCFG_MC68681_ADD( "duart68681", XTAL_8_664MHz / 2 /*??*/)
 	MCFG_MC68681_IRQ_CALLBACK(WRITELINE(tmaster_state, duart_irq_handler))
@@ -910,22 +1095,41 @@ static MACHINE_CONFIG_START( tm, tmaster_state )
 
 	MCFG_NVRAM_ADD_0FILL("nvram")
 
+<<<<<<< HEAD
+=======
+	// video hardware
+>>>>>>> upstream/master
 	MCFG_SCREEN_ADD("screen", RASTER)
 	MCFG_SCREEN_REFRESH_RATE(60)
 	MCFG_SCREEN_VBLANK_TIME(ATTOSECONDS_IN_USEC(0))
 	MCFG_SCREEN_SIZE(400, 256)
 	MCFG_SCREEN_VISIBLE_AREA(0, 400-1, 0, 256-1)
+<<<<<<< HEAD
 	MCFG_SCREEN_UPDATE_DRIVER(tmaster_state, screen_update_tmaster)
+=======
+	MCFG_SCREEN_UPDATE_DRIVER(tmaster_state, screen_update)
+>>>>>>> upstream/master
 	MCFG_SCREEN_PALETTE("palette")
 
 	MCFG_PALETTE_ADD("palette", 0x1000)
 	MCFG_PALETTE_FORMAT(xBBBBBGGGGGRRRRR)
 
+<<<<<<< HEAD
 	MCFG_VIDEO_START_OVERRIDE(tmaster_state,tmaster)
 
 	MCFG_SPEAKER_STANDARD_MONO("mono")
 
 	MCFG_OKIM6295_ADD("oki", XTAL_24MHz / 16, OKIM6295_PIN7_HIGH)  /* 1.5Mhz? clock frequency & pin 7 not verified */
+=======
+	MCFG_CESBLIT_ADD("blitter", "screen", XTAL_32MHz)
+	MCFG_CESBLIT_COMPUTE_ADDR(tmaster_compute_addr)
+	MCFG_CESBLIT_IRQ_CB(WRITELINE(tmaster_state, blitter_irq_callback))
+
+	// sound hardware
+	MCFG_SPEAKER_STANDARD_MONO("mono")
+
+	MCFG_OKIM6295_ADD("oki", XTAL_24MHz / 16, PIN7_HIGH)  /* 1.5Mhz? clock frequency & pin 7 not verified */
+>>>>>>> upstream/master
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 1.0)
 MACHINE_CONFIG_END
 
@@ -933,6 +1137,7 @@ static MACHINE_CONFIG_DERIVED( tmds1204, tm )
 	MCFG_DS1204_ADD("ds1204")
 MACHINE_CONFIG_END
 
+<<<<<<< HEAD
 MACHINE_RESET_MEMBER(tmaster_state,galgames)
 {
 	m_gfx_offs = 0;
@@ -997,6 +1202,8 @@ static MACHINE_CONFIG_DERIVED( galgame2, galgames )
 MACHINE_CONFIG_END
 
 
+=======
+>>>>>>> upstream/master
 /***************************************************************************
 
                                ROMs Loading
@@ -1137,6 +1344,26 @@ ROM_START( tm2kb )
 	ROM_CONTINUE(              0xc0000, 0x040000 )
 ROM_END
 
+<<<<<<< HEAD
+=======
+ROM_START( tm2kspeval ) /* NOT FOR RELEASE / FOR EVALUATION - still requires credits - Defaults to Spanish but English can be selected */
+	ROM_REGION( 0x200000, "maincpu", 0 ) // 68000 Code
+	ROM_LOAD16_BYTE( "tm2k_spain_4.xx3.u51", 0x000000, 0x080000, CRC(ba51f4dd) SHA1(bcdf6acbe6546a562e74178d4f9cdb0e167baee2) ) /* Ver: 4.XX3 Spanish 6-26-97 - Evaluation Only */
+	ROM_LOAD16_BYTE( "tm2k_spain_4.xx3.u52", 0x000001, 0x080000, CRC(6ca86264) SHA1(2fb04b8d4bd0a51653ca80e1af7fedab5aebb9dd) ) /* Ver: 4.XX3 Spanish 6-26-97 - Evaluation Only */
+
+	ROM_REGION( 0x400000, "blitter", ROMREGION_ERASE )  // Blitter gfx
+	ROM_LOAD16_BYTE( "tm2k_graphic.u38", 0x100000, 0x080000, CRC(22bb6cc5) SHA1(fc6cfd4e1e6e1455d648a7b63f2c8e37cdfe86d6) ) /* All 4 graphic roms marked as Rev 4.X */
+	ROM_LOAD16_BYTE( "tm2k_graphic.u36", 0x100001, 0x080000, CRC(7f0840ac) SHA1(1c3af419d571579a3f2c561617d55914d28ef22b) )
+	ROM_LOAD16_BYTE( "tm2k_graphic.u39", 0x300000, 0x080000, CRC(059e1bd8) SHA1(7451c1cfa0d090b0566e353738a1ffba732a8ad2) )
+	ROM_LOAD16_BYTE( "tm2k_graphic.u37", 0x300001, 0x080000, CRC(4cf65950) SHA1(74d49166da19ecc4b8fc1e8e3f01361dfb645eea) )
+	/* Sockets U40 & U41 not populated with earlier Touchmaster 2000 sets */
+
+	ROM_REGION( 0x100000, "oki", 0 ) // Samples
+	ROM_LOAD( "tm2k_sound.u8", 0x40000, 0x040000, CRC(f39ad4cf) SHA1(9bcb9a5dd3636d6541eeb3e737c7253ab0ed4e8d) ) /* Marked as Rev 1.0 */
+	ROM_CONTINUE(              0xc0000, 0x040000 )
+ROM_END
+
+>>>>>>> upstream/master
 /***************************************************************************
 
 Touchmaster 3000
@@ -1188,6 +1415,26 @@ ROM_START( tm3k )
 	ROM_LOAD( "tm3k_sound.u8", 0x00000, 0x100000, CRC(d0ae33c1) SHA1(a079def9a086a091fcc4493a44fec756d2470415) ) /* Labeled TOUCHMASTER U8 5.0 (green label) */
 ROM_END
 
+<<<<<<< HEAD
+=======
+ROM_START( tm3ksp ) /* Defaults to Spanish but can also be played in English */
+	ROM_REGION( 0x200000, "maincpu", 0 ) // 68000 Code
+	ROM_LOAD16_BYTE( "tm3k_v5.02_spain.u51", 0x000000, 0x100000, CRC(e5d1d465) SHA1(30ecf32c146a611a257d97bd6789b46ce2695024) ) /* TOUCHMASTER U51 SPAIN 5.02 (Spanish 11-25-97) (yellow label) */
+	ROM_LOAD16_BYTE( "tm3k_v5.02_spain.u52", 0x000001, 0x100000, CRC(21c5fb8b) SHA1(5575925d6dc7548f5ccb04876d8c15b24601e3c0) ) /* TOUCHMASTER U52 SPAIN 5.02 (Spanish 11-25-97) (yellow label) */
+
+	ROM_REGION( 0x600000, "blitter", 0 )    // Blitter gfx
+	ROM_LOAD16_BYTE( "tm3k_graphic.u38", 0x000000, 0x100000, CRC(a6683899) SHA1(d05024390917cdb1871d030996da8e1eb6460918) ) /* Labeled TOUCHMASTER U38 STANDARD 5.0 (pink label) */
+	ROM_LOAD16_BYTE( "tm3k_graphic.u36", 0x000001, 0x100000, CRC(7bde520d) SHA1(77750b689e2f0d47804042456e54bbd9c28deeac) ) /* Labeled TOUCHMASTER U36 STANDARD 5.0 (pink label) */
+	ROM_LOAD16_BYTE( "tm3k_graphic.u39", 0x200000, 0x100000, CRC(206b56a6) SHA1(09e5e05bffd0a09abd24d668e2c59b56f2c79134) ) /* Labeled TOUCHMASTER U39 STANDARD 5.0 (pink label) */
+	ROM_LOAD16_BYTE( "tm3k_graphic.u37", 0x200001, 0x100000, CRC(18f50eb3) SHA1(a7c9d3b24b5fd110380ec87d9200d55cad473efc) ) /* Labeled TOUCHMASTER U37 STANDARD 5.0 (pink label) */
+	ROM_LOAD16_BYTE( "tm3k_graphic.u41", 0x400000, 0x100000, CRC(c35c0536) SHA1(a29fd88e8f3e124f6e84012c3573616f6447eeaa) ) /* Labeled TOUCHMASTER U41 STANDARD 5.0 (pink label) */
+	ROM_LOAD16_BYTE( "tm3k_graphic.u40", 0x400001, 0x100000, CRC(353df7ca) SHA1(d6c5d5449af6b6a3acee219778583904c5b554b4) ) /* Labeled TOUCHMASTER U40 STANDARD 5.0 (pink label) */
+
+	ROM_REGION( 0x100000, "oki", 0 ) // Samples
+	ROM_LOAD( "tm3k_sound.u8", 0x00000, 0x100000, CRC(d0ae33c1) SHA1(a079def9a086a091fcc4493a44fec756d2470415) ) /* Labeled TOUCHMASTER U8 5.0 (green label) */
+ROM_END
+
+>>>>>>> upstream/master
 ROM_START( tm3ka )
 	ROM_REGION( 0x200000, "maincpu", 0 ) // 68000 Code
 	ROM_LOAD16_BYTE( "tm3k_v5.01.u51", 0x000000, 0x100000, CRC(c9522279) SHA1(e613b791f831271722f05b7e96c35519fa9fc174) ) /* TOUCHMASTER 3000 U51 DOMESTIC 5.01 (Standard 11-4-97) (yellow label) */
@@ -1205,6 +1452,26 @@ ROM_START( tm3ka )
 	ROM_LOAD( "tm3k_sound.u8", 0x00000, 0x100000, CRC(d0ae33c1) SHA1(a079def9a086a091fcc4493a44fec756d2470415) ) /* Labeled TOUCHMASTER U8 5.0 (green label) */
 ROM_END
 
+<<<<<<< HEAD
+=======
+ROM_START( tm3keval ) /* FREEPLAY ONLY / NOT FOR RELEASE / FOR EVALUATION ONLY */
+	ROM_REGION( 0x200000, "maincpu", 0 ) // 68000 Code
+	ROM_LOAD16_BYTE( "u51_touchmaster_10-21-97_a903.u51", 0x000000, 0x100000, CRC(4ddf94aa) SHA1(733134f835a30db48e6edb7eef95dc7a8f680955) ) /* U51  TOUCHMASTER 10-21-97 A903 (Standard AMOA 10-21-97) */
+	ROM_LOAD16_BYTE( "u52_touchmaster_10-21-97_dab0.u52", 0x000001, 0x100000, CRC(a1e1eb81) SHA1(d2e116872ff41cce9f6c228ac0ce7a3250f21054) ) /* U51  TOUCHMASTER 10-21-97 DAB0 (Standard AMOA 10-21-97) */
+
+	ROM_REGION( 0x600000, "blitter", 0 )    // Blitter gfx
+	ROM_LOAD16_BYTE( "u38_touchmaster_10-21-97_0067.u38", 0x000000, 0x100000, CRC(cc2af2b0) SHA1(64de224599e038b98ffedd965ac83b077298097f) ) /* U38  TOUCHMASTER 10-21-97 0067 (date and checksum hand written) */
+	ROM_LOAD16_BYTE( "u36_touchmaster_10-21-97_ba57.u36", 0x000001, 0x100000, CRC(73e99b1c) SHA1(812d6958a8746cc8f5cba125486e1f72740a0840) ) /* U36  TOUCHMASTER 10-21-97 BA57 (date and checksum hand written) */
+	ROM_LOAD16_BYTE( "u39_touchmaster_10-21-97_4a76.u39", 0x200000, 0x100000, CRC(af92cf87) SHA1(cb6baf8b3afe1e61e440be69a90d5c001eb7b388) ) /* U39  TOUCHMASTER 10-21-97 4A76 (date and checksum hand written) */
+	ROM_LOAD16_BYTE( "u37_touchmaster_10-21-97_40F6.u37", 0x200001, 0x100000, CRC(b5e69eca) SHA1(c548e33a049d17381c9755499940ffc459c0cb48) ) /* U37  TOUCHMASTER 10-21-97 40F6 (date and checksum hand written) */
+	ROM_LOAD16_BYTE( "u41_touchmaster_10-21-97_f986.u41", 0x400000, 0x100000, CRC(97bc5e19) SHA1(9a9786ec2a9a7b7008d9e2e8624df8301f737dbc) ) /* U41  TOUCHMASTER 10-21-97 F986 (date and checksum hand written) */
+	ROM_LOAD16_BYTE( "u40_touchmaster_10-21-97_7086.u40", 0x400001, 0x100000, CRC(e3ae6fa6) SHA1(02c98f59553f4343f0dd855794364ad95aa81063) ) /* U40  TOUCHMASTER 10-21-97 7086 (date and checksum hand written) */
+
+	ROM_REGION( 0x100000, "oki", 0 ) // Samples
+	ROM_LOAD( "tm3k_sound.u8", 0x00000, 0x100000, CRC(d0ae33c1) SHA1(a079def9a086a091fcc4493a44fec756d2470415) ) /* Labeled TOUCHMASTER U8 5.0 (green label) */
+ROM_END
+
+>>>>>>> upstream/master
 /***************************************************************************
 
 Touchmaster 4000
@@ -1683,6 +1950,7 @@ ROM_START( tm8k902 )
 	ROM_LOAD( "tm8k_sound.u8", 0x00000, 0x100000, CRC(c6070a60) SHA1(2dc20bf2217a36374b5a691133ad43f53dbe29ca) ) /* Mask rom labeled 5341-16513-03 U8 SOUND */
 ROM_END
 
+<<<<<<< HEAD
 /***************************************************************************
 
 Galaxy Games BIOS v. 1.90
@@ -1862,3 +2130,33 @@ GAME( 2000, tm8k,     0,        tmds1204, tm4k,     driver_device, 0,        ROT
 GAME( 2000, tm8k902,  tm8k,     tmds1204, tm4k,     driver_device, 0,        ROT0, "Midway Games Inc.",                       "Touchmaster 8000 (v9.02 Standard)",      0 )
 GAME( 1998, galgbios, 0,        galgames, galgames, tmaster_state, galgames, ROT0, "Creative Electronics & Software",         "Galaxy Games (BIOS v1.90)",              MACHINE_IS_BIOS_ROOT )
 GAME( 1998, galgame2, galgbios, galgame2, galgames, tmaster_state, galgame2, ROT0, "Creative Electronics & Software / Namco", "Galaxy Games StarPak 2",                 0 )
+=======
+GAME( 1996, tm,         0,        tm,       tm,       tmaster_state, 0,        ROT0, "Midway Games Inc. / CES Inc.", "Touchmaster (v3.00 Euro)",                          0 )
+GAME( 1996, tmdo,       tm,       tm,       tm,       tmaster_state, 0,        ROT0, "Midway Games Inc. / CES Inc.", "Touchmaster (v2.2-01 Standard)",                    0 )
+GAME( 1996, tm2k,       0,        tm,       tm2k,     tmaster_state, 0,        ROT0, "Midway Games Inc.",            "Touchmaster 2000 Plus (v4.63 Standard)",            0 )
+GAME( 1996, tm2ka,      tm2k,     tm,       tm2k,     tmaster_state, 0,        ROT0, "Midway Games Inc.",            "Touchmaster 2000 (v4.02 Standard)",                 0 )
+GAME( 1996, tm2kb,      tm2k,     tm,       tm2k,     tmaster_state, 0,        ROT0, "Midway Games Inc.",            "Touchmaster 2000 (v4.00 Standard)",                 0 )
+GAME( 1996, tm2kspeval, tm2k,     tm,       tm2k,     tmaster_state, 0,        ROT0, "Midway Games Inc.",            "Touchmaster 2000 (v4.XX3 Spanish Evaluation)",      0 )
+GAME( 1997, tm3k,       0,        tm,       tm2k,     tmaster_state, 0,        ROT0, "Midway Games Inc.",            "Touchmaster 3000 (v5.02 Standard)",                 0 )
+GAME( 1997, tm3ksp,     tm3k,     tm,       tm2k,     tmaster_state, 0,        ROT0, "Midway Games Inc.",            "Touchmaster 3000 (v5.02 Spanish)",                  0 )
+GAME( 1997, tm3ka,      tm3k,     tm,       tm2k,     tmaster_state, 0,        ROT0, "Midway Games Inc.",            "Touchmaster 3000 (v5.01 Standard)",                 0 )
+GAME( 1997, tm3keval,   tm3k,     tm,       tm2k,     tmaster_state, 0,        ROT0, "Midway Games Inc.",            "Touchmaster 3000 (v5.XX Standard AMOA Evaluation)", 0 )
+GAME( 1998, tm4k,       0,        tmds1204, tm4k,     tmaster_state, 0,        ROT0, "Midway Games Inc.",            "Touchmaster 4000 (v6.03 Standard)",                 0 )
+GAME( 1998, tm4knj,     tm4k,     tmds1204, tm4k,     tmaster_state, 0,        ROT0, "Midway Games Inc.",            "Touchmaster 4000 (v6.03 New Jersey)",               0 )
+GAME( 1998, tm4ka,      tm4k,     tmds1204, tm4k,     tmaster_state, 0,        ROT0, "Midway Games Inc.",            "Touchmaster 4000 (v6.02 Standard)",                 0 )
+GAME( 1998, tm4kca,     tm4k,     tmds1204, tm4k,     tmaster_state, 0,        ROT0, "Midway Games Inc.",            "Touchmaster 4000 (v6.02 California)",               0 )
+GAME( 1998, tm4kb,      tm4k,     tmds1204, tm4k,     tmaster_state, 0,        ROT0, "Midway Games Inc.",            "Touchmaster 4000 (v6.01 Standard)",                 0 )
+GAME( 1998, tm4kmn,     tm4k,     tmds1204, tm4k,     tmaster_state, 0,        ROT0, "Midway Games Inc.",            "Touchmaster 4000 (v6.01 Minnesota)",                0 )
+GAME( 1998, tm5k,       0,        tmds1204, tm4k,     tmaster_state, 0,        ROT0, "Midway Games Inc.",            "Touchmaster 5000 (v7.10 Standard)",                 0 )
+GAME( 1998, tm5kca,     tm5k,     tmds1204, tm4k,     tmaster_state, 0,        ROT0, "Midway Games Inc.",            "Touchmaster 5000 (v7.10 California)",               0 )
+GAME( 1998, tm5kmn,     tm5k,     tmds1204, tm4k,     tmaster_state, 0,        ROT0, "Midway Games Inc.",            "Touchmaster 5000 (v7.10 Minnesota)",                0 )
+GAME( 1998, tm5ka,      tm5k,     tmds1204, tm4k,     tmaster_state, 0,        ROT0, "Midway Games Inc.",            "Touchmaster 5000 (v7.01 Standard)",                 0 )
+GAME( 1999, tm7k,       0,        tmds1204, tm4k,     tmaster_state, 0,        ROT0, "Midway Games Inc.",            "Touchmaster 7000 (v8.04 Standard)",                 0 )
+GAME( 1999, tm7knj,     tm7k,     tmds1204, tm4k,     tmaster_state, 0,        ROT0, "Midway Games Inc.",            "Touchmaster 7000 (v8.05 New Jersey)",               0 )
+GAME( 1999, tm7kmn,     tm7k,     tmds1204, tm4k,     tmaster_state, 0,        ROT0, "Midway Games Inc.",            "Touchmaster 7000 (v8.04 Minnesota)",                0 )
+GAME( 1999, tm7ka,      tm7k,     tmds1204, tm4k,     tmaster_state, 0,        ROT0, "Midway Games Inc.",            "Touchmaster 7000 (v8.00 Standard)",                 0 )
+GAME( 1999, tm7kmna,    tm7k,     tmds1204, tm4k,     tmaster_state, 0,        ROT0, "Midway Games Inc.",            "Touchmaster 7000 (v8.00 Minnesota)",                0 )
+GAME( 1999, tm7keval,   tm7k,     tmds1204, tm4k,     tmaster_state, 0,        ROT0, "Midway Games Inc.",            "Touchmaster 7000 (v8.1X ASI Standard Evaluation)",  0 )
+GAME( 2000, tm8k,       0,        tmds1204, tm4k,     tmaster_state, 0,        ROT0, "Midway Games Inc.",            "Touchmaster 8000 (v9.04 Standard)",                 0 )
+GAME( 2000, tm8k902,    tm8k,     tmds1204, tm4k,     tmaster_state, 0,        ROT0, "Midway Games Inc.",            "Touchmaster 8000 (v9.02 Standard)",                 0 )
+>>>>>>> upstream/master

@@ -6,6 +6,10 @@
 //
 //============================================================
 
+<<<<<<< HEAD
+=======
+#include "emu.h"
+>>>>>>> upstream/master
 #include "pointswininfo.h"
 
 #include "debugviewinfo.h"
@@ -14,13 +18,21 @@
 
 
 pointswin_info::pointswin_info(debugger_windows_interface &debugger) :
+<<<<<<< HEAD
 	debugwin_info(debugger, false, std::string("All Breakpoints").c_str(), NULL)
+=======
+	debugwin_info(debugger, false, std::string("All Breakpoints").c_str(), nullptr)
+>>>>>>> upstream/master
 {
 	if (!window())
 		return;
 
 	m_views[0].reset(global_alloc(debugview_info(debugger, *this, window(), DVT_BREAK_POINTS)));
+<<<<<<< HEAD
 	if ((m_views[0] == NULL) || !m_views[0]->is_valid())
+=======
+	if ((m_views[0] == nullptr) || !m_views[0]->is_valid())
+>>>>>>> upstream/master
 	{
 		m_views[0].reset();
 		return;

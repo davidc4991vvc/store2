@@ -5,6 +5,10 @@
  *   Xerox AltoII memory mapped I/O hardware
  *
  *****************************************************************************/
+<<<<<<< HEAD
+=======
+#include "emu.h"
+>>>>>>> upstream/master
 #include "alto2cpu.h"
 #include "a2roms.h"
 
@@ -184,7 +188,11 @@ WRITE16_MEMBER( alto2_cpu_device::mouse_buttons_w ) { X_WRBITS(m_hw.utilin,16,13
  * @brief printer paper strobe bit
  * Paper strobe bit. Toggling this bit causes a paper scrolling operation.
  */
+<<<<<<< HEAD
 //static inline UINT16 GET_PPPSTR(UINT16 utilout) { return X_RDBITS(utilout,16,0,0); }
+=======
+//static inline uint16_t GET_PPPSTR(uint16_t utilout) { return X_RDBITS(utilout,16,0,0); }
+>>>>>>> upstream/master
 
 /**
  * @brief printer retstore bit
@@ -192,26 +200,42 @@ WRITE16_MEMBER( alto2_cpu_device::mouse_buttons_w ) { X_WRBITS(m_hw.utilin,16,13
  * the "check" condition if present) and moves the carriage to the
  * left margin.
  */
+<<<<<<< HEAD
 //static inline UINT16 GET_PREST(UINT16 utilout) { return X_RDBITS(utilout,16,1,1); }
+=======
+//static inline uint16_t GET_PREST(uint16_t utilout) { return X_RDBITS(utilout,16,1,1); }
+>>>>>>> upstream/master
 
 /**
  * @brief printer ribbon bit
  * Ribbon bit. When this bit is 1 the ribbon is up (in printing
  * position); when 0, it is down.
  */
+<<<<<<< HEAD
 //static inline UINT16 GET_PRIB(UINT16 utilout) { return X_RDBITS(utilout,16,2,2); }
+=======
+//static inline uint16_t GET_PRIB(uint16_t utilout) { return X_RDBITS(utilout,16,2,2); }
+>>>>>>> upstream/master
 
 /**
  * @brief printer daisy strobe bit
  * Daisy strobe bit. Toggling this bit causes a character to be printed.
  */
+<<<<<<< HEAD
 //static inline UINT16 GET_PCHSTR(UINT16 utilout) { return X_RDBITS(utilout,16,3,3); }
+=======
+//static inline uint16_t GET_PCHSTR(uint16_t utilout) { return X_RDBITS(utilout,16,3,3); }
+>>>>>>> upstream/master
 
 /**
  * @brief printer carriage strobe bit
  * Carriage strobe bit. Toggling this bit causes a horizontal position operation.
  */
+<<<<<<< HEAD
 //static inline UINT16 GET_PCARSTR(UINT16 utilout) { return X_RDBITS(utilout,16,4,4); }
+=======
+//static inline uint16_t GET_PCARSTR(uint16_t utilout) { return X_RDBITS(utilout,16,4,4); }
+>>>>>>> upstream/master
 
 /**
  * @brief printer data
@@ -225,23 +249,39 @@ WRITE16_MEMBER( alto2_cpu_device::mouse_buttons_w ) { X_WRBITS(m_hw.utilin,16,13
  * represented as sign-magnitude (i.e., bit 5 is 1 for negative numbers, 0 for
  * positive; bits 6-15 are the absolute value of the number).
  */
+<<<<<<< HEAD
 //static inline UINT16 GET_PDATA(UINT16 utilout) { return X_RDBITS(utilout,16,5,15); }
+=======
+//static inline uint16_t GET_PDATA(uint16_t utilout) { return X_RDBITS(utilout,16,5,15); }
+>>>>>>> upstream/master
 
 /**
  * @brief read the UTILIN port
  *
+<<<<<<< HEAD
  * @param addr memory mapped I/O address to be read
+=======
+ * @param offset memory mapped I/O address to be read
+>>>>>>> upstream/master
  * @return current value on the UTILIN port
  */
 READ16_MEMBER( alto2_cpu_device::utilin_r )
 {
+<<<<<<< HEAD
 	UINT16  data;
+=======
+	uint16_t  data;
+>>>>>>> upstream/master
 	// FIXME: update the printer status
 	// printer_read();
 
 	data = m_hw.utilin;
 
+<<<<<<< HEAD
 	if (!space.debugger_access()) {
+=======
+	if (!machine().side_effect_disabled()) {
+>>>>>>> upstream/master
 		LOG((this,LOG_HW,2," UTILIN rd %#o (%#o)\n", offset, data));
 	}
 	return data;
@@ -250,14 +290,24 @@ READ16_MEMBER( alto2_cpu_device::utilin_r )
 /**
  * @brief read the XBUS port
  *
+<<<<<<< HEAD
  * @param addr memory mapped I/O address to be read
+=======
+ * @param offset memory mapped I/O address to be read
+>>>>>>> upstream/master
  * @return current value on the XBUS port latch
  */
 READ16_MEMBER( alto2_cpu_device::xbus_r )
 {
+<<<<<<< HEAD
 	UINT16 data = m_hw.xbus[offset & 3];
 
 	if (!space.debugger_access()) {
+=======
+	uint16_t data = m_hw.xbus[offset & 3];
+
+	if (!machine().side_effect_disabled()) {
+>>>>>>> upstream/master
 		LOG((this,LOG_HW,2," XBUS[%d] rd %#o (%#o)\n", offset & 3, offset, data));
 	}
 	return data;
@@ -273,7 +323,11 @@ READ16_MEMBER( alto2_cpu_device::xbus_r )
  */
 WRITE16_MEMBER( alto2_cpu_device::xbus_w )
 {
+<<<<<<< HEAD
 	if (!space.debugger_access()) {
+=======
+	if (!machine().side_effect_disabled()) {
+>>>>>>> upstream/master
 		LOG((this,LOG_HW,2," XBUS[%d] wr %#o (%#o)\n", offset & 3, offset, data));
 	}
 	m_hw.xbus[offset&3] = data;
@@ -287,8 +341,13 @@ WRITE16_MEMBER( alto2_cpu_device::xbus_w )
  */
 READ16_MEMBER( alto2_cpu_device::utilout_r )
 {
+<<<<<<< HEAD
 	UINT16 data = m_hw.utilout ^ 0177777;
 	if (!space.debugger_access()) {
+=======
+	uint16_t data = m_hw.utilout ^ 0177777;
+	if (!machine().side_effect_disabled()) {
+>>>>>>> upstream/master
 		LOG((this,0,2,"  UTILOUT rd %#o (%#o)\n", offset, data));
 	}
 	return data;
@@ -304,13 +363,21 @@ READ16_MEMBER( alto2_cpu_device::utilout_r )
  */
 WRITE16_MEMBER( alto2_cpu_device::utilout_w )
 {
+<<<<<<< HEAD
 	if (!space.debugger_access()) {
+=======
+	if (!machine().side_effect_disabled()) {
+>>>>>>> upstream/master
 		LOG((this,LOG_HW,2," UTILOUT wr %#o (%#o)\n", offset, data));
 	}
 	m_hw.utilout = data ^ 0177777;
 
 	// FIXME: write printer data
 	// printer_write();
+<<<<<<< HEAD
+=======
+	m_speaker->level_w(data ? 1 : 0);
+>>>>>>> upstream/master
 }
 
 /**
@@ -362,7 +429,11 @@ WRITE16_MEMBER( alto2_cpu_device::utilout_w )
 static const prom_load_t pl_madr_a64 =
 {
 	"madr.a64",
+<<<<<<< HEAD
 	0,
+=======
+	nullptr,
+>>>>>>> upstream/master
 	"a66b0eda",
 	"4d9088f592caa3299e90966b17765be74e523144",
 	/* size */  0400,
@@ -373,13 +444,21 @@ static const prom_load_t pl_madr_a64 =
 	/* shift */ 0,
 	/* dmap */  DMAP_DEFAULT,
 	/* dand */  ZERO,
+<<<<<<< HEAD
 	/* type */  sizeof(UINT8)
+=======
+	/* type */  sizeof(uint8_t)
+>>>>>>> upstream/master
 };
 
 static const prom_load_t pl_madr_a65 =
 {
 	"madr.a65",
+<<<<<<< HEAD
 	0,
+=======
+	nullptr,
+>>>>>>> upstream/master
 	"ba37febd",
 	"82e9db1cb65f451755295f0d179e6f8fe3349d4d",
 	/* size */  0400,
@@ -390,7 +469,11 @@ static const prom_load_t pl_madr_a65 =
 	/* shift */ 0,
 	/* dmap */  DMAP_DEFAULT,
 	/* dand */  ZERO,
+<<<<<<< HEAD
 	/* type */  sizeof(UINT8)
+=======
+	/* type */  sizeof(uint8_t)
+>>>>>>> upstream/master
 };
 
 /**

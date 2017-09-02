@@ -1,5 +1,9 @@
 /*
+<<<<<<< HEAD
 ** $Id: lmem.c,v 1.89 2014/11/02 19:33:33 roberto Exp $
+=======
+** $Id: lmem.c,v 1.91 2015/03/06 19:45:54 roberto Exp $
+>>>>>>> upstream/master
 ** Interface to Memory Manager
 ** See Copyright Notice in lua.h
 */
@@ -85,10 +89,18 @@ void *luaM_realloc_ (lua_State *L, void *block, size_t osize, size_t nsize) {
 #endif
   newblock = (*g->frealloc)(g->ud, block, osize, nsize);
   if (newblock == NULL && nsize > 0) {
+<<<<<<< HEAD
     api_check( nsize > realosize,
                  "realloc cannot fail when shrinking a block");
     luaC_fullgc(L, 1);  /* try to free some memory... */
     newblock = (*g->frealloc)(g->ud, block, osize, nsize);  /* try again */
+=======
+    lua_assert(nsize > realosize);  /* cannot fail when shrinking a block */
+    if (g->version) {  /* is state fully built? */
+      luaC_fullgc(L, 1);  /* try to free some memory... */
+      newblock = (*g->frealloc)(g->ud, block, osize, nsize);  /* try again */
+    }
+>>>>>>> upstream/master
     if (newblock == NULL)
       luaD_throw(L, LUA_ERRMEM);
   }

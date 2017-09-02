@@ -1,6 +1,7 @@
 // license:BSD-3-Clause
 // copyright-holders:Carl
 
+<<<<<<< HEAD
 #ifndef __SB16__
 #define __SB16__
 
@@ -10,6 +11,16 @@
 #include "bus/pc_joy/pc_joy.h"
 #include "cpu/mcs51/mcs51.h"
 #include "sound/262intf.h"
+=======
+#ifndef MAME_BUS_ISA_SB16_H
+#define MAME_BUS_ISA_SB16_H
+
+#include "isa.h"
+#include "bus/pc_joy/pc_joy.h"
+#include "cpu/mcs51/mcs51.h"
+#include "sound/262intf.h"
+#include "sound/dac.h"
+>>>>>>> upstream/master
 
 //*********************************************************************
 //   TYPE DEFINITIONS
@@ -17,6 +28,7 @@
 
 // ====================> sb16_device
 
+<<<<<<< HEAD
 class sb16_lle_device : public device_t,
 					public device_isa16_card_interface
 {
@@ -32,6 +44,13 @@ public:
 	required_device<dac_device> m_dacr;
 	required_device<pc_joy_device> m_joy;
 	required_device<cpu_device> m_cpu;
+=======
+class sb16_lle_device : public device_t, public device_isa16_card_interface
+{
+public:
+	// construction/destruction
+	sb16_lle_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
+>>>>>>> upstream/master
 
 	READ8_MEMBER( mpu401_r );
 	WRITE8_MEMBER( mpu401_w );
@@ -81,6 +100,7 @@ public:
 
 protected:
 	// device-level overrides
+<<<<<<< HEAD
 	virtual void device_start();
 	virtual void device_reset();
 
@@ -89,11 +109,33 @@ protected:
 	void dack_w(int line, UINT8 data);
 	UINT16 dack16_r(int line);
 	void dack16_w(int line, UINT16 data);
+=======
+	virtual void device_start() override;
+	virtual void device_reset() override;
+
+	virtual void device_timer(emu_timer &timer, device_timer_id id, int param, void *ptr) override;
+
+	// optional information overrides
+	virtual const tiny_rom_entry *device_rom_region() const override;
+	virtual void device_add_mconfig(machine_config &config) override;
+
+	uint8_t dack_r(int line) override;
+	void dack_w(int line, uint8_t data) override;
+	uint16_t dack16_r(int line) override;
+	void dack16_w(int line, uint16_t data) override;
+
+	required_device<dac_word_interface> m_ldac;
+	required_device<dac_word_interface> m_rdac;
+	required_device<pc_joy_device> m_joy;
+	required_device<cpu_device> m_cpu;
+
+>>>>>>> upstream/master
 private:
 	void control_timer(bool start);
 
 	// internal state
 	bool m_data_in;
+<<<<<<< HEAD
 	UINT8 m_in_byte;
 	bool m_data_out;
 	UINT8 m_out_byte;
@@ -104,6 +146,18 @@ private:
 		UINT32 w;
 		UINT16 h[2];
 		UINT8  b[4];
+=======
+	uint8_t m_in_byte;
+	bool m_data_out;
+	uint8_t m_out_byte;
+
+	uint8_t m_freq, m_mode, m_dac_fifo_ctrl, m_adc_fifo_ctrl, m_ctrl8, m_ctrl16, m_mpu_byte;
+	uint16_t m_dma8_len, m_dma16_len, m_dma8_cnt, m_dma16_cnt;
+	typedef union {
+		uint32_t w;
+		uint16_t h[2];
+		uint8_t  b[4];
+>>>>>>> upstream/master
 	} samples;
 	samples m_adc_fifo[16], m_dac_fifo[16];
 	int m_adc_fifo_head, m_adc_fifo_tail, m_dac_fifo_head, m_dac_fifo_tail;
@@ -117,4 +171,8 @@ private:
 
 extern const device_type ISA16_SB16;
 
+<<<<<<< HEAD
 #endif
+=======
+#endif // MAME_BUS_ISA_SB16_H
+>>>>>>> upstream/master

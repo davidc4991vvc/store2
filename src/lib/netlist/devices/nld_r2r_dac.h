@@ -46,6 +46,7 @@
 #ifndef NLD_R2R_DAC_H_
 #define NLD_R2R_DAC_H_
 
+<<<<<<< HEAD
 #include "nl_base.h"
 #include "analog/nld_twoterm.h"
 
@@ -66,5 +67,14 @@ NETLIB_DEVICE_WITH_PARAMS_DERIVED(r2r_dac, twoterm,
 
 NETLIB_NAMESPACE_DEVICES_END()
 
+=======
+#include "../nl_setup.h"
+
+#define R2R_DAC(name, p_VIN, p_R, p_N)                                          \
+		NET_REGISTER_DEV(R2R_DAC, name)                                         \
+		NETDEV_PARAMI(name, VIN, p_VIN)                                         \
+		NETDEV_PARAMI(name, R,   p_R)                                           \
+		NETDEV_PARAMI(name, N,   p_N)
+>>>>>>> upstream/master
 
 #endif /* NLD_R2R_DAC_H_ */

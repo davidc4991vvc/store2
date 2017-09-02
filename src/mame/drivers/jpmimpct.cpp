@@ -1,5 +1,9 @@
 // license:BSD-3-Clause
 // copyright-holders:Philip Bennett
+<<<<<<< HEAD
+=======
+// thanks-to:Tony Friery
+>>>>>>> upstream/master
 /***************************************************************************
 
     JPM IMPACT (aka System 6)
@@ -103,6 +107,7 @@ Thanks to Tony Friery and JPeMU for I/O routines and documentation.
 
 
 #include "emu.h"
+<<<<<<< HEAD
 #include "cpu/m68000/m68000.h"
 
 #include "includes/jpmimpct.h"
@@ -113,6 +118,18 @@ Thanks to Tony Friery and JPeMU for I/O routines and documentation.
 #include "machine/steppers.h"
 #include "machine/roc10937.h"
 #include "machine/i8255.h"
+=======
+#include "includes/jpmimpct.h"
+
+#include "cpu/m68000/m68000.h"
+#include "machine/i8255.h"
+#include "machine/nvram.h"
+#include "video/awpvid.h"
+#include "screen.h"
+#include "speaker.h"
+
+#include "jpmimpct.lh"
+>>>>>>> upstream/master
 
 /*************************************
  *
@@ -210,7 +227,11 @@ TIMER_DEVICE_CALLBACK_MEMBER(jpmimpct_state::duart_1_timer_event)
 READ16_MEMBER(jpmimpct_state::duart_1_r)
 {
 	struct duart_t &duart_1 = m_duart_1;
+<<<<<<< HEAD
 	UINT16 val = 0xffff;
+=======
+	uint16_t val = 0xffff;
+>>>>>>> upstream/master
 	switch (offset)
 	{
 		case 0x1:
@@ -384,7 +405,11 @@ READ16_MEMBER(jpmimpct_state::duart_2_r)
 		}
 		case 0xb:
 		{
+<<<<<<< HEAD
 			UINT16 val = m_touch_data[m_touch_cnt];
+=======
+			uint16_t val = m_touch_data[m_touch_cnt];
+>>>>>>> upstream/master
 
 			if (m_touch_cnt++ == 3)
 				m_touch_cnt = 0;
@@ -428,7 +453,11 @@ WRITE16_MEMBER(jpmimpct_state::duart_2_w)
 
 READ16_MEMBER(jpmimpct_state::inputs1_r)
 {
+<<<<<<< HEAD
 	UINT16 val = 0x00ff;
+=======
+	uint16_t val = 0x00ff;
+>>>>>>> upstream/master
 
 	switch (offset)
 	{
@@ -513,7 +542,11 @@ void jpmimpct_state::jpm_draw_lamps(int data, int lamp_strobe)
 	for (i=0; i<16; i++)
 	{
 		m_Lamps[16*(m_lamp_strobe+i)] = data & 1;
+<<<<<<< HEAD
 		output_set_lamp_value((16*lamp_strobe)+i, (m_Lamps[(16*lamp_strobe)+i]));
+=======
+		output().set_lamp_value((16*lamp_strobe)+i, (m_Lamps[(16*lamp_strobe)+i]));
+>>>>>>> upstream/master
 		data = data >> 1;
 	}
 }
@@ -552,7 +585,11 @@ WRITE16_MEMBER(jpmimpct_state::jpmio_w)
 			}
 			else
 //          slide = 0;
+<<<<<<< HEAD
 			MechMtr_update(0, data >> 10);
+=======
+			m_meters->update(0, data >> 10);
+>>>>>>> upstream/master
 			m_duart_1.IP &= ~0x10;
 			break;
 		}
@@ -565,7 +602,11 @@ WRITE16_MEMBER(jpmimpct_state::jpmio_w)
 
 		case 0x0b:
 		{
+<<<<<<< HEAD
 			output_set_digit_value(m_lamp_strobe,data);
+=======
+			output().set_digit_value(m_lamp_strobe,data);
+>>>>>>> upstream/master
 			break;
 		}
 		case 0x0f:
@@ -834,13 +875,21 @@ WRITE_LINE_MEMBER(jpmimpct_state::tms_irq)
  *
  *************************************/
 
+<<<<<<< HEAD
 static MACHINE_CONFIG_START( jpmimpct, jpmimpct_state )
+=======
+static MACHINE_CONFIG_START( jpmimpct )
+>>>>>>> upstream/master
 	MCFG_CPU_ADD("maincpu", M68000, 8000000)
 	MCFG_CPU_PROGRAM_MAP(m68k_program_map)
 
 	MCFG_CPU_ADD("dsp", TMS34010, 40000000)
 	MCFG_CPU_PROGRAM_MAP(tms_program_map)
+<<<<<<< HEAD
 	MCFG_TMS340X0_HALT_ON_RESET(TRUE) /* halt on reset */
+=======
+	MCFG_TMS340X0_HALT_ON_RESET(true) /* halt on reset */
+>>>>>>> upstream/master
 	MCFG_TMS340X0_PIXEL_CLOCK(40000000/16) /* pixel clock */
 	MCFG_TMS340X0_PIXELS_PER_CLOCK(4) /* pixels per clock */
 	MCFG_TMS340X0_SCANLINE_RGB32_CB(jpmimpct_state, scanline_update)   /* scanline updater (rgb32) */
@@ -865,6 +914,12 @@ static MACHINE_CONFIG_START( jpmimpct, jpmimpct_state )
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 0.50)
 
 	MCFG_VIDEO_START_OVERRIDE(jpmimpct_state,jpmimpct)
+<<<<<<< HEAD
+=======
+
+	MCFG_DEVICE_ADD("meters", METERS, 0)
+	MCFG_METERS_NUMBER(5)
+>>>>>>> upstream/master
 MACHINE_CONFIG_END
 
 
@@ -999,7 +1054,11 @@ MACHINE_RESET_MEMBER(jpmimpct_state,impctawp)
  */
 READ16_MEMBER(jpmimpct_state::inputs1awp_r)
 {
+<<<<<<< HEAD
 	UINT16 val = 0x00;
+=======
+	uint16_t val = 0x00;
+>>>>>>> upstream/master
 
 	{
 		switch (offset)
@@ -1076,8 +1135,13 @@ WRITE16_MEMBER(jpmimpct_state::jpmioawp_w)
 	{
 		case 0x00:
 		{
+<<<<<<< HEAD
 			output_set_value("PWRLED",!(data&0x100));
 			output_set_value("STATLED",!(data&0x200));
+=======
+			output().set_value("PWRLED",!(data&0x100));
+			output().set_value("STATLED",!(data&0x200));
+>>>>>>> upstream/master
 			break;
 		}
 
@@ -1088,18 +1152,30 @@ WRITE16_MEMBER(jpmimpct_state::jpmioawp_w)
 			m_reel1->update((data >> 1)& 0x0F);
 			m_reel2->update((data >> 2)& 0x0F);
 			m_reel3->update((data >> 3)& 0x0F);
+<<<<<<< HEAD
 			awp_draw_reel("reel1", m_reel0);
 			awp_draw_reel("reel2", m_reel1);
 			awp_draw_reel("reel3", m_reel2);
 			awp_draw_reel("reel4", m_reel3);
+=======
+			awp_draw_reel(machine(),"reel1", *m_reel0);
+			awp_draw_reel(machine(),"reel2", *m_reel1);
+			awp_draw_reel(machine(),"reel3", *m_reel2);
+			awp_draw_reel(machine(),"reel4", *m_reel3);
+>>>>>>> upstream/master
 			break;
 		}
 		case 0x04:
 		{
 			m_reel4->update((data >> 4)& 0x0F);
 			m_reel5->update((data >> 5)& 0x0F);
+<<<<<<< HEAD
 			awp_draw_reel("reel5", m_reel4);
 			awp_draw_reel("reel6", m_reel5);
+=======
+			awp_draw_reel(machine(),"reel5", *m_reel4);
+			awp_draw_reel(machine(),"reel6", *m_reel5);
+>>>>>>> upstream/master
 			break;
 		}
 		case 0x06:
@@ -1122,20 +1198,34 @@ WRITE16_MEMBER(jpmimpct_state::jpmioawp_w)
 					{
 						for (i=0; i<5; i++)
 						{
+<<<<<<< HEAD
 							MechMtr_update(i, 0);
+=======
+							m_meters->update(i, 0);
+>>>>>>> upstream/master
 						}
 						break;
 					}
 					default:
 					{
+<<<<<<< HEAD
 						MechMtr_update(((metno <<2) - 1), 1);
+=======
+						m_meters->update(((metno <<2) - 1), 1);
+>>>>>>> upstream/master
 					}
 					break;
 				}
 			}
+<<<<<<< HEAD
 			int combined_meter = MechMtr_GetActivity(0) | MechMtr_GetActivity(1) |
 			MechMtr_GetActivity(2) | MechMtr_GetActivity(3) |
 			MechMtr_GetActivity(4);
+=======
+			int combined_meter = m_meters->GetActivity(0) | m_meters->GetActivity(1) |
+			m_meters->GetActivity(2) | m_meters->GetActivity(3) |
+			m_meters->GetActivity(4);
+>>>>>>> upstream/master
 
 			if(combined_meter)
 			{
@@ -1156,7 +1246,11 @@ WRITE16_MEMBER(jpmimpct_state::jpmioawp_w)
 
 		case 0x0b:
 		{
+<<<<<<< HEAD
 			output_set_digit_value(m_lamp_strobe,data);
+=======
+			output().set_digit_value(m_lamp_strobe,data);
+>>>>>>> upstream/master
 			break;
 		}
 		case 0x0f:
@@ -1303,7 +1397,11 @@ INPUT_PORTS_END
  *
  *************************************/
 
+<<<<<<< HEAD
 MACHINE_CONFIG_START( impctawp, jpmimpct_state )
+=======
+MACHINE_CONFIG_START( impctawp )
+>>>>>>> upstream/master
 	MCFG_CPU_ADD("maincpu",M68000, 8000000)
 	MCFG_CPU_PROGRAM_MAP(awp68k_program_map)
 
@@ -1340,6 +1438,12 @@ MACHINE_CONFIG_START( impctawp, jpmimpct_state )
 	MCFG_STARPOINT_48STEP_ADD("reel5")
 	MCFG_STEPPER_OPTIC_CALLBACK(WRITELINE(jpmimpct_state, reel5_optic_cb))
 
+<<<<<<< HEAD
+=======
+	MCFG_DEVICE_ADD("meters", METERS, 0)
+	MCFG_METERS_NUMBER(5)
+
+>>>>>>> upstream/master
 MACHINE_CONFIG_END
 
 
@@ -1368,7 +1472,11 @@ ROM_START( cluedo )
 	ROM_REGION16_LE( 0x200000, "user1", 0 )
 	ROM_LOAD16_BYTE( "clugrb1", 0x000000, 0x80000, CRC(176ae2df) SHA1(135fd2640c255e5321b1a6ba35f72fa2ba8f04b8) )
 	ROM_LOAD16_BYTE( "clugrb2", 0x000001, 0x80000, CRC(06ab2f78) SHA1(4325fd9096e73956310e97e244c7fe1ee8d27f5c) )
+<<<<<<< HEAD
 	ROM_COPY( "user1", 0x000000, 0x100000, 0x100000 )
+=======
+	ROM_COPY( "user1", 0x00000, 0x100000, 0x100000 )
+>>>>>>> upstream/master
 
 	ROM_REGION( 0x80000, "upd", 0 )
 	ROM_LOAD( "1214.bin", 0x000000, 0x80000, CRC(fe43aeae) SHA1(017a471af5766ef41fa46982c02941fb4fc35174) )
@@ -1392,7 +1500,11 @@ ROM_START( cluedod )
 	ROM_REGION16_LE( 0x200000, "user1", 0 )
 	ROM_LOAD16_BYTE( "clugrb1", 0x000000, 0x80000, CRC(176ae2df) SHA1(135fd2640c255e5321b1a6ba35f72fa2ba8f04b8) )
 	ROM_LOAD16_BYTE( "clugrb2", 0x000001, 0x80000, CRC(06ab2f78) SHA1(4325fd9096e73956310e97e244c7fe1ee8d27f5c) )
+<<<<<<< HEAD
 	ROM_COPY( "user1", 0x000000, 0x100000, 0x100000 )
+=======
+	ROM_COPY( "user1", 0x00000, 0x100000, 0x100000 )
+>>>>>>> upstream/master
 
 	ROM_REGION( 0x80000, "upd", 0 )
 	ROM_LOAD( "1214.bin", 0x000000, 0x80000, CRC(fe43aeae) SHA1(017a471af5766ef41fa46982c02941fb4fc35174) )
@@ -1416,7 +1528,11 @@ ROM_START( cluedo2c )
 	ROM_REGION16_LE( 0x200000, "user1", 0 )
 	ROM_LOAD16_BYTE( "clugrb1", 0x000000, 0x80000, CRC(176ae2df) SHA1(135fd2640c255e5321b1a6ba35f72fa2ba8f04b8) )
 	ROM_LOAD16_BYTE( "clugrb2", 0x000001, 0x80000, CRC(06ab2f78) SHA1(4325fd9096e73956310e97e244c7fe1ee8d27f5c) )
+<<<<<<< HEAD
 	ROM_COPY( "user1", 0x000000, 0x100000, 0x100000 )
+=======
+	ROM_COPY( "user1", 0x00000, 0x100000, 0x100000 )
+>>>>>>> upstream/master
 
 	ROM_REGION( 0x80000, "upd", 0 )
 	ROM_LOAD( "1214.bin", 0x000000, 0x80000, CRC(fe43aeae) SHA1(017a471af5766ef41fa46982c02941fb4fc35174) )
@@ -1440,7 +1556,11 @@ ROM_START( cluedo2 )
 	ROM_REGION16_LE( 0x200000, "user1", 0 )
 	ROM_LOAD16_BYTE( "clugrb1", 0x000000, 0x80000, CRC(176ae2df) SHA1(135fd2640c255e5321b1a6ba35f72fa2ba8f04b8) )
 	ROM_LOAD16_BYTE( "clugrb2", 0x000001, 0x80000, CRC(06ab2f78) SHA1(4325fd9096e73956310e97e244c7fe1ee8d27f5c) )
+<<<<<<< HEAD
 	ROM_COPY( "user1", 0x000000, 0x100000, 0x100000 )
+=======
+	ROM_COPY( "user1", 0x00000, 0x100000, 0x100000 )
+>>>>>>> upstream/master
 
 	ROM_REGION( 0x80000, "upd", 0 )
 	ROM_LOAD( "clue2as1.bin", 0x000000, 0x80000, CRC(16b2bc45) SHA1(56963f5d63b5a091b89b96f4ca9327010006c024) )
@@ -1738,6 +1858,7 @@ ROM_END
 
 /* Video */
 
+<<<<<<< HEAD
 GAME( 1995, cluedo,   0,       jpmimpct, cluedo, driver_device,   0, ROT0, "JPM", "Cluedo (prod. 2D)",           MACHINE_IMPERFECT_GRAPHICS | MACHINE_SUPPORTS_SAVE )
 GAME( 1995, cluedod,  cluedo,  jpmimpct, cluedo, driver_device,   0, ROT0, "JPM", "Cluedo (prod. 2D) (Protocol)",MACHINE_IMPERFECT_GRAPHICS | MACHINE_SUPPORTS_SAVE )
 GAME( 1995, cluedo2c, cluedo,  jpmimpct, cluedo, driver_device,   0, ROT0, "JPM", "Cluedo (prod. 2C)",           MACHINE_IMPERFECT_GRAPHICS | MACHINE_SUPPORTS_SAVE )
@@ -1755,3 +1876,22 @@ GAME( 199?, tqst,     0,       jpmimpct, cluedo  , driver_device, 0, ROT0, "JPM"
 GAME( 199?, snlad,    0,       jpmimpct, cluedo  , driver_device, 0, ROT0, "JPM", "Snake & Ladders"            , MACHINE_NOT_WORKING) // incomplete
 GAME( 199?, buzzundr, 0,       jpmimpct, cluedo  , driver_device, 0, ROT0, "Ace", "Buzzundrum (Ace)", MACHINE_NOT_WORKING )
 GAME( 199?, monspdr , 0,       jpmimpct, cluedo  , driver_device, 0, ROT0, "Ace", "Money Spider (Ace)", MACHINE_NOT_WORKING )
+=======
+GAME( 1995, cluedo,   0,       jpmimpct, cluedo,   jpmimpct_state, 0, ROT0, "JPM", "Cluedo (prod. 2D)",           MACHINE_IMPERFECT_GRAPHICS | MACHINE_SUPPORTS_SAVE )
+GAME( 1995, cluedod,  cluedo,  jpmimpct, cluedo,   jpmimpct_state, 0, ROT0, "JPM", "Cluedo (prod. 2D) (Protocol)",MACHINE_IMPERFECT_GRAPHICS | MACHINE_SUPPORTS_SAVE )
+GAME( 1995, cluedo2c, cluedo,  jpmimpct, cluedo,   jpmimpct_state, 0, ROT0, "JPM", "Cluedo (prod. 2C)",           MACHINE_IMPERFECT_GRAPHICS | MACHINE_SUPPORTS_SAVE )
+GAME( 1995, cluedo2,  cluedo,  jpmimpct, cluedo,   jpmimpct_state, 0, ROT0, "JPM", "Cluedo (prod. 2)",        MACHINE_IMPERFECT_GRAPHICS | MACHINE_SUPPORTS_SAVE )
+GAME( 1996, trivialp, 0,       jpmimpct, trivialp, jpmimpct_state, 0, ROT0, "JPM", "Trivial Pursuit (New Edition) (prod. 1D)",  MACHINE_SUPPORTS_SAVE )
+GAME( 1996, trivialpd,trivialp,jpmimpct, trivialp, jpmimpct_state, 0, ROT0, "JPM", "Trivial Pursuit (New Edition) (prod. 1D) (Protocol)",MACHINE_SUPPORTS_SAVE )
+GAME( 1996, trivialpo,trivialp,jpmimpct, trivialp, jpmimpct_state, 0, ROT0, "JPM", "Trivial Pursuit",  MACHINE_SUPPORTS_SAVE )
+GAME( 1997, scrabble, 0,       jpmimpct, scrabble, jpmimpct_state, 0, ROT0, "JPM", "Scrabble (rev. F)",           MACHINE_SUPPORTS_SAVE )
+GAME( 1997, scrabbled,scrabble,jpmimpct, scrabble, jpmimpct_state, 0, ROT0, "JPM", "Scrabble (rev. F) (Protocol)",MACHINE_SUPPORTS_SAVE )
+GAME( 1998, hngmnjpm, 0,       jpmimpct, hngmnjpm, jpmimpct_state, 0, ROT0, "JPM", "Hangman (JPM)",               MACHINE_SUPPORTS_SAVE )
+GAME( 1998, hngmnjpmd,hngmnjpm,jpmimpct, hngmnjpm, jpmimpct_state, 0, ROT0, "JPM", "Hangman (JPM) (Protocol)",    MACHINE_SUPPORTS_SAVE )
+GAME( 1999, coronatn, 0,       jpmimpct, coronatn, jpmimpct_state, 0, ROT0, "JPM", "Coronation Street Quiz Game", MACHINE_SUPPORTS_SAVE )
+GAME( 1999, coronatnd,coronatn,jpmimpct, coronatn, jpmimpct_state, 0, ROT0, "JPM", "Coronation Street Quiz Game (Protocol)", MACHINE_SUPPORTS_SAVE )
+GAME( 199?, tqst,     0,       jpmimpct, cluedo  , jpmimpct_state, 0, ROT0, "JPM", "Treasure Quest"             , MACHINE_NOT_WORKING) // incomplete (ACE?)
+GAME( 199?, snlad,    0,       jpmimpct, cluedo  , jpmimpct_state, 0, ROT0, "JPM", "Snake & Ladders"            , MACHINE_NOT_WORKING) // incomplete
+GAME( 199?, buzzundr, 0,       jpmimpct, cluedo  , jpmimpct_state, 0, ROT0, "Ace", "Buzzundrum (Ace)", MACHINE_NOT_WORKING )
+GAME( 199?, monspdr , 0,       jpmimpct, cluedo  , jpmimpct_state, 0, ROT0, "Ace", "Money Spider (Ace)", MACHINE_NOT_WORKING )
+>>>>>>> upstream/master

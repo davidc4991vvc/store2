@@ -20,7 +20,11 @@
 
 TILE_GET_INFO_MEMBER(badlands_state::get_playfield_tile_info)
 {
+<<<<<<< HEAD
 	UINT16 data = tilemap.basemem_read(tile_index);
+=======
+	uint16_t data = m_playfield_tilemap->basemem_read(tile_index);
+>>>>>>> upstream/master
 	int code = (data & 0x1fff) + ((data & 0x1000) ? (m_playfield_tile_bank << 12) : 0);
 	int color = (data >> 13) & 0x07;
 	SET_TILE_INFO_MEMBER(0, code, color, 0);
@@ -101,7 +105,11 @@ WRITE16_MEMBER( badlands_state::badlands_pf_bank_w )
  *
  *************************************/
 
+<<<<<<< HEAD
 UINT32 badlands_state::screen_update_badlands(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+=======
+uint32_t badlands_state::screen_update_badlands(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+>>>>>>> upstream/master
 {
 	// start drawing
 	m_mob->draw_async(cliprect);
@@ -111,11 +119,19 @@ UINT32 badlands_state::screen_update_badlands(screen_device &screen, bitmap_ind1
 
 	// draw and merge the MO
 	bitmap_ind16 &mobitmap = m_mob->bitmap();
+<<<<<<< HEAD
 	for (const sparse_dirty_rect *rect = m_mob->first_dirty_rect(cliprect); rect != NULL; rect = rect->next())
 		for (int y = rect->min_y; y <= rect->max_y; y++)
 		{
 			UINT16 *mo = &mobitmap.pix16(y);
 			UINT16 *pf = &bitmap.pix16(y);
+=======
+	for (const sparse_dirty_rect *rect = m_mob->first_dirty_rect(cliprect); rect != nullptr; rect = rect->next())
+		for (int y = rect->min_y; y <= rect->max_y; y++)
+		{
+			uint16_t *mo = &mobitmap.pix16(y);
+			uint16_t *pf = &bitmap.pix16(y);
+>>>>>>> upstream/master
 			for (int x = rect->min_x; x <= rect->max_x; x++)
 				if (mo[x] != 0xffff)
 				{

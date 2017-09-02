@@ -1,10 +1,19 @@
 // license:BSD-3-Clause
 // copyright-holders:Nicola Salmoria
+<<<<<<< HEAD
+=======
+
+>>>>>>> upstream/master
 /*************************************************************************
 
     Deniam games
 
 *************************************************************************/
+<<<<<<< HEAD
+=======
+
+#include "machine/gen_latch.h"
+>>>>>>> upstream/master
 #include "sound/okim6295.h"
 
 class deniam_state : public driver_device
@@ -20,6 +29,7 @@ public:
 		m_audiocpu(*this, "audiocpu"),
 		m_oki(*this, "oki"),
 		m_gfxdecode(*this, "gfxdecode"),
+<<<<<<< HEAD
 		m_palette(*this, "palette") { }
 
 	/* memory pointers */
@@ -27,6 +37,16 @@ public:
 	required_shared_ptr<UINT16> m_textram;
 	required_shared_ptr<UINT16> m_spriteram;
 	required_shared_ptr<UINT16> m_paletteram;
+=======
+		m_palette(*this, "palette"),
+		m_soundlatch(*this, "soundlatch") { }
+
+	/* memory pointers */
+	required_shared_ptr<uint16_t> m_videoram;
+	required_shared_ptr<uint16_t> m_textram;
+	required_shared_ptr<uint16_t> m_spriteram;
+	required_shared_ptr<uint16_t> m_paletteram;
+>>>>>>> upstream/master
 
 	/* video-related */
 	tilemap_t        *m_fg_tilemap;
@@ -45,10 +65,16 @@ public:
 	int            m_fg_page_reg;
 	int            m_bg_page[4];
 	int            m_fg_page[4];
+<<<<<<< HEAD
 	UINT16         m_coinctrl;
 
 	/* devices */
 	DECLARE_WRITE16_MEMBER(sound_command_w);
+=======
+	uint16_t         m_coinctrl;
+
+	/* devices */
+>>>>>>> upstream/master
 	DECLARE_WRITE16_MEMBER(deniam_irq_ack_w);
 	DECLARE_WRITE16_MEMBER(deniam_videoram_w);
 	DECLARE_WRITE16_MEMBER(deniam_textram_w);
@@ -63,10 +89,17 @@ public:
 	TILE_GET_INFO_MEMBER(get_bg_tile_info);
 	TILE_GET_INFO_MEMBER(get_fg_tile_info);
 	TILE_GET_INFO_MEMBER(get_tx_tile_info);
+<<<<<<< HEAD
 	virtual void machine_start();
 	virtual void machine_reset();
 	virtual void video_start();
 	UINT32 screen_update_deniam(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
+=======
+	virtual void machine_start() override;
+	virtual void machine_reset() override;
+	virtual void video_start() override;
+	uint32_t screen_update_deniam(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
+>>>>>>> upstream/master
 	void deniam_common_init(  );
 	void draw_sprites( screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect );
 	void set_bg_page( int page, int value );
@@ -76,4 +109,8 @@ public:
 	required_device<okim6295_device> m_oki;
 	required_device<gfxdecode_device> m_gfxdecode;
 	required_device<palette_device> m_palette;
+<<<<<<< HEAD
+=======
+	optional_device<generic_latch_8_device> m_soundlatch;
+>>>>>>> upstream/master
 };

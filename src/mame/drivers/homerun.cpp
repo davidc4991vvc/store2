@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 // license:LGPL-2.1+
+=======
+// license:BSD-3-Clause
+>>>>>>> upstream/master
 // copyright-holders:Tomasz Slanina
 /*
  Moero!! Pro Yakyuu Homerun Kyousou - (c) 1988 Jaleco
@@ -51,11 +55,20 @@ Notes:
 */
 
 #include "emu.h"
+<<<<<<< HEAD
+=======
+#include "includes/homerun.h"
+
+>>>>>>> upstream/master
 #include "cpu/z80/z80.h"
 #include "machine/i8255.h"
 #include "sound/2203intf.h"
 #include "sound/samples.h"
+<<<<<<< HEAD
 #include "includes/homerun.h"
+=======
+#include "speaker.h"
+>>>>>>> upstream/master
 
 
 /***************************************************************************
@@ -70,12 +83,20 @@ WRITE8_MEMBER(homerun_state::homerun_control_w)
 
 	// d4: d7756 start pin
 	// d5: d7756 reset pin(?)
+<<<<<<< HEAD
 	if (m_d7756 != NULL)
+=======
+	if (m_d7756 != nullptr)
+>>>>>>> upstream/master
 	{
 		m_d7756->reset_w(~data & 0x20);
 		m_d7756->start_w(~data & 0x10);
 	}
+<<<<<<< HEAD
 	if (m_samples != NULL)
+=======
+	if (m_samples != nullptr)
+>>>>>>> upstream/master
 	{
 		// play MAME sample if a dump of the internal rom does not exist
 		if (data & 0x20 & ~m_control)
@@ -83,7 +104,11 @@ WRITE8_MEMBER(homerun_state::homerun_control_w)
 
 		if (~data & 0x10 & m_control && !m_samples->playing(0))
 		{
+<<<<<<< HEAD
 			samples_iterator iter(m_samples);
+=======
+			samples_iterator iter(*m_samples);
+>>>>>>> upstream/master
 			if (m_sample < iter.count())
 				m_samples->start(0, m_sample);
 		}
@@ -97,7 +122,11 @@ WRITE8_MEMBER(homerun_state::homerun_d7756_sample_w)
 {
 	m_sample = data;
 
+<<<<<<< HEAD
 	if (m_d7756 != NULL)
+=======
+	if (m_d7756 != nullptr)
+>>>>>>> upstream/master
 		m_d7756->port_w(space, 0, data);
 }
 
@@ -148,8 +177,13 @@ CUSTOM_INPUT_MEMBER(homerun_state::ganjaja_hopper_status_r)
 static INPUT_PORTS_START( homerun )
 	PORT_START("IN0")
 	PORT_BIT( 0x08, IP_ACTIVE_LOW,  IPT_COIN1 )
+<<<<<<< HEAD
 	PORT_BIT( 0x40, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, homerun_state, homerun_sprite0_r, NULL)
 	PORT_BIT( 0x80, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, homerun_state, homerun_d7756_busy_r, NULL)
+=======
+	PORT_BIT( 0x40, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, homerun_state, homerun_sprite0_r, nullptr)
+	PORT_BIT( 0x80, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, homerun_state, homerun_d7756_busy_r, nullptr)
+>>>>>>> upstream/master
 	PORT_BIT( 0x37, IP_ACTIVE_HIGH, IPT_UNKNOWN )
 
 	PORT_START("IN1")
@@ -185,7 +219,11 @@ INPUT_PORTS_END
 static INPUT_PORTS_START( dynashot )
 	PORT_START("IN0")
 	PORT_BIT( 0x08, IP_ACTIVE_LOW,  IPT_COIN1 )
+<<<<<<< HEAD
 	PORT_BIT( 0x40, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, homerun_state, homerun_sprite0_r, NULL)
+=======
+	PORT_BIT( 0x40, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, homerun_state, homerun_sprite0_r, nullptr)
+>>>>>>> upstream/master
 	PORT_BIT( 0x80, IP_ACTIVE_HIGH, IPT_UNUSED ) // doesn't have d7756
 	PORT_BIT( 0x37, IP_ACTIVE_HIGH, IPT_UNKNOWN )
 
@@ -223,8 +261,13 @@ static INPUT_PORTS_START( ganjaja )
 	PORT_START("IN0")
 	PORT_BIT( 0x01, IP_ACTIVE_HIGH, IPT_UNKNOWN ) // ?
 	PORT_BIT( 0x08, IP_ACTIVE_LOW,  IPT_COIN1 )
+<<<<<<< HEAD
 	PORT_BIT( 0x40, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, homerun_state, homerun_sprite0_r, NULL)
 	PORT_BIT( 0x80, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, homerun_state, ganjaja_d7756_busy_r, NULL)
+=======
+	PORT_BIT( 0x40, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, homerun_state, homerun_sprite0_r, nullptr)
+	PORT_BIT( 0x80, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, homerun_state, ganjaja_d7756_busy_r, nullptr)
+>>>>>>> upstream/master
 	PORT_BIT( 0x36, IP_ACTIVE_HIGH, IPT_UNKNOWN )
 
 	PORT_START("IN1")
@@ -232,7 +275,11 @@ static INPUT_PORTS_START( ganjaja )
 	PORT_BIT( 0x02, IP_ACTIVE_HIGH, IPT_JOYSTICK_DOWN  ) PORT_NAME("P1 Down / Paper")
 	PORT_BIT( 0x04, IP_ACTIVE_HIGH, IPT_JOYSTICK_RIGHT ) PORT_NAME("P1 Right / Scissors")
 	PORT_BIT( 0x08, IP_ACTIVE_HIGH, IPT_JOYSTICK_LEFT  ) // unused?
+<<<<<<< HEAD
 	PORT_BIT( 0x30, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, homerun_state, ganjaja_hopper_status_r, NULL)
+=======
+	PORT_BIT( 0x30, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, homerun_state, ganjaja_hopper_status_r, nullptr)
+>>>>>>> upstream/master
 	PORT_BIT( 0x40, IP_ACTIVE_HIGH, IPT_UNKNOWN )
 	PORT_BIT( 0x80, IP_ACTIVE_HIGH, IPT_UNKNOWN )
 
@@ -285,7 +332,11 @@ static const char *const homerun_sample_names[] =
 	"13", // aho (be called a fool by supervisor)
 	"14", // bat hits ball
 	"15", // crowd cheers
+<<<<<<< HEAD
 	0
+=======
+	nullptr
+>>>>>>> upstream/master
 };
 
 /**************************************************************************/
@@ -322,7 +373,11 @@ GFXDECODE_END
 
 void homerun_state::machine_start()
 {
+<<<<<<< HEAD
 	UINT8 *ROM = memregion("maincpu")->base();
+=======
+	uint8_t *ROM = memregion("maincpu")->base();
+>>>>>>> upstream/master
 
 	membank("bank1")->configure_entry(0, &ROM[0x00000]);
 	membank("bank1")->configure_entries(1, 7, &ROM[0x10000], 0x4000);
@@ -345,7 +400,11 @@ void homerun_state::machine_reset()
 
 /**************************************************************************/
 
+<<<<<<< HEAD
 static MACHINE_CONFIG_START( dynashot, homerun_state )
+=======
+static MACHINE_CONFIG_START( dynashot )
+>>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", Z80, XTAL_20MHz/4)
@@ -450,6 +509,12 @@ ROM_START( ganjaja )
 ROM_END
 
 
+<<<<<<< HEAD
 GAME( 1988, homerun,  0, homerun,  homerun,  driver_device, 0, ROT0, "Jaleco", "Moero!! Pro Yakyuu Homerun Kyousou", MACHINE_IMPERFECT_GRAPHICS | MACHINE_IMPERFECT_SOUND | MACHINE_SUPPORTS_SAVE )
 GAME( 1988, dynashot, 0, dynashot, dynashot, driver_device, 0, ROT0, "Jaleco", "Dynamic Shoot Kyousou", MACHINE_IMPERFECT_GRAPHICS | MACHINE_SUPPORTS_SAVE )
 GAME( 1990, ganjaja,  0, ganjaja,  ganjaja,  driver_device, 0, ROT0, "Jaleco", "Ganbare Jajamaru Saisho wa Goo / Ganbare Jajamaru Hop Step & Jump", MACHINE_IMPERFECT_GRAPHICS | MACHINE_SUPPORTS_SAVE )
+=======
+GAME( 1988, homerun,  0, homerun,  homerun,  homerun_state, 0, ROT0, "Jaleco", "Moero!! Pro Yakyuu Homerun Kyousou", MACHINE_IMPERFECT_GRAPHICS | MACHINE_IMPERFECT_SOUND | MACHINE_SUPPORTS_SAVE )
+GAME( 1988, dynashot, 0, dynashot, dynashot, homerun_state, 0, ROT0, "Jaleco", "Dynamic Shoot Kyousou", MACHINE_IMPERFECT_GRAPHICS | MACHINE_SUPPORTS_SAVE )
+GAME( 1990, ganjaja,  0, ganjaja,  ganjaja,  homerun_state, 0, ROT0, "Jaleco", "Ganbare Jajamaru Saisho wa Goo / Ganbare Jajamaru Hop Step & Jump", MACHINE_IMPERFECT_GRAPHICS | MACHINE_SUPPORTS_SAVE )
+>>>>>>> upstream/master

@@ -41,9 +41,16 @@ control registers
 
 
 #define VERBOSE 0
+<<<<<<< HEAD
 #define LOG(x) do { if (VERBOSE) logerror x; } while (0)
 
 const device_type K051316 = &device_creator<k051316_device>;
+=======
+#include "logmacro.h"
+
+
+DEFINE_DEVICE_TYPE(K051316, k051316_device, "k051316", "K051316 PSAC")
+>>>>>>> upstream/master
 
 
 const gfx_layout k051316_device::charlayout4 =
@@ -103,11 +110,18 @@ GFXDECODE_MEMBER( k051316_device::gfxinfo4_ram )
 GFXDECODE_END
 
 
+<<<<<<< HEAD
 k051316_device::k051316_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
 	: device_t(mconfig, K051316, "K051316 PSAC", tag, owner, clock, "k051316", __FILE__),
 		device_gfx_interface(mconfig, *this, gfxinfo),
 		m_zoom_rom(NULL),
 		m_zoom_size(0),
+=======
+k051316_device::k051316_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: device_t(mconfig, K051316, tag, owner, clock),
+		device_gfx_interface(mconfig, *this, gfxinfo),
+		m_zoom_rom(*this, DEVICE_SELF),
+>>>>>>> upstream/master
 		m_dx(0),
 		m_dy(0),
 		m_wrap(0),
@@ -151,6 +165,7 @@ void k051316_device::set_bpp(device_t &device, int bpp)
 
 void k051316_device::device_start()
 {
+<<<<<<< HEAD
 	memory_region *ROM = region();
 	if (ROM != NULL)
 	{
@@ -160,6 +175,13 @@ void k051316_device::device_start()
 
 	decode_gfx();
 	m_gfx[0]->set_colors(m_palette->entries() / m_gfx[0]->depth());
+=======
+	if (!palette().device().started())
+		throw device_missing_dependencies();
+
+	decode_gfx();
+	gfx(0)->set_colors(palette().entries() / gfx(0)->depth());
+>>>>>>> upstream/master
 
 	m_tmap = &machine().tilemap().create(*this, tilemap_get_info_delegate(FUNC(k051316_device::get_tile_info),this), TILEMAP_SCAN_ROWS, 16, 16, 32, 32);
 	m_ram.resize(0x800);
@@ -209,13 +231,21 @@ WRITE8_MEMBER( k051316_device::write )
 
 READ8_MEMBER( k051316_device::rom_r )
 {
+<<<<<<< HEAD
 	assert (m_zoom_size != 0);
+=======
+	assert (m_zoom_rom.found());
+>>>>>>> upstream/master
 
 	if ((m_ctrlram[0x0e] & 0x01) == 0)
 	{
 		int addr = offset + (m_ctrlram[0x0c] << 11) + (m_ctrlram[0x0d] << 19);
 		addr /= m_pixels_per_byte;
+<<<<<<< HEAD
 		addr &= m_zoom_size - 1;
+=======
+		addr &= m_zoom_rom.mask();
+>>>>>>> upstream/master
 
 		//  popmessage("%s: offset %04x addr %04x", space.machine().describe_context(), offset, addr);
 
@@ -261,6 +291,7 @@ TILE_GET_INFO_MEMBER(k051316_device::get_tile_info)
 }
 
 
+<<<<<<< HEAD
 void k051316_device::zoom_draw( screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect, int flags, UINT32 priority )
 {
 	UINT32 startx, starty;
@@ -272,6 +303,19 @@ void k051316_device::zoom_draw( screen_device &screen, bitmap_ind16 &bitmap, con
 	starty = 256 * ((INT16)(256 * m_ctrlram[0x06] + m_ctrlram[0x07]));
 	incxy  =        (INT16)(256 * m_ctrlram[0x08] + m_ctrlram[0x09]);
 	incyy  =        (INT16)(256 * m_ctrlram[0x0a] + m_ctrlram[0x0b]);
+=======
+void k051316_device::zoom_draw( screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect, int flags, uint32_t priority )
+{
+	uint32_t startx, starty;
+	int incxx, incxy, incyx, incyy;
+
+	startx = 256 * ((int16_t)(256 * m_ctrlram[0x00] + m_ctrlram[0x01]));
+	incxx  =        (int16_t)(256 * m_ctrlram[0x02] + m_ctrlram[0x03]);
+	incyx  =        (int16_t)(256 * m_ctrlram[0x04] + m_ctrlram[0x05]);
+	starty = 256 * ((int16_t)(256 * m_ctrlram[0x06] + m_ctrlram[0x07]));
+	incxy  =        (int16_t)(256 * m_ctrlram[0x08] + m_ctrlram[0x09]);
+	incyy  =        (int16_t)(256 * m_ctrlram[0x0a] + m_ctrlram[0x0b]);
+>>>>>>> upstream/master
 
 	startx -= (16 + m_dy) * incyx;
 	starty -= (16 + m_dy) * incyy;

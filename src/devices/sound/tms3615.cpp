@@ -6,11 +6,19 @@
 #define VMIN    0x0000
 #define VMAX    0x7fff
 
+<<<<<<< HEAD
 static const int divisor[TMS3615_TONES] = { 478, 451, 426, 402, 379, 358, 338, 319, 301, 284, 268, 253, 239 };
 
 
 // device type definition
 const device_type TMS3615 = &device_creator<tms3615_device>;
+=======
+const int tms3615_device::divisor[TMS3615_TONES] = { 478, 451, 426, 402, 379, 358, 338, 319, 301, 284, 268, 253, 239 };
+
+
+// device type definition
+DEFINE_DEVICE_TYPE(TMS3615, tms3615_device, "tms3615", "TMS3615")
+>>>>>>> upstream/master
 
 
 //**************************************************************************
@@ -21,6 +29,7 @@ const device_type TMS3615 = &device_creator<tms3615_device>;
 //  tms3615_device - constructor
 //-------------------------------------------------
 
+<<<<<<< HEAD
 tms3615_device::tms3615_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
 	: device_t(mconfig, TMS3615, "TMS3615", tag, owner, clock, "tms3615", __FILE__),
 		device_sound_interface(mconfig, *this),
@@ -33,6 +42,20 @@ tms3615_device::tms3615_device(const machine_config &mconfig, const char *tag, d
 {
 	memset(m_counter8, 0, TMS3615_TONES);
 	memset(m_counter16, 0, TMS3615_TONES);
+=======
+tms3615_device::tms3615_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: device_t(mconfig, TMS3615, tag, owner, clock)
+	, device_sound_interface(mconfig, *this)
+	, m_channel(nullptr)
+	, m_samplerate(0)
+	, m_basefreq(0)
+	, m_output8(0)
+	, m_output16(0)
+	, m_enable(0)
+{
+	std::fill(std::begin(m_counter8), std::end(m_counter8), 0);
+	std::fill(std::begin(m_counter16), std::end(m_counter16), 0);
+>>>>>>> upstream/master
 }
 
 
@@ -55,8 +78,13 @@ void tms3615_device::device_start()
 void tms3615_device::sound_stream_update(sound_stream &stream, stream_sample_t **inputs, stream_sample_t **outputs, int samples)
 {
 	int samplerate = m_samplerate;
+<<<<<<< HEAD
 	stream_sample_t *buffer8 = outputs[TMS3615_FOOTAGE_8];
 	stream_sample_t *buffer16 = outputs[TMS3615_FOOTAGE_16];
+=======
+	stream_sample_t *buffer8 = outputs[FOOTAGE_8];
+	stream_sample_t *buffer16 = outputs[FOOTAGE_16];
+>>>>>>> upstream/master
 
 	while( samples-- > 0 )
 	{

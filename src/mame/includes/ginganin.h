@@ -6,6 +6,11 @@
 
 *************************************************************************/
 
+<<<<<<< HEAD
+=======
+#include "machine/gen_latch.h"
+
+>>>>>>> upstream/master
 class ginganin_state : public driver_device
 {
 public:
@@ -15,6 +20,7 @@ public:
 		m_spriteram(*this, "spriteram"),
 		m_vregs(*this, "vregs"),
 		m_fgram(*this, "fgram"),
+<<<<<<< HEAD
 		m_audiocpu(*this, "audiocpu"),
 		m_maincpu(*this, "maincpu"),
 		m_gfxdecode(*this, "gfxdecode"),
@@ -25,6 +31,19 @@ public:
 	required_shared_ptr<UINT16> m_spriteram;
 	required_shared_ptr<UINT16> m_vregs;
 	required_shared_ptr<UINT16> m_fgram;
+=======
+		m_maincpu(*this, "maincpu"),
+		m_audiocpu(*this, "audiocpu"),
+		m_gfxdecode(*this, "gfxdecode"),
+		m_palette(*this, "palette"),
+		m_soundlatch(*this, "soundlatch") { }
+
+	/* memory pointers */
+	required_shared_ptr<uint16_t> m_txtram;
+	required_shared_ptr<uint16_t> m_spriteram;
+	required_shared_ptr<uint16_t> m_vregs;
+	required_shared_ptr<uint16_t> m_fgram;
+>>>>>>> upstream/master
 
 	/* video-related */
 	tilemap_t     *m_bg_tilemap;
@@ -38,15 +57,29 @@ public:
 #endif
 
 	/* devices */
+<<<<<<< HEAD
 	required_device<cpu_device> m_audiocpu;
 	DECLARE_WRITE16_MEMBER(ginganin_fgram16_w);
 	DECLARE_WRITE16_MEMBER(ginganin_txtram16_w);
 	DECLARE_WRITE16_MEMBER(ginganin_vregs16_w);
 	DECLARE_WRITE8_MEMBER(ptm_irq);
+=======
+	required_device<cpu_device> m_maincpu;
+	required_device<cpu_device> m_audiocpu;
+	required_device<gfxdecode_device> m_gfxdecode;
+	required_device<palette_device> m_palette;
+	required_device<generic_latch_8_device> m_soundlatch;
+
+	DECLARE_WRITE16_MEMBER(ginganin_fgram16_w);
+	DECLARE_WRITE16_MEMBER(ginganin_txtram16_w);
+	DECLARE_WRITE16_MEMBER(ginganin_vregs16_w);
+	DECLARE_WRITE_LINE_MEMBER(ptm_irq);
+>>>>>>> upstream/master
 	DECLARE_DRIVER_INIT(ginganin);
 	TILE_GET_INFO_MEMBER(get_bg_tile_info);
 	TILE_GET_INFO_MEMBER(get_fg_tile_info);
 	TILE_GET_INFO_MEMBER(get_txt_tile_info);
+<<<<<<< HEAD
 	virtual void machine_start();
 	virtual void machine_reset();
 	virtual void video_start();
@@ -55,4 +88,11 @@ public:
 	required_device<cpu_device> m_maincpu;
 	required_device<gfxdecode_device> m_gfxdecode;
 	required_device<palette_device> m_palette;
+=======
+	virtual void machine_start() override;
+	virtual void machine_reset() override;
+	virtual void video_start() override;
+	uint32_t screen_update_ginganin(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
+	void draw_sprites( bitmap_ind16 &bitmap,const rectangle &cliprect );
+>>>>>>> upstream/master
 };

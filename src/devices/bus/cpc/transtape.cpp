@@ -8,29 +8,47 @@
  * Further info at - http://cpcwiki.eu/index.php/Transtape
  */
 
+<<<<<<< HEAD
 #include "transtape.h"
 #include "includes/amstrad.h"
+=======
+#include "emu.h"
+#include "transtape.h"
+>>>>>>> upstream/master
 
 //**************************************************************************
 //  DEVICE DEFINITIONS
 //**************************************************************************
 
+<<<<<<< HEAD
 const device_type CPC_TRANSTAPE = &device_creator<cpc_transtape_device>;
+=======
+DEFINE_DEVICE_TYPE(CPC_TRANSTAPE, cpc_transtape_device, "cpc_transtape", "Hard Micro Transtape")
+>>>>>>> upstream/master
 
 ROM_START( cpc_transtape )
 	ROM_REGION( 0x4000, "tt_rom", 0 )
 	ROM_LOAD( "tta.rom",   0x0000, 0x4000, CRC(c568da76) SHA1(cc509d21216bf11d40f9a3e0791ef7f4ada03790) )
 ROM_END
 
+<<<<<<< HEAD
 const rom_entry *cpc_transtape_device::device_rom_region() const
+=======
+const tiny_rom_entry *cpc_transtape_device::device_rom_region() const
+>>>>>>> upstream/master
 {
 	return ROM_NAME( cpc_transtape );
 }
 
 static INPUT_PORTS_START(cpc_transtape)
 	PORT_START("transtape")
+<<<<<<< HEAD
 	PORT_BIT(0x01, IP_ACTIVE_HIGH, IPT_OTHER) PORT_NAME("Red Button") PORT_CODE(KEYCODE_F1) PORT_CHANGED_MEMBER(DEVICE_SELF,cpc_transtape_device,button_red_w,1)
 	PORT_BIT(0x02, IP_ACTIVE_HIGH, IPT_OTHER) PORT_NAME("Black Button") PORT_CODE(KEYCODE_F2) PORT_CHANGED_MEMBER(DEVICE_SELF,cpc_transtape_device,button_black_w,1)
+=======
+	PORT_BIT(0x01, IP_ACTIVE_HIGH, IPT_OTHER) PORT_NAME("Red Button") PORT_CODE(KEYCODE_F1) PORT_CHANGED_MEMBER(DEVICE_SELF,cpc_transtape_device,button_red_w,nullptr)
+	PORT_BIT(0x02, IP_ACTIVE_HIGH, IPT_OTHER) PORT_NAME("Black Button") PORT_CODE(KEYCODE_F2) PORT_CHANGED_MEMBER(DEVICE_SELF,cpc_transtape_device,button_black_w,nullptr)
+>>>>>>> upstream/master
 INPUT_PORTS_END
 
 ioport_constructor cpc_transtape_device::device_input_ports() const
@@ -42,9 +60,16 @@ ioport_constructor cpc_transtape_device::device_input_ports() const
 //  LIVE DEVICE
 //**************************************************************************
 
+<<<<<<< HEAD
 cpc_transtape_device::cpc_transtape_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock) :
 	device_t(mconfig, CPC_TRANSTAPE, "HM Transtape", tag, owner, clock, "cpc_transtape", __FILE__),
 	device_cpc_expansion_card_interface(mconfig, *this), m_slot(nullptr), m_cpu(nullptr), m_space(nullptr), m_ram(nullptr),
+=======
+cpc_transtape_device::cpc_transtape_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock) :
+	device_t(mconfig, CPC_TRANSTAPE, tag, owner, clock),
+	device_cpc_expansion_card_interface(mconfig, *this),
+	m_slot(nullptr), m_cpu(nullptr), m_space(nullptr), m_ram(nullptr),
+>>>>>>> upstream/master
 	m_rom_active(false),
 	m_romen(true),
 	m_output(0)
@@ -61,10 +86,17 @@ void cpc_transtape_device::device_start()
 	m_cpu = static_cast<cpu_device*>(machine().device("maincpu"));
 	m_space = &m_cpu->space(AS_IO);
 
+<<<<<<< HEAD
 	m_ram = auto_alloc_array_clear(machine(), UINT8, 0x2000);
 
 	m_space->install_write_handler(0xfbf0,0xfbf0,0,0,write8_delegate(FUNC(cpc_transtape_device::output_w),this));
 	m_space->install_read_handler(0xfbff,0xfbff,0,0,read8_delegate(FUNC(cpc_transtape_device::input_r),this));
+=======
+	m_ram = make_unique_clear<uint8_t[]>(0x2000);
+
+	m_space->install_write_handler(0xfbf0,0xfbf0,write8_delegate(FUNC(cpc_transtape_device::output_w),this));
+	m_space->install_read_handler(0xfbff,0xfbff,read8_delegate(FUNC(cpc_transtape_device::input_r),this));
+>>>>>>> upstream/master
 }
 
 //-------------------------------------------------
@@ -80,7 +112,11 @@ void cpc_transtape_device::device_reset()
 
 void cpc_transtape_device::map_enable()
 {
+<<<<<<< HEAD
 	UINT8* ROM = memregion("tt_rom")->base();
+=======
+	uint8_t* ROM = memregion("tt_rom")->base();
+>>>>>>> upstream/master
 	if(m_output & 0x02)  // ROM enable
 	{
 		membank(":bank1")->set_base(ROM);
@@ -88,10 +124,17 @@ void cpc_transtape_device::map_enable()
 	}
 	if(m_output & 0x01)  // RAM enable
 	{
+<<<<<<< HEAD
 		membank(":bank7")->set_base(m_ram);
 		membank(":bank15")->set_base(m_ram);
 		membank(":bank8")->set_base(m_ram);  // repeats in second 8kB
 		membank(":bank16")->set_base(m_ram);
+=======
+		membank(":bank7")->set_base(m_ram.get());
+		membank(":bank15")->set_base(m_ram.get());
+		membank(":bank8")->set_base(m_ram.get());  // repeats in second 8kB
+		membank(":bank16")->set_base(m_ram.get());
+>>>>>>> upstream/master
 	}
 }
 
@@ -130,7 +173,11 @@ WRITE8_MEMBER(cpc_transtape_device::output_w)
 	m_slot->rom_select(space,0,get_rom_bank());  // trigger rethink
 }
 
+<<<<<<< HEAD
 void cpc_transtape_device::set_mapping(UINT8 type)
+=======
+void cpc_transtape_device::set_mapping(uint8_t type)
+>>>>>>> upstream/master
 {
 	if(type != MAP_OTHER)
 		return;

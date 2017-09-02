@@ -64,6 +64,7 @@ and/or http://ngs.no.coocan.jp/doc/wiki.cgi/datapack?page=4.2+MSX-AUDIO+%B3%C8%C
 #include "msx_audio.h"
 #include "bus/msx_cart/msx_audio_kb.h"
 
+<<<<<<< HEAD
 
 const device_type MSX_CART_MSX_AUDIO_HXMU900 = &device_creator<msx_cart_msx_audio_hxmu900>;
 const device_type MSX_CART_MSX_AUDIO_NMS1205 = &device_creator<msx_cart_msx_audio_nms1205>;
@@ -72,13 +73,29 @@ const device_type MSX_CART_MSX_AUDIO_FSCA1 = &device_creator<msx_cart_msx_audio_
 
 msx_cart_msx_audio_hxmu900::msx_cart_msx_audio_hxmu900(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
 	: device_t(mconfig, MSX_CART_MSX_AUDIO_HXMU900, "MSX Cartridge - MSX-AUDIO HX-MU900", tag, owner, clock, "msx_audio_hxmu900", __FILE__)
+=======
+#include "speaker.h"
+
+
+DEFINE_DEVICE_TYPE(MSX_CART_MSX_AUDIO_HXMU900, msx_cart_msx_audio_hxmu900_device, "msx_audio_hxmu900", "MSX Cartridge - MSX-AUDIO HX-MU900")
+DEFINE_DEVICE_TYPE(MSX_CART_MSX_AUDIO_NMS1205, msx_cart_msx_audio_nms1205_device, "msx_audio_nms1205", "MSX Cartridge - MSX-AUDIO NMS-1205")
+DEFINE_DEVICE_TYPE(MSX_CART_MSX_AUDIO_FSCA1,   msx_cart_msx_audio_fsca1_device,   "msx_audio_fsca1",   "MSX Cartridge - MSX-AUDIO FS-CA1")
+
+
+msx_cart_msx_audio_hxmu900_device::msx_cart_msx_audio_hxmu900_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: device_t(mconfig, MSX_CART_MSX_AUDIO_HXMU900, tag, owner, clock)
+>>>>>>> upstream/master
 	, msx_cart_interface(mconfig, *this)
 	, m_y8950(*this, "y8950")
 {
 }
 
 
+<<<<<<< HEAD
 static MACHINE_CONFIG_FRAGMENT( msx_audio_hxmu900 )
+=======
+MACHINE_CONFIG_MEMBER( msx_cart_msx_audio_hxmu900_device::device_add_mconfig )
+>>>>>>> upstream/master
 	// This is actually incorrect. The sound output is passed back into the MSX machine where it is mixed internally and output through the system 'speaker'.
 	MCFG_SPEAKER_STANDARD_MONO("mono")
 	MCFG_SOUND_ADD("y8950", Y8950, XTAL_3_579545MHz)    // Not verified
@@ -86,6 +103,7 @@ static MACHINE_CONFIG_FRAGMENT( msx_audio_hxmu900 )
 	MCFG_Y8950_KEYBOARD_WRITE_HANDLER(DEVWRITE8("kbdc", msx_audio_kbdc_port_device, write))
 	MCFG_Y8950_KEYBOARD_READ_HANDLER(DEVREAD8("kbdc", msx_audio_kbdc_port_device, read))
 
+<<<<<<< HEAD
 	MCFG_MSX_AUDIO_KBDC_PORT_ADD("kbdc", msx_audio_keyboards, NULL)
 MACHINE_CONFIG_END
 
@@ -97,6 +115,13 @@ machine_config_constructor msx_cart_msx_audio_hxmu900::device_mconfig_additions(
 
 
 void msx_cart_msx_audio_hxmu900::device_start()
+=======
+	MCFG_MSX_AUDIO_KBDC_PORT_ADD("kbdc", msx_audio_keyboards, nullptr)
+MACHINE_CONFIG_END
+
+
+void msx_cart_msx_audio_hxmu900_device::device_start()
+>>>>>>> upstream/master
 {
 	// Install IO read/write handlers
 	address_space &space = machine().device<cpu_device>("maincpu")->space(AS_IO);
@@ -105,7 +130,11 @@ void msx_cart_msx_audio_hxmu900::device_start()
 }
 
 
+<<<<<<< HEAD
 void msx_cart_msx_audio_hxmu900::initialize_cartridge()
+=======
+void msx_cart_msx_audio_hxmu900_device::initialize_cartridge()
+>>>>>>> upstream/master
 {
 	if (get_rom_size() < 0x8000)
 	{
@@ -114,7 +143,11 @@ void msx_cart_msx_audio_hxmu900::initialize_cartridge()
 }
 
 
+<<<<<<< HEAD
 READ8_MEMBER(msx_cart_msx_audio_hxmu900::read_cart)
+=======
+READ8_MEMBER(msx_cart_msx_audio_hxmu900_device::read_cart)
+>>>>>>> upstream/master
 {
 	if (offset >= 0x4000 && offset < 0xC000)
 	{
@@ -124,11 +157,30 @@ READ8_MEMBER(msx_cart_msx_audio_hxmu900::read_cart)
 }
 
 
+<<<<<<< HEAD
 
 
 
 msx_cart_msx_audio_nms1205::msx_cart_msx_audio_nms1205(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
 	: device_t(mconfig, MSX_CART_MSX_AUDIO_NMS1205, "MSX Cartridge - MSX-AUDIO NMS-1205", tag, owner, clock, "msx_audio_nms1205", __FILE__)
+=======
+ROM_START( msx_hxmu )
+	ROM_REGION(0x8000, "y8950", ROMREGION_ERASE00)
+ROM_END
+
+
+const tiny_rom_entry *msx_cart_msx_audio_hxmu900_device::device_rom_region() const
+{
+	return ROM_NAME( msx_hxmu );
+}
+
+
+
+
+
+msx_cart_msx_audio_nms1205_device::msx_cart_msx_audio_nms1205_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: device_t(mconfig, MSX_CART_MSX_AUDIO_NMS1205, tag, owner, clock)
+>>>>>>> upstream/master
 	, msx_cart_interface(mconfig, *this)
 	, m_y8950(*this, "y8950")
 	, m_acia6850(*this, "acia6850")
@@ -138,7 +190,11 @@ msx_cart_msx_audio_nms1205::msx_cart_msx_audio_nms1205(const machine_config &mco
 }
 
 
+<<<<<<< HEAD
 static MACHINE_CONFIG_FRAGMENT( msx_audio_nms1205 )
+=======
+MACHINE_CONFIG_MEMBER( msx_cart_msx_audio_nms1205_device::device_add_mconfig )
+>>>>>>> upstream/master
 	// This is actually incorrect. The sound output is passed back into the MSX machine where it is mixed internally and output through the system 'speaker'.
 	// At the same time the sound is also output on two output on the nms1205 cartridge itself
 	MCFG_SPEAKER_STANDARD_MONO("mono")
@@ -146,16 +202,26 @@ static MACHINE_CONFIG_FRAGMENT( msx_audio_nms1205 )
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 0.40)
 	MCFG_Y8950_KEYBOARD_WRITE_HANDLER(DEVWRITE8("kbdc", msx_audio_kbdc_port_device, write))
 	MCFG_Y8950_KEYBOARD_READ_HANDLER(DEVREAD8("kbdc", msx_audio_kbdc_port_device, read))
+<<<<<<< HEAD
 	MCFG_Y8950_IRQ_HANDLER(WRITELINE(msx_cart_msx_audio_nms1205, irq_write))
 
 	MCFG_MSX_AUDIO_KBDC_PORT_ADD("kbdc", msx_audio_keyboards, NULL)
+=======
+	MCFG_Y8950_IRQ_HANDLER(WRITELINE(msx_cart_msx_audio_nms1205_device, irq_write))
+
+	MCFG_MSX_AUDIO_KBDC_PORT_ADD("kbdc", msx_audio_keyboards, nullptr)
+>>>>>>> upstream/master
 
 	// There is a 2 MHz crystal on the PCB, the 6850 TX and RX clocks are derived from it
 	MCFG_DEVICE_ADD("acia6850", ACIA6850, 0)
 	MCFG_ACIA6850_TXD_HANDLER(DEVWRITELINE("mdout", midi_port_device, write_txd))
 
 	MCFG_MIDI_PORT_ADD("mdin", midiin_slot, "midiin")
+<<<<<<< HEAD
 	MCFG_MIDI_RX_HANDLER(WRITELINE(msx_cart_msx_audio_nms1205, midi_in))
+=======
+	MCFG_MIDI_RX_HANDLER(WRITELINE(msx_cart_msx_audio_nms1205_device, midi_in))
+>>>>>>> upstream/master
 
 	MCFG_MIDI_PORT_ADD("mdthru", midiout_slot, "midiout")
 
@@ -163,24 +229,35 @@ static MACHINE_CONFIG_FRAGMENT( msx_audio_nms1205 )
 MACHINE_CONFIG_END
 
 
+<<<<<<< HEAD
 machine_config_constructor msx_cart_msx_audio_nms1205::device_mconfig_additions() const
 {
 	return MACHINE_CONFIG_NAME( msx_audio_nms1205 );
 }
 
 
+=======
+>>>>>>> upstream/master
 ROM_START( msx_nms1205 )
 	ROM_REGION(0x8000, "y8950", ROMREGION_ERASE00)
 ROM_END
 
 
+<<<<<<< HEAD
 const rom_entry *msx_cart_msx_audio_nms1205::device_rom_region() const
+=======
+const tiny_rom_entry *msx_cart_msx_audio_nms1205_device::device_rom_region() const
+>>>>>>> upstream/master
 {
 	return ROM_NAME( msx_nms1205 );
 }
 
 
+<<<<<<< HEAD
 WRITE_LINE_MEMBER(msx_cart_msx_audio_nms1205::irq_write)
+=======
+WRITE_LINE_MEMBER(msx_cart_msx_audio_nms1205_device::irq_write)
+>>>>>>> upstream/master
 {
 	// Trigger IRQ on the maincpu
 	// The 8950 seems to trigger an irq on reset, this causes an infinite loop of continuously triggering
@@ -190,7 +267,11 @@ WRITE_LINE_MEMBER(msx_cart_msx_audio_nms1205::irq_write)
 }
 
 
+<<<<<<< HEAD
 WRITE_LINE_MEMBER(msx_cart_msx_audio_nms1205::midi_in)
+=======
+WRITE_LINE_MEMBER(msx_cart_msx_audio_nms1205_device::midi_in)
+>>>>>>> upstream/master
 {
 	// MIDI in signals is sent to both the 6850 and the MIDI thru output port
 	m_acia6850->write_rxd(state);
@@ -198,7 +279,11 @@ WRITE_LINE_MEMBER(msx_cart_msx_audio_nms1205::midi_in)
 }
 
 
+<<<<<<< HEAD
 void msx_cart_msx_audio_nms1205::device_start()
+=======
+void msx_cart_msx_audio_nms1205_device::device_start()
+>>>>>>> upstream/master
 {
 	// Install IO read/write handlers
 	address_space &space = machine().device<cpu_device>("maincpu")->space(AS_IO);
@@ -211,7 +296,11 @@ void msx_cart_msx_audio_nms1205::device_start()
 }
 
 
+<<<<<<< HEAD
 void msx_cart_msx_audio_nms1205::initialize_cartridge()
+=======
+void msx_cart_msx_audio_nms1205_device::initialize_cartridge()
+>>>>>>> upstream/master
 {
 	if (get_rom_size() < 0x8000)
 	{
@@ -220,7 +309,11 @@ void msx_cart_msx_audio_nms1205::initialize_cartridge()
 }
 
 
+<<<<<<< HEAD
 READ8_MEMBER(msx_cart_msx_audio_nms1205::read_cart)
+=======
+READ8_MEMBER(msx_cart_msx_audio_nms1205_device::read_cart)
+>>>>>>> upstream/master
 {
 	if (offset >= 0x4000 && offset < 0xC000)
 	{
@@ -235,8 +328,13 @@ READ8_MEMBER(msx_cart_msx_audio_nms1205::read_cart)
 
 
 
+<<<<<<< HEAD
 msx_cart_msx_audio_fsca1::msx_cart_msx_audio_fsca1(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
 	: device_t(mconfig, MSX_CART_MSX_AUDIO_FSCA1, "MSX Cartridge - MSX-AUDIO FS-CA1", tag, owner, clock, "msx_audio_fsca1", __FILE__)
+=======
+msx_cart_msx_audio_fsca1_device::msx_cart_msx_audio_fsca1_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: device_t(mconfig, MSX_CART_MSX_AUDIO_FSCA1, tag, owner, clock)
+>>>>>>> upstream/master
 	, msx_cart_interface(mconfig, *this)
 	, m_y8950(*this, "y8950")
 	, m_io_config(*this, "CONFIG")
@@ -247,13 +345,18 @@ msx_cart_msx_audio_fsca1::msx_cart_msx_audio_fsca1(const machine_config &mconfig
 }
 
 
+<<<<<<< HEAD
 static MACHINE_CONFIG_FRAGMENT( msx_audio_fsca1 )
+=======
+MACHINE_CONFIG_MEMBER( msx_cart_msx_audio_fsca1_device::device_add_mconfig )
+>>>>>>> upstream/master
 	// This is actually incorrect. The sound output is passed back into the MSX machine where it is mixed internally and output through the system 'speaker'.
 	MCFG_SPEAKER_STANDARD_MONO("mono")
 	MCFG_SOUND_ADD("y8950", Y8950, XTAL_3_579545MHz)
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 0.40)
 	MCFG_Y8950_KEYBOARD_WRITE_HANDLER(DEVWRITE8("kbdc", msx_audio_kbdc_port_device, write))
 	MCFG_Y8950_KEYBOARD_READ_HANDLER(DEVREAD8("kbdc", msx_audio_kbdc_port_device, read))
+<<<<<<< HEAD
 	MCFG_Y8950_IO_READ_HANDLER(READ8(msx_cart_msx_audio_fsca1, y8950_io_r))
 	MCFG_Y8950_IO_WRITE_HANDLER(WRITE8(msx_cart_msx_audio_fsca1, y8950_io_w))
 
@@ -267,6 +370,15 @@ machine_config_constructor msx_cart_msx_audio_fsca1::device_mconfig_additions() 
 }
 
 
+=======
+	MCFG_Y8950_IO_READ_HANDLER(READ8(msx_cart_msx_audio_fsca1_device, y8950_io_r))
+	MCFG_Y8950_IO_WRITE_HANDLER(WRITE8(msx_cart_msx_audio_fsca1_device, y8950_io_w))
+
+	MCFG_MSX_AUDIO_KBDC_PORT_ADD("kbdc", msx_audio_keyboards, nullptr)
+MACHINE_CONFIG_END
+
+
+>>>>>>> upstream/master
 static INPUT_PORTS_START( msx_audio_fsca1 )
 	PORT_START("CONFIG")
 	PORT_CONFNAME( 0x04, 0x04, "FS-CA1 Firmware switch")
@@ -276,7 +388,11 @@ static INPUT_PORTS_START( msx_audio_fsca1 )
 INPUT_PORTS_END
 
 
+<<<<<<< HEAD
 ioport_constructor msx_cart_msx_audio_fsca1::device_input_ports() const
+=======
+ioport_constructor msx_cart_msx_audio_fsca1_device::device_input_ports() const
+>>>>>>> upstream/master
 {
 	return INPUT_PORTS_NAME( msx_audio_fsca1 );
 }
@@ -287,12 +403,17 @@ ROM_START( msx_fsca1 )
 ROM_END
 
 
+<<<<<<< HEAD
 const rom_entry *msx_cart_msx_audio_fsca1::device_rom_region() const
+=======
+const tiny_rom_entry *msx_cart_msx_audio_fsca1_device::device_rom_region() const
+>>>>>>> upstream/master
 {
 	return ROM_NAME( msx_fsca1 );
 }
 
 
+<<<<<<< HEAD
 void msx_cart_msx_audio_fsca1::device_start()
 {
 	// Install IO read/write handlers
@@ -303,6 +424,18 @@ void msx_cart_msx_audio_fsca1::device_start()
 
 
 void msx_cart_msx_audio_fsca1::initialize_cartridge()
+=======
+void msx_cart_msx_audio_fsca1_device::device_start()
+{
+	// Install IO read/write handlers
+	address_space &space = machine().device<cpu_device>("maincpu")->space(AS_IO);
+	space.install_write_handler(0xc0, 0xc3, write8_delegate(FUNC(msx_cart_msx_audio_fsca1_device::write_y8950), this));
+	space.install_read_handler(0xc0, 0xc3, read8_delegate(FUNC(msx_cart_msx_audio_fsca1_device::read_y8950), this));
+}
+
+
+void msx_cart_msx_audio_fsca1_device::initialize_cartridge()
+>>>>>>> upstream/master
 {
 	if (get_rom_size() < 0x20000)
 	{
@@ -311,7 +444,11 @@ void msx_cart_msx_audio_fsca1::initialize_cartridge()
 }
 
 
+<<<<<<< HEAD
 READ8_MEMBER(msx_cart_msx_audio_fsca1::read_cart)
+=======
+READ8_MEMBER(msx_cart_msx_audio_fsca1_device::read_cart)
+>>>>>>> upstream/master
 {
 	if (m_7ffe == 0 && (offset & 0xB000) == 0x3000)
 	{
@@ -321,7 +458,11 @@ READ8_MEMBER(msx_cart_msx_audio_fsca1::read_cart)
 }
 
 
+<<<<<<< HEAD
 WRITE8_MEMBER(msx_cart_msx_audio_fsca1::write_cart)
+=======
+WRITE8_MEMBER(msx_cart_msx_audio_fsca1_device::write_cart)
+>>>>>>> upstream/master
 {
 	if (offset == 0x7ffe)
 	{
@@ -341,11 +482,19 @@ WRITE8_MEMBER(msx_cart_msx_audio_fsca1::write_cart)
 		return;
 	}
 
+<<<<<<< HEAD
 	logerror("msx_cart_msx_audio_fsca1: Unhandled write %02x to %04x\n", data, offset);
 }
 
 
 WRITE8_MEMBER(msx_cart_msx_audio_fsca1::write_y8950)
+=======
+	logerror("msx_cart_msx_audio_fsca1_device: Unhandled write %02x to %04x\n", data, offset);
+}
+
+
+WRITE8_MEMBER(msx_cart_msx_audio_fsca1_device::write_y8950)
+>>>>>>> upstream/master
 {
 	if (offset & 2)
 	{
@@ -364,7 +513,11 @@ WRITE8_MEMBER(msx_cart_msx_audio_fsca1::write_y8950)
 }
 
 
+<<<<<<< HEAD
 READ8_MEMBER(msx_cart_msx_audio_fsca1::read_y8950)
+=======
+READ8_MEMBER(msx_cart_msx_audio_fsca1_device::read_y8950)
+>>>>>>> upstream/master
 {
 	if (offset & 2)
 	{
@@ -377,13 +530,21 @@ READ8_MEMBER(msx_cart_msx_audio_fsca1::read_y8950)
 }
 
 
+<<<<<<< HEAD
 WRITE8_MEMBER(msx_cart_msx_audio_fsca1::y8950_io_w)
+=======
+WRITE8_MEMBER(msx_cart_msx_audio_fsca1_device::y8950_io_w)
+>>>>>>> upstream/master
 {
 	logerror("msx_fsca1::y8950_io_w: %02x\n", data);
 }
 
 
+<<<<<<< HEAD
 READ8_MEMBER(msx_cart_msx_audio_fsca1::y8950_io_r)
+=======
+READ8_MEMBER(msx_cart_msx_audio_fsca1_device::y8950_io_r)
+>>>>>>> upstream/master
 {
 	return m_io_config->read();
 }

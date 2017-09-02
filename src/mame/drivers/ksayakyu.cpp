@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 // license:LGPL-2.1+
+=======
+// license:BSD-3-Clause
+>>>>>>> upstream/master
 // copyright-holders:Tomasz Slanina
 /*
 Kusayakyuu (Sandlot Baseball)
@@ -10,8 +14,12 @@ TODO:
 - sprite glitches (sometimes) .. missing vertical flip flag? <- (*)
 - sound cpu int freq (timer ? $a010 writes ?)
 
+<<<<<<< HEAD
 (*) this looks a BTANB, when the player slide the relative sand drawing is made with the text tilemap and it's virtually impossible
 to fix it without breaking anything else. -AS
+=======
+(*) this was caused by flip Y being hooked up as bit 6 in text videoram attribute. -AS
+>>>>>>> upstream/master
 
 M6100097A
 
@@ -66,10 +74,22 @@ SRAM:
 */
 
 #include "emu.h"
+<<<<<<< HEAD
 #include "cpu/z80/z80.h"
 #include "sound/ay8910.h"
 #include "sound/dac.h"
 #include "includes/ksayakyu.h"
+=======
+#include "includes/ksayakyu.h"
+
+#include "cpu/z80/z80.h"
+#include "sound/ay8910.h"
+#include "sound/dac.h"
+#include "sound/volt_reg.h"
+#include "screen.h"
+#include "speaker.h"
+
+>>>>>>> upstream/master
 
 #define MAIN_CLOCK XTAL_18_432MHz
 
@@ -89,7 +109,11 @@ WRITE8_MEMBER(ksayakyu_state::bank_select_w)
 WRITE8_MEMBER(ksayakyu_state::latch_w)
 {
 	m_sound_status &= ~0x80;
+<<<<<<< HEAD
 	soundlatch_byte_w(space, 0, data | 0x80);
+=======
+	m_soundlatch->write(space, 0, data | 0x80);
+>>>>>>> upstream/master
 }
 
 READ8_MEMBER(ksayakyu_state::sound_status_r)
@@ -100,7 +124,17 @@ READ8_MEMBER(ksayakyu_state::sound_status_r)
 WRITE8_MEMBER(ksayakyu_state::tomaincpu_w)
 {
 	m_sound_status |= 0x80;
+<<<<<<< HEAD
 	soundlatch_byte_w(space, 0, data);
+=======
+	m_soundlatch->write(space, 0, data);
+}
+
+READ8_MEMBER(ksayakyu_state::int_ack_r)
+{
+	m_maincpu->set_input_line(0, CLEAR_LINE);
+	return 0xff; // value not used
+>>>>>>> upstream/master
 }
 
 static ADDRESS_MAP_START( maincpu_map, AS_PROGRAM, 8, ksayakyu_state )
@@ -115,7 +149,11 @@ static ADDRESS_MAP_START( maincpu_map, AS_PROGRAM, 8, ksayakyu_state )
 	AM_RANGE(0xa804, 0xa804) AM_WRITE(ksayakyu_videoctrl_w)
 	AM_RANGE(0xa805, 0xa805) AM_WRITE(latch_w)
 	AM_RANGE(0xa806, 0xa806) AM_READ(sound_status_r)
+<<<<<<< HEAD
 	AM_RANGE(0xa807, 0xa807) AM_READNOP /* watchdog ? */
+=======
+	AM_RANGE(0xa807, 0xa807) AM_READ(int_ack_r)
+>>>>>>> upstream/master
 	AM_RANGE(0xa808, 0xa808) AM_WRITE(bank_select_w)
 	AM_RANGE(0xb000, 0xb7ff) AM_RAM_WRITE(ksayakyu_videoram_w) AM_SHARE("videoram")
 	AM_RANGE(0xb800, 0xbfff) AM_RAM AM_SHARE("spriteram")
@@ -127,7 +165,11 @@ static ADDRESS_MAP_START( soundcpu_map, AS_PROGRAM, 8, ksayakyu_state )
 	AM_RANGE(0xa001, 0xa001) AM_DEVREAD("ay1", ay8910_device, data_r)
 	AM_RANGE(0xa002, 0xa003) AM_DEVWRITE("ay1", ay8910_device, data_address_w)
 	AM_RANGE(0xa006, 0xa007) AM_DEVWRITE("ay2", ay8910_device, data_address_w)
+<<<<<<< HEAD
 	AM_RANGE(0xa008, 0xa008) AM_DEVWRITE("dac", dac_device, write_unsigned8)
+=======
+	AM_RANGE(0xa008, 0xa008) AM_DEVWRITE("dac", dac_byte_interface, write)
+>>>>>>> upstream/master
 	AM_RANGE(0xa00c, 0xa00c) AM_WRITE(tomaincpu_w)
 	AM_RANGE(0xa010, 0xa010) AM_WRITENOP //a timer of some sort?
 ADDRESS_MAP_END
@@ -230,7 +272,11 @@ GFXDECODE_END
 
 void ksayakyu_state::machine_start()
 {
+<<<<<<< HEAD
 	UINT8 *ROM = memregion("maincpu")->base();
+=======
+	uint8_t *ROM = memregion("maincpu")->base();
+>>>>>>> upstream/master
 
 	membank("bank1")->configure_entries(0, 2, &ROM[0x10000], 0x4000);
 
@@ -246,12 +292,19 @@ void ksayakyu_state::machine_reset()
 	m_flipscreen = 0;
 }
 
+<<<<<<< HEAD
 static MACHINE_CONFIG_START( ksayakyu, ksayakyu_state )
+=======
+static MACHINE_CONFIG_START( ksayakyu )
+>>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", Z80,MAIN_CLOCK/8) //divider is guessed
 	MCFG_CPU_PROGRAM_MAP(maincpu_map)
+<<<<<<< HEAD
 	MCFG_CPU_VBLANK_INT_DRIVER("screen", ksayakyu_state,  irq0_line_hold)
+=======
+>>>>>>> upstream/master
 
 	MCFG_CPU_ADD("audiocpu", Z80, MAIN_CLOCK/8) //divider is guessed, controls DAC tempo
 	MCFG_CPU_PROGRAM_MAP(soundcpu_map)
@@ -268,26 +321,49 @@ static MACHINE_CONFIG_START( ksayakyu, ksayakyu_state )
 	MCFG_SCREEN_VISIBLE_AREA(0*8, 32*8-1, 2*8, 30*8-1)
 	MCFG_SCREEN_UPDATE_DRIVER(ksayakyu_state, screen_update_ksayakyu)
 	MCFG_SCREEN_PALETTE("palette")
+<<<<<<< HEAD
+=======
+	MCFG_SCREEN_VBLANK_CALLBACK(ASSERTLINE("maincpu", 0))
+>>>>>>> upstream/master
 
 	MCFG_GFXDECODE_ADD("gfxdecode", "palette", ksayakyu)
 	MCFG_PALETTE_ADD("palette", 256)
 	MCFG_PALETTE_INIT_OWNER(ksayakyu_state, ksayakyu)
 
 	/* sound hardware */
+<<<<<<< HEAD
 	MCFG_SPEAKER_STANDARD_MONO("mono")
 
 	MCFG_SOUND_ADD("ay1", AY8910, MAIN_CLOCK/16) //unknown clock
 	MCFG_AY8910_PORT_A_READ_CB(READ8(driver_device, soundlatch_byte_r))
 	MCFG_AY8910_PORT_B_WRITE_CB(WRITE8(ksayakyu_state, dummy1_w))
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 0.25)
+=======
+	MCFG_SPEAKER_STANDARD_MONO("speaker")
+
+	MCFG_GENERIC_LATCH_8_ADD("soundlatch")
+
+	MCFG_SOUND_ADD("ay1", AY8910, MAIN_CLOCK/16) //unknown clock
+	MCFG_AY8910_PORT_A_READ_CB(DEVREAD8("soundlatch", generic_latch_8_device, read))
+	MCFG_AY8910_PORT_B_WRITE_CB(WRITE8(ksayakyu_state, dummy1_w))
+	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "speaker", 0.25)
+>>>>>>> upstream/master
 
 	MCFG_SOUND_ADD("ay2", AY8910, MAIN_CLOCK/16) //unknown clock
 	MCFG_AY8910_PORT_A_WRITE_CB(WRITE8(ksayakyu_state, dummy2_w))
 	MCFG_AY8910_PORT_B_WRITE_CB(WRITE8(ksayakyu_state, dummy3_w))
+<<<<<<< HEAD
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 0.25)
 
 	MCFG_DAC_ADD("dac")
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 0.20)
+=======
+	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "speaker", 0.25)
+
+	MCFG_SOUND_ADD("dac", DAC_6BIT_R2R, 0) MCFG_SOUND_ROUTE(ALL_OUTPUTS, "speaker", 0.25) // unknown DAC
+	MCFG_DEVICE_ADD("vref", VOLTAGE_REGULATOR, 0) MCFG_VOLTAGE_REGULATOR_OUTPUT(5.0)
+	MCFG_SOUND_ROUTE_EX(0, "dac", 1.0, DAC_VREF_POS_INPUT) MCFG_SOUND_ROUTE_EX(0, "dac", -1.0, DAC_VREF_NEG_INPUT)
+>>>>>>> upstream/master
 MACHINE_CONFIG_END
 
 ROM_START( ksayakyu )
@@ -326,4 +402,8 @@ ROM_START( ksayakyu )
 	ROM_LOAD( "9f.bin", 0x0000, 0x0100, CRC(ff71b27f) SHA1(6aad2bd2be997595a05ddb81d24df8fe1435910b) )
 ROM_END
 
+<<<<<<< HEAD
 GAME( 1985, ksayakyu, 0, ksayakyu, ksayakyu, driver_device, 0, ORIENTATION_FLIP_Y, "Taito Corporation", "Kusayakyuu", MACHINE_SUPPORTS_SAVE )
+=======
+GAME( 1985, ksayakyu, 0, ksayakyu, ksayakyu, ksayakyu_state, 0, ORIENTATION_FLIP_Y, "Taito Corporation", "Kusayakyuu", MACHINE_SUPPORTS_SAVE )
+>>>>>>> upstream/master

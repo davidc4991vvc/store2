@@ -1,6 +1,14 @@
 // license:BSD-3-Clause
 // copyright-holders:Andrew Gardner
+<<<<<<< HEAD
 #define NO_MEM_TRACKING
+=======
+#include "emu.h"
+#include <QtWidgets/QScrollBar>
+#include <QtWidgets/QApplication>
+#include <QtGui/QPainter>
+#include <QtGui/QKeyEvent>
+>>>>>>> upstream/master
 
 #include "debuggerview.h"
 
@@ -12,7 +20,11 @@ DebuggerView::DebuggerView(const debug_view_type& type,
 							QWidget* parent) :
 	QAbstractScrollArea(parent),
 	m_preferBottom(false),
+<<<<<<< HEAD
 	m_view(NULL),
+=======
+	m_view(nullptr),
+>>>>>>> upstream/master
 	m_machine(machine)
 {
 	// I like setting the font per-view since it doesn't override the menuing fonts.
@@ -28,10 +40,17 @@ DebuggerView::DebuggerView(const debug_view_type& type,
 												DebuggerView::debuggerViewUpdate,
 												this);
 
+<<<<<<< HEAD
 	connect(verticalScrollBar(), SIGNAL(valueChanged(int)),
 			this, SLOT(verticalScrollSlot(int)));
 	connect(horizontalScrollBar(), SIGNAL(valueChanged(int)),
 			this, SLOT(horizontalScrollSlot(int)));
+=======
+	connect(verticalScrollBar(), &QScrollBar::valueChanged,
+			this, &DebuggerView::verticalScrollSlot);
+	connect(horizontalScrollBar(), &QScrollBar::valueChanged,
+			this, &DebuggerView::horizontalScrollSlot);
+>>>>>>> upstream/master
 }
 
 
@@ -41,6 +60,7 @@ DebuggerView::~DebuggerView()
 		m_machine->debug_view().free_view(*m_view);
 }
 
+<<<<<<< HEAD
 // TODO: remove this version no later than January 1, 2015
 #if QT_VERSION < QT_VERSION_CHECK(4, 7, 0)
 void DebuggerView::paintEvent(QPaintEvent* event)
@@ -156,12 +176,18 @@ void DebuggerView::paintEvent(QPaintEvent* event)
 	}
 }
 #else
+=======
+>>>>>>> upstream/master
 void DebuggerView::paintEvent(QPaintEvent* event)
 {
 	// Tell the MAME debug view how much real estate is available
 	QFontMetrics actualFont = fontMetrics();
 	const double fontWidth = actualFont.width(QString(100, '_')) / 100.;
+<<<<<<< HEAD
 	const int fontHeight = MAX(1, actualFont.height());
+=======
+	const int fontHeight = std::max(1, actualFont.lineSpacing());
+>>>>>>> upstream/master
 	m_view->set_visible_size(debug_view_xy(width()/fontWidth, height()/fontHeight));
 
 
@@ -272,11 +298,18 @@ void DebuggerView::paintEvent(QPaintEvent* event)
 		}
 	}
 }
+<<<<<<< HEAD
 #endif
 
 void DebuggerView::keyPressEvent(QKeyEvent* event)
 {
 	if (m_view == NULL)
+=======
+
+void DebuggerView::keyPressEvent(QKeyEvent* event)
+{
+	if (m_view == nullptr)
+>>>>>>> upstream/master
 		return QWidget::keyPressEvent(event);
 
 	Qt::KeyboardModifiers keyMods = QApplication::keyboardModifiers();
@@ -346,14 +379,22 @@ void DebuggerView::keyPressEvent(QKeyEvent* event)
 
 void DebuggerView::mousePressEvent(QMouseEvent* event)
 {
+<<<<<<< HEAD
 	if (m_view == NULL)
+=======
+	if (m_view == nullptr)
+>>>>>>> upstream/master
 		return;
 
 	if (event->button() == Qt::LeftButton)
 	{
 		QFontMetrics actualFont = fontMetrics();
 		const double fontWidth = actualFont.width(QString(100, '_')) / 100.;
+<<<<<<< HEAD
 		const int fontHeight = MAX(1, actualFont.height());
+=======
+		const int fontHeight = std::max(1, actualFont.height());
+>>>>>>> upstream/master
 
 		debug_view_xy topLeft = m_view->visible_position();
 		debug_view_xy clickViewPosition;

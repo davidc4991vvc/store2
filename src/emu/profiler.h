@@ -21,10 +21,17 @@
 
 ***************************************************************************/
 
+<<<<<<< HEAD
 #pragma once
 
 #ifndef __PROFILER_H__
 #define __PROFILER_H__
+=======
+#ifndef MAME_EMU_PROFILER_H
+#define MAME_EMU_PROFILER_H
+
+#pragma once
+>>>>>>> upstream/master
 
 #include "attotime.h"
 
@@ -51,10 +58,13 @@ enum profile_type
 	PROFILER_BLIT,
 	PROFILER_SOUND,
 	PROFILER_TIMER_CALLBACK,
+<<<<<<< HEAD
 #ifdef USE_HISCORE
 	//MKCHAMP - INCLUDING THE HISCORE ENGINE TO THE PROFILER
  	PROFILER_HISCORE,
 #endif /* USE_HISCORE */
+=======
+>>>>>>> upstream/master
 	PROFILER_INPUT,             // input.c and inptport.c
 	PROFILER_MOVIE_REC,         // movie recording
 	PROFILER_LOGERROR,          // logerror
@@ -75,7 +85,11 @@ enum profile_type
 	PROFILER_IDLE,
 	PROFILER_TOTAL
 };
+<<<<<<< HEAD
 DECLARE_ENUM_OPERATORS(profile_type)
+=======
+DECLARE_ENUM_INCDEC_OPERATORS(profile_type)
+>>>>>>> upstream/master
 
 
 
@@ -95,7 +109,11 @@ public:
 	// getters
 	bool enabled() const
 	{
+<<<<<<< HEAD
 		return m_filoptr != NULL;
+=======
+		return m_filoptr != nullptr;
+>>>>>>> upstream/master
 	}
 	const char *text(running_machine &machine);
 
@@ -216,4 +234,8 @@ typedef dummy_profiler_state profiler_state;
 extern profiler_state g_profiler;
 
 
+<<<<<<< HEAD
 #endif  /* __PROFILER_H__ */
+=======
+#endif  /* MAME_EMU_PROFILER_H */
+>>>>>>> upstream/master

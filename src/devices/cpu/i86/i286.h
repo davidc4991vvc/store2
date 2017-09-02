@@ -1,11 +1,19 @@
 // license:BSD-3-Clause
 // copyright-holders:Carl
+<<<<<<< HEAD
 #ifndef I286_H_
 #define I286_H_
+=======
+#ifndef MAME_CPU_I86_I286_H
+#define MAME_CPU_I86_I286_H
+
+#pragma once
+>>>>>>> upstream/master
 
 #include "i86.h"
 #define INPUT_LINE_A20      1
 
+<<<<<<< HEAD
 extern const device_type I80286;
 
 enum
@@ -13,6 +21,15 @@ enum
 	I286_PC = 0,
 
 	I286_IP,
+=======
+DECLARE_DEVICE_TYPE(I80286, i80286_cpu_device)
+
+enum
+{   // same order as I8086 registers
+	I286_PC = STATE_GENPC,
+
+	I286_IP = 1,
+>>>>>>> upstream/master
 	I286_AX,
 	I286_CX,
 	I286_DX,
@@ -29,7 +46,11 @@ enum
 	I286_DS,
 
 	I286_VECTOR,
+<<<<<<< HEAD
 	I286_PENDING,
+=======
+	I286_HALT,
+>>>>>>> upstream/master
 
 	I286_ES_BASE,
 	I286_ES_LIMIT,
@@ -64,6 +85,7 @@ class i80286_cpu_device : public i8086_common_cpu_device
 {
 public:
 	// construction/destruction
+<<<<<<< HEAD
 	i80286_cpu_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
 
 	// device_memory_interface overrides
@@ -132,6 +154,81 @@ private:
 	address_space_config m_program_config;
 	address_space_config m_io_config;
 	static const UINT8 m_i80286_timing[200];
+=======
+	i80286_cpu_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
+
+	// device_memory_interface overrides
+	virtual space_config_vector memory_space_config() const override;
+
+	typedef delegate<uint32_t (bool)> a20_cb;
+	static void static_set_a20_callback(device_t &device, a20_cb object) { downcast<i80286_cpu_device &>(device).m_a20_callback = object; }
+	template <class Object> static devcb_base &static_set_shutdown_callback(device_t &device, Object &&cb) { return downcast<i80286_cpu_device &>(device).m_out_shutdown_func.set_callback(std::forward<Object>(cb)); }
+
+protected:
+	virtual void execute_run() override;
+	virtual void device_reset() override;
+	virtual void device_start() override;
+
+	// device_state_interface overrides
+	virtual void state_import(const device_state_entry &entry) override;
+	virtual void state_string_export(const device_state_entry &entry, std::string &str) const override;
+
+	virtual uint32_t execute_input_lines() const override { return 1; }
+	virtual void execute_set_input(int inputnum, int state) override;
+	bool memory_translate(int spacenum, int intention, offs_t &address) override;
+
+	virtual void interrupt(int int_num, int trap = 1) override { if(trap) throw TRAP(int_num, (uint16_t)-1); else interrupt_descriptor(int_num, 0, 0); }
+	virtual uint8_t read_port_byte(uint16_t port) override;
+	virtual uint16_t read_port_word(uint16_t port) override;
+	virtual void write_port_byte(uint16_t port, uint8_t data) override;
+	virtual void write_port_word(uint16_t port, uint16_t data) override;
+
+	// Executing instructions
+	virtual uint8_t fetch_op() override;
+	virtual uint8_t fetch() override;
+	virtual uint32_t calc_addr(int seg, uint16_t offset, int size, int op, bool override = true) override;
+
+private:
+	void check_permission(uint8_t check_seg, uint32_t offset, uint16_t size, int operation);
+	void code_descriptor(uint16_t selector, uint16_t offset, int gate);
+	void data_descriptor(int reg, uint16_t selector);
+	void data_descriptor(int reg, uint16_t selector, int cpl, uint32_t trap, uint16_t offset = 0, int size = 0);
+	uint16_t far_return(int iret, int bytes);
+	void interrupt_descriptor(int number, int hwint, int error);
+	void load_flags(uint16_t flags, int cpl);
+	void pop_seg(int reg);
+	uint32_t selector_address(uint16_t sel);
+	void switch_task(uint16_t ntask, int type);
+	void trap(uint32_t error);
+	int verify(uint16_t selector, int operation, uint8_t rights, bool valid);
+	uint32_t pc() { return m_pc = m_base[CS] + m_ip; }
+
+	int m_trap_level;
+	uint16_t m_msw;
+	uint32_t m_base[4];
+	uint16_t m_limit[4];
+	uint8_t m_rights[4];
+	bool m_valid[4];
+	uint32_t m_amask;
+
+	struct {
+		uint32_t base;
+		uint16_t limit;
+	} m_gdtr, m_idtr;
+	struct {
+		uint16_t sel;
+		uint32_t base;
+		uint16_t limit;
+		uint8_t rights;
+	} m_ldtr, m_tr;
+
+	uint32_t TRAP(uint16_t fault, uint16_t code)  { return ((((uint32_t)fault&0xffff)<<16)|(code&0xffff)); }
+
+	address_space_config m_program_config;
+	address_space_config m_opcodes_config;
+	address_space_config m_io_config;
+	static const uint8_t m_i80286_timing[200];
+>>>>>>> upstream/master
 
 	enum {
 		FAULT_DE = 0,
@@ -156,9 +253,17 @@ private:
 };
 
 #define MCFG_80286_A20(_class, _a20_cb) \
+<<<<<<< HEAD
 		i80286_cpu_device::static_set_a20_callback(*device, i80286_cpu_device::a20_cb(FUNC(_class::_a20_cb), (_class *)owner));
+=======
+		i80286_cpu_device::static_set_a20_callback(*device, i80286_cpu_device::a20_cb(&_class::_a20_cb, (_class *)owner));
+>>>>>>> upstream/master
 
 #define MCFG_80286_SHUTDOWN(_devcb) \
 	devcb = &i80286_cpu_device::static_set_shutdown_callback(*device, DEVCB_##_devcb);
 
+<<<<<<< HEAD
 #endif /* I286_H_ */
+=======
+#endif // MAME_CPU_I86_I286_H
+>>>>>>> upstream/master

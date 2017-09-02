@@ -1,6 +1,13 @@
 // license:BSD-3-Clause
 // copyright-holders:David Haywood, Luca Elia, MetalliC
 /* emulation of Altera Cyclone EPIC12 FPGA programmed as a blitter */
+<<<<<<< HEAD
+=======
+#ifndef MAME_VIDEO_EPIC12_H
+#define MAME_VIDEO_EPIC12_H
+
+#pragma once
+>>>>>>> upstream/master
 
 #define MCFG_EPIC12_ADD(_tag) \
 	MCFG_DEVICE_ADD(_tag, EPIC12, 0)
@@ -9,6 +16,7 @@
 	epic12_device::set_mainramsize(*device, _rgn);
 
 
+<<<<<<< HEAD
 extern UINT8 epic12_device_colrtable[0x20][0x40];
 extern UINT8 epic12_device_colrtable_rev[0x20][0x40];
 extern UINT8 epic12_device_colrtable_add[0x20][0x20];
@@ -50,11 +58,23 @@ public:
 	epic12_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
 
 	void set_rambase(UINT16* rambase) { m_ram16 = rambase; }
+=======
+class epic12_device : public device_t, public device_video_interface
+{
+public:
+	epic12_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
+
+	void set_rambase(uint16_t* rambase) { m_ram16 = rambase; }
+>>>>>>> upstream/master
 	void set_delay_scale(int delay_scale) { m_delay_scale = delay_scale; }
 	void set_is_unsafe(int is_unsafe) { m_is_unsafe = is_unsafe; }
 	void set_cpu_device(cpu_device* maincpu) { m_maincpu = maincpu; }
 
+<<<<<<< HEAD
 	inline UINT16 READ_NEXT_WORD(offs_t *addr);
+=======
+	inline uint16_t READ_NEXT_WORD(offs_t *addr);
+>>>>>>> upstream/master
 
 	static void set_mainramsize(device_t &device, int ramsize)
 	{
@@ -70,6 +90,7 @@ public:
 
 	void draw_screen(bitmap_rgb32 &bitmap, const rectangle &cliprect);
 
+<<<<<<< HEAD
 	UINT16* m_ram16;
 	UINT32 m_gfx_addr;
 	UINT32 m_gfx_scroll_0_x, m_gfx_scroll_0_y;
@@ -80,6 +101,18 @@ public:
 	rectangle m_clip;
 
 	UINT16* m_use_ram;
+=======
+	uint16_t* m_ram16;
+	uint32_t m_gfx_addr;
+	uint32_t m_gfx_scroll_0_x, m_gfx_scroll_0_y;
+	uint32_t m_gfx_scroll_1_x, m_gfx_scroll_1_y;
+
+	int m_gfx_size;
+	std::unique_ptr<bitmap_rgb32> m_bitmaps;
+	rectangle m_clip;
+
+	uint16_t* m_use_ram;
+>>>>>>> upstream/master
 	int m_main_ramsize; // type D has double the main ram
 	int m_main_rammask;
 
@@ -92,6 +125,7 @@ public:
 	// thread safe mode, with no delays & shadow ram copy
 	DECLARE_READ32_MEMBER(blitter_r);
 	DECLARE_WRITE32_MEMBER(blitter_w);
+<<<<<<< HEAD
 	UINT32 m_gfx_addr_shadowcopy;
 	UINT32 m_gfx_scroll_0_x_shadowcopy, m_gfx_scroll_0_y_shadowcopy;
 	UINT32 m_gfx_scroll_1_x_shadowcopy, m_gfx_scroll_1_y_shadowcopy;
@@ -99,6 +133,15 @@ public:
 	inline void gfx_upload_shadow_copy(address_space &space, offs_t *addr);
 	inline void gfx_create_shadow_copy(address_space &space);
 	inline UINT16 COPY_NEXT_WORD(address_space &space, offs_t *addr);
+=======
+	uint32_t m_gfx_addr_shadowcopy;
+	uint32_t m_gfx_scroll_0_x_shadowcopy, m_gfx_scroll_0_y_shadowcopy;
+	uint32_t m_gfx_scroll_1_x_shadowcopy, m_gfx_scroll_1_y_shadowcopy;
+	std::unique_ptr<uint16_t[]> m_ram16_copy;
+	inline void gfx_upload_shadow_copy(address_space &space, offs_t *addr);
+	inline void gfx_create_shadow_copy(address_space &space);
+	inline uint16_t COPY_NEXT_WORD(address_space &space, offs_t *addr);
+>>>>>>> upstream/master
 	inline void gfx_draw_shadow_copy(address_space &space, offs_t *addr);
 	inline void gfx_upload(offs_t *addr);
 	inline void gfx_draw(offs_t *addr);
@@ -114,8 +157,174 @@ public:
 	void gfx_exec_unsafe(void);
 	static void *blit_request_callback_unsafe(void *param, int threadid);
 
+<<<<<<< HEAD
 #define BLIT_FUNCTION static void
 #define BLIT_PARAMS bitmap_rgb32 *bitmap, const rectangle *clip, UINT32 *gfx, int src_x, int src_y, const int dst_x_start, const int dst_y_start, int dimx, int dimy, const int flipy, const UINT8 s_alpha, const UINT8 d_alpha, const clr_t *tint_clr
+=======
+protected:
+	struct clr_t
+	{
+		// clr_t to r5g5b5
+		uint32_t to_pen() const
+		{
+			// --t- ---- rrrr r--- gggg g--- bbbb b---  format
+			return (r << (16 + 3)) | (g << (8 + 3)) | (b << 3);
+
+			// --t- ---- ---r rrrr ---g gggg ---b bbbb  format
+			//return (r << 16) | (g << 8) | b;
+		}
+
+
+		void add_with_clr_mul_fixed(const clr_t &clr0, uint8_t mulfixed_val, const clr_t &mulfixed_clr0)
+		{
+			r = colrtable_add[clr0.r][colrtable[mulfixed_clr0.r][mulfixed_val]];
+			g = colrtable_add[clr0.g][colrtable[mulfixed_clr0.g][mulfixed_val]];
+			b = colrtable_add[clr0.b][colrtable[mulfixed_clr0.b][mulfixed_val]];
+		}
+
+		void add_with_clr_mul_3param(const clr_t &clr0, const clr_t &clr1, const clr_t &clr2)
+		{
+			r = colrtable_add[clr0.r][colrtable[clr2.r][clr1.r]];
+			g = colrtable_add[clr0.g][colrtable[clr2.g][clr1.g]];
+			b = colrtable_add[clr0.b][colrtable[clr2.b][clr1.b]];
+		}
+
+		void add_with_clr_square(const clr_t &clr0, const clr_t &clr1)
+		{
+			r = colrtable_add[clr0.r][colrtable[clr1.r][clr1.r]];
+			g = colrtable_add[clr0.r][colrtable[clr1.g][clr1.g]];
+			b = colrtable_add[clr0.r][colrtable[clr1.b][clr1.b]];
+		}
+
+		void add_with_clr_mul_fixed_rev(const clr_t &clr0, uint8_t val, const clr_t &clr1)
+		{
+			r = colrtable_add[clr0.r][colrtable_rev[val][clr1.r]];
+			g = colrtable_add[clr0.g][colrtable_rev[val][clr1.g]];
+			b = colrtable_add[clr0.b][colrtable_rev[val][clr1.b]];
+		}
+
+		void add_with_clr_mul_rev_3param(const clr_t &clr0, const clr_t &clr1, const clr_t &clr2)
+		{
+			r = colrtable_add[clr0.r][colrtable_rev[clr2.r][clr1.r]];
+			g = colrtable_add[clr0.g][colrtable_rev[clr2.g][clr1.g]];
+			b = colrtable_add[clr0.b][colrtable_rev[clr2.b][clr1.b]];
+		}
+
+		void add_with_clr_mul_rev_square(const clr_t &clr0, const clr_t &clr1)
+		{
+			r = colrtable_add[clr0.r][colrtable_rev[(clr1.r)][(clr1.r)]];
+			g = colrtable_add[clr0.g][colrtable_rev[(clr1.g)][(clr1.g)]];
+			b = colrtable_add[clr0.b][colrtable_rev[(clr1.b)][(clr1.b)]];
+		}
+
+
+		void add(const clr_t &clr0, const clr_t &clr1)
+		{
+			//r = clr0.r + clr1.r;
+			//g = clr0.g + clr1.g;
+			//b = clr0.b + clr1.b;
+
+			// use pre-clamped lookup table
+			r =  colrtable_add[clr0.r][clr1.r];
+			g =  colrtable_add[clr0.g][clr1.g];
+			b =  colrtable_add[clr0.b][clr1.b];
+		}
+
+
+		void mul(const clr_t &clr1)
+		{
+			r = colrtable[r][clr1.r];
+			g = colrtable[g][clr1.g];
+			b = colrtable[b][clr1.b];
+		}
+
+		void square(const clr_t &clr1)
+		{
+			r = colrtable[clr1.r][clr1.r];
+			g = colrtable[clr1.g][clr1.g];
+			b = colrtable[clr1.b][clr1.b];
+		}
+
+		void mul_3param(const clr_t &clr1, const clr_t &clr2)
+		{
+			r = colrtable[clr2.r][clr1.r];
+			g = colrtable[clr2.g][clr1.g];
+			b = colrtable[clr2.b][clr1.b];
+		}
+
+		void mul_rev(const clr_t &clr1)
+		{
+			r = colrtable_rev[r][clr1.r];
+			g = colrtable_rev[g][clr1.g];
+			b = colrtable_rev[b][clr1.b];
+		}
+
+		void mul_rev_square(const clr_t &clr1)
+		{
+			r = colrtable_rev[clr1.r][clr1.r];
+			g = colrtable_rev[clr1.g][clr1.g];
+			b = colrtable_rev[clr1.b][clr1.b];
+		}
+
+
+		void mul_rev_3param(const clr_t &clr1, const clr_t &clr2)
+		{
+			r = colrtable_rev[clr2.r][clr1.r];
+			g = colrtable_rev[clr2.g][clr1.g];
+			b = colrtable_rev[clr2.b][clr1.b];
+		}
+
+		void mul_fixed(uint8_t val, const clr_t &clr0)
+		{
+			r = colrtable[val][clr0.r];
+			g = colrtable[val][clr0.g];
+			b = colrtable[val][clr0.b];
+		}
+
+		void mul_fixed_rev(uint8_t val, const clr_t &clr0)
+		{
+			r = colrtable_rev[val][clr0.r];
+			g = colrtable_rev[val][clr0.g];
+			b = colrtable_rev[val][clr0.b];
+		}
+
+		void copy(const clr_t &clr0)
+		{
+			r = clr0.r;
+			g = clr0.g;
+			b = clr0.b;
+		}
+
+
+		uint8_t b, g, r, t;
+	};
+
+	union colour_t
+	{
+		clr_t trgb;
+		uint32_t u32;
+	};
+
+	typedef void (*blitfunction)(
+			bitmap_rgb32 *,
+			const rectangle *,
+			uint32_t *gfx,
+			int src_x,
+			int src_y,
+			const int dst_x_start,
+			const int dst_y_start,
+			int dimx,
+			int dimy,
+			const int flipy,
+			const uint8_t s_alpha,
+			const uint8_t d_alpha,
+			//int tint,
+			const clr_t *);
+
+
+#define BLIT_FUNCTION static void
+#define BLIT_PARAMS bitmap_rgb32 *bitmap, const rectangle *clip, uint32_t *gfx, int src_x, int src_y, const int dst_x_start, const int dst_y_start, int dimx, int dimy, const int flipy, const uint8_t s_alpha, const uint8_t d_alpha, const clr_t *tint_clr
+>>>>>>> upstream/master
 
 	BLIT_FUNCTION draw_sprite_f0_ti0_plain(BLIT_PARAMS);
 	BLIT_FUNCTION draw_sprite_f0_ti0_tr1_s0_d0(BLIT_PARAMS);
@@ -652,7 +861,11 @@ public:
 
 
 
+<<<<<<< HEAD
 	static inline void pen_to_clr(UINT32 pen, clr_t *clr)
+=======
+	static inline void pen_to_clr(uint32_t pen, clr_t *clr)
+>>>>>>> upstream/master
 	{
 	// --t- ---- rrrr r--- gggg g--- bbbb b---  format
 		clr->r = (pen >> (16+3));// & 0x1f;
@@ -668,13 +881,18 @@ public:
 
 
 	// convert separate r,g,b biases (0..80..ff) to clr_t (-1f..0..1f)
+<<<<<<< HEAD
 	static inline void tint_to_clr(UINT8 r, UINT8 g, UINT8 b, clr_t *clr)
+=======
+	void tint_to_clr(uint8_t r, uint8_t g, uint8_t b, clr_t *clr)
+>>>>>>> upstream/master
 	{
 		clr->r  =   r>>2;
 		clr->g  =   g>>2;
 		clr->b  =   b>>2;
 	};
 
+<<<<<<< HEAD
 	// clr_t to r5g5b5
 	static inline UINT32 clr_to_pen(const clr_t *clr)
 	{
@@ -808,6 +1026,8 @@ public:
 		clr->b = clr0->b;
 	}
 
+=======
+>>>>>>> upstream/master
 
 
 	// (1|s|d) * s_factor * s + (1|s|d) * d_factor * d
@@ -821,9 +1041,16 @@ public:
 	// 7: *
 
 
+<<<<<<< HEAD
 protected:
 	virtual void device_start();
 	virtual void device_reset();
+=======
+	virtual void device_start() override;
+	virtual void device_reset() override;
+
+	TIMER_CALLBACK_MEMBER( blitter_delay_callback );
+>>>>>>> upstream/master
 
 	osd_work_queue *m_work_queue;
 	osd_work_item *m_blitter_request;
@@ -832,9 +1059,31 @@ protected:
 	emu_timer *m_blitter_delay_timer;
 	int m_blitter_busy;
 
+<<<<<<< HEAD
 	TIMER_CALLBACK_MEMBER( blitter_delay_callback );
 };
 
 
 
 extern const device_type EPIC12;
+=======
+	static uint8_t colrtable[0x20][0x40];
+	static uint8_t colrtable_rev[0x20][0x40];
+	static uint8_t colrtable_add[0x20][0x20];
+	static uint64_t blit_delay;
+
+	static const blitfunction f0_ti1_tr1_blit_funcs[64];
+	static const blitfunction f0_ti1_tr0_blit_funcs[64];
+	static const blitfunction f1_ti1_tr1_blit_funcs[64];
+	static const blitfunction f1_ti1_tr0_blit_funcs[64];
+	static const blitfunction f0_ti0_tr1_blit_funcs[64];
+	static const blitfunction f0_ti0_tr0_blit_funcs[64];
+	static const blitfunction f1_ti0_tr1_blit_funcs[64];
+	static const blitfunction f1_ti0_tr0_blit_funcs[64];
+};
+
+
+DECLARE_DEVICE_TYPE(EPIC12, epic12_device)
+
+#endif // MAME_VIDEO_EPIC12_H
+>>>>>>> upstream/master

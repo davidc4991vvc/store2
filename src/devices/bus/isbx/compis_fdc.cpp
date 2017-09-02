@@ -6,6 +6,10 @@
 
 **********************************************************************/
 
+<<<<<<< HEAD
+=======
+#include "emu.h"
+>>>>>>> upstream/master
 #include "compis_fdc.h"
 
 
@@ -21,7 +25,11 @@
 //  DEVICE DEFINITIONS
 //**************************************************************************
 
+<<<<<<< HEAD
 const device_type COMPIS_FDC = &device_creator<compis_fdc_device>;
+=======
+DEFINE_DEVICE_TYPE(COMPIS_FDC, compis_fdc_device, "compis_fdc", "Compis FDC")
+>>>>>>> upstream/master
 
 
 //-------------------------------------------------
@@ -44,14 +52,25 @@ FLOPPY_FORMATS_END
 
 static SLOT_INTERFACE_START( compis_floppies )
 	SLOT_INTERFACE( "525qd", FLOPPY_525_QD )
+<<<<<<< HEAD
+=======
+	SLOT_INTERFACE( "525hd", FLOPPY_525_HD )
+>>>>>>> upstream/master
 SLOT_INTERFACE_END
 
 
 //-------------------------------------------------
+<<<<<<< HEAD
 //  MACHINE_DRIVER( compis_fdc )
 //-------------------------------------------------
 
 static MACHINE_CONFIG_FRAGMENT( compis_fdc )
+=======
+//  device_add_mconfig - add device configuration
+//-------------------------------------------------
+
+MACHINE_CONFIG_MEMBER( compis_fdc_device::device_add_mconfig )
+>>>>>>> upstream/master
 	MCFG_I8272A_ADD(I8272_TAG, true)
 	MCFG_UPD765_INTRQ_CALLBACK(WRITELINE(compis_fdc_device, fdc_irq))
 	MCFG_UPD765_DRQ_CALLBACK(WRITELINE(compis_fdc_device, fdc_drq))
@@ -60,6 +79,7 @@ static MACHINE_CONFIG_FRAGMENT( compis_fdc )
 MACHINE_CONFIG_END
 
 
+<<<<<<< HEAD
 //-------------------------------------------------
 //  machine_config_additions - device-specific
 //  machine configurations
@@ -71,6 +91,8 @@ machine_config_constructor compis_fdc_device::device_mconfig_additions() const
 }
 
 
+=======
+>>>>>>> upstream/master
 
 //**************************************************************************
 //  LIVE DEVICE
@@ -80,8 +102,13 @@ machine_config_constructor compis_fdc_device::device_mconfig_additions() const
 //  compis_fdc_device - constructor
 //-------------------------------------------------
 
+<<<<<<< HEAD
 compis_fdc_device::compis_fdc_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock) :
 	device_t(mconfig, COMPIS_FDC, "Compis FDC", tag, owner, clock, "compis_fdc", __FILE__),
+=======
+compis_fdc_device::compis_fdc_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock) :
+	device_t(mconfig, COMPIS_FDC, tag, owner, clock),
+>>>>>>> upstream/master
 	device_isbx_card_interface(mconfig, *this),
 	m_fdc(*this, I8272_TAG),
 	m_floppy0(*this, I8272_TAG":0"),
@@ -113,9 +140,15 @@ void compis_fdc_device::device_reset()
 //  mcs0_r - chip select 0 read
 //-------------------------------------------------
 
+<<<<<<< HEAD
 UINT8 compis_fdc_device::mcs0_r(address_space &space, offs_t offset)
 {
 	UINT8 data = 0xff;
+=======
+uint8_t compis_fdc_device::mcs0_r(address_space &space, offs_t offset)
+{
+	uint8_t data = 0xff;
+>>>>>>> upstream/master
 
 	switch (BIT(offset, 0))
 	{
@@ -131,7 +164,11 @@ UINT8 compis_fdc_device::mcs0_r(address_space &space, offs_t offset)
 //  mcs0_w - chip select 0 write
 //-------------------------------------------------
 
+<<<<<<< HEAD
 void compis_fdc_device::mcs0_w(address_space &space, offs_t offset, UINT8 data)
+=======
+void compis_fdc_device::mcs0_w(address_space &space, offs_t offset, uint8_t data)
+>>>>>>> upstream/master
 {
 	switch (BIT(offset, 0))
 	{
@@ -144,7 +181,11 @@ void compis_fdc_device::mcs0_w(address_space &space, offs_t offset, UINT8 data)
 //  mdack_r - DMA acknowledge read
 //-------------------------------------------------
 
+<<<<<<< HEAD
 UINT8 compis_fdc_device::mdack_r(address_space &space, offs_t offset)
+=======
+uint8_t compis_fdc_device::mdack_r(address_space &space, offs_t offset)
+>>>>>>> upstream/master
 {
 	return m_fdc->dma_r();
 }
@@ -154,7 +195,11 @@ UINT8 compis_fdc_device::mdack_r(address_space &space, offs_t offset)
 //  mdack_w - DMA acknowledge write
 //-------------------------------------------------
 
+<<<<<<< HEAD
 void compis_fdc_device::mdack_w(address_space &space, offs_t offset, UINT8 data)
+=======
+void compis_fdc_device::mdack_w(address_space &space, offs_t offset, uint8_t data)
+>>>>>>> upstream/master
 {
 	m_fdc->dma_w(data);
 }

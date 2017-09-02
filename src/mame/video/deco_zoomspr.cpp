@@ -13,16 +13,25 @@
 #include "emu.h"
 #include "deco_zoomspr.h"
 
+<<<<<<< HEAD
 const device_type DECO_ZOOMSPR = &device_creator<deco_zoomspr_device>;
 
 deco_zoomspr_device::deco_zoomspr_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
 	: device_t(mconfig, DECO_ZOOMSPR, "DECO Zooming Sprites", tag, owner, clock, "deco_zoomspr", __FILE__),
 	m_palette(*this),
 	m_gfxdecode(*this)
+=======
+DEFINE_DEVICE_TYPE(DECO_ZOOMSPR, deco_zoomspr_device, "deco_zoomspr", "DECO Zooming Sprites")
+
+deco_zoomspr_device::deco_zoomspr_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: device_t(mconfig, DECO_ZOOMSPR, tag, owner, clock)
+	, m_gfxdecode(*this, finder_base::DUMMY_TAG)
+>>>>>>> upstream/master
 {
 }
 
 //-------------------------------------------------
+<<<<<<< HEAD
 //  static_set_palette_tag: Set the tag of the
 //  palette device
 //-------------------------------------------------
@@ -33,6 +42,8 @@ void deco_zoomspr_device::static_set_palette_tag(device_t &device, const char *t
 }
 
 //-------------------------------------------------
+=======
+>>>>>>> upstream/master
 //  static_set_gfxdecode_tag: Set the tag of the
 //  gfx decoder
 //-------------------------------------------------
@@ -56,9 +67,15 @@ void deco_zoomspr_device::device_reset()
 
 inline void deco_zoomspr_device::dragngun_drawgfxzoom(
 		bitmap_rgb32 &dest_bmp,const rectangle &clip,gfx_element *gfx,
+<<<<<<< HEAD
 		UINT32 code,UINT32 color,int flipx,int flipy,int sx,int sy,
 		int transparent_color,
 		int scalex, int scaley,bitmap_ind8 *pri_buffer,UINT32 pri_mask, int sprite_screen_width, int  sprite_screen_height, UINT8 alpha,
+=======
+		uint32_t code,uint32_t color,int flipx,int flipy,int sx,int sy,
+		int transparent_color,
+		int scalex, int scaley,bitmap_ind8 *pri_buffer,uint32_t pri_mask, int sprite_screen_width, int  sprite_screen_height, uint8_t alpha,
+>>>>>>> upstream/master
 		bitmap_ind8 &pri_bitmap, bitmap_rgb32 &temp_bitmap,
 		int priority)
 {
@@ -80,8 +97,13 @@ inline void deco_zoomspr_device::dragngun_drawgfxzoom(
 	{
 		if( gfx )
 		{
+<<<<<<< HEAD
 			const pen_t *pal = &m_palette->pen(gfx->colorbase() + gfx->granularity() * (color % gfx->colors()));
 			const UINT8 *code_base = gfx->get_data(code % gfx->elements());
+=======
+			const pen_t *pal = &m_gfxdecode->palette().pen(gfx->colorbase() + gfx->granularity() * (color % gfx->colors()));
+			const uint8_t *code_base = gfx->get_data(code % gfx->elements());
+>>>>>>> upstream/master
 
 			if (sprite_screen_width && sprite_screen_height)
 			{
@@ -149,9 +171,15 @@ inline void deco_zoomspr_device::dragngun_drawgfxzoom(
 						{
 							for( y=sy; y<ey; y++ )
 							{
+<<<<<<< HEAD
 								const UINT8 *source = code_base + (y_index>>16) * gfx->rowbytes();
 								UINT32 *dest = &temp_bitmap.pix32(y);
 								UINT8 *pri = &pri_bitmap.pix8(y);
+=======
+								const uint8_t *source = code_base + (y_index>>16) * gfx->rowbytes();
+								uint32_t *dest = &temp_bitmap.pix32(y);
+								uint8_t *pri = &pri_bitmap.pix8(y);
+>>>>>>> upstream/master
 
 
 								int x, x_index = x_index_base;
@@ -185,10 +213,17 @@ inline void deco_zoomspr_device::dragngun_drawgfxzoom(
 						{
 							for( y=sy; y<ey; y++ )
 							{
+<<<<<<< HEAD
 								const UINT8 *source = code_base + (y_index>>16) * gfx->rowbytes();
 								UINT32 *dest = &temp_bitmap.pix32(y);
 								UINT8 *pri = &pri_bitmap.pix8(y);
 								UINT32 *tmapcolor = &dest_bmp.pix32(y);
+=======
+								const uint8_t *source = code_base + (y_index>>16) * gfx->rowbytes();
+								uint32_t *dest = &temp_bitmap.pix32(y);
+								uint8_t *pri = &pri_bitmap.pix8(y);
+								uint32_t *tmapcolor = &dest_bmp.pix32(y);
+>>>>>>> upstream/master
 
 
 								int x, x_index = x_index_base;
@@ -228,10 +263,17 @@ inline void deco_zoomspr_device::dragngun_drawgfxzoom(
 	}
 }
 
+<<<<<<< HEAD
 void deco_zoomspr_device::dragngun_draw_sprites( bitmap_rgb32 &bitmap, const rectangle &cliprect, const UINT32 *spritedata, UINT32* dragngun_sprite_layout_0_ram, UINT32* dragngun_sprite_layout_1_ram, UINT32* dragngun_sprite_lookup_0_ram, UINT32* dragngun_sprite_lookup_1_ram, UINT32 dragngun_sprite_ctrl,  bitmap_ind8 &pri_bitmap, bitmap_rgb32 &temp_bitmap)
 {
 	const UINT32 *layout_ram;
 	const UINT32 *lookup_ram;
+=======
+void deco_zoomspr_device::dragngun_draw_sprites( bitmap_rgb32 &bitmap, const rectangle &cliprect, const uint32_t *spritedata, uint32_t* dragngun_sprite_layout_0_ram, uint32_t* dragngun_sprite_layout_1_ram, uint32_t* dragngun_sprite_lookup_0_ram, uint32_t* dragngun_sprite_lookup_1_ram, uint32_t dragngun_sprite_ctrl,  bitmap_ind8 &pri_bitmap, bitmap_rgb32 &temp_bitmap)
+{
+	const uint32_t *layout_ram;
+	const uint32_t *lookup_ram;
+>>>>>>> upstream/master
 	int offs;
 	temp_bitmap.fill(0x00000000, cliprect);
 
@@ -399,7 +441,11 @@ void deco_zoomspr_device::dragngun_draw_sprites( bitmap_rgb32 &bitmap, const rec
 						colour,
 						fx,fy,
 						xpos>>16,ypos>>16,
+<<<<<<< HEAD
 						15,zoomx,zoomy,NULL,0,
+=======
+						15,zoomx,zoomy,nullptr,0,
+>>>>>>> upstream/master
 						((xpos+(zoomx<<4))>>16) - (xpos>>16), ((ypos+(zoomy<<4))>>16) - (ypos>>16), alpha,
 						pri_bitmap, temp_bitmap,
 						priority
@@ -420,12 +466,21 @@ void deco_zoomspr_device::dragngun_draw_sprites( bitmap_rgb32 &bitmap, const rec
 
 	for (int y = cliprect.min_y; y <= cliprect.max_y; y++)
 	{
+<<<<<<< HEAD
 		UINT32 *src = &temp_bitmap.pix32(y);
 		UINT32 *dst = &bitmap.pix32(y);
 
 		for (int x = cliprect.min_x; x <= cliprect.max_x; x++)
 		{
 			UINT32 srcpix = src[x];
+=======
+		uint32_t *src = &temp_bitmap.pix32(y);
+		uint32_t *dst = &bitmap.pix32(y);
+
+		for (int x = cliprect.min_x; x <= cliprect.max_x; x++)
+		{
+			uint32_t srcpix = src[x];
+>>>>>>> upstream/master
 
 			if ((srcpix & 0xff000000) == 0xff000000)
 			{

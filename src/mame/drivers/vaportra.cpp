@@ -1,22 +1,47 @@
 // license:BSD-3-Clause
 // copyright-holders:Bryan McPhail
+<<<<<<< HEAD
+=======
+
+>>>>>>> upstream/master
 /***************************************************************************
 
   Vapor Trail (World version)  (c) 1989 Data East Corporation
   Vapor Trail (USA version)    (c) 1989 Data East USA
   Kuhga (Japanese version)     (c) 1989 Data East Corporation
 
+<<<<<<< HEAD
+=======
+  Notes:
+  -----
+  - If you activate the service mode dip switch during the gameplay, it acts like invicibility
+    either for player 1 and player 2. It works for all sets.
+
+>>>>>>> upstream/master
   Emulation by Bryan McPhail, mish@tendril.co.uk
   added pal & prom-maps - Highwayman.
 ***************************************************************************/
 
 #include "emu.h"
+<<<<<<< HEAD
 #include "cpu/m68000/m68000.h"
 #include "cpu/h6280/h6280.h"
 #include "sound/2203intf.h"
 #include "sound/2151intf.h"
 #include "sound/okim6295.h"
 #include "includes/vaportra.h"
+=======
+#include "includes/vaportra.h"
+
+#include "cpu/m68000/m68000.h"
+#include "cpu/h6280/h6280.h"
+#include "sound/2203intf.h"
+#include "sound/ym2151.h"
+#include "sound/okim6295.h"
+#include "screen.h"
+#include "speaker.h"
+
+>>>>>>> upstream/master
 
 /******************************************************************************/
 
@@ -24,10 +49,31 @@ WRITE16_MEMBER(vaportra_state::vaportra_sound_w)
 {
 	/* Force synchronisation between CPUs with fake timer */
 	machine().scheduler().synchronize();
+<<<<<<< HEAD
 	soundlatch_byte_w(space, 0, data & 0xff);
 	m_audiocpu->set_input_line(0, ASSERT_LINE);
 }
 
+=======
+	m_soundlatch->write(space, 0, data & 0xff);
+	m_audiocpu->set_input_line(0, ASSERT_LINE);
+}
+
+READ16_MEMBER(vaportra_state::irq6_ack_r)
+{
+	if (ACCESSING_BITS_0_7)
+		m_maincpu->set_input_line (6, CLEAR_LINE);
+
+	return (0);
+}
+
+WRITE16_MEMBER(vaportra_state::irq6_ack_w)
+{
+	if (ACCESSING_BITS_0_7)
+		m_maincpu->set_input_line (6, CLEAR_LINE);
+}
+
+>>>>>>> upstream/master
 READ16_MEMBER(vaportra_state::vaportra_control_r)
 {
 	switch (offset << 1)
@@ -59,9 +105,15 @@ static ADDRESS_MAP_START( main_map, AS_PROGRAM, 16, vaportra_state )
 	AM_RANGE(0x2c0000, 0x2c000f) AM_DEVWRITE("tilegen1", deco16ic_device, pf_control_w)
 	AM_RANGE(0x300000, 0x3009ff) AM_RAM_WRITE(vaportra_palette_24bit_rg_w) AM_SHARE("paletteram")
 	AM_RANGE(0x304000, 0x3049ff) AM_RAM_WRITE(vaportra_palette_24bit_b_w) AM_SHARE("paletteram2")
+<<<<<<< HEAD
 	AM_RANGE(0x308000, 0x308001) AM_NOP
 	AM_RANGE(0x30c000, 0x30c001) AM_DEVWRITE("spriteram", buffered_spriteram16_device, write)
 	AM_RANGE(0xff8000, 0xff87ff) AM_RAM AM_SHARE("spriteram")
+=======
+	AM_RANGE(0x308000, 0x308001) AM_READWRITE(irq6_ack_r, irq6_ack_w)
+	AM_RANGE(0x30c000, 0x30c001) AM_DEVWRITE("spriteram", buffered_spriteram16_device, write)
+	AM_RANGE(0x318000, 0x3187ff) AM_MIRROR(0xce0000) AM_RAM AM_SHARE("spriteram")
+>>>>>>> upstream/master
 	AM_RANGE(0xffc000, 0xffffff) AM_RAM
 ADDRESS_MAP_END
 
@@ -71,7 +123,11 @@ ADDRESS_MAP_END
 READ8_MEMBER(vaportra_state::vaportra_soundlatch_r)
 {
 	m_audiocpu->set_input_line(0, CLEAR_LINE);
+<<<<<<< HEAD
 	return soundlatch_byte_r(space, offset);
+=======
+	return m_soundlatch->read(space, offset);
+>>>>>>> upstream/master
 }
 
 static ADDRESS_MAP_START( sound_map, AS_PROGRAM, 8, vaportra_state )
@@ -110,7 +166,11 @@ static INPUT_PORTS_START( vaportra )
 	PORT_START("COINS")
 	PORT_BIT( 0x0001, IP_ACTIVE_LOW, IPT_COIN1 )
 	PORT_BIT( 0x0002, IP_ACTIVE_LOW, IPT_COIN2 )
+<<<<<<< HEAD
 	PORT_BIT( 0x0004, IP_ACTIVE_LOW, IPT_COIN3 )
+=======
+	PORT_BIT( 0x0004, IP_ACTIVE_LOW, IPT_SERVICE1 )
+>>>>>>> upstream/master
 	PORT_BIT( 0x0008, IP_ACTIVE_HIGH, IPT_CUSTOM ) PORT_VBLANK("screen")
 	PORT_BIT( 0x0010, IP_ACTIVE_LOW, IPT_UNKNOWN )
 	PORT_BIT( 0x0020, IP_ACTIVE_LOW, IPT_UNKNOWN )
@@ -214,12 +274,20 @@ void vaportra_state::machine_reset()
 	m_priority[1] = 0;
 }
 
+<<<<<<< HEAD
 static MACHINE_CONFIG_START( vaportra, vaportra_state )
+=======
+static MACHINE_CONFIG_START( vaportra )
+>>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", M68000,XTAL_24MHz/2) /* Custom chip 59 */
 	MCFG_CPU_PROGRAM_MAP(main_map)
+<<<<<<< HEAD
 	MCFG_CPU_VBLANK_INT_DRIVER("screen", vaportra_state,  irq6_line_hold)
+=======
+	MCFG_CPU_VBLANK_INT_DRIVER("screen", vaportra_state, irq6_line_assert)
+>>>>>>> upstream/master
 
 	MCFG_CPU_ADD("audiocpu", H6280, XTAL_24MHz/4) /* Custom chip 45; Audio section crystal is 32.220 MHz but CPU clock is confirmed as coming from the 24MHz crystal (6Mhz exactly on the CPU) */
 	MCFG_CPU_PROGRAM_MAP(sound_map)
@@ -254,7 +322,10 @@ static MACHINE_CONFIG_START( vaportra, vaportra_state )
 	MCFG_DECO16IC_PF12_8X8_BANK(0)
 	MCFG_DECO16IC_PF12_16X16_BANK(1)
 	MCFG_DECO16IC_GFXDECODE("gfxdecode")
+<<<<<<< HEAD
 	MCFG_DECO16IC_PALETTE("palette")
+=======
+>>>>>>> upstream/master
 
 	MCFG_DEVICE_ADD("tilegen2", DECO16IC, 0)
 	MCFG_DECO16IC_SPLIT(0)
@@ -270,16 +341,28 @@ static MACHINE_CONFIG_START( vaportra, vaportra_state )
 	MCFG_DECO16IC_PF12_8X8_BANK(2)
 	MCFG_DECO16IC_PF12_16X16_BANK(3)
 	MCFG_DECO16IC_GFXDECODE("gfxdecode")
+<<<<<<< HEAD
 	MCFG_DECO16IC_PALETTE("palette")
 
 	MCFG_DEVICE_ADD("spritegen", DECO_MXC06, 0)
 	deco_mxc06_device::set_gfx_region(*device, 4);
 	MCFG_DECO_MXC06_GFXDECODE("gfxdecode")
 	MCFG_DECO_MXC06_PALETTE("palette")
+=======
+
+	MCFG_DEVICE_ADD("spritegen", DECO_MXC06, 0)
+	MCFG_DECO_MXC06_GFX_REGION(4)
+	MCFG_DECO_MXC06_GFXDECODE("gfxdecode")
+>>>>>>> upstream/master
 
 	/* sound hardware */
 	MCFG_SPEAKER_STANDARD_MONO("mono")
 
+<<<<<<< HEAD
+=======
+	MCFG_GENERIC_LATCH_8_ADD("soundlatch")
+
+>>>>>>> upstream/master
 	MCFG_SOUND_ADD("ym1", YM2203, XTAL_32_22MHz/8)
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 0.60)
 
@@ -288,10 +371,17 @@ static MACHINE_CONFIG_START( vaportra, vaportra_state )
 	MCFG_SOUND_ROUTE(0, "mono", 0.60)
 	MCFG_SOUND_ROUTE(1, "mono", 0.60)
 
+<<<<<<< HEAD
 	MCFG_OKIM6295_ADD("oki1", XTAL_32_22MHz/32, OKIM6295_PIN7_HIGH)
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 0.75)
 
 	MCFG_OKIM6295_ADD("oki2", XTAL_32_22MHz/16, OKIM6295_PIN7_HIGH)
+=======
+	MCFG_OKIM6295_ADD("oki1", XTAL_32_22MHz/32, PIN7_HIGH)
+	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 0.75)
+
+	MCFG_OKIM6295_ADD("oki2", XTAL_32_22MHz/16, PIN7_HIGH)
+>>>>>>> upstream/master
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 0.60)
 MACHINE_CONFIG_END
 
@@ -838,16 +928,29 @@ C3D54*
 
 DRIVER_INIT_MEMBER(vaportra_state,vaportra)
 {
+<<<<<<< HEAD
 	UINT8 *RAM = memregion("maincpu")->base();
 	int i;
 
 	for (i = 0x00000; i < 0x80000; i++)
+=======
+	uint8_t *RAM = memregion("maincpu")->base();
+
+	for (int i = 0x00000; i < 0x80000; i++)
+>>>>>>> upstream/master
 		RAM[i] = BITSWAP8(RAM[i],0,6,5,4,3,2,1,7);
 }
 
 /******************************************************************************/
 
+<<<<<<< HEAD
 GAME( 1989, vaportra, 0,        vaportra, vaportra, vaportra_state, vaportra, ROT270, "Data East Corporation", "Vapor Trail - Hyper Offence Formation (World revision 1)", MACHINE_SUPPORTS_SAVE )
 GAME( 1989, vaportra3,vaportra, vaportra, vaportra, vaportra_state, vaportra, ROT270, "Data East Corporation", "Vapor Trail - Hyper Offence Formation (World revision 3?)", MACHINE_SUPPORTS_SAVE )
 GAME( 1989, vaportrau,vaportra, vaportra, vaportra, vaportra_state, vaportra, ROT270, "Data East USA", "Vapor Trail - Hyper Offence Formation (US)", MACHINE_SUPPORTS_SAVE )
 GAME( 1989, kuhga,    vaportra, vaportra, vaportra, vaportra_state, vaportra, ROT270, "Data East Corporation", "Kuhga - Operation Code 'Vapor Trail' (Japan revision 3)", MACHINE_SUPPORTS_SAVE )
+=======
+GAME( 1989, vaportra,  0,        vaportra, vaportra, vaportra_state, vaportra, ROT270, "Data East Corporation", "Vapor Trail - Hyper Offence Formation (World revision 1)",  MACHINE_SUPPORTS_SAVE )
+GAME( 1989, vaportra3, vaportra, vaportra, vaportra, vaportra_state, vaportra, ROT270, "Data East Corporation", "Vapor Trail - Hyper Offence Formation (World revision 3?)", MACHINE_SUPPORTS_SAVE )
+GAME( 1989, vaportrau, vaportra, vaportra, vaportra, vaportra_state, vaportra, ROT270, "Data East USA",         "Vapor Trail - Hyper Offence Formation (US)",                MACHINE_SUPPORTS_SAVE )
+GAME( 1989, kuhga,     vaportra, vaportra, vaportra, vaportra_state, vaportra, ROT270, "Data East Corporation", "Kuhga - Operation Code 'Vapor Trail' (Japan revision 3)",   MACHINE_SUPPORTS_SAVE )
+>>>>>>> upstream/master

@@ -76,16 +76,28 @@ void mystston_state::set_palette()
 	static const int resistances_b [2] = { 3300, 1500 };
 	double weights_rg[3], weights_b[2];
 
+<<<<<<< HEAD
 	UINT8 *color_prom = memregion("proms")->base();
+=======
+	uint8_t *color_prom = memregion("proms")->base();
+>>>>>>> upstream/master
 
 	compute_resistor_weights(0, 255, -1.0,
 			3, resistances_rg, weights_rg, 0, 4700,
 			2, resistances_b,  weights_b,  0, 4700,
+<<<<<<< HEAD
 			0, 0, 0, 0, 0);
 
 	for (i = 0; i < 0x40; i++)
 	{
 		UINT8 data;
+=======
+			0, nullptr, nullptr, 0, 0);
+
+	for (i = 0; i < 0x40; i++)
+	{
+		uint8_t data;
+>>>>>>> upstream/master
 		int r, g, b;
 		int bit0, bit1, bit2;
 
@@ -133,8 +145,13 @@ WRITE8_MEMBER(mystston_state::mystston_video_control_w)
 	/* D3 - unused */
 
 	/* D4-D5 - coin counters in flipped order */
+<<<<<<< HEAD
 	coin_counter_w(machine(), 0, data & 0x20);
 	coin_counter_w(machine(), 1, data & 0x10);
+=======
+	machine().bookkeeping().coin_counter_w(0, data & 0x20);
+	machine().bookkeeping().coin_counter_w(1, data & 0x10);
+>>>>>>> upstream/master
 
 	/* D6 - unused */
 	/* D7 - screen flip */
@@ -214,9 +231,15 @@ void mystston_state::draw_sprites(bitmap_ind16 &bitmap, const rectangle &cliprec
 
 VIDEO_START_MEMBER(mystston_state,mystston)
 {
+<<<<<<< HEAD
 	m_bg_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(mystston_state::get_bg_tile_info),this), TILEMAP_SCAN_COLS_FLIP_X, 16, 16, 16, 32);
 
 	m_fg_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(mystston_state::get_fg_tile_info),this), TILEMAP_SCAN_COLS_FLIP_X,  8,  8, 32, 32);
+=======
+	m_bg_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(mystston_state::get_bg_tile_info),this), TILEMAP_SCAN_COLS_FLIP_X, 16, 16, 16, 32);
+
+	m_fg_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(mystston_state::get_fg_tile_info),this), TILEMAP_SCAN_COLS_FLIP_X,  8,  8, 32, 32);
+>>>>>>> upstream/master
 	m_fg_tilemap->set_transparent_pen(0);
 
 	/* create the interrupt timer */
@@ -244,7 +267,11 @@ VIDEO_RESET_MEMBER(mystston_state,mystston)
  *
  *************************************/
 
+<<<<<<< HEAD
 UINT32 mystston_state::screen_update_mystston(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+=======
+uint32_t mystston_state::screen_update_mystston(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+>>>>>>> upstream/master
 {
 	int flip = (*m_video_control & 0x80) ^ ((ioport("DSW1")->read() & 0x20) << 2);
 
@@ -309,7 +336,11 @@ GFXDECODE_END
  *
  *************************************/
 
+<<<<<<< HEAD
 MACHINE_CONFIG_FRAGMENT( mystston_video )
+=======
+MACHINE_CONFIG_START( mystston_video )
+>>>>>>> upstream/master
 	MCFG_VIDEO_START_OVERRIDE(mystston_state,mystston)
 	MCFG_VIDEO_RESET_OVERRIDE(mystston_state,mystston)
 

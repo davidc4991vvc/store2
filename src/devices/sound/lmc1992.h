@@ -24,12 +24,20 @@
 
 **********************************************************************/
 
+<<<<<<< HEAD
 #pragma once
 
 #ifndef __LMC1992__
 #define __LMC1992__
 
 #include "emu.h"
+=======
+#ifndef MAME_SOUND_LMC1992_H
+#define MAME_SOUND_LMC1992_H
+
+#pragma once
+
+>>>>>>> upstream/master
 
 
 
@@ -71,7 +79,11 @@ class lmc1992_device :  public device_t,
 {
 public:
 	// construction/destruction
+<<<<<<< HEAD
 	lmc1992_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
+=======
+	lmc1992_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
+>>>>>>> upstream/master
 
 	DECLARE_WRITE_LINE_MEMBER( clock_w );
 	DECLARE_WRITE_LINE_MEMBER( data_w );
@@ -79,10 +91,17 @@ public:
 
 protected:
 	// device-level overrides
+<<<<<<< HEAD
 	virtual void device_start();
 
 	// internal callbacks
 	virtual void sound_stream_update(sound_stream &stream, stream_sample_t **inputs, stream_sample_t **outputs, int samples);
+=======
+	virtual void device_start() override;
+
+	// internal callbacks
+	virtual void sound_stream_update(sound_stream &stream, stream_sample_t **inputs, stream_sample_t **outputs, int samples) override;
+>>>>>>> upstream/master
 
 private:
 	inline void execute_command(int addr, int data);
@@ -92,7 +111,11 @@ private:
 	int m_enable;                   // enable latch
 	int m_data;                     // data latch
 	int m_clk;                      // clock latch
+<<<<<<< HEAD
 	UINT16 m_si;                    // serial in shift register
+=======
+	uint16_t m_si;                    // serial in shift register
+>>>>>>> upstream/master
 
 	int m_input;                    // input select
 	int m_bass;                     // bass
@@ -106,8 +129,14 @@ private:
 
 
 // device type definition
+<<<<<<< HEAD
 extern const device_type LMC1992;
 
 
 
 #endif
+=======
+DECLARE_DEVICE_TYPE(LMC1992, lmc1992_device)
+
+#endif // MAME_SOUND_LMC1992_H
+>>>>>>> upstream/master

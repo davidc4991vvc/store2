@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 // license:LGPL-2.1+
+=======
+// license:BSD-3-Clause
+>>>>>>> upstream/master
 // copyright-holders:Tomasz Slanina
 
 
@@ -36,6 +40,7 @@ public:
 		m_palette(*this, "palette") { }
 
 	/* memory pointers */
+<<<<<<< HEAD
 	required_shared_ptr<UINT8> m_videoram;
 	required_shared_ptr<UINT8> m_spriteram;
 
@@ -45,6 +50,17 @@ public:
 	UINT8      m_char_palette;
 	UINT8      m_sprite_palette;
 	UINT8      m_char_bank;
+=======
+	required_shared_ptr<uint8_t> m_videoram;
+	required_shared_ptr<uint8_t> m_spriteram;
+
+	/* video-related */
+	tilemap_t    *m_bgmap;
+	uint8_t      m_cocktail_flip;
+	uint8_t      m_char_palette;
+	uint8_t      m_sprite_palette;
+	uint8_t      m_char_bank;
+>>>>>>> upstream/master
 
 	/* misc */
 	int        m_fcombat_sh;
@@ -70,9 +86,17 @@ public:
 	DECLARE_INPUT_CHANGED_MEMBER(coin_inserted);
 	DECLARE_DRIVER_INIT(fcombat);
 	TILE_GET_INFO_MEMBER(get_bg_tile_info);
+<<<<<<< HEAD
 	virtual void machine_start();
 	virtual void machine_reset();
 	virtual void video_start();
 	DECLARE_PALETTE_INIT(fcombat);
 	UINT32 screen_update_fcombat(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
+=======
+	virtual void machine_start() override;
+	virtual void machine_reset() override;
+	virtual void video_start() override;
+	DECLARE_PALETTE_INIT(fcombat);
+	uint32_t screen_update_fcombat(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
+>>>>>>> upstream/master
 };

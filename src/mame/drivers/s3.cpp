@@ -37,11 +37,23 @@ ToDo:
 
 ************************************************************************************/
 
+<<<<<<< HEAD
 
 #include "machine/genpin.h"
 #include "cpu/m6800/m6800.h"
 #include "machine/6821pia.h"
 #include "sound/dac.h"
+=======
+#include "emu.h"
+#include "machine/genpin.h"
+
+#include "cpu/m6800/m6800.h"
+#include "machine/6821pia.h"
+#include "sound/dac.h"
+#include "sound/volt_reg.h"
+#include "speaker.h"
+
+>>>>>>> upstream/master
 #include "s3.lh"
 
 
@@ -52,7 +64,10 @@ public:
 		: genpin_class(mconfig, type, tag)
 		, m_maincpu(*this, "maincpu")
 		, m_audiocpu(*this, "audiocpu")
+<<<<<<< HEAD
 		, m_dac(*this, "dac")
+=======
+>>>>>>> upstream/master
 		, m_pia22(*this, "pia22")
 		, m_pia24(*this, "pia24")
 		, m_pia28(*this, "pia28")
@@ -60,7 +75,11 @@ public:
 		, m_pias(*this, "pias")
 	{ }
 
+<<<<<<< HEAD
 	DECLARE_READ8_MEMBER(dac_r);
+=======
+	DECLARE_READ8_MEMBER(sound_r);
+>>>>>>> upstream/master
 	DECLARE_WRITE8_MEMBER(dig0_w);
 	DECLARE_WRITE8_MEMBER(dig1_w);
 	DECLARE_WRITE8_MEMBER(lamp0_w);
@@ -86,15 +105,25 @@ public:
 	DECLARE_MACHINE_RESET(s3);
 	DECLARE_MACHINE_RESET(s3a);
 private:
+<<<<<<< HEAD
 	UINT8 m_t_c;
 	UINT8 m_sound_data;
 	UINT8 m_strobe;
 	UINT8 m_kbdrow;
+=======
+	uint8_t m_t_c;
+	uint8_t m_sound_data;
+	uint8_t m_strobe;
+	uint8_t m_kbdrow;
+>>>>>>> upstream/master
 	bool m_data_ok;
 	bool m_chimes;
 	required_device<cpu_device> m_maincpu;
 	optional_device<cpu_device> m_audiocpu;
+<<<<<<< HEAD
 	optional_device<dac_device> m_dac;
+=======
+>>>>>>> upstream/master
 	required_device<pia6821_device> m_pia22;
 	required_device<pia6821_device> m_pia24;
 	required_device<pia6821_device> m_pia28;
@@ -311,7 +340,11 @@ WRITE8_MEMBER( s3_state::sol1_w )
 	}
 	else
 	{
+<<<<<<< HEAD
 		UINT8 sound_data = ioport("SND")->read(); // 0xff or 0xbf
+=======
+		uint8_t sound_data = ioport("SND")->read(); // 0xff or 0xbf
+>>>>>>> upstream/master
 		if (BIT(data, 0))
 			sound_data &= 0xfe;
 
@@ -381,17 +414,30 @@ WRITE8_MEMBER( s3_state::dig0_w )
 {
 	m_strobe = data & 15;
 	m_data_ok = true;
+<<<<<<< HEAD
 	output_set_value("led0", !BIT(data, 4));
 	output_set_value("led1", !BIT(data, 5));
+=======
+	output().set_value("led0", !BIT(data, 4));
+	output().set_value("led1", !BIT(data, 5));
+>>>>>>> upstream/master
 }
 
 WRITE8_MEMBER( s3_state::dig1_w )
 {
+<<<<<<< HEAD
 	static const UINT8 patterns[16] = { 0x3f, 0x06, 0x5b, 0x4f, 0x66, 0x6d, 0x7c, 0x07, 0x7f, 0x67, 0, 0, 0, 0, 0, 0 }; // MC14558
 	if (m_data_ok)
 	{
 		output_set_digit_value(m_strobe+16, patterns[data&15]);
 		output_set_digit_value(m_strobe, patterns[data>>4]);
+=======
+	static const uint8_t patterns[16] = { 0x3f, 0x06, 0x5b, 0x4f, 0x66, 0x6d, 0x7c, 0x07, 0x7f, 0x67, 0, 0, 0, 0, 0, 0 }; // MC14558
+	if (m_data_ok)
+	{
+		output().set_digit_value(m_strobe+16, patterns[data&15]);
+		output().set_digit_value(m_strobe, patterns[data>>4]);
+>>>>>>> upstream/master
 	}
 	m_data_ok = false;
 }
@@ -408,7 +454,11 @@ WRITE8_MEMBER( s3_state::switch_w )
 	m_kbdrow = data;
 }
 
+<<<<<<< HEAD
 READ8_MEMBER( s3_state::dac_r )
+=======
+READ8_MEMBER( s3_state::sound_r )
+>>>>>>> upstream/master
 {
 	return m_sound_data;
 }
@@ -421,7 +471,11 @@ TIMER_DEVICE_CALLBACK_MEMBER( s3_state::irq )
 		m_t_c++;
 }
 
+<<<<<<< HEAD
 static MACHINE_CONFIG_START( s3, s3_state )
+=======
+static MACHINE_CONFIG_START( s3 )
+>>>>>>> upstream/master
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", M6800, 3580000)
 	MCFG_CPU_PROGRAM_MAP(s3_main_map)
@@ -440,16 +494,26 @@ static MACHINE_CONFIG_START( s3, s3_state )
 	MCFG_PIA_WRITEPB_HANDLER(WRITE8(s3_state, sol1_w))
 	MCFG_PIA_CA2_HANDLER(WRITELINE(s3_state, pia22_ca2_w))
 	MCFG_PIA_CB2_HANDLER(WRITELINE(s3_state, pia22_cb2_w))
+<<<<<<< HEAD
 	MCFG_PIA_IRQA_HANDLER(DEVWRITELINE("maincpu", m6800_cpu_device, irq_line))
 	MCFG_PIA_IRQB_HANDLER(DEVWRITELINE("maincpu", m6800_cpu_device, irq_line))
+=======
+	MCFG_PIA_IRQA_HANDLER(INPUTLINE("maincpu", M6800_IRQ_LINE))
+	MCFG_PIA_IRQB_HANDLER(INPUTLINE("maincpu", M6800_IRQ_LINE))
+>>>>>>> upstream/master
 
 	MCFG_DEVICE_ADD("pia24", PIA6821, 0)
 	MCFG_PIA_WRITEPA_HANDLER(WRITE8(s3_state, lamp0_w))
 	MCFG_PIA_WRITEPB_HANDLER(WRITE8(s3_state, lamp1_w))
 	MCFG_PIA_CA2_HANDLER(WRITELINE(s3_state, pia24_ca2_w))
 	MCFG_PIA_CB2_HANDLER(WRITELINE(s3_state, pia24_cb2_w))
+<<<<<<< HEAD
 	MCFG_PIA_IRQA_HANDLER(DEVWRITELINE("maincpu", m6800_cpu_device, irq_line))
 	MCFG_PIA_IRQB_HANDLER(DEVWRITELINE("maincpu", m6800_cpu_device, irq_line))
+=======
+	MCFG_PIA_IRQA_HANDLER(INPUTLINE("maincpu", M6800_IRQ_LINE))
+	MCFG_PIA_IRQB_HANDLER(INPUTLINE("maincpu", M6800_IRQ_LINE))
+>>>>>>> upstream/master
 
 	MCFG_DEVICE_ADD("pia28", PIA6821, 0)
 	MCFG_PIA_READPA_HANDLER(READ8(s3_state, dips_r))
@@ -459,16 +523,26 @@ static MACHINE_CONFIG_START( s3, s3_state )
 	MCFG_PIA_WRITEPB_HANDLER(WRITE8(s3_state, dig1_w))
 	MCFG_PIA_CA2_HANDLER(WRITELINE(s3_state, pia28_ca2_w))
 	MCFG_PIA_CB2_HANDLER(WRITELINE(s3_state, pia28_cb2_w))
+<<<<<<< HEAD
 	MCFG_PIA_IRQA_HANDLER(DEVWRITELINE("maincpu", m6800_cpu_device, irq_line))
 	MCFG_PIA_IRQB_HANDLER(DEVWRITELINE("maincpu", m6800_cpu_device, irq_line))
+=======
+	MCFG_PIA_IRQA_HANDLER(INPUTLINE("maincpu", M6800_IRQ_LINE))
+	MCFG_PIA_IRQB_HANDLER(INPUTLINE("maincpu", M6800_IRQ_LINE))
+>>>>>>> upstream/master
 
 	MCFG_DEVICE_ADD("pia30", PIA6821, 0)
 	MCFG_PIA_READPA_HANDLER(READ8(s3_state, switch_r))
 	MCFG_PIA_WRITEPB_HANDLER(WRITE8(s3_state, switch_w))
 	MCFG_PIA_CA2_HANDLER(WRITELINE(s3_state, pia30_ca2_w))
 	MCFG_PIA_CB2_HANDLER(WRITELINE(s3_state, pia30_cb2_w))
+<<<<<<< HEAD
 	MCFG_PIA_IRQA_HANDLER(DEVWRITELINE("maincpu", m6800_cpu_device, irq_line))
 	MCFG_PIA_IRQB_HANDLER(DEVWRITELINE("maincpu", m6800_cpu_device, irq_line))
+=======
+	MCFG_PIA_IRQA_HANDLER(INPUTLINE("maincpu", M6800_IRQ_LINE))
+	MCFG_PIA_IRQB_HANDLER(INPUTLINE("maincpu", M6800_IRQ_LINE))
+>>>>>>> upstream/master
 
 	MCFG_NVRAM_ADD_0FILL("nvram")
 MACHINE_CONFIG_END
@@ -478,6 +552,7 @@ static MACHINE_CONFIG_DERIVED( s3a, s3 )
 	MCFG_CPU_ADD("audiocpu", M6802, 3580000)
 	MCFG_CPU_PROGRAM_MAP(s3_audio_map)
 	MCFG_MACHINE_RESET_OVERRIDE(s3_state, s3a)
+<<<<<<< HEAD
 	MCFG_SPEAKER_STANDARD_MONO("mono")
 	MCFG_SOUND_ADD("dac", DAC, 0)
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 1.00)
@@ -487,6 +562,19 @@ static MACHINE_CONFIG_DERIVED( s3a, s3 )
 	MCFG_PIA_WRITEPA_HANDLER(DEVWRITE8("dac", dac_device, write_unsigned8))
 	MCFG_PIA_IRQA_HANDLER(DEVWRITELINE("audiocpu", m6800_cpu_device, irq_line))
 	MCFG_PIA_IRQB_HANDLER(DEVWRITELINE("audiocpu", m6800_cpu_device, irq_line))
+=======
+
+	MCFG_SPEAKER_STANDARD_MONO("speaker")
+	MCFG_SOUND_ADD("dac", MC1408, 0) MCFG_SOUND_ROUTE(ALL_OUTPUTS, "speaker", 0.5)
+	MCFG_DEVICE_ADD("vref", VOLTAGE_REGULATOR, 0) MCFG_VOLTAGE_REGULATOR_OUTPUT(5.0)
+	MCFG_SOUND_ROUTE_EX(0, "dac", 1.0, DAC_VREF_POS_INPUT) MCFG_SOUND_ROUTE_EX(0, "dac", -1.0, DAC_VREF_NEG_INPUT)
+
+	MCFG_DEVICE_ADD("pias", PIA6821, 0)
+	MCFG_PIA_READPB_HANDLER(READ8(s3_state,sound_r))
+	MCFG_PIA_WRITEPA_HANDLER(DEVWRITE8("dac", dac_byte_interface, write))
+	MCFG_PIA_IRQA_HANDLER(INPUTLINE("audiocpu", M6802_IRQ_LINE))
+	MCFG_PIA_IRQB_HANDLER(INPUTLINE("audiocpu", M6802_IRQ_LINE))
+>>>>>>> upstream/master
 MACHINE_CONFIG_END
 
 
@@ -523,7 +611,11 @@ ROM_START(wldcp_l1)
 	ROM_LOAD("white2wc.716", 0x1800, 0x0800, CRC(618d15b5) SHA1(527387893eeb2cd4aa563a4cfb1948a15d2ed741))
 
 	ROM_REGION(0x0800, "audioroms", 0)
+<<<<<<< HEAD
 	ROM_LOAD("sound1.716",   0x0000, 0x0800, CRC(f4190ca3) SHA1(ee234fb5c894fca5876ee6dc7ea8e89e7e0aec9c))
+=======
+	ROM_LOAD("481_s0_world_cup.716",   0x0000, 0x0800, CRC(cf012812) SHA1(26074f6a44075a94e6f91de1dbf92f8ec3ff8ca4))
+>>>>>>> upstream/master
 ROM_END
 
 /*-------------------------------------
@@ -536,7 +628,11 @@ ROM_START(cntct_l1)
 	ROM_LOAD("white2.716",   0x1800, 0x0800, CRC(4d4010dd) SHA1(11221124fef3b7bf82d353d65ce851495f6946a7))
 
 	ROM_REGION(0x0800, "audioroms", 0)
+<<<<<<< HEAD
 	ROM_LOAD("sound1.716",   0x0000, 0x0800, CRC(f4190ca3) SHA1(ee234fb5c894fca5876ee6dc7ea8e89e7e0aec9c))
+=======
+	ROM_LOAD("482_s0_contact.716",   0x0000, 0x0800, CRC(d3c713da) SHA1(1fc4a8fadf472e9a04b3a86f60a9d625d07764e1))
+>>>>>>> upstream/master
 ROM_END
 
 /*-------------------------------------
@@ -549,7 +645,11 @@ ROM_START(disco_l1)
 	ROM_LOAD("white2.716",   0x1800, 0x0800, CRC(4d4010dd) SHA1(11221124fef3b7bf82d353d65ce851495f6946a7))
 
 	ROM_REGION(0x0800, "audioroms", 0)
+<<<<<<< HEAD
 	ROM_LOAD("sound1.716",   0x0000, 0x0800, CRC(f4190ca3) SHA1(ee234fb5c894fca5876ee6dc7ea8e89e7e0aec9c))
+=======
+	ROM_LOAD("483_s0_disco_fever.716",   0x0000, 0x0800, CRC(d1cb5047) SHA1(7f36296975df19feecc6456ffb91f4a23bcad037))
+>>>>>>> upstream/master
 ROM_END
 
 /*--------------------------------
@@ -562,7 +662,11 @@ ROM_START(phnix_l1)
 	ROM_LOAD("white2.716",   0x1800, 0x0800, CRC(4d4010dd) SHA1(11221124fef3b7bf82d353d65ce851495f6946a7))
 
 	ROM_REGION(0x0800, "audioroms", 0)
+<<<<<<< HEAD
 	ROM_LOAD("sound1.716",   0x0000, 0x0800, CRC(f4190ca3) SHA1(ee234fb5c894fca5876ee6dc7ea8e89e7e0aec9c))
+=======
+	ROM_LOAD("485_s0_phoenix.716",   0x0000, 0x0800, CRC(1c3dea6e) SHA1(04bfe952be2eab66f023b204c21a1bd461ea572f))
+>>>>>>> upstream/master
 ROM_END
 
 /*--------------------------------
@@ -578,6 +682,7 @@ ROM_START(pkrno_l1)
 	ROM_LOAD("sound1.716",   0x0000, 0x0800, CRC(f4190ca3) SHA1(ee234fb5c894fca5876ee6dc7ea8e89e7e0aec9c))
 ROM_END
 
+<<<<<<< HEAD
 GAME( 1977, httip_l1, 0, s3,  s3, driver_device, 0, ROT0, "Williams", "Hot Tip (L-1)", MACHINE_MECHANICAL )
 GAME( 1977, lucky_l1, 0, s3,  s3, driver_device, 0, ROT0, "Williams", "Lucky Seven (L-1)", MACHINE_MECHANICAL )
 GAME( 1978, wldcp_l1, 0, s3a, s3, driver_device, 0, ROT0, "Williams", "World Cup Soccer (L-1)", MACHINE_MECHANICAL )
@@ -585,3 +690,12 @@ GAME( 1978, cntct_l1, 0, s3a, s3, driver_device, 0, ROT0, "Williams", "Contact (
 GAME( 1978, disco_l1, 0, s3a, s3, driver_device, 0, ROT0, "Williams", "Disco Fever (L-1)", MACHINE_MECHANICAL )
 GAME( 1978, phnix_l1, 0, s3a, s3, driver_device, 0, ROT0, "Williams", "Phoenix (L-1)", MACHINE_MECHANICAL )
 GAME( 1978, pkrno_l1, 0, s3a, s3, driver_device, 0, ROT0, "Williams", "Pokerino (L-1)", MACHINE_MECHANICAL )
+=======
+GAME( 1977, httip_l1, 0, s3,  s3, s3_state, 0, ROT0, "Williams", "Hot Tip (L-1)",          MACHINE_MECHANICAL | MACHINE_NOT_WORKING )
+GAME( 1977, lucky_l1, 0, s3,  s3, s3_state, 0, ROT0, "Williams", "Lucky Seven (L-1)",      MACHINE_MECHANICAL | MACHINE_NOT_WORKING )
+GAME( 1978, wldcp_l1, 0, s3a, s3, s3_state, 0, ROT0, "Williams", "World Cup (L-1)",        MACHINE_MECHANICAL | MACHINE_NOT_WORKING )
+GAME( 1978, cntct_l1, 0, s3a, s3, s3_state, 0, ROT0, "Williams", "Contact (L-1)",          MACHINE_MECHANICAL | MACHINE_NOT_WORKING )
+GAME( 1978, disco_l1, 0, s3a, s3, s3_state, 0, ROT0, "Williams", "Disco Fever (L-1)",      MACHINE_MECHANICAL | MACHINE_NOT_WORKING )
+GAME( 1978, phnix_l1, 0, s3a, s3, s3_state, 0, ROT0, "Williams", "Phoenix (L-1)",          MACHINE_MECHANICAL | MACHINE_NOT_WORKING )
+GAME( 1978, pkrno_l1, 0, s3a, s3, s3_state, 0, ROT0, "Williams", "Pokerino (L-1)",         MACHINE_MECHANICAL | MACHINE_NOT_WORKING )
+>>>>>>> upstream/master

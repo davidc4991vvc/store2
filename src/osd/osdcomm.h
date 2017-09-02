@@ -11,11 +11,21 @@
 
 #pragma once
 
+<<<<<<< HEAD
 #ifndef __OSDCOMM_H__
 #define __OSDCOMM_H__
 
 #include <stdio.h>
 #include <string.h>
+=======
+#ifndef MAME_OSD_OSDCOMM_H
+#define MAME_OSD_OSDCOMM_H
+
+#include <stdio.h>
+#include <string.h>
+#include <cstdint>
+#include <type_traits>
+>>>>>>> upstream/master
 
 
 /***************************************************************************
@@ -29,6 +39,7 @@
 
 
 /* Some optimizations/warnings cleanups for GCC */
+<<<<<<< HEAD
 #if defined(__GNUC__) && (__GNUC__ >= 3)
 #define ATTR_UNUSED             __attribute__((__unused__))
 #define ATTR_NORETURN           __attribute__((noreturn))
@@ -65,12 +76,32 @@
 #define ATTR_FORCE_INLINE       __forceinline
 #define ATTR_NONNULL(...)
 #define ATTR_DEPRECATED         __declspec(deprecated)
+=======
+#if defined(__GNUC__)
+#define ATTR_UNUSED             __attribute__((__unused__))
+#define ATTR_PRINTF(x,y)        __attribute__((format(printf, x, y)))
+#define ATTR_CONST              __attribute__((const))
+#define ATTR_FORCE_INLINE       __attribute__((always_inline))
+#define ATTR_HOT                __attribute__((hot))
+#define ATTR_COLD               __attribute__((cold))
+#define UNEXPECTED(exp)         __builtin_expect(!!(exp), 0)
+#define EXPECTED(exp)           __builtin_expect(!!(exp), 1)
+#define RESTRICT                __restrict__
+#else
+#define ATTR_UNUSED
+#define ATTR_PRINTF(x,y)
+#define ATTR_CONST
+#define ATTR_FORCE_INLINE       __forceinline
+>>>>>>> upstream/master
 #define ATTR_HOT
 #define ATTR_COLD
 #define UNEXPECTED(exp)         (exp)
 #define EXPECTED(exp)           (exp)
 #define RESTRICT
+<<<<<<< HEAD
 #define SETJMP_GNUC_PROTECT()   do {} while (0)
+=======
+>>>>>>> upstream/master
 #endif
 
 
@@ -79,6 +110,7 @@
     FUNDAMENTAL TYPES
 ***************************************************************************/
 
+<<<<<<< HEAD
 /* These types work on most modern compilers; however, OSD code can
    define their own by setting OSD_TYPES_DEFINED */
 
@@ -134,11 +166,27 @@ typedef UINT32                              FPTR;
 #endif
 
 
+=======
+namespace osd {
+
+using u8 = std::uint8_t;
+using u16 = std::uint16_t;
+using u32 = std::uint32_t;
+using u64 = std::uint64_t;
+
+using s8 = std::int8_t;
+using s16 = std::int16_t;
+using s32 = std::int32_t;
+using s64 = std::int64_t;
+
+} // namespace OSD
+>>>>>>> upstream/master
 
 /***************************************************************************
     FUNDAMENTAL MACROS
 ***************************************************************************/
 
+<<<<<<< HEAD
 /* Standard MIN/MAX macros */
 #ifndef MIN
 #define MIN(x,y)            ((x) < (y) ? (x) : (y))
@@ -246,6 +294,53 @@ static __inline double log2(double x) { return log(x) * M_LOG2E; }
 #else // VS2015
 #define _CRT_STDIO_LEGACY_WIDE_SPECIFIERS
 #endif
+=======
+/* Concatenate/extract 32-bit halves of 64-bit values */
+constexpr uint64_t concat_64(uint32_t hi, uint32_t lo) { return (uint64_t(hi) << 32) | uint32_t(lo); }
+constexpr uint32_t extract_64hi(uint64_t val) { return uint32_t(val >> 32); }
+constexpr uint32_t extract_64lo(uint64_t val) { return uint32_t(val); }
+
+// Highly useful template for compile-time knowledge of an array size
+template <typename T, size_t N> constexpr size_t ARRAY_LENGTH(T (&)[N]) { return N;}
+
+// For declaring an array of the same dimensions as another array (including multi-dimensional arrays)
+template <typename T, typename U> struct equivalent_array_or_type { typedef T type; };
+template <typename T, typename U, std::size_t N> struct equivalent_array_or_type<T, U[N]> { typedef typename equivalent_array_or_type<T, U>::type type[N]; };
+template <typename T, typename U> using equivalent_array_or_type_t = typename equivalent_array_or_type<T, U>::type;
+template <typename T, typename U> struct equivalent_array { };
+template <typename T, typename U, std::size_t N> struct equivalent_array<T, U[N]> { typedef equivalent_array_or_type_t<T, U> type[N]; };
+template <typename T, typename U> using equivalent_array_t = typename equivalent_array<T, U>::type;
+#define EQUIVALENT_ARRAY(a, T) equivalent_array_t<T, std::remove_reference_t<decltype(a)> >
+
+/* Macros for normalizing data into big or little endian formats */
+constexpr uint16_t flipendian_int16(uint16_t val) { return (val << 8) | (val >> 8); }
+
+constexpr uint32_t flipendian_int32_partial16(uint32_t val) { return ((val << 8) & 0xFF00FF00U) | ((val >> 8) & 0x00FF00FFU); }
+constexpr uint32_t flipendian_int32(uint32_t val) { return (flipendian_int32_partial16(val) << 16) | (flipendian_int32_partial16(val) >> 16); }
+
+constexpr uint64_t flipendian_int64_partial16(uint64_t val) { return ((val << 8) & 0xFF00FF00FF00FF00U) | ((val >> 8) & 0x00FF00FF00FF00FFU); }
+constexpr uint64_t flipendian_int64_partial32(uint64_t val) { return ((flipendian_int64_partial16(val) << 16) & 0xFFFF0000FFFF0000U) | ((flipendian_int64_partial16(val) >> 16) & 0x0000FFFF0000FFFFU); }
+constexpr uint64_t flipendian_int64(uint64_t val) { return (flipendian_int64_partial32(val) << 32) | (flipendian_int64_partial32(val) >> 32); }
+
+#ifdef LSB_FIRST
+constexpr uint16_t big_endianize_int16(uint16_t x) { return flipendian_int16(x); }
+constexpr uint32_t big_endianize_int32(uint32_t x) { return flipendian_int32(x); }
+constexpr uint64_t big_endianize_int64(uint64_t x) { return flipendian_int64(x); }
+constexpr uint16_t little_endianize_int16(uint16_t x) { return x; }
+constexpr uint32_t little_endianize_int32(uint32_t x) { return x; }
+constexpr uint64_t little_endianize_int64(uint64_t x) { return x; }
+#else
+constexpr uint16_t big_endianize_int16(uint16_t x) { return x; }
+constexpr uint32_t big_endianize_int32(uint32_t x) { return x; }
+constexpr uint64_t big_endianize_int64(uint64_t x) { return x; }
+constexpr uint16_t little_endianize_int16(uint16_t x) { return flipendian_int16(x); }
+constexpr uint32_t little_endianize_int32(uint32_t x) { return flipendian_int32(x); }
+constexpr uint64_t little_endianize_int64(uint64_t x) { return flipendian_int64(x); }
+#endif /* LSB_FIRST */
+
+#ifdef _MSC_VER
+using ssize_t = std::make_signed_t<size_t>;
+>>>>>>> upstream/master
 #endif
 
 #ifdef __GNUC__
@@ -254,6 +349,7 @@ static __inline double log2(double x) { return log(x) * M_LOG2E; }
 #endif
 #endif
 
+<<<<<<< HEAD
 // mamep: Visual C++
 #if defined(_MSC_VER) && _MSC_VER >= 1400
 #define _CRT_NON_CONFORMING_SWPRINTFS 
@@ -265,3 +361,6 @@ static __inline double log2(double x) { return log(x) * M_LOG2E; }
 #endif
 
 #endif  /* __OSDCOMM_H__ */
+=======
+#endif  /* MAME_OSD_OSDCOMM_H */
+>>>>>>> upstream/master

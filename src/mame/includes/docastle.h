@@ -6,6 +6,10 @@
 
 ***************************************************************************/
 
+<<<<<<< HEAD
+=======
+#include "machine/tms1024.h"
+>>>>>>> upstream/master
 #include "video/mc6845.h"
 #include "sound/msm5205.h"
 
@@ -19,6 +23,10 @@ public:
 		m_cpu3(*this, "cpu3"),
 		m_crtc(*this, "crtc"),
 		m_msm(*this, "msm"),
+<<<<<<< HEAD
+=======
+		m_inp(*this, "inp%u", 1),
+>>>>>>> upstream/master
 		m_videoram(*this, "videoram"),
 		m_colorram(*this, "colorram"),
 		m_spriteram(*this, "spriteram"),
@@ -32,11 +40,20 @@ public:
 	required_device<cpu_device> m_cpu3;
 	required_device<h46505_device> m_crtc;
 	optional_device<msm5205_device> m_msm;
+<<<<<<< HEAD
 
 	/* memory pointers */
 	required_shared_ptr<UINT8> m_videoram;
 	required_shared_ptr<UINT8> m_colorram;
 	required_shared_ptr<UINT8> m_spriteram;
+=======
+	required_device_array<tms1025_device, 2> m_inp;
+
+	/* memory pointers */
+	required_shared_ptr<uint8_t> m_videoram;
+	required_shared_ptr<uint8_t> m_colorram;
+	required_shared_ptr<uint8_t> m_spriteram;
+>>>>>>> upstream/master
 
 	required_device<gfxdecode_device> m_gfxdecode;
 	required_device<palette_device> m_palette;
@@ -50,8 +67,13 @@ public:
 	int      m_adpcm_idle;
 	int      m_adpcm_data;
 	int      m_adpcm_status;
+<<<<<<< HEAD
 	UINT8    m_buffer0[9];
 	UINT8    m_buffer1[9];
+=======
+	uint8_t    m_buffer0[9];
+	uint8_t    m_buffer1[9];
+>>>>>>> upstream/master
 
 	DECLARE_READ8_MEMBER(docastle_shared0_r);
 	DECLARE_READ8_MEMBER(docastle_shared1_r);
@@ -60,11 +82,16 @@ public:
 	DECLARE_WRITE8_MEMBER(docastle_nmitrigger_w);
 	DECLARE_WRITE8_MEMBER(docastle_videoram_w);
 	DECLARE_WRITE8_MEMBER(docastle_colorram_w);
+<<<<<<< HEAD
 	DECLARE_READ8_MEMBER(flipscreen_r);
+=======
+	DECLARE_READ8_MEMBER(inputs_flipscreen_r);
+>>>>>>> upstream/master
 	DECLARE_WRITE8_MEMBER(flipscreen_w);
 	DECLARE_READ8_MEMBER(idsoccer_adpcm_status_r);
 	DECLARE_WRITE8_MEMBER(idsoccer_adpcm_w);
 	TILE_GET_INFO_MEMBER(get_tile_info);
+<<<<<<< HEAD
 	virtual void machine_start();
 	virtual void machine_reset();
 	virtual void video_start();
@@ -72,6 +99,15 @@ public:
 	DECLARE_VIDEO_START(dorunrun);
 	UINT32 screen_update_docastle(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
 	void video_start_common( UINT32 tile_transmask );
+=======
+	virtual void machine_start() override;
+	virtual void machine_reset() override;
+	virtual void video_start() override;
+	DECLARE_PALETTE_INIT(docastle);
+	DECLARE_VIDEO_START(dorunrun);
+	uint32_t screen_update_docastle(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
+	void video_start_common( uint32_t tile_transmask );
+>>>>>>> upstream/master
 	void draw_sprites( screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect );
 	DECLARE_WRITE_LINE_MEMBER(docastle_tint);
 	DECLARE_WRITE_LINE_MEMBER(idsoccer_adpcm_int);

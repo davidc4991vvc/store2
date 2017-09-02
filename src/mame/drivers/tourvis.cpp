@@ -1,5 +1,9 @@
 // license:BSD-3-Clause
+<<<<<<< HEAD
 // copyright-holders:Mariusz Wojcieszek, Stephh
+=======
+// copyright-holders:Mariusz Wojcieszek
+>>>>>>> upstream/master
 /****************************************************************************
 
     TourVision
@@ -11,6 +15,7 @@
 
     Todo: complete jamma interface emulation.
 
+<<<<<<< HEAD
     By now, three known BIOS versions, U4-52 (dumped from a board with-subboard PCB),
     U4-55 (dumped from an integrated PCB) and U4-60 (dumped from a board with-subboard PCB).
 
@@ -77,6 +82,132 @@
     Volfied [dumped]
     W-Ring
     Xevious
+=======
+    By now, six known BIOS versions, U4-52 (dumped from a board with-subboard PCB),
+    U4-55 (dumped from an integrated PCB) and U4-60 (dumped from a board with-subboard PCB).
+
+    Known games (followed by game ID, some are duplicate):
+
+    1943 Kai (65)
+    Adventure Island (64)
+    Aero Blaster (32)
+    After Burner II (46)
+    Alice in Wonderland (61)
+    Ankoku Densetsu (Legendary Axe II) (33)
+    Armed-F (?)
+    Ballistix (186)
+    Barunba (39)
+    Batman (30)
+    Be Ball (93)
+  * Blodia
+    Bomberman (71)
+    Bomberman 93 (204)
+    Bull Fight (185)
+    Burning Angels (49)
+    Cadash (203)
+    Chozetsurinjin Beraboh Man (Super Foolish Man) (27)
+    Chuka Taisen (37)
+    Columns (90)
+    Coryoon (43)
+  * Cross Wiber
+    Cyber Core (13)
+    Daisempuu (3)
+    Dead Moon (?)
+    Devil Crash (47)
+    Die Hard (73)
+    Dodge Ball (194)
+    Doraemon Meikyuu Daisakusen (20)
+    Doreamon - Nobita's Dorabian Night (Doraemon II, 43)
+    Down Load (43)
+    Dragon Egg! (98)
+    Dragon Saber (65)
+    Dragon Spirit (?)
+    Drop Rock Hora Hora (12)
+    Dungeon Explorer (209)
+  * F1 Triple Battle
+    Fighting Run (195)
+    Final Blaster (29)
+    Final Lap Twin (79)
+    Final Match Tennis (62)
+    Formation Soccer (1)
+    Gomola Speed (27)
+    Gradius (187)
+    Gunhed (148)
+    Hana Taka Daka (Super Long Nose Goblin) (6)
+  * Hatris
+    Hit The Ice (97)
+    Image Fight (99)
+    Jackie Chan (54)
+    Jinmu Densho (19)
+    Kato & Ken (42)
+    Kiki Kaikai (120)
+    Knight Rider Special (193)
+    Legend Of Hero Tomna (56)
+    Makyo Densetsu - The Legendary Axe (40)
+    Mashin Eiyuden Wataru (27)
+    Mesopotamia (197)
+    Mizubaku Daibouken Liquid Kids (10) (marketed as "Parasol Stars II")
+    Mr. Heli (23)
+    Ninja Ryukenden (10)
+    Operation Wolf (26)
+    Ordyne (94)
+    Out Run (38)
+    Override (53)
+    Pac-Land (16)
+  * Paranoia (18)
+  * PC Genjin
+    PC Genjin 2 (84)
+    PC Denjin Punkic Cyborg (201)
+    Power Drift (200)
+    Power Eleven (83)
+  * Power Golf
+    Power League IV (?)
+    Power Sports (199)
+    Power Tennis (183)
+    Pro Yakyuu World Stadium '91 (192)
+    Psycho Chaser (14)
+    Puzzle Boy (57)
+    Puzznic (69)
+    R-Type II (61)
+  * Rabio Lepus Special
+    Raiden (111)
+    Rastan Saga II (33, possibly incorrect riser)
+    Saigo no Nindou (44)
+    Salamander (184)
+    Shinobi (5)
+    Side Arms (2)
+    Skweek (89)
+    Sokoban World (66)
+    Soldier Blade (23)
+    Son Son II (80)
+    Special Criminal Investigation (58)
+    Spin Pair (50)
+    Super Star Soldier (42)
+    Super Volley ball (9)
+    Tatsujin (31)
+    Terra Cresta II (27)
+    The NewZealand Story (11)
+    Thunder Blade (34)
+  * Tiger Road
+  * Titan
+    Toilet Kids (196)
+    Toy Shop Boys (51)
+    Tricky (42)
+  * TV Sports
+    USA Pro Basketball (?)
+    Veigues (40)
+    Vigilante (8)
+    Volfied (68)
+    W-Ring (21)
+    Winning Shot (28)
+    World Jockey (202)
+    Xevious (?)
+
+    Rumored games:
+  * Parasol Stars - often been mentioned, but still not confirmed, for Tourvision. For now it's been added from its NEC PC-Engine dump, which it would be likely identical.
+
+* Denotes Not Dumped
+>>>>>>> upstream/master
 
  _______________________________________________________________________________________________________________________________________________
 |                                                                                                                                               |
@@ -152,6 +283,7 @@ Games are dumped directly from the cartridge edge connector using the following 
  ----------------------------------------------------------------------------
 
                        +----------+
+<<<<<<< HEAD
                 (N.C.) |01      01| +5V
                    +5V |02      02| +5V
                    A18 |03      03| +5V
@@ -177,6 +309,33 @@ Games are dumped directly from the cartridge edge connector using the following 
                 (N.C.) |23      23| (N.C.)
                 (N.C.) |24      24| (N.C.)
                 (N.C.) |25      25| (N.C.)
+=======
+                (N.C.) |50      49| +5V
+                   +5V |48      47| +5V
+                   A18 |46      45| +5V
+                   A14 |44      43| A17
+                    A8 |42      41| A13
+                   A11 |40      39| A9
+                   A10 |38      37| OE#
+                    D7 |36      35| CE#
+(front of           D5 |34      33| D6               (rear of
+ cartridge)         D3 |32      31| D4                cartridge)
+                    D2 |30      29| GND
+                    D0 |28      27| D1
+                    A1 |26      25| A0
+                    A3 |24      23| A2
+                    A5 |22      21| A4
+                    A7 |20      19| A6
+                   A15 |18      17| A12
+                   A19 |16      15| A16
+                   GND |14      13| (N.C.)
+                   GND |12      11| GND)
+                 (KEY) |10------09| (KEY)
+                   ID7 |08      07| ID6
+                   ID5 |06      05| ID4
+                   ID3 |04      03| ID2
+                   ID1 |02      01| ID0
+>>>>>>> upstream/master
                        +----------+
 
  ----------------------------------------------------------------------------
@@ -222,6 +381,7 @@ coin 2 triggers code at 0x028f
 in each coin insertion routine, you need to insert n coins (based on DSW settings) then you are awarded u units of time (also based on DSW settings)
 I can't tell ATM if units are seconds (even if values in tables seem very related to them)
 
+<<<<<<< HEAD
 ****************************************************************************/
 
 #include "emu.h"
@@ -233,18 +393,57 @@ I can't tell ATM if units are seconds (even if values in tables seem very relate
 #include "sound/c6280.h"
 #include "machine/i8155.h"
 
+=======
+****************************************************************************
+Notes from system11:
+Game ID is configured on carts using pins 1 -> 8, these form a single byte integer, known IDs are tagged above.  IDs can be shared between games.  Game handling is defined based on data tables in the BIOS, using offset + ID*data block size.  Data block starts in 6.0 BIOS as follows:
+
+1184   1284   1384   1484   1584   3584   5d84   5684
+
+For full information see:
+http://blog.system11.org/?p=1943
+
+****************************************************************************/
+
+#include "emu.h"
+#include "machine/pcecommn.h"
+
+#include "cpu/h6280/h6280.h"
+#include "cpu/i8085/i8085.h"
+#include "video/huc6260.h"
+#include "video/huc6270.h"
+#include "sound/c6280.h"
+#include "machine/i8155.h"
+
+#include "bus/generic/slot.h"
+#include "bus/generic/carts.h"
+
+#include "screen.h"
+#include "softlist.h"
+#include "speaker.h"
+
+
+>>>>>>> upstream/master
 class tourvision_state : public pce_common_state
 {
 public:
 	tourvision_state(const machine_config &mconfig, device_type type, const char *tag)
+<<<<<<< HEAD
 		: pce_common_state(mconfig, type, tag),
 		m_subcpu(*this, "subcpu") { }
+=======
+		: pce_common_state(mconfig, type, tag)
+		, m_subcpu(*this, "subcpu")
+		, m_cart(*this, "cartslot")
+	{ }
+>>>>>>> upstream/master
 
 	DECLARE_WRITE8_MEMBER(tourvision_8085_d000_w);
 	DECLARE_WRITE8_MEMBER(tourvision_i8155_a_w);
 	DECLARE_WRITE8_MEMBER(tourvision_i8155_b_w);
 	DECLARE_WRITE8_MEMBER(tourvision_i8155_c_w);
 	DECLARE_WRITE_LINE_MEMBER(tourvision_timer_out);
+<<<<<<< HEAD
 	DECLARE_WRITE_LINE_MEMBER(pce_irq_changed);
 	required_device<cpu_device> m_subcpu;
 };
@@ -260,6 +459,64 @@ static INPUT_PORTS_START( tourvision )
 	PORT_BIT( 0x40, IP_ACTIVE_LOW, IPT_JOYSTICK_DOWN )
 	PORT_BIT( 0x80, IP_ACTIVE_LOW, IPT_JOYSTICK_LEFT )
 	PORT_BIT( 0x20, IP_ACTIVE_LOW, IPT_JOYSTICK_RIGHT )
+=======
+	required_device<cpu_device> m_subcpu;
+	required_device<generic_slot_device> m_cart;
+	uint32_t  m_rom_size;
+
+	DECLARE_DEVICE_IMAGE_LOAD_MEMBER(tourvision_cart);
+};
+
+DEVICE_IMAGE_LOAD_MEMBER( tourvision_state, tourvision_cart )
+{
+	m_rom_size = m_cart->common_get_size("rom");
+	m_cart->rom_alloc(m_rom_size, GENERIC_ROM8_WIDTH, ENDIANNESS_LITTLE);
+	m_cart->common_load_rom(m_cart->get_rom_base(), m_rom_size, "rom");
+
+	uint8_t* rgn = memregion("maincpu")->base();
+	uint8_t* base = m_cart->get_rom_base();
+
+	if (m_rom_size == 0x0c0000)
+	{
+		memcpy(rgn+0x000000, base+0x000000, 0x0c0000 );
+		memcpy(rgn+0x0c0000, base+0x080000, 0x040000 );
+	}
+	else
+	if (m_rom_size == 0x060000)
+	{
+		memcpy(rgn+0x000000, base+0x000000, 0x040000 );
+		memcpy(rgn+0x040000, base+0x000000, 0x040000 );
+		memcpy(rgn+0x080000, base+0x040000, 0x020000 );
+		memcpy(rgn+0x0a0000, base+0x040000, 0x020000 );
+		memcpy(rgn+0x0c0000, base+0x040000, 0x020000 );
+		memcpy(rgn+0x0e0000, base+0x040000, 0x020000 );
+	}
+	else
+	{
+		for (int i=0;i<0x100000;i+=m_rom_size)
+			memcpy(rgn+i, base+0x000000, m_rom_size );
+	}
+
+#if 0
+	{
+		FILE *fp;
+		fp=fopen("tourvision.bin", "w+b");
+		if (fp)
+		{
+			fwrite(rgn, 0x100000, 1, fp);
+			fclose(fp);
+		}
+	}
+#endif
+
+	return image_init_result::PASS;
+}
+
+/* note from system11 - this system actually supports 2 players */
+
+static INPUT_PORTS_START( tourvision )
+	PCE_STANDARD_INPUT_PORT_P1
+>>>>>>> upstream/master
 
 	PORT_START( "DSW1" )
 	PORT_DIPNAME( 0x07, 0x07, "Coins needed 1" )
@@ -288,9 +545,15 @@ static INPUT_PORTS_START( tourvision )
 	PORT_DIPSETTING(    0x10, "120" )
 	PORT_DIPSETTING(    0x08, "90" )
 	PORT_DIPSETTING(    0x00, "60" )
+<<<<<<< HEAD
 	PORT_DIPUNKNOWN( 0x80, 0x00 )
 // I can't tell what DSW1 bit 7 is really supposed to do, but it has an effect only when no "Free Play" and [0x8005] = [0x8006] = 0 (code at 0x0a58) :
 // Since these conditions seem to be true only in "attract mode" when there is no time left, this bit could enable/disable sounds.
+=======
+	PORT_DIPNAME( 0x80, 0x00, DEF_STR( Demo_Sounds ) )
+	PORT_DIPSETTING(    0x80, DEF_STR( Off ))
+	PORT_DIPSETTING(    0x00, DEF_STR( On ))
+>>>>>>> upstream/master
 
 	PORT_START( "DSW2" )
 	PORT_DIPNAME( 0x03, 0x03, "Coins needed 2" )
@@ -381,12 +644,17 @@ WRITE_LINE_MEMBER(tourvision_state::tourvision_timer_out)
 	//logerror("Timer out %d\n", state);
 }
 
+<<<<<<< HEAD
 WRITE_LINE_MEMBER(tourvision_state::pce_irq_changed)
 {
 	m_maincpu->set_input_line(0, state);
 }
 
 static MACHINE_CONFIG_START( tourvision, tourvision_state )
+=======
+
+static MACHINE_CONFIG_START( tourvision )
+>>>>>>> upstream/master
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", H6280, PCE_MAIN_CLOCK/3)
 	MCFG_CPU_PROGRAM_MAP(pce_mem)
@@ -398,7 +666,11 @@ static MACHINE_CONFIG_START( tourvision, tourvision_state )
 
 	/* video hardware */
 	MCFG_SCREEN_ADD("screen", RASTER)
+<<<<<<< HEAD
 	MCFG_SCREEN_RAW_PARAMS(PCE_MAIN_CLOCK, HUC6260_WPF, 64, 64 + 1024 + 64, HUC6260_LPF, 18, 18 + 242)
+=======
+	MCFG_SCREEN_RAW_PARAMS(PCE_MAIN_CLOCK, huc6260_device::WPF, 64, 64 + 1024 + 64, huc6260_device::LPF, 18, 18 + 242)
+>>>>>>> upstream/master
 	MCFG_SCREEN_UPDATE_DRIVER( pce_common_state, screen_update )
 	MCFG_SCREEN_PALETTE("huc6260:palette")
 
@@ -409,7 +681,11 @@ static MACHINE_CONFIG_START( tourvision, tourvision_state )
 	MCFG_HUC6260_HSYNC_CHANGED_CB(DEVWRITELINE("huc6270", huc6270_device, hsync_changed))
 	MCFG_DEVICE_ADD( "huc6270", HUC6270, 0 )
 	MCFG_HUC6270_VRAM_SIZE(0x10000)
+<<<<<<< HEAD
 	MCFG_HUC6270_IRQ_CHANGED_CB(WRITELINE(tourvision_state, pce_irq_changed))
+=======
+	MCFG_HUC6270_IRQ_CHANGED_CB(INPUTLINE("maincpu", 0))
+>>>>>>> upstream/master
 
 	MCFG_DEVICE_ADD("i8155", I8155, 1000000 /*?*/)
 	MCFG_I8155_OUT_PORTA_CB(WRITE8(tourvision_state, tourvision_i8155_a_w))
@@ -423,10 +699,22 @@ static MACHINE_CONFIG_START( tourvision, tourvision_state )
 	MCFG_SOUND_ROUTE(0, "lspeaker", 1.00)
 	MCFG_SOUND_ROUTE(1, "rspeaker", 1.00)
 
+<<<<<<< HEAD
+=======
+	MCFG_GENERIC_CARTSLOT_ADD("cartslot", generic_plain_slot, "tourvision_cart")
+	MCFG_GENERIC_EXTENSIONS("bin")
+	MCFG_GENERIC_LOAD(tourvision_state, tourvision_cart)
+	MCFG_GENERIC_MANDATORY
+
+	MCFG_SOFTWARE_LIST_ADD("tv_list","pce_tourvision")
+
+
+>>>>>>> upstream/master
 MACHINE_CONFIG_END
 
 #define TOURVISION_BIOS \
 	ROM_REGION( 0x8000, "subcpu", 0 ) \
+<<<<<<< HEAD
 	ROM_SYSTEM_BIOS( 0, "60", "U4-60" ) \
 	ROMX_LOAD( "u4-60.ic29", 0x0000, 0x8000, CRC(1fd27e22) SHA1(b103d365eac3fa447c2e9addddf6974b4403ed41), ROM_BIOS(1) ) \
 	ROM_SYSTEM_BIOS( 1, "55", "U4-55" ) \
@@ -437,6 +725,22 @@ MACHINE_CONFIG_END
 	ROMX_LOAD( "u4-52.ic29", 0x0000, 0x8000, CRC(ffd7b0fe) SHA1(d1804865c91e925a01b05cf441e8458a3db23f50), ROM_BIOS(4) ) \
 	ROM_SYSTEM_BIOS( 4, "43", "U4-43" ) \
 	ROMX_LOAD( "u4-43.ic29", 0x0000, 0x8000, CRC(88da23f3) SHA1(9d24faa116129783e55c7f79a4a08902a236d5a6), ROM_BIOS(5) )
+=======
+	ROM_SYSTEM_BIOS( 0, "60", "V4-60" ) \
+	ROMX_LOAD( "v4-60.ic29", 0x0000, 0x8000, CRC(1fd27e22) SHA1(b103d365eac3fa447c2e9addddf6974b4403ed41), ROM_BIOS(1) ) \
+	ROM_SYSTEM_BIOS( 1, "55", "V4-55" ) \
+	ROMX_LOAD( "v4-55.ic29", 0x0000, 0x8000, CRC(87cf66c1) SHA1(d6b42137be7a07a0e299c2d922328a6a9a2b7b8f), ROM_BIOS(2) ) \
+	ROM_SYSTEM_BIOS( 2, "53", "V4-53" ) \
+	ROMX_LOAD( "v4-53.ic29", 0x0000, 0x8000, CRC(bccb53c9) SHA1(a27113d70cf348c7eafa39fc7a76f55f63723ad7), ROM_BIOS(3) ) \
+	ROM_SYSTEM_BIOS( 3, "52", "V4-52" ) \
+	ROMX_LOAD( "v4-52.ic29", 0x0000, 0x8000, CRC(ffd7b0fe) SHA1(d1804865c91e925a01b05cf441e8458a3db23f50), ROM_BIOS(4) ) \
+	ROM_SYSTEM_BIOS( 4, "43", "V4-43" ) \
+	ROMX_LOAD( "v4-43.ic29", 0x0000, 0x8000, CRC(88da23f3) SHA1(9d24faa116129783e55c7f79a4a08902a236d5a6), ROM_BIOS(5) ) \
+	ROM_SYSTEM_BIOS( 5, "40", "V4-40" ) \
+	ROMX_LOAD( "v4-40.ic29", 0x0000, 0x8000, CRC(ba6290cc) SHA1(92b0e9f55791e892ec209de4fadd80faef370622), ROM_BIOS(6) ) \
+	ROM_SYSTEM_BIOS( 6, "12", "V1-20" ) \
+	ROMX_LOAD( "v1_2.0.bin", 0x0000, 0x8000, CRC(36012f88) SHA1(5bd42fb51aa48ff65e704ea06a9181bb87ed2137), ROM_BIOS(7) )
+>>>>>>> upstream/master
 
 
 ROM_START(tourvis)
@@ -446,6 +750,7 @@ ROM_START(tourvis)
 ROM_END
 
 
+<<<<<<< HEAD
 /*
 Aicom USA Pro Basketball Tourvision cart.
 
@@ -659,3 +964,6 @@ GAME( 1991, tvpcgen2, tourvis, tourvision, tourvision, pce_common_state, pce_com
 GAME( 1991, tvpow11,  tourvis, tourvision, tourvision, pce_common_state, pce_common, ROT0, "bootleg (Tourvision) / Hudson", "Power Eleven (Tourvision PCE bootleg)", MACHINE_IMPERFECT_SOUND | MACHINE_NOT_WORKING )
 GAME( 1991, tvpwlg4,  tourvis, tourvision, tourvision, pce_common_state, pce_common, ROT0, "bootleg (Tourvision) / Hudson", "Power League IV (Tourvision PCE bootleg)", MACHINE_IMPERFECT_SOUND | MACHINE_NOT_WORKING )
 GAME( 1991, tvsci,    tourvis, tourvision, tourvision, pce_common_state, pce_common, ROT0, "bootleg (Tourvision) / Taito", "Special Criminal Investigation (Tourvision PCE bootleg)", MACHINE_IMPERFECT_SOUND | MACHINE_NOT_WORKING )
+=======
+GAME( 19??, tourvis,  0,       tourvision, tourvision, tourvision_state, pce_common, ROT0, "bootleg (Tourvision)",                                      "Tourvision PCE bootleg", MACHINE_IS_BIOS_ROOT | MACHINE_NOT_WORKING )
+>>>>>>> upstream/master

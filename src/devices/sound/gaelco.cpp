@@ -37,7 +37,11 @@ Registers per channel:
 
 #include "emu.h"
 #include "gaelco.h"
+<<<<<<< HEAD
 #include "sound/wavwrite.h"
+=======
+#include "wavwrite.h"
+>>>>>>> upstream/master
 
 #define VERBOSE_SOUND 0
 #define VERBOSE_READ_WRITES 0
@@ -54,6 +58,7 @@ static wav_file* wavraw; // Raw waveform
                         Gaelco GAE1 sound device
   ============================================================================*/
 
+<<<<<<< HEAD
 const device_type GAELCO_GAE1 = &device_creator<gaelco_gae1_device>;
 
 gaelco_gae1_device::gaelco_gae1_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
@@ -71,6 +76,20 @@ gaelco_gae1_device::gaelco_gae1_device(const machine_config &mconfig, device_typ
 		m_stream(NULL),
 		m_snd_data(NULL),
 		m_data_tag(NULL)
+=======
+DEFINE_DEVICE_TYPE(GAELCO_GAE1, gaelco_gae1_device, "gaelco_gae1", "Gaelco GAE1")
+
+gaelco_gae1_device::gaelco_gae1_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: gaelco_gae1_device(mconfig, GAELCO_GAE1, tag, owner, clock)
+{
+}
+
+gaelco_gae1_device::gaelco_gae1_device(const machine_config &mconfig, device_type type, const char *tag, device_t *owner, uint32_t clock)
+	: device_t(mconfig, type, tag, owner, clock)
+	, device_sound_interface(mconfig, *this)
+	, m_stream(nullptr)
+	, m_snd_data(*this, finder_base::DUMMY_TAG)
+>>>>>>> upstream/master
 {
 }
 
@@ -90,9 +109,15 @@ void gaelco_gae1_device::sound_stream_update(sound_stream &stream, stream_sample
 		int output_l = 0, output_r = 0;
 
 		/* for each channel */
+<<<<<<< HEAD
 		for (ch = 0; ch < GAELCO_NUM_CHANNELS; ch ++){
 			int ch_data_l = 0, ch_data_r = 0;
 			gaelco_sound_channel *channel = &m_channel[ch];
+=======
+		for (ch = 0; ch < NUM_CHANNELS; ch ++){
+			int ch_data_l = 0, ch_data_r = 0;
+			sound_channel *channel = &m_channel[ch];
+>>>>>>> upstream/master
 
 			/* if the channel is playing */
 			if (channel->active == 1){
@@ -167,8 +192,13 @@ void gaelco_gae1_device::sound_stream_update(sound_stream &stream, stream_sample
 		if (output_r < -32768) output_r = -32768;
 #else
 		/* ponderate channels */
+<<<<<<< HEAD
 		output_l /= GAELCO_NUM_CHANNELS;
 		output_r /= GAELCO_NUM_CHANNELS;
+=======
+		output_l /= NUM_CHANNELS;
+		output_r /= NUM_CHANNELS;
+>>>>>>> upstream/master
 #endif
 
 		/* now that we have computed all channels, save current data to the output buffer */
@@ -188,6 +218,12 @@ READ16_MEMBER( gaelco_gae1_device::gaelcosnd_r )
 {
 	LOG_READ_WRITES(("%s: (GAE1): read from %04x\n", machine().describe_context(), offset));
 
+<<<<<<< HEAD
+=======
+	/* first update the stream to this point in time */
+	m_stream->update();
+
+>>>>>>> upstream/master
 	return m_sndregs[offset];
 }
 
@@ -197,7 +233,11 @@ READ16_MEMBER( gaelco_gae1_device::gaelcosnd_r )
 
 WRITE16_MEMBER( gaelco_gae1_device::gaelcosnd_w )
 {
+<<<<<<< HEAD
 	gaelco_sound_channel *channel = &m_channel[offset >> 3];
+=======
+	sound_channel *channel = &m_channel[offset >> 3];
+>>>>>>> upstream/master
 
 	LOG_READ_WRITES(("%s: (GAE1): write %04x to %04x\n", machine().describe_context(), data, offset));
 
@@ -242,12 +282,19 @@ void gaelco_gae1_device::device_start()
 {
 	m_stream = stream_alloc(0, 2, 8000);
 
+<<<<<<< HEAD
 	m_snd_data = owner()->memregion(m_data_tag)->base();
 
 	/* init volume table */
 	for (int vol = 0; vol < GAELCO_VOLUME_LEVELS; vol++){
 		for (int j = -128; j <= 127; j++){
 			m_volume_table[vol][(j ^ 0x80) & 0xff] = (vol*j*256)/(GAELCO_VOLUME_LEVELS - 1);
+=======
+	/* init volume table */
+	for (int vol = 0; vol < VOLUME_LEVELS; vol++){
+		for (int j = -128; j <= 127; j++){
+			m_volume_table[vol][(j ^ 0x80) & 0xff] = (vol*j*256)/(VOLUME_LEVELS - 1);
+>>>>>>> upstream/master
 		}
 	}
 
@@ -260,7 +307,11 @@ void gaelco_gae1_device::device_stop()
 {
 	if (wavraw)
 		wav_close(wavraw);
+<<<<<<< HEAD
 	wavraw = NULL;
+=======
+	wavraw = nullptr;
+>>>>>>> upstream/master
 }
 
 
@@ -268,9 +319,16 @@ void gaelco_gae1_device::device_stop()
                         Gaelco CG-1V sound device
   ============================================================================*/
 
+<<<<<<< HEAD
 const device_type GAELCO_CG1V = &device_creator<gaelco_cg1v_device>;
 
 gaelco_cg1v_device::gaelco_cg1v_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
 	: gaelco_gae1_device(mconfig, GAELCO_CG1V, "Gaelco CG1V", tag, owner, clock, "gaelco_cg1v", __FILE__)
+=======
+DEFINE_DEVICE_TYPE(GAELCO_CG1V, gaelco_cg1v_device, "gaelco_cg1v", "Gaelco CG1V")
+
+gaelco_cg1v_device::gaelco_cg1v_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: gaelco_gae1_device(mconfig, GAELCO_CG1V, tag, owner, clock)
+>>>>>>> upstream/master
 {
 }

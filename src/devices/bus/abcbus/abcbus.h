@@ -95,12 +95,20 @@
 
 **********************************************************************/
 
+<<<<<<< HEAD
 #pragma once
 
 #ifndef __ABCBUS__
 #define __ABCBUS__
 
 #include "emu.h"
+=======
+#ifndef MAME_DEVICES_ABCBUS_ABCBUS_H
+#define MAME_DEVICES_ABCBUS_ABCBUS_H
+
+#pragma once
+
+>>>>>>> upstream/master
 
 
 //**************************************************************************
@@ -121,6 +129,7 @@
 
 
 #define MCFG_ABCBUS_SLOT_IRQ_CALLBACK(_irq) \
+<<<<<<< HEAD
 	downcast<abcbus_slot_t *>(device)->set_irq_callback(DEVCB_##_irq);
 
 #define MCFG_ABCBUS_SLOT_NMI_CALLBACK(_nmi) \
@@ -149,6 +158,36 @@
 
 #define MCFG_ABCBUS_SLOT_XINT5_CALLBACK(_xint5) \
 	downcast<abcbus_slot_t *>(device)->set_xint5_callback(DEVCB_##_xint5);
+=======
+	devcb = &downcast<abcbus_slot_device *>(device)->set_irq_callback(DEVCB_##_irq);
+
+#define MCFG_ABCBUS_SLOT_NMI_CALLBACK(_nmi) \
+	devcb = &downcast<abcbus_slot_device *>(device)->set_nmi_callback(DEVCB_##_nmi);
+
+#define MCFG_ABCBUS_SLOT_RDY_CALLBACK(_rdy) \
+	devcb = &downcast<abcbus_slot_device *>(device)->set_rdy_callback(DEVCB_##_rdy);
+
+#define MCFG_ABCBUS_SLOT_RESIN_CALLBACK(_resin) \
+	devcb = &downcast<abcbus_slot_device *>(device)->set_resin_callback(DEVCB_##_resin);
+
+#define MCFG_ABCBUS_SLOT_PREN_CALLBACK(_pren) \
+	devcb = &downcast<abcbus_slot_device *>(device)->set_pren_callback(DEVCB_##_pren);
+
+#define MCFG_ABCBUS_SLOT_TRRQ_CALLBACK(_trrq) \
+	devcb = &downcast<abcbus_slot_device *>(device)->set_trrq_callback(DEVCB_##_trrq);
+
+#define MCFG_ABCBUS_SLOT_XINT2_CALLBACK(_xint2) \
+	devcb = &downcast<abcbus_slot_device *>(device)->set_xint2_callback(DEVCB_##_xint2);
+
+#define MCFG_ABCBUS_SLOT_XINT3_CALLBACK(_xint3) \
+	devcb = &downcast<abcbus_slot_device *>(device)->set_xint3_callback(DEVCB_##_xint3);
+
+#define MCFG_ABCBUS_SLOT_XINT4_CALLBACK(_xint4) \
+	devcb = &downcast<abcbus_slot_device *>(device)->set_xint4_callback(DEVCB_##_xint4);
+
+#define MCFG_ABCBUS_SLOT_XINT5_CALLBACK(_xint5) \
+	devcb = &downcast<abcbus_slot_device *>(device)->set_xint5_callback(DEVCB_##_xint5);
+>>>>>>> upstream/master
 
 
 
@@ -158,11 +197,16 @@
 
 // ======================> device_abcbus_card_interface
 
+<<<<<<< HEAD
 class abcbus_slot_t;
+=======
+class abcbus_slot_device;
+>>>>>>> upstream/master
 
 class device_abcbus_card_interface : public device_slot_card_interface
 {
 public:
+<<<<<<< HEAD
 	// construction/destruction
 	device_abcbus_card_interface(const machine_config &mconfig, device_t &device);
 
@@ -188,11 +232,36 @@ public:
 	virtual void abcbus_tren(int state) { };
 	virtual void abcbus_prac(int state) { };
 	virtual UINT8 abcbus_exp() { return 0xff; };
+=======
+	// required operation overrides
+	virtual void abcbus_cs(uint8_t data) = 0;
+
+	// optional operation overrides
+	virtual uint8_t abcbus_inp() { return 0xff; };
+	virtual void abcbus_out(uint8_t data) { };
+	virtual uint8_t abcbus_stat() { return 0xff; };
+	virtual void abcbus_c1(uint8_t data) { };
+	virtual void abcbus_c2(uint8_t data) { };
+	virtual void abcbus_c3(uint8_t data) { };
+	virtual void abcbus_c4(uint8_t data) { };
+
+	// optional operation overrides for ABC 80
+	virtual uint8_t abcbus_xmemfl(offs_t offset) { return 0xff; };
+	virtual void abcbus_xmemw(offs_t offset, uint8_t data) { };
+
+	// optional operation overrides for ABC 1600
+	virtual int abcbus_csb() { return 1; }
+	virtual uint8_t abcbus_ops() { return 0xff; };
+	virtual void abcbus_tren(int state) { };
+	virtual void abcbus_prac(int state) { };
+	virtual uint8_t abcbus_exp() { return 0xff; };
+>>>>>>> upstream/master
 	virtual int abcbus_xcsb2() { return 1; };
 	virtual int abcbus_xcsb3() { return 1; };
 	virtual int abcbus_xcsb4() { return 1; };
 	virtual int abcbus_xcsb5() { return 1; };
 
+<<<<<<< HEAD
 public:
 	abcbus_slot_t  *m_slot;
 };
@@ -201,10 +270,26 @@ public:
 // ======================> abcbus_slot_t
 
 class abcbus_slot_t : public device_t,
+=======
+protected:
+	// construction/destruction
+	device_abcbus_card_interface(const machine_config &mconfig, device_t &device);
+
+	abcbus_slot_device  *m_slot;
+
+	friend class abcbus_slot_device;
+};
+
+
+// ======================> abcbus_slot_device
+
+class abcbus_slot_device : public device_t,
+>>>>>>> upstream/master
 							public device_slot_interface
 {
 public:
 	// construction/destruction
+<<<<<<< HEAD
 	abcbus_slot_t(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
 
 	template<class _irq> void set_irq_callback(_irq irq) { m_write_irq.set_callback(irq); }
@@ -233,6 +318,36 @@ public:
 	DECLARE_READ_LINE_MEMBER( csb_r ) { return m_card ? m_card->abcbus_csb() : 1; }
 	UINT8 ops_r() { return m_card ? m_card->abcbus_ops() : 0xff; }
 	UINT8 exp_r() { return m_card ? m_card->abcbus_exp() : 0xff; }
+=======
+	abcbus_slot_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
+
+	template <class Object> devcb_base &set_irq_callback(Object &&cb) { return m_write_irq.set_callback(std::forward<Object>(cb)); }
+	template <class Object> devcb_base &set_nmi_callback(Object &&cb) { return m_write_nmi.set_callback(std::forward<Object>(cb)); }
+	template <class Object> devcb_base &set_rdy_callback(Object &&cb) { return m_write_rdy.set_callback(std::forward<Object>(cb)); }
+	template <class Object> devcb_base &set_resin_callback(Object &&cb) { return m_write_resin.set_callback(std::forward<Object>(cb)); }
+	template <class Object> devcb_base &set_pren_callback(Object &&cb) { return m_write_pren.set_callback(std::forward<Object>(cb)); }
+	template <class Object> devcb_base &set_trrq_callback(Object &&cb) { return m_write_trrq.set_callback(std::forward<Object>(cb)); }
+	template <class Object> devcb_base &set_xint2_callback(Object &&cb) { return m_write_xint2.set_callback(std::forward<Object>(cb)); }
+	template <class Object> devcb_base &set_xint3_callback(Object &&cb) { return m_write_xint3.set_callback(std::forward<Object>(cb)); }
+	template <class Object> devcb_base &set_xint4_callback(Object &&cb) { return m_write_xint4.set_callback(std::forward<Object>(cb)); }
+	template <class Object> devcb_base &set_xint5_callback(Object &&cb) { return m_write_xint5.set_callback(std::forward<Object>(cb)); }
+
+	// computer interface
+	void cs_w(uint8_t data) { if (m_card) m_card->abcbus_cs(data); }
+	uint8_t rst_r() { device_reset(); return 0xff; }
+	uint8_t inp_r() { return m_card ? m_card->abcbus_inp() : 0xff; }
+	void out_w(uint8_t data) { if (m_card) m_card->abcbus_out(data); }
+	uint8_t stat_r() { return m_card ? m_card->abcbus_stat() : 0xff; }
+	void c1_w(uint8_t data) { if (m_card) m_card->abcbus_c1(data); }
+	void c2_w(uint8_t data) { if (m_card) m_card->abcbus_c2(data); }
+	void c3_w(uint8_t data) { if (m_card) m_card->abcbus_c3(data); }
+	void c4_w(uint8_t data) { if (m_card) m_card->abcbus_c4(data); }
+	uint8_t xmemfl_r(offs_t offset) { return m_card ? m_card->abcbus_xmemfl(offset) : 0xff; }
+	void xmemw_w(offs_t offset, uint8_t data) { if (m_card) m_card->abcbus_xmemw(offset, data); }
+	DECLARE_READ_LINE_MEMBER( csb_r ) { return m_card ? m_card->abcbus_csb() : 1; }
+	uint8_t ops_r() { return m_card ? m_card->abcbus_ops() : 0xff; }
+	uint8_t exp_r() { return m_card ? m_card->abcbus_exp() : 0xff; }
+>>>>>>> upstream/master
 	DECLARE_READ_LINE_MEMBER( xcsb2_r ) { return m_card ? m_card->abcbus_xcsb2() : 1; }
 	DECLARE_READ_LINE_MEMBER( xcsb3_r ) { return m_card ? m_card->abcbus_xcsb3() : 1; }
 	DECLARE_READ_LINE_MEMBER( xcsb4_r ) { return m_card ? m_card->abcbus_xcsb4() : 1; }
@@ -275,8 +390,13 @@ public:
 
 protected:
 	// device-level overrides
+<<<<<<< HEAD
 	virtual void device_start();
 	virtual void device_reset() { if (m_card) get_card_device()->reset(); }
+=======
+	virtual void device_start() override;
+	virtual void device_reset() override { if (m_card) get_card_device()->reset(); }
+>>>>>>> upstream/master
 
 	devcb_write_line   m_write_irq;
 	devcb_write_line   m_write_nmi;
@@ -303,7 +423,11 @@ protected:
 
 
 // device type definition
+<<<<<<< HEAD
 extern const device_type ABCBUS_SLOT;
+=======
+DECLARE_DEVICE_TYPE(ABCBUS_SLOT, abcbus_slot_device)
+>>>>>>> upstream/master
 
 
 SLOT_INTERFACE_EXTERN( abc80_cards );
@@ -311,9 +435,16 @@ SLOT_INTERFACE_EXTERN( abcbus_cards );
 SLOT_INTERFACE_EXTERN( abc1600bus_cards );
 
 
+<<<<<<< HEAD
 typedef device_type_iterator<&device_creator<abcbus_slot_t>, abcbus_slot_t> abcbus_slot_device_iterator;
 
 
 
 
 #endif
+=======
+typedef device_type_iterator<abcbus_slot_device> abcbus_slot_device_iterator;
+
+
+#endif // MAME_DEVICES_ABCBUS_ABCBUS_H
+>>>>>>> upstream/master

@@ -12,7 +12,10 @@
 #include "cpu/s2650/s2650.h"
 #include "includes/meadows.h"
 #include "sound/samples.h"
+<<<<<<< HEAD
 #include "sound/dac.h"
+=======
+>>>>>>> upstream/master
 
 
 
@@ -25,7 +28,11 @@
 #define ENABLE_DAC      0x04
 #define ENABLE_CTR1     0x08
 
+<<<<<<< HEAD
 static const INT16 waveform[2] = { -120*256, 120*256 };
+=======
+static const int16_t waveform[2] = { -120*256, 120*256 };
+>>>>>>> upstream/master
 
 /************************************/
 /* Sound handler start              */
@@ -33,8 +40,11 @@ static const INT16 waveform[2] = { -120*256, 120*256 };
 SAMPLES_START_CB_MEMBER(meadows_state::meadows_sh_start)
 {
 	m_0c00 = m_0c01 = m_0c02 = m_0c03 = 0;
+<<<<<<< HEAD
 	m_dac_data = 0;
 	m_dac_enable = 0;
+=======
+>>>>>>> upstream/master
 	m_channel = 0;
 	m_freq1 = m_freq2 = 1000;
 	m_latched_0c01 = m_latched_0c02 = m_latched_0c03 = 0;
@@ -88,6 +98,7 @@ void meadows_state::meadows_sh_update()
 		m_samples->set_volume(1,amp/255.0);
 	}
 
+<<<<<<< HEAD
 	if (m_latched_0c03 != m_0c03)
 	{
 		m_dac_enable = m_0c03 & ENABLE_DAC;
@@ -96,12 +107,18 @@ void meadows_state::meadows_sh_update()
 			m_dac->write_unsigned8(m_dac_data);
 		else
 			m_dac->write_unsigned8(0);
+=======
+	if (((m_latched_0c03 ^ m_0c03) & ENABLE_DAC) != 0)
+	{
+		m_dac->set_output_gain(ALL_OUTPUTS, (m_0c03 & ENABLE_DAC) != 0 ? 1.0 : 0.0);
+>>>>>>> upstream/master
 	}
 
 	m_latched_0c01 = m_0c01;
 	m_latched_0c02 = m_0c02;
 	m_latched_0c03 = m_0c03;
 }
+<<<<<<< HEAD
 
 /************************************/
 /* Write DAC value                  */
@@ -114,3 +131,5 @@ void meadows_state::meadows_sh_dac_w(int data)
 	else
 		m_dac->write_unsigned8(0);
 }
+=======
+>>>>>>> upstream/master

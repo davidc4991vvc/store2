@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 // license:???
+=======
+// license:BSD-3-Clause
+>>>>>>> upstream/master
 // copyright-holders:Stefan Jokisch
 /***************************************************************************
 
@@ -11,8 +15,16 @@
 #include "emu.h"
 #include "machine/6532riot.h"
 #include "cpu/m6502/m6502.h"
+<<<<<<< HEAD
 #include "sound/tiaintf.h"
 #include "video/tia.h"
+=======
+#include "machine/watchdog.h"
+#include "sound/tiaintf.h"
+#include "video/tia.h"
+#include "screen.h"
+#include "speaker.h"
+>>>>>>> upstream/master
 
 
 class tourtabl_state : public driver_device
@@ -27,7 +39,10 @@ public:
 	DECLARE_WRITE8_MEMBER(tourtabl_led_w);
 	DECLARE_READ16_MEMBER(tourtabl_read_input_port);
 	DECLARE_READ8_MEMBER(tourtabl_get_databus_contents);
+<<<<<<< HEAD
 	DECLARE_WRITE8_MEMBER(watchdog_w);
+=======
+>>>>>>> upstream/master
 };
 
 
@@ -36,12 +51,21 @@ public:
 
 WRITE8_MEMBER(tourtabl_state::tourtabl_led_w)
 {
+<<<<<<< HEAD
 	set_led_status(machine(), 0, data & 0x40); /* start 1 */
 	set_led_status(machine(), 1, data & 0x20); /* start 2 */
 	set_led_status(machine(), 2, data & 0x10); /* start 4 */
 	set_led_status(machine(), 3, data & 0x80); /* select game */
 
 	coin_lockout_global_w(machine(), !(data & 0x80));
+=======
+	output().set_led_value(0, data & 0x40); /* start 1 */
+	output().set_led_value(1, data & 0x20); /* start 2 */
+	output().set_led_value(2, data & 0x10); /* start 4 */
+	output().set_led_value(3, data & 0x80); /* select game */
+
+	machine().bookkeeping().coin_lockout_global_w(!(data & 0x80));
+>>>>>>> upstream/master
 }
 
 
@@ -69,11 +93,14 @@ static ADDRESS_MAP_START( main_map, AS_PROGRAM, 8, tourtabl_state )
 ADDRESS_MAP_END
 
 
+<<<<<<< HEAD
 WRITE8_MEMBER(tourtabl_state::watchdog_w)
 {
 	machine().watchdog_reset();
 }
 
+=======
+>>>>>>> upstream/master
 static INPUT_PORTS_START( tourtabl )
 
 	PORT_START("PADDLE4")
@@ -149,7 +176,11 @@ static INPUT_PORTS_START( tourtabl )
 INPUT_PORTS_END
 
 
+<<<<<<< HEAD
 static MACHINE_CONFIG_START( tourtabl, tourtabl_state )
+=======
+static MACHINE_CONFIG_START( tourtabl )
+>>>>>>> upstream/master
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", M6502, MASTER_CLOCK / 3)    /* actually M6507 */
 	MCFG_CPU_PROGRAM_MAP(main_map)
@@ -157,13 +188,22 @@ static MACHINE_CONFIG_START( tourtabl, tourtabl_state )
 	MCFG_DEVICE_ADD("riot1", RIOT6532, MASTER_CLOCK / 3)
 	MCFG_RIOT6532_IN_PA_CB(IOPORT("RIOT0_SWA"))
 	MCFG_RIOT6532_IN_PB_CB(IOPORT("RIOT0_SWB"))
+<<<<<<< HEAD
 	MCFG_RIOT6532_OUT_PB_CB(WRITE8(tourtabl_state, watchdog_w))
+=======
+	MCFG_RIOT6532_OUT_PB_CB(DEVWRITE8("watchdog", watchdog_timer_device, reset_w))
+>>>>>>> upstream/master
 
 	MCFG_DEVICE_ADD("riot2", RIOT6532, MASTER_CLOCK / 3)
 	MCFG_RIOT6532_IN_PA_CB(IOPORT("RIOT1_SWA"))
 	MCFG_RIOT6532_IN_PB_CB(IOPORT("RIOT1_SWB"))
 	MCFG_RIOT6532_OUT_PB_CB(WRITE8(tourtabl_state, tourtabl_led_w))
 
+<<<<<<< HEAD
+=======
+	MCFG_WATCHDOG_ADD("watchdog")
+
+>>>>>>> upstream/master
 	/* video hardware */
 	MCFG_DEVICE_ADD("tia_video", TIA_NTSC_VIDEO, 0)
 	MCFG_TIA_READ_INPUT_PORT_CB(READ16(tourtabl_state, tourtabl_read_input_port))
@@ -204,5 +244,10 @@ ROM_START( tourtab2 )
 ROM_END
 
 
+<<<<<<< HEAD
 GAME( 1978, tourtabl, 0,        tourtabl, tourtabl, driver_device, 0, ROT0, "Atari", "Tournament Table (set 1)", MACHINE_SUPPORTS_SAVE )
 GAME( 1978, tourtab2, tourtabl, tourtabl, tourtabl, driver_device, 0, ROT0, "Atari", "Tournament Table (set 2)", MACHINE_SUPPORTS_SAVE )
+=======
+GAME( 1978, tourtabl, 0,        tourtabl, tourtabl, tourtabl_state, 0, ROT0, "Atari", "Tournament Table (set 1)", MACHINE_SUPPORTS_SAVE )
+GAME( 1978, tourtab2, tourtabl, tourtabl, tourtabl, tourtabl_state, 0, ROT0, "Atari", "Tournament Table (set 2)", MACHINE_SUPPORTS_SAVE )
+>>>>>>> upstream/master

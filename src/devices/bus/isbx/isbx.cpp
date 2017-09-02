@@ -6,6 +6,10 @@
 
 **********************************************************************/
 
+<<<<<<< HEAD
+=======
+#include "emu.h"
+>>>>>>> upstream/master
 #include "isbx.h"
 
 
@@ -14,7 +18,11 @@
 //  DEVICE DEFINITIONS
 //**************************************************************************
 
+<<<<<<< HEAD
 const device_type ISBX_SLOT = &device_creator<isbx_slot_device>;
+=======
+DEFINE_DEVICE_TYPE(ISBX_SLOT, isbx_slot_device, "isbx_slot", "iSBX bus slot")
+>>>>>>> upstream/master
 
 
 
@@ -37,8 +45,13 @@ device_isbx_card_interface::device_isbx_card_interface(const machine_config &mco
 //  isbx_slot_device - constructor
 //-------------------------------------------------
 
+<<<<<<< HEAD
 isbx_slot_device::isbx_slot_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock) :
 	device_t(mconfig, ISBX_SLOT, "iSBX bus slot", tag, owner, clock, "isbx_slot", __FILE__),
+=======
+isbx_slot_device::isbx_slot_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock) :
+	device_t(mconfig, ISBX_SLOT, tag, owner, clock),
+>>>>>>> upstream/master
 	device_slot_interface(mconfig, *this),
 	m_write_mintr0(*this),
 	m_write_mintr1(*this),

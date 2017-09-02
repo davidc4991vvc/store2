@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 // license:???
+=======
+// license:GPL-2.0+
+>>>>>>> upstream/master
 // copyright-holders:David Graves, Jarek Burczynski
 /***************************************************************************
   Functions to emulate video hardware on these Taito games:
@@ -9,6 +13,10 @@
 
 #include "emu.h"
 #include "includes/opwolf.h"
+<<<<<<< HEAD
+=======
+#include "screen.h"
+>>>>>>> upstream/master
 
 
 WRITE16_MEMBER(opwolf_state::opwolf_spritectrl_w)
@@ -24,18 +32,30 @@ WRITE16_MEMBER(opwolf_state::opwolf_spritectrl_w)
 		/* If data = 4, the Piston Motor is off, otherwise it's on. */
 		if (data == 4)
 		{
+<<<<<<< HEAD
 			output_set_value("Player1_Recoil_Piston", 0);
 		}
 		else
 		{
 			output_set_value("Player1_Recoil_Piston", 1);
+=======
+			output().set_value("Player1_Recoil_Piston", 0);
+		}
+		else
+		{
+			output().set_value("Player1_Recoil_Piston", 1);
+>>>>>>> upstream/master
 		}
 	}
 }
 
 /***************************************************************************/
 
+<<<<<<< HEAD
 UINT32 opwolf_state::screen_update_opwolf(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+=======
+uint32_t opwolf_state::screen_update_opwolf(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+>>>>>>> upstream/master
 {
 	int layer[2];
 

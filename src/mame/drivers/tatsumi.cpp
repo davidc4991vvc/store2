@@ -102,7 +102,11 @@
     |     ROM6    ROM14                       ROM18                | ||
     |                            EPL204   PAL           TC51832    | ||
     |                       |--------------|                       | ||
+<<<<<<< HEAD
     |   CXD10950  CXD10950  |    68000     |  ROM19     TC51832    | ||
+=======
+    |   CXD1095Q  CXD1095Q  |    68000     |  ROM19     TC51832    | ||
+>>>>>>> upstream/master
     |                       |--------------|                       | ||
     |                                                   TC51832    |-||
     |      DSW3(4) DSW2(8) DSW1(8)                                    |
@@ -140,6 +144,7 @@
 ***************************************************************************/
 
 #include "emu.h"
+<<<<<<< HEAD
 #include "cpu/z80/z80.h"
 #include "cpu/nec/nec.h"
 #include "cpu/m68000/m68000.h"
@@ -147,6 +152,17 @@
 #include "sound/2151intf.h"
 #include "sound/okim6295.h"
 #include "machine/nvram.h"
+=======
+#include "includes/tatsumi.h"
+
+#include "cpu/nec/nec.h"
+#include "cpu/z80/z80.h"
+#include "machine/i8255.h"
+#include "machine/nvram.h"
+#include "sound/ym2151.h"
+#include "screen.h"
+#include "speaker.h"
+>>>>>>> upstream/master
 
 #include "roundup5.lh"
 
@@ -182,9 +198,25 @@ WRITE16_MEMBER(tatsumi_state::bigfight_a60000_w)
 	COMBINE_DATA(&m_bigfight_a60000[offset]);
 }
 
+<<<<<<< HEAD
 WRITE16_MEMBER(tatsumi_state::cyclwarr_sound_w)
 {
 	soundlatch_byte_w(space, 0, data >> 8);
+=======
+WRITE16_MEMBER(tatsumi_state::io1_byte_smear_w)
+{
+	m_io[0]->write(space, offset, data & 0xff);
+}
+
+WRITE16_MEMBER(tatsumi_state::io2_byte_smear_w)
+{
+	m_io[1]->write(space, offset, data & 0xff);
+}
+
+WRITE16_MEMBER(tatsumi_state::cyclwarr_sound_w)
+{
+	m_soundlatch->write(space, 0, data >> 8);
+>>>>>>> upstream/master
 	m_audiocpu->set_input_line(INPUT_LINE_NMI, PULSE_LINE);
 }
 
@@ -218,7 +250,11 @@ ADDRESS_MAP_END
 
 static ADDRESS_MAP_START( apache3_v20_map, AS_PROGRAM, 8, tatsumi_state )
 	AM_RANGE(0x00000, 0x01fff) AM_RAM
+<<<<<<< HEAD
 	AM_RANGE(0x04000, 0x04003) AM_NOP // piu select .. ?
+=======
+	AM_RANGE(0x04000, 0x04003) AM_DEVREADWRITE("ppi", i8255_device, read, write)
+>>>>>>> upstream/master
 	AM_RANGE(0x06000, 0x06001) AM_READ_PORT("IN0") // esw
 	AM_RANGE(0x08000, 0x08001) AM_READ(tatsumi_hack_ym2151_r) AM_DEVWRITE("ymsnd", ym2151_device, write)
 	AM_RANGE(0x0a000, 0x0a000) AM_READ(tatsumi_hack_oki_r) AM_DEVWRITE("oki", okim6295_device, write)
@@ -257,7 +293,11 @@ static ADDRESS_MAP_START( roundup5_68000_map, AS_PROGRAM, 16, tatsumi_state )
 	AM_RANGE(0xa0000, 0xa0fff) AM_RAM AM_SHARE("roundup_r_ram") // Road control data
 	AM_RANGE(0xb0000, 0xb0fff) AM_RAM AM_SHARE("roundup_p_ram") // Road pixel data
 	AM_RANGE(0xc0000, 0xc0fff) AM_RAM AM_SHARE("roundup_l_ram") // Road colour data
+<<<<<<< HEAD
 	AM_RANGE(0xd0002, 0xd0003) AM_WRITE(roundup5_d0000_w) AM_SHARE("ru5_d0000_ram")
+=======
+	AM_RANGE(0xd0000, 0xd0003) AM_WRITE(roundup5_d0000_w) AM_SHARE("ru5_d0000_ram")
+>>>>>>> upstream/master
 	AM_RANGE(0xe0000, 0xe0001) AM_WRITE(roundup5_e0000_w) AM_SHARE("ru5_e0000_ram")
 ADDRESS_MAP_END
 
@@ -266,11 +306,16 @@ static ADDRESS_MAP_START( roundup5_z80_map, AS_PROGRAM, 8, tatsumi_state )
 	AM_RANGE(0xe000, 0xffef) AM_RAM
 	AM_RANGE(0xfff0, 0xfff1) AM_READ(tatsumi_hack_ym2151_r) AM_DEVWRITE("ymsnd", ym2151_device, write)
 	AM_RANGE(0xfff4, 0xfff4) AM_READ(tatsumi_hack_oki_r) AM_DEVWRITE("oki", okim6295_device, write)
+<<<<<<< HEAD
 	AM_RANGE(0xfff8, 0xfff8) AM_READ_PORT("IN0")
 	AM_RANGE(0xfff9, 0xfff9) AM_READ_PORT("IN1")
 	AM_RANGE(0xfffc, 0xfffc) AM_READ_PORT("STICKX")
 	AM_RANGE(0xfff9, 0xfff9) AM_WRITENOP //irq ack?
 	AM_RANGE(0xfffa, 0xfffa) AM_WRITENOP //irq ack?
+=======
+	AM_RANGE(0xfff8, 0xfffb) AM_DEVREADWRITE("ppi", i8255_device, read, write)
+	AM_RANGE(0xfffc, 0xfffc) AM_READ_PORT("STICKX")
+>>>>>>> upstream/master
 ADDRESS_MAP_END
 
 /******************************************************************************/
@@ -287,6 +332,7 @@ static ADDRESS_MAP_START( cyclwarr_68000a_map, AS_PROGRAM, 16, tatsumi_state )
 	AM_RANGE(0x0a6000, 0x0a6001) AM_WRITE(bigfight_a60000_w)
 
 	AM_RANGE(0x0b8000, 0x0b8001) AM_WRITE(cyclwarr_sound_w)
+<<<<<<< HEAD
 	AM_RANGE(0x0b9002, 0x0b9003) AM_READ_PORT("SERVICE")
 	AM_RANGE(0x0b9004, 0x0b9005) AM_READ_PORT("P1")
 	AM_RANGE(0x0b9006, 0x0b9007) AM_READ_PORT("P2")
@@ -296,6 +342,10 @@ static ADDRESS_MAP_START( cyclwarr_68000a_map, AS_PROGRAM, 16, tatsumi_state )
 	AM_RANGE(0x0ba004, 0x0ba005) AM_READ_PORT("P3")
 	AM_RANGE(0x0ba006, 0x0ba007) AM_READ_PORT("P4")
 	AM_RANGE(0x0ba008, 0x0ba009) AM_READWRITE(cyclwarr_control_r, cyclwarr_control_w)
+=======
+	AM_RANGE(0x0b9000, 0x0b900f) AM_DEVREAD8("io1", cxd1095_device, read, 0x00ff) AM_WRITE(io1_byte_smear_w)
+	AM_RANGE(0x0ba000, 0x0ba00f) AM_DEVREAD8("io2", cxd1095_device, read, 0x00ff) AM_WRITE(io2_byte_smear_w)
+>>>>>>> upstream/master
 	AM_RANGE(0x0c0000, 0x0c3fff) AM_READWRITE(cyclwarr_sprite_r, cyclwarr_sprite_w) AM_SHARE("spriteram")
 	AM_RANGE(0x0ca000, 0x0ca1ff) AM_WRITE(tatsumi_sprite_control_w) AM_SHARE("sprite_ctlram")
 	AM_RANGE(0x0d0000, 0x0d3fff) AM_RAM_DEVWRITE("palette", palette_device, write) AM_SHARE("palette")
@@ -313,6 +363,7 @@ static ADDRESS_MAP_START( cyclwarr_68000b_map, AS_PROGRAM, 16, tatsumi_state )
 	AM_RANGE(0x0a4000, 0x0a4001) AM_WRITE(bigfight_a40000_w)
 	AM_RANGE(0x0a6000, 0x0a6001) AM_WRITE(bigfight_a60000_w)
 
+<<<<<<< HEAD
 	AM_RANGE(0x0b9002, 0x0b9003) AM_READ_PORT("SERVICE")
 	AM_RANGE(0x0b9004, 0x0b9005) AM_READ_PORT("P1")
 	AM_RANGE(0x0b9006, 0x0b9007) AM_READ_PORT("P2")
@@ -322,6 +373,10 @@ static ADDRESS_MAP_START( cyclwarr_68000b_map, AS_PROGRAM, 16, tatsumi_state )
 	AM_RANGE(0x0ba004, 0x0ba005) AM_READ_PORT("P3")
 	AM_RANGE(0x0ba006, 0x0ba007) AM_READ_PORT("P4")
 	AM_RANGE(0x0ba008, 0x0ba009) AM_READ(cyclwarr_control_r)
+=======
+	AM_RANGE(0x0b9000, 0x0b900f) AM_DEVREAD8("io1", cxd1095_device, read, 0x00ff) AM_WRITE(io1_byte_smear_w)
+	AM_RANGE(0x0ba000, 0x0ba00f) AM_DEVREAD8("io2", cxd1095_device, read, 0x00ff) AM_WRITE(io2_byte_smear_w)
+>>>>>>> upstream/master
 	AM_RANGE(0x0c0000, 0x0c3fff) AM_READWRITE(cyclwarr_sprite_r, cyclwarr_sprite_w)
 	AM_RANGE(0x0ca000, 0x0ca1ff) AM_WRITE(tatsumi_sprite_control_w)
 	AM_RANGE(0x0d0000, 0x0d3fff) AM_RAM_DEVWRITE("palette", palette_device, write) AM_SHARE("palette")
@@ -334,7 +389,11 @@ static ADDRESS_MAP_START( cyclwarr_z80_map, AS_PROGRAM, 8, tatsumi_state )
 	AM_RANGE(0xe000, 0xffef) AM_RAM
 	AM_RANGE(0xfff0, 0xfff1) AM_READ(tatsumi_hack_ym2151_r) AM_DEVWRITE("ymsnd", ym2151_device, write)
 	AM_RANGE(0xfff4, 0xfff4) AM_READ(tatsumi_hack_oki_r) AM_DEVWRITE("oki", okim6295_device, write)
+<<<<<<< HEAD
 	AM_RANGE(0xfffc, 0xfffc) AM_READ(soundlatch_byte_r)
+=======
+	AM_RANGE(0xfffc, 0xfffc) AM_DEVREAD("soundlatch", generic_latch_8_device, read)
+>>>>>>> upstream/master
 	AM_RANGE(0xfffe, 0xfffe) AM_WRITENOP
 ADDRESS_MAP_END
 
@@ -354,6 +413,7 @@ static ADDRESS_MAP_START( bigfight_68000a_map, AS_PROGRAM, 16, tatsumi_state )
 	AM_RANGE(0x0a6000, 0x0a6001) AM_WRITE(bigfight_a60000_w)
 
 	AM_RANGE(0x0b8000, 0x0b8001) AM_WRITE(cyclwarr_sound_w)
+<<<<<<< HEAD
 	AM_RANGE(0x0b9002, 0x0b9003) AM_READ_PORT("SERVICE")
 	AM_RANGE(0x0b9004, 0x0b9005) AM_READ_PORT("P1")
 	AM_RANGE(0x0b9006, 0x0b9007) AM_READ_PORT("P2")
@@ -363,6 +423,10 @@ static ADDRESS_MAP_START( bigfight_68000a_map, AS_PROGRAM, 16, tatsumi_state )
 	AM_RANGE(0x0ba004, 0x0ba005) AM_READ_PORT("P3")
 	AM_RANGE(0x0ba006, 0x0ba007) AM_READ_PORT("P4")
 	AM_RANGE(0x0ba008, 0x0ba009) AM_READWRITE(cyclwarr_control_r, cyclwarr_control_w)
+=======
+	AM_RANGE(0x0b9000, 0x0b900f) AM_DEVREAD8("io1", cxd1095_device, read, 0x00ff) AM_WRITE(io1_byte_smear_w)
+	AM_RANGE(0x0ba000, 0x0ba00f) AM_DEVREAD8("io2", cxd1095_device, read, 0x00ff) AM_WRITE(io2_byte_smear_w)
+>>>>>>> upstream/master
 	AM_RANGE(0x0c0000, 0x0c3fff) AM_READWRITE(cyclwarr_sprite_r, cyclwarr_sprite_w) AM_SHARE("spriteram")
 	AM_RANGE(0x0ca000, 0x0ca1ff) AM_WRITE(tatsumi_sprite_control_w) AM_SHARE("sprite_ctlram")
 	AM_RANGE(0x0d0000, 0x0d3fff) AM_RAM_DEVWRITE("palette", palette_device, write) AM_SHARE("palette")
@@ -378,6 +442,7 @@ static ADDRESS_MAP_START( bigfight_68000b_map, AS_PROGRAM, 16, tatsumi_state )
 	AM_RANGE(0x0a4000, 0x0a4001) AM_WRITE(bigfight_a40000_w)
 	AM_RANGE(0x0a6000, 0x0a6001) AM_WRITE(bigfight_a60000_w)
 
+<<<<<<< HEAD
 	AM_RANGE(0x0b9002, 0x0b9003) AM_READ_PORT("SERVICE")
 	AM_RANGE(0x0b9004, 0x0b9005) AM_READ_PORT("P1")
 	AM_RANGE(0x0b9006, 0x0b9007) AM_READ_PORT("P2")
@@ -387,6 +452,10 @@ static ADDRESS_MAP_START( bigfight_68000b_map, AS_PROGRAM, 16, tatsumi_state )
 	AM_RANGE(0x0ba004, 0x0ba005) AM_READ_PORT("P3")
 	AM_RANGE(0x0ba006, 0x0ba007) AM_READ_PORT("P4")
 	AM_RANGE(0x0ba008, 0x0ba009) AM_READ(cyclwarr_control_r)
+=======
+	AM_RANGE(0x0b9000, 0x0b900f) AM_DEVREAD8("io1", cxd1095_device, read, 0x00ff) AM_WRITE(io1_byte_smear_w)
+	AM_RANGE(0x0ba000, 0x0ba00f) AM_DEVREAD8("io2", cxd1095_device, read, 0x00ff) AM_WRITE(io2_byte_smear_w)
+>>>>>>> upstream/master
 	AM_RANGE(0x0c0000, 0x0c3fff) AM_READWRITE(cyclwarr_sprite_r, cyclwarr_sprite_w)
 	AM_RANGE(0x0ca000, 0x0ca1ff) AM_WRITE(tatsumi_sprite_control_w)
 	AM_RANGE(0x0d0000, 0x0d3fff) AM_RAM_DEVWRITE("palette", palette_device, write) AM_SHARE("palette")
@@ -470,6 +539,7 @@ INPUT_PORTS_END
 
 static INPUT_PORTS_START( roundup5 )
 	PORT_START("IN0")
+<<<<<<< HEAD
 	PORT_BIT( 0x0001, IP_ACTIVE_LOW, IPT_BUTTON1 ) PORT_PLAYER(1) PORT_NAME("Accelerator")
 	PORT_BIT( 0x0002, IP_ACTIVE_LOW, IPT_UNKNOWN )
 	PORT_BIT( 0x0004, IP_ACTIVE_LOW, IPT_BUTTON2 ) PORT_PLAYER(1) PORT_NAME("Brake")
@@ -478,6 +548,16 @@ static INPUT_PORTS_START( roundup5 )
 	PORT_BIT( 0x0020, IP_ACTIVE_LOW, IPT_START1 )
 	PORT_BIT( 0x0040, IP_ACTIVE_LOW, IPT_UNKNOWN )
 	PORT_BIT( 0x0080, IP_ACTIVE_LOW, IPT_UNKNOWN )
+=======
+	PORT_BIT( 0x01, IP_ACTIVE_LOW, IPT_BUTTON1 ) PORT_PLAYER(1) PORT_NAME("Accelerator")
+	PORT_BIT( 0x02, IP_ACTIVE_LOW, IPT_UNKNOWN )
+	PORT_BIT( 0x04, IP_ACTIVE_LOW, IPT_BUTTON2 ) PORT_PLAYER(1) PORT_NAME("Brake")
+	PORT_BIT( 0x08, IP_ACTIVE_LOW, IPT_BUTTON3 ) PORT_PLAYER(1) PORT_NAME("Shift") PORT_TOGGLE
+	PORT_BIT( 0x10, IP_ACTIVE_LOW, IPT_BUTTON4 ) PORT_PLAYER(1) PORT_NAME("Turbo")
+	PORT_BIT( 0x20, IP_ACTIVE_LOW, IPT_START1 )
+	PORT_BIT( 0x40, IP_ACTIVE_LOW, IPT_UNKNOWN )
+	PORT_BIT( 0x80, IP_ACTIVE_LOW, IPT_UNKNOWN )
+>>>>>>> upstream/master
 
 	PORT_START("IN1")
 	PORT_SERVICE_NO_TOGGLE( 0x01, IP_ACTIVE_LOW )
@@ -553,6 +633,7 @@ static INPUT_PORTS_START( cyclwarr )
 	PORT_BIT( 0x80, IP_ACTIVE_LOW, IPT_SERVICE4 )
 
 	PORT_START("P1")
+<<<<<<< HEAD
 	PORT_BIT( 0x0001, IP_ACTIVE_LOW, IPT_START1 )
 	PORT_BIT( 0x0002, IP_ACTIVE_LOW, IPT_BUTTON3 ) PORT_PLAYER(1)
 	PORT_BIT( 0x0004, IP_ACTIVE_LOW, IPT_BUTTON2 ) PORT_PLAYER(1)
@@ -664,15 +745,134 @@ static INPUT_PORTS_START( cyclwarr )
 	PORT_BIT( 0x0020, IP_ACTIVE_LOW, IPT_JOYSTICK_LEFT  ) PORT_8WAY PORT_PLAYER(4)
 	PORT_BIT( 0x0040, IP_ACTIVE_LOW, IPT_JOYSTICK_DOWN  ) PORT_8WAY PORT_PLAYER(4)
 	PORT_BIT( 0x0080, IP_ACTIVE_LOW, IPT_JOYSTICK_UP    ) PORT_8WAY PORT_PLAYER(4)
+=======
+	PORT_BIT( 0x01, IP_ACTIVE_LOW, IPT_START1 )
+	PORT_BIT( 0x02, IP_ACTIVE_LOW, IPT_BUTTON3 ) PORT_PLAYER(1)
+	PORT_BIT( 0x04, IP_ACTIVE_LOW, IPT_BUTTON2 ) PORT_PLAYER(1)
+	PORT_BIT( 0x08, IP_ACTIVE_LOW, IPT_BUTTON1 ) PORT_PLAYER(1)
+	PORT_BIT( 0x10, IP_ACTIVE_LOW, IPT_JOYSTICK_RIGHT ) PORT_8WAY PORT_PLAYER(1)
+	PORT_BIT( 0x20, IP_ACTIVE_LOW, IPT_JOYSTICK_LEFT  ) PORT_8WAY PORT_PLAYER(1)
+	PORT_BIT( 0x40, IP_ACTIVE_LOW, IPT_JOYSTICK_DOWN  ) PORT_8WAY PORT_PLAYER(1)
+	PORT_BIT( 0x80, IP_ACTIVE_LOW, IPT_JOYSTICK_UP    ) PORT_8WAY PORT_PLAYER(1)
+
+	PORT_START("P2")
+	PORT_BIT( 0x01, IP_ACTIVE_LOW, IPT_START2 )
+	PORT_BIT( 0x02, IP_ACTIVE_LOW, IPT_BUTTON3 ) PORT_PLAYER(2)
+	PORT_BIT( 0x04, IP_ACTIVE_LOW, IPT_BUTTON2 ) PORT_PLAYER(2)
+	PORT_BIT( 0x08, IP_ACTIVE_LOW, IPT_BUTTON1 ) PORT_PLAYER(2)
+	PORT_BIT( 0x10, IP_ACTIVE_LOW, IPT_JOYSTICK_RIGHT ) PORT_8WAY PORT_PLAYER(2)
+	PORT_BIT( 0x20, IP_ACTIVE_LOW, IPT_JOYSTICK_LEFT  ) PORT_8WAY PORT_PLAYER(2)
+	PORT_BIT( 0x40, IP_ACTIVE_LOW, IPT_JOYSTICK_DOWN  ) PORT_8WAY PORT_PLAYER(2)
+	PORT_BIT( 0x80, IP_ACTIVE_LOW, IPT_JOYSTICK_UP    ) PORT_8WAY PORT_PLAYER(2)
+
+	PORT_START("DSW3")
+	PORT_DIPNAME( 0x1, 0x1, DEF_STR( Unknown ) ) PORT_DIPLOCATION("SW3:1")
+	PORT_DIPSETTING(   0x1, DEF_STR( Off ) )
+	PORT_DIPSETTING(   0x0, DEF_STR( On ) )
+	PORT_DIPNAME( 0x2, 0x0, "Player Select" ) PORT_DIPLOCATION("SW3:2")
+	PORT_DIPSETTING(   0x2, "Coin Slot" )
+	PORT_DIPSETTING(   0x0, "Select SW" )
+	PORT_DIPNAME( 0x4, 0x4, DEF_STR( Service_Mode ) ) PORT_DIPLOCATION("SW3:3")
+	PORT_DIPSETTING(   0x4, DEF_STR( Off ) )
+	PORT_DIPSETTING(   0x0, DEF_STR( On ) )
+	PORT_DIPNAME( 0x8, 0x8, "Hardware Test Mode" ) PORT_DIPLOCATION("SW3:4")
+	PORT_DIPSETTING(   0x8, DEF_STR( Off ) )
+	PORT_DIPSETTING(   0x0, DEF_STR( On ) )
+
+	PORT_START("DSW1")
+	PORT_DIPNAME( 0x0f, 0x0f, DEF_STR( Coin_A ) ) PORT_DIPLOCATION("SW1:1,2,3,4")
+	PORT_DIPSETTING(    0x00, DEF_STR( 5C_1C ) )
+	PORT_DIPSETTING(    0x02, DEF_STR( 4C_1C ) )
+	PORT_DIPSETTING(    0x05, DEF_STR( 3C_1C ) )
+	PORT_DIPSETTING(    0x08, DEF_STR( 2C_1C ) )
+	PORT_DIPSETTING(    0x04, DEF_STR( 3C_2C ) )
+	PORT_DIPSETTING(    0x01, DEF_STR( 4C_3C ) )
+	PORT_DIPSETTING(    0x0f, DEF_STR( 1C_1C ) )
+	PORT_DIPSETTING(    0x03, DEF_STR( 3C_4C ) )
+	PORT_DIPSETTING(    0x07, DEF_STR( 2C_3C ) )
+	PORT_DIPSETTING(    0x0e, DEF_STR( 1C_2C ) )
+	PORT_DIPSETTING(    0x06, DEF_STR( 2C_5C ) )
+	PORT_DIPSETTING(    0x0d, DEF_STR( 1C_3C ) )
+	PORT_DIPSETTING(    0x0c, DEF_STR( 1C_4C ) )
+	PORT_DIPSETTING(    0x0b, DEF_STR( 1C_5C ) )
+	PORT_DIPSETTING(    0x0a, DEF_STR( 1C_6C ) )
+	PORT_DIPSETTING(    0x09, DEF_STR( 1C_7C ) )
+	PORT_DIPNAME( 0xf0, 0xf0, DEF_STR( Coin_B ) ) PORT_DIPLOCATION("SW1:5,6,7,8")
+	PORT_DIPSETTING(    0x00, DEF_STR( 6C_1C ) )
+	PORT_DIPSETTING(    0x10, DEF_STR( 5C_1C ) )
+	PORT_DIPSETTING(    0x20, DEF_STR( 4C_1C ) )
+	PORT_DIPSETTING(    0x50, DEF_STR( 3C_1C ) )
+	PORT_DIPSETTING(    0x80, DEF_STR( 2C_1C ) )
+	PORT_DIPSETTING(    0x40, DEF_STR( 3C_2C ) )
+	PORT_DIPSETTING(    0xf0, DEF_STR( 1C_1C ) )
+	PORT_DIPSETTING(    0x30, DEF_STR( 3C_4C ) )
+	PORT_DIPSETTING(    0x70, DEF_STR( 2C_3C ) )
+	PORT_DIPSETTING(    0xe0, DEF_STR( 1C_2C ) )
+	PORT_DIPSETTING(    0x60, DEF_STR( 2C_5C ) )
+	PORT_DIPSETTING(    0xd0, DEF_STR( 1C_3C ) )
+	PORT_DIPSETTING(    0xc0, DEF_STR( 1C_4C ) )
+	PORT_DIPSETTING(    0xb0, DEF_STR( 1C_5C ) )
+	PORT_DIPSETTING(    0xa0, DEF_STR( 1C_6C ) )
+	PORT_DIPSETTING(    0x90, DEF_STR( 1C_7C ) )
+
+	PORT_START("DSW2")
+	PORT_DIPNAME( 0x03, 0x02, DEF_STR( Lives ) ) PORT_DIPLOCATION("SW2:1,2")
+	PORT_DIPSETTING(    0x00, "5" )
+	PORT_DIPSETTING(    0x01, "3" )
+	PORT_DIPSETTING(    0x02, "2" )
+	PORT_DIPSETTING(    0x03, "1" )
+	PORT_DIPNAME( 0x04, 0x04, "Ticket Dispenser" ) PORT_DIPLOCATION("SW2:3")
+	PORT_DIPSETTING(    0x04, "10000" )
+	PORT_DIPSETTING(    0x00, "15000" )
+	PORT_DIPNAME( 0x18, 0x00, "Machine Type" ) PORT_DIPLOCATION("SW2:4,5")
+	PORT_DIPSETTING(    0x00, "2 Players" )
+	PORT_DIPSETTING(    0x08, "2 Players" )
+	PORT_DIPSETTING(    0x10, "3 Players" )
+	PORT_DIPSETTING(    0x18, "4 Players" )
+	PORT_DIPNAME( 0x60, 0x60, DEF_STR( Difficulty ) ) PORT_DIPLOCATION("SW2:6,7")
+	PORT_DIPSETTING(    0x00, DEF_STR( Very_Hard ) )
+	PORT_DIPSETTING(    0x20, DEF_STR( Hard ) )
+	PORT_DIPSETTING(    0x40, DEF_STR( Easy ) )
+	PORT_DIPSETTING(    0x60, DEF_STR( Normal ) )
+	PORT_DIPNAME( 0x80, 0x00, DEF_STR( Demo_Sounds ) ) PORT_DIPLOCATION("SW2:8")
+	PORT_DIPSETTING(    0x80, DEF_STR( Off ) )
+	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
+
+	PORT_START("P3")
+	PORT_BIT( 0x01, IP_ACTIVE_LOW, IPT_START3 )
+	PORT_BIT( 0x02, IP_ACTIVE_LOW, IPT_BUTTON3 ) PORT_PLAYER(3)
+	PORT_BIT( 0x04, IP_ACTIVE_LOW, IPT_BUTTON2 ) PORT_PLAYER(3)
+	PORT_BIT( 0x08, IP_ACTIVE_LOW, IPT_BUTTON1 ) PORT_PLAYER(3)
+	PORT_BIT( 0x10, IP_ACTIVE_LOW, IPT_JOYSTICK_RIGHT ) PORT_8WAY PORT_PLAYER(3)
+	PORT_BIT( 0x20, IP_ACTIVE_LOW, IPT_JOYSTICK_LEFT  ) PORT_8WAY PORT_PLAYER(3)
+	PORT_BIT( 0x40, IP_ACTIVE_LOW, IPT_JOYSTICK_DOWN  ) PORT_8WAY PORT_PLAYER(3)
+	PORT_BIT( 0x80, IP_ACTIVE_LOW, IPT_JOYSTICK_UP    ) PORT_8WAY PORT_PLAYER(3)
+
+	PORT_START("P4")
+	PORT_BIT( 0x01, IP_ACTIVE_LOW, IPT_START4 )
+	PORT_BIT( 0x02, IP_ACTIVE_LOW, IPT_BUTTON3 ) PORT_PLAYER(4)
+	PORT_BIT( 0x04, IP_ACTIVE_LOW, IPT_BUTTON2 ) PORT_PLAYER(4)
+	PORT_BIT( 0x08, IP_ACTIVE_LOW, IPT_BUTTON1 ) PORT_PLAYER(4)
+	PORT_BIT( 0x10, IP_ACTIVE_LOW, IPT_JOYSTICK_RIGHT ) PORT_8WAY PORT_PLAYER(4)
+	PORT_BIT( 0x20, IP_ACTIVE_LOW, IPT_JOYSTICK_LEFT  ) PORT_8WAY PORT_PLAYER(4)
+	PORT_BIT( 0x40, IP_ACTIVE_LOW, IPT_JOYSTICK_DOWN  ) PORT_8WAY PORT_PLAYER(4)
+	PORT_BIT( 0x80, IP_ACTIVE_LOW, IPT_JOYSTICK_UP    ) PORT_8WAY PORT_PLAYER(4)
+>>>>>>> upstream/master
 INPUT_PORTS_END
 
 static INPUT_PORTS_START( cyclwarb )
 	PORT_INCLUDE(cyclwarr)
 
 	PORT_MODIFY("DSW3")
+<<<<<<< HEAD
 	PORT_DIPNAME( 0x0008, 0x0008, DEF_STR( Unknown ) ) PORT_DIPLOCATION("SW3:4")
 	PORT_DIPSETTING(      0x0008, DEF_STR( Off ) )
 	PORT_DIPSETTING(      0x0000, DEF_STR( On ) )
+=======
+	PORT_DIPNAME( 0x8, 0x8, DEF_STR( Unknown ) ) PORT_DIPLOCATION("SW3:4")
+	PORT_DIPSETTING(   0x8, DEF_STR( Off ) )
+	PORT_DIPSETTING(   0x0, DEF_STR( On ) )
+>>>>>>> upstream/master
 INPUT_PORTS_END
 
 static INPUT_PORTS_START( bigfight )
@@ -687,6 +887,7 @@ static INPUT_PORTS_START( bigfight )
 	PORT_BIT( 0x80, IP_ACTIVE_LOW, IPT_SERVICE4 )
 
 	PORT_START("P1")
+<<<<<<< HEAD
 	PORT_BIT( 0x0001, IP_ACTIVE_LOW, IPT_START1 )
 	PORT_BIT( 0x0002, IP_ACTIVE_LOW, IPT_BUTTON3 ) PORT_PLAYER(1)
 	PORT_BIT( 0x0004, IP_ACTIVE_LOW, IPT_BUTTON2 ) PORT_PLAYER(1)
@@ -799,6 +1000,120 @@ static INPUT_PORTS_START( bigfight )
 	PORT_BIT( 0x0020, IP_ACTIVE_LOW, IPT_JOYSTICK_LEFT  ) PORT_8WAY PORT_PLAYER(4)
 	PORT_BIT( 0x0040, IP_ACTIVE_LOW, IPT_JOYSTICK_DOWN  ) PORT_8WAY PORT_PLAYER(4)
 	PORT_BIT( 0x0080, IP_ACTIVE_LOW, IPT_JOYSTICK_UP    ) PORT_8WAY PORT_PLAYER(4)
+=======
+	PORT_BIT( 0x01, IP_ACTIVE_LOW, IPT_START1 )
+	PORT_BIT( 0x02, IP_ACTIVE_LOW, IPT_BUTTON3 ) PORT_PLAYER(1)
+	PORT_BIT( 0x04, IP_ACTIVE_LOW, IPT_BUTTON2 ) PORT_PLAYER(1)
+	PORT_BIT( 0x08, IP_ACTIVE_LOW, IPT_BUTTON1 ) PORT_PLAYER(1)
+	PORT_BIT( 0x10, IP_ACTIVE_LOW, IPT_JOYSTICK_RIGHT ) PORT_8WAY PORT_PLAYER(1)
+	PORT_BIT( 0x20, IP_ACTIVE_LOW, IPT_JOYSTICK_LEFT  ) PORT_8WAY PORT_PLAYER(1)
+	PORT_BIT( 0x40, IP_ACTIVE_LOW, IPT_JOYSTICK_DOWN  ) PORT_8WAY PORT_PLAYER(1)
+	PORT_BIT( 0x80, IP_ACTIVE_LOW, IPT_JOYSTICK_UP    ) PORT_8WAY PORT_PLAYER(1)
+
+	PORT_START("P2")
+	PORT_BIT( 0x01, IP_ACTIVE_LOW, IPT_START2 )
+	PORT_BIT( 0x02, IP_ACTIVE_LOW, IPT_BUTTON3 ) PORT_PLAYER(2)
+	PORT_BIT( 0x04, IP_ACTIVE_LOW, IPT_BUTTON2 ) PORT_PLAYER(2)
+	PORT_BIT( 0x08, IP_ACTIVE_LOW, IPT_BUTTON1 ) PORT_PLAYER(2)
+	PORT_BIT( 0x10, IP_ACTIVE_LOW, IPT_JOYSTICK_RIGHT ) PORT_8WAY PORT_PLAYER(2)
+	PORT_BIT( 0x20, IP_ACTIVE_LOW, IPT_JOYSTICK_LEFT  ) PORT_8WAY PORT_PLAYER(2)
+	PORT_BIT( 0x40, IP_ACTIVE_LOW, IPT_JOYSTICK_DOWN  ) PORT_8WAY PORT_PLAYER(2)
+	PORT_BIT( 0x80, IP_ACTIVE_LOW, IPT_JOYSTICK_UP    ) PORT_8WAY PORT_PLAYER(2)
+
+	PORT_START("DSW3")
+	PORT_DIPNAME( 0x1, 0x1, DEF_STR( Unknown ) ) PORT_DIPLOCATION("SW3:1")
+	PORT_DIPSETTING(   0x1, DEF_STR( Off ) )
+	PORT_DIPSETTING(   0x0, DEF_STR( On ) )
+	PORT_DIPNAME( 0x2, 0x0, "Player Select" ) PORT_DIPLOCATION("SW3:2")
+	PORT_DIPSETTING(   0x2, "Coin Slot" )
+	PORT_DIPSETTING(   0x0, "Select SW" )
+	PORT_DIPNAME( 0x4, 0x4, DEF_STR( Service_Mode ) ) PORT_DIPLOCATION("SW3:3")
+	PORT_DIPSETTING(   0x4, DEF_STR( Off ) )
+	PORT_DIPSETTING(   0x0, DEF_STR( On ) )
+	PORT_DIPNAME( 0x8, 0x8, "Hardware Test Mode" ) PORT_DIPLOCATION("SW3:4")
+	PORT_DIPSETTING(   0x8, DEF_STR( Off ) )
+	PORT_DIPSETTING(   0x0, DEF_STR( On ) )
+
+	PORT_START("DSW1")
+	PORT_DIPNAME( 0x0f, 0x0f, DEF_STR( Coin_A ) ) PORT_DIPLOCATION("SW1:1,2,3,4")
+	PORT_DIPSETTING(    0x00, DEF_STR( 5C_1C ) )
+	PORT_DIPSETTING(    0x02, DEF_STR( 4C_1C ) )
+	PORT_DIPSETTING(    0x05, DEF_STR( 3C_1C ) )
+	PORT_DIPSETTING(    0x08, DEF_STR( 2C_1C ) )
+	PORT_DIPSETTING(    0x04, DEF_STR( 3C_2C ) )
+	PORT_DIPSETTING(    0x01, DEF_STR( 4C_3C ) )
+	PORT_DIPSETTING(    0x0f, DEF_STR( 1C_1C ) )
+	PORT_DIPSETTING(    0x03, DEF_STR( 3C_4C ) )
+	PORT_DIPSETTING(    0x07, DEF_STR( 2C_3C ) )
+	PORT_DIPSETTING(    0x0e, DEF_STR( 1C_2C ) )
+	PORT_DIPSETTING(    0x06, DEF_STR( 2C_5C ) )
+	PORT_DIPSETTING(    0x0d, DEF_STR( 1C_3C ) )
+	PORT_DIPSETTING(    0x0c, DEF_STR( 1C_4C ) )
+	PORT_DIPSETTING(    0x0b, DEF_STR( 1C_5C ) )
+	PORT_DIPSETTING(    0x0a, DEF_STR( 1C_6C ) )
+	PORT_DIPSETTING(    0x09, DEF_STR( 1C_7C ) )
+	PORT_DIPNAME( 0xf0, 0xf0, DEF_STR( Coin_B ) ) PORT_DIPLOCATION("SW1:5,6,7,8")
+	PORT_DIPSETTING(    0x00, DEF_STR( 6C_1C ) )
+	PORT_DIPSETTING(    0x10, DEF_STR( 5C_1C ) )
+	PORT_DIPSETTING(    0x20, DEF_STR( 4C_1C ) )
+	PORT_DIPSETTING(    0x50, DEF_STR( 3C_1C ) )
+	PORT_DIPSETTING(    0x80, DEF_STR( 2C_1C ) )
+	PORT_DIPSETTING(    0x40, DEF_STR( 3C_2C ) )
+	PORT_DIPSETTING(    0xf0, DEF_STR( 1C_1C ) )
+	PORT_DIPSETTING(    0x30, DEF_STR( 3C_4C ) )
+	PORT_DIPSETTING(    0x70, DEF_STR( 2C_3C ) )
+	PORT_DIPSETTING(    0xe0, DEF_STR( 1C_2C ) )
+	PORT_DIPSETTING(    0x60, DEF_STR( 2C_5C ) )
+	PORT_DIPSETTING(    0xd0, DEF_STR( 1C_3C ) )
+	PORT_DIPSETTING(    0xc0, DEF_STR( 1C_4C ) )
+	PORT_DIPSETTING(    0xb0, DEF_STR( 1C_5C ) )
+	PORT_DIPSETTING(    0xa0, DEF_STR( 1C_6C ) )
+	PORT_DIPSETTING(    0x90, DEF_STR( 1C_7C ) )
+
+	PORT_START("DSW2")
+	PORT_DIPNAME( 0x03, 0x03, DEF_STR( Lives ) ) PORT_DIPLOCATION("SW2:1,2")
+	PORT_DIPSETTING(    0x00, "1" )
+	PORT_DIPSETTING(    0x03, "2" )
+	PORT_DIPSETTING(    0x02, "3" )
+	PORT_DIPSETTING(    0x01, "4" )
+	PORT_DIPNAME( 0x04, 0x04, "Ticket Dispenser" ) PORT_DIPLOCATION("SW2:3")
+	PORT_DIPSETTING(    0x04, "100000" )
+	PORT_DIPSETTING(    0x00, "150000" )
+	PORT_DIPNAME( 0x08, 0x08, "Continue Coin" ) PORT_DIPLOCATION("SW2:4")
+	PORT_DIPSETTING(    0x08, DEF_STR( Off ) )
+	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
+	PORT_DIPNAME( 0x10, 0x10, "Extend" ) PORT_DIPLOCATION("SW2:5")
+	PORT_DIPSETTING(    0x10, "100000" )
+	PORT_DIPSETTING(    0x00, DEF_STR( None ) )
+	PORT_DIPNAME( 0x60, 0x60, DEF_STR( Difficulty ) ) PORT_DIPLOCATION("SW2:6,7")
+	PORT_DIPSETTING(    0x00, DEF_STR( Very_Hard ) )
+	PORT_DIPSETTING(    0x20, DEF_STR( Hard ) )
+	PORT_DIPSETTING(    0x40, DEF_STR( Easy ) )
+	PORT_DIPSETTING(    0x60, DEF_STR( Normal ) )
+	PORT_DIPNAME( 0x80, 0x00, DEF_STR( Demo_Sounds ) ) PORT_DIPLOCATION("SW2:8")
+	PORT_DIPSETTING(    0x80, DEF_STR( Off ) )
+	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
+
+	PORT_START("P3")
+	PORT_BIT( 0x01, IP_ACTIVE_LOW, IPT_START3 )
+	PORT_BIT( 0x02, IP_ACTIVE_LOW, IPT_BUTTON3 ) PORT_PLAYER(3)
+	PORT_BIT( 0x04, IP_ACTIVE_LOW, IPT_BUTTON2 ) PORT_PLAYER(3)
+	PORT_BIT( 0x08, IP_ACTIVE_LOW, IPT_BUTTON1 ) PORT_PLAYER(3)
+	PORT_BIT( 0x10, IP_ACTIVE_LOW, IPT_JOYSTICK_RIGHT ) PORT_8WAY PORT_PLAYER(3)
+	PORT_BIT( 0x20, IP_ACTIVE_LOW, IPT_JOYSTICK_LEFT  ) PORT_8WAY PORT_PLAYER(3)
+	PORT_BIT( 0x40, IP_ACTIVE_LOW, IPT_JOYSTICK_DOWN  ) PORT_8WAY PORT_PLAYER(3)
+	PORT_BIT( 0x80, IP_ACTIVE_LOW, IPT_JOYSTICK_UP    ) PORT_8WAY PORT_PLAYER(3)
+
+	PORT_START("P4")
+	PORT_BIT( 0x01, IP_ACTIVE_LOW, IPT_START4 )
+	PORT_BIT( 0x02, IP_ACTIVE_LOW, IPT_BUTTON3 ) PORT_PLAYER(4)
+	PORT_BIT( 0x04, IP_ACTIVE_LOW, IPT_BUTTON2 ) PORT_PLAYER(4)
+	PORT_BIT( 0x08, IP_ACTIVE_LOW, IPT_BUTTON1 ) PORT_PLAYER(4)
+	PORT_BIT( 0x10, IP_ACTIVE_LOW, IPT_JOYSTICK_RIGHT ) PORT_8WAY PORT_PLAYER(4)
+	PORT_BIT( 0x20, IP_ACTIVE_LOW, IPT_JOYSTICK_LEFT  ) PORT_8WAY PORT_PLAYER(4)
+	PORT_BIT( 0x40, IP_ACTIVE_LOW, IPT_JOYSTICK_DOWN  ) PORT_8WAY PORT_PLAYER(4)
+	PORT_BIT( 0x80, IP_ACTIVE_LOW, IPT_JOYSTICK_UP    ) PORT_8WAY PORT_PLAYER(4)
+>>>>>>> upstream/master
 INPUT_PORTS_END
 
 /******************************************************************************/
@@ -832,7 +1147,11 @@ GFXDECODE_END
 
 static GFXDECODE_START( roundup5 )
 	GFXDECODE_ENTRY( "gfx1", 0, spritelayout, 1024, 256)
+<<<<<<< HEAD
 	GFXDECODE_ENTRY( NULL, 0, roundup5_vramlayout, 0, 16)
+=======
+	GFXDECODE_ENTRY( nullptr, 0, roundup5_vramlayout, 0, 16)
+>>>>>>> upstream/master
 GFXDECODE_END
 
 static GFXDECODE_START( cyclwarr )
@@ -861,7 +1180,11 @@ MACHINE_RESET_MEMBER(tatsumi_state,apache3)
 }
 
 
+<<<<<<< HEAD
 static MACHINE_CONFIG_START( apache3, tatsumi_state )
+=======
+static MACHINE_CONFIG_START( apache3 )
+>>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", V30, CLOCK_1 / 2)
@@ -883,6 +1206,11 @@ static MACHINE_CONFIG_START( apache3, tatsumi_state )
 	MCFG_NVRAM_ADD_0FILL("nvram")
 	MCFG_MACHINE_RESET_OVERRIDE(tatsumi_state,apache3)
 
+<<<<<<< HEAD
+=======
+	MCFG_DEVICE_ADD("ppi", I8255, 0)
+
+>>>>>>> upstream/master
 	/* video hardware */
 	MCFG_SCREEN_ADD("screen", RASTER)
 	MCFG_SCREEN_RAW_PARAMS(CLOCK_2 / 8, 400, 0, 320, 280, 0, 240) // TODO: Hook up CRTC
@@ -910,12 +1238,20 @@ static MACHINE_CONFIG_START( apache3, tatsumi_state )
 	MCFG_SOUND_ROUTE(0, "lspeaker", 0.45)
 	MCFG_SOUND_ROUTE(1, "rspeaker", 0.45)
 
+<<<<<<< HEAD
 	MCFG_OKIM6295_ADD("oki", CLOCK_1 / 4 / 2, OKIM6295_PIN7_HIGH)
+=======
+	MCFG_OKIM6295_ADD("oki", CLOCK_1 / 4 / 2, PIN7_HIGH)
+>>>>>>> upstream/master
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "lspeaker", 0.75)
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "rspeaker", 0.75)
 MACHINE_CONFIG_END
 
+<<<<<<< HEAD
 static MACHINE_CONFIG_START( roundup5, tatsumi_state )
+=======
+static MACHINE_CONFIG_START( roundup5 )
+>>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", V30, CLOCK_1 / 2)
@@ -930,6 +1266,13 @@ static MACHINE_CONFIG_START( roundup5, tatsumi_state )
 
 	MCFG_QUANTUM_TIME(attotime::from_hz(6000))
 
+<<<<<<< HEAD
+=======
+	MCFG_DEVICE_ADD("ppi", I8255, 0)
+	MCFG_I8255_IN_PORTA_CB(IOPORT("IN0"))
+	MCFG_I8255_IN_PORTB_CB(IOPORT("IN1"))
+
+>>>>>>> upstream/master
 	/* video hardware */
 	MCFG_SCREEN_ADD("screen", RASTER)
 	MCFG_SCREEN_REFRESH_RATE(60)
@@ -954,12 +1297,20 @@ static MACHINE_CONFIG_START( roundup5, tatsumi_state )
 	MCFG_SOUND_ROUTE(0, "lspeaker", 0.45)
 	MCFG_SOUND_ROUTE(1, "rspeaker", 0.45)
 
+<<<<<<< HEAD
 	MCFG_OKIM6295_ADD("oki", CLOCK_1 / 4 / 2, OKIM6295_PIN7_HIGH)
+=======
+	MCFG_OKIM6295_ADD("oki", CLOCK_1 / 4 / 2, PIN7_HIGH)
+>>>>>>> upstream/master
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "lspeaker", 0.75)
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "rspeaker", 0.75)
 MACHINE_CONFIG_END
 
+<<<<<<< HEAD
 static MACHINE_CONFIG_START( cyclwarr, tatsumi_state )
+=======
+static MACHINE_CONFIG_START( cyclwarr )
+>>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", M68000, CLOCK_2 / 4)
@@ -975,6 +1326,22 @@ static MACHINE_CONFIG_START( cyclwarr, tatsumi_state )
 
 	MCFG_QUANTUM_TIME(attotime::from_hz(12000))
 
+<<<<<<< HEAD
+=======
+	MCFG_DEVICE_ADD("io1", CXD1095, 0)
+	MCFG_CXD1095_IN_PORTB_CB(IOPORT("SERVICE"))
+	MCFG_CXD1095_IN_PORTC_CB(IOPORT("P1"))
+	MCFG_CXD1095_IN_PORTD_CB(IOPORT("P2"))
+	MCFG_CXD1095_IN_PORTE_CB(IOPORT("DSW3"))
+
+	MCFG_DEVICE_ADD("io2", CXD1095, 0)
+	MCFG_CXD1095_IN_PORTA_CB(IOPORT("DSW1"))
+	MCFG_CXD1095_IN_PORTB_CB(IOPORT("DSW2"))
+	MCFG_CXD1095_IN_PORTC_CB(IOPORT("P3"))
+	MCFG_CXD1095_IN_PORTD_CB(IOPORT("P4"))
+	MCFG_CXD1095_OUT_PORTE_CB(WRITE8(tatsumi_state, cyclwarr_control_w))
+
+>>>>>>> upstream/master
 	/* video hardware */
 	MCFG_SCREEN_ADD("screen", RASTER)
 	MCFG_SCREEN_REFRESH_RATE(60)
@@ -992,17 +1359,30 @@ static MACHINE_CONFIG_START( cyclwarr, tatsumi_state )
 	/* sound hardware */
 	MCFG_SPEAKER_STANDARD_STEREO("lspeaker", "rspeaker")
 
+<<<<<<< HEAD
+=======
+	MCFG_GENERIC_LATCH_8_ADD("soundlatch")
+
+>>>>>>> upstream/master
 	MCFG_YM2151_ADD("ymsnd", CLOCK_1 / 4)
 	MCFG_YM2151_IRQ_HANDLER(INPUTLINE("audiocpu", INPUT_LINE_IRQ0))
 	MCFG_SOUND_ROUTE(0, "lspeaker", 0.45)
 	MCFG_SOUND_ROUTE(1, "rspeaker", 0.45)
 
+<<<<<<< HEAD
 	MCFG_OKIM6295_ADD("oki", CLOCK_1 / 8, OKIM6295_PIN7_HIGH)
+=======
+	MCFG_OKIM6295_ADD("oki", CLOCK_1 / 8, PIN7_HIGH)
+>>>>>>> upstream/master
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "lspeaker", 0.75)
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "rspeaker", 0.75)
 MACHINE_CONFIG_END
 
+<<<<<<< HEAD
 static MACHINE_CONFIG_START( bigfight, tatsumi_state )
+=======
+static MACHINE_CONFIG_START( bigfight )
+>>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", M68000, CLOCK_2 / 4)
@@ -1018,6 +1398,22 @@ static MACHINE_CONFIG_START( bigfight, tatsumi_state )
 
 	MCFG_QUANTUM_TIME(attotime::from_hz(12000))
 
+<<<<<<< HEAD
+=======
+	MCFG_DEVICE_ADD("io1", CXD1095, 0)
+	MCFG_CXD1095_IN_PORTB_CB(IOPORT("SERVICE"))
+	MCFG_CXD1095_IN_PORTC_CB(IOPORT("P1"))
+	MCFG_CXD1095_IN_PORTD_CB(IOPORT("P2"))
+	MCFG_CXD1095_IN_PORTE_CB(IOPORT("DSW3"))
+
+	MCFG_DEVICE_ADD("io2", CXD1095, 0)
+	MCFG_CXD1095_IN_PORTA_CB(IOPORT("DSW1"))
+	MCFG_CXD1095_IN_PORTB_CB(IOPORT("DSW2"))
+	MCFG_CXD1095_IN_PORTC_CB(IOPORT("P3"))
+	MCFG_CXD1095_IN_PORTD_CB(IOPORT("P4"))
+	MCFG_CXD1095_OUT_PORTE_CB(WRITE8(tatsumi_state, cyclwarr_control_w))
+
+>>>>>>> upstream/master
 	/* video hardware */
 	MCFG_SCREEN_ADD("screen", RASTER)
 	MCFG_SCREEN_REFRESH_RATE(60)
@@ -1035,12 +1431,21 @@ static MACHINE_CONFIG_START( bigfight, tatsumi_state )
 	/* sound hardware */
 	MCFG_SPEAKER_STANDARD_STEREO("lspeaker", "rspeaker")
 
+<<<<<<< HEAD
+=======
+	MCFG_GENERIC_LATCH_8_ADD("soundlatch")
+
+>>>>>>> upstream/master
 	MCFG_YM2151_ADD("ymsnd", CLOCK_1 / 4)
 	MCFG_YM2151_IRQ_HANDLER(INPUTLINE("audiocpu", INPUT_LINE_IRQ0))
 	MCFG_SOUND_ROUTE(0, "lspeaker", 0.45)
 	MCFG_SOUND_ROUTE(1, "rspeaker", 0.45)
 
+<<<<<<< HEAD
 	MCFG_OKIM6295_ADD("oki", CLOCK_1 / 8 / 2, OKIM6295_PIN7_HIGH) /* 2MHz was too fast. Can the clock be software controlled? */
+=======
+	MCFG_OKIM6295_ADD("oki", CLOCK_1 / 8 / 2, PIN7_HIGH) /* 2MHz was too fast. Can the clock be software controlled? */
+>>>>>>> upstream/master
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "lspeaker", 0.75)
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "rspeaker", 0.75)
 MACHINE_CONFIG_END
@@ -1342,9 +1747,15 @@ ROM_END
 
 DRIVER_INIT_MEMBER(tatsumi_state,apache3)
 {
+<<<<<<< HEAD
 	UINT8 *dst = memregion("gfx1")->base();
 	UINT8 *src1 = memregion("gfx2")->base();
 	UINT8 *src2 = memregion("gfx3")->base();
+=======
+	uint8_t *dst = memregion("gfx1")->base();
+	uint8_t *src1 = memregion("gfx2")->base();
+	uint8_t *src2 = memregion("gfx3")->base();
+>>>>>>> upstream/master
 
 	for (int i=0; i<0x100000; i+=32)
 	{
@@ -1369,9 +1780,15 @@ DRIVER_INIT_MEMBER(tatsumi_state,apache3)
 
 DRIVER_INIT_MEMBER(tatsumi_state,roundup5)
 {
+<<<<<<< HEAD
 	UINT8 *dst = memregion("gfx1")->base();
 	UINT8 *src1 = memregion("gfx2")->base();
 	UINT8 *src2 = memregion("gfx3")->base();
+=======
+	uint8_t *dst = memregion("gfx1")->base();
+	uint8_t *src1 = memregion("gfx2")->base();
+	uint8_t *src2 = memregion("gfx3")->base();
+>>>>>>> upstream/master
 
 	for (int i=0; i<0xc0000; i+=32)
 	{
@@ -1394,10 +1811,17 @@ DRIVER_INIT_MEMBER(tatsumi_state,roundup5)
 
 DRIVER_INIT_MEMBER(tatsumi_state,cyclwarr)
 {
+<<<<<<< HEAD
 	UINT8 *dst = memregion("gfx1")->base();
 	UINT8 *src1 = memregion("gfx2")->base();
 	int len1 = memregion("gfx2")->bytes();
 	UINT8 *src2 = memregion("gfx3")->base();
+=======
+	uint8_t *dst = memregion("gfx1")->base();
+	uint8_t *src1 = memregion("gfx2")->base();
+	int len1 = memregion("gfx2")->bytes();
+	uint8_t *src2 = memregion("gfx3")->base();
+>>>>>>> upstream/master
 	int len2 = memregion("gfx3")->bytes();
 
 	for (int i=0; i<len1; i+=32)

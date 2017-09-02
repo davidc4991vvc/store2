@@ -7,6 +7,10 @@ Bull Fighter      (c) 1984 Alpha Denshi Co./Sega
 Gekisou           (c) 1985 Eastern Corp.
 The Koukouyakyuh  (c) 1985 Alpha Denshi Co.
 Splendor Blast    (c) 1985 Alpha Denshi Co.
+<<<<<<< HEAD
+=======
+Splendor Blast II (c) 1985 Alpha Denshi Co.
+>>>>>>> upstream/master
 High Voltage      (c) 1985 Alpha Denshi Co.
 
 The following are not dumped yet:
@@ -122,6 +126,13 @@ Notes:
   CABINET     Cocktail                         ON
               Upright                          OFF
 
+<<<<<<< HEAD
+=======
+- splndrbt2 is different in many areas, most notibly in the title screen and the
+  operation of the missiles which is a power-up pickup rather than a cumulative
+  collecting of missiles that can run out.
+
+>>>>>>> upstream/master
 
 TODO:
 ----
@@ -164,8 +175,11 @@ TODO:
 - bassline imperfect. This is just the square wave output of the 5232 at the moment.
   It should go through analog stages.
 
+<<<<<<< HEAD
 - properly emulate the 8155 on the sound board.
 
+=======
+>>>>>>> upstream/master
 - implement low-pass filters on the DAC output
 
 - the purpose of the sound PROM is unclear. From the schematics, it seems it
@@ -356,12 +370,27 @@ D                                                                               
 *******************************************************************************/
 
 #include "emu.h"
+<<<<<<< HEAD
 #include "cpu/m68000/m68000.h"
 #include "cpu/alph8201/alph8201.h"
 #include "cpu/i8085/i8085.h"
 #include "sound/ay8910.h"
 #include "machine/nvram.h"
 #include "includes/equites.h"
+=======
+#include "includes/equites.h"
+
+#include "cpu/alph8201/alph8201.h"
+#include "cpu/i8085/i8085.h"
+#include "cpu/m68000/m68000.h"
+#include "machine/74259.h"
+#include "machine/i8155.h"
+#include "machine/nvram.h"
+#include "machine/watchdog.h"
+#include "sound/ay8910.h"
+#include "sound/volt_reg.h"
+#include "speaker.h"
+>>>>>>> upstream/master
 
 #define FRQ_ADJUSTER_TAG    "FRQ"
 
@@ -378,14 +407,25 @@ D                                                                               
 /******************************************************************************/
 // Sound
 
+<<<<<<< HEAD
 TIMER_CALLBACK_MEMBER(equites_state::equites_nmi_callback)
 {
 	m_audiocpu->set_input_line(INPUT_LINE_NMI, ASSERT_LINE);
+=======
+WRITE_LINE_MEMBER(equites_state::equites_8155_timer_pulse)
+{
+	if (!state) // active low
+		m_audiocpu->set_input_line(INPUT_LINE_NMI, ASSERT_LINE);
+>>>>>>> upstream/master
 }
 
 TIMER_CALLBACK_MEMBER(equites_state::equites_frq_adjuster_callback)
 {
+<<<<<<< HEAD
 	UINT8 frq = ioport(FRQ_ADJUSTER_TAG)->read();
+=======
+	uint8_t frq = ioport(FRQ_ADJUSTER_TAG)->read();
+>>>>>>> upstream/master
 
 	m_msm->set_clock(MSM5232_MIN_CLOCK + frq * (MSM5232_MAX_CLOCK - MSM5232_MIN_CLOCK) / 100);
 //popmessage("8155: C %02x A %02x  AY: A %02x B %02x Unk:%x", m_eq8155_port_c, m_eq8155_port_a, m_ay_port_a, m_ay_port_b, m_eq_cymbal_ctrl & 15);
@@ -406,7 +446,11 @@ WRITE8_MEMBER(equites_state::equites_c0f8_w)
 
 		case 1: // c0f9: RST75 trigger (written by NMI handler)
 			// Note: solder pad CP3 on the pcb would allow to disable this
+<<<<<<< HEAD
 			generic_pulse_irq_line(m_audiocpu, I8085_RST75_LINE, 1);
+=======
+			generic_pulse_irq_line(*m_audiocpu, I8085_RST75_LINE, 1);
+>>>>>>> upstream/master
 			break;
 
 		case 2: // c0fa: INTR trigger (written by NMI handler)
@@ -437,7 +481,11 @@ WRITE8_MEMBER(equites_state::equites_c0f8_w)
 
 		case 7: // c0ff: sound command latch clear
 			// Note: solder pad CP1 on the pcb would allow to disable this
+<<<<<<< HEAD
 			soundlatch_clear_byte_w(space, 0, 0);
+=======
+			m_soundlatch->clear_w(space, 0, 0);
+>>>>>>> upstream/master
 			break;
 	}
 }
@@ -499,24 +547,64 @@ void equites_state::equites_update_dac(  )
 	// Note that PB0 goes through three filters while PB1 only goes through one.
 
 	if (m_eq8155_port_b & 1)
+<<<<<<< HEAD
 		m_dac_1->write_signed8(m_dac_latch);
 
 	if (m_eq8155_port_b & 2)
 		m_dac_2->write_signed8(m_dac_latch);
+=======
+		m_dac_1->write(m_dac_latch);
+
+	if (m_eq8155_port_b & 2)
+		m_dac_2->write(m_dac_latch);
+>>>>>>> upstream/master
 }
 
 WRITE8_MEMBER(equites_state::equites_dac_latch_w)
 {
+<<<<<<< HEAD
 	m_dac_latch = data << 2;
 	equites_update_dac();
 }
 
+=======
+	m_dac_latch = data;
+	equites_update_dac();
+}
+
+WRITE8_MEMBER(equites_state::equites_8155_porta_w)
+{
+	m_eq8155_port_a = data;
+	m_msm->set_output_gain(0, (data >> 4) / 15.0);  /* group1 from msm5232 */
+	m_msm->set_output_gain(1, (data >> 4) / 15.0);  /* group1 from msm5232 */
+	m_msm->set_output_gain(2, (data >> 4) / 15.0);  /* group1 from msm5232 */
+	m_msm->set_output_gain(3, (data >> 4) / 15.0);  /* group1 from msm5232 */
+	m_msm->set_output_gain(4, (data & 0x0f) / 15.0);    /* group2 from msm5232 */
+	m_msm->set_output_gain(5, (data & 0x0f) / 15.0);    /* group2 from msm5232 */
+	m_msm->set_output_gain(6, (data & 0x0f) / 15.0);    /* group2 from msm5232 */
+	m_msm->set_output_gain(7, (data & 0x0f) / 15.0);    /* group2 from msm5232 */
+}
+
+>>>>>>> upstream/master
 WRITE8_MEMBER(equites_state::equites_8155_portb_w)
 {
 	m_eq8155_port_b = data;
 	equites_update_dac();
 }
 
+<<<<<<< HEAD
+=======
+WRITE8_MEMBER(equites_state::equites_8155_portc_w)
+{
+	m_eq8155_port_c = data;
+	m_msm->set_output_gain(8, (data & 0x0f) / 15.0);    /* SOLO  8' from msm5232 */
+	if (data & 0x20)
+		m_msm->set_output_gain(9, (data & 0x0f) / 15.0);    /* SOLO 16' from msm5232 */
+	else
+		m_msm->set_output_gain(9, 0);   /* SOLO 16' from msm5232 */
+}
+
+>>>>>>> upstream/master
 WRITE_LINE_MEMBER(equites_state::equites_msm5232_gate)
 {
 }
@@ -548,6 +636,7 @@ TIMER_DEVICE_CALLBACK_MEMBER(equites_state::splndrbt_scanline)
 		m_maincpu->set_input_line(2, HOLD_LINE);
 }
 
+<<<<<<< HEAD
 WRITE8_MEMBER(equites_state::equites_8155_w)
 {
 	// FIXME proper 8155 emulation must be implemented
@@ -589,6 +678,8 @@ WRITE8_MEMBER(equites_state::equites_8155_w)
 	}
 }
 
+=======
+>>>>>>> upstream/master
 
 
 /******************************************************************************/
@@ -601,7 +692,11 @@ CUSTOM_INPUT_MEMBER(equites_state::gekisou_unknown_bit_r)
 
 WRITE16_MEMBER(equites_state::gekisou_unknown_bit_w)
 {
+<<<<<<< HEAD
 	// data bit is A16 (offset)
+=======
+	// data bit is A17 (offset)
+>>>>>>> upstream/master
 	m_gekisou_unknown_bit = (offset == 0) ? 0 : 1;;
 }
 
@@ -616,7 +711,11 @@ READ16_MEMBER(equites_state::equites_spriteram_kludge_r)
 
 READ8_MEMBER(equites_state::mcu_ram_r)
 {
+<<<<<<< HEAD
 	if (m_fakemcu == NULL)
+=======
+	if (m_fakemcu == nullptr)
+>>>>>>> upstream/master
 		return m_alpha_8201->ext_ram_r(space, offset);
 	else
 		return m_mcuram[offset];
@@ -624,12 +723,17 @@ READ8_MEMBER(equites_state::mcu_ram_r)
 
 WRITE8_MEMBER(equites_state::mcu_ram_w)
 {
+<<<<<<< HEAD
 	if (m_fakemcu == NULL)
+=======
+	if (m_fakemcu == nullptr)
+>>>>>>> upstream/master
 		m_alpha_8201->ext_ram_w(space, offset, data);
 	else
 		m_mcuram[offset] = data;
 }
 
+<<<<<<< HEAD
 WRITE16_MEMBER(equites_state::mcu_start_w)
 {
 	// data bit is A16 (offset)
@@ -644,6 +748,20 @@ WRITE16_MEMBER(equites_state::mcu_switch_w)
 	// data bit is A16 (offset)
 	if (m_fakemcu == NULL)
 		m_alpha_8201->bus_dir_w(offset == 0);
+=======
+WRITE_LINE_MEMBER(equites_state::mcu_start_w)
+{
+	if (m_fakemcu == nullptr)
+		m_alpha_8201->mcu_start_w(state != 0);
+	else
+		m_fakemcu->set_input_line(INPUT_LINE_HALT, state ? ASSERT_LINE : CLEAR_LINE);
+}
+
+WRITE_LINE_MEMBER(equites_state::mcu_switch_w)
+{
+	if (m_fakemcu == nullptr)
+		m_alpha_8201->bus_dir_w(state == 0);
+>>>>>>> upstream/master
 }
 
 
@@ -661,6 +779,7 @@ static ADDRESS_MAP_START( equites_map, AS_PROGRAM, 16, equites_state )
 	AM_RANGE(0x100000, 0x100001) AM_READ(equites_spriteram_kludge_r)
 	AM_RANGE(0x100000, 0x1001ff) AM_RAM AM_SHARE("spriteram")
 	AM_RANGE(0x140000, 0x1407ff) AM_READWRITE8(mcu_ram_r, mcu_ram_w, 0x00ff)
+<<<<<<< HEAD
 	AM_RANGE(0x180000, 0x180001) AM_READ_PORT("IN1") AM_WRITE8(soundlatch_byte_w, 0x00ff)
 	AM_RANGE(0x184000, 0x184001) AM_MIRROR(0x020000) AM_MASK(0x020000) AM_WRITE(equites_flipw_w)
 	AM_RANGE(0x188000, 0x188001) AM_MIRROR(0x020000) AM_MASK(0x020000) AM_WRITE(mcu_start_w)
@@ -668,11 +787,22 @@ static ADDRESS_MAP_START( equites_map, AS_PROGRAM, 16, equites_state )
 	AM_RANGE(0x1c0000, 0x1c0001) AM_READ_PORT("IN0") AM_WRITE(equites_scrollreg_w)
 	AM_RANGE(0x380000, 0x380001) AM_WRITE8(equites_bgcolor_w, 0xff00)
 	AM_RANGE(0x780000, 0x780001) AM_WRITE(watchdog_reset16_w)
+=======
+	AM_RANGE(0x180000, 0x180001) AM_READ_PORT("IN1") AM_DEVWRITE8("soundlatch", generic_latch_8_device, write, 0x00ff)
+	AM_RANGE(0x180000, 0x180001) AM_SELECT(0x03c000) AM_DEVWRITE8_MOD("mainlatch", ls259_device, write_a3, rshift<13>, 0xff00)
+	AM_RANGE(0x1c0000, 0x1c0001) AM_READ_PORT("IN0") AM_WRITE(equites_scrollreg_w)
+	AM_RANGE(0x380000, 0x380001) AM_WRITE8(equites_bgcolor_w, 0xff00)
+	AM_RANGE(0x780000, 0x780001) AM_DEVWRITE("watchdog", watchdog_timer_device, reset16_w)
+>>>>>>> upstream/master
 ADDRESS_MAP_END
 
 static ADDRESS_MAP_START( gekisou_map, AS_PROGRAM, 16, equites_state )
 	AM_RANGE(0x040000, 0x040fff) AM_RAM AM_SHARE("nvram") // mainram is battery-backed
+<<<<<<< HEAD
 	AM_RANGE(0x580000, 0x580001) AM_MIRROR(0x020000) AM_MASK(0x020000) AM_WRITE(gekisou_unknown_bit_w)
+=======
+	AM_RANGE(0x580000, 0x580001) AM_SELECT(0x020000) AM_WRITE(gekisou_unknown_bit_w)
+>>>>>>> upstream/master
 	AM_IMPORT_FROM( equites_map )
 ADDRESS_MAP_END
 
@@ -683,6 +813,7 @@ static ADDRESS_MAP_START( splndrbt_map, AS_PROGRAM, 16, equites_state )
 	AM_RANGE(0x040000, 0x040fff) AM_RAM
 	AM_RANGE(0x080000, 0x080001) AM_READ_PORT("IN0")
 	AM_RANGE(0x0c0000, 0x0c0001) AM_READ_PORT("IN1")
+<<<<<<< HEAD
 	AM_RANGE(0x0c0000, 0x0c0001) AM_MIRROR(0x020000) AM_MASK(0x020000) AM_WRITE8(equites_bgcolor_w, 0xff00) // note: addressmask does not apply here
 	AM_RANGE(0x0c0000, 0x0c0001) AM_MIRROR(0x020000) AM_MASK(0x020000) AM_WRITE8(equites_flipb_w, 0x00ff)
 	AM_RANGE(0x0c4000, 0x0c4001) AM_MIRROR(0x020000) AM_MASK(0x020000) AM_WRITE(mcu_start_w)
@@ -690,6 +821,12 @@ static ADDRESS_MAP_START( splndrbt_map, AS_PROGRAM, 16, equites_state )
 	AM_RANGE(0x0cc000, 0x0cc001) AM_MIRROR(0x020000) AM_MASK(0x020000) AM_WRITE(splndrbt_selchar_w)
 	AM_RANGE(0x100000, 0x100001) AM_WRITE(splndrbt_bg_scrollx_w)
 	AM_RANGE(0x140000, 0x140001) AM_WRITE8(soundlatch_byte_w, 0x00ff)
+=======
+	AM_RANGE(0x0c0000, 0x0c0001) AM_SELECT(0x020000) AM_WRITE8(equites_bgcolor_w, 0xff00)
+	AM_RANGE(0x0c0000, 0x0c0001) AM_SELECT(0x03c000) AM_DEVWRITE8_MOD("mainlatch", ls259_device, write_a3, rshift<13>, 0x00ff)
+	AM_RANGE(0x100000, 0x100001) AM_WRITE(splndrbt_bg_scrollx_w)
+	AM_RANGE(0x140000, 0x140001) AM_DEVWRITE8("soundlatch", generic_latch_8_device, write, 0x00ff)
+>>>>>>> upstream/master
 	AM_RANGE(0x1c0000, 0x1c0001) AM_WRITE(splndrbt_bg_scrolly_w)
 	AM_RANGE(0x180000, 0x1807ff) AM_READWRITE8(mcu_ram_r, mcu_ram_w, 0x00ff)
 	AM_RANGE(0x200000, 0x200fff) AM_MIRROR(0x001000) AM_READWRITE8(equites_fg_videoram_r, equites_fg_videoram_w, 0x00ff)
@@ -702,7 +839,11 @@ ADDRESS_MAP_END
 
 static ADDRESS_MAP_START( sound_map, AS_PROGRAM, 8, equites_state )
 	AM_RANGE(0x0000, 0xbfff) AM_ROM
+<<<<<<< HEAD
 	AM_RANGE(0xc000, 0xc000) AM_READ(soundlatch_byte_r)
+=======
+	AM_RANGE(0xc000, 0xc000) AM_DEVREAD("soundlatch", generic_latch_8_device, read)
+>>>>>>> upstream/master
 	AM_RANGE(0xc080, 0xc08d) AM_DEVWRITE("msm", msm5232_device, write)
 	AM_RANGE(0xc0a0, 0xc0a1) AM_DEVWRITE("aysnd", ay8910_device, data_address_w)
 	AM_RANGE(0xc0b0, 0xc0b0) AM_WRITENOP // n.c.
@@ -710,11 +851,19 @@ static ADDRESS_MAP_START( sound_map, AS_PROGRAM, 8, equites_state )
 	AM_RANGE(0xc0d0, 0xc0d0) AM_WRITE(equites_dac_latch_w)  // followed by 1 (and usually 0) on 8155 port B
 	AM_RANGE(0xc0e0, 0xc0e0) AM_WRITE(equites_dac_latch_w)  // followed by 2 (and usually 0) on 8155 port B
 	AM_RANGE(0xc0f8, 0xc0ff) AM_WRITE(equites_c0f8_w)
+<<<<<<< HEAD
 	AM_RANGE(0xe000, 0xe0ff) AM_RAM
 ADDRESS_MAP_END
 
 static ADDRESS_MAP_START( sound_portmap, AS_IO, 8, equites_state )
 	AM_RANGE(0x00e0, 0x00e5) AM_WRITE(equites_8155_w)
+=======
+	AM_RANGE(0xe000, 0xe0ff) AM_DEVREADWRITE("audio8155", i8155_device, memory_r, memory_w)
+ADDRESS_MAP_END
+
+static ADDRESS_MAP_START( sound_portmap, AS_IO, 8, equites_state )
+	AM_RANGE(0x00e0, 0x00e7) AM_DEVREADWRITE("audio8155", i8155_device, io_r, io_w)
+>>>>>>> upstream/master
 ADDRESS_MAP_END
 
 
@@ -792,12 +941,20 @@ static INPUT_PORTS_START( gekisou )
 	PORT_START("IN1")
 	PORT_BIT( 0x0100, IP_ACTIVE_HIGH, IPT_COIN1 )
 	PORT_BIT( 0x0200, IP_ACTIVE_HIGH, IPT_COIN2 )
+<<<<<<< HEAD
 	PORT_BIT( 0x0400, IP_ACTIVE_HIGH, IPT_SERVICE) PORT_NAME("Settings") PORT_CODE(KEYCODE_F1)
+=======
+	PORT_BIT( 0x0400, IP_ACTIVE_HIGH, IPT_SERVICE ) // settings
+>>>>>>> upstream/master
 	PORT_BIT( 0x0800, IP_ACTIVE_HIGH, IPT_UNKNOWN )
 	PORT_BIT( 0x1000, IP_ACTIVE_HIGH, IPT_UNKNOWN )
 	PORT_BIT( 0x2000, IP_ACTIVE_HIGH, IPT_UNKNOWN )
 	PORT_BIT( 0x4000, IP_ACTIVE_HIGH, IPT_UNKNOWN )
+<<<<<<< HEAD
 	PORT_BIT( 0x8000, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, equites_state, gekisou_unknown_bit_r, NULL)
+=======
+	PORT_BIT( 0x8000, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, equites_state, gekisou_unknown_bit_r, nullptr)
+>>>>>>> upstream/master
 
 	/* this is actually a variable resistor */
 	PORT_START(FRQ_ADJUSTER_TAG)
@@ -1036,25 +1193,49 @@ static const char *const alphamc07_sample_names[] =
 	"bongo1",
 	"bongo2",
 	"bongo3",
+<<<<<<< HEAD
 	0
+=======
+	nullptr
+>>>>>>> upstream/master
 };
 
 
 #define MSM5232_BASE_VOLUME 1.0
 
 // the sound board is the same in all games
+<<<<<<< HEAD
 static MACHINE_CONFIG_FRAGMENT( common_sound )
+=======
+static MACHINE_CONFIG_START( common_sound )
+>>>>>>> upstream/master
 
 	MCFG_CPU_ADD("audiocpu", I8085A, XTAL_6_144MHz) /* verified on pcb */
 	MCFG_CPU_PROGRAM_MAP(sound_map)
 	MCFG_CPU_IO_MAP(sound_portmap)
+<<<<<<< HEAD
 
 	/* sound hardware */
 	MCFG_SPEAKER_STANDARD_MONO("mono")
+=======
+	MCFG_I8085A_CLK_OUT_DEVICE("audio8155")
+
+	MCFG_DEVICE_ADD("audio8155", I8155, 0)
+	MCFG_I8155_OUT_PORTA_CB(WRITE8(equites_state, equites_8155_porta_w))
+	MCFG_I8155_OUT_PORTB_CB(WRITE8(equites_state, equites_8155_portb_w))
+	MCFG_I8155_OUT_PORTC_CB(WRITE8(equites_state, equites_8155_portc_w))
+	MCFG_I8155_OUT_TIMEROUT_CB(WRITELINE(equites_state, equites_8155_timer_pulse))
+
+	/* sound hardware */
+	MCFG_SPEAKER_STANDARD_MONO("speaker")
+
+	MCFG_GENERIC_LATCH_8_ADD("soundlatch")
+>>>>>>> upstream/master
 
 	MCFG_SOUND_ADD("msm", MSM5232, MSM5232_MAX_CLOCK)   // will be adjusted at runtime through PORT_ADJUSTER
 	MCFG_MSM5232_SET_CAPACITORS(0.47e-6, 0.47e-6, 0.47e-6, 0.47e-6, 0.47e-6, 0.47e-6, 0.47e-6, 0.47e-6) // verified
 	MCFG_MSM5232_GATE_HANDLER_CB(WRITELINE(equites_state, equites_msm5232_gate))
+<<<<<<< HEAD
 	MCFG_SOUND_ROUTE(0, "mono", MSM5232_BASE_VOLUME/2.2)    // pin 28  2'-1 : 22k resistor
 	MCFG_SOUND_ROUTE(1, "mono", MSM5232_BASE_VOLUME/1.5)    // pin 29  4'-1 : 15k resistor
 	MCFG_SOUND_ROUTE(2, "mono", MSM5232_BASE_VOLUME)        // pin 30  8'-1 : 10k resistor
@@ -1066,10 +1247,24 @@ static MACHINE_CONFIG_FRAGMENT( common_sound )
 	MCFG_SOUND_ROUTE(8, "mono", 1.0)        // pin 1 SOLO  8' (this actually feeds an analog section)
 	MCFG_SOUND_ROUTE(9, "mono", 1.0)        // pin 2 SOLO 16' (this actually feeds an analog section)
 	MCFG_SOUND_ROUTE(10,"mono", 0.12)       // pin 22 Noise Output (this actually feeds an analog section)
+=======
+	MCFG_SOUND_ROUTE(0, "speaker", MSM5232_BASE_VOLUME/2.2)    // pin 28  2'-1 : 22k resistor
+	MCFG_SOUND_ROUTE(1, "speaker", MSM5232_BASE_VOLUME/1.5)    // pin 29  4'-1 : 15k resistor
+	MCFG_SOUND_ROUTE(2, "speaker", MSM5232_BASE_VOLUME)        // pin 30  8'-1 : 10k resistor
+	MCFG_SOUND_ROUTE(3, "speaker", MSM5232_BASE_VOLUME)        // pin 31 16'-1 : 10k resistor
+	MCFG_SOUND_ROUTE(4, "speaker", MSM5232_BASE_VOLUME/2.2)    // pin 36  2'-2 : 22k resistor
+	MCFG_SOUND_ROUTE(5, "speaker", MSM5232_BASE_VOLUME/1.5)    // pin 35  4'-2 : 15k resistor
+	MCFG_SOUND_ROUTE(6, "speaker", MSM5232_BASE_VOLUME)        // pin 34  8'-2 : 10k resistor
+	MCFG_SOUND_ROUTE(7, "speaker", MSM5232_BASE_VOLUME)        // pin 33 16'-2 : 10k resistor
+	MCFG_SOUND_ROUTE(8, "speaker", 1.0)        // pin 1 SOLO  8' (this actually feeds an analog section)
+	MCFG_SOUND_ROUTE(9, "speaker", 1.0)        // pin 2 SOLO 16' (this actually feeds an analog section)
+	MCFG_SOUND_ROUTE(10,"speaker", 0.12)       // pin 22 Noise Output (this actually feeds an analog section)
+>>>>>>> upstream/master
 
 	MCFG_SOUND_ADD("aysnd", AY8910, XTAL_6_144MHz/4) /* verified on pcb */
 	MCFG_AY8910_PORT_A_WRITE_CB(WRITE8(equites_state, equites_8910porta_w))
 	MCFG_AY8910_PORT_B_WRITE_CB(WRITE8(equites_state, equites_8910portb_w))
+<<<<<<< HEAD
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 0.15)
 
 	MCFG_DAC_ADD("dac1")
@@ -1077,11 +1272,24 @@ static MACHINE_CONFIG_FRAGMENT( common_sound )
 
 	MCFG_DAC_ADD("dac2")
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 0.50)
+=======
+	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "speaker", 0.15)
+
+	MCFG_SOUND_ADD("dac1", DAC_6BIT_R2R, 0) MCFG_SOUND_ROUTE(ALL_OUTPUTS, "speaker", 0.5) // unknown DAC
+	MCFG_SOUND_ADD("dac2", DAC_6BIT_R2R, 0) MCFG_SOUND_ROUTE(ALL_OUTPUTS, "speaker", 0.5) // unknown DAC
+	MCFG_DEVICE_ADD("vref", VOLTAGE_REGULATOR, 0) MCFG_VOLTAGE_REGULATOR_OUTPUT(5.0)
+	MCFG_SOUND_ROUTE_EX(0, "dac1", 1.0, DAC_VREF_POS_INPUT) MCFG_SOUND_ROUTE_EX(0, "dac1", -1.0, DAC_VREF_NEG_INPUT)
+	MCFG_SOUND_ROUTE_EX(0, "dac2", 1.0, DAC_VREF_POS_INPUT) MCFG_SOUND_ROUTE_EX(0, "dac2", -1.0, DAC_VREF_NEG_INPUT)
+>>>>>>> upstream/master
 
 	MCFG_SOUND_ADD("samples", SAMPLES, 0)
 	MCFG_SAMPLES_CHANNELS(3)
 	MCFG_SAMPLES_NAMES(alphamc07_sample_names)
+<<<<<<< HEAD
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 0.30)
+=======
+	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "speaker", 0.3)
+>>>>>>> upstream/master
 MACHINE_CONFIG_END
 
 /******************************************************************************/
@@ -1124,30 +1332,53 @@ void equites_state::machine_start()
 	save_item(NAME(m_timer_count));
 	save_item(NAME(m_gekisou_unknown_bit));
 
+<<<<<<< HEAD
 	m_nmi_timer = machine().scheduler().timer_alloc(timer_expired_delegate(FUNC(equites_state::equites_nmi_callback), this));
 
+=======
+>>>>>>> upstream/master
 	m_adjuster_timer = machine().scheduler().timer_alloc(timer_expired_delegate(FUNC(equites_state::equites_frq_adjuster_callback), this));
 	m_adjuster_timer->adjust(attotime::from_hz(60), 0, attotime::from_hz(60));
 }
 
 void equites_state::machine_reset()
 {
+<<<<<<< HEAD
 	flip_screen_set(0);
 }
 
 
 static MACHINE_CONFIG_START( equites, equites_state )
+=======
+}
+
+
+static MACHINE_CONFIG_START( equites )
+>>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", M68000, XTAL_12MHz/4) /* 68000P8 running at 3mhz! verified on pcb */
 	MCFG_CPU_PROGRAM_MAP(equites_map)
 	MCFG_TIMER_DRIVER_ADD_SCANLINE("scantimer", equites_state, equites_scanline, "screen", 0, 1)
 
+<<<<<<< HEAD
+=======
+	MCFG_DEVICE_ADD("mainlatch", LS259, 0)
+	MCFG_ADDRESSABLE_LATCH_Q1_OUT_CB(WRITELINE(equites_state, flip_screen_w))
+	MCFG_ADDRESSABLE_LATCH_Q2_OUT_CB(WRITELINE(equites_state, mcu_start_w))
+	MCFG_ADDRESSABLE_LATCH_Q3_OUT_CB(WRITELINE(equites_state, mcu_switch_w))
+
+>>>>>>> upstream/master
 	MCFG_FRAGMENT_ADD(common_sound)
 
 	MCFG_DEVICE_ADD("alpha_8201", ALPHA_8201, 4000000/8) // 8303 or 8304 (same device!)
 	MCFG_QUANTUM_PERFECT_CPU("alpha_8201:mcu")
 
+<<<<<<< HEAD
+=======
+	MCFG_WATCHDOG_ADD("watchdog")
+
+>>>>>>> upstream/master
 	/* video hardware */
 	MCFG_SCREEN_ADD("screen", RASTER)
 	MCFG_SCREEN_REFRESH_RATE(60)
@@ -1179,13 +1410,26 @@ static MACHINE_CONFIG_DERIVED( gekisou, equites )
 MACHINE_CONFIG_END
 
 
+<<<<<<< HEAD
 static MACHINE_CONFIG_START( splndrbt, equites_state )
+=======
+static MACHINE_CONFIG_START( splndrbt )
+>>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", M68000, XTAL_24MHz/4) /* 68000P8 running at 6mhz, verified on pcb */
 	MCFG_CPU_PROGRAM_MAP(splndrbt_map)
 	MCFG_TIMER_DRIVER_ADD_SCANLINE("scantimer", equites_state, splndrbt_scanline, "screen", 0, 1)
 
+<<<<<<< HEAD
+=======
+	MCFG_DEVICE_ADD("mainlatch", LS259, 0)
+	MCFG_ADDRESSABLE_LATCH_Q0_OUT_CB(WRITELINE(equites_state, flip_screen_w))
+	MCFG_ADDRESSABLE_LATCH_Q1_OUT_CB(WRITELINE(equites_state, mcu_start_w))
+	MCFG_ADDRESSABLE_LATCH_Q2_OUT_CB(WRITELINE(equites_state, mcu_switch_w))
+	MCFG_ADDRESSABLE_LATCH_Q3_OUT_CB(WRITELINE(equites_state, splndrbt_selchar_w))
+
+>>>>>>> upstream/master
 	MCFG_FRAGMENT_ADD(common_sound)
 
 	MCFG_DEVICE_ADD("alpha_8201", ALPHA_8201, 4000000/8) // 8303 or 8304 (same device!)
@@ -1366,7 +1610,11 @@ ROM_START( bullfgtr )
 	ROM_LOAD16_BYTE( "hp6vr.bin",  0x04000, 0x2000, CRC(3dfadcf4) SHA1(724d45df0be7073bbe2767f3c0d050c8b45c9d27) )
 	ROM_LOAD16_BYTE( "hp3vr.bin",  0x08001, 0x2000, CRC(d3a21f8a) SHA1(2b3135aaae798eeee5850e616ed6ad8987fbc01b) )
 	ROM_LOAD16_BYTE( "hp7vr.bin",  0x08000, 0x2000, CRC(665cc015) SHA1(17fe18c8f22808a102f48bc4cbc8e4a1f6f9eaf1) )
+<<<<<<< HEAD
 	ROM_FILL(                      0x0c000, 0x4000, 0 )
+=======
+	ROM_FILL(                      0x0c000, 0x4000, 0x00 )
+>>>>>>> upstream/master
 
 	ROM_REGION( 0x10000, "audiocpu", 0 ) // 8085A ROMs
 	ROM_LOAD( "hv1vr.bin", 0x00000, 0x2000, CRC(2a8e6fcf) SHA1(866903408e05938a982ffef4c9b849203c6cc060) )
@@ -1448,7 +1696,11 @@ ROM_START( bullfgtrs )
 	ROM_LOAD16_BYTE( "m_b12.bin",  0x04000, 0x2000, CRC(d98390ef) SHA1(17006503325627055c8b22052d7ed94e474f4ef7) )
 	ROM_LOAD16_BYTE( "m_d10.bin",  0x08001, 0x2000, CRC(21875752) SHA1(016db4125b1a4584ae277af427370780d96a17c5) )
 	ROM_LOAD16_BYTE( "m_b10.bin",  0x08000, 0x2000, CRC(9d84f678) SHA1(32584d54788cb570bd5210992836f28ba9c87aac) )
+<<<<<<< HEAD
 	ROM_FILL(                      0x0c000, 0x4000, 0 )
+=======
+	ROM_FILL(                      0x0c000, 0x4000, 0x00 )
+>>>>>>> upstream/master
 
 	ROM_REGION( 0x10000, "audiocpu", 0 ) // 8085A ROMs
 	ROM_LOAD( "hv1vr.bin", 0x00000, 0x2000, CRC(2a8e6fcf) SHA1(866903408e05938a982ffef4c9b849203c6cc060) )
@@ -1516,7 +1768,11 @@ ROM_START( kouyakyu )
 	ROM_LOAD16_BYTE( "epr-6708.bin", 0x04000, 0x2000, CRC(f8863dc5) SHA1(bfdd294d51420dd70aa97942909a9b8a95ffc05c) )
 	ROM_LOAD16_BYTE( "epr-6706.bin", 0x08001, 0x2000, BAD_DUMP CRC(79e94cd2) SHA1(f44c2292614b46116818fad9a7eb48cceeb3b819)  )  // was bad, manually patched
 	ROM_LOAD16_BYTE( "epr-6709.bin", 0x08000, 0x2000, CRC(f41cb58c) SHA1(f0d1048e949d51432739755f985e4df65b8e918b) )
+<<<<<<< HEAD
 	ROM_FILL(                        0x0c000, 0x4000, 0 )
+=======
+	ROM_FILL(                        0x0c000, 0x4000, 0x00 )
+>>>>>>> upstream/master
 
 	ROM_REGION( 0x10000, "audiocpu", 0 ) // 8085A ROMs
 	ROM_LOAD( "epr-6703.bin", 0x00000, 0x2000, CRC(fbff3a86) SHA1(4ed2887b1e4509ded853a230f735d4d2aa475886) )
@@ -1697,6 +1953,159 @@ ROM_START( splndrbt )
 	ROM_LOAD( "s3.8l",  0x0100, 0x0100, CRC(1314b0b5) SHA1(31ef4b916110581390afc1ba90c5dca7c08c619f) ) // y
 ROM_END
 
+<<<<<<< HEAD
+=======
+ROM_START( splndrbta )
+	ROM_REGION( 0x10000, "maincpu", 0 ) // 68000 ROMs(16k x 4) - Red band on program rom labels
+	ROM_LOAD16_BYTE( "1red.16b", 0x00001, 0x4000, CRC(3e342030) SHA1(82529e12378c0036097a654fe059f82d69fac8e6) )
+	ROM_LOAD16_BYTE( "2red.16c", 0x00000, 0x4000, CRC(757e270b) SHA1(be615829fd21609ded21888e7a75456cbeecb603) )
+	ROM_LOAD16_BYTE( "3red.15b", 0x08001, 0x4000, CRC(788deb02) SHA1(a4e79621bf4cda50dfb8dfab7f70dc4021065794) )
+	ROM_LOAD16_BYTE( "4red.15c", 0x08000, 0x4000, CRC(d02a5606) SHA1(6bb2e5d95ea711452dd40218bd90488d70f82006) )
+
+	ROM_REGION( 0x10000, "audiocpu", 0 ) // 8085A ROMs
+	ROM_LOAD( "8v.1l",  0x00000, 0x4000, CRC(71b2ec29) SHA1(89c630c5bf9c4752b01006183d1419fe6a458f5c) )
+	ROM_LOAD( "9v.1h",  0x04000, 0x4000, CRC(e95abcb5) SHA1(1680875fc16d1a4e1054ccdabdf6fd06d434a163) )
+
+	ROM_REGION( 0x2000, "alpha_8201:mcu", 0 )
+	ROM_LOAD( "alpha-8303_44801b42.bin", 0x0000, 0x2000, CRC(66adcb37) SHA1(e1c72ecb161129dcbddc0b16dd90e716d0c79311) )
+
+	ROM_REGION( 0x2000, "gfx1", 0 ) // chars
+	ROM_LOAD( "10.8c",  0x00000, 0x2000, CRC(501887d4) SHA1(3cf4401d6fddff1500066219a71ac3b30ecbdd28) )
+
+	ROM_REGION( 0x8000, "gfx2", 0 ) // tiles
+	ROM_LOAD( "8.14m",  0x00000, 0x4000, CRC(c2c86621) SHA1(a715c70ace98502f2c0d4a81539cd79d19e9b6c4) )
+	ROM_LOAD( "9.12m",  0x04000, 0x4000, CRC(4f7da6ff) SHA1(0516271df4a36d6ea38d1b8a5e471e1d2a79e8c1) )
+
+	ROM_REGION( 0x10000, "gfx3", 0 )    // sprites
+	ROM_LOAD( "6.18n", 0x00000, 0x2000, CRC(aa72237f) SHA1(0a26746a6c448a7fb853ef708e2bdeb76edd99cf) )
+	// empty space to unpack previous ROM
+	ROM_CONTINUE(      0x04000, 0x2000 )
+	// empty space to unpack previous ROM
+	ROM_LOAD( "5.18m", 0x08000, 0x4000, CRC(5f618b39) SHA1(2891067e71b8e1183ee5741487faa1561316cade) )
+	ROM_LOAD( "7.17m", 0x0c000, 0x4000, CRC(abdd8483) SHA1(df8c8338c24fa487c49b01ce26db7eb28c8c6b85) )
+
+	ROM_REGION( 0x0500, "proms", 0 )
+	ROM_LOAD( "r.3a",   0x0000, 0x100, CRC(ca1f08ce) SHA1(e46e2850d3ee3c8cbb23c10645f07d406c7ff50b) ) // R
+	ROM_LOAD( "g.1a",   0x0100, 0x100, CRC(66f89177) SHA1(caa51c1bf071764d5089487342794cbf023136c0) ) // G
+	ROM_LOAD( "b.2a",   0x0200, 0x100, CRC(d14318bc) SHA1(e219963b3e40eb246e608fbe10daa85dbb4c1226) ) // B
+	ROM_LOAD( "2.8k",   0x0300, 0x100, CRC(e1770ad3) SHA1(e408b175b8fff934e07b0ded1ee21d7f91a9523d) ) // CLUT bg
+	ROM_LOAD( "s5.15p", 0x0400, 0x100, CRC(7f6cf709) SHA1(5938faf937b682dcc83e53444cbf5e0bd7741363) ) // CLUT sprites
+
+	ROM_REGION( 0x0020, "prom", 0 )
+	ROM_LOAD( "3h.bpr", 0x00000, 0x020, CRC(33b98466) SHA1(017c73cf8c17dc5047c89316ae5b45f8d22092e8) )
+
+	ROM_REGION( 0x2100, "user1", 0 ) // bg scaling
+	ROM_LOAD( "0.8h",   0x0000, 0x2000, CRC(12681fb5) SHA1(7a0930819d4cd00475d1897128daa6ac865e07d0) ) // x
+	ROM_LOAD( "1.9j",   0x2000, 0x0100, CRC(f5b9b777) SHA1(a4ec731be77306db6baf319391c4fe78517fe43e) ) // y
+
+	ROM_REGION( 0x0200, "user2", 0 ) // sprite scaling
+	ROM_LOAD( "4.7m",   0x0000, 0x0100, CRC(12cbcd2c) SHA1(a7946820bbf3f7e110a328b673123988af97ce7e) ) // x
+	ROM_LOAD( "s3.8l",  0x0100, 0x0100, CRC(1314b0b5) SHA1(31ef4b916110581390afc1ba90c5dca7c08c619f) ) // y
+ROM_END
+
+ROM_START( splndrbtb )
+	ROM_REGION( 0x10000, "maincpu", 0 ) // 68000 ROMs(16k x 4) - Blue band on program rom labels
+	ROM_LOAD16_BYTE( "1blue.16a", 0x00001, 0x4000, CRC(f8507502) SHA1(35a915db9ef90e45aac8ce9e349c319e99a36810) )
+	ROM_LOAD16_BYTE( "2blue.16c", 0x00000, 0x4000, CRC(8969bd04) SHA1(6cd8a0ab58ce0e4a43cf5ca4fcd10b30962a13b3) )
+	ROM_LOAD16_BYTE( "3blue.15a", 0x08001, 0x4000, CRC(bce26d4f) SHA1(81a295e665af9e46ff28618f2f77f31f41f14a4f) )
+	ROM_LOAD16_BYTE( "4blue.15c", 0x08000, 0x4000, CRC(5715ec1b) SHA1(fddf45a4e1b2fd319b0a47376c11ce2a41c40eb2) )
+
+	ROM_REGION( 0x10000, "audiocpu", 0 ) // 8085A ROMs
+	ROM_LOAD( "1_v.1m", 0x00000, 0x2000, CRC(1b3a6e42) SHA1(41a4f0503c939ec0a739c8bc6bf3c8fc354912ee) )
+	ROM_LOAD( "2_v.1l", 0x02000, 0x2000, CRC(2a618c72) SHA1(6ad459d94352c317150ae6344d4db9bb613938dd) )
+	ROM_LOAD( "3_v.1k", 0x04000, 0x2000, CRC(bbee5346) SHA1(753cb784b04f081fa1f8590dc28056d9918f313b) )
+	ROM_LOAD( "4_v.1h", 0x06000, 0x2000, CRC(10f45af4) SHA1(00fa599bad8bf3ba6deee54165f381403096e8f9) )
+
+	ROM_REGION( 0x2000, "alpha_8201:mcu", 0 )
+	ROM_LOAD( "alpha-8303_44801b42.bin", 0x0000, 0x2000, CRC(66adcb37) SHA1(e1c72ecb161129dcbddc0b16dd90e716d0c79311) )
+
+	ROM_REGION( 0x2000, "gfx1", 0 ) // chars
+	ROM_LOAD( "10.8c",  0x00000, 0x2000, CRC(501887d4) SHA1(3cf4401d6fddff1500066219a71ac3b30ecbdd28) )
+
+	ROM_REGION( 0x8000, "gfx2", 0 ) // tiles
+	ROM_LOAD( "8.14m",  0x00000, 0x4000, CRC(c2c86621) SHA1(a715c70ace98502f2c0d4a81539cd79d19e9b6c4) )
+	ROM_LOAD( "9.12m",  0x04000, 0x4000, CRC(4f7da6ff) SHA1(0516271df4a36d6ea38d1b8a5e471e1d2a79e8c1) )
+
+	ROM_REGION( 0x10000, "gfx3", 0 )    // sprites
+	ROM_LOAD( "6.18n", 0x00000, 0x2000, CRC(aa72237f) SHA1(0a26746a6c448a7fb853ef708e2bdeb76edd99cf) )
+	// empty space to unpack previous ROM
+	ROM_CONTINUE(      0x04000, 0x2000 )
+	// empty space to unpack previous ROM
+	ROM_LOAD( "5.18m", 0x08000, 0x4000, CRC(5f618b39) SHA1(2891067e71b8e1183ee5741487faa1561316cade) )
+	ROM_LOAD( "7.17m", 0x0c000, 0x4000, CRC(abdd8483) SHA1(df8c8338c24fa487c49b01ce26db7eb28c8c6b85) )
+
+	ROM_REGION( 0x0500, "proms", 0 )
+	ROM_LOAD( "r.3a",   0x0000, 0x100, CRC(ca1f08ce) SHA1(e46e2850d3ee3c8cbb23c10645f07d406c7ff50b) ) // R
+	ROM_LOAD( "g.1a",   0x0100, 0x100, CRC(66f89177) SHA1(caa51c1bf071764d5089487342794cbf023136c0) ) // G
+	ROM_LOAD( "b.2a",   0x0200, 0x100, CRC(d14318bc) SHA1(e219963b3e40eb246e608fbe10daa85dbb4c1226) ) // B
+	ROM_LOAD( "2.8k",   0x0300, 0x100, CRC(e1770ad3) SHA1(e408b175b8fff934e07b0ded1ee21d7f91a9523d) ) // CLUT bg
+	ROM_LOAD( "s5.15p", 0x0400, 0x100, CRC(7f6cf709) SHA1(5938faf937b682dcc83e53444cbf5e0bd7741363) ) // CLUT sprites
+
+	ROM_REGION( 0x0020, "prom", 0 )
+	ROM_LOAD( "3h.bpr", 0x00000, 0x020, CRC(33b98466) SHA1(017c73cf8c17dc5047c89316ae5b45f8d22092e8) )
+
+	ROM_REGION( 0x2100, "user1", 0 ) // bg scaling
+	ROM_LOAD( "0.8h",   0x0000, 0x2000, CRC(12681fb5) SHA1(7a0930819d4cd00475d1897128daa6ac865e07d0) ) // x
+	ROM_LOAD( "1.9j",   0x2000, 0x0100, CRC(f5b9b777) SHA1(a4ec731be77306db6baf319391c4fe78517fe43e) ) // y
+
+	ROM_REGION( 0x0200, "user2", 0 ) // sprite scaling
+	ROM_LOAD( "4.7m",   0x0000, 0x0100, CRC(12cbcd2c) SHA1(a7946820bbf3f7e110a328b673123988af97ce7e) ) // x
+	ROM_LOAD( "s3.8l",  0x0100, 0x0100, CRC(1314b0b5) SHA1(31ef4b916110581390afc1ba90c5dca7c08c619f) ) // y
+ROM_END
+
+ROM_START( splndrbt2 )
+	ROM_REGION( 0x10000, "maincpu", 0 ) // 68000 ROMs(16k x 4)
+	ROM_LOAD16_BYTE( "1.a16", 0x00001, 0x4000, CRC(0fd3121d) SHA1(f9767af477442a09a70c04e4d427914557fddcd9) )
+	ROM_LOAD16_BYTE( "2.c16", 0x00000, 0x4000, CRC(227d8a1b) SHA1(8ce976e6d3dce1236a784e48f4829f42c801249c) )
+	ROM_LOAD16_BYTE( "3.a15", 0x08001, 0x4000, CRC(936f7cc9) SHA1(ef1601097659700f4a4b53fb57cd6d73efa03e0d) )
+	ROM_LOAD16_BYTE( "4.c15", 0x08000, 0x4000, CRC(3ff7c7b5) SHA1(4997efd4427f09a5427f752d0147b648fbdce252) )
+
+	ROM_REGION( 0x10000, "audiocpu", 0 ) // 8085A ROMs
+	ROM_LOAD( "s1.m1",  0x00000, 0x02000, CRC(045eac1b) SHA1(49ecc73b999719e470b2ef0afee6a84df620e0d9) )
+	ROM_LOAD( "s2.l1",  0x02000, 0x02000, CRC(65a3d094) SHA1(f6415eb323478a2d38acd4507404d9530fac77c4) )
+	ROM_LOAD( "s3.k1",  0x04000, 0x02000, CRC(980d38be) SHA1(c07f9851cfb6352781568f333d931b4ca08fd888) )
+	ROM_LOAD( "s4.h1",  0x06000, 0x02000, CRC(10f45af4) SHA1(00fa599bad8bf3ba6deee54165f381403096e8f9) )
+	ROM_LOAD( "s5.f1",  0x08000, 0x02000, CRC(0d76cac0) SHA1(15d0d5860035f06020589115b40d347c06d7ecbe) )
+	ROM_LOAD( "s6.e1",  0x0a000, 0x02000, CRC(bc65d469) SHA1(45145974d3ae7040fd00c776418702166c06b0dc) )
+
+	ROM_REGION( 0x2000, "alpha_8201:mcu", 0 )
+	ROM_LOAD( "alpha-8303_44801b42.bin", 0x0000, 0x2000, CRC(66adcb37) SHA1(e1c72ecb161129dcbddc0b16dd90e716d0c79311) )
+
+	ROM_REGION( 0x2000, "gfx1", 0 ) // chars
+	ROM_LOAD( "5.b8",   0x00000, 0x02000, CRC(77a5dc55) SHA1(49f19e8816629b661c135b0db6f6e087eb2690ff) )
+
+	ROM_REGION( 0x8000, "gfx2", 0 ) // tiles
+	ROM_LOAD( "8.m13",  0x00000, 0x4000, CRC(c2c86621) SHA1(a715c70ace98502f2c0d4a81539cd79d19e9b6c4) )
+	ROM_LOAD( "9.m12",  0x04000, 0x4000, CRC(4f7da6ff) SHA1(0516271df4a36d6ea38d1b8a5e471e1d2a79e8c1) )
+
+	ROM_REGION( 0x10000, "gfx3", 0 )    // sprites
+	ROM_LOAD( "8.n18",  0x00000, 0x4000, CRC(15b8277b) SHA1(36d80e9c1200f587cafdf43fafafe844d56296aa) )
+	// empty space to unpack previous ROM
+	// ROM_CONTINUE(       0x04000, 0x2000 )
+	// empty space to unpack previous ROM
+	ROM_LOAD( "5.m18",  0x08000, 0x4000, CRC(5f618b39) SHA1(2891067e71b8e1183ee5741487faa1561316cade) )
+	ROM_LOAD( "7.m17",  0x0c000, 0x4000, CRC(abdd8483) SHA1(df8c8338c24fa487c49b01ce26db7eb28c8c6b85) )
+
+	ROM_REGION( 0x0500, "proms", 0 )
+	ROM_LOAD( "r.3a",   0x0000, 0x100, CRC(ca1f08ce) SHA1(e46e2850d3ee3c8cbb23c10645f07d406c7ff50b) ) // R
+	ROM_LOAD( "g.1a",   0x0100, 0x100, CRC(66f89177) SHA1(caa51c1bf071764d5089487342794cbf023136c0) ) // G
+	ROM_LOAD( "b.2a",   0x0200, 0x100, CRC(d14318bc) SHA1(e219963b3e40eb246e608fbe10daa85dbb4c1226) ) // B
+	ROM_LOAD( "2.8k",   0x0300, 0x100, CRC(e1770ad3) SHA1(e408b175b8fff934e07b0ded1ee21d7f91a9523d) ) // CLUT bg
+	ROM_LOAD( "s5.15p", 0x0400, 0x100, CRC(7f6cf709) SHA1(5938faf937b682dcc83e53444cbf5e0bd7741363) ) // CLUT sprites
+
+	ROM_REGION( 0x0020, "prom", 0 )
+	ROM_LOAD( "3h.bpr", 0x00000, 0x020, CRC(33b98466) SHA1(017c73cf8c17dc5047c89316ae5b45f8d22092e8) )
+
+	ROM_REGION( 0x2100, "user1", 0 ) // bg scaling
+	ROM_LOAD( "0.h7",   0x0000, 0x2000, CRC(12681fb5) SHA1(7a0930819d4cd00475d1897128daa6ac865e07d0) ) // x
+	ROM_LOAD( "1.9j",   0x2000, 0x0100, CRC(f5b9b777) SHA1(a4ec731be77306db6baf319391c4fe78517fe43e) ) // y
+
+	ROM_REGION( 0x0200, "user2", 0 ) // sprite scaling
+	ROM_LOAD( "4.7m",   0x0000, 0x0100, CRC(12cbcd2c) SHA1(a7946820bbf3f7e110a328b673123988af97ce7e) ) // x
+	ROM_LOAD( "s3.8l",  0x0100, 0x0100, CRC(1314b0b5) SHA1(31ef4b916110581390afc1ba90c5dca7c08c619f) ) // y
+ROM_END
+
+>>>>>>> upstream/master
 /******************************************************************************/
 // High Voltage ROM Map
 
@@ -1770,7 +2179,11 @@ ROM_END
 
 void equites_state::unpack_block(const char *region, int offset, int size)
 {
+<<<<<<< HEAD
 	UINT8 *rom = memregion(region)->base();
+=======
+	uint8_t *rom = memregion(region)->base();
+>>>>>>> upstream/master
 
 	for (int i = 0; i < size; i++)
 	{
@@ -1812,5 +2225,12 @@ GAME( 1985, kouyakyu,  0,        equites,  kouyakyu, equites_state, equites,  RO
 GAME( 1985, gekisou,   0,        gekisou,  gekisou,  equites_state, equites,  ROT90, "Eastern Corp.", "Gekisou (Japan)", MACHINE_UNEMULATED_PROTECTION | MACHINE_IMPERFECT_SOUND | MACHINE_IMPERFECT_GRAPHICS | MACHINE_SUPPORTS_SAVE )
 
 // Splendor Blast Hardware
+<<<<<<< HEAD
 GAME( 1985, splndrbt,  0,        splndrbt, splndrbt, equites_state, splndrbt, ROT0,  "Alpha Denshi Co.", "Splendor Blast", MACHINE_IMPERFECT_SOUND | MACHINE_IMPERFECT_GRAPHICS | MACHINE_SUPPORTS_SAVE )
+=======
+GAME( 1985, splndrbt,  0,        splndrbt, splndrbt, equites_state, splndrbt, ROT0,  "Alpha Denshi Co.", "Splendor Blast (set 1)", MACHINE_IMPERFECT_SOUND | MACHINE_IMPERFECT_GRAPHICS | MACHINE_SUPPORTS_SAVE )
+GAME( 1985, splndrbta, splndrbt, splndrbt, splndrbt, equites_state, splndrbt, ROT0,  "Alpha Denshi Co.", "Splendor Blast (set 2)", MACHINE_IMPERFECT_SOUND | MACHINE_IMPERFECT_GRAPHICS | MACHINE_SUPPORTS_SAVE )
+GAME( 1985, splndrbtb, splndrbt, splndrbt, splndrbt, equites_state, splndrbt, ROT0,  "Alpha Denshi Co.", "Splendor Blast (set 3)", MACHINE_IMPERFECT_SOUND | MACHINE_IMPERFECT_GRAPHICS | MACHINE_SUPPORTS_SAVE )
+GAME( 1985, splndrbt2, 0,        splndrbt, splndrbt, equites_state, splndrbt, ROT0,  "Alpha Denshi Co.", "Splendor Blast II", MACHINE_IMPERFECT_SOUND | MACHINE_IMPERFECT_GRAPHICS | MACHINE_SUPPORTS_SAVE )
+>>>>>>> upstream/master
 GAME( 1985, hvoltage,  0,        hvoltage, hvoltage, equites_state, splndrbt, ROT0,  "Alpha Denshi Co.", "High Voltage", MACHINE_UNEMULATED_PROTECTION | MACHINE_IMPERFECT_SOUND | MACHINE_IMPERFECT_GRAPHICS | MACHINE_SUPPORTS_SAVE )

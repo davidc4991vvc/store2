@@ -1,5 +1,9 @@
 // license:BSD-3-Clause
 // copyright-holders:Roberto Fresca
+<<<<<<< HEAD
+=======
+// thanks-to:Iris Falbala, Rob Ragon
+>>>>>>> upstream/master
 /******************************************************************************
 
     MAGIC FLY
@@ -19,7 +23,11 @@
 
     This hardware was clearly designed for poker games.
     You can find a complete hardware & software analysis here:
+<<<<<<< HEAD
     http://www.robertofresca.com.ar/
+=======
+    http://www.robertofresca.com
+>>>>>>> upstream/master
 
 
     Special Thanks to...
@@ -65,6 +73,7 @@
 
 
     PCB Layout:
+<<<<<<< HEAD
      _________________________________________________________________
     |                                                                 |
     |                                                                 |
@@ -162,6 +171,110 @@
 
 
     **** Pins connector ****
+=======
+    .-----------------------------------------------------------------.
+    |                                                                 |
+    |                                                                 |
+    |            POWER                  .---------. .---------.       |
+    |               SUPPLY              | 74LS08N | | 74LS32  |       |
+    |                                   '---------' '---------'       |
+    |                                   .---------. .---------.       |
+    |                                   | 74LS138 | | 74HC00  |       |
+    |                                   '---------' '---------'       |
+    |   .--------------.               .----------------------.       |
+    |   | MK48Z02B-20  |               |       R6502P         |  .----'
+    |   |              |               |                      |  |
+    |   '--------------'               '----------------------'  |
+    | .----------------. .---------.   .----------------------.  |
+    | |    AM27128     | | 74LS157 |   |       MC6845P        |  '----.
+    | |                | '---------'   |                      |   ----|
+    | '----------------' .---------.   '----------------------'   ----|
+    |                    | 74LS157 |     .--------. .---------.   ----|
+    |                    '---------'     | 74LS14 | | 74LS374 |   ----|
+    | .------------.     .---------.     '--------' '---------'   ----|
+    | | 74LS245    |     | 74LS157 |                .---------.   ----|
+    | '------------'     '---------'                | 74HC244 |   ----|
+    | .------------.     .---------.                '---------'   ----|
+    | | 74LS245    |     | 74LS32  |     .-------.                ----| 30x2
+    | '------------'     '---------'     | | | | |                ----| connector
+    | .--------------.                   |4|3|2|1|                ----|
+    | | HM6116       |                   | | | | |                ----|
+    | | o MSM2128    |                   '-------'                ----|
+    | '--------------'                   DIP SW x4                ----|
+    | .--------------.                                            ----|
+    | | HM6116       |   .--------.     .---------.               ----|
+    | | o MSM2128    |   | 74LS08 |     | 74LS174 |               ----|
+    | '--------------'   '--------'     '---------'               ----|
+    | .----------------. .----------.         .------.            ----|
+    | |      2764      | | PAL16R4A |         | TDA  |            ----|
+    | |                | '----------'         | 2002 |            ----|
+    | '----------------' .----------.         '------'            ----|
+    | .----------------. | 74LS166  |    .---.                   .----'
+    | |      2764      | '----------'   / POT \                  |
+    | |                | .----------.   \     /                  |
+    | '----------------' | 74LS166  |    '---'                   '----.
+    | .----------------. '----------'                              .--|
+    | |      2764      | .----------.    .---------.        .------|  |
+    | |                | | 74LS166  |    | 74LS05  |  .---. |SS112D|8 | 10
+    | '----------------' '----------'    '---------' / POT \|------|8 | pins
+    | .--------..------. .----------.    .---------. \     /|SS112D|8 | male
+    | | 74LS04 ||10 MHz| | 74LS193  |    | 74LS86  |  '---' |------|8 | connector
+    | '--------'| XTAL | '----------'    '---------'        |SS112D|8 |
+    |           '------'                                    '------|  |
+    |                                                              '--|
+    '-----------------------------------------------------------------'
+
+
+    Pinouts (from almost unreadable 7mezzo pinout sheet + PCB trace)
+    ----------------------------------------------------------------
+
+    *********** Edge connector ************
+
+       Solder side  |Conn|  Components side
+    ----------------+----+---------------------
+               GND  | 30 |  GND
+          +10V. AC  | 29 |  +10V. AC
+          +10V. AC  | 28 |  +10V. AC
+            unused  | 27 |  unused
+            unused  | 26 |  unused
+               GND  | 25 |  GND
+          +12V. AC  | 24 |  +12V. AC
+          +12V. AC  | 23 |  +12V. AC
+            unused  | 22 |  unused
+      Common C (3)  | 21 |  Common A (1)
+      Common D (4)  | 20 |  Common B (2)
+              Deal  | 19 |  Double
+            Hold 1  | 18 |  Cancel
+            Hold 2  | 17 |  Hold 5
+            Hold 3  | 16 |  Hold 4
+            Meters  | 15 |  Bet
+            Coupon  | 14 |
+                    | 13 |  Coin 1
+      (unreadable)  | 12 |  Coin 2
+              Take  | 11 |  Payout
+     Small (play1)  | 10 |  Big (play3)
+            unused  | 09 |  unused
+            unused  | 08 |  unused
+            unused  | 07 |  unused
+             Green  | 06 |  Red
+              Sync  | 05 |  Blue
+               GND  | 04 |  GND
+          Speaker+  | 03 |  Speaker+
+    Speaker- (GND)  | 02 |  Speaker- (GND)
+              +5V.  | 01 |  +5V.
+
+    (1) = Double, Deal, Cancel, Bet, Meters.
+    (2) = Take, Small, Big, Pay.
+    (3) = Hold 1, Hold 2, Hold 3, Hold 4, Hold 5.
+    (4) = Coin 1, Coin 2, Coupon.
+
+    Note: Each Common GND (A-B-C-D) are for their respective
+    multiplexed groups of inputs, since there are 4 groups
+    with 5 valid inputs each one.
+
+
+    **** 10-Pins connector ****
+>>>>>>> upstream/master
 
     pin 01: (soldered to pin 05)
     pin 02:
@@ -241,12 +354,17 @@
                          Counters.        ; Bits 4-5-6 are used for Coin1, Coin2, and Payout counters.
                          Sound DAC,       ; Bit 7 is used to transmit DAC data.
 
+<<<<<<< HEAD
     $C000 - $FFFF    ROM space       ; Program ROMs.
+=======
+    $C000 - $FFFF    ROM space       ; Program ROM.
+>>>>>>> upstream/master
 
 
 *******************************************************************************
 
 
+<<<<<<< HEAD
     After check the last bit of $1800, code jump into a loop ($DA30)...
 
     BEHAVIOUR OF BOOT CHECK (magicfly):
@@ -258,12 +376,29 @@
     5) Check bit 7 of $1800 (video RAM, 1st offset) if activated.
     6) If not, go to $DA30 (incremented fill infinite loop).
     7) If true, returns and continue to NORMAL GAME.
+=======
+    After check the last bit of $1800, the code jumps into a loop ($DA30)...
+
+    BEHAVIOUR OF BOOT CHECK (magicfly):
+
+    1) Fills the video RAM with spaces (0x20), and color RAM with 0x15.
+    2) Checks bit 7 of $1800 (video RAM, 1st offset) if it's active.
+    3) If true, go to $DA30 (incremented fill infinite loop).
+    4) If not, fills the video RAM with spaces (0x20), and color RAM with 0x1F.
+    5) Checks bit 7 of $1800 (video RAM, 1st offset) if it's active.
+    6) If not, go to $DA30 (incremented fill infinite loop).
+    7) If true, returns and continues to NORMAL GAME.
+>>>>>>> upstream/master
 
     Since bits 0-2 are for regular colors, seems that bit 3 in color RAM
     (bit 2 for 7mezzo) is mirrored to bit 7 through a kind of device.
 
     This is the only explanation I found to allow a normal boot, and seems to be
+<<<<<<< HEAD
     created as a protection method that don't allow owners to use a ROM-swap on
+=======
+    created as a protection method that doesn't allow owners to do a ROM-swap on
+>>>>>>> upstream/master
     their boards, converting from one game to another.
 
 
@@ -434,6 +569,7 @@
 
 *******************************************************************************/
 
+<<<<<<< HEAD
 
 #define MASTER_CLOCK    XTAL_10MHz
 
@@ -442,6 +578,19 @@
 #include "video/mc6845.h"
 #include "sound/dac.h"
 #include "machine/nvram.h"
+=======
+#include "emu.h"
+#include "cpu/m6502/m6502.h"
+#include "machine/nvram.h"
+#include "sound/dac.h"
+#include "sound/volt_reg.h"
+#include "video/mc6845.h"
+#include "screen.h"
+#include "speaker.h"
+
+
+#define MASTER_CLOCK    XTAL_10MHz
+>>>>>>> upstream/master
 
 
 class magicfly_state : public driver_device
@@ -455,8 +604,13 @@ public:
 		m_dac(*this, "dac"),
 		m_gfxdecode(*this, "gfxdecode") { }
 
+<<<<<<< HEAD
 	required_shared_ptr<UINT8> m_videoram;
 	required_shared_ptr<UINT8> m_colorram;
+=======
+	required_shared_ptr<uint8_t> m_videoram;
+	required_shared_ptr<uint8_t> m_colorram;
+>>>>>>> upstream/master
 	tilemap_t *m_bg_tilemap;
 	int m_input_selector;
 	DECLARE_WRITE8_MEMBER(magicfly_videoram_w);
@@ -465,6 +619,7 @@ public:
 	DECLARE_WRITE8_MEMBER(mux_port_w);
 	TILE_GET_INFO_MEMBER(get_magicfly_tile_info);
 	TILE_GET_INFO_MEMBER(get_7mezzo_tile_info);
+<<<<<<< HEAD
 	virtual void video_start();
 	DECLARE_PALETTE_INIT(magicfly);
 	DECLARE_PALETTE_INIT(bchance);
@@ -472,6 +627,15 @@ public:
 	UINT32 screen_update_magicfly(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
 	required_device<cpu_device> m_maincpu;
 	required_device<dac_device> m_dac;
+=======
+	virtual void video_start() override;
+	DECLARE_PALETTE_INIT(magicfly);
+	DECLARE_PALETTE_INIT(bchance);
+	DECLARE_VIDEO_START(7mezzo);
+	uint32_t screen_update_magicfly(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
+	required_device<cpu_device> m_maincpu;
+	required_device<dac_bit_interface> m_dac;
+>>>>>>> upstream/master
 	required_device<gfxdecode_device> m_gfxdecode;
 };
 
@@ -521,7 +685,11 @@ TILE_GET_INFO_MEMBER(magicfly_state::get_magicfly_tile_info)
 
 void magicfly_state::video_start()
 {
+<<<<<<< HEAD
 	m_bg_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(magicfly_state::get_magicfly_tile_info),this), TILEMAP_SCAN_ROWS, 8, 8, 32, 29);
+=======
+	m_bg_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(magicfly_state::get_magicfly_tile_info), this), TILEMAP_SCAN_ROWS, 8, 8, 32, 29);
+>>>>>>> upstream/master
 }
 
 
@@ -550,6 +718,7 @@ TILE_GET_INFO_MEMBER(magicfly_state::get_7mezzo_tile_info)
 	SET_TILE_INFO_MEMBER(bank, code, color, 0);
 }
 
+<<<<<<< HEAD
 VIDEO_START_MEMBER(magicfly_state,7mezzo)
 {
 	m_bg_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(magicfly_state::get_7mezzo_tile_info),this), TILEMAP_SCAN_ROWS, 8, 8, 32, 29);
@@ -557,6 +726,15 @@ VIDEO_START_MEMBER(magicfly_state,7mezzo)
 
 
 UINT32 magicfly_state::screen_update_magicfly(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+=======
+VIDEO_START_MEMBER(magicfly_state, 7mezzo)
+{
+	m_bg_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(magicfly_state::get_7mezzo_tile_info), this), TILEMAP_SCAN_ROWS, 8, 8, 32, 29);
+}
+
+
+uint32_t magicfly_state::screen_update_magicfly(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+>>>>>>> upstream/master
 {
 	m_bg_tilemap->draw(screen, bitmap, cliprect, 0, 0);
 	return 0;
@@ -652,11 +830,19 @@ WRITE8_MEMBER(magicfly_state::mux_port_w)
 */
 	m_input_selector = data & 0x0f; /* Input Selector */
 
+<<<<<<< HEAD
 	m_dac->write_unsigned8(data & 0x80);      /* Sound DAC */
 
 	coin_counter_w(machine(), 0, data & 0x40);  /* Coin1 */
 	coin_counter_w(machine(), 1, data & 0x10);  /* Coin2 */
 	coin_counter_w(machine(), 2, data & 0x20);  /* Payout */
+=======
+	m_dac->write(BIT(data, 7));      /* Sound DAC */
+
+	machine().bookkeeping().coin_counter_w(0, data & 0x40);  /* Coin1 */
+	machine().bookkeeping().coin_counter_w(1, data & 0x10);  /* Coin2 */
+	machine().bookkeeping().coin_counter_w(2, data & 0x20);  /* Payout */
+>>>>>>> upstream/master
 }
 
 
@@ -724,7 +910,11 @@ static INPUT_PORTS_START( magicfly )
 	PORT_BIT( 0x40, IP_ACTIVE_LOW, IPT_UNUSED )
 	PORT_BIT( 0x80, IP_ACTIVE_LOW, IPT_UNUSED )
 
+<<<<<<< HEAD
 	PORT_START("DSW0")    /* Only 4 phisical DIP switches (valid bits = 4, 6, 7) */
+=======
+	PORT_START("DSW0")    /* Only 4 physical DIP switches (valid bits = 4, 6, 7) */
+>>>>>>> upstream/master
 	PORT_BIT( 0x01, IP_ACTIVE_LOW, IPT_UNUSED )
 	PORT_BIT( 0x02, IP_ACTIVE_LOW, IPT_UNUSED )
 	PORT_BIT( 0x04, IP_ACTIVE_LOW, IPT_UNUSED )
@@ -787,7 +977,11 @@ static INPUT_PORTS_START( 7mezzo )
 	PORT_BIT( 0x40, IP_ACTIVE_LOW, IPT_UNUSED )
 	PORT_BIT( 0x80, IP_ACTIVE_LOW, IPT_UNUSED )
 
+<<<<<<< HEAD
 	PORT_START("DSW0")    /* Only 4 phisical DIP switches (valid bits = 4, 6, 7) */
+=======
+	PORT_START("DSW0")    /* Only 4 physical DIP switches (valid bits = 4, 6, 7) */
+>>>>>>> upstream/master
 	PORT_BIT( 0x01, IP_ACTIVE_LOW, IPT_UNUSED )
 	PORT_BIT( 0x02, IP_ACTIVE_LOW, IPT_UNUSED )
 	PORT_BIT( 0x04, IP_ACTIVE_LOW, IPT_UNUSED )
@@ -862,7 +1056,11 @@ static INPUT_PORTS_START( bchance )
 	PORT_BIT( 0x80, IP_ACTIVE_LOW, IPT_UNUSED )
 
 	PORT_START("DSW0")
+<<<<<<< HEAD
 /*  Only 4 phisical DIP switches
+=======
+/*  Only 4 physical DIP switches
+>>>>>>> upstream/master
     (valid bits = 4, 6, 7)
 */
 	PORT_BIT( 0x01, IP_ACTIVE_LOW, IPT_UNUSED )
@@ -923,12 +1121,21 @@ GFXDECODE_END
 *              Machine Drivers               *
 *********************************************/
 
+<<<<<<< HEAD
 static MACHINE_CONFIG_START( magicfly, magicfly_state )
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", M6502, MASTER_CLOCK/16) /* guess */
 	MCFG_CPU_PROGRAM_MAP(magicfly_map)
 	MCFG_CPU_VBLANK_INT_DRIVER("screen", magicfly_state,  nmi_line_pulse)
+=======
+static MACHINE_CONFIG_START( magicfly )
+
+	/* basic machine hardware */
+	MCFG_CPU_ADD("maincpu", M6502, MASTER_CLOCK / 16) /* guess */
+	MCFG_CPU_PROGRAM_MAP(magicfly_map)
+	MCFG_CPU_VBLANK_INT_DRIVER("screen", magicfly_state, nmi_line_pulse)
+>>>>>>> upstream/master
 
 	MCFG_NVRAM_ADD_0FILL("nvram")
 
@@ -945,15 +1152,26 @@ static MACHINE_CONFIG_START( magicfly, magicfly_state )
 	MCFG_PALETTE_ADD("palette", 32)
 	MCFG_PALETTE_INIT_OWNER(magicfly_state, magicfly)
 
+<<<<<<< HEAD
 	MCFG_MC6845_ADD("crtc", MC6845, "screen", MASTER_CLOCK/16) /* guess */
+=======
+	MCFG_MC6845_ADD("crtc", MC6845, "screen", MASTER_CLOCK / 16) /* guess */
+>>>>>>> upstream/master
 	MCFG_MC6845_SHOW_BORDER_AREA(false)
 	MCFG_MC6845_CHAR_WIDTH(8)
 
 	/* sound hardware */
+<<<<<<< HEAD
 	MCFG_SPEAKER_STANDARD_MONO("mono")
 	MCFG_DAC_ADD("dac")
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 0.50)
 
+=======
+	MCFG_SPEAKER_STANDARD_MONO("speaker")
+	MCFG_SOUND_ADD("dac", DAC_1BIT, 0) MCFG_SOUND_ROUTE(ALL_OUTPUTS, "speaker", 0.25)
+	MCFG_DEVICE_ADD("vref", VOLTAGE_REGULATOR, 0) MCFG_VOLTAGE_REGULATOR_OUTPUT(5.0)
+	MCFG_SOUND_ROUTE_EX(0, "dac", 1.0, DAC_VREF_POS_INPUT)
+>>>>>>> upstream/master
 MACHINE_CONFIG_END
 
 
@@ -1047,7 +1265,14 @@ ROM_END
 *                Game Drivers                *
 *********************************************/
 
+<<<<<<< HEAD
 /*    YEAR  NAME      PARENT  MACHINE   INPUT     STATE          INIT   ROT    COMPANY      FULLNAME                         FLAGS... */
 GAME( 198?, magicfly, 0,      magicfly, magicfly, driver_device, 0,     ROT0, "P&A Games", "Magic Fly",                      0 )
 GAME( 198?, 7mezzo,   0,      7mezzo,   7mezzo,   driver_device, 0,     ROT0, "<unknown>", "7 e Mezzo",                      0 )
 GAME( 198?, bchance,  0,      bchance,  bchance,  driver_device, 0,     ROT0, "<unknown>", "Bonne Chance! (French/English)", MACHINE_IMPERFECT_GRAPHICS )
+=======
+//    YEAR  NAME      PARENT  MACHINE   INPUT     STATE           INIT   ROT   COMPANY      FULLNAME                          FLAGS
+GAME( 198?, magicfly, 0,      magicfly, magicfly, magicfly_state, 0,     ROT0, "P&A Games", "Magic Fly",                      0 )
+GAME( 198?, 7mezzo,   0,      7mezzo,   7mezzo,   magicfly_state, 0,     ROT0, "<unknown>", "7 e Mezzo",                      0 )
+GAME( 198?, bchance,  0,      bchance,  bchance,  magicfly_state, 0,     ROT0, "<unknown>", "Bonne Chance! (French/English)", MACHINE_IMPERFECT_GRAPHICS )
+>>>>>>> upstream/master

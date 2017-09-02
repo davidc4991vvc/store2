@@ -69,7 +69,11 @@ READ8_MEMBER( namco_54xx_device::R0_r )
 
 WRITE8_MEMBER( namco_54xx_device::O_w )
 {
+<<<<<<< HEAD
 	UINT8 out = (data & 0x0f);
+=======
+	uint8_t out = (data & 0x0f);
+>>>>>>> upstream/master
 	if (data & 0x10)
 		m_discrete->write(space, NAMCO_54XX_1_DATA(m_basenode), out);
 	else
@@ -78,7 +82,11 @@ WRITE8_MEMBER( namco_54xx_device::O_w )
 
 WRITE8_MEMBER( namco_54xx_device::R1_w )
 {
+<<<<<<< HEAD
 	UINT8 out = (data & 0x0f);
+=======
+	uint8_t out = (data & 0x0f);
+>>>>>>> upstream/master
 
 	m_discrete->write(space, NAMCO_54XX_2_DATA(m_basenode), out);
 }
@@ -108,6 +116,7 @@ WRITE8_MEMBER( namco_54xx_device::write )
     DEVICE INTERFACE
 ***************************************************************************/
 
+<<<<<<< HEAD
 static ADDRESS_MAP_START( namco_54xx_map_io, AS_IO, 8, namco_54xx_device )
 	AM_RANGE(MB88_PORTK,  MB88_PORTK)  AM_READ(K_r)
 	AM_RANGE(MB88_PORTO,  MB88_PORTO)  AM_WRITE(O_w)
@@ -123,17 +132,28 @@ static MACHINE_CONFIG_FRAGMENT( namco_54xx )
 MACHINE_CONFIG_END
 
 
+=======
+>>>>>>> upstream/master
 ROM_START( namco_54xx )
 	ROM_REGION( 0x400, "mcu", 0 )
 	ROM_LOAD( "54xx.bin",     0x0000, 0x0400, CRC(ee7357e0) SHA1(01bdf984a49e8d0cc8761b2cc162fd6434d5afbe) )
 ROM_END
 
+<<<<<<< HEAD
 const device_type NAMCO_54XX = &device_creator<namco_54xx_device>;
 
 namco_54xx_device::namco_54xx_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
 	: device_t(mconfig, NAMCO_54XX, "Namco 54xx", tag, owner, clock, "namco54", __FILE__),
 	m_cpu(*this, "mcu"),
 	m_discrete(*this),
+=======
+DEFINE_DEVICE_TYPE(NAMCO_54XX, namco_54xx_device, "namco54", "Namco 54xx")
+
+namco_54xx_device::namco_54xx_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: device_t(mconfig, NAMCO_54XX, tag, owner, clock),
+	m_cpu(*this, "mcu"),
+	m_discrete(*this, finder_base::DUMMY_TAG),
+>>>>>>> upstream/master
 	m_basenode(0),
 	m_latched_cmd(0)
 {
@@ -147,6 +167,7 @@ void namco_54xx_device::device_start()
 }
 
 //-------------------------------------------------
+<<<<<<< HEAD
 //  device_mconfig_additions - return a pointer to
 //  the device's machine fragment
 //-------------------------------------------------
@@ -155,13 +176,29 @@ machine_config_constructor namco_54xx_device::device_mconfig_additions() const
 {
 	return MACHINE_CONFIG_NAME( namco_54xx  );
 }
+=======
+// device_add_mconfig - add device configuration
+//-------------------------------------------------
+
+MACHINE_CONFIG_MEMBER( namco_54xx_device::device_add_mconfig )
+	MCFG_CPU_ADD("mcu", MB8844, DERIVED_CLOCK(1,1))     /* parent clock, internally divided by 6 */
+	MCFG_MB88XX_READ_K_CB(READ8(namco_54xx_device, K_r))
+	MCFG_MB88XX_WRITE_O_CB(WRITE8(namco_54xx_device, O_w))
+	MCFG_MB88XX_READ_R0_CB(READ8(namco_54xx_device, R0_r))
+	MCFG_MB88XX_WRITE_R1_CB(WRITE8(namco_54xx_device, R1_w))
+MACHINE_CONFIG_END
+>>>>>>> upstream/master
 
 //-------------------------------------------------
 //  device_rom_region - return a pointer to the
 //  the device's ROM definitions
 //-------------------------------------------------
 
+<<<<<<< HEAD
 const rom_entry *namco_54xx_device::device_rom_region() const
+=======
+const tiny_rom_entry *namco_54xx_device::device_rom_region() const
+>>>>>>> upstream/master
 {
 	return ROM_NAME(namco_54xx );
 }

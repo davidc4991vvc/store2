@@ -1,4 +1,5 @@
 // license:BSD-3-Clause
+<<<<<<< HEAD
 // copyright-holders:David Haywood
 
 // CPS2 keys
@@ -225,3 +226,11 @@
 #define PROGEAR_USA_KEY                CRYPT_PARAMS( "639ad8c6","ef130df3", "000000", "400000" )    // 0C81 63A1 B8D3  cmpi.l  #$63A1B8D3,D1
 #define PROGEAR_JAPAN_KEY              CRYPT_PARAMS( "9f7edc56","39fb47be", "000000", "400000" )    // 0C81 63A1 B8D3  cmpi.l  #$63A1B8D3,D1
 #define PROGEAR_ASIA_KEY               CRYPT_PARAMS( "658ab128","fddc9b5e", "000000", "400000" )    // 0C81 63A1 B8D3  cmpi.l  #$63A1B8D3,D1
+=======
+// copyright-holders:Paul Leaman, Andreas Naive, Nicola Salmoria,Charles MacDonald
+/******************************************************************************
+
+CPS-2 Encryption
+
+*/
+>>>>>>> upstream/master

@@ -14,9 +14,15 @@ public:
 	required_device<cpu_device> m_maincpu;
 	required_device<gfxdecode_device> m_gfxdecode;
 
+<<<<<<< HEAD
 	required_shared_ptr<UINT8> m_rambase;
 	required_shared_ptr<UINT8> m_bgvideoram;
 	required_shared_ptr<UINT8> m_fgvideoram;
+=======
+	required_shared_ptr<uint8_t> m_rambase;
+	required_shared_ptr<uint8_t> m_bgvideoram;
+	required_shared_ptr<uint8_t> m_fgvideoram;
+>>>>>>> upstream/master
 
 	int m_videoenable;
 	int m_video_type;
@@ -35,10 +41,18 @@ public:
 
 	DECLARE_DRIVER_INIT(grndtour);
 	DECLARE_DRIVER_INIT(iqblock);
+<<<<<<< HEAD
 	virtual void video_start();
+=======
+	virtual void video_start() override;
+>>>>>>> upstream/master
 
 	TILE_GET_INFO_MEMBER(get_bg_tile_info);
 	TILE_GET_INFO_MEMBER(get_fg_tile_info);
 
+<<<<<<< HEAD
 	UINT32 screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
+=======
+	uint32_t screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
+>>>>>>> upstream/master
 };

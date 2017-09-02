@@ -18,7 +18,11 @@
 //  DEVICE DEFINITIONS
 //**************************************************************************
 
+<<<<<<< HEAD
 const device_type MPC105 = &device_creator<mpc105_device>;
+=======
+DEFINE_DEVICE_TYPE(MPC105, mpc105_device, "mpc105", "Motorola MPC105")
+>>>>>>> upstream/master
 
 
 //**************************************************************************
@@ -29,8 +33,13 @@ const device_type MPC105 = &device_creator<mpc105_device>;
 //  mpc105_device - constructor
 //-------------------------------------------------
 
+<<<<<<< HEAD
 mpc105_device::mpc105_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
 	: device_t(mconfig, MPC105, "MPC105", tag, owner, clock, "mpc105", __FILE__),
+=======
+mpc105_device::mpc105_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: device_t(mconfig, MPC105, tag, owner, clock),
+>>>>>>> upstream/master
 	pci_device_interface( mconfig, *this ),
 	m_cpu_tag(nullptr),
 	m_bank_base_default(0),
@@ -93,7 +102,11 @@ void mpc105_device::update_memory()
 				|   (((m_bank_registers[(bank / 4) + 6] >> (bank % 4) * 8)) & 0x03) << 28
 				| 0x000FFFFF;
 
+<<<<<<< HEAD
 			end = MIN(end, begin + machine().device<ram_device>(RAM_TAG)->size() - 1);
+=======
+			end = std::min(end, begin + machine().device<ram_device>(RAM_TAG)->size() - 1);
+>>>>>>> upstream/master
 
 			if ((begin + 0x100000) <= end)
 			{
@@ -102,7 +115,11 @@ void mpc105_device::update_memory()
 
 				if (m_bank_base > 0)
 				{
+<<<<<<< HEAD
 					sprintf(bank_str,"bank%d",bank + m_bank_base);
+=======
+					sprintf(bank_str,"bank%d",uint8_t(bank + m_bank_base));
+>>>>>>> upstream/master
 					membank(bank_str)->set_base(machine().device<ram_device>(RAM_TAG)->pointer());
 				}
 			}
@@ -114,9 +131,15 @@ void mpc105_device::update_memory()
 //  pci_read - implementation of PCI read
 //-------------------------------------------------
 
+<<<<<<< HEAD
 UINT32 mpc105_device::pci_read(pci_bus_device *pcibus, int function, int offset, UINT32 mem_mask)
 {
 	UINT32 result;
+=======
+uint32_t mpc105_device::pci_read(pci_bus_device *pcibus, int function, int offset, uint32_t mem_mask)
+{
+	uint32_t result;
+>>>>>>> upstream/master
 
 	if (function != 0)
 		return 0;
@@ -191,7 +214,11 @@ UINT32 mpc105_device::pci_read(pci_bus_device *pcibus, int function, int offset,
 //  pci_write - implementation of PCI write
 //-------------------------------------------------
 
+<<<<<<< HEAD
 void mpc105_device::pci_write(pci_bus_device *pcibus, int function, int offset, UINT32 data, UINT32 mem_mask)
+=======
+void mpc105_device::pci_write(pci_bus_device *pcibus, int function, int offset, uint32_t data, uint32_t mem_mask)
+>>>>>>> upstream/master
 {
 	int i;
 	if (function != 0)
@@ -216,9 +243,15 @@ void mpc105_device::pci_write(pci_bus_device *pcibus, int function, int offset, 
 			break;
 
 		case 0xA0:  /* memory enable */
+<<<<<<< HEAD
 			if (m_bank_enable != (UINT8) data)
 			{
 				m_bank_enable = (UINT8) data;
+=======
+			if (m_bank_enable != (uint8_t) data)
+			{
+				m_bank_enable = (uint8_t) data;
+>>>>>>> upstream/master
 				update_memory();
 			}
 			break;

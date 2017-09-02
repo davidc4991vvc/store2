@@ -98,9 +98,18 @@ Dip Locations and factory settings verified with manual
 ***************************************************************************/
 
 #include "emu.h"
+<<<<<<< HEAD
 #include "cpu/z80/z80.h"
 #include "sound/ay8910.h"
 #include "includes/bombjack.h"
+=======
+#include "includes/bombjack.h"
+
+#include "cpu/z80/z80.h"
+#include "sound/ay8910.h"
+#include "screen.h"
+#include "speaker.h"
+>>>>>>> upstream/master
 
 
 TIMER_CALLBACK_MEMBER(bombjack_state::soundlatch_callback)
@@ -351,7 +360,11 @@ INTERRUPT_GEN_MEMBER(bombjack_state::vblank_irq)
 		device.execute().set_input_line(INPUT_LINE_NMI, PULSE_LINE);
 }
 
+<<<<<<< HEAD
 static MACHINE_CONFIG_START( bombjack, bombjack_state )
+=======
+static MACHINE_CONFIG_START( bombjack )
+>>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", Z80, XTAL_4MHz)     /* Confirmed from PCB */
@@ -504,6 +517,12 @@ ROM_END
  *
  *************************************/
 
+<<<<<<< HEAD
 GAME( 1984, bombjack,  0,        bombjack, bombjack, driver_device, 0, ROT90, "Tehkan", "Bomb Jack (set 1)", MACHINE_SUPPORTS_SAVE )
 GAME( 1984, bombjack2, bombjack, bombjack, bombjack, driver_device, 0, ROT90, "Tehkan", "Bomb Jack (set 2)", MACHINE_SUPPORTS_SAVE )
 GAME( 1984, bombjackt, bombjack, bombjack, bombjack, driver_device, 0, ROT90, "Tehkan (Tecfri licence)", "Bomb Jack (Tecfri, Spain)", MACHINE_SUPPORTS_SAVE ) // official licence
+=======
+GAME( 1984, bombjack,  0,        bombjack, bombjack, bombjack_state, 0, ROT90, "Tehkan", "Bomb Jack (set 1)", MACHINE_SUPPORTS_SAVE )
+GAME( 1984, bombjack2, bombjack, bombjack, bombjack, bombjack_state, 0, ROT90, "Tehkan", "Bomb Jack (set 2)", MACHINE_SUPPORTS_SAVE )
+GAME( 1984, bombjackt, bombjack, bombjack, bombjack, bombjack_state, 0, ROT90, "Tehkan (Tecfri licence)", "Bomb Jack (Tecfri, Spain)", MACHINE_SUPPORTS_SAVE ) // official licence
+>>>>>>> upstream/master

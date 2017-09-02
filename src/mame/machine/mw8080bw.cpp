@@ -1,5 +1,11 @@
+<<<<<<< HEAD
 // license:???
 // copyright-holders:Michael Strutts, Nicola Salmoria, Tormod Tjaberg, Mirko Buffoni,Lee Taylor, Valerio Verrando, Marco Cassili, Zsolt Vasvari
+=======
+// license:BSD-3-Clause
+// copyright-holders:Nicola Salmoria, Tormod Tjaberg, Mirko Buffoni,Lee Taylor, Valerio Verrando, Zsolt Vasvari
+// thanks-to:Michael Strutts, Marco Cassili
+>>>>>>> upstream/master
 /***************************************************************************
 
     Midway 8080-based black and white hardware
@@ -15,10 +21,17 @@
  *
  *************************************/
 
+<<<<<<< HEAD
 UINT8 mw8080bw_state::vpos_to_vysnc_chain_counter( int vpos )
 {
 	/* convert from a vertical position to the actual values on the vertical sync counters */
 	UINT8 counter;
+=======
+uint8_t mw8080bw_state::vpos_to_vysnc_chain_counter( int vpos )
+{
+	/* convert from a vertical position to the actual values on the vertical sync counters */
+	uint8_t counter;
+>>>>>>> upstream/master
 	int vblank = (vpos >= MW8080BW_VBSTART);
 
 	if (vblank)
@@ -30,7 +43,11 @@ UINT8 mw8080bw_state::vpos_to_vysnc_chain_counter( int vpos )
 }
 
 
+<<<<<<< HEAD
 int mw8080bw_state::vysnc_chain_counter_to_vpos( UINT8 counter, int vblank )
+=======
+int mw8080bw_state::vysnc_chain_counter_to_vpos( uint8_t counter, int vblank )
+>>>>>>> upstream/master
 {
 	/* convert from the vertical sync counters to an actual vertical position */
 	int vpos;
@@ -46,14 +63,23 @@ int mw8080bw_state::vysnc_chain_counter_to_vpos( UINT8 counter, int vblank )
 
 TIMER_CALLBACK_MEMBER(mw8080bw_state::mw8080bw_interrupt_callback)
 {
+<<<<<<< HEAD
 	UINT8 next_counter;
+=======
+	uint8_t next_counter;
+>>>>>>> upstream/master
 	int next_vpos;
 	int next_vblank;
 
 	/* compute vector and set the interrupt line */
 	int vpos = m_screen->vpos();
+<<<<<<< HEAD
 	UINT8 counter = vpos_to_vysnc_chain_counter(vpos);
 	UINT8 vector = 0xc7 | ((counter & 0x40) >> 2) | ((~counter & 0x40) >> 3);
+=======
+	uint8_t counter = vpos_to_vysnc_chain_counter(vpos);
+	uint8_t vector = 0xc7 | ((counter & 0x40) >> 2) | ((~counter & 0x40) >> 3);
+>>>>>>> upstream/master
 	m_maincpu->set_input_line_and_vector(0, HOLD_LINE, vector);
 
 	/* set up for next interrupt */

@@ -51,10 +51,19 @@ Note: SW2, SW3 & SW4 not populated
 
 
 #include "emu.h"
+<<<<<<< HEAD
 #include "cpu/z80/z80.h"
 #include "sound/okim6295.h"
 #include "includes/funybubl.h"
 
+=======
+#include "includes/funybubl.h"
+
+#include "cpu/z80/z80.h"
+#include "screen.h"
+#include "speaker.h"
+
+>>>>>>> upstream/master
 
 WRITE8_MEMBER(funybubl_state::funybubl_vidram_bank_w)
 {
@@ -69,13 +78,21 @@ WRITE8_MEMBER(funybubl_state::funybubl_cpurombank_w)
 
 WRITE8_MEMBER(funybubl_state::funybubl_soundcommand_w)
 {
+<<<<<<< HEAD
 	soundlatch_byte_w(space, 0, data);
+=======
+	m_soundlatch->write(space, 0, data);
+>>>>>>> upstream/master
 	m_audiocpu->set_input_line(0, HOLD_LINE);
 }
 
 WRITE8_MEMBER(funybubl_state::funybubl_oki_bank_sw)
 {
+<<<<<<< HEAD
 	m_oki->set_bank_base(((data & 1) * 0x40000));
+=======
+	m_oki->set_rom_bank(data & 1);
+>>>>>>> upstream/master
 }
 
 
@@ -105,7 +122,11 @@ static ADDRESS_MAP_START( sound_map, AS_PROGRAM, 8, funybubl_state )
 	AM_RANGE(0x8000, 0x87ff) AM_RAM
 	AM_RANGE(0x9000, 0x9000) AM_WRITE(funybubl_oki_bank_sw)
 	AM_RANGE(0x9800, 0x9800) AM_DEVREADWRITE("oki", okim6295_device, read, write)
+<<<<<<< HEAD
 	AM_RANGE(0xa000, 0xa000) AM_READ(soundlatch_byte_r)
+=======
+	AM_RANGE(0xa000, 0xa000) AM_DEVREAD("soundlatch", generic_latch_8_device, read)
+>>>>>>> upstream/master
 ADDRESS_MAP_END
 
 
@@ -202,7 +223,11 @@ GFXDECODE_END
 
 void funybubl_state::machine_start()
 {
+<<<<<<< HEAD
 	UINT8 *ROM = memregion("maincpu")->base();
+=======
+	uint8_t *ROM = memregion("maincpu")->base();
+>>>>>>> upstream/master
 
 
 	save_item(NAME(m_banked_vram));
@@ -214,7 +239,11 @@ void funybubl_state::machine_start()
 }
 
 
+<<<<<<< HEAD
 static MACHINE_CONFIG_START( funybubl, funybubl_state )
+=======
+static MACHINE_CONFIG_START( funybubl )
+>>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", Z80,12000000/2)      /* 6 MHz?? */
@@ -243,7 +272,13 @@ static MACHINE_CONFIG_START( funybubl, funybubl_state )
 	/* sound hardware */
 	MCFG_SPEAKER_STANDARD_MONO("mono")
 
+<<<<<<< HEAD
 	MCFG_OKIM6295_ADD("oki", 1056000, OKIM6295_PIN7_HIGH) // clock frequency & pin 7 not verified
+=======
+	MCFG_GENERIC_LATCH_8_ADD("soundlatch")
+
+	MCFG_OKIM6295_ADD("oki", 1056000, PIN7_HIGH) // clock frequency & pin 7 not verified
+>>>>>>> upstream/master
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 1.0)
 MACHINE_CONFIG_END
 
@@ -310,5 +345,10 @@ ROM_START( funybublc )
 ROM_END
 
 
+<<<<<<< HEAD
 GAME( 1999, funybubl, 0,        funybubl, funybubl, driver_device, 0, ROT0, "In Chang Electronic Co", "Funny Bubble", MACHINE_SUPPORTS_SAVE )
 GAME( 1999, funybublc,funybubl, funybubl, funybubl, driver_device, 0, ROT0, "Comad", "Funny Bubble (Comad version)", MACHINE_SUPPORTS_SAVE )
+=======
+GAME( 1999, funybubl, 0,        funybubl, funybubl, funybubl_state, 0, ROT0, "In Chang Electronic Co", "Funny Bubble", MACHINE_SUPPORTS_SAVE )
+GAME( 1999, funybublc,funybubl, funybubl, funybubl, funybubl_state, 0, ROT0, "Comad", "Funny Bubble (Comad version)", MACHINE_SUPPORTS_SAVE )
+>>>>>>> upstream/master

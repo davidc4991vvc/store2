@@ -1,9 +1,17 @@
 // license:BSD-3-Clause
+<<<<<<< HEAD
 // copyright-holders:K.Wilkins
 #pragma once
 
 #ifndef __DISC_FLTH__
 #define __DISC_FLT_H__
+=======
+// copyright-holders:K.Wilkins,Couriersud,Derrick Renaud,Frank Palazzolo
+#ifndef MAME_SOUND_DISC_FLT_H
+#define MAME_SOUND_DISC_FLT_H
+
+#pragma once
+>>>>>>> upstream/master
 
 /***********************************************************************
  *
@@ -49,8 +57,13 @@ DISCRETE_CLASS_STEP_RESET(dst_crfilter, 1,
 	double          m_vCap;
 	double          m_rc;
 	double          m_exponent;
+<<<<<<< HEAD
 	UINT8           m_has_rc_nodes;
 	//UINT8           m_is_fast;
+=======
+	uint8_t           m_has_rc_nodes;
+	//uint8_t           m_is_fast;
+>>>>>>> upstream/master
 );
 
 DISCRETE_CLASS_STEP_RESET(dst_op_amp_filt, 1,
@@ -148,8 +161,13 @@ DISCRETE_CLASS_STEP_RESET(dst_rcfilter, 1,
 	double          m_vCap;
 	double          m_rc;
 	double          m_exponent;
+<<<<<<< HEAD
 	UINT8           m_has_rc_nodes;
 	UINT8           m_is_fast;
+=======
+	uint8_t           m_has_rc_nodes;
+	uint8_t           m_is_fast;
+>>>>>>> upstream/master
 );
 
 DISCRETE_CLASS_STEP_RESET(dst_rcfilter_sw, 1,
@@ -177,4 +195,8 @@ DISCRETE_CLASS_STEP_RESET(dst_rcdisc2N, 1,
 );
 
 
+<<<<<<< HEAD
 #endif /* __DISC_FLT_H__ */
+=======
+#endif // MAME_SOUND_DISC_FLT_H
+>>>>>>> upstream/master

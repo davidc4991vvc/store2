@@ -7,7 +7,11 @@
 *************************************************************************/
 
 #include "machine/alpha8201.h"
+<<<<<<< HEAD
 #include "sound/dac.h"
+=======
+#include "machine/watchdog.h"
+>>>>>>> upstream/master
 
 
 class champbas_state : public driver_device
@@ -18,8 +22,12 @@ public:
 		m_maincpu(*this, "maincpu"),
 		m_audiocpu(*this, "audiocpu"),
 		m_alpha_8201(*this, "alpha_8201"),
+<<<<<<< HEAD
 		m_dac1(*this, "dac1"),
 		m_dac2(*this, "dac2"),
+=======
+		m_watchdog(*this, "watchdog"),
+>>>>>>> upstream/master
 		m_gfxdecode(*this, "gfxdecode"),
 		m_palette(*this, "palette"),
 		m_mainram(*this, "mainram"),
@@ -32,6 +40,7 @@ public:
 	required_device<cpu_device> m_maincpu;
 	optional_device<cpu_device> m_audiocpu;
 	optional_device<alpha_8201_device> m_alpha_8201;
+<<<<<<< HEAD
 	optional_device<dac_device> m_dac1;
 	optional_device<dac_device> m_dac2;
 	required_device<gfxdecode_device> m_gfxdecode;
@@ -52,6 +61,27 @@ public:
 	DECLARE_WRITE8_MEMBER(irq_enable_w);
 	DECLARE_WRITE8_MEMBER(mcu_switch_w);
 	DECLARE_WRITE8_MEMBER(mcu_start_w);
+=======
+	required_device<watchdog_timer_device> m_watchdog;
+	required_device<gfxdecode_device> m_gfxdecode;
+	required_device<palette_device> m_palette;
+
+	required_shared_ptr<uint8_t> m_mainram;
+	required_shared_ptr<uint8_t> m_vram;
+	required_shared_ptr<uint8_t> m_spriteram;
+	optional_shared_ptr<uint8_t> m_spriteram2;
+
+	// internal state
+	uint8_t m_irq_mask;
+	tilemap_t *m_bg_tilemap;
+	uint8_t m_gfx_bank;
+	uint8_t m_palette_bank;
+
+	// handlers
+	DECLARE_WRITE_LINE_MEMBER(irq_enable_w);
+	DECLARE_WRITE_LINE_MEMBER(mcu_switch_w);
+	DECLARE_WRITE_LINE_MEMBER(mcu_start_w);
+>>>>>>> upstream/master
 	DECLARE_READ8_MEMBER(champbja_protection_r);
 
 	DECLARE_CUSTOM_INPUT_MEMBER(watchdog_bit2);
@@ -59,6 +89,7 @@ public:
 	INTERRUPT_GEN_MEMBER(vblank_irq);
 	TIMER_DEVICE_CALLBACK_MEMBER(exctsccr_sound_irq);
 
+<<<<<<< HEAD
 	DECLARE_WRITE8_MEMBER(dac1_w);
 	DECLARE_WRITE8_MEMBER(dac2_w);
 
@@ -66,6 +97,12 @@ public:
 	DECLARE_WRITE8_MEMBER(gfxbank_w);
 	DECLARE_WRITE8_MEMBER(palette_bank_w);
 	DECLARE_WRITE8_MEMBER(flipscreen_w);
+=======
+	DECLARE_WRITE8_MEMBER(tilemap_w);
+	DECLARE_WRITE_LINE_MEMBER(gfxbank_w);
+	DECLARE_WRITE_LINE_MEMBER(palette_bank_w);
+	DECLARE_WRITE_LINE_MEMBER(flipscreen_w);
+>>>>>>> upstream/master
 
 	DECLARE_DRIVER_INIT(exctsccr);
 	DECLARE_DRIVER_INIT(champbas);
@@ -77,6 +114,7 @@ public:
 	TILE_GET_INFO_MEMBER(champbas_get_bg_tile_info);
 	TILE_GET_INFO_MEMBER(exctsccr_get_bg_tile_info);
 
+<<<<<<< HEAD
 	UINT32 screen_update_champbas(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
 	UINT32 screen_update_exctsccr(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
 	void champbas_draw_sprites(bitmap_ind16 &bitmap, const rectangle &cliprect);
@@ -84,4 +122,13 @@ public:
 
 	virtual void machine_start();
 	virtual void machine_reset();
+=======
+	uint32_t screen_update_champbas(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
+	uint32_t screen_update_exctsccr(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
+	void champbas_draw_sprites(bitmap_ind16 &bitmap, const rectangle &cliprect);
+	void exctsccr_draw_sprites(bitmap_ind16 &bitmap, const rectangle &cliprect);
+
+	virtual void machine_start() override;
+	virtual void machine_reset() override;
+>>>>>>> upstream/master
 };

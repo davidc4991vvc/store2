@@ -18,8 +18,13 @@
 --
 
 	function xcode.buildprjtree(prj)
+<<<<<<< HEAD
 		local tr = premake.project.buildsourcetree(prj)
 		
+=======
+		local tr = premake.project.buildsourcetree(prj, true)
+
+>>>>>>> upstream/master
 		-- create a list of build configurations and assign IDs
 		tr.configs = {}
 		for _, cfgname in ipairs(prj.solution.configurations) do
@@ -31,14 +36,22 @@
 				table.insert(tr.configs, cfg)
 			end
 		end
+<<<<<<< HEAD
 		
+=======
+
+>>>>>>> upstream/master
 		-- convert localized resources from their filesystem layout (English.lproj/MainMenu.xib)
 		-- to Xcode's display layout (MainMenu.xib/English).
 		tree.traverse(tr, {
 			onbranch = function(node)
 				if path.getextension(node.name) == ".lproj" then
 					local lang = path.getbasename(node.name)  -- "English", "French", etc.
+<<<<<<< HEAD
 					
+=======
+
+>>>>>>> upstream/master
 					-- create a new language group for each file it contains
 					for _, filenode in ipairs(node.children) do
 						local grpnode = node.parent.children[filenode.name]
@@ -46,18 +59,39 @@
 							grpnode = tree.insert(node.parent, tree.new(filenode.name))
 							grpnode.kind = "vgroup"
 						end
+<<<<<<< HEAD
 						
+=======
+
+>>>>>>> upstream/master
 						-- convert the file node to a language node and add to the group
 						filenode.name = path.getbasename(lang)
 						tree.insert(grpnode, filenode)
 					end
+<<<<<<< HEAD
 					
+=======
+
+>>>>>>> upstream/master
 					-- remove this directory from the tree
 					tree.remove(node)
 				end
 			end
 		})
+<<<<<<< HEAD
 		
+=======
+
+		-- fix .xcassets files, they should be treated as a file, not a folder
+		tree.traverse(tr, {
+			onbranch = function(node)
+				if path.getextension(node.name) == ".xcassets" then
+					node.children = {}
+				end
+			end
+		})
+
+>>>>>>> upstream/master
 		-- the special folder "Frameworks" lists all linked frameworks
 		tr.frameworks = tree.new("Frameworks")
 		for cfg in premake.eachconfig(prj) do
@@ -69,12 +103,21 @@
 				end
 			end
 		end
+<<<<<<< HEAD
 		
 		-- only add it to the tree if there are frameworks to link
 		if #tr.frameworks.children > 0 then 
 			tree.insert(tr, tr.frameworks)
 		end
 		
+=======
+
+		-- only add it to the tree if there are frameworks to link
+		if #tr.frameworks.children > 0 then
+			tree.insert(tr, tr.frameworks)
+		end
+
+>>>>>>> upstream/master
 		-- the special folder "Products" holds the target produced by the project; this
 		-- is populated below
 		tr.products = tree.insert(tr, tree.new("Products"))
@@ -91,7 +134,11 @@
 			xcnode.productproxyid = xcode.newid(xcnode, "prodprox")
 			xcnode.targetproxyid  = xcode.newid(xcnode, "targprox")
 			xcnode.targetdependid = xcode.newid(xcnode, "targdep")
+<<<<<<< HEAD
 			
+=======
+
+>>>>>>> upstream/master
 			-- create a grandchild node for the dependency's link target
 			local cfg = premake.getconfig(dep, prj.configurations[1])
 			node = tree.insert(xcnode, tree.new(cfg.linktarget.name))
@@ -108,7 +155,11 @@
 			onnode = function(node)
 				-- assign IDs to every node in the tree
 				node.id = xcode.newid(node)
+<<<<<<< HEAD
 				
+=======
+
+>>>>>>> upstream/master
 				-- assign build IDs to buildable files
 				if xcode.getbuildcategory(node) then
 					node.buildid = xcode.newid(node, "build")
@@ -117,7 +168,14 @@
 				-- remember key files that are needed elsewhere
 				if string.endswith(node.name, "Info.plist") then
 					tr.infoplist = node
+<<<<<<< HEAD
 				end						
+=======
+				end
+				if string.endswith(node.name, ".entitlements") then
+					tr.entitlements = node
+				end
+>>>>>>> upstream/master
 			end
 		}, true)
 
@@ -156,10 +214,17 @@
 		xcode.PBXReferenceProxy(tr)
 		xcode.PBXResourcesBuildPhase(tr)
 		xcode.PBXShellScriptBuildPhase(tr)
+<<<<<<< HEAD
 		xcode.PBXSourcesBuildPhase(tr)
 		xcode.PBXVariantGroup(tr)
 		xcode.PBXTargetDependency(tr)
 		xcode.XCBuildConfiguration(tr)
+=======
+		xcode.PBXSourcesBuildPhase(tr,prj)
+		xcode.PBXVariantGroup(tr)
+		xcode.PBXTargetDependency(tr)
+		xcode.XCBuildConfiguration(tr, prj)
+>>>>>>> upstream/master
 		xcode.XCBuildConfigurationList(tr)
 		xcode.Footer(tr)
 	end

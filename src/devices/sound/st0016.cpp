@@ -8,12 +8,21 @@
 #include "emu.h"
 #include "st0016.h"
 
+<<<<<<< HEAD
 #define VERBOSE (0)
 #define LOG(x) do { if (VERBOSE) logerror x; } while (0)
 
 
 // device type definition
 const device_type ST0016 = &device_creator<st0016_device>;
+=======
+//#define VERBOSE 1
+#include "logmacro.h"
+
+
+// device type definition
+DEFINE_DEVICE_TYPE(ST0016, st0016_device, "st0016", "Seta ST0016 (Audio)")
+>>>>>>> upstream/master
 
 
 //**************************************************************************
@@ -24,6 +33,7 @@ const device_type ST0016 = &device_creator<st0016_device>;
 //  st0016_device - constructor
 //-------------------------------------------------
 
+<<<<<<< HEAD
 st0016_device::st0016_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
 	: device_t(mconfig, ST0016, "ST0016 (Audio)", tag, owner, clock, "st0016_audio", __FILE__),
 		device_sound_interface(mconfig, *this),
@@ -34,6 +44,18 @@ st0016_device::st0016_device(const machine_config &mconfig, const char *tag, dev
 	memset(m_frac, 0, sizeof(int)*8);
 	memset(m_lponce, 0, sizeof(int)*8);
 	memset(m_regs, 0, sizeof(UINT8)*0x100);
+=======
+st0016_device::st0016_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: device_t(mconfig, ST0016, tag, owner, clock)
+	, device_sound_interface(mconfig, *this)
+	, m_stream(nullptr)
+	, m_ram_read_cb(*this)
+	, m_vpos{ 0, 0, 0, 0, 0, 0, 0, 0 }
+	, m_frac{ 0, 0, 0, 0, 0, 0, 0, 0 }
+	, m_lponce{ 0, 0, 0, 0, 0, 0, 0, 0 }
+{
+	std::fill(std::begin(m_regs), std::end(m_regs), 0);
+>>>>>>> upstream/master
 }
 
 
@@ -61,9 +83,15 @@ void st0016_device::sound_stream_update(sound_stream &stream, stream_sample_t **
 {
 	int v, i, snum;
 	unsigned char *slot;
+<<<<<<< HEAD
 	INT32 mix[48000*2];
 	INT32 *mixp;
 	INT16 sample;
+=======
+	int32_t mix[48000*2];
+	int32_t *mixp;
+	int16_t sample;
+>>>>>>> upstream/master
 	int sptr, eptr, freq, lsptr, leptr;
 
 	memset(mix, 0, sizeof(mix[0])*samples*2);
@@ -152,13 +180,21 @@ WRITE8_MEMBER( st0016_device::st0016_snd_w )
 		{
 			m_vpos[voice] = m_frac[voice] = m_lponce[voice] = 0;
 
+<<<<<<< HEAD
 			LOG(("Key on V%02d: st %06x-%06x lp %06x-%06x frq %x flg %x\n", voice,
+=======
+			LOG("Key on V%02d: st %06x-%06x lp %06x-%06x frq %x flg %x\n", voice,
+>>>>>>> upstream/master
 				m_regs[vbase+2]<<16   | m_regs[vbase+1]<<8   | m_regs[vbase+2],
 				m_regs[vbase+0xe]<<16 | m_regs[vbase+0xd]<<8 | m_regs[vbase+0xc],
 				m_regs[vbase+6]<<16   | m_regs[vbase+5]<<8   | m_regs[vbase+4],
 				m_regs[vbase+0xa]<<16 | m_regs[vbase+0x9]<<8 | m_regs[vbase+0x8],
 				m_regs[vbase+0x11]<<8 | m_regs[vbase+0x10],
+<<<<<<< HEAD
 				m_regs[vbase+0x16]));
+=======
+				m_regs[vbase+0x16]);
+>>>>>>> upstream/master
 		}
 	}
 }

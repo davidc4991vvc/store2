@@ -17,10 +17,18 @@
  *  It also monitors all I/O port writes, so that it can restore them when resuming the current application.
  */
 
+<<<<<<< HEAD
 #ifndef MFACE2_H_
 #define MFACE2_H_
 
 #include "emu.h"
+=======
+#ifndef MAME_BUS_CPC_MFACE2_H
+#define MAME_BUS_CPC_MFACE2_H
+
+#pragma once
+
+>>>>>>> upstream/master
 #include "cpcexp.h"
 
 /* stop button has been pressed */
@@ -36,26 +44,46 @@ class cpc_multiface2_device :   public device_t,
 {
 public:
 	// construction/destruction
+<<<<<<< HEAD
 	cpc_multiface2_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
 
 	// optional information overrides
 	virtual const rom_entry *device_rom_region() const;
 	virtual ioport_constructor device_input_ports() const;
 	virtual machine_config_constructor device_mconfig_additions() const;
+=======
+	cpc_multiface2_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
+>>>>>>> upstream/master
 
 	int multiface_hardware_enabled();
 	void multiface_rethink_memory();
 	void multiface_stop();
+<<<<<<< HEAD
 	int multiface_io_write(UINT16 offset, UINT8 data);
 	void check_button_state();
 protected:
 	// device-level overrides
 	virtual void device_start();
 	virtual void device_reset();
+=======
+	int multiface_io_write(uint16_t offset, uint8_t data);
+	void check_button_state();
+
+protected:
+	// device-level overrides
+	virtual void device_start() override;
+	virtual void device_reset() override;
+
+	// optional information overrides
+	virtual const tiny_rom_entry *device_rom_region() const override;
+	virtual ioport_constructor device_input_ports() const override;
+	virtual void device_add_mconfig(machine_config &config) override;
+>>>>>>> upstream/master
 
 private:
 	cpc_expansion_slot_device *m_slot;
 
+<<<<<<< HEAD
 	DIRECT_UPDATE_MEMBER( amstrad_default );
 	DIRECT_UPDATE_MEMBER( amstrad_multiface_directoverride );
 
@@ -69,3 +97,15 @@ private:
 extern const device_type CPC_MFACE2;
 
 #endif /* MFACE2_H_ */
+=======
+	std::unique_ptr<uint8_t[]> m_multiface_ram;
+	unsigned long m_multiface_flags;
+
+	uint8_t m_romdis;
+};
+
+// device type definition
+DECLARE_DEVICE_TYPE(CPC_MFACE2, cpc_multiface2_device)
+
+#endif // MAME_BUS_CPC_MFACE2_H
+>>>>>>> upstream/master

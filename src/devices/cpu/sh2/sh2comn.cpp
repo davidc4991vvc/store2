@@ -9,6 +9,7 @@
  *****************************************************************************/
 
 #include "emu.h"
+<<<<<<< HEAD
 #include "debugger.h"
 #include "sh2.h"
 #include "sh2comn.h"
@@ -16,6 +17,15 @@
 #define VERBOSE 0
 
 #define LOG(x)  do { if (VERBOSE) logerror x; } while (0)
+=======
+#include "sh2.h"
+#include "sh2comn.h"
+
+#include "debugger.h"
+
+//#define VERBOSE 1
+#include "logmacro.h"
+>>>>>>> upstream/master
 
 static const int div_tab[4] = { 3, 5, 7, 0 };
 
@@ -23,8 +33,13 @@ static const int div_tab[4] = { 3, 5, 7, 0 };
 void sh2_device::sh2_timer_resync()
 {
 	int divider = div_tab[(m_m[5] >> 8) & 3];
+<<<<<<< HEAD
 	UINT64 cur_time = total_cycles();
 	UINT64 add = (cur_time - m_frc_base) >> divider;
+=======
+	uint64_t cur_time = total_cycles();
+	uint64_t add = (cur_time - m_frc_base) >> divider;
+>>>>>>> upstream/master
 
 	if (add > 0)
 	{
@@ -38,19 +53,31 @@ void sh2_device::sh2_timer_resync()
 void sh2_device::sh2_timer_activate()
 {
 	int max_delta = 0xfffff;
+<<<<<<< HEAD
 	UINT16 frc;
+=======
+	uint16_t frc;
+>>>>>>> upstream/master
 
 	m_timer->adjust(attotime::never);
 
 	frc = m_frc;
 	if(!(m_m[4] & OCFA)) {
+<<<<<<< HEAD
 		UINT16 delta = m_ocra - frc;
+=======
+		uint16_t delta = m_ocra - frc;
+>>>>>>> upstream/master
 		if(delta < max_delta)
 			max_delta = delta;
 	}
 
 	if(!(m_m[4] & OCFB) && (m_ocra <= m_ocrb || !(m_m[4] & 0x010000))) {
+<<<<<<< HEAD
 		UINT16 delta = m_ocrb - frc;
+=======
+		uint16_t delta = m_ocrb - frc;
+>>>>>>> upstream/master
 		if(delta < max_delta)
 			max_delta = delta;
 	}
@@ -75,7 +102,11 @@ void sh2_device::sh2_timer_activate()
 
 TIMER_CALLBACK_MEMBER( sh2_device::sh2_timer_callback )
 {
+<<<<<<< HEAD
 	UINT16 frc;
+=======
+	uint16_t frc;
+>>>>>>> upstream/master
 
 	sh2_timer_resync();
 
@@ -144,9 +175,15 @@ void sh2_device::sh2_notify_dma_data_available()
 
 void sh2_device::sh2_do_dma(int dma)
 {
+<<<<<<< HEAD
 	UINT32 dmadata;
 
 	UINT32 tempsrc, tempdst;
+=======
+	uint32_t dmadata;
+
+	uint32_t tempsrc, tempdst;
+>>>>>>> upstream/master
 
 	if (m_active_dma_count[dma] > 0)
 	{
@@ -365,7 +402,11 @@ void sh2_device::sh2_do_dma(int dma)
 		}
 
 
+<<<<<<< HEAD
 		LOG(("SH2.%s: DMA %d complete\n", tag(), dma));
+=======
+		LOG("SH2: DMA %d complete\n", dma);
+>>>>>>> upstream/master
 		m_m[0x62+4*dma] = 0;
 		m_m[0x63+4*dma] |= 2;
 		m_dma_timer_active[dma] = 0;
@@ -405,7 +446,11 @@ void sh2_device::sh2_dmac_check(int dma)
 			if(!m_active_dma_count[dma])
 				m_active_dma_count[dma] = 0x1000000;
 
+<<<<<<< HEAD
 			LOG(("SH2: DMA %d start %x, %x, %x, %04x, %d, %d, %d\n", dma, m_active_dma_src[dma], m_active_dma_dst[dma], m_active_dma_count[dma], m_m[0x63+4*dma], m_active_dma_incs[dma], m_active_dma_incd[dma], m_active_dma_size[dma]));
+=======
+			LOG("SH2: DMA %d start %x, %x, %x, %04x, %d, %d, %d\n", dma, m_active_dma_src[dma], m_active_dma_dst[dma], m_active_dma_count[dma], m_m[0x63+4*dma], m_active_dma_incs[dma], m_active_dma_incd[dma], m_active_dma_size[dma]);
+>>>>>>> upstream/master
 
 			m_dma_timer_active[dma] = 1;
 
@@ -465,7 +510,11 @@ void sh2_device::sh2_dmac_check(int dma)
 
 WRITE32_MEMBER( sh2_device::sh7604_w )
 {
+<<<<<<< HEAD
 	UINT32 old;
+=======
+	uint32_t old;
+>>>>>>> upstream/master
 
 	old = m_m[offset];
 	COMBINE_DATA(m_m+offset);
@@ -582,9 +631,15 @@ WRITE32_MEMBER( sh2_device::sh7604_w )
 		break;
 	case 0x41: // DVDNT
 		{
+<<<<<<< HEAD
 			INT32 a = m_m[0x41];
 			INT32 b = m_m[0x40];
 			LOG(("SH2 '%s' div+mod %d/%d\n", tag(), a, b));
+=======
+			int32_t a = m_m[0x41];
+			int32_t b = m_m[0x40];
+			LOG("SH2 div+mod %d/%d\n", a, b);
+>>>>>>> upstream/master
 			if (b)
 			{
 				m_m[0x45] = a / b;
@@ -610,6 +665,7 @@ WRITE32_MEMBER( sh2_device::sh7604_w )
 		break;
 	case 0x45: // DVDNTL
 		{
+<<<<<<< HEAD
 			INT64 a = m_m[0x45] | ((UINT64)(m_m[0x44]) << 32);
 			INT64 b = (INT32)m_m[0x40];
 			LOG(("SH2 '%s' div+mod %" I64FMT "d/%" I64FMT "d\n", tag(), a, b));
@@ -617,6 +673,15 @@ WRITE32_MEMBER( sh2_device::sh7604_w )
 			{
 				INT64 q = a / b;
 				if (q != (INT32)q)
+=======
+			int64_t a = m_m[0x45] | ((uint64_t)(m_m[0x44]) << 32);
+			int64_t b = (int32_t)m_m[0x40];
+			LOG("SH2 div+mod %d/%d\n", a, b);
+			if (b)
+			{
+				int64_t q = a / b;
+				if (q != (int32_t)q)
+>>>>>>> upstream/master
 				{
 					m_m[0x42] |= 0x00010000;
 					m_m[0x45] = 0x7fffffff;
@@ -725,7 +790,11 @@ READ32_MEMBER( sh2_device::sh7604_r )
 		return (m_m[0x38] & 0x7fffffff) | (m_nmi_line_state == ASSERT_LINE ? 0 : 0x80000000);
 
 	case 0x78: // BCR1
+<<<<<<< HEAD
 		return m_is_slave ? 0x00008000 : 0;
+=======
+		return (m_is_slave ? 0x00008000 : 0) | (m_m[0x78] & 0x7fff);
+>>>>>>> upstream/master
 
 	case 0x41: // dvdntl mirrors
 	case 0x47:
@@ -814,6 +883,7 @@ void sh2_device::sh2_recalc_irq()
 	m_test_irq = 1;
 }
 
+<<<<<<< HEAD
 void sh2_device::sh2_exception(const char *message, int irqline)
 {
 	int vector;
@@ -884,6 +954,8 @@ void sh2_device::sh2_exception(const char *message, int irqline)
 	if(m_sh2_state->sleep_mode == 1) { m_sh2_state->sleep_mode = 2; }
 }
 
+=======
+>>>>>>> upstream/master
 /*
  SH-7021 on-chip device
  */
@@ -891,7 +963,11 @@ void sh2_device::sh2_exception(const char *message, int irqline)
 void sh2a_device::sh7032_dma_exec(int ch)
 {
 	const short dma_word_size[4] = { 0, +1, -1, 0 };
+<<<<<<< HEAD
 	UINT8 rs = (m_dma[ch].chcr >> 8) & 0xf; /**< Resource Select bits */
+=======
+	uint8_t rs = (m_dma[ch].chcr >> 8) & 0xf; /**< Resource Select bits */
+>>>>>>> upstream/master
 	if(rs != 0xc) // Auto-Request
 	{
 		logerror("Warning: SH7032 DMA enables non auto-request transfer\n");
@@ -903,6 +979,7 @@ void sh2a_device::sh7032_dma_exec(int ch)
 		return;
 
 	printf("%08x %08x %04x\n",m_dma[ch].sar,m_dma[ch].dar,m_dma[ch].chcr);
+<<<<<<< HEAD
 	UINT8 dm = (m_dma[ch].chcr >> 14) & 3;  /**< Destination Address Mode bits */
 	UINT8 sm = (m_dma[ch].chcr >> 12) & 3;  /**< Source Address Mode bits */
 	bool ts = (m_dma[ch].chcr & 8);         /**< Transfer Size bit */
@@ -911,6 +988,16 @@ void sh2a_device::sh7032_dma_exec(int ch)
 	UINT32 src_addr = m_dma[ch].sar;
 	UINT32 dst_addr = m_dma[ch].dar;
 	UINT32 size_index = m_dma[ch].tcr;
+=======
+	uint8_t dm = (m_dma[ch].chcr >> 14) & 3;  /**< Destination Address Mode bits */
+	uint8_t sm = (m_dma[ch].chcr >> 12) & 3;  /**< Source Address Mode bits */
+	bool ts = (m_dma[ch].chcr & 8);         /**< Transfer Size bit */
+	int src_word_size = dma_word_size[sm] * ((ts == true) ? 2 : 1);
+	int dst_word_size = dma_word_size[dm] * ((ts == true) ? 2 : 1);
+	uint32_t src_addr = m_dma[ch].sar;
+	uint32_t dst_addr = m_dma[ch].dar;
+	uint32_t size_index = m_dma[ch].tcr;
+>>>>>>> upstream/master
 	if(size_index == 0)
 		size_index = 0x10000;
 

@@ -1,5 +1,9 @@
 // license:BSD-3-Clause
+<<<<<<< HEAD
 // copyright-holders:Zsolt Vasvari
+=======
+// copyright-holders:K.Wilkins,Zsolt Vasvari
+>>>>>>> upstream/master
 /***************************************************************************
 
     Sigma Spiders hardware
@@ -190,6 +194,7 @@
 ***************************************************************************/
 
 #include "emu.h"
+<<<<<<< HEAD
 #include "machine/rescap.h"
 #include "cpu/m6800/m6800.h"
 #include "cpu/m6809/m6809.h"
@@ -198,6 +203,18 @@
 #include "machine/74123.h"
 #include "includes/spiders.h"
 #include "machine/nvram.h"
+=======
+#include "includes/spiders.h"
+
+#include "cpu/m6800/m6800.h"
+#include "cpu/m6809/m6809.h"
+#include "machine/6821pia.h"
+#include "machine/74123.h"
+#include "machine/nvram.h"
+#include "machine/rescap.h"
+#include "video/mc6845.h"
+#include "screen.h"
+>>>>>>> upstream/master
 
 
 #define MAIN_CPU_MASTER_CLOCK   (11200000)
@@ -236,6 +253,7 @@ WRITE_LINE_MEMBER(spiders_state::main_cpu_irq)
 }
 
 
+<<<<<<< HEAD
 WRITE_LINE_MEMBER(spiders_state::main_cpu_firq)
 {
 	m_maincpu->set_input_line(M6809_FIRQ_LINE, state ? ASSERT_LINE : CLEAR_LINE);
@@ -248,6 +266,8 @@ WRITE_LINE_MEMBER(spiders_state::audio_cpu_irq)
 }
 
 
+=======
+>>>>>>> upstream/master
 
 /*************************************
  *
@@ -325,11 +345,19 @@ WRITE_LINE_MEMBER(spiders_state::flipscreen_w)
 
 MC6845_UPDATE_ROW( spiders_state::crtc_update_row )
 {
+<<<<<<< HEAD
 	UINT8 x = 0;
 
 	for (UINT8 cx = 0; cx < x_count; cx++)
 	{
 		UINT8 data1, data2, data3;
+=======
+	uint8_t x = 0;
+
+	for (uint8_t cx = 0; cx < x_count; cx++)
+	{
+		uint8_t data1, data2, data3;
+>>>>>>> upstream/master
 
 		/* the memory is hooked up to the MA, RA lines this way */
 		offs_t offs = ((ma << 3) & 0x3f00) |
@@ -345,7 +373,11 @@ MC6845_UPDATE_ROW( spiders_state::crtc_update_row )
 
 		for (int i = 0; i < 8; i++)
 		{
+<<<<<<< HEAD
 			UINT8 color;
+=======
+			uint8_t color;
+>>>>>>> upstream/master
 
 			if (m_flipscreen)
 			{
@@ -401,11 +433,19 @@ WRITE8_MEMBER(spiders_state::gfx_rom_intf_w)
 
 READ8_MEMBER(spiders_state::gfx_rom_r)
 {
+<<<<<<< HEAD
 	UINT8 ret;
 
 	if (m_gfx_rom_ctrl_mode)
 	{
 		UINT8 *rom = memregion("gfx1")->base();
+=======
+	uint8_t ret;
+
+	if (m_gfx_rom_ctrl_mode)
+	{
+		uint8_t *rom = memregion("gfx1")->base();
+>>>>>>> upstream/master
 
 		ret = rom[m_gfx_rom_address];
 
@@ -413,7 +453,11 @@ READ8_MEMBER(spiders_state::gfx_rom_r)
 	}
 	else
 	{
+<<<<<<< HEAD
 		UINT8 shift_count = m_gfx_rom_ctrl_latch << 2;
+=======
+		uint8_t shift_count = m_gfx_rom_ctrl_latch << 2;
+>>>>>>> upstream/master
 		m_gfx_rom_address = (m_gfx_rom_address & ~(0x0f << shift_count)) | (m_gfx_rom_ctrl_data << shift_count);
 
 		ret = 0;
@@ -551,7 +595,11 @@ INPUT_PORTS_END
  *
  *************************************/
 
+<<<<<<< HEAD
 static MACHINE_CONFIG_START( spiders, spiders_state )
+=======
+static MACHINE_CONFIG_START( spiders )
+>>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", M6809, 2800000)
@@ -588,7 +636,11 @@ static MACHINE_CONFIG_START( spiders, spiders_state )
 	MCFG_PIA_READPA_HANDLER(READ8(spiders_state,gfx_rom_r))
 	MCFG_PIA_WRITEPB_HANDLER(WRITE8(spiders_state,gfx_rom_intf_w))
 	MCFG_PIA_CB2_HANDLER(WRITELINE(spiders_state,flipscreen_w))
+<<<<<<< HEAD
 	MCFG_PIA_IRQA_HANDLER(WRITELINE(spiders_state,main_cpu_firq))
+=======
+	MCFG_PIA_IRQA_HANDLER(INPUTLINE("maincpu", M6809_FIRQ_LINE))
+>>>>>>> upstream/master
 	MCFG_PIA_IRQB_HANDLER(WRITELINE(spiders_state,main_cpu_irq))
 
 	MCFG_DEVICE_ADD("pia3", PIA6821, 0)
@@ -600,7 +652,11 @@ static MACHINE_CONFIG_START( spiders, spiders_state )
 	MCFG_DEVICE_ADD("pia4", PIA6821, 0)
 	MCFG_PIA_WRITEPA_HANDLER(WRITE8(spiders_state, spiders_audio_a_w))
 	MCFG_PIA_WRITEPB_HANDLER(WRITE8(spiders_state, spiders_audio_b_w))
+<<<<<<< HEAD
 	MCFG_PIA_IRQA_HANDLER(WRITELINE(spiders_state, audio_cpu_irq))
+=======
+	MCFG_PIA_IRQA_HANDLER(INPUTLINE("audiocpu", M6802_IRQ_LINE))
+>>>>>>> upstream/master
 
 	MCFG_DEVICE_ADD("ic60", TTL74123, 0)
 	MCFG_TTL74123_CONNECTION_TYPE(TTL74123_GROUNDED)    /* the hook up type */
@@ -714,7 +770,14 @@ ROM_END
  *************************************/
 
 /* this is a newer version with just one bug fix */
+<<<<<<< HEAD
 GAME( 1981, spiders,  0,       spiders, spiders, driver_device, 0, ROT270, "Sigma Enterprises Inc.", "Spiders (set 1)", MACHINE_IMPERFECT_SOUND | MACHINE_SUPPORTS_SAVE)
 GAME( 1981, spiders2, spiders, spiders, spiders, driver_device, 0, ROT270, "Sigma Enterprises Inc.", "Spiders (set 2)", MACHINE_IMPERFECT_SOUND | MACHINE_SUPPORTS_SAVE)
 GAME( 1981, spiders3, spiders, spiders, spiders, driver_device, 0, ROT270, "Sigma Enterprises Inc.", "Spiders (set 3)", MACHINE_IMPERFECT_SOUND | MACHINE_SUPPORTS_SAVE)
 GAME( 1981, spinner,  spiders, spiders, spiders, driver_device, 0, ROT270, "bootleg",                 "Spinner", MACHINE_IMPERFECT_SOUND | MACHINE_SUPPORTS_SAVE)
+=======
+GAME( 1981, spiders,  0,       spiders, spiders, spiders_state, 0, ROT270, "Sigma Enterprises Inc.", "Spiders (set 1)", MACHINE_IMPERFECT_SOUND | MACHINE_SUPPORTS_SAVE)
+GAME( 1981, spiders2, spiders, spiders, spiders, spiders_state, 0, ROT270, "Sigma Enterprises Inc.", "Spiders (set 2)", MACHINE_IMPERFECT_SOUND | MACHINE_SUPPORTS_SAVE)
+GAME( 1981, spiders3, spiders, spiders, spiders, spiders_state, 0, ROT270, "Sigma Enterprises Inc.", "Spiders (set 3)", MACHINE_IMPERFECT_SOUND | MACHINE_SUPPORTS_SAVE)
+GAME( 1981, spinner,  spiders, spiders, spiders, spiders_state, 0, ROT270, "bootleg",                 "Spinner", MACHINE_IMPERFECT_SOUND | MACHINE_SUPPORTS_SAVE)
+>>>>>>> upstream/master

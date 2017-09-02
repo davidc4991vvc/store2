@@ -1,5 +1,9 @@
 // license:BSD-3-Clause
+<<<<<<< HEAD
 // copyright-holders:K.Wilkins
+=======
+// copyright-holders:K.Wilkins,Stephane Humbert
+>>>>>>> upstream/master
 /***************************************************************************
 
   Toaplan Slap Fight hardware
@@ -12,6 +16,7 @@
 #include "includes/slapfght.h"
 
 
+<<<<<<< HEAD
 /***************************************************************************
 
     Tiger Heli MCU
@@ -32,10 +37,13 @@ WRITE8_MEMBER(slapfght_state::tigerh_mcu_w)
 }
 
 
+=======
+>>>>>>> upstream/master
 /**************************************************************************/
 
 READ8_MEMBER(slapfght_state::tigerh_mcu_status_r)
 {
+<<<<<<< HEAD
 	// d0 is vblank
 	UINT8 res = m_screen->vblank() ? 1 : 0;
 
@@ -201,6 +209,23 @@ WRITE8_MEMBER(slapfght_state::slapfight_68705_ddrC_w)
 
 
 
+=======
+	return
+			(m_screen->vblank() ? 0x01 : 0x00) |
+			((m_bmcu && (CLEAR_LINE == m_bmcu->host_semaphore_r())) ? 0x02 : 0x00) |
+			((m_bmcu && (CLEAR_LINE == m_bmcu->mcu_semaphore_r())) ? 0x04 : 0x00);
+}
+
+WRITE8_MEMBER(slapfght_state::scroll_from_mcu_w)
+{
+	switch (offset)
+	{
+	case 0x01: m_scrollx_lo = data; break;  // PB3
+	case 0x02: m_scrollx_hi = data; break;  // PB4
+	}
+}
+
+>>>>>>> upstream/master
 /***************************************************************************
 
     Get Star MCU simulation :(
@@ -221,6 +246,7 @@ READ8_MEMBER(slapfght_state::getstar_mcusim_status_r)
 
 READ8_MEMBER(slapfght_state::getstar_mcusim_r)
 {
+<<<<<<< HEAD
 	UINT16 tmp = 0;  /* needed for values computed on 16 bits */
 	UINT8 getstar_val = 0;
 	UINT8 phase_lookup_table[] = {0x00, 0x01, 0x03, 0xff, 0xff, 0x02, 0x05, 0xff, 0xff, 0x05}; /* table at 0x0e05 in 'getstarb1' */
@@ -292,6 +318,14 @@ READ8_MEMBER(slapfght_state::getstar_mcusim_r)
 					break;
 			}
 			break;
+=======
+	uint8_t getstar_val = 0;
+	uint8_t lives_lookup_table[] = {0x03, 0x05, 0x01, 0x02};                                     /* table at 0x0e62 in 'getstarb1' */
+	uint8_t lgsb2_lookup_table[] = {0x00, 0x03, 0x04, 0x05};                                     /* fake tanle for "test mode" in 'getstarb2' */
+
+	switch (m_getstar_id)
+	{
+>>>>>>> upstream/master
 		case GETSTARB1:
 			/* value isn't computed by the bootleg but we want to please the "test mode" */
 			if (space.device().safe_pc() == 0x6b04) return (lives_lookup_table[m_gs_a]);
@@ -333,6 +367,7 @@ WRITE8_MEMBER(slapfght_state::getstar_mcusim_w)
 
 	switch (m_getstar_id)
 	{
+<<<<<<< HEAD
 		case GETSTAR:
 			/* unknown effect - not read back */
 			if (space.device().safe_pc() == 0x00bf)
@@ -701,6 +736,8 @@ WRITE8_MEMBER(slapfght_state::getstar_mcusim_w)
 				GS_SAVE_REGS
 			}
 			break;
+=======
+>>>>>>> upstream/master
 		case GETSTARB1:
 			/* "Test mode" doesn't compute the lives value :
 			    6ADA: 3E 23         ld   a,$23
@@ -793,7 +830,11 @@ WRITE8_MEMBER(slapfght_state::getstar_mcusim_w)
 
 READ8_MEMBER(slapfght_state::tigerhb1_prot_r)
 {
+<<<<<<< HEAD
 	UINT8 tigerhb_val = 0;
+=======
+	uint8_t tigerhb_val = 0;
+>>>>>>> upstream/master
 	switch (m_tigerhb_cmd)
 	{
 		case 0x73:  /* avoid "BAD HW" message */

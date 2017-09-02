@@ -6,6 +6,10 @@
 
 **********************************************************************/
 
+<<<<<<< HEAD
+=======
+#include "emu.h"
+>>>>>>> upstream/master
 #include "exp.h"
 
 
@@ -13,7 +17,11 @@
 //  DEVICE DEFINITIONS
 //**************************************************************************
 
+<<<<<<< HEAD
 const device_type COMX_EXPANSION_SLOT = &device_creator<comx_expansion_slot_device>;
+=======
+DEFINE_DEVICE_TYPE(COMX_EXPANSION_SLOT, comx_expansion_slot_device, "comx_expansion_slot", "COMX-35 expansion slot")
+>>>>>>> upstream/master
 
 
 
@@ -42,8 +50,13 @@ device_comx_expansion_card_interface::device_comx_expansion_card_interface(const
 //  comx_expansion_slot_device - constructor
 //-------------------------------------------------
 
+<<<<<<< HEAD
 comx_expansion_slot_device::comx_expansion_slot_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock) :
 	device_t(mconfig, COMX_EXPANSION_SLOT, "COMX-35 expansion slot", tag, owner, clock, "comx_expansion_slot", __FILE__),
+=======
+comx_expansion_slot_device::comx_expansion_slot_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock) :
+	device_t(mconfig, COMX_EXPANSION_SLOT, tag, owner, clock),
+>>>>>>> upstream/master
 	device_slot_interface(mconfig, *this),
 	m_write_irq(*this), m_card(nullptr)
 {
@@ -67,11 +80,19 @@ void comx_expansion_slot_device::device_start()
 //  mrd_r - memory read
 //-------------------------------------------------
 
+<<<<<<< HEAD
 UINT8 comx_expansion_slot_device::mrd_r(address_space &space, offs_t offset, int *extrom)
 {
 	UINT8 data = 0;
 
 	if (m_card != NULL)
+=======
+uint8_t comx_expansion_slot_device::mrd_r(address_space &space, offs_t offset, int *extrom)
+{
+	uint8_t data = 0;
+
+	if (m_card != nullptr)
+>>>>>>> upstream/master
 	{
 		data = m_card->comx_mrd_r(space, offset, extrom);
 	}
@@ -84,9 +105,15 @@ UINT8 comx_expansion_slot_device::mrd_r(address_space &space, offs_t offset, int
 //  mwr_w - memory write
 //-------------------------------------------------
 
+<<<<<<< HEAD
 void comx_expansion_slot_device::mwr_w(address_space &space, offs_t offset, UINT8 data)
 {
 	if (m_card != NULL)
+=======
+void comx_expansion_slot_device::mwr_w(address_space &space, offs_t offset, uint8_t data)
+{
+	if (m_card != nullptr)
+>>>>>>> upstream/master
 	{
 		m_card->comx_mwr_w(space, offset, data);
 	}
@@ -97,11 +124,19 @@ void comx_expansion_slot_device::mwr_w(address_space &space, offs_t offset, UINT
 //  io_r - I/O read
 //-------------------------------------------------
 
+<<<<<<< HEAD
 UINT8 comx_expansion_slot_device::io_r(address_space &space, offs_t offset)
 {
 	UINT8 data = 0;
 
 	if (m_card != NULL)
+=======
+uint8_t comx_expansion_slot_device::io_r(address_space &space, offs_t offset)
+{
+	uint8_t data = 0;
+
+	if (m_card != nullptr)
+>>>>>>> upstream/master
 	{
 		data = m_card->comx_io_r(space, offset);
 	}
@@ -114,9 +149,15 @@ UINT8 comx_expansion_slot_device::io_r(address_space &space, offs_t offset)
 //  sout_w - I/O write
 //-------------------------------------------------
 
+<<<<<<< HEAD
 void comx_expansion_slot_device::io_w(address_space &space, offs_t offset, UINT8 data)
 {
 	if (m_card != NULL)
+=======
+void comx_expansion_slot_device::io_w(address_space &space, offs_t offset, uint8_t data)
+{
+	if (m_card != nullptr)
+>>>>>>> upstream/master
 	{
 		m_card->comx_io_w(space, offset, data);
 	}
@@ -129,7 +170,11 @@ void comx_expansion_slot_device::io_w(address_space &space, offs_t offset, UINT8
 
 WRITE_LINE_MEMBER( comx_expansion_slot_device::ds_w )
 {
+<<<<<<< HEAD
 	if (m_card != NULL)
+=======
+	if (m_card != nullptr)
+>>>>>>> upstream/master
 	{
 		m_card->comx_ds_w(state);
 	}
@@ -142,7 +187,11 @@ WRITE_LINE_MEMBER( comx_expansion_slot_device::ds_w )
 
 WRITE_LINE_MEMBER( comx_expansion_slot_device::q_w )
 {
+<<<<<<< HEAD
 	if (m_card != NULL)
+=======
+	if (m_card != nullptr)
+>>>>>>> upstream/master
 	{
 		m_card->comx_q_w(state);
 	}
@@ -152,7 +201,11 @@ READ_LINE_MEMBER( comx_expansion_slot_device::ef4_r )
 {
 	int state = CLEAR_LINE;
 
+<<<<<<< HEAD
 	if (m_card != NULL)
+=======
+	if (m_card != nullptr)
+>>>>>>> upstream/master
 	{
 		state = m_card->comx_ef4_r();
 	}

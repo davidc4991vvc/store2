@@ -1,11 +1,21 @@
 // license:BSD-3-Clause
 // copyright-holders:Carl
+<<<<<<< HEAD
 #include "machine/midikbd.h"
 
 const device_type MIDI_KBD = &device_creator<midi_keyboard_device>;
 
 midi_keyboard_device::midi_keyboard_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock) :
 	device_t(mconfig, MIDI_KBD, "Generic MIDI Keyboard", tag, owner, clock, "midi_kbd", __FILE__),
+=======
+#include "emu.h"
+#include "machine/midikbd.h"
+
+DEFINE_DEVICE_TYPE(MIDI_KBD, midi_keyboard_device, "midi_kbd", "Generic MIDI Keyboard")
+
+midi_keyboard_device::midi_keyboard_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock) :
+	device_t(mconfig, MIDI_KBD, tag, owner, clock),
+>>>>>>> upstream/master
 	device_serial_interface(mconfig, *this),
 	m_out_tx_func(*this),
 	m_keyboard(*this, "KEYBOARD")
@@ -14,11 +24,15 @@ midi_keyboard_device::midi_keyboard_device(const machine_config &mconfig, const 
 
 void midi_keyboard_device::device_timer(emu_timer &timer, device_timer_id id, int param, void *ptr)
 {
+<<<<<<< HEAD
 	if(id)
 	{
 		device_serial_interface::device_timer(timer, id, param, ptr);
 	}
 	else
+=======
+	if(!id)
+>>>>>>> upstream/master
 	{
 		const int keyboard_notes[24] =
 		{
@@ -50,7 +64,11 @@ void midi_keyboard_device::device_timer(emu_timer &timer, device_timer_id id, in
 
 		int i;
 
+<<<<<<< HEAD
 		UINT32 kbstate = m_keyboard->read();
+=======
+		uint32_t kbstate = m_keyboard->read();
+>>>>>>> upstream/master
 		if(kbstate != m_keyboard_state)
 		{
 			for (i=0; i < 24; i++)

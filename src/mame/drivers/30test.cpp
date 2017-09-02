@@ -46,6 +46,11 @@ http://blogs.yahoo.co.jp/nadegatayosoyuki/59285865.html
 #include "emu.h"
 #include "cpu/mc68hc11/mc68hc11.h"
 #include "sound/okim6295.h"
+<<<<<<< HEAD
+=======
+#include "speaker.h"
+
+>>>>>>> upstream/master
 #include "30test.lh"
 
 #define MAIN_CLOCK XTAL_16MHz
@@ -58,8 +63,13 @@ public:
 		m_maincpu(*this, "maincpu"),
 		m_oki(*this, "oki") { }
 
+<<<<<<< HEAD
 	UINT8 m_mux_data;
 	UINT8 m_oki_bank;
+=======
+	uint8_t m_mux_data;
+	uint8_t m_oki_bank;
+>>>>>>> upstream/master
 	DECLARE_WRITE8_MEMBER(namco_30test_led_w);
 	DECLARE_WRITE8_MEMBER(namco_30test_led_rank_w);
 	DECLARE_WRITE8_MEMBER(namco_30test_lamps_w);
@@ -68,38 +78,65 @@ public:
 	DECLARE_WRITE8_MEMBER(hc11_mux_w);
 	DECLARE_READ8_MEMBER(hc11_okibank_r);
 	DECLARE_WRITE8_MEMBER(hc11_okibank_w);
+<<<<<<< HEAD
 	virtual void machine_start();
 	virtual void machine_reset();
+=======
+	virtual void machine_start() override;
+	virtual void machine_reset() override;
+>>>>>>> upstream/master
 	required_device<cpu_device> m_maincpu;
 	required_device<okim6295_device> m_oki;
 };
 
 
+<<<<<<< HEAD
 static const UINT8 led_map[16] =
+=======
+static const uint8_t led_map[16] =
+>>>>>>> upstream/master
 	{ 0x3f,0x06,0x5b,0x4f,0x66,0x6d,0x7c,0x07,0x7f,0x67,0x77,0x7c,0x39,0x5e,0x79,0x00 };
 
 WRITE8_MEMBER(namco_30test_state::namco_30test_led_w)
 {
+<<<<<<< HEAD
 	output_set_digit_value(0 + offset * 2, led_map[(data & 0xf0) >> 4]);
 	output_set_digit_value(1 + offset * 2, led_map[(data & 0x0f) >> 0]);
+=======
+	output().set_digit_value(0 + offset * 2, led_map[(data & 0xf0) >> 4]);
+	output().set_digit_value(1 + offset * 2, led_map[(data & 0x0f) >> 0]);
+>>>>>>> upstream/master
 }
 
 WRITE8_MEMBER(namco_30test_state::namco_30test_led_rank_w)
 {
+<<<<<<< HEAD
 	output_set_digit_value(64 + offset * 2, led_map[(data & 0xf0) >> 4]);
 	output_set_digit_value(65 + offset * 2, led_map[(data & 0x0f) >> 0]);
+=======
+	output().set_digit_value(64 + offset * 2, led_map[(data & 0xf0) >> 4]);
+	output().set_digit_value(65 + offset * 2, led_map[(data & 0x0f) >> 0]);
+>>>>>>> upstream/master
 }
 
 WRITE8_MEMBER(namco_30test_state::namco_30test_lamps_w)
 {
 	// d0-d5: ranking, d6: game over, d7: assume marquee lamp
 	for (int i = 0; i < 8; i++)
+<<<<<<< HEAD
 		output_set_lamp_value(i, data >> i & 1);
+=======
+		output().set_lamp_value(i, data >> i & 1);
+>>>>>>> upstream/master
 }
 
 READ8_MEMBER(namco_30test_state::namco_30test_mux_r)
 {
+<<<<<<< HEAD
 	UINT8 res = 0xff;
+=======
+	uint8_t res = 0xff;
+>>>>>>> upstream/master
 
 	switch(m_mux_data)
 	{
@@ -130,7 +167,11 @@ READ8_MEMBER(namco_30test_state::hc11_okibank_r)
 WRITE8_MEMBER(namco_30test_state::hc11_okibank_w)
 {
 	m_oki_bank = data;
+<<<<<<< HEAD
 	m_oki->set_bank_base((data & 1) ? 0x40000 : 0);
+=======
+	m_oki->set_rom_bank(data & 1);
+>>>>>>> upstream/master
 }
 
 
@@ -235,7 +276,11 @@ void namco_30test_state::machine_reset()
 }
 
 
+<<<<<<< HEAD
 static MACHINE_CONFIG_START( 30test, namco_30test_state )
+=======
+static MACHINE_CONFIG_START( 30test )
+>>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", MC68HC11,MAIN_CLOCK/4)
@@ -249,7 +294,11 @@ static MACHINE_CONFIG_START( 30test, namco_30test_state )
 	/* sound hardware */
 	MCFG_SPEAKER_STANDARD_MONO("mono")
 
+<<<<<<< HEAD
 	MCFG_OKIM6295_ADD("oki", 1056000, OKIM6295_PIN7_HIGH)
+=======
+	MCFG_OKIM6295_ADD("oki", 1056000, PIN7_HIGH)
+>>>>>>> upstream/master
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 1.0)
 MACHINE_CONFIG_END
 
@@ -267,4 +316,8 @@ ROM_START( 30test )
 	ROM_LOAD( "tt1-voi0.7p",   0x0000, 0x80000, CRC(b4fc5921) SHA1(92a88d5adb50dae48715847f12e88a35e37ef78c) )
 ROM_END
 
+<<<<<<< HEAD
 GAMEL( 1997, 30test,  0,   30test,  30test, driver_device,  0, ROT0, "Namco", "30 Test (Remake)", MACHINE_SUPPORTS_SAVE | MACHINE_CLICKABLE_ARTWORK, layout_30test )
+=======
+GAMEL( 1997, 30test,  0,   30test,  30test, namco_30test_state,  0, ROT0, "Namco", "30 Test (Remake)", MACHINE_SUPPORTS_SAVE | MACHINE_CLICKABLE_ARTWORK, layout_30test )
+>>>>>>> upstream/master

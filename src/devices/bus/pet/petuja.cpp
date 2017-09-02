@@ -8,6 +8,10 @@
 
 **********************************************************************/
 
+<<<<<<< HEAD
+=======
+#include "emu.h"
+>>>>>>> upstream/master
 #include "petuja.h"
 
 
@@ -16,7 +20,11 @@
 //  DEVICE DEFINITIONS
 //**************************************************************************
 
+<<<<<<< HEAD
 const device_type PET_USERPORT_JOYSTICK_ADAPTER = &device_creator<pet_userport_joystick_adapter_device>;
+=======
+DEFINE_DEVICE_TYPE(PET_USERPORT_JOYSTICK_ADAPTER, pet_userport_joystick_adapter_device, "petuja", "PET Userport Joystick Adapter")
+>>>>>>> upstream/master
 
 
 //-------------------------------------------------
@@ -59,8 +67,13 @@ ioport_constructor pet_userport_joystick_adapter_device::device_input_ports() co
 //  pet_userport_joystick_adapter_device - constructor
 //-------------------------------------------------
 
+<<<<<<< HEAD
 pet_userport_joystick_adapter_device::pet_userport_joystick_adapter_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock) :
 	device_t(mconfig, PET_USERPORT_JOYSTICK_ADAPTER, "PET Userport Joystick Adapter", tag, owner, clock, "petuja", __FILE__),
+=======
+pet_userport_joystick_adapter_device::pet_userport_joystick_adapter_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock) :
+	device_t(mconfig, PET_USERPORT_JOYSTICK_ADAPTER, tag, owner, clock),
+>>>>>>> upstream/master
 	device_pet_user_port_interface(mconfig, *this),
 	m_up1(1),
 	m_down1(1),
@@ -87,7 +100,11 @@ void pet_userport_joystick_adapter_device::device_start()
 
 void pet_userport_joystick_adapter_device::update_port1()
 {
+<<<<<<< HEAD
 	printf( "update port1\n" );
+=======
+	//printf( "update port1\n" );
+>>>>>>> upstream/master
 	output_c(m_up1 && m_fire1);
 	output_d(m_down1 && m_fire1);
 }
@@ -99,7 +116,11 @@ void pet_userport_joystick_adapter_device::update_port1()
 
 void pet_userport_joystick_adapter_device::update_port2()
 {
+<<<<<<< HEAD
 	printf( "update port2\n" );
+=======
+	//printf( "update port2\n" );
+>>>>>>> upstream/master
 	output_h(m_up2 && m_fire2);
 	output_j(m_down2 && m_fire2);
 }

@@ -11,6 +11,7 @@
 
 *****************************************************************************/
 
+<<<<<<< HEAD
 #ifndef __TMS9902_H__
 #define __TMS9902_H__
 
@@ -43,22 +44,70 @@
 #define RI  0x01
 
 extern const device_type TMS9902;
+=======
+#ifndef MAME_MACHINE_TMS9902_H
+#define MAME_MACHINE_TMS9902_H
+
+#pragma once
+
+
+DECLARE_DEVICE_TYPE(TMS9902, tms9902_device)
+>>>>>>> upstream/master
 
 class tms9902_device : public device_t
 {
 public:
+<<<<<<< HEAD
 	tms9902_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
 
 	template<class _Object> static devcb_base &set_int_callback(device_t &device, _Object object) { return downcast<tms9902_device &>(device).m_int_cb.set_callback(object); }
 	template<class _Object> static devcb_base &set_rcv_callback(device_t &device, _Object object) { return downcast<tms9902_device &>(device).m_rcv_cb.set_callback(object); }
 	template<class _Object> static devcb_base &set_xmit_callback(device_t &device, _Object object) { return downcast<tms9902_device &>(device).m_xmit_cb.set_callback(object); }
 	template<class _Object> static devcb_base &set_ctrl_callback(device_t &device, _Object object) { return downcast<tms9902_device &>(device).m_ctrl_cb.set_callback(object); }
+=======
+	// Serial control protocol values
+	static constexpr unsigned TYPE_TMS9902 = 0x01;
+
+	// Configuration (output only)
+	static constexpr unsigned CONFIG   = 0x80;
+	static constexpr unsigned RATERECV = 0x70;
+	static constexpr unsigned RATEXMIT = 0x60;
+	static constexpr unsigned DATABITS = 0x50;
+	static constexpr unsigned STOPBITS = 0x40;
+	static constexpr unsigned PARITY   = 0x30;
+
+	// Exceptional states (BRK: both directions; FRMERR/PARERR: input only)
+	static constexpr unsigned EXCEPT = 0x40;
+	static constexpr unsigned BRK    = 0x02;
+	static constexpr unsigned FRMERR = 0x04;
+	static constexpr unsigned PARERR = 0x06;
+
+	// Line states (RTS, DTR: output; CTS, DSR, RI, DCD: input)
+	static constexpr unsigned LINES = 0x00;
+	static constexpr unsigned RTS   = 0x20;
+	static constexpr unsigned CTS   = 0x10;
+	static constexpr unsigned DSR   = 0x08;
+	static constexpr unsigned DCD   = 0x04;
+	static constexpr unsigned DTR   = 0x02;
+	static constexpr unsigned RI    = 0x01;
+
+	tms9902_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
+
+	template <class Object> static devcb_base &set_int_callback(device_t &device, Object &&cb) { return downcast<tms9902_device &>(device).m_int_cb.set_callback(std::forward<Object>(cb)); }
+	template <class Object> static devcb_base &set_rcv_callback(device_t &device, Object &&cb) { return downcast<tms9902_device &>(device).m_rcv_cb.set_callback(std::forward<Object>(cb)); }
+	template <class Object> static devcb_base &set_xmit_callback(device_t &device, Object &&cb) { return downcast<tms9902_device &>(device).m_xmit_cb.set_callback(std::forward<Object>(cb)); }
+	template <class Object> static devcb_base &set_ctrl_callback(device_t &device, Object &&cb) { return downcast<tms9902_device &>(device).m_ctrl_cb.set_callback(std::forward<Object>(cb)); }
+>>>>>>> upstream/master
 
 	void    set_clock(bool state);
 
 	void    rcv_cts(line_state state);
 	void    rcv_dsr(line_state state);
+<<<<<<< HEAD
 	void    rcv_data(UINT8 data);
+=======
+	void    rcv_data(uint8_t data);
+>>>>>>> upstream/master
 	void    rcv_break(bool value);
 	void    rcv_framing_error();
 	void    rcv_parity_error();
@@ -71,10 +120,17 @@ public:
 	DECLARE_WRITE8_MEMBER( cruwrite );
 
 protected:
+<<<<<<< HEAD
 	virtual void    device_timer(emu_timer &timer, device_timer_id id, int param, void *ptr);
 	virtual void    device_start();
 	virtual void    device_reset();
 	virtual void    device_stop();
+=======
+	virtual void    device_timer(emu_timer &timer, device_timer_id id, int param, void *ptr) override;
+	virtual void    device_start() override;
+	virtual void    device_reset() override;
+	virtual void    device_stop() override;
+>>>>>>> upstream/master
 
 private:
 	void    field_interrupts();
@@ -115,11 +171,19 @@ private:
 	bool    m_BRKON;            // BRK-on request
 	bool    m_BRKout;       // indicates the current BRK state
 
+<<<<<<< HEAD
 	UINT8   m_XBR;          // transmit buffer register
 	UINT8   m_XSR;          // transmit shift register
 
 	/* receiver registers */
 	UINT8   m_RBR;          // Receive buffer register
+=======
+	uint8_t   m_XBR;          // transmit buffer register
+	uint8_t   m_XSR;          // transmit shift register
+
+	/* receiver registers */
+	uint8_t   m_RBR;          // Receive buffer register
+>>>>>>> upstream/master
 
 	/* Interrupt enable flags */
 	bool    m_DSCENB;       // Data set change interrupt enable
@@ -134,9 +198,15 @@ private:
 
 	    where clock1 = clock_rate / (CLK4M? 4:3)
 	*/
+<<<<<<< HEAD
 	UINT16  m_RDR;          // Receive data rate
 	bool    m_RDV8;         // Receive data rate divider
 	UINT16  m_XDR;          // Transmit data rate
+=======
+	uint16_t  m_RDR;          // Receive data rate
+	bool    m_RDV8;         // Receive data rate divider
+	uint16_t  m_XDR;          // Transmit data rate
+>>>>>>> upstream/master
 	bool    m_XDV8;         // Transmit data rate divider
 
 	/* Status flags */
@@ -161,6 +231,7 @@ private:
 	bool    m_ROVER;            // Receiver overflow
 	bool    m_RPER;         // Receive parity error
 
+<<<<<<< HEAD
 	UINT8   m_RCL;          // Character length
 	bool    m_ODDP;
 	bool    m_PENB;
@@ -168,6 +239,15 @@ private:
 	bool    m_CLK4M;        // /PHI input divide select
 
 	UINT8   m_TMR;      /* interval timer */
+=======
+	uint8_t   m_RCL;          // Character length
+	bool    m_ODDP;
+	bool    m_PENB;
+	uint8_t   m_STOPB;
+	bool    m_CLK4M;        // /PHI input divide select
+
+	uint8_t   m_TMR;      /* interval timer */
+>>>>>>> upstream/master
 
 	/* clock registers */
 	emu_timer *m_dectimer;          /* MESS timer, used to emulate the decrementer register */
@@ -188,6 +268,7 @@ private:
     DEVICE CONFIGURATION MACROS
 ***************************************************************************/
 
+<<<<<<< HEAD
 #define MCFG_TMS9902_INT_CB(_devcb) \
 	devcb = &tms9902_device::set_int_callback(*device, DEVCB_##_devcb);
 
@@ -201,3 +282,18 @@ private:
 	devcb = &tms9902_device::set_ctrl_callback(*device, DEVCB_##_devcb);
 
 #endif /* __TMS9902_H__ */
+=======
+#define MCFG_TMS9902_INT_CB(cb) \
+		devcb = &tms9902_device::set_int_callback(*device, (DEVCB_##cb));
+
+#define MCFG_TMS9902_RCV_CB(cb) \
+		devcb = &tms9902_device::set_rcv_callback(*device, (DEVCB_##cb));
+
+#define MCFG_TMS9902_XMIT_CB(cb) \
+		devcb = &tms9902_device::set_xmit_callback(*device, (DEVCB_##cb));
+
+#define MCFG_TMS9902_CTRL_CB(cb) \
+		devcb = &tms9902_device::set_ctrl_callback(*device, (DEVCB_##cb));
+
+#endif // MAME_MACHINE_TMS9902_H
+>>>>>>> upstream/master

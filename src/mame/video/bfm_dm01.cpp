@@ -51,10 +51,21 @@ Standard dm01 memorymap
 
 #define LOG(x) do { if (VERBOSE) logerror x; } while (0)
 
+<<<<<<< HEAD
 const device_type BF_DM01 = &device_creator<bfmdm01_device>;
 
 bfmdm01_device::bfmdm01_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
 	: device_t(mconfig, BF_DM01, "BFM Dotmatrix 01", tag, owner, clock, "bfm_dm01", __FILE__),
+=======
+DEFINE_DEVICE_TYPE(BFM_DM01, bfm_dm01_device, "bfm_dm01", "BFM Dotmatrix 01")
+
+
+bfm_dm01_device::bfm_dm01_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: device_t(mconfig, BFM_DM01, tag, owner, clock),
+	m_matrixcpu(*this, "matrix"),
+	m_screen(*this, "dmd"),
+	m_palette(*this, "palette_lcd"),
+>>>>>>> upstream/master
 	m_data_avail(0),
 	m_control(0),
 	m_xcounter(0),
@@ -62,19 +73,38 @@ bfmdm01_device::bfmdm01_device(const machine_config &mconfig, const char *tag, d
 	m_comdata(0),
 	m_busy_cb(*this)
 {
+<<<<<<< HEAD
 	for (int i = 0; i < 65; i++)
 	m_segbuffer[i] = 0;
 
 	for (int i = 0; i < DM_BYTESPERROW; i++)
 	m_scanline[i] = 0;
+=======
+	for (auto & elem : m_segbuffer)
+	elem = 0;
+
+	for (auto & elem : m_scanline)
+	elem = 0;
+>>>>>>> upstream/master
 }
 
 //-------------------------------------------------
 //  device_start - device-specific startup
 //-------------------------------------------------
 
+<<<<<<< HEAD
 void bfmdm01_device::device_start()
 {
+=======
+void bfm_dm01_device::device_start()
+{
+	if(!m_screen->started())
+		throw device_missing_dependencies();
+
+	if(!m_palette->started())
+		throw device_missing_dependencies();
+
+>>>>>>> upstream/master
 	m_busy_cb.resolve_safe();
 
 	save_item(NAME(m_data_avail));
@@ -86,15 +116,33 @@ void bfmdm01_device::device_start()
 	for (int i = 0; i < 65; i++)
 	save_item(NAME(m_segbuffer), i);
 
+<<<<<<< HEAD
 	for (int i = 0; i < DM_BYTESPERROW; i++)
 	save_item(NAME(m_scanline), i);
 }
 
+=======
+	for (int i = 0; i < BYTES_PER_ROW; i++)
+	save_item(NAME(m_scanline), i);
+
+	m_screen->register_screen_bitmap(m_tmpbitmap);
+	m_palette->set_pen_color(0, rgb_t(0, 0, 0));        // background
+	m_palette->set_pen_color(1, rgb_t(15, 1, 1));       // off dot
+	m_palette->set_pen_color(2, rgb_t(255, 31, 31));    // on dot
+}
+
+
+
+>>>>>>> upstream/master
 //-------------------------------------------------
 //  device_reset - device-specific reset
 //-------------------------------------------------
 
+<<<<<<< HEAD
 void bfmdm01_device::device_reset()
+=======
+void bfm_dm01_device::device_reset()
+>>>>>>> upstream/master
 {
 	m_busy     = 0;
 	m_control  = 0;
@@ -106,7 +154,11 @@ void bfmdm01_device::device_reset()
 
 ///////////////////////////////////////////////////////////////////////////
 
+<<<<<<< HEAD
 int bfmdm01_device::read_data(void)
+=======
+int bfm_dm01_device::read_data(void)
+>>>>>>> upstream/master
 {
 	int data = m_comdata;
 
@@ -117,14 +169,22 @@ int bfmdm01_device::read_data(void)
 
 ///////////////////////////////////////////////////////////////////////////
 
+<<<<<<< HEAD
 READ8_MEMBER( bfmdm01_device::control_r )
+=======
+READ8_MEMBER( bfm_dm01_device::control_r )
+>>>>>>> upstream/master
 {
 	return 0;
 }
 
 ///////////////////////////////////////////////////////////////////////////
 
+<<<<<<< HEAD
 WRITE8_MEMBER( bfmdm01_device::control_w )
+=======
+WRITE8_MEMBER( bfm_dm01_device::control_w )
+>>>>>>> upstream/master
 {
 	int changed = m_control ^ data;
 
@@ -151,16 +211,28 @@ WRITE8_MEMBER( bfmdm01_device::control_w )
 
 ///////////////////////////////////////////////////////////////////////////
 
+<<<<<<< HEAD
 READ8_MEMBER( bfmdm01_device::mux_r )
+=======
+READ8_MEMBER( bfm_dm01_device::mux_r )
+>>>>>>> upstream/master
 {
 	return 0;
 }
 
 ///////////////////////////////////////////////////////////////////////////
 
+<<<<<<< HEAD
 WRITE8_MEMBER( bfmdm01_device::mux_w )
 {
 	if ( m_xcounter < DM_BYTESPERROW )
+=======
+WRITE8_MEMBER( bfm_dm01_device::mux_w )
+{
+	g_profiler.start(PROFILER_USER2);
+
+	if ( m_xcounter < BYTES_PER_ROW )
+>>>>>>> upstream/master
 	{
 		m_scanline[m_xcounter] = data;
 		m_xcounter++;
@@ -173,9 +245,15 @@ WRITE8_MEMBER( bfmdm01_device::mux_w )
 		{
 			int p = 0;
 
+<<<<<<< HEAD
 			while ( p < (DM_BYTESPERROW) )
 			{
 				UINT8 d = m_scanline[p];
+=======
+			while ( p < (BYTES_PER_ROW) )
+			{
+				uint8_t d = m_scanline[p];
+>>>>>>> upstream/master
 
 				for (int bitpos=0; bitpos <8; bitpos++)
 				{
@@ -188,17 +266,37 @@ WRITE8_MEMBER( bfmdm01_device::mux_w )
 				p++;
 			}
 
+<<<<<<< HEAD
 			for (int pos=0;pos<65;pos++)
 			{
 				output_set_indexed_value("dotmatrix", pos +(65*row), m_segbuffer[(pos)]);
 			}
 		}
 	}
+=======
+			uint16_t* pix = &m_tmpbitmap.pix16(row*2);
+			uint16_t* pix2 = &m_tmpbitmap.pix16((row*2)+1);
+			for (int pos=0;pos<65;pos++)
+			{
+				pix[0 + (pos * 2)] = m_segbuffer[(pos)]+1;
+				pix[1 + (pos * 2)] = 0;
+				pix2[0 + (pos * 2)] = 0;
+				pix2[1 + (pos * 2)] = 0;
+			}
+		}
+	}
+
+	g_profiler.stop();
+>>>>>>> upstream/master
 }
 
 ///////////////////////////////////////////////////////////////////////////
 
+<<<<<<< HEAD
 READ8_MEMBER( bfmdm01_device::comm_r )
+=======
+READ8_MEMBER( bfm_dm01_device::comm_r )
+>>>>>>> upstream/master
 {
 	int result = 0;
 
@@ -219,25 +317,40 @@ READ8_MEMBER( bfmdm01_device::comm_r )
 
 ///////////////////////////////////////////////////////////////////////////
 
+<<<<<<< HEAD
 WRITE8_MEMBER( bfmdm01_device::comm_w )
+=======
+WRITE8_MEMBER( bfm_dm01_device::comm_w )
+>>>>>>> upstream/master
 {
 }
 ///////////////////////////////////////////////////////////////////////////
 
+<<<<<<< HEAD
 READ8_MEMBER( bfmdm01_device::unknown_r )
+=======
+READ8_MEMBER( bfm_dm01_device::unknown_r )
+>>>>>>> upstream/master
 {
 	return 0;
 }
 
 ///////////////////////////////////////////////////////////////////////////
 
+<<<<<<< HEAD
 WRITE8_MEMBER( bfmdm01_device::unknown_w )
 {
 	space.machine().device("matrix")->execute().set_input_line(INPUT_LINE_NMI, CLEAR_LINE ); //?
+=======
+WRITE8_MEMBER( bfm_dm01_device::unknown_w )
+{
+	m_matrixcpu->set_input_line(INPUT_LINE_NMI, CLEAR_LINE ); //?
+>>>>>>> upstream/master
 }
 
 ///////////////////////////////////////////////////////////////////////////
 
+<<<<<<< HEAD
 ADDRESS_MAP_START( bfm_dm01_memmap, AS_PROGRAM, 8, bfmdm01_device )
 	AM_RANGE(0x0000, 0x1fff) AM_RAM                             // 8k RAM
 	AM_RANGE(0x2000, 0x2000) AM_DEVREADWRITE("dm01", bfmdm01_device, control_r, control_w)  // control reg
@@ -250,16 +363,69 @@ ADDRESS_MAP_END
 ///////////////////////////////////////////////////////////////////////////
 
 void bfmdm01_device::writedata(UINT8 data)
+=======
+ADDRESS_MAP_START( bfm_dm01_memmap, AS_PROGRAM, 8, bfm_dm01_device )
+	AM_RANGE(0x0000, 0x1fff) AM_RAM                             // 8k RAM
+	AM_RANGE(0x2000, 0x2000) AM_READWRITE(control_r, control_w)  // control reg
+	AM_RANGE(0x2800, 0x2800) AM_READWRITE(mux_r, mux_w)           // mux
+	AM_RANGE(0x3000, 0x3000) AM_READWRITE(comm_r, comm_w)     //
+	AM_RANGE(0x3800, 0x3800) AM_READWRITE(unknown_r, unknown_w)   // ???
+	AM_RANGE(0x4000, 0xFfff) AM_ROM                             // 48k  ROM
+ADDRESS_MAP_END
+
+
+uint32_t bfm_dm01_device::screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+{
+	copybitmap(bitmap, m_tmpbitmap, 0, 0, 0, 0,       cliprect);
+	return 0;
+}
+
+
+
+INTERRUPT_GEN_MEMBER( bfm_dm01_device::nmi_line_assert )
+{
+	m_matrixcpu->set_input_line(INPUT_LINE_NMI, ASSERT_LINE);
+}
+
+MACHINE_CONFIG_MEMBER( bfm_dm01_device::device_add_mconfig )
+	MCFG_CPU_ADD("matrix", M6809, 2000000 )        /* matrix board 6809 CPU at 2 Mhz ?? I don't know the exact freq.*/
+	MCFG_CPU_PROGRAM_MAP(bfm_dm01_memmap)
+	MCFG_CPU_PERIODIC_INT_DRIVER(bfm_dm01_device, nmi_line_assert, 1500 )          /* generate 1500 NMI's per second ?? what is the exact freq?? */
+
+	MCFG_PALETTE_ADD("palette_lcd", 3)
+
+	MCFG_SCREEN_ADD("dmd", RASTER)
+	MCFG_SCREEN_REFRESH_RATE(60)
+	MCFG_SCREEN_VBLANK_TIME(ATTOSECONDS_IN_USEC(0))
+	MCFG_SCREEN_SIZE(65*2, 21*2)
+	MCFG_SCREEN_VISIBLE_AREA(0, 65*2-1, 0, 21*2-1)
+	MCFG_SCREEN_UPDATE_DRIVER(bfm_dm01_device, screen_update)
+
+	MCFG_SCREEN_PALETTE("palette_lcd")
+MACHINE_CONFIG_END
+
+///////////////////////////////////////////////////////////////////////////
+
+void bfm_dm01_device::writedata(uint8_t data)
+>>>>>>> upstream/master
 {
 	m_comdata = data;
 	m_data_avail = 1;
 
 	//pulse IRQ line
+<<<<<<< HEAD
 	machine().device("matrix")->execute().set_input_line(M6809_IRQ_LINE, HOLD_LINE ); // trigger IRQ
 }
 
 ///////////////////////////////////////////////////////////////////////////
 int bfmdm01_device::busy(void)
+=======
+	m_matrixcpu->set_input_line(M6809_IRQ_LINE, HOLD_LINE ); // trigger IRQ
+}
+
+///////////////////////////////////////////////////////////////////////////
+int bfm_dm01_device::busy(void)
+>>>>>>> upstream/master
 {
 	return m_data_avail;
 }

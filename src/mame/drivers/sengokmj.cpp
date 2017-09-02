@@ -21,8 +21,13 @@ Notes:
 - To bypass the startup message, toggle "Reset" dip-switch or reset with F3.
 - If the Work RAM is not hooked-up (areas $67xx),a sound sample is played.I can't understand what it says though,
   appears to japanese words for "RAM failed".
+<<<<<<< HEAD
 - Playing with the debugger I've found this -> http://img444.imageshack.us/img444/2980/0000ti3.png (notice the "credit" at
   the bottom). Maybe a non-BET version exists? Or there's a jumper setting?
+=======
+- Snippets of a non-BET Version are scattered thru the code (for example a credit display).
+  Might be either undumped revision or selectable somehow.
+>>>>>>> upstream/master
 
 CPU:    uPD70116C-8 (V30)
 Sound:  Z80-A
@@ -54,11 +59,23 @@ RSSENGO2.72   chr.
 *******************************************************************************************/
 
 #include "emu.h"
+<<<<<<< HEAD
 #include "cpu/nec/nec.h"
 #include "audio/seibu.h"
 #include "sound/3812intf.h"
 #include "video/seibu_crtc.h"
 #include "machine/nvram.h"
+=======
+#include "audio/seibu.h"
+
+#include "cpu/nec/nec.h"
+#include "machine/nvram.h"
+#include "sound/3812intf.h"
+#include "sound/okim6295.h"
+#include "video/seibu_crtc.h"
+#include "screen.h"
+#include "speaker.h"
+>>>>>>> upstream/master
 
 
 class sengokmj_state : public driver_device
@@ -79,21 +96,36 @@ public:
 	required_device<gfxdecode_device> m_gfxdecode;
 	required_device<palette_device> m_palette;
 
+<<<<<<< HEAD
 	required_shared_ptr<UINT16> m_sc0_vram;
 	required_shared_ptr<UINT16> m_sc1_vram;
 	required_shared_ptr<UINT16> m_sc2_vram;
 	required_shared_ptr<UINT16> m_sc3_vram;
 	required_shared_ptr<UINT16> m_spriteram16;
+=======
+	required_shared_ptr<uint16_t> m_sc0_vram;
+	required_shared_ptr<uint16_t> m_sc1_vram;
+	required_shared_ptr<uint16_t> m_sc2_vram;
+	required_shared_ptr<uint16_t> m_sc3_vram;
+	required_shared_ptr<uint16_t> m_spriteram16;
+>>>>>>> upstream/master
 
 	tilemap_t *m_sc0_tilemap;
 	tilemap_t *m_sc1_tilemap;
 	tilemap_t *m_sc2_tilemap;
 	tilemap_t *m_sc3_tilemap;
 
+<<<<<<< HEAD
 	UINT16 m_mux_data;
 	UINT8 m_hopper_io;
 	UINT16 m_layer_en;
 	UINT16 m_scrollram[6];
+=======
+	uint16_t m_mux_data;
+	uint8_t m_hopper_io;
+	uint16_t m_layer_en;
+	uint16_t m_scrollram[6];
+>>>>>>> upstream/master
 
 	DECLARE_READ16_MEMBER(mahjong_panel_r);
 	DECLARE_WRITE16_MEMBER(mahjong_panel_w);
@@ -113,11 +145,19 @@ public:
 
 	INTERRUPT_GEN_MEMBER(interrupt);
 
+<<<<<<< HEAD
 	virtual void machine_start();
 	virtual void video_start();
 
 	void draw_sprites(bitmap_ind16 &bitmap,const rectangle &cliprect,int pri);
 	UINT32 screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
+=======
+	virtual void machine_start() override;
+	virtual void video_start() override;
+
+	void draw_sprites(bitmap_ind16 &bitmap,const rectangle &cliprect,int pri);
+	uint32_t screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
+>>>>>>> upstream/master
 };
 
 
@@ -294,10 +334,17 @@ void sengokmj_state::draw_sprites(bitmap_ind16 &bitmap,const rectangle &cliprect
 
 void sengokmj_state::video_start()
 {
+<<<<<<< HEAD
 	m_sc0_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(sengokmj_state::seibucrtc_sc0_tile_info),this),TILEMAP_SCAN_ROWS,16,16,32,32);
 	m_sc2_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(sengokmj_state::seibucrtc_sc2_tile_info),this),TILEMAP_SCAN_ROWS,16,16,32,32);
 	m_sc1_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(sengokmj_state::seibucrtc_sc1_tile_info),this),TILEMAP_SCAN_ROWS,16,16,32,32);
 	m_sc3_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(sengokmj_state::seibucrtc_sc3_tile_info),this),TILEMAP_SCAN_ROWS,8,8,64,32);
+=======
+	m_sc0_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(sengokmj_state::seibucrtc_sc0_tile_info),this),TILEMAP_SCAN_ROWS,16,16,32,32);
+	m_sc2_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(sengokmj_state::seibucrtc_sc2_tile_info),this),TILEMAP_SCAN_ROWS,16,16,32,32);
+	m_sc1_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(sengokmj_state::seibucrtc_sc1_tile_info),this),TILEMAP_SCAN_ROWS,16,16,32,32);
+	m_sc3_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(sengokmj_state::seibucrtc_sc3_tile_info),this),TILEMAP_SCAN_ROWS,8,8,64,32);
+>>>>>>> upstream/master
 
 	m_sc2_tilemap->set_transparent_pen(15);
 	m_sc1_tilemap->set_transparent_pen(15);
@@ -307,7 +354,11 @@ void sengokmj_state::video_start()
 	save_item(NAME(m_scrollram));
 }
 
+<<<<<<< HEAD
 UINT32 sengokmj_state::screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+=======
+uint32_t sengokmj_state::screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+>>>>>>> upstream/master
 {
 	bitmap.fill(m_palette->pen(0x7ff), cliprect); //black pen
 
@@ -344,9 +395,15 @@ void sengokmj_state::machine_start()
 /* Multiplexer device for the mahjong panel */
 READ16_MEMBER(sengokmj_state::mahjong_panel_r)
 {
+<<<<<<< HEAD
 	const char *const mpnames[] = { "KEY0", "KEY1", "KEY2", "KEY3", "KEY4", "UNUSED" };
 	int i;
 	UINT16 res = 0xffff;
+=======
+	const char *const mpnames[] = { "KEY0", "KEY1", "KEY2", "KEY3", "KEY4", "KEY5" };
+	int i;
+	uint16_t res = 0xffff;
+>>>>>>> upstream/master
 
 	for(i=0;i<5;i++)
 	{
@@ -371,9 +428,15 @@ WRITE16_MEMBER(sengokmj_state::out_w)
 	/* ---- ---- ---- -x-- Coin counter (done AFTER you press start)*/
 	/* ---- ---- ---- --x- Cash enable (lockout)*/
 	/* ---- ---- ---- ---x Hopper 10 */
+<<<<<<< HEAD
 	coin_lockout_w(machine(), 0,~data & 2);
 	coin_lockout_w(machine(), 1,~data & 2);
 	coin_counter_w(machine(), 0,data & 4);
+=======
+	machine().bookkeeping().coin_lockout_w(0,~data & 2);
+	machine().bookkeeping().coin_lockout_w(1,~data & 2);
+	machine().bookkeeping().coin_counter_w(0,data & 4);
+>>>>>>> upstream/master
 	m_hopper_io = ((data & 1)<<6);
 //  popmessage("%02x",m_hopper_io);
 }
@@ -396,7 +459,11 @@ static ADDRESS_MAP_START( sengokmj_map, AS_PROGRAM, 16, sengokmj_state )
 ADDRESS_MAP_END
 
 static ADDRESS_MAP_START( sengokmj_io_map, AS_IO, 16, sengokmj_state )
+<<<<<<< HEAD
 	AM_RANGE(0x4000, 0x400f) AM_DEVREADWRITE("seibu_sound", seibu_sound_device, main_word_r, main_word_w)
+=======
+	AM_RANGE(0x4000, 0x400f) AM_DEVREADWRITE8("seibu_sound", seibu_sound_device, main_r, main_w, 0x00ff)
+>>>>>>> upstream/master
 	/*Areas from 8000-804f are for the custom Seibu CRTC.*/
 	AM_RANGE(0x8000, 0x804f) AM_DEVREADWRITE("crtc", seibu_crtc_device, read, write)
 
@@ -405,7 +472,11 @@ static ADDRESS_MAP_START( sengokmj_io_map, AS_IO, 16, sengokmj_state )
 //  AM_RANGE(0x8100, 0x8101) AM_WRITENOP // always 0
 	AM_RANGE(0x8180, 0x8181) AM_WRITE(out_w)
 	AM_RANGE(0x8140, 0x8141) AM_WRITE(mahjong_panel_w)
+<<<<<<< HEAD
 	AM_RANGE(0xc000, 0xc001) AM_READ_PORT("DSW1")
+=======
+	AM_RANGE(0xc000, 0xc001) AM_READ_PORT("DSW")
+>>>>>>> upstream/master
 	AM_RANGE(0xc002, 0xc003) AM_READ(mahjong_panel_r)
 	AM_RANGE(0xc004, 0xc005) AM_READ(system_r) //switches
 ADDRESS_MAP_END
@@ -414,7 +485,11 @@ ADDRESS_MAP_END
 static INPUT_PORTS_START( sengokmj )
 	SEIBU_COIN_INPUTS   /* coin inputs read through sound cpu */
 
+<<<<<<< HEAD
 	PORT_START("DSW1")
+=======
+	PORT_START("DSW") // Names and locations from service mode
+>>>>>>> upstream/master
 	PORT_DIPNAME( 0x0001, 0x0000, DEF_STR( Demo_Sounds ) )  PORT_DIPLOCATION("SW1:1")
 	PORT_DIPSETTING(      0x0001, DEF_STR( Off ) )
 	PORT_DIPSETTING(      0x0000, DEF_STR( On ) )
@@ -432,6 +507,7 @@ static INPUT_PORTS_START( sengokmj )
 	PORT_DIPSETTING(      0x0000, DEF_STR( On ) )
 	PORT_DIPUNUSED_DIPLOC( 0x0020, 0x0020, "SW1:6" )
 	PORT_DIPNAME( 0x0040, 0x0040, "Out Sw" ) PORT_DIPLOCATION("SW1:7")
+<<<<<<< HEAD
 	PORT_DIPSETTING(      0x0040, DEF_STR( Off ) )
 	PORT_DIPSETTING(      0x0000, DEF_STR( On ) )
 	PORT_DIPNAME( 0x0080, 0x0000, "Hopper" ) PORT_DIPLOCATION("SW1:8") //game gives hopper error with this off.
@@ -518,6 +594,86 @@ static INPUT_PORTS_START( sengokmj )
 	PORT_DIPNAME( 0x0080, 0x0080, "Meter" )
 	PORT_DIPSETTING(      0x0080, DEF_STR( Off ) )
 	PORT_DIPSETTING(      0x0000, DEF_STR( On ) )
+=======
+	PORT_DIPSETTING(      0x0040, DEF_STR( Off ) ) // One of these probably selects coins
+	PORT_DIPSETTING(      0x0000, DEF_STR( On ) ) // The other probably selects tickets
+	PORT_DIPNAME( 0x0080, 0x0000, "Hopper" ) PORT_DIPLOCATION("SW1:8") //game gives hopper error with this off.
+	PORT_DIPSETTING(      0x0080, DEF_STR( Off ) )
+	PORT_DIPSETTING(      0x0000, DEF_STR( On ) )
+	PORT_DIPUNUSED_DIPLOC( 0x0100, 0x0100, "SW2:1" )
+	PORT_DIPUNUSED_DIPLOC( 0x0200, 0x0200, "SW2:2" )
+	PORT_DIPUNUSED_DIPLOC( 0x0400, 0x0400, "SW2:3" )
+	PORT_DIPUNUSED_DIPLOC( 0x0800, 0x0800, "SW2:4" )
+	PORT_DIPUNUSED_DIPLOC( 0x1000, 0x1000, "SW2:5" )
+	PORT_DIPUNUSED_DIPLOC( 0x2000, 0x2000, "SW2:6" )
+	PORT_DIPUNUSED_DIPLOC( 0x4000, 0x4000, "SW2:7" )
+	PORT_DIPUNUSED_DIPLOC( 0x8000, 0x8000, "SW2:8" )
+
+	PORT_START("KEY0")
+	PORT_BIT( 0x0001, IP_ACTIVE_LOW, IPT_MAHJONG_A ) // Internal code 0F0h
+	PORT_BIT( 0x0002, IP_ACTIVE_LOW, IPT_MAHJONG_E ) // Internal code 0F4h
+	PORT_BIT( 0x0004, IP_ACTIVE_LOW, IPT_MAHJONG_I ) // Internal code 0F8h
+	PORT_BIT( 0x0008, IP_ACTIVE_LOW, IPT_MAHJONG_M ) // Internal code 0FCh
+	PORT_BIT( 0x0010, IP_ACTIVE_LOW, IPT_MAHJONG_KAN ) // Internal code 3h
+	PORT_BIT( 0x0020, IP_ACTIVE_LOW, IPT_START1 ) // Internal code 0Ah
+	PORT_BIT( 0x0040, IP_ACTIVE_LOW, IPT_OTHER ) PORT_NAME("Bet 2") PORT_CODE(KEYCODE_4) // Internal code 0FFFFh; ignored in service mode but probably does something
+	PORT_BIT( 0xff80, IP_ACTIVE_LOW, IPT_UNUSED )
+
+	PORT_START("KEY1")
+	PORT_BIT( 0x0001, IP_ACTIVE_LOW, IPT_MAHJONG_B ) // Internal code 0F1h
+	PORT_BIT( 0x0002, IP_ACTIVE_LOW, IPT_MAHJONG_F ) // Internal code 0F5h
+	PORT_BIT( 0x0004, IP_ACTIVE_LOW, IPT_MAHJONG_J ) // Internal code 0F9h
+	PORT_BIT( 0x0008, IP_ACTIVE_LOW, IPT_MAHJONG_N ) // Internal code 0FBh
+	PORT_BIT( 0x0010, IP_ACTIVE_LOW, IPT_MAHJONG_REACH ) // Internal code 0Bh
+	PORT_BIT( 0x0020, IP_ACTIVE_LOW, IPT_MAHJONG_BET ) // Internal code 9h
+	PORT_BIT( 0xffc0, IP_ACTIVE_LOW, IPT_UNUSED )
+
+	PORT_START("KEY2")
+	PORT_BIT( 0x0001, IP_ACTIVE_LOW, IPT_MAHJONG_C ) // Internal code 0F2h
+	PORT_BIT( 0x0002, IP_ACTIVE_LOW, IPT_MAHJONG_G ) // Internal code 0F6h
+	PORT_BIT( 0x0004, IP_ACTIVE_LOW, IPT_MAHJONG_K ) // Internal code 0FAh
+	PORT_BIT( 0x0008, IP_ACTIVE_LOW, IPT_MAHJONG_CHI ) // Internal code 1h
+	PORT_BIT( 0x0010, IP_ACTIVE_LOW, IPT_MAHJONG_RON ) // Internal code 0Ch
+	PORT_BIT( 0x0020, IP_ACTIVE_LOW, IPT_UNUSED )
+	PORT_BIT( 0xffc0, IP_ACTIVE_LOW, IPT_UNUSED )
+
+	PORT_START("KEY3")
+	PORT_BIT( 0x0001, IP_ACTIVE_LOW, IPT_MAHJONG_D ) // Internal code 0F3h
+	PORT_BIT( 0x0002, IP_ACTIVE_LOW, IPT_MAHJONG_H ) // Internal code 0F7h
+	PORT_BIT( 0x0004, IP_ACTIVE_LOW, IPT_MAHJONG_L ) // Internal code 0FBh
+	PORT_BIT( 0x0008, IP_ACTIVE_LOW, IPT_MAHJONG_PON ) // Internal code 2h
+	PORT_BIT( 0x0010, IP_ACTIVE_LOW, IPT_UNKNOWN ) // Internal code 6h; not shown in service mode and probably does nothing
+	PORT_BIT( 0x0020, IP_ACTIVE_LOW, IPT_UNUSED )
+	PORT_BIT( 0xffc0, IP_ACTIVE_LOW, IPT_UNUSED )
+
+	PORT_START("KEY4")
+	PORT_BIT( 0x0001, IP_ACTIVE_LOW, IPT_MAHJONG_LAST_CHANCE ) // Internal code 4h
+	PORT_BIT( 0x0002, IP_ACTIVE_LOW, IPT_MAHJONG_SCORE ) // Internal code 8h
+	PORT_BIT( 0x0004, IP_ACTIVE_LOW, IPT_MAHJONG_DOUBLE_UP ) // Internal code 7h
+	PORT_BIT( 0x0008, IP_ACTIVE_LOW, IPT_UNUSED )
+	PORT_BIT( 0x0010, IP_ACTIVE_LOW, IPT_OTHER ) PORT_NAME("Show Checksum") PORT_CODE(KEYCODE_X) // Internal code 5h; not shown in service mode but certainly does something
+	PORT_BIT( 0x0020, IP_ACTIVE_LOW, IPT_UNUSED )
+	PORT_BIT( 0xffc0, IP_ACTIVE_LOW, IPT_UNUSED )
+
+	PORT_START("KEY5")
+	PORT_BIT( 0x0001, IP_ACTIVE_LOW, IPT_UNUSED )
+	PORT_BIT( 0x0002, IP_ACTIVE_LOW, IPT_UNUSED )
+	PORT_BIT( 0x0004, IP_ACTIVE_LOW, IPT_UNUSED )
+	PORT_BIT( 0x0008, IP_ACTIVE_LOW, IPT_UNUSED )
+	PORT_BIT( 0x0010, IP_ACTIVE_LOW, IPT_UNUSED )
+	PORT_BIT( 0x0020, IP_ACTIVE_LOW, IPT_UNUSED )
+	PORT_BIT( 0xffc0, IP_ACTIVE_LOW, IPT_UNUSED )
+
+	PORT_START("SYSTEM")
+	PORT_BIT( 0x0001, IP_ACTIVE_LOW, IPT_GAMBLE_DOOR ) // Only used in service mode?
+	PORT_SERVICE_NO_TOGGLE( 0x0002, IP_ACTIVE_LOW )
+	PORT_BIT( 0x0004, IP_ACTIVE_LOW, IPT_SERVICE4 ) PORT_NAME("Opt. 1st") // Only used in service mode?
+	PORT_BIT( 0x0008, IP_ACTIVE_LOW, IPT_MEMORY_RESET )
+	PORT_BIT( 0x0010, IP_ACTIVE_LOW, IPT_UNUSED )
+	PORT_BIT( 0x0020, IP_ACTIVE_LOW, IPT_SERVICE3 ) PORT_NAME("Cash") // Only used in service mode?
+//  0x40 Hopper
+	PORT_BIT( 0x0080, IP_ACTIVE_LOW, IPT_GAMBLE_BOOK ) PORT_NAME("Meter")
+>>>>>>> upstream/master
 	PORT_BIT( 0xff00, IP_ACTIVE_LOW, IPT_UNUSED )
 INPUT_PORTS_END
 
@@ -570,7 +726,11 @@ WRITE16_MEMBER( sengokmj_state::layer_scroll_w )
 }
 
 
+<<<<<<< HEAD
 static MACHINE_CONFIG_START( sengokmj, sengokmj_state )
+=======
+static MACHINE_CONFIG_START( sengokmj )
+>>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", V30, 16000000/2) /* V30-8 */
@@ -578,7 +738,12 @@ static MACHINE_CONFIG_START( sengokmj, sengokmj_state )
 	MCFG_CPU_IO_MAP(sengokmj_io_map)
 	MCFG_CPU_VBLANK_INT_DRIVER("screen", sengokmj_state,  interrupt)
 
+<<<<<<< HEAD
 	SEIBU_SOUND_SYSTEM_CPU(14318180/4)
+=======
+	MCFG_CPU_ADD("audiocpu", Z80, 14318180/4)
+	MCFG_CPU_PROGRAM_MAP(seibu_sound_map)
+>>>>>>> upstream/master
 
 	MCFG_NVRAM_ADD_0FILL("nvram")
 
@@ -600,7 +765,24 @@ static MACHINE_CONFIG_START( sengokmj, sengokmj_state )
 	MCFG_PALETTE_FORMAT(xBBBBBGGGGGRRRRR)
 
 	/* sound hardware */
+<<<<<<< HEAD
 	SEIBU_SOUND_SYSTEM_YM3812_INTERFACE(14318180/4,1320000)
+=======
+	MCFG_SPEAKER_STANDARD_MONO("mono")
+
+	MCFG_SOUND_ADD("ymsnd", YM3812, 14318180/4)
+	MCFG_YM3812_IRQ_HANDLER(DEVWRITELINE("seibu_sound", seibu_sound_device, fm_irqhandler))
+	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 1.0)
+
+	MCFG_OKIM6295_ADD("oki", 1320000, PIN7_LOW)
+	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 0.40)
+
+	MCFG_DEVICE_ADD("seibu_sound", SEIBU_SOUND, 0)
+	MCFG_SEIBU_SOUND_CPU("audiocpu")
+	MCFG_SEIBU_SOUND_ROMBANK("seibu_bank1")
+	MCFG_SEIBU_SOUND_YM_READ_CB(DEVREAD8("ymsnd", ym3812_device, read))
+	MCFG_SEIBU_SOUND_YM_WRITE_CB(DEVWRITE8("ymsnd", ym3812_device, write))
+>>>>>>> upstream/master
 MACHINE_CONFIG_END
 
 
@@ -612,7 +794,11 @@ ROM_START( sengokmj )
 	ROM_REGION( 0x20000, "audiocpu", 0 ) /* 64k code for sound Z80 */
 	ROM_LOAD( "mah1-2-1.013", 0x000000, 0x08000, CRC(6a4f31b8) SHA1(5e1d7ed299c1fd65c7a43faa02831220f4251733) )
 	ROM_CONTINUE(             0x010000, 0x08000 )
+<<<<<<< HEAD
 	ROM_COPY( "audiocpu", 0,     0x018000, 0x08000 )
+=======
+	ROM_COPY( "audiocpu", 0x000000,     0x018000, 0x08000 )
+>>>>>>> upstream/master
 
 	ROM_REGION( 0x100000, "spr_gfx", 0 ) /*Sprites gfx rom*/
 	ROM_LOAD( "rssengo2.72", 0x00000, 0x100000, CRC(fb215ff8) SHA1(f98c0a53ad9b97d209dd1f85c994fc17ec585bd7) )
@@ -640,5 +826,9 @@ ROM_START( sengokmj )
 	ROM_LOAD( "rs006.89", 0x000, 0x200, CRC(96f7646e) SHA1(400a831b83d6ac4d2a46ef95b97b1ee237099e44) ) /* Priority */
 ROM_END
 
+<<<<<<< HEAD
 GAME( 1991, sengokmj, 0, sengokmj, sengokmj, driver_device, 0, ROT0, "Sigma", "Sengoku Mahjong [BET] (Japan)", MACHINE_IMPERFECT_GRAPHICS | MACHINE_SUPPORTS_SAVE )
+=======
+GAME( 1991, sengokmj, 0, sengokmj, sengokmj, sengokmj_state, 0, ROT0, "Sigma", "Sengoku Mahjong [BET] (Japan)", MACHINE_IMPERFECT_GRAPHICS | MACHINE_SUPPORTS_SAVE )
+>>>>>>> upstream/master
 /*Non-Bet Version?*/

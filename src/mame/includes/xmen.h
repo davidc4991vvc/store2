@@ -1,10 +1,20 @@
 // license:BSD-3-Clause
 // copyright-holders:Nicola Salmoria
+<<<<<<< HEAD
+=======
+
+#include "machine/gen_latch.h"
+>>>>>>> upstream/master
 #include "sound/k054539.h"
 #include "video/k053246_k053247_k055673.h"
 #include "video/k053251.h"
 #include "video/k052109.h"
 #include "video/konami_helper.h"
+<<<<<<< HEAD
+=======
+#include "machine/k054321.h"
+#include "screen.h"
+>>>>>>> upstream/master
 
 class xmen_state : public driver_device
 {
@@ -22,6 +32,10 @@ public:
 		m_k053246(*this, "k053246"),
 		m_k053251(*this, "k053251"),
 		m_screen(*this, "screen"),
+<<<<<<< HEAD
+=======
+		m_k054321(*this, "k054321"),
+>>>>>>> upstream/master
 		m_z80bank(*this, "z80bank") { }
 
 	/* video-related */
@@ -30,6 +44,7 @@ public:
 	int        m_layerpri[3];
 
 	/* for xmen6p */
+<<<<<<< HEAD
 	bitmap_ind16   *m_screen_right;
 	bitmap_ind16   *m_screen_left;
 	optional_shared_ptr<UINT16> m_xmen6p_spriteramleft;
@@ -40,6 +55,18 @@ public:
 
 	/* misc */
 	UINT8       m_vblank_irq_mask;
+=======
+	std::unique_ptr<bitmap_ind16> m_screen_right;
+	std::unique_ptr<bitmap_ind16> m_screen_left;
+	optional_shared_ptr<uint16_t> m_xmen6p_spriteramleft;
+	optional_shared_ptr<uint16_t> m_xmen6p_spriteramright;
+	optional_shared_ptr<uint16_t> m_xmen6p_tilemapleft;
+	optional_shared_ptr<uint16_t> m_xmen6p_tilemapright;
+	uint16_t *   m_k053247_ram;
+
+	/* misc */
+	uint8_t       m_vblank_irq_mask;
+>>>>>>> upstream/master
 
 	/* devices */
 	required_device<cpu_device> m_maincpu;
@@ -49,6 +76,7 @@ public:
 	required_device<k053247_device> m_k053246;
 	required_device<k053251_device> m_k053251;
 	required_device<screen_device> m_screen;
+<<<<<<< HEAD
 
 	required_memory_bank m_z80bank;
 	DECLARE_WRITE16_MEMBER(eeprom_w);
@@ -65,6 +93,22 @@ public:
 	UINT32 screen_update_xmen6p_left(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
 	UINT32 screen_update_xmen6p_right(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
 	void screen_eof_xmen6p(screen_device &screen, bool state);
+=======
+	required_device<k054321_device> m_k054321;
+
+	required_memory_bank m_z80bank;
+	DECLARE_WRITE16_MEMBER(eeprom_w);
+	DECLARE_WRITE16_MEMBER(xmen_18fa00_w);
+	DECLARE_WRITE8_MEMBER(sound_bankswitch_w);
+	DECLARE_CUSTOM_INPUT_MEMBER(xmen_frame_r);
+	virtual void machine_start() override;
+	virtual void machine_reset() override;
+	DECLARE_VIDEO_START(xmen6p);
+	uint32_t screen_update_xmen(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
+	uint32_t screen_update_xmen6p_left(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
+	uint32_t screen_update_xmen6p_right(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
+	DECLARE_WRITE_LINE_MEMBER(screen_vblank_xmen6p);
+>>>>>>> upstream/master
 	TIMER_DEVICE_CALLBACK_MEMBER(xmen_scanline);
 	K052109_CB_MEMBER(tile_callback);
 	K053246_CB_MEMBER(sprite_callback);

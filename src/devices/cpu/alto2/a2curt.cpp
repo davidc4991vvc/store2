@@ -5,6 +5,10 @@
  *   Xerox AltoII cursor task
  *
  *****************************************************************************/
+<<<<<<< HEAD
+=======
+#include "emu.h"
+>>>>>>> upstream/master
 #include "alto2cpu.h"
 
 /**
@@ -28,6 +32,7 @@ void alto2_cpu_device::f2_late_load_xpreg()
 
 /**
  * @brief f2_load_csr late: load the cursor shift register from BUS[0-15]
+<<<<<<< HEAD
  *
  * Shift CSR to xpreg % 16 position to make it easier to
  * to handle the word xor in unload_word().
@@ -42,6 +47,8 @@ void alto2_cpu_device::f2_late_load_xpreg()
  *    14        00000000000000xxxxxxxxxxxxxxxx00
  *    15        000000000000000xxxxxxxxxxxxxxxx0
  * </PRE>
+=======
+>>>>>>> upstream/master
  */
 void alto2_cpu_device::f2_late_load_csr()
 {
@@ -56,21 +63,27 @@ void alto2_cpu_device::activate_curt()
 {
 	m_task_wakeup &= ~(1 << m_task);
 	m_dsp.curt_wakeup = false;
+<<<<<<< HEAD
 
 	int x = 01777 - m_dsp.xpreg;
 	UINT32 bits = m_dsp.csr << (16 - (x & 15));
 	m_dsp.cursor0 = static_cast<UINT16>(bits >> 16);
 	m_dsp.cursor1 = static_cast<UINT16>(bits);
 	m_dsp.curxpos = x / 16;
+=======
+>>>>>>> upstream/master
 }
 
 /** @brief initialize the cursor task F1 and F2 functions */
 void alto2_cpu_device::init_curt(int task)
 {
+<<<<<<< HEAD
 	set_f1(task, f1_block,              &alto2_cpu_device::f1_early_curt_block, 0);
 	set_f2(task, f2_curt_load_xpreg,    0, &alto2_cpu_device::f2_late_load_xpreg);
 	set_f2(task, f2_curt_load_csr,      0, &alto2_cpu_device::f2_late_load_csr);
 	m_active_callback[task] = &alto2_cpu_device::activate_curt;
+=======
+>>>>>>> upstream/master
 }
 
 void alto2_cpu_device::exit_curt()
@@ -83,6 +96,9 @@ void alto2_cpu_device::reset_curt()
 	m_dsp.curt_blocks = false;
 	m_dsp.xpreg = 0;
 	m_dsp.csr = 0;
+<<<<<<< HEAD
 	m_dsp.curxpos = 0;
 	m_dsp.cursor0 = m_dsp.cursor1 = 0;
+=======
+>>>>>>> upstream/master
 }

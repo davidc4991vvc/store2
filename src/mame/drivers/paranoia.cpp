@@ -36,14 +36,28 @@ HuC6280A (Hudson)
 ****************************************************************************/
 
 #include "emu.h"
+<<<<<<< HEAD
 #include "cpu/z80/z80.h"
 #include "cpu/i8085/i8085.h"
 #include "machine/i8155.h"
 #include "machine/pcecommn.h"
+=======
+#include "machine/pcecommn.h"
+
+#include "cpu/z80/z80.h"
+#include "cpu/i8085/i8085.h"
+#include "machine/i8155.h"
+>>>>>>> upstream/master
 #include "video/huc6260.h"
 #include "video/huc6270.h"
 #include "cpu/h6280/h6280.h"
 #include "sound/c6280.h"
+<<<<<<< HEAD
+=======
+#include "screen.h"
+#include "speaker.h"
+
+>>>>>>> upstream/master
 
 class paranoia_state : public pce_common_state
 {
@@ -64,6 +78,7 @@ public:
 
 
 static INPUT_PORTS_START( paranoia )
+<<<<<<< HEAD
 	PORT_START( "JOY" )
 	PORT_BIT( 0x01, IP_ACTIVE_LOW, IPT_BUTTON2 ) /* button I */
 	PORT_BIT( 0x02, IP_ACTIVE_LOW, IPT_BUTTON1 ) /* button II */
@@ -73,6 +88,9 @@ static INPUT_PORTS_START( paranoia )
 	PORT_BIT( 0x40, IP_ACTIVE_LOW, IPT_JOYSTICK_DOWN )
 	PORT_BIT( 0x80, IP_ACTIVE_LOW, IPT_JOYSTICK_LEFT )
 	PORT_BIT( 0x20, IP_ACTIVE_LOW, IPT_JOYSTICK_RIGHT )
+=======
+	PCE_STANDARD_INPUT_PORT_P1
+>>>>>>> upstream/master
 INPUT_PORTS_END
 
 static ADDRESS_MAP_START( pce_mem , AS_PROGRAM, 8, paranoia_state )
@@ -159,7 +177,11 @@ WRITE_LINE_MEMBER(paranoia_state::i8155_timer_out)
 	//logerror("Timer out %d\n", state);
 }
 
+<<<<<<< HEAD
 static MACHINE_CONFIG_START( paranoia, paranoia_state )
+=======
+static MACHINE_CONFIG_START( paranoia )
+>>>>>>> upstream/master
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", H6280, PCE_MAIN_CLOCK/3)
 	MCFG_CPU_PROGRAM_MAP(pce_mem)
@@ -182,7 +204,11 @@ static MACHINE_CONFIG_START( paranoia, paranoia_state )
 
 	/* video hardware */
 	MCFG_SCREEN_ADD("screen", RASTER)
+<<<<<<< HEAD
 	MCFG_SCREEN_RAW_PARAMS(PCE_MAIN_CLOCK, HUC6260_WPF, 64, 64 + 1024 + 64, HUC6260_LPF, 18, 18 + 242)
+=======
+	MCFG_SCREEN_RAW_PARAMS(PCE_MAIN_CLOCK, huc6260_device::WPF, 64, 64 + 1024 + 64, huc6260_device::LPF, 18, 18 + 242)
+>>>>>>> upstream/master
 	MCFG_SCREEN_UPDATE_DRIVER( pce_common_state, screen_update )
 	MCFG_SCREEN_PALETTE("huc6260:palette")
 
@@ -193,7 +219,11 @@ static MACHINE_CONFIG_START( paranoia, paranoia_state )
 	MCFG_HUC6260_HSYNC_CHANGED_CB(DEVWRITELINE("huc6270", huc6270_device, hsync_changed))
 	MCFG_DEVICE_ADD( "huc6270", HUC6270, 0 )
 	MCFG_HUC6270_VRAM_SIZE(0x10000)
+<<<<<<< HEAD
 	MCFG_HUC6270_IRQ_CHANGED_CB(WRITELINE(pce_common_state, pce_irq_changed))
+=======
+	MCFG_HUC6270_IRQ_CHANGED_CB(INPUTLINE("maincpu", 0))
+>>>>>>> upstream/master
 
 	MCFG_SPEAKER_STANDARD_STEREO("lspeaker","rspeaker")
 	MCFG_SOUND_ADD("c6280", C6280, PCE_MAIN_CLOCK/6)
@@ -217,4 +247,8 @@ ROM_START(paranoia)
 	ROM_LOAD( "4.352", 0x18000, 0x8000, CRC(11297fed) SHA1(17a294e65ba1c4806307602dee4c7c627ad1fcfd) )
 ROM_END
 
+<<<<<<< HEAD
 GAME( 1990, paranoia, 0, paranoia, paranoia, pce_common_state, pce_common, ROT0, "Naxat Soft", "Paranoia", MACHINE_IMPERFECT_SOUND | MACHINE_NOT_WORKING | MACHINE_SUPPORTS_SAVE )
+=======
+GAME( 1990, paranoia, 0, paranoia, paranoia, paranoia_state, pce_common, ROT0, "Naxat Soft", "Paranoia", MACHINE_IMPERFECT_SOUND | MACHINE_NOT_WORKING | MACHINE_SUPPORTS_SAVE )
+>>>>>>> upstream/master

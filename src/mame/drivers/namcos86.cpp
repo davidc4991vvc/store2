@@ -175,26 +175,48 @@ TODO:
 *******************************************************************/
 
 #include "emu.h"
+<<<<<<< HEAD
 #include "cpu/m6809/m6809.h"
 #include "cpu/m6800/m6800.h"
 #include "sound/2151intf.h"
 #include "sound/n63701x.h"
 #include "includes/namcos86.h"
+=======
+#include "includes/namcos86.h"
+
+#include "cpu/m6809/m6809.h"
+#include "cpu/m6800/m6801.h"
+#include "sound/ym2151.h"
+#include "sound/n63701x.h"
+#include "screen.h"
+#include "speaker.h"
+
+>>>>>>> upstream/master
 
 WRITE8_MEMBER(namcos86_state::bankswitch1_w)
 {
 	/* if the ROM expansion module is available, don't do anything. This avoids conflict */
 	/* with bankswitch1_ext_w() in wndrmomo */
+<<<<<<< HEAD
 	if (memregion("user1")->base()) return;
+=======
+	if (m_user1_ptr)
+		return;
+>>>>>>> upstream/master
 
 	membank("bank1")->set_entry(data & 0x03);
 }
 
 WRITE8_MEMBER(namcos86_state::bankswitch1_ext_w)
 {
+<<<<<<< HEAD
 	UINT8 *base = memregion("user1")->base();
 
 	if (base == 0) return;
+=======
+	if (!m_user1_ptr)
+		return;
+>>>>>>> upstream/master
 
 	membank("bank1")->set_entry(data & 0x1f);
 }
@@ -256,7 +278,11 @@ WRITE8_MEMBER(namcos86_state::watchdog1_w)
 	if (m_wdog == 3)
 	{
 		m_wdog = 0;
+<<<<<<< HEAD
 		watchdog_reset_w(space,0,0);
+=======
+		m_watchdog->reset_w(space,0,0);
+>>>>>>> upstream/master
 	}
 }
 
@@ -266,29 +292,48 @@ WRITE8_MEMBER(namcos86_state::watchdog2_w)
 	if (m_wdog == 3)
 	{
 		m_wdog = 0;
+<<<<<<< HEAD
 		watchdog_reset_w(space,0,0);
+=======
+		m_watchdog->reset_w(space,0,0);
+>>>>>>> upstream/master
 	}
 }
 
 
 WRITE8_MEMBER(namcos86_state::coin_w)
 {
+<<<<<<< HEAD
 	coin_lockout_global_w(machine(), data & 1);
 	coin_counter_w(machine(), 0,~data & 2);
 	coin_counter_w(machine(), 1,~data & 4);
+=======
+	machine().bookkeeping().coin_lockout_global_w(data & 1);
+	machine().bookkeeping().coin_counter_w(0,~data & 2);
+	machine().bookkeeping().coin_counter_w(1,~data & 4);
+>>>>>>> upstream/master
 }
 
 WRITE8_MEMBER(namcos86_state::led_w)
 {
+<<<<<<< HEAD
 	set_led_status(machine(), 0,data & 0x08);
 	set_led_status(machine(), 1,data & 0x10);
+=======
+	output().set_led_value(0,data & 0x08);
+	output().set_led_value(1,data & 0x10);
+>>>>>>> upstream/master
 }
 
 
 WRITE8_MEMBER(namcos86_state::cus115_w)
 {
 	/* make sure the expansion board is present */
+<<<<<<< HEAD
 	if (!memregion("user1")->base())
+=======
+	if (!m_user1_ptr)
+>>>>>>> upstream/master
 	{
 		popmessage("expansion board not present");
 		return;
@@ -317,10 +362,17 @@ WRITE8_MEMBER(namcos86_state::cus115_w)
 
 void namcos86_state::machine_start()
 {
+<<<<<<< HEAD
 	if (!memregion("user1")->base())
 		membank("bank1")->configure_entries(0, 4, memregion("cpu1")->base(), 0x2000);
 	else
 		membank("bank1")->configure_entries(0, 32, memregion("user1")->base(), 0x2000);
+=======
+	if (m_user1_ptr)
+		membank("bank1")->configure_entries(0, 32, m_user1_ptr, 0x2000);
+	else
+		membank("bank1")->configure_entries(0, 4, memregion("cpu1")->base(), 0x2000);
+>>>>>>> upstream/master
 
 	if (membank("bank2"))
 		membank("bank2")->configure_entries(0, 4, memregion("cpu2")->base(), 0x2000);
@@ -1043,7 +1095,11 @@ GFXDECODE_END
 
 /*******************************************************************/
 
+<<<<<<< HEAD
 static MACHINE_CONFIG_START( hopmappy, namcos86_state )
+=======
+static MACHINE_CONFIG_START( hopmappy )
+>>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("cpu1", M6809, XTAL_49_152MHz/32)
@@ -1061,12 +1117,20 @@ static MACHINE_CONFIG_START( hopmappy, namcos86_state )
 
 	MCFG_QUANTUM_TIME(attotime::from_hz(48000)) /* heavy interleaving needed to avoid hangs in rthunder */
 
+<<<<<<< HEAD
+=======
+	MCFG_WATCHDOG_ADD("watchdog")
+>>>>>>> upstream/master
 
 	/* video hardware */
 	MCFG_SCREEN_ADD("screen", RASTER)
 	MCFG_SCREEN_RAW_PARAMS(XTAL_49_152MHz/8, 384, 3+8*8, 3+44*8, 264, 2*8, 30*8)
 	MCFG_SCREEN_UPDATE_DRIVER(namcos86_state, screen_update)
+<<<<<<< HEAD
 	MCFG_SCREEN_VBLANK_DRIVER(namcos86_state, screen_eof)
+=======
+	MCFG_SCREEN_VBLANK_CALLBACK(WRITELINE(namcos86_state, screen_vblank))
+>>>>>>> upstream/master
 	MCFG_SCREEN_PALETTE("palette")
 
 	MCFG_GFXDECODE_ADD("gfxdecode", "palette", namcos86)
@@ -1232,11 +1296,19 @@ ROM_START( hopmappy )
 
 	ROM_REGION( 0x06000, "gfx1", 0 )
 	ROM_LOAD( "hm1_6.7r",     0x00000, 0x04000, CRC(fd0e8887) SHA1(b76737d22bb1c1ae4d700ea6796e8d91f6ffa275) )  /* plane 1,2 */
+<<<<<<< HEAD
 	ROM_FILL(                 0x04000, 0x02000, 0 )         /* no plane 3 */
 
 	ROM_REGION( 0x06000, "gfx2", 0 )
 	ROM_LOAD( "hm1_5.4r",     0x00000, 0x04000, CRC(9c4f31ae) SHA1(1c7072355d6f98b8e8554da19eab0512fdd9e2e1) )  /* plane 1,2 */
 	ROM_FILL(                 0x04000, 0x02000, 0 )         /* no plane 3 */
+=======
+	ROM_FILL(                 0x04000, 0x02000, 0x00 )         /* no plane 3 */
+
+	ROM_REGION( 0x06000, "gfx2", 0 )
+	ROM_LOAD( "hm1_5.4r",     0x00000, 0x04000, CRC(9c4f31ae) SHA1(1c7072355d6f98b8e8554da19eab0512fdd9e2e1) )  /* plane 1,2 */
+	ROM_FILL(                 0x04000, 0x02000, 0x00 )         /* no plane 3 */
+>>>>>>> upstream/master
 
 	ROM_REGION( 0x40000, "gfx3", 0 )
 	ROM_LOAD( "hm1_4.12h",    0x00000, 0x8000, CRC(78719c52) SHA1(06d7bb9f29ccdbf563b3bf13c0290510b26e186f) )
@@ -1665,25 +1737,41 @@ ROM_END
 DRIVER_INIT_MEMBER(namcos86_state,namco86)
 {
 	int size;
+<<<<<<< HEAD
 	UINT8 *gfx;
+=======
+	uint8_t *gfx;
+>>>>>>> upstream/master
 
 	/* shuffle tile ROMs so regular gfx unpack routines can be used */
 	gfx = memregion("gfx1")->base();
 	size = memregion("gfx1")->bytes() * 2 / 3;
 
 	{
+<<<<<<< HEAD
 		dynamic_buffer buffer( size );
 		UINT8 *dest1 = gfx;
 		UINT8 *dest2 = gfx + ( size / 2 );
 		UINT8 *mono = gfx + size;
+=======
+		std::vector<uint8_t> buffer( size );
+		uint8_t *dest1 = gfx;
+		uint8_t *dest2 = gfx + ( size / 2 );
+		uint8_t *mono = gfx + size;
+>>>>>>> upstream/master
 		int i;
 
 		memcpy( &buffer[0], gfx, size );
 
 		for ( i = 0; i < size; i += 2 )
 		{
+<<<<<<< HEAD
 			UINT8 data1 = buffer[i];
 			UINT8 data2 = buffer[i+1];
+=======
+			uint8_t data1 = buffer[i];
+			uint8_t data2 = buffer[i+1];
+>>>>>>> upstream/master
 			*dest1++ = ( data1 << 4 ) | ( data2 & 0xf );
 			*dest2++ = ( data1 & 0xf0 ) | ( data2 >> 4 );
 
@@ -1695,18 +1783,30 @@ DRIVER_INIT_MEMBER(namcos86_state,namco86)
 	size = memregion("gfx2")->bytes() * 2 / 3;
 
 	{
+<<<<<<< HEAD
 		dynamic_buffer buffer( size );
 		UINT8 *dest1 = gfx;
 		UINT8 *dest2 = gfx + ( size / 2 );
 		UINT8 *mono = gfx + size;
+=======
+		std::vector<uint8_t> buffer( size );
+		uint8_t *dest1 = gfx;
+		uint8_t *dest2 = gfx + ( size / 2 );
+		uint8_t *mono = gfx + size;
+>>>>>>> upstream/master
 		int i;
 
 		memcpy( &buffer[0], gfx, size );
 
 		for ( i = 0; i < size; i += 2 )
 		{
+<<<<<<< HEAD
 			UINT8 data1 = buffer[i];
 			UINT8 data2 = buffer[i+1];
+=======
+			uint8_t data1 = buffer[i];
+			uint8_t data2 = buffer[i+1];
+>>>>>>> upstream/master
 			*dest1++ = ( data1 << 4 ) | ( data2 & 0xf );
 			*dest2++ = ( data1 & 0xf0 ) | ( data2 >> 4 );
 

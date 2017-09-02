@@ -4,6 +4,7 @@
  *  Data East Pinball DMD Type 2 Display
  */
 
+<<<<<<< HEAD
 #ifndef DECODMD_H_
 #define DECODMD_H_
 
@@ -11,11 +12,22 @@
 #include "cpu/m6809/m6809.h"
 #include "video/mc6845.h"
 #include "machine/ram.h"
+=======
+#ifndef MAME_VIDEO_DECODMD2_H
+#define MAME_VIDEO_DECODMD2_H
+
+#pragma once
+
+#include "cpu/m6809/m6809.h"
+#include "machine/ram.h"
+#include "video/mc6845.h"
+>>>>>>> upstream/master
 
 #define MCFG_DECODMD_TYPE2_ADD(_tag, _region) \
 	MCFG_DEVICE_ADD(_tag, DECODMD2, 0) \
 	decodmd_type2_device::static_set_gfxregion(*device, _region);
 
+<<<<<<< HEAD
 #define START_ADDRESS       (((m_crtc_reg[0x0c]<<8) & 0x3f00) | (m_crtc_reg[0x0d] & 0xff))
 
 class decodmd_type2_device : public device_t
@@ -31,6 +43,12 @@ public:
 	memory_region* m_rom;
 
 	UINT32 screen_update( screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect );
+=======
+class decodmd_type2_device : public device_t
+{
+public:
+	decodmd_type2_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
+>>>>>>> upstream/master
 
 	DECLARE_WRITE8_MEMBER(bank_w);
 	DECLARE_WRITE8_MEMBER(crtc_address_w);
@@ -43,12 +61,16 @@ public:
 	DECLARE_READ8_MEMBER(ctrl_r);
 	DECLARE_READ8_MEMBER(status_r);
 	DECLARE_WRITE8_MEMBER(status_w);
+<<<<<<< HEAD
 	TIMER_DEVICE_CALLBACK_MEMBER(dmd_firq);
 	MC6845_UPDATE_ROW(crtc_update_row);
+=======
+>>>>>>> upstream/master
 
 	static void static_set_gfxregion(device_t &device, const char *tag);
 
 protected:
+<<<<<<< HEAD
 	virtual machine_config_constructor device_mconfig_additions() const;
 	virtual void device_start();
 	virtual void device_reset();
@@ -67,3 +89,36 @@ private:
 extern const device_type DECODMD2;
 
 #endif /* DECODMD_H_ */
+=======
+	virtual void device_add_mconfig(machine_config &config) override;
+	virtual void device_start() override;
+	virtual void device_reset() override;
+
+	uint16_t start_address() const { return ((m_crtc_reg[0x0c] << 8) & 0x3f00) | (m_crtc_reg[0x0d] & 0xff); }
+
+private:
+	required_device<cpu_device> m_cpu;
+	required_device<mc6845_device> m_mc6845;
+	required_memory_bank m_rombank1;
+	required_memory_bank m_rombank2;
+	required_memory_bank m_rambank;
+	required_device<ram_device> m_ram;
+	memory_region* m_rom;
+
+	uint8_t m_crtc_index;
+	uint8_t m_crtc_reg[0x100];
+	uint8_t m_latch;
+	uint8_t m_status;
+	uint8_t m_ctrl;
+	uint8_t m_busy;
+	uint8_t m_command;
+	const char* m_gfxtag;
+
+	TIMER_DEVICE_CALLBACK_MEMBER(dmd_firq);
+	MC6845_UPDATE_ROW(crtc_update_row);
+};
+
+DECLARE_DEVICE_TYPE(DECODMD2, decodmd_type2_device)
+
+#endif // MAME_VIDEO_DECODMD2_H
+>>>>>>> upstream/master

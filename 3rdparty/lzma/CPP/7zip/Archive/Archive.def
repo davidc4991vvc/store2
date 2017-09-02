@@ -1,6 +1,19 @@
 EXPORTS
   CreateObject PRIVATE
+<<<<<<< HEAD
   GetHandlerProperty PRIVATE
   GetNumberOfFormats PRIVATE
   GetHandlerProperty2 PRIVATE
   CreateObject PRIVATE
+=======
+
+  GetHandlerProperty PRIVATE
+  GetNumberOfFormats PRIVATE
+  GetHandlerProperty2 PRIVATE
+  GetIsArc PRIVATE
+
+  SetCodecs PRIVATE
+
+  SetLargePageMode PRIVATE
+  SetCaseSensitive PRIVATE
+>>>>>>> upstream/master

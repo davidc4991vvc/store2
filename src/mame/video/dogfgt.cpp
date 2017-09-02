@@ -15,7 +15,11 @@
 
 PALETTE_INIT_MEMBER(dogfgt_state, dogfgt)
 {
+<<<<<<< HEAD
 	const UINT8 *color_prom = memregion("proms")->base();
+=======
+	const uint8_t *color_prom = memregion("proms")->base();
+>>>>>>> upstream/master
 	int i;
 
 	/* first 16 colors are RAM */
@@ -68,10 +72,17 @@ TILE_GET_INFO_MEMBER(dogfgt_state::get_tile_info)
 
 void dogfgt_state::video_start()
 {
+<<<<<<< HEAD
 	m_bg_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(dogfgt_state::get_tile_info),this), TILEMAP_SCAN_ROWS, 16, 16, 32, 32);
 
 	m_bitmapram = auto_alloc_array(machine(), UINT8, BITMAPRAM_SIZE);
 	save_pointer(NAME(m_bitmapram), BITMAPRAM_SIZE);
+=======
+	m_bg_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(dogfgt_state::get_tile_info),this), TILEMAP_SCAN_ROWS, 16, 16, 32, 32);
+
+	m_bitmapram = std::make_unique<uint8_t[]>(BITMAPRAM_SIZE);
+	save_pointer(NAME(m_bitmapram.get()), BITMAPRAM_SIZE);
+>>>>>>> upstream/master
 
 	m_screen->register_screen_bitmap(m_pixbitmap);
 	save_item(NAME(m_pixbitmap));
@@ -154,8 +165,13 @@ WRITE8_MEMBER(dogfgt_state::dogfgt_1800_w)
 	m_pixcolor = ((data & 0x01) << 1) | ((data & 0x02) >> 1);
 
 	/* bits 4 and 5 are coin counters */
+<<<<<<< HEAD
 	coin_counter_w(machine(), 0, data & 0x10);
 	coin_counter_w(machine(), 1, data & 0x20);
+=======
+	machine().bookkeeping().coin_counter_w(0, data & 0x10);
+	machine().bookkeeping().coin_counter_w(1, data & 0x20);
+>>>>>>> upstream/master
 
 	/* bit 7 is screen flip */
 	flip_screen_set(data & 0x80);
@@ -203,7 +219,11 @@ void dogfgt_state::draw_sprites( bitmap_ind16 &bitmap,const rectangle &cliprect 
 }
 
 
+<<<<<<< HEAD
 UINT32 dogfgt_state::screen_update_dogfgt(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+=======
+uint32_t dogfgt_state::screen_update_dogfgt(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+>>>>>>> upstream/master
 {
 	int offs;
 

@@ -1922,6 +1922,11 @@ public:
    /** Set the sampler and type. */
    void set_sampler(ir_dereference *sampler, const glsl_type *type);
 
+<<<<<<< HEAD
+=======
+   static bool has_lod(const glsl_type *sampler_type);
+
+>>>>>>> upstream/master
    /**
     * Do a reverse-lookup to translate a string into an ir_texture_opcode.
     */
@@ -2161,7 +2166,11 @@ union ir_constant_data {
 
 class ir_constant : public ir_rvalue {
 public:
+<<<<<<< HEAD
    ir_constant(const struct glsl_type *type, const ir_constant_data *data);
+=======
+   ir_constant(const struct glsl_type *type, const ir_constant_data *data, glsl_precision precision = glsl_precision_undefined);
+>>>>>>> upstream/master
    ir_constant(bool b, unsigned vector_elements=1);
    ir_constant(unsigned int u, unsigned vector_elements=1);
    ir_constant(int i, unsigned vector_elements=1);

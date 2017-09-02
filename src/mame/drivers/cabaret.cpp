@@ -25,7 +25,13 @@ are the same of IGS.  AMT may be previous IGS name.
 
 #include "emu.h"
 #include "cpu/z180/z180.h"
+<<<<<<< HEAD
 #include "sound/2413intf.h"
+=======
+#include "sound/ym2413.h"
+#include "screen.h"
+#include "speaker.h"
+>>>>>>> upstream/master
 
 
 class cabaret_state : public driver_device
@@ -41,6 +47,7 @@ public:
 		m_gfxdecode(*this, "gfxdecode"),
 		m_palette(*this, "palette") { }
 
+<<<<<<< HEAD
 	required_shared_ptr<UINT8> m_fg_tile_ram;
 	required_shared_ptr<UINT8> m_fg_color_ram;
 	required_shared_ptr<UINT8> m_bg_scroll;
@@ -49,6 +56,16 @@ public:
 	tilemap_t *m_fg_tilemap;
 	int m_nmi_enable;
 	UINT8 m_out[3];
+=======
+	required_shared_ptr<uint8_t> m_fg_tile_ram;
+	required_shared_ptr<uint8_t> m_fg_color_ram;
+	required_shared_ptr<uint8_t> m_bg_scroll;
+	required_shared_ptr<uint8_t> m_bg_tile_ram;
+	tilemap_t *m_bg_tilemap;
+	tilemap_t *m_fg_tilemap;
+	int m_nmi_enable;
+	uint8_t m_out[3];
+>>>>>>> upstream/master
 	DECLARE_WRITE8_MEMBER(bg_scroll_w);
 	DECLARE_WRITE8_MEMBER(bg_tile_w);
 	DECLARE_WRITE8_MEMBER(fg_tile_w);
@@ -58,9 +75,15 @@ public:
 	DECLARE_DRIVER_INIT(cabaret);
 	TILE_GET_INFO_MEMBER(get_bg_tile_info);
 	TILE_GET_INFO_MEMBER(get_fg_tile_info);
+<<<<<<< HEAD
 	virtual void machine_reset();
 	virtual void video_start();
 	UINT32 screen_update_cabaret(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
+=======
+	virtual void machine_reset() override;
+	virtual void video_start() override;
+	uint32_t screen_update_cabaret(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
+>>>>>>> upstream/master
 	INTERRUPT_GEN_MEMBER(cabaret_interrupt);
 	required_device<cpu_device> m_maincpu;
 	required_device<gfxdecode_device> m_gfxdecode;
@@ -115,14 +138,23 @@ WRITE8_MEMBER(cabaret_state::fg_color_w)
 
 void cabaret_state::video_start()
 {
+<<<<<<< HEAD
 	m_bg_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(cabaret_state::get_bg_tile_info),this), TILEMAP_SCAN_ROWS,    8,  32, 64, 8);
 	m_fg_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(cabaret_state::get_fg_tile_info),this), TILEMAP_SCAN_ROWS,    8,  8,  64, 32);
+=======
+	m_bg_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(cabaret_state::get_bg_tile_info),this), TILEMAP_SCAN_ROWS,    8,  32, 64, 8);
+	m_fg_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(cabaret_state::get_fg_tile_info),this), TILEMAP_SCAN_ROWS,    8,  8,  64, 32);
+>>>>>>> upstream/master
 	m_fg_tilemap->set_transparent_pen(0);
 	m_bg_tilemap->set_scroll_cols(64);
 }
 
 
+<<<<<<< HEAD
 UINT32 cabaret_state::screen_update_cabaret(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+=======
+uint32_t cabaret_state::screen_update_cabaret(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+>>>>>>> upstream/master
 {
 	bitmap.fill(m_palette->black_pen(), cliprect);
 
@@ -154,12 +186,21 @@ WRITE8_MEMBER(cabaret_state::cabaret_nmi_and_coins_w)
 //      popmessage("%02x",data);
 	}
 
+<<<<<<< HEAD
 	coin_counter_w(machine(), 0,        data & 0x01);   // coin_a
 	coin_counter_w(machine(), 1,        data & 0x04);   // coin_c
 	coin_counter_w(machine(), 2,        data & 0x08);   // key in
 	coin_counter_w(machine(), 3,        data & 0x10);   // coin m_out mech
 
 	set_led_status(machine(), 6,        data & 0x40);   // led for coin m_out / hopper active
+=======
+	machine().bookkeeping().coin_counter_w(0,        data & 0x01);   // coin_a
+	machine().bookkeeping().coin_counter_w(1,        data & 0x04);   // coin_c
+	machine().bookkeeping().coin_counter_w(2,        data & 0x08);   // key in
+	machine().bookkeeping().coin_counter_w(3,        data & 0x10);   // coin m_out mech
+
+	output().set_led_value(6,        data & 0x40);   // led for coin m_out / hopper active
+>>>>>>> upstream/master
 
 	m_nmi_enable = data;    //  data & 0x80     // nmi enable?
 
@@ -339,7 +380,11 @@ INTERRUPT_GEN_MEMBER(cabaret_state::cabaret_interrupt)
 		device.execute().set_input_line(INPUT_LINE_NMI, PULSE_LINE);
 }
 
+<<<<<<< HEAD
 static MACHINE_CONFIG_START( cabaret, cabaret_state )
+=======
+static MACHINE_CONFIG_START( cabaret )
+>>>>>>> upstream/master
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", Z180, XTAL_12MHz / 2)
 	MCFG_CPU_PROGRAM_MAP(cabaret_map)
@@ -369,7 +414,11 @@ MACHINE_CONFIG_END
 
 DRIVER_INIT_MEMBER(cabaret_state,cabaret)
 {
+<<<<<<< HEAD
 	UINT8 *rom = memregion("maincpu")->base();
+=======
+	uint8_t *rom = memregion("maincpu")->base();
+>>>>>>> upstream/master
 	int i;
 
 	/* decrypt the program ROM */

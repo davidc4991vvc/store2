@@ -83,6 +83,11 @@ www.andys-arcade.com
 #include "cpu/z80/z80.h"
 #include "machine/i8255.h"
 #include "sound/ay8910.h"
+<<<<<<< HEAD
+=======
+#include "screen.h"
+#include "speaker.h"
+>>>>>>> upstream/master
 
 #include "imolagp.lh"
 
@@ -103,6 +108,7 @@ public:
 	required_device<timer_device> m_steer_pot_timer;
 	required_ioport m_steer_inp;
 
+<<<<<<< HEAD
 	UINT8 m_videoram[2][0x4000]; // 2 layers of 16KB
 	UINT8 m_comms_latch[2];
 	UINT8 m_vcontrol;
@@ -110,6 +116,15 @@ public:
 	UINT8 m_scroll;
 	UINT8 m_steerlatch;
 	UINT8 m_draw_mode;
+=======
+	uint8_t m_videoram[2][0x4000]; // 2 layers of 16KB
+	uint8_t m_comms_latch[2];
+	uint8_t m_vcontrol;
+	uint8_t m_vreg[0x10];
+	uint8_t m_scroll;
+	uint8_t m_steerlatch;
+	uint8_t m_draw_mode;
+>>>>>>> upstream/master
 
 	DECLARE_WRITE8_MEMBER(transmit_data_w);
 	DECLARE_READ8_MEMBER(trigger_slave_nmi_r);
@@ -124,11 +139,19 @@ public:
 	INTERRUPT_GEN_MEMBER(slave_vblank_irq);
 	TIMER_DEVICE_CALLBACK_MEMBER(imolagp_pot_callback);
 
+<<<<<<< HEAD
 	virtual void machine_start();
 	virtual void machine_reset();
 	virtual void video_start();
 	DECLARE_PALETTE_INIT(imolagp);
 	UINT32 screen_update_imolagp(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
+=======
+	virtual void machine_start() override;
+	virtual void machine_reset() override;
+	virtual void video_start() override;
+	DECLARE_PALETTE_INIT(imolagp);
+	uint32_t screen_update_imolagp(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
+>>>>>>> upstream/master
 };
 
 
@@ -158,13 +181,18 @@ void imolagp_state::video_start()
 }
 
 
+<<<<<<< HEAD
 UINT32 imolagp_state::screen_update_imolagp(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+=======
+uint32_t imolagp_state::screen_update_imolagp(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+>>>>>>> upstream/master
 {
 	// draw solid background layer first, then sprites on top
 	for (int layer = 0; layer < 2; layer++)
 	{
 		for (int y = cliprect.min_y; y <= cliprect.max_y; y++)
 		{
+<<<<<<< HEAD
 			const UINT8 *source = &m_videoram[layer][(y & 0xff) * 0x40];
 			UINT16 *dest = &bitmap.pix16(y & 0xff);
 			for (int i = 0; i < 0x40; i++)
@@ -178,6 +206,21 @@ UINT32 imolagp_state::screen_update_imolagp(screen_device &screen, bitmap_ind16 
 					for (int x2 = 0; x2 < 4; x2++)
 					{
 						UINT8 offset = x + x2;
+=======
+			const uint8_t *source = &m_videoram[layer][(y & 0xff) * 0x40];
+			uint16_t *dest = &bitmap.pix16(y & 0xff);
+			for (int i = 0; i < 0x40; i++)
+			{
+				uint8_t data = source[i];
+				if (data || layer == 0)
+				{
+					// one color per each 4 pixels
+					uint8_t color = (data & 0xf0) >> 3;
+					uint8_t x = (i << 2) - (m_scroll ^ 3);
+					for (int x2 = 0; x2 < 4; x2++)
+					{
+						uint8_t offset = x + x2;
+>>>>>>> upstream/master
 						if (offset >= cliprect.min_x && offset <= cliprect.max_x)
 							dest[offset] = color | (data >> x2 & 1);
 					}
@@ -259,10 +302,17 @@ READ8_MEMBER(imolagp_state::trigger_slave_nmi_r)
 WRITE8_MEMBER(imolagp_state::imola_led_board_w)
 {
 	// not sure what chip is used here, this is copied from turbo.c
+<<<<<<< HEAD
 	static const UINT8 ls48_map[16] =
 		{ 0x3f,0x06,0x5b,0x4f,0x66,0x6d,0x7c,0x07,0x7f,0x67,0x58,0x4c,0x62,0x69,0x78,0x00 };
 
 	output_set_digit_value(offset, ls48_map[data & 0x0f]);
+=======
+	static const uint8_t ls48_map[16] =
+		{ 0x3f,0x06,0x5b,0x4f,0x66,0x6d,0x7c,0x07,0x7f,0x67,0x58,0x4c,0x62,0x69,0x78,0x00 };
+
+	output().set_digit_value(offset, ls48_map[data & 0x0f]);
+>>>>>>> upstream/master
 /*
     score:         0,  1,  2,  3
     time:          4,  5
@@ -422,7 +472,11 @@ static INPUT_PORTS_START( imolagp )
 	PORT_DIPSETTING(    0x80, DEF_STR( On ) )
 
 	PORT_START("IN0")
+<<<<<<< HEAD
 	PORT_BIT( 0x0f, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, imolagp_state, imolagp_steerlatch_r, NULL)
+=======
+	PORT_BIT( 0x0f, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, imolagp_state, imolagp_steerlatch_r, nullptr)
+>>>>>>> upstream/master
 	PORT_BIT( 0x10, IP_ACTIVE_LOW, IPT_UNKNOWN )
 	PORT_BIT( 0x20, IP_ACTIVE_LOW, IPT_COIN1 )
 	PORT_BIT( 0x40, IP_ACTIVE_LOW, IPT_COIN2 )
@@ -453,7 +507,11 @@ static INPUT_PORTS_START( imolagpo )
 	PORT_BIT( 0x80, IP_ACTIVE_LOW, IPT_UNKNOWN )
 
 	PORT_MODIFY("IN1")
+<<<<<<< HEAD
 	PORT_BIT( 0x0f, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, imolagp_state, imolagp_steerlatch_r, NULL)
+=======
+	PORT_BIT( 0x0f, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, imolagp_state, imolagp_steerlatch_r, nullptr)
+>>>>>>> upstream/master
 INPUT_PORTS_END
 
 
@@ -482,7 +540,11 @@ void imolagp_state::machine_reset()
 }
 
 
+<<<<<<< HEAD
 static MACHINE_CONFIG_START( imolagp, imolagp_state )
+=======
+static MACHINE_CONFIG_START( imolagp )
+>>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", Z80, 3000000) // ? (assume slower than slave)
@@ -501,8 +563,13 @@ static MACHINE_CONFIG_START( imolagp, imolagp_state )
 	MCFG_DEVICE_ADD("ppi8255", I8255A, 0)
 	// mode $91 - ports A & C-lower as input, ports B & C-upper as output
 	MCFG_I8255_IN_PORTA_CB(IOPORT("IN0"))
+<<<<<<< HEAD
 	MCFG_I8255_IN_PORTB_CB(LOGGER("PPI8255 - unmapped read port B", 0))
 	MCFG_I8255_OUT_PORTB_CB(LOGGER("PPI8255 - unmapped write port B", 0))
+=======
+	MCFG_I8255_IN_PORTB_CB(LOGGER("PPI8255 - unmapped read port B"))
+	MCFG_I8255_OUT_PORTB_CB(LOGGER("PPI8255 - unmapped write port B"))
+>>>>>>> upstream/master
 	MCFG_I8255_IN_PORTC_CB(IOPORT("IN1"))
 
 	/* video hardware */
@@ -570,6 +637,12 @@ ROM_START( imolagpo )
 ROM_END
 
 
+<<<<<<< HEAD
 /*    YEAR,  NAME,     PARENT,  MACHINE, INPUT,    INIT,              MONITOR, COMPANY, FULLNAME, FLAGS */
 GAMEL(1983?, imolagp,  0,       imolagp, imolagp,  driver_device, 0,  ROT90,   "RB Bologna", "Imola Grand Prix (set 1)", MACHINE_IMPERFECT_GRAPHICS | MACHINE_IMPERFECT_COLORS | MACHINE_SUPPORTS_SAVE, layout_imolagp ) // made by Alberici? year not shown, PCB labels suggests it's from 1983
 GAMEL(1983?, imolagpo, imolagp, imolagp, imolagpo, driver_device, 0,  ROT90,   "RB Bologna", "Imola Grand Prix (set 2)", MACHINE_IMPERFECT_GRAPHICS | MACHINE_IMPERFECT_COLORS | MACHINE_SUPPORTS_SAVE, layout_imolagp ) // "
+=======
+//    YEAR,  NAME,     PARENT,  MACHINE, INPUT,    STATE,         INIT, MONITOR, COMPANY,       FULLNAME,                  FLAGS
+GAMEL(1983?, imolagp,  0,       imolagp, imolagp,  imolagp_state, 0,    ROT90,   "RB Bologna", "Imola Grand Prix (set 1)", MACHINE_IMPERFECT_GRAPHICS | MACHINE_IMPERFECT_COLORS | MACHINE_SUPPORTS_SAVE, layout_imolagp ) // made by Alberici? year not shown, PCB labels suggests it's from 1983
+GAMEL(1983?, imolagpo, imolagp, imolagp, imolagpo, imolagp_state, 0,    ROT90,   "RB Bologna", "Imola Grand Prix (set 2)", MACHINE_IMPERFECT_GRAPHICS | MACHINE_IMPERFECT_COLORS | MACHINE_SUPPORTS_SAVE, layout_imolagp ) // "
+>>>>>>> upstream/master

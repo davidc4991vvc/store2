@@ -46,7 +46,11 @@ WRITE8_MEMBER( zodiack_state::flipscreen_w )
 
 PALETTE_INIT_MEMBER(zodiack_state,zodiack)
 {
+<<<<<<< HEAD
 	const UINT8 *color_prom = memregion("proms")->base();
+=======
+	const uint8_t *color_prom = memregion("proms")->base();
+>>>>>>> upstream/master
 	int i;
 
 	/* create a lookup table for the palette */
@@ -77,7 +81,11 @@ PALETTE_INIT_MEMBER(zodiack_state,zodiack)
 	}
 
 	/* white for bullets */
+<<<<<<< HEAD
 	palette.set_indirect_color(0x30, rgb_t::white);
+=======
+	palette.set_indirect_color(0x30, rgb_t::white());
+>>>>>>> upstream/master
 
 	for (i = 0; i < 0x20; i++)
 		palette.set_pen_indirect(i, (i & 3) ? i : 0);
@@ -111,8 +119,13 @@ TILE_GET_INFO_MEMBER(zodiack_state::get_fg_tile_info)
 
 void zodiack_state::video_start()
 {
+<<<<<<< HEAD
 	m_bg_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(zodiack_state::get_bg_tile_info),this), TILEMAP_SCAN_ROWS, 8, 8, 32, 32);
 	m_fg_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(zodiack_state::get_fg_tile_info),this), TILEMAP_SCAN_ROWS, 8, 8, 32, 32);
+=======
+	m_bg_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(zodiack_state::get_bg_tile_info),this), TILEMAP_SCAN_ROWS, 8, 8, 32, 32);
+	m_fg_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(zodiack_state::get_fg_tile_info),this), TILEMAP_SCAN_ROWS, 8, 8, 32, 32);
+>>>>>>> upstream/master
 
 	m_fg_tilemap->set_transparent_pen(0);
 	m_fg_tilemap->set_scroll_cols(32);
@@ -162,7 +175,11 @@ void zodiack_state::draw_sprites( bitmap_ind16 &bitmap, const rectangle &cliprec
 	}
 }
 
+<<<<<<< HEAD
 UINT32 zodiack_state::screen_update( screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect )
+=======
+uint32_t zodiack_state::screen_update( screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect )
+>>>>>>> upstream/master
 {
 	for (int i = 0; i < 32; i++)
 		m_fg_tilemap->set_scrolly(i, m_attributeram[i * 2]);

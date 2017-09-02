@@ -8,8 +8,14 @@
 */
 
 #include "emu.h"
+<<<<<<< HEAD
 
 static const UINT8 *Iconfig;
+=======
+#include "nec_common.h"
+
+static const uint8_t *Iconfig;
+>>>>>>> upstream/master
 
 enum
 {
@@ -67,10 +73,17 @@ enum
 
 struct NEC_I386_OPCODE {
 	char mnemonic[32];
+<<<<<<< HEAD
 	UINT32 flags;
 	UINT32 param1;
 	UINT32 param2;
 	UINT32 param3;
+=======
+	uint32_t flags;
+	uint32_t param1;
+	uint32_t param2;
+	uint32_t param3;
+>>>>>>> upstream/master
 	offs_t dasm_flags;
 };
 
@@ -79,8 +92,13 @@ struct NEC_GROUP_OP {
 	const NEC_I386_OPCODE *opcode;
 };
 
+<<<<<<< HEAD
 static const UINT8 *opcode_ptr;
 static const UINT8 *opcode_ptr_base;
+=======
+static const uint8_t *opcode_ptr;
+static const uint8_t *opcode_ptr_base;
+>>>>>>> upstream/master
 
 static const NEC_I386_OPCODE necv_opcode_table1[256] =
 {
@@ -864,9 +882,15 @@ static const char *const nec_sfreg[256] =
 	"???",  "???",  "???",  "???",  "ispr", "???",  "???",  "idb"
 };
 
+<<<<<<< HEAD
 static UINT32 pc;
 static UINT8 modrm;
 static UINT32 segment;
+=======
+static uint32_t pc;
+static uint8_t modrm;
+static uint32_t segment;
+>>>>>>> upstream/master
 static offs_t dasm_flags;
 static char modrm_string[256];
 
@@ -875,7 +899,11 @@ static char modrm_string[256];
 
 #define MAX_LENGTH  8
 
+<<<<<<< HEAD
 INLINE UINT8 FETCH(void)
+=======
+static inline uint8_t FETCH(void)
+>>>>>>> upstream/master
 {
 	if ((opcode_ptr - opcode_ptr_base) + 1 > MAX_LENGTH)
 		return 0xff;
@@ -884,9 +912,15 @@ INLINE UINT8 FETCH(void)
 }
 
 #if 0
+<<<<<<< HEAD
 INLINE UINT16 FETCH16(void)
 {
 	UINT16 d;
+=======
+static inline uint16_t FETCH16(void)
+{
+	uint16_t d;
+>>>>>>> upstream/master
 	if ((opcode_ptr - opcode_ptr_base) + 2 > MAX_LENGTH)
 		return 0xffff;
 	d = opcode_ptr[0] | (opcode_ptr[1] << 8);
@@ -896,7 +930,11 @@ INLINE UINT16 FETCH16(void)
 }
 #endif
 
+<<<<<<< HEAD
 INLINE UINT8 FETCHD(void)
+=======
+static inline uint8_t FETCHD(void)
+>>>>>>> upstream/master
 {
 	if ((opcode_ptr - opcode_ptr_base) + 1 > MAX_LENGTH)
 		return 0xff;
@@ -904,9 +942,15 @@ INLINE UINT8 FETCHD(void)
 	return *opcode_ptr++;
 }
 
+<<<<<<< HEAD
 INLINE UINT16 FETCHD16(void)
 {
 	UINT16 d;
+=======
+static inline uint16_t FETCHD16(void)
+{
+	uint16_t d;
+>>>>>>> upstream/master
 	if ((opcode_ptr - opcode_ptr_base) + 2 > MAX_LENGTH)
 		return 0xffff;
 	d = opcode_ptr[0] | (opcode_ptr[1] << 8);
@@ -915,7 +959,11 @@ INLINE UINT16 FETCHD16(void)
 	return d;
 }
 
+<<<<<<< HEAD
 static char *hexstring(UINT32 value, int digits)
+=======
+static char *hexstring(uint32_t value, int digits)
+>>>>>>> upstream/master
 {
 	static char buffer[20];
 	buffer[0] = '0';
@@ -926,7 +974,11 @@ static char *hexstring(UINT32 value, int digits)
 	return (buffer[1] >= '0' && buffer[1] <= '9') ? &buffer[1] : &buffer[0];
 }
 
+<<<<<<< HEAD
 static char *shexstring(UINT32 value, int digits, int always)
+=======
+static char *shexstring(uint32_t value, int digits, bool always)
+>>>>>>> upstream/master
 {
 	static char buffer[20];
 	if (value >= 0x80000000)
@@ -940,9 +992,15 @@ static char *shexstring(UINT32 value, int digits, int always)
 
 static void handle_modrm(char* s)
 {
+<<<<<<< HEAD
 	INT8 disp8;
 	INT16 disp16;
 	UINT8 mod, rm;
+=======
+	int8_t disp8;
+	int16_t disp16;
+	uint8_t mod, rm;
+>>>>>>> upstream/master
 
 	modrm = FETCHD();
 	mod = (modrm >> 6) & 0x3;
@@ -971,7 +1029,11 @@ static void handle_modrm(char* s)
 		case 6:
 			if( mod == 0 ) {
 				disp16 = FETCHD16();
+<<<<<<< HEAD
 				s += sprintf( s, "%s", hexstring((unsigned) (UINT16) disp16, 0) );
+=======
+				s += sprintf( s, "%s", hexstring((unsigned) (uint16_t) disp16, 0) );
+>>>>>>> upstream/master
 			} else {
 				s += sprintf( s, "bp" );
 			}
@@ -980,6 +1042,7 @@ static void handle_modrm(char* s)
 	}
 	if( mod == 1 ) {
 		disp8 = FETCHD();
+<<<<<<< HEAD
 		s += sprintf( s, "%s", shexstring((INT32)disp8, 0, TRUE) );
 	} else if( mod == 2 ) {
 		disp16 = FETCHD16();
@@ -996,10 +1059,28 @@ static char* handle_param(char* s, UINT32 param)
 	UINT32 addr;
 	INT8 d8;
 	INT16 d16;
+=======
+		s += sprintf( s, "%s", shexstring((int32_t)disp8, 0, true) );
+	} else if( mod == 2 ) {
+		disp16 = FETCHD16();
+		s += sprintf( s, "%s", shexstring((int32_t)disp16, 0, true) );
+	}
+	s += sprintf( s, "]" );}
+
+static void handle_param(std::ostream &stream, uint32_t param)
+{
+	uint8_t i8;
+	uint16_t i16;
+	uint16_t ptr;
+	uint32_t addr;
+	int8_t d8;
+	int16_t d16;
+>>>>>>> upstream/master
 
 	switch(param)
 	{
 		case PARAM_REG8:
+<<<<<<< HEAD
 			s += sprintf( s, "%s", nec_reg8[MODRM_REG1] );
 			break;
 
@@ -1013,81 +1094,150 @@ static char* handle_param(char* s, UINT32 param)
 
 		case PARAM_REG2_16:
 			s += sprintf( s, "%s", nec_reg[MODRM_REG2] );
+=======
+			util::stream_format( stream, "%s", nec_reg8[MODRM_REG1] );
+			break;
+
+		case PARAM_REG16:
+			util::stream_format( stream, "%s", nec_reg[MODRM_REG1] );
+			break;
+
+		case PARAM_REG2_8:
+			util::stream_format( stream, "%s", nec_reg8[MODRM_REG2] );
+			break;
+
+		case PARAM_REG2_16:
+			util::stream_format( stream, "%s", nec_reg[MODRM_REG2] );
+>>>>>>> upstream/master
 			break;
 
 		case PARAM_RM8:
 		case PARAM_RMPTR8:
 			if( modrm >= 0xc0 ) {
+<<<<<<< HEAD
 				s += sprintf( s, "%s", nec_reg8[MODRM_REG2] );
 			} else {
 				if (param == PARAM_RMPTR8)
 					s += sprintf( s, "byte ptr " );
 				s += sprintf( s, "%s", modrm_string );
+=======
+				util::stream_format( stream, "%s", nec_reg8[MODRM_REG2] );
+			} else {
+				if (param == PARAM_RMPTR8)
+					util::stream_format( stream, "byte ptr " );
+				util::stream_format( stream, "%s", modrm_string );
+>>>>>>> upstream/master
 			}
 			break;
 
 		case PARAM_RM16:
 		case PARAM_RMPTR16:
 			if( modrm >= 0xc0 ) {
+<<<<<<< HEAD
 				s += sprintf( s, "%s", nec_reg[MODRM_REG2] );
 			} else {
 				if (param == PARAM_RMPTR16)
 					s += sprintf( s, "word ptr " );
 				s += sprintf( s, "%s", modrm_string );
+=======
+				util::stream_format( stream, "%s", nec_reg[MODRM_REG2] );
+			} else {
+				if (param == PARAM_RMPTR16)
+					util::stream_format( stream, "word ptr " );
+				util::stream_format( stream, "%s", modrm_string );
+>>>>>>> upstream/master
 			}
 			break;
 
 		case PARAM_I3:
 			i8 = FETCHD();
+<<<<<<< HEAD
 			s += sprintf( s, "%d", i8 & 0x07 );
+=======
+			util::stream_format( stream, "%d", i8 & 0x07 );
+>>>>>>> upstream/master
 			break;
 
 		case PARAM_I4:
 			i8 = FETCHD();
+<<<<<<< HEAD
 			s += sprintf( s, "%d", i8 & 0x0f );
+=======
+			util::stream_format( stream, "%d", i8 & 0x0f );
+>>>>>>> upstream/master
 			break;
 
 		case PARAM_I8:
 			i8 = FETCHD();
+<<<<<<< HEAD
 			s += sprintf( s, "%s", shexstring((INT8)i8, 0, FALSE) );
+=======
+			util::stream_format( stream, "%s", shexstring((int8_t)i8, 0, false) );
+>>>>>>> upstream/master
 			break;
 
 		case PARAM_I16:
 			i16 = FETCHD16();
+<<<<<<< HEAD
 			s += sprintf( s, "%s", shexstring((INT16)i16, 0, FALSE) );
+=======
+			util::stream_format( stream, "%s", shexstring((int16_t)i16, 0, false) );
+>>>>>>> upstream/master
 			break;
 
 		case PARAM_UI8:
 			i8 = FETCHD();
+<<<<<<< HEAD
 			s += sprintf( s, "%s", shexstring((UINT8)i8, 0, FALSE) );
+=======
+			util::stream_format( stream, "%s", shexstring((uint8_t)i8, 0, false) );
+>>>>>>> upstream/master
 			break;
 
 		case PARAM_IMM:
 			i16 = FETCHD16();
+<<<<<<< HEAD
 			s += sprintf( s, "%s", hexstring(i16, 0) );
+=======
+			util::stream_format( stream, "%s", hexstring(i16, 0) );
+>>>>>>> upstream/master
 			break;
 
 		case PARAM_ADDR:
 			addr = FETCHD16();
 			ptr = FETCHD16();
+<<<<<<< HEAD
 			s += sprintf( s, "%s:", hexstring(ptr, 4) );
 			s += sprintf( s, "%s", hexstring(addr, 0) );
+=======
+			util::stream_format( stream, "%s:", hexstring(ptr, 4) );
+			util::stream_format( stream, "%s", hexstring(addr, 0) );
+>>>>>>> upstream/master
 			break;
 
 		case PARAM_REL16:
 			/* make sure to keep the relative offset within the segment */
 			d16 = FETCHD16();
+<<<<<<< HEAD
 			s += sprintf( s, "%s", hexstring((pc & 0xFFFF0000) | ((pc + d16) & 0x0000FFFF), 0) );
+=======
+			util::stream_format( stream, "%s", hexstring((pc & 0xFFFF0000) | ((pc + d16) & 0x0000FFFF), 0) );
+>>>>>>> upstream/master
 			break;
 
 		case PARAM_REL8:
 			d8 = FETCHD();
+<<<<<<< HEAD
 			s += sprintf( s, "%s", hexstring(pc + d8, 0) );
+=======
+			util::stream_format( stream, "%s", hexstring(pc + d8, 0) );
+>>>>>>> upstream/master
 			break;
 
 		case PARAM_MEM_OFFS:
 			switch(segment)
 			{
+<<<<<<< HEAD
 				case SEG_PS: s += sprintf( s, "ps:" ); break;
 				case SEG_DS0: s += sprintf( s, "ds0:" ); break;
 				case SEG_DS1: s += sprintf( s, "ds1:" ); break;
@@ -1100,10 +1250,25 @@ static char* handle_param(char* s, UINT32 param)
 
 		case PARAM_SREG:
 			s += sprintf( s, "%s", nec_sreg[MODRM_REG1] );
+=======
+				case SEG_PS: util::stream_format( stream, "ps:" ); break;
+				case SEG_DS0: util::stream_format( stream, "ds0:" ); break;
+				case SEG_DS1: util::stream_format( stream, "ds1:" ); break;
+				case SEG_SS: util::stream_format( stream, "ss:" ); break;
+			}
+
+			i16 = FETCHD16();
+			util::stream_format( stream, "[%s]", hexstring(i16, 0) );
+			break;
+
+		case PARAM_SREG:
+			util::stream_format( stream, "%s", nec_sreg[MODRM_REG1] );
+>>>>>>> upstream/master
 			break;
 
 		case PARAM_SFREG:
 			i8 = FETCHD();
+<<<<<<< HEAD
 			s += sprintf( s, "%s", nec_sfreg[i8] );
 			break;
 
@@ -1133,6 +1298,36 @@ static char* handle_param(char* s, UINT32 param)
 }
 
 static void handle_fpu(char *s, UINT8 op1, UINT8 op2)
+=======
+			util::stream_format( stream, "%s", nec_sfreg[i8] );
+			break;
+
+		case PARAM_1:
+			util::stream_format( stream, "1" );
+			break;
+
+		case PARAM_AL: util::stream_format( stream, "al" ); break;
+		case PARAM_CL: util::stream_format( stream, "cl" ); break;
+		case PARAM_DL: util::stream_format( stream, "dl" ); break;
+		case PARAM_BL: util::stream_format( stream, "bl" ); break;
+		case PARAM_AH: util::stream_format( stream, "ah" ); break;
+		case PARAM_CH: util::stream_format( stream, "ch" ); break;
+		case PARAM_DH: util::stream_format( stream, "dh" ); break;
+		case PARAM_BH: util::stream_format( stream, "bh" ); break;
+
+		case PARAM_AW: util::stream_format( stream, "aw" ); break;
+		case PARAM_CW: util::stream_format( stream, "cw" ); break;
+		case PARAM_DW: util::stream_format( stream, "dw" ); break;
+		case PARAM_BW: util::stream_format( stream, "bw" ); break;
+		case PARAM_SP: util::stream_format( stream, "sp" ); break;
+		case PARAM_BP: util::stream_format( stream, "bp" ); break;
+		case PARAM_IX: util::stream_format( stream, "ix" ); break;
+		case PARAM_IY: util::stream_format( stream, "iy" ); break;
+	}
+}
+
+static void handle_fpu(std::ostream &stream, uint8_t op1, uint8_t op2)
+>>>>>>> upstream/master
 {
 	switch (op1 & 0x7)
 	{
@@ -1145,6 +1340,7 @@ static void handle_fpu(char *s, UINT8 op1, UINT8 op2)
 				handle_modrm( modrm_string );
 				switch ((op2 >> 3) & 0x7)
 				{
+<<<<<<< HEAD
 					case 0: sprintf(s, "fadd    dword ptr %s", modrm_string); break;
 					case 1: sprintf(s, "fmul    dword ptr %s", modrm_string); break;
 					case 2: sprintf(s, "fcom    dword ptr %s", modrm_string); break;
@@ -1153,12 +1349,23 @@ static void handle_fpu(char *s, UINT8 op1, UINT8 op2)
 					case 5: sprintf(s, "fsubr   dword ptr %s", modrm_string); break;
 					case 6: sprintf(s, "fdiv    dword ptr %s", modrm_string); break;
 					case 7: sprintf(s, "fdivr   dword ptr %s", modrm_string); break;
+=======
+					case 0: util::stream_format(stream, "fadd    dword ptr %s", modrm_string); break;
+					case 1: util::stream_format(stream, "fmul    dword ptr %s", modrm_string); break;
+					case 2: util::stream_format(stream, "fcom    dword ptr %s", modrm_string); break;
+					case 3: util::stream_format(stream, "fcomp   dword ptr %s", modrm_string); break;
+					case 4: util::stream_format(stream, "fsub    dword ptr %s", modrm_string); break;
+					case 5: util::stream_format(stream, "fsubr   dword ptr %s", modrm_string); break;
+					case 6: util::stream_format(stream, "fdiv    dword ptr %s", modrm_string); break;
+					case 7: util::stream_format(stream, "fdivr   dword ptr %s", modrm_string); break;
+>>>>>>> upstream/master
 				}
 			}
 			else
 			{
 				switch ((op2 >> 3) & 0x7)
 				{
+<<<<<<< HEAD
 					case 0: sprintf(s, "fadd    st(0),st(%d)", op2 & 0x7); break;
 					case 1: sprintf(s, "fcom    st(0),st(%d)", op2 & 0x7); break;
 					case 2: sprintf(s, "fsub    st(0),st(%d)", op2 & 0x7); break;
@@ -1167,6 +1374,16 @@ static void handle_fpu(char *s, UINT8 op1, UINT8 op2)
 					case 5: sprintf(s, "fcomp   st(0),st(%d)", op2 & 0x7); break;
 					case 6: sprintf(s, "fsubr   st(0),st(%d)", op2 & 0x7); break;
 					case 7: sprintf(s, "fdivr   st(0),st(%d)", op2 & 0x7); break;
+=======
+					case 0: util::stream_format(stream, "fadd    st(0),st(%d)", op2 & 0x7); break;
+					case 1: util::stream_format(stream, "fcom    st(0),st(%d)", op2 & 0x7); break;
+					case 2: util::stream_format(stream, "fsub    st(0),st(%d)", op2 & 0x7); break;
+					case 3: util::stream_format(stream, "fdiv    st(0),st(%d)", op2 & 0x7); break;
+					case 4: util::stream_format(stream, "fmul    st(0),st(%d)", op2 & 0x7); break;
+					case 5: util::stream_format(stream, "fcomp   st(0),st(%d)", op2 & 0x7); break;
+					case 6: util::stream_format(stream, "fsubr   st(0),st(%d)", op2 & 0x7); break;
+					case 7: util::stream_format(stream, "fdivr   st(0),st(%d)", op2 & 0x7); break;
+>>>>>>> upstream/master
 				}
 			}
 			break;
@@ -1181,6 +1398,7 @@ static void handle_fpu(char *s, UINT8 op1, UINT8 op2)
 				handle_modrm( modrm_string );
 				switch ((op2 >> 3) & 0x7)
 				{
+<<<<<<< HEAD
 					case 0: sprintf(s, "fld     dword ptr %s", modrm_string); break;
 					case 1: sprintf(s, "??? (FPU)"); break;
 					case 2: sprintf(s, "fst     dword ptr %s", modrm_string); break;
@@ -1189,6 +1407,16 @@ static void handle_fpu(char *s, UINT8 op1, UINT8 op2)
 					case 5: sprintf(s, "fldcw   word ptr %s", modrm_string); break;
 					case 6: sprintf(s, "fstenv  word ptr %s", modrm_string); break;
 					case 7: sprintf(s, "fstcw   word ptr %s", modrm_string); break;
+=======
+					case 0: util::stream_format(stream, "fld     dword ptr %s", modrm_string); break;
+					case 1: util::stream_format(stream, "??? (FPU)"); break;
+					case 2: util::stream_format(stream, "fst     dword ptr %s", modrm_string); break;
+					case 3: util::stream_format(stream, "fstp    dword ptr %s", modrm_string); break;
+					case 4: util::stream_format(stream, "fldenv  word ptr %s", modrm_string); break;
+					case 5: util::stream_format(stream, "fldcw   word ptr %s", modrm_string); break;
+					case 6: util::stream_format(stream, "fstenv  word ptr %s", modrm_string); break;
+					case 7: util::stream_format(stream, "fstcw   word ptr %s", modrm_string); break;
+>>>>>>> upstream/master
 				}
 			}
 			else
@@ -1196,6 +1424,7 @@ static void handle_fpu(char *s, UINT8 op1, UINT8 op2)
 				switch (op2 & 0x3f)
 				{
 					case 0x00: case 0x01: case 0x02: case 0x03: case 0x04: case 0x05: case 0x06: case 0x07:
+<<<<<<< HEAD
 						sprintf(s, "fld     st(0),st(%d)", op2 & 0x7); break;
 
 					case 0x08: case 0x09: case 0x0a: case 0x0b: case 0x0c: case 0x0d: case 0x0e: case 0x0f:
@@ -1231,6 +1460,43 @@ static void handle_fpu(char *s, UINT8 op1, UINT8 op2)
 					case 0x3f: sprintf(s, "fcos"); break;
 
 					default: sprintf(s, "??? (FPU)"); break;
+=======
+						util::stream_format(stream, "fld     st(0),st(%d)", op2 & 0x7); break;
+
+					case 0x08: case 0x09: case 0x0a: case 0x0b: case 0x0c: case 0x0d: case 0x0e: case 0x0f:
+						util::stream_format(stream, "fxch    st(0),st(%d)", op2 & 0x7); break;
+
+					case 0x10: util::stream_format(stream, "fnop"); break;
+					case 0x20: util::stream_format(stream, "fchs"); break;
+					case 0x21: util::stream_format(stream, "fabs"); break;
+					case 0x24: util::stream_format(stream, "ftst"); break;
+					case 0x25: util::stream_format(stream, "fxam"); break;
+					case 0x28: util::stream_format(stream, "fld1"); break;
+					case 0x29: util::stream_format(stream, "fldl2t"); break;
+					case 0x2a: util::stream_format(stream, "fldl2e"); break;
+					case 0x2b: util::stream_format(stream, "fldpi"); break;
+					case 0x2c: util::stream_format(stream, "fldlg2"); break;
+					case 0x2d: util::stream_format(stream, "fldln2"); break;
+					case 0x2e: util::stream_format(stream, "fldz"); break;
+					case 0x30: util::stream_format(stream, "f2xm1"); break;
+					case 0x31: util::stream_format(stream, "fyl2x"); break;
+					case 0x32: util::stream_format(stream, "fptan"); break;
+					case 0x33: util::stream_format(stream, "fpatan"); break;
+					case 0x34: util::stream_format(stream, "fxtract"); break;
+					case 0x35: util::stream_format(stream, "fprem1"); break;
+					case 0x36: util::stream_format(stream, "fdecstp"); break;
+					case 0x37: util::stream_format(stream, "fincstp"); break;
+					case 0x38: util::stream_format(stream, "fprem"); break;
+					case 0x39: util::stream_format(stream, "fyl2xp1"); break;
+					case 0x3a: util::stream_format(stream, "fsqrt"); break;
+					case 0x3b: util::stream_format(stream, "fsincos"); break;
+					case 0x3c: util::stream_format(stream, "frndint"); break;
+					case 0x3d: util::stream_format(stream, "fscale"); break;
+					case 0x3e: util::stream_format(stream, "fsin"); break;
+					case 0x3f: util::stream_format(stream, "fcos"); break;
+
+					default: util::stream_format(stream, "??? (FPU)"); break;
+>>>>>>> upstream/master
 				}
 			}
 			break;
@@ -1245,6 +1511,7 @@ static void handle_fpu(char *s, UINT8 op1, UINT8 op2)
 				handle_modrm( modrm_string );
 				switch ((op2 >> 3) & 0x7)
 				{
+<<<<<<< HEAD
 					case 0: sprintf(s, "fiadd   dword ptr %s", modrm_string); break;
 					case 1: sprintf(s, "fimul   dword ptr %s", modrm_string); break;
 					case 2: sprintf(s, "ficom   dword ptr %s", modrm_string); break;
@@ -1253,6 +1520,16 @@ static void handle_fpu(char *s, UINT8 op1, UINT8 op2)
 					case 5: sprintf(s, "fisubr  dword ptr %s", modrm_string); break;
 					case 6: sprintf(s, "fidiv   dword ptr %s", modrm_string); break;
 					case 7: sprintf(s, "fidivr  dword ptr %s", modrm_string); break;
+=======
+					case 0: util::stream_format(stream, "fiadd   dword ptr %s", modrm_string); break;
+					case 1: util::stream_format(stream, "fimul   dword ptr %s", modrm_string); break;
+					case 2: util::stream_format(stream, "ficom   dword ptr %s", modrm_string); break;
+					case 3: util::stream_format(stream, "ficomp  dword ptr %s", modrm_string); break;
+					case 4: util::stream_format(stream, "fisub   dword ptr %s", modrm_string); break;
+					case 5: util::stream_format(stream, "fisubr  dword ptr %s", modrm_string); break;
+					case 6: util::stream_format(stream, "fidiv   dword ptr %s", modrm_string); break;
+					case 7: util::stream_format(stream, "fidivr  dword ptr %s", modrm_string); break;
+>>>>>>> upstream/master
 				}
 			}
 			else
@@ -1260,6 +1537,7 @@ static void handle_fpu(char *s, UINT8 op1, UINT8 op2)
 				switch (op2 & 0x3f)
 				{
 					case 0x00: case 0x01: case 0x02: case 0x03: case 0x04: case 0x05: case 0x06: case 0x07:
+<<<<<<< HEAD
 						sprintf(s, "fcmovb  st(0),st(%d)", op2 & 0x7); break;
 
 					case 0x08: case 0x09: case 0x0a: case 0x0b: case 0x0c: case 0x0d: case 0x0e: case 0x0f:
@@ -1272,6 +1550,20 @@ static void handle_fpu(char *s, UINT8 op1, UINT8 op2)
 						sprintf(s, "fcmovu  st(0),st(%d)", op2 & 0x7); break;
 
 					default: sprintf(s, "??? (FPU)"); break;
+=======
+						util::stream_format(stream, "fcmovb  st(0),st(%d)", op2 & 0x7); break;
+
+					case 0x08: case 0x09: case 0x0a: case 0x0b: case 0x0c: case 0x0d: case 0x0e: case 0x0f:
+						util::stream_format(stream, "fcmove  st(0),st(%d)", op2 & 0x7); break;
+
+					case 0x10: case 0x11: case 0x12: case 0x13: case 0x14: case 0x15: case 0x16: case 0x17:
+						util::stream_format(stream, "fcmovbe st(0),st(%d)", op2 & 0x7); break;
+
+					case 0x18: case 0x19: case 0x1a: case 0x1b: case 0x1c: case 0x1d: case 0x1e: case 0x1f:
+						util::stream_format(stream, "fcmovu  st(0),st(%d)", op2 & 0x7); break;
+
+					default: util::stream_format(stream, "??? (FPU)"); break;
+>>>>>>> upstream/master
 
 				}
 			}
@@ -1287,6 +1579,7 @@ static void handle_fpu(char *s, UINT8 op1, UINT8 op2)
 				handle_modrm( modrm_string );
 				switch ((op2 >> 3) & 0x7)
 				{
+<<<<<<< HEAD
 					case 0: sprintf(s, "fild    dword ptr %s", modrm_string); break;
 					case 1: sprintf(s, "??? (FPU)"); break;
 					case 2: sprintf(s, "fist    dword ptr %s", modrm_string); break;
@@ -1295,6 +1588,16 @@ static void handle_fpu(char *s, UINT8 op1, UINT8 op2)
 					case 5: sprintf(s, "fld     tword ptr %s", modrm_string); break;
 					case 6: sprintf(s, "??? (FPU)"); break;
 					case 7: sprintf(s, "fstp    tword ptr %s", modrm_string); break;
+=======
+					case 0: util::stream_format(stream, "fild    dword ptr %s", modrm_string); break;
+					case 1: util::stream_format(stream, "??? (FPU)"); break;
+					case 2: util::stream_format(stream, "fist    dword ptr %s", modrm_string); break;
+					case 3: util::stream_format(stream, "fistp   dword ptr %s", modrm_string); break;
+					case 4: util::stream_format(stream, "??? (FPU)"); break;
+					case 5: util::stream_format(stream, "fld     tword ptr %s", modrm_string); break;
+					case 6: util::stream_format(stream, "??? (FPU)"); break;
+					case 7: util::stream_format(stream, "fstp    tword ptr %s", modrm_string); break;
+>>>>>>> upstream/master
 				}
 			}
 			else
@@ -1302,6 +1605,7 @@ static void handle_fpu(char *s, UINT8 op1, UINT8 op2)
 				switch (op2 & 0x3f)
 				{
 					case 0x00: case 0x01: case 0x02: case 0x03: case 0x04: case 0x05: case 0x06: case 0x07:
+<<<<<<< HEAD
 						sprintf(s, "fcmovnb st(0),st(%d)", op2 & 0x7); break;
 
 					case 0x08: case 0x09: case 0x0a: case 0x0b: case 0x0c: case 0x0d: case 0x0e: case 0x0f:
@@ -1323,6 +1627,29 @@ static void handle_fpu(char *s, UINT8 op1, UINT8 op2)
 						sprintf(s, "fcomi   st(0),st(%d)", op2 & 0x7); break;
 
 					default: sprintf(s, "??? (FPU)"); break;
+=======
+						util::stream_format(stream, "fcmovnb st(0),st(%d)", op2 & 0x7); break;
+
+					case 0x08: case 0x09: case 0x0a: case 0x0b: case 0x0c: case 0x0d: case 0x0e: case 0x0f:
+						util::stream_format(stream, "fcmovne st(0),st(%d)", op2 & 0x7); break;
+
+					case 0x10: case 0x11: case 0x12: case 0x13: case 0x14: case 0x15: case 0x16: case 0x17:
+						util::stream_format(stream, "fcmovnbe st(0),st(%d)", op2 & 0x7); break;
+
+					case 0x18: case 0x19: case 0x1a: case 0x1b: case 0x1c: case 0x1d: case 0x1e: case 0x1f:
+						util::stream_format(stream, "fcmovnu st(0),st(%d)", op2 & 0x7); break;
+
+					case 0x22: util::stream_format(stream, "fclex"); break;
+					case 0x23: util::stream_format(stream, "finit"); break;
+
+					case 0x28: case 0x29: case 0x2a: case 0x2b: case 0x2c: case 0x2d: case 0x2e: case 0x2f:
+						util::stream_format(stream, "fucomi  st(0),st(%d)", op2 & 0x7); break;
+
+					case 0x30: case 0x31: case 0x32: case 0x33: case 0x34: case 0x35: case 0x36: case 0x37:
+						util::stream_format(stream, "fcomi   st(0),st(%d)", op2 & 0x7); break;
+
+					default: util::stream_format(stream, "??? (FPU)"); break;
+>>>>>>> upstream/master
 				}
 			}
 			break;
@@ -1337,6 +1664,7 @@ static void handle_fpu(char *s, UINT8 op1, UINT8 op2)
 				handle_modrm( modrm_string );
 				switch ((op2 >> 3) & 0x7)
 				{
+<<<<<<< HEAD
 					case 0: sprintf(s, "fadd    qword ptr %s", modrm_string); break;
 					case 1: sprintf(s, "fmul    qword ptr %s", modrm_string); break;
 					case 2: sprintf(s, "fcom    qword ptr %s", modrm_string); break;
@@ -1345,6 +1673,16 @@ static void handle_fpu(char *s, UINT8 op1, UINT8 op2)
 					case 5: sprintf(s, "fsubr   qword ptr %s", modrm_string); break;
 					case 6: sprintf(s, "fdiv    qword ptr %s", modrm_string); break;
 					case 7: sprintf(s, "fdivr   qword ptr %s", modrm_string); break;
+=======
+					case 0: util::stream_format(stream, "fadd    qword ptr %s", modrm_string); break;
+					case 1: util::stream_format(stream, "fmul    qword ptr %s", modrm_string); break;
+					case 2: util::stream_format(stream, "fcom    qword ptr %s", modrm_string); break;
+					case 3: util::stream_format(stream, "fcomp   qword ptr %s", modrm_string); break;
+					case 4: util::stream_format(stream, "fsub    qword ptr %s", modrm_string); break;
+					case 5: util::stream_format(stream, "fsubr   qword ptr %s", modrm_string); break;
+					case 6: util::stream_format(stream, "fdiv    qword ptr %s", modrm_string); break;
+					case 7: util::stream_format(stream, "fdivr   qword ptr %s", modrm_string); break;
+>>>>>>> upstream/master
 				}
 			}
 			else
@@ -1352,6 +1690,7 @@ static void handle_fpu(char *s, UINT8 op1, UINT8 op2)
 				switch (op2 & 0x3f)
 				{
 					case 0x00: case 0x01: case 0x02: case 0x03: case 0x04: case 0x05: case 0x06: case 0x07:
+<<<<<<< HEAD
 						sprintf(s, "fadd    st(%d),st(0)", op2 & 0x7); break;
 
 					case 0x08: case 0x09: case 0x0a: case 0x0b: case 0x0c: case 0x0d: case 0x0e: case 0x0f:
@@ -1370,6 +1709,26 @@ static void handle_fpu(char *s, UINT8 op1, UINT8 op2)
 						sprintf(s, "fdiv    st(%d),st(0)", op2 & 0x7); break;
 
 					default: sprintf(s, "??? (FPU)"); break;
+=======
+						util::stream_format(stream, "fadd    st(%d),st(0)", op2 & 0x7); break;
+
+					case 0x08: case 0x09: case 0x0a: case 0x0b: case 0x0c: case 0x0d: case 0x0e: case 0x0f:
+						util::stream_format(stream, "fmul    st(%d),st(0)", op2 & 0x7); break;
+
+					case 0x20: case 0x21: case 0x22: case 0x23: case 0x24: case 0x25: case 0x26: case 0x27:
+						util::stream_format(stream, "fsubr   st(%d),st(0)", op2 & 0x7); break;
+
+					case 0x28: case 0x29: case 0x2a: case 0x2b: case 0x2c: case 0x2d: case 0x2e: case 0x2f:
+						util::stream_format(stream, "fsub    st(%d),st(0)", op2 & 0x7); break;
+
+					case 0x30: case 0x31: case 0x32: case 0x33: case 0x34: case 0x35: case 0x36: case 0x37:
+						util::stream_format(stream, "fdivr   st(%d),st(0)", op2 & 0x7); break;
+
+					case 0x38: case 0x39: case 0x3a: case 0x3b: case 0x3c: case 0x3d: case 0x3e: case 0x3f:
+						util::stream_format(stream, "fdiv    st(%d),st(0)", op2 & 0x7); break;
+
+					default: util::stream_format(stream, "??? (FPU)"); break;
+>>>>>>> upstream/master
 				}
 			}
 			break;
@@ -1384,6 +1743,7 @@ static void handle_fpu(char *s, UINT8 op1, UINT8 op2)
 				handle_modrm( modrm_string );
 				switch ((op2 >> 3) & 0x7)
 				{
+<<<<<<< HEAD
 					case 0: sprintf(s, "fld     qword ptr %s", modrm_string); break;
 					case 1: sprintf(s, "??? (FPU)"); break;
 					case 2: sprintf(s, "fst     qword ptr %s", modrm_string); break;
@@ -1392,6 +1752,16 @@ static void handle_fpu(char *s, UINT8 op1, UINT8 op2)
 					case 5: sprintf(s, "??? (FPU)"); break;
 					case 6: sprintf(s, "fsave   %s", modrm_string); break;
 					case 7: sprintf(s, "fstsw   word ptr %s", modrm_string); break;
+=======
+					case 0: util::stream_format(stream, "fld     qword ptr %s", modrm_string); break;
+					case 1: util::stream_format(stream, "??? (FPU)"); break;
+					case 2: util::stream_format(stream, "fst     qword ptr %s", modrm_string); break;
+					case 3: util::stream_format(stream, "fstp    qword ptr %s", modrm_string); break;
+					case 4: util::stream_format(stream, "frstor  %s", modrm_string); break;
+					case 5: util::stream_format(stream, "??? (FPU)"); break;
+					case 6: util::stream_format(stream, "fsave   %s", modrm_string); break;
+					case 7: util::stream_format(stream, "fstsw   word ptr %s", modrm_string); break;
+>>>>>>> upstream/master
 				}
 			}
 			else
@@ -1399,6 +1769,7 @@ static void handle_fpu(char *s, UINT8 op1, UINT8 op2)
 				switch (op2 & 0x3f)
 				{
 					case 0x00: case 0x01: case 0x02: case 0x03: case 0x04: case 0x05: case 0x06: case 0x07:
+<<<<<<< HEAD
 						sprintf(s, "ffree   st(%d)", op2 & 0x7); break;
 
 					case 0x10: case 0x11: case 0x12: case 0x13: case 0x14: case 0x15: case 0x16: case 0x17:
@@ -1414,6 +1785,23 @@ static void handle_fpu(char *s, UINT8 op1, UINT8 op2)
 						sprintf(s, "fucomp  st(%d)", op2 & 0x7); break;
 
 					default: sprintf(s, "??? (FPU)"); break;
+=======
+						util::stream_format(stream, "ffree   st(%d)", op2 & 0x7); break;
+
+					case 0x10: case 0x11: case 0x12: case 0x13: case 0x14: case 0x15: case 0x16: case 0x17:
+						util::stream_format(stream, "fst     st(%d)", op2 & 0x7); break;
+
+					case 0x18: case 0x19: case 0x1a: case 0x1b: case 0x1c: case 0x1d: case 0x1e: case 0x1f:
+						util::stream_format(stream, "fstp    st(%d)", op2 & 0x7); break;
+
+					case 0x20: case 0x21: case 0x22: case 0x23: case 0x24: case 0x25: case 0x26: case 0x27:
+						util::stream_format(stream, "fucom   st(%d), st(0)", op2 & 0x7); break;
+
+					case 0x28: case 0x29: case 0x2a: case 0x2b: case 0x2c: case 0x2d: case 0x2e: case 0x2f:
+						util::stream_format(stream, "fucomp  st(%d)", op2 & 0x7); break;
+
+					default: util::stream_format(stream, "??? (FPU)"); break;
+>>>>>>> upstream/master
 				}
 			}
 			break;
@@ -1428,6 +1816,7 @@ static void handle_fpu(char *s, UINT8 op1, UINT8 op2)
 				handle_modrm( modrm_string );
 				switch ((op2 >> 3) & 0x7)
 				{
+<<<<<<< HEAD
 					case 0: sprintf(s, "fiadd   word ptr %s", modrm_string); break;
 					case 1: sprintf(s, "fimul   word ptr %s", modrm_string); break;
 					case 2: sprintf(s, "ficom   word ptr %s", modrm_string); break;
@@ -1436,6 +1825,16 @@ static void handle_fpu(char *s, UINT8 op1, UINT8 op2)
 					case 5: sprintf(s, "fisubr  word ptr %s", modrm_string); break;
 					case 6: sprintf(s, "fidiv   word ptr %s", modrm_string); break;
 					case 7: sprintf(s, "fidivr  word ptr %s", modrm_string); break;
+=======
+					case 0: util::stream_format(stream, "fiadd   word ptr %s", modrm_string); break;
+					case 1: util::stream_format(stream, "fimul   word ptr %s", modrm_string); break;
+					case 2: util::stream_format(stream, "ficom   word ptr %s", modrm_string); break;
+					case 3: util::stream_format(stream, "ficomp  word ptr %s", modrm_string); break;
+					case 4: util::stream_format(stream, "fisub   word ptr %s", modrm_string); break;
+					case 5: util::stream_format(stream, "fisubr  word ptr %s", modrm_string); break;
+					case 6: util::stream_format(stream, "fidiv   word ptr %s", modrm_string); break;
+					case 7: util::stream_format(stream, "fidivr  word ptr %s", modrm_string); break;
+>>>>>>> upstream/master
 				}
 			}
 			else
@@ -1443,6 +1842,7 @@ static void handle_fpu(char *s, UINT8 op1, UINT8 op2)
 				switch (op2 & 0x3f)
 				{
 					case 0x00: case 0x01: case 0x02: case 0x03: case 0x04: case 0x05: case 0x06: case 0x07:
+<<<<<<< HEAD
 						sprintf(s, "faddp   st(%d)", op2 & 0x7); break;
 
 					case 0x08: case 0x09: case 0x0a: case 0x0b: case 0x0c: case 0x0d: case 0x0e: case 0x0f:
@@ -1463,6 +1863,28 @@ static void handle_fpu(char *s, UINT8 op1, UINT8 op2)
 						sprintf(s, "fdivp   st(%d)", op2 & 0x7); break;
 
 					default: sprintf(s, "??? (FPU)"); break;
+=======
+						util::stream_format(stream, "faddp   st(%d)", op2 & 0x7); break;
+
+					case 0x08: case 0x09: case 0x0a: case 0x0b: case 0x0c: case 0x0d: case 0x0e: case 0x0f:
+						util::stream_format(stream, "fmulp   st(%d)", op2 & 0x7); break;
+
+					case 0x19: util::stream_format(stream, "fcompp"); break;
+
+					case 0x20: case 0x21: case 0x22: case 0x23: case 0x24: case 0x25: case 0x26: case 0x27:
+						util::stream_format(stream, "fsubrp  st(%d)", op2 & 0x7); break;
+
+					case 0x28: case 0x29: case 0x2a: case 0x2b: case 0x2c: case 0x2d: case 0x2e: case 0x2f:
+						util::stream_format(stream, "fsubp   st(%d)", op2 & 0x7); break;
+
+					case 0x30: case 0x31: case 0x32: case 0x33: case 0x34: case 0x35: case 0x36: case 0x37:
+						util::stream_format(stream, "fdivrp  st(%d), st(0)", op2 & 0x7); break;
+
+					case 0x38: case 0x39: case 0x3a: case 0x3b: case 0x3c: case 0x3d: case 0x3e: case 0x3f:
+						util::stream_format(stream, "fdivp   st(%d)", op2 & 0x7); break;
+
+					default: util::stream_format(stream, "??? (FPU)"); break;
+>>>>>>> upstream/master
 				}
 			}
 			break;
@@ -1477,6 +1899,7 @@ static void handle_fpu(char *s, UINT8 op1, UINT8 op2)
 				handle_modrm( modrm_string );
 				switch ((op2 >> 3) & 0x7)
 				{
+<<<<<<< HEAD
 					case 0: sprintf(s, "fild    word ptr %s", modrm_string); break;
 					case 1: sprintf(s, "??? (FPU)"); break;
 					case 2: sprintf(s, "fist    word ptr %s", modrm_string); break;
@@ -1485,12 +1908,23 @@ static void handle_fpu(char *s, UINT8 op1, UINT8 op2)
 					case 5: sprintf(s, "fild    qword ptr %s", modrm_string); break;
 					case 6: sprintf(s, "fbstp   %s", modrm_string); break;
 					case 7: sprintf(s, "fistp   qword ptr %s", modrm_string); break;
+=======
+					case 0: util::stream_format(stream, "fild    word ptr %s", modrm_string); break;
+					case 1: util::stream_format(stream, "??? (FPU)"); break;
+					case 2: util::stream_format(stream, "fist    word ptr %s", modrm_string); break;
+					case 3: util::stream_format(stream, "fistp   word ptr %s", modrm_string); break;
+					case 4: util::stream_format(stream, "fbld    %s", modrm_string); break;
+					case 5: util::stream_format(stream, "fild    qword ptr %s", modrm_string); break;
+					case 6: util::stream_format(stream, "fbstp   %s", modrm_string); break;
+					case 7: util::stream_format(stream, "fistp   qword ptr %s", modrm_string); break;
+>>>>>>> upstream/master
 				}
 			}
 			else
 			{
 				switch (op2 & 0x3f)
 				{
+<<<<<<< HEAD
 					case 0x20: sprintf(s, "fstsw   aw"); break;
 
 					case 0x28: case 0x29: case 0x2a: case 0x2b: case 0x2c: case 0x2d: case 0x2e: case 0x2f:
@@ -1500,6 +1934,17 @@ static void handle_fpu(char *s, UINT8 op1, UINT8 op2)
 						sprintf(s, "fcomip  st(%d),st(0)", op2 & 0x7); break;
 
 					default: sprintf(s, "??? (FPU)"); break;
+=======
+					case 0x20: util::stream_format(stream, "fstsw   aw"); break;
+
+					case 0x28: case 0x29: case 0x2a: case 0x2b: case 0x2c: case 0x2d: case 0x2e: case 0x2f:
+						util::stream_format(stream, "fucomip st(%d)", op2 & 0x7); break;
+
+					case 0x30: case 0x31: case 0x32: case 0x33: case 0x34: case 0x35: case 0x36: case 0x37:
+						util::stream_format(stream, "fcomip  st(%d),st(0)", op2 & 0x7); break;
+
+					default: util::stream_format(stream, "??? (FPU)"); break;
+>>>>>>> upstream/master
 				}
 			}
 			break;
@@ -1507,16 +1952,27 @@ static void handle_fpu(char *s, UINT8 op1, UINT8 op2)
 	}
 }
 
+<<<<<<< HEAD
 static void decode_opcode(char *s, const NEC_I386_OPCODE *op, UINT8 op1 )
 {
 	int i;
 	UINT8 op2;
+=======
+static void decode_opcode(std::ostream &stream, const NEC_I386_OPCODE *op, uint8_t op1 )
+{
+	int i;
+	uint8_t op2;
+>>>>>>> upstream/master
 
 	switch( op->flags )
 	{
 		case TWO_BYTE:
 			op2 = FETCHD();
+<<<<<<< HEAD
 			decode_opcode( s, &necv_opcode_table2[op2], op1 );
+=======
+			decode_opcode( stream, &necv_opcode_table2[op2], op1 );
+>>>>>>> upstream/master
 			return;
 
 		case SEG_PS:
@@ -1526,6 +1982,7 @@ static void decode_opcode(char *s, const NEC_I386_OPCODE *op, UINT8 op1 )
 			segment = op->flags;
 			op2 = FETCH();
 			if (Iconfig) op2 = Iconfig[op2];
+<<<<<<< HEAD
 			decode_opcode( s, &necv_opcode_table1[op2], op1 );
 			return;
 
@@ -1534,6 +1991,16 @@ static void decode_opcode(char *s, const NEC_I386_OPCODE *op, UINT8 op1 )
 			op2 = FETCH();
 			if (Iconfig) op2 = Iconfig[op2];
 			decode_opcode( s, &necv_opcode_table1[op2], op1 );
+=======
+			decode_opcode( stream, &necv_opcode_table1[op2], op1 );
+			return;
+
+		case PREFIX:
+			util::stream_format( stream, "%-8s", op->mnemonic );
+			op2 = FETCH();
+			if (Iconfig) op2 = Iconfig[op2];
+			decode_opcode( stream, &necv_opcode_table1[op2], op1 );
+>>>>>>> upstream/master
 			return;
 
 		case GROUP:
@@ -1541,7 +2008,11 @@ static void decode_opcode(char *s, const NEC_I386_OPCODE *op, UINT8 op1 )
 			for( i=0; i < ARRAY_LENGTH(group_op_table); i++ ) {
 				if( strcmp(op->mnemonic, group_op_table[i].mnemonic) == 0 )
 				{
+<<<<<<< HEAD
 					decode_opcode( s, &group_op_table[i].opcode[MODRM_REG1], op1 );
+=======
+					decode_opcode( stream, &group_op_table[i].opcode[MODRM_REG1], op1 );
+>>>>>>> upstream/master
 					return;
 				}
 			}
@@ -1549,7 +2020,11 @@ static void decode_opcode(char *s, const NEC_I386_OPCODE *op, UINT8 op1 )
 
 		case FPU:
 			op2 = FETCHD();
+<<<<<<< HEAD
 			handle_fpu( s, op1, op2);
+=======
+			handle_fpu( stream, op1, op2);
+>>>>>>> upstream/master
 			return;
 
 		case MODRM:
@@ -1557,6 +2032,7 @@ static void decode_opcode(char *s, const NEC_I386_OPCODE *op, UINT8 op1 )
 			break;
 	}
 
+<<<<<<< HEAD
 	s += sprintf( s, "%-8s", op->mnemonic );
 	dasm_flags = op->dasm_flags;
 
@@ -1572,16 +2048,42 @@ static void decode_opcode(char *s, const NEC_I386_OPCODE *op, UINT8 op1 )
 	if( op->param3 != 0 ) {
 		s += sprintf( s, "," );
 		s = handle_param( s, op->param3 );
+=======
+	util::stream_format( stream, "%-8s", op->mnemonic );
+	dasm_flags = op->dasm_flags;
+
+	if( op->param1 != 0 ) {
+		handle_param(stream, op->param1);
+	}
+
+	if( op->param2 != 0 ) {
+		util::stream_format( stream, "," );
+		handle_param(stream, op->param2);
+	}
+
+	if( op->param3 != 0 ) {
+		util::stream_format( stream, "," );
+		handle_param(stream, op->param3);
+>>>>>>> upstream/master
 	}
 	return;
 
 handle_unknown:
+<<<<<<< HEAD
 	sprintf(s, "???");
 }
 
 int necv_dasm_one(char *buffer, UINT32 eip, const UINT8 *oprom, const UINT8 *decryption_table)
 {
 	UINT8 op;
+=======
+	util::stream_format(stream, "???");
+}
+
+int necv_dasm_one(std::ostream &stream, uint32_t eip, const uint8_t *oprom, const uint8_t *decryption_table)
+{
+	uint8_t op;
+>>>>>>> upstream/master
 	Iconfig = decryption_table;
 
 	opcode_ptr = opcode_ptr_base = oprom;
@@ -1593,11 +2095,19 @@ int necv_dasm_one(char *buffer, UINT32 eip, const UINT8 *oprom, const UINT8 *dec
 
 	if (Iconfig) op = Iconfig[op];
 
+<<<<<<< HEAD
 	decode_opcode( buffer, &necv_opcode_table1[op], op );
+=======
+	decode_opcode( stream, &necv_opcode_table1[op], op );
+>>>>>>> upstream/master
 	return (pc-eip) | dasm_flags | DASMFLAG_SUPPORTED;
 }
 
 CPU_DISASSEMBLE( nec )
 {
+<<<<<<< HEAD
 	return necv_dasm_one(buffer, pc, oprom, NULL);
+=======
+	return necv_dasm_one(stream, pc, oprom, nullptr);
+>>>>>>> upstream/master
 }

@@ -52,16 +52,27 @@ public:
 	}
 
 	// devices
+<<<<<<< HEAD
 	required_device<netlist_mame_device_t> m_maincpu;
+=======
+	required_device<netlist_mame_device> m_maincpu;
+>>>>>>> upstream/master
 	required_device<fixedfreq_device> m_video;
 
 protected:
 
 	// driver_device overrides
+<<<<<<< HEAD
 	virtual void machine_start();
 	virtual void machine_reset();
 
 	virtual void video_start();
+=======
+	virtual void machine_start() override;
+	virtual void machine_reset() override;
+
+	virtual void video_start() override;
+>>>>>>> upstream/master
 
 private:
 
@@ -95,7 +106,11 @@ void exidyttl_state::video_start()
 {
 }
 
+<<<<<<< HEAD
 static MACHINE_CONFIG_START( attack, exidyttl_state )
+=======
+static MACHINE_CONFIG_START( attack )
+>>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_DEVICE_ADD("maincpu", NETLIST_CPU, NETLIST_CLOCK)
@@ -110,7 +125,11 @@ static MACHINE_CONFIG_START( attack, exidyttl_state )
 	MCFG_FIXFREQ_SYNC_THRESHOLD(0.30)
 MACHINE_CONFIG_END
 
+<<<<<<< HEAD
 static MACHINE_CONFIG_START( deathrac, exidyttl_state )
+=======
+static MACHINE_CONFIG_START( deathrac )
+>>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_DEVICE_ADD("maincpu", NETLIST_CPU, NETLIST_CLOCK)
@@ -211,6 +230,12 @@ ROM_START( deathrac )
 	ROM_LOAD( "6331-36.t7",     0x0000, 0x0020, CRC(15e00a2a) SHA1(cd43d227a34e5444ed9d8a4acf5497df9c789c73) )
 ROM_END
 
+<<<<<<< HEAD
 GAME( 1977, attckexd,  0,        attack,   0, driver_device,  0, ROT0, "Exidy", "Attack (Set 1) [TTL]", MACHINE_IS_SKELETON )
 GAME( 1977, attckexd2, attckexd, attack,   0, driver_device,  0, ROT0, "Exidy", "Attack (Set 2) [TTL]", MACHINE_IS_SKELETON )
 GAME( 1976, deathrac,  0,        deathrac, 0, driver_device,  0, ROT0, "Exidy", "Death Race [TTL]", MACHINE_IS_SKELETON )
+=======
+GAME( 1977, attckexd,  0,        attack,   0, exidyttl_state,  0, ROT0, "Exidy", "Attack (Set 1) [TTL]", MACHINE_IS_SKELETON )
+GAME( 1977, attckexd2, attckexd, attack,   0, exidyttl_state,  0, ROT0, "Exidy", "Attack (Set 2) [TTL]", MACHINE_IS_SKELETON )
+GAME( 1976, deathrac,  0,        deathrac, 0, exidyttl_state,  0, ROT0, "Exidy", "Death Race [TTL]",     MACHINE_IS_SKELETON )
+>>>>>>> upstream/master

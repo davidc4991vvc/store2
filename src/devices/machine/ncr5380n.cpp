@@ -17,7 +17,11 @@
 #include "emu.h"
 #include "ncr5380n.h"
 
+<<<<<<< HEAD
 const device_type NCR5380N = &device_creator<ncr5380n_device>;
+=======
+DEFINE_DEVICE_TYPE(NCR5380N, ncr5380n_device, "ncr5380_new", "NCR 5380 SCSI (new)")
+>>>>>>> upstream/master
 
 DEVICE_ADDRESS_MAP_START(map, 8, ncr5380n_device)
 	AM_RANGE(0x0, 0x0) AM_READWRITE(scsidata_r, outdata_w)
@@ -30,12 +34,22 @@ DEVICE_ADDRESS_MAP_START(map, 8, ncr5380n_device)
 	AM_RANGE(0x7, 0x7) AM_READWRITE(resetparityirq_r, startdmainitrx_w)
 ADDRESS_MAP_END
 
+<<<<<<< HEAD
 ncr5380n_device::ncr5380n_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
 		: nscsi_device(mconfig, NCR5380N, "5380 SCSI (new)", tag, owner, clock, "ncr5380", __FILE__), tm(nullptr), status(0), istatus(0), m_mode(0),
 	m_outdata(0), m_busstatus(0), m_dmalatch(0), m_icommand(0), m_tcommand(0), clock_conv(0), sync_offset(0), sync_period(0), bus_id(0), select_timeout(0),
 	seq(0), tcount(0), mode(0), state(0), irq(false), drq(false),
 	m_irq_handler(*this),
 	m_drq_handler(*this)
+=======
+ncr5380n_device::ncr5380n_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: nscsi_device(mconfig, NCR5380N, tag, owner, clock)
+	, tm(nullptr), status(0), istatus(0), m_mode(0)
+	, m_outdata(0), m_busstatus(0), m_dmalatch(0), m_icommand(0), m_tcommand(0), clock_conv(0), sync_offset(0), sync_period(0), bus_id(0), select_timeout(0)
+	, seq(0), tcount(0), mode(0), state(0), irq(false), drq(false)
+	, m_irq_handler(*this)
+	, m_drq_handler(*this)
+>>>>>>> upstream/master
 {
 }
 
@@ -99,7 +113,11 @@ void ncr5380n_device::reset_disconnect()
 
 void ncr5380n_device::scsi_ctrl_changed()
 {
+<<<<<<< HEAD
 	UINT32 ctrl = scsi_bus->ctrl_r();
+=======
+	uint32_t ctrl = scsi_bus->ctrl_r();
+>>>>>>> upstream/master
 
 //  printf("scsi_ctrl_changed: lines now %x\n", ctrl);
 
@@ -143,8 +161,13 @@ void ncr5380n_device::device_timer(emu_timer &timer, device_timer_id id, int par
 
 void ncr5380n_device::step(bool timeout)
 {
+<<<<<<< HEAD
 	UINT32 ctrl = scsi_bus->ctrl_r();
 	UINT32 data = scsi_bus->data_r();
+=======
+	uint32_t ctrl = scsi_bus->ctrl_r();
+	uint32_t data = scsi_bus->data_r();
+>>>>>>> upstream/master
 
 	if(0)
 		printf("%s: state=%d.%d %s\n",
@@ -165,7 +188,11 @@ void ncr5380n_device::step(bool timeout)
 			break;
 
 		int win;
+<<<<<<< HEAD
 		for(win=7; win>=0 && !(data & (1<<win)); win--);
+=======
+		for(win=7; win>=0 && !(data & (1<<win)); win--) {};
+>>>>>>> upstream/master
 //      printf("arb complete: data %02x win %02x scsi_id %02x\n", data, win, scsi_id);
 		if(win != scsi_id) {
 			scsi_bus->data_w(scsi_refid, 0);
@@ -318,11 +345,19 @@ WRITE8_MEMBER(ncr5380n_device::icmd_w)
 	}
 
 	// any control lines changing?
+<<<<<<< HEAD
 	UINT8 mask = (data & IC_PHASEMASK) ^ (m_icommand & IC_PHASEMASK);
 	if (mask)
 	{
 		// translate data to nscsi
 		UINT8 newdata = 0;
+=======
+	uint8_t mask = (data & IC_PHASEMASK) ^ (m_icommand & IC_PHASEMASK);
+	if (mask)
+	{
+		// translate data to nscsi
+		uint8_t newdata;
+>>>>>>> upstream/master
 
 		newdata = (data & IC_RST ? S_RST : 0) |
 			(data & IC_ACK ? S_ACK : 0) |
@@ -413,8 +448,13 @@ void ncr5380n_device::check_irq()
 
 READ8_MEMBER(ncr5380n_device::status_r)
 {
+<<<<<<< HEAD
 	UINT32 ctrl = scsi_bus->ctrl_r();
 	UINT8 res = status |
+=======
+	uint32_t ctrl = scsi_bus->ctrl_r();
+	uint8_t res = status |
+>>>>>>> upstream/master
 		(ctrl & S_RST ? ST_RST : 0) |
 		(ctrl & S_BSY ? ST_BSY : 0) |
 		(ctrl & S_REQ ? ST_REQ : 0) |
@@ -433,8 +473,13 @@ WRITE8_MEMBER(ncr5380n_device::selenable_w)
 
 READ8_MEMBER(ncr5380n_device::busandstatus_r)
 {
+<<<<<<< HEAD
 	UINT32 ctrl = scsi_bus->ctrl_r();
 	UINT8 res = m_busstatus |
+=======
+	uint32_t ctrl = scsi_bus->ctrl_r();
+	uint8_t res = m_busstatus |
+>>>>>>> upstream/master
 		(ctrl & S_ATN ? BAS_ATN : 0) |
 		(ctrl & S_ACK ? BAS_ACK : 0);
 
@@ -470,7 +515,11 @@ WRITE8_MEMBER(ncr5380n_device::startdmainitrx_w)
 	recv_byte();
 }
 
+<<<<<<< HEAD
 void ncr5380n_device::dma_w(UINT8 val)
+=======
+void ncr5380n_device::dma_w(uint8_t val)
+>>>>>>> upstream/master
 {
 	// drop DRQ until we're ready for another byte
 	drq_clear();
@@ -482,7 +531,11 @@ void ncr5380n_device::dma_w(UINT8 val)
 	}
 }
 
+<<<<<<< HEAD
 UINT8 ncr5380n_device::dma_r()
+=======
+uint8_t ncr5380n_device::dma_r()
+>>>>>>> upstream/master
 {
 	// drop DRQ
 	drq_clear();

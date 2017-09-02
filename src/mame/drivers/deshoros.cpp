@@ -12,7 +12,11 @@ It is not Y2K compliant.
 
 Rough cpanel sketch:
 
+<<<<<<< HEAD
     [LED-array dispay]          1  2  3  M
+=======
+    [LED-array display]         1  2  3  M
+>>>>>>> upstream/master
                                 4  5  6  F
                                 7  8  9  0
                                 CLEAR ENTER
@@ -32,6 +36,12 @@ TODO:
 #include "emu.h"
 #include "cpu/m6809/m6809.h"
 #include "sound/beep.h"
+<<<<<<< HEAD
+=======
+#include "rendlay.h"
+#include "screen.h"
+#include "speaker.h"
+>>>>>>> upstream/master
 
 class destiny_state : public driver_device
 {
@@ -60,11 +70,19 @@ public:
 
 protected:
 	// driver_device overrides
+<<<<<<< HEAD
 	virtual void machine_start();
 	virtual void machine_reset();
 	virtual void video_start();
 public:
 	UINT32 screen_update_destiny(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
+=======
+	virtual void machine_start() override;
+	virtual void machine_reset() override;
+	virtual void video_start() override;
+public:
+	uint32_t screen_update_destiny(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
+>>>>>>> upstream/master
 };
 
 
@@ -72,13 +90,21 @@ public:
 
 void destiny_state::video_start()
 {
+<<<<<<< HEAD
 	UINT8 i;
+=======
+	uint8_t i;
+>>>>>>> upstream/master
 	for(i=0;i<20;i++)
 		m_led_array[i] = 0x20;
 	m_led_array[20] = 0;
 }
 
+<<<<<<< HEAD
 UINT32 destiny_state::screen_update_destiny(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+=======
+uint32_t destiny_state::screen_update_destiny(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+>>>>>>> upstream/master
 {
 	popmessage("%s",m_led_array);
 	return 0;
@@ -135,7 +161,11 @@ WRITE8_MEMBER(destiny_state::display_w)
 WRITE8_MEMBER(destiny_state::out_w)
 {
 	// d0: coin blocker
+<<<<<<< HEAD
 	coin_lockout_w(machine(), 0, ~data & 1);
+=======
+	machine().bookkeeping().coin_lockout_w(0, ~data & 1);
+>>>>>>> upstream/master
 
 	// d1: paper cutter 1
 	// d2: paper cutter 2
@@ -155,8 +185,13 @@ INPUT_CHANGED_MEMBER(destiny_state::coin_inserted)
 		m_maincpu->set_input_line(INPUT_LINE_NMI, ASSERT_LINE);
 
 	// coincounter on coin insert
+<<<<<<< HEAD
 	if (((int)(FPTR)param) == 0)
 		coin_counter_w(machine(), 0, newval);
+=======
+	if (((int)(uintptr_t)param) == 0)
+		machine().bookkeeping().coin_counter_w(0, newval);
+>>>>>>> upstream/master
 }
 
 WRITE8_MEMBER(destiny_state::sound_w)
@@ -251,8 +286,11 @@ INPUT_PORTS_END
 
 void destiny_state::machine_start()
 {
+<<<<<<< HEAD
 	m_beeper->set_frequency(800); // TODO: determine exact frequency thru schematics
 	m_beeper->set_state(0);
+=======
+>>>>>>> upstream/master
 }
 
 void destiny_state::machine_reset()
@@ -260,11 +298,16 @@ void destiny_state::machine_reset()
 	bank_select_w(m_maincpu->space(AS_PROGRAM), 0, 0);
 }
 
+<<<<<<< HEAD
 static MACHINE_CONFIG_START( destiny, destiny_state )
+=======
+static MACHINE_CONFIG_START( destiny )
+>>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", M6809, XTAL_4MHz/2)
 	MCFG_CPU_PROGRAM_MAP(main_map)
+<<<<<<< HEAD
 	MCFG_CPU_PERIODIC_INT_DRIVER(destiny_state, irq0_line_hold,  60) // timer irq controls update speed, frequency needs to be determined yet (2MHz through three 74LS390)
 
 	/* video hardware (dummy) */
@@ -282,6 +325,25 @@ static MACHINE_CONFIG_START( destiny, destiny_state )
 	/* sound hardware */
 	MCFG_SPEAKER_STANDARD_MONO("mono")
 	MCFG_SOUND_ADD("beeper", BEEP, 0)
+=======
+	MCFG_CPU_PERIODIC_INT_DRIVER(destiny_state, irq0_line_hold, 50) // timer irq controls update speed, frequency needs to be determined yet (2MHz through three 74LS390)
+
+	/* video hardware (dummy) */
+	MCFG_SCREEN_ADD("screen", LCD)
+	MCFG_SCREEN_REFRESH_RATE(50)
+	MCFG_SCREEN_VBLANK_TIME(ATTOSECONDS_IN_USEC(2500)) /* not accurate */
+	MCFG_SCREEN_SIZE(6*16, 9*2)
+	MCFG_SCREEN_VISIBLE_AREA(0, 6*16-1, 0, 9*2-1)
+	MCFG_DEFAULT_LAYOUT(layout_lcd)
+	MCFG_SCREEN_UPDATE_DRIVER(destiny_state, screen_update_destiny)
+	MCFG_SCREEN_PALETTE("palette")
+
+	MCFG_PALETTE_ADD_MONOCHROME("palette")
+
+	/* sound hardware */
+	MCFG_SPEAKER_STANDARD_MONO("mono")
+	MCFG_SOUND_ADD("beeper", BEEP, 800) // TODO: determine exact frequency thru schematics
+>>>>>>> upstream/master
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS,"mono",0.50)
 MACHINE_CONFIG_END
 
@@ -313,4 +375,8 @@ ROM_START( destiny )
 	ROM_LOAD( "ag11.18a",  0x16000, 0x2000, CRC(5f7bf9f9) SHA1(281f89c0bccfcc2bdc1d4d0a5b9cc9a8ab2e7869) )
 ROM_END
 
+<<<<<<< HEAD
 GAME( 1983, destiny,  0,       destiny,  destiny, driver_device,  0, ROT0, "Data East Corporation", "Destiny - The Fortuneteller (USA)", MACHINE_IMPERFECT_SOUND | MACHINE_NOT_WORKING )
+=======
+GAME( 1983, destiny,  0,       destiny,  destiny, destiny_state,  0, ROT0, "Data East Corporation", "Destiny - The Fortuneteller (USA)", MACHINE_IMPERFECT_SOUND | MACHINE_NOT_WORKING|MACHINE_IMPERFECT_GRAPHICS|MACHINE_NODEVICE_PRINTER )
+>>>>>>> upstream/master

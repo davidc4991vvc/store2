@@ -1,5 +1,6 @@
 // LockedStream.h
 
+<<<<<<< HEAD
 #ifndef __LOCKEDSTREAM_H
 #define __LOCKEDSTREAM_H
 
@@ -34,5 +35,9 @@ public:
 
   STDMETHOD(Read)(void *data, UInt32 size, UInt32 *processedSize);
 };
+=======
+#ifndef __LOCKED_STREAM_H
+#define __LOCKED_STREAM_H
+>>>>>>> upstream/master
 
 #endif

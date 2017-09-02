@@ -7,7 +7,10 @@
 ***************************************************************************/
 
 #include "emu.h"
+<<<<<<< HEAD
 #include "includes/mcr.h"
+=======
+>>>>>>> upstream/master
 #include "includes/mcr68.h"
 
 
@@ -22,7 +25,11 @@
 
 TILE_GET_INFO_MEMBER(mcr68_state::get_bg_tile_info)
 {
+<<<<<<< HEAD
 	UINT16 *videoram = m_videoram;
+=======
+	uint16_t *videoram = m_videoram;
+>>>>>>> upstream/master
 	int data = LOW_BYTE(videoram[tile_index * 2]) | (LOW_BYTE(videoram[tile_index * 2 + 1]) << 8);
 	int code = (data & 0x3ff) | ((data >> 4) & 0xc00);
 	int color = (~data >> 12) & 3;
@@ -32,6 +39,7 @@ TILE_GET_INFO_MEMBER(mcr68_state::get_bg_tile_info)
 }
 
 
+<<<<<<< HEAD
 TILE_GET_INFO_MEMBER(mcr68_state::zwackery_get_bg_tile_info)
 {
 	UINT16 *videoram = m_videoram;
@@ -51,6 +59,8 @@ TILE_GET_INFO_MEMBER(mcr68_state::zwackery_get_fg_tile_info)
 }
 
 
+=======
+>>>>>>> upstream/master
 
 /*************************************
  *
@@ -61,11 +71,16 @@ TILE_GET_INFO_MEMBER(mcr68_state::zwackery_get_fg_tile_info)
 VIDEO_START_MEMBER(mcr68_state,mcr68)
 {
 	/* initialize the background tilemap */
+<<<<<<< HEAD
 	m_bg_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(mcr68_state::get_bg_tile_info),this), TILEMAP_SCAN_ROWS,  16,16, 32,32);
+=======
+	m_bg_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(mcr68_state::get_bg_tile_info),this), TILEMAP_SCAN_ROWS,  16,16, 32,32);
+>>>>>>> upstream/master
 	m_bg_tilemap->set_transparent_pen(0);
 }
 
 
+<<<<<<< HEAD
 VIDEO_START_MEMBER(mcr68_state,zwackery)
 {
 	const UINT8 *colordatabase = (const UINT8 *)memregion("gfx3")->base();
@@ -130,6 +145,8 @@ VIDEO_START_MEMBER(mcr68_state,zwackery)
 }
 
 
+=======
+>>>>>>> upstream/master
 
 /*************************************
  *
@@ -139,12 +156,17 @@ VIDEO_START_MEMBER(mcr68_state,zwackery)
 
 WRITE16_MEMBER(mcr68_state::mcr68_videoram_w)
 {
+<<<<<<< HEAD
 	UINT16 *videoram = m_videoram;
+=======
+	uint16_t *videoram = m_videoram;
+>>>>>>> upstream/master
 	COMBINE_DATA(&videoram[offset]);
 	m_bg_tilemap->mark_tile_dirty(offset / 2);
 }
 
 
+<<<<<<< HEAD
 WRITE16_MEMBER(mcr68_state::zwackery_videoram_w)
 {
 	UINT16 *videoram = m_videoram;
@@ -163,6 +185,8 @@ WRITE16_MEMBER(mcr68_state::zwackery_spriteram_w)
 }
 
 
+=======
+>>>>>>> upstream/master
 
 /*************************************
  *
@@ -173,7 +197,11 @@ WRITE16_MEMBER(mcr68_state::zwackery_spriteram_w)
 void mcr68_state::mcr68_update_sprites(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect, int priority)
 {
 	rectangle sprite_clip = m_screen->visible_area();
+<<<<<<< HEAD
 	UINT16 *spriteram = m_spriteram;
+=======
+	uint16_t *spriteram = m_spriteram;
+>>>>>>> upstream/master
 	int offs;
 
 	/* adjust for clipping */
@@ -223,6 +251,7 @@ void mcr68_state::mcr68_update_sprites(screen_device &screen, bitmap_ind16 &bitm
 }
 
 
+<<<<<<< HEAD
 void mcr68_state::zwackery_update_sprites(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect, int priority)
 {
 	UINT16 *spriteram = m_spriteram;
@@ -280,6 +309,8 @@ void mcr68_state::zwackery_update_sprites(screen_device &screen, bitmap_ind16 &b
 }
 
 
+=======
+>>>>>>> upstream/master
 
 /*************************************
  *
@@ -287,7 +318,11 @@ void mcr68_state::zwackery_update_sprites(screen_device &screen, bitmap_ind16 &b
  *
  *************************************/
 
+<<<<<<< HEAD
 UINT32 mcr68_state::screen_update_mcr68(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+=======
+uint32_t mcr68_state::screen_update_mcr68(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+>>>>>>> upstream/master
 {
 	/* draw the background */
 	m_bg_tilemap->draw(screen, bitmap, cliprect, TILEMAP_DRAW_OPAQUE | TILEMAP_DRAW_ALL_CATEGORIES, 0);
@@ -302,6 +337,7 @@ UINT32 mcr68_state::screen_update_mcr68(screen_device &screen, bitmap_ind16 &bit
 	mcr68_update_sprites(screen, bitmap, cliprect, 1);
 	return 0;
 }
+<<<<<<< HEAD
 
 
 UINT32 mcr68_state::screen_update_zwackery(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
@@ -319,3 +355,5 @@ UINT32 mcr68_state::screen_update_zwackery(screen_device &screen, bitmap_ind16 &
 	zwackery_update_sprites(screen, bitmap, cliprect, 1);
 	return 0;
 }
+=======
+>>>>>>> upstream/master

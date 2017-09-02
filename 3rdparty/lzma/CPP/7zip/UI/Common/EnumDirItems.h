@@ -3,6 +3,7 @@
 #ifndef __ENUM_DIR_ITEMS_H
 #define __ENUM_DIR_ITEMS_H
 
+<<<<<<< HEAD
 #include "Common/Wildcard.h"
 #include "Windows/FileFind.h"
 #include "DirItem.h"
@@ -21,5 +22,21 @@ HRESULT EnumerateItems(
     IEnumDirItemCallback *callback,
     FStringVector &errorPaths,
     CRecordVector<DWORD> &errorCodes);
+=======
+#include "../../../Common/Wildcard.h"
+
+#include "../../../Windows/FileFind.h"
+
+#include "DirItem.h"
+
+void AddDirFileInfo(int phyParent, int logParent, int secureIndex,
+    const NWindows::NFile::NFind::CFileInfo &fi, CObjectVector<CDirItem> &dirItems);
+
+HRESULT EnumerateItems(
+    const NWildcard::CCensor &censor,
+    NWildcard::ECensorPathMode pathMode,
+    const UString &addPathPrefix,
+    CDirItems &dirItems);
+>>>>>>> upstream/master
 
 #endif

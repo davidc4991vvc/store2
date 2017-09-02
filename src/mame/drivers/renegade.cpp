@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 // license:???
+=======
+// license:BSD-3-Clause
+>>>>>>> upstream/master
 // copyright-holders:Phil Stroffolino, Carlos A. Lozano, Rob Rosenbrock
 /***************************************************************************
 
@@ -19,7 +23,10 @@ IRQ is used to handle coin inputs
 
 Known issues:
 - coin counter isn't working properly (interrupt related?)
+<<<<<<< HEAD
 - kuniokun MCU internal ROM needs to be dumped
+=======
+>>>>>>> upstream/master
 
 Memory Map (Preliminary):
 
@@ -103,11 +110,21 @@ $8000 - $ffff   ROM
 ***************************************************************************/
 
 #include "emu.h"
+<<<<<<< HEAD
 #include "cpu/m6502/m6502.h"
 #include "cpu/m6809/m6809.h"
 #include "cpu/m6805/m6805.h"
 #include "sound/3526intf.h"
 #include "includes/renegade.h"
+=======
+#include "includes/renegade.h"
+
+#include "cpu/m6502/m6502.h"
+#include "cpu/m6809/m6809.h"
+#include "sound/3526intf.h"
+#include "screen.h"
+#include "speaker.h"
+>>>>>>> upstream/master
 
 
 /**************************************************************************/
@@ -162,12 +179,17 @@ WRITE_LINE_MEMBER(renegade_state::adpcm_int)
 	}
 	else
 	{
+<<<<<<< HEAD
 		UINT8 const data = m_adpcmrom[m_adpcm_pos / 2];
+=======
+		uint8_t const data = m_adpcmrom[m_adpcm_pos / 2];
+>>>>>>> upstream/master
 		m_msm->data_w(m_adpcm_pos & 1 ? data & 0xf : data >> 4);
 		m_adpcm_pos++;
 	}
 }
 
+<<<<<<< HEAD
 WRITE8_MEMBER(renegade_state::sound_w)
 {
 	soundlatch_byte_w(space, offset, data);
@@ -193,6 +215,8 @@ static const UINT8 kuniokun_xor_table[0x2a] =
 	0x68, 0x60
 };
 
+=======
+>>>>>>> upstream/master
 void renegade_state::machine_start()
 {
 	m_rombank->configure_entries(0, 2, memregion("maincpu")->base(), 0x4000);
@@ -202,6 +226,7 @@ void renegade_state::machine_start()
 	save_item(NAME(m_adpcm_playing));
 }
 
+<<<<<<< HEAD
 DRIVER_INIT_MEMBER(renegade_state,renegade)
 {
 	m_mcu_sim = FALSE;
@@ -323,11 +348,18 @@ WRITE8_MEMBER(renegade_state::_68705_ddr_c_w)
 /***************************************************************************
 
     MCU simulation
+=======
+
+/***************************************************************************
+
+    MCU interface
+>>>>>>> upstream/master
 
 ***************************************************************************/
 
 READ8_MEMBER(renegade_state::mcu_reset_r)
 {
+<<<<<<< HEAD
 	if (m_mcu_sim == TRUE)
 	{
 		m_mcu_key = -1;
@@ -573,6 +605,24 @@ CUSTOM_INPUT_MEMBER(renegade_state::mcu_status_r)
 	}
 
 	return res;
+=======
+	m_mcu->reset_w(PULSE_LINE);
+	return 0;
+}
+
+CUSTOM_INPUT_MEMBER(renegade_state::mcu_status_r)
+{
+	if (m_mcu.found())
+	{
+		return
+			((CLEAR_LINE == m_mcu->host_semaphore_r()) ? 0x01 : 0x00) |
+			((CLEAR_LINE == m_mcu->mcu_semaphore_r()) ? 0x02 : 0x00);
+	}
+	else
+	{
+		return 0x00;
+	}
+>>>>>>> upstream/master
 }
 
 /********************************************************************************************/
@@ -600,7 +650,11 @@ WRITE8_MEMBER(renegade_state::coincounter_w)
 
 /********************************************************************************************/
 
+<<<<<<< HEAD
 static ADDRESS_MAP_START( renegade_map, AS_PROGRAM, 8, renegade_state )
+=======
+static ADDRESS_MAP_START( renegade_nomcu_map, AS_PROGRAM, 8, renegade_state )
+>>>>>>> upstream/master
 	AM_RANGE(0x0000, 0x17ff) AM_RAM
 	AM_RANGE(0x1800, 0x1fff) AM_RAM_WRITE(fg_videoram_w) AM_SHARE("fg_videoram")
 	AM_RANGE(0x2000, 0x27ff) AM_RAM AM_SHARE("spriteram")
@@ -609,19 +663,37 @@ static ADDRESS_MAP_START( renegade_map, AS_PROGRAM, 8, renegade_state )
 	AM_RANGE(0x3100, 0x31ff) AM_RAM_DEVWRITE("palette", palette_device, write_ext) AM_SHARE("palette_ext")
 	AM_RANGE(0x3800, 0x3800) AM_READ_PORT("IN0") AM_WRITE(scroll_lsb_w)       /* Player#1 controls, P1,P2 start */
 	AM_RANGE(0x3801, 0x3801) AM_READ_PORT("IN1") AM_WRITE(scroll_msb_w)       /* Player#2 controls, coin triggers */
+<<<<<<< HEAD
 	AM_RANGE(0x3802, 0x3802) AM_READ_PORT("DSW2") AM_WRITE(sound_w) /* DIP2  various IO ports */
 	AM_RANGE(0x3803, 0x3803) AM_READ_PORT("DSW1") AM_WRITE(flipscreen_w)   /* DIP1 */
 	AM_RANGE(0x3804, 0x3804) AM_READWRITE(mcu_r, mcu_w)
 	AM_RANGE(0x3805, 0x3805) AM_READWRITE(mcu_reset_r, bankswitch_w)
+=======
+	AM_RANGE(0x3802, 0x3802) AM_READ_PORT("DSW2") AM_DEVWRITE("soundlatch", generic_latch_8_device, write) /* DIP2  various IO ports */
+	AM_RANGE(0x3803, 0x3803) AM_READ_PORT("DSW1") AM_WRITE(flipscreen_w)   /* DIP1 */
+	AM_RANGE(0x3805, 0x3805) AM_READNOP AM_WRITE(bankswitch_w)
+>>>>>>> upstream/master
 	AM_RANGE(0x3806, 0x3806) AM_WRITENOP // ?? watchdog
 	AM_RANGE(0x3807, 0x3807) AM_WRITE(coincounter_w)
 	AM_RANGE(0x4000, 0x7fff) AM_ROMBANK("rombank")
 	AM_RANGE(0x8000, 0xffff) AM_ROM
 ADDRESS_MAP_END
 
+<<<<<<< HEAD
 static ADDRESS_MAP_START( renegade_sound_map, AS_PROGRAM, 8, renegade_state )
 	AM_RANGE(0x0000, 0x0fff) AM_RAM
 	AM_RANGE(0x1000, 0x1000) AM_READ(soundlatch_byte_r)
+=======
+static ADDRESS_MAP_START( renegade_map, AS_PROGRAM, 8, renegade_state )
+	AM_RANGE(0x3804, 0x3804) AM_DEVREADWRITE("mcu", taito68705_mcu_device, data_r, data_w)
+	AM_RANGE(0x3805, 0x3805) AM_READ(mcu_reset_r)
+	AM_IMPORT_FROM(renegade_nomcu_map)
+ADDRESS_MAP_END
+
+static ADDRESS_MAP_START( renegade_sound_map, AS_PROGRAM, 8, renegade_state )
+	AM_RANGE(0x0000, 0x0fff) AM_RAM
+	AM_RANGE(0x1000, 0x1000) AM_DEVREAD("soundlatch", generic_latch_8_device, read)
+>>>>>>> upstream/master
 	AM_RANGE(0x1800, 0x1800) AM_WRITE(adpcm_start_w)
 	AM_RANGE(0x2000, 0x2000) AM_WRITE(adpcm_addr_w)
 	AM_RANGE(0x2800, 0x2801) AM_DEVREADWRITE("ymsnd", ym3526_device, read, write)
@@ -629,6 +701,7 @@ static ADDRESS_MAP_START( renegade_sound_map, AS_PROGRAM, 8, renegade_state )
 	AM_RANGE(0x8000, 0xffff) AM_ROM
 ADDRESS_MAP_END
 
+<<<<<<< HEAD
 static ADDRESS_MAP_START( renegade_mcu_map, AS_PROGRAM, 8, renegade_state )
 	ADDRESS_MAP_GLOBAL_MASK(0x7ff)
 	AM_RANGE(0x0000, 0x0000) AM_READWRITE(_68705_port_a_r, _68705_port_a_w)
@@ -643,6 +716,8 @@ static ADDRESS_MAP_START( renegade_mcu_map, AS_PROGRAM, 8, renegade_state )
 	AM_RANGE(0x0080, 0x07ff) AM_ROM
 ADDRESS_MAP_END
 
+=======
+>>>>>>> upstream/master
 
 static INPUT_PORTS_START( renegade )
 	PORT_START("IN0")   /* IN0 */
@@ -674,7 +749,11 @@ static INPUT_PORTS_START( renegade )
 
 	PORT_BIT( 0x04, IP_ACTIVE_LOW, IPT_BUTTON3 ) PORT_PLAYER(1) /* attack right */
 	PORT_BIT( 0x08, IP_ACTIVE_LOW, IPT_BUTTON3 ) PORT_PLAYER(2) /* attack right */
+<<<<<<< HEAD
 	PORT_BIT( 0x30, IP_ACTIVE_HIGH, IPT_SPECIAL) PORT_CUSTOM_MEMBER(DEVICE_SELF, renegade_state,mcu_status_r, NULL)
+=======
+	PORT_BIT( 0x30, IP_ACTIVE_HIGH, IPT_SPECIAL) PORT_CUSTOM_MEMBER(DEVICE_SELF, renegade_state, mcu_status_r, nullptr)
+>>>>>>> upstream/master
 	PORT_BIT( 0x40, IP_ACTIVE_LOW, IPT_CUSTOM ) PORT_VBLANK("screen")
 	PORT_BIT( 0x80, IP_ACTIVE_LOW, IPT_SERVICE1 )
 
@@ -842,7 +921,11 @@ void renegade_state::machine_reset()
 }
 
 
+<<<<<<< HEAD
 static MACHINE_CONFIG_START( renegade, renegade_state )
+=======
+static MACHINE_CONFIG_START( renegade )
+>>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", M6502, 12000000/8)  /* 1.5 MHz (measured) */
@@ -852,9 +935,13 @@ static MACHINE_CONFIG_START( renegade, renegade_state )
 	MCFG_CPU_ADD("audiocpu", M6809, 12000000/8)
 	MCFG_CPU_PROGRAM_MAP(renegade_sound_map)    /* IRQs are caused by the main CPU */
 
+<<<<<<< HEAD
 	MCFG_CPU_ADD("mcu", M68705, 12000000/4) // ?
 	MCFG_CPU_PROGRAM_MAP(renegade_mcu_map)
 
+=======
+	MCFG_DEVICE_ADD("mcu", TAITO68705_MCU, 12000000/4) // ?
+>>>>>>> upstream/master
 
 	/* video hardware */
 	MCFG_SCREEN_ADD("screen", RASTER)
@@ -872,18 +959,36 @@ static MACHINE_CONFIG_START( renegade, renegade_state )
 	/* sound hardware */
 	MCFG_SPEAKER_STANDARD_MONO("mono")
 
+<<<<<<< HEAD
 	MCFG_SOUND_ADD("ymsnd", YM3526, 12000000/4)
 	MCFG_YM3526_IRQ_HANDLER(DEVWRITELINE("audiocpu", m6809_device, firq_line))
+=======
+	MCFG_GENERIC_LATCH_8_ADD("soundlatch")
+	MCFG_GENERIC_LATCH_DATA_PENDING_CB(INPUTLINE("audiocpu", M6809_IRQ_LINE))
+
+	MCFG_SOUND_ADD("ymsnd", YM3526, 12000000/4)
+	MCFG_YM3526_IRQ_HANDLER(INPUTLINE("audiocpu", M6809_FIRQ_LINE))
+>>>>>>> upstream/master
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 1.0)
 
 	MCFG_SOUND_ADD("msm", MSM5205, 12000000/32)
 	MCFG_MSM5205_VCLK_CB(WRITELINE(renegade_state, adpcm_int))
+<<<<<<< HEAD
 	MCFG_MSM5205_PRESCALER_SELECTOR(MSM5205_S48_4B)  /* 8kHz */
+=======
+	MCFG_MSM5205_PRESCALER_SELECTOR(S48_4B)  /* 8kHz */
+>>>>>>> upstream/master
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 1.0)
 MACHINE_CONFIG_END
 
 
 static MACHINE_CONFIG_DERIVED( kuniokunb, renegade )
+<<<<<<< HEAD
+=======
+	MCFG_CPU_MODIFY("maincpu")
+	MCFG_CPU_PROGRAM_MAP(renegade_nomcu_map)
+
+>>>>>>> upstream/master
 	MCFG_DEVICE_REMOVE("mcu")
 MACHINE_CONFIG_END
 
@@ -896,7 +1001,11 @@ ROM_START( renegade )
 	ROM_REGION( 0x10000, "audiocpu", 0 )
 	ROM_LOAD( "n0-5.ic13",     0x8000, 0x8000, CRC(3587de3b) SHA1(f82e758254b21eb0c5a02469c72adb86d9577065) )
 
+<<<<<<< HEAD
 	ROM_REGION( 0x0800, "mcu", 0 ) /* MC68705P5 */
+=======
+	ROM_REGION( 0x0800, "mcu:mcu", 0 ) /* MC68705P5 */
+>>>>>>> upstream/master
 	ROM_LOAD( "nz-5.ic97",    0x0000, 0x0800, CRC(32e47560) SHA1(93a386b3f3c8eb35a53487612147a877dc7453ff) )
 
 	ROM_REGION( 0x08000, "chars", 0 )
@@ -938,8 +1047,13 @@ ROM_START( kuniokun )
 	ROM_REGION( 0x10000, "audiocpu", 0 )
 	ROM_LOAD( "n0-5.bin",     0x8000, 0x8000, CRC(3587de3b) SHA1(f82e758254b21eb0c5a02469c72adb86d9577065) )
 
+<<<<<<< HEAD
 	ROM_REGION( 0x10000, "mcu", 0 )
 	ROM_LOAD( "mcu",          0x8000, 0x8000, NO_DUMP )
+=======
+	ROM_REGION( 0x0800, "mcu:mcu", 0 ) // MC68705P3
+	ROM_LOAD( "nz-0.bin",     0x0000, 0x0800, CRC(650bb5f0) SHA1(56a9679e3265de244ce2191a81b709992f012111) )
+>>>>>>> upstream/master
 
 	ROM_REGION( 0x08000, "chars", 0 )
 	ROM_LOAD( "ta18-25.bin",  0x0000, 0x8000, CRC(9bd2bea3) SHA1(fa79c9d4c71c1dbbf0e14cb8d6870f1f94b9af88) )
@@ -1013,6 +1127,12 @@ ROM_END
 
 
 
+<<<<<<< HEAD
 GAME( 1986, renegade,  0,        renegade,  renegade, renegade_state, renegade,  ROT0, "Technos Japan (Taito America license)", "Renegade (US)", MACHINE_SUPPORTS_SAVE )
 GAME( 1986, kuniokun,  renegade, renegade,  renegade, renegade_state, kuniokun,  ROT0, "Technos Japan", "Nekketsu Kouha Kunio-kun (Japan)", MACHINE_SUPPORTS_SAVE )
 GAME( 1986, kuniokunb, renegade, kuniokunb, renegade, renegade_state, kuniokunb, ROT0, "bootleg", "Nekketsu Kouha Kunio-kun (Japan bootleg)", MACHINE_SUPPORTS_SAVE )
+=======
+GAME( 1986, renegade,  0,        renegade,  renegade, renegade_state, 0, ROT0, "Technos Japan (Taito America license)", "Renegade (US)", MACHINE_SUPPORTS_SAVE )
+GAME( 1986, kuniokun,  renegade, renegade,  renegade, renegade_state, 0, ROT0, "Technos Japan", "Nekketsu Kouha Kunio-kun (Japan)", MACHINE_SUPPORTS_SAVE )
+GAME( 1986, kuniokunb, renegade, kuniokunb, renegade, renegade_state, 0, ROT0, "bootleg", "Nekketsu Kouha Kunio-kun (Japan bootleg)", MACHINE_SUPPORTS_SAVE )
+>>>>>>> upstream/master

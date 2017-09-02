@@ -1,7 +1,13 @@
 // license:BSD-3-Clause
 // copyright-holders:Mariusz Wojcieszek, R. Belmont
 /*
+<<<<<<< HEAD
     68681 DUART
+=======
+    2681 DUART
+    68681 DUART
+    28C94 QUART
+>>>>>>> upstream/master
 
     Written by Mariusz Wojcieszek
     Updated by Jonathan Gevaryahu AKA Lord Nightmare
@@ -12,8 +18,14 @@
 #include "emu.h"
 #include "mc68681.h"
 
+<<<<<<< HEAD
 #define VERBOSE 0
 #define LOG(x)  do { if (VERBOSE) logerror x; } while (0)
+=======
+//#define VERBOSE 1
+#include "logmacro.h"
+
+>>>>>>> upstream/master
 
 static const char *const duart68681_reg_read_names[0x10] =
 {
@@ -50,6 +62,7 @@ static const int baud_rate_ACR_1[] = { 75, 110, 134, 150, 300, 600, 1200, 2000, 
 
 #define CHANA_TAG   "cha"
 #define CHANB_TAG   "chb"
+<<<<<<< HEAD
 
 // device type definition
 const device_type MC68681 = &device_creator<mc68681_device>;
@@ -59,11 +72,22 @@ MACHINE_CONFIG_FRAGMENT( duart68681 )
 	MCFG_DEVICE_ADD(CHANA_TAG, MC68681_CHANNEL, 0)
 	MCFG_DEVICE_ADD(CHANB_TAG, MC68681_CHANNEL, 0)
 MACHINE_CONFIG_END
+=======
+#define CHANC_TAG   "chc"
+#define CHAND_TAG   "chd"
+
+// device type definition
+DEFINE_DEVICE_TYPE(MC68681, mc68681_device, "mc68681", "MC68681 DUART")
+DEFINE_DEVICE_TYPE(SC28C94, sc28c94_device, "sc28c94", "SC28C94 QUART")
+DEFINE_DEVICE_TYPE(MC68681_CHANNEL, mc68681_channel, "mc68681_channel", "MC68681 DUART channel")
+
+>>>>>>> upstream/master
 
 //**************************************************************************
 //  LIVE DEVICE
 //**************************************************************************
 
+<<<<<<< HEAD
 mc68681_device::mc68681_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
 	: device_t(mconfig, MC68681, "MC68681 DUART", tag, owner, clock, "mc68681", __FILE__),
 	m_chanA(*this, CHANA_TAG),
@@ -71,6 +95,19 @@ mc68681_device::mc68681_device(const machine_config &mconfig, const char *tag, d
 	write_irq(*this),
 	write_a_tx(*this),
 	write_b_tx(*this),
+=======
+mc68681_base_device::mc68681_base_device(const machine_config &mconfig, device_type type, const char *tag, device_t *owner, uint32_t clock)
+	: device_t(mconfig, type, tag, owner, clock),
+	m_chanA(*this, CHANA_TAG),
+	m_chanB(*this, CHANB_TAG),
+	m_chanC(*this, CHANC_TAG),
+	m_chanD(*this, CHAND_TAG),
+	write_irq(*this),
+	write_a_tx(*this),
+	write_b_tx(*this),
+	write_c_tx(*this),
+	write_d_tx(*this),
+>>>>>>> upstream/master
 	read_inport(*this),
 	write_outport(*this),
 	ip3clk(0),
@@ -83,14 +120,33 @@ mc68681_device::mc68681_device(const machine_config &mconfig, const char *tag, d
 {
 }
 
+<<<<<<< HEAD
+=======
+mc68681_device::mc68681_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: mc68681_base_device(mconfig, MC68681, tag, owner, clock)
+{
+}
+
+sc28c94_device::sc28c94_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: mc68681_base_device(mconfig, SC28C94, tag, owner, clock)
+{
+}
+
+>>>>>>> upstream/master
 //-------------------------------------------------
 //  static_set_clocks - configuration helper to set
 //  the external clocks
 //-------------------------------------------------
 
+<<<<<<< HEAD
 void mc68681_device::static_set_clocks(device_t &device, int clk3, int clk4, int clk5, int clk6)
 {
 	mc68681_device &duart = downcast<mc68681_device &>(device);
+=======
+void mc68681_base_device::static_set_clocks(device_t &device, int clk3, int clk4, int clk5, int clk6)
+{
+	mc68681_base_device &duart = downcast<mc68681_base_device &>(device);
+>>>>>>> upstream/master
 	duart.ip3clk = clk3;
 	duart.ip4clk = clk4;
 	duart.ip5clk = clk5;
@@ -101,15 +157,28 @@ void mc68681_device::static_set_clocks(device_t &device, int clk3, int clk4, int
     device start callback
 -------------------------------------------------*/
 
+<<<<<<< HEAD
 void mc68681_device::device_start()
+=======
+void mc68681_base_device::device_start()
+>>>>>>> upstream/master
 {
 	write_irq.resolve_safe();
 	write_a_tx.resolve_safe();
 	write_b_tx.resolve_safe();
+<<<<<<< HEAD
 	read_inport.resolve();
 	write_outport.resolve_safe();
 
 	duart_timer = machine().scheduler().timer_alloc(timer_expired_delegate(FUNC(mc68681_device::duart_timer_callback),this), NULL);
+=======
+	write_c_tx.resolve_safe();
+	write_d_tx.resolve_safe();
+	read_inport.resolve();
+	write_outport.resolve_safe();
+
+	duart_timer = machine().scheduler().timer_alloc(timer_expired_delegate(FUNC(mc68681_base_device::duart_timer_callback),this), nullptr);
+>>>>>>> upstream/master
 
 	save_item(NAME(ACR));
 	save_item(NAME(IMR));
@@ -125,7 +194,11 @@ void mc68681_device::device_start()
     device reset callback
 -------------------------------------------------*/
 
+<<<<<<< HEAD
 void mc68681_device::device_reset()
+=======
+void mc68681_base_device::device_reset()
+>>>>>>> upstream/master
 {
 	ACR = 0;  /* Interrupt Vector Register */
 	IVR = 0x0f;  /* Interrupt Vector Register */
@@ -141,12 +214,28 @@ void mc68681_device::device_reset()
 	write_outport(OPR ^ 0xff);
 }
 
+<<<<<<< HEAD
 machine_config_constructor mc68681_device::device_mconfig_additions() const
 {
 	return MACHINE_CONFIG_NAME( duart68681 );
 }
 
 void mc68681_device::update_interrupts()
+=======
+MACHINE_CONFIG_MEMBER( mc68681_base_device::device_add_mconfig )
+	MCFG_DEVICE_ADD(CHANA_TAG, MC68681_CHANNEL, 0)
+	MCFG_DEVICE_ADD(CHANB_TAG, MC68681_CHANNEL, 0)
+MACHINE_CONFIG_END
+
+MACHINE_CONFIG_MEMBER( sc28c94_device::device_add_mconfig )
+	MCFG_DEVICE_ADD(CHANA_TAG, MC68681_CHANNEL, 0)
+	MCFG_DEVICE_ADD(CHANB_TAG, MC68681_CHANNEL, 0)
+	MCFG_DEVICE_ADD(CHANC_TAG, MC68681_CHANNEL, 0)
+	MCFG_DEVICE_ADD(CHAND_TAG, MC68681_CHANNEL, 0)
+MACHINE_CONFIG_END
+
+void mc68681_base_device::update_interrupts()
+>>>>>>> upstream/master
 {
 	/* update SR state and update interrupt ISR state for the following bits:
 	SRn: bits 7-4: handled elsewhere.
@@ -165,11 +254,16 @@ void mc68681_device::update_interrupts()
 	*/
 	if ( (ISR & IMR) != 0 )
 	{
+<<<<<<< HEAD
 		LOG(( "68681: Interrupt line active (IMR & ISR = %02X)\n", (ISR & IMR) ));
+=======
+		LOG( "68681: Interrupt line active (IMR & ISR = %02X)\n", (ISR & IMR) );
+>>>>>>> upstream/master
 		write_irq(ASSERT_LINE);
 	}
 	else
 	{
+<<<<<<< HEAD
 		LOG(( "68681: Interrupt line not active (IMR & ISR = %02X)\n", ISR & IMR));
 		write_irq(CLEAR_LINE);
 		m_read_vector = false;  // clear IACK too
@@ -177,6 +271,47 @@ void mc68681_device::update_interrupts()
 }
 
 double mc68681_device::duart68681_get_ct_rate()
+=======
+		LOG( "68681: Interrupt line not active (IMR & ISR = %02X)\n", ISR & IMR);
+		write_irq(CLEAR_LINE);
+		m_read_vector = false;  // clear IACK too
+	}
+	if(OPCR & 0xf0)
+	{
+		if(BIT(OPCR, 4))
+		{
+			if(BIT(ISR, 1))
+				OPR |= 0x10;
+			else
+				OPR &= ~0x10;
+		}
+		if(BIT(OPCR, 5))
+		{
+			if(BIT(ISR, 5))
+				OPR |= 0x20;
+			else
+				OPR &= ~0x20;
+		}
+		if(BIT(OPCR, 6))
+		{
+			if(BIT(ISR, 0))
+				OPR |= 0x40;
+			else
+				OPR &= ~0x40;
+		}
+		if(BIT(OPCR, 7))
+		{
+			if(BIT(ISR, 4))
+				OPR |= 0x80;
+			else
+				OPR &= ~0x80;
+		}
+		write_outport(OPR ^ 0xff);
+	}
+}
+
+double mc68681_base_device::duart68681_get_ct_rate()
+>>>>>>> upstream/master
 {
 	double rate = 0.0f;
 
@@ -218,19 +353,31 @@ double mc68681_device::duart68681_get_ct_rate()
 	return rate;
 }
 
+<<<<<<< HEAD
 UINT16 mc68681_device::duart68681_get_ct_count()
+=======
+uint16_t mc68681_base_device::duart68681_get_ct_count()
+>>>>>>> upstream/master
 {
 	double clock = duart68681_get_ct_rate();
 	return (duart_timer->remaining() * clock).as_double();
 }
 
+<<<<<<< HEAD
 void mc68681_device::duart68681_start_ct(int count)
+=======
+void mc68681_base_device::duart68681_start_ct(int count)
+>>>>>>> upstream/master
 {
 	double clock = duart68681_get_ct_rate();
 	duart_timer->adjust(attotime::from_hz(clock) * count, 0);
 }
 
+<<<<<<< HEAD
 TIMER_CALLBACK_MEMBER( mc68681_device::duart_timer_callback )
+=======
+TIMER_CALLBACK_MEMBER( mc68681_base_device::duart_timer_callback )
+>>>>>>> upstream/master
 {
 	if (ACR & 0x40)
 	{
@@ -247,7 +394,11 @@ TIMER_CALLBACK_MEMBER( mc68681_device::duart_timer_callback )
 		// timer driving any serial channels?
 		if (BIT(ACR, 7) == 1)
 		{
+<<<<<<< HEAD
 			UINT8 csr = m_chanA->get_chan_CSR();
+=======
+			uint8_t csr = m_chanA->get_chan_CSR();
+>>>>>>> upstream/master
 
 			if ((csr & 0xf0) == 0xd0)   // tx is timer driven
 			{
@@ -275,7 +426,11 @@ TIMER_CALLBACK_MEMBER( mc68681_device::duart_timer_callback )
 			update_interrupts();
 		}
 
+<<<<<<< HEAD
 		int count = MAX(CTR.w.l, 1);
+=======
+		int count = std::max(CTR.w.l, uint16_t(1));
+>>>>>>> upstream/master
 		duart68681_start_ct(count);
 	}
 	else
@@ -288,6 +443,7 @@ TIMER_CALLBACK_MEMBER( mc68681_device::duart_timer_callback )
 
 }
 
+<<<<<<< HEAD
 READ8_MEMBER( mc68681_device::read )
 {
 	UINT8 r = 0xff;
@@ -295,6 +451,43 @@ READ8_MEMBER( mc68681_device::read )
 	offset &= 0xf;
 
 	LOG(( "Reading 68681 (%s) reg %x (%s) ", tag(), offset, duart68681_reg_read_names[offset] ));
+=======
+READ8_MEMBER( sc28c94_device::read )
+{
+	uint8_t r = 0;
+	offset &= 0x1f;
+
+	if (offset < 0x10)
+	{
+		return mc68681_base_device::read(space, offset, mem_mask);
+	}
+
+	switch (offset)
+	{
+		case 0x10: /* MR1A/MR2C */
+		case 0x11: /* SRC */
+		case 0x13: /* Rx Holding Register C */
+			r = m_chanC->read_chan_reg(offset & 3);
+			break;
+
+		case 0x18: /* MR1D/MR2D */
+		case 0x19: /* SRD */
+		case 0x1b: /* RHRD */
+			r = m_chanD->read_chan_reg(offset & 3);
+			break;
+	}
+
+	return r;
+}
+
+READ8_MEMBER( mc68681_base_device::read )
+{
+	uint8_t r = 0xff;
+
+	offset &= 0xf;
+
+	LOG( "Reading 68681 (%s) reg %x (%s)\n", tag(), offset, duart68681_reg_read_names[offset] );
+>>>>>>> upstream/master
 
 	switch (offset)
 	{
@@ -368,7 +561,11 @@ READ8_MEMBER( mc68681_device::read )
 				half_period = 0;
 			}
 
+<<<<<<< HEAD
 			int count = MAX(CTR.w.l, 1);
+=======
+			int count = std::max(CTR.w.l, uint16_t(1));
+>>>>>>> upstream/master
 			duart68681_start_ct(count);
 			break;
 		}
@@ -384,18 +581,59 @@ READ8_MEMBER( mc68681_device::read )
 			break;
 
 		default:
+<<<<<<< HEAD
 			LOG(( "Reading unhandled 68681 reg %x\n", offset ));
 			break;
 	}
 	LOG(("returned %02x\n", r));
+=======
+			LOG( "Reading unhandled 68681 reg %x\n", offset );
+			break;
+	}
+	LOG("returned %02x\n", r);
+>>>>>>> upstream/master
 
 	return r;
 }
 
+<<<<<<< HEAD
 WRITE8_MEMBER( mc68681_device::write )
 {
 	offset &= 0x0f;
 	LOG(( "Writing 68681 (%s) reg %x (%s) with %04x\n", tag(), offset, duart68681_reg_write_names[offset], data ));
+=======
+WRITE8_MEMBER( sc28c94_device::write )
+{
+	offset &= 0x1f;
+
+	if (offset < 0x10)
+	{
+		mc68681_base_device::write(space, offset, data, mem_mask);
+	}
+
+	switch(offset)
+	{
+		case 0x10: /* MRC */
+		case 0x11: /* CSRC */
+		case 0x12: /* CRC */
+		case 0x13: /* THRC */
+			m_chanC->write_chan_reg(offset&3, data);
+			break;
+
+		case 0x18: /* MRC */
+		case 0x19: /* CSRC */
+		case 0x1a: /* CRC */
+		case 0x1b: /* THRC */
+			m_chanD->write_chan_reg(offset&3, data);
+			break;
+	}
+}
+
+WRITE8_MEMBER( mc68681_base_device::write )
+{
+	offset &= 0x0f;
+	LOG( "Writing 68681 (%s) reg %x (%s) with %04x\n", tag(), offset, duart68681_reg_write_names[offset], data );
+>>>>>>> upstream/master
 	switch(offset)
 	{
 		case 0x00: /* MRA */
@@ -407,7 +645,11 @@ WRITE8_MEMBER( mc68681_device::write )
 
 		case 0x04: /* ACR */
 		{
+<<<<<<< HEAD
 			UINT8 old_acr = ACR;
+=======
+			uint8_t old_acr = ACR;
+>>>>>>> upstream/master
 			ACR = data;
 
 			//       bits 6-4: Counter/Timer Mode And Clock Source Select
@@ -417,7 +659,11 @@ WRITE8_MEMBER( mc68681_device::write )
 				if (data & 0x40)
 				{
 					// Entering timer mode
+<<<<<<< HEAD
 					UINT16 count = MAX(CTR.w.l, 1);
+=======
+					uint16_t count = std::max(CTR.w.l, uint16_t(1));
+>>>>>>> upstream/master
 					half_period = 0;
 
 					duart68681_start_ct(count);
@@ -467,7 +713,11 @@ WRITE8_MEMBER( mc68681_device::write )
 			break;
 
 		case 0x0d: /* OPCR */
+<<<<<<< HEAD
 			if ((data != 0x00) && ((data & 0xc) != 0x4))
+=======
+			if (((data & 0xf) != 0x00) && ((data & 0xc) != 0x4))
+>>>>>>> upstream/master
 				logerror( "68681 (%s): Unhandled OPCR value: %02x\n", tag(), data);
 			OPCR = data;
 			break;
@@ -484,9 +734,15 @@ WRITE8_MEMBER( mc68681_device::write )
 	}
 }
 
+<<<<<<< HEAD
 WRITE_LINE_MEMBER( mc68681_device::ip0_w )
 {
 	UINT8 newIP = (IP_last_state & ~0x01) | ((state == ASSERT_LINE) ? 1 : 0);
+=======
+WRITE_LINE_MEMBER( mc68681_base_device::ip0_w )
+{
+	uint8_t newIP = (IP_last_state & ~0x01) | ((state == ASSERT_LINE) ? 1 : 0);
+>>>>>>> upstream/master
 
 	if (newIP != IP_last_state)
 	{
@@ -504,9 +760,15 @@ WRITE_LINE_MEMBER( mc68681_device::ip0_w )
 	IP_last_state = newIP;
 }
 
+<<<<<<< HEAD
 WRITE_LINE_MEMBER( mc68681_device::ip1_w )
 {
 	UINT8 newIP = (IP_last_state & ~0x02) | ((state == ASSERT_LINE) ? 2 : 0);
+=======
+WRITE_LINE_MEMBER( mc68681_base_device::ip1_w )
+{
+	uint8_t newIP = (IP_last_state & ~0x02) | ((state == ASSERT_LINE) ? 2 : 0);
+>>>>>>> upstream/master
 
 	if (newIP != IP_last_state)
 	{
@@ -524,9 +786,15 @@ WRITE_LINE_MEMBER( mc68681_device::ip1_w )
 	IP_last_state = newIP;
 }
 
+<<<<<<< HEAD
 WRITE_LINE_MEMBER( mc68681_device::ip2_w )
 {
 	UINT8 newIP = (IP_last_state & ~0x04) | ((state == ASSERT_LINE) ? 4 : 0);
+=======
+WRITE_LINE_MEMBER( mc68681_base_device::ip2_w )
+{
+	uint8_t newIP = (IP_last_state & ~0x04) | ((state == ASSERT_LINE) ? 4 : 0);
+>>>>>>> upstream/master
 
 	if (newIP != IP_last_state)
 	{
@@ -544,9 +812,15 @@ WRITE_LINE_MEMBER( mc68681_device::ip2_w )
 	IP_last_state = newIP;
 }
 
+<<<<<<< HEAD
 WRITE_LINE_MEMBER( mc68681_device::ip3_w )
 {
 	UINT8 newIP = (IP_last_state & ~0x08) | ((state == ASSERT_LINE) ? 8 : 0);
+=======
+WRITE_LINE_MEMBER( mc68681_base_device::ip3_w )
+{
+	uint8_t newIP = (IP_last_state & ~0x08) | ((state == ASSERT_LINE) ? 8 : 0);
+>>>>>>> upstream/master
 
 	if (newIP != IP_last_state)
 	{
@@ -564,21 +838,37 @@ WRITE_LINE_MEMBER( mc68681_device::ip3_w )
 	IP_last_state = newIP;
 }
 
+<<<<<<< HEAD
 WRITE_LINE_MEMBER( mc68681_device::ip4_w )
 {
 	UINT8 newIP = (IP_last_state & ~0x10) | ((state == ASSERT_LINE) ? 0x10 : 0);
+=======
+WRITE_LINE_MEMBER( mc68681_base_device::ip4_w )
+{
+	uint8_t newIP = (IP_last_state & ~0x10) | ((state == ASSERT_LINE) ? 0x10 : 0);
+>>>>>>> upstream/master
 // TODO: special mode for ip4 (Ch. A Rx clock)
 	IP_last_state = newIP;
 }
 
+<<<<<<< HEAD
 WRITE_LINE_MEMBER( mc68681_device::ip5_w )
 {
 	UINT8 newIP = (IP_last_state & ~0x20) | ((state == ASSERT_LINE) ? 0x20 : 0);
+=======
+WRITE_LINE_MEMBER( mc68681_base_device::ip5_w )
+{
+	uint8_t newIP = (IP_last_state & ~0x20) | ((state == ASSERT_LINE) ? 0x20 : 0);
+>>>>>>> upstream/master
 // TODO: special mode for ip5 (Ch. B Tx clock)
 	IP_last_state = newIP;
 }
 
+<<<<<<< HEAD
 mc68681_channel *mc68681_device::get_channel(int chan)
+=======
+mc68681_channel *mc68681_base_device::get_channel(int chan)
+>>>>>>> upstream/master
 {
 	if (chan == 0)
 	{
@@ -588,9 +878,15 @@ mc68681_channel *mc68681_device::get_channel(int chan)
 	return m_chanB;
 }
 
+<<<<<<< HEAD
 int mc68681_device::calc_baud(int ch, UINT8 data)
 {
 	int baud_rate = 0;
+=======
+int mc68681_base_device::calc_baud(int ch, uint8_t data)
+{
+	int baud_rate;
+>>>>>>> upstream/master
 
 	if ( BIT(ACR, 7) == 0 )
 	{
@@ -626,6 +922,7 @@ int mc68681_device::calc_baud(int ch, UINT8 data)
 
 	if ((baud_rate == 0) && ((data & 0xf) != 0xd))
 	{
+<<<<<<< HEAD
 		LOG(( "Unsupported transmitter clock: channel %d, clock select = %02x\n", ch, data ));
 	}
 
@@ -633,19 +930,38 @@ int mc68681_device::calc_baud(int ch, UINT8 data)
 }
 
 void mc68681_device::clear_ISR_bits(int mask)
+=======
+		LOG( "Unsupported transmitter clock: channel %d, clock select = %02x\n", ch, data );
+	}
+
+	//printf("%s ch %d setting baud to %d\n", tag(), ch, baud_rate);
+	return baud_rate;
+}
+
+void mc68681_base_device::clear_ISR_bits(int mask)
+>>>>>>> upstream/master
 {
 	ISR &= ~mask;
 }
 
+<<<<<<< HEAD
 void mc68681_device::set_ISR_bits(int mask)
+=======
+void mc68681_base_device::set_ISR_bits(int mask)
+>>>>>>> upstream/master
 {
 	ISR |= mask;
 }
 
 // DUART channel class stuff
 
+<<<<<<< HEAD
 mc68681_channel::mc68681_channel(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
 	: device_t(mconfig, MC68681_CHANNEL, "MC68681 DUART CHANNEL", tag, owner, clock, "mc68681_channel", __FILE__),
+=======
+mc68681_channel::mc68681_channel(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: device_t(mconfig, MC68681_CHANNEL, tag, owner, clock),
+>>>>>>> upstream/master
 	device_serial_interface(mconfig, *this),
 	MR1(0),
 	MR2(0),
@@ -658,7 +974,11 @@ mc68681_channel::mc68681_channel(const machine_config &mconfig, const char *tag,
 
 void mc68681_channel::device_start()
 {
+<<<<<<< HEAD
 	m_uart = downcast<mc68681_device *>(owner());
+=======
+	m_uart = downcast<mc68681_base_device *>(owner());
+>>>>>>> upstream/master
 	m_ch = m_uart->get_ch(this);    // get our channel number
 
 	save_item(NAME(CR));
@@ -692,11 +1012,14 @@ void mc68681_channel::device_reset()
 	CSR = 0;
 }
 
+<<<<<<< HEAD
 void mc68681_channel::device_timer(emu_timer &timer, device_timer_id id, int param, void *ptr)
 {
 	device_serial_interface::device_timer(timer, id, param, ptr);
 }
 
+=======
+>>>>>>> upstream/master
 // serial device virtual overrides
 void mc68681_channel::rcv_complete()
 {
@@ -738,7 +1061,11 @@ void mc68681_channel::tra_complete()
 	{
 		if (rx_fifo_num >= MC68681_RX_FIFO_SIZE)
 		{
+<<<<<<< HEAD
 			LOG(( "68681: FIFO overflow\n" ));
+=======
+			LOG( "68681: FIFO overflow\n" );
+>>>>>>> upstream/master
 			SR |= STATUS_OVERRUN_ERROR;
 		}
 		else
@@ -761,15 +1088,34 @@ void mc68681_channel::tra_callback()
 	if ((MR2&0xC0) != 0x80)
 	{
 		int bit = transmit_register_get_data_bit();
+<<<<<<< HEAD
 //      printf("%s ch %d transmit %d\n", tag(), m_ch, bit);
+=======
+		//printf("%s ch %d transmit %d\n", tag(), m_ch, bit);
+>>>>>>> upstream/master
 		if (m_ch == 0)
 		{
 			m_uart->write_a_tx(bit);
 		}
+<<<<<<< HEAD
 		else
 		{
 			m_uart->write_b_tx(bit);
 		}
+=======
+		else if (m_ch == 1)
+		{
+			m_uart->write_b_tx(bit);
+		}
+		else if (m_ch == 2)
+		{
+			m_uart->write_c_tx(bit);
+		}
+		else if (m_ch == 3)
+		{
+			m_uart->write_d_tx(bit);
+		}
+>>>>>>> upstream/master
 	}
 	else    // must call this to advance the transmitter
 	{
@@ -876,15 +1222,25 @@ void mc68681_channel::update_interrupts()
 	//logerror("DEBUG: 68681 int check: after receiver test, SR%c is %02X, ISR is %02X\n", (ch+0x41), duart68681->channel[ch].SR, duart68681->ISR);
 }
 
+<<<<<<< HEAD
 UINT8 mc68681_channel::read_rx_fifo()
 {
 	UINT8 rv = 0;
+=======
+uint8_t mc68681_channel::read_rx_fifo()
+{
+	uint8_t rv;
+>>>>>>> upstream/master
 
 //  printf("read_rx_fifo: rx_fifo_num %d\n", rx_fifo_num);
 
 	if ( rx_fifo_num == 0 )
 	{
+<<<<<<< HEAD
 		LOG(( "68681 channel: rx fifo underflow\n" ));
+=======
+		LOG( "68681 channel: rx fifo underflow\n" );
+>>>>>>> upstream/master
 		update_interrupts();
 		return 0;
 	}
@@ -903,9 +1259,15 @@ UINT8 mc68681_channel::read_rx_fifo()
 	return rv;
 }
 
+<<<<<<< HEAD
 UINT8 mc68681_channel::read_chan_reg(int reg)
 {
 	UINT8 rv = 0xff;
+=======
+uint8_t mc68681_channel::read_chan_reg(int reg)
+{
+	uint8_t rv = 0xff;
+>>>>>>> upstream/master
 
 	switch (reg)
 	{
@@ -936,7 +1298,11 @@ UINT8 mc68681_channel::read_chan_reg(int reg)
 	return rv;
 }
 
+<<<<<<< HEAD
 void mc68681_channel::write_chan_reg(int reg, UINT8 data)
+=======
+void mc68681_channel::write_chan_reg(int reg, uint8_t data)
+>>>>>>> upstream/master
 {
 	switch (reg)
 	{
@@ -963,7 +1329,11 @@ void mc68681_channel::write_chan_reg(int reg, UINT8 data)
 	}
 }
 
+<<<<<<< HEAD
 void mc68681_channel::write_MR(UINT8 data)
+=======
+void mc68681_channel::write_MR(uint8_t data)
+>>>>>>> upstream/master
 {
 	if ( MR_ptr == 0 )
 	{
@@ -1038,7 +1408,11 @@ void mc68681_channel::recalc_framing()
 	set_data_frame(1, (MR1 & 3)+5, parity, stopbits);
 }
 
+<<<<<<< HEAD
 void mc68681_channel::write_CR(UINT8 data)
+=======
+void mc68681_channel::write_CR(uint8_t data)
+>>>>>>> upstream/master
 {
 	CR = data;
 
@@ -1082,7 +1456,11 @@ void mc68681_channel::write_CR(UINT8 data)
 			break;
 		/* TODO: case 6 and case 7 are start break and stop break respectively, which start or stop holding the TxDA or TxDB line low (space) after whatever data is in the buffer finishes transmitting (following the stop bit?), or after two bit-times if no data is being transmitted  */
 		default:
+<<<<<<< HEAD
 			LOG(( "68681: Unhandled command (%x) in CR%d\n", (data >> 4) & 0x07, m_ch ));
+=======
+			LOG( "68681: Unhandled command (%x) in CR%d\n", (data >> 4) & 0x07, m_ch );
+>>>>>>> upstream/master
 			break;
 	}
 
@@ -1116,7 +1494,11 @@ void mc68681_channel::write_CR(UINT8 data)
 	update_interrupts();
 }
 
+<<<<<<< HEAD
 void mc68681_channel::write_TX(UINT8 data)
+=======
+void mc68681_channel::write_TX(uint8_t data)
+>>>>>>> upstream/master
 {
 	tx_data = data;
 
@@ -1125,7 +1507,11 @@ void mc68681_channel::write_TX(UINT8 data)
          printf("Write %02x to TX when TX not ready!\n", data);
     }*/
 
+<<<<<<< HEAD
 //  printf("%s ch %d Tx %02x\n", tag(), m_ch, data);
+=======
+	//printf("%s ch %d Tx %02x\n", tag(), m_ch, data);
+>>>>>>> upstream/master
 
 	tx_ready = 0;
 	SR &= ~STATUS_TRANSMITTER_READY;
@@ -1146,7 +1532,11 @@ void mc68681_channel::ACR_updated()
 	write_chan_reg(1, CSR);
 }
 
+<<<<<<< HEAD
 UINT8 mc68681_channel::get_chan_CSR()
+=======
+uint8_t mc68681_channel::get_chan_CSR()
+>>>>>>> upstream/master
 {
 	return CSR;
 }

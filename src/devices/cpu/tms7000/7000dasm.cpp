@@ -21,7 +21,11 @@ struct tms7000_opcodeinfo {
 	int opcode;
 	char name[8];
 	int operand;
+<<<<<<< HEAD
 	UINT32 s_flag;
+=======
+	uint32_t s_flag;
+>>>>>>> upstream/master
 };
 
 static const oprandinfo of[] = {
@@ -367,7 +371,11 @@ static const tms7000_opcodeinfo opcodes[] = {
 	{0x00, "NOP", 23, 0 }
 };
 
+<<<<<<< HEAD
 CPU_DISASSEMBLE( tms7000 )
+=======
+CPU_DISASSEMBLE(tms7000)
+>>>>>>> upstream/master
 {
 	int opcode, i/*, size = 1*/;
 	int pos = 0;
@@ -382,12 +390,21 @@ CPU_DISASSEMBLE( tms7000 )
 			/* We found a match */
 
 			int j,k,vector;
+<<<<<<< HEAD
 			UINT8   a;
 			INT8    b;
 			UINT16  c;
 			INT16   d;
 
 			buffer += sprintf (buffer, "%s", opcodes[i].name);
+=======
+			uint8_t   a;
+			int8_t    b;
+			uint16_t  c;
+			int16_t   d;
+
+			util::stream_format(stream, "%s", opcodes[i].name);
+>>>>>>> upstream/master
 
 			j=opcodes[i].operand;
 
@@ -398,6 +415,7 @@ CPU_DISASSEMBLE( tms7000 )
 					case DONE:
 						break;
 					case NONE:
+<<<<<<< HEAD
 						buffer += sprintf (buffer, "%s", of[j].opstr[k]);
 						break;
 					case UI8:
@@ -431,6 +449,41 @@ CPU_DISASSEMBLE( tms7000 )
 						c += opram[pos++];
 						sprintf(tmpbuf, "$%04X", c);
 						buffer += sprintf (buffer, of[j].opstr[k], tmpbuf);
+=======
+						util::stream_format(stream, "%s", of[j].opstr[k]);
+						break;
+					case UI8:
+						a = (uint8_t)opram[pos++];
+						util::stream_format(stream, of[j].opstr[k], (unsigned int)a);
+						break;
+					case I8:
+						b = (int8_t)opram[pos++];
+						util::stream_format(stream, of[j].opstr[k], (int8_t)b);
+						break;
+					case UI16:
+						c = (uint16_t)opram[pos++];
+						c <<= 8;
+						c += opram[pos++];
+						util::stream_format(stream, of[j].opstr[k], (unsigned int)c);
+						break;
+					case I16:
+						d = (int16_t)opram[pos++];
+						d <<= 8;
+						d += opram[pos++];
+						util::stream_format(stream, of[j].opstr[k], (signed int)d);
+						break;
+					case PCREL:
+						b = (int8_t)opram[pos++];
+						sprintf(tmpbuf, "$%04X", pc+2+k+b);
+						util::stream_format(stream, of[j].opstr[k], tmpbuf);
+						break;
+					case PCABS:
+						c = (uint16_t)opram[pos++];
+						c <<= 8;
+						c += opram[pos++];
+						sprintf(tmpbuf, "$%04X", c);
+						util::stream_format(stream, of[j].opstr[k], tmpbuf);
+>>>>>>> upstream/master
 						break;
 					case TRAP:
 						vector = 0xffff - ((0xff - opcode) * 2);
@@ -443,6 +496,10 @@ CPU_DISASSEMBLE( tms7000 )
 	}
 
 	/* No Match */
+<<<<<<< HEAD
 	strcpy (buffer, "Illegal Opcode");
+=======
+	stream << "Illegal Opcode";
+>>>>>>> upstream/master
 	return pos | DASMFLAG_SUPPORTED;
 }

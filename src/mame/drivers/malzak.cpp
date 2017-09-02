@@ -65,16 +65,30 @@
 */
 
 #include "emu.h"
+<<<<<<< HEAD
 #include "cpu/s2650/s2650.h"
 #include "sound/sn76477.h"
 #include "video/saa5050.h"
 #include "machine/nvram.h"
 #include "includes/malzak.h"
+=======
+#include "includes/malzak.h"
+
+#include "cpu/s2650/s2650.h"
+#include "machine/nvram.h"
+#include "sound/sn76477.h"
+#include "video/saa5050.h"
+#include "speaker.h"
+>>>>>>> upstream/master
 
 
 READ8_MEMBER(malzak_state::fake_VRLE_r)
 {
+<<<<<<< HEAD
 	return (m_s2636_0->work_ram_r(space, 0xcb) & 0x3f) + (m_screen->vblank() * 0x40);
+=======
+	return (m_s2636_0->read_data(space, 0xcb) & 0x3f) + (m_screen->vblank() ? 0x40 : 0x00);
+>>>>>>> upstream/master
 }
 
 READ8_MEMBER(malzak_state::s2636_portA_r)
@@ -106,8 +120,13 @@ static ADDRESS_MAP_START( malzak_map, AS_PROGRAM, 8, malzak_state )
 	AM_RANGE(0x1200, 0x12ff) AM_MIRROR(0x6000) AM_RAM
 	AM_RANGE(0x1300, 0x13ff) AM_MIRROR(0x6000) AM_RAM
 	AM_RANGE(0x14cb, 0x14cb) AM_MIRROR(0x6000) AM_READ(fake_VRLE_r)
+<<<<<<< HEAD
 	AM_RANGE(0x1400, 0x14ff) AM_MIRROR(0x6000) AM_DEVREADWRITE("s2636_0", s2636_device, work_ram_r, work_ram_w)
 	AM_RANGE(0x1500, 0x15ff) AM_MIRROR(0x6000) AM_DEVREADWRITE("s2636_1", s2636_device, work_ram_r, work_ram_w)
+=======
+	AM_RANGE(0x1400, 0x14ff) AM_MIRROR(0x6000) AM_DEVREADWRITE("s2636_0", s2636_device, read_data, write_data)
+	AM_RANGE(0x1500, 0x15ff) AM_MIRROR(0x6000) AM_DEVREADWRITE("s2636_1", s2636_device, read_data, write_data)
+>>>>>>> upstream/master
 	AM_RANGE(0x1600, 0x16ff) AM_MIRROR(0x6000) AM_RAM_WRITE(malzak_playfield_w)
 	AM_RANGE(0x1700, 0x17ff) AM_MIRROR(0x6000) AM_RAM
 	AM_RANGE(0x1800, 0x1fff) AM_MIRROR(0x6000) AM_RAM AM_SHARE("videoram")
@@ -127,8 +146,13 @@ static ADDRESS_MAP_START( malzak2_map, AS_PROGRAM, 8, malzak_state )
 	AM_RANGE(0x1300, 0x13ff) AM_MIRROR(0x6000) AM_RAM
 	AM_RANGE(0x14cb, 0x14cb) AM_MIRROR(0x6000) AM_READ(fake_VRLE_r)
 	AM_RANGE(0x14cc, 0x14cc) AM_MIRROR(0x6000) AM_READ(s2636_portA_r)
+<<<<<<< HEAD
 	AM_RANGE(0x1400, 0x14ff) AM_MIRROR(0x6000) AM_DEVREADWRITE("s2636_0", s2636_device, work_ram_r, work_ram_w)
 	AM_RANGE(0x1500, 0x15ff) AM_MIRROR(0x6000) AM_DEVREADWRITE("s2636_1", s2636_device, work_ram_r, work_ram_w)
+=======
+	AM_RANGE(0x1400, 0x14ff) AM_MIRROR(0x6000) AM_DEVREADWRITE("s2636_0", s2636_device, read_data, write_data)
+	AM_RANGE(0x1500, 0x15ff) AM_MIRROR(0x6000) AM_DEVREADWRITE("s2636_1", s2636_device, read_data, write_data)
+>>>>>>> upstream/master
 	AM_RANGE(0x1600, 0x16ff) AM_MIRROR(0x6000) AM_RAM_WRITE(malzak_playfield_w)
 	AM_RANGE(0x1700, 0x17ff) AM_MIRROR(0x6000) AM_RAM AM_SHARE("nvram")
 	AM_RANGE(0x1800, 0x1fff) AM_MIRROR(0x6000) AM_RAM AM_SHARE("videoram")
@@ -185,8 +209,15 @@ static ADDRESS_MAP_START( malzak_io_map, AS_IO, 8, malzak_state )
 	AM_RANGE(0x80, 0x80) AM_READ_PORT("IN0")  //controls
 	AM_RANGE(0xa0, 0xa0) AM_WRITENOP  // echoes I/O port read from port 0x80
 	AM_RANGE(0xc0, 0xc0) AM_WRITE(portc0_w)  // possibly playfield row selection for writing and/or collisions
+<<<<<<< HEAD
 	AM_RANGE(S2650_DATA_PORT, S2650_DATA_PORT) AM_READ(s2650_data_r)  // read upon death
 	AM_RANGE(S2650_SENSE_PORT, S2650_SENSE_PORT) AM_READ_PORT("SENSE")
+=======
+ADDRESS_MAP_END
+
+static ADDRESS_MAP_START( malzak_data_map, AS_DATA, 8, malzak_state )
+	AM_RANGE(S2650_DATA_PORT, S2650_DATA_PORT) AM_READ(s2650_data_r)  // read upon death
+>>>>>>> upstream/master
 ADDRESS_MAP_END
 
 
@@ -208,9 +239,12 @@ static INPUT_PORTS_START( malzak )
 	PORT_START("POT")
 	/* No POT switch on Malzak as far as I know */
 
+<<<<<<< HEAD
 	PORT_START("SENSE")
 	PORT_BIT( 0x80, IP_ACTIVE_HIGH, IPT_CUSTOM ) PORT_VBLANK("screen")
 
+=======
+>>>>>>> upstream/master
 INPUT_PORTS_END
 
 static INPUT_PORTS_START( malzak2 )
@@ -235,9 +269,12 @@ static INPUT_PORTS_START( malzak2 )
 	PORT_DIPSETTING( 0x02, "3" )
 	PORT_DIPSETTING( 0x03, "4" )  // Change settings
 
+<<<<<<< HEAD
 	PORT_START("SENSE")
 	PORT_BIT( 0x80, IP_ACTIVE_HIGH, IPT_CUSTOM ) PORT_VBLANK("screen")
 
+=======
+>>>>>>> upstream/master
 INPUT_PORTS_END
 
 
@@ -297,12 +334,21 @@ void malzak_state::machine_reset()
 	m_malzak_y = 0;
 }
 
+<<<<<<< HEAD
 static MACHINE_CONFIG_START( malzak, malzak_state )
+=======
+static MACHINE_CONFIG_START( malzak )
+>>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", S2650, 3800000/4)
 	MCFG_CPU_PROGRAM_MAP(malzak_map)
 	MCFG_CPU_IO_MAP(malzak_io_map)
+<<<<<<< HEAD
+=======
+	MCFG_CPU_DATA_MAP(malzak_data_map)
+	MCFG_S2650_SENSE_INPUT(DEVREADLINE("screen", screen_device, vblank))
+>>>>>>> upstream/master
 
 	/* video hardware */
 	MCFG_SCREEN_ADD("screen", RASTER)
@@ -317,12 +363,18 @@ static MACHINE_CONFIG_START( malzak, malzak_state )
 	MCFG_PALETTE_INIT_OWNER(malzak_state, malzak)
 
 	MCFG_DEVICE_ADD("s2636_0", S2636, 0)
+<<<<<<< HEAD
 	MCFG_S2636_WORKRAM_SIZE(0x100)
+=======
+>>>>>>> upstream/master
 	MCFG_S2636_OFFSETS(0, -16)  // -8, -16
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 0.25)
 
 	MCFG_DEVICE_ADD("s2636_1", S2636, 0)
+<<<<<<< HEAD
 	MCFG_S2636_WORKRAM_SIZE(0x100)
+=======
+>>>>>>> upstream/master
 	MCFG_S2636_OFFSETS(0, -16)  // -9, -16
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 0.25)
 
@@ -413,5 +465,10 @@ ROM_START( malzak2 )
 ROM_END
 
 
+<<<<<<< HEAD
 GAME( 19??, malzak,   0,       malzak,  malzak, driver_device,  0,        ROT0, "Kitronix", "Malzak", MACHINE_NOT_WORKING | MACHINE_IMPERFECT_SOUND | MACHINE_IMPERFECT_GRAPHICS | MACHINE_SUPPORTS_SAVE )
 GAME( 19??, malzak2, malzak,   malzak2, malzak2, driver_device, 0,        ROT0, "Kitronix", "Malzak II", MACHINE_NOT_WORKING | MACHINE_IMPERFECT_SOUND | MACHINE_IMPERFECT_GRAPHICS | MACHINE_SUPPORTS_SAVE )
+=======
+GAME( 19??, malzak,   0,       malzak,  malzak,  malzak_state, 0,        ROT0, "Kitronix", "Malzak",    MACHINE_NOT_WORKING | MACHINE_IMPERFECT_SOUND | MACHINE_IMPERFECT_GRAPHICS | MACHINE_SUPPORTS_SAVE )
+GAME( 19??, malzak2, malzak,   malzak2, malzak2, malzak_state, 0,        ROT0, "Kitronix", "Malzak II", MACHINE_NOT_WORKING | MACHINE_IMPERFECT_SOUND | MACHINE_IMPERFECT_GRAPHICS | MACHINE_SUPPORTS_SAVE )
+>>>>>>> upstream/master

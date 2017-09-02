@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 #region Using directives
+=======
+﻿#region Using directives
+>>>>>>> upstream/master
 
 using System.Reflection;
 using System.Runtime.CompilerServices;

@@ -20,9 +20,18 @@
 
 
 #include "emu.h"
+<<<<<<< HEAD
 #include "cpu/m68000/m68000.h"
 #include "video/atarimo.h"
 #include "includes/batman.h"
+=======
+#include "includes/batman.h"
+#include "cpu/m68000/m68000.h"
+#include "machine/eeprompar.h"
+#include "machine/watchdog.h"
+#include "video/atarimo.h"
+#include "speaker.h"
+>>>>>>> upstream/master
 
 
 
@@ -76,7 +85,11 @@ WRITE16_MEMBER(batman_state::latch_w)
 	if ((oldword ^ m_latch_data) & 0x7000)
 	{
 		m_screen->update_partial(m_screen->vpos());
+<<<<<<< HEAD
 		m_vad->alpha()->mark_all_dirty();
+=======
+		m_vad->alpha().mark_all_dirty();
+>>>>>>> upstream/master
 		m_alpha_tile_bank = (m_latch_data >> 12) & 7;
 	}
 }
@@ -97,13 +110,18 @@ static ADDRESS_MAP_START( main_map, AS_PROGRAM, 16, batman_state )
 	ADDRESS_MAP_GLOBAL_MASK(0x3fffff)
 	AM_RANGE(0x000000, 0x0bffff) AM_ROM
 	AM_RANGE(0x100000, 0x10ffff) AM_MIRROR(0x010000) AM_RAM
+<<<<<<< HEAD
 	AM_RANGE(0x120000, 0x120fff) AM_MIRROR(0x01f000) AM_DEVREADWRITE8("eeprom", atari_eeprom_device, read, write, 0x00ff)
+=======
+	AM_RANGE(0x120000, 0x120fff) AM_MIRROR(0x01f000) AM_DEVREADWRITE8("eeprom", eeprom_parallel_28xx_device, read, write, 0x00ff)
+>>>>>>> upstream/master
 	AM_RANGE(0x260000, 0x260001) AM_MIRROR(0x11ff8c) AM_READ_PORT("260000")
 	AM_RANGE(0x260002, 0x260003) AM_MIRROR(0x11ff8c) AM_READ_PORT("260002")
 	AM_RANGE(0x260010, 0x260011) AM_MIRROR(0x11ff8e) AM_READ_PORT("260010")
 	AM_RANGE(0x260030, 0x260031) AM_MIRROR(0x11ff8e) AM_DEVREAD8("jsa", atari_jsa_iii_device, main_response_r, 0x00ff)
 	AM_RANGE(0x260040, 0x260041) AM_MIRROR(0x11ff8e) AM_DEVWRITE8("jsa", atari_jsa_iii_device, main_command_w, 0x00ff)
 	AM_RANGE(0x260050, 0x260051) AM_MIRROR(0x11ff8e) AM_WRITE(latch_w)
+<<<<<<< HEAD
 	AM_RANGE(0x260060, 0x260061) AM_MIRROR(0x11ff8e) AM_DEVWRITE("eeprom", atari_eeprom_device, unlock_write)
 	AM_RANGE(0x2a0000, 0x2a0001) AM_MIRROR(0x11fffe) AM_WRITE(watchdog_reset16_w)
 	AM_RANGE(0x3e0000, 0x3e0fff) AM_MIRROR(0x100000) AM_RAM_DEVWRITE("palette", palette_device, write) AM_SHARE("palette")
@@ -116,6 +134,20 @@ static ADDRESS_MAP_START( main_map, AS_PROGRAM, 16, batman_state )
 	AM_RANGE(0x3f8f00, 0x3f8f7f) AM_MIRROR(0x100000) AM_SHARE("vad:eof")
 	AM_RANGE(0x3f8f80, 0x3f8fff) AM_MIRROR(0x100000) AM_RAM AM_SHARE("vad:mob:slip")
 	AM_RANGE(0x3f0000, 0x3fffff) AM_MIRROR(0x100000) AM_RAM
+=======
+	AM_RANGE(0x260060, 0x260061) AM_MIRROR(0x11ff8e) AM_DEVWRITE("eeprom", eeprom_parallel_28xx_device, unlock_write)
+	AM_RANGE(0x2a0000, 0x2a0001) AM_MIRROR(0x11fffe) AM_DEVWRITE("watchdog", watchdog_timer_device, reset16_w)
+	AM_RANGE(0x2e0000, 0x2e0fff) AM_MIRROR(0x100000) AM_RAM_DEVWRITE("palette", palette_device, write) AM_SHARE("palette")
+	AM_RANGE(0x2effc0, 0x2effff) AM_MIRROR(0x100000) AM_DEVREADWRITE("vad", atari_vad_device, control_read, control_write)
+	AM_RANGE(0x2f0000, 0x2f1fff) AM_MIRROR(0x100000) AM_DEVWRITE("vad", atari_vad_device, playfield2_latched_msb_w) AM_SHARE("vad:playfield2")
+	AM_RANGE(0x2f2000, 0x2f3fff) AM_MIRROR(0x100000) AM_DEVWRITE("vad", atari_vad_device, playfield_latched_lsb_w) AM_SHARE("vad:playfield")
+	AM_RANGE(0x2f4000, 0x2f5fff) AM_MIRROR(0x100000) AM_DEVWRITE("vad", atari_vad_device, playfield_upper_w) AM_SHARE("vad:playfield_ext")
+	AM_RANGE(0x2f6000, 0x2f7fff) AM_MIRROR(0x100000) AM_RAM AM_SHARE("vad:mob")
+	AM_RANGE(0x2f8000, 0x2f8eff) AM_MIRROR(0x100000) AM_DEVWRITE("vad", atari_vad_device, alpha_w) AM_SHARE("vad:alpha")
+	AM_RANGE(0x2f8f00, 0x2f8f7f) AM_MIRROR(0x100000) AM_SHARE("vad:eof")
+	AM_RANGE(0x2f8f80, 0x2f8fff) AM_MIRROR(0x100000) AM_RAM AM_SHARE("vad:mob:slip")
+	AM_RANGE(0x2f0000, 0x2fffff) AM_MIRROR(0x100000) AM_RAM
+>>>>>>> upstream/master
 ADDRESS_MAP_END
 
 
@@ -194,7 +226,11 @@ GFXDECODE_END
  *
  *************************************/
 
+<<<<<<< HEAD
 static MACHINE_CONFIG_START( batman, batman_state )
+=======
+static MACHINE_CONFIG_START( batman )
+>>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", M68000, ATARI_CLOCK_14MHz)
@@ -203,7 +239,14 @@ static MACHINE_CONFIG_START( batman, batman_state )
 	MCFG_MACHINE_START_OVERRIDE(batman_state,batman)
 	MCFG_MACHINE_RESET_OVERRIDE(batman_state,batman)
 
+<<<<<<< HEAD
 	MCFG_ATARI_EEPROM_2816_ADD("eeprom")
+=======
+	MCFG_EEPROM_2816_ADD("eeprom")
+	MCFG_EEPROM_28XX_LOCK_AFTER_WRITE(true)
+
+	MCFG_WATCHDOG_ADD("watchdog")
+>>>>>>> upstream/master
 
 	/* video hardware */
 	MCFG_GFXDECODE_ADD("gfxdecode", "palette", batman)
@@ -251,9 +294,14 @@ ROM_START( batman )
 	ROM_LOAD16_BYTE( "136085-2034.9r",   0x80000, 0x20000, CRC(05388c62) SHA1(de037203d94e72e2922c89256da080ae023ca0e7) )
 	ROM_LOAD16_BYTE( "136085-2035.5r",   0x80001, 0x20000, CRC(e77c92dd) SHA1(6d475092f7628114960d26b8ec1c5eae5e61ce25) )
 
+<<<<<<< HEAD
 	ROM_REGION( 0x14000, "jsa:cpu", 0 ) /* 64k + 16k for 6502 code */
 	ROM_LOAD( "136085-1040.12c",  0x10000, 0x4000, CRC(080db83c) SHA1(ec084b7c1dc5878acd6d081e2e8b8d1e8b3d8a45) )
 	ROM_CONTINUE(                 0x04000, 0xc000 )
+=======
+	ROM_REGION( 0x10000, "jsa:cpu", 0 ) /* 64k for 6502 code */
+	ROM_LOAD( "136085-1040.12c",  0x00000, 0x10000, CRC(080db83c) SHA1(ec084b7c1dc5878acd6d081e2e8b8d1e8b3d8a45) )
+>>>>>>> upstream/master
 
 	ROM_REGION( 0x20000, "gfx1", 0 )
 	ROM_LOAD( "136085-2009.10m",  0x00000, 0x20000, CRC(a82d4923) SHA1(38e03eebd95347a383f3d7357462252961bd3c7f) )  /* alphanumerics */
@@ -284,7 +332,11 @@ ROM_START( batman )
 	ROM_LOAD( "136085-1043.15e",  0x40000, 0x20000, CRC(51812d3b) SHA1(6748fecef753179a9257c0da5a7b7c9648437208) )
 	ROM_LOAD( "136085-1044.12e",  0x60000, 0x20000, CRC(5e2d7f31) SHA1(737c7204d91f5dd5c9ed0321fc6c0d6194a18f8a) )
 
+<<<<<<< HEAD
 	ROM_REGION( 0x800, "eeprom:eeprom", 0 )
+=======
+	ROM_REGION( 0x800, "eeprom", 0 )
+>>>>>>> upstream/master
 	ROM_LOAD( "batman-eeprom.bin", 0x0000, 0x800, CRC(c859b535) SHA1(b7f37aab1e869e92fbcc69af98a9c14f7cf2b418) )
 
 	ROM_REGION( 0x1000, "plds", 0 )
@@ -306,4 +358,8 @@ ROM_END
  *
  *************************************/
 
+<<<<<<< HEAD
 GAME( 1991, batman, 0, batman, batman, driver_device, 0, ROT0, "Atari Games", "Batman", MACHINE_SUPPORTS_SAVE )
+=======
+GAME( 1991, batman, 0, batman, batman, batman_state, 0, ROT0, "Atari Games", "Batman", MACHINE_SUPPORTS_SAVE )
+>>>>>>> upstream/master

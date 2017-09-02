@@ -4,6 +4,7 @@
  *   DIABLO31 and DIABLO44 hard drive support
  **********************************************************/
 
+<<<<<<< HEAD
 #if !defined(_DIABLO_HD_DEVICE_)
 #define _DIABLO_HD_DEVICE_
 
@@ -13,6 +14,14 @@
 #ifndef DIABLO_DEBUG
 #define DIABLO_DEBUG    1                           //!< set to 1 to enable debug log output
 #endif
+=======
+#ifndef MAME_MACHINE_DIABLO_HD_H
+#define MAME_MACHINE_DIABLO_HD_H
+
+#pragma once
+
+#include "imagedev/diablo.h"
+>>>>>>> upstream/master
 
 #define DIABLO_HD_0 "diablo0"
 #define DIABLO_HD_1 "diablo1"
@@ -22,7 +31,11 @@ extern const device_type DIABLO_HD;
 class diablo_hd_device : public device_t
 {
 public:
+<<<<<<< HEAD
 	diablo_hd_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
+=======
+	diablo_hd_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
+>>>>>>> upstream/master
 	~diablo_hd_device();
 
 	static const int DIABLO_UNIT_MAX = 2;           //!< max number of drive units
@@ -68,6 +81,7 @@ public:
 	int rd_clock(int index);
 
 protected:
+<<<<<<< HEAD
 	virtual void device_start();
 	virtual void device_reset();
 	virtual void device_timer(emu_timer &timer, device_timer_id id, int param, void *ptr);
@@ -82,6 +96,17 @@ private:
 #else
 #   define  LOG_DRIVE(x)
 #endif
+=======
+	virtual void device_start() override;
+	virtual void device_reset() override;
+	virtual void device_timer(emu_timer &timer, device_timer_id id, int param, void *ptr) override;
+	virtual void device_add_mconfig(machine_config &config) override;
+
+private:
+	template <typename Format, typename... Params> void logprintf(int level, Format &&fmt, Params &&... args);
+
+	int m_log_level;
+>>>>>>> upstream/master
 	bool m_diablo31;                        //!< true, if this is a DIABLO31 drive
 	int m_unit;                             //!< drive unit number (0 or 1)
 	char m_description[32];                 //!< description of the drive(s)
@@ -108,8 +133,13 @@ private:
 	int m_head;                             //!< current head (track) number on cylinder
 	int m_sector;                           //!< current sector number in track
 	int m_page;                             //!< current page (derived from cylinder, head and sector)
+<<<<<<< HEAD
 	UINT8** m_cache;                        //!< pages raw bytes
 	UINT32** m_bits;                        //!< pages expanded to bits
+=======
+	std::unique_ptr<uint8_t[]> m_cache[2 * DIABLO_PAGES];                        //!< pages raw bytes
+	uint32_t** m_bits;                        //!< pages expanded to bits
+>>>>>>> upstream/master
 	int m_rdfirst;                          //!< set to first bit of a sector that is read from
 	int m_rdlast;                           //!< set to last bit of a sector that was read from
 	int m_wrfirst;                          //!< set to non-zero if a sector is written to
@@ -125,6 +155,7 @@ private:
 	void read_sector();
 
 	//! compute the checksum of a record
+<<<<<<< HEAD
 	int cksum(UINT8 *src, size_t size, int start);
 
 	//! expand a series of clock bits and 0 data bits
@@ -161,6 +192,42 @@ private:
 
 	//! squeeze an array of 32 clock and data bits into a checksum word
 	size_t squeeze_cksum(UINT32 *bits, size_t src, int *cksum);
+=======
+	int cksum(uint8_t *src, size_t size, int start);
+
+	//! expand a series of clock bits and 0 data bits
+	size_t expand_zeroes(uint32_t *bits, size_t dst, size_t size);
+
+	//! expand a series of 0 words and write a final sync bit
+	size_t expand_sync(uint32_t *bits, size_t dst, size_t size);
+
+	//! expand a record of words into a array of bits at dst
+	size_t expand_record(uint32_t *bits, size_t dst, uint8_t *field, size_t size);
+
+	//! expand a record's checksum word to 32 bits
+	size_t expand_cksum(uint32_t *bits, size_t dst, uint8_t *field, size_t size);
+
+	//! expand a sector into an array of clock and data bits
+	uint32_t* expand_sector();
+
+	//! dump a number of words as ASCII characters
+	void dump_ascii(uint8_t *src, size_t size);
+
+	//! dump a record's contents
+	size_t dump_record(uint8_t *src, size_t addr, size_t size, const char *name, int cr);
+
+	//! find a sync bit in an array of clock and data bits
+	size_t squeeze_sync(uint32_t *bits, size_t src, size_t size);
+
+	//! find a 16 x 0 bits sequence in an array of clock and data bits
+	size_t squeeze_unsync(uint32_t *bits, size_t src, size_t size);
+
+	//! squeeze an array of clock and data bits into a sector's record
+	size_t squeeze_record(uint32_t *bits, size_t src, uint8_t *field, size_t size);
+
+	//! squeeze an array of 32 clock and data bits into a checksum word
+	size_t squeeze_cksum(uint32_t *bits, size_t src, int *cksum);
+>>>>>>> upstream/master
 
 	//! squeeze a array of clock and data bits into a sector's data
 	void squeeze_sector();

@@ -25,6 +25,7 @@
 #include "emu.h"
 #include "f3853.h"
 
+<<<<<<< HEAD
 /***************************************************************************
     MACROS
 ***************************************************************************/
@@ -32,6 +33,8 @@
 #define INTERRUPT_VECTOR(external) ( external ? m_low | ( m_high << 8 ) | 0x80 \
 : ( m_low | ( m_high << 8 ) ) & ~0x80 )
 
+=======
+>>>>>>> upstream/master
 
 
 /***************************************************************************
@@ -43,14 +46,23 @@
 //**************************************************************************
 
 // device type definition
+<<<<<<< HEAD
 const device_type F3853 = &device_creator<f3853_device>;
+=======
+DEFINE_DEVICE_TYPE(F3853, f3853_device, "f3853_device", "F3853")
+>>>>>>> upstream/master
 
 //-------------------------------------------------
 //  f3853_device - constructor
 //-------------------------------------------------
 
+<<<<<<< HEAD
 f3853_device::f3853_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
 	: device_t(mconfig, F3853, "F3853", tag, owner, clock, "f3853", __FILE__)
+=======
+f3853_device::f3853_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: device_t(mconfig, F3853, tag, owner, clock)
+>>>>>>> upstream/master
 {
 }
 
@@ -60,6 +72,7 @@ f3853_device::f3853_device(const machine_config &mconfig, const char *tag, devic
 
 void f3853_device::device_start()
 {
+<<<<<<< HEAD
 	UINT8 reg = 0xfe;
 	for(INT32 i=254 /* Known to get 0xfe after 255 cycles */; i >= 0; i--)
 	{
@@ -67,6 +80,15 @@ void f3853_device::device_start()
 		INT32 o5 = (reg & 0x20) ? TRUE : FALSE;
 		INT32 o4 = (reg & 0x10) ? TRUE : FALSE;
 		INT32 o3 = (reg & 0x08) ? TRUE : FALSE;
+=======
+	uint8_t reg = 0xfe;
+	for(int32_t i=254 /* Known to get 0xfe after 255 cycles */; i >= 0; i--)
+	{
+		int32_t o7 = (reg & 0x80) ? true : false;
+		int32_t o5 = (reg & 0x20) ? true : false;
+		int32_t o4 = (reg & 0x10) ? true : false;
+		int32_t o3 = (reg & 0x08) ? true : false;
+>>>>>>> upstream/master
 		m_value_to_cycle[reg] = i;
 		reg <<= 1;
 		if (!((o7 != o5) != (o4 != o3)))
@@ -77,7 +99,11 @@ void f3853_device::device_start()
 
 	m_interrupt_req_cb.bind_relative_to(*owner());
 
+<<<<<<< HEAD
 	m_timer = machine().scheduler().timer_alloc(FUNC(f3853_timer_callback), (void *)this );
+=======
+	m_timer = machine().scheduler().timer_alloc(timer_expired_delegate(FUNC(f3853_device::timer_callback),this));
+>>>>>>> upstream/master
 
 	save_item(NAME(m_high) );
 	save_item(NAME(m_low) );
@@ -100,8 +126,13 @@ void f3853_device::device_reset()
 	m_external_enable = 0;
 	m_timer_enable = 0;
 	m_request_flipflop = 0;
+<<<<<<< HEAD
 	m_priority_line = FALSE;
 	m_external_interrupt_line = TRUE;
+=======
+	m_priority_line = false;
+	m_external_interrupt_line = true;
+>>>>>>> upstream/master
 
 	m_timer->enable(false);
 }
@@ -113,6 +144,7 @@ void f3853_device::set_interrupt_request_line()
 		return;
 
 	if (m_external_enable && !m_priority_line)
+<<<<<<< HEAD
 		m_interrupt_req_cb(INTERRUPT_VECTOR(TRUE), TRUE);
 	else if (m_timer_enable && !m_priority_line && m_request_flipflop)
 		m_interrupt_req_cb(INTERRUPT_VECTOR(FALSE), TRUE);
@@ -122,12 +154,24 @@ void f3853_device::set_interrupt_request_line()
 
 
 void f3853_device::timer_start(UINT8 value)
+=======
+		m_interrupt_req_cb(external_interrupt_vector(), true);
+	else if (m_timer_enable && !m_priority_line && m_request_flipflop)
+		m_interrupt_req_cb(timer_interrupt_vector(), true);
+	else
+		m_interrupt_req_cb(0, false);
+}
+
+
+void f3853_device::timer_start(uint8_t value)
+>>>>>>> upstream/master
 {
 	attotime period = (value != 0xff) ? attotime::from_hz(clock()) * (m_value_to_cycle[value]*31) : attotime::never;
 
 	m_timer->adjust(period);
 }
 
+<<<<<<< HEAD
 
 TIMER_CALLBACK( f3853_device::f3853_timer_callback )
 {
@@ -139,6 +183,13 @@ void f3853_device::timer()
 	if(m_timer_enable)
 	{
 		m_request_flipflop = TRUE;
+=======
+TIMER_CALLBACK_MEMBER(f3853_device::timer_callback)
+{
+	if(m_timer_enable)
+	{
+		m_request_flipflop = true;
+>>>>>>> upstream/master
 		set_interrupt_request_line();
 	}
 	timer_start(0xfe);
@@ -148,7 +199,11 @@ void f3853_device::set_external_interrupt_in_line(int level)
 {
 	if(m_external_interrupt_line && !level && m_external_enable)
 	{
+<<<<<<< HEAD
 		m_request_flipflop = TRUE;
+=======
+		m_request_flipflop = true;
+>>>>>>> upstream/master
 	}
 	m_external_interrupt_line = level;
 	set_interrupt_request_line();
@@ -163,7 +218,11 @@ void f3853_device::set_priority_in_line(int level)
 
 READ8_MEMBER(f3853_device::read)
 {
+<<<<<<< HEAD
 	UINT8 data = 0;
+=======
+	uint8_t data = 0;
+>>>>>>> upstream/master
 
 	switch (offset)
 	{
@@ -203,7 +262,11 @@ WRITE8_MEMBER(f3853_device::write)
 		break;
 
 	case 3: //timer
+<<<<<<< HEAD
 		m_request_flipflop = FALSE;
+=======
+		m_request_flipflop = false;
+>>>>>>> upstream/master
 		set_interrupt_request_line();
 		timer_start(data);
 		break;

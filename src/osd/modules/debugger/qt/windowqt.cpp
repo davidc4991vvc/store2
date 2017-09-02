@@ -1,6 +1,12 @@
 // license:BSD-3-Clause
 // copyright-holders:Andrew Gardner
+<<<<<<< HEAD
 #define NO_MEM_TRACKING
+=======
+#include "emu.h"
+#include <QtWidgets/QMenu>
+#include <QtWidgets/QMenuBar>
+>>>>>>> upstream/master
 
 #include "windowqt.h"
 #include "logwindow.h"
@@ -9,12 +15,21 @@
 #include "breakpointswindow.h"
 #include "deviceswindow.h"
 
+<<<<<<< HEAD
+=======
+#include "debug/debugcpu.h"
+
+>>>>>>> upstream/master
 bool WindowQt::s_refreshAll = false;
 bool WindowQt::s_hideAll = false;
 
 
 // Since all debug windows are intended to be top-level, this inherited
+<<<<<<< HEAD
 // constructor is always called with a NULL parent.  The passed-in parent widget,
+=======
+// constructor is always called with a nullptr parent.  The passed-in parent widget,
+>>>>>>> upstream/master
 // however, is often used to place each child window & the code to do this can
 // be found in most of the inherited classes.
 
@@ -27,6 +42,7 @@ WindowQt::WindowQt(running_machine* machine, QWidget* parent) :
 	// The Debug menu bar
 	QAction* debugActOpenMemory = new QAction("New &Memory Window", this);
 	debugActOpenMemory->setShortcut(QKeySequence("Ctrl+M"));
+<<<<<<< HEAD
 	connect(debugActOpenMemory, SIGNAL(triggered()), this, SLOT(debugActOpenMemory()));
 
 	QAction* debugActOpenDasm = new QAction("New &Dasm Window", this);
@@ -92,6 +108,73 @@ WindowQt::WindowQt(running_machine* machine, QWidget* parent) :
 	QAction* dbgActQuit = new QAction("&Quit", this);
 	dbgActQuit->setShortcut(QKeySequence::Quit);
 	connect(dbgActQuit, SIGNAL(triggered()), this, SLOT(debugActQuit()));
+=======
+	connect(debugActOpenMemory, &QAction::triggered, this, &WindowQt::debugActOpenMemory);
+
+	QAction* debugActOpenDasm = new QAction("New &Dasm Window", this);
+	debugActOpenDasm->setShortcut(QKeySequence("Ctrl+D"));
+	connect(debugActOpenDasm, &QAction::triggered, this, &WindowQt::debugActOpenDasm);
+
+	QAction* debugActOpenLog = new QAction("New &Log Window", this);
+	debugActOpenLog->setShortcut(QKeySequence("Ctrl+L"));
+	connect(debugActOpenLog, &QAction::triggered, this, &WindowQt::debugActOpenLog);
+
+	QAction* debugActOpenPoints = new QAction("New &Break|Watchpoints Window", this);
+	debugActOpenPoints->setShortcut(QKeySequence("Ctrl+B"));
+	connect(debugActOpenPoints, &QAction::triggered, this, &WindowQt::debugActOpenPoints);
+
+	QAction* debugActOpenDevices = new QAction("New D&evices Window", this);
+	debugActOpenDevices->setShortcut(QKeySequence("Shift+Ctrl+D"));
+	connect(debugActOpenDevices, &QAction::triggered, this, &WindowQt::debugActOpenDevices);
+
+	QAction* dbgActRun = new QAction("Run", this);
+	dbgActRun->setShortcut(Qt::Key_F5);
+	connect(dbgActRun, &QAction::triggered, this, &WindowQt::debugActRun);
+
+	QAction* dbgActRunAndHide = new QAction("Run And Hide Debugger", this);
+	dbgActRunAndHide->setShortcut(Qt::Key_F12);
+	connect(dbgActRunAndHide, &QAction::triggered, this, &WindowQt::debugActRunAndHide);
+
+	QAction* dbgActRunToNextCpu = new QAction("Run to Next CPU", this);
+	dbgActRunToNextCpu->setShortcut(Qt::Key_F6);
+	connect(dbgActRunToNextCpu, &QAction::triggered, this, &WindowQt::debugActRunToNextCpu);
+
+	QAction* dbgActRunNextInt = new QAction("Run to Next Interrupt on This CPU", this);
+	dbgActRunNextInt->setShortcut(Qt::Key_F7);
+	connect(dbgActRunNextInt, &QAction::triggered, this, &WindowQt::debugActRunNextInt);
+
+	QAction* dbgActRunNextVBlank = new QAction("Run to Next VBlank", this);
+	dbgActRunNextVBlank->setShortcut(Qt::Key_F8);
+	connect(dbgActRunNextVBlank, &QAction::triggered, this, &WindowQt::debugActRunNextVBlank);
+
+	QAction* dbgActStepInto = new QAction("Step Into", this);
+	dbgActStepInto->setShortcut(Qt::Key_F11);
+	connect(dbgActStepInto, &QAction::triggered, this, &WindowQt::debugActStepInto);
+
+	QAction* dbgActStepOver = new QAction("Step Over", this);
+	dbgActStepOver->setShortcut(Qt::Key_F10);
+	connect(dbgActStepOver, &QAction::triggered, this, &WindowQt::debugActStepOver);
+
+	QAction* dbgActStepOut = new QAction("Step Out", this);
+	dbgActStepOut->setShortcut(QKeySequence("Shift+F11"));
+	connect(dbgActStepOut, &QAction::triggered, this, &WindowQt::debugActStepOut);
+
+	QAction* dbgActSoftReset = new QAction("Soft Reset", this);
+	dbgActSoftReset->setShortcut(Qt::Key_F3);
+	connect(dbgActSoftReset, &QAction::triggered, this, &WindowQt::debugActSoftReset);
+
+	QAction* dbgActHardReset = new QAction("Hard Reset", this);
+	dbgActHardReset->setShortcut(QKeySequence("Shift+F3"));
+	connect(dbgActHardReset, &QAction::triggered, this, &WindowQt::debugActHardReset);
+
+	QAction* dbgActClose = new QAction("Close &Window", this);
+	dbgActClose->setShortcut(QKeySequence::Close);
+	connect(dbgActClose, &QAction::triggered, this, &WindowQt::debugActClose);
+
+	QAction* dbgActQuit = new QAction("&Quit", this);
+	dbgActQuit->setShortcut(QKeySequence::Quit);
+	connect(dbgActQuit, &QAction::triggered, this, &WindowQt::debugActQuit);
+>>>>>>> upstream/master
 
 	// Construct the menu
 	QMenu* debugMenu = menuBar()->addMenu("&Debug");
@@ -175,49 +258,85 @@ void WindowQt::debugActOpenDevices()
 
 void WindowQt::debugActRun()
 {
+<<<<<<< HEAD
 	debug_cpu_get_visible_cpu(*m_machine)->debug()->go();
+=======
+	m_machine->debugger().cpu().get_visible_cpu()->debug()->go();
+>>>>>>> upstream/master
 }
 
 void WindowQt::debugActRunAndHide()
 {
+<<<<<<< HEAD
 	debug_cpu_get_visible_cpu(*m_machine)->debug()->go();
+=======
+	m_machine->debugger().cpu().get_visible_cpu()->debug()->go();
+>>>>>>> upstream/master
 	hideAll();
 }
 
 void WindowQt::debugActRunToNextCpu()
 {
+<<<<<<< HEAD
 	debug_cpu_get_visible_cpu(*m_machine)->debug()->go_next_device();
+=======
+	m_machine->debugger().cpu().get_visible_cpu()->debug()->go_next_device();
+>>>>>>> upstream/master
 }
 
 void WindowQt::debugActRunNextInt()
 {
+<<<<<<< HEAD
 	debug_cpu_get_visible_cpu(*m_machine)->debug()->go_interrupt();
+=======
+	m_machine->debugger().cpu().get_visible_cpu()->debug()->go_interrupt();
+>>>>>>> upstream/master
 }
 
 void WindowQt::debugActRunNextVBlank()
 {
+<<<<<<< HEAD
 	debug_cpu_get_visible_cpu(*m_machine)->debug()->go_vblank();
+=======
+	m_machine->debugger().cpu().get_visible_cpu()->debug()->go_vblank();
+>>>>>>> upstream/master
 }
 
 void WindowQt::debugActStepInto()
 {
+<<<<<<< HEAD
 	debug_cpu_get_visible_cpu(*m_machine)->debug()->single_step();
+=======
+	m_machine->debugger().cpu().get_visible_cpu()->debug()->single_step();
+>>>>>>> upstream/master
 }
 
 void WindowQt::debugActStepOver()
 {
+<<<<<<< HEAD
 	debug_cpu_get_visible_cpu(*m_machine)->debug()->single_step_over();
+=======
+	m_machine->debugger().cpu().get_visible_cpu()->debug()->single_step_over();
+>>>>>>> upstream/master
 }
 
 void WindowQt::debugActStepOut()
 {
+<<<<<<< HEAD
 	debug_cpu_get_visible_cpu(*m_machine)->debug()->single_step_out();
+=======
+	m_machine->debugger().cpu().get_visible_cpu()->debug()->single_step_out();
+>>>>>>> upstream/master
 }
 
 void WindowQt::debugActSoftReset()
 {
 	m_machine->schedule_soft_reset();
+<<<<<<< HEAD
 	debug_cpu_get_visible_cpu(*m_machine)->debug()->single_step();
+=======
+	m_machine->debugger().cpu().get_visible_cpu()->debug()->single_step();
+>>>>>>> upstream/master
 }
 
 void WindowQt::debugActHardReset()
@@ -254,6 +373,7 @@ void WindowQtConfig::applyToQWidget(QWidget* widget)
 }
 
 
+<<<<<<< HEAD
 void WindowQtConfig::addToXmlDataNode(xml_data_node* node) const
 {
 	xml_set_attribute_int(node, "type", m_type);
@@ -271,4 +391,23 @@ void WindowQtConfig::recoverFromXmlNode(xml_data_node* node)
 	m_position.setX(xml_get_attribute_int(node, "position_x", m_position.x()));
 	m_position.setY(xml_get_attribute_int(node, "position_y", m_position.y()));
 	m_type = (WindowQtConfig::WindowType)xml_get_attribute_int(node, "type", m_type);
+=======
+void WindowQtConfig::addToXmlDataNode(util::xml::data_node &node) const
+{
+	node.set_attribute_int("type", m_type);
+	node.set_attribute_int("position_x", m_position.x());
+	node.set_attribute_int("position_y", m_position.y());
+	node.set_attribute_int("size_x", m_size.x());
+	node.set_attribute_int("size_y", m_size.y());
+}
+
+
+void WindowQtConfig::recoverFromXmlNode(util::xml::data_node const &node)
+{
+	m_size.setX(node.get_attribute_int("size_x", m_size.x()));
+	m_size.setY(node.get_attribute_int("size_y", m_size.y()));
+	m_position.setX(node.get_attribute_int("position_x", m_position.x()));
+	m_position.setY(node.get_attribute_int("position_y", m_position.y()));
+	m_type = (WindowQtConfig::WindowType)node.get_attribute_int("type", m_type);
+>>>>>>> upstream/master
 }

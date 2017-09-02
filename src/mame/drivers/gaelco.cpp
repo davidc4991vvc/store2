@@ -19,12 +19,27 @@ Year   Game                PCB            NOTES
 ***************************************************************************/
 
 #include "emu.h"
+<<<<<<< HEAD
 #include "cpu/m6809/m6809.h"
 #include "cpu/m68000/m68000.h"
 #include "sound/okim6295.h"
 #include "sound/3812intf.h"
 #include "includes/gaelcrpt.h"
 #include "includes/gaelco.h"
+=======
+#include "includes/gaelco.h"
+
+#include "includes/gaelcrpt.h"
+
+#include "cpu/m6809/m6809.h"
+#include "cpu/m68000/m68000.h"
+#include "machine/74259.h"
+#include "sound/okim6295.h"
+#include "sound/3812intf.h"
+
+#include "screen.h"
+#include "speaker.h"
+>>>>>>> upstream/master
 
 
 /*************************************
@@ -33,6 +48,7 @@ Year   Game                PCB            NOTES
  *
  *************************************/
 
+<<<<<<< HEAD
 WRITE16_MEMBER(gaelco_state::bigkarnk_sound_command_w)
 {
 	if (ACCESSING_BITS_0_7)
@@ -68,6 +84,31 @@ WRITE16_MEMBER(gaelco_state::OKIM6295_bankswitch_w)
 	{
 		memcpy(&RAM[0x30000], &RAM[0x40000 + (data & 0x0f) * 0x10000], 0x10000);
 	}
+=======
+WRITE_LINE_MEMBER(gaelco_state::coin1_lockout_w)
+{
+	machine().bookkeeping().coin_lockout_w(0, state);
+}
+
+WRITE_LINE_MEMBER(gaelco_state::coin2_lockout_w)
+{
+	machine().bookkeeping().coin_lockout_w(1, state);
+}
+
+WRITE_LINE_MEMBER(gaelco_state::coin1_counter_w)
+{
+	machine().bookkeeping().coin_counter_w(0, state);
+}
+
+WRITE_LINE_MEMBER(gaelco_state::coin2_counter_w)
+{
+	machine().bookkeeping().coin_counter_w(1, state);
+}
+
+WRITE8_MEMBER(gaelco_state::OKIM6295_bankswitch_w)
+{
+	membank("okibank")->set_entry(data & 0x0f);
+>>>>>>> upstream/master
 }
 
 /*********** Squash Encryption Related Code ******************/
@@ -118,7 +159,11 @@ static ADDRESS_MAP_START( bigkarnk_map, AS_PROGRAM, 16, gaelco_state )
 	AM_RANGE(0x100000, 0x101fff) AM_RAM_WRITE(gaelco_vram_w) AM_SHARE("videoram")               /* Video RAM */
 	AM_RANGE(0x102000, 0x103fff) AM_RAM                                                         /* Screen RAM */
 	AM_RANGE(0x108000, 0x108007) AM_WRITEONLY AM_SHARE("vregs")                         /* Video Registers */
+<<<<<<< HEAD
 //  AM_RANGE(0x10800c, 0x10800d) AM_WRITE(watchdog_reset_w)                                                 /* INT 6 ACK/Watchdog timer */
+=======
+//  AM_RANGE(0x10800c, 0x10800d) AM_DEVWRITE(watchdog_reset_w)                                                 /* INT 6 ACK/Watchdog timer */
+>>>>>>> upstream/master
 	AM_RANGE(0x200000, 0x2007ff) AM_RAM_DEVWRITE("palette", palette_device, write) AM_SHARE("palette")    /* Palette */
 	AM_RANGE(0x440000, 0x440fff) AM_RAM AM_SHARE("spriteram")                               /* Sprite RAM */
 	AM_RANGE(0x700000, 0x700001) AM_READ_PORT("DSW1")
@@ -126,8 +171,13 @@ static ADDRESS_MAP_START( bigkarnk_map, AS_PROGRAM, 16, gaelco_state )
 	AM_RANGE(0x700004, 0x700005) AM_READ_PORT("P1")
 	AM_RANGE(0x700006, 0x700007) AM_READ_PORT("P2")
 	AM_RANGE(0x700008, 0x700009) AM_READ_PORT("SERVICE")
+<<<<<<< HEAD
 	AM_RANGE(0x70000e, 0x70000f) AM_WRITE(bigkarnk_sound_command_w)                                     /* Triggers a FIRQ on the sound CPU */
 	AM_RANGE(0x70000a, 0x70003b) AM_WRITE(bigkarnk_coin_w)                                          /* Coin Counters + Coin Lockout */
+=======
+	AM_RANGE(0x70000a, 0x70000b) AM_SELECT(0x000070) AM_DEVWRITE8_MOD("outlatch", ls259_device, write_d0, rshift<3>, 0x00ff)
+	AM_RANGE(0x70000e, 0x70000f) AM_DEVWRITE8("soundlatch", generic_latch_8_device, write, 0x00ff)               /* Triggers a FIRQ on the sound CPU */
+>>>>>>> upstream/master
 	AM_RANGE(0xff8000, 0xffffff) AM_RAM                                                         /* Work RAM */
 ADDRESS_MAP_END
 
@@ -136,7 +186,11 @@ static ADDRESS_MAP_START( bigkarnk_snd_map, AS_PROGRAM, 8, gaelco_state )
 	AM_RANGE(0x0800, 0x0801) AM_DEVREADWRITE("oki", okim6295_device, read, write)   /* OKI6295 */
 //  AM_RANGE(0x0900, 0x0900) AM_WRITENOP                                    /* enable sound output? */
 	AM_RANGE(0x0a00, 0x0a01) AM_DEVREADWRITE("ymsnd", ym3812_device, read, write)        /* YM3812 */
+<<<<<<< HEAD
 	AM_RANGE(0x0b00, 0x0b00) AM_READ(soundlatch_byte_r)                         /* Sound latch */
+=======
+	AM_RANGE(0x0b00, 0x0b00) AM_DEVREAD("soundlatch", generic_latch_8_device, read)      /* Sound latch */
+>>>>>>> upstream/master
 	AM_RANGE(0x0c00, 0xffff) AM_ROM                                         /* ROM */
 ADDRESS_MAP_END
 
@@ -152,7 +206,11 @@ static ADDRESS_MAP_START( maniacsq_map, AS_PROGRAM, 16, gaelco_state )
 	AM_RANGE(0x700002, 0x700003) AM_READ_PORT("DSW1")
 	AM_RANGE(0x700004, 0x700005) AM_READ_PORT("P1")
 	AM_RANGE(0x700006, 0x700007) AM_READ_PORT("P2")
+<<<<<<< HEAD
 	AM_RANGE(0x70000c, 0x70000d) AM_WRITE(OKIM6295_bankswitch_w)                                        /* OKI6295 bankswitch */
+=======
+	AM_RANGE(0x70000c, 0x70000d) AM_WRITE8(OKIM6295_bankswitch_w, 0x00ff)
+>>>>>>> upstream/master
 	AM_RANGE(0x70000e, 0x70000f) AM_DEVREADWRITE8("oki", okim6295_device, read, write, 0x00ff)                      /* OKI6295 status register */
 	AM_RANGE(0xff0000, 0xffffff) AM_RAM                                                         /* Work RAM */
 ADDRESS_MAP_END
@@ -169,7 +227,12 @@ static ADDRESS_MAP_START( squash_map, AS_PROGRAM, 16, gaelco_state )
 	AM_RANGE(0x700002, 0x700003) AM_READ_PORT("DSW1")
 	AM_RANGE(0x700004, 0x700005) AM_READ_PORT("P1")
 	AM_RANGE(0x700006, 0x700007) AM_READ_PORT("P2")
+<<<<<<< HEAD
 	AM_RANGE(0x70000c, 0x70000d) AM_WRITE(OKIM6295_bankswitch_w)                                        /* OKI6295 bankswitch */
+=======
+	AM_RANGE(0x70000a, 0x70000b) AM_SELECT(0x000070) AM_DEVWRITE8_MOD("outlatch", ls259_device, write_d0, rshift<3>, 0x00ff)
+	AM_RANGE(0x70000c, 0x70000d) AM_WRITE8(OKIM6295_bankswitch_w, 0x00ff)
+>>>>>>> upstream/master
 	AM_RANGE(0x70000e, 0x70000f) AM_DEVREADWRITE8("oki", okim6295_device, read, write, 0x00ff)                      /* OKI6295 status register */
 	AM_RANGE(0xff0000, 0xffffff) AM_RAM                                                         /* Work RAM */
 ADDRESS_MAP_END
@@ -186,12 +249,26 @@ static ADDRESS_MAP_START( thoop_map, AS_PROGRAM, 16, gaelco_state )
 	AM_RANGE(0x700002, 0x700003) AM_READ_PORT("DSW1")
 	AM_RANGE(0x700004, 0x700005) AM_READ_PORT("P1")
 	AM_RANGE(0x700006, 0x700007) AM_READ_PORT("P2")
+<<<<<<< HEAD
 	AM_RANGE(0x70000c, 0x70000d) AM_WRITE(OKIM6295_bankswitch_w)                                        /* OKI6295 bankswitch */
+=======
+	AM_RANGE(0x70000a, 0x70000b) AM_SELECT(0x000070) AM_DEVWRITE8_MOD("outlatch", ls259_device, write_d0, rshift<3>, 0x00ff)
+	AM_RANGE(0x70000c, 0x70000d) AM_WRITE8(OKIM6295_bankswitch_w, 0x00ff)
+>>>>>>> upstream/master
 	AM_RANGE(0x70000e, 0x70000f) AM_DEVREADWRITE8("oki", okim6295_device, read, write, 0x00ff)                      /* OKI6295 status register */
 	AM_RANGE(0xff0000, 0xffffff) AM_RAM                                                         /* Work RAM */
 ADDRESS_MAP_END
 
 
+<<<<<<< HEAD
+=======
+static ADDRESS_MAP_START( oki_map, 0, 8, gaelco_state )
+	AM_RANGE(0x00000, 0x2ffff) AM_ROM
+	AM_RANGE(0x30000, 0x3ffff) AM_ROMBANK("okibank")
+ADDRESS_MAP_END
+
+
+>>>>>>> upstream/master
 /*************************************
  *
  *  Input ports
@@ -494,9 +571,17 @@ GFXDECODEINFO(0x100000,64)
 
 void gaelco_state::machine_start()
 {
+<<<<<<< HEAD
 }
 
 static MACHINE_CONFIG_START( bigkarnk, gaelco_state )
+=======
+	if (memregion("oki")->bytes() > 0x040000) //bigkarnk oki isn't banked
+		membank("okibank")->configure_entries(0, 16, memregion("oki")->base(), 0x10000);
+}
+
+static MACHINE_CONFIG_START( bigkarnk )
+>>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", M68000, 10000000)   /* MC68000P10, 10 MHz */
@@ -508,6 +593,14 @@ static MACHINE_CONFIG_START( bigkarnk, gaelco_state )
 
 	MCFG_QUANTUM_TIME(attotime::from_hz(600))
 
+<<<<<<< HEAD
+=======
+	MCFG_DEVICE_ADD("outlatch", LS259, 0)
+	MCFG_ADDRESSABLE_LATCH_Q0_OUT_CB(WRITELINE(gaelco_state, coin1_lockout_w)) MCFG_DEVCB_INVERT
+	MCFG_ADDRESSABLE_LATCH_Q1_OUT_CB(WRITELINE(gaelco_state, coin2_lockout_w)) MCFG_DEVCB_INVERT
+	MCFG_ADDRESSABLE_LATCH_Q2_OUT_CB(WRITELINE(gaelco_state, coin1_counter_w))
+	MCFG_ADDRESSABLE_LATCH_Q3_OUT_CB(WRITELINE(gaelco_state, coin2_counter_w))
+>>>>>>> upstream/master
 
 	/* video hardware */
 	MCFG_SCREEN_ADD("screen", RASTER)
@@ -527,6 +620,7 @@ static MACHINE_CONFIG_START( bigkarnk, gaelco_state )
 	/* sound hardware */
 	MCFG_SPEAKER_STANDARD_MONO("mono")
 
+<<<<<<< HEAD
 	MCFG_SOUND_ADD("ymsnd", YM3812, 3580000)
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 1.0)
 
@@ -535,6 +629,19 @@ static MACHINE_CONFIG_START( bigkarnk, gaelco_state )
 MACHINE_CONFIG_END
 
 static MACHINE_CONFIG_START( maniacsq, gaelco_state )
+=======
+	MCFG_GENERIC_LATCH_8_ADD("soundlatch")
+	MCFG_GENERIC_LATCH_DATA_PENDING_CB(INPUTLINE("audiocpu", M6809_FIRQ_LINE))
+
+	MCFG_SOUND_ADD("ymsnd", YM3812, 3580000)
+	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 1.0)
+
+	MCFG_OKIM6295_ADD("oki", 1056000, PIN7_HIGH) // clock frequency & pin 7 not verified
+	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 1.0)
+MACHINE_CONFIG_END
+
+static MACHINE_CONFIG_START( maniacsq )
+>>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", M68000,24000000/2)          /* 12 MHz */
@@ -560,11 +667,20 @@ static MACHINE_CONFIG_START( maniacsq, gaelco_state )
 	/* sound hardware */
 	MCFG_SPEAKER_STANDARD_MONO("mono")
 
+<<<<<<< HEAD
 	MCFG_OKIM6295_ADD("oki", 1056000, OKIM6295_PIN7_HIGH) // clock frequency & pin 7 not verified
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 1.0)
 MACHINE_CONFIG_END
 
 static MACHINE_CONFIG_START( squash, gaelco_state )
+=======
+	MCFG_OKIM6295_ADD("oki", 1056000, PIN7_HIGH) // clock frequency & pin 7 not verified
+	MCFG_DEVICE_ADDRESS_MAP(0, oki_map)
+	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 1.0)
+MACHINE_CONFIG_END
+
+static MACHINE_CONFIG_START( squash )
+>>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", M68000, 12000000)   /* MC68000P12, 12 MHz */
@@ -573,6 +689,15 @@ static MACHINE_CONFIG_START( squash, gaelco_state )
 
 	MCFG_QUANTUM_TIME(attotime::from_hz(600))
 
+<<<<<<< HEAD
+=======
+	MCFG_DEVICE_ADD("outlatch", LS259, 0) // B8
+	MCFG_ADDRESSABLE_LATCH_Q0_OUT_CB(WRITELINE(gaelco_state, coin1_lockout_w)) MCFG_DEVCB_INVERT
+	MCFG_ADDRESSABLE_LATCH_Q1_OUT_CB(WRITELINE(gaelco_state, coin2_lockout_w)) MCFG_DEVCB_INVERT
+	MCFG_ADDRESSABLE_LATCH_Q2_OUT_CB(WRITELINE(gaelco_state, coin1_counter_w))
+	MCFG_ADDRESSABLE_LATCH_Q3_OUT_CB(WRITELINE(gaelco_state, coin2_counter_w))
+	MCFG_ADDRESSABLE_LATCH_Q4_OUT_CB(NOOP) // used
+>>>>>>> upstream/master
 
 	/* video hardware */
 	MCFG_SCREEN_ADD("screen", RASTER)
@@ -592,11 +717,20 @@ static MACHINE_CONFIG_START( squash, gaelco_state )
 	/* sound hardware */
 	MCFG_SPEAKER_STANDARD_MONO("mono")
 
+<<<<<<< HEAD
 	MCFG_OKIM6295_ADD("oki", 1056000, OKIM6295_PIN7_HIGH) // clock frequency & pin 7 not verified
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 1.0)
 MACHINE_CONFIG_END
 
 static MACHINE_CONFIG_START( thoop, gaelco_state )
+=======
+	MCFG_OKIM6295_ADD("oki", 1056000, PIN7_HIGH) // clock frequency & pin 7 not verified
+	MCFG_DEVICE_ADDRESS_MAP(0, oki_map)
+	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 1.0)
+MACHINE_CONFIG_END
+
+static MACHINE_CONFIG_START( thoop )
+>>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", M68000, 12000000)   /* MC68000P12, 12 MHz */
@@ -605,6 +739,15 @@ static MACHINE_CONFIG_START( thoop, gaelco_state )
 
 	MCFG_QUANTUM_TIME(attotime::from_hz(600))
 
+<<<<<<< HEAD
+=======
+	MCFG_DEVICE_ADD("outlatch", LS259, 0) // B8
+	MCFG_ADDRESSABLE_LATCH_Q0_OUT_CB(WRITELINE(gaelco_state, coin1_lockout_w)) // not inverted
+	MCFG_ADDRESSABLE_LATCH_Q1_OUT_CB(WRITELINE(gaelco_state, coin2_lockout_w)) // not inverted
+	MCFG_ADDRESSABLE_LATCH_Q2_OUT_CB(WRITELINE(gaelco_state, coin1_counter_w))
+	MCFG_ADDRESSABLE_LATCH_Q3_OUT_CB(WRITELINE(gaelco_state, coin2_counter_w))
+	MCFG_ADDRESSABLE_LATCH_Q4_OUT_CB(NOOP) // used
+>>>>>>> upstream/master
 
 	/* video hardware */
 	MCFG_SCREEN_ADD("screen", RASTER)
@@ -624,7 +767,12 @@ static MACHINE_CONFIG_START( thoop, gaelco_state )
 	/* sound hardware */
 	MCFG_SPEAKER_STANDARD_MONO("mono")
 
+<<<<<<< HEAD
 	MCFG_OKIM6295_ADD("oki", 1056000, OKIM6295_PIN7_HIGH) // clock frequency & pin 7 not verified
+=======
+	MCFG_OKIM6295_ADD("oki", 1056000, PIN7_HIGH) // clock frequency & pin 7 not verified
+	MCFG_DEVICE_ADDRESS_MAP(0, oki_map)
+>>>>>>> upstream/master
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 1.0)
 MACHINE_CONFIG_END
 
@@ -676,11 +824,17 @@ ROM_START( maniacsp ) /* PCB - REF 922804/2 */
 	ROM_RELOAD(     0x380000, 0x040000 )
 	/* 0x340000-0x37ffff and 0x3c0000-0x3fffff empty */
 
+<<<<<<< HEAD
 	ROM_REGION( 0x140000, "oki", 0 )    /* ADPCM samples - sound chip is OKIM6295 */
 	ROM_LOAD( "c1", 0x000000, 0x080000, CRC(2557f2d6) SHA1(3a99388f2d845281f73a427d6dc797dce87b2f82) )
 	/* 0x00000-0x2ffff is fixed, 0x30000-0x3ffff is bank switched from all the ROMs */
 	ROM_RELOAD(     0x040000, 0x080000 )
 	ROM_RELOAD(     0x0c0000, 0x080000 )
+=======
+	ROM_REGION( 0x080000, "oki", 0 )    /* ADPCM samples - sound chip is OKIM6295 */
+	ROM_LOAD( "c1", 0x000000, 0x080000, CRC(2557f2d6) SHA1(3a99388f2d845281f73a427d6dc797dce87b2f82) )
+	/* 0x00000-0x2ffff is fixed, 0x30000-0x3ffff is bank switched from all the ROMs */
+>>>>>>> upstream/master
 ROM_END
 
 
@@ -708,11 +862,18 @@ ROM_START( biomtoy ) /* PCB - REF 922804/2 */
 	ROM_LOAD( "j10",    0x300000, 0x040000, CRC(8e3e96cc) SHA1(761009f3f32b18139e98f20a22c433b6a49d9168) )
 	ROM_CONTINUE(       0x380000, 0x040000 )
 
+<<<<<<< HEAD
 	ROM_REGION( 0x140000, "oki", 0 )    /* ADPCM samples - sound chip is OKIM6295 */
 	ROM_LOAD( "c1", 0x000000, 0x080000, CRC(0f02de7e) SHA1(a8779370cc36290616794ff11eb3eebfdea5b1a9) )
 	/* 0x00000-0x2ffff is fixed, 0x30000-0x3ffff is bank switched from all the ROMs */
 	ROM_RELOAD(     0x040000, 0x080000 )
 	ROM_LOAD( "c3", 0x0c0000, 0x080000, CRC(914e4bbc) SHA1(ca82b7481621a119f05992ed093b963da70d748a) )
+=======
+	ROM_REGION( 0x100000, "oki", 0 )    /* ADPCM samples - sound chip is OKIM6295 */
+	ROM_LOAD( "c1", 0x000000, 0x080000, CRC(0f02de7e) SHA1(a8779370cc36290616794ff11eb3eebfdea5b1a9) )
+	/* 0x00000-0x2ffff is fixed, 0x30000-0x3ffff is bank switched from all the ROMs */
+	ROM_LOAD( "c3", 0x080000, 0x080000, CRC(914e4bbc) SHA1(ca82b7481621a119f05992ed093b963da70d748a) )
+>>>>>>> upstream/master
 ROM_END
 
 
@@ -740,12 +901,19 @@ ROM_START( biomtoya ) /* PCB - REF 922804/2 */
 	ROM_LOAD( "j10",    0x300000, 0x040000, CRC(8e3e96cc) SHA1(761009f3f32b18139e98f20a22c433b6a49d9168) )
 	ROM_CONTINUE(       0x380000, 0x040000 )
 
+<<<<<<< HEAD
 	// using the same samples as the parent set causes bad sounds for most of the game
 	ROM_REGION( 0x140000, "oki", 0 )    /* ADPCM samples - sound chip is OKIM6295 */
 	ROM_LOAD( "c1", 0x000000, 0x080000, BAD_DUMP CRC(0f02de7e) SHA1(a8779370cc36290616794ff11eb3eebfdea5b1a9) )
 	/* 0x00000-0x2ffff is fixed, 0x30000-0x3ffff is bank switched from all the ROMs */
 	ROM_RELOAD(     0x040000, 0x080000 )
 	ROM_LOAD( "c3", 0x0c0000, 0x080000, BAD_DUMP CRC(914e4bbc) SHA1(ca82b7481621a119f05992ed093b963da70d748a) )
+=======
+	ROM_REGION( 0x100000, "oki", 0 )    /* ADPCM samples - sound chip is OKIM6295 */
+	ROM_LOAD( "c1", 0x000000, 0x080000, CRC(edf77532) SHA1(cf198b14c25e1b242a65af8ce23538404cd2b12d) )
+	/* 0x00000-0x2ffff is fixed, 0x30000-0x3ffff is bank switched from all the ROMs */
+	ROM_LOAD( "c3", 0x080000, 0x080000, CRC(c3aea660) SHA1(639d4195391e2608e94759e8a4385b518872263a) )
+>>>>>>> upstream/master
 ROM_END
 
 
@@ -812,11 +980,17 @@ ROM_START( squash )
 	ROM_LOAD( "squash.c12", 0x000000, 0x80000, CRC(5c440645) SHA1(4f2fc1647ffc549fa079f2dc0aaaceb447afdf44) ) /* encrypted video ram */
 	ROM_RELOAD(               0x080000, 0x80000 )
 
+<<<<<<< HEAD
 	ROM_REGION( 0x140000, "oki", 0 )    /* ADPCM samples - sound chip is OKIM6295 */
 	ROM_LOAD( "squash.d01",   0x000000, 0x80000, CRC(a1b9651b) SHA1(a396ba94889f70ea06d6330e3606b0f2497ff6ce) )
 	/* 0x00000-0x2ffff is fixed, 0x30000-0x3ffff is bank switched from all the ROMs */
 	ROM_RELOAD(     0x040000, 0x080000 )
 	ROM_RELOAD(     0x0c0000, 0x080000 )
+=======
+	ROM_REGION( 0x80000, "oki", 0 )    /* ADPCM samples - sound chip is OKIM6295 */
+	ROM_LOAD( "squash.d01",   0x000000, 0x80000, CRC(a1b9651b) SHA1(a396ba94889f70ea06d6330e3606b0f2497ff6ce) )
+	/* 0x00000-0x2ffff is fixed, 0x30000-0x3ffff is bank switched from all the ROMs */
+>>>>>>> upstream/master
 ROM_END
 
 
@@ -843,10 +1017,16 @@ ROM_START( thoop )
 	ROM_CONTINUE(    0x040000, 0x040000 )
 	ROM_CONTINUE(    0x0c0000, 0x040000 )
 
+<<<<<<< HEAD
 	ROM_REGION( 0x140000, "oki", 0 )    /* ADPCM samples - sound chip is OKIM6295 */
 	ROM_LOAD( "sound", 0x000000, 0x100000, CRC(99f80961) SHA1(de3a514a8f46dffd5f762e52aac1f4c3b08e2e18) )
 	/* 0x00000-0x2ffff is fixed, 0x30000-0x3ffff is bank switched from all the ROMs */
 	ROM_RELOAD(        0x040000, 0x100000 )
+=======
+	ROM_REGION( 0x100000, "oki", 0 )    /* ADPCM samples - sound chip is OKIM6295 */
+	ROM_LOAD( "sound", 0x000000, 0x100000, CRC(99f80961) SHA1(de3a514a8f46dffd5f762e52aac1f4c3b08e2e18) )
+	/* 0x00000-0x2ffff is fixed, 0x30000-0x3ffff is bank switched from all the ROMs */
+>>>>>>> upstream/master
 ROM_END
 
 
@@ -857,9 +1037,18 @@ ROM_END
  *
  *************************************/
 
+<<<<<<< HEAD
 GAME( 1991, bigkarnk, 0,        bigkarnk, bigkarnk, driver_device, 0, ROT0, "Gaelco", "Big Karnak", MACHINE_SUPPORTS_SAVE )
 GAME( 1995, biomtoy,  0,        maniacsq, biomtoy, driver_device,  0, ROT0, "Gaelco", "Biomechanical Toy (Ver. 1.0.1885)", MACHINE_SUPPORTS_SAVE )
 GAME( 1995, biomtoya, biomtoy,  maniacsq, biomtoy, driver_device,  0, ROT0, "Gaelco", "Biomechanical Toy (Ver. 1.0.1884)", MACHINE_SUPPORTS_SAVE )
 GAME( 1996, maniacsp, maniacsq, maniacsq, maniacsq, driver_device, 0, ROT0, "Gaelco", "Maniac Square (prototype)", MACHINE_SUPPORTS_SAVE )
 GAME( 1992, squash,   0,        squash,   squash, driver_device,   0, ROT0, "Gaelco", "Squash (Ver. 1.0)", MACHINE_SUPPORTS_SAVE )
 GAME( 1992, thoop,    0,        thoop,    thoop, driver_device,    0, ROT0, "Gaelco", "Thunder Hoop (Ver. 1)", MACHINE_SUPPORTS_SAVE )
+=======
+GAME( 1991, bigkarnk, 0,        bigkarnk, bigkarnk, gaelco_state, 0, ROT0, "Gaelco", "Big Karnak", MACHINE_SUPPORTS_SAVE )
+GAME( 1995, biomtoy,  0,        maniacsq, biomtoy,  gaelco_state, 0, ROT0, "Gaelco", "Biomechanical Toy (Ver. 1.0.1885)", MACHINE_SUPPORTS_SAVE )
+GAME( 1995, biomtoya, biomtoy,  maniacsq, biomtoy,  gaelco_state, 0, ROT0, "Gaelco", "Biomechanical Toy (Ver. 1.0.1884)", MACHINE_SUPPORTS_SAVE )
+GAME( 1996, maniacsp, maniacsq, maniacsq, maniacsq, gaelco_state, 0, ROT0, "Gaelco", "Maniac Square (prototype)", MACHINE_SUPPORTS_SAVE )
+GAME( 1992, squash,   0,        squash,   squash,   gaelco_state, 0, ROT0, "Gaelco", "Squash (Ver. 1.0)", MACHINE_SUPPORTS_SAVE )
+GAME( 1992, thoop,    0,        thoop,    thoop,    gaelco_state, 0, ROT0, "Gaelco", "Thunder Hoop (Ver. 1)", MACHINE_SUPPORTS_SAVE )
+>>>>>>> upstream/master

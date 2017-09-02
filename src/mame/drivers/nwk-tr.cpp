@@ -259,6 +259,11 @@ Thrill Drive 713A13  -       713A14  -
 #include "sound/k056800.h"
 #include "video/voodoo.h"
 #include "video/k001604.h"
+<<<<<<< HEAD
+=======
+#include "screen.h"
+#include "speaker.h"
+>>>>>>> upstream/master
 
 
 class nwktr_state : public driver_device
@@ -288,9 +293,15 @@ public:
 	// TODO: Needs verification on real hardware
 	static const int m_sound_timer_usec = 2400;
 
+<<<<<<< HEAD
 	UINT8 m_led_reg0;
 	UINT8 m_led_reg1;
 	required_shared_ptr<UINT32> m_work_ram;
+=======
+	uint8_t m_led_reg0;
+	uint8_t m_led_reg1;
+	required_shared_ptr<uint32_t> m_work_ram;
+>>>>>>> upstream/master
 	required_device<ppc_device> m_maincpu;
 	required_device<cpu_device> m_audiocpu;
 	required_device<cpu_device> m_dsp;
@@ -299,13 +310,23 @@ public:
 	required_device<adc12138_device> m_adc12138;
 	required_ioport m_in0, m_in1, m_in2, m_dsw, m_analog1, m_analog2, m_analog3, m_analog4, m_analog5;
 	required_device<palette_device> m_palette;
+<<<<<<< HEAD
 	required_shared_ptr<UINT32> m_generic_paletteram_32;
+=======
+	required_shared_ptr<uint32_t> m_generic_paletteram_32;
+>>>>>>> upstream/master
 	emu_timer *m_sound_irq_timer;
 	int m_fpga_uploaded;
 	int m_lanc2_ram_r;
 	int m_lanc2_ram_w;
+<<<<<<< HEAD
 	UINT8 *m_lanc2_ram;
 	UINT32 *m_sharc_dataram;
+=======
+	uint8_t m_lanc2_reg[3];
+	std::unique_ptr<uint8_t[]> m_lanc2_ram;
+	std::unique_ptr<uint32_t[]> m_sharc_dataram;
+>>>>>>> upstream/master
 	DECLARE_WRITE32_MEMBER(paletteram32_w);
 	DECLARE_READ32_MEMBER(sysreg_r);
 	DECLARE_WRITE32_MEMBER(sysreg_w);
@@ -322,9 +343,15 @@ public:
 
 	TIMER_CALLBACK_MEMBER(sound_irq);
 	DECLARE_DRIVER_INIT(nwktr);
+<<<<<<< HEAD
 	virtual void machine_start();
 	virtual void machine_reset();
 	UINT32 screen_update_nwktr(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect);
+=======
+	virtual void machine_start() override;
+	virtual void machine_reset() override;
+	uint32_t screen_update_nwktr(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect);
+>>>>>>> upstream/master
 
 	void lanc2_init();
 };
@@ -344,6 +371,7 @@ WRITE_LINE_MEMBER(nwktr_state::voodoo_vblank_0)
 }
 
 
+<<<<<<< HEAD
 UINT32 nwktr_state::screen_update_nwktr(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect)
 {
 	device_t *voodoo = machine().device("voodoo0");
@@ -351,6 +379,15 @@ UINT32 nwktr_state::screen_update_nwktr(screen_device &screen, bitmap_rgb32 &bit
 	bitmap.fill(m_palette->pen(0), cliprect);
 
 	voodoo_update(voodoo, bitmap, cliprect);
+=======
+uint32_t nwktr_state::screen_update_nwktr(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect)
+{
+	voodoo_device *voodoo = (voodoo_device*)machine().device("voodoo0");
+
+	bitmap.fill(m_palette->pen(0), cliprect);
+
+	voodoo->voodoo_update(bitmap, cliprect);
+>>>>>>> upstream/master
 
 	const rectangle &visarea = screen.visible_area();
 	const rectangle tilemap_rect(visarea.min_x, visarea.max_x, visarea.min_y+16, visarea.max_y);
@@ -366,7 +403,11 @@ UINT32 nwktr_state::screen_update_nwktr(screen_device &screen, bitmap_rgb32 &bit
 
 READ32_MEMBER(nwktr_state::sysreg_r)
 {
+<<<<<<< HEAD
 	UINT32 r = 0;
+=======
+	uint32_t r = 0;
+>>>>>>> upstream/master
 	if (offset == 0)
 	{
 		if (ACCESSING_BITS_24_31)
@@ -443,7 +484,11 @@ void nwktr_state::lanc2_init()
 	m_fpga_uploaded = 0;
 	m_lanc2_ram_r = 0;
 	m_lanc2_ram_w = 0;
+<<<<<<< HEAD
 	m_lanc2_ram = auto_alloc_array(machine(), UINT8, 0x8000);
+=======
+	m_lanc2_ram = std::make_unique<uint8_t[]>(0x8000);
+>>>>>>> upstream/master
 }
 
 READ32_MEMBER(nwktr_state::lanc1_r)
@@ -452,7 +497,11 @@ READ32_MEMBER(nwktr_state::lanc1_r)
 	{
 		case 0x40/4:
 		{
+<<<<<<< HEAD
 			UINT32 r = 0;
+=======
+			uint32_t r = 0;
+>>>>>>> upstream/master
 
 			r |= (m_fpga_uploaded) ? (1 << 6) : 0;
 			r |= 1 << 5;
@@ -475,7 +524,11 @@ WRITE32_MEMBER(nwktr_state::lanc1_w)
 
 READ32_MEMBER(nwktr_state::lanc2_r)
 {
+<<<<<<< HEAD
 	UINT32 r = 0;
+=======
+	uint32_t r = 0;
+>>>>>>> upstream/master
 
 	if (offset == 0)
 	{
@@ -509,7 +562,11 @@ WRITE32_MEMBER(nwktr_state::lanc2_w)
 	{
 		if (ACCESSING_BITS_24_31)
 		{
+<<<<<<< HEAD
 			UINT8 value = data >> 24;
+=======
+			uint8_t value = data >> 24;
+>>>>>>> upstream/master
 
 			value = ((value >> 7) & 0x01) |
 					((value >> 5) & 0x02) |
@@ -521,6 +578,10 @@ WRITE32_MEMBER(nwktr_state::lanc2_w)
 					((value << 7) & 0x80);
 
 			m_fpga_uploaded = 1;
+<<<<<<< HEAD
+=======
+			m_lanc2_reg[0] = (uint8_t)(data >> 24);
+>>>>>>> upstream/master
 
 			//printf("lanc2_fpga_w: %02X at %08X\n", value, space.device().safe_pc());
 		}
@@ -528,11 +589,24 @@ WRITE32_MEMBER(nwktr_state::lanc2_w)
 		{
 			m_lanc2_ram_r = 0;
 			m_lanc2_ram_w = 0;
+<<<<<<< HEAD
 		}
 		else if (ACCESSING_BITS_16_23)
 		{
 			m_lanc2_ram[2] = (data >> 20) & 0xf;
 			m_lanc2_ram[3] = 0;
+=======
+			m_lanc2_reg[1] = (uint8_t)(data >> 8);
+		}
+		else if (ACCESSING_BITS_16_23)
+		{
+			if (m_lanc2_reg[0] != 0)
+			{
+				m_lanc2_ram[2] = (data >> 20) & 0xf;
+				m_lanc2_ram[3] = 0;
+			}
+			m_lanc2_reg[2] = (uint8_t)(data >> 16);
+>>>>>>> upstream/master
 		}
 		else if (ACCESSING_BITS_0_7)
 		{
@@ -611,7 +685,11 @@ void nwktr_state::machine_start()
 	m_maincpu->ppcdrc_set_options(PPCDRC_COMPATIBLE_OPTIONS);
 
 	/* configure fast RAM regions for DRC */
+<<<<<<< HEAD
 	m_maincpu->ppcdrc_add_fastram(0x00000000, 0x003fffff, FALSE, m_work_ram);
+=======
+	m_maincpu->ppcdrc_add_fastram(0x00000000, 0x003fffff, false, m_work_ram);
+>>>>>>> upstream/master
 
 	m_sound_irq_timer = machine().scheduler().timer_alloc(timer_expired_delegate(FUNC(nwktr_state::sound_irq), this));
 }
@@ -756,7 +834,11 @@ void nwktr_state::machine_reset()
 	m_dsp->set_input_line(INPUT_LINE_RESET, ASSERT_LINE);
 }
 
+<<<<<<< HEAD
 static MACHINE_CONFIG_START( nwktr, nwktr_state )
+=======
+static MACHINE_CONFIG_START( nwktr )
+>>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", PPC403GA, XTAL_64MHz/2)   /* PowerPC 403GA 32MHz */
@@ -795,16 +877,23 @@ static MACHINE_CONFIG_START( nwktr, nwktr_state )
 
 	MCFG_PALETTE_ADD("palette", 65536)
 
+<<<<<<< HEAD
 	MCFG_GFXDECODE_ADD("gfxdecode", "palette", empty)
 
 	MCFG_DEVICE_ADD("k001604", K001604, 0)
 	MCFG_K001604_GFX_INDEX1(0)
 	MCFG_K001604_GFX_INDEX2(1)
+=======
+	MCFG_DEVICE_ADD("k001604", K001604, 0)
+>>>>>>> upstream/master
 	MCFG_K001604_LAYER_SIZE(0)
 	MCFG_K001604_ROZ_SIZE(1)
 	MCFG_K001604_TXT_OFFSET(0)  // correct?
 	MCFG_K001604_ROZ_OFFSET(0)  // correct?
+<<<<<<< HEAD
 	MCFG_K001604_GFXDECODE("gfxdecode")
+=======
+>>>>>>> upstream/master
 	MCFG_K001604_PALETTE("palette")
 
 	MCFG_SPEAKER_STANDARD_STEREO("lspeaker", "rspeaker")
@@ -818,20 +907,30 @@ static MACHINE_CONFIG_START( nwktr, nwktr_state )
 
 	MCFG_DEVICE_ADD("konppc", KONPPC, 0)
 	MCFG_KONPPC_CGBOARD_NUMBER(2)
+<<<<<<< HEAD
 	MCFG_KONPPC_CGBOARD_TYPE(CGBOARD_TYPE_NWKTR)
+=======
+	MCFG_KONPPC_CGBOARD_TYPE(NWKTR)
+>>>>>>> upstream/master
 MACHINE_CONFIG_END
 
 static MACHINE_CONFIG_DERIVED( thrilld, nwktr )
 
 	MCFG_DEVICE_REMOVE("k001604")
 	MCFG_DEVICE_ADD("k001604", K001604, 0)
+<<<<<<< HEAD
 	MCFG_K001604_GFX_INDEX1(0)
 	MCFG_K001604_GFX_INDEX2(1)
+=======
+>>>>>>> upstream/master
 	MCFG_K001604_LAYER_SIZE(1)
 	MCFG_K001604_ROZ_SIZE(1)
 	MCFG_K001604_TXT_OFFSET(0)  // correct?
 	MCFG_K001604_ROZ_OFFSET(0)  // correct?
+<<<<<<< HEAD
 	MCFG_K001604_GFXDECODE("gfxdecode")
+=======
+>>>>>>> upstream/master
 	MCFG_K001604_PALETTE("palette")
 MACHINE_CONFIG_END
 
@@ -841,7 +940,11 @@ DRIVER_INIT_MEMBER(nwktr_state, nwktr)
 {
 	machine().device<konppc_device>("konppc")->set_cgboard_texture_bank(0, "bank5", memregion("user5")->base());
 
+<<<<<<< HEAD
 	m_sharc_dataram = auto_alloc_array(machine(), UINT32, 0x100000/4);
+=======
+	m_sharc_dataram = std::make_unique<uint32_t[]>(0x100000/4);
+>>>>>>> upstream/master
 	m_led_reg0 = m_led_reg1 = 0x7f;
 
 	lanc2_init();
@@ -991,9 +1094,18 @@ ROM_END
 
 /*****************************************************************************/
 
+<<<<<<< HEAD
 GAME( 1998, racingj,    0,       nwktr,   nwktr, nwktr_state, nwktr, ROT0, "Konami", "Racing Jam (JAC)", MACHINE_NOT_WORKING | MACHINE_IMPERFECT_GRAPHICS | MACHINE_NO_SOUND )
 GAME( 1999, racingj2,   racingj, nwktr,   nwktr, nwktr_state, nwktr, ROT0, "Konami", "Racing Jam: Chapter 2 (EAE)", MACHINE_NOT_WORKING | MACHINE_IMPERFECT_GRAPHICS | MACHINE_NO_SOUND )
 GAME( 1999, racingj2j,  racingj, nwktr,   nwktr, nwktr_state, nwktr, ROT0, "Konami", "Racing Jam: Chapter 2 (JAE)", MACHINE_NOT_WORKING | MACHINE_IMPERFECT_GRAPHICS | MACHINE_NO_SOUND )
 GAME( 1998, thrilld,    0,       thrilld, nwktr, nwktr_state, nwktr, ROT0, "Konami", "Thrill Drive (JAE)", MACHINE_IMPERFECT_GRAPHICS | MACHINE_IMPERFECT_SOUND )
 GAME( 1998, thrilldb,   thrilld, thrilld, nwktr, nwktr_state, nwktr, ROT0, "Konami", "Thrill Drive (JAB)", MACHINE_IMPERFECT_GRAPHICS | MACHINE_IMPERFECT_SOUND )
 GAME( 1998, thrilldae,  thrilld, thrilld, nwktr, nwktr_state, nwktr, ROT0, "Konami", "Thrill Drive (EAA)", MACHINE_NOT_WORKING | MACHINE_IMPERFECT_GRAPHICS | MACHINE_IMPERFECT_SOUND )
+=======
+GAME( 1998, racingj,    0,       nwktr,   nwktr, nwktr_state, nwktr, ROT0, "Konami", "Racing Jam (JAC)",            MACHINE_NOT_WORKING | MACHINE_IMPERFECT_GRAPHICS | MACHINE_NO_SOUND )
+GAME( 1999, racingj2,   racingj, nwktr,   nwktr, nwktr_state, nwktr, ROT0, "Konami", "Racing Jam: Chapter 2 (EAE)", MACHINE_NOT_WORKING | MACHINE_IMPERFECT_GRAPHICS | MACHINE_NO_SOUND )
+GAME( 1999, racingj2j,  racingj, nwktr,   nwktr, nwktr_state, nwktr, ROT0, "Konami", "Racing Jam: Chapter 2 (JAE)", MACHINE_NOT_WORKING | MACHINE_IMPERFECT_GRAPHICS | MACHINE_NO_SOUND )
+GAME( 1998, thrilld,    0,       thrilld, nwktr, nwktr_state, nwktr, ROT0, "Konami", "Thrill Drive (JAE)",          MACHINE_IMPERFECT_GRAPHICS | MACHINE_IMPERFECT_SOUND )
+GAME( 1998, thrilldb,   thrilld, thrilld, nwktr, nwktr_state, nwktr, ROT0, "Konami", "Thrill Drive (JAB)",          MACHINE_IMPERFECT_GRAPHICS | MACHINE_IMPERFECT_SOUND )
+GAME( 1998, thrilldae,  thrilld, thrilld, nwktr, nwktr_state, nwktr, ROT0, "Konami", "Thrill Drive (EAA)",          MACHINE_NOT_WORKING | MACHINE_IMPERFECT_GRAPHICS | MACHINE_IMPERFECT_SOUND )
+>>>>>>> upstream/master

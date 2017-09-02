@@ -16,18 +16,31 @@
     IMPLEMENTATION
 ***************************************************************************/
 
+<<<<<<< HEAD
 const device_type MIDIIN = &device_creator<midiin_device>;
+=======
+DEFINE_DEVICE_TYPE(MIDIIN, midiin_device, "midiin", "MIDI In image device")
+>>>>>>> upstream/master
 
 /*-------------------------------------------------
     ctor
 -------------------------------------------------*/
 
+<<<<<<< HEAD
 midiin_device::midiin_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
 	: device_t(mconfig, MIDIIN, "MIDI In image device", tag, owner, clock, "midiin", __FILE__),
 		device_image_interface(mconfig, *this),
 		device_serial_interface(mconfig, *this),
 		m_midi(NULL),
 		m_timer(NULL),
+=======
+midiin_device::midiin_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: device_t(mconfig, MIDIIN, tag, owner, clock),
+		device_image_interface(mconfig, *this),
+		device_serial_interface(mconfig, *this),
+		m_midi(nullptr),
+		m_timer(nullptr),
+>>>>>>> upstream/master
 		m_input_cb(*this),
 		m_xmit_read(0),
 		m_xmit_write(0),
@@ -43,7 +56,11 @@ void midiin_device::device_start()
 {
 	m_input_cb.resolve_safe();
 	m_timer = timer_alloc(0);
+<<<<<<< HEAD
 	m_midi = NULL;
+=======
+	m_midi = nullptr;
+>>>>>>> upstream/master
 	m_timer->enable(false);
 }
 
@@ -59,6 +76,7 @@ void midiin_device::device_reset()
 }
 
 /*-------------------------------------------------
+<<<<<<< HEAD
     device_config_complete
 -------------------------------------------------*/
 
@@ -68,11 +86,14 @@ void midiin_device::device_config_complete(void)
 }
 
 /*-------------------------------------------------
+=======
+>>>>>>> upstream/master
     device_timer
 -------------------------------------------------*/
 
 void midiin_device::device_timer(emu_timer &timer, device_timer_id id, int param, void *ptr)
 {
+<<<<<<< HEAD
 	if (id) {
 		device_serial_interface::device_timer(timer, id, param, ptr);
 		return;
@@ -94,6 +115,26 @@ void midiin_device::device_timer(emu_timer &timer, device_timer_id id, int param
 			for (int i = 0; i < bytesRead; i++)
 			{
 				xmit_char(buf[i]);
+=======
+	if (!id) {
+		uint8_t buf[8192*4];
+		int bytesRead;
+
+		if (m_midi == nullptr) {
+			return;
+		}
+
+		while (m_midi->poll())
+		{
+			bytesRead = m_midi->read(buf);
+
+			if (bytesRead > 0)
+			{
+				for (int i = 0; i < bytesRead; i++)
+				{
+					xmit_char(buf[i]);
+				}
+>>>>>>> upstream/master
 			}
 		}
 	}
@@ -103,20 +144,33 @@ void midiin_device::device_timer(emu_timer &timer, device_timer_id id, int param
     call_load
 -------------------------------------------------*/
 
+<<<<<<< HEAD
 bool midiin_device::call_load(void)
+=======
+image_init_result midiin_device::call_load(void)
+>>>>>>> upstream/master
 {
 	m_midi = machine().osd().create_midi_device();
 
 	if (!m_midi->open_input(filename()))
 	{
 		global_free(m_midi);
+<<<<<<< HEAD
 		m_midi = NULL;
 		return IMAGE_INIT_FAIL;
+=======
+		m_midi = nullptr;
+		return image_init_result::FAIL;
+>>>>>>> upstream/master
 	}
 
 	m_timer->adjust(attotime::from_hz(1500), 0, attotime::from_hz(1500));
 	m_timer->enable(true);
+<<<<<<< HEAD
 	return IMAGE_INIT_PASS;
+=======
+	return image_init_result::PASS;
+>>>>>>> upstream/master
 }
 
 /*-------------------------------------------------
@@ -131,7 +185,11 @@ void midiin_device::call_unload(void)
 		global_free(m_midi);
 	}
 		m_timer->enable(false);
+<<<<<<< HEAD
 		m_midi = NULL;
+=======
+		m_midi = nullptr;
+>>>>>>> upstream/master
 }
 
 void midiin_device::tra_complete()
@@ -158,7 +216,11 @@ void midiin_device::tra_callback()
 	m_input_cb(bit);
 }
 
+<<<<<<< HEAD
 void midiin_device::xmit_char(UINT8 data)
+=======
+void midiin_device::xmit_char(uint8_t data)
+>>>>>>> upstream/master
 {
 //  printf("MIDI in: xmit %02x\n", data);
 

@@ -12,7 +12,10 @@ the bottom screen.
 driver by Nicola Salmoria
 
 TODO:
+<<<<<<< HEAD
 - finish spunchout protection, currently using a hacky workaround
+=======
+>>>>>>> upstream/master
 - add useless driver config to choose between pink and white color proms
 - video raw params - pixel clock is derived from 20.16mhz xtal
 - money bag placement might not be 100% correct in Arm Wrestling
@@ -116,11 +119,24 @@ DIP locations verified for:
 ***************************************************************************/
 
 #include "emu.h"
+<<<<<<< HEAD
 #include "cpu/z80/z80.h"
 #include "cpu/m6502/n2a03.h"
 #include "machine/nvram.h"
 #include "rendlay.h"
 #include "includes/punchout.h"
+=======
+#include "includes/punchout.h"
+
+#include "cpu/z80/z80.h"
+#include "cpu/m6502/n2a03.h"
+#include "machine/74259.h"
+#include "machine/gen_latch.h"
+#include "machine/nvram.h"
+#include "rendlay.h"
+#include "screen.h"
+#include "speaker.h"
+>>>>>>> upstream/master
 
 
 /***************************************************************************
@@ -131,6 +147,7 @@ DIP locations verified for:
 
 // Z80 (main)
 
+<<<<<<< HEAD
 WRITE8_MEMBER(punchout_state::punchout_speech_reset_w)
 {
 	m_vlm->rst( data & 0x01 );
@@ -157,6 +174,11 @@ WRITE8_MEMBER(punchout_state::punchout_2a03_reset_w)
 WRITE8_MEMBER(punchout_state::nmi_mask_w)
 {
 	m_nmi_mask = data & 1;
+=======
+WRITE_LINE_MEMBER(punchout_state::nmi_mask_w)
+{
+	m_nmi_mask = state;
+>>>>>>> upstream/master
 }
 
 static ADDRESS_MAP_START( punchout_map, AS_PROGRAM, 8, punchout_state )
@@ -192,6 +214,7 @@ static ADDRESS_MAP_START( punchout_io_map, AS_IO, 8, punchout_state )
 	ADDRESS_MAP_GLOBAL_MASK(0xff)
 	AM_RANGE(0x00, 0x00) AM_READ_PORT("IN0")
 	AM_RANGE(0x01, 0x01) AM_READ_PORT("IN1")
+<<<<<<< HEAD
 	AM_RANGE(0x00, 0x01) AM_WRITENOP    /* the 2A03 #1 is not present */
 	AM_RANGE(0x02, 0x02) AM_READ_PORT("DSW2") AM_WRITE(soundlatch_byte_w)
 	AM_RANGE(0x03, 0x03) AM_READ_PORT("DSW1") AM_WRITE(soundlatch2_byte_w)
@@ -206,6 +229,20 @@ static ADDRESS_MAP_START( punchout_io_map, AS_IO, 8, punchout_state )
 	AM_RANGE(0x0d, 0x0d) AM_WRITE(punchout_speech_st_w) /* VLM5030 */
 	AM_RANGE(0x0e, 0x0e) AM_WRITE(punchout_speech_vcu_w)    /* VLM5030 */
 	AM_RANGE(0x0f, 0x0f) AM_WRITENOP    /* enable NVRAM ? */
+=======
+	AM_RANGE(0x00, 0x01) AM_WRITENOP // the 2A03 #1 is not present
+	AM_RANGE(0x02, 0x02) AM_READ_PORT("DSW2") AM_DEVWRITE("soundlatch", generic_latch_8_device, write)
+	AM_RANGE(0x03, 0x03) AM_READ_PORT("DSW1") AM_DEVWRITE("soundlatch2", generic_latch_8_device, write)
+	AM_RANGE(0x04, 0x04) AM_DEVWRITE("vlm", vlm5030_device, data_w)
+	AM_RANGE(0x05, 0x07) AM_WRITENOP // spunchout protection
+	AM_RANGE(0x08, 0x0f) AM_DEVWRITE("mainlatch", ls259_device, write_d0)
+ADDRESS_MAP_END
+
+
+static ADDRESS_MAP_START( punchout_vlm_map, 0, 8, punchout_state )
+	ADDRESS_MAP_GLOBAL_MASK(0x3fff)
+	AM_RANGE(0x0000, 0x3fff) AM_ROM
+>>>>>>> upstream/master
 ADDRESS_MAP_END
 
 
@@ -223,12 +260,17 @@ READ8_MEMBER(punchout_state::spunchout_exp_r)
 	// d5: _ALARM from RP5C01
 	// d6: COUNTER OUT from RP5H01
 	// d7: DATA OUT from RP5H01 - always 0?
+<<<<<<< HEAD
 	UINT8 ret = m_rtc->read(space, offset >> 4 & 0xf) & 0xf;
+=======
+	uint8_t ret = m_rtc->read(space, offset >> 4 & 0xf) & 0xf;
+>>>>>>> upstream/master
 	ret |= 0x10;
 	ret |= m_rtc->alarm_r() ? 0x00 : 0x20;
 	ret |= m_rp5h01->counter_r() ? 0x00 : 0x40;
 	ret |= m_rp5h01->data_r() ? 0x00 : 0x80;
 
+<<<<<<< HEAD
 	// FIXME - hack d6/d7 state until we figure out why the game resets
 	/* PC = 0x0313 */
 	/* (ret or 0x10) -> (D7DF),(D7A0) - (D7DF),(D7A0) = 0d0h(ret nc) */
@@ -238,6 +280,8 @@ READ8_MEMBER(punchout_state::spunchout_exp_r)
 		ret |= 0xc0;
 	}
 
+=======
+>>>>>>> upstream/master
 	return ret;
 }
 
@@ -245,6 +289,7 @@ WRITE8_MEMBER(punchout_state::spunchout_exp_w)
 {
 	// d0-d3: D0-D3 to RP5C01
 	m_rtc->write(space, offset >> 4 & 0xf, data & 0xf);
+<<<<<<< HEAD
 
 	// d0: 74LS74 1D + 74LS74 2D
 	// 74LS74 1Q -> RP5H01 DATA CLOCK + TEST
@@ -261,6 +306,32 @@ WRITE8_MEMBER(punchout_state::spunchout_exp_w)
 
 static ADDRESS_MAP_START( spnchout_io_map, AS_IO, 8, punchout_state )
 	AM_RANGE(0x07, 0x07) AM_MIRROR(0xf0) AM_MASK(0xf0) AM_READWRITE(spunchout_exp_r, spunchout_exp_w) /* protection ports */
+=======
+}
+
+WRITE8_MEMBER(punchout_state::spunchout_rp5h01_reset_w)
+{
+	// d0: 74LS74 2D
+	// 74LS74 2Q -> RP5H01 RESET
+	// 74LS74 _2Q -> 74LS74 _1 RESET
+	m_rp5h01->reset_w(data & 1);
+	if (data & 1)
+		spunchout_rp5h01_clock_w(space, 0, 0);
+}
+
+WRITE8_MEMBER(punchout_state::spunchout_rp5h01_clock_w)
+{
+	// d0: 74LS74 1D
+	// 74LS74 1Q -> RP5H01 DATA CLOCK + TEST
+	m_rp5h01->clock_w(data & 1);
+	m_rp5h01->test_w(data & 1);
+}
+
+static ADDRESS_MAP_START( spnchout_io_map, AS_IO, 8, punchout_state )
+	AM_RANGE(0x05, 0x05) AM_MIRROR(0xf0) AM_WRITE(spunchout_rp5h01_reset_w)
+	AM_RANGE(0x06, 0x06) AM_MIRROR(0xf0) AM_WRITE(spunchout_rp5h01_clock_w)
+	AM_RANGE(0x07, 0x07) AM_SELECT(0xf0) AM_READWRITE(spunchout_exp_r, spunchout_exp_w) // protection ports
+>>>>>>> upstream/master
 	AM_IMPORT_FROM( punchout_io_map )
 ADDRESS_MAP_END
 
@@ -268,8 +339,13 @@ ADDRESS_MAP_END
 
 static ADDRESS_MAP_START( punchout_sound_map, AS_PROGRAM, 8, punchout_state )
 	AM_RANGE(0x0000, 0x07ff) AM_RAM
+<<<<<<< HEAD
 	AM_RANGE(0x4016, 0x4016) AM_READ(soundlatch_byte_r)
 	AM_RANGE(0x4017, 0x4017) AM_READ(soundlatch2_byte_r)
+=======
+	AM_RANGE(0x4016, 0x4016) AM_DEVREAD("soundlatch", generic_latch_8_device, read)
+	AM_RANGE(0x4017, 0x4017) AM_DEVREAD("soundlatch2", generic_latch_8_device, read)
+>>>>>>> upstream/master
 	AM_RANGE(0xe000, 0xffff) AM_ROM
 ADDRESS_MAP_END
 
@@ -636,7 +712,11 @@ MACHINE_RESET_MEMBER(punchout_state, spnchout)
 }
 
 
+<<<<<<< HEAD
 static MACHINE_CONFIG_START( punchout, punchout_state )
+=======
+static MACHINE_CONFIG_START( punchout )
+>>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", Z80, XTAL_8MHz/2)
@@ -644,12 +724,29 @@ static MACHINE_CONFIG_START( punchout, punchout_state )
 	MCFG_CPU_IO_MAP(punchout_io_map)
 	MCFG_CPU_VBLANK_INT_DRIVER("top", punchout_state, vblank_irq)
 
+<<<<<<< HEAD
 	MCFG_CPU_ADD("audiocpu", N2A03, XTAL_21_4772MHz/12)
+=======
+	MCFG_CPU_ADD("audiocpu", N2A03, NTSC_APU_CLOCK)
+>>>>>>> upstream/master
 	MCFG_CPU_PROGRAM_MAP(punchout_sound_map)
 	MCFG_CPU_VBLANK_INT_DRIVER("top", punchout_state, nmi_line_pulse)
 
 	MCFG_NVRAM_ADD_0FILL("nvram")
 
+<<<<<<< HEAD
+=======
+	MCFG_DEVICE_ADD("mainlatch", LS259, 0) // 2B
+	MCFG_ADDRESSABLE_LATCH_Q0_OUT_CB(WRITELINE(punchout_state, nmi_mask_w))
+	MCFG_ADDRESSABLE_LATCH_Q1_OUT_CB(NOOP) // watchdog reset, seldom used because 08 clears the watchdog as well
+	MCFG_ADDRESSABLE_LATCH_Q2_OUT_CB(NOOP) // ?
+	MCFG_ADDRESSABLE_LATCH_Q3_OUT_CB(INPUTLINE("audiocpu", INPUT_LINE_RESET))
+	MCFG_ADDRESSABLE_LATCH_Q4_OUT_CB(DEVWRITELINE("vlm", vlm5030_device, rst))
+	MCFG_ADDRESSABLE_LATCH_Q5_OUT_CB(DEVWRITELINE("vlm", vlm5030_device, st))
+	MCFG_ADDRESSABLE_LATCH_Q6_OUT_CB(DEVWRITELINE("vlm", vlm5030_device, vcu))
+	MCFG_ADDRESSABLE_LATCH_Q7_OUT_CB(NOOP) // enable NVRAM?
+
+>>>>>>> upstream/master
 	/* video hardware */
 	MCFG_GFXDECODE_ADD("gfxdecode", "palette", punchout)
 	MCFG_PALETTE_ADD("palette", 0x200)
@@ -674,7 +771,15 @@ static MACHINE_CONFIG_START( punchout, punchout_state )
 	/* sound hardware */
 	MCFG_SPEAKER_STANDARD_STEREO("lspeaker", "mono")
 
+<<<<<<< HEAD
 	MCFG_SOUND_ADD("vlm", VLM5030, XTAL_21_4772MHz/6)
+=======
+	MCFG_GENERIC_LATCH_8_ADD("soundlatch")
+	MCFG_GENERIC_LATCH_8_ADD("soundlatch2")
+
+	MCFG_SOUND_ADD("vlm", VLM5030, N2A03_NTSC_XTAL/6)
+	MCFG_DEVICE_ADDRESS_MAP(0, punchout_vlm_map)
+>>>>>>> upstream/master
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "lspeaker", 0.50)
 MACHINE_CONFIG_END
 
@@ -1126,7 +1231,11 @@ ROM_START( spnchout )
 	ROM_LOAD( "chs1-b-8f_white.8f", 0x1a00, 0x0200, CRC(1663eed7) SHA1(90ff876a6b885f8a80c17531cde8b91864f1a6a5) )  /* B */
 	ROM_LOAD( "chs1-v.2d",          0x2000, 0x0100, CRC(71dc0d48) SHA1(dd6609f547d74887f520d7e71a1a00317ff181d0) )  /* timing - not used */
 
+<<<<<<< HEAD
 	ROM_REGION( 0x10000, "vlm", 0 ) /* 64k for the VLM5030 data */
+=======
+	ROM_REGION( 0x4000, "vlm", 0 )  /* 16k for the VLM5030 data */
+>>>>>>> upstream/master
 	ROM_LOAD( "chs1-c.6p",    0x0000, 0x4000, CRC(ad8b64b8) SHA1(0f1232a10faf71b782f9f6653cca8570243c17e0) )
 ROM_END
 
@@ -1272,7 +1381,11 @@ ROM_START( spnchoutj )
 	ROM_LOAD( "chs1-b-8f_white.8f", 0x1a00, 0x0200, CRC(1663eed7) SHA1(90ff876a6b885f8a80c17531cde8b91864f1a6a5) )  /* B */
 	ROM_LOAD( "chs1-v.2d",          0x2000, 0x0100, CRC(71dc0d48) SHA1(dd6609f547d74887f520d7e71a1a00317ff181d0) )  /* timing - not used */
 
+<<<<<<< HEAD
 	ROM_REGION( 0x10000, "vlm", 0 ) /* 64k for the VLM5030 data */
+=======
+	ROM_REGION( 0x4000, "vlm", 0 )  /* 16k for the VLM5030 data */
+>>>>>>> upstream/master
 	ROM_LOAD( "chs1c6pa.bin", 0x0000, 0x4000, CRC(d05fb730) SHA1(9f4c4c7e5113739312558eff4d3d3e42d513aa31) )
 ROM_END
 
@@ -1328,12 +1441,17 @@ ROM_START( armwrest )
 	ROM_LOAD( "chv1-b.3c",    0x0c00, 0x0100, CRC(c3f92ea2) SHA1(1a82cca1b9a8d9bd4a1d121d8c131a7d0be554bc) )    /* priority encoder - not used */
 	ROM_LOAD( "chpv-v.2d",    0x0d00, 0x0100, CRC(71dc0d48) SHA1(dd6609f547d74887f520d7e71a1a00317ff181d0) )    /* timing - not used */
 
+<<<<<<< HEAD
 	ROM_REGION( 0x10000, "vlm", 0 ) /* 64k for the VLM5030 data */
+=======
+	ROM_REGION( 0x4000, "vlm", 0 )  /* 16k for the VLM5030 data */
+>>>>>>> upstream/master
 	ROM_LOAD( "chv1-c.6p",    0x0000, 0x4000, CRC(31b52896) SHA1(395f59ac38b46042f79e9224ac6bc7d3dc299906) )
 ROM_END
 
 
 
+<<<<<<< HEAD
 GAME( 1984, punchout,  0,        punchout, punchout, driver_device, 0, ROT0, "Nintendo", "Punch-Out!! (Rev B)", 0 ) /* CHP1-02 boards */
 GAME( 1984, punchouta, punchout, punchout, punchout, driver_device, 0, ROT0, "Nintendo", "Punch-Out!! (Rev A)", 0 ) /* CHP1-01 boards */
 GAME( 1984, punchoutj, punchout, punchout, punchout, driver_device, 0, ROT0, "Nintendo", "Punch-Out!! (Japan)", 0 )
@@ -1342,3 +1460,13 @@ GAME( 1984, spnchout,  0,        spnchout, spnchout, driver_device, 0, ROT0, "Ni
 GAME( 1984, spnchouta, spnchout, spnchout, spnchout, driver_device, 0, ROT0, "Nintendo", "Super Punch-Out!! (Rev A)", 0 ) /* CHP1-01 boards */
 GAME( 1984, spnchoutj, spnchout, spnchout, spnchout, driver_device, 0, ROT0, "Nintendo", "Super Punch-Out!! (Japan)", 0 )
 GAME( 1985, armwrest,  0,        armwrest, armwrest, driver_device, 0, ROT0, "Nintendo", "Arm Wrestling", 0 )
+=======
+GAME( 1984, punchout,  0,        punchout, punchout, punchout_state, 0, ROT0, "Nintendo", "Punch-Out!! (Rev B)", 0 ) /* CHP1-02 boards */
+GAME( 1984, punchouta, punchout, punchout, punchout, punchout_state, 0, ROT0, "Nintendo", "Punch-Out!! (Rev A)", 0 ) /* CHP1-01 boards */
+GAME( 1984, punchoutj, punchout, punchout, punchout, punchout_state, 0, ROT0, "Nintendo", "Punch-Out!! (Japan)", 0 )
+GAME( 1984, punchita,  punchout, punchout, punchout, punchout_state, 0, ROT0, "bootleg",  "Punch-Out!! (Italian bootleg)", 0 )
+GAME( 1984, spnchout,  0,        spnchout, spnchout, punchout_state, 0, ROT0, "Nintendo", "Super Punch-Out!! (Rev B)", 0 ) /* CHP1-02 boards */
+GAME( 1984, spnchouta, spnchout, spnchout, spnchout, punchout_state, 0, ROT0, "Nintendo", "Super Punch-Out!! (Rev A)", 0 ) /* CHP1-01 boards */
+GAME( 1984, spnchoutj, spnchout, spnchout, spnchout, punchout_state, 0, ROT0, "Nintendo", "Super Punch-Out!! (Japan)", 0 )
+GAME( 1985, armwrest,  0,        armwrest, armwrest, punchout_state, 0, ROT0, "Nintendo", "Arm Wrestling", 0 )
+>>>>>>> upstream/master

@@ -1,5 +1,9 @@
 /*
+<<<<<<< HEAD
  * Copyright 2011-2015 Branimir Karadzic. All rights reserved.
+=======
+ * Copyright 2011-2017 Branimir Karadzic. All rights reserved.
+>>>>>>> upstream/master
  * License: https://github.com/bkaradzic/bgfx/blob/master/LICENSE
  */
 
@@ -1101,7 +1105,11 @@ namespace Scintilla
 
 } // namespace Scintilla
 
+<<<<<<< HEAD
 ScintillaEditor* ImGuiScintilla(const char* _name, bool* _opened, const ImVec2& _size)
+=======
+ScintillaEditor* ImGuiScintilla(const char* _name, bool* /*_opened*/, const ImVec2& /*_size*/)
+>>>>>>> upstream/master
 {
 	ScintillaEditor* sci = NULL;
 

@@ -14,14 +14,26 @@
 
 #define DE156CPU ARM
 #include "emu.h"
+<<<<<<< HEAD
 #include "includes/decocrpt.h"
+=======
+#include "machine/decocrpt.h"
+#include "machine/deco156.h"
+>>>>>>> upstream/master
 #include "machine/eepromser.h"
 #include "sound/okim6295.h"
 #include "sound/ymz280b.h"
 #include "cpu/arm/arm.h"
 #include "video/deco16ic.h"
+<<<<<<< HEAD
 #include "rendlay.h"
 #include "video/decospr.h"
+=======
+#include "video/decospr.h"
+#include "rendlay.h"
+#include "screen.h"
+#include "speaker.h"
+>>>>>>> upstream/master
 
 
 class backfire_state : public driver_device
@@ -47,17 +59,30 @@ public:
 	{ }
 
 	/* memory pointers */
+<<<<<<< HEAD
 	UINT16 *  m_spriteram_1;
 	UINT16 *  m_spriteram_2;
 	required_shared_ptr<UINT32> m_mainram;
 	required_shared_ptr<UINT32> m_left_priority;
 	required_shared_ptr<UINT32> m_right_priority;
+=======
+	std::unique_ptr<uint16_t[]>  m_spriteram_1;
+	std::unique_ptr<uint16_t[]>  m_spriteram_2;
+	required_shared_ptr<uint32_t> m_mainram;
+	required_shared_ptr<uint32_t> m_left_priority;
+	required_shared_ptr<uint32_t> m_right_priority;
+>>>>>>> upstream/master
 	optional_device<decospr_device> m_sprgen;
 	optional_device<decospr_device> m_sprgen2;
 
 	/* video related */
+<<<<<<< HEAD
 	bitmap_ind16  *m_left;
 	bitmap_ind16  *m_right;
+=======
+	std::unique_ptr<bitmap_ind16>  m_left;
+	std::unique_ptr<bitmap_ind16>  m_right;
+>>>>>>> upstream/master
 
 	/* devices */
 	required_device<cpu_device> m_maincpu;
@@ -67,12 +92,20 @@ public:
 	required_device<eeprom_serial_93cxx_device> m_eeprom;
 
 	/* memory */
+<<<<<<< HEAD
 	UINT16    m_pf1_rowscroll[0x0800/2];
 	UINT16    m_pf2_rowscroll[0x0800/2];
 	UINT16    m_pf3_rowscroll[0x0800/2];
 	UINT16    m_pf4_rowscroll[0x0800/2];
 	DECLARE_READ32_MEMBER(backfire_control2_r);
 	DECLARE_READ32_MEMBER(backfire_control3_r);
+=======
+	uint16_t    m_pf1_rowscroll[0x0800/2];
+	uint16_t    m_pf2_rowscroll[0x0800/2];
+	uint16_t    m_pf3_rowscroll[0x0800/2];
+	uint16_t    m_pf4_rowscroll[0x0800/2];
+	DECLARE_READ32_MEMBER(backfire_control2_r);
+>>>>>>> upstream/master
 	DECLARE_WRITE32_MEMBER(backfire_nonbuffered_palette_w);
 	DECLARE_READ32_MEMBER(backfire_pf1_rowscroll_r);
 	DECLARE_READ32_MEMBER(backfire_pf2_rowscroll_r);
@@ -87,6 +120,7 @@ public:
 	DECLARE_READ32_MEMBER(backfire_spriteram2_r);
 	DECLARE_WRITE32_MEMBER(backfire_spriteram2_w);
 	DECLARE_READ32_MEMBER(backfire_speedup_r);
+<<<<<<< HEAD
 	DECLARE_READ32_MEMBER(backfire_unknown_wheel_r);
 	DECLARE_READ32_MEMBER(backfire_wheel1_r);
 	DECLARE_READ32_MEMBER(backfire_wheel2_r);
@@ -97,6 +131,15 @@ public:
 	virtual void video_start();
 	UINT32 screen_update_backfire_left(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
 	UINT32 screen_update_backfire_right(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
+=======
+	DECLARE_READ32_MEMBER(backfire_eeprom_r);
+	DECLARE_WRITE32_MEMBER(backfire_eeprom_w);
+	DECLARE_DRIVER_INIT(backfire);
+	virtual void machine_start() override;
+	virtual void video_start() override;
+	uint32_t screen_update_backfire_left(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
+	uint32_t screen_update_backfire_right(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
+>>>>>>> upstream/master
 	INTERRUPT_GEN_MEMBER(deco32_vbl_interrupt);
 	void descramble_sound();
 	DECO16IC_BANK_CB_MEMBER(bank_callback);
@@ -107,16 +150,28 @@ public:
 	required_ioport m_io_in2;
 	required_ioport m_io_in3;
 	required_device<palette_device> m_palette;
+<<<<<<< HEAD
 	required_shared_ptr<UINT32> m_generic_paletteram_32;
 };
 
 //UINT32 *backfire_180010, *backfire_188010;
+=======
+	required_shared_ptr<uint32_t> m_generic_paletteram_32;
+};
+
+//uint32_t *backfire_180010, *backfire_188010;
+>>>>>>> upstream/master
 
 /* I'm using the functions in deco16ic.c ... same chips, why duplicate code? */
 void backfire_state::video_start()
 {
+<<<<<<< HEAD
 	m_spriteram_1 = auto_alloc_array(machine(), UINT16, 0x2000/2);
 	m_spriteram_2 = auto_alloc_array(machine(), UINT16, 0x2000/2);
+=======
+	m_spriteram_1 = std::make_unique<uint16_t[]>(0x2000/2);
+	m_spriteram_2 = std::make_unique<uint16_t[]>(0x2000/2);
+>>>>>>> upstream/master
 
 	/* and register the allocated ram so that save states still work */
 	save_item(NAME(m_pf1_rowscroll));
@@ -124,11 +179,19 @@ void backfire_state::video_start()
 	save_item(NAME(m_pf3_rowscroll));
 	save_item(NAME(m_pf4_rowscroll));
 
+<<<<<<< HEAD
 	m_left =  auto_bitmap_ind16_alloc(machine(), 80*8, 32*8);
 	m_right = auto_bitmap_ind16_alloc(machine(), 80*8, 32*8);
 
 	save_pointer(NAME(m_spriteram_1), 0x2000/2);
 	save_pointer(NAME(m_spriteram_2), 0x2000/2);
+=======
+	m_left =  std::make_unique<bitmap_ind16>(80*8, 32*8);
+	m_right = std::make_unique<bitmap_ind16>(80*8, 32*8);
+
+	save_pointer(NAME(m_spriteram_1.get()), 0x2000/2);
+	save_pointer(NAME(m_spriteram_2.get()), 0x2000/2);
+>>>>>>> upstream/master
 
 	save_item(NAME(*m_left));
 	save_item(NAME(*m_right));
@@ -136,7 +199,11 @@ void backfire_state::video_start()
 
 
 
+<<<<<<< HEAD
 UINT32 backfire_state::screen_update_backfire_left(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+=======
+uint32_t backfire_state::screen_update_backfire_left(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+>>>>>>> upstream/master
 {
 	//FIXME: flip_screen_x should not be written!
 	flip_screen_set_no_update(1);
@@ -153,13 +220,21 @@ UINT32 backfire_state::screen_update_backfire_left(screen_device &screen, bitmap
 	{
 		m_deco_tilegen2->tilemap_1_draw(screen, bitmap, cliprect, 0, 1);
 		m_deco_tilegen1->tilemap_1_draw(screen, bitmap, cliprect, 0, 2);
+<<<<<<< HEAD
 		m_sprgen->draw_sprites(bitmap, cliprect, m_spriteram_1, 0x800);
+=======
+		m_sprgen->draw_sprites(bitmap, cliprect, m_spriteram_1.get(), 0x800);
+>>>>>>> upstream/master
 	}
 	else if (m_left_priority[0] == 2)
 	{
 		m_deco_tilegen1->tilemap_1_draw(screen, bitmap, cliprect, 0, 2);
 		m_deco_tilegen2->tilemap_1_draw(screen, bitmap, cliprect, 0, 4);
+<<<<<<< HEAD
 		m_sprgen->draw_sprites(bitmap, cliprect, m_spriteram_1, 0x800);
+=======
+		m_sprgen->draw_sprites(bitmap, cliprect, m_spriteram_1.get(), 0x800);
+>>>>>>> upstream/master
 	}
 	else
 		popmessage( "unknown left priority %08x", m_left_priority[0]);
@@ -167,7 +242,11 @@ UINT32 backfire_state::screen_update_backfire_left(screen_device &screen, bitmap
 	return 0;
 }
 
+<<<<<<< HEAD
 UINT32 backfire_state::screen_update_backfire_right(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+=======
+uint32_t backfire_state::screen_update_backfire_right(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+>>>>>>> upstream/master
 {
 	//FIXME: flip_screen_x should not be written!
 	flip_screen_set_no_update(1);
@@ -184,13 +263,21 @@ UINT32 backfire_state::screen_update_backfire_right(screen_device &screen, bitma
 	{
 		m_deco_tilegen2->tilemap_2_draw(screen, bitmap, cliprect, 0, 1);
 		m_deco_tilegen1->tilemap_2_draw(screen, bitmap, cliprect, 0, 2);
+<<<<<<< HEAD
 		m_sprgen2->draw_sprites(bitmap, cliprect, m_spriteram_2, 0x800);
+=======
+		m_sprgen2->draw_sprites(bitmap, cliprect, m_spriteram_2.get(), 0x800);
+>>>>>>> upstream/master
 	}
 	else if (m_right_priority[0] == 2)
 	{
 		m_deco_tilegen1->tilemap_2_draw(screen, bitmap, cliprect, 0, 2);
 		m_deco_tilegen2->tilemap_2_draw(screen, bitmap, cliprect, 0, 4);
+<<<<<<< HEAD
 		m_sprgen2->draw_sprites(bitmap, cliprect, m_spriteram_2, 0x800);
+=======
+		m_sprgen2->draw_sprites(bitmap, cliprect, m_spriteram_2.get(), 0x800);
+>>>>>>> upstream/master
 	}
 	else
 		popmessage( "unknown right priority %08x", m_right_priority[0]);
@@ -471,7 +558,11 @@ void backfire_state::machine_start()
 {
 }
 
+<<<<<<< HEAD
 static MACHINE_CONFIG_START( backfire, backfire_state )
+=======
+static MACHINE_CONFIG_START( backfire )
+>>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", ARM, 28000000/4) /* Unconfirmed */
@@ -517,7 +608,10 @@ static MACHINE_CONFIG_START( backfire, backfire_state )
 	MCFG_DECO16IC_PF12_8X8_BANK(0)
 	MCFG_DECO16IC_PF12_16X16_BANK(1)
 	MCFG_DECO16IC_GFXDECODE("gfxdecode")
+<<<<<<< HEAD
 	MCFG_DECO16IC_PALETTE("palette")
+=======
+>>>>>>> upstream/master
 
 	MCFG_DEVICE_ADD("tilegen2", DECO16IC, 0)
 	MCFG_DECO16IC_SET_SCREEN("lscreen")
@@ -534,21 +628,30 @@ static MACHINE_CONFIG_START( backfire, backfire_state )
 	MCFG_DECO16IC_PF12_8X8_BANK(2)
 	MCFG_DECO16IC_PF12_16X16_BANK(3)
 	MCFG_DECO16IC_GFXDECODE("gfxdecode")
+<<<<<<< HEAD
 	MCFG_DECO16IC_PALETTE("palette")
+=======
+>>>>>>> upstream/master
 
 	MCFG_DEVICE_ADD("spritegen", DECO_SPRITE, 0)
 	MCFG_VIDEO_SET_SCREEN("lscreen")
 	MCFG_DECO_SPRITE_GFX_REGION(4)
 	MCFG_DECO_SPRITE_PRIORITY_CB(backfire_state, pri_callback)
 	MCFG_DECO_SPRITE_GFXDECODE("gfxdecode")
+<<<<<<< HEAD
 	MCFG_DECO_SPRITE_PALETTE("palette")
+=======
+>>>>>>> upstream/master
 
 	MCFG_DEVICE_ADD("spritegen2", DECO_SPRITE, 0)
 	MCFG_VIDEO_SET_SCREEN("rscreen")
 	MCFG_DECO_SPRITE_GFX_REGION(5)
 	MCFG_DECO_SPRITE_PRIORITY_CB(backfire_state, pri_callback)
 	MCFG_DECO_SPRITE_GFXDECODE("gfxdecode")
+<<<<<<< HEAD
 	MCFG_DECO_SPRITE_PALETTE("palette")
+=======
+>>>>>>> upstream/master
 
 
 	/* sound hardware */
@@ -683,6 +786,7 @@ ROM_END
 
 void backfire_state::descramble_sound()
 {
+<<<<<<< HEAD
 	UINT8 *rom = memregion("ymz")->base();
 	int length = 0x200000; // only the first rom is swapped on backfire!
 	dynamic_buffer buf1(length);
@@ -691,6 +795,16 @@ void backfire_state::descramble_sound()
 	for (x = 0; x < length; x++)
 	{
 		UINT32 addr;
+=======
+	uint8_t *rom = memregion("ymz")->base();
+	int length = 0x200000; // only the first rom is swapped on backfire!
+	std::vector<uint8_t> buf1(length);
+	uint32_t x;
+
+	for (x = 0; x < length; x++)
+	{
+		uint32_t addr;
+>>>>>>> upstream/master
 
 		addr = BITSWAP24 (x,23,22,21,0, 20,
 							19,18,17,16,

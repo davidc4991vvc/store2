@@ -26,6 +26,7 @@
 //  constructor
 //-------------------------------------------------
 
+<<<<<<< HEAD
 const device_type GENERIC_RAM_32K_PLAIN = &device_creator<generic_ram_32k_plain_device>;
 const device_type GENERIC_RAM_64K_PLAIN = &device_creator<generic_ram_64k_plain_device>;
 const device_type GENERIC_RAM_128K_PLAIN = &device_creator<generic_ram_128k_plain_device>;
@@ -45,10 +46,32 @@ generic_ram_linear_device::generic_ram_linear_device(const machine_config &mconf
 						: device_t(mconfig, type, name, tag, owner, clock, shortname, source),
 							device_generic_cart_interface(mconfig, *this),
 							m_size(size)
+=======
+DEFINE_DEVICE_TYPE(GENERIC_RAM_32K_PLAIN,   generic_ram_32k_plain_device,    "generic_ram32p",  "Generic RAM 32K (plain mapping)")
+DEFINE_DEVICE_TYPE(GENERIC_RAM_64K_PLAIN,   generic_ram_64k_plain_device,    "generic_ram64p",  "Generic RAM 64K (plain mapping)")
+DEFINE_DEVICE_TYPE(GENERIC_RAM_128K_PLAIN,  generic_ram_128k_plain_device,   "generic_ram128p", "Generic RAM 128K (plain mapping)")
+DEFINE_DEVICE_TYPE(GENERIC_RAM_32K_LINEAR,  generic_ram_32k_linear_device,   "generic_ram32l",  "Generic RAM 32K (linear mapping)")
+DEFINE_DEVICE_TYPE(GENERIC_RAM_64K_LINEAR,  generic_ram_64k_linear_device,   "generic_ram64l",  "Generic RAM 64K (linear mapping)")
+DEFINE_DEVICE_TYPE(GENERIC_RAM_128K_LINEAR, generic_ram_128k_linear_device,  "generic_ram128l", "Generic RAM 128K (linear mapping)")
+
+
+generic_ram_plain_device::generic_ram_plain_device(const machine_config &mconfig, device_type type, const char *tag, device_t *owner, uint32_t clock, uint32_t size)
+	: device_t(mconfig, type, tag, owner, clock)
+	, device_generic_cart_interface(mconfig, *this)
+	, m_size(size)
+{
+}
+
+generic_ram_linear_device::generic_ram_linear_device(const machine_config &mconfig, device_type type, const char *tag, device_t *owner, uint32_t clock, uint32_t size)
+	: device_t(mconfig, type, tag, owner, clock)
+	, device_generic_cart_interface(mconfig, *this)
+	, m_size(size)
+>>>>>>> upstream/master
 {
 }
 
 
+<<<<<<< HEAD
 generic_ram_32k_plain_device::generic_ram_32k_plain_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
 					: generic_ram_plain_device(mconfig, GENERIC_RAM_32K_PLAIN, "Generic RAM 32K (plain mapping)", tag, owner, clock, 0x8000, "generic_ram32p", __FILE__)
 {
@@ -76,6 +99,35 @@ generic_ram_64k_linear_device::generic_ram_64k_linear_device(const machine_confi
 
 generic_ram_128k_linear_device::generic_ram_128k_linear_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
 					: generic_ram_linear_device(mconfig, GENERIC_RAM_128K_LINEAR, "Generic RAM 128K (linear mapping)", tag, owner, clock, 0x20000, "generic_ram128l", __FILE__)
+=======
+generic_ram_32k_plain_device::generic_ram_32k_plain_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: generic_ram_plain_device(mconfig, GENERIC_RAM_32K_PLAIN, tag, owner, clock, 0x8000)
+{
+}
+
+generic_ram_64k_plain_device::generic_ram_64k_plain_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: generic_ram_plain_device(mconfig, GENERIC_RAM_64K_PLAIN, tag, owner, clock, 0x10000)
+{
+}
+
+generic_ram_128k_plain_device::generic_ram_128k_plain_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: generic_ram_plain_device(mconfig, GENERIC_RAM_128K_PLAIN, tag, owner, clock, 0x20000)
+{
+}
+
+generic_ram_32k_linear_device::generic_ram_32k_linear_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: generic_ram_linear_device(mconfig, GENERIC_RAM_32K_LINEAR, tag, owner, clock, 0x8000)
+{
+}
+
+generic_ram_64k_linear_device::generic_ram_64k_linear_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: generic_ram_linear_device(mconfig, GENERIC_RAM_64K_LINEAR, tag, owner, clock, 0x10000)
+{
+}
+
+generic_ram_128k_linear_device::generic_ram_128k_linear_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: generic_ram_linear_device(mconfig, GENERIC_RAM_128K_LINEAR, tag, owner, clock, 0x20000)
+>>>>>>> upstream/master
 {
 }
 

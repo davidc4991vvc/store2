@@ -60,6 +60,20 @@
 		]]
 	end
 
+<<<<<<< HEAD
+=======
+	function suite.PBXBuildFile_ListsDependencyTargets_OnBundle()
+		kind "Bundle"
+		prepare()
+		xcode.PBXBuildFile(tr)
+		test.capture [[
+/* Begin PBXBuildFile section */
+		[MyProject2-d.bundle:build] /* MyProject2-d.bundle in Frameworks */ = {isa = PBXBuildFile; fileRef = [MyProject2-d.bundle] /* MyProject2-d.bundle */; };
+/* End PBXBuildFile section */
+		]]
+	end
+
+>>>>>>> upstream/master
 
 ---------------------------------------------------------------------------
 -- PBXContainerItemProxy tests
@@ -157,6 +171,27 @@
 		]]
 	end
 
+<<<<<<< HEAD
+=======
+	function suite.PBXFrameworksBuildPhase_ListsDependencies_OnBundle()
+		kind "Bundle"
+		prepare()
+		xcode.PBXFrameworksBuildPhase(tr)
+		test.capture [[
+/* Begin PBXFrameworksBuildPhase section */
+		[MyProject:fxs] /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				[MyProject2-d.bundle:build] /* MyProject2-d.bundle in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+		]]
+	end
+
+>>>>>>> upstream/master
 ---------------------------------------------------------------------------
 -- PBXGroup tests
 ---------------------------------------------------------------------------

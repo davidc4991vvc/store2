@@ -6,6 +6,10 @@
 
 **********************************************************************/
 
+<<<<<<< HEAD
+=======
+#include "emu.h"
+>>>>>>> upstream/master
 #include "exp.h"
 
 
@@ -22,7 +26,11 @@
 //  DEVICE DEFINITIONS
 //**************************************************************************
 
+<<<<<<< HEAD
 const device_type PET_EXPANSION_SLOT = &device_creator<pet_expansion_slot_device>;
+=======
+DEFINE_DEVICE_TYPE(PET_EXPANSION_SLOT, pet_expansion_slot_device, "pet_expansion_slot", "PET memory expansion port")
+>>>>>>> upstream/master
 
 
 
@@ -34,8 +42,13 @@ const device_type PET_EXPANSION_SLOT = &device_creator<pet_expansion_slot_device
 //  pet_expansion_slot_device - constructor
 //-------------------------------------------------
 
+<<<<<<< HEAD
 pet_expansion_slot_device::pet_expansion_slot_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock) :
 	device_t(mconfig, PET_EXPANSION_SLOT, "PET memory expansion port", tag, owner, clock, "pet_expansion_slot", __FILE__),
+=======
+pet_expansion_slot_device::pet_expansion_slot_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock) :
+	device_t(mconfig, PET_EXPANSION_SLOT, tag, owner, clock),
+>>>>>>> upstream/master
 	device_slot_interface(mconfig, *this), m_card(nullptr),
 	m_read_dma(*this),
 	m_write_dma(*this)
@@ -92,7 +105,11 @@ void pet_expansion_slot_device::device_start()
 
 void pet_expansion_slot_device::device_reset()
 {
+<<<<<<< HEAD
 	if (m_card != NULL)
+=======
+	if (m_card != nullptr)
+>>>>>>> upstream/master
 	{
 		get_card_device()->reset();
 	}
@@ -113,9 +130,15 @@ int pet_expansion_slot_device::norom_r(address_space &space, offs_t offset, int 
 //  read - buffered data read
 //-------------------------------------------------
 
+<<<<<<< HEAD
 UINT8 pet_expansion_slot_device::read(address_space &space, offs_t offset, UINT8 data, int &sel)
 {
 	if (m_card != NULL)
+=======
+uint8_t pet_expansion_slot_device::read(address_space &space, offs_t offset, uint8_t data, int &sel)
+{
+	if (m_card != nullptr)
+>>>>>>> upstream/master
 	{
 		data = m_card->pet_bd_r(space, offset, data, sel);
 	}
@@ -128,9 +151,15 @@ UINT8 pet_expansion_slot_device::read(address_space &space, offs_t offset, UINT8
 //  write - buffered data write
 //-------------------------------------------------
 
+<<<<<<< HEAD
 void pet_expansion_slot_device::write(address_space &space, offs_t offset, UINT8 data, int &sel)
 {
 	if (m_card != NULL)
+=======
+void pet_expansion_slot_device::write(address_space &space, offs_t offset, uint8_t data, int &sel)
+{
+	if (m_card != nullptr)
+>>>>>>> upstream/master
 	{
 		m_card->pet_bd_w(space, offset, data, sel);
 	}
@@ -161,7 +190,11 @@ WRITE_LINE_MEMBER( pet_expansion_slot_device::irq_w )
 //  dma_bd_r - DMA read
 //-------------------------------------------------
 
+<<<<<<< HEAD
 UINT8 pet_expansion_slot_device::dma_bd_r(offs_t offset)
+=======
+uint8_t pet_expansion_slot_device::dma_bd_r(offs_t offset)
+>>>>>>> upstream/master
 {
 	return m_read_dma(offset);
 }
@@ -171,7 +204,11 @@ UINT8 pet_expansion_slot_device::dma_bd_r(offs_t offset)
 //  dma_bd_w - DMA write
 //-------------------------------------------------
 
+<<<<<<< HEAD
 void pet_expansion_slot_device::dma_bd_w(offs_t offset, UINT8 data)
+=======
+void pet_expansion_slot_device::dma_bd_w(offs_t offset, uint8_t data)
+>>>>>>> upstream/master
 {
 	m_write_dma(offset, data);
 }

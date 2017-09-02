@@ -129,8 +129,17 @@ ROMs -
 
 ----------------------------------------------------------------*/
 
+<<<<<<< HEAD
 #include "includes/psikyo4.h"
 #include "rendlay.h"
+=======
+#include "emu.h"
+#include "includes/psikyo4.h"
+
+#include "rendlay.h"
+#include "speaker.h"
+
+>>>>>>> upstream/master
 
 static GFXLAYOUT_RAW( layout_16x16x8, 16, 16, 16*8, 16*16*8 )
 
@@ -171,7 +180,11 @@ INTERRUPT_GEN_MEMBER(psikyo4_state::psikyosh_interrupt)
 
 CUSTOM_INPUT_MEMBER(psikyo4_state::mahjong_ctrl_r)/* used by hotgmck/hgkairak */
 {
+<<<<<<< HEAD
 	int player = (FPTR)param;
+=======
+	int player = (uintptr_t)param;
+>>>>>>> upstream/master
 	int ret = 0xff;
 
 	if (m_io_select & 1) ret &= m_keys[player+0]->read();
@@ -294,15 +307,25 @@ WRITE32_MEMBER(psikyo4_state::io_select_w)
 	// YMF banking
 	if (ACCESSING_BITS_16_31)
 	{
+<<<<<<< HEAD
 		UINT32 bankdata = data >> 16;
 		UINT32 bankmask = mem_mask >> 16;
 		for (int i = 0; i < 4; i++)
+=======
+		uint32_t bankdata = data >> 16;
+		uint32_t bankmask = mem_mask >> 16;
+		for (auto & elem : m_ymf_bank)
+>>>>>>> upstream/master
 		{
 			if (bankmask & 0x0f)
 			{
 				int banknum = bankdata & 0x0f;
 				if (banknum < m_ymf_max_bank)
+<<<<<<< HEAD
 					m_ymf_bank[i]->set_entry(banknum);
+=======
+					elem->set_entry(banknum);
+>>>>>>> upstream/master
 			}
 			bankdata >>= 4;
 			bankmask >>= 4;
@@ -339,7 +362,11 @@ static ADDRESS_MAP_START( ps4_map, AS_PROGRAM, 32, psikyo4_state )
 	AM_RANGE(0x06000000, 0x060fffff) AM_RAM AM_SHARE("ram") // main RAM (1 meg)
 ADDRESS_MAP_END
 
+<<<<<<< HEAD
 static ADDRESS_MAP_START( ps4_ymf_map, AS_0, 8, psikyo4_state )
+=======
+static ADDRESS_MAP_START( ps4_ymf_map, 0, 8, psikyo4_state )
+>>>>>>> upstream/master
 	AM_RANGE(0x000000, 0x0fffff) AM_ROMBANK("ymfbank0")
 	AM_RANGE(0x100000, 0x1fffff) AM_ROMBANK("ymfbank1")
 	AM_RANGE(0x200000, 0x2fffff) AM_ROMBANK("ymfbank2")
@@ -648,7 +675,11 @@ void psikyo4_state::machine_reset()
 	m_oldbrt2 = -1;
 }
 
+<<<<<<< HEAD
 static MACHINE_CONFIG_START( ps4big, psikyo4_state )
+=======
+static MACHINE_CONFIG_START( ps4big )
+>>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", SH2, MASTER_CLOCK/2)
@@ -688,7 +719,11 @@ static MACHINE_CONFIG_START( ps4big, psikyo4_state )
 	MCFG_SPEAKER_STANDARD_STEREO("lspeaker", "rspeaker")
 
 	MCFG_SOUND_ADD("ymf", YMF278B, MASTER_CLOCK/2)
+<<<<<<< HEAD
 	MCFG_DEVICE_ADDRESS_MAP(AS_0, ps4_ymf_map)
+=======
+	MCFG_DEVICE_ADDRESS_MAP(0, ps4_ymf_map)
+>>>>>>> upstream/master
 	MCFG_YMF278B_IRQ_HANDLER(INPUTLINE("maincpu", 12))
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "lspeaker", 1.0)
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "rspeaker", 1.0)
@@ -909,6 +944,7 @@ ROM_START( hotdebut )
 ROM_END
 
 
+<<<<<<< HEAD
 /*    YEAR  NAME      PARENT    MACHINE    INPUT     INIT              MONITOR COMPANY   FULLNAME     FLAGS */
 GAME( 1997, hotgmck,  0,        ps4big,    hotgmck,  driver_device, 0, ROT0,   "Psikyo", "Taisen Hot Gimmick (Japan)", MACHINE_SUPPORTS_SAVE )
 GAME( 1998, hgkairak, 0,        ps4big,    hotgmck,  driver_device, 0, ROT0,   "Psikyo", "Taisen Hot Gimmick Kairakuten (Japan)", MACHINE_SUPPORTS_SAVE )
@@ -918,3 +954,14 @@ GAME( 2001, hotgmcki, 0,        ps4big,    hotgmck,  driver_device, 0, ROT0,   "
 GAME( 2000, loderndf, 0,        ps4small,  loderndf, driver_device, 0, ROT0,   "Psikyo", "Lode Runner - The Dig Fight (ver. B)", MACHINE_SUPPORTS_SAVE )
 GAME( 2000, loderndfa,loderndf, ps4small,  loderndf, driver_device, 0, ROT0,   "Psikyo", "Lode Runner - The Dig Fight (ver. A)", MACHINE_SUPPORTS_SAVE )
 GAME( 2000, hotdebut, 0,        ps4small,  hotdebut, driver_device, 0, ROT0,   "MOSS / Psikyo", "Quiz de Idol! Hot Debut (Japan)", MACHINE_SUPPORTS_SAVE )
+=======
+//    YEAR  NAME      PARENT    MACHINE    INPUT     INIT              MONITOR COMPANY          FULLNAME                                        FLAGS
+GAME( 1997, hotgmck,  0,        ps4big,    hotgmck,  psikyo4_state, 0, ROT0,   "Psikyo",        "Taisen Hot Gimmick (Japan)",                   MACHINE_SUPPORTS_SAVE )
+GAME( 1998, hgkairak, 0,        ps4big,    hotgmck,  psikyo4_state, 0, ROT0,   "Psikyo",        "Taisen Hot Gimmick Kairakuten (Japan)",        MACHINE_SUPPORTS_SAVE )
+GAME( 1999, hotgmck3, 0,        ps4big,    hotgmck,  psikyo4_state, 0, ROT0,   "Psikyo",        "Taisen Hot Gimmick 3 Digital Surfing (Japan)", MACHINE_SUPPORTS_SAVE )
+GAME( 2000, hotgm4ev, 0,        ps4big,    hotgmck,  psikyo4_state, 0, ROT0,   "Psikyo",        "Taisen Hot Gimmick 4 Ever (Japan)",            MACHINE_SUPPORTS_SAVE )
+GAME( 2001, hotgmcki, 0,        ps4big,    hotgmck,  psikyo4_state, 0, ROT0,   "Psikyo",        "Mahjong Hot Gimmick Integral (Japan)",         MACHINE_SUPPORTS_SAVE )
+GAME( 2000, loderndf, 0,        ps4small,  loderndf, psikyo4_state, 0, ROT0,   "Psikyo",        "Lode Runner - The Dig Fight (ver. B)",         MACHINE_SUPPORTS_SAVE )
+GAME( 2000, loderndfa,loderndf, ps4small,  loderndf, psikyo4_state, 0, ROT0,   "Psikyo",        "Lode Runner - The Dig Fight (ver. A)",         MACHINE_SUPPORTS_SAVE )
+GAME( 2000, hotdebut, 0,        ps4small,  hotdebut, psikyo4_state, 0, ROT0,   "MOSS / Psikyo", "Quiz de Idol! Hot Debut (Japan)",              MACHINE_SUPPORTS_SAVE )
+>>>>>>> upstream/master

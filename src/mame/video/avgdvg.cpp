@@ -1,5 +1,10 @@
 // license:BSD-3-Clause
+<<<<<<< HEAD
 // copyright-holders:Eric Smith, Brad Oliver, Bernd Wiebelt, Aaron Giles, Andrew Caldwell
+=======
+// copyright-holders:Mathis Rosenhauer
+// thanks-to:Eric Smith, Brad Oliver, Bernd Wiebelt, Aaron Giles, Andrew Caldwell
+>>>>>>> upstream/master
 /*************************************************************************
 
     avgdvg.c: Atari DVG and AVG
@@ -15,6 +20,10 @@
 
 #include "emu.h"
 #include "avgdvg.h"
+<<<<<<< HEAD
+=======
+#include "screen.h"
+>>>>>>> upstream/master
 
 /*************************************
  *
@@ -68,19 +77,95 @@ void avgdvg_device::apply_flipping(int *x, int *y)
 
 void avgdvg_device::vg_flush()
 {
+<<<<<<< HEAD
+=======
+	int cx0 = 0, cy0 = 0, cx1 = 0x5000000, cy1 = 0x5000000;
+>>>>>>> upstream/master
 	int i = 0;
 
 	while (vectbuf[i].status == VGCLIP)
 		i++;
+<<<<<<< HEAD
 	m_vector->add_point(vectbuf[i].x, vectbuf[i].y, vectbuf[i].color, 0);
+=======
+	int xs = vectbuf[i].x;
+	int ys = vectbuf[i].y;
+>>>>>>> upstream/master
 
 	for (i = 0; i < nvect; i++)
 	{
 		if (vectbuf[i].status == VGVECTOR)
+<<<<<<< HEAD
 			m_vector->add_point(vectbuf[i].x, vectbuf[i].y, vectbuf[i].color, vectbuf[i].intensity);
 
 		if (vectbuf[i].status == VGCLIP)
 			m_vector->add_clip(vectbuf[i].x, vectbuf[i].y, vectbuf[i].arg1, vectbuf[i].arg2);
+=======
+		{
+			int xe = vectbuf[i].x;
+			int ye = vectbuf[i].y;
+			int x0 = xs, y0 = ys, x1 = xe, y1 = ye;
+
+			xs = xe;
+			ys = ye;
+
+			if((x0 < cx0 && x1 < cx0) || (x0 > cx1 && x1 > cx1))
+				continue;
+
+			if(x0 < cx0) {
+				y0 += int64_t(cx0-x0)*int64_t(y1-y0)/(x1-x0);
+				x0 = cx0;
+			} else if(x0 > cx1) {
+				y0 += int64_t(cx1-x0)*int64_t(y1-y0)/(x1-x0);
+				x0 = cx1;
+			}
+			if(x1 < cx0) {
+				y1 += int64_t(cx0-x1)*int64_t(y1-y0)/(x1-x0);
+				x1 = cx0;
+			} else if(x1 > cx1) {
+				y1 += int64_t(cx1-x1)*int64_t(y1-y0)/(x1-x0);
+				x1 = cx1;
+			}
+
+			if((y0 < cy0 && y1 < cy0) || (y0 > cy1 && y1 > cy1))
+				continue;
+
+			if(y0 < cy0) {
+				x0 += int64_t(cy0-y0)*int64_t(x1-x0)/(y1-y0);
+				y0 = cy0;
+			} else if(y0 > cy1) {
+				x0 += int64_t(cy1-y0)*int64_t(x1-x0)/(y1-y0);
+				y0 = cy1;
+			}
+			if(y1 < cy0) {
+				x1 += int64_t(cy0-y1)*int64_t(x1-x0)/(y1-y0);
+				y1 = cy0;
+			} else if(y1 > cy1) {
+				x1 += int64_t(cy1-y1)*int64_t(x1-x0)/(y1-y0);
+				y1 = cy1;
+			}
+
+			m_vector->add_point(x0, y0, vectbuf[i].color, 0);
+			m_vector->add_point(x1, y1, vectbuf[i].color, vectbuf[i].intensity);
+		}
+
+		if (vectbuf[i].status == VGCLIP) {
+			cx0 = vectbuf[i].x;
+			cy0 = vectbuf[i].y;
+			cx1 = vectbuf[i].arg1;
+			cy1 = vectbuf[i].arg2;
+			if(cx0 > cx1) {
+				int t = cx1;
+				cx1 = cx0;
+				cx0 = t;
+			}
+			if(cy0 > cx1) {
+				int t = cy1;
+				cy1 = cy0;
+				cy0 = t;
+			}
+		}
+>>>>>>> upstream/master
 	}
 
 	nvect=0;
@@ -127,9 +212,15 @@ void dvg_device::update_databus() // dvg_data
 	m_data = avgdvg_vectorram[(m_pc << 1) | (m_state_latch & 1)];
 }
 
+<<<<<<< HEAD
 UINT8 dvg_device::state_addr() // dvg_state_addr
 {
 	UINT8 addr;
+=======
+uint8_t dvg_device::state_addr() // dvg_state_addr
+{
+	uint8_t addr;
+>>>>>>> upstream/master
 
 	addr =((((m_state_latch >> 4) ^ 1) & 1) << 7) | (m_state_latch & 0xf);
 
@@ -169,7 +260,11 @@ void dvg_device::dvg_draw_to(int x, int y, int intensity)
 	if (((x | y) & 0x400) == 0)
 		vg_add_point_buf((xmin + x - 512) << 16,
 							(ymin + 512 - y) << 16,
+<<<<<<< HEAD
 							VECTOR_COLOR111(7), intensity << 4);
+=======
+							vector_device::color111(7), intensity << 4);
+>>>>>>> upstream/master
 }
 
 int dvg_device::handler_2() //dvg_gostrobe
@@ -368,7 +463,11 @@ void dvg_device::vgrst() // dvg_vgrst
  *
  *******************************************************************/
 
+<<<<<<< HEAD
 UINT8 avg_device::state_addr() // avg_state_addr
+=======
+uint8_t avg_device::state_addr() // avg_state_addr
+>>>>>>> upstream/master
 {
 	return (((m_state_latch >> 4) ^ 1) << 7)
 		| (m_op << 4)
@@ -610,7 +709,11 @@ int avg_device::handler_7() // avg_strobe3
 
 	if ((m_op & 5) == 0)
 	{
+<<<<<<< HEAD
 		vg_add_point_buf(m_xpos, m_ypos, VECTOR_COLOR111(m_color),
+=======
+		vg_add_point_buf(m_xpos, m_ypos, vector_device::color111(m_color),
+>>>>>>> upstream/master
 							(((m_int_latch >> 1) == 1)? m_intensity: m_int_latch & 0xe) << 4);
 	}
 
@@ -641,7 +744,11 @@ int avg_tempest_device::handler_6() // tempest_strobe2
 int avg_tempest_device::handler_7() // tempest_strobe3
 {
 	int cycles, r, g, b, bit0, bit1, bit2, bit3, x, y;
+<<<<<<< HEAD
 	UINT8 data;
+=======
+	uint8_t data;
+>>>>>>> upstream/master
 
 	cycles = avg_common_strobe3();
 
@@ -691,7 +798,11 @@ void avg_tempest_device::vggo() // tempest_vggo
 	*
 	*************************************/
 
+<<<<<<< HEAD
 	int avg_mhavoc_device::handler_1() //  mhavoc_latch1
+=======
+int avg_mhavoc_device::handler_1() //  mhavoc_latch1
+>>>>>>> upstream/master
 {
 	/*
 	 * Major Havoc just has ymin clipping
@@ -750,7 +861,11 @@ int avg_mhavoc_device::handler_7()  // mhavoc_strobe3
 {
 	int cycles, r, g, b, bit0, bit1, bit2, bit3, dx, dy, i;
 
+<<<<<<< HEAD
 	UINT8 data;
+=======
+	uint8_t data;
+>>>>>>> upstream/master
 
 	m_halt = OP0;
 	cycles = 0;
@@ -832,7 +947,11 @@ int avg_mhavoc_device::handler_7()  // mhavoc_strobe3
 
 void avg_mhavoc_device::update_databus() // mhavoc_data
 {
+<<<<<<< HEAD
 	UINT8 *bank;
+=======
+	uint8_t *bank;
+>>>>>>> upstream/master
 
 	if (m_pc & 0x2000)
 	{
@@ -883,7 +1002,11 @@ int avg_starwars_device::handler_7() // starwars_strobe3
 
 	if ((m_op & 5) == 0)
 	{
+<<<<<<< HEAD
 		vg_add_point_buf(m_xpos, m_ypos, VECTOR_COLOR111(m_color),
+=======
+		vg_add_point_buf(m_xpos, m_ypos, vector_device::color111(m_color),
+>>>>>>> upstream/master
 							((m_int_latch >> 1) * m_intensity) >> 3);
 	}
 
@@ -897,7 +1020,11 @@ int avg_starwars_device::handler_7() // starwars_strobe3
 	*************************************/
 void avg_quantum_device::update_databus() // quantum_data
 {
+<<<<<<< HEAD
 	m_data = ((UINT16 *)avgdvg_vectorram)[m_pc >> 1];
+=======
+	m_data = ((uint16_t *)avgdvg_vectorram)[m_pc >> 1];
+>>>>>>> upstream/master
 }
 
 void avg_quantum_device::vggo() // tempest_vggo
@@ -1013,13 +1140,21 @@ int avg_quantum_device::handler_7() // quantum_strobe3
 {
 	int cycles=0, r, g, b, bit0, bit1, bit2, bit3, x, y;
 
+<<<<<<< HEAD
 	UINT16 data;
+=======
+	uint16_t data;
+>>>>>>> upstream/master
 
 	m_halt = OP0;
 
 	if ((m_op & 5) == 0)
 	{
+<<<<<<< HEAD
 		data = ((UINT16 *)avgdvg_colorram)[m_color];
+=======
+		data = ((uint16_t *)avgdvg_colorram)[m_color];
+>>>>>>> upstream/master
 		bit3 = (~data >> 3) & 1;
 		bit2 = (~data >> 2) & 1;
 		bit1 = (~data >> 1) & 1;
@@ -1123,7 +1258,11 @@ int avg_bzone_device::handler_7() // bzone_strobe3
 
 	if ((m_op & 5) == 0)
 	{
+<<<<<<< HEAD
 		vg_add_point_buf(m_xpos, m_ypos, VECTOR_COLOR111(7),
+=======
+		vg_add_point_buf(m_xpos, m_ypos, vector_device::color111(7),
+>>>>>>> upstream/master
 							(((m_int_latch >> 1) == 1)? m_intensity: m_int_latch & 0xe) << 4);
 	}
 
@@ -1155,7 +1294,11 @@ int avg_tomcat_device::handler_7() // starwars_strobe3
 
 	if ((m_op & 5) == 0)
 	{
+<<<<<<< HEAD
 		vg_add_point_buf(m_xpos, m_ypos, VECTOR_COLOR111(m_color),
+=======
+		vg_add_point_buf(m_xpos, m_ypos, vector_device::color111(m_color),
+>>>>>>> upstream/master
 							((m_int_latch >> 1) * m_intensity) >> 3);
 	}
 
@@ -1197,7 +1340,11 @@ TIMER_CALLBACK_MEMBER( avgdvg_device::vg_set_halt_callback )
 TIMER_CALLBACK_MEMBER( avgdvg_device::run_state_machine )
 {
 	int cycles = 0;
+<<<<<<< HEAD
 	UINT8 *state_prom = machine().root_device().memregion("user1")->base();
+=======
+	uint8_t *state_prom = machine().root_device().memregion("user1")->base();
+>>>>>>> upstream/master
 
 	while (cycles < VGSLICE)
 	{
@@ -1340,10 +1487,21 @@ void avg_device::device_start()
 
 	const rectangle &visarea = machine().first_screen()->visible_area();
 
+<<<<<<< HEAD
 	avgdvg_vectorram = reinterpret_cast<UINT8 *>(machine().root_device().memshare("vectorram")->ptr());
 	avgdvg_vectorram_size = machine().root_device().memshare("vectorram")->bytes();
 
 	avgdvg_colorram = reinterpret_cast<UINT8 *>(machine().root_device().memshare("colorram")->ptr());
+=======
+	avgdvg_vectorram = reinterpret_cast<uint8_t *>(machine().root_device().memshare("vectorram")->ptr());
+	avgdvg_vectorram_size = machine().root_device().memshare("vectorram")->bytes();
+
+	memory_share *colorram = machine().root_device().memshare("colorram");
+	if (colorram != nullptr)
+	{
+		avgdvg_colorram = reinterpret_cast<uint8_t *>(colorram->ptr());
+	}
+>>>>>>> upstream/master
 
 	xmin = visarea.min_x;
 	ymin = visarea.min_y;
@@ -1376,10 +1534,21 @@ void dvg_device::device_start()
 
 	const rectangle &visarea = machine().first_screen()->visible_area();
 
+<<<<<<< HEAD
 	avgdvg_vectorram = reinterpret_cast<UINT8 *>(machine().root_device().memshare("vectorram")->ptr());
 	avgdvg_vectorram_size = machine().root_device().memshare("vectorram")->bytes();
 
 	avgdvg_colorram = reinterpret_cast<UINT8 *>(machine().root_device().memshare("colorram")->ptr());
+=======
+	avgdvg_vectorram = reinterpret_cast<uint8_t *>(machine().root_device().memshare("vectorram")->ptr());
+	avgdvg_vectorram_size = machine().root_device().memshare("vectorram")->bytes();
+
+	memory_share *colorram = machine().root_device().memshare("colorram");
+	if (colorram != nullptr)
+	{
+		avgdvg_colorram = reinterpret_cast<uint8_t *>(colorram->ptr());
+	}
+>>>>>>> upstream/master
 
 	xmin = visarea.min_x;
 	ymin = visarea.min_y;
@@ -1395,9 +1564,15 @@ void avgdvg_device::static_set_vector_tag(device_t &device, const char *tag)
 	downcast<avgdvg_device &>(device).m_vector.set_tag(tag);
 }
 
+<<<<<<< HEAD
 avgdvg_device::avgdvg_device(const machine_config &mconfig, device_type type, const char *name, const char *tag, device_t *owner, UINT32 clock, const char *shortname, const char *source) :
 		device_t(mconfig, type, name, tag, owner, clock, shortname, source),
 		m_vector(*this)
+=======
+avgdvg_device::avgdvg_device(const machine_config &mconfig, device_type type, const char *tag, device_t *owner, uint32_t clock)
+	: device_t(mconfig, type, tag, owner, clock)
+	, m_vector(*this, finder_base::DUMMY_TAG)
+>>>>>>> upstream/master
 {
 	m_pc = 0;
 	m_sp = 0;
@@ -1451,6 +1626,7 @@ avgdvg_device::avgdvg_device(const machine_config &mconfig, device_type type, co
 	nvect = 0;
 }
 
+<<<<<<< HEAD
 dvg_device::dvg_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock) :
 		avgdvg_device(mconfig, DVG, "Atari DVG", tag, owner, clock, "dvg", __FILE__)
 {
@@ -1463,10 +1639,25 @@ avg_device::avg_device(const machine_config &mconfig, const char *tag, device_t 
 
 avg_device::avg_device(const machine_config &mconfig, device_type type, const char *name, const char *tag, device_t *owner, UINT32 clock, const char *shortname, const char *source) :
 		avgdvg_device(mconfig, type, name, tag, owner, clock, shortname, source)
+=======
+dvg_device::dvg_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock) :
+	avgdvg_device(mconfig, DVG, tag, owner, clock)
+{
+}
+
+avg_device::avg_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock) :
+	avg_device(mconfig, AVG, tag, owner, clock)
+{
+}
+
+avg_device::avg_device(const machine_config &mconfig, device_type type, const char *tag, device_t *owner, uint32_t clock) :
+	avgdvg_device(mconfig, type, tag, owner, clock)
+>>>>>>> upstream/master
 {
 }
 
 
+<<<<<<< HEAD
 avg_tempest_device::avg_tempest_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock) :
 		avg_device(mconfig, AVG_TEMPEST, "Atari AVG (Tempest)", tag, owner, clock, "avg_tempest", __FILE__)
 {
@@ -1504,3 +1695,42 @@ const device_type AVG_STARWARS = &device_creator<avg_starwars_device>;
 const device_type AVG_QUANTUM = &device_creator<avg_quantum_device>;
 const device_type AVG_BZONE = &device_creator<avg_bzone_device>;
 const device_type AVG_TOMCAT = &device_creator<avg_tomcat_device>;
+=======
+avg_tempest_device::avg_tempest_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock) :
+	avg_device(mconfig, AVG_TEMPEST, tag, owner, clock)
+{
+}
+avg_mhavoc_device::avg_mhavoc_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock) :
+	avg_device(mconfig, AVG_MHAVOC, tag, owner, clock)
+{
+}
+
+avg_starwars_device::avg_starwars_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock) :
+	avg_device(mconfig, AVG_STARWARS, tag, owner, clock)
+{
+}
+
+avg_quantum_device::avg_quantum_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock) :
+	avg_device(mconfig, AVG_QUANTUM, tag, owner, clock)
+{
+}
+
+avg_bzone_device::avg_bzone_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock) :
+	avg_device(mconfig, AVG_BZONE, tag, owner, clock)
+{
+}
+
+avg_tomcat_device::avg_tomcat_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock) :
+	avg_device(mconfig, AVG_TOMCAT, tag, owner, clock)
+{
+}
+
+DEFINE_DEVICE_TYPE(DVG,          dvg_device,          "dvg",          "Atari DVG")
+DEFINE_DEVICE_TYPE(AVG,          avg_device,          "avg",          "Atari AVG")
+DEFINE_DEVICE_TYPE(AVG_TEMPEST,  avg_tempest_device,  "avg_tempest",  "Atari AVG (Tempest)")
+DEFINE_DEVICE_TYPE(AVG_MHAVOC,   avg_mhavoc_device,   "avg_mhavoc",   "Atari AVG (Major Havoc)")
+DEFINE_DEVICE_TYPE(AVG_STARWARS, avg_starwars_device, "avg_starwars", "Atari AVG (Star Wars)")
+DEFINE_DEVICE_TYPE(AVG_QUANTUM,  avg_quantum_device,  "avg_quantum",  "Atari AVG (Quantum)")
+DEFINE_DEVICE_TYPE(AVG_BZONE,    avg_bzone_device,    "avg_bzone",    "Atari AVG (Battle Zone)")
+DEFINE_DEVICE_TYPE(AVG_TOMCAT,   avg_tomcat_device,   "avg_tomcat",   "Atari AVG (TomCat)")
+>>>>>>> upstream/master

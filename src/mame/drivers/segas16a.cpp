@@ -148,11 +148,22 @@ Tetris         -         -         -         -         EPR12169  EPR12170  -    
 
 #include "emu.h"
 #include "includes/segas16a.h"
+<<<<<<< HEAD
 #include "machine/segacrp2.h"
 #include "machine/fd1089.h"
 #include "machine/nvram.h"
 #include "sound/dac.h"
 #include "includes/segaipt.h"
+=======
+#include "includes/segaipt.h"
+
+#include "machine/fd1089.h"
+#include "machine/nvram.h"
+#include "machine/segacrp2_device.h"
+#include "sound/dac.h"
+#include "sound/volt_reg.h"
+#include "speaker.h"
+>>>>>>> upstream/master
 
 
 //**************************************************************************
@@ -181,8 +192,13 @@ WRITE8_MEMBER( segas16a_state::misc_control_w )
 	// bits 2 & 3: control the lamps, allowing for overrides
 	if (((m_video_control ^ data) & 0x0c) && !m_lamp_changed_w.isnull())
 		m_lamp_changed_w(m_video_control ^ data, data);
+<<<<<<< HEAD
 	set_led_status(machine(), 1, data & 0x08);
 	set_led_status(machine(), 0, data & 0x04);
+=======
+	output().set_led_value(1, data & 0x08);
+	output().set_led_value(0, data & 0x04);
+>>>>>>> upstream/master
 
 	m_video_control = data;
 
@@ -191,15 +207,24 @@ WRITE8_MEMBER( segas16a_state::misc_control_w )
 	m_sprites->set_flip(data & 0x80);
 
 	// bit 6: set 8751 interrupt line
+<<<<<<< HEAD
 	if (m_mcu != NULL)
+=======
+	if (m_mcu != nullptr)
+>>>>>>> upstream/master
 		m_mcu->set_input_line(MCS51_INT1_LINE, (data & 0x40) ? CLEAR_LINE : ASSERT_LINE);
 
 	// bit 4: enable display
 	m_segaic16vid->set_display_enable(data & 0x10);
 
 	// bits 0 & 1: update coin counters
+<<<<<<< HEAD
 	coin_counter_w(machine(), 1, data & 0x02);
 	coin_counter_w(machine(), 0, data & 0x01);
+=======
+	machine().bookkeeping().coin_counter_w(1, data & 0x02);
+	machine().bookkeeping().coin_counter_w(0, data & 0x01);
+>>>>>>> upstream/master
 }
 
 
@@ -255,7 +280,11 @@ READ16_MEMBER( segas16a_state::standard_io_r )
 		case 0x2000/2:
 			return ioport((offset & 1) ? "DSW2" : "DSW1")->read();
 	}
+<<<<<<< HEAD
 	//logerror("%06X:standard_io_r - unknown read access to address %04X\n", m_maincpu->pc(), offset * 2);
+=======
+	//logerror("%06X:standard_io_r - unknown read access to address %04X\n", m_maincpu->state_int(STATE_GENPC), offset * 2);
+>>>>>>> upstream/master
 	return 0xffff;
 }
 
@@ -276,7 +305,11 @@ WRITE16_MEMBER( segas16a_state::standard_io_w )
 				synchronize(TID_PPI_WRITE, ((offset & 3) << 8) | (data & 0xff));
 			return;
 	}
+<<<<<<< HEAD
 	//logerror("%06X:standard_io_w - unknown write access to address %04X = %04X & %04X\n", m_maincpu->pc(), offset * 2, data, mem_mask);
+=======
+	//logerror("%06X:standard_io_w - unknown write access to address %04X = %04X & %04X\n", m_maincpu->state_int(STATE_GENPC), offset * 2, data, mem_mask);
+>>>>>>> upstream/master
 }
 
 
@@ -315,7 +348,11 @@ READ8_MEMBER( segas16a_state::sound_data_r )
 {
 	// assert ACK
 	m_i8255->pc6_w(CLEAR_LINE);
+<<<<<<< HEAD
 	return soundlatch_read();
+=======
+	return m_soundlatch->read(space, 0);
+>>>>>>> upstream/master
 }
 
 
@@ -402,7 +439,11 @@ READ8_MEMBER( segas16a_state::n7751_p2_r )
 {
 	// read from P2 - 8255's PC0-2 connects to 7751's S0-2 (P24-P26 on an 8048)
 	// bit 0x80 is an alternate way to control the sample on/off; doesn't appear to be used
+<<<<<<< HEAD
 	return 0x80 | ((m_n7751_command & 0x07) << 4) | (m_n7751_i8243->i8243_p2_r(space, offset) & 0x0f);
+=======
+	return 0x80 | ((m_n7751_command & 0x07) << 4) | (m_n7751_i8243->p2_r(space, offset) & 0x0f);
+>>>>>>> upstream/master
 }
 
 
@@ -413,13 +454,18 @@ READ8_MEMBER( segas16a_state::n7751_p2_r )
 WRITE8_MEMBER( segas16a_state::n7751_p2_w )
 {
 	// write to P2; low 4 bits go to 8243
+<<<<<<< HEAD
 	m_n7751_i8243->i8243_p2_w(space, offset, data & 0x0f);
+=======
+	m_n7751_i8243->p2_w(space, offset, data & 0x0f);
+>>>>>>> upstream/master
 
 	// output of bit $80 indicates we are ready (1) or busy (0)
 	// no other outputs are used
 }
 
 
+<<<<<<< HEAD
 //-------------------------------------------------
 //  n7751_t1_r - MCU reads from the T1 line
 //-------------------------------------------------
@@ -431,6 +477,8 @@ READ8_MEMBER( segas16a_state::n7751_t1_r )
 }
 
 
+=======
+>>>>>>> upstream/master
 
 //**************************************************************************
 //  I8751 MCU READ/WRITE HANDLERS
@@ -533,7 +581,11 @@ READ8_MEMBER( segas16a_state::mcu_io_r )
 		case 0:
 			// access watchdog? (unsure about this one)
 			if (                         offset < 0x3fff)
+<<<<<<< HEAD
 				return watchdog_reset_r(space, 0);
+=======
+				return m_watchdog->reset_r(space, 0);
+>>>>>>> upstream/master
 
 			// access main work RAM
 			else if (offset >= 0x4000 && offset < 0x8000)
@@ -636,7 +688,11 @@ void segas16a_state::device_timer(emu_timer &timer, device_timer_id id, int para
 		case TID_INIT_I8751:
 			if (!m_i8751_vblank_hook.isnull())
 				m_mcu->suspend(SUSPEND_REASON_DISABLE, 1);
+<<<<<<< HEAD
 			else if (m_mcu != NULL)
+=======
+			else if (m_mcu != nullptr)
+>>>>>>> upstream/master
 				machine().scheduler().boost_interleave(attotime::zero, attotime::from_msec(10));
 			break;
 
@@ -660,10 +716,17 @@ void segas16a_state::device_timer(emu_timer &timer, device_timer_id id, int para
 
 void segas16a_state::dumpmtmt_i8751_sim()
 {
+<<<<<<< HEAD
 	UINT8 flag = m_workram[0x200/2] >> 8;
 	UINT8 tick = m_workram[0x200/2] & 0xff;
 	UINT8 sec = m_workram[0x202/2] >> 8;
 	UINT8 min = m_workram[0x202/2] & 0xff;
+=======
+	uint8_t flag = m_workram[0x200/2] >> 8;
+	uint8_t tick = m_workram[0x200/2] & 0xff;
+	uint8_t sec = m_workram[0x202/2] >> 8;
+	uint8_t min = m_workram[0x202/2] & 0xff;
+>>>>>>> upstream/master
 
 	// signal a VBLANK to the main CPU
 	m_maincpu->set_input_line(4, HOLD_LINE);
@@ -771,10 +834,36 @@ READ16_MEMBER( segas16a_state::aceattaca_custom_io_r )
 				}
 			}
 			break;
+<<<<<<< HEAD
+=======
+
+		case 0x3000/2:
+			if (BIT(offset, 4))
+				return m_cxdio->read(space, offset & 0x0f);
+			break;
+>>>>>>> upstream/master
 	}
 	return standard_io_r(space, offset, mem_mask);
 }
 
+<<<<<<< HEAD
+=======
+WRITE16_MEMBER( segas16a_state::aceattaca_custom_io_w )
+{
+	switch (offset & (0x3000/2))
+	{
+		case 0x3000/2:
+			if (BIT(offset, 4))
+			{
+				m_cxdio->write(space, offset & 0x0f, data);
+				return;
+			}
+			break;
+	}
+	standard_io_w(space, offset, data, mem_mask);
+}
+
+>>>>>>> upstream/master
 
 //-------------------------------------------------
 //  mjleague_custom_io_r - custom I/O read handler
@@ -792,9 +881,15 @@ READ16_MEMBER( segas16a_state::mjleague_custom_io_r )
 				// upper bit of the trackball controls
 				case 0:
 				{
+<<<<<<< HEAD
 					UINT8 buttons = ioport("SERVICE")->read();
 					UINT8 analog1 = ioport((m_video_control & 4) ? "ANALOGY1" : "ANALOGX1")->read();
 					UINT8 analog2 = ioport((m_video_control & 4) ? "ANALOGY2" : "ANALOGX2")->read();
+=======
+					uint8_t buttons = ioport("SERVICE")->read();
+					uint8_t analog1 = ioport((m_video_control & 4) ? "ANALOGY1" : "ANALOGX1")->read();
+					uint8_t analog2 = ioport((m_video_control & 4) ? "ANALOGY2" : "ANALOGX2")->read();
+>>>>>>> upstream/master
 					buttons |= (analog1 & 0x80) >> 1;
 					buttons |= (analog2 & 0x80);
 					return buttons;
@@ -804,8 +899,13 @@ READ16_MEMBER( segas16a_state::mjleague_custom_io_r )
 				// player 1 select switch mapped to bit 7
 				case 1:
 				{
+<<<<<<< HEAD
 					UINT8 buttons = ioport("BUTTONS1")->read();
 					UINT8 analog = ioport((m_video_control & 4) ? "ANALOGY1" : "ANALOGX1")->read();
+=======
+					uint8_t buttons = ioport("BUTTONS1")->read();
+					uint8_t analog = ioport((m_video_control & 4) ? "ANALOGY1" : "ANALOGX1")->read();
+>>>>>>> upstream/master
 					return (buttons & 0x80) | (analog & 0x7f);
 				}
 
@@ -816,8 +916,13 @@ READ16_MEMBER( segas16a_state::mjleague_custom_io_r )
 						return (ioport("ANALOGZ1")->read() >> 4) | (ioport("ANALOGZ2")->read() & 0xf0);
 					else
 					{
+<<<<<<< HEAD
 						UINT8 buttons1 = ioport("BUTTONS1")->read();
 						UINT8 buttons2 = ioport("BUTTONS2")->read();
+=======
+						uint8_t buttons1 = ioport("BUTTONS1")->read();
+						uint8_t buttons2 = ioport("BUTTONS2")->read();
+>>>>>>> upstream/master
 
 						if (!(buttons1 & 0x01))
 							m_last_buttons1 = 0;
@@ -845,8 +950,13 @@ READ16_MEMBER( segas16a_state::mjleague_custom_io_r )
 				// player 2 select switch mapped to bit 7
 				case 3:
 				{
+<<<<<<< HEAD
 					UINT8 buttons = ioport("BUTTONS2")->read();
 					UINT8 analog = ioport((m_video_control & 4) ? "ANALOGY2" : "ANALOGX2")->read();
+=======
+					uint8_t buttons = ioport("BUTTONS2")->read();
+					uint8_t analog = ioport((m_video_control & 4) ? "ANALOGY2" : "ANALOGX2")->read();
+>>>>>>> upstream/master
 					return (buttons & 0x80) | (analog & 0x7f);
 				}
 			}
@@ -917,19 +1027,30 @@ READ16_MEMBER( segas16a_state::sdi_custom_io_r )
 
 READ16_MEMBER( segas16a_state::sjryuko_custom_io_r )
 {
+<<<<<<< HEAD
 	static const char *const portname[] = { "MJ0", "MJ1", "MJ2", "MJ3", "MJ4", "MJ5" };
+=======
+>>>>>>> upstream/master
 	switch (offset & (0x3000/2))
 	{
 		case 0x1000/2:
 			switch (offset & 3)
 			{
 				case 1:
+<<<<<<< HEAD
 					if (read_safe(ioport(portname[m_mj_input_num]), 0xff) != 0xff)
+=======
+					if (m_mj_inputs[m_mj_input_num].read_safe(0xff) != 0xff)
+>>>>>>> upstream/master
 						return 0xff & ~(1 << m_mj_input_num);
 					return 0xff;
 
 				case 2:
+<<<<<<< HEAD
 					return read_safe(ioport(portname[m_mj_input_num]), 0xff);
+=======
+					return m_mj_inputs[m_mj_input_num].read_safe(0xff);
+>>>>>>> upstream/master
 			}
 			break;
 	}
@@ -937,7 +1058,11 @@ READ16_MEMBER( segas16a_state::sjryuko_custom_io_r )
 }
 
 
+<<<<<<< HEAD
 void segas16a_state::sjryuko_lamp_changed_w(UINT8 changed, UINT8 newval)
+=======
+void segas16a_state::sjryuko_lamp_changed_w(uint8_t changed, uint8_t newval)
+>>>>>>> upstream/master
 {
 	if ((changed & 4) && (newval & 4))
 		m_mj_input_num = (m_mj_input_num + 1) % 6;
@@ -957,11 +1082,19 @@ static ADDRESS_MAP_START( system16a_map, AS_PROGRAM, 16, segas16a_state )
 	AM_RANGE(0x440000, 0x4407ff) AM_MIRROR(0x3bf800) AM_RAM AM_SHARE("sprites")
 	AM_RANGE(0x840000, 0x840fff) AM_MIRROR(0x3bf000) AM_RAM_WRITE(paletteram_w) AM_SHARE("paletteram")
 	AM_RANGE(0xc40000, 0xc43fff) AM_MIRROR(0x39c000) AM_READWRITE(misc_io_r, misc_io_w)
+<<<<<<< HEAD
 	AM_RANGE(0xc60000, 0xc6ffff) AM_READ(watchdog_reset16_r)
 	AM_RANGE(0xc70000, 0xc73fff) AM_MIRROR(0x38c000) AM_RAM AM_SHARE("nvram")
 ADDRESS_MAP_END
 
 static ADDRESS_MAP_START( decrypted_opcodes_map, AS_DECRYPTED_OPCODES, 16, segas16a_state )
+=======
+	AM_RANGE(0xc60000, 0xc6ffff) AM_DEVREAD("watchdog", watchdog_timer_device, reset16_r)
+	AM_RANGE(0xc70000, 0xc73fff) AM_MIRROR(0x38c000) AM_RAM AM_SHARE("nvram")
+ADDRESS_MAP_END
+
+static ADDRESS_MAP_START( decrypted_opcodes_map, AS_OPCODES, 16, segas16a_state )
+>>>>>>> upstream/master
 	AM_RANGE(0x00000, 0xfffff) AM_ROMBANK("fd1094_decrypted_opcodes")
 ADDRESS_MAP_END
 
@@ -976,7 +1109,11 @@ static ADDRESS_MAP_START( sound_map, AS_PROGRAM, 8, segas16a_state )
 	AM_RANGE(0xf800, 0xffff) AM_RAM
 ADDRESS_MAP_END
 
+<<<<<<< HEAD
 static ADDRESS_MAP_START( sound_decrypted_opcodes_map, AS_DECRYPTED_OPCODES, 8, segas16a_state )
+=======
+static ADDRESS_MAP_START( sound_decrypted_opcodes_map, AS_OPCODES, 8, segas16a_state )
+>>>>>>> upstream/master
 	AM_RANGE(0x0000, 0x7fff) AM_ROM AM_SHARE("sound_decrypted_opcodes")
 ADDRESS_MAP_END
 
@@ -988,6 +1125,7 @@ static ADDRESS_MAP_START( sound_portmap, AS_IO, 8, segas16a_state )
 	AM_RANGE(0xc0, 0xc0) AM_MIRROR(0x3f) AM_READ(sound_data_r)
 ADDRESS_MAP_END
 
+<<<<<<< HEAD
 
 
 //**************************************************************************
@@ -1000,6 +1138,14 @@ static ADDRESS_MAP_START( n7751_portmap, AS_IO, 8, segas16a_state )
 	AM_RANGE(MCS48_PORT_P1,   MCS48_PORT_P1)   AM_DEVWRITE("dac", dac_device, write_unsigned8)
 	AM_RANGE(MCS48_PORT_P2,   MCS48_PORT_P2)   AM_READWRITE(n7751_p2_r, n7751_p2_w)
 	AM_RANGE(MCS48_PORT_PROG, MCS48_PORT_PROG) AM_DEVWRITE("n7751_8243", i8243_device, i8243_prog_w)
+=======
+static ADDRESS_MAP_START( sound_no7751_portmap, AS_IO, 8, segas16a_state )
+	ADDRESS_MAP_UNMAP_HIGH
+	ADDRESS_MAP_GLOBAL_MASK(0xff)
+	AM_RANGE(0x00, 0x01) AM_MIRROR(0x3e) AM_DEVREADWRITE("ymsnd", ym2151_device, read, write)
+	AM_RANGE(0x80, 0x80) AM_MIRROR(0x3f) AM_NOP
+	AM_RANGE(0xc0, 0xc0) AM_MIRROR(0x3f) AM_READ(sound_data_r)
+>>>>>>> upstream/master
 ADDRESS_MAP_END
 
 
@@ -1883,7 +2029,11 @@ GFXDECODE_END
 //  GENERIC MACHINE DRIVERS
 //**************************************************************************
 
+<<<<<<< HEAD
 static MACHINE_CONFIG_START( system16a, segas16a_state )
+=======
+static MACHINE_CONFIG_START( system16a )
+>>>>>>> upstream/master
 
 	// basic machine hardware
 	MCFG_CPU_ADD("maincpu", M68000, 10000000)
@@ -1895,14 +2045,30 @@ static MACHINE_CONFIG_START( system16a, segas16a_state )
 	MCFG_CPU_IO_MAP(sound_portmap)
 
 	MCFG_CPU_ADD("n7751", N7751, 6000000)
+<<<<<<< HEAD
 	MCFG_CPU_IO_MAP(n7751_portmap)
+=======
+	MCFG_MCS48_PORT_BUS_IN_CB(READ8(segas16a_state, n7751_rom_r))
+	MCFG_MCS48_PORT_T1_IN_CB(GND) // labelled as "TEST", connected to ground
+	MCFG_MCS48_PORT_P1_OUT_CB(DEVWRITE8("dac", dac_byte_interface, write))
+	MCFG_MCS48_PORT_P2_IN_CB(READ8(segas16a_state, n7751_p2_r))
+	MCFG_MCS48_PORT_P2_OUT_CB(WRITE8(segas16a_state, n7751_p2_w))
+	MCFG_MCS48_PORT_PROG_OUT_CB(DEVWRITELINE("n7751_8243", i8243_device, prog_w))
+>>>>>>> upstream/master
 
 	MCFG_I8243_ADD("n7751_8243", NOOP, WRITE8(segas16a_state,n7751_rom_offset_w))
 
 	MCFG_NVRAM_ADD_0FILL("nvram")
 
+<<<<<<< HEAD
 	MCFG_DEVICE_ADD("i8255", I8255, 0)
 	MCFG_I8255_OUT_PORTA_CB(WRITE8(driver_device, soundlatch_byte_w))
+=======
+	MCFG_WATCHDOG_ADD("watchdog")
+
+	MCFG_DEVICE_ADD("i8255", I8255, 0)
+	MCFG_I8255_OUT_PORTA_CB(DEVWRITE8("soundlatch", generic_latch_8_device, write))
+>>>>>>> upstream/master
 	MCFG_I8255_OUT_PORTB_CB(WRITE8(segas16a_state, misc_control_w))
 	MCFG_I8255_OUT_PORTC_CB(WRITE8(segas16a_state, tilemap_sound_w))
 
@@ -1922,6 +2088,7 @@ static MACHINE_CONFIG_START( system16a, segas16a_state )
 	MCFG_PALETTE_ADD("palette", 2048*3)
 
 	// sound hardware
+<<<<<<< HEAD
 	MCFG_SPEAKER_STANDARD_MONO("mono")
 
 	MCFG_YM2151_ADD("ymsnd", 4000000)
@@ -1930,6 +2097,19 @@ static MACHINE_CONFIG_START( system16a, segas16a_state )
 
 	MCFG_DAC_ADD("dac")
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 0.80)
+=======
+	MCFG_SPEAKER_STANDARD_MONO("speaker")
+
+	MCFG_GENERIC_LATCH_8_ADD("soundlatch")
+
+	MCFG_YM2151_ADD("ymsnd", 4000000)
+	MCFG_YM2151_PORT_WRITE_HANDLER(WRITE8(segas16a_state, n7751_control_w))
+	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "speaker", 0.43)
+
+	MCFG_SOUND_ADD("dac", DAC_8BIT_R2R, 0) MCFG_SOUND_ROUTE(ALL_OUTPUTS, "speaker", 0.4) // unknown DAC
+	MCFG_DEVICE_ADD("vref", VOLTAGE_REGULATOR, 0) MCFG_VOLTAGE_REGULATOR_OUTPUT(5.0)
+	MCFG_SOUND_ROUTE_EX(0, "dac", 1.0, DAC_VREF_POS_INPUT) MCFG_SOUND_ROUTE_EX(0, "dac", -1.0, DAC_VREF_NEG_INPUT)
+>>>>>>> upstream/master
 MACHINE_CONFIG_END
 
 
@@ -1952,6 +2132,13 @@ static MACHINE_CONFIG_DERIVED( system16a_fd1094, system16a )
 	MCFG_CPU_VBLANK_INT_DRIVER("screen", segas16a_state, irq4_line_hold)
 MACHINE_CONFIG_END
 
+<<<<<<< HEAD
+=======
+static MACHINE_CONFIG_DERIVED( aceattaca_fd1094, system16a_fd1094 )
+	MCFG_DEVICE_ADD("cxdio", CXD1095, 0)
+MACHINE_CONFIG_END
+
+>>>>>>> upstream/master
 
 static MACHINE_CONFIG_DERIVED( system16a_i8751, system16a )
 	MCFG_CPU_MODIFY("maincpu")
@@ -1964,6 +2151,7 @@ MACHINE_CONFIG_END
 
 
 static MACHINE_CONFIG_DERIVED( system16a_no7751, system16a )
+<<<<<<< HEAD
 	MCFG_DEVICE_REMOVE("n7751")
 	MCFG_DEVICE_REMOVE("dac")
 
@@ -1974,19 +2162,46 @@ MACHINE_CONFIG_END
 static MACHINE_CONFIG_DERIVED( system16a_no7751p, system16a_no7751 )
 	MCFG_DEVICE_MODIFY("soundcpu")
 	MCFG_CPU_DECRYPTED_OPCODES_MAP(sound_decrypted_opcodes_map)
+=======
+	MCFG_CPU_MODIFY("soundcpu")
+	MCFG_CPU_IO_MAP(sound_no7751_portmap)
+
+	MCFG_DEVICE_REMOVE("n7751")
+	MCFG_DEVICE_REMOVE("dac")
+	MCFG_DEVICE_REMOVE("vref")
+
+	MCFG_SOUND_REPLACE("ymsnd", YM2151, 4000000)
+	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "speaker", 1.0)
+MACHINE_CONFIG_END
+
+static MACHINE_CONFIG_DERIVED( system16a_no7751p, system16a_no7751 )
+	MCFG_CPU_REPLACE("soundcpu", SEGA_315_5177, 4000000)
+	MCFG_CPU_PROGRAM_MAP(sound_map)
+	MCFG_CPU_IO_MAP(sound_no7751_portmap)
+	MCFG_CPU_DECRYPTED_OPCODES_MAP(sound_decrypted_opcodes_map)
+	MCFG_SEGAZ80_SET_DECRYPTED_TAG(":sound_decrypted_opcodes")
+>>>>>>> upstream/master
 MACHINE_CONFIG_END
 
 /*
 static MACHINE_CONFIG_DERIVED( system16a_i8751_no7751, system16a_i8751 )
     MCFG_DEVICE_REMOVE("n7751")
     MCFG_DEVICE_REMOVE("dac")
+<<<<<<< HEAD
 
     MCFG_SOUND_REPLACE("ymsnd", YM2151, 4000000)
     MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 1.0)
+=======
+    MCFG_DEVICE_REMOVE("vref")
+
+    MCFG_SOUND_REPLACE("ymsnd", YM2151, 4000000)
+    MCFG_SOUND_ROUTE(ALL_OUTPUTS, "speaker", 1.0)
+>>>>>>> upstream/master
 MACHINE_CONFIG_END
 */
 
 static MACHINE_CONFIG_DERIVED( system16a_fd1089a_no7751, system16a_fd1089a )
+<<<<<<< HEAD
 	MCFG_DEVICE_REMOVE("n7751")
 	MCFG_DEVICE_REMOVE("dac")
 
@@ -2008,6 +2223,41 @@ static MACHINE_CONFIG_DERIVED( system16a_fd1094_no7751, system16a_fd1094 )
 
 	MCFG_SOUND_REPLACE("ymsnd", YM2151, 4000000)
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 1.0)
+=======
+	MCFG_CPU_MODIFY("soundcpu")
+	MCFG_CPU_IO_MAP(sound_no7751_portmap)
+
+	MCFG_DEVICE_REMOVE("n7751")
+	MCFG_DEVICE_REMOVE("dac")
+	MCFG_DEVICE_REMOVE("vref")
+
+	MCFG_SOUND_REPLACE("ymsnd", YM2151, 4000000)
+	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "speaker", 1.0)
+MACHINE_CONFIG_END
+
+static MACHINE_CONFIG_DERIVED( system16a_fd1089b_no7751, system16a_fd1089b )
+	MCFG_CPU_MODIFY("soundcpu")
+	MCFG_CPU_IO_MAP(sound_no7751_portmap)
+
+	MCFG_DEVICE_REMOVE("n7751")
+	MCFG_DEVICE_REMOVE("dac")
+	MCFG_DEVICE_REMOVE("vref")
+
+	MCFG_SOUND_REPLACE("ymsnd", YM2151, 4000000)
+	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "speaker", 1.0)
+MACHINE_CONFIG_END
+
+static MACHINE_CONFIG_DERIVED( system16a_fd1094_no7751, system16a_fd1094 )
+	MCFG_CPU_MODIFY("soundcpu")
+	MCFG_CPU_IO_MAP(sound_no7751_portmap)
+
+	MCFG_DEVICE_REMOVE("n7751")
+	MCFG_DEVICE_REMOVE("dac")
+	MCFG_DEVICE_REMOVE("vref")
+
+	MCFG_SOUND_REPLACE("ymsnd", YM2151, 4000000)
+	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "speaker", 1.0)
+>>>>>>> upstream/master
 MACHINE_CONFIG_END
 
 
@@ -3629,12 +3879,20 @@ DRIVER_INIT_MEMBER(segas16a_state,aceattaca)
 {
 	DRIVER_INIT_CALL(generic);
 	m_custom_io_r = read16_delegate(FUNC(segas16a_state::aceattaca_custom_io_r), this);
+<<<<<<< HEAD
+=======
+	m_custom_io_w = write16_delegate(FUNC(segas16a_state::aceattaca_custom_io_w), this);
+>>>>>>> upstream/master
 }
 
 DRIVER_INIT_MEMBER(segas16a_state,dumpmtmt)
 {
 	DRIVER_INIT_CALL(generic);
+<<<<<<< HEAD
 	m_i8751_vblank_hook = i8751_sim_delegate(FUNC(segas16a_state::dumpmtmt_i8751_sim), this);
+=======
+	m_i8751_vblank_hook = i8751_sim_delegate(&segas16a_state::dumpmtmt_i8751_sim, this);
+>>>>>>> upstream/master
 }
 
 DRIVER_INIT_MEMBER(segas16a_state,mjleague)
@@ -3652,6 +3910,7 @@ DRIVER_INIT_MEMBER(segas16a_state,passsht16a)
 DRIVER_INIT_MEMBER(segas16a_state,quartet)
 {
 	DRIVER_INIT_CALL(generic);
+<<<<<<< HEAD
 	m_i8751_vblank_hook = i8751_sim_delegate(FUNC(segas16a_state::quartet_i8751_sim), this);
 }
 
@@ -3712,6 +3971,11 @@ DRIVER_INIT_MEMBER(segas16a_state,fantzonep)
 
 	sega_decode_2(memregion("soundcpu")->base(), m_sound_decrypted_opcodes, xor_table, swap_table);
 }
+=======
+	m_i8751_vblank_hook = i8751_sim_delegate(&segas16a_state::quartet_i8751_sim, this);
+}
+
+>>>>>>> upstream/master
 
 DRIVER_INIT_MEMBER(segas16a_state,sdi)
 {
@@ -3723,7 +3987,11 @@ DRIVER_INIT_MEMBER(segas16a_state,sjryukoa)
 {
 	DRIVER_INIT_CALL(generic);
 	m_custom_io_r = read16_delegate(FUNC(segas16a_state::sjryuko_custom_io_r), this);
+<<<<<<< HEAD
 	m_lamp_changed_w = lamp_changed_delegate(FUNC(segas16a_state::sjryuko_lamp_changed_w), this);
+=======
+	m_lamp_changed_w = lamp_changed_delegate(&segas16a_state::sjryuko_lamp_changed_w, this);
+>>>>>>> upstream/master
 }
 
 
@@ -3750,7 +4018,11 @@ GAME( 1987, aliensyn5,  aliensyn, system16a_fd1089b,        aliensyn,   segas16a
 GAME( 1987, aliensyn2,  aliensyn, system16a_fd1089a,        aliensyn,   segas16a_state,generic,     ROT0,   "Sega", "Alien Syndrome (set 2, System 16A, FD1089A 317-0033)", MACHINE_SUPPORTS_SAVE )
 GAME( 1987, aliensynjo, aliensyn, system16a_fd1089a,        aliensynj,  segas16a_state,generic,     ROT0,   "Sega", "Alien Syndrome (set 1, Japan, old, System 16A, FD1089A 317-0033)", MACHINE_SUPPORTS_SAVE )
 
+<<<<<<< HEAD
 GAME( 1988, aceattaca,  aceattac, system16a_fd1094,         aceattaca,  segas16a_state,aceattaca,   ROT270, "Sega", "Ace Attacker (Japan, System 16A, FD1094 317-0060)", MACHINE_SUPPORTS_SAVE )
+=======
+GAME( 1988, aceattaca,  aceattac, aceattaca_fd1094,         aceattaca,  segas16a_state,aceattaca,   ROT270, "Sega", "Ace Attacker (Japan, System 16A, FD1094 317-0060)", MACHINE_SUPPORTS_SAVE )
+>>>>>>> upstream/master
 
 GAME( 1986, afighter,   0,        system16a_fd1089a_no7751, afighter,   segas16a_state,generic,     ROT270, "Sega", "Action Fighter (FD1089A 317-0018)", MACHINE_SUPPORTS_SAVE )
 
@@ -3759,7 +4031,11 @@ GAME( 1986, alexkidd1,  alexkidd, system16a_fd1089a,        alexkidd,   segas16a
 
 GAME( 1986, fantzone,   0,        system16a_no7751,         fantzone,   segas16a_state,generic,     ROT0,   "Sega", "Fantasy Zone (Rev A, unprotected)", MACHINE_SUPPORTS_SAVE )
 GAME( 1986, fantzone1,  fantzone, system16a_no7751,         fantzone,   segas16a_state,generic,     ROT0,   "Sega", "Fantasy Zone (unprotected)", MACHINE_SUPPORTS_SAVE )
+<<<<<<< HEAD
 GAME( 1986, fantzonep,  fantzone, system16a_no7751p,        fantzone,   segas16a_state,fantzonep,   ROT0,   "Sega", "Fantasy Zone (317-5000)", MACHINE_SUPPORTS_SAVE )
+=======
+GAME( 1986, fantzonep,  fantzone, system16a_no7751p,        fantzone,   segas16a_state,generic,     ROT0,   "Sega", "Fantasy Zone (317-5000)", MACHINE_SUPPORTS_SAVE )
+>>>>>>> upstream/master
 GAME( 1986, fantzonepr, fantzone, system16a_no7751,         fantzone,   segas16a_state,generic,     ROT0,   "Sega", "Fantasy Zone (prototype)", MACHINE_IMPERFECT_GRAPHICS | MACHINE_SUPPORTS_SAVE ) // bad / missing gfx roms
 
 GAME( 1988, passsht16a, passsht,  system16a_fd1094,         passsht16a, segas16a_state,passsht16a,  ROT270, "Sega", "Passing Shot (Japan, 4 Players, System 16A) (FD1094 317-0071)", MACHINE_SUPPORTS_SAVE )

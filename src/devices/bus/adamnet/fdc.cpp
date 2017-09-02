@@ -16,6 +16,10 @@
 
 */
 
+<<<<<<< HEAD
+=======
+#include "emu.h"
+>>>>>>> upstream/master
 #include "fdc.h"
 
 
@@ -33,7 +37,11 @@
 //  DEVICE DEFINITIONS
 //**************************************************************************
 
+<<<<<<< HEAD
 const device_type ADAM_FDC = &device_creator<adam_fdc_device>;
+=======
+DEFINE_DEVICE_TYPE(ADAM_FDC, adam_fdc_device, "adam_fdc", "Adam FDC")
+>>>>>>> upstream/master
 
 
 //-------------------------------------------------
@@ -45,12 +53,21 @@ ROM_START( adam_fdc )
 	ROM_DEFAULT_BIOS("ssdd")
 	ROM_SYSTEM_BIOS( 0, "ssdd", "Coleco 160KB SSDD" )
 	ROMX_LOAD( "adam disk u10 ad 31 rev a 09-27-84.u10", 0x0000, 0x1000, CRC(4b0b7143) SHA1(1cb68891c3af80e99efad7e309136ca37244f060), ROM_BIOS(1) )
+<<<<<<< HEAD
 	ROM_SYSTEM_BIOS( 1, "320ta", "320KB DSDD" )
 	ROMX_LOAD( "320ta.u10", 0x0000, 0x1000, CRC(dcd865b3) SHA1(dde583e0d18ce4406e9ea44ab34d083e73ee30e2), ROM_BIOS(2) )
 	ROM_SYSTEM_BIOS( 2, "dbl24", "320KB DSDD" )
 	ROMX_LOAD( "dbl2-4.u10", 0x0000, 0x1000, CRC(5df49f15) SHA1(43d5710e4fb05f520e813869a049585b41ada86b), ROM_BIOS(3) )
 	ROM_SYSTEM_BIOS( 3, "dsdd", "320KB DSDD" )
 	ROMX_LOAD( "unknown.u10", 0x0000, 0x1000, CRC(2b2a9c6d) SHA1(e40304cbb6b9f174d9f5762d920983c79c899b3e), ROM_BIOS(4) )
+=======
+	ROM_SYSTEM_BIOS( 1, "320ta", "320KB DSDD (Minh Ta?)" )
+	ROMX_LOAD( "320ta.u10", 0x0000, 0x1000, CRC(dcd865b3) SHA1(dde583e0d18ce4406e9ea44ab34d083e73ee30e2), ROM_BIOS(2) )
+	ROM_SYSTEM_BIOS( 2, "dbl24", "320KB DSDD (DBL)" )
+	ROMX_LOAD( "dbl2-4.u10", 0x0000, 0x1000, CRC(5df49f15) SHA1(43d5710e4fb05f520e813869a049585b41ada86b), ROM_BIOS(3) )
+	ROM_SYSTEM_BIOS( 3, "320doug", "320KB DSDD (Doug Slopsema)" )
+	ROMX_LOAD( "doug.u10", 0x0000, 0x1000, CRC(2b2a9c6d) SHA1(e40304cbb6b9f174d9f5762d920983c79c899b3e), ROM_BIOS(4) )
+>>>>>>> upstream/master
 	ROM_SYSTEM_BIOS( 4, "a720dipi", "720KB 3.5\" A720DIPI 7607 MMSG" )
 	ROMX_LOAD( "a720dipi 7607 mmsg (c) 1988.u10", 0x0000, 0x1000, CRC(5f248557) SHA1(15b3aaebba38af84f6a1a6ccdf840ca3d58635da), ROM_BIOS(5) )
 	ROM_SYSTEM_BIOS( 5, "fp720at", "720KB 3.5\" FastPack 720A(T)" )
@@ -66,7 +83,11 @@ ROM_END
 //  rom_region - device-specific ROM region
 //-------------------------------------------------
 
+<<<<<<< HEAD
 const rom_entry *adam_fdc_device::device_rom_region() const
+=======
+const tiny_rom_entry *adam_fdc_device::device_rom_region() const
+>>>>>>> upstream/master
 {
 	return ROM_NAME( adam_fdc );
 }
@@ -80,6 +101,7 @@ static ADDRESS_MAP_START( adam_fdc_mem, AS_PROGRAM, 8, adam_fdc_device )
 	AM_RANGE(0x0000, 0x001f) AM_DEVREADWRITE(M6801_TAG, m6801_cpu_device, m6801_io_r, m6801_io_w)
 	AM_RANGE(0x0080, 0x00ff) AM_RAM
 	AM_RANGE(0x0400, 0x07ff) AM_RAM AM_WRITEONLY AM_SHARE("ram")
+<<<<<<< HEAD
 	AM_RANGE(0x0800, 0x0800) AM_MIRROR(0x3ff) AM_DEVREAD(WD2793_TAG, wd2793_t, status_r)
 	AM_RANGE(0x1400, 0x17ff) AM_RAM AM_READONLY AM_SHARE("ram")
 	AM_RANGE(0x1800, 0x1800) AM_MIRROR(0x3ff) AM_DEVWRITE(WD2793_TAG, wd2793_t, cmd_w)
@@ -90,6 +112,18 @@ static ADDRESS_MAP_START( adam_fdc_mem, AS_PROGRAM, 8, adam_fdc_device )
 	AM_RANGE(0x6800, 0x6800) AM_MIRROR(0x3ff) AM_DEVREAD(WD2793_TAG, wd2793_t, data_r)
 	AM_RANGE(0x6c00, 0x6fff) AM_READ(data_r)
 	AM_RANGE(0x7800, 0x7800) AM_MIRROR(0x3ff) AM_DEVWRITE(WD2793_TAG, wd2793_t, data_w)
+=======
+	AM_RANGE(0x0800, 0x0800) AM_MIRROR(0x3ff) AM_DEVREAD(WD2793_TAG, wd2793_device, status_r)
+	AM_RANGE(0x1400, 0x17ff) AM_RAM AM_READONLY AM_SHARE("ram")
+	AM_RANGE(0x1800, 0x1800) AM_MIRROR(0x3ff) AM_DEVWRITE(WD2793_TAG, wd2793_device, cmd_w)
+	AM_RANGE(0x2800, 0x2800) AM_MIRROR(0x3ff) AM_DEVREAD(WD2793_TAG, wd2793_device, track_r)
+	AM_RANGE(0x3800, 0x3800) AM_MIRROR(0x3ff) AM_DEVWRITE(WD2793_TAG, wd2793_device, track_w)
+	AM_RANGE(0x4800, 0x4800) AM_MIRROR(0x3ff) AM_DEVREAD(WD2793_TAG, wd2793_device, sector_r)
+	AM_RANGE(0x5800, 0x5800) AM_MIRROR(0x3ff) AM_DEVWRITE(WD2793_TAG, wd2793_device, sector_w)
+	AM_RANGE(0x6800, 0x6800) AM_MIRROR(0x3ff) AM_DEVREAD(WD2793_TAG, wd2793_device, data_r)
+	AM_RANGE(0x6c00, 0x6fff) AM_READ(data_r)
+	AM_RANGE(0x7800, 0x7800) AM_MIRROR(0x3ff) AM_DEVWRITE(WD2793_TAG, wd2793_device, data_w)
+>>>>>>> upstream/master
 	AM_RANGE(0x8000, 0x8fff) AM_MIRROR(0x7000) AM_ROM AM_REGION(M6801_TAG, 0)
 ADDRESS_MAP_END
 
@@ -120,10 +154,17 @@ SLOT_INTERFACE_END
 
 
 //-------------------------------------------------
+<<<<<<< HEAD
 //  MACHINE_DRIVER( adam_fdc )
 //-------------------------------------------------
 
 static MACHINE_CONFIG_FRAGMENT( adam_fdc )
+=======
+//  device_add_mconfig - add device configuration
+//-------------------------------------------------
+
+MACHINE_CONFIG_MEMBER( adam_fdc_device::device_add_mconfig )
+>>>>>>> upstream/master
 	MCFG_CPU_ADD(M6801_TAG, M6801, XTAL_4MHz)
 	MCFG_CPU_PROGRAM_MAP(adam_fdc_mem)
 	MCFG_CPU_IO_MAP(adam_fdc_io)
@@ -136,6 +177,7 @@ MACHINE_CONFIG_END
 
 
 //-------------------------------------------------
+<<<<<<< HEAD
 //  machine_config_additions - device-specific
 //  machine configurations
 //-------------------------------------------------
@@ -147,6 +189,8 @@ machine_config_constructor adam_fdc_device::device_mconfig_additions() const
 
 
 //-------------------------------------------------
+=======
+>>>>>>> upstream/master
 //  INPUT_PORTS( adam_fdc )
 //-------------------------------------------------
 
@@ -177,6 +221,7 @@ ioport_constructor adam_fdc_device::device_input_ports() const
 //  adam_fdc_device - constructor
 //-------------------------------------------------
 
+<<<<<<< HEAD
 adam_fdc_device::adam_fdc_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
 	: device_t(mconfig, ADAM_FDC, "Adam FDC", tag, owner, clock, "adam_fdc", __FILE__),
 		device_adamnet_card_interface(mconfig, *this),
@@ -184,6 +229,15 @@ adam_fdc_device::adam_fdc_device(const machine_config &mconfig, const char *tag,
 		m_fdc(*this, WD2793_TAG),
 		m_floppy0(*this, WD2793_TAG":0:525ssdd"),
 		m_floppy(NULL),
+=======
+adam_fdc_device::adam_fdc_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: device_t(mconfig, ADAM_FDC, tag, owner, clock),
+		device_adamnet_card_interface(mconfig, *this),
+		m_maincpu(*this, M6801_TAG),
+		m_fdc(*this, WD2793_TAG),
+		m_connector(*this, WD2793_TAG":0"),
+		m_floppy(nullptr),
+>>>>>>> upstream/master
 		m_ram(*this, "ram"),
 		m_sw3(*this, "SW3")
 {
@@ -217,7 +271,11 @@ void adam_fdc_device::adamnet_reset_w(int state)
 
 READ8_MEMBER( adam_fdc_device::data_r )
 {
+<<<<<<< HEAD
 	UINT8 data = m_fdc->data_r();
+=======
+	uint8_t data = m_fdc->data_r();
+>>>>>>> upstream/master
 
 	m_ram[offset & 0x3ff] = data;
 
@@ -246,10 +304,18 @@ READ8_MEMBER( adam_fdc_device::p1_r )
 
 	*/
 
+<<<<<<< HEAD
 	UINT8 data = 0x00;
 
 	// disk in place
 	data |= m_floppy0->exists() ? 0x00 : 0x01;
+=======
+	uint8_t data = 0x00;
+
+	// disk in place
+	floppy_image_device *floppy0 = m_connector->get_device();
+	data |= (floppy0 != nullptr && floppy0->exists()) ? 0x00 : 0x01;
+>>>>>>> upstream/master
 
 	// floppy data request
 	data |= m_fdc->drq_r() ? 0x04 : 0x00;
@@ -289,11 +355,19 @@ WRITE8_MEMBER( adam_fdc_device::p1_w )
 	m_fdc->dden_w(BIT(data, 3));
 
 	// drive select
+<<<<<<< HEAD
 	m_floppy = NULL;
 
 	if (BIT(data, 5))
 	{
 		m_floppy = m_floppy0;
+=======
+	m_floppy = nullptr;
+
+	if (BIT(data, 5))
+	{
+		m_floppy = m_connector->get_device();
+>>>>>>> upstream/master
 	}
 
 	m_fdc->set_floppy(m_floppy);
@@ -321,7 +395,11 @@ READ8_MEMBER( adam_fdc_device::p2_r )
 
 	*/
 
+<<<<<<< HEAD
 	UINT8 data = M6801_MODE_2;
+=======
+	uint8_t data = M6801_MODE_2;
+>>>>>>> upstream/master
 
 	// NET RXD
 	data |= m_bus->rxd_r(this) << 3;

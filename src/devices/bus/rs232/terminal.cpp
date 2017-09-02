@@ -1,5 +1,6 @@
 // license:BSD-3-Clause
 // copyright-holders:smf
+<<<<<<< HEAD
 #include "terminal.h"
 
 serial_terminal_device::serial_terminal_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
@@ -14,6 +15,21 @@ serial_terminal_device::serial_terminal_device(const machine_config &mconfig, co
 	m_rs232_stopbits(*this, "RS232_STOPBITS"),
 	m_curr_key(0),
 	m_key_valid(false)
+=======
+#include "emu.h"
+#include "terminal.h"
+
+serial_terminal_device::serial_terminal_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: generic_terminal_device(mconfig, SERIAL_TERMINAL, tag, owner, clock, TERMINAL_WIDTH, TERMINAL_HEIGHT)
+	, device_buffered_serial_interface(mconfig, *this)
+	, device_rs232_port_interface(mconfig, *this)
+	, m_rs232_txbaud(*this, "RS232_TXBAUD")
+	, m_rs232_rxbaud(*this, "RS232_RXBAUD")
+	, m_rs232_startbits(*this, "RS232_STARTBITS")
+	, m_rs232_databits(*this, "RS232_DATABITS")
+	, m_rs232_parity(*this, "RS232_PARITY")
+	, m_rs232_stopbits(*this, "RS232_STOPBITS")
+>>>>>>> upstream/master
 {
 }
 
@@ -33,6 +49,7 @@ ioport_constructor serial_terminal_device::device_input_ports() const
 	return INPUT_PORTS_NAME(serial_terminal);
 }
 
+<<<<<<< HEAD
 void serial_terminal_device::device_start()
 {
 	generic_terminal_device::device_start();
@@ -51,6 +68,23 @@ WRITE_LINE_MEMBER(serial_terminal_device::update_serial)
 	set_tra_rate(txbaud);
 
 	int rxbaud = convert_baud(m_rs232_rxbaud->read());
+=======
+WRITE_LINE_MEMBER(serial_terminal_device::update_serial)
+{
+	clear_fifo();
+
+	int const startbits = convert_startbits(m_rs232_startbits->read());
+	int const databits = convert_databits(m_rs232_databits->read());
+	parity_t const parity = convert_parity(m_rs232_parity->read());
+	stop_bits_t const stopbits = convert_stopbits(m_rs232_stopbits->read());
+
+	set_data_frame(startbits, databits, parity, stopbits);
+
+	int const txbaud = convert_baud(m_rs232_txbaud->read());
+	set_tra_rate(txbaud);
+
+	int const rxbaud = convert_baud(m_rs232_rxbaud->read());
+>>>>>>> upstream/master
 	set_rcv_rate(rxbaud);
 
 	output_rxd(1);
@@ -59,6 +93,11 @@ WRITE_LINE_MEMBER(serial_terminal_device::update_serial)
 	output_dcd(0);
 	output_dsr(0);
 	output_cts(0);
+<<<<<<< HEAD
+=======
+	receive_register_reset();
+	transmit_register_reset();
+>>>>>>> upstream/master
 }
 
 void serial_terminal_device::device_reset()
@@ -68,6 +107,7 @@ void serial_terminal_device::device_reset()
 	update_serial(0);
 }
 
+<<<<<<< HEAD
 void serial_terminal_device::device_timer(emu_timer &timer, device_timer_id id, int param, void *ptr)
 {
 	device_serial_interface::device_timer(timer, id, param, ptr);
@@ -83,6 +123,11 @@ void serial_terminal_device::send_key(UINT8 code)
 
 	m_key_valid = true;
 	m_curr_key = code;
+=======
+void serial_terminal_device::send_key(uint8_t code)
+{
+	transmit_byte(code);
+>>>>>>> upstream/master
 }
 
 void serial_terminal_device::tra_callback()
@@ -90,6 +135,7 @@ void serial_terminal_device::tra_callback()
 	output_rxd(transmit_register_get_data_bit());
 }
 
+<<<<<<< HEAD
 void serial_terminal_device::tra_complete()
 {
 	if (m_key_valid)
@@ -106,3 +152,11 @@ void serial_terminal_device::rcv_complete()
 }
 
 const device_type SERIAL_TERMINAL = &device_creator<serial_terminal_device>;
+=======
+void serial_terminal_device::received_byte(uint8_t byte)
+{
+	term_write(byte);
+}
+
+DEFINE_DEVICE_TYPE(SERIAL_TERMINAL, serial_terminal_device, "serial_terminal", "Serial Terminal")
+>>>>>>> upstream/master

@@ -30,9 +30,15 @@ ROM_END
 //  GLOBAL VARIABLES
 //**************************************************************************
 
+<<<<<<< HEAD
 const device_type KC_STANDARD = &device_creator<kc_8k_device>;
 const device_type KC_M006     = &device_creator<kc_m006_device>;
 const device_type KC_M033     = &device_creator<kc_m033_device>;
+=======
+DEFINE_DEVICE_TYPE(KC_STANDARD, kc_8k_device,   "kc_8k",   "Standard 8K ROM module")
+DEFINE_DEVICE_TYPE(KC_M006,     kc_m006_device, "kc_m006", "M006 BASIC")
+DEFINE_DEVICE_TYPE(KC_M033,     kc_m033_device, "kc_m033", "M033 TypeStar")
+>>>>>>> upstream/master
 
 //**************************************************************************
 //  LIVE DEVICE
@@ -42,6 +48,7 @@ const device_type KC_M033     = &device_creator<kc_m033_device>;
 //  kc_8k_device - constructor
 //-------------------------------------------------
 
+<<<<<<< HEAD
 kc_8k_device::kc_8k_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
 		: device_t(mconfig, KC_STANDARD, "Standard", tag, owner, clock, "kc_8k", __FILE__),
 		device_kcexp_interface( mconfig, *this ), m_slot(nullptr), m_mei(0), m_rom(nullptr), m_enabled(0), m_base(0)
@@ -52,6 +59,18 @@ kc_8k_device::kc_8k_device(const machine_config &mconfig, device_type type, cons
 		: device_t(mconfig, type, name, tag, owner, clock, shortname, source),
 		device_kcexp_interface( mconfig, *this ), m_slot(nullptr), m_mei(0), m_rom(nullptr), m_enabled(0), m_base(0)
 	{
+=======
+kc_8k_device::kc_8k_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: kc_8k_device(mconfig, KC_STANDARD, tag, owner, clock)
+{
+}
+
+kc_8k_device::kc_8k_device(const machine_config &mconfig, device_type type, const char *tag, device_t *owner, uint32_t clock)
+	: device_t(mconfig, type, tag, owner, clock)
+	, device_kcexp_interface(mconfig, *this)
+	, m_slot(nullptr), m_mei(0), m_rom(nullptr), m_enabled(0), m_base(0)
+{
+>>>>>>> upstream/master
 }
 
 
@@ -80,7 +99,11 @@ void kc_8k_device::device_reset()
 //  rom_region - device-specific ROM region
 //-------------------------------------------------
 
+<<<<<<< HEAD
 const rom_entry *kc_8k_device::device_rom_region() const
+=======
+const tiny_rom_entry *kc_8k_device::device_rom_region() const
+>>>>>>> upstream/master
 {
 	return ROM_NAME( kc_rom );
 }
@@ -89,7 +112,11 @@ const rom_entry *kc_8k_device::device_rom_region() const
     get_cart_base
 -------------------------------------------------*/
 
+<<<<<<< HEAD
 UINT8* kc_8k_device::get_cart_base()
+=======
+uint8_t* kc_8k_device::get_cart_base()
+>>>>>>> upstream/master
 {
 	return m_rom;
 }
@@ -98,7 +125,11 @@ UINT8* kc_8k_device::get_cart_base()
     module control write
 -------------------------------------------------*/
 
+<<<<<<< HEAD
 void kc_8k_device::control_w(UINT8 data)
+=======
+void kc_8k_device::control_w(uint8_t data)
+>>>>>>> upstream/master
 {
 	if (m_mei)
 	{
@@ -111,7 +142,11 @@ void kc_8k_device::control_w(UINT8 data)
     read
 -------------------------------------------------*/
 
+<<<<<<< HEAD
 void kc_8k_device::read(offs_t offset, UINT8 &data)
+=======
+void kc_8k_device::read(offs_t offset, uint8_t &data)
+>>>>>>> upstream/master
 {
 	if (offset >= m_base && offset < (m_base + 0x2000) && m_enabled && m_mei)
 	{
@@ -142,8 +177,13 @@ WRITE_LINE_MEMBER( kc_8k_device::mei_w )
 //  kc_m006_device - constructor
 //-------------------------------------------------
 
+<<<<<<< HEAD
 kc_m006_device::kc_m006_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
 		: kc_8k_device(mconfig, KC_M006, "M006 BASIC", tag, owner, clock, "kc_m006", __FILE__)
+=======
+kc_m006_device::kc_m006_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: kc_8k_device(mconfig, KC_M006, tag, owner, clock)
+>>>>>>> upstream/master
 {
 }
 
@@ -151,7 +191,11 @@ kc_m006_device::kc_m006_device(const machine_config &mconfig, const char *tag, d
     module control write
 -------------------------------------------------*/
 
+<<<<<<< HEAD
 void kc_m006_device::control_w(UINT8 data)
+=======
+void kc_m006_device::control_w(uint8_t data)
+>>>>>>> upstream/master
 {
 	if (m_mei)
 	{
@@ -164,7 +208,11 @@ void kc_m006_device::control_w(UINT8 data)
     read
 -------------------------------------------------*/
 
+<<<<<<< HEAD
 void kc_m006_device::read(offs_t offset, UINT8 &data)
+=======
+void kc_m006_device::read(offs_t offset, uint8_t &data)
+>>>>>>> upstream/master
 {
 	if (offset >= m_base && offset < (m_base + 0x4000) && m_enabled)
 	{
@@ -184,9 +232,16 @@ void kc_m006_device::read(offs_t offset, UINT8 &data)
 //  kc_m033_device - constructor
 //-------------------------------------------------
 
+<<<<<<< HEAD
 kc_m033_device::kc_m033_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
 		: kc_8k_device(mconfig, KC_M033, "M033 TypeStar", tag, owner, clock, "kc_m033", __FILE__), m_bank(0)
 	{
+=======
+kc_m033_device::kc_m033_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: kc_8k_device(mconfig, KC_M033, tag, owner, clock)
+	, m_bank(0)
+{
+>>>>>>> upstream/master
 }
 
 //-------------------------------------------------
@@ -204,7 +259,11 @@ void kc_m033_device::device_reset()
     module control write
 -------------------------------------------------*/
 
+<<<<<<< HEAD
 void kc_m033_device::control_w(UINT8 data)
+=======
+void kc_m033_device::control_w(uint8_t data)
+>>>>>>> upstream/master
 {
 	if (m_mei)
 	{
@@ -218,7 +277,11 @@ void kc_m033_device::control_w(UINT8 data)
     read
 -------------------------------------------------*/
 
+<<<<<<< HEAD
 void kc_m033_device::read(offs_t offset, UINT8 &data)
+=======
+void kc_m033_device::read(offs_t offset, uint8_t &data)
+>>>>>>> upstream/master
 {
 	if (offset >= m_base && offset < (m_base + 0x2000) && m_enabled && m_mei)
 	{

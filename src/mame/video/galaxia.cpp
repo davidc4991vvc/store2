@@ -63,16 +63,26 @@ PALETTE_INIT_MEMBER(galaxia_state,astrowar)
 
 TILE_GET_INFO_MEMBER(galaxia_state::get_galaxia_bg_tile_info)
 {
+<<<<<<< HEAD
 	UINT8 code = m_video_ram[tile_index] & 0x7f; // d7 unused
 	UINT8 color = m_color_ram[tile_index] & 3; // highest bits unused
+=======
+	uint8_t code = m_video_ram[tile_index] & 0x7f; // d7 unused
+	uint8_t color = m_color_ram[tile_index] & 3; // highest bits unused
+>>>>>>> upstream/master
 
 	SET_TILE_INFO_MEMBER(0, code, color, 0);
 }
 
 TILE_GET_INFO_MEMBER(galaxia_state::get_astrowar_bg_tile_info)
 {
+<<<<<<< HEAD
 	UINT8 code = m_video_ram[tile_index];
 	UINT8 color = m_color_ram[tile_index] & 7; // highest bits unused
+=======
+	uint8_t code = m_video_ram[tile_index];
+	uint8_t color = m_color_ram[tile_index] & 7; // highest bits unused
+>>>>>>> upstream/master
 
 	SET_TILE_INFO_MEMBER(0, code, color, 0);
 }
@@ -87,7 +97,11 @@ VIDEO_START_MEMBER(galaxia_state,galaxia)
 {
 	init_common();
 
+<<<<<<< HEAD
 	m_bg_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(galaxia_state::get_galaxia_bg_tile_info),this), TILEMAP_SCAN_ROWS, 8, 8, 32, 32);
+=======
+	m_bg_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(galaxia_state::get_galaxia_bg_tile_info),this), TILEMAP_SCAN_ROWS, 8, 8, 32, 32);
+>>>>>>> upstream/master
 	m_bg_tilemap->set_transparent_pen(0);
 	m_bg_tilemap->set_scroll_cols(8);
 
@@ -97,7 +111,11 @@ VIDEO_START_MEMBER(galaxia_state,astrowar)
 {
 	init_common();
 
+<<<<<<< HEAD
 	m_bg_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(galaxia_state::get_astrowar_bg_tile_info),this), TILEMAP_SCAN_ROWS, 8, 8, 32, 32);
+=======
+	m_bg_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(galaxia_state::get_astrowar_bg_tile_info),this), TILEMAP_SCAN_ROWS, 8, 8, 32, 32);
+>>>>>>> upstream/master
 	m_bg_tilemap->set_transparent_pen(0);
 	m_bg_tilemap->set_scroll_cols(8);
 	m_bg_tilemap->set_scrolldx(8, 8);
@@ -108,6 +126,7 @@ VIDEO_START_MEMBER(galaxia_state,astrowar)
 
 /********************************************************************************/
 
+<<<<<<< HEAD
 UINT32 galaxia_state::screen_update_galaxia(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
 {
 	int x, y;
@@ -115,6 +134,15 @@ UINT32 galaxia_state::screen_update_galaxia(screen_device &screen, bitmap_ind16 
 	bitmap_ind16 *s2636_0_bitmap = &m_s2636_0->update(cliprect);
 	bitmap_ind16 *s2636_1_bitmap = &m_s2636_1->update(cliprect);
 	bitmap_ind16 *s2636_2_bitmap = &m_s2636_2->update(cliprect);
+=======
+uint32_t galaxia_state::screen_update_galaxia(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+{
+	int x, y;
+
+	bitmap_ind16 const &s2636_0_bitmap = m_s2636_0->update(cliprect);
+	bitmap_ind16 const &s2636_1_bitmap = m_s2636_1->update(cliprect);
+	bitmap_ind16 const &s2636_2_bitmap = m_s2636_2->update(cliprect);
+>>>>>>> upstream/master
 
 	bitmap.fill(0, cliprect);
 	cvs_update_stars(bitmap, cliprect, STAR_PEN, 1);
@@ -139,9 +167,15 @@ UINT32 galaxia_state::screen_update_galaxia(screen_device &screen, bitmap_ind16 
 			}
 
 			// copy the S2636 images into the main bitmap and check collision
+<<<<<<< HEAD
 			int pixel0 = s2636_0_bitmap->pix16(y, x);
 			int pixel1 = s2636_1_bitmap->pix16(y, x);
 			int pixel2 = s2636_2_bitmap->pix16(y, x);
+=======
+			int pixel0 = s2636_0_bitmap.pix16(y, x);
+			int pixel1 = s2636_1_bitmap.pix16(y, x);
+			int pixel2 = s2636_2_bitmap.pix16(y, x);
+>>>>>>> upstream/master
 
 			int pixel = pixel0 | pixel1 | pixel2;
 
@@ -173,12 +207,20 @@ UINT32 galaxia_state::screen_update_galaxia(screen_device &screen, bitmap_ind16 
 }
 
 
+<<<<<<< HEAD
 UINT32 galaxia_state::screen_update_astrowar(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+=======
+uint32_t galaxia_state::screen_update_astrowar(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+>>>>>>> upstream/master
 {
 	// astrowar has only one S2636
 	int x, y;
 
+<<<<<<< HEAD
 	bitmap_ind16 &s2636_0_bitmap = m_s2636_0->update(cliprect);
+=======
+	bitmap_ind16 const &s2636_0_bitmap = m_s2636_0->update(cliprect);
+>>>>>>> upstream/master
 
 	bitmap.fill(0, cliprect);
 	cvs_update_stars(bitmap, cliprect, STAR_PEN, 1);
@@ -190,7 +232,11 @@ UINT32 galaxia_state::screen_update_astrowar(screen_device &screen, bitmap_ind16
 		// draw bullets (guesswork)
 		if (m_bullet_ram[y])
 		{
+<<<<<<< HEAD
 			UINT8 pos = m_bullet_ram[y] ^ 0xff;
+=======
+			uint8_t pos = m_bullet_ram[y] ^ 0xff;
+>>>>>>> upstream/master
 
 			// background vs. bullet collision detection
 			if (m_temp_bitmap.pix16(y, pos) & 1)

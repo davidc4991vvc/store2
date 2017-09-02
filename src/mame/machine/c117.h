@@ -1,10 +1,20 @@
 // license:BSD-3-Clause
 // copyright-holders:Alex W. Jackson
+<<<<<<< HEAD
 
 #pragma once
 
 #ifndef __C117_H__
 #define __C117_H__
+=======
+#ifndef MAME_MACHINE_C117_H
+#define MAME_MACHINE_C117_H
+
+#pragma once
+
+
+#include "machine/watchdog.h"
+>>>>>>> upstream/master
 
 
 //**************************************************************************
@@ -28,7 +38,11 @@ class namco_c117_device :
 {
 public:
 	//construction/destruction
+<<<<<<< HEAD
 	namco_c117_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
+=======
+	namco_c117_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
+>>>>>>> upstream/master
 
 	// static configuration
 	static void set_cpu_tags(device_t &device, const char *maintag, const char *subtag);
@@ -46,6 +60,7 @@ public:
 
 protected:
 	// device-level overrides
+<<<<<<< HEAD
 	virtual void device_start();
 	virtual void device_reset();
 
@@ -61,6 +76,24 @@ private:
 	// internal state
 	UINT32 m_offsets[2][8];
 	UINT8 m_subres, m_wdog;
+=======
+	virtual void device_start() override;
+	virtual void device_reset() override;
+	virtual void device_add_mconfig(machine_config &config) override;
+
+	// device_memory_interface overrides
+	virtual space_config_vector memory_space_config() const override;
+
+private:
+	// internal helpers
+	void register_w(int whichcpu, offs_t offset, uint8_t data);
+	void bankswitch(int whichcpu, int whichbank, int a0, uint8_t data);
+	void kick_watchdog(int whichcpu);
+
+	// internal state
+	uint32_t m_offsets[2][8];
+	uint8_t m_subres, m_wdog;
+>>>>>>> upstream/master
 
 	// callbacks
 	devcb_write_line           m_subres_cb;
@@ -76,9 +109,20 @@ private:
 	// configuration
 	const char *               m_maincpu_tag;
 	const char *               m_subcpu_tag;
+<<<<<<< HEAD
 };
 
 // device type definition
 extern const device_type NAMCO_C117;
 
 #endif
+=======
+
+	required_device<watchdog_timer_device> m_watchdog;
+};
+
+// device type definition
+DECLARE_DEVICE_TYPE(NAMCO_C117, namco_c117_device)
+
+#endif // MAME_MACHINE_C117_H
+>>>>>>> upstream/master

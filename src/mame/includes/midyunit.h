@@ -1,25 +1,45 @@
+<<<<<<< HEAD
 // license:???
 // copyright-holders:Alex Pasadyn, Zsolt Vasvari, Kurt Mahan, Ernesto Corvi, Aaron Giles
+=======
+// license:BSD-3-Clause
+// copyright-holders:Alex Pasadyn, Zsolt Vasvari, Ernesto Corvi, Aaron Giles
+// thanks-to:Kurt Mahan
+>>>>>>> upstream/master
 /*************************************************************************
 
     Williams/Midway Y/Z-unit system
 
 **************************************************************************/
 
+<<<<<<< HEAD
 #include "cpu/tms34010/tms34010.h"
 #include "audio/williams.h"
+=======
+#include "audio/williams.h"
+
+#include "cpu/tms34010/tms34010.h"
+#include "machine/gen_latch.h"
+#include "machine/gen_latch.h"
+>>>>>>> upstream/master
 #include "machine/nvram.h"
 #include "sound/okim6295.h"
 
 /* protection data types */
 struct protection_data
 {
+<<<<<<< HEAD
 	UINT16  reset_sequence[3];
 	UINT16  data_sequence[100];
+=======
+	uint16_t  reset_sequence[3];
+	uint16_t  data_sequence[100];
+>>>>>>> upstream/master
 };
 
 struct dma_state_t
 {
+<<<<<<< HEAD
 	UINT32      offset;         /* source offset, in bits */
 	INT32       rowbytes;       /* source bytes to skip each row */
 	INT32       xpos;           /* x position, clipped */
@@ -28,6 +48,16 @@ struct dma_state_t
 	INT32       height;         /* vertical pixel count */
 	UINT16      palette;        /* palette base */
 	UINT16      color;          /* current foreground color with palette */
+=======
+	uint32_t      offset;         /* source offset, in bits */
+	int32_t       rowbytes;       /* source bytes to skip each row */
+	int32_t       xpos;           /* x position, clipped */
+	int32_t       ypos;           /* y position, clipped */
+	int32_t       width;          /* horizontal pixel count */
+	int32_t       height;         /* vertical pixel count */
+	uint16_t      palette;        /* palette base */
+	uint16_t      color;          /* current foreground color with palette */
+>>>>>>> upstream/master
 };
 
 
@@ -41,6 +71,7 @@ public:
 	};
 
 	midyunit_state(const machine_config &mconfig, device_type type, const char *tag)
+<<<<<<< HEAD
 		: driver_device(mconfig, type, tag),
 			m_maincpu(*this, "maincpu"),
 			m_audiocpu(*this, "audiocpu"),
@@ -52,6 +83,24 @@ public:
 			m_generic_paletteram_16(*this, "paletteram"),
 			m_gfx_rom(*this, "gfx_rom", 16),
 			m_ports(*this, ports) { }
+=======
+		: driver_device(mconfig, type, tag)
+		, m_maincpu(*this, "maincpu")
+		, m_audiocpu(*this, "audiocpu")
+		, m_oki(*this, "oki")
+		, m_palette(*this, "palette")
+		, m_narc_sound(*this, "narcsnd")
+		, m_cvsd_sound(*this, "cvsd")
+		, m_adpcm_sound(*this, "adpcm")
+		, m_soundlatch(*this, "soundlatch")
+		, m_generic_paletteram_16(*this, "paletteram")
+		, m_gfx_rom(*this, "gfx_rom", 16)
+		, m_mainram(*this, "mainram")
+		, m_ports(*this, { { "IN0", "IN1", "IN2", "DSW", "UNK0", "UNK1" } })
+	{
+	}
+
+>>>>>>> upstream/master
 
 	required_device<cpu_device> m_maincpu;
 	optional_device<cpu_device> m_audiocpu;
@@ -60,6 +109,7 @@ public:
 	optional_device<williams_narc_sound_device> m_narc_sound;
 	optional_device<williams_cvsd_sound_device> m_cvsd_sound;
 	optional_device<williams_adpcm_sound_device> m_adpcm_sound;
+<<<<<<< HEAD
 
 	required_shared_ptr<UINT16> m_generic_paletteram_16;
 	optional_shared_ptr<UINT8> m_gfx_rom;
@@ -87,6 +137,36 @@ public:
 	UINT8 m_yawdim_dma;
 	UINT16 m_dma_register[16];
 	dma_state_t m_dma_state;
+=======
+	optional_device<generic_latch_8_device> m_soundlatch;
+
+	required_shared_ptr<uint16_t> m_generic_paletteram_16;
+	optional_shared_ptr<uint8_t> m_gfx_rom;
+	required_shared_ptr<uint16_t> m_mainram;
+	optional_ioport_array<6> m_ports;
+
+	std::unique_ptr<uint16_t[]> m_cmos_ram;
+	uint32_t m_cmos_page;
+	uint16_t m_prot_result;
+	uint16_t m_prot_sequence[3];
+	uint8_t m_prot_index;
+	uint8_t m_term2_analog_select;
+	const struct protection_data *m_prot_data;
+	uint8_t m_cmos_w_enable;
+	uint8_t m_chip_type;
+	uint16_t *m_t2_hack_mem;
+	uint8_t *m_cvsd_protection_base;
+	uint8_t m_autoerase_enable;
+	uint32_t m_palette_mask;
+	std::unique_ptr<pen_t[]> m_pen_map;
+	std::unique_ptr<uint16_t[]>   m_local_videoram;
+	uint8_t m_videobank_select;
+	uint8_t m_yawdim_dma;
+	uint16_t m_dma_register[16];
+	dma_state_t m_dma_state;
+	emu_timer *m_dma_timer;
+	emu_timer *m_autoerase_line_timer;
+>>>>>>> upstream/master
 	DECLARE_WRITE16_MEMBER(midyunit_cmos_w);
 	DECLARE_READ16_MEMBER(midyunit_cmos_r);
 	DECLARE_WRITE16_MEMBER(midyunit_cmos_enable_w);
@@ -139,8 +219,13 @@ public:
 	TIMER_CALLBACK_MEMBER(autoerase_line);
 
 protected:
+<<<<<<< HEAD
 	virtual void device_timer(emu_timer &timer, device_timer_id id, int param, void *ptr);
 	void dma_draw(UINT16 command);
+=======
+	virtual void device_timer(emu_timer &timer, device_timer_id id, int param, void *ptr) override;
+	void dma_draw(uint16_t command);
+>>>>>>> upstream/master
 	void init_generic(int bpp, int sound, int prot_start, int prot_end);
 	void term2_init_common(write16_delegate hack_w);
 };

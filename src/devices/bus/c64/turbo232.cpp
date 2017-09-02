@@ -12,6 +12,10 @@
 
 */
 
+<<<<<<< HEAD
+=======
+#include "emu.h"
+>>>>>>> upstream/master
 #include "turbo232.h"
 
 
@@ -29,6 +33,7 @@
 //  DEVICE DEFINITIONS
 //**************************************************************************
 
+<<<<<<< HEAD
 const device_type C64_TURBO232 = &device_creator<c64_turbo232_cartridge_device>;
 
 
@@ -37,12 +42,26 @@ const device_type C64_TURBO232 = &device_creator<c64_turbo232_cartridge_device>;
 //-------------------------------------------------
 
 static MACHINE_CONFIG_FRAGMENT( c64_turbo232 )
+=======
+DEFINE_DEVICE_TYPE(C64_TURBO232, c64_turbo232_cartridge_device, "c64_turbo232", "C64 Turbo232 cartridge")
+
+
+//-------------------------------------------------
+//  device_add_mconfig - add device configuration
+//-------------------------------------------------
+
+MACHINE_CONFIG_MEMBER( c64_turbo232_cartridge_device::device_add_mconfig )
+>>>>>>> upstream/master
 	MCFG_DEVICE_ADD(MOS6551_TAG, MOS6551, 0)
 	MCFG_MOS6551_XTAL(XTAL_3_6864MHz)
 	MCFG_MOS6551_IRQ_HANDLER(WRITELINE(c64_turbo232_cartridge_device, acia_irq_w))
 	MCFG_MOS6551_TXD_HANDLER(DEVWRITELINE(RS232_TAG, rs232_port_device, write_txd))
 
+<<<<<<< HEAD
 	MCFG_RS232_PORT_ADD(RS232_TAG, default_rs232_devices, NULL)
+=======
+	MCFG_RS232_PORT_ADD(RS232_TAG, default_rs232_devices, nullptr)
+>>>>>>> upstream/master
 	MCFG_RS232_RXD_HANDLER(DEVWRITELINE(MOS6551_TAG, mos6551_device, write_rxd))
 	MCFG_RS232_DCD_HANDLER(DEVWRITELINE(MOS6551_TAG, mos6551_device, write_dcd))
 	MCFG_RS232_DSR_HANDLER(DEVWRITELINE(MOS6551_TAG, mos6551_device, write_dsr))
@@ -51,6 +70,7 @@ MACHINE_CONFIG_END
 
 
 //-------------------------------------------------
+<<<<<<< HEAD
 //  machine_config_additions - device-specific
 //  machine configurations
 //-------------------------------------------------
@@ -62,6 +82,8 @@ machine_config_constructor c64_turbo232_cartridge_device::device_mconfig_additio
 
 
 //-------------------------------------------------
+=======
+>>>>>>> upstream/master
 //  INPUT_PORTS( c64_turbo232 )
 //-------------------------------------------------
 
@@ -98,8 +120,13 @@ ioport_constructor c64_turbo232_cartridge_device::device_input_ports() const
 //  c64_turbo232_cartridge_device - constructor
 //-------------------------------------------------
 
+<<<<<<< HEAD
 c64_turbo232_cartridge_device::c64_turbo232_cartridge_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock) :
 	device_t(mconfig, C64_TURBO232, "C64 Turbo232 cartridge", tag, owner, clock, "c64_turbo232", __FILE__),
+=======
+c64_turbo232_cartridge_device::c64_turbo232_cartridge_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock) :
+	device_t(mconfig, C64_TURBO232, tag, owner, clock),
+>>>>>>> upstream/master
 	device_c64_expansion_card_interface(mconfig, *this),
 	m_acia(*this, MOS6551_TAG),
 	m_rs232(*this, RS232_TAG),
@@ -137,7 +164,11 @@ void c64_turbo232_cartridge_device::device_reset()
 //  c64_cd_r - cartridge data read
 //-------------------------------------------------
 
+<<<<<<< HEAD
 UINT8 c64_turbo232_cartridge_device::c64_cd_r(address_space &space, offs_t offset, UINT8 data, int sphi2, int ba, int roml, int romh, int io1, int io2)
+=======
+uint8_t c64_turbo232_cartridge_device::c64_cd_r(address_space &space, offs_t offset, uint8_t data, int sphi2, int ba, int roml, int romh, int io1, int io2)
+>>>>>>> upstream/master
 {
 	if (((m_cs == DE00) && !io1) || ((m_cs == DF00) && !io2) ||
 		((m_cs == D700) && ((offset & 0xff00) == 0xd700)))
@@ -164,7 +195,11 @@ UINT8 c64_turbo232_cartridge_device::c64_cd_r(address_space &space, offs_t offse
 //  c64_cd_w - cartridge data write
 //-------------------------------------------------
 
+<<<<<<< HEAD
 void c64_turbo232_cartridge_device::c64_cd_w(address_space &space, offs_t offset, UINT8 data, int sphi2, int ba, int roml, int romh, int io1, int io2)
+=======
+void c64_turbo232_cartridge_device::c64_cd_w(address_space &space, offs_t offset, uint8_t data, int sphi2, int ba, int roml, int romh, int io1, int io2)
+>>>>>>> upstream/master
 {
 	if (((m_cs == DE00) && !io1) || ((m_cs == DF00) && !io2) ||
 		((m_cs == D700) && ((offset & 0xff00) == 0xd700)))

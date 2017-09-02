@@ -8,6 +8,7 @@
 
 ***************************************************************************/
 
+<<<<<<< HEAD
 #pragma once
 
 #ifndef __EMU_H__
@@ -21,6 +22,16 @@
 
 //**************************************************************************
 //  TYPE DEFINITIONS
+=======
+#ifndef MAME_EMU_DIOUTPUT_H
+#define MAME_EMU_DIOUTPUT_H
+
+#pragma once
+
+
+//**************************************************************************
+//  MACROS
+>>>>>>> upstream/master
 //**************************************************************************
 
 #define MCFG_OUTPUT_INDEX(_index) \
@@ -58,5 +69,9 @@ protected:
 };
 
 
+<<<<<<< HEAD
 
 #endif  /* __DIOUTPUT_H__ */
+=======
+#endif // MAME_EMU_DIOUTPUT_H
+>>>>>>> upstream/master

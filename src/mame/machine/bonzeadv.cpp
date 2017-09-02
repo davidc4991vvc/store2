@@ -28,6 +28,7 @@
 
 struct cchip_mapping
 {
+<<<<<<< HEAD
 	UINT16 xmin;
 	UINT16 xmax;
 	UINT16 ymin;
@@ -39,6 +40,19 @@ struct cchip_mapping
 };
 
 static const UINT16 CLEV[][13] =
+=======
+	uint16_t xmin;
+	uint16_t xmax;
+	uint16_t ymin;
+	uint16_t ymax;
+	uint16_t sx;
+	uint16_t sy;
+	uint16_t px;
+	uint16_t py;
+};
+
+static const uint16_t CLEV[][13] =
+>>>>>>> upstream/master
 {
 /*    map start       player start    player y-range  player x-range  map y-range     map x-range     time   */
 	{ 0x0000, 0x0018, 0x0020, 0x0030, 0x0028, 0x00D0, 0x0050, 0x0090, 0x0000, 0x0118, 0x0000, 0x0C90, 0x3800 },
@@ -310,7 +324,11 @@ void asuka_state::WriteLevelData()
 
 	for (i = 0; i < 13; i++)
 	{
+<<<<<<< HEAD
 		UINT16 v = CLEV[m_current_round][i];
+=======
+		uint16_t v = CLEV[m_current_round][i];
+>>>>>>> upstream/master
 
 		m_cval[2 * i + 0] = v & 0xff;
 		m_cval[2 * i + 1] = v >> 8;
@@ -390,10 +408,17 @@ WRITE16_MEMBER(asuka_state::bonzeadv_cchip_ram_w)
 		{
 			m_cc_port = data;
 
+<<<<<<< HEAD
 			coin_lockout_w(machine(), 1, data & 0x80);
 			coin_lockout_w(machine(), 0, data & 0x40);
 			coin_counter_w(machine(), 1, data & 0x20);
 			coin_counter_w(machine(), 0, data & 0x10);
+=======
+			machine().bookkeeping().coin_lockout_w(1, data & 0x80);
+			machine().bookkeeping().coin_lockout_w(0, data & 0x40);
+			machine().bookkeeping().coin_counter_w(1, data & 0x20);
+			machine().bookkeeping().coin_counter_w(0, data & 0x10);
+>>>>>>> upstream/master
 		}
 
 		if (offset == 0x0e && data != 0x00)

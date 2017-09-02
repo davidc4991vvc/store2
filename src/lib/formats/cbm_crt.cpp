@@ -122,6 +122,7 @@ static const char * CRT_C64_SLOT_NAMES[_CRT_C64_COUNT] =
 //  cbm_crt_get_card - get slot interface card
 //-------------------------------------------------
 
+<<<<<<< HEAD
 void cbm_crt_get_card(std::string &result, core_file *file)
 {
 	// read the header
@@ -137,6 +138,22 @@ void cbm_crt_get_card(std::string &result, core_file *file)
 	}
 
 	result.clear();
+=======
+std::string cbm_crt_get_card(util::core_file &file)
+{
+	// read the header
+	cbm_crt_header header;
+	file.read(&header, CRT_HEADER_LENGTH);
+
+	if (memcmp(header.signature, CRT_SIGNATURE, 16) == 0)
+	{
+		uint16_t hardware = pick_integer_be(header.hardware, 0, 2);
+
+		return std::string(CRT_C64_SLOT_NAMES[hardware]);
+	}
+
+	return std::string();
+>>>>>>> upstream/master
 }
 
 
@@ -144,16 +161,28 @@ void cbm_crt_get_card(std::string &result, core_file *file)
 //  cbm_crt_read_header - read cartridge header
 //-------------------------------------------------
 
+<<<<<<< HEAD
 bool cbm_crt_read_header(core_file* file, size_t *roml_size, size_t *romh_size, int *exrom, int *game)
 {
 	// read the header
 	cbm_crt_header header;
 	core_fread(file, &header, CRT_HEADER_LENGTH);
+=======
+bool cbm_crt_read_header(util::core_file &file, size_t *roml_size, size_t *romh_size, int *exrom, int *game)
+{
+	// read the header
+	cbm_crt_header header;
+	file.read(&header, CRT_HEADER_LENGTH);
+>>>>>>> upstream/master
 
 	if (memcmp(header.signature, CRT_SIGNATURE, 16) != 0)
 		return false;
 
+<<<<<<< HEAD
 	UINT16 hardware = pick_integer_be(header.hardware, 0, 2);
+=======
+	uint16_t hardware = pick_integer_be(header.hardware, 0, 2);
+>>>>>>> upstream/master
 	*exrom = header.exrom;
 	*game = header.game;
 
@@ -167,6 +196,7 @@ bool cbm_crt_read_header(core_file* file, size_t *roml_size, size_t *romh_size, 
 	}
 
 	// determine ROM region lengths
+<<<<<<< HEAD
 	while (!core_feof(file))
 	{
 		cbm_crt_chip chip;
@@ -175,6 +205,16 @@ bool cbm_crt_read_header(core_file* file, size_t *roml_size, size_t *romh_size, 
 		UINT16 address = pick_integer_be(chip.start_address, 0, 2);
 		UINT16 size = pick_integer_be(chip.image_size, 0, 2);
 		UINT16 type = pick_integer_be(chip.chip_type, 0, 2);
+=======
+	while (!file.eof())
+	{
+		cbm_crt_chip chip;
+		file.read(&chip, CRT_CHIP_LENGTH);
+
+		uint16_t address = pick_integer_be(chip.start_address, 0, 2);
+		uint16_t size = pick_integer_be(chip.image_size, 0, 2);
+		uint16_t type = pick_integer_be(chip.chip_type, 0, 2);
+>>>>>>> upstream/master
 
 		if (LOG)
 		{
@@ -191,7 +231,11 @@ bool cbm_crt_read_header(core_file* file, size_t *roml_size, size_t *romh_size, 
 		default: osd_printf_verbose("Invalid CHIP loading address!\n"); break;
 		}
 
+<<<<<<< HEAD
 		core_fseek(file, size, SEEK_CUR);
+=======
+		file.seek(size, SEEK_CUR);
+>>>>>>> upstream/master
 	}
 
 	return true;
@@ -202,6 +246,7 @@ bool cbm_crt_read_header(core_file* file, size_t *roml_size, size_t *romh_size, 
 //  cbm_crt_read_data - read cartridge data
 //-------------------------------------------------
 
+<<<<<<< HEAD
 bool cbm_crt_read_data(core_file* file, UINT8 *roml, UINT8 *romh)
 {
 	UINT32 roml_offset = 0;
@@ -222,6 +267,28 @@ bool cbm_crt_read_data(core_file* file, UINT8 *roml, UINT8 *romh)
 		case 0x8000: core_fread(file, roml + roml_offset, size); roml_offset += size; break;
 		case 0xa000: core_fread(file, romh + romh_offset, size); romh_offset += size; break;
 		case 0xe000: core_fread(file, romh + romh_offset, size); romh_offset += size; break;
+=======
+bool cbm_crt_read_data(util::core_file &file, uint8_t *roml, uint8_t *romh)
+{
+	uint32_t roml_offset = 0;
+	uint32_t romh_offset = 0;
+
+	file.seek(CRT_HEADER_LENGTH, SEEK_SET);
+
+	while (!file.eof())
+	{
+		cbm_crt_chip chip;
+		file.read(&chip, CRT_CHIP_LENGTH);
+
+		uint16_t address = pick_integer_be(chip.start_address, 0, 2);
+		uint16_t size = pick_integer_be(chip.image_size, 0, 2);
+
+		switch (address)
+		{
+		case 0x8000: file.read(roml + roml_offset, size); roml_offset += size; break;
+		case 0xa000: file.read(romh + romh_offset, size); romh_offset += size; break;
+		case 0xe000: file.read(romh + romh_offset, size); romh_offset += size; break;
+>>>>>>> upstream/master
 		}
 	}
 

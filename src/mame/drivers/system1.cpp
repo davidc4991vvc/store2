@@ -210,7 +210,11 @@ DIPs are also shared 100% with each other.
 
 flickys1, flickys2
 ------------------
+<<<<<<< HEAD
 Very noticibly more difficult than the other two sets.  DIPs have changes (less lives
+=======
+Very noticeably more difficult than the other two sets.  DIPs have changes (less lives
+>>>>>>> upstream/master
 and bonus options).  There is no screen which shows the bonus lives values like the
 other two sets, either.  flickys1 allows for DEMO SOUND which none of the others sets
 seem to have access to.
@@ -218,6 +222,7 @@ seem to have access to.
 ******************************************************************************/
 
 #include "emu.h"
+<<<<<<< HEAD
 #include "cpu/z80/z80.h"
 #include "cpu/mcs51/mcs51.h"
 #include "machine/z80pio.h"
@@ -227,6 +232,16 @@ seem to have access to.
 #include "machine/mc8123.h"
 #include "sound/sn76496.h"
 #include "includes/system1.h"
+=======
+#include "includes/system1.h"
+
+#include "cpu/mcs51/mcs51.h"
+#include "machine/z80pio.h"
+#include "machine/segacrpt_device.h"
+#include "machine/mc8123.h"
+#include "sound/sn76496.h"
+#include "speaker.h"
+>>>>>>> upstream/master
 
 
 #define MASTER_CLOCK    XTAL_20MHz
@@ -253,7 +268,11 @@ seem to have access to.
     each opcode fetch (since the M1 line is low for 2 cycles per byte).
 */
 
+<<<<<<< HEAD
 static const UINT8 cc_op[0x100] = {
+=======
+static const uint8_t cc_op[0x100] = {
+>>>>>>> upstream/master
 	4*5+1*2,10*5+3*2, 7*5+1*2, 6*5+1*2, 4*5+1*2, 4*5+1*2, 7*5+2*2, 4*5+1*2, 4*5+1*2,11*5+1*2, 7*5+1*2, 6*5+1*2, 4*5+1*2, 4*5+1*2, 7*5+2*2, 4*5+1*2,
 	8*5+2*2,10*5+3*2, 7*5+1*2, 6*5+1*2, 4*5+1*2, 4*5+1*2, 7*5+2*2, 4*5+1*2,12*5+2*2,11*5+1*2, 7*5+1*2, 6*5+1*2, 4*5+1*2, 4*5+1*2, 7*5+2*2, 4*5+1*2,
 	7*5+2*2,10*5+3*2,16*5+3*2, 6*5+1*2, 4*5+1*2, 4*5+1*2, 7*5+2*2, 4*5+1*2, 7*5+2*2,11*5+1*2,16*5+3*2, 6*5+1*2, 4*5+1*2, 4*5+1*2, 7*5+2*2, 4*5+1*2,
@@ -272,7 +291,11 @@ static const UINT8 cc_op[0x100] = {
 	5*5+1*2,10*5+1*2,10*5+3*2, 4*5+1*2,10*5+3*2,11*5+1*2, 7*5+2*2,11*5+1*2, 5*5+1*2, 6*5+1*2,10*5+3*2, 4*5+1*2,10*5+3*2, 0*5    , 7*5+2*2,11*5+1*2
 };
 
+<<<<<<< HEAD
 static const UINT8 cc_cb[0x100] = {
+=======
+static const uint8_t cc_cb[0x100] = {
+>>>>>>> upstream/master
 	8*5+2*2, 8*5+2*2, 8*5+2*2, 8*5+2*2, 8*5+2*2, 8*5+2*2,15*5+2*2, 8*5+2*2, 8*5+2*2, 8*5+2*2, 8*5+2*2, 8*5+2*2, 8*5+2*2, 8*5+2*2,15*5+2*2, 8*5+2*2,
 	8*5+2*2, 8*5+2*2, 8*5+2*2, 8*5+2*2, 8*5+2*2, 8*5+2*2,15*5+2*2, 8*5+2*2, 8*5+2*2, 8*5+2*2, 8*5+2*2, 8*5+2*2, 8*5+2*2, 8*5+2*2,15*5+2*2, 8*5+2*2,
 	8*5+2*2, 8*5+2*2, 8*5+2*2, 8*5+2*2, 8*5+2*2, 8*5+2*2,15*5+2*2, 8*5+2*2, 8*5+2*2, 8*5+2*2, 8*5+2*2, 8*5+2*2, 8*5+2*2, 8*5+2*2,15*5+2*2, 8*5+2*2,
@@ -291,7 +314,11 @@ static const UINT8 cc_cb[0x100] = {
 	8*5+2*2, 8*5+2*2, 8*5+2*2, 8*5+2*2, 8*5+2*2, 8*5+2*2,15*5+2*2, 8*5+2*2, 8*5+2*2, 8*5+2*2, 8*5+2*2, 8*5+2*2, 8*5+2*2, 8*5+2*2,15*5+2*2, 8*5+2*2
 };
 
+<<<<<<< HEAD
 static const UINT8 cc_ed[0x100] = {
+=======
+static const uint8_t cc_ed[0x100] = {
+>>>>>>> upstream/master
 	8*5+2*2, 8*5+2*2, 8*5+2*2, 8*5+2*2, 8*5+2*2, 8*5+2*2, 8*5+2*2, 8*5+2*2, 8*5+2*2, 8*5+2*2, 8*5+2*2, 8*5+2*2, 8*5+2*2, 8*5+2*2, 8*5+2*2, 8*5+2*2,
 	8*5+2*2, 8*5+2*2, 8*5+2*2, 8*5+2*2, 8*5+2*2, 8*5+2*2, 8*5+2*2, 8*5+2*2, 8*5+2*2, 8*5+2*2, 8*5+2*2, 8*5+2*2, 8*5+2*2, 8*5+2*2, 8*5+2*2, 8*5+2*2,
 	8*5+2*2, 8*5+2*2, 8*5+2*2, 8*5+2*2, 8*5+2*2, 8*5+2*2, 8*5+2*2, 8*5+2*2, 8*5+2*2, 8*5+2*2, 8*5+2*2, 8*5+2*2, 8*5+2*2, 8*5+2*2, 8*5+2*2, 8*5+2*2,
@@ -310,7 +337,11 @@ static const UINT8 cc_ed[0x100] = {
 	8*5+2*2, 8*5+2*2, 8*5+2*2, 8*5+2*2, 8*5+2*2, 8*5+2*2, 8*5+2*2, 8*5+2*2, 8*5+2*2, 8*5+2*2, 8*5+2*2, 8*5+2*2, 8*5+2*2, 8*5+2*2, 8*5+2*2, 8*5+2*2
 };
 
+<<<<<<< HEAD
 static const UINT8 cc_xy[0x100] = {
+=======
+static const uint8_t cc_xy[0x100] = {
+>>>>>>> upstream/master
 ( 4+4)*5+2*2,(10+4)*5+4*2,( 7+4)*5+2*2,( 6+4)*5+2*2,( 4+4)*5+2*2,( 4+4)*5+2*2,( 7+4)*5+3*2,( 4+4)*5+2*2,( 4+4)*5+2*2,(11+4)*5+2*2,( 7+4)*5+2*2,( 6+4)*5+2*2,( 4+4)*5+2*2,( 4+4)*5+2*2,( 7+4)*5+3*2,( 4+4)*5+2*2,
 ( 8+4)*5+3*2,(10+4)*5+4*2,( 7+4)*5+2*2,( 6+4)*5+2*2,( 4+4)*5+2*2,( 4+4)*5+2*2,( 7+4)*5+3*2,( 4+4)*5+2*2,(12+4)*5+3*2,(11+4)*5+2*2,( 7+4)*5+2*2,( 6+4)*5+2*2,( 4+4)*5+2*2,( 4+4)*5+2*2,( 7+4)*5+3*2,( 4+4)*5+2*2,
 ( 7+4)*5+3*2,(10+4)*5+4*2,(16+4)*5+4*2,( 6+4)*5+2*2,( 4+4)*5+2*2,( 4+4)*5+2*2,( 7+4)*5+3*2,( 4+4)*5+2*2,( 7+4)*5+3*2,(11+4)*5+2*2,(16+4)*5+4*2,( 6+4)*5+2*2,( 4+4)*5+2*2,( 4+4)*5+2*2,( 7+4)*5+3*2,( 4+4)*5+2*2,
@@ -329,7 +360,11 @@ static const UINT8 cc_xy[0x100] = {
 ( 5+4)*5+2*2,(10+4)*5+2*2,(10+4)*5+4*2,( 4+4)*5+2*2,(10+4)*5+4*2,(11+4)*5+2*2,( 7+4)*5+3*2,(11+4)*5+2*2,( 5+4)*5+2*2,( 6+4)*5+2*2,(10+4)*5+4*2,( 4+4)*5+2*2,(10+4)*5+4*2,( 4  )*5+2*2,( 7+4)*5+3*2,(11+4)*5+2*2
 };
 
+<<<<<<< HEAD
 static const UINT8 cc_xycb[0x100] = {
+=======
+static const uint8_t cc_xycb[0x100] = {
+>>>>>>> upstream/master
 23*5+4*2,23*5+4*2,23*5+4*2,23*5+4*2,23*5+4*2,23*5+4*2,23*5+4*2,23*5+4*2,23*5+4*2,23*5+4*2,23*5+4*2,23*5+4*2,23*5+4*2,23*5+4*2,23*5+4*2,23*5+4*2,
 23*5+4*2,23*5+4*2,23*5+4*2,23*5+4*2,23*5+4*2,23*5+4*2,23*5+4*2,23*5+4*2,23*5+4*2,23*5+4*2,23*5+4*2,23*5+4*2,23*5+4*2,23*5+4*2,23*5+4*2,23*5+4*2,
 23*5+4*2,23*5+4*2,23*5+4*2,23*5+4*2,23*5+4*2,23*5+4*2,23*5+4*2,23*5+4*2,23*5+4*2,23*5+4*2,23*5+4*2,23*5+4*2,23*5+4*2,23*5+4*2,23*5+4*2,23*5+4*2,
@@ -349,7 +384,11 @@ static const UINT8 cc_xycb[0x100] = {
 };
 
 /* extra cycles if jr/jp/call taken and 'interrupt latency' on rst 0-7 */
+<<<<<<< HEAD
 static const UINT8 cc_ex[0x100] = {
+=======
+static const uint8_t cc_ex[0x100] = {
+>>>>>>> upstream/master
 	0*5, 0*5, 0*5, 0*5, 0*5, 0*5, 0*5, 0*5, 0*5, 0*5, 0*5, 0*5, 0*5, 0*5, 0*5, 0*5,
 	5*5, 0*5, 0*5, 0*5, 0*5, 0*5, 0*5, 0*5, 0*5, 0*5, 0*5, 0*5, 0*5, 0*5, 0*5, 0*5, /* DJNZ */
 	5*5, 0*5, 0*5, 0*5, 0*5, 0*5, 0*5, 0*5, 5*5, 0*5, 0*5, 0*5, 0*5, 0*5, 0*5, 0*5, /* JR NZ/JR Z */
@@ -371,7 +410,11 @@ static const UINT8 cc_ex[0x100] = {
 
 void system1_state::machine_start()
 {
+<<<<<<< HEAD
 	UINT32 numbanks = (m_maincpu_region->bytes() - 0x10000) / 0x4000;
+=======
+	uint32_t numbanks = (m_maincpu_region->bytes() - 0x10000) / 0x4000;
+>>>>>>> upstream/master
 
 	if (numbanks > 0)
 		m_bank1->configure_entries(0, numbanks, m_maincpu_region->base() + 0x10000, 0x4000);
@@ -381,8 +424,13 @@ void system1_state::machine_start()
 
 	if (m_banked_decrypted_opcodes)
 	{
+<<<<<<< HEAD
 		m_bank0d->set_base(m_banked_decrypted_opcodes);
 		m_bank1d->configure_entries(0, numbanks, m_banked_decrypted_opcodes + 0x10000, 0x4000);
+=======
+		m_bank0d->set_base(m_banked_decrypted_opcodes.get());
+		m_bank1d->configure_entries(0, numbanks, m_banked_decrypted_opcodes.get() + 0x10000, 0x4000);
+>>>>>>> upstream/master
 		m_bank1d->set_entry(0);
 	}
 
@@ -417,14 +465,22 @@ void system1_state::machine_reset()
  *
  *************************************/
 
+<<<<<<< HEAD
 void system1_state::bank44_custom_w(UINT8 data, UINT8 prevdata)
+=======
+void system1_state::bank44_custom_w(uint8_t data, uint8_t prevdata)
+>>>>>>> upstream/master
 {
 	/* bank bits are bits 6 and 2 */
 	m_bank1->set_entry(((data & 0x40) >> 5) | ((data & 0x04) >> 2));
 }
 
 
+<<<<<<< HEAD
 void system1_state::bank0c_custom_w(UINT8 data, UINT8 prevdata)
+=======
+void system1_state::bank0c_custom_w(uint8_t data, uint8_t prevdata)
+>>>>>>> upstream/master
 {
 	/* bank bits are bits 3 and 2 */
 	m_bank1->set_entry((data & 0x0c) >> 2);
@@ -436,16 +492,28 @@ void system1_state::bank0c_custom_w(UINT8 data, UINT8 prevdata)
 WRITE8_MEMBER(system1_state::videomode_w)
 {
 	/* bit 6 is connected to the 8751 IRQ */
+<<<<<<< HEAD
 	if (m_mcu != NULL)
 		m_mcu->set_input_line(MCS51_INT1_LINE, (data & 0x40) ? CLEAR_LINE : ASSERT_LINE);
 
 	/* handle any custom banking or other stuff */
 	if (m_videomode_custom != NULL)
+=======
+	if (m_mcu != nullptr)
+		m_mcu->set_input_line(MCS51_INT1_LINE, (data & 0x40) ? CLEAR_LINE : ASSERT_LINE);
+
+	/* handle any custom banking or other stuff */
+	if (m_videomode_custom != nullptr)
+>>>>>>> upstream/master
 		(this->*m_videomode_custom)(data, m_videomode_prev);
 	m_videomode_prev = data;
 
 	/* bit 0 is for the coin counters */
+<<<<<<< HEAD
 	coin_counter_w(machine(), 0, data & 1);
+=======
+	machine().bookkeeping().coin_counter_w(0, data & 1);
+>>>>>>> upstream/master
 
 	/* remaining signals are video-related */
 	system1_videomode_w(space, 0, data);
@@ -473,7 +541,11 @@ CUSTOM_INPUT_MEMBER(system1_state::dakkochn_mux_status_r)
 }
 
 
+<<<<<<< HEAD
 void system1_state::dakkochn_custom_w(UINT8 data, UINT8 prevdata)
+=======
+void system1_state::dakkochn_custom_w(uint8_t data, uint8_t prevdata)
+>>>>>>> upstream/master
 {
 	/* bit 1 toggling on clocks the mux; we store the previous state in the high bit of dakkochn_mux_data */
 	if ((data & 0x02) && !(prevdata & 0x02))
@@ -494,7 +566,11 @@ void system1_state::dakkochn_custom_w(UINT8 data, UINT8 prevdata)
 READ8_MEMBER(system1_state::shtngmst_gunx_r)
 {
 	// x is slightly offset, and has a range of 00-fe
+<<<<<<< HEAD
 	UINT8 x = ioport("GUNX")->read() - 0x12;
+=======
+	uint8_t x = ioport("GUNX")->read() - 0x12;
+>>>>>>> upstream/master
 	return (x == 0xff) ? 0xfe : x;
 }
 
@@ -526,6 +602,7 @@ READ8_MEMBER(system1_state::sound_data_r)
 	z80pio_device *pio = machine().device<z80pio_device>("pio");
 
 	/* if we have an 8255 PPI, get the data from the port and toggle the ack */
+<<<<<<< HEAD
 	if (m_ppi8255 != NULL)
 	{
 		m_ppi8255->pc6_w(0);
@@ -537,6 +614,19 @@ READ8_MEMBER(system1_state::sound_data_r)
 	else if (pio != NULL)
 	{
 		UINT8 data = pio->port_read(z80pio_device::PORT_A);
+=======
+	if (m_ppi8255 != nullptr)
+	{
+		m_ppi8255->pc6_w(0);
+		m_ppi8255->pc6_w(1);
+		return m_soundlatch->read(space, offset);
+	}
+
+	/* if we have a Z80 PIO, get the data from the port and toggle the strobe */
+	else if (pio != nullptr)
+	{
+		uint8_t data = pio->port_read(z80pio_device::PORT_A);
+>>>>>>> upstream/master
 		pio->strobe(z80pio_device::PORT_A, false);
 		pio->strobe(z80pio_device::PORT_A, true);
 		return data;
@@ -549,7 +639,11 @@ READ8_MEMBER(system1_state::sound_data_r)
 WRITE8_MEMBER(system1_state::soundport_w)
 {
 	/* boost interleave when communicating with the sound CPU */
+<<<<<<< HEAD
 	soundlatch_byte_w(space, 0, data);
+=======
+	m_soundlatch->write(space, 0, data);
+>>>>>>> upstream/master
 	machine().scheduler().boost_interleave(attotime::zero, attotime::from_usec(100));
 }
 
@@ -755,7 +849,11 @@ static ADDRESS_MAP_START( system1_map, AS_PROGRAM, 8, system1_state )
 	AM_RANGE(0xfc00, 0xffff) AM_WRITE(system1_sprite_collision_reset_w)
 ADDRESS_MAP_END
 
+<<<<<<< HEAD
 static ADDRESS_MAP_START( decrypted_opcodes_map, AS_DECRYPTED_OPCODES, 8, system1_state )
+=======
+static ADDRESS_MAP_START( decrypted_opcodes_map, AS_OPCODES, 8, system1_state )
+>>>>>>> upstream/master
 	AM_RANGE(0x0000, 0x7fff) AM_ROM AM_SHARE("decrypted_opcodes")
 	AM_RANGE(0x8000, 0xbfff) AM_ROMBANK("bank1")
 	AM_RANGE(0xc000, 0xcfff) AM_RAM AM_SHARE("ram")
@@ -763,7 +861,11 @@ static ADDRESS_MAP_START( decrypted_opcodes_map, AS_DECRYPTED_OPCODES, 8, system
 	AM_RANGE(0xd800, 0xdfff) AM_RAM_WRITE(system1_paletteram_w) AM_SHARE("palette")
 ADDRESS_MAP_END
 
+<<<<<<< HEAD
 static ADDRESS_MAP_START( banked_decrypted_opcodes_map, AS_DECRYPTED_OPCODES, 8, system1_state )
+=======
+static ADDRESS_MAP_START( banked_decrypted_opcodes_map, AS_OPCODES, 8, system1_state )
+>>>>>>> upstream/master
 	AM_RANGE(0x0000, 0x7fff) AM_ROMBANK("bank0d")
 	AM_RANGE(0x8000, 0xbfff) AM_ROMBANK("bank1d")
 	AM_RANGE(0xc000, 0xcfff) AM_RAM AM_SHARE("ram")
@@ -820,8 +922,13 @@ ADDRESS_MAP_END
 static ADDRESS_MAP_START( sound_map, AS_PROGRAM, 8, system1_state )
 	AM_RANGE(0x0000, 0x7fff) AM_ROM
 	AM_RANGE(0x8000, 0x87ff) AM_MIRROR(0x1800) AM_RAM
+<<<<<<< HEAD
 	AM_RANGE(0xa000, 0xa003) AM_MIRROR(0x1fff) AM_DEVWRITE("sn1", sn76489a_device, write)
 	AM_RANGE(0xc000, 0xc003) AM_MIRROR(0x1fff) AM_DEVWRITE("sn2", sn76489a_device, write)
+=======
+	AM_RANGE(0xa000, 0xa000) AM_MIRROR(0x1fff) AM_DEVWRITE("sn1", sn76489a_device, write)
+	AM_RANGE(0xc000, 0xc000) AM_MIRROR(0x1fff) AM_DEVWRITE("sn2", sn76489a_device, write)
+>>>>>>> upstream/master
 	AM_RANGE(0xe000, 0xe000) AM_MIRROR(0x1fff) AM_READ(sound_data_r)
 ADDRESS_MAP_END
 
@@ -1997,10 +2104,17 @@ static INPUT_PORTS_START( dakkochn )
 	PORT_INCLUDE( choplift )
 
 	PORT_MODIFY("P1")
+<<<<<<< HEAD
 	PORT_BIT( 0xff, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, system1_state,dakkochn_mux_data_r, NULL)
 
 	PORT_MODIFY("P2")
 	PORT_BIT( 0xff, IP_ACTIVE_LOW, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, system1_state,dakkochn_mux_status_r, NULL)
+=======
+	PORT_BIT( 0xff, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, system1_state,dakkochn_mux_data_r, nullptr)
+
+	PORT_MODIFY("P2")
+	PORT_BIT( 0xff, IP_ACTIVE_LOW, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, system1_state,dakkochn_mux_status_r, nullptr)
+>>>>>>> upstream/master
 
 	PORT_MODIFY("SYSTEM")
 	PORT_BIT( 0x10, IP_ACTIVE_LOW, IPT_UNUSED )     /* start 1 & 2 not connected. */
@@ -2145,7 +2259,11 @@ GFXDECODE_END
  *************************************/
 
 /* original board with 64kbit ROMs and an 8255 PPI for outputs */
+<<<<<<< HEAD
 static MACHINE_CONFIG_START( sys1ppi, system1_state )
+=======
+static MACHINE_CONFIG_START( sys1ppi )
+>>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", Z80, MASTER_CLOCK)  /* not really, see notes above */
@@ -2178,6 +2296,11 @@ static MACHINE_CONFIG_START( sys1ppi, system1_state )
 	/* sound hardware */
 	MCFG_SPEAKER_STANDARD_MONO("mono")
 
+<<<<<<< HEAD
+=======
+	MCFG_GENERIC_LATCH_8_ADD("soundlatch")
+
+>>>>>>> upstream/master
 	MCFG_SOUND_ADD("sn1", SN76489A, SOUND_CLOCK/4)
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 0.50)
 
@@ -2185,10 +2308,14 @@ static MACHINE_CONFIG_START( sys1ppi, system1_state )
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 0.50)
 MACHINE_CONFIG_END
 
+<<<<<<< HEAD
 static MACHINE_CONFIG_DERIVED( sys1ppix, sys1ppi )
 	MCFG_DEVICE_MODIFY("maincpu")
 	MCFG_CPU_DECRYPTED_OPCODES_MAP(decrypted_opcodes_map)
 MACHINE_CONFIG_END
+=======
+
+>>>>>>> upstream/master
 
 
 /* reduced visible area for scrolling games */
@@ -2199,10 +2326,16 @@ static MACHINE_CONFIG_DERIVED( sys1ppis, sys1ppi )
 	MCFG_SCREEN_VISIBLE_AREA(2*(0*8+8), 2*(32*8-1-8), 0*8, 28*8-1)
 MACHINE_CONFIG_END
 
+<<<<<<< HEAD
 static MACHINE_CONFIG_DERIVED( sys1ppisx, sys1ppis )
 	MCFG_DEVICE_MODIFY("maincpu")
 	MCFG_CPU_DECRYPTED_OPCODES_MAP(decrypted_opcodes_map)
 MACHINE_CONFIG_END
+=======
+
+
+
+>>>>>>> upstream/master
 
 
 /* revised board with 128kbit ROMs and a Z80 PIO for outputs */
@@ -2218,9 +2351,157 @@ static MACHINE_CONFIG_DERIVED( sys1pio, sys1ppi )
 	MCFG_Z80PIO_OUT_PB_CB(WRITE8(system1_state, videomode_w))
 MACHINE_CONFIG_END
 
+<<<<<<< HEAD
 static MACHINE_CONFIG_DERIVED( sys1piox, sys1pio )
 	MCFG_DEVICE_MODIFY("maincpu")
 	MCFG_CPU_DECRYPTED_OPCODES_MAP(decrypted_opcodes_map)
+=======
+#define ENCRYPTED_SYS1PPI_MAPS \
+	MCFG_CPU_PROGRAM_MAP(system1_map) \
+	MCFG_CPU_DECRYPTED_OPCODES_MAP(decrypted_opcodes_map) \
+	MCFG_CPU_IO_MAP(system1_ppi_io_map) \
+	MCFG_CPU_VBLANK_INT_DRIVER("screen", system1_state, irq0_line_hold)
+
+#define ENCRYPTED_SYS1PIO_MAPS \
+	MCFG_CPU_PROGRAM_MAP(system1_map) \
+	MCFG_CPU_DECRYPTED_OPCODES_MAP(decrypted_opcodes_map) \
+	MCFG_CPU_IO_MAP(system1_pio_io_map) \
+	MCFG_CPU_VBLANK_INT_DRIVER("screen", system1_state, irq0_line_hold)
+
+#define ENCRYPTED_SYS2_MC8123_MAPS \
+	MCFG_CPU_PROGRAM_MAP(system1_map) \
+	MCFG_CPU_DECRYPTED_OPCODES_MAP(banked_decrypted_opcodes_map) \
+	MCFG_CPU_IO_MAP(system1_ppi_io_map) \
+	MCFG_CPU_VBLANK_INT_DRIVER("screen", system1_state, irq0_line_hold)
+
+
+static MACHINE_CONFIG_DERIVED( sys1pioxb, sys1pio )
+	MCFG_CPU_REPLACE("maincpu", MC8123, MASTER_CLOCK)
+	ENCRYPTED_SYS1PIO_MAPS
+MACHINE_CONFIG_END
+
+static MACHINE_CONFIG_DERIVED( sys1ppix_315_5178, sys1ppi )
+	MCFG_CPU_REPLACE("maincpu", SEGA_315_5178, MASTER_CLOCK)
+	ENCRYPTED_SYS1PPI_MAPS
+	MCFG_SEGAZ80_SET_DECRYPTED_TAG(":decrypted_opcodes")
+MACHINE_CONFIG_END
+
+static MACHINE_CONFIG_DERIVED( sys1ppix_315_5179, sys1ppi )
+	MCFG_CPU_REPLACE("maincpu", SEGA_315_5179, MASTER_CLOCK)
+	ENCRYPTED_SYS1PPI_MAPS
+	MCFG_SEGAZ80_SET_DECRYPTED_TAG(":decrypted_opcodes")
+MACHINE_CONFIG_END
+
+static MACHINE_CONFIG_DERIVED( sys1ppix_315_5051, sys1ppi )
+	MCFG_CPU_REPLACE("maincpu", SEGA_315_5051, MASTER_CLOCK)
+	ENCRYPTED_SYS1PPI_MAPS
+	MCFG_SEGACRPT_SET_DECRYPTED_TAG(":decrypted_opcodes")
+MACHINE_CONFIG_END
+
+static MACHINE_CONFIG_DERIVED( sys1ppix_315_5048, sys1ppi )
+	MCFG_CPU_REPLACE("maincpu", SEGA_315_5048, MASTER_CLOCK)
+	ENCRYPTED_SYS1PPI_MAPS
+	MCFG_SEGACRPT_SET_DECRYPTED_TAG(":decrypted_opcodes")
+MACHINE_CONFIG_END
+
+static MACHINE_CONFIG_DERIVED( sys1ppix_315_5033, sys1ppi )
+	MCFG_CPU_REPLACE("maincpu", SEGA_315_5033, MASTER_CLOCK)
+	ENCRYPTED_SYS1PPI_MAPS
+	MCFG_SEGACRPT_SET_DECRYPTED_TAG(":decrypted_opcodes")
+MACHINE_CONFIG_END
+
+static MACHINE_CONFIG_DERIVED( sys1ppix_315_5065, sys1ppi )
+	MCFG_CPU_REPLACE("maincpu", SEGA_315_5065, MASTER_CLOCK)
+	ENCRYPTED_SYS1PPI_MAPS
+	MCFG_SEGACRPT_SET_DECRYPTED_TAG(":decrypted_opcodes")
+MACHINE_CONFIG_END
+
+
+static MACHINE_CONFIG_DERIVED( sys1ppix_315_5098, sys1ppi )
+	MCFG_CPU_REPLACE("maincpu", SEGA_315_5098, MASTER_CLOCK)
+	ENCRYPTED_SYS1PPI_MAPS
+	MCFG_SEGACRPT_SET_DECRYPTED_TAG(":decrypted_opcodes")
+MACHINE_CONFIG_END
+
+static MACHINE_CONFIG_DERIVED( sys1piox_315_5177, sys1pio )
+	MCFG_CPU_REPLACE("maincpu", SEGA_315_5177, MASTER_CLOCK)
+	ENCRYPTED_SYS1PIO_MAPS
+	MCFG_SEGAZ80_SET_DECRYPTED_TAG(":decrypted_opcodes")
+MACHINE_CONFIG_END
+
+static MACHINE_CONFIG_DERIVED( sys1piox_315_5162, sys1pio )
+	MCFG_CPU_REPLACE("maincpu", SEGA_315_5162, MASTER_CLOCK)
+	ENCRYPTED_SYS1PIO_MAPS
+	MCFG_SEGAZ80_SET_DECRYPTED_TAG(":decrypted_opcodes")
+MACHINE_CONFIG_END
+
+static MACHINE_CONFIG_DERIVED( sys1piox_317_0006, sys1pio )
+	MCFG_CPU_REPLACE("maincpu", SEGA_317_0006, MASTER_CLOCK)
+	ENCRYPTED_SYS1PIO_MAPS
+	MCFG_SEGAZ80_SET_DECRYPTED_TAG(":decrypted_opcodes")
+MACHINE_CONFIG_END
+
+static MACHINE_CONFIG_DERIVED( sys1piox_315_5135, sys1pio )
+	MCFG_CPU_REPLACE("maincpu", SEGA_315_5135, MASTER_CLOCK)
+	ENCRYPTED_SYS1PIO_MAPS
+	MCFG_SEGACRPT_SET_DECRYPTED_TAG(":decrypted_opcodes")
+MACHINE_CONFIG_END
+
+static MACHINE_CONFIG_DERIVED( sys1piox_315_5132, sys1pio )
+	MCFG_CPU_REPLACE("maincpu", SEGA_315_5132, MASTER_CLOCK)
+	ENCRYPTED_SYS1PIO_MAPS
+	MCFG_SEGACRPT_SET_DECRYPTED_TAG(":decrypted_opcodes")
+MACHINE_CONFIG_END
+
+static MACHINE_CONFIG_DERIVED( sys1piox_315_5155, sys1pio )
+	MCFG_CPU_REPLACE("maincpu", SEGA_315_5155, MASTER_CLOCK)
+	ENCRYPTED_SYS1PIO_MAPS
+	MCFG_SEGACRPT_SET_DECRYPTED_TAG(":decrypted_opcodes")
+MACHINE_CONFIG_END
+
+static MACHINE_CONFIG_DERIVED( sys1piox_315_5110, sys1pio )
+	MCFG_CPU_REPLACE("maincpu", SEGA_315_5110, MASTER_CLOCK)
+	ENCRYPTED_SYS1PIO_MAPS
+	MCFG_SEGACRPT_SET_DECRYPTED_TAG(":decrypted_opcodes")
+MACHINE_CONFIG_END
+
+static MACHINE_CONFIG_DERIVED( sys1piox_315_5051, sys1pio )
+	MCFG_CPU_REPLACE("maincpu", SEGA_315_5051, MASTER_CLOCK)
+	ENCRYPTED_SYS1PIO_MAPS
+	MCFG_SEGACRPT_SET_DECRYPTED_TAG(":decrypted_opcodes")
+MACHINE_CONFIG_END
+
+static MACHINE_CONFIG_DERIVED( sys1piox_315_5098, sys1pio )
+	MCFG_CPU_REPLACE("maincpu", SEGA_315_5098, MASTER_CLOCK)
+	ENCRYPTED_SYS1PIO_MAPS
+	MCFG_SEGACRPT_SET_DECRYPTED_TAG(":decrypted_opcodes")
+MACHINE_CONFIG_END
+
+static MACHINE_CONFIG_DERIVED( sys1piox_315_5102, sys1pio )
+	MCFG_CPU_REPLACE("maincpu", SEGA_315_5102, MASTER_CLOCK)
+	ENCRYPTED_SYS1PIO_MAPS
+	MCFG_SEGACRPT_SET_DECRYPTED_TAG(":decrypted_opcodes")
+MACHINE_CONFIG_END
+
+
+static MACHINE_CONFIG_DERIVED( sys1piox_315_5133, sys1pio )
+	MCFG_CPU_REPLACE("maincpu", SEGA_315_5133, MASTER_CLOCK)
+	ENCRYPTED_SYS1PIO_MAPS
+	MCFG_SEGACRPT_SET_DECRYPTED_TAG(":decrypted_opcodes")
+MACHINE_CONFIG_END
+
+
+static MACHINE_CONFIG_DERIVED( sys1piox_315_5093, sys1pio )
+	MCFG_CPU_REPLACE("maincpu", SEGA_315_5093, MASTER_CLOCK)
+	ENCRYPTED_SYS1PIO_MAPS
+	MCFG_SEGACRPT_SET_DECRYPTED_TAG(":decrypted_opcodes")
+MACHINE_CONFIG_END
+
+static MACHINE_CONFIG_DERIVED( sys1piox_315_5065, sys1pio )
+	MCFG_CPU_REPLACE("maincpu", SEGA_315_5065, MASTER_CLOCK)
+	ENCRYPTED_SYS1PIO_MAPS
+	MCFG_SEGACRPT_SET_DECRYPTED_TAG(":decrypted_opcodes")
+>>>>>>> upstream/master
 MACHINE_CONFIG_END
 
 /* reduced visible area for scrolling games */
@@ -2231,6 +2512,7 @@ static MACHINE_CONFIG_DERIVED( sys1pios, sys1pio )
 	MCFG_SCREEN_VISIBLE_AREA(2*(0*8+8), 2*(32*8-1-8), 0*8, 28*8-1)
 MACHINE_CONFIG_END
 
+<<<<<<< HEAD
 static MACHINE_CONFIG_DERIVED( sys1piosx, sys1pios )
 	MCFG_DEVICE_MODIFY("maincpu")
 	MCFG_CPU_DECRYPTED_OPCODES_MAP(decrypted_opcodes_map)
@@ -2239,6 +2521,40 @@ MACHINE_CONFIG_END
 
 /* this describes the additional 8751 MCU when present */
 static MACHINE_CONFIG_FRAGMENT( mcu )
+=======
+static MACHINE_CONFIG_DERIVED( sys1piosx_315_5099, sys1pios )
+	MCFG_CPU_REPLACE("maincpu", SEGA_315_5065, MASTER_CLOCK)
+	ENCRYPTED_SYS1PIO_MAPS
+	MCFG_SEGACRPT_SET_DECRYPTED_TAG(":decrypted_opcodes")
+MACHINE_CONFIG_END
+
+static MACHINE_CONFIG_DERIVED( sys1piosx_315_spat, sys1pios )
+	MCFG_CPU_REPLACE("maincpu", SEGA_315_SPAT, MASTER_CLOCK)
+	ENCRYPTED_SYS1PIO_MAPS
+	MCFG_SEGACRPT_SET_DECRYPTED_TAG(":decrypted_opcodes")
+MACHINE_CONFIG_END
+
+
+static MACHINE_CONFIG_DERIVED( sys1ppisx_315_5064, sys1ppis )
+	MCFG_CPU_REPLACE("maincpu", SEGA_315_5064, MASTER_CLOCK)
+	ENCRYPTED_SYS1PPI_MAPS
+	MCFG_SEGACRPT_SET_DECRYPTED_TAG(":decrypted_opcodes")
+MACHINE_CONFIG_END
+
+static MACHINE_CONFIG_DERIVED( sys1ppisx_315_5041, sys1ppis )
+	MCFG_CPU_REPLACE("maincpu", SEGA_315_5041, MASTER_CLOCK)
+	ENCRYPTED_SYS1PPI_MAPS
+	MCFG_SEGACRPT_SET_DECRYPTED_TAG(":decrypted_opcodes")
+MACHINE_CONFIG_END
+
+
+
+
+
+
+/* this describes the additional 8751 MCU when present */
+static MACHINE_CONFIG_START( mcu )
+>>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_MODIFY("maincpu")
@@ -2286,8 +2602,43 @@ static MACHINE_CONFIG_DERIVED( sys2x, sys2 )
 	MCFG_CPU_DECRYPTED_OPCODES_MAP(decrypted_opcodes_map)
 MACHINE_CONFIG_END
 
+<<<<<<< HEAD
 static MACHINE_CONFIG_DERIVED( sys2xb, sys2 )
 	MCFG_DEVICE_MODIFY("maincpu")
+=======
+static MACHINE_CONFIG_DERIVED( sys2_315_5177, sys2 )
+	MCFG_CPU_REPLACE("maincpu", SEGA_315_5177, MASTER_CLOCK)
+	ENCRYPTED_SYS1PPI_MAPS
+	MCFG_SEGAZ80_SET_DECRYPTED_TAG(":decrypted_opcodes")
+MACHINE_CONFIG_END
+
+static MACHINE_CONFIG_DERIVED( sys2_315_5176, sys2 )
+	MCFG_CPU_REPLACE("maincpu", SEGA_315_5176, MASTER_CLOCK)
+	ENCRYPTED_SYS1PPI_MAPS
+	MCFG_SEGAZ80_SET_DECRYPTED_TAG(":decrypted_opcodes")
+MACHINE_CONFIG_END
+
+static MACHINE_CONFIG_DERIVED( sys2_317_0006, sys2 )
+	MCFG_CPU_REPLACE("maincpu", SEGA_317_0006, MASTER_CLOCK)
+	ENCRYPTED_SYS1PPI_MAPS
+	MCFG_SEGAZ80_SET_DECRYPTED_TAG(":decrypted_opcodes")
+MACHINE_CONFIG_END
+
+static MACHINE_CONFIG_DERIVED( sys2_317_0007, sys2 )
+	MCFG_CPU_REPLACE("maincpu", SEGA_317_0007, MASTER_CLOCK)
+	ENCRYPTED_SYS1PPI_MAPS
+	MCFG_SEGAZ80_SET_DECRYPTED_TAG(":decrypted_opcodes")
+MACHINE_CONFIG_END
+
+
+static MACHINE_CONFIG_DERIVED( sys2xb, sys2 )
+	MCFG_CPU_REPLACE("maincpu", MC8123, MASTER_CLOCK)
+	ENCRYPTED_SYS2_MC8123_MAPS
+MACHINE_CONFIG_END
+
+static MACHINE_CONFIG_DERIVED( sys2xboot, sys2 )
+	MCFG_CPU_MODIFY("maincpu")
+>>>>>>> upstream/master
 	MCFG_CPU_DECRYPTED_OPCODES_MAP(banked_decrypted_opcodes_map)
 MACHINE_CONFIG_END
 
@@ -2304,7 +2655,16 @@ static MACHINE_CONFIG_DERIVED( sys2row, sys2 )
 MACHINE_CONFIG_END
 
 static MACHINE_CONFIG_DERIVED( sys2rowxb, sys2row )
+<<<<<<< HEAD
 	MCFG_DEVICE_MODIFY("maincpu")
+=======
+	MCFG_CPU_REPLACE("maincpu", MC8123, MASTER_CLOCK)
+	ENCRYPTED_SYS2_MC8123_MAPS
+MACHINE_CONFIG_END
+
+static MACHINE_CONFIG_DERIVED( sys2rowxboot, sys2row )
+	MCFG_CPU_MODIFY("maincpu")
+>>>>>>> upstream/master
 	MCFG_CPU_DECRYPTED_OPCODES_MAP(banked_decrypted_opcodes_map)
 MACHINE_CONFIG_END
 
@@ -2631,6 +2991,31 @@ ROM_START( flicky )
 	ROM_LOAD( "pr-5317.76",     0x0000, 0x0100, CRC(648350b8) SHA1(c7986aa9127ef5b50b845434cb4e81dff9861cd2) )
 ROM_END
 
+<<<<<<< HEAD
+=======
+// PCB label: 834-5411-11 FLICKY
+ROM_START( flickya )
+	ROM_REGION( 0x10000, "maincpu", 0 )
+	ROM_LOAD( "epr5978a.116",   0x0000, 0x4000, CRC(296f1492) SHA1(52e2c63ce376ab8124b2c68bdfa432b6621cfa78) ) /* encrypted */
+	ROM_LOAD( "epr5979a.109",   0x4000, 0x4000, CRC(64b03ef9) SHA1(7519aa7f036bce6d52a5d4be2418139559f9a8a5) ) /* encrypted */
+
+	ROM_REGION( 0x10000, "soundcpu", 0 )
+	ROM_LOAD( "epr-5869.120",   0x0000, 0x2000, CRC(6d220d4e) SHA1(fe02a7a94a1ad046fc775a7f67f460c8d0f6dca6) )
+
+	ROM_REGION( 0xc000, "tiles", 0 )
+	ROM_LOAD( "epr-6001.62",    0x0000, 0x4000, CRC(f1a75200) SHA1(47e57b5dbd687d0fa91de91f35f199e88d5a5d99) )
+	ROM_LOAD( "epr-6000.64",    0x4000, 0x4000, CRC(299aefb7) SHA1(d0301f0bf706807891845f090e4e1f1c38dbbd54) )
+	ROM_LOAD( "epr-5999.66",    0x8000, 0x4000, CRC(1ca53157) SHA1(46b4b9dac3f0506edc3957cee768e41c4754b0f4) )
+
+	ROM_REGION( 0x8000, "sprites", 0 )
+	ROM_LOAD( "epr-5855.117",   0x0000, 0x4000, CRC(b5f894a1) SHA1(2c72dc16739dad155fcd572e1add067a7647f5bd) )
+	ROM_LOAD( "epr-5856.110",   0x4000, 0x4000, CRC(266af78f) SHA1(dcbfce550d10a1f2b3ce3e7e081fc008cb575708) )
+
+	ROM_REGION( 0x0100, "proms", 0 )
+	ROM_LOAD( "pr-5317.76",     0x0000, 0x0100, CRC(648350b8) SHA1(c7986aa9127ef5b50b845434cb4e81dff9861cd2) )
+ROM_END
+
+>>>>>>> upstream/master
 ROM_START( flickys2 )
 	ROM_REGION( 0x10000, "maincpu", 0 )
 	ROM_LOAD( "epr-6621.bin",   0x0000, 0x4000, CRC(b21ff546) SHA1(e1d5438eaf0efeaeb4687dcfc12bf325e804182f) )
@@ -2955,9 +3340,49 @@ ROM_END
 
 ROM_START( seganinj )
 	ROM_REGION( 0x10000, "maincpu", 0 )
+<<<<<<< HEAD
 	ROM_LOAD( "epr-.116",       0x0000, 0x4000, CRC(a5d0c9d0) SHA1(b60caccab8269f40d4f6e7a50f3aa0d4901c1e57) ) /* encrypted */
 	ROM_LOAD( "epr-.109",       0x4000, 0x4000, CRC(b9e6775c) SHA1(f39e815c3c034015125b96de34a2a225b81392b5) ) /* encrypted */
 	ROM_LOAD( "epr-6552.96",    0x8000, 0x4000, CRC(f2eeb0d8) SHA1(1f0d1c73ba9eaa2887ffc596f0038b0af37ced49) ) /* epr-7151.96 */
+=======
+	ROM_LOAD( "epr-6594a.116",   0x0000, 0x4000, CRC(a5d0c9d0) SHA1(b60caccab8269f40d4f6e7a50f3aa0d4901c1e57) ) /* encrypted */
+	ROM_LOAD( "epr-6595a.109",   0x4000, 0x4000, CRC(b9e6775c) SHA1(f39e815c3c034015125b96de34a2a225b81392b5) ) /* encrypted */
+	ROM_LOAD( "epr-6596a.96",    0x8000, 0x4000, CRC(f2eeb0d8) SHA1(1f0d1c73ba9eaa2887ffc596f0038b0af37ced49) ) /* == epr-6552.96 */
+>>>>>>> upstream/master
+
+	ROM_REGION( 0x10000, "soundcpu", 0 )
+	ROM_LOAD( "epr-6559.120",   0x0000, 0x2000, CRC(5a1570ee) SHA1(fd9215e007b6687d057ea7aee01f6d3dcbc8f894) )
+
+	ROM_REGION( 0xc000, "tiles", 0 )
+	ROM_LOAD( "epr-6558.62",    0x0000, 0x2000, CRC(2af9eaeb) SHA1(a8a472e9f156c34f1cfcf6d6be808da4303a2276) )
+	ROM_LOAD( "epr-6592.61",    0x2000, 0x2000, CRC(7804db86) SHA1(8229781b8296d3ffdfa2f0901e2eed297cc3e160) )
+	ROM_LOAD( "epr-6556.64",    0x4000, 0x2000, CRC(79fd26f7) SHA1(a7de0f21ccbcfda495a5c93237569a9b3919d2d5) )
+	ROM_LOAD( "epr-6590.63",    0x6000, 0x2000, CRC(bf858cad) SHA1(1c18c4aa4b9a59f3c06aa459eab6bdd1b298d848) )
+	ROM_LOAD( "epr-6554.66",    0x8000, 0x2000, CRC(5ac9d205) SHA1(c3094d10d1d6226bf9ad174d2dd1631b8d6ca33a) )
+	ROM_LOAD( "epr-6588.65",    0xa000, 0x2000, CRC(dc931dbb) SHA1(4729b27843f226ba5861c3106f8418db70e7c47d) )
+
+	ROM_REGION( 0x10000, "sprites", 0 )
+	ROM_LOAD( "epr-6546.117",   0x0000, 0x4000, CRC(a4785692) SHA1(95ce23076dc86c5d6d3a65274873d4c48e91cc06) )
+	ROM_LOAD( "epr-6548.04",    0x4000, 0x4000, CRC(bdf278c1) SHA1(7ebe505f4f0434edb2cee17a6cbce6b900b29cc4) )
+	ROM_LOAD( "epr-6547.110",   0x8000, 0x4000, CRC(34451b08) SHA1(ee8708f6c886b63f138bcc10dc2a053bfad96c37) )
+<<<<<<< HEAD
+	ROM_LOAD( "epr-6549.05",    0xc000, 0x4000, CRC(d2057668) SHA1(ded2a04f7555eb3b1e4da57901ca00635de2c043) )
+=======
+	ROM_LOAD( "epr-6549a.05",   0xc000, 0x4000, CRC(7c51488c) SHA1(adc835d86e8b51ac47b8619655b3cc2c01aa8c7a) ) // note 'a' revision
+>>>>>>> upstream/master
+
+	ROM_REGION( 0x0100, "proms", 0 )
+	ROM_LOAD( "pr-5317.76",     0x0000, 0x0100, CRC(648350b8) SHA1(c7986aa9127ef5b50b845434cb4e81dff9861cd2) )
+ROM_END
+
+ROM_START( seganinju )
+	ROM_REGION( 0x10000, "maincpu", 0 )
+	ROM_LOAD( "epr-7149.116",   0x0000, 0x4000, CRC(cd9fade7) SHA1(958ef5c449df6ef5346b8634cb34a646950f706e) )
+	ROM_LOAD( "epr-7150.109",   0x4000, 0x4000, CRC(c36351e2) SHA1(17734d3f410feb4cad617d1931b3356192b69ac0) )
+<<<<<<< HEAD
+	ROM_LOAD( "epr-6552.96",    0x8000, 0x4000, CRC(f2eeb0d8) SHA1(1f0d1c73ba9eaa2887ffc596f0038b0af37ced49) ) /* epr-7151.96 */
+=======
+	ROM_LOAD( "epr-7151.96",    0x8000, 0x4000, CRC(f2eeb0d8) SHA1(1f0d1c73ba9eaa2887ffc596f0038b0af37ced49) ) /* == epr-6552.96 */
 
 	ROM_REGION( 0x10000, "soundcpu", 0 )
 	ROM_LOAD( "epr-6559.120",   0x0000, 0x2000, CRC(5a1570ee) SHA1(fd9215e007b6687d057ea7aee01f6d3dcbc8f894) )
@@ -2980,11 +3405,12 @@ ROM_START( seganinj )
 	ROM_LOAD( "pr-5317.76",     0x0000, 0x0100, CRC(648350b8) SHA1(c7986aa9127ef5b50b845434cb4e81dff9861cd2) )
 ROM_END
 
-ROM_START( seganinju )
+ROM_START( seganinja )
 	ROM_REGION( 0x10000, "maincpu", 0 )
-	ROM_LOAD( "epr-7149.116",   0x0000, 0x4000, CRC(cd9fade7) SHA1(958ef5c449df6ef5346b8634cb34a646950f706e) )
-	ROM_LOAD( "epr-7150.109",   0x4000, 0x4000, CRC(c36351e2) SHA1(17734d3f410feb4cad617d1931b3356192b69ac0) )
-	ROM_LOAD( "epr-6552.96",    0x8000, 0x4000, CRC(f2eeb0d8) SHA1(1f0d1c73ba9eaa2887ffc596f0038b0af37ced49) ) /* epr-7151.96 */
+	ROM_LOAD( "epr-6879.116",   0x0000, 0x4000, CRC(cae7e51f) SHA1(de6aec8e83cfbe71ed2c52b8f5692aff5ef596a7) )
+	ROM_LOAD( "epr-6880.109",   0x4000, 0x4000, CRC(7af85e01) SHA1(57d2a8662efc878ae132cd66de8d46d506ddd6e5) )
+	ROM_LOAD( "epr-6881.96",    0x8000, 0x4000, CRC(f2eeb0d8) SHA1(1f0d1c73ba9eaa2887ffc596f0038b0af37ced49) ) /* == epr-6552.96 */
+>>>>>>> upstream/master
 
 	ROM_REGION( 0x10000, "soundcpu", 0 )
 	ROM_LOAD( "epr-6559.120",   0x0000, 0x2000, CRC(5a1570ee) SHA1(fd9215e007b6687d057ea7aee01f6d3dcbc8f894) )
@@ -3013,7 +3439,11 @@ ROM_START( nprinces )
 	ROM_LOAD( "epr-6613.130",   0x2000, 0x2000, CRC(18281f27) SHA1(3fcf2fbd1fc13eda678b77c58c53aa881882286c) ) /* encrypted */
 	ROM_LOAD( "epr-6614.131",   0x4000, 0x2000, CRC(69fc3d73) SHA1(287e6b252ae3cd23812b56afe23d4f239f3a76d5) ) /* encrypted */
 	ROM_LOAD( "epr-6615.132",   0x6000, 0x2000, CRC(1d0374c8) SHA1(6d818470e294c03b51ec6db8a285d7b71ab2b61f) ) /* encrypted */
+<<<<<<< HEAD
 	ROM_LOAD( "epr-6577.133",   0x8000, 0x2000, CRC(73616e03) SHA1(429615ee1e041d3e14fc557ec39c380fea07de71) ) /* epr-6616.133 */
+=======
+	ROM_LOAD( "epr-6616.133",   0x8000, 0x2000, CRC(73616e03) SHA1(429615ee1e041d3e14fc557ec39c380fea07de71) )
+>>>>>>> upstream/master
 	ROM_LOAD( "epr-6617.134",   0xa000, 0x2000, CRC(20b6f895) SHA1(9c9cb3b0c33c4da2850a5756b63c3886634ec544) )
 
 	ROM_REGION( 0x10000, "soundcpu", 0 )
@@ -3258,6 +3688,7 @@ ROM_START( teddybbo )
 ROM_END
 
 
+<<<<<<< HEAD
 ROM_START( teddybbobl )
 	ROM_REGION( 0x10000, "maincpu", 0 )
 	ROM_LOAD( "epr-6739.116",   0x0000, 0x4000, CRC(81a37e69) SHA1(ddd0fd7ba5b3646c43ae4261f1e3fedd4184d92c) ) // 1.f2
@@ -3266,6 +3697,16 @@ ROM_START( teddybbobl )
 
 	ROM_REGION( 0x10000, "soundcpu", 0 ) /* board was missing sound rom, using 'older' version which this set mostly matches and marked bad_dump */
 	ROM_LOAD( "epr-6748.120",   0x0000, 0x2000, CRC(9325a1cf) SHA1(555d137b1c974b144ebe6593b4c32c97b3bb5de9) )
+=======
+ROM_START( teddybbobl ) // data in romset is an exact match for teddybbo, including encryption
+	ROM_REGION( 0x10000, "maincpu", 0 )
+	ROM_LOAD( "1.f2",   0x0000, 0x4000, CRC(81a37e69) SHA1(ddd0fd7ba5b3646c43ae4261f1e3fedd4184d92c) ) // == epr-6739.116 (encrypted
+	ROM_LOAD( "2.j2",   0x4000, 0x4000, CRC(715388a9) SHA1(5affc4ecb1e0d58b69093aed732b1e292b8d3118) ) // == epr-6740.109
+	ROM_LOAD( "3.k2",   0x8000, 0x4000, CRC(e5a74f5f) SHA1(ccf18b424d4aaeec0bae1e6f096b4c176f6ab554) ) // == epr-6741.96
+
+	ROM_REGION( 0x10000, "soundcpu", 0 )
+	ROM_LOAD( "6.e10",   0x0000, 0x2000, CRC(9325a1cf) SHA1(555d137b1c974b144ebe6593b4c32c97b3bb5de9) )
+>>>>>>> upstream/master
 
 	ROM_REGION( 0xc000, "tiles", 0 ) /* same as parent except 3x16k instead of 6x8k */
 	ROM_LOAD( "11.r7",          0x0000, 0x4000, CRC(55d7aaf7) SHA1(84041b665f91b515968aaa48d8ffe93c84c90c57) ) // epr-6747.62 + epr-6746.61
@@ -3273,6 +3714,7 @@ ROM_START( teddybbobl )
 	ROM_LOAD( "9.r10",          0x8000, 0x4000, CRC(8076d3a3) SHA1(ba7f136b9300a2b41f225a7696345c90a6fbd6a5) ) // epr-6753.66 + epr-6742.65
 
 	ROM_REGION( 0x10000, "sprites", 0 )
+<<<<<<< HEAD
 	ROM_LOAD( "epr-6735.117",   0x0000, 0x4000, CRC(1be35a97) SHA1(7524cfa1a9c9a2e37753f119e7ac7aa3158621be) ) // 4.f3
 	ROM_LOAD( "epr-6737.04",    0x4000, 0x4000, CRC(6b53aa7a) SHA1(b1b3ff9460b2321e72b49befa63b61c9c36fedd9) ) // 6.k3
 	ROM_LOAD( "epr-6736.110",   0x8000, 0x4000, CRC(565c25d0) SHA1(5ae524ef01138c5042b223286d65eb9043c0f0d5) ) // 5.h3
@@ -3280,6 +3722,18 @@ ROM_START( teddybbobl )
 
 	ROM_REGION( 0x0100, "proms", 0 )
 	ROM_LOAD( "pr-5317.76",     0x0000, 0x0100, CRC(648350b8) SHA1(c7986aa9127ef5b50b845434cb4e81dff9861cd2) )
+=======
+	ROM_LOAD( "4.f3",   0x0000, 0x4000, CRC(1be35a97) SHA1(7524cfa1a9c9a2e37753f119e7ac7aa3158621be) )
+	ROM_LOAD( "6.k3",   0x4000, 0x4000, CRC(6b53aa7a) SHA1(b1b3ff9460b2321e72b49befa63b61c9c36fedd9) )
+	ROM_LOAD( "5.h3",   0x8000, 0x4000, CRC(565c25d0) SHA1(5ae524ef01138c5042b223286d65eb9043c0f0d5) )
+	ROM_LOAD( "7.m3",   0xc000, 0x4000, CRC(e116285f) SHA1(b6fb50b02a981b3b23385200045ae537092d26d6) )
+
+	ROM_REGION( 0x0100, "proms", 0 )
+	ROM_LOAD( "pr-5317.76",     0x0000, 0x0100, CRC(648350b8) SHA1(c7986aa9127ef5b50b845434cb4e81dff9861cd2) )
+
+	ROM_REGION( 0x0100, "promsbl", 0 )
+	ROM_LOAD( "74s287.bin",     0x0000, 0x0100, CRC(de9af32c) SHA1(f999465bb4600a97179a9253e17413f6837703df) )
+>>>>>>> upstream/master
 ROM_END
 
 
@@ -3370,6 +3824,39 @@ ROM_START( sscandal )
 	ROM_LOAD( "pr-5317.76",     0x0000, 0x0100, CRC(648350b8) SHA1(c7986aa9127ef5b50b845434cb4e81dff9861cd2) )
 ROM_END
 
+<<<<<<< HEAD
+=======
+
+ROM_START( myherobl )
+	ROM_REGION( 0x10000, "maincpu", 0 )
+	ROM_LOAD( "1.f2",   0x0000, 0x4000, CRC(c1d354dc) SHA1(0146dda49ccf5e0d1b507604095b75690e211f1b) )
+	ROM_LOAD( "2.g2",   0x4000, 0x4000, CRC(688c9ede) SHA1(768f2e4bb797c2c85568d0ec2cda974e77efaff3) )
+	ROM_LOAD( "3.h2",   0x8000, 0x4000, CRC(3cbbaf64) SHA1(fdb5f2ca38010729afa4ed24c087119cf398f27d) )
+
+	ROM_REGION( 0x10000, "soundcpu", 0 )
+	ROM_LOAD( "6.E10",   0x0000, 0x2000, CRC(af467223) SHA1(d79a67e761fe483407cad645dd3b93d86e8790e3) )
+
+	ROM_REGION( 0xc000, "tiles", 0 ) // identical to original except for first half of B13.R10 ( has Coreland / Sega copyright tiles like the Japan set, not closer otherwise to the parent set )
+	ROM_LOAD( "B13.R10",   0x0000, 0x4000, CRC(9a4861b1) SHA1(0b09556101a8d06f5dacb40970681113d493cbf5) ) // epr-6966.62             B13.R10      [1/2]      98.498535%
+	ROM_LOAD( "B11.R7",    0x4000, 0x4000, CRC(0d6f248a) SHA1(18229745adc552c58a865a181ddad44dfd62bfad) )
+	ROM_LOAD( "x.R8",      0x8000, 0x4000, CRC(24537709) SHA1(2afbefb41b6541d7e27ebef7339f7a26aa2c00c6) )
+
+	ROM_REGION( 0x10000, "sprites", 0 )
+	ROM_LOAD( "4.f4",   0x0000, 0x4000, CRC(f19e05a1) SHA1(98288ba2e96c03a4ab9c8235faa7e01bb376d021) )
+	ROM_LOAD( "x.H4",   0x4000, 0x4000, CRC(7988adc3) SHA1(4ee9e964c24234366660af4981566e8c45f46db9) )
+	ROM_LOAD( "x.G4",   0x8000, 0x4000, CRC(37f77a78) SHA1(01d8bd41303bd5e3a6f1cdafa4a1d682e4c659a2) )
+	ROM_LOAD( "B7.K4",  0xc000, 0x4000, CRC(42bdc8f6) SHA1(f31d82641187a7cc77a4a19189b5a15d5168cbd7) )
+
+	ROM_REGION( 0x0100, "proms", 0 ) // wasn't dumped here, but needed for priority
+	ROM_LOAD( "pr-5317.76",     0x0000, 0x0100, CRC(648350b8) SHA1(c7986aa9127ef5b50b845434cb4e81dff9861cd2) )
+
+	ROM_REGION( 0x0100, "promsbl", 0 ) // this is related to the bootleg reproduction of the encryption scheme
+	ROM_LOAD( "PROM.A2",     0x0000, 0x0100, CRC(4fcaf000) SHA1(c68592377373b157713b5e129b020feb6c866f91) )
+	ROM_IGNORE(0x100)
+ROM_END
+
+
+>>>>>>> upstream/master
 ROM_START( myherok )
 	ROM_REGION( 0x10000, "maincpu", 0 )
 	/* all the three program ROMs have bits 0-1 swapped */
@@ -3794,6 +4281,39 @@ ROM_START( wboy )
 	ROM_LOAD( "pr-5317.76",     0x0000, 0x0100, CRC(648350b8) SHA1(c7986aa9127ef5b50b845434cb4e81dff9861cd2) )
 ROM_END
 
+<<<<<<< HEAD
+=======
+ROM_START( wboyub ) // seems to be the same as 'wboy' but a different rom layout and external encryption handling
+	ROM_REGION( 0x10000, "maincpu", 0 )
+	ROM_LOAD( "1.bin",        0x0000, 0x8000, CRC(07066b6f) SHA1(1ead373907fd5bd5f4cc003a97218aa582758a00) )
+	ROM_LOAD( "epr-7491.96",  0x8000, 0x4000, CRC(1f7d0efe) SHA1(a1b4f8faf1614f4808df1292209c340f1490adbd) )
+
+	ROM_REGION( 0x10000, "unk", 0 )
+	ROM_LOAD( "0cpu.bin",     0xc000, 0x2000, CRC(a962e6af) SHA1(f46b01db38cdc9c8485d7fe0a344e9f6ed918925) ) /* supposedly the encryption key */
+
+	ROM_REGION( 0x10000, "soundcpu", 0 )
+	ROM_LOAD( "epr7498a.3",     0x0000, 0x2000, CRC(c198205c) SHA1(d2d5cd154ce6a5a3c6a099b4ab2ea7cc045ab0a1) )
+
+	ROM_REGION( 0xc000, "tiles", 0 )
+	ROM_LOAD( "epr-7497.62",    0x0000, 0x2000, CRC(08d609ca) SHA1(11799e9ef7e6942b304f132b404bff3ed44d524b) )
+	ROM_LOAD( "epr-7496.61",    0x2000, 0x2000, CRC(6f61fdf1) SHA1(21826aebf5835b9f3d9c467c8647809c1bc0d01f) )
+	ROM_LOAD( "epr-7495.64",    0x4000, 0x2000, CRC(6a0d2c2d) SHA1(8c21d7f0768e8dda2b7185f3c510cae4229a4a2e) )
+	ROM_LOAD( "epr-7494.63",    0x6000, 0x2000, CRC(a8e281c7) SHA1(a88b80a7b94ab1401bbf28d7707fdf28a5505127) )
+	ROM_LOAD( "epr-7493.66",    0x8000, 0x2000, CRC(89305df4) SHA1(7a5098624769a31e7512f56831e818bce6a18871) )
+	ROM_LOAD( "epr-7492.65",    0xa000, 0x2000, CRC(60f806b1) SHA1(f91e5868a455dff2bce3c2891a7cfd648957cd73) )
+
+	ROM_REGION( 0x10000, "sprites", 0 )
+	ROM_LOAD( "4.bin",        0x0000, 0x4000, CRC(8b3124e6) SHA1(e90deaa687128c1f0b7e9e6b6d767bd484c7fc61) )
+	ROM_CONTINUE(0x8000,0x4000)
+	ROM_LOAD( "5.bin",        0x4000, 0x4000, CRC(b75278e7) SHA1(5b7c519f32eac40dc46ca5bba03cec1e893b6fcd) )
+	ROM_CONTINUE(0xc000,0x4000)
+
+	ROM_REGION( 0x0100, "proms", 0 )
+	ROM_LOAD( "pr-5317.76",     0x0000, 0x0100, CRC(648350b8) SHA1(c7986aa9127ef5b50b845434cb4e81dff9861cd2) )
+ROM_END
+
+
+>>>>>>> upstream/master
 
 /* Wonder Boy (Escape, Sega license)
 PCB: 834-3984-09 WONDER BOY
@@ -3977,6 +4497,40 @@ ROM_START( wboy5 )
 	ROM_LOAD( "pr-5317.76",0x0000, 0x0100, CRC(648350b8) SHA1(c7986aa9127ef5b50b845434cb4e81dff9861cd2) )
 ROM_END
 
+<<<<<<< HEAD
+=======
+ROM_START( wboy6 )
+	ROM_REGION( 0x10000, "maincpu", 0 )
+	ROM_LOAD( "epr-7731.129",   0x0000, 0x2000, CRC(9776ceb6) SHA1(14a09cb397e99f2a503242c1feb7e13bd4394536) ) /* encrypted */
+	ROM_LOAD( "epr-7732.130",   0x2000, 0x2000, CRC(74ff0918) SHA1(1a4124173f39bfbb471d5e33c8572c09a278965d) ) /* encrypted */
+	ROM_LOAD( "epr-7733.131",   0x4000, 0x2000, CRC(07c8b494) SHA1(14b9bf9d97eb633378cee8964608f56ab63eb6d3) ) /* encrypted */
+	ROM_LOAD( "epr-7734.132",   0x6000, 0x2000, CRC(8ebd648c) SHA1(03e5b19dc59a8118641a16b8a8fd583d51fcad28) ) /* encrypted */
+	ROM_LOAD( "epr-7735.133",   0x8000, 0x2000, CRC(8379aa23) SHA1(da47e0150b724a00878ef5f953fa6ac80bb27d8d) )
+	ROM_LOAD( "epr-7736.134",   0xa000, 0x2000, CRC(c767a5d7) SHA1(a4e8d6a8278ac2227bde8c24d45aa7ab2a273579) )
+
+	ROM_REGION( 0x10000, "soundcpu", 0 )
+	ROM_LOAD( "epr-7498.120",   0x0000, 0x2000, CRC(78ae1e7b) SHA1(86032f443359b0bb2766e33024ed2e320aa9bc84) ) /* epr-7498.3 */
+
+	ROM_REGION( 0xc000, "tiles", 0 )
+	ROM_LOAD( "epr-7497.62",    0x0000, 0x2000, CRC(08d609ca) SHA1(11799e9ef7e6942b304f132b404bff3ed44d524b) ) /* epr-7497.82 */
+	ROM_LOAD( "epr-7496.61",    0x2000, 0x2000, CRC(6f61fdf1) SHA1(21826aebf5835b9f3d9c467c8647809c1bc0d01f) ) /* epr-7496.65 */
+	ROM_LOAD( "epr-7495.64",    0x4000, 0x2000, CRC(6a0d2c2d) SHA1(8c21d7f0768e8dda2b7185f3c510cae4229a4a2e) ) /* epr-7495.81 */
+	ROM_LOAD( "epr-7494.63",    0x6000, 0x2000, CRC(a8e281c7) SHA1(a88b80a7b94ab1401bbf28d7707fdf28a5505127) ) /* epr-7494.64 */
+	ROM_LOAD( "epr-7493.66",    0x8000, 0x2000, CRC(89305df4) SHA1(7a5098624769a31e7512f56831e818bce6a18871) ) /* epr-7493.80 */
+	ROM_LOAD( "epr-7492.65",    0xa000, 0x2000, CRC(60f806b1) SHA1(f91e5868a455dff2bce3c2891a7cfd648957cd73) ) /* epr-7492.63 */
+
+	ROM_REGION( 0x10000, "sprites", 0 )
+	ROM_LOAD( "epr-7485.117",   0x0000, 0x4000, CRC(c2891722) SHA1(e4e11c0e9bd0dc121c25349493f2b13d2ff8c807) ) /* epr-7485.3 */
+	ROM_LOAD( "epr-7487.04",    0x4000, 0x4000, CRC(2d3a421b) SHA1(d70440a8703ccface3212cd9544c950b36263e8c) ) /* epr-7487.1 */
+	ROM_LOAD( "epr-7486.110",   0x8000, 0x4000, CRC(8d622c50) SHA1(9a76a50204c618347d3e8eee6cda841becd906eb) ) /* epr-7486.4 */
+	ROM_LOAD( "epr-7488.05",    0xc000, 0x4000, CRC(007c2f1b) SHA1(c2f1376144a49d20cb35384648e06d06978474c1) ) /* epr-7488.2 */
+
+	ROM_REGION( 0x0100, "proms", 0 )
+	ROM_LOAD( "pr-5317.76",     0x0000, 0x0100, CRC(648350b8) SHA1(c7986aa9127ef5b50b845434cb4e81dff9861cd2) )
+																/* pr-5317.106 */
+ROM_END
+
+>>>>>>> upstream/master
 ROM_START( wboyu )
 	ROM_REGION( 0x10000, "maincpu", 0 )
 	ROM_LOAD( "ic116_89.bin",   0x0000, 0x4000, CRC(73d8cef0) SHA1(a6f1f8de44a88f995836ce03b5a073306c56aaeb) )
@@ -4004,6 +4558,7 @@ ROM_START( wboyu )
 	ROM_LOAD( "pr-5317.76",     0x0000, 0x0100, CRC(648350b8) SHA1(c7986aa9127ef5b50b845434cb4e81dff9861cd2) )
 ROM_END
 
+<<<<<<< HEAD
 ROM_START( wboyub )
 	ROM_REGION( 0x10000, "maincpu", 0 )
 	/* this has way more code than the parent sets, I have no idea what to do with it */
@@ -4050,6 +4605,51 @@ ROM_START( wboysys2 )
 	ROM_REGION( 0x10000, "sprites", 0 )
 	ROM_LOAD( "7578.87",  0x00000, 0x8000, CRC(6ff1637f) SHA1(9a6ddbd7b8d53273b30c3529b028c1f28bf3c63b) )
 	ROM_LOAD( "7577.86",  0x08000, 0x8000, CRC(58b3705e) SHA1(1a8ff3f1765a3b21145bd1a6c85441f806f7b17d) )
+=======
+
+ROM_START( wboysys2 )
+	ROM_REGION( 0x20000, "maincpu", 0 )
+	ROM_LOAD( "epr7580.90",  0x00000, 0x8000, CRC(d69927a5) SHA1(b633177146a83953131d4e03fa987416f222199a) ) /* encrypted */
+	ROM_LOAD( "epr7579.91",  0x10000, 0x8000, CRC(8a6f4b00) SHA1(2b1c26daa2e9c668292db73e28318257c62b175c) )
+
+	ROM_REGION( 0x10000, "soundcpu", 0 )
+	ROM_LOAD( "epr7583.126", 0x0000, 0x8000, CRC(99334b3c) SHA1(dfc09f63082b7666fa2152e22810c0455a7e5051) )
+
+	ROM_REGION( 0x18000, "tiles", 0 )
+	ROM_LOAD( "epr7581.4",   0x00000, 0x8000, CRC(d95565fd) SHA1(25f1653cca1d6432171a7b391cbb76bc18ddfb06) )
+	ROM_LOAD( "epr7582.5",   0x08000, 0x8000, CRC(560cbac0) SHA1(851283e6d63e33d250840501dd22750b19772fb0) )
+	ROM_LOAD( "epr7607.6",   0x10000, 0x8000, CRC(bd36df03) SHA1(7f7efac2c71fae48dd1dcb4dcc849f07e8127f7d) )
+
+	ROM_REGION( 0x10000, "sprites", 0 )
+	ROM_LOAD( "epr7578.87",  0x00000, 0x8000, CRC(6ff1637f) SHA1(9a6ddbd7b8d53273b30c3529b028c1f28bf3c63b) )
+	ROM_LOAD( "epr7577.86",  0x08000, 0x8000, CRC(58b3705e) SHA1(1a8ff3f1765a3b21145bd1a6c85441f806f7b17d) )
+
+	ROM_REGION( 0x0300, "palette", 0 )
+	ROM_LOAD( "pr-7345.20",      0x0000, 0x0100, CRC(8eee0f72) SHA1(b5694c120f604a5f7cc95618a71ab16a1a6151ed) ) /* palette red component */
+	ROM_LOAD( "pr-7344.14",      0x0100, 0x0100, CRC(3e7babd7) SHA1(d4f8790db4dce75e27156a4c6de2dcef2baf6d76) ) /* palette green component */
+	ROM_LOAD( "pr-7343.8",      0x0200, 0x0100, CRC(371c44a6) SHA1(ac37458d1feb6566b09a795b20c21953d4ab109d) ) /* palette blue component */
+
+	ROM_REGION( 0x0100, "proms", 0 )
+	ROM_LOAD( "pr-5317.28",     0x0000, 0x0100, CRC(648350b8) SHA1(c7986aa9127ef5b50b845434cb4e81dff9861cd2) )
+ROM_END
+
+ROM_START( wboysys2a )
+	ROM_REGION( 0x20000, "maincpu", 0 )
+	ROM_LOAD( "epr7625.90",  0x00000, 0x8000, CRC(43b3d155) SHA1(40cc063bf64327250be7ae078ea85315ad4db794) ) /* encrypted */
+	ROM_LOAD( "epr7626.91",  0x10000, 0x8000, CRC(8a6f4b00) SHA1(2b1c26daa2e9c668292db73e28318257c62b175c) )
+
+	ROM_REGION( 0x10000, "soundcpu", 0 )
+	ROM_LOAD( "epr7583.126", 0x0000, 0x8000, CRC(99334b3c) SHA1(dfc09f63082b7666fa2152e22810c0455a7e5051) )
+
+	ROM_REGION( 0x18000, "tiles", 0 )
+	ROM_LOAD( "epr7581.4",   0x00000, 0x8000, CRC(d95565fd) SHA1(25f1653cca1d6432171a7b391cbb76bc18ddfb06) )
+	ROM_LOAD( "epr7582.5",   0x08000, 0x8000, CRC(560cbac0) SHA1(851283e6d63e33d250840501dd22750b19772fb0) )
+	ROM_LOAD( "epr7607.6",   0x10000, 0x8000, CRC(bd36df03) SHA1(7f7efac2c71fae48dd1dcb4dcc849f07e8127f7d) )
+
+	ROM_REGION( 0x10000, "sprites", 0 )
+	ROM_LOAD( "epr7578.87",  0x00000, 0x8000, CRC(6ff1637f) SHA1(9a6ddbd7b8d53273b30c3529b028c1f28bf3c63b) )
+	ROM_LOAD( "epr7577.86",  0x08000, 0x8000, CRC(58b3705e) SHA1(1a8ff3f1765a3b21145bd1a6c85441f806f7b17d) )
+>>>>>>> upstream/master
 
 	ROM_REGION( 0x0300, "palette", 0 )
 	ROM_LOAD( "pr-7345.20",      0x0000, 0x0100, CRC(8eee0f72) SHA1(b5694c120f604a5f7cc95618a71ab16a1a6151ed) ) /* palette red component */
@@ -4248,7 +4848,11 @@ ROM_START( wbml )
 	ROM_LOAD( "epr11032.91",  0x10000, 0x8000, CRC(9d03bdb2) SHA1(7dbab23e7c7972d9b51a0d3d046374720b7d6af5) ) /* encrypted */
 	ROM_LOAD( "epr11033.92",  0x18000, 0x8000, CRC(7076905c) SHA1(562fbd9bd60851f7e4e60b725193395b4f193479) ) /* encrypted */
 
+<<<<<<< HEAD
 	ROM_REGION( 0x2000, "key", 0 ) /* MC8123 key */
+=======
+	ROM_REGION( 0x2000, "maincpu:key", 0 ) /* MC8123 key */
+>>>>>>> upstream/master
 	ROM_LOAD( "317-0043.key",  0x0000, 0x2000, CRC(e354abfc) SHA1(07b0d3c51301ebb25909234b6220a3ed20dbcc7d) )
 
 	ROM_REGION( 0x10000, "soundcpu", 0 )
@@ -4280,7 +4884,11 @@ ROM_START( wbmljo )
 	ROM_LOAD( "epr11032.91",  0x10000, 0x8000, CRC(9d03bdb2) SHA1(7dbab23e7c7972d9b51a0d3d046374720b7d6af5) ) /* encrypted */
 	ROM_LOAD( "epr11033.92",  0x18000, 0x8000, CRC(7076905c) SHA1(562fbd9bd60851f7e4e60b725193395b4f193479) ) /* encrypted */
 
+<<<<<<< HEAD
 	ROM_REGION( 0x2000, "key", 0 ) /* MC8123 key */
+=======
+	ROM_REGION( 0x2000, "maincpu:key", 0 ) /* MC8123 key */
+>>>>>>> upstream/master
 	ROM_LOAD( "317-0043.key",  0x0000, 0x2000, CRC(e354abfc) SHA1(07b0d3c51301ebb25909234b6220a3ed20dbcc7d) )
 
 	ROM_REGION( 0x10000, "soundcpu", 0 )
@@ -4306,6 +4914,69 @@ ROM_START( wbmljo )
 	ROM_LOAD( "pr5317.37",    0x0000, 0x0100, CRC(648350b8) SHA1(c7986aa9127ef5b50b845434cb4e81dff9861cd2) )
 ROM_END
 
+<<<<<<< HEAD
+=======
+
+ROM_START( wbmld )
+	ROM_REGION( 0x20000, "maincpu", 0 )
+	ROM_LOAD( "decrypted_ep11031a.90",  0x00000, 0x8000, CRC(aba42eb7) SHA1(d2bb16a52404ba867930140e71f981cfa225dd21) )
+	ROM_LOAD( "decrypted_epr11032.91",  0x10000, 0x8000, CRC(1b158845) SHA1(26360f4bc2884746fbcc5fd6dc21fd848a3d2157) )
+	ROM_LOAD( "decrypted_epr11033.92",  0x18000, 0x8000, CRC(39e07286) SHA1(70192f03e52dd34c9fe5698a5ec1c24d3c58543c) )
+
+	ROM_REGION( 0x10000, "soundcpu", 0 )
+	ROM_LOAD( "epr11037.126", 0x0000, 0x8000, CRC(7a4ee585) SHA1(050436106cced5dcbf40a3d94d48202eedddc3ad) )
+
+	ROM_REGION( 0x18000, "tiles", 0 )
+	ROM_LOAD( "epr11034.4",   0x00000, 0x8000, CRC(37a2077d) SHA1(57f032a98022bf03ff98cb2e563178ba97e4b63c) )
+	ROM_LOAD( "epr11035.5",   0x08000, 0x8000, CRC(cdf2a21b) SHA1(db2553866f21e03bd9d668c179be3352adbaf8a6) )
+	ROM_LOAD( "epr11036.6",   0x10000, 0x8000, CRC(644687fa) SHA1(d6c5bc95da4fc7e81091dcfe6205b6f47d54af76) )
+
+	ROM_REGION( 0x20000, "sprites", 0 )
+	ROM_LOAD( "epr11028.87",  0x00000, 0x8000, CRC(af0b3972) SHA1(413825f66b84c7e45aa1855131482abead8f7f3b) )
+	ROM_LOAD( "epr11027.86",  0x08000, 0x8000, CRC(277d8f1d) SHA1(7854673503ed03d276abe971805a11f8c992f6d6) )
+	ROM_LOAD( "epr11030.89",  0x10000, 0x8000, CRC(f05ffc76) SHA1(f3dbb518240f86430840c3d4cda04bac79c20f69) )
+	ROM_LOAD( "epr11029.88",  0x18000, 0x8000, CRC(cedc9c61) SHA1(dbe5744f9b6f2a406b52b910dd4e133db7bce6b2) )
+
+	ROM_REGION( 0x0300, "palette", 0 )
+	ROM_LOAD( "pr11026.20",   0x0000, 0x0100, CRC(27057298) SHA1(654be7abb937bb0720263ee6512e31194662effe) )
+	ROM_LOAD( "pr11025.14",   0x0100, 0x0100, CRC(41e4d86b) SHA1(a86e8bb0a465d01b04410edfbb82eb96f12b909f) )
+	ROM_LOAD( "pr11024.8",    0x0200, 0x0100, CRC(08d71954) SHA1(df045dbfb3d669e4d42fbdba1e7191cd046f7b47) )
+
+	ROM_REGION( 0x0100, "proms", 0 )
+	ROM_LOAD( "pr5317.37",    0x0000, 0x0100, CRC(648350b8) SHA1(c7986aa9127ef5b50b845434cb4e81dff9861cd2) )
+ROM_END
+
+ROM_START( wbmljod )
+	ROM_REGION( 0x20000, "maincpu", 0 )
+	ROM_LOAD( "decrypted_epr11031.90",  0x00000, 0x8000, CRC(940b35bf) SHA1(b0e3b494d17cfad3b4bb1de996931ee813e91f92) )
+	ROM_LOAD( "decrypted_epr11032.91",  0x10000, 0x8000, CRC(1b158845) SHA1(26360f4bc2884746fbcc5fd6dc21fd848a3d2157) )
+	ROM_LOAD( "decrypted_epr11033.92",  0x18000, 0x8000, CRC(39e07286) SHA1(70192f03e52dd34c9fe5698a5ec1c24d3c58543c) )
+
+	ROM_REGION( 0x10000, "soundcpu", 0 )
+	ROM_LOAD( "epr11037.126", 0x0000, 0x8000, CRC(7a4ee585) SHA1(050436106cced5dcbf40a3d94d48202eedddc3ad) )
+
+	ROM_REGION( 0x18000, "tiles", 0 )
+	ROM_LOAD( "epr11034.4",   0x00000, 0x8000, CRC(37a2077d) SHA1(57f032a98022bf03ff98cb2e563178ba97e4b63c) )
+	ROM_LOAD( "epr11035.5",   0x08000, 0x8000, CRC(cdf2a21b) SHA1(db2553866f21e03bd9d668c179be3352adbaf8a6) )
+	ROM_LOAD( "epr11036.6",   0x10000, 0x8000, CRC(644687fa) SHA1(d6c5bc95da4fc7e81091dcfe6205b6f47d54af76) )
+
+	ROM_REGION( 0x20000, "sprites", 0 )
+	ROM_LOAD( "epr11028.87",  0x00000, 0x8000, CRC(af0b3972) SHA1(413825f66b84c7e45aa1855131482abead8f7f3b) )
+	ROM_LOAD( "epr11027.86",  0x08000, 0x8000, CRC(277d8f1d) SHA1(7854673503ed03d276abe971805a11f8c992f6d6) )
+	ROM_LOAD( "epr11030.89",  0x10000, 0x8000, CRC(f05ffc76) SHA1(f3dbb518240f86430840c3d4cda04bac79c20f69) )
+	ROM_LOAD( "epr11029.88",  0x18000, 0x8000, CRC(cedc9c61) SHA1(dbe5744f9b6f2a406b52b910dd4e133db7bce6b2) )
+
+	ROM_REGION( 0x0300, "palette", 0 )
+	ROM_LOAD( "pr11026.20",   0x0000, 0x0100, CRC(27057298) SHA1(654be7abb937bb0720263ee6512e31194662effe) )
+	ROM_LOAD( "pr11025.14",   0x0100, 0x0100, CRC(41e4d86b) SHA1(a86e8bb0a465d01b04410edfbb82eb96f12b909f) )
+	ROM_LOAD( "pr11024.8",    0x0200, 0x0100, CRC(08d71954) SHA1(df045dbfb3d669e4d42fbdba1e7191cd046f7b47) )
+
+	ROM_REGION( 0x0100, "proms", 0 )
+	ROM_LOAD( "pr5317.37",    0x0000, 0x0100, CRC(648350b8) SHA1(c7986aa9127ef5b50b845434cb4e81dff9861cd2) )
+ROM_END
+
+
+>>>>>>> upstream/master
 ROM_START( wbmljb )
 	ROM_REGION( 0x40000, "maincpu", 0 )
 	ROM_LOAD( "wbml.01",      0x20000, 0x8000, CRC(66482638) SHA1(887f93015f0effa2d0fa1f1f59082f75ac072221) ) /* Unencrypted opcodes */
@@ -4449,8 +5120,13 @@ ROM_START( wbmlvc )
 
 	ROM_REGION( 0x18000, "tiles", 0 )
 	ROM_LOAD( "vc.ic4",   0x00000, 0x8000, CRC(820bee59) SHA1(47afff58387eb67a8b0849d74023bd2c176a45e9) )
+<<<<<<< HEAD
 	ROM_LOAD( "vc.ic6",   0x08000, 0x8000, CRC(a9a1447e) SHA1(f7e55080c4fd6e1ff9e21a19b2f71dfd512d62c3) )
 	ROM_LOAD( "vc.ic5",   0x10000, 0x8000, CRC(359026a0) SHA1(a20c801dbc758f172fcfc505a5083ddb76604243) )
+=======
+	ROM_LOAD( "vc.ic5",   0x08000, 0x8000, CRC(a9a1447e) SHA1(f7e55080c4fd6e1ff9e21a19b2f71dfd512d62c3) )
+	ROM_LOAD( "vc.ic6",   0x10000, 0x8000, CRC(359026a0) SHA1(a20c801dbc758f172fcfc505a5083ddb76604243) )
+>>>>>>> upstream/master
 
 	ROM_REGION( 0x20000, "sprites", 0 )
 	ROM_LOAD( "epr11028.87",  0x00000, 0x8000, CRC(af0b3972) SHA1(413825f66b84c7e45aa1855131482abead8f7f3b) )
@@ -4467,6 +5143,37 @@ ROM_START( wbmlvc )
 	ROM_LOAD( "pr5317.37",    0x0000, 0x0100, CRC(648350b8) SHA1(c7986aa9127ef5b50b845434cb4e81dff9861cd2) )
 ROM_END
 
+<<<<<<< HEAD
+=======
+ROM_START( wbmlvcd )
+	ROM_REGION( 0x20000, "maincpu", 0 )
+	ROM_LOAD( "wbmlvcd.ic90",  0x00000, 0x8000, CRC(f9c04c07) SHA1(736013b01451c38f7ede207f3154c7387e60ac29) )
+	ROM_LOAD( "wbmlvcd.ic91",  0x10000, 0x8000, CRC(87167a57) SHA1(853e029e2875a2250471f3f405c906c9b5a4829d) )
+	ROM_LOAD( "wbmlvcd.ic92",  0x18000, 0x8000, CRC(ffb69e82) SHA1(0d48ce1e3cc02a992c495a92fec4e2d03fc27193) )
+
+	ROM_REGION( 0x10000, "soundcpu", 0 )
+	ROM_LOAD( "epr11037.126", 0x0000, 0x8000, CRC(7a4ee585) SHA1(050436106cced5dcbf40a3d94d48202eedddc3ad) )
+
+	ROM_REGION( 0x18000, "tiles", 0 )
+	ROM_LOAD( "vc.ic4",   0x00000, 0x8000, CRC(820bee59) SHA1(47afff58387eb67a8b0849d74023bd2c176a45e9) )
+	ROM_LOAD( "vc.ic5",   0x08000, 0x8000, CRC(a9a1447e) SHA1(f7e55080c4fd6e1ff9e21a19b2f71dfd512d62c3) )
+	ROM_LOAD( "vc.ic6",   0x10000, 0x8000, CRC(359026a0) SHA1(a20c801dbc758f172fcfc505a5083ddb76604243) )
+
+	ROM_REGION( 0x20000, "sprites", 0 )
+	ROM_LOAD( "epr11028.87",  0x00000, 0x8000, CRC(af0b3972) SHA1(413825f66b84c7e45aa1855131482abead8f7f3b) )
+	ROM_LOAD( "epr11027.86",  0x08000, 0x8000, CRC(277d8f1d) SHA1(7854673503ed03d276abe971805a11f8c992f6d6) )
+	ROM_LOAD( "epr11030.89",  0x10000, 0x8000, CRC(f05ffc76) SHA1(f3dbb518240f86430840c3d4cda04bac79c20f69) )
+	ROM_LOAD( "epr11029.88",  0x18000, 0x8000, CRC(cedc9c61) SHA1(dbe5744f9b6f2a406b52b910dd4e133db7bce6b2) )
+
+	ROM_REGION( 0x0300, "palette", 0 )
+	ROM_LOAD( "pr11026.20",   0x0000, 0x0100, CRC(27057298) SHA1(654be7abb937bb0720263ee6512e31194662effe) )
+	ROM_LOAD( "pr11025.14",   0x0100, 0x0100, CRC(41e4d86b) SHA1(a86e8bb0a465d01b04410edfbb82eb96f12b909f) )
+	ROM_LOAD( "pr11024.8",    0x0200, 0x0100, CRC(08d71954) SHA1(df045dbfb3d669e4d42fbdba1e7191cd046f7b47) )
+
+	ROM_REGION( 0x0100, "proms", 0 )
+	ROM_LOAD( "pr5317.37",    0x0000, 0x0100, CRC(648350b8) SHA1(c7986aa9127ef5b50b845434cb4e81dff9861cd2) )
+ROM_END
+>>>>>>> upstream/master
 
 ROM_START( dakkochn )
 	ROM_REGION( 0x20000, "maincpu", 0 )
@@ -4474,7 +5181,11 @@ ROM_START( dakkochn )
 	ROM_LOAD( "epr-11225.ic91",  0x10000, 0x8000, CRC(c540f9e2) SHA1(dbda9355e8b796bcfaee2789714d248c4d7ad58c) ) /* encrypted */
 	/* 18000-1ffff empty */
 
+<<<<<<< HEAD
 	ROM_REGION( 0x2000, "key", 0 ) /* MC8123B key */
+=======
+	ROM_REGION( 0x2000, "maincpu:key", 0 ) /* MC8123B key */
+>>>>>>> upstream/master
 	ROM_LOAD( "317-5014.key",    0x0000, 0x2000, CRC(bb9df5ad) SHA1(7e7b7255149ae01d19883ecf4a88989f8a9bf4c6) )
 
 	ROM_REGION( 0x10000, "soundcpu", 0 )
@@ -4510,7 +5221,11 @@ ROM_START( ufosensi )
 	ROM_LOAD( "epr11662.91",  0x10000, 0x8000, CRC(0c2e4120) SHA1(d81fbefa95868e3efd29ef3bacf108329781ca17) ) /* encrypted */
 	ROM_LOAD( "epr11663.92",  0x18000, 0x8000, CRC(4515ebae) SHA1(9b823f10999746292762c2f0a1ca9039efa22506) ) /* encrypted */
 
+<<<<<<< HEAD
 	ROM_REGION( 0x2000, "key", 0 ) /* MC8123 key */
+=======
+	ROM_REGION( 0x2000, "maincpu:key", 0 ) /* MC8123 key */
+>>>>>>> upstream/master
 	ROM_LOAD( "317-0064.key",  0x0000, 0x2000, CRC(da326f36) SHA1(0871b351379a094ac578e0eca5cb17797f9085aa) )
 
 	ROM_REGION( 0x10000, "soundcpu", 0 )
@@ -4586,7 +5301,11 @@ ROM_START( blockgal )
 	ROM_LOAD( "bg.109",       0x4000, 0x4000, CRC(a6b573d5) SHA1(33547a3895bbe65d5a6c40453eeb93e1fedad6de) ) /* encrypted */
 	/* 0x8000-0xbfff empty (was same as My Hero) */
 
+<<<<<<< HEAD
 	ROM_REGION( 0x2000, "key", 0 ) /* MC8123 key */
+=======
+	ROM_REGION( 0x2000, "maincpu:key", 0 ) /* MC8123 key */
+>>>>>>> upstream/master
 	ROM_LOAD( "317-0029.key",  0x0000, 0x2000, CRC(350d7f93) SHA1(7ef12d63b2c7150f8e74f65ec8340471d72b1c03) )
 
 	ROM_REGION( 0x10000, "soundcpu", 0 )
@@ -4789,19 +5508,26 @@ ROM_END
 
 DRIVER_INIT_MEMBER(system1_state,bank00)
 {
+<<<<<<< HEAD
 	m_videomode_custom = NULL;
 	m_banked_decrypted_opcodes = NULL;
+=======
+>>>>>>> upstream/master
 }
 
 DRIVER_INIT_MEMBER(system1_state,bank44)
 {
 	m_videomode_custom = &system1_state::bank44_custom_w;
+<<<<<<< HEAD
 	m_banked_decrypted_opcodes = NULL;
+=======
+>>>>>>> upstream/master
 }
 
 DRIVER_INIT_MEMBER(system1_state,bank0c)
 {
 	m_videomode_custom = &system1_state::bank0c_custom_w;
+<<<<<<< HEAD
 	m_banked_decrypted_opcodes = NULL;
 }
 
@@ -5361,10 +6087,70 @@ DRIVER_INIT_MEMBER(system1_state,wboyo)
 	DRIVER_INIT_CALL(bank00);
 	sega_decode(m_maincpu_region->base(), m_decrypted_opcodes, 0x8000, convtable);
 }
+=======
+}
+
+
+
+
+DRIVER_INIT_MEMBER(system1_state,myherok)
+{
+	// extra layer of encryption applied BEFORE the usual CPU decryption
+	// probably bootleg?
+
+	int A;
+	uint8_t *rom;
+
+	/* additionally to the usual protection, all the program ROMs have data lines */
+	/* D0 and D1 swapped. */
+	rom = m_maincpu_region->base();
+	for (A = 0;A < 0xc000;A++)
+		rom[A] = (rom[A] & 0xfc) | ((rom[A] & 1) << 1) | ((rom[A] & 2) >> 1);
+
+	/* the tile gfx ROMs are mangled as well: */
+	rom = memregion("tiles")->base();
+
+	/* the first ROM has data lines D0 and D6 swapped. */
+	for (A = 0x0000;A < 0x4000;A++)
+		rom[A] = (rom[A] & 0xbe) | ((rom[A] & 0x01) << 6) | ((rom[A] & 0x40) >> 6);
+
+	/* the second ROM has data lines D1 and D5 swapped. */
+	for (A = 0x4000;A < 0x8000;A++)
+		rom[A] = (rom[A] & 0xdd) | ((rom[A] & 0x02) << 4) | ((rom[A] & 0x20) >> 4);
+
+	/* the third ROM has data lines D0 and D6 swapped. */
+	for (A = 0x8000;A < 0xc000;A++)
+		rom[A] = (rom[A] & 0xbe) | ((rom[A] & 0x01) << 6) | ((rom[A] & 0x40) >> 6);
+
+	/* also, all three ROMs have address lines A4 and A5 swapped. */
+	for (A = 0;A < 0xc000;A++)
+	{
+		int A1;
+		uint8_t temp;
+
+		A1 = (A & 0xffcf) | ((A & 0x0010) << 1) | ((A & 0x0020) >> 1);
+		if (A < A1)
+		{
+			temp = rom[A];
+			rom[A] = rom[A1];
+			rom[A1] = temp;
+		}
+	}
+
+	DRIVER_INIT_CALL(bank00);
+}
+
+
+
+
+
+
+>>>>>>> upstream/master
 
 DRIVER_INIT_MEMBER(system1_state,blockgal)
 {
 	DRIVER_INIT_CALL(bank00);
+<<<<<<< HEAD
 	mc8123_decode(m_maincpu_region->base(), m_decrypted_opcodes, memregion("key")->base(), 0x8000);
 }
 
@@ -5409,17 +6195,32 @@ DRIVER_INIT_MEMBER(system1_state,gardiab)
 	DRIVER_INIT_CALL(bank44);
 	sega_decode_317(m_maincpu_region->base(), m_decrypted_opcodes, 3);
 }
+=======
+	downcast<mc8123_device &>(*m_maincpu).decode(m_maincpu_region->base(), m_decrypted_opcodes, 0x8000);
+}
+
+
+
+
+
+>>>>>>> upstream/master
 
 DRIVER_INIT_MEMBER(system1_state,wbml)
 {
 	DRIVER_INIT_CALL(bank0c);
+<<<<<<< HEAD
 	m_banked_decrypted_opcodes = auto_alloc_array(machine(), UINT8, m_maincpu_region->bytes());
 	mc8123_decode(m_maincpu_region->base(), m_banked_decrypted_opcodes, memregion("key")->base(), m_maincpu_region->bytes());
+=======
+	m_banked_decrypted_opcodes = std::make_unique<uint8_t[]>(m_maincpu_region->bytes());
+	downcast<mc8123_device &>(*m_maincpu).decode(m_maincpu_region->base(), m_banked_decrypted_opcodes.get(), m_maincpu_region->bytes());
+>>>>>>> upstream/master
 }
 
 DRIVER_INIT_MEMBER(system1_state,ufosensi)
 {
 	DRIVER_INIT_CALL(bank0c);
+<<<<<<< HEAD
 	m_banked_decrypted_opcodes = auto_alloc_array(machine(), UINT8, m_maincpu_region->bytes());
 	mc8123_decode(m_maincpu_region->base(), m_banked_decrypted_opcodes, memregion("key")->base(), m_maincpu_region->bytes());
 }
@@ -5479,6 +6280,10 @@ DRIVER_INIT_MEMBER(system1_state,wboysys2)
 
 	DRIVER_INIT_CALL(bank0c);
 	sega_decode_2(m_maincpu_region->base(), m_decrypted_opcodes, xor_table, swap_table);
+=======
+	m_banked_decrypted_opcodes = std::make_unique<uint8_t[]>(m_maincpu_region->bytes());
+	downcast<mc8123_device &>(*m_maincpu).decode(m_maincpu_region->base(), m_banked_decrypted_opcodes.get(), m_maincpu_region->bytes());
+>>>>>>> upstream/master
 }
 
 
@@ -5486,6 +6291,7 @@ DRIVER_INIT_MEMBER(system1_state,wboysys2)
 DRIVER_INIT_MEMBER(system1_state,dakkochn)
 {
 	m_videomode_custom = &system1_state::dakkochn_custom_w;
+<<<<<<< HEAD
 	m_banked_decrypted_opcodes = auto_alloc_array(machine(), UINT8, m_maincpu_region->bytes());
 	mc8123_decode(m_maincpu_region->base(), m_banked_decrypted_opcodes, memregion("key")->base(), m_maincpu_region->bytes());
 }
@@ -5559,6 +6365,13 @@ DRIVER_INIT_MEMBER(system1_state,myherok)
 
 	sega_decode(m_maincpu_region->base(), m_decrypted_opcodes, 0x8000, convtable);
 }
+=======
+	m_banked_decrypted_opcodes = std::make_unique<uint8_t[]>(m_maincpu_region->bytes());
+	downcast<mc8123_device &>(*m_maincpu).decode(m_maincpu_region->base(), m_banked_decrypted_opcodes.get(), m_maincpu_region->bytes());
+}
+
+
+>>>>>>> upstream/master
 
 READ8_MEMBER(system1_state::nob_start_r)
 {
@@ -5579,7 +6392,11 @@ DRIVER_INIT_MEMBER(system1_state,nob)
 	space.install_read_handler(0x0001, 0x0001, read8_delegate(FUNC(system1_state::nob_start_r),this));
 
 	/* install MCU communications */
+<<<<<<< HEAD
 	iospace.install_readwrite_handler(0x18, 0x18, 0x00, 0x00, read8_delegate(FUNC(system1_state::nob_maincpu_latch_r),this), write8_delegate(FUNC(system1_state::nob_maincpu_latch_w),this));
+=======
+	iospace.install_readwrite_handler(0x18, 0x18, read8_delegate(FUNC(system1_state::nob_maincpu_latch_r),this), write8_delegate(FUNC(system1_state::nob_maincpu_latch_w),this));
+>>>>>>> upstream/master
 	iospace.install_read_handler(0x1c, 0x1c, read8_delegate(FUNC(system1_state::nob_mcu_status_r),this));
 }
 
@@ -5588,7 +6405,11 @@ DRIVER_INIT_MEMBER(system1_state,nobb)
 	/* Patch to get PRG ROMS ('T', 'R' and 'S) status as "GOOD" in the "test mode" */
 	/* not really needed */
 
+<<<<<<< HEAD
 //  UINT8 *ROM = m_maincpu_region->base();
+=======
+//  uint8_t *ROM = m_maincpu_region->base();
+>>>>>>> upstream/master
 
 //  ROM[0x3296] = 0x18;     // 'jr' instead of 'jr z' - 'T' (PRG Main ROM)
 //  ROM[0x32be] = 0x18;     // 'jr' instead of 'jr z' - 'R' (Banked ROM 1)
@@ -5601,16 +6422,26 @@ DRIVER_INIT_MEMBER(system1_state,nobb)
 
 	/* Patch to get sound in later levels(the program enters into a tight loop)*/
 	address_space &iospace = m_maincpu->space(AS_IO);
+<<<<<<< HEAD
 	UINT8 *ROM2 = memregion("soundcpu")->base();
+=======
+	uint8_t *ROM2 = memregion("soundcpu")->base();
+>>>>>>> upstream/master
 
 	ROM2[0x02f9] = 0x28;//'jr z' instead of 'jr'
 
 	DRIVER_INIT_CALL(bank44);
 
 	iospace.install_read_handler(0x1c, 0x1c, read8_delegate(FUNC(system1_state::nobb_inport1c_r),this));
+<<<<<<< HEAD
 	iospace.install_read_handler(0x22, 0x22, read8_delegate(FUNC(system1_state::nobb_inport22_r),this));
 	iospace.install_read_handler(0x23, 0x23, read8_delegate(FUNC(system1_state::nobb_inport23_r),this));
 	iospace.install_write_handler(0x24, 0x24, write8_delegate(FUNC(system1_state::nobb_outport24_w),this));
+=======
+	iospace.install_read_handler(0x02, 0x02, read8_delegate(FUNC(system1_state::nobb_inport22_r),this));
+	iospace.install_read_handler(0x03, 0x03, read8_delegate(FUNC(system1_state::nobb_inport23_r),this));
+	iospace.install_write_handler(0x04, 0x04, write8_delegate(FUNC(system1_state::nobb_outport24_w),this));
+>>>>>>> upstream/master
 }
 
 
@@ -5628,9 +6459,23 @@ DRIVER_INIT_MEMBER(system1_state,bootsys2)
 	m_bank1d->configure_entries(0, 4, m_maincpu_region->base() + 0x30000, 0x4000);
 }
 
+<<<<<<< HEAD
 DRIVER_INIT_MEMBER(system1_state,choplift)
 {
 	UINT8 *mcurom = memregion("mcu")->base();
+=======
+DRIVER_INIT_MEMBER(system1_state,bootsys2d)
+{
+	DRIVER_INIT_CALL(bank0c);
+	m_bank0d->set_base(m_maincpu_region->base());
+	m_bank1d->configure_entries(0, 4, m_maincpu_region->base() + 0x10000, 0x4000);
+}
+
+
+DRIVER_INIT_MEMBER(system1_state,choplift)
+{
+	uint8_t *mcurom = memregion("mcu")->base();
+>>>>>>> upstream/master
 
 	/* the ROM dump we have is bad; the following patches make it work */
 	mcurom[0x100] = 0x55;       /* D5 in current dump */
@@ -5643,10 +6488,17 @@ DRIVER_INIT_MEMBER(system1_state,choplift)
 DRIVER_INIT_MEMBER(system1_state,shtngmst)
 {
 	address_space &iospace = m_maincpu->space(AS_IO);
+<<<<<<< HEAD
 	iospace.install_read_port(0x12, 0x12, 0x00, 0x00, "TRIGGER");
 	iospace.install_read_port(0x18, 0x18, 0x00, 0x03, "18");
 	iospace.install_read_handler(0x1c, 0x1c, 0x00, 0x02, read8_delegate(FUNC(system1_state::shtngmst_gunx_r),this));
 	iospace.install_read_port(0x1d, 0x1d, 0x00, 0x02, "GUNY");
+=======
+	iospace.install_read_port(0x12, 0x12, "TRIGGER");
+	iospace.install_read_port(0x18, 0x18, 0x03, "18");
+	iospace.install_read_handler(0x1c, 0x1c, 0, 0x02, 0, read8_delegate(FUNC(system1_state::shtngmst_gunx_r),this));
+	iospace.install_read_port(0x1d, 0x1d, 0x02, "GUNY");
+>>>>>>> upstream/master
 	DRIVER_INIT_CALL(bank0c);
 }
 
@@ -5659,6 +6511,7 @@ DRIVER_INIT_MEMBER(system1_state,shtngmst)
  *************************************/
 
 /* PPI-based System 1 */
+<<<<<<< HEAD
 GAME( 1983, starjack,   0,        sys1ppis,  starjack,  system1_state, bank00,   ROT270, "Sega", "Star Jacker (Sega)", MACHINE_SUPPORTS_SAVE )
 GAME( 1983, starjacks,  starjack, sys1ppis,  starjacks, system1_state, bank00,   ROT270, "Sega (Stern Electronics license)", "Star Jacker (Stern Electronics)", MACHINE_SUPPORTS_SAVE )
 GAME( 1983, upndown,    0,        sys1ppix,  upndown,   system1_state, nprinces, ROT270, "Sega", "Up'n Down (315-5030)", MACHINE_SUPPORTS_SAVE )
@@ -5741,3 +6594,95 @@ GAME( 1987, dakkochn,   0,        sys2xb,    dakkochn,  system1_state, dakkochn,
 GAME( 1987, blockgalb,  blockgal, sys2x,     blockgal,  system1_state, bootleg,  ROT90,  "bootleg", "Block Gal (bootleg)", MACHINE_SUPPORTS_SAVE )
 GAME( 1988, ufosensi,   0,        sys2rowxb, ufosensi,  system1_state, ufosensi, ROT0,   "Sega", "Ufo Senshi Yohko Chan (MC-8123, 317-0064)", MACHINE_SUPPORTS_SAVE )
 GAME( 1988, ufosensib,  ufosensi, sys2rowxb, ufosensi,  system1_state, bootsys2, ROT0,   "bootleg", "Ufo Senshi Yohko Chan (bootleg, not encrypted)", MACHINE_SUPPORTS_SAVE )
+=======
+GAME( 1983, starjack,   0,        sys1ppis,          starjack,  system1_state, bank00,       ROT270, "Sega", "Star Jacker (Sega)", MACHINE_SUPPORTS_SAVE )
+GAME( 1983, starjacks,  starjack, sys1ppis,          starjacks, system1_state, bank00,       ROT270, "Sega (Stern Electronics license)", "Star Jacker (Stern Electronics)", MACHINE_SUPPORTS_SAVE )
+GAME( 1983, upndown,    0,        sys1ppix_315_5098, upndown,   system1_state, bank00,       ROT270, "Sega", "Up'n Down (315-5030)", MACHINE_SUPPORTS_SAVE )
+GAME( 1983, upndownu,   upndown,  sys1ppi,           upndown,   system1_state, bank00,       ROT270, "Sega", "Up'n Down (not encrypted)", MACHINE_SUPPORTS_SAVE )
+GAME( 1983, regulus,    0,        sys1ppix_315_5033, regulus,   system1_state, bank00,       ROT270, "Sega", "Regulus (315-5033, Rev A.)", MACHINE_SUPPORTS_SAVE )
+GAME( 1983, reguluso,   regulus,  sys1ppix_315_5033, reguluso,  system1_state, bank00,       ROT270, "Sega", "Regulus (315-5033)", MACHINE_SUPPORTS_SAVE )
+GAME( 1983, regulusu,   regulus,  sys1ppi,           regulus,   system1_state, bank00,       ROT270, "Sega", "Regulus (not encrypted)", MACHINE_SUPPORTS_SAVE )
+GAME( 1984, mrviking,   0,        sys1ppisx_315_5041,mrviking,  system1_state, bank00,       ROT270, "Sega", "Mister Viking (315-5041)", MACHINE_SUPPORTS_SAVE )
+GAME( 1984, mrvikingj,  mrviking, sys1ppisx_315_5041,mrvikingj, system1_state, bank00,       ROT270, "Sega", "Mister Viking (315-5041, Japan)", MACHINE_SUPPORTS_SAVE )
+GAME( 1984, swat,       0,        sys1ppix_315_5048, swat,      system1_state, bank00,       ROT270, "Coreland / Sega", "SWAT (315-5048)", MACHINE_SUPPORTS_SAVE )
+GAME( 1984, flickyo,    flicky,   sys1ppix_315_5051, flicky,    system1_state, bank00,       ROT0,   "Sega", "Flicky (64k Version, 315-5051, set 1)", MACHINE_SUPPORTS_SAVE )
+GAME( 1984, flickys1,   flicky,   sys1ppix_315_5051, flickys1,  system1_state, bank00,       ROT0,   "Sega", "Flicky (64k Version, 315-5051, set 2)", MACHINE_SUPPORTS_SAVE )
+GAME( 1984, wmatch,     0,        sys1ppisx_315_5064,wmatch,    system1_state, bank00,       ROT270, "Sega", "Water Match (315-5064)", MACHINE_SUPPORTS_SAVE )
+GAME( 1984, bullfgt,    0,        sys1ppix_315_5065, bullfgt,   system1_state, bank00,       ROT0,   "Coreland / Sega", "Bullfight (315-5065)", MACHINE_SUPPORTS_SAVE )
+GAME( 1985, nprinces,   seganinj, sys1ppix_315_5051, seganinj,  system1_state, bank00,       ROT0,   "bootleg?", "Ninja Princess (315-5051, 64k Ver. bootleg?)", MACHINE_SUPPORTS_SAVE )
+GAME( 1985, nprincesu,  seganinj, sys1ppi,           seganinj,  system1_state, bank00,       ROT0,   "Sega", "Ninja Princess (64k Ver. not encrypted)", MACHINE_SUPPORTS_SAVE )
+GAME( 1986, wboy2,      wboy,     sys1ppix_315_5178, wboy,      system1_state, bank00,       ROT0,   "Escape (Sega license)", "Wonder Boy (set 2, 315-5178)", MACHINE_SUPPORTS_SAVE )
+GAME( 1986, wboy2u,     wboy,     sys1ppi,           wboy,      system1_state, bank00,       ROT0,   "Escape (Sega license)", "Wonder Boy (set 2, not encrypted)", MACHINE_SUPPORTS_SAVE )
+GAME( 1986, wboy6,      wboy,     sys1ppix_315_5179, wboy,      system1_state, bank00,       ROT0,   "Escape (Sega license)", "Wonder Boy (set 6, 315-5179)", MACHINE_SUPPORTS_SAVE )
+GAME( 1986, wbdeluxe,   wboy,     sys1ppi,           wbdeluxe,  system1_state, bank00,       ROT0,   "Escape (Sega license)", "Wonder Boy Deluxe", MACHINE_SUPPORTS_SAVE )
+GAME( 1986, nob,        0,        nobm,              nob,       system1_state, nob,          ROT270, "Coreland / Data East Corporation", "Noboranka (Japan)", MACHINE_SUPPORTS_SAVE )
+GAME( 1986, nobb,       nob,      nob,               nob,       system1_state, nobb,         ROT270, "bootleg (Game Electronics)", "Noboranka (Japan, bootleg)", MACHINE_SUPPORTS_SAVE )
+
+/* PIO-based System 1 */
+GAME( 1984, flicky,     0,        sys1piox_315_5051, flicky,    system1_state, bank00,       ROT0,   "Sega", "Flicky (128k Version, 315-5051)", MACHINE_SUPPORTS_SAVE )
+GAME( 1984, flickya,    flicky,   sys1piox_315_5051, flicky,    system1_state, bank00,       ROT0,   "Sega", "Flicky (128k Version, 315-5051, larger roms)", MACHINE_SUPPORTS_SAVE )
+GAME( 1984, flickys2,   flicky,   sys1pio,           flickys2,  system1_state, bank00,       ROT0,   "Sega", "Flicky (128k Version, not encrypted)", MACHINE_SUPPORTS_SAVE )
+GAME( 1984, thetogyu,   bullfgt,  sys1piox_315_5065, bullfgt,   system1_state, bank00,       ROT0,   "Coreland / Sega", "The Togyu (315-5065, Japan)", MACHINE_SUPPORTS_SAVE )
+GAME( 1984, spatter,    0,        sys1piosx_315_spat,spatter,   system1_state, bank00,       ROT0,   "Sega", "Spatter (315-xxxx)", MACHINE_SUPPORTS_SAVE )
+GAME( 1984, spattera,   spatter,  sys1piosx_315_5099,spatter,   system1_state, bank00,       ROT0,   "Sega", "Spatter (315-5099)", MACHINE_SUPPORTS_SAVE )
+GAME( 1984, ssanchan,   spatter,  sys1piosx_315_spat,spatter,   system1_state, bank00,       ROT0,   "Sega", "Sanrin San Chan (Japan, 315-xxxx)", MACHINE_SUPPORTS_SAVE )
+GAME( 1985, pitfall2,   0,        sys1piox_315_5093, pitfall2,  system1_state, bank00,       ROT0,   "Sega", "Pitfall II (315-5093)", MACHINE_SUPPORTS_SAVE )
+GAME( 1985, pitfall2a,  pitfall2, sys1piox_315_5093, pitfall2,  system1_state, bank00,       ROT0,   "Sega", "Pitfall II (315-5093, Flicky Conversion)", MACHINE_SUPPORTS_SAVE )
+GAME( 1985, pitfall2u,  pitfall2, sys1pio,           pitfall2u, system1_state, bank00,       ROT0,   "Sega", "Pitfall II (not encrypted)", MACHINE_SUPPORTS_SAVE )
+GAME( 1985, seganinj,   0,        sys1piox_315_5102, seganinj,  system1_state, bank00,       ROT0,   "Sega", "Sega Ninja (315-5102)", MACHINE_SUPPORTS_SAVE )
+GAME( 1985, seganinju,  seganinj, sys1pio,           seganinj,  system1_state, bank00,       ROT0,   "Sega", "Sega Ninja (not encrypted)", MACHINE_SUPPORTS_SAVE )
+GAME( 1985, seganinja,  seganinj, sys1piox_315_5133, seganinj,  system1_state, bank00,       ROT0,   "Sega", "Sega Ninja (315-5113)", MACHINE_SUPPORTS_SAVE )
+GAME( 1985, ninja,      seganinj, sys1piox_315_5102, seganinj,  system1_state, bank00,       ROT0,   "Sega", "Ninja (315-5102)", MACHINE_SUPPORTS_SAVE )
+GAME( 1985, nprinceso,  seganinj, sys1piox_315_5098, seganinj,  system1_state, bank00,       ROT0,   "Sega", "Ninja Princess (315-5098, 128k Ver.)", MACHINE_SUPPORTS_SAVE )
+GAME( 1985, nprincesb,  seganinj, sys1piox_315_5051, seganinj,  system1_state, bank00,       ROT0,   "bootleg?", "Ninja Princess (315-5051?, 128k Ver. bootleg?)", MACHINE_SUPPORTS_SAVE )
+GAME( 1985, imsorry,    0,        sys1piox_315_5110, imsorry,   system1_state, bank00,       ROT0,   "Coreland / Sega", "I'm Sorry (315-5110, US)", MACHINE_SUPPORTS_SAVE )
+GAME( 1985, imsorryj,   imsorry,  sys1piox_315_5110, imsorry,   system1_state, bank00,       ROT0,   "Coreland / Sega", "Gonbee no I'm Sorry (315-5110, Japan)", MACHINE_SUPPORTS_SAVE )
+GAME( 1985, teddybb,    0,        sys1piox_315_5155, teddybb,   system1_state, bank00,       ROT0,   "Sega", "TeddyBoy Blues (315-5115, New Ver.)", MACHINE_SUPPORTS_SAVE )
+GAME( 1985, teddybbo,   teddybb,  sys1piox_315_5155, teddybb,   system1_state, bank00,       ROT0,   "Sega", "TeddyBoy Blues (315-5115, Old Ver.)", MACHINE_SUPPORTS_SAVE )
+GAME( 1985, teddybbobl, teddybb,  sys1piox_315_5155, teddybb,   system1_state, bank00,       ROT0,   "bootleg", "TeddyBoy Blues (Old Ver. bootleg)", MACHINE_SUPPORTS_SAVE )
+GAME( 1985, myhero,     0,        sys1pio,           myhero,    system1_state, bank00,       ROT0,   "Coreland / Sega", "My Hero (US, not encrypted)", MACHINE_SUPPORTS_SAVE )
+GAME( 1985, sscandal,   myhero,   sys1piox_315_5132, myhero,    system1_state, bank00,       ROT0,   "Coreland / Sega", "Seishun Scandal (315-5132, Japan)", MACHINE_SUPPORTS_SAVE )
+GAME( 1985, myherobl,   myhero,   sys1piox_315_5132, myhero,    system1_state, bank00,       ROT0,   "bootleg",         "My Hero (bootleg, 315-5132 encryption)", MACHINE_SUPPORTS_SAVE ) // cloned 315-5132 encryption? might be a direct copy of an undumped original set
+GAME( 1985, myherok,    myhero,   sys1piox_315_5132, myhero,    system1_state, myherok,      ROT0,   "Coreland / Sega", "My Hero (Korea)", MACHINE_SUPPORTS_SAVE ) // possible bootleg, has extra encryption
+GAME( 1985, 4dwarrio,   0,        sys1piox_315_5162, 4dwarrio,  system1_state, bank00,       ROT0,   "Coreland / Sega", "4-D Warriors (315-5162)", MACHINE_SUPPORTS_SAVE )
+GAME( 1986, raflesia,   0,        sys1piox_315_5162, raflesia,  system1_state, bank00,       ROT270, "Coreland / Sega", "Rafflesia (315-5162)", MACHINE_SUPPORTS_SAVE )
+GAME( 1986, wboy,       0,        sys1piox_315_5177, wboy,      system1_state, bank00,       ROT0,   "Escape (Sega license)", "Wonder Boy (set 1, 315-5177)", MACHINE_SUPPORTS_SAVE )
+GAME( 1986, wboyo,      wboy,     sys1piox_315_5135, wboy,      system1_state, bank00,       ROT0,   "Escape (Sega license)", "Wonder Boy (set 2, 315-5135)", MACHINE_SUPPORTS_SAVE ) // aka 317-0003
+GAME( 1986, wboy3,      wboy,     sys1piox_315_5135, wboy3,     system1_state, bank00,       ROT0,   "Escape (Sega license)", "Wonder Boy (set 3, 315-5135)", MACHINE_SUPPORTS_SAVE )
+GAME( 1986, wboy4,      wboy,     sys1piox_315_5162, wboy,      system1_state, bank00,       ROT0,   "Escape (Sega license)", "Wonder Boy (315-5162, 4-D Warriors Conversion)", MACHINE_SUPPORTS_SAVE )
+GAME( 1986, wboyu,      wboy,     sys1pio,           wboyu,     system1_state, bank00,       ROT0,   "Escape (Sega license)", "Wonder Boy (prototype?)", MACHINE_SUPPORTS_SAVE ) // appears to be a very early / unfinished version.
+GAME( 1986, wboy5,      wboy,     sys1piox_315_5135, wboy3,     system1_state, bank00,       ROT0,   "bootleg", "Wonder Boy (set 5, bootleg)", MACHINE_SUPPORTS_SAVE )
+GAME( 1986, wboyub,     wboy,     sys1piox_315_5177, wboy,      system1_state, bank00,       ROT0,   "bootleg", "Wonder Boy (US bootleg)", MACHINE_SUPPORTS_SAVE )
+GAME( 1987, blockgal,   0,        sys1pioxb,         blockgal,  system1_state, blockgal,     ROT90,  "Sega / Vic Tokai","Block Gal (MC-8123B, 317-0029)", MACHINE_SUPPORTS_SAVE)
+
+/* PIO-based System 1 with ROM banking */
+GAME( 1985, hvymetal,   0,        sys1piox_315_5135, hvymetal,  system1_state, bank44,       ROT0,   "Sega", "Heavy Metal (315-5135)", MACHINE_SUPPORTS_SAVE )
+GAME( 1986, gardia,     0,        sys1piox_317_0006, gardia,    system1_state, bank44,       ROT270, "Coreland / Sega", "Gardia (317-0006)", MACHINE_NO_COCKTAIL | MACHINE_SUPPORTS_SAVE)
+GAME( 1986, brain,      0,        sys1pio,           brain,     system1_state, bank44,       ROT0,   "Coreland / Sega", "Brain", MACHINE_SUPPORTS_SAVE )
+
+/* System 2 */
+GAME( 1985, choplift,   0,        sys2rowm,          choplift,  system1_state, choplift,     ROT0,   "Sega (licensed from Dan Gorlin)", "Choplifter (8751 315-5151)", MACHINE_SUPPORTS_SAVE )
+GAME( 1985, chopliftu,  choplift, sys2row,           choplift,  system1_state, bank0c,       ROT0,   "Sega (licensed from Dan Gorlin)", "Choplifter (unprotected)", MACHINE_SUPPORTS_SAVE )
+GAME( 1985, chopliftbl, choplift, sys2row,           choplift,  system1_state, bank0c,       ROT0,   "bootleg", "Choplifter (bootleg)", MACHINE_SUPPORTS_SAVE )
+GAME( 1985, shtngmst,   0,        sys2m,             shtngmst,  system1_state, shtngmst,     ROT0,   "Sega", "Shooting Master (8751 315-5159)", MACHINE_SUPPORTS_SAVE | MACHINE_NOT_WORKING )
+GAME( 1985, shtngmste,  shtngmst, sys2m,             shtngmst,  system1_state, shtngmst,     ROT0,   "Sega / EVG", "Shooting Master (EVG, 8751 315-5159a)", MACHINE_SUPPORTS_SAVE )
+GAME( 1986, gardiab,    gardia,   sys2_317_0007,     gardia,    system1_state, bank44,       ROT270, "bootleg", "Gardia (317-0007?, bootleg)", MACHINE_IMPERFECT_GRAPHICS | MACHINE_SUPPORTS_SAVE )
+GAME( 1986, gardiaj,    gardia,   sys2_317_0006,     gardia,    system1_state, bank44,       ROT270, "Coreland / Sega", "Gardia (Japan, 317-0006)", MACHINE_IMPERFECT_GRAPHICS | MACHINE_SUPPORTS_SAVE )
+GAME( 1986, wboysys2,   wboy,     sys2_315_5177,     wboysys2,  system1_state, bank0c,       ROT0,   "Escape (Sega license)", "Wonder Boy (system 2, set 1, 315-5177)", MACHINE_SUPPORTS_SAVE )
+GAME( 1986, wboysys2a,  wboy,     sys2_315_5176,     wboysys2,  system1_state, bank0c,       ROT0,   "Escape (Sega license)", "Wonder Boy (system 2, set 2, 315-5176)", MACHINE_NOT_WORKING | MACHINE_SUPPORTS_SAVE )
+GAME( 1987, tokisens,   0,        sys2,              tokisens,  system1_state, bank0c,       ROT90,  "Sega", "Toki no Senshi - Chrono Soldier", MACHINE_SUPPORTS_SAVE )
+GAME( 1987, wbml,       0,        sys2xb,            wbml,      system1_state, wbml,         ROT0,   "Sega / Westone", "Wonder Boy in Monster Land (Japan New Ver., MC-8123, 317-0043)", MACHINE_SUPPORTS_SAVE )
+GAME( 1987, wbmljo,     wbml,     sys2xb,            wbml,      system1_state, wbml,         ROT0,   "Sega / Westone", "Wonder Boy in Monster Land (Japan Old Ver., MC-8123, 317-0043)", MACHINE_SUPPORTS_SAVE )
+GAME( 1987, wbmljb,     wbml,     sys2xboot,         wbml,      system1_state, bootsys2,     ROT0,   "bootleg", "Wonder Boy in Monster Land (Japan bootleg)", MACHINE_SUPPORTS_SAVE )
+GAME( 1987, wbmlb,      wbml,     sys2xboot,         wbml,      system1_state, bootsys2,     ROT0,   "bootleg", "Wonder Boy in Monster Land (English bootleg set 1)", MACHINE_SUPPORTS_SAVE)
+GAME( 1987, wbmlbg,     wbml,     sys2xboot,         wbml,      system1_state, bootsys2,     ROT0,   "bootleg (Galaxy Electronics)", "Wonder Boy in Monster Land (English bootleg set 2)", MACHINE_SUPPORTS_SAVE )
+GAME( 1987, wbmlbge,    wbml,     sys2xboot,         wbml,      system1_state, bootsys2,     ROT0,   "bootleg (Gecas)", "Wonder Boy in Monster Land (English bootleg set 3)", MACHINE_SUPPORTS_SAVE )
+GAME( 2009, wbmlvc,     wbml,     sys2xboot,         wbml,      system1_state, bootsys2,     ROT0,   "Sega", "Wonder Boy in Monster Land (English, Virtual Console)", MACHINE_SUPPORTS_SAVE )
+GAME( 2009, wbmlvcd,    wbml,     sys2xboot,         wbml,      system1_state, bootsys2d,    ROT0,   "bootleg (mpatou)", "Wonder Boy in Monster Land (decrypted bootleg of English, Virtual Console release)", MACHINE_SUPPORTS_SAVE ) // fully decrypted version
+GAME( 1987, wbmld,      wbml,     sys2xboot,         wbml,      system1_state, bootsys2d,    ROT0,   "bootleg (mpatou)", "Wonder Boy in Monster Land (decrypted bootleg of Japan New Ver., MC-8123, 317-0043)", MACHINE_SUPPORTS_SAVE )
+GAME( 1987, wbmljod,    wbml,     sys2xboot,         wbml,      system1_state, bootsys2d,    ROT0,   "bootleg (mpatou)", "Wonder Boy in Monster Land (decrypted bootleg of Japan Old Ver., MC-8123, 317-0043)", MACHINE_SUPPORTS_SAVE )
+GAME( 1987, dakkochn,   0,        sys2xb,            dakkochn,  system1_state, dakkochn,     ROT0,   "White Board", "DakkoChan House (MC-8123B, 317-5014)", MACHINE_SUPPORTS_SAVE )
+GAME( 1987, blockgalb,  blockgal, sys2x,             blockgal,  system1_state, bootleg,      ROT90,  "bootleg", "Block Gal (bootleg)", MACHINE_SUPPORTS_SAVE )
+GAME( 1988, ufosensi,   0,        sys2rowxb,         ufosensi,  system1_state, ufosensi,     ROT0,   "Sega", "Ufo Senshi Yohko Chan (MC-8123, 317-0064)", MACHINE_SUPPORTS_SAVE )
+GAME( 1988, ufosensib,  ufosensi, sys2rowxboot,      ufosensi,  system1_state, bootsys2,     ROT0,   "bootleg", "Ufo Senshi Yohko Chan (bootleg, not encrypted)", MACHINE_SUPPORTS_SAVE )
+>>>>>>> upstream/master

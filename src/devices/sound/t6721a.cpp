@@ -6,6 +6,7 @@
 
 **********************************************************************/
 
+<<<<<<< HEAD
 #include "t6721a.h"
 
 
@@ -15,6 +16,13 @@
 //**************************************************************************
 
 #define LOG 0
+=======
+#include "emu.h"
+#include "t6721a.h"
+
+//#define VERBOSE 1
+#include "logmacro.h"
+>>>>>>> upstream/master
 
 
 
@@ -23,7 +31,11 @@
 //**************************************************************************
 
 // device type definition
+<<<<<<< HEAD
 const device_type T6721A = &device_creator<t6721a_device>;
+=======
+DEFINE_DEVICE_TYPE(T6721A, t6721a_device, "t6721a", "Toshiba T6721A")
+>>>>>>> upstream/master
 
 
 
@@ -35,14 +47,23 @@ const device_type T6721A = &device_creator<t6721a_device>;
 //  t6721a_device - constructor
 //-------------------------------------------------
 
+<<<<<<< HEAD
 t6721a_device::t6721a_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
 	: device_t(mconfig, T6721A, "T6721A", tag, owner, clock, "t6721a", __FILE__),
+=======
+t6721a_device::t6721a_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: device_t(mconfig, T6721A, tag, owner, clock),
+>>>>>>> upstream/master
 		device_sound_interface(mconfig, *this),
 		m_write_eos(*this),
 		m_write_phi2(*this),
 		m_write_dtrd(*this),
 		m_write_apd(*this),
+<<<<<<< HEAD
 		m_stream(NULL)
+=======
+		m_stream(nullptr)
+>>>>>>> upstream/master
 {
 }
 

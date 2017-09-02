@@ -6,7 +6,11 @@ project(expat)
 cmake_minimum_required(VERSION 2.6)
 set(PACKAGE_BUGREPORT "expat-bugs@libexpat.org")
 set(PACKAGE_NAME "expat")
+<<<<<<< HEAD
 set(PACKAGE_VERSION "2.1.0")
+=======
+set(PACKAGE_VERSION "2.1.1")
+>>>>>>> upstream/master
 set(PACKAGE_STRING "${PACKAGE_NAME} ${PACKAGE_VERSION}")
 set(PACKAGE_TARNAME "${PACKAGE_NAME}")
 
@@ -86,6 +90,10 @@ if(BUILD_tools AND NOT WINCE)
     )
 
     add_executable(xmlwf ${xmlwf_SRCS})
+<<<<<<< HEAD
+=======
+    set_property(TARGET xmlwf PROPERTY RUNTIME_OUTPUT_DIRECTORY xmlwf)
+>>>>>>> upstream/master
     target_link_libraries(xmlwf expat)
     install(TARGETS xmlwf DESTINATION bin)
     install(FILES doc/xmlwf.1 DESTINATION share/man/man1)
@@ -93,19 +101,38 @@ endif(BUILD_tools AND NOT WINCE)
 
 if(BUILD_examples)
     add_executable(elements examples/elements.c)
+<<<<<<< HEAD
     target_link_libraries(elements expat)
 
     add_executable(outline examples/outline.c)
+=======
+    set_property(TARGET elements PROPERTY RUNTIME_OUTPUT_DIRECTORY examples)
+    target_link_libraries(elements expat)
+
+    add_executable(outline examples/outline.c)
+    set_property(TARGET outline PROPERTY RUNTIME_OUTPUT_DIRECTORY examples)
+>>>>>>> upstream/master
     target_link_libraries(outline expat)
 endif(BUILD_examples)
 
 if(BUILD_tests)
     ## these are unittests that can be run on any platform
     add_executable(runtests tests/runtests.c tests/chardata.c tests/minicheck.c)
+<<<<<<< HEAD
     target_link_libraries(runtests expat)
     add_test(runtests runtests)
 
     add_executable(runtestspp tests/runtestspp.cpp tests/chardata.c tests/minicheck.c)
     target_link_libraries(runtestspp expat)
     add_test(runtestspp runtestspp)
+=======
+    set_property(TARGET runtests PROPERTY RUNTIME_OUTPUT_DIRECTORY tests)
+    target_link_libraries(runtests expat)
+    add_test(runtests tests/runtests)
+
+    add_executable(runtestspp tests/runtestspp.cpp tests/chardata.c tests/minicheck.c)
+    set_property(TARGET runtestspp PROPERTY RUNTIME_OUTPUT_DIRECTORY tests)
+    target_link_libraries(runtestspp expat)
+    add_test(runtestspp tests/runtestspp)
+>>>>>>> upstream/master
 endif(BUILD_tests)

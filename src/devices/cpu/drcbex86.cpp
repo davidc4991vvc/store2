@@ -85,12 +85,32 @@
 #include <stddef.h>
 #include "emu.h"
 #include "debugger.h"
+<<<<<<< HEAD
 #include "drcuml.h"
 #include "drcbex86.h"
 
 using namespace uml;
 using namespace x86emit;
 
+=======
+#include "emuopts.h"
+#include "drcuml.h"
+#include "drcbex86.h"
+
+// This is a trick to make it build on Android where the x86 SDK declares ::REG_Exx
+namespace drc {
+using namespace uml;
+using namespace x86emit;
+
+using x86emit::REG_EAX;
+using x86emit::REG_ECX;
+using x86emit::REG_EDX;
+using x86emit::REG_EBX;
+using x86emit::REG_ESP;
+using x86emit::REG_EBP;
+using x86emit::REG_ESI;
+using x86emit::REG_EDI;
+>>>>>>> upstream/master
 
 //**************************************************************************
 //  DEBUGGING
@@ -104,6 +124,7 @@ using namespace x86emit;
 //  CONSTANTS
 //**************************************************************************
 
+<<<<<<< HEAD
 const UINT32 PTYPE_M    = 1 << parameter::PTYPE_MEMORY;
 const UINT32 PTYPE_I    = 1 << parameter::PTYPE_IMMEDIATE;
 const UINT32 PTYPE_R    = 1 << parameter::PTYPE_INT_REGISTER;
@@ -113,6 +134,17 @@ const UINT32 PTYPE_F    = 1 << parameter::PTYPE_FLOAT_REGISTER;
 const UINT32 PTYPE_MR   = PTYPE_M | PTYPE_R;
 const UINT32 PTYPE_MRI  = PTYPE_M | PTYPE_R | PTYPE_I;
 const UINT32 PTYPE_MF   = PTYPE_M | PTYPE_F;
+=======
+const uint32_t PTYPE_M    = 1 << parameter::PTYPE_MEMORY;
+const uint32_t PTYPE_I    = 1 << parameter::PTYPE_IMMEDIATE;
+const uint32_t PTYPE_R    = 1 << parameter::PTYPE_INT_REGISTER;
+const uint32_t PTYPE_F    = 1 << parameter::PTYPE_FLOAT_REGISTER;
+//const uint32_t PTYPE_MI   = PTYPE_M | PTYPE_I;
+//const uint32_t PTYPE_RI   = PTYPE_R | PTYPE_I;
+const uint32_t PTYPE_MR   = PTYPE_M | PTYPE_R;
+const uint32_t PTYPE_MRI  = PTYPE_M | PTYPE_R | PTYPE_I;
+const uint32_t PTYPE_MF   = PTYPE_M | PTYPE_F;
+>>>>>>> upstream/master
 
 
 
@@ -137,20 +169,35 @@ const UINT32 PTYPE_MF   = PTYPE_M | PTYPE_F;
 drcbe_x86::opcode_generate_func drcbe_x86::s_opcode_table[OP_MAX];
 
 // size-to-mask table
+<<<<<<< HEAD
 //static const UINT64 size_to_mask[] = { 0, 0xff, 0xffff, 0, 0xffffffff, 0, 0, 0, U64(0xffffffffffffffff) };
 
 // register mapping tables
 static const UINT8 int_register_map[REG_I_COUNT] =
+=======
+//static const uint64_t size_to_mask[] = { 0, 0xff, 0xffff, 0, 0xffffffff, 0, 0, 0, 0xffffffffffffffffU };
+
+// register mapping tables
+static const uint8_t int_register_map[REG_I_COUNT] =
+>>>>>>> upstream/master
 {
 	REG_EBX, REG_ESI, REG_EDI, REG_EBP
 };
 
 // flags mapping tables
+<<<<<<< HEAD
 static UINT8 flags_map[0x1000];
 static UINT32 flags_unmap[0x20];
 
 // condition mapping table
 static const UINT8 condition_map[uml::COND_MAX - uml::COND_Z] =
+=======
+static uint8_t flags_map[0x1000];
+static uint32_t flags_unmap[0x20];
+
+// condition mapping table
+static const uint8_t condition_map[uml::COND_MAX - uml::COND_Z] =
+>>>>>>> upstream/master
 {
 	x86emit::COND_Z,    // COND_Z = 0x80,    requires Z
 	x86emit::COND_NZ,   // COND_NZ,          requires Z
@@ -171,7 +218,11 @@ static const UINT8 condition_map[uml::COND_MAX - uml::COND_Z] =
 };
 
 // FPU control register mapping
+<<<<<<< HEAD
 static const UINT16 fp_control[4] =
+=======
+static const uint16_t fp_control[4] =
+>>>>>>> upstream/master
 {
 	0x0e3f,     // ROUND_TRUNC
 	0x023f,     // ROUND_ROUND
@@ -242,6 +293,10 @@ const drcbe_x86::opcode_table_entry drcbe_x86::s_opcode_table_source[] =
 	{ uml::OP_OR,      &drcbe_x86::op_or },         // OR      dst,src1,src2[,f]
 	{ uml::OP_XOR,     &drcbe_x86::op_xor },        // XOR     dst,src1,src2[,f]
 	{ uml::OP_LZCNT,   &drcbe_x86::op_lzcnt },      // LZCNT   dst,src[,f]
+<<<<<<< HEAD
+=======
+	{ uml::OP_TZCNT,   &drcbe_x86::op_tzcnt },      // TZCNT   dst,src[,f]
+>>>>>>> upstream/master
 	{ uml::OP_BSWAP,   &drcbe_x86::op_bswap },      // BSWAP   dst,src
 	{ uml::OP_SHL,     &drcbe_x86::op_shl },        // SHL     dst,src,count[,f]
 	{ uml::OP_SHR,     &drcbe_x86::op_shr },        // SHR     dst,src,count[,f]
@@ -270,7 +325,13 @@ const drcbe_x86::opcode_table_entry drcbe_x86::s_opcode_table_source[] =
 	{ uml::OP_FABS,    &drcbe_x86::op_fabs },       // FABS    dst,src1
 	{ uml::OP_FSQRT,   &drcbe_x86::op_fsqrt },      // FSQRT   dst,src1
 	{ uml::OP_FRECIP,  &drcbe_x86::op_frecip },     // FRECIP  dst,src1
+<<<<<<< HEAD
 	{ uml::OP_FRSQRT,  &drcbe_x86::op_frsqrt }      // FRSQRT  dst,src1
+=======
+	{ uml::OP_FRSQRT,  &drcbe_x86::op_frsqrt },     // FRSQRT  dst,src1
+	{ uml::OP_FCOPYI,  &drcbe_x86::op_fcopyi },     // FCOPYI  dst,src
+	{ uml::OP_ICOPYF,  &drcbe_x86::op_icopyf },     // ICOPYF  dst,src
+>>>>>>> upstream/master
 };
 
 
@@ -284,7 +345,11 @@ const drcbe_x86::opcode_table_entry drcbe_x86::s_opcode_table_source[] =
 //  into a reduced set
 //-------------------------------------------------
 
+<<<<<<< HEAD
 drcbe_x86::be_parameter::be_parameter(drcbe_x86 &drcbe, const parameter &param, UINT32 allowed)
+=======
+drcbe_x86::be_parameter::be_parameter(drcbe_x86 &drcbe, const parameter &param, uint32_t allowed)
+>>>>>>> upstream/master
 {
 	int regnum;
 
@@ -433,12 +498,20 @@ inline void drcbe_x86::reset_last_upper_lower_reg()
 //  loaded a lower register
 //-------------------------------------------------
 
+<<<<<<< HEAD
 inline void drcbe_x86::set_last_lower_reg(x86code *&dst, const be_parameter &param, UINT8 reglo)
+=======
+inline void drcbe_x86::set_last_lower_reg(x86code *&dst, const be_parameter &param, uint8_t reglo)
+>>>>>>> upstream/master
 {
 	if (param.is_memory())
 	{
 		m_last_lower_reg = reglo;
+<<<<<<< HEAD
 		m_last_lower_addr = (UINT32 *)((FPTR)param.memory());
+=======
+		m_last_lower_addr = (uint32_t *)((uintptr_t)param.memory());
+>>>>>>> upstream/master
 		m_last_lower_pc = dst;
 	}
 }
@@ -449,10 +522,17 @@ inline void drcbe_x86::set_last_lower_reg(x86code *&dst, const be_parameter &par
 //  loaded an upper register
 //-------------------------------------------------
 
+<<<<<<< HEAD
 inline void drcbe_x86::set_last_upper_reg(x86code *&dst, const be_parameter &param, UINT8 reghi)
 {
 	m_last_upper_reg = reghi;
 	m_last_upper_addr = (param.is_int_register()) ? m_reghi[param.ireg()] : (UINT32 *)((FPTR)param.memory(4));
+=======
+inline void drcbe_x86::set_last_upper_reg(x86code *&dst, const be_parameter &param, uint8_t reghi)
+{
+	m_last_upper_reg = reghi;
+	m_last_upper_addr = (param.is_int_register()) ? m_reghi[param.ireg()] : (uint32_t *)((uintptr_t)param.memory(4));
+>>>>>>> upstream/master
 	m_last_upper_pc = dst;
 }
 
@@ -462,7 +542,11 @@ inline void drcbe_x86::set_last_upper_reg(x86code *&dst, const be_parameter &par
 //  skip re-loading a lower half of a register
 //-------------------------------------------------
 
+<<<<<<< HEAD
 inline bool drcbe_x86::can_skip_lower_load(x86code *&dst, UINT32 *memref, UINT8 reglo)
+=======
+inline bool drcbe_x86::can_skip_lower_load(x86code *&dst, uint32_t *memref, uint8_t reglo)
+>>>>>>> upstream/master
 {
 	return (dst == m_last_lower_pc && memref == m_last_lower_addr && reglo == m_last_lower_reg);
 }
@@ -473,7 +557,11 @@ inline bool drcbe_x86::can_skip_lower_load(x86code *&dst, UINT32 *memref, UINT8 
 //  skip re-loading an upper half of a register
 //-------------------------------------------------
 
+<<<<<<< HEAD
 inline bool drcbe_x86::can_skip_upper_load(x86code *&dst, UINT32 *memref, UINT8 reghi)
+=======
+inline bool drcbe_x86::can_skip_upper_load(x86code *&dst, uint32_t *memref, uint8_t reghi)
+>>>>>>> upstream/master
 {
 	return (dst == m_last_upper_pc && memref == m_last_upper_addr && reghi == m_last_upper_reg);
 }
@@ -502,11 +590,16 @@ inline void drcbe_x86::track_resolve_link(x86code *&destptr, const emit_link &li
 //  drcbe_x86 - constructor
 //-------------------------------------------------
 
+<<<<<<< HEAD
 drcbe_x86::drcbe_x86(drcuml_state &drcuml, device_t &device, drc_cache &cache, UINT32 flags, int modes, int addrbits, int ignorebits)
+=======
+drcbe_x86::drcbe_x86(drcuml_state &drcuml, device_t &device, drc_cache &cache, uint32_t flags, int modes, int addrbits, int ignorebits)
+>>>>>>> upstream/master
 	: drcbe_interface(drcuml, cache, device),
 		m_hash(cache, modes, addrbits, ignorebits),
 		m_map(cache, 0),
 		m_labels(cache),
+<<<<<<< HEAD
 		m_log(NULL),
 		m_logged_common(false),
 		m_sse3(false),
@@ -530,6 +623,31 @@ drcbe_x86::drcbe_x86(drcuml_state &drcuml, device_t &device, drc_cache &cache, U
 		m_reshi(0),
 		m_fixup_label(FUNC(drcbe_x86::fixup_label), this),
 		m_fixup_exception(FUNC(drcbe_x86::fixup_exception), this)
+=======
+		m_log(nullptr),
+		m_logged_common(false),
+		m_sse3(false),
+		m_entry(nullptr),
+		m_exit(nullptr),
+		m_nocode(nullptr),
+		m_save(nullptr),
+		m_restore(nullptr),
+		m_last_lower_reg(REG_NONE),
+		m_last_lower_pc(nullptr),
+		m_last_lower_addr(nullptr),
+		m_last_upper_reg(REG_NONE),
+		m_last_upper_pc(nullptr),
+		m_last_upper_addr(nullptr),
+		m_fptemp(0),
+		m_fpumode(0),
+		m_fmodesave(0),
+		m_stacksave(nullptr),
+		m_hashstacksave(nullptr),
+		m_reslo(0),
+		m_reshi(0),
+		m_fixup_label(&drcbe_x86::fixup_label, this),
+		m_fixup_exception(&drcbe_x86::fixup_exception, this)
+>>>>>>> upstream/master
 {
 	// compute hi pointers for each register
 	for (int regnum = 0; regnum < ARRAY_LENGTH(int_register_map); regnum++)
@@ -542,7 +660,11 @@ drcbe_x86::drcbe_x86(drcuml_state &drcuml, device_t &device, drc_cache &cache, U
 	// build the flags map (static but it doesn't hurt to regenerate it)
 	for (int entry = 0; entry < ARRAY_LENGTH(flags_map); entry++)
 	{
+<<<<<<< HEAD
 		UINT8 flags = 0;
+=======
+		uint8_t flags = 0;
+>>>>>>> upstream/master
 		if (entry & 0x001) flags |= FLAG_C;
 		if (entry & 0x004) flags |= FLAG_U;
 		if (entry & 0x040) flags |= FLAG_Z;
@@ -552,7 +674,11 @@ drcbe_x86::drcbe_x86(drcuml_state &drcuml, device_t &device, drc_cache &cache, U
 	}
 	for (int entry = 0; entry < ARRAY_LENGTH(flags_unmap); entry++)
 	{
+<<<<<<< HEAD
 		UINT32 flags = 0;
+=======
+		uint32_t flags = 0;
+>>>>>>> upstream/master
 		if (entry & FLAG_C) flags |= 0x001;
 		if (entry & FLAG_U) flags |= 0x004;
 		if (entry & FLAG_Z) flags |= 0x040;
@@ -562,8 +688,13 @@ drcbe_x86::drcbe_x86(drcuml_state &drcuml, device_t &device, drc_cache &cache, U
 	}
 
 	// build the opcode table (static but it doesn't hurt to regenerate it)
+<<<<<<< HEAD
 	for (int opnum = 0; opnum < ARRAY_LENGTH(s_opcode_table_source); opnum++)
 		s_opcode_table[s_opcode_table_source[opnum].opcode] = s_opcode_table_source[opnum].func;
+=======
+	for (auto & elem : s_opcode_table_source)
+		s_opcode_table[elem.opcode] = elem.func;
+>>>>>>> upstream/master
 
 	// create the log
 	if (device.machine().options().drc_log_native())
@@ -581,7 +712,11 @@ drcbe_x86::drcbe_x86(drcuml_state &drcuml, device_t &device, drc_cache &cache, U
 drcbe_x86::~drcbe_x86()
 {
 	// free the log context
+<<<<<<< HEAD
 	if (m_log != NULL)
+=======
+	if (m_log != nullptr)
+>>>>>>> upstream/master
 		x86log_free_context(m_log);
 }
 
@@ -593,18 +728,31 @@ drcbe_x86::~drcbe_x86()
 void drcbe_x86::reset()
 {
 	// output a note to the log
+<<<<<<< HEAD
 	if (m_log != NULL)
 		x86log_printf(m_log, "\n\n===========\nCACHE RESET\n===========\n\n");
 
 	// generate a little bit of glue code to set up the environment
 	drccodeptr *cachetop = m_cache.begin_codegen(500);
 	if (cachetop == NULL)
+=======
+	if (m_log != nullptr)
+		x86log_printf(m_log, "%s", "\n\n===========\nCACHE RESET\n===========\n\n");
+
+	// generate a little bit of glue code to set up the environment
+	drccodeptr *cachetop = m_cache.begin_codegen(500);
+	if (cachetop == nullptr)
+>>>>>>> upstream/master
 		fatalerror("Out of cache space after a reset!\n");
 
 	x86code *dst = (x86code *)*cachetop;
 
 	// generate a simple CPUID stub
+<<<<<<< HEAD
 	UINT32 (*cpuid_ecx_stub)(void) = (UINT32 (*)(void))dst;
+=======
+	uint32_t (*cpuid_ecx_stub)(void) = (uint32_t (*)(void))dst;
+>>>>>>> upstream/master
 	emit_push_r32(dst, REG_EBX);                                                        // push  ebx
 	emit_mov_r32_imm(dst, REG_EAX, 1);                                                  // mov   eax,1
 	emit_cpuid(dst);                                                                    // cpuid
@@ -628,7 +776,11 @@ void drcbe_x86::reset()
 	emit_mov_m32_r32(dst, MABS(&m_stacksave), REG_ESP);                         // mov   [stacksave],esp
 	emit_fstcw_m16(dst, MABS(&m_fpumode));                                          // fstcw [fpumode]
 	emit_jmp_r32(dst, REG_EAX);                                                         // jmp   eax
+<<<<<<< HEAD
 	if (m_log != NULL && !m_logged_common)
+=======
+	if (m_log != nullptr && !m_logged_common)
+>>>>>>> upstream/master
 		x86log_disasm_code_range(m_log, "entry_point", (x86code *)m_entry, dst);
 
 	// generate an exit point
@@ -641,13 +793,21 @@ void drcbe_x86::reset()
 	emit_pop_r32(dst, REG_ESI);                                                         // pop   esi
 	emit_pop_r32(dst, REG_EBX);                                                         // pop   ebx
 	emit_ret(dst);                                                                      // ret
+<<<<<<< HEAD
 	if (m_log != NULL && !m_logged_common)
+=======
+	if (m_log != nullptr && !m_logged_common)
+>>>>>>> upstream/master
 		x86log_disasm_code_range(m_log, "exit_point", m_exit, dst);
 
 	// generate a no code point
 	m_nocode = dst;
 	emit_ret(dst);                                                                      // ret
+<<<<<<< HEAD
 	if (m_log != NULL && !m_logged_common)
+=======
+	if (m_log != nullptr && !m_logged_common)
+>>>>>>> upstream/master
 		x86log_disasm_code_range(m_log, "nocode", m_nocode, dst);
 
 	// generate a save subroutine
@@ -663,8 +823,13 @@ void drcbe_x86::reset()
 	emit_mov_m32_r32(dst, MBD(REG_ECX, offsetof(drcuml_machine_state, exp)), REG_EAX);  // mov    state->exp,eax
 	for (int regnum = 0; regnum < ARRAY_LENGTH(m_state.r); regnum++)
 	{
+<<<<<<< HEAD
 		FPTR regoffsl = (FPTR)&((drcuml_machine_state *)NULL)->r[regnum].w.l;
 		FPTR regoffsh = (FPTR)&((drcuml_machine_state *)NULL)->r[regnum].w.h;
+=======
+		uintptr_t regoffsl = (uintptr_t)&((drcuml_machine_state *)nullptr)->r[regnum].w.l;
+		uintptr_t regoffsh = (uintptr_t)&((drcuml_machine_state *)nullptr)->r[regnum].w.h;
+>>>>>>> upstream/master
 		if (int_register_map[regnum] != 0)
 			emit_mov_m32_r32(dst, MBD(REG_ECX, regoffsl), int_register_map[regnum]);
 		else
@@ -677,23 +842,37 @@ void drcbe_x86::reset()
 	}
 	for (int regnum = 0; regnum < ARRAY_LENGTH(m_state.f); regnum++)
 	{
+<<<<<<< HEAD
 		FPTR regoffsl = (FPTR)&((drcuml_machine_state *)NULL)->f[regnum].s.l;
 		FPTR regoffsh = (FPTR)&((drcuml_machine_state *)NULL)->f[regnum].s.h;
+=======
+		uintptr_t regoffsl = (uintptr_t)&((drcuml_machine_state *)nullptr)->f[regnum].s.l;
+		uintptr_t regoffsh = (uintptr_t)&((drcuml_machine_state *)nullptr)->f[regnum].s.h;
+>>>>>>> upstream/master
 		emit_mov_r32_m32(dst, REG_EAX, MABS(&m_state.f[regnum].s.l));
 		emit_mov_m32_r32(dst, MBD(REG_ECX, regoffsl), REG_EAX);
 		emit_mov_r32_m32(dst, REG_EAX, MABS(&m_state.f[regnum].s.h));
 		emit_mov_m32_r32(dst, MBD(REG_ECX, regoffsh), REG_EAX);
 	}
 	emit_ret(dst);                                                                      // ret
+<<<<<<< HEAD
 	if (m_log != NULL && !m_logged_common)
+=======
+	if (m_log != nullptr && !m_logged_common)
+>>>>>>> upstream/master
 		x86log_disasm_code_range(m_log, "save", m_save, dst);
 
 	// generate a restore subroutine
 	m_restore = dst;
 	for (int regnum = 0; regnum < ARRAY_LENGTH(m_state.r); regnum++)
 	{
+<<<<<<< HEAD
 		FPTR regoffsl = (FPTR)&((drcuml_machine_state *)NULL)->r[regnum].w.l;
 		FPTR regoffsh = (FPTR)&((drcuml_machine_state *)NULL)->r[regnum].w.h;
+=======
+		uintptr_t regoffsl = (uintptr_t)&((drcuml_machine_state *)nullptr)->r[regnum].w.l;
+		uintptr_t regoffsh = (uintptr_t)&((drcuml_machine_state *)nullptr)->r[regnum].w.h;
+>>>>>>> upstream/master
 		if (int_register_map[regnum] != 0)
 			emit_mov_r32_m32(dst, int_register_map[regnum], MBD(REG_ECX, regoffsl));
 		else
@@ -706,8 +885,13 @@ void drcbe_x86::reset()
 	}
 	for (int regnum = 0; regnum < ARRAY_LENGTH(m_state.f); regnum++)
 	{
+<<<<<<< HEAD
 		FPTR regoffsl = (FPTR)&((drcuml_machine_state *)NULL)->f[regnum].s.l;
 		FPTR regoffsh = (FPTR)&((drcuml_machine_state *)NULL)->f[regnum].s.h;
+=======
+		uintptr_t regoffsl = (uintptr_t)&((drcuml_machine_state *)nullptr)->f[regnum].s.l;
+		uintptr_t regoffsh = (uintptr_t)&((drcuml_machine_state *)nullptr)->f[regnum].s.h;
+>>>>>>> upstream/master
 		emit_mov_r32_m32(dst, REG_EAX, MBD(REG_ECX, regoffsl));
 		emit_mov_m32_r32(dst, MABS(&m_state.f[regnum].s.l), REG_EAX);
 		emit_mov_r32_m32(dst, REG_EAX, MBD(REG_ECX, regoffsh));
@@ -723,7 +907,11 @@ void drcbe_x86::reset()
 	emit_push_m32(dst, MABSI(flags_unmap, REG_EAX, 4));                                 // push   flags_unmap[eax*4]
 	emit_popf(dst);                                                                     // popf
 	emit_ret(dst);                                                                      // ret
+<<<<<<< HEAD
 	if (m_log != NULL && !m_logged_common)
+=======
+	if (m_log != nullptr && !m_logged_common)
+>>>>>>> upstream/master
 		x86log_disasm_code_range(m_log, "restore", m_restore, dst);
 
 	// finish up codegen
@@ -753,7 +941,11 @@ int drcbe_x86::execute(code_handle &entry)
 //  drcbex86_generate - generate code
 //-------------------------------------------------
 
+<<<<<<< HEAD
 void drcbe_x86::generate(drcuml_block &block, const instruction *instlist, UINT32 numinst)
+=======
+void drcbe_x86::generate(drcuml_block &block, const instruction *instlist, uint32_t numinst)
+>>>>>>> upstream/master
 {
 	// tell all of our utility objects that a block is beginning
 	m_hash.block_begin(block, instlist, numinst);
@@ -762,6 +954,7 @@ void drcbe_x86::generate(drcuml_block &block, const instruction *instlist, UINT3
 
 	// begin codegen; fail if we can't
 	drccodeptr *cachetop = m_cache.begin_codegen(numinst * 8 * 4);
+<<<<<<< HEAD
 	if (cachetop == NULL)
 		block.abort();
 
@@ -772,26 +965,51 @@ void drcbe_x86::generate(drcuml_block &block, const instruction *instlist, UINT3
 	// generate code
 	std::string tempstring;
 	const char *blockname = NULL;
+=======
+	if (cachetop == nullptr)
+		block.abort();
+
+	// compute the base by aligning the cache top to a cache line (assumed to be 64 bytes)
+	x86code *base = (x86code *)(((uintptr_t)*cachetop + 63) & ~63);
+	x86code *dst = base;
+
+	// generate code
+	const char *blockname = nullptr;
+>>>>>>> upstream/master
 	for (int inum = 0; inum < numinst; inum++)
 	{
 		const instruction &inst = instlist[inum];
 		assert(inst.opcode() < ARRAY_LENGTH(s_opcode_table));
 
 		// add a comment
+<<<<<<< HEAD
 		if (m_log != NULL)
 		{
 			std::string dasm;
 			inst.disasm(dasm, &m_drcuml);
+=======
+		if (m_log != nullptr)
+		{
+			std::string dasm = inst.disasm(&m_drcuml);
+>>>>>>> upstream/master
 			x86log_add_comment(m_log, dst, "%s", dasm.c_str());
 		}
 
 		// extract a blockname
+<<<<<<< HEAD
 		if (blockname == NULL)
+=======
+		if (blockname == nullptr)
+>>>>>>> upstream/master
 		{
 			if (inst.opcode() == OP_HANDLE)
 				blockname = inst.param(0).handle().string();
 			else if (inst.opcode() == OP_HASH)
+<<<<<<< HEAD
 				blockname = strformat(tempstring, "Code: mode=%d PC=%08X", (UINT32)inst.param(0).immediate(), (offs_t)inst.param(1).immediate()).c_str();
+=======
+				blockname = string_format("Code: mode=%d PC=%08X", (uint32_t)inst.param(0).immediate(), (offs_t)inst.param(1).immediate()).c_str();
+>>>>>>> upstream/master
 		}
 
 		// generate code
@@ -803,8 +1021,13 @@ void drcbe_x86::generate(drcuml_block &block, const instruction *instlist, UINT3
 	m_cache.end_codegen();
 
 	// log it
+<<<<<<< HEAD
 	if (m_log != NULL)
 		x86log_disasm_code_range(m_log, (blockname == NULL) ? "Unknown block" : blockname, base, m_cache.top());
+=======
+	if (m_log != nullptr)
+		x86log_disasm_code_range(m_log, (blockname == nullptr) ? "Unknown block" : blockname, base, m_cache.top());
+>>>>>>> upstream/master
 
 	// tell all of our utility objects that the block is finished
 	m_hash.block_end(block);
@@ -818,7 +1041,11 @@ void drcbe_x86::generate(drcuml_block &block, const instruction *instlist, UINT3
 //  given mode/pc exists in the hash table
 //-------------------------------------------------
 
+<<<<<<< HEAD
 bool drcbe_x86::hash_exists(UINT32 mode, UINT32 pc)
+=======
+bool drcbe_x86::hash_exists(uint32_t mode, uint32_t pc)
+>>>>>>> upstream/master
 {
 	return m_hash.code_exists(mode, pc);
 }
@@ -848,7 +1075,11 @@ void drcbe_x86::get_info(drcbe_info &info)
 //  into a register
 //-------------------------------------------------
 
+<<<<<<< HEAD
 void drcbe_x86::emit_mov_r32_p32(x86code *&dst, UINT8 reg, const be_parameter &param)
+=======
+void drcbe_x86::emit_mov_r32_p32(x86code *&dst, uint8_t reg, const be_parameter &param)
+>>>>>>> upstream/master
 {
 	if (param.is_immediate())
 	{
@@ -873,13 +1104,21 @@ void drcbe_x86::emit_mov_r32_p32(x86code *&dst, UINT8 reg, const be_parameter &p
 //  any flags
 //-------------------------------------------------
 
+<<<<<<< HEAD
 void drcbe_x86::emit_mov_r32_p32_keepflags(x86code *&dst, UINT8 reg, const be_parameter &param)
+=======
+void drcbe_x86::emit_mov_r32_p32_keepflags(x86code *&dst, uint8_t reg, const be_parameter &param)
+>>>>>>> upstream/master
 {
 	if (param.is_immediate())
 		emit_mov_r32_imm(dst, reg, param.immediate());                                      // mov   reg,param
 	else if (param.is_memory())
 	{
+<<<<<<< HEAD
 		if (!can_skip_lower_load(dst, (UINT32 *)((FPTR)param.memory()), reg))
+=======
+		if (!can_skip_lower_load(dst, (uint32_t *)((uintptr_t)param.memory()), reg))
+>>>>>>> upstream/master
 			emit_mov_r32_m32(dst, reg, MABS(param.memory()));                               // mov   reg,[param]
 	}
 	else if (param.is_int_register())
@@ -901,7 +1140,11 @@ void drcbe_x86::emit_mov_m32_p32(x86code *&dst, x86_memref memref, const be_para
 		emit_mov_m32_imm(dst, memref, param.immediate());                                   // mov   [mem],param
 	else if (param.is_memory())
 	{
+<<<<<<< HEAD
 		if (!can_skip_lower_load(dst, (UINT32 *)((FPTR)param.memory()), REG_EAX))
+=======
+		if (!can_skip_lower_load(dst, (uint32_t *)((uintptr_t)param.memory()), REG_EAX))
+>>>>>>> upstream/master
 			emit_mov_r32_m32(dst, REG_EAX, MABS(param.memory()));                           // mov   eax,[param]
 		emit_mov_m32_r32(dst, memref, REG_EAX);                                     // mov   [mem],eax
 	}
@@ -915,7 +1158,11 @@ void drcbe_x86::emit_mov_m32_p32(x86code *&dst, x86_memref memref, const be_para
 //  32-bit parameter
 //-------------------------------------------------
 
+<<<<<<< HEAD
 void drcbe_x86::emit_mov_p32_r32(x86code *&dst, const be_parameter &param, UINT8 reg)
+=======
+void drcbe_x86::emit_mov_p32_r32(x86code *&dst, const be_parameter &param, uint8_t reg)
+>>>>>>> upstream/master
 {
 	assert(!param.is_immediate());
 	if (param.is_memory())
@@ -936,7 +1183,11 @@ void drcbe_x86::emit_mov_p32_r32(x86code *&dst, const be_parameter &param, UINT8
 //  register from a 32-bit parameter
 //-------------------------------------------------
 
+<<<<<<< HEAD
 void drcbe_x86::emit_add_r32_p32(x86code *&dst, UINT8 reg, const be_parameter &param, const instruction &inst)
+=======
+void drcbe_x86::emit_add_r32_p32(x86code *&dst, uint8_t reg, const be_parameter &param, const instruction &inst)
+>>>>>>> upstream/master
 {
 	if (param.is_immediate())
 	{
@@ -976,7 +1227,11 @@ void drcbe_x86::emit_add_m32_p32(x86code *&dst, x86_memref memref, const be_para
 //  register from a 32-bit parameter
 //-------------------------------------------------
 
+<<<<<<< HEAD
 void drcbe_x86::emit_adc_r32_p32(x86code *&dst, UINT8 reg, const be_parameter &param, const instruction &inst)
+=======
+void drcbe_x86::emit_adc_r32_p32(x86code *&dst, uint8_t reg, const be_parameter &param, const instruction &inst)
+>>>>>>> upstream/master
 {
 	if (param.is_immediate())
 		emit_adc_r32_imm(dst, reg, param.immediate());                                      // adc   reg,param
@@ -1010,7 +1265,11 @@ void drcbe_x86::emit_adc_m32_p32(x86code *&dst, x86_memref memref, const be_para
 //  register from a 32-bit parameter
 //-------------------------------------------------
 
+<<<<<<< HEAD
 void drcbe_x86::emit_sub_r32_p32(x86code *&dst, UINT8 reg, const be_parameter &param, const instruction &inst)
+=======
+void drcbe_x86::emit_sub_r32_p32(x86code *&dst, uint8_t reg, const be_parameter &param, const instruction &inst)
+>>>>>>> upstream/master
 {
 	if (param.is_immediate())
 	{
@@ -1050,7 +1309,11 @@ void drcbe_x86::emit_sub_m32_p32(x86code *&dst, x86_memref memref, const be_para
 //  register from a 32-bit parameter
 //-------------------------------------------------
 
+<<<<<<< HEAD
 void drcbe_x86::emit_sbb_r32_p32(x86code *&dst, UINT8 reg, const be_parameter &param, const instruction &inst)
+=======
+void drcbe_x86::emit_sbb_r32_p32(x86code *&dst, uint8_t reg, const be_parameter &param, const instruction &inst)
+>>>>>>> upstream/master
 {
 	if (param.is_immediate())
 		emit_sbb_r32_imm(dst, reg, param.immediate());                                      // sbb   reg,param
@@ -1084,7 +1347,11 @@ void drcbe_x86::emit_sbb_m32_p32(x86code *&dst, x86_memref memref, const be_para
 //  register from a 32-bit parameter
 //-------------------------------------------------
 
+<<<<<<< HEAD
 void drcbe_x86::emit_cmp_r32_p32(x86code *&dst, UINT8 reg, const be_parameter &param, const instruction &inst)
+=======
+void drcbe_x86::emit_cmp_r32_p32(x86code *&dst, uint8_t reg, const be_parameter &param, const instruction &inst)
+>>>>>>> upstream/master
 {
 	if (param.is_immediate())
 		emit_cmp_r32_imm(dst, reg, param.immediate());                                      // cmp   reg,param
@@ -1118,6 +1385,7 @@ void drcbe_x86::emit_cmp_m32_p32(x86code *&dst, x86_memref memref, const be_para
 //  register from a 32-bit parameter
 //-------------------------------------------------
 
+<<<<<<< HEAD
 void drcbe_x86::emit_and_r32_p32(x86code *&dst, UINT8 reg, const be_parameter &param, const instruction &inst)
 {
 	if (param.is_immediate())
@@ -1125,6 +1393,15 @@ void drcbe_x86::emit_and_r32_p32(x86code *&dst, UINT8 reg, const be_parameter &p
 		if (inst.flags() == 0 && (UINT32)param.immediate() == 0xffffffff)
 			;// skip
 		else if (inst.flags() == 0 && (UINT32)param.immediate() == 0)
+=======
+void drcbe_x86::emit_and_r32_p32(x86code *&dst, uint8_t reg, const be_parameter &param, const instruction &inst)
+{
+	if (param.is_immediate())
+	{
+		if (inst.flags() == 0 && (uint32_t)param.immediate() == 0xffffffff)
+			;// skip
+		else if (inst.flags() == 0 && (uint32_t)param.immediate() == 0)
+>>>>>>> upstream/master
 			emit_xor_r32_r32(dst, reg, reg);                                            // xor   reg,reg
 		else
 			emit_and_r32_imm(dst, reg, param.immediate());                                  // and   reg,param
@@ -1145,9 +1422,15 @@ void drcbe_x86::emit_and_m32_p32(x86code *&dst, x86_memref memref, const be_para
 {
 	if (param.is_immediate())
 	{
+<<<<<<< HEAD
 		if (inst.flags() == 0 && (UINT32)param.immediate() == 0xffffffff)
 			;// skip
 		else if (inst.flags() == 0 && (UINT32)param.immediate() == 0)
+=======
+		if (inst.flags() == 0 && (uint32_t)param.immediate() == 0xffffffff)
+			;// skip
+		else if (inst.flags() == 0 && (uint32_t)param.immediate() == 0)
+>>>>>>> upstream/master
 			emit_mov_m32_imm(dst, memref, 0);                                       // mov   [dest],0
 		else
 			emit_and_m32_imm(dst, memref, param.immediate());                               // and   [dest],param
@@ -1166,7 +1449,11 @@ void drcbe_x86::emit_and_m32_p32(x86code *&dst, x86_memref memref, const be_para
 //  register from a 32-bit parameter
 //-------------------------------------------------
 
+<<<<<<< HEAD
 void drcbe_x86::emit_test_r32_p32(x86code *&dst, UINT8 reg, const be_parameter &param, const instruction &inst)
+=======
+void drcbe_x86::emit_test_r32_p32(x86code *&dst, uint8_t reg, const be_parameter &param, const instruction &inst)
+>>>>>>> upstream/master
 {
 	if (param.is_immediate())
 		emit_test_r32_imm(dst, reg, param.immediate());                                     // test   reg,param
@@ -1201,6 +1488,7 @@ void drcbe_x86::emit_test_m32_p32(x86code *&dst, x86_memref memref, const be_par
 //  register from a 32-bit parameter
 //-------------------------------------------------
 
+<<<<<<< HEAD
 void drcbe_x86::emit_or_r32_p32(x86code *&dst, UINT8 reg, const be_parameter &param, const instruction &inst)
 {
 	if (param.is_immediate())
@@ -1208,6 +1496,15 @@ void drcbe_x86::emit_or_r32_p32(x86code *&dst, UINT8 reg, const be_parameter &pa
 		if (inst.flags() == 0 && (UINT32)param.immediate() == 0)
 			;// skip
 		else if (inst.flags() == 0 && (UINT32)param.immediate() == 0xffffffff)
+=======
+void drcbe_x86::emit_or_r32_p32(x86code *&dst, uint8_t reg, const be_parameter &param, const instruction &inst)
+{
+	if (param.is_immediate())
+	{
+		if (inst.flags() == 0 && (uint32_t)param.immediate() == 0)
+			;// skip
+		else if (inst.flags() == 0 && (uint32_t)param.immediate() == 0xffffffff)
+>>>>>>> upstream/master
 			emit_mov_r32_imm(dst, reg, ~0);                                             // mov  reg,-1
 		else
 			emit_or_r32_imm(dst, reg, param.immediate());                                   // or   reg,param
@@ -1228,9 +1525,15 @@ void drcbe_x86::emit_or_m32_p32(x86code *&dst, x86_memref memref, const be_param
 {
 	if (param.is_immediate())
 	{
+<<<<<<< HEAD
 		if (inst.flags() == 0 && (UINT32)param.immediate() == 0)
 			;// skip
 		else if (inst.flags() == 0 && (UINT32)param.immediate() == 0xffffffff)
+=======
+		if (inst.flags() == 0 && (uint32_t)param.immediate() == 0)
+			;// skip
+		else if (inst.flags() == 0 && (uint32_t)param.immediate() == 0xffffffff)
+>>>>>>> upstream/master
 			emit_mov_m32_imm(dst, memref, ~0);                                      // mov   [dest],-1
 		else
 			emit_or_m32_imm(dst, memref, param.immediate());                                // or   [dest],param
@@ -1249,6 +1552,7 @@ void drcbe_x86::emit_or_m32_p32(x86code *&dst, x86_memref memref, const be_param
 //  register from a 32-bit parameter
 //-------------------------------------------------
 
+<<<<<<< HEAD
 void drcbe_x86::emit_xor_r32_p32(x86code *&dst, UINT8 reg, const be_parameter &param, const instruction &inst)
 {
 	if (param.is_immediate())
@@ -1256,6 +1560,15 @@ void drcbe_x86::emit_xor_r32_p32(x86code *&dst, UINT8 reg, const be_parameter &p
 		if (inst.flags() == 0 && (UINT32)param.immediate() == 0)
 			;// skip
 		else if (inst.flags() == 0 && (UINT32)param.immediate() == 0xffffffff)
+=======
+void drcbe_x86::emit_xor_r32_p32(x86code *&dst, uint8_t reg, const be_parameter &param, const instruction &inst)
+{
+	if (param.is_immediate())
+	{
+		if (inst.flags() == 0 && (uint32_t)param.immediate() == 0)
+			;// skip
+		else if (inst.flags() == 0 && (uint32_t)param.immediate() == 0xffffffff)
+>>>>>>> upstream/master
 			emit_not_r32(dst, reg);                                                     // not   reg
 		else
 			emit_xor_r32_imm(dst, reg, param.immediate());                                  // xor   reg,param
@@ -1276,9 +1589,15 @@ void drcbe_x86::emit_xor_m32_p32(x86code *&dst, x86_memref memref, const be_para
 {
 	if (param.is_immediate())
 	{
+<<<<<<< HEAD
 		if (inst.flags() == 0 && (UINT32)param.immediate() == 0)
 			;// skip
 		else if (inst.flags() == 0 && (UINT32)param.immediate() == 0xffffffff)
+=======
+		if (inst.flags() == 0 && (uint32_t)param.immediate() == 0)
+			;// skip
+		else if (inst.flags() == 0 && (uint32_t)param.immediate() == 0xffffffff)
+>>>>>>> upstream/master
 			emit_not_m32(dst, memref);                                              // not   [dest]
 		else
 			emit_xor_m32_imm(dst, memref, param.immediate());                               // xor   [dest],param
@@ -1297,11 +1616,19 @@ void drcbe_x86::emit_xor_m32_p32(x86code *&dst, x86_memref memref, const be_para
 //  register from a 32-bit parameter
 //-------------------------------------------------
 
+<<<<<<< HEAD
 void drcbe_x86::emit_shl_r32_p32(x86code *&dst, UINT8 reg, const be_parameter &param, const instruction &inst)
 {
 	if (param.is_immediate())
 	{
 		if (inst.flags() == 0 && (UINT32)param.immediate() == 0)
+=======
+void drcbe_x86::emit_shl_r32_p32(x86code *&dst, uint8_t reg, const be_parameter &param, const instruction &inst)
+{
+	if (param.is_immediate())
+	{
+		if (inst.flags() == 0 && (uint32_t)param.immediate() == 0)
+>>>>>>> upstream/master
 			;// skip
 		else
 			emit_shl_r32_imm(dst, reg, param.immediate());                                  // shl   reg,param
@@ -1323,7 +1650,11 @@ void drcbe_x86::emit_shl_m32_p32(x86code *&dst, x86_memref memref, const be_para
 {
 	if (param.is_immediate())
 	{
+<<<<<<< HEAD
 		if (inst.flags() == 0 && (UINT32)param.immediate() == 0)
+=======
+		if (inst.flags() == 0 && (uint32_t)param.immediate() == 0)
+>>>>>>> upstream/master
 			;// skip
 		else
 			emit_shl_m32_imm(dst, memref, param.immediate());                               // shl   [dest],param
@@ -1341,11 +1672,19 @@ void drcbe_x86::emit_shl_m32_p32(x86code *&dst, x86_memref memref, const be_para
 //  register from a 32-bit parameter
 //-------------------------------------------------
 
+<<<<<<< HEAD
 void drcbe_x86::emit_shr_r32_p32(x86code *&dst, UINT8 reg, const be_parameter &param, const instruction &inst)
 {
 	if (param.is_immediate())
 	{
 		if (inst.flags() == 0 && (UINT32)param.immediate() == 0)
+=======
+void drcbe_x86::emit_shr_r32_p32(x86code *&dst, uint8_t reg, const be_parameter &param, const instruction &inst)
+{
+	if (param.is_immediate())
+	{
+		if (inst.flags() == 0 && (uint32_t)param.immediate() == 0)
+>>>>>>> upstream/master
 			;// skip
 		else
 			emit_shr_r32_imm(dst, reg, param.immediate());                                  // shr   reg,param
@@ -1367,7 +1706,11 @@ void drcbe_x86::emit_shr_m32_p32(x86code *&dst, x86_memref memref, const be_para
 {
 	if (param.is_immediate())
 	{
+<<<<<<< HEAD
 		if (inst.flags() == 0 && (UINT32)param.immediate() == 0)
+=======
+		if (inst.flags() == 0 && (uint32_t)param.immediate() == 0)
+>>>>>>> upstream/master
 			;// skip
 		else
 			emit_shr_m32_imm(dst, memref, param.immediate());                               // shr   [dest],param
@@ -1385,11 +1728,19 @@ void drcbe_x86::emit_shr_m32_p32(x86code *&dst, x86_memref memref, const be_para
 //  register from a 32-bit parameter
 //-------------------------------------------------
 
+<<<<<<< HEAD
 void drcbe_x86::emit_sar_r32_p32(x86code *&dst, UINT8 reg, const be_parameter &param, const instruction &inst)
 {
 	if (param.is_immediate())
 	{
 		if (inst.flags() == 0 && (UINT32)param.immediate() == 0)
+=======
+void drcbe_x86::emit_sar_r32_p32(x86code *&dst, uint8_t reg, const be_parameter &param, const instruction &inst)
+{
+	if (param.is_immediate())
+	{
+		if (inst.flags() == 0 && (uint32_t)param.immediate() == 0)
+>>>>>>> upstream/master
 			;// skip
 		else
 			emit_sar_r32_imm(dst, reg, param.immediate());                                  // sar   reg,param
@@ -1411,7 +1762,11 @@ void drcbe_x86::emit_sar_m32_p32(x86code *&dst, x86_memref memref, const be_para
 {
 	if (param.is_immediate())
 	{
+<<<<<<< HEAD
 		if (inst.flags() == 0 && (UINT32)param.immediate() == 0)
+=======
+		if (inst.flags() == 0 && (uint32_t)param.immediate() == 0)
+>>>>>>> upstream/master
 			;// skip
 		else
 			emit_sar_m32_imm(dst, memref, param.immediate());                               // sar   [dest],param
@@ -1429,11 +1784,19 @@ void drcbe_x86::emit_sar_m32_p32(x86code *&dst, x86_memref memref, const be_para
 //  register from a 32-bit parameter
 //-------------------------------------------------
 
+<<<<<<< HEAD
 void drcbe_x86::emit_rol_r32_p32(x86code *&dst, UINT8 reg, const be_parameter &param, const instruction &inst)
 {
 	if (param.is_immediate())
 	{
 		if (inst.flags() == 0 && (UINT32)param.immediate() == 0)
+=======
+void drcbe_x86::emit_rol_r32_p32(x86code *&dst, uint8_t reg, const be_parameter &param, const instruction &inst)
+{
+	if (param.is_immediate())
+	{
+		if (inst.flags() == 0 && (uint32_t)param.immediate() == 0)
+>>>>>>> upstream/master
 			;// skip
 		else
 			emit_rol_r32_imm(dst, reg, param.immediate());                                  // rol   reg,param
@@ -1455,7 +1818,11 @@ void drcbe_x86::emit_rol_m32_p32(x86code *&dst, x86_memref memref, const be_para
 {
 	if (param.is_immediate())
 	{
+<<<<<<< HEAD
 		if (inst.flags() == 0 && (UINT32)param.immediate() == 0)
+=======
+		if (inst.flags() == 0 && (uint32_t)param.immediate() == 0)
+>>>>>>> upstream/master
 			;// skip
 		else
 			emit_rol_m32_imm(dst, memref, param.immediate());                               // rol   [dest],param
@@ -1473,11 +1840,19 @@ void drcbe_x86::emit_rol_m32_p32(x86code *&dst, x86_memref memref, const be_para
 //  register from a 32-bit parameter
 //-------------------------------------------------
 
+<<<<<<< HEAD
 void drcbe_x86::emit_ror_r32_p32(x86code *&dst, UINT8 reg, const be_parameter &param, const instruction &inst)
 {
 	if (param.is_immediate())
 	{
 		if (inst.flags() == 0 && (UINT32)param.immediate() == 0)
+=======
+void drcbe_x86::emit_ror_r32_p32(x86code *&dst, uint8_t reg, const be_parameter &param, const instruction &inst)
+{
+	if (param.is_immediate())
+	{
+		if (inst.flags() == 0 && (uint32_t)param.immediate() == 0)
+>>>>>>> upstream/master
 			;// skip
 		else
 			emit_ror_r32_imm(dst, reg, param.immediate());                                  // ror   reg,param
@@ -1499,7 +1874,11 @@ void drcbe_x86::emit_ror_m32_p32(x86code *&dst, x86_memref memref, const be_para
 {
 	if (param.is_immediate())
 	{
+<<<<<<< HEAD
 		if (inst.flags() == 0 && (UINT32)param.immediate() == 0)
+=======
+		if (inst.flags() == 0 && (uint32_t)param.immediate() == 0)
+>>>>>>> upstream/master
 			;// skip
 		else
 			emit_ror_m32_imm(dst, memref, param.immediate());                               // ror   [dest],param
@@ -1517,11 +1896,19 @@ void drcbe_x86::emit_ror_m32_p32(x86code *&dst, x86_memref memref, const be_para
 //  register from a 32-bit parameter
 //-------------------------------------------------
 
+<<<<<<< HEAD
 void drcbe_x86::emit_rcl_r32_p32(x86code *&dst, UINT8 reg, const be_parameter &param, const instruction &inst)
 {
 	if (param.is_immediate())
 	{
 		if (inst.flags() == 0 && (UINT32)param.immediate() == 0)
+=======
+void drcbe_x86::emit_rcl_r32_p32(x86code *&dst, uint8_t reg, const be_parameter &param, const instruction &inst)
+{
+	if (param.is_immediate())
+	{
+		if (inst.flags() == 0 && (uint32_t)param.immediate() == 0)
+>>>>>>> upstream/master
 			;// skip
 		else
 			emit_rcl_r32_imm(dst, reg, param.immediate());                                  // rcl   reg,param
@@ -1543,7 +1930,11 @@ void drcbe_x86::emit_rcl_m32_p32(x86code *&dst, x86_memref memref, const be_para
 {
 	if (param.is_immediate())
 	{
+<<<<<<< HEAD
 		if (inst.flags() == 0 && (UINT32)param.immediate() == 0)
+=======
+		if (inst.flags() == 0 && (uint32_t)param.immediate() == 0)
+>>>>>>> upstream/master
 			;// skip
 		else
 			emit_rcl_m32_imm(dst, memref, param.immediate());                               // rcl   [dest],param
@@ -1561,11 +1952,19 @@ void drcbe_x86::emit_rcl_m32_p32(x86code *&dst, x86_memref memref, const be_para
 //  register from a 32-bit parameter
 //-------------------------------------------------
 
+<<<<<<< HEAD
 void drcbe_x86::emit_rcr_r32_p32(x86code *&dst, UINT8 reg, const be_parameter &param, const instruction &inst)
 {
 	if (param.is_immediate())
 	{
 		if (inst.flags() == 0 && (UINT32)param.immediate() == 0)
+=======
+void drcbe_x86::emit_rcr_r32_p32(x86code *&dst, uint8_t reg, const be_parameter &param, const instruction &inst)
+{
+	if (param.is_immediate())
+	{
+		if (inst.flags() == 0 && (uint32_t)param.immediate() == 0)
+>>>>>>> upstream/master
 			;// skip
 		else
 			emit_rcr_r32_imm(dst, reg, param.immediate());                                  // rcr   reg,param
@@ -1587,7 +1986,11 @@ void drcbe_x86::emit_rcr_m32_p32(x86code *&dst, x86_memref memref, const be_para
 {
 	if (param.is_immediate())
 	{
+<<<<<<< HEAD
 		if (inst.flags() == 0 && (UINT32)param.immediate() == 0)
+=======
+		if (inst.flags() == 0 && (uint32_t)param.immediate() == 0)
+>>>>>>> upstream/master
 			;// skip
 		else
 			emit_rcr_m32_imm(dst, memref, param.immediate());                               // rcr   [dest],param
@@ -1610,27 +2013,44 @@ void drcbe_x86::emit_rcr_m32_p32(x86code *&dst, x86_memref memref, const be_para
 //  into a pair of registers
 //-------------------------------------------------
 
+<<<<<<< HEAD
 void drcbe_x86::emit_mov_r64_p64(x86code *&dst, UINT8 reglo, UINT8 reghi, const be_parameter &param)
+=======
+void drcbe_x86::emit_mov_r64_p64(x86code *&dst, uint8_t reglo, uint8_t reghi, const be_parameter &param)
+>>>>>>> upstream/master
 {
 	if (param.is_immediate())
 	{
 		if (reglo == REG_NONE)
 			;
+<<<<<<< HEAD
 		else if ((UINT32)param.immediate() == 0)
+=======
+		else if ((uint32_t)param.immediate() == 0)
+>>>>>>> upstream/master
 			emit_xor_r32_r32(dst, reglo, reglo);                                        // xor   reglo,reglo
 		else
 			emit_mov_r32_imm(dst, reglo, param.immediate());                                    // mov   reglo,param
 		if (reghi == REG_NONE)
 			;
+<<<<<<< HEAD
 		else if ((UINT32)(param.immediate() >> 32) == 0)
+=======
+		else if ((uint32_t)(param.immediate() >> 32) == 0)
+>>>>>>> upstream/master
 			emit_xor_r32_r32(dst, reghi, reghi);                                        // xor   reghi,reghi
 		else
 			emit_mov_r32_imm(dst, reghi, param.immediate() >> 32);                          // mov   reghi,param >> 32
 	}
 	else if (param.is_memory())
 	{
+<<<<<<< HEAD
 		int skip_lower = can_skip_lower_load(dst, (UINT32 *)((FPTR)param.memory()), reglo);
 		int skip_upper = can_skip_upper_load(dst, (UINT32 *)((FPTR)param.memory(4)), reghi);
+=======
+		int skip_lower = can_skip_lower_load(dst, (uint32_t *)((uintptr_t)param.memory()), reglo);
+		int skip_upper = can_skip_upper_load(dst, (uint32_t *)((uintptr_t)param.memory(4)), reghi);
+>>>>>>> upstream/master
 		if (reglo != REG_NONE && !skip_lower)
 			emit_mov_r32_m32(dst, reglo, MABS(param.memory()));                         // mov   reglo,[param]
 		if (reghi != REG_NONE && !skip_upper)
@@ -1653,7 +2073,11 @@ void drcbe_x86::emit_mov_r64_p64(x86code *&dst, UINT8 reglo, UINT8 reghi, const 
 //  affecting any flags
 //-------------------------------------------------
 
+<<<<<<< HEAD
 void drcbe_x86::emit_mov_r64_p64_keepflags(x86code *&dst, UINT8 reglo, UINT8 reghi, const be_parameter &param)
+=======
+void drcbe_x86::emit_mov_r64_p64_keepflags(x86code *&dst, uint8_t reglo, uint8_t reghi, const be_parameter &param)
+>>>>>>> upstream/master
 {
 	if (param.is_immediate())
 	{
@@ -1664,8 +2088,13 @@ void drcbe_x86::emit_mov_r64_p64_keepflags(x86code *&dst, UINT8 reglo, UINT8 reg
 	}
 	else if (param.is_memory())
 	{
+<<<<<<< HEAD
 		int skip_lower = can_skip_lower_load(dst, (UINT32 *)((FPTR)param.memory()), reglo);
 		int skip_upper = can_skip_upper_load(dst, (UINT32 *)((FPTR)param.memory(4)), reghi);
+=======
+		int skip_lower = can_skip_lower_load(dst, (uint32_t *)((uintptr_t)param.memory()), reglo);
+		int skip_upper = can_skip_upper_load(dst, (uint32_t *)((uintptr_t)param.memory(4)), reghi);
+>>>>>>> upstream/master
 		if (reglo != REG_NONE && !skip_lower)
 			emit_mov_r32_m32(dst, reglo, MABS(param.memory()));                         // mov   reglo,[param]
 		if (reghi != REG_NONE && !skip_upper)
@@ -1696,7 +2125,11 @@ void drcbe_x86::emit_mov_m64_p64(x86code *&dst, x86_memref memref, const be_para
 	}
 	else if (param.is_memory())
 	{
+<<<<<<< HEAD
 		int skip_lower = can_skip_lower_load(dst, (UINT32 *)((FPTR)param.memory()), REG_EAX);
+=======
+		int skip_lower = can_skip_lower_load(dst, (uint32_t *)((uintptr_t)param.memory()), REG_EAX);
+>>>>>>> upstream/master
 		if (!skip_lower)
 			emit_mov_r32_m32(dst, REG_EAX, MABS(param.memory()));                           // mov   eax,[param]
 		emit_mov_m32_r32(dst, memref + 0, REG_EAX);                                 // mov   [mem],eax
@@ -1717,7 +2150,11 @@ void drcbe_x86::emit_mov_m64_p64(x86code *&dst, x86_memref memref, const be_para
 //  into a 64-bit parameter
 //-------------------------------------------------
 
+<<<<<<< HEAD
 void drcbe_x86::emit_mov_p64_r64(x86code *&dst, const be_parameter &param, UINT8 reglo, UINT8 reghi)
+=======
+void drcbe_x86::emit_mov_p64_r64(x86code *&dst, const be_parameter &param, uint8_t reglo, uint8_t reghi)
+>>>>>>> upstream/master
 {
 	assert(!param.is_immediate());
 	if (param.is_memory())
@@ -1741,7 +2178,11 @@ void drcbe_x86::emit_mov_p64_r64(x86code *&dst, const be_parameter &param, UINT8
 //  pair of registers from a 64-bit parameter
 //-------------------------------------------------
 
+<<<<<<< HEAD
 void drcbe_x86::emit_add_r64_p64(x86code *&dst, UINT8 reglo, UINT8 reghi, const be_parameter &param, const instruction &inst)
+=======
+void drcbe_x86::emit_add_r64_p64(x86code *&dst, uint8_t reglo, uint8_t reghi, const be_parameter &param, const instruction &inst)
+>>>>>>> upstream/master
 {
 	int saveflags = ((inst.flags() & FLAG_Z) != 0);
 	if (param.is_memory())
@@ -1799,7 +2240,11 @@ void drcbe_x86::emit_add_m64_p64(x86code *&dst, x86_memref memref, const be_para
 //  pair of registers from a 64-bit parameter
 //-------------------------------------------------
 
+<<<<<<< HEAD
 void drcbe_x86::emit_adc_r64_p64(x86code *&dst, UINT8 reglo, UINT8 reghi, const be_parameter &param, const instruction &inst)
+=======
+void drcbe_x86::emit_adc_r64_p64(x86code *&dst, uint8_t reglo, uint8_t reghi, const be_parameter &param, const instruction &inst)
+>>>>>>> upstream/master
 {
 	int saveflags = ((inst.flags() & FLAG_Z) != 0);
 	if (param.is_memory())
@@ -1857,7 +2302,11 @@ void drcbe_x86::emit_adc_m64_p64(x86code *&dst, x86_memref memref, const be_para
 //  pair of registers from a 64-bit parameter
 //-------------------------------------------------
 
+<<<<<<< HEAD
 void drcbe_x86::emit_sub_r64_p64(x86code *&dst, UINT8 reglo, UINT8 reghi, const be_parameter &param, const instruction &inst)
+=======
+void drcbe_x86::emit_sub_r64_p64(x86code *&dst, uint8_t reglo, uint8_t reghi, const be_parameter &param, const instruction &inst)
+>>>>>>> upstream/master
 {
 	int saveflags = ((inst.flags() & FLAG_Z) != 0);
 	if (param.is_memory())
@@ -1915,7 +2364,11 @@ void drcbe_x86::emit_sub_m64_p64(x86code *&dst, x86_memref memref, const be_para
 //  pair of registers from a 64-bit parameter
 //-------------------------------------------------
 
+<<<<<<< HEAD
 void drcbe_x86::emit_sbb_r64_p64(x86code *&dst, UINT8 reglo, UINT8 reghi, const be_parameter &param, const instruction &inst)
+=======
+void drcbe_x86::emit_sbb_r64_p64(x86code *&dst, uint8_t reglo, uint8_t reghi, const be_parameter &param, const instruction &inst)
+>>>>>>> upstream/master
 {
 	int saveflags = ((inst.flags() & FLAG_Z) != 0);
 	if (param.is_memory())
@@ -1973,7 +2426,11 @@ void drcbe_x86::emit_sbb_m64_p64(x86code *&dst, x86_memref memref, const be_para
 //  pair of registers from a 64-bit parameter
 //-------------------------------------------------
 
+<<<<<<< HEAD
 void drcbe_x86::emit_cmp_r64_p64(x86code *&dst, UINT8 reglo, UINT8 reghi, const be_parameter &param, const instruction &inst)
+=======
+void drcbe_x86::emit_cmp_r64_p64(x86code *&dst, uint8_t reglo, uint8_t reghi, const be_parameter &param, const instruction &inst)
+>>>>>>> upstream/master
 {
 	int saveflags = (inst.flags() != FLAG_Z && (inst.flags() & FLAG_Z) != 0);
 	if (param.is_memory())
@@ -2006,7 +2463,11 @@ void drcbe_x86::emit_cmp_r64_p64(x86code *&dst, UINT8 reglo, UINT8 reghi, const 
 //  pair of registers from a 64-bit parameter
 //-------------------------------------------------
 
+<<<<<<< HEAD
 void drcbe_x86::emit_and_r64_p64(x86code *&dst, UINT8 reglo, UINT8 reghi, const be_parameter &param, const instruction &inst)
+=======
+void drcbe_x86::emit_and_r64_p64(x86code *&dst, uint8_t reglo, uint8_t reghi, const be_parameter &param, const instruction &inst)
+>>>>>>> upstream/master
 {
 	int saveflags = ((inst.flags() & FLAG_Z) != 0);
 	if (param.is_memory())
@@ -2017,16 +2478,28 @@ void drcbe_x86::emit_and_r64_p64(x86code *&dst, UINT8 reglo, UINT8 reghi, const 
 	}
 	else if (param.is_immediate())
 	{
+<<<<<<< HEAD
 		if (inst.flags() == 0 && (UINT32)param.immediate() == 0xffffffff)
 			;// skip
 		else if (inst.flags() == 0 && (UINT32)param.immediate() == 0)
+=======
+		if (inst.flags() == 0 && (uint32_t)param.immediate() == 0xffffffff)
+			;// skip
+		else if (inst.flags() == 0 && (uint32_t)param.immediate() == 0)
+>>>>>>> upstream/master
 			emit_xor_r32_r32(dst, reglo, reglo);                                        // xor   reglo,reglo
 		else
 			emit_and_r32_imm(dst, reglo, param.immediate());                                    // and   reglo,param
 		if (saveflags) emit_pushf(dst);                                                 // pushf
+<<<<<<< HEAD
 		if (inst.flags() == 0 && (UINT32)(param.immediate() >> 32) == 0xffffffff)
 			;// skip
 		else if (inst.flags() == 0 && (UINT32)(param.immediate() >> 32) == 0)
+=======
+		if (inst.flags() == 0 && (uint32_t)(param.immediate() >> 32) == 0xffffffff)
+			;// skip
+		else if (inst.flags() == 0 && (uint32_t)(param.immediate() >> 32) == 0)
+>>>>>>> upstream/master
 			emit_xor_r32_r32(dst, reghi, reghi);                                        // xor   reghi,reghi
 		else
 			emit_and_r32_imm(dst, reghi, param.immediate() >> 32);                          // and   reghi,param >> 32
@@ -2052,16 +2525,28 @@ void drcbe_x86::emit_and_m64_p64(x86code *&dst, x86_memref memref, const be_para
 	int saveflags = ((inst.flags() & FLAG_Z) != 0);
 	if (param.is_immediate())
 	{
+<<<<<<< HEAD
 		if (inst.flags() == 0 && (UINT32)param.immediate() == 0xffffffff)
 			;// skip
 		else if (inst.flags() == 0 && (UINT32)param.immediate() == 0)
+=======
+		if (inst.flags() == 0 && (uint32_t)param.immediate() == 0xffffffff)
+			;// skip
+		else if (inst.flags() == 0 && (uint32_t)param.immediate() == 0)
+>>>>>>> upstream/master
 			emit_mov_m32_imm(dst, memref, 0);                                       // mov   [dest],0
 		else
 			emit_and_m32_imm(dst, memref, param.immediate());                               // and   [dest],param
 		if (saveflags) emit_pushf(dst);                                                 // pushf
+<<<<<<< HEAD
 		if (inst.flags() == 0 && (UINT32)(param.immediate() >> 32) == 0xffffffff)
 			;// skip
 		else if (inst.flags() == 0 && (UINT32)(param.immediate() >> 32) == 0)
+=======
+		if (inst.flags() == 0 && (uint32_t)(param.immediate() >> 32) == 0xffffffff)
+			;// skip
+		else if (inst.flags() == 0 && (uint32_t)(param.immediate() >> 32) == 0)
+>>>>>>> upstream/master
 			emit_mov_m32_imm(dst, memref + 4, 0);                                   // mov   [dest+4],0
 		else
 			emit_and_m32_imm(dst, memref + 4, param.immediate() >> 32);                 // and   [dest+4],param >> 32
@@ -2084,7 +2569,11 @@ void drcbe_x86::emit_and_m64_p64(x86code *&dst, x86_memref memref, const be_para
 //  pair of registers from a 64-bit parameter
 //-------------------------------------------------
 
+<<<<<<< HEAD
 void drcbe_x86::emit_test_r64_p64(x86code *&dst, UINT8 reglo, UINT8 reghi, const be_parameter &param, const instruction &inst)
+=======
+void drcbe_x86::emit_test_r64_p64(x86code *&dst, uint8_t reglo, uint8_t reghi, const be_parameter &param, const instruction &inst)
+>>>>>>> upstream/master
 {
 	int saveflags = ((inst.flags() & FLAG_Z) != 0);
 	if (param.is_memory())
@@ -2142,7 +2631,11 @@ void drcbe_x86::emit_test_m64_p64(x86code *&dst, x86_memref memref, const be_par
 //  pair of registers from a 64-bit parameter
 //-------------------------------------------------
 
+<<<<<<< HEAD
 void drcbe_x86::emit_or_r64_p64(x86code *&dst, UINT8 reglo, UINT8 reghi, const be_parameter &param, const instruction &inst)
+=======
+void drcbe_x86::emit_or_r64_p64(x86code *&dst, uint8_t reglo, uint8_t reghi, const be_parameter &param, const instruction &inst)
+>>>>>>> upstream/master
 {
 	int saveflags = ((inst.flags() & FLAG_Z) != 0);
 	if (param.is_memory())
@@ -2153,16 +2646,28 @@ void drcbe_x86::emit_or_r64_p64(x86code *&dst, UINT8 reglo, UINT8 reghi, const b
 	}
 	else if (param.is_immediate())
 	{
+<<<<<<< HEAD
 		if (inst.flags() == 0 && (UINT32)param.immediate() == 0)
 			;// skip
 		else if (inst.flags() == 0 && (UINT32)param.immediate() == 0xffffffff)
+=======
+		if (inst.flags() == 0 && (uint32_t)param.immediate() == 0)
+			;// skip
+		else if (inst.flags() == 0 && (uint32_t)param.immediate() == 0xffffffff)
+>>>>>>> upstream/master
 			emit_mov_r32_imm(dst, reglo, ~0);                                           // mov   reglo,-1
 		else
 			emit_or_r32_imm(dst, reglo, param.immediate());                                 // or    reglo,param
 		if (saveflags) emit_pushf(dst);                                                 // pushf
+<<<<<<< HEAD
 		if (inst.flags() == 0 && (UINT32)(param.immediate() >> 32) == 0)
 			;// skip
 		else if (inst.flags() == 0 && (UINT32)(param.immediate() >> 32) == 0xffffffff)
+=======
+		if (inst.flags() == 0 && (uint32_t)(param.immediate() >> 32) == 0)
+			;// skip
+		else if (inst.flags() == 0 && (uint32_t)(param.immediate() >> 32) == 0xffffffff)
+>>>>>>> upstream/master
 			emit_mov_r32_imm(dst, reghi, ~0);                                           // mov   reghi,-1
 		else
 			emit_or_r32_imm(dst, reghi, param.immediate() >> 32);                           // or    reghi,param >> 32
@@ -2188,16 +2693,28 @@ void drcbe_x86::emit_or_m64_p64(x86code *&dst, x86_memref memref, const be_param
 	int saveflags = ((inst.flags() & FLAG_Z) != 0);
 	if (param.is_immediate())
 	{
+<<<<<<< HEAD
 		if (inst.flags() == 0 && (UINT32)param.immediate() == 0)
 			;// skip
 		else if (inst.flags() == 0 && (UINT32)param.immediate() == 0xffffffff)
+=======
+		if (inst.flags() == 0 && (uint32_t)param.immediate() == 0)
+			;// skip
+		else if (inst.flags() == 0 && (uint32_t)param.immediate() == 0xffffffff)
+>>>>>>> upstream/master
 			emit_mov_m32_imm(dst, memref, ~0);                                      // mov   [dest],-1
 		else
 			emit_or_m32_imm(dst, memref, param.immediate());                                // or    [dest],param
 		if (saveflags) emit_pushf(dst);                                                 // pushf
+<<<<<<< HEAD
 		if (inst.flags() == 0 && (UINT32)(param.immediate() >> 32) == 0)
 			;// skip
 		else if (inst.flags() == 0 && (UINT32)(param.immediate() >> 32) == 0xffffffff)
+=======
+		if (inst.flags() == 0 && (uint32_t)(param.immediate() >> 32) == 0)
+			;// skip
+		else if (inst.flags() == 0 && (uint32_t)(param.immediate() >> 32) == 0xffffffff)
+>>>>>>> upstream/master
 			emit_mov_m32_imm(dst, memref + 4, ~0);                                  // mov   [dest+4],-1
 		else
 			emit_or_m32_imm(dst, memref + 4, param.immediate() >> 32);                  // or    [dest+4],param >> 32
@@ -2220,7 +2737,11 @@ void drcbe_x86::emit_or_m64_p64(x86code *&dst, x86_memref memref, const be_param
 //  pair of registers from a 64-bit parameter
 //-------------------------------------------------
 
+<<<<<<< HEAD
 void drcbe_x86::emit_xor_r64_p64(x86code *&dst, UINT8 reglo, UINT8 reghi, const be_parameter &param, const instruction &inst)
+=======
+void drcbe_x86::emit_xor_r64_p64(x86code *&dst, uint8_t reglo, uint8_t reghi, const be_parameter &param, const instruction &inst)
+>>>>>>> upstream/master
 {
 	int saveflags = ((inst.flags() & FLAG_Z) != 0);
 	if (param.is_memory())
@@ -2231,16 +2752,28 @@ void drcbe_x86::emit_xor_r64_p64(x86code *&dst, UINT8 reglo, UINT8 reghi, const 
 	}
 	else if (param.is_immediate())
 	{
+<<<<<<< HEAD
 		if (inst.flags() == 0 && (UINT32)param.immediate() == 0)
 			;// skip
 		else if (inst.flags() == 0 && (UINT32)param.immediate() == 0xffffffff)
+=======
+		if (inst.flags() == 0 && (uint32_t)param.immediate() == 0)
+			;// skip
+		else if (inst.flags() == 0 && (uint32_t)param.immediate() == 0xffffffff)
+>>>>>>> upstream/master
 			emit_not_r32(dst, reglo);                                                   // not   reglo
 		else
 			emit_xor_r32_imm(dst, reglo, param.immediate());                                    // xor   reglo,param
 		if (saveflags) emit_pushf(dst);                                                 // pushf
+<<<<<<< HEAD
 		if (inst.flags() == 0 && (UINT32)(param.immediate() >> 32) == 0)
 			;// skip
 		else if (inst.flags() == 0 && (UINT32)(param.immediate() >> 32) == 0xffffffff)
+=======
+		if (inst.flags() == 0 && (uint32_t)(param.immediate() >> 32) == 0)
+			;// skip
+		else if (inst.flags() == 0 && (uint32_t)(param.immediate() >> 32) == 0xffffffff)
+>>>>>>> upstream/master
 			emit_not_r32(dst, reghi);                                                   // not   reghi
 		else
 			emit_xor_r32_imm(dst, reghi, param.immediate() >> 32);                          // xor   reghi,param >> 32
@@ -2266,16 +2799,28 @@ void drcbe_x86::emit_xor_m64_p64(x86code *&dst, x86_memref memref, const be_para
 	int saveflags = ((inst.flags() & FLAG_Z) != 0);
 	if (param.is_immediate())
 	{
+<<<<<<< HEAD
 		if (inst.flags() == 0 && (UINT32)param.immediate() == 0)
 			;// skip
 		else if (inst.flags() == 0 && (UINT32)param.immediate() == 0xffffffff)
+=======
+		if (inst.flags() == 0 && (uint32_t)param.immediate() == 0)
+			;// skip
+		else if (inst.flags() == 0 && (uint32_t)param.immediate() == 0xffffffff)
+>>>>>>> upstream/master
 			emit_not_m32(dst, memref);                                              // not   [dest]
 		else
 			emit_xor_m32_imm(dst, memref, param.immediate());                               // xor   [dest],param
 		if (saveflags) emit_pushf(dst);                                                 // pushf
+<<<<<<< HEAD
 		if (inst.flags() == 0 && (UINT32)(param.immediate() >> 32) == 0)
 			;// skip
 		else if (inst.flags() == 0 && (UINT32)(param.immediate() >> 32) == 0xffffffff)
+=======
+		if (inst.flags() == 0 && (uint32_t)(param.immediate() >> 32) == 0)
+			;// skip
+		else if (inst.flags() == 0 && (uint32_t)(param.immediate() >> 32) == 0xffffffff)
+>>>>>>> upstream/master
 			emit_not_m32(dst, memref + 4);                                          // not   [dest+4]
 		else
 			emit_xor_m32_imm(dst, memref + 4, param.immediate() >> 32);                 // xor   [dest+4],param >> 32
@@ -2298,7 +2843,11 @@ void drcbe_x86::emit_xor_m64_p64(x86code *&dst, x86_memref memref, const be_para
 //  pair of registers from a 64-bit parameter
 //-------------------------------------------------
 
+<<<<<<< HEAD
 void drcbe_x86::emit_shl_r64_p64(x86code *&dst, UINT8 reglo, UINT8 reghi, const be_parameter &param, const instruction &inst)
+=======
+void drcbe_x86::emit_shl_r64_p64(x86code *&dst, uint8_t reglo, uint8_t reghi, const be_parameter &param, const instruction &inst)
+>>>>>>> upstream/master
 {
 	int saveflags = (inst.flags() != 0);
 	if (param.is_immediate())
@@ -2369,7 +2918,11 @@ void drcbe_x86::emit_shl_r64_p64(x86code *&dst, UINT8 reglo, UINT8 reghi, const 
 //  pair of registers from a 64-bit parameter
 //-------------------------------------------------
 
+<<<<<<< HEAD
 void drcbe_x86::emit_shr_r64_p64(x86code *&dst, UINT8 reglo, UINT8 reghi, const be_parameter &param, const instruction &inst)
+=======
+void drcbe_x86::emit_shr_r64_p64(x86code *&dst, uint8_t reglo, uint8_t reghi, const be_parameter &param, const instruction &inst)
+>>>>>>> upstream/master
 {
 	int saveflags = ((inst.flags() & FLAG_Z) != 0);
 	if (param.is_immediate())
@@ -2440,7 +2993,11 @@ void drcbe_x86::emit_shr_r64_p64(x86code *&dst, UINT8 reglo, UINT8 reghi, const 
 //  pair of registers from a 64-bit parameter
 //-------------------------------------------------
 
+<<<<<<< HEAD
 void drcbe_x86::emit_sar_r64_p64(x86code *&dst, UINT8 reglo, UINT8 reghi, const be_parameter &param, const instruction &inst)
+=======
+void drcbe_x86::emit_sar_r64_p64(x86code *&dst, uint8_t reglo, uint8_t reghi, const be_parameter &param, const instruction &inst)
+>>>>>>> upstream/master
 {
 	int saveflags = ((inst.flags() & FLAG_Z) != 0);
 	if (param.is_immediate())
@@ -2511,7 +3068,11 @@ void drcbe_x86::emit_sar_r64_p64(x86code *&dst, UINT8 reglo, UINT8 reghi, const 
 //  pair of registers from a 64-bit parameter
 //-------------------------------------------------
 
+<<<<<<< HEAD
 void drcbe_x86::emit_rol_r64_p64(x86code *&dst, UINT8 reglo, UINT8 reghi, const be_parameter &param, const instruction &inst)
+=======
+void drcbe_x86::emit_rol_r64_p64(x86code *&dst, uint8_t reglo, uint8_t reghi, const be_parameter &param, const instruction &inst)
+>>>>>>> upstream/master
 {
 	int saveflags = ((inst.flags() & FLAG_Z) != 0);
 	if (param.is_immediate())
@@ -2586,7 +3147,11 @@ void drcbe_x86::emit_rol_r64_p64(x86code *&dst, UINT8 reglo, UINT8 reghi, const 
 //  pair of registers from a 64-bit parameter
 //-------------------------------------------------
 
+<<<<<<< HEAD
 void drcbe_x86::emit_ror_r64_p64(x86code *&dst, UINT8 reglo, UINT8 reghi, const be_parameter &param, const instruction &inst)
+=======
+void drcbe_x86::emit_ror_r64_p64(x86code *&dst, uint8_t reglo, uint8_t reghi, const be_parameter &param, const instruction &inst)
+>>>>>>> upstream/master
 {
 	int saveflags = ((inst.flags() & FLAG_Z) != 0);
 	if (param.is_immediate())
@@ -2661,7 +3226,11 @@ void drcbe_x86::emit_ror_r64_p64(x86code *&dst, UINT8 reglo, UINT8 reghi, const 
 //  pair of registers from a 64-bit parameter
 //-------------------------------------------------
 
+<<<<<<< HEAD
 void drcbe_x86::emit_rcl_r64_p64(x86code *&dst, UINT8 reglo, UINT8 reghi, const be_parameter &param, const instruction &inst)
+=======
+void drcbe_x86::emit_rcl_r64_p64(x86code *&dst, uint8_t reglo, uint8_t reghi, const be_parameter &param, const instruction &inst)
+>>>>>>> upstream/master
 {
 	int saveflags = ((inst.flags() & FLAG_Z) != 0);
 	emit_link skipall, skiploop;
@@ -2703,7 +3272,11 @@ void drcbe_x86::emit_rcl_r64_p64(x86code *&dst, UINT8 reglo, UINT8 reghi, const 
 //  pair of registers from a 64-bit parameter
 //-------------------------------------------------
 
+<<<<<<< HEAD
 void drcbe_x86::emit_rcr_r64_p64(x86code *&dst, UINT8 reglo, UINT8 reghi, const be_parameter &param, const instruction &inst)
+=======
+void drcbe_x86::emit_rcr_r64_p64(x86code *&dst, uint8_t reglo, uint8_t reghi, const be_parameter &param, const instruction &inst)
+>>>>>>> upstream/master
 {
 	int saveflags = (inst.flags() != 0);
 	emit_link skipall, skiploop;
@@ -2800,12 +3373,20 @@ void drcbe_x86::fixup_label(void *parameter, drccodeptr labelcodeptr)
 	else if (src[0] == 0xe9)
 	{
 		src += 1 + 4;
+<<<<<<< HEAD
 		((UINT32 *)src)[-1] = labelcodeptr - src;
+=======
+		((uint32_t *)src)[-1] = labelcodeptr - src;
+>>>>>>> upstream/master
 	}
 	else if (src[0] == 0x0f && (src[1] & 0xf0) == 0x80)
 	{
 		src += 2 + 4;
+<<<<<<< HEAD
 		((UINT32 *)src)[-1] = labelcodeptr - src;
+=======
+		((uint32_t *)src)[-1] = labelcodeptr - src;
+>>>>>>> upstream/master
 	}
 	else
 		fatalerror("fixup_label called with invalid jmp source!\n");
@@ -2832,14 +3413,23 @@ void drcbe_x86::fixup_exception(drccodeptr *codeptr, void *param1, void *param2)
 
 	// first fixup the jump to get us here
 	drccodeptr dst = *codeptr;
+<<<<<<< HEAD
 	((UINT32 *)src)[-1] = dst - src;
+=======
+	((uint32_t *)src)[-1] = dst - src;
+>>>>>>> upstream/master
 
 	// then store the exception parameter
 	emit_mov_m32_p32(dst, MABS(&m_state.exp), exp);                     // mov   [exp],exp
 
 	// push the original return address on the stack
+<<<<<<< HEAD
 	emit_push_imm(dst, (FPTR)src);                                                      // push  <return>
 	if (*targetptr != NULL)
+=======
+	emit_push_imm(dst, (uintptr_t)src);                                                      // push  <return>
+	if (*targetptr != nullptr)
+>>>>>>> upstream/master
 		emit_jmp(dst, *targetptr);                                                      // jmp   *targetptr
 	else
 		emit_jmp_m32(dst, MABS(targetptr));                                         // jmp   [targetptr]
@@ -2995,12 +3585,20 @@ void drcbe_x86::op_debug(x86code *&dst, const instruction &inst)
 
 		// test and branch
 		emit_test_m32_imm(dst, MABS(&m_device.machine().debug_flags), DEBUG_FLAG_CALL_HOOK);        // test  [debug_flags],DEBUG_FLAG_CALL_HOOK
+<<<<<<< HEAD
 		emit_link skip = { 0 };
+=======
+		emit_link skip = { nullptr };
+>>>>>>> upstream/master
 		emit_jcc_short_link(dst, x86emit::COND_Z, skip);                                        // jz    skip
 
 		// push the parameter
 		emit_mov_m32_p32(dst, MBD(REG_ESP, 4), pcp);                            // mov   [esp+4],pcp
+<<<<<<< HEAD
 		emit_mov_m32_imm(dst, MBD(REG_ESP, 0), (FPTR)&m_device);                    // mov   [esp],device
+=======
+		emit_mov_m32_imm(dst, MBD(REG_ESP, 0), (uintptr_t)&m_device);                    // mov   [esp],device
+>>>>>>> upstream/master
 		emit_call(dst, (x86code *)debugger_instruction_hook);                           // call  debug_cpu_instruction_hook
 
 		track_resolve_link(dst, skip);                                              // skip:
@@ -3064,8 +3662,13 @@ void drcbe_x86::op_hashjmp(x86code *&dst, const instruction &inst)
 		// a straight immediate jump is direct, though we need the PC in EAX in case of failure
 		if (pcp.is_immediate())
 		{
+<<<<<<< HEAD
 			UINT32 l1val = (pcp.immediate() >> m_hash.l1shift()) & m_hash.l1mask();
 			UINT32 l2val = (pcp.immediate() >> m_hash.l2shift()) & m_hash.l2mask();
+=======
+			uint32_t l1val = (pcp.immediate() >> m_hash.l1shift()) & m_hash.l1mask();
+			uint32_t l2val = (pcp.immediate() >> m_hash.l2shift()) & m_hash.l2mask();
+>>>>>>> upstream/master
 			emit_call_m32(dst, MABS(&m_hash.base()[modep.immediate()][l1val][l2val]));  // call  hash[modep][l1val][l2val]
 		}
 
@@ -3091,8 +3694,13 @@ void drcbe_x86::op_hashjmp(x86code *&dst, const instruction &inst)
 		// fixed PC
 		if (pcp.is_immediate())
 		{
+<<<<<<< HEAD
 			UINT32 l1val = (pcp.immediate() >> m_hash.l1shift()) & m_hash.l1mask();
 			UINT32 l2val = (pcp.immediate() >> m_hash.l2shift()) & m_hash.l2mask();
+=======
+			uint32_t l1val = (pcp.immediate() >> m_hash.l1shift()) & m_hash.l1mask();
+			uint32_t l2val = (pcp.immediate() >> m_hash.l2shift()) & m_hash.l2mask();
+>>>>>>> upstream/master
 			emit_mov_r32_m32(dst, REG_EDX, MBD(REG_ECX, l1val*4));                      // mov   edx,[ecx+l1val*4]
 			emit_call_m32(dst, MBD(REG_EDX, l2val*4));                                  // call  [l2val*4]
 		}
@@ -3163,7 +3771,11 @@ void drcbe_x86::op_exh(x86code *&dst, const instruction &inst)
 	if (inst.condition() == uml::COND_ALWAYS)
 	{
 		emit_mov_m32_p32(dst, MABS(&m_state.exp), exp);                 // mov   [exp],exp
+<<<<<<< HEAD
 		if (*targetptr != NULL)
+=======
+		if (*targetptr != nullptr)
+>>>>>>> upstream/master
 			emit_call(dst, *targetptr);                                             // call  *targetptr
 		else
 			emit_call_m32(dst, MABS(targetptr));                                        // call  [targetptr]
@@ -3172,7 +3784,11 @@ void drcbe_x86::op_exh(x86code *&dst, const instruction &inst)
 	// otherwise, jump to an out-of-band handler
 	else
 	{
+<<<<<<< HEAD
 		emit_jcc(dst, X86_CONDITION(inst.condition()), 0);                              // jcc   exception
+=======
+		emit_jcc(dst, X86_CONDITION(inst.condition()), nullptr);                              // jcc   exception
+>>>>>>> upstream/master
 		m_cache.request_oob_codegen(m_fixup_exception, dst, &const_cast<instruction &>(inst));
 	}
 }
@@ -3197,12 +3813,20 @@ void drcbe_x86::op_callh(x86code *&dst, const instruction &inst)
 	drccodeptr *targetptr = handp.handle().codeptr_addr();
 
 	// skip if conditional
+<<<<<<< HEAD
 	emit_link skip = { 0 };
+=======
+	emit_link skip = { nullptr };
+>>>>>>> upstream/master
 	if (inst.condition() != uml::COND_ALWAYS)
 		emit_jcc_short_link(dst, X86_NOT_CONDITION(inst.condition()), skip);            // jcc   skip
 
 	// jump through the handle; directly if a normal jump
+<<<<<<< HEAD
 	if (*targetptr != NULL)
+=======
+	if (*targetptr != nullptr)
+>>>>>>> upstream/master
 		emit_call(dst, *targetptr);                                                 // call  *targetptr
 	else
 		emit_call_m32(dst, MABS(targetptr));                                            // call  [targetptr]
@@ -3226,7 +3850,11 @@ void drcbe_x86::op_ret(x86code *&dst, const instruction &inst)
 	assert(inst.numparams() == 0);
 
 	// skip if conditional
+<<<<<<< HEAD
 	emit_link skip = { 0 };
+=======
+	emit_link skip = { nullptr };
+>>>>>>> upstream/master
 	if (inst.condition() != uml::COND_ALWAYS)
 		emit_jcc_short_link(dst, X86_NOT_CONDITION(inst.condition()), skip);            // jcc   skip
 
@@ -3257,13 +3885,22 @@ void drcbe_x86::op_callc(x86code *&dst, const instruction &inst)
 	be_parameter paramp(*this, inst.param(1), PTYPE_M);
 
 	// skip if conditional
+<<<<<<< HEAD
 	emit_link skip = { 0 };
+=======
+	emit_link skip = { nullptr };
+>>>>>>> upstream/master
 	if (inst.condition() != uml::COND_ALWAYS)
 		emit_jcc_short_link(dst, X86_NOT_CONDITION(inst.condition()), skip);            // jcc   skip
 
 	// perform the call
+<<<<<<< HEAD
 	emit_mov_m32_imm(dst, MBD(REG_ESP, 0), (FPTR)paramp.memory());                          // mov   [esp],paramp
 	emit_call(dst, (x86code *)(FPTR)funcp.cfunc());                                     // call  funcp
+=======
+	emit_mov_m32_imm(dst, MBD(REG_ESP, 0), (uintptr_t)paramp.memory());                          // mov   [esp],paramp
+	emit_call(dst, (x86code *)(uintptr_t)funcp.cfunc());                                     // call  funcp
+>>>>>>> upstream/master
 
 	// resolve the conditional link
 	if (inst.condition() != uml::COND_ALWAYS)
@@ -3291,7 +3928,11 @@ void drcbe_x86::op_recover(x86code *&dst, const instruction &inst)
 	emit_sub_r32_imm(dst, REG_EAX, 1);                                                  // sub   eax,1
 	emit_mov_m32_imm(dst, MBD(REG_ESP, 8), inst.param(1).mapvar());                     // mov   [esp+8],param1
 	emit_mov_m32_r32(dst, MBD(REG_ESP, 4), REG_EAX);                                    // mov   [esp+4],eax
+<<<<<<< HEAD
 	emit_mov_m32_imm(dst, MBD(REG_ESP, 0), (FPTR)&m_map);                           // mov   [esp],m_map
+=======
+	emit_mov_m32_imm(dst, MBD(REG_ESP, 0), (uintptr_t)&m_map);                           // mov   [esp],m_map
+>>>>>>> upstream/master
 	emit_call(dst, (x86code *)&drc_map_variables::static_get_value);                    // call  drcmap_get_value
 	emit_mov_p32_r32(dst, dstp, REG_EAX);                                       // mov   dstp,eax
 }
@@ -3404,7 +4045,11 @@ void drcbe_x86::op_getflgs(x86code *&dst, const instruction &inst)
 	int dstreg = dstp.select_register(REG_EAX);
 
 	// compute mask for flags
+<<<<<<< HEAD
 	UINT32 flagmask = 0;
+=======
+	uint32_t flagmask = 0;
+>>>>>>> upstream/master
 	if (maskp.immediate() & FLAG_C) flagmask |= 0x001;
 	if (maskp.immediate() & FLAG_V) flagmask |= 0x800;
 	if (maskp.immediate() & FLAG_Z) flagmask |= 0x040;
@@ -3536,7 +4181,11 @@ void drcbe_x86::op_save(x86code *&dst, const instruction &inst)
 	be_parameter dstp(*this, inst.param(0), PTYPE_M);
 
 	// copy live state to the destination
+<<<<<<< HEAD
 	emit_mov_r32_imm(dst, REG_ECX, (FPTR)dstp.memory());                                        // mov    ecx,dstp
+=======
+	emit_mov_r32_imm(dst, REG_ECX, (uintptr_t)dstp.memory());                                        // mov    ecx,dstp
+>>>>>>> upstream/master
 	emit_call(dst, m_save);                                                     // call   save
 }
 
@@ -3555,7 +4204,11 @@ void drcbe_x86::op_restore(x86code *&dst, const instruction &inst)
 	be_parameter srcp(*this, inst.param(0), PTYPE_M);
 
 	// copy live state from the destination
+<<<<<<< HEAD
 	emit_mov_r32_imm(dst, REG_ECX, (FPTR)srcp.memory());                                        // mov    ecx,dstp
+=======
+	emit_mov_r32_imm(dst, REG_ECX, (uintptr_t)srcp.memory());                                        // mov    ecx,dstp
+>>>>>>> upstream/master
 	emit_call(dst, m_restore);                                                  // call   restore
 }
 
@@ -3858,7 +4511,11 @@ void drcbe_x86::op_read(x86code *&dst, const instruction &inst)
 
 	// set up a call to the read byte handler
 	emit_mov_m32_p32(dst, MBD(REG_ESP, 4), addrp);                              // mov    [esp+4],addrp
+<<<<<<< HEAD
 	emit_mov_m32_imm(dst, MBD(REG_ESP, 0), (FPTR)m_space[spacesizep.space()]);  // mov    [esp],space
+=======
+	emit_mov_m32_imm(dst, MBD(REG_ESP, 0), (uintptr_t)m_space[spacesizep.space()]);  // mov    [esp],space
+>>>>>>> upstream/master
 	if (spacesizep.size() == SIZE_BYTE)
 	{
 		emit_call(dst, (x86code *)m_accessors[spacesizep.space()].read_byte);
@@ -3938,7 +4595,11 @@ void drcbe_x86::op_readm(x86code *&dst, const instruction &inst)
 	else
 		emit_mov_m64_p64(dst, MBD(REG_ESP, 8), maskp);                          // mov    [esp+8],maskp
 	emit_mov_m32_p32(dst, MBD(REG_ESP, 4), addrp);                              // mov    [esp+4],addrp
+<<<<<<< HEAD
 	emit_mov_m32_imm(dst, MBD(REG_ESP, 0), (FPTR)m_space[spacesizep.space()]);  // mov    [esp],space
+=======
+	emit_mov_m32_imm(dst, MBD(REG_ESP, 0), (uintptr_t)m_space[spacesizep.space()]);  // mov    [esp],space
+>>>>>>> upstream/master
 	if (spacesizep.size() == SIZE_WORD)
 	{
 		emit_call(dst, (x86code *)m_accessors[spacesizep.space()].read_word_masked);
@@ -4008,7 +4669,11 @@ void drcbe_x86::op_write(x86code *&dst, const instruction &inst)
 	else
 		emit_mov_m64_p64(dst, MBD(REG_ESP, 8), srcp);                           // mov    [esp+8],srcp
 	emit_mov_m32_p32(dst, MBD(REG_ESP, 4), addrp);                              // mov    [esp+4],addrp
+<<<<<<< HEAD
 	emit_mov_m32_imm(dst, MBD(REG_ESP, 0), (FPTR)m_space[spacesizep.space()]);  // mov    [esp],space
+=======
+	emit_mov_m32_imm(dst, MBD(REG_ESP, 0), (uintptr_t)m_space[spacesizep.space()]);  // mov    [esp],space
+>>>>>>> upstream/master
 	if (spacesizep.size() == SIZE_BYTE)
 		emit_call(dst, (x86code *)m_accessors[spacesizep.space()].write_byte);
 																						// call   write_byte
@@ -4054,7 +4719,11 @@ void drcbe_x86::op_writem(x86code *&dst, const instruction &inst)
 		emit_mov_m64_p64(dst, MBD(REG_ESP, 8), srcp);                           // mov    [esp+8],srcp
 	}
 	emit_mov_m32_p32(dst, MBD(REG_ESP, 4), addrp);                              // mov    [esp+4],addrp
+<<<<<<< HEAD
 	emit_mov_m32_imm(dst, MBD(REG_ESP, 0), (FPTR)m_space[spacesizep.space()]);  // mov    [esp],space
+=======
+	emit_mov_m32_imm(dst, MBD(REG_ESP, 0), (uintptr_t)m_space[spacesizep.space()]);  // mov    [esp],space
+>>>>>>> upstream/master
 	if (spacesizep.size() == SIZE_WORD)
 		emit_call(dst, (x86code *)m_accessors[spacesizep.space()].write_word_masked);
 																						// call   write_word_masked
@@ -4085,7 +4754,11 @@ void drcbe_x86::op_carry(x86code *&dst, const instruction &inst)
 	// degenerate case: source is immediate
 	if (srcp.is_immediate() && bitp.is_immediate())
 	{
+<<<<<<< HEAD
 		if (srcp.immediate() & ((UINT64)1 << bitp.immediate()))
+=======
+		if (srcp.immediate() & ((uint64_t)1 << bitp.immediate()))
+>>>>>>> upstream/master
 			emit_stc(dst);
 		else
 			emit_clc(dst);
@@ -4200,7 +4873,11 @@ void drcbe_x86::op_mov(x86code *&dst, const instruction &inst)
 	int dstreg = dstp.select_register(REG_EAX);
 
 	// always start with a jmp
+<<<<<<< HEAD
 	emit_link skip = { 0 };
+=======
+	emit_link skip = { nullptr };
+>>>>>>> upstream/master
 	if (inst.condition() != uml::COND_ALWAYS)
 		emit_jcc_short_link(dst, X86_NOT_CONDITION(inst.condition()), skip);            // jcc   skip
 
@@ -4219,7 +4896,11 @@ void drcbe_x86::op_mov(x86code *&dst, const instruction &inst)
 		else if (inst.condition() != uml::COND_ALWAYS && dstp.is_int_register() && srcp.is_memory())
 		{
 			dst = savedst;
+<<<<<<< HEAD
 			skip.target = NULL;
+=======
+			skip.target = nullptr;
+>>>>>>> upstream/master
 			emit_cmovcc_r32_m32(dst, X86_CONDITION(inst.condition()), dstp.ireg(), MABS(srcp.memory()));
 																						// cmovcc dstp,[srcp]
 		}
@@ -4228,7 +4909,11 @@ void drcbe_x86::op_mov(x86code *&dst, const instruction &inst)
 		else if (inst.condition() != uml::COND_ALWAYS && dstp.is_int_register() && srcp.is_int_register())
 		{
 			dst = savedst;
+<<<<<<< HEAD
 			skip.target = NULL;
+=======
+			skip.target = nullptr;
+>>>>>>> upstream/master
 			emit_cmovcc_r32_r32(dst, X86_CONDITION(inst.condition()), dstp.ireg(), srcp.ireg());
 																						// cmovcc dstp,srcp
 		}
@@ -4268,7 +4953,11 @@ void drcbe_x86::op_mov(x86code *&dst, const instruction &inst)
 	}
 
 	// resolve the jump
+<<<<<<< HEAD
 	if (skip.target != NULL)
+=======
+	if (skip.target != nullptr)
+>>>>>>> upstream/master
 		track_resolve_link(dst, skip);
 }
 
@@ -4757,8 +5446,13 @@ void drcbe_x86::op_cmp(x86code *&dst, const instruction &inst)
 
 void drcbe_x86::op_mulu(x86code *&dst, const instruction &inst)
 {
+<<<<<<< HEAD
 	UINT8 zsflags = inst.flags() & (FLAG_Z | FLAG_S);
 	UINT8 vflag = inst.flags() & FLAG_V;
+=======
+	uint8_t zsflags = inst.flags() & (FLAG_Z | FLAG_S);
+	uint8_t vflag = inst.flags() & FLAG_V;
+>>>>>>> upstream/master
 
 	// validate instruction
 	assert(inst.size() == 4 || inst.size() == 8);
@@ -4836,6 +5530,7 @@ void drcbe_x86::op_mulu(x86code *&dst, const instruction &inst)
 		emit_mov_m64_p64(dst, MBD(REG_ESP, 16), src2p);                     // mov   [esp+16],src2p
 		emit_mov_m64_p64(dst, MBD(REG_ESP, 8), src1p);                          // mov   [esp+8],src1p
 		if (!compute_hi)
+<<<<<<< HEAD
 			emit_mov_m32_imm(dst, MBD(REG_ESP, 4), (FPTR)&m_reslo);             // mov   [esp+4],&reslo
 		else
 			emit_mov_m32_imm(dst, MBD(REG_ESP, 4), (FPTR)&m_reshi);             // mov   [esp+4],&reshi
@@ -4850,6 +5545,22 @@ void drcbe_x86::op_mulu(x86code *&dst, const instruction &inst)
 		{
 			emit_mov_r32_m32(dst, REG_EAX, MABS((UINT32 *)&m_reshi + 0));           // mov   eax,reshi.lo
 			emit_mov_r32_m32(dst, REG_ECX, MABS((UINT32 *)&m_reshi + 1));           // mov   ecx,reshi.hi
+=======
+			emit_mov_m32_imm(dst, MBD(REG_ESP, 4), (uintptr_t)&m_reslo);             // mov   [esp+4],&reslo
+		else
+			emit_mov_m32_imm(dst, MBD(REG_ESP, 4), (uintptr_t)&m_reshi);             // mov   [esp+4],&reshi
+		emit_mov_m32_imm(dst, MBD(REG_ESP, 0), (uintptr_t)&m_reslo);                 // mov   [esp],&reslo
+		emit_call(dst, (x86code *)dmulu);                                               // call  dmulu
+		if (inst.flags() != 0)
+			emit_push_m32(dst, MABSI(flags_unmap, REG_EAX, 4));                         // push   flags_unmap[eax*4]
+		emit_mov_r32_m32(dst, REG_EAX, MABS((uint32_t *)&m_reslo + 0));               // mov   eax,reslo.lo
+		emit_mov_r32_m32(dst, REG_EDX, MABS((uint32_t *)&m_reslo + 1));               // mov   edx,reslo.hi
+		emit_mov_p64_r64(dst, dstp, REG_EAX, REG_EDX);                          // mov   dstp,edx:eax
+		if (compute_hi)
+		{
+			emit_mov_r32_m32(dst, REG_EAX, MABS((uint32_t *)&m_reshi + 0));           // mov   eax,reshi.lo
+			emit_mov_r32_m32(dst, REG_ECX, MABS((uint32_t *)&m_reshi + 1));           // mov   ecx,reshi.hi
+>>>>>>> upstream/master
 			emit_mov_p64_r64(dst, edstp, REG_EAX, REG_ECX);                 // mov   edstp,ecx:eax
 		}
 		if (inst.flags() != 0)
@@ -4864,8 +5575,13 @@ void drcbe_x86::op_mulu(x86code *&dst, const instruction &inst)
 
 void drcbe_x86::op_muls(x86code *&dst, const instruction &inst)
 {
+<<<<<<< HEAD
 	UINT8 zsflags = inst.flags() & (FLAG_Z | FLAG_S);
 	UINT8 vflag =  inst.flags() & FLAG_V;
+=======
+	uint8_t zsflags = inst.flags() & (FLAG_Z | FLAG_S);
+	uint8_t vflag =  inst.flags() & FLAG_V;
+>>>>>>> upstream/master
 
 	// validate instruction
 	assert(inst.size() == 4 || inst.size() == 8);
@@ -4966,6 +5682,7 @@ void drcbe_x86::op_muls(x86code *&dst, const instruction &inst)
 		emit_mov_m64_p64(dst, MBD(REG_ESP, 16), src2p);                     // mov   [esp+16],src2p
 		emit_mov_m64_p64(dst, MBD(REG_ESP, 8), src1p);                          // mov   [esp+8],src1p
 		if (!compute_hi)
+<<<<<<< HEAD
 			emit_mov_m32_imm(dst, MBD(REG_ESP, 4), (FPTR)&m_reslo);             // mov   [esp+4],&reslo
 		else
 			emit_mov_m32_imm(dst, MBD(REG_ESP, 4), (FPTR)&m_reshi);             // push  [esp+4],&reshi
@@ -4980,6 +5697,22 @@ void drcbe_x86::op_muls(x86code *&dst, const instruction &inst)
 		{
 			emit_mov_r32_m32(dst, REG_EAX, MABS((UINT32 *)&m_reshi + 0));           // mov   eax,reshi.lo
 			emit_mov_r32_m32(dst, REG_EDX, MABS((UINT32 *)&m_reshi + 1));           // mov   edx,reshi.hi
+=======
+			emit_mov_m32_imm(dst, MBD(REG_ESP, 4), (uintptr_t)&m_reslo);             // mov   [esp+4],&reslo
+		else
+			emit_mov_m32_imm(dst, MBD(REG_ESP, 4), (uintptr_t)&m_reshi);             // push  [esp+4],&reshi
+		emit_mov_m32_imm(dst, MBD(REG_ESP, 0), (uintptr_t)&m_reslo);                 // mov   [esp],&reslo
+		emit_call(dst, (x86code *)dmuls);                                               // call  dmuls
+		if (inst.flags() != 0)
+			emit_push_m32(dst, MABSI(flags_unmap, REG_EAX, 4));                         // push   flags_unmap[eax*4]
+		emit_mov_r32_m32(dst, REG_EAX, MABS((uint32_t *)&m_reslo + 0));               // mov   eax,reslo.lo
+		emit_mov_r32_m32(dst, REG_EDX, MABS((uint32_t *)&m_reslo + 1));               // mov   edx,reslo.hi
+		emit_mov_p64_r64(dst, dstp, REG_EAX, REG_EDX);                          // mov   dstp,edx:eax
+		if (compute_hi)
+		{
+			emit_mov_r32_m32(dst, REG_EAX, MABS((uint32_t *)&m_reshi + 0));           // mov   eax,reshi.lo
+			emit_mov_r32_m32(dst, REG_EDX, MABS((uint32_t *)&m_reshi + 1));           // mov   edx,reshi.hi
+>>>>>>> upstream/master
 			emit_mov_p64_r64(dst, edstp, REG_EAX, REG_EDX);                 // mov   edstp,edx:eax
 		}
 		if (inst.flags() != 0)
@@ -5036,6 +5769,7 @@ void drcbe_x86::op_divu(x86code *&dst, const instruction &inst)
 		emit_mov_m64_p64(dst, MBD(REG_ESP, 16), src2p);                     // mov   [esp+16],src2p
 		emit_mov_m64_p64(dst, MBD(REG_ESP, 8), src1p);                          // mov   [esp+8],src1p
 		if (!compute_rem)
+<<<<<<< HEAD
 			emit_mov_m32_imm(dst, MBD(REG_ESP, 4), (FPTR)&m_reslo);             // mov   [esp+4],&reslo
 		else
 			emit_mov_m32_imm(dst, MBD(REG_ESP, 4), (FPTR)&m_reshi);             // push  [esp+4],&reshi
@@ -5050,6 +5784,22 @@ void drcbe_x86::op_divu(x86code *&dst, const instruction &inst)
 		{
 			emit_mov_r32_m32(dst, REG_EAX, MABS((UINT32 *)&m_reshi + 0));           // mov   eax,reshi.lo
 			emit_mov_r32_m32(dst, REG_EDX, MABS((UINT32 *)&m_reshi + 1));           // mov   edx,reshi.hi
+=======
+			emit_mov_m32_imm(dst, MBD(REG_ESP, 4), (uintptr_t)&m_reslo);             // mov   [esp+4],&reslo
+		else
+			emit_mov_m32_imm(dst, MBD(REG_ESP, 4), (uintptr_t)&m_reshi);             // push  [esp+4],&reshi
+		emit_mov_m32_imm(dst, MBD(REG_ESP, 0), (uintptr_t)&m_reslo);                 // mov   [esp],&reslo
+		emit_call(dst, (x86code *)ddivu);                                               // call  ddivu
+		if (inst.flags() != 0)
+			emit_push_m32(dst, MABSI(flags_unmap, REG_EAX, 4));                         // push   flags_unmap[eax*4]
+		emit_mov_r32_m32(dst, REG_EAX, MABS((uint32_t *)&m_reslo + 0));               // mov   eax,reslo.lo
+		emit_mov_r32_m32(dst, REG_EDX, MABS((uint32_t *)&m_reslo + 1));               // mov   edx,reslo.hi
+		emit_mov_p64_r64(dst, dstp, REG_EAX, REG_EDX);                          // mov   dstp,edx:eax
+		if (compute_rem)
+		{
+			emit_mov_r32_m32(dst, REG_EAX, MABS((uint32_t *)&m_reshi + 0));           // mov   eax,reshi.lo
+			emit_mov_r32_m32(dst, REG_EDX, MABS((uint32_t *)&m_reshi + 1));           // mov   edx,reshi.hi
+>>>>>>> upstream/master
 			emit_mov_p64_r64(dst, edstp, REG_EAX, REG_EDX);                 // mov   edstp,edx:eax
 		}
 		if (inst.flags() != 0)
@@ -5106,6 +5856,7 @@ void drcbe_x86::op_divs(x86code *&dst, const instruction &inst)
 		emit_mov_m64_p64(dst, MBD(REG_ESP, 16), src2p);                     // mov   [esp+16],src2p
 		emit_mov_m64_p64(dst, MBD(REG_ESP, 8), src1p);                          // mov   [esp+8],src1p
 		if (!compute_rem)
+<<<<<<< HEAD
 			emit_mov_m32_imm(dst, MBD(REG_ESP, 4), (FPTR)&m_reslo);             // mov   [esp+4],&reslo
 		else
 			emit_mov_m32_imm(dst, MBD(REG_ESP, 4), (FPTR)&m_reshi);             // push  [esp+4],&reshi
@@ -5120,6 +5871,22 @@ void drcbe_x86::op_divs(x86code *&dst, const instruction &inst)
 		{
 			emit_mov_r32_m32(dst, REG_EAX, MABS((UINT32 *)&m_reshi + 0));           // mov   eax,reshi.lo
 			emit_mov_r32_m32(dst, REG_EDX, MABS((UINT32 *)&m_reshi + 1));           // mov   edx,reshi.hi
+=======
+			emit_mov_m32_imm(dst, MBD(REG_ESP, 4), (uintptr_t)&m_reslo);             // mov   [esp+4],&reslo
+		else
+			emit_mov_m32_imm(dst, MBD(REG_ESP, 4), (uintptr_t)&m_reshi);             // push  [esp+4],&reshi
+		emit_mov_m32_imm(dst, MBD(REG_ESP, 0), (uintptr_t)&m_reslo);                 // mov   [esp],&reslo
+		emit_call(dst, (x86code *)ddivs);                                               // call  ddivs
+		if (inst.flags() != 0)
+			emit_push_m32(dst, MABSI(flags_unmap, REG_EAX, 4));                         // push   flags_unmap[eax*4]
+		emit_mov_r32_m32(dst, REG_EAX, MABS((uint32_t *)&m_reslo + 0));               // mov   eax,reslo.lo
+		emit_mov_r32_m32(dst, REG_EDX, MABS((uint32_t *)&m_reslo + 1));               // mov   edx,reslo.hi
+		emit_mov_p64_r64(dst, dstp, REG_EAX, REG_EDX);                          // mov   dstp,edx:eax
+		if (compute_rem)
+		{
+			emit_mov_r32_m32(dst, REG_EAX, MABS((uint32_t *)&m_reshi + 0));           // mov   eax,reshi.lo
+			emit_mov_r32_m32(dst, REG_EDX, MABS((uint32_t *)&m_reshi + 1));           // mov   edx,reshi.hi
+>>>>>>> upstream/master
 			emit_mov_p64_r64(dst, edstp, REG_EAX, REG_EDX);                 // mov   edstp,edx:eax
 		}
 		if (inst.flags() != 0)
@@ -5231,7 +5998,11 @@ void drcbe_x86::op_and(x86code *&dst, const instruction &inst)
 		}
 
 		// AND with immediate 0xffffffff00000000
+<<<<<<< HEAD
 		else if (src2p.is_immediate_value(U64(0xffffffff00000000)) && inst.flags() == 0)
+=======
+		else if (src2p.is_immediate_value(0xffffffff00000000U) && inst.flags() == 0)
+>>>>>>> upstream/master
 		{
 			if (src1p != dstp)
 			{
@@ -5475,6 +6246,54 @@ void drcbe_x86::op_lzcnt(x86code *&dst, const instruction &inst)
 
 
 //-------------------------------------------------
+<<<<<<< HEAD
+=======
+//  op_tzcnt - process a TZCNT opcode
+//-------------------------------------------------
+
+void drcbe_x86::op_tzcnt(x86code *&dst, const instruction &inst)
+{
+	// validate instruction
+	assert(inst.size() == 4 || inst.size() == 8);
+	assert_no_condition(inst);
+	assert_flags(inst, FLAG_Z | FLAG_S);
+
+	// normalize parameters
+	be_parameter dstp(*this, inst.param(0), PTYPE_MR);
+	be_parameter srcp(*this, inst.param(1), PTYPE_MRI);
+
+	int dstreg = dstp.select_register(REG_EAX);
+
+	// 32-bit form
+	if (inst.size() == 4)
+	{
+		emit_mov_r32_p32(dst, dstreg, srcp);                                            // mov   dstreg,src1p
+		emit_mov_r32_imm(dst, REG_ECX, 32);                                             // mov   ecx,32
+		emit_bsf_r32_r32(dst, dstreg, dstreg);                                          // bsf   dstreg,dstreg
+		emit_cmovcc_r32_r32(dst, x86emit::COND_Z, dstreg, REG_ECX);                     // cmovz dstreg,ecx
+		emit_mov_p32_r32(dst, dstp, dstreg);                                            // mov   dstp,dstreg
+	}
+
+	// 64-bit form
+	else if (inst.size() == 8)
+	{
+		emit_link skip;
+		emit_mov_r64_p64(dst, REG_EDX, dstreg, srcp);                                   // mov   dstreg:edx,srcp
+		emit_bsf_r32_r32(dst, dstreg, dstreg);                                          // bsf   dstreg,dstreg
+		emit_jcc_short_link(dst, x86emit::COND_NZ, skip);                               // jnz   skip
+		emit_mov_r32_imm(dst, REG_ECX, 32);                                             // mov   ecx,32
+		emit_bsf_r32_r32(dst, dstreg, REG_EDX);                                         // bsf   dstreg,edx
+		emit_cmovcc_r32_r32(dst, x86emit::COND_Z, dstreg, REG_ECX);                     // cmovz dstreg,ecx
+		emit_add_r32_imm(dst, dstreg, 32);                                              // add   dstreg,32
+		track_resolve_link(dst, skip);                                                  // skip:
+		emit_xor_r32_r32(dst, REG_EDX, REG_EDX);                                        // xor   edx,edx
+		emit_mov_p64_r64(dst, dstp, dstreg, REG_EDX);                                   // mov   dstp,edx:dstreg
+	}
+}
+
+
+//-------------------------------------------------
+>>>>>>> upstream/master
 //  op_bswap - process a BSWAP opcode
 //-------------------------------------------------
 
@@ -5954,7 +6773,11 @@ void drcbe_x86::op_fread(x86code *&dst, const instruction &inst)
 
 	// set up a call to the read dword/qword handler
 	emit_mov_m32_p32(dst, MBD(REG_ESP, 4), addrp);                              // mov    [esp+4],addrp
+<<<<<<< HEAD
 	emit_mov_m32_imm(dst, MBD(REG_ESP, 0), (FPTR)m_space[spacep.space()]);      // mov    [esp],space
+=======
+	emit_mov_m32_imm(dst, MBD(REG_ESP, 0), (uintptr_t)m_space[spacep.space()]);      // mov    [esp],space
+>>>>>>> upstream/master
 	if (inst.size() == 4)
 		emit_call(dst, (x86code *)m_accessors[spacep.space()].read_dword);  // call   read_dword
 	else if (inst.size() == 8)
@@ -5992,7 +6815,11 @@ void drcbe_x86::op_fwrite(x86code *&dst, const instruction &inst)
 	else if (inst.size() == 8)
 		emit_mov_m64_p64(dst, MBD(REG_ESP, 8), srcp);                           // mov    [esp+8],srcp
 	emit_mov_m32_p32(dst, MBD(REG_ESP, 4), addrp);                              // mov    [esp+4],addrp
+<<<<<<< HEAD
 	emit_mov_m32_imm(dst, MBD(REG_ESP, 0), (FPTR)m_space[spacep.space()]);      // mov    [esp],space
+=======
+	emit_mov_m32_imm(dst, MBD(REG_ESP, 0), (uintptr_t)m_space[spacep.space()]);      // mov    [esp],space
+>>>>>>> upstream/master
 	if (inst.size() == 4)
 		emit_call(dst, (x86code *)m_accessors[spacep.space()].write_dword); // call   write_dword
 	else if (inst.size() == 8)
@@ -6016,7 +6843,11 @@ void drcbe_x86::op_fmov(x86code *&dst, const instruction &inst)
 	be_parameter srcp(*this, inst.param(1), PTYPE_MF);
 
 	// always start with a jmp
+<<<<<<< HEAD
 	emit_link skip = { 0 };
+=======
+	emit_link skip = { nullptr };
+>>>>>>> upstream/master
 	if (inst.condition() != uml::COND_ALWAYS)
 		emit_jcc_short_link(dst, X86_NOT_CONDITION(inst.condition()), skip);            // jcc   skip
 
@@ -6029,7 +6860,11 @@ void drcbe_x86::op_fmov(x86code *&dst, const instruction &inst)
 		emit_mov_m32_r32(dst, MABS(dstp.memory(4)), REG_EDX);                           // mov   [dstp + 4],edx
 
 	// resolve the jump
+<<<<<<< HEAD
 	if (skip.target != NULL)
+=======
+	if (skip.target != nullptr)
+>>>>>>> upstream/master
 		track_resolve_link(dst, skip);                                              // skip:
 }
 
@@ -6149,7 +6984,11 @@ void drcbe_x86::op_ffrint(x86code *&dst, const instruction &inst)
 		if (srcp.is_immediate())
 		{
 			emit_mov_m32_imm(dst, MABS(&m_fptemp), srcp.immediate());                   // mov   [fptemp],srcp
+<<<<<<< HEAD
 			emit_mov_m32_imm(dst, MABS((UINT8 *)&m_fptemp + 4), srcp.immediate());      // mov   [fptemp+4],srcp
+=======
+			emit_mov_m32_imm(dst, MABS((uint8_t *)&m_fptemp + 4), srcp.immediate());      // mov   [fptemp+4],srcp
+>>>>>>> upstream/master
 			emit_fild_m64(dst, MABS(&m_fptemp));                                    // fild  [fptemp]
 		}
 		else if (srcp.is_memory())
@@ -6450,6 +7289,108 @@ void drcbe_x86::op_frsqrt(x86code *&dst, const instruction &inst)
 }
 
 
+<<<<<<< HEAD
+=======
+//-------------------------------------------------
+//  op_fcopyi - process a FCOPYI opcode
+//-------------------------------------------------
+
+void drcbe_x86::op_fcopyi(x86code *&dst, const instruction &inst)
+{
+	// validate instruction
+	assert(inst.size() == 4 || inst.size() == 8);
+	assert_no_condition(inst);
+	assert_no_flags(inst);
+
+	// normalize parameters
+	be_parameter dstp(*this, inst.param(0), PTYPE_MF);
+	be_parameter srcp(*this, inst.param(1), PTYPE_MR);
+
+	// 32-bit case
+	if (inst.size() == 4)
+	{
+		if (srcp.is_memory())
+		{
+			emit_mov_r32_m32(dst, REG_EAX, MABS(srcp.memory()));                            // mov eax,[srcp]
+			emit_mov_m32_r32(dst, MABS(dstp.memory()), REG_EAX);                            // mov [dstp],eax
+		}
+		else if (srcp.is_int_register())
+		{
+			emit_mov_m32_r32(dst, MABS(dstp.memory()), srcp.ireg());                        // mov [dstp],srcp
+		}
+	}
+
+	// 64-bit case
+	else if (inst.size() == 8)
+	{
+		if (srcp.is_memory())
+		{
+			emit_mov_r32_m32(dst, REG_EAX, MABS(srcp.memory()));                            // mov eax,[srcp]
+			emit_mov_r32_m32(dst, REG_EDX, MABS(srcp.memory(4)));                       // mov edx,[srcp+4]
+		}
+		else if (srcp.is_int_register())
+		{
+			emit_mov_r32_m32(dst, REG_EDX, MABS(m_reghi[srcp.ireg()]));                 // mov edx,[reghi[srcp]]
+			emit_mov_r32_r32(dst, REG_EAX, srcp.ireg());                                    // mov eax,srcp
+		}
+
+		emit_mov_m32_r32(dst, MABS(dstp.memory()), REG_EAX);                                // mov [dstp],eax
+		emit_mov_m32_r32(dst, MABS(dstp.memory(4)), REG_EDX);                           // mov [dstp+4],edx
+	}
+}
+
+
+//-------------------------------------------------
+//  op_icopyf - process a ICOPYF opcode
+//-------------------------------------------------
+
+void drcbe_x86::op_icopyf(x86code *&dst, const instruction &inst)
+{
+	// validate instruction
+	assert(inst.size() == 4 || inst.size() == 8);
+	assert_no_condition(inst);
+	assert_no_flags(inst);
+
+	// normalize parameters
+	be_parameter dstp(*this, inst.param(0), PTYPE_MR);
+	be_parameter srcp(*this, inst.param(1), PTYPE_MF);
+
+	// 32-bit case
+	if (inst.size() == 4)
+	{
+		emit_mov_r32_m32(dst, REG_EAX, MABS(srcp.memory()));                                // mov eax,[srcp]
+
+		if (dstp.is_memory())
+		{
+			emit_mov_m32_r32(dst, MABS(dstp.memory()), REG_EAX);                            // mov [dstp],eax
+		}
+		else if (dstp.is_int_register())
+		{
+			emit_mov_r32_r32(dst, dstp.ireg(), REG_EAX);                                    // mov dstp,eax
+		}
+	}
+
+	// 64-bit case
+	else if (inst.size() == 8)
+	{
+		emit_mov_r32_m32(dst, REG_EAX, MABS(srcp.memory()));                                // mov eax,[srcp]
+		emit_mov_r32_m32(dst, REG_EDX, MABS(srcp.memory(4)));                           // mov edx,[srcp+4]
+
+		if (dstp.is_memory())
+		{
+			emit_mov_m32_r32(dst, MABS(dstp.memory()), REG_EAX);                            // mov [dstp],eax
+			emit_mov_m32_r32(dst, MABS(dstp.memory(4)), REG_EDX);                       // mov [dstp+4],edx
+		}
+		else
+		{
+			emit_mov_m32_r32(dst, MABS(m_reghi[dstp.ireg()]), REG_EDX);                 // mov [reghi[dstp]],edx
+			emit_mov_r32_r32(dst, dstp.ireg(), REG_EAX);                                    // mov dstp,eax
+		}
+	}
+}
+
+
+>>>>>>> upstream/master
 
 //**************************************************************************
 //  MISCELLAENOUS FUNCTIONS
@@ -6459,18 +7400,30 @@ void drcbe_x86::op_frsqrt(x86code *&dst, const instruction &inst)
 //  dmulu - perform a double-wide unsigned multiply
 //-------------------------------------------------
 
+<<<<<<< HEAD
 int drcbe_x86::dmulu(UINT64 &dstlo, UINT64 &dsthi, UINT64 src1, UINT64 src2, int flags)
 {
 	// shortcut if we don't care about the high bits or the flags
 	if (&dstlo == &dsthi && flags == 0)
+=======
+int drcbe_x86::dmulu(uint64_t &dstlo, uint64_t &dsthi, uint64_t src1, uint64_t src2, bool flags)
+{
+	// shortcut if we don't care about the high bits or the flags
+	if (&dstlo == &dsthi && flags == false)
+>>>>>>> upstream/master
 	{
 		dstlo = src1 * src2;
 		return 0;
 	}
 
 	// fetch source values
+<<<<<<< HEAD
 	UINT64 a = src1;
 	UINT64 b = src2;
+=======
+	uint64_t a = src1;
+	uint64_t b = src2;
+>>>>>>> upstream/master
 	if (a == 0 || b == 0)
 	{
 		dsthi = dstlo = 0;
@@ -6478,17 +7431,30 @@ int drcbe_x86::dmulu(UINT64 &dstlo, UINT64 &dsthi, UINT64 src1, UINT64 src2, int
 	}
 
 	// compute high and low parts first
+<<<<<<< HEAD
 	UINT64 lo = (UINT64)(UINT32)(a >> 0)  * (UINT64)(UINT32)(b >> 0);
 	UINT64 hi = (UINT64)(UINT32)(a >> 32) * (UINT64)(UINT32)(b >> 32);
 
 	// compute middle parts
 	UINT64 prevlo = lo;
 	UINT64 temp = (UINT64)(UINT32)(a >> 32)  * (UINT64)(UINT32)(b >> 0);
+=======
+	uint64_t lo = (uint64_t)(uint32_t)(a >> 0)  * (uint64_t)(uint32_t)(b >> 0);
+	uint64_t hi = (uint64_t)(uint32_t)(a >> 32) * (uint64_t)(uint32_t)(b >> 32);
+
+	// compute middle parts
+	uint64_t prevlo = lo;
+	uint64_t temp = (uint64_t)(uint32_t)(a >> 32)  * (uint64_t)(uint32_t)(b >> 0);
+>>>>>>> upstream/master
 	lo += temp << 32;
 	hi += (temp >> 32) + (lo < prevlo);
 
 	prevlo = lo;
+<<<<<<< HEAD
 	temp = (UINT64)(UINT32)(a >> 0)  * (UINT64)(UINT32)(b >> 32);
+=======
+	temp = (uint64_t)(uint32_t)(a >> 0)  * (uint64_t)(uint32_t)(b >> 32);
+>>>>>>> upstream/master
 	lo += temp << 32;
 	hi += (temp >> 32) + (lo < prevlo);
 
@@ -6503,6 +7469,7 @@ int drcbe_x86::dmulu(UINT64 &dstlo, UINT64 &dsthi, UINT64 src1, UINT64 src2, int
 //  dmuls - perform a double-wide signed multiply
 //-------------------------------------------------
 
+<<<<<<< HEAD
 int drcbe_x86::dmuls(UINT64 &dstlo, UINT64 &dsthi, INT64 src1, INT64 src2, int flags)
 {
 	UINT64 lo, hi, prevlo;
@@ -6510,14 +7477,28 @@ int drcbe_x86::dmuls(UINT64 &dstlo, UINT64 &dsthi, INT64 src1, INT64 src2, int f
 
 	// shortcut if we don't care about the high bits or the flags
 	if (&dstlo == &dsthi && flags == 0)
+=======
+int drcbe_x86::dmuls(uint64_t &dstlo, uint64_t &dsthi, int64_t src1, int64_t src2, bool flags)
+{
+	uint64_t lo, hi, prevlo;
+	uint64_t a, b, temp;
+
+	// shortcut if we don't care about the high bits or the flags
+	if (&dstlo == &dsthi && flags == false)
+>>>>>>> upstream/master
 	{
 		dstlo = src1 * src2;
 		return 0;
 	}
 
 	// fetch absolute source values
+<<<<<<< HEAD
 	a = src1; if ((INT64)a < 0) a = -a;
 	b = src2; if ((INT64)b < 0) b = -b;
+=======
+	a = src1; if ((int64_t)a < 0) a = -a;
+	b = src2; if ((int64_t)b < 0) b = -b;
+>>>>>>> upstream/master
 	if (a == 0 || b == 0)
 	{
 		dsthi = dstlo = 0;
@@ -6525,22 +7506,39 @@ int drcbe_x86::dmuls(UINT64 &dstlo, UINT64 &dsthi, INT64 src1, INT64 src2, int f
 	}
 
 	// compute high and low parts first
+<<<<<<< HEAD
 	lo = (UINT64)(UINT32)(a >> 0)  * (UINT64)(UINT32)(b >> 0);
 	hi = (UINT64)(UINT32)(a >> 32) * (UINT64)(UINT32)(b >> 32);
 
 	// compute middle parts
 	prevlo = lo;
 	temp = (UINT64)(UINT32)(a >> 32)  * (UINT64)(UINT32)(b >> 0);
+=======
+	lo = (uint64_t)(uint32_t)(a >> 0)  * (uint64_t)(uint32_t)(b >> 0);
+	hi = (uint64_t)(uint32_t)(a >> 32) * (uint64_t)(uint32_t)(b >> 32);
+
+	// compute middle parts
+	prevlo = lo;
+	temp = (uint64_t)(uint32_t)(a >> 32)  * (uint64_t)(uint32_t)(b >> 0);
+>>>>>>> upstream/master
 	lo += temp << 32;
 	hi += (temp >> 32) + (lo < prevlo);
 
 	prevlo = lo;
+<<<<<<< HEAD
 	temp = (UINT64)(UINT32)(a >> 0)  * (UINT64)(UINT32)(b >> 32);
+=======
+	temp = (uint64_t)(uint32_t)(a >> 0)  * (uint64_t)(uint32_t)(b >> 32);
+>>>>>>> upstream/master
 	lo += temp << 32;
 	hi += (temp >> 32) + (lo < prevlo);
 
 	// adjust for signage
+<<<<<<< HEAD
 	if ((INT64)(src1 ^ src2) < 0)
+=======
+	if ((int64_t)(src1 ^ src2) < 0)
+>>>>>>> upstream/master
 	{
 		hi = ~hi + (lo == 0);
 		lo = ~lo + 1;
@@ -6549,7 +7547,11 @@ int drcbe_x86::dmuls(UINT64 &dstlo, UINT64 &dsthi, INT64 src1, INT64 src2, int f
 	// store the results
 	dsthi = hi;
 	dstlo = lo;
+<<<<<<< HEAD
 	return ((hi >> 60) & FLAG_S) | ((dsthi != ((INT64)lo >> 63)) << 1);
+=======
+	return ((hi >> 60) & FLAG_S) | ((dsthi != ((int64_t)lo >> 63)) << 1);
+>>>>>>> upstream/master
 }
 
 
@@ -6557,7 +7559,11 @@ int drcbe_x86::dmuls(UINT64 &dstlo, UINT64 &dsthi, INT64 src1, INT64 src2, int f
 //  ddivu - perform a double-wide unsigned divide
 //-------------------------------------------------
 
+<<<<<<< HEAD
 int drcbe_x86::ddivu(UINT64 &dstlo, UINT64 &dsthi, UINT64 src1, UINT64 src2)
+=======
+int drcbe_x86::ddivu(uint64_t &dstlo, uint64_t &dsthi, uint64_t src1, uint64_t src2)
+>>>>>>> upstream/master
 {
 	// do nothing if src2 == 0
 	if (src2 == 0)
@@ -6575,7 +7581,11 @@ int drcbe_x86::ddivu(UINT64 &dstlo, UINT64 &dsthi, UINT64 src1, UINT64 src2)
 //  ddivs - perform a double-wide signed divide
 //-------------------------------------------------
 
+<<<<<<< HEAD
 int drcbe_x86::ddivs(UINT64 &dstlo, UINT64 &dsthi, INT64 src1, INT64 src2)
+=======
+int drcbe_x86::ddivs(uint64_t &dstlo, uint64_t &dsthi, int64_t src1, int64_t src2)
+>>>>>>> upstream/master
 {
 	// do nothing if src2 == 0
 	if (src2 == 0)
@@ -6587,3 +7597,8 @@ int drcbe_x86::ddivs(UINT64 &dstlo, UINT64 &dsthi, INT64 src1, INT64 src2)
 		dsthi = src1 % src2;
 	return ((dstlo == 0) << 2) | ((dstlo >> 60) & FLAG_S);
 }
+<<<<<<< HEAD
+=======
+
+} // namespace drc
+>>>>>>> upstream/master

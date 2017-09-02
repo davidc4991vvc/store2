@@ -5,6 +5,7 @@
 
 namespace NExtract {
   
+<<<<<<< HEAD
   namespace NPathMode
   {
     enum EEnum
@@ -26,6 +27,32 @@ namespace NExtract {
       kAutoRenameExisting
     };
   }
+=======
+namespace NPathMode
+{
+  enum EEnum
+  {
+    kFullPaths,
+    kCurPaths,
+    kNoPaths,
+    kAbsPaths,
+    kNoPathsAlt // alt streams must be extracted without name of base file
+  };
+}
+
+namespace NOverwriteMode
+{
+  enum EEnum
+  {
+    kAsk,
+    kOverwrite,
+    kSkip,
+    kRename,
+    kRenameExisting
+  };
+}
+
+>>>>>>> upstream/master
 }
 
 #endif

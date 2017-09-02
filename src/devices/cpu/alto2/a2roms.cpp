@@ -5,6 +5,10 @@
  *   Xerox AltoII PROM loading and decoding
  *
  *****************************************************************************/
+<<<<<<< HEAD
+=======
+#include "emu.h"
+>>>>>>> upstream/master
 #include "alto2cpu.h"
 #include "a2roms.h"
 
@@ -17,6 +21,7 @@
  * but first step is mapping 2-bit values
  * into sum of 2 1-bit values in sneaky way.
  */
+<<<<<<< HEAD
 static UINT32 ones_u32(UINT32 val)
 {
 		val -= ((val >> 1) & 0x55555555);
@@ -25,12 +30,26 @@ static UINT32 ones_u32(UINT32 val)
 		val += (val >> 8);
 		val += (val >> 16);
 		return (val & 0x0000003f);
+=======
+static uint32_t ones_u32(uint32_t val)
+{
+	val -= ((val >> 1) & 0x55555555);
+	val = (((val >> 2) & 0x33333333) + (val & 0x33333333));
+	val = (((val >> 4) + val) & 0x0f0f0f0f);
+	val += (val >> 8);
+	val += (val >> 16);
+	return val & 0x3f;
+>>>>>>> upstream/master
 }
 
 /**
  * @brief return the log2 of an integer value
  */
+<<<<<<< HEAD
 static UINT32 log2_u32(UINT32 val)
+=======
+static uint32_t log2_u32(uint32_t val)
+>>>>>>> upstream/master
 {
 	val |= (val >> 1);
 	val |= (val >> 2);
@@ -43,6 +62,7 @@ static UINT32 log2_u32(UINT32 val)
 /**
  * @brief map a number of data or address lines using a lookup table
  *
+<<<<<<< HEAD
  * @param map pointer to an array of values, or NULL for default
  * @param lines number of data or address lines
  * @param val value to map
@@ -54,6 +74,19 @@ static UINT32 map_lines(const UINT8 *map, int lines, UINT32 val)
 		return val;
 
 	UINT32 res = 0;
+=======
+ * @param map pointer to an array of values, or nullptr for default
+ * @param lines number of data or address lines
+ * @param val value to map
+ * @result returns the remapped value, or just val, if map was nullptr
+ */
+static uint32_t map_lines(const uint8_t *map, int lines, uint32_t val)
+{
+	if (nullptr == map)
+		return val;
+
+	uint32_t res = 0;
+>>>>>>> upstream/master
 	for (int i = 0; i < lines; i++)
 		if (val & (1 << i))
 			res |= 1 << map[i];
@@ -64,11 +97,16 @@ static UINT32 map_lines(const UINT8 *map, int lines, UINT32 val)
  * @brief write to a ROM base + address of type 'type', ANDing with and, ORing with or
  *
  * @param base ROM base address in memory
+<<<<<<< HEAD
  * @param type one of 1 for UINT8, 2 for UINT16, 4 for UINT32
+=======
+ * @param type one of 1 for uint8_t, 2 for uint16_t, 4 for uint32_t
+>>>>>>> upstream/master
  * @param addr address offset into base
  * @param dand value to AND to contents before XORing
  * @param dxor value to XOR before writing back
  */
+<<<<<<< HEAD
 static void write_type_and_xor(void *base, int type, UINT32 addr, UINT32 dand, UINT32 dxor)
 {
 	switch (type) {
@@ -87,6 +125,26 @@ static void write_type_and_xor(void *base, int type, UINT32 addr, UINT32 dand, U
 	case sizeof(UINT32):
 		{
 			UINT32 *base32 = reinterpret_cast<UINT32 *>(base);
+=======
+static void write_type_and_xor(void *base, int type, uint32_t addr, uint32_t dand, uint32_t dxor)
+{
+	switch (type) {
+	case sizeof(uint8_t):
+		{
+			uint8_t *base8 = reinterpret_cast<uint8_t *>(base);
+			base8[addr] = (base8[addr] & dand) ^ dxor;
+		}
+		break;
+	case sizeof(uint16_t):
+		{
+			uint16_t *base16 = reinterpret_cast<uint16_t *>(base);
+			base16[addr] = (base16[addr] & dand) ^ dxor;
+		}
+		break;
+	case sizeof(uint32_t):
+		{
+			uint32_t *base32 = reinterpret_cast<uint32_t *>(base);
+>>>>>>> upstream/master
 			base32[addr] = (base32[addr] & dand) ^ dxor;
 		}
 		break;
@@ -103,6 +161,7 @@ static void write_type_and_xor(void *base, int type, UINT32 addr, UINT32 dand, U
  * @param segments number of segments in one page of the result
  * @return pointer to the newly allocated memory filled with source bits
  */
+<<<<<<< HEAD
 UINT8* prom_load(running_machine& machine, const prom_load_t* prom, const UINT8* src, int pages, int segments)
 {
 	void* array = 0;
@@ -136,6 +195,41 @@ UINT8* prom_load(running_machine& machine, const prom_load_t* prom, const UINT8*
 				UINT32 dst_addr = map_lines(prom->amap, log2_u32(prom->size) + 1, src_addr);
 				// fetch data bits
 				UINT32 data = src[src_addr ^ prom->axor] ^ prom->dxor;
+=======
+uint8_t* prom_load(running_machine& machine, const prom_load_t* prom, const uint8_t* src, int pages, int segments)
+{
+	void* array = nullptr;
+	size_t type = prom->type;
+	size_t size = prom->size;
+#if DEBUG_PROM_LOAD
+	uint8_t width = prom->width;
+#endif
+
+	switch (type) {
+	case sizeof(uint8_t):
+		array = auto_alloc_array(machine, uint8_t, pages * size);
+		break;
+	case sizeof(uint16_t):
+		array = auto_alloc_array(machine, uint16_t, pages * size);
+		break;
+	case sizeof(uint32_t):
+		array = auto_alloc_array(machine, uint32_t, pages * size);
+		break;
+	}
+
+	uint8_t* base = reinterpret_cast<uint8_t*>(array);
+	for (int page = 0; page < pages; page++)
+	{
+		uint8_t* dst = base + (prom->type * prom->size * page);
+		for (int segment = 0; segment < segments; segment++, prom++)
+		{
+			for (uint32_t src_addr = 0; src_addr < prom->size; src_addr++)
+			{
+				// map destination address lines
+				uint32_t dst_addr = map_lines(prom->amap, log2_u32(prom->size) + 1, src_addr);
+				// fetch data bits
+				uint32_t data = src[src_addr ^ prom->axor] ^ prom->dxor;
+>>>>>>> upstream/master
 				// mask width bits
 				data = data & ((1 << prom->width) - 1);
 				// map destination data lines
@@ -151,9 +245,15 @@ UINT8* prom_load(running_machine& machine, const prom_load_t* prom, const UINT8*
 
 #if DEBUG_PROM_LOAD
 	switch (type) {
+<<<<<<< HEAD
 	case sizeof(UINT8):
 		{
 			UINT8* data = reinterpret_cast<UINT8*>(array);
+=======
+	case sizeof(uint8_t):
+		{
+			uint8_t* data = reinterpret_cast<uint8_t*>(array);
+>>>>>>> upstream/master
 			for (int addr = 0; addr < pages*size; addr++) {
 				if (0 == (addr % 16))
 					printf("%04x:", addr);
@@ -166,9 +266,15 @@ UINT8* prom_load(running_machine& machine, const prom_load_t* prom, const UINT8*
 			}
 		}
 		break;
+<<<<<<< HEAD
 	case sizeof(UINT16):
 		{
 			UINT16* data = reinterpret_cast<UINT16*>(array);
+=======
+	case sizeof(uint16_t):
+		{
+			uint16_t* data = reinterpret_cast<uint16_t*>(array);
+>>>>>>> upstream/master
 			for (int addr = 0; addr < pages*size; addr++) {
 				if (0 == (addr % 8))
 					printf("%04x:", addr);
@@ -178,9 +284,15 @@ UINT8* prom_load(running_machine& machine, const prom_load_t* prom, const UINT8*
 			}
 		}
 		break;
+<<<<<<< HEAD
 	case sizeof(UINT32):
 		{
 			UINT32* data = reinterpret_cast<UINT32*>(array);
+=======
+	case sizeof(uint32_t):
+		{
+			uint32_t* data = reinterpret_cast<uint32_t*>(array);
+>>>>>>> upstream/master
 			for (int addr = 0; addr < pages*size; addr++) {
 				if (0 == (addr % 4))
 					printf("%04x:", addr);
@@ -192,5 +304,9 @@ UINT8* prom_load(running_machine& machine, const prom_load_t* prom, const UINT8*
 		break;
 	}
 #endif
+<<<<<<< HEAD
 	return reinterpret_cast<UINT8 *>(array);
+=======
+	return reinterpret_cast<uint8_t *>(array);
+>>>>>>> upstream/master
 }

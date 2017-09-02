@@ -13,15 +13,33 @@ skeleton device
 
 
 
+<<<<<<< HEAD
+=======
+/* status flags */
+#define BSY 1<<7
+#define REQ 1<<6
+#define EXT 1<<5
+#define ERR 1<<4
+
+
+>>>>>>> upstream/master
 //**************************************************************************
 //  GLOBAL VARIABLES
 //**************************************************************************
 
 // device type definition
+<<<<<<< HEAD
 const device_type UPD7752 = &device_creator<upd7752_device>;
 
 /* TODO: unknown exact size */
 static ADDRESS_MAP_START( upd7752_ram, AS_0, 8, upd7752_device )
+=======
+DEFINE_DEVICE_TYPE(UPD7752, upd7752_device, "upd7752", "NEC uPD7752")
+
+
+/* TODO: unknown exact size */
+static ADDRESS_MAP_START( upd7752_ram, 0, 8, upd7752_device )
+>>>>>>> upstream/master
 //  AM_RANGE(0x0000, 0x7fff) AM_ROM
 	AM_RANGE(0x0000, 0xffff) AM_RAM
 ADDRESS_MAP_END
@@ -34,8 +52,13 @@ ADDRESS_MAP_END
 //  upd7752_device - constructor
 //-------------------------------------------------
 
+<<<<<<< HEAD
 upd7752_device::upd7752_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
 	: device_t(mconfig, UPD7752, "uPD7752", tag, owner, clock, "upd7752", __FILE__),
+=======
+upd7752_device::upd7752_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: device_t(mconfig, UPD7752, tag, owner, clock),
+>>>>>>> upstream/master
 		device_sound_interface(mconfig, *this),
 		device_memory_interface(mconfig, *this), m_stream(nullptr),
 		m_space_config("ram", ENDIANNESS_LITTLE, 8, 16, 0, nullptr, *ADDRESS_MAP_NAME(upd7752_ram)), m_status(0), m_ram_addr(0), m_mode(0)
@@ -48,9 +71,17 @@ upd7752_device::upd7752_device(const machine_config &mconfig, const char *tag, d
 //  any address spaces owned by this device
 //-------------------------------------------------
 
+<<<<<<< HEAD
 const address_space_config *upd7752_device::memory_space_config(address_spacenum spacenum) const
 {
 	return (spacenum == AS_0) ? &m_space_config : NULL;
+=======
+device_memory_interface::space_config_vector upd7752_device::memory_space_config() const
+{
+	return space_config_vector {
+		std::make_pair(0, &m_space_config)
+	};
+>>>>>>> upstream/master
 }
 
 
@@ -96,7 +127,11 @@ void upd7752_device::sound_stream_update(sound_stream &stream, stream_sample_t *
 //  INLINE HELPERS
 //**************************************************************************
 
+<<<<<<< HEAD
 inline UINT8 upd7752_device::readbyte(offs_t address)
+=======
+inline uint8_t upd7752_device::readbyte(offs_t address)
+>>>>>>> upstream/master
 {
 	return space().read_byte(address);
 }
@@ -105,7 +140,11 @@ inline UINT8 upd7752_device::readbyte(offs_t address)
 //  writebyte - write a byte at the given address
 //-------------------------------------------------
 
+<<<<<<< HEAD
 inline void upd7752_device::writebyte(offs_t address, UINT8 data)
+=======
+inline void upd7752_device::writebyte(offs_t address, uint8_t data)
+>>>>>>> upstream/master
 {
 	space().write_byte(address, data);
 }
@@ -114,7 +153,11 @@ inline void upd7752_device::writebyte(offs_t address, UINT8 data)
 //  READ/WRITE HANDLERS
 //**************************************************************************
 
+<<<<<<< HEAD
 void upd7752_device::status_change(UINT8 flag,bool type)
+=======
+void upd7752_device::status_change(uint8_t flag,bool type)
+>>>>>>> upstream/master
 {
 	if(type == true)
 		m_status |= flag;

@@ -2,6 +2,10 @@
  * jcapistd.c
  *
  * Copyright (C) 1994-1996, Thomas G. Lane.
+<<<<<<< HEAD
+=======
+ * Modified 2013 by Guido Vollbeding.
+>>>>>>> upstream/master
  * This file is part of the Independent JPEG Group's software.
  * For conditions of distribution and use, see the accompanying README file.
  *
@@ -145,7 +149,11 @@ jpeg_write_raw_data (j_compress_ptr cinfo, JSAMPIMAGE data,
     (*cinfo->master->pass_startup) (cinfo);
 
   /* Verify that at least one iMCU row has been passed. */
+<<<<<<< HEAD
   lines_per_iMCU_row = cinfo->max_v_samp_factor * DCTSIZE;
+=======
+  lines_per_iMCU_row = cinfo->max_v_samp_factor * cinfo->min_DCT_v_scaled_size;
+>>>>>>> upstream/master
   if (num_lines < lines_per_iMCU_row)
     ERREXIT(cinfo, JERR_BUFFER_SIZE);
 

@@ -45,17 +45,29 @@ enum
 //-------------------------------------------------
 
 emu_timer::emu_timer()
+<<<<<<< HEAD
 	: m_machine(NULL),
 		m_next(NULL),
 		m_prev(NULL),
 		m_param(0),
 		m_ptr(NULL),
+=======
+	: m_machine(nullptr),
+		m_next(nullptr),
+		m_prev(nullptr),
+		m_param(0),
+		m_ptr(nullptr),
+>>>>>>> upstream/master
 		m_enabled(false),
 		m_temporary(false),
 		m_period(attotime::zero),
 		m_start(attotime::zero),
 		m_expire(attotime::never),
+<<<<<<< HEAD
 		m_device(NULL),
+=======
+		m_device(nullptr),
+>>>>>>> upstream/master
 		m_id(0)
 {
 }
@@ -79,8 +91,13 @@ emu_timer &emu_timer::init(running_machine &machine, timer_expired_delegate call
 {
 	// ensure the entire timer state is clean
 	m_machine = &machine;
+<<<<<<< HEAD
 	m_next = NULL;
 	m_prev = NULL;
+=======
+	m_next = nullptr;
+	m_prev = nullptr;
+>>>>>>> upstream/master
 	m_callback = callback;
 	m_param = 0;
 	m_ptr = ptr;
@@ -89,7 +106,11 @@ emu_timer &emu_timer::init(running_machine &machine, timer_expired_delegate call
 	m_period = attotime::never;
 	m_start = machine.time();
 	m_expire = attotime::never;
+<<<<<<< HEAD
 	m_device = NULL;
+=======
+	m_device = nullptr;
+>>>>>>> upstream/master
 	m_id = 0;
 
 	// if we're not temporary, register ourselves with the save state system
@@ -111,8 +132,13 @@ emu_timer &emu_timer::init(device_t &device, device_timer_id id, void *ptr, bool
 {
 	// ensure the entire timer state is clean
 	m_machine = &device.machine();
+<<<<<<< HEAD
 	m_next = NULL;
 	m_prev = NULL;
+=======
+	m_next = nullptr;
+	m_prev = nullptr;
+>>>>>>> upstream/master
 	m_callback = timer_expired_delegate();
 	m_param = 0;
 	m_ptr = ptr;
@@ -174,7 +200,11 @@ bool emu_timer::enable(bool enable)
 //  firings
 //-------------------------------------------------
 
+<<<<<<< HEAD
 void emu_timer::adjust(attotime start_delay, INT32 param, const attotime &period)
+=======
+void emu_timer::adjust(attotime start_delay, s32 param, const attotime &period)
+>>>>>>> upstream/master
 {
 	// if this is the callback timer, mark it modified
 	device_scheduler &scheduler = machine().scheduler();
@@ -241,20 +271,40 @@ void emu_timer::register_save()
 	std::string name;
 
 	// for non-device timers, it is an index based on the callback function name
+<<<<<<< HEAD
 	if (m_device == NULL)
 	{
 		name = m_callback.name();
 		for (emu_timer *curtimer = machine().scheduler().first_timer(); curtimer != NULL; curtimer = curtimer->next())
 			if (!curtimer->m_temporary && curtimer->m_device == NULL && strcmp(curtimer->m_callback.name(), m_callback.name()) == 0)
 				index++;
+=======
+	if (m_device == nullptr)
+	{
+		name = m_callback.name() ? m_callback.name() : "unnamed";
+		for (emu_timer *curtimer = machine().scheduler().first_timer(); curtimer != nullptr; curtimer = curtimer->next())
+			if (!curtimer->m_temporary && curtimer->m_device == nullptr)
+			{
+				if (curtimer->m_callback.name() != nullptr && m_callback.name() != nullptr && strcmp(curtimer->m_callback.name(), m_callback.name()) == 0)
+					index++;
+				else if (curtimer->m_callback.name() == nullptr && m_callback.name() == nullptr)
+					index++;
+			}
+>>>>>>> upstream/master
 	}
 
 	// for device timers, it is an index based on the device and timer ID
 	else
 	{
+<<<<<<< HEAD
 		strprintf(name,"%s/%d", m_device->tag(), m_id);
 		for (emu_timer *curtimer = machine().scheduler().first_timer(); curtimer != NULL; curtimer = curtimer->next())
 			if (!curtimer->m_temporary && curtimer->m_device != NULL && curtimer->m_device == m_device && curtimer->m_id == m_id)
+=======
+		name = string_format("%s/%d", m_device->tag(), m_id);
+		for (emu_timer *curtimer = machine().scheduler().first_timer(); curtimer != nullptr; curtimer = curtimer->next())
+			if (!curtimer->m_temporary && curtimer->m_device != nullptr && curtimer->m_device == m_device && curtimer->m_id == m_id)
+>>>>>>> upstream/master
 				index++;
 	}
 
@@ -293,8 +343,16 @@ inline void emu_timer::schedule_next_period()
 void emu_timer::dump() const
 {
 	machine().logerror("%p: en=%d temp=%d exp=%15s start=%15s per=%15s param=%d ptr=%p", this, m_enabled, m_temporary, m_expire.as_string(PRECISION), m_start.as_string(PRECISION), m_period.as_string(PRECISION), m_param, m_ptr);
+<<<<<<< HEAD
 	if (m_device == NULL)
 		machine().logerror(" cb=%s\n", m_callback.name());
+=======
+	if (m_device == nullptr)
+		if (m_callback.name() == nullptr)
+			machine().logerror(" cb=NULL\n");
+		else
+			machine().logerror(" cb=%s\n", m_callback.name());
+>>>>>>> upstream/master
 	else
 		machine().logerror(" dev=%s id=%d\n", m_device->tag(), m_id);
 }
@@ -311,18 +369,30 @@ void emu_timer::dump() const
 
 device_scheduler::device_scheduler(running_machine &machine) :
 	m_machine(machine),
+<<<<<<< HEAD
 	m_executing_device(NULL),
 	m_execute_list(NULL),
 	m_basetime(attotime::zero),
 	m_timer_list(NULL),
 	m_callback_timer(NULL),
+=======
+	m_executing_device(nullptr),
+	m_execute_list(nullptr),
+	m_basetime(attotime::zero),
+	m_timer_list(nullptr),
+	m_callback_timer(nullptr),
+>>>>>>> upstream/master
 	m_callback_timer_modified(false),
 	m_callback_timer_expire_time(attotime::zero),
 	m_suspend_changes_pending(true),
 	m_quantum_minimum(ATTOSECONDS_IN_NSEC(1) / 1000)
 {
 	// append a single never-expiring timer so there is always one in the list
+<<<<<<< HEAD
 	m_timer_list = &m_timer_allocator.alloc()->init(machine, timer_expired_delegate(), NULL, true);
+=======
+	m_timer_list = &m_timer_allocator.alloc()->init(machine, timer_expired_delegate(), nullptr, true);
+>>>>>>> upstream/master
 	m_timer_list->adjust(attotime::never);
 
 	// register global states
@@ -339,7 +409,11 @@ device_scheduler::device_scheduler(running_machine &machine) :
 device_scheduler::~device_scheduler()
 {
 	// remove all timers
+<<<<<<< HEAD
 	while (m_timer_list != NULL)
+=======
+	while (m_timer_list != nullptr)
+>>>>>>> upstream/master
 		m_timer_allocator.reclaim(m_timer_list->release());
 }
 
@@ -351,12 +425,20 @@ device_scheduler::~device_scheduler()
 attotime device_scheduler::time() const
 {
 	// if we're currently in a callback, use the timer's expiration time as a base
+<<<<<<< HEAD
 	if (m_callback_timer != NULL)
+=======
+	if (m_callback_timer != nullptr)
+>>>>>>> upstream/master
 		return m_callback_timer_expire_time;
 
 	// if we're executing as a particular CPU, use its local time as a base
 	// otherwise, return the global base time
+<<<<<<< HEAD
 	return (m_executing_device != NULL) ? m_executing_device->local_time() : m_basetime;
+=======
+	return (m_executing_device != nullptr) ? m_executing_device->local_time() : m_basetime;
+>>>>>>> upstream/master
 }
 
 
@@ -368,7 +450,11 @@ attotime device_scheduler::time() const
 bool device_scheduler::can_save() const
 {
 	// if any live temporary timers exit, fail
+<<<<<<< HEAD
 	for (emu_timer *timer = m_timer_list; timer != NULL; timer = timer->next())
+=======
+	for (emu_timer *timer = m_timer_list; timer != nullptr; timer = timer->next())
+>>>>>>> upstream/master
 		if (timer->m_temporary && !timer->expire().is_never())
 		{
 			machine().logerror("Failed save state attempt due to anonymous timers:\n");
@@ -388,8 +474,13 @@ bool device_scheduler::can_save() const
 
 inline void device_scheduler::apply_suspend_changes()
 {
+<<<<<<< HEAD
 	UINT32 suspendchanged = 0;
 	for (device_execute_interface *exec = m_execute_list; exec != NULL; exec = exec->m_nextexec)
+=======
+	u32 suspendchanged = 0;
+	for (device_execute_interface *exec = m_execute_list; exec != nullptr; exec = exec->m_nextexec)
+>>>>>>> upstream/master
 	{
 		suspendchanged |= exec->m_suspend ^ exec->m_nextsuspend;
 		exec->m_suspend = exec->m_nextsuspend;
@@ -415,7 +506,11 @@ void device_scheduler::timeslice()
 	bool call_debugger = ((machine().debug_flags & DEBUG_FLAG_ENABLED) != 0);
 
 	// build the execution list if we don't have one yet
+<<<<<<< HEAD
 	if (UNEXPECTED(m_execute_list == NULL))
+=======
+	if (UNEXPECTED(m_execute_list == nullptr))
+>>>>>>> upstream/master
 		rebuild_execute_list();
 
 	// if the current quantum has expired, find a new one
@@ -440,7 +535,11 @@ void device_scheduler::timeslice()
 			apply_suspend_changes();
 
 		// loop over all CPUs
+<<<<<<< HEAD
 		for (device_execute_interface *exec = m_execute_list; exec != NULL; exec = exec->m_nextexec)
+=======
+		for (device_execute_interface *exec = m_execute_list; exec != nullptr; exec = exec->m_nextexec)
+>>>>>>> upstream/master
 		{
 			// only process if this CPU is executing or truly halted (not yielding)
 			// and if our target is later than the CPU's current time (coarse check)
@@ -456,8 +555,13 @@ void device_scheduler::timeslice()
 				if (delta >= exec->m_attoseconds_per_cycle)
 				{
 					// compute how many cycles we want to execute
+<<<<<<< HEAD
 					int ran = exec->m_cycles_running = divu_64x32((UINT64)delta >> exec->m_divshift, exec->m_divisor);
 					LOG(("  cpu '%s': %" I64FMT"d (%d cycles)\n", exec->device().tag(), delta, exec->m_cycles_running));
+=======
+					int ran = exec->m_cycles_running = divu_64x32(u64(delta) >> exec->m_divshift, exec->m_divisor);
+					LOG(("  cpu '%s': %d (%d cycles)\n", exec->device().tag(), delta, exec->m_cycles_running));
+>>>>>>> upstream/master
 
 					// if we're not suspended, actually execute
 					if (exec->m_suspend == 0)
@@ -490,21 +594,44 @@ void device_scheduler::timeslice()
 					exec->m_totalcycles += ran;
 
 					// update the local time for this CPU
+<<<<<<< HEAD
 					attotime deltatime(0, exec->m_attoseconds_per_cycle * ran);
 					assert(deltatime >= attotime::zero);
 					exec->m_localtime += deltatime;
 					LOG(("         %d ran, %d total, time = %s\n", ran, (INT32)exec->m_totalcycles, exec->m_localtime.as_string(PRECISION)));
+=======
+					attotime deltatime;
+					if (ran < exec->m_cycles_per_second)
+						deltatime = attotime(0, exec->m_attoseconds_per_cycle * ran);
+					else
+					{
+						u32 remainder;
+						s32 secs = divu_64x32_rem(ran, exec->m_cycles_per_second, &remainder);
+						deltatime = attotime(secs, u64(remainder) * exec->m_attoseconds_per_cycle);
+					}
+					assert(deltatime >= attotime::zero);
+					exec->m_localtime += deltatime;
+					LOG(("         %d ran, %d total, time = %s\n", ran, s32(exec->m_totalcycles), exec->m_localtime.as_string(PRECISION)));
+>>>>>>> upstream/master
 
 					// if the new local CPU time is less than our target, move the target up, but not before the base
 					if (exec->m_localtime < target)
 					{
+<<<<<<< HEAD
 						target = max(exec->m_localtime, m_basetime);
+=======
+						target = std::max(exec->m_localtime, m_basetime);
+>>>>>>> upstream/master
 						LOG(("         (new target)\n"));
 					}
 				}
 			}
 		}
+<<<<<<< HEAD
 		m_executing_device = NULL;
+=======
+		m_executing_device = nullptr;
+>>>>>>> upstream/master
 
 		// update the base time
 		m_basetime = target;
@@ -522,7 +649,11 @@ void device_scheduler::timeslice()
 
 void device_scheduler::abort_timeslice()
 {
+<<<<<<< HEAD
 	if (m_executing_device != NULL)
+=======
+	if (m_executing_device != nullptr)
+>>>>>>> upstream/master
 		m_executing_device->abort_timeslice();
 }
 
@@ -534,7 +665,11 @@ void device_scheduler::abort_timeslice()
 void device_scheduler::trigger(int trigid, const attotime &after)
 {
 	// ensure we have a list of executing devices
+<<<<<<< HEAD
 	if (m_execute_list == NULL)
+=======
+	if (m_execute_list == nullptr)
+>>>>>>> upstream/master
 		rebuild_execute_list();
 
 	// if we have a non-zero time, schedule a timer
@@ -543,7 +678,11 @@ void device_scheduler::trigger(int trigid, const attotime &after)
 
 	// send the trigger to everyone who cares
 	else
+<<<<<<< HEAD
 		for (device_execute_interface *exec = m_execute_list; exec != NULL; exec = exec->m_nextexec)
+=======
+		for (device_execute_interface *exec = m_execute_list; exec != nullptr; exec = exec->m_nextexec)
+>>>>>>> upstream/master
 			exec->trigger(trigid);
 }
 
@@ -586,6 +725,7 @@ void device_scheduler::timer_set(const attotime &duration, timer_expired_delegat
 
 
 //-------------------------------------------------
+<<<<<<< HEAD
 //  timer_pulse - allocate an anonymous non-device
 //  timer and set it to go off at the given
 //  frequency
@@ -598,6 +738,8 @@ void device_scheduler::timer_pulse(const attotime &period, timer_expired_delegat
 
 
 //-------------------------------------------------
+=======
+>>>>>>> upstream/master
 //  timer_alloc - allocate a global device timer
 //  and return a pointer
 //-------------------------------------------------
@@ -627,7 +769,11 @@ void device_scheduler::timer_set(const attotime &duration, device_t &device, dev
 
 void device_scheduler::eat_all_cycles()
 {
+<<<<<<< HEAD
 	for (device_execute_interface *exec = m_execute_list; exec != NULL; exec = exec->m_nextexec)
+=======
+	for (device_execute_interface *exec = m_execute_list; exec != nullptr; exec = exec->m_nextexec)
+>>>>>>> upstream/master
 		exec->eat_cycles(1000000000);
 }
 
@@ -637,7 +783,11 @@ void device_scheduler::eat_all_cycles()
 //  given amount of time
 //-------------------------------------------------
 
+<<<<<<< HEAD
 void device_scheduler::timed_trigger(void *ptr, INT32 param)
+=======
+void device_scheduler::timed_trigger(void *ptr, s32 param)
+>>>>>>> upstream/master
 {
 	trigger(param);
 }
@@ -663,7 +813,11 @@ void device_scheduler::postload()
 {
 	// remove all timers and make a private list of permanent ones
 	simple_list<emu_timer> private_list;
+<<<<<<< HEAD
 	while (m_timer_list != NULL)
+=======
+	while (m_timer_list != nullptr)
+>>>>>>> upstream/master
 	{
 		emu_timer &timer = *m_timer_list;
 
@@ -678,7 +832,11 @@ void device_scheduler::postload()
 
 	// now re-insert them; this effectively re-sorts them by time
 	emu_timer *timer;
+<<<<<<< HEAD
 	while ((timer = private_list.detach_head()) != NULL)
+=======
+	while ((timer = private_list.detach_head()) != nullptr)
+>>>>>>> upstream/master
 		timer_list_insert(*timer);
 
 	m_suspend_changes_pending = true;
@@ -698,17 +856,29 @@ void device_scheduler::postload()
 void device_scheduler::compute_perfect_interleave()
 {
 	// ensure we have a list of executing devices
+<<<<<<< HEAD
 	if (m_execute_list == NULL)
+=======
+	if (m_execute_list == nullptr)
+>>>>>>> upstream/master
 		rebuild_execute_list();
 
 	// start with the first one
 	device_execute_interface *first = m_execute_list;
+<<<<<<< HEAD
 	if (first != NULL)
+=======
+	if (first != nullptr)
+>>>>>>> upstream/master
 	{
 		// start with a huge time factor and find the 2nd smallest cycle time
 		attoseconds_t smallest = first->minimum_quantum();
 		attoseconds_t perfect = ATTOSECONDS_PER_SECOND - 1;
+<<<<<<< HEAD
 		for (device_execute_interface *exec = first->m_nextexec; exec != NULL; exec = exec->m_nextexec)
+=======
+		for (device_execute_interface *exec = first->m_nextexec; exec != nullptr; exec = exec->m_nextexec)
+>>>>>>> upstream/master
 		{
 			// find the 2nd smallest cycle interval
 			attoseconds_t curquantum = exec->minimum_quantum();
@@ -726,8 +896,13 @@ void device_scheduler::compute_perfect_interleave()
 		{
 			// adjust all the actuals; this doesn't affect the current
 			m_quantum_minimum = perfect;
+<<<<<<< HEAD
 			for (quantum_slot *quant = m_quantum_list.first(); quant != NULL; quant = quant->next())
 				quant->m_actual = MAX(quant->m_requested, m_quantum_minimum);
+=======
+			for (quantum_slot &quant : m_quantum_list)
+				quant.m_actual = std::max(quant.m_requested, m_quantum_minimum);
+>>>>>>> upstream/master
 		}
 	}
 }
@@ -742,7 +917,11 @@ void device_scheduler::compute_perfect_interleave()
 void device_scheduler::rebuild_execute_list()
 {
 	// if we haven't yet set a scheduling quantum, do it now
+<<<<<<< HEAD
 	if (m_quantum_list.first() == NULL)
+=======
+	if (m_quantum_list.empty())
+>>>>>>> upstream/master
 	{
 		// set the core scheduling quantum
 		attotime min_quantum = machine().config().m_minimum_quantum;
@@ -755,18 +934,30 @@ void device_scheduler::rebuild_execute_list()
 		if (!machine().config().m_perfect_cpu_quantum.empty())
 		{
 			device_t *device = machine().device(machine().config().m_perfect_cpu_quantum.c_str());
+<<<<<<< HEAD
 			if (device == NULL)
+=======
+			if (device == nullptr)
+>>>>>>> upstream/master
 				fatalerror("Device '%s' specified for perfect interleave is not present!\n", machine().config().m_perfect_cpu_quantum.c_str());
 
 			device_execute_interface *exec;
 			if (!device->interface(exec))
 				fatalerror("Device '%s' specified for perfect interleave is not an executing device!\n", machine().config().m_perfect_cpu_quantum.c_str());
 
+<<<<<<< HEAD
 			min_quantum = min(attotime(0, exec->minimum_quantum()), min_quantum);
 		}
 
 		// make sure it's no higher than 60Hz
 		min_quantum = min(min_quantum, attotime::from_hz(60));
+=======
+			min_quantum = std::min(attotime(0, exec->minimum_quantum()), min_quantum);
+		}
+
+		// make sure it's no higher than 60Hz
+		min_quantum = std::min(min_quantum, attotime::from_hz(60));
+>>>>>>> upstream/master
 
 		// inform the timer system of our decision
 		add_scheduling_quantum(min_quantum, attotime::never);
@@ -774,6 +965,7 @@ void device_scheduler::rebuild_execute_list()
 
 	// start with an empty list
 	device_execute_interface **active_tailptr = &m_execute_list;
+<<<<<<< HEAD
 	*active_tailptr = NULL;
 
 	// also make an empty list of suspended devices
@@ -795,6 +987,28 @@ void device_scheduler::rebuild_execute_list()
 		{
 			*suspend_tailptr = exec;
 			suspend_tailptr = &exec->m_nextexec;
+=======
+	*active_tailptr = nullptr;
+
+	// also make an empty list of suspended devices
+	device_execute_interface *suspend_list = nullptr;
+	device_execute_interface **suspend_tailptr = &suspend_list;
+
+	// iterate over all devices
+	for (device_execute_interface &exec : execute_interface_iterator(machine().root_device()))
+	{
+		// append to the appropriate list
+		exec.m_nextexec = nullptr;
+		if (exec.m_suspend == 0)
+		{
+			*active_tailptr = &exec;
+			active_tailptr = &exec.m_nextexec;
+		}
+		else
+		{
+			*suspend_tailptr = &exec;
+			suspend_tailptr = &exec.m_nextexec;
+>>>>>>> upstream/master
 		}
 	}
 
@@ -814,8 +1028,13 @@ emu_timer &device_scheduler::timer_list_insert(emu_timer &timer)
 	const attotime &expire = timer.m_enabled ? timer.m_expire : attotime::never;
 
 	// loop over the timer list
+<<<<<<< HEAD
 	emu_timer *prevtimer = NULL;
 	for (emu_timer *curtimer = m_timer_list; curtimer != NULL; prevtimer = curtimer, curtimer = curtimer->next())
+=======
+	emu_timer *prevtimer = nullptr;
+	for (emu_timer *curtimer = m_timer_list; curtimer != nullptr; prevtimer = curtimer, curtimer = curtimer->next())
+>>>>>>> upstream/master
 	{
 		// if the current list entry expires after us, we should be inserted before it
 		if (curtimer->m_expire > expire)
@@ -824,7 +1043,11 @@ emu_timer &device_scheduler::timer_list_insert(emu_timer &timer)
 			timer.m_prev = curtimer->m_prev;
 			timer.m_next = curtimer;
 
+<<<<<<< HEAD
 			if (curtimer->m_prev != NULL)
+=======
+			if (curtimer->m_prev != nullptr)
+>>>>>>> upstream/master
 				curtimer->m_prev->m_next = &timer;
 			else
 				m_timer_list = &timer;
@@ -835,13 +1058,21 @@ emu_timer &device_scheduler::timer_list_insert(emu_timer &timer)
 	}
 
 	// need to insert after the last one
+<<<<<<< HEAD
 	if (prevtimer != NULL)
+=======
+	if (prevtimer != nullptr)
+>>>>>>> upstream/master
 		prevtimer->m_next = &timer;
 	else
 		m_timer_list = &timer;
 
 	timer.m_prev = prevtimer;
+<<<<<<< HEAD
 	timer.m_next = NULL;
+=======
+	timer.m_next = nullptr;
+>>>>>>> upstream/master
 	return timer;
 }
 
@@ -854,12 +1085,20 @@ emu_timer &device_scheduler::timer_list_insert(emu_timer &timer)
 emu_timer &device_scheduler::timer_list_remove(emu_timer &timer)
 {
 	// remove it from the list
+<<<<<<< HEAD
 	if (timer.m_prev != NULL)
+=======
+	if (timer.m_prev != nullptr)
+>>>>>>> upstream/master
 		timer.m_prev->m_next = timer.m_next;
 	else
 		m_timer_list = timer.m_next;
 
+<<<<<<< HEAD
 	if (timer.m_next != NULL)
+=======
+	if (timer.m_next != nullptr)
+>>>>>>> upstream/master
 		timer.m_next->m_prev = timer.m_prev;
 
 	return timer;
@@ -893,7 +1132,11 @@ inline void device_scheduler::execute_timers()
 		{
 			g_profiler.start(PROFILER_TIMER_CALLBACK);
 
+<<<<<<< HEAD
 			if (timer.m_device != NULL)
+=======
+			if (timer.m_device != nullptr)
+>>>>>>> upstream/master
 			{
 				LOG(("execute_timers: timer device %s timer %d\n", timer.m_device->tag(), timer.m_id));
 				timer.m_device->timer_expired(timer, timer.m_id, timer.m_param, timer.m_ptr);
@@ -908,7 +1151,11 @@ inline void device_scheduler::execute_timers()
 		}
 
 		// clear the callback timer global
+<<<<<<< HEAD
 		m_callback_timer = NULL;
+=======
+		m_callback_timer = nullptr;
+>>>>>>> upstream/master
 
 		// reset or remove the timer, but only if it wasn't modified during the callback
 		if (!m_callback_timer_modified)
@@ -940,9 +1187,15 @@ void device_scheduler::add_scheduling_quantum(const attotime &quantum, const att
 	const attoseconds_t quantum_attos = quantum.attoseconds();
 
 	// figure out where to insert ourselves, expiring any quanta that are out-of-date
+<<<<<<< HEAD
 	quantum_slot *insert_after = NULL;
 	quantum_slot *next;
 	for (quantum_slot *quant = m_quantum_list.first(); quant != NULL; quant = next)
+=======
+	quantum_slot *insert_after = nullptr;
+	quantum_slot *next;
+	for (quantum_slot *quant = m_quantum_list.first(); quant != nullptr; quant = next)
+>>>>>>> upstream/master
 	{
 		// if this quantum is expired, nuke it
 		next = quant->next();
@@ -955,15 +1208,24 @@ void device_scheduler::add_scheduling_quantum(const attotime &quantum, const att
 	}
 
 	// if we found an exact match, just take the maximum expiry time
+<<<<<<< HEAD
 	if (insert_after != NULL && insert_after->m_requested == quantum_attos)
 		insert_after->m_expire = max(insert_after->m_expire, expire);
+=======
+	if (insert_after != nullptr && insert_after->m_requested == quantum_attos)
+		insert_after->m_expire = std::max(insert_after->m_expire, expire);
+>>>>>>> upstream/master
 
 	// otherwise, allocate a new quantum and insert it after the one we picked
 	else
 	{
 		quantum_slot &quant = *m_quantum_allocator.alloc();
 		quant.m_requested = quantum_attos;
+<<<<<<< HEAD
 		quant.m_actual = MAX(quantum_attos, m_quantum_minimum);
+=======
+		quant.m_actual = std::max(quantum_attos, m_quantum_minimum);
+>>>>>>> upstream/master
 		quant.m_expire = expire;
 		m_quantum_list.insert_after(quant, insert_after);
 	}
@@ -978,7 +1240,11 @@ void device_scheduler::dump_timers() const
 {
 	machine().logerror("=============================================\n");
 	machine().logerror("Timer Dump: Time = %15s\n", time().as_string(PRECISION));
+<<<<<<< HEAD
 	for (emu_timer *timer = first_timer(); timer != NULL; timer = timer->next())
+=======
+	for (emu_timer *timer = first_timer(); timer != nullptr; timer = timer->next())
+>>>>>>> upstream/master
 		timer->dump();
 	machine().logerror("=============================================\n");
 }

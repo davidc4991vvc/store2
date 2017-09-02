@@ -32,16 +32,24 @@
 
 ***************************************************************************/
 
+<<<<<<< HEAD
 #pragma once
 
 #ifndef __POLYLGCY_H__
 #define __POLYLGCY_H__
+=======
+#ifndef MAME_VIDEO_POLYLGCY_H
+#define MAME_VIDEO_POLYLGCY_H
+
+#pragma once
+>>>>>>> upstream/master
 
 
 /***************************************************************************
     CONSTANTS
 ***************************************************************************/
 
+<<<<<<< HEAD
 #define MAX_VERTEX_PARAMS                   6
 #define MAX_POLYGON_VERTS                   32
 
@@ -49,6 +57,15 @@
 #define POLYFLAG_INCLUDE_RIGHT_EDGE         0x02
 #define POLYFLAG_NO_WORK_QUEUE              0x04
 #define POLYFLAG_ALLOW_QUADS                0x08
+=======
+static constexpr unsigned POLYLGCY_MAX_VERTEX_PARAMS = 6;
+static constexpr unsigned POLYLGCY_MAX_POLYGON_VERTS = 32;
+
+static constexpr uint8_t POLYLGCY_FLAG_INCLUDE_BOTTOM_EDGE = 0x01;
+static constexpr uint8_t POLYLGCY_FLAG_INCLUDE_RIGHT_EDGE  = 0x02;
+static constexpr uint8_t POLYLGCY_FLAG_NO_WORK_QUEUE       = 0x04;
+static constexpr uint8_t POLYLGCY_FLAG_ALLOW_QUADS         = 0x08;
+>>>>>>> upstream/master
 
 
 
@@ -65,7 +82,11 @@ struct poly_vertex
 {
 	float       x;                          /* X coordinate */
 	float       y;                          /* Y coordinate */
+<<<<<<< HEAD
 	float       p[MAX_VERTEX_PARAMS];       /* interpolated parameter values */
+=======
+	float       p[POLYLGCY_MAX_VERTEX_PARAMS];       /* interpolated parameter values */
+>>>>>>> upstream/master
 };
 
 
@@ -80,14 +101,24 @@ struct poly_param_extent
 /* poly_extent describes start/end points for a scanline, along with per-scanline parameters */
 struct poly_extent
 {
+<<<<<<< HEAD
 	INT16       startx;                     /* starting X coordinate (inclusive) */
 	INT16       stopx;                      /* ending X coordinate (exclusive) */
 	poly_param_extent param[MAX_VERTEX_PARAMS]; /* starting and dx values for each parameter */
+=======
+	int16_t       startx;                     /* starting X coordinate (inclusive) */
+	int16_t       stopx;                      /* ending X coordinate (exclusive) */
+	poly_param_extent param[POLYLGCY_MAX_VERTEX_PARAMS]; /* starting and dx values for each parameter */
+>>>>>>> upstream/master
 };
 
 
 /* callback routine to process a batch of scanlines in a triangle */
+<<<<<<< HEAD
 typedef void (*poly_draw_scanline_func)(void *dest, INT32 scanline, const poly_extent *extent, const void *extradata, int threadid);
+=======
+typedef void (*poly_draw_scanline_func)(void *dest, int32_t scanline, const poly_extent *extent, const void *extradata, int threadid);
+>>>>>>> upstream/master
 
 
 
@@ -99,7 +130,11 @@ typedef void (*poly_draw_scanline_func)(void *dest, INT32 scanline, const poly_e
 /* ----- initialization/teardown ----- */
 
 /* allocate a new poly manager that can render triangles */
+<<<<<<< HEAD
 legacy_poly_manager *poly_alloc(running_machine &machine, int max_polys, size_t extra_data_size, UINT8 flags);
+=======
+legacy_poly_manager *poly_alloc(running_machine &machine, int max_polys, size_t extra_data_size, uint8_t flags);
+>>>>>>> upstream/master
 
 /* free a poly manager */
 void poly_free(legacy_poly_manager *poly);
@@ -119,6 +154,7 @@ void *poly_get_extra_data(legacy_poly_manager *poly);
 /* ----- core triangle rendering ----- */
 
 /* render a single triangle given 3 vertexes */
+<<<<<<< HEAD
 UINT32 poly_render_triangle(legacy_poly_manager *poly, void *dest, const rectangle &cliprect, poly_draw_scanline_func callback, int paramcount, const poly_vertex *v1, const poly_vertex *v2, const poly_vertex *v3);
 
 /* render a set of triangles in a fan */
@@ -126,23 +162,43 @@ UINT32 poly_render_triangle_fan(legacy_poly_manager *poly, void *dest, const rec
 
 /* perform a custom render of an object, given specific extents */
 UINT32 poly_render_triangle_custom(legacy_poly_manager *poly, void *dest, const rectangle &cliprect, poly_draw_scanline_func callback, int startscanline, int numscanlines, const poly_extent *extents);
+=======
+uint32_t poly_render_triangle(legacy_poly_manager *poly, void *dest, const rectangle &cliprect, poly_draw_scanline_func callback, int paramcount, const poly_vertex *v1, const poly_vertex *v2, const poly_vertex *v3);
+
+/* render a set of triangles in a fan */
+uint32_t poly_render_triangle_fan(legacy_poly_manager *poly, void *dest, const rectangle &cliprect, poly_draw_scanline_func callback, int paramcount, int numverts, const poly_vertex *v);
+
+/* perform a custom render of an object, given specific extents */
+uint32_t poly_render_triangle_custom(legacy_poly_manager *poly, void *dest, const rectangle &cliprect, poly_draw_scanline_func callback, int startscanline, int numscanlines, const poly_extent *extents);
+>>>>>>> upstream/master
 
 
 
 /* ----- core quad rendering ----- */
 
 /* render a single quad given 4 vertexes */
+<<<<<<< HEAD
 UINT32 poly_render_quad(legacy_poly_manager *poly, void *dest, const rectangle &cliprect, poly_draw_scanline_func callback, int paramcount, const poly_vertex *v1, const poly_vertex *v2, const poly_vertex *v3, const poly_vertex *v4);
 
 /* render a set of quads in a fan */
 UINT32 poly_render_quad_fan(legacy_poly_manager *poly, void *dest, const rectangle &cliprect, poly_draw_scanline_func callback, int paramcount, int numverts, const poly_vertex *v);
+=======
+uint32_t poly_render_quad(legacy_poly_manager *poly, void *dest, const rectangle &cliprect, poly_draw_scanline_func callback, int paramcount, const poly_vertex *v1, const poly_vertex *v2, const poly_vertex *v3, const poly_vertex *v4);
+
+/* render a set of quads in a fan */
+uint32_t poly_render_quad_fan(legacy_poly_manager *poly, void *dest, const rectangle &cliprect, poly_draw_scanline_func callback, int paramcount, int numverts, const poly_vertex *v);
+>>>>>>> upstream/master
 
 
 
 /* ----- core polygon rendering ----- */
 
 /* render a single polygon up to 32 vertices */
+<<<<<<< HEAD
 UINT32 poly_render_polygon(legacy_poly_manager *poly, void *dest, const rectangle &cliprect, poly_draw_scanline_func callback, int paramcount, int numverts, const poly_vertex *v);
+=======
+uint32_t poly_render_polygon(legacy_poly_manager *poly, void *dest, const rectangle &cliprect, poly_draw_scanline_func callback, int paramcount, int numverts, const poly_vertex *v);
+>>>>>>> upstream/master
 
 
 
@@ -152,4 +208,8 @@ UINT32 poly_render_polygon(legacy_poly_manager *poly, void *dest, const rectangl
 int poly_zclip_if_less(int numverts, const poly_vertex *v, poly_vertex *outv, int paramcount, float clipval);
 
 
+<<<<<<< HEAD
 #endif  /* __POLYLGCY_H__ */
+=======
+#endif // MAME_VIDEO_POLYLGCY_H
+>>>>>>> upstream/master

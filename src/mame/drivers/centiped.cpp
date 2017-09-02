@@ -415,6 +415,7 @@ each direction to assign the boundries.
 ***************************************************************************/
 
 #include "emu.h"
+<<<<<<< HEAD
 #include "cpu/m6502/m6502.h"
 #include "cpu/s2650/s2650.h"
 #include "machine/eepromser.h"
@@ -423,6 +424,18 @@ each direction to assign the boundries.
 #include "sound/ay8910.h"
 #include "sound/sn76496.h"
 #include "sound/pokey.h"
+=======
+#include "includes/centiped.h"
+
+#include "cpu/m6502/m6502.h"
+#include "cpu/s2650/s2650.h"
+#include "machine/74259.h"
+#include "machine/watchdog.h"
+#include "machine/atari_vg.h"
+#include "sound/sn76496.h"
+#include "sound/pokey.h"
+#include "speaker.h"
+>>>>>>> upstream/master
 
 /*************************************
  *
@@ -455,8 +468,11 @@ MACHINE_START_MEMBER(centiped_state,centiped)
 MACHINE_RESET_MEMBER(centiped_state,centiped)
 {
 	m_maincpu->set_input_line(0, CLEAR_LINE);
+<<<<<<< HEAD
 	m_dsw_select = 0;
 	m_control_select = 0;
+=======
+>>>>>>> upstream/master
 	m_prg_bank = 0;
 }
 
@@ -503,7 +519,11 @@ WRITE8_MEMBER(centiped_state::irq_ack_w)
 
 inline int centiped_state::read_trackball(int idx, int switch_port)
 {
+<<<<<<< HEAD
 	UINT8 newpos;
+=======
+	uint8_t newpos;
+>>>>>>> upstream/master
 	static const char *const portnames[] = { "IN0", "IN1", "IN2" };
 	static const char *const tracknames[] = { "TRACK0_X", "TRACK0_Y", "TRACK1_X", "TRACK1_Y" };
 
@@ -547,7 +567,11 @@ READ8_MEMBER(centiped_state::milliped_IN1_r)
 
 READ8_MEMBER(centiped_state::milliped_IN2_r)
 {
+<<<<<<< HEAD
 	UINT8 data = ioport("IN2")->read();
+=======
+	uint8_t data = ioport("IN2")->read();
+>>>>>>> upstream/master
 
 	/* MSH - 15 Feb, 2007
 	 * The P2 X Joystick inputs are not properly handled in
@@ -559,7 +583,11 @@ READ8_MEMBER(centiped_state::milliped_IN2_r)
 	if (m_control_select != 0)
 	{
 		/* Bottom 4 bits is our joystick inputs */
+<<<<<<< HEAD
 		UINT8 joy2data = ioport("IN3")->read() & 0x0f;
+=======
+		uint8_t joy2data = ioport("IN3")->read() & 0x0f;
+>>>>>>> upstream/master
 		data = data & 0xf0; /* Keep the top 4 bits */
 		data |= (joy2data & 0x0a) >> 1; /* flip left and up */
 		data |= (joy2data & 0x05) << 1; /* flip right and down */
@@ -567,6 +595,7 @@ READ8_MEMBER(centiped_state::milliped_IN2_r)
 	return data;
 }
 
+<<<<<<< HEAD
 WRITE8_MEMBER(centiped_state::input_select_w)
 {
 	m_dsw_select = (~data >> 7) & 1;
@@ -576,6 +605,17 @@ WRITE8_MEMBER(centiped_state::input_select_w)
 WRITE8_MEMBER(centiped_state::control_select_w)
 {
 	m_control_select = (data >> 7) & 1;
+=======
+WRITE_LINE_MEMBER(centiped_state::input_select_w)
+{
+	m_dsw_select = !state;
+}
+
+/* used P2 controls if 1, P1 controls if 0 */
+WRITE_LINE_MEMBER(centiped_state::control_select_w)
+{
+	m_control_select = state;
+>>>>>>> upstream/master
 }
 
 
@@ -615,9 +655,33 @@ READ8_MEMBER(centiped_state::bullsdrt_data_port_r)
  *
  *************************************/
 
+<<<<<<< HEAD
 WRITE8_MEMBER(centiped_state::led_w)
 {
 	set_led_status(machine(), offset, ~data & 0x80);
+=======
+WRITE_LINE_MEMBER(centiped_state::led_1_w)
+{
+	output().set_led_value(0, !state);
+}
+
+
+WRITE_LINE_MEMBER(centiped_state::led_2_w)
+{
+	output().set_led_value(1, !state);
+}
+
+
+WRITE_LINE_MEMBER(centiped_state::led_3_w)
+{
+	output().set_led_value(2, !state);
+}
+
+
+WRITE_LINE_MEMBER(centiped_state::led_4_w)
+{
+	output().set_led_value(3, !state);
+>>>>>>> upstream/master
 }
 
 
@@ -627,6 +691,7 @@ READ8_MEMBER(centiped_state::caterplr_unknown_r)
 }
 
 
+<<<<<<< HEAD
 WRITE8_MEMBER(centiped_state::coin_count_w)
 {
 	coin_counter_w(machine(), offset, data);
@@ -636,6 +701,29 @@ WRITE8_MEMBER(centiped_state::coin_count_w)
 WRITE8_MEMBER(centiped_state::bullsdrt_coin_count_w)
 {
 	coin_counter_w(machine(), 0, data);
+=======
+WRITE_LINE_MEMBER(centiped_state::coin_counter_left_w)
+{
+	machine().bookkeeping().coin_counter_w(0, state);
+}
+
+
+WRITE_LINE_MEMBER(centiped_state::coin_counter_center_w)
+{
+	machine().bookkeeping().coin_counter_w(1, state);
+}
+
+
+WRITE_LINE_MEMBER(centiped_state::coin_counter_right_w)
+{
+	machine().bookkeeping().coin_counter_w(2, state);
+}
+
+
+WRITE_LINE_MEMBER(centiped_state::bullsdrt_coin_count_w)
+{
+	machine().bookkeeping().coin_counter_w(0, state);
+>>>>>>> upstream/master
 }
 
 
@@ -662,10 +750,15 @@ static ADDRESS_MAP_START( centiped_base_map, AS_PROGRAM, 8, centiped_state )
 	AM_RANGE(0x1680, 0x1680) AM_DEVWRITE("earom", atari_vg_earom_device, ctrl_w)
 	AM_RANGE(0x1700, 0x173f) AM_DEVREAD("earom", atari_vg_earom_device, read)
 	AM_RANGE(0x1800, 0x1800) AM_WRITE(irq_ack_w)
+<<<<<<< HEAD
 	AM_RANGE(0x1c00, 0x1c02) AM_WRITE(coin_count_w)
 	AM_RANGE(0x1c03, 0x1c04) AM_WRITE(led_w)
 	AM_RANGE(0x1c07, 0x1c07) AM_WRITE(centiped_flip_screen_w)
 	AM_RANGE(0x2000, 0x2000) AM_WRITE(watchdog_reset_w)
+=======
+	AM_RANGE(0x1c00, 0x1c07) AM_DEVWRITE("outlatch", ls259_device, write_d7)
+	AM_RANGE(0x2000, 0x2000) AM_DEVWRITE("watchdog", watchdog_timer_device, reset_w)
+>>>>>>> upstream/master
 	AM_RANGE(0x2000, 0x3fff) AM_ROM
 ADDRESS_MAP_END
 
@@ -689,16 +782,25 @@ static ADDRESS_MAP_START( centipdb_map, AS_PROGRAM, 8, centiped_state )
 	AM_RANGE(0x0c01, 0x0c01) AM_MIRROR(0x4000) AM_READ_PORT("IN1")
 	AM_RANGE(0x0c02, 0x0c02) AM_MIRROR(0x4000) AM_READ(centiped_IN2_r)
 	AM_RANGE(0x0c03, 0x0c03) AM_MIRROR(0x4000) AM_READ_PORT("IN3")
+<<<<<<< HEAD
 	AM_RANGE(0x1000, 0x1001) AM_MIRROR(0x4000) AM_DEVWRITE("pokey", ay8910_device, data_address_w)
 	AM_RANGE(0x1001, 0x1001) AM_MIRROR(0x4000) AM_DEVREAD("pokey", ay8910_device, data_r)
+=======
+	AM_RANGE(0x1000, 0x1001) AM_MIRROR(0x4000) AM_DEVWRITE("aysnd", ay8910_device, data_address_w)
+	AM_RANGE(0x1001, 0x1001) AM_MIRROR(0x4000) AM_DEVREAD("aysnd", ay8910_device, data_r)
+>>>>>>> upstream/master
 	AM_RANGE(0x1400, 0x140f) AM_MIRROR(0x4000) AM_WRITE(centiped_paletteram_w) AM_SHARE("paletteram")
 	AM_RANGE(0x1600, 0x163f) AM_MIRROR(0x4000) AM_DEVWRITE("earom", atari_vg_earom_device, write)
 	AM_RANGE(0x1680, 0x1680) AM_MIRROR(0x4000) AM_DEVWRITE("earom", atari_vg_earom_device, ctrl_w)
 	AM_RANGE(0x1700, 0x173f) AM_MIRROR(0x4000) AM_DEVREAD("earom", atari_vg_earom_device, read)
 	AM_RANGE(0x1800, 0x1800) AM_MIRROR(0x4000) AM_WRITE(irq_ack_w)
+<<<<<<< HEAD
 	AM_RANGE(0x1c00, 0x1c02) AM_MIRROR(0x4000) AM_WRITE(coin_count_w)
 	AM_RANGE(0x1c03, 0x1c04) AM_MIRROR(0x4000) AM_WRITE(led_w)
 	AM_RANGE(0x1c07, 0x1c07) AM_MIRROR(0x4000) AM_WRITE(centiped_flip_screen_w)
+=======
+	AM_RANGE(0x1c00, 0x1c07) AM_MIRROR(0x4000) AM_DEVWRITE("outlatch", ls259_device, write_d7)
+>>>>>>> upstream/master
 	AM_RANGE(0x2000, 0x27ff) AM_ROM
 	AM_RANGE(0x2800, 0x3fff) AM_MIRROR(0x4000) AM_ROM
 	AM_RANGE(0x6000, 0x67ff) AM_ROM
@@ -707,8 +809,13 @@ ADDRESS_MAP_END
 
 static ADDRESS_MAP_START( magworm_map, AS_PROGRAM, 8, centiped_state )
 	AM_IMPORT_FROM(centiped_base_map)
+<<<<<<< HEAD
 	AM_RANGE(0x1001, 0x1001) AM_DEVWRITE("pokey", ay8910_device, address_w)
 	AM_RANGE(0x1003, 0x1003) AM_DEVREADWRITE("pokey", ay8910_device, data_r, data_w)
+=======
+	AM_RANGE(0x1001, 0x1001) AM_DEVWRITE("aysnd", ay8910_device, address_w)
+	AM_RANGE(0x1003, 0x1003) AM_DEVREADWRITE("aysnd", ay8910_device, data_r, data_w)
+>>>>>>> upstream/master
 ADDRESS_MAP_END
 
 
@@ -720,16 +827,26 @@ ADDRESS_MAP_END
 
 WRITE8_MEMBER(centiped_state::caterplr_AY8910_w)
 {
+<<<<<<< HEAD
 	ay8910_device *ay8910 = machine().device<ay8910_device>("pokey");
 	ay8910->address_w(space, 0, offset);
 	ay8910->data_w(space, 0, data);
+=======
+	m_aysnd->address_w(space, 0, offset);
+	m_aysnd->data_w(space, 0, data);
+>>>>>>> upstream/master
 }
 
 READ8_MEMBER(centiped_state::caterplr_AY8910_r)
 {
+<<<<<<< HEAD
 	ay8910_device *ay8910 = machine().device<ay8910_device>("pokey");
 	ay8910->address_w(space, 0, offset);
 	return ay8910->data_r(space, 0);
+=======
+	m_aysnd->address_w(space, 0, offset);
+	return m_aysnd->data_r(space, 0);
+>>>>>>> upstream/master
 }
 
 
@@ -753,6 +870,7 @@ static ADDRESS_MAP_START( milliped_map, AS_PROGRAM, 8, centiped_state )
 	AM_RANGE(0x2011, 0x2011) AM_READ_PORT("IN3")
 	AM_RANGE(0x2030, 0x2030) AM_DEVREAD("earom", atari_vg_earom_device, read)
 	AM_RANGE(0x2480, 0x249f) AM_WRITE(milliped_paletteram_w) AM_SHARE("paletteram")
+<<<<<<< HEAD
 	AM_RANGE(0x2500, 0x2502) AM_WRITE(coin_count_w)
 	AM_RANGE(0x2503, 0x2504) AM_WRITE(led_w)
 	AM_RANGE(0x2505, 0x2505) AM_WRITE(input_select_w) /* TBEN */
@@ -760,6 +878,11 @@ static ADDRESS_MAP_START( milliped_map, AS_PROGRAM, 8, centiped_state )
 	AM_RANGE(0x2507, 0x2507) AM_WRITE(control_select_w) /* CNTRLSEL */
 	AM_RANGE(0x2600, 0x2600) AM_WRITE(irq_ack_w)
 	AM_RANGE(0x2680, 0x2680) AM_WRITE(watchdog_reset_w)
+=======
+	AM_RANGE(0x2500, 0x2507) AM_DEVWRITE("outlatch", ls259_device, write_d7)
+	AM_RANGE(0x2600, 0x2600) AM_WRITE(irq_ack_w)
+	AM_RANGE(0x2680, 0x2680) AM_DEVWRITE("watchdog", watchdog_timer_device, reset_w)
+>>>>>>> upstream/master
 	AM_RANGE(0x2700, 0x2700) AM_DEVWRITE("earom", atari_vg_earom_device, ctrl_w)
 	AM_RANGE(0x2780, 0x27bf) AM_DEVWRITE("earom", atari_vg_earom_device, write)
 	AM_RANGE(0x4000, 0x7fff) AM_ROM
@@ -801,6 +924,7 @@ static ADDRESS_MAP_START( multiped_map, AS_PROGRAM, 8, centiped_state )
 	AM_RANGE(0x2011, 0x2011) AM_READ_PORT("IN3")
 	AM_RANGE(0x2030, 0x2030) AM_READNOP
 	AM_RANGE(0x2480, 0x249f) AM_WRITE(milliped_paletteram_w) AM_SHARE("paletteram")
+<<<<<<< HEAD
 	AM_RANGE(0x2500, 0x2502) AM_WRITE(coin_count_w)
 	AM_RANGE(0x2503, 0x2504) AM_WRITE(led_w)
 	AM_RANGE(0x2505, 0x2505) AM_WRITE(input_select_w)
@@ -808,6 +932,11 @@ static ADDRESS_MAP_START( multiped_map, AS_PROGRAM, 8, centiped_state )
 	AM_RANGE(0x2507, 0x2507) AM_WRITE(control_select_w)
 	AM_RANGE(0x2600, 0x2600) AM_WRITE(irq_ack_w)
 	AM_RANGE(0x2680, 0x2680) AM_WRITE(watchdog_reset_w)
+=======
+	AM_RANGE(0x2500, 0x2507) AM_DEVWRITE("outlatch", ls259_device, write_d7)
+	AM_RANGE(0x2600, 0x2600) AM_WRITE(irq_ack_w)
+	AM_RANGE(0x2680, 0x2680) AM_DEVWRITE("watchdog", watchdog_timer_device, reset_w)
+>>>>>>> upstream/master
 	AM_RANGE(0x2700, 0x2700) AM_WRITENOP
 	AM_RANGE(0x2780, 0x27bf) AM_WRITENOP
 	AM_RANGE(0x4000, 0x5fff) AM_ROM
@@ -876,9 +1005,14 @@ static ADDRESS_MAP_START( warlords_map, AS_PROGRAM, 8, centiped_state )
 	AM_RANGE(0x0c01, 0x0c01) AM_READ_PORT("IN1")
 	AM_RANGE(0x1000, 0x100f) AM_DEVREADWRITE("pokey", pokey_device, read, write)
 	AM_RANGE(0x1800, 0x1800) AM_WRITE(irq_ack_w)
+<<<<<<< HEAD
 	AM_RANGE(0x1c00, 0x1c02) AM_WRITE(coin_count_w)
 	AM_RANGE(0x1c03, 0x1c06) AM_WRITE(led_w)
 	AM_RANGE(0x4000, 0x4000) AM_WRITE(watchdog_reset_w)
+=======
+	AM_RANGE(0x1c00, 0x1c07) AM_DEVWRITE("outlatch", ls259_device, write_d7)
+	AM_RANGE(0x4000, 0x4000) AM_DEVWRITE("watchdog", watchdog_timer_device, reset_w)
+>>>>>>> upstream/master
 	AM_RANGE(0x5000, 0x7fff) AM_ROM
 ADDRESS_MAP_END
 
@@ -904,6 +1038,7 @@ static ADDRESS_MAP_START( mazeinv_map, AS_PROGRAM, 8, centiped_state )
 	AM_RANGE(0x2020, 0x2020) AM_READ(mazeinv_input_r)
 	AM_RANGE(0x2030, 0x2030) AM_DEVREAD("earom", atari_vg_earom_device, read)
 	AM_RANGE(0x2480, 0x249f) AM_WRITE(mazeinv_paletteram_w) AM_SHARE("paletteram")
+<<<<<<< HEAD
 	AM_RANGE(0x2500, 0x2502) AM_WRITE(coin_count_w)
 	AM_RANGE(0x2503, 0x2504) AM_WRITE(led_w)
 	AM_RANGE(0x2505, 0x2505) AM_WRITE(input_select_w)
@@ -911,6 +1046,12 @@ static ADDRESS_MAP_START( mazeinv_map, AS_PROGRAM, 8, centiped_state )
 	AM_RANGE(0x2580, 0x2583) AM_WRITE(mazeinv_input_select_w)
 	AM_RANGE(0x2600, 0x2600) AM_WRITE(irq_ack_w)
 	AM_RANGE(0x2680, 0x2680) AM_WRITE(watchdog_reset_w)
+=======
+	AM_RANGE(0x2500, 0x2507) AM_DEVWRITE("outlatch", ls259_device, write_d7)
+	AM_RANGE(0x2580, 0x2583) AM_WRITE(mazeinv_input_select_w)
+	AM_RANGE(0x2600, 0x2600) AM_WRITE(irq_ack_w)
+	AM_RANGE(0x2680, 0x2680) AM_DEVWRITE("watchdog", watchdog_timer_device, reset_w)
+>>>>>>> upstream/master
 	AM_RANGE(0x2700, 0x2700) AM_DEVWRITE("earom", atari_vg_earom_device, ctrl_w)
 	AM_RANGE(0x2780, 0x27bf) AM_DEVWRITE("earom", atari_vg_earom_device, write)
 	AM_RANGE(0x3000, 0x7fff) AM_ROM
@@ -934,10 +1075,15 @@ static ADDRESS_MAP_START( bullsdrt_map, AS_PROGRAM, 8, centiped_state )
 	AM_RANGE(0x1280, 0x1280) AM_MIRROR(0x6000) AM_DEVWRITE("earom", atari_vg_earom_device, ctrl_w)
 	AM_RANGE(0x1300, 0x1300) AM_MIRROR(0x6000) AM_READ_PORT("DSW2")
 	AM_RANGE(0x1400, 0x140f) AM_MIRROR(0x6000) AM_WRITE(centiped_paletteram_w) AM_SHARE("paletteram")
+<<<<<<< HEAD
 	AM_RANGE(0x1481, 0x1481) AM_MIRROR(0x6000) AM_WRITE(bullsdrt_coin_count_w)
 	AM_RANGE(0x1483, 0x1484) AM_MIRROR(0x6000) AM_WRITE(led_w)
 	AM_RANGE(0x1487, 0x1487) AM_MIRROR(0x6000) AM_WRITE(centiped_flip_screen_w)
 	AM_RANGE(0x1500, 0x1500) AM_MIRROR(0x6000) AM_WRITE(watchdog_reset_w)
+=======
+	AM_RANGE(0x1480, 0x1487) AM_MIRROR(0x6000) AM_DEVWRITE("outlatch", ls259_device, write_d7)
+	AM_RANGE(0x1500, 0x1500) AM_MIRROR(0x6000) AM_DEVWRITE("watchdog", watchdog_timer_device, reset_w)
+>>>>>>> upstream/master
 	AM_RANGE(0x1580, 0x1580) AM_MIRROR(0x6000) AM_NOP
 	AM_RANGE(0x1800, 0x1bbf) AM_MIRROR(0x6000) AM_WRITE(centiped_videoram_w) AM_SHARE("videoram")
 	AM_RANGE(0x1bc0, 0x1bff) AM_MIRROR(0x6000) AM_RAM AM_SHARE("spriteram")
@@ -950,6 +1096,12 @@ ADDRESS_MAP_END
 static ADDRESS_MAP_START( bullsdrt_port_map, AS_IO, 8, centiped_state )
 	AM_RANGE(0x00, 0x00) AM_WRITE(bullsdrt_sprites_bank_w)
 	AM_RANGE(0x20, 0x3f) AM_WRITE(bullsdrt_tilesbank_w) AM_SHARE("bullsdrt_bank")
+<<<<<<< HEAD
+=======
+ADDRESS_MAP_END
+
+static ADDRESS_MAP_START( bullsdrt_data_map, AS_DATA, 8, centiped_state )
+>>>>>>> upstream/master
 	AM_RANGE(S2650_DATA_PORT, S2650_DATA_PORT) AM_READ(bullsdrt_data_port_r) AM_DEVWRITE("snsnd", sn76496_device, write)
 ADDRESS_MAP_END
 
@@ -1680,7 +1832,11 @@ GFXDECODE_END
  *
  *************************************/
 
+<<<<<<< HEAD
 static MACHINE_CONFIG_START( centiped_base, centiped_state )
+=======
+static MACHINE_CONFIG_START( centiped_base )
+>>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", M6502, 12096000/8)  /* 1.512 MHz (slows down to 0.75MHz while accessing playfield RAM) */
@@ -1690,6 +1846,18 @@ static MACHINE_CONFIG_START( centiped_base, centiped_state )
 
 	MCFG_ATARIVGEAROM_ADD("earom")
 
+<<<<<<< HEAD
+=======
+	MCFG_DEVICE_ADD("outlatch", LS259, 0)
+	MCFG_ADDRESSABLE_LATCH_Q0_OUT_CB(WRITELINE(centiped_state, coin_counter_left_w))
+	MCFG_ADDRESSABLE_LATCH_Q1_OUT_CB(WRITELINE(centiped_state, coin_counter_center_w))
+	MCFG_ADDRESSABLE_LATCH_Q2_OUT_CB(WRITELINE(centiped_state, coin_counter_right_w))
+	MCFG_ADDRESSABLE_LATCH_Q3_OUT_CB(WRITELINE(centiped_state, led_1_w))
+	MCFG_ADDRESSABLE_LATCH_Q4_OUT_CB(WRITELINE(centiped_state, led_2_w))
+
+	MCFG_WATCHDOG_ADD("watchdog")
+
+>>>>>>> upstream/master
 	/* timer */
 	MCFG_TIMER_DRIVER_ADD_SCANLINE("32v", centiped_state, generate_interrupt, "screen", 0, 16)
 
@@ -1712,6 +1880,12 @@ static MACHINE_CONFIG_DERIVED( centiped, centiped_base )
 	MCFG_CPU_MODIFY("maincpu")
 	MCFG_CPU_PROGRAM_MAP(centiped_map)
 
+<<<<<<< HEAD
+=======
+	MCFG_DEVICE_MODIFY("outlatch") // M10
+	MCFG_ADDRESSABLE_LATCH_Q7_OUT_CB(WRITELINE(centiped_state, flip_screen_w))
+
+>>>>>>> upstream/master
 	/* sound hardware */
 	MCFG_SPEAKER_STANDARD_MONO("mono")
 
@@ -1728,23 +1902,47 @@ static MACHINE_CONFIG_DERIVED( caterplr, centiped_base )
 	MCFG_CPU_MODIFY("maincpu")
 	MCFG_CPU_PROGRAM_MAP(caterplr_map)
 
+<<<<<<< HEAD
 	/* sound hardware */
 	MCFG_SPEAKER_STANDARD_MONO("mono")
 
 	MCFG_SOUND_ADD("pokey", AY8910, 12096000/8)
+=======
+	MCFG_DEVICE_MODIFY("outlatch")
+	MCFG_ADDRESSABLE_LATCH_Q7_OUT_CB(WRITELINE(centiped_state, flip_screen_w))
+
+	/* sound hardware */
+	MCFG_SPEAKER_STANDARD_MONO("mono")
+
+	MCFG_SOUND_ADD("aysnd", AY8910, 12096000/8)
+>>>>>>> upstream/master
 
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 1.0)
 MACHINE_CONFIG_END
 
 
+<<<<<<< HEAD
 static MACHINE_CONFIG_DERIVED( centipdb, centiped )
+=======
+static MACHINE_CONFIG_DERIVED( centipdb, centiped_base )
+>>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_MODIFY("maincpu")
 	MCFG_CPU_PROGRAM_MAP(centipdb_map)
 
+<<<<<<< HEAD
 	/* sound hardware */
 	MCFG_SOUND_REPLACE("pokey", AY8910, 12096000/8)
+=======
+	MCFG_DEVICE_MODIFY("outlatch")
+	MCFG_ADDRESSABLE_LATCH_Q7_OUT_CB(WRITELINE(centiped_state, flip_screen_w))
+
+	/* sound hardware */
+	MCFG_SPEAKER_STANDARD_MONO("mono")
+
+	MCFG_SOUND_ADD("aysnd", AY8910, 12096000/8)
+>>>>>>> upstream/master
 	MCFG_AY8910_PORT_A_READ_CB(READ8(centiped_state, caterplr_unknown_r))
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 2.0)
 MACHINE_CONFIG_END
@@ -1757,22 +1955,44 @@ static MACHINE_CONFIG_DERIVED( magworm, centiped_base )
 	MCFG_CPU_PROGRAM_MAP(magworm_map)
 	MCFG_MACHINE_RESET_OVERRIDE(centiped_state,magworm)
 
+<<<<<<< HEAD
 	/* sound hardware */
 	MCFG_SPEAKER_STANDARD_MONO("mono")
 
 	MCFG_SOUND_ADD("pokey", AY8910, 12096000/8)
 	MCFG_AY8910_PORT_A_READ_CB(READ8(centiped_state, caterplr_unknown_r))
+=======
+	MCFG_DEVICE_MODIFY("outlatch") // 12A
+	MCFG_ADDRESSABLE_LATCH_Q7_OUT_CB(WRITELINE(centiped_state, flip_screen_w))
+
+	/* sound hardware */
+	MCFG_SPEAKER_STANDARD_MONO("mono")
+
+	MCFG_SOUND_ADD("aysnd", AY8910, 12096000/8)
+>>>>>>> upstream/master
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 2.0)
 
 MACHINE_CONFIG_END
 
 
+<<<<<<< HEAD
 static MACHINE_CONFIG_DERIVED( milliped, centiped )
+=======
+static MACHINE_CONFIG_DERIVED( milliped, centiped_base )
+>>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_MODIFY("maincpu")
 	MCFG_CPU_PROGRAM_MAP(milliped_map)
 
+<<<<<<< HEAD
+=======
+	MCFG_DEVICE_MODIFY("outlatch") // 12E
+	MCFG_ADDRESSABLE_LATCH_Q5_OUT_CB(WRITELINE(centiped_state, input_select_w)) // TBEN
+	MCFG_ADDRESSABLE_LATCH_Q6_OUT_CB(WRITELINE(centiped_state, flip_screen_w))
+	MCFG_ADDRESSABLE_LATCH_Q7_OUT_CB(WRITELINE(centiped_state, control_select_w)) // CNTRLSEL
+
+>>>>>>> upstream/master
 	/* video hardware */
 	MCFG_GFXDECODE_MODIFY("gfxdecode", milliped)
 	MCFG_PALETTE_MODIFY("palette")
@@ -1783,7 +2003,13 @@ static MACHINE_CONFIG_DERIVED( milliped, centiped )
 	MCFG_SCREEN_UPDATE_DRIVER(centiped_state, screen_update_milliped)
 
 	/* sound hardware */
+<<<<<<< HEAD
 	MCFG_SOUND_REPLACE("pokey", POKEY, 12096000/8)
+=======
+	MCFG_SPEAKER_STANDARD_MONO("mono")
+
+	MCFG_DEVICE_ADD("pokey", POKEY, 12096000/8)
+>>>>>>> upstream/master
 	MCFG_POKEY_ALLPOT_R_CB(IOPORT("DSW1"))
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 0.50)
 
@@ -1804,12 +2030,24 @@ static MACHINE_CONFIG_DERIVED( multiped, milliped )
 MACHINE_CONFIG_END
 
 
+<<<<<<< HEAD
 static MACHINE_CONFIG_DERIVED( warlords, centiped )
+=======
+static MACHINE_CONFIG_DERIVED( warlords, centiped_base )
+>>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_MODIFY("maincpu")
 	MCFG_CPU_PROGRAM_MAP(warlords_map)
 
+<<<<<<< HEAD
+=======
+	// these extra LEDs also appear on Centipede schematics
+	MCFG_DEVICE_MODIFY("outlatch") // P9
+	MCFG_ADDRESSABLE_LATCH_Q5_OUT_CB(WRITELINE(centiped_state, led_3_w))
+	MCFG_ADDRESSABLE_LATCH_Q6_OUT_CB(WRITELINE(centiped_state, led_4_w))
+
+>>>>>>> upstream/master
 	/* video hardware */
 	MCFG_GFXDECODE_MODIFY("gfxdecode", warlords)
 	MCFG_PALETTE_MODIFY("palette")
@@ -1821,7 +2059,13 @@ static MACHINE_CONFIG_DERIVED( warlords, centiped )
 	MCFG_SCREEN_UPDATE_DRIVER(centiped_state, screen_update_warlords)
 
 	/* sound hardware */
+<<<<<<< HEAD
 	MCFG_SOUND_REPLACE("pokey", POKEY, 12096000/8)
+=======
+	MCFG_SPEAKER_STANDARD_MONO("mono")
+
+	MCFG_DEVICE_ADD("pokey", POKEY, 12096000/8)
+>>>>>>> upstream/master
 	MCFG_POKEY_POT0_R_CB(IOPORT("PADDLE0"))
 	MCFG_POKEY_POT1_R_CB(IOPORT("PADDLE1"))
 	MCFG_POKEY_POT2_R_CB(IOPORT("PADDLE2"))
@@ -1835,20 +2079,46 @@ static MACHINE_CONFIG_DERIVED( mazeinv, milliped )
 	/* basic machine hardware */
 	MCFG_CPU_MODIFY("maincpu")
 	MCFG_CPU_PROGRAM_MAP(mazeinv_map)
+<<<<<<< HEAD
+=======
+
+	MCFG_DEVICE_MODIFY("outlatch")
+	MCFG_ADDRESSABLE_LATCH_Q7_OUT_CB(NOOP)
+
+>>>>>>> upstream/master
 	MCFG_SCREEN_MODIFY("screen")
 	MCFG_SCREEN_UPDATE_DRIVER(centiped_state, screen_update_centiped)
 MACHINE_CONFIG_END
 
 
+<<<<<<< HEAD
 static MACHINE_CONFIG_START( bullsdrt, centiped_state )
+=======
+static MACHINE_CONFIG_START( bullsdrt )
+>>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", S2650, 12096000/8)
 	MCFG_CPU_PROGRAM_MAP(bullsdrt_map)
 	MCFG_CPU_IO_MAP(bullsdrt_port_map)
+<<<<<<< HEAD
 
 	MCFG_ATARIVGEAROM_ADD("earom")
 
+=======
+	MCFG_CPU_DATA_MAP(bullsdrt_data_map)
+
+	MCFG_ATARIVGEAROM_ADD("earom")
+
+	MCFG_DEVICE_ADD("outlatch", LS259, 0)
+	MCFG_ADDRESSABLE_LATCH_Q1_OUT_CB(WRITELINE(centiped_state, bullsdrt_coin_count_w))
+	MCFG_ADDRESSABLE_LATCH_Q3_OUT_CB(WRITELINE(centiped_state, led_1_w))
+	MCFG_ADDRESSABLE_LATCH_Q4_OUT_CB(WRITELINE(centiped_state, led_2_w))
+	MCFG_ADDRESSABLE_LATCH_Q7_OUT_CB(WRITELINE(centiped_state, flip_screen_w))
+
+	MCFG_WATCHDOG_ADD("watchdog")
+
+>>>>>>> upstream/master
 	/* video hardware */
 	MCFG_SCREEN_ADD("screen", RASTER)
 	MCFG_SCREEN_REFRESH_RATE(60)
@@ -2166,8 +2436,13 @@ DRIVER_INIT_MEMBER(centiped_state,bullsdrt)
 
 DRIVER_INIT_MEMBER(centiped_state,multiped)
 {
+<<<<<<< HEAD
 	UINT8 *src = memregion("user1")->base();
 	UINT8 *dest = memregion("maincpu")->base();
+=======
+	uint8_t *src = memregion("user1")->base();
+	uint8_t *dest = memregion("maincpu")->base();
+>>>>>>> upstream/master
 
 	// descramble rom and put in maincpu region
 	for (int i = 0; i < 0x10000; i++)
@@ -2187,6 +2462,7 @@ DRIVER_INIT_MEMBER(centiped_state,multiped)
  *************************************/
 
 // Centipede, Millipede, and clones
+<<<<<<< HEAD
 GAME( 1980, centiped,  0,        centiped, centiped4,driver_device,  0,        ROT270, "Atari", "Centipede (revision 4)", MACHINE_SUPPORTS_SAVE ) /* 1 Player Only with Timer Options */
 GAME( 1980, centiped3, centiped, centiped, centiped, driver_device,  0,        ROT270, "Atari", "Centipede (revision 3)", MACHINE_SUPPORTS_SAVE )
 GAME( 1980, centiped2, centiped, centiped, centiped, driver_device,  0,        ROT270, "Atari", "Centipede (revision 2)", MACHINE_SUPPORTS_SAVE )
@@ -2204,6 +2480,25 @@ GAME( 2002, multiped,  0,        multiped, multiped, centiped_state, multiped, R
 // other Atari games
 GAME( 1980, warlords,  0,        warlords, warlords, driver_device,  0,        ROT0,   "Atari", "Warlords", MACHINE_SUPPORTS_SAVE )
 GAME( 1981, mazeinv,   0,        mazeinv,  mazeinv,  driver_device,  0,        ROT270, "Atari", "Maze Invaders (prototype)", 0 )
+=======
+GAME( 1980, centiped,  0,        centiped, centiped4,centiped_state, 0,        ROT270, "Atari", "Centipede (revision 4)", MACHINE_SUPPORTS_SAVE ) /* 1 Player Only with Timer Options */
+GAME( 1980, centiped3, centiped, centiped, centiped, centiped_state, 0,        ROT270, "Atari", "Centipede (revision 3)", MACHINE_SUPPORTS_SAVE )
+GAME( 1980, centiped2, centiped, centiped, centiped, centiped_state, 0,        ROT270, "Atari", "Centipede (revision 2)", MACHINE_SUPPORTS_SAVE )
+GAME( 1980, centiped1, centiped, centiped, centiped, centiped_state, 0,        ROT270, "Atari", "Centipede (revision 1)", MACHINE_SUPPORTS_SAVE )
+GAME( 1980, centipdb,  centiped, centipdb, centiped, centiped_state, 0,        ROT270, "bootleg", "Centipede (bootleg)", MACHINE_SUPPORTS_SAVE )
+GAME( 1989, centipdd,  centiped, centiped, centiped, centiped_state, 0,        ROT270, "hack (Two-Bit Score)", "Centipede Dux (hack)", MACHINE_SUPPORTS_SAVE )
+GAME( 1980, caterplr,  centiped, caterplr, caterplr, centiped_state, 0,        ROT270, "bootleg (Olympia)", "Caterpillar (bootleg of Centipede)", MACHINE_SUPPORTS_SAVE )
+GAME( 1980, millpac,   centiped, centipdb, centiped, centiped_state, 0,        ROT270, "bootleg? (Valadon Automation)", "Millpac (bootleg of Centipede)", MACHINE_SUPPORTS_SAVE )
+GAME( 1980, magworm,   centiped, magworm,  magworm,  centiped_state, 0,        ROT270, "bootleg (Sidam)", "Magic Worm (bootleg of Centipede, set 1)", MACHINE_SUPPORTS_SAVE )
+GAME( 1980, magworma,  centiped, magworm,  magworm,  centiped_state, 0,        ROT270, "bootleg", "Magic Worm (bootleg of Centipede, set 2)", MACHINE_SUPPORTS_SAVE | MACHINE_NOT_WORKING )
+GAME( 1982, milliped,  0,        milliped, milliped, centiped_state, 0,        ROT270, "Atari", "Millipede", MACHINE_SUPPORTS_SAVE )
+GAME( 1989, millipdd,  milliped, milliped, milliped, centiped_state, 0,        ROT270, "hack (Two-Bit Score)", "Millipede Dux (hack)", MACHINE_SUPPORTS_SAVE )
+GAME( 2002, multiped,  0,        multiped, multiped, centiped_state, multiped, ROT270, "hack (Braze Technologies)", "Multipede (Centipede/Millipede multigame kit)", MACHINE_NOT_WORKING | MACHINE_SUPPORTS_SAVE )
+
+// other Atari games
+GAME( 1980, warlords,  0,        warlords, warlords, centiped_state, 0,        ROT0,   "Atari", "Warlords", MACHINE_SUPPORTS_SAVE )
+GAME( 1981, mazeinv,   0,        mazeinv,  mazeinv,  centiped_state, 0,        ROT270, "Atari", "Maze Invaders (prototype)", 0 )
+>>>>>>> upstream/master
 
 // other manufacturers
 GAME( 1985, bullsdrt,  0,        bullsdrt, bullsdrt, centiped_state, bullsdrt, ROT270, "Shinkai Inc. (Magic Electronics Inc. license)", "Bulls Eye Darts", MACHINE_WRONG_COLORS | MACHINE_SUPPORTS_SAVE )

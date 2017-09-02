@@ -50,7 +50,11 @@ main(int argc, char *argv[])
   XML_SetUserData(parser, &depth);
   XML_SetElementHandler(parser, startElement, endElement);
   do {
+<<<<<<< HEAD
     int len = (int)fread(buf, 1, sizeof(buf), stdin);
+=======
+    size_t len = fread(buf, 1, sizeof(buf), stdin);
+>>>>>>> upstream/master
     done = len < sizeof(buf);
     if (XML_Parse(parser, buf, len, done) == XML_STATUS_ERROR) {
       fprintf(stderr,

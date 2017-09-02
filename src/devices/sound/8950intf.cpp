@@ -18,10 +18,15 @@
 * NOTES
 *
 ******************************************************************************/
+<<<<<<< HEAD
+=======
+#include "emu.h"
+>>>>>>> upstream/master
 #include "8950intf.h"
 #include "fmopl.h"
 
 
+<<<<<<< HEAD
 static void IRQHandler(void *param,int irq)
 {
 	y8950_device *y8950 = (y8950_device *) param;
@@ -29,6 +34,9 @@ static void IRQHandler(void *param,int irq)
 }
 
 void y8950_device::_IRQHandler(int irq)
+=======
+void y8950_device::irq_handler(int irq)
+>>>>>>> upstream/master
 {
 	m_irq_handler(irq);
 }
@@ -47,6 +55,7 @@ void y8950_device::device_timer(emu_timer &timer, device_timer_id id, int param,
 	}
 }
 
+<<<<<<< HEAD
 static void timer_handler(void *param, int c, const attotime &period)
 {
 	y8950_device *y8950 = (y8950_device *) param;
@@ -54,6 +63,9 @@ static void timer_handler(void *param, int c, const attotime &period)
 }
 
 void y8950_device::_timer_handler(int c, const attotime &period)
+=======
+void y8950_device::timer_handler(int c, const attotime &period)
+>>>>>>> upstream/master
 {
 	if( period == attotime::zero )
 	{   /* Reset FM Timer */
@@ -66,6 +78,7 @@ void y8950_device::_timer_handler(int c, const attotime &period)
 }
 
 
+<<<<<<< HEAD
 static unsigned char Y8950PortHandler_r(void *param)
 {
 	y8950_device *y8950 = (y8950_device *) param;
@@ -110,6 +123,8 @@ void y8950_device::_Y8950KeyboardHandler_w(unsigned char data)
 	m_keyboard_write_handler((offs_t)0,data);
 }
 
+=======
+>>>>>>> upstream/master
 //-------------------------------------------------
 //  sound_stream_update - handle a stream update
 //-------------------------------------------------
@@ -119,6 +134,7 @@ void y8950_device::sound_stream_update(sound_stream &stream, stream_sample_t **i
 	y8950_update_one(m_chip, outputs[0], samples);
 }
 
+<<<<<<< HEAD
 static void y8950_update_request(void *param, int interval)
 {
 	y8950_device *y8950 = (y8950_device *) param;
@@ -130,6 +146,8 @@ void y8950_device::_y8950_update_request()
 	m_stream->update();
 }
 
+=======
+>>>>>>> upstream/master
 
 //-------------------------------------------------
 //  device_start - device-specific startup
@@ -147,6 +165,7 @@ void y8950_device::device_start()
 
 	/* stream system initialize */
 	m_chip = y8950_init(this,clock(),rate);
+<<<<<<< HEAD
 	assert_always(m_chip != NULL, "Error creating Y8950 chip");
 
 	/* ADPCM ROM data */
@@ -161,6 +180,22 @@ void y8950_device::device_start()
 	y8950_set_timer_handler (m_chip, timer_handler, this);
 	y8950_set_irq_handler   (m_chip, IRQHandler, this);
 	y8950_set_update_handler(m_chip, y8950_update_request, this);
+=======
+	assert_always(m_chip != nullptr, "Error creating Y8950 chip");
+
+	/* ADPCM ROM data */
+	y8950_set_delta_t_memory(m_chip, m_region->base(), m_region->bytes());
+
+	m_stream = machine().sound().stream_alloc(*this,0,1,rate);
+	/* port and keyboard handler */
+	y8950_set_port_handler(m_chip, &y8950_device::static_port_handler_w, &y8950_device::static_port_handler_r, this);
+	y8950_set_keyboard_handler(m_chip, &y8950_device::static_keyboard_handler_w, &y8950_device::static_keyboard_handler_r, this);
+
+	/* Y8950 setup */
+	y8950_set_timer_handler (m_chip, &y8950_device::static_timer_handler, this);
+	y8950_set_irq_handler   (m_chip, &y8950_device::static_irq_handler, this);
+	y8950_set_update_handler(m_chip, &y8950_device::static_update_request, this);
+>>>>>>> upstream/master
 
 	m_timer[0] = timer_alloc(0);
 	m_timer[1] = timer_alloc(1);
@@ -201,6 +236,7 @@ WRITE8_MEMBER( y8950_device::control_port_w ) { write(space, 0, data); }
 WRITE8_MEMBER( y8950_device::write_port_w ) { write(space, 1, data); }
 
 
+<<<<<<< HEAD
 const device_type Y8950 = &device_creator<y8950_device>;
 
 y8950_device::y8950_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
@@ -223,5 +259,21 @@ y8950_device::y8950_device(const machine_config &mconfig, const char *tag, devic
 //-------------------------------------------------
 
 void y8950_device::device_config_complete()
+=======
+DEFINE_DEVICE_TYPE(Y8950, y8950_device, "y8950", "Y8950 MSX-Audio")
+
+y8950_device::y8950_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: device_t(mconfig, Y8950, tag, owner, clock)
+	, device_sound_interface(mconfig, *this)
+	, m_stream(nullptr)
+	, m_timer{ nullptr, nullptr }
+	, m_chip(nullptr)
+	, m_irq_handler(*this)
+	, m_keyboard_read_handler(*this)
+	, m_keyboard_write_handler(*this)
+	, m_io_read_handler(*this)
+	, m_io_write_handler(*this)
+	, m_region(*this, DEVICE_SELF)
+>>>>>>> upstream/master
 {
 }

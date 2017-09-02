@@ -6,6 +6,10 @@
 
 **********************************************************************/
 
+<<<<<<< HEAD
+=======
+#include "emu.h"
+>>>>>>> upstream/master
 #include "ecbbus.h"
 
 
@@ -14,7 +18,11 @@
 //  GLOBAL VARIABLES
 //**************************************************************************
 
+<<<<<<< HEAD
 const device_type ECBBUS_SLOT = &device_creator<ecbbus_slot_device>;
+=======
+DEFINE_DEVICE_TYPE(ECBBUS_SLOT, ecbbus_slot_device, "ecbbus_slot", "ECB bus slot")
+>>>>>>> upstream/master
 
 
 
@@ -26,9 +34,16 @@ const device_type ECBBUS_SLOT = &device_creator<ecbbus_slot_device>;
 //  ecbbus_slot_device - constructor
 //-------------------------------------------------
 
+<<<<<<< HEAD
 ecbbus_slot_device::ecbbus_slot_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock) :
 		device_t(mconfig, ECBBUS_SLOT, "ECB bus slot", tag, owner, clock, "ecbbus_slot", __FILE__),
 		device_slot_interface(mconfig, *this), m_bus_tag(nullptr), m_bus_num(0), m_bus(nullptr)
+=======
+ecbbus_slot_device::ecbbus_slot_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock) :
+	device_t(mconfig, ECBBUS_SLOT, tag, owner, clock),
+	device_slot_interface(mconfig, *this),
+	m_bus_tag(nullptr), m_bus_num(0), m_bus(nullptr)
+>>>>>>> upstream/master
 {
 }
 
@@ -62,7 +77,11 @@ void ecbbus_slot_device::device_start()
 //  DEVICE DEFINITIONS
 //**************************************************************************
 
+<<<<<<< HEAD
 const device_type ECBBUS = &device_creator<ecbbus_device>;
+=======
+DEFINE_DEVICE_TYPE(ECBBUS, ecbbus_device, "ecbbus", "ECB bus")
+>>>>>>> upstream/master
 
 
 
@@ -90,6 +109,7 @@ device_ecbbus_card_interface::device_ecbbus_card_interface(const machine_config 
 //  ecbbus_device - constructor
 //-------------------------------------------------
 
+<<<<<<< HEAD
 ecbbus_device::ecbbus_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock) :
 	device_t(mconfig, ECBBUS, "ECB bus", tag, owner, clock, "ecbbus", __FILE__),
 	m_write_irq(*this),
@@ -97,6 +117,14 @@ ecbbus_device::ecbbus_device(const machine_config &mconfig, const char *tag, dev
 {
 	for (int i = 0; i < MAX_ECBBUS_SLOTS; i++)
 		m_ecbbus_device[i] = NULL;
+=======
+ecbbus_device::ecbbus_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock) :
+	device_t(mconfig, ECBBUS, tag, owner, clock),
+	m_write_irq(*this),
+	m_write_nmi(*this)
+{
+	std::fill(std::begin(m_ecbbus_device), std::end(m_ecbbus_device), nullptr);
+>>>>>>> upstream/master
 }
 
 
@@ -128,6 +156,7 @@ void ecbbus_device::add_card(device_ecbbus_card_interface *card, int pos)
 
 READ8_MEMBER( ecbbus_device::mem_r )
 {
+<<<<<<< HEAD
 	UINT8 data = 0;
 
 	for (int i = 0; i < MAX_ECBBUS_SLOTS; i++)
@@ -135,6 +164,15 @@ READ8_MEMBER( ecbbus_device::mem_r )
 		if (m_ecbbus_device[i] != NULL)
 		{
 			data |= m_ecbbus_device[i]->ecbbus_mem_r(offset);
+=======
+	uint8_t data = 0;
+
+	for (auto & elem : m_ecbbus_device)
+	{
+		if (elem != nullptr)
+		{
+			data |= elem->ecbbus_mem_r(offset);
+>>>>>>> upstream/master
 		}
 	}
 
@@ -148,11 +186,19 @@ READ8_MEMBER( ecbbus_device::mem_r )
 
 WRITE8_MEMBER( ecbbus_device::mem_w )
 {
+<<<<<<< HEAD
 	for (int i = 0; i < MAX_ECBBUS_SLOTS; i++)
 	{
 		if (m_ecbbus_device[i] != NULL)
 		{
 			m_ecbbus_device[i]->ecbbus_mem_w(offset, data);
+=======
+	for (auto & elem : m_ecbbus_device)
+	{
+		if (elem != nullptr)
+		{
+			elem->ecbbus_mem_w(offset, data);
+>>>>>>> upstream/master
 		}
 	}
 }
@@ -164,6 +210,7 @@ WRITE8_MEMBER( ecbbus_device::mem_w )
 
 READ8_MEMBER( ecbbus_device::io_r )
 {
+<<<<<<< HEAD
 	UINT8 data = 0;
 
 	for (int i = 0; i < MAX_ECBBUS_SLOTS; i++)
@@ -171,6 +218,15 @@ READ8_MEMBER( ecbbus_device::io_r )
 		if (m_ecbbus_device[i] != NULL)
 		{
 			data |= m_ecbbus_device[i]->ecbbus_io_r(offset);
+=======
+	uint8_t data = 0;
+
+	for (auto & elem : m_ecbbus_device)
+	{
+		if (elem != nullptr)
+		{
+			data |= elem->ecbbus_io_r(offset);
+>>>>>>> upstream/master
 		}
 	}
 
@@ -184,11 +240,19 @@ READ8_MEMBER( ecbbus_device::io_r )
 
 WRITE8_MEMBER( ecbbus_device::io_w )
 {
+<<<<<<< HEAD
 	for (int i = 0; i < MAX_ECBBUS_SLOTS; i++)
 	{
 		if (m_ecbbus_device[i] != NULL)
 		{
 			m_ecbbus_device[i]->ecbbus_io_w(offset, data);
+=======
+	for (auto & elem : m_ecbbus_device)
+	{
+		if (elem != nullptr)
+		{
+			elem->ecbbus_io_w(offset, data);
+>>>>>>> upstream/master
 		}
 	}
 }

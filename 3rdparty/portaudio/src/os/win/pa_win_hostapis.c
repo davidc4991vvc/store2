@@ -1,5 +1,9 @@
 /*
+<<<<<<< HEAD
  * $Id: pa_win_hostapis.c 1728 2011-08-18 03:31:51Z rossb $
+=======
+ * $Id$
+>>>>>>> upstream/master
  * Portable Audio I/O Library Windows initialization table
  *
  * Based on the Open Source API proposed by Ross Bencina

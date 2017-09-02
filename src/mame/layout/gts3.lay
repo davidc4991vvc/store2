@@ -1,3 +1,7 @@
+<<<<<<< HEAD
+=======
+<?xml version="1.0"?>
+>>>>>>> upstream/master
 <!-- gts3 copied from gts80b.lay -->
 
 <!-- 2014-10-18: Initial version. -->
@@ -151,4 +155,8 @@
 			<bounds left="466" top="100" right="486" bottom="139" />
 		</bezel>
 	</view>
+<<<<<<< HEAD
 </mamelayout>
+=======
+</mamelayout>
+>>>>>>> upstream/master

@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 // license:???
 // copyright-holders:insideoutboy
 /*
@@ -17,6 +18,14 @@ away from where you are trying to get.  When you reach your goal
 you get another more difficult screen, etc.
 
 -------------------------------------------------------------------------
+=======
+// license:BSD-3-Clause
+// copyright-holders:David Haywood
+
+// **** SKELETON DRIVER **** original removed due to unresolved licensing.
+
+/*
+>>>>>>> upstream/master
 
 Marine Date
 Taito 1981
@@ -108,6 +117,7 @@ Notes:
 Top and Middle PCBs are plugged in with the solder-sides together.
 Lower PCB is plugged in with components facing up.
 -------------------------------------------------------------------------
+<<<<<<< HEAD
 
 todo:
 in cocktail mopde p1 is flipped
@@ -153,11 +163,17 @@ p2 ink doesn't always light up in test mode
 
 #include "emu.h"
 #include "cpu/z80/z80.h"
+=======
+*/
+
+#include "emu.h"
+>>>>>>> upstream/master
 
 class marinedt_state : public driver_device
 {
 public:
 	marinedt_state(const machine_config &mconfig, device_type type, const char *tag)
+<<<<<<< HEAD
 		: driver_device(mconfig, type, tag),
 		m_tx_tileram(*this, "tx_tileram"),
 		m_maincpu(*this, "maincpu"),
@@ -759,6 +775,20 @@ MACHINE_CONFIG_END
 
 ***************************************************************************/
 
+=======
+		: driver_device(mconfig, type, tag)
+	{ }
+};
+
+
+static INPUT_PORTS_START( marinedt )
+INPUT_PORTS_END
+
+
+static MACHINE_CONFIG_START( marinedt )
+MACHINE_CONFIG_END
+
+>>>>>>> upstream/master
 ROM_START( marinedt )
 	ROM_REGION( 0x10000, "maincpu", 0 )
 	ROM_LOAD( "mg01.3d",     0x0000, 0x0800, CRC(ad09f04d) SHA1(932fc973b4a2fbbebd7e6437ed30c8444e3d4afb))
@@ -781,6 +811,7 @@ ROM_START( marinedt )
 	ROM_LOAD( "mg13.6h",     0x0000, 0x1000, CRC(17817044) SHA1(8c9b96620e3c414952e6d85c6e81b0df85c88e7a) )
 
 	ROM_REGION( 0x0080, "proms", 0 )
+<<<<<<< HEAD
 	ROM_LOAD( "mg14.2a",  0x0000, 0x0020, CRC(f75f4e3a) SHA1(36e665987f475c57435fa8c224a2a3ce0c5e672b) )    //char clr
 	ROM_LOAD( "mg15.1a",  0x0020, 0x0020, CRC(cd3ab489) SHA1(a77478fb94d0cf8f4317f89cc9579def7c294b4f) )    //obj clr
 	ROM_LOAD( "mg16.4e",  0x0040, 0x0020, CRC(92c868bc) SHA1(483ae6f47845ddacb701528e82bd388d7d66a0fb) )    //?? collisions
@@ -788,3 +819,12 @@ ROM_START( marinedt )
 ROM_END
 
 GAME( 1981, marinedt, 0, marinedt, marinedt, driver_device, 0, ROT270, "Taito", "Marine Date", MACHINE_NO_SOUND | MACHINE_SUPPORTS_SAVE )
+=======
+	ROM_LOAD( "mg14.2a",  0x0000, 0x0020, CRC(f75f4e3a) SHA1(36e665987f475c57435fa8c224a2a3ce0c5e672b) )
+	ROM_LOAD( "mg15.1a",  0x0020, 0x0020, CRC(cd3ab489) SHA1(a77478fb94d0cf8f4317f89cc9579def7c294b4f) )
+	ROM_LOAD( "mg16.4e",  0x0040, 0x0020, CRC(92c868bc) SHA1(483ae6f47845ddacb701528e82bd388d7d66a0fb) )
+	ROM_LOAD( "mg17.bpr", 0x0060, 0x0020, CRC(13261a02) SHA1(050edd18e4f79d19d5206f55f329340432fd4099) )
+ROM_END
+
+GAME( 1981, marinedt, 0, marinedt, marinedt, marinedt_state, 0, ROT270, "Taito", "Marine Date", MACHINE_IS_SKELETON )
+>>>>>>> upstream/master

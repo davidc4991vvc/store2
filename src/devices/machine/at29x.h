@@ -7,6 +7,7 @@
     August 2015
 */
 
+<<<<<<< HEAD
 #ifndef __AT29X__
 #define __AT29X__
 
@@ -30,15 +31,30 @@ enum  s_pgm_t
 	PGM_2,
 	PGM_3
 };
+=======
+#ifndef MAME_MACHINE_AT29X_H
+#define MAME_MACHINE_AT29X_H
+
+#pragma once
+
+
+DECLARE_DEVICE_TYPE(AT29C020,  at29c020_device)
+DECLARE_DEVICE_TYPE(AT29C040,  at29c040_device)
+DECLARE_DEVICE_TYPE(AT29C040A, at29c040a_device)
+>>>>>>> upstream/master
 
 class at29x_device : public device_t, public device_nvram_interface
 {
 public:
+<<<<<<< HEAD
 	at29x_device(const machine_config &mconfig, device_type type, const char *name, const char *tag, device_t *owner, UINT32 clock, const char *shortname, const char *source);
+=======
+>>>>>>> upstream/master
 	DECLARE_READ8_MEMBER( read );
 	DECLARE_WRITE8_MEMBER( write );
 
 protected:
+<<<<<<< HEAD
 	virtual void device_start(void);
 	virtual void device_reset(void);
 	virtual void device_stop(void);
@@ -54,6 +70,25 @@ protected:
 	int        m_word_width;
 	int        m_device_id;
 	int        m_sector_size;
+=======
+	at29x_device(const machine_config &mconfig, device_type type, const char *tag, device_t *owner, uint32_t clock, int memory_size, int device_id, int sector_size);
+
+	virtual void device_start(void) override;
+	virtual void device_reset(void) override;
+	virtual void device_stop(void) override;
+	virtual void device_timer(emu_timer &timer, device_timer_id id, int param, void *ptr) override;
+
+	void       nvram_default() override;
+	void       nvram_read(emu_file &file) override;
+	void       nvram_write(emu_file &file) override;
+
+	int        get_sector_number(offs_t address) { return address / m_sector_size; }
+
+	const int  m_memory_size;   // bytes
+	int        m_word_width;
+	const int  m_device_id;
+	const int  m_sector_size;
+>>>>>>> upstream/master
 	int        m_cycle_time;        // ms
 	int        m_boot_block_size;
 	int        m_version;
@@ -61,9 +96,30 @@ protected:
 	int        m_sector_mask;
 
 private:
+<<<<<<< HEAD
 	void        sync_flags(void);
 
 	UINT8*      m_eememory;
+=======
+	enum s_cmd_t
+	{
+		CMD_0 = 0,
+		CMD_1,
+		CMD_2
+	};
+
+	enum s_pgm_t
+	{
+		PGM_0 = 0,
+		PGM_1,
+		PGM_2,
+		PGM_3
+	};
+
+	void        sync_flags(void);
+
+	std::unique_ptr<uint8_t[]>      m_eememory;
+>>>>>>> upstream/master
 
 	bool        m_lower_bbl;              // set when lower boot block lockout is enabled
 	bool        m_higher_bbl;             // set when upper boot block lockout is enabled
@@ -78,7 +134,11 @@ private:
 	bool        m_disabling_sdb;          // set when a sdp disable command is in progress
 	bool        m_toggle_bit;             // indicates flashing in progress (toggles for each query)
 
+<<<<<<< HEAD
 	UINT8*      m_programming_buffer;
+=======
+	std::unique_ptr<uint8_t[]>      m_programming_buffer;
+>>>>>>> upstream/master
 	int         m_programming_last_offset;
 	emu_timer*  m_programming_timer;
 };
@@ -89,19 +149,31 @@ private:
 class at29c020_device : public at29x_device
 {
 public:
+<<<<<<< HEAD
 	at29c020_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
+=======
+	at29c020_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
+>>>>>>> upstream/master
 };
 
 class at29c040_device : public at29x_device
 {
 public:
+<<<<<<< HEAD
 	at29c040_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
+=======
+	at29c040_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
+>>>>>>> upstream/master
 };
 
 class at29c040a_device : public at29x_device
 {
 public:
+<<<<<<< HEAD
 	at29c040a_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
+=======
+	at29c040a_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
+>>>>>>> upstream/master
 };
 
 #define MCFG_AT29C020_ADD(_tag )    \
@@ -113,4 +185,8 @@ public:
 #define MCFG_AT29C040A_ADD(_tag )    \
 	MCFG_DEVICE_ADD(_tag, AT29C040A, 0)
 
+<<<<<<< HEAD
 #endif
+=======
+#endif // MAME_MACHINE_AT29X_H
+>>>>>>> upstream/master

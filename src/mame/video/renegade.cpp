@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 // license:???
+=======
+// license:BSD-3-Clause
+>>>>>>> upstream/master
 // copyright-holders:Phil Stroffolino, Carlos A. Lozano, Rob Rosenbrock
 /***************************************************************************
 
@@ -41,8 +45,13 @@ WRITE8_MEMBER(renegade_state::scroll_msb_w)
 
 TILE_GET_INFO_MEMBER(renegade_state::get_bg_tilemap_info)
 {
+<<<<<<< HEAD
 	const UINT8 *source = &m_bg_videoram[tile_index];
 	UINT8 attributes = source[0x400]; /* CCC??BBB */
+=======
+	const uint8_t *source = &m_bg_videoram[tile_index];
+	uint8_t attributes = source[0x400]; /* CCC??BBB */
+>>>>>>> upstream/master
 	SET_TILE_INFO_MEMBER(1 + (attributes & 0x7),
 		source[0],
 		attributes >> 5,
@@ -51,8 +60,13 @@ TILE_GET_INFO_MEMBER(renegade_state::get_bg_tilemap_info)
 
 TILE_GET_INFO_MEMBER(renegade_state::get_fg_tilemap_info)
 {
+<<<<<<< HEAD
 	const UINT8 *source = &m_fg_videoram[tile_index];
 	UINT8 attributes = source[0x400];
+=======
+	const uint8_t *source = &m_fg_videoram[tile_index];
+	uint8_t attributes = source[0x400];
+>>>>>>> upstream/master
 	SET_TILE_INFO_MEMBER(0,
 		(attributes & 3) * 256 + source[0],
 		attributes >> 6,
@@ -61,8 +75,13 @@ TILE_GET_INFO_MEMBER(renegade_state::get_fg_tilemap_info)
 
 void renegade_state::video_start()
 {
+<<<<<<< HEAD
 	m_bg_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(renegade_state::get_bg_tilemap_info),this), TILEMAP_SCAN_ROWS,      16, 16, 64, 16);
 	m_fg_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(renegade_state::get_fg_tilemap_info),this), TILEMAP_SCAN_ROWS,   8, 8, 32, 32);
+=======
+	m_bg_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(renegade_state::get_bg_tilemap_info),this), TILEMAP_SCAN_ROWS,      16, 16, 64, 16);
+	m_fg_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(renegade_state::get_fg_tilemap_info),this), TILEMAP_SCAN_ROWS,   8, 8, 32, 32);
+>>>>>>> upstream/master
 
 	m_fg_tilemap->set_transparent_pen(0);
 	m_bg_tilemap->set_scrolldx(256, 0);
@@ -72,8 +91,13 @@ void renegade_state::video_start()
 
 void renegade_state::draw_sprites(bitmap_ind16 &bitmap, const rectangle &cliprect)
 {
+<<<<<<< HEAD
 	UINT8 *source = m_spriteram;
 	UINT8 *finish = source + 96 * 4;
+=======
+	uint8_t *source = m_spriteram;
+	uint8_t *finish = source + 96 * 4;
+>>>>>>> upstream/master
 
 	while (source < finish)
 	{
@@ -121,7 +145,11 @@ void renegade_state::draw_sprites(bitmap_ind16 &bitmap, const rectangle &cliprec
 	}
 }
 
+<<<<<<< HEAD
 UINT32 renegade_state::screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+=======
+uint32_t renegade_state::screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+>>>>>>> upstream/master
 {
 	m_bg_tilemap->set_scrollx(0, m_scrollx);
 	m_bg_tilemap->draw(screen, bitmap, cliprect, 0 , 0);

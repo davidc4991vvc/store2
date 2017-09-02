@@ -1,9 +1,17 @@
 // license:BSD-3-Clause
+<<<<<<< HEAD
 // copyright-holders:K.Wilkins
 #pragma once
 
 #ifndef __DISC_DEV_H__
 #define __DISC_DEV_H__
+=======
+// copyright-holders:K.Wilkins,Couriersud,Derrick Renaud,Frank Palazzolo
+#ifndef MAME_SOUND_DISC_DEV_H
+#define MAME_SOUND_DISC_DEV_H
+
+#pragma once
+>>>>>>> upstream/master
 
 /***********************************************************************
  *
@@ -126,4 +134,8 @@ DISCRETE_CLASS_STEP_RESET(dsd_ls624, 1,
 	int             m_out_type;
 );
 
+<<<<<<< HEAD
 #endif /* __DISC_WAV_H__ */
+=======
+#endif // MAME_SOUND_DISC_DEV_H
+>>>>>>> upstream/master

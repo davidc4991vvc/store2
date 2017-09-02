@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 // license:???
+=======
+// license:BSD-3-Clause
+>>>>>>> upstream/master
 // copyright-holders:Stefan Jokisch
 /***************************************************************************
 
@@ -18,7 +22,11 @@ WRITE8_MEMBER(orbit_state::orbit_playfield_w)
 
 TILE_GET_INFO_MEMBER(orbit_state::get_tile_info)
 {
+<<<<<<< HEAD
 	UINT8 code = m_playfield_ram[tile_index];
+=======
+	uint8_t code = m_playfield_ram[tile_index];
+>>>>>>> upstream/master
 	int flags = 0;
 
 	if (BIT(code, 6))
@@ -32,13 +40,21 @@ TILE_GET_INFO_MEMBER(orbit_state::get_tile_info)
 
 void orbit_state::video_start()
 {
+<<<<<<< HEAD
 	m_bg_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(orbit_state::get_tile_info),this), TILEMAP_SCAN_ROWS, 16, 16, 32, 30);
+=======
+	m_bg_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(orbit_state::get_tile_info),this), TILEMAP_SCAN_ROWS, 16, 16, 32, 30);
+>>>>>>> upstream/master
 }
 
 
 void orbit_state::draw_sprites( bitmap_ind16 &bitmap, const rectangle &cliprect )
 {
+<<<<<<< HEAD
 	const UINT8* p = m_sprite_ram;
+=======
+	const uint8_t* p = m_sprite_ram;
+>>>>>>> upstream/master
 
 	int i;
 
@@ -77,7 +93,11 @@ void orbit_state::draw_sprites( bitmap_ind16 &bitmap, const rectangle &cliprect 
 }
 
 
+<<<<<<< HEAD
 UINT32 orbit_state::screen_update_orbit(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+=======
+uint32_t orbit_state::screen_update_orbit(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+>>>>>>> upstream/master
 {
 	m_flip_screen = ioport("DSW2")->read() & 8;
 

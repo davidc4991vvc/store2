@@ -11,12 +11,16 @@
 #ifndef __SDLWINDOW__
 #define __SDLWINDOW__
 
+<<<<<<< HEAD
 #include "sdlinc.h"
+=======
+>>>>>>> upstream/master
 #include "osdsdl.h"
 #include "video.h"
 
 #include "modules/osdwindow.h"
 
+<<<<<<< HEAD
 // I don't like this, but we're going to get spurious "cast to integer of different size" warnings on
 // at least one architecture without doing it this way.
 #ifdef PTR64
@@ -24,11 +28,18 @@ typedef UINT64 HashT;
 #else
 typedef UINT32 HashT;
 #endif
+=======
+#include <cstdint>
+#include <memory>
+#include <list>
+
+>>>>>>> upstream/master
 
 //============================================================
 //  TYPE DEFINITIONS
 //============================================================
 
+<<<<<<< HEAD
 #define OSDWORK_CALLBACK(name)  void *name(void *param, ATTR_UNUSED int threadid)
 
 class sdl_window_info : public osd_window
@@ -104,11 +115,57 @@ public:
 #endif
 
 	osd_dim blit_surface_size();
+=======
+class render_target;
+
+// forward of SDL_DisplayMode not possible (typedef struct) - define wrapper
+
+class SDL_DM_Wrapper;
+
+typedef uintptr_t HashT;
+
+#define OSDWORK_CALLBACK(name)  void *name(void *param, ATTR_UNUSED int threadid)
+
+class sdl_window_info : public osd_window_t<SDL_Window*>
+{
+public:
+	sdl_window_info(running_machine &a_machine, int index, std::shared_ptr<osd_monitor_info> a_monitor,
+			const osd_window_config *config);
+
+	~sdl_window_info();
+
+	int window_init();
+
+	void update() override;
+	void toggle_full_screen();
+	void modify_prescale(int dir);
+	void resize(int32_t width, int32_t height);
+	void destroy() override;
+
+	void capture_pointer() override;
+	void release_pointer() override;
+	void show_pointer() override;
+	void hide_pointer() override;
+
+	void notify_changed();
+
+	osd_dim get_size() override;
+
+	int xy_to_render_target(int x, int y, int *xt, int *yt);
+
+	running_machine &machine() const override { return m_machine; }
+	osd_monitor_info *monitor() const override { return m_monitor.get(); }
+	int fullscreen() const override { return m_fullscreen; }
+
+	render_target *target() override { return m_target; }
+
+>>>>>>> upstream/master
 	int prescale() const { return m_prescale; }
 
 	// Pointer to next window
 	sdl_window_info *   m_next;
 
+<<<<<<< HEAD
 #if (SDLMAME_SDL2)
 	// These are used in combine resizing events ... #if SDL13_COMBINE_RESIZE
 	int                 m_resize_width;
@@ -116,6 +173,8 @@ public:
 	osd_ticks_t         m_last_resize;
 #endif
 
+=======
+>>>>>>> upstream/master
 private:
 	// window handle and info
 	char                m_title[256];
@@ -126,6 +185,7 @@ private:
 	osd_dim             m_windowed_dim;
 
 	// rendering info
+<<<<<<< HEAD
 	osd_event *         m_rendered_event;
 	render_target *     m_target;
 
@@ -149,6 +209,20 @@ private:
 	static OSDWORK_CALLBACK( complete_create_wt );
 protected:
 	osd_renderer &renderer() { return *m_renderer; }
+=======
+	osd_event           m_rendered_event;
+	render_target *     m_target;
+
+	// Original display_mode
+	SDL_DM_Wrapper      *m_original_mode;
+
+	int                 m_extra_flags;
+
+	// returns 0 on success, else 1
+	int complete_create();
+	void complete_destroy();
+
+>>>>>>> upstream/master
 private:
 	int wnd_extra_width();
 	int wnd_extra_height();
@@ -162,6 +236,7 @@ private:
 
 	// Pointer to machine
 	running_machine &   m_machine;
+<<<<<<< HEAD
 	// monitor info
 	osd_monitor_info *  m_monitor;
 	int                 m_fullscreen;
@@ -176,6 +251,14 @@ private:
 	static OSDWORK_CALLBACK( sdlwindow_toggle_full_screen_wt );
 	static OSDWORK_CALLBACK( notify_changed_wt );
 	static OSDWORK_CALLBACK( update_cursor_state_wt );
+=======
+
+	// monitor info
+	std::shared_ptr<osd_monitor_info>  m_monitor;
+	int                                m_fullscreen;
+	bool                               m_mouse_captured;
+	bool                               m_mouse_hidden;
+>>>>>>> upstream/master
 
 	void measure_fps(int update);
 
@@ -184,6 +267,7 @@ private:
 struct osd_draw_callbacks
 {
 	osd_renderer *(*create)(osd_window *window);
+<<<<<<< HEAD
 	void (*exit)(void);
 };
 
@@ -195,6 +279,11 @@ struct osd_draw_callbacks
 extern sdl_window_info *sdl_window_list;
 
 //============================================================
+=======
+};
+
+//============================================================
+>>>>>>> upstream/master
 //  PROTOTYPES
 //============================================================
 
@@ -202,8 +291,11 @@ extern sdl_window_info *sdl_window_list;
 // PROTOTYPES - drawsdl.c
 //============================================================
 
+<<<<<<< HEAD
 int drawsdl_init(osd_draw_callbacks *callbacks);
 const char *drawsdl_scale_mode_str(int index);
+=======
+>>>>>>> upstream/master
 int drawsdl_scale_mode(const char *s);
 
 //============================================================

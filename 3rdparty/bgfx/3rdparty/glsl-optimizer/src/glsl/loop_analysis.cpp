@@ -25,11 +25,18 @@
 #include "loop_analysis.h"
 #include "ir_hierarchical_visitor.h"
 #include "ir_variable_refcount.h"
+<<<<<<< HEAD
 
 static bool is_loop_terminator(ir_if *ir);
 
 static bool used_outside_loops(exec_node *head, ir_variable *var, bool first_assignment);
 
+=======
+#include "util/hash_table.h"
+
+static bool is_loop_terminator(ir_if *ir);
+
+>>>>>>> upstream/master
 static bool all_expression_operands_are_loop_constant(ir_rvalue *,
 						      hash_table *);
 
@@ -84,6 +91,11 @@ loop_state::loop_state()
             hash_table_pointer_compare);
    this->ht_non_inductors = hash_table_ctor(0, hash_table_pointer_hash,
 										 hash_table_pointer_compare);
+<<<<<<< HEAD
+=======
+   this->ht_variables = hash_table_ctor(0, hash_table_pointer_hash,
+										 hash_table_pointer_compare);
+>>>>>>> upstream/master
    this->mem_ctx = ralloc_context(NULL);
    this->loop_found = false;
 }
@@ -94,6 +106,10 @@ loop_state::~loop_state()
    hash_table_dtor(this->ht);
    hash_table_dtor(this->ht_inductors);
    hash_table_dtor(this->ht_non_inductors);
+<<<<<<< HEAD
+=======
+   hash_table_dtor(this->ht_variables);
+>>>>>>> upstream/master
    ralloc_free(this->mem_ctx);
 }
 
@@ -122,10 +138,43 @@ loop_state::get_for_inductor(const ir_variable *ir)
    return (loop_variable_state *) hash_table_find(this->ht_inductors, ir);
 }
 
+<<<<<<< HEAD
 void
 loop_state::insert_non_inductor(ir_variable *var)
 {
 	// key doesn't matter, just needs to be non-NULL
+=======
+static void *unreferenced_variable = (void *)1;
+static void *assigned_variable = (void *)2;
+
+void
+loop_state::insert_variable(ir_variable *var)
+{
+	// data starts as 1. If an assignment is seen, it's replaced with 2.
+	// this way we can mark a variable as a non-inductor if it's referenced
+	// other than the first assignment
+	hash_table_insert(this->ht_variables, unreferenced_variable, var);
+}
+
+void
+loop_state::reference_variable(ir_variable *var, bool assignment)
+{
+	void *ref = hash_table_find(this->ht_variables, var);
+
+	// variable declaration was not seen or already discarded, just ignore
+	if (ref == NULL)
+		return;
+
+	if (ref == unreferenced_variable && assignment)
+	{
+		hash_table_replace(this->ht_variables, assigned_variable, var);
+		return;
+	}
+
+	// variable is referenced and not just in an initial assignment,
+	// so it cannot be an inductor
+	hash_table_remove(this->ht_variables, var);
+>>>>>>> upstream/master
 	hash_table_insert(this->ht_non_inductors, this, var);
 }
 
@@ -266,10 +315,20 @@ public:
    virtual ir_visitor_status visit_enter(ir_if *);
    virtual ir_visitor_status visit_leave(ir_if *);
 
+<<<<<<< HEAD
+=======
+   void visit_general(ir_instruction *);
+
+>>>>>>> upstream/master
    loop_state *loops;
 
    int if_statement_depth;
 
+<<<<<<< HEAD
+=======
+   bool first_pass;
+
+>>>>>>> upstream/master
    ir_assignment *current_assignment;
 
    exec_list state;
@@ -277,10 +336,24 @@ public:
 
 } /* anonymous namespace */
 
+<<<<<<< HEAD
 loop_analysis::loop_analysis(loop_state *loops)
    : loops(loops), if_statement_depth(0), current_assignment(NULL)
 {
    /* empty */
+=======
+void loop_enter_callback(class ir_instruction *ir, void *data)
+{
+   ((loop_analysis *)data)->visit_general(ir);
+}
+
+loop_analysis::loop_analysis(loop_state *loops)
+   : loops(loops), if_statement_depth(0), current_assignment(NULL), first_pass(false)
+{
+   /* empty */
+   data_enter = this;
+   callback_enter = &loop_enter_callback;
+>>>>>>> upstream/master
 }
 
 
@@ -308,6 +381,7 @@ loop_analysis::visit(ir_variable *var)
 	if (!this->state.is_empty())
 		return visit_continue;
 
+<<<<<<< HEAD
 	// Check if this variable is used outside a loop anywhere. If it is, it can't be a
 	// variable that's private to the loop, so can't be an inductor.
 	// This doesn't reject all possible non-inductors, notably anything declared in an
@@ -318,6 +392,13 @@ loop_analysis::visit(ir_variable *var)
 		// add to list of "non inductors"
 		loops->insert_non_inductor(var);
 	}
+=======
+	// In the first pass over the instructions we look at variables declared and
+	// examine their references to determine if they can be an inductor or not
+	// for the second pass
+	if (this->first_pass)
+		loops->insert_variable(var);
+>>>>>>> upstream/master
 
 	return visit_continue;
 }
@@ -339,10 +420,22 @@ loop_analysis::visit_enter(ir_call *)
 ir_visitor_status
 loop_analysis::visit(ir_dereference_variable *ir)
 {
+<<<<<<< HEAD
    /* If we're not somewhere inside a loop, there's nothing to do.
     */
    if (this->state.is_empty())
       return visit_continue;
+=======
+   /* If we're not somewhere inside a loop, just check for
+    * non-inductors
+    */
+   if (this->state.is_empty() || this->first_pass)
+   {
+      if (this->state.is_empty() && this->first_pass)
+         loops->reference_variable(ir->variable_referenced(), this->in_assignee);
+      return visit_continue;
+   }
+>>>>>>> upstream/master
 
    bool nested = false;
 
@@ -382,8 +475,16 @@ loop_analysis::visit_leave(ir_loop *ir)
     * We could perform some conservative analysis (prove there's no statically
     * possible assignment, etc.) but it isn't worth it for now; function
     * inlining will allow us to unroll loops anyway.
+<<<<<<< HEAD
     */
    if (ls->contains_calls)
+=======
+    *
+    * We also skip doing any work in the first pass, where we are just identifying
+    * variables that cannot be inductors.
+    */
+   if (ls->contains_calls || this->first_pass)
+>>>>>>> upstream/master
       return visit_continue;
 
    foreach_in_list(ir_instruction, node, &ir->body_instructions) {
@@ -591,7 +692,11 @@ loop_analysis::visit_enter(ir_assignment *ir)
    /* If we're not somewhere inside a loop, there's nothing to do.
     */
    if (this->state.is_empty())
+<<<<<<< HEAD
       return visit_continue_with_parent;
+=======
+      return visit_continue;
+>>>>>>> upstream/master
 
    this->current_assignment = ir;
 
@@ -601,10 +706,15 @@ loop_analysis::visit_enter(ir_assignment *ir)
 ir_visitor_status
 loop_analysis::visit_leave(ir_assignment *ir)
 {
+<<<<<<< HEAD
    /* Since the visit_enter exits with visit_continue_with_parent for this
     * case, the loop state stack should never be empty here.
     */
    assert(!this->state.is_empty());
+=======
+   if (this->state.is_empty())
+      return visit_continue;
+>>>>>>> upstream/master
 
    assert(this->current_assignment == ir);
    this->current_assignment = NULL;
@@ -612,6 +722,27 @@ loop_analysis::visit_leave(ir_assignment *ir)
    return visit_continue;
 }
 
+<<<<<<< HEAD
+=======
+void
+loop_analysis::visit_general(ir_instruction *ir)
+{
+   /* If we're inside a loop, we can't start marking things as non-inductors
+    * Likewise in the second pass we've done all this work, so return early
+    */
+   if (!this->state.is_empty() || !this->first_pass)
+      return;
+
+   ir_variable_refcount_visitor refs;
+   ir->accept (&refs);
+
+   struct hash_entry *referenced_var;
+   hash_table_foreach (refs.ht, referenced_var) {
+      ir_variable *var = (ir_variable *)referenced_var->key;
+      loops->reference_variable(var, false);
+   }
+}
+>>>>>>> upstream/master
 
 class examine_rhs : public ir_hierarchical_visitor {
 public:
@@ -733,6 +864,7 @@ is_loop_terminator(ir_if *ir)
    return true;
 }
 
+<<<<<<< HEAD
 
 bool
 used_outside_loops(exec_node *head, ir_variable *var, bool first_assignment)
@@ -793,12 +925,29 @@ used_outside_loops(exec_node *head, ir_variable *var, bool first_assignment)
 }
 
 
+=======
+>>>>>>> upstream/master
 loop_state *
 analyze_loop_variables(exec_list *instructions)
 {
    loop_state *loops = new loop_state;
    loop_analysis v(loops);
 
+<<<<<<< HEAD
    v.run(instructions);
+=======
+   /* Do two passes over the instructions. The first pass builds a view
+    * of the variables declared and whether or not they're used outside
+    * of loops (if so, they cannot be inductors).
+    *
+    * In the second pass we apply this information to do the loop analysis
+    * itself.
+    */
+   v.first_pass = true;
+   v.run(instructions);
+   v.first_pass = false;
+   v.run(instructions);
+
+>>>>>>> upstream/master
    return v.loops;
 }

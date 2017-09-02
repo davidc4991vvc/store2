@@ -9,8 +9,15 @@
 
 ***************************************************************************/
 
+<<<<<<< HEAD
 #ifndef __H8_INTC_H__
 #define __H8_INTC_H__
+=======
+#ifndef MAME_CPU_H8_H8_INTC_H
+#define MAME_CPU_H8_H8_INTC_H
+
+#pragma once
+>>>>>>> upstream/master
 
 #include "h8.h"
 
@@ -26,8 +33,12 @@
 
 class h8_intc_device : public device_t {
 public:
+<<<<<<< HEAD
 	h8_intc_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
 	h8_intc_device(const machine_config &mconfig, device_type type, const char *name, const char *tag, device_t *owner, UINT32 clock, const char *shortname, const char *source);
+=======
+	h8_intc_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
+>>>>>>> upstream/master
 
 	int interrupt_taken(int vector);
 	void internal_interrupt(int vector);
@@ -48,6 +59,7 @@ protected:
 
 	required_device<h8_device> cpu;
 
+<<<<<<< HEAD
 	UINT32 pending_irqs[MAX_VECTORS/32];
 	int irq_type[8];
 	bool nmi_input;
@@ -59,6 +71,21 @@ protected:
 
 	virtual void device_start();
 	virtual void device_reset();
+=======
+	uint32_t pending_irqs[MAX_VECTORS/32];
+	int irq_type[8];
+	bool nmi_input;
+	uint8_t irq_input;
+	uint8_t ier;
+	uint8_t isr;
+	uint16_t iscr;
+	int icr_filter, ipr_filter;
+
+	h8_intc_device(const machine_config &mconfig, device_type type, const char *tag, device_t *owner, uint32_t clock);
+
+	virtual void device_start() override;
+	virtual void device_reset() override;
+>>>>>>> upstream/master
 
 	virtual void get_priority(int vect, int &icr_pri, int &ipr_pri) const;
 	void update_irq_state();
@@ -68,8 +95,12 @@ protected:
 
 class h8h_intc_device : public h8_intc_device {
 public:
+<<<<<<< HEAD
 	h8h_intc_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
 	h8h_intc_device(const machine_config &mconfig, device_type type, const char *name, const char *tag, device_t *owner, UINT32 clock, const char *shortname, const char *source);
+=======
+	h8h_intc_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
+>>>>>>> upstream/master
 
 	DECLARE_READ8_MEMBER(isr_r);
 	DECLARE_WRITE8_MEMBER(isr_w);
@@ -85,23 +116,39 @@ public:
 protected:
 	static const int vector_to_slot[];
 
+<<<<<<< HEAD
 	UINT32 icr;
 
 	virtual void device_start();
 	virtual void device_reset();
 
 	virtual void get_priority(int vect, int &icr_pri, int &ipr_pri) const;
+=======
+	uint32_t icr;
+
+	h8h_intc_device(const machine_config &mconfig, device_type type, const char *tag, device_t *owner, uint32_t clock);
+
+	virtual void device_start() override;
+	virtual void device_reset() override;
+
+	virtual void get_priority(int vect, int &icr_pri, int &ipr_pri) const override;
+>>>>>>> upstream/master
 	void update_irq_types();
 };
 
 class h8s_intc_device : public h8h_intc_device {
 public:
+<<<<<<< HEAD
 	h8s_intc_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
+=======
+	h8s_intc_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
+>>>>>>> upstream/master
 
 	DECLARE_READ8_MEMBER(ipr_r);
 	DECLARE_WRITE8_MEMBER(ipr_w);
 	DECLARE_READ8_MEMBER(iprk_r);
 	DECLARE_WRITE8_MEMBER(iprk_w);
+<<<<<<< HEAD
 
 	void set_mode_8(bool mode_8);
 
@@ -118,3 +165,18 @@ extern const device_type H8H_INTC;
 extern const device_type H8S_INTC;
 
 #endif
+=======
+private:
+	static const int vector_to_slot[];
+	uint8_t ipr[11];
+
+	virtual void get_priority(int vect, int &icr_pri, int &ipr_pri) const override;
+	virtual void device_reset() override;
+};
+
+DECLARE_DEVICE_TYPE(H8_INTC,  h8_intc_device)
+DECLARE_DEVICE_TYPE(H8H_INTC, h8h_intc_device)
+DECLARE_DEVICE_TYPE(H8S_INTC, h8s_intc_device)
+
+#endif // MAME_CPU_H8_H8_INTC_H
+>>>>>>> upstream/master

@@ -8,11 +8,20 @@
 
 ***************************************************************************/
 
+<<<<<<< HEAD
 #include "ser_mouse.h"
 
 
 serial_mouse_device::serial_mouse_device(const machine_config &mconfig, device_type type, const char *name, const char *tag, device_t *owner, UINT32 clock, const char *shortname, const char *source)
 	: device_t(mconfig, type, name, tag, owner, clock, shortname, source),
+=======
+#include "emu.h"
+#include "ser_mouse.h"
+
+
+serial_mouse_device::serial_mouse_device(const machine_config &mconfig, device_type type, const char *tag, device_t *owner, uint32_t clock)
+	: device_t(mconfig, type, tag, owner, clock),
+>>>>>>> upstream/master
 	device_rs232_port_interface(mconfig, *this),
 	device_serial_interface(mconfig, *this),
 	m_dtr(1),
@@ -28,6 +37,7 @@ serial_mouse_device::serial_mouse_device(const machine_config &mconfig, device_t
 {
 }
 
+<<<<<<< HEAD
 const device_type MSFT_SERIAL_MOUSE = &device_creator<microsoft_mouse_device>;
 
 microsoft_mouse_device::microsoft_mouse_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
@@ -39,6 +49,19 @@ const device_type MSYSTEM_SERIAL_MOUSE = &device_creator<mouse_systems_mouse_dev
 
 mouse_systems_mouse_device::mouse_systems_mouse_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
 	: serial_mouse_device(mconfig, MSYSTEM_SERIAL_MOUSE, "Mouse Systems Serial Mouse", tag, owner, clock, "mouse_systems_mouse", __FILE__)
+=======
+DEFINE_DEVICE_TYPE(MSFT_SERIAL_MOUSE, microsoft_mouse_device, "microsoft_mouse", "Microsoft Serial Mouse")
+
+microsoft_mouse_device::microsoft_mouse_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: serial_mouse_device(mconfig, MSFT_SERIAL_MOUSE, tag, owner, clock)
+{
+}
+
+DEFINE_DEVICE_TYPE(MSYSTEM_SERIAL_MOUSE, mouse_systems_mouse_device, "mouse_systems_mouse", "Mouse Systems Serial Mouse")
+
+mouse_systems_mouse_device::mouse_systems_mouse_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: serial_mouse_device(mconfig, MSYSTEM_SERIAL_MOUSE, tag, owner, clock)
+>>>>>>> upstream/master
 {
 }
 
@@ -85,6 +108,7 @@ void serial_mouse_device::tra_callback()
  **************************************************************************/
 void serial_mouse_device::device_timer(emu_timer &timer, device_timer_id id, int param, void *ptr)
 {
+<<<<<<< HEAD
 	if (id)
 	{
 		device_serial_interface::device_timer(timer, id, param, ptr);
@@ -125,6 +149,44 @@ void serial_mouse_device::device_timer(emu_timer &timer, device_timer_id id, int
 
 	if(m_tail != m_head && is_transmit_register_empty())
 		transmit_register_setup(unqueue_data());
+=======
+	if (!id)
+	{
+		static int ox = 0, oy = 0;
+		int nx,ny;
+		int dx, dy, nb;
+		int mbc;
+
+		/* Do not get deltas or send packets if queue is not empty (Prevents drifting) */
+		if (m_head==m_tail)
+		{
+			nx = m_x->read();
+
+			dx = nx - ox;
+			if (dx<=-0x800) dx = nx + 0x1000 - ox; /* Prevent jumping */
+			if (dx>=0x800) dx = nx - 0x1000 - ox;
+			ox = nx;
+
+			ny = m_y->read();
+
+			dy = ny - oy;
+			if (dy<=-0x800) dy = ny + 0x1000 - oy;
+			if (dy>=0x800) dy = ny - 0x1000 - oy;
+			oy = ny;
+
+			nb = m_btn->read();
+			mbc = nb^m_mb;
+			m_mb = nb;
+
+			/* check if there is any delta or mouse buttons changed */
+			if ( (dx!=0) || (dy!=0) || (mbc!=0) )
+				mouse_trans(dx, dy, nb, mbc);
+		}
+
+		if(m_tail != m_head && is_transmit_register_empty())
+			transmit_register_setup(unqueue_data());
+	}
+>>>>>>> upstream/master
 }
 
 void microsoft_mouse_device::mouse_trans(int dx, int dy, int nb, int mbc)
@@ -132,7 +194,11 @@ void microsoft_mouse_device::mouse_trans(int dx, int dy, int nb, int mbc)
 	/* split deltas into packets of -128..+127 max */
 	do
 	{
+<<<<<<< HEAD
 		UINT8 m0, m1, m2;
+=======
+		uint8_t m0, m1, m2;
+>>>>>>> upstream/master
 		int ddx = (dx < -128) ? -128 : (dx > 127) ? 127 : dx;
 		int ddy = (dy < -128) ? -128 : (dy > 127) ? 127 : dy;
 		m0 = 0x40 | ((nb << 4) & 0x30) | ((ddx >> 6) & 0x03) | ((ddy >> 4) & 0x0c);

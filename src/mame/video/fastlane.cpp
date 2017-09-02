@@ -6,7 +6,11 @@
 
 PALETTE_INIT_MEMBER(fastlane_state, fastlane)
 {
+<<<<<<< HEAD
 	const UINT8 *color_prom = memregion("proms")->base();
+=======
+	const uint8_t *color_prom = memregion("proms")->base();
+>>>>>>> upstream/master
 	int pal;
 
 	for (pal = 0; pal < 0x10; pal++)
@@ -15,7 +19,11 @@ PALETTE_INIT_MEMBER(fastlane_state, fastlane)
 
 		for (i = 0; i < 0x400; i++)
 		{
+<<<<<<< HEAD
 			UINT8 ctabentry = (i & 0x3f0) | color_prom[(pal << 4) | (i & 0x0f)];
+=======
+			uint8_t ctabentry = (i & 0x3f0) | color_prom[(pal << 4) | (i & 0x0f)];
+>>>>>>> upstream/master
 			palette.set_pen_indirect((pal << 10) | i, ctabentry);
 		}
 	}
@@ -31,9 +39,15 @@ PALETTE_INIT_MEMBER(fastlane_state, fastlane)
 
 TILE_GET_INFO_MEMBER(fastlane_state::get_tile_info0)
 {
+<<<<<<< HEAD
 	UINT8 ctrl_3 = m_k007121->ctrlram_r(generic_space(), 3);
 	UINT8 ctrl_4 = m_k007121->ctrlram_r(generic_space(), 4);
 	UINT8 ctrl_5 = m_k007121->ctrlram_r(generic_space(), 5);
+=======
+	uint8_t ctrl_3 = m_k007121->ctrlram_r(generic_space(), 3);
+	uint8_t ctrl_4 = m_k007121->ctrlram_r(generic_space(), 4);
+	uint8_t ctrl_5 = m_k007121->ctrlram_r(generic_space(), 5);
+>>>>>>> upstream/master
 	int attr = m_videoram1[tile_index];
 	int code = m_videoram1[tile_index + 0x400];
 	int bit0 = (ctrl_5 >> 0) & 0x03;
@@ -58,9 +72,15 @@ TILE_GET_INFO_MEMBER(fastlane_state::get_tile_info0)
 
 TILE_GET_INFO_MEMBER(fastlane_state::get_tile_info1)
 {
+<<<<<<< HEAD
 	UINT8 ctrl_3 = m_k007121->ctrlram_r(generic_space(), 3);
 	UINT8 ctrl_4 = m_k007121->ctrlram_r(generic_space(), 4);
 	UINT8 ctrl_5 = m_k007121->ctrlram_r(generic_space(), 5);
+=======
+	uint8_t ctrl_3 = m_k007121->ctrlram_r(generic_space(), 3);
+	uint8_t ctrl_4 = m_k007121->ctrlram_r(generic_space(), 4);
+	uint8_t ctrl_5 = m_k007121->ctrlram_r(generic_space(), 5);
+>>>>>>> upstream/master
 	int attr = m_videoram2[tile_index];
 	int code = m_videoram2[tile_index + 0x400];
 	int bit0 = (ctrl_5 >> 0) & 0x03;
@@ -91,8 +111,13 @@ TILE_GET_INFO_MEMBER(fastlane_state::get_tile_info1)
 
 void fastlane_state::video_start()
 {
+<<<<<<< HEAD
 	m_layer0 = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(fastlane_state::get_tile_info0),this), TILEMAP_SCAN_ROWS, 8, 8, 32, 32);
 	m_layer1 = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(fastlane_state::get_tile_info1),this), TILEMAP_SCAN_ROWS, 8, 8, 32, 32);
+=======
+	m_layer0 = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(fastlane_state::get_tile_info0),this), TILEMAP_SCAN_ROWS, 8, 8, 32, 32);
+	m_layer1 = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(fastlane_state::get_tile_info1),this), TILEMAP_SCAN_ROWS, 8, 8, 32, 32);
+>>>>>>> upstream/master
 
 	m_layer0->set_scroll_rows(32);
 
@@ -130,7 +155,11 @@ WRITE8_MEMBER(fastlane_state::fastlane_vram2_w)
 
 ***************************************************************************/
 
+<<<<<<< HEAD
 UINT32 fastlane_state::screen_update_fastlane(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+=======
+uint32_t fastlane_state::screen_update_fastlane(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+>>>>>>> upstream/master
 {
 	rectangle finalclip0 = m_clip0, finalclip1 = m_clip1;
 	int i, xoffs;
@@ -139,7 +168,11 @@ UINT32 fastlane_state::screen_update_fastlane(screen_device &screen, bitmap_ind1
 	finalclip1 &= cliprect;
 
 	/* set scroll registers */
+<<<<<<< HEAD
 	address_space &space = machine().driver_data()->generic_space();
+=======
+	address_space &space = machine().dummy_space();
+>>>>>>> upstream/master
 	xoffs = m_k007121->ctrlram_r(space, 0);
 	for (i = 0; i < 32; i++)
 		m_layer0->set_scrollx(i, m_k007121_regs[0x20 + i] + xoffs - 40);
@@ -147,7 +180,11 @@ UINT32 fastlane_state::screen_update_fastlane(screen_device &screen, bitmap_ind1
 	m_layer0->set_scrolly(0, m_k007121->ctrlram_r(space, 2));
 
 	m_layer0->draw(screen, bitmap, finalclip0, 0, 0);
+<<<<<<< HEAD
 	m_k007121->sprites_draw(bitmap, cliprect, m_gfxdecode->gfx(0), m_palette, m_spriteram, 0, 40, 0, screen.priority(), (UINT32)-1);
+=======
+	m_k007121->sprites_draw(bitmap, cliprect, m_gfxdecode->gfx(0), *m_palette, m_spriteram, 0, 40, 0, screen.priority(), (uint32_t)-1);
+>>>>>>> upstream/master
 	m_layer1->draw(screen, bitmap, finalclip1, 0, 0);
 	return 0;
 }

@@ -72,15 +72,25 @@ bool cc525dsdd_format::supports_save() const
 	return true;
 }
 
+<<<<<<< HEAD
 void cc525dsdd_format::find_size(io_generic *io, UINT8 &track_count, UINT8 &head_count, UINT8 &sector_count)
 {
 	UINT64 size = io_generic_size(io);
+=======
+void cc525dsdd_format::find_size(io_generic *io, uint8_t &track_count, uint8_t &head_count, uint8_t &sector_count)
+{
+	uint64_t size = io_generic_size(io);
+>>>>>>> upstream/master
 
 	track_count = 77;
 	head_count = 2;
 	sector_count = 9;
 
+<<<<<<< HEAD
 	UINT32 expected_size = 512 * track_count*head_count*sector_count;
+=======
+	uint32_t expected_size = 512 * track_count*head_count*sector_count;
+>>>>>>> upstream/master
 	if (size == expected_size)
 	{
 		return;
@@ -89,9 +99,15 @@ void cc525dsdd_format::find_size(io_generic *io, UINT8 &track_count, UINT8 &head
 	track_count = head_count = sector_count = 0;
 }
 
+<<<<<<< HEAD
 int cc525dsdd_format::identify(io_generic *io, UINT32 form_factor)
 {
 	UINT8 track_count, head_count, sector_count;
+=======
+int cc525dsdd_format::identify(io_generic *io, uint32_t form_factor)
+{
+	uint8_t track_count, head_count, sector_count;
+>>>>>>> upstream/master
 	find_size(io, track_count, head_count, sector_count);
 
 	if(track_count)
@@ -99,12 +115,21 @@ int cc525dsdd_format::identify(io_generic *io, UINT32 form_factor)
 	return 0;
 }
 
+<<<<<<< HEAD
 bool cc525dsdd_format::load(io_generic *io, UINT32 form_factor, floppy_image *image)
 {
 	UINT8 track_count, head_count, sector_count;
 	find_size(io, track_count, head_count, sector_count);
 
 	UINT8 sectdata[10*512];
+=======
+bool cc525dsdd_format::load(io_generic *io, uint32_t form_factor, floppy_image *image)
+{
+	uint8_t track_count, head_count, sector_count;
+	find_size(io, track_count, head_count, sector_count);
+
+	uint8_t sectdata[10*512];
+>>>>>>> upstream/master
 	desc_s sectors[10];
 	for(int i=0; i<sector_count; i++) {
 		sectors[i+1].data = sectdata + 512*i;
@@ -140,7 +165,11 @@ bool cc525dsdd_format::save(io_generic *io, floppy_image *image)
 	if(sector_count != 9)
 		sector_count = 9;
 
+<<<<<<< HEAD
 	UINT8 sectdata[9*512];
+=======
+	uint8_t sectdata[9*512];
+>>>>>>> upstream/master
 	int track_size = sector_count*512;
 
 	for(int track=0; track < track_count; track++) {

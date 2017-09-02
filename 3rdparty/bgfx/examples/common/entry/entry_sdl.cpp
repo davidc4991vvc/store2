@@ -1,6 +1,11 @@
 /*
+<<<<<<< HEAD
  * Copyright 2011-2015 Branimir Karadzic. All rights reserved.
  * License: http://www.opensource.org/licenses/BSD-2-Clause
+=======
+ * Copyright 2011-2017 Branimir Karadzic. All rights reserved.
+ * License: https://github.com/bkaradzic/bgfx#license-bsd-2-clause
+>>>>>>> upstream/master
  */
 
 #include "entry_p.h"
@@ -11,6 +16,7 @@
 #	define SDL_MAIN_HANDLED
 #endif // BX_PLATFORM_WINDOWS
 
+<<<<<<< HEAD
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_syswm.h>
 #include <bgfx/bgfxplatform.h>
@@ -18,11 +24,67 @@
 #include <stdio.h>
 #include <bx/thread.h>
 #include <bx/handlealloc.h>
+=======
+#include <bx/bx.h>
+
+#include <SDL2/SDL.h>
+
+BX_PRAGMA_DIAGNOSTIC_PUSH()
+BX_PRAGMA_DIAGNOSTIC_IGNORED_CLANG("-Wextern-c-compat")
+#include <SDL2/SDL_syswm.h>
+BX_PRAGMA_DIAGNOSTIC_POP()
+
+#include <bgfx/platform.h>
+#if defined(None) // X11 defines this...
+#	undef None
+#endif // defined(None)
+
+#include <stdio.h>
+#include <bx/mutex.h>
+#include <bx/thread.h>
+#include <bx/handlealloc.h>
+#include <bx/readerwriter.h>
+#include <bx/crtimpl.h>
+>>>>>>> upstream/master
 #include <tinystl/allocator.h>
 #include <tinystl/string.h>
 
 namespace entry
 {
+<<<<<<< HEAD
+=======
+	inline bool sdlSetWindow(SDL_Window* _window)
+	{
+		SDL_SysWMinfo wmi;
+		SDL_VERSION(&wmi.version);
+		if (!SDL_GetWindowWMInfo(_window, &wmi) )
+		{
+			return false;
+		}
+
+		bgfx::PlatformData pd;
+#	if BX_PLATFORM_LINUX || BX_PLATFORM_BSD
+		pd.ndt          = wmi.info.x11.display;
+		pd.nwh          = (void*)(uintptr_t)wmi.info.x11.window;
+#	elif BX_PLATFORM_OSX
+		pd.ndt          = NULL;
+		pd.nwh          = wmi.info.cocoa.window;
+#	elif BX_PLATFORM_WINDOWS
+		pd.ndt          = NULL;
+		pd.nwh          = wmi.info.win.window;
+#	elif BX_PLATFORM_STEAMLINK
+		pd.ndt          = wmi.info.vivante.display;
+		pd.nwh          = wmi.info.vivante.window;
+#	endif // BX_PLATFORM_
+		pd.context      = NULL;
+		pd.backBuffer   = NULL;
+		pd.backBufferDS = NULL;
+		bgfx::setPlatformData(pd);
+
+		return true;
+	}
+
+>>>>>>> upstream/master
 	static uint8_t translateKeyModifiers(uint16_t _sdl)
 	{
 		uint8_t modifiers = 0;
@@ -37,6 +99,28 @@ namespace entry
 		return modifiers;
 	}
 
+<<<<<<< HEAD
+=======
+	static uint8_t translateKeyModifierPress(uint16_t _key)
+	{
+		uint8_t modifier;
+		switch (_key)
+		{
+			case SDL_SCANCODE_LALT:   { modifier = Modifier::LeftAlt;    } break;
+			case SDL_SCANCODE_RALT:   { modifier = Modifier::RightAlt;   } break;
+			case SDL_SCANCODE_LCTRL:  { modifier = Modifier::LeftCtrl;   } break;
+			case SDL_SCANCODE_RCTRL:  { modifier = Modifier::RightCtrl;  } break;
+			case SDL_SCANCODE_LSHIFT: { modifier = Modifier::LeftShift;  } break;
+			case SDL_SCANCODE_RSHIFT: { modifier = Modifier::RightShift; } break;
+			case SDL_SCANCODE_LGUI:   { modifier = Modifier::LeftMeta;   } break;
+			case SDL_SCANCODE_RGUI:   { modifier = Modifier::RightMeta;  } break;
+			default:                  { modifier = 0;                    } break;
+		}
+
+		return modifier;
+	}
+
+>>>>>>> upstream/master
 	static uint8_t s_translateKey[256];
 
 	static void initTranslateKey(uint16_t _sdl, Key::Enum _key)
@@ -74,13 +158,36 @@ namespace entry
 		return GamepadAxis::Enum(s_translateGamepadAxis[_sdl]);
 	}
 
+<<<<<<< HEAD
+=======
+	struct AxisDpadRemap
+	{
+		Key::Enum first;
+		Key::Enum second;
+	};
+
+	static AxisDpadRemap s_axisDpad[] =
+	{
+		{ Key::GamepadLeft, Key::GamepadRight },
+		{ Key::GamepadUp,   Key::GamepadDown  },
+		{ Key::None,        Key::None         },
+		{ Key::GamepadLeft, Key::GamepadRight },
+		{ Key::GamepadUp,   Key::GamepadDown  },
+		{ Key::None,        Key::None         },
+	};
+
+>>>>>>> upstream/master
 	struct GamepadSDL
 	{
 		GamepadSDL()
 			: m_controller(NULL)
 			, m_jid(INT32_MAX)
 		{
+<<<<<<< HEAD
 			memset(m_value, 0, sizeof(m_value) );
+=======
+			bx::memSet(m_value, 0, sizeof(m_value) );
+>>>>>>> upstream/master
 
 			// Deadzone values from xinput.h
 			m_deadzone[GamepadAxis::LeftX ] =
@@ -91,17 +198,72 @@ namespace entry
 			m_deadzone[GamepadAxis::RightZ] = 30;
 		}
 
+<<<<<<< HEAD
 		void create(int32_t _jid)
 		{
 			m_controller = SDL_GameControllerOpen(_jid);
+=======
+		void create(const SDL_JoyDeviceEvent& _jev)
+		{
+			m_joystick = SDL_JoystickOpen(_jev.which);
+			SDL_Joystick* joystick = m_joystick;
+			m_jid = SDL_JoystickInstanceID(joystick);
+		}
+
+		void create(const SDL_ControllerDeviceEvent& _cev)
+		{
+			m_controller = SDL_GameControllerOpen(_cev.which);
+>>>>>>> upstream/master
 			SDL_Joystick* joystick = SDL_GameControllerGetJoystick(m_controller);
 			m_jid = SDL_JoystickInstanceID(joystick);
 		}
 
+<<<<<<< HEAD
 		void destroy()
 		{
 			SDL_GameControllerClose(m_controller);
 			m_controller = NULL;
+=======
+		void update(EventQueue& _eventQueue, WindowHandle _handle, GamepadHandle _gamepad, GamepadAxis::Enum _axis, int32_t _value)
+		{
+			if (filter(_axis, &_value) )
+			{
+				_eventQueue.postAxisEvent(_handle, _gamepad, _axis, _value);
+
+				if (Key::None != s_axisDpad[_axis].first)
+				{
+					if (_value == 0)
+					{
+						_eventQueue.postKeyEvent(_handle, s_axisDpad[_axis].first,  0, false);
+						_eventQueue.postKeyEvent(_handle, s_axisDpad[_axis].second, 0, false);
+					}
+					else
+					{
+						_eventQueue.postKeyEvent(_handle
+								, 0 > _value ? s_axisDpad[_axis].first : s_axisDpad[_axis].second
+								, 0
+								, true
+								);
+					}
+				}
+			}
+		}
+
+		void destroy()
+		{
+			if (NULL != m_controller)
+			{
+				SDL_GameControllerClose(m_controller);
+				m_controller = NULL;
+			}
+
+			if (NULL != m_joystick)
+			{
+				SDL_JoystickClose(m_joystick);
+				m_joystick = NULL;
+			}
+
+>>>>>>> upstream/master
 			m_jid = INT32_MAX;
 		}
 
@@ -119,6 +281,10 @@ namespace entry
 		int32_t m_value[GamepadAxis::Count];
 		int32_t m_deadzone[GamepadAxis::Count];
 
+<<<<<<< HEAD
+=======
+		SDL_Joystick*       m_joystick;
+>>>>>>> upstream/master
 		SDL_GameController* m_controller;
 //		SDL_Haptic*         m_haptic;
 		SDL_JoystickID      m_jid;
@@ -142,12 +308,21 @@ namespace entry
 			return NULL;
 		}
 
+<<<<<<< HEAD
 #	if BX_PLATFORM_LINUX || BX_PLATFORM_FREEBSD
+=======
+#	if BX_PLATFORM_LINUX || BX_PLATFORM_BSD
+>>>>>>> upstream/master
 		return (void*)wmi.info.x11.window;
 #	elif BX_PLATFORM_OSX
 		return wmi.info.cocoa.window;
 #	elif BX_PLATFORM_WINDOWS
 		return wmi.info.win.window;
+<<<<<<< HEAD
+=======
+#	elif BX_PLATFORM_STEAMLINK
+		return wmi.info.vivante.window;
+>>>>>>> upstream/master
 #	endif // BX_PLATFORM_
 	}
 
@@ -218,7 +393,11 @@ namespace entry
 			, m_mouseLock(false)
 			, m_fullscreen(false)
 		{
+<<<<<<< HEAD
 			memset(s_translateKey, 0, sizeof(s_translateKey) );
+=======
+			bx::memSet(s_translateKey, 0, sizeof(s_translateKey) );
+>>>>>>> upstream/master
 			initTranslateKey(SDL_SCANCODE_ESCAPE,       Key::Esc);
 			initTranslateKey(SDL_SCANCODE_RETURN,       Key::Return);
 			initTranslateKey(SDL_SCANCODE_TAB,          Key::Tab);
@@ -234,7 +413,19 @@ namespace entry
 			initTranslateKey(SDL_SCANCODE_END,          Key::End);
 			initTranslateKey(SDL_SCANCODE_PRINTSCREEN,  Key::Print);
 			initTranslateKey(SDL_SCANCODE_KP_PLUS,      Key::Plus);
+<<<<<<< HEAD
 			initTranslateKey(SDL_SCANCODE_KP_MINUS,     Key::Minus);
+=======
+			initTranslateKey(SDL_SCANCODE_EQUALS,       Key::Plus);
+			initTranslateKey(SDL_SCANCODE_KP_MINUS,     Key::Minus);
+			initTranslateKey(SDL_SCANCODE_MINUS,        Key::Minus);
+			initTranslateKey(SDL_SCANCODE_GRAVE,        Key::Tilde);
+			initTranslateKey(SDL_SCANCODE_KP_COMMA,     Key::Comma);
+			initTranslateKey(SDL_SCANCODE_COMMA,        Key::Comma);
+			initTranslateKey(SDL_SCANCODE_KP_PERIOD,    Key::Period);
+			initTranslateKey(SDL_SCANCODE_PERIOD,       Key::Period);
+			initTranslateKey(SDL_SCANCODE_SLASH,        Key::Slash);
+>>>>>>> upstream/master
 			initTranslateKey(SDL_SCANCODE_F1,           Key::F1);
 			initTranslateKey(SDL_SCANCODE_F2,           Key::F2);
 			initTranslateKey(SDL_SCANCODE_F3,           Key::F3);
@@ -294,7 +485,11 @@ namespace entry
 			initTranslateKey(SDL_SCANCODE_Y,            Key::KeyY);
 			initTranslateKey(SDL_SCANCODE_Z,            Key::KeyZ);
 
+<<<<<<< HEAD
 			memset(s_translateGamepad, uint8_t(Key::Count), sizeof(s_translateGamepad) );
+=======
+			bx::memSet(s_translateGamepad, uint8_t(Key::Count), sizeof(s_translateGamepad) );
+>>>>>>> upstream/master
 			initTranslateGamepad(SDL_CONTROLLER_BUTTON_A,             Key::GamepadA);
 			initTranslateGamepad(SDL_CONTROLLER_BUTTON_B,             Key::GamepadB);
 			initTranslateGamepad(SDL_CONTROLLER_BUTTON_X,             Key::GamepadX);
@@ -311,7 +506,11 @@ namespace entry
 			initTranslateGamepad(SDL_CONTROLLER_BUTTON_START,         Key::GamepadStart);
 			initTranslateGamepad(SDL_CONTROLLER_BUTTON_GUIDE,         Key::GamepadGuide);
 
+<<<<<<< HEAD
 			memset(s_translateGamepadAxis, uint8_t(GamepadAxis::Count), sizeof(s_translateGamepadAxis) );
+=======
+			bx::memSet(s_translateGamepadAxis, uint8_t(GamepadAxis::Count), sizeof(s_translateGamepadAxis) );
+>>>>>>> upstream/master
 			initTranslateGamepadAxis(SDL_CONTROLLER_AXIS_LEFTX,        GamepadAxis::LeftX);
 			initTranslateGamepadAxis(SDL_CONTROLLER_AXIS_LEFTY,        GamepadAxis::LeftY);
 			initTranslateGamepadAxis(SDL_CONTROLLER_AXIS_TRIGGERLEFT,  GamepadAxis::LeftZ);
@@ -326,7 +525,10 @@ namespace entry
 			m_mte.m_argv = _argv;
 
 			SDL_Init(0
+<<<<<<< HEAD
 				| SDL_INIT_VIDEO
+=======
+>>>>>>> upstream/master
 				| SDL_INIT_GAMECONTROLLER
 				);
 
@@ -347,7 +549,11 @@ namespace entry
 
 			s_userEventStart = SDL_RegisterEvents(7);
 
+<<<<<<< HEAD
 			bgfx::sdlSetWindow(m_window[0]);
+=======
+			sdlSetWindow(m_window[0]);
+>>>>>>> upstream/master
 			bgfx::renderFrame();
 
 			m_thread.init(MainThreadEntry::threadFunc, &m_mte);
@@ -356,10 +562,25 @@ namespace entry
 			WindowHandle defaultWindow = { 0 };
 			setWindowSize(defaultWindow, m_width, m_height, true);
 
+<<<<<<< HEAD
 			SDL_RWops* rw = SDL_RWFromFile("gamecontrollerdb.txt", "rb");
 			if (NULL != rw)
 			{
 				SDL_GameControllerAddMappingsFromRW(rw, 1);
+=======
+			bx::FileReaderI* reader = getFileReader();
+			if (bx::open(reader, "gamecontrollerdb.txt") )
+			{
+				bx::AllocatorI* allocator = getAllocator();
+				uint32_t size = (uint32_t)bx::getSize(reader);
+				void* data = BX_ALLOC(allocator, size);
+				bx::read(reader, data, size);
+				bx::close(reader);
+
+				SDL_GameControllerAddMapping( (char*)data);
+
+				BX_FREE(allocator, data);
+>>>>>>> upstream/master
 			}
 
 			bool exit = false;
@@ -451,25 +672,54 @@ namespace entry
 								uint8_t modifiers = translateKeyModifiers(kev.keysym.mod);
 								Key::Enum key = translateKey(kev.keysym.scancode);
 
+<<<<<<< HEAD
 								// TODO: These keys are not captured by SDL_TEXTINPUT. Should be probably handled by SDL_TEXTEDITING. This is a workaround for now.
 								if (key == 1) // Escape
+=======
+#if 0
+								DBG("SDL scancode %d, key %d, name %s, key name %s"
+									, kev.keysym.scancode
+									, key
+									, SDL_GetScancodeName(kev.keysym.scancode)
+									, SDL_GetKeyName(kev.keysym.scancode)
+									);
+#endif // 0
+
+								/// If you only press (e.g.) 'shift' and nothing else, then key == 'shift', modifier == 0.
+								/// Further along, pressing 'shift' + 'ctrl' would be: key == 'shift', modifier == 'ctrl.
+								if (0 == key && 0 == modifiers)
+								{
+									modifiers = translateKeyModifierPress(kev.keysym.scancode);
+								}
+
+								if (Key::Esc == key)
+>>>>>>> upstream/master
 								{
 									uint8_t pressedChar[4];
 									pressedChar[0] = 0x1b;
 									m_eventQueue.postCharEvent(handle, 1, pressedChar);
 								}
+<<<<<<< HEAD
 								else if (key == 2) // Enter
+=======
+								else if (Key::Return == key)
+>>>>>>> upstream/master
 								{
 									uint8_t pressedChar[4];
 									pressedChar[0] = 0x0d;
 									m_eventQueue.postCharEvent(handle, 1, pressedChar);
 								}
+<<<<<<< HEAD
 								else if (key == 5) // Backspace
+=======
+								else if (Key::Backspace == key)
+>>>>>>> upstream/master
 								{
 									uint8_t pressedChar[4];
 									pressedChar[0] = 0x08;
 									m_eventQueue.postCharEvent(handle, 1, pressedChar);
 								}
+<<<<<<< HEAD
 								else
 								{
 								    m_eventQueue.postKeyEvent(handle, key, modifiers, kev.state == SDL_PRESSED);
@@ -477,6 +727,14 @@ namespace entry
 							}
 						}
 						break;
+=======
+
+								m_eventQueue.postKeyEvent(handle, key, modifiers, kev.state == SDL_PRESSED);
+							}
+						}
+						break;
+
+>>>>>>> upstream/master
 					case SDL_KEYUP:
 						{
 							const SDL_KeyboardEvent& kev = event.key;
@@ -530,6 +788,21 @@ namespace entry
 						}
 						break;
 
+<<<<<<< HEAD
+=======
+					case SDL_JOYAXISMOTION:
+						{
+							const SDL_JoyAxisEvent& jev = event.jaxis;
+							GamepadHandle handle = findGamepad(jev.which);
+							if (isValid(handle) )
+							{
+								GamepadAxis::Enum axis = translateGamepadAxis(jev.axis);
+								m_gamepad[handle.idx].update(m_eventQueue, defaultWindow, handle, axis, jev.value);
+							}
+						}
+						break;
+
+>>>>>>> upstream/master
 					case SDL_CONTROLLERAXISMOTION:
 						{
 							const SDL_ControllerAxisEvent& aev = event.caxis;
@@ -537,10 +810,30 @@ namespace entry
 							if (isValid(handle) )
 							{
 								GamepadAxis::Enum axis = translateGamepadAxis(aev.axis);
+<<<<<<< HEAD
 								int32_t value = aev.value;
 								if (m_gamepad[handle.idx].filter(axis, &value) )
 								{
 									m_eventQueue.postAxisEvent(defaultWindow, handle, axis, value);
+=======
+								m_gamepad[handle.idx].update(m_eventQueue, defaultWindow, handle, axis, aev.value);
+							}
+						}
+						break;
+
+					case SDL_JOYBUTTONDOWN:
+					case SDL_JOYBUTTONUP:
+						{
+							const SDL_JoyButtonEvent& bev = event.jbutton;
+							GamepadHandle handle = findGamepad(bev.which);
+
+							if (isValid(handle) )
+							{
+								Key::Enum key = translateGamepad(bev.button);
+								if (Key::Count != key)
+								{
+									m_eventQueue.postKeyEvent(defaultWindow, key, 0, event.type == SDL_JOYBUTTONDOWN);
+>>>>>>> upstream/master
 								}
 							}
 						}
@@ -562,6 +855,7 @@ namespace entry
 						}
 						break;
 
+<<<<<<< HEAD
 					case SDL_CONTROLLERDEVICEADDED:
 						{
 							const SDL_ControllerDeviceEvent& cev = event.cdevice;
@@ -570,6 +864,40 @@ namespace entry
 							if (isValid(handle) )
 							{
 								m_gamepad[handle.idx].create(cev.which);
+=======
+					case SDL_JOYDEVICEADDED:
+						{
+							GamepadHandle handle = { m_gamepadAlloc.alloc() };
+							if (isValid(handle) )
+							{
+								const SDL_JoyDeviceEvent& jev = event.jdevice;
+								m_gamepad[handle.idx].create(jev);
+								m_eventQueue.postGamepadEvent(defaultWindow, handle, true);
+							}
+						}
+						break;
+
+					case SDL_JOYDEVICEREMOVED:
+						{
+							const SDL_JoyDeviceEvent& jev = event.jdevice;
+							GamepadHandle handle = findGamepad(jev.which);
+							if (isValid(handle) )
+							{
+								m_gamepad[handle.idx].destroy();
+								m_gamepadAlloc.free(handle.idx);
+								m_eventQueue.postGamepadEvent(defaultWindow, handle, false);
+							}
+						}
+						break;
+
+					case SDL_CONTROLLERDEVICEADDED:
+						{
+							GamepadHandle handle = { m_gamepadAlloc.alloc() };
+							if (isValid(handle) )
+							{
+								const SDL_ControllerDeviceEvent& cev = event.cdevice;
+								m_gamepad[handle.idx].create(cev);
+>>>>>>> upstream/master
 								m_eventQueue.postGamepadEvent(defaultWindow, handle, true);
 							}
 						}
@@ -618,8 +946,13 @@ namespace entry
 									void* nwh = sdlNativeWindowHandle(m_window[handle.idx]);
 									if (NULL != nwh)
 									{
+<<<<<<< HEAD
 										m_eventQueue.postWindowEvent(handle, nwh);
 										m_eventQueue.postSizeEvent(handle, msg->m_width, msg->m_height);
+=======
+										m_eventQueue.postSizeEvent(handle, msg->m_width, msg->m_height);
+										m_eventQueue.postWindowEvent(handle, nwh);
+>>>>>>> upstream/master
 									}
 
 									delete msg;
@@ -722,7 +1055,11 @@ namespace entry
 
 		WindowHandle findHandle(SDL_Window* _window)
 		{
+<<<<<<< HEAD
 			bx::LwMutexScope scope(m_lock);
+=======
+			bx::MutexScope scope(m_lock);
+>>>>>>> upstream/master
 			for (uint32_t ii = 0, num = m_windowAlloc.getNumHandles(); ii < num; ++ii)
 			{
 				uint16_t idx = m_windowAlloc.getHandleAt(ii);
@@ -771,7 +1108,11 @@ namespace entry
 		bx::Thread m_thread;
 
 		EventQueue m_eventQueue;
+<<<<<<< HEAD
 		bx::LwMutex m_lock;
+=======
+		bx::Mutex m_lock;
+>>>>>>> upstream/master
 
 		bx::HandleAllocT<ENTRY_CONFIG_MAX_WINDOWS> m_windowAlloc;
 		SDL_Window* m_window[ENTRY_CONFIG_MAX_WINDOWS];
@@ -810,7 +1151,11 @@ namespace entry
 
 	WindowHandle createWindow(int32_t _x, int32_t _y, uint32_t _width, uint32_t _height, uint32_t _flags, const char* _title)
 	{
+<<<<<<< HEAD
 		bx::LwMutexScope scope(s_ctx.m_lock);
+=======
+		bx::MutexScope scope(s_ctx.m_lock);
+>>>>>>> upstream/master
 		WindowHandle handle = { s_ctx.m_windowAlloc.alloc() };
 
 		if (UINT16_MAX != handle.idx)
@@ -835,7 +1180,11 @@ namespace entry
 		{
 			sdlPostEvent(SDL_USER_WINDOW_DESTROY, _handle);
 
+<<<<<<< HEAD
 			bx::LwMutexScope scope(s_ctx.m_lock);
+=======
+			bx::MutexScope scope(s_ctx.m_lock);
+>>>>>>> upstream/master
 			s_ctx.m_windowAlloc.free(_handle.idx);
 		}
 	}

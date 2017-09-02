@@ -196,8 +196,17 @@ VBlank duration: 1/VSYNC * (16/256) = 1017.6 us
 
 ***************************************************************************/
 
+<<<<<<< HEAD
 #include "includes/gottlieb.h"
 #include "machine/nvram.h"
+=======
+#include "emu.h"
+#include "includes/gottlieb.h"
+
+#include "machine/nvram.h"
+#include "machine/watchdog.h"
+#include "speaker.h"
+>>>>>>> upstream/master
 
 
 #define LOG_AUDIO_DECODE    (0)
@@ -224,19 +233,32 @@ void gottlieb_state::machine_start()
 	save_item(NAME(m_track));
 
 	/* see if we have a laserdisc */
+<<<<<<< HEAD
 	if (m_laserdisc != NULL)
 	{
 		/* attach to the I/O ports */
 		m_maincpu->space(AS_PROGRAM).install_read_handler(0x05805, 0x05807, 0, 0x07f8, read8_delegate(FUNC(gottlieb_state::laserdisc_status_r),this));
 		m_maincpu->space(AS_PROGRAM).install_write_handler(0x05805, 0x05805, 0, 0x07f8, write8_delegate(FUNC(gottlieb_state::laserdisc_command_w),this));    /* command for the player */
 		m_maincpu->space(AS_PROGRAM).install_write_handler(0x05806, 0x05806, 0, 0x07f8, write8_delegate(FUNC(gottlieb_state::laserdisc_select_w),this));
+=======
+	if (m_laserdisc != nullptr)
+	{
+		/* attach to the I/O ports */
+		m_maincpu->space(AS_PROGRAM).install_read_handler(0x05805, 0x05807, 0, 0x07f8, 0, read8_delegate(FUNC(gottlieb_state::laserdisc_status_r),this));
+		m_maincpu->space(AS_PROGRAM).install_write_handler(0x05805, 0x05805, 0, 0x07f8, 0, write8_delegate(FUNC(gottlieb_state::laserdisc_command_w),this));    /* command for the player */
+		m_maincpu->space(AS_PROGRAM).install_write_handler(0x05806, 0x05806, 0, 0x07f8, 0, write8_delegate(FUNC(gottlieb_state::laserdisc_select_w),this));
+>>>>>>> upstream/master
 
 		/* allocate a timer for serial transmission, and one for philips code processing */
 		m_laserdisc_bit_timer = timer_alloc(TIMER_LASERDISC_BIT);
 		m_laserdisc_philips_timer = timer_alloc(TIMER_LASERDISC_PHILIPS);
 
 		/* create some audio RAM */
+<<<<<<< HEAD
 		m_laserdisc_audio_buffer = auto_alloc_array(machine(), UINT8, AUDIORAM_SIZE);
+=======
+		m_laserdisc_audio_buffer = std::make_unique<uint8_t[]>(AUDIORAM_SIZE);
+>>>>>>> upstream/master
 		m_laserdisc_status = 0x38;
 
 		/* more save state registration */
@@ -244,7 +266,11 @@ void gottlieb_state::machine_start()
 		save_item(NAME(m_laserdisc_status));
 		save_item(NAME(m_laserdisc_philips_code));
 
+<<<<<<< HEAD
 		save_pointer(NAME(m_laserdisc_audio_buffer), AUDIORAM_SIZE);
+=======
+		save_pointer(NAME(m_laserdisc_audio_buffer.get()), AUDIORAM_SIZE);
+>>>>>>> upstream/master
 		save_item(NAME(m_laserdisc_audio_address));
 		save_item(NAME(m_laserdisc_last_samples));
 		save_item(NAME(m_laserdisc_last_time));
@@ -259,7 +285,11 @@ void gottlieb_state::machine_start()
 void gottlieb_state::machine_reset()
 {
 	/* if we have a laserdisc, reset our philips code callback for the next line 17 */
+<<<<<<< HEAD
 	if (m_laserdisc != NULL)
+=======
+	if (m_laserdisc != nullptr)
+>>>>>>> upstream/master
 		m_laserdisc_philips_timer->adjust(m_screen->time_until_pos(17), 17);
 }
 
@@ -283,15 +313,25 @@ CUSTOM_INPUT_MEMBER(gottlieb_state::analog_delta_r)
 WRITE8_MEMBER(gottlieb_state::gottlieb_analog_reset_w)
 {
 	/* reset the trackball counters */
+<<<<<<< HEAD
 	m_track[0] = read_safe(ioport("TRACKX"), 0);
 	m_track[1] = read_safe(ioport("TRACKY"), 0);
+=======
+	m_track[0] = m_track_x.read_safe(0);
+	m_track[1] = m_track_y.read_safe(0);
+>>>>>>> upstream/master
 }
 
 
 CUSTOM_INPUT_MEMBER(gottlieb_state::stooges_joystick_r)
 {
+<<<<<<< HEAD
 	static const char *const joyport[] = { "P2JOY", "P3JOY", "P1JOY", NULL };
 	return (joyport[m_joystick_select & 3] != NULL) ? ioport(joyport[m_joystick_select & 3])->read() : 0xff;
+=======
+	static const char *const joyport[] = { "P2JOY", "P3JOY", "P1JOY", nullptr };
+	return (joyport[m_joystick_select & 3] != nullptr) ? ioport(joyport[m_joystick_select & 3])->read() : 0xff;
+>>>>>>> upstream/master
 }
 
 
@@ -305,13 +345,21 @@ CUSTOM_INPUT_MEMBER(gottlieb_state::stooges_joystick_r)
 WRITE8_MEMBER(gottlieb_state::general_output_w)
 {
 	/* bits 0-3 control video features, and are different for laserdisc games */
+<<<<<<< HEAD
 	if (m_laserdisc == NULL)
+=======
+	if (m_laserdisc == nullptr)
+>>>>>>> upstream/master
 		gottlieb_video_control_w(space, offset, data);
 	else
 		gottlieb_laserdisc_video_control_w(space, offset, data);
 
 	/* bit 4 normally controls the coin meter */
+<<<<<<< HEAD
 	coin_counter_w(machine(), 0, data & 0x10);
+=======
+	machine().bookkeeping().coin_counter_w(0, data & 0x10);
+>>>>>>> upstream/master
 
 	/* bit 5 doesn't have a generic function */
 	/* bit 6 controls "COIN1"; it appears that no games used this */
@@ -323,9 +371,15 @@ WRITE8_MEMBER(gottlieb_state::reactor_output_w)
 {
 	general_output_w(space, offset, data & ~0xe0);
 
+<<<<<<< HEAD
 	set_led_status(machine(), 0, data & 0x20);
 	set_led_status(machine(), 1, data & 0x40);
 	set_led_status(machine(), 2, data & 0x80);
+=======
+	output().set_led_value(0, data & 0x20);
+	output().set_led_value(1, data & 0x40);
+	output().set_led_value(2, data & 0x80);
+>>>>>>> upstream/master
 }
 
 WRITE8_MEMBER(gottlieb_state::qbert_output_w)
@@ -384,7 +438,11 @@ READ8_MEMBER(gottlieb_state::laserdisc_status_r)
 	}
 	else
 	{
+<<<<<<< HEAD
 		UINT8 result = m_laserdisc_audio_buffer[m_laserdisc_audio_address++];
+=======
+		uint8_t result = m_laserdisc_audio_buffer[m_laserdisc_audio_address++];
+>>>>>>> upstream/master
 		m_laserdisc_audio_address %= AUDIORAM_SIZE;
 		return result;
 	}
@@ -420,7 +478,11 @@ WRITE8_MEMBER(gottlieb_state::laserdisc_command_w)
 
 TIMER_CALLBACK_MEMBER(gottlieb_state::laserdisc_philips_callback)
 {
+<<<<<<< HEAD
 	UINT32 newcode = m_laserdisc->get_field_code((param == 17) ? LASERDISC_CODE_LINE17 : LASERDISC_CODE_LINE18, TRUE);
+=======
+	uint32_t newcode = m_laserdisc->get_field_code((param == 17) ? LASERDISC_CODE_LINE17 : LASERDISC_CODE_LINE18, true);
+>>>>>>> upstream/master
 
 	/* the PR8210 sends line 17/18 data on each frame; the laserdisc interface
 	   board receives notification and latches the most recent frame number */
@@ -447,8 +509,13 @@ TIMER_CALLBACK_MEMBER(gottlieb_state::laserdisc_bit_off_callback)
 
 TIMER_CALLBACK_MEMBER(gottlieb_state::laserdisc_bit_callback)
 {
+<<<<<<< HEAD
 	UINT8 bitsleft = param >> 16;
 	UINT8 data = param;
+=======
+	uint8_t bitsleft = param >> 16;
+	uint8_t data = param;
+>>>>>>> upstream/master
 	attotime duration;
 
 	/* assert the line and set a timer for deassertion */
@@ -490,7 +557,11 @@ inline void gottlieb_state::audio_end_state()
 }
 
 
+<<<<<<< HEAD
 void gottlieb_state::audio_process_clock(int logit)
+=======
+void gottlieb_state::audio_process_clock(bool logit)
+>>>>>>> upstream/master
 {
 	/* clock the bit through the shift register */
 	m_laserdisc_audio_bits >>= 1;
@@ -531,7 +602,11 @@ void gottlieb_state::audio_process_clock(int logit)
 }
 
 
+<<<<<<< HEAD
 void gottlieb_state::audio_handle_zero_crossing(const attotime &zerotime, int logit)
+=======
+void gottlieb_state::audio_handle_zero_crossing(const attotime &zerotime, bool logit)
+>>>>>>> upstream/master
 {
 	/* compute time from last clock */
 	attotime deltaclock = zerotime - m_laserdisc_last_clock;
@@ -578,9 +653,15 @@ void gottlieb_state::audio_handle_zero_crossing(const attotime &zerotime, int lo
 }
 
 
+<<<<<<< HEAD
 void gottlieb_state::laserdisc_audio_process(laserdisc_device &device, int samplerate, int samples, const INT16 *ch0, const INT16 *ch1)
 {
 	int logit = LOG_AUDIO_DECODE && machine().input().code_pressed(KEYCODE_L);
+=======
+void gottlieb_state::laserdisc_audio_process(laserdisc_device &device, int samplerate, int samples, const int16_t *ch0, const int16_t *ch1)
+{
+	bool logit = LOG_AUDIO_DECODE && machine().input().code_pressed(KEYCODE_L);
+>>>>>>> upstream/master
 	attotime time_per_sample = attotime::from_hz(samplerate);
 	attotime curtime = m_laserdisc_last_time;
 	int cursamp;
@@ -589,7 +670,11 @@ void gottlieb_state::laserdisc_audio_process(laserdisc_device &device, int sampl
 		logerror("--------------\n");
 
 	/* if no data, reset it all */
+<<<<<<< HEAD
 	if (ch1 == NULL)
+=======
+	if (ch1 == nullptr)
+>>>>>>> upstream/master
 	{
 		m_laserdisc_last_time = curtime + time_per_sample * samples;
 		return;
@@ -598,7 +683,11 @@ void gottlieb_state::laserdisc_audio_process(laserdisc_device &device, int sampl
 	/* iterate over samples */
 	for (cursamp = 0; cursamp < samples; cursamp++)
 	{
+<<<<<<< HEAD
 		INT16 sample = ch1[cursamp];
+=======
+		int16_t sample = ch1[cursamp];
+>>>>>>> upstream/master
 
 		/* start by logging the current sample and time */
 		if (logit)
@@ -651,9 +740,15 @@ void gottlieb_state::laserdisc_audio_process(laserdisc_device &device, int sampl
 //   a real kicker/knocker, hook it up via output "knocker0")
 //-------------------------------------------------
 
+<<<<<<< HEAD
 void gottlieb_state::qbert_knocker(UINT8 knock)
 {
 	output_set_value("knocker0", knock);
+=======
+void gottlieb_state::qbert_knocker(uint8_t knock)
+{
+	output().set_value("knocker0", knock);
+>>>>>>> upstream/master
 
 	// start sound on rising edge
 	if (knock & ~m_knocker_prev)
@@ -665,10 +760,17 @@ static const char *const qbert_knocker_names[] =
 {
 	"*qbert",
 	"knocker",
+<<<<<<< HEAD
 	0   /* end of array */
 };
 
 MACHINE_CONFIG_FRAGMENT( qbert_knocker )
+=======
+	nullptr   /* end of array */
+};
+
+MACHINE_CONFIG_START( qbert_knocker )
+>>>>>>> upstream/master
 	MCFG_SPEAKER_ADD("knocker", 0.0, 0.0, 1.0)
 
 	MCFG_SOUND_ADD("knocker_sam", SAMPLES, 0)
@@ -702,7 +804,11 @@ void gottlieb_state::device_timer(emu_timer &timer, device_timer_id id, int para
 		nmi_clear(ptr, param);
 		break;
 	default:
+<<<<<<< HEAD
 		assert_always(FALSE, "Unknown id in gottlieb_state::device_timer");
+=======
+		assert_always(false, "Unknown id in gottlieb_state::device_timer");
+>>>>>>> upstream/master
 	}
 }
 
@@ -719,7 +825,11 @@ INTERRUPT_GEN_MEMBER(gottlieb_state::gottlieb_interrupt)
 	timer_set(m_screen->time_until_pos(0), TIMER_NMI_CLEAR);
 
 	/* if we have a laserdisc, update it */
+<<<<<<< HEAD
 	if (m_laserdisc != NULL)
+=======
+	if (m_laserdisc != nullptr)
+>>>>>>> upstream/master
 	{
 		/* set the "disc ready" bit, which basically indicates whether or not we have a proper video frame */
 		if (!m_laserdisc->video_active())
@@ -739,9 +849,15 @@ INTERRUPT_GEN_MEMBER(gottlieb_state::gottlieb_interrupt)
 
 WRITE8_MEMBER(gottlieb_state::gottlieb_sh_w)
 {
+<<<<<<< HEAD
 	if (m_r1_sound != NULL)
 		m_r1_sound->write(space, offset, data);
 	if (m_r2_sound != NULL)
+=======
+	if (m_r1_sound != nullptr)
+		m_r1_sound->write(space, offset, data);
+	if (m_r2_sound != nullptr)
+>>>>>>> upstream/master
 		m_r2_sound->write(space, offset, data);
 }
 
@@ -753,7 +869,11 @@ static ADDRESS_MAP_START( reactor_map, AS_PROGRAM, 8, gottlieb_state )
 	AM_RANGE(0x4000, 0x4fff) AM_RAM_WRITE(gottlieb_charram_w) AM_SHARE("charram")               /* BOJRSEL1 */
 /*  AM_RANGE(0x5000, 0x5fff) AM_WRITE() */                                                               /* BOJRSEL2 */
 	AM_RANGE(0x6000, 0x601f) AM_MIRROR(0x0fe0) AM_WRITE(gottlieb_paletteram_w) AM_SHARE("paletteram")       /* COLSEL */
+<<<<<<< HEAD
 	AM_RANGE(0x7000, 0x7000) AM_MIRROR(0x0ff8) AM_WRITE(watchdog_reset_w)
+=======
+	AM_RANGE(0x7000, 0x7000) AM_MIRROR(0x0ff8) AM_DEVWRITE("watchdog", watchdog_timer_device, reset_w)
+>>>>>>> upstream/master
 	AM_RANGE(0x7001, 0x7001) AM_MIRROR(0x0ff8) AM_WRITE(gottlieb_analog_reset_w)                        /* A1J2 interface */
 	AM_RANGE(0x7002, 0x7002) AM_MIRROR(0x0ff8) AM_WRITE(gottlieb_sh_w)                                  /* trackball H */
 	AM_RANGE(0x7003, 0x7003) AM_MIRROR(0x0ff8) AM_WRITE(reactor_output_w)                               /* trackball V */
@@ -775,7 +895,11 @@ static ADDRESS_MAP_START( gottlieb_map, AS_PROGRAM, 8, gottlieb_state )
 	AM_RANGE(0x3800, 0x3bff) AM_MIRROR(0x0400) AM_RAM_WRITE(gottlieb_videoram_w) AM_SHARE("videoram")       /* BRSEL */
 	AM_RANGE(0x4000, 0x4fff) AM_RAM_WRITE(gottlieb_charram_w) AM_SHARE("charram")               /* BOJRSEL1 */
 	AM_RANGE(0x5000, 0x501f) AM_MIRROR(0x07e0) AM_WRITE(gottlieb_paletteram_w) AM_SHARE("paletteram")       /* COLSEL */
+<<<<<<< HEAD
 	AM_RANGE(0x5800, 0x5800) AM_MIRROR(0x07f8) AM_WRITE(watchdog_reset_w)
+=======
+	AM_RANGE(0x5800, 0x5800) AM_MIRROR(0x07f8) AM_DEVWRITE("watchdog", watchdog_timer_device, reset_w)
+>>>>>>> upstream/master
 	AM_RANGE(0x5801, 0x5801) AM_MIRROR(0x07f8) AM_WRITE(gottlieb_analog_reset_w)                        /* A1J2 interface */
 	AM_RANGE(0x5802, 0x5802) AM_MIRROR(0x07f8) AM_WRITE(gottlieb_sh_w)                                  /* OP20-27 */
 	AM_RANGE(0x5803, 0x5803) AM_MIRROR(0x07f8) AM_WRITE(general_output_w)                               /* OP30-37 */
@@ -1575,7 +1699,11 @@ static INPUT_PORTS_START( 3stooges )
 	PORT_BIT( 0xff, IP_ACTIVE_LOW, IPT_UNUSED )
 
 	PORT_START("IN4")   /* joystick inputs */
+<<<<<<< HEAD
 	PORT_BIT( 0x0f, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, gottlieb_state,stooges_joystick_r, NULL)
+=======
+	PORT_BIT( 0x0f, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, gottlieb_state,stooges_joystick_r, nullptr)
+>>>>>>> upstream/master
 	PORT_BIT( 0x10, IP_ACTIVE_HIGH, IPT_BUTTON1 ) PORT_PLAYER(2)
 	PORT_BIT( 0x20, IP_ACTIVE_HIGH, IPT_BUTTON1 ) PORT_PLAYER(1)
 	PORT_BIT( 0x40, IP_ACTIVE_HIGH, IPT_BUTTON1 ) PORT_PLAYER(3)
@@ -1747,7 +1875,11 @@ static const gfx_layout fg_layout =
 };
 
 static GFXDECODE_START( gfxdecode )
+<<<<<<< HEAD
 	GFXDECODE_ENTRY( NULL,      0x4000, bg_ram_layout, 0, 1 )   /* the game dynamically modifies this */
+=======
+	GFXDECODE_ENTRY( nullptr,      0x4000, bg_ram_layout, 0, 1 )   /* the game dynamically modifies this */
+>>>>>>> upstream/master
 	GFXDECODE_ENTRY( "bgtiles", 0x0000, bg_rom_layout, 0, 1 )
 	GFXDECODE_ENTRY( "sprites", 0x0000, fg_layout,     0, 1 )
 GFXDECODE_END
@@ -1760,7 +1892,11 @@ GFXDECODE_END
  *
  *************************************/
 
+<<<<<<< HEAD
 static MACHINE_CONFIG_START( gottlieb_core, gottlieb_state )
+=======
+static MACHINE_CONFIG_START( gottlieb_core )
+>>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", I8088, CPU_CLOCK/3)
@@ -1768,7 +1904,13 @@ static MACHINE_CONFIG_START( gottlieb_core, gottlieb_state )
 	MCFG_CPU_VBLANK_INT_DRIVER("screen", gottlieb_state,  gottlieb_interrupt)
 
 	MCFG_NVRAM_ADD_1FILL("nvram")
+<<<<<<< HEAD
 	MCFG_WATCHDOG_VBLANK_INIT(16)
+=======
+
+	MCFG_WATCHDOG_ADD("watchdog")
+	MCFG_WATCHDOG_VBLANK_INIT("screen", 16)
+>>>>>>> upstream/master
 
 	/* video hardware */
 	MCFG_SCREEN_ADD("screen", RASTER)
@@ -1779,23 +1921,38 @@ static MACHINE_CONFIG_START( gottlieb_core, gottlieb_state )
 	MCFG_PALETTE_ADD("palette", 16)
 
 	// basic speaker configuration
+<<<<<<< HEAD
 	MCFG_SPEAKER_STANDARD_MONO("mono")
+=======
+	MCFG_SPEAKER_STANDARD_MONO("speaker")
+>>>>>>> upstream/master
 MACHINE_CONFIG_END
 
 
 static MACHINE_CONFIG_DERIVED( gottlieb1, gottlieb_core )
+<<<<<<< HEAD
 	MCFG_GOTTLIEB_SOUND_R1_ADD("r1sound")
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 1.0)
+=======
+	MCFG_SOUND_ADD("r1sound", GOTTLIEB_SOUND_REV1, 0)
+	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "speaker", 1.0)
+>>>>>>> upstream/master
 MACHINE_CONFIG_END
 
 
 static MACHINE_CONFIG_DERIVED( gottlieb2, gottlieb_core )
+<<<<<<< HEAD
 	MCFG_GOTTLIEB_SOUND_R2_ADD("r2sound")
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 1.0)
+=======
+	MCFG_SOUND_ADD("r2sound", GOTTLIEB_SOUND_REV2, 0)
+	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "speaker", 1.0)
+>>>>>>> upstream/master
 MACHINE_CONFIG_END
 
 
 static MACHINE_CONFIG_DERIVED( g2laser, gottlieb_core )
+<<<<<<< HEAD
 	MCFG_GOTTLIEB_SOUND_R2_ADD("r2sound")
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 1.0)
 
@@ -1805,6 +1962,17 @@ static MACHINE_CONFIG_DERIVED( g2laser, gottlieb_core )
 	MCFG_LASERDISC_OVERLAY_CLIP(0, GOTTLIEB_VIDEO_HBLANK-1, 0, GOTTLIEB_VIDEO_VBLANK-8)
 	MCFG_LASERDISC_OVERLAY_PALETTE("palette")
 	MCFG_SOUND_ROUTE(0, "mono", 1.0)
+=======
+	MCFG_SOUND_ADD("r2sound", GOTTLIEB_SOUND_REV2, 0)
+	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "speaker", 1.0)
+
+	MCFG_LASERDISC_PR8210_ADD("laserdisc")
+	MCFG_LASERDISC_AUDIO(laserdisc_device::audio_delegate(&gottlieb_state::laserdisc_audio_process, downcast<gottlieb_state*>(owner)))
+	MCFG_LASERDISC_OVERLAY_DRIVER(GOTTLIEB_VIDEO_HCOUNT, GOTTLIEB_VIDEO_VCOUNT, gottlieb_state, screen_update_gottlieb)
+	MCFG_LASERDISC_OVERLAY_CLIP(0, GOTTLIEB_VIDEO_HBLANK-1, 0, GOTTLIEB_VIDEO_VBLANK-8)
+	MCFG_LASERDISC_OVERLAY_PALETTE("palette")
+	MCFG_SOUND_ROUTE(0, "speaker", 1.0)
+>>>>>>> upstream/master
 	/* right channel is processed as data */
 
 	MCFG_DEVICE_REMOVE("screen")
@@ -1819,6 +1987,7 @@ MACHINE_CONFIG_END
  *
  *************************************/
 
+<<<<<<< HEAD
 #if USE_FAKE_VOTRAX
 
 static MACHINE_CONFIG_DERIVED( reactor, gottlieb1 )
@@ -1855,6 +2024,12 @@ MACHINE_CONFIG_END
 static MACHINE_CONFIG_DERIVED( gottlieb1_votrax, gottlieb_core )
 	MCFG_GOTTLIEB_SOUND_R1_ADD_VOTRAX("r1sound")
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 1.0)
+=======
+
+static MACHINE_CONFIG_DERIVED( gottlieb1_votrax, gottlieb_core )
+	MCFG_SOUND_ADD("r1sound", GOTTLIEB_SOUND_REV1_VOTRAX, 0)
+	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "speaker", 1.0)
+>>>>>>> upstream/master
 MACHINE_CONFIG_END
 
 
@@ -1879,15 +2054,19 @@ static MACHINE_CONFIG_DERIVED( tylz, gottlieb1_votrax )
 MACHINE_CONFIG_END
 
 
+<<<<<<< HEAD
 #endif
 
 
+=======
+>>>>>>> upstream/master
 static MACHINE_CONFIG_DERIVED( screwloo, gottlieb2 )
 
 	MCFG_VIDEO_START_OVERRIDE(gottlieb_state,screwloo)
 MACHINE_CONFIG_END
 
 static MACHINE_CONFIG_DERIVED( cobram3, gottlieb_core )
+<<<<<<< HEAD
 	MCFG_GOTTLIEB_SOUND_R2_ADD_COBRAM3("r2sound")
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 1.0)
 
@@ -1897,6 +2076,18 @@ static MACHINE_CONFIG_DERIVED( cobram3, gottlieb_core )
 	MCFG_LASERDISC_OVERLAY_CLIP(0, GOTTLIEB_VIDEO_HBLANK-1, 0, GOTTLIEB_VIDEO_VBLANK-8)
 	MCFG_LASERDISC_OVERLAY_PALETTE("palette")
 	MCFG_SOUND_ROUTE(0, "mono", 1.0)
+=======
+	MCFG_SOUND_ADD("r2sound", GOTTLIEB_SOUND_REV2, 0)
+	MCFG_GOTTLIEB_ENABLE_COBRAM3_MODS()
+	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "speaker", 1.0)
+
+	MCFG_LASERDISC_PR8210_ADD("laserdisc")
+	MCFG_LASERDISC_AUDIO(laserdisc_device::audio_delegate(&gottlieb_state::laserdisc_audio_process, downcast<gottlieb_state*>(owner)))
+	MCFG_LASERDISC_OVERLAY_DRIVER(GOTTLIEB_VIDEO_HCOUNT, GOTTLIEB_VIDEO_VCOUNT, gottlieb_state, screen_update_gottlieb)
+	MCFG_LASERDISC_OVERLAY_CLIP(0, GOTTLIEB_VIDEO_HBLANK-1, 0, GOTTLIEB_VIDEO_VBLANK-8)
+	MCFG_LASERDISC_OVERLAY_PALETTE("palette")
+	MCFG_SOUND_ROUTE(0, "speaker", 1.0)
+>>>>>>> upstream/master
 	/* right channel is processed as data */
 
 	MCFG_DEVICE_REMOVE("screen")
@@ -2279,18 +2470,28 @@ ROM_START( qbertqub )
 ROM_END
 
 
+<<<<<<< HEAD
 ROM_START( curvebal )
 	ROM_REGION( 0x10000, "maincpu", 0 )
 	ROM_LOAD( "cb-rom-3.chp", 0x8000, 0x2000, CRC(72ad4d45) SHA1(9537eb360ed1d33d399cc2d8761c36b7d25fdae0) )
 	ROM_LOAD( "cb-rom-2.chp", 0xa000, 0x2000, CRC(d46c3db5) SHA1(d4f464a6ebc090d100e890303557f0d05214033b) )
 	ROM_LOAD( "cb-rom-1.chp", 0xc000, 0x2000, CRC(eb1e08bd) SHA1(f558664df12e4e15ef2779a0bdf99538f8c43ca3) )
 	ROM_LOAD( "cb-rom-0.chp", 0xe000, 0x2000, CRC(401fc7e3) SHA1(86ca53cb6f1d88d5a95baa9524c6b42a1f7fc9c2) )
+=======
+ROM_START( curvebal ) /* Rom labels have the following conventions:  GV-134  ROM 3, (c)1984, Mylstar Electronics, Inc., ALL RIGHTS RSV'D   etc... */
+	ROM_REGION( 0x10000, "maincpu", 0 )
+	ROM_LOAD( "gv-134_rom_3.rom3_c14-15", 0x8000, 0x2000, CRC(72ad4d45) SHA1(9537eb360ed1d33d399cc2d8761c36b7d25fdae0) ) /* PCB silkscreened with both ROM 3 and C14-15 PCB locations */
+	ROM_LOAD( "gv-134_rom_2.rom2_c13-14", 0xa000, 0x2000, CRC(d46c3db5) SHA1(d4f464a6ebc090d100e890303557f0d05214033b) ) /* PCB silkscreened with both ROM 2 and C13-14 PCB locations */
+	ROM_LOAD( "gv-134_rom_1.rom1_c12-13", 0xc000, 0x2000, CRC(eb1e08bd) SHA1(f558664df12e4e15ef2779a0bdf99538f8c43ca3) ) /* PCB silkscreened with both ROM 1 and C12-13 PCB locations */
+	ROM_LOAD( "gv-134_rom_0.rom0_c11-12", 0xe000, 0x2000, CRC(401fc7e3) SHA1(86ca53cb6f1d88d5a95baa9524c6b42a1f7fc9c2) ) /* PCB silkscreened with both ROM 0 and C11-12 PCB locations */
+>>>>>>> upstream/master
 
 	ROM_REGION( 0x10000, "r1sound:audiocpu", 0 )
 	ROM_LOAD( "yrom.sbd",     0x6000, 0x1000, CRC(4c313d9b) SHA1(c61a8c827f4b199fdfb6ffc0bc6cca396c73625e) )
 	ROM_LOAD( "drom.sbd",     0x7000, 0x1000, CRC(cecece88) SHA1(4c6639f6f89f80b04b6ffbb5004ea2121e71f504) )
 
 	ROM_REGION( 0x2000, "bgtiles", 0 )
+<<<<<<< HEAD
 	ROM_LOAD( "cb-bg-0.chp",  0x0000, 0x1000, CRC(d666a179) SHA1(3b9aca5272ae3f3d99ba55f5dc2db4eac82896bc) )
 	ROM_LOAD( "cb-bg-1.chp",  0x1000, 0x1000, CRC(5e34ff4e) SHA1(f88234c0f46533540815e05479938810ea4fb4f8) )
 
@@ -2299,6 +2500,16 @@ ROM_START( curvebal )
 	ROM_LOAD( "cb-fg-2.chp",  0x2000, 0x2000, CRC(065131af) SHA1(fe78ee907f1d0e9f6fc3c96e4fa4aff390115147) )
 	ROM_LOAD( "cb-fg-1.chp",  0x4000, 0x2000, CRC(1b7b7f94) SHA1(ffb0f163531c2f9d184d8733466d23ab9d48ea2e) )
 	ROM_LOAD( "cb-fg-0.chp",  0x6000, 0x2000, CRC(e3a8230e) SHA1(c256b5ca25dc15c11d574d0ad823b34093933802) )
+=======
+	ROM_LOAD( "gv-134_bg_0.bg0_e11-12", 0x0000, 0x1000, CRC(d666a179) SHA1(3b9aca5272ae3f3d99ba55f5dc2db4eac82896bc) ) /* PCB silkscreened with both BG 0 and E11-12 PCB locations */
+	ROM_LOAD( "gv-134_bg_1.bg1_e13",    0x1000, 0x1000, CRC(5e34ff4e) SHA1(f88234c0f46533540815e05479938810ea4fb4f8) ) /* PCB silkscreened with both BG 1 and E13 PCB locations */
+
+	ROM_REGION( 0x8000, "sprites", 0 )
+	ROM_LOAD( "gv-134_fg_3.fg3_k7-8", 0x0000, 0x2000, CRC(9c9452fe) SHA1(4cf5ee2efa5734849781aa57c2b92ed542d5cb4e) ) /* PCB silkscreened with both FG 3 and K7-8 PCB locations */
+	ROM_LOAD( "gv-134_fg_2.fg2_k6",   0x2000, 0x2000, CRC(065131af) SHA1(fe78ee907f1d0e9f6fc3c96e4fa4aff390115147) ) /* PCB silkscreened with both FG 2 and K6 PCB locations */
+	ROM_LOAD( "gv-134_fg_1.fg1_k5",   0x4000, 0x2000, CRC(1b7b7f94) SHA1(ffb0f163531c2f9d184d8733466d23ab9d48ea2e) ) /* PCB silkscreened with both FG 1 and K5 PCB locations */
+	ROM_LOAD( "gv-134_fg_0.fg0_k4",   0x6000, 0x2000, CRC(e3a8230e) SHA1(c256b5ca25dc15c11d574d0ad823b34093933802) ) /* PCB silkscreened with both FG 0 and K4 PCB locations */
+>>>>>>> upstream/master
 ROM_END
 
 
@@ -2357,6 +2568,66 @@ ROM_START( mach3 )
 ROM_END
 
 
+<<<<<<< HEAD
+=======
+ROM_START( mach3a )
+	ROM_REGION( 0x10000, "maincpu", 0 )
+	ROM_LOAD( "m3rom4.bin",   0x6000, 0x2000, CRC(8bfd5a44) SHA1(61f5c6c39047c1d0296e2cacce2be9525cb47176) )
+	ROM_LOAD( "m3rom3.bin",   0x8000, 0x2000, CRC(b1b045af) SHA1(4e71ca4661bf5daaf9e2ffbb930ac3b13e2e57bd) )
+	ROM_LOAD( "m3rom2-1.bin",   0xa000, 0x2000, CRC(2b1689a7) SHA1(18714810de6501bc1656261aacf98be228af624e) )
+	ROM_LOAD( "m3rom1.bin",   0xc000, 0x2000, CRC(3b0ba80b) SHA1(bc7e961311b40f05f2998f10f0a68f2e515c8e66) )
+	ROM_LOAD( "m3rom0.bin",   0xe000, 0x2000, CRC(70c12bf4) SHA1(c26127b6e2a16791b3be8abac93be6af4f30fb3b) )
+
+	ROM_REGION( 0x10000, "r2sound:audiocpu", 0 )
+	ROM_LOAD( "m3drom1.bin",  0xd000, 0x1000, CRC(a6e29212) SHA1(a73aafc2efa99e9ae0aecbb6075a10f7178ac938) )
+
+	ROM_REGION( 0x10000, "r2sound:speechcpu", 0 )
+	ROM_LOAD( "m3yrom1.bin",  0xf000, 0x1000, CRC(eddf8872) SHA1(29ed0d1828639849bab826b3e2ab4eefac45fd85) )
+
+	ROM_REGION( 0x2000, "bgtiles", 0 )
+	ROM_LOAD( "mach3bg0.bin", 0x0000, 0x1000, CRC(ea2f5257) SHA1(664502dd2b7ee4ce96820da532615f3902b45557) )
+	ROM_LOAD( "mach3bg1.bin", 0x1000, 0x1000, CRC(f543e4ce) SHA1(2a1b7dbbcd9756f836ca2e42973043b98a303082) )
+
+	ROM_REGION( 0x8000, "sprites", 0 )
+	ROM_LOAD( "mach3fg3.bin", 0x0000, 0x2000, CRC(472128b4) SHA1(8c6f36cab5ec8abb6db2e6d52530560664b950fe) )
+	ROM_LOAD( "mach3fg2.bin", 0x2000, 0x2000, CRC(2a59e99e) SHA1(5c1faa244fc0f53cc2a52c8d4d40fb178706c2ed) )
+	ROM_LOAD( "mach3fg1.bin", 0x4000, 0x2000, CRC(9b88767b) SHA1(8071e11906b3f0026f9a210cc5a236d95ca1f659) )
+	ROM_LOAD( "mach3fg0.bin", 0x6000, 0x2000, CRC(0bae12a5) SHA1(7bc0b82ccab0e4498a7a2a9dc85f03125f25826e) )
+
+	DISK_REGION( "laserdisc" )
+	DISK_IMAGE_READONLY( "mach3", 0, SHA1(d0f72bded7feff5c360f8749d6c27650a6964847) )
+ROM_END
+
+ROM_START( mach3b )
+	ROM_REGION( 0x10000, "maincpu", 0 )
+	ROM_LOAD( "rom4",   0x6000, 0x2000, CRC(bf460625) SHA1(899b691888505a7759c5ce6d4490519b72322d07) )
+	ROM_LOAD( "rom3",   0x8000, 0x2000, CRC(9daa023f) SHA1(80efeca6e7f9112a2335045c9890b1458ef38cce) )
+	ROM_LOAD( "rom2",   0xa000, 0x2000, CRC(5c1fd3ac) SHA1(8e3c14f7e6fe849ab6d9a1d99c03e2c275eca33a) )
+	ROM_LOAD( "rom1",   0xc000, 0x2000, CRC(1f755e11) SHA1(cead5f6be15d1ef21b3011a7ec345e35e942393b) )
+	ROM_LOAD( "rom0",   0xe000, 0x2000, CRC(4bfcd992) SHA1(7fe0977176ea1b5a54c3f77afb4e7bb46af8ec63) )
+
+	ROM_REGION( 0x10000, "r2sound:audiocpu", 0 )
+	ROM_LOAD( "m3drom1.bin",  0xd000, 0x1000, CRC(a6e29212) SHA1(a73aafc2efa99e9ae0aecbb6075a10f7178ac938) )
+
+	ROM_REGION( 0x10000, "r2sound:speechcpu", 0 )
+	ROM_LOAD( "m3yrom1.bin",  0xf000, 0x1000, CRC(eddf8872) SHA1(29ed0d1828639849bab826b3e2ab4eefac45fd85) )
+
+	ROM_REGION( 0x2000, "bgtiles", 0 )
+	ROM_LOAD( "mach3bg0.bin", 0x0000, 0x1000, CRC(ea2f5257) SHA1(664502dd2b7ee4ce96820da532615f3902b45557) )
+	ROM_LOAD( "mach3bg1.bin", 0x1000, 0x1000, CRC(f543e4ce) SHA1(2a1b7dbbcd9756f836ca2e42973043b98a303082) )
+
+	ROM_REGION( 0x8000, "sprites", 0 )
+	ROM_LOAD( "mach3fg3.bin", 0x0000, 0x2000, CRC(472128b4) SHA1(8c6f36cab5ec8abb6db2e6d52530560664b950fe) )
+	ROM_LOAD( "mach3fg2.bin", 0x2000, 0x2000, CRC(2a59e99e) SHA1(5c1faa244fc0f53cc2a52c8d4d40fb178706c2ed) )
+	ROM_LOAD( "mach3fg1.bin", 0x4000, 0x2000, CRC(9b88767b) SHA1(8071e11906b3f0026f9a210cc5a236d95ca1f659) )
+	ROM_LOAD( "mach3fg0.bin", 0x6000, 0x2000, CRC(0bae12a5) SHA1(7bc0b82ccab0e4498a7a2a9dc85f03125f25826e) )
+
+	DISK_REGION( "laserdisc" )
+	DISK_IMAGE_READONLY( "mach3", 0, SHA1(d0f72bded7feff5c360f8749d6c27650a6964847) )
+ROM_END
+
+
+>>>>>>> upstream/master
 ROM_START( cobram3 )
 	ROM_REGION( 0x10000, "maincpu", 0 )
 	ROM_LOAD( "bh03",   0x8000, 0x2000, CRC(755cbbf5) SHA1(e3ea146f8c344af1e9bf51548ae4902cb09e589a) )
@@ -2544,21 +2815,33 @@ DRIVER_INIT_MEMBER(gottlieb_state,romtiles)
 DRIVER_INIT_MEMBER(gottlieb_state,qbert)
 {
 	DRIVER_INIT_CALL(romtiles);
+<<<<<<< HEAD
 	m_maincpu->space(AS_PROGRAM).install_write_handler(0x5803, 0x5803, 0, 0x07f8, write8_delegate(FUNC(gottlieb_state::qbert_output_w),this));
+=======
+	m_maincpu->space(AS_PROGRAM).install_write_handler(0x5803, 0x5803, 0, 0x07f8, 0, write8_delegate(FUNC(gottlieb_state::qbert_output_w),this));
+>>>>>>> upstream/master
 }
 
 
 DRIVER_INIT_MEMBER(gottlieb_state,qbertqub)
 {
 	DRIVER_INIT_CALL(romtiles);
+<<<<<<< HEAD
 	m_maincpu->space(AS_PROGRAM).install_write_handler(0x5803, 0x5803, 0, 0x07f8, write8_delegate(FUNC(gottlieb_state::qbertqub_output_w),this));
+=======
+	m_maincpu->space(AS_PROGRAM).install_write_handler(0x5803, 0x5803, 0, 0x07f8, 0, write8_delegate(FUNC(gottlieb_state::qbertqub_output_w),this));
+>>>>>>> upstream/master
 }
 
 
 DRIVER_INIT_MEMBER(gottlieb_state,stooges)
 {
 	DRIVER_INIT_CALL(ramtiles);
+<<<<<<< HEAD
 	m_maincpu->space(AS_PROGRAM).install_write_handler(0x5803, 0x5803, 0, 0x07f8, write8_delegate(FUNC(gottlieb_state::stooges_output_w),this));
+=======
+	m_maincpu->space(AS_PROGRAM).install_write_handler(0x5803, 0x5803, 0, 0x07f8, 0, write8_delegate(FUNC(gottlieb_state::stooges_output_w),this));
+>>>>>>> upstream/master
 }
 
 
@@ -2604,7 +2887,13 @@ GAME( 1984, curvebal,  0,        gottlieb1, curvebal, gottlieb_state, romtiles, 
 
 /* games using rev 2 sound board */
 GAME( 1983, screwloo,  0,        screwloo,  screwloo, gottlieb_state, screwloo, ROT0,   "Mylstar",                   "Screw Loose (prototype)", 0 )
+<<<<<<< HEAD
 GAME( 1983, mach3,     0,        g2laser,   mach3,    gottlieb_state, romtiles, ROT0,   "Mylstar",                   "M.A.C.H. 3", 0 )
+=======
+GAME( 1983, mach3,     0,        g2laser,   mach3,    gottlieb_state, romtiles, ROT0,   "Mylstar",                   "M.A.C.H. 3 (set 1)", 0 )
+GAME( 1983, mach3a,    mach3,    g2laser,   mach3,    gottlieb_state, romtiles, ROT0,   "Mylstar",                   "M.A.C.H. 3 (set 2)", 0 )
+GAME( 1983, mach3b,    mach3,    g2laser,   mach3,    gottlieb_state, romtiles, ROT0,   "Mylstar",                   "M.A.C.H. 3 (set 3)", 0 )
+>>>>>>> upstream/master
 GAME( 1984, cobram3,   cobra,    cobram3,   cobram3,  gottlieb_state, romtiles, ROT0,   "Data East",                 "Cobra Command (M.A.C.H. 3 hardware)", 0 )
 GAME( 1984, usvsthem,  0,        g2laser,   usvsthem, gottlieb_state, romtiles, ROT0,   "Mylstar",                   "Us vs. Them", 0 )
 GAME( 1984, 3stooges,  0,        gottlieb2, 3stooges, gottlieb_state, stooges,  ROT0,   "Mylstar",                   "The Three Stooges In Brides Is Brides (set 1)", 0 )

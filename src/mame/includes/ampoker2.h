@@ -1,5 +1,11 @@
 // license:BSD-3-Clause
 // copyright-holders:Roberto Fresca
+<<<<<<< HEAD
+=======
+
+#include "machine/watchdog.h"
+
+>>>>>>> upstream/master
 class ampoker2_state : public driver_device
 {
 public:
@@ -7,9 +13,16 @@ public:
 		: driver_device(mconfig, type, tag),
 		m_videoram(*this, "videoram"),
 		m_maincpu(*this, "maincpu"),
+<<<<<<< HEAD
 		m_gfxdecode(*this, "gfxdecode") { }
 
 	required_shared_ptr<UINT8> m_videoram;
+=======
+		m_watchdog(*this, "watchdog"),
+		m_gfxdecode(*this, "gfxdecode") { }
+
+	required_shared_ptr<uint8_t> m_videoram;
+>>>>>>> upstream/master
 	tilemap_t *m_bg_tilemap;
 	DECLARE_WRITE8_MEMBER(ampoker2_port30_w);
 	DECLARE_WRITE8_MEMBER(ampoker2_port31_w);
@@ -24,10 +37,19 @@ public:
 	DECLARE_DRIVER_INIT(piccolop);
 	TILE_GET_INFO_MEMBER(get_bg_tile_info);
 	TILE_GET_INFO_MEMBER(s2k_get_bg_tile_info);
+<<<<<<< HEAD
 	virtual void video_start();
 	DECLARE_PALETTE_INIT(ampoker2);
 	DECLARE_VIDEO_START(sigma2k);
 	UINT32 screen_update_ampoker2(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
 	required_device<cpu_device> m_maincpu;
+=======
+	virtual void video_start() override;
+	DECLARE_PALETTE_INIT(ampoker2);
+	DECLARE_VIDEO_START(sigma2k);
+	uint32_t screen_update_ampoker2(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
+	required_device<cpu_device> m_maincpu;
+	required_device<watchdog_timer_device> m_watchdog;
+>>>>>>> upstream/master
 	required_device<gfxdecode_device> m_gfxdecode;
 };

@@ -2,11 +2,16 @@
 // copyright-holders:Mariusz Wojcieszek, James Wallace
 /***************************************************************************
 
+<<<<<<< HEAD
     Nova 'LaserMax'/Atari Games Cops
+=======
+    Nova Laserdisc Games/Atari Games COPS
+>>>>>>> upstream/master
     (hardware developed by Nova Productions Limited)
     Preliminary driver by Mariusz Wojcieszek, James Wallace
 
     Cops uses a Sony CD-ROM in addition to the regular setup, purely to play
+<<<<<<< HEAD
     Bad Boys by Inner Circle, so there is muscial accompaniment to areas
     where the laserdisc audio is muted.
 
@@ -19,6 +24,28 @@
 
     The UK version COPS appears to want to communicate with the LDP in a
     different way.
+=======
+    Bad Boys by Inner Circle, so there is musical accompaniment to areas
+    where the laserdisc audio is muted.
+
+    The different games here have subtly different control PCBs COPS has an Atari
+    part number (58-12B), while Revelations simply refers to a Lasermax control PCB
+    (Lasermax being the consumer name for the LDP series)
+
+    NOTES: To boot up Revelations, turn the refill key (R) and press button A
+    to init NVRAM.
+
+    TODO: There are probably more ROMs for Revelations and related, the disc
+    contains full data for a picture based memory game called 'Vision Quest'.
+    However, the Vision Quest Laserdisc is slightly different, with Revelations
+    specific data seemingly replaced with black level.
+
+    The UK version COPS appears to want to communicate with the LDP in a
+    different way, passing illegal commands, need to verify this is the same
+    player.
+
+    This should be similar hardware for Street Viper if we get a dump.
+>>>>>>> upstream/master
 ***************************************************************************/
 
 
@@ -26,6 +53,7 @@
 #include "cpu/m6502/m6502.h"
 #include "machine/6522via.h"
 #include "sound/sn76496.h"
+<<<<<<< HEAD
 
 //#include "machine/mos6551.h"
 
@@ -33,6 +61,17 @@
 
 #define LOG_CDROM   0
 #define LOG_DACIA   0
+=======
+#include "machine/msm6242.h"
+#include "machine/ldp1450.h"
+#include "machine/mos6551.h"
+#include "speaker.h"
+
+#include "cops.lh"
+
+#define LOG_CDROM   1
+#define LOG_DACIA   1
+>>>>>>> upstream/master
 
 #define CMP_REGISTER 0
 #define AUX_REGISTER 1
@@ -46,12 +85,17 @@ public:
 		: driver_device(mconfig, type, tag),
 			m_maincpu(*this, "maincpu"),
 			m_sn(*this, "snsnd"),
+<<<<<<< HEAD
+=======
+			m_ld(*this, "laserdisc"),
+>>>>>>> upstream/master
 			m_irq(0)
 	{ }
 
 	// devices
 	required_device<cpu_device> m_maincpu;
 	required_device<sn76489_device> m_sn;
+<<<<<<< HEAD
 
 	// screen updates
 	UINT32 screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
@@ -62,15 +106,40 @@ protected:
 	virtual void machine_reset();
 
 	virtual void video_start();
+=======
+	required_device<sony_ldp1450_device> m_ld;
+
+	// screen updates
+	uint32_t screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
+
+protected:
+	// driver_device overrides
+	virtual void machine_start() override;
+	virtual void machine_reset() override;
+
+	virtual void video_start() override;
+>>>>>>> upstream/master
 
 public:
 	DECLARE_WRITE8_MEMBER(io1_w);
 	DECLARE_READ8_MEMBER(io1_r);
+<<<<<<< HEAD
 	DECLARE_WRITE8_MEMBER(io2_w);
 	DECLARE_READ8_MEMBER(io2_r);
 	DECLARE_WRITE_LINE_MEMBER(via1_irq);
 	DECLARE_WRITE_LINE_MEMBER(via2_irq);
 	void dacia_receive(UINT8 data);
+=======
+	DECLARE_READ8_MEMBER(io1_lm_r);
+	DECLARE_WRITE8_MEMBER(io2_w);
+	DECLARE_READ8_MEMBER(io2_r);
+	DECLARE_READ8_MEMBER(ldstatus_r);
+	DECLARE_WRITE_LINE_MEMBER(dacia_irq);
+	DECLARE_WRITE_LINE_MEMBER(ld_w);
+	DECLARE_WRITE_LINE_MEMBER(via1_irq);
+	DECLARE_WRITE_LINE_MEMBER(via2_irq);
+	void dacia_receive(uint8_t data);
+>>>>>>> upstream/master
 	void update_dacia_irq();
 	DECLARE_WRITE8_MEMBER(dacia_w);
 	DECLARE_READ8_MEMBER(dacia_r);
@@ -82,6 +151,7 @@ public:
 	DECLARE_DRIVER_INIT(cops);
 	int m_irq;
 
+<<<<<<< HEAD
 	UINT8 m_lcd_addr_l, m_lcd_addr_h;
 	UINT8 m_lcd_data_l, m_lcd_data_h;
 
@@ -135,6 +205,70 @@ public:
 	void laserdisc_w(UINT8 data);
 	void laserdisc_response_w(UINT8 data);
 	DECLARE_PALETTE_INIT( cops );
+=======
+	uint8_t m_lcd_addr_l, m_lcd_addr_h;
+	uint8_t m_lcd_data_l, m_lcd_data_h;
+
+	uint8_t m_dacia_irq1_reg;
+	uint8_t m_dacia_rts1;
+	uint8_t m_dacia_dtr1;
+
+	uint8_t m_parity_1;
+	uint8_t m_parity_mode_1;
+	uint8_t m_bpc_1;
+	int m_dacia_ic_div_1;
+	uint8_t m_dacia_echo1;
+	uint8_t m_dacia_stp_1;
+	uint8_t m_dacia_reg1;
+	uint8_t m_dacia_fe1;
+	uint8_t m_dacia_cmp1;
+	uint8_t m_dacia_cmpval1;
+
+	uint8_t m_dacia_irq2_reg;
+	uint8_t m_dacia_rts2;
+	uint8_t m_dacia_dtr2;
+
+	uint8_t m_parity_2;
+	uint8_t m_parity_mode_2;
+	uint8_t m_bpc_2;
+	int m_dacia_ic_div_2;
+	uint8_t m_dacia_echo2;
+	uint8_t m_dacia_stp_2;
+	uint8_t m_dacia_reg2;
+	uint8_t m_dacia_fe2;
+	uint8_t m_dacia_cmp2;
+	uint8_t m_dacia_cmpval2;
+
+	uint8_t m_dacia_cts;
+	uint8_t m_dacia_dcd;
+	uint8_t m_dacia_trans;
+	uint8_t m_dacia_trans2;
+
+	uint8_t m_dacia_receiver_data;
+	uint8_t m_dacia_receiver_full;
+
+	uint8_t m_dacia_receiver_data2;
+	uint8_t m_dacia_receiver_full2;
+
+	uint8_t m_cdrom_ctrl;
+	uint8_t m_cdrom_data;
+
+	uint8_t m_sn_data;
+	uint8_t m_sn_cb1;
+
+	// LDP-1450
+	emu_timer *m_ld_timer;
+	TIMER_CALLBACK_MEMBER(ld_timer_callback);
+
+	uint8_t m_ld_command_to_send[8];
+	uint8_t m_ld_command_current_byte;
+	uint8_t ldcount=0;
+	uint8_t lddata;
+	uint8_t generate_isr();
+	uint8_t generate_isr2();
+//  void laserdisc_w(uint8_t data);
+	void laserdisc_response_w(uint8_t data);
+>>>>>>> upstream/master
 };
 
 const int timer_divide_select[16] =
@@ -161,7 +295,11 @@ void cops_state::video_start()
 {
 }
 
+<<<<<<< HEAD
 UINT32 cops_state::screen_update( screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect )
+=======
+uint32_t cops_state::screen_update( screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect )
+>>>>>>> upstream/master
 {
 	return 0;
 }
@@ -176,7 +314,11 @@ WRITE8_MEMBER(cops_state::cdrom_data_w)
 {
 	const char *regs[4] = { "CMD", "PARAM", "WRITE", "CTRL" };
 	m_cdrom_data = BITSWAP8(data,0,1,2,3,4,5,6,7);
+<<<<<<< HEAD
 	UINT8 reg = ((m_cdrom_ctrl & 4) >> 1) | ((m_cdrom_ctrl & 8) >> 3);
+=======
+	uint8_t reg = ((m_cdrom_ctrl & 4) >> 1) | ((m_cdrom_ctrl & 8) >> 3);
+>>>>>>> upstream/master
 	if (LOG_CDROM) logerror("%s:cdrom_data_w(reg = %s, data = %02x)\n", machine().describe_context(), regs[reg & 0x03], m_cdrom_data);
 }
 
@@ -189,7 +331,11 @@ WRITE8_MEMBER(cops_state::cdrom_ctrl_w)
 READ8_MEMBER(cops_state::cdrom_data_r)
 {
 	const char *regs[4] = { "STATUS", "RESULT", "READ", "FIFOST" };
+<<<<<<< HEAD
 	UINT8 reg = ((m_cdrom_ctrl & 4) >> 1) | ((m_cdrom_ctrl & 8) >> 3);
+=======
+	uint8_t reg = ((m_cdrom_ctrl & 4) >> 1) | ((m_cdrom_ctrl & 8) >> 3);
+>>>>>>> upstream/master
 	if (LOG_CDROM) logerror("%s:cdrom_data_r(reg = %s)\n", machine().describe_context(), regs[reg & 0x03]);
 	return machine().rand()&0xff;
 }
@@ -199,9 +345,21 @@ READ8_MEMBER(cops_state::cdrom_data_r)
  *
  *************************************/
 
+<<<<<<< HEAD
 TIMER_CALLBACK_MEMBER(cops_state::ld_timer_callback)
 {
 	m_dacia_receiver_full = 1;
+=======
+READ8_MEMBER(cops_state::ldstatus_r)
+{
+	return m_ld->status_r();
+}
+
+TIMER_CALLBACK_MEMBER(cops_state::ld_timer_callback)
+{
+	m_dacia_receiver_full = 1;
+ int m_ld_command_total_bytes =8;
+>>>>>>> upstream/master
 
 	if ( m_ld_command_current_byte < m_ld_command_total_bytes )
 	{
@@ -214,6 +372,7 @@ TIMER_CALLBACK_MEMBER(cops_state::ld_timer_callback)
 	}
 }
 
+<<<<<<< HEAD
 void cops_state::laserdisc_response_w(UINT8 data)
 {
 	if ( m_ld_command_total_bytes >= 5 )
@@ -350,6 +509,49 @@ void cops_state::laserdisc_w(UINT8 data)
 			break;
 	}
 }
+=======
+WRITE_LINE_MEMBER(cops_state::ld_w)
+{
+	lddata <<= 1;
+
+	if ( state ) lddata |= 1;
+
+	if ( ++ldcount >= 8 )
+	{
+		ldcount = 0;
+		lddata  = 0;
+		printf("LDBYTE %d",lddata);
+	}
+
+	printf("LDBIT %d",state);
+}
+/*void cops_state::laserdisc_w(uint8_t data)
+{
+    switch( m_ld_input_state )
+    {
+        case LD_INPUT_TEXT_GET_X:
+            m_ld_input_state = LD_INPUT_TEXT_GET_Y;
+            break;
+        case LD_INPUT_TEXT_GET_Y:
+            m_ld_input_state = LD_INPUT_TEXT_GET_MODE;
+            break;
+        case LD_INPUT_TEXT_GET_MODE:
+            m_ld_input_state = LD_INPUT_GET_COMMAND;
+            break;
+        case LD_INPUT_TEXT_GET_SET_WINDOW:
+            m_ld_input_state = LD_INPUT_GET_COMMAND;
+            break;
+        case LD_INPUT_TEXT_GET_STRING:
+            if ( data == 0x1a )
+            {
+                m_ld_input_state = LD_INPUT_GET_COMMAND;
+            }
+            break;
+            }
+            break;
+    }
+}*/
+>>>>>>> upstream/master
 
 /*************************************
  *
@@ -357,6 +559,7 @@ void cops_state::laserdisc_w(UINT8 data)
  *
  *************************************/
 
+<<<<<<< HEAD
 	void cops_state::update_dacia_irq()
 {
 	UINT8 isr = generate_isr();
@@ -366,6 +569,23 @@ void cops_state::laserdisc_w(UINT8 data)
 }
 
 void cops_state::dacia_receive(UINT8 data)
+=======
+void cops_state::update_dacia_irq()
+{
+	uint8_t isr = generate_isr();
+	//remove bits
+	isr &= ~m_dacia_irq1_reg;
+	m_maincpu->set_input_line(INPUT_LINE_NMI, isr? ASSERT_LINE:CLEAR_LINE);
+
+	uint8_t isr2 = generate_isr2();
+	//remove bits
+	isr2 &= ~m_dacia_irq2_reg;
+	m_maincpu->set_input_line(INPUT_LINE_NMI, isr2? ASSERT_LINE:CLEAR_LINE);
+
+}
+
+void cops_state::dacia_receive(uint8_t data)
+>>>>>>> upstream/master
 {
 	if (m_dacia_cmp1)
 	{
@@ -389,9 +609,15 @@ void cops_state::dacia_receive(UINT8 data)
 	}
 }
 
+<<<<<<< HEAD
 UINT8 cops_state::generate_isr()
 {
 	UINT8 isr =0;
+=======
+uint8_t cops_state::generate_isr()
+{
+	uint8_t isr =0;
+>>>>>>> upstream/master
 
 	isr |= m_dacia_receiver_full;
 	isr |= (m_dacia_cmp1 << 1);
@@ -404,13 +630,35 @@ UINT8 cops_state::generate_isr()
 	return isr;
 }
 
+<<<<<<< HEAD
+=======
+uint8_t cops_state::generate_isr2()
+{
+	uint8_t isr2 =0;
+
+	isr2 |= m_dacia_receiver_full2;
+	isr2 |= (m_dacia_cmp2 << 1);
+	isr2 |= (m_dacia_trans2 <<4);
+
+	if (isr2)
+	{
+		isr2 |= 0x40;
+	}
+	return isr2;
+}
+
+>>>>>>> upstream/master
 READ8_MEMBER(cops_state::dacia_r)
 {
 	switch(offset & 0x07)
 	{
 		case 0: /* ISR1: Interrupt Status Register */
 		{
+<<<<<<< HEAD
 			UINT8 isr = generate_isr();
+=======
+			uint8_t isr = generate_isr();
+>>>>>>> upstream/master
 			m_dacia_trans =0;
 			m_maincpu->set_input_line(INPUT_LINE_NMI, CLEAR_LINE);
 			return isr;
@@ -418,7 +666,11 @@ READ8_MEMBER(cops_state::dacia_r)
 
 		case 1: /* CSR1: Control Status Register */
 		{
+<<<<<<< HEAD
 			UINT8 csr =0;
+=======
+			uint8_t csr =0;
+>>>>>>> upstream/master
 			csr |= m_dacia_rts1;
 			csr |= (m_dacia_dtr1 << 1);
 			csr |= (m_dacia_cts <<4);
@@ -428,11 +680,50 @@ READ8_MEMBER(cops_state::dacia_r)
 		}
 
 		case 3: /* RDR1: Receive data register */
+<<<<<<< HEAD
 			m_dacia_receiver_full = 0;
 			m_dacia_fe1=0;
 			if (LOG_DACIA) logerror("RDR1 %02x\n",m_dacia_receiver_data);
 			return m_dacia_receiver_data;
 		default:
+=======
+		{
+			m_dacia_receiver_full = 0;
+			m_dacia_fe1=0;
+
+//          if (LOG_DACIA) logerror("RDR1 %02x\n",m_dacia_receiver_data);
+			if (LOG_DACIA) logerror("RDR1 %02x\n",m_ld->status_r());
+			return m_ld->status_r();
+		}
+		case 4: /* ISR2: Interrupt Status Register */
+		{
+			uint8_t isr2 = generate_isr2();
+			m_dacia_trans2 =0;
+			m_maincpu->set_input_line(INPUT_LINE_NMI, CLEAR_LINE);
+			return isr2;
+		}
+
+		case 5: /* CSR2: Control Status Register */
+		{
+			uint8_t csr2 =0;
+			csr2 |= m_dacia_rts2;
+			csr2 |= (m_dacia_dtr2 << 1);
+			csr2 |= (m_dacia_cts <<4);
+			csr2 |= (m_dacia_fe2 <<7);
+			if (LOG_DACIA) logerror("CSR2 %02x\n",csr2);
+			return csr2;
+		}
+
+		case 7: /* RDR2: Receive data register */
+			m_dacia_receiver_full2 = 0;
+			m_dacia_fe2=0;
+
+			if (LOG_DACIA) logerror("RDR2 %02x\n",m_ld->status_r());
+			return m_ld->status_r();
+
+
+			default:
+>>>>>>> upstream/master
 			if (LOG_DACIA) logerror("%s:dacia_r(%02x)\n", machine().describe_context(), offset);
 			return 0;
 	}
@@ -485,7 +776,11 @@ WRITE8_MEMBER(cops_state::dacia_w)
 				}
 				if (LOG_DACIA) logerror("DACIA TIME %02d\n", XTAL_3_6864MHz / m_dacia_ic_div_1);
 
+<<<<<<< HEAD
 				m_ld_timer->adjust(attotime::from_hz(XTAL_3_6864MHz / m_dacia_ic_div_1), 0, attotime::from_hz(XTAL_3_6864MHz / m_dacia_ic_div_1));
+=======
+//              m_ld_timer->adjust(attotime::from_hz(XTAL_3_6864MHz / m_dacia_ic_div_1), 0, attotime::from_hz(XTAL_3_6864MHz / m_dacia_ic_div_1));
+>>>>>>> upstream/master
 
 				if (LOG_DACIA) logerror("DACIA Ctrl Register: %02x\n", data);
 
@@ -507,6 +802,7 @@ WRITE8_MEMBER(cops_state::dacia_w)
 			}
 		}
 		case 3: /* Transmit Data Register 1 */
+<<<<<<< HEAD
 			if (LOG_DACIA) logerror("DACIA Transmit: %02x %c\n", data, (char)data);
 			laserdisc_w(data);
 			break;
@@ -516,6 +812,90 @@ WRITE8_MEMBER(cops_state::dacia_w)
 	}
 }
 
+=======
+		{
+			if (LOG_DACIA) logerror("DACIA Transmit: %02x %c\n", data, (char)data);
+			m_ld->command_w(data);
+			break;
+		}
+		case 4: /* IRQ enable Register 2 */
+		{
+			m_dacia_irq2_reg &= ~0x80;
+
+			if (data & 0x80) //enable bits
+			{
+				m_dacia_irq2_reg |= (data & 0x7f);
+			}
+			else // disable bits
+			{
+				m_dacia_irq2_reg &= ~(data & 0x7f);
+			}
+			if (LOG_DACIA) logerror("DACIA IRQ 2 Register: %02x\n", m_dacia_irq2_reg);
+			update_dacia_irq();
+			break;
+		}
+
+		case 5: /* Control / Format Register 2 */
+		{
+			if (data & 0x80) //Format Register
+			{
+				m_dacia_rts2 = (data & 0x01);
+				m_dacia_dtr2 = (data & 0x02 ? 1:0);
+				m_parity_2 = (data & 0x04);
+				m_parity_mode_2 = ((data & 0x18) >> 3);
+				m_bpc_2 = ((data & 0x60) >> 5) +5;
+				if (LOG_DACIA) logerror("DACIA Format Register 2: %02x\n", data);
+			}
+			else // Control register
+			{
+				m_dacia_ic_div_2 = timer_divide_select[data & 0x15];
+				m_dacia_echo2 = (data & 0x10);
+				m_dacia_stp_2 = (data & 0x20 ? 2:1);
+				if (data & 0x40)
+				{
+					m_dacia_reg2 = AUX_REGISTER;
+				}
+				else
+				{
+					m_dacia_reg2 = CMP_REGISTER;
+				}
+				if (LOG_DACIA) logerror("DACIA TIME 2 %02d\n", XTAL_3_6864MHz / m_dacia_ic_div_1);
+
+				m_ld_timer->adjust(attotime::from_hz(XTAL_3_6864MHz / m_dacia_ic_div_2), 0, attotime::from_hz(XTAL_3_6864MHz / m_dacia_ic_div_2));
+
+				if (LOG_DACIA) logerror("DACIA Ctrl Register 2: %02x\n", data);
+
+			}
+			break;
+		}
+		case 6: /* Compare / Aux Ctrl Register 2 */
+		{
+			if (m_dacia_reg2 == CMP_REGISTER)
+			{
+				m_dacia_cmp2 =1;
+				m_dacia_cmpval2=data;
+				if (LOG_DACIA) logerror("DACIA Compare mode 2: %02x \n", data);
+//              update_dacia_irq();
+			}
+			else
+			{
+				if (LOG_DACIA) logerror("DACIA Aux ctrl 2: %02x \n", data);
+			}
+		}
+		case 7: /* Transmit Data Register 2 */
+		{
+			if (LOG_DACIA) logerror("DACIA Transmit 2: %02x %c\n", data, (char)data);
+
+		//  for (int i=0; i <8; i++)
+			{
+	//          m_ld_command_to_send[i] = data & (1<<i);
+			}
+//          m_ld->command_w(data);
+			break;
+		}
+	}
+}
+>>>>>>> upstream/master
 /*************************************
  *
  * I/O
@@ -538,11 +918,36 @@ READ8_MEMBER(cops_state::io1_r)
 	}
 }
 
+<<<<<<< HEAD
+=======
+READ8_MEMBER(cops_state::io1_lm_r)
+{
+	switch( offset & 0x0f )
+	{
+		case 0x07:  /* WDI */
+			return 1;
+		case 0x08:  /* SW0 */
+			return ioport("SW0")->read();
+		case 0x09:  /* SW1 */
+			return ioport("SW1")->read();
+		case 0x0a:  /* SW2 */
+			return ioport("SW2")->read();
+		default:
+			logerror("Unknown io1_r, offset = %03x\n", offset);
+			return 0;
+	}
+}
+
+>>>>>>> upstream/master
 WRITE8_MEMBER(cops_state::io1_w)
 {
 	int i;
 	char output_name[16];
+<<<<<<< HEAD
 	UINT16 display_data;
+=======
+	uint16_t display_data;
+>>>>>>> upstream/master
 
 	switch( offset & 0x0f )
 	{
@@ -553,9 +958,15 @@ WRITE8_MEMBER(cops_state::io1_w)
 			m_lcd_addr_h = data;
 			{
 				// update display
+<<<<<<< HEAD
 				const UINT16 addrs_table[] = { 0x0004, 0x0008, 0x0010, 0x0020, 0x0040, 0x0002, 0x0001, 0x0080,
 												0x1000, 0x0800, 0x0400, 0x2000, 0x4000, 0x0200, 0x0100, 0x8000 };
 				UINT16 addr = m_lcd_addr_l | (m_lcd_addr_h << 8);
+=======
+				const uint16_t addrs_table[] = { 0x0004, 0x0008, 0x0010, 0x0020, 0x0040, 0x0002, 0x0001, 0x0080,
+												0x1000, 0x0800, 0x0400, 0x2000, 0x4000, 0x0200, 0x0100, 0x8000 };
+				uint16_t addr = m_lcd_addr_l | (m_lcd_addr_h << 8);
+>>>>>>> upstream/master
 				for (i = 0; i < 16; i++ )
 				{
 					if (addr == addrs_table[i])
@@ -569,7 +980,11 @@ WRITE8_MEMBER(cops_state::io1_w)
 					sprintf(output_name, "digit%d", i);
 					display_data = m_lcd_data_l | (m_lcd_data_h << 8);
 					display_data = BITSWAP16(display_data, 4, 5, 12, 1, 0, 11, 10, 6, 7, 2, 9, 3, 15, 8, 14, 13);
+<<<<<<< HEAD
 					output_set_value(output_name, display_data);
+=======
+					output().set_value(output_name, display_data);
+>>>>>>> upstream/master
 				}
 			}
 			break;
@@ -580,6 +995,7 @@ WRITE8_MEMBER(cops_state::io1_w)
 			m_lcd_data_h = data;
 			break;
 		case 0x04: /* WOP4 */
+<<<<<<< HEAD
 			output_set_value("Offroad Right 4 Lamp", data & 0x80);
 			output_set_value("Offroad Right 3 Lamp", data & 0x40);
 			output_set_value("Offroad Right 2 Lamp", data & 0x20);
@@ -597,6 +1013,25 @@ WRITE8_MEMBER(cops_state::io1_w)
 			output_set_value("Vest Hit 3 Lamp", data & 0x04);
 			output_set_value("Gun Active Left Lamp", data & 0x02);
 			output_set_value("Vest Hit 1 Lamp", data & 0x01);
+=======
+			output().set_value("Offroad Right 4 Lamp", data & 0x80);
+			output().set_value("Offroad Right 3 Lamp", data & 0x40);
+			output().set_value("Offroad Right 2 Lamp", data & 0x20);
+			output().set_value("Offroad Right 1 Lamp", data & 0x10);
+			output().set_value("Offroad Left 4 Lamp", data & 0x08);
+			output().set_value("Offroad Left 3 Lamp", data & 0x04);
+			output().set_value("Offroad Left 2 Lamp", data & 0x02);
+			output().set_value("Offroad Left 1 Lamp", data & 0x01);
+			break;
+		case 0x05: /* WOP5 */
+			output().set_value("Damage Lamp", data & 0x80);
+			output().set_value("Stop Lamp", data & 0x40);
+			output().set_value("Gun Active Right Lamp", data & 0x20);
+			output().set_value("Vest Hit 2 Lamp", data & 0x10);
+			output().set_value("Vest Hit 3 Lamp", data & 0x04);
+			output().set_value("Gun Active Left Lamp", data & 0x02);
+			output().set_value("Vest Hit 1 Lamp", data & 0x01);
+>>>>>>> upstream/master
 			break;
 		case 0x06: /* WOP6 */
 			logerror("WOP6: data = %02x\n", data);
@@ -630,6 +1065,7 @@ WRITE8_MEMBER(cops_state::io2_w)
 	switch( offset & 0x0f )
 	{
 		case 0x02:
+<<<<<<< HEAD
 			output_set_value("Flash Red Lamp", data & 0x01);
 			output_set_value("Flash Blue Lamp", data & 0x80);
 			if ( data & ~0x91 ) logerror("Unknown io2_w, offset = %02x, data = %02x\n", offset, data);
@@ -641,6 +1077,19 @@ WRITE8_MEMBER(cops_state::io2_w)
 			output_set_value("Bullet Lamp 3", data & 0x04);
 			output_set_value("Bullet Lamp 2", data & 0x02);
 			output_set_value("Bullet Lamp 1", data & 0x01);
+=======
+			output().set_value("Flash Red Lamp", data & 0x01);
+			output().set_value("Flash Blue Lamp", data & 0x80);
+			if ( data & ~0x91 ) logerror("Unknown io2_w, offset = %02x, data = %02x\n", offset, data);
+			break;
+		case 0x04:
+			output().set_value("Bullet Lamp 6", data & 0x20);
+			output().set_value("Bullet Lamp 5", data & 0x10);
+			output().set_value("Bullet Lamp 4", data & 0x08);
+			output().set_value("Bullet Lamp 3", data & 0x04);
+			output().set_value("Bullet Lamp 2", data & 0x02);
+			output().set_value("Bullet Lamp 1", data & 0x01);
+>>>>>>> upstream/master
 			if ( data & ~0x3f ) logerror("Unknown io2_w, offset = %02x, data = %02x\n", offset, data);
 			break;
 		default:
@@ -653,7 +1102,11 @@ WRITE8_MEMBER(cops_state::io2_w)
  *
  *  VIA 1 (U18)
  *   PA0-2 Steer
+<<<<<<< HEAD
  *   PA3   ?
+=======
+ *   PA3   Shake motor?
+>>>>>>> upstream/master
  *   PA4-6 Fade?
  *   PA7   STK (system rom banking)
  *   PB0-7 SN76489 data bus
@@ -726,13 +1179,29 @@ static ADDRESS_MAP_START( cops_map, AS_PROGRAM, 8, cops_state )
 	AM_RANGE(0xb000, 0xb00f) AM_DEVREADWRITE("via6522_1", via6522_device, read, write)  /* VIA 1 */
 	AM_RANGE(0xb800, 0xb80f) AM_DEVREADWRITE("via6522_2", via6522_device, read, write)  /* VIA 2 */
 	AM_RANGE(0xc000, 0xcfff) AM_READWRITE(io2_r, io2_w)
+<<<<<<< HEAD
 //  AM_RANGE(0xd000, 0xd003) AM_DEVREADWRITE("acia6551_1", mos6551_device, read, write )
 //  AM_RANGE(0xd004, 0xd007) AM_DEVREADWRITE("acia6551_2", mos6551_device, read, write )
+=======
+>>>>>>> upstream/master
 	AM_RANGE(0xd000, 0xd007) AM_READWRITE(dacia_r, dacia_w)
 	AM_RANGE(0xd800, 0xd80f) AM_DEVREADWRITE("via6522_3", via6522_device, read, write)  /* VIA 3 */
 	AM_RANGE(0xe000, 0xffff) AM_ROMBANK("sysbank1")
 ADDRESS_MAP_END
 
+<<<<<<< HEAD
+=======
+static ADDRESS_MAP_START( revlatns_map, AS_PROGRAM, 8, cops_state )
+	AM_RANGE(0x0000, 0x1fff) AM_RAM
+	AM_RANGE(0x2000, 0x9fff) AM_ROM AM_REGION("program", 0)
+	AM_RANGE(0xa000, 0xafff) AM_READWRITE(io1_lm_r, io1_w)
+	AM_RANGE(0xb000, 0xb00f) AM_DEVREADWRITE("via6522_1", via6522_device, read, write)  /* VIA 1 */
+	AM_RANGE(0xc000, 0xc00f) AM_DEVREADWRITE("rtc", msm6242_device, read, write)
+	AM_RANGE(0xd000, 0xd007) AM_READWRITE(dacia_r, dacia_w)
+	AM_RANGE(0xe000, 0xffff) AM_ROMBANK("sysbank1")
+ADDRESS_MAP_END
+
+>>>>>>> upstream/master
 static INPUT_PORTS_START( cops )
 	PORT_START("SW0")
 	PORT_BIT( 0x01, IP_ACTIVE_LOW, IPT_OTHER ) PORT_NAME("Switch A") PORT_CODE(KEYCODE_A) PORT_IMPULSE(1)
@@ -795,7 +1264,10 @@ INPUT_PORTS_END
 void cops_state::machine_start()
 {
 	m_ld_timer = machine().scheduler().timer_alloc(timer_expired_delegate(FUNC(cops_state::ld_timer_callback),this));
+<<<<<<< HEAD
 	m_dacia_ic_div_1 = timer_divide_select[0];
+=======
+>>>>>>> upstream/master
 
 	m_ld_timer->adjust(attotime::from_hz(167*5), 0, attotime::from_hz(167*5));
 }
@@ -814,6 +1286,7 @@ void cops_state::machine_reset()
 	m_dacia_dtr1 = 1;
 	m_dacia_fe1 = 1;
 	m_dacia_receiver_full = 1;
+<<<<<<< HEAD
 	m_ld_input_state = LD_INPUT_GET_COMMAND;
 	m_ld_command_current_byte = m_ld_command_total_bytes = 0;
 	m_ld_frame_index = 0;
@@ -824,22 +1297,36 @@ PALETTE_INIT_MEMBER( cops_state,cops )
 {
 }
 
+=======
+}
+
+
+>>>>>>> upstream/master
 DRIVER_INIT_MEMBER(cops_state,cops)
 {
 	//The hardware is designed and programmed to use multiple system ROM banks, but for some reason it's hardwired to bank 2.
 	//For documentation's sake, here's the init
+<<<<<<< HEAD
 	UINT8 *rom = memregion("system")->base();
+=======
+	uint8_t *rom = memregion("system")->base();
+>>>>>>> upstream/master
 	membank("sysbank1")->configure_entries(0, 4, &rom[0x0000], 0x2000);
 	membank("sysbank1")->set_entry(2);
 }
 
+<<<<<<< HEAD
 static MACHINE_CONFIG_START( cops, cops_state )
+=======
+static MACHINE_CONFIG_START( cops )
+>>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu",M6502,MAIN_CLOCK/2)
 	MCFG_CPU_PROGRAM_MAP(cops_map)
 
 	/* video hardware */
+<<<<<<< HEAD
 	MCFG_SCREEN_ADD("screen", RASTER)
 	MCFG_SCREEN_REFRESH_RATE(60)
 	MCFG_SCREEN_VBLANK_TIME(ATTOSECONDS_IN_USEC(0))
@@ -850,6 +1337,10 @@ static MACHINE_CONFIG_START( cops, cops_state )
 
 	MCFG_PALETTE_ADD("palette", 8)
 	MCFG_PALETTE_INIT_OWNER(cops_state,cops)
+=======
+	MCFG_LASERDISC_LDP1450_ADD("laserdisc",9600)
+	MCFG_LASERDISC_SCREEN_ADD_NTSC("screen", "laserdisc")
+>>>>>>> upstream/master
 
 	/* via */
 	MCFG_DEVICE_ADD("via6522_1", VIA6522, 0)
@@ -865,20 +1356,60 @@ static MACHINE_CONFIG_START( cops, cops_state )
 	MCFG_VIA6522_WRITEPA_HANDLER(WRITE8(cops_state, cdrom_data_w))
 	MCFG_VIA6522_WRITEPB_HANDLER(WRITE8(cops_state, cdrom_ctrl_w))
 
+<<<<<<< HEAD
 	/* acia */
 //  MCFG_MOS6551_ADD("acia6551_1", XTAL_1_8432MHz, NULL)
 //  MCFG_MOS6551_ADD("acia6551_2", XTAL_1_8432MHz, NULL)
+=======
+	/* acia (really a 65C52)*/
+>>>>>>> upstream/master
 
 	/* sound hardware */
 	MCFG_SPEAKER_STANDARD_MONO("mono")
 
+<<<<<<< HEAD
 		/* TODO: Verify clock */
+=======
+	/* TODO: Verify clock */
+>>>>>>> upstream/master
 	MCFG_SOUND_ADD("snsnd", SN76489, MAIN_CLOCK/2)
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 0.50)
 
 MACHINE_CONFIG_END
 
 
+<<<<<<< HEAD
+=======
+static MACHINE_CONFIG_START( revlatns )
+
+	/* basic machine hardware */
+	MCFG_CPU_ADD("maincpu",M6502,MAIN_CLOCK/2)
+	MCFG_CPU_PROGRAM_MAP(revlatns_map)
+
+	/* video hardware */
+	MCFG_LASERDISC_LDP1450_ADD("laserdisc",9600)
+	MCFG_LASERDISC_SCREEN_ADD_NTSC("screen", "laserdisc")
+
+	/* via */
+	MCFG_DEVICE_ADD("via6522_1", VIA6522, 0)
+	MCFG_VIA6522_IRQ_HANDLER(WRITELINE(cops_state, via1_irq))
+	MCFG_VIA6522_WRITEPB_HANDLER(WRITE8(cops_state, via1_b_w))
+	MCFG_VIA6522_CB1_HANDLER(WRITE8(cops_state, via1_cb1_w))
+
+	MCFG_DEVICE_ADD("rtc", MSM6242, XTAL_32_768kHz)
+
+	/* acia (really a 65C52)*/
+
+	/* sound hardware */
+	MCFG_SPEAKER_STANDARD_MONO("mono")
+
+	/* TODO: Verify clock */
+	MCFG_SOUND_ADD("snsnd", SN76489, MAIN_CLOCK/2)
+	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 0.50)
+
+MACHINE_CONFIG_END
+
+>>>>>>> upstream/master
 /***************************************************************************
 
   Game driver(s)
@@ -893,10 +1424,17 @@ ROM_START( cops )
 	ROM_LOAD( "cops_sys.dat", 0x0000, 0x8000, CRC(0060e5d0) SHA1(b8c9f6fde6a315e33fa7946e5d3bb4ea2fbe76a8) )
 
 	DISK_REGION( "audiocd" )
+<<<<<<< HEAD
 		DISK_IMAGE_READONLY( "copscd", 0, NO_DUMP )
 
 	DISK_REGION( "laserdisc" )
 		DISK_IMAGE_READONLY( "cops", 0, NO_DUMP )
+=======
+	DISK_IMAGE_READONLY( "copscd", 0, NO_DUMP )
+
+	DISK_REGION( "laserdisc" )
+	DISK_IMAGE_READONLY( "cops", 0, NO_DUMP )
+>>>>>>> upstream/master
 ROM_END
 
 ROM_START( copsuk )
@@ -907,10 +1445,17 @@ ROM_START( copsuk )
 	ROM_LOAD( "cops_sys.dat", 0x0000, 0x8000, CRC(0060e5d0) SHA1(b8c9f6fde6a315e33fa7946e5d3bb4ea2fbe76a8) )
 
 	DISK_REGION( "audiocd" )
+<<<<<<< HEAD
 		DISK_IMAGE_READONLY( "copscd", 0, NO_DUMP )
 
 	DISK_REGION( "laserdisc" )
 		DISK_IMAGE_READONLY( "cops", 0, NO_DUMP )
+=======
+	DISK_IMAGE_READONLY( "copscd", 0, NO_DUMP )
+
+	DISK_REGION( "laserdisc" )
+	DISK_IMAGE_READONLY( "copsld", 0, NO_DUMP )
+>>>>>>> upstream/master
 ROM_END
 
 ROM_START( revlatns )
@@ -921,6 +1466,7 @@ ROM_START( revlatns )
 	ROM_LOAD( "revelations_sys.bin", 0x0000, 0x8000, CRC(43e5e3ec) SHA1(fa44b102b5aa7ad2421c575abdc67f1c29f23bc1) )
 
 	DISK_REGION( "laserdisc" )
+<<<<<<< HEAD
 		DISK_IMAGE_READONLY( "revlatns", 0, NO_DUMP )
 ROM_END
 
@@ -928,3 +1474,12 @@ ROM_END
 GAMEL( 1994, cops,      0,   cops,  cops,      cops_state, cops,       ROT0, "Atari Games",                     "Cops (USA)",   MACHINE_NOT_WORKING | MACHINE_NO_SOUND, layout_cops )
 GAMEL( 1994, copsuk,    cops,cops,  cops,      cops_state, cops,       ROT0, "Nova Productions / Deith Leisure","Cops (UK)",    MACHINE_NOT_WORKING | MACHINE_NO_SOUND, layout_cops )
 GAMEL( 1994, revlatns,  0,   cops,  revlatns,  cops_state, cops,       ROT0, "Nova Productions",                "Revelations",  MACHINE_NOT_WORKING | MACHINE_NO_SOUND, layout_cops )
+=======
+	DISK_IMAGE_READONLY( "revlatns", 0, NO_DUMP )
+ROM_END
+
+
+GAMEL( 1994, cops,      0,   cops,      cops,      cops_state, cops,       ROT0, "Atari Games",                     "Cops (USA)",   MACHINE_NOT_WORKING | MACHINE_NO_SOUND, layout_cops )
+GAMEL( 1994, copsuk,    cops,cops,      cops,      cops_state, cops,       ROT0, "Nova Productions / Deith Leisure","Cops (UK)",    MACHINE_NOT_WORKING | MACHINE_NO_SOUND, layout_cops )
+GAMEL( 1994, revlatns,  0,   revlatns,  revlatns,  cops_state, cops,       ROT0, "Nova Productions",                "Revelations",  MACHINE_NOT_WORKING | MACHINE_NO_SOUND, layout_cops )
+>>>>>>> upstream/master

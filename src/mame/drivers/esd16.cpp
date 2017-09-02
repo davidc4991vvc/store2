@@ -23,22 +23,35 @@ Year + Game            PCB             Notes
 98  Multi Champ        ESD 11-09-98   (also a year 1999 revision)
 99  Multi Champ Deluxe ESD 08-26-1999 (also a year 2000 revision)
 99  Head Panic         ESD 05-28-99   (All English version, copyright 1999)
+<<<<<<< HEAD
+=======
+99  Head Panic         ESD 06-10-1999 (All English version, copyright 1999)
+>>>>>>> upstream/master
 00  Head Panic         ESD 08-26-1999 (All English version, copyright 2000)
 00  Head Panic         ESD 08-26-1999 (with Fuuki, Story in Japanese)
 00  Deluxe 5           ESD            (no date is marked on PCB)
 00  Tang Tang          ESD            (no date is marked on PCB)
 01  SWAT Police        ESD            (no date is marked on PCB)
+<<<<<<< HEAD
 01  Jumping Pop        ESD 11-09-98   (also original version by Emag Soft)
+=======
+01  Jumping Pop        ESD 11-09-98   (version by Emag Soft)
+01  Jumping Pop        ESD 12-04-00   (ESD branded version)
+>>>>>>> upstream/master
 ---------------------------------------------------------------------------
 
 Other ESD games:
 
 3 Cushion Billiards (c) 2000 - Undumped
 Tang Tang           (c) 2000 - Undumped ESD 05-28-99 version
+<<<<<<< HEAD
 Fire Hawk           (c) 2001 - see nmk16.c driver
 
 Head Panic
 - Nude / Bikini pics don't show in-game, even when set in test mode?
+=======
+Fire Hawk           (c) 2001 - see nmk16.cpp driver
+>>>>>>> upstream/master
 
 ---------------------------------------------------------------------------
 
@@ -67,12 +80,23 @@ ToDo:
 ***************************************************************************/
 
 #include "emu.h"
+<<<<<<< HEAD
 #include "cpu/z80/z80.h"
 #include "cpu/m68000/m68000.h"
 #include "machine/eepromser.h"
 #include "sound/okim6295.h"
 #include "sound/3812intf.h"
 #include "includes/esd16.h"
+=======
+#include "includes/esd16.h"
+
+#include "cpu/m68000/m68000.h"
+#include "cpu/z80/z80.h"
+#include "sound/3812intf.h"
+#include "sound/okim6295.h"
+#include "screen.h"
+#include "speaker.h"
+>>>>>>> upstream/master
 
 
 /***************************************************************************
@@ -87,7 +111,11 @@ WRITE16_MEMBER(esd16_state::esd16_sound_command_w)
 {
 	if (ACCESSING_BITS_0_7)
 	{
+<<<<<<< HEAD
 		soundlatch_byte_w(space, 0, data & 0xff);
+=======
+		m_soundlatch->write(space, 0, data & 0xff);
+>>>>>>> upstream/master
 		m_audiocpu->set_input_line(0, ASSERT_LINE);      // Generate an IRQ
 		space.device().execute().spin_until_time(attotime::from_usec(50));  // Allow the other CPU to reply
 	}
@@ -250,7 +278,11 @@ READ8_MEMBER(esd16_state::esd16_sound_command_r)
 {
 	/* Clear IRQ only after reading the command, or some get lost */
 	m_audiocpu->set_input_line(0, CLEAR_LINE);
+<<<<<<< HEAD
 	return soundlatch_byte_r(space, 0);
+=======
+	return m_soundlatch->read(space, 0);
+>>>>>>> upstream/master
 }
 
 static ADDRESS_MAP_START( multchmp_sound_io_map, AS_IO, 8, esd16_state )
@@ -332,8 +364,13 @@ static INPUT_PORTS_START( jumppop )
 	PORT_DIPSETTING(      0x0400, DEF_STR( Off ) )
 	PORT_DIPSETTING(      0x0000, DEF_STR( On ) )
 	PORT_DIPNAME( 0x0800, 0x0800, "BG Modesty" )               PORT_DIPLOCATION("SW2:4")
+<<<<<<< HEAD
 	PORT_DIPSETTING(      0x0800, "Less" )
 	PORT_DIPSETTING(      0x0000, "More" )
+=======
+	PORT_DIPSETTING(      0x0800, "More" )
+	PORT_DIPSETTING(      0x0000, "Less" )
+>>>>>>> upstream/master
 	PORT_DIPNAME( 0x3000, 0x3000, DEF_STR( Difficulty ) )   PORT_DIPLOCATION("SW2:5,6")
 	PORT_DIPSETTING(      0x2000, DEF_STR( Easy ) )
 	PORT_DIPSETTING(      0x3000, DEF_STR( Normal ) )
@@ -582,7 +619,11 @@ GFXDECODE_END
 
 void esd16_state::machine_start()
 {
+<<<<<<< HEAD
 	UINT8 *AUDIO = memregion("audiocpu")->base();
+=======
+	uint8_t *AUDIO = memregion("audiocpu")->base();
+>>>>>>> upstream/master
 
 	membank("bank1")->configure_entries(0, 16, &AUDIO[0x0000], 0x4000);
 
@@ -604,7 +645,11 @@ DECOSPR_PRIORITY_CB_MEMBER(esd16_state::hedpanic_pri_callback)
 		return 0; // above everything
 }
 
+<<<<<<< HEAD
 static MACHINE_CONFIG_START( esd16, esd16_state )
+=======
+static MACHINE_CONFIG_START( esd16 )
+>>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu",M68000, XTAL_16MHz)  /* 16MHz */
@@ -632,7 +677,10 @@ static MACHINE_CONFIG_START( esd16, esd16_state )
 	MCFG_DECO_SPRITE_PRIORITY_CB(esd16_state, hedpanic_pri_callback)
 	MCFG_DECO_SPRITE_FLIPALLX(1)
 	MCFG_DECO_SPRITE_GFXDECODE("gfxdecode")
+<<<<<<< HEAD
 	MCFG_DECO_SPRITE_PALETTE("palette")
+=======
+>>>>>>> upstream/master
 
 	MCFG_GFXDECODE_ADD("gfxdecode", "palette", esd16)
 	MCFG_PALETTE_ADD("palette", 0x1000/2)
@@ -642,10 +690,19 @@ static MACHINE_CONFIG_START( esd16, esd16_state )
 	/* sound hardware */
 	MCFG_SPEAKER_STANDARD_MONO("mono")
 
+<<<<<<< HEAD
 	MCFG_SOUND_ADD("ymsnd", YM3812, XTAL_16MHz/4)   /* 4MHz */
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 0.30)
 
 	MCFG_OKIM6295_ADD("oki", XTAL_16MHz/16, OKIM6295_PIN7_HIGH) /* 1MHz */
+=======
+	MCFG_GENERIC_LATCH_8_ADD("soundlatch")
+
+	MCFG_SOUND_ADD("ymsnd", YM3812, XTAL_16MHz/4)   /* 4MHz */
+	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 0.30)
+
+	MCFG_OKIM6295_ADD("oki", XTAL_16MHz/16, PIN7_HIGH) /* 1MHz */
+>>>>>>> upstream/master
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 0.60)
 MACHINE_CONFIG_END
 
@@ -665,7 +722,11 @@ static MACHINE_CONFIG_DERIVED( jumppop, esd16 )
 	MCFG_SOUND_REPLACE("ymsnd", YM3812, XTAL_14MHz/4) /* 3.5MHz - Verified */
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 0.30)
 
+<<<<<<< HEAD
 	MCFG_OKIM6295_REPLACE("oki", XTAL_14MHz/16, OKIM6295_PIN7_HIGH) /* 875kHz - Verified */
+=======
+	MCFG_OKIM6295_REPLACE("oki", XTAL_14MHz/16, PIN7_HIGH) /* 875kHz - Verified */
+>>>>>>> upstream/master
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 0.60)
 MACHINE_CONFIG_END
 
@@ -737,7 +798,11 @@ ESD 11-09-98
 (C) ESD 1998, 1999
 PCB No. ESD 11-09-98
 CPU: MC68HC000FN16 (68000, 68 pin PLCC socketed)
+<<<<<<< HEAD
 SND: Z80 (Z0840006PSC), YM3812/YM3014 & OKI M6295 (rebaged as U6612/U6614 & AD-65)
+=======
+SND: Z80 (Z0840006PSC), YM3812/YM3014 & OKI M6295 (rebadged as U6612/U6614 & AD-65)
+>>>>>>> upstream/master
 OSC: 16.000MHz, 14.000MHz
 RAM: 4 x 62256, 9 x 6116
 DIPS: 2 x 8 position
@@ -826,6 +891,40 @@ ROM_START( multchmpk )
 	ROM_LOAD( "esd4.su10", 0x00000, 0x20000, CRC(6e741fcd) SHA1(742e0952916c00f67dd9f8d01e721a9a538d2fc4) )
 ROM_END
 
+<<<<<<< HEAD
+=======
+ROM_START( multchmpa )
+	ROM_REGION( 0x080000, "maincpu", 0 )        /* 68000 Code */
+	ROM_LOAD16_BYTE( "esd2.cu02", 0x000000, 0x040000, CRC(bfd39198) SHA1(11c0cb7a865daa1be9301ddfa5f5d2014e8f9908) )
+	ROM_LOAD16_BYTE( "esd1.cu03", 0x000001, 0x040000, CRC(cd769077) SHA1(741cca679393dab031691834874c96fee791241e) )
+
+	ROM_REGION( 0x40000, "audiocpu", 0 )        /* Z80 Code */
+	ROM_LOAD( "esd3.su01", 0x00000, 0x20000, CRC(7c178bd7) SHA1(8754d3c70d9b2bf369a5ce0cce4cc0696ed22750) )
+
+	ROM_REGION( 0x180000, "spr", 0 )    /* Sprites, 16x16x5 */
+	ROM_LOAD16_BYTE( "esd17.ju06", 0x000000, 0x040000, CRC(51f01067) SHA1(d5ebbc7d358b63724d2f24da8b2ce4a202be37a5) )
+	ROM_LOAD16_BYTE( "esd16.ju05", 0x000001, 0x040000, CRC(88e252e8) SHA1(07d898379798c6be42b636762b0af61b9111a480) )
+	ROM_LOAD16_BYTE( "esd15.ju04", 0x080000, 0x040000, CRC(b1ae7f08) SHA1(37dd9d4cef8b9e1d09d7b46a9794fb2b777c9a01) )
+	ROM_LOAD16_BYTE( "esd14.ju03", 0x080001, 0x040000, CRC(d8f06fa8) SHA1(f76912f93f99578529612a7f01d82ac7229a8e41) )
+	ROM_LOAD16_BYTE( "esd13.ju07", 0x100000, 0x040000, CRC(9d1590a6) SHA1(35f634dbf0df06ec62359c7bae43c7f5d14b0ab2) )
+
+	ROM_REGION( 0x400000, "bgs", 0 )    /* Layers, 16x16x8 */
+	ROM_LOAD32_BYTE( "esd9.fu28",  0x000000, 0x080000, CRC(a3cfe895) SHA1(a8dc0d5d9e64d4c5112177b8f20b5bdb86ca73af) )
+	ROM_LOAD32_BYTE( "esd11.fu29", 0x000001, 0x080000, CRC(d3c1855e) SHA1(bb547d4a45a745e9ae4a6727087cdf325105de90) )
+	ROM_LOAD32_BYTE( "esd7.fu26",  0x000002, 0x080000, CRC(042d59ff) SHA1(8e45a4757e07d8aaf50b151d8849c1a27424e64b) )
+	ROM_LOAD32_BYTE( "esd5.fu27",  0x000003, 0x080000, CRC(ed5b4e58) SHA1(82c3ee9e2525c0b370a29d5560c21ec6380d1a43) )
+	ROM_LOAD32_BYTE( "esd10.fu31", 0x200000, 0x080000, CRC(396d77b6) SHA1(f22449a7f9f50e172e36db4f399c14e527409884) )
+	ROM_LOAD32_BYTE( "esd12.fu33", 0x200001, 0x080000, CRC(a68848a8) SHA1(915239a961d76af6a1a567eb89b1569f158e714e) )
+	ROM_LOAD32_BYTE( "esd8.fu30",  0x200002, 0x080000, CRC(fa8cd2d3) SHA1(ddc1b98867e6d2eee458bf35a933e7cdc59f4c7e) )
+	ROM_LOAD32_BYTE( "esd6.fu32",  0x200003, 0x080000, CRC(97fde7b1) SHA1(b3610f6fcc1367ff079dc01121c86bc1e1f4c7a2) )
+
+	ROM_REGION( 0x40000, "oki", 0 ) /* Samples */
+	ROM_LOAD( "esd4.su08", 0x00000, 0x20000, CRC(6e741fcd) SHA1(742e0952916c00f67dd9f8d01e721a9a538d2fc4) )
+ROM_END
+
+
+
+>>>>>>> upstream/master
 /*
 
 Multi Champ Deluxe
@@ -892,7 +991,11 @@ ROM_START( mchampdx )
 	ROM_LOAD( "ver0106_ju02.bin", 0x000000, 0x200000, CRC(b27a4977) SHA1(b7f94bb04d0046538b3938335e6b0cce330ad79c) )
 	/* expand this to take up 0x200000 bytes too so we can decode it */
 	ROM_LOAD16_BYTE( "ver0106_esd5.ju07", 0x400000, 0x040000, CRC(7a3ac887) SHA1(3c759f9bed396bbaf6bd7298a8bd2bd76df3aa6f) )
+<<<<<<< HEAD
 	ROM_FILL(                             0x500000, 0x100000, 0 )
+=======
+	ROM_FILL(                             0x500000, 0x100000, 0x00 )
+>>>>>>> upstream/master
 
 	ROM_REGION( 0x400000, "bgs", 0 )    /* Layers, 16x16x8 */
 	ROM_LOAD16_BYTE( "rom.fu35", 0x000000, 0x200000, CRC(ba46f3dc) SHA1(4ac7695bdf4237654481f7f74f8650d70a51e691) )
@@ -915,7 +1018,11 @@ ROM_START( mchampdxa )
 	ROM_LOAD( "rom.ju02", 0x000000, 0x200000, CRC(7e87e332) SHA1(f90aa00a64a940846d99053c7aa023e3fd5d070b) )
 	/* expand this to take up 0x200000 bytes too so we can decode it */
 	ROM_LOAD16_BYTE( "esd5.ju07", 0x400000, 0x080000, CRC(6cc871cc) SHA1(710b9695c864e4234686993b88d24590d60e1cb9) )
+<<<<<<< HEAD
 	ROM_FILL(                     0x500000, 0x100000, 0 )
+=======
+	ROM_FILL(                     0x500000, 0x100000, 0x00 )
+>>>>>>> upstream/master
 
 	ROM_REGION( 0x400000, "bgs", 0 )    /* Layers, 16x16x8 */
 	ROM_LOAD16_BYTE( "rom.fu35", 0x000000, 0x200000, CRC(ba46f3dc) SHA1(4ac7695bdf4237654481f7f74f8650d70a51e691) )
@@ -938,7 +1045,11 @@ ROM_START( mchampdxb )
 	ROM_LOAD( "ver1114_ju02", 0x000000, 0x200000, CRC(2f9ccff8) SHA1(176240cd247cc5d3efd58fe0630726a8633be2a4) )
 	/* expand this to take up 0x200000 bytes too so we can decode it */
 	ROM_LOAD16_BYTE( "ver1114_esd5.ju07", 0x400000, 0x040000,  CRC(8175939f) SHA1(cd0132ae0d2e35dc656434989b1f0f255ad562ab) )
+<<<<<<< HEAD
 	ROM_FILL(                             0x500000, 0x100000, 0 )
+=======
+	ROM_FILL(                             0x500000, 0x100000, 0x00 )
+>>>>>>> upstream/master
 
 	ROM_REGION( 0x400000, "bgs", 0 )    /* Layers, 16x16x8 */
 	ROM_LOAD16_BYTE( "ver1114_fu35", 0x000000, 0x200000, CRC(c515c704) SHA1(c1657534314e66a25c38f70a12f14d2225ab89cc) ) // SMT Flash MX chips
@@ -994,7 +1105,11 @@ Notes:
 2x pushbutton
 
 
+<<<<<<< HEAD
 ESD 08-26-1999
+=======
+ESD 08-26-1999 (ESD 06-10-1999 nearly identical)
+>>>>>>> upstream/master
 |-----------------------------------------|
 |  3014  3812 6116   6295   ESD4          |
 |VOL        ESD3    Z80                 * |
@@ -1048,7 +1163,11 @@ ROM_START( hedpanic ) /* Story line & game instructions in English */
 	ROM_LOAD( "esd7.ju02", 0x000000, 0x200000, CRC(055d525f) SHA1(85ad474691f96e47311a1904015d1c92d3b2d607) )
 	/* expand this to take up 0x200000 bytes too so we can decode it */
 	ROM_LOAD16_BYTE( "esd5.ju07", 0x400000, 0x080000, CRC(bd785921) SHA1(c8bcb38d5aa6f5a27f0dedf7efd1d6737d59b4ca) )
+<<<<<<< HEAD
 	ROM_FILL(                     0x500000, 0x100000, 0 )
+=======
+	ROM_FILL(                     0x500000, 0x100000, 0x00 )
+>>>>>>> upstream/master
 
 	ROM_REGION( 0x400000, "bgs", 0 )    /* Layers, 16x16x8 */
 	ROM_LOAD16_BYTE( "esd8.fu35", 0x000000, 0x200000, CRC(23aceb4f) SHA1(35d9ebc33b9e1515e47750cfcdfc0bf8bf44b71d) )
@@ -1057,7 +1176,11 @@ ROM_START( hedpanic ) /* Story line & game instructions in English */
 	ROM_REGION( 0x40000, "oki", 0 ) /* Samples */
 	ROM_LOAD( "esd4.su10", 0x000000, 0x020000, CRC(3c11c590) SHA1(cb33845c3dc0501fff8055c2d66f412881089df1) ) /* AT27010 mask rom */
 
+<<<<<<< HEAD
 	ROM_REGION( 0x80, "eeprom", 0 )
+=======
+	ROM_REGION16_BE( 0x80, "eeprom", 0 )
+>>>>>>> upstream/master
 	ROM_LOAD( "hedpanic.nv", 0x0000, 0x0080, CRC(e91f4038) SHA1(f492de71170900f87912a272ab4f4a3a37ba31fe) )
 ROM_END
 
@@ -1075,7 +1198,11 @@ ROM_START( hedpanicf ) /* Story line in Japanese, game instructions in English *
 	ROM_LOAD( "esd7.ju02", 0x000000, 0x200000, CRC(055d525f) SHA1(85ad474691f96e47311a1904015d1c92d3b2d607) )
 	/* expand this to take up 0x200000 bytes too so we can decode it */
 	ROM_LOAD16_BYTE( "esd5.ju07", 0x400000, 0x080000, CRC(bd785921) SHA1(c8bcb38d5aa6f5a27f0dedf7efd1d6737d59b4ca) )
+<<<<<<< HEAD
 	ROM_FILL(                     0x500000, 0x100000, 0 )
+=======
+	ROM_FILL(                     0x500000, 0x100000, 0x00 )
+>>>>>>> upstream/master
 
 	ROM_REGION( 0x400000, "bgs", 0 )    /* Layers, 16x16x8 */
 	ROM_LOAD16_BYTE( "esd8.fu35", 0x000000, 0x200000, CRC(23aceb4f) SHA1(35d9ebc33b9e1515e47750cfcdfc0bf8bf44b71d) )
@@ -1084,7 +1211,38 @@ ROM_START( hedpanicf ) /* Story line in Japanese, game instructions in English *
 	ROM_REGION( 0x40000, "oki", 0 ) /* Samples */
 	ROM_LOAD( "esd4.su10", 0x000000, 0x020000, CRC(3c11c590) SHA1(cb33845c3dc0501fff8055c2d66f412881089df1) ) /* AT27010 mask rom */
 
+<<<<<<< HEAD
 	ROM_REGION( 0x80, "eeprom", 0 )
+=======
+	ROM_REGION16_BE( 0x80, "eeprom", 0 )
+	ROM_LOAD( "hedpanic.nv", 0x0000, 0x0080, CRC(e91f4038) SHA1(f492de71170900f87912a272ab4f4a3a37ba31fe) )
+ROM_END
+
+
+ROM_START( hedpanica ) /* Story line & game instructions in English, copyright year is 1999 - ESD 06-10-1999 PCB */
+	ROM_REGION( 0x080000, "maincpu", 0 )        /* 68000 Code */
+	ROM_LOAD16_BYTE( "esd12.cu03", 0x000000, 0x040000, CRC(deb7e0a0) SHA1(ef3a00e9bfdffd7c89326ad97a261f9a7b9863ae) ) /* CU03 */
+	ROM_LOAD16_BYTE( "esd11.cu02", 0x000001, 0x040000, CRC(e1418f23) SHA1(39f14172d9b1a0d47edfe2456362fddc22f60066) ) /* CU02 */
+
+	ROM_REGION( 0x40000, "audiocpu", 0 )        /* Z80 Code */
+	ROM_LOAD( "esd3.su06", 0x00000, 0x40000, CRC(a88d4424) SHA1(eefb5ac79632931a36f360713c482cd079891f91) ) /* AT27C020 mask rom */
+
+	ROM_REGION( 0x600000, "spr", 0 )    /* Sprites, 16x16x5 */
+	ROM_LOAD( "ju04", 0x200000, 0x200000, CRC(4f3503d7) SHA1(4bed795c7328e0ebfa97688918eb8a908c29deb8) )
+	ROM_LOAD( "ju06", 0x000000, 0x200000, CRC(9f6f6193) SHA1(c7c7ae6898ab7177eefb0e525d827666e2af9f7e) )
+	/* expand this to take up 0x200000 bytes too so we can decode it */
+	ROM_LOAD16_BYTE( "esd5.bin", 0x400000, 0x080000, CRC(6968265a) SHA1(84b4f2d8b3bf6ea4117fa8281c76b58df778261d) ) /* JU07 */
+	ROM_FILL(                    0x500000, 0x100000, 0x00 )
+
+	ROM_REGION( 0x400000, "bgs", 0 )    /* Layers, 16x16x8 */
+	ROM_LOAD16_BYTE( "fu35", 0x000000, 0x200000, CRC(9b5a45c5) SHA1(fbd8bc6ccc068d2cc7fe4f575fa0847f53e786ab) )
+	ROM_LOAD16_BYTE( "fu34", 0x000001, 0x200000, CRC(8f2099cc) SHA1(40795ae5fb8de613c2d5b6147992c153695bf698) )
+
+	ROM_REGION( 0x80000, "oki", 0 ) /* Samples */
+	ROM_LOAD( "esd4.bin", 0x000000, 0x080000, CRC(5692fe92) SHA1(4423039cb437ab36d198b212ef394bf1704be404) ) /* SU10 */
+
+	ROM_REGION16_BE( 0x80, "eeprom", 0 )
+>>>>>>> upstream/master
 	ROM_LOAD( "hedpanic.nv", 0x0000, 0x0080, CRC(e91f4038) SHA1(f492de71170900f87912a272ab4f4a3a37ba31fe) )
 ROM_END
 
@@ -1102,7 +1260,11 @@ ROM_START( hedpanico ) /* Story line & game instructions in English, copyright y
 	ROM_LOAD( "sm2.ju02", 0x200000, 0x200000, CRC(7a9610e4) SHA1(21ae3ec3fbddfc66416c109b091bd885d5ba0558) )
 	/* expand this to take up 0x200000 bytes too so we can decode it */
 	ROM_LOAD16_BYTE( "esd5.rom", 0x400000, 0x080000, CRC(82c5727f) SHA1(017f1d0c94475c51d17f12e24895f47a273a2dbb) ) /* JU07 */
+<<<<<<< HEAD
 	ROM_FILL(                    0x500000, 0x100000, 0 )
+=======
+	ROM_FILL(                    0x500000, 0x100000, 0x00 )
+>>>>>>> upstream/master
 
 	ROM_REGION( 0x400000, "bgs", 0 )    /* Layers, 16x16x8 */
 	ROM_LOAD16_BYTE( "sm3.fu35", 0x000000, 0x200000, CRC(94dd4cfc) SHA1(a3f9c49611f0bc9d26166dafb44e2c5ebbb31127) )
@@ -1111,7 +1273,11 @@ ROM_START( hedpanico ) /* Story line & game instructions in English, copyright y
 	ROM_REGION( 0x40000, "oki", 0 ) /* Samples */
 	ROM_LOAD( "esd4.rom", 0x000000, 0x020000, CRC(d7ca6806) SHA1(8ad668bfb5b7561cc0f3e36dfc3c936b136a4274) ) /* SU10 */
 
+<<<<<<< HEAD
 	ROM_REGION( 0x80, "eeprom", 0 )
+=======
+	ROM_REGION16_BE( 0x80, "eeprom", 0 )
+>>>>>>> upstream/master
 	ROM_LOAD( "hedpanic.nv", 0x0000, 0x0080, CRC(e91f4038) SHA1(f492de71170900f87912a272ab4f4a3a37ba31fe) )
 ROM_END
 
@@ -1236,6 +1402,34 @@ ROM_START( deluxe5b ) /* Deluxe 5 */
 	ROM_LOAD( "esd4.su10", 0x00000, 0x20000, CRC(23f2b7d9) SHA1(328c951d14674760df68486841c933bad0d59fe3) ) /* AT27C010 mask rom */
 ROM_END
 
+<<<<<<< HEAD
+=======
+
+ROM_START( deluxe4u ) /* Deluxe 4 U - Removes Blackjack game, but otherwise same as Deluxe 5 */
+	ROM_REGION( 0x080000, "maincpu", 0 )        /* 68000 Code */
+	ROM_LOAD16_BYTE( "2.cu02", 0x000000, 0x040000,  CRC(db213e1f) SHA1(bf9c49635f79b92a761715138528200106aa86ae) )
+	ROM_LOAD16_BYTE( "1.cu03", 0x000001, 0x040000,  CRC(fbf14d74) SHA1(5ff5bf4ff55609452d5b8a49d8658f878541ce60) )
+
+	ROM_REGION( 0x40000, "audiocpu", 0 )        /* Z80 Code */
+	ROM_LOAD( "esd3.su06", 0x00000, 0x40000, CRC(31de379a) SHA1(a0c9a9cec7207cc4ba33abb68bef62d7eb8e75e9) ) /* AM27C020 mask rom */
+
+	ROM_REGION( 0x180000, "spr", 0 )    /* Sprites, 16x16x5 */
+	ROM_LOAD16_BYTE( "am27c020.ju06", 0x000000, 0x040000, CRC(8b853bce) SHA1(fa6e654fc965d88bb426b76cdce3417f357b25f3) ) /* AM27C020 mask roms with no label */
+	ROM_LOAD16_BYTE( "am27c020.ju05", 0x000001, 0x040000, CRC(bbe81779) SHA1(750387fb4aaa04b7f4f1d3985896f5e11219e3ea) )
+	ROM_LOAD16_BYTE( "am27c020.ju04", 0x080000, 0x040000, CRC(40fa2c2f) SHA1(b9d9bfdc9343f00bad9749c76472f064c509cfce) )
+	ROM_LOAD16_BYTE( "am27c020.ju03", 0x080001, 0x040000, CRC(aa130fd3) SHA1(46a55d8ca59a52e610600fdba76d9729528d2871) )
+	ROM_LOAD16_BYTE( "am27c020.ju07", 0x100000, 0x040000, CRC(d414c3af) SHA1(9299b07a8c7a3e30a1bb6028204a049a7cb510f7) )
+
+	ROM_REGION( 0x400000, "bgs", 0 )    /* Layers, 16x16x8 */
+	ROM_LOAD16_BYTE( "fu35", 0x000000, 0x200000, CRC(6df14570) SHA1(fa4fc64c984d6a94fe61ec809ec515e840388704) ) /* Specific to Deluxe 4 U - No labels on the flash roms  */
+	ROM_LOAD16_BYTE( "fu34", 0x000001, 0x200000, CRC(93175d6d) SHA1(691832134f43e17bb767dff080b2736288961414) ) /* Specific to Deluxe 4 U - No labels on the flash roms  */
+
+	ROM_REGION( 0x40000, "oki", 0 ) /* Samples */
+	ROM_LOAD( "esd4.su10", 0x00000, 0x20000, CRC(23f2b7d9) SHA1(328c951d14674760df68486841c933bad0d59fe3) ) /* AT27C010 mask rom */
+ROM_END
+
+
+>>>>>>> upstream/master
 /* Tang Tang
 
 Tang Tang (ESD)
@@ -1310,6 +1504,12 @@ ROM_START( tangtang )
 
 	ROM_REGION( 0x40000, "oki", 0 ) /* Samples */
 	ROM_LOAD( "esd4.su10", 0x00000, 0x20000, CRC(f2dfb02d) SHA1(04001488697aad3e5b2d15c9f5a81dc2b7d0952c) )
+<<<<<<< HEAD
+=======
+
+	ROM_REGION16_BE( 0x80, "eeprom", ROMREGION_ERASE00 ) // default settings because game doesn't init them properly otherwise
+	ROM_LOAD16_WORD_SWAP( "eeprom", 0x0000, 0x0080, CRC(00514989) SHA1(86cdca86ed48962e3bda13f9e6f8e573e176dec0) )
+>>>>>>> upstream/master
 ROM_END
 
 /*
@@ -1394,6 +1594,10 @@ ESD, 2001
 PCB Layout
 ----------
 
+<<<<<<< HEAD
+=======
+ESD 12-04-00
+>>>>>>> upstream/master
 |------------------------------------------------------|
 | TDA1519A                62256         PAL            |
 | SAMPLES.BIN YM3014      62256         BG0.BIN        |
@@ -1529,6 +1733,7 @@ ROM_END
 ***************************************************************************/
 
 /* ESD 11-09-98 */
+<<<<<<< HEAD
 GAME( 1999, multchmp, 0,        esd16,    multchmp, driver_device, 0, ROT0, "ESD",         "Multi Champ (World, ver. 2.5)", MACHINE_SUPPORTS_SAVE )
 GAME( 1998, multchmpk,multchmp, esd16,    multchmp, driver_device, 0, ROT0, "ESD",         "Multi Champ (Korea)", MACHINE_SUPPORTS_SAVE )
 GAME( 2001, jumppop,  0,        jumppop,  jumppop, driver_device,  0, ROT0, "ESD",         "Jumping Pop (set 1)", MACHINE_SUPPORTS_SAVE ) /* Redesigned(?) ESD 11-09-98 with no ID# */
@@ -1551,3 +1756,33 @@ GAME( 2000, deluxe5b, deluxe5,  tangtang, hedpanic, driver_device, 0, ROT0, "ESD
 
 GAME( 2000, tangtang, 0,        tangtang, hedpanic, driver_device, 0, ROT0, "ESD",         "Tang Tang (ver. 0526, 26/05/2000)", MACHINE_SUPPORTS_SAVE )
 GAME( 2001, swatpolc, 0,        hedpanic, swatpolc, driver_device, 0, ROT0, "ESD",         "SWAT Police", MACHINE_SUPPORTS_SAVE )
+=======
+GAME( 1999, multchmp,  0,        esd16,    multchmp, esd16_state, 0, ROT0, "ESD",         "Multi Champ (World, ver. 2.5)",              MACHINE_SUPPORTS_SAVE )
+GAME( 1998, multchmpk, multchmp, esd16,    multchmp, esd16_state, 0, ROT0, "ESD",         "Multi Champ (Korea, older)",                 MACHINE_SUPPORTS_SAVE )
+GAME( 1998, multchmpa, multchmp, esd16,    multchmp, esd16_state, 0, ROT0, "ESD",         "Multi Champ (World, older)",                 MACHINE_SUPPORTS_SAVE )
+
+GAME( 2001, jumppop,   0,        jumppop,  jumppop,  esd16_state, 0, ROT0, "ESD",         "Jumping Pop (set 1)",                        MACHINE_SUPPORTS_SAVE )
+GAME( 2001, jumppope,  jumppop,  jumppop,  jumppop,  esd16_state, 0, ROT0, "Emag Soft",   "Jumping Pop (set 2)",                        MACHINE_SUPPORTS_SAVE )
+
+/* ESD 05-28-99 */
+GAME( 1999, hedpanico, hedpanic, hedpanio, hedpanic, esd16_state, 0, ROT0, "ESD",         "Head Panic (ver. 0615, 15/06/1999)",         MACHINE_SUPPORTS_SAVE )
+
+/* ESD 06-10-1999 */
+GAME( 1999, hedpanica, hedpanic, hedpanic, hedpanic, esd16_state, 0, ROT0, "ESD",         "Head Panic (ver. 0702, 02/07/1999)",         MACHINE_SUPPORTS_SAVE )
+
+/* ESD 08-26-1999 */
+GAME( 2000, mchampdx,  0,        mchampdx, hedpanic, esd16_state, 0, ROT0, "ESD",         "Multi Champ Deluxe (ver. 0106, 06/01/2000)", MACHINE_SUPPORTS_SAVE )
+GAME( 1999, mchampdxa, mchampdx, mchampdx, hedpanic, esd16_state, 0, ROT0, "ESD",         "Multi Champ Deluxe (ver. 1126, 26/11/1999)", MACHINE_SUPPORTS_SAVE )
+GAME( 1999, mchampdxb, mchampdx, mchampdx, hedpanic, esd16_state, 0, ROT0, "ESD",         "Multi Champ Deluxe (ver. 1114, 14/11/1999)", MACHINE_SUPPORTS_SAVE )
+GAME( 2000, hedpanic,  0,        hedpanic, hedpanic, esd16_state, 0, ROT0, "ESD",         "Head Panic (ver. 0117, 17/01/2000)",         MACHINE_SUPPORTS_SAVE )
+GAME( 2000, hedpanicf, hedpanic, hedpanic, hedpanic, esd16_state, 0, ROT0, "ESD / Fuuki", "Head Panic (ver. 0315, 15/03/2000)",         MACHINE_SUPPORTS_SAVE )
+
+/* ESD - This PCB looks identical to the ESD 08-26-1999 PCB */
+GAME( 2000, deluxe5,   0,        tangtang, hedpanic, esd16_state, 0, ROT0, "ESD",         "Deluxe 5 (ver. 0107, 07/01/2000, set 1)",    MACHINE_SUPPORTS_SAVE ) // all 4 sets report the same version number?
+GAME( 2000, deluxe5a,  deluxe5,  tangtang, hedpanic, esd16_state, 0, ROT0, "ESD",         "Deluxe 5 (ver. 0107, 07/01/2000, set 2)",    MACHINE_SUPPORTS_SAVE )
+GAME( 2000, deluxe5b,  deluxe5,  tangtang, hedpanic, esd16_state, 0, ROT0, "ESD",         "Deluxe 5 (ver. 0107, 07/01/2000, set 3)",    MACHINE_SUPPORTS_SAVE )
+GAME( 2000, deluxe4u,  deluxe5,  tangtang, hedpanic, esd16_state, 0, ROT0, "ESD",         "Deluxe 4 U (ver. 0107, 07/01/2000)",         MACHINE_SUPPORTS_SAVE )
+
+GAME( 2000, tangtang,  0,        tangtang, hedpanic, esd16_state, 0, ROT0, "ESD",         "Tang Tang (ver. 0526, 26/05/2000)",          MACHINE_SUPPORTS_SAVE )
+GAME( 2001, swatpolc,  0,        hedpanic, swatpolc, esd16_state, 0, ROT0, "ESD",         "SWAT Police",                                MACHINE_SUPPORTS_SAVE )
+>>>>>>> upstream/master

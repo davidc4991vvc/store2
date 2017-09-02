@@ -50,6 +50,10 @@ tilt the mirror up and down, and the monitor left and right.
 
 #include "emu.h"
 #include "includes/stactics.h"
+<<<<<<< HEAD
+=======
+#include "screen.h"
+>>>>>>> upstream/master
 
 
 
@@ -61,7 +65,11 @@ tilt the mirror up and down, and the monitor left and right.
 
 PALETTE_INIT_MEMBER(stactics_state,stactics)
 {
+<<<<<<< HEAD
 	const UINT8 *color_prom = memregion("proms")->base();
+=======
+	const uint8_t *color_prom = memregion("proms")->base();
+>>>>>>> upstream/master
 	int i;
 
 	for (i = 0; i < 0x400; i++)
@@ -85,6 +93,15 @@ PALETTE_INIT_MEMBER(stactics_state,stactics)
 }
 
 
+<<<<<<< HEAD
+=======
+WRITE_LINE_MEMBER(stactics_state::palette_bank_w)
+{
+	m_palette_bank = m_outlatch->q6_r() | (m_outlatch->q7_r() << 1);
+}
+
+
+>>>>>>> upstream/master
 
 /*************************************
  *
@@ -206,10 +223,17 @@ void stactics_state::update_beam()
  *
  *************************************/
 
+<<<<<<< HEAD
 inline int stactics_state::get_pixel_on_plane(UINT8 *videoram, UINT8 y, UINT8 x, UINT8 y_scroll)
 {
 	UINT8 code;
 	UINT8 gfx;
+=======
+inline int stactics_state::get_pixel_on_plane(uint8_t *videoram, uint8_t y, uint8_t x, uint8_t y_scroll)
+{
+	uint8_t code;
+	uint8_t gfx;
+>>>>>>> upstream/master
 
 	/* compute effective row */
 	y = y - y_scroll;
@@ -246,7 +270,11 @@ void stactics_state::draw_background(bitmap_ind16 &bitmap, const rectangle &clip
 			int pixel_f = get_pixel_on_plane(m_videoram_f, y, x, m_y_scroll_f);
 
 			/* get the color for this pixel */
+<<<<<<< HEAD
 			UINT8 color = m_videoram_b[((y >> 3) << 5) | (x >> 3)] >> 4;
+=======
+			uint8_t color = m_videoram_b[((y >> 3) << 5) | (x >> 3)] >> 4;
+>>>>>>> upstream/master
 
 			/* assemble the pen index */
 			int pen = color |
@@ -254,8 +282,12 @@ void stactics_state::draw_background(bitmap_ind16 &bitmap, const rectangle &clip
 						(pixel_f << 5) |
 						(pixel_e << 6) |
 						(pixel_d << 7) |
+<<<<<<< HEAD
 						((m_palette_val[0] & 0x01) << 8) |
 						((m_palette_val[1] & 0x01) << 9);
+=======
+						(m_palette_bank << 8);
+>>>>>>> upstream/master
 
 			/* compute the effective pixel coordinate after adjusting for the
 			   mirror movement - this is mechanical on the real machine */
@@ -291,16 +323,67 @@ void stactics_state::set_indicator_leds(int data, const char *output_name, int b
 	data = to_7seg[~data & 0x0f];
 
 	/* set the 4 LEDs */
+<<<<<<< HEAD
 	output_set_indexed_value(output_name, base_index + 0, (data >> 2) & 0x01);
 	output_set_indexed_value(output_name, base_index + 1, (data >> 6) & 0x01);
 	output_set_indexed_value(output_name, base_index + 2, (data >> 5) & 0x01);
 	output_set_indexed_value(output_name, base_index + 3, (data >> 4) & 0x01);
+=======
+	output().set_indexed_value(output_name, base_index + 0, (data >> 2) & 0x01);
+	output().set_indexed_value(output_name, base_index + 1, (data >> 6) & 0x01);
+	output().set_indexed_value(output_name, base_index + 2, (data >> 5) & 0x01);
+	output().set_indexed_value(output_name, base_index + 3, (data >> 4) & 0x01);
+}
+
+
+WRITE_LINE_MEMBER(stactics_state::barrier_lamp_w)
+{
+	// this needs to flash on/off, not implemented
+	machine().output().set_value("barrier_lamp", state);
+}
+
+
+WRITE_LINE_MEMBER(stactics_state::start_lamp_w)
+{
+	machine().output().set_value("start_lamp", state);
+}
+
+
+WRITE_LINE_MEMBER(stactics_state::base_1_lamp_w)
+{
+	machine().output().set_indexed_value("base_lamp", 0, state);
+}
+
+
+WRITE_LINE_MEMBER(stactics_state::base_2_lamp_w)
+{
+	machine().output().set_indexed_value("base_lamp", 1, state);
+}
+
+
+WRITE_LINE_MEMBER(stactics_state::base_3_lamp_w)
+{
+	machine().output().set_indexed_value("base_lamp", 2, state);
+}
+
+
+WRITE_LINE_MEMBER(stactics_state::base_4_lamp_w)
+{
+	machine().output().set_indexed_value("base_lamp", 3, state);
+}
+
+
+WRITE_LINE_MEMBER(stactics_state::base_5_lamp_w)
+{
+	machine().output().set_indexed_value("base_lamp", 4, state);
+>>>>>>> upstream/master
 }
 
 
 void stactics_state::update_artwork()
 {
 	int i;
+<<<<<<< HEAD
 	UINT8 *beam_region = memregion("user1")->base();
 
 	/* set the lamps first */
@@ -311,11 +394,15 @@ void stactics_state::update_artwork()
 	output_set_indexed_value("base_lamp", 0, m_lamps[4] & 0x01);
 	output_set_value("start_lamp",   m_lamps[5] & 0x01);
 	output_set_value("barrier_lamp", m_lamps[6] & 0x01);  /* this needs to flash on/off, not implemented */
+=======
+	uint8_t *beam_region = memregion("user1")->base();
+>>>>>>> upstream/master
 
 	/* laser beam - loop for each LED */
 	for (i = 0; i < 0x40; i++)
 	{
 		offs_t beam_data_offs = ((i & 0x08) << 7) | ((i & 0x30) << 4) | m_beam_state;
+<<<<<<< HEAD
 		UINT8 beam_data = beam_region[beam_data_offs];
 		int on = (beam_data >> (i & 0x07)) & 0x01;
 
@@ -329,6 +416,21 @@ void stactics_state::update_artwork()
 	/* score display */
 	for (i = 0x01; i < 0x07; i++)
 		output_set_digit_value(i - 1, to_7seg[~m_display_buffer[i] & 0x0f]);
+=======
+		uint8_t beam_data = beam_region[beam_data_offs];
+		int on = (beam_data >> (i & 0x07)) & 0x01;
+
+		output().set_indexed_value("beam_led_left", i, on);
+		output().set_indexed_value("beam_led_right", i, on);
+	}
+
+	/* sight LED */
+	output().set_value("sight_led", m_motor_on);
+
+	/* score display */
+	for (i = 0x01; i < 0x07; i++)
+		output().set_digit_value(i - 1, to_7seg[~m_display_buffer[i] & 0x0f]);
+>>>>>>> upstream/master
 
 	/* credits indicator */
 	set_indicator_leds(m_display_buffer[0x07], "credit_led", 0x00);
@@ -366,6 +468,11 @@ void stactics_state::video_start()
 	m_beam_state = 0;
 	m_old_beam_state = 0;
 
+<<<<<<< HEAD
+=======
+	m_palette_bank = 0;
+
+>>>>>>> upstream/master
 	save_item(NAME(m_y_scroll_d));
 	save_item(NAME(m_y_scroll_e));
 	save_item(NAME(m_y_scroll_f));
@@ -375,6 +482,10 @@ void stactics_state::video_start()
 	save_item(NAME(m_beam_state));
 	save_item(NAME(m_old_beam_state));
 	save_item(NAME(m_beam_states_per_frame));
+<<<<<<< HEAD
+=======
+	save_item(NAME(m_palette_bank));
+>>>>>>> upstream/master
 }
 
 
@@ -385,7 +496,11 @@ void stactics_state::video_start()
  *
  *************************************/
 
+<<<<<<< HEAD
 UINT32 stactics_state::screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+=======
+uint32_t stactics_state::screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+>>>>>>> upstream/master
 {
 	update_beam();
 	draw_background(bitmap, cliprect);
@@ -404,7 +519,11 @@ UINT32 stactics_state::screen_update(screen_device &screen, bitmap_ind16 &bitmap
  *
  *************************************/
 
+<<<<<<< HEAD
 MACHINE_CONFIG_FRAGMENT( stactics_video )
+=======
+MACHINE_CONFIG_START( stactics_video )
+>>>>>>> upstream/master
 	MCFG_SCREEN_ADD("screen", RASTER)
 	MCFG_SCREEN_VIDEO_ATTRIBUTES(VIDEO_ALWAYS_UPDATE)
 	MCFG_SCREEN_REFRESH_RATE(60)

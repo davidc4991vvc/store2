@@ -7,8 +7,13 @@
 */
 
 #include "emu.h"
+<<<<<<< HEAD
 #include "debugger.h"
 #include "tms32051.h"
+=======
+#include "tms32051.h"
+#include "debugger.h"
+>>>>>>> upstream/master
 
 enum
 {
@@ -35,6 +40,7 @@ enum
 	TMS32051_AR4,
 	TMS32051_AR5,
 	TMS32051_AR6,
+<<<<<<< HEAD
 	TMS32051_AR7
 };
 
@@ -47,12 +53,38 @@ const device_type TMS32051 = &device_creator<tms32051_device>;
  **************************************************************************/
 
 static ADDRESS_MAP_START( internal_pgm, AS_PROGRAM, 16, tms32051_device )
+=======
+	TMS32051_AR7,
+	TMS32051_IFR,
+	TMS32051_IMR,
+	TMS32051_ST0_INTM,
+	TMS32051_ST1_ARB,
+	TMS32051_ST1_TC,
+	TMS32051_TIM,
+	TMS32051_PSC
+};
+
+
+DEFINE_DEVICE_TYPE(TMS32051, tms32051_device, "tms32051", "TMS32051")
+DEFINE_DEVICE_TYPE(TMS32053, tms32053_device, "tms32053", "TMS32053")
+
+
+/**************************************************************************
+ * TMS32051 Internal memory map
+ **************************************************************************/
+
+static ADDRESS_MAP_START( tms32051_internal_pgm, AS_PROGRAM, 16, tms32051_device )
+>>>>>>> upstream/master
 //  AM_RANGE(0x0000, 0x1fff) AM_ROM                         // ROM          TODO: is off-chip if MP/_MC = 0
 	AM_RANGE(0x2000, 0x23ff) AM_RAM AM_SHARE("saram")       // SARAM        TODO: is off-chip if RAM bit = 0
 	AM_RANGE(0xfe00, 0xffff) AM_RAM AM_SHARE("daram_b0")    // DARAM B0     TODO: is off-chip if CNF = 0
 ADDRESS_MAP_END
 
+<<<<<<< HEAD
 static ADDRESS_MAP_START( internal_data, AS_DATA, 16, tms32051_device )
+=======
+static ADDRESS_MAP_START( tms32051_internal_data, AS_DATA, 16, tms32051_device )
+>>>>>>> upstream/master
 	AM_RANGE(0x0000, 0x005f) AM_READWRITE(cpuregs_r, cpuregs_w)
 	AM_RANGE(0x0060, 0x007f) AM_RAM                         // DARAM B2
 	AM_RANGE(0x0100, 0x02ff) AM_RAM AM_SHARE("daram_b0")    // DARAM B0     TODO: is unconnected if CNF = 1
@@ -61,6 +93,7 @@ static ADDRESS_MAP_START( internal_data, AS_DATA, 16, tms32051_device )
 ADDRESS_MAP_END
 
 
+<<<<<<< HEAD
 tms32051_device::tms32051_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
 	: cpu_device(mconfig, TMS32051, "TMS32051", tag, owner, clock, "tms32051", __FILE__)
 	, m_program_config("program", ENDIANNESS_LITTLE, 16, 16, -1, ADDRESS_MAP_NAME(internal_pgm))
@@ -73,6 +106,60 @@ offs_t tms32051_device::disasm_disassemble(char *buffer, offs_t pc, const UINT8 
 {
 	extern CPU_DISASSEMBLE( tms32051 );
 	return CPU_DISASSEMBLE_NAME(tms32051)(this, buffer, pc, oprom, opram, options);
+=======
+tms32051_device::tms32051_device(const machine_config &mconfig, device_type type, const char *tag, device_t *owner, uint32_t clock, address_map_constructor internal_pgm, address_map_constructor internal_data)
+	: cpu_device(mconfig, type, tag, owner, clock)
+	, m_program_config("program", ENDIANNESS_LITTLE, 16, 16, -1, internal_pgm)
+	, m_data_config("data", ENDIANNESS_LITTLE, 16, 16, -1, internal_data)
+	, m_io_config("io", ENDIANNESS_LITTLE, 16, 16, -1)
+{
+}
+
+tms32051_device::tms32051_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: tms32051_device(mconfig, TMS32051, tag, owner, clock, ADDRESS_MAP_NAME(tms32051_internal_pgm), ADDRESS_MAP_NAME(tms32051_internal_data))
+{
+}
+
+device_memory_interface::space_config_vector tms32051_device::memory_space_config() const
+{
+	return space_config_vector {
+		std::make_pair(AS_PROGRAM, &m_program_config),
+		std::make_pair(AS_DATA,    &m_data_config),
+		std::make_pair(AS_IO,      &m_io_config)
+	};
+}
+
+
+/**************************************************************************
+ * TMS32053 Internal memory map
+ **************************************************************************/
+
+static ADDRESS_MAP_START( tms32053_internal_pgm, AS_PROGRAM, 16, tms32053_device )
+//  AM_RANGE(0x0000, 0x3fff) AM_ROM                         // ROM          TODO: is off-chip if MP/_MC = 0
+	AM_RANGE(0x4000, 0x4bff) AM_RAM AM_SHARE("saram")       // SARAM        TODO: is off-chip if RAM bit = 0
+	AM_RANGE(0xfe00, 0xffff) AM_RAM AM_SHARE("daram_b0")    // DARAM B0     TODO: is off-chip if CNF = 0
+ADDRESS_MAP_END
+
+static ADDRESS_MAP_START( tms32053_internal_data, AS_DATA, 16, tms32053_device )
+	AM_RANGE(0x0000, 0x005f) AM_READWRITE(cpuregs_r, cpuregs_w)
+	AM_RANGE(0x0060, 0x007f) AM_RAM                         // DARAM B2
+	AM_RANGE(0x0100, 0x02ff) AM_RAM AM_SHARE("daram_b0")    // DARAM B0     TODO: is unconnected if CNF = 1
+	AM_RANGE(0x0300, 0x04ff) AM_RAM                         // DARAM B1
+	AM_RANGE(0x0800, 0x13ff) AM_RAM AM_SHARE("saram")       // SARAM        TODO: is off-chip if OVLY = 0
+ADDRESS_MAP_END
+
+
+tms32053_device::tms32053_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: tms32051_device(mconfig, TMS32053, tag, owner, clock, ADDRESS_MAP_NAME(tms32053_internal_pgm), ADDRESS_MAP_NAME(tms32053_internal_data))
+{
+}
+
+
+offs_t tms32051_device::disasm_disassemble(std::ostream &stream, offs_t pc, const uint8_t *oprom, const uint8_t *opram, uint32_t options)
+{
+	extern CPU_DISASSEMBLE( tms32051 );
+	return CPU_DISASSEMBLE_NAME(tms32051)(this, stream, pc, oprom, opram, options);
+>>>>>>> upstream/master
 }
 
 
@@ -80,32 +167,56 @@ offs_t tms32051_device::disasm_disassemble(char *buffer, offs_t pc, const UINT8 
 
 #define ROPCODE()       m_direct->read_word((m_pc++) << 1)
 
+<<<<<<< HEAD
 void tms32051_device::CHANGE_PC(UINT16 new_pc)
+=======
+void tms32051_device::CHANGE_PC(uint16_t new_pc)
+>>>>>>> upstream/master
 {
 	m_pc = new_pc;
 }
 
+<<<<<<< HEAD
 UINT16 tms32051_device::PM_READ16(UINT16 address)
+=======
+uint16_t tms32051_device::PM_READ16(uint16_t address)
+>>>>>>> upstream/master
 {
 	return m_program->read_word(address << 1);
 }
 
+<<<<<<< HEAD
 void tms32051_device::PM_WRITE16(UINT16 address, UINT16 data)
+=======
+void tms32051_device::PM_WRITE16(uint16_t address, uint16_t data)
+>>>>>>> upstream/master
 {
 	m_program->write_word(address << 1, data);
 }
 
+<<<<<<< HEAD
 UINT16 tms32051_device::DM_READ16(UINT16 address)
+=======
+uint16_t tms32051_device::DM_READ16(uint16_t address)
+>>>>>>> upstream/master
 {
 	return m_data->read_word(address << 1);
 }
 
+<<<<<<< HEAD
 void tms32051_device::DM_WRITE16(UINT16 address, UINT16 data)
+=======
+void tms32051_device::DM_WRITE16(uint16_t address, uint16_t data)
+>>>>>>> upstream/master
 {
 	m_data->write_word(address << 1, data);
 }
 
+<<<<<<< HEAD
 #include "32051ops.inc"
+=======
+#include "32051ops.hxx"
+>>>>>>> upstream/master
 #include "32051ops.h"
 
 void tms32051_device::op_group_be()
@@ -118,7 +229,11 @@ void tms32051_device::op_group_bf()
 	(this->*s_opcode_table_bf[m_op & 0xff])();
 }
 
+<<<<<<< HEAD
 void tms32051_device::delay_slot(UINT16 startpc)
+=======
+void tms32051_device::delay_slot(uint16_t startpc)
+>>>>>>> upstream/master
 {
 	m_op = ROPCODE();
 	(this->*s_opcode_table[m_op >> 8])();
@@ -137,6 +252,10 @@ void tms32051_device::device_start()
 	m_program = &space(AS_PROGRAM);
 	m_direct = &m_program->direct();
 	m_data = &space(AS_DATA);
+<<<<<<< HEAD
+=======
+	m_io = &space(AS_IO);
+>>>>>>> upstream/master
 
 	m_pcstack_ptr = 0;
 	m_op = 0;
@@ -191,7 +310,20 @@ void tms32051_device::device_start()
 	state_add( TMS32051_AR6,   "AR6", m_ar[6]).formatstr("%04X");
 	state_add( TMS32051_AR7,   "AR7", m_ar[7]).formatstr("%04X");
 
+<<<<<<< HEAD
 	state_add(STATE_GENPC, "GENPC", m_pc).formatstr("%04X").noshow();
+=======
+	state_add( TMS32051_IFR,      "IFR", m_ifr).formatstr("%04X");
+	state_add( TMS32051_IMR,      "IMR", m_imr).formatstr("%04X");
+	state_add( TMS32051_ST0_INTM, "ST0_INTM", m_st0.intm).formatstr("%1d");
+	state_add( TMS32051_ST1_ARB,  "ST1_ARB", m_st1.arb).formatstr("%04X");
+	state_add( TMS32051_ST1_TC,   "ST1_TC", m_st1.tc).formatstr("%1d");
+	state_add( TMS32051_TIM,      "TIM", m_timer.tim).formatstr("%04X");
+	state_add( TMS32051_PSC,      "PSC", m_timer.psc).formatstr("%04X");
+
+	state_add(STATE_GENPC, "GENPC", m_pc).formatstr("%04X").noshow();
+	state_add(STATE_GENPCBASE, "CURPC", m_pc).formatstr("%04X").noshow();
+>>>>>>> upstream/master
 
 	m_icountptr = &m_icount;
 }
@@ -219,6 +351,11 @@ void tms32051_device::device_reset()
 	m_cbcr      = 0;
 	m_rptc      = -1;
 
+<<<<<<< HEAD
+=======
+	m_idle = false;
+
+>>>>>>> upstream/master
 	// simulate internal rom boot loader (can be removed when the dsp rom(s) is dumped)
 	m_st0.intm  = 1;
 	m_st1.cnf   = 1;
@@ -226,7 +363,11 @@ void tms32051_device::device_reset()
 	m_pmst.ovly = 0;
 
 	int i;
+<<<<<<< HEAD
 	UINT16 src, dst, length;
+=======
+	uint16_t src, dst, length;
+>>>>>>> upstream/master
 
 	src = 0x7800;
 	dst = DM_READ16(src++);
@@ -237,7 +378,11 @@ void tms32051_device::device_reset()
 	/* TODO: if you soft reset on Taito JC it tries to do a 0x7802->0x9007 (0xff00) transfer. */
 	for (i=0; i < (length & 0x7ff); i++)
 	{
+<<<<<<< HEAD
 		UINT16 data = DM_READ16(src++);
+=======
+		uint16_t data = DM_READ16(src++);
+>>>>>>> upstream/master
 		PM_WRITE16(dst++, data);
 	}
 }
@@ -256,6 +401,11 @@ void tms32051_device::check_interrupts()
 				m_pc = (m_pmst.iptr << 11) | ((i+1) << 1);
 				m_ifr &= ~(1 << i);
 
+<<<<<<< HEAD
+=======
+				m_idle = false;
+
+>>>>>>> upstream/master
 				save_interrupt_context();
 				break;
 			}
@@ -311,6 +461,7 @@ void tms32051_device::execute_run()
 {
 	while (m_icount > 0)
 	{
+<<<<<<< HEAD
 		UINT16 ppc;
 
 		// handle block repeat
@@ -349,6 +500,54 @@ void tms32051_device::execute_run()
 		else
 		{
 			m_rptc = 0;
+=======
+		uint16_t ppc;
+
+		if (m_idle)
+		{
+			debugger_instruction_hook(this, m_pc);
+			CYCLES(1);
+		}
+		else
+		{
+			// handle block repeat
+			if (m_pmst.braf)
+			{
+				if (m_pc == m_paer)
+				{
+					if (m_brcr > 0)
+					{
+						CHANGE_PC(m_pasr);
+					}
+
+					m_brcr--;
+					if (m_brcr <= 0)
+					{
+						m_pmst.braf = 0;
+					}
+				}
+			}
+
+			ppc = m_pc;
+			debugger_instruction_hook(this, m_pc);
+
+			m_op = ROPCODE();
+			(this->*s_opcode_table[m_op >> 8])();
+
+			// handle single repeat
+			if (m_rptc > 0)
+			{
+				if (ppc == m_rpt_end)
+				{
+					CHANGE_PC(m_rpt_start);
+					m_rptc--;
+				}
+			}
+			else
+			{
+				m_rptc = 0;
+			}
+>>>>>>> upstream/master
 		}
 
 		m_timer.psc--;
@@ -379,7 +578,11 @@ READ16_MEMBER( tms32051_device::cpuregs_r )
 
 		case 0x07: // PMST
 		{
+<<<<<<< HEAD
 			UINT16 r = 0;
+=======
+			uint16_t r = 0;
+>>>>>>> upstream/master
 			r |= m_pmst.iptr << 11;
 			r |= m_pmst.avis << 7;
 			r |= m_pmst.ovly << 5;
@@ -417,7 +620,11 @@ READ16_MEMBER( tms32051_device::cpuregs_r )
 
 		case 0x26: // TCR
 		{
+<<<<<<< HEAD
 			UINT16 r = 0;
+=======
+			uint16_t r = 0;
+>>>>>>> upstream/master
 			r |= (m_timer.psc & 0xf) << 6;
 			r |= (m_timer.tddr & 0xf);
 			return r;
@@ -426,8 +633,34 @@ READ16_MEMBER( tms32051_device::cpuregs_r )
 		case 0x28: // PDWSR
 			return 0;
 
+<<<<<<< HEAD
 		default:
 			if (!space.debugger_access())
+=======
+		case 0x37:  // ABU BKR
+			return 0;
+
+		case 0x50:  // Memory-mapped I/O ports
+		case 0x51:
+		case 0x52:
+		case 0x53:
+		case 0x54:
+		case 0x55:
+		case 0x56:
+		case 0x57:
+		case 0x58:
+		case 0x59:
+		case 0x5a:
+		case 0x5b:
+		case 0x5c:
+		case 0x5d:
+		case 0x5e:
+		case 0x5f:
+			return m_io->read_word(offset << 1);
+
+		default:
+			if (!machine().side_effect_disabled())
+>>>>>>> upstream/master
 				fatalerror("32051: cpuregs_r: unimplemented memory-mapped register %02X at %04X\n", offset, m_pc-1);
 	}
 
@@ -441,6 +674,12 @@ WRITE16_MEMBER( tms32051_device::cpuregs_w )
 		case 0x00: break;
 		case 0x04: m_imr = data; break;
 
+<<<<<<< HEAD
+=======
+		case 0x05: // GREG
+			break;
+
+>>>>>>> upstream/master
 		case 0x06: // IFR
 		{
 			for (int i = 0; i < 16; i++)
@@ -467,6 +706,10 @@ WRITE16_MEMBER( tms32051_device::cpuregs_w )
 		}
 
 		case 0x09: m_brcr = data; break;
+<<<<<<< HEAD
+=======
+		case 0x0d: m_treg1 = data; break;
+>>>>>>> upstream/master
 		case 0x0e: m_treg2 = data; break;
 		case 0x0f: m_dbmr = data; break;
 		case 0x10: m_ar[0] = data; break;
@@ -509,13 +752,44 @@ WRITE16_MEMBER( tms32051_device::cpuregs_w )
 		case 0x28: // PDWSR
 			break;
 
+<<<<<<< HEAD
 		default:
 			if (!space.debugger_access())
+=======
+		case 0x29: // IOWSR
+			break;
+
+		case 0x2a: // CWSR
+			break;
+
+		case 0x50:  // Memory-mapped I/O ports
+		case 0x51:
+		case 0x52:
+		case 0x53:
+		case 0x54:
+		case 0x55:
+		case 0x56:
+		case 0x57:
+		case 0x58:
+		case 0x59:
+		case 0x5a:
+		case 0x5b:
+		case 0x5c:
+		case 0x5d:
+		case 0x5e:
+		case 0x5f:
+			m_io->write_word(offset << 1, data);
+			break;
+
+		default:
+			if (!machine().side_effect_disabled())
+>>>>>>> upstream/master
 				fatalerror("32051: cpuregs_w: unimplemented memory-mapped register %02X, data %04X at %04X\n", offset, data, m_pc-1);
 	}
 }
 
 
+<<<<<<< HEAD
 bool tms32051_device::memory_read(address_spacenum spacenum, offs_t offset, int size, UINT64 &value)
 {
 	/* TODO: alignment if offset is odd */
@@ -528,4 +802,32 @@ bool tms32051_device::memory_read(address_spacenum spacenum, offs_t offset, int 
 		value = (DM_READ16(offset>>1));
 	}
 	return 1;
+=======
+void tms32053_device::device_reset()
+{
+	// reset registers
+	m_st0.intm  = 1;
+	m_st0.ov    = 0;
+	m_st1.c     = 1;
+	m_st1.cnf   = 0;
+	m_st1.hm    = 1;
+	m_st1.pm    = 0;
+	m_st1.sxm   = 1;
+	m_st1.xf    = 1;
+	m_pmst.avis = 0;
+	m_pmst.braf = 0;
+	m_pmst.iptr = 0;
+	m_pmst.ndx  = 0;
+	m_pmst.ovly = 0;
+	m_pmst.ram  = 0;
+	m_pmst.mpmc = 0; // TODO: this is set to logical pin state at reset
+	m_pmst.trm  = 0;
+	m_ifr       = 0;
+	m_cbcr      = 0;
+	m_rptc      = -1;
+
+	m_idle = false;
+
+	CHANGE_PC(0);
+>>>>>>> upstream/master
 }

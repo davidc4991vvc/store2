@@ -20,9 +20,19 @@
 
 
 #include "emu.h"
+<<<<<<< HEAD
 #include "cpu/m68000/m68000.h"
 #include "includes/skullxbo.h"
 
+=======
+#include "includes/skullxbo.h"
+
+#include "cpu/m68000/m68000.h"
+#include "machine/eeprompar.h"
+#include "machine/watchdog.h"
+#include "speaker.h"
+
+>>>>>>> upstream/master
 
 
 /*************************************
@@ -41,7 +51,11 @@ void skullxbo_state::update_interrupts()
 
 TIMER_DEVICE_CALLBACK_MEMBER(skullxbo_state::scanline_timer)
 {
+<<<<<<< HEAD
 	scanline_int_gen(m_maincpu);
+=======
+	scanline_int_gen(*m_maincpu);
+>>>>>>> upstream/master
 }
 
 
@@ -99,25 +113,41 @@ static ADDRESS_MAP_START( main_map, AS_PROGRAM, 16, skullxbo_state )
 	AM_RANGE(0x000000, 0x07ffff) AM_ROM
 	AM_RANGE(0xff0000, 0xff07ff) AM_WRITE(skullxbo_mobmsb_w)
 	AM_RANGE(0xff0800, 0xff0bff) AM_WRITE(skullxbo_halt_until_hblank_0_w)
+<<<<<<< HEAD
 	AM_RANGE(0xff0c00, 0xff0fff) AM_DEVWRITE("eeprom", atari_eeprom_device, unlock_write)
+=======
+	AM_RANGE(0xff0c00, 0xff0fff) AM_DEVWRITE("eeprom", eeprom_parallel_28xx_device, unlock_write)
+>>>>>>> upstream/master
 	AM_RANGE(0xff1000, 0xff13ff) AM_WRITE(video_int_ack_w)
 	AM_RANGE(0xff1400, 0xff17ff) AM_DEVWRITE8("jsa", atari_jsa_ii_device, main_command_w, 0x00ff)
 	AM_RANGE(0xff1800, 0xff1bff) AM_DEVWRITE("jsa", atari_jsa_ii_device, sound_reset_w)
 	AM_RANGE(0xff1c00, 0xff1c7f) AM_WRITE(playfield_latch_w)
 	AM_RANGE(0xff1c80, 0xff1cff) AM_WRITE(skullxbo_xscroll_w) AM_SHARE("xscroll")
 	AM_RANGE(0xff1d00, 0xff1d7f) AM_WRITE(scanline_int_ack_w)
+<<<<<<< HEAD
 	AM_RANGE(0xff1d80, 0xff1dff) AM_WRITE(watchdog_reset16_w)
 	AM_RANGE(0xff1e00, 0xff1e7f) AM_WRITE(playfield_latch_w)
 	AM_RANGE(0xff1e80, 0xff1eff) AM_WRITE(skullxbo_xscroll_w)
 	AM_RANGE(0xff1f00, 0xff1f7f) AM_WRITE(scanline_int_ack_w)
 	AM_RANGE(0xff1f80, 0xff1fff) AM_WRITE(watchdog_reset16_w)
+=======
+	AM_RANGE(0xff1d80, 0xff1dff) AM_DEVWRITE("watchdog", watchdog_timer_device, reset16_w)
+	AM_RANGE(0xff1e00, 0xff1e7f) AM_WRITE(playfield_latch_w)
+	AM_RANGE(0xff1e80, 0xff1eff) AM_WRITE(skullxbo_xscroll_w)
+	AM_RANGE(0xff1f00, 0xff1f7f) AM_WRITE(scanline_int_ack_w)
+	AM_RANGE(0xff1f80, 0xff1fff) AM_DEVWRITE("watchdog", watchdog_timer_device, reset16_w)
+>>>>>>> upstream/master
 	AM_RANGE(0xff2000, 0xff2fff) AM_RAM_DEVWRITE("palette", palette_device, write) AM_SHARE("palette")
 	AM_RANGE(0xff4000, 0xff47ff) AM_WRITE(skullxbo_yscroll_w) AM_SHARE("yscroll")
 	AM_RANGE(0xff4800, 0xff4fff) AM_WRITE(skullxbo_mobwr_w)
 	AM_RANGE(0xff5000, 0xff5001) AM_DEVREAD8("jsa", atari_jsa_ii_device, main_response_r, 0x00ff)
 	AM_RANGE(0xff5800, 0xff5801) AM_READ_PORT("FF5800")
 	AM_RANGE(0xff5802, 0xff5803) AM_READ_PORT("FF5802")
+<<<<<<< HEAD
 	AM_RANGE(0xff6000, 0xff6fff) AM_DEVREADWRITE8("eeprom", atari_eeprom_device, read, write, 0x00ff)
+=======
+	AM_RANGE(0xff6000, 0xff6fff) AM_DEVREADWRITE8("eeprom", eeprom_parallel_28xx_device, read, write, 0x00ff)
+>>>>>>> upstream/master
 	AM_RANGE(0xff8000, 0xff9fff) AM_RAM_WRITE(playfield_latched_w) AM_SHARE("playfield")
 	AM_RANGE(0xffa000, 0xffbfff) AM_RAM_DEVWRITE("playfield", tilemap_device, write_ext) AM_SHARE("playfield_ext")
 	AM_RANGE(0xffc000, 0xffcf7f) AM_RAM_DEVWRITE("alpha", tilemap_device, write) AM_SHARE("alpha")
@@ -221,7 +251,11 @@ GFXDECODE_END
  *
  *************************************/
 
+<<<<<<< HEAD
 static MACHINE_CONFIG_START( skullxbo, skullxbo_state )
+=======
+static MACHINE_CONFIG_START( skullxbo )
+>>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", M68000, ATARI_CLOCK_14MHz/2)
@@ -231,7 +265,14 @@ static MACHINE_CONFIG_START( skullxbo, skullxbo_state )
 	MCFG_TIMER_DRIVER_ADD("scan_timer", skullxbo_state, scanline_timer)
 	MCFG_MACHINE_RESET_OVERRIDE(skullxbo_state,skullxbo)
 
+<<<<<<< HEAD
 	MCFG_ATARI_EEPROM_2816_ADD("eeprom")
+=======
+	MCFG_EEPROM_2816_ADD("eeprom")
+	MCFG_EEPROM_28XX_LOCK_AFTER_WRITE(true)
+
+	MCFG_WATCHDOG_ADD("watchdog")
+>>>>>>> upstream/master
 
 	/* video hardware */
 	MCFG_GFXDECODE_ADD("gfxdecode", "palette", skullxbo)
@@ -280,9 +321,14 @@ ROM_START( skullxbo )
 	ROM_LOAD16_BYTE( "136072-1156.185a", 0x070000, 0x008000, CRC(cde16b55) SHA1(bf5059f0f73a8819551fb3ded3cb6a3123841481) )
 	ROM_LOAD16_BYTE( "136072-1157.185c", 0x070001, 0x008000, CRC(31c77376) SHA1(19eb54d73edb25fda6803df896e182d05c5bad7e) )
 
+<<<<<<< HEAD
 	ROM_REGION( 0x14000, "jsa:cpu", 0 ) /* 64k for 6502 code */
 	ROM_LOAD( "136072-1149.1b",  0x010000, 0x004000, CRC(8d730e7a) SHA1(b89fb9cadcf813ea5cba55f1efcdcdd2517944c7) )
 	ROM_CONTINUE(                0x004000, 0x00c000 )
+=======
+	ROM_REGION( 0x10000, "jsa:cpu", 0 ) /* 64k for 6502 code */
+	ROM_LOAD( "136072-1149.1b",  0x00000, 0x10000, CRC(8d730e7a) SHA1(b89fb9cadcf813ea5cba55f1efcdcdd2517944c7) )
+>>>>>>> upstream/master
 
 	ROM_REGION( 0x190000, "gfx1", 0 )
 	ROM_LOAD( "136072-1102.13r", 0x000000, 0x010000, CRC(90becdfa) SHA1(aa5aaeda70e137518a9e58906daed66fa563b27e) )
@@ -344,9 +390,14 @@ ROM_START( skullxbo4 )
 	ROM_LOAD16_BYTE( "136072-1156.185a", 0x070000, 0x008000, CRC(cde16b55) SHA1(bf5059f0f73a8819551fb3ded3cb6a3123841481) )
 	ROM_LOAD16_BYTE( "136072-1157.185c", 0x070001, 0x008000, CRC(31c77376) SHA1(19eb54d73edb25fda6803df896e182d05c5bad7e) )
 
+<<<<<<< HEAD
 	ROM_REGION( 0x14000, "jsa:cpu", 0 ) /* 64k for 6502 code */
 	ROM_LOAD( "136072-1149.1b",  0x010000, 0x004000, CRC(8d730e7a) SHA1(b89fb9cadcf813ea5cba55f1efcdcdd2517944c7) )
 	ROM_CONTINUE(                0x004000, 0x00c000 )
+=======
+	ROM_REGION( 0x10000, "jsa:cpu", 0 ) /* 64k for 6502 code */
+	ROM_LOAD( "136072-1149.1b",  0x00000, 0x10000, CRC(8d730e7a) SHA1(b89fb9cadcf813ea5cba55f1efcdcdd2517944c7) )
+>>>>>>> upstream/master
 
 	ROM_REGION( 0x190000, "gfx1", 0 )
 	ROM_LOAD( "136072-1102.13r", 0x000000, 0x010000, CRC(90becdfa) SHA1(aa5aaeda70e137518a9e58906daed66fa563b27e) )
@@ -408,9 +459,14 @@ ROM_START( skullxbo3 )
 	ROM_LOAD16_BYTE( "136072-1156.185a", 0x070000, 0x008000, CRC(cde16b55) SHA1(bf5059f0f73a8819551fb3ded3cb6a3123841481) )
 	ROM_LOAD16_BYTE( "136072-1157.185c", 0x070001, 0x008000, CRC(31c77376) SHA1(19eb54d73edb25fda6803df896e182d05c5bad7e) )
 
+<<<<<<< HEAD
 	ROM_REGION( 0x14000, "jsa:cpu", 0 ) /* 64k for 6502 code */
 	ROM_LOAD( "136072-1149.1b",  0x010000, 0x004000, CRC(8d730e7a) SHA1(b89fb9cadcf813ea5cba55f1efcdcdd2517944c7) )
 	ROM_CONTINUE(                0x004000, 0x00c000 )
+=======
+	ROM_REGION( 0x10000, "jsa:cpu", 0 ) /* 64k for 6502 code */
+	ROM_LOAD( "136072-1149.1b",  0x00000, 0x10000, CRC(8d730e7a) SHA1(b89fb9cadcf813ea5cba55f1efcdcdd2517944c7) )
+>>>>>>> upstream/master
 
 	ROM_REGION( 0x190000, "gfx1", 0 )
 	ROM_LOAD( "136072-1102.13r", 0x000000, 0x010000, CRC(90becdfa) SHA1(aa5aaeda70e137518a9e58906daed66fa563b27e) )
@@ -472,9 +528,14 @@ ROM_START( skullxbo2 )
 	ROM_LOAD16_BYTE( "136072-1156.185a", 0x070000, 0x008000, CRC(cde16b55) SHA1(bf5059f0f73a8819551fb3ded3cb6a3123841481) )
 	ROM_LOAD16_BYTE( "136072-1157.185c", 0x070001, 0x008000, CRC(31c77376) SHA1(19eb54d73edb25fda6803df896e182d05c5bad7e) )
 
+<<<<<<< HEAD
 	ROM_REGION( 0x14000, "jsa:cpu", 0 ) /* 64k for 6502 code */
 	ROM_LOAD( "136072-1149.1b",  0x010000, 0x004000, CRC(8d730e7a) SHA1(b89fb9cadcf813ea5cba55f1efcdcdd2517944c7) )
 	ROM_CONTINUE(                0x004000, 0x00c000 )
+=======
+	ROM_REGION( 0x10000, "jsa:cpu", 0 ) /* 64k for 6502 code */
+	ROM_LOAD( "136072-1149.1b",  0x00000, 0x10000, CRC(8d730e7a) SHA1(b89fb9cadcf813ea5cba55f1efcdcdd2517944c7) )
+>>>>>>> upstream/master
 
 	ROM_REGION( 0x190000, "gfx1", 0 )
 	ROM_LOAD( "136072-1102.13r", 0x000000, 0x010000, CRC(90becdfa) SHA1(aa5aaeda70e137518a9e58906daed66fa563b27e) )
@@ -536,9 +597,14 @@ ROM_START( skullxbo1 )
 	ROM_LOAD16_BYTE( "136072-1156.185a", 0x070000, 0x008000, CRC(cde16b55) SHA1(bf5059f0f73a8819551fb3ded3cb6a3123841481) )
 	ROM_LOAD16_BYTE( "136072-1157.185c", 0x070001, 0x008000, CRC(31c77376) SHA1(19eb54d73edb25fda6803df896e182d05c5bad7e) )
 
+<<<<<<< HEAD
 	ROM_REGION( 0x14000, "jsa:cpu", 0 ) /* 64k for 6502 code */
 	ROM_LOAD( "136072-1149.1b",  0x010000, 0x004000, CRC(8d730e7a) SHA1(b89fb9cadcf813ea5cba55f1efcdcdd2517944c7) )
 	ROM_CONTINUE(                0x004000, 0x00c000 )
+=======
+	ROM_REGION( 0x10000, "jsa:cpu", 0 ) /* 64k for 6502 code */
+	ROM_LOAD( "136072-1149.1b",  0x00000, 0x10000, CRC(8d730e7a) SHA1(b89fb9cadcf813ea5cba55f1efcdcdd2517944c7) )
+>>>>>>> upstream/master
 
 	ROM_REGION( 0x190000, "gfx1", 0 )
 	ROM_LOAD( "136072-1102.13r", 0x000000, 0x010000, CRC(90becdfa) SHA1(aa5aaeda70e137518a9e58906daed66fa563b27e) )

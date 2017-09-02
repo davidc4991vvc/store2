@@ -9,6 +9,10 @@
  *
  */
 
+<<<<<<< HEAD
+=======
+#include "emu.h"
+>>>>>>> upstream/master
 #include "machine/zs01.h"
 
 #define VERBOSE_LEVEL ( 0 )
@@ -27,11 +31,20 @@ inline void ATTR_PRINTF( 3, 4 ) zs01_device::verboselog( int n_level, const char
 }
 
 // device type definition
+<<<<<<< HEAD
 const device_type ZS01 = &device_creator<zs01_device>;
 
 zs01_device::zs01_device( const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock )
 	: device_t( mconfig, ZS01, "Konami ZS01 PIC", tag, owner, clock, "zs01", __FILE__ ),
 	device_nvram_interface(mconfig, *this),
+=======
+DEFINE_DEVICE_TYPE(ZS01, zs01_device, "zs01", "Konami ZS01 PIC")
+
+zs01_device::zs01_device( const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock )
+	: device_t(mconfig, ZS01, tag, owner, clock),
+	device_nvram_interface(mconfig, *this),
+	m_region(*this, DEVICE_SELF),
+>>>>>>> upstream/master
 	m_cs( 0 ),
 	m_rst( 0 ),
 	m_scl( 0 ),
@@ -47,7 +60,11 @@ zs01_device::zs01_device( const machine_config &mconfig, const char *tag, device
 void zs01_device::device_start()
 {
 	m_ds2401 = siblingdevice<ds2401_device>(m_ds2401_tag);
+<<<<<<< HEAD
 	if( m_ds2401 == NULL )
+=======
+	if( m_ds2401 == nullptr )
+>>>>>>> upstream/master
 	{
 		logerror( "ds2401 '%s' not found\n", m_ds2401_tag );
 	}
@@ -116,6 +133,7 @@ WRITE_LINE_MEMBER( zs01_device::write_cs )
 	m_cs = state;
 }
 
+<<<<<<< HEAD
 void zs01_device::decrypt( UINT8 *destination, UINT8 *source, int length, UINT8 *key, UINT8 previous_byte )
 {
 	UINT32 a0;
@@ -124,6 +142,16 @@ void zs01_device::decrypt( UINT8 *destination, UINT8 *source, int length, UINT8 
 	UINT32 a1;
 	UINT32 t1;
 	UINT32 t0;
+=======
+void zs01_device::decrypt( uint8_t *destination, uint8_t *source, int length, uint8_t *key, uint8_t previous_byte )
+{
+	uint32_t a0;
+	uint32_t v1;
+	uint32_t v0;
+	uint32_t a1;
+	uint32_t t1;
+	uint32_t t0;
+>>>>>>> upstream/master
 
 	length--;
 	if( length >= 0 )
@@ -163,6 +191,7 @@ void zs01_device::decrypt( UINT8 *destination, UINT8 *source, int length, UINT8 
 	}
 }
 
+<<<<<<< HEAD
 void zs01_device::decrypt2( UINT8 *destination, UINT8 *source, int length, UINT8 *key, UINT8 previous_byte )
 {
 	UINT32 a0;
@@ -172,6 +201,17 @@ void zs01_device::decrypt2( UINT8 *destination, UINT8 *source, int length, UINT8
 	UINT32 t2;
 	UINT32 t1;
 	UINT32 t0;
+=======
+void zs01_device::decrypt2( uint8_t *destination, uint8_t *source, int length, uint8_t *key, uint8_t previous_byte )
+{
+	uint32_t a0;
+	uint32_t v1;
+	uint32_t v0;
+	uint32_t a1;
+	uint32_t t2;
+	uint32_t t1;
+	uint32_t t0;
+>>>>>>> upstream/master
 
 	t2 = 0;
 	if( length >= 0 )
@@ -211,6 +251,7 @@ void zs01_device::decrypt2( UINT8 *destination, UINT8 *source, int length, UINT8
 	}
 }
 
+<<<<<<< HEAD
 void zs01_device::encrypt( UINT8 *destination, UINT8 *source, int length, UINT8 *key, UINT32 previous_byte )
 {
 	UINT32 t0;
@@ -218,6 +259,15 @@ void zs01_device::encrypt( UINT8 *destination, UINT8 *source, int length, UINT8 
 	UINT32 v1;
 	UINT32 a0;
 	UINT32 a1;
+=======
+void zs01_device::encrypt( uint8_t *destination, uint8_t *source, int length, uint8_t *key, uint32_t previous_byte )
+{
+	uint32_t t0;
+	uint32_t v0;
+	uint32_t v1;
+	uint32_t a0;
+	uint32_t a1;
+>>>>>>> upstream/master
 
 	length--;
 	if( length >= 0 )
@@ -259,12 +309,21 @@ void zs01_device::encrypt( UINT8 *destination, UINT8 *source, int length, UINT8 
 	}
 }
 
+<<<<<<< HEAD
 UINT16 zs01_device::calc_crc( UINT8 *buffer, UINT32 length )
 {
 	UINT32 v1;
 	UINT32 a3;
 	UINT32 v0;
 	UINT32 a2;
+=======
+uint16_t zs01_device::calc_crc( uint8_t *buffer, uint32_t length )
+{
+	uint32_t v1;
+	uint32_t a3;
+	uint32_t v0;
+	uint32_t a2;
+>>>>>>> upstream/master
 
 	v1 = 0xffff;
 	a3 = 0;
@@ -391,7 +450,11 @@ WRITE_LINE_MEMBER( zs01_device::write_scl )
 								decrypt2( &m_write_buffer[ 2 ], &m_write_buffer[ 2 ], SIZE_DATA_BUFFER, m_data_key, 0x00 );
 							}
 
+<<<<<<< HEAD
 							UINT16 crc = calc_crc( m_write_buffer, 10 );
+=======
+							uint16_t crc = calc_crc( m_write_buffer, 10 );
+>>>>>>> upstream/master
 
 							if( crc == ( ( m_write_buffer[ 10 ] << 8 ) | m_write_buffer[ 11 ] ) )
 							{
@@ -581,7 +644,11 @@ void zs01_device::nvram_default()
 
 	int expected_bytes = sizeof( m_response_to_reset ) + sizeof( m_command_key ) + sizeof( m_data_key ) + sizeof( m_data );
 
+<<<<<<< HEAD
 	if( !m_region )
+=======
+	if (!m_region.found())
+>>>>>>> upstream/master
 	{
 		logerror( "zs01(%s) region not found\n", tag() );
 	}
@@ -591,7 +658,11 @@ void zs01_device::nvram_default()
 	}
 	else
 	{
+<<<<<<< HEAD
 		UINT8 *region = m_region->base();
+=======
+		uint8_t *region = m_region->base();
+>>>>>>> upstream/master
 
 		memcpy( m_response_to_reset, region, sizeof( m_response_to_reset ) ); region += sizeof( m_response_to_reset );
 		memcpy( m_command_key, region, sizeof( m_command_key ) ); region += sizeof( m_command_key );

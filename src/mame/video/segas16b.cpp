@@ -26,7 +26,11 @@ void segas16b_state::video_start()
 //  screen_update - render all graphics
 //-------------------------------------------------
 
+<<<<<<< HEAD
 UINT32 segas16b_state::screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+=======
+uint32_t segas16b_state::screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+>>>>>>> upstream/master
 {
 	// if no drawing is happening, fill with black and get out
 	if (!m_segaic16vid->m_display_enable)
@@ -36,12 +40,18 @@ UINT32 segas16b_state::screen_update(screen_device &screen, bitmap_ind16 &bitmap
 	}
 
 	// start the sprites drawing
+<<<<<<< HEAD
 	m_sprites->draw_async(cliprect);
+=======
+	if (m_sprites.found())
+		m_sprites->draw_async(cliprect);
+>>>>>>> upstream/master
 
 	// reset priorities
 	screen.priority().fill(0, cliprect);
 
 	// draw background opaquely first, not setting any priorities
+<<<<<<< HEAD
 	m_segaic16vid->tilemap_draw( screen, bitmap, cliprect, 0, SEGAIC16_TILEMAP_BACKGROUND, 0 | TILEMAP_DRAW_OPAQUE, 0x00);
 	m_segaic16vid->tilemap_draw( screen, bitmap, cliprect, 0, SEGAIC16_TILEMAP_BACKGROUND, 1 | TILEMAP_DRAW_OPAQUE, 0x00);
 
@@ -70,6 +80,37 @@ UINT32 segas16b_state::screen_update(screen_device &screen, bitmap_ind16 &bitmap
 			{
 				// only process written pixels
 				UINT16 pix = src[x];
+=======
+	m_segaic16vid->tilemap_draw( screen, bitmap, cliprect, 0, segaic16_video_device::TILEMAP_BACKGROUND, 0 | TILEMAP_DRAW_OPAQUE, 0x00);
+	m_segaic16vid->tilemap_draw( screen, bitmap, cliprect, 0, segaic16_video_device::TILEMAP_BACKGROUND, 1 | TILEMAP_DRAW_OPAQUE, 0x00);
+
+	// draw background again, just to set the priorities on non-transparent pixels
+	bitmap_ind16 dummy_bitmap;
+	m_segaic16vid->tilemap_draw( screen, dummy_bitmap, cliprect, 0, segaic16_video_device::TILEMAP_BACKGROUND, 0, 0x01);
+	m_segaic16vid->tilemap_draw( screen, dummy_bitmap, cliprect, 0, segaic16_video_device::TILEMAP_BACKGROUND, 1, 0x02);
+
+	// draw foreground
+	m_segaic16vid->tilemap_draw( screen, bitmap, cliprect, 0, segaic16_video_device::TILEMAP_FOREGROUND, 0, 0x02);
+	m_segaic16vid->tilemap_draw( screen, bitmap, cliprect, 0, segaic16_video_device::TILEMAP_FOREGROUND, 1, 0x04);
+
+	// text layer
+	m_segaic16vid->tilemap_draw( screen, bitmap, cliprect, 0, segaic16_video_device::TILEMAP_TEXT, 0, 0x04);
+	m_segaic16vid->tilemap_draw( screen, bitmap, cliprect, 0, segaic16_video_device::TILEMAP_TEXT, 1, 0x08);
+
+	// mix in sprites
+	if (!m_sprites.found()) return 0;
+	bitmap_ind16 &sprites = m_sprites->bitmap();
+	for (const sparse_dirty_rect *rect = m_sprites->first_dirty_rect(cliprect); rect != nullptr; rect = rect->next())
+		for (int y = rect->min_y; y <= rect->max_y; y++)
+		{
+			uint16_t *dest = &bitmap.pix(y);
+			uint16_t *src = &sprites.pix(y);
+			uint8_t *pri = &screen.priority().pix(y);
+			for (int x = rect->min_x; x <= rect->max_x; x++)
+			{
+				// only process written pixels
+				uint16_t pix = src[x];
+>>>>>>> upstream/master
 				if (pix != 0xffff)
 				{
 					// compare sprite priority against tilemap priority
@@ -82,7 +123,11 @@ UINT32 segas16b_state::screen_update(screen_device &screen, bitmap_ind16 &bitmap
 
 						// otherwise, just add in sprite palette base
 						else
+<<<<<<< HEAD
 							dest[x] = 0x400 | (pix & 0x3ff);
+=======
+							dest[x] = m_spritepalbase | (pix & 0x3ff);
+>>>>>>> upstream/master
 					}
 				}
 			}

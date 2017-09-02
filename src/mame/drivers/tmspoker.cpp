@@ -161,9 +161,13 @@
   The switch placed below the program ROMs is connected to each PD /PGM line,
   so you can switch between 2 different programs.
 
+<<<<<<< HEAD
   Both programs seems to be encrypted.
 
   - Data lines are clearly inverted (Q1-Q8 --> D7-D0).
+=======
+  - Data lines are inverted according to TI convention (Q1-Q8 --> D7-D0).
+>>>>>>> upstream/master
 
   - Address lines are scrambled:
 
@@ -207,6 +211,7 @@
 
 *******************************************************************************/
 
+<<<<<<< HEAD
 
 #define MASTER_CLOCK    XTAL_6MHz   /* confirmed */
 
@@ -214,6 +219,16 @@
 #include "cpu/tms9900/tms9980a.h"
 #include "video/mc6845.h"
 #include "sound/sn76477.h"
+=======
+#include "emu.h"
+#include "cpu/tms9900/tms9980a.h"
+#include "sound/sn76477.h"
+#include "video/mc6845.h"
+#include "screen.h"
+
+
+#define MASTER_CLOCK    XTAL_6MHz   /* confirmed */
+>>>>>>> upstream/master
 
 
 class tmspoker_state : public driver_device
@@ -225,18 +240,30 @@ public:
 		m_maincpu(*this, "maincpu"),
 		m_gfxdecode(*this, "gfxdecode") { }
 
+<<<<<<< HEAD
 	required_shared_ptr<UINT8> m_videoram;
+=======
+	required_shared_ptr<uint8_t> m_videoram;
+>>>>>>> upstream/master
 	tilemap_t *m_bg_tilemap;
 	DECLARE_WRITE8_MEMBER(tmspoker_videoram_w);
 	//DECLARE_WRITE8_MEMBER(debug_w);
 	DECLARE_READ8_MEMBER(unk_r);
 	DECLARE_DRIVER_INIT(bus);
 	TILE_GET_INFO_MEMBER(get_bg_tile_info);
+<<<<<<< HEAD
 	virtual void machine_start();
 	virtual void machine_reset();
 	virtual void video_start();
 	DECLARE_PALETTE_INIT(tmspoker);
 	UINT32 screen_update_tmspoker(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
+=======
+	virtual void machine_start() override;
+	virtual void machine_reset() override;
+	virtual void video_start() override;
+	DECLARE_PALETTE_INIT(tmspoker);
+	uint32_t screen_update_tmspoker(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
+>>>>>>> upstream/master
 	INTERRUPT_GEN_MEMBER(tmspoker_interrupt);
 	required_device<cpu_device> m_maincpu;
 	required_device<gfxdecode_device> m_gfxdecode;
@@ -269,10 +296,17 @@ TILE_GET_INFO_MEMBER(tmspoker_state::get_bg_tile_info)
 
 void tmspoker_state::video_start()
 {
+<<<<<<< HEAD
 	m_bg_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(tmspoker_state::get_bg_tile_info),this), TILEMAP_SCAN_ROWS, 8, 8, 32, 32);
 }
 
 UINT32 tmspoker_state::screen_update_tmspoker(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+=======
+	m_bg_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(tmspoker_state::get_bg_tile_info),this), TILEMAP_SCAN_ROWS, 8, 8, 32, 32);
+}
+
+uint32_t tmspoker_state::screen_update_tmspoker(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+>>>>>>> upstream/master
 {
 	m_bg_tilemap->draw(screen, bitmap, cliprect, 0, 0);
 	return 0;
@@ -305,14 +339,22 @@ INTERRUPT_GEN_MEMBER(tmspoker_state::tmspoker_interrupt)
 
 void tmspoker_state::machine_start()
 {
+<<<<<<< HEAD
 	UINT8 *ROM = memregion("maincpu")->base();
+=======
+	uint8_t *ROM = memregion("maincpu")->base();
+>>>>>>> upstream/master
 	membank("bank1")->configure_entries(0, 2, &ROM[0], 0x1000);
 }
 
 
 void tmspoker_state::machine_reset()
 {
+<<<<<<< HEAD
 	UINT8 seldsw = (ioport("SELDSW")->read() );
+=======
+	uint8_t seldsw = (ioport("SELDSW")->read() );
+>>>>>>> upstream/master
 
 	popmessage("ROM Bank: %02X", seldsw);
 
@@ -327,9 +369,15 @@ void tmspoker_state::machine_reset()
 static ADDRESS_MAP_START( tmspoker_map, AS_PROGRAM, 8, tmspoker_state )
 	ADDRESS_MAP_GLOBAL_MASK(0x3fff)
 	AM_RANGE(0x0000, 0x0fff) AM_ROMBANK("bank1")
+<<<<<<< HEAD
 	AM_RANGE(0x2800, 0x2800) AM_DEVWRITE("crtc", mc6845_device, address_w)
 	AM_RANGE(0x2801, 0x2801) AM_DEVREADWRITE("crtc", mc6845_device, register_r, register_w)
 	AM_RANGE(0x3000, 0x33ff) AM_WRITE(tmspoker_videoram_w) AM_SHARE("videoram")
+=======
+	AM_RANGE(0x2800, 0x2800) AM_READNOP AM_DEVWRITE("crtc", mc6845_device, address_w)
+	AM_RANGE(0x2801, 0x2801) AM_DEVREADWRITE("crtc", mc6845_device, register_r, register_w)
+	AM_RANGE(0x3000, 0x33ff) AM_RAM_WRITE(tmspoker_videoram_w) AM_SHARE("videoram")
+>>>>>>> upstream/master
 	AM_RANGE(0x3800, 0x3fff) AM_RAM //NVRAM?
 	AM_RANGE(0x2000, 0x20ff) AM_RAM //color RAM?
 ADDRESS_MAP_END
@@ -342,7 +390,11 @@ READ8_MEMBER(tmspoker_state::unk_r)
 }
 
 static ADDRESS_MAP_START( tmspoker_cru_map, AS_IO, 8, tmspoker_state )
+<<<<<<< HEAD
 	AM_RANGE(0x0000, 0xffff) AM_READ(unk_r)
+=======
+	AM_RANGE(0x0000, 0x07ff) AM_READ(unk_r)
+>>>>>>> upstream/master
 ADDRESS_MAP_END
 
 /* I/O byte R/W
@@ -551,7 +603,11 @@ GFXDECODE_END
 *    Machine Drivers     *
 *************************/
 
+<<<<<<< HEAD
 static MACHINE_CONFIG_START( tmspoker, tmspoker_state )
+=======
+static MACHINE_CONFIG_START( tmspoker )
+>>>>>>> upstream/master
 
 	// CPU TMS9980A; no line connections
 	MCFG_TMS99xx_ADD("maincpu", TMS9980A, MASTER_CLOCK/4, tmspoker_map, tmspoker_cru_map)
@@ -585,8 +641,15 @@ MACHINE_CONFIG_END
 ROM_START( tmspoker )
 	ROM_REGION( 0x4000, "maincpu", 0 ) /* TMS9980 selectable code */
 
+<<<<<<< HEAD
 	ROM_LOAD( "0.bin",  0x0000, 0x1000, CRC(a20ae6cb) SHA1(d47780119b4ebb16dc759a50dfc880ddbc6a1112) )  /* Program 1 */
 	ROM_LOAD( "8.bin",  0x1000, 0x1000, CRC(0c0a7159) SHA1(92cc3dc32a5bf4a7fa197e72c3931e583c96ef33) )  /* Program 2 */
+=======
+	ROM_LOAD( "0.bin",  0x0800, 0x0800, CRC(a20ae6cb) SHA1(d47780119b4ebb16dc759a50dfc880ddbc6a1112) )  /* Program 1 */
+	ROM_CONTINUE(       0x0000, 0x0800 )
+	ROM_LOAD( "8.bin",  0x1800, 0x0800, CRC(0c0a7159) SHA1(92cc3dc32a5bf4a7fa197e72c3931e583c96ef33) )  /* Program 2 */
+	ROM_CONTINUE(       0x0800, 0x0800 )
+>>>>>>> upstream/master
 
 	ROM_REGION( 0x0800, "gfx1", 0 )
 	ROM_LOAD( "3.bin",  0x0000, 0x0800, CRC(55458dae) SHA1(bf96d1b287292ff89bc2dbd9451a88a2ab941f3e) )
@@ -602,6 +665,7 @@ ROM_END
 
 DRIVER_INIT_MEMBER(tmspoker_state,bus)
 {
+<<<<<<< HEAD
 	/* decode the TMS9980 ROMs */
 
 	// MZ: Does not make sense to swap the bit order, so I commented it out.
@@ -618,6 +682,8 @@ DRIVER_INIT_MEMBER(tmspoker_state,bus)
     }
 */
 
+=======
+>>>>>>> upstream/master
 	/* still need to decode the addressing lines */
 	/* text found in the ROM (A at 6, B at 8, etc: consistent with gfx rom byte offsets) suggests
 	   that the lower address lines are good already:
@@ -641,5 +707,9 @@ DRIVER_INIT_MEMBER(tmspoker_state,bus)
 *      Game Drivers      *
 *************************/
 
+<<<<<<< HEAD
 /*    YEAR  NAME      PARENT  MACHINE   INPUT     INIT  ROT    COMPANY      FULLNAME                     FLAGS */
+=======
+//    YEAR  NAME      PARENT  MACHINE   INPUT     STATE           INIT  ROT   COMPANY      FULLNAME                      FLAGS
+>>>>>>> upstream/master
 GAME( 198?, tmspoker, 0,      tmspoker, tmspoker, tmspoker_state, bus,  ROT0, "<unknown>", "unknown TMS9980 Poker Game", MACHINE_NO_SOUND | MACHINE_NOT_WORKING )

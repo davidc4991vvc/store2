@@ -33,6 +33,7 @@
 
 */
 
+<<<<<<< HEAD
 #include "crt9021.h"
 
 
@@ -41,14 +42,30 @@
 //**************************************************************************
 
 const device_type CRT9021 = &device_creator<crt9021_t>;
+=======
+#include "emu.h"
+#include "crt9021.h"
+
+#include "screen.h"
+
+//#define VERBOSE 1
+#include "logmacro.h"
+>>>>>>> upstream/master
 
 
 
 //**************************************************************************
+<<<<<<< HEAD
 //  MACROS / CONSTANTS
 //**************************************************************************
 
 #define LOG 0
+=======
+//  DEVICE DEFINITIONS
+//**************************************************************************
+
+DEFINE_DEVICE_TYPE(CRT9021, crt9021_device, "crt9021", "SMC CRT9021 VAC")
+>>>>>>> upstream/master
 
 
 
@@ -57,11 +74,19 @@ const device_type CRT9021 = &device_creator<crt9021_t>;
 //**************************************************************************
 
 //-------------------------------------------------
+<<<<<<< HEAD
 //  crt9021_t - constructor
 //-------------------------------------------------
 
 crt9021_t::crt9021_t(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock) :
 	device_t(mconfig, CRT9021, "SMC CRT9021", tag, owner, clock, "crt9021", __FILE__),
+=======
+//  crt9021_device - constructor
+//-------------------------------------------------
+
+crt9021_device::crt9021_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock) :
+	device_t(mconfig, CRT9021, tag, owner, clock),
+>>>>>>> upstream/master
 	device_video_interface(mconfig, *this),
 	m_data(0),
 	m_ms0(0),
@@ -93,7 +118,11 @@ crt9021_t::crt9021_t(const machine_config &mconfig, const char *tag, device_t *o
 //  device_start - device-specific startup
 //-------------------------------------------------
 
+<<<<<<< HEAD
 void crt9021_t::device_start()
+=======
+void crt9021_device::device_start()
+>>>>>>> upstream/master
 {
 	// register bitmap
 	m_screen->register_screen_bitmap(m_bitmap);
@@ -129,9 +158,15 @@ void crt9021_t::device_start()
 //  ld_sh_w - load/shift
 //-------------------------------------------------
 
+<<<<<<< HEAD
 WRITE_LINE_MEMBER( crt9021_t::ld_sh_w )
 {
 	if (LOG) logerror("CRT9021 '%s' LD/SH: %u\n", tag(), state);
+=======
+WRITE_LINE_MEMBER( crt9021_device::ld_sh_w )
+{
+	LOG("CRT9021 LD/SH: %u\n", state);
+>>>>>>> upstream/master
 
 	if (!m_ld_sh && state)
 	{
@@ -169,9 +204,15 @@ WRITE_LINE_MEMBER( crt9021_t::ld_sh_w )
 //  vsync_w - vertical sync
 //-------------------------------------------------
 
+<<<<<<< HEAD
 WRITE_LINE_MEMBER( crt9021_t::vsync_w )
 {
 	if (LOG) logerror("CRT9021 '%s' VSYNC: %u\n", tag(), state);
+=======
+WRITE_LINE_MEMBER( crt9021_device::vsync_w )
+{
+	LOG("CRT9021 VSYNC: %u\n", state);
+>>>>>>> upstream/master
 }
 
 
@@ -179,9 +220,15 @@ WRITE_LINE_MEMBER( crt9021_t::vsync_w )
 //  screen_update - update screen
 //-------------------------------------------------
 
+<<<<<<< HEAD
 UINT32 crt9021_t::screen_update(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect)
 {
 	m_bitmap.fill(rgb_t::black, cliprect);
+=======
+uint32_t crt9021_device::screen_update(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect)
+{
+	m_bitmap.fill(rgb_t::black(), cliprect);
+>>>>>>> upstream/master
 
 	return 0;
 }

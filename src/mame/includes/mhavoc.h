@@ -27,6 +27,7 @@ public:
 		m_alpha(*this, "alpha"),
 		m_gamma(*this, "gamma"){ }
 
+<<<<<<< HEAD
 	required_shared_ptr<UINT8> m_zram0;
 	required_shared_ptr<UINT8> m_zram1;
 	required_device<cpu_device> m_alpha;
@@ -43,6 +44,24 @@ public:
 	UINT8 m_gamma_irq_clock;
 	UINT8 m_has_gamma_cpu;
 	UINT8 m_speech_write_buffer;
+=======
+	required_shared_ptr<uint8_t> m_zram0;
+	required_shared_ptr<uint8_t> m_zram1;
+	required_device<cpu_device> m_alpha;
+	optional_device<cpu_device> m_gamma;
+	uint8_t m_alpha_data;
+	uint8_t m_alpha_rcvd;
+	uint8_t m_alpha_xmtd;
+	uint8_t m_gamma_data;
+	uint8_t m_gamma_rcvd;
+	uint8_t m_gamma_xmtd;
+	uint8_t m_player_1;
+	uint8_t m_alpha_irq_clock;
+	uint8_t m_alpha_irq_clock_enable;
+	uint8_t m_gamma_irq_clock;
+	uint8_t m_has_gamma_cpu;
+	uint8_t m_speech_write_buffer;
+>>>>>>> upstream/master
 	DECLARE_READ8_MEMBER(dual_pokey_r);
 	DECLARE_WRITE8_MEMBER(dual_pokey_w);
 	DECLARE_WRITE8_MEMBER(mhavoc_alpha_irq_ack_w);
@@ -68,8 +87,13 @@ public:
 	DECLARE_CUSTOM_INPUT_MEMBER(alpha_xmtd_r);
 	DECLARE_CUSTOM_INPUT_MEMBER(clock_r);
 	DECLARE_DRIVER_INIT(mhavocrv);
+<<<<<<< HEAD
 	virtual void machine_start();
 	virtual void machine_reset();
+=======
+	virtual void machine_start() override;
+	virtual void machine_reset() override;
+>>>>>>> upstream/master
 	TIMER_CALLBACK_MEMBER(delayed_gamma_w);
 	TIMER_DEVICE_CALLBACK_MEMBER(mhavoc_cpu_irq_clock);
 };

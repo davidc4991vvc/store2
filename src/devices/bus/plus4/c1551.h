@@ -6,12 +6,20 @@
 
 **********************************************************************/
 
+<<<<<<< HEAD
 #pragma once
 
 #ifndef __C1551__
 #define __C1551__
 
 #include "emu.h"
+=======
+#ifndef MAME_BUS_PLUS4_C1551_H
+#define MAME_BUS_PLUS4_C1551_H
+
+#pragma once
+
+>>>>>>> upstream/master
 #include "exp.h"
 #include "cpu/m6502/m6510t.h"
 #include "machine/64h156.h"
@@ -24,6 +32,7 @@
 //  TYPE DEFINITIONS
 //**************************************************************************
 
+<<<<<<< HEAD
 // ======================> c1551_t
 
 class c1551_t :  public device_t,
@@ -38,11 +47,41 @@ public:
 	virtual machine_config_constructor device_mconfig_additions() const;
 	virtual ioport_constructor device_input_ports() const;
 
+=======
+// ======================> c1551_device
+
+class c1551_device : public device_t, public device_plus4_expansion_card_interface
+{
+public:
+	// construction/destruction
+	c1551_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
+
+	DECLARE_READ8_MEMBER( tpi0_r );
+	DECLARE_WRITE8_MEMBER( tpi0_w );
+
+protected:
+	// device-level overrides
+	virtual void device_start() override;
+	virtual void device_reset() override;
+	virtual void device_timer(emu_timer &timer, device_timer_id id, int param, void *ptr) override;
+
+	// optional information overrides
+	virtual const tiny_rom_entry *device_rom_region() const override;
+	virtual void device_add_mconfig(machine_config &config) override;
+	virtual ioport_constructor device_input_ports() const override;
+
+	// device_plus4_expansion_card_interface overrides
+	virtual uint8_t plus4_cd_r(address_space &space, offs_t offset, uint8_t data, int ba, int cs0, int c1l, int c2l, int cs1, int c1h, int c2h) override;
+	virtual void plus4_cd_w(address_space &space, offs_t offset, uint8_t data, int ba, int cs0, int c1l, int c2l, int cs1, int c1h, int c2h) override;
+
+private:
+>>>>>>> upstream/master
 	DECLARE_READ8_MEMBER( port_r );
 	DECLARE_WRITE8_MEMBER( port_w );
 
 	DECLARE_READ8_MEMBER( tcbm_data_r );
 	DECLARE_WRITE8_MEMBER( tcbm_data_w );
+<<<<<<< HEAD
 	DECLARE_READ8_MEMBER( tpi0_r );
 	DECLARE_WRITE8_MEMBER( tpi0_w );
 	DECLARE_READ8_MEMBER( yb_r );
@@ -52,12 +91,18 @@ public:
 
 	DECLARE_READ8_MEMBER( tpi1_pa_r );
 	DECLARE_WRITE8_MEMBER( tpi1_pa_w );
+=======
+	DECLARE_READ8_MEMBER( tpi0_pc_r );
+	DECLARE_WRITE8_MEMBER( tpi0_pc_w );
+
+>>>>>>> upstream/master
 	DECLARE_READ8_MEMBER( tpi1_pb_r );
 	DECLARE_READ8_MEMBER( tpi1_pc_r );
 	DECLARE_WRITE8_MEMBER( tpi1_pc_w );
 
 	DECLARE_FLOPPY_FORMATS( floppy_formats );
 
+<<<<<<< HEAD
 protected:
 	// device-level overrides
 	virtual void device_start();
@@ -69,6 +114,8 @@ protected:
 	virtual void plus4_cd_w(address_space &space, offs_t offset, UINT8 data, int ba, int cs0, int c1l, int c2l, int cs1, int c1h, int c2h);
 
 private:
+=======
+>>>>>>> upstream/master
 	enum
 	{
 		LED_POWER = 0,
@@ -87,7 +134,11 @@ private:
 	required_ioport m_jp1;
 
 	// TCBM bus
+<<<<<<< HEAD
 	UINT8 m_tcbm_data;                      // data
+=======
+	uint8_t m_tcbm_data;                      // data
+>>>>>>> upstream/master
 	int m_status;                           // status
 	int m_dav;                              // data valid
 	int m_ack;                              // acknowledge
@@ -101,7 +152,13 @@ private:
 
 // device type definition
 extern const device_type C1551;
+<<<<<<< HEAD
 
 
 
 #endif
+=======
+DECLARE_DEVICE_TYPE(C1551, c1551_device)
+
+#endif // MAME_BUS_PLUS4_C1551_H
+>>>>>>> upstream/master

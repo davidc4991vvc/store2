@@ -1,5 +1,9 @@
 // license:BSD-3-Clause
+<<<<<<< HEAD
 // copyright-holders:Aaron Giles
+=======
+// copyright-holders:Aaron Giles,Paul Leaman
+>>>>>>> upstream/master
 /***************************************************************************
 
     Cinemat/Leland driver
@@ -10,7 +14,11 @@
     -------------------------------------------------------------------
 
     1st generation sound hardware was controlled by the master Z80.
+<<<<<<< HEAD
     It drove an AY-8910/AY-8912 pair for music. It also had two DACs
+=======
+    It drove either an AY-8910/AY-8912 for music. It also had two DACs
+>>>>>>> upstream/master
     that were driven by the video refresh. At the end of each scanline
     there are 8-bit DAC samples that can be enabled via the output
     ports on the AY-8910. The DACs run at a fixed frequency of 15.3kHz,
@@ -80,8 +88,16 @@
 ***************************************************************************/
 
 #include "emu.h"
+<<<<<<< HEAD
 #include "cpu/z80/z80.h"
 #include "includes/leland.h"
+=======
+#include "audio/leland.h"
+
+#include "cpu/z80/z80.h"
+#include "sound/volt_reg.h"
+#include "speaker.h"
+>>>>>>> upstream/master
 
 #define LOG_COMM 0
 #define LOG_EXTERN 0
@@ -112,11 +128,14 @@ WRITE_LINE_MEMBER(leland_80186_sound_device::pit1_2_w)
 	set_clock_line(5, state);
 }
 
+<<<<<<< HEAD
 WRITE_LINE_MEMBER(leland_80186_sound_device::pit2_0_w)
 {
 	set_clock_line(5, state);
 }
 
+=======
+>>>>>>> upstream/master
 WRITE_LINE_MEMBER(leland_80186_sound_device::i80186_tmr0_w)
 {
 	set_clock_line(6, state);
@@ -128,13 +147,18 @@ WRITE_LINE_MEMBER(leland_80186_sound_device::i80186_tmr1_w)
 	{
 		if (m_ext_active && (m_ext_start < m_ext_stop))
 		{
+<<<<<<< HEAD
 			m_dac4->write_signed8(m_ext_base[m_ext_start]);
+=======
+			m_dac4->write(m_ext_base[m_ext_start]);
+>>>>>>> upstream/master
 			m_ext_start++;
 		}
 	}
 	set_clock_line(7, state);
 }
 
+<<<<<<< HEAD
 static MACHINE_CONFIG_FRAGMENT( leland_80186_sound )
 	MCFG_SPEAKER_STANDARD_MONO("speaker")
 	MCFG_SOUND_ADD("dac1", DAC, 0)
@@ -151,6 +175,31 @@ static MACHINE_CONFIG_FRAGMENT( leland_80186_sound )
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "speaker", 0.40)
 	MCFG_SOUND_ADD("dac7", DAC, 0)
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "speaker", 1.00)
+=======
+MACHINE_CONFIG_MEMBER( leland_80186_sound_device::device_add_mconfig )
+	MCFG_SPEAKER_STANDARD_MONO("speaker")
+	MCFG_SOUND_ADD("dac1", AD7524, 0) MCFG_SOUND_ROUTE(ALL_OUTPUTS, "speaker", 0.2) // 74hc374.u31 + ad7524.u46
+	MCFG_SOUND_ADD("dac2", AD7524, 0) MCFG_SOUND_ROUTE(ALL_OUTPUTS, "speaker", 0.2) // 74hc374.u32 + ad7524.u47
+	MCFG_SOUND_ADD("dac3", AD7524, 0) MCFG_SOUND_ROUTE(ALL_OUTPUTS, "speaker", 0.2) // 74hc374.u33 + ad7524.u48
+	MCFG_SOUND_ADD("dac4", AD7524, 0) MCFG_SOUND_ROUTE(ALL_OUTPUTS, "speaker", 0.2) // 74hc374.u34 + ad7524.u49
+	MCFG_SOUND_ADD("dac5", AD7524, 0) MCFG_SOUND_ROUTE(ALL_OUTPUTS, "speaker", 0.2) // 74hc374.u35 + ad7524.u50
+	MCFG_SOUND_ADD("dac6", AD7524, 0) MCFG_SOUND_ROUTE(ALL_OUTPUTS, "speaker", 0.2) // 74hc374.u36 + ad7524.u51
+	MCFG_SOUND_ADD("dac9", AD7533, 0) MCFG_SOUND_ROUTE(ALL_OUTPUTS, "speaker", 1.0) // ad7533.u64
+	MCFG_SOUND_ADD("dac1vol", DAC_8BIT_BINARY_WEIGHTED, 0) MCFG_SOUND_ROUTE_EX(0, "dac1", 1.0, DAC_VREF_POS_INPUT) MCFG_SOUND_ROUTE_EX(0, "dac1", -1.0, DAC_VREF_NEG_INPUT) // 74hc374.u17 + r2-r9 (24k,12k,6.2k,3k,1.5k,750,360,160)
+	MCFG_SOUND_ADD("dac2vol", DAC_8BIT_BINARY_WEIGHTED, 0) MCFG_SOUND_ROUTE_EX(0, "dac2", 1.0, DAC_VREF_POS_INPUT) MCFG_SOUND_ROUTE_EX(0, "dac2", -1.0, DAC_VREF_NEG_INPUT) // 74hc374.u18 + r12-r19 (24k,12k,6.2k,3k,1.5k,750,360,160)
+	MCFG_SOUND_ADD("dac3vol", DAC_8BIT_BINARY_WEIGHTED, 0) MCFG_SOUND_ROUTE_EX(0, "dac3", 1.0, DAC_VREF_POS_INPUT) MCFG_SOUND_ROUTE_EX(0, "dac3", -1.0, DAC_VREF_NEG_INPUT) // 74hc374.u19 + r22-r29 (24k,12k,6.2k,3k,1.5k,750,360,160)
+	MCFG_SOUND_ADD("dac4vol", DAC_8BIT_BINARY_WEIGHTED, 0) MCFG_SOUND_ROUTE_EX(0, "dac4", 1.0, DAC_VREF_POS_INPUT) MCFG_SOUND_ROUTE_EX(0, "dac4", -1.0, DAC_VREF_NEG_INPUT) // 74hc374.u20 + r32-r39 (24k,12k,6.2k,3k,1.5k,750,360,160)
+	MCFG_SOUND_ADD("dac5vol", DAC_8BIT_BINARY_WEIGHTED, 0) MCFG_SOUND_ROUTE_EX(0, "dac5", 1.0, DAC_VREF_POS_INPUT) MCFG_SOUND_ROUTE_EX(0, "dac5", -1.0, DAC_VREF_NEG_INPUT) // 74hc374.u21 + r42-r49 (24k,12k,6.2k,3k,1.5k,750,360,160)
+	MCFG_SOUND_ADD("dac6vol", DAC_8BIT_BINARY_WEIGHTED, 0) MCFG_SOUND_ROUTE_EX(0, "dac6", 1.0, DAC_VREF_POS_INPUT) MCFG_SOUND_ROUTE_EX(0, "dac6", -1.0, DAC_VREF_NEG_INPUT) // 74hc374.u22 + r52-r59 (24k,12k,6.2k,3k,1.5k,750,360,160)
+	MCFG_DEVICE_ADD("vref", VOLTAGE_REGULATOR, 0) MCFG_VOLTAGE_REGULATOR_OUTPUT(5.0)
+	MCFG_SOUND_ROUTE_EX(0, "dac1vol", 1.0, DAC_VREF_POS_INPUT)
+	MCFG_SOUND_ROUTE_EX(0, "dac2vol", 1.0, DAC_VREF_POS_INPUT)
+	MCFG_SOUND_ROUTE_EX(0, "dac3vol", 1.0, DAC_VREF_POS_INPUT)
+	MCFG_SOUND_ROUTE_EX(0, "dac4vol", 1.0, DAC_VREF_POS_INPUT)
+	MCFG_SOUND_ROUTE_EX(0, "dac5vol", 1.0, DAC_VREF_POS_INPUT)
+	MCFG_SOUND_ROUTE_EX(0, "dac6vol", 1.0, DAC_VREF_POS_INPUT)
+	MCFG_SOUND_ROUTE_EX(0, "dac9", 1.0, DAC_VREF_POS_INPUT) MCFG_SOUND_ROUTE_EX(0, "dac9", -1.0, DAC_VREF_NEG_INPUT)
+>>>>>>> upstream/master
 
 	MCFG_DEVICE_ADD("pit0", PIT8254, 0)
 	MCFG_PIT8253_CLK0(4000000)
@@ -169,6 +218,7 @@ static MACHINE_CONFIG_FRAGMENT( leland_80186_sound )
 	MCFG_PIT8253_OUT2_HANDLER(WRITELINE(leland_80186_sound_device, pit1_2_w))
 MACHINE_CONFIG_END
 
+<<<<<<< HEAD
 static MACHINE_CONFIG_FRAGMENT( redline_80186_sound )
 	MCFG_SPEAKER_STANDARD_MONO("speaker")
 	MCFG_SOUND_ADD("dac1", DAC, 0)
@@ -187,6 +237,35 @@ static MACHINE_CONFIG_FRAGMENT( redline_80186_sound )
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "speaker", 0.40)
 	MCFG_SOUND_ADD("dac8", DAC, 0)
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "speaker", 0.40)
+=======
+MACHINE_CONFIG_MEMBER( redline_80186_sound_device::device_add_mconfig )
+	MCFG_SPEAKER_STANDARD_MONO("speaker")
+	MCFG_SOUND_ADD("dac1", AD7524, 0) MCFG_SOUND_ROUTE(ALL_OUTPUTS, "speaker", 0.2) // unknown DAC
+	MCFG_SOUND_ADD("dac2", AD7524, 0) MCFG_SOUND_ROUTE(ALL_OUTPUTS, "speaker", 0.2) // unknown DAC
+	MCFG_SOUND_ADD("dac3", AD7524, 0) MCFG_SOUND_ROUTE(ALL_OUTPUTS, "speaker", 0.2) // unknown DAC
+	MCFG_SOUND_ADD("dac4", AD7524, 0) MCFG_SOUND_ROUTE(ALL_OUTPUTS, "speaker", 0.2) // unknown DAC
+	MCFG_SOUND_ADD("dac5", AD7524, 0) MCFG_SOUND_ROUTE(ALL_OUTPUTS, "speaker", 0.2) // unknown DAC
+	MCFG_SOUND_ADD("dac6", AD7524, 0) MCFG_SOUND_ROUTE(ALL_OUTPUTS, "speaker", 0.2) // unknown DAC
+	MCFG_SOUND_ADD("dac7", AD7524, 0) MCFG_SOUND_ROUTE(ALL_OUTPUTS, "speaker", 0.2) // unknown DAC
+	MCFG_SOUND_ADD("dac8", AD7524, 0) MCFG_SOUND_ROUTE(ALL_OUTPUTS, "speaker", 0.2) // unknown DAC
+	MCFG_SOUND_ADD("dac1vol", DAC_8BIT_BINARY_WEIGHTED, 0) MCFG_SOUND_ROUTE_EX(0, "dac1", 1.0, DAC_VREF_POS_INPUT) MCFG_SOUND_ROUTE_EX(0, "dac1", -1.0, DAC_VREF_NEG_INPUT) // unknown DAC
+	MCFG_SOUND_ADD("dac2vol", DAC_8BIT_BINARY_WEIGHTED, 0) MCFG_SOUND_ROUTE_EX(0, "dac2", 1.0, DAC_VREF_POS_INPUT) MCFG_SOUND_ROUTE_EX(0, "dac2", -1.0, DAC_VREF_NEG_INPUT) // unknown DAC
+	MCFG_SOUND_ADD("dac3vol", DAC_8BIT_BINARY_WEIGHTED, 0) MCFG_SOUND_ROUTE_EX(0, "dac3", 1.0, DAC_VREF_POS_INPUT) MCFG_SOUND_ROUTE_EX(0, "dac3", -1.0, DAC_VREF_NEG_INPUT) // unknown DAC
+	MCFG_SOUND_ADD("dac4vol", DAC_8BIT_BINARY_WEIGHTED, 0) MCFG_SOUND_ROUTE_EX(0, "dac4", 1.0, DAC_VREF_POS_INPUT) MCFG_SOUND_ROUTE_EX(0, "dac4", -1.0, DAC_VREF_NEG_INPUT) // unknown DAC
+	MCFG_SOUND_ADD("dac5vol", DAC_8BIT_BINARY_WEIGHTED, 0) MCFG_SOUND_ROUTE_EX(0, "dac5", 1.0, DAC_VREF_POS_INPUT) MCFG_SOUND_ROUTE_EX(0, "dac5", -1.0, DAC_VREF_NEG_INPUT) // unknown DAC
+	MCFG_SOUND_ADD("dac6vol", DAC_8BIT_BINARY_WEIGHTED, 0) MCFG_SOUND_ROUTE_EX(0, "dac6", 1.0, DAC_VREF_POS_INPUT) MCFG_SOUND_ROUTE_EX(0, "dac6", -1.0, DAC_VREF_NEG_INPUT) // unknown DAC
+	MCFG_SOUND_ADD("dac7vol", DAC_8BIT_BINARY_WEIGHTED, 0) MCFG_SOUND_ROUTE_EX(0, "dac7", 1.0, DAC_VREF_POS_INPUT) MCFG_SOUND_ROUTE_EX(0, "dac7", -1.0, DAC_VREF_NEG_INPUT) // unknown DAC
+	MCFG_SOUND_ADD("dac8vol", DAC_8BIT_BINARY_WEIGHTED, 0) MCFG_SOUND_ROUTE_EX(0, "dac8", 1.0, DAC_VREF_POS_INPUT) MCFG_SOUND_ROUTE_EX(0, "dac8", -1.0, DAC_VREF_NEG_INPUT) // unknown DAC
+	MCFG_DEVICE_ADD("vref", VOLTAGE_REGULATOR, 0) MCFG_VOLTAGE_REGULATOR_OUTPUT(5.0)
+	MCFG_SOUND_ROUTE_EX(0, "dac1vol", 1.0, DAC_VREF_POS_INPUT)
+	MCFG_SOUND_ROUTE_EX(0, "dac2vol", 1.0, DAC_VREF_POS_INPUT)
+	MCFG_SOUND_ROUTE_EX(0, "dac3vol", 1.0, DAC_VREF_POS_INPUT)
+	MCFG_SOUND_ROUTE_EX(0, "dac4vol", 1.0, DAC_VREF_POS_INPUT)
+	MCFG_SOUND_ROUTE_EX(0, "dac5vol", 1.0, DAC_VREF_POS_INPUT)
+	MCFG_SOUND_ROUTE_EX(0, "dac6vol", 1.0, DAC_VREF_POS_INPUT)
+	MCFG_SOUND_ROUTE_EX(0, "dac7vol", 1.0, DAC_VREF_POS_INPUT)
+	MCFG_SOUND_ROUTE_EX(0, "dac8vol", 1.0, DAC_VREF_POS_INPUT)
+>>>>>>> upstream/master
 
 	MCFG_DEVICE_ADD("pit0", PIT8254, 0)
 	MCFG_PIT8253_CLK0(7000000)
@@ -210,6 +289,7 @@ static MACHINE_CONFIG_FRAGMENT( redline_80186_sound )
 	MCFG_PIT8253_CLK2(7000000)
 MACHINE_CONFIG_END
 
+<<<<<<< HEAD
 static MACHINE_CONFIG_FRAGMENT( ataxx_80186_sound )
 	MCFG_SPEAKER_STANDARD_MONO("speaker")
 	MCFG_SOUND_ADD("dac1", DAC, 0)
@@ -222,6 +302,25 @@ static MACHINE_CONFIG_FRAGMENT( ataxx_80186_sound )
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "speaker", 0.40)
 	MCFG_SOUND_ADD("dac7", DAC, 0)
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "speaker", 1.00)
+=======
+MACHINE_CONFIG_MEMBER( ataxx_80186_sound_device::device_add_mconfig )
+	MCFG_SPEAKER_STANDARD_MONO("speaker")
+	MCFG_SOUND_ADD("dac1", AD7524, 0) MCFG_SOUND_ROUTE(ALL_OUTPUTS, "speaker", 0.2) // unknown DAC
+	MCFG_SOUND_ADD("dac2", AD7524, 0) MCFG_SOUND_ROUTE(ALL_OUTPUTS, "speaker", 0.2) // unknown DAC
+	MCFG_SOUND_ADD("dac3", AD7524, 0) MCFG_SOUND_ROUTE(ALL_OUTPUTS, "speaker", 0.2) // unknown DAC
+	MCFG_SOUND_ADD("dac4", AD7524, 0) MCFG_SOUND_ROUTE(ALL_OUTPUTS, "speaker", 0.2) // unknown DAC
+	MCFG_SOUND_ADD("dac9", AD7533, 0) MCFG_SOUND_ROUTE(ALL_OUTPUTS, "speaker", 1.0) // unknown DAC
+	MCFG_SOUND_ADD("dac1vol", DAC_8BIT_BINARY_WEIGHTED, 0) MCFG_SOUND_ROUTE_EX(0, "dac1", 1.0, DAC_VREF_POS_INPUT) MCFG_SOUND_ROUTE_EX(0, "dac1", -1.0, DAC_VREF_NEG_INPUT) // unknown DAC
+	MCFG_SOUND_ADD("dac2vol", DAC_8BIT_BINARY_WEIGHTED, 0) MCFG_SOUND_ROUTE_EX(0, "dac2", 1.0, DAC_VREF_POS_INPUT) MCFG_SOUND_ROUTE_EX(0, "dac2", -1.0, DAC_VREF_NEG_INPUT) // unknown DAC
+	MCFG_SOUND_ADD("dac3vol", DAC_8BIT_BINARY_WEIGHTED, 0) MCFG_SOUND_ROUTE_EX(0, "dac3", 1.0, DAC_VREF_POS_INPUT) MCFG_SOUND_ROUTE_EX(0, "dac3", -1.0, DAC_VREF_NEG_INPUT) // unknown DAC
+	MCFG_SOUND_ADD("dac4vol", DAC_8BIT_BINARY_WEIGHTED, 0) MCFG_SOUND_ROUTE_EX(0, "dac4", 1.0, DAC_VREF_POS_INPUT) MCFG_SOUND_ROUTE_EX(0, "dac4", -1.0, DAC_VREF_NEG_INPUT) // unknown DAC
+	MCFG_DEVICE_ADD("vref", VOLTAGE_REGULATOR, 0) MCFG_VOLTAGE_REGULATOR_OUTPUT(5.0)
+	MCFG_SOUND_ROUTE_EX(0, "dac1vol", 1.0, DAC_VREF_POS_INPUT)
+	MCFG_SOUND_ROUTE_EX(0, "dac2vol", 1.0, DAC_VREF_POS_INPUT)
+	MCFG_SOUND_ROUTE_EX(0, "dac3vol", 1.0, DAC_VREF_POS_INPUT)
+	MCFG_SOUND_ROUTE_EX(0, "dac4vol", 1.0, DAC_VREF_POS_INPUT)
+	MCFG_SOUND_ROUTE_EX(0, "dac9", 1.0, DAC_VREF_POS_INPUT) MCFG_SOUND_ROUTE_EX(0, "dac9", -1.0, DAC_VREF_NEG_INPUT)
+>>>>>>> upstream/master
 
 	MCFG_DEVICE_ADD("pit0", PIT8254, 0)
 	MCFG_PIT8253_CLK0(4000000)
@@ -232,6 +331,7 @@ static MACHINE_CONFIG_FRAGMENT( ataxx_80186_sound )
 	MCFG_PIT8253_OUT2_HANDLER(WRITELINE(leland_80186_sound_device, pit0_2_w))
 MACHINE_CONFIG_END
 
+<<<<<<< HEAD
 static MACHINE_CONFIG_FRAGMENT( wsf_80186_sound )
 	MCFG_SPEAKER_STANDARD_MONO("speaker")
 	MCFG_SOUND_ADD("dac1", DAC, 0)
@@ -244,6 +344,25 @@ static MACHINE_CONFIG_FRAGMENT( wsf_80186_sound )
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "speaker", 0.40)
 	MCFG_SOUND_ADD("dac7", DAC, 0)
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "speaker", 1.00)
+=======
+MACHINE_CONFIG_MEMBER( wsf_80186_sound_device::device_add_mconfig )
+	MCFG_SPEAKER_STANDARD_MONO("speaker")
+	MCFG_SOUND_ADD("dac1", AD7524, 0) MCFG_SOUND_ROUTE(ALL_OUTPUTS, "speaker", 0.2) // unknown DAC
+	MCFG_SOUND_ADD("dac2", AD7524, 0) MCFG_SOUND_ROUTE(ALL_OUTPUTS, "speaker", 0.2) // unknown DAC
+	MCFG_SOUND_ADD("dac3", AD7524, 0) MCFG_SOUND_ROUTE(ALL_OUTPUTS, "speaker", 0.2) // unknown DAC
+	MCFG_SOUND_ADD("dac4", AD7524, 0) MCFG_SOUND_ROUTE(ALL_OUTPUTS, "speaker", 0.2) // unknown DAC
+	MCFG_SOUND_ADD("dac9", AD7533, 0) MCFG_SOUND_ROUTE(ALL_OUTPUTS, "speaker", 1.0) // unknown DAC
+	MCFG_SOUND_ADD("dac1vol", DAC_8BIT_BINARY_WEIGHTED, 0) MCFG_SOUND_ROUTE_EX(0, "dac1", 1.0, DAC_VREF_POS_INPUT) MCFG_SOUND_ROUTE_EX(0, "dac1", -1.0, DAC_VREF_NEG_INPUT) // unknown DAC
+	MCFG_SOUND_ADD("dac2vol", DAC_8BIT_BINARY_WEIGHTED, 0) MCFG_SOUND_ROUTE_EX(0, "dac2", 1.0, DAC_VREF_POS_INPUT) MCFG_SOUND_ROUTE_EX(0, "dac2", -1.0, DAC_VREF_NEG_INPUT) // unknown DAC
+	MCFG_SOUND_ADD("dac3vol", DAC_8BIT_BINARY_WEIGHTED, 0) MCFG_SOUND_ROUTE_EX(0, "dac3", 1.0, DAC_VREF_POS_INPUT) MCFG_SOUND_ROUTE_EX(0, "dac3", -1.0, DAC_VREF_NEG_INPUT) // unknown DAC
+	MCFG_SOUND_ADD("dac4vol", DAC_8BIT_BINARY_WEIGHTED, 0) MCFG_SOUND_ROUTE_EX(0, "dac4", 1.0, DAC_VREF_POS_INPUT) MCFG_SOUND_ROUTE_EX(0, "dac4", -1.0, DAC_VREF_NEG_INPUT) // unknown DAC
+	MCFG_DEVICE_ADD("vref", VOLTAGE_REGULATOR, 0) MCFG_VOLTAGE_REGULATOR_OUTPUT(5.0)
+	MCFG_SOUND_ROUTE_EX(0, "dac1vol", 1.0, DAC_VREF_POS_INPUT)
+	MCFG_SOUND_ROUTE_EX(0, "dac2vol", 1.0, DAC_VREF_POS_INPUT)
+	MCFG_SOUND_ROUTE_EX(0, "dac3vol", 1.0, DAC_VREF_POS_INPUT)
+	MCFG_SOUND_ROUTE_EX(0, "dac4vol", 1.0, DAC_VREF_POS_INPUT)
+	MCFG_SOUND_ROUTE_EX(0, "dac9", 1.0, DAC_VREF_POS_INPUT) MCFG_SOUND_ROUTE_EX(0, "dac9", -1.0, DAC_VREF_NEG_INPUT)
+>>>>>>> upstream/master
 
 	/* sound hardware */
 	MCFG_YM2151_ADD("ymsnd", 4000000)
@@ -259,6 +378,7 @@ static MACHINE_CONFIG_FRAGMENT( wsf_80186_sound )
 	MCFG_PIT8253_OUT2_HANDLER(WRITELINE(leland_80186_sound_device, pit0_2_w))
 MACHINE_CONFIG_END
 
+<<<<<<< HEAD
 machine_config_constructor leland_80186_sound_device::device_mconfig_additions() const
 {
 	return MACHINE_CONFIG_NAME( leland_80186_sound );
@@ -278,6 +398,8 @@ machine_config_constructor wsf_80186_sound_device::device_mconfig_additions() co
 {
 	return MACHINE_CONFIG_NAME( wsf_80186_sound );
 }
+=======
+>>>>>>> upstream/master
 
 /*************************************
  *
@@ -308,7 +430,11 @@ void leland_80186_sound_device::device_start()
 	m_ext_start = 0;
 	m_ext_stop = 0;
 	m_ext_active = 0;
+<<<<<<< HEAD
 	m_ext_base = NULL;
+=======
+	m_ext_base = nullptr;
+>>>>>>> upstream/master
 
 	m_audiocpu = downcast<i80186_cpu_device *>(machine().device("audiocpu"));
 
@@ -327,6 +453,7 @@ void leland_80186_sound_device::device_reset()
 	m_ext_active = 0;
 }
 
+<<<<<<< HEAD
 const device_type LELAND_80186 = &device_creator<leland_80186_sound_device>;
 
 leland_80186_sound_device::leland_80186_sound_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
@@ -343,12 +470,23 @@ leland_80186_sound_device::leland_80186_sound_device(const machine_config &mconf
 		m_pit1(*this, "pit1"),
 		m_pit2(*this, "pit2"),
 		m_ymsnd(*this, "ymsnd")
+=======
+DEFINE_DEVICE_TYPE(LELAND_80186, leland_80186_sound_device, "leland_80186_sound", "80186 DAC (Leland)")
+
+leland_80186_sound_device::leland_80186_sound_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: leland_80186_sound_device(mconfig, LELAND_80186, tag, owner, clock)
+>>>>>>> upstream/master
 {
 	m_type = TYPE_LELAND;
 }
 
+<<<<<<< HEAD
 leland_80186_sound_device::leland_80186_sound_device(const machine_config &mconfig, device_type type, const char *name, const char *tag, device_t *owner, UINT32 clock, const char *shortname, const char *source)
 	: device_t(mconfig, type, name, tag, owner, clock, shortname, source),
+=======
+leland_80186_sound_device::leland_80186_sound_device(const machine_config &mconfig, device_type type, const char *tag, device_t *owner, uint32_t clock)
+	: device_t(mconfig, type, tag, owner, clock),
+>>>>>>> upstream/master
 		m_dac1(*this, "dac1"),
 		m_dac2(*this, "dac2"),
 		m_dac3(*this, "dac3"),
@@ -357,6 +495,18 @@ leland_80186_sound_device::leland_80186_sound_device(const machine_config &mconf
 		m_dac6(*this, "dac6"),
 		m_dac7(*this, "dac7"),
 		m_dac8(*this, "dac8"),
+<<<<<<< HEAD
+=======
+		m_dac9(*this, "dac9"),
+		m_dac1vol(*this, "dac1vol"),
+		m_dac2vol(*this, "dac2vol"),
+		m_dac3vol(*this, "dac3vol"),
+		m_dac4vol(*this, "dac4vol"),
+		m_dac5vol(*this, "dac5vol"),
+		m_dac6vol(*this, "dac6vol"),
+		m_dac7vol(*this, "dac7vol"),
+		m_dac8vol(*this, "dac8vol"),
+>>>>>>> upstream/master
 		m_pit0(*this, "pit0"),
 		m_pit1(*this, "pit1"),
 		m_pit2(*this, "pit2"),
@@ -364,26 +514,47 @@ leland_80186_sound_device::leland_80186_sound_device(const machine_config &mconf
 {
 }
 
+<<<<<<< HEAD
 const device_type REDLINE_80186 = &device_creator<redline_80186_sound_device>;
 
 redline_80186_sound_device::redline_80186_sound_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
 	: leland_80186_sound_device(mconfig, REDLINE_80186, "80186 DAC (Redline Racer)", tag, owner, clock, "redline_80186_sound", __FILE__)
+=======
+DEFINE_DEVICE_TYPE(REDLINE_80186, redline_80186_sound_device, "redline_80186_sound", "80186 DAC (Redline Racer)")
+
+redline_80186_sound_device::redline_80186_sound_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: leland_80186_sound_device(mconfig, REDLINE_80186, tag, owner, clock)
+>>>>>>> upstream/master
 {
 	m_type = TYPE_REDLINE;
 }
 
+<<<<<<< HEAD
 const device_type ATAXX_80186 = &device_creator<ataxx_80186_sound_device>;
 
 ataxx_80186_sound_device::ataxx_80186_sound_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
 	: leland_80186_sound_device(mconfig, REDLINE_80186, "80186 DAC (Ataxx)", tag, owner, clock, "ataxx_80186_sound", __FILE__)
+=======
+DEFINE_DEVICE_TYPE(ATAXX_80186, ataxx_80186_sound_device, "ataxx_80186_sound", "80186 DAC (Ataxx)")
+
+ataxx_80186_sound_device::ataxx_80186_sound_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: leland_80186_sound_device(mconfig, ATAXX_80186, tag, owner, clock)
+>>>>>>> upstream/master
 {
 	m_type = TYPE_ATAXX;
 }
 
+<<<<<<< HEAD
 const device_type WSF_80186 = &device_creator<wsf_80186_sound_device>;
 
 wsf_80186_sound_device::wsf_80186_sound_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
 	: leland_80186_sound_device(mconfig, REDLINE_80186, "80186 DAC (WSF)", tag, owner, clock, "wsf_80186_sound", __FILE__)
+=======
+DEFINE_DEVICE_TYPE(WSF_80186, wsf_80186_sound_device, "wsf_80186_sound", "80186 DAC (WSF)")
+
+wsf_80186_sound_device::wsf_80186_sound_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: leland_80186_sound_device(mconfig, WSF_80186, tag, owner, clock)
+>>>>>>> upstream/master
 {
 	m_type = TYPE_WSF;
 }
@@ -398,7 +569,11 @@ WRITE16_MEMBER(leland_80186_sound_device::peripheral_ctrl)
 
 		case 4:
 		{
+<<<<<<< HEAD
 			UINT32 temp = (m_peripheral & 0xffc0) << 4;
+=======
+			uint32_t temp = (m_peripheral & 0xffc0) << 4;
+>>>>>>> upstream/master
 			if (data & 0x0040)
 			{
 				m_audiocpu->device_t::memory().space(AS_PROGRAM).install_readwrite_handler(temp, temp + 0x2ff, read16_delegate(FUNC(leland_80186_sound_device::peripheral_r), this), write16_delegate(FUNC(leland_80186_sound_device::peripheral_w), this));
@@ -489,6 +664,7 @@ WRITE8_MEMBER( leland_80186_sound_device::leland_80186_command_hi_w )
 }
 
 
+<<<<<<< HEAD
 READ16_MEMBER( leland_80186_sound_device::main_to_sound_comm_r )
 {
 	if (LOG_COMM) logerror("%05X:Read sound command latch = %02X\n", m_audiocpu->device_t::safe_pc(), m_sound_command);
@@ -496,6 +672,8 @@ READ16_MEMBER( leland_80186_sound_device::main_to_sound_comm_r )
 }
 
 
+=======
+>>>>>>> upstream/master
 
 
 /*************************************
@@ -542,6 +720,7 @@ READ8_MEMBER( leland_80186_sound_device::leland_80186_response_r )
 }
 
 
+<<<<<<< HEAD
 WRITE16_MEMBER( leland_80186_sound_device::sound_to_main_comm_w )
 {
 	if (LOG_COMM) logerror("%05X:Write sound response latch = %02X\n", m_audiocpu->device_t::safe_pc(), data);
@@ -549,6 +728,8 @@ WRITE16_MEMBER( leland_80186_sound_device::sound_to_main_comm_w )
 }
 
 
+=======
+>>>>>>> upstream/master
 
 /*************************************
  *
@@ -558,11 +739,16 @@ WRITE16_MEMBER( leland_80186_sound_device::sound_to_main_comm_w )
 
 WRITE16_MEMBER( leland_80186_sound_device::dac_w )
 {
+<<<<<<< HEAD
 	int which = offset & 7;
+=======
+	int dac = offset & 7;
+>>>>>>> upstream/master
 
 	/* handle value changes */
 	if (ACCESSING_BITS_0_7)
 	{
+<<<<<<< HEAD
 		switch(which)
 		{
 			case 0:
@@ -591,10 +777,42 @@ WRITE16_MEMBER( leland_80186_sound_device::dac_w )
 				break;
 		}
 		m_clock_active &= ~(1<<which);
+=======
+		switch (dac)
+		{
+		case 0:
+			m_dac1->write(data & 0xff);
+			break;
+		case 1:
+			m_dac2->write(data & 0xff);
+			break;
+		case 2:
+			m_dac3->write(data & 0xff);
+			break;
+		case 3:
+			m_dac4->write(data & 0xff);
+			break;
+		case 4:
+			m_dac5->write(data & 0xff);
+			break;
+		case 5:
+			m_dac6->write(data & 0xff);
+			break;
+		case 6:
+			m_dac7->write(data & 0xff);
+			break;
+		case 7:
+			m_dac8->write(data & 0xff);
+			break;
+		}
+
+		set_clock_line(dac, 0);
+>>>>>>> upstream/master
 	}
 
 	/* handle volume changes */
 	if (ACCESSING_BITS_8_15)
+<<<<<<< HEAD
 		switch(which)
 		{
 			case 0:
@@ -623,6 +841,37 @@ WRITE16_MEMBER( leland_80186_sound_device::dac_w )
 				break;
 		}
 
+=======
+	{
+		switch(dac)
+		{
+		case 0:
+			m_dac1vol->write(data >> 8);
+			break;
+		case 1:
+			m_dac2vol->write(data >> 8);
+			break;
+		case 2:
+			m_dac3vol->write(data >> 8);
+			break;
+		case 3:
+			m_dac4vol->write(data >> 8);
+			break;
+		case 4:
+			m_dac5vol->write(data >> 8);
+			break;
+		case 5:
+			m_dac6vol->write(data >> 8);
+			break;
+		case 6:
+			m_dac7vol->write(data >> 8);
+			break;
+		case 7:
+			m_dac8vol->write(data >> 8);
+			break;
+		}
+	}
+>>>>>>> upstream/master
 }
 
 
@@ -633,6 +882,7 @@ WRITE16_MEMBER( redline_80186_sound_device::redline_dac_w )
 
 WRITE16_MEMBER( leland_80186_sound_device::ataxx_dac_control )
 {
+<<<<<<< HEAD
 	/* handle common offsets */
 	switch (offset)
 	{
@@ -694,6 +944,64 @@ WRITE16_MEMBER( leland_80186_sound_device::ataxx_dac_control )
 				break;
 		}
 	}
+=======
+	if (ACCESSING_BITS_0_7)
+	{
+		/* handle common offsets */
+		switch (offset)
+		{
+		case 0x00:
+		case 0x01:
+		case 0x02:
+			dac_w(space, offset, data, 0x00ff);
+			return;
+		case 0x03:
+			m_dac1vol->write((data & 7) << 5);
+			m_dac2vol->write(((data >> 3) & 7) << 5);
+			m_dac3vol->write(((data >> 6) & 3) << 6);
+			return;
+		}
+	}
+
+	/* if we have a YM2151 (and an external DAC), handle those offsets */
+	switch (m_type)
+	{
+	case TYPE_WSF:
+		switch (offset)
+		{
+		case 0x04:
+			m_ext_active = 1;
+			if (LOG_EXTERN) logerror("External DAC active\n");
+			return;
+		case 0x05:
+			m_ext_active = 0;
+			if (LOG_EXTERN) logerror("External DAC inactive\n");
+			return;
+		case 0x06:
+			m_ext_start >>= 4;
+			COMBINE_DATA(&m_ext_start);
+			m_ext_start <<= 4;
+			if (LOG_EXTERN) logerror("External DAC start = %05X\n", m_ext_start);
+			return;
+		case 0x07:
+			m_ext_stop >>= 4;
+			COMBINE_DATA(&m_ext_stop);
+			m_ext_stop <<= 4;
+			if (LOG_EXTERN) logerror("External DAC stop = %05X\n", m_ext_stop);
+			return;
+		}
+		break;
+	default:
+		switch (offset)
+		{
+		case 0x21:
+			dac_w(space, 3, data, mem_mask);
+			return;
+		}
+		break;
+	}
+
+>>>>>>> upstream/master
 	logerror("%05X:Unexpected peripheral write %d/%02X = %02X\n", m_audiocpu->device_t::safe_pc(), 5, offset, data);
 }
 
@@ -717,7 +1025,11 @@ READ16_MEMBER( leland_80186_sound_device::peripheral_r )
 			//if ((++m_clock_tick & 7) == 0)
 			//  return 0;
 
+<<<<<<< HEAD
 			/* if we've filled up all the active channels, we can give this CPU a reset */
+=======
+			/* if we've filled up all the active channels, we can give this CPU a rest */
+>>>>>>> upstream/master
 			/* until the next interrupt */
 			if (m_type != TYPE_REDLINE)
 				return ((m_clock_active >> 1) & 0x3e);
@@ -725,17 +1037,29 @@ READ16_MEMBER( leland_80186_sound_device::peripheral_r )
 				return ((m_clock_active << 1) & 0x7e);
 
 		case 1:
+<<<<<<< HEAD
 			return main_to_sound_comm_r(space, offset, mem_mask);
 
 		case 2:
 			if (mem_mask != 0xff00)
+=======
+			if (LOG_COMM) logerror("%05X:Read sound command latch = %02X\n", m_audiocpu->device_t::safe_pc(), m_sound_command);
+			return m_sound_command;
+
+		case 2:
+			if (ACCESSING_BITS_0_7)
+>>>>>>> upstream/master
 				return m_pit0->read(space, offset & 3);
 			break;
 
 		case 3:
 			if (m_type <= TYPE_REDLINE)
 			{
+<<<<<<< HEAD
 				if (mem_mask != 0xff00)
+=======
+				if (ACCESSING_BITS_0_7)
+>>>>>>> upstream/master
 					return m_pit1->read(space, offset & 3);
 			}
 			else if (m_type == TYPE_WSF)
@@ -745,7 +1069,11 @@ READ16_MEMBER( leland_80186_sound_device::peripheral_r )
 		case 4:
 			if (m_type == TYPE_REDLINE)
 			{
+<<<<<<< HEAD
 				if (mem_mask != 0xff00)
+=======
+				if (ACCESSING_BITS_0_7)
+>>>>>>> upstream/master
 					return m_pit2->read(space, offset & 3);
 			}
 			else
@@ -768,18 +1096,31 @@ WRITE16_MEMBER( leland_80186_sound_device::peripheral_w )
 	switch (select)
 	{
 		case 1:
+<<<<<<< HEAD
 			sound_to_main_comm_w(space, offset, data, mem_mask);
 			break;
 
 		case 2:
 			if (mem_mask != 0xff00)
+=======
+			if (LOG_COMM) logerror("%05X:Write sound response latch = %02X\n", m_audiocpu->device_t::safe_pc(), data);
+			m_sound_response = data;
+			break;
+
+		case 2:
+			if (ACCESSING_BITS_0_7)
+>>>>>>> upstream/master
 				m_pit0->write(space, offset & 3, data);
 			break;
 
 		case 3:
 			if (m_type <= TYPE_REDLINE)
 			{
+<<<<<<< HEAD
 				if (mem_mask != 0xff00)
+=======
+				if (ACCESSING_BITS_0_7)
+>>>>>>> upstream/master
 					m_pit1->write(space, offset & 3, data);
 			}
 			else if(m_type == TYPE_WSF)
@@ -789,13 +1130,22 @@ WRITE16_MEMBER( leland_80186_sound_device::peripheral_w )
 		case 4:
 			if (m_type == TYPE_REDLINE)
 			{
+<<<<<<< HEAD
 				if (mem_mask != 0xff00)
+=======
+				if (ACCESSING_BITS_0_7)
+>>>>>>> upstream/master
 					m_pit2->write(space, offset & 3, data);
 			}
 			else if (mem_mask == 0xffff)
 			{
+<<<<<<< HEAD
 				m_dac7->write_signed16(data << 6);
 				m_clock_active &= ~(1<<6);
+=======
+				m_dac9->write(data);
+				set_clock_line(6, 0);
+>>>>>>> upstream/master
 			}
 			break;
 
@@ -836,20 +1186,35 @@ WRITE8_MEMBER( leland_80186_sound_device::ataxx_80186_control_w )
  *
  *************************************/
 
+<<<<<<< HEAD
 ADDRESS_MAP_START( leland_80186_map_program, AS_PROGRAM, 16, driver_device )
+=======
+ADDRESS_MAP_START( leland_80186_map_program, AS_PROGRAM, 16, leland_80186_sound_device )
+>>>>>>> upstream/master
 	AM_RANGE(0x00000, 0x03fff) AM_MIRROR(0x1c000) AM_RAM
 	AM_RANGE(0x20000, 0xfffff) AM_ROM
 ADDRESS_MAP_END
 
+<<<<<<< HEAD
 ADDRESS_MAP_START( ataxx_80186_map_io, AS_IO, 16, driver_device )
 ADDRESS_MAP_END
 
 ADDRESS_MAP_START( redline_80186_map_io, AS_IO, 16, driver_device )
+=======
+ADDRESS_MAP_START( ataxx_80186_map_io, AS_IO, 16, leland_80186_sound_device )
+ADDRESS_MAP_END
+
+ADDRESS_MAP_START( redline_80186_map_io, AS_IO, 16, leland_80186_sound_device )
+>>>>>>> upstream/master
 	AM_RANGE(0x0000, 0xffff) AM_DEVWRITE("custom", redline_80186_sound_device, redline_dac_w)
 ADDRESS_MAP_END
 
 
+<<<<<<< HEAD
 ADDRESS_MAP_START( leland_80186_map_io, AS_IO, 16, driver_device )
+=======
+ADDRESS_MAP_START( leland_80186_map_io, AS_IO, 16, leland_80186_sound_device )
+>>>>>>> upstream/master
 	AM_RANGE(0x0000, 0xffff) AM_DEVWRITE("custom", leland_80186_sound_device, dac_w)
 ADDRESS_MAP_END
 

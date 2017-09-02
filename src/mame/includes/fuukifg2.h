@@ -1,7 +1,15 @@
 // license:BSD-3-Clause
 // copyright-holders:Luca Elia,Paul Priest
+<<<<<<< HEAD
 #include "sound/okim6295.h"
 #include "video/fuukifg.h"
+=======
+
+#include "machine/gen_latch.h"
+#include "sound/okim6295.h"
+#include "video/fuukifg.h"
+#include "screen.h"
+>>>>>>> upstream/master
 
 class fuuki16_state : public driver_device
 {
@@ -22,7 +30,12 @@ public:
 		m_screen(*this, "screen"),
 		m_palette(*this, "palette"),
 		m_fuukivid(*this, "fuukivid"),
+<<<<<<< HEAD
 		m_vram(*this, "vram"),
+=======
+		m_soundlatch(*this, "soundlatch"),
+		m_vram(*this, "vram.%u", 0),
+>>>>>>> upstream/master
 		m_vregs(*this, "vregs"),
 		m_unknown(*this, "unknown"),
 		m_priority(*this, "priority")
@@ -36,12 +49,22 @@ public:
 	required_device<screen_device> m_screen;
 	required_device<palette_device> m_palette;
 	required_device<fuukivid_device> m_fuukivid;
+<<<<<<< HEAD
 
 	/* memory pointers */
 	required_shared_ptr_array<UINT16,4> m_vram;
 	required_shared_ptr<UINT16> m_vregs;
 	required_shared_ptr<UINT16> m_unknown;
 	required_shared_ptr<UINT16> m_priority;
+=======
+	required_device<generic_latch_8_device> m_soundlatch;
+
+	/* memory pointers */
+	required_shared_ptr_array<uint16_t,4> m_vram;
+	required_shared_ptr<uint16_t> m_vregs;
+	required_shared_ptr<uint16_t> m_unknown;
+	required_shared_ptr<uint16_t> m_priority;
+>>>>>>> upstream/master
 
 	/* video-related */
 	tilemap_t     *m_tilemap[4];
@@ -52,7 +75,11 @@ public:
 	emu_timer   *m_raster_interrupt_timer;
 
 	DECLARE_WRITE16_MEMBER(vregs_w);
+<<<<<<< HEAD
 	DECLARE_WRITE16_MEMBER(sound_command_w);
+=======
+	DECLARE_WRITE8_MEMBER(sound_command_w);
+>>>>>>> upstream/master
 	DECLARE_WRITE8_MEMBER(sound_rombank_w);
 	DECLARE_WRITE16_MEMBER(vram_0_w);
 	DECLARE_WRITE16_MEMBER(vram_1_w);
@@ -65,6 +92,7 @@ public:
 	TILE_GET_INFO_MEMBER(get_tile_info_2);
 	TILE_GET_INFO_MEMBER(get_tile_info_3);
 
+<<<<<<< HEAD
 	virtual void machine_start();
 	virtual void machine_reset();
 	virtual void video_start();
@@ -76,4 +104,17 @@ public:
 
 protected:
 	virtual void device_timer(emu_timer &timer, device_timer_id id, int param, void *ptr);
+=======
+	virtual void machine_start() override;
+	virtual void machine_reset() override;
+	virtual void video_start() override;
+
+	uint32_t screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
+	inline void get_tile_info(tile_data &tileinfo, tilemap_memory_index tile_index, int _N_);
+	inline void vram_w(offs_t offset, uint16_t data, uint16_t mem_mask, int _N_);
+	void draw_layer( screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect, int i, int flag, int pri );
+
+protected:
+	virtual void device_timer(emu_timer &timer, device_timer_id id, int param, void *ptr) override;
+>>>>>>> upstream/master
 };

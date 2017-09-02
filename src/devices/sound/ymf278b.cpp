@@ -54,12 +54,15 @@
 #define LOG(x) do { if (VERBOSE) logerror x; } while (0)
 
 
+<<<<<<< HEAD
 // default address map
 static ADDRESS_MAP_START( ymf278b, AS_0, 8, ymf278b_device )
 		AM_RANGE(0x000000, 0x3fffff) AM_ROM
 ADDRESS_MAP_END
 
 
+=======
+>>>>>>> upstream/master
 /**************************************************************************/
 
 int ymf278b_device::compute_rate(YMF278BSlot *slot, int val)
@@ -88,10 +91,17 @@ int ymf278b_device::compute_rate(YMF278BSlot *slot, int val)
 	return res;
 }
 
+<<<<<<< HEAD
 UINT32 ymf278b_device::compute_decay_env_vol_step(YMF278BSlot *slot, int val)
 {
 	int rate;
 	UINT32 res;
+=======
+uint32_t ymf278b_device::compute_decay_env_vol_step(YMF278BSlot *slot, int val)
+{
+	int rate;
+	uint32_t res;
+>>>>>>> upstream/master
 
 	// rate override with damping/pseudo reverb
 	if (slot->DAMP)
@@ -115,7 +125,11 @@ UINT32 ymf278b_device::compute_decay_env_vol_step(YMF278BSlot *slot, int val)
 
 void ymf278b_device::compute_freq_step(YMF278BSlot *slot)
 {
+<<<<<<< HEAD
 	UINT32 step;
+=======
+	uint32_t step;
+>>>>>>> upstream/master
 	int oct;
 
 	oct = slot->octave;
@@ -220,10 +234,17 @@ void ymf278b_device::compute_envelope(YMF278BSlot *slot)
 void ymf278b_device::sound_stream_update(sound_stream &stream, stream_sample_t **inputs, stream_sample_t **outputs, int samples)
 {
 	int i, j;
+<<<<<<< HEAD
 	YMF278BSlot *slot = NULL;
 	INT16 sample = 0;
 	INT32 *mixp;
 	INT32 vl, vr;
+=======
+	YMF278BSlot *slot;
+	int16_t sample = 0;
+	int32_t *mixp;
+	int32_t vl, vr;
+>>>>>>> upstream/master
 
 	if (&stream == m_stream_ymf262)
 	{
@@ -231,7 +252,11 @@ void ymf278b_device::sound_stream_update(sound_stream &stream, stream_sample_t *
 		return;
 	}
 
+<<<<<<< HEAD
 	memset(m_mix_buffer, 0, sizeof(m_mix_buffer[0])*samples*2);
+=======
+	memset(m_mix_buffer.get(), 0, sizeof(m_mix_buffer[0])*samples*2);
+>>>>>>> upstream/master
 
 	for (i = 0; i < 24; i++)
 	{
@@ -239,7 +264,11 @@ void ymf278b_device::sound_stream_update(sound_stream &stream, stream_sample_t *
 
 		if (slot->active)
 		{
+<<<<<<< HEAD
 			mixp = m_mix_buffer;
+=======
+			mixp = m_mix_buffer.get();
+>>>>>>> upstream/master
 
 			for (j = 0; j < samples; j++)
 			{
@@ -255,23 +284,40 @@ void ymf278b_device::sound_stream_update(sound_stream &stream, stream_sample_t *
 				{
 					// 8 bit
 					case 0:
+<<<<<<< HEAD
 						sample = m_direct->read_byte(slot->startaddr + (slot->stepptr>>16))<<8;
+=======
+						sample = read_byte(slot->startaddr + (slot->stepptr>>16))<<8;
+>>>>>>> upstream/master
 						break;
 
 					// 12 bit
 					case 1:
 						if (slot->stepptr & 0x10000)
+<<<<<<< HEAD
 							sample = m_direct->read_byte(slot->startaddr + (slot->stepptr>>17)*3+2)<<8 |
 								(m_direct->read_byte(slot->startaddr + (slot->stepptr>>17)*3+1) << 4 & 0xf0);
 						else
 							sample = m_direct->read_byte(slot->startaddr + (slot->stepptr>>17)*3)<<8 |
 								(m_direct->read_byte(slot->startaddr + (slot->stepptr>>17)*3+1) & 0xf0);
+=======
+							sample = read_byte(slot->startaddr + (slot->stepptr>>17)*3+2)<<8 |
+								(read_byte(slot->startaddr + (slot->stepptr>>17)*3+1) << 4 & 0xf0);
+						else
+							sample = read_byte(slot->startaddr + (slot->stepptr>>17)*3)<<8 |
+								(read_byte(slot->startaddr + (slot->stepptr>>17)*3+1) & 0xf0);
+>>>>>>> upstream/master
 						break;
 
 					// 16 bit
 					case 2:
+<<<<<<< HEAD
 						sample = m_direct->read_byte(slot->startaddr + ((slot->stepptr>>16)*2))<<8 |
 							m_direct->read_byte(slot->startaddr + ((slot->stepptr>>16)*2)+1);
+=======
+						sample = read_byte(slot->startaddr + ((slot->stepptr>>16)*2))<<8 |
+							read_byte(slot->startaddr + ((slot->stepptr>>16)*2)+1);
+>>>>>>> upstream/master
 						break;
 
 					// ?? bit, effect is unknown, datasheet says it's prohibited
@@ -288,7 +334,11 @@ void ymf278b_device::sound_stream_update(sound_stream &stream, stream_sample_t *
 
 				// update envelope
 				slot->env_vol += slot->env_vol_step;
+<<<<<<< HEAD
 				if (((INT32)(slot->env_vol - slot->env_vol_lim)) >= 0)
+=======
+				if (((int32_t)(slot->env_vol - slot->env_vol_lim)) >= 0)
+>>>>>>> upstream/master
 				{
 					slot->env_step++;
 					compute_envelope(slot);
@@ -299,7 +349,11 @@ void ymf278b_device::sound_stream_update(sound_stream &stream, stream_sample_t *
 		}
 	}
 
+<<<<<<< HEAD
 	mixp = m_mix_buffer;
+=======
+	mixp = m_mix_buffer.get();
+>>>>>>> upstream/master
 	vl = m_mix_level[m_pcm_l];
 	vr = m_mix_level[m_pcm_r];
 	for (i = 0; i < samples; i++)
@@ -358,7 +412,11 @@ void ymf278b_device::device_timer(emu_timer &timer, device_timer_id id, int para
 
 /**************************************************************************/
 
+<<<<<<< HEAD
 void ymf278b_device::A_w(UINT8 reg, UINT8 data)
+=======
+void ymf278b_device::A_w(uint8_t reg, uint8_t data)
+>>>>>>> upstream/master
 {
 	// FM register array 0 (compatible with YMF262)
 	switch(reg)
@@ -422,7 +480,11 @@ void ymf278b_device::A_w(UINT8 reg, UINT8 data)
 	}
 }
 
+<<<<<<< HEAD
 void ymf278b_device::B_w(UINT8 reg, UINT8 data)
+=======
+void ymf278b_device::B_w(uint8_t reg, uint8_t data)
+>>>>>>> upstream/master
 {
 	// FM register array 1 (compatible with YMF262)
 	switch(reg)
@@ -458,12 +520,20 @@ void ymf278b_device::retrigger_note(YMF278BSlot *slot)
 	compute_envelope(slot);
 }
 
+<<<<<<< HEAD
 void ymf278b_device::C_w(UINT8 reg, UINT8 data)
+=======
+void ymf278b_device::C_w(uint8_t reg, uint8_t data)
+>>>>>>> upstream/master
 {
 	// Handle slot registers specifically
 	if (reg >= 0x08 && reg <= 0xf7)
 	{
+<<<<<<< HEAD
 		YMF278BSlot *slot = NULL;
+=======
+		YMF278BSlot *slot;
+>>>>>>> upstream/master
 		int snum;
 		snum = (reg-8) % 24;
 		slot = &m_slots[snum];
@@ -472,8 +542,13 @@ void ymf278b_device::C_w(UINT8 reg, UINT8 data)
 			case 0:
 			{
 				attotime period;
+<<<<<<< HEAD
 				UINT32 offset;
 				UINT8 p[12];
+=======
+				uint32_t offset;
+				uint8_t p[12];
+>>>>>>> upstream/master
 				int i;
 
 				slot->wave &= 0x100;
@@ -485,7 +560,11 @@ void ymf278b_device::C_w(UINT8 reg, UINT8 data)
 				else
 					offset = m_wavetblhdr*0x80000 + (slot->wave - 384) * 12;
 				for (i = 0; i < 12; i++)
+<<<<<<< HEAD
 					p[i] = m_direct->read_byte(offset+i);
+=======
+					p[i] = read_byte(offset+i);
+>>>>>>> upstream/master
 
 				slot->bits = (p[0]&0xc0)>>6;
 				slot->startaddr = (p[2] | (p[1]<<8) | ((p[0]&0x3f)<<16));
@@ -646,7 +725,11 @@ void ymf278b_device::C_w(UINT8 reg, UINT8 data)
 
 			case 0x06:
 				// memory data
+<<<<<<< HEAD
 				m_addrspace[0]->write_byte(m_memadr, data);
+=======
+				space(0).write_byte(m_memadr, data);
+>>>>>>> upstream/master
 				m_memadr = (m_memadr + 1) & 0x3fffff;
 				break;
 
@@ -725,7 +808,11 @@ WRITE8_MEMBER( ymf278b_device::write )
 
 READ8_MEMBER( ymf278b_device::read )
 {
+<<<<<<< HEAD
 	UINT8 ret = 0;
+=======
+	uint8_t ret = 0;
+>>>>>>> upstream/master
 
 	switch (offset)
 	{
@@ -733,7 +820,11 @@ READ8_MEMBER( ymf278b_device::read )
 		case 0:
 		{
 			// bits 0 and 1 are only valid if NEW2 is set
+<<<<<<< HEAD
 			UINT8 newbits = 0;
+=======
+			uint8_t newbits = 0;
+>>>>>>> upstream/master
 			if (m_exp & 2)
 				newbits = (m_status_ld << 1) | m_status_busy;
 
@@ -762,7 +853,11 @@ READ8_MEMBER( ymf278b_device::read )
 					ret = (m_pcmregs[m_port_C] & 0x1f) | 0x20; // device ID in upper bits
 					break;
 				case 6:
+<<<<<<< HEAD
 					ret = m_direct->read_byte(m_memadr);
+=======
+					ret = read_byte(m_memadr);
+>>>>>>> upstream/master
 					m_memadr = (m_memadr + 1) & 0x3fffff;
 					break;
 
@@ -844,7 +939,16 @@ void ymf278b_device::device_reset()
 void ymf278b_device::device_stop()
 {
 	ymf262_shutdown(m_ymf262);
+<<<<<<< HEAD
 	m_ymf262 = NULL;
+=======
+	m_ymf262 = nullptr;
+}
+
+void ymf278b_device::rom_bank_updated()
+{
+	m_stream->update();
+>>>>>>> upstream/master
 }
 
 void ymf278b_device::precompute_rate_tables()
@@ -943,6 +1047,7 @@ void ymf278b_device::register_save_state()
 //  device_start - device-specific startup
 //-------------------------------------------------
 
+<<<<<<< HEAD
 static void ymf278b_ymf262_irq_handler(void *param,int irq)
 {
 }
@@ -965,11 +1070,16 @@ void ymf278b_device::ymf262_update_request()
 }
 
 
+=======
+>>>>>>> upstream/master
 void ymf278b_device::device_start()
 {
 	int i;
 
+<<<<<<< HEAD
 	m_direct = &space().direct();
+=======
+>>>>>>> upstream/master
 	m_clock = clock();
 	m_irq_handler.resolve();
 
@@ -985,7 +1095,11 @@ void ymf278b_device::device_start()
 	}
 
 	m_stream = machine().sound().stream_alloc(*this, 0, 2, clock()/768);
+<<<<<<< HEAD
 	m_mix_buffer = auto_alloc_array(machine(), INT32, 44100*2);
+=======
+	m_mix_buffer = std::make_unique<int32_t[]>(44100*2);
+>>>>>>> upstream/master
 
 	// rate tables
 	precompute_rate_tables();
@@ -1016,11 +1130,16 @@ void ymf278b_device::device_start()
 	/* stream system initialize */
 	int ymf262_clock = clock() / (19/8.0);
 	m_ymf262 = ymf262_init(this, ymf262_clock, ymf262_clock / 288);
+<<<<<<< HEAD
 	assert_always(m_ymf262 != NULL, "Error creating YMF262 chip");
+=======
+	assert_always(m_ymf262 != nullptr, "Error creating YMF262 chip");
+>>>>>>> upstream/master
 
 	m_stream_ymf262 = machine().sound().stream_alloc(*this, 0, 4, ymf262_clock / 288);
 
 	/* YMF262 setup */
+<<<<<<< HEAD
 	ymf262_set_timer_handler (m_ymf262, ymf278b_ymf262_timer_handler, this);
 	ymf262_set_irq_handler   (m_ymf262, ymf278b_ymf262_irq_handler, this);
 	ymf262_set_update_handler(m_ymf262, ymf278b_ymf262_update_request, this);
@@ -1047,5 +1166,21 @@ ymf278b_device::ymf278b_device(const machine_config &mconfig, const char *tag, d
 //-------------------------------------------------
 
 void ymf278b_device::device_config_complete()
+=======
+	ymf262_set_timer_handler (m_ymf262, ymf278b_device::static_timer_handler, this);
+	ymf262_set_irq_handler   (m_ymf262, ymf278b_device::static_irq_handler, this);
+	ymf262_set_update_handler(m_ymf262, ymf278b_device::static_update_request, this);
+}
+
+
+DEFINE_DEVICE_TYPE(YMF278B, ymf278b_device, "ymf278b", "Yamaha YMF278B OPL4")
+
+ymf278b_device::ymf278b_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: device_t(mconfig, YMF278B, tag, owner, clock)
+	, device_sound_interface(mconfig, *this)
+	, device_rom_interface(mconfig, *this, 22)
+	, m_irq_handler(*this)
+	, m_last_fm_data(0)
+>>>>>>> upstream/master
 {
 }

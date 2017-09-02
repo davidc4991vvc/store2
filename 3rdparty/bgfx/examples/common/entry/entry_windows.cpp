@@ -1,12 +1,18 @@
 /*
+<<<<<<< HEAD
  * Copyright 2011-2015 Branimir Karadzic. All rights reserved.
  * License: http://www.opensource.org/licenses/BSD-2-Clause
+=======
+ * Copyright 2011-2017 Branimir Karadzic. All rights reserved.
+ * License: https://github.com/bkaradzic/bgfx#license-bsd-2-clause
+>>>>>>> upstream/master
  */
 
 #include "entry_p.h"
 
 #if ENTRY_CONFIG_USE_NATIVE && BX_PLATFORM_WINDOWS
 
+<<<<<<< HEAD
 #include <bgfx/bgfxplatform.h>
 
 #include <bx/uint32_t.h>
@@ -17,6 +23,21 @@
 #include <tinystl/allocator.h>
 #include <tinystl/string.h>
 
+=======
+#include <bgfx/platform.h>
+
+#include <bx/mutex.h>
+#include <bx/handlealloc.h>
+#include <bx/os.h>
+#include <bx/thread.h>
+#include <bx/timer.h>
+#include <bx/uint32_t.h>
+
+#include <tinystl/allocator.h>
+#include <tinystl/string.h>
+
+#include <windows.h>
+>>>>>>> upstream/master
 #include <windowsx.h>
 #include <xinput.h>
 
@@ -30,6 +51,18 @@
 
 namespace entry
 {
+<<<<<<< HEAD
+=======
+	///
+	inline void winSetHwnd(::HWND _window)
+	{
+		bgfx::PlatformData pd;
+		bx::memSet(&pd, 0, sizeof(pd) );
+		pd.nwh = _window;
+		bgfx::setPlatformData(pd);
+	}
+
+>>>>>>> upstream/master
 	typedef DWORD (WINAPI* PFN_XINPUT_GET_STATE)(DWORD dwUserIndex, XINPUT_STATE* pState);
 	typedef void  (WINAPI* PFN_XINPUT_ENABLE)(BOOL enable); // 1.4+
 
@@ -66,8 +99,13 @@ namespace entry
 		XInput()
 			: m_xinputdll(NULL)
 		{
+<<<<<<< HEAD
 			memset(m_connected, 0, sizeof(m_connected) );
 			memset(m_state, 0, sizeof(m_state) );
+=======
+			bx::memSet(m_connected, 0, sizeof(m_connected) );
+			bx::memSet(m_state, 0, sizeof(m_state) );
+>>>>>>> upstream/master
 
 			m_deadzone[GamepadAxis::LeftX ] =
 			m_deadzone[GamepadAxis::LeftY ] = XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE;
@@ -76,7 +114,11 @@ namespace entry
 			m_deadzone[GamepadAxis::LeftZ ] =
 			m_deadzone[GamepadAxis::RightZ] = XINPUT_GAMEPAD_TRIGGER_THRESHOLD;
 
+<<<<<<< HEAD
 			memset(m_flip, 1, sizeof(m_flip) );
+=======
+			bx::memSet(m_flip, 1, sizeof(m_flip) );
+>>>>>>> upstream/master
 			m_flip[GamepadAxis::LeftY ] =
 			m_flip[GamepadAxis::RightY] = -1;
 		}
@@ -134,13 +176,23 @@ namespace entry
 			}
 
 			WindowHandle defaultWindow = { 0 };
+<<<<<<< HEAD
 			GamepadHandle handle = { 0 };
 
 			for (uint32_t ii = 0; ii < BX_COUNTOF(m_state); ++ii)
+=======
+
+			for (uint16_t ii = 0; ii < BX_COUNTOF(m_state); ++ii)
+>>>>>>> upstream/master
 			{
 				XINPUT_STATE state;
 				DWORD result = XInputGetState(ii, &state);
 
+<<<<<<< HEAD
+=======
+				GamepadHandle handle = { ii };
+
+>>>>>>> upstream/master
 				bool connected = ERROR_SUCCESS == result;
 				if (connected != m_connected[ii])
 				{
@@ -343,7 +395,11 @@ namespace entry
 			, m_init(false)
 			, m_exit(false)
 		{
+<<<<<<< HEAD
 			memset(s_translateKey, 0, sizeof(s_translateKey) );
+=======
+			bx::memSet(s_translateKey, 0, sizeof(s_translateKey) );
+>>>>>>> upstream/master
 			s_translateKey[VK_ESCAPE]     = Key::Esc;
 			s_translateKey[VK_RETURN]     = Key::Return;
 			s_translateKey[VK_TAB]        = Key::Tab;
@@ -358,7 +414,11 @@ namespace entry
 			s_translateKey[VK_HOME]       = Key::Home;
 			s_translateKey[VK_END]        = Key::End;
 			s_translateKey[VK_PRIOR]      = Key::PageUp;
+<<<<<<< HEAD
 			s_translateKey[VK_NEXT]       = Key::PageUp;
+=======
+			s_translateKey[VK_NEXT]       = Key::PageDown;
+>>>>>>> upstream/master
 			s_translateKey[VK_SNAPSHOT]   = Key::Print;
 			s_translateKey[VK_OEM_PLUS]   = Key::Plus;
 			s_translateKey[VK_OEM_MINUS]  = Key::Minus;
@@ -368,6 +428,10 @@ namespace entry
 			s_translateKey[VK_OEM_7]      = Key::Quote;
 			s_translateKey[VK_OEM_COMMA]  = Key::Comma;
 			s_translateKey[VK_OEM_PERIOD] = Key::Period;
+<<<<<<< HEAD
+=======
+			s_translateKey[VK_DECIMAL] 	  = Key::Period;
+>>>>>>> upstream/master
 			s_translateKey[VK_OEM_2]      = Key::Slash;
 			s_translateKey[VK_OEM_5]      = Key::Backslash;
 			s_translateKey[VK_OEM_3]      = Key::Tilde;
@@ -433,14 +497,23 @@ namespace entry
 
 		int32_t run(int _argc, char** _argv)
 		{
+<<<<<<< HEAD
 			SetDllDirectory(".");
+=======
+			SetDllDirectoryA(".");
+>>>>>>> upstream/master
 
 			s_xinput.init();
 
 			HINSTANCE instance = (HINSTANCE)GetModuleHandle(NULL);
 
+<<<<<<< HEAD
 			WNDCLASSEX wnd;
 			memset(&wnd, 0, sizeof(wnd) );
+=======
+			WNDCLASSEXA wnd;
+			bx::memSet(&wnd, 0, sizeof(wnd) );
+>>>>>>> upstream/master
 			wnd.cbSize = sizeof(wnd);
 			wnd.style = CS_HREDRAW | CS_VREDRAW;
 			wnd.lpfnWndProc = wndProc;
@@ -470,7 +543,11 @@ namespace entry
 				| ENTRY_WINDOW_FLAG_FRAME
 				;
 
+<<<<<<< HEAD
 			bgfx::winSetHwnd(m_hwnd[0]);
+=======
+			winSetHwnd(m_hwnd[0]);
+>>>>>>> upstream/master
 
 			adjust(m_hwnd[0], ENTRY_DEFAULT_WIDTH, ENTRY_DEFAULT_HEIGHT, true);
 			clear(m_hwnd[0]);
@@ -550,10 +627,22 @@ namespace entry
 				case WM_USER_WINDOW_DESTROY:
 					{
 						WindowHandle handle = { (uint16_t)_wparam };
+<<<<<<< HEAD
 						PostMessageA(m_hwnd[_wparam], WM_CLOSE, 0, 0);
 						m_eventQueue.postWindowEvent(handle);
 						DestroyWindow(m_hwnd[_wparam]);
 						m_hwnd[_wparam] = 0;
+=======
+						m_eventQueue.postWindowEvent(handle);
+						DestroyWindow(m_hwnd[_wparam]);
+						m_hwnd[_wparam] = 0;
+
+						if (0 == handle.idx)
+						{
+							m_exit = true;
+							m_eventQueue.postExitEvent();
+						}
+>>>>>>> upstream/master
 					}
 					break;
 
@@ -605,6 +694,7 @@ namespace entry
 
 				case WM_QUIT:
 				case WM_CLOSE:
+<<<<<<< HEAD
 					if (_hwnd == m_hwnd[0])
 					{
 						m_exit = true;
@@ -614,6 +704,9 @@ namespace entry
 					{
 						destroyWindow(findHandle(_hwnd) );
 					}
+=======
+					destroyWindow(findHandle(_hwnd) );
+>>>>>>> upstream/master
 					// Don't process message. Window will be destroyed later.
 					return 0;
 
@@ -821,8 +914,13 @@ namespace entry
 
 		WindowHandle findHandle(HWND _hwnd)
 		{
+<<<<<<< HEAD
 			bx::LwMutexScope scope(m_lock);
 			for (uint32_t ii = 0, num = m_windowAlloc.getNumHandles(); ii < num; ++ii)
+=======
+			bx::MutexScope scope(m_lock);
+			for (uint16_t ii = 0, num = m_windowAlloc.getNumHandles(); ii < num; ++ii)
+>>>>>>> upstream/master
 			{
 				uint16_t idx = m_windowAlloc.getHandleAt(ii);
 				if (_hwnd == m_hwnd[idx])
@@ -959,7 +1057,11 @@ namespace entry
 		static LRESULT CALLBACK wndProc(HWND _hwnd, UINT _id, WPARAM _wparam, LPARAM _lparam);
 
 		EventQueue m_eventQueue;
+<<<<<<< HEAD
 		bx::LwMutex m_lock;
+=======
+		bx::Mutex m_lock;
+>>>>>>> upstream/master
 
 		bx::HandleAllocT<ENTRY_CONFIG_MAX_WINDOWS> m_windowAlloc;
 
@@ -1010,7 +1112,11 @@ namespace entry
 
 	WindowHandle createWindow(int32_t _x, int32_t _y, uint32_t _width, uint32_t _height, uint32_t _flags, const char* _title)
 	{
+<<<<<<< HEAD
 		bx::LwMutexScope scope(s_ctx.m_lock);
+=======
+		bx::MutexScope scope(s_ctx.m_lock);
+>>>>>>> upstream/master
 		WindowHandle handle = { s_ctx.m_windowAlloc.alloc() };
 
 		if (UINT16_MAX != handle.idx)
@@ -1034,7 +1140,11 @@ namespace entry
 		{
 			PostMessage(s_ctx.m_hwnd[0], WM_USER_WINDOW_DESTROY, _handle.idx, 0);
 
+<<<<<<< HEAD
 			bx::LwMutexScope scope(s_ctx.m_lock);
+=======
+			bx::MutexScope scope(s_ctx.m_lock);
+>>>>>>> upstream/master
 			s_ctx.m_windowAlloc.free(_handle.idx);
 		}
 	}

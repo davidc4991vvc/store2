@@ -10,6 +10,7 @@
 */
 
 #include "emu.h"
+<<<<<<< HEAD
 #include "cpu/rsp/rsp.h"
 #include "cpu/mips/mips3.h"
 #include "sound/dmadac.h"
@@ -18,6 +19,19 @@
 #include "bus/generic/carts.h"
 #include "imagedev/snapquik.h"
 #include "softlist.h"
+=======
+#include "includes/n64.h"
+
+#include "cpu/rsp/rsp.h"
+#include "cpu/mips/mips3.h"
+#include "sound/dmadac.h"
+#include "bus/generic/slot.h"
+#include "bus/generic/carts.h"
+#include "imagedev/harddriv.h"
+#include "screen.h"
+#include "softlist.h"
+#include "speaker.h"
+>>>>>>> upstream/master
 
 class n64_mess_state : public n64_state
 {
@@ -30,9 +44,17 @@ public:
 	DECLARE_MACHINE_START(n64dd);
 	INTERRUPT_GEN_MEMBER(n64_reset_poll);
 	DECLARE_DEVICE_IMAGE_LOAD_MEMBER(n64_cart);
+<<<<<<< HEAD
 	void mempak_format(UINT8* pak);
 	int quickload(device_image_interface &image, const char *file_type, int quickload_size);
 	DECLARE_QUICKLOAD_LOAD_MEMBER( n64dd );
+=======
+	void mempak_format(uint8_t* pak);
+	image_init_result disk_load(device_image_interface &image);
+	void disk_unload(device_image_interface &image);
+	DECLARE_DEVICE_IMAGE_LOAD_MEMBER( n64dd );
+	DECLARE_DEVICE_IMAGE_UNLOAD_MEMBER( n64dd );
+>>>>>>> upstream/master
 };
 
 READ32_MEMBER(n64_mess_state::dd_null_r)
@@ -111,6 +133,14 @@ static INPUT_PORTS_START( n64 )
 	PORT_CONFSETTING(0x0000, "Retail")
 	PORT_CONFSETTING(0x0100, "Development")
 
+<<<<<<< HEAD
+=======
+	PORT_CONFNAME(0xC000, 0x8000, "EEPROM Size")
+	PORT_CONFSETTING(0x0000, "None")
+	PORT_CONFSETTING(0x8000, "4KB")
+	PORT_CONFSETTING(0xC000, "16KB")
+
+>>>>>>> upstream/master
 	//Player 1
 	PORT_START("P1")
 	PORT_BIT( 0x8000, IP_ACTIVE_HIGH, IPT_BUTTON2 )        PORT_PLAYER(1) PORT_NAME("P1 Button A / Left Click")
@@ -237,6 +267,7 @@ static INPUT_PORTS_START( n64 )
 
 INPUT_PORTS_END
 
+<<<<<<< HEAD
 #if 0
 /* ?? */
 static const mips3_config config =
@@ -248,6 +279,9 @@ static const mips3_config config =
 #endif
 
 void n64_mess_state::mempak_format(UINT8* pak)
+=======
+void n64_mess_state::mempak_format(uint8_t* pak)
+>>>>>>> upstream/master
 {
 	unsigned char pak_header[] =
 	{
@@ -266,6 +300,7 @@ void n64_mess_state::mempak_format(UINT8* pak)
 		0xff,0xff,0xff,0xff, 0x05,0x1a,0x5f,0x13, 0x00,0x00,0x00,0x00, 0x00,0x00,0x00,0x00,
 		0xff,0xff,0xff,0xff, 0xff,0xff,0xff,0xff, 0xff,0xff,0x01,0xff, 0x66,0x25,0x99,0xcd,
 		0x00,0x00,0x00,0x00, 0x00,0x00,0x00,0x00, 0x00,0x00,0x00,0x00, 0x00,0x00,0x00,0x00,
+<<<<<<< HEAD
 		0x00,0x00,0x00,0x00, 0x00,0x00,0x00,0x00, 0x00,0x00,0x00,0x00, 0x00,0x00,0x00,0x00,
 		0x00,0x71,0x00,0x03, 0x00,0x03,0x00,0x03, 0x00,0x03,0x00,0x03, 0x00,0x03,0x00,0x03
 	};
@@ -276,15 +311,50 @@ void n64_mess_state::mempak_format(UINT8* pak)
 		pak[i+1] = 0x03;
 	}
 	memcpy(pak, pak_header, 272);
+=======
+		0x00,0x00,0x00,0x00, 0x00,0x00,0x00,0x00, 0x00,0x00,0x00,0x00, 0x00,0x00,0x00,0x00
+	};
+
+	unsigned char pak_inode_table[] =
+	{
+		0x01,0x71,0x00,0x00, 0x00,0x00,0x00,0x00, 0x00,0x00,0x00,0x03, 0x00,0x03,0x00,0x03,
+		0x00,0x03,0x00,0x03, 0x00,0x03,0x00,0x03, 0x00,0x03,0x00,0x03, 0x00,0x03,0x00,0x03,
+		0x00,0x03,0x00,0x03, 0x00,0x03,0x00,0x03, 0x00,0x03,0x00,0x03, 0x00,0x03,0x00,0x03,
+		0x00,0x03,0x00,0x03, 0x00,0x03,0x00,0x03, 0x00,0x03,0x00,0x03, 0x00,0x03,0x00,0x03,
+		0x00,0x03,0x00,0x03, 0x00,0x03,0x00,0x03, 0x00,0x03,0x00,0x03, 0x00,0x03,0x00,0x03,
+		0x00,0x03,0x00,0x03, 0x00,0x03,0x00,0x03, 0x00,0x03,0x00,0x03, 0x00,0x03,0x00,0x03,
+		0x00,0x03,0x00,0x03, 0x00,0x03,0x00,0x03, 0x00,0x03,0x00,0x03, 0x00,0x03,0x00,0x03,
+		0x00,0x03,0x00,0x03, 0x00,0x03,0x00,0x03, 0x00,0x03,0x00,0x03, 0x00,0x03,0x00,0x03,
+		0x00,0x03,0x00,0x03, 0x00,0x03,0x00,0x03, 0x00,0x03,0x00,0x03, 0x00,0x03,0x00,0x03,
+		0x00,0x03,0x00,0x03, 0x00,0x03,0x00,0x03, 0x00,0x03,0x00,0x03, 0x00,0x03,0x00,0x03,
+		0x00,0x03,0x00,0x03, 0x00,0x03,0x00,0x03, 0x00,0x03,0x00,0x03, 0x00,0x03,0x00,0x03,
+		0x00,0x03,0x00,0x03, 0x00,0x03,0x00,0x03, 0x00,0x03,0x00,0x03, 0x00,0x03,0x00,0x03,
+		0x00,0x03,0x00,0x03, 0x00,0x03,0x00,0x03, 0x00,0x03,0x00,0x03, 0x00,0x03,0x00,0x03,
+		0x00,0x03,0x00,0x03, 0x00,0x03,0x00,0x03, 0x00,0x03,0x00,0x03, 0x00,0x03,0x00,0x03,
+		0x00,0x03,0x00,0x03, 0x00,0x03,0x00,0x03, 0x00,0x03,0x00,0x03, 0x00,0x03,0x00,0x03,
+		0x00,0x03,0x00,0x03, 0x00,0x03,0x00,0x03, 0x00,0x03,0x00,0x03, 0x00,0x03,0x00,0x03
+	};
+
+	memset(pak, 0, 0x8000);
+	memcpy(pak, pak_header, 256);
+	memcpy(pak+256, pak_inode_table, 256); // Main
+	memcpy(pak+512, pak_inode_table, 256); // Mirror
+>>>>>>> upstream/master
 }
 
 DEVICE_IMAGE_LOAD_MEMBER(n64_mess_state,n64_cart)
 {
 	int i, length;
 	n64_periphs *periphs = machine().device<n64_periphs>("rcp");
+<<<<<<< HEAD
 	UINT8 *cart = memregion("user2")->base();
 
 	if (image.software_entry() == NULL)
+=======
+	uint8_t *cart = memregion("user2")->base();
+
+	if (!image.loaded_through_softlist())
+>>>>>>> upstream/master
 	{
 		length = image.fread(cart, 0x4000000);
 	}
@@ -299,10 +369,17 @@ DEVICE_IMAGE_LOAD_MEMBER(n64_mess_state,n64_cart)
 	{
 		for (i = 0; i < length; i += 4)
 		{
+<<<<<<< HEAD
 			UINT8 b1 = cart[i + 0];
 			UINT8 b2 = cart[i + 1];
 			UINT8 b3 = cart[i + 2];
 			UINT8 b4 = cart[i + 3];
+=======
+			uint8_t b1 = cart[i + 0];
+			uint8_t b2 = cart[i + 1];
+			uint8_t b3 = cart[i + 2];
+			uint8_t b4 = cart[i + 3];
+>>>>>>> upstream/master
 			cart[i + 0] = b3;
 			cart[i + 1] = b4;
 			cart[i + 2] = b1;
@@ -313,10 +390,17 @@ DEVICE_IMAGE_LOAD_MEMBER(n64_mess_state,n64_cart)
 	{
 		for (i = 0; i < length; i += 4)
 		{
+<<<<<<< HEAD
 			UINT8 b1 = cart[i + 0];
 			UINT8 b2 = cart[i + 1];
 			UINT8 b3 = cart[i + 2];
 			UINT8 b4 = cart[i + 3];
+=======
+			uint8_t b1 = cart[i + 0];
+			uint8_t b2 = cart[i + 1];
+			uint8_t b3 = cart[i + 2];
+			uint8_t b4 = cart[i + 3];
+>>>>>>> upstream/master
 			cart[i + 0] = b4;
 			cart[i + 1] = b3;
 			cart[i + 2] = b2;
@@ -332,10 +416,19 @@ DEVICE_IMAGE_LOAD_MEMBER(n64_mess_state,n64_cart)
 	if(battery_image)
 	{
 		//printf("Loading\n");
+<<<<<<< HEAD
 		UINT8 data[0x30800];
 		battery_image->battery_load(data, 0x30800, 0x00);
 		//memcpy(n64_sram, data, 0x20000);
 		memcpy(memshare("sram")->ptr(), data, 0x20000);
+=======
+		uint8_t data[0x30800];
+		battery_image->battery_load(data, 0x30800, 0x00);
+		if (m_sram != nullptr)
+		{
+			memcpy(m_sram, data, 0x20000);
+		}
+>>>>>>> upstream/master
 		memcpy(periphs->m_save_data.eeprom, data + 0x20000, 0x800);
 		memcpy(periphs->m_save_data.mempak[0], data + 0x20800, 0x8000);
 		memcpy(periphs->m_save_data.mempak[1], data + 0x28800, 0x8000);
@@ -348,13 +441,18 @@ DEVICE_IMAGE_LOAD_MEMBER(n64_mess_state,n64_cart)
 		mempak_format(periphs->m_save_data.mempak[1]);
 	}
 
+<<<<<<< HEAD
 	return IMAGE_INIT_PASS;
+=======
+	return image_init_result::PASS;
+>>>>>>> upstream/master
 }
 
 MACHINE_START_MEMBER(n64_mess_state,n64dd)
 {
 	machine_start();
 	machine().device<n64_periphs>("rcp")->dd_present = true;
+<<<<<<< HEAD
 	UINT8 *ipl = memregion("ddipl")->base();
 
 	for (int i = 0; i < 0x400000; i += 4)
@@ -363,6 +461,16 @@ MACHINE_START_MEMBER(n64_mess_state,n64dd)
 		UINT8 b2 = ipl[i + 1];
 		UINT8 b3 = ipl[i + 2];
 		UINT8 b4 = ipl[i + 3];
+=======
+	uint8_t *ipl = memregion("ddipl")->base();
+
+	for (int i = 0; i < 0x400000; i += 4)
+	{
+		uint8_t b1 = ipl[i + 0];
+		uint8_t b2 = ipl[i + 1];
+		uint8_t b3 = ipl[i + 2];
+		uint8_t b4 = ipl[i + 3];
+>>>>>>> upstream/master
 		ipl[i + 0] = b1;
 		ipl[i + 1] = b2;
 		ipl[i + 2] = b3;
@@ -370,6 +478,7 @@ MACHINE_START_MEMBER(n64_mess_state,n64dd)
 	}
 }
 
+<<<<<<< HEAD
 QUICKLOAD_LOAD_MEMBER(n64_mess_state,n64dd)
 {
 	return quickload(image, file_type, quickload_size);
@@ -383,6 +492,30 @@ int n64_mess_state::quickload(device_image_interface &image, const char *file_ty
 	return IMAGE_INIT_PASS;
 }
 
+=======
+DEVICE_IMAGE_LOAD_MEMBER(n64_mess_state,n64dd)
+{
+	return disk_load(image);
+}
+
+DEVICE_IMAGE_UNLOAD_MEMBER(n64_mess_state,n64dd)
+{
+	disk_unload(image);
+}
+
+image_init_result n64_mess_state::disk_load(device_image_interface &image)
+{
+	image.fseek(0, SEEK_SET);
+	image.fread(memregion("disk")->base(), image.length());
+	machine().device<n64_periphs>("rcp")->disk_present = true;
+	return image_init_result::PASS;
+}
+
+void n64_mess_state::disk_unload(device_image_interface &image)
+{
+	machine().device<n64_periphs>("rcp")->disk_present = false;
+}
+>>>>>>> upstream/master
 
 INTERRUPT_GEN_MEMBER(n64_mess_state::n64_reset_poll)
 {
@@ -390,16 +523,31 @@ INTERRUPT_GEN_MEMBER(n64_mess_state::n64_reset_poll)
 	periphs->poll_reset_button((ioport("RESET")->read() & 1) ? true : false);
 }
 
+<<<<<<< HEAD
 static MACHINE_CONFIG_START( n64, n64_mess_state )
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", VR4300BE, 93750000)
 	MCFG_FORCE_NO_DRC()
 	MCFG_CPU_CONFIG(config)
+=======
+static MACHINE_CONFIG_START( n64 )
+
+	/* basic machine hardware */
+	MCFG_CPU_ADD("maincpu", VR4300BE, 93750000)
+	MCFG_CPU_FORCE_NO_DRC()
+	//MCFG_MIPS3_ICACHE_SIZE(16384) /* ?? */
+	//MCFG_MIPS3_DCACHE_SIZE(8192) /* ?? */
+	//MCFG_MIPS3_SYSTEM_CLOCK(62500000) /* ?? */
+>>>>>>> upstream/master
 	MCFG_CPU_PROGRAM_MAP(n64_map)
 	MCFG_CPU_VBLANK_INT_DRIVER("screen", n64_mess_state, n64_reset_poll)
 
 	MCFG_CPU_ADD("rsp", RSP, 62500000)
+<<<<<<< HEAD
+=======
+	MCFG_CPU_FORCE_NO_DRC()
+>>>>>>> upstream/master
 	MCFG_RSP_DP_REG_R_CB(DEVREAD32("rcp",n64_periphs, dp_reg_r))
 	MCFG_RSP_DP_REG_W_CB(DEVWRITE32("rcp",n64_periphs, dp_reg_w))
 	MCFG_RSP_SP_REG_R_CB(DEVREAD32("rcp",n64_periphs, sp_reg_r))
@@ -419,7 +567,11 @@ static MACHINE_CONFIG_START( n64, n64_mess_state )
 	//MCFG_SCREEN_SIZE(640, 525)
 	//MCFG_SCREEN_VISIBLE_AREA(0, 639, 0, 479)
 	MCFG_SCREEN_UPDATE_DRIVER(n64_state, screen_update_n64)
+<<<<<<< HEAD
 	MCFG_SCREEN_VBLANK_DRIVER(n64_state, screen_eof_n64)
+=======
+	MCFG_SCREEN_VBLANK_CALLBACK(WRITELINE(n64_state, screen_vblank_n64))
+>>>>>>> upstream/master
 
 	MCFG_PALETTE_ADD("palette", 0x1000)
 
@@ -440,8 +592,11 @@ static MACHINE_CONFIG_START( n64, n64_mess_state )
 
 	/* software lists */
 	MCFG_SOFTWARE_LIST_ADD("cart_list", "n64")
+<<<<<<< HEAD
 
 	MCFG_FORCE_NO_DRC()
+=======
+>>>>>>> upstream/master
 MACHINE_CONFIG_END
 
 static MACHINE_CONFIG_DERIVED( n64dd, n64 )
@@ -455,8 +610,15 @@ static MACHINE_CONFIG_DERIVED( n64dd, n64 )
 	MCFG_GENERIC_EXTENSIONS("v64,z64,rom,n64,bin")
 	MCFG_GENERIC_LOAD(n64_mess_state, n64_cart)
 
+<<<<<<< HEAD
 	MCFG_QUICKLOAD_ADD("quickload", n64_mess_state, n64dd, "bin,dsk", 0)
 	MCFG_QUICKLOAD_INTERFACE("n64dd_disk")
+=======
+	MCFG_HARDDISK_ADD("n64disk")
+	MCFG_HARDDISK_LOAD(n64_mess_state,n64dd)
+	MCFG_HARDDISK_UNLOAD(n64_mess_state,n64dd)
+	MCFG_HARDDISK_INTERFACE("n64dd_disk")
+>>>>>>> upstream/master
 
 	MCFG_SOFTWARE_LIST_ADD("dd_list", "n64dd")
 MACHINE_CONFIG_END
@@ -487,7 +649,11 @@ ROM_START( n64dd )
 	ROM_REGION32_BE( 0x400000, "ddipl", ROMREGION_ERASEFF)
 	ROM_LOAD( "64ddipl.bin", 0x000000, 0x400000, CRC(7f933ce2) SHA1(bf861922dcb78c316360e3e742f4f70ff63c9bc3) )
 
+<<<<<<< HEAD
 	ROM_REGION32_LE( 0x4400000, "disk", ROMREGION_ERASEFF)
+=======
+	ROM_REGION32_BE( 0x4400000, "disk", ROMREGION_ERASEFF)
+>>>>>>> upstream/master
 
 	ROM_REGION16_BE( 0x80, "normpoint", 0 )
 	ROM_LOAD( "normpnt.rom", 0x00, 0x80, CRC(e7f2a005) SHA1(c27b4a364a24daeee6e99fd286753fd6216362b4) )
@@ -496,5 +662,10 @@ ROM_START( n64dd )
 	ROM_LOAD( "normslp.rom", 0x00, 0x80, CRC(4f2ae525) SHA1(eab43f8cc52c8551d9cff6fced18ef80eaba6f05) )
 ROM_END
 
+<<<<<<< HEAD
 CONS(1996, n64,     0,      0,      n64,    n64, driver_device, 0,  "Nintendo", "Nintendo 64", MACHINE_NOT_WORKING | MACHINE_IMPERFECT_GRAPHICS )
 CONS(1996, n64dd,   n64,    0,      n64dd,  n64, driver_device, 0,  "Nintendo", "Nintendo 64DD", MACHINE_NOT_WORKING | MACHINE_IMPERFECT_GRAPHICS )
+=======
+CONS(1996, n64,     0,      0,      n64,    n64, n64_mess_state, 0,  "Nintendo", "Nintendo 64",   MACHINE_NOT_WORKING | MACHINE_IMPERFECT_GRAPHICS )
+CONS(1996, n64dd,   n64,    0,      n64dd,  n64, n64_mess_state, 0,  "Nintendo", "Nintendo 64DD", MACHINE_NOT_WORKING | MACHINE_IMPERFECT_GRAPHICS )
+>>>>>>> upstream/master

@@ -41,6 +41,10 @@ Notes:
 
 */
 
+<<<<<<< HEAD
+=======
+#include "emu.h"
+>>>>>>> upstream/master
 #include "fdc.h"
 
 
@@ -57,7 +61,11 @@ Notes:
 //  DEVICE DEFINITIONS
 //**************************************************************************
 
+<<<<<<< HEAD
 const device_type COMX_FD = &device_creator<comx_fd_device>;
+=======
+DEFINE_DEVICE_TYPE(COMX_FD, comx_fd_device, "comx_fd", "COMX FD")
+>>>>>>> upstream/master
 
 
 //-------------------------------------------------
@@ -74,7 +82,11 @@ ROM_END
 //  rom_region - device-specific ROM region
 //-------------------------------------------------
 
+<<<<<<< HEAD
 const rom_entry *comx_fd_device::device_rom_region() const
+=======
+const tiny_rom_entry *comx_fd_device::device_rom_region() const
+>>>>>>> upstream/master
 {
 	return ROM_NAME( comx_fd );
 }
@@ -91,6 +103,7 @@ SLOT_INTERFACE_END
 
 
 //-------------------------------------------------
+<<<<<<< HEAD
 //  MACHINE_CONFIG_FRAGMENT( comx_fd )
 //-------------------------------------------------
 
@@ -113,6 +126,19 @@ machine_config_constructor comx_fd_device::device_mconfig_additions() const
 }
 
 
+=======
+//  device_add_mconfig - add device configuration
+//-------------------------------------------------
+
+MACHINE_CONFIG_MEMBER( comx_fd_device::device_add_mconfig )
+	MCFG_WD1770_ADD(WD1770_TAG, XTAL_8MHz)
+
+	MCFG_FLOPPY_DRIVE_ADD(WD1770_TAG":0", comx_fd_floppies, "525sd35t", comx_fd_device::floppy_formats)
+	MCFG_FLOPPY_DRIVE_ADD(WD1770_TAG":1", comx_fd_floppies, nullptr, comx_fd_device::floppy_formats)
+MACHINE_CONFIG_END
+
+
+>>>>>>> upstream/master
 
 //**************************************************************************
 //  LIVE DEVICE
@@ -122,8 +148,13 @@ machine_config_constructor comx_fd_device::device_mconfig_additions() const
 //  comx_fd_device - constructor
 //-------------------------------------------------
 
+<<<<<<< HEAD
 comx_fd_device::comx_fd_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock) :
 	device_t(mconfig, COMX_FD, "COMX FD", tag, owner, clock, "comx_fd", __FILE__),
+=======
+comx_fd_device::comx_fd_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock) :
+	device_t(mconfig, COMX_FD, tag, owner, clock),
+>>>>>>> upstream/master
 	device_comx_expansion_card_interface(mconfig, *this),
 	m_fdc(*this, WD1770_TAG),
 	m_floppy0(*this, WD1770_TAG":0"),
@@ -158,7 +189,11 @@ void comx_fd_device::device_reset()
 {
 	m_fdc->reset();
 	m_fdc->dden_w(1);
+<<<<<<< HEAD
 	m_fdc->set_floppy(NULL);
+=======
+	m_fdc->set_floppy(nullptr);
+>>>>>>> upstream/master
 
 	m_addr = 0;
 	m_disb = 1;
@@ -196,9 +231,15 @@ void comx_fd_device::comx_q_w(int state)
 //  comx_mrd_r - memory read
 //-------------------------------------------------
 
+<<<<<<< HEAD
 UINT8 comx_fd_device::comx_mrd_r(address_space &space, offs_t offset, int *extrom)
 {
 	UINT8 data = 0xff;
+=======
+uint8_t comx_fd_device::comx_mrd_r(address_space &space, offs_t offset, int *extrom)
+{
+	uint8_t data = 0xff;
+>>>>>>> upstream/master
 
 	if (offset >= 0x0dd0 && offset < 0x0de0)
 	{
@@ -218,9 +259,15 @@ UINT8 comx_fd_device::comx_mrd_r(address_space &space, offs_t offset, int *extro
 //  comx_io_r - I/O read
 //-------------------------------------------------
 
+<<<<<<< HEAD
 UINT8 comx_fd_device::comx_io_r(address_space &space, offs_t offset)
 {
 	UINT8 data = 0xff;
+=======
+uint8_t comx_fd_device::comx_io_r(address_space &space, offs_t offset)
+{
+	uint8_t data = 0xff;
+>>>>>>> upstream/master
 
 	if (offset == 2)
 	{
@@ -243,7 +290,11 @@ UINT8 comx_fd_device::comx_io_r(address_space &space, offs_t offset)
 //  comx_io_w - I/O write
 //-------------------------------------------------
 
+<<<<<<< HEAD
 void comx_fd_device::comx_io_w(address_space &space, offs_t offset, UINT8 data)
+=======
+void comx_fd_device::comx_io_w(address_space &space, offs_t offset, uint8_t data)
+>>>>>>> upstream/master
 {
 	if (offset == 2)
 	{
@@ -266,7 +317,11 @@ void comx_fd_device::comx_io_w(address_space &space, offs_t offset, UINT8 data)
 			m_addr = data & 0x03;
 
 			// drive select
+<<<<<<< HEAD
 			floppy_image_device *floppy = NULL;
+=======
+			floppy_image_device *floppy = nullptr;
+>>>>>>> upstream/master
 
 			if (BIT(data, 2)) floppy = m_floppy0->get_device();
 			if (BIT(data, 3)) floppy = m_floppy1->get_device();

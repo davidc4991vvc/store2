@@ -29,12 +29,20 @@
 
 **********************************************************************/
 
+<<<<<<< HEAD
 #pragma once
 
 #ifndef __TMS5501__
 #define __TMS5501__
 
 #include "emu.h"
+=======
+#ifndef MAME_MACHINE_TMS5501_H
+#define MAME_MACHINE_TMS5501_H
+
+#pragma once
+
+>>>>>>> upstream/master
 
 
 
@@ -67,12 +75,21 @@ class tms5501_device :  public device_t,
 {
 public:
 	// construction/destruction
+<<<<<<< HEAD
 	tms5501_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
 
 	template<class _Object> static devcb_base &set_irq_wr_callback(device_t &device, _Object object) { return downcast<tms5501_device &>(device).m_write_irq.set_callback(object); }
 	template<class _Object> static devcb_base &set_xmt_wr_callback(device_t &device, _Object object) { return downcast<tms5501_device &>(device).m_write_xmt.set_callback(object); }
 	template<class _Object> static devcb_base &set_xi_rd_callback(device_t &device, _Object object) { return downcast<tms5501_device &>(device).m_read_xi.set_callback(object); }
 	template<class _Object> static devcb_base &set_xo_wr_callback(device_t &device, _Object object) { return downcast<tms5501_device &>(device).m_write_xo.set_callback(object); }
+=======
+	tms5501_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
+
+	template <class Object> static devcb_base &set_irq_wr_callback(device_t &device, Object &&cb) { return downcast<tms5501_device &>(device).m_write_irq.set_callback(std::forward<Object>(cb)); }
+	template <class Object> static devcb_base &set_xmt_wr_callback(device_t &device, Object &&cb) { return downcast<tms5501_device &>(device).m_write_xmt.set_callback(std::forward<Object>(cb)); }
+	template <class Object> static devcb_base &set_xi_rd_callback(device_t &device, Object &&cb) { return downcast<tms5501_device &>(device).m_read_xi.set_callback(std::forward<Object>(cb)); }
+	template <class Object> static devcb_base &set_xo_wr_callback(device_t &device, Object &&cb) { return downcast<tms5501_device &>(device).m_write_xo.set_callback(std::forward<Object>(cb)); }
+>>>>>>> upstream/master
 
 	virtual DECLARE_ADDRESS_MAP(io_map, 8);
 
@@ -81,6 +98,7 @@ public:
 	DECLARE_WRITE_LINE_MEMBER( sens_w );
 	DECLARE_WRITE_LINE_MEMBER( xi7_w );
 
+<<<<<<< HEAD
 	UINT8 get_vector();
 
 protected:
@@ -93,6 +111,20 @@ protected:
 	virtual void tra_callback();
 	virtual void tra_complete();
 	virtual void rcv_complete();
+=======
+	uint8_t get_vector();
+
+protected:
+	// device-level overrides
+	virtual void device_start() override;
+	virtual void device_reset() override;
+	virtual void device_timer(emu_timer &timer, device_timer_id id, int param, void *ptr) override;
+
+	// device_serial_interface overrides
+	virtual void tra_callback() override;
+	virtual void tra_complete() override;
+	virtual void rcv_complete() override;
+>>>>>>> upstream/master
 
 	DECLARE_READ8_MEMBER( rb_r );
 	DECLARE_READ8_MEMBER( xi_r );
@@ -162,9 +194,15 @@ private:
 		RR_STOP  = 0x80
 	};
 
+<<<<<<< HEAD
 	static const UINT8 rst_vector[];
 
 	void set_interrupt(UINT8 mask);
+=======
+	static const uint8_t rst_vector[];
+
+	void set_interrupt(uint8_t mask);
+>>>>>>> upstream/master
 	void check_interrupt();
 
 	devcb_write_line m_write_irq;
@@ -172,6 +210,7 @@ private:
 	devcb_read8 m_read_xi;
 	devcb_write8 m_write_xo;
 
+<<<<<<< HEAD
 	UINT8 m_irq;
 	UINT8 m_rb;
 	UINT8 m_sta;
@@ -179,6 +218,15 @@ private:
 	UINT8 m_rr;
 	UINT8 m_tb;
 	UINT8 m_mr;
+=======
+	uint8_t m_irq;
+	uint8_t m_rb;
+	uint8_t m_sta;
+	uint8_t m_cmd;
+	uint8_t m_rr;
+	uint8_t m_tb;
+	uint8_t m_mr;
+>>>>>>> upstream/master
 
 	int m_sens;
 	int m_xi7;
@@ -189,7 +237,13 @@ private:
 
 // device type definition
 extern const device_type TMS5501;
+<<<<<<< HEAD
 
 
 
 #endif
+=======
+DECLARE_DEVICE_TYPE(TMS5501, tms5501_device)
+
+#endif // MAME_MACHINE_TMS5501_H
+>>>>>>> upstream/master

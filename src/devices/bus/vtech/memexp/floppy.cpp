@@ -9,6 +9,10 @@
 
 ***************************************************************************/
 
+<<<<<<< HEAD
+=======
+#include "emu.h"
+>>>>>>> upstream/master
 #include "floppy.h"
 
 
@@ -16,9 +20,15 @@
 //  DEVICE DEFINITIONS
 //**************************************************************************
 
+<<<<<<< HEAD
 const device_type FLOPPY_CONTROLLER = &device_creator<floppy_controller_device>;
 
 DEVICE_ADDRESS_MAP_START(map, 8, floppy_controller_device)
+=======
+DEFINE_DEVICE_TYPE(VTECH_FLOPPY_CONTROLLER, vtech_floppy_controller_device, "vtech_fdc", "Laser/VZ Floppy Disk Controller")
+
+DEVICE_ADDRESS_MAP_START(map, 8, vtech_floppy_controller_device)
+>>>>>>> upstream/master
 	AM_RANGE(0, 0) AM_WRITE(latch_w)
 	AM_RANGE(1, 1) AM_READ(shifter_r)
 	AM_RANGE(2, 2) AM_READ(rd_r)
@@ -34,36 +44,52 @@ ROM_START( floppy )
 	ROM_LOAD("vzdos.rom", 0x0000, 0x2000, CRC(b6ed6084) SHA1(59d1cbcfa6c5e1906a32704fbf0d9670f0d1fd8b))
 ROM_END
 
+<<<<<<< HEAD
 const rom_entry *floppy_controller_device::device_rom_region() const
+=======
+const tiny_rom_entry *vtech_floppy_controller_device::device_rom_region() const
+>>>>>>> upstream/master
 {
 	return ROM_NAME( floppy );
 }
 
 //-------------------------------------------------
+<<<<<<< HEAD
 //  machine_config_additions - device-specific
 //  machine configurations
+=======
+//  device_add_mconfig - add device configuration
+>>>>>>> upstream/master
 //-------------------------------------------------
 
 static SLOT_INTERFACE_START( laser_floppies )
 	SLOT_INTERFACE("525", FLOPPY_525_SSSD)
 SLOT_INTERFACE_END
 
+<<<<<<< HEAD
 static MACHINE_CONFIG_FRAGMENT( floppy_controller )
+=======
+MACHINE_CONFIG_MEMBER( vtech_floppy_controller_device::device_add_mconfig )
+>>>>>>> upstream/master
 	MCFG_MEMEXP_SLOT_ADD("mem")
 	MCFG_FLOPPY_DRIVE_ADD("0", laser_floppies, "525", floppy_image_device::default_floppy_formats)
 	MCFG_FLOPPY_DRIVE_ADD("1", laser_floppies, "525", floppy_image_device::default_floppy_formats)
 MACHINE_CONFIG_END
 
+<<<<<<< HEAD
 machine_config_constructor floppy_controller_device::device_mconfig_additions() const
 {
 	return MACHINE_CONFIG_NAME( floppy_controller );
 }
+=======
+>>>>>>> upstream/master
 
 //**************************************************************************
 //  LIVE DEVICE
 //**************************************************************************
 
 //-------------------------------------------------
+<<<<<<< HEAD
 //  floppy_controller_device - constructor
 //-------------------------------------------------
 
@@ -73,6 +99,18 @@ floppy_controller_device::floppy_controller_device(const machine_config &mconfig
 	m_memexp(*this, "mem"),
 	m_floppy0(*this, "0"),
 	m_floppy1(*this, "1"), m_floppy(nullptr), m_latch(0), m_shifter(0), m_latching_inverter(false), m_current_cyl(0), m_write_position(0)
+=======
+//  vtech_floppy_controller_device - constructor
+//-------------------------------------------------
+
+vtech_floppy_controller_device::vtech_floppy_controller_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock) :
+	device_t(mconfig, VTECH_FLOPPY_CONTROLLER, tag, owner, clock),
+	device_vtech_memexp_interface(mconfig, *this),
+	m_memexp(*this, "mem"),
+	m_floppy0(*this, "0"),
+	m_floppy1(*this, "1"),
+	m_floppy(nullptr), m_latch(0), m_shifter(0), m_latching_inverter(false), m_current_cyl(0), m_write_position(0)
+>>>>>>> upstream/master
 {
 }
 
@@ -80,7 +118,11 @@ floppy_controller_device::floppy_controller_device(const machine_config &mconfig
 //  device_start - device-specific startup
 //-------------------------------------------------
 
+<<<<<<< HEAD
 void floppy_controller_device::device_start()
+=======
+void vtech_floppy_controller_device::device_start()
+>>>>>>> upstream/master
 {
 	save_item(NAME(m_latch));
 	save_item(NAME(m_shifter));
@@ -92,7 +134,11 @@ void floppy_controller_device::device_start()
 
 	// TODO: save m_write_buffer and rebuild m_floppy after load
 
+<<<<<<< HEAD
 	UINT8 *bios = memregion("software")->base();
+=======
+	uint8_t *bios = memregion("software")->base();
+>>>>>>> upstream/master
 
 	// Obvious bugs... must have worked by sheer luck and very subtle
 	// timings.  Our current z80 is not subtle enough.
@@ -105,6 +151,7 @@ void floppy_controller_device::device_start()
 //  device_reset - device-specific reset
 //-------------------------------------------------
 
+<<<<<<< HEAD
 void floppy_controller_device::device_reset()
 {
 	m_memexp->set_io_space(m_slot->m_io);
@@ -116,6 +163,19 @@ void floppy_controller_device::device_reset()
 
 	m_latch = 0x00;
 	m_floppy = NULL;
+=======
+void vtech_floppy_controller_device::device_reset()
+{
+	m_memexp->set_io_space(&io_space());
+	m_memexp->set_program_space(&program_space());
+
+	program_space().install_rom(0x4000, 0x5fff, memregion("software")->base());
+
+	io_space().install_device(0x10, 0x1f, *this, &vtech_floppy_controller_device::map);
+
+	m_latch = 0x00;
+	m_floppy = nullptr;
+>>>>>>> upstream/master
 	m_current_cyl = 0;
 	m_shifter = 0x00;
 	m_latching_inverter = false;
@@ -136,12 +196,21 @@ void floppy_controller_device::device_reset()
 //  bit  6:   !write request
 //  bits 4,7: floppy select
 
+<<<<<<< HEAD
 WRITE8_MEMBER(floppy_controller_device::latch_w)
 {
 	UINT8 diff = m_latch ^ data;
 	m_latch = data;
 
 	floppy_image_device *newflop = NULL;
+=======
+WRITE8_MEMBER(vtech_floppy_controller_device::latch_w)
+{
+	uint8_t diff = m_latch ^ data;
+	m_latch = data;
+
+	floppy_image_device *newflop = nullptr;
+>>>>>>> upstream/master
 	if(m_latch & 0x10)
 		newflop = m_floppy0->get_device();
 	else if(m_latch & 0x80)
@@ -157,7 +226,11 @@ WRITE8_MEMBER(floppy_controller_device::latch_w)
 		if(newflop) {
 			newflop->set_rpm(85);
 			newflop->mon_w(0);
+<<<<<<< HEAD
 			newflop->setup_index_pulse_cb(floppy_image_device::index_pulse_cb(FUNC(floppy_controller_device::index_callback), this));
+=======
+			newflop->setup_index_pulse_cb(floppy_image_device::index_pulse_cb(&vtech_floppy_controller_device::index_callback, this));
+>>>>>>> upstream/master
 			m_current_cyl = newflop->get_cyl() << 1;
 		}
 		m_floppy = newflop;
@@ -212,7 +285,11 @@ WRITE8_MEMBER(floppy_controller_device::latch_w)
 // - the inverted inverter output is shifted through the lsb of the shift register
 // - the inverter is cleared
 
+<<<<<<< HEAD
 READ8_MEMBER(floppy_controller_device::shifter_r)
+=======
+READ8_MEMBER(vtech_floppy_controller_device::shifter_r)
+>>>>>>> upstream/master
 {
 	update_latching_inverter();
 	m_shifter = (m_shifter << 1) | !m_latching_inverter;
@@ -222,7 +299,11 @@ READ8_MEMBER(floppy_controller_device::shifter_r)
 
 
 // Linked to the latching inverter on bit 7, rest is floating
+<<<<<<< HEAD
 READ8_MEMBER(floppy_controller_device::rd_r)
+=======
+READ8_MEMBER(vtech_floppy_controller_device::rd_r)
+>>>>>>> upstream/master
 {
 	update_latching_inverter();
 	return m_latching_inverter ? 0x80 : 0x00;
@@ -230,12 +311,20 @@ READ8_MEMBER(floppy_controller_device::rd_r)
 
 
 // Linked to wp signal on bit 7, rest is floating
+<<<<<<< HEAD
 READ8_MEMBER(floppy_controller_device::wpt_r)
+=======
+READ8_MEMBER(vtech_floppy_controller_device::wpt_r)
+>>>>>>> upstream/master
 {
 	return m_floppy && m_floppy->wpt_r() ? 0x80 : 0x00;
 }
 
+<<<<<<< HEAD
 void floppy_controller_device::update_latching_inverter()
+=======
+void vtech_floppy_controller_device::update_latching_inverter()
+>>>>>>> upstream/master
 {
 	attotime now = machine().time();
 	if(!m_floppy) {
@@ -253,13 +342,21 @@ void floppy_controller_device::update_latching_inverter()
 	m_last_latching_inverter_update_time = now;
 }
 
+<<<<<<< HEAD
 void floppy_controller_device::index_callback(floppy_image_device *floppy, int state)
+=======
+void vtech_floppy_controller_device::index_callback(floppy_image_device *floppy, int state)
+>>>>>>> upstream/master
 {
 	update_latching_inverter();
 	flush_writes(true);
 }
 
+<<<<<<< HEAD
 void floppy_controller_device::flush_writes(bool keep_margin)
+=======
+void vtech_floppy_controller_device::flush_writes(bool keep_margin)
+>>>>>>> upstream/master
 {
 	if(!m_floppy || m_write_start_time == attotime::never)
 		return;

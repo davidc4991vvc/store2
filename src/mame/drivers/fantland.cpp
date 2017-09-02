@@ -46,6 +46,7 @@ Year + Game             Main CPU    Sound CPU    Sound            Video
 ***************************************************************************************/
 
 #include "emu.h"
+<<<<<<< HEAD
 #include "cpu/z80/z80.h"
 #include "cpu/nec/nec.h"
 #include "cpu/i86/i86.h"
@@ -54,6 +55,19 @@ Year + Game             Main CPU    Sound CPU    Sound            Video
 #include "sound/dac.h"
 #include "sound/msm5205.h"
 #include "includes/fantland.h"
+=======
+#include "includes/fantland.h"
+
+#include "cpu/i86/i86.h"
+#include "cpu/nec/nec.h"
+#include "cpu/z80/z80.h"
+#include "sound/3526intf.h"
+#include "sound/dac.h"
+#include "sound/volt_reg.h"
+#include "sound/ym2151.h"
+#include "speaker.h"
+
+>>>>>>> upstream/master
 
 /***************************************************************************
 
@@ -77,7 +91,11 @@ WRITE16_MEMBER(fantland_state::fantland_nmi_enable_16_w)
 
 WRITE8_MEMBER(fantland_state::fantland_soundlatch_w)
 {
+<<<<<<< HEAD
 	soundlatch_byte_w(space, 0, data);
+=======
+	m_soundlatch->write(space, 0, data);
+>>>>>>> upstream/master
 	m_audiocpu->set_input_line(INPUT_LINE_NMI, PULSE_LINE);
 }
 
@@ -93,19 +111,31 @@ WRITE16_MEMBER(fantland_state::fantland_soundlatch_16_w)
 
 READ16_MEMBER(fantland_state::spriteram_16_r)
 {
+<<<<<<< HEAD
 	UINT8 *spriteram = m_spriteram;
+=======
+	uint8_t *spriteram = m_spriteram;
+>>>>>>> upstream/master
 	return spriteram[2 * offset + 0] | (spriteram[2 * offset + 1] << 8);
 }
 
 READ16_MEMBER(fantland_state::spriteram2_16_r)
 {
+<<<<<<< HEAD
 	UINT8 *spriteram_2 = m_spriteram2;
+=======
+	uint8_t *spriteram_2 = m_spriteram2;
+>>>>>>> upstream/master
 	return spriteram_2[2 * offset + 0] | (spriteram_2[2 * offset + 1] << 8);
 }
 
 WRITE16_MEMBER(fantland_state::spriteram_16_w)
 {
+<<<<<<< HEAD
 	UINT8 *spriteram = m_spriteram;
+=======
+	uint8_t *spriteram = m_spriteram;
+>>>>>>> upstream/master
 	if (ACCESSING_BITS_0_7)
 		spriteram[2 * offset + 0] = data;
 	if (ACCESSING_BITS_8_15)
@@ -114,7 +144,11 @@ WRITE16_MEMBER(fantland_state::spriteram_16_w)
 
 WRITE16_MEMBER(fantland_state::spriteram2_16_w)
 {
+<<<<<<< HEAD
 	UINT8 *spriteram_2 = m_spriteram2;
+=======
+	uint8_t *spriteram_2 = m_spriteram2;
+>>>>>>> upstream/master
 	if (ACCESSING_BITS_0_7)
 		spriteram_2[2 * offset + 0] = data;
 	if (ACCESSING_BITS_8_15)
@@ -294,6 +328,7 @@ static ADDRESS_MAP_START( fantland_sound_map, AS_PROGRAM, 8, fantland_state )
 ADDRESS_MAP_END
 
 static ADDRESS_MAP_START( fantland_sound_iomap, AS_IO, 8, fantland_state )
+<<<<<<< HEAD
 	AM_RANGE( 0x0080, 0x0080 ) AM_READ(soundlatch_byte_r )
 	AM_RANGE( 0x0100, 0x0101 ) AM_DEVREADWRITE("ymsnd", ym2151_device, read, write)
 	AM_RANGE( 0x0180, 0x0180 ) AM_DEVWRITE("dac", dac_device, write_unsigned8 )
@@ -301,6 +336,15 @@ ADDRESS_MAP_END
 
 static ADDRESS_MAP_START( galaxygn_sound_iomap, AS_IO, 8, fantland_state )
 	AM_RANGE( 0x0080, 0x0080 ) AM_READ(soundlatch_byte_r )
+=======
+	AM_RANGE( 0x0080, 0x0080 ) AM_DEVREAD("soundlatch", generic_latch_8_device, read)
+	AM_RANGE( 0x0100, 0x0101 ) AM_DEVREADWRITE("ymsnd", ym2151_device, read, write)
+	AM_RANGE( 0x0180, 0x0180 ) AM_DEVWRITE("dac", dac_byte_interface, write )
+ADDRESS_MAP_END
+
+static ADDRESS_MAP_START( galaxygn_sound_iomap, AS_IO, 8, fantland_state )
+	AM_RANGE( 0x0080, 0x0080 ) AM_DEVREAD("soundlatch", generic_latch_8_device, read)
+>>>>>>> upstream/master
 	AM_RANGE( 0x0100, 0x0101 ) AM_DEVREADWRITE("ymsnd", ym2151_device, read, write)
 ADDRESS_MAP_END
 
@@ -360,7 +404,11 @@ WRITE8_MEMBER(fantland_state::borntofi_msm5205_w)
 
 void fantland_state::borntofi_adpcm_int( msm5205_device *device, int voice )
 {
+<<<<<<< HEAD
 	UINT8 *rom;
+=======
+	uint8_t *rom;
+>>>>>>> upstream/master
 	size_t len;
 	int start, stop;
 
@@ -399,7 +447,11 @@ WRITE_LINE_MEMBER(fantland_state::borntofi_adpcm_int_3) { borntofi_adpcm_int(m_m
 
 static ADDRESS_MAP_START( borntofi_sound_map, AS_PROGRAM, 8, fantland_state )
 	AM_RANGE( 0x00000, 0x003ff ) AM_RAM
+<<<<<<< HEAD
 	AM_RANGE( 0x04000, 0x04000 ) AM_READ(soundlatch_byte_r)
+=======
+	AM_RANGE( 0x04000, 0x04000 ) AM_DEVREAD("soundlatch", generic_latch_8_device, read)
+>>>>>>> upstream/master
 	AM_RANGE( 0x04000, 0x0401f ) AM_WRITE(borntofi_msm5205_w)
 	AM_RANGE( 0x08000, 0x0ffff ) AM_ROM
 	AM_RANGE( 0xf8000, 0xfffff ) AM_ROM
@@ -418,7 +470,11 @@ static ADDRESS_MAP_START( wheelrun_sound_map, AS_PROGRAM, 8, fantland_state )
 	AM_RANGE(0xb000, 0xb000) AM_WRITENOP    // on a car crash / hit
 	AM_RANGE(0xc000, 0xc000) AM_WRITENOP    // ""
 
+<<<<<<< HEAD
 	AM_RANGE(0xd000, 0xd000) AM_READ(soundlatch_byte_r )    // during NMI
+=======
+	AM_RANGE(0xd000, 0xd000) AM_DEVREAD("soundlatch", generic_latch_8_device, read)    // during NMI
+>>>>>>> upstream/master
 ADDRESS_MAP_END
 
 
@@ -719,7 +775,11 @@ INPUT_PORTS_END
 
 CUSTOM_INPUT_MEMBER(fantland_state::wheelrun_wheel_r)
 {
+<<<<<<< HEAD
 	int player = (FPTR)param;
+=======
+	int player = (uintptr_t)param;
+>>>>>>> upstream/master
 	int delta = ioport(player ? "WHEEL1" : "WHEEL0")->read();
 	delta = (delta & 0x7f) - (delta & 0x80) + 4;
 
@@ -836,7 +896,11 @@ INTERRUPT_GEN_MEMBER(fantland_state::fantland_sound_irq)
 	device.execute().set_input_line_and_vector(0, HOLD_LINE, 0x80 / 4);
 }
 
+<<<<<<< HEAD
 static MACHINE_CONFIG_START( fantland, fantland_state )
+=======
+static MACHINE_CONFIG_START( fantland )
+>>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", I8086, 8000000)        // ?
@@ -868,6 +932,7 @@ static MACHINE_CONFIG_START( fantland, fantland_state )
 	MCFG_PALETTE_FORMAT(xRRRRRGGGGGBBBBB)
 
 	/* sound hardware */
+<<<<<<< HEAD
 	MCFG_SPEAKER_STANDARD_MONO("mono")
 
 	MCFG_YM2151_ADD("ymsnd", 3000000)
@@ -876,6 +941,19 @@ static MACHINE_CONFIG_START( fantland, fantland_state )
 
 	MCFG_DAC_ADD("dac")
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 0.50)
+=======
+	MCFG_SPEAKER_STANDARD_MONO("speaker")
+
+	MCFG_GENERIC_LATCH_8_ADD("soundlatch")
+
+	MCFG_YM2151_ADD("ymsnd", 3000000)
+	MCFG_SOUND_ROUTE(0, "speaker", 0.35)
+	MCFG_SOUND_ROUTE(1, "speaker", 0.35)
+
+	MCFG_SOUND_ADD("dac", DAC_8BIT_R2R, 0) MCFG_SOUND_ROUTE(ALL_OUTPUTS, "speaker", 0.25) // unknown DAC
+	MCFG_DEVICE_ADD("vref", VOLTAGE_REGULATOR, 0) MCFG_VOLTAGE_REGULATOR_OUTPUT(5.0)
+	MCFG_SOUND_ROUTE_EX(0, "dac", 1.0, DAC_VREF_POS_INPUT) MCFG_SOUND_ROUTE_EX(0, "dac", -1.0, DAC_VREF_NEG_INPUT)
+>>>>>>> upstream/master
 MACHINE_CONFIG_END
 
 
@@ -884,7 +962,11 @@ WRITE_LINE_MEMBER(fantland_state::galaxygn_sound_irq)
 	m_audiocpu->set_input_line_and_vector(0, state ? ASSERT_LINE : CLEAR_LINE, 0x80/4);
 }
 
+<<<<<<< HEAD
 static MACHINE_CONFIG_START( galaxygn, fantland_state )
+=======
+static MACHINE_CONFIG_START( galaxygn )
+>>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", I8088, 8000000)        // ?
@@ -913,12 +995,23 @@ static MACHINE_CONFIG_START( galaxygn, fantland_state )
 	MCFG_PALETTE_FORMAT(xRRRRRGGGGGBBBBB)
 
 	/* sound hardware */
+<<<<<<< HEAD
 	MCFG_SPEAKER_STANDARD_MONO("mono")
 
 	MCFG_YM2151_ADD("ymsnd", 3000000)
 	MCFG_YM2151_IRQ_HANDLER(WRITELINE(fantland_state, galaxygn_sound_irq))
 	MCFG_SOUND_ROUTE(0, "mono", 1.0)
 	MCFG_SOUND_ROUTE(1, "mono", 1.0)
+=======
+	MCFG_SPEAKER_STANDARD_MONO("speaker")
+
+	MCFG_GENERIC_LATCH_8_ADD("soundlatch")
+
+	MCFG_YM2151_ADD("ymsnd", 3000000)
+	MCFG_YM2151_IRQ_HANDLER(WRITELINE(fantland_state, galaxygn_sound_irq))
+	MCFG_SOUND_ROUTE(0, "speaker", 1.0)
+	MCFG_SOUND_ROUTE(1, "speaker", 1.0)
+>>>>>>> upstream/master
 MACHINE_CONFIG_END
 
 
@@ -964,7 +1057,11 @@ MACHINE_RESET_MEMBER(fantland_state,borntofi)
 	borntofi_adpcm_stop(m_msm4, 3);
 }
 
+<<<<<<< HEAD
 static MACHINE_CONFIG_START( borntofi, fantland_state )
+=======
+static MACHINE_CONFIG_START( borntofi )
+>>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", V20, 16000000/2)        // D701080C-8 - NEC D70108C-8 V20 CPU, running at 8.000MHz [16/2]
@@ -991,11 +1088,18 @@ static MACHINE_CONFIG_START( borntofi, fantland_state )
 	MCFG_PALETTE_FORMAT(xRRRRRGGGGGBBBBB)
 
 	/* sound hardware */
+<<<<<<< HEAD
 	MCFG_SPEAKER_STANDARD_MONO("mono")
+=======
+	MCFG_SPEAKER_STANDARD_MONO("speaker")
+
+	MCFG_GENERIC_LATCH_8_ADD("soundlatch")
+>>>>>>> upstream/master
 
 	// OKI M5205 running at 384kHz [18.432/48]. Sample rate = 384000 / 48
 	MCFG_SOUND_ADD("msm1", MSM5205, 384000)
 	MCFG_MSM5205_VCLK_CB(WRITELINE(fantland_state, borntofi_adpcm_int_0))   /* IRQ handler */
+<<<<<<< HEAD
 	MCFG_MSM5205_PRESCALER_SELECTOR(MSM5205_S48_4B)      /* 8 kHz, 4 Bits  */
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 1.0)
 
@@ -1017,6 +1121,29 @@ MACHINE_CONFIG_END
 
 
 static MACHINE_CONFIG_START( wheelrun, fantland_state )
+=======
+	MCFG_MSM5205_PRESCALER_SELECTOR(S48_4B)      /* 8 kHz, 4 Bits  */
+	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "speaker", 1.0)
+
+	MCFG_SOUND_ADD("msm2", MSM5205, 384000)
+	MCFG_MSM5205_VCLK_CB(WRITELINE(fantland_state, borntofi_adpcm_int_1))   /* IRQ handler */
+	MCFG_MSM5205_PRESCALER_SELECTOR(S48_4B)      /* 8 kHz, 4 Bits  */
+	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "speaker", 1.0)
+
+	MCFG_SOUND_ADD("msm3", MSM5205, 384000)
+	MCFG_MSM5205_VCLK_CB(WRITELINE(fantland_state, borntofi_adpcm_int_2))   /* IRQ handler */
+	MCFG_MSM5205_PRESCALER_SELECTOR(S48_4B)      /* 8 kHz, 4 Bits  */
+	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "speaker", 1.0)
+
+	MCFG_SOUND_ADD("msm4", MSM5205, 384000)
+	MCFG_MSM5205_VCLK_CB(WRITELINE(fantland_state, borntofi_adpcm_int_3))   /* IRQ handler */
+	MCFG_MSM5205_PRESCALER_SELECTOR(S48_4B)      /* 8 kHz, 4 Bits  */
+	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "speaker", 1.0)
+MACHINE_CONFIG_END
+
+
+static MACHINE_CONFIG_START( wheelrun )
+>>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", V20, XTAL_18MHz/2)      // D701080C-8 (V20)
@@ -1044,11 +1171,21 @@ static MACHINE_CONFIG_START( wheelrun, fantland_state )
 	MCFG_PALETTE_FORMAT(xRRRRRGGGGGBBBBB)
 
 	/* sound hardware */
+<<<<<<< HEAD
 	MCFG_SPEAKER_STANDARD_MONO("mono")
 
 	MCFG_SOUND_ADD("ymsnd", YM3526, XTAL_14MHz/4)
 	MCFG_YM3526_IRQ_HANDLER(DEVWRITELINE("audiocpu", z80_device, irq_line))
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 1.0)
+=======
+	MCFG_SPEAKER_STANDARD_MONO("speaker")
+
+	MCFG_GENERIC_LATCH_8_ADD("soundlatch")
+
+	MCFG_SOUND_ADD("ymsnd", YM3526, XTAL_14MHz/4)
+	MCFG_YM3526_IRQ_HANDLER(INPUTLINE("audiocpu", INPUT_LINE_IRQ0))
+	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "speaker", 1.0)
+>>>>>>> upstream/master
 MACHINE_CONFIG_END
 
 
@@ -1085,7 +1222,11 @@ ROM_START( fantland )
 	ROM_REGION( 0x100000, "maincpu", 0 )                    // Main CPU
 	ROM_LOAD16_BYTE( "fantasyl.ev2", 0x00000, 0x20000, CRC(f5bdca0e) SHA1(d05cf6f68d4d1a3dcc0171f7cf220c4920bd47bb) )
 	ROM_LOAD16_BYTE( "fantasyl.od2", 0x00001, 0x20000, CRC(9db35023) SHA1(81e2accd67dcf8563a68b2c4e35526f23a40150c) )
+<<<<<<< HEAD
 	ROM_COPY( "maincpu",     0x00000, 0x40000, 0x40000 )
+=======
+	ROM_COPY( "maincpu",     0x000000, 0x40000, 0x40000 )
+>>>>>>> upstream/master
 	ROM_LOAD16_BYTE( "fantasyl.ev1", 0xe0000, 0x10000, CRC(70e0ee30) SHA1(5253213da56b3f97e2811f2b10927d0e542447f0) )
 	ROM_LOAD16_BYTE( "fantasyl.od1", 0xe0001, 0x10000, CRC(577b4bd7) SHA1(1f08202d99c3e39e0dd1ed4947b928b695a5b411) )
 
@@ -1114,7 +1255,11 @@ ROM_START( fantlanda )
 	ROM_REGION( 0x100000, "maincpu", 0 )                    // Main CPU
 	ROM_LOAD16_BYTE( "fantasyl.ev2", 0x00000, 0x20000, CRC(f5bdca0e) SHA1(d05cf6f68d4d1a3dcc0171f7cf220c4920bd47bb) ) // 04.bin (was first half only)
 	ROM_LOAD16_BYTE( "fantasyl.od2", 0x00001, 0x20000, CRC(9db35023) SHA1(81e2accd67dcf8563a68b2c4e35526f23a40150c) ) // 03.bin (was first half only)
+<<<<<<< HEAD
 	ROM_COPY( "maincpu",     0x00000, 0x40000, 0x40000 )
+=======
+	ROM_COPY( "maincpu",     0x000000, 0x40000, 0x40000 )
+>>>>>>> upstream/master
 	ROM_LOAD16_BYTE( "02.bin",       0xe0000, 0x10000, CRC(8b835eed) SHA1(6a6b3fe116145f685b91dcd5301165f17973697c) )
 	ROM_LOAD16_BYTE( "01.bin",       0xe0001, 0x10000, CRC(4fa3eb8b) SHA1(56da42a4e2972a696ef28811116cbc20bb5ba3e8) )
 
@@ -1404,8 +1549,16 @@ ROM_START( wheelrun )
 ROM_END
 
 
+<<<<<<< HEAD
 GAME( 19??, borntofi,  0,        borntofi, borntofi, driver_device, 0, ROT0,  "International Games",       "Born To Fight",        MACHINE_SUPPORTS_SAVE )
 GAME( 19??, fantland,  0,        fantland, fantland, driver_device, 0, ROT0,  "Electronic Devices Italy",  "Fantasy Land (set 1)", MACHINE_SUPPORTS_SAVE )
 GAME( 19??, fantlanda, fantland, fantland, fantland, driver_device, 0, ROT0,  "Electronic Devices Italy",  "Fantasy Land (set 2)", MACHINE_SUPPORTS_SAVE )
 GAME( 19??, wheelrun,  0,        wheelrun, wheelrun, driver_device, 0, ROT0,  "International Games",       "Wheels Runner",        MACHINE_SUPPORTS_SAVE )
 GAME( 1989, galaxygn,  0,        galaxygn, galaxygn, driver_device, 0, ROT90, "Electronic Devices Italy",  "Galaxy Gunners",       MACHINE_IMPERFECT_SOUND | MACHINE_SUPPORTS_SAVE )
+=======
+GAME( 19??, borntofi,  0,        borntofi, borntofi, fantland_state, 0, ROT0,  "International Games",       "Born To Fight",        MACHINE_SUPPORTS_SAVE )
+GAME( 19??, fantland,  0,        fantland, fantland, fantland_state, 0, ROT0,  "Electronic Devices Italy",  "Fantasy Land (set 1)", MACHINE_SUPPORTS_SAVE )
+GAME( 19??, fantlanda, fantland, fantland, fantland, fantland_state, 0, ROT0,  "Electronic Devices Italy",  "Fantasy Land (set 2)", MACHINE_SUPPORTS_SAVE )
+GAME( 19??, wheelrun,  0,        wheelrun, wheelrun, fantland_state, 0, ROT0,  "International Games",       "Wheels Runner",        MACHINE_SUPPORTS_SAVE )
+GAME( 1989, galaxygn,  0,        galaxygn, galaxygn, fantland_state, 0, ROT90, "Electronic Devices Italy",  "Galaxy Gunners",       MACHINE_IMPERFECT_SOUND | MACHINE_SUPPORTS_SAVE )
+>>>>>>> upstream/master

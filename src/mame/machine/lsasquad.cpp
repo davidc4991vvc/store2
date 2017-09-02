@@ -10,6 +10,7 @@
 
 ***************************************************************************/
 
+<<<<<<< HEAD
 TIMER_CALLBACK_MEMBER(lsasquad_state::nmi_callback)
 {
 	if (m_sound_nmi_enable)
@@ -21,10 +22,16 @@ TIMER_CALLBACK_MEMBER(lsasquad_state::nmi_callback)
 WRITE8_MEMBER(lsasquad_state::lsasquad_sh_nmi_disable_w)
 {
 	m_sound_nmi_enable = 0;
+=======
+WRITE8_MEMBER(lsasquad_state::lsasquad_sh_nmi_disable_w)
+{
+	m_soundnmi->in_w<1>(0);
+>>>>>>> upstream/master
 }
 
 WRITE8_MEMBER(lsasquad_state::lsasquad_sh_nmi_enable_w)
 {
+<<<<<<< HEAD
 	m_sound_nmi_enable = 1;
 	if (m_pending_nmi)
 	{
@@ -61,12 +68,16 @@ READ8_MEMBER(lsasquad_state::lsasquad_sound_result_r)
 	m_sound_pending &= ~0x02;
 	//logerror("%04x: read sound res %02x\n", space.device().safe_pc(), m_sound_result);
 	return m_sound_result;
+=======
+	m_soundnmi->in_w<1>(1);
+>>>>>>> upstream/master
 }
 
 READ8_MEMBER(lsasquad_state::lsasquad_sound_status_r)
 {
 	/* bit 0: message pending for sound cpu */
 	/* bit 1: message pending for main cpu */
+<<<<<<< HEAD
 	return m_sound_pending;
 }
 
@@ -79,10 +90,17 @@ READ8_MEMBER(lsasquad_state::daikaiju_sh_sound_command_r)
 	return m_sound_cmd;
 }
 
+=======
+	return (m_soundlatch->pending_r() ? 1 : 0) | (m_soundlatch2->pending_r() ? 2 : 0);
+}
+
+
+>>>>>>> upstream/master
 READ8_MEMBER(lsasquad_state::daikaiju_sound_status_r)
 {
 	/* bit 0: message pending for sound cpu */
 	/* bit 1: message pending for main cpu */
+<<<<<<< HEAD
 	return m_sound_pending ^ 3;
 }
 
@@ -169,6 +187,9 @@ READ8_MEMBER(lsasquad_state::lsasquad_mcu_r)
 	//logerror("%04x: mcu_r %02x\n", space.device().safe_pc(), m_from_mcu);
 	m_mcu_sent = 0;
 	return m_from_mcu;
+=======
+	return (m_soundlatch->pending_r() ? 2 : 1);
+>>>>>>> upstream/master
 }
 
 READ8_MEMBER(lsasquad_state::lsasquad_mcu_status_r)
@@ -178,10 +199,20 @@ READ8_MEMBER(lsasquad_state::lsasquad_mcu_status_r)
 	/* bit 0 = when 1, mcu is ready to receive data from main cpu */
 	/* bit 1 = when 0, mcu has sent data to the main cpu */
 	//logerror("%04x: mcu_status_r\n",space.device().safe_pc());
+<<<<<<< HEAD
 	if (!m_main_sent)
 		res |= 0x01;
 	if (!m_mcu_sent)
 		res |= 0x02;
+=======
+	if (m_bmcu)
+	{
+		if (CLEAR_LINE == m_bmcu->host_semaphore_r())
+			res |= 0x01;
+		if (CLEAR_LINE == m_bmcu->mcu_semaphore_r())
+			res |= 0x02;
+	}
+>>>>>>> upstream/master
 
 	return res;
 }
@@ -193,6 +224,7 @@ READ8_MEMBER(lsasquad_state::daikaiju_mcu_status_r)
 	/* bit 0 = when 1, mcu is ready to receive data from main cpu */
 	/* bit 1 = when 0, mcu has sent data to the main cpu */
 	//logerror("%04x: mcu_status_r\n",space.device().safe_pc());
+<<<<<<< HEAD
 	if (!m_main_sent)
 		res |= 0x01;
 	if (!m_mcu_sent)
@@ -200,5 +232,16 @@ READ8_MEMBER(lsasquad_state::daikaiju_mcu_status_r)
 
 	res |= ((m_sound_pending & 0x02) ^ 2) << 3; //inverted flag
 	m_sound_pending &= ~0x02;
+=======
+	if (m_bmcu)
+	{
+		if (CLEAR_LINE == m_bmcu->host_semaphore_r())
+			res |= 0x01;
+		if (CLEAR_LINE == m_bmcu->mcu_semaphore_r())
+			res |= 0x02;
+	}
+
+	res |= ((m_soundlatch->pending_r() & 0x02) ^ 2) << 3; //inverted flag
+>>>>>>> upstream/master
 	return res;
 }

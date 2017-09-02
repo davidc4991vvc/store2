@@ -28,7 +28,11 @@
 
 PALETTE_INIT_MEMBER(cvs_state,cvs)
 {
+<<<<<<< HEAD
 	const UINT8 *color_prom = memregion("proms")->base();
+=======
+	const uint8_t *color_prom = memregion("proms")->base();
+>>>>>>> upstream/master
 	int i, attr;
 
 	/* color mapping PROM */
@@ -36,7 +40,11 @@ PALETTE_INIT_MEMBER(cvs_state,cvs)
 	{
 		for (i = 0; i < 8; i++)
 		{
+<<<<<<< HEAD
 			UINT8 ctabentry = color_prom[(i << 8) | attr] & 0x07;
+=======
+			uint8_t ctabentry = color_prom[(i << 8) | attr] & 0x07;
+>>>>>>> upstream/master
 
 			/* bits 0 and 2 are swapped */
 			ctabentry = BITSWAP8(ctabentry,7,6,5,4,3,0,1,2);
@@ -90,8 +98,13 @@ WRITE8_MEMBER(cvs_state::cvs_video_fx_w)
 	if (data & 0x04)   logerror("           SCREEN ROTATE\n");
 	if (data & 0x08)   logerror("           SHADE BRIGHTER TO LEFT\n");
 
+<<<<<<< HEAD
 	set_led_status(machine(), 1, data & 0x10);  /* lamp 1 */
 	set_led_status(machine(), 2, data & 0x20);  /* lamp 2 */
+=======
+	output().set_led_value(1, data & 0x10);  /* lamp 1 */
+	output().set_led_value(2, data & 0x20);  /* lamp 2 */
+>>>>>>> upstream/master
 
 	if (data & 0x40)   logerror("           SHADE BRIGHTER TO BOTTOM\n");
 	if (data & 0x80)   logerror("           SHADE BRIGHTER TO TOP\n");
@@ -133,7 +146,11 @@ VIDEO_START_MEMBER(cvs_state,cvs)
 }
 
 
+<<<<<<< HEAD
 UINT32 cvs_state::screen_update_cvs(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+=======
+uint32_t cvs_state::screen_update_cvs(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+>>>>>>> upstream/master
 {
 	static const int ram_based_char_start_indices[] = { 0xe0, 0xc0, 0x100, 0x80 };
 	offs_t offs;
@@ -145,11 +162,19 @@ UINT32 cvs_state::screen_update_cvs(screen_device &screen, bitmap_ind16 &bitmap,
 	for (offs = 0; offs < 0x0400; offs++)
 	{
 		int collision_color = 0x100;
+<<<<<<< HEAD
 		UINT8 code = m_video_ram[offs];
 		UINT8 color = m_color_ram[offs];
 
 		UINT8 x = offs << 3;
 		UINT8 y = offs >> 5 << 3;
+=======
+		uint8_t code = m_video_ram[offs];
+		uint8_t color = m_color_ram[offs];
+
+		uint8_t x = offs << 3;
+		uint8_t y = offs >> 5 << 3;
+>>>>>>> upstream/master
 
 		int gfxnum = (code < ram_based_char_start_indices[m_character_banking_mode]) ? 0 : 1;
 
@@ -186,6 +211,7 @@ UINT32 cvs_state::screen_update_cvs(screen_device &screen, bitmap_ind16 &bitmap,
 	scroll[6] = 0;
 	scroll[7] = 0;
 
+<<<<<<< HEAD
 	copyscrollbitmap(bitmap, m_background_bitmap, 0, 0, 8, scroll, cliprect);
 	copyscrollbitmap(m_scrolled_collision_background, m_collision_background, 0, 0, 8, scroll, cliprect);
 
@@ -193,6 +219,15 @@ UINT32 cvs_state::screen_update_cvs(screen_device &screen, bitmap_ind16 &bitmap,
 	bitmap_ind16 *s2636_0_bitmap = &m_s2636_0->update(cliprect);
 	bitmap_ind16 *s2636_1_bitmap = &m_s2636_1->update(cliprect);
 	bitmap_ind16 *s2636_2_bitmap = &m_s2636_2->update(cliprect);
+=======
+	copyscrollbitmap(bitmap, m_background_bitmap, 0, nullptr, 8, scroll, cliprect);
+	copyscrollbitmap(m_scrolled_collision_background, m_collision_background, 0, nullptr, 8, scroll, cliprect);
+
+	/* update the S2636 chips */
+	bitmap_ind16 const &s2636_0_bitmap = m_s2636_0->update(cliprect);
+	bitmap_ind16 const &s2636_1_bitmap = m_s2636_1->update(cliprect);
+	bitmap_ind16 const &s2636_2_bitmap = m_s2636_2->update(cliprect);
+>>>>>>> upstream/master
 
 	/* Bullet Hardware */
 	for (offs = 8; offs < 256; offs++ )
@@ -205,9 +240,15 @@ UINT32 cvs_state::screen_update_cvs(screen_device &screen, bitmap_ind16 &bitmap,
 				int bx = 255 - 7 - m_bullet_ram[offs] - ct;
 
 				/* Bullet/Object Collision */
+<<<<<<< HEAD
 				if ((s2636_0_bitmap->pix16(offs, bx) != 0) ||
 					(s2636_1_bitmap->pix16(offs, bx) != 0) ||
 					(s2636_2_bitmap->pix16(offs, bx) != 0))
+=======
+				if ((s2636_0_bitmap.pix16(offs, bx) != 0) ||
+					(s2636_1_bitmap.pix16(offs, bx) != 0) ||
+					(s2636_2_bitmap.pix16(offs, bx) != 0))
+>>>>>>> upstream/master
 					m_collision_register |= 0x08;
 
 				/* Bullet/Background Collision */
@@ -230,9 +271,15 @@ UINT32 cvs_state::screen_update_cvs(screen_device &screen, bitmap_ind16 &bitmap,
 
 			for (x = cliprect.min_x; x <= cliprect.max_x; x++)
 			{
+<<<<<<< HEAD
 				int pixel0 = s2636_0_bitmap->pix16(y, x);
 				int pixel1 = s2636_1_bitmap->pix16(y, x);
 				int pixel2 = s2636_2_bitmap->pix16(y, x);
+=======
+				int pixel0 = s2636_0_bitmap.pix16(y, x);
+				int pixel1 = s2636_1_bitmap.pix16(y, x);
+				int pixel2 = s2636_2_bitmap.pix16(y, x);
+>>>>>>> upstream/master
 
 				int pixel = pixel0 | pixel1 | pixel2;
 
@@ -317,8 +364,13 @@ void cvs_state::cvs_update_stars(bitmap_ind16 &bitmap, const rectangle &cliprect
 {
 	for (int offs = 0; offs < m_total_stars; offs++)
 	{
+<<<<<<< HEAD
 		UINT8 x = (m_stars[offs].x + m_stars_scroll) >> 1;
 		UINT8 y = m_stars[offs].y + ((m_stars_scroll + m_stars[offs].x) >> 9);
+=======
+		uint8_t x = (m_stars[offs].x + m_stars_scroll) >> 1;
+		uint8_t y = m_stars[offs].y + ((m_stars_scroll + m_stars[offs].x) >> 9);
+>>>>>>> upstream/master
 
 		if ((y & 1) ^ ((x >> 4) & 1))
 		{

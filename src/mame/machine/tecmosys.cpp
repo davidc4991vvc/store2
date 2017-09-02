@@ -8,7 +8,11 @@
     After that, it uploads 4 ranges of code to checksum, followed by the 4 checksums.
     The 68K does the checksumming, and returns the results to the protection device.
 
+<<<<<<< HEAD
     Apart from inital protection calls and code upload, the vblank in both games writes
+=======
+    Apart from initial protection calls and code upload, the vblank in both games writes
+>>>>>>> upstream/master
     info to the protection but they seem to ignore the returned data.
     Maybe the protection is tied to something else, or maybe it was preliminary work on
     further security.
@@ -45,17 +49,30 @@ enum DEV_STATUS
 
 struct prot_data
 {
+<<<<<<< HEAD
 	UINT8 passwd_len;
 	const UINT8* passwd;
 	const UINT8* code;
 	UINT8 checksum_ranges[17];
 	UINT8 checksums[4];
+=======
+	uint8_t passwd_len;
+	const uint8_t* passwd;
+	const uint8_t* code;
+	uint8_t checksum_ranges[17];
+	uint8_t checksums[4];
+>>>>>>> upstream/master
 };
 
 
 // deroon prot data
+<<<<<<< HEAD
 static const UINT8 deroon_passwd[] = {'L','U','N','A',0};
 static const UINT8 deroon_upload[] = {0x02, 0x4e, 0x75, 0x00 }; // code length, code, 0x00 trailer
+=======
+static const uint8_t deroon_passwd[] = {'L','U','N','A',0};
+static const uint8_t deroon_upload[] = {0x02, 0x4e, 0x75, 0x00 }; // code length, code, 0x00 trailer
+>>>>>>> upstream/master
 static const struct prot_data deroon_data =
 {
 	5,
@@ -72,8 +89,13 @@ static const struct prot_data deroon_data =
 };
 
 // tkdensho prot data
+<<<<<<< HEAD
 static const UINT8 tkdensho_passwd[] = {'A','G','E','P','R','O','T','E','C','T',' ','S','T','A','R','T',0};
 static const UINT8 tkdensho_upload[] = {0x06, 0x4e, 0xf9, 0x00, 0x00, 0x22, 0xc4,0x00};
+=======
+static const uint8_t tkdensho_passwd[] = {'A','G','E','P','R','O','T','E','C','T',' ','S','T','A','R','T',0};
+static const uint8_t tkdensho_upload[] = {0x06, 0x4e, 0xf9, 0x00, 0x00, 0x22, 0xc4,0x00};
+>>>>>>> upstream/master
 static const struct prot_data tkdensho_data =
 {
 	0x11,
@@ -121,7 +143,11 @@ void tecmosys_state::prot_init(int which)
 	case 2: m_device_data = &tkdensha_data; break;
 	}
 
+<<<<<<< HEAD
 	machine().add_notifier(MACHINE_NOTIFY_RESET, machine_notify_delegate(FUNC(tecmosys_state::prot_reset),this));
+=======
+	machine().add_notifier(MACHINE_NOTIFY_RESET, machine_notify_delegate(&tecmosys_state::prot_reset,this));
+>>>>>>> upstream/master
 }
 
 READ16_MEMBER(tecmosys_state::prot_status_r)
@@ -146,7 +172,11 @@ READ16_MEMBER(tecmosys_state::prot_data_r)
 {
 	// prot appears to be read-ready for two consecutive reads
 	// but returns 0xff for subsequent reads.
+<<<<<<< HEAD
 	UINT8 ret = m_device_value;
+=======
+	uint8_t ret = m_device_value;
+>>>>>>> upstream/master
 	m_device_value = 0xff;
 	//logerror("- prot_r = 0x%02x\n", ret );
 	return ret << 8;

@@ -10,6 +10,10 @@
 
 #include "emu.h"
 #include "includes/galaga.h"
+<<<<<<< HEAD
+=======
+#include "includes/xevious.h"
+>>>>>>> upstream/master
 
 /***************************************************************************
 
@@ -28,7 +32,11 @@
 ***************************************************************************/
 PALETTE_INIT_MEMBER(xevious_state,xevious)
 {
+<<<<<<< HEAD
 	const UINT8 *color_prom = memregion("proms")->base();
+=======
+	const uint8_t *color_prom = memregion("proms")->base();
+>>>>>>> upstream/master
 	int i;
 	#define TOTAL_COLORS(gfxn) (m_gfxdecode->gfx(gfxn)->colors() *m_gfxdecode->gfx(gfxn)->granularity())
 
@@ -96,6 +104,7 @@ PALETTE_INIT_MEMBER(xevious_state,xevious)
 	}
 }
 
+<<<<<<< HEAD
 
 
 PALETTE_INIT_MEMBER(xevious_state,battles)
@@ -168,6 +177,8 @@ PALETTE_INIT_MEMBER(xevious_state,battles)
 
 
 
+=======
+>>>>>>> upstream/master
 /***************************************************************************
 
   Callbacks for the TileMap code
@@ -176,14 +187,22 @@ PALETTE_INIT_MEMBER(xevious_state,battles)
 
 TILE_GET_INFO_MEMBER(xevious_state::get_fg_tile_info)
 {
+<<<<<<< HEAD
 	UINT8 attr = m_xevious_fg_colorram[tile_index];
+=======
+	uint8_t attr = m_xevious_fg_colorram[tile_index];
+>>>>>>> upstream/master
 
 	/* the hardware has two character sets, one normal and one x-flipped. When
 	   screen is flipped, character y flip is done by the hardware inverting the
 	   timing signals, while x flip is done by selecting the 2nd character set.
 	   We reproduce this here, but since the tilemap system automatically flips
 	   characters when screen is flipped, we have to flip them back. */
+<<<<<<< HEAD
 	UINT8 color = ((attr & 0x03) << 4) | ((attr & 0x3c) >> 2);
+=======
+	uint8_t color = ((attr & 0x03) << 4) | ((attr & 0x3c) >> 2);
+>>>>>>> upstream/master
 	SET_TILE_INFO_MEMBER(0,
 			m_xevious_fg_videoram[tile_index] | (flip_screen() ? 0x100 : 0),
 			color,
@@ -192,9 +211,15 @@ TILE_GET_INFO_MEMBER(xevious_state::get_fg_tile_info)
 
 TILE_GET_INFO_MEMBER(xevious_state::get_bg_tile_info)
 {
+<<<<<<< HEAD
 	UINT8 code = m_xevious_bg_videoram[tile_index];
 	UINT8 attr = m_xevious_bg_colorram[tile_index];
 	UINT8 color = ((attr & 0x3c) >> 2) | ((code & 0x80) >> 3) | ((attr & 0x03) << 5);
+=======
+	uint8_t code = m_xevious_bg_videoram[tile_index];
+	uint8_t attr = m_xevious_bg_colorram[tile_index];
+	uint8_t color = ((attr & 0x3c) >> 2) | ((code & 0x80) >> 3) | ((attr & 0x03) << 5);
+>>>>>>> upstream/master
 	SET_TILE_INFO_MEMBER(1,
 			code + ((attr & 0x01) << 8),
 			color,
@@ -211,8 +236,13 @@ TILE_GET_INFO_MEMBER(xevious_state::get_bg_tile_info)
 
 VIDEO_START_MEMBER(xevious_state,xevious)
 {
+<<<<<<< HEAD
 	m_bg_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(xevious_state::get_bg_tile_info),this),TILEMAP_SCAN_ROWS,8,8,64,32);
 	m_fg_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(xevious_state::get_fg_tile_info),this),TILEMAP_SCAN_ROWS,8,8,64,32);
+=======
+	m_bg_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(xevious_state::get_bg_tile_info),this),TILEMAP_SCAN_ROWS,8,8,64,32);
+	m_fg_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(xevious_state::get_fg_tile_info),this),TILEMAP_SCAN_ROWS,8,8,64,32);
+>>>>>>> upstream/master
 
 	m_bg_tilemap->set_scrolldx(-20,288+27);
 	m_bg_tilemap->set_scrolldy(-16,-16);
@@ -296,9 +326,15 @@ WRITE8_MEMBER( xevious_state::xevious_bs_w )
 
 READ8_MEMBER( xevious_state::xevious_bb_r )
 {
+<<<<<<< HEAD
 	UINT8 *rom2a = memregion("gfx4")->base();
 	UINT8 *rom2b = rom2a+0x1000;
 	UINT8 *rom2c = rom2a+0x3000;
+=======
+	uint8_t *rom2a = memregion("gfx4")->base();
+	uint8_t *rom2b = rom2a+0x1000;
+	uint8_t *rom2c = rom2a+0x3000;
+>>>>>>> upstream/master
 	int adr_2b,adr_2c;
 	int dat1,dat2;
 
@@ -394,9 +430,15 @@ ROM 3M,3L color replace table for sprite
 
 void xevious_state::draw_sprites(bitmap_ind16 &bitmap,const rectangle &cliprect)
 {
+<<<<<<< HEAD
 	UINT8 *spriteram = m_xevious_sr3 + 0x780;
 	UINT8 *spriteram_2 = m_xevious_sr1 + 0x780;
 	UINT8 *spriteram_3 = m_xevious_sr2 + 0x780;
+=======
+	uint8_t *spriteram = m_xevious_sr3 + 0x780;
+	uint8_t *spriteram_2 = m_xevious_sr1 + 0x780;
+	uint8_t *spriteram_3 = m_xevious_sr2 + 0x780;
+>>>>>>> upstream/master
 	int offs,sx,sy;
 
 	for (offs = 0;offs < 0x80;offs += 2)
@@ -404,7 +446,11 @@ void xevious_state::draw_sprites(bitmap_ind16 &bitmap,const rectangle &cliprect)
 		if ((spriteram[offs + 1] & 0x40) == 0)  /* I'm not sure about this one */
 		{
 			int bank,code,color,flipx,flipy;
+<<<<<<< HEAD
 			UINT32 transmask;
+=======
+			uint32_t transmask;
+>>>>>>> upstream/master
 
 			if (spriteram_3[offs] & 0x80)
 			{
@@ -472,7 +518,11 @@ void xevious_state::draw_sprites(bitmap_ind16 &bitmap,const rectangle &cliprect)
 }
 
 
+<<<<<<< HEAD
 UINT32 xevious_state::screen_update_xevious(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+=======
+uint32_t xevious_state::screen_update_xevious(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+>>>>>>> upstream/master
 {
 	m_bg_tilemap->draw(screen, bitmap, cliprect, 0,0);
 	draw_sprites(bitmap,cliprect);

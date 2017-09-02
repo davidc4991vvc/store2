@@ -1,3 +1,7 @@
+<<<<<<< HEAD
+=======
+<?xml version="1.0"?>
+>>>>>>> upstream/master
 <!-- Basic display of CD-ROM drive LEDs for the Sega MegaCD -->
 
 <mamelayout version="2">
@@ -28,4 +32,8 @@
 		</bezel>
 	</view>
 
+<<<<<<< HEAD
 </mamelayout>
+=======
+</mamelayout>
+>>>>>>> upstream/master

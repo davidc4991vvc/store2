@@ -20,6 +20,7 @@
 //  sns_rom_sufami_device - constructor
 //-------------------------------------------------
 
+<<<<<<< HEAD
 const device_type SNS_LOROM_SUFAMI = &device_creator<sns_rom_sufami_device>;
 const device_type SNS_STROM = &device_creator<sns_rom_strom_device>;
 
@@ -33,6 +34,21 @@ sns_rom_sufami_device::sns_rom_sufami_device(const machine_config &mconfig, cons
 
 sns_rom_strom_device::sns_rom_strom_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
 					: sns_rom_device(mconfig, SNS_STROM, "SNES Sufami Turbo Minicart", tag, owner, clock, "sns_strom", __FILE__)
+=======
+DEFINE_DEVICE_TYPE(SNS_LOROM_SUFAMI, sns_rom_sufami_device, "sns_rom_sufami", "SNES Sufami Turbo Cart")
+DEFINE_DEVICE_TYPE(SNS_STROM,        sns_rom_strom_device,  "sns_strom",      "SNES Sufami Turbo Minicart")
+
+
+sns_rom_sufami_device::sns_rom_sufami_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: sns_rom_device(mconfig, SNS_LOROM_SUFAMI, tag, owner, clock)
+	, m_slot1(*this, "st_slot1")
+	, m_slot2(*this, "st_slot2")
+{
+}
+
+sns_rom_strom_device::sns_rom_strom_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: sns_rom_device(mconfig, SNS_STROM, tag, owner, clock)
+>>>>>>> upstream/master
 {
 }
 
@@ -45,14 +61,18 @@ void sns_rom_strom_device::device_start()
 {
 }
 
+<<<<<<< HEAD
 //-------------------------------------------------
 //  MACHINE_CONFIG_FRAGMENT( st_slot )
 //-------------------------------------------------
+=======
+>>>>>>> upstream/master
 
 static SLOT_INTERFACE_START(sufamiturbo_cart)
 	SLOT_INTERFACE_INTERNAL("strom",  SNS_STROM)
 SLOT_INTERFACE_END
 
+<<<<<<< HEAD
 static MACHINE_CONFIG_FRAGMENT( st_slot )
 	MCFG_SNS_SUFAMI_CARTRIDGE_ADD("st_slot1", sufamiturbo_cart, NULL)
 	MCFG_SNS_SUFAMI_CARTRIDGE_ADD("st_slot2", sufamiturbo_cart, NULL)
@@ -68,6 +88,17 @@ machine_config_constructor sns_rom_sufami_device::device_mconfig_additions() con
 {
 	return MACHINE_CONFIG_NAME( st_slot );
 }
+=======
+
+//-------------------------------------------------
+//  device_add_mconfig - add device configuration
+//-------------------------------------------------
+
+MACHINE_CONFIG_MEMBER( sns_rom_sufami_device::device_add_mconfig )
+	MCFG_SNS_SUFAMI_CARTRIDGE_ADD("st_slot1", sufamiturbo_cart, nullptr)
+	MCFG_SNS_SUFAMI_CARTRIDGE_ADD("st_slot2", sufamiturbo_cart, nullptr)
+MACHINE_CONFIG_END
+>>>>>>> upstream/master
 
 /*-------------------------------------------------
  mapper specific handlers

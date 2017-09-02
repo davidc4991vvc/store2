@@ -5,24 +5,39 @@
  */
 
 #include "emu.h"
+<<<<<<< HEAD
 #include "machine/dp8390.h"
 #include "x68k_neptunex.h"
 
+=======
+#include "x68k_neptunex.h"
+
+#include "machine/dp8390.h"
+
+>>>>>>> upstream/master
 
 //**************************************************************************
 //  DEVICE DEFINITIONS
 //**************************************************************************
 
+<<<<<<< HEAD
 const device_type X68K_NEPTUNEX = &device_creator<x68k_neptune_device>;
 
 // device machine config
 static MACHINE_CONFIG_FRAGMENT( x68k_neptunex )
+=======
+DEFINE_DEVICE_TYPE(X68K_NEPTUNEX, x68k_neptune_device, "x68k_neptunex", "Neptune-X")
+
+// device machine config
+MACHINE_CONFIG_MEMBER( x68k_neptune_device::device_add_mconfig )
+>>>>>>> upstream/master
 	MCFG_DEVICE_ADD("dp8390d", DP8390D, 0)
 	MCFG_DP8390D_IRQ_CB(WRITELINE(x68k_neptune_device, x68k_neptune_irq_w))
 	MCFG_DP8390D_MEM_READ_CB(READ8(x68k_neptune_device, x68k_neptune_mem_read))
 	MCFG_DP8390D_MEM_WRITE_CB(WRITE8(x68k_neptune_device, x68k_neptune_mem_write))
 MACHINE_CONFIG_END
 
+<<<<<<< HEAD
 machine_config_constructor x68k_neptune_device::device_mconfig_additions() const
 {
 	return MACHINE_CONFIG_NAME( x68k_neptunex );
@@ -33,6 +48,13 @@ x68k_neptune_device::x68k_neptune_device(const machine_config &mconfig, const ch
 		device_x68k_expansion_card_interface(mconfig, *this),
 	m_slot(nullptr),
 		m_dp8390(*this, "dp8390d")
+=======
+x68k_neptune_device::x68k_neptune_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: device_t(mconfig, X68K_NEPTUNEX, tag, owner, clock)
+	, device_x68k_expansion_card_interface(mconfig, *this)
+	, m_slot(nullptr)
+	, m_dp8390(*this, "dp8390d")
+>>>>>>> upstream/master
 {
 }
 
@@ -44,7 +66,11 @@ void x68k_neptune_device::device_start()
 {
 	device_t* cpu = machine().device("maincpu");
 	char mac[7];
+<<<<<<< HEAD
 	UINT32 num = rand();
+=======
+	uint32_t num = machine().rand();
+>>>>>>> upstream/master
 	address_space& space = cpu->memory().space(AS_PROGRAM);
 	m_slot = dynamic_cast<x68k_expansion_slot_device *>(owner());
 	memset(m_prom, 0x57, 16);
@@ -61,7 +87,11 @@ void x68k_neptune_device::device_reset() {
 
 READ16_MEMBER(x68k_neptune_device::x68k_neptune_port_r)
 {
+<<<<<<< HEAD
 	UINT16 data;
+=======
+	uint16_t data;
+>>>>>>> upstream/master
 
 	if(offset >= 0x100+32 || offset < 0x100)
 		return 0xffff;

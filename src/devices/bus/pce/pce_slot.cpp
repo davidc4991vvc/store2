@@ -19,7 +19,11 @@
 //  GLOBAL VARIABLES
 //**************************************************************************
 
+<<<<<<< HEAD
 const device_type PCE_CART_SLOT = &device_creator<pce_cart_slot_device>;
+=======
+DEFINE_DEVICE_TYPE(PCE_CART_SLOT, pce_cart_slot_device, "pce_cart_slot", "PCE/TG16 Cartridge Slot")
+>>>>>>> upstream/master
 
 //**************************************************************************
 //    PCE cartridges Interface
@@ -31,7 +35,11 @@ const device_type PCE_CART_SLOT = &device_creator<pce_cart_slot_device>;
 
 device_pce_cart_interface::device_pce_cart_interface(const machine_config &mconfig, device_t &device)
 	: device_slot_card_interface(mconfig, device),
+<<<<<<< HEAD
 		m_rom(NULL),
+=======
+		m_rom(nullptr),
+>>>>>>> upstream/master
 		m_rom_size(0)
 {
 }
@@ -49,9 +57,15 @@ device_pce_cart_interface::~device_pce_cart_interface()
 //  rom_alloc - alloc the space for the cart
 //-------------------------------------------------
 
+<<<<<<< HEAD
 void device_pce_cart_interface::rom_alloc(UINT32 size, const char *tag)
 {
 	if (m_rom == NULL)
+=======
+void device_pce_cart_interface::rom_alloc(uint32_t size, const char *tag)
+{
+	if (m_rom == nullptr)
+>>>>>>> upstream/master
 	{
 		m_rom = device().machine().memory().region_alloc(std::string(tag).append(PCESLOT_ROM_REGION_TAG).c_str(), size, 1, ENDIANNESS_LITTLE)->base();
 		m_rom_size = size;
@@ -63,7 +77,11 @@ void device_pce_cart_interface::rom_alloc(UINT32 size, const char *tag)
 //  ram_alloc - alloc the space for the ram
 //-------------------------------------------------
 
+<<<<<<< HEAD
 void device_pce_cart_interface::ram_alloc(UINT32 size)
+=======
+void device_pce_cart_interface::ram_alloc(uint32_t size)
+>>>>>>> upstream/master
 {
 	m_ram.resize(size);
 	device().save_item(NAME(m_ram));
@@ -74,7 +92,11 @@ void device_pce_cart_interface::ram_alloc(UINT32 size)
 //  blocks, so to simplify ROM access to mirror
 //-------------------------------------------------
 
+<<<<<<< HEAD
 void device_pce_cart_interface::rom_map_setup(UINT32 size)
+=======
+void device_pce_cart_interface::rom_map_setup(uint32_t size)
+>>>>>>> upstream/master
 {
 	if (size == 0x60000)
 	{
@@ -135,12 +157,21 @@ void device_pce_cart_interface::rom_map_setup(UINT32 size)
 //-------------------------------------------------
 //  pce_cart_slot_device - constructor
 //-------------------------------------------------
+<<<<<<< HEAD
 pce_cart_slot_device::pce_cart_slot_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock) :
 						device_t(mconfig, PCE_CART_SLOT, "PCE & TG16 Cartridge Slot", tag, owner, clock, "pce_cart_slot", __FILE__),
 						device_image_interface(mconfig, *this),
 						device_slot_interface(mconfig, *this),
 						m_interface("pce_cart"),
 						m_type(PCE_STD), m_cart(nullptr)
+=======
+pce_cart_slot_device::pce_cart_slot_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock) :
+	device_t(mconfig, PCE_CART_SLOT, tag, owner, clock),
+	device_image_interface(mconfig, *this),
+	device_slot_interface(mconfig, *this),
+	m_interface("pce_cart"),
+	m_type(PCE_STD), m_cart(nullptr)
+>>>>>>> upstream/master
 {
 }
 
@@ -162,6 +193,7 @@ void pce_cart_slot_device::device_start()
 	m_cart = dynamic_cast<device_pce_cart_interface *>(get_card_device());
 }
 
+<<<<<<< HEAD
 //-------------------------------------------------
 //  device_config_complete - perform any
 //  operations now that the configuration is
@@ -174,6 +206,8 @@ void pce_cart_slot_device::device_config_complete()
 	update_names();
 }
 
+=======
+>>>>>>> upstream/master
 
 //-------------------------------------------------
 //  PCE PCB
@@ -197,10 +231,17 @@ static const pce_slot slot_list[] =
 
 static int pce_get_pcb_id(const char *slot)
 {
+<<<<<<< HEAD
 	for (int i = 0; i < ARRAY_LENGTH(slot_list); i++)
 	{
 		if (!core_stricmp(slot_list[i].slot_option, slot))
 			return slot_list[i].pcb_id;
+=======
+	for (auto & elem : slot_list)
+	{
+		if (!core_stricmp(elem.slot_option, slot))
+			return elem.pcb_id;
+>>>>>>> upstream/master
 	}
 
 	return 0;
@@ -208,10 +249,17 @@ static int pce_get_pcb_id(const char *slot)
 
 static const char *pce_get_slot(int type)
 {
+<<<<<<< HEAD
 	for (int i = 0; i < ARRAY_LENGTH(slot_list); i++)
 	{
 		if (slot_list[i].pcb_id == type)
 			return slot_list[i].slot_option;
+=======
+	for (auto & elem : slot_list)
+	{
+		if (elem.pcb_id == type)
+			return elem.slot_option;
+>>>>>>> upstream/master
 	}
 
 	return "rom";
@@ -222,6 +270,7 @@ static const char *pce_get_slot(int type)
  call load
  -------------------------------------------------*/
 
+<<<<<<< HEAD
 bool pce_cart_slot_device::call_load()
 {
 	if (m_cart)
@@ -232,6 +281,18 @@ bool pce_cart_slot_device::call_load()
 
 		// From fullpath, check for presence of a header and skip it
 		if (software_entry() == NULL && (len % 0x4000) == 512)
+=======
+image_init_result pce_cart_slot_device::call_load()
+{
+	if (m_cart)
+	{
+		uint32_t offset;
+		uint32_t len = !loaded_through_softlist() ? length() : get_software_region_length("rom");
+		uint8_t *ROM;
+
+		// From fullpath, check for presence of a header and skip it
+		if (!loaded_through_softlist() && (len % 0x4000) == 512)
+>>>>>>> upstream/master
 		{
 			logerror("Rom-header found, skipping\n");
 			offset = 512;
@@ -242,7 +303,11 @@ bool pce_cart_slot_device::call_load()
 		m_cart->rom_alloc(len, tag());
 		ROM = m_cart->get_rom_base();
 
+<<<<<<< HEAD
 		if (software_entry() == NULL)
+=======
+		if (!loaded_through_softlist())
+>>>>>>> upstream/master
 			fread(ROM, len);
 		else
 			memcpy(ROM, get_software_region("rom"), len);
@@ -250,7 +315,11 @@ bool pce_cart_slot_device::call_load()
 		// check for encryption (US carts)
 		if (ROM[0x1fff] < 0xe0)
 		{
+<<<<<<< HEAD
 			UINT8 decrypted[256];
+=======
+			uint8_t decrypted[256];
+>>>>>>> upstream/master
 
 			/* Initialize decryption table */
 			for (int i = 0; i < 256; i++)
@@ -263,7 +332,11 @@ bool pce_cart_slot_device::call_load()
 
 		m_cart->rom_map_setup(len);
 
+<<<<<<< HEAD
 		if (software_entry() == NULL)
+=======
+		if (!loaded_through_softlist())
+>>>>>>> upstream/master
 			m_type = get_cart_type(ROM, len);
 		else
 		{
@@ -278,10 +351,17 @@ bool pce_cart_slot_device::call_load()
 		if (m_type == PCE_CDSYS3J || m_type == PCE_CDSYS3U)
 			m_cart->ram_alloc(0x30000);
 
+<<<<<<< HEAD
 		return IMAGE_INIT_PASS;
 	}
 
 	return IMAGE_INIT_PASS;
+=======
+		return image_init_result::PASS;
+	}
+
+	return image_init_result::PASS;
+>>>>>>> upstream/master
 }
 
 
@@ -295,6 +375,7 @@ void pce_cart_slot_device::call_unload()
 
 
 /*-------------------------------------------------
+<<<<<<< HEAD
  call softlist load
  -------------------------------------------------*/
 
@@ -307,11 +388,17 @@ bool pce_cart_slot_device::call_softlist_load(software_list_device &swlist, cons
 
 
 /*-------------------------------------------------
+=======
+>>>>>>> upstream/master
  get_cart_type - code to detect NVRAM type from
  fullpath
  -------------------------------------------------*/
 
+<<<<<<< HEAD
 int pce_cart_slot_device::get_cart_type(UINT8 *ROM, UINT32 len)
+=======
+int pce_cart_slot_device::get_cart_type(const uint8_t *ROM, uint32_t len)
+>>>>>>> upstream/master
 {
 	int type = PCE_STD;
 
@@ -339,6 +426,7 @@ int pce_cart_slot_device::get_cart_type(UINT8 *ROM, UINT32 len)
  get default card software
  -------------------------------------------------*/
 
+<<<<<<< HEAD
 void pce_cart_slot_device::get_default_card_software(std::string &result)
 {
 	if (open_image_file(mconfig().options()))
@@ -349,11 +437,24 @@ void pce_cart_slot_device::get_default_card_software(std::string &result)
 		int type;
 
 		core_fread(m_file, &rom[0], len);
+=======
+std::string pce_cart_slot_device::get_default_card_software(get_default_card_software_hook &hook) const
+{
+	if (hook.image_file())
+	{
+		const char *slot_string;
+		uint32_t len = hook.image_file()->size();
+		std::vector<uint8_t> rom(len);
+		int type;
+
+		hook.image_file()->read(&rom[0], len);
+>>>>>>> upstream/master
 
 		type = get_cart_type(&rom[0], len);
 		slot_string = pce_get_slot(type);
 
 		//printf("type: %s\n", slot_string);
+<<<<<<< HEAD
 		clear();
 
 		result.assign(slot_string);
@@ -361,6 +462,13 @@ void pce_cart_slot_device::get_default_card_software(std::string &result)
 	}
 
 	software_get_default_slot(result, "rom");
+=======
+
+		return std::string(slot_string);
+	}
+
+	return software_get_default_slot("rom");
+>>>>>>> upstream/master
 }
 
 /*-------------------------------------------------
@@ -390,6 +498,10 @@ WRITE8_MEMBER(pce_cart_slot_device::write_cart)
  Internal header logging
  -------------------------------------------------*/
 
+<<<<<<< HEAD
 void pce_cart_slot_device::internal_header_logging(UINT8 *ROM, UINT32 len)
+=======
+void pce_cart_slot_device::internal_header_logging(uint8_t *ROM, uint32_t len)
+>>>>>>> upstream/master
 {
 }

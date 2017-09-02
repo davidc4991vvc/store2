@@ -19,8 +19,13 @@ void bigstrkb_state::draw_sprites(bitmap_ind16 &bitmap, const rectangle &cliprec
 	**- End of Comments -*/
 
 	gfx_element *gfx = m_gfxdecode->gfx(2);
+<<<<<<< HEAD
 	UINT16 *source = m_spriteram;
 	UINT16 *finish = source + 0x800/2;
+=======
+	uint16_t *source = m_spriteram;
+	uint16_t *finish = source + 0x800/2;
+>>>>>>> upstream/master
 
 	while( source<finish )
 	{
@@ -113,16 +118,26 @@ WRITE16_MEMBER(bigstrkb_state::videoram3_w)
 
 void bigstrkb_state::video_start()
 {
+<<<<<<< HEAD
 	m_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(bigstrkb_state::get_tile_info),this),TILEMAP_SCAN_COLS, 8, 8,64,32);
 	m_tilemap2 = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(bigstrkb_state::get_tile2_info),this),tilemap_mapper_delegate(FUNC(bigstrkb_state::bg_scan),this), 16, 16,128,64);
 	m_tilemap3 = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(bigstrkb_state::get_tile3_info),this),tilemap_mapper_delegate(FUNC(bigstrkb_state::bg_scan),this), 16, 16,128,64);
+=======
+	m_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(bigstrkb_state::get_tile_info),this),TILEMAP_SCAN_COLS, 8, 8,64,32);
+	m_tilemap2 = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(bigstrkb_state::get_tile2_info),this),tilemap_mapper_delegate(FUNC(bigstrkb_state::bg_scan),this), 16, 16,128,64);
+	m_tilemap3 = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(bigstrkb_state::get_tile3_info),this),tilemap_mapper_delegate(FUNC(bigstrkb_state::bg_scan),this), 16, 16,128,64);
+>>>>>>> upstream/master
 
 	m_tilemap->set_transparent_pen(15);
 	//m_tilemap2->set_transparent_pen(15);
 	m_tilemap3->set_transparent_pen(15);
 }
 
+<<<<<<< HEAD
 UINT32 bigstrkb_state::screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+=======
+uint32_t bigstrkb_state::screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+>>>>>>> upstream/master
 {
 //  bitmap.fill(m_palette->black_pen(), cliprect);
 

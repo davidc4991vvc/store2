@@ -64,6 +64,7 @@ VIDEO_START_MEMBER(moo_state,bucky)
 	m_k056832->set_layer_offs(3,  6, 0);
 }
 
+<<<<<<< HEAD
 UINT32 moo_state::screen_update_moo(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect)
 {
 	static const int K053251_CI[4] = { K053251_CI1, K053251_CI2, K053251_CI3, K053251_CI4 };
@@ -71,6 +72,15 @@ UINT32 moo_state::screen_update_moo(screen_device &screen, bitmap_rgb32 &bitmap,
 	int new_colorbase, plane, dirty, alpha;
 
 	m_sprite_colorbase = m_k053251->get_palette_index(K053251_CI0);
+=======
+uint32_t moo_state::screen_update_moo(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect)
+{
+	static const int K053251_CI[4] = { k053251_device::CI1, k053251_device::CI2, k053251_device::CI3, k053251_device::CI4 };
+	int layers[3];
+	int new_colorbase, plane, dirty, alpha;
+
+	m_sprite_colorbase = m_k053251->get_palette_index(k053251_device::CI0);
+>>>>>>> upstream/master
 	m_layer_colorbase[0] = 0x70;
 
 	if (m_k056832->get_layer_association())
@@ -101,6 +111,7 @@ UINT32 moo_state::screen_update_moo(screen_device &screen, bitmap_rgb32 &bitmap,
 	}
 
 	layers[0] = 1;
+<<<<<<< HEAD
 	m_layerpri[0] = m_k053251->get_priority(K053251_CI2);
 	layers[1] = 2;
 	m_layerpri[1] = m_k053251->get_priority(K053251_CI3);
@@ -110,11 +121,26 @@ UINT32 moo_state::screen_update_moo(screen_device &screen, bitmap_rgb32 &bitmap,
 	konami_sortlayers3(layers, m_layerpri);
 
 	m_k054338->update_all_shadows(0, m_palette);
+=======
+	m_layerpri[0] = m_k053251->get_priority(k053251_device::CI2);
+	layers[1] = 2;
+	m_layerpri[1] = m_k053251->get_priority(k053251_device::CI3);
+	layers[2] = 3;
+	m_layerpri[2] = m_k053251->get_priority(k053251_device::CI4);
+
+	konami_sortlayers3(layers, m_layerpri);
+
+	m_k054338->update_all_shadows(0, *m_palette);
+>>>>>>> upstream/master
 	m_k054338->fill_solid_bg(bitmap, cliprect);
 
 	screen.priority().fill(0, cliprect);
 
+<<<<<<< HEAD
 	if (m_layerpri[0] < m_k053251->get_priority(K053251_CI1))   /* bucky hides back layer behind background */
+=======
+	if (m_layerpri[0] < m_k053251->get_priority(k053251_device::CI1))   /* bucky hides back layer behind background */
+>>>>>>> upstream/master
 		m_k056832->tilemap_draw(screen, bitmap, cliprect, layers[0], 0, 1);
 
 	m_k056832->tilemap_draw(screen, bitmap, cliprect, layers[1], 0, 2);

@@ -100,11 +100,21 @@
 ***************************************************************************/
 
 #include "emu.h"
+<<<<<<< HEAD
 #include "includes/decocrpt.h"
 #include "machine/eepromser.h"
 #include "cpu/arm/arm.h"
 #include "cpu/sh2/sh2.h"
 #include "includes/deco_mlc.h"
+=======
+#include "includes/deco_mlc.h"
+
+#include "machine/deco156.h"
+#include "machine/eepromser.h"
+#include "cpu/arm/arm.h"
+#include "cpu/sh2/sh2.h"
+#include "speaker.h"
+>>>>>>> upstream/master
 
 
 /***************************************************************************/
@@ -172,7 +182,11 @@ READ32_MEMBER(deco_mlc_state::mlc_scanline_r)
 WRITE32_MEMBER(deco_mlc_state::avengrs_eprom_w)
 {
 	if (ACCESSING_BITS_8_15) {
+<<<<<<< HEAD
 		UINT8 ebyte=(data>>8)&0xff;
+=======
+		uint8_t ebyte=(data>>8)&0xff;
+>>>>>>> upstream/master
 //      if (ebyte&0x80) {
 			m_eeprom->clk_write((ebyte & 0x2) ? ASSERT_LINE : CLEAR_LINE);
 			m_eeprom->di_write(ebyte & 0x1);
@@ -239,14 +253,24 @@ READ32_MEMBER(deco_mlc_state::mlc_vram_r)
 
 READ32_MEMBER( deco_mlc_state::mlc_spriteram_r )
 {
+<<<<<<< HEAD
 	UINT32 retdata = 0;
 
 	if (mem_mask & 0xffff0000)
+=======
+	uint32_t retdata = 0;
+
+	if (ACCESSING_BITS_16_31)
+>>>>>>> upstream/master
 	{
 		retdata |= 0xffff0000;
 	}
 
+<<<<<<< HEAD
 	if (mem_mask & 0x0000ffff)
+=======
+	if (ACCESSING_BITS_0_15)
+>>>>>>> upstream/master
 	{
 		retdata |= m_mlc_spriteram[offset];
 	}
@@ -257,11 +281,19 @@ READ32_MEMBER( deco_mlc_state::mlc_spriteram_r )
 
 WRITE32_MEMBER( deco_mlc_state::mlc_spriteram_w )
 {
+<<<<<<< HEAD
 	if (mem_mask & 0xffff0000)
 	{
 	}
 
 	if (mem_mask & 0x0000ffff)
+=======
+	if (ACCESSING_BITS_16_31)
+	{
+	}
+
+	if (ACCESSING_BITS_0_15)
+>>>>>>> upstream/master
 	{
 		data &=0x0000ffff;
 		COMBINE_DATA(&m_mlc_spriteram[offset]);
@@ -272,8 +304,13 @@ READ16_MEMBER( deco_mlc_state::sh96_protection_region_0_146_r )
 {
 	int real_address = 0 + (offset *2);
 	int deco146_addr = BITSWAP32(real_address, /* NC */31,30,29,28,27,26,25,24,23,22,21,20,19,18, 13,12,11,/**/      17,16,15,14,    10,9,8, 7,6,5,4, 3,2,1,0) & 0x7fff;
+<<<<<<< HEAD
 	UINT8 cs = 0;
 	UINT16 data = m_deco146->read_data( deco146_addr, mem_mask, cs );
+=======
+	uint8_t cs = 0;
+	uint16_t data = m_deco146->read_data( deco146_addr, mem_mask, cs );
+>>>>>>> upstream/master
 	return data;
 }
 
@@ -281,14 +318,22 @@ WRITE16_MEMBER( deco_mlc_state::sh96_protection_region_0_146_w )
 {
 	int real_address = 0 + (offset *2);
 	int deco146_addr = BITSWAP32(real_address, /* NC */31,30,29,28,27,26,25,24,23,22,21,20,19,18, 13,12,11,/**/      17,16,15,14,    10,9,8, 7,6,5,4, 3,2,1,0) & 0x7fff;
+<<<<<<< HEAD
 	UINT8 cs = 0;
+=======
+	uint8_t cs = 0;
+>>>>>>> upstream/master
 	m_deco146->write_data( space, deco146_addr, data, mem_mask, cs );
 }
 
 
 /******************************************************************************/
 
+<<<<<<< HEAD
 static ADDRESS_MAP_START( decomlc_map, AS_PROGRAM, 32, deco_mlc_state )
+=======
+static ADDRESS_MAP_START( avengrgs_map, AS_PROGRAM, 32, deco_mlc_state )
+>>>>>>> upstream/master
 	AM_RANGE(0x0000000, 0x00fffff) AM_ROM AM_MIRROR(0xff000000)
 	AM_RANGE(0x0100000, 0x011ffff) AM_RAM AM_SHARE("mlc_ram") AM_MIRROR(0xff000000)
 	AM_RANGE(0x0200000, 0x0200003) AM_READ(mlc_200000_r) AM_MIRROR(0xff000000)
@@ -308,7 +353,33 @@ static ADDRESS_MAP_START( decomlc_map, AS_PROGRAM, 32, deco_mlc_state )
 	AM_RANGE(0x044001c, 0x044001f) AM_READWRITE(mlc_44001c_r, mlc_44001c_w) AM_MIRROR(0xff000000)
 	AM_RANGE(0x0500000, 0x0500003) AM_WRITE(avengrs_eprom_w) AM_MIRROR(0xff000000)
 	AM_RANGE(0x0600000, 0x0600007) AM_DEVREADWRITE8("ymz", ymz280b_device, read, write, 0xff000000) AM_MIRROR(0xff000000)
+<<<<<<< HEAD
 	AM_RANGE(0x070f000, 0x070ffff) AM_READWRITE16(sh96_protection_region_0_146_r, sh96_protection_region_0_146_w, 0xffff0000) AM_MIRROR(0xff000000)
+=======
+ADDRESS_MAP_END
+
+static ADDRESS_MAP_START( decomlc_map, AS_PROGRAM, 32, deco_mlc_state )
+	AM_RANGE(0x0000000, 0x00fffff) AM_ROM
+	AM_RANGE(0x0100000, 0x011ffff) AM_RAM AM_SHARE("mlc_ram")
+	AM_RANGE(0x0200000, 0x0200003) AM_READ(mlc_200000_r)
+	AM_RANGE(0x0200004, 0x0200007) AM_READ(mlc_200004_r)
+	AM_RANGE(0x0200070, 0x0200073) AM_READ(mlc_200070_r)
+	AM_RANGE(0x0200074, 0x0200077) AM_READ(mlc_scanline_r)
+	AM_RANGE(0x020007c, 0x020007f) AM_READ(mlc_20007c_r)
+	AM_RANGE(0x0200000, 0x020007f) AM_WRITE(mlc_irq_w) AM_SHARE("irq_ram")
+	AM_RANGE(0x0200080, 0x02000ff) AM_RAM AM_SHARE("mlc_clip_ram")
+	AM_RANGE(0x0204000, 0x0206fff) AM_READWRITE( mlc_spriteram_r, mlc_spriteram_w )
+	AM_RANGE(0x0280000, 0x029ffff) AM_RAM AM_SHARE("mlc_vram")
+	AM_RANGE(0x0300000, 0x0307fff) AM_RAM_WRITE(avengrs_palette_w) AM_SHARE("paletteram")
+	AM_RANGE(0x0400000, 0x0400003) AM_READ_PORT("INPUTS")
+	AM_RANGE(0x0440000, 0x0440003) AM_READ_PORT("INPUTS2")
+	AM_RANGE(0x0440004, 0x0440007) AM_READ_PORT("INPUTS3")
+	AM_RANGE(0x0440008, 0x044000b) AM_READ(mlc_440008_r)
+	AM_RANGE(0x044001c, 0x044001f) AM_READWRITE(mlc_44001c_r, mlc_44001c_w)
+	AM_RANGE(0x0500000, 0x0500003) AM_WRITE(avengrs_eprom_w)
+	AM_RANGE(0x0600000, 0x0600007) AM_DEVREADWRITE8("ymz", ymz280b_device, read, write, 0xff000000)
+	AM_RANGE(0x070f000, 0x070ffff) AM_READWRITE16(sh96_protection_region_0_146_r, sh96_protection_region_0_146_w, 0xffff0000)
+>>>>>>> upstream/master
 ADDRESS_MAP_END
 
 /******************************************************************************/
@@ -478,11 +549,19 @@ MACHINE_RESET_MEMBER(deco_mlc_state,mlc)
 	m_raster_irq_timer = machine().device<timer_device>("int_timer");
 }
 
+<<<<<<< HEAD
 static MACHINE_CONFIG_START( avengrgs, deco_mlc_state )
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", SH2,42000000/2) /* 21 MHz clock confirmed on real board */
 	MCFG_CPU_PROGRAM_MAP(decomlc_map)
+=======
+static MACHINE_CONFIG_START( avengrgs )
+
+	/* basic machine hardware */
+	MCFG_CPU_ADD("maincpu", SH2,42000000/2) /* 21 MHz clock confirmed on real board */
+	MCFG_CPU_PROGRAM_MAP(avengrgs_map)
+>>>>>>> upstream/master
 
 	MCFG_MACHINE_RESET_OVERRIDE(deco_mlc_state,mlc)
 	MCFG_EEPROM_SERIAL_93C46_ADD("eeprom") /* Actually 93c45 */
@@ -495,7 +574,11 @@ static MACHINE_CONFIG_START( avengrgs, deco_mlc_state )
 	MCFG_SCREEN_SIZE(40*8, 32*8)
 	MCFG_SCREEN_VISIBLE_AREA(0*8, 40*8-1, 1*8, 31*8-1)
 	MCFG_SCREEN_UPDATE_DRIVER(deco_mlc_state, screen_update_mlc)
+<<<<<<< HEAD
 	MCFG_SCREEN_VBLANK_DRIVER(deco_mlc_state, screen_eof_mlc)
+=======
+	MCFG_SCREEN_VBLANK_CALLBACK(WRITELINE(deco_mlc_state, screen_vblank_mlc))
+>>>>>>> upstream/master
 	MCFG_SCREEN_VIDEO_ATTRIBUTES(VIDEO_UPDATE_SCANLINE)
 
 	MCFG_GFXDECODE_ADD("gfxdecode", "palette", deco_mlc)
@@ -511,7 +594,11 @@ static MACHINE_CONFIG_START( avengrgs, deco_mlc_state )
 	MCFG_SOUND_ROUTE(1, "rspeaker", 1.0)
 MACHINE_CONFIG_END
 
+<<<<<<< HEAD
 static MACHINE_CONFIG_START( mlc, deco_mlc_state )
+=======
+static MACHINE_CONFIG_START( mlc )
+>>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", ARM,42000000/6) /* 42 MHz -> 7MHz clock confirmed on real board */
@@ -528,7 +615,11 @@ static MACHINE_CONFIG_START( mlc, deco_mlc_state )
 	MCFG_SCREEN_SIZE(40*8, 32*8)
 	MCFG_SCREEN_VISIBLE_AREA(0*8, 40*8-1, 1*8, 31*8-1)
 	MCFG_SCREEN_UPDATE_DRIVER(deco_mlc_state, screen_update_mlc)
+<<<<<<< HEAD
 	MCFG_SCREEN_VBLANK_DRIVER(deco_mlc_state, screen_eof_mlc)
+=======
+	MCFG_SCREEN_VBLANK_CALLBACK(WRITELINE(deco_mlc_state, screen_vblank_mlc))
+>>>>>>> upstream/master
 	MCFG_SCREEN_VIDEO_ATTRIBUTES(VIDEO_UPDATE_SCANLINE)
 
 	MCFG_GFXDECODE_ADD("gfxdecode", "palette", deco_mlc)
@@ -553,6 +644,14 @@ MACHINE_CONFIG_END
 
 static MACHINE_CONFIG_DERIVED( mlc_5bpp, mlc )
 	MCFG_GFXDECODE_MODIFY("gfxdecode", 5bpp)
+<<<<<<< HEAD
+=======
+
+	// TODO: mono? ch.0 doesn't output any sound in-game
+	MCFG_SOUND_MODIFY("ymz")
+	MCFG_SOUND_ROUTE(1, "lspeaker", 1.0)
+	MCFG_SOUND_ROUTE(0, "rspeaker", 1.0)
+>>>>>>> upstream/master
 MACHINE_CONFIG_END
 
 /***************************************************************************/
@@ -637,8 +736,13 @@ ROM_END
 
 ROM_START( stadhr96 )
 	ROM_REGION( 0x100000, "maincpu", 0 )
+<<<<<<< HEAD
 	ROM_LOAD32_WORD( "sh-eaj.2a", 0x000000, 0x80000, CRC(10d1496a) SHA1(1dc151547463a38d717159b3dfce7ffd78a943ad) )
 	ROM_LOAD32_WORD( "sh-eaj.2b", 0x000002, 0x80000, CRC(608a9144) SHA1(15e2fa99dc96e8ebd9868713ae7708cb824fc6c5) )
+=======
+	ROM_LOAD32_WORD( "sh-eaj.2a", 0x000000, 0x80000, CRC(10d1496a) SHA1(1dc151547463a38d717159b3dfce7ffd78a943ad) ) /* FRI SEP 20 14:32:35 JST 1996 */
+	ROM_LOAD32_WORD( "sh-eaj.2b", 0x000002, 0x80000, CRC(608a9144) SHA1(15e2fa99dc96e8ebd9868713ae7708cb824fc6c5) ) /*    EUROPE (DISTRIBUTED)      */
+>>>>>>> upstream/master
 
 	ROM_REGION( 0x1800000, "gfx1", 0 )
 	ROM_LOAD16_BYTE( "mcm-00.2e", 0x0000001, 0x400000, CRC(c1919c3c) SHA1(168000ff1512a147d7029ee8878dd70de680fb08) )
@@ -658,10 +762,40 @@ ROM_START( stadhr96 )
 	ROM_LOAD( "eeprom-stadhr96.bin",  0x00, 0x80, CRC(77861793) SHA1(df43b3ee55b7eb840cd6d3e5c5e04c68ce64bb57) )
 ROM_END
 
+<<<<<<< HEAD
 ROM_START( stadhr96j )
 	ROM_REGION( 0x100000, "maincpu", 0 )
 	ROM_LOAD32_WORD( "ead00-4.2a", 0x000000, 0x80000, CRC(b0adfc39) SHA1(3094dfb7c7f8fa9d7e10d98dff8fb8aba285d710) )
 	ROM_LOAD32_WORD( "ead01-4.2b", 0x000002, 0x80000, CRC(0b332820) SHA1(28b757fe529250711fcb82424ba63c222a9329b9) )
+=======
+ROM_START( stadhr96u )
+	ROM_REGION( 0x100000, "maincpu", 0 )
+	ROM_LOAD32_WORD( "eah00-0.2a", 0x000000, 0x80000, CRC(f45b2ca0) SHA1(442dbfea97abb98451b323986878504ac0370e85) ) /* FRI SEP 20 14:01:45 JST 1996 */
+	ROM_LOAD32_WORD( "eah01-0.2b", 0x000002, 0x80000, CRC(328a2bca) SHA1(7e398b48719e5d71b2212d5b65be667e20663589) ) /*            U.S.A.            */
+
+	ROM_REGION( 0x1800000, "gfx1", 0 )
+	ROM_LOAD16_BYTE( "mcm-00.2e", 0x0000001, 0x400000, CRC(c1919c3c) SHA1(168000ff1512a147d7029ee8878dd70de680fb08) )
+	ROM_LOAD16_BYTE( "mcm-01.8m", 0x0000000, 0x400000, CRC(2255d47d) SHA1(ba3298e781fce1c84f68290bc464f2bc991382c0) )
+	ROM_LOAD16_BYTE( "mcm-02.4e", 0x0800001, 0x400000, CRC(38c39822) SHA1(393d2c1c3c0bcb99df706d32ee3f8b681891dcac) )
+	ROM_LOAD16_BYTE( "mcm-03.10m",0x0800000, 0x400000, CRC(4bd84ca7) SHA1(43dad8ced344f8d629d36f30ab2332879ba067d2) )
+	ROM_LOAD16_BYTE( "mcm-04.6e", 0x1000001, 0x400000, CRC(7c0bd84c) SHA1(730b085a893d3c70592a8b4aecaeeaf4aceede56) )
+	ROM_LOAD16_BYTE( "mcm-05.11m",0x1000000, 0x400000, CRC(476f03d7) SHA1(5c58ab4fc0e29f76619827bc27fa64cce2627e48) )
+
+	ROM_REGION( 0x80000, "gfx2", 0 )
+	ROM_LOAD( "eaf02-0.6h", 0x000000, 0x80000, CRC(f95ad7ce) SHA1(878dcc1d5f76c8523c788e66bb4a8c5740d515e5) )
+
+	ROM_REGION( 0x800000, "ymz", 0 )
+	ROM_LOAD( "mcm-06.6a",  0x000000, 0x400000,  CRC(fbc178f3) SHA1(f44cb913177b6552b30c139505c3284bc445ba13) )
+
+	ROM_REGION16_BE( 0x80, "eeprom", ROMREGION_ERASE00 )
+	ROM_LOAD( "eeprom-stadhr96u.bin",  0x00, 0x80, CRC(71d796ba) SHA1(dc23117e24a8e79ca04f60a7cd23e22922ec9846) )
+ROM_END
+
+ROM_START( stadhr96j )
+	ROM_REGION( 0x100000, "maincpu", 0 )
+	ROM_LOAD32_WORD( "ead00-4.2a", 0x000000, 0x80000, CRC(b0adfc39) SHA1(3094dfb7c7f8fa9d7e10d98dff8fb8aba285d710) ) /* WED SEP  5 00:00:00 JST 1996 (FINAL) */
+	ROM_LOAD32_WORD( "ead01-4.2b", 0x000002, 0x80000, CRC(0b332820) SHA1(28b757fe529250711fcb82424ba63c222a9329b9) ) /*                JAPAN                 */
+>>>>>>> upstream/master
 
 	ROM_REGION( 0x1800000, "gfx1", 0 )
 	ROM_LOAD16_BYTE( "mcm-00.2e", 0x0000001, 0x400000, CRC(c1919c3c) SHA1(168000ff1512a147d7029ee8878dd70de680fb08) )
@@ -762,7 +896,11 @@ ROM_START( skullfng )
 	ROM_LOAD16_BYTE( "mch-05.11m",0x800000, 0x200000, CRC(ef0b54ba) SHA1(3be56c064ac81686096be5f31ad2aad948ba6701) )
 
 	ROM_REGION( 0x80000, "gfx2", 0 )
+<<<<<<< HEAD
 	ROM_LOAD( "sh02-0.6h", 0x000000, 0x80000, CRC(0d3ae757) SHA1(480fc3855d330380b75a47a271f3571a59aee10c) ) /* Labeld SW 02-0, but same contents */
+=======
+	ROM_LOAD( "sw02-0.6h", 0x000000, 0x80000, CRC(0d3ae757) SHA1(480fc3855d330380b75a47a271f3571a59aee10c) )
+>>>>>>> upstream/master
 
 	ROM_REGION( 0x800000, "ymz", ROMREGION_ERASE00 )
 	ROM_LOAD( "mch-06.6a",  0x200000, 0x200000, CRC(b2efe4ae) SHA1(5a9dab74c2ba73a65e8f1419b897467804734fa2) )
@@ -796,11 +934,39 @@ ROM_START( skullfngj )
 	ROM_LOAD( "skullfng.eeprom",  0x00, 0x80, CRC(240d882e) SHA1(3c1a15ccac91d95b02a8c54b051aa64ff28ce2ab) )
 ROM_END
 
+<<<<<<< HEAD
+=======
+ROM_START( skullfnga )
+	ROM_REGION( 0x100000, "maincpu", 0 )
+	ROM_LOAD32_WORD( "sx00-0.2a", 0x000000, 0x80000, CRC(749c0972) SHA1(8a5f170f2f8d800ad2d47ecf2e5b8978a1f14f50) )
+	ROM_LOAD32_WORD( "sx01-0.2b", 0x000002, 0x80000, CRC(61ae7dc3) SHA1(185448fb3d9fe887db0202b195c97674e3dd5f65) )
+
+	ROM_REGION( 0xc00000, "gfx1", 0 )
+	ROM_LOAD16_BYTE( "mch-00.2e", 0x000001, 0x200000, CRC(d5cc4238) SHA1(f1bd86386e44a3f600475aeab310f7ea632998df) )
+	ROM_LOAD16_BYTE( "mch-01.8m", 0x000000, 0x200000, CRC(d37cf0cd) SHA1(c2fe7062a123ca2df65217c6dced857b803d8a8d) )
+	ROM_LOAD16_BYTE( "mch-02.4e", 0x400001, 0x200000, CRC(4046314d) SHA1(32e3b7ddbe20ffa6ba6ebe9bd55a32e3b3a120f6) )
+	ROM_LOAD16_BYTE( "mch-03.10m",0x400000, 0x200000, CRC(1dea8f6c) SHA1(c2ad59592385a00e323aac9057906c9384b67078) )
+	ROM_LOAD16_BYTE( "mch-04.6e", 0x800001, 0x200000, CRC(4869dfe8) SHA1(296df6274ecb3eed485de24258cf462e3942f1fa) )
+	ROM_LOAD16_BYTE( "mch-05.11m",0x800000, 0x200000, CRC(ef0b54ba) SHA1(3be56c064ac81686096be5f31ad2aad948ba6701) )
+
+	ROM_REGION( 0x80000, "gfx2", 0 )
+	ROM_LOAD( "sx02-0.6h", 0x000000, 0x80000, CRC(0d3ae757) SHA1(480fc3855d330380b75a47a271f3571a59aee10c) )
+
+	ROM_REGION( 0x800000, "ymz", ROMREGION_ERASE00 )
+	ROM_LOAD( "mch-06.6a",  0x200000, 0x200000, CRC(b2efe4ae) SHA1(5a9dab74c2ba73a65e8f1419b897467804734fa2) )
+	ROM_LOAD( "mch-07.11j", 0x400000, 0x200000, CRC(bc1a50a1) SHA1(3de191fbc92d2ae84e54263f1c70afec6ff7cc3c) )
+
+	ROM_REGION16_BE( 0x80, "eeprom", ROMREGION_ERASE00 )
+	ROM_LOAD( "skullfng.eeprom",  0x00, 0x80, CRC(240d882e) SHA1(3c1a15ccac91d95b02a8c54b051aa64ff28ce2ab) )
+ROM_END
+
+>>>>>>> upstream/master
 /***************************************************************************/
 
 void deco_mlc_state::descramble_sound(  )
 {
 	/* the same as simpl156 / heavy smash? */
+<<<<<<< HEAD
 	UINT8 *rom = memregion("ymz")->base();
 	int length = memregion("ymz")->bytes();
 	dynamic_buffer buf1(length);
@@ -810,6 +976,17 @@ void deco_mlc_state::descramble_sound(  )
 	for (x=0;x<length;x++)
 	{
 		UINT32 addr;
+=======
+	uint8_t *rom = memregion("ymz")->base();
+	int length = memregion("ymz")->bytes();
+	std::vector<uint8_t> buf1(length);
+
+	uint32_t x;
+
+	for (x=0;x<length;x++)
+	{
+		uint32_t addr;
+>>>>>>> upstream/master
 
 		addr = BITSWAP24 (x,23,22,21,0, 20,
 							19,18,17,16,
@@ -826,8 +1003,13 @@ void deco_mlc_state::descramble_sound(  )
 
 READ32_MEMBER(deco_mlc_state::avengrgs_speedup_r)
 {
+<<<<<<< HEAD
 	UINT32 a=m_mlc_ram[0x89a0/4];
 	UINT32 p=space.device().safe_pc();
+=======
+	uint32_t a=m_mlc_ram[0x89a0/4];
+	uint32_t p=space.device().safe_pc();
+>>>>>>> upstream/master
 
 	if ((p==0x3234 || p==0x32dc) && (a&1)) space.device().execute().spin_until_interrupt();
 
@@ -869,9 +1051,17 @@ DRIVER_INIT_MEMBER(deco_mlc_state,mlc)
 GAME( 1995, avengrgs, 0,        avengrgs, mlc, deco_mlc_state, avengrgs, ROT0,   "Data East Corporation", "Avengers In Galactic Storm (US)", 0 )
 GAME( 1995, avengrgsj,avengrgs, avengrgs, mlc, deco_mlc_state, avengrgs, ROT0,   "Data East Corporation", "Avengers In Galactic Storm (Japan)", 0 )
 GAME( 1996, stadhr96, 0,        mlc_6bpp, mlc, deco_mlc_state, mlc,      ROT0,   "Data East Corporation", "Stadium Hero '96 (World, EAJ)", MACHINE_IMPERFECT_GRAPHICS ) // Rom labels are EAJ  ^^
+<<<<<<< HEAD
 GAME( 1996, stadhr96j,stadhr96, mlc_6bpp, mlc, deco_mlc_state, mlc,      ROT0,   "Data East Corporation", "Stadium Hero '96 (Japan, EAD)", MACHINE_IMPERFECT_GRAPHICS ) // Rom labels are EAD (this isn't a Konami region code!)
 GAME( 1996, skullfng, 0,        mlc_6bpp, mlc, deco_mlc_state, mlc,      ROT270, "Data East Corporation", "Skull Fang (World)", 0 ) /* Version 1.13, Europe, Master 96.02.19 */
 GAME( 1996, skullfngj,skullfng, mlc_6bpp, mlc, deco_mlc_state, mlc,      ROT270, "Data East Corporation", "Skull Fang (Japan)", 0 ) /* Version 1.09, Japan, Master 96.02.08 */
+=======
+GAME( 1996, stadhr96u,stadhr96, mlc_6bpp, mlc, deco_mlc_state, mlc,      ROT0,   "Data East Corporation", "Stadium Hero '96 (USA, EAH)", MACHINE_IMPERFECT_GRAPHICS ) // Rom labels are EAH  ^^
+GAME( 1996, stadhr96j,stadhr96, mlc_6bpp, mlc, deco_mlc_state, mlc,      ROT0,   "Data East Corporation", "Stadium Hero '96 (Japan, EAD)", MACHINE_IMPERFECT_GRAPHICS ) // Rom labels are EAD (this isn't a Konami region code!)
+GAME( 1996, skullfng, 0,        mlc_6bpp, mlc, deco_mlc_state, mlc,      ROT270, "Data East Corporation", "Skull Fang (World)", 0 ) /* Version 1.13, Europe, Master 96.02.19 */
+GAME( 1996, skullfngj,skullfng, mlc_6bpp, mlc, deco_mlc_state, mlc,      ROT270, "Data East Corporation", "Skull Fang (Japan)", 0 ) /* Version 1.09, Japan, Master 96.02.08 */
+GAME( 1996, skullfnga,skullfng, mlc_6bpp, mlc, deco_mlc_state, mlc,      ROT270, "Data East Corporation", "Skull Fang (Asia)", 0 ) /* Version 1.13, Asia, Master 96.02.19 */
+>>>>>>> upstream/master
 GAME( 1996, hoops96,  0,        mlc_5bpp, mlc, deco_mlc_state, mlc,      ROT0,   "Data East Corporation", "Hoops '96 (Europe/Asia 2.0)", 0 )
 GAME( 1995, ddream95, hoops96,  mlc_5bpp, mlc, deco_mlc_state, mlc,      ROT0,   "Data East Corporation", "Dunk Dream '95 (Japan 1.4, EAM)", 0 )
 GAME( 1995, hoops95,  hoops96,  mlc_5bpp, mlc, deco_mlc_state, mlc,      ROT0,   "Data East Corporation", "Hoops (Europe/Asia 1.7)", 0 )

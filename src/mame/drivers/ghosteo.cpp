@@ -59,10 +59,19 @@ ToDo: verify QS1000 hook-up
 #include "emu.h"
 #include "cpu/arm7/arm7.h"
 #include "cpu/arm7/arm7core.h"
+<<<<<<< HEAD
+=======
+#include "machine/gen_latch.h"
+>>>>>>> upstream/master
 #include "machine/s3c2410.h"
 //#include "machine/smartmed.h"
 #include "machine/i2cmem.h"
 #include "sound/qs1000.h"
+<<<<<<< HEAD
+=======
+#include "screen.h"
+#include "speaker.h"
+>>>>>>> upstream/master
 
 #define NAND_LOG 0
 
@@ -86,6 +95,7 @@ class ghosteo_state : public driver_device
 public:
 	ghosteo_state(const machine_config &mconfig, device_type type, const char *tag)
 		: driver_device(mconfig, type, tag),
+<<<<<<< HEAD
 		m_maincpu(*this, "maincpu") ,
 		m_i2cmem(*this, "i2cmem"),
 		m_s3c2410(*this, "s3c2410"),
@@ -98,6 +108,24 @@ public:
 
 	int m_security_count;
 	UINT32 m_bballoon_port[20];
+=======
+		m_maincpu(*this, "maincpu"),
+		m_qs1000(*this, "qs1000"),
+		m_i2cmem(*this, "i2cmem"),
+		m_s3c2410(*this, "s3c2410"),
+		m_soundlatch(*this, "soundlatch"),
+		m_system_memory(*this, "systememory") { }
+
+	required_device<cpu_device> m_maincpu;
+	required_device<qs1000_device> m_qs1000;
+	required_device<i2cmem_device> m_i2cmem;
+	required_device<s3c2410_device> m_s3c2410;
+	required_device<generic_latch_8_device> m_soundlatch;
+	required_shared_ptr<uint32_t> m_system_memory;
+
+	int m_security_count;
+	uint32_t m_bballoon_port[20];
+>>>>>>> upstream/master
 	struct nand_t m_nand;
 	DECLARE_READ32_MEMBER(bballoon_speedup_r);
 	DECLARE_READ32_MEMBER(touryuu_port_10000000_r);
@@ -110,11 +138,19 @@ public:
 	DECLARE_WRITE8_MEMBER(qs1000_p3_w);
 
 	int m_rom_pagesize;
+<<<<<<< HEAD
 	UINT8* m_flash;
 	DECLARE_DRIVER_INIT(touryuu);
 	DECLARE_DRIVER_INIT(bballoon);
 	virtual void machine_start();
 	virtual void machine_reset();
+=======
+	uint8_t* m_flash;
+	DECLARE_DRIVER_INIT(touryuu);
+	DECLARE_DRIVER_INIT(bballoon);
+	virtual void machine_start() override;
+	virtual void machine_reset() override;
+>>>>>>> upstream/master
 	DECLARE_READ32_MEMBER(s3c2410_gpio_port_r);
 	DECLARE_WRITE32_MEMBER(s3c2410_gpio_port_w);
 	DECLARE_READ32_MEMBER(s3c2410_core_pin_r);
@@ -154,7 +190,11 @@ NAND Flash Controller (4KB internal buffer)
 
 READ8_MEMBER( ghosteo_state::qs1000_p1_r )
 {
+<<<<<<< HEAD
 	return soundlatch_byte_r(space, 0);
+=======
+	return m_soundlatch->read(space, 0);
+>>>>>>> upstream/master
 }
 
 WRITE8_MEMBER( ghosteo_state::qs1000_p1_w )
@@ -171,22 +211,37 @@ WRITE8_MEMBER( ghosteo_state::qs1000_p3_w )
 	// ...x .... - ?
 	// ..x. .... - /IRQ clear
 
+<<<<<<< HEAD
 	qs1000_device *qs1000 = machine().device<qs1000_device>("qs1000");
 
 	membank("qs1000:bank")->set_entry(data & 0x07);
 
 	if (!BIT(data, 5))
 		qs1000->set_irq(CLEAR_LINE);
+=======
+	membank("qs1000:bank")->set_entry(data & 0x07);
+
+	if (!BIT(data, 5))
+		m_qs1000->set_irq(CLEAR_LINE);
+>>>>>>> upstream/master
 }
 
 
 // GPIO
 
+<<<<<<< HEAD
 static const UINT8 security_data[] = { 0x01, 0xC4, 0xFF, 0x22, 0xFF, 0xFF, 0xFF, 0xFF };
 
 READ32_MEMBER(ghosteo_state::s3c2410_gpio_port_r)
 {
 	UINT32 data = m_bballoon_port[offset];
+=======
+static const uint8_t security_data[] = { 0x01, 0xC4, 0xFF, 0x22, 0xFF, 0xFF, 0xFF, 0xFF };
+
+READ32_MEMBER(ghosteo_state::s3c2410_gpio_port_r)
+{
+	uint32_t data = m_bballoon_port[offset];
+>>>>>>> upstream/master
 	switch (offset)
 	{
 		case S3C2410_GPIO_PORT_F :
@@ -206,7 +261,11 @@ READ32_MEMBER(ghosteo_state::s3c2410_gpio_port_r)
 
 WRITE32_MEMBER(ghosteo_state::s3c2410_gpio_port_w)
 {
+<<<<<<< HEAD
 	UINT32 old_value = m_bballoon_port[offset];
+=======
+	uint32_t old_value = m_bballoon_port[offset];
+>>>>>>> upstream/master
 	m_bballoon_port[offset] = data;
 	switch (offset)
 	{
@@ -327,7 +386,11 @@ READ8_MEMBER(ghosteo_state::s3c2410_nand_data_r )
 {
 	struct nand_t &nand = m_nand;
 //  device_t *nand = space.machine().device( "nand");
+<<<<<<< HEAD
 	UINT8 data = 0;
+=======
+	uint8_t data = 0;
+>>>>>>> upstream/master
 	switch (nand.mode)
 	{
 		case NAND_M_INIT :
@@ -345,7 +408,11 @@ READ8_MEMBER(ghosteo_state::s3c2410_nand_data_r )
 			{
 				if ((nand.byte_addr >= 0x200) && (nand.byte_addr < 0x204))
 				{
+<<<<<<< HEAD
 					UINT8 mecc[4];
+=======
+					uint8_t mecc[4];
+>>>>>>> upstream/master
 					m_s3c2410->s3c2410_nand_calculate_mecc( m_flash + nand.page_addr * 0x200, 0x200, mecc);
 					data = mecc[nand.byte_addr-0x200];
 				}
@@ -402,8 +469,13 @@ WRITE_LINE_MEMBER(ghosteo_state::s3c2410_i2c_sda_w )
 
 READ32_MEMBER( ghosteo_state::touryuu_port_10000000_r )
 {
+<<<<<<< HEAD
 	UINT32 port_g = m_bballoon_port[S3C2410_GPIO_PORT_G];
 	UINT32 data = 0xFFFFFFFF;
+=======
+	uint32_t port_g = m_bballoon_port[S3C2410_GPIO_PORT_G];
+	uint32_t data = 0xFFFFFFFF;
+>>>>>>> upstream/master
 	switch (port_g)
 	{
 		case 0x8 : data = ioport( "10000000-08")->read(); break;
@@ -562,7 +634,11 @@ INPUT_PORTS_END
 
 READ32_MEMBER(ghosteo_state::bballoon_speedup_r)
 {
+<<<<<<< HEAD
 	UINT32 ret = m_s3c2410->s3c24xx_lcd_r(space, offset+0x10/4, mem_mask);
+=======
+	uint32_t ret = m_s3c2410->s3c24xx_lcd_r(space, offset+0x10/4, mem_mask);
+>>>>>>> upstream/master
 
 
 	int pc = space.device().safe_pc();
@@ -586,17 +662,26 @@ READ32_MEMBER(ghosteo_state::bballoon_speedup_r)
 
 WRITE32_MEMBER(ghosteo_state::soundlatch_w)
 {
+<<<<<<< HEAD
 	qs1000_device *qs1000 = space.machine().device<qs1000_device>("qs1000");
 
 	soundlatch_byte_w(space, 0, data);
 	qs1000->set_irq(ASSERT_LINE);
+=======
+	m_soundlatch->write(space, 0, data);
+	m_qs1000->set_irq(ASSERT_LINE);
+>>>>>>> upstream/master
 
 	machine().scheduler().boost_interleave(attotime::zero, attotime::from_usec(100));
 }
 
 void ghosteo_state::machine_start()
 {
+<<<<<<< HEAD
 	m_flash = (UINT8 *)memregion( "user1")->base();
+=======
+	m_flash = (uint8_t *)memregion( "user1")->base();
+>>>>>>> upstream/master
 
 	// Set up the QS1000 program ROM banking, taking care not to overlap the internal RAM
 	machine().device("qs1000:cpu")->memory().space(AS_IO).install_read_bank(0x0100, 0xffff, "bank");
@@ -608,7 +693,11 @@ void ghosteo_state::machine_reset()
 	m_maincpu->space(AS_PROGRAM).install_read_handler(0x4d000010, 0x4d000013,read32_delegate(FUNC(ghosteo_state::bballoon_speedup_r), this));
 }
 
+<<<<<<< HEAD
 static MACHINE_CONFIG_START( ghosteo, ghosteo_state )
+=======
+static MACHINE_CONFIG_START( ghosteo )
+>>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", ARM9, 200000000)
@@ -638,13 +727,24 @@ static MACHINE_CONFIG_START( ghosteo, ghosteo_state )
 
 //  MCFG_DEVICE_ADD("nand", NAND, 0)
 //  MCFG_NAND_TYPE(NAND_CHIP_K9F5608U0D)    // or another variant with ID 0xEC 0x75 ?
+<<<<<<< HEAD
 //  MCFG_DEVICE_CONFIG(bballoon_nand_intf)
 
 //  MCFG_I2CMEM_ADD("i2cmem", 0xA0, 0, 0x100, NULL)
+=======
+//  MCFG_NAND_RNB_CALLBACK(DEVWRITELINE("s3c2410", s3c2410_device, s3c24xx_pin_frnb_w))
+
+//  MCFG_I2CMEM_ADD("i2cmem", 0xA0, 0, 0x100, nullptr)
+>>>>>>> upstream/master
 
 	/* sound hardware */
 	MCFG_SPEAKER_STANDARD_STEREO("lspeaker", "rspeaker")
 
+<<<<<<< HEAD
+=======
+	MCFG_GENERIC_LATCH_8_ADD("soundlatch")
+
+>>>>>>> upstream/master
 	MCFG_SOUND_ADD("qs1000", QS1000, XTAL_24MHz)
 	MCFG_QS1000_EXTERNAL_ROM(true)
 	MCFG_QS1000_IN_P1_CB(READ8(ghosteo_state, qs1000_p1_r))
@@ -765,6 +865,12 @@ DRIVER_INIT_MEMBER(ghosteo_state,touryuu)
 	m_rom_pagesize = 0x210;
 }
 
+<<<<<<< HEAD
 GAME( 2003, bballoon, 0, bballoon, bballoon, ghosteo_state, bballoon, ROT0, "Eolith", "BnB Arcade", MACHINE_IMPERFECT_SOUND )
 GAME( 2005, hapytour, 0, bballoon, bballoon, ghosteo_state, bballoon, ROT0, "GAV Company", "Happy Tour", MACHINE_IMPERFECT_SOUND )
 GAME( 2005, touryuu,  0, touryuu, touryuu, ghosteo_state, touryuu, ROT0, "Yuki Enterprise", "Touryuumon (V1.1)?", MACHINE_IMPERFECT_SOUND ) // On first boot inputs won't work, TODO: hook-up default eeprom
+=======
+GAME( 2003, bballoon, 0, bballoon, bballoon, ghosteo_state, bballoon, ROT0, "Eolith",          "BnB Arcade",         MACHINE_IMPERFECT_SOUND )
+GAME( 2005, hapytour, 0, bballoon, bballoon, ghosteo_state, bballoon, ROT0, "GAV Company",     "Happy Tour",         MACHINE_IMPERFECT_SOUND )
+GAME( 2005, touryuu,  0, touryuu,  touryuu,  ghosteo_state, touryuu,  ROT0, "Yuki Enterprise", "Touryuumon (V1.1)?", MACHINE_IMPERFECT_SOUND ) // On first boot inputs won't work, TODO: hook-up default eeprom
+>>>>>>> upstream/master

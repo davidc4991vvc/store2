@@ -4,6 +4,7 @@
 // /home/ms/source/sidplay/libsidplay/emu/RCS/envelope.h,v
 //
 
+<<<<<<< HEAD
 #pragma once
 
 #ifndef __SIDENVEL_H__
@@ -11,11 +12,26 @@
 
 
 extern void enveEmuInit(UINT32 updateFreq, int measuredValues);
+=======
+#ifndef MAME_SOUND_SIDENVEL_H
+#define MAME_SOUND_SIDENVEL_H
+
+#pragma once
+
+#include "sidvoice.h"
+
+
+extern void enveEmuInit(uint32_t updateFreq, int measuredValues);
+>>>>>>> upstream/master
 void enveEmuResetOperator(sidOperator* pVoice);
 
 
 extern const ptr2sidUwordFunc enveModeTable[];   // -> envelope.cpp
+<<<<<<< HEAD
 extern const UINT8 masterVolumeLevels[16];  // -> envelope.cpp
+=======
+extern const uint8_t masterVolumeLevels[16];  // -> envelope.cpp
+>>>>>>> upstream/master
 
 enum
 {
@@ -36,4 +52,8 @@ enum
 };
 
 
+<<<<<<< HEAD
 #endif /* __SIDENVEL_H__ */
+=======
+#endif // MAME_SOUND_SIDENVEL_H
+>>>>>>> upstream/master

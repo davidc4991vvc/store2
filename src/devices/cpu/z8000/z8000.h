@@ -1,15 +1,28 @@
 // license:BSD-3-Clause
 // copyright-holders:Juergen Buchmueller,Ernesto Corvi
+<<<<<<< HEAD
 #pragma once
 
 #ifndef __Z8000_H__
 #define __Z8000_H__
+=======
+#ifndef MAME_CPU_Z8000_Z8000_H
+#define MAME_CPU_Z8000_Z8000_H
+
+#pragma once
+
+#include "cpu/z80/z80daisy.h"
+>>>>>>> upstream/master
 
 
 enum
 {
 	Z8000_PC=1,
+<<<<<<< HEAD
 	Z8000_PPC, Z8000_NSPSEG, Z8000_NSPOFF, Z8000_FCW,
+=======
+	Z8000_NSPSEG, Z8000_NSPOFF, Z8000_FCW,
+>>>>>>> upstream/master
 	Z8000_PSAPSEG, Z8000_PSAPOFF, Z8000_REFRESH,
 	Z8000_IRQ_REQ, Z8000_IRQ_SRV, Z8000_IRQ_VEC,
 	Z8000_R0, Z8000_R1, Z8000_R2, Z8000_R3,
@@ -31,6 +44,7 @@ enum
 #define MCFG_Z8000_MO(_devcb) \
 	devcb = &z8002_device::set_mo_callback(*device, DEVCB_##_devcb);
 
+<<<<<<< HEAD
 class z8002_device : public cpu_device
 {
 public:
@@ -73,11 +87,55 @@ protected:
 	virtual UINT32 disasm_min_opcode_bytes() const { return 2; }
 	virtual UINT32 disasm_max_opcode_bytes() const { return 6; }
 	virtual offs_t disasm_disassemble(char *buffer, offs_t pc, const UINT8 *oprom, const UINT8 *opram, UINT32 options);
+=======
+class z8002_device : public cpu_device, public z80_daisy_chain_interface
+{
+public:
+	// construction/destruction
+	z8002_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
+	~z8002_device();
+
+	template <class Object> static devcb_base &set_mo_callback(device_t &device, Object &&cb) { return downcast<z8002_device &>(device).m_mo_out.set_callback(std::forward<Object>(cb)); }
+	DECLARE_WRITE_LINE_MEMBER(mi_w) { m_mi = state; } // XXX: this has to apply in the middle of an insn for now
+
+	struct Z8000_dasm { char const *dasm; uint32_t flags; int size; };
+
+	static void init_tables();
+	static void deinit_tables();
+	static Z8000_dasm dasm(unsigned w);
+
+protected:
+	z8002_device(const machine_config &mconfig, device_type type, const char *tag, device_t *owner, uint32_t clock, int addrbits, int iobits, int vecmult);
+
+	// device-level overrides
+	virtual void device_start() override;
+	virtual void device_reset() override;
+
+	// device_execute_interface overrides
+	virtual uint32_t execute_min_cycles() const override { return 2; }
+	virtual uint32_t execute_max_cycles() const override { return 744; }
+	virtual uint32_t execute_input_lines() const override { return 2; }
+	virtual uint32_t execute_default_irq_vector() const override { return 0xff; }
+	virtual void execute_run() override;
+	virtual void execute_set_input(int inputnum, int state) override;
+
+	// device_memory_interface overrides
+	virtual space_config_vector memory_space_config() const override;
+
+	// device_state_interface overrides
+	virtual void state_string_export(const device_state_entry &entry, std::string &str) const override;
+
+	// device_disasm_interface overrides
+	virtual uint32_t disasm_min_opcode_bytes() const override { return 2; }
+	virtual uint32_t disasm_max_opcode_bytes() const override { return 6; }
+	virtual offs_t disasm_disassemble(std::ostream &stream, offs_t pc, const uint8_t *oprom, const uint8_t *opram, uint32_t options) override;
+>>>>>>> upstream/master
 
 	address_space_config m_program_config;
 	address_space_config m_io_config;
 	devcb_write_line m_mo_out;
 
+<<<<<<< HEAD
 	UINT32  m_op[4];      /* opcodes/data of current instruction */
 	UINT32  m_ppc;        /* previous program counter */
 	UINT32  m_pc;         /* program counter */
@@ -96,6 +154,26 @@ protected:
 		UINT16  W[16]; /* R0,R1,R2...R15 */
 		UINT32  L[8];  /* RR0,RR2,RR4..RR14 */
 		UINT64  Q[4];  /* RQ0,RQ4,..RQ12 */
+=======
+	uint32_t  m_op[4];      /* opcodes/data of current instruction */
+	uint32_t  m_ppc;        /* previous program counter */
+	uint32_t  m_pc;         /* program counter */
+	uint16_t  m_psapseg;    /* program status pointer, segment (Z8001 only) */
+	uint16_t  m_psapoff;    /* program status pointer, offset */
+	uint16_t  m_fcw;        /* flags and control word */
+	uint16_t  m_refresh;    /* refresh timer/counter */
+	uint16_t  m_nspseg;     /* system stack pointer, segment (Z8001 only) */
+	uint16_t  m_nspoff;     /* system stack pointer, offset */
+	uint16_t  m_irq_req;    /* CPU is halted, interrupt or trap request */
+	uint16_t  m_irq_vec;    /* interrupt vector */
+	uint32_t  m_op_valid;   /* bit field indicating if given op[] field is already initialized */
+	union
+	{
+		uint8_t   B[16]; /* RL0,RH0,RL1,RH1...RL7,RH7 */
+		uint16_t  W[16]; /* R0,R1,R2...R15 */
+		uint32_t  L[8];  /* RR0,RR2,RR4..RR14 */
+		uint64_t  Q[4];  /* RQ0,RQ4,..RQ12 */
+>>>>>>> upstream/master
 	} m_regs;             /* registers */
 	int m_nmi_state;      /* NMI line state */
 	int m_irq_state[2];   /* IRQ line states (NVI, VI) */
@@ -110,6 +188,7 @@ protected:
 	void clear_internal_state();
 	void register_debug_state();
 	virtual int segmented_mode();
+<<<<<<< HEAD
 	static inline UINT32 addr_add(UINT32 addr, UINT32 addend);
 	static inline UINT32 addr_sub(UINT32 addr, UINT32 subtrahend);
 	inline UINT16 RDOP();
@@ -210,6 +289,107 @@ protected:
 	virtual UINT32 read_irq_vector();
 
 public:
+=======
+	static inline uint32_t addr_add(uint32_t addr, uint32_t addend);
+	static inline uint32_t addr_sub(uint32_t addr, uint32_t subtrahend);
+	inline uint16_t RDOP();
+	inline uint32_t get_operand(int opnum);
+	inline uint32_t get_addr_operand(int opnum);
+	inline uint32_t get_raw_addr_operand(int opnum);
+	virtual uint32_t adjust_addr_for_nonseg_mode(uint32_t addr);
+	inline uint8_t RDMEM_B(int spacenum, uint32_t addr);
+	inline uint16_t RDMEM_W(int spacenum, uint32_t addr);
+	inline uint32_t RDMEM_L(int spacenum, uint32_t addr);
+	inline void WRMEM_B(int spacenum, uint32_t addr, uint8_t value);
+	inline void WRMEM_W(int spacenum, uint32_t addr, uint16_t value);
+	inline void WRMEM_L(int spacenum, uint32_t addr, uint32_t value);
+	inline uint8_t RDPORT_B(int mode, uint16_t addr);
+	virtual uint16_t RDPORT_W(int mode, uint16_t addr);
+	inline void WRPORT_B(int mode, uint16_t addr, uint8_t value);
+	virtual void WRPORT_W(int mode, uint16_t addr, uint16_t value);
+	inline void cycles(int cycles);
+	inline void set_irq(int type);
+	virtual void PUSH_PC();
+	virtual void CHANGE_FCW(uint16_t fcw);
+	static inline uint32_t make_segmented_addr(uint32_t addr);
+	static inline uint32_t segmented_addr(uint32_t addr);
+	inline uint32_t addr_from_reg(int regno);
+	inline void addr_to_reg(int regno, uint32_t addr);
+	inline void add_to_addr_reg(int regno, uint16_t addend);
+	inline void sub_from_addr_reg(int regno, uint16_t subtrahend);
+	inline void set_pc(uint32_t addr);
+	inline void PUSHW(uint8_t dst, uint16_t value);
+	inline uint16_t POPW(uint8_t src);
+	inline void PUSHL(uint8_t dst, uint32_t value);
+	inline uint32_t POPL(uint8_t src);
+	inline uint8_t ADDB(uint8_t dest, uint8_t value);
+	inline uint16_t ADDW(uint16_t dest, uint16_t value);
+	inline uint32_t ADDL(uint32_t dest, uint32_t value);
+	inline uint8_t ADCB(uint8_t dest, uint8_t value);
+	inline uint16_t ADCW(uint16_t dest, uint16_t value);
+	inline uint8_t SUBB(uint8_t dest, uint8_t value);
+	inline uint16_t SUBW(uint16_t dest, uint16_t value);
+	inline uint32_t SUBL(uint32_t dest, uint32_t value);
+	inline uint8_t SBCB(uint8_t dest, uint8_t value);
+	inline uint16_t SBCW(uint16_t dest, uint16_t value);
+	inline uint8_t ORB(uint8_t dest, uint8_t value);
+	inline uint16_t ORW(uint16_t dest, uint16_t value);
+	inline uint8_t ANDB(uint8_t dest, uint8_t value);
+	inline uint16_t ANDW(uint16_t dest, uint16_t value);
+	inline uint8_t XORB(uint8_t dest, uint8_t value);
+	inline uint16_t XORW(uint16_t dest, uint16_t value);
+	inline void CPB(uint8_t dest, uint8_t value);
+	inline void CPW(uint16_t dest, uint16_t value);
+	inline void CPL(uint32_t dest, uint32_t value);
+	inline uint8_t COMB(uint8_t dest);
+	inline uint16_t COMW(uint16_t dest);
+	inline uint8_t NEGB(uint8_t dest);
+	inline uint16_t NEGW(uint16_t dest);
+	inline void TESTB(uint8_t result);
+	inline void TESTW(uint16_t dest);
+	inline void TESTL(uint32_t dest);
+	inline uint8_t INCB(uint8_t dest, uint8_t value);
+	inline uint16_t INCW(uint16_t dest, uint16_t value);
+	inline uint8_t DECB(uint8_t dest, uint8_t value);
+	inline uint16_t DECW(uint16_t dest, uint16_t value);
+	inline uint32_t MULTW(uint16_t dest, uint16_t value);
+	inline uint64_t MULTL(uint32_t dest, uint32_t value);
+	inline uint32_t DIVW(uint32_t dest, uint16_t value);
+	inline uint64_t DIVL(uint64_t dest, uint32_t value);
+	inline uint8_t RLB(uint8_t dest, uint8_t twice);
+	inline uint16_t RLW(uint16_t dest, uint8_t twice);
+	inline uint8_t RLCB(uint8_t dest, uint8_t twice);
+	inline uint16_t RLCW(uint16_t dest, uint8_t twice);
+	inline uint8_t RRB(uint8_t dest, uint8_t twice);
+	inline uint16_t RRW(uint16_t dest, uint8_t twice);
+	inline uint8_t RRCB(uint8_t dest, uint8_t twice);
+	inline uint16_t RRCW(uint16_t dest, uint8_t twice);
+	inline uint8_t SDAB(uint8_t dest, int8_t count);
+	inline uint16_t SDAW(uint16_t dest, int8_t count);
+	inline uint32_t SDAL(uint32_t dest, int8_t count);
+	inline uint8_t SDLB(uint8_t dest, int8_t count);
+	inline uint16_t SDLW(uint16_t dest, int8_t count);
+	inline uint32_t SDLL(uint32_t dest, int8_t count);
+	inline uint8_t SLAB(uint8_t dest, uint8_t count);
+	inline uint16_t SLAW(uint16_t dest, uint8_t count);
+	inline uint32_t SLAL(uint32_t dest, uint8_t count);
+	inline uint8_t SLLB(uint8_t dest, uint8_t count);
+	inline uint16_t SLLW(uint16_t dest, uint8_t count);
+	inline uint32_t SLLL(uint32_t dest, uint8_t count);
+	inline uint8_t SRAB(uint8_t dest, uint8_t count);
+	inline uint16_t SRAW(uint16_t dest, uint8_t count);
+	inline uint32_t SRAL(uint32_t dest, uint8_t count);
+	inline uint8_t SRLB(uint8_t dest, uint8_t count);
+	inline uint16_t SRLW(uint16_t dest, uint8_t count);
+	inline uint32_t SRLL(uint32_t dest, uint8_t count);
+	inline void Interrupt();
+	virtual uint32_t GET_PC(uint32_t VEC);
+	virtual uint16_t GET_FCW(uint32_t VEC);
+	virtual uint32_t F_SEG_Z8001();
+	virtual uint32_t PSA_ADDR();
+	virtual uint32_t read_irq_vector();
+
+>>>>>>> upstream/master
 	void zinvalid();
 	void Z00_0000_dddd_imm8();
 	void Z00_ssN0_dddd();
@@ -621,6 +801,34 @@ public:
 	void ZE_cccc_dsp8();
 	void ZF_dddd_0dsp7();
 	void ZF_dddd_1dsp7();
+<<<<<<< HEAD
+=======
+
+private:
+	// structure for the opcode definition table
+	typedef void (z8002_device::*opcode_func)();
+
+	struct Z8000_init {
+		int     beg, end, step;
+		int     size, cycles;
+		opcode_func opcode;
+		const char  *dasm;
+		uint32_t dasmflags;
+	};
+
+	/* structure for the opcode execution table / disassembler */
+	struct Z8000_exec {
+		opcode_func opcode;
+		int     cycles;
+		int     size;
+		const char    *dasm;
+		uint32_t dasmflags;
+	};
+
+	/* opcode execution table */
+	static const Z8000_init table[];
+	static std::unique_ptr<Z8000_exec const []> z8000_exec;
+>>>>>>> upstream/master
 };
 
 
@@ -628,6 +836,7 @@ class z8001_device : public z8002_device
 {
 public:
 	// construction/destruction
+<<<<<<< HEAD
 	z8001_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
 
 protected:
@@ -668,6 +877,42 @@ protected:
 
 extern const device_type Z8001;
 extern const device_type Z8002;
+=======
+	z8001_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
+
+protected:
+	// device-level overrides
+	virtual void device_start() override;
+	virtual void device_reset() override;
+
+	// device_memory_interface overrides
+	virtual space_config_vector memory_space_config() const override;
+
+	// device_disasm_interface overrides
+	virtual uint32_t disasm_max_opcode_bytes() const override { return 8; }
+
+	address_space_config m_data_config;
+
+	virtual int segmented_mode() override;
+	virtual uint32_t adjust_addr_for_nonseg_mode(uint32_t addr) override;
+	virtual uint16_t RDPORT_W(int mode, uint16_t addr) override;
+	virtual void WRPORT_W(int mode, uint16_t addr, uint16_t value) override;
+	virtual void PUSH_PC() override;
+	virtual void CHANGE_FCW(uint16_t fcw) override;
+	virtual uint32_t GET_PC(uint32_t VEC) override;
+	virtual uint16_t GET_FCW(uint32_t VEC) override;
+	virtual uint32_t F_SEG_Z8001() override;
+	virtual uint32_t PSA_ADDR() override;
+	virtual uint32_t read_irq_vector() override;
+
+private:
+	void z8k_disass_mode(int ref, const std::vector<std::string> &params);
+};
+
+
+DECLARE_DEVICE_TYPE(Z8001, z8001_device)
+DECLARE_DEVICE_TYPE(Z8002, z8002_device)
+>>>>>>> upstream/master
 
 
 /* possible values for z8k_segm_mode */
@@ -675,4 +920,8 @@ extern const device_type Z8002;
 #define Z8K_SEGM_MODE_SEG    1
 #define Z8K_SEGM_MODE_AUTO   2
 
+<<<<<<< HEAD
 #endif /* __Z8000_H__ */
+=======
+#endif // MAME_CPU_Z8000_Z8000_H
+>>>>>>> upstream/master

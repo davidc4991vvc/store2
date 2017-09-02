@@ -15,16 +15,25 @@
 #define K001604_NUM_TILES_LAYER0        16384
 #define K001604_NUM_TILES_LAYER1        4096
 
+<<<<<<< HEAD
 const device_type K001604 = &device_creator<k001604_device>;
 
 k001604_device::k001604_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
 	: device_t(mconfig, K001604, "K001604 2D tilemaps + 2x ROZ", tag, owner, clock, "k001604", __FILE__),
 	m_gfx_index_1(0),
 	m_gfx_index_2(0),
+=======
+DEFINE_DEVICE_TYPE(K001604, k001604_device, "k001604_device", "K001604 2D tilemaps + 2x ROZ")
+
+k001604_device::k001604_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: device_t(mconfig, K001604, tag, owner, clock),
+	device_gfx_interface(mconfig, *this, nullptr),
+>>>>>>> upstream/master
 	m_layer_size(0),
 	m_roz_size(0),
 	m_txt_mem_offset(0),
 	m_roz_mem_offset(0),
+<<<<<<< HEAD
 	m_tile_ram(NULL),
 	m_char_ram(NULL),
 	m_reg(NULL),
@@ -43,6 +52,13 @@ k001604_device::k001604_device(const machine_config &mconfig, const char *tag, d
 void k001604_device::static_set_gfxdecode_tag(device_t &device, const char *tag)
 {
 	downcast<k001604_device &>(device).m_gfxdecode.set_tag(tag);
+=======
+	m_layer_roz(nullptr),
+	m_tile_ram(nullptr),
+	m_char_ram(nullptr),
+	m_reg(nullptr)
+{
+>>>>>>> upstream/master
 }
 
 //-------------------------------------------------
@@ -51,6 +67,12 @@ void k001604_device::static_set_gfxdecode_tag(device_t &device, const char *tag)
 
 void k001604_device::device_start()
 {
+<<<<<<< HEAD
+=======
+	if (!palette().device().started())
+		throw device_missing_dependencies();
+
+>>>>>>> upstream/master
 	static const gfx_layout k001604_char_layout_layer_8x8 =
 	{
 		8, 8,
@@ -73,6 +95,7 @@ void k001604_device::device_start()
 		16*256
 	};
 
+<<<<<<< HEAD
 	if(!m_gfxdecode->started())
 		throw device_missing_dependencies();
 
@@ -84,12 +107,20 @@ void k001604_device::device_start()
 	m_char_ram = auto_alloc_array_clear(machine(), UINT32, 0x200000 / 4);
 	m_tile_ram = auto_alloc_array_clear(machine(), UINT32, 0x20000 / 4);
 	m_reg = auto_alloc_array_clear(machine(), UINT32, 0x400 / 4);
+=======
+	int roz_tile_size;
+
+	m_char_ram = make_unique_clear<uint32_t[]>(0x200000 / 4);
+	m_tile_ram = make_unique_clear<uint32_t[]>(0x20000 / 4);
+	m_reg = make_unique_clear<uint32_t[]>(0x400 / 4);
+>>>>>>> upstream/master
 
 	/* create tilemaps */
 	roz_tile_size = m_roz_size ? 16 : 8;
 
 	if (m_layer_size)
 	{
+<<<<<<< HEAD
 		m_layer_8x8[0] = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(k001604_device::tile_info_layer_8x8),this), tilemap_mapper_delegate(FUNC(k001604_device::scan_layer_8x8_0_size1),this), 8, 8, 64, 64);
 		m_layer_8x8[1] = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(k001604_device::tile_info_layer_8x8),this), tilemap_mapper_delegate(FUNC(k001604_device::scan_layer_8x8_1_size1),this), 8, 8, 64, 64);
 
@@ -101,17 +132,39 @@ void k001604_device::device_start()
 		m_layer_8x8[1] = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(k001604_device::tile_info_layer_8x8),this), tilemap_mapper_delegate(FUNC(k001604_device::scan_layer_8x8_1_size0),this), 8, 8, 64, 64);
 
 		m_layer_roz = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(k001604_device::tile_info_layer_roz),this), tilemap_mapper_delegate(FUNC(k001604_device::scan_layer_roz_128),this), roz_tile_size, roz_tile_size, 128, 64);
+=======
+		m_layer_8x8[0] = &machine().tilemap().create(*this, tilemap_get_info_delegate(FUNC(k001604_device::tile_info_layer_8x8),this), tilemap_mapper_delegate(FUNC(k001604_device::scan_layer_8x8_0_size1),this), 8, 8, 64, 64);
+		m_layer_8x8[1] = &machine().tilemap().create(*this, tilemap_get_info_delegate(FUNC(k001604_device::tile_info_layer_8x8),this), tilemap_mapper_delegate(FUNC(k001604_device::scan_layer_8x8_1_size1),this), 8, 8, 64, 64);
+
+		m_layer_roz = &machine().tilemap().create(*this, tilemap_get_info_delegate(FUNC(k001604_device::tile_info_layer_roz),this), tilemap_mapper_delegate(FUNC(k001604_device::scan_layer_roz_256),this), roz_tile_size, roz_tile_size, 128, 64);
+	}
+	else
+	{
+		m_layer_8x8[0] = &machine().tilemap().create(*this, tilemap_get_info_delegate(FUNC(k001604_device::tile_info_layer_8x8),this), tilemap_mapper_delegate(FUNC(k001604_device::scan_layer_8x8_0_size0),this), 8, 8, 64, 64);
+		m_layer_8x8[1] = &machine().tilemap().create(*this, tilemap_get_info_delegate(FUNC(k001604_device::tile_info_layer_8x8),this), tilemap_mapper_delegate(FUNC(k001604_device::scan_layer_8x8_1_size0),this), 8, 8, 64, 64);
+
+		m_layer_roz = &machine().tilemap().create(*this, tilemap_get_info_delegate(FUNC(k001604_device::tile_info_layer_roz),this), tilemap_mapper_delegate(FUNC(k001604_device::scan_layer_roz_128),this), roz_tile_size, roz_tile_size, 128, 64);
+>>>>>>> upstream/master
 	}
 
 	m_layer_8x8[0]->set_transparent_pen(0);
 	m_layer_8x8[1]->set_transparent_pen(0);
 
+<<<<<<< HEAD
 	m_gfxdecode->set_gfx(m_gfx_index[0], global_alloc(gfx_element(m_palette, k001604_char_layout_layer_8x8, (UINT8*)&m_char_ram[0], 0, m_palette->entries() / 16, 0)));
 	m_gfxdecode->set_gfx(m_gfx_index[1], global_alloc(gfx_element(m_palette, k001604_char_layout_layer_16x16, (UINT8*)&m_char_ram[0], 0, m_palette->entries() / 16, 0)));
 
 	save_pointer(NAME(m_reg), 0x400 / 4);
 	save_pointer(NAME(m_char_ram), 0x200000 / 4);
 	save_pointer(NAME(m_tile_ram), 0x20000 / 4);
+=======
+	set_gfx(0, std::make_unique<gfx_element>(&palette(), k001604_char_layout_layer_8x8, (uint8_t*)&m_char_ram[0], 0, palette().entries() / 16, 0));
+	set_gfx(1, std::make_unique<gfx_element>(&palette(), k001604_char_layout_layer_16x16, (uint8_t*)&m_char_ram[0], 0, palette().entries() / 16, 0));
+
+	save_pointer(NAME(m_reg.get()), 0x400 / 4);
+	save_pointer(NAME(m_char_ram.get()), 0x200000 / 4);
+	save_pointer(NAME(m_tile_ram.get()), 0x20000 / 4);
+>>>>>>> upstream/master
 
 }
 
@@ -121,9 +174,15 @@ void k001604_device::device_start()
 
 void k001604_device::device_reset()
 {
+<<<<<<< HEAD
 	memset(m_char_ram, 0, 0x200000);
 	memset(m_tile_ram, 0, 0x10000);
 	memset(m_reg, 0, 0x400);
+=======
+	memset(m_char_ram.get(), 0, 0x200000);
+	memset(m_tile_ram.get(), 0, 0x10000);
+	memset(m_reg.get(), 0, 0x400);
+>>>>>>> upstream/master
 }
 
 /*****************************************************************************
@@ -171,7 +230,11 @@ TILEMAP_MAPPER_MEMBER(k001604_device::scan_layer_roz_256)
 
 TILE_GET_INFO_MEMBER(k001604_device::tile_info_layer_8x8)
 {
+<<<<<<< HEAD
 	UINT32 val = m_tile_ram[tile_index];
+=======
+	uint32_t val = m_tile_ram[tile_index];
+>>>>>>> upstream/master
 	int color = (val >> 17) & 0x1f;
 	int tile = (val & 0x7fff);
 	int flags = 0;
@@ -181,12 +244,20 @@ TILE_GET_INFO_MEMBER(k001604_device::tile_info_layer_8x8)
 	if (val & 0x800000)
 		flags |= TILE_FLIPY;
 
+<<<<<<< HEAD
 	SET_TILE_INFO_MEMBER(m_gfx_index[0], tile, color, flags);
+=======
+	SET_TILE_INFO_MEMBER(0, tile, color, flags);
+>>>>>>> upstream/master
 }
 
 TILE_GET_INFO_MEMBER(k001604_device::tile_info_layer_roz)
 {
+<<<<<<< HEAD
 	UINT32 val = m_tile_ram[tile_index];
+=======
+	uint32_t val = m_tile_ram[tile_index];
+>>>>>>> upstream/master
 	int flags = 0;
 	int color = (val >> 17) & 0x1f;
 	int tile = m_roz_size ? (val & 0x7ff) : (val & 0x1fff);
@@ -198,7 +269,11 @@ TILE_GET_INFO_MEMBER(k001604_device::tile_info_layer_roz)
 
 	tile += m_roz_size ? 0x800 : 0x2000;
 
+<<<<<<< HEAD
 	SET_TILE_INFO_MEMBER(m_gfx_index[m_roz_size], tile, color, flags);
+=======
+	SET_TILE_INFO_MEMBER(m_roz_size, tile, color, flags);
+>>>>>>> upstream/master
 }
 
 
@@ -211,6 +286,7 @@ void k001604_device::draw_back_layer( bitmap_rgb32 &bitmap, const rectangle &cli
 
 	int tile_size = m_roz_size ? 16 : 8;
 
+<<<<<<< HEAD
 	INT32 x  = (INT16)((m_reg[0x08] >> 16) & 0xffff);
 	INT32 y  = (INT16)((m_reg[0x08] >>  0) & 0xffff);
 	INT32 xx = (INT16)((m_reg[0x09] >>  0) & 0xffff);
@@ -220,6 +296,17 @@ void k001604_device::draw_back_layer( bitmap_rgb32 &bitmap, const rectangle &cli
 
 	int pivotx = (INT16)((m_reg[0x00] >> 16) & 0xffff);
 	int pivoty = (INT16)((m_reg[0x00] >>  0) & 0xffff);
+=======
+	int32_t x  = (int16_t)((m_reg[0x08] >> 16) & 0xffff);
+	int32_t y  = (int16_t)((m_reg[0x08] >>  0) & 0xffff);
+	int32_t xx = (int16_t)((m_reg[0x09] >>  0) & 0xffff);
+	int32_t xy = (int16_t)((m_reg[0x09] >> 16) & 0xffff);
+	int32_t yx = (int16_t)((m_reg[0x0a] >>  0) & 0xffff);
+	int32_t yy = (int16_t)((m_reg[0x0a] >> 16) & 0xffff);
+
+	int pivotx = (int16_t)((m_reg[0x00] >> 16) & 0xffff);
+	int pivoty = (int16_t)((m_reg[0x00] >>  0) & 0xffff);
+>>>>>>> upstream/master
 
 	int startx  = ((x - pivotx) * 256) * 32;
 	int starty  = ((y - pivoty) * 256) * 32;
@@ -236,7 +323,11 @@ void k001604_device::draw_back_layer( bitmap_rgb32 &bitmap, const rectangle &cli
 	int ex = cliprect.max_x;
 	int ey = cliprect.max_y;
 
+<<<<<<< HEAD
 	const rgb_t *clut = m_palette->palette()->entry_list_raw();
+=======
+	const rgb_t *clut = palette().palette()->entry_list_raw();
+>>>>>>> upstream/master
 
 	int window_x, window_y, window_xmask, window_ymask;
 
@@ -265,10 +356,17 @@ void k001604_device::draw_back_layer( bitmap_rgb32 &bitmap, const rectangle &cli
 	{
 		// initialize X counters
 		int x = sx;
+<<<<<<< HEAD
 		UINT32 cx = startx;
 		UINT32 cy = starty;
 
 		UINT32 *dest = &bitmap.pix(sy, sx);
+=======
+		uint32_t cx = startx;
+		uint32_t cy = starty;
+
+		uint32_t *dest = &bitmap.pix(sy, sx);
+>>>>>>> upstream/master
 
 		// loop over columns
 		while (x <= ex)
@@ -309,7 +407,11 @@ READ32_MEMBER( k001604_device::tile_r )
 READ32_MEMBER( k001604_device::char_r )
 {
 	int set, bank;
+<<<<<<< HEAD
 	UINT32 addr;
+=======
+	uint32_t addr;
+>>>>>>> upstream/master
 
 	set = (m_reg[0x60 / 4] & 0x1000000) ? 0x100000 : 0;
 
@@ -337,7 +439,11 @@ READ32_MEMBER( k001604_device::reg_r )
 WRITE32_MEMBER( k001604_device::tile_w )
 {
 	int x/*, y*/;
+<<<<<<< HEAD
 	COMBINE_DATA(m_tile_ram + offset);
+=======
+	COMBINE_DATA(m_tile_ram.get() + offset);
+>>>>>>> upstream/master
 
 	if (m_layer_size)
 	{
@@ -383,7 +489,11 @@ WRITE32_MEMBER( k001604_device::tile_w )
 WRITE32_MEMBER( k001604_device::char_w )
 {
 	int set, bank;
+<<<<<<< HEAD
 	UINT32 addr;
+=======
+	uint32_t addr;
+>>>>>>> upstream/master
 
 	set = (m_reg[0x60/4] & 0x1000000) ? 0x100000 : 0;
 
@@ -394,15 +504,26 @@ WRITE32_MEMBER( k001604_device::char_w )
 
 	addr = offset + ((set + (bank * 0x40000)) / 4);
 
+<<<<<<< HEAD
 	COMBINE_DATA(m_char_ram + addr);
 
 	m_gfxdecode->gfx(m_gfx_index[0])->mark_dirty(addr / 32);
 	m_gfxdecode->gfx(m_gfx_index[1])->mark_dirty(addr / 128);
+=======
+	COMBINE_DATA(m_char_ram.get() + addr);
+
+	gfx(0)->mark_dirty(addr / 32);
+	gfx(1)->mark_dirty(addr / 128);
+>>>>>>> upstream/master
 }
 
 WRITE32_MEMBER( k001604_device::reg_w )
 {
+<<<<<<< HEAD
 	COMBINE_DATA(m_reg + offset);
+=======
+	COMBINE_DATA(m_reg.get() + offset);
+>>>>>>> upstream/master
 
 	switch (offset)
 	{
@@ -418,6 +539,7 @@ WRITE32_MEMBER( k001604_device::reg_w )
 		//printf("K001604_reg_w (%d), %02X, %08X, %08X at %08X\n", chip, offset, data, mem_mask, space.device().safe_pc());
 	}
 }
+<<<<<<< HEAD
 
 //-------------------------------------------------
 //  static_set_palette_tag: Set the tag of the
@@ -428,3 +550,5 @@ void k001604_device::static_set_palette_tag(device_t &device, const char *tag)
 {
 	downcast<k001604_device &>(device).m_palette.set_tag(tag);
 }
+=======
+>>>>>>> upstream/master

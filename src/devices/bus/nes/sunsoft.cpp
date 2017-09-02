@@ -26,6 +26,11 @@
 
 #include "cpu/m6502/m6502.h"
 #include "sound/ay8910.h"
+<<<<<<< HEAD
+=======
+#include "speaker.h"
+
+>>>>>>> upstream/master
 
 #ifdef NES_PCB_DEBUG
 #define VERBOSE 1
@@ -40,6 +45,7 @@
 //  constructor
 //-------------------------------------------------
 
+<<<<<<< HEAD
 const device_type NES_SUNSOFT_1 = &device_creator<nes_sunsoft_1_device>;
 const device_type NES_SUNSOFT_2 = &device_creator<nes_sunsoft_2_device>;
 const device_type NES_SUNSOFT_3 = &device_creator<nes_sunsoft_3_device>;
@@ -86,6 +92,54 @@ nes_sunsoft_fme7_device::nes_sunsoft_fme7_device(const machine_config &mconfig, 
 nes_sunsoft_5_device::nes_sunsoft_5_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
 					: nes_sunsoft_fme7_device(mconfig, NES_SUNSOFT_5, "NES Cart Sunsoft 5A/5B PCB", tag, owner, clock, "nes_sun5", __FILE__),
 						m_ym2149(*this, "ay")
+=======
+DEFINE_DEVICE_TYPE(NES_SUNSOFT_1,    nes_sunsoft_1_device,    "nes_sun1", "NES Cart Sunsoft 1 PCB")
+DEFINE_DEVICE_TYPE(NES_SUNSOFT_2,    nes_sunsoft_2_device,    "nes_sun2", "NES Cart Sunsoft 2 PCB")
+DEFINE_DEVICE_TYPE(NES_SUNSOFT_3,    nes_sunsoft_3_device,    "nes_sun3", "NES Cart Sunsoft 3 PCB")
+DEFINE_DEVICE_TYPE(NES_SUNSOFT_4,    nes_sunsoft_4_device,    "nes_sun4", "NES Cart Sunsoft 4 PCB")
+DEFINE_DEVICE_TYPE(NES_SUNSOFT_FME7, nes_sunsoft_fme7_device, "nes_fme7", "NES Cart Sunsoft FME7 PCB")
+DEFINE_DEVICE_TYPE(NES_SUNSOFT_5,    nes_sunsoft_5_device,    "nes_sun5", "NES Cart Sunsoft 5A/5B PCB")
+
+
+nes_sunsoft_1_device::nes_sunsoft_1_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: nes_nrom_device(mconfig, NES_SUNSOFT_1, tag, owner, clock)
+{
+}
+
+nes_sunsoft_2_device::nes_sunsoft_2_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: nes_nrom_device(mconfig, NES_SUNSOFT_2, tag, owner, clock)
+{
+}
+
+nes_sunsoft_3_device::nes_sunsoft_3_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: nes_nrom_device(mconfig, NES_SUNSOFT_3, tag, owner, clock), m_irq_count(0), m_irq_enable(0), m_irq_toggle(0), irq_timer(nullptr)
+{
+}
+
+nes_sunsoft_4_device::nes_sunsoft_4_device(const machine_config &mconfig, device_type type, const char *tag, device_t *owner, uint32_t clock)
+	: nes_nrom_device(mconfig, type, tag, owner, clock), m_reg(0), m_latch1(0), m_latch2(0), m_wram_enable(0)
+{
+}
+
+nes_sunsoft_4_device::nes_sunsoft_4_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: nes_sunsoft_4_device(mconfig, NES_SUNSOFT_4, tag, owner, clock)
+{
+}
+
+nes_sunsoft_fme7_device::nes_sunsoft_fme7_device(const machine_config &mconfig, device_type type, const char *tag, device_t *owner, uint32_t clock)
+	: nes_nrom_device(mconfig, type, tag, owner, clock), m_irq_count(0), m_irq_enable(0), irq_timer(nullptr), m_latch(0), m_wram_bank(0)
+{
+}
+
+nes_sunsoft_fme7_device::nes_sunsoft_fme7_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: nes_sunsoft_fme7_device(mconfig, NES_SUNSOFT_FME7, tag, owner, clock)
+{
+}
+
+nes_sunsoft_5_device::nes_sunsoft_5_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: nes_sunsoft_fme7_device(mconfig, NES_SUNSOFT_5, tag, owner, clock)
+	, m_ym2149(*this, "ay")
+>>>>>>> upstream/master
 {
 }
 
@@ -236,7 +290,11 @@ WRITE8_MEMBER(nes_sunsoft_1_device::write_m)
 
 WRITE8_MEMBER(nes_sunsoft_2_device::write_h)
 {
+<<<<<<< HEAD
 	UINT8 helper = (data & 0x07) | ((data & 0x80) ? 0x08 : 0x00);
+=======
+	uint8_t helper = (data & 0x07) | ((data & 0x80) ? 0x08 : 0x00);
+>>>>>>> upstream/master
 	LOG_MMC(("Sunsoft 2 write_h, offset: %04x, data: %02x\n", offset, data));
 
 	// this pcb is subject to bus conflict
@@ -534,7 +592,11 @@ WRITE8_MEMBER(nes_sunsoft_fme7_device::fme7_write)
 
 WRITE8_MEMBER(nes_sunsoft_fme7_device::write_m)
 {
+<<<<<<< HEAD
 	UINT8 bank = m_wram_bank & 0x3f;
+=======
+	uint8_t bank = m_wram_bank & 0x3f;
+>>>>>>> upstream/master
 	LOG_MMC(("Sunsoft FME7 write_m, offset: %04x, data: %02x\n", offset, data));
 
 	if (!(m_wram_bank & 0x40))  // is PRG ROM, no write
@@ -550,7 +612,11 @@ WRITE8_MEMBER(nes_sunsoft_fme7_device::write_m)
 
 READ8_MEMBER(nes_sunsoft_fme7_device::read_m)
 {
+<<<<<<< HEAD
 	UINT8 bank = m_wram_bank & 0x3f;
+=======
+	uint8_t bank = m_wram_bank & 0x3f;
+>>>>>>> upstream/master
 	LOG_MMC(("Sunsoft FME7 read_m, offset: %04x\n", offset));
 
 	if (!(m_wram_bank & 0x40))  // is PRG ROM
@@ -595,9 +661,12 @@ WRITE8_MEMBER(nes_sunsoft_5_device::write_h)
 	}
 }
 
+<<<<<<< HEAD
 //-------------------------------------------------
 //  MACHINE_DRIVER( sun_5b )
 //-------------------------------------------------
+=======
+>>>>>>> upstream/master
 
 // From NESdev wiki: The 5B's audio is driven by the CPU clock (1.78977267 MHz),
 // but like the NES's APU, the YM2149F has an optional clock divider which
@@ -606,13 +675,23 @@ WRITE8_MEMBER(nes_sunsoft_5_device::write_h)
 // YM2149F operating in this mode. To use an AY-3-8910 as a substitute,
 // you would need an external divider to reduce the clock speed by half.
 
+<<<<<<< HEAD
 #define SUN5_NTSC_CLOCK (21477272.724 / 12)
 
 static MACHINE_CONFIG_FRAGMENT( sun_5b )
+=======
+
+//-------------------------------------------------
+//  device_add_mconfig - add device configuration
+//-------------------------------------------------
+
+MACHINE_CONFIG_MEMBER( nes_sunsoft_5_device::device_add_mconfig )
+>>>>>>> upstream/master
 
 	// additional sound hardware
 	MCFG_SPEAKER_STANDARD_MONO("addon")
 
+<<<<<<< HEAD
 	MCFG_SOUND_ADD("ay", YM2149, SUN5_NTSC_CLOCK/2) // divide by 2 for the internal divider
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "addon", 0.50)
 MACHINE_CONFIG_END
@@ -626,3 +705,10 @@ machine_config_constructor nes_sunsoft_5_device::device_mconfig_additions() cons
 {
 	return MACHINE_CONFIG_NAME( sun_5b );
 }
+=======
+	// TODO: this is not how Sunsoft 5B clock signaling works!
+	// The board uses the CLK pin in reality, not hardcoded NTSC values!
+	MCFG_SOUND_ADD("ay", YM2149, (XTAL_21_4772MHz/12)/2) // divide by 2 for the internal divider
+	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "addon", 0.50)
+MACHINE_CONFIG_END
+>>>>>>> upstream/master

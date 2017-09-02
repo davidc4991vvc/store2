@@ -1,9 +1,16 @@
 // license:BSD-3-Clause
 // copyright-holders:smf
+<<<<<<< HEAD
 #pragma once
 
 #ifndef _K573DIO_H_
 #define _K573DIO_H_
+=======
+#ifndef MAME_MACHINE_K573DIO_H
+#define MAME_MACHINE_K573DIO_H
+
+#pragma once
+>>>>>>> upstream/master
 
 #include "sound/mas3507d.h"
 #include "machine/ds2401.h"
@@ -17,7 +24,11 @@
 class k573dio_device : public device_t
 {
 public:
+<<<<<<< HEAD
 	k573dio_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
+=======
+	k573dio_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
+>>>>>>> upstream/master
 
 	template<class _write> void set_output_cb(_write _output_cb)
 	{
@@ -64,15 +75,24 @@ public:
 	DECLARE_WRITE16_MEMBER(output_5_w);
 
 protected:
+<<<<<<< HEAD
 	virtual void device_start();
 	virtual void device_reset();
 	virtual const rom_entry *device_rom_region() const;
 	virtual machine_config_constructor device_mconfig_additions() const;
 	virtual void device_timer(emu_timer &timer, device_timer_id id, int param, void *ptr);
+=======
+	virtual void device_start() override;
+	virtual void device_reset() override;
+	virtual const tiny_rom_entry *device_rom_region() const override;
+	virtual void device_add_mconfig(machine_config &config) override;
+	virtual void device_timer(emu_timer &timer, device_timer_id id, int param, void *ptr) override;
+>>>>>>> upstream/master
 
 private:
 	devcb_write8 output_cb;
 
+<<<<<<< HEAD
 	UINT16 *ram;
 	UINT32 ram_adr;
 	UINT8 output_data[8];
@@ -83,3 +103,15 @@ private:
 extern const device_type KONAMI_573_DIGITAL_IO_BOARD;
 
 #endif
+=======
+	std::unique_ptr<uint16_t[]> ram;
+	uint32_t ram_adr;
+	uint8_t output_data[8];
+
+	void output(int offset, uint16_t data);
+};
+
+DECLARE_DEVICE_TYPE(KONAMI_573_DIGITAL_IO_BOARD, k573dio_device)
+
+#endif // MAME_MACHINE_K573DIO_H
+>>>>>>> upstream/master

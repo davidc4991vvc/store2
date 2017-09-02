@@ -1,10 +1,18 @@
+<<<<<<< HEAD
 // license:???
+=======
+// license:BSD-3-Clause
+>>>>>>> upstream/master
 // copyright-holders:Steve Baines, Frank Palazzolo
 /***************************************************************************
 
     Atari Star Wars hardware
 
+<<<<<<< HEAD
     driver by Steve Baines (sulaco@ntlworld.com) and Frank Palazzolo
+=======
+    driver by Steve Baines and Frank Palazzolo
+>>>>>>> upstream/master
 
     This file is Copyright Steve Baines.
     Modified by Frank Palazzolo for sound support
@@ -25,14 +33,28 @@
 ***************************************************************************/
 
 #include "emu.h"
+<<<<<<< HEAD
 #include "cpu/m6809/m6809.h"
+=======
+#include "includes/starwars.h"
+#include "includes/slapstic.h"
+
+#include "cpu/m6809/m6809.h"
+#include "machine/74259.h"
+#include "machine/watchdog.h"
+>>>>>>> upstream/master
 #include "video/vector.h"
 #include "video/avgdvg.h"
 #include "sound/tms5220.h"
 #include "sound/pokey.h"
 #include "machine/x2212.h"
+<<<<<<< HEAD
 #include "includes/starwars.h"
 #include "includes/slapstic.h"
+=======
+#include "screen.h"
+#include "speaker.h"
+>>>>>>> upstream/master
 
 
 #define MASTER_CLOCK (XTAL_12_096MHz)
@@ -59,17 +81,25 @@ WRITE8_MEMBER(starwars_state::quad_pokeyn_w)
 void starwars_state::machine_reset()
 {
 	/* ESB-specific */
+<<<<<<< HEAD
 	if (m_is_esb)
 	{
 		address_space &space = m_maincpu->space(AS_PROGRAM);
 
+=======
+	if (m_slapstic_device.found())
+	{
+>>>>>>> upstream/master
 		/* reset the slapstic */
 		m_slapstic_device->slapstic_reset();
 		m_slapstic_current_bank = m_slapstic_device->slapstic_bank();
 		memcpy(m_slapstic_base, &m_slapstic_source[m_slapstic_current_bank * 0x2000], 0x2000);
+<<<<<<< HEAD
 
 		/* reset all the banks */
 		starwars_out_w(space, 4, 0);
+=======
+>>>>>>> upstream/master
 	}
 
 	/* reset the matrix processor */
@@ -124,6 +154,7 @@ WRITE8_MEMBER(starwars_state::esb_slapstic_w)
 }
 
 
+<<<<<<< HEAD
 
 /*************************************
  *
@@ -156,6 +187,8 @@ DIRECT_UPDATE_MEMBER(starwars_state::esb_setdirect)
 
 
 
+=======
+>>>>>>> upstream/master
 /*************************************
  *
  *  Main CPU memory handlers
@@ -170,14 +203,25 @@ static ADDRESS_MAP_START( main_map, AS_PROGRAM, 8, starwars_state )
 	AM_RANGE(0x4340, 0x435f) AM_READ_PORT("DSW0")
 	AM_RANGE(0x4360, 0x437f) AM_READ_PORT("DSW1")
 	AM_RANGE(0x4380, 0x439f) AM_READ(starwars_adc_r)            /* a-d control result */
+<<<<<<< HEAD
 	AM_RANGE(0x4400, 0x4400) AM_READWRITE(starwars_main_read_r, starwars_main_wr_w)
+=======
+	AM_RANGE(0x4400, 0x4400) AM_DEVREAD("mainlatch", generic_latch_8_device, read)
+	AM_RANGE(0x4400, 0x4400) AM_DEVWRITE("soundlatch", generic_latch_8_device, write)
+>>>>>>> upstream/master
 	AM_RANGE(0x4401, 0x4401) AM_READ(starwars_main_ready_flag_r)
 	AM_RANGE(0x4500, 0x45ff) AM_DEVREADWRITE("x2212", x2212_device, read, write)
 	AM_RANGE(0x4600, 0x461f) AM_DEVWRITE("avg", avg_starwars_device, go_w)
 	AM_RANGE(0x4620, 0x463f) AM_DEVWRITE("avg", avg_starwars_device, reset_w)
+<<<<<<< HEAD
 	AM_RANGE(0x4640, 0x465f) AM_WRITE(watchdog_reset_w)
 	AM_RANGE(0x4660, 0x467f) AM_WRITE(irq_ack_w)
 	AM_RANGE(0x4680, 0x469f) AM_READNOP AM_WRITE(starwars_out_w)
+=======
+	AM_RANGE(0x4640, 0x465f) AM_DEVWRITE("watchdog", watchdog_timer_device, reset_w)
+	AM_RANGE(0x4660, 0x467f) AM_WRITE(irq_ack_w)
+	AM_RANGE(0x4680, 0x4687) AM_READNOP AM_MIRROR(0x0018) AM_DEVWRITE("outlatch", ls259_device, write_d7)
+>>>>>>> upstream/master
 	AM_RANGE(0x46a0, 0x46bf) AM_WRITE(starwars_nstore_w)
 	AM_RANGE(0x46c0, 0x46c2) AM_WRITE(starwars_adc_select_w)
 	AM_RANGE(0x46e0, 0x46e0) AM_WRITE(starwars_soundrst_w)
@@ -191,6 +235,14 @@ static ADDRESS_MAP_START( main_map, AS_PROGRAM, 8, starwars_state )
 	AM_RANGE(0x8000, 0xffff) AM_ROM                             /* rest of main_rom */
 ADDRESS_MAP_END
 
+<<<<<<< HEAD
+=======
+static ADDRESS_MAP_START( esb_main_map, AS_PROGRAM, 8, starwars_state )
+	AM_RANGE(0x8000, 0x9fff) AM_READWRITE(esb_slapstic_r, esb_slapstic_w)
+	AM_RANGE(0xa000, 0xffff) AM_ROMBANK("bank2")
+	AM_IMPORT_FROM(main_map)
+ADDRESS_MAP_END
+>>>>>>> upstream/master
 
 
 /*************************************
@@ -200,8 +252,13 @@ ADDRESS_MAP_END
  *************************************/
 
 static ADDRESS_MAP_START( sound_map, AS_PROGRAM, 8, starwars_state )
+<<<<<<< HEAD
 	AM_RANGE(0x0000, 0x07ff) AM_WRITE(starwars_sout_w)
 	AM_RANGE(0x0800, 0x0fff) AM_READ(starwars_sin_r)        /* SIN Read */
+=======
+	AM_RANGE(0x0000, 0x07ff) AM_DEVWRITE("mainlatch", generic_latch_8_device, write)
+	AM_RANGE(0x0800, 0x0fff) AM_DEVREAD("soundlatch", generic_latch_8_device, read) /* SIN Read */
+>>>>>>> upstream/master
 	AM_RANGE(0x1000, 0x107f) AM_RAM                         /* 6532 ram */
 	AM_RANGE(0x1080, 0x109f) AM_DEVREADWRITE("riot", riot6532_device, read, write)
 	AM_RANGE(0x1800, 0x183f) AM_WRITE(quad_pokeyn_w)
@@ -235,14 +292,24 @@ static INPUT_PORTS_START( starwars )
 	PORT_START("IN1")
 	PORT_BIT( 0x01, IP_ACTIVE_HIGH, IPT_UNUSED )
 	PORT_BIT( 0x02, IP_ACTIVE_HIGH, IPT_UNUSED )
+<<<<<<< HEAD
 	PORT_BIT( 0x04, IP_ACTIVE_LOW, IPT_SERVICE ) PORT_NAME("Diagnostic Step") PORT_CODE(KEYCODE_F1)
+=======
+	PORT_BIT( 0x04, IP_ACTIVE_LOW, IPT_SERVICE2 ) PORT_NAME("Diagnostic Step")
+>>>>>>> upstream/master
 	PORT_BIT( 0x08, IP_ACTIVE_HIGH, IPT_UNUSED )
 	PORT_BIT( 0x10, IP_ACTIVE_LOW, IPT_BUTTON3 )
 	PORT_BIT( 0x20, IP_ACTIVE_LOW, IPT_BUTTON2 )
 	/* Bit 6 is VG_HALT */
+<<<<<<< HEAD
 	PORT_BIT( 0x40, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER("avg", avg_starwars_device, done_r, NULL)
 	/* Bit 7 is MATH_RUN - see machine/starwars.c */
 	PORT_BIT( 0x80, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, starwars_state,matrix_flag_r, NULL)
+=======
+	PORT_BIT( 0x40, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER("avg", avg_starwars_device, done_r, nullptr)
+	/* Bit 7 is MATH_RUN - see machine/starwars.c */
+	PORT_BIT( 0x80, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, starwars_state,matrix_flag_r, nullptr)
+>>>>>>> upstream/master
 
 	PORT_START("DSW0")
 	PORT_DIPNAME( 0x03, 0x02, "Starting Shields" )  PORT_DIPLOCATION("10D:1,2")
@@ -325,15 +392,25 @@ INPUT_PORTS_END
  *
  *************************************/
 
+<<<<<<< HEAD
 static MACHINE_CONFIG_START( starwars, starwars_state )
+=======
+static MACHINE_CONFIG_START( starwars )
+>>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", M6809, MASTER_CLOCK / 8)
 	MCFG_CPU_PROGRAM_MAP(main_map)
 	MCFG_CPU_PERIODIC_INT_DRIVER(starwars_state, irq0_line_assert, CLOCK_3KHZ / 12)
+<<<<<<< HEAD
 	MCFG_WATCHDOG_TIME_INIT(attotime::from_hz(CLOCK_3KHZ / 128))
 
 	MCFG_SLAPSTIC_ADD("slapstic")
+=======
+
+	MCFG_WATCHDOG_ADD("watchdog")
+	MCFG_WATCHDOG_TIME_INIT(attotime::from_hz(CLOCK_3KHZ / 128))
+>>>>>>> upstream/master
 
 	MCFG_CPU_ADD("audiocpu", M6809, MASTER_CLOCK / 8)
 	MCFG_CPU_PROGRAM_MAP(sound_map)
@@ -343,10 +420,27 @@ static MACHINE_CONFIG_START( starwars, starwars_state )
 	MCFG_RIOT6532_OUT_PA_CB(WRITE8(starwars_state, r6532_porta_w))
 	MCFG_RIOT6532_IN_PB_CB(DEVREAD8("tms", tms5220_device, status_r))
 	MCFG_RIOT6532_OUT_PB_CB(DEVWRITE8("tms", tms5220_device, data_w))
+<<<<<<< HEAD
 	MCFG_RIOT6532_IRQ_CB(WRITELINE(starwars_state, snd_interrupt))
 
 	MCFG_X2212_ADD_AUTOSAVE("x2212") /* nvram */
 
+=======
+	MCFG_RIOT6532_IRQ_CB(INPUTLINE("audiocpu", M6809_IRQ_LINE))
+
+	MCFG_X2212_ADD_AUTOSAVE("x2212") /* nvram */
+
+	MCFG_DEVICE_ADD("outlatch", LS259, 0) // 9L/M
+	MCFG_ADDRESSABLE_LATCH_Q0_OUT_CB(WRITELINE(starwars_state, coin1_counter_w)) // Coin counter 1
+	MCFG_ADDRESSABLE_LATCH_Q1_OUT_CB(WRITELINE(starwars_state, coin2_counter_w)) // Coin counter 2
+	MCFG_ADDRESSABLE_LATCH_Q2_OUT_CB(WRITELINE(starwars_state, led3_w)) // LED 3
+	MCFG_ADDRESSABLE_LATCH_Q3_OUT_CB(WRITELINE(starwars_state, led2_w)) // LED 2
+	MCFG_ADDRESSABLE_LATCH_Q4_OUT_CB(MEMBANK("bank1")) // bank switch
+	MCFG_ADDRESSABLE_LATCH_Q5_OUT_CB(WRITELINE(starwars_state, prng_reset_w)) // reset PRNG
+	MCFG_ADDRESSABLE_LATCH_Q6_OUT_CB(WRITELINE(starwars_state, led1_w)) // LED 1
+	MCFG_ADDRESSABLE_LATCH_Q7_OUT_CB(WRITELINE(starwars_state, recall_w)) // NVRAM array recall
+
+>>>>>>> upstream/master
 	/* video hardware */
 	MCFG_VECTOR_ADD("vector")
 	MCFG_SCREEN_ADD("screen", VECTOR)
@@ -375,6 +469,27 @@ static MACHINE_CONFIG_START( starwars, starwars_state )
 
 	MCFG_SOUND_ADD("tms", TMS5220, MASTER_CLOCK/2/9)
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 0.50)
+<<<<<<< HEAD
+=======
+
+	MCFG_GENERIC_LATCH_8_ADD("soundlatch")
+	MCFG_GENERIC_LATCH_DATA_PENDING_CB(DEVWRITELINE("riot", riot6532_device, pa7_w))
+
+	MCFG_GENERIC_LATCH_8_ADD("mainlatch")
+	MCFG_GENERIC_LATCH_DATA_PENDING_CB(DEVWRITELINE("riot", riot6532_device, pa6_w))
+MACHINE_CONFIG_END
+
+
+static MACHINE_CONFIG_DERIVED( esb, starwars )
+	MCFG_CPU_MODIFY("maincpu")
+	MCFG_CPU_PROGRAM_MAP(esb_main_map)
+
+	MCFG_SLAPSTIC_ADD("slapstic", 101)
+
+	MCFG_DEVICE_MODIFY("outlatch")
+	MCFG_ADDRESSABLE_LATCH_Q4_OUT_CB(MEMBANK("bank1"))
+	MCFG_DEVCB_CHAIN_OUTPUT(MEMBANK("bank2"))
+>>>>>>> upstream/master
 MACHINE_CONFIG_END
 
 
@@ -544,7 +659,10 @@ ROM_END
 DRIVER_INIT_MEMBER(starwars_state,starwars)
 {
 	/* prepare the mathbox */
+<<<<<<< HEAD
 	m_is_esb = 0;
+=======
+>>>>>>> upstream/master
 	starwars_mproc_init();
 
 	/* initialize banking */
@@ -555,6 +673,7 @@ DRIVER_INIT_MEMBER(starwars_state,starwars)
 
 DRIVER_INIT_MEMBER(starwars_state,esb)
 {
+<<<<<<< HEAD
 	UINT8 *rom = memregion("maincpu")->base();
 
 	/* init the slapstic */
@@ -574,6 +693,16 @@ DRIVER_INIT_MEMBER(starwars_state,esb)
 
 	/* prepare the matrix processor */
 	m_is_esb = 1;
+=======
+	uint8_t *rom = memregion("maincpu")->base();
+
+	/* init the slapstic */
+	m_slapstic_device->slapstic_init();
+	m_slapstic_source = &rom[0x14000];
+	m_slapstic_base = &rom[0x08000];
+
+	/* prepare the matrix processor */
+>>>>>>> upstream/master
 	starwars_mproc_init();
 
 	/* initialize banking */
@@ -584,8 +713,11 @@ DRIVER_INIT_MEMBER(starwars_state,esb)
 
 	/* additional globals for state saving */
 	save_item(NAME(m_slapstic_current_bank));
+<<<<<<< HEAD
 	save_item(NAME(m_slapstic_last_pc));
 	save_item(NAME(m_slapstic_last_address));
+=======
+>>>>>>> upstream/master
 }
 
 
@@ -603,4 +735,8 @@ GAME( 1983, starwarso,starwars, starwars, starwars, starwars_state, starwars, RO
 
 GAME( 1983, tomcatsw, tomcat,   starwars, starwars, starwars_state, starwars, ROT0, "Atari", "TomCat (Star Wars hardware, prototype)", MACHINE_NO_SOUND )
 
+<<<<<<< HEAD
 GAME( 1985, esb,      0,        starwars, esb, starwars_state,      esb,      ROT0, "Atari Games", "The Empire Strikes Back", 0 )
+=======
+GAME( 1985, esb,      0,        esb,      esb,      starwars_state, esb,      ROT0, "Atari Games", "The Empire Strikes Back", 0 )
+>>>>>>> upstream/master

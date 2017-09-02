@@ -160,6 +160,7 @@
 
 ***********************************************************************************/
 
+<<<<<<< HEAD
 
 #define MASTER_CLOCK    XTAL_16MHz
 
@@ -169,6 +170,19 @@
 #include "video/mc6845.h"
 #include "machine/nvram.h"
 #include "video/resnet.h"
+=======
+#include "emu.h"
+#include "cpu/z80/z80.h"
+#include "machine/i8255.h"
+#include "machine/nvram.h"
+#include "video/mc6845.h"
+#include "video/resnet.h"
+#include "screen.h"
+#include "speaker.h"
+
+
+#define MASTER_CLOCK    XTAL_16MHz
+>>>>>>> upstream/master
 
 
 class supercrd_state : public driver_device
@@ -181,15 +195,24 @@ public:
 		m_maincpu(*this, "maincpu"),
 		m_gfxdecode(*this, "gfxdecode") { }
 
+<<<<<<< HEAD
 	required_shared_ptr<UINT8> m_videoram;
 	required_shared_ptr<UINT8> m_colorram;
+=======
+	required_shared_ptr<uint8_t> m_videoram;
+	required_shared_ptr<uint8_t> m_colorram;
+>>>>>>> upstream/master
 	tilemap_t *m_bg_tilemap;
 	DECLARE_WRITE8_MEMBER(supercrd_videoram_w);
 	DECLARE_WRITE8_MEMBER(supercrd_colorram_w);
 	TILE_GET_INFO_MEMBER(get_bg_tile_info);
 	DECLARE_PALETTE_INIT(supercrd);
 	DECLARE_VIDEO_START(supercrd);
+<<<<<<< HEAD
 	UINT32 screen_update_supercrd(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
+=======
+	uint32_t screen_update_supercrd(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
+>>>>>>> upstream/master
 	required_device<cpu_device> m_maincpu;
 	required_device<gfxdecode_device> m_gfxdecode;
 };
@@ -201,7 +224,11 @@ public:
 
 PALETTE_INIT_MEMBER(supercrd_state, supercrd)
 {
+<<<<<<< HEAD
 	const UINT8 *color_prom = memregion("proms")->base();
+=======
+	const uint8_t *color_prom = memregion("proms")->base();
+>>>>>>> upstream/master
 	int i;
 	static const int resistances_rb[3] = { 1000, 470, 220 };
 	static const int resistances_g [2] = { 470, 220 };
@@ -268,11 +295,19 @@ TILE_GET_INFO_MEMBER(supercrd_state::get_bg_tile_info)
 
 VIDEO_START_MEMBER(supercrd_state, supercrd)
 {
+<<<<<<< HEAD
 	m_bg_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(supercrd_state::get_bg_tile_info),this), TILEMAP_SCAN_ROWS, 4, 8, 96, 29);
 }
 
 
 UINT32 supercrd_state::screen_update_supercrd(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+=======
+	m_bg_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(supercrd_state::get_bg_tile_info),this), TILEMAP_SCAN_ROWS, 4, 8, 96, 29);
+}
+
+
+uint32_t supercrd_state::screen_update_supercrd(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+>>>>>>> upstream/master
 {
 	m_bg_tilemap->draw(screen, bitmap, cliprect, 0, 0);
 	return 0;
@@ -410,7 +445,11 @@ GFXDECODE_END
 *     Machine Drivers     *
 **************************/
 
+<<<<<<< HEAD
 static MACHINE_CONFIG_START( supercrd, supercrd_state )
+=======
+static MACHINE_CONFIG_START( supercrd )
+>>>>>>> upstream/master
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", Z80, MASTER_CLOCK/8)    /* 2MHz, guess */
 	MCFG_CPU_PROGRAM_MAP(supercrd_map)
@@ -508,6 +547,12 @@ ROM_START( fruitstr )
 ROM_END
 
 
+<<<<<<< HEAD
 /*    YEAR  NAME      PARENT  MACHINE   INPUT     STATE          INIT    ROT    COMPANY      FULLNAME                 FLAGS   */
 GAME( 1992, supercrd, 0,      supercrd, supercrd, driver_device, 0,      ROT0, "Fun World", "Super Card (encrypted)", MACHINE_NOT_WORKING )
 GAME( 1992, fruitstr, 0,      supercrd, supercrd, driver_device, 0,      ROT0, "Fun World", "Fruit Star (encrypted)", MACHINE_NOT_WORKING )
+=======
+//    YEAR  NAME      PARENT  MACHINE   INPUT     STATE           INIT    ROT   COMPANY      FULLNAME                  FLAGS
+GAME( 1992, supercrd, 0,      supercrd, supercrd, supercrd_state, 0,      ROT0, "Fun World", "Super Card (encrypted)", MACHINE_NOT_WORKING )
+GAME( 1992, fruitstr, 0,      supercrd, supercrd, supercrd_state, 0,      ROT0, "Fun World", "Fruit Star (encrypted)", MACHINE_NOT_WORKING )
+>>>>>>> upstream/master

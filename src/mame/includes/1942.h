@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 // license:???
+=======
+// license:BSD-3-Clause
+>>>>>>> upstream/master
 // copyright-holders:Paul Leaman, Couriersud
 /***************************************************************************
 
@@ -6,6 +10,11 @@
 
 ***************************************************************************/
 
+<<<<<<< HEAD
+=======
+#include "machine/gen_latch.h"
+
+>>>>>>> upstream/master
 class _1942_state : public driver_device
 {
 public:
@@ -18,6 +27,7 @@ public:
 		m_audiocpu(*this, "audiocpu"),
 		m_maincpu(*this, "maincpu"),
 		m_gfxdecode(*this, "gfxdecode"),
+<<<<<<< HEAD
 		m_palette(*this, "palette") { }
 
 	/* memory pointers */
@@ -25,12 +35,26 @@ public:
 	required_shared_ptr<UINT8> m_fg_videoram;
 	required_shared_ptr<UINT8> m_bg_videoram;
 	optional_shared_ptr<UINT8> m_protopal;
+=======
+		m_palette(*this, "palette"),
+		m_soundlatch(*this, "soundlatch") { }
+
+	/* memory pointers */
+	required_shared_ptr<uint8_t> m_spriteram;
+	required_shared_ptr<uint8_t> m_fg_videoram;
+	required_shared_ptr<uint8_t> m_bg_videoram;
+	optional_shared_ptr<uint8_t> m_protopal;
+>>>>>>> upstream/master
 
 	/* video-related */
 	tilemap_t *m_fg_tilemap;
 	tilemap_t *m_bg_tilemap;
 	int m_palette_bank;
+<<<<<<< HEAD
 	UINT8 m_scroll[2];
+=======
+	uint8_t m_scroll[2];
+>>>>>>> upstream/master
 	void create_palette();
 	DECLARE_PALETTE_INIT(1942);
 	DECLARE_PALETTE_INIT(1942p);
@@ -49,16 +73,29 @@ public:
 	DECLARE_DRIVER_INIT(1942);
 	TILE_GET_INFO_MEMBER(get_fg_tile_info);
 	TILE_GET_INFO_MEMBER(get_bg_tile_info);
+<<<<<<< HEAD
 	virtual void machine_start();
 	virtual void machine_reset();
 	virtual void video_start();
 	void video_start_c1942p();
 	UINT32 screen_update_1942(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
 	UINT32 screen_update_1942p(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
+=======
+	virtual void machine_start() override;
+	virtual void machine_reset() override;
+	virtual void video_start() override;
+	void video_start_c1942p();
+	uint32_t screen_update_1942(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
+	uint32_t screen_update_1942p(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
+>>>>>>> upstream/master
 	TIMER_DEVICE_CALLBACK_MEMBER(c1942_scanline);
 	void draw_sprites( bitmap_ind16 &bitmap, const rectangle &cliprect );
 	void draw_sprites_p( bitmap_ind16 &bitmap, const rectangle &cliprect );
 	required_device<cpu_device> m_maincpu;
 	required_device<gfxdecode_device> m_gfxdecode;
 	required_device<palette_device> m_palette;
+<<<<<<< HEAD
+=======
+	required_device<generic_latch_8_device> m_soundlatch;
+>>>>>>> upstream/master
 };

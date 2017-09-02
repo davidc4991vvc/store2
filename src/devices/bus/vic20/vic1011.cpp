@@ -6,6 +6,10 @@
 
 **********************************************************************/
 
+<<<<<<< HEAD
+=======
+#include "emu.h"
+>>>>>>> upstream/master
 #include "vic1011.h"
 
 
@@ -22,6 +26,7 @@
 //  DEVICE DEFINITIONS
 //**************************************************************************
 
+<<<<<<< HEAD
 const device_type VIC1011 = &device_creator<vic1011_device>;
 
 
@@ -31,6 +36,17 @@ const device_type VIC1011 = &device_creator<vic1011_device>;
 
 static MACHINE_CONFIG_FRAGMENT( vic1011 )
 	MCFG_RS232_PORT_ADD(RS232_TAG, default_rs232_devices, NULL)
+=======
+DEFINE_DEVICE_TYPE(VIC1011, vic1011_device, "vic1011", "VIC-1011 RS-232C")
+
+
+//-------------------------------------------------
+//  device_add_mconfig - add device configuration
+//-------------------------------------------------
+
+MACHINE_CONFIG_MEMBER( vic1011_device::device_add_mconfig )
+	MCFG_RS232_PORT_ADD(RS232_TAG, default_rs232_devices, nullptr)
+>>>>>>> upstream/master
 	MCFG_RS232_RXD_HANDLER(DEVWRITELINE(DEVICE_SELF, vic1011_device, output_rxd))
 	MCFG_RS232_DCD_HANDLER(DEVWRITELINE(DEVICE_SELF, vic1011_device, output_h)) MCFG_DEVCB_XOR(1)
 	MCFG_RS232_CTS_HANDLER(DEVWRITELINE(DEVICE_SELF, vic1011_device, output_k)) MCFG_DEVCB_XOR(1)
@@ -38,6 +54,7 @@ static MACHINE_CONFIG_FRAGMENT( vic1011 )
 MACHINE_CONFIG_END
 
 
+<<<<<<< HEAD
 //-------------------------------------------------
 //  machine_config_additions - device-specific
 //  machine configurations
@@ -50,6 +67,8 @@ machine_config_constructor vic1011_device::device_mconfig_additions() const
 
 
 
+=======
+>>>>>>> upstream/master
 //**************************************************************************
 //  LIVE DEVICE
 //**************************************************************************
@@ -58,10 +77,17 @@ machine_config_constructor vic1011_device::device_mconfig_additions() const
 //  vic1011_device - constructor
 //-------------------------------------------------
 
+<<<<<<< HEAD
 vic1011_device::vic1011_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
 	: device_t(mconfig, VIC1011, "VIC1011", tag, owner, clock, "vic1011", __FILE__),
 		device_pet_user_port_interface(mconfig, *this),
 		m_rs232(*this, RS232_TAG)
+=======
+vic1011_device::vic1011_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: device_t(mconfig, VIC1011, tag, owner, clock)
+	, device_pet_user_port_interface(mconfig, *this)
+	, m_rs232(*this, RS232_TAG)
+>>>>>>> upstream/master
 {
 }
 

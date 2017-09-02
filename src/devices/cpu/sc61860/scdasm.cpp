@@ -92,6 +92,7 @@ static const struct { const char *mnemonic; Adr adr; } table[]={
 	{ "MVWD",   Imp }, { "EXWD",    Imp }, { "MVBD",    Imp }, { "EXBD",    Imp },
 	{ "SRW",    Imp }, { "SLW",     Imp }, { "FILM",    Imp }, { "FILD",    Imp },
 
+<<<<<<< HEAD
 	{ "LDP",    Imp }, { "LPQ",     Imp }, { "LPR",     Imp }, { 0,         Ill },
 	{ "IXL",    Imp }, { "DXL",     Imp }, { "IYS",     Imp }, { "DYS",     Imp },
 	{ "JRNZP",  RelP}, { "JRNZM",   RelM}, { "JRNCP",   RelP}, { "JRNCM",   RelM},
@@ -101,6 +102,17 @@ static const struct { const char *mnemonic; Adr adr; } table[]={
 	{ "PUSH",   Imp }, { "DATA",    Imp }, { 0,         Ill }, { "RTN",     Imp },
 	{ "JRZP",   RelP}, { "JRZM",    RelM}, { "JRCP",    RelP}, { "JRCM",    RelM},
 	{ 0,        Ill }, { 0,         Ill }, { 0,         Ill }, { 0,         Ill },
+=======
+	{ "LDP",    Imp }, { "LPQ",     Imp }, { "LPR",     Imp }, { nullptr,         Ill },
+	{ "IXL",    Imp }, { "DXL",     Imp }, { "IYS",     Imp }, { "DYS",     Imp },
+	{ "JRNZP",  RelP}, { "JRNZM",   RelM}, { "JRNCP",   RelP}, { "JRNCM",   RelM},
+	{ "JRP",    RelP}, { "JRM",     RelM}, { nullptr,         Ill }, { "LOOP",    RelM},
+
+	{ "STP",    Imp }, { "STQ",     Imp }, { "STR",     Imp }, { nullptr,         Ill },
+	{ "PUSH",   Imp }, { "DATA",    Imp }, { nullptr,         Ill }, { "RTN",     Imp },
+	{ "JRZP",   RelP}, { "JRZM",    RelM}, { "JRCP",    RelP}, { "JRCM",    RelM},
+	{ nullptr,        Ill }, { nullptr,         Ill }, { nullptr,         Ill }, { nullptr,         Ill },
+>>>>>>> upstream/master
 
 	{ "INCI",   Imp }, { "DECI",    Imp }, { "INCA",    Imp }, { "DECA",    Imp },
 	{ "ADM",    Imp }, { "SBM",     Imp }, { "ANMA",    Imp }, { "ORMA",    Imp },
@@ -110,6 +122,7 @@ static const struct { const char *mnemonic; Adr adr; } table[]={
 	{ "INCP",   Imp }, { "DECP",    Imp }, { "STD",     Imp }, { "MVDM",    Imp },
 	{ "READM",/*mvmp*/  Imp }, { "MVMD",    Imp }, { "READ"/*ldpc*/,    Imp }, { "LDD",     Imp },
 	{ "SWP",    Imp }, { "LDM",     Imp }, { "SL",      Imp }, { "POP",     Imp },
+<<<<<<< HEAD
 	{ 0,        Ill }, { "OUTA",    Imp }, { 0,         Ill }, { "OUTF",    Imp },
 
 	{ "ANIM",   Imm }, { "ORIM",    Imm }, { "TSIM",    Imm }, { "CPIM",    Imm },
@@ -162,15 +175,74 @@ CPU_DISASSEMBLE( sc61860 )
 	switch(oper&0xc0) {
 	case 0x80:
 		sprintf(buffer,"%-6s%.2x",table[oper&0x80].mnemonic, oper&0x3f);
+=======
+	{ nullptr,        Ill }, { "OUTA",    Imp }, { nullptr,         Ill }, { "OUTF",    Imp },
+
+	{ "ANIM",   Imm }, { "ORIM",    Imm }, { "TSIM",    Imm }, { "CPIM",    Imm },
+	{ "ANIA",   Imm }, { "ORIA",    Imm }, { "TSIA",    Imm }, { "CPIA",    Imm },
+	{ nullptr,        Ill }, { "ETC",     Etc }, { nullptr,         Ill }, { "TEST",    Imm },
+	{ nullptr,        Ill }, { nullptr,         Ill }, { nullptr,         Ill }, { "IPXH"/*CDN,lxp*/, Imp },
+
+	{ "ADIM",   Imm }, { "SBIM",    Imm }, { nullptr,         Ill }, { nullptr,         Ill },
+	{ "ADIA",   Imm }, { "SBIA",    Imm }, { nullptr,         Ill }, { nullptr,         Ill },
+	{ "CALL",   Abs }, { "JP",      Abs }, { "PTC",     Ptc }, { nullptr,         Ill },
+	{ "JPNZ",   Abs }, { "JPNC",    Abs }, { "JPZ",     Abs }, { "JPC",     Abs },
+
+
+	{ "LP", Lp  }, { nullptr }, { nullptr }, { nullptr },  { nullptr }, { nullptr }, { nullptr }, { nullptr },
+	{ nullptr }, { nullptr }, { nullptr }, { nullptr },  { nullptr }, { nullptr }, { nullptr }, { nullptr },
+
+	{ nullptr }, { nullptr }, { nullptr }, { nullptr },  { nullptr }, { nullptr }, { nullptr }, { nullptr },
+	{ nullptr }, { nullptr }, { nullptr }, { nullptr },  { nullptr }, { nullptr }, { nullptr }, { nullptr },
+
+	{ nullptr }, { nullptr }, { nullptr }, { nullptr },  { nullptr }, { nullptr }, { nullptr }, { nullptr },
+	{ nullptr }, { nullptr }, { nullptr }, { nullptr },  { nullptr }, { nullptr }, { nullptr }, { nullptr },
+
+	{ nullptr }, { nullptr }, { nullptr }, { nullptr },  { nullptr }, { nullptr }, { nullptr }, { nullptr },
+	{ nullptr }, { nullptr }, { nullptr }, { nullptr },  { nullptr }, { nullptr }, { nullptr }, { nullptr },
+
+	{ "INCJ",   Imp }, { "DECJ",    Imp }, { "INCB",    Imp }, { "DECB",    Imp },
+	{ "ACDM",   Imp }, { "SBCM",    Imp }, { nullptr,         Ill }, { "CPMA",    Imp },
+	{ "INCL",   Imp }, { "DECL",    Imp }, { "INCW",    Imp }, { "DECW",    Imp },
+	{ "INB",    Imp }, { nullptr,         Ill }, { "NOPT",    Imp }, { nullptr,         Ill },
+
+	{ "SC",     Imp }, { "RC",      Imp }, { "SR",      Imp }, { nullptr,         Ill },
+	{ "ANID",   Imm }, { "ORID",    Imm }, { "TSID",    Imm }, { nullptr,         Ill },
+	{ "LEAVE",  Imp }, { nullptr,         Ill }, { "EXAB",    Imp }, { "EXAM",    Imp },
+	{ nullptr,        Ill }, { "OUTB",    Imp }, { nullptr,         Ill }, { "OUTC",    Imp },
+
+	{ "CAL", Imp }, { nullptr }, { nullptr }, { nullptr },  { nullptr }, { nullptr }, { nullptr }, { nullptr },
+	{ nullptr }, { nullptr }, { nullptr }, { nullptr },  { nullptr }, { nullptr }, { nullptr }, { nullptr },
+
+	{ nullptr }, { nullptr }, { nullptr }, { nullptr },  { nullptr }, { nullptr }, { nullptr }, { nullptr },
+	{ nullptr }, { nullptr }, { nullptr }, { nullptr },  { nullptr }, { nullptr }, { nullptr }, { nullptr },
+};
+
+CPU_DISASSEMBLE(sc61860)
+{
+	const uint8_t *base_oprom = oprom;
+	int oper=*(oprom++);
+	int t;
+	uint16_t adr;
+
+	switch(oper&0xc0) {
+	case 0x80:
+		util::stream_format(stream,"%-6s%02x",table[oper&0x80].mnemonic, oper&0x3f);
+>>>>>>> upstream/master
 		break;
 	default:
 		switch(oper&0xe0) {
 		case 0xe0:
+<<<<<<< HEAD
 			sprintf(buffer,"%-6s%.4x",table[oper&0xe0].mnemonic,
+=======
+			util::stream_format(stream,"%-6s%04x",table[oper&0xe0].mnemonic,
+>>>>>>> upstream/master
 					*(oprom++)|((oper&0x1f)<<8));
 			break;
 		default:
 			switch (table[oper].adr) {
+<<<<<<< HEAD
 			case Ill: sprintf(buffer,"?%.2x",oper);break;
 			case Imp: sprintf(buffer,"%s",table[oper].mnemonic); break;
 			case Imm: sprintf(buffer,"%-6s%.2x",table[oper].mnemonic, *(oprom++)); break;
@@ -189,14 +261,41 @@ CPU_DISASSEMBLE( sc61860 )
 			case RelP:
 				adr=pc+*(oprom++);
 				sprintf(buffer,"%-6s%.4x",table[oper].mnemonic, adr&0xffff);
+=======
+			case Ill: util::stream_format(stream,"?%02x",oper);break;
+			case Imp: util::stream_format(stream,"%s",table[oper].mnemonic); break;
+			case Imm: util::stream_format(stream,"%-6s%02x",table[oper].mnemonic, *(oprom++)); break;
+			case ImmW:
+				adr=(oprom[0]<<8)|oprom[1];oprom+=2;
+				util::stream_format(stream,"%-6s%04x",table[oper].mnemonic, adr);
+				break;
+			case Abs:
+				adr=(oprom[0]<<8)|oprom[1];oprom+=2;
+				util::stream_format(stream,"%-6s%04x",table[oper].mnemonic, adr);
+				break;
+			case RelM:
+				adr=pc-*(oprom++);
+				util::stream_format(stream,"%-6s%04x",table[oper].mnemonic, adr&0xffff);
+				break;
+			case RelP:
+				adr=pc+*(oprom++);
+				util::stream_format(stream,"%-6s%04x",table[oper].mnemonic, adr&0xffff);
+>>>>>>> upstream/master
 				break;
 			case Ptc:
 				t=*(oprom++);
 				adr=(oprom[0]<<8)|oprom[1];oprom+=2;
+<<<<<<< HEAD
 				sprintf(buffer,"%-6s%.2x,%.4x",table[oper].mnemonic,t, adr);
 				break;
 			case Etc:
 				sprintf(buffer,"%-6s",table[oper].mnemonic);
+=======
+				util::stream_format(stream,"%-6s%02x,%04x",table[oper].mnemonic,t, adr);
+				break;
+			case Etc:
+				util::stream_format(stream,"%-6s",table[oper].mnemonic);
+>>>>>>> upstream/master
 				/*H imm, abs */
 				/* abs */
 				break;

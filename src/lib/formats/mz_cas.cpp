@@ -36,7 +36,11 @@
 #define STM_0       20
 #define STM_L       1
 
+<<<<<<< HEAD
 static int fill_wave_1(INT16 *buffer, int offs)
+=======
+static int fill_wave_1(int16_t *buffer, int offs)
+>>>>>>> upstream/master
 {
 	buffer[offs++] = HI;
 	buffer[offs++] = HI;
@@ -45,14 +49,22 @@ static int fill_wave_1(INT16 *buffer, int offs)
 	return LONG_PULSE;
 }
 
+<<<<<<< HEAD
 static int fill_wave_0(INT16 *buffer, int offs)
+=======
+static int fill_wave_0(int16_t *buffer, int offs)
+>>>>>>> upstream/master
 {
 	buffer[offs++] = HI;
 	buffer[offs++] = LO;
 	return SHORT_PULSE;
 }
 
+<<<<<<< HEAD
 static int fill_wave_b(INT16 *buffer, int offs, int byte)
+=======
+static int fill_wave_b(int16_t *buffer, int offs, int byte)
+>>>>>>> upstream/master
 {
 	int i, count = 0;
 
@@ -69,10 +81,17 @@ static int fill_wave_b(INT16 *buffer, int offs, int byte)
 	return count;
 }
 
+<<<<<<< HEAD
 static int fill_wave(INT16 *buffer, int length, UINT8 *code)
 {
 	static INT16 *beg;
 	static UINT16 csum = 0;
+=======
+static int fill_wave(int16_t *buffer, int length, uint8_t *code)
+{
+	static int16_t *beg;
+	static uint16_t csum = 0;
+>>>>>>> upstream/master
 	static int header = 1, bytecount = 0;
 	int count = 0;
 
@@ -123,7 +142,11 @@ static int fill_wave(INT16 *buffer, int length, UINT8 *code)
 	if( code == CODE_TRAILER )
 	{
 		int i, file_length;
+<<<<<<< HEAD
 		INT16 *end = buffer;
+=======
+		int16_t *end = buffer;
+>>>>>>> upstream/master
 
 		/* is there insufficient space for the CHKF? */
 		if( count + 2 * BYTE_SAMPLES > length )
@@ -145,12 +168,20 @@ static int fill_wave(INT16 *buffer, int length, UINT8 *code)
 		for (i = 0; i < 256; i++)
 			count += fill_wave_0(buffer, count);
 
+<<<<<<< HEAD
 		file_length = (int)(end - beg) / sizeof(INT16);
+=======
+		file_length = (int)(end - beg) / sizeof(int16_t);
+>>>>>>> upstream/master
 		/* is there insufficient space for the FILEC ? */
 		if( count + file_length > length )
 			return -1;
 		LOG(1,"mz700_fill_wave",("FILEC %d samples\n", file_length));
+<<<<<<< HEAD
 		memcpy(buffer + count, beg, file_length * sizeof(INT16));
+=======
+		memcpy(buffer + count, beg, file_length * sizeof(int16_t));
+>>>>>>> upstream/master
 		count += file_length;
 
 		/* is there insufficient space for the CHKF ? */
@@ -177,7 +208,11 @@ static int fill_wave(INT16 *buffer, int length, UINT8 *code)
 	if( header == 1 && bytecount == 128 )
 	{
 		int i, hdr_length;
+<<<<<<< HEAD
 		INT16 *end = buffer;
+=======
+		int16_t *end = buffer;
+>>>>>>> upstream/master
 
 		/* is there insufficient space for the CHKH ? */
 		if( count + 2 * BYTE_SAMPLES > length )
@@ -199,12 +234,20 @@ static int fill_wave(INT16 *buffer, int length, UINT8 *code)
 		for (i = 0; i < 256; i++)
 			count += fill_wave_0(buffer, count);
 
+<<<<<<< HEAD
 		hdr_length = (int)(end - beg) / sizeof(INT16);
+=======
+		hdr_length = (int)(end - beg) / sizeof(int16_t);
+>>>>>>> upstream/master
 		/* is there insufficient space for the HDRC ? */
 		if( count + hdr_length > length )
 			return -1;
 		LOG(1,"mz700_fill_wave",("HDRC %d samples\n", hdr_length));
+<<<<<<< HEAD
 		memcpy(buffer + count, beg, hdr_length * sizeof(INT16));
+=======
+		memcpy(buffer + count, beg, hdr_length * sizeof(int16_t));
+>>>>>>> upstream/master
 		count += hdr_length;
 
 		/* is there insufficient space for CHKH ? */
@@ -306,7 +349,11 @@ static const struct CassetteLegacyWaveFiller mz700_legacy_fill_wave =
 	fill_wave,                  /* fill_wave */
 	1,                          /* chunk_size */
 	2 * BYTE_SAMPLES,           /* chunk_samples */
+<<<<<<< HEAD
 	NULL,                       /* chunk_sample_calc */
+=======
+	nullptr,                       /* chunk_sample_calc */
+>>>>>>> upstream/master
 	4400,                       // sample_frequency (tested ok with MZ-80K, MZ-80A, MZ-700, MZ-800, MZ-1500)
 	MZ700_WAVESAMPLES_HEADER,   /* header_samples */
 	1                           /* trailer_samples */
@@ -314,14 +361,22 @@ static const struct CassetteLegacyWaveFiller mz700_legacy_fill_wave =
 
 
 
+<<<<<<< HEAD
 static casserr_t mz700_cas_identify(cassette_image *cassette, struct CassetteOptions *opts)
+=======
+static cassette_image::error mz700_cas_identify(cassette_image *cassette, struct CassetteOptions *opts)
+>>>>>>> upstream/master
 {
 	return cassette_legacy_identify(cassette, opts, &mz700_legacy_fill_wave);
 }
 
 
 
+<<<<<<< HEAD
 static casserr_t mz700_cas_load(cassette_image *cassette)
+=======
+static cassette_image::error mz700_cas_load(cassette_image *cassette)
+>>>>>>> upstream/master
 {
 	return cassette_legacy_construct(cassette, &mz700_legacy_fill_wave);
 }
@@ -333,7 +388,11 @@ static const struct CassetteFormat mz700_cas_format =
 	"m12,mzf,mzt",
 	mz700_cas_identify,
 	mz700_cas_load,
+<<<<<<< HEAD
 	NULL
+=======
+	nullptr
+>>>>>>> upstream/master
 };
 
 

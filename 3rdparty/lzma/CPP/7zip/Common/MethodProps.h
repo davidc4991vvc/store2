@@ -11,7 +11,11 @@
 
 bool StringToBool(const UString &s, bool &res);
 HRESULT PROPVARIANT_to_bool(const PROPVARIANT &prop, bool &dest);
+<<<<<<< HEAD
 int ParseStringToUInt32(const UString &srcString, UInt32 &number);
+=======
+unsigned ParseStringToUInt32(const UString &srcString, UInt32 &number);
+>>>>>>> upstream/master
 HRESULT ParsePropToUInt32(const UString &name, const PROPVARIANT &prop, UInt32 &resValue);
 
 HRESULT ParseMtProp(const UString &name, const PROPVARIANT &prop, UInt32 defaultNumThreads, UInt32 &numThreads);
@@ -32,7 +36,11 @@ struct CProps
 
   bool AreThereNonOptionalProps() const
   {
+<<<<<<< HEAD
     for (int i = 0; i < Props.Size(); i++)
+=======
+    FOR_VECTOR (i, Props)
+>>>>>>> upstream/master
       if (!Props[i].IsOptional)
         return true;
     return false;
@@ -40,6 +48,7 @@ struct CProps
 
   void AddProp32(PROPID propid, UInt32 level);
 
+<<<<<<< HEAD
   void AddPropString(PROPID propid, const wchar_t *s)
   {
     CProp prop;
@@ -47,6 +56,14 @@ struct CProps
     prop.Id = propid;
     prop.Value = s;
     Props.Add(prop);
+=======
+  void AddProp_Ascii(PROPID propid, const char *s)
+  {
+    CProp &prop = Props.AddNew();
+    prop.IsOptional = true;
+    prop.Id = propid;
+    prop.Value = s;
+>>>>>>> upstream/master
   }
 
   HRESULT SetCoderProps(ICompressSetCoderProperties *scp, const UInt64 *dataSizeReduce) const;
@@ -100,6 +117,17 @@ public:
     return level <= 5 ? (1 << (level * 2 + 14)) : (level == 6 ? (1 << 25) : (1 << 26));
   }
 
+<<<<<<< HEAD
+=======
+  bool Are_Lzma_Model_Props_Defined() const
+  {
+    if (FindProp(NCoderPropID::kPosStateBits) >= 0) return true;
+    if (FindProp(NCoderPropID::kLitContextBits) >= 0) return true;
+    if (FindProp(NCoderPropID::kLitPosBits) >= 0) return true;
+    return false;
+  }
+
+>>>>>>> upstream/master
   UInt32 Get_Lzma_NumThreads(bool &fixedNumber) const
   {
     fixedNumber = false;
@@ -153,12 +181,20 @@ public:
     return level >= 9 ? (192 << 20) : ((UInt32)1 << (level + 19));
   }
 
+<<<<<<< HEAD
   void AddLevelProp(UInt32 level)
+=======
+  void AddProp_Level(UInt32 level)
+>>>>>>> upstream/master
   {
     AddProp32(NCoderPropID::kLevel, level);
   }
 
+<<<<<<< HEAD
   void AddNumThreadsProp(UInt32 numThreads)
+=======
+  void AddProp_NumThreads(UInt32 numThreads)
+>>>>>>> upstream/master
   {
     AddProp32(NCoderPropID::kNumThreads, numThreads);
   }
@@ -170,15 +206,28 @@ public:
 class COneMethodInfo: public CMethodProps
 {
 public:
+<<<<<<< HEAD
   UString MethodName;
+=======
+  AString MethodName;
+  UString PropsString;
+>>>>>>> upstream/master
   
   void Clear()
   {
     CMethodProps::Clear();
     MethodName.Empty();
+<<<<<<< HEAD
   }
   bool IsEmpty() const { return MethodName.IsEmpty() && Props.IsEmpty(); }
   HRESULT ParseMethodFromPROPVARIANT(const UString &realName, const PROPVARIANT &value);
+=======
+    PropsString.Empty();
+  }
+  bool IsEmpty() const { return MethodName.IsEmpty() && Props.IsEmpty(); }
+  HRESULT ParseMethodFromPROPVARIANT(const UString &realName, const PROPVARIANT &value);
+  HRESULT ParseMethodFromString(const UString &s);
+>>>>>>> upstream/master
 };
 
 #endif

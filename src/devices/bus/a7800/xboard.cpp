@@ -46,12 +46,17 @@
 #include "emu.h"
 #include "xboard.h"
 #include "a78_carts.h"
+<<<<<<< HEAD
+=======
+#include "speaker.h"
+>>>>>>> upstream/master
 
 
 //-------------------------------------------------
 //  constructor
 //-------------------------------------------------
 
+<<<<<<< HEAD
 const device_type A78_XBOARD = &device_creator<a78_xboard_device>;
 const device_type A78_XM = &device_creator<a78_xm_device>;
 
@@ -76,6 +81,31 @@ a78_xm_device::a78_xm_device(const machine_config &mconfig, const char *tag, dev
 					: a78_xboard_device(mconfig, A78_XM, "Atari 7800 XM expansion module", tag, owner, clock, "a78_xm", __FILE__),
 						m_ym(*this, "xm_ym2151"), m_ym_enabled(0)
 				{
+=======
+DEFINE_DEVICE_TYPE(A78_XBOARD, a78_xboard_device, "a78_xboard", "Atari 7800 XBoarD expansion")
+DEFINE_DEVICE_TYPE(A78_XM,     a78_xm_device,     "a78_xm",     "Atari 7800 XM expansion module")
+
+
+a78_xboard_device::a78_xboard_device(const machine_config &mconfig, device_type type, const char *tag, device_t *owner, uint32_t clock)
+	: a78_rom_device(mconfig, type, tag, owner, clock)
+	, m_xbslot(*this, "xb_slot")
+	, m_pokey(*this, "xb_pokey")
+	, m_reg(0), m_ram_bank(0)
+{
+}
+
+
+a78_xboard_device::a78_xboard_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: a78_xboard_device(mconfig, A78_XBOARD, tag, owner, clock)
+{
+}
+
+
+a78_xm_device::a78_xm_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: a78_xboard_device(mconfig, A78_XM, tag, owner, clock)
+	, m_ym(*this, "xm_ym2151"), m_ym_enabled(0)
+{
+>>>>>>> upstream/master
 }
 
 
@@ -106,8 +136,13 @@ void a78_xm_device::device_reset()
 }
 
 
+<<<<<<< HEAD
 static MACHINE_CONFIG_FRAGMENT( a78_xb )
 	MCFG_A78_CARTRIDGE_ADD("xb_slot", a7800_cart, NULL)
+=======
+MACHINE_CONFIG_MEMBER( a78_xboard_device::device_add_mconfig )
+	MCFG_A78_CARTRIDGE_ADD("xb_slot", a7800_cart, nullptr)
+>>>>>>> upstream/master
 
 	MCFG_SPEAKER_STANDARD_MONO("xb_speaker")
 
@@ -115,8 +150,13 @@ static MACHINE_CONFIG_FRAGMENT( a78_xb )
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "xb_speaker", 1.00)
 MACHINE_CONFIG_END
 
+<<<<<<< HEAD
 static MACHINE_CONFIG_FRAGMENT( a78_xm )
 	MCFG_A78_CARTRIDGE_ADD("xb_slot", a7800_cart, NULL)
+=======
+MACHINE_CONFIG_MEMBER( a78_xm_device::device_add_mconfig )
+	MCFG_A78_CARTRIDGE_ADD("xb_slot", a7800_cart, nullptr)
+>>>>>>> upstream/master
 
 	MCFG_SPEAKER_STANDARD_MONO("xb_speaker")
 
@@ -127,6 +167,7 @@ static MACHINE_CONFIG_FRAGMENT( a78_xm )
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "xb_speaker", 1.00)
 MACHINE_CONFIG_END
 
+<<<<<<< HEAD
 machine_config_constructor a78_xboard_device::device_mconfig_additions() const
 {
 	return MACHINE_CONFIG_NAME( a78_xb );
@@ -136,6 +177,8 @@ machine_config_constructor a78_xm_device::device_mconfig_additions() const
 {
 	return MACHINE_CONFIG_NAME( a78_xm );
 }
+=======
+>>>>>>> upstream/master
 
 /*-------------------------------------------------
  mapper specific handlers

@@ -191,6 +191,7 @@ RoadBlasters (aka Future Vette):005*
 
 
 #include "emu.h"
+<<<<<<< HEAD
 #include "cpu/m68000/m68000.h"
 #include "cpu/m6502/m6502.h"
 #include "machine/atarigen.h"
@@ -199,6 +200,18 @@ RoadBlasters (aka Future Vette):005*
 #include "sound/pokey.h"
 #include "video/atarimo.h"
 #include "includes/atarisy1.h"
+=======
+#include "includes/atarisy1.h"
+#include "cpu/m68000/m68000.h"
+#include "cpu/m6502/m6502.h"
+#include "machine/6522via.h"
+#include "machine/eeprompar.h"
+#include "machine/watchdog.h"
+#include "sound/pokey.h"
+#include "sound/ym2151.h"
+#include "video/atarimo.h"
+#include "speaker.h"
+>>>>>>> upstream/master
 
 
 
@@ -238,7 +251,10 @@ MACHINE_RESET_MEMBER(atarisy1_state,atarisy1)
 }
 
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> upstream/master
 /*************************************
  *
  *  Joystick I/O
@@ -309,6 +325,7 @@ READ16_MEMBER(atarisy1_state::trakball_r)
 		/* when reading the even ports, do a real analog port update */
 		if (which == 0)
 		{
+<<<<<<< HEAD
 			UINT8 posx,posy;
 
 			if (player == 0)
@@ -320,6 +337,19 @@ READ16_MEMBER(atarisy1_state::trakball_r)
 			{
 				posx = (INT8)ioport("IN2")->read();
 				posy = (INT8)ioport("IN3")->read();
+=======
+			uint8_t posx,posy;
+
+			if (player == 0)
+			{
+				posx = (int8_t)ioport("IN0")->read();
+				posy = (int8_t)ioport("IN1")->read();
+			}
+			else
+			{
+				posx = (int8_t)ioport("IN2")->read();
+				posy = (int8_t)ioport("IN3")->read();
+>>>>>>> upstream/master
 			}
 
 			m_cur[player][0] = posx + posy;
@@ -396,7 +426,11 @@ WRITE8_MEMBER(atarisy1_state::via_pb_w)
 
 	/* bit 4 is connected to an up-counter, clocked by SYCLKB */
 	data = 5 | ((data >> 3) & 2);
+<<<<<<< HEAD
 	m_tms->set_frequency(ATARI_CLOCK_14MHz/2 / (16 - data));
+=======
+	m_tms->set_unscaled_clock(ATARI_CLOCK_14MHz/2 / (16 - data));
+>>>>>>> upstream/master
 }
 
 
@@ -409,6 +443,7 @@ READ8_MEMBER(atarisy1_state::via_pb_r)
 
 /*************************************
  *
+<<<<<<< HEAD
  *  Sound LED handlers
  *
  *************************************/
@@ -416,6 +451,33 @@ READ8_MEMBER(atarisy1_state::via_pb_r)
 WRITE8_MEMBER(atarisy1_state::led_w)
 {
 	set_led_status(machine(), offset, ~data & 1);
+=======
+ *  LED and coin counter handlers
+ *
+ *************************************/
+
+WRITE_LINE_MEMBER(atarisy1_state::led_1_w)
+{
+	machine().output().set_led_value(0, !state);
+}
+
+
+WRITE_LINE_MEMBER(atarisy1_state::led_2_w)
+{
+	machine().output().set_led_value(1, !state);
+}
+
+
+WRITE_LINE_MEMBER(atarisy1_state::coin_counter_right_w)
+{
+	machine().bookkeeping().coin_counter_w(0, state);
+}
+
+
+WRITE_LINE_MEMBER(atarisy1_state::coin_counter_left_w)
+{
+	machine().bookkeeping().coin_counter_w(1, state);
+>>>>>>> upstream/master
 }
 
 
@@ -435,15 +497,25 @@ static ADDRESS_MAP_START( main_map, AS_PROGRAM, 16, atarisy1_state )
 	AM_RANGE(0x820000, 0x820001) AM_WRITE(atarisy1_yscroll_w) AM_SHARE("yscroll")
 	AM_RANGE(0x840000, 0x840001) AM_WRITE(atarisy1_priority_w)
 	AM_RANGE(0x860000, 0x860001) AM_WRITE(atarisy1_bankselect_w) AM_SHARE("bankselect")
+<<<<<<< HEAD
 	AM_RANGE(0x880000, 0x880001) AM_WRITE(watchdog_reset16_w)
 	AM_RANGE(0x8a0000, 0x8a0001) AM_WRITE(video_int_ack_w)
 	AM_RANGE(0x8c0000, 0x8c0001) AM_DEVWRITE("eeprom", atari_eeprom_device, unlock_write)
+=======
+	AM_RANGE(0x880000, 0x880001) AM_DEVWRITE("watchdog", watchdog_timer_device, reset16_w)
+	AM_RANGE(0x8a0000, 0x8a0001) AM_WRITE(video_int_ack_w)
+	AM_RANGE(0x8c0000, 0x8c0001) AM_DEVWRITE("eeprom", eeprom_parallel_28xx_device, unlock_write)
+>>>>>>> upstream/master
 	AM_RANGE(0x900000, 0x9fffff) AM_RAM
 	AM_RANGE(0xa00000, 0xa01fff) AM_RAM_DEVWRITE("playfield", tilemap_device, write) AM_SHARE("playfield")
 	AM_RANGE(0xa02000, 0xa02fff) AM_RAM_WRITE(atarisy1_spriteram_w) AM_SHARE("mob")
 	AM_RANGE(0xa03000, 0xa03fff) AM_RAM_DEVWRITE("alpha", tilemap_device, write) AM_SHARE("alpha")
 	AM_RANGE(0xb00000, 0xb007ff) AM_RAM_DEVWRITE("palette", palette_device, write) AM_SHARE("palette")
+<<<<<<< HEAD
 	AM_RANGE(0xf00000, 0xf00fff) AM_DEVREADWRITE8("eeprom", atari_eeprom_device, read, write, 0x00ff)
+=======
+	AM_RANGE(0xf00000, 0xf00fff) AM_DEVREADWRITE8("eeprom", eeprom_parallel_28xx_device, read, write, 0x00ff)
+>>>>>>> upstream/master
 	AM_RANGE(0xf20000, 0xf20007) AM_READ(trakball_r)
 	AM_RANGE(0xf40000, 0xf4001f) AM_READWRITE(joystick_r, joystick_w)
 	AM_RANGE(0xf60000, 0xf60003) AM_READ_PORT("F60000")
@@ -466,7 +538,11 @@ static ADDRESS_MAP_START( sound_map, AS_PROGRAM, 8, atarisy1_state )
 	AM_RANGE(0x1800, 0x1801) AM_DEVREADWRITE("ymsnd", ym2151_device, read, write)
 	AM_RANGE(0x1810, 0x1810) AM_DEVREADWRITE("soundcomm", atari_sound_comm_device, sound_command_r, sound_response_w)
 	AM_RANGE(0x1820, 0x1820) AM_READ(switch_6502_r)
+<<<<<<< HEAD
 	AM_RANGE(0x1824, 0x1825) AM_WRITE(led_w)
+=======
+	AM_RANGE(0x1820, 0x1827) AM_DEVWRITE("outlatch", ls259_device, write_d0)
+>>>>>>> upstream/master
 	AM_RANGE(0x1870, 0x187f) AM_DEVREADWRITE("pokey", pokey_device, read, write)
 	AM_RANGE(0x4000, 0xffff) AM_ROM
 ADDRESS_MAP_END
@@ -706,22 +782,43 @@ GFXDECODE_END
  *
  *************************************/
 
+<<<<<<< HEAD
 static MACHINE_CONFIG_START( atarisy1, atarisy1_state )
+=======
+static MACHINE_CONFIG_START( atarisy1 )
+>>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", M68010, ATARI_CLOCK_14MHz/2)
 	MCFG_CPU_PROGRAM_MAP(main_map)
 	MCFG_DEVICE_VBLANK_INT_DRIVER("screen", atarigen_state, video_int_gen)
 
+<<<<<<< HEAD
 	MCFG_SLAPSTIC_ADD("slapstic")
 
+=======
+>>>>>>> upstream/master
 	MCFG_CPU_ADD("audiocpu", M6502, ATARI_CLOCK_14MHz/8)
 	MCFG_CPU_PROGRAM_MAP(sound_map)
 
 	MCFG_MACHINE_START_OVERRIDE(atarisy1_state,atarisy1)
 	MCFG_MACHINE_RESET_OVERRIDE(atarisy1_state,atarisy1)
 
+<<<<<<< HEAD
 	MCFG_ATARI_EEPROM_2804_ADD("eeprom")
+=======
+	MCFG_EEPROM_2804_ADD("eeprom")
+	MCFG_EEPROM_28XX_LOCK_AFTER_WRITE(true)
+
+	MCFG_DEVICE_ADD("outlatch", LS259, 0) // 15H (TTL) or 14F (LSI)
+	MCFG_ADDRESSABLE_LATCH_Q0_OUT_CB(DEVWRITELINE("ymsnd", ym2151_device, reset_w))
+	MCFG_ADDRESSABLE_LATCH_Q4_OUT_CB(WRITELINE(atarisy1_state, led_1_w))
+	MCFG_ADDRESSABLE_LATCH_Q5_OUT_CB(WRITELINE(atarisy1_state, led_2_w))
+	MCFG_ADDRESSABLE_LATCH_Q6_OUT_CB(WRITELINE(atarisy1_state, coin_counter_right_w))
+	MCFG_ADDRESSABLE_LATCH_Q7_OUT_CB(WRITELINE(atarisy1_state, coin_counter_left_w))
+
+	MCFG_WATCHDOG_ADD("watchdog")
+>>>>>>> upstream/master
 
 	MCFG_TIMER_DRIVER_ADD("joystick_timer", atarisy1_state, delayed_joystick_int)
 	MCFG_TIMER_DRIVER_ADD("scan_timer", atarisy1_state, atarisy1_int3_callback)
@@ -775,6 +872,33 @@ static MACHINE_CONFIG_START( atarisy1, atarisy1_state )
 	MCFG_VIA6522_WRITEPB_HANDLER(WRITE8(atarisy1_state, via_pb_w))
 MACHINE_CONFIG_END
 
+<<<<<<< HEAD
+=======
+static MACHINE_CONFIG_DERIVED( marble, atarisy1 )
+	MCFG_SLAPSTIC_ADD("slapstic", 103)
+MACHINE_CONFIG_END
+
+static MACHINE_CONFIG_DERIVED( peterpak, atarisy1 )
+	MCFG_SLAPSTIC_ADD("slapstic", 107)
+MACHINE_CONFIG_END
+
+static MACHINE_CONFIG_DERIVED( indytemp, atarisy1 )
+	MCFG_SLAPSTIC_ADD("slapstic", 105)
+MACHINE_CONFIG_END
+
+static MACHINE_CONFIG_DERIVED( roadrunn, atarisy1 )
+	MCFG_SLAPSTIC_ADD("slapstic", 108)
+MACHINE_CONFIG_END
+
+static MACHINE_CONFIG_DERIVED( roadb109, atarisy1 )
+	MCFG_SLAPSTIC_ADD("slapstic", 109)
+MACHINE_CONFIG_END
+
+static MACHINE_CONFIG_DERIVED( roadb110, atarisy1 )
+	MCFG_SLAPSTIC_ADD("slapstic", 110)
+MACHINE_CONFIG_END
+
+>>>>>>> upstream/master
 
 
 /*************************************
@@ -2405,7 +2529,11 @@ ROM_END
 
 DRIVER_INIT_MEMBER(atarisy1_state,marble)
 {
+<<<<<<< HEAD
 	slapstic_configure(*m_maincpu, 0x080000, 0, 103);
+=======
+	slapstic_configure(*m_maincpu, 0x080000, 0, memregion("maincpu")->base() + 0x80000);
+>>>>>>> upstream/master
 
 	m_joystick_type = 0;    /* none */
 	m_trackball_type = 1;   /* rotated */
@@ -2414,7 +2542,11 @@ DRIVER_INIT_MEMBER(atarisy1_state,marble)
 
 DRIVER_INIT_MEMBER(atarisy1_state,peterpak)
 {
+<<<<<<< HEAD
 	slapstic_configure(*m_maincpu, 0x080000, 0, 107);
+=======
+	slapstic_configure(*m_maincpu, 0x080000, 0, memregion("maincpu")->base() + 0x80000);
+>>>>>>> upstream/master
 
 	m_joystick_type = 1;    /* digital */
 	m_trackball_type = 0;   /* none */
@@ -2423,7 +2555,11 @@ DRIVER_INIT_MEMBER(atarisy1_state,peterpak)
 
 DRIVER_INIT_MEMBER(atarisy1_state,indytemp)
 {
+<<<<<<< HEAD
 	slapstic_configure(*m_maincpu, 0x080000, 0, 105);
+=======
+	slapstic_configure(*m_maincpu, 0x080000, 0, memregion("maincpu")->base() + 0x80000);
+>>>>>>> upstream/master
 
 	m_joystick_type = 1;    /* digital */
 	m_trackball_type = 0;   /* none */
@@ -2432,13 +2568,18 @@ DRIVER_INIT_MEMBER(atarisy1_state,indytemp)
 
 DRIVER_INIT_MEMBER(atarisy1_state,roadrunn)
 {
+<<<<<<< HEAD
 	slapstic_configure(*m_maincpu, 0x080000, 0, 108);
+=======
+	slapstic_configure(*m_maincpu, 0x080000, 0, memregion("maincpu")->base() + 0x80000);
+>>>>>>> upstream/master
 
 	m_joystick_type = 2;    /* analog */
 	m_trackball_type = 0;   /* none */
 }
 
 
+<<<<<<< HEAD
 DRIVER_INIT_MEMBER(atarisy1_state,roadb109)
 {
 	slapstic_configure(*m_maincpu, 0x080000, 0, 109);
@@ -2451,6 +2592,11 @@ DRIVER_INIT_MEMBER(atarisy1_state,roadb109)
 DRIVER_INIT_MEMBER(atarisy1_state,roadb110)
 {
 	slapstic_configure(*m_maincpu, 0x080000, 0, 110);
+=======
+DRIVER_INIT_MEMBER(atarisy1_state,roadblst)
+{
+	slapstic_configure(*m_maincpu, 0x080000, 0, memregion("maincpu")->base() + 0x80000);
+>>>>>>> upstream/master
 
 	m_joystick_type = 3;    /* pedal */
 	m_trackball_type = 2;   /* steering wheel */
@@ -2464,6 +2610,7 @@ DRIVER_INIT_MEMBER(atarisy1_state,roadb110)
  *
  *************************************/
 
+<<<<<<< HEAD
 GAME( 1984, atarisy1, 0,        atarisy1, peterpak, atarisy1_state, peterpak, ROT0, "Atari Games", "Atari System 1 BIOS", MACHINE_IS_BIOS_ROOT )
 
 GAME( 1984, marble,   atarisy1, atarisy1, marble, atarisy1_state,   marble,   ROT0, "Atari Games", "Marble Madness (set 1)", 0 )
@@ -2496,3 +2643,37 @@ GAME( 1987, roadblstc,  roadblst, atarisy1, roadblst, atarisy1_state, roadb110, 
 GAME( 1987, roadblstcg, roadblst, atarisy1, roadblst, atarisy1_state, roadb109, ROT0, "Atari Games", "Road Blasters (cockpit, German, rev 1)", MACHINE_IMPERFECT_GRAPHICS )
 GAME( 1987, roadblstc1, roadblst, atarisy1, roadblst, atarisy1_state, roadb109, ROT0, "Atari Games", "Road Blasters (cockpit, rev 1)", MACHINE_IMPERFECT_GRAPHICS )
 GAME( 1987, roadblstgu, roadblst, atarisy1, roadblst, atarisy1_state, roadb109, ROT0, "Atari Games", "Road Blasters (upright, German, rev ?)", 0 )
+=======
+GAME( 1984, atarisy1,   0,        peterpak, peterpak, atarisy1_state, peterpak, ROT0, "Atari Games", "Atari System 1 BIOS", MACHINE_IS_BIOS_ROOT )
+
+GAME( 1984, marble,     atarisy1, marble,   marble,   atarisy1_state, marble,   ROT0, "Atari Games", "Marble Madness (set 1)", 0 )
+GAME( 1984, marble2,    marble,   marble,   marble,   atarisy1_state, marble,   ROT0, "Atari Games", "Marble Madness (set 2)", 0 )
+GAME( 1984, marble3,    marble,   marble,   marble,   atarisy1_state, marble,   ROT0, "Atari Games", "Marble Madness (set 3)", 0 )
+GAME( 1984, marble4,    marble,   marble,   marble,   atarisy1_state, marble,   ROT0, "Atari Games", "Marble Madness (set 4)", 0 )
+GAME( 1984, marble5,    marble,   marble,   marble,   atarisy1_state, marble,   ROT0, "Atari Games", "Marble Madness (set 5 - LSI Cartridge)", 0 )
+
+GAME( 1984, peterpak,   atarisy1, peterpak, peterpak, atarisy1_state, peterpak, ROT0, "Atari Games", "Peter Pack Rat", 0 )
+
+GAME( 1985, indytemp,   atarisy1, indytemp, indytemp, atarisy1_state, indytemp, ROT0, "Atari Games", "Indiana Jones and the Temple of Doom (set 1)", 0 )
+GAME( 1985, indytemp2,  indytemp, indytemp, indytemp, atarisy1_state, indytemp, ROT0, "Atari Games", "Indiana Jones and the Temple of Doom (set 2)", 0 )
+GAME( 1985, indytemp3,  indytemp, indytemp, indytemp, atarisy1_state, indytemp, ROT0, "Atari Games", "Indiana Jones and the Temple of Doom (set 3)", 0 )
+GAME( 1985, indytemp4,  indytemp, indytemp, indytemp, atarisy1_state, indytemp, ROT0, "Atari Games", "Indiana Jones and the Temple of Doom (set 4)", 0 )
+GAME( 1985, indytempd,  indytemp, indytemp, indytemp, atarisy1_state, indytemp, ROT0, "Atari Games", "Indiana Jones and the Temple of Doom (German)", 0 )
+GAME( 1985, indytempc,  indytemp, indytemp, indytemc, atarisy1_state, indytemp, ROT0, "Atari Games", "Indiana Jones and the Temple of Doom (Cocktail)", MACHINE_IMPERFECT_GRAPHICS )
+
+GAME( 1985, roadrunn,   atarisy1, roadrunn, roadrunn, atarisy1_state, roadrunn, ROT0, "Atari Games", "Road Runner (rev 2)", 0 )
+GAME( 1985, roadrunn2,  roadrunn, roadrunn, roadrunn, atarisy1_state, roadrunn, ROT0, "Atari Games", "Road Runner (rev 1+)", 0 )
+GAME( 1985, roadrunn1,  roadrunn, roadrunn, roadrunn, atarisy1_state, roadrunn, ROT0, "Atari Games", "Road Runner (rev 1)", 0 )
+
+GAME( 1987, roadblst,   atarisy1, roadb110, roadblst, atarisy1_state, roadblst, ROT0, "Atari Games", "Road Blasters (upright, rev 4)", 0 )
+GAME( 1987, roadblstg,  roadblst, roadb109, roadblst, atarisy1_state, roadblst, ROT0, "Atari Games", "Road Blasters (upright, German, rev 3)", 0 )
+GAME( 1987, roadblst3,  roadblst, roadb109, roadblst, atarisy1_state, roadblst, ROT0, "Atari Games", "Road Blasters (upright, rev 3)", 0 )
+GAME( 1987, roadblstg2, roadblst, roadb110, roadblst, atarisy1_state, roadblst, ROT0, "Atari Games", "Road Blasters (upright, German, rev 2)", 0 )
+GAME( 1987, roadblst2,  roadblst, roadb110, roadblst, atarisy1_state, roadblst, ROT0, "Atari Games", "Road Blasters (upright, rev 2)", 0 )
+GAME( 1987, roadblstg1, roadblst, roadb109, roadblst, atarisy1_state, roadblst, ROT0, "Atari Games", "Road Blasters (upright, German, rev 1)", 0 )
+GAME( 1987, roadblst1,  roadblst, roadb109, roadblst, atarisy1_state, roadblst, ROT0, "Atari Games", "Road Blasters (upright, rev 1)", 0 )
+GAME( 1987, roadblstc,  roadblst, roadb110, roadblst, atarisy1_state, roadblst, ROT0, "Atari Games", "Road Blasters (cockpit, rev 2)", 0 )
+GAME( 1987, roadblstcg, roadblst, roadb109, roadblst, atarisy1_state, roadblst, ROT0, "Atari Games", "Road Blasters (cockpit, German, rev 1)", MACHINE_IMPERFECT_GRAPHICS )
+GAME( 1987, roadblstc1, roadblst, roadb109, roadblst, atarisy1_state, roadblst, ROT0, "Atari Games", "Road Blasters (cockpit, rev 1)", MACHINE_IMPERFECT_GRAPHICS )
+GAME( 1987, roadblstgu, roadblst, roadb109, roadblst, atarisy1_state, roadblst, ROT0, "Atari Games", "Road Blasters (upright, German, rev ?)", 0 )
+>>>>>>> upstream/master

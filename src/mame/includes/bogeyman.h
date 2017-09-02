@@ -32,11 +32,19 @@ public:
 	required_device<ay8910_device> m_ay2;
 
 	/* memory pointers */
+<<<<<<< HEAD
 	required_shared_ptr<UINT8> m_videoram;
 	required_shared_ptr<UINT8> m_videoram2;
 	required_shared_ptr<UINT8> m_colorram;
 	required_shared_ptr<UINT8> m_colorram2;
 	required_shared_ptr<UINT8> m_spriteram;
+=======
+	required_shared_ptr<uint8_t> m_videoram;
+	required_shared_ptr<uint8_t> m_videoram2;
+	required_shared_ptr<uint8_t> m_colorram;
+	required_shared_ptr<uint8_t> m_colorram2;
+	required_shared_ptr<uint8_t> m_spriteram;
+>>>>>>> upstream/master
 
 	/* video-related */
 	tilemap_t    *m_bg_tilemap;
@@ -58,11 +66,20 @@ public:
 	TILE_GET_INFO_MEMBER(get_bg_tile_info);
 	TILE_GET_INFO_MEMBER(get_fg_tile_info);
 
+<<<<<<< HEAD
 	virtual void machine_start();
 	virtual void machine_reset();
 	virtual void video_start();
 
 	DECLARE_PALETTE_INIT(bogeyman);
 	UINT32 screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
+=======
+	virtual void machine_start() override;
+	virtual void machine_reset() override;
+	virtual void video_start() override;
+
+	DECLARE_PALETTE_INIT(bogeyman);
+	uint32_t screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
+>>>>>>> upstream/master
 	void draw_sprites(bitmap_ind16 &bitmap, const rectangle &cliprect);
 };

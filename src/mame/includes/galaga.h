@@ -1,8 +1,21 @@
 // license:BSD-3-Clause
 // copyright-holders:Nicola Salmoria
+<<<<<<< HEAD
 #include "sound/discrete.h"
 #include "sound/namco.h"
 #include "sound/samples.h"
+=======
+#ifndef MAME_INCLUDES_GALAGA_H
+#define MAME_INCLUDES_GALAGA_H
+
+#pragma once
+
+#include "machine/74259.h"
+#include "sound/discrete.h"
+#include "sound/namco.h"
+#include "sound/samples.h"
+#include "screen.h"
+>>>>>>> upstream/master
 
 class galaga_state : public driver_device
 {
@@ -13,7 +26,11 @@ public:
 		m_galaga_ram1(*this, "galaga_ram1"),
 		m_galaga_ram2(*this, "galaga_ram2"),
 		m_galaga_ram3(*this, "galaga_ram3"),
+<<<<<<< HEAD
 		m_galaga_starcontrol(*this, "starcontrol"),
+=======
+		m_videolatch(*this, "videolatch"),
+>>>>>>> upstream/master
 		m_maincpu(*this, "maincpu"),
 		m_subcpu(*this, "sub"),
 		m_subcpu2(*this, "sub2"),
@@ -23,11 +40,19 @@ public:
 		m_palette(*this, "palette") { }
 
 	/* memory pointers */
+<<<<<<< HEAD
 	optional_shared_ptr<UINT8> m_videoram;
 	optional_shared_ptr<UINT8> m_galaga_ram1;
 	optional_shared_ptr<UINT8> m_galaga_ram2;
 	optional_shared_ptr<UINT8> m_galaga_ram3;
 	optional_shared_ptr<UINT8> m_galaga_starcontrol;    // 6 addresses
+=======
+	optional_shared_ptr<uint8_t> m_videoram;
+	optional_shared_ptr<uint8_t> m_galaga_ram1;
+	optional_shared_ptr<uint8_t> m_galaga_ram2;
+	optional_shared_ptr<uint8_t> m_galaga_ram3;
+	optional_device<ls259_device> m_videolatch; // not present on Xevious
+>>>>>>> upstream/master
 	required_device<cpu_device> m_maincpu;
 	required_device<cpu_device> m_subcpu;
 	required_device<cpu_device> m_subcpu2;
@@ -36,6 +61,7 @@ public:
 	required_device<screen_device> m_screen;
 	required_device<palette_device> m_palette;
 	emu_timer *m_cpu3_interrupt_timer;
+<<<<<<< HEAD
 	UINT8 m_custom_mod;
 
 	/* machine state */
@@ -43,6 +69,14 @@ public:
 	UINT32 m_stars_scrolly;
 
 	UINT32 m_galaga_gfxbank; // used by catsbee
+=======
+
+	/* machine state */
+	uint32_t m_stars_scrollx;
+	uint32_t m_stars_scrolly;
+
+	uint32_t m_galaga_gfxbank; // used by catsbee
+>>>>>>> upstream/master
 
 	/* devices */
 
@@ -52,6 +86,7 @@ public:
 	tilemap_t *m_fg_tilemap;
 	tilemap_t *m_bg_tilemap;
 
+<<<<<<< HEAD
 	UINT8 m_main_irq_mask;
 	UINT8 m_sub_irq_mask;
 	UINT8 m_sub2_nmi_mask;
@@ -60,11 +95,26 @@ public:
 	DECLARE_WRITE8_MEMBER(bosco_latch_w);
 	DECLARE_WRITE8_MEMBER(galaga_videoram_w);
 	DECLARE_WRITE8_MEMBER(gatsbee_bank_w);
+=======
+	uint8_t m_main_irq_mask;
+	uint8_t m_sub_irq_mask;
+	uint8_t m_sub2_nmi_mask;
+	DECLARE_READ8_MEMBER(bosco_dsw_r);
+	DECLARE_WRITE_LINE_MEMBER(flip_screen_w);
+	DECLARE_WRITE_LINE_MEMBER(irq1_clear_w);
+	DECLARE_WRITE_LINE_MEMBER(irq2_clear_w);
+	DECLARE_WRITE_LINE_MEMBER(nmion_w);
+	DECLARE_WRITE8_MEMBER(galaga_videoram_w);
+	DECLARE_WRITE_LINE_MEMBER(gatsbee_bank_w);
+>>>>>>> upstream/master
 	DECLARE_WRITE8_MEMBER(out_0);
 	DECLARE_WRITE8_MEMBER(out_1);
 	DECLARE_READ8_MEMBER(namco_52xx_rom_r);
 	DECLARE_READ8_MEMBER(namco_52xx_si_r);
+<<<<<<< HEAD
 	DECLARE_READ8_MEMBER(custom_mod_r);
+=======
+>>>>>>> upstream/master
 	DECLARE_DRIVER_INIT(galaga);
 	DECLARE_DRIVER_INIT(gatsbee);
 	TILEMAP_MAPPER_MEMBER(tilemap_scan);
@@ -73,23 +123,36 @@ public:
 	DECLARE_MACHINE_RESET(galaga);
 	DECLARE_VIDEO_START(galaga);
 	DECLARE_PALETTE_INIT(galaga);
+<<<<<<< HEAD
 	UINT32 screen_update_galaga(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
 	void screen_eof_galaga(screen_device &screen, bool state);
+=======
+	uint32_t screen_update_galaga(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
+	DECLARE_WRITE_LINE_MEMBER(screen_vblank_galaga);
+>>>>>>> upstream/master
 	INTERRUPT_GEN_MEMBER(main_vblank_irq);
 	INTERRUPT_GEN_MEMBER(sub_vblank_irq);
 	TIMER_CALLBACK_MEMBER(cpu3_interrupt_callback);
 	void draw_sprites(bitmap_ind16 &bitmap, const rectangle &cliprect );
 	void draw_stars(bitmap_ind16 &bitmap, const rectangle &cliprect );
+<<<<<<< HEAD
 	void bosco_latch_reset();
 	struct star
 	{
 		UINT16 x,y;
 		UINT8 col,set;
+=======
+	struct star
+	{
+		uint16_t x,y;
+		uint8_t col,set;
+>>>>>>> upstream/master
 	};
 
 	static struct star m_star_seed_tab[];
 };
 
+<<<<<<< HEAD
 class xevious_state : public galaga_state
 {
 public:
@@ -236,3 +299,9 @@ public:
 
 DISCRETE_SOUND_EXTERN( bosco );
 DISCRETE_SOUND_EXTERN( galaga );
+=======
+DISCRETE_SOUND_EXTERN( galaga );
+DISCRETE_SOUND_EXTERN( bosco );
+
+#endif // MAME_INCLUDES_GALAGA_H
+>>>>>>> upstream/master

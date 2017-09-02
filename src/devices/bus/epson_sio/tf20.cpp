@@ -12,6 +12,10 @@
 
 **********************************************************************/
 
+<<<<<<< HEAD
+=======
+#include "emu.h"
+>>>>>>> upstream/master
 #include "tf20.h"
 
 #define XTAL_CR1    XTAL_8MHz
@@ -22,7 +26,11 @@
 //  DEVICE DEFINITIONS
 //**************************************************************************
 
+<<<<<<< HEAD
 const device_type EPSON_TF20 = &device_creator<epson_tf20_device>;
+=======
+DEFINE_DEVICE_TYPE(EPSON_TF20, epson_tf20_device, "epson_tf20", "EPSON TF-20 Dual Floppy Disk Drive")
+>>>>>>> upstream/master
 
 //-------------------------------------------------
 //  address maps
@@ -52,7 +60,11 @@ ROM_START( tf20 )
 	ROM_LOAD("tfx.15e", 0x0000, 0x0800, CRC(af34f084) SHA1(c9bdf393f757ba5d8f838108ceb2b079be1d616e))
 ROM_END
 
+<<<<<<< HEAD
 const rom_entry *epson_tf20_device::device_rom_region() const
+=======
+const tiny_rom_entry *epson_tf20_device::device_rom_region() const
+>>>>>>> upstream/master
 {
 	return ROM_NAME( tf20 );
 }
@@ -75,19 +87,31 @@ ioport_constructor epson_tf20_device::device_input_ports() const
 }
 
 //-------------------------------------------------
+<<<<<<< HEAD
 //  machine_config_additions - device-specific
 //  machine configurations
+=======
+//  device_add_mconfig - add device configuration
+>>>>>>> upstream/master
 //-------------------------------------------------
 
 static SLOT_INTERFACE_START( tf20_floppies )
 	SLOT_INTERFACE( "sd320", EPSON_SD_320 )
 SLOT_INTERFACE_END
 
+<<<<<<< HEAD
 static MACHINE_CONFIG_FRAGMENT( tf20 )
 	MCFG_CPU_ADD("19b", Z80, XTAL_CR1 / 2) /* uPD780C */
 	MCFG_CPU_PROGRAM_MAP(cpu_mem)
 	MCFG_CPU_IO_MAP(cpu_io)
 	MCFG_CPU_IRQ_ACKNOWLEDGE_DEVICE(DEVICE_SELF, epson_tf20_device,irq_callback)
+=======
+MACHINE_CONFIG_MEMBER( epson_tf20_device::device_add_mconfig )
+	MCFG_CPU_ADD("19b", Z80, XTAL_CR1 / 2) /* uPD780C */
+	MCFG_CPU_PROGRAM_MAP(cpu_mem)
+	MCFG_CPU_IO_MAP(cpu_io)
+	MCFG_CPU_IRQ_ACKNOWLEDGE_DEVICE(DEVICE_SELF, epson_tf20_device, irq_callback)
+>>>>>>> upstream/master
 
 	// 64k internal ram
 	MCFG_RAM_ADD("ram")
@@ -107,16 +131,23 @@ static MACHINE_CONFIG_FRAGMENT( tf20 )
 	MCFG_FLOPPY_DRIVE_ADD("5a:1", tf20_floppies, "sd320", floppy_image_device::default_floppy_formats)
 
 	// serial interface to another device
+<<<<<<< HEAD
 	MCFG_EPSON_SIO_ADD("sio", NULL)
+=======
+	MCFG_EPSON_SIO_ADD("sio", nullptr)
+>>>>>>> upstream/master
 	MCFG_EPSON_SIO_RX(DEVWRITELINE(DEVICE_SELF, epson_tf20_device, rxc_w))
 	MCFG_EPSON_SIO_PIN(DEVWRITELINE(DEVICE_SELF, epson_tf20_device, pinc_w))
 MACHINE_CONFIG_END
 
+<<<<<<< HEAD
 machine_config_constructor epson_tf20_device::device_mconfig_additions() const
 {
 	return MACHINE_CONFIG_NAME( tf20 );
 }
 
+=======
+>>>>>>> upstream/master
 
 //**************************************************************************
 //  LIVE DEVICE
@@ -126,8 +157,13 @@ machine_config_constructor epson_tf20_device::device_mconfig_additions() const
 //  epson_tf20_device - constructor
 //-------------------------------------------------
 
+<<<<<<< HEAD
 epson_tf20_device::epson_tf20_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock) :
 	device_t(mconfig, EPSON_TF20, "EPSON TF-20 Dual Floppy Disk Drive", tag, owner, clock, "epson_tf20", __FILE__),
+=======
+epson_tf20_device::epson_tf20_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock) :
+	device_t(mconfig, EPSON_TF20, tag, owner, clock),
+>>>>>>> upstream/master
 	device_epson_sio_interface(mconfig, *this),
 	m_cpu(*this, "19b"),
 	m_ram(*this, "ram"),
@@ -149,8 +185,13 @@ void epson_tf20_device::device_start()
 	if (!m_ram->started())
 		throw device_missing_dependencies();
 
+<<<<<<< HEAD
 	m_timer_serial = timer_alloc(0, NULL);
 	m_timer_tc = timer_alloc(1, NULL);
+=======
+	m_timer_serial = timer_alloc(0, nullptr);
+	m_timer_tc = timer_alloc(1, nullptr);
+>>>>>>> upstream/master
 
 	m_fd0 = subdevice<floppy_connector>("5a:0")->get_device();
 	m_fd1 = subdevice<floppy_connector>("5a:1")->get_device();
@@ -174,7 +215,11 @@ void epson_tf20_device::device_reset()
 	m_mpsc->rxb_w(1);
 
 	// enable rom
+<<<<<<< HEAD
 	m_cpu->space(AS_PROGRAM).install_rom(0x0000, 0x07ff, 0, 0x7800, memregion("rom")->base());
+=======
+	m_cpu->space(AS_PROGRAM).install_rom(0x0000, 0x07ff, 0x7800, memregion("rom")->base());
+>>>>>>> upstream/master
 }
 
 //-------------------------------------------------

@@ -8,10 +8,17 @@
 
 ***************************************************************************/
 
+<<<<<<< HEAD
 #pragma once
 
 #ifndef __EEPROMPAR_H__
 #define __EEPROMPAR_H__
+=======
+#ifndef MAME_MACHINE_EEPROMPAR_H
+#define MAME_MACHINE_EEPROMPAR_H
+
+#pragma once
+>>>>>>> upstream/master
 
 #include "eeprom.h"
 
@@ -38,6 +45,12 @@
 #define MCFG_EEPROM_28040_ADD(_tag) \
 	MCFG_DEVICE_ADD(_tag, EEPROM_PARALLEL_28040, 0)
 
+<<<<<<< HEAD
+=======
+// true when external circuit is used to lock EEPROM after every write
+#define MCFG_EEPROM_28XX_LOCK_AFTER_WRITE(_lock) \
+	eeprom_parallel_28xx_device::static_set_lock_after_write(*device, _lock);
+>>>>>>> upstream/master
 
 
 //**************************************************************************
@@ -51,6 +64,7 @@ class eeprom_parallel_base_device : public eeprom_base_device
 {
 protected:
 	// construction/destruction
+<<<<<<< HEAD
 	eeprom_parallel_base_device(const machine_config &mconfig, device_type devtype, const char *name, const char *tag, device_t *owner, const char *shortname, const char *file);
 
 public:
@@ -59,6 +73,13 @@ protected:
 	// device-level overrides
 	virtual void device_start();
 	virtual void device_reset();
+=======
+	eeprom_parallel_base_device(const machine_config &mconfig, device_type devtype, const char *tag, device_t *owner);
+
+	// device-level overrides
+	virtual void device_start() override;
+	virtual void device_reset() override;
+>>>>>>> upstream/master
 };
 
 
@@ -67,6 +88,7 @@ protected:
 
 class eeprom_parallel_28xx_device : public eeprom_parallel_base_device
 {
+<<<<<<< HEAD
 protected:
 	// construction/destruction
 	eeprom_parallel_28xx_device(const machine_config &mconfig, device_type devtype, const char *name, const char *tag, device_t *owner, const char *shortname, const char *file);
@@ -76,6 +98,36 @@ public:
 	// they are handled reasonably
 	DECLARE_WRITE8_MEMBER(write);
 	DECLARE_READ8_MEMBER(read);
+=======
+public:
+	// static configuration helpers
+	static void static_set_lock_after_write(device_t &device, bool lock);
+
+	// read/write data lines
+	DECLARE_WRITE8_MEMBER(write);
+	DECLARE_READ8_MEMBER(read);
+
+	// control lines
+	DECLARE_WRITE_LINE_MEMBER(oe_w);
+	DECLARE_WRITE8_MEMBER(unlock_write);
+	DECLARE_WRITE16_MEMBER(unlock_write);
+	DECLARE_WRITE32_MEMBER(unlock_write);
+
+protected:
+	// construction/destruction
+	eeprom_parallel_28xx_device(const machine_config &mconfig, device_type devtype, const char *tag, device_t *owner);
+
+	// device-level overrides
+	virtual void device_start() override;
+	virtual void device_reset() override;
+
+private:
+	// configuration state
+	bool            m_lock_after_write;         // lock EEPROM after writes
+
+	// runtime state
+	int             m_oe;                       // state of OE line (-1 = synchronized with read)
+>>>>>>> upstream/master
 };
 
 
@@ -89,9 +141,16 @@ public:
 class eeprom_parallel_##_lowercase##_device : public eeprom_parallel_##_baseclass##_device \
 { \
 public: \
+<<<<<<< HEAD
 	eeprom_parallel_##_lowercase##_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock); \
 }; \
 extern const device_type EEPROM_PARALLEL_##_uppercase;
+=======
+	eeprom_parallel_##_lowercase##_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock); \
+}; \
+DECLARE_DEVICE_TYPE(EEPROM_PARALLEL_##_uppercase, eeprom_parallel_##_lowercase##_device)
+
+>>>>>>> upstream/master
 // standard 28XX class of 8-bit EEPROMs
 DECLARE_PARALLEL_EEPROM_DEVICE(28xx, 2804, 2804)
 DECLARE_PARALLEL_EEPROM_DEVICE(28xx, 2816, 2816)
@@ -102,4 +161,8 @@ DECLARE_PARALLEL_EEPROM_DEVICE(28xx, 28010, 28010)
 DECLARE_PARALLEL_EEPROM_DEVICE(28xx, 28020, 28020)
 DECLARE_PARALLEL_EEPROM_DEVICE(28xx, 28040, 28040)
 
+<<<<<<< HEAD
 #endif
+=======
+#endif // MAME_MACHINE_EEPROMPAR_H
+>>>>>>> upstream/master

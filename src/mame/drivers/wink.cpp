@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 // license:???
 // copyright-holders:HIGHWAYMAN, Nicola Salmoria, Pierpaolo Prazzoli
 /*
@@ -5,6 +6,14 @@
 
     driver by HIGHWAYMAN, Nicola Salmoria, Pierpaolo Prazzoli
 
+=======
+// license:BSD-3-Clause
+// copyright-holders:Nicola Salmoria, Pierpaolo Prazzoli
+// thanks-to:HIGHWAYMAN
+/*
+    Wink    -   (c) 1985 Midcoin
+
+>>>>>>> upstream/master
     TODO:
     - better interrupts?
     - finish sound
@@ -15,8 +24,16 @@
 
 #include "emu.h"
 #include "cpu/z80/z80.h"
+<<<<<<< HEAD
 #include "sound/ay8910.h"
 #include "machine/nvram.h"
+=======
+#include "machine/gen_latch.h"
+#include "machine/nvram.h"
+#include "sound/ay8910.h"
+#include "screen.h"
+#include "speaker.h"
+>>>>>>> upstream/master
 
 
 class wink_state : public driver_device
@@ -33,11 +50,19 @@ public:
 	required_device<cpu_device> m_audiocpu;
 	required_device<gfxdecode_device> m_gfxdecode;
 
+<<<<<<< HEAD
 	required_shared_ptr<UINT8> m_videoram;
 
 	tilemap_t *m_bg_tilemap;
 	UINT8 m_sound_flag;
 	UINT8 m_tile_bank;
+=======
+	required_shared_ptr<uint8_t> m_videoram;
+
+	tilemap_t *m_bg_tilemap;
+	uint8_t m_sound_flag;
+	uint8_t m_tile_bank;
+>>>>>>> upstream/master
 
 	DECLARE_WRITE8_MEMBER(bgram_w);
 	DECLARE_WRITE8_MEMBER(player_mux_w);
@@ -53,11 +78,19 @@ public:
 	TILE_GET_INFO_MEMBER(get_bg_tile_info);
 
 	DECLARE_DRIVER_INIT(wink);
+<<<<<<< HEAD
 	virtual void machine_start();
 	virtual void machine_reset();
 	virtual void video_start();
 
 	UINT32 screen_update_wink(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
+=======
+	virtual void machine_start() override;
+	virtual void machine_reset() override;
+	virtual void video_start() override;
+
+	uint32_t screen_update_wink(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
+>>>>>>> upstream/master
 
 	INTERRUPT_GEN_MEMBER(wink_sound);
 };
@@ -65,7 +98,11 @@ public:
 
 TILE_GET_INFO_MEMBER(wink_state::get_bg_tile_info)
 {
+<<<<<<< HEAD
 	UINT8 *videoram = m_videoram;
+=======
+	uint8_t *videoram = m_videoram;
+>>>>>>> upstream/master
 	int code = videoram[tile_index];
 	code |= 0x200 * m_tile_bank;
 
@@ -80,10 +117,17 @@ TILE_GET_INFO_MEMBER(wink_state::get_bg_tile_info)
 
 void wink_state::video_start()
 {
+<<<<<<< HEAD
 	m_bg_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(wink_state::get_bg_tile_info),this), TILEMAP_SCAN_ROWS, 8, 8, 32, 32);
 }
 
 UINT32 wink_state::screen_update_wink(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+=======
+	m_bg_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(wink_state::get_bg_tile_info),this), TILEMAP_SCAN_ROWS, 8, 8, 32, 32);
+}
+
+uint32_t wink_state::screen_update_wink(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+>>>>>>> upstream/master
 {
 	m_bg_tilemap->draw(screen, bitmap, cliprect, 0, 0);
 	return 0;
@@ -91,7 +135,11 @@ UINT32 wink_state::screen_update_wink(screen_device &screen, bitmap_ind16 &bitma
 
 WRITE8_MEMBER(wink_state::bgram_w)
 {
+<<<<<<< HEAD
 	UINT8 *videoram = m_videoram;
+=======
+	uint8_t *videoram = m_videoram;
+>>>>>>> upstream/master
 	videoram[offset] = data;
 	m_bg_tilemap->mark_tile_dirty(offset);
 }
@@ -110,7 +158,11 @@ WRITE8_MEMBER(wink_state::tile_banking_w)
 
 WRITE8_MEMBER(wink_state::wink_coin_counter_w)
 {
+<<<<<<< HEAD
 	coin_counter_w(machine(), offset,data & 1);
+=======
+	machine().bookkeeping().coin_counter_w(offset,data & 1);
+>>>>>>> upstream/master
 }
 
 READ8_MEMBER(wink_state::analog_port_r)
@@ -172,7 +224,11 @@ static ADDRESS_MAP_START( wink_io, AS_IO, 8, wink_state )
 //  AM_RANGE(0x23, 0x23) AM_WRITENOP                //?
 //  AM_RANGE(0x24, 0x24) AM_WRITENOP                //cab Knocker like in q-bert!
 	AM_RANGE(0x25, 0x27) AM_WRITE(wink_coin_counter_w)
+<<<<<<< HEAD
 	AM_RANGE(0x40, 0x40) AM_WRITE(soundlatch_byte_w)
+=======
+	AM_RANGE(0x40, 0x40) AM_DEVWRITE("soundlatch", generic_latch_8_device, write)
+>>>>>>> upstream/master
 	AM_RANGE(0x60, 0x60) AM_WRITE(sound_irq_w)
 	AM_RANGE(0x80, 0x80) AM_READ(analog_port_r)
 	AM_RANGE(0xa0, 0xa0) AM_READ(player_inputs_r)
@@ -189,7 +245,11 @@ ADDRESS_MAP_END
 static ADDRESS_MAP_START( wink_sound_map, AS_PROGRAM, 8, wink_state )
 	AM_RANGE(0x0000, 0x1fff) AM_ROM
 	AM_RANGE(0x4000, 0x43ff) AM_RAM
+<<<<<<< HEAD
 	AM_RANGE(0x8000, 0x8000) AM_READ(soundlatch_byte_r)
+=======
+	AM_RANGE(0x8000, 0x8000) AM_DEVREAD("soundlatch", generic_latch_8_device, read)
+>>>>>>> upstream/master
 ADDRESS_MAP_END
 
 static ADDRESS_MAP_START( wink_sound_io, AS_IO, 8, wink_state )
@@ -352,7 +412,11 @@ void wink_state::machine_reset()
 	m_sound_flag = 0;
 }
 
+<<<<<<< HEAD
 static MACHINE_CONFIG_START( wink, wink_state )
+=======
+static MACHINE_CONFIG_START( wink )
+>>>>>>> upstream/master
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", Z80, 12000000 / 4)
 	MCFG_CPU_PROGRAM_MAP(wink_map)
@@ -382,6 +446,12 @@ static MACHINE_CONFIG_START( wink, wink_state )
 
 	/* sound hardware */
 	MCFG_SPEAKER_STANDARD_MONO("mono")
+<<<<<<< HEAD
+=======
+
+	MCFG_GENERIC_LATCH_8_ADD("soundlatch")
+
+>>>>>>> upstream/master
 	MCFG_SOUND_ADD("aysnd", AY8912, 12000000 / 8)
 	MCFG_AY8910_PORT_A_READ_CB(READ8(wink_state, sound_r))
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 1.0)
@@ -423,9 +493,15 @@ ROM_END
 
 DRIVER_INIT_MEMBER(wink_state,wink)
 {
+<<<<<<< HEAD
 	UINT32 i;
 	UINT8 *ROM = memregion("maincpu")->base();
 	dynamic_buffer buffer(0x8000);
+=======
+	uint32_t i;
+	uint8_t *ROM = memregion("maincpu")->base();
+	std::vector<uint8_t> buffer(0x8000);
+>>>>>>> upstream/master
 
 	// protection module reverse engineered by HIGHWAYMAN
 

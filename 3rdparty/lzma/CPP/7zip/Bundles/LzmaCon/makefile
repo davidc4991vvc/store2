@@ -2,7 +2,11 @@ PROG = lzma.exe
 MY_CONSOLE = 1
 CFLAGS = $(CFLAGS)
 
+<<<<<<< HEAD
 LZMA_OBJS = \
+=======
+CURRENT_OBJS = \
+>>>>>>> upstream/master
   $O\LzmaAlone.obj \
 
 COMPRESS_OBJS = \
@@ -13,8 +17,15 @@ COMPRESS_OBJS = \
 COMMON_OBJS = \
   $O\CommandLineParser.obj \
   $O\CRC.obj \
+<<<<<<< HEAD
   $O\IntToString.obj \
   $O\MyString.obj \
+=======
+  $O\CrcReg.obj \
+  $O\IntToString.obj \
+  $O\MyString.obj \
+  $O\NewHandler.obj \
+>>>>>>> upstream/master
   $O\StringConvert.obj \
   $O\StringToInt.obj \
   $O\MyVector.obj
@@ -54,6 +65,7 @@ C_OBJS = \
 
 !include "../../Crc.mak"
 
+<<<<<<< HEAD
 OBJS = \
   $O\StdAfx.obj \
   $(LZMA_OBJS) \
@@ -87,3 +99,6 @@ $(C_OBJS): ../../../../C/$(*B).c
 	$(COMPL_O2)
 
 !include "../../Asm.mak"
+=======
+!include "../../7zip.mak"
+>>>>>>> upstream/master

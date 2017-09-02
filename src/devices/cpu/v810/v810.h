@@ -1,9 +1,18 @@
+<<<<<<< HEAD
 // license:LGPL-2.1+
 // copyright-holders:Angelo Salese, Tomasz Slanina
 #pragma once
 
 #ifndef __V810_H__
 #define __V810_H__
+=======
+// license:BSD-3-Clause
+// copyright-holders:Angelo Salese, Tomasz Slanina
+#ifndef MAME_CPU_V810_V810_H
+#define MAME_CPU_V810_V810_H
+
+#pragma once
+>>>>>>> upstream/master
 
 
 enum
@@ -83,6 +92,7 @@ class v810_device : public cpu_device
 {
 public:
 	// construction/destruction
+<<<<<<< HEAD
 	v810_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
 
 protected:
@@ -110,11 +120,41 @@ protected:
 
 private:
 	typedef UINT32 (v810_device::*opcode_func)(UINT32 op);
+=======
+	v810_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
+
+protected:
+	// device-level overrides
+	virtual void device_start() override;
+	virtual void device_reset() override;
+
+	// device_execute_interface overrides
+	virtual uint32_t execute_min_cycles() const override { return 3; }
+	virtual uint32_t execute_max_cycles() const override { return 6; }
+	virtual uint32_t execute_input_lines() const override { return 16; }
+	virtual void execute_run() override;
+	virtual void execute_set_input(int inputnum, int state) override;
+
+	// device_memory_interface overrides
+	virtual space_config_vector memory_space_config() const override;
+
+	// device_state_interface overrides
+	virtual void state_string_export(const device_state_entry &entry, std::string &str) const override;
+
+	// device_disasm_interface overrides
+	virtual uint32_t disasm_min_opcode_bytes() const override { return 2; }
+	virtual uint32_t disasm_max_opcode_bytes() const override { return 4; }
+	virtual offs_t disasm_disassemble(std::ostream &stream, offs_t pc, const uint8_t *oprom, const uint8_t *opram, uint32_t options) override;
+
+private:
+	typedef uint32_t (v810_device::*opcode_func)(uint32_t op);
+>>>>>>> upstream/master
 	static const opcode_func s_OpCodeTable[64];
 
 	address_space_config m_program_config;
 	address_space_config m_io_config;
 
+<<<<<<< HEAD
 	UINT32 m_reg[65];
 	UINT8 m_irq_line;
 	UINT8 m_irq_state;
@@ -202,3 +242,90 @@ extern const device_type V810;
 
 
 #endif /* __V810_H__ */
+=======
+	uint32_t m_reg[65];
+	uint8_t m_irq_line;
+	uint8_t m_irq_state;
+	uint8_t m_nmi_line;
+	address_space *m_program;
+	direct_read_data *m_direct;
+	address_space *m_io;
+	uint32_t m_PPC;
+	int m_icount;
+
+	inline void SETREG(uint32_t reg,uint32_t val);
+	inline uint32_t GETREG(uint32_t reg);
+	uint32_t opUNDEF(uint32_t op);
+	uint32_t opMOVr(uint32_t op);
+	uint32_t opMOVEA(uint32_t op);
+	uint32_t opMOVHI(uint32_t op);
+	uint32_t opMOVi(uint32_t op);
+	uint32_t opADDr(uint32_t op);
+	uint32_t opADDi(uint32_t op);
+	uint32_t opADDI(uint32_t op);
+	uint32_t opSUBr(uint32_t op);
+	uint32_t opCMPr(uint32_t op);
+	uint32_t opCMPi(uint32_t op);
+	uint32_t opSETFi(uint32_t op);
+	uint32_t opANDr(uint32_t op);
+	uint32_t opANDI(uint32_t op);
+	uint32_t opORr(uint32_t op);
+	uint32_t opORI(uint32_t op);
+	uint32_t opXORr(uint32_t op);
+	uint32_t opLDSR(uint32_t op);
+	uint32_t opSTSR(uint32_t op);
+	uint32_t opXORI(uint32_t op);
+	uint32_t opNOTr(uint32_t op);
+	uint32_t opSHLr(uint32_t op);
+	uint32_t opSHLi(uint32_t op);
+	uint32_t opSHRr(uint32_t op);
+	uint32_t opSHRi(uint32_t op);
+	uint32_t opSARr(uint32_t op);
+	uint32_t opSARi(uint32_t op);
+	uint32_t opJMPr(uint32_t op);
+	uint32_t opJR(uint32_t op);
+	uint32_t opJAL(uint32_t op);
+	uint32_t opEI(uint32_t op);
+	uint32_t opDI(uint32_t op);
+	uint32_t opTRAP(uint32_t op);
+	uint32_t opRETI(uint32_t op);
+	uint32_t opHALT(uint32_t op);
+	uint32_t opB(uint32_t op);
+	uint32_t opLDB(uint32_t op);
+	uint32_t opLDH(uint32_t op);
+	uint32_t opLDW(uint32_t op);
+	uint32_t opINB(uint32_t op);
+	uint32_t opCAXI(uint32_t op);
+	uint32_t opINH(uint32_t op);
+	uint32_t opINW(uint32_t op);
+	uint32_t opSTB(uint32_t op);
+	uint32_t opSTH(uint32_t op);
+	uint32_t opSTW(uint32_t op);
+	uint32_t opOUTB(uint32_t op);
+	uint32_t opOUTH(uint32_t op);
+	uint32_t opOUTW(uint32_t op);
+	uint32_t opMULr(uint32_t op);
+	uint32_t opMULUr(uint32_t op);
+	uint32_t opDIVr(uint32_t op);
+	uint32_t opDIVUr(uint32_t op);
+	void opADDF(uint32_t op);
+	void opSUBF(uint32_t op);
+	void opMULF(uint32_t op);
+	void opDIVF(uint32_t op);
+	void opTRNC(uint32_t op);
+	void opCMPF(uint32_t op);
+	void opCVTS(uint32_t op);
+	void opCVTW(uint32_t op);
+	void opMPYHW(uint32_t op);
+	void opXB(uint32_t op);
+	void opXH(uint32_t op);
+	uint32_t opFpoint(uint32_t op);
+	uint32_t opBSU(uint32_t op);
+	void take_interrupt();
+};
+
+
+DECLARE_DEVICE_TYPE(V810, v810_device)
+
+#endif // MAME_CPU_V810_V810_H
+>>>>>>> upstream/master

@@ -58,14 +58,26 @@ and two large (paddles pretending to be) guns.
 
 #include "emu.h"
 #include "includes/m79amb.h"
+<<<<<<< HEAD
 #include "cpu/i8085/i8085.h"
+=======
+
+#include "cpu/i8085/i8085.h"
+#include "screen.h"
+#include "speaker.h"
+
+>>>>>>> upstream/master
 
 WRITE8_MEMBER(m79amb_state::ramtek_videoram_w)
 {
 	m_videoram[offset] = data & ~*m_mask;
 }
 
+<<<<<<< HEAD
 UINT32 m79amb_state::screen_update_ramtek(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect)
+=======
+uint32_t m79amb_state::screen_update_ramtek(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect)
+>>>>>>> upstream/master
 {
 	offs_t offs;
 
@@ -73,13 +85,21 @@ UINT32 m79amb_state::screen_update_ramtek(screen_device &screen, bitmap_rgb32 &b
 	{
 		int i;
 
+<<<<<<< HEAD
 		UINT8 data = m_videoram[offs];
+=======
+		uint8_t data = m_videoram[offs];
+>>>>>>> upstream/master
 		int y = offs >> 5;
 		int x = (offs & 0x1f) << 3;
 
 		for (i = 0; i < 8; i++)
 		{
+<<<<<<< HEAD
 			pen_t pen = (data & 0x80) ? rgb_t::white : rgb_t::black;
+=======
+			pen_t pen = (data & 0x80) ? rgb_t::white() : rgb_t::black();
+>>>>>>> upstream/master
 			bitmap.pix32(y, x) = pen;
 
 			x++;
@@ -93,16 +113,26 @@ UINT32 m79amb_state::screen_update_ramtek(screen_device &screen, bitmap_rgb32 &b
 
 READ8_MEMBER(m79amb_state::gray5bit_controller0_r)
 {
+<<<<<<< HEAD
 	UINT8 port_data = ioport("8004")->read();
 	UINT8 gun_pos = ioport("GUN1")->read();
+=======
+	uint8_t port_data = ioport("8004")->read();
+	uint8_t gun_pos = ioport("GUN1")->read();
+>>>>>>> upstream/master
 
 	return (port_data & 0xe0) | m_lut_gun1[gun_pos];
 }
 
 READ8_MEMBER(m79amb_state::gray5bit_controller1_r)
 {
+<<<<<<< HEAD
 	UINT8 port_data = ioport("8005")->read();
 	UINT8 gun_pos = ioport("GUN2")->read();
+=======
+	uint8_t port_data = ioport("8005")->read();
+	uint8_t gun_pos = ioport("GUN2")->read();
+>>>>>>> upstream/master
 
 	return (port_data & 0xe0) | m_lut_gun2[gun_pos];
 }
@@ -111,7 +141,11 @@ WRITE8_MEMBER(m79amb_state::m79amb_8002_w)
 {
 	/* D1 may also be watchdog reset */
 	/* port goes to 0x7f to turn on explosion lamp */
+<<<<<<< HEAD
 	output_set_value("EXP_LAMP", data ? 1 : 0);
+=======
+	output().set_value("EXP_LAMP", data ? 1 : 0);
+>>>>>>> upstream/master
 }
 
 static ADDRESS_MAP_START( main_map, AS_PROGRAM, 8, m79amb_state )
@@ -185,7 +219,11 @@ INTERRUPT_GEN_MEMBER(m79amb_state::m79amb_interrupt)
 	device.execute().set_input_line_and_vector(0, HOLD_LINE, 0xcf);  /* RST 08h */
 }
 
+<<<<<<< HEAD
 static MACHINE_CONFIG_START( m79amb, m79amb_state )
+=======
+static MACHINE_CONFIG_START( m79amb )
+>>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", I8080, XTAL_19_6608MHz / 10)
@@ -251,14 +289,22 @@ ROM_END
     181.6, 199.9, 205.4, 211.9, 223.5, 232.4, 254.0, 254.0
 */
 
+<<<<<<< HEAD
 static const UINT8 lut_cross[0x20] = {
+=======
+static const uint8_t lut_cross[0x20] = {
+>>>>>>> upstream/master
 		19,    20,    21,    23,    25,    27,    29,    37,
 		45,    53,    66,    82,    88,    95,   105,   111,
 	118,   130,   142,   149,   158,   165,   170,   177,
 	191,   203,   209,   218,   228,   243,   249,   255,
 };
 
+<<<<<<< HEAD
 static const UINT8 lut_pos[0x20] = {
+=======
+static const uint8_t lut_pos[0x20] = {
+>>>>>>> upstream/master
 	0x1f,  0x1e,  0x1c,  0x1d,  0x19,  0x18,  0x1a,  0x1b,
 	0x13,  0x12,  0x10,  0x11,  0x15,  0x14,  0x16,  0x17,
 	0x07,  0x06,  0x04,  0x05,  0x01,  0x00,  0x02,  0x03,
@@ -268,7 +314,11 @@ static const UINT8 lut_pos[0x20] = {
 
 DRIVER_INIT_MEMBER(m79amb_state,m79amb)
 {
+<<<<<<< HEAD
 	UINT8 *rom = memregion("maincpu")->base();
+=======
+	uint8_t *rom = memregion("maincpu")->base();
+>>>>>>> upstream/master
 	int i, j;
 
 	/* PROM data is active low */

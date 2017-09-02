@@ -25,7 +25,11 @@
 
 PALETTE_INIT_MEMBER(pandoras_state, pandoras)
 {
+<<<<<<< HEAD
 	const UINT8 *color_prom = memregion("proms")->base();
+=======
+	const uint8_t *color_prom = memregion("proms")->base();
+>>>>>>> upstream/master
 	static const int resistances_rg[3] = { 1000, 470, 220 };
 	static const int resistances_b [2] = { 470, 220 };
 	double rweights[3], gweights[3], bweights[2];
@@ -69,14 +73,22 @@ PALETTE_INIT_MEMBER(pandoras_state, pandoras)
 	/* sprites */
 	for (i = 0; i < 0x100; i++)
 	{
+<<<<<<< HEAD
 		UINT8 ctabentry = color_prom[i] & 0x0f;
+=======
+		uint8_t ctabentry = color_prom[i] & 0x0f;
+>>>>>>> upstream/master
 		palette.set_pen_indirect(i, ctabentry);
 	}
 
 	/* characters */
 	for (i = 0x100; i < 0x200; i++)
 	{
+<<<<<<< HEAD
 		UINT8 ctabentry = (color_prom[i] & 0x0f) | 0x10;
+=======
+		uint8_t ctabentry = (color_prom[i] & 0x0f) | 0x10;
+>>>>>>> upstream/master
 		palette.set_pen_indirect(i, ctabentry);
 	}
 }
@@ -89,7 +101,11 @@ PALETTE_INIT_MEMBER(pandoras_state, pandoras)
 
 TILE_GET_INFO_MEMBER(pandoras_state::get_tile_info0)
 {
+<<<<<<< HEAD
 	UINT8 attr = m_colorram[tile_index];
+=======
+	uint8_t attr = m_colorram[tile_index];
+>>>>>>> upstream/master
 	SET_TILE_INFO_MEMBER(1,
 			m_videoram[tile_index] + ((attr & 0x10) << 4),
 			attr & 0x0f,
@@ -105,7 +121,11 @@ TILE_GET_INFO_MEMBER(pandoras_state::get_tile_info0)
 
 void pandoras_state::video_start()
 {
+<<<<<<< HEAD
 	m_layer0 = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(pandoras_state::get_tile_info0),this), TILEMAP_SCAN_ROWS, 8, 8, 32, 32);
+=======
+	m_layer0 = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(pandoras_state::get_tile_info0),this), TILEMAP_SCAN_ROWS, 8, 8, 32, 32);
+>>>>>>> upstream/master
 
 	save_item(NAME(m_flipscreen));
 }
@@ -133,9 +153,15 @@ WRITE8_MEMBER(pandoras_state::pandoras_scrolly_w)
 	m_layer0->set_scrolly(0, data);
 }
 
+<<<<<<< HEAD
 WRITE8_MEMBER(pandoras_state::pandoras_flipscreen_w)
 {
 	m_flipscreen = data;
+=======
+WRITE_LINE_MEMBER(pandoras_state::flipscreen_w)
+{
+	m_flipscreen = state;
+>>>>>>> upstream/master
 	machine().tilemap().set_flip_all(m_flipscreen ? (TILEMAP_FLIPY | TILEMAP_FLIPX) : 0);
 }
 
@@ -145,7 +171,11 @@ WRITE8_MEMBER(pandoras_state::pandoras_flipscreen_w)
 
 ***************************************************************************/
 
+<<<<<<< HEAD
 void pandoras_state::draw_sprites( bitmap_ind16 &bitmap, const rectangle &cliprect, UINT8* sr )
+=======
+void pandoras_state::draw_sprites( bitmap_ind16 &bitmap, const rectangle &cliprect, uint8_t* sr )
+>>>>>>> upstream/master
 {
 	int offs;
 
@@ -166,7 +196,11 @@ void pandoras_state::draw_sprites( bitmap_ind16 &bitmap, const rectangle &clipre
 	}
 }
 
+<<<<<<< HEAD
 UINT32 pandoras_state::screen_update_pandoras(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+=======
+uint32_t pandoras_state::screen_update_pandoras(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+>>>>>>> upstream/master
 {
 	m_layer0->draw(screen, bitmap, cliprect, 1 ,0);
 	draw_sprites(bitmap, cliprect, &m_spriteram[0x800] );

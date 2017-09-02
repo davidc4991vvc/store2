@@ -3,9 +3,18 @@
 #ifndef __DEBUG_QT_MAIN_WINDOW_H__
 #define __DEBUG_QT_MAIN_WINDOW_H__
 
+<<<<<<< HEAD
 #include <QtGui/QtGui>
 #include <vector>
 
+=======
+#include <vector>
+
+#include <QtWidgets/QLineEdit>
+#include <QtWidgets/QVBoxLayout>
+#include <QtWidgets/QComboBox>
+
+>>>>>>> upstream/master
 #include "debug/dvdisasm.h"
 
 #include "debuggerview.h"
@@ -23,7 +32,11 @@ class MainWindow : public WindowQt
 	Q_OBJECT
 
 public:
+<<<<<<< HEAD
 	MainWindow(running_machine* machine, QWidget* parent=NULL);
+=======
+	MainWindow(running_machine* machine, QWidget* parent=nullptr);
+>>>>>>> upstream/master
 	virtual ~MainWindow();
 
 	void setProcessor(device_t* processor);
@@ -43,7 +56,11 @@ private slots:
 	void runToCursor(bool changedTo);
 	void rightBarChanged(QAction* changedTo);
 
+<<<<<<< HEAD
 	void executeCommand(bool withClear=true);
+=======
+	void executeCommandSlot();
+>>>>>>> upstream/master
 
 	void mountImage(bool changedTo);
 	void unmountImage(bool changedTo);
@@ -72,6 +89,10 @@ private:
 	int m_historyIndex;
 	std::vector<QString> m_inputHistory;
 	void addToHistory(const QString& command);
+<<<<<<< HEAD
+=======
+	void executeCommand(bool withClear);
+>>>>>>> upstream/master
 };
 
 
@@ -83,7 +104,11 @@ class DasmDockWidget : public QWidget
 	Q_OBJECT
 
 public:
+<<<<<<< HEAD
 	DasmDockWidget(running_machine* machine, QWidget* parent=NULL) :
+=======
+	DasmDockWidget(running_machine* machine, QWidget* parent=nullptr) :
+>>>>>>> upstream/master
 		QWidget(parent),
 		m_machine(machine)
 	{
@@ -134,9 +159,15 @@ class ProcessorDockWidget : public QWidget
 
 public:
 	ProcessorDockWidget(running_machine* machine,
+<<<<<<< HEAD
 						QWidget* parent=NULL) :
 		QWidget(parent),
 		m_processorView(NULL),
+=======
+						QWidget* parent=nullptr) :
+		QWidget(parent),
+		m_processorView(nullptr),
+>>>>>>> upstream/master
 		m_machine(machine)
 	{
 		m_processorView = new DebuggerView(DVT_STATE,
@@ -195,8 +226,13 @@ public:
 
 	void buildFromQWidget(QWidget* widget);
 	void applyToQWidget(QWidget* widget);
+<<<<<<< HEAD
 	void addToXmlDataNode(xml_data_node* node) const;
 	void recoverFromXmlNode(xml_data_node* node);
+=======
+	void addToXmlDataNode(util::xml::data_node &node) const;
+	void recoverFromXmlNode(util::xml::data_node const &node);
+>>>>>>> upstream/master
 };
 
 

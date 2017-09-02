@@ -6,10 +6,17 @@
     Written by Ryan Holtz
 */
 
+<<<<<<< HEAD
 #pragma once
 
 #ifndef __SSEM_H__
 #define __SSEM_H__
+=======
+#ifndef MAME_CPU_SSEM_SSEM_H
+#define MAME_CPU_SSEM_SSEM_H
+
+#pragma once
+>>>>>>> upstream/master
 
 //**************************************************************************
 //  TYPE DEFINITIONS
@@ -22,6 +29,7 @@ class ssem_device : public cpu_device
 {
 public:
 	// construction/destruction
+<<<<<<< HEAD
 	ssem_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
 
 	// device-level overrides
@@ -46,11 +54,39 @@ public:
 
 	// device_state_interface overrides
 	virtual void state_string_export(const device_state_entry &entry, std::string &str);
+=======
+	ssem_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
+
+protected:
+	// device-level overrides
+	virtual void device_start() override;
+	virtual void device_reset() override;
+	virtual void device_stop() override;
+
+	// device_execute_interface overrides
+	virtual uint32_t execute_min_cycles() const override;
+	virtual uint32_t execute_max_cycles() const override;
+	virtual uint32_t execute_input_lines() const override;
+	virtual void execute_run() override;
+	virtual void execute_set_input(int inputnum, int state) override;
+
+	// device_memory_interface overrides
+	virtual space_config_vector memory_space_config() const override;
+
+	// device_disasm_interface overrides
+	virtual uint32_t disasm_min_opcode_bytes() const override;
+	virtual uint32_t disasm_max_opcode_bytes() const override;
+	virtual offs_t disasm_disassemble(std::ostream &stream, offs_t pc, const uint8_t *oprom, const uint8_t *opram, uint32_t options) override;
+
+	// device_state_interface overrides
+	virtual void state_string_export(const device_state_entry &entry, std::string &str) const override;
+>>>>>>> upstream/master
 
 	// address spaces
 	const address_space_config m_program_config;
 
 	// memory access
+<<<<<<< HEAD
 	inline UINT32 program_read32(UINT32 addr);
 	inline void program_write32(UINT32 addr, UINT32 data);
 
@@ -59,6 +95,16 @@ public:
 	UINT32 m_shifted_pc;
 	UINT32 m_a;
 	UINT32 m_halt;
+=======
+	inline uint32_t program_read32(uint32_t addr);
+	inline void program_write32(uint32_t addr, uint32_t data);
+
+	// CPU registers
+	uint32_t m_pc;
+	uint32_t m_shifted_pc;
+	uint32_t m_a;
+	uint32_t m_halt;
+>>>>>>> upstream/master
 
 	// other internal states
 	int m_icount;
@@ -68,7 +114,11 @@ public:
 };
 
 // device type definition
+<<<<<<< HEAD
 extern const device_type SSEMCPU;
+=======
+DECLARE_DEVICE_TYPE(SSEMCPU, ssem_device)
+>>>>>>> upstream/master
 
 /***************************************************************************
     REGISTER ENUMERATION
@@ -83,4 +133,8 @@ enum
 
 CPU_DISASSEMBLE( ssem );
 
+<<<<<<< HEAD
 #endif /* __SSEM_H__ */
+=======
+#endif // MAME_CPU_SSEM_SSEM_H
+>>>>>>> upstream/master

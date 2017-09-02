@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 // license:LGPL-2.1+
+=======
+// license:BSD-3-Clause
+>>>>>>> upstream/master
 // copyright-holders:Tomasz Slanina
 
 /************************************
@@ -25,9 +29,18 @@
 #include "cpu/mcs51/mcs51.h"
 #include "sound/okim6295.h"
 #include "video/mc6845.h"
+<<<<<<< HEAD
 
 #include "cardline.lh"
 
+=======
+#include "screen.h"
+#include "speaker.h"
+
+#include "cardline.lh"
+
+
+>>>>>>> upstream/master
 #define MASTER_CLOCK XTAL_12MHz
 
 class cardline_state : public driver_device
@@ -43,11 +56,19 @@ public:
 		m_screen(*this, "screen")
 	{ }
 
+<<<<<<< HEAD
 	required_shared_ptr<UINT8> m_videoram;
 	required_shared_ptr<UINT8> m_colorram;
 
 	UINT8 m_video;
 	UINT8 m_hsync_q;
+=======
+	required_shared_ptr<uint8_t> m_videoram;
+	required_shared_ptr<uint8_t> m_colorram;
+
+	uint8_t m_video;
+	uint8_t m_hsync_q;
+>>>>>>> upstream/master
 
 	DECLARE_WRITE8_MEMBER(vram_w);
 	DECLARE_WRITE8_MEMBER(attr_w);
@@ -61,7 +82,11 @@ public:
 
 	DECLARE_PALETTE_INIT(cardline);
 
+<<<<<<< HEAD
 	virtual void machine_start();
+=======
+	virtual void machine_start() override;
+>>>>>>> upstream/master
 
 	DECLARE_WRITE_LINE_MEMBER(hsync_changed);
 	DECLARE_WRITE_LINE_MEMBER(vsync_changed);
@@ -92,8 +117,13 @@ MC6845_BEGIN_UPDATE( cardline_state::crtc_begin_update )
 
 MC6845_UPDATE_ROW( cardline_state::crtc_update_row )
 {
+<<<<<<< HEAD
 	UINT8 *gfx;
 	UINT16 x = 0;
+=======
+	uint8_t *gfx;
+	uint16_t x = 0;
+>>>>>>> upstream/master
 	int gfx_ofs;
 	const rgb_t *palette = m_palette->palette()->entry_list_raw();
 
@@ -112,7 +142,11 @@ MC6845_UPDATE_ROW( cardline_state::crtc_update_row )
 
 	gfx = memregion("gfx1")->base();
 
+<<<<<<< HEAD
 	for (UINT8 cx = 0; cx < x_count; cx++)
+=======
+	for (uint8_t cx = 0; cx < x_count; cx++)
+>>>>>>> upstream/master
 	{
 		int bg_tile = (m_videoram[ma + gfx_ofs] | (m_colorram[ma + gfx_ofs]<<8)) & 0x3fff;
 		int bg_pal_ofs = ((m_colorram[ma + gfx_ofs] & 0x80) ? 256 : 0);
@@ -196,6 +230,7 @@ READ8_MEMBER(cardline_state::hsync_r)
 WRITE8_MEMBER(cardline_state::lamps_w)
 {
 	/* button lamps 1-8 (collect, card 1-5, bet, start) */
+<<<<<<< HEAD
 	output_set_lamp_value(5,(data >> 0) & 1);
 	output_set_lamp_value(0,(data >> 1) & 1);
 	output_set_lamp_value(1,(data >> 2) & 1);
@@ -204,6 +239,16 @@ WRITE8_MEMBER(cardline_state::lamps_w)
 	output_set_lamp_value(4,(data >> 5) & 1);
 	output_set_lamp_value(6,(data >> 6) & 1);
 	output_set_lamp_value(7,(data >> 7) & 1);
+=======
+	output().set_lamp_value(5,(data >> 0) & 1);
+	output().set_lamp_value(0,(data >> 1) & 1);
+	output().set_lamp_value(1,(data >> 2) & 1);
+	output().set_lamp_value(2,(data >> 3) & 1);
+	output().set_lamp_value(3,(data >> 4) & 1);
+	output().set_lamp_value(4,(data >> 5) & 1);
+	output().set_lamp_value(6,(data >> 6) & 1);
+	output().set_lamp_value(7,(data >> 7) & 1);
+>>>>>>> upstream/master
 }
 
 static ADDRESS_MAP_START( mem_prg, AS_PROGRAM, 8, cardline_state )
@@ -285,7 +330,11 @@ GFXDECODE_END
 
 PALETTE_INIT_MEMBER(cardline_state, cardline)
 {
+<<<<<<< HEAD
 	const UINT8 *color_prom = memregion("proms")->base();
+=======
+	const uint8_t *color_prom = memregion("proms")->base();
+>>>>>>> upstream/master
 	int i,r,g,b,data;
 	int bit0,bit1,bit2;
 	for (i = 0;i < palette.entries();i++)
@@ -310,7 +359,11 @@ PALETTE_INIT_MEMBER(cardline_state, cardline)
 	}
 }
 
+<<<<<<< HEAD
 static MACHINE_CONFIG_START( cardline, cardline_state )
+=======
+static MACHINE_CONFIG_START( cardline )
+>>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", I80C32, MASTER_CLOCK)
@@ -346,7 +399,11 @@ static MACHINE_CONFIG_START( cardline, cardline_state )
 	/* sound hardware */
 	MCFG_SPEAKER_STANDARD_STEREO("lspeaker", "rspeaker")
 
+<<<<<<< HEAD
 	MCFG_OKIM6295_ADD("oki", 1056000, OKIM6295_PIN7_HIGH) // clock frequency & pin 7 not verified
+=======
+	MCFG_OKIM6295_ADD("oki", 1056000, PIN7_HIGH) // clock frequency & pin 7 not verified
+>>>>>>> upstream/master
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "lspeaker", 1.0)
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "rspeaker", 1.0)
 
@@ -374,4 +431,8 @@ ROM_START( cardline )
 
 ROM_END
 
+<<<<<<< HEAD
 GAME( 199?, cardline,  0,       cardline,  cardline, driver_device,  0, ROT0, "Veltmeijer", "Card Line" , MACHINE_SUPPORTS_SAVE)
+=======
+GAME( 199?, cardline,  0,       cardline,  cardline, cardline_state,  0, ROT0, "Veltmeijer", "Card Line" , MACHINE_SUPPORTS_SAVE)
+>>>>>>> upstream/master

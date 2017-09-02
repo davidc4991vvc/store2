@@ -7,6 +7,7 @@
 #include "emu.h"
 #include "mcf5206e.h"
 
+<<<<<<< HEAD
 static void CLIB_DECL ATTR_PRINTF(1,2) nolog(const char *format, ...) {}
 
 //#define debuglog printf
@@ -20,6 +21,15 @@ static void CLIB_DECL ATTR_PRINTF(1,2) nolog(const char *format, ...) {}
 #define debuglogtimer nolog
 
 static ADDRESS_MAP_START( coldfire_regs_map, AS_0, 32, mcf5206e_peripheral_device )
+=======
+#define LOG_DEBUG       (0U << 0)
+#define LOG_INVALID     (0U << 1)
+#define LOG_TIMER       (0U << 2)
+
+#include "logmacro.h"
+
+static ADDRESS_MAP_START( coldfire_regs_map, 0, 32, mcf5206e_peripheral_device )
+>>>>>>> upstream/master
 
 
 	AM_RANGE(0x014, 0x017) AM_READWRITE8(ICR1_ICR2_ICR3_ICR4_r,    ICR1_ICR2_ICR3_ICR4_w,    0xffffffff)
@@ -80,6 +90,7 @@ READ8_MEMBER( mcf5206e_peripheral_device::ICR1_ICR2_ICR3_ICR4_r )
 	switch (offset)
 	{
 	case 0: // 0x014
+<<<<<<< HEAD
 		debuglog("%s: (External IRQ1/IPL1 Interrupt Vector) ICR1_r\n", this->machine().describe_context());
 		return m_ICR[ICR1];
 	case 1: // 0x015
@@ -90,6 +101,18 @@ READ8_MEMBER( mcf5206e_peripheral_device::ICR1_ICR2_ICR3_ICR4_r )
 		return m_ICR[ICR3];
 	case 3: // 0x017
 		debuglog("%s: (External IRQ4/IPL4 Interrupt Vector) ICR4_r\n", this->machine().describe_context());
+=======
+		LOGMASKED(LOG_DEBUG, "%s: (External IRQ1/IPL1 Interrupt Vector) ICR1_r\n", this->machine().describe_context());
+		return m_ICR[ICR1];
+	case 1: // 0x015
+		LOGMASKED(LOG_DEBUG, "%s: (External IPL2 Interrupt Vector) ICR2_r\n", this->machine().describe_context());
+		return m_ICR[ICR2];
+	case 2: // 0x016
+		LOGMASKED(LOG_DEBUG, "%s: (External IPL3 Interrupt Vector) ICR3_r\n", this->machine().describe_context());
+		return m_ICR[ICR3];
+	case 3: // 0x017
+		LOGMASKED(LOG_DEBUG, "%s: (External IRQ4/IPL4 Interrupt Vector) ICR4_r\n", this->machine().describe_context());
+>>>>>>> upstream/master
 		return m_ICR[ICR4];
 	}
 
@@ -102,22 +125,38 @@ WRITE8_MEMBER( mcf5206e_peripheral_device::ICR1_ICR2_ICR3_ICR4_w )
 	{
 	case 0: // 0x014
 		m_ICR[ICR1] = data;
+<<<<<<< HEAD
 		debuglog("%s: (External IRQ1/IPL1 Interrupt Vector) ICR1_w %02x\n", this->machine().describe_context(), data);
+=======
+		LOGMASKED(LOG_DEBUG, "%s: (External IRQ1/IPL1 Interrupt Vector) ICR1_w %02x\n", this->machine().describe_context(), data);
+>>>>>>> upstream/master
 		ICR_info(m_ICR[ICR1]);
 		break;
 	case 1: // 0x015
 		m_ICR[ICR2] = data;
+<<<<<<< HEAD
 		debuglog("%s: (External IPL2 Interrupt Vector) ICR2_w %02x\n", this->machine().describe_context(), data);
+=======
+		LOGMASKED(LOG_DEBUG, "%s: (External IPL2 Interrupt Vector) ICR2_w %02x\n", this->machine().describe_context(), data);
+>>>>>>> upstream/master
 		ICR_info(m_ICR[ICR2]);
 		break;
 	case 2: // 0x016
 		m_ICR[ICR3] = data;
+<<<<<<< HEAD
 		debuglog("%s: (External IPL3 Interrupt Vector) ICR3_w %02x\n", this->machine().describe_context(), data);
+=======
+		LOGMASKED(LOG_DEBUG, "%s: (External IPL3 Interrupt Vector) ICR3_w %02x\n", this->machine().describe_context(), data);
+>>>>>>> upstream/master
 		ICR_info(m_ICR[ICR3]);
 		break;
 	case 3: // 0x017
 		m_ICR[ICR4] = data;
+<<<<<<< HEAD
 		debuglog("%s: (External IRQ4/IPL4 Interrupt Vector) ICR4_w %02x\n", this->machine().describe_context(), data);
+=======
+		LOGMASKED(LOG_DEBUG, "%s: (External IRQ4/IPL4 Interrupt Vector) ICR4_w %02x\n", this->machine().describe_context(), data);
+>>>>>>> upstream/master
 		ICR_info(m_ICR[ICR4]);
 		break;
 	}
@@ -128,6 +167,7 @@ READ8_MEMBER( mcf5206e_peripheral_device::ICR9_ICR10_ICR11_ICR12_r )
 	switch (offset)
 	{
 	case 0: // 0x01c
+<<<<<<< HEAD
 		debuglog("%s: (Timer 1 Interrupt Vector) ICR9_r\n", this->machine().describe_context());
 		return m_ICR[ICR9];
 	case 1: // 0x01d
@@ -138,6 +178,18 @@ READ8_MEMBER( mcf5206e_peripheral_device::ICR9_ICR10_ICR11_ICR12_r )
 		return m_ICR[ICR11];
 	case 3: // 0x01f
 		debuglog("%s: (UART1 Interrupt Vector) ICR12_r\n", this->machine().describe_context());
+=======
+		LOGMASKED(LOG_DEBUG, "%s: (Timer 1 Interrupt Vector) ICR9_r\n", this->machine().describe_context());
+		return m_ICR[ICR9];
+	case 1: // 0x01d
+		LOGMASKED(LOG_DEBUG, "%s: (Timer 2 Interrupt Vector) ICR10_r\n", this->machine().describe_context());
+		return m_ICR[ICR10];
+	case 2: // 0x01e
+		LOGMASKED(LOG_DEBUG, "%s: (MBUS Interrupt Vector) ICR11_r\n", this->machine().describe_context());
+		return m_ICR[ICR11];
+	case 3: // 0x01f
+		LOGMASKED(LOG_DEBUG, "%s: (UART1 Interrupt Vector) ICR12_r\n", this->machine().describe_context());
+>>>>>>> upstream/master
 		return m_ICR[ICR12];
 	}
 
@@ -150,22 +202,38 @@ WRITE8_MEMBER( mcf5206e_peripheral_device::ICR9_ICR10_ICR11_ICR12_w )
 	{
 	case 0: // 0x01c
 		m_ICR[ICR9] = data;
+<<<<<<< HEAD
 		debuglog("%s: (Timer 1 Interrupt Vector) ICR9_w %02x\n", this->machine().describe_context(), data);
+=======
+		LOGMASKED(LOG_DEBUG, "%s: (Timer 1 Interrupt Vector) ICR9_w %02x\n", this->machine().describe_context(), data);
+>>>>>>> upstream/master
 		ICR_info(m_ICR[ICR9]);
 		break;
 	case 1: // 0x01d
 		m_ICR[ICR10] = data;
+<<<<<<< HEAD
 		debuglog("%s: (Timer 2 Interrupt Vector) ICR10_w %02x\n", this->machine().describe_context(), data);
+=======
+		LOGMASKED(LOG_DEBUG, "%s: (Timer 2 Interrupt Vector) ICR10_w %02x\n", this->machine().describe_context(), data);
+>>>>>>> upstream/master
 		ICR_info(m_ICR[ICR10]);
 		break;
 	case 2: // 0x01e
 		m_ICR[ICR11] = data;
+<<<<<<< HEAD
 		debuglog("%s: (MBUS Interrupt Vector) ICR11_w %02x\n", this->machine().describe_context(), data);
+=======
+		LOGMASKED(LOG_DEBUG, "%s: (MBUS Interrupt Vector) ICR11_w %02x\n", this->machine().describe_context(), data);
+>>>>>>> upstream/master
 		ICR_info(m_ICR[ICR11]);
 		break;
 	case 3: // 0x01f
 		m_ICR[ICR12] = data;
+<<<<<<< HEAD
 		debuglog("%s: (UART1 Interrupt Vector) ICR12_w %02x\n", this->machine().describe_context(), data);
+=======
+		LOGMASKED(LOG_DEBUG, "%s: (UART1 Interrupt Vector) ICR12_w %02x\n", this->machine().describe_context(), data);
+>>>>>>> upstream/master
 		ICR_info(m_ICR[ICR12]);
 		break;
 	}
@@ -176,12 +244,20 @@ READ8_MEMBER( mcf5206e_peripheral_device::ICR13_r )
 	switch (offset)
 	{
 	case 0: // 0x020
+<<<<<<< HEAD
 		debuglog("%s: (UART2 Interrupt Vector) ICR13_r\n", this->machine().describe_context());
+=======
+		LOGMASKED(LOG_DEBUG, "%s: (UART2 Interrupt Vector) ICR13_r\n", this->machine().describe_context());
+>>>>>>> upstream/master
 		return m_ICR[ICR13];
 	case 1:
 	case 2:
 	case 3:
+<<<<<<< HEAD
 		invalidlog("%s: invalid ICR13_r %d\n", this->machine().describe_context(), offset);
+=======
+		LOGMASKED(LOG_INVALID, "%s: invalid ICR13_r %d\n", this->machine().describe_context(), offset);
+>>>>>>> upstream/master
 		return 0;
 	}
 
@@ -194,37 +270,62 @@ WRITE8_MEMBER( mcf5206e_peripheral_device::ICR13_w )
 	{
 	case 0: // 0x020
 		m_ICR[ICR13] = data;
+<<<<<<< HEAD
 		debuglog("%s: (UART2 Interrupt Vector) ICR13_w %02x\n", this->machine().describe_context(), data);
+=======
+		LOGMASKED(LOG_DEBUG, "%s: (UART2 Interrupt Vector) ICR13_w %02x\n", this->machine().describe_context(), data);
+>>>>>>> upstream/master
 		ICR_info(m_ICR[ICR13]);
 		break;
 	case 1:
 	case 2:
 	case 3:
+<<<<<<< HEAD
 		invalidlog("%s: invalid ICR13_w %d, %02x\n", this->machine().describe_context(), offset, data);
+=======
+		LOGMASKED(LOG_INVALID, "%s: invalid ICR13_w %d, %02x\n", this->machine().describe_context(), offset, data);
+>>>>>>> upstream/master
 		break;
 	}
 }
 
 
+<<<<<<< HEAD
 inline UINT16 mcf5206e_peripheral_device::CSAR_r(int which, int offset, UINT16 mem_mask)
 {
 	if (offset==0)
 	{
 		debuglog("%s: CSAR%d_r\n", this->machine().describe_context(), which);
+=======
+inline uint16_t mcf5206e_peripheral_device::CSAR_r(int which, int offset, uint16_t mem_mask)
+{
+	if (offset==0)
+	{
+		LOGMASKED(LOG_DEBUG, "%s: CSAR%d_r\n", this->machine().describe_context(), which);
+>>>>>>> upstream/master
 		return m_CSAR[which];
 	}
 	else
 	{
+<<<<<<< HEAD
 		invalidlog("%s: invalid CSAR%d_r with offset %d\n", this->machine().describe_context(), which, offset);
+=======
+		LOGMASKED(LOG_INVALID, "%s: invalid CSAR%d_r with offset %d\n", this->machine().describe_context(), which, offset);
+>>>>>>> upstream/master
 		return 0;
 	}
 }
 
+<<<<<<< HEAD
 inline void mcf5206e_peripheral_device::CSAR_w(int which, int offset, UINT16 data, UINT16 mem_mask)
+=======
+inline void mcf5206e_peripheral_device::CSAR_w(int which, int offset, uint16_t data, uint16_t mem_mask)
+>>>>>>> upstream/master
 {
 	if (offset==0)
 	{
 		COMBINE_DATA( &m_CSAR[which] );
+<<<<<<< HEAD
 		debuglog("%s: CSAR%d_w %04x\n", this->machine().describe_context(), which, data);
 	}
 	else
@@ -250,25 +351,68 @@ inline UINT16 mcf5206e_peripheral_device::CSCR_r(int which, int offset, UINT16 m
 	if (offset==1)
 	{
 		debuglog("%s: CSCR%d_r\n", this->machine().describe_context(), which);
+=======
+		LOGMASKED(LOG_DEBUG, "%s: CSAR%d_w %04x\n", this->machine().describe_context(), which, data);
+	}
+	else
+	{
+		LOGMASKED(LOG_INVALID, "%s: invalid CSAR%d_w with offset %d %04x\n", this->machine().describe_context(), which, offset, data);
+	}
+}
+
+inline uint32_t mcf5206e_peripheral_device::CSMR_r(int which, uint32_t mem_mask)
+{
+	LOGMASKED(LOG_DEBUG, "%s: CSMR%d_r\n", this->machine().describe_context(), which);
+	return m_CSMR[0];
+}
+
+inline void mcf5206e_peripheral_device::CSMR_w(int which, uint32_t data, uint32_t mem_mask)
+{
+	COMBINE_DATA( &m_CSMR[0] );
+	LOGMASKED(LOG_DEBUG, "%s: CSMR%d_w %08x\n", this->machine().describe_context(), which, data);
+}
+
+inline uint16_t mcf5206e_peripheral_device::CSCR_r(int which, int offset, uint16_t mem_mask)
+{
+	if (offset==1)
+	{
+		LOGMASKED(LOG_DEBUG, "%s: CSCR%d_r\n", this->machine().describe_context(), which);
+>>>>>>> upstream/master
 		return m_CSCR[which];
 	}
 	else
 	{
+<<<<<<< HEAD
 		invalidlog("%s: invalid CSCR%d_r with offset %d\n", this->machine().describe_context(), which, offset);
+=======
+		LOGMASKED(LOG_INVALID, "%s: invalid CSCR%d_r with offset %d\n", this->machine().describe_context(), which, offset);
+>>>>>>> upstream/master
 		return 0;
 	}
 }
 
+<<<<<<< HEAD
 inline void mcf5206e_peripheral_device::CSCR_w(int which, int offset, UINT16 data, UINT16 mem_mask)
+=======
+inline void mcf5206e_peripheral_device::CSCR_w(int which, int offset, uint16_t data, uint16_t mem_mask)
+>>>>>>> upstream/master
 {
 	if (offset==1)
 	{
 		COMBINE_DATA( &m_CSCR[which] );
+<<<<<<< HEAD
 		debuglog("%s: CSCR%d_w %04x\n", this->machine().describe_context(), which, data);
 	}
 	else
 	{
 		invalidlog("%s: invalid CSCR%d_r with offset %d %04x\n", this->machine().describe_context(), which, offset, data);
+=======
+		LOGMASKED(LOG_DEBUG, "%s: CSCR%d_w %04x\n", this->machine().describe_context(), which, data);
+	}
+	else
+	{
+		LOGMASKED(LOG_INVALID, "%s: invalid CSCR%d_r with offset %d %04x\n", this->machine().describe_context(), which, offset, data);
+>>>>>>> upstream/master
 	}
 }
 
@@ -337,10 +481,17 @@ READ16_MEMBER( mcf5206e_peripheral_device::DMCR_r)
 	switch (offset)
 	{
 	case 1:
+<<<<<<< HEAD
 		debuglog("%s: DMCR_r %04x\n", this->machine().describe_context(), mem_mask);
 		return m_DMCR;
 	case 0:
 		invalidlog("%s: invalid DMCR_r %d %04x\n", this->machine().describe_context(), offset, mem_mask);
+=======
+		LOGMASKED(LOG_DEBUG, "%s: DMCR_r %04x\n", this->machine().describe_context(), mem_mask);
+		return m_DMCR;
+	case 0:
+		LOGMASKED(LOG_INVALID, "%s: invalid DMCR_r %d %04x\n", this->machine().describe_context(), offset, mem_mask);
+>>>>>>> upstream/master
 		return 0;
 	}
 
@@ -353,10 +504,17 @@ WRITE16_MEMBER( mcf5206e_peripheral_device::DMCR_w)
 	{
 	case 1:
 		COMBINE_DATA(&m_DMCR);
+<<<<<<< HEAD
 		debuglog("%s: DMCR_w %04x %04x\n", this->machine().describe_context(), data, mem_mask);
 		break;
 	case 0:
 		invalidlog("%s: invalid DMCR_w %d, %04x %04x\n", this->machine().describe_context(), offset, data, mem_mask);
+=======
+		LOGMASKED(LOG_DEBUG, "%s: DMCR_w %04x %04x\n", this->machine().describe_context(), data, mem_mask);
+		break;
+	case 0:
+		LOGMASKED(LOG_INVALID, "%s: invalid DMCR_w %d, %04x %04x\n", this->machine().describe_context(), offset, data, mem_mask);
+>>>>>>> upstream/master
 		break;
 
 	}
@@ -368,10 +526,17 @@ READ16_MEMBER( mcf5206e_peripheral_device::PAR_r)
 	switch (offset)
 	{
 	case 1:
+<<<<<<< HEAD
 		debuglog("%s: PAR_r %04x\n", this->machine().describe_context(), mem_mask);
 		return m_PAR;
 	case 0:
 		invalidlog("%s: invalid PAR_r %d %04x\n", this->machine().describe_context(), offset, mem_mask);
+=======
+		LOGMASKED(LOG_DEBUG, "%s: PAR_r %04x\n", this->machine().describe_context(), mem_mask);
+		return m_PAR;
+	case 0:
+		LOGMASKED(LOG_INVALID, "%s: invalid PAR_r %d %04x\n", this->machine().describe_context(), offset, mem_mask);
+>>>>>>> upstream/master
 		return 0;
 	}
 
@@ -384,10 +549,17 @@ WRITE16_MEMBER( mcf5206e_peripheral_device::PAR_w)
 	{
 	case 1:
 		COMBINE_DATA(&m_PAR);
+<<<<<<< HEAD
 		debuglog("%s: PAR_w %04x %04x\n", this->machine().describe_context(), data, mem_mask);
 		break;
 	case 0:
 		invalidlog("%s: invalid PAR_w %d, %04x %04x\n", this->machine().describe_context(), offset, data, mem_mask);
+=======
+		LOGMASKED(LOG_DEBUG, "%s: PAR_w %04x %04x\n", this->machine().describe_context(), data, mem_mask);
+		break;
+	case 0:
+		LOGMASKED(LOG_INVALID, "%s: invalid PAR_w %d, %04x %04x\n", this->machine().describe_context(), offset, data, mem_mask);
+>>>>>>> upstream/master
 		break;
 
 	}
@@ -402,10 +574,17 @@ READ8_MEMBER( mcf5206e_peripheral_device::PPDDR_r)
 	case 0:
 	case 2:
 	case 3:
+<<<<<<< HEAD
 		invalidlog("%s: invalid PPDDR_r %d\n", this->machine().describe_context(), offset);
 		return 0;
 	case 1: // '$1C5'
 		debuglog("%s: (Port A Data Direction Register) PPDDR_r\n", this->machine().describe_context());
+=======
+		LOGMASKED(LOG_INVALID, "%s: invalid PPDDR_r %d\n", this->machine().describe_context(), offset);
+		return 0;
+	case 1: // '$1C5'
+		LOGMASKED(LOG_DEBUG, "%s: (Port A Data Direction Register) PPDDR_r\n", this->machine().describe_context());
+>>>>>>> upstream/master
 		return m_PPDDR;
 	}
 
@@ -419,11 +598,19 @@ WRITE8_MEMBER( mcf5206e_peripheral_device::PPDDR_w)
 	case 0:
 	case 2:
 	case 3:
+<<<<<<< HEAD
 		invalidlog("%s: invalid PPDDR_w %d %02x\n", this->machine().describe_context(), offset, data);
 		break;
 	case 1: // '$1C5'
 		m_PPDDR = data;
 		debuglog("%s: (Port A Data Direction Register) PPDDR_w %02x\n", this->machine().describe_context(), data);
+=======
+		LOGMASKED(LOG_INVALID, "%s: invalid PPDDR_w %d %02x\n", this->machine().describe_context(), offset, data);
+		break;
+	case 1: // '$1C5'
+		m_PPDDR = data;
+		LOGMASKED(LOG_DEBUG, "%s: (Port A Data Direction Register) PPDDR_w %02x\n", this->machine().describe_context(), data);
+>>>>>>> upstream/master
 		break;
 	}
 }
@@ -435,10 +622,17 @@ READ8_MEMBER( mcf5206e_peripheral_device::PPDAT_r)
 	case 0:
 	case 2:
 	case 3:
+<<<<<<< HEAD
 		invalidlog("%s: invalid PPDAT_r %d\n", this->machine().describe_context(), offset);
 		return 0;
 	case 1: // '$1C9'
 		debuglog("%s: (Port A Data Register) PPDAT_r\n", this->machine().describe_context());
+=======
+		LOGMASKED(LOG_INVALID, "%s: invalid PPDAT_r %d\n", this->machine().describe_context(), offset);
+		return 0;
+	case 1: // '$1C9'
+		LOGMASKED(LOG_DEBUG, "%s: (Port A Data Register) PPDAT_r\n", this->machine().describe_context());
+>>>>>>> upstream/master
 		return m_PPDAT; // should use a callback.
 	}
 
@@ -452,11 +646,19 @@ WRITE8_MEMBER( mcf5206e_peripheral_device::PPDAT_w)
 	case 0:
 	case 2:
 	case 3:
+<<<<<<< HEAD
 		invalidlog("%s: invalid PPDAT_w %d, %02x\n", this->machine().describe_context(), offset, data);
 		break;
 	case 1: // '$1C9'
 		m_PPDAT = data; // should use a callback.
 		debuglog("%s: (Port A Data Register) PPDAT_w %02x\n", this->machine().describe_context(), data);
+=======
+		LOGMASKED(LOG_INVALID, "%s: invalid PPDAT_w %d, %02x\n", this->machine().describe_context(), offset, data);
+		break;
+	case 1: // '$1C9'
+		m_PPDAT = data; // should use a callback.
+		LOGMASKED(LOG_DEBUG, "%s: (Port A Data Register) PPDAT_w %02x\n", this->machine().describe_context(), data);
+>>>>>>> upstream/master
 		break;
 	}
 
@@ -468,12 +670,20 @@ READ8_MEMBER( mcf5206e_peripheral_device::MBCR_r)
 	switch (offset)
 	{
 	case 0:
+<<<<<<< HEAD
 		debuglog("%s: (M-Bus Control Register) MBCR_r\n", this->machine().describe_context());
+=======
+		LOGMASKED(LOG_DEBUG, "%s: (M-Bus Control Register) MBCR_r\n", this->machine().describe_context());
+>>>>>>> upstream/master
 		return m_MBCR;
 	case 1:
 	case 2:
 	case 3:
+<<<<<<< HEAD
 		invalidlog("%s: invalid MBCR_r %d\n", this->machine().describe_context(), offset);
+=======
+		LOGMASKED(LOG_INVALID, "%s: invalid MBCR_r %d\n", this->machine().describe_context(), offset);
+>>>>>>> upstream/master
 		return 0;
 	}
 
@@ -486,12 +696,20 @@ WRITE8_MEMBER( mcf5206e_peripheral_device::MBCR_w)
 	{
 	case 0:
 		m_MBCR = data;
+<<<<<<< HEAD
 		debuglog("%s: (M-Bus Control Register) MBCR_w %02x\n", this->machine().describe_context(), data);
+=======
+		LOGMASKED(LOG_DEBUG, "%s: (M-Bus Control Register) MBCR_w %02x\n", this->machine().describe_context(), data);
+>>>>>>> upstream/master
 		break;
 	case 1:
 	case 2:
 	case 3:
+<<<<<<< HEAD
 		invalidlog("%s: invalid MBCR_w %d, %02x\n", this->machine().describe_context(), offset, data);
+=======
+		LOGMASKED(LOG_INVALID, "%s: invalid MBCR_w %d, %02x\n", this->machine().describe_context(), offset, data);
+>>>>>>> upstream/master
 		break;
 
 	}
@@ -502,12 +720,20 @@ READ8_MEMBER( mcf5206e_peripheral_device::MFDR_r)
 	switch (offset)
 	{
 	case 0:
+<<<<<<< HEAD
 		debuglog("%s: (M-Bus Frequency Divider Register) MFDR_r\n", this->machine().describe_context());
+=======
+		LOGMASKED(LOG_DEBUG, "%s: (M-Bus Frequency Divider Register) MFDR_r\n", this->machine().describe_context());
+>>>>>>> upstream/master
 		return m_MFDR;
 	case 1:
 	case 2:
 	case 3:
+<<<<<<< HEAD
 		invalidlog("%s: invalid MFDR_r %d\n", this->machine().describe_context(), offset);
+=======
+		LOGMASKED(LOG_INVALID, "%s: invalid MFDR_r %d\n", this->machine().describe_context(), offset);
+>>>>>>> upstream/master
 		return 0;
 	}
 
@@ -520,12 +746,20 @@ WRITE8_MEMBER( mcf5206e_peripheral_device::MFDR_w)
 	{
 	case 0:
 		m_MFDR = data;
+<<<<<<< HEAD
 		debuglog("%s: (M-Bus Frequency Divider Register) MFDR_w %02x\n", this->machine().describe_context(), data);
+=======
+		LOGMASKED(LOG_DEBUG, "%s: (M-Bus Frequency Divider Register) MFDR_w %02x\n", this->machine().describe_context(), data);
+>>>>>>> upstream/master
 		break;
 	case 1:
 	case 2:
 	case 3:
+<<<<<<< HEAD
 		invalidlog("%s: invalid MFDR_w %d, %02x\n", this->machine().describe_context(), offset, data);
+=======
+		LOGMASKED(LOG_INVALID, "%s: invalid MFDR_w %d, %02x\n", this->machine().describe_context(), offset, data);
+>>>>>>> upstream/master
 		break;
 
 	}
@@ -545,13 +779,21 @@ READ8_MEMBER( mcf5206e_peripheral_device::MBSR_r)
 	case 0:
 	{
 		hack ^= (machine().rand()&0xff);
+<<<<<<< HEAD
 		debuglog("%s: (M-Bus Status Register) MBSR_r\n", this->machine().describe_context());
+=======
+		LOGMASKED(LOG_DEBUG, "%s: (M-Bus Status Register) MBSR_r\n", this->machine().describe_context());
+>>>>>>> upstream/master
 		return m_MBSR ^ hack; // will loop on this after a while
 	}
 	case 1:
 	case 2:
 	case 3:
+<<<<<<< HEAD
 		invalidlog("%s: invalid MBSR_r %d\n", this->machine().describe_context(), offset);
+=======
+		LOGMASKED(LOG_INVALID, "%s: invalid MBSR_r %d\n", this->machine().describe_context(), offset);
+>>>>>>> upstream/master
 		return 0;
 	}
 
@@ -564,12 +806,20 @@ WRITE8_MEMBER( mcf5206e_peripheral_device::MBSR_w)
 	{
 	case 0:
 		m_MBSR = data;
+<<<<<<< HEAD
 		debuglog("%s: (M-Bus Status Register) MBSR_w %02x\n", this->machine().describe_context(), data);
+=======
+		LOGMASKED(LOG_DEBUG, "%s: (M-Bus Status Register) MBSR_w %02x\n", this->machine().describe_context(), data);
+>>>>>>> upstream/master
 		break;
 	case 1:
 	case 2:
 	case 3:
+<<<<<<< HEAD
 		invalidlog("%s: invalid MBSR_w %d, %02x\n", this->machine().describe_context(), offset, data);
+=======
+		LOGMASKED(LOG_INVALID, "%s: invalid MBSR_w %d, %02x\n", this->machine().describe_context(), offset, data);
+>>>>>>> upstream/master
 		break;
 
 	}
@@ -587,13 +837,21 @@ READ8_MEMBER( mcf5206e_peripheral_device::MBDR_r)
 	case 0:
 	{
 		hack ^= (machine().rand()&0xff);
+<<<<<<< HEAD
 		debuglog("%s: (M-Bus Data I/O Register) MBDR_r\n", this->machine().describe_context());
+=======
+		LOGMASKED(LOG_DEBUG, "%s: (M-Bus Data I/O Register) MBDR_r\n", this->machine().describe_context());
+>>>>>>> upstream/master
 		return m_MBDR ^ hack;
 	}
 	case 1:
 	case 2:
 	case 3:
+<<<<<<< HEAD
 		invalidlog("%s: invalid MBDR_r %d\n", this->machine().describe_context(), offset);
+=======
+		LOGMASKED(LOG_INVALID, "%s: invalid MBDR_r %d\n", this->machine().describe_context(), offset);
+>>>>>>> upstream/master
 		return 0;
 	}
 
@@ -606,12 +864,20 @@ WRITE8_MEMBER( mcf5206e_peripheral_device::MBDR_w)
 	{
 	case 0:
 		m_MBDR = data;
+<<<<<<< HEAD
 		debuglog("%s: (M-Bus Data I/O Register) MBDR_w %02x\n", this->machine().describe_context(), data);
+=======
+		LOGMASKED(LOG_DEBUG, "%s: (M-Bus Data I/O Register) MBDR_w %02x\n", this->machine().describe_context(), data);
+>>>>>>> upstream/master
 		break;
 	case 1:
 	case 2:
 	case 3:
+<<<<<<< HEAD
 		invalidlog("%s: invalid MBDR_w %d, %02x\n", this->machine().describe_context(), offset, data);
+=======
+		LOGMASKED(LOG_INVALID, "%s: invalid MBDR_w %d, %02x\n", this->machine().describe_context(), offset, data);
+>>>>>>> upstream/master
 		break;
 
 	}
@@ -624,10 +890,17 @@ READ16_MEMBER( mcf5206e_peripheral_device::IMR_r)
 	switch (offset)
 	{
 	case 1:
+<<<<<<< HEAD
 		debuglog("%s: (Interrupt Mask Register) IMR_r %04x\n", this->machine().describe_context(), mem_mask);
 		return m_IMR;
 	case 0:
 		invalidlog("%s: invalid IMR_r %d %04x\n", this->machine().describe_context(), offset, mem_mask);
+=======
+		LOGMASKED(LOG_DEBUG, "%s: (Interrupt Mask Register) IMR_r %04x\n", this->machine().describe_context(), mem_mask);
+		return m_IMR;
+	case 0:
+		LOGMASKED(LOG_INVALID, "%s: invalid IMR_r %d %04x\n", this->machine().describe_context(), offset, mem_mask);
+>>>>>>> upstream/master
 		return 0;
 	}
 
@@ -640,28 +913,48 @@ WRITE16_MEMBER( mcf5206e_peripheral_device::IMR_w)
 	{
 	case 1:
 		COMBINE_DATA(&m_IMR);
+<<<<<<< HEAD
 		debuglog("%s: (Interrupt Mask Register) IMR_w %04x %04x\n", this->machine().describe_context(), data, mem_mask);
 		break;
 	case 0:
 		invalidlog("%s: invalid IMR_w %d, %04x %04x\n", this->machine().describe_context(), offset, data, mem_mask);
+=======
+		LOGMASKED(LOG_DEBUG, "%s: (Interrupt Mask Register) IMR_w %04x %04x\n", this->machine().describe_context(), data, mem_mask);
+		break;
+	case 0:
+		LOGMASKED(LOG_INVALID, "%s: invalid IMR_w %d, %04x %04x\n", this->machine().describe_context(), offset, data, mem_mask);
+>>>>>>> upstream/master
 		break;
 
 	}
 }
 
+<<<<<<< HEAD
 void mcf5206e_peripheral_device::ICR_info(UINT8 ICR)
 {
 	debuglog("  (AutoVector) AVEC : %01x | ", (ICR&0x80)>>7);
 	debuglog("(Interrupt Level) IL : %01x | ", (ICR&0x1c)>>2); // if autovector (AVEC) is used then the vectors referenced are at +24 (+0x18) + IL, ie the standard 68k autovectors, otherwise vector must be provided by device
 	debuglog("(Interrupt Priority) IP : %01x |", (ICR&0x03)>>0);
 	debuglog("(Unused bits) : %01x\n", (ICR&0x60)>>5);
+=======
+void mcf5206e_peripheral_device::ICR_info(uint8_t ICR)
+{
+	LOGMASKED(LOG_DEBUG, "  (AutoVector) AVEC : %01x | ", (ICR&0x80)>>7);
+	LOGMASKED(LOG_DEBUG, "(Interrupt Level) IL : %01x | ", (ICR&0x1c)>>2); // if autovector (AVEC) is used then the vectors referenced are at +24 (+0x18) + IL, ie the standard 68k autovectors, otherwise vector must be provided by device
+	LOGMASKED(LOG_DEBUG, "(Interrupt Priority) IP : %01x |", (ICR&0x03)>>0);
+	LOGMASKED(LOG_DEBUG, "(Unused bits) : %01x\n", (ICR&0x60)>>5);
+>>>>>>> upstream/master
 }
 
 
 
 TIMER_CALLBACK_MEMBER(mcf5206e_peripheral_device::timer1_callback)
 {
+<<<<<<< HEAD
 	UINT8 ICR = m_ICR[ICR9];
+=======
+	uint8_t ICR = m_ICR[ICR9];
+>>>>>>> upstream/master
 
 	// technically we should do the vector check in the IRQ callback as well as various checks based on the IRQ masks before asserting the interrupt
 	if (ICR & 0x80) // AVEC
@@ -669,7 +962,11 @@ TIMER_CALLBACK_MEMBER(mcf5206e_peripheral_device::timer1_callback)
 		if (!(m_IMR & 0x0200)) m_cpu->set_input_line((ICR&0x1c)>>2, HOLD_LINE);
 	}
 
+<<<<<<< HEAD
 	debuglogtimer("timer1_callback\n");
+=======
+	LOGMASKED(LOG_TIMER, "timer1_callback\n");
+>>>>>>> upstream/master
 	m_TER1 |= 0x02;
 
 	m_timer1->adjust(attotime::from_msec(10)); // completely made up value just to fire our timers for now
@@ -681,10 +978,17 @@ READ16_MEMBER( mcf5206e_peripheral_device::TMR1_r)
 	switch (offset)
 	{
 	case 0:
+<<<<<<< HEAD
 		debuglogtimer("%s: (Timer 1 Mode Register) TMR1_r %04x\n", this->machine().describe_context(), mem_mask);
 		return m_TMR1;
 	case 1:
 		invalidlog("%s: invalid TMR1_r %d %04x\n", this->machine().describe_context(), offset, mem_mask);
+=======
+		LOGMASKED(LOG_TIMER, "%s: (Timer 1 Mode Register) TMR1_r %04x\n", this->machine().describe_context(), mem_mask);
+		return m_TMR1;
+	case 1:
+		LOGMASKED(LOG_INVALID, "%s: invalid TMR1_r %d %04x\n", this->machine().describe_context(), offset, mem_mask);
+>>>>>>> upstream/master
 		return 0;
 	}
 
@@ -697,9 +1001,15 @@ WRITE16_MEMBER( mcf5206e_peripheral_device::TMR1_w)
 	{
 	case 0:
 		COMBINE_DATA(&m_TMR1);
+<<<<<<< HEAD
 		debuglogtimer("%s: (Timer 1 Mode Register) TMR1_w %04x %04x\n", this->machine().describe_context(), data, mem_mask);
 
 		debuglogtimer(" (Prescale) PS : %02x  (Capture Edge/Interrupt) CE : %01x (Output Mode) OM : %01x  (Output Reference Interrupt En) ORI : %01x   Free Run (FRR) : %01x  Input Clock Source (ICLK) : %01x  (Reset Timer) RST : %01x  \n", (m_TMR1 & 0xff00)>>8, (m_TMR1 & 0x00c0)>>6,  (m_TMR1 & 0x0020)>>5, (m_TMR1 & 0x0010)>>4, (m_TMR1 & 0x0008)>>3, (m_TMR1 & 0x0006)>>1, (m_TMR1 & 0x0001)>>0);
+=======
+		LOGMASKED(LOG_TIMER, "%s: (Timer 1 Mode Register) TMR1_w %04x %04x\n", this->machine().describe_context(), data, mem_mask);
+
+		LOGMASKED(LOG_TIMER, " (Prescale) PS : %02x  (Capture Edge/Interrupt) CE : %01x (Output Mode) OM : %01x  (Output Reference Interrupt En) ORI : %01x   Free Run (FRR) : %01x  Input Clock Source (ICLK) : %01x  (Reset Timer) RST : %01x  \n", (m_TMR1 & 0xff00)>>8, (m_TMR1 & 0x00c0)>>6,  (m_TMR1 & 0x0020)>>5, (m_TMR1 & 0x0010)>>4, (m_TMR1 & 0x0008)>>3, (m_TMR1 & 0x0006)>>1, (m_TMR1 & 0x0001)>>0);
+>>>>>>> upstream/master
 
 		if (m_TMR1 & 0x0001)
 		{
@@ -713,7 +1023,11 @@ WRITE16_MEMBER( mcf5206e_peripheral_device::TMR1_w)
 
 		break;
 	case 1:
+<<<<<<< HEAD
 		invalidlog("%s: invalid TMR1_w %d, %04x %04x\n", this->machine().describe_context(), offset, data, mem_mask);
+=======
+		LOGMASKED(LOG_INVALID, "%s: invalid TMR1_w %d, %04x %04x\n", this->machine().describe_context(), offset, data, mem_mask);
+>>>>>>> upstream/master
 		break;
 
 	}
@@ -724,10 +1038,17 @@ READ16_MEMBER( mcf5206e_peripheral_device::TRR1_r)
 	switch (offset)
 	{
 	case 0:
+<<<<<<< HEAD
 		debuglogtimer("%s: (Timer 1 Reference Register) TRR1_r %04x\n", this->machine().describe_context(), mem_mask);
 		return m_TRR1;
 	case 1:
 		invalidlog("%s: invalid TRR1_r %d %04x\n", this->machine().describe_context(), offset, mem_mask);
+=======
+		LOGMASKED(LOG_TIMER, "%s: (Timer 1 Reference Register) TRR1_r %04x\n", this->machine().describe_context(), mem_mask);
+		return m_TRR1;
+	case 1:
+		LOGMASKED(LOG_INVALID, "%s: invalid TRR1_r %d %04x\n", this->machine().describe_context(), offset, mem_mask);
+>>>>>>> upstream/master
 		return 0;
 	}
 
@@ -740,10 +1061,17 @@ WRITE16_MEMBER( mcf5206e_peripheral_device::TRR1_w)
 	{
 	case 0:
 		COMBINE_DATA(&m_TRR1);
+<<<<<<< HEAD
 		debuglogtimer("%s: (Timer 1 Reference Register) TRR1_w %04x %04x\n", this->machine().describe_context(), data, mem_mask);
 		break;
 	case 1:
 		debuglog("%s: invalid TRR1_w %d, %04x %04x\n", this->machine().describe_context(), offset, data, mem_mask);
+=======
+		LOGMASKED(LOG_TIMER, "%s: (Timer 1 Reference Register) TRR1_w %04x %04x\n", this->machine().describe_context(), data, mem_mask);
+		break;
+	case 1:
+		LOGMASKED(LOG_DEBUG, "%s: invalid TRR1_w %d, %04x %04x\n", this->machine().describe_context(), offset, data, mem_mask);
+>>>>>>> upstream/master
 		break;
 
 	}
@@ -756,12 +1084,20 @@ READ8_MEMBER( mcf5206e_peripheral_device::TER1_r)
 	switch (offset)
 	{
 	case 1:
+<<<<<<< HEAD
 		debuglogtimer("%s: TER1_r\n", this->machine().describe_context());
+=======
+		LOGMASKED(LOG_TIMER, "%s: TER1_r\n", this->machine().describe_context());
+>>>>>>> upstream/master
 		return m_TER1; // set on timer events, cleared by writing below
 	case 0:
 	case 2:
 	case 3:
+<<<<<<< HEAD
 		invalidlog("%s: invalid TER1_r %d\n", this->machine().describe_context(), offset);
+=======
+		LOGMASKED(LOG_INVALID, "%s: invalid TER1_r %d\n", this->machine().describe_context(), offset);
+>>>>>>> upstream/master
 		return 0;
 	}
 
@@ -774,12 +1110,20 @@ WRITE8_MEMBER( mcf5206e_peripheral_device::TER1_w)
 	{
 	case 1:
 		m_TER1 &= ~data; // writes should clear the bits..
+<<<<<<< HEAD
 		debuglogtimer("%s: TER1_w %02x\n", this->machine().describe_context(), data);
+=======
+		LOGMASKED(LOG_TIMER, "%s: TER1_w %02x\n", this->machine().describe_context(), data);
+>>>>>>> upstream/master
 		break;
 	case 0:
 	case 2:
 	case 3:
+<<<<<<< HEAD
 		invalidlog("%s: invalid TER1_w %d, %02x\n", this->machine().describe_context(), offset, data);
+=======
+		LOGMASKED(LOG_INVALID, "%s: invalid TER1_w %d, %02x\n", this->machine().describe_context(), offset, data);
+>>>>>>> upstream/master
 		break;
 
 	}
@@ -790,11 +1134,19 @@ READ16_MEMBER( mcf5206e_peripheral_device::TCN1_r)
 	switch (offset)
 	{
 	case 0:
+<<<<<<< HEAD
 		debuglogtimer("%s: (Timer 1 Counter) TCN1_r %04x\n", this->machine().describe_context(), mem_mask);
 		// return 0x9c40;
 		return 0x8ca0 -1;// m_TCN1; // this should be the counter, code has a hardcoded >= check against 8ca0.
 	case 1:
 		invalidlog("%s: invalid TCN1_r %d %04x\n", this->machine().describe_context(), offset, mem_mask);
+=======
+		LOGMASKED(LOG_TIMER, "%s: (Timer 1 Counter) TCN1_r %04x\n", this->machine().describe_context(), mem_mask);
+		// return 0x9c40;
+		return 0x8ca0 -1;// m_TCN1; // this should be the counter, code has a hardcoded >= check against 8ca0.
+	case 1:
+		LOGMASKED(LOG_INVALID, "%s: invalid TCN1_r %d %04x\n", this->machine().describe_context(), offset, mem_mask);
+>>>>>>> upstream/master
 		return 0;
 	}
 
@@ -807,10 +1159,17 @@ WRITE16_MEMBER( mcf5206e_peripheral_device::TCN1_w)
 	{
 	case 0:
 		COMBINE_DATA(&m_TCN1);
+<<<<<<< HEAD
 		debuglogtimer("%s: (Timer 1 Counter) TCN1_w %04x %04x\n", this->machine().describe_context(), data, mem_mask);
 		break;
 	case 1:
 		invalidlog("%s: invalid TCN1_w %d, %04x %04x\n", this->machine().describe_context(), offset, data, mem_mask);
+=======
+		LOGMASKED(LOG_TIMER, "%s: (Timer 1 Counter) TCN1_w %04x %04x\n", this->machine().describe_context(), data, mem_mask);
+		break;
+	case 1:
+		LOGMASKED(LOG_INVALID, "%s: invalid TCN1_w %d, %04x %04x\n", this->machine().describe_context(), offset, data, mem_mask);
+>>>>>>> upstream/master
 		break;
 
 	}
@@ -822,12 +1181,17 @@ WRITE16_MEMBER( mcf5206e_peripheral_device::TCN1_w)
 //**************************************************************************
 
 // device type definition
+<<<<<<< HEAD
 const device_type MCF5206E_PERIPHERAL = &device_creator<mcf5206e_peripheral_device>;
+=======
+DEFINE_DEVICE_TYPE(MCF5206E_PERIPHERAL, mcf5206e_peripheral_device, "mcf5206e_peripheral", "MCF5206E Peripheral")
+>>>>>>> upstream/master
 
 //-------------------------------------------------
 //  mcf5206e_peripheral_device - constructor
 //-------------------------------------------------
 
+<<<<<<< HEAD
 mcf5206e_peripheral_device::mcf5206e_peripheral_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
 	: device_t(mconfig, MCF5206E_PERIPHERAL, "MCF5206E Peripheral", tag, owner, clock, "mcf5206e_peripheral", __FILE__),
 		device_memory_interface(mconfig, *this),
@@ -849,6 +1213,21 @@ void mcf5206e_peripheral_device::device_config_complete()
 const address_space_config *mcf5206e_peripheral_device::memory_space_config(address_spacenum spacenum) const
 {
 	return (spacenum == AS_0) ? &m_space_config : NULL;
+=======
+mcf5206e_peripheral_device::mcf5206e_peripheral_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: device_t(mconfig, MCF5206E_PERIPHERAL, tag, owner, clock),
+		device_memory_interface(mconfig, *this),
+		m_space_config("coldfire_regs", ENDIANNESS_BIG, 32,10, 0, nullptr, *ADDRESS_MAP_NAME(coldfire_regs_map))
+
+{
+}
+
+device_memory_interface::space_config_vector mcf5206e_peripheral_device::memory_space_config() const
+{
+	return space_config_vector {
+		std::make_pair(0, &m_space_config)
+	};
+>>>>>>> upstream/master
 }
 
 //-------------------------------------------------

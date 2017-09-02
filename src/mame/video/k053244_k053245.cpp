@@ -33,7 +33,11 @@ main ram and the buffer.
 #include "konami_helper.h"
 
 #define VERBOSE 0
+<<<<<<< HEAD
 #define LOG(x) do { if (VERBOSE) logerror x; } while (0)
+=======
+#include "logmacro.h"
+>>>>>>> upstream/master
 
 
 
@@ -41,7 +45,12 @@ main ram and the buffer.
     DEVICE INTERFACE
 *****************************************************************************/
 
+<<<<<<< HEAD
 const device_type K053244 = &device_creator<k05324x_device>;
+=======
+DEFINE_DEVICE_TYPE(K053244, k05324x_device, "k05324x", "K053244/053245 Sprite Generator")
+device_type const K053245 = K053244;
+>>>>>>> upstream/master
 
 const gfx_layout k05324x_device::spritelayout =
 {
@@ -81,12 +90,21 @@ GFXDECODE_MEMBER( k05324x_device::gfxinfo_6bpp )
 GFXDECODE_END
 
 
+<<<<<<< HEAD
 k05324x_device::k05324x_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
 	: device_t(mconfig, K053244, "K053244 & 053245 Sprite Generator", tag, owner, clock, "k05324x", __FILE__),
 	device_gfx_interface(mconfig, *this, gfxinfo),
 	m_ram(NULL),
 	m_buffer(NULL),
 	m_sprite_rom(NULL),
+=======
+k05324x_device::k05324x_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: device_t(mconfig, K053244, tag, owner, clock),
+	device_gfx_interface(mconfig, *this, gfxinfo),
+	m_ram(nullptr),
+	m_buffer(nullptr),
+	m_sprite_rom(*this, DEVICE_SELF),
+>>>>>>> upstream/master
 	m_dx(0),
 	m_dy(0),
 	m_rombank(0),
@@ -118,6 +136,7 @@ void k05324x_device::set_bpp(device_t &device, int bpp)
 
 void k05324x_device::device_start()
 {
+<<<<<<< HEAD
 	m_sprite_rom = region()->base();
 	m_sprite_size = region()->bytes();
 
@@ -126,19 +145,39 @@ void k05324x_device::device_start()
 	m_gfx[0]->set_colors(m_palette->entries() / m_gfx[0]->depth());
 
 	if (VERBOSE && !(m_palette->shadows_enabled()))
+=======
+	if (!palette().device().started())
+		throw device_missing_dependencies();
+
+	/* decode the graphics */
+	decode_gfx();
+	gfx(0)->set_colors(palette().entries() / gfx(0)->depth());
+
+	if (VERBOSE && !(palette().shadows_enabled()))
+>>>>>>> upstream/master
 		popmessage("driver should use VIDEO_HAS_SHADOWS");
 
 	m_ramsize = 0x800;
 
 	m_z_rejection = -1;
+<<<<<<< HEAD
 	m_ram = auto_alloc_array_clear(machine(), UINT16, m_ramsize / 2);
 	m_buffer = auto_alloc_array_clear(machine(), UINT16, m_ramsize / 2);
+=======
+	m_ram = make_unique_clear<uint16_t[]>(m_ramsize / 2);
+	m_buffer = make_unique_clear<uint16_t[]>(m_ramsize / 2);
+>>>>>>> upstream/master
 
 	// bind callbacks
 	m_k05324x_cb.bind_relative_to(*owner());
 
+<<<<<<< HEAD
 	save_pointer(NAME(m_ram), m_ramsize / 2);
 	save_pointer(NAME(m_buffer), m_ramsize / 2);
+=======
+	save_pointer(NAME(m_ram.get()), m_ramsize / 2);
+	save_pointer(NAME(m_buffer.get()), m_ramsize / 2);
+>>>>>>> upstream/master
 	save_item(NAME(m_rombank));
 	save_item(NAME(m_z_rejection));
 	save_item(NAME(m_regs));
@@ -152,8 +191,13 @@ void k05324x_device::device_reset()
 {
 	m_rombank = 0;
 
+<<<<<<< HEAD
 	for (int i = 0; i < 0x10; i++)
 		m_regs[i] = 0;
+=======
+	for (auto & elem : m_regs)
+		elem = 0;
+>>>>>>> upstream/master
 }
 
 /*****************************************************************************
@@ -167,7 +211,11 @@ READ16_MEMBER( k05324x_device::k053245_word_r )
 
 WRITE16_MEMBER( k05324x_device::k053245_word_w )
 {
+<<<<<<< HEAD
 	COMBINE_DATA(m_ram + offset);
+=======
+	COMBINE_DATA(m_ram.get() + offset);
+>>>>>>> upstream/master
 }
 
 READ8_MEMBER( k05324x_device::k053245_r )
@@ -197,7 +245,11 @@ void k05324x_device::clear_buffer()
 
 void k05324x_device::update_buffer()
 {
+<<<<<<< HEAD
 	memcpy(m_buffer, m_ram, m_ramsize);
+=======
+	memcpy(m_buffer.get(), m_ram.get(), m_ramsize);
+>>>>>>> upstream/master
 }
 
 READ8_MEMBER( k05324x_device::k053244_r )
@@ -209,7 +261,11 @@ READ8_MEMBER( k05324x_device::k053244_r )
 		addr = (m_rombank << 19) | ((m_regs[11] & 0x7) << 18)
 			| (m_regs[8] << 10) | (m_regs[9] << 2)
 			| ((offset & 3) ^ 1);
+<<<<<<< HEAD
 		addr &= m_sprite_size - 1;
+=======
+		addr &= m_sprite_rom.mask();
+>>>>>>> upstream/master
 
 		//  popmessage("%s: offset %02x addr %06x", machine().describe_context(), offset & 3, addr);
 
@@ -316,7 +372,11 @@ void k05324x_device::sprites_draw( bitmap_ind16 &bitmap, const rectangle &clipre
 	int offs, pri_code, i;
 	int sortedlist[NUM_SPRITES];
 	int flipscreenX, flipscreenY, spriteoffsX, spriteoffsY;
+<<<<<<< HEAD
 	UINT8 drawmode_table[256];
+=======
+	uint8_t drawmode_table[256];
+>>>>>>> upstream/master
 
 	memset(drawmode_table, DRAWMODE_SOURCE, sizeof(drawmode_table));
 	drawmode_table[0] = DRAWMODE_NONE;
@@ -458,7 +518,11 @@ void k05324x_device::sprites_draw( bitmap_ind16 &bitmap, const rectangle &clipre
 		ox -= (zoomx * w) >> 13;
 		oy -= (zoomy * h) >> 13;
 
+<<<<<<< HEAD
 		drawmode_table[m_gfx[0]->granularity() - 1] = shadow ? DRAWMODE_SHADOW : DRAWMODE_SOURCE;
+=======
+		drawmode_table[gfx(0)->granularity() - 1] = shadow ? DRAWMODE_SHADOW : DRAWMODE_SOURCE;
+>>>>>>> upstream/master
 
 		for (y = 0; y < h; y++)
 		{
@@ -522,7 +586,11 @@ void k05324x_device::sprites_draw( bitmap_ind16 &bitmap, const rectangle &clipre
 
 				if (zoomx == 0x10000 && zoomy == 0x10000)
 				{
+<<<<<<< HEAD
 					m_gfx[0]->prio_transtable(bitmap,cliprect,
+=======
+					gfx(0)->prio_transtable(bitmap,cliprect,
+>>>>>>> upstream/master
 							c,color,
 							fx,fy,
 							sx,sy,
@@ -531,7 +599,11 @@ void k05324x_device::sprites_draw( bitmap_ind16 &bitmap, const rectangle &clipre
 				}
 				else
 				{
+<<<<<<< HEAD
 					m_gfx[0]->prio_zoom_transtable(bitmap,cliprect,
+=======
+					gfx(0)->prio_zoom_transtable(bitmap,cliprect,
+>>>>>>> upstream/master
 							c,color,
 							fx,fy,
 							sx,sy,

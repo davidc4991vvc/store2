@@ -1,13 +1,23 @@
 /*
  * Copyright 2013 Jeremie Roy. All rights reserved.
+<<<<<<< HEAD
  * License: http://www.opensource.org/licenses/BSD-2-Clause
+=======
+ * License: https://github.com/bkaradzic/bgfx#license-bsd-2-clause
+>>>>>>> upstream/master
  */
 
 #include "../common.h"
 
 #include <bgfx/bgfx.h>
+<<<<<<< HEAD
 #include <stddef.h> // offsetof
 #include <memory.h> // memcpy
+=======
+#include <bgfx/embedded_shader.h>
+
+#include <stddef.h> // offsetof
+>>>>>>> upstream/master
 #include <wchar.h>  // wcslen
 
 #include "text_buffer_manager.h"
@@ -21,6 +31,21 @@
 #include "vs_font_distance_field_subpixel.bin.h"
 #include "fs_font_distance_field_subpixel.bin.h"
 
+<<<<<<< HEAD
+=======
+static const bgfx::EmbeddedShader s_embeddedShaders[] =
+{
+	BGFX_EMBEDDED_SHADER(vs_font_basic),
+	BGFX_EMBEDDED_SHADER(fs_font_basic),
+	BGFX_EMBEDDED_SHADER(vs_font_distance_field),
+	BGFX_EMBEDDED_SHADER(fs_font_distance_field),
+	BGFX_EMBEDDED_SHADER(vs_font_distance_field_subpixel),
+	BGFX_EMBEDDED_SHADER(fs_font_distance_field_subpixel),
+
+	BGFX_EMBEDDED_SHADER_END()
+};
+
+>>>>>>> upstream/master
 #define MAX_BUFFERED_CHARACTERS (8192 - 5)
 
 class TextBuffer
@@ -238,7 +263,11 @@ void TextBuffer::appendText(FontHandle _fontHandle, const char* _string, const c
 
 	if (_end == NULL)
 	{
+<<<<<<< HEAD
 		_end = _string + strlen(_string);
+=======
+		_end = _string + bx::strnlen(_string);
+>>>>>>> upstream/master
 	}
 	BX_CHECK(_end >= _string);
 
@@ -565,6 +594,7 @@ TextBufferManager::TextBufferManager(FontManager* _fontManager)
 {
 	m_textBuffers = new BufferCache[MAX_TEXT_BUFFER_COUNT];
 
+<<<<<<< HEAD
 	const bgfx::Memory* vs_font_basic;
 	const bgfx::Memory* fs_font_basic;
 	const bgfx::Memory* vs_font_distance_field;
@@ -629,6 +659,27 @@ TextBufferManager::TextBufferManager(FontManager* _fontManager)
 									, bgfx::createShader(fs_font_distance_field_subpixel)
 									, true
 									);
+=======
+	bgfx::RendererType::Enum type = bgfx::getRendererType();
+
+	m_basicProgram = bgfx::createProgram(
+		  bgfx::createEmbeddedShader(s_embeddedShaders, type, "vs_font_basic")
+		, bgfx::createEmbeddedShader(s_embeddedShaders, type, "fs_font_basic")
+		, true
+		);
+
+	m_distanceProgram = bgfx::createProgram(
+		  bgfx::createEmbeddedShader(s_embeddedShaders, type, "vs_font_distance_field")
+		, bgfx::createEmbeddedShader(s_embeddedShaders, type, "fs_font_distance_field")
+		, true
+		);
+
+	m_distanceSubpixelProgram = bgfx::createProgram(
+		  bgfx::createEmbeddedShader(s_embeddedShaders, type, "vs_font_distance_field_subpixel")
+		, bgfx::createEmbeddedShader(s_embeddedShaders, type, "fs_font_distance_field_subpixel")
+		, true
+		);
+>>>>>>> upstream/master
 
 	m_vertexDecl
 		.begin()
@@ -822,8 +873,13 @@ void TextBufferManager::submitTextBuffer(TextBufferHandle _handle, uint8_t _id, 
 						);
 			}
 
+<<<<<<< HEAD
 			bgfx::setVertexBuffer(vbh, bc.textBuffer->getVertexCount() );
 			bgfx::setIndexBuffer(ibh, bc.textBuffer->getIndexCount() );
+=======
+			bgfx::setVertexBuffer(vbh, 0, bc.textBuffer->getVertexCount() );
+			bgfx::setIndexBuffer(ibh, 0, bc.textBuffer->getIndexCount() );
+>>>>>>> upstream/master
 		}
 		break;
 
@@ -833,8 +889,13 @@ void TextBufferManager::submitTextBuffer(TextBufferHandle _handle, uint8_t _id, 
 			bgfx::TransientVertexBuffer tvb;
 			bgfx::allocTransientIndexBuffer(&tib, bc.textBuffer->getIndexCount() );
 			bgfx::allocTransientVertexBuffer(&tvb, bc.textBuffer->getVertexCount(), m_vertexDecl);
+<<<<<<< HEAD
 			memcpy(tib.data, bc.textBuffer->getIndexBuffer(), indexSize);
 			memcpy(tvb.data, bc.textBuffer->getVertexBuffer(), vertexSize);
+=======
+			bx::memCopy(tib.data, bc.textBuffer->getIndexBuffer(), indexSize);
+			bx::memCopy(tvb.data, bc.textBuffer->getVertexBuffer(), vertexSize);
+>>>>>>> upstream/master
 			bgfx::setVertexBuffer(&tvb, 0, bc.textBuffer->getVertexCount() );
 			bgfx::setIndexBuffer(&tib, 0, bc.textBuffer->getIndexCount() );
 		}

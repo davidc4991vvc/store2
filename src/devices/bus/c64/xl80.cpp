@@ -36,7 +36,13 @@ Notes:
 
 */
 
+<<<<<<< HEAD
 #include "xl80.h"
+=======
+#include "emu.h"
+#include "xl80.h"
+#include "screen.h"
+>>>>>>> upstream/master
 
 
 
@@ -55,7 +61,11 @@ Notes:
 //  DEVICE DEFINITIONS
 //**************************************************************************
 
+<<<<<<< HEAD
 const device_type C64_XL80 = &device_creator<c64_xl80_device>;
+=======
+DEFINE_DEVICE_TYPE(C64_XL80, c64_xl80_device, "c64_xl80", "C64 XL 80 cartridge")
+>>>>>>> upstream/master
 
 
 //-------------------------------------------------
@@ -72,7 +82,11 @@ ROM_END
 //  rom_region - device-specific ROM region
 //-------------------------------------------------
 
+<<<<<<< HEAD
 const rom_entry *c64_xl80_device::device_rom_region() const
+=======
+const tiny_rom_entry *c64_xl80_device::device_rom_region() const
+>>>>>>> upstream/master
 {
 	return ROM_NAME( c64_xl80 );
 }
@@ -87,9 +101,15 @@ MC6845_UPDATE_ROW( c64_xl80_device::crtc_update_row )
 
 	for (int column = 0; column < x_count; column++)
 	{
+<<<<<<< HEAD
 		UINT8 code = m_ram[((ma + column) & 0x7ff)];
 		UINT16 addr = (code << 3) | (ra & 0x07);
 		UINT8 data = m_char_rom->base()[addr & 0x7ff];
+=======
+		uint8_t code = m_ram[((ma + column) & 0x7ff)];
+		uint16_t addr = (code << 3) | (ra & 0x07);
+		uint8_t data = m_char_rom->base()[addr & 0x7ff];
+>>>>>>> upstream/master
 
 		if (column == cursor_x)
 		{
@@ -118,18 +138,30 @@ GFXDECODE_END
 
 
 //-------------------------------------------------
+<<<<<<< HEAD
 //  MACHINE_CONFIG_FRAGMENT( c64_xl80 )
 //-------------------------------------------------
 
 static MACHINE_CONFIG_FRAGMENT( c64_xl80 )
 	MCFG_SCREEN_ADD(MC6845_SCREEN_TAG, RASTER)
+=======
+//  device_add_mconfig - add device configuration
+//-------------------------------------------------
+
+MACHINE_CONFIG_MEMBER( c64_xl80_device::device_add_mconfig )
+	MCFG_SCREEN_ADD_MONOCHROME(MC6845_SCREEN_TAG, RASTER, rgb_t::white())
+>>>>>>> upstream/master
 	MCFG_SCREEN_UPDATE_DEVICE(HD46505SP_TAG, h46505_device, screen_update)
 	MCFG_SCREEN_SIZE(80*8, 24*8)
 	MCFG_SCREEN_VISIBLE_AREA(0, 80*8-1, 0, 24*8-1)
 	MCFG_SCREEN_REFRESH_RATE(50)
 
 	MCFG_GFXDECODE_ADD("gfxdecode", "palette", c64_xl80)
+<<<<<<< HEAD
 	MCFG_PALETTE_ADD_BLACK_AND_WHITE("palette")
+=======
+	MCFG_PALETTE_ADD_MONOCHROME("palette")
+>>>>>>> upstream/master
 
 	MCFG_MC6845_ADD(HD46505SP_TAG, H46505, MC6845_SCREEN_TAG, XTAL_14_31818MHz / 8)
 	MCFG_MC6845_SHOW_BORDER_AREA(true)
@@ -138,6 +170,7 @@ static MACHINE_CONFIG_FRAGMENT( c64_xl80 )
 MACHINE_CONFIG_END
 
 
+<<<<<<< HEAD
 //-------------------------------------------------
 //  machine_config_additions - device-specific
 //  machine configurations
@@ -149,6 +182,8 @@ machine_config_constructor c64_xl80_device::device_mconfig_additions() const
 }
 
 
+=======
+>>>>>>> upstream/master
 
 //**************************************************************************
 //  LIVE DEVICE
@@ -158,8 +193,13 @@ machine_config_constructor c64_xl80_device::device_mconfig_additions() const
 //  c64_xl80_device - constructor
 //-------------------------------------------------
 
+<<<<<<< HEAD
 c64_xl80_device::c64_xl80_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock) :
 	device_t(mconfig, C64_XL80, "XL 80", tag, owner, clock, "c64_xl80", __FILE__),
+=======
+c64_xl80_device::c64_xl80_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock) :
+	device_t(mconfig, C64_XL80, tag, owner, clock),
+>>>>>>> upstream/master
 	device_c64_expansion_card_interface(mconfig, *this),
 	m_crtc(*this, HD46505SP_TAG),
 	m_palette(*this, "palette"),
@@ -193,7 +233,11 @@ void c64_xl80_device::device_reset()
 //  c64_cd_r - cartridge data read
 //-------------------------------------------------
 
+<<<<<<< HEAD
 UINT8 c64_xl80_device::c64_cd_r(address_space &space, offs_t offset, UINT8 data, int sphi2, int ba, int roml, int romh, int io1, int io2)
+=======
+uint8_t c64_xl80_device::c64_cd_r(address_space &space, offs_t offset, uint8_t data, int sphi2, int ba, int roml, int romh, int io1, int io2)
+>>>>>>> upstream/master
 {
 	if (!io2 && BIT(offset, 2))
 	{
@@ -219,7 +263,11 @@ UINT8 c64_xl80_device::c64_cd_r(address_space &space, offs_t offset, UINT8 data,
 //  c64_cd_w - cartridge data write
 //-------------------------------------------------
 
+<<<<<<< HEAD
 void c64_xl80_device::c64_cd_w(address_space &space, offs_t offset, UINT8 data, int sphi2, int ba, int roml, int romh, int io1, int io2)
+=======
+void c64_xl80_device::c64_cd_w(address_space &space, offs_t offset, uint8_t data, int sphi2, int ba, int roml, int romh, int io1, int io2)
+>>>>>>> upstream/master
 {
 	if (offset >= 0x9800 && offset < 0xa000)
 	{

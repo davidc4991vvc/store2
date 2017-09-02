@@ -52,11 +52,22 @@ Grndtour:
 ***************************************************************************/
 
 #include "emu.h"
+<<<<<<< HEAD
 #include "cpu/z80/z80.h"
 #include "cpu/z180/z180.h"
 #include "machine/i8255.h"
 #include "includes/iqblock.h"
 #include "sound/2413intf.h"
+=======
+#include "includes/iqblock.h"
+
+#include "cpu/z80/z80.h"
+#include "cpu/z180/z180.h"
+#include "machine/i8255.h"
+#include "sound/ym2413.h"
+#include "screen.h"
+#include "speaker.h"
+>>>>>>> upstream/master
 
 
 WRITE8_MEMBER(iqblock_state::iqblock_prot_w)
@@ -103,7 +114,11 @@ WRITE8_MEMBER(iqblock_state::port_C_w)
 	m_videoenable = data & 0x20;
 
 	/* bit 6 is coin counter */
+<<<<<<< HEAD
 	coin_counter_w(machine(), 0,data & 0x40);
+=======
+	machine().bookkeeping().coin_counter_w(0,data & 0x40);
+>>>>>>> upstream/master
 
 	/* bit 7 could be a second coin counter, but coin 2 doesn't seem to work... */
 }
@@ -336,7 +351,11 @@ GFXDECODE_END
 
 
 
+<<<<<<< HEAD
 static MACHINE_CONFIG_START( iqblock, iqblock_state )
+=======
+static MACHINE_CONFIG_START( iqblock )
+>>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", Z80,12000000/2) /* 6 MHz */
@@ -499,7 +518,11 @@ ROM_END
 
 DRIVER_INIT_MEMBER(iqblock_state,iqblock)
 {
+<<<<<<< HEAD
 	UINT8 *rom = memregion("maincpu")->base();
+=======
+	uint8_t *rom = memregion("maincpu")->base();
+>>>>>>> upstream/master
 	int i;
 
 	/* decrypt the program ROM */
@@ -516,7 +539,11 @@ DRIVER_INIT_MEMBER(iqblock_state,iqblock)
 
 DRIVER_INIT_MEMBER(iqblock_state,grndtour)
 {
+<<<<<<< HEAD
 	UINT8 *rom = memregion("maincpu")->base();
+=======
+	uint8_t *rom = memregion("maincpu")->base();
+>>>>>>> upstream/master
 	int i;
 
 	/* decrypt the program ROM */

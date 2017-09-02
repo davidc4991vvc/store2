@@ -6,12 +6,20 @@
 
 **********************************************************************/
 
+<<<<<<< HEAD
 #pragma once
 
 #ifndef __C2031__
 #define __C2031__
 
 #include "emu.h"
+=======
+#ifndef MAME_BUS_IEEE488_C2031_H
+#define MAME_BUS_IEEE488_C2031_H
+
+#pragma once
+
+>>>>>>> upstream/master
 #include "ieee488.h"
 #include "cpu/m6502/m6502.h"
 #include "machine/64h156.h"
@@ -30,12 +38,33 @@ class c2031_device :  public device_t,
 {
 public:
 	// construction/destruction
+<<<<<<< HEAD
 	c2031_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
 
 	// optional information overrides
 	virtual const rom_entry *device_rom_region() const;
 	virtual machine_config_constructor device_mconfig_additions() const;
 	virtual ioport_constructor device_input_ports() const;
+=======
+	c2031_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
+
+protected:
+	// device-level overrides
+	virtual void device_start() override;
+	virtual void device_reset() override;
+
+	// optional information overrides
+	virtual const tiny_rom_entry *device_rom_region() const override;
+	virtual void device_add_mconfig(machine_config &config) override;
+	virtual ioport_constructor device_input_ports() const override;
+
+	// device_ieee488_interface overrides
+	virtual void ieee488_atn(int state) override;
+	virtual void ieee488_ifc(int state) override;
+
+private:
+	inline int get_device_number();
+>>>>>>> upstream/master
 
 	DECLARE_WRITE_LINE_MEMBER( via0_irq_w );
 	DECLARE_READ8_MEMBER( via0_pa_r );
@@ -49,6 +78,7 @@ public:
 
 	DECLARE_FLOPPY_FORMATS( floppy_formats );
 
+<<<<<<< HEAD
 protected:
 	// device-level overrides
 	virtual void device_start();
@@ -60,6 +90,8 @@ protected:
 
 	inline int get_device_number();
 
+=======
+>>>>>>> upstream/master
 	required_device<cpu_device> m_maincpu;
 	required_device<via6522_device> m_via0;
 	required_device<via6522_device> m_via1;
@@ -80,8 +112,15 @@ protected:
 
 
 // device type definition
+<<<<<<< HEAD
 extern const device_type C2031;
 
 
 
 #endif
+=======
+DECLARE_DEVICE_TYPE(C2031, c2031_device)
+
+
+#endif // MAME_BUS_IEEE488_C2031_H
+>>>>>>> upstream/master

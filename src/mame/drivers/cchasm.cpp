@@ -15,6 +15,7 @@
 ***************************************************************************/
 
 #include "emu.h"
+<<<<<<< HEAD
 #include "cpu/z80/z80.h"
 #include "cpu/z80/z80daisy.h"
 #include "cpu/m68000/m68000.h"
@@ -23,6 +24,19 @@
 #include "machine/6840ptm.h"
 #include "machine/z80ctc.h"
 #include "includes/cchasm.h"
+=======
+#include "includes/cchasm.h"
+
+#include "cpu/z80/z80.h"
+#include "cpu/z80/z80daisy.h"
+#include "cpu/m68000/m68000.h"
+#include "machine/6840ptm.h"
+#include "machine/z80ctc.h"
+#include "machine/watchdog.h"
+#include "sound/ay8910.h"
+#include "sound/volt_reg.h"
+#include "speaker.h"
+>>>>>>> upstream/master
 
 #define CCHASM_68K_CLOCK (XTAL_8MHz)
 
@@ -37,7 +51,11 @@ static ADDRESS_MAP_START( memmap, AS_PROGRAM, 16, cchasm_state )
 	AM_RANGE(0x040000, 0x04000f) AM_DEVREADWRITE8("6840ptm", ptm6840_device, read, write, 0xff)
 	AM_RANGE(0x050000, 0x050001) AM_WRITE(refresh_control_w)
 	AM_RANGE(0x060000, 0x060001) AM_READ_PORT("DSW") AM_WRITE(led_w)
+<<<<<<< HEAD
 	AM_RANGE(0x070000, 0x070001) AM_WRITE(watchdog_reset16_w)
+=======
+	AM_RANGE(0x070000, 0x070001) AM_DEVWRITE("watchdog", watchdog_timer_device, reset16_w)
+>>>>>>> upstream/master
 	AM_RANGE(0xf80000, 0xf800ff) AM_READWRITE(io_r,io_w)
 	AM_RANGE(0xffb000, 0xffffff) AM_RAM AM_SHARE("ram")
 ADDRESS_MAP_END
@@ -57,7 +75,11 @@ static ADDRESS_MAP_START( sound_memmap, AS_PROGRAM, 8, cchasm_state )
 	AM_RANGE(0x6001, 0x6001) AM_MIRROR(0xf9e) AM_DEVREAD("ay1", ay8910_device, data_r)
 	AM_RANGE(0x6020, 0x6021) AM_MIRROR(0xf9e) AM_DEVWRITE("ay2", ay8910_device, address_data_w)
 	AM_RANGE(0x6021, 0x6021) AM_MIRROR(0xf9e) AM_DEVREAD("ay2", ay8910_device, data_r)
+<<<<<<< HEAD
 	AM_RANGE(0x6040, 0x6040) AM_MIRROR(0xf9e) AM_READWRITE(soundlatch_byte_r, soundlatch3_byte_w)
+=======
+	AM_RANGE(0x6040, 0x6040) AM_MIRROR(0xf9e) AM_DEVREAD("soundlatch", generic_latch_8_device, read) AM_DEVWRITE("soundlatch3", generic_latch_8_device, write)
+>>>>>>> upstream/master
 	AM_RANGE(0x6041, 0x6041) AM_MIRROR(0xf9e) AM_READWRITE(soundlatch2_r, soundlatch4_w)
 	AM_RANGE(0x6061, 0x6061) AM_MIRROR(0xf9e) AM_WRITE(reset_coin_flag_w)
 	AM_RANGE(0x7041, 0x7041) AM_NOP // TODO
@@ -130,7 +152,11 @@ INPUT_PORTS_END
 static const z80_daisy_config daisy_chain[] =
 {
 	{ "ctc" },
+<<<<<<< HEAD
 	{ NULL }
+=======
+	{ nullptr }
+>>>>>>> upstream/master
 };
 
 
@@ -141,14 +167,22 @@ static const z80_daisy_config daisy_chain[] =
  *
  *************************************/
 
+<<<<<<< HEAD
 static MACHINE_CONFIG_START( cchasm, cchasm_state )
+=======
+static MACHINE_CONFIG_START( cchasm )
+>>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", M68000, CCHASM_68K_CLOCK)    /* 8 MHz (from schematics) */
 	MCFG_CPU_PROGRAM_MAP(memmap)
 
 	MCFG_CPU_ADD("audiocpu", Z80, 3584229)       /* 3.58  MHz (from schematics) */
+<<<<<<< HEAD
 	MCFG_CPU_CONFIG(daisy_chain)
+=======
+	MCFG_Z80_DAISY_CHAIN(daisy_chain)
+>>>>>>> upstream/master
 	MCFG_CPU_PROGRAM_MAP(sound_memmap)
 	MCFG_CPU_IO_MAP(sound_portmap)
 
@@ -157,6 +191,11 @@ static MACHINE_CONFIG_START( cchasm, cchasm_state )
 	MCFG_Z80CTC_ZC1_CB(WRITELINE(cchasm_state, ctc_timer_1_w))
 	MCFG_Z80CTC_ZC2_CB(WRITELINE(cchasm_state, ctc_timer_2_w))
 
+<<<<<<< HEAD
+=======
+	MCFG_WATCHDOG_ADD("watchdog")
+
+>>>>>>> upstream/master
 	/* video hardware */
 	MCFG_VECTOR_ADD("vector")
 	MCFG_SCREEN_ADD("screen", VECTOR)
@@ -166,6 +205,7 @@ static MACHINE_CONFIG_START( cchasm, cchasm_state )
 	MCFG_SCREEN_UPDATE_DEVICE("vector", vector_device, screen_update)
 
 	/* sound hardware */
+<<<<<<< HEAD
 	MCFG_SPEAKER_STANDARD_MONO("mono")
 
 	MCFG_SOUND_ADD("ay1", AY8910, 1818182)
@@ -183,6 +223,29 @@ static MACHINE_CONFIG_START( cchasm, cchasm_state )
 	/* 6840 PTM */
 	MCFG_DEVICE_ADD("6840ptm", PTM6840, 0)
 	MCFG_PTM6840_INTERNAL_CLOCK(CCHASM_68K_CLOCK/10)
+=======
+	MCFG_SPEAKER_STANDARD_MONO("speaker")
+
+	MCFG_GENERIC_LATCH_8_ADD("soundlatch")
+	MCFG_GENERIC_LATCH_8_ADD("soundlatch2")
+	MCFG_GENERIC_LATCH_8_ADD("soundlatch3")
+	MCFG_GENERIC_LATCH_8_ADD("soundlatch4")
+
+	MCFG_SOUND_ADD("ay1", AY8910, 1818182)
+	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "speaker", 0.2)
+
+	MCFG_SOUND_ADD("ay2", AY8910, 1818182)
+	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "speaker", 0.2)
+
+	MCFG_SOUND_ADD("dac1", DAC_1BIT, 0) MCFG_SOUND_ROUTE(ALL_OUTPUTS, "speaker", 0.5)
+	MCFG_SOUND_ADD("dac2", DAC_1BIT, 0) MCFG_SOUND_ROUTE(ALL_OUTPUTS, "speaker", 0.5)
+	MCFG_DEVICE_ADD("vref", VOLTAGE_REGULATOR, 0) MCFG_VOLTAGE_REGULATOR_OUTPUT(5.0)
+	MCFG_SOUND_ROUTE_EX(0, "dac1", 1.0, DAC_VREF_POS_INPUT)
+	MCFG_SOUND_ROUTE_EX(0, "dac2", 1.0, DAC_VREF_POS_INPUT)
+
+	/* 6840 PTM */
+	MCFG_DEVICE_ADD("6840ptm", PTM6840, CCHASM_68K_CLOCK/10)
+>>>>>>> upstream/master
 	MCFG_PTM6840_EXTERNAL_CLOCKS(0, CCHASM_68K_CLOCK / 10, 0)
 	MCFG_PTM6840_IRQ_CB(INPUTLINE("maincpu", 4))
 MACHINE_CONFIG_END
@@ -254,5 +317,10 @@ ROM_END
  *
  *************************************/
 
+<<<<<<< HEAD
 GAME( 1983, cchasm,  0,      cchasm, cchasm, driver_device, 0, ROT270, "Cinematronics / GCE", "Cosmic Chasm (set 1)", MACHINE_SUPPORTS_SAVE )
 GAME( 1983, cchasm1, cchasm, cchasm, cchasm, driver_device, 0, ROT270, "Cinematronics / GCE", "Cosmic Chasm (set 2)", MACHINE_SUPPORTS_SAVE )
+=======
+GAME( 1983, cchasm,  0,      cchasm, cchasm, cchasm_state, 0, ROT270, "Cinematronics / GCE", "Cosmic Chasm (set 1)", MACHINE_SUPPORTS_SAVE )
+GAME( 1983, cchasm1, cchasm, cchasm, cchasm, cchasm_state, 0, ROT270, "Cinematronics / GCE", "Cosmic Chasm (set 2)", MACHINE_SUPPORTS_SAVE )
+>>>>>>> upstream/master

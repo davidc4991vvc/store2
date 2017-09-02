@@ -32,7 +32,13 @@
  *
  *          This is positive triggered, J and K
  *          are latched during clock high and
+<<<<<<< HEAD
  *          transferred when CLK falls.
+=======
+ *          transferred when CLK falls. The
+ *          datasheet requires J and K to be
+ *          stable during clock high.
+>>>>>>> upstream/master
  *
  *          Function table 107A
  *
@@ -51,14 +57,23 @@
  *
  *  Naming conventions follow Texas instruments datasheet
  *
+<<<<<<< HEAD
  *  FIXME: Currently, only the 107A is implemented.
  *         The 107 uses the same model.
+=======
+ *  TODO:  Currently, only the 107A is implemented.
+ *         The 107 uses the same model, but different timings.
+ *         The requirement that J and K must be stable during
+ *         clock high indicates that the chip may exhibit undefined
+ *         behaviour.
+>>>>>>> upstream/master
  *
  */
 
 #ifndef NLD_74107_H_
 #define NLD_74107_H_
 
+<<<<<<< HEAD
 #include "nl_base.h"
 
 #define TTL_74107A(_name, _CLK, _J, _K, _CLRQ)                                      \
@@ -115,5 +130,21 @@ NETLIB_DEVICE(74107_dip,
 );
 
 NETLIB_NAMESPACE_DEVICES_END()
+=======
+#include "../nl_setup.h"
+
+#define TTL_74107A(name, cCLK, cJ, cK, cCLRQ)                                   \
+		NET_REGISTER_DEV(TTL_74107A, name)                                      \
+		NET_CONNECT(name, CLK, cCLK)                                            \
+		NET_CONNECT(name, J, cJ)                                                \
+		NET_CONNECT(name, K, cK)                                                \
+		NET_CONNECT(name, CLRQ, cCLRQ)
+
+#define TTL_74107(name, cCLK, cJ, cK, cCLRQ)                                    \
+		TTL_74107A(name, cCLK, cJ, cK, cCLRQ)
+
+#define TTL_74107_DIP(name)                             \
+		NET_REGISTER_DEV(TTL_74107_DIP, name)
+>>>>>>> upstream/master
 
 #endif /* NLD_74107_H_ */

@@ -10,9 +10,16 @@
 #ifndef NL_CONVERT_H_
 #define NL_CONVERT_H_
 
+<<<<<<< HEAD
 #include "plib/pstring.h"
 #include "plib/plists.h"
 #include "plib/pparser.h"
+=======
+#include <memory>
+#include "../plib/pstring.h"
+#include "../plib/plists.h"
+#include "../plib/pparser.h"
+>>>>>>> upstream/master
 
 /*-------------------------------------------------
     convert - convert a spice netlist
@@ -22,6 +29,7 @@ class nl_convert_base_t
 {
 public:
 
+<<<<<<< HEAD
 	nl_convert_base_t() : out(m_buf) {};
 	virtual ~nl_convert_base_t()
 	{
@@ -31,10 +39,19 @@ public:
 	}
 
 	const pstringbuffer &result() { return m_buf.str(); }
+=======
+	virtual ~nl_convert_base_t();
+
+	const pstring &result() { return m_buf.str(); }
+>>>>>>> upstream/master
 
 	virtual void convert(const pstring &contents) = 0;
 
 protected:
+<<<<<<< HEAD
+=======
+	nl_convert_base_t();
+>>>>>>> upstream/master
 
 	void add_pin_alias(const pstring &devname, const pstring &name, const pstring &alias);
 
@@ -53,6 +70,7 @@ protected:
 
 	double get_sp_val(const pstring &sin);
 
+<<<<<<< HEAD
 	pstream_fmt_writer_t out;
 private:
 	struct net_t
@@ -63,13 +81,30 @@ private:
 
 		const pstring &name() { return m_name;}
 		pstring_list_t &terminals() { return m_terminals; }
+=======
+	plib::putf8_fmt_writer out;
+private:
+
+	struct net_t
+	{
+	public:
+		explicit net_t(const pstring &aname)
+		: m_name(aname), m_no_export(false) {}
+
+		const pstring &name() { return m_name;}
+		std::vector<pstring> &terminals() { return m_terminals; }
+>>>>>>> upstream/master
 		void set_no_export() { m_no_export = true; }
 		bool is_no_export() { return m_no_export; }
 
 	private:
 		pstring m_name;
 		bool m_no_export;
+<<<<<<< HEAD
 		pstring_list_t m_terminals;
+=======
+		std::vector<pstring> m_terminals;
+>>>>>>> upstream/master
 	};
 
 	struct dev_t
@@ -104,8 +139,13 @@ private:
 	};
 
 	struct unit_t {
+<<<<<<< HEAD
 		pstring m_unit;
 		pstring m_func;
+=======
+		const char *m_unit;
+		const char *m_func;
+>>>>>>> upstream/master
 		double m_mult;
 	};
 
@@ -124,6 +164,7 @@ private:
 
 private:
 
+<<<<<<< HEAD
 	postringstream m_buf;
 
 	pnamedlist_t<dev_t *> m_devs;
@@ -132,6 +173,19 @@ private:
 	pnamedlist_t<pin_alias_t *> m_pins;
 
 	static unit_t m_units[];
+=======
+	void add_device(std::unique_ptr<dev_t> dev);
+
+	plib::postringstream m_buf;
+
+	std::vector<std::unique_ptr<dev_t>> m_devs;
+	std::unordered_map<pstring, std::unique_ptr<net_t> > m_nets;
+	std::vector<pstring> m_ext_alias;
+	std::unordered_map<pstring, std::unique_ptr<pin_alias_t>> m_pins;
+
+	static unit_t m_units[];
+	pstring m_numberchars;
+>>>>>>> upstream/master
 
 };
 
@@ -139,12 +193,21 @@ class nl_convert_spice_t : public nl_convert_base_t
 {
 public:
 
+<<<<<<< HEAD
 	nl_convert_spice_t() : nl_convert_base_t() {};
 	~nl_convert_spice_t()
 	{
 	}
 
 	void convert(const pstring &contents);
+=======
+	nl_convert_spice_t() : nl_convert_base_t() {}
+	virtual ~nl_convert_spice_t() override
+	{
+	}
+
+	void convert(const pstring &contents) override;
+>>>>>>> upstream/master
 
 protected:
 
@@ -158,6 +221,7 @@ class nl_convert_eagle_t : public nl_convert_base_t
 {
 public:
 
+<<<<<<< HEAD
 	nl_convert_eagle_t() : nl_convert_base_t() {};
 	~nl_convert_eagle_t()
 	{
@@ -189,6 +253,17 @@ public:
 			register_token(")");
 			register_token("(");
 		}
+=======
+	nl_convert_eagle_t() : nl_convert_base_t() {}
+	virtual ~nl_convert_eagle_t() override
+	{
+	}
+
+	class tokenizer : public plib::ptokenizer
+	{
+	public:
+		tokenizer(nl_convert_eagle_t &convert, plib::putf8_reader &strm);
+>>>>>>> upstream/master
 
 		token_id_t m_tok_ADD;
 		token_id_t m_tok_VALUE;
@@ -197,17 +272,66 @@ public:
 
 	protected:
 
+<<<<<<< HEAD
 		void verror(const pstring &msg, int line_num, const pstring &line)
 		{
 			m_convert.out("{} (line {}): {}\n", msg.cstr(), line_num, line.cstr());
 		}
 
+=======
+		virtual void verror(const pstring &msg, int line_num, const pstring &line) override;
+>>>>>>> upstream/master
 
 	private:
 		nl_convert_eagle_t &m_convert;
 	};
 
+<<<<<<< HEAD
 	void convert(const pstring &contents);
+=======
+	void convert(const pstring &contents) override;
+
+protected:
+
+
+private:
+
+};
+
+class nl_convert_rinf_t : public nl_convert_base_t
+{
+public:
+
+	nl_convert_rinf_t() : nl_convert_base_t() {}
+	virtual ~nl_convert_rinf_t() override
+	{
+	}
+
+	class tokenizer : public plib::ptokenizer
+	{
+	public:
+		tokenizer(nl_convert_rinf_t &convert, plib::putf8_reader &strm);
+
+		token_id_t m_tok_HEA;
+		token_id_t m_tok_APP;
+		token_id_t m_tok_TIM;
+		token_id_t m_tok_TYP;
+		token_id_t m_tok_ADDC;
+		token_id_t m_tok_ATTC;
+		token_id_t m_tok_NET;
+		token_id_t m_tok_TER;
+		token_id_t m_tok_END;
+
+	protected:
+
+		virtual void verror(const pstring &msg, int line_num, const pstring &line) override;
+
+	private:
+		nl_convert_rinf_t &m_convert;
+	};
+
+	void convert(const pstring &contents) override;
+>>>>>>> upstream/master
 
 protected:
 

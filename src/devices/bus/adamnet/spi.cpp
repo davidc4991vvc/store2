@@ -6,6 +6,10 @@
 
 **********************************************************************/
 
+<<<<<<< HEAD
+=======
+#include "emu.h"
+>>>>>>> upstream/master
 #include "spi.h"
 
 
@@ -25,7 +29,11 @@
 //  DEVICE DEFINITIONS
 //**************************************************************************
 
+<<<<<<< HEAD
 const device_type ADAM_SPI = &device_creator<adam_spi_device>;
+=======
+DEFINE_DEVICE_TYPE(ADAM_SPI, adam_spi_device, "adam_spi", "Adam SPI")
+>>>>>>> upstream/master
 
 
 //-------------------------------------------------
@@ -42,7 +50,11 @@ ROM_END
 //  rom_region - device-specific ROM region
 //-------------------------------------------------
 
+<<<<<<< HEAD
 const rom_entry *adam_spi_device::device_rom_region() const
+=======
+const tiny_rom_entry *adam_spi_device::device_rom_region() const
+>>>>>>> upstream/master
 {
 	return ROM_NAME( adam_spi );
 }
@@ -69,10 +81,17 @@ ADDRESS_MAP_END
 
 
 //-------------------------------------------------
+<<<<<<< HEAD
 //  MACHINE_DRIVER( adam_spi )
 //-------------------------------------------------
 
 static MACHINE_CONFIG_FRAGMENT( adam_spi )
+=======
+//  device_add_mconfig - add device configuration
+//-------------------------------------------------
+
+MACHINE_CONFIG_MEMBER( adam_spi_device::device_add_mconfig )
+>>>>>>> upstream/master
 	MCFG_CPU_ADD(M6801_TAG, M6801, XTAL_4MHz)
 	MCFG_CPU_PROGRAM_MAP(adam_spi_mem)
 	MCFG_CPU_IO_MAP(adam_spi_io)
@@ -80,7 +99,11 @@ static MACHINE_CONFIG_FRAGMENT( adam_spi )
 
 	MCFG_DEVICE_ADD(MC2661_TAG, MC2661, XTAL_4_9152MHz)
 
+<<<<<<< HEAD
 	MCFG_RS232_PORT_ADD(RS232_TAG, default_rs232_devices, NULL)
+=======
+	MCFG_RS232_PORT_ADD(RS232_TAG, default_rs232_devices, nullptr)
+>>>>>>> upstream/master
 
 	MCFG_CENTRONICS_ADD(CENTRONICS_TAG, centronics_devices, "printer")
 	MCFG_CENTRONICS_DATA_INPUT_BUFFER("cent_data_in")
@@ -89,6 +112,7 @@ static MACHINE_CONFIG_FRAGMENT( adam_spi )
 MACHINE_CONFIG_END
 
 
+<<<<<<< HEAD
 //-------------------------------------------------
 //  machine_config_additions - device-specific
 //  machine configurations
@@ -100,6 +124,8 @@ machine_config_constructor adam_spi_device::device_mconfig_additions() const
 }
 
 
+=======
+>>>>>>> upstream/master
 
 //**************************************************************************
 //  LIVE DEVICE
@@ -109,8 +135,13 @@ machine_config_constructor adam_spi_device::device_mconfig_additions() const
 //  adam_spi_device - constructor
 //-------------------------------------------------
 
+<<<<<<< HEAD
 adam_spi_device::adam_spi_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
 	: device_t(mconfig, ADAM_SPI, "Adam SPI", tag, owner, clock, "adam_spi", __FILE__),
+=======
+adam_spi_device::adam_spi_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: device_t(mconfig, ADAM_SPI, tag, owner, clock),
+>>>>>>> upstream/master
 		device_adamnet_card_interface(mconfig, *this),
 		m_maincpu(*this, M6801_TAG)
 {
@@ -154,7 +185,11 @@ READ8_MEMBER( adam_spi_device::p2_r )
 
 	*/
 
+<<<<<<< HEAD
 	UINT8 data = M6801_MODE_7;
+=======
+	uint8_t data = M6801_MODE_7;
+>>>>>>> upstream/master
 
 	// NET RXD
 	data |= m_bus->rxd_r(this) << 3;

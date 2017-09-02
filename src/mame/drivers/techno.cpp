@@ -14,6 +14,10 @@ ToDo:
 ***********************************************************************************/
 
 
+<<<<<<< HEAD
+=======
+#include "emu.h"
+>>>>>>> upstream/master
 #include "machine/genpin.h"
 #include "cpu/m68000/m68000.h"
 #include "techno.lh"
@@ -25,7 +29,11 @@ public:
 	techno_state(const machine_config &mconfig, device_type type, const char *tag)
 		: driver_device(mconfig, type, tag)
 		, m_maincpu(*this, "maincpu")
+<<<<<<< HEAD
 		, m_switch(*this, "SWITCH")
+=======
+		, m_switch(*this, "SWITCH.%u", 0)
+>>>>>>> upstream/master
 	{ }
 
 	DECLARE_READ16_MEMBER(key_r);
@@ -42,10 +50,17 @@ public:
 	INTERRUPT_GEN_MEMBER(techno_intgen);
 private:
 	bool m_digwait;
+<<<<<<< HEAD
 	UINT8 m_keyrow;
 	UINT16 m_digit;
 	UINT8 m_vector;
 	virtual void machine_reset();
+=======
+	uint8_t m_keyrow;
+	uint16_t m_digit;
+	uint8_t m_vector;
+	virtual void machine_reset() override;
+>>>>>>> upstream/master
 	required_device<cpu_device> m_maincpu;
 	required_ioport_array<8> m_switch;
 };
@@ -76,12 +91,20 @@ ADDRESS_MAP_END
 
 WRITE16_MEMBER( techno_state::disp1_w )
 {
+<<<<<<< HEAD
 	output_set_digit_value(m_digit, BITSWAP16(data, 12, 10, 8, 14, 13, 9, 11, 15, 7, 6, 5, 4, 3, 2, 1, 0));
+=======
+	output().set_digit_value(m_digit, BITSWAP16(data, 12, 10, 8, 14, 13, 9, 11, 15, 7, 6, 5, 4, 3, 2, 1, 0));
+>>>>>>> upstream/master
 }
 
 WRITE16_MEMBER( techno_state::disp2_w )
 {
+<<<<<<< HEAD
 	output_set_digit_value(m_digit+30, BITSWAP16(data, 12, 10, 8, 14, 13, 9, 11, 15, 7, 6, 5, 4, 3, 2, 1, 0));
+=======
+	output().set_digit_value(m_digit+30, BITSWAP16(data, 12, 10, 8, 14, 13, 9, 11, 15, 7, 6, 5, 4, 3, 2, 1, 0));
+>>>>>>> upstream/master
 }
 
 WRITE16_MEMBER( techno_state::sound_w )
@@ -243,7 +266,11 @@ void techno_state::machine_reset()
 	m_digit = 0;
 }
 
+<<<<<<< HEAD
 static MACHINE_CONFIG_START( techno, techno_state )
+=======
+static MACHINE_CONFIG_START( techno )
+>>>>>>> upstream/master
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", M68000, XTAL_8MHz)
 	MCFG_CPU_PROGRAM_MAP(techno_map)
@@ -261,8 +288,27 @@ ROM_START(xforce)
 	ROM_LOAD16_BYTE("ic15", 0x0001, 0x8000, CRC(fb8d2853) SHA1(0b0004abfe32edfd3ac15d66f90695d264c97eba))
 	ROM_LOAD16_BYTE("ic17", 0x0000, 0x8000, CRC(122ef649) SHA1(0b425f81869bc359841377a91c39f44395502bff))
 
+<<<<<<< HEAD
 	//ROM_REGION(0x20000), "cpu2", 0)
 	// 5 x 27256 roms are undumped
 ROM_END
 
 GAME(1987,  xforce,  0,  techno,  techno, driver_device,  0,  ROT0,  "Tecnoplay", "X Force", MACHINE_IS_SKELETON_MECHANICAL)
+=======
+	//ROM_REGION(0x20000, "cpu2", 0)
+	// 5 x 27256 roms are undumped
+ROM_END
+
+ROM_START(spcteam)
+	ROM_REGION(0x10000, "maincpu", 0)
+	ROM_LOAD16_BYTE("cpu_top.bin", 0x000001, 0x8000, CRC(b11dcf1f) SHA1(084eb98ee4c9f32d5518897a891ad1a601850d80))
+	ROM_LOAD16_BYTE("cpu_bot.bin", 0x000000, 0x8000, CRC(892a5592) SHA1(c30dce37a5aae2834459179787f6c99353aadabb))
+
+	ROM_REGION(0x10000, "cpu2", 0)
+	ROM_LOAD("sound.bin", 0x8000, 0x8000, CRC(6a87370f) SHA1(51e055dcf23a30e337ff439bba3c40e5c51c490a))
+	ROM_RELOAD(0, 0x8000)
+ROM_END
+
+GAME(1987,  xforce,  0,  techno,  techno, techno_state,  0,  ROT0,  "Tecnoplay", "X Force",    MACHINE_IS_SKELETON_MECHANICAL)
+GAME(1988,  spcteam, 0,  techno,  techno, techno_state,  0,  ROT0,  "Tecnoplay", "Space Team", MACHINE_IS_SKELETON_MECHANICAL) // needs correct layout
+>>>>>>> upstream/master

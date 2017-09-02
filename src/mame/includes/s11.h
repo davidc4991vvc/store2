@@ -9,6 +9,16 @@
 #ifndef S11_H_
 #define S11_H_
 
+<<<<<<< HEAD
+=======
+#include "audio/s11c_bg.h"
+#include "machine/6821pia.h"
+#include "machine/genpin.h"
+#include "sound/dac.h"
+#include "sound/hc55516.h"
+#include "sound/ym2151.h"
+
+>>>>>>> upstream/master
 // 6802/8 CPU's input clock is 4MHz
 // but because it has an internal /4 divider, its E clock runs at 1/4 that frequency
 #define E_CLOCK (XTAL_4MHz/4)
@@ -27,8 +37,11 @@ public:
 	m_maincpu(*this, "maincpu"),
 	m_audiocpu(*this, "audiocpu"),
 	m_bgcpu(*this, "bgcpu"),
+<<<<<<< HEAD
 	m_dac(*this, "dac"),
 	m_dac1(*this, "dac1"),
+=======
+>>>>>>> upstream/master
 	m_hc55516(*this, "hc55516"),
 	m_pias(*this, "pias"),
 	m_pia21(*this, "pia21"),
@@ -42,8 +55,12 @@ public:
 	m_bg(*this, "bgm")
 	{ }
 
+<<<<<<< HEAD
 	DECLARE_READ8_MEMBER(dac_r);
 	DECLARE_WRITE8_MEMBER(dac_w);
+=======
+	DECLARE_READ8_MEMBER(sound_r);
+>>>>>>> upstream/master
 	DECLARE_WRITE8_MEMBER(bank_w);
 	DECLARE_WRITE8_MEMBER(dig0_w);
 	DECLARE_WRITE8_MEMBER(dig1_w);
@@ -57,6 +74,7 @@ public:
 	DECLARE_WRITE8_MEMBER(pia34_pa_w);
 	DECLARE_WRITE8_MEMBER(pia34_pb_w);
 	DECLARE_WRITE_LINE_MEMBER(pia34_cb2_w);
+<<<<<<< HEAD
 	DECLARE_WRITE8_MEMBER(pia40_pa_w);
 	DECLARE_WRITE8_MEMBER(pia40_pb_w);
 	DECLARE_WRITE_LINE_MEMBER(pia40_cb2_w);
@@ -64,6 +82,12 @@ public:
 	DECLARE_READ8_MEMBER(switch_r);
 	DECLARE_WRITE8_MEMBER(switch_w);
 	DECLARE_READ_LINE_MEMBER(pia21_ca1_r);
+=======
+	DECLARE_WRITE8_MEMBER(pia40_pb_w);
+	DECLARE_WRITE_LINE_MEMBER(pia40_cb2_w);
+	DECLARE_READ8_MEMBER(switch_r);
+	DECLARE_WRITE8_MEMBER(switch_w);
+>>>>>>> upstream/master
 	DECLARE_READ8_MEMBER(pia28_w7_r);
 	DECLARE_WRITE_LINE_MEMBER(pias_ca2_w);
 	DECLARE_WRITE_LINE_MEMBER(pias_cb2_w);
@@ -84,8 +108,11 @@ protected:
 	required_device<cpu_device> m_maincpu;
 	optional_device<cpu_device> m_audiocpu;
 	optional_device<cpu_device> m_bgcpu;
+<<<<<<< HEAD
 	optional_device<dac_device> m_dac;
 	optional_device<dac_device> m_dac1;
+=======
+>>>>>>> upstream/master
 	optional_device<hc55516_device> m_hc55516;
 	optional_device<pia6821_device> m_pias;
 	required_device<pia6821_device> m_pia21;
@@ -99,6 +126,7 @@ protected:
 	optional_device<s11c_bg_device> m_bg;
 
 	// getters/setters
+<<<<<<< HEAD
 	UINT8 get_strobe() { return m_strobe; }
 	void set_strobe(UINT8 s) { m_strobe = s; }
 	UINT8 get_diag() { return m_diag; }
@@ -118,10 +146,32 @@ private:
 	UINT8 m_diag;
 	UINT32 m_segment1;
 	UINT32 m_segment2;
+=======
+	uint8_t get_strobe() { return m_strobe; }
+	void set_strobe(uint8_t s) { m_strobe = s; }
+	uint8_t get_diag() { return m_diag; }
+	void set_diag(uint8_t d) { m_diag = d; }
+	uint32_t get_segment1() { return m_segment1; }
+	void set_segment1(uint32_t s) { m_segment1 = s; }
+	uint32_t get_segment2() { return m_segment2; }
+	void set_segment2(uint32_t s) { m_segment2 = s; }
+	void set_timer(emu_timer* t) { m_irq_timer = t; }
+
+	virtual void device_timer(emu_timer &timer, device_timer_id id, int param, void *ptr) override;
+	static const device_timer_id TIMER_IRQ = 0;
+private:
+	uint8_t m_sound_data;
+	uint8_t m_strobe;
+	uint8_t m_kbdrow;
+	uint8_t m_diag;
+	uint32_t m_segment1;
+	uint32_t m_segment2;
+>>>>>>> upstream/master
 	emu_timer* m_irq_timer;
 	bool m_irq_active;
 };
 
+<<<<<<< HEAD
 class s11a_state : public s11_state
 {
 public:
@@ -193,4 +243,6 @@ private:
 };
 
 
+=======
+>>>>>>> upstream/master
 #endif /* S11_H_ */

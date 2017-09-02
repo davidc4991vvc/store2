@@ -5,10 +5,20 @@
     Bally Astrocade-based hardware
 
 ***************************************************************************/
+<<<<<<< HEAD
 #include "machine/bankdev.h"
 #include "sound/astrocde.h"
 #include "sound/samples.h"
 #include "sound/votrax.h"
+=======
+
+#include "machine/bankdev.h"
+#include "machine/gen_latch.h"
+#include "sound/astrocde.h"
+#include "sound/samples.h"
+#include "sound/votrax.h"
+#include "screen.h"
+>>>>>>> upstream/master
 
 #define ASTROCADE_CLOCK     (XTAL_14_31818MHz/2)
 
@@ -17,8 +27,11 @@
 #define AC_STARS            (0x04)
 #define AC_MONITOR_BW       (0x08)
 
+<<<<<<< HEAD
 #define USE_FAKE_VOTRAX     (1)
 
+=======
+>>>>>>> upstream/master
 
 class astrocde_state : public driver_device
 {
@@ -39,6 +52,10 @@ public:
 		m_videoram(*this, "videoram"),
 		m_protected_ram(*this, "protected_ram"),
 		m_screen(*this, "screen"),
+<<<<<<< HEAD
+=======
+		m_soundlatch(*this, "soundlatch"),
+>>>>>>> upstream/master
 		m_bank4000(*this, "bank4000"),
 		m_bank8000(*this, "bank8000"),
 		m_p1handle(*this, "P1HANDLE"),
@@ -53,8 +70,14 @@ public:
 		m_p2_knob(*this, "P2_KNOB"),
 		m_p3_knob(*this, "P3_KNOB"),
 		m_p4_knob(*this, "P4_KNOB"),
+<<<<<<< HEAD
 		m_trackball(*this, trackball_inputs),
 		m_joystick(*this, joystick_inputs)
+=======
+		m_trackball(*this, { { "TRACKX2", "TRACKY2", "TRACKX1", "TRACKY1" } }),
+		m_joystick(*this, { { "MOVEX", "MOVEY" } }),
+		m_interrupt_scanline(0xff)
+>>>>>>> upstream/master
 	{ }
 
 	required_device<cpu_device> m_maincpu;
@@ -62,9 +85,16 @@ public:
 	optional_device<samples_device> m_samples;
 	optional_device<votrax_sc01_device> m_votrax;
 	optional_device<astrocade_device> m_astrocade_sound1;
+<<<<<<< HEAD
 	optional_shared_ptr<UINT8> m_videoram;
 	optional_shared_ptr<UINT8> m_protected_ram;
 	required_device<screen_device> m_screen;
+=======
+	optional_shared_ptr<uint8_t> m_videoram;
+	optional_shared_ptr<uint8_t> m_protected_ram;
+	required_device<screen_device> m_screen;
+	optional_device<generic_latch_8_device> m_soundlatch;
+>>>>>>> upstream/master
 	optional_device<address_map_bank_device> m_bank4000;
 	optional_memory_bank m_bank8000;
 	optional_ioport m_p1handle;
@@ -79,6 +109,7 @@ public:
 	optional_ioport m_p2_knob;
 	optional_ioport m_p3_knob;
 	optional_ioport m_p4_knob;
+<<<<<<< HEAD
 	DECLARE_IOPORT_ARRAY(trackball_inputs);
 	optional_ioport_array<4> m_trackball;
 	DECLARE_IOPORT_ARRAY(joystick_inputs);
@@ -86,10 +117,18 @@ public:
 
 	UINT8 m_video_config;
 	UINT8 m_sparkle[4];
+=======
+	optional_ioport_array<4> m_trackball;
+	optional_ioport_array<2> m_joystick;
+
+	uint8_t m_video_config;
+	uint8_t m_sparkle[4];
+>>>>>>> upstream/master
 	char m_totalword[256];
 	char *m_totalword_ptr;
 	char m_oldword[256];
 	int m_plural;
+<<<<<<< HEAD
 	UINT8 m_port_1_last;
 	UINT8 m_port_2_last;
 	UINT8 m_ram_write_enable;
@@ -131,6 +170,49 @@ public:
 	UINT8 m_profpac_writemode;
 	UINT16 m_profpac_writemask;
 	UINT8 m_profpac_vw;
+=======
+	uint8_t m_port_1_last;
+	uint8_t m_port_2_last;
+	uint8_t m_ram_write_enable;
+	uint8_t m_input_select;
+	std::unique_ptr<uint8_t[]> m_sparklestar;
+	uint8_t m_interrupt_enabl;
+	uint8_t m_interrupt_vector;
+	uint8_t m_interrupt_scanline;
+	uint8_t m_vertical_feedback;
+	uint8_t m_horizontal_feedback;
+	emu_timer *m_scanline_timer;
+	emu_timer *m_intoff_timer;
+	uint8_t m_colors[8];
+	uint8_t m_colorsplit;
+	uint8_t m_bgdata;
+	uint8_t m_vblank;
+	uint8_t m_video_mode;
+	uint8_t m_funcgen_expand_color[2];
+	uint8_t m_funcgen_control;
+	uint8_t m_funcgen_expand_count;
+	uint8_t m_funcgen_rotate_count;
+	uint8_t m_funcgen_rotate_data[4];
+	uint8_t m_funcgen_shift_prev_data;
+	uint8_t m_funcgen_intercept;
+	uint16_t m_pattern_source;
+	uint8_t m_pattern_mode;
+	uint16_t m_pattern_dest;
+	uint8_t m_pattern_skip;
+	uint8_t m_pattern_width;
+	uint8_t m_pattern_height;
+	std::unique_ptr<uint16_t[]> m_profpac_videoram;
+	uint16_t m_profpac_palette[16];
+	uint8_t m_profpac_colormap[4];
+	uint8_t m_profpac_intercept;
+	uint8_t m_profpac_vispage;
+	uint8_t m_profpac_readpage;
+	uint8_t m_profpac_readshift;
+	uint8_t m_profpac_writepage;
+	uint8_t m_profpac_writemode;
+	uint16_t m_profpac_writemask;
+	uint8_t m_profpac_vw;
+>>>>>>> upstream/master
 	DECLARE_WRITE8_MEMBER(protected_ram_enable_w);
 	DECLARE_READ8_MEMBER(protected_ram_r);
 	DECLARE_WRITE8_MEMBER(protected_ram_w);
@@ -150,7 +232,10 @@ public:
 	DECLARE_WRITE8_MEMBER(demndrgn_banksw_w);
 	DECLARE_READ8_MEMBER(demndrgn_io_r);
 	DECLARE_WRITE8_MEMBER(demndrgn_sound_w);
+<<<<<<< HEAD
 	DECLARE_WRITE8_MEMBER(tenpindx_sound_w);
+=======
+>>>>>>> upstream/master
 	DECLARE_WRITE8_MEMBER(tenpindx_lamp_w);
 	DECLARE_WRITE8_MEMBER(tenpindx_counter_w);
 	DECLARE_WRITE8_MEMBER(tenpindx_lights_w);
@@ -176,6 +261,7 @@ public:
 	DECLARE_DRIVER_INIT(ebases);
 	DECLARE_DRIVER_INIT(gorf);
 	DECLARE_DRIVER_INIT(astrocde);
+<<<<<<< HEAD
 	virtual void video_start();
 	DECLARE_PALETTE_INIT(astrocde);
 	DECLARE_VIDEO_START(profpac);
@@ -211,3 +297,27 @@ extern const char *const wow_sample_names[];
 /*----------- defined in audio/gorf.c -----------*/
 
 extern const char *const gorf_sample_names[];
+=======
+	virtual void video_start() override;
+	DECLARE_PALETTE_INIT(astrocde);
+	DECLARE_VIDEO_START(profpac);
+	DECLARE_PALETTE_INIT(profpac);
+	uint32_t screen_update_astrocde(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
+	uint32_t screen_update_profpac(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
+	TIMER_CALLBACK_MEMBER(scanline_callback);
+	inline int mame_vpos_to_astrocade_vpos(int scanline);
+	void init_savestate();
+	void astrocade_trigger_lightpen(uint8_t vfeedback, uint8_t hfeedback);
+	inline void increment_source(uint8_t curwidth, uint8_t *u13ff);
+	inline void increment_dest(uint8_t curwidth);
+	void execute_blit(address_space &space);
+	void init_sparklestar();
+	virtual void machine_start() override;
+
+	DECLARE_READ8_MEMBER( votrax_speech_r );
+	CUSTOM_INPUT_MEMBER( votrax_speech_status_r );
+
+protected:
+	virtual void device_timer(emu_timer &timer, device_timer_id id, int param, void *ptr) override;
+};
+>>>>>>> upstream/master

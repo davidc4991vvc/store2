@@ -14,7 +14,11 @@
 
 PALETTE_INIT_MEMBER(kchamp_state, kchamp)
 {
+<<<<<<< HEAD
 	const UINT8 *color_prom = memregion("proms")->base();
+=======
+	const uint8_t *color_prom = memregion("proms")->base();
+>>>>>>> upstream/master
 	int i, red, green, blue;
 
 	for (i = 0; i < palette.entries(); i++)
@@ -39,9 +43,15 @@ WRITE8_MEMBER(kchamp_state::kchamp_colorram_w)
 	m_bg_tilemap->mark_tile_dirty(offset);
 }
 
+<<<<<<< HEAD
 WRITE8_MEMBER(kchamp_state::kchamp_flipscreen_w)
 {
 	flip_screen_set(data & 0x01);
+=======
+WRITE_LINE_MEMBER(kchamp_state::flipscreen_w)
+{
+	flip_screen_set(state);
+>>>>>>> upstream/master
 }
 
 TILE_GET_INFO_MEMBER(kchamp_state::get_bg_tile_info)
@@ -54,7 +64,11 @@ TILE_GET_INFO_MEMBER(kchamp_state::get_bg_tile_info)
 
 void kchamp_state::video_start()
 {
+<<<<<<< HEAD
 	m_bg_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(kchamp_state::get_bg_tile_info),this), TILEMAP_SCAN_ROWS, 8, 8, 32, 32);
+=======
+	m_bg_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(kchamp_state::get_bg_tile_info),this), TILEMAP_SCAN_ROWS, 8, 8, 32, 32);
+>>>>>>> upstream/master
 }
 
 /*
@@ -69,7 +83,11 @@ void kchamp_state::video_start()
 
 void kchamp_state::kchamp_draw_sprites( bitmap_ind16 &bitmap, const rectangle &cliprect )
 {
+<<<<<<< HEAD
 	UINT8 *spriteram = m_spriteram;
+=======
+	uint8_t *spriteram = m_spriteram;
+>>>>>>> upstream/master
 	int offs;
 
 	for (offs = 0; offs < 0x100; offs += 4)
@@ -97,7 +115,11 @@ void kchamp_state::kchamp_draw_sprites( bitmap_ind16 &bitmap, const rectangle &c
 
 void kchamp_state::kchampvs_draw_sprites( bitmap_ind16 &bitmap, const rectangle &cliprect )
 {
+<<<<<<< HEAD
 	UINT8 *spriteram = m_spriteram;
+=======
+	uint8_t *spriteram = m_spriteram;
+>>>>>>> upstream/master
 	int offs;
 
 	for (offs = 0; offs < 0x100; offs += 4)
@@ -124,14 +146,22 @@ void kchamp_state::kchampvs_draw_sprites( bitmap_ind16 &bitmap, const rectangle 
 }
 
 
+<<<<<<< HEAD
 UINT32 kchamp_state::screen_update_kchamp(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+=======
+uint32_t kchamp_state::screen_update_kchamp(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+>>>>>>> upstream/master
 {
 	m_bg_tilemap->draw(screen, bitmap, cliprect, 0, 0);
 	kchamp_draw_sprites(bitmap, cliprect);
 	return 0;
 }
 
+<<<<<<< HEAD
 UINT32 kchamp_state::screen_update_kchampvs(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+=======
+uint32_t kchamp_state::screen_update_kchampvs(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+>>>>>>> upstream/master
 {
 	m_bg_tilemap->draw(screen, bitmap, cliprect, 0, 0);
 	kchampvs_draw_sprites(bitmap, cliprect);

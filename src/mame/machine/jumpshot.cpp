@@ -4,9 +4,15 @@
 #include "includes/pacman.h"
 
 
+<<<<<<< HEAD
 UINT8 pacman_state::jumpshot_decrypt(int addr, UINT8 e)
 {
 	static const UINT8 swap_xor_table[6][9] =
+=======
+uint8_t pacman_state::jumpshot_decrypt(int addr, uint8_t e)
+{
+	static const uint8_t swap_xor_table[6][9] =
+>>>>>>> upstream/master
 	{
 		{ 7,6,5,4,3,2,1,0, 0x00 },
 		{ 7,6,3,4,5,2,1,0, 0x20 },
@@ -20,8 +26,13 @@ UINT8 pacman_state::jumpshot_decrypt(int addr, UINT8 e)
 		0,2,4,4,4,2,0,2,2,0,2,4,4,2,0,2,
 		5,3,5,1,5,3,5,3,1,5,1,5,5,3,5,3
 	};
+<<<<<<< HEAD
 	UINT32 method = 0;
 	const UINT8 *tbl;
+=======
+	uint32_t method = 0;
+	const uint8_t *tbl;
+>>>>>>> upstream/master
 
 
 	/* pick method from bits 0 2 5 7 9 of the address */
@@ -44,7 +55,11 @@ UINT8 pacman_state::jumpshot_decrypt(int addr, UINT8 e)
 void pacman_state::jumpshot_decode()
 {
 	int i;
+<<<<<<< HEAD
 	UINT8 *RAM;
+=======
+	uint8_t *RAM;
+>>>>>>> upstream/master
 
 	/* CPU ROMs */
 

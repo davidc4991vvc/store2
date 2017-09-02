@@ -30,7 +30,11 @@
 
 PALETTE_INIT_MEMBER(champbas_state,champbas)
 {
+<<<<<<< HEAD
 	const UINT8 *color_prom = memregion("proms")->base();
+=======
+	const uint8_t *color_prom = memregion("proms")->base();
+>>>>>>> upstream/master
 	static const int resistances_rg[3] = { 1000, 470, 220 };
 	static const int resistances_b [2] = { 470, 220 };
 	double rweights[3], gweights[3], bweights[2];
@@ -71,7 +75,11 @@ PALETTE_INIT_MEMBER(champbas_state,champbas)
 
 	for (int i = 0; i < 0x200; i++)
 	{
+<<<<<<< HEAD
 		UINT8 ctabentry = (color_prom[i & 0xff] & 0x0f) | ((i & 0x100) >> 4);
+=======
+		uint8_t ctabentry = (color_prom[i & 0xff] & 0x0f) | ((i & 0x100) >> 4);
+>>>>>>> upstream/master
 		palette.set_pen_indirect(i, ctabentry);
 	}
 }
@@ -79,7 +87,11 @@ PALETTE_INIT_MEMBER(champbas_state,champbas)
 
 PALETTE_INIT_MEMBER(champbas_state,exctsccr)
 {
+<<<<<<< HEAD
 	const UINT8 *color_prom = memregion("proms")->base();
+=======
+	const uint8_t *color_prom = memregion("proms")->base();
+>>>>>>> upstream/master
 
 	/* create a lookup table for the palette */
 	for (int i = 0; i < 0x20; i++)
@@ -115,14 +127,22 @@ PALETTE_INIT_MEMBER(champbas_state,exctsccr)
 	for (int i = 0; i < 0x100; i++)
 	{
 		int swapped_i = BITSWAP8(i, 2, 7, 6, 5, 4, 3, 1, 0);
+<<<<<<< HEAD
 		UINT8 ctabentry = (color_prom[swapped_i] & 0x0f) | ((i & 0x80) >> 3);
+=======
+		uint8_t ctabentry = (color_prom[swapped_i] & 0x0f) | ((i & 0x80) >> 3);
+>>>>>>> upstream/master
 		palette.set_pen_indirect(i, ctabentry);
 	}
 
 	/* sprites (4bpp) */
 	for (int i = 0; i < 0x100; i++)
 	{
+<<<<<<< HEAD
 		UINT8 ctabentry = (color_prom[0x100 + i] & 0x0f) | 0x10;
+=======
+		uint8_t ctabentry = (color_prom[0x100 + i] & 0x0f) | 0x10;
+>>>>>>> upstream/master
 		palette.set_pen_indirect(i + 0x100, ctabentry);
 	}
 }
@@ -161,12 +181,20 @@ TILE_GET_INFO_MEMBER(champbas_state::exctsccr_get_bg_tile_info)
 
 VIDEO_START_MEMBER(champbas_state,champbas)
 {
+<<<<<<< HEAD
 	m_bg_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(champbas_state::champbas_get_bg_tile_info),this), TILEMAP_SCAN_ROWS, 8, 8, 32, 32);
+=======
+	m_bg_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(champbas_state::champbas_get_bg_tile_info),this), TILEMAP_SCAN_ROWS, 8, 8, 32, 32);
+>>>>>>> upstream/master
 }
 
 VIDEO_START_MEMBER(champbas_state,exctsccr)
 {
+<<<<<<< HEAD
 	m_bg_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(champbas_state::exctsccr_get_bg_tile_info),this), TILEMAP_SCAN_ROWS, 8, 8, 32, 32);
+=======
+	m_bg_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(champbas_state::exctsccr_get_bg_tile_info),this), TILEMAP_SCAN_ROWS, 8, 8, 32, 32);
+>>>>>>> upstream/master
 }
 
 
@@ -183,6 +211,7 @@ WRITE8_MEMBER(champbas_state::tilemap_w)
 	m_bg_tilemap->mark_tile_dirty(offset & 0x3ff);
 }
 
+<<<<<<< HEAD
 WRITE8_MEMBER(champbas_state::gfxbank_w)
 {
 	data &= 1;
@@ -203,6 +232,23 @@ WRITE8_MEMBER(champbas_state::palette_bank_w)
 WRITE8_MEMBER(champbas_state::flipscreen_w)
 {
 	flip_screen_set(~data & 1);
+=======
+WRITE_LINE_MEMBER(champbas_state::gfxbank_w)
+{
+	m_gfx_bank = state;
+	m_bg_tilemap->mark_all_dirty();
+}
+
+WRITE_LINE_MEMBER(champbas_state::palette_bank_w)
+{
+	m_palette_bank = state;
+	m_bg_tilemap->set_palette_offset(m_palette_bank << 8);
+}
+
+WRITE_LINE_MEMBER(champbas_state::flipscreen_w)
+{
+	flip_screen_set(!state);
+>>>>>>> upstream/master
 }
 
 
@@ -225,7 +271,11 @@ void champbas_state::champbas_draw_sprites(bitmap_ind16 &bitmap, const rectangle
 		int sy = 255 - m_spriteram[offs];
 
 		// attribute data is from last section of mainram
+<<<<<<< HEAD
 		UINT8 *attr = &(m_mainram[0x7f0]);
+=======
+		uint8_t *attr = &(m_mainram[0x7f0]);
+>>>>>>> upstream/master
 		int code = (attr[offs] >> 2 & 0x3f) | (m_gfx_bank << 6);
 		int color = (attr[offs + 1] & 0x1f) | (m_palette_bank << 6);
 		int flipx = ~attr[offs] & 1;
@@ -291,14 +341,22 @@ void champbas_state::exctsccr_draw_sprites(bitmap_ind16 &bitmap, const rectangle
 }
 
 
+<<<<<<< HEAD
 UINT32 champbas_state::screen_update_champbas(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+=======
+uint32_t champbas_state::screen_update_champbas(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+>>>>>>> upstream/master
 {
 	m_bg_tilemap->draw(screen, bitmap, cliprect, 0, 0);
 	champbas_draw_sprites(bitmap, cliprect);
 	return 0;
 }
 
+<<<<<<< HEAD
 UINT32 champbas_state::screen_update_exctsccr(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+=======
+uint32_t champbas_state::screen_update_exctsccr(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+>>>>>>> upstream/master
 {
 	m_bg_tilemap->draw(screen, bitmap, cliprect, 0, 0);
 	exctsccr_draw_sprites(bitmap, cliprect);

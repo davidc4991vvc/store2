@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 // license:???
+=======
+// license:BSD-3-Clause
+>>>>>>> upstream/master
 // copyright-holders:Frank Palazzolo, Stefan Jokisch
 /***************************************************************************
 
@@ -10,8 +14,15 @@ Atari Starship 1 driver
 ***************************************************************************/
 
 #include "emu.h"
+<<<<<<< HEAD
 #include "cpu/m6502/m6502.h"
 #include "includes/starshp1.h"
+=======
+#include "includes/starshp1.h"
+#include "cpu/m6502/m6502.h"
+#include "machine/74259.h"
+#include "speaker.h"
+>>>>>>> upstream/master
 
 
 
@@ -23,6 +34,7 @@ INTERRUPT_GEN_MEMBER(starshp1_state::starshp1_interrupt)
 }
 
 
+<<<<<<< HEAD
 WRITE8_MEMBER(starshp1_state::starshp1_audio_w)
 {
 	data &= 1;
@@ -56,6 +68,22 @@ WRITE8_MEMBER(starshp1_state::starshp1_audio_w)
 
 	coin_lockout_w(machine(), 0, !m_attract);
 	coin_lockout_w(machine(), 1, !m_attract);
+=======
+WRITE_LINE_MEMBER(starshp1_state::attract_w)
+{
+	m_attract = state;
+	m_discrete->write(machine().dummy_space(), STARSHP1_ATTRACT, state);
+
+	machine().bookkeeping().coin_lockout_w(0, !m_attract);
+	machine().bookkeeping().coin_lockout_w(1, !m_attract);
+}
+
+
+WRITE_LINE_MEMBER(starshp1_state::phasor_w)
+{
+	m_phasor = state;
+	m_discrete->write(machine().dummy_space(), STARSHP1_PHASOR_ON, state);
+>>>>>>> upstream/master
 }
 
 
@@ -130,6 +158,7 @@ WRITE8_MEMBER(starshp1_state::starshp1_analog_out_w)
 }
 
 
+<<<<<<< HEAD
 WRITE8_MEMBER(starshp1_state::starshp1_misc_w)
 {
 	data &= 1;
@@ -161,6 +190,47 @@ WRITE8_MEMBER(starshp1_state::starshp1_misc_w)
 		set_led_status(machine(), 0, !data);
 		break;
 	}
+=======
+WRITE_LINE_MEMBER(starshp1_state::ship_explode_w)
+{
+	m_ship_explode = state;
+}
+
+
+WRITE_LINE_MEMBER(starshp1_state::circle_mod_w)
+{
+	m_circle_mod = state;
+}
+
+
+WRITE_LINE_MEMBER(starshp1_state::circle_kill_w)
+{
+	m_circle_kill = !state;
+}
+
+
+WRITE_LINE_MEMBER(starshp1_state::starfield_kill_w)
+{
+	m_starfield_kill = state;
+}
+
+
+WRITE_LINE_MEMBER(starshp1_state::inverse_w)
+{
+	m_inverse = state;
+}
+
+
+WRITE_LINE_MEMBER(starshp1_state::mux_w)
+{
+	m_mux = state;
+}
+
+
+WRITE_LINE_MEMBER(starshp1_state::led_w)
+{
+	output().set_led_value(0, !state);
+>>>>>>> upstream/master
 }
 
 
@@ -178,9 +248,15 @@ static ADDRESS_MAP_START( starshp1_map, AS_PROGRAM, 8, starshp1_state )
 	AM_RANGE(0xd400, 0xd40f) AM_WRITEONLY AM_SHARE("obj_ram")
 	AM_RANGE(0xd800, 0xd800) AM_READ(starshp1_rng_r)
 	AM_RANGE(0xd800, 0xd80f) AM_WRITE(starshp1_collision_reset_w)
+<<<<<<< HEAD
 	AM_RANGE(0xdc00, 0xdc0f) AM_WRITE(starshp1_misc_w)
 	AM_RANGE(0xdd00, 0xdd0f) AM_WRITE(starshp1_analog_in_w)
 	AM_RANGE(0xde00, 0xde0f) AM_WRITE(starshp1_audio_w)
+=======
+	AM_RANGE(0xdc00, 0xdc07) AM_MIRROR(0x0008) AM_DEVWRITE("misclatch", f9334_device, write_d0)
+	AM_RANGE(0xdd00, 0xdd0f) AM_WRITE(starshp1_analog_in_w)
+	AM_RANGE(0xde00, 0xde07) AM_MIRROR(0x0008) AM_DEVWRITE("audiolatch", f9334_device, write_d0)
+>>>>>>> upstream/master
 	AM_RANGE(0xdf00, 0xdf0f) AM_WRITE(starshp1_analog_out_w)
 	AM_RANGE(0xf000, 0xffff) AM_ROM
 ADDRESS_MAP_END
@@ -196,16 +272,31 @@ static INPUT_PORTS_START( starshp1 )
 	PORT_DIPNAME( 0x20, 0x20, "Extended Play" )
 	PORT_DIPSETTING(    0x00, DEF_STR( No ) )
 	PORT_DIPSETTING(    0x20, DEF_STR( Yes ) )
+<<<<<<< HEAD
 	PORT_BIT( 0x40, IP_ACTIVE_LOW, IPT_BUTTON3 ) PORT_TOGGLE
 	PORT_BIT( 0x80, IP_ACTIVE_LOW, IPT_COIN1 )
 
 	PORT_START("VBLANK")
 	PORT_BIT( 0x3f, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, starshp1_state,starshp1_analog_r, NULL)   /* analog in */
+=======
+	// IPT_BUTTON3 is the Speed lever (Throttle)
+	// This is _not_ IPT_TOGGLE, even though it looks like one.
+	// It returns to SLOW unless you hold it down (FAST)
+	PORT_BIT( 0x40, IP_ACTIVE_LOW, IPT_BUTTON3 )
+	PORT_BIT( 0x80, IP_ACTIVE_LOW, IPT_COIN1 )
+
+	PORT_START("VBLANK")
+	PORT_BIT( 0x3f, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, starshp1_state,starshp1_analog_r, nullptr)   /* analog in */
+>>>>>>> upstream/master
 	PORT_SERVICE( 0x40, IP_ACTIVE_LOW )
 	PORT_BIT( 0x80, IP_ACTIVE_HIGH, IPT_CUSTOM ) PORT_VBLANK("screen")
 
 	PORT_START("COINAGE")
+<<<<<<< HEAD
 	PORT_BIT( 0x0f, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, starshp1_state,collision_latch_r, NULL)   /* collision latch */
+=======
+	PORT_BIT( 0x0f, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, starshp1_state,collision_latch_r, nullptr)   /* collision latch */
+>>>>>>> upstream/master
 	PORT_DIPNAME( 0x70, 0x20, DEF_STR( Coinage ) )
 	PORT_DIPSETTING(    0x10, DEF_STR( 2C_1C ) )
 	PORT_DIPSETTING(    0x20, DEF_STR( 1C_1C ) )
@@ -260,7 +351,11 @@ static const gfx_layout spritelayout =
 	0x100   /* step */
 };
 
+<<<<<<< HEAD
 static const UINT32 shiplayout_xoffset[64] =
+=======
+static const uint32_t shiplayout_xoffset[64] =
+>>>>>>> upstream/master
 {
 		0x04, 0x05, 0x06, 0x07, 0x0c, 0x0d, 0x0e, 0x0f,
 		0x14, 0x15, 0x16, 0x17, 0x1c, 0x1d, 0x1e, 0x1f,
@@ -282,7 +377,11 @@ static const gfx_layout shiplayout =
 	{ STEP16(0x000, 0x080) },
 	0x800,  /* step */
 	shiplayout_xoffset,
+<<<<<<< HEAD
 	NULL
+=======
+	nullptr
+>>>>>>> upstream/master
 };
 
 
@@ -293,7 +392,11 @@ static GFXDECODE_START( starshp1 )
 GFXDECODE_END
 
 
+<<<<<<< HEAD
 static MACHINE_CONFIG_START( starshp1, starshp1_state )
+=======
+static MACHINE_CONFIG_START( starshp1 )
+>>>>>>> upstream/master
 
 	/* basic machine hardware */
 
@@ -301,13 +404,30 @@ static MACHINE_CONFIG_START( starshp1, starshp1_state )
 	MCFG_CPU_PROGRAM_MAP(starshp1_map)
 	MCFG_CPU_VBLANK_INT_DRIVER("screen", starshp1_state,  starshp1_interrupt)
 
+<<<<<<< HEAD
+=======
+	MCFG_DEVICE_ADD("misclatch", F9334, 0) // C8
+	MCFG_ADDRESSABLE_LATCH_Q0_OUT_CB(WRITELINE(starshp1_state, ship_explode_w))
+	MCFG_ADDRESSABLE_LATCH_Q1_OUT_CB(WRITELINE(starshp1_state, circle_mod_w))
+	MCFG_ADDRESSABLE_LATCH_Q2_OUT_CB(WRITELINE(starshp1_state, circle_kill_w))
+	MCFG_ADDRESSABLE_LATCH_Q3_OUT_CB(WRITELINE(starshp1_state, starfield_kill_w))
+	MCFG_ADDRESSABLE_LATCH_Q4_OUT_CB(WRITELINE(starshp1_state, inverse_w))
+	MCFG_ADDRESSABLE_LATCH_Q5_OUT_CB(NOOP) // BLACK HOLE, not used
+	MCFG_ADDRESSABLE_LATCH_Q6_OUT_CB(WRITELINE(starshp1_state, mux_w))
+	MCFG_ADDRESSABLE_LATCH_Q7_OUT_CB(WRITELINE(starshp1_state, led_w))
+
+>>>>>>> upstream/master
 	/* video hardware */
 
 
 	MCFG_SCREEN_ADD("screen", RASTER)
 	MCFG_SCREEN_RAW_PARAMS(STARSHP1_PIXEL_CLOCK, STARSHP1_HTOTAL, STARSHP1_HBEND, STARSHP1_HBSTART, STARSHP1_VTOTAL, STARSHP1_VBEND, STARSHP1_VBSTART)
 	MCFG_SCREEN_UPDATE_DRIVER(starshp1_state, screen_update_starshp1)
+<<<<<<< HEAD
 	MCFG_SCREEN_VBLANK_DRIVER(starshp1_state, screen_eof_starshp1)
+=======
+	MCFG_SCREEN_VBLANK_CALLBACK(WRITELINE(starshp1_state, screen_vblank_starshp1))
+>>>>>>> upstream/master
 	MCFG_SCREEN_PALETTE("palette")
 
 	MCFG_GFXDECODE_ADD("gfxdecode", "palette", starshp1)
@@ -321,6 +441,18 @@ static MACHINE_CONFIG_START( starshp1, starshp1_state )
 	MCFG_SOUND_ADD("discrete", DISCRETE, 0)
 	MCFG_DISCRETE_INTF(starshp1)
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 1.0)
+<<<<<<< HEAD
+=======
+
+	MCFG_DEVICE_ADD("audiolatch", F9334, 0) // D9
+	MCFG_ADDRESSABLE_LATCH_Q0_OUT_CB(WRITELINE(starshp1_state, attract_w))
+	MCFG_ADDRESSABLE_LATCH_Q1_OUT_CB(WRITELINE(starshp1_state, phasor_w))
+	MCFG_ADDRESSABLE_LATCH_Q2_OUT_CB(DEVWRITELINE("discrete", discrete_device, write_line<STARSHP1_KICKER>))
+	MCFG_ADDRESSABLE_LATCH_Q3_OUT_CB(DEVWRITELINE("discrete", discrete_device, write_line<STARSHP1_SL1>))
+	MCFG_ADDRESSABLE_LATCH_Q4_OUT_CB(DEVWRITELINE("discrete", discrete_device, write_line<STARSHP1_SL2>))
+	MCFG_ADDRESSABLE_LATCH_Q5_OUT_CB(DEVWRITELINE("discrete", discrete_device, write_line<STARSHP1_MOLVL>))
+	MCFG_ADDRESSABLE_LATCH_Q6_OUT_CB(DEVWRITELINE("discrete", discrete_device, write_line<STARSHP1_NOISE_FREQ>))
+>>>>>>> upstream/master
 MACHINE_CONFIG_END
 
 
@@ -393,5 +525,10 @@ ROM_START( starshpp )
 ROM_END
 
 
+<<<<<<< HEAD
 GAME( 1977, starshp1, 0,        starshp1, starshp1, driver_device, 0, ORIENTATION_FLIP_X, "Atari", "Starship 1",              MACHINE_IMPERFECT_SOUND )
 GAME( 1977, starshpp, starshp1, starshp1, starshp1, driver_device, 0, ORIENTATION_FLIP_X, "Atari", "Starship 1 (prototype?)", MACHINE_IMPERFECT_SOUND )
+=======
+GAME( 1977, starshp1, 0,        starshp1, starshp1, starshp1_state, 0, ORIENTATION_FLIP_X, "Atari", "Starship 1",              MACHINE_IMPERFECT_SOUND )
+GAME( 1977, starshpp, starshp1, starshp1, starshp1, starshp1_state, 0, ORIENTATION_FLIP_X, "Atari", "Starship 1 (prototype?)", MACHINE_IMPERFECT_SOUND )
+>>>>>>> upstream/master

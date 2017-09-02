@@ -11,7 +11,11 @@
 
     Manufactured by Matic: http://maticplay.com.br/
     This driver still only emulates an early prototype of the game.
+<<<<<<< HEAD
     Propper dumps of the actual released game is still lacking.
+=======
+    Proper dumps of the actual released game is still lacking.
+>>>>>>> upstream/master
     Photos on the web make us believe that there are at least 2 official
     releases of this game.
 
@@ -34,6 +38,7 @@
 
 **************************************************************************/
 
+<<<<<<< HEAD
 #define CPU_CLOCK       (XTAL_6MHz)         /* main cpu clock */
 
 #include "emu.h"
@@ -41,20 +46,40 @@
 #include "sound/dac.h"
 #include "barata.lh"
 #include "rendlay.h"
+=======
+#include "emu.h"
+#include "cpu/mcs51/mcs51.h"
+#include "rendlay.h"
+#include "speaker.h"
+
+#include "barata.lh"
+
+#define CPU_CLOCK       (XTAL_6MHz)         /* main cpu clock */
+>>>>>>> upstream/master
 
 class barata_state : public driver_device
 {
 public:
 	barata_state(const machine_config &mconfig, device_type type, const char *tag)
 		: driver_device(mconfig, type, tag),
+<<<<<<< HEAD
 		m_maincpu(*this, "maincpu"),
 		m_dac(*this, "dac") { }
+=======
+		m_maincpu(*this, "maincpu") { }
+>>>>>>> upstream/master
 	DECLARE_WRITE8_MEMBER(fpga_w);
 	DECLARE_WRITE8_MEMBER(port0_w);
 	DECLARE_WRITE8_MEMBER(port2_w);
 	DECLARE_READ8_MEMBER(port2_r);
+<<<<<<< HEAD
 	required_device<cpu_device> m_maincpu;
 	required_device<dac_device> m_dac;
+=======
+	void fpga_send(unsigned char cmd);
+
+	required_device<cpu_device> m_maincpu;
+>>>>>>> upstream/master
 private:
 	unsigned char row_selection;
 };
@@ -117,9 +142,15 @@ static INPUT_PORTS_START( barata )
 INPUT_PORTS_END
 
 /* BCD to Seven Segment Decoder */
+<<<<<<< HEAD
 static UINT8 dec_7seg(int data)
 {
 	UINT8 segment;
+=======
+static uint8_t dec_7seg(int data)
+{
+	uint8_t segment;
+>>>>>>> upstream/master
 	switch (data)
 	{
 		case 0: segment = 0x3f; break;
@@ -153,26 +184,46 @@ const char* mode_strings[] = {
 "Set counter values"
 };
 
+<<<<<<< HEAD
 static void fpga_send(device_t *device, unsigned char cmd){
+=======
+void barata_state::fpga_send(unsigned char cmd)
+{
+>>>>>>> upstream/master
 	static unsigned char byte = 0;
 	static unsigned char mode = FPGA_WAITING_FOR_NEW_CMD;
 	static unsigned char lamp_data = 0;
 
+<<<<<<< HEAD
 	device->logerror("FPGA CMD: %d\n", cmd);
+=======
+	logerror("FPGA CMD: %d\n", cmd);
+>>>>>>> upstream/master
 
 	if (mode == FPGA_WAITING_FOR_NEW_CMD){
 		if (cmd < FPGA_WAITING_FOR_NEW_CMD){
 			mode = cmd;
 			byte=1;
+<<<<<<< HEAD
 			device->logerror("SET FPGA MODE: %s\n", mode_strings[mode]);
 
 			if (mode == FPGA_PLAY_BGM){
 				device->logerror("PLAY_BGM.\n");
+=======
+			logerror("SET FPGA MODE: %s\n", mode_strings[mode]);
+
+			if (mode == FPGA_PLAY_BGM){
+				logerror("PLAY_BGM.\n");
+>>>>>>> upstream/master
 				mode = FPGA_WAITING_FOR_NEW_CMD;
 			}
 
 			if (mode == FPGA_STOP_BGM){
+<<<<<<< HEAD
 				device->logerror("STOP_BGM.\n");
+=======
+				logerror("STOP_BGM.\n");
+>>>>>>> upstream/master
 				mode = FPGA_WAITING_FOR_NEW_CMD;
 			}
 		}
@@ -195,10 +246,17 @@ static void fpga_send(device_t *device, unsigned char cmd){
 				if (erase_all){
 //                  logerror("LED: ERASE ALL\n");
 					for (int i=0; i<16; i++){
+<<<<<<< HEAD
 						output_set_led_value(i, 1);
 					}
 				} else {
 					output_set_led_value(lamp_index, state ? 0 : 1);
+=======
+						output().set_led_value(i, 1);
+					}
+				} else {
+					output().set_led_value(lamp_index, state ? 0 : 1);
+>>>>>>> upstream/master
 				}
 			default:
 				mode = FPGA_WAITING_FOR_NEW_CMD;
@@ -226,11 +284,19 @@ static void fpga_send(device_t *device, unsigned char cmd){
 				counter_data = (counter_data << 3) | cmd;
 
 				if (counter_state){
+<<<<<<< HEAD
 					output_set_digit_value(2*counter_bank, 0);
 					output_set_digit_value(2*counter_bank+1, 0);
 				} else {
 					output_set_digit_value(2*counter_bank, dec_7seg(counter_data/10));
 					output_set_digit_value(2*counter_bank+1, dec_7seg(counter_data%10));
+=======
+					output().set_digit_value(2*counter_bank, 0);
+					output().set_digit_value(2*counter_bank+1, 0);
+				} else {
+					output().set_digit_value(2*counter_bank, dec_7seg(counter_data/10));
+					output().set_digit_value(2*counter_bank+1, dec_7seg(counter_data%10));
+>>>>>>> upstream/master
 				}
 			default:
 				mode = FPGA_WAITING_FOR_NEW_CMD;
@@ -248,7 +314,11 @@ static void fpga_send(device_t *device, unsigned char cmd){
 				break;
 			case 2:
 				sample_index = (sample_index << 3) | cmd;
+<<<<<<< HEAD
 				device->logerror("PLAY_SAMPLE #%d.\n", sample_index);
+=======
+				logerror("PLAY_SAMPLE #%d.\n", sample_index);
+>>>>>>> upstream/master
 			default:
 				mode = FPGA_WAITING_FOR_NEW_CMD;
 				break;
@@ -263,7 +333,11 @@ WRITE8_MEMBER(barata_state::fpga_w)
 	static unsigned char old_data = 0;
 	if (!BIT(old_data, 5) && BIT(data, 5)){
 		//process the command sent to the FPGA
+<<<<<<< HEAD
 		fpga_send(this, (data >> 2) & 7);
+=======
+		fpga_send((data >> 2) & 7);
+>>>>>>> upstream/master
 	}
 	old_data = data;
 }
@@ -302,7 +376,11 @@ ADDRESS_MAP_END
 *    Machine Drivers    *
 ************************/
 
+<<<<<<< HEAD
 static MACHINE_CONFIG_START( barata, barata_state )
+=======
+static MACHINE_CONFIG_START( barata )
+>>>>>>> upstream/master
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", I8051, CPU_CLOCK)
 	MCFG_CPU_IO_MAP(i8051_io_port)
@@ -310,9 +388,13 @@ static MACHINE_CONFIG_START( barata, barata_state )
 	MCFG_DEFAULT_LAYOUT( layout_barata )
 
 	/* sound hardware */
+<<<<<<< HEAD
 	MCFG_SPEAKER_STANDARD_MONO("mono")
 	MCFG_DAC_ADD("dac")
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 0.55)
+=======
+	MCFG_SPEAKER_STANDARD_MONO("speaker")
+>>>>>>> upstream/master
 
 	/* TODO: add sound samples */
 MACHINE_CONFIG_END
@@ -329,4 +411,8 @@ ROM_END
 /*************************
 *      Game Drivers      *
 *************************/
+<<<<<<< HEAD
 GAME( 2002, barata,     0,        barata,   barata,    driver_device, 0,        ROT0,  "Eletro Matic Equipamentos Eletromec??nicos", "Dona Barata (early prototype)", MACHINE_IMPERFECT_GRAPHICS )
+=======
+GAME( 2002, barata,     0,        barata,   barata,    barata_state, 0,        ROT0,  "Eletro Matic Equipamentos Eletromec??nicos", "Dona Barata (early prototype)", MACHINE_IMPERFECT_GRAPHICS )
+>>>>>>> upstream/master

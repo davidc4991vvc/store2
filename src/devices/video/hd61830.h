@@ -6,12 +6,20 @@
 
 **********************************************************************/
 
+<<<<<<< HEAD
 #pragma once
 
 #ifndef __HD61830__
 #define __HD61830__
 
 #include "emu.h"
+=======
+#ifndef MAME_VIDEO_HD61830_H
+#define MAME_VIDEO_HD61830_H
+
+#pragma once
+
+>>>>>>> upstream/master
 
 
 
@@ -36,9 +44,15 @@ class hd61830_device :  public device_t,
 {
 public:
 	// construction/destruction
+<<<<<<< HEAD
 	hd61830_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
 
 	template<class _Object> static devcb_base &set_rd_rd_callback(device_t &device, _Object object) { return downcast<hd61830_device &>(device).m_read_rd.set_callback(object); }
+=======
+	hd61830_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
+
+	template <class Object> static devcb_base &set_rd_rd_callback(device_t &device, Object &&cb) { return downcast<hd61830_device &>(device).m_read_rd.set_callback(std::forward<Object>(cb)); }
+>>>>>>> upstream/master
 
 	DECLARE_READ8_MEMBER( status_r );
 	DECLARE_WRITE8_MEMBER( control_w );
@@ -46,6 +60,7 @@ public:
 	DECLARE_READ8_MEMBER( data_r );
 	DECLARE_WRITE8_MEMBER( data_w );
 
+<<<<<<< HEAD
 	UINT32 screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
 
 protected:
@@ -60,6 +75,22 @@ protected:
 
 	inline UINT8 readbyte(offs_t address);
 	inline void writebyte(offs_t address, UINT8 data);
+=======
+	uint32_t screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
+
+protected:
+	// device-level overrides
+	virtual const tiny_rom_entry *device_rom_region() const override;
+	virtual void device_start() override;
+	virtual void device_reset() override;
+	virtual void device_timer(emu_timer &timer, device_timer_id id, int param, void *ptr) override;
+
+	// device_memory_interface overrides
+	virtual space_config_vector memory_space_config() const override;
+
+	uint8_t readbyte(offs_t address) { return space().read_byte(address); }
+	void writebyte(offs_t address, uint8_t data) { space().write_byte(address, data); }
+>>>>>>> upstream/master
 
 private:
 	enum
@@ -81,9 +112,15 @@ private:
 
 	void set_busy_flag();
 
+<<<<<<< HEAD
 	UINT16 draw_scanline(bitmap_ind16 &bitmap, const rectangle &cliprect, int y, UINT16 ra);
 	void update_graphics(bitmap_ind16 &bitmap, const rectangle &cliprect);
 	void draw_char(bitmap_ind16 &bitmap, const rectangle &cliprect, UINT16 ma, int x, int y, UINT8 md);
+=======
+	uint16_t draw_scanline(bitmap_ind16 &bitmap, const rectangle &cliprect, int y, uint16_t ra);
+	void update_graphics(bitmap_ind16 &bitmap, const rectangle &cliprect);
+	void draw_char(bitmap_ind16 &bitmap, const rectangle &cliprect, uint16_t ma, int x, int y, uint8_t md);
+>>>>>>> upstream/master
 	void update_text(bitmap_ind16 &bitmap, const rectangle &cliprect);
 
 	devcb_read8 m_read_rd;
@@ -93,12 +130,21 @@ private:
 
 	bool m_bf;                      // busy flag
 
+<<<<<<< HEAD
 	UINT8 m_ir;                     // instruction register
 	UINT8 m_mcr;                    // mode control register
 	UINT8 m_dor;                    // data output register
 
 	UINT16 m_dsa;                   // display start address
 	UINT16 m_cac;                   // cursor address counter
+=======
+	uint8_t m_ir;                     // instruction register
+	uint8_t m_mcr;                    // mode control register
+	uint8_t m_dor;                    // data output register
+
+	uint16_t m_dsa;                   // display start address
+	uint16_t m_cac;                   // cursor address counter
+>>>>>>> upstream/master
 
 	int m_vp;                       // vertical character pitch
 	int m_hp;                       // horizontal character pitch
@@ -112,14 +158,25 @@ private:
 	// address space configurations
 	const address_space_config      m_space_config;
 
+<<<<<<< HEAD
 	required_region_ptr<UINT8> m_char_rom;
+=======
+	required_region_ptr<uint8_t> m_char_rom;
+>>>>>>> upstream/master
 };
 
 
 // device type definition
+<<<<<<< HEAD
 extern const device_type HD61830;
 extern const device_type HD61830B;
 
 
 
 #endif
+=======
+DECLARE_DEVICE_TYPE(HD61830, hd61830_device)
+extern const device_type HD61830B;
+
+#endif // MAME_VIDEO_HD61830_H
+>>>>>>> upstream/master

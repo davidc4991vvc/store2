@@ -8,6 +8,10 @@
 
 #include "machine/s2636.h"
 #include "video/saa5050.h"
+<<<<<<< HEAD
+=======
+#include "screen.h"
+>>>>>>> upstream/master
 
 class malzak_state : public driver_device
 {
@@ -27,7 +31,11 @@ public:
 	required_device<s2636_device> m_s2636_0;
 	required_device<s2636_device> m_s2636_1;
 	required_device<saa5050_device> m_trom;
+<<<<<<< HEAD
 	required_shared_ptr<UINT8> m_videoram;
+=======
+	required_shared_ptr<uint8_t> m_videoram;
+>>>>>>> upstream/master
 	required_device<gfxdecode_device> m_gfxdecode;
 	required_device<screen_device> m_screen;
 	required_device<palette_device> m_palette;
@@ -50,8 +58,15 @@ public:
 	DECLARE_READ8_MEMBER(collision_r);
 	DECLARE_WRITE8_MEMBER(malzak_playfield_w);
 	DECLARE_READ8_MEMBER(videoram_r);
+<<<<<<< HEAD
 	virtual void machine_start();
 	virtual void machine_reset();
 	DECLARE_PALETTE_INIT(malzak);
 	UINT32 screen_update_malzak(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect);
+=======
+	virtual void machine_start() override;
+	virtual void machine_reset() override;
+	DECLARE_PALETTE_INIT(malzak);
+	uint32_t screen_update_malzak(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect);
+>>>>>>> upstream/master
 };

@@ -27,8 +27,14 @@
 
 *********************************************************************/
 
+<<<<<<< HEAD
 #include "a2ultraterm.h"
 #include "includes/apple2.h"
+=======
+#include "emu.h"
+#include "a2ultraterm.h"
+#include "screen.h"
+>>>>>>> upstream/master
 
 
 /***************************************************************************
@@ -39,8 +45,13 @@
 //  GLOBAL VARIABLES
 //**************************************************************************
 
+<<<<<<< HEAD
 const device_type A2BUS_ULTRATERM = &device_creator<a2bus_ultraterm_device>;
 const device_type A2BUS_ULTRATERMENH = &device_creator<a2bus_ultratermenh_device>;
+=======
+DEFINE_DEVICE_TYPE(A2BUS_ULTRATERM,    a2bus_ultraterm_device,    "a2ulttrm", "Videx UltraTerm (original)")
+DEFINE_DEVICE_TYPE(A2BUS_ULTRATERMENH, a2bus_ultratermenh_device, "a2ultrme", "Videx UltraTerm (enhanced //e)")
+>>>>>>> upstream/master
 
 #define ULTRATERM_ROM_REGION  "uterm_rom"
 #define ULTRATERM_GFX_REGION  "uterm_gfx"
@@ -72,6 +83,7 @@ static const rgb_t ultraterm_palette[4] =
 	rgb_t(0xff,0xff,0xff)
 };
 
+<<<<<<< HEAD
 MACHINE_CONFIG_FRAGMENT( a2ultraterm )
 	MCFG_SCREEN_ADD( ULTRATERM_SCREEN_NAME, RASTER)
 	MCFG_SCREEN_RAW_PARAMS(CLOCK_LOW, 882, 0, 720, 370, 0, 350 )
@@ -83,6 +95,8 @@ MACHINE_CONFIG_FRAGMENT( a2ultraterm )
 	MCFG_MC6845_UPDATE_ROW_CB(a2bus_videx160_device, crtc_update_row)
 	MCFG_MC6845_OUT_VSYNC_CB(WRITELINE(a2bus_videx160_device, vsync_changed))
 MACHINE_CONFIG_END
+=======
+>>>>>>> upstream/master
 
 ROM_START( a2ultraterm )
 	ROM_REGION(0x1000, ULTRATERM_ROM_REGION, 0)
@@ -111,6 +125,7 @@ ROM_END
 ***************************************************************************/
 
 //-------------------------------------------------
+<<<<<<< HEAD
 //  machine_config_additions - device-specific
 //  machine configurations
 //-------------------------------------------------
@@ -119,17 +134,41 @@ machine_config_constructor a2bus_videx160_device::device_mconfig_additions() con
 {
 	return MACHINE_CONFIG_NAME( a2ultraterm );
 }
+=======
+//  device_add_mconfig - add device configuration
+//-------------------------------------------------
+
+MACHINE_CONFIG_MEMBER( a2bus_videx160_device::device_add_mconfig )
+	MCFG_SCREEN_ADD( ULTRATERM_SCREEN_NAME, RASTER)
+	MCFG_SCREEN_RAW_PARAMS(CLOCK_LOW, 882, 0, 720, 370, 0, 350 )
+	MCFG_SCREEN_UPDATE_DEVICE( ULTRATERM_MC6845_NAME, mc6845_device, screen_update )
+
+	MCFG_MC6845_ADD(ULTRATERM_MC6845_NAME, MC6845, ULTRATERM_SCREEN_NAME, CLOCK_LOW/9)
+	MCFG_MC6845_SHOW_BORDER_AREA(false)
+	MCFG_MC6845_CHAR_WIDTH(8)
+	MCFG_MC6845_UPDATE_ROW_CB(a2bus_videx160_device, crtc_update_row)
+	MCFG_MC6845_OUT_VSYNC_CB(WRITELINE(a2bus_videx160_device, vsync_changed))
+MACHINE_CONFIG_END
+>>>>>>> upstream/master
 
 //-------------------------------------------------
 //  rom_region - device-specific ROM region
 //-------------------------------------------------
 
+<<<<<<< HEAD
 const rom_entry *a2bus_ultraterm_device::device_rom_region() const
+=======
+const tiny_rom_entry *a2bus_ultraterm_device::device_rom_region() const
+>>>>>>> upstream/master
 {
 	return ROM_NAME( a2ultraterm );
 }
 
+<<<<<<< HEAD
 const rom_entry *a2bus_ultratermenh_device::device_rom_region() const
+=======
+const tiny_rom_entry *a2bus_ultratermenh_device::device_rom_region() const
+>>>>>>> upstream/master
 {
 	return ROM_NAME( a2ultratermenh );
 }
@@ -138,13 +177,19 @@ const rom_entry *a2bus_ultratermenh_device::device_rom_region() const
 //  LIVE DEVICE
 //**************************************************************************
 
+<<<<<<< HEAD
 a2bus_videx160_device::a2bus_videx160_device(const machine_config &mconfig, device_type type, const char *name, const char *tag, device_t *owner, UINT32 clock, const char *shortname, const char *source) :
 	device_t(mconfig, type, name, tag, owner, clock, shortname, source),
+=======
+a2bus_videx160_device::a2bus_videx160_device(const machine_config &mconfig, device_type type, const char *tag, device_t *owner, uint32_t clock) :
+	device_t(mconfig, type, tag, owner, clock),
+>>>>>>> upstream/master
 	device_a2bus_card_interface(mconfig, *this), m_rom(nullptr), m_chrrom(nullptr), m_framecnt(0), m_ctrl1(0), m_ctrl2(0),
 	m_crtc(*this, ULTRATERM_MC6845_NAME), m_rambank(0)
 {
 }
 
+<<<<<<< HEAD
 a2bus_ultraterm_device::a2bus_ultraterm_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock) :
 	a2bus_videx160_device(mconfig, A2BUS_ULTRATERM, "Videx UltraTerm (original)", tag, owner, clock, "a2ulttrm", __FILE__)
 {
@@ -152,6 +197,15 @@ a2bus_ultraterm_device::a2bus_ultraterm_device(const machine_config &mconfig, co
 
 a2bus_ultratermenh_device::a2bus_ultratermenh_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock) :
 	a2bus_videx160_device(mconfig, A2BUS_ULTRATERMENH, "Videx UltraTerm (enhanced //e)", tag, owner, clock, "a2ultrme", __FILE__)
+=======
+a2bus_ultraterm_device::a2bus_ultraterm_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock) :
+	a2bus_videx160_device(mconfig, A2BUS_ULTRATERM, tag, owner, clock)
+{
+}
+
+a2bus_ultratermenh_device::a2bus_ultratermenh_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock) :
+	a2bus_videx160_device(mconfig, A2BUS_ULTRATERMENH, tag, owner, clock)
+>>>>>>> upstream/master
 {
 }
 
@@ -188,7 +242,11 @@ void a2bus_videx160_device::device_reset()
     read_c0nx - called for reads from this card's c0nx space
 -------------------------------------------------*/
 
+<<<<<<< HEAD
 UINT8 a2bus_videx160_device::read_c0nx(address_space &space, UINT8 offset)
+=======
+uint8_t a2bus_videx160_device::read_c0nx(address_space &space, uint8_t offset)
+>>>>>>> upstream/master
 {
 //    printf("Read c0n%x (PC=%x)\n", offset, space.device().safe_pc());
 
@@ -217,7 +275,11 @@ UINT8 a2bus_videx160_device::read_c0nx(address_space &space, UINT8 offset)
     write_c0nx - called for writes to this card's c0nx space
 -------------------------------------------------*/
 
+<<<<<<< HEAD
 void a2bus_videx160_device::write_c0nx(address_space &space, UINT8 offset, UINT8 data)
+=======
+void a2bus_videx160_device::write_c0nx(address_space &space, uint8_t offset, uint8_t data)
+>>>>>>> upstream/master
 {
 //    printf("Write %02x to c0n%x (PC=%x)\n", data, offset, space.device().safe_pc());
 
@@ -258,7 +320,11 @@ void a2bus_videx160_device::write_c0nx(address_space &space, UINT8 offset, UINT8
     read_cnxx - called for reads from this card's cnxx space
 -------------------------------------------------*/
 
+<<<<<<< HEAD
 UINT8 a2bus_videx160_device::read_cnxx(address_space &space, UINT8 offset)
+=======
+uint8_t a2bus_videx160_device::read_cnxx(address_space &space, uint8_t offset)
+>>>>>>> upstream/master
 {
 	return m_rom[offset+(m_slot * 0x100)];
 }
@@ -267,7 +333,11 @@ UINT8 a2bus_videx160_device::read_cnxx(address_space &space, UINT8 offset)
     write_cnxx - called for writes to this card's cnxx space
     the firmware writes here to switch in our $C800 a lot
 -------------------------------------------------*/
+<<<<<<< HEAD
 void a2bus_videx160_device::write_cnxx(address_space &space, UINT8 offset, UINT8 data)
+=======
+void a2bus_videx160_device::write_cnxx(address_space &space, uint8_t offset, uint8_t data)
+>>>>>>> upstream/master
 {
 }
 
@@ -275,7 +345,11 @@ void a2bus_videx160_device::write_cnxx(address_space &space, UINT8 offset, UINT8
     read_c800 - called for reads from this card's c800 space
 -------------------------------------------------*/
 
+<<<<<<< HEAD
 UINT8 a2bus_videx160_device::read_c800(address_space &space, UINT16 offset)
+=======
+uint8_t a2bus_videx160_device::read_c800(address_space &space, uint16_t offset)
+>>>>>>> upstream/master
 {
 	// ROM at c800-cbff
 	// bankswitched RAM at cc00-cdff
@@ -298,7 +372,11 @@ UINT8 a2bus_videx160_device::read_c800(address_space &space, UINT16 offset)
 /*-------------------------------------------------
     write_c800 - called for writes to this card's c800 space
 -------------------------------------------------*/
+<<<<<<< HEAD
 void a2bus_videx160_device::write_c800(address_space &space, UINT16 offset, UINT8 data)
+=======
+void a2bus_videx160_device::write_c800(address_space &space, uint16_t offset, uint8_t data)
+>>>>>>> upstream/master
 {
 	if (offset >= 0x400)
 	{
@@ -309,18 +387,32 @@ void a2bus_videx160_device::write_c800(address_space &space, UINT16 offset, UINT
 
 MC6845_UPDATE_ROW( a2bus_videx160_device::crtc_update_row )
 {
+<<<<<<< HEAD
 	UINT32  *p = &bitmap.pix32(y);
 	UINT16  chr_base = ra;
+=======
+	uint32_t  *p = &bitmap.pix32(y);
+	uint16_t  chr_base = ra;
+>>>>>>> upstream/master
 	int i;
 
 	for ( i = 0; i < x_count; i++ )
 	{
+<<<<<<< HEAD
 		UINT16 offset = ( ma + i );
 		UINT8 chr = m_ram[ offset ];
 		UINT8 data = m_chrrom[ chr_base + (chr * 16) ];
 		UINT8 fg = 2;
 		UINT8 bg = 0;
 		UINT8 tmp;
+=======
+		uint16_t offset = ( ma + i );
+		uint8_t chr = m_ram[ offset ];
+		uint8_t data = m_chrrom[ chr_base + (chr * 16) ];
+		uint8_t fg = 2;
+		uint8_t bg = 0;
+		uint8_t tmp;
+>>>>>>> upstream/master
 
 		// apply attributes
 		if (!(m_ctrl2 & CT2_USEDIPS))

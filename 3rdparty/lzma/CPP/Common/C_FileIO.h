@@ -6,12 +6,23 @@
 #include <stdio.h>
 #include <sys/types.h>
 
+<<<<<<< HEAD
 #include "Types.h"
 #include "MyWindows.h"
 
 #ifdef _WIN32
 typedef size_t ssize_t;
 #endif
+=======
+#include "MyTypes.h"
+#include "MyWindows.h"
+
+#ifdef _WIN32
+#ifdef _MSC_VER
+typedef size_t ssize_t;
+#endif
+#endif
+>>>>>>> upstream/master
 
 namespace NC {
 namespace NFile {

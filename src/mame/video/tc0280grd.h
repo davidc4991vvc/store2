@@ -1,13 +1,24 @@
 // license:BSD-3-Clause
 // copyright-holders:Nicola Salmoria
+<<<<<<< HEAD
 #ifndef __TC0280GRD_H__
 #define __TC0280GRD_H__
+=======
+#ifndef MAME_VIDEO_TC0280GRD_H
+#define MAME_VIDEO_TC0280GRD_H
+
+#pragma once
+>>>>>>> upstream/master
 
 class tc0280grd_device : public device_t
 {
 public:
+<<<<<<< HEAD
 	tc0280grd_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
 	~tc0280grd_device() {}
+=======
+	tc0280grd_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
+>>>>>>> upstream/master
 
 	// static configuration
 	static void static_set_gfxdecode_tag(device_t &device, const char *tag);
@@ -17,12 +28,17 @@ public:
 	DECLARE_WRITE16_MEMBER( tc0280grd_word_w );
 	DECLARE_WRITE16_MEMBER( tc0280grd_ctrl_word_w );
 	void tc0280grd_tilemap_update(int base_color);
+<<<<<<< HEAD
 	void tc0280grd_zoom_draw(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect, int xoffset, int yoffset, UINT32 priority);
+=======
+	void tc0280grd_zoom_draw(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect, int xoffset, int yoffset, uint32_t priority);
+>>>>>>> upstream/master
 
 	DECLARE_READ16_MEMBER( tc0430grw_word_r );
 	DECLARE_WRITE16_MEMBER( tc0430grw_word_w );
 	DECLARE_WRITE16_MEMBER( tc0430grw_ctrl_word_w );
 	void tc0430grw_tilemap_update(int base_color);
+<<<<<<< HEAD
 	void tc0430grw_zoom_draw(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect, int xoffset, int yoffset, UINT32 priority);
 
 protected:
@@ -37,15 +53,38 @@ private:
 	tilemap_t      *m_tilemap;
 
 	UINT16         m_ctrl[8];
+=======
+	void tc0430grw_zoom_draw(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect, int xoffset, int yoffset, uint32_t priority);
+
+protected:
+	// device-level overrides
+	virtual void device_start() override;
+	virtual void device_reset() override;
+
+private:
+	// internal state
+	std::unique_ptr<uint16_t[]>       m_ram;
+
+	tilemap_t      *m_tilemap;
+
+	uint16_t         m_ctrl[8];
+>>>>>>> upstream/master
 	int            m_base_color;
 	int            m_gfxnum;
 	required_device<gfxdecode_device> m_gfxdecode;
 
 	TILE_GET_INFO_MEMBER(tc0280grd_get_tile_info);
+<<<<<<< HEAD
 	void zoom_draw( screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect, int xoffset, int yoffset, UINT32 priority, int xmultiply );
 };
 
 extern const device_type TC0280GRD;
+=======
+	void zoom_draw( screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect, int xoffset, int yoffset, uint32_t priority, int xmultiply );
+};
+
+DECLARE_DEVICE_TYPE(TC0280GRD, tc0280grd_device)
+>>>>>>> upstream/master
 
 #define TC0430GRW TC0280GRD
 
@@ -60,4 +99,9 @@ extern const device_type TC0280GRD;
 
 #define MCFG_TC0430GRW_GFXDECODE(_gfxtag) \
 	tc0280grd_device::static_set_gfxdecode_tag(*device, "^" _gfxtag);
+<<<<<<< HEAD
 #endif
+=======
+
+#endif // MAME_VIDEO_TC0280GRD_H
+>>>>>>> upstream/master

@@ -1,6 +1,10 @@
 /*
  * Copyright 2013 Jeremie Roy. All rights reserved.
+<<<<<<< HEAD
  * License: http://www.opensource.org/licenses/BSD-2-Clause
+=======
+ * License: https://github.com/bkaradzic/bgfx#license-bsd-2-clause
+>>>>>>> upstream/master
  */
 
 #include "common.h"
@@ -15,6 +19,7 @@
 #include "font/text_buffer_manager.h"
 #include "imgui/imgui.h"
 
+<<<<<<< HEAD
 #include <stdio.h>
 #include <string.h>
 
@@ -57,6 +62,17 @@ TrueTypeHandle loadTtf(FontManager* _fm, const char* _filePath)
 		mem[size-1] = '\0';
 		TrueTypeHandle handle = _fm->createTtf(mem, size);
 		free(mem);
+=======
+TrueTypeHandle loadTtf(FontManager* _fm, const char* _filePath)
+{
+	uint32_t size;
+	void* data = load(_filePath, &size);
+
+	if (NULL != data)
+	{
+		TrueTypeHandle handle = _fm->createTtf( (uint8_t*)data, size);
+		BX_FREE(entry::getAllocator(), data);
+>>>>>>> upstream/master
 		return handle;
 	}
 
@@ -90,7 +106,11 @@ int _main_(int _argc, char** _argv)
 	// Imgui.
 	imguiCreate();
 
+<<<<<<< HEAD
 	char* bigText = loadText( "text/sherlock_holmes_a_scandal_in_bohemia_arthur_conan_doyle.txt");
+=======
+	char* bigText = (char*)load("text/sherlock_holmes_a_scandal_in_bohemia_arthur_conan_doyle.txt");
+>>>>>>> upstream/master
 
 	// Init the text rendering system.
 	FontManager* fontManager = new FontManager(512);
@@ -135,9 +155,15 @@ int _main_(int _argc, char** _argv)
 			| (mouseState.m_buttons[entry::MouseButton::Right ] ? IMGUI_MBUT_RIGHT  : 0)
 			| (mouseState.m_buttons[entry::MouseButton::Middle] ? IMGUI_MBUT_MIDDLE : 0)
 			, mouseState.m_mz
+<<<<<<< HEAD
 			, width
 			, height
 			);
+=======
+			, uint16_t(width)
+			, uint16_t(height)
+		);
+>>>>>>> upstream/master
 
 		imguiBeginScrollArea("Text Area"
 			, width - guiPanelWidth - 10
@@ -174,7 +200,11 @@ int _main_(int _argc, char** _argv)
 		imguiEndFrame();
 
 		// Set view 0 default viewport.
+<<<<<<< HEAD
 		bgfx::setViewRect(0, 0, 0, width, height);
+=======
+		bgfx::setViewRect(0, 0, 0, uint16_t(width), uint16_t(height) );
+>>>>>>> upstream/master
 
 		// This dummy draw call is here to make sure that view 0 is cleared
 		// if no other draw calls are submitted to view 0.
@@ -206,7 +236,11 @@ int _main_(int _argc, char** _argv)
 		if (NULL != hmd && 0 != (hmd->flags & BGFX_HMD_RENDERING) )
 		{
 			float proj[16];
+<<<<<<< HEAD
 			bx::mtxProj(proj, hmd->eye[0].fov, 0.1f, 100.0f);
+=======
+			bx::mtxProj(proj, hmd->eye[0].fov, 0.1f, 100.0f, bgfx::getCaps()->homogeneousDepth);
+>>>>>>> upstream/master
 
 			static float time = 0.0f;
 			time += 0.05f;
@@ -228,7 +262,11 @@ int _main_(int _argc, char** _argv)
 			float ortho[16];
 			bx::mtxOrtho(ortho, centering, width + centering, height + centering, centering, -1.0f, 1.0f);
 			bgfx::setViewTransform(0, view, ortho);
+<<<<<<< HEAD
 			bgfx::setViewRect(0, 0, 0, width, height);
+=======
+			bgfx::setViewRect(0, 0, 0, uint16_t(width), uint16_t(height) );
+>>>>>>> upstream/master
 		}
 
 		//very crude approximation :(
@@ -267,7 +305,11 @@ int _main_(int _argc, char** _argv)
 
 	imguiDestroy();
 
+<<<<<<< HEAD
 	free(bigText);
+=======
+	BX_FREE(entry::getAllocator(), bigText);
+>>>>>>> upstream/master
 
 	fontManager->destroyTtf(font);
 	// Destroy the fonts.

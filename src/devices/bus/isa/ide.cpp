@@ -8,8 +8,16 @@
 
 #include "emu.h"
 #include "ide.h"
+<<<<<<< HEAD
 #include "machine/idectrl.h"
 #include "imagedev/harddriv.h"
+=======
+
+#include "imagedev/harddriv.h"
+#include "machine/idectrl.h"
+#include "speaker.h"
+
+>>>>>>> upstream/master
 
 READ8_MEMBER(isa16_ide_device::ide16_alt_r )
 {
@@ -41,9 +49,18 @@ WRITE_LINE_MEMBER(isa16_ide_device::ide_interrupt)
 	}
 }
 
+<<<<<<< HEAD
 static MACHINE_CONFIG_FRAGMENT( ide )
 	MCFG_IDE_CONTROLLER_ADD("ide", ata_devices, "hdd", NULL, false)
 	MCFG_ATA_INTERFACE_IRQ_HANDLER(WRITELINE(isa16_ide_device, ide_interrupt))
+=======
+static MACHINE_CONFIG_START(cdrom_headphones)
+	MCFG_DEVICE_MODIFY("cdda")
+	MCFG_SOUND_ROUTE(0, "lheadphone", 1.0)
+	MCFG_SOUND_ROUTE(1, "rheadphone", 1.0)
+
+	MCFG_SPEAKER_STANDARD_STEREO("lheadphone", "rheadphone")
+>>>>>>> upstream/master
 MACHINE_CONFIG_END
 
 static INPUT_PORTS_START( ide )
@@ -57,6 +74,7 @@ INPUT_PORTS_END
 //  GLOBAL VARIABLES
 //**************************************************************************
 
+<<<<<<< HEAD
 const device_type ISA16_IDE = &device_creator<isa16_ide_device>;
 
 //-------------------------------------------------
@@ -68,6 +86,23 @@ machine_config_constructor isa16_ide_device::device_mconfig_additions() const
 {
 	return MACHINE_CONFIG_NAME( ide );
 }
+=======
+DEFINE_DEVICE_TYPE(ISA16_IDE, isa16_ide_device, "isa_ide", "IDE Fixed Drive Adapter")
+
+//-------------------------------------------------
+//  device_add_mconfig - add device configuration
+//-------------------------------------------------
+
+MACHINE_CONFIG_MEMBER( isa16_ide_device::device_add_mconfig )
+	MCFG_IDE_CONTROLLER_ADD("ide", ata_devices, "hdd", nullptr, false)
+	MCFG_ATA_INTERFACE_IRQ_HANDLER(WRITELINE(isa16_ide_device, ide_interrupt))
+
+	MCFG_DEVICE_MODIFY("ide:0")
+	MCFG_SLOT_OPTION_MACHINE_CONFIG("cdrom", cdrom_headphones)
+	MCFG_DEVICE_MODIFY("ide:1")
+	MCFG_SLOT_OPTION_MACHINE_CONFIG("cdrom", cdrom_headphones)
+MACHINE_CONFIG_END
+>>>>>>> upstream/master
 
 //-------------------------------------------------
 //  input_ports - device-specific input ports
@@ -86,11 +121,19 @@ ioport_constructor isa16_ide_device::device_input_ports() const
 //  isa16_ide_device - constructor
 //-------------------------------------------------
 
+<<<<<<< HEAD
 isa16_ide_device::isa16_ide_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
 		: device_t(mconfig, ISA16_IDE, "IDE Fixed Drive Adapter", tag, owner, clock, "isa_ide", __FILE__),
 		device_isa16_card_interface( mconfig, *this ),
 		m_is_primary(true),
 		m_ide(*this, "ide")
+=======
+isa16_ide_device::isa16_ide_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: device_t(mconfig, ISA16_IDE, tag, owner, clock)
+	, device_isa16_card_interface(mconfig, *this)
+	, m_is_primary(true)
+	, m_ide(*this, "ide")
+>>>>>>> upstream/master
 {
 }
 

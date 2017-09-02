@@ -17,7 +17,13 @@ function createProjects_mame_dummy(_target, _subtarget)
 	targetsubdir(_target .."_" .. _subtarget)
 	kind (LIBTYPE)
 	uuid (os.uuid("drv-mame_dummy"))
+<<<<<<< HEAD
 	
+=======
+	addprojectflags()
+	precompiledheaders()
+
+>>>>>>> upstream/master
 	includedirs {
 		MAME_DIR .. "src/osd",
 		MAME_DIR .. "src/emu",
@@ -41,4 +47,8 @@ function linkProjects_mame_dummy(_target, _subtarget)
 	links {
 		"mame_dummy",
 	}
+<<<<<<< HEAD
 end
+=======
+end
+>>>>>>> upstream/master

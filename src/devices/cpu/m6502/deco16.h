@@ -8,13 +8,19 @@
 
 ***************************************************************************/
 
+<<<<<<< HEAD
 #ifndef __DECO16_H__
 #define __DECO16_H__
+=======
+#ifndef MAME_CPU_M6502_DECO16_H
+#define MAME_CPU_M6502_DECO16_H
+>>>>>>> upstream/master
 
 #include "m6502.h"
 
 class deco16_device : public m6502_device {
 public:
+<<<<<<< HEAD
 	deco16_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
 
 	static const disasm_entry disasm_entries[0x100];
@@ -22,13 +28,27 @@ public:
 	virtual offs_t disasm_disassemble(char *buffer, offs_t pc, const UINT8 *oprom, const UINT8 *opram, UINT32 options);
 	virtual void do_exec_full();
 	virtual void do_exec_partial();
+=======
+	deco16_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
+
+	static const disasm_entry disasm_entries[0x100];
+
+	virtual offs_t disasm_disassemble(std::ostream &stream, offs_t pc, const uint8_t *oprom, const uint8_t *opram, uint32_t options) override;
+	virtual void do_exec_full() override;
+	virtual void do_exec_partial() override;
+>>>>>>> upstream/master
 
 protected:
 	address_space *io;
 	address_space_config io_config;
 
+<<<<<<< HEAD
 	virtual const address_space_config *memory_space_config(address_spacenum spacenum = AS_0) const;
 	virtual void device_start();
+=======
+	virtual space_config_vector memory_space_config() const override;
+	virtual void device_start() override;
+>>>>>>> upstream/master
 
 #define O(o) void o ## _full(); void o ## _partial()
 
@@ -57,6 +77,12 @@ enum {
 	DECO16_SET_OVERFLOW = m6502_device::V_LINE
 };
 
+<<<<<<< HEAD
 extern const device_type DECO16;
 
 #endif
+=======
+DECLARE_DEVICE_TYPE(DECO16, deco16_device)
+
+#endif // MAME_CPU_M6502_DECO16_H
+>>>>>>> upstream/master

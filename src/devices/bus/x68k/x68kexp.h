@@ -61,10 +61,18 @@
  *
  */
 
+<<<<<<< HEAD
 #ifndef X68KEXP_H_
 #define X68KEXP_H_
 
 #include "emu.h"
+=======
+#ifndef MAME_BUS_X68K_X68KEXP_H
+#define MAME_BUS_X68K_X68KEXP_H
+
+#pragma once
+
+>>>>>>> upstream/master
 
 //**************************************************************************
 //  CONSTANTS
@@ -100,16 +108,33 @@ class device_x68k_expansion_card_interface : public device_slot_card_interface
 {
 public:
 	// construction/destruction
+<<<<<<< HEAD
 	device_x68k_expansion_card_interface(const machine_config &mconfig, device_t &device);
 	virtual ~device_x68k_expansion_card_interface();
 
 	// reset
 	virtual void x68k_reset_w() { };
+=======
+	virtual ~device_x68k_expansion_card_interface();
+
+	// reset
+	virtual void x68k_reset_w() { }
+
+	void set_vector(uint8_t vector) { m_vector = vector; }
+	uint8_t vector() { return m_vector; }
+
+protected:
+	device_x68k_expansion_card_interface(const machine_config &mconfig, device_t &device);
+
+private:
+	uint8_t m_vector;
+>>>>>>> upstream/master
 };
 
 
 // ======================> x68k_expansion_slot_device
 
+<<<<<<< HEAD
 class x68k_expansion_slot_device : public device_t,
 									public device_slot_interface
 {
@@ -122,6 +147,19 @@ public:
 	template<class _Object> static devcb_base &set_out_irq4_callback(device_t &device, _Object object) { return downcast<x68k_expansion_slot_device &>(device).m_out_irq4_cb.set_callback(object); }
 	template<class _Object> static devcb_base &set_out_nmi_callback(device_t &device, _Object object) { return downcast<x68k_expansion_slot_device &>(device).m_out_nmi_cb.set_callback(object); }
 	template<class _Object> static devcb_base &set_out_reset_callback(device_t &device, _Object object) { return downcast<x68k_expansion_slot_device &>(device).m_out_reset_cb.set_callback(object); }
+=======
+class x68k_expansion_slot_device : public device_t, public device_slot_interface
+{
+public:
+	// construction/destruction
+	x68k_expansion_slot_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
+	virtual ~x68k_expansion_slot_device();
+
+	template <class Object> static devcb_base &set_out_irq2_callback(device_t &device, Object &&cb) { return downcast<x68k_expansion_slot_device &>(device).m_out_irq2_cb.set_callback(std::forward<Object>(cb)); }
+	template <class Object> static devcb_base &set_out_irq4_callback(device_t &device, Object &&cb) { return downcast<x68k_expansion_slot_device &>(device).m_out_irq4_cb.set_callback(std::forward<Object>(cb)); }
+	template <class Object> static devcb_base &set_out_nmi_callback(device_t &device, Object &&cb) { return downcast<x68k_expansion_slot_device &>(device).m_out_nmi_cb.set_callback(std::forward<Object>(cb)); }
+	template <class Object> static devcb_base &set_out_reset_callback(device_t &device, Object &&cb) { return downcast<x68k_expansion_slot_device &>(device).m_out_reset_cb.set_callback(std::forward<Object>(cb)); }
+>>>>>>> upstream/master
 
 
 	DECLARE_WRITE_LINE_MEMBER( irq2_w );
@@ -129,10 +167,19 @@ public:
 	DECLARE_WRITE_LINE_MEMBER( nmi_w );
 	DECLARE_WRITE_LINE_MEMBER( reset_w );
 
+<<<<<<< HEAD
 protected:
 	// device-level overrides
 	virtual void device_start();
 	virtual void device_reset();
+=======
+	uint8_t vector() { return m_card->vector(); }
+
+protected:
+	// device-level overrides
+	virtual void device_start() override;
+	virtual void device_reset() override;
+>>>>>>> upstream/master
 
 	devcb_write_line    m_out_irq2_cb;
 	devcb_write_line    m_out_irq4_cb;
@@ -144,6 +191,12 @@ protected:
 
 
 // device type definition
+<<<<<<< HEAD
 extern const device_type X68K_EXPANSION_SLOT;
 
 #endif /* X68KEXP_H_ */
+=======
+DECLARE_DEVICE_TYPE(X68K_EXPANSION_SLOT, x68k_expansion_slot_device)
+
+#endif // MAME_BUS_X68K_X68KEXP_H
+>>>>>>> upstream/master

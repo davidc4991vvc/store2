@@ -15,10 +15,17 @@
 #include "emu.h"
 #include "audio/timeplt.h"
 
+<<<<<<< HEAD
+=======
+#include "machine/gen_latch.h"
+#include "speaker.h"
+
+>>>>>>> upstream/master
 
 #define MASTER_CLOCK         XTAL_14_31818MHz
 
 
+<<<<<<< HEAD
 const device_type TIMEPLT_AUDIO = &device_creator<timeplt_audio_device>;
 
 timeplt_audio_device::timeplt_audio_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
@@ -35,6 +42,14 @@ timeplt_audio_device::timeplt_audio_device(const machine_config &mconfig, const 
 //-------------------------------------------------
 
 void timeplt_audio_device::device_config_complete()
+=======
+DEFINE_DEVICE_TYPE(TIMEPLT_AUDIO, timeplt_audio_device, "timplt_audio", "Time Pilot Audio")
+
+timeplt_audio_device::timeplt_audio_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: device_t(mconfig, TIMEPLT_AUDIO, tag, owner, clock)
+	, device_sound_interface(mconfig, *this)
+	, m_last_irq_state(0)
+>>>>>>> upstream/master
 {
 }
 
@@ -107,7 +122,11 @@ void timeplt_audio_device::filter_w( device_t *device, int data )
 	if (data & 2)
 		C +=  47000;    /*  47000pF = 0.047uF */
 
+<<<<<<< HEAD
 	dynamic_cast<filter_rc_device*>(device)->filter_rc_set_RC(FLT_RC_LOWPASS, 1000, 5100, 0, CAP_P(C));
+=======
+	downcast<filter_rc_device*>(device)->filter_rc_set_RC(filter_rc_device::LOWPASS, 1000, 5100, 0, CAP_P(C));
+>>>>>>> upstream/master
 }
 
 
@@ -129,15 +148,32 @@ WRITE8_MEMBER( timeplt_audio_device::filter_w )
  *
  *************************************/
 
+<<<<<<< HEAD
 WRITE8_MEMBER( timeplt_audio_device::sh_irqtrigger_w )
 {
 	if (m_last_irq_state == 0 && data)
+=======
+WRITE_LINE_MEMBER(timeplt_audio_device::sh_irqtrigger_w)
+{
+	if (m_last_irq_state == 0 && state)
+>>>>>>> upstream/master
 	{
 		/* setting bit 0 low then high triggers IRQ on the sound CPU */
 		m_soundcpu->set_input_line_and_vector(0, HOLD_LINE, 0xff);
 	}
 
+<<<<<<< HEAD
 	m_last_irq_state = data;
+=======
+	m_last_irq_state = state;
+}
+
+
+WRITE_LINE_MEMBER(timeplt_audio_device::mute_w)
+{
+	// controls pin 6 (DC audio mute) of LA4460 amplifier
+	machine().sound().system_mute(state);
+>>>>>>> upstream/master
 }
 
 
@@ -148,7 +184,11 @@ WRITE8_MEMBER( timeplt_audio_device::sh_irqtrigger_w )
  *
  *************************************/
 
+<<<<<<< HEAD
 static ADDRESS_MAP_START( timeplt_sound_map, AS_PROGRAM, 8, driver_device )
+=======
+static ADDRESS_MAP_START( timeplt_sound_map, AS_PROGRAM, 8, timeplt_audio_device )
+>>>>>>> upstream/master
 	AM_RANGE(0x0000, 0x2fff) AM_ROM
 	AM_RANGE(0x3000, 0x33ff) AM_MIRROR(0x0c00) AM_RAM
 	AM_RANGE(0x4000, 0x4000) AM_MIRROR(0x0fff) AM_DEVREADWRITE("ay1", ay8910_device, data_r, data_w)
@@ -159,7 +199,11 @@ static ADDRESS_MAP_START( timeplt_sound_map, AS_PROGRAM, 8, driver_device )
 ADDRESS_MAP_END
 
 
+<<<<<<< HEAD
 static ADDRESS_MAP_START( locomotn_sound_map, AS_PROGRAM, 8, driver_device )
+=======
+static ADDRESS_MAP_START( locomotn_sound_map, AS_PROGRAM, 8, timeplt_audio_device )
+>>>>>>> upstream/master
 	AM_RANGE(0x0000, 0x1fff) AM_ROM
 	AM_RANGE(0x2000, 0x23ff) AM_MIRROR(0x0c00) AM_RAM
 	AM_RANGE(0x3000, 0x3fff) AM_DEVWRITE("timeplt_audio", timeplt_audio_device, filter_w)
@@ -176,7 +220,11 @@ ADDRESS_MAP_END
  *
  *************************************/
 
+<<<<<<< HEAD
 MACHINE_CONFIG_FRAGMENT( timeplt_sound )
+=======
+MACHINE_CONFIG_START( timeplt_sound )
+>>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("tpsound",Z80,MASTER_CLOCK/8)
@@ -188,7 +236,11 @@ MACHINE_CONFIG_FRAGMENT( timeplt_sound )
 	MCFG_SOUND_ADD("timeplt_audio", TIMEPLT_AUDIO, 0)
 
 	MCFG_SOUND_ADD("ay1", AY8910, MASTER_CLOCK/8)
+<<<<<<< HEAD
 	MCFG_AY8910_PORT_A_READ_CB(READ8(driver_device, soundlatch_byte_r))
+=======
+	MCFG_AY8910_PORT_A_READ_CB(DEVREAD8("soundlatch", generic_latch_8_device, read))
+>>>>>>> upstream/master
 	MCFG_AY8910_PORT_B_READ_CB(DEVREAD8("timeplt_audio", timeplt_audio_device, portB_r))
 	MCFG_SOUND_ROUTE(0, "filter.0.0", 0.60)
 	MCFG_SOUND_ROUTE(1, "filter.0.1", 0.60)

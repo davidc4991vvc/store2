@@ -9,8 +9,13 @@
 ***************************************************************************/
 
 #include "emu.h"
+<<<<<<< HEAD
 #include "debugger.h"
 #include "r3000.h"
+=======
+#include "r3000.h"
+#include "debugger.h"
+>>>>>>> upstream/master
 
 
 #define ENABLE_OVERFLOWS    0
@@ -86,8 +91,13 @@
 #define RTVAL           m_r[RTREG]
 #define RDVAL           m_r[RDREG]
 
+<<<<<<< HEAD
 #define SIMMVAL         ((INT16)m_op)
 #define UIMMVAL         ((UINT16)m_op)
+=======
+#define SIMMVAL         ((int16_t)m_op)
+#define UIMMVAL         ((uint16_t)m_op)
+>>>>>>> upstream/master
 #define LIMMVAL         (m_op & 0x03ffffff)
 
 #define ADDPC(x)        do { m_nextpc = m_pc + ((x) << 2); } while (0)
@@ -113,23 +123,40 @@
 //  DEVICE INTERFACE
 //**************************************************************************
 
+<<<<<<< HEAD
 const device_type R3041 = &device_creator<r3041_device>;
 const device_type R3051 = &device_creator<r3051_device>;
 const device_type R3052 = &device_creator<r3052_device>;
 const device_type R3071 = &device_creator<r3071_device>;
 const device_type R3081 = &device_creator<r3081_device>;
+=======
+DEFINE_DEVICE_TYPE(R3041, r3041_device, "r3041", "R3041")
+DEFINE_DEVICE_TYPE(R3051, r3051_device, "r3051", "R3051")
+DEFINE_DEVICE_TYPE(R3052, r3052_device, "r3052", "R3052")
+DEFINE_DEVICE_TYPE(R3071, r3071_device, "r3071", "R3071")
+DEFINE_DEVICE_TYPE(R3081, r3081_device, "r3081", "R3081")
+>>>>>>> upstream/master
 
 
 //-------------------------------------------------
 //  r3000_device - constructor
 //-------------------------------------------------
 
+<<<<<<< HEAD
 r3000_device::r3000_device(const machine_config &mconfig, device_type type, const char *name, const char *tag, device_t *owner, UINT32 clock, chip_type chiptype, const char *shortname, const char *source)
 	: cpu_device(mconfig, type, name, tag, owner, clock, shortname, source),
 		m_program_config_be("program", ENDIANNESS_BIG, 32, 29),
 		m_program_config_le("program", ENDIANNESS_LITTLE, 32, 29),
 		m_program(NULL),
 		m_direct(NULL),
+=======
+r3000_device::r3000_device(const machine_config &mconfig, device_type type, const char *tag, device_t *owner, uint32_t clock, chip_type chiptype)
+	: cpu_device(mconfig, type, tag, owner, clock),
+		m_program_config_be("program", ENDIANNESS_BIG, 32, 29),
+		m_program_config_le("program", ENDIANNESS_LITTLE, 32, 29),
+		m_program(nullptr),
+		m_direct(nullptr),
+>>>>>>> upstream/master
 		m_chip_type(chiptype),
 		m_hasfpu(false),
 		m_endianness(ENDIANNESS_BIG),
@@ -169,40 +196,65 @@ r3000_device::~r3000_device()
 //  r3041_device - constructor
 //-------------------------------------------------
 
+<<<<<<< HEAD
 r3041_device::r3041_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
 	: r3000_device(mconfig, R3041, "R3041", tag, owner, clock, CHIP_TYPE_R3041, "r3041", __FILE__) { }
+=======
+r3041_device::r3041_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: r3000_device(mconfig, R3041, tag, owner, clock, CHIP_TYPE_R3041) { }
+>>>>>>> upstream/master
 
 
 //-------------------------------------------------
 //  r3051_device - constructor
 //-------------------------------------------------
 
+<<<<<<< HEAD
 r3051_device::r3051_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
 	: r3000_device(mconfig, R3051, "R3051", tag, owner, clock, CHIP_TYPE_R3051, "r3051", __FILE__) { }
+=======
+r3051_device::r3051_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: r3000_device(mconfig, R3051, tag, owner, clock, CHIP_TYPE_R3051) { }
+>>>>>>> upstream/master
 
 
 //-------------------------------------------------
 //  r3052_device - constructor
 //-------------------------------------------------
 
+<<<<<<< HEAD
 r3052_device::r3052_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
 	: r3000_device(mconfig, R3052, "R3052", tag, owner, clock, CHIP_TYPE_R3052, "r3052", __FILE__) { }
+=======
+r3052_device::r3052_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: r3000_device(mconfig, R3052, tag, owner, clock, CHIP_TYPE_R3052) { }
+>>>>>>> upstream/master
 
 
 //-------------------------------------------------
 //  r3071_device - constructor
 //-------------------------------------------------
 
+<<<<<<< HEAD
 r3071_device::r3071_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
 	: r3000_device(mconfig, R3071, "R3071", tag, owner, clock, CHIP_TYPE_R3071, "r3071", __FILE__) { }
+=======
+r3071_device::r3071_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: r3000_device(mconfig, R3071, tag, owner, clock, CHIP_TYPE_R3071) { }
+>>>>>>> upstream/master
 
 
 //-------------------------------------------------
 //  r3081_device - constructor
 //-------------------------------------------------
 
+<<<<<<< HEAD
 r3081_device::r3081_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
 	: r3000_device(mconfig, R3081, "R3081", tag, owner, clock, CHIP_TYPE_R3081, "r3081", __FILE__) { }
+=======
+r3081_device::r3081_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: r3000_device(mconfig, R3081, tag, owner, clock, CHIP_TYPE_R3081) { }
+>>>>>>> upstream/master
 
 
 //-------------------------------------------------
@@ -305,7 +357,11 @@ void r3000_device::device_start()
 
 	// register our state for the debugger
 	state_add(STATE_GENPC,      "GENPC",     m_pc).noshow();
+<<<<<<< HEAD
 	state_add(STATE_GENPCBASE,  "GENPCBASE", m_ppc).noshow();
+=======
+	state_add(STATE_GENPCBASE,  "CURPC",     m_ppc).noshow();
+>>>>>>> upstream/master
 	state_add(STATE_GENSP,      "GENSP",     m_r[31]).noshow();
 	state_add(STATE_GENFLAGS,   "GENFLAGS",  SR).callimport().callexport().formatstr("%6s").noshow();
 	state_add(R3000_PC,         "PC",       m_pc);
@@ -390,6 +446,7 @@ void r3000_device::device_reset()
 
 //-------------------------------------------------
 //  memory_space_config - return the configuration
+<<<<<<< HEAD
 //  of the specified address space, or NULL if
 //  the space doesn't exist
 //-------------------------------------------------
@@ -400,6 +457,17 @@ const address_space_config *r3000_device::memory_space_config(address_spacenum s
 		return (m_endianness == ENDIANNESS_BIG) ? &m_program_config_be : &m_program_config_le;
 	else
 		return NULL;
+=======
+//  of the specified address space, or nullptr if
+//  the space doesn't exist
+//-------------------------------------------------
+
+device_memory_interface::space_config_vector r3000_device::memory_space_config() const
+{
+	return space_config_vector {
+		std::make_pair(AS_PROGRAM, (m_endianness == ENDIANNESS_BIG) ? &m_program_config_be : &m_program_config_le)
+	};
+>>>>>>> upstream/master
 }
 
 
@@ -443,7 +511,11 @@ void r3000_device::state_export(const device_state_entry &entry)
 //  for the debugger
 //-------------------------------------------------
 
+<<<<<<< HEAD
 void r3000_device::state_string_export(const device_state_entry &entry, std::string &str)
+=======
+void r3000_device::state_string_export(const device_state_entry &entry, std::string &str) const
+>>>>>>> upstream/master
 {
 	switch (entry.index())
 	{
@@ -458,7 +530,11 @@ void r3000_device::state_string_export(const device_state_entry &entry, std::str
 //  of the shortest instruction, in bytes
 //-------------------------------------------------
 
+<<<<<<< HEAD
 UINT32 r3000_device::disasm_min_opcode_bytes() const
+=======
+uint32_t r3000_device::disasm_min_opcode_bytes() const
+>>>>>>> upstream/master
 {
 	return 4;
 }
@@ -469,7 +545,11 @@ UINT32 r3000_device::disasm_min_opcode_bytes() const
 //  of the longest instruction, in bytes
 //-------------------------------------------------
 
+<<<<<<< HEAD
 UINT32 r3000_device::disasm_max_opcode_bytes() const
+=======
+uint32_t r3000_device::disasm_max_opcode_bytes() const
+>>>>>>> upstream/master
 {
 	return 4;
 }
@@ -480,15 +560,25 @@ UINT32 r3000_device::disasm_max_opcode_bytes() const
 //  helper function
 //-------------------------------------------------
 
+<<<<<<< HEAD
 offs_t r3000_device::disasm_disassemble(char *buffer, offs_t pc, const UINT8 *oprom, const UINT8 *opram, UINT32 options)
+=======
+offs_t r3000_device::disasm_disassemble(std::ostream &stream, offs_t pc, const uint8_t *oprom, const uint8_t *opram, uint32_t options)
+>>>>>>> upstream/master
 {
 	extern CPU_DISASSEMBLE( r3000le );
 	extern CPU_DISASSEMBLE( r3000be );
 
 	if (m_endianness == ENDIANNESS_BIG)
+<<<<<<< HEAD
 		return CPU_DISASSEMBLE_NAME(r3000be)(this, buffer, pc, oprom, opram, options);
 	else
 		return CPU_DISASSEMBLE_NAME(r3000le)(this, buffer, pc, oprom, opram, options);
+=======
+		return CPU_DISASSEMBLE_NAME(r3000be)(this, stream, pc, oprom, opram, options);
+	else
+		return CPU_DISASSEMBLE_NAME(r3000le)(this, stream, pc, oprom, opram, options);
+>>>>>>> upstream/master
 }
 
 
@@ -496,37 +586,65 @@ offs_t r3000_device::disasm_disassemble(char *buffer, offs_t pc, const UINT8 *op
     MEMORY ACCESSORS
 ***************************************************************************/
 
+<<<<<<< HEAD
 inline UINT32 r3000_device::readop(offs_t pc)
+=======
+inline uint32_t r3000_device::readop(offs_t pc)
+>>>>>>> upstream/master
 {
 	return m_direct->read_dword(pc);
 }
 
+<<<<<<< HEAD
 UINT8 r3000_device::readmem(offs_t offset)
+=======
+uint8_t r3000_device::readmem(offs_t offset)
+>>>>>>> upstream/master
 {
 	return m_program->read_byte(offset);
 }
 
+<<<<<<< HEAD
 UINT16 r3000_device::readmem_word(offs_t offset)
+=======
+uint16_t r3000_device::readmem_word(offs_t offset)
+>>>>>>> upstream/master
 {
 	return m_program->read_word(offset);
 }
 
+<<<<<<< HEAD
 UINT32 r3000_device::readmem_dword(offs_t offset)
+=======
+uint32_t r3000_device::readmem_dword(offs_t offset)
+>>>>>>> upstream/master
 {
 	return m_program->read_dword(offset);
 }
 
+<<<<<<< HEAD
 void r3000_device::writemem(offs_t offset, UINT8 data)
+=======
+void r3000_device::writemem(offs_t offset, uint8_t data)
+>>>>>>> upstream/master
 {
 	m_program->write_byte(offset, data);
 }
 
+<<<<<<< HEAD
 void r3000_device::writemem_word(offs_t offset, UINT16 data)
+=======
+void r3000_device::writemem_word(offs_t offset, uint16_t data)
+>>>>>>> upstream/master
 {
 	m_program->write_word(offset, data);
 }
 
+<<<<<<< HEAD
 void r3000_device::writemem_dword(offs_t offset, UINT32 data)
+=======
+void r3000_device::writemem_dword(offs_t offset, uint32_t data)
+>>>>>>> upstream/master
 {
 	m_program->write_dword(offset, data);
 }
@@ -536,12 +654,17 @@ void r3000_device::writemem_dword(offs_t offset, UINT32 data)
     BIG ENDIAN CACHE I/O
 ***************************************************************************/
 
+<<<<<<< HEAD
 UINT8 r3000_device::readcache_be(offs_t offset)
+=======
+uint8_t r3000_device::readcache_be(offs_t offset)
+>>>>>>> upstream/master
 {
 	offset &= 0x1fffffff;
 	return (offset * 4 < m_cache_size) ? m_cache[BYTE4_XOR_BE(offset)] : 0xff;
 }
 
+<<<<<<< HEAD
 UINT16 r3000_device::readcache_be_word(offs_t offset)
 {
 	offset &= 0x1fffffff;
@@ -555,11 +678,27 @@ UINT32 r3000_device::readcache_be_dword(offs_t offset)
 }
 
 void r3000_device::writecache_be(offs_t offset, UINT8 data)
+=======
+uint16_t r3000_device::readcache_be_word(offs_t offset)
+{
+	offset &= 0x1fffffff;
+	return (offset * 4 < m_cache_size) ? *(uint16_t *)&m_cache[WORD_XOR_BE(offset)] : 0xffff;
+}
+
+uint32_t r3000_device::readcache_be_dword(offs_t offset)
+{
+	offset &= 0x1fffffff;
+	return (offset * 4 < m_cache_size) ? *(uint32_t *)&m_cache[offset] : 0xffffffff;
+}
+
+void r3000_device::writecache_be(offs_t offset, uint8_t data)
+>>>>>>> upstream/master
 {
 	offset &= 0x1fffffff;
 	if (offset * 4 < m_cache_size) m_cache[BYTE4_XOR_BE(offset)] = data;
 }
 
+<<<<<<< HEAD
 void r3000_device::writecache_be_word(offs_t offset, UINT16 data)
 {
 	offset &= 0x1fffffff;
@@ -573,6 +712,21 @@ void r3000_device::writecache_be_dword(offs_t offset, UINT32 data)
 }
 
 UINT8 r3000_device::readcache_le(offs_t offset)
+=======
+void r3000_device::writecache_be_word(offs_t offset, uint16_t data)
+{
+	offset &= 0x1fffffff;
+	if (offset * 4 < m_cache_size) *(uint16_t *)&m_cache[WORD_XOR_BE(offset)] = data;
+}
+
+void r3000_device::writecache_be_dword(offs_t offset, uint32_t data)
+{
+	offset &= 0x1fffffff;
+	if (offset * 4 < m_cache_size) *(uint32_t *)&m_cache[offset] = data;
+}
+
+uint8_t r3000_device::readcache_le(offs_t offset)
+>>>>>>> upstream/master
 {
 	offset &= 0x1fffffff;
 	return (offset * 4 < m_cache_size) ? m_cache[BYTE4_XOR_LE(offset)] : 0xff;
@@ -583,6 +737,7 @@ UINT8 r3000_device::readcache_le(offs_t offset)
     LITTLE ENDIAN CACHE I/O
 ***************************************************************************/
 
+<<<<<<< HEAD
 UINT16 r3000_device::readcache_le_word(offs_t offset)
 {
 	offset &= 0x1fffffff;
@@ -596,11 +751,27 @@ UINT32 r3000_device::readcache_le_dword(offs_t offset)
 }
 
 void r3000_device::writecache_le(offs_t offset, UINT8 data)
+=======
+uint16_t r3000_device::readcache_le_word(offs_t offset)
+{
+	offset &= 0x1fffffff;
+	return (offset * 4 < m_cache_size) ? *(uint16_t *)&m_cache[WORD_XOR_LE(offset)] : 0xffff;
+}
+
+uint32_t r3000_device::readcache_le_dword(offs_t offset)
+{
+	offset &= 0x1fffffff;
+	return (offset * 4 < m_cache_size) ? *(uint32_t *)&m_cache[offset] : 0xffffffff;
+}
+
+void r3000_device::writecache_le(offs_t offset, uint8_t data)
+>>>>>>> upstream/master
 {
 	offset &= 0x1fffffff;
 	if (offset * 4 < m_cache_size) m_cache[BYTE4_XOR_LE(offset)] = data;
 }
 
+<<<<<<< HEAD
 void r3000_device::writecache_le_word(offs_t offset, UINT16 data)
 {
 	offset &= 0x1fffffff;
@@ -611,6 +782,18 @@ void r3000_device::writecache_le_dword(offs_t offset, UINT32 data)
 {
 	offset &= 0x1fffffff;
 	if (offset * 4 < m_cache_size) *(UINT32 *)&m_cache[offset] = data;
+=======
+void r3000_device::writecache_le_word(offs_t offset, uint16_t data)
+{
+	offset &= 0x1fffffff;
+	if (offset * 4 < m_cache_size) *(uint16_t *)&m_cache[WORD_XOR_LE(offset)] = data;
+}
+
+void r3000_device::writecache_le_dword(offs_t offset, uint32_t data)
+{
+	offset &= 0x1fffffff;
+	if (offset * 4 < m_cache_size) *(uint32_t *)&m_cache[offset] = data;
+>>>>>>> upstream/master
 }
 
 
@@ -680,12 +863,20 @@ void r3000_device::set_irq_line(int irqline, int state)
     COP0 (SYSTEM) EXECUTION HANDLING
 ***************************************************************************/
 
+<<<<<<< HEAD
 inline UINT32 r3000_device::get_cop0_reg(int idx)
+=======
+inline uint32_t r3000_device::get_cop0_reg(int idx)
+>>>>>>> upstream/master
 {
 	return m_cpr[0][idx];
 }
 
+<<<<<<< HEAD
 inline void r3000_device::set_cop0_reg(int idx, UINT32 val)
+=======
+inline void r3000_device::set_cop0_reg(int idx, uint32_t val)
+>>>>>>> upstream/master
 {
 	if (idx == COP0_Cause)
 	{
@@ -696,8 +887,13 @@ inline void r3000_device::set_cop0_reg(int idx, UINT32 val)
 	}
 	else if (idx == COP0_Status)
 	{
+<<<<<<< HEAD
 		UINT32 oldsr = m_cpr[0][idx];
 		UINT32 diff = oldsr ^ val;
+=======
+		uint32_t oldsr = m_cpr[0][idx];
+		uint32_t diff = oldsr ^ val;
+>>>>>>> upstream/master
 
 		// handle cache isolation
 		if (diff & SR_IsC)
@@ -725,12 +921,20 @@ inline void r3000_device::set_cop0_reg(int idx, UINT32 val)
 		m_cpr[0][idx] = val;
 }
 
+<<<<<<< HEAD
 inline UINT32 r3000_device::get_cop0_creg(int idx)
+=======
+inline uint32_t r3000_device::get_cop0_creg(int idx)
+>>>>>>> upstream/master
 {
 	return m_ccr[0][idx];
 }
 
+<<<<<<< HEAD
 inline void r3000_device::set_cop0_creg(int idx, UINT32 val)
+=======
+inline void r3000_device::set_cop0_creg(int idx, uint32_t val)
+>>>>>>> upstream/master
 {
 	m_ccr[0][idx] = val;
 }
@@ -792,22 +996,38 @@ inline void r3000_device::handle_cop0()
     COP1 (FPU) EXECUTION HANDLING
 ***************************************************************************/
 
+<<<<<<< HEAD
 inline UINT32 r3000_device::get_cop1_reg(int idx)
+=======
+inline uint32_t r3000_device::get_cop1_reg(int idx)
+>>>>>>> upstream/master
 {
 	return m_cpr[1][idx];
 }
 
+<<<<<<< HEAD
 inline void r3000_device::set_cop1_reg(int idx, UINT32 val)
+=======
+inline void r3000_device::set_cop1_reg(int idx, uint32_t val)
+>>>>>>> upstream/master
 {
 	m_cpr[1][idx] = val;
 }
 
+<<<<<<< HEAD
 inline UINT32 r3000_device::get_cop1_creg(int idx)
+=======
+inline uint32_t r3000_device::get_cop1_creg(int idx)
+>>>>>>> upstream/master
 {
 	return m_ccr[1][idx];
 }
 
+<<<<<<< HEAD
 inline void r3000_device::set_cop1_creg(int idx, UINT32 val)
+=======
+inline void r3000_device::set_cop1_creg(int idx, uint32_t val)
+>>>>>>> upstream/master
 {
 	m_ccr[1][idx] = val;
 }
@@ -860,22 +1080,38 @@ inline void r3000_device::handle_cop1()
     COP2 (CUSTOM) EXECUTION HANDLING
 ***************************************************************************/
 
+<<<<<<< HEAD
 inline UINT32 r3000_device::get_cop2_reg(int idx)
+=======
+inline uint32_t r3000_device::get_cop2_reg(int idx)
+>>>>>>> upstream/master
 {
 	return m_cpr[2][idx];
 }
 
+<<<<<<< HEAD
 inline void r3000_device::set_cop2_reg(int idx, UINT32 val)
+=======
+inline void r3000_device::set_cop2_reg(int idx, uint32_t val)
+>>>>>>> upstream/master
 {
 	m_cpr[2][idx] = val;
 }
 
+<<<<<<< HEAD
 inline UINT32 r3000_device::get_cop2_creg(int idx)
+=======
+inline uint32_t r3000_device::get_cop2_creg(int idx)
+>>>>>>> upstream/master
 {
 	return m_ccr[2][idx];
 }
 
+<<<<<<< HEAD
 inline void r3000_device::set_cop2_creg(int idx, UINT32 val)
+=======
+inline void r3000_device::set_cop2_creg(int idx, uint32_t val)
+>>>>>>> upstream/master
 {
 	m_ccr[2][idx] = val;
 }
@@ -926,22 +1162,38 @@ inline void r3000_device::handle_cop2()
     COP3 (CUSTOM) EXECUTION HANDLING
 ***************************************************************************/
 
+<<<<<<< HEAD
 inline UINT32 r3000_device::get_cop3_reg(int idx)
+=======
+inline uint32_t r3000_device::get_cop3_reg(int idx)
+>>>>>>> upstream/master
 {
 	return m_cpr[3][idx];
 }
 
+<<<<<<< HEAD
 inline void r3000_device::set_cop3_reg(int idx, UINT32 val)
+=======
+inline void r3000_device::set_cop3_reg(int idx, uint32_t val)
+>>>>>>> upstream/master
 {
 	m_cpr[3][idx] = val;
 }
 
+<<<<<<< HEAD
 inline UINT32 r3000_device::get_cop3_creg(int idx)
+=======
+inline uint32_t r3000_device::get_cop3_creg(int idx)
+>>>>>>> upstream/master
 {
 	return m_ccr[3][idx];
 }
 
+<<<<<<< HEAD
 inline void r3000_device::set_cop3_creg(int idx, UINT32 val)
+=======
+inline void r3000_device::set_cop3_creg(int idx, uint32_t val)
+>>>>>>> upstream/master
 {
 	m_ccr[3][idx] = val;
 }
@@ -997,7 +1249,11 @@ inline void r3000_device::handle_cop3()
 //  cycles it takes for one instruction to execute
 //-------------------------------------------------
 
+<<<<<<< HEAD
 UINT32 r3000_device::execute_min_cycles() const
+=======
+uint32_t r3000_device::execute_min_cycles() const
+>>>>>>> upstream/master
 {
 	return 1;
 }
@@ -1008,7 +1264,11 @@ UINT32 r3000_device::execute_min_cycles() const
 //  cycles it takes for one instruction to execute
 //-------------------------------------------------
 
+<<<<<<< HEAD
 UINT32 r3000_device::execute_max_cycles() const
+=======
+uint32_t r3000_device::execute_max_cycles() const
+>>>>>>> upstream/master
 {
 	return 40;
 }
@@ -1019,7 +1279,11 @@ UINT32 r3000_device::execute_max_cycles() const
 //  input/interrupt lines
 //-------------------------------------------------
 
+<<<<<<< HEAD
 UINT32 r3000_device::execute_input_lines() const
+=======
+uint32_t r3000_device::execute_input_lines() const
+>>>>>>> upstream/master
 {
 	return 6;
 }
@@ -1051,7 +1315,11 @@ void r3000_device::execute_run()
 	// core execution loop
 	do
 	{
+<<<<<<< HEAD
 		UINT64 temp64;
+=======
+		uint64_t temp64;
+>>>>>>> upstream/master
 		int temp;
 
 		// debugging
@@ -1078,10 +1346,17 @@ void r3000_device::execute_run()
 				{
 					case 0x00:  /* SLL */       if (RDREG) RDVAL = RTVAL << SHIFT;                        break;
 					case 0x02:  /* SRL */       if (RDREG) RDVAL = RTVAL >> SHIFT;                        break;
+<<<<<<< HEAD
 					case 0x03:  /* SRA */       if (RDREG) RDVAL = (INT32)RTVAL >> SHIFT;                 break;
 					case 0x04:  /* SLLV */      if (RDREG) RDVAL = RTVAL << (RSVAL & 31);          break;
 					case 0x06:  /* SRLV */      if (RDREG) RDVAL = RTVAL >> (RSVAL & 31);          break;
 					case 0x07:  /* SRAV */      if (RDREG) RDVAL = (INT32)RTVAL >> (RSVAL & 31);   break;
+=======
+					case 0x03:  /* SRA */       if (RDREG) RDVAL = (int32_t)RTVAL >> SHIFT;                 break;
+					case 0x04:  /* SLLV */      if (RDREG) RDVAL = RTVAL << (RSVAL & 31);          break;
+					case 0x06:  /* SRLV */      if (RDREG) RDVAL = RTVAL >> (RSVAL & 31);          break;
+					case 0x07:  /* SRAV */      if (RDREG) RDVAL = (int32_t)RTVAL >> (RSVAL & 31);   break;
+>>>>>>> upstream/master
 					case 0x08:  /* JR */        SETPC(RSVAL);                                             break;
 					case 0x09:  /* JALR */      SETPCL(RSVAL, RDREG);                                     break;
 					case 0x0c:  /* SYSCALL */   generate_exception(EXCEPTION_SYSCALL);                           break;
@@ -1092,6 +1367,7 @@ void r3000_device::execute_run()
 					case 0x12:  /* MFLO */      if (RDREG) RDVAL = m_lo;                                    break;
 					case 0x13:  /* MTLO */      m_lo = RSVAL;                                               break;
 					case 0x18:  /* MULT */
+<<<<<<< HEAD
 						temp64 = (INT64)(INT32)RSVAL * (INT64)(INT32)RTVAL;
 						m_lo = (UINT32)temp64;
 						m_hi = (UINT32)(temp64 >> 32);
@@ -1101,13 +1377,29 @@ void r3000_device::execute_run()
 						temp64 = (UINT64)RSVAL * (UINT64)RTVAL;
 						m_lo = (UINT32)temp64;
 						m_hi = (UINT32)(temp64 >> 32);
+=======
+						temp64 = (int64_t)(int32_t)RSVAL * (int64_t)(int32_t)RTVAL;
+						m_lo = (uint32_t)temp64;
+						m_hi = (uint32_t)(temp64 >> 32);
+						m_icount -= 11;
+						break;
+					case 0x19:  /* MULTU */
+						temp64 = (uint64_t)RSVAL * (uint64_t)RTVAL;
+						m_lo = (uint32_t)temp64;
+						m_hi = (uint32_t)(temp64 >> 32);
+>>>>>>> upstream/master
 						m_icount -= 11;
 						break;
 					case 0x1a:  /* DIV */
 						if (RTVAL)
 						{
+<<<<<<< HEAD
 							m_lo = (INT32)RSVAL / (INT32)RTVAL;
 							m_hi = (INT32)RSVAL % (INT32)RTVAL;
+=======
+							m_lo = (int32_t)RSVAL / (int32_t)RTVAL;
+							m_hi = (int32_t)RSVAL % (int32_t)RTVAL;
+>>>>>>> upstream/master
 						}
 						m_icount -= 34;
 						break;
@@ -1133,8 +1425,13 @@ void r3000_device::execute_run()
 					case 0x25:  /* OR */        if (RDREG) RDVAL = RSVAL | RTVAL;                  break;
 					case 0x26:  /* XOR */       if (RDREG) RDVAL = RSVAL ^ RTVAL;                  break;
 					case 0x27:  /* NOR */       if (RDREG) RDVAL = ~(RSVAL | RTVAL);               break;
+<<<<<<< HEAD
 					case 0x2a:  /* SLT */       if (RDREG) RDVAL = (INT32)RSVAL < (INT32)RTVAL;    break;
 					case 0x2b:  /* SLTU */      if (RDREG) RDVAL = (UINT32)RSVAL < (UINT32)RTVAL;  break;
+=======
+					case 0x2a:  /* SLT */       if (RDREG) RDVAL = (int32_t)RSVAL < (int32_t)RTVAL;    break;
+					case 0x2b:  /* SLTU */      if (RDREG) RDVAL = (uint32_t)RSVAL < (uint32_t)RTVAL;  break;
+>>>>>>> upstream/master
 					case 0x30:  /* TEQ */       invalid_instruction();                                         break;
 					case 0x31:  /* TGEU */      invalid_instruction();                                         break;
 					case 0x32:  /* TLT */       invalid_instruction();                                         break;
@@ -1148,8 +1445,13 @@ void r3000_device::execute_run()
 			case 0x01:  /* REGIMM */
 				switch (RTREG)
 				{
+<<<<<<< HEAD
 					case 0x00:  /* BLTZ */      if ((INT32)RSVAL < 0) ADDPC(SIMMVAL);                     break;
 					case 0x01:  /* BGEZ */      if ((INT32)RSVAL >= 0) ADDPC(SIMMVAL);                    break;
+=======
+					case 0x00:  /* BLTZ */      if ((int32_t)RSVAL < 0) ADDPC(SIMMVAL);                     break;
+					case 0x01:  /* BGEZ */      if ((int32_t)RSVAL >= 0) ADDPC(SIMMVAL);                    break;
+>>>>>>> upstream/master
 					case 0x02:  /* BLTZL */     invalid_instruction();                                         break;
 					case 0x03:  /* BGEZL */     invalid_instruction();                                         break;
 					case 0x08:  /* TGEI */      invalid_instruction();                                         break;
@@ -1158,8 +1460,13 @@ void r3000_device::execute_run()
 					case 0x0b:  /* TLTIU */     invalid_instruction();                                         break;
 					case 0x0c:  /* TEQI */      invalid_instruction();                                         break;
 					case 0x0e:  /* TNEI */      invalid_instruction();                                         break;
+<<<<<<< HEAD
 					case 0x10:  /* BLTZAL */    if ((INT32)RSVAL < 0) ADDPCL(SIMMVAL,31);                  break;
 					case 0x11:  /* BGEZAL */    if ((INT32)RSVAL >= 0) ADDPCL(SIMMVAL,31);                 break;
+=======
+					case 0x10:  /* BLTZAL */    if ((int32_t)RSVAL < 0) ADDPCL(SIMMVAL,31);                  break;
+					case 0x11:  /* BGEZAL */    if ((int32_t)RSVAL >= 0) ADDPCL(SIMMVAL,31);                 break;
+>>>>>>> upstream/master
 					case 0x12:  /* BLTZALL */   invalid_instruction();                                         break;
 					case 0x13:  /* BGEZALL */   invalid_instruction();                                         break;
 					default:    /* ??? */       invalid_instruction();                                         break;
@@ -1170,15 +1477,25 @@ void r3000_device::execute_run()
 			case 0x03:  /* JAL */       ABSPCL(LIMMVAL,31);                                                      break;
 			case 0x04:  /* BEQ */       if (RSVAL == RTVAL) ADDPC(SIMMVAL);                        break;
 			case 0x05:  /* BNE */       if (RSVAL != RTVAL) ADDPC(SIMMVAL);                        break;
+<<<<<<< HEAD
 			case 0x06:  /* BLEZ */      if ((INT32)RSVAL <= 0) ADDPC(SIMMVAL);                            break;
 			case 0x07:  /* BGTZ */      if ((INT32)RSVAL > 0) ADDPC(SIMMVAL);                             break;
+=======
+			case 0x06:  /* BLEZ */      if ((int32_t)RSVAL <= 0) ADDPC(SIMMVAL);                            break;
+			case 0x07:  /* BGTZ */      if ((int32_t)RSVAL > 0) ADDPC(SIMMVAL);                             break;
+>>>>>>> upstream/master
 			case 0x08:  /* ADDI */
 				if (ENABLE_OVERFLOWS && RSVAL > ~SIMMVAL) generate_exception(EXCEPTION_OVERFLOW);
 				else if (RTREG) RTVAL = RSVAL + SIMMVAL;
 				break;
 			case 0x09:  /* ADDIU */     if (RTREG) RTVAL = RSVAL + SIMMVAL;                               break;
+<<<<<<< HEAD
 			case 0x0a:  /* SLTI */      if (RTREG) RTVAL = (INT32)RSVAL < (INT32)SIMMVAL;                 break;
 			case 0x0b:  /* SLTIU */     if (RTREG) RTVAL = (UINT32)RSVAL < (UINT32)SIMMVAL;               break;
+=======
+			case 0x0a:  /* SLTI */      if (RTREG) RTVAL = (int32_t)RSVAL < (int32_t)SIMMVAL;                 break;
+			case 0x0b:  /* SLTIU */     if (RTREG) RTVAL = (uint32_t)RSVAL < (uint32_t)SIMMVAL;               break;
+>>>>>>> upstream/master
 			case 0x0c:  /* ANDI */      if (RTREG) RTVAL = RSVAL & UIMMVAL;                               break;
 			case 0x0d:  /* ORI */       if (RTREG) RTVAL = RSVAL | UIMMVAL;                               break;
 			case 0x0e:  /* XORI */      if (RTREG) RTVAL = RSVAL ^ UIMMVAL;                               break;
@@ -1191,12 +1508,21 @@ void r3000_device::execute_run()
 			case 0x15:  /* BNEL */      invalid_instruction();                                                 break;
 			case 0x16:  /* BLEZL */     invalid_instruction();                                                 break;
 			case 0x17:  /* BGTZL */     invalid_instruction();                                                 break;
+<<<<<<< HEAD
 			case 0x20:  /* LB */        temp = RBYTE(SIMMVAL+RSVAL); if (RTREG) RTVAL = (INT8)temp; break;
 			case 0x21:  /* LH */        temp = RWORD(SIMMVAL+RSVAL); if (RTREG) RTVAL = (INT16)temp; break;
 			case 0x22:  /* LWL */       (*this.*m_lwl)();                                                       break;
 			case 0x23:  /* LW */        temp = RLONG(SIMMVAL+RSVAL); if (RTREG) RTVAL = temp;      break;
 			case 0x24:  /* LBU */       temp = RBYTE(SIMMVAL+RSVAL); if (RTREG) RTVAL = (UINT8)temp; break;
 			case 0x25:  /* LHU */       temp = RWORD(SIMMVAL+RSVAL); if (RTREG) RTVAL = (UINT16)temp; break;
+=======
+			case 0x20:  /* LB */        temp = RBYTE(SIMMVAL+RSVAL); if (RTREG) RTVAL = (int8_t)temp; break;
+			case 0x21:  /* LH */        temp = RWORD(SIMMVAL+RSVAL); if (RTREG) RTVAL = (int16_t)temp; break;
+			case 0x22:  /* LWL */       (*this.*m_lwl)();                                                       break;
+			case 0x23:  /* LW */        temp = RLONG(SIMMVAL+RSVAL); if (RTREG) RTVAL = temp;      break;
+			case 0x24:  /* LBU */       temp = RBYTE(SIMMVAL+RSVAL); if (RTREG) RTVAL = (uint8_t)temp; break;
+			case 0x25:  /* LHU */       temp = RWORD(SIMMVAL+RSVAL); if (RTREG) RTVAL = (uint16_t)temp; break;
+>>>>>>> upstream/master
 			case 0x26:  /* LWR */       (*this.*m_lwr)();                                                       break;
 			case 0x28:  /* SB */        WBYTE(SIMMVAL+RSVAL, RTVAL);                               break;
 			case 0x29:  /* SH */        WWORD(SIMMVAL+RSVAL, RTVAL);                               break;
@@ -1238,7 +1564,11 @@ void r3000_device::execute_run()
 void r3000_device::lwl_be()
 {
 	offs_t offs = SIMMVAL + RSVAL;
+<<<<<<< HEAD
 	UINT32 temp = RLONG(offs & ~3);
+=======
+	uint32_t temp = RLONG(offs & ~3);
+>>>>>>> upstream/master
 	if (RTREG)
 	{
 		if (!(offs & 3)) RTVAL = temp;
@@ -1253,7 +1583,11 @@ void r3000_device::lwl_be()
 void r3000_device::lwr_be()
 {
 	offs_t offs = SIMMVAL + RSVAL;
+<<<<<<< HEAD
 	UINT32 temp = RLONG(offs & ~3);
+=======
+	uint32_t temp = RLONG(offs & ~3);
+>>>>>>> upstream/master
 	if (RTREG)
 	{
 		if ((offs & 3) == 3) RTVAL = temp;
@@ -1271,7 +1605,11 @@ void r3000_device::swl_be()
 	if (!(offs & 3)) WLONG(offs, RTVAL);
 	else
 	{
+<<<<<<< HEAD
 		UINT32 temp = RLONG(offs & ~3);
+=======
+		uint32_t temp = RLONG(offs & ~3);
+>>>>>>> upstream/master
 		int shift = 8 * (offs & 3);
 		WLONG(offs & ~3, (temp & (0xffffff00 << (24 - shift))) | (RTVAL >> shift));
 	}
@@ -1284,7 +1622,11 @@ void r3000_device::swr_be()
 	if ((offs & 3) == 3) WLONG(offs & ~3, RTVAL);
 	else
 	{
+<<<<<<< HEAD
 		UINT32 temp = RLONG(offs & ~3);
+=======
+		uint32_t temp = RLONG(offs & ~3);
+>>>>>>> upstream/master
 		int shift = 8 * (offs & 3);
 		WLONG(offs & ~3, (temp & (0x00ffffff >> shift)) | (RTVAL << (24 - shift)));
 	}
@@ -1295,7 +1637,11 @@ void r3000_device::swr_be()
 void r3000_device::lwl_le()
 {
 	offs_t offs = SIMMVAL + RSVAL;
+<<<<<<< HEAD
 	UINT32 temp = RLONG(offs & ~3);
+=======
+	uint32_t temp = RLONG(offs & ~3);
+>>>>>>> upstream/master
 	if (RTREG)
 	{
 		if (!(offs & 3)) RTVAL = temp;
@@ -1310,7 +1656,11 @@ void r3000_device::lwl_le()
 void r3000_device::lwr_le()
 {
 	offs_t offs = SIMMVAL + RSVAL;
+<<<<<<< HEAD
 	UINT32 temp = RLONG(offs & ~3);
+=======
+	uint32_t temp = RLONG(offs & ~3);
+>>>>>>> upstream/master
 	if (RTREG)
 	{
 		if ((offs & 3) == 3) RTVAL = temp;
@@ -1328,7 +1678,11 @@ void r3000_device::swl_le()
 	if (!(offs & 3)) WLONG(offs, RTVAL);
 	else
 	{
+<<<<<<< HEAD
 		UINT32 temp = RLONG(offs & ~3);
+=======
+		uint32_t temp = RLONG(offs & ~3);
+>>>>>>> upstream/master
 		int shift = 8 * (offs & 3);
 		WLONG(offs & ~3, (temp & (0x00ffffff >> (24 - shift))) | (RTVAL << shift));
 	}
@@ -1340,7 +1694,11 @@ void r3000_device::swr_le()
 	if ((offs & 3) == 3) WLONG(offs & ~3, RTVAL);
 	else
 	{
+<<<<<<< HEAD
 		UINT32 temp = RLONG(offs & ~3);
+=======
+		uint32_t temp = RLONG(offs & ~3);
+>>>>>>> upstream/master
 		int shift = 8 * (offs & 3);
 		WLONG(offs & ~3, (temp & (0xffffff00 << shift)) | (RTVAL >> (24 - shift)));
 	}

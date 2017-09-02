@@ -26,12 +26,20 @@
 
 **********************************************************************/
 
+<<<<<<< HEAD
 #pragma once
 
 #ifndef __IMI7000_BUS__
 #define __IMI7000_BUS__
 
 #include "emu.h"
+=======
+#ifndef MAME_BUS_IMI7000_IMI7000_H
+#define MAME_BUS_IMI7000_IMI7000_H
+
+#pragma once
+
+>>>>>>> upstream/master
 
 
 
@@ -74,6 +82,7 @@ class imi7000_bus_device : public device_t
 {
 public:
 	// construction/destruction
+<<<<<<< HEAD
 	imi7000_bus_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
 
 	void add_device(imi7000_slot_device *slot, device_t *target);
@@ -81,6 +90,13 @@ public:
 protected:
 	// device-level overrides
 	virtual void device_start();
+=======
+	imi7000_bus_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
+
+protected:
+	// device-level overrides
+	virtual void device_start() override;
+>>>>>>> upstream/master
 
 	imi7000_slot_device *m_unit[4];
 };
@@ -93,11 +109,19 @@ class imi7000_slot_device : public device_t,
 {
 public:
 	// construction/destruction
+<<<<<<< HEAD
 	imi7000_slot_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
 
 protected:
 	// device-level overrides
 	virtual void device_start();
+=======
+	imi7000_slot_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
+
+protected:
+	// device-level overrides
+	virtual void device_start() override;
+>>>>>>> upstream/master
 
 	device_imi7000_interface *m_card;
 };
@@ -109,24 +133,40 @@ class device_imi7000_interface : public device_slot_card_interface
 {
 	friend class imi7000_slot_device;
 
+<<<<<<< HEAD
 public:
 	// construction/destruction
 	device_imi7000_interface(const machine_config &mconfig, device_t &device);
 	virtual ~device_imi7000_interface() { }
 
 protected:
+=======
+protected:
+	// construction/destruction
+	device_imi7000_interface(const machine_config &mconfig, device_t &device);
+
+>>>>>>> upstream/master
 	imi7000_slot_device *m_slot;
 };
 
 
 // device type definition
+<<<<<<< HEAD
 extern const device_type IMI7000_BUS;
 extern const device_type IMI7000_SLOT;
+=======
+DECLARE_DEVICE_TYPE(IMI7000_BUS,  imi7000_bus_device)
+DECLARE_DEVICE_TYPE(IMI7000_SLOT, imi7000_slot_device)
+>>>>>>> upstream/master
 
 
 // slot interface
 SLOT_INTERFACE_EXTERN( imi7000_devices );
 
+<<<<<<< HEAD
 
 
 #endif
+=======
+#endif // MAME_BUS_IMI7000_IMI7000_H
+>>>>>>> upstream/master

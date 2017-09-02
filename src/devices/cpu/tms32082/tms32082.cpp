@@ -8,14 +8,24 @@
 */
 
 #include "emu.h"
+<<<<<<< HEAD
 #include "debugger.h"
 #include "tms32082.h"
+=======
+#include "tms32082.h"
+#include "debugger.h"
+>>>>>>> upstream/master
 
 extern CPU_DISASSEMBLE(tms32082_mp);
 extern CPU_DISASSEMBLE(tms32082_pp);
 
+<<<<<<< HEAD
 const device_type TMS32082_MP = &device_creator<tms32082_mp_device>;
 const device_type TMS32082_PP = &device_creator<tms32082_pp_device>;
+=======
+DEFINE_DEVICE_TYPE(TMS32082_MP, tms32082_mp_device, "tms32082_mp", "TMS32082 MP")
+DEFINE_DEVICE_TYPE(TMS32082_PP, tms32082_pp_device, "tms32082_pp", "TMS32082 PP")
+>>>>>>> upstream/master
 
 
 
@@ -33,7 +43,11 @@ static ADDRESS_MAP_START(mp_internal_map, AS_PROGRAM, 32, tms32082_mp_device)
 	AM_RANGE(0x01010000, 0x010107ff) AM_READWRITE(mp_param_r, mp_param_w)
 ADDRESS_MAP_END
 
+<<<<<<< HEAD
 const UINT32 tms32082_mp_device::SHIFT_MASK[] =
+=======
+const uint32_t tms32082_mp_device::SHIFT_MASK[] =
+>>>>>>> upstream/master
 {
 	0x00000000, 0x00000001, 0x00000003, 0x00000007, 0x0000000f, 0x0000001f, 0x0000003f, 0x0000007f,
 	0x000000ff, 0x000001ff, 0x000003ff, 0x000007ff, 0x00000fff, 0x00001fff, 0x00003fff, 0x00007fff,
@@ -44,20 +58,54 @@ const UINT32 tms32082_mp_device::SHIFT_MASK[] =
 
 
 
+<<<<<<< HEAD
 tms32082_mp_device::tms32082_mp_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
 	: cpu_device(mconfig, TMS32082_MP, "TMS32082 MP", tag, owner, clock, "tms32082_mp", __FILE__)
+=======
+tms32082_mp_device::tms32082_mp_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: cpu_device(mconfig, TMS32082_MP, tag, owner, clock)
+>>>>>>> upstream/master
 	, m_program_config("program", ENDIANNESS_BIG, 32, 32, 0, ADDRESS_MAP_NAME(mp_internal_map))
 {
 }
 
+<<<<<<< HEAD
 
 offs_t tms32082_mp_device::disasm_disassemble(char *buffer, offs_t pc, const UINT8 *oprom, const UINT8 *opram, UINT32 options)
 {
 	return CPU_DISASSEMBLE_NAME(tms32082_mp)(this, buffer, pc, oprom, opram, options);
+=======
+device_memory_interface::space_config_vector tms32082_mp_device::memory_space_config() const
+{
+	return space_config_vector {
+		std::make_pair(AS_PROGRAM, &m_program_config)
+	};
+}
+
+device_memory_interface::space_config_vector tms32082_pp_device::memory_space_config() const
+{
+	return space_config_vector {
+		std::make_pair(AS_PROGRAM, &m_program_config)
+	};
+}
+
+offs_t tms32082_mp_device::disasm_disassemble(std::ostream &stream, offs_t pc, const uint8_t *oprom, const uint8_t *opram, uint32_t options)
+{
+	return CPU_DISASSEMBLE_NAME(tms32082_mp)(this, stream, pc, oprom, opram, options);
+>>>>>>> upstream/master
 }
 
 
 
+<<<<<<< HEAD
+=======
+void tms32082_mp_device::set_command_callback(write32_delegate callback)
+{
+	m_cmd_callback = callback;
+}
+
+
+>>>>>>> upstream/master
 READ32_MEMBER(tms32082_mp_device::mp_param_r)
 {
 	//printf("mp_param_w: %08X, %08X\n", offset, mem_mask);
@@ -74,6 +122,7 @@ WRITE32_MEMBER(tms32082_mp_device::mp_param_w)
 	{
 		// initiate Transfer Controller operation
 		// TODO: move TC functionality to separate device
+<<<<<<< HEAD
 		UINT32 address = data;
 
 		UINT32 next_entry = m_program->read_dword(address + 0);
@@ -90,6 +139,24 @@ WRITE32_MEMBER(tms32082_mp_device::mp_param_w)
 		UINT32 dst_b_pitch = m_program->read_dword(address + 36);
 		UINT32 src_c_pitch = m_program->read_dword(address + 40);
 		UINT32 dst_c_pitch = m_program->read_dword(address + 44);
+=======
+		uint32_t address = data;
+
+		uint32_t next_entry = m_program->read_dword(address + 0);
+		uint32_t pt_options = m_program->read_dword(address + 4);
+		uint32_t src_addr = m_program->read_dword(address + 8);
+		uint32_t dst_addr = m_program->read_dword(address + 12);
+		uint32_t src_b_count = m_program->read_word(address + 16);
+		uint32_t src_a_count = m_program->read_word(address + 18);
+		uint32_t dst_b_count = m_program->read_word(address + 20);
+		uint32_t dst_a_count = m_program->read_word(address + 22);
+		uint32_t src_c_count = m_program->read_dword(address + 24);
+		uint32_t dst_c_count = m_program->read_dword(address + 28);
+		uint32_t src_b_pitch = m_program->read_dword(address + 32);
+		uint32_t dst_b_pitch = m_program->read_dword(address + 36);
+		uint32_t src_c_pitch = m_program->read_dword(address + 40);
+		uint32_t dst_c_pitch = m_program->read_dword(address + 44);
+>>>>>>> upstream/master
 
 		printf("TC operation:\n");
 		printf("   Next entry: %08X\n", next_entry);
@@ -110,6 +177,7 @@ WRITE32_MEMBER(tms32082_mp_device::mp_param_w)
 
 		for (int ic = 0; ic <= src_c_count; ic++)
 		{
+<<<<<<< HEAD
 			UINT32 c_src_offset = ic * src_c_pitch;
 			UINT32 c_dst_offset = ic * dst_c_pitch;
 
@@ -124,6 +192,22 @@ WRITE32_MEMBER(tms32082_mp_device::mp_param_w)
 					UINT32 dst = dst_addr + c_dst_offset + b_dst_offset + ia;
 
 					UINT32 data = m_program->read_byte(src);
+=======
+			uint32_t c_src_offset = ic * src_c_pitch;
+			uint32_t c_dst_offset = ic * dst_c_pitch;
+
+			for (int ib = 0; ib <= src_b_count; ib++)
+			{
+				uint32_t b_src_offset = ib * src_b_pitch;
+				uint32_t b_dst_offset = ib * dst_b_pitch;
+
+				for (int ia = 0; ia < src_a_count; ia++)
+				{
+					uint32_t src = src_addr + c_src_offset + b_src_offset + ia;
+					uint32_t dst = dst_addr + c_dst_offset + b_dst_offset + ia;
+
+					uint32_t data = m_program->read_byte(src);
+>>>>>>> upstream/master
 					m_program->write_byte(dst, data);
 
 					//printf("%08X: %02X -> %08X\n", src, data, dst);
@@ -200,7 +284,12 @@ void tms32082_mp_device::device_start()
 	state_add(MP_TCOUNT, "tcount", m_tcount).formatstr("%08X");
 	state_add(MP_TSCALE, "tscale", m_tscale).formatstr("%08X");
 
+<<<<<<< HEAD
 	state_add(STATE_GENPC, "curpc", m_pc).noshow();
+=======
+	state_add(STATE_GENPC, "GENPC", m_pc).noshow();
+	state_add(STATE_GENPCBASE, "CURPC", m_pc).noshow();
+>>>>>>> upstream/master
 
 	m_program = &space(AS_PROGRAM);
 	m_direct = &m_program->direct();
@@ -208,12 +297,20 @@ void tms32082_mp_device::device_start()
 	m_icountptr = &m_icount;
 }
 
+<<<<<<< HEAD
 void tms32082_mp_device::state_string_export(const device_state_entry &entry, std::string &str)
+=======
+void tms32082_mp_device::state_string_export(const device_state_entry &entry, std::string &str) const
+>>>>>>> upstream/master
 {
 	switch (entry.index())
 	{
 		case STATE_GENFLAGS:
+<<<<<<< HEAD
 			strprintf(str, "?");
+=======
+			str = "?";
+>>>>>>> upstream/master
 			break;
 	}
 }
@@ -241,7 +338,11 @@ void tms32082_mp_device::device_reset()
 	m_ie = 0;
 }
 
+<<<<<<< HEAD
 void tms32082_mp_device::processor_command(UINT32 command)
+=======
+void tms32082_mp_device::processor_command(uint32_t command)
+>>>>>>> upstream/master
 {
 	printf("MP CMND %08X: ", command);
 
@@ -277,6 +378,7 @@ void tms32082_mp_device::processor_command(UINT32 command)
 	if (command & 0x00000001)
 		printf("PP0 ");
 
+<<<<<<< HEAD
 	printf("\n");
 
 	// PP0
@@ -349,6 +451,15 @@ void tms32082_mp_device::processor_command(UINT32 command)
 }
 
 UINT32 tms32082_mp_device::read_creg(int reg)
+=======
+	if (!m_cmd_callback.isnull())
+		m_cmd_callback(*m_program, 0, command, 0xffffffff);
+
+	printf("\n");
+}
+
+uint32_t tms32082_mp_device::read_creg(int reg)
+>>>>>>> upstream/master
 {
 	switch (reg)
 	{
@@ -386,7 +497,11 @@ UINT32 tms32082_mp_device::read_creg(int reg)
 	return 0;
 }
 
+<<<<<<< HEAD
 void tms32082_mp_device::write_creg(int reg, UINT32 data)
+=======
+void tms32082_mp_device::write_creg(int reg, uint32_t data)
+>>>>>>> upstream/master
 {
 	switch (reg)
 	{
@@ -483,9 +598,15 @@ void tms32082_mp_device::execute_set_input(int inputnum, int state)
 	}
 }
 
+<<<<<<< HEAD
 UINT32 tms32082_mp_device::fetch()
 {
 	UINT32 w = m_direct->read_dword(m_fetchpc);
+=======
+uint32_t tms32082_mp_device::fetch()
+{
+	uint32_t w = m_direct->read_dword(m_fetchpc);
+>>>>>>> upstream/master
 	m_fetchpc += 4;
 	return w;
 }
@@ -512,15 +633,23 @@ void tms32082_mp_device::execute_run()
 		m_ir = fetch();
 		execute();
 
+<<<<<<< HEAD
 		if (m_tcount == 0)
+=======
+		m_tcount--;
+		if (m_tcount < 0)
+>>>>>>> upstream/master
 		{
 			// TODO: timer interrupt
 			m_tcount = m_tscale;
 		}
+<<<<<<< HEAD
 		else
 		{
 			m_tcount--;
 		}
+=======
+>>>>>>> upstream/master
 
 		m_icount--;
 	};
@@ -543,16 +672,27 @@ static ADDRESS_MAP_START(pp_internal_map, AS_PROGRAM, 32, tms32082_pp_device)
 	AM_RANGE(0x01001000, 0x01001fff) AM_RAM AM_SHARE("pp1_param")
 ADDRESS_MAP_END
 
+<<<<<<< HEAD
 tms32082_pp_device::tms32082_pp_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
 	: cpu_device(mconfig, TMS32082_PP, "TMS32082 PP", tag, owner, clock, "tms32082_pp", __FILE__)
+=======
+tms32082_pp_device::tms32082_pp_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: cpu_device(mconfig, TMS32082_PP, tag, owner, clock)
+>>>>>>> upstream/master
 	, m_program_config("program", ENDIANNESS_BIG, 32, 32, 0, ADDRESS_MAP_NAME(pp_internal_map))
 {
 }
 
 
+<<<<<<< HEAD
 offs_t tms32082_pp_device::disasm_disassemble(char *buffer, offs_t pc, const UINT8 *oprom, const UINT8 *opram, UINT32 options)
 {
 	return CPU_DISASSEMBLE_NAME(tms32082_pp)(this, buffer, pc, oprom, opram, options);
+=======
+offs_t tms32082_pp_device::disasm_disassemble(std::ostream &stream, offs_t pc, const uint8_t *oprom, const uint8_t *opram, uint32_t options)
+{
+	return CPU_DISASSEMBLE_NAME(tms32082_pp)(this, stream, pc, oprom, opram, options);
+>>>>>>> upstream/master
 }
 
 void tms32082_pp_device::device_start()
@@ -565,7 +705,12 @@ void tms32082_pp_device::device_start()
 	// Register state for debugger
 	state_add(PP_PC, "pc", m_pc).formatstr("%08X");
 
+<<<<<<< HEAD
 	state_add(STATE_GENPC, "curpc", m_pc).noshow();
+=======
+	state_add(STATE_GENPC, "GENPC", m_pc).noshow();
+	state_add(STATE_GENPCBASE, "CURPC", m_pc).noshow();
+>>>>>>> upstream/master
 
 	m_program = &space(AS_PROGRAM);
 	m_direct = &m_program->direct();
@@ -573,12 +718,20 @@ void tms32082_pp_device::device_start()
 	m_icountptr = &m_icount;
 }
 
+<<<<<<< HEAD
 void tms32082_pp_device::state_string_export(const device_state_entry &entry, std::string &str)
+=======
+void tms32082_pp_device::state_string_export(const device_state_entry &entry, std::string &str) const
+>>>>>>> upstream/master
 {
 	switch (entry.index())
 	{
 		case STATE_GENFLAGS:
+<<<<<<< HEAD
 			strprintf(str, "?");
+=======
+			str = "?";
+>>>>>>> upstream/master
 			break;
 	}
 }

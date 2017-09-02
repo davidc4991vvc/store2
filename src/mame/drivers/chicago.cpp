@@ -50,16 +50,27 @@ public:
 	}
 
 	// devices
+<<<<<<< HEAD
 	required_device<netlist_mame_device_t> m_maincpu;
+=======
+	required_device<netlist_mame_device> m_maincpu;
+>>>>>>> upstream/master
 	required_device<fixedfreq_device> m_video;
 
 protected:
 
 	// driver_device overrides
+<<<<<<< HEAD
 	virtual void machine_start();
 	virtual void machine_reset();
 
 	virtual void video_start();
+=======
+	virtual void machine_start() override;
+	virtual void machine_reset() override;
+
+	virtual void video_start() override;
+>>>>>>> upstream/master
 
 private:
 
@@ -93,7 +104,11 @@ void chicago_state::video_start()
 {
 }
 
+<<<<<<< HEAD
 static MACHINE_CONFIG_START( chicago, chicago_state )
+=======
+static MACHINE_CONFIG_START( chicago )
+>>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_DEVICE_ADD("maincpu", NETLIST_CPU, NETLIST_CLOCK)
@@ -138,4 +153,8 @@ ROM_START( dmodrbcc )
 ROM_END
 
 
+<<<<<<< HEAD
 GAME( 1976, dmodrbcc,  0, chicago, 0, driver_device,  0, ROT0, "Chicago Coin", "Demolition Derby [TTL]", MACHINE_IS_SKELETON )
+=======
+GAME( 1976, dmodrbcc,  0, chicago, 0, chicago_state,  0, ROT0, "Chicago Coin", "Demolition Derby [TTL]", MACHINE_IS_SKELETON )
+>>>>>>> upstream/master

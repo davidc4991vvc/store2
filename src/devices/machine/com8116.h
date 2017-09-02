@@ -4,6 +4,12 @@
 
     COM8116 Dual Baud Rate Generator (Programmable Divider) emulation
 
+<<<<<<< HEAD
+=======
+    COM5016 is a mostly-compatible clone of this chip, with +12V on
+    pin 9 rather than NC.
+
+>>>>>>> upstream/master
 **********************************************************************
                             _____   _____
              XTAL/EXT1   1 |*    \_/     | 18  XTAL/EXT2
@@ -18,12 +24,20 @@
 
 **********************************************************************/
 
+<<<<<<< HEAD
 #pragma once
 
 #ifndef __COM8116__
 #define __COM8116__
 
 #include "emu.h"
+=======
+#ifndef MAME_MACHINE_COM8116_H
+#define MAME_MACHINE_COM8116_H
+
+#pragma once
+
+>>>>>>> upstream/master
 
 
 
@@ -51,6 +65,7 @@ class com8116_device :  public device_t
 {
 public:
 	// construction/destruction
+<<<<<<< HEAD
 	com8116_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
 
 	template<class _Object> static devcb_base &set_fx4_handler(device_t &device, _Object object) { return downcast<com8116_device &>(device).m_fx4_handler.set_callback(object); }
@@ -71,6 +86,34 @@ protected:
 	virtual void device_start();
 	virtual void device_reset();
 	virtual void device_timer(emu_timer &timer, device_timer_id id, int m_param, void *ptr);
+=======
+	com8116_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
+
+	template <class Object> static devcb_base &set_fx4_handler(device_t &device, Object &&cb) { return downcast<com8116_device &>(device).m_fx4_handler.set_callback(std::forward<Object>(cb)); }
+	template <class Object> static devcb_base &set_fr_handler(device_t &device, Object &&cb) { return downcast<com8116_device &>(device).m_fr_handler.set_callback(std::forward<Object>(cb)); }
+	template <class Object> static devcb_base &set_ft_handler(device_t &device, Object &&cb) { return downcast<com8116_device &>(device).m_ft_handler.set_callback(std::forward<Object>(cb)); }
+
+	void str_w(uint8_t data);
+	DECLARE_WRITE8_MEMBER( str_w );
+	void stt_w(uint8_t data);
+	DECLARE_WRITE8_MEMBER( stt_w );
+
+protected:
+	static const int divisors_16X_5_0688MHz[];
+	static const int divisors_16X_6_01835MHz[];
+	static const int divisors_16X_4_9152MHz[];
+	static const int divisors_32X_5_0688MHz[];
+	static const int divisors_16X_2_7648MHz[];
+	static const int divisors_16X_5_0688MHz_030[];
+	static const int divisors_16X_4_6080MHz[];
+	static const int divisors_16X_4_9152MHz_SY2661_1[];
+	static const int divisors_16X_4_9152MHz_SY2661_2[];
+
+	// device-level overrides
+	virtual void device_start() override;
+	virtual void device_reset() override;
+	virtual void device_timer(emu_timer &timer, device_timer_id id, int m_param, void *ptr) override;
+>>>>>>> upstream/master
 
 private:
 	enum
@@ -99,6 +142,12 @@ private:
 
 
 // device type definition
+<<<<<<< HEAD
 extern const device_type COM8116;
 
 #endif
+=======
+DECLARE_DEVICE_TYPE(COM8116, com8116_device)
+
+#endif // MAME_MACHINE_COM8116_H
+>>>>>>> upstream/master

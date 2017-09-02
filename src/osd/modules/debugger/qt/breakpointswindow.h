@@ -3,8 +3,11 @@
 #ifndef __DEBUG_QT_BREAK_POINTS_WINDOW_H__
 #define __DEBUG_QT_BREAK_POINTS_WINDOW_H__
 
+<<<<<<< HEAD
 #include <QtGui/QtGui>
 
+=======
+>>>>>>> upstream/master
 #include "debuggerview.h"
 #include "windowqt.h"
 
@@ -17,7 +20,11 @@ class BreakpointsWindow : public WindowQt
 	Q_OBJECT
 
 public:
+<<<<<<< HEAD
 	BreakpointsWindow(running_machine* machine, QWidget* parent=NULL);
+=======
+	BreakpointsWindow(running_machine* machine, QWidget* parent=nullptr);
+>>>>>>> upstream/master
 	virtual ~BreakpointsWindow();
 
 
@@ -50,8 +57,13 @@ public:
 
 	void buildFromQWidget(QWidget* widget);
 	void applyToQWidget(QWidget* widget);
+<<<<<<< HEAD
 	void addToXmlDataNode(xml_data_node* node) const;
 	void recoverFromXmlNode(xml_data_node* node);
+=======
+	void addToXmlDataNode(util::xml::data_node &node) const;
+	void recoverFromXmlNode(util::xml::data_node const &node);
+>>>>>>> upstream/master
 };
 
 

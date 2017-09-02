@@ -122,7 +122,11 @@ static int decrypt(int const param1, int const param2, int const enc_prev_word, 
 
 
 
+<<<<<<< HEAD
 UINT16 gaelco_decrypt(address_space &space, int offset, int data, int param1, int param2)
+=======
+uint16_t gaelco_decrypt(address_space &space, int offset, int data, int param1, int param2)
+>>>>>>> upstream/master
 {
 	static int lastpc, lastoffset, lastencword, lastdecword;
 

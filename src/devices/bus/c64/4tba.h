@@ -6,6 +6,7 @@
 
 **********************************************************************/
 
+<<<<<<< HEAD
 #pragma once
 
 #ifndef __C64_4TBA__
@@ -13,6 +14,14 @@
 
 
 #include "emu.h"
+=======
+#ifndef MAME_BUS_C64_4TBA_H
+#define MAME_BUS_C64_4TBA_H
+
+#pragma once
+
+
+>>>>>>> upstream/master
 #include "user.h"
 
 
@@ -28,6 +37,7 @@ class c64_4tba_device : public device_t,
 {
 public:
 	// construction/destruction
+<<<<<<< HEAD
 	c64_4tba_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
 
 	// optional information overrides
@@ -40,11 +50,31 @@ public:
 protected:
 	// device-level overrides
 	virtual void device_start();
+=======
+	c64_4tba_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
+
+	// optional information overrides
+	virtual ioport_constructor device_input_ports() const override;
+
+	// device_pet_user_port_interface overrides
+	virtual WRITE_LINE_MEMBER( input_4 ) override { output_6(state); }
+	virtual WRITE_LINE_MEMBER( input_6 ) override { output_4(state); }
+
+protected:
+	// device-level overrides
+	virtual void device_start() override;
+>>>>>>> upstream/master
 };
 
 
 // device type definition
+<<<<<<< HEAD
 extern const device_type C64_4TBA;
 
 
 #endif
+=======
+DECLARE_DEVICE_TYPE(C64_4TBA, c64_4tba_device)
+
+#endif // MAME_BUS_C64_4TBA_H
+>>>>>>> upstream/master

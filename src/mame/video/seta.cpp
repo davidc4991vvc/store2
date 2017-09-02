@@ -139,10 +139,20 @@ Note:   if MAME_DEBUG is defined, pressing Z with:
 
 #include "emu.h"
 #include "includes/seta.h"
+<<<<<<< HEAD
+=======
+#include "screen.h"
+>>>>>>> upstream/master
 
 /* note that drgnunit, stg and qzkklogy run on the same board, yet they need different alignment */
 static const game_offset game_offsets[] =
 {
+<<<<<<< HEAD
+=======
+	// x offsets
+	// "game",    {spr, spr_flip}, {tmap, tmap_flip}
+
+>>>>>>> upstream/master
 	/* only sprites */
 	{ "tndrcade", {  0,  0 } },             // correct (start grid, wall at beginning of game)
 	{ "tndrcadej",{  0,  0 } },             // "
@@ -170,11 +180,19 @@ static const game_offset game_offsets[] =
 	{ "calibr50", { -1,  2 }, { -3, -2 } }, // correct (test grid and roof in animation at beginning of game)
 	{ "arbalest", {  0,  1 }, { -2, -1 } }, // correct (test grid and landing pad at beginning of game)
 	{ "metafox",  {  0,  0 }, { 16,-19 } }, // sprites unknown, tilemap correct (test grid)
+<<<<<<< HEAD
 	{ "setaroul", {  0,  0 }, {  0,  0 } }, // unknown
 	{ "drgnunit", {  2,  2 }, { -2, -2 } }, // correct (test grid and I/O test)
 	{ "jockeyc",  {  0,  0 }, { -2,  0 } }, // sprites unknown, tilemap correct (test grid)
 	{ "inttoote", {  0,  0 }, { -2,  0 } }, // "
 	{ "inttootea",{  0,  0 }, { -2,  0 } }, // "
+=======
+	{ "setaroul", {  7,  0 }, {  5,  0 } }, // unknown (flipped offsets are unused: game handles flipping manually without setting the flip bit)
+	{ "drgnunit", {  2,  2 }, { -2, -2 } }, // correct (test grid and I/O test)
+	{ "jockeyc",  {  0,  0 }, { -2,126 } }, // sprites correct? (bets), tilemap correct (test grid)
+	{ "inttoote2",{  0,  0 }, { -2,126 } }, // "
+	{ "inttoote", {  0,  0 }, { -2,  0 } }, // "
+>>>>>>> upstream/master
 	{ "stg",      {  0,  0 }, { -2, -2 } }, // sprites correct? (panel), tilemap correct (test grid)
 	{ "qzkklogy", {  1,  1 }, { -1, -1 } }, // correct (timer, test grid)
 	{ "qzkklgy2", {  0,  0 }, { -1, -3 } }, // sprites unknown, tilemaps correct (test grid)
@@ -209,7 +227,11 @@ static const game_offset game_offsets[] =
 	{ "crazyfgt", {  0,  0 }, { -2,  0 } }, // wrong (empty background column in title screen, but aligned sprites in screen select)
 	{ "magspeed", {  0,  0 }, { -2,  0 } }, // floating tilemap maybe 1px off in test grid
 
+<<<<<<< HEAD
 	{ NULL }
+=======
+	{ nullptr }
+>>>>>>> upstream/master
 };
 
 
@@ -241,14 +263,24 @@ void seta_state::seta_coin_lockout_w(int data)
 		}
 	}
 
+<<<<<<< HEAD
 	coin_counter_w      (machine(), 0, (( data) >> 0) & 1 );
 	coin_counter_w      (machine(), 1, (( data) >> 1) & 1 );
+=======
+	machine().bookkeeping().coin_counter_w(0, (( data) >> 0) & 1 );
+	machine().bookkeeping().coin_counter_w(1, (( data) >> 1) & 1 );
+>>>>>>> upstream/master
 
 	/* some games haven't the coin lockout device */
 	if (    !m_coin_lockout )
 		return;
+<<<<<<< HEAD
 	coin_lockout_w      (machine(), 0, ((~data) >> 2) & 1 );
 	coin_lockout_w      (machine(), 1, ((~data) >> 3) & 1 );
+=======
+	machine().bookkeeping().coin_lockout_w(0, ((~data) >> 2) & 1 );
+	machine().bookkeeping().coin_lockout_w(1, ((~data) >> 3) & 1 );
+>>>>>>> upstream/master
 }
 
 
@@ -270,10 +302,17 @@ WRITE16_MEMBER(seta_state::seta_vregs_w)
 			if (ACCESSING_BITS_0_7)
 			{
 				seta_coin_lockout_w (data & 0x0f);
+<<<<<<< HEAD
 				if (m_x1 != NULL)
 					m_x1->enable_w (data & 0x20);
 				coin_counter_w(machine(), 0,data & 0x01);
 				coin_counter_w(machine(), 1,data & 0x02);
+=======
+				if (m_x1 != nullptr)
+					m_x1->enable_w (data & 0x20);
+				machine().bookkeeping().coin_counter_w(0,data & 0x01);
+				machine().bookkeeping().coin_counter_w(1,data & 0x02);
+>>>>>>> upstream/master
 			}
 			break;
 
@@ -295,7 +334,14 @@ WRITE16_MEMBER(seta_state::seta_vregs_w)
 
 				if (new_bank != m_samples_bank)
 				{
+<<<<<<< HEAD
 					UINT8 *rom = memregion("x1snd")->base();
+=======
+					if (memregion("x1snd") == nullptr) // triplfun no longer has the hardware, but still writes here
+						break;
+
+					uint8_t *rom = memregion("x1snd")->base();
+>>>>>>> upstream/master
 					int samples_len = memregion("x1snd")->bytes();
 					int addr;
 
@@ -356,7 +402,11 @@ Offset + 0x1000:
 Offset + 0x0:                               Scroll X
 Offset + 0x2:                               Scroll Y
 Offset + 0x4:
+<<<<<<< HEAD
                     fedc ba98 7654 3210     -
+=======
+                    fedc ba98 765- ----     -
+>>>>>>> upstream/master
                     ---- ---- ---4 ----     Tilemap color mode switch (used in blandia and the other games using 6bpp graphics)
                     ---- ---- ---- 3---     Tilemap Select (There Are 2 Tilemaps Per Layer)
                     ---- ---- ---- -21-     0 (1 only in eightfrc, when flip is on!)
@@ -366,9 +416,15 @@ Offset + 0x4:
 
 inline void seta_state::twineagl_tile_info( tile_data &tileinfo, int tile_index, int offset )
 {
+<<<<<<< HEAD
 	UINT16 *vram = m_vram_0 + offset;
 	UINT16 code =   vram[ tile_index ];
 	UINT16 attr =   vram[ tile_index + 0x800 ];
+=======
+	uint16_t *vram = m_vram_0 + offset;
+	uint16_t code =   vram[ tile_index ];
+	uint16_t attr =   vram[ tile_index + 0x800 ];
+>>>>>>> upstream/master
 	if ((code & 0x3e00) == 0x3e00)
 		code = (code & 0xc07f) | ((m_twineagl_tilebank[(code & 0x0180) >> 7] >> 1) << 7);
 	SET_TILE_INFO_MEMBER(1, (code & 0x3fff), attr & 0x1f, TILE_FLIPXY((code & 0xc000) >> 14) );
@@ -381,12 +437,21 @@ TILE_GET_INFO_MEMBER(seta_state::twineagl_get_tile_info_1){ twineagl_tile_info(t
 inline void seta_state::get_tile_info( tile_data &tileinfo, int tile_index, int layer, int offset )
 {
 	int gfx = 1 + layer;
+<<<<<<< HEAD
 	UINT16 *vram = (layer == 0) ? m_vram_0 + offset : m_vram_2 + offset;
 	UINT16 *vctrl = (layer == 0) ? m_vctrl_0 : m_vctrl_2;
 	UINT16 code =   vram[ tile_index ];
 	UINT16 attr =   vram[ tile_index + 0x800 ];
 
 	if(m_gfxdecode->gfx(gfx + ((vctrl[ 4/2 ] & 0x10) >> m_color_mode_shift)) != NULL)
+=======
+	uint16_t *vram = (layer == 0) ? m_vram_0 + offset : m_vram_2 + offset;
+	uint16_t *vctrl = (layer == 0) ? m_vctrl_0 : m_vctrl_2;
+	uint16_t code =   vram[ tile_index ];
+	uint16_t attr =   vram[ tile_index + 0x800 ];
+
+	if(m_gfxdecode->gfx(gfx + ((vctrl[ 4/2 ] & 0x10) >> m_color_mode_shift)) != nullptr)
+>>>>>>> upstream/master
 	{
 		gfx += (vctrl[ 4/2 ] & 0x10) >> m_color_mode_shift;
 	}
@@ -446,6 +511,7 @@ VIDEO_START_MEMBER(seta_state,seta_2_layers)
 	   at any given time */
 
 	/* layer 0 */
+<<<<<<< HEAD
 	m_tilemap_0 = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(seta_state::get_tile_info_0),this), TILEMAP_SCAN_ROWS,
 									16,16, 64,32 );
 
@@ -459,6 +525,25 @@ VIDEO_START_MEMBER(seta_state,seta_2_layers)
 
 	m_tilemap_3 = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(seta_state::get_tile_info_3),this), TILEMAP_SCAN_ROWS,
 									16,16, 64,32 );
+=======
+	m_tilemap_0 = &machine().tilemap().create(
+			*m_gfxdecode, tilemap_get_info_delegate(FUNC(seta_state::get_tile_info_0),this), TILEMAP_SCAN_ROWS,
+			16,16, 64,32 );
+
+	m_tilemap_1 = &machine().tilemap().create(
+			*m_gfxdecode, tilemap_get_info_delegate(FUNC(seta_state::get_tile_info_1),this), TILEMAP_SCAN_ROWS,
+			16,16, 64,32 );
+
+
+	/* layer 1 */
+	m_tilemap_2 = &machine().tilemap().create(
+			*m_gfxdecode, tilemap_get_info_delegate(FUNC(seta_state::get_tile_info_2),this), TILEMAP_SCAN_ROWS,
+			16,16, 64,32 );
+
+	m_tilemap_3 = &machine().tilemap().create(
+			*m_gfxdecode, tilemap_get_info_delegate(FUNC(seta_state::get_tile_info_3),this), TILEMAP_SCAN_ROWS,
+			16,16, 64,32 );
+>>>>>>> upstream/master
 
 	m_tilemaps_flip = 0;
 	m_color_mode_shift = 3;
@@ -488,11 +573,21 @@ VIDEO_START_MEMBER(seta_state,seta_1_layer)
 	   at any given time */
 
 	/* layer 0 */
+<<<<<<< HEAD
 	m_tilemap_0 = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(seta_state::get_tile_info_0),this), TILEMAP_SCAN_ROWS,
 									16,16, 64,32 );
 
 	m_tilemap_1 = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(seta_state::get_tile_info_1),this), TILEMAP_SCAN_ROWS,
 									16,16, 64,32 );
+=======
+	m_tilemap_0 = &machine().tilemap().create(
+			*m_gfxdecode, tilemap_get_info_delegate(FUNC(seta_state::get_tile_info_0),this), TILEMAP_SCAN_ROWS,
+			16,16, 64,32 );
+
+	m_tilemap_1 = &machine().tilemap().create(
+			*m_gfxdecode, tilemap_get_info_delegate(FUNC(seta_state::get_tile_info_1),this), TILEMAP_SCAN_ROWS,
+			16,16, 64,32 );
+>>>>>>> upstream/master
 
 	m_color_mode_shift = 4;
 
@@ -500,13 +595,30 @@ VIDEO_START_MEMBER(seta_state,seta_1_layer)
 	m_tilemap_1->set_transparent_pen(0);
 }
 
+<<<<<<< HEAD
 VIDEO_START_MEMBER(seta_state,setaroul_1_layer)
+=======
+VIDEO_START_MEMBER(setaroul_state,setaroul_1_layer)
+>>>>>>> upstream/master
 {
 	VIDEO_START_CALL_MEMBER(seta_1_layer);
 
 	// position kludges
+<<<<<<< HEAD
 	m_seta001->set_fg_yoffsets( -0x12, 0x0e );
 	m_seta001->set_bg_yoffsets( 0x1, -0x1 );
+=======
+	m_seta001->set_bg_yoffsets( 0, -0x1 );
+	m_seta001->set_bg_xoffsets( 0, 0x2 );
+}
+
+VIDEO_START_MEMBER(jockeyc_state,jockeyc_1_layer)
+{
+	VIDEO_START_CALL_MEMBER(seta_1_layer);
+
+	// position kludges
+	m_seta001->set_fg_yoffsets( -0x12+8, 0x0e );
+>>>>>>> upstream/master
 }
 
 VIDEO_START_MEMBER(seta_state,twineagl_1_layer)
@@ -517,11 +629,21 @@ VIDEO_START_MEMBER(seta_state,twineagl_1_layer)
 	   at any given time */
 
 	/* layer 0 */
+<<<<<<< HEAD
 	m_tilemap_0 = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(seta_state::twineagl_get_tile_info_0),this), TILEMAP_SCAN_ROWS,
 									16,16, 64,32 );
 
 	m_tilemap_1 = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(seta_state::twineagl_get_tile_info_1),this), TILEMAP_SCAN_ROWS,
 									16,16, 64,32 );
+=======
+	m_tilemap_0 = &machine().tilemap().create(
+			*m_gfxdecode, tilemap_get_info_delegate(FUNC(seta_state::twineagl_get_tile_info_0),this), TILEMAP_SCAN_ROWS,
+			16,16, 64,32 );
+
+	m_tilemap_1 = &machine().tilemap().create(
+			*m_gfxdecode, tilemap_get_info_delegate(FUNC(seta_state::twineagl_get_tile_info_1),this), TILEMAP_SCAN_ROWS,
+			16,16, 64,32 );
+>>>>>>> upstream/master
 
 	m_tilemap_0->set_transparent_pen(0);
 	m_tilemap_1->set_transparent_pen(0);
@@ -538,10 +660,17 @@ SETA001_SPRITE_GFXBANK_CB_MEMBER(seta_state::setac_gfxbank_callback)
 /* NO layers, only sprites */
 VIDEO_START_MEMBER(seta_state,seta_no_layers)
 {
+<<<<<<< HEAD
 	m_tilemap_0 = 0;
 	m_tilemap_1 = 0;
 	m_tilemap_2 = 0;
 	m_tilemap_3 = 0;
+=======
+	m_tilemap_0 = nullptr;
+	m_tilemap_1 = nullptr;
+	m_tilemap_2 = nullptr;
+	m_tilemap_3 = nullptr;
+>>>>>>> upstream/master
 
 	m_tilemaps_flip = 0;
 
@@ -659,9 +788,15 @@ PALETTE_INIT_MEMBER(seta_state,zingzip)
 }
 
 // color prom
+<<<<<<< HEAD
 PALETTE_INIT_MEMBER(seta_state,inttoote)
 {
 	const UINT8 *color_prom = memregion("proms")->base();
+=======
+PALETTE_INIT_MEMBER(seta_state,palette_init_RRRRRGGGGGBBBBB_proms)
+{
+	const uint8_t *color_prom = memregion("proms")->base();
+>>>>>>> upstream/master
 	int x;
 	for (x = 0; x < 0x200 ; x++)
 	{
@@ -670,24 +805,40 @@ PALETTE_INIT_MEMBER(seta_state,inttoote)
 	}
 }
 
+<<<<<<< HEAD
 PALETTE_INIT_MEMBER(seta_state,setaroul)
+=======
+PALETTE_INIT_MEMBER(setaroul_state,setaroul)
+>>>>>>> upstream/master
 {
 	m_gfxdecode->gfx(0)->set_granularity(16);
 	m_gfxdecode->gfx(1)->set_granularity(16);
 
+<<<<<<< HEAD
 	PALETTE_INIT_NAME(inttoote)(palette);
+=======
+	PALETTE_INIT_NAME(palette_init_RRRRRGGGGGBBBBB_proms)(palette);
+>>>>>>> upstream/master
 }
 
 PALETTE_INIT_MEMBER(seta_state,usclssic)
 {
+<<<<<<< HEAD
 	const UINT8 *color_prom = memregion("proms")->base();
+=======
+	const uint8_t *color_prom = memregion("proms")->base();
+>>>>>>> upstream/master
 	int color, pen;
 	int x;
 
 	/* DECODE PROM */
 	for (x = 0; x < 0x200 ; x++)
 	{
+<<<<<<< HEAD
 		UINT16 data = (color_prom[x*2] <<8) | color_prom[x*2+1];
+=======
+		uint16_t data = (color_prom[x*2] <<8) | color_prom[x*2+1];
+>>>>>>> upstream/master
 
 		rgb_t color = rgb_t(pal5bit(data >> 10), pal5bit(data >> 5), pal5bit(data >> 0));
 
@@ -712,7 +863,11 @@ void seta_state::set_pens()
 
 	for (i = 0; i < m_paletteram.bytes() / 2; i++)
 	{
+<<<<<<< HEAD
 		UINT16 data = m_paletteram[i];
+=======
+		uint16_t data = m_paletteram[i];
+>>>>>>> upstream/master
 
 		rgb_t color = rgb_t(pal5bit(data >> 10), pal5bit(data >> 5), pal5bit(data >> 0));
 
@@ -722,11 +877,19 @@ void seta_state::set_pens()
 			m_palette->set_pen_color(i, color);
 	}
 
+<<<<<<< HEAD
 	if(m_paletteram2 != NULL)
 	{
 		for (i = 0; i < m_paletteram2.bytes() / 2; i++)
 		{
 			UINT16 data = m_paletteram2[i];
+=======
+	if(m_paletteram2 != nullptr)
+	{
+		for (i = 0; i < m_paletteram2.bytes() / 2; i++)
+		{
+			uint16_t data = m_paletteram2[i];
+>>>>>>> upstream/master
 
 			rgb_t color = rgb_t(pal5bit(data >> 10), pal5bit(data >> 5), pal5bit(data >> 0));
 
@@ -745,7 +908,11 @@ void seta_state::usclssic_set_pens()
 
 	for (i = 0; i < 0x200; i++)
 	{
+<<<<<<< HEAD
 		UINT16 data = m_paletteram[i];
+=======
+		uint16_t data = m_paletteram[i];
+>>>>>>> upstream/master
 
 		rgb_t color = rgb_t(pal5bit(data >> 10), pal5bit(data >> 5), pal5bit(data >> 0));
 
@@ -774,7 +941,11 @@ void seta_state::draw_tilemap_palette_effect(bitmap_ind16 &bitmap, const rectang
 
 	for (y = cliprect.min_y; y <= cliprect.max_y; y++)
 	{
+<<<<<<< HEAD
 		UINT16 *dest = &bitmap.pix16(y);
+=======
+		uint16_t *dest = &bitmap.pix16(y);
+>>>>>>> upstream/master
 
 		int x;
 		for (x = cliprect.min_x; x <= cliprect.max_x; x++)
@@ -817,7 +988,11 @@ void seta_state::draw_tilemap_palette_effect(bitmap_ind16 &bitmap, const rectang
 
 
 /* For games without tilemaps */
+<<<<<<< HEAD
 UINT32 seta_state::screen_update_seta_no_layers(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+=======
+uint32_t seta_state::screen_update_seta_no_layers(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+>>>>>>> upstream/master
 {
 	set_pens();
 	bitmap.fill(0x1f0, cliprect);
@@ -848,7 +1023,11 @@ void seta_state::seta_layers_update(screen_device &screen, bitmap_ind16 &bitmap,
 		m_tilemap_1->mark_all_dirty();
 	}
 
+<<<<<<< HEAD
 	if(m_tilemap_2 != NULL && m_tilemap_3 != NULL)
+=======
+	if(m_tilemap_2 != nullptr && m_tilemap_3 != nullptr)
+>>>>>>> upstream/master
 	{
 		if(m_current_tilemap_mode[1] != (m_vctrl_2[ 4/2 ] & 0x10))
 		{
@@ -976,7 +1155,11 @@ if (screen.machine().input().code_pressed(KEYCODE_Z))
 		{
 			if (layers_ctrl & 8)        m_seta001->draw_sprites(screen, bitmap,cliprect,sprite_bank_size, sprite_setac);
 
+<<<<<<< HEAD
 			if((order & 4) && m_paletteram2 != NULL)
+=======
+			if((order & 4) && m_paletteram2 != nullptr)
+>>>>>>> upstream/master
 			{
 				if(m_tilemap_2->enabled())
 				{
@@ -1003,7 +1186,11 @@ if (screen.machine().input().code_pressed(KEYCODE_Z))
 		}
 		else
 		{
+<<<<<<< HEAD
 			if((order & 4) && m_paletteram2 != NULL)
+=======
+			if((order & 4) && m_paletteram2 != nullptr)
+>>>>>>> upstream/master
 			{
 				if(m_tilemap_2->enabled())
 				{
@@ -1034,23 +1221,40 @@ if (screen.machine().input().code_pressed(KEYCODE_Z))
 
 }
 
+<<<<<<< HEAD
 UINT32 seta_state::screen_update_seta_layers(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+=======
+uint32_t seta_state::screen_update_seta_layers(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+>>>>>>> upstream/master
 {
 	seta_layers_update(screen, bitmap, cliprect, 0x1000, 1 );
 	return 0;
 }
 
 
+<<<<<<< HEAD
 UINT32 seta_state::screen_update_setaroul(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
 {
 	bitmap.fill(0x0, cliprect);
 
 	seta_layers_update(screen, bitmap, cliprect, 0x800, 1 );
+=======
+uint32_t setaroul_state::screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+{
+	bitmap.fill(0x0, cliprect);
+
+	if (m_led & 0x80)
+		seta_layers_update(screen, bitmap, cliprect, 0x800, 1 );
+>>>>>>> upstream/master
 
 	return 0;
 }
 
+<<<<<<< HEAD
 void seta_state::screen_eof_setaroul(screen_device &screen, bool state)
+=======
+WRITE_LINE_MEMBER(setaroul_state::screen_vblank)
+>>>>>>> upstream/master
 {
 	// rising edge
 	if (state)
@@ -1059,18 +1263,27 @@ void seta_state::screen_eof_setaroul(screen_device &screen, bool state)
 
 
 
+<<<<<<< HEAD
 UINT32 seta_state::screen_update_seta(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+=======
+uint32_t seta_state::screen_update_seta(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+>>>>>>> upstream/master
 {
 	set_pens();
 	return screen_update_seta_layers(screen, bitmap, cliprect);
 }
 
 
+<<<<<<< HEAD
 UINT32 seta_state::screen_update_usclssic(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+=======
+uint32_t seta_state::screen_update_usclssic(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+>>>>>>> upstream/master
 {
 	usclssic_set_pens();
 	return screen_update_seta_layers(screen, bitmap, cliprect);
 }
+<<<<<<< HEAD
 
 
 UINT32 seta_state::screen_update_inttoote(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
@@ -1078,3 +1291,5 @@ UINT32 seta_state::screen_update_inttoote(screen_device &screen, bitmap_ind16 &b
 	/* no palette to set */
 	return screen_update_seta_layers(screen, bitmap, cliprect);
 }
+=======
+>>>>>>> upstream/master

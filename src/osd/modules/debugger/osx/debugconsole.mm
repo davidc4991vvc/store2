@@ -6,6 +6,10 @@
 //
 //============================================================
 
+<<<<<<< HEAD
+=======
+#include "emu.h"
+>>>>>>> upstream/master
 #import "debugconsole.h"
 
 #import "debugcommandhistory.h"
@@ -20,18 +24,34 @@
 #import "pointsviewer.h"
 #import "registersview.h"
 
+<<<<<<< HEAD
 #include "debug/debugcon.h"
 #include "debug/debugcpu.h"
 
+=======
+#include "debugger.h"
+#include "debug/debugcon.h"
+#include "debug/debugcpu.h"
+
+#include "util/xmlfile.h"
+
+>>>>>>> upstream/master
 
 @implementation MAMEDebugConsole
 
 - (id)initWithMachine:(running_machine &)m {
+<<<<<<< HEAD
 	NSSplitView		*regSplit, *dasmSplit;
 	NSScrollView	*regScroll, *dasmScroll, *consoleScroll;
 	NSView			*consoleContainer;
 	NSPopUpButton	*actionButton;
 	NSRect			rct;
+=======
+	NSScrollView    *regScroll, *dasmScroll, *consoleScroll;
+	NSView          *consoleContainer;
+	NSPopUpButton   *actionButton;
+	NSRect          rct;
+>>>>>>> upstream/master
 
 	// initialise superclass
 	if (!(self = [super initWithMachine:m title:@"Debug"]))
@@ -47,6 +67,10 @@
 	[regScroll setHasVerticalScroller:YES];
 	[regScroll setAutohidesScrollers:YES];
 	[regScroll setBorderType:NSBezelBorder];
+<<<<<<< HEAD
+=======
+	[regScroll setDrawsBackground:NO];
+>>>>>>> upstream/master
 	[regScroll setDocumentView:regView];
 	[regView release];
 
@@ -58,6 +82,10 @@
 	[dasmScroll setHasVerticalScroller:YES];
 	[dasmScroll setAutohidesScrollers:YES];
 	[dasmScroll setBorderType:NSBezelBorder];
+<<<<<<< HEAD
+=======
+	[dasmScroll setDrawsBackground:NO];
+>>>>>>> upstream/master
 	[dasmScroll setDocumentView:dasmView];
 	[dasmView release];
 
@@ -69,6 +97,10 @@
 	[consoleScroll setHasVerticalScroller:YES];
 	[consoleScroll setAutohidesScrollers:YES];
 	[consoleScroll setBorderType:NSBezelBorder];
+<<<<<<< HEAD
+=======
+	[consoleScroll setDrawsBackground:NO];
+>>>>>>> upstream/master
 	[consoleScroll setDocumentView:consoleView];
 	[consoleView release];
 
@@ -132,6 +164,7 @@
 	[window makeFirstResponder:commandField];
 
 	// calculate the optimal size for everything
+<<<<<<< HEAD
 	NSRect const	available = [[NSScreen mainScreen] visibleFrame];
 	NSSize const	regCurrent = [regScroll frame].size;
 	NSSize const	regSize = [NSScrollView frameSizeForContentSize:[regView maximumFrameSize]
@@ -150,24 +183,57 @@
 															 borderType:[consoleScroll borderType]];
 	NSRect			windowFrame = [window frame];
 	NSSize			adjustment;
+=======
+	NSRect const    available = [[NSScreen mainScreen] visibleFrame];
+	NSSize const    regCurrent = [regScroll frame].size;
+	NSSize const    regSize = [NSScrollView frameSizeForContentSize:[regView maximumFrameSize]
+											  hasHorizontalScroller:YES
+												hasVerticalScroller:YES
+														 borderType:[regScroll borderType]];
+	NSSize const    dasmCurrent = [dasmScroll frame].size;
+	NSSize const    dasmSize = [NSScrollView frameSizeForContentSize:[dasmView maximumFrameSize]
+											  hasHorizontalScroller:YES
+												hasVerticalScroller:YES
+														 borderType:[dasmScroll borderType]];
+	NSSize const    consoleCurrent = [consoleContainer frame].size;
+	NSSize          consoleSize = [NSScrollView frameSizeForContentSize:[consoleView maximumFrameSize]
+												  hasHorizontalScroller:YES
+													hasVerticalScroller:YES
+															 borderType:[consoleScroll borderType]];
+	NSRect          windowFrame = [window frame];
+	NSSize          adjustment;
+>>>>>>> upstream/master
 
 	consoleSize.width += consoleCurrent.width - [consoleScroll frame].size.width;
 	consoleSize.height += consoleCurrent.height - [consoleScroll frame].size.height;
 	adjustment.width = regSize.width - regCurrent.width;
 	adjustment.height = regSize.height - regCurrent.height;
+<<<<<<< HEAD
 	adjustment.width += MAX(dasmSize.width - dasmCurrent.width, consoleSize.width - consoleCurrent.width);
 
 	windowFrame.size.width += adjustment.width;
 	windowFrame.size.height += adjustment.height; // not used - better to go for fixed height
 	windowFrame.size.height = MIN(512.0, available.size.height);
 	windowFrame.size.width = MIN(windowFrame.size.width, available.size.width);
+=======
+	adjustment.width += std::max(dasmSize.width - dasmCurrent.width, consoleSize.width - consoleCurrent.width);
+
+	windowFrame.size.width += adjustment.width;
+	windowFrame.size.height += adjustment.height; // not used - better to go for fixed height
+	windowFrame.size.height = std::min(CGFloat(512.0), available.size.height);
+	windowFrame.size.width = std::min(windowFrame.size.width, available.size.width);
+>>>>>>> upstream/master
 	windowFrame.origin.x = available.origin.x + available.size.width - windowFrame.size.width;
 	windowFrame.origin.y = available.origin.y;
 	[window setFrame:windowFrame display:YES];
 
 	NSRect lhsFrame = [regScroll frame];
 	NSRect rhsFrame = [dasmSplit frame];
+<<<<<<< HEAD
 	adjustment.width = MIN(regSize.width, ([regSplit frame].size.width - [regSplit dividerThickness]) / 2);
+=======
+	adjustment.width = std::min(regSize.width, ([regSplit frame].size.width - [regSplit dividerThickness]) / 2);
+>>>>>>> upstream/master
 	rhsFrame.origin.x -= lhsFrame.size.width - adjustment.width;
 	rhsFrame.size.width += lhsFrame.size.width - adjustment.width;
 	lhsFrame.size.width = adjustment.width;
@@ -213,12 +279,20 @@
 	NSString *command = [sender stringValue];
 	if ([command length] == 0)
 	{
+<<<<<<< HEAD
 		debug_cpu_get_visible_cpu(*machine)->debug()->single_step();
+=======
+		machine->debugger().cpu().get_visible_cpu()->debug()->single_step();
+>>>>>>> upstream/master
 		[history reset];
 	}
 	else
 	{
+<<<<<<< HEAD
 		debug_console_execute_command(*machine, [command UTF8String], 1);
+=======
+		machine->debugger().console().execute_command([command UTF8String], 1);
+>>>>>>> upstream/master
 		[history add:command];
 		[history edit];
 	}
@@ -227,8 +301,13 @@
 
 
 - (IBAction)debugToggleBreakpoint:(id)sender {
+<<<<<<< HEAD
 	device_t &device = [dasmView source]->device();
 	if ([dasmView cursorVisible] && (debug_cpu_get_visible_cpu(*machine) == &device))
+=======
+	device_t &device = *[dasmView source]->device();
+	if ([dasmView cursorVisible] && (machine->debugger().cpu().get_visible_cpu() == &device))
+>>>>>>> upstream/master
 	{
 		offs_t const address = [dasmView selectedAddress];
 		device_debug::breakpoint *bp = [[self class] findBreakpointAtAddress:address
@@ -236,40 +315,69 @@
 
 		// if it doesn't exist, add a new one
 		NSString *command;
+<<<<<<< HEAD
 		if (bp == NULL)
 			command = [NSString stringWithFormat:@"bpset 0x%lX", (unsigned long)address];
 		else
 			command = [NSString stringWithFormat:@"bpclear 0x%X", (unsigned)bp->index()];
 		debug_console_execute_command(*machine, [command UTF8String], 1);
+=======
+		if (bp == nullptr)
+			command = [NSString stringWithFormat:@"bpset 0x%lX", (unsigned long)address];
+		else
+			command = [NSString stringWithFormat:@"bpclear 0x%X", (unsigned)bp->index()];
+		machine->debugger().console().execute_command([command UTF8String], 1);
+>>>>>>> upstream/master
 	}
 }
 
 
 - (IBAction)debugToggleBreakpointEnable:(id)sender {
+<<<<<<< HEAD
 	device_t &device = [dasmView source]->device();
 	if ([dasmView cursorVisible] && (debug_cpu_get_visible_cpu(*machine) == &device))
 	{
 		device_debug::breakpoint *bp = [[self class] findBreakpointAtAddress:[dasmView selectedAddress]
 																   forDevice:device];
 		if (bp != NULL)
+=======
+	device_t &device = *[dasmView source]->device();
+	if ([dasmView cursorVisible] && (machine->debugger().cpu().get_visible_cpu() == &device))
+	{
+		device_debug::breakpoint *bp = [[self class] findBreakpointAtAddress:[dasmView selectedAddress]
+																   forDevice:device];
+		if (bp != nullptr)
+>>>>>>> upstream/master
 		{
 			NSString *command;
 			if (bp->enabled())
 				command = [NSString stringWithFormat:@"bpdisable 0x%X", (unsigned)bp->index()];
 			else
 				command = [NSString stringWithFormat:@"bpenable 0x%X", (unsigned)bp->index()];
+<<<<<<< HEAD
 			debug_console_execute_command(*machine, [command UTF8String], 1);
+=======
+			machine->debugger().console().execute_command([command UTF8String], 1);
+>>>>>>> upstream/master
 		}
 	}
 }
 
 
 - (IBAction)debugRunToCursor:(id)sender {
+<<<<<<< HEAD
 	device_t &device = [dasmView source]->device();
 	if ([dasmView cursorVisible] && (debug_cpu_get_visible_cpu(*machine) == &device))
 	{
 		NSString *command = [NSString stringWithFormat:@"go 0x%lX", (unsigned long)[dasmView selectedAddress]];
 		debug_console_execute_command(*machine, [command UTF8String], 1);
+=======
+	device_t &device = *[dasmView source]->device();
+	if ([dasmView cursorVisible] && (machine->debugger().cpu().get_visible_cpu() == &device))
+	{
+		NSString *command = [NSString stringWithFormat:@"go 0x%lX", (unsigned long)[dasmView selectedAddress]];
+		machine->debugger().console().execute_command([command UTF8String], 1);
+>>>>>>> upstream/master
 	}
 }
 
@@ -373,6 +481,86 @@
 }
 
 
+<<<<<<< HEAD
+=======
+- (void)loadConfiguration:(util::xml::data_node const *)parentnode {
+	util::xml::data_node const *node = nullptr;
+	for (node = parentnode->get_child("window"); node; node = node->get_next_sibling("window"))
+	{
+		MAMEDebugWindowHandler *win = nil;
+		switch (node->get_attribute_int("type", -1))
+		{
+		case MAME_DEBUGGER_WINDOW_TYPE_CONSOLE:
+			[self restoreConfigurationFromNode:node];
+			break;
+		case MAME_DEBUGGER_WINDOW_TYPE_MEMORY_VIEWER:
+			win = [[MAMEMemoryViewer alloc] initWithMachine:*machine console:self];
+			break;
+		case MAME_DEBUGGER_WINDOW_TYPE_DISASSEMBLY_VIEWER:
+			win = [[MAMEDisassemblyViewer alloc] initWithMachine:*machine console:self];
+			break;
+		case MAME_DEBUGGER_WINDOW_TYPE_ERROR_LOG_VIEWER:
+			win = [[MAMEErrorLogViewer alloc] initWithMachine:*machine console:self];
+			break;
+		case MAME_DEBUGGER_WINDOW_TYPE_POINTS_VIEWER:
+			win = [[MAMEPointsViewer alloc] initWithMachine:*machine console:self];
+			break;
+		case MAME_DEBUGGER_WINDOW_TYPE_DEVICES_VIEWER:
+			win = [[MAMEDevicesViewer alloc] initWithMachine:*machine console:self];
+			break;
+		case MAME_DEBUGGER_WINDOW_TYPE_DEVICE_INFO_VIEWER:
+			// FIXME: needs device info on init, make another variant
+			//win = [[MAMEDeviceInfoViewer alloc] initWithMachine:*machine console:self];
+			break;
+		default:
+			break;
+		}
+		if (win)
+		{
+			[auxiliaryWindows addObject:win];
+			[win restoreConfigurationFromNode:node];
+			[win release];
+			[win activate];
+		}
+	}
+}
+
+
+- (void)saveConfigurationToNode:(util::xml::data_node *)node {
+	[super saveConfigurationToNode:node];
+	node->set_attribute_int("type", MAME_DEBUGGER_WINDOW_TYPE_CONSOLE);
+	util::xml::data_node *const splits = node->add_child("splits", nullptr);
+	if (splits)
+	{
+		splits->set_attribute_float("state",
+									[regSplit isSubviewCollapsed:[[regSplit subviews] objectAtIndex:0]]
+								  ? 0.0
+								  : NSMaxX([[[regSplit subviews] objectAtIndex:0] frame]));
+		splits->set_attribute_float("disassembly",
+									[dasmSplit isSubviewCollapsed:[[dasmSplit subviews] objectAtIndex:0]]
+								  ? 0.0
+								  : NSMaxY([[[dasmSplit subviews] objectAtIndex:0] frame]));
+	}
+	[dasmView saveConfigurationToNode:node];
+}
+
+
+- (void)restoreConfigurationFromNode:(util::xml::data_node const *)node {
+	[super restoreConfigurationFromNode:node];
+	util::xml::data_node const *const splits = node->get_child("splits");
+	if (splits)
+	{
+		[regSplit setPosition:splits->get_attribute_float("state", NSMaxX([[[regSplit subviews] objectAtIndex:0] frame]))
+			 ofDividerAtIndex:0];
+		[dasmSplit setPosition:splits->get_attribute_float("disassembly", NSMaxY([[[dasmSplit subviews] objectAtIndex:0] frame]))
+			  ofDividerAtIndex:0];
+	}
+	[dasmView restoreConfigurationFromNode:node];
+}
+
+
+
+>>>>>>> upstream/master
 - (BOOL)control:(NSControl *)control textShouldBeginEditing:(NSText *)fieldEditor {
 	if (control == commandField)
 		[history edit];
@@ -404,7 +592,11 @@
 			}
 			return YES;
 		}
+<<<<<<< HEAD
     }
+=======
+	}
+>>>>>>> upstream/master
 	return NO;
 }
 
@@ -418,7 +610,11 @@
 		[[NSNotificationCenter defaultCenter] postNotificationName:MAMEHideDebuggerNotification
 															object:self
 														  userInfo:info];
+<<<<<<< HEAD
 		debug_cpu_get_visible_cpu(*machine)->debug()->go();
+=======
+		machine->debugger().cpu().get_visible_cpu()->debug()->go();
+>>>>>>> upstream/master
 	}
 }
 
@@ -429,8 +625,13 @@
 
 
 - (CGFloat)splitView:(NSSplitView *)sender constrainMaxCoordinate:(CGFloat)max ofSubviewAt:(NSInteger)offs {
+<<<<<<< HEAD
 	NSSize	sz = [sender bounds].size;
 	CGFloat	allowed = ([sender isVertical] ? sz.width : sz.height) - 100 - [sender dividerThickness];
+=======
+	NSSize  sz = [sender bounds].size;
+	CGFloat allowed = ([sender isVertical] ? sz.width : sz.height) - 100 - [sender dividerThickness];
+>>>>>>> upstream/master
 	return (max > allowed) ? allowed : max;
 }
 
@@ -481,6 +682,7 @@
 	SEL const action = [item action];
 	BOOL const inContextMenu = ([item menu] == [dasmView menu]);
 	BOOL const haveCursor = [dasmView cursorVisible];
+<<<<<<< HEAD
 	BOOL const isCurrent = (debug_cpu_get_visible_cpu(*machine) == &[dasmView source]->device());
 
 	device_debug::breakpoint *breakpoint = NULL;
@@ -488,13 +690,26 @@
 	{
 		breakpoint = [[self class] findBreakpointAtAddress:[dasmView selectedAddress]
 												 forDevice:[dasmView source]->device()];
+=======
+	BOOL const isCurrent = (machine->debugger().cpu().get_visible_cpu() == [dasmView source]->device());
+
+	device_debug::breakpoint *breakpoint = nullptr;
+	if (haveCursor)
+	{
+		breakpoint = [[self class] findBreakpointAtAddress:[dasmView selectedAddress]
+												 forDevice:*[dasmView source]->device()];
+>>>>>>> upstream/master
 	}
 
 	if (action == @selector(debugToggleBreakpoint:))
 	{
 		if (haveCursor)
 		{
+<<<<<<< HEAD
 			if (breakpoint != NULL)
+=======
+			if (breakpoint != nullptr)
+>>>>>>> upstream/master
 			{
 				if (inContextMenu)
 					[item setTitle:@"Clear Breakpoint"];
@@ -520,7 +735,11 @@
 	}
 	else if (action == @selector(debugToggleBreakpointEnable:))
 	{
+<<<<<<< HEAD
 		if ((breakpoint != NULL) && !breakpoint->enabled())
+=======
+		if ((breakpoint != nullptr) && !breakpoint->enabled())
+>>>>>>> upstream/master
 		{
 			if (inContextMenu)
 				[item setTitle:@"Enable Breakpoint"];
@@ -534,7 +753,11 @@
 			else
 				[item setTitle:@"Disable Breakpoint at Cursor"];
 		}
+<<<<<<< HEAD
 		return (breakpoint != NULL) && isCurrent;
+=======
+		return (breakpoint != nullptr) && isCurrent;
+>>>>>>> upstream/master
 	}
 	else if (action == @selector(debugRunToCursor:))
 	{

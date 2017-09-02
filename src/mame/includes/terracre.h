@@ -1,5 +1,10 @@
 // license:BSD-3-Clause
 // copyright-holders:Carlos A. Lozano
+<<<<<<< HEAD
+=======
+
+#include "machine/gen_latch.h"
+>>>>>>> upstream/master
 #include "video/bufsprite.h"
 
 class terracre_state : public driver_device
@@ -11,6 +16,10 @@ public:
 		m_gfxdecode(*this, "gfxdecode"),
 		m_palette(*this, "palette"),
 		m_spriteram(*this, "spriteram"),
+<<<<<<< HEAD
+=======
+		m_soundlatch(*this, "soundlatch"),
+>>>>>>> upstream/master
 		m_bg_videoram(*this, "bg_videoram"),
 		m_fg_videoram(*this, "fg_videoram") { }
 
@@ -18,6 +27,7 @@ public:
 	required_device<gfxdecode_device> m_gfxdecode;
 	required_device<palette_device> m_palette;
 	required_device<buffered_spriteram16_device> m_spriteram;
+<<<<<<< HEAD
 
 	required_shared_ptr<UINT16> m_bg_videoram;
 	required_shared_ptr<UINT16> m_fg_videoram;
@@ -27,6 +37,19 @@ public:
 	UINT8 m_mAmazonProtReg[6];
 	UINT16 m_xscroll;
 	UINT16 m_yscroll;
+=======
+	required_device<generic_latch_8_device> m_soundlatch;
+
+	required_shared_ptr<uint16_t> m_bg_videoram;
+	required_shared_ptr<uint16_t> m_fg_videoram;
+
+	// move to 1412m2
+	uint8_t m_mAmazonProtCmd;
+	uint8_t m_mAmazonProtReg[6];
+
+	uint16_t m_xscroll;
+	uint16_t m_yscroll;
+>>>>>>> upstream/master
 	tilemap_t *m_background;
 	tilemap_t *m_foreground;
 	DECLARE_WRITE16_MEMBER(amazon_sound_w);
@@ -38,6 +61,7 @@ public:
 	DECLARE_WRITE16_MEMBER(amazon_flipscreen_w);
 	DECLARE_WRITE16_MEMBER(amazon_scrolly_w);
 	DECLARE_WRITE16_MEMBER(amazon_scrollx_w);
+<<<<<<< HEAD
 	DECLARE_DRIVER_INIT(amazon);
 	DECLARE_DRIVER_INIT(amatelas);
 	DECLARE_DRIVER_INIT(horekid);
@@ -47,5 +71,13 @@ public:
 	DECLARE_PALETTE_INIT(terracre);
 	DECLARE_MACHINE_START(amazon);
 	UINT32 screen_update_amazon(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
+=======
+	TILE_GET_INFO_MEMBER(get_bg_tile_info);
+	TILE_GET_INFO_MEMBER(get_fg_tile_info);
+	virtual void video_start() override;
+	DECLARE_PALETTE_INIT(terracre);
+	DECLARE_MACHINE_START(amazon);
+	uint32_t screen_update_amazon(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
+>>>>>>> upstream/master
 	void draw_sprites(bitmap_ind16 &bitmap, const rectangle &cliprect );
 };

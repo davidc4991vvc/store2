@@ -12,9 +12,16 @@
 
 ***************************************************************************/
 
+<<<<<<< HEAD
 #include "tmpz84c015.h"
 
 const device_type TMPZ84C015 = &device_creator<tmpz84c015_device>;
+=======
+#include "emu.h"
+#include "tmpz84c015.h"
+
+DEFINE_DEVICE_TYPE(TMPZ84C015, tmpz84c015_device, "tmpz84c015", "TMPZ84C015")
+>>>>>>> upstream/master
 
 static ADDRESS_MAP_START( tmpz84c015_internal_io_map, AS_IO, 8, tmpz84c015_device )
 	AM_RANGE(0x10, 0x13) AM_MIRROR(0xff00) AM_DEVREADWRITE("tmpz84c015_ctc", z80ctc_device, read, write)
@@ -24,8 +31,13 @@ static ADDRESS_MAP_START( tmpz84c015_internal_io_map, AS_IO, 8, tmpz84c015_devic
 ADDRESS_MAP_END
 
 
+<<<<<<< HEAD
 tmpz84c015_device::tmpz84c015_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
 	: z80_device(mconfig, TMPZ84C015, "TMPZ84C015", tag, owner, clock, "tmpz84c015", __FILE__),
+=======
+tmpz84c015_device::tmpz84c015_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: z80_device(mconfig, TMPZ84C015, tag, owner, clock),
+>>>>>>> upstream/master
 	m_io_space_config( "io", ENDIANNESS_LITTLE, 8, 16, 0, ADDRESS_MAP_NAME( tmpz84c015_internal_io_map ) ),
 	m_ctc(*this, "tmpz84c015_ctc"),
 	m_sio(*this, "tmpz84c015_sio"),
@@ -63,6 +75,16 @@ tmpz84c015_device::tmpz84c015_device(const machine_config &mconfig, const char *
 {
 }
 
+<<<<<<< HEAD
+=======
+device_memory_interface::space_config_vector tmpz84c015_device::memory_space_config() const
+{
+	auto r = z80_device::memory_space_config();
+	r.back().second = &m_io_space_config;
+	return r;
+}
+
+>>>>>>> upstream/master
 
 //-------------------------------------------------
 //  device_start - device-specific startup
@@ -125,7 +147,11 @@ void tmpz84c015_device::device_reset()
 void tmpz84c015_device::device_post_load()
 {
 	// reinit irq priority
+<<<<<<< HEAD
 	UINT8 prio = m_irq_priority;
+=======
+	uint8_t prio = m_irq_priority;
+>>>>>>> upstream/master
 	m_irq_priority = -1;
 	irq_priority_w(*m_io, 0, prio);
 }
@@ -155,21 +181,37 @@ WRITE8_MEMBER(tmpz84c015_device::irq_priority_w)
 			{ 1, 2, 0 }  // 5: sio -> pio -> ctc -> ext
 		};
 
+<<<<<<< HEAD
 		// reconfigure first 3 entries in daisy chain
+=======
+		// reconfigure daisy chain
+>>>>>>> upstream/master
 		const z80_daisy_config daisy_chain[] =
 		{
 			{ dev[prio[data][0]] },
 			{ dev[prio[data][1]] },
 			{ dev[prio[data][2]] },
+<<<<<<< HEAD
 			{ NULL }
 		};
 		m_daisy.init(this, daisy_chain);
+=======
+			{ nullptr }
+		};
+
+		// insert these 3 entries in order before any externally linked devices
+		daisy_init(daisy_chain);
+>>>>>>> upstream/master
 
 		m_irq_priority = data;
 	}
 }
 
+<<<<<<< HEAD
 static MACHINE_CONFIG_FRAGMENT( tmpz84c015 )
+=======
+MACHINE_CONFIG_MEMBER( tmpz84c015_device::device_add_mconfig )
+>>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_Z80SIO0_ADD("tmpz84c015_sio", DERIVED_CLOCK(1,1), 0, 0, 0, 0)
@@ -210,8 +252,11 @@ static MACHINE_CONFIG_FRAGMENT( tmpz84c015 )
 	MCFG_Z80PIO_OUT_PB_CB(WRITE8(tmpz84c015_device, out_pb_cb_trampoline_w))
 	MCFG_Z80PIO_OUT_BRDY_CB(WRITELINE(tmpz84c015_device, out_brdy_cb_trampoline_w))
 MACHINE_CONFIG_END
+<<<<<<< HEAD
 
 machine_config_constructor tmpz84c015_device::device_mconfig_additions() const
 {
 	return MACHINE_CONFIG_NAME( tmpz84c015 );
 }
+=======
+>>>>>>> upstream/master

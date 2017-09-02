@@ -44,6 +44,7 @@
 //  constructor
 //-------------------------------------------------
 
+<<<<<<< HEAD
 const device_type NES_SACHEN_SA009 = &device_creator<nes_sachen_sa009_device>;
 const device_type NES_SACHEN_SA0036 = &device_creator<nes_sachen_sa0036_device>;
 const device_type NES_SACHEN_SA0037 = &device_creator<nes_sachen_sa0037_device>;
@@ -137,6 +138,101 @@ nes_sachen_8259c_device::nes_sachen_8259c_device(const machine_config &mconfig, 
 
 nes_sachen_8259d_device::nes_sachen_8259d_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
 					: nes_sachen_8259a_device(mconfig, NES_SACHEN_8259D, "NES Cart Sachen 8259D PCB", tag, owner, clock, "nes_s8259d", __FILE__)
+=======
+DEFINE_DEVICE_TYPE(NES_SACHEN_SA009,      nes_sachen_sa009_device,      "nes_sa009",    "NES Cart Sachen SA009 PCB")
+DEFINE_DEVICE_TYPE(NES_SACHEN_SA0036,     nes_sachen_sa0036_device,     "nes_sa0036",   "NES Cart Sachen SA0036 PCB")
+DEFINE_DEVICE_TYPE(NES_SACHEN_SA0037,     nes_sachen_sa0037_device,     "nes_sa0037",   "NES Cart Sachen SA0037 PCB")
+DEFINE_DEVICE_TYPE(NES_SACHEN_SA72007,    nes_sachen_sa72007_device,    "nes_sa72007",  "NES Cart Sachen SA72007 PCB")
+DEFINE_DEVICE_TYPE(NES_SACHEN_SA72008,    nes_sachen_sa72008_device,    "nes_sa72008",  "NES Cart Sachen SA72008 PCB")
+DEFINE_DEVICE_TYPE(NES_SACHEN_TCA01,      nes_sachen_tca01_device,      "nes_tca01",    "NES Cart Sachen TCA-01 PCB")
+DEFINE_DEVICE_TYPE(NES_SACHEN_TCU01,      nes_sachen_tcu01_device,      "nes_tcu01",    "NES Cart Sachen TCU-01 PCB")
+DEFINE_DEVICE_TYPE(NES_SACHEN_TCU02,      nes_sachen_tcu02_device,      "nes_tcu02",    "NES Cart Sachen TCU-02 PCB")
+DEFINE_DEVICE_TYPE(NES_SACHEN_74X374,     nes_sachen_74x374_device,     "nes_s74x374",  "NES Cart Sachen 74*374 PCB")
+DEFINE_DEVICE_TYPE(NES_SACHEN_74X374_ALT, nes_sachen_74x374_alt_device, "nes_s74x374a", "NES Cart Sachen 74*374 Alt PCB")
+DEFINE_DEVICE_TYPE(NES_SACHEN_8259A,      nes_sachen_8259a_device,      "nes_s8259a",   "NES Cart Sachen 8259A PCB")
+DEFINE_DEVICE_TYPE(NES_SACHEN_8259B,      nes_sachen_8259b_device,      "nes_s8259b",   "NES Cart Sachen 8259B PCB")
+DEFINE_DEVICE_TYPE(NES_SACHEN_8259C,      nes_sachen_8259c_device,      "nes_s8259c",   "NES Cart Sachen 8259C PCB")
+DEFINE_DEVICE_TYPE(NES_SACHEN_8259D,      nes_sachen_8259d_device,      "nes_s8259d",   "NES Cart Sachen 8259D PCB")
+
+
+nes_sachen_sa009_device::nes_sachen_sa009_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: nes_nrom_device(mconfig, NES_SACHEN_SA009, tag, owner, clock)
+{
+}
+
+nes_sachen_sa0036_device::nes_sachen_sa0036_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: nes_nrom_device(mconfig, NES_SACHEN_SA0036, tag, owner, clock)
+{
+}
+
+nes_sachen_sa0037_device::nes_sachen_sa0037_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: nes_nrom_device(mconfig, NES_SACHEN_SA0037, tag, owner, clock)
+{
+}
+
+nes_sachen_sa72007_device::nes_sachen_sa72007_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: nes_nrom_device(mconfig, NES_SACHEN_SA72007, tag, owner, clock)
+{
+}
+
+nes_sachen_sa72008_device::nes_sachen_sa72008_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: nes_nrom_device(mconfig, NES_SACHEN_SA72008, tag, owner, clock)
+{
+}
+
+nes_sachen_tca01_device::nes_sachen_tca01_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: nes_nrom_device(mconfig, NES_SACHEN_TCA01, tag, owner, clock)
+{
+}
+
+nes_sachen_tcu01_device::nes_sachen_tcu01_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: nes_nrom_device(mconfig, NES_SACHEN_TCU01, tag, owner, clock)
+{
+}
+
+nes_sachen_tcu02_device::nes_sachen_tcu02_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: nes_nrom_device(mconfig, NES_SACHEN_TCU02, tag, owner, clock), m_latch(0)
+{
+}
+
+nes_sachen_74x374_device::nes_sachen_74x374_device(const machine_config &mconfig, device_type type, const char *tag, device_t *owner, uint32_t clock)
+	: nes_nrom_device(mconfig, type, tag, owner, clock), m_latch(0), m_mmc_vrom_bank(0)
+{
+}
+
+nes_sachen_74x374_device::nes_sachen_74x374_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: nes_sachen_74x374_device(mconfig, NES_SACHEN_74X374, tag, owner, clock)
+{
+}
+
+nes_sachen_74x374_alt_device::nes_sachen_74x374_alt_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: nes_sachen_74x374_device(mconfig, NES_SACHEN_74X374_ALT, tag, owner, clock)
+{
+}
+
+nes_sachen_8259a_device::nes_sachen_8259a_device(const machine_config &mconfig, device_type type, const char *tag, device_t *owner, uint32_t clock)
+	: nes_sachen_74x374_device(mconfig, type, tag, owner, clock)
+{
+}
+
+nes_sachen_8259a_device::nes_sachen_8259a_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: nes_sachen_8259a_device(mconfig, NES_SACHEN_8259A, tag, owner, clock)
+{
+}
+
+nes_sachen_8259b_device::nes_sachen_8259b_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: nes_sachen_8259a_device(mconfig, NES_SACHEN_8259B, tag, owner, clock)
+{
+}
+
+nes_sachen_8259c_device::nes_sachen_8259c_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: nes_sachen_8259a_device(mconfig, NES_SACHEN_8259C, tag, owner, clock)
+{
+}
+
+nes_sachen_8259d_device::nes_sachen_8259d_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: nes_sachen_8259a_device(mconfig, NES_SACHEN_8259D, tag, owner, clock)
+>>>>>>> upstream/master
 {
 }
 
@@ -488,7 +584,11 @@ READ8_MEMBER(nes_sachen_tcu02_device::read_l)
 
  -------------------------------------------------*/
 
+<<<<<<< HEAD
 void nes_sachen_74x374_device::set_mirror(UINT8 nt) // also used by mappers 137, 138, 139, 141
+=======
+void nes_sachen_74x374_device::set_mirror(uint8_t nt) // also used by mappers 137, 138, 139, 141
+>>>>>>> upstream/master
 {
 	switch (nt)
 	{
@@ -614,8 +714,13 @@ WRITE8_MEMBER(nes_sachen_74x374_alt_device::write_l)
 
 void nes_sachen_8259a_device::chr_update()
 {
+<<<<<<< HEAD
 	UINT8 bank_helper1 = m_reg[7] & 0x01;
 	UINT8 bank_helper2 = (m_reg[4] & 0x07) << 3;
+=======
+	uint8_t bank_helper1 = m_reg[7] & 0x01;
+	uint8_t bank_helper2 = (m_reg[4] & 0x07) << 3;
+>>>>>>> upstream/master
 
 	if (m_chr_source == CHRROM)
 	{
@@ -657,8 +762,13 @@ WRITE8_MEMBER(nes_sachen_8259a_device::write_l)
 
 void nes_sachen_8259b_device::chr_update()
 {
+<<<<<<< HEAD
 	UINT8 bank_helper1 = m_reg[7] & 0x01;
 	UINT8 bank_helper2 = (m_reg[4] & 0x07) << 3;
+=======
+	uint8_t bank_helper1 = m_reg[7] & 0x01;
+	uint8_t bank_helper2 = (m_reg[4] & 0x07) << 3;
+>>>>>>> upstream/master
 
 	if (m_chr_source == CHRROM)
 	{
@@ -671,8 +781,13 @@ void nes_sachen_8259b_device::chr_update()
 
 void nes_sachen_8259c_device::chr_update()
 {
+<<<<<<< HEAD
 	UINT8 bank_helper1 = m_reg[7] & 0x01;
 	UINT8 bank_helper2 = (m_reg[4] & 0x07) << 3;
+=======
+	uint8_t bank_helper1 = m_reg[7] & 0x01;
+	uint8_t bank_helper2 = (m_reg[4] & 0x07) << 3;
+>>>>>>> upstream/master
 
 	if (m_chr_source == CHRROM)
 	{

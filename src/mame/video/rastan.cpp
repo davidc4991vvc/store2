@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 // license:???
+=======
+// license:GPL-2.0+
+>>>>>>> upstream/master
 // copyright-holders:Jarek Burczynski
 /***************************************************************************
   Functions to emulate video hardware on these Taito games:
@@ -9,6 +13,10 @@
 
 #include "emu.h"
 #include "includes/rastan.h"
+<<<<<<< HEAD
+=======
+#include "screen.h"
+>>>>>>> upstream/master
 
 /***************************************************************************/
 
@@ -20,17 +28,30 @@ WRITE16_MEMBER(rastan_state::rastan_spritectrl_w)
 	/* bit 4 unused */
 
 	/* bits 0 and 1 are coin lockout */
+<<<<<<< HEAD
 	coin_lockout_w(machine(), 1, ~data & 0x01);
 	coin_lockout_w(machine(), 0, ~data & 0x02);
 
 	/* bits 2 and 3 are the coin counters */
 	coin_counter_w(machine(), 1, data & 0x04);
 	coin_counter_w(machine(), 0, data & 0x08);
+=======
+	machine().bookkeeping().coin_lockout_w(1, ~data & 0x01);
+	machine().bookkeeping().coin_lockout_w(0, ~data & 0x02);
+
+	/* bits 2 and 3 are the coin counters */
+	machine().bookkeeping().coin_counter_w(1, data & 0x04);
+	machine().bookkeeping().coin_counter_w(0, data & 0x08);
+>>>>>>> upstream/master
 }
 
 /***************************************************************************/
 
+<<<<<<< HEAD
 UINT32 rastan_state::screen_update_rastan(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+=======
+uint32_t rastan_state::screen_update_rastan(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+>>>>>>> upstream/master
 {
 	int layer[2];
 

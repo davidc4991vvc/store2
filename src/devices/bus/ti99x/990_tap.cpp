@@ -69,10 +69,17 @@ enum
 	w7_tape_error       = 0x0001
 };
 
+<<<<<<< HEAD
 static const UINT16 w_mask[8] =
 {
 	0x000f,     /* Controllers should prevent overwriting of w0 status bits, and I know
                 that some controllers do so. */
+=======
+static const uint16_t w_mask[8] =
+{
+	0x000f,     /* Controllers should prevent overwriting of w0 status bits, and I know
+	            that some controllers do so. */
+>>>>>>> upstream/master
 	0xffff,
 	0xffff,
 	0xffff,
@@ -123,7 +130,11 @@ void tap_990_device::update_interrupt()
 */
 void tap_990_device::cmd_read_binary_forward()
 {
+<<<<<<< HEAD
 	UINT8 buffer[256];
+=======
+	uint8_t buffer[256];
+>>>>>>> upstream/master
 	int reclen;
 
 	int dma_address;
@@ -349,7 +360,11 @@ update_registers:
 */
 void tap_990_device::cmd_record_skip_forward()
 {
+<<<<<<< HEAD
 	UINT8 buffer[4];
+=======
+	uint8_t buffer[4];
+>>>>>>> upstream/master
 	int reclen;
 
 	int record_count;
@@ -485,7 +500,11 @@ update_registers:
 */
 void tap_990_device::cmd_record_skip_reverse()
 {
+<<<<<<< HEAD
 	UINT8 buffer[4];
+=======
+	uint8_t buffer[4];
+>>>>>>> upstream/master
 	int reclen;
 
 	int record_count;
@@ -871,7 +890,11 @@ WRITE16_MEMBER( tap_990_device::write )
 		/* write protect if a command is in progress */
 		if (m_w[7] & w7_idle)
 		{
+<<<<<<< HEAD
 			UINT16 old_data = m_w[offset];
+=======
+			uint16_t old_data = m_w[offset];
+>>>>>>> upstream/master
 
 			/* Only write writable bits AND honor byte accesses (ha!) */
 			m_w[offset] = (m_w[offset] & ((~w_mask[offset]) | mem_mask)) | (data & w_mask[offset] & ~mem_mask);
@@ -892,6 +915,7 @@ class ti990_tape_image_device : public device_t,
 {
 public:
 	// construction/destruction
+<<<<<<< HEAD
 	ti990_tape_image_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
 
 	// image-level overrides
@@ -912,10 +936,30 @@ protected:
 	// device-level overrides
 	virtual void device_config_complete();
 	virtual void device_start();
+=======
+	ti990_tape_image_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
+
+	// image-level overrides
+	virtual iodevice_t image_type() const override { return IO_MAGTAPE; }
+
+	virtual bool is_readable()  const override { return 1; }
+	virtual bool is_writeable() const override { return 1; }
+	virtual bool is_creatable() const override { return 1; }
+	virtual bool must_be_loaded() const override { return 0; }
+	virtual bool is_reset_on_load() const override { return 0; }
+	virtual const char *file_extensions() const override { return "tap"; }
+
+	virtual image_init_result call_load() override;
+	virtual void call_unload() override;
+protected:
+	// device-level overrides
+	virtual void device_start() override;
+>>>>>>> upstream/master
 private:
 	int tape_get_id();
 };
 
+<<<<<<< HEAD
 const device_type TI990_TAPE = &device_creator<ti990_tape_image_device>;
 
 ti990_tape_image_device::ti990_tape_image_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
@@ -927,6 +971,13 @@ ti990_tape_image_device::ti990_tape_image_device(const machine_config &mconfig, 
 void ti990_tape_image_device::device_config_complete()
 {
 	update_names();
+=======
+DEFINE_DEVICE_TYPE(TI990_TAPE, ti990_tape_image_device, "ti990_tape_image", "TI-990 Magnetic Tape")
+
+ti990_tape_image_device::ti990_tape_image_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: device_t(mconfig, TI990_TAPE, tag, owner, clock), device_image_interface(mconfig, *this)
+{
+>>>>>>> upstream/master
 }
 
 void ti990_tape_image_device::device_start()
@@ -948,12 +999,20 @@ int ti990_tape_image_device::tape_get_id()
 /*
     Open a tape image
 */
+<<<<<<< HEAD
 bool ti990_tape_image_device::call_load()
+=======
+image_init_result ti990_tape_image_device::call_load()
+>>>>>>> upstream/master
 {
 	tap_990_device* tpc = downcast<tap_990_device*>(owner());
 	tpc->set_tape(tape_get_id(), this, true, false, is_readonly());
 
+<<<<<<< HEAD
 	return IMAGE_INIT_PASS;
+=======
+	return image_init_result::PASS;
+>>>>>>> upstream/master
 }
 
 /*
@@ -969,6 +1028,7 @@ void ti990_tape_image_device::call_unload()
 	MCFG_DEVICE_ADD((_tag),  TI990_TAPE, 0)
 
 
+<<<<<<< HEAD
 static MACHINE_CONFIG_FRAGMENT( tap_990 )
 	MCFG_TI990_TAPE_ADD("tape0")
 	MCFG_TI990_TAPE_ADD("tape1")
@@ -991,6 +1051,12 @@ tap_990_device::tap_990_device(const machine_config &mconfig, const char *tag, d
 //-------------------------------------------------
 
 void tap_990_device::device_config_complete()
+=======
+DEFINE_DEVICE_TYPE(TI990_TAPE_CTRL, tap_990_device, "ti990_tap", "Generic TI-900 Tape Controller")
+
+tap_990_device::tap_990_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: device_t(mconfig, TI990_TAPE_CTRL, tag, owner, clock), m_int_line(*this)
+>>>>>>> upstream/master
 {
 }
 
@@ -1011,6 +1077,7 @@ void tap_990_device::device_start()
 }
 
 //-------------------------------------------------
+<<<<<<< HEAD
 //  device_mconfig_additions - return a pointer to
 //  the device's machine fragment
 //-------------------------------------------------
@@ -1019,3 +1086,14 @@ machine_config_constructor tap_990_device::device_mconfig_additions() const
 {
 	return MACHINE_CONFIG_NAME( tap_990  );
 }
+=======
+//  device_add_mconfig - add device configuration
+//-------------------------------------------------
+
+MACHINE_CONFIG_MEMBER( tap_990_device::device_add_mconfig )
+	MCFG_TI990_TAPE_ADD("tape0")
+	MCFG_TI990_TAPE_ADD("tape1")
+	MCFG_TI990_TAPE_ADD("tape2")
+	MCFG_TI990_TAPE_ADD("tape3")
+MACHINE_CONFIG_END
+>>>>>>> upstream/master

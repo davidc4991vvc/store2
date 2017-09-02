@@ -14,6 +14,7 @@
 #error Dont include this file directly; include emu.h instead.
 #endif
 
+<<<<<<< HEAD
 #ifndef __MACHINE_H__
 #define __MACHINE_H__
 
@@ -21,12 +22,21 @@
 
 // forward declaration instead of osdepend.h
 class osd_interface;
+=======
+#ifndef MAME_EMU_MACHINE_H
+#define MAME_EMU_MACHINE_H
+
+#include <functional>
+
+#include <time.h>
+>>>>>>> upstream/master
 
 //**************************************************************************
 //  CONSTANTS
 //**************************************************************************
 
 // machine phases
+<<<<<<< HEAD
 enum machine_phase
 {
 	MACHINE_PHASE_PREINIT,
@@ -34,6 +44,15 @@ enum machine_phase
 	MACHINE_PHASE_RESET,
 	MACHINE_PHASE_RUNNING,
 	MACHINE_PHASE_EXIT
+=======
+enum class machine_phase
+{
+	PREINIT,
+	INIT,
+	RESET,
+	RUNNING,
+	EXIT
+>>>>>>> upstream/master
 };
 
 
@@ -50,6 +69,7 @@ enum machine_notification
 
 
 // debug flags
+<<<<<<< HEAD
 const int DEBUG_FLAG_ENABLED        = 0x00000001;       // debugging is enabled
 const int DEBUG_FLAG_CALL_HOOK      = 0x00000002;       // CPU cores must call instruction hook
 const int DEBUG_FLAG_WPR_PROGRAM    = 0x00000010;       // watchpoints are enabled for PROGRAM memory reads
@@ -59,6 +79,17 @@ const int DEBUG_FLAG_WPW_PROGRAM    = 0x00000100;       // watchpoints are enabl
 const int DEBUG_FLAG_WPW_DATA       = 0x00000200;       // watchpoints are enabled for DATA memory writes
 const int DEBUG_FLAG_WPW_IO         = 0x00000400;       // watchpoints are enabled for IO memory writes
 const int DEBUG_FLAG_OSD_ENABLED    = 0x00001000;       // The OSD debugger is enabled
+=======
+constexpr int DEBUG_FLAG_ENABLED        = 0x00000001;       // debugging is enabled
+constexpr int DEBUG_FLAG_CALL_HOOK      = 0x00000002;       // CPU cores must call instruction hook
+constexpr int DEBUG_FLAG_WPR_PROGRAM    = 0x00000010;       // watchpoints are enabled for PROGRAM memory reads
+constexpr int DEBUG_FLAG_WPR_DATA       = 0x00000020;       // watchpoints are enabled for DATA memory reads
+constexpr int DEBUG_FLAG_WPR_IO         = 0x00000040;       // watchpoints are enabled for IO memory reads
+constexpr int DEBUG_FLAG_WPW_PROGRAM    = 0x00000100;       // watchpoints are enabled for PROGRAM memory writes
+constexpr int DEBUG_FLAG_WPW_DATA       = 0x00000200;       // watchpoints are enabled for DATA memory writes
+constexpr int DEBUG_FLAG_WPW_IO         = 0x00000400;       // watchpoints are enabled for IO memory writes
+constexpr int DEBUG_FLAG_OSD_ENABLED    = 0x00001000;       // The OSD debugger is enabled
+>>>>>>> upstream/master
 
 
 
@@ -73,17 +104,21 @@ const int DEBUG_FLAG_OSD_ENABLED    = 0x00001000;       // The OSD debugger is e
 #define auto_alloc_array_clear(m, t, c) pool_alloc_array_clear(static_cast<running_machine &>(m).respool(), t, c)
 #define auto_free(m, v)                 pool_free(static_cast<running_machine &>(m).respool(), v)
 
+<<<<<<< HEAD
 #define auto_bitmap_ind8_alloc(m, w, h) auto_alloc(m, bitmap_ind8(w, h))
 #define auto_bitmap_ind16_alloc(m, w, h)    auto_alloc(m, bitmap_ind16(w, h))
 #define auto_bitmap_ind32_alloc(m, w, h)    auto_alloc(m, bitmap_ind32(w, h))
 #define auto_bitmap_rgb32_alloc(m, w, h)    auto_alloc(m, bitmap_rgb32(w, h))
 
 
+=======
+>>>>>>> upstream/master
 
 //**************************************************************************
 //  TYPE DEFINITIONS
 //**************************************************************************
 
+<<<<<<< HEAD
 // forward declarations
 class cheat_manager;
 class render_manager;
@@ -100,6 +135,8 @@ struct debugcpu_private;
 struct generic_machine_private;
 
 
+=======
+>>>>>>> upstream/master
 // ======================> system_time
 
 // system time description, both local and UTC
@@ -107,12 +144,17 @@ class system_time
 {
 public:
 	system_time();
+<<<<<<< HEAD
+=======
+	explicit system_time(time_t t);
+>>>>>>> upstream/master
 	void set(time_t t);
 
 	struct full_time
 	{
 		void set(struct tm &t);
 
+<<<<<<< HEAD
 		UINT8       second;     // seconds (0-59)
 		UINT8       minute;     // minutes (0-59)
 		UINT8       hour;       // hours (0-23)
@@ -125,12 +167,55 @@ public:
 	};
 
 	INT64           time;       // number of seconds elapsed since midnight, January 1 1970 UTC
+=======
+		u8          second;     // seconds (0-59)
+		u8          minute;     // minutes (0-59)
+		u8          hour;       // hours (0-23)
+		u8          mday;       // day of month (1-31)
+		u8          month;      // month (0-11)
+		s32         year;       // year (1=1 AD)
+		u8          weekday;    // day of week (0-6)
+		u16         day;        // day of year (0-365)
+		u8          is_dst;     // is this daylight savings?
+	};
+
+	s64           time;       // number of seconds elapsed since midnight, January 1 1970 UTC
+>>>>>>> upstream/master
 	full_time       local_time; // local time
 	full_time       utc_time;   // UTC coordinated time
 };
 
 
 
+<<<<<<< HEAD
+=======
+// ======================> dummy_space_device
+
+// a dummy address space for passing to handlers outside of the memory system
+
+class dummy_space_device : public device_t,
+	public device_memory_interface
+{
+public:
+	dummy_space_device(const machine_config &mconfig, const char *tag, device_t *owner, u32 clock);
+
+	DECLARE_READ8_MEMBER(read);
+	DECLARE_WRITE8_MEMBER(write);
+
+protected:
+	// device-level overrides
+	virtual void device_start() override;
+
+	// device_memory_interface overrides
+	virtual space_config_vector memory_space_config() const override;
+
+private:
+	const address_space_config  m_space_config;
+};
+
+
+
+>>>>>>> upstream/master
 // ======================> running_machine
 
 typedef delegate<void ()> machine_notify_delegate;
@@ -140,10 +225,19 @@ class running_machine
 {
 	DISABLE_COPYING(running_machine);
 
+<<<<<<< HEAD
 	friend void debugger_init(running_machine &machine);
 	friend class sound_manager;
 
 	typedef void (*logerror_callback)(const running_machine &machine, const char *string);
+=======
+	class side_effect_disabler;
+
+	friend class sound_manager;
+	friend class memory_manager;
+
+	typedef std::function<void(const char*)> logerror_callback;
+>>>>>>> upstream/master
 
 	// must be at top of member variables
 	resource_pool           m_respool;              // pool of resources for this machine
@@ -165,6 +259,7 @@ public:
 	memory_manager &memory() { return m_memory; }
 	ioport_manager &ioport() { return m_ioport; }
 	parameters_manager &parameters() { return m_parameters; }
+<<<<<<< HEAD
 	cheat_manager &cheat() const { assert(m_cheat != NULL); return *m_cheat; }
 	render_manager &render() const { assert(m_render != NULL); return *m_render; }
 	input_manager &input() const { assert(m_input != NULL); return *m_input; }
@@ -177,6 +272,28 @@ public:
 	template<class _DriverClass> _DriverClass *driver_data() const { return &downcast<_DriverClass &>(root_device()); }
 	machine_phase phase() const { return m_current_phase; }
 	bool paused() const { return m_paused || (m_current_phase != MACHINE_PHASE_RUNNING); }
+=======
+	render_manager &render() const { assert(m_render != nullptr); return *m_render; }
+	input_manager &input() const { assert(m_input != nullptr); return *m_input; }
+	sound_manager &sound() const { assert(m_sound != nullptr); return *m_sound; }
+	video_manager &video() const { assert(m_video != nullptr); return *m_video; }
+	network_manager &network() const { assert(m_network != nullptr); return *m_network; }
+	bookkeeping_manager &bookkeeping() const { assert(m_network != nullptr); return *m_bookkeeping; }
+	configuration_manager  &configuration() const { assert(m_configuration != nullptr); return *m_configuration; }
+	output_manager  &output() const { assert(m_output != nullptr); return *m_output; }
+	ui_manager &ui() const { assert(m_ui != nullptr); return *m_ui; }
+	ui_input_manager &ui_input() const { assert(m_ui_input != nullptr); return *m_ui_input; }
+	crosshair_manager &crosshair() const { assert(m_crosshair != nullptr); return *m_crosshair; }
+	image_manager &image() const { assert(m_image != nullptr); return *m_image; }
+	rom_load_manager &rom_load() const { assert(m_rom_load != nullptr); return *m_rom_load; }
+	tilemap_manager &tilemap() const { assert(m_tilemap != nullptr); return *m_tilemap; }
+	debug_view_manager &debug_view() const { assert(m_debug_view != nullptr); return *m_debug_view; }
+	debugger_manager &debugger() const { assert(m_debugger != nullptr); return *m_debugger; }
+	driver_device *driver_data() const { return &downcast<driver_device &>(root_device()); }
+	template<class _DriverClass> _DriverClass *driver_data() const { return &downcast<_DriverClass &>(root_device()); }
+	machine_phase phase() const { return m_current_phase; }
+	bool paused() const { return m_paused || (m_current_phase != machine_phase::RUNNING); }
+>>>>>>> upstream/master
 	bool exit_pending() const { return m_exit_pending; }
 	bool ui_active() const { return m_ui_active; }
 	const char *basename() const { return m_basename.c_str(); }
@@ -184,16 +301,29 @@ public:
 	bool save_or_load_pending() const { return !m_saveload_pending_file.empty(); }
 	screen_device *first_screen() const { return primary_screen; }
 
+<<<<<<< HEAD
+=======
+	// RAII-based side effect disable
+	// NOP-ed when passed false, to make it more easily conditional
+	side_effect_disabler disable_side_effect(bool disable_se = true) { return side_effect_disabler(this, disable_se); }
+	bool side_effect_disabled() const { return m_side_effect_disabled != 0; }
+
+>>>>>>> upstream/master
 	// additional helpers
 	emu_options &options() const { return m_config.options(); }
 	attotime time() const { return m_scheduler.time(); }
 	bool scheduled_event_pending() const { return m_exit_pending || m_hard_reset_pending; }
+<<<<<<< HEAD
+=======
+	bool allow_logging() const { return !m_logerror_list.empty(); }
+>>>>>>> upstream/master
 
 	// fetch items by name
 	inline device_t *device(const char *tag) const { return root_device().subdevice(tag); }
 	template<class _DeviceClass> inline _DeviceClass *device(const char *tag) { return downcast<_DeviceClass *>(device(tag)); }
 
 	// immediate operations
+<<<<<<< HEAD
 	int run(bool firstrun);
 	void pause();
 	void resume();
@@ -202,6 +332,18 @@ public:
 	void call_notifiers(machine_notification which);
 	void add_logerror_callback(logerror_callback callback);
 	void set_ui_active(bool active) { m_ui_active = active; }
+=======
+	int run(bool quiet);
+	void pause();
+	void resume();
+	void toggle_pause();
+	void add_notifier(machine_notification event, machine_notify_delegate callback, bool first = false);
+	void call_notifiers(machine_notification which);
+	void add_logerror_callback(logerror_callback callback);
+	void set_ui_active(bool active) { m_ui_active = active; }
+	void debug_break();
+	void export_http_api();
+>>>>>>> upstream/master
 
 	// TODO: Do saves and loads still require scheduling?
 	void immediate_save(const char *filename);
@@ -211,12 +353,18 @@ public:
 	void schedule_exit();
 	void schedule_hard_reset();
 	void schedule_soft_reset();
+<<<<<<< HEAD
 	void schedule_save(const char *filename);
 	void schedule_load(const char *filename);
+=======
+	void schedule_save(std::string &&filename);
+	void schedule_load(std::string &&filename);
+>>>>>>> upstream/master
 
 	// date & time
 	void base_datetime(system_time &systime);
 	void current_datetime(system_time &systime);
+<<<<<<< HEAD
 
 	// watchdog control
 	void watchdog_reset();
@@ -234,10 +382,27 @@ public:
 #ifdef USE_HISCORE
 	device_t *              cpu[8];             // CPU array for hiscore support
 #endif /* USE_HISCORE */
+=======
+	void set_rtc_datetime(const system_time &systime);
+
+	// misc
+	address_space &dummy_space() const { return m_dummy_space.space(AS_PROGRAM); }
+	void popmessage() const { popmessage(static_cast<char const *>(nullptr)); }
+	template <typename Format, typename... Params> void popmessage(Format &&fmt, Params &&... args) const;
+	template <typename Format, typename... Params> void logerror(Format &&fmt, Params &&... args) const;
+	void strlog(const char *str) const;
+	u32 rand();
+	std::string describe_context() const;
+	std::string compose_saveload_filename(std::string &&base_filename, const char **searchpath = nullptr);
+	std::string get_statename(const char *statename_opt) const;
+
+	// CPU information
+>>>>>>> upstream/master
 	cpu_device *            firstcpu;           // first CPU
 
 private:
 	// video-related information
+<<<<<<< HEAD
 	screen_device *         primary_screen;     // the primary screen device, or NULL if screenless
 
 public:
@@ -266,6 +431,55 @@ private:
 
 	// internal callbacks
 	static void logfile_callback(const running_machine &machine, const char *buffer);
+=======
+	screen_device *         primary_screen;     // the primary screen device, or nullptr if screenless
+
+	// side effect disable counter
+	u32                     m_side_effect_disabled;
+
+public:
+	// debugger-related information
+	u32                     debug_flags;        // the current debug flags
+
+private:
+	class side_effect_disabler {
+		running_machine *m_machine;
+		bool m_disable_se;
+
+	public:
+		side_effect_disabler(running_machine *m, bool disable_se) : m_machine(m), m_disable_se(disable_se) {
+			if(m_disable_se)
+				m_machine->disable_side_effect_count();
+		}
+
+		~side_effect_disabler() {
+			if(m_disable_se)
+				m_machine->enable_side_effect_count();
+		}
+
+		side_effect_disabler(const side_effect_disabler &) = delete;
+		side_effect_disabler(side_effect_disabler &&) = default;
+	};
+
+	void disable_side_effect_count() { m_side_effect_disabled++; }
+	void enable_side_effect_count()  { m_side_effect_disabled--; }
+
+	// internal helpers
+	template <typename T> struct is_null { template <typename U> static bool value(U &&x) { return false; } };
+	template <typename T> struct is_null<T *> { template <typename U> static bool value(U &&x) { return !x; } };
+	void start();
+	void set_saveload_filename(std::string &&filename);
+	void handle_saveload();
+	void soft_reset(void *ptr = nullptr, s32 param = 0);
+	std::string nvram_filename(device_t &device) const;
+	void nvram_load();
+	void nvram_save();
+	void popup_clear() const;
+	void popup_message(util::format_argument_pack<std::ostream> const &args) const;
+
+	// internal callbacks
+	void logfile_callback(const char *buffer);
+>>>>>>> upstream/master
 
 	// internal device helpers
 	void start_all_devices();
@@ -274,13 +488,17 @@ private:
 	void presave_all_devices();
 	void postload_all_devices();
 
+<<<<<<< HEAD
 	TIMER_CALLBACK_MEMBER(autoboot_callback);
 
+=======
+>>>>>>> upstream/master
 	// internal state
 	const machine_config &  m_config;               // reference to the constructed machine_config
 	const game_driver &     m_system;               // reference to the definition of the game machine
 	machine_manager &       m_manager;              // reference to machine manager system
 	// managers
+<<<<<<< HEAD
 	auto_pointer<cheat_manager> m_cheat;            // internal data from cheat.c
 	auto_pointer<render_manager> m_render;          // internal data from render.c
 	auto_pointer<input_manager> m_input;            // internal data from input.c
@@ -289,6 +507,24 @@ private:
 	auto_pointer<ui_manager> m_ui;                  // internal data from ui.c
 	auto_pointer<tilemap_manager> m_tilemap;        // internal data from tilemap.c
 	auto_pointer<debug_view_manager> m_debug_view;  // internal data from debugvw.c
+=======
+	std::unique_ptr<render_manager> m_render;          // internal data from render.cpp
+	std::unique_ptr<input_manager> m_input;            // internal data from input.cpp
+	std::unique_ptr<sound_manager> m_sound;            // internal data from sound.cpp
+	std::unique_ptr<video_manager> m_video;            // internal data from video.cpp
+	ui_manager *m_ui;                                  // internal data from ui.cpp
+	std::unique_ptr<ui_input_manager> m_ui_input;      // internal data from uiinput.cpp
+	std::unique_ptr<tilemap_manager> m_tilemap;        // internal data from tilemap.cpp
+	std::unique_ptr<debug_view_manager> m_debug_view;  // internal data from debugvw.cpp
+	std::unique_ptr<network_manager> m_network;        // internal data from network.cpp
+	std::unique_ptr<bookkeeping_manager> m_bookkeeping;// internal data from bookkeeping.cpp
+	std::unique_ptr<configuration_manager> m_configuration; // internal data from config.cpp
+	std::unique_ptr<output_manager> m_output;          // internal data from output.cpp
+	std::unique_ptr<crosshair_manager> m_crosshair;    // internal data from crsshair.cpp
+	std::unique_ptr<image_manager> m_image;            // internal data from image.cpp
+	std::unique_ptr<rom_load_manager> m_rom_load;      // internal data from romload.cpp
+	std::unique_ptr<debugger_manager> m_debugger;      // internal data from debugger.cpp
+>>>>>>> upstream/master
 
 	// system state
 	machine_phase           m_current_phase;        // current execution phase
@@ -297,6 +533,7 @@ private:
 	bool                    m_exit_pending;         // is an exit pending?
 	emu_timer *             m_soft_reset_timer;     // timer used to schedule a soft reset
 
+<<<<<<< HEAD
 	// watchdog state
 	bool                    m_watchdog_enabled;     // is the watchdog enabled?
 	INT32                   m_watchdog_counter;     // counter for watchdog tracking
@@ -317,6 +554,22 @@ private:
 		SLS_NONE,
 		SLS_SAVE,
 		SLS_LOAD
+=======
+	// misc state
+	u32                     m_rand_seed;            // current random number seed
+	bool                    m_ui_active;            // ui active or not (useful for games / systems with keyboard inputs)
+	time_t                  m_base_time;            // real time at initial emulation time
+	std::string             m_basename;             // basename used for game-related paths
+	int                     m_sample_rate;          // the digital audio sample rate
+	std::unique_ptr<emu_file>  m_logfile;              // pointer to the active log file
+
+	// load/save management
+	enum class saveload_schedule
+	{
+		NONE,
+		SAVE,
+		LOAD
+>>>>>>> upstream/master
 	};
 	saveload_schedule       m_saveload_schedule;
 	attotime                m_saveload_schedule_time;
@@ -329,6 +582,7 @@ private:
 		// construction/destruction
 		notifier_callback_item(machine_notify_delegate func);
 
+<<<<<<< HEAD
 		// getters
 		notifier_callback_item *next() const { return m_next; }
 
@@ -337,6 +591,12 @@ private:
 		machine_notify_delegate     m_func;
 	};
 	simple_list<notifier_callback_item> m_notifier_list[MACHINE_NOTIFY_COUNT];
+=======
+		// state
+		machine_notify_delegate     m_func;
+	};
+	std::list<std::unique_ptr<notifier_callback_item>> m_notifier_list[MACHINE_NOTIFY_COUNT];
+>>>>>>> upstream/master
 
 	// logerror callbacks
 	class logerror_callback_item
@@ -345,6 +605,7 @@ private:
 		// construction/destruction
 		logerror_callback_item(logerror_callback func);
 
+<<<<<<< HEAD
 		// getters
 		logerror_callback_item *next() const { return m_next; }
 
@@ -353,6 +614,12 @@ private:
 		logerror_callback           m_func;
 	};
 	simple_list<logerror_callback_item> m_logerror_list;
+=======
+		// state
+		logerror_callback           m_func;
+	};
+	std::list<std::unique_ptr<logerror_callback_item>> m_logerror_list;
+>>>>>>> upstream/master
 
 	// embedded managers and objects
 	save_manager            m_save;                 // save manager
@@ -360,8 +627,84 @@ private:
 	ioport_manager          m_ioport;               // I/O port manager
 	parameters_manager      m_parameters;           // parameters manager
 	device_scheduler        m_scheduler;            // scheduler object
+<<<<<<< HEAD
 	emu_timer               *m_autoboot_timer;      // autoboot timer
 };
 
 
 #endif  /* __MACHINE_H__ */
+=======
+
+	// string formatting buffer
+	mutable util::ovectorstream m_string_buffer;
+
+	// configuration state
+	dummy_space_device m_dummy_space;
+
+#if defined(EMSCRIPTEN)
+private:
+	static running_machine *emscripten_running_machine;
+	static void emscripten_main_loop();
+public:
+	static void emscripten_set_running_machine(running_machine *machine);
+	static running_machine * emscripten_get_running_machine();
+	static ui_manager * emscripten_get_ui();
+	static sound_manager * emscripten_get_sound();
+
+	static void emscripten_exit();
+	static void emscripten_hard_reset();
+	static void emscripten_soft_reset();
+	static void emscripten_save(const char *name);
+	static void emscripten_load(const char *name);
+#endif
+};
+
+
+
+//**************************************************************************
+//  MEMBER TEMPLATES
+//**************************************************************************
+
+/*-------------------------------------------------
+    popmessage - pop up a user-visible message
+-------------------------------------------------*/
+
+template <typename Format, typename... Params>
+inline void running_machine::popmessage(Format &&fmt, Params &&... args) const
+{
+	// if the format is nullptr, it is a signal to clear the popmessage
+	// otherwise, generate the buffer and call the UI to display the message
+	if (is_null<Format>::value(fmt))
+		popup_clear();
+	else
+		popup_message(util::make_format_argument_pack(std::forward<Format>(fmt), std::forward<Params>(args)...));
+}
+
+
+/*-------------------------------------------------
+    logerror - log to the debugger and any other
+    OSD-defined output streams
+-------------------------------------------------*/
+
+template <typename Format, typename... Params>
+inline void running_machine::logerror(Format &&fmt, Params &&... args) const
+{
+	// process only if there is a target
+	if (allow_logging())
+	{
+		g_profiler.start(PROFILER_LOGERROR);
+
+		// dump to the buffer
+		m_string_buffer.clear();
+		m_string_buffer.seekp(0);
+		util::stream_format(m_string_buffer, std::forward<Format>(fmt), std::forward<Params>(args)...);
+		m_string_buffer.put('\0');
+
+		strlog(&m_string_buffer.vec()[0]);
+
+		g_profiler.stop();
+	}
+}
+
+#endif  /* MAME_EMU_MACHINE_H */
+>>>>>>> upstream/master

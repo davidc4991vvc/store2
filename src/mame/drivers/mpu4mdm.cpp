@@ -2,17 +2,23 @@
 // copyright-holders:David Haywood
 /* MPU4 games by MDM */
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> upstream/master
 #include "emu.h"
 #include "includes/mpu4.h"
 
 MACHINE_CONFIG_EXTERN( mod4oki );
 INPUT_PORTS_EXTERN( mpu4 );
 
+<<<<<<< HEAD
 #define GAME_FLAGS (MACHINE_NOT_WORKING|MACHINE_REQUIRES_ARTWORK|MACHINE_MECHANICAL)
 
 
 
+=======
+>>>>>>> upstream/master
 ROM_START( m42punlm )
 	ROM_REGION( 0x020000, "maincpu", 0 )
 	ROM_LOAD( "2pun0-0.bin", 0x0000, 0x020000, CRC(f8fd7b92) SHA1(400a66d0b401b2df2e2fb0f70eae6da7e547a50b) )
@@ -412,6 +418,10 @@ ROM_START( m4ewshft )
 	ROM_LOAD( "each_way_shifter-snd2.bin", 0x080000, 0x080000, CRC(e3ce5ec5) SHA1(9c7eefa4042b1b1aca3d0fbefcad10db34992c43) )
 ROM_END
 
+<<<<<<< HEAD
+=======
+#define GAME_FLAGS (MACHINE_NOT_WORKING|MACHINE_REQUIRES_ARTWORK|MACHINE_MECHANICAL)
+>>>>>>> upstream/master
 
 /* MDM
    most of these boot and act similar to the Empire games (ie bad text, but run OK) */

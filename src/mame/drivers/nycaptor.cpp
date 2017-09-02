@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 // license:LGPL-2.1+
+=======
+// license:BSD-3-Clause
+>>>>>>> upstream/master
 // copyright-holders:Tomasz Slanina
 /***************************************************************************
     N.Y. Captor - Taito '85
@@ -12,7 +16,11 @@
 
 What's new :
  - added bootlegs - Bronx and Colt
+<<<<<<< HEAD
  - Cycle Shooting added (bigger VRAM than nycpator, dfferent (unknwn yet) banking and
+=======
+ - Cycle Shooting added (bigger VRAM than nycpator, different (unknown yet) banking and
+>>>>>>> upstream/master
    gfx control , ROMs probably are wrong mapped, gfx too)
  - Sub CPU halt (cpu #0 ,$d001)
  - Improved communication between main cpu and sound cpu ($d400 cpu#0 , $d000 sound cpu)
@@ -159,14 +167,22 @@ Stephh's additional notes (based on the game Z80 code and some tests) :
         Furthermore, shooting birds kills you instead of recovering 3 "steps" of damage !
   - I can't tell if it's an ingame bug of this bootleg, but the game hangs after bonus stage
     (level 4) instead of looping back to level 1 with higher difficulty.
+<<<<<<< HEAD
     The game also frezees sometimes for some unknown reasons.
+=======
+    The game also freezes sometimes for some unknown reasons.
+>>>>>>> upstream/master
 
 2) 'cyclshtg' and clones
 
 2a) 'cyclshtg'
 
   - Lives (BCD coded) settings are not read from MCU, but from table at 0x0fee.
+<<<<<<< HEAD
   - Even if it isn't mentionned in the manual, DSWB bit 7 allows you to reset damage to 0
+=======
+  - Even if it isn't mentioned in the manual, DSWB bit 7 allows you to reset damage to 0
+>>>>>>> upstream/master
     at the end of a level (check code at 0x328d).
   - When "Infinite Bullets" is set to ON, there is no timer to reload the bullets.
     However, it's hard to notice as you don't see an indicator as in 'nycaptor'.
@@ -190,6 +206,7 @@ Stephh's additional notes (based on the game Z80 code and some tests) :
 
 ***************************************************************************/
 
+<<<<<<< HEAD
 //#define USE_MCU
 
 
@@ -215,6 +232,27 @@ READ8_MEMBER(nycaptor_state::from_snd_r)
 WRITE8_MEMBER(nycaptor_state::to_main_w)
 {
 	m_snd_data = data;
+=======
+#include "emu.h"
+#include "includes/nycaptor.h"
+#include "includes/taitoipt.h"
+
+#include "cpu/m6805/m6805.h"
+#include "cpu/z80/z80.h"
+#include "sound/ay8910.h"
+#include "sound/dac.h"
+#include "sound/volt_reg.h"
+#include "screen.h"
+#include "speaker.h"
+
+
+//#define USE_MCU
+
+
+WRITE8_MEMBER(nycaptor_state::sub_cpu_halt_w)
+{
+	m_subcpu->set_input_line(INPUT_LINE_HALT, (data) ? ASSERT_LINE : CLEAR_LINE);
+>>>>>>> upstream/master
 }
 
 READ8_MEMBER(nycaptor_state::nycaptor_b_r)
@@ -243,6 +281,26 @@ WRITE8_MEMBER(nycaptor_state::sound_cpu_reset_w)
 	m_audiocpu->set_input_line(INPUT_LINE_RESET, (data&1 )? ASSERT_LINE : CLEAR_LINE);
 }
 
+<<<<<<< HEAD
+=======
+READ8_MEMBER(nycaptor_state::nycaptor_mcu_status_r1)
+{
+	/* bit 1 = when 1, mcu has sent data to the main cpu */
+	return (CLEAR_LINE != m_bmcu->mcu_semaphore_r()) ? 2 : 0;
+}
+
+READ8_MEMBER(nycaptor_state::nycaptor_mcu_status_r2)
+{
+	/* bit 0 = when 1, mcu is ready to receive data from main cpu */
+	return (CLEAR_LINE != m_bmcu->host_semaphore_r()) ? 0 : 1;
+}
+
+READ8_MEMBER(nycaptor_state::sound_status_r)
+{
+	return (m_soundlatch->pending_r() ? 1 : 0) | (m_soundlatch2->pending_r() ? 2 : 0);
+}
+
+>>>>>>> upstream/master
 
 MACHINE_RESET_MEMBER(nycaptor_state,ta7630)
 {
@@ -261,6 +319,7 @@ MACHINE_RESET_MEMBER(nycaptor_state,ta7630)
 	}
 }
 
+<<<<<<< HEAD
 TIMER_CALLBACK_MEMBER(nycaptor_state::nmi_callback)
 {
 	if (m_sound_nmi_enable)
@@ -278,10 +337,16 @@ WRITE8_MEMBER(nycaptor_state::sound_command_w)
 WRITE8_MEMBER(nycaptor_state::nmi_disable_w)
 {
 	m_sound_nmi_enable = 0;
+=======
+WRITE8_MEMBER(nycaptor_state::nmi_disable_w)
+{
+	m_soundnmi->in_w<1>(0);
+>>>>>>> upstream/master
 }
 
 WRITE8_MEMBER(nycaptor_state::nmi_enable_w)
 {
+<<<<<<< HEAD
 	m_sound_nmi_enable = 1;
 
 	if (m_pending_nmi)
@@ -289,6 +354,9 @@ WRITE8_MEMBER(nycaptor_state::nmi_enable_w)
 		m_audiocpu->set_input_line(INPUT_LINE_NMI, PULSE_LINE);
 		m_pending_nmi = 0;
 	}
+=======
+	m_soundnmi->in_w<1>(1);
+>>>>>>> upstream/master
 }
 
 WRITE8_MEMBER(nycaptor_state::unk_w)
@@ -310,10 +378,17 @@ static ADDRESS_MAP_START( nycaptor_master_map, AS_PROGRAM, 8, nycaptor_state )
 	AM_RANGE(0x0000, 0x7fff) AM_ROM
 	AM_RANGE(0x8000, 0xbfff) AM_ROMBANK("bank1")
 	AM_RANGE(0xc000, 0xc7ff) AM_RAM_WRITE(nycaptor_videoram_w) AM_SHARE("videoram")
+<<<<<<< HEAD
 	AM_RANGE(0xd000, 0xd000) AM_READWRITE(nycaptor_mcu_r, nycaptor_mcu_w)
 	AM_RANGE(0xd001, 0xd001) AM_WRITE(sub_cpu_halt_w)
 	AM_RANGE(0xd002, 0xd002) AM_READWRITE(nycaptor_generic_control_r, nycaptor_generic_control_w)   /* bit 3 - memory bank at 0x8000-0xbfff */
 	AM_RANGE(0xd400, 0xd400) AM_READWRITE(from_snd_r, sound_command_w)
+=======
+	AM_RANGE(0xd000, 0xd000) AM_DEVREADWRITE("bmcu", taito68705_mcu_device, data_r, data_w)
+	AM_RANGE(0xd001, 0xd001) AM_WRITE(sub_cpu_halt_w)
+	AM_RANGE(0xd002, 0xd002) AM_READWRITE(nycaptor_generic_control_r, nycaptor_generic_control_w)   /* bit 3 - memory bank at 0x8000-0xbfff */
+	AM_RANGE(0xd400, 0xd400) AM_DEVREAD("soundlatch2", generic_latch_8_device, read) AM_DEVWRITE("soundlatch", generic_latch_8_device, write)
+>>>>>>> upstream/master
 	AM_RANGE(0xd401, 0xd401) AM_READNOP
 	AM_RANGE(0xd403, 0xd403) AM_WRITE(sound_cpu_reset_w)
 	AM_RANGE(0xd800, 0xd800) AM_READ_PORT("DSWA")
@@ -322,7 +397,11 @@ static ADDRESS_MAP_START( nycaptor_master_map, AS_PROGRAM, 8, nycaptor_state )
 	AM_RANGE(0xd803, 0xd803) AM_READ_PORT("IN0")
 	AM_RANGE(0xd804, 0xd804) AM_READ_PORT("IN1")
 	AM_RANGE(0xd805, 0xd805) AM_READ(nycaptor_mcu_status_r1)
+<<<<<<< HEAD
 	AM_RANGE(0xd806, 0xd806) AM_READNOP /* unknown ?sound? */
+=======
+	AM_RANGE(0xd806, 0xd806) AM_READ(sound_status_r)
+>>>>>>> upstream/master
 	AM_RANGE(0xd807, 0xd807) AM_READ(nycaptor_mcu_status_r2)
 	AM_RANGE(0xdc00, 0xdc9f) AM_RAM AM_SHARE("spriteram")
 	AM_RANGE(0xdca0, 0xdcbf) AM_RAM_WRITE(nycaptor_scrlram_w) AM_SHARE("scrlram")
@@ -360,6 +439,7 @@ static ADDRESS_MAP_START( nycaptor_sound_map, AS_PROGRAM, 8, nycaptor_state )
 	AM_RANGE(0xca00, 0xca00) AM_WRITENOP
 	AM_RANGE(0xcb00, 0xcb00) AM_WRITENOP
 	AM_RANGE(0xcc00, 0xcc00) AM_WRITENOP
+<<<<<<< HEAD
 	AM_RANGE(0xd000, 0xd000) AM_READ(soundlatch_byte_r) AM_WRITE(to_main_w)
 	AM_RANGE(0xd200, 0xd200) AM_READNOP AM_WRITE(nmi_enable_w)
 	AM_RANGE(0xd400, 0xd400) AM_WRITE(nmi_disable_w)
@@ -379,6 +459,15 @@ static ADDRESS_MAP_START( nycaptor_m68705_map, AS_PROGRAM, 8, nycaptor_state )
 	AM_RANGE(0x0080, 0x07ff) AM_ROM
 ADDRESS_MAP_END
 
+=======
+	AM_RANGE(0xd000, 0xd000) AM_DEVREAD("soundlatch", generic_latch_8_device, read) AM_DEVWRITE("soundlatch2", generic_latch_8_device, write)
+	AM_RANGE(0xd200, 0xd200) AM_READNOP AM_WRITE(nmi_enable_w)
+	AM_RANGE(0xd400, 0xd400) AM_WRITE(nmi_disable_w)
+	AM_RANGE(0xd600, 0xd600) AM_DEVWRITE("soundlatch", generic_latch_8_device, acknowledge_w)
+	AM_RANGE(0xe000, 0xefff) AM_NOP
+ADDRESS_MAP_END
+
+>>>>>>> upstream/master
 
 /* Cycle Shooting */
 
@@ -406,6 +495,13 @@ WRITE8_MEMBER(nycaptor_state::cyclshtg_generic_control_w)
 {
 	m_generic_control_reg = data;
 	membank("bank1")->set_entry((data >> 2) & 3);
+<<<<<<< HEAD
+=======
+
+	// shared palette data gets overwritten in colt without this
+	if (m_gametype == 2)
+		m_subcpu->set_input_line(INPUT_LINE_RESET, BIT(data, 1) ? CLEAR_LINE : ASSERT_LINE);
+>>>>>>> upstream/master
 }
 
 
@@ -416,7 +512,11 @@ static ADDRESS_MAP_START( cyclshtg_master_map, AS_PROGRAM, 8, nycaptor_state )
 	AM_RANGE(0xd000, 0xd000) AM_READWRITE(cyclshtg_mcu_r, cyclshtg_mcu_w)
 	AM_RANGE(0xd001, 0xd001) AM_WRITE(sub_cpu_halt_w)
 	AM_RANGE(0xd002, 0xd002) AM_READWRITE(nycaptor_generic_control_r, cyclshtg_generic_control_w)
+<<<<<<< HEAD
 	AM_RANGE(0xd400, 0xd400) AM_READWRITE(from_snd_r, sound_command_w)
+=======
+	AM_RANGE(0xd400, 0xd400) AM_DEVREAD("soundlatch2", generic_latch_8_device, read) AM_DEVWRITE("soundlatch", generic_latch_8_device, write)
+>>>>>>> upstream/master
 	AM_RANGE(0xd403, 0xd403) AM_WRITE(sound_cpu_reset_w)
 	AM_RANGE(0xd800, 0xd800) AM_READ_PORT("DSWA")
 	AM_RANGE(0xd801, 0xd801) AM_READ_PORT("DSWB")
@@ -424,7 +524,11 @@ static ADDRESS_MAP_START( cyclshtg_master_map, AS_PROGRAM, 8, nycaptor_state )
 	AM_RANGE(0xd803, 0xd803) AM_READ_PORT("IN0")
 	AM_RANGE(0xd804, 0xd804) AM_READ_PORT("IN1")
 	AM_RANGE(0xd805, 0xd805) AM_READ(cyclshtg_mcu_status_r)
+<<<<<<< HEAD
 	AM_RANGE(0xd806, 0xd806) AM_READNOP
+=======
+	AM_RANGE(0xd806, 0xd806) AM_READ(sound_status_r)
+>>>>>>> upstream/master
 	AM_RANGE(0xd807, 0xd807) AM_READ(cyclshtg_mcu_status_r)
 	AM_RANGE(0xdc00, 0xdc9f) AM_RAM AM_SHARE("spriteram")
 	AM_RANGE(0xdca0, 0xdcbf) AM_RAM_WRITE(nycaptor_scrlram_w) AM_SHARE("scrlram")
@@ -454,7 +558,11 @@ static ADDRESS_MAP_START( cyclshtg_slave_map, AS_PROGRAM, 8, nycaptor_state )
 ADDRESS_MAP_END
 
 static ADDRESS_MAP_START( cyclshtg_sound_map, AS_PROGRAM, 8, nycaptor_state )
+<<<<<<< HEAD
 	AM_RANGE(0xd600, 0xd600) AM_DEVWRITE("dac", dac_device, write_signed8) //otherwise no girl's scream, see MT03975
+=======
+	AM_RANGE(0xd600, 0xd600) AM_DEVWRITE("dac", dac_byte_interface, write) //otherwise no girl's scream, see MT03975
+>>>>>>> upstream/master
 	AM_IMPORT_FROM( nycaptor_sound_map )
 ADDRESS_MAP_END
 
@@ -470,7 +578,11 @@ static ADDRESS_MAP_START( bronx_master_map, AS_PROGRAM, 8, nycaptor_state )
 	AM_RANGE(0xd000, 0xd000) AM_READ(cyclshtg_mcu_r) AM_WRITENOP
 	AM_RANGE(0xd001, 0xd001) AM_WRITE(sub_cpu_halt_w)
 	AM_RANGE(0xd002, 0xd002) AM_READWRITE(nycaptor_generic_control_r, cyclshtg_generic_control_w)
+<<<<<<< HEAD
 	AM_RANGE(0xd400, 0xd400) AM_READWRITE(from_snd_r, sound_command_w)
+=======
+	AM_RANGE(0xd400, 0xd400) AM_DEVREAD("soundlatch2", generic_latch_8_device, read) AM_DEVWRITE("soundlatch", generic_latch_8_device, write)
+>>>>>>> upstream/master
 	AM_RANGE(0xd401, 0xd401) AM_READ(unk_r)
 	AM_RANGE(0xd403, 0xd403) AM_WRITE(sound_cpu_reset_w)
 	AM_RANGE(0xd800, 0xd800) AM_READ_PORT("DSWA")
@@ -479,7 +591,11 @@ static ADDRESS_MAP_START( bronx_master_map, AS_PROGRAM, 8, nycaptor_state )
 	AM_RANGE(0xd803, 0xd803) AM_READ_PORT("IN0")
 	AM_RANGE(0xd804, 0xd804) AM_READ_PORT("IN1")
 	AM_RANGE(0xd805, 0xd805) AM_READ(cyclshtg_mcu_status_r)
+<<<<<<< HEAD
 	AM_RANGE(0xd806, 0xd806) AM_READNOP
+=======
+	AM_RANGE(0xd806, 0xd806) AM_READ(sound_status_r)
+>>>>>>> upstream/master
 	AM_RANGE(0xd807, 0xd807) AM_READ(cyclshtg_mcu_status_r)
 	AM_RANGE(0xdc00, 0xdc9f) AM_RAM AM_SHARE("spriteram")
 	AM_RANGE(0xdca0, 0xdcbf) AM_RAM_WRITE(nycaptor_scrlram_w) AM_SHARE("scrlram")
@@ -745,14 +861,18 @@ void nycaptor_state::machine_start()
 		membank("bank1")->configure_entries(0, 4, memregion("maincpu")->base() + 0x10000, 0x4000);
 
 	save_item(NAME(m_generic_control_reg));
+<<<<<<< HEAD
 	save_item(NAME(m_sound_nmi_enable));
 	save_item(NAME(m_pending_nmi));
 	save_item(NAME(m_snd_data));
+=======
+>>>>>>> upstream/master
 	save_item(NAME(m_vol_ctrl));
 
 	save_item(NAME(m_char_bank));
 	save_item(NAME(m_palette_bank));
 	save_item(NAME(m_gfxctrl));
+<<<<<<< HEAD
 
 	save_item(NAME(m_port_a_in));
 	save_item(NAME(m_port_a_out));
@@ -767,6 +887,8 @@ void nycaptor_state::machine_start()
 	save_item(NAME(m_main_sent));
 	save_item(NAME(m_from_main));
 	save_item(NAME(m_from_mcu));
+=======
+>>>>>>> upstream/master
 }
 
 void nycaptor_state::machine_reset()
@@ -774,14 +896,18 @@ void nycaptor_state::machine_reset()
 	MACHINE_RESET_CALL_MEMBER(ta7630);
 
 	m_generic_control_reg = 0;
+<<<<<<< HEAD
 	m_sound_nmi_enable = 0;
 	m_pending_nmi = 0;
 	m_snd_data = 0;
+=======
+>>>>>>> upstream/master
 
 	m_char_bank = 0;
 	m_palette_bank = 0;
 	m_gfxctrl = 0;
 
+<<<<<<< HEAD
 	m_port_a_in = 0;
 	m_port_a_out = 0;
 	m_ddr_a = 0;
@@ -800,6 +926,12 @@ void nycaptor_state::machine_reset()
 }
 
 static MACHINE_CONFIG_START( nycaptor, nycaptor_state )
+=======
+	memset(m_vol_ctrl, 0, sizeof(m_vol_ctrl));
+}
+
+static MACHINE_CONFIG_START( nycaptor )
+>>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", Z80,8000000/2)      /* ??? */
@@ -814,8 +946,12 @@ static MACHINE_CONFIG_START( nycaptor, nycaptor_state )
 	MCFG_CPU_PROGRAM_MAP(nycaptor_sound_map)
 	MCFG_CPU_PERIODIC_INT_DRIVER(nycaptor_state, irq0_line_hold, 2*60)  /* IRQ generated by ??? */
 
+<<<<<<< HEAD
 	MCFG_CPU_ADD("mcu", M68705,2000000)
 	MCFG_CPU_PROGRAM_MAP(nycaptor_m68705_map)
+=======
+	MCFG_DEVICE_ADD("bmcu", TAITO68705_MCU,2000000)
+>>>>>>> upstream/master
 
 	MCFG_QUANTUM_TIME(attotime::from_hz(6000))  /* 100 CPU slices per frame - an high value to ensure proper synchronization of the CPUs */
 
@@ -835,16 +971,33 @@ static MACHINE_CONFIG_START( nycaptor, nycaptor_state )
 
 
 	/* sound hardware */
+<<<<<<< HEAD
 	MCFG_SPEAKER_STANDARD_MONO("mono")
+=======
+	MCFG_SPEAKER_STANDARD_MONO("speaker")
+
+	MCFG_GENERIC_LATCH_8_ADD("soundlatch")
+	MCFG_GENERIC_LATCH_DATA_PENDING_CB(DEVWRITELINE("soundnmi", input_merger_device, in_w<0>))
+
+	MCFG_INPUT_MERGER_ALL_HIGH("soundnmi")
+	MCFG_INPUT_MERGER_OUTPUT_HANDLER(INPUTLINE("audiocpu", INPUT_LINE_NMI))
+
+	MCFG_GENERIC_LATCH_8_ADD("soundlatch2")
+>>>>>>> upstream/master
 
 	MCFG_SOUND_ADD("ay1", AY8910, 8000000/4)
 	MCFG_AY8910_PORT_A_WRITE_CB(WRITE8(nycaptor_state, unk_w))
 	MCFG_AY8910_PORT_B_WRITE_CB(WRITE8(nycaptor_state, unk_w))
+<<<<<<< HEAD
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 0.15)
+=======
+	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "speaker", 0.15)
+>>>>>>> upstream/master
 
 	MCFG_SOUND_ADD("ay2", AY8910, 8000000/4)
 	MCFG_AY8910_PORT_A_WRITE_CB(WRITE8(nycaptor_state, unk_w))
 	MCFG_AY8910_PORT_B_WRITE_CB(WRITE8(nycaptor_state, unk_w))
+<<<<<<< HEAD
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 0.15)
 
 	MCFG_SOUND_ADD("msm", MSM5232, 2000000)
@@ -863,6 +1016,28 @@ static MACHINE_CONFIG_START( nycaptor, nycaptor_state )
 MACHINE_CONFIG_END
 
 static MACHINE_CONFIG_START( cyclshtg, nycaptor_state )
+=======
+	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "speaker", 0.15)
+
+	MCFG_SOUND_ADD("msm", MSM5232, 2000000)
+	MCFG_MSM5232_SET_CAPACITORS(0.65e-6, 0.65e-6, 0.65e-6, 0.65e-6, 0.65e-6, 0.65e-6, 0.65e-6, 0.65e-6) /* 0.65 (???) uF capacitors (match the sample, not verified) */
+	MCFG_SOUND_ROUTE(0, "speaker", 1.0)    // pin 28  2'-1
+	MCFG_SOUND_ROUTE(1, "speaker", 1.0)    // pin 29  4'-1
+	MCFG_SOUND_ROUTE(2, "speaker", 1.0)    // pin 30  8'-1
+	MCFG_SOUND_ROUTE(3, "speaker", 1.0)    // pin 31 16'-1
+	MCFG_SOUND_ROUTE(4, "speaker", 1.0)    // pin 36  2'-2
+	MCFG_SOUND_ROUTE(5, "speaker", 1.0)    // pin 35  4'-2
+	MCFG_SOUND_ROUTE(6, "speaker", 1.0)    // pin 34  8'-2
+	MCFG_SOUND_ROUTE(7, "speaker", 1.0)    // pin 33 16'-2
+	// pin 1 SOLO  8'       not mapped
+	// pin 2 SOLO 16'       not mapped
+	// pin 22 Noise Output  not mapped
+
+	// Does the DAC also exist on this board? nycaptor writes 0x80 to 0xd600
+MACHINE_CONFIG_END
+
+static MACHINE_CONFIG_START( cyclshtg )
+>>>>>>> upstream/master
 
 	MCFG_CPU_ADD("maincpu", Z80,8000000/2)
 	MCFG_CPU_PROGRAM_MAP(cyclshtg_master_map)
@@ -877,8 +1052,12 @@ static MACHINE_CONFIG_START( cyclshtg, nycaptor_state )
 	MCFG_CPU_PERIODIC_INT_DRIVER(nycaptor_state, irq0_line_hold, 2*60)
 
 #ifdef USE_MCU
+<<<<<<< HEAD
 	MCFG_CPU_ADD("mcu", M68705,2000000)
 	MCFG_CPU_PROGRAM_MAP(nycaptor_m68705_map)
+=======
+	MCFG_DEVICE_ADD("bmcu", TAITO68705_MCU,2000000)
+>>>>>>> upstream/master
 #endif
 
 	MCFG_QUANTUM_TIME(attotime::from_hz(60))
@@ -896,16 +1075,33 @@ static MACHINE_CONFIG_START( cyclshtg, nycaptor_state )
 	MCFG_PALETTE_FORMAT(xxxxBBBBGGGGRRRR)
 
 
+<<<<<<< HEAD
 	MCFG_SPEAKER_STANDARD_MONO("mono")
+=======
+	MCFG_SPEAKER_STANDARD_MONO("speaker")
+
+	MCFG_GENERIC_LATCH_8_ADD("soundlatch")
+	MCFG_GENERIC_LATCH_DATA_PENDING_CB(DEVWRITELINE("soundnmi", input_merger_device, in_w<0>))
+
+	MCFG_INPUT_MERGER_ALL_HIGH("soundnmi")
+	MCFG_INPUT_MERGER_OUTPUT_HANDLER(INPUTLINE("audiocpu", INPUT_LINE_NMI))
+
+	MCFG_GENERIC_LATCH_8_ADD("soundlatch2")
+>>>>>>> upstream/master
 
 	MCFG_SOUND_ADD("ay1", AY8910, 8000000/4)
 	MCFG_AY8910_PORT_A_WRITE_CB(WRITE8(nycaptor_state, unk_w))
 	MCFG_AY8910_PORT_B_WRITE_CB(WRITE8(nycaptor_state, unk_w))
+<<<<<<< HEAD
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 0.15)
+=======
+	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "speaker", 0.15)
+>>>>>>> upstream/master
 
 	MCFG_SOUND_ADD("ay2", AY8910, 8000000/4)
 	MCFG_AY8910_PORT_A_WRITE_CB(WRITE8(nycaptor_state, unk_w))
 	MCFG_AY8910_PORT_B_WRITE_CB(WRITE8(nycaptor_state, unk_w))
+<<<<<<< HEAD
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 0.15)
 
 	MCFG_SOUND_ADD("msm", MSM5232, 2000000)
@@ -918,16 +1114,40 @@ static MACHINE_CONFIG_START( cyclshtg, nycaptor_state )
 	MCFG_SOUND_ROUTE(5, "mono", 1.0)    // pin 35  4'-2
 	MCFG_SOUND_ROUTE(6, "mono", 1.0)    // pin 34  8'-2
 	MCFG_SOUND_ROUTE(7, "mono", 1.0)    // pin 33 16'-2
+=======
+	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "speaker", 0.15)
+
+	MCFG_SOUND_ADD("msm", MSM5232, 2000000)
+	MCFG_MSM5232_SET_CAPACITORS(0.65e-6, 0.65e-6, 0.65e-6, 0.65e-6, 0.65e-6, 0.65e-6, 0.65e-6, 0.65e-6) /* 0.65 (???) uF capacitors (match the sample, not verified) */
+	MCFG_SOUND_ROUTE(0, "speaker", 1.0)    // pin 28  2'-1
+	MCFG_SOUND_ROUTE(1, "speaker", 1.0)    // pin 29  4'-1
+	MCFG_SOUND_ROUTE(2, "speaker", 1.0)    // pin 30  8'-1
+	MCFG_SOUND_ROUTE(3, "speaker", 1.0)    // pin 31 16'-1
+	MCFG_SOUND_ROUTE(4, "speaker", 1.0)    // pin 36  2'-2
+	MCFG_SOUND_ROUTE(5, "speaker", 1.0)    // pin 35  4'-2
+	MCFG_SOUND_ROUTE(6, "speaker", 1.0)    // pin 34  8'-2
+	MCFG_SOUND_ROUTE(7, "speaker", 1.0)    // pin 33 16'-2
+>>>>>>> upstream/master
 	// pin 1 SOLO  8'       not mapped
 	// pin 2 SOLO 16'       not mapped
 	// pin 22 Noise Output  not mapped
 
+<<<<<<< HEAD
 	MCFG_DAC_ADD("dac")
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 0.50)
 MACHINE_CONFIG_END
 
 
 static MACHINE_CONFIG_START( bronx, nycaptor_state )
+=======
+	MCFG_SOUND_ADD("dac", DAC_8BIT_R2R, 0) MCFG_SOUND_ROUTE(ALL_OUTPUTS, "speaker", 0.25) // unknown DAC
+	MCFG_DEVICE_ADD("vref", VOLTAGE_REGULATOR, 0) MCFG_VOLTAGE_REGULATOR_OUTPUT(5.0)
+	MCFG_SOUND_ROUTE_EX(0, "dac", 1.0, DAC_VREF_POS_INPUT) MCFG_SOUND_ROUTE_EX(0, "dac", -1.0, DAC_VREF_NEG_INPUT)
+MACHINE_CONFIG_END
+
+
+static MACHINE_CONFIG_START( bronx )
+>>>>>>> upstream/master
 
 	MCFG_CPU_ADD("maincpu", Z80,8000000/2)
 	MCFG_CPU_PROGRAM_MAP(bronx_master_map)
@@ -956,17 +1176,34 @@ static MACHINE_CONFIG_START( bronx, nycaptor_state )
 	MCFG_PALETTE_ADD("palette", 512)
 	MCFG_PALETTE_FORMAT(xxxxBBBBGGGGRRRR)
 
+<<<<<<< HEAD
 
 	MCFG_SPEAKER_STANDARD_MONO("mono")
+=======
+	MCFG_SPEAKER_STANDARD_MONO("speaker")
+
+	MCFG_GENERIC_LATCH_8_ADD("soundlatch")
+	MCFG_GENERIC_LATCH_DATA_PENDING_CB(DEVWRITELINE("soundnmi", input_merger_device, in_w<0>))
+
+	MCFG_INPUT_MERGER_ALL_HIGH("soundnmi")
+	MCFG_INPUT_MERGER_OUTPUT_HANDLER(INPUTLINE("audiocpu", INPUT_LINE_NMI))
+
+	MCFG_GENERIC_LATCH_8_ADD("soundlatch2")
+>>>>>>> upstream/master
 
 	MCFG_SOUND_ADD("ay1", AY8910, 8000000/4)
 	MCFG_AY8910_PORT_A_WRITE_CB(WRITE8(nycaptor_state, unk_w))
 	MCFG_AY8910_PORT_B_WRITE_CB(WRITE8(nycaptor_state, unk_w))
+<<<<<<< HEAD
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 0.15)
+=======
+	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "speaker", 0.15)
+>>>>>>> upstream/master
 
 	MCFG_SOUND_ADD("ay2", AY8910, 8000000/4)
 	MCFG_AY8910_PORT_A_WRITE_CB(WRITE8(nycaptor_state, unk_w))
 	MCFG_AY8910_PORT_B_WRITE_CB(WRITE8(nycaptor_state, unk_w))
+<<<<<<< HEAD
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 0.15)
 
 	MCFG_SOUND_ADD("msm", MSM5232, 2000000)
@@ -979,12 +1216,32 @@ static MACHINE_CONFIG_START( bronx, nycaptor_state )
 	MCFG_SOUND_ROUTE(5, "mono", 1.0)    // pin 35  4'-2
 	MCFG_SOUND_ROUTE(6, "mono", 1.0)    // pin 34  8'-2
 	MCFG_SOUND_ROUTE(7, "mono", 1.0)    // pin 33 16'-2
+=======
+	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "speaker", 0.15)
+
+	MCFG_SOUND_ADD("msm", MSM5232, 2000000)
+	MCFG_MSM5232_SET_CAPACITORS(0.65e-6, 0.65e-6, 0.65e-6, 0.65e-6, 0.65e-6, 0.65e-6, 0.65e-6, 0.65e-6) /* 0.65 (???) uF capacitors (match the sample, not verified) */
+	MCFG_SOUND_ROUTE(0, "speaker", 1.0)    // pin 28  2'-1
+	MCFG_SOUND_ROUTE(1, "speaker", 1.0)    // pin 29  4'-1
+	MCFG_SOUND_ROUTE(2, "speaker", 1.0)    // pin 30  8'-1
+	MCFG_SOUND_ROUTE(3, "speaker", 1.0)    // pin 31 16'-1
+	MCFG_SOUND_ROUTE(4, "speaker", 1.0)    // pin 36  2'-2
+	MCFG_SOUND_ROUTE(5, "speaker", 1.0)    // pin 35  4'-2
+	MCFG_SOUND_ROUTE(6, "speaker", 1.0)    // pin 34  8'-2
+	MCFG_SOUND_ROUTE(7, "speaker", 1.0)    // pin 33 16'-2
+>>>>>>> upstream/master
 	// pin 1 SOLO  8'       not mapped
 	// pin 2 SOLO 16'       not mapped
 	// pin 22 Noise Output  not mapped
 
+<<<<<<< HEAD
 	MCFG_DAC_ADD("dac")
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 0.50)
+=======
+	MCFG_SOUND_ADD("dac", DAC_8BIT_R2R, 0) MCFG_SOUND_ROUTE(ALL_OUTPUTS, "speaker", 0.25) // unknown DAC
+	MCFG_DEVICE_ADD("vref", VOLTAGE_REGULATOR, 0) MCFG_VOLTAGE_REGULATOR_OUTPUT(5.0)
+	MCFG_SOUND_ROUTE_EX(0, "dac", 1.0, DAC_VREF_POS_INPUT) MCFG_SOUND_ROUTE_EX(0, "dac", -1.0, DAC_VREF_NEG_INPUT)
+>>>>>>> upstream/master
 MACHINE_CONFIG_END
 
 
@@ -1008,7 +1265,11 @@ ROM_START( nycaptor )
 	ROM_LOAD( "a50_15",   0x0000, 0x4000, CRC(f8a604e5) SHA1(8fae920fd09584b5e5ccd0db8b8934b393a23d50) )
 	ROM_LOAD( "a50_16",   0x4000, 0x4000, CRC(fc24e11d) SHA1(ce1a1d7b809fa0f5f5e7a462047374b1b3f621c6) )
 
+<<<<<<< HEAD
 	ROM_REGION( 0x0800, "mcu", 0 )
+=======
+	ROM_REGION( 0x0800, "bmcu:mcu", 0 )
+>>>>>>> upstream/master
 	ROM_LOAD( "a50_17",   0x0000, 0x0800, CRC(69fe08dc) SHA1(9bdac3e835f63bbb8806892169d89f43d447df21) )
 
 	ROM_REGION( 0x20000, "gfx1", ROMREGION_INVERT )
@@ -1038,7 +1299,11 @@ ROM_START( cyclshtg )
 	ROM_LOAD( "a80_16.i26",   0x0000, 0x4000, CRC(ce171a48) SHA1(e5ae9bb22f58c8857737bc6f5317866819a4e4d1) )
 	ROM_LOAD( "a80_17.i25",   0x4000, 0x4000, CRC(a90b7bbc) SHA1(bd5c96861a59a1f84bb5032775b1c70efdb7066f) )
 
+<<<<<<< HEAD
 	ROM_REGION( 0x0800, "cpu3", 0 )
+=======
+	ROM_REGION( 0x0800, "bmcu:mcu", 0 )
+>>>>>>> upstream/master
 	ROM_LOAD( "a80_18",       0x0000, 0x0800, NO_DUMP ) /* Missing */
 
 	ROM_REGION( 0x20000, "gfx1", ROMREGION_INVERT )
@@ -1330,7 +1595,11 @@ DRIVER_INIT_MEMBER(nycaptor_state,cyclshtg)
 DRIVER_INIT_MEMBER(nycaptor_state,bronx)
 {
 	int i;
+<<<<<<< HEAD
 	UINT8 *rom = memregion("maincpu")->base();
+=======
+	uint8_t *rom = memregion("maincpu")->base();
+>>>>>>> upstream/master
 
 	for (i = 0; i < 0x20000; i++)
 		rom[i] = BITSWAP8(rom[i], 0, 1, 2, 3, 4, 5, 6, 7);
@@ -1341,7 +1610,11 @@ DRIVER_INIT_MEMBER(nycaptor_state,bronx)
 DRIVER_INIT_MEMBER(nycaptor_state,colt)
 {
 	int i;
+<<<<<<< HEAD
 	UINT8 *rom = memregion("maincpu")->base();
+=======
+	uint8_t *rom = memregion("maincpu")->base();
+>>>>>>> upstream/master
 
 	for (i = 0; i < 0x20000; i++)
 		rom[i] = BITSWAP8(rom[i], 0, 1, 2, 3, 4, 5, 6, 7);
@@ -1349,8 +1622,16 @@ DRIVER_INIT_MEMBER(nycaptor_state,colt)
 	m_gametype = 2;
 }
 
+<<<<<<< HEAD
 GAME( 1985, nycaptor, 0,        nycaptor, nycaptor, nycaptor_state, nycaptor, ROT0,  "Taito",   "N.Y. Captor", MACHINE_IMPERFECT_GRAPHICS | MACHINE_IMPERFECT_SOUND | MACHINE_SUPPORTS_SAVE )
 GAME( 1986, cyclshtg, 0,        cyclshtg, cyclshtg, nycaptor_state, cyclshtg, ROT90, "Taito",   "Cycle Shooting", MACHINE_NOT_WORKING | MACHINE_SUPPORTS_SAVE )
 /* bootlegs */
 GAME( 1986, bronx,    cyclshtg, bronx,    bronx, nycaptor_state,    bronx,    ROT90, "bootleg", "Bronx", MACHINE_IMPERFECT_GRAPHICS | MACHINE_IMPERFECT_SOUND | MACHINE_SUPPORTS_SAVE )
 GAME( 1986, colt,     nycaptor, bronx,    colt, nycaptor_state,     colt,     ROT0,  "bootleg", "Colt", MACHINE_IMPERFECT_GRAPHICS | MACHINE_IMPERFECT_SOUND | MACHINE_WRONG_COLORS | MACHINE_SUPPORTS_SAVE )
+=======
+GAME( 1985, nycaptor, 0,        nycaptor, nycaptor, nycaptor_state, nycaptor, ROT0,  "Taito",   "N.Y. Captor",    MACHINE_IMPERFECT_GRAPHICS | MACHINE_IMPERFECT_SOUND | MACHINE_SUPPORTS_SAVE )
+GAME( 1986, cyclshtg, 0,        cyclshtg, cyclshtg, nycaptor_state, cyclshtg, ROT90, "Taito",   "Cycle Shooting", MACHINE_NOT_WORKING | MACHINE_SUPPORTS_SAVE )
+/* bootlegs */
+GAME( 1986, bronx,    cyclshtg, bronx,    bronx,    nycaptor_state, bronx,    ROT90, "bootleg", "Bronx",          MACHINE_IMPERFECT_GRAPHICS | MACHINE_IMPERFECT_SOUND | MACHINE_SUPPORTS_SAVE )
+GAME( 1986, colt,     nycaptor, bronx,    colt,     nycaptor_state, colt,     ROT0,  "bootleg", "Colt",           MACHINE_IMPERFECT_GRAPHICS | MACHINE_IMPERFECT_SOUND | MACHINE_SUPPORTS_SAVE )
+>>>>>>> upstream/master

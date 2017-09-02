@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 // license:???
+=======
+// license:GPL-2.0+
+>>>>>>> upstream/master
 // copyright-holders:Jarek Burczynski
 /****************************************************************************
 
@@ -11,6 +15,7 @@
 /*
     TO DO:
     - sprites graphics decoding could be changed to only use
+<<<<<<< HEAD
       color codes 8-15 (now it decodes all 64 colors). Perhaps the same
       applies to character graphics (colors 0-7 only),
 
@@ -19,6 +24,13 @@
     - controls may be wrong (BUTTON 3 - not used ?)
 
     - palette has 1024 colors, but only first 256 are used at the moment
+=======
+      color codes 8-15 (now it decodes all 64 colors).
+
+    - sprite memory needs to be buffered ?
+
+    - inputs labels for Field Day, also fix the p3 / p4 controls (actually routes to p1 / p2)
+>>>>>>> upstream/master
 
     - pixel layer needs priority ?
 */
@@ -204,7 +216,11 @@ M4300049A (relabeled J1100004A/K1100010A)
 1x m5m5517
 z80c
 
+<<<<<<< HEAD
 a17_14 protection processor. 28 Pin Motorolla 15-00011-01 DA68235 (Labeled 8909)
+=======
+a17_14 protection processor. 28 Pin Motorola 15-00011-01 DA68235 (Labeled 8909)
+>>>>>>> upstream/master
 Next to MB14241
 
 Rom Daughterboard
@@ -225,11 +241,24 @@ Notes - Has jumper setting for 122HZ or 61HZ)
 */
 
 #include "emu.h"
+<<<<<<< HEAD
 #include "cpu/z80/z80.h"
 #include "cpu/m6805/m6805.h"
 #include "sound/ay8910.h"
 #include "sound/dac.h"
 #include "includes/40love.h"
+=======
+#include "includes/40love.h"
+
+#include "cpu/m6805/m6805.h"
+#include "cpu/z80/z80.h"
+#include "sound/ay8910.h"
+#include "sound/dac.h"
+#include "sound/volt_reg.h"
+#include "screen.h"
+#include "speaker.h"
+
+>>>>>>> upstream/master
 
 void fortyl_state::device_timer(emu_timer &timer, device_timer_id id, int param, void *ptr)
 {
@@ -242,13 +271,21 @@ void fortyl_state::device_timer(emu_timer &timer, device_timer_id id, int param,
 			m_pending_nmi = 1;
 		break;
 	default:
+<<<<<<< HEAD
 			assert_always(FALSE, "Unknown id in fortyl_state::device_timer");
+=======
+			assert_always(false, "Unknown id in fortyl_state::device_timer");
+>>>>>>> upstream/master
 	}
 }
 
 WRITE8_MEMBER(fortyl_state::sound_command_w)
 {
+<<<<<<< HEAD
 	soundlatch_byte_w(space, 0, data);
+=======
+	m_soundlatch->write(space, 0, data);
+>>>>>>> upstream/master
 	synchronize(TIMER_NMI_CALLBACK, data);
 }
 
@@ -272,7 +309,11 @@ WRITE8_MEMBER(fortyl_state::nmi_enable_w)
 #if 0
 WRITE8_MEMBER(fortyl_state::fortyl_coin_counter_w)
 {
+<<<<<<< HEAD
 	coin_counter_w(machine(), offset,data);
+=======
+	machine().bookkeeping().coin_counter_w(offset,data);
+>>>>>>> upstream/master
 }
 #endif
 
@@ -296,6 +337,18 @@ WRITE8_MEMBER(fortyl_state::pix1_w)
 	m_pix1 = data;
 }
 
+<<<<<<< HEAD
+=======
+READ8_MEMBER(fortyl_state::fortyl_mcu_status_r)
+{
+	// bit 0 = when 1, MCU is ready to receive data from main CPU
+	// bit 1 = when 1, MCU has sent data to the main CPU
+	return
+		((CLEAR_LINE == m_bmcu->host_semaphore_r()) ? 0x01 : 0x00) |
+		((CLEAR_LINE != m_bmcu->mcu_semaphore_r()) ? 0x02 : 0x00);
+}
+
+>>>>>>> upstream/master
 WRITE8_MEMBER(fortyl_state::pix1_mcu_w)
 {
 //  if (data > 7)
@@ -331,6 +384,7 @@ READ8_MEMBER(fortyl_state::pix2_r)
 }
 
 
+<<<<<<< HEAD
 /****************************************************************************
                         fake MCU (undoukai and field day)
 ****************************************************************************/
@@ -570,11 +624,17 @@ READ8_MEMBER(fortyl_state::undoukai_mcu_status_r)
 	return res;
 }
 
+=======
+>>>>>>> upstream/master
 /***************************************************************************/
 
 DRIVER_INIT_MEMBER(fortyl_state,undoukai)
 {
+<<<<<<< HEAD
 	UINT8 *ROM = memregion("maincpu")->base();
+=======
+	uint8_t *ROM = memregion("maincpu")->base();
+>>>>>>> upstream/master
 	membank("bank1")->configure_entries(0, 2, &ROM[0x10000], 0x2000);
 
 	m_pix_color[0] = 0x000;
@@ -585,14 +645,22 @@ DRIVER_INIT_MEMBER(fortyl_state,undoukai)
 
 DRIVER_INIT_MEMBER(fortyl_state,40love)
 {
+<<<<<<< HEAD
 	UINT8 *ROM = memregion("maincpu")->base();
+=======
+	uint8_t *ROM = memregion("maincpu")->base();
+>>>>>>> upstream/master
 	membank("bank1")->configure_entries(0, 2, &ROM[0x10000], 0x2000);
 
 	#if 0
 		/* character ROM hack
 		    to show a white line on the opponent side */
 
+<<<<<<< HEAD
 		UINT8 *ROM = memregion("gfx2")->base();
+=======
+		uint8_t *ROM = memregion("gfx2")->base();
+>>>>>>> upstream/master
 		int adr = 0x10 * 0x022b;
 		ROM[adr + 0x000a] = 0x00;
 		ROM[adr + 0x000b] = 0x00;
@@ -630,8 +698,13 @@ WRITE8_MEMBER(fortyl_state::to_main_w)
 static ADDRESS_MAP_START( 40love_map, AS_PROGRAM, 8, fortyl_state )
 	AM_RANGE(0x0000, 0x7fff) AM_ROM
 	AM_RANGE(0x8000, 0x87ff) AM_RAM /* M5517P on main board */
+<<<<<<< HEAD
 	AM_RANGE(0x8800, 0x8800) AM_DEVREADWRITE("bmcu", buggychl_mcu_device, buggychl_mcu_r, buggychl_mcu_w)
 	AM_RANGE(0x8801, 0x8801) AM_DEVREAD("bmcu", buggychl_mcu_device, buggychl_mcu_status_r) AM_WRITE(pix1_mcu_w)      //pixel layer related
+=======
+	AM_RANGE(0x8800, 0x8800) AM_DEVREADWRITE("bmcu", taito68705_mcu_device, data_r, data_w)
+	AM_RANGE(0x8801, 0x8801) AM_READWRITE(fortyl_mcu_status_r, pix1_mcu_w)      //pixel layer related
+>>>>>>> upstream/master
 	AM_RANGE(0x8802, 0x8802) AM_WRITE(bank_select_w)
 	AM_RANGE(0x8803, 0x8803) AM_READWRITE(pix2_r, pix2_w)       //pixel layer related
 	AM_RANGE(0x8804, 0x8804) AM_READWRITE(from_snd_r, sound_command_w)
@@ -649,6 +722,10 @@ static ADDRESS_MAP_START( 40love_map, AS_PROGRAM, 8, fortyl_state )
 	AM_RANGE(0x9880, 0x98bf) AM_READWRITE(fortyl_bg_colorram_r, fortyl_bg_colorram_w) AM_SHARE("colorram")      /* background attributes (2 bytes per line) */
 	AM_RANGE(0x98c0, 0x98ff) AM_RAM AM_SHARE("spriteram2")/* sprites part 2 */
 	AM_RANGE(0xa000, 0xbfff) AM_ROMBANK("bank1")
+<<<<<<< HEAD
+=======
+	//AM_RANGE(0xbf00, 0xbfff) writes here when zooms-in/out, left-over or pixel line clearance?
+>>>>>>> upstream/master
 	AM_RANGE(0xc000, 0xffff) AM_READWRITE(fortyl_pixram_r, fortyl_pixram_w) /* banked pixel layer */
 ADDRESS_MAP_END
 
@@ -656,8 +733,13 @@ static ADDRESS_MAP_START( undoukai_map, AS_PROGRAM, 8, fortyl_state )
 	AM_RANGE(0x0000, 0x7fff) AM_ROM
 	AM_RANGE(0x8000, 0x9fff) AM_ROMBANK("bank1")
 	AM_RANGE(0xa000, 0xa7ff) AM_RAM AM_SHARE("mcu_ram") /* M5517P on main board */
+<<<<<<< HEAD
 	AM_RANGE(0xa800, 0xa800) AM_READWRITE(undoukai_mcu_r, undoukai_mcu_w)
 	AM_RANGE(0xa801, 0xa801) AM_READWRITE(undoukai_mcu_status_r, pix1_w)        //pixel layer related
+=======
+	AM_RANGE(0xa800, 0xa800) AM_DEVREADWRITE("bmcu", taito68705_mcu_device, data_r, data_w)
+	AM_RANGE(0xa801, 0xa801) AM_READWRITE(fortyl_mcu_status_r, pix1_w)        //pixel layer related
+>>>>>>> upstream/master
 	AM_RANGE(0xa802, 0xa802) AM_WRITE(bank_select_w)
 	AM_RANGE(0xa803, 0xa803) AM_READWRITE(pix2_r, pix2_w)       //pixel layer related
 	AM_RANGE(0xa804, 0xa804) AM_READWRITE(from_snd_r, sound_command_w)
@@ -749,10 +831,17 @@ static ADDRESS_MAP_START( sound_map, AS_PROGRAM, 8, fortyl_state )
 	AM_RANGE(0xca00, 0xca0d) AM_DEVWRITE("msm", msm5232_device, write)
 	AM_RANGE(0xcc00, 0xcc00) AM_WRITE(sound_control_0_w)
 	AM_RANGE(0xce00, 0xce00) AM_WRITE(sound_control_1_w)
+<<<<<<< HEAD
 	AM_RANGE(0xd800, 0xd800) AM_READ(soundlatch_byte_r) AM_WRITE(to_main_w)
 	AM_RANGE(0xda00, 0xda00) AM_READNOP AM_WRITE(nmi_enable_w) /* unknown read */
 	AM_RANGE(0xdc00, 0xdc00) AM_WRITE(nmi_disable_w)
 	AM_RANGE(0xde00, 0xde00) AM_READNOP AM_DEVWRITE("dac", dac_device, write_signed8)       /* signed 8-bit DAC - unknown read */
+=======
+	AM_RANGE(0xd800, 0xd800) AM_DEVREAD("soundlatch", generic_latch_8_device, read) AM_WRITE(to_main_w)
+	AM_RANGE(0xda00, 0xda00) AM_READNOP AM_WRITE(nmi_enable_w) /* unknown read */
+	AM_RANGE(0xdc00, 0xdc00) AM_WRITE(nmi_disable_w)
+	AM_RANGE(0xde00, 0xde00) AM_READNOP AM_DEVWRITE("dac", dac_byte_interface, write)       /* signed 8-bit DAC - unknown read */
+>>>>>>> upstream/master
 	AM_RANGE(0xe000, 0xefff) AM_ROM /* space for diagnostics ROM */
 ADDRESS_MAP_END
 
@@ -832,8 +921,13 @@ static INPUT_PORTS_START( 40love )
 	PORT_DIPSETTING(    0x80, "2" )
 
 	PORT_START("SYSTEM")
+<<<<<<< HEAD
 	PORT_BIT( 0x01, IP_ACTIVE_LOW, IPT_UNKNOWN )    // ?
 	PORT_BIT( 0x02, IP_ACTIVE_LOW, IPT_UNKNOWN )    // ?
+=======
+	PORT_BIT( 0x01, IP_ACTIVE_LOW, IPT_UNKNOWN )
+	PORT_BIT( 0x02, IP_ACTIVE_LOW, IPT_UNKNOWN )
+>>>>>>> upstream/master
 	PORT_BIT( 0x04, IP_ACTIVE_HIGH,IPT_COIN1 )
 	PORT_BIT( 0x08, IP_ACTIVE_HIGH,IPT_COIN2 )
 	PORT_BIT( 0x10, IP_ACTIVE_LOW, IPT_START1 )
@@ -846,20 +940,34 @@ static INPUT_PORTS_START( 40love )
 	PORT_BIT( 0x02, IP_ACTIVE_LOW, IPT_JOYSTICK_RIGHT ) PORT_4WAY
 	PORT_BIT( 0x04, IP_ACTIVE_LOW, IPT_JOYSTICK_DOWN ) PORT_4WAY
 	PORT_BIT( 0x08, IP_ACTIVE_LOW, IPT_JOYSTICK_UP ) PORT_4WAY
+<<<<<<< HEAD
 	PORT_BIT( 0x10, IP_ACTIVE_LOW, IPT_BUTTON1 )
 	PORT_BIT( 0x20, IP_ACTIVE_LOW, IPT_BUTTON2 )
 	PORT_BIT( 0x40, IP_ACTIVE_LOW, IPT_BUTTON3 )    // ?
 	PORT_BIT( 0x80, IP_ACTIVE_LOW, IPT_BUTTON4 )
+=======
+	PORT_BIT( 0x10, IP_ACTIVE_LOW, IPT_BUTTON3 ) PORT_NAME("P1 Stance Change Button")
+	PORT_BIT( 0x20, IP_ACTIVE_LOW, IPT_BUTTON2 ) PORT_NAME("P1 Lob Button")
+	PORT_BIT( 0x40, IP_ACTIVE_LOW, IPT_UNKNOWN )
+	PORT_BIT( 0x80, IP_ACTIVE_LOW, IPT_BUTTON1 ) PORT_NAME("P1 Stroke Button")
+>>>>>>> upstream/master
 
 	PORT_START("P2")
 	PORT_BIT( 0x01, IP_ACTIVE_LOW, IPT_JOYSTICK_LEFT ) PORT_4WAY PORT_COCKTAIL
 	PORT_BIT( 0x02, IP_ACTIVE_LOW, IPT_JOYSTICK_RIGHT ) PORT_4WAY PORT_COCKTAIL
 	PORT_BIT( 0x04, IP_ACTIVE_LOW, IPT_JOYSTICK_DOWN ) PORT_4WAY PORT_COCKTAIL
 	PORT_BIT( 0x08, IP_ACTIVE_LOW, IPT_JOYSTICK_UP ) PORT_4WAY PORT_COCKTAIL
+<<<<<<< HEAD
 	PORT_BIT( 0x10, IP_ACTIVE_LOW, IPT_BUTTON1 ) PORT_COCKTAIL
 	PORT_BIT( 0x20, IP_ACTIVE_LOW, IPT_BUTTON2 ) PORT_COCKTAIL
 	PORT_BIT( 0x40, IP_ACTIVE_LOW, IPT_BUTTON3 ) PORT_COCKTAIL  // ?
 	PORT_BIT( 0x80, IP_ACTIVE_LOW, IPT_BUTTON4 ) PORT_COCKTAIL
+=======
+	PORT_BIT( 0x10, IP_ACTIVE_LOW, IPT_BUTTON3 ) PORT_COCKTAIL PORT_NAME("P2 Stance Change Button")
+	PORT_BIT( 0x20, IP_ACTIVE_LOW, IPT_BUTTON2 ) PORT_COCKTAIL PORT_NAME("P2 Lob Button")
+	PORT_BIT( 0x40, IP_ACTIVE_LOW, IPT_UNKNOWN )
+	PORT_BIT( 0x80, IP_ACTIVE_LOW, IPT_BUTTON1 ) PORT_COCKTAIL PORT_NAME("P2 Stroke Button")
+>>>>>>> upstream/master
 INPUT_PORTS_END
 
 static INPUT_PORTS_START( undoukai )
@@ -962,6 +1070,11 @@ MACHINE_START_MEMBER(fortyl_state,40love)
 	/* video */
 	save_item(NAME(m_pix1));
 	save_item(NAME(m_pix2));
+<<<<<<< HEAD
+=======
+	save_item(NAME(m_color_bank));
+	save_item(NAME(m_screen_disable));
+>>>>>>> upstream/master
 	/* sound */
 	save_item(NAME(m_sound_nmi_enable));
 	save_item(NAME(m_pending_nmi));
@@ -974,6 +1087,7 @@ MACHINE_START_MEMBER(fortyl_state,40love)
 	save_item(NAME(m_snd_ctrl3));
 }
 
+<<<<<<< HEAD
 MACHINE_START_MEMBER(fortyl_state,undoukai)
 {
 	MACHINE_START_CALL_MEMBER(40love);
@@ -986,6 +1100,8 @@ MACHINE_START_MEMBER(fortyl_state,undoukai)
 	save_item(NAME(m_mcu_out[0]));
 	save_item(NAME(m_mcu_out[1]));
 }
+=======
+>>>>>>> upstream/master
 
 MACHINE_RESET_MEMBER(fortyl_state,common)
 {
@@ -995,6 +1111,10 @@ MACHINE_RESET_MEMBER(fortyl_state,common)
 	m_pix1 = 0;
 	m_pix2[0] = 0;
 	m_pix2[1] = 0;
+<<<<<<< HEAD
+=======
+	m_color_bank = false;
+>>>>>>> upstream/master
 
 	/* sound */
 	m_sound_nmi_enable = 0;
@@ -1009,6 +1129,7 @@ MACHINE_RESET_MEMBER(fortyl_state,common)
 
 MACHINE_RESET_MEMBER(fortyl_state,40love)
 {
+<<<<<<< HEAD
 	m_mcu->set_input_line(0, CLEAR_LINE);
 
 	MACHINE_RESET_CALL_MEMBER(common);
@@ -1034,6 +1155,12 @@ MACHINE_RESET_MEMBER(fortyl_state,undoukai)
 }
 
 static MACHINE_CONFIG_START( 40love, fortyl_state )
+=======
+	MACHINE_RESET_CALL_MEMBER(common);
+}
+
+static MACHINE_CONFIG_START( 40love )
+>>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu",Z80,8000000/2) /* OK */
@@ -1044,9 +1171,13 @@ static MACHINE_CONFIG_START( 40love, fortyl_state )
 	MCFG_CPU_PROGRAM_MAP(sound_map)
 	MCFG_CPU_PERIODIC_INT_DRIVER(fortyl_state, irq0_line_hold, 2*60)    /* source/number of IRQs is unknown */
 
+<<<<<<< HEAD
 	MCFG_CPU_ADD("mcu",M68705,18432000/6) /* OK */
 	MCFG_CPU_PROGRAM_MAP(buggychl_mcu_map)
 	MCFG_DEVICE_ADD("bmcu", BUGGYCHL_MCU, 0)
+=======
+	MCFG_DEVICE_ADD("bmcu", TAITO68705_MCU, 18432000/6) /* OK */
+>>>>>>> upstream/master
 
 	MCFG_QUANTUM_TIME(attotime::from_hz(6000))  /* high interleave to ensure proper synchronization of CPUs */
 	MCFG_MACHINE_START_OVERRIDE(fortyl_state,40love)
@@ -1062,15 +1193,25 @@ static MACHINE_CONFIG_START( 40love, fortyl_state )
 	MCFG_SCREEN_PALETTE("palette")
 
 	MCFG_GFXDECODE_ADD("gfxdecode", "palette", 40love)
+<<<<<<< HEAD
 	MCFG_PALETTE_ADD("palette", 1024)
 	MCFG_PALETTE_INIT_OWNER(fortyl_state, fortyl)
 
 	/* sound hardware */
 	MCFG_SPEAKER_STANDARD_MONO("mono")
+=======
+	MCFG_PALETTE_ADD_RRRRGGGGBBBB_PROMS("palette", "proms", 1024)
+
+	/* sound hardware */
+	MCFG_SPEAKER_STANDARD_MONO("speaker")
+
+	MCFG_GENERIC_LATCH_8_ADD("soundlatch")
+>>>>>>> upstream/master
 
 	MCFG_SOUND_ADD("aysnd", AY8910, 2000000)
 	MCFG_AY8910_PORT_A_WRITE_CB(WRITE8(fortyl_state, sound_control_2_w))
 	MCFG_AY8910_PORT_B_WRITE_CB(WRITE8(fortyl_state, sound_control_3_w))
+<<<<<<< HEAD
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 0.10)
 
 	MCFG_SOUND_ADD("msm", MSM5232, 8000000/4)
@@ -1083,15 +1224,38 @@ static MACHINE_CONFIG_START( 40love, fortyl_state )
 	MCFG_SOUND_ROUTE(5, "mono", 1.0)    // pin 35  4'-2
 	MCFG_SOUND_ROUTE(6, "mono", 1.0)    // pin 34  8'-2
 	MCFG_SOUND_ROUTE(7, "mono", 1.0)    // pin 33 16'-2
+=======
+	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "speaker", 0.1)
+
+	MCFG_SOUND_ADD("msm", MSM5232, 8000000/4)
+	MCFG_MSM5232_SET_CAPACITORS(1.0e-6, 1.0e-6, 1.0e-6, 1.0e-6, 1.0e-6, 1.0e-6, 1.0e-6, 1.0e-6) /* 1.0 uF capacitors (verified on real PCB) */
+	MCFG_SOUND_ROUTE(0, "speaker", 1.0)    // pin 28  2'-1
+	MCFG_SOUND_ROUTE(1, "speaker", 1.0)    // pin 29  4'-1
+	MCFG_SOUND_ROUTE(2, "speaker", 1.0)    // pin 30  8'-1
+	MCFG_SOUND_ROUTE(3, "speaker", 1.0)    // pin 31 16'-1
+	MCFG_SOUND_ROUTE(4, "speaker", 1.0)    // pin 36  2'-2
+	MCFG_SOUND_ROUTE(5, "speaker", 1.0)    // pin 35  4'-2
+	MCFG_SOUND_ROUTE(6, "speaker", 1.0)    // pin 34  8'-2
+	MCFG_SOUND_ROUTE(7, "speaker", 1.0)    // pin 33 16'-2
+>>>>>>> upstream/master
 	// pin 1 SOLO  8'       not mapped
 	// pin 2 SOLO 16'       not mapped
 	// pin 22 Noise Output  not mapped
 
+<<<<<<< HEAD
 	MCFG_DAC_ADD("dac")
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 0.20)
 MACHINE_CONFIG_END
 
 static MACHINE_CONFIG_START( undoukai, fortyl_state )
+=======
+	MCFG_SOUND_ADD("dac", DAC_8BIT_R2R, 0) MCFG_SOUND_ROUTE(ALL_OUTPUTS, "speaker", 0.2) // unknown DAC
+	MCFG_DEVICE_ADD("vref", VOLTAGE_REGULATOR, 0) MCFG_VOLTAGE_REGULATOR_OUTPUT(5.0)
+	MCFG_SOUND_ROUTE_EX(0, "dac", 1.0, DAC_VREF_POS_INPUT) MCFG_SOUND_ROUTE_EX(0, "dac", -1.0, DAC_VREF_NEG_INPUT)
+MACHINE_CONFIG_END
+
+static MACHINE_CONFIG_START( undoukai )
+>>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu",Z80,8000000/2)
@@ -1102,12 +1266,20 @@ static MACHINE_CONFIG_START( undoukai, fortyl_state )
 	MCFG_CPU_PROGRAM_MAP(sound_map)
 	MCFG_CPU_PERIODIC_INT_DRIVER(fortyl_state, irq0_line_hold, 2*60)    /* source/number of IRQs is unknown */
 
+<<<<<<< HEAD
 //  MCFG_CPU_ADD("mcu",M68705,18432000/6)
 //  MCFG_CPU_PROGRAM_MAP(buggychl_mcu_map)
 //  MCFG_DEVICE_ADD("bmcu", BUGGYCHL_MCU, 0)
 
 	MCFG_MACHINE_START_OVERRIDE(fortyl_state,undoukai)
 	MCFG_MACHINE_RESET_OVERRIDE(fortyl_state,undoukai)  /* init machine */
+=======
+	MCFG_DEVICE_ADD("bmcu", TAITO68705_MCU, 18432000/6)
+
+	MCFG_QUANTUM_TIME(attotime::from_hz(6000))
+	MCFG_MACHINE_START_OVERRIDE(fortyl_state,40love)
+	MCFG_MACHINE_RESET_OVERRIDE(fortyl_state,40love)  /* init machine */
+>>>>>>> upstream/master
 
 	/* video hardware */
 	MCFG_SCREEN_ADD("screen", RASTER)
@@ -1119,15 +1291,25 @@ static MACHINE_CONFIG_START( undoukai, fortyl_state )
 	MCFG_SCREEN_PALETTE("palette")
 
 	MCFG_GFXDECODE_ADD("gfxdecode", "palette", 40love)
+<<<<<<< HEAD
 	MCFG_PALETTE_ADD("palette", 1024)
 	MCFG_PALETTE_INIT_OWNER(fortyl_state, fortyl)
 
 	/* sound hardware */
 	MCFG_SPEAKER_STANDARD_MONO("mono")
+=======
+	MCFG_PALETTE_ADD_RRRRGGGGBBBB_PROMS("palette", "proms", 1024)
+
+	/* sound hardware */
+	MCFG_SPEAKER_STANDARD_MONO("speaker")
+
+	MCFG_GENERIC_LATCH_8_ADD("soundlatch")
+>>>>>>> upstream/master
 
 	MCFG_SOUND_ADD("aysnd", AY8910, 2000000)
 	MCFG_AY8910_PORT_A_WRITE_CB(WRITE8(fortyl_state, sound_control_2_w))
 	MCFG_AY8910_PORT_B_WRITE_CB(WRITE8(fortyl_state, sound_control_3_w))
+<<<<<<< HEAD
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 0.10)
 
 	MCFG_SOUND_ADD("msm", MSM5232, 8000000/4)
@@ -1140,12 +1322,32 @@ static MACHINE_CONFIG_START( undoukai, fortyl_state )
 	MCFG_SOUND_ROUTE(5, "mono", 1.0)    // pin 35  4'-2
 	MCFG_SOUND_ROUTE(6, "mono", 1.0)    // pin 34  8'-2
 	MCFG_SOUND_ROUTE(7, "mono", 1.0)    // pin 33 16'-2
+=======
+	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "speaker", 0.1)
+
+	MCFG_SOUND_ADD("msm", MSM5232, 8000000/4)
+	MCFG_MSM5232_SET_CAPACITORS(1.0e-6, 1.0e-6, 1.0e-6, 1.0e-6, 1.0e-6, 1.0e-6, 1.0e-6, 1.0e-6) /* 1.0 uF capacitors (verified on real PCB) */
+	MCFG_SOUND_ROUTE(0, "speaker", 1.0)    // pin 28  2'-1
+	MCFG_SOUND_ROUTE(1, "speaker", 1.0)    // pin 29  4'-1
+	MCFG_SOUND_ROUTE(2, "speaker", 1.0)    // pin 30  8'-1
+	MCFG_SOUND_ROUTE(3, "speaker", 1.0)    // pin 31 16'-1
+	MCFG_SOUND_ROUTE(4, "speaker", 1.0)    // pin 36  2'-2
+	MCFG_SOUND_ROUTE(5, "speaker", 1.0)    // pin 35  4'-2
+	MCFG_SOUND_ROUTE(6, "speaker", 1.0)    // pin 34  8'-2
+	MCFG_SOUND_ROUTE(7, "speaker", 1.0)    // pin 33 16'-2
+>>>>>>> upstream/master
 	// pin 1 SOLO  8'       not mapped
 	// pin 2 SOLO 16'       not mapped
 	// pin 22 Noise Output  not mapped
 
+<<<<<<< HEAD
 	MCFG_DAC_ADD("dac")
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 0.20)
+=======
+	MCFG_SOUND_ADD("dac", DAC_8BIT_R2R, 0) MCFG_SOUND_ROUTE(ALL_OUTPUTS, "speaker", 0.2) // unknown DAC
+	MCFG_DEVICE_ADD("vref", VOLTAGE_REGULATOR, 0) MCFG_VOLTAGE_REGULATOR_OUTPUT(5.0)
+	MCFG_SOUND_ROUTE_EX(0, "dac", 1.0, DAC_VREF_POS_INPUT) MCFG_SOUND_ROUTE_EX(0, "dac", -1.0, DAC_VREF_NEG_INPUT)
+>>>>>>> upstream/master
 MACHINE_CONFIG_END
 
 /*******************************************************************************/
@@ -1167,7 +1369,11 @@ ROM_START( 40love )
 	ROM_LOAD( "a30-12.u38", 0x8000, 0x2000, CRC(f7afd475) SHA1(dd09d5ca7fec5e0454f9efb8ebc722561010f124) )
 	ROM_LOAD( "a30-13.u39", 0xa000, 0x2000, CRC(e806630f) SHA1(09022aae88ea0171a0aacf3260fa3a95e8faeb21) )
 
+<<<<<<< HEAD
 	ROM_REGION( 0x0800, "mcu", 0 )  /* 2k for the microcontroller */
+=======
+	ROM_REGION( 0x0800, "bmcu:mcu", 0 )  /* 2k for the microcontroller */
+>>>>>>> upstream/master
 	ROM_LOAD( "a30-14"    , 0x0000, 0x0800, CRC(c4690279) SHA1(60bc77e03b9be434bb97a374a2fedeb8d049a660) )
 
 	ROM_REGION( 0x8000, "gfx1", 0 )
@@ -1190,6 +1396,45 @@ ROM_START( 40love )
 
 ROM_END
 
+<<<<<<< HEAD
+=======
+ROM_START( 40lovej )
+	ROM_REGION( 0x14000, "maincpu", 0 ) /* Z80 main CPU */
+	ROM_LOAD( "a30_01.70",    0x000000, 0x004000, CRC(1b89829e) SHA1(d875a4e3586fd9fb2e354e4353c9144ad68ce620) )
+	ROM_LOAD( "a30_02.71",    0x004000, 0x004000, CRC(1468e71e) SHA1(e251ddf42ab51e9c391c213f54b709b71a3f1519) )
+	ROM_LOAD( "a30_03.72",    0x010000, 0x004000, CRC(dbc0049d) SHA1(1fca22ca0794564bbd1f946afb644fef0342acca) )
+
+	ROM_REGION( 0x10000, "audiocpu", ROMREGION_ERASEFF ) /* Z80 sound CPU */
+	// not in the provided set, identical?
+	ROM_LOAD( "a30-08.u08", 0x0000, 0x2000, BAD_DUMP CRC(2fc42ee1) SHA1(b56e5f9acbcdc476252e188f41ad7249dba6f8e1) )
+	ROM_LOAD( "a30-09.u09", 0x2000, 0x2000, BAD_DUMP CRC(3a75abce) SHA1(ad2df26789d38196c0677c22ab8f176e99604b18) )
+	ROM_LOAD( "a30-10.u10", 0x4000, 0x2000, BAD_DUMP CRC(393c4b5b) SHA1(a8e1dd5c33e929bc832cccc13b85ecd13fff1eb2) )
+	ROM_LOAD( "a30-11.u37", 0x6000, 0x2000, BAD_DUMP CRC(11b2c6d2) SHA1(d55690512a37c4df2386a845e0cfb14f8052295b) )
+	ROM_LOAD( "a30-12.u38", 0x8000, 0x2000, BAD_DUMP CRC(f7afd475) SHA1(dd09d5ca7fec5e0454f9efb8ebc722561010f124) )
+	ROM_LOAD( "a30-13.u39", 0xa000, 0x2000, BAD_DUMP CRC(e806630f) SHA1(09022aae88ea0171a0aacf3260fa3a95e8faeb21) )
+
+	ROM_REGION( 0x0800, "bmcu:mcu", 0 )  /* 2k for the microcontroller */
+	 // taken from World set, the provided one causes bad hw message
+	ROM_LOAD( "a30-14"    , 0x0000, 0x0800, BAD_DUMP CRC(c4690279) SHA1(60bc77e03b9be434bb97a374a2fedeb8d049a660) )
+//    ROM_LOAD( "a30_14",       0x000000, 0x000800, BAD_DUMP CRC(a4f770ce) SHA1(868e98528e8824e7329e9a298603e456bbc1f1f0) )
+
+	ROM_REGION( 0x8000, "gfx1", 0 )
+	ROM_LOAD( "a30_04.18",    0x000000, 0x004000, CRC(529a7489) SHA1(cf3fa83f16e2e62c1a4aa74b00080f1e167865a6) )
+	ROM_LOAD( "a30_05.19",    0x004000, 0x004000, CRC(7017e5f1) SHA1(fc614fd41109a9a6236ed4a331eda74e5d49b946) )
+
+	ROM_REGION( 0x8000, "gfx2", 0 )
+	ROM_LOAD( "a30_06.59",    0x000000, 0x004000, CRC(f744ea8e) SHA1(0bf6deabfac47237347af810332bc3716e3a26f0) )
+	ROM_LOAD( "a30_07.60",    0x004000, 0x004000, CRC(b2af1359) SHA1(6a21e38cfb65d52b7e1209101f0dd497f9a71f46) )
+
+	ROM_REGION( 0x1000, "proms", 0 )
+	// not provided
+	ROM_LOAD( "a30-15.u03", 0x0000, 0x0400, BAD_DUMP CRC(55e38cc7) SHA1(823a6d7f29eadf5d12702d782d4297b0d4c65a0e) )  /* red */
+	ROM_LOAD( "a30-16.u01", 0x0400, 0x0400, BAD_DUMP CRC(13997e20) SHA1(9fae1cf633409a88263dc66a17b1c2eeccd05f4f) )  /* green */
+	ROM_LOAD( "a30-17.u02", 0x0800, 0x0400, BAD_DUMP CRC(5031f2f3) SHA1(1836d82fdc9f39cb318a791af2a935c27baabfd7) )  /* blue */
+	ROM_LOAD( "a30-18.u13", 0x0c00, 0x0400, BAD_DUMP CRC(78697c0f) SHA1(31382ed4c0d44024f7f57a9de6407527f4d5b0d1) )  /* ??? */
+ROM_END
+
+>>>>>>> upstream/master
 ROM_START( fieldday )
 	ROM_REGION( 0x14000, "maincpu", 0 ) /* Z80 main CPU  */
 	ROM_LOAD( "a17_44.bin", 0x00000, 0x2000, CRC(d59812e1) SHA1(f3e7e2f09fba5964c92813cd652aa093fe3e4415) )
@@ -1208,8 +1453,13 @@ ROM_START( fieldday )
 	ROM_LOAD( "a17_28.bin", 0x8000, 0x2000, CRC(1a4d1dae) SHA1(fbc3c55ad9f15ead432c136eec648fe22e523ea7) )
 	ROM_LOAD( "a17_29.bin", 0xa000, 0x2000, CRC(3c540007) SHA1(549e7ff260214c538913ff548dcb088987845911) )
 
+<<<<<<< HEAD
 	ROM_REGION( 0x0800, "cpu2", 0 ) /* 2k for the microcontroller */
 	ROM_LOAD( "a17_14.bin", 0x0000, 0x0800, NO_DUMP )
+=======
+	ROM_REGION( 0x0800, "bmcu:mcu", 0 )  /* 2k for the microcontroller */
+	ROM_LOAD( "a17_14.bin", 0x0000, 0x0800, CRC(a686894d) SHA1(0578747a1869db98ee1962822491103f3f082cba) )
+>>>>>>> upstream/master
 
 	ROM_REGION( 0x8000, "gfx1", 0 )
 	ROM_LOAD( "a17_36.bin", 0x0000, 0x2000, CRC(e3dd51f7) SHA1(95a97ea925c5bc7bdc00887e6d17d817b36befc4) )
@@ -1246,8 +1496,13 @@ ROM_START( undoukai )
 	ROM_LOAD( "a17-12.38s", 0x8000, 0x2000, CRC(cb7e6dcd) SHA1(5286c6d340c1d465caebae5dd7e3d4ff8b7f8f5e) )
 	ROM_LOAD( "a17-13.39s", 0xa000, 0x2000, CRC(0a40930e) SHA1(8c4b9fa0aed67a3e269c2136ef81791fc8acd1da) )
 
+<<<<<<< HEAD
 	ROM_REGION( 0x0800, "cpu2", 0 ) /* 2k for the microcontroller */
 	ROM_LOAD( "a17-14.41c", 0x0000, 0x0800, NO_DUMP )
+=======
+	ROM_REGION( 0x0800, "bmcu:mcu", 0 )  /* 2k for the microcontroller */
+	ROM_LOAD( "a17_14.bin", 0x0000, 0x0800, CRC(a686894d) SHA1(0578747a1869db98ee1962822491103f3f082cba) )
+>>>>>>> upstream/master
 
 	ROM_REGION( 0x8000, "gfx1", 0 )
 	ROM_LOAD( "a17-04.18v", 0x0000, 0x4000, CRC(84dabee2) SHA1(698f12ee4201665988248853dafbf4b16dfc6517) )
@@ -1264,6 +1519,12 @@ ROM_START( undoukai )
 	ROM_LOAD( "a17-18.23v", 0x0c00, 0x0400, CRC(3023a1da) SHA1(08ce4c6e99d04b358d66f0588852311d07183619) )  /* ??? */
 ROM_END
 
+<<<<<<< HEAD
 GAME( 1984, 40love,   0,        40love,   40love, fortyl_state,   40love,   ROT0, "Taito Corporation", "Forty-Love", MACHINE_SUPPORTS_SAVE | MACHINE_IMPERFECT_GRAPHICS )
 GAME( 1984, fieldday, 0,        undoukai, undoukai, fortyl_state, undoukai, ROT0, "Taito Corporation", "Field Day", MACHINE_SUPPORTS_SAVE )
+=======
+GAME( 1984, 40love,   0,        40love,   40love,   fortyl_state, 40love,   ROT0, "Taito Corporation", "Forty-Love (World)",           MACHINE_SUPPORTS_SAVE | MACHINE_IMPERFECT_GRAPHICS )
+GAME( 1984, 40lovej,  40love,   40love,   40love,   fortyl_state, 40love,   ROT0, "Taito Corporation", "Forty-Love (Japan)",           MACHINE_SUPPORTS_SAVE | MACHINE_IMPERFECT_GRAPHICS ) // several ROMs needs double checking
+GAME( 1984, fieldday, 0,        undoukai, undoukai, fortyl_state, undoukai, ROT0, "Taito Corporation", "Field Day",            MACHINE_SUPPORTS_SAVE )
+>>>>>>> upstream/master
 GAME( 1984, undoukai, fieldday, undoukai, undoukai, fortyl_state, undoukai, ROT0, "Taito Corporation", "The Undoukai (Japan)", MACHINE_SUPPORTS_SAVE )

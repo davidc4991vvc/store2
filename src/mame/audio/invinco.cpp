@@ -32,6 +32,7 @@ static const char *const invinco_sample_names[] =
 	"shiphit",
 	"move3",    /* currently not used */
 	"move4",    /* currently not used */
+<<<<<<< HEAD
 	0
 };
 
@@ -45,6 +46,12 @@ MACHINE_CONFIG_FRAGMENT( invinco_audio )
 MACHINE_CONFIG_END
 
 
+=======
+	nullptr
+};
+
+
+>>>>>>> upstream/master
 /* sample IDs - must match sample file name table above */
 enum
 {
@@ -61,17 +68,28 @@ enum
 
 WRITE8_MEMBER( vicdual_state::invinco_audio_w )
 {
+<<<<<<< HEAD
 	static int port2State = 0;
+=======
+>>>>>>> upstream/master
 	int bitsChanged;
 	//int bitsGoneHigh;
 	int bitsGoneLow;
 
+<<<<<<< HEAD
 
 	bitsChanged  = port2State ^ data;
 	//bitsGoneHigh = bitsChanged & data;
 	bitsGoneLow  = bitsChanged & ~data;
 
 	port2State = data;
+=======
+	bitsChanged  = m_port2State ^ data;
+	//bitsGoneHigh = bitsChanged & data;
+	bitsGoneLow  = bitsChanged & ~data;
+
+	m_port2State = data;
+>>>>>>> upstream/master
 
 	if ( bitsGoneLow & OUT_PORT_2_SAUCER )
 	{
@@ -102,8 +120,22 @@ WRITE8_MEMBER( vicdual_state::invinco_audio_w )
 	{
 		PLAY( m_samples, SND_SHIPHIT, 0 );
 	}
+<<<<<<< HEAD
 
 #if 0
 	logerror("Went LO: %02X  %04X\n", bitsGoneLow, space.device().safe_pc());
 #endif
 }
+=======
+}
+
+
+MACHINE_CONFIG_START( invinco_audio )
+
+	/* samples */
+	MCFG_SOUND_ADD("samples", SAMPLES, 0)
+	MCFG_SAMPLES_CHANNELS(8)
+	MCFG_SAMPLES_NAMES(invinco_sample_names)
+	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 0.5)
+MACHINE_CONFIG_END
+>>>>>>> upstream/master

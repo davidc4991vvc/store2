@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 // license:???
+=======
+// license:BSD-3-Clause
+>>>>>>> upstream/master
 // copyright-holders:Philip Bennett,Carlos A. Lozano, Rob Rosenbrock, Phil Stroffolino, Ernesto Corvi, David Haywood, R. Belmont
 /***************************************************************************
 
@@ -53,6 +57,7 @@ Dip locations verified with manual for ddragon & ddragon2
 ***************************************************************************/
 
 #include "emu.h"
+<<<<<<< HEAD
 #include "cpu/m6809/hd6309.h"
 #include "cpu/m6800/m6800.h"
 #include "cpu/m6805/m6805.h"
@@ -62,6 +67,18 @@ Dip locations verified with manual for ddragon & ddragon2
 #include "sound/okim6295.h"
 #include "sound/msm5205.h"
 #include "includes/ddragon.h"
+=======
+#include "includes/ddragon.h"
+
+#include "cpu/m6809/hd6309.h"
+#include "cpu/m6800/m6801.h"
+#include "cpu/m6809/m6809.h"
+#include "cpu/z80/z80.h"
+#include "sound/okim6295.h"
+#include "sound/ym2151.h"
+
+#include "speaker.h"
+>>>>>>> upstream/master
 
 
 #define MAIN_CLOCK      XTAL_12MHz
@@ -184,7 +201,11 @@ WRITE8_MEMBER(ddragon_state::ddragon_bankswitch_w)
 }
 
 
+<<<<<<< HEAD
 WRITE8_MEMBER(ddragon_state::toffy_bankswitch_w)
+=======
+WRITE8_MEMBER(toffy_state::toffy_bankswitch_w)
+>>>>>>> upstream/master
 {
 	m_scrollx_hi = data & 0x01;
 	m_scrolly_hi = (data & 0x02) >> 1;
@@ -196,7 +217,11 @@ WRITE8_MEMBER(ddragon_state::toffy_bankswitch_w)
 }
 
 
+<<<<<<< HEAD
 READ8_MEMBER(ddragon_state::darktowr_mcu_bank_r)
+=======
+READ8_MEMBER(darktowr_state::darktowr_mcu_bank_r)
+>>>>>>> upstream/master
 {
 	// logerror("BankRead %05x %08x\n",space.device().safe_pc(),offset);
 
@@ -217,26 +242,44 @@ READ8_MEMBER(ddragon_state::darktowr_mcu_bank_r)
 	}
 
 	if (offset == 0x1401 || offset == 1)
+<<<<<<< HEAD
 		return m_darktowr_mcu_ports[0];
+=======
+		return m_mcu_port_a_out;
+>>>>>>> upstream/master
 
 	logerror("Unmapped mcu bank read %04x\n",offset);
 	return 0xff;
 }
 
 
+<<<<<<< HEAD
 WRITE8_MEMBER(ddragon_state::darktowr_mcu_bank_w)
+=======
+WRITE8_MEMBER(darktowr_state::darktowr_mcu_bank_w)
+>>>>>>> upstream/master
 {
 	logerror("BankWrite %05x %08x %08x\n", space.device().safe_pc(), offset, data);
 
 	if (offset == 0x1400 || offset == 0)
 	{
+<<<<<<< HEAD
 		m_darktowr_mcu_ports[1] = BITSWAP8(data,0,1,2,3,4,5,6,7);
 		logerror("MCU PORT 1 -> %04x (from %04x)\n", BITSWAP8(data,0,1,2,3,4,5,6,7), data);
+=======
+		uint8_t const value(BITSWAP8(data, 0, 1, 2, 3, 4, 5, 6, 7));
+		m_mcu->pb_w(space, 0, value);
+		logerror("MCU PORT 1 -> %04x (from %04x)\n", value, data);
+>>>>>>> upstream/master
 	}
 }
 
 
+<<<<<<< HEAD
 WRITE8_MEMBER(ddragon_state::darktowr_bankswitch_w)
+=======
+WRITE8_MEMBER(darktowr_state::darktowr_bankswitch_w)
+>>>>>>> upstream/master
 {
 	m_scrollx_hi = (data & 0x01);
 	m_scrolly_hi = ((data & 0x02) >> 1);
@@ -251,7 +294,11 @@ WRITE8_MEMBER(ddragon_state::darktowr_bankswitch_w)
 
 	membank("bank1")->set_entry(newbank);
 	if (newbank == 4 && oldbank != 4)
+<<<<<<< HEAD
 		space.install_readwrite_handler(0x4000, 0x7fff, read8_delegate(FUNC(ddragon_state::darktowr_mcu_bank_r),this), write8_delegate(FUNC(ddragon_state::darktowr_mcu_bank_w),this));
+=======
+		space.install_readwrite_handler(0x4000, 0x7fff, read8_delegate(FUNC(darktowr_state::darktowr_mcu_bank_r),this), write8_delegate(FUNC(darktowr_state::darktowr_mcu_bank_w),this));
+>>>>>>> upstream/master
 	else if (newbank != 4 && oldbank == 4)
 		space.install_readwrite_bank(0x4000, 0x7fff, "bank1");
 }
@@ -264,7 +311,11 @@ WRITE8_MEMBER(ddragon_state::darktowr_bankswitch_w)
  *
  *************************************/
 
+<<<<<<< HEAD
 void ddragon_state::ddragon_interrupt_ack(address_space &space, offs_t offset, UINT8 data)
+=======
+void ddragon_state::ddragon_interrupt_ack(address_space &space, offs_t offset, uint8_t data)
+>>>>>>> upstream/master
 {
 	switch (offset)
 	{
@@ -281,8 +332,12 @@ void ddragon_state::ddragon_interrupt_ack(address_space &space, offs_t offset, U
 			break;
 
 		case 3: /* 380e - SND IRQ and latch */
+<<<<<<< HEAD
 			soundlatch_byte_w(space, 0, data);
 			m_soundcpu->set_input_line(m_sound_irq, ASSERT_LINE);
+=======
+			m_soundlatch->write(space, 0, data);
+>>>>>>> upstream/master
 			break;
 
 		case 4: /* 380f - MCU IRQ */
@@ -324,6 +379,7 @@ WRITE_LINE_MEMBER(ddragon_state::irq_handler)
 }
 
 
+<<<<<<< HEAD
 READ8_MEMBER(ddragon_state::soundlatch_ack_r)
 {
 	m_soundcpu->set_input_line(m_sound_irq, CLEAR_LINE);
@@ -331,6 +387,8 @@ READ8_MEMBER(ddragon_state::soundlatch_ack_r)
 }
 
 
+=======
+>>>>>>> upstream/master
 WRITE8_MEMBER(ddragon_state::ddragonba_port_w)
 {
 	if ((data & 0x8) == 0)
@@ -360,10 +418,17 @@ CUSTOM_INPUT_MEMBER(ddragon_state::subcpu_bus_free)
 }
 
 
+<<<<<<< HEAD
 WRITE8_MEMBER(ddragon_state::darktowr_mcu_w)
 {
 	logerror("McuWrite %05x %08x %08x\n",space.device().safe_pc(), offset, data);
 	m_darktowr_mcu_ports[offset] = data;
+=======
+WRITE8_MEMBER(darktowr_state::mcu_port_a_w)
+{
+	logerror("McuWrite %05x %08x %08x\n", space.device().safe_pc(), offset, data);
+	m_mcu_port_a_out = data;
+>>>>>>> upstream/master
 }
 
 
@@ -464,7 +529,11 @@ void ddragon_state::dd_adpcm_int( msm5205_device *device, int chip )
 	}
 	else
 	{
+<<<<<<< HEAD
 		UINT8 *ROM = memregion("adpcm")->base() + 0x10000 * chip;
+=======
+		uint8_t *ROM = memregion("adpcm")->base() + 0x10000 * chip;
+>>>>>>> upstream/master
 
 		m_adpcm_data[chip] = ROM[m_adpcm_pos[chip]++];
 		device->data_w(m_adpcm_data[chip] >> 4);
@@ -570,7 +639,11 @@ ADDRESS_MAP_END
 
 
 static ADDRESS_MAP_START( ddragonba_sub_portmap, AS_IO, 8, ddragon_state )
+<<<<<<< HEAD
 	AM_RANGE(0x0000, 0xffff) AM_WRITE(ddragonba_port_w)
+=======
+	AM_RANGE(0x0000, 0x01ff) AM_WRITE(ddragonba_port_w)
+>>>>>>> upstream/master
 ADDRESS_MAP_END
 
 
@@ -583,7 +656,11 @@ ADDRESS_MAP_END
 
 static ADDRESS_MAP_START( sound_map, AS_PROGRAM, 8, ddragon_state )
 	AM_RANGE(0x0000, 0x0fff) AM_RAM
+<<<<<<< HEAD
 	AM_RANGE(0x1000, 0x1000) AM_READ(soundlatch_ack_r)
+=======
+	AM_RANGE(0x1000, 0x1000) AM_DEVREAD("soundlatch", generic_latch_8_device, read)
+>>>>>>> upstream/master
 	AM_RANGE(0x1800, 0x1800) AM_READ(dd_adpcm_status_r)
 	AM_RANGE(0x2800, 0x2801) AM_DEVREADWRITE("fmsnd", ym2151_device, read, write)
 	AM_RANGE(0x3800, 0x3807) AM_WRITE(dd_adpcm_w)
@@ -596,6 +673,7 @@ static ADDRESS_MAP_START( dd2_sound_map, AS_PROGRAM, 8, ddragon_state )
 	AM_RANGE(0x8000, 0x87ff) AM_RAM
 	AM_RANGE(0x8800, 0x8801) AM_DEVREADWRITE("fmsnd", ym2151_device, read, write)
 	AM_RANGE(0x9800, 0x9800) AM_DEVREADWRITE("oki", okim6295_device, read, write)
+<<<<<<< HEAD
 	AM_RANGE(0xa000, 0xa000) AM_READ(soundlatch_ack_r)
 ADDRESS_MAP_END
 
@@ -612,6 +690,9 @@ static ADDRESS_MAP_START( mcu_map, AS_PROGRAM, 8, ddragon_state )
 	AM_RANGE(0x0000, 0x0007) AM_RAM_WRITE(darktowr_mcu_w) AM_SHARE("darktowr_mcu")
 	AM_RANGE(0x0008, 0x007f) AM_RAM
 	AM_RANGE(0x0080, 0x07ff) AM_ROM
+=======
+	AM_RANGE(0xa000, 0xa000) AM_DEVREAD("soundlatch", generic_latch_8_device, read)
+>>>>>>> upstream/master
 ADDRESS_MAP_END
 
 
@@ -695,7 +776,11 @@ static INPUT_PORTS_START( ddragon )
 	PORT_BIT( 0x02, IP_ACTIVE_LOW, IPT_BUTTON3 )
 	PORT_BIT( 0x04, IP_ACTIVE_LOW, IPT_BUTTON3 ) PORT_PLAYER(2)
 	PORT_BIT( 0x08, IP_ACTIVE_HIGH, IPT_CUSTOM ) PORT_VBLANK("screen")
+<<<<<<< HEAD
 	PORT_BIT( 0x10, IP_ACTIVE_LOW, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, ddragon_state, subcpu_bus_free, NULL)
+=======
+	PORT_BIT( 0x10, IP_ACTIVE_LOW, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, ddragon_state, subcpu_bus_free, nullptr)
+>>>>>>> upstream/master
 	PORT_BIT( 0xe0, IP_ACTIVE_HIGH, IPT_UNUSED )
 INPUT_PORTS_END
 
@@ -756,6 +841,22 @@ INPUT_PORTS_END
 static INPUT_PORTS_START( ddungeon )
 	PORT_INCLUDE(ddragon)
 
+<<<<<<< HEAD
+=======
+	// Dangerous Dungeons installation guide recommends 4-way joystick "for maximum profits"
+	PORT_MODIFY("P1")
+	PORT_BIT( 0x01, IP_ACTIVE_LOW, IPT_JOYSTICK_RIGHT ) PORT_4WAY
+	PORT_BIT( 0x02, IP_ACTIVE_LOW, IPT_JOYSTICK_LEFT ) PORT_4WAY
+	PORT_BIT( 0x04, IP_ACTIVE_LOW, IPT_JOYSTICK_UP ) PORT_4WAY
+	PORT_BIT( 0x08, IP_ACTIVE_LOW, IPT_JOYSTICK_DOWN ) PORT_4WAY
+
+	PORT_MODIFY("P2")
+	PORT_BIT( 0x01, IP_ACTIVE_LOW, IPT_JOYSTICK_RIGHT ) PORT_4WAY PORT_PLAYER(2)
+	PORT_BIT( 0x02, IP_ACTIVE_LOW, IPT_JOYSTICK_LEFT ) PORT_4WAY PORT_PLAYER(2)
+	PORT_BIT( 0x04, IP_ACTIVE_LOW, IPT_JOYSTICK_UP ) PORT_4WAY PORT_PLAYER(2)
+	PORT_BIT( 0x08, IP_ACTIVE_LOW, IPT_JOYSTICK_DOWN ) PORT_4WAY PORT_PLAYER(2)
+
+>>>>>>> upstream/master
 	PORT_MODIFY("DSW0")
 	PORT_DIPNAME( 0x0f, 0x00, DEF_STR( Coin_A ) )
 	PORT_DIPSETTING(    0x03, DEF_STR( 4C_1C ) )
@@ -840,7 +941,11 @@ INPUT_PORTS_END
 
 
 static INPUT_PORTS_START( toffy )
+<<<<<<< HEAD
 	PORT_INCLUDE(ddragon)
+=======
+	PORT_INCLUDE(ddungeon)
+>>>>>>> upstream/master
 
 	PORT_MODIFY("DSW0")
 	PORT_DIPNAME( 0x0f, 0x00, DEF_STR( Coin_A ) )
@@ -944,7 +1049,11 @@ GFXDECODE_END
  *
  *************************************/
 
+<<<<<<< HEAD
 static MACHINE_CONFIG_START( ddragon, ddragon_state )
+=======
+static MACHINE_CONFIG_START( ddragon )
+>>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", HD6309, MAIN_CLOCK)     /* 12 MHz / 4 internally */
@@ -977,6 +1086,12 @@ static MACHINE_CONFIG_START( ddragon, ddragon_state )
 	/* sound hardware */
 	MCFG_SPEAKER_STANDARD_MONO("mono")
 
+<<<<<<< HEAD
+=======
+	MCFG_GENERIC_LATCH_8_ADD("soundlatch")
+	MCFG_GENERIC_LATCH_DATA_PENDING_CB(INPUTLINE("soundcpu", M6809_IRQ_LINE))
+
+>>>>>>> upstream/master
 	MCFG_YM2151_ADD("fmsnd", SOUND_CLOCK)
 	MCFG_YM2151_IRQ_HANDLER(WRITELINE(ddragon_state, irq_handler))
 	MCFG_SOUND_ROUTE(0, "mono", 0.60)
@@ -984,12 +1099,20 @@ static MACHINE_CONFIG_START( ddragon, ddragon_state )
 
 	MCFG_SOUND_ADD("adpcm1", MSM5205, MAIN_CLOCK / 32)
 	MCFG_MSM5205_VCLK_CB(WRITELINE(ddragon_state, dd_adpcm_int_1))   /* interrupt function */
+<<<<<<< HEAD
 	MCFG_MSM5205_PRESCALER_SELECTOR(MSM5205_S48_4B)  /* 8kHz */
+=======
+	MCFG_MSM5205_PRESCALER_SELECTOR(S48_4B)  /* 8kHz */
+>>>>>>> upstream/master
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 0.50)
 
 	MCFG_SOUND_ADD("adpcm2", MSM5205, MAIN_CLOCK / 32)
 	MCFG_MSM5205_VCLK_CB(WRITELINE(ddragon_state, dd_adpcm_int_2))   /* interrupt function */
+<<<<<<< HEAD
 	MCFG_MSM5205_PRESCALER_SELECTOR(MSM5205_S48_4B)  /* 8kHz */
+=======
+	MCFG_MSM5205_PRESCALER_SELECTOR(S48_4B)  /* 8kHz */
+>>>>>>> upstream/master
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 0.50)
 MACHINE_CONFIG_END
 
@@ -1011,7 +1134,11 @@ static MACHINE_CONFIG_DERIVED( ddragonba, ddragon )
 MACHINE_CONFIG_END
 
 
+<<<<<<< HEAD
 static MACHINE_CONFIG_START( ddragon6809, ddragon_state )
+=======
+static MACHINE_CONFIG_START( ddragon6809 )
+>>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", M6809, MAIN_CLOCK / 8)  /* 1.5 MHz */
@@ -1044,6 +1171,12 @@ static MACHINE_CONFIG_START( ddragon6809, ddragon_state )
 	/* sound hardware */
 	MCFG_SPEAKER_STANDARD_MONO("mono")
 
+<<<<<<< HEAD
+=======
+	MCFG_GENERIC_LATCH_8_ADD("soundlatch")
+	MCFG_GENERIC_LATCH_DATA_PENDING_CB(INPUTLINE("soundcpu", M6809_IRQ_LINE))
+
+>>>>>>> upstream/master
 	MCFG_YM2151_ADD("fmsnd", SOUND_CLOCK)
 	MCFG_YM2151_IRQ_HANDLER(WRITELINE(ddragon_state,irq_handler))
 	MCFG_SOUND_ROUTE(0, "mono", 0.60)
@@ -1051,17 +1184,29 @@ static MACHINE_CONFIG_START( ddragon6809, ddragon_state )
 
 	MCFG_SOUND_ADD("adpcm1", MSM5205, MAIN_CLOCK/32)
 	MCFG_MSM5205_VCLK_CB(WRITELINE(ddragon_state, dd_adpcm_int_1))   /* interrupt function */
+<<<<<<< HEAD
 	MCFG_MSM5205_PRESCALER_SELECTOR(MSM5205_S48_4B)  /* 8kHz */
+=======
+	MCFG_MSM5205_PRESCALER_SELECTOR(S48_4B)  /* 8kHz */
+>>>>>>> upstream/master
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 0.50)
 
 	MCFG_SOUND_ADD("adpcm2", MSM5205, MAIN_CLOCK/32)
 	MCFG_MSM5205_VCLK_CB(WRITELINE(ddragon_state, dd_adpcm_int_2))   /* interrupt function */
+<<<<<<< HEAD
 	MCFG_MSM5205_PRESCALER_SELECTOR(MSM5205_S48_4B)  /* 8kHz */
+=======
+	MCFG_MSM5205_PRESCALER_SELECTOR(S48_4B)  /* 8kHz */
+>>>>>>> upstream/master
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 0.50)
 MACHINE_CONFIG_END
 
 
+<<<<<<< HEAD
 static MACHINE_CONFIG_START( ddragon2, ddragon_state )
+=======
+static MACHINE_CONFIG_START( ddragon2 )
+>>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", HD6309, MAIN_CLOCK)     /* 12 MHz / 4 internally */
@@ -1094,12 +1239,22 @@ static MACHINE_CONFIG_START( ddragon2, ddragon_state )
 	/* sound hardware */
 	MCFG_SPEAKER_STANDARD_MONO("mono")
 
+<<<<<<< HEAD
+=======
+	MCFG_GENERIC_LATCH_8_ADD("soundlatch")
+	MCFG_GENERIC_LATCH_DATA_PENDING_CB(INPUTLINE("soundcpu", INPUT_LINE_NMI))
+
+>>>>>>> upstream/master
 	MCFG_YM2151_ADD("fmsnd", SOUND_CLOCK)
 	MCFG_YM2151_IRQ_HANDLER(WRITELINE(ddragon_state,irq_handler))
 	MCFG_SOUND_ROUTE(0, "mono", 0.60)
 	MCFG_SOUND_ROUTE(1, "mono", 0.60)
 
+<<<<<<< HEAD
 	MCFG_OKIM6295_ADD("oki", 1056000, OKIM6295_PIN7_HIGH) // clock frequency & pin 7 not verified
+=======
+	MCFG_OKIM6295_ADD("oki", 1056000, PIN7_HIGH) // clock frequency & pin 7 not verified
+>>>>>>> upstream/master
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 0.20)
 MACHINE_CONFIG_END
 
@@ -1107,8 +1262,13 @@ MACHINE_CONFIG_END
 static MACHINE_CONFIG_DERIVED( darktowr, ddragon )
 
 	/* basic machine hardware */
+<<<<<<< HEAD
 	MCFG_CPU_ADD("mcu", M68705,XTAL_4MHz)
 	MCFG_CPU_PROGRAM_MAP(mcu_map)
+=======
+	MCFG_CPU_ADD("mcu", M68705P3, XTAL_4MHz)
+	MCFG_M68705_PORTA_W_CB(WRITE8(darktowr_state, mcu_port_a_w))
+>>>>>>> upstream/master
 
 	/* video hardware */
 MACHINE_CONFIG_END
@@ -1750,6 +1910,54 @@ ROM_START( ddragon2u )
 	ROM_LOAD( "prom.16",      0x0000, 0x0200, CRC(46339529) SHA1(64f4c42a826d67b7cbaa8a23a45ebc4eb6248891) )    /* sprite timing (same as ddragon) */
 ROM_END
 
+<<<<<<< HEAD
+=======
+ROM_START( ddragon2b )
+	ROM_REGION( 0x30000, "maincpu", 0 )
+	ROM_LOAD( "3",   0x08000, 0x8000, CRC(5cc38bad) SHA1(8ebbb998cce48b5baa4a738c2d4c2e481e2637fb) )
+	ROM_LOAD( "4",   0x10000, 0x8000, CRC(78750947) SHA1(6b8349c3cd27c37a4329cea213b6ff0167c4edee) )
+	ROM_LOAD( "5",   0x18000, 0x8000, CRC(49ddddcd) SHA1(91dc53718d04718b313f23d86e241027c89d1a03) )
+	ROM_LOAD( "6",   0x20000, 0x8000, CRC(097eaf26) SHA1(60504abd30fec44c45197cdf3832c87d05ef577d) )
+
+	ROM_REGION( 0x10000, "sub", 0 ) /* sprite CPU 64kb (Upper 16kb = 0) */
+	ROM_LOAD( "2",   0x00000, 0x10000, CRC(ea437867) SHA1(cd910203af0565f981b9bdef51ea6e9c33ee82d3) )
+
+	ROM_REGION( 0x10000, "soundcpu", 0 ) /* music CPU, 64kb */
+	ROM_LOAD( "11",   0x00000, 0x8000, CRC(75e36cd6) SHA1(f24805f4f6925b3ac508e66a6fc25c275b05f3b9) )
+
+	ROM_REGION( 0x10000, "gfx1", 0 )
+	ROM_LOAD( "1",   0x00000, 0x10000, CRC(3ad1049c) SHA1(11d9544a56f8e6a84beb307a5c8a9ff8afc55c66) )  /* chars */
+
+	ROM_REGION( 0xc0000, "gfx2", 0 )
+	ROM_LOAD( "27",   0x00000, 0x10000, CRC(fe42df5d) SHA1(aab801346c2db04263cb61c97c6e086387675586) )  /* sprites */
+	ROM_LOAD( "26",   0x10000, 0x10000, CRC(42f582c6) SHA1(bb269f677321f706043aa33a12bd3ddda4c32e55) )
+	ROM_LOAD( "23",   0x20000, 0x10000, CRC(e157319f) SHA1(8b898fa20329b12293e7cb7ffc2e1b17304f826f) )
+	ROM_LOAD( "22",   0x30000, 0x10000, CRC(82e952c9) SHA1(d340262c11f3c0ef3640c487e6a78745a2fe97d4) )
+	ROM_LOAD( "25",   0x40000, 0x10000, CRC(4a4a085d) SHA1(80786c6fda135af1f9e9d8191879ab27baf36167) )
+	ROM_LOAD( "24",   0x50000, 0x10000, CRC(c9d52536) SHA1(54f9236c4d22e3fd79d66c3f45b134f1fc9a1d32) )
+	ROM_LOAD( "21",   0x60000, 0x10000, CRC(32ab0897) SHA1(f992dc3876621896b6e1fd6518f576b48d54a631) )
+	ROM_LOAD( "20",   0x70000, 0x10000, CRC(a68e168f) SHA1(6ae596c097d7d435b767207012de1d23316d86d4) )
+	ROM_LOAD( "17",   0x80000, 0x10000, CRC(882f99b1) SHA1(2fbb9171a2c9ddab177efe1e89e96426643d382b) )
+	ROM_LOAD( "16",   0x90000, 0x10000, CRC(e2fe3eca) SHA1(bfd2e91261b9a002a99998486a2b606d4ee2e59b) )
+	ROM_LOAD( "18",   0xa0000, 0x10000, CRC(0e1c6c63) SHA1(506e43161992c41d9b77c1df11228117f0587cbd) )
+	ROM_LOAD( "19",   0xb0000, 0x10000, CRC(0e21eae0) SHA1(0cde9cdc6dbe2015e7f38b391c78cf3f16658e5c) )
+
+	ROM_REGION( 0x40000, "gfx3", 0 )
+	ROM_LOAD( "15",   0x00000, 0x10000, CRC(3c3f16f6) SHA1(2fccbf1dd072c59b5923631fc1c6d40f7ea63996))
+	ROM_LOAD( "13",   0x10000, 0x10000, CRC(7c21be72) SHA1(9935c983d0f7613ee192758ddcd8d8592e8bf78a) )
+	ROM_LOAD( "14",   0x20000, 0x10000, CRC(e92f91f4) SHA1(4351b2b117c1104dcdb6f48531ddad385691c945) )
+	ROM_LOAD( "12",   0x30000, 0x10000, CRC(6896e2f7) SHA1(d230d2406ae451f59d1d0783b1d670a0d3e28d8c) )
+
+	ROM_REGION( 0x40000, "oki", 0 ) /* adpcm samples */
+	ROM_LOAD( "7",   0x00000, 0x10000, CRC(6d9e3f0f) SHA1(5c3e7fb2e46939dd3c540b9e1af9591dbfd15b19) )
+	ROM_LOAD( "9",   0x10000, 0x10000, CRC(0c15dec9) SHA1(b0a6bb13216f4321b5fc01a649ea84d2d1d51088) )
+	ROM_LOAD( "8",   0x20000, 0x10000, CRC(151b22b4) SHA1(3b0470df9b719dd76115d8c549010ec92e28d0d0) )
+	ROM_LOAD( "10",  0x30000, 0x10000, CRC(ae2fc028) SHA1(94fea9088b7b412706b6aaf7aac856709649fb63) )
+
+	ROM_REGION( 0x0200, "proms", 0 ) // wasn't in this set, is it still present?
+	ROM_LOAD( "prom.16",      0x0000, 0x0200, CRC(46339529) SHA1(64f4c42a826d67b7cbaa8a23a45ebc4eb6248891) )    /* sprite timing (same as ddragon) */
+ROM_END
+>>>>>>> upstream/master
 
 ROM_START( tstrike )
 	ROM_REGION( 0x30000, "maincpu", 0 ) /* 64k for code + bankswitched memory */
@@ -1764,7 +1972,11 @@ ROM_START( tstrike )
 	ROM_REGION( 0x10000, "soundcpu", 0 ) /* audio cpu */
 	ROM_LOAD( "tstrike.30",      0x08000, 0x08000, CRC(3f3f04a1) SHA1(45d2b4542ec783c1c4122616606be6c160f76c06) )
 
+<<<<<<< HEAD
 	ROM_REGION( 0x0800, "mcu", 0 )  /* 8k for the microcontroller */
+=======
+	ROM_REGION( 0x0800, "mcu", 0 )  /* 2k for the microcontroller */
+>>>>>>> upstream/master
 	ROM_LOAD( "68705prt.mcu",   0x00000, 0x0800, CRC(34cbb2d3) SHA1(8e0c3b13c636012d88753d547c639b1a8af85680) )
 
 	ROM_REGION( 0x08000, "gfx1", 0 )
@@ -1808,7 +2020,11 @@ ROM_START( tstrikea )
 	ROM_REGION( 0x10000, "soundcpu", 0 ) /* audio cpu */
 	ROM_LOAD( "tstrike.30",      0x08000, 0x08000, CRC(3f3f04a1) SHA1(45d2b4542ec783c1c4122616606be6c160f76c06) )
 
+<<<<<<< HEAD
 	ROM_REGION( 0x0800, "mcu", 0 )  /* 8k for the microcontroller */
+=======
+	ROM_REGION( 0x0800, "mcu", 0 )  /* 2k for the microcontroller */
+>>>>>>> upstream/master
 	ROM_LOAD( "68705prt.mcu",   0x00000, 0x0800, CRC(34cbb2d3) SHA1(8e0c3b13c636012d88753d547c639b1a8af85680) )
 
 	ROM_REGION( 0x08000, "gfx1", 0 )
@@ -1852,7 +2068,11 @@ ROM_START( ddungeon )
 	ROM_REGION( 0x10000, "soundcpu", 0 ) /* audio cpu */
 	ROM_LOAD( "dd30.30",    0x08000, 0x08000, CRC(ef1af99a) SHA1(7ced695b81ca9efbb7b28b78013e112edac85672) )
 
+<<<<<<< HEAD
 	ROM_REGION( 0x0800, "mcu", 0 )  /* 8k for the microcontroller */
+=======
+	ROM_REGION( 0x0800, "mcu", 0 )  /* 2k for the microcontroller */
+>>>>>>> upstream/master
 	ROM_LOAD( "dd_mcu.bin", 0x00000, 0x0800,  CRC(34cbb2d3) SHA1(8e0c3b13c636012d88753d547c639b1a8af85680) )
 
 	ROM_REGION( 0x10000, "gfx1", 0 ) /* GFX? */
@@ -1891,7 +2111,11 @@ ROM_START( ddungeone )
 	ROM_REGION( 0x10000, "soundcpu", 0 ) /* audio cpu */
 	ROM_LOAD( "21j-0-1",      0x08000, 0x08000, CRC(9efa95bb) SHA1(da997d9cc7b9e7b2c70a4b6d30db693086a6f7d8) ) /* from ddragon */
 
+<<<<<<< HEAD
 	ROM_REGION( 0x0800, "mcu", 0 )  /* 8k for the microcontroller */
+=======
+	ROM_REGION( 0x0800, "mcu", 0 )  /* 2k for the microcontroller */
+>>>>>>> upstream/master
 	ROM_LOAD( "dd_mcu.bin", 0x00000, 0x0800,  CRC(34cbb2d3) SHA1(8e0c3b13c636012d88753d547c639b1a8af85680) )
 
 	ROM_REGION( 0x10000, "gfx1", 0 ) /* GFX? */
@@ -1928,7 +2152,11 @@ ROM_START( darktowr )
 	ROM_REGION( 0x10000, "soundcpu", 0 ) /* audio cpu */
 	ROM_LOAD( "21j-0-1",      0x08000, 0x08000, CRC(9efa95bb) SHA1(da997d9cc7b9e7b2c70a4b6d30db693086a6f7d8) ) /* from ddragon */
 
+<<<<<<< HEAD
 	ROM_REGION( 0x0800, "mcu", 0 )  /* 8k for the microcontroller */
+=======
+	ROM_REGION( 0x0800, "mcu", 0 )  /* 2k for the microcontroller */
+>>>>>>> upstream/master
 	ROM_LOAD( "68705prt.mcu",   0x00000, 0x0800, CRC(34cbb2d3) SHA1(8e0c3b13c636012d88753d547c639b1a8af85680) )
 
 	ROM_REGION( 0x08000, "gfx1", 0 ) /* chars */
@@ -2032,7 +2260,10 @@ ROM_END
 DRIVER_INIT_MEMBER(ddragon_state,ddragon)
 {
 	m_sprite_irq = INPUT_LINE_NMI;
+<<<<<<< HEAD
 	m_sound_irq = M6809_IRQ_LINE;
+=======
+>>>>>>> upstream/master
 	m_ym_irq = M6809_FIRQ_LINE;
 	m_technos_video_hw = 0;
 }
@@ -2041,12 +2272,16 @@ DRIVER_INIT_MEMBER(ddragon_state,ddragon)
 DRIVER_INIT_MEMBER(ddragon_state,ddragon2)
 {
 	m_sprite_irq = INPUT_LINE_NMI;
+<<<<<<< HEAD
 	m_sound_irq = INPUT_LINE_NMI;
+=======
+>>>>>>> upstream/master
 	m_ym_irq = 0;
 	m_technos_video_hw = 2;
 }
 
 
+<<<<<<< HEAD
 DRIVER_INIT_MEMBER(ddragon_state,darktowr)
 {
 	m_sprite_irq = INPUT_LINE_NMI;
@@ -2066,6 +2301,28 @@ DRIVER_INIT_MEMBER(ddragon_state,toffy)
 	m_ym_irq = M6809_FIRQ_LINE;
 	m_technos_video_hw = 0;
 	m_maincpu->space(AS_PROGRAM).install_write_handler(0x3808, 0x3808, write8_delegate(FUNC(ddragon_state::toffy_bankswitch_w),this));
+=======
+DRIVER_INIT_MEMBER(darktowr_state, darktowr)
+{
+	save_item(NAME(m_mcu_port_a_out));
+
+	m_sprite_irq = INPUT_LINE_NMI;
+	m_ym_irq = M6809_FIRQ_LINE;
+	m_technos_video_hw = 0;
+	m_maincpu->space(AS_PROGRAM).install_write_handler(0x3808, 0x3808, write8_delegate(FUNC(darktowr_state::darktowr_bankswitch_w), this));
+	m_mcu_port_a_out = 0xff;
+}
+
+
+DRIVER_INIT_MEMBER(toffy_state, toffy)
+{
+	int i, length;
+	uint8_t *rom;
+
+	m_ym_irq = M6809_FIRQ_LINE;
+	m_technos_video_hw = 0;
+	m_maincpu->space(AS_PROGRAM).install_write_handler(0x3808, 0x3808, write8_delegate(FUNC(toffy_state::toffy_bankswitch_w), this));
+>>>>>>> upstream/master
 
 	/* the program rom has a simple bitswap encryption */
 	rom = memregion("maincpu")->base();
@@ -2100,7 +2357,11 @@ DRIVER_INIT_MEMBER(ddragon_state,toffy)
 DRIVER_INIT_MEMBER(ddragon_state,ddragon6809)
 {
 	int i;
+<<<<<<< HEAD
 	UINT8 *dst,*src;
+=======
+	uint8_t *dst,*src;
+>>>>>>> upstream/master
 
 	src = memregion("chars")->base();
 	dst = memregion("gfx1")->base();
@@ -2117,7 +2378,10 @@ DRIVER_INIT_MEMBER(ddragon_state,ddragon6809)
 	}
 
 	m_sprite_irq = INPUT_LINE_NMI;
+<<<<<<< HEAD
 	m_sound_irq = M6809_IRQ_LINE;
+=======
+>>>>>>> upstream/master
 	m_ym_irq = M6809_FIRQ_LINE;
 	m_technos_video_hw = 0;
 }
@@ -2130,6 +2394,7 @@ DRIVER_INIT_MEMBER(ddragon_state,ddragon6809)
  *
  *************************************/
 
+<<<<<<< HEAD
 GAME( 1987, ddragon,     0,        ddragon,  ddragon, ddragon_state,  ddragon,  ROT0, "Technos Japan", "Double Dragon (Japan)", MACHINE_SUPPORTS_SAVE )
 GAME( 1987, ddragonw,    ddragon,  ddragon,  ddragon, ddragon_state,  ddragon,  ROT0, "Technos Japan (Taito license)", "Double Dragon (World set 1)", MACHINE_SUPPORTS_SAVE )
 GAME( 1987, ddragonw1,   ddragon,  ddragon,  ddragon, ddragon_state,  ddragon,  ROT0, "Technos Japan (Taito license)", "Double Dragon (World set 2)", MACHINE_SUPPORTS_SAVE )
@@ -2158,3 +2423,34 @@ GAME( 1993, toffy,    0,        toffy,    toffy, ddragon_state,    toffy,    ROT
 
 GAME( 1994, stoffy,   0,        toffy,    toffy, ddragon_state,    toffy,    ROT0, "Midas", "Super Toffy", MACHINE_SUPPORTS_SAVE )
 GAME( 1994, stoffyu,  stoffy,   toffy,    toffy, ddragon_state,    toffy,    ROT0, "Midas (Unico license)", "Super Toffy (Unico license)", MACHINE_SUPPORTS_SAVE )
+=======
+GAME( 1987, ddragon,     0,        ddragon,     ddragon,  ddragon_state,  ddragon,     ROT0, "Technos Japan",                         "Double Dragon (Japan)",                       MACHINE_SUPPORTS_SAVE )
+GAME( 1987, ddragonw,    ddragon,  ddragon,     ddragon,  ddragon_state,  ddragon,     ROT0, "Technos Japan (Taito license)",         "Double Dragon (World set 1)",                 MACHINE_SUPPORTS_SAVE )
+GAME( 1987, ddragonw1,   ddragon,  ddragon,     ddragon,  ddragon_state,  ddragon,     ROT0, "Technos Japan (Taito license)",         "Double Dragon (World set 2)",                 MACHINE_SUPPORTS_SAVE )
+GAME( 1987, ddragonu,    ddragon,  ddragon,     ddragon,  ddragon_state,  ddragon,     ROT0, "Technos Japan (Taito America license)", "Double Dragon (US set 1)",                    MACHINE_SUPPORTS_SAVE )
+GAME( 1987, ddragonua,   ddragon,  ddragon,     ddragon,  ddragon_state,  ddragon,     ROT0, "Technos Japan (Taito America license)", "Double Dragon (US set 2)",                    MACHINE_SUPPORTS_SAVE )
+GAME( 1987, ddragonub,   ddragon,  ddragon,     ddragon,  ddragon_state,  ddragon,     ROT0, "Technos Japan (Taito America license)", "Double Dragon (US set 3)",                    MACHINE_SUPPORTS_SAVE )
+GAME( 1987, ddragonb2,   ddragon,  ddragon,     ddragon,  ddragon_state,  ddragon,     ROT0, "bootleg",                               "Double Dragon (bootleg)",                     MACHINE_SUPPORTS_SAVE )
+GAME( 1987, ddragonb,    ddragon,  ddragonb,    ddragon,  ddragon_state,  ddragon,     ROT0, "bootleg",                               "Double Dragon (bootleg with HD6309)",         MACHINE_SUPPORTS_SAVE ) // according to dump notes
+GAME( 1987, ddragonba,   ddragon,  ddragonba,   ddragon,  ddragon_state,  ddragon,     ROT0, "bootleg",                               "Double Dragon (bootleg with M6803)",          MACHINE_SUPPORTS_SAVE )
+GAME( 1987, ddragon6809, ddragon,  ddragon6809, ddragon,  ddragon_state,  ddragon6809, ROT0, "bootleg",                               "Double Dragon (bootleg with 3xM6809, set 1)", MACHINE_NOT_WORKING )
+GAME( 1987, ddragon6809a,ddragon,  ddragon6809, ddragon,  ddragon_state,  ddragon6809, ROT0, "bootleg",                               "Double Dragon (bootleg with 3xM6809, set 2)", MACHINE_NOT_WORKING )
+
+GAME( 1988, ddragon2,    0,        ddragon2,    ddragon2, ddragon_state,  ddragon2,    ROT0, "Technos Japan", "Double Dragon II - The Revenge (World)",       MACHINE_SUPPORTS_SAVE )
+GAME( 1988, ddragon2u,   ddragon2, ddragon2,    ddragon2, ddragon_state,  ddragon2,    ROT0, "Technos Japan", "Double Dragon II - The Revenge (US)",          MACHINE_SUPPORTS_SAVE )
+GAME( 1988, ddragon2j,   ddragon2, ddragon2,    ddragon2, ddragon_state,  ddragon2,    ROT0, "Technos Japan", "Double Dragon II - The Revenge (Japan)",       MACHINE_NOT_WORKING | MACHINE_SUPPORTS_SAVE ) // bad dump
+GAME( 1988, ddragon2b,   ddragon2, ddragon2,    ddragon2, ddragon_state,  ddragon2,    ROT0, "bootleg",       "Double Dragon II - The Revenge (US, bootleg)", MACHINE_SUPPORTS_SAVE )
+
+/* these were conversions of double dragon */
+GAME( 1991, tstrike,    0,         darktowr,    tstrike,  darktowr_state, darktowr,    ROT0, "East Coast Coin Company", "Thunder Strike (set 1)",        MACHINE_SUPPORTS_SAVE ) // same manufacturer as The Game Room?
+GAME( 1991, tstrikea,   tstrike,   darktowr,    tstrike,  darktowr_state, darktowr,    ROT0, "The Game Room",           "Thunder Strike (set 2, older)", MACHINE_SUPPORTS_SAVE )
+GAME( 1992, ddungeon,   0,         darktowr,    ddungeon, darktowr_state, darktowr,    ROT0, "The Game Room",           "Dangerous Dungeons (set 1)",    MACHINE_SUPPORTS_SAVE )
+GAME( 1992, ddungeone,  ddungeon,  darktowr,    ddungeon, darktowr_state, darktowr,    ROT0, "East Coast Coin Company", "Dangerous Dungeons (set 2)",    MACHINE_SUPPORTS_SAVE )
+GAME( 1992, darktowr,   0,         darktowr,    darktowr, darktowr_state, darktowr,    ROT0, "The Game Room",           "Dark Tower",                    MACHINE_SUPPORTS_SAVE )
+
+/* these run on their own board, but are basically the same game. Toffy even has 'dangerous dungeons' text in it */
+GAME( 1993, toffy,      0,         toffy,       toffy,    toffy_state,    toffy,       ROT0, "Midas",                   "Toffy",                         MACHINE_SUPPORTS_SAVE )
+
+GAME( 1994, stoffy,     0,         toffy,       toffy,    toffy_state,    toffy,       ROT0, "Midas",                   "Super Toffy",                   MACHINE_SUPPORTS_SAVE )
+GAME( 1994, stoffyu,    stoffy,    toffy,       toffy,    toffy_state,    toffy,       ROT0, "Midas (Unico license)",   "Super Toffy (Unico license)",   MACHINE_SUPPORTS_SAVE )
+>>>>>>> upstream/master

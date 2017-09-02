@@ -120,6 +120,10 @@ Notes:
 
 */
 
+<<<<<<< HEAD
+=======
+#include "emu.h"
+>>>>>>> upstream/master
 #include "lux10828.h"
 
 
@@ -138,7 +142,11 @@ Notes:
 //  DEVICE DEFINITIONS
 //**************************************************************************
 
+<<<<<<< HEAD
 const device_type LUXOR_55_10828 = &device_creator<luxor_55_10828_device>;
+=======
+DEFINE_DEVICE_TYPE(LUXOR_55_10828, luxor_55_10828_device, "lux10828", "Luxor 55 10828")
+>>>>>>> upstream/master
 
 
 //-------------------------------------------------
@@ -172,7 +180,11 @@ ROM_END
 //  rom_region - device-specific ROM region
 //-------------------------------------------------
 
+<<<<<<< HEAD
 const rom_entry *luxor_55_10828_device::device_rom_region() const
+=======
+const tiny_rom_entry *luxor_55_10828_device::device_rom_region() const
+>>>>>>> upstream/master
 {
 	return ROM_NAME( luxor_55_10828 );
 }
@@ -233,10 +245,17 @@ READ8_MEMBER( luxor_55_10828_device::pio_pb_r )
 
 	*/
 
+<<<<<<< HEAD
 	UINT8 data = 0x04;
 
 	// single/double sided drive
 	UINT8 sw1 = m_sw1->read() & 0x0f;
+=======
+	uint8_t data = 0x04;
+
+	// single/double sided drive
+	uint8_t sw1 = m_sw1->read() & 0x0f;
+>>>>>>> upstream/master
 	int ds0 = m_sel0 ? BIT(sw1, 0) : 1;
 	int ds1 = m_sel1 ? BIT(sw1, 1) : 1;
 	data |= !(ds0 & ds1);
@@ -290,7 +309,11 @@ WRITE8_MEMBER( luxor_55_10828_device::pio_pb_w )
 static const z80_daisy_config daisy_chain[] =
 {
 	{ Z80PIO_TAG },
+<<<<<<< HEAD
 	{ NULL }
+=======
+	{ nullptr }
+>>>>>>> upstream/master
 };
 
 static SLOT_INTERFACE_START( abc_floppies )
@@ -310,18 +333,27 @@ WRITE_LINE_MEMBER( luxor_55_10828_device::fdc_intrq_w )
 	m_fdc_irq = state;
 	m_pio->port_b_write(state << 7);
 
+<<<<<<< HEAD
 	if (state) m_maincpu->set_input_line(Z80_INPUT_LINE_WAIT, CLEAR_LINE);
+=======
+	if (state) m_maincpu->set_input_line(Z80_INPUT_LINE_BOGUSWAIT, CLEAR_LINE);
+>>>>>>> upstream/master
 }
 
 WRITE_LINE_MEMBER( luxor_55_10828_device::fdc_drq_w )
 {
 	m_fdc_drq = state;
 
+<<<<<<< HEAD
 	if (state) m_maincpu->set_input_line(Z80_INPUT_LINE_WAIT, CLEAR_LINE);
+=======
+	if (state) m_maincpu->set_input_line(Z80_INPUT_LINE_BOGUSWAIT, CLEAR_LINE);
+>>>>>>> upstream/master
 }
 
 
 //-------------------------------------------------
+<<<<<<< HEAD
 //  MACHINE_DRIVER( luxor_55_10828 )
 //-------------------------------------------------
 
@@ -330,6 +362,16 @@ static MACHINE_CONFIG_FRAGMENT( luxor_55_10828 )
 	MCFG_CPU_PROGRAM_MAP(luxor_55_10828_mem)
 	MCFG_CPU_IO_MAP(luxor_55_10828_io)
 	MCFG_CPU_CONFIG(daisy_chain)
+=======
+//  device_add_mconfig - add device configuration
+//-------------------------------------------------
+
+MACHINE_CONFIG_MEMBER( luxor_55_10828_device::device_add_mconfig )
+	MCFG_CPU_ADD(Z80_TAG, Z80, XTAL_4MHz/2)
+	MCFG_CPU_PROGRAM_MAP(luxor_55_10828_mem)
+	MCFG_CPU_IO_MAP(luxor_55_10828_io)
+	MCFG_Z80_DAISY_CHAIN(daisy_chain)
+>>>>>>> upstream/master
 
 	MCFG_DEVICE_ADD(Z80PIO_TAG, Z80PIO, XTAL_4MHz/2)
 	MCFG_Z80PIO_OUT_INT_CB(INPUTLINE(Z80_TAG, INPUT_LINE_IRQ0))
@@ -348,6 +390,7 @@ MACHINE_CONFIG_END
 
 
 //-------------------------------------------------
+<<<<<<< HEAD
 //  machine_config_additions - device-specific
 //  machine configurations
 //-------------------------------------------------
@@ -359,6 +402,8 @@ machine_config_constructor luxor_55_10828_device::device_mconfig_additions() con
 
 
 //-------------------------------------------------
+=======
+>>>>>>> upstream/master
 //  INPUT_PORTS( luxor_55_10828 )
 //-------------------------------------------------
 
@@ -403,8 +448,13 @@ ioport_constructor luxor_55_10828_device::device_input_ports() const
 //  luxor_55_10828_device - constructor
 //-------------------------------------------------
 
+<<<<<<< HEAD
 luxor_55_10828_device::luxor_55_10828_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
 	: device_t(mconfig, LUXOR_55_10828, "Luxor 55 10828", tag, owner, clock, "lux10828", __FILE__),
+=======
+luxor_55_10828_device::luxor_55_10828_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: device_t(mconfig, LUXOR_55_10828, tag, owner, clock),
+>>>>>>> upstream/master
 		device_abcbus_card_interface(mconfig, *this),
 		m_maincpu(*this, Z80_TAG),
 		m_pio(*this, Z80PIO_TAG),
@@ -440,7 +490,11 @@ void luxor_55_10828_device::device_start()
 	save_item(NAME(m_sel1));
 
 	// patch out protection checks
+<<<<<<< HEAD
 	UINT8 *rom = memregion(Z80_TAG)->base();
+=======
+	uint8_t *rom = memregion(Z80_TAG)->base();
+>>>>>>> upstream/master
 	rom[0x00fa] = 0xff;
 	rom[0x0336] = 0xff;
 	rom[0x0718] = 0xff;
@@ -469,9 +523,15 @@ void luxor_55_10828_device::device_reset()
 //  abcbus_cs -
 //-------------------------------------------------
 
+<<<<<<< HEAD
 void luxor_55_10828_device::abcbus_cs(UINT8 data)
 {
 	UINT8 address = 0x2c | BIT(m_s1->read(), 0);
+=======
+void luxor_55_10828_device::abcbus_cs(uint8_t data)
+{
+	uint8_t address = 0x2c | BIT(m_s1->read(), 0);
+>>>>>>> upstream/master
 
 	m_cs = (data == address);
 }
@@ -481,9 +541,15 @@ void luxor_55_10828_device::abcbus_cs(UINT8 data)
 //  abcbus_stat -
 //-------------------------------------------------
 
+<<<<<<< HEAD
 UINT8 luxor_55_10828_device::abcbus_stat()
 {
 	UINT8 data = 0xff;
+=======
+uint8_t luxor_55_10828_device::abcbus_stat()
+{
+	uint8_t data = 0xff;
+>>>>>>> upstream/master
 
 	if (m_cs)
 	{
@@ -498,9 +564,15 @@ UINT8 luxor_55_10828_device::abcbus_stat()
 //  abcbus_inp -
 //-------------------------------------------------
 
+<<<<<<< HEAD
 UINT8 luxor_55_10828_device::abcbus_inp()
 {
 	UINT8 data = 0xff;
+=======
+uint8_t luxor_55_10828_device::abcbus_inp()
+{
+	uint8_t data = 0xff;
+>>>>>>> upstream/master
 
 	if (m_cs)
 	{
@@ -521,7 +593,11 @@ UINT8 luxor_55_10828_device::abcbus_inp()
 //  abcbus_out -
 //-------------------------------------------------
 
+<<<<<<< HEAD
 void luxor_55_10828_device::abcbus_out(UINT8 data)
+=======
+void luxor_55_10828_device::abcbus_out(uint8_t data)
+>>>>>>> upstream/master
 {
 	if (!m_cs) return;
 
@@ -539,7 +615,11 @@ void luxor_55_10828_device::abcbus_out(UINT8 data)
 //  abcbus_c1 -
 //-------------------------------------------------
 
+<<<<<<< HEAD
 void luxor_55_10828_device::abcbus_c1(UINT8 data)
+=======
+void luxor_55_10828_device::abcbus_c1(uint8_t data)
+>>>>>>> upstream/master
 {
 	if (m_cs)
 	{
@@ -553,7 +633,11 @@ void luxor_55_10828_device::abcbus_c1(UINT8 data)
 //  abcbus_c3 -
 //-------------------------------------------------
 
+<<<<<<< HEAD
 void luxor_55_10828_device::abcbus_c3(UINT8 data)
+=======
+void luxor_55_10828_device::abcbus_c3(uint8_t data)
+>>>>>>> upstream/master
 {
 	if (m_cs)
 	{
@@ -592,7 +676,11 @@ WRITE8_MEMBER( luxor_55_10828_device::ctrl_w )
 	m_sel0 = BIT(data, 0);
 	m_sel1 = BIT(data, 1);
 
+<<<<<<< HEAD
 	floppy_image_device *floppy = NULL;
+=======
+	floppy_image_device *floppy = nullptr;
+>>>>>>> upstream/master
 
 	if (BIT(data, 0)) floppy = m_floppy0->get_device();
 	if (BIT(data, 1)) floppy = m_floppy1->get_device();
@@ -654,7 +742,11 @@ READ8_MEMBER( luxor_55_10828_device::fdc_r )
 	{
 		logerror("Z80 WAIT not supported by MAME core\n");
 
+<<<<<<< HEAD
 		m_maincpu->set_input_line(Z80_INPUT_LINE_WAIT, ASSERT_LINE);
+=======
+		m_maincpu->set_input_line(Z80_INPUT_LINE_BOGUSWAIT, ASSERT_LINE);
+>>>>>>> upstream/master
 	}
 
 	return m_fdc->gen_r(offset);
@@ -671,7 +763,11 @@ WRITE8_MEMBER( luxor_55_10828_device::fdc_w )
 	{
 		logerror("Z80 WAIT not supported by MAME core\n");
 
+<<<<<<< HEAD
 		m_maincpu->set_input_line(Z80_INPUT_LINE_WAIT, ASSERT_LINE);
+=======
+		m_maincpu->set_input_line(Z80_INPUT_LINE_BOGUSWAIT, ASSERT_LINE);
+>>>>>>> upstream/master
 	}
 
 	m_fdc->gen_w(offset, data);

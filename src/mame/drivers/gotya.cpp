@@ -36,9 +36,19 @@ TODO: Emulated sound
 ****************************************************************************/
 
 #include "emu.h"
+<<<<<<< HEAD
 #include "cpu/z80/z80.h"
 #include "sound/samples.h"
 #include "includes/gotya.h"
+=======
+#include "includes/gotya.h"
+
+#include "cpu/z80/z80.h"
+#include "machine/watchdog.h"
+#include "sound/samples.h"
+#include "screen.h"
+#include "speaker.h"
+>>>>>>> upstream/master
 
 
 static ADDRESS_MAP_START( gotya_map, AS_PROGRAM, 8, gotya_state )
@@ -50,7 +60,11 @@ static ADDRESS_MAP_START( gotya_map, AS_PROGRAM, 8, gotya_state )
 	AM_RANGE(0x6004, 0x6004) AM_WRITE(gotya_video_control_w)
 	AM_RANGE(0x6005, 0x6005) AM_WRITE(gotya_soundlatch_w)
 	AM_RANGE(0x6006, 0x6006) AM_WRITEONLY AM_SHARE("scroll")
+<<<<<<< HEAD
 	AM_RANGE(0x6007, 0x6007) AM_WRITE(watchdog_reset_w)
+=======
+	AM_RANGE(0x6007, 0x6007) AM_DEVWRITE("watchdog", watchdog_timer_device, reset_w)
+>>>>>>> upstream/master
 	AM_RANGE(0xc000, 0xc7ff) AM_RAM_WRITE(gotya_videoram_w) AM_SHARE("videoram")
 	AM_RANGE(0xc800, 0xcfff) AM_RAM_WRITE(gotya_colorram_w) AM_SHARE("colorram")
 	AM_RANGE(0xd000, 0xd3df) AM_RAM AM_SHARE("videoram2")
@@ -166,7 +180,11 @@ static const char *const sample_names[] =
 	"18",   /* 'Come on!' */                // 194a
 	"19",   /* 'I love you!' */             // 194a
 	"1a",   /* 'See you again!' */          // 194a
+<<<<<<< HEAD
 	0
+=======
+	nullptr
+>>>>>>> upstream/master
 };
 
 void gotya_state::machine_start()
@@ -181,13 +199,21 @@ void gotya_state::machine_reset()
 	m_theme_playing = 0;
 }
 
+<<<<<<< HEAD
 static MACHINE_CONFIG_START( gotya, gotya_state )
+=======
+static MACHINE_CONFIG_START( gotya )
+>>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", Z80,18432000/6) /* 3.072 MHz ??? */
 	MCFG_CPU_PROGRAM_MAP(gotya_map)
 	MCFG_CPU_VBLANK_INT_DRIVER("screen", gotya_state,  irq0_line_hold)
 
+<<<<<<< HEAD
+=======
+	MCFG_WATCHDOG_ADD("watchdog")
+>>>>>>> upstream/master
 
 	/* video hardware */
 	MCFG_SCREEN_ADD("screen", RASTER)
@@ -274,5 +300,10 @@ ROM_START( gotya )
 	ROM_LOAD( "gb-07.bin",  0x7000, 0x1000, CRC(92a9f8bf) SHA1(9231cd86f24f1e6a585c3a919add50c1f8e42a4c) )
 ROM_END
 
+<<<<<<< HEAD
 GAME( 1981, thehand, 0,       gotya, gotya, driver_device, 0, ROT270, "T.I.C.",      "The Hand",                        MACHINE_IMPERFECT_SOUND | MACHINE_SUPPORTS_SAVE )
 GAME( 1981, gotya,   thehand, gotya, gotya, driver_device, 0, ROT270, "Game-A-Tron", "Got-Ya (12/24/1981, prototype?)", MACHINE_IMPERFECT_SOUND | MACHINE_SUPPORTS_SAVE )
+=======
+GAME( 1981, thehand, 0,       gotya, gotya, gotya_state, 0, ROT270, "T.I.C.",      "The Hand",                        MACHINE_IMPERFECT_SOUND | MACHINE_SUPPORTS_SAVE )
+GAME( 1981, gotya,   thehand, gotya, gotya, gotya_state, 0, ROT270, "Game-A-Tron", "Got-Ya (12/24/1981, prototype?)", MACHINE_IMPERFECT_SOUND | MACHINE_SUPPORTS_SAVE )
+>>>>>>> upstream/master

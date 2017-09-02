@@ -54,7 +54,11 @@ MANIFEST
 Makefile.in
 README
 configure
+<<<<<<< HEAD
 configure.in
+=======
+configure.ac
+>>>>>>> upstream/master
 expat_config.h.in
 expat_config.h.cmake
 expat.pc.in

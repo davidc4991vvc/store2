@@ -11,6 +11,7 @@
 
 
 
+<<<<<<< HEAD
 const device_type TRACKFLD_AUDIO = &device_creator<trackfld_audio_device>;
 
 trackfld_audio_device::trackfld_audio_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
@@ -28,6 +29,15 @@ trackfld_audio_device::trackfld_audio_device(const machine_config &mconfig, cons
 //-------------------------------------------------
 
 void trackfld_audio_device::device_config_complete()
+=======
+DEFINE_DEVICE_TYPE(TRACKFLD_AUDIO, trackfld_audio_device, "trackfld_audio", "Track And Field Audio")
+
+trackfld_audio_device::trackfld_audio_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: device_t(mconfig, TRACKFLD_AUDIO, tag, owner, clock)
+	, device_sound_interface(mconfig, *this)
+	, m_last_addr(0)
+	, m_last_irq(0)
+>>>>>>> upstream/master
 {
 }
 
@@ -68,7 +78,11 @@ void trackfld_audio_device::device_reset()
 
 READ8_MEMBER( trackfld_audio_device::trackfld_sh_timer_r )
 {
+<<<<<<< HEAD
 	UINT32 clock = space.machine().device<cpu_device>("audiocpu")->total_cycles() / TIMER_RATE;
+=======
+	uint32_t clock = space.machine().device<cpu_device>("audiocpu")->total_cycles() / TIMER_RATE;
+>>>>>>> upstream/master
 
 	return clock & 0xF;
 }
@@ -99,9 +113,15 @@ WRITE8_MEMBER( trackfld_audio_device::trackfld_sound_w )
 
 READ8_MEMBER( trackfld_audio_device::hyperspt_sh_timer_r )
 {
+<<<<<<< HEAD
 	UINT32 clock = m_audiocpu->total_cycles() / TIMER_RATE;
 
 	if (m_vlm != NULL)
+=======
+	uint32_t clock = m_audiocpu->total_cycles() / TIMER_RATE;
+
+	if (m_vlm != nullptr)
+>>>>>>> upstream/master
 		return (clock & 0x3) | (m_vlm->bsy() ? 0x04 : 0);
 	else
 		return (clock & 0x3);
@@ -131,15 +151,25 @@ WRITE8_MEMBER( trackfld_audio_device::hyperspt_sound_w )
 
 
 
+<<<<<<< HEAD
 WRITE8_MEMBER( trackfld_audio_device::konami_sh_irqtrigger_w )
 {
 	if (m_last_irq == 0 && data)
+=======
+WRITE_LINE_MEMBER(trackfld_audio_device::sh_irqtrigger_w)
+{
+	if (m_last_irq == 0 && state)
+>>>>>>> upstream/master
 	{
 		/* setting bit 0 low then high triggers IRQ on the sound CPU */
 		m_audiocpu->set_input_line_and_vector(0, HOLD_LINE, 0xff);
 	}
 
+<<<<<<< HEAD
 	m_last_irq = data;
+=======
+	m_last_irq = state;
+>>>>>>> upstream/master
 }
 
 //-------------------------------------------------

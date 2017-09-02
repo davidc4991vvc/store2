@@ -2,7 +2,11 @@
 // copyright-holders:Raphael Nabet
 /****************************************************************************
 
+<<<<<<< HEAD
     macbin.c
+=======
+    macbin.cpp
+>>>>>>> upstream/master
 
     MacBinary filter for use with Mac and ProDOS drivers
 
@@ -54,7 +58,11 @@
 
 
 
+<<<<<<< HEAD
 static UINT32 pad128(UINT32 length)
+=======
+static uint32_t pad128(uint32_t length)
+>>>>>>> upstream/master
 {
 	if (length % 128)
 		length += 128 - (length % 128);
@@ -63,9 +71,15 @@ static UINT32 pad128(UINT32 length)
 
 
 
+<<<<<<< HEAD
 static imgtoolerr_t macbinary_readfile(imgtool_partition *partition, const char *filename, const char *fork, imgtool_stream *destf)
 {
 	static const UINT32 attrs[] =
+=======
+static imgtoolerr_t macbinary_readfile(imgtool::partition &partition, const char *filename, const char *fork, imgtool::stream &destf)
+{
+	static const uint32_t attrs[] =
+>>>>>>> upstream/master
 	{
 		IMGTOOLATTR_TIME_CREATED,
 		IMGTOOLATTR_TIME_LASTMODIFIED,
@@ -80,6 +94,7 @@ static imgtoolerr_t macbinary_readfile(imgtool_partition *partition, const char 
 		0
 	};
 	imgtoolerr_t err;
+<<<<<<< HEAD
 	UINT8 header[128];
 	const char *basename;
 	int i;
@@ -114,6 +129,50 @@ static imgtoolerr_t macbinary_readfile(imgtool_partition *partition, const char 
 
 	/* get the attributes */
 	err = imgtool_partition_get_file_attributes(partition, filename, attrs, attr_values);
+=======
+	uint8_t header[128];
+	const char *basename;
+
+	uint32_t type_code = 0x3F3F3F3F;
+	uint32_t creator_code = 0x3F3F3F3F;
+	uint16_t finder_flags = 0;
+	uint16_t coord_x = 0;
+	uint16_t coord_y = 0;
+	uint16_t finder_folder = 0;
+	uint8_t script_code = 0;
+	uint8_t extended_flags = 0;
+
+	uint32_t creation_time = 0;
+	uint32_t lastmodified_time = 0;
+	imgtool_attribute attr_values[10];
+
+	// get the forks
+	std::vector<imgtool::fork_entry> fork_entries;
+	err = partition.list_file_forks(filename, fork_entries);
+	if (err)
+		return err;
+
+	const imgtool::fork_entry *data_fork = nullptr;
+	const imgtool::fork_entry *resource_fork = nullptr;
+	for (const auto &entry : fork_entries)
+	{
+		switch (entry.type())
+		{
+		case imgtool::fork_entry::type_t::DATA:
+			data_fork = &entry;
+			break;
+		case imgtool::fork_entry::type_t::RESOURCE:
+			resource_fork = &entry;
+			break;
+		default:
+			// do nothing
+			break;
+		}
+	}
+
+	/* get the attributes */
+	err = partition.get_file_attributes(filename, attrs, attr_values);
+>>>>>>> upstream/master
 	if (err && (ERRORCODE(err) != IMGTOOLERR_UNIMPLEMENTED))
 		return err;
 	if (err == IMGTOOLERR_SUCCESS)
@@ -144,8 +203,13 @@ static imgtoolerr_t macbinary_readfile(imgtool_partition *partition, const char 
 	place_integer_be(header,  75, 2, coord_x);
 	place_integer_be(header,  77, 2, coord_y);
 	place_integer_be(header,  79, 2, finder_folder);
+<<<<<<< HEAD
 	place_integer_be(header,  83, 4, data_fork ? data_fork->size : 0);
 	place_integer_be(header,  87, 4, resource_fork ? resource_fork->size : 0);
+=======
+	place_integer_be(header,  83, 4, data_fork ? data_fork->size() : 0);
+	place_integer_be(header,  87, 4, resource_fork ? resource_fork->size() : 0);
+>>>>>>> upstream/master
 	place_integer_be(header,  91, 4, creation_time);
 	place_integer_be(header,  95, 4, lastmodified_time);
 	place_integer_be(header, 101, 1, (finder_flags >> 0) & 0xFF);
@@ -156,6 +220,7 @@ static imgtoolerr_t macbinary_readfile(imgtool_partition *partition, const char 
 	place_integer_be(header, 123, 1, 0x81);
 	place_integer_be(header, 124, 2, ccitt_crc16(0, header, 124));
 
+<<<<<<< HEAD
 	stream_write(destf, header, sizeof(header));
 
 	if (data_fork)
@@ -165,15 +230,34 @@ static imgtoolerr_t macbinary_readfile(imgtool_partition *partition, const char 
 			return err;
 
 		stream_fill(destf, 0, pad128(data_fork->size));
+=======
+	destf.write(header, sizeof(header));
+
+	if (data_fork)
+	{
+		err = partition.read_file(filename, "", destf, NULL);
+		if (err)
+			return err;
+
+		destf.fill(0, pad128(data_fork->size()));
+>>>>>>> upstream/master
 	}
 
 	if (resource_fork)
 	{
+<<<<<<< HEAD
 		err = imgtool_partition_read_file(partition, filename, "RESOURCE_FORK", destf, NULL);
 		if (err)
 			return err;
 
 		stream_fill(destf, 0, pad128(resource_fork->size));
+=======
+		err = partition.read_file(filename, "RESOURCE_FORK", destf, NULL);
+		if (err)
+			return err;
+
+		destf.fill(0, pad128(resource_fork->size()));
+>>>>>>> upstream/master
 	}
 
 	return IMGTOOLERR_SUCCESS;
@@ -181,15 +265,24 @@ static imgtoolerr_t macbinary_readfile(imgtool_partition *partition, const char 
 
 
 
+<<<<<<< HEAD
 static imgtoolerr_t write_fork(imgtool_partition *partition, const char *filename, const char *fork,
 	imgtool_stream *sourcef, UINT64 pos, UINT64 fork_len, option_resolution *opts)
 {
 	imgtoolerr_t err = IMGTOOLERR_SUCCESS;
 	imgtool_stream *mem_stream = NULL;
+=======
+static imgtoolerr_t write_fork(imgtool::partition &partition, const char *filename, const char *fork,
+	imgtool::stream &sourcef, uint64_t pos, uint64_t fork_len, util::option_resolution *opts)
+{
+	imgtoolerr_t err;
+	imgtool::stream::ptr mem_stream;
+>>>>>>> upstream/master
 	size_t len;
 
 	if (fork_len > 0)
 	{
+<<<<<<< HEAD
 		mem_stream = stream_open_mem(NULL, 0);
 		if (!mem_stream)
 		{
@@ -212,13 +305,37 @@ done:
 	if (mem_stream)
 		stream_close(mem_stream);
 	return err;
+=======
+		mem_stream = imgtool::stream::open_mem(nullptr, 0);
+		if (!mem_stream)
+			return IMGTOOLERR_OUTOFMEMORY;
+
+		sourcef.seek(pos, SEEK_SET);
+		len = imgtool::stream::transfer(*mem_stream, sourcef, fork_len);
+		if (len < fork_len)
+			mem_stream->fill(0, fork_len);
+
+		mem_stream->seek(0, SEEK_SET);
+		err = partition.write_file(filename, fork, *mem_stream, opts, NULL);
+		if (err)
+			return err;
+	}
+
+	return IMGTOOLERR_SUCCESS;
+>>>>>>> upstream/master
 }
 
 
 
+<<<<<<< HEAD
 static imgtoolerr_t macbinary_writefile(imgtool_partition *partition, const char *filename, const char *fork, imgtool_stream *sourcef, option_resolution *opts)
 {
 	static const UINT32 attrs[] =
+=======
+static imgtoolerr_t macbinary_writefile(imgtool::partition &partition, const char *filename, const char *fork, imgtool::stream &sourcef, util::option_resolution *opts)
+{
+	static const uint32_t attrs[] =
+>>>>>>> upstream/master
 	{
 		IMGTOOLATTR_TIME_CREATED,
 		IMGTOOLATTR_TIME_LASTMODIFIED,
@@ -233,6 +350,7 @@ static imgtoolerr_t macbinary_writefile(imgtool_partition *partition, const char
 		0
 	};
 	imgtoolerr_t err;
+<<<<<<< HEAD
 	imgtool_image *image = imgtool_partition_image(partition);
 	UINT8 header[128];
 	UINT32 datafork_size;
@@ -255,6 +373,30 @@ static imgtoolerr_t macbinary_writefile(imgtool_partition *partition, const char
 	/* read in the header */
 	memset(header, 0, sizeof(header));
 	stream_read(sourcef, header, sizeof(header));
+=======
+	imgtool::image *image = &partition.image();
+	uint8_t header[128];
+	uint32_t datafork_size;
+	uint32_t resourcefork_size;
+	uint64_t total_size;
+	uint32_t creation_time;
+	uint32_t lastmodified_time;
+	//int version;
+	imgtool_attribute attr_values[10];
+
+	uint32_t type_code;
+	uint32_t creator_code;
+	uint16_t finder_flags;
+	uint16_t coord_x;
+	uint16_t coord_y;
+	uint16_t finder_folder;
+	uint8_t script_code = 0;
+	uint8_t extended_flags = 0;
+
+	/* read in the header */
+	memset(header, 0, sizeof(header));
+	sourcef.read(header, sizeof(header));
+>>>>>>> upstream/master
 
 	/* check magic and zero fill bytes */
 	if (header[0] != 0x00)
@@ -266,7 +408,11 @@ static imgtoolerr_t macbinary_writefile(imgtool_partition *partition, const char
 
 	datafork_size = pick_integer_be(header, 83, 4);
 	resourcefork_size = pick_integer_be(header, 87, 4);
+<<<<<<< HEAD
 	total_size = stream_size(sourcef);
+=======
+	total_size = sourcef.size();
+>>>>>>> upstream/master
 
 	/* size of a MacBinary header is always 128 bytes */
 	if (total_size - pad128(datafork_size) - pad128(resourcefork_size) != 128)
@@ -332,7 +478,11 @@ static imgtoolerr_t macbinary_writefile(imgtool_partition *partition, const char
 		attr_values[8].i = script_code;
 		attr_values[9].i = extended_flags;
 
+<<<<<<< HEAD
 		err = imgtool_partition_put_file_attributes(partition, filename, attrs, attr_values);
+=======
+		err = partition.put_file_attributes(filename, attrs, attr_values);
+>>>>>>> upstream/master
 		if (err)
 			return err;
 	}
@@ -341,8 +491,14 @@ static imgtoolerr_t macbinary_writefile(imgtool_partition *partition, const char
 }
 
 
+<<<<<<< HEAD
 
 static imgtoolerr_t macbinary_checkstream(imgtool_stream *stream, imgtool_suggestion_viability_t *viability)
+=======
+// this was completely broken - it was calling macbinary_writefile() with a nullptr partition
+#if 0
+static imgtoolerr_t macbinary_checkstream(imgtool::stream &stream, imgtool_suggestion_viability_t *viability)
+>>>>>>> upstream/master
 {
 	imgtoolerr_t err;
 
@@ -360,10 +516,18 @@ static imgtoolerr_t macbinary_checkstream(imgtool_stream *stream, imgtool_sugges
 	}
 	return err;
 }
+<<<<<<< HEAD
 
 
 
 void filter_macbinary_getinfo(UINT32 state, union filterinfo *info)
+=======
+#endif
+
+
+
+void filter_macbinary_getinfo(uint32_t state, union filterinfo *info)
+>>>>>>> upstream/master
 {
 	switch(state)
 	{
@@ -372,6 +536,10 @@ void filter_macbinary_getinfo(UINT32 state, union filterinfo *info)
 		case FILTINFO_STR_EXTENSION:    info->s = "bin"; break;
 		case FILTINFO_PTR_READFILE:     info->read_file = macbinary_readfile; break;
 		case FILTINFO_PTR_WRITEFILE:    info->write_file = macbinary_writefile; break;
+<<<<<<< HEAD
 		case FILTINFO_PTR_CHECKSTREAM:  info->check_stream = macbinary_checkstream; break;
+=======
+		//case FILTINFO_PTR_CHECKSTREAM:  info->check_stream = macbinary_checkstream; break;
+>>>>>>> upstream/master
 	}
 }

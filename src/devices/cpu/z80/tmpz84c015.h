@@ -7,12 +7,20 @@
 
 ***************************************************************************/
 
+<<<<<<< HEAD
 #pragma once
 
 #ifndef __TMPZ84C015__
 #define __TMPZ84C015__
 
 #include "emu.h"
+=======
+#ifndef MAME_CPU_Z80_TMPZ84C015_H
+#define MAME_CPU_Z80_TMPZ84C015_H
+
+#pragma once
+
+>>>>>>> upstream/master
 #include "z80.h"
 #include "machine/z80dart.h"
 #include "machine/z80ctc.h"
@@ -23,9 +31,12 @@
     DEVICE CONFIGURATION MACROS
 ***************************************************************************/
 
+<<<<<<< HEAD
 // If an external daisy chain is used, insert this before your own device tags:
 #define TMPZ84C015_DAISY_INTERNAL { "tmpz84c015_ctc" }, { "tmpz84c015_sio" }, { "tmpz84c015_pio" }
 
+=======
+>>>>>>> upstream/master
 // SIO callbacks
 #define MCFG_TMPZ84C015_OUT_TXDA_CB(_devcb) \
 	devcb = &tmpz84c015_device::set_out_txda_callback(*device, DEVCB_##_devcb);
@@ -108,7 +119,11 @@
 class tmpz84c015_device : public z80_device
 {
 public:
+<<<<<<< HEAD
 	tmpz84c015_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32);
+=======
+	tmpz84c015_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t);
+>>>>>>> upstream/master
 
 	// static configuration helpers
 	template<class _Object> static devcb_base &set_out_txda_callback(device_t &device, _Object object) { return downcast<tmpz84c015_device &>(device).m_out_txda_cb.set_callback(object); }
@@ -178,6 +193,7 @@ public:
 
 	DECLARE_WRITE8_MEMBER( irq_priority_w );
 
+<<<<<<< HEAD
 	DECLARE_WRITE_LINE_MEMBER( out_txda_cb_trampoline_w ) { m_out_txda_cb(state); }
 	DECLARE_WRITE_LINE_MEMBER( out_dtra_cb_trampoline_w ) { m_out_dtra_cb(state); }
 	DECLARE_WRITE_LINE_MEMBER( out_rtsa_cb_trampoline_w ) { m_out_rtsa_cb(state); }
@@ -224,6 +240,18 @@ protected:
 			default: return z80_device::memory_space_config(spacenum);
 		}
 	}
+=======
+protected:
+	// device-level overrides
+	virtual void device_add_mconfig(machine_config &config) override;
+	virtual void device_start() override;
+	virtual void device_reset() override;
+	virtual void device_post_load() override;
+
+	const address_space_config m_io_space_config;
+
+	virtual space_config_vector memory_space_config() const override;
+>>>>>>> upstream/master
 
 private:
 	// devices/pointers
@@ -232,7 +260,11 @@ private:
 	required_device<z80pio_device> m_pio;
 
 	// internal state
+<<<<<<< HEAD
 	UINT8 m_irq_priority;
+=======
+	uint8_t m_irq_priority;
+>>>>>>> upstream/master
 
 	// callbacks
 	devcb_write_line m_out_txda_cb;
@@ -263,11 +295,50 @@ private:
 	devcb_read8 m_in_pb_cb;
 	devcb_write8 m_out_pb_cb;
 	devcb_write_line m_out_brdy_cb;
+<<<<<<< HEAD
+=======
+
+	DECLARE_WRITE_LINE_MEMBER( out_txda_cb_trampoline_w ) { m_out_txda_cb(state); }
+	DECLARE_WRITE_LINE_MEMBER( out_dtra_cb_trampoline_w ) { m_out_dtra_cb(state); }
+	DECLARE_WRITE_LINE_MEMBER( out_rtsa_cb_trampoline_w ) { m_out_rtsa_cb(state); }
+	DECLARE_WRITE_LINE_MEMBER( out_wrdya_cb_trampoline_w ) { m_out_wrdya_cb(state); }
+	DECLARE_WRITE_LINE_MEMBER( out_synca_cb_trampoline_w ) { m_out_synca_cb(state); }
+
+	DECLARE_WRITE_LINE_MEMBER( out_txdb_cb_trampoline_w ) { m_out_txdb_cb(state); }
+	DECLARE_WRITE_LINE_MEMBER( out_dtrb_cb_trampoline_w ) { m_out_dtrb_cb(state); }
+	DECLARE_WRITE_LINE_MEMBER( out_rtsb_cb_trampoline_w ) { m_out_rtsb_cb(state); }
+	DECLARE_WRITE_LINE_MEMBER( out_wrdyb_cb_trampoline_w ) { m_out_wrdyb_cb(state); }
+	DECLARE_WRITE_LINE_MEMBER( out_syncb_cb_trampoline_w ) { m_out_syncb_cb(state); }
+
+	DECLARE_WRITE_LINE_MEMBER( out_rxdrqa_cb_trampoline_w ) { m_out_rxdrqa_cb(state); }
+	DECLARE_WRITE_LINE_MEMBER( out_txdrqa_cb_trampoline_w ) { m_out_txdrqa_cb(state); }
+	DECLARE_WRITE_LINE_MEMBER( out_rxdrqb_cb_trampoline_w ) { m_out_rxdrqb_cb(state); }
+	DECLARE_WRITE_LINE_MEMBER( out_txdrqb_cb_trampoline_w ) { m_out_txdrqb_cb(state); }
+
+	DECLARE_WRITE_LINE_MEMBER( zc0_cb_trampoline_w ) { m_zc0_cb(state); }
+	DECLARE_WRITE_LINE_MEMBER( zc1_cb_trampoline_w ) { m_zc1_cb(state); }
+	DECLARE_WRITE_LINE_MEMBER( zc2_cb_trampoline_w ) { m_zc2_cb(state); }
+
+	DECLARE_READ8_MEMBER( in_pa_cb_trampoline_r ) { return m_in_pa_cb(); }
+	DECLARE_WRITE8_MEMBER( out_pa_cb_trampoline_w ) { m_out_pa_cb(data); }
+	DECLARE_WRITE_LINE_MEMBER( out_ardy_cb_trampoline_w ) { m_out_ardy_cb(state); }
+
+	DECLARE_READ8_MEMBER( in_pb_cb_trampoline_r ) { return m_in_pb_cb(); }
+	DECLARE_WRITE8_MEMBER( out_pb_cb_trampoline_w ) { m_out_pb_cb(data); }
+	DECLARE_WRITE_LINE_MEMBER( out_brdy_cb_trampoline_w ) { m_out_brdy_cb(state); }
+>>>>>>> upstream/master
 };
 
 
 // device type definition
+<<<<<<< HEAD
 extern const device_type TMPZ84C015;
 
 
 #endif // __TMPZ84C015__
+=======
+DECLARE_DEVICE_TYPE(TMPZ84C015, tmpz84c015_device)
+
+
+#endif // MAME_CPU_Z80_TMPZ84C015_H
+>>>>>>> upstream/master

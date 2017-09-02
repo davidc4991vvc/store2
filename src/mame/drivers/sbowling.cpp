@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 // license:???
+=======
+// license:GPL-2.0+
+>>>>>>> upstream/master
 // copyright-holders:Jarek Burczynski, Tomasz Slanina
 /**********************************************************
 Strike Bowling  (c)1982 Taito
@@ -42,8 +46,16 @@ PROMs : NEC B406 (1kx4) x2
 #include "emu.h"
 #include "cpu/i8085/i8085.h"
 #include "cpu/mcs48/mcs48.h"
+<<<<<<< HEAD
 #include "video/resnet.h"
 #include "sound/ay8910.h"
+=======
+#include "machine/watchdog.h"
+#include "sound/ay8910.h"
+#include "video/resnet.h"
+#include "screen.h"
+#include "speaker.h"
+>>>>>>> upstream/master
 
 
 class sbowling_state : public driver_device
@@ -56,16 +68,27 @@ public:
 		m_gfxdecode(*this, "gfxdecode") { }
 
 	required_device<cpu_device> m_maincpu;
+<<<<<<< HEAD
 	required_shared_ptr<UINT8> m_videoram;
+=======
+	required_shared_ptr<uint8_t> m_videoram;
+>>>>>>> upstream/master
 	required_device<gfxdecode_device> m_gfxdecode;
 
 	int m_bgmap;
 	int m_system;
 	tilemap_t *m_tilemap;
+<<<<<<< HEAD
 	bitmap_ind16 *m_tmpbitmap;
 	UINT32 m_color_prom_address;
 	UINT8 m_pix_sh;
 	UINT8 m_pix[2];
+=======
+	std::unique_ptr<bitmap_ind16> m_tmpbitmap;
+	uint32_t m_color_prom_address;
+	uint8_t m_pix_sh;
+	uint8_t m_pix[2];
+>>>>>>> upstream/master
 
 	DECLARE_WRITE8_MEMBER(videoram_w);
 	DECLARE_WRITE8_MEMBER(pix_shift_w);
@@ -78,16 +101,27 @@ public:
 	TILE_GET_INFO_MEMBER(get_tile_info);
 	TIMER_DEVICE_CALLBACK_MEMBER(interrupt);
 
+<<<<<<< HEAD
 	virtual void video_start();
 	DECLARE_PALETTE_INIT(sbowling);
 
 	UINT32 screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
+=======
+	virtual void video_start() override;
+	DECLARE_PALETTE_INIT(sbowling);
+
+	uint32_t screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
+>>>>>>> upstream/master
 	void postload();
 };
 
 TILE_GET_INFO_MEMBER(sbowling_state::get_tile_info)
 {
+<<<<<<< HEAD
 	UINT8 *rom = memregion("user1")->base();
+=======
+	uint8_t *rom = memregion("user1")->base();
+>>>>>>> upstream/master
 	int tileno = rom[tile_index + m_bgmap * 1024];
 
 	SET_TILE_INFO_MEMBER(0, tileno, 0, 0);
@@ -121,13 +155,21 @@ WRITE8_MEMBER(sbowling_state::videoram_w)
 
 	for (int i = 0; i < 8; i++)
 	{
+<<<<<<< HEAD
 		plot_pixel_sbw(m_tmpbitmap, x++, y, m_color_prom_address | ( ((v1&1)*0x20) | ((v2&1)*0x40) ), flip);
+=======
+		plot_pixel_sbw(m_tmpbitmap.get(), x++, y, m_color_prom_address | ( ((v1&1)*0x20) | ((v2&1)*0x40) ), flip);
+>>>>>>> upstream/master
 		v1 >>= 1;
 		v2 >>= 1;
 	}
 }
 
+<<<<<<< HEAD
 UINT32 sbowling_state::screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+=======
+uint32_t sbowling_state::screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+>>>>>>> upstream/master
 {
 	bitmap.fill(0x18, cliprect);
 	m_tilemap->draw(screen, bitmap, cliprect, 0, 0);
@@ -137,8 +179,13 @@ UINT32 sbowling_state::screen_update(screen_device &screen, bitmap_ind16 &bitmap
 
 void sbowling_state::video_start()
 {
+<<<<<<< HEAD
 	m_tmpbitmap = auto_bitmap_ind16_alloc(machine(),32*8,32*8);
 	m_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(sbowling_state::get_tile_info),this), TILEMAP_SCAN_ROWS, 8, 8, 32, 32);
+=======
+	m_tmpbitmap = std::make_unique<bitmap_ind16>(32*8,32*8);
+	m_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(sbowling_state::get_tile_info),this), TILEMAP_SCAN_ROWS, 8, 8, 32, 32);
+>>>>>>> upstream/master
 
 	save_item(NAME(m_bgmap));
 	save_item(NAME(m_system));
@@ -166,7 +213,11 @@ WRITE8_MEMBER(sbowling_state::pix_data_w)
 }
 READ8_MEMBER(sbowling_state::pix_data_r)
 {
+<<<<<<< HEAD
 	UINT32 p1, p0;
+=======
+	uint32_t p1, p0;
+>>>>>>> upstream/master
 	int res;
 	int sh = m_pix_sh & 7;
 
@@ -250,7 +301,11 @@ ADDRESS_MAP_END
 
 
 static ADDRESS_MAP_START( port_map, AS_IO, 8, sbowling_state )
+<<<<<<< HEAD
 	AM_RANGE(0x00, 0x00) AM_READ_PORT("IN0") AM_WRITE(watchdog_reset_w)
+=======
+	AM_RANGE(0x00, 0x00) AM_READ_PORT("IN0") AM_DEVWRITE("watchdog", watchdog_timer_device, reset_w)
+>>>>>>> upstream/master
 	AM_RANGE(0x01, 0x01) AM_READWRITE(controls_r, pix_data_w)
 	AM_RANGE(0x02, 0x02) AM_READWRITE(pix_data_r, pix_shift_w)
 	AM_RANGE(0x03, 0x03) AM_READ_PORT("IN1") AM_WRITENOP
@@ -361,7 +416,11 @@ GFXDECODE_END
 
 PALETTE_INIT_MEMBER(sbowling_state, sbowling)
 {
+<<<<<<< HEAD
 	const UINT8 *color_prom = memregion("proms")->base();
+=======
+	const uint8_t *color_prom = memregion("proms")->base();
+>>>>>>> upstream/master
 
 	static const int resistances_rg[3] = { 470, 270, 100 };
 	static const int resistances_b[2]  = { 270, 100 };
@@ -398,12 +457,21 @@ PALETTE_INIT_MEMBER(sbowling_state, sbowling)
 	}
 }
 
+<<<<<<< HEAD
 static MACHINE_CONFIG_START( sbowling, sbowling_state )
+=======
+static MACHINE_CONFIG_START( sbowling )
+>>>>>>> upstream/master
 	MCFG_CPU_ADD("maincpu", I8080, XTAL_19_968MHz/10)   /* ? */
 	MCFG_CPU_PROGRAM_MAP(main_map)
 	MCFG_CPU_IO_MAP(port_map)
 	MCFG_TIMER_DRIVER_ADD_SCANLINE("scantimer", sbowling_state, interrupt, "screen", 0, 1)
 
+<<<<<<< HEAD
+=======
+	MCFG_WATCHDOG_ADD("watchdog")
+
+>>>>>>> upstream/master
 	/* video hardware */
 	MCFG_SCREEN_ADD("screen", RASTER)
 	MCFG_SCREEN_REFRESH_RATE(60)
@@ -443,4 +511,8 @@ ROM_START( sbowling )
 	ROM_LOAD( "kb09.6m",        0x0400, 0x0400, CRC(e29191a6) SHA1(9a2c78a96ef6d118f4dacbea0b7d454b66a452ae))
 ROM_END
 
+<<<<<<< HEAD
 GAME( 1982, sbowling, 0, sbowling, sbowling, driver_device, 0, ROT90, "Taito Corporation", "Strike Bowling", MACHINE_IMPERFECT_SOUND | MACHINE_SUPPORTS_SAVE )
+=======
+GAME( 1982, sbowling, 0, sbowling, sbowling, sbowling_state, 0, ROT90, "Taito Corporation", "Strike Bowling", MACHINE_IMPERFECT_SOUND | MACHINE_SUPPORTS_SAVE )
+>>>>>>> upstream/master

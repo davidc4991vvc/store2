@@ -19,12 +19,17 @@
 #define KCONST6(op)     ((((op) >> 2) & 0x0030) | ((op) & 0x000f))
 #define KCONST7(op)     (((op) >> 3) & 0x007f)
 #define KCONST8(op)     ((((op) >> 4) & 0x00f0) | ((op) & 0x000f))
+<<<<<<< HEAD
 #define KCONST22(op)    (((((UINT32)(op) >> 3) & 0x003e) | ((UINT32)(op) & 0x0001)) << 16)
+=======
+#define KCONST22(op)    (((((uint32_t)(op) >> 3) & 0x003e) | ((uint32_t)(op) & 0x0001)) << 16)
+>>>>>>> upstream/master
 #define QCONST6(op)     ((((op) >> 8) & 0x0020) | (((op) >> 7) & 0x0018) | ((op) & 0x0007))
 #define ACONST5(op)     (((op) >> 3) & 0x001f)
 #define ACONST6(op)     ((((op) >> 5) & 0x0030) | ((op) & 0x000f))
 #define MULCONST2(op)   ((((op) >> 6) & 0x0002) | (((op) >> 3) & 0x0001))
 
+<<<<<<< HEAD
 CPU_DISASSEMBLE( avr8 )
 {
 	char *output = buffer;
@@ -32,6 +37,14 @@ CPU_DISASSEMBLE( avr8 )
 	UINT32 op = oprom[pos++];
 	op |= oprom[pos++] << 8;
 	UINT32 addr = 0;
+=======
+CPU_DISASSEMBLE(avr8)
+{
+	int pos = 0;
+	uint32_t op = oprom[pos++];
+	op |= oprom[pos++] << 8;
+	uint32_t addr;
+>>>>>>> upstream/master
 	const char* register_names[0x40] = {"PINA", "DDRA", "PORTA", "PINB", "DDRB", "PORTB", "PINC", "DDRC", "PORTC", "PIND", "DDRD", "PORTD", "PINE", "DDRE", "PORTE", "PINF", "DDRF", "PORTF", "PING", "DDRG", "PORTG", "TIFR0", "TIFR1", "TIFR2","TIFR3", "TIFR4", "TIFR5", "PCIFR", "EIFR", "EIMSK", "GPIOR0", "EECR", "EEDR", "EEARL", "EEARH", "GTCCR", "TCCR0A", "TCCR0B", "TCNT0", "OCR0A", "OCR0B", "0x29", "GPIOR1", "GPIOR2", "SPCR", "SPSR", "SPDR", "0x2F", "ACSR", "OCDR", "0x32", "SMCR", "MCUSR", "MCUCR", "0x36", "SPMCSR", "0x38", "0x39", "0x3A", "RAMPZ", "EIND", "SPL", "SPH", "SREG"};
 
 	const char* register_bit_names[0x40][8] = {
@@ -106,6 +119,7 @@ CPU_DISASSEMBLE( avr8 )
 			switch(op & 0x0f00)
 			{
 				case 0x0000:
+<<<<<<< HEAD
 					output += sprintf( output, "NOP" );
 					break;
 				case 0x0100:
@@ -113,11 +127,21 @@ CPU_DISASSEMBLE( avr8 )
 					break;
 				case 0x0200:
 					output += sprintf( output, "MULS    R%d, R%d", 16+RD4(op), 16+RR4(op) );
+=======
+					util::stream_format(stream, "NOP");
+					break;
+				case 0x0100:
+					util::stream_format(stream, "MOVW    R%d:R%d, R%d:R%d", (RD4(op) << 1)+1, RD4(op) << 1, (RR4(op) << 1)+1, RR4(op) << 1);
+					break;
+				case 0x0200:
+					util::stream_format(stream, "MULS    R%d, R%d", 16+RD4(op), 16+RR4(op));
+>>>>>>> upstream/master
 					break;
 				case 0x0300:
 					switch(MULCONST2(op))
 					{
 						case 0:
+<<<<<<< HEAD
 							output += sprintf( output, "MULSU   R%d, R%d", 16+RD3(op), 16+RR3(op) );
 							break;
 						case 1:
@@ -128,6 +152,18 @@ CPU_DISASSEMBLE( avr8 )
 							break;
 						case 3:
 							output += sprintf( output, "FMULSU  R%d, R%d", 16+RD3(op), 16+RR3(op) );
+=======
+							util::stream_format(stream, "MULSU   R%d, R%d", 16+RD3(op), 16+RR3(op));
+							break;
+						case 1:
+							util::stream_format(stream, "FMUL    R%d, R%d", 16+RD3(op), 16+RR3(op));
+							break;
+						case 2:
+							util::stream_format(stream, "FMULS   R%d, R%d", 16+RD3(op), 16+RR3(op));
+							break;
+						case 3:
+							util::stream_format(stream, "FMULSU  R%d, R%d", 16+RD3(op), 16+RR3(op));
+>>>>>>> upstream/master
 							break;
 					}
 					break;
@@ -135,19 +171,31 @@ CPU_DISASSEMBLE( avr8 )
 				case 0x0500:
 				case 0x0600:
 				case 0x0700:
+<<<<<<< HEAD
 					output += sprintf( output, "CPC     R%d, R%d", RD5(op), RR5(op) );
+=======
+					util::stream_format(stream, "CPC     R%d, R%d", RD5(op), RR5(op));
+>>>>>>> upstream/master
 					break;
 				case 0x0800:
 				case 0x0900:
 				case 0x0a00:
 				case 0x0b00:
+<<<<<<< HEAD
 					output += sprintf( output, "SBC     R%d, R%d", RD5(op), RR5(op) );
+=======
+					util::stream_format(stream, "SBC     R%d, R%d", RD5(op), RR5(op));
+>>>>>>> upstream/master
 					break;
 				case 0x0c00:
 				case 0x0d00:
 				case 0x0e00:
 				case 0x0f00:
+<<<<<<< HEAD
 					output += sprintf( output, "ADD     R%d, R%d", RD5(op), RR5(op) );
+=======
+					util::stream_format(stream, "ADD     R%d, R%d", RD5(op), RR5(op));
+>>>>>>> upstream/master
 					break;
 			}
 			break;
@@ -155,6 +203,7 @@ CPU_DISASSEMBLE( avr8 )
 			switch(op & 0x0c00)
 			{
 				case 0x0000:
+<<<<<<< HEAD
 					output += sprintf( output, "CPSE    R%d, R%d", RD5(op), RR5(op) );
 					break;
 				case 0x0400:
@@ -165,6 +214,18 @@ CPU_DISASSEMBLE( avr8 )
 					break;
 				case 0x0c00:
 					output += sprintf( output, "ADC     R%d, R%d", RD5(op), RR5(op) );
+=======
+					util::stream_format(stream, "CPSE    R%d, R%d", RD5(op), RR5(op));
+					break;
+				case 0x0400:
+					util::stream_format(stream, "CP      R%d, R%d", RD5(op), RR5(op));
+					break;
+				case 0x0800:
+					util::stream_format(stream, "SUB     R%d, R%d", RD5(op), RR5(op));
+					break;
+				case 0x0c00:
+					util::stream_format(stream, "ADC     R%d, R%d", RD5(op), RR5(op));
+>>>>>>> upstream/master
 					break;
 			}
 			break;
@@ -172,6 +233,7 @@ CPU_DISASSEMBLE( avr8 )
 			switch(op & 0x0c00)
 			{
 				case 0x0000:
+<<<<<<< HEAD
 					output += sprintf( output, "AND     R%d, R%d", RD5(op), RR5(op) );
 					break;
 				case 0x0400:
@@ -182,10 +244,23 @@ CPU_DISASSEMBLE( avr8 )
 					break;
 				case 0x0c00:
 					output += sprintf( output, "MOV     R%d, R%d", RD5(op), RR5(op) );
+=======
+					util::stream_format(stream, "AND     R%d, R%d", RD5(op), RR5(op));
+					break;
+				case 0x0400:
+					util::stream_format(stream, "EOR     R%d, R%d", RD5(op), RR5(op));
+					break;
+				case 0x0800:
+					util::stream_format(stream, "OR      R%d, R%d", RD5(op), RR5(op));
+					break;
+				case 0x0c00:
+					util::stream_format(stream, "MOV     R%d, R%d", RD5(op), RR5(op));
+>>>>>>> upstream/master
 					break;
 			}
 			break;
 		case 0x3000:
+<<<<<<< HEAD
 			output += sprintf( output, "CPI     R%d, 0x%02x", 16+RD4(op), KCONST8(op) );
 			break;
 		case 0x4000:
@@ -199,12 +274,28 @@ CPU_DISASSEMBLE( avr8 )
 			break;
 		case 0x7000:
 				output += sprintf( output, "ANDI    R%d, 0x%02x", 16+RD4(op), KCONST8(op) );
+=======
+			util::stream_format(stream, "CPI     R%d, 0x%02x", 16+RD4(op), KCONST8(op));
+			break;
+		case 0x4000:
+			util::stream_format(stream, "SBCI    R%d, 0x%02x", 16+RD4(op), KCONST8(op));
+			break;
+		case 0x5000:
+				util::stream_format(stream, "SUBI    R%d, 0x%02x", 16+RD4(op), KCONST8(op));
+			break;
+		case 0x6000:
+				util::stream_format(stream, "ORI     R%d, 0x%02x", 16+RD4(op), KCONST8(op));
+			break;
+		case 0x7000:
+				util::stream_format(stream, "ANDI    R%d, 0x%02x", 16+RD4(op), KCONST8(op));
+>>>>>>> upstream/master
 			break;
 		case 0x8000:
 		case 0xa000:
 			switch(op & 0x0208)
 			{
 				case 0x0000:
+<<<<<<< HEAD
 					output += sprintf( output, "LD(D)   R%d, Z+%02x", RD5(op), QCONST6(op) );
 					break;
 				case 0x0008:
@@ -215,6 +306,18 @@ CPU_DISASSEMBLE( avr8 )
 					break;
 				case 0x0208:
 					output += sprintf( output, "ST(D)   Y+%02x, R%d", QCONST6(op), RD5(op) );
+=======
+					util::stream_format(stream, "LD(D)   R%d, Z+%02x", RD5(op), QCONST6(op));
+					break;
+				case 0x0008:
+					util::stream_format(stream, "LD(D)   R%d, Y+%02x", RD5(op), QCONST6(op));
+					break;
+				case 0x0200:
+					util::stream_format(stream, "ST(D)   Z+%02x, R%d", QCONST6(op), RD5(op));
+					break;
+				case 0x0208:
+					util::stream_format(stream, "ST(D)   Y+%02x, R%d", QCONST6(op), RD5(op));
+>>>>>>> upstream/master
 					break;
 			}
 			break;
@@ -229,6 +332,7 @@ CPU_DISASSEMBLE( avr8 )
 							op <<= 16;
 							op |= oprom[pos++];
 							op |= oprom[pos++] << 8;
+<<<<<<< HEAD
 							output += sprintf( output, "LDS     R%d, (0x%04x)", RD5(op >> 16), op & 0x0000ffff );
 							break;
 						case 0x0001:
@@ -269,6 +373,48 @@ CPU_DISASSEMBLE( avr8 )
 							break;
 						default:
 							output += sprintf( output, "Undefined (%08x)", op );
+=======
+							util::stream_format(stream, "LDS     R%d, (0x%04x)", RD5(op >> 16), op & 0x0000ffff);
+							break;
+						case 0x0001:
+							util::stream_format(stream, "LD      R%d, Z+", RD5(op));
+							break;
+						case 0x0002:
+							util::stream_format(stream, "LD      R%d,-Z", RD5(op));
+							break;
+						case 0x0004:
+							util::stream_format(stream, "LPM     R%d, Z", RD5(op));
+							break;
+						case 0x0005:
+							util::stream_format(stream, "LPM     R%d, Z+", RD5(op));
+							break;
+						case 0x0006:
+							util::stream_format(stream, "ELPM    R%d, Z", RD5(op));
+							break;
+						case 0x0007:
+							util::stream_format(stream, "ELPM    R%d, Z+", RD5(op));
+							break;
+						case 0x0009:
+							util::stream_format(stream, "LD      R%d, Y+", RD5(op));
+							break;
+						case 0x000a:
+							util::stream_format(stream, "LD      R%d,-Y", RD5(op));
+							break;
+						case 0x000c:
+							util::stream_format(stream, "LD      R%d, X", RD5(op));
+							break;
+						case 0x000d:
+							util::stream_format(stream, "LD      R%d, X+", RD5(op));
+							break;
+						case 0x000e:
+							util::stream_format(stream, "LD      R%d,-X", RD5(op));
+							break;
+						case 0x000f:
+							util::stream_format(stream, "POP     R%d", RD5(op));
+							break;
+						default:
+							util::stream_format(stream, "Undefined (%08x)", op);
+>>>>>>> upstream/master
 							break;
 					}
 					break;
@@ -280,6 +426,7 @@ CPU_DISASSEMBLE( avr8 )
 							op <<= 16;
 							op |= oprom[pos++];
 							op |= oprom[pos++] << 8;
+<<<<<<< HEAD
 							output += sprintf( output, "STS     (0x%04x), R%d", op & 0x0000ffff, RD5(op >> 16) );
 							break;
 						case 0x0001:
@@ -308,6 +455,36 @@ CPU_DISASSEMBLE( avr8 )
 							break;
 						default:
 							output += sprintf( output, "Undefined (%08x)", op );
+=======
+							util::stream_format(stream, "STS     (0x%04x), R%d", op & 0x0000ffff, RD5(op >> 16));
+							break;
+						case 0x0001:
+							util::stream_format(stream, "ST       Z+, R%d", RD5(op));
+							break;
+						case 0x0002:
+							util::stream_format(stream, "ST      -Z , R%d", RD5(op));
+							break;
+						case 0x0009:
+							util::stream_format(stream, "ST       Y+, R%d", RD5(op));
+							break;
+						case 0x000a:
+							util::stream_format(stream, "ST      -Y , R%d", RD5(op));
+							break;
+						case 0x000c:
+							util::stream_format(stream, "ST       X , R%d", RD5(op));
+							break;
+						case 0x000d:
+							util::stream_format(stream, "ST       X+, R%d", RD5(op));
+							break;
+						case 0x000e:
+							util::stream_format(stream, "ST      -X , R%d", RD5(op));
+							break;
+						case 0x000f:
+							util::stream_format(stream, "PUSH    R%d", RD5(op));
+							break;
+						default:
+							util::stream_format(stream, "Undefined (%08x)", op);
+>>>>>>> upstream/master
 							break;
 					}
 					break;
@@ -315,6 +492,7 @@ CPU_DISASSEMBLE( avr8 )
 					switch(op & 0x000f)
 					{
 						case 0x0000:
+<<<<<<< HEAD
 							output += sprintf( output, "COM     R%d", RD5(op) );
 							break;
 						case 0x0001:
@@ -334,11 +512,33 @@ CPU_DISASSEMBLE( avr8 )
 							break;
 						case 0x0007:
 							output += sprintf( output, "ROR     R%d", RD5(op) );
+=======
+							util::stream_format(stream, "COM     R%d", RD5(op));
+							break;
+						case 0x0001:
+							util::stream_format(stream, "NEG     R%d", RD5(op));
+							break;
+						case 0x0002:
+							util::stream_format(stream, "SWAP    R%d", RD5(op));
+							break;
+						case 0x0003:
+							util::stream_format(stream, "INC     R%d", RD5(op));
+							break;
+						case 0x0005:
+							util::stream_format(stream, "ASR     R%d", RD5(op));
+							break;
+						case 0x0006:
+							util::stream_format(stream, "LSR     R%d", RD5(op));
+							break;
+						case 0x0007:
+							util::stream_format(stream, "ROR     R%d", RD5(op));
+>>>>>>> upstream/master
 							break;
 						case 0x0008:
 							switch(op & 0x00f0)
 							{
 								case 0x0000:
+<<<<<<< HEAD
 									output += sprintf( output, "SEC" );
 									break;
 								case 0x0010:
@@ -388,6 +588,57 @@ CPU_DISASSEMBLE( avr8 )
 									break;
 								default:
 									output += sprintf( output, "Undefined (%08x)", op );
+=======
+									util::stream_format(stream, "SEC");
+									break;
+								case 0x0010:
+									util::stream_format(stream, "SEZ");
+									break;
+								case 0x0020:
+									util::stream_format(stream, "SEN");
+									break;
+								case 0x0030:
+									util::stream_format(stream, "SEV");
+									break;
+								case 0x0040:
+									util::stream_format(stream, "SES");
+									break;
+								case 0x0050:
+									util::stream_format(stream, "SEH");
+									break;
+								case 0x0060:
+									util::stream_format(stream, "SET");
+									break;
+								case 0x0070:
+									util::stream_format(stream, "SEI");
+									break;
+								case 0x0080:
+									util::stream_format(stream, "CLC");
+									break;
+								case 0x0090:
+									util::stream_format(stream, "CLZ");
+									break;
+								case 0x00a0:
+									util::stream_format(stream, "CLN");
+									break;
+								case 0x00b0:
+									util::stream_format(stream, "CLV");
+									break;
+								case 0x00c0:
+									util::stream_format(stream, "CLS");
+									break;
+								case 0x00d0:
+									util::stream_format(stream, "CLH");
+									break;
+								case 0x00e0:
+									util::stream_format(stream, "CLT");
+									break;
+								case 0x00f0:
+									util::stream_format(stream, "CLI");
+									break;
+								default:
+									util::stream_format(stream, "Undefined (%08x)", op);
+>>>>>>> upstream/master
 									break;
 							}
 							break;
@@ -395,6 +646,7 @@ CPU_DISASSEMBLE( avr8 )
 							switch(op & 0x00f0)
 							{
 								case 0x0000:
+<<<<<<< HEAD
 									output += sprintf( output, "IJMP" );
 									break;
 								case 0x0010:
@@ -402,28 +654,52 @@ CPU_DISASSEMBLE( avr8 )
 									break;
 								default:
 									output += sprintf( output, "Undefined (%08x)", op );
+=======
+									util::stream_format(stream, "IJMP");
+									break;
+								case 0x0010:
+									util::stream_format(stream, "EIJMP");
+									break;
+								default:
+									util::stream_format(stream, "Undefined (%08x)", op);
+>>>>>>> upstream/master
 									break;
 							}
 							break;
 						case 0x000a:
+<<<<<<< HEAD
 							output += sprintf( output, "DEC     R%d", RD5(op) );
+=======
+							util::stream_format(stream, "DEC     R%d", RD5(op));
+>>>>>>> upstream/master
 							break;
 						case 0x000c:
 						case 0x000d:
 							addr = KCONST22(op) << 16;
 							addr |= oprom[pos++];
 							addr |= oprom[pos++] << 8;
+<<<<<<< HEAD
 							output += sprintf( output, "JMP     0x%06x", addr << 1 );
+=======
+							util::stream_format(stream, "JMP     0x%06x", addr << 1);
+>>>>>>> upstream/master
 							break;
 						case 0x000e:
 						case 0x000f:
 							addr = KCONST22(op) << 16;
 							addr |= oprom[pos++];
 							addr |= oprom[pos++] << 8;
+<<<<<<< HEAD
 							output += sprintf( output, "CALL    0x%06x", addr << 1 );
 							break;
 						default:
 							output += sprintf( output, "Undefined (%08x)", op );
+=======
+							util::stream_format(stream, "CALL    0x%06x", addr << 1);
+							break;
+						default:
+							util::stream_format(stream, "Undefined (%08x)", op);
+>>>>>>> upstream/master
 							break;
 					}
 					break;
@@ -431,6 +707,7 @@ CPU_DISASSEMBLE( avr8 )
 					switch(op & 0x000f)
 					{
 						case 0x0000:
+<<<<<<< HEAD
 							output += sprintf( output, "COM     R%d", RD5(op) );
 							break;
 						case 0x0001:
@@ -450,11 +727,33 @@ CPU_DISASSEMBLE( avr8 )
 							break;
 						case 0x0007:
 							output += sprintf( output, "ROR     R%d", RD5(op) );
+=======
+							util::stream_format(stream, "COM     R%d", RD5(op));
+							break;
+						case 0x0001:
+							util::stream_format(stream, "NEG     R%d", RD5(op));
+							break;
+						case 0x0002:
+							util::stream_format(stream, "SWAP    R%d", RD5(op));
+							break;
+						case 0x0003:
+							util::stream_format(stream, "INC     R%d", RD5(op));
+							break;
+						case 0x0005:
+							util::stream_format(stream, "ASR     R%d", RD5(op));
+							break;
+						case 0x0006:
+							util::stream_format(stream, "LSR     R%d", RD5(op));
+							break;
+						case 0x0007:
+							util::stream_format(stream, "ROR     R%d", RD5(op));
+>>>>>>> upstream/master
 							break;
 						case 0x0008:
 							switch(op & 0x00f0)
 							{
 								case 0x0000:
+<<<<<<< HEAD
 									output += sprintf( output, "RET" );
 									break;
 								case 0x0010:
@@ -483,6 +782,36 @@ CPU_DISASSEMBLE( avr8 )
 									break;
 								default:
 									output += sprintf( output, "Undefined (%08x)", op );
+=======
+									util::stream_format(stream, "RET");
+									break;
+								case 0x0010:
+									util::stream_format(stream, "RETI");
+									break;
+								case 0x0080:
+									util::stream_format(stream, "SLEEP");
+									break;
+								case 0x0090:
+									util::stream_format(stream, "BREAK");
+									break;
+								case 0x00a0:
+									util::stream_format(stream, "WDR");
+									break;
+								case 0x00c0:
+									util::stream_format(stream, "LPM");
+									break;
+								case 0x00d0:
+									util::stream_format(stream, "ELPM");
+									break;
+								case 0x00e0:
+									util::stream_format(stream, "SPM");
+									break;
+								case 0x00f0:
+									util::stream_format(stream, "SPM     Z+");
+									break;
+								default:
+									util::stream_format(stream, "Undefined (%08x)", op);
+>>>>>>> upstream/master
 									break;
 							}
 							break;
@@ -490,6 +819,7 @@ CPU_DISASSEMBLE( avr8 )
 							switch(op & 0x00f0)
 							{
 								case 0x0000:
+<<<<<<< HEAD
 									output += sprintf( output, "ICALL" );
 									break;
 								case 0x0010:
@@ -497,29 +827,51 @@ CPU_DISASSEMBLE( avr8 )
 									break;
 								default:
 									output += sprintf( output, "Undefined (%08x)", op );
+=======
+									util::stream_format(stream, "ICALL");
+									break;
+								case 0x0010:
+									util::stream_format(stream, "EICALL");
+									break;
+								default:
+									util::stream_format(stream, "Undefined (%08x)", op);
+>>>>>>> upstream/master
 									break;
 							}
 							break;
 						case 0x000a:
+<<<<<<< HEAD
 							output += sprintf( output, "DEC     R%d", RD5(op) );
+=======
+							util::stream_format(stream, "DEC     R%d", RD5(op));
+>>>>>>> upstream/master
 							break;
 						case 0x000c:
 						case 0x000d:
 							op <<= 16;
 							op |= oprom[pos++];
 							op |= oprom[pos++] << 8;
+<<<<<<< HEAD
 							output += sprintf( output, "JMP     0x%06x", KCONST22(op) << 1 );
+=======
+							util::stream_format(stream, "JMP     0x%06x", KCONST22(op) << 1);
+>>>>>>> upstream/master
 							break;
 						case 0x000e:
 						case 0x000f:
 							op <<= 16;
 							op |= oprom[pos++];
 							op |= oprom[pos++] << 8;
+<<<<<<< HEAD
 							output += sprintf( output, "CALL    0x%06x", KCONST22(op) << 1 );
+=======
+							util::stream_format(stream, "CALL    0x%06x", KCONST22(op) << 1);
+>>>>>>> upstream/master
 							break;
 					}
 					break;
 				case 0x0600:
+<<<<<<< HEAD
 					output += sprintf( output, "ADIW    R%d:R%d, 0x%02x", 24+(RD2(op) << 1)+1, 24+(RD2(op) << 1), KCONST6(op) );
 					break;
 				case 0x0700:
@@ -548,12 +900,46 @@ CPU_DISASSEMBLE( avr8 )
 			output += sprintf( output, "SBIS    %s, %s", register_names[ACONST5(op)],  register_bit_names[ACONST5(op)][RR3(op)] );
 			else
 			output += sprintf( output, "SBIS    0x%02x, %d", ACONST5(op), RR3(op) );
+=======
+					util::stream_format(stream, "ADIW    R%d:R%d, 0x%02x", 24+(RD2(op) << 1)+1, 24+(RD2(op) << 1), KCONST6(op));
+					break;
+				case 0x0700:
+					util::stream_format(stream, "SBIW    R%d:R%d, 0x%02x", 24+(RD2(op) << 1)+1, 24+(RD2(op) << 1), KCONST6(op));
+					break;
+				case 0x0800:
+			if (ACONST5(op) < 0x20)
+			util::stream_format(stream, "CBI     %s, %s", register_names[ACONST5(op)], register_bit_names[ACONST5(op)][RR3(op)]);
+			else
+			util::stream_format(stream, "CBI     0x%02x, %d", ACONST5(op), RR3(op));
+					break;
+				case 0x0900:
+			if (ACONST5(op) < 0x20)
+			util::stream_format(stream, "SBIC    %s, %s", register_names[ACONST5(op)],  register_bit_names[ACONST5(op)][RR3(op)]);
+			else
+			util::stream_format(stream, "SBIC    0x%02x, %d", ACONST5(op), RR3(op));
+					break;
+				case 0x0a00:
+			if (ACONST5(op) < 0x20)
+			util::stream_format(stream, "SBI     %s, %s", register_names[ACONST5(op)],  register_bit_names[ACONST5(op)][RR3(op)]);
+			else
+			util::stream_format(stream, "SBI     0x%02x, %d", ACONST5(op), RR3(op));
+					break;
+				case 0x0b00:
+			if (ACONST5(op) < 0x20)
+			util::stream_format(stream, "SBIS    %s, %s", register_names[ACONST5(op)],  register_bit_names[ACONST5(op)][RR3(op)]);
+			else
+			util::stream_format(stream, "SBIS    0x%02x, %d", ACONST5(op), RR3(op));
+>>>>>>> upstream/master
 					break;
 				case 0x0c00:
 				case 0x0d00:
 				case 0x0e00:
 				case 0x0f00:
+<<<<<<< HEAD
 					output += sprintf( output, "MUL     R%d, R%d", RD5(op), RR5(op) );
+=======
+					util::stream_format(stream, "MUL     R%d, R%d", RD5(op), RR5(op));
+>>>>>>> upstream/master
 					break;
 			}
 			break;
@@ -561,22 +947,35 @@ CPU_DISASSEMBLE( avr8 )
 			if(op & 0x0800)
 			{
 		if (ACONST6(op) < 0x40 ) {
+<<<<<<< HEAD
 			output += sprintf( output, "OUT     %s, R%d", register_names[ACONST6(op)], RD5(op) );
 		} else {
 			output += sprintf( output, "OUT     0x%02x, R%d", ACONST6(op), RD5(op) );
+=======
+			util::stream_format(stream, "OUT     %s, R%d", register_names[ACONST6(op)], RD5(op));
+		} else {
+			util::stream_format(stream, "OUT     0x%02x, R%d", ACONST6(op), RD5(op));
+>>>>>>> upstream/master
 		}
 			}
 			else
 			{
 		if (ACONST6(op) < 0x40 ) {
+<<<<<<< HEAD
 			output += sprintf( output, "IN      R%d, %s", RD5(op), register_names[ACONST6(op)] );
 		} else {
 			output += sprintf( output, "IN      R%d, 0x%02x", RD5(op), ACONST6(op) );
+=======
+			util::stream_format(stream, "IN      R%d, %s", RD5(op), register_names[ACONST6(op)]);
+		} else {
+			util::stream_format(stream, "IN      R%d, 0x%02x", RD5(op), ACONST6(op));
+>>>>>>> upstream/master
 		}
 			}
 			break;
 		case 0xc000:
 		//I'm not sure if this is correct. why pc + ... : pc + 8 + ... ?
+<<<<<<< HEAD
 			output += sprintf( output, "RJMP    %08x", (((op & 0x0800) ? pc + ((op & 0x0fff) | 0xfffff000) : pc + 8 + (op & 0x0fff)) << 0) );
 			break;
 		case 0xd000:
@@ -584,6 +983,15 @@ CPU_DISASSEMBLE( avr8 )
 			break;
 		case 0xe000:
 			output += sprintf( output, "LDI     R%d, 0x%02x", 16 + RD4(op), KCONST8(op) );
+=======
+			util::stream_format(stream, "RJMP    %08x", (((op & 0x0800) ? pc + ((op & 0x0fff) | 0xfffff000) : pc + 8 + (op & 0x0fff)) << 0));
+			break;
+		case 0xd000:
+			util::stream_format(stream, "RCALL   %08x", (((op & 0x0800) ? ((op & 0x0fff) | 0xfffff000) : (op & 0x0fff)) << 1));
+			break;
+		case 0xe000:
+			util::stream_format(stream, "LDI     R%d, 0x%02x", 16 + RD4(op), KCONST8(op));
+>>>>>>> upstream/master
 			break;
 		case 0xf000:
 			switch(op & 0x0c00)
@@ -592,6 +1000,7 @@ CPU_DISASSEMBLE( avr8 )
 					switch(op & 0x0007)
 					{
 						case 0x0000:
+<<<<<<< HEAD
 							output += sprintf( output, "BRLO    %08x", (((op & 0x0200) ? (KCONST7(op) | 0xff80) : KCONST7(op)) << 1) );
 							break;
 						case 0x0001:
@@ -614,6 +1023,30 @@ CPU_DISASSEMBLE( avr8 )
 							break;
 						case 0x0007:
 							output += sprintf( output, "BRIE    %08x", (((op & 0x0200) ? (KCONST7(op) | 0xff80) : KCONST7(op)) << 1) );
+=======
+							util::stream_format(stream, "BRLO    %08x", (((op & 0x0200) ? (KCONST7(op) | 0xff80) : KCONST7(op)) << 1));
+							break;
+						case 0x0001:
+							util::stream_format(stream, "BREQ    %08x", (((op & 0x0200) ? (KCONST7(op) | 0xff80) : KCONST7(op)) << 1));
+							break;
+						case 0x0002:
+							util::stream_format(stream, "BRMI    %08x", (((op & 0x0200) ? (KCONST7(op) | 0xff80) : KCONST7(op)) << 1));
+							break;
+						case 0x0003:
+							util::stream_format(stream, "BRVS    %08x", (((op & 0x0200) ? (KCONST7(op) | 0xff80) : KCONST7(op)) << 1));
+							break;
+						case 0x0004:
+							util::stream_format(stream, "BRLT    %08x", (((op & 0x0200) ? (KCONST7(op) | 0xff80) : KCONST7(op)) << 1));
+							break;
+						case 0x0005:
+							util::stream_format(stream, "BRHS    %08x", (((op & 0x0200) ? (KCONST7(op) | 0xff80) : KCONST7(op)) << 1));
+							break;
+						case 0x0006:
+							util::stream_format(stream, "BRTS    %08x", (((op & 0x0200) ? (KCONST7(op) | 0xff80) : KCONST7(op)) << 1));
+							break;
+						case 0x0007:
+							util::stream_format(stream, "BRIE    %08x", (((op & 0x0200) ? (KCONST7(op) | 0xff80) : KCONST7(op)) << 1));
+>>>>>>> upstream/master
 							break;
 					}
 					break;
@@ -621,6 +1054,7 @@ CPU_DISASSEMBLE( avr8 )
 					switch(op & 0x0007)
 					{
 						case 0x0000:
+<<<<<<< HEAD
 							output += sprintf( output, "BRSH    %08x", (((op & 0x0200) ? (KCONST7(op) | 0xff80) : KCONST7(op)) << 1) );
 							break;
 						case 0x0001:
@@ -643,27 +1077,67 @@ CPU_DISASSEMBLE( avr8 )
 							break;
 						case 0x0007:
 							output += sprintf( output, "BRID    %08x", (((op & 0x0200) ? (KCONST7(op) | 0xff80) : KCONST7(op)) << 1) );
+=======
+							util::stream_format(stream, "BRSH    %08x", (((op & 0x0200) ? (KCONST7(op) | 0xff80) : KCONST7(op)) << 1));
+							break;
+						case 0x0001:
+							util::stream_format(stream, "BRNE    %08x", (((op & 0x0200) ? (KCONST7(op) | 0xff80) : KCONST7(op)) << 1));
+							break;
+						case 0x0002:
+							util::stream_format(stream, "BRPL    %08x", (((op & 0x0200) ? (KCONST7(op) | 0xff80) : KCONST7(op)) << 1));
+							break;
+						case 0x0003:
+							util::stream_format(stream, "BRVC    %08x", (((op & 0x0200) ? (KCONST7(op) | 0xff80) : KCONST7(op)) << 1));
+							break;
+						case 0x0004:
+							util::stream_format(stream, "BRGE    %08x", (((op & 0x0200) ? (KCONST7(op) | 0xff80) : KCONST7(op)) << 1));
+							break;
+						case 0x0005:
+							util::stream_format(stream, "BRHC    %08x", (((op & 0x0200) ? (KCONST7(op) | 0xff80) : KCONST7(op)) << 1));
+							break;
+						case 0x0006:
+							util::stream_format(stream, "BRTC    %08x", (((op & 0x0200) ? (KCONST7(op) | 0xff80) : KCONST7(op)) << 1));
+							break;
+						case 0x0007:
+							util::stream_format(stream, "BRID    %08x", (((op & 0x0200) ? (KCONST7(op) | 0xff80) : KCONST7(op)) << 1));
+>>>>>>> upstream/master
 							break;
 					}
 					break;
 				case 0x0800:
 					if(op & 0x0200)
 					{
+<<<<<<< HEAD
 						output += sprintf( output, "BST     R%d, %d", RD5(op), RR3(op) );
 					}
 					else
 					{
 						output += sprintf( output, "BLD     R%d, %d", RD5(op), RR3(op) );
+=======
+						util::stream_format(stream, "BST     R%d, %d", RD5(op), RR3(op));
+					}
+					else
+					{
+						util::stream_format(stream, "BLD     R%d, %d", RD5(op), RR3(op));
+>>>>>>> upstream/master
 					}
 					break;
 				case 0x0c00:
 					if(op & 0x0200)
 					{
+<<<<<<< HEAD
 						output += sprintf( output, "SBRS    R%d, %d", RD5(op), RR3(op) );
 					}
 					else
 					{
 						output += sprintf( output, "SBRC    R%d, %d", RD5(op), RR3(op) );
+=======
+						util::stream_format(stream, "SBRS    R%d, %d", RD5(op), RR3(op));
+					}
+					else
+					{
+						util::stream_format(stream, "SBRC    R%d, %d", RD5(op), RR3(op));
+>>>>>>> upstream/master
 					}
 					break;
 			}

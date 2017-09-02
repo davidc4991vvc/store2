@@ -21,12 +21,21 @@ public:
 	virtual ~disasmwin_info();
 
 protected:
+<<<<<<< HEAD
 	virtual void recompute_children();
 	virtual bool handle_command(WPARAM wparam, LPARAM lparam);
 	virtual void draw_contents(HDC dc);
 
 private:
 	virtual void process_string(char const *string);
+=======
+	virtual void recompute_children() override;
+	virtual bool handle_command(WPARAM wparam, LPARAM lparam) override;
+	virtual void draw_contents(HDC dc) override;
+
+private:
+	virtual void process_string(const std::string &string) override;
+>>>>>>> upstream/master
 
 	void update_caption();
 

@@ -17,9 +17,15 @@ class d82_format : public d80_format {
 public:
 	d82_format();
 
+<<<<<<< HEAD
 	virtual const char *name() const;
 	virtual const char *description() const;
 	virtual const char *extensions() const;
+=======
+	virtual const char *name() const override;
+	virtual const char *description() const override;
+	virtual const char *extensions() const override;
+>>>>>>> upstream/master
 
 protected:
 	static const format file_formats[];

@@ -5,12 +5,22 @@
  **********************************************************/
 
 #include "emu.h"
+<<<<<<< HEAD
 #include "emuopts.h"
 #include "harddisk.h"
 #include "diablo.h"
 
 
 static OPTION_GUIDE_START(dsk_option_guide)
+=======
+#include "diablo.h"
+
+#include "emuopts.h"
+#include "harddisk.h"
+
+
+OPTION_GUIDE_START(dsk_option_guide)
+>>>>>>> upstream/master
 	OPTION_INT('C', "cylinders",        "Cylinders")
 	OPTION_INT('H', "heads",            "Heads")
 	OPTION_INT('S', "sectors",          "Sectors")
@@ -23,12 +33,17 @@ static const char *dsk_option_spec =
 
 
 // device type definition
+<<<<<<< HEAD
 const device_type DIABLO = &device_creator<diablo_image_device>;
+=======
+DEFINE_DEVICE_TYPE(DIABLO, diablo_image_device, "diablo_image", "Diablo")
+>>>>>>> upstream/master
 
 //-------------------------------------------------
 //  diablo_image_device - constructor
 //-------------------------------------------------
 
+<<<<<<< HEAD
 diablo_image_device::diablo_image_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
 	: device_t(mconfig, DIABLO, "Diablo", tag, owner, clock, "diablo_image", __FILE__),
 		device_image_interface(mconfig, *this),
@@ -37,6 +52,16 @@ diablo_image_device::diablo_image_device(const machine_config &mconfig, const ch
 		m_device_image_load(device_image_load_delegate()),
 		m_device_image_unload(device_image_func_delegate()),
 		m_interface(NULL)
+=======
+diablo_image_device::diablo_image_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: device_t(mconfig, DIABLO, tag, owner, clock),
+		device_image_interface(mconfig, *this),
+		m_chd(nullptr),
+		m_hard_disk_handle(nullptr),
+		m_device_image_load(device_image_load_delegate()),
+		m_device_image_unload(device_image_func_delegate()),
+		m_interface(nullptr)
+>>>>>>> upstream/master
 {
 }
 
@@ -56,6 +81,7 @@ diablo_image_device::~diablo_image_device()
 
 void diablo_image_device::device_config_complete()
 {
+<<<<<<< HEAD
 	m_formatlist.append(*global_alloc(image_device_format("chd", "CHD Hard drive", "chd,dsk", dsk_option_spec)));
 
 	// set brief and instance name
@@ -63,6 +89,12 @@ void diablo_image_device::device_config_complete()
 }
 
 const option_guide *diablo_image_device::create_option_guide() const
+=======
+	add_format("chd", "CHD Hard drive", "chd,dsk", dsk_option_spec);
+}
+
+const util::option_guide &diablo_image_device::create_option_guide() const
+>>>>>>> upstream/master
 {
 	return dsk_option_guide;
 }
@@ -73,17 +105,29 @@ const option_guide *diablo_image_device::create_option_guide() const
 
 void diablo_image_device::device_start()
 {
+<<<<<<< HEAD
 	m_chd = NULL;
 
 	// try to locate the CHD from a DISK_REGION
 	chd_file *handle = get_disk_handle(machine(), tag());
 	if (handle != NULL)
+=======
+	m_chd = nullptr;
+
+	// try to locate the CHD from a DISK_REGION
+	chd_file *handle = machine().rom_load().get_disk_handle(tag());
+	if (handle != nullptr)
+>>>>>>> upstream/master
 	{
 		m_hard_disk_handle = hard_disk_open(handle);
 	}
 	else
 	{
+<<<<<<< HEAD
 		m_hard_disk_handle = NULL;
+=======
+		m_hard_disk_handle = nullptr;
+>>>>>>> upstream/master
 	}
 }
 
@@ -93,9 +137,15 @@ void diablo_image_device::device_stop()
 		hard_disk_close(m_hard_disk_handle);
 }
 
+<<<<<<< HEAD
 bool diablo_image_device::call_load()
 {
 	int our_result;
+=======
+image_init_result diablo_image_device::call_load()
+{
+	image_init_result our_result;
+>>>>>>> upstream/master
 
 	our_result = internal_load_dsk();
 	/* Check if there is an image_load callback defined */
@@ -108,6 +158,7 @@ bool diablo_image_device::call_load()
 
 }
 
+<<<<<<< HEAD
 bool diablo_image_device::call_create(int create_format, option_resolution *create_args)
 {
 	int err;
@@ -120,18 +171,40 @@ bool diablo_image_device::call_create(int create_format, option_resolution *crea
 	sectors     = option_resolution_lookup_int(create_args, 'S');
 	sectorsize  = option_resolution_lookup_int(create_args, 'L') * sizeof(UINT16);
 	hunksize    = option_resolution_lookup_int(create_args, 'K');
+=======
+image_init_result diablo_image_device::call_create(int create_format, util::option_resolution *create_args)
+{
+	int err;
+	uint32_t sectorsize, hunksize;
+	uint32_t cylinders, heads, sectors, totalsectors;
+
+	assert_always(create_args != nullptr, "Expected create_args to not be nullptr");
+	cylinders   = create_args->lookup_int('C');
+	heads       = create_args->lookup_int('H');
+	sectors     = create_args->lookup_int('S');
+	sectorsize  = create_args->lookup_int('L') * sizeof(uint16_t);
+	hunksize    = create_args->lookup_int('K');
+>>>>>>> upstream/master
 
 	totalsectors = cylinders * heads * sectors;
 
 	/* create the CHD file */
 	chd_codec_type compression[4] = { CHD_CODEC_NONE };
+<<<<<<< HEAD
 	err = m_origchd.create(*image_core_file(), (UINT64)totalsectors * (UINT64)sectorsize, hunksize, sectorsize, compression);
+=======
+	err = m_origchd.create(image_core_file(), (uint64_t)totalsectors * (uint64_t)sectorsize, hunksize, sectorsize, compression);
+>>>>>>> upstream/master
 	if (err != CHDERR_NONE)
 		goto error;
 
 	/* if we created the image and hence, have metadata to set, set the metadata */
+<<<<<<< HEAD
 	strprintf(metadata,HARD_DISK_METADATA_FORMAT, cylinders, heads, sectors, sectorsize);
 	err = m_origchd.write_metadata(HARD_DISK_METADATA_TAG, 0, metadata);
+=======
+	err = m_origchd.write_metadata(HARD_DISK_METADATA_TAG, 0, string_format(HARD_DISK_METADATA_FORMAT, cylinders, heads, sectors, sectorsize));
+>>>>>>> upstream/master
 	m_origchd.close();
 
 	if (err != CHDERR_NONE)
@@ -140,7 +213,11 @@ bool diablo_image_device::call_create(int create_format, option_resolution *crea
 	return internal_load_dsk();
 
 error:
+<<<<<<< HEAD
 	return IMAGE_INIT_FAIL;
+=======
+	return image_init_result::FAIL;
+>>>>>>> upstream/master
 }
 
 void diablo_image_device::call_unload()
@@ -151,15 +228,26 @@ void diablo_image_device::call_unload()
 		m_device_image_unload(*this);
 	}
 
+<<<<<<< HEAD
 	if (m_hard_disk_handle != NULL)
 	{
 		hard_disk_close(m_hard_disk_handle);
 		m_hard_disk_handle = NULL;
+=======
+	if (m_hard_disk_handle != nullptr)
+	{
+		hard_disk_close(m_hard_disk_handle);
+		m_hard_disk_handle = nullptr;
+>>>>>>> upstream/master
 	}
 
 	m_origchd.close();
 	m_diffchd.close();
+<<<<<<< HEAD
 	m_chd = NULL;
+=======
+	m_chd = nullptr;
+>>>>>>> upstream/master
 }
 
 /*-------------------------------------------------
@@ -173,8 +261,13 @@ static chd_error open_disk_diff(emu_options &options, const char *name, chd_file
 	/* try to open the diff */
 	//printf("Opening differencing image file: %s\n", fname.c_str());
 	emu_file diff_file(options.diff_directory(), OPEN_FLAG_READ | OPEN_FLAG_WRITE);
+<<<<<<< HEAD
 	file_error filerr = diff_file.open(fname.c_str());
 	if (filerr == FILERR_NONE)
+=======
+	osd_file::error filerr = diff_file.open(fname.c_str());
+	if (filerr == osd_file::error::NONE)
+>>>>>>> upstream/master
 	{
 		std::string fullpath(diff_file.fullpath());
 		diff_file.close();
@@ -187,7 +280,11 @@ static chd_error open_disk_diff(emu_options &options, const char *name, chd_file
 	//printf("Creating differencing image: %s\n", fname.c_str());
 	diff_file.set_openflags(OPEN_FLAG_READ | OPEN_FLAG_WRITE | OPEN_FLAG_CREATE | OPEN_FLAG_CREATE_PATHS);
 	filerr = diff_file.open(fname.c_str());
+<<<<<<< HEAD
 	if (filerr == FILERR_NONE)
+=======
+	if (filerr == osd_file::error::NONE)
+>>>>>>> upstream/master
 	{
 		std::string fullpath(diff_file.fullpath());
 		diff_file.close();
@@ -205,16 +302,25 @@ static chd_error open_disk_diff(emu_options &options, const char *name, chd_file
 	return CHDERR_FILE_NOT_FOUND;
 }
 
+<<<<<<< HEAD
 int diablo_image_device::internal_load_dsk()
 {
 	chd_error err = CHDERR_NONE;
 
 	m_chd = NULL;
+=======
+image_init_result diablo_image_device::internal_load_dsk()
+{
+	chd_error err = CHDERR_NONE;
+
+	m_chd = nullptr;
+>>>>>>> upstream/master
 
 	if (m_hard_disk_handle)
 		hard_disk_close(m_hard_disk_handle);
 
 	/* open the CHD file */
+<<<<<<< HEAD
 	if (software_entry() != NULL)
 	{
 		m_chd = get_disk_handle(device().machine(), device().subtag("harddriv").c_str());
@@ -222,13 +328,26 @@ int diablo_image_device::internal_load_dsk()
 	else
 	{
 		err = m_origchd.open(*image_core_file(), true);
+=======
+	if (loaded_through_softlist())
+	{
+		m_chd = device().machine().rom_load().get_disk_handle(device().subtag("harddriv").c_str());
+	}
+	else
+	{
+		err = m_origchd.open(image_core_file(), true);
+>>>>>>> upstream/master
 		if (err == CHDERR_NONE)
 		{
 			m_chd = &m_origchd;
 		}
 		else if (err == CHDERR_FILE_NOT_WRITEABLE)
 		{
+<<<<<<< HEAD
 			err = m_origchd.open(*image_core_file(), false);
+=======
+			err = m_origchd.open(image_core_file(), false);
+>>>>>>> upstream/master
 			if (err == CHDERR_NONE)
 			{
 				err = open_disk_diff(device().machine().options(), basename_noext(), m_origchd, m_diffchd);
@@ -240,21 +359,37 @@ int diablo_image_device::internal_load_dsk()
 		}
 	}
 
+<<<<<<< HEAD
 	if (m_chd != NULL)
 	{
 		/* open the hard disk file */
 		m_hard_disk_handle = hard_disk_open(m_chd);
 		if (m_hard_disk_handle != NULL)
 			return IMAGE_INIT_PASS;
+=======
+	if (m_chd != nullptr)
+	{
+		/* open the hard disk file */
+		m_hard_disk_handle = hard_disk_open(m_chd);
+		if (m_hard_disk_handle != nullptr)
+			return image_init_result::PASS;
+>>>>>>> upstream/master
 	}
 
 	/* if we had an error, close out the CHD */
 	m_origchd.close();
 	m_diffchd.close();
+<<<<<<< HEAD
 	m_chd = NULL;
 	seterror(IMAGE_ERROR_UNSPECIFIED, chd_file::error_string(err));
 
 	return IMAGE_INIT_FAIL;
+=======
+	m_chd = nullptr;
+	seterror(IMAGE_ERROR_UNSPECIFIED, chd_file::error_string(err));
+
+	return image_init_result::FAIL;
+>>>>>>> upstream/master
 }
 
 /*************************************
@@ -266,7 +401,11 @@ int diablo_image_device::internal_load_dsk()
 
 chd_file *diablo_image_device::get_chd_file()
 {
+<<<<<<< HEAD
 	chd_file *result = NULL;
+=======
+	chd_file *result = nullptr;
+>>>>>>> upstream/master
 	hard_disk_file *hd_file = get_hard_disk_file();
 	if (hd_file)
 		result = hard_disk_get_chd(hd_file);

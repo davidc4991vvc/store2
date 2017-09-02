@@ -41,7 +41,11 @@
 #define MAKE_INT_8(A) (int8)((A)&0xff)
 #else
 #define int8   int
+<<<<<<< HEAD
 INLINE int MAKE_INT_8(int A) {return (A & 0x80) ? A | ~0xff : A & 0xff;}
+=======
+static inline int MAKE_INT_8(int A) {return (A & 0x80) ? A | ~0xff : A & 0xff;}
+>>>>>>> upstream/master
 #endif /* UCHAR_MAX == 0xff */
 
 #define MAKE_UINT_8(A) ((A)&0xff)
@@ -212,7 +216,11 @@ INLINE int MAKE_INT_8(int A) {return (A & 0x80) ? A | ~0xff : A & 0xff;}
 #define CFLAG_SET       0x100
 #define CFLAG_CLEAR     0
 
+<<<<<<< HEAD
 /* Codition code tests */
+=======
+/* Condition code tests */
+>>>>>>> upstream/master
 #define COND_CC()       (!(FLAG_C&0x100))   /* Carry Clear */
 #define COND_CS()       (FLAG_C&0x100)      /* Carry Set */
 #define COND_EQ()       (!FLAG_Z)           /* Equal */
@@ -233,7 +241,11 @@ INLINE int MAKE_INT_8(int A) {return (A & 0x80) ? A | ~0xff : A & 0xff;}
 #define NFLAG_8(A)      (A)
 #define NFLAG_16(A)     ((A)>>8)
 
+<<<<<<< HEAD
 #define CFLAG_AS_1()    ((FLAG_C>>8)&1)
+=======
+#define CFLAG_1()    ((FLAG_C>>8)&1)
+>>>>>>> upstream/master
 
 /* ======================================================================== */
 /* ========================== EFFECTIVE ADDRESSES ========================= */

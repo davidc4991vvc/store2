@@ -5,6 +5,10 @@
  *   Xerox AltoII disk sector task
  *
  *****************************************************************************/
+<<<<<<< HEAD
+=======
+#include "emu.h"
+>>>>>>> upstream/master
 #include "alto2cpu.h"
 
 //! f1_ksec_block early: block the disk sector task
@@ -17,6 +21,7 @@ void alto2_cpu_device::f1_early_ksec_block()
 //! disk sector task slot initialization
 void alto2_cpu_device::init_ksec(int task)
 {
+<<<<<<< HEAD
 	set_bs(task, bs_ksec_read_kstat,    &alto2_cpu_device::bs_early_read_kstat, 0);
 	set_bs(task, bs_ksec_read_kdata,    &alto2_cpu_device::bs_early_read_kdata, 0);
 
@@ -40,6 +45,8 @@ void alto2_cpu_device::init_ksec(int task)
 	set_f2(task, f2_ksec_strobon,       0, &alto2_cpu_device::f2_late_strobon);
 	set_f2(task, f2_task_17,            0, 0);
 
+=======
+>>>>>>> upstream/master
 	m_task_wakeup |= 1 << task;
 }
 

@@ -17,8 +17,16 @@
 
 */
 
+<<<<<<< HEAD
 #include "sid.h"
 
+=======
+#include "emu.h"
+#include "sid.h"
+
+#include "speaker.h"
+
+>>>>>>> upstream/master
 
 
 //**************************************************************************
@@ -34,7 +42,11 @@
 //  DEVICE DEFINITIONS
 //**************************************************************************
 
+<<<<<<< HEAD
 const device_type PLUS4_SID = &device_creator<plus4_sid_cartridge_device>;
+=======
+DEFINE_DEVICE_TYPE(PLUS4_SID, plus4_sid_cartridge_device, "plus4_sid", "Plus/4 SID cartridge")
+>>>>>>> upstream/master
 
 
 //-------------------------------------------------
@@ -51,13 +63,18 @@ ROM_END
 //  rom_region - device-specific ROM region
 //-------------------------------------------------
 
+<<<<<<< HEAD
 const rom_entry *plus4_sid_cartridge_device::device_rom_region() const
+=======
+const tiny_rom_entry *plus4_sid_cartridge_device::device_rom_region() const
+>>>>>>> upstream/master
 {
 	return ROM_NAME( plus4_sid );
 }
 
 
 //-------------------------------------------------
+<<<<<<< HEAD
 //  MACHINE_CONFIG_FRAGMENT( plus4_sid )
 //-------------------------------------------------
 
@@ -83,6 +100,20 @@ machine_config_constructor plus4_sid_cartridge_device::device_mconfig_additions(
 }
 
 
+=======
+//  device_add_mconfig - add device configuration
+//-------------------------------------------------
+
+MACHINE_CONFIG_MEMBER( plus4_sid_cartridge_device::device_add_mconfig )
+	MCFG_SPEAKER_STANDARD_MONO("speaker")
+	MCFG_SOUND_ADD(MOS8580_TAG, MOS8580, XTAL_17_73447MHz/20)
+	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "speaker", 1.0)
+
+	MCFG_VCS_CONTROL_PORT_ADD(CONTROL1_TAG, vcs_control_port_devices, nullptr)
+MACHINE_CONFIG_END
+
+
+>>>>>>> upstream/master
 
 //**************************************************************************
 //  LIVE DEVICE
@@ -92,8 +123,13 @@ machine_config_constructor plus4_sid_cartridge_device::device_mconfig_additions(
 //  plus4_sid_cartridge_device - constructor
 //-------------------------------------------------
 
+<<<<<<< HEAD
 plus4_sid_cartridge_device::plus4_sid_cartridge_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock) :
 	device_t(mconfig, PLUS4_SID, "Plus/4 SID cartridge", tag, owner, clock, "plus4_sid", __FILE__),
+=======
+plus4_sid_cartridge_device::plus4_sid_cartridge_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock) :
+	device_t(mconfig, PLUS4_SID, tag, owner, clock),
+>>>>>>> upstream/master
 	device_plus4_expansion_card_interface(mconfig, *this),
 	m_sid(*this, MOS8580_TAG),
 	m_joy(*this, CONTROL1_TAG)
@@ -124,7 +160,11 @@ void plus4_sid_cartridge_device::device_reset()
 //  plus4_cd_r - cartridge data read
 //-------------------------------------------------
 
+<<<<<<< HEAD
 UINT8 plus4_sid_cartridge_device::plus4_cd_r(address_space &space, offs_t offset, UINT8 data, int ba, int cs0, int c1l, int c2l, int cs1, int c1h, int c2h)
+=======
+uint8_t plus4_sid_cartridge_device::plus4_cd_r(address_space &space, offs_t offset, uint8_t data, int ba, int cs0, int c1l, int c2l, int cs1, int c1h, int c2h)
+>>>>>>> upstream/master
 {
 	if ((offset >= 0xfe80 && offset < 0xfea0) || (offset >= 0xfd40 && offset < 0xfd60))
 	{
@@ -143,7 +183,11 @@ UINT8 plus4_sid_cartridge_device::plus4_cd_r(address_space &space, offs_t offset
 //  plus4_cd_w - cartridge data write
 //-------------------------------------------------
 
+<<<<<<< HEAD
 void plus4_sid_cartridge_device::plus4_cd_w(address_space &space, offs_t offset, UINT8 data, int ba, int cs0, int c1l, int c2l, int cs1, int c1h, int c2h)
+=======
+void plus4_sid_cartridge_device::plus4_cd_w(address_space &space, offs_t offset, uint8_t data, int ba, int cs0, int c1l, int c2l, int cs1, int c1h, int c2h)
+>>>>>>> upstream/master
 {
 	if ((offset >= 0xfe80 && offset < 0xfea0) || (offset >= 0xfd40 && offset < 0xfd60))
 	{

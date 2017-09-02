@@ -8,10 +8,20 @@
 
 ***************************************************************************/
 
+<<<<<<< HEAD
 #include "namcoic.h"
 #include "cpu/m6502/m3745x.h"
 #include "video/c45.h"
 
+=======
+#include "machine/namco_c139.h"
+#include "machine/namco_c148.h"
+#include "video/c45.h"
+
+#include "cpu/m6502/m3745x.h"
+#include "screen.h"
+
+>>>>>>> upstream/master
 /* CPU reference numbers */
 
 #define CPU_MASTER  0
@@ -91,7 +101,10 @@ enum
 	NAMCOFL_FINAL_LAP_R
 };
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> upstream/master
 // fix me -- most of this should be devices eventually
 class namcos2_shared_state : public driver_device
 {
@@ -101,11 +114,21 @@ public:
 			m_dspmaster(*this, "dspmaster"),
 			m_dspslave(*this, "dspslave"),
 			m_c68(*this, "c68"),
+<<<<<<< HEAD
+=======
+			m_master_intc(*this, "master_intc"),
+			m_slave_intc(*this, "slave_intc"),
+			m_sci(*this, "sci"),
+>>>>>>> upstream/master
 			m_gpu(*this, "gpu"),
 			m_gametype(0),
 			m_c169_roz_videoram(*this, "rozvideoram", 0),
 			m_c169_roz_gfxbank(0),
+<<<<<<< HEAD
 			m_c169_roz_mask(NULL),
+=======
+			m_c169_roz_mask(nullptr),
+>>>>>>> upstream/master
 			m_c355_obj_gfxbank(0),
 			m_c355_obj_palxor(0),
 			m_maincpu(*this, "maincpu"),
@@ -119,12 +142,19 @@ public:
 	optional_device<cpu_device> m_dspmaster;
 	optional_device<cpu_device> m_dspslave;
 	optional_device<m37450_device> m_c68;
+<<<<<<< HEAD
+=======
+	optional_device<namco_c148_device> m_master_intc;
+	optional_device<namco_c148_device> m_slave_intc;
+	optional_device<namco_c139_device> m_sci;
+>>>>>>> upstream/master
 	optional_device<cpu_device> m_gpu; //to be moved to namco21_state after disentangling
 
 	// game type helpers
 	bool is_system21();
 	int m_gametype;
 
+<<<<<<< HEAD
 	emu_timer *m_posirq_timer;
 	int m_mcu_analog_ctrl;
 	int m_mcu_analog_data;
@@ -136,6 +166,21 @@ public:
 
 	// C123 Tilemap Emulation
 	// TODO: merge with namcos1.c implementation and convert to device
+=======
+	int m_mcu_analog_ctrl;
+	int m_mcu_analog_data;
+	int m_mcu_analog_complete;
+	std::unique_ptr<uint8_t[]> m_eeprom;
+
+	DECLARE_WRITE8_MEMBER(sound_reset_w);
+	DECLARE_WRITE8_MEMBER(system_reset_w);
+	void reset_all_subcpus(int state);
+
+	TIMER_DEVICE_CALLBACK_MEMBER(screen_scanline);
+
+	// C123 Tilemap Emulation
+	// TODO: merge with namcos1.cpp implementation and convert to device
+>>>>>>> upstream/master
 public:
 	DECLARE_WRITE16_MEMBER( c123_tilemap_videoram_w );
 	DECLARE_READ16_MEMBER( c123_tilemap_videoram_r );
@@ -147,7 +192,40 @@ public:
 	TILE_GET_INFO_MEMBER( get_tile_info3 );
 	TILE_GET_INFO_MEMBER( get_tile_info4 );
 	TILE_GET_INFO_MEMBER( get_tile_info5 );
+<<<<<<< HEAD
 	void namco_tilemap_init(int gfxbank, void *pMaskROM, void (*cb)( running_machine &machine, UINT16 code, int *gfx, int *mask) );
+=======
+	typedef delegate<void (uint16_t, int*, int*)> c123_tilemap_delegate;
+	void c123_tilemap_init(int gfxbank, void *pMaskROM, c123_tilemap_delegate tilemap_cb);
+	void c123_tilemap_invalidate(void);
+	void c123_tilemap_draw(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect, int pri);
+	void c123_SetTilemapVideoram(int offset, uint16_t newword);
+	void c123_SetTilemapControl(int offset, uint16_t newword);
+
+	struct c123_mTilemapInfo
+	{
+		uint16_t control[0x40/2];
+		/**
+		 * [0x1] 0x02/2 tilemap#0.scrollx
+		 * [0x3] 0x06/2 tilemap#0.scrolly
+		 * [0x5] 0x0a/2 tilemap#1.scrollx
+		 * [0x7] 0x0e/2 tilemap#1.scrolly
+		 * [0x9] 0x12/2 tilemap#2.scrollx
+		 * [0xb] 0x16/2 tilemap#2.scrolly
+		 * [0xd] 0x1a/2 tilemap#3.scrollx
+		 * [0xf] 0x1e/2 tilemap#3.scrolly
+		 * 0x20/2 priority
+		 * 0x30/2 color
+		 */
+		tilemap_t *tmap[6];
+		std::unique_ptr<uint16_t[]> videoram;
+		int gfxbank;
+		uint8_t *maskBaseAddr;
+		c123_tilemap_delegate cb;
+	};
+
+	c123_mTilemapInfo m_c123_TilemapInfo;
+>>>>>>> upstream/master
 
 	// C169 ROZ Layer Emulation
 public:
@@ -163,12 +241,21 @@ public:
 protected:
 	struct roz_parameters
 	{
+<<<<<<< HEAD
 		UINT32 left, top, size;
 		UINT32 startx, starty;
 		int incxx, incxy, incyx, incyy;
 		int color, priority;
 	};
 	void c169_roz_unpack_params(const UINT16 *source, roz_parameters &params);
+=======
+		uint32_t left, top, size;
+		uint32_t startx, starty;
+		int incxx, incxy, incyx, incyy;
+		int color, priority;
+	};
+	void c169_roz_unpack_params(const uint16_t *source, roz_parameters &params);
+>>>>>>> upstream/master
 	void c169_roz_draw_helper(screen_device &screen, bitmap_ind16 &bitmap, tilemap_t &tmap, const rectangle &clip, const roz_parameters &params);
 	void c169_roz_draw_scanline(screen_device &screen, bitmap_ind16 &bitmap, int line, int which, int pri, const rectangle &cliprect);
 	void c169_roz_get_info(tile_data &tileinfo, int tile_index, int which);
@@ -178,11 +265,19 @@ protected:
 
 	static const int ROZ_TILEMAP_COUNT = 2;
 	tilemap_t *m_c169_roz_tilemap[ROZ_TILEMAP_COUNT];
+<<<<<<< HEAD
 	UINT16 m_c169_roz_bank[0x10/2];
 	UINT16 m_c169_roz_control[0x20/2];
 	optional_shared_ptr<UINT16> m_c169_roz_videoram;
 	int m_c169_roz_gfxbank;
 	UINT8 *m_c169_roz_mask;
+=======
+	uint16_t m_c169_roz_bank[0x10/2];
+	uint16_t m_c169_roz_control[0x20/2];
+	optional_shared_ptr<uint16_t> m_c169_roz_videoram;
+	int m_c169_roz_gfxbank;
+	uint8_t *m_c169_roz_mask;
+>>>>>>> upstream/master
 
 	// C355 Motion Object Emulation
 public:
@@ -201,13 +296,20 @@ public:
 protected:
 	// C355 Motion Object internals
 	template<class _BitmapClass>
+<<<<<<< HEAD
 	void c355_obj_draw_sprite(screen_device &screen, _BitmapClass &bitmap, const rectangle &cliprect, const UINT16 *pSource, int pri, int zpos);
 	template<class _BitmapClass>
 	void c355_obj_draw_list(screen_device &screen, _BitmapClass &bitmap, const rectangle &cliprect, int pri, const UINT16 *pSpriteList16, const UINT16 *pSpriteTable);
+=======
+	void c355_obj_draw_sprite(screen_device &screen, _BitmapClass &bitmap, const rectangle &cliprect, const uint16_t *pSource, int pri, int zpos);
+	template<class _BitmapClass>
+	void c355_obj_draw_list(screen_device &screen, _BitmapClass &bitmap, const rectangle &cliprect, int pri, const uint16_t *pSpriteList16, const uint16_t *pSpriteTable);
+>>>>>>> upstream/master
 
 	c355_obj_code2tile_delegate m_c355_obj_code2tile;
 	int m_c355_obj_gfxbank;
 	int m_c355_obj_palxor;
+<<<<<<< HEAD
 	UINT16 m_c355_obj_position[4];
 	UINT16 m_c355_obj_ram[0x20000/2];
 
@@ -235,6 +337,21 @@ public:
 
 	DECLARE_WRITE16_MEMBER( namcos2_68k_slave_C148_w );
 	DECLARE_READ16_MEMBER( namcos2_68k_slave_C148_r );
+=======
+	uint16_t m_c355_obj_position[4];
+	uint16_t m_c355_obj_ram[0x20000/2];
+
+	uint8_t m_player_mux;
+	inline void namcoic_get_tile_info(tile_data &tileinfo,int tile_index,uint16_t *vram);
+
+public:
+	// general
+	void zdrawgfxzoom(screen_device &screen, bitmap_ind16 &dest_bmp, const rectangle &clip, gfx_element *gfx, uint32_t code, uint32_t color, int flipx, int flipy, int sx, int sy, int scalex, int scaley, int zpos);
+	void zdrawgfxzoom(screen_device &screen, bitmap_rgb32 &dest_bmp, const rectangle &clip, gfx_element *gfx, uint32_t code, uint32_t color, int flipx, int flipy, int sx, int sy, int scalex, int scaley, int zpos);
+
+	DECLARE_WRITE8_MEMBER( namcos2_68k_eeprom_w );
+	DECLARE_READ8_MEMBER( namcos2_68k_eeprom_r );
+>>>>>>> upstream/master
 
 	DECLARE_WRITE8_MEMBER( namcos2_mcu_port_d_w );
 	DECLARE_READ8_MEMBER( namcos2_mcu_port_d_r );
@@ -244,9 +361,12 @@ public:
 	DECLARE_READ8_MEMBER( namcos2_mcu_analog_port_r );
 	DECLARE_WRITE8_MEMBER( namcos2_sound_bankselect_w );
 
+<<<<<<< HEAD
 	/* TODO: this should belong to namcos21_state */
 	DECLARE_WRITE16_MEMBER( namcos21_68k_gpu_C148_w );
 	DECLARE_READ16_MEMBER( namcos21_68k_gpu_C148_r );
+=======
+>>>>>>> upstream/master
 	required_device<cpu_device> m_maincpu;
 	optional_device<cpu_device> m_audiocpu;
 	optional_device<cpu_device> m_slave;
@@ -264,7 +384,10 @@ public:
 			m_dpram(*this, "dpram"),
 			m_paletteram(*this, "paletteram"),
 			m_spriteram(*this, "spriteram"),
+<<<<<<< HEAD
 			m_serial_comms_ram(*this, "serialram"),
+=======
+>>>>>>> upstream/master
 			m_rozram(*this, "rozram"),
 			m_roz_ctrl(*this, "rozctrl"),
 			m_c45_road(*this, "c45_road")
@@ -312,17 +435,29 @@ public:
 	DECLARE_DRIVER_INIT(marvland);
 	DECLARE_DRIVER_INIT(rthun2);
 
+<<<<<<< HEAD
 	virtual void video_start();
+=======
+	virtual void video_start() override;
+>>>>>>> upstream/master
 	void video_start_finallap();
 	void video_start_luckywld();
 	void video_start_metlhawk();
 	void video_start_sgunner();
 
+<<<<<<< HEAD
 	UINT32 screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
 	UINT32 screen_update_finallap(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
 	UINT32 screen_update_luckywld(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
 	UINT32 screen_update_metlhawk(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
 	UINT32 screen_update_sgunner(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
+=======
+	uint32_t screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
+	uint32_t screen_update_finallap(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
+	uint32_t screen_update_luckywld(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
+	uint32_t screen_update_metlhawk(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
+	uint32_t screen_update_sgunner(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
+>>>>>>> upstream/master
 
 	TILE_GET_INFO_MEMBER( roz_tile_info );
 
@@ -331,10 +466,13 @@ public:
 	DECLARE_WRITE16_MEMBER( rozram_word_w );
 	DECLARE_READ16_MEMBER( gfx_ctrl_r );
 	DECLARE_WRITE16_MEMBER( gfx_ctrl_w );
+<<<<<<< HEAD
 	DECLARE_READ16_MEMBER( serial_comms_ram_r );
 	DECLARE_WRITE16_MEMBER( serial_comms_ram_w );
 	DECLARE_READ16_MEMBER( serial_comms_ctrl_r );
 	DECLARE_WRITE16_MEMBER( serial_comms_ctrl_w );
+=======
+>>>>>>> upstream/master
 
 	void draw_sprite_init();
 	void update_palette();
@@ -342,6 +480,7 @@ public:
 	void draw_roz(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
 	void draw_sprites(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect, int pri, int control );
 	void draw_sprites_metalhawk(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect, int pri );
+<<<<<<< HEAD
 	UINT16 get_palette_register( int which );
 
 	int get_pos_irq_scanline() { return (get_palette_register(5) - 32) & 0xff; }
@@ -355,6 +494,21 @@ public:
 	tilemap_t *m_tilemap_roz;
 	UINT16 m_gfx_ctrl;
 	UINT16 m_serial_comms_ctrl[0x8];
+=======
+	uint16_t get_palette_register( int which );
+
+	int get_pos_irq_scanline() { return (get_palette_register(5) - 32) & 0xff; }
+	TIMER_DEVICE_CALLBACK_MEMBER(screen_scanline);
+
+	required_shared_ptr<uint8_t> m_dpram; /* 2Kx8 */
+	required_shared_ptr<uint16_t> m_paletteram;
+	optional_shared_ptr<uint16_t> m_spriteram;
+	optional_shared_ptr<uint16_t> m_rozram;
+	optional_shared_ptr<uint16_t> m_roz_ctrl;
+	tilemap_t *m_tilemap_roz;
+	uint16_t m_gfx_ctrl;
+	uint16_t m_serial_comms_ctrl[0x8];
+>>>>>>> upstream/master
 	unsigned m_finallap_prot_count;
 	int m_sendval;
 
@@ -363,6 +517,15 @@ public:
 	DECLARE_READ16_MEMBER( namcos2_68k_key_r );
 	DECLARE_WRITE16_MEMBER( namcos2_68k_key_w );
 	DECLARE_READ16_MEMBER( namcos2_finallap_prot_r );
+<<<<<<< HEAD
+=======
+	void GollyGhostUpdateLED_c4( int data );
+	void GollyGhostUpdateLED_c6( int data );
+	void GollyGhostUpdateLED_c8( int data );
+	void GollyGhostUpdateLED_ca( int data );
+	void GollyGhostUpdateDiorama_c0( int data );
+	void TilemapCB(uint16_t code, int *tile, int *mask);
+>>>>>>> upstream/master
 
 };
 

@@ -8,13 +8,18 @@
 #ifndef NLD_BJT_H_
 #define NLD_BJT_H_
 
+<<<<<<< HEAD
 #include "nl_base.h"
 #include "nld_twoterm.h"
+=======
+#include "../nl_setup.h"
+>>>>>>> upstream/master
 
 // -----------------------------------------------------------------------------
 // Macros
 // -----------------------------------------------------------------------------
 
+<<<<<<< HEAD
 #define QBJT_SW(_name, _model)                                                 \
 		NET_REGISTER_DEV(QBJT_SW, _name)                                       \
 		NETDEV_PARAMI(_name,  MODEL,   _model)
@@ -165,5 +170,14 @@ private:
 };
 
 NETLIB_NAMESPACE_DEVICES_END()
+=======
+#define QBJT_SW(name, model)                                                 \
+		NET_REGISTER_DEV(QBJT_SW, name)                                       \
+		NETDEV_PARAMI(name,  MODEL, model)
+
+#define QBJT_EB(name, model)                                                 \
+		NET_REGISTER_DEV(QBJT_EB, name)                                       \
+		NETDEV_PARAMI(name,  MODEL, model)
+>>>>>>> upstream/master
 
 #endif /* NLD_BJT_H_ */

@@ -4,9 +4,15 @@
 #include "emu.h"
 #include "k054338.h"
 
+<<<<<<< HEAD
 
 #define VERBOSE 0
 #define LOG(x) do { if (VERBOSE) logerror x; } while (0)
+=======
+#define VERBOSE 0
+#include "logmacro.h"
+
+>>>>>>> upstream/master
 
 /***************************************************************************/
 /*                                                                         */
@@ -18,6 +24,7 @@
 // because the implementation is video dependant, this is just a
 // register-handling shell.
 
+<<<<<<< HEAD
 const device_type K054338 = &device_creator<k054338_device>;
 
 k054338_device::k054338_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
@@ -25,6 +32,15 @@ k054338_device::k054338_device(const machine_config &mconfig, const char *tag, d
 	device_video_interface(mconfig, *this),
 	m_alpha_inv(0),
 	m_k055555_tag(NULL)
+=======
+DEFINE_DEVICE_TYPE(K054338, k054338_device, "k054338", "K054338 Mixer")
+
+k054338_device::k054338_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: device_t(mconfig, K054338, tag, owner, clock),
+	device_video_interface(mconfig, *this),
+	m_alpha_inv(0),
+	m_k055555_tag(nullptr)
+>>>>>>> upstream/master
 {
 	memset(&m_regs, 0, sizeof(m_regs));
 	memset(&m_shd_rgb, 0, sizeof(m_shd_rgb));
@@ -36,7 +52,11 @@ k054338_device::k054338_device(const machine_config &mconfig, const char *tag, d
 
 void k054338_device::device_start()
 {
+<<<<<<< HEAD
 	m_k055555 = m_k055555_tag ? machine().device<k055555_device>(m_k055555_tag) : NULL;
+=======
+	m_k055555 = m_k055555_tag ? machine().device<k055555_device>(m_k055555_tag) : nullptr;
+>>>>>>> upstream/master
 
 	save_item(NAME(m_regs));
 	save_item(NAME(m_shd_rgb));
@@ -48,7 +68,11 @@ void k054338_device::device_start()
 
 void k054338_device::device_reset()
 {
+<<<<<<< HEAD
 	memset(m_regs, 0, sizeof(UINT16)*32);
+=======
+	memset(m_regs, 0, sizeof(uint16_t)*32);
+>>>>>>> upstream/master
 	memset(m_shd_rgb, 0, sizeof(int)*9);
 }
 
@@ -74,7 +98,11 @@ int  k054338_device::register_r( int reg )
 	return m_regs[reg];
 }
 
+<<<<<<< HEAD
 void k054338_device::update_all_shadows( int rushingheroes_hack, palette_device *palette )
+=======
+void k054338_device::update_all_shadows( int rushingheroes_hack, palette_device &palette )
+>>>>>>> upstream/master
 {
 	int i, d;
 	int noclip = m_regs[K338_REG_CONTROL] & K338_CTL_CLIPSL;
@@ -89,6 +117,7 @@ void k054338_device::update_all_shadows( int rushingheroes_hack, palette_device 
 
 	if (!rushingheroes_hack)
 	{
+<<<<<<< HEAD
 		palette->set_shadow_dRGB32(0, m_shd_rgb[0], m_shd_rgb[1], m_shd_rgb[2], noclip);
 		palette->set_shadow_dRGB32(1, m_shd_rgb[3], m_shd_rgb[4], m_shd_rgb[5], noclip);
 		palette->set_shadow_dRGB32(2, m_shd_rgb[6], m_shd_rgb[7], m_shd_rgb[8], noclip);
@@ -98,13 +127,28 @@ void k054338_device::update_all_shadows( int rushingheroes_hack, palette_device 
 		palette->set_shadow_dRGB32(0, -80, -80, -80, 0);
 		palette->set_shadow_dRGB32(1, -80, -80, -80, 0);
 		palette->set_shadow_dRGB32(2, -80, -80, -80, 0);
+=======
+		palette.set_shadow_dRGB32(0, m_shd_rgb[0], m_shd_rgb[1], m_shd_rgb[2], noclip);
+		palette.set_shadow_dRGB32(1, m_shd_rgb[3], m_shd_rgb[4], m_shd_rgb[5], noclip);
+		palette.set_shadow_dRGB32(2, m_shd_rgb[6], m_shd_rgb[7], m_shd_rgb[8], noclip);
+	}
+	else // rushing heroes seems to specify shadows in another format, or it's not being interpreted properly.
+	{
+		palette.set_shadow_dRGB32(0, -80, -80, -80, 0);
+		palette.set_shadow_dRGB32(1, -80, -80, -80, 0);
+		palette.set_shadow_dRGB32(2, -80, -80, -80, 0);
+>>>>>>> upstream/master
 	}
 }
 
 // k054338 BG color fill
 void k054338_device::fill_solid_bg( bitmap_rgb32 &bitmap, const rectangle &cliprect )
 {
+<<<<<<< HEAD
 	UINT32 bgcolor = (register_r(K338_REG_BGC_R) & 0xff) << 16;
+=======
+	uint32_t bgcolor = (register_r(K338_REG_BGC_R) & 0xff) << 16;
+>>>>>>> upstream/master
 	bgcolor |= register_r(K338_REG_BGC_GB);
 
 	bitmap.fill(bgcolor, cliprect);
@@ -119,7 +163,11 @@ void k054338_device::fill_backcolor(bitmap_rgb32 &bitmap, const rectangle &clipr
 	}
 	else
 	{
+<<<<<<< HEAD
 		UINT32 *dst_ptr = &bitmap.pix32(cliprect.min_y);
+=======
+		uint32_t *dst_ptr = &bitmap.pix32(cliprect.min_y);
+>>>>>>> upstream/master
 		int dst_pitch = bitmap.rowpixels();
 
 		if ((mode & 0x01) == 0) // vertical gradient fill
@@ -138,7 +186,11 @@ void k054338_device::fill_backcolor(bitmap_rgb32 &bitmap, const rectangle &clipr
 		}
 		else    // horizontal gradient fill
 		{
+<<<<<<< HEAD
 			int width = cliprect.width() * sizeof(UINT32);
+=======
+			int width = cliprect.width() * sizeof(uint32_t);
+>>>>>>> upstream/master
 			pal_ptr += cliprect.min_x;
 			dst_ptr += cliprect.min_x;
 			for(int y = cliprect.min_y; y<= cliprect.max_y; y++)
@@ -153,7 +205,11 @@ void k054338_device::fill_backcolor(bitmap_rgb32 &bitmap, const rectangle &clipr
 // addition blending unimplemented (requires major changes to drawgfx and tilemap.c)
 int k054338_device::set_alpha_level( int pblend )
 {
+<<<<<<< HEAD
 	UINT16 *regs;
+=======
+	uint16_t *regs;
+>>>>>>> upstream/master
 	int ctrl, mixpri, mixset, mixlv;
 
 	if (pblend <= 0 || pblend > 3)

@@ -9,11 +9,16 @@ STDMETHODIMP CSequentialInStreamSizeCount2::Read(void *data, UInt32 size, UInt32
   UInt32 realProcessedSize;
   HRESULT result = _stream->Read(data, size, &realProcessedSize);
   _size += realProcessedSize;
+<<<<<<< HEAD
   if (processedSize != 0)
+=======
+  if (processedSize)
+>>>>>>> upstream/master
     *processedSize = realProcessedSize;
   return result;
 }
 
+<<<<<<< HEAD
 STDMETHODIMP CSequentialInStreamSizeCount2::GetSubStreamSize(
     UInt64 subStream, UInt64 *value)
 {
@@ -22,3 +27,11 @@ STDMETHODIMP CSequentialInStreamSizeCount2::GetSubStreamSize(
   return  _getSubStreamSize->GetSubStreamSize(subStream, value);
 }
 
+=======
+STDMETHODIMP CSequentialInStreamSizeCount2::GetSubStreamSize(UInt64 subStream, UInt64 *value)
+{
+  if (!_getSubStreamSize)
+    return E_NOTIMPL;
+  return _getSubStreamSize->GetSubStreamSize(subStream, value);
+}
+>>>>>>> upstream/master

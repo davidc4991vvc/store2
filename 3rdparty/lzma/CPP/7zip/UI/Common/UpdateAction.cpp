@@ -6,7 +6,11 @@
 
 namespace NUpdateArchive {
 
+<<<<<<< HEAD
 const CActionSet kAddActionSet =
+=======
+const CActionSet k_ActionSet_Add =
+>>>>>>> upstream/master
 {{
   NPairAction::kCopy,
   NPairAction::kCopy,
@@ -17,7 +21,11 @@ const CActionSet kAddActionSet =
   NPairAction::kCompress
 }};
 
+<<<<<<< HEAD
 const CActionSet kUpdateActionSet =
+=======
+const CActionSet k_ActionSet_Update =
+>>>>>>> upstream/master
 {{
   NPairAction::kCopy,
   NPairAction::kCopy,
@@ -28,7 +36,11 @@ const CActionSet kUpdateActionSet =
   NPairAction::kCompress
 }};
 
+<<<<<<< HEAD
 const CActionSet kFreshActionSet =
+=======
+const CActionSet k_ActionSet_Fresh =
+>>>>>>> upstream/master
 {{
   NPairAction::kCopy,
   NPairAction::kCopy,
@@ -39,7 +51,11 @@ const CActionSet kFreshActionSet =
   NPairAction::kCompress
 }};
 
+<<<<<<< HEAD
 const CActionSet kSynchronizeActionSet =
+=======
+const CActionSet k_ActionSet_Sync =
+>>>>>>> upstream/master
 {{
   NPairAction::kCopy,
   NPairAction::kIgnore,
@@ -50,7 +66,11 @@ const CActionSet kSynchronizeActionSet =
   NPairAction::kCompress,
 }};
 
+<<<<<<< HEAD
 const CActionSet kDeleteActionSet =
+=======
+const CActionSet k_ActionSet_Delete =
+>>>>>>> upstream/master
 {{
   NPairAction::kCopy,
   NPairAction::kIgnore,

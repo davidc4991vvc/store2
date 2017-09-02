@@ -38,15 +38,30 @@ write
 ***************************************************************************/
 
 #include "emu.h"
+<<<<<<< HEAD
 #include "cpu/z80/z80.h"
 #include "sound/ay8910.h"
 #include "includes/marineb.h"
 
+=======
+#include "includes/marineb.h"
+
+#include "cpu/z80/z80.h"
+#include "machine/74259.h"
+#include "sound/ay8910.h"
+#include "screen.h"
+#include "speaker.h"
+
+#define MASTER_CLOCK (XTAL_12MHz)
+#define CPU_CLOCK (MASTER_CLOCK/4)
+#define SOUND_CLOCK (MASTER_CLOCK/8)
+>>>>>>> upstream/master
 
 void marineb_state::machine_reset()
 {
 	m_palette_bank = 0;
 	m_column_scroll = 0;
+<<<<<<< HEAD
 	m_flipscreen_x = 0;
 	m_flipscreen_y = 0;
 	m_marineb_active_low_flipscreen = 0;
@@ -57,16 +72,26 @@ MACHINE_RESET_MEMBER(marineb_state,springer)
 	marineb_state::machine_reset();
 
 	m_marineb_active_low_flipscreen = 1;
+=======
+>>>>>>> upstream/master
 }
 
 void marineb_state::machine_start()
 {
+<<<<<<< HEAD
 	save_item(NAME(m_marineb_active_low_flipscreen));
 }
 
 WRITE8_MEMBER(marineb_state::irq_mask_w)
 {
 	m_irq_mask = data & 1;
+=======
+}
+
+WRITE_LINE_MEMBER(marineb_state::irq_mask_w)
+{
+	m_irq_mask = state;
+>>>>>>> upstream/master
 }
 
 static ADDRESS_MAP_START( marineb_map, AS_PROGRAM, 8, marineb_state )
@@ -78,9 +103,14 @@ static ADDRESS_MAP_START( marineb_map, AS_PROGRAM, 8, marineb_state )
 	AM_RANGE(0x9800, 0x9800) AM_WRITE(marineb_column_scroll_w)
 	AM_RANGE(0x9a00, 0x9a00) AM_WRITE(marineb_palette_bank_0_w)
 	AM_RANGE(0x9c00, 0x9c00) AM_WRITE(marineb_palette_bank_1_w)
+<<<<<<< HEAD
 	AM_RANGE(0xa000, 0xa000) AM_READ_PORT("P2") AM_WRITE(irq_mask_w)
 	AM_RANGE(0xa001, 0xa001) AM_WRITE(marineb_flipscreen_y_w)
 	AM_RANGE(0xa002, 0xa002) AM_WRITE(marineb_flipscreen_x_w)
+=======
+	AM_RANGE(0xa000, 0xa007) AM_DEVWRITE("outlatch", ls259_device, write_d0)
+	AM_RANGE(0xa000, 0xa000) AM_READ_PORT("P2")
+>>>>>>> upstream/master
 	AM_RANGE(0xa800, 0xa800) AM_READ_PORT("P1")
 	AM_RANGE(0xb000, 0xb000) AM_READ_PORT("DSW")
 	AM_RANGE(0xb800, 0xb800) AM_READ_PORT("SYSTEM") AM_WRITENOP     /* also watchdog */
@@ -94,8 +124,13 @@ ADDRESS_MAP_END
 
 static ADDRESS_MAP_START( wanted_io_map, AS_IO, 8, marineb_state )
 	ADDRESS_MAP_GLOBAL_MASK(0xff)
+<<<<<<< HEAD
 	AM_RANGE(0x00, 0x01) AM_DEVWRITE("ay1", ay8910_device, address_data_w)
 	AM_RANGE(0x02, 0x03) AM_DEVWRITE("ay2", ay8910_device, address_data_w)
+=======
+	AM_RANGE(0x00, 0x01) AM_DEVWRITE("ay1", ay8912_device, address_data_w)
+	AM_RANGE(0x02, 0x03) AM_DEVWRITE("ay2", ay8912_device, address_data_w)
+>>>>>>> upstream/master
 ADDRESS_MAP_END
 
 
@@ -531,14 +566,28 @@ INTERRUPT_GEN_MEMBER(marineb_state::wanted_vblank_irq)
 }
 
 
+<<<<<<< HEAD
 static MACHINE_CONFIG_START( marineb, marineb_state )
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", Z80, 3072000)   /* 3.072 MHz */
+=======
+static MACHINE_CONFIG_START( marineb )
+
+	/* basic machine hardware */
+	MCFG_CPU_ADD("maincpu", Z80, CPU_CLOCK)   /* 3 MHz? */
+>>>>>>> upstream/master
 	MCFG_CPU_PROGRAM_MAP(marineb_map)
 	MCFG_CPU_IO_MAP(marineb_io_map)
 	MCFG_CPU_VBLANK_INT_DRIVER("screen", marineb_state,  marineb_vblank_irq)
 
+<<<<<<< HEAD
+=======
+	MCFG_DEVICE_ADD("outlatch", LS259, 0)
+	MCFG_ADDRESSABLE_LATCH_Q0_OUT_CB(WRITELINE(marineb_state, irq_mask_w))
+	MCFG_ADDRESSABLE_LATCH_Q1_OUT_CB(WRITELINE(marineb_state, flipscreen_y_w))
+	MCFG_ADDRESSABLE_LATCH_Q2_OUT_CB(WRITELINE(marineb_state, flipscreen_x_w))
+>>>>>>> upstream/master
 
 	/* video hardware */
 	MCFG_SCREEN_ADD("screen", RASTER)
@@ -555,7 +604,11 @@ static MACHINE_CONFIG_START( marineb, marineb_state )
 
 	/* sound hardware */
 	MCFG_SPEAKER_STANDARD_MONO("mono")
+<<<<<<< HEAD
 	MCFG_SOUND_ADD("ay1", AY8910, 1500000)
+=======
+	MCFG_SOUND_ADD("ay1", AY8910, SOUND_CLOCK)
+>>>>>>> upstream/master
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 0.50)
 MACHINE_CONFIG_END
 
@@ -574,7 +627,13 @@ MACHINE_CONFIG_END
 static MACHINE_CONFIG_DERIVED( springer, marineb )
 
 	/* basic machine hardware */
+<<<<<<< HEAD
 	MCFG_MACHINE_RESET_OVERRIDE(marineb_state,springer)
+=======
+	MCFG_DEVICE_MODIFY("outlatch")
+	MCFG_ADDRESSABLE_LATCH_Q1_OUT_CB(WRITELINE(marineb_state, flipscreen_y_w)) MCFG_DEVCB_INVERT
+	MCFG_ADDRESSABLE_LATCH_Q2_OUT_CB(WRITELINE(marineb_state, flipscreen_x_w)) MCFG_DEVCB_INVERT
+>>>>>>> upstream/master
 
 	/* video hardware */
 	MCFG_SCREEN_MODIFY("screen")
@@ -605,11 +664,19 @@ static MACHINE_CONFIG_DERIVED( wanted, marineb )
 	MCFG_SCREEN_MODIFY("screen")
 	MCFG_SCREEN_UPDATE_DRIVER(marineb_state, screen_update_springer)
 
+<<<<<<< HEAD
 	/* sound hardware */
 	MCFG_SOUND_REPLACE("ay1", AY8910, 1500000)
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 0.25)
 
 	MCFG_SOUND_ADD("ay2", AY8910, 1500000)
+=======
+	// sound hardware (PSG type verified only for bcruzm12)
+	MCFG_SOUND_REPLACE("ay1", AY8912, SOUND_CLOCK)
+	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 0.25)
+
+	MCFG_SOUND_ADD("ay2", AY8912, SOUND_CLOCK)
+>>>>>>> upstream/master
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 0.25)
 MACHINE_CONFIG_END
 
@@ -628,7 +695,13 @@ MACHINE_CONFIG_END
 static MACHINE_CONFIG_DERIVED( bcruzm12, wanted )
 
 	/* basic machine hardware */
+<<<<<<< HEAD
 	MCFG_MACHINE_RESET_OVERRIDE(marineb_state,springer)
+=======
+	MCFG_DEVICE_MODIFY("outlatch")
+	MCFG_ADDRESSABLE_LATCH_Q1_OUT_CB(WRITELINE(marineb_state, flipscreen_y_w)) MCFG_DEVCB_INVERT
+	MCFG_ADDRESSABLE_LATCH_Q2_OUT_CB(WRITELINE(marineb_state, flipscreen_x_w)) MCFG_DEVCB_INVERT
+>>>>>>> upstream/master
 MACHINE_CONFIG_END
 
 /***************************************************************************
@@ -807,6 +880,12 @@ All roms type 2764
 Both proms type MB7052 (compatible to 82s129)
 RAM: 1 x 8416, 1 x AM9122, 2 x D2125, 4 x M5L2114
 
+<<<<<<< HEAD
+=======
+The topmost row is entirely unpopulated. This includes a space (at 19D) for
+a MC68705P3.
+
+>>>>>>> upstream/master
 PCB Layout:
 
        NECD780C                      D-84_4  D-84_5  D-84_6  D-84_7
@@ -833,8 +912,13 @@ ROM_START( bcruzm12 )
 	ROM_LOAD( "d-84_4.17ef",   0x2000, 0x2000, CRC(fe186459) SHA1(3b0ee1fe98c835271f5b67de5ca0507827e25d71) )
 
 	ROM_REGION( 0x4000, "gfx2", 0 )
+<<<<<<< HEAD
 	ROM_LOAD( "d-84_7.17h",    0x0000, 0x2000, CRC(a5be90ef) SHA1(6037d924296ba62999aafe665396fef142d73df2) )
 	ROM_LOAD( "d-84_6.17fh",   0x2000, 0x2000, CRC(1337dc01) SHA1(c55bfc6dd15a499dd71da0acc5016035a7c51f16) )
+=======
+	ROM_LOAD( "d-84_6.17fh",   0x0000, 0x2000, CRC(1337dc01) SHA1(c55bfc6dd15a499dd71da0acc5016035a7c51f16) )
+	ROM_LOAD( "d-84_7.17h",    0x2000, 0x2000, CRC(a5be90ef) SHA1(6037d924296ba62999aafe665396fef142d73df2) )
+>>>>>>> upstream/master
 
 	ROM_REGION( 0x0200, "proms", 0 )
 	ROM_LOAD( "bcm12col.7k",   0x0000, 0x0100, CRC(bf4f2671) SHA1(dde6da568ecf0121910f4b507c83fe6230b07c8d) )   /* palette low 4 bits */
@@ -865,6 +949,7 @@ ROM_END
 
 
 /*    year  name      parent   machine   inputs */
+<<<<<<< HEAD
 GAME( 1982, marineb,  0,       marineb,  marineb, driver_device, 0, ROT0,   "Orca", "Marine Boy", MACHINE_SUPPORTS_SAVE )
 GAME( 1982, changes,  0,       changes,  changes, driver_device, 0, ROT0,   "Orca", "Changes", MACHINE_SUPPORTS_SAVE )
 GAME( 1982, changesa, changes, changes,  changes, driver_device, 0, ROT0,   "Orca (Eastern Micro Electronics, Inc. license)", "Changes (EME license)", MACHINE_SUPPORTS_SAVE )
@@ -875,3 +960,15 @@ GAME( 1983, hoccer2,  hoccer,  hoccer,   hoccer, driver_device,  0, ROT90,  "Eas
 GAME( 1983, bcruzm12, 0,       bcruzm12, bcruzm12, driver_device,0, ROT90,  "Sigma Enterprises Inc.", "Battle Cruiser M-12", MACHINE_SUPPORTS_SAVE )
 GAME( 1983, hopprobo, 0,       hopprobo, marineb, driver_device, 0, ROT90,  "Sega", "Hopper Robo", MACHINE_SUPPORTS_SAVE )
 GAME( 1984, wanted,   0,       wanted,   wanted, driver_device,  0, ROT90,  "Sigma Enterprises Inc.", "Wanted", MACHINE_SUPPORTS_SAVE )
+=======
+GAME( 1982, marineb,  0,       marineb,  marineb,  marineb_state, 0, ROT0,   "Orca", "Marine Boy", MACHINE_SUPPORTS_SAVE )
+GAME( 1982, changes,  0,       changes,  changes,  marineb_state, 0, ROT0,   "Orca", "Changes", MACHINE_SUPPORTS_SAVE )
+GAME( 1982, changesa, changes, changes,  changes,  marineb_state, 0, ROT0,   "Orca (Eastern Micro Electronics, Inc. license)", "Changes (EME license)", MACHINE_SUPPORTS_SAVE )
+GAME( 1982, looper,   changes, changes,  changes,  marineb_state, 0, ROT0,   "Orca", "Looper", MACHINE_SUPPORTS_SAVE )
+GAME( 1982, springer, 0,       springer, marineb,  marineb_state, 0, ROT270, "Orca", "Springer", MACHINE_SUPPORTS_SAVE )
+GAME( 1983, hoccer,   0,       hoccer,   hoccer,   marineb_state, 0, ROT90,  "Eastern Micro Electronics, Inc.", "Hoccer (set 1)", MACHINE_SUPPORTS_SAVE )
+GAME( 1983, hoccer2,  hoccer,  hoccer,   hoccer,   marineb_state, 0, ROT90,  "Eastern Micro Electronics, Inc.", "Hoccer (set 2)" , MACHINE_SUPPORTS_SAVE )  /* earlier */
+GAME( 1983, bcruzm12, 0,       bcruzm12, bcruzm12, marineb_state, 0, ROT90,  "Sigma Enterprises Inc.", "Battle Cruiser M-12", MACHINE_SUPPORTS_SAVE )
+GAME( 1983, hopprobo, 0,       hopprobo, marineb,  marineb_state, 0, ROT90,  "Sega", "Hopper Robo", MACHINE_SUPPORTS_SAVE )
+GAME( 1984, wanted,   0,       wanted,   wanted,   marineb_state, 0, ROT90,  "Sigma Enterprises Inc.", "Wanted", MACHINE_SUPPORTS_SAVE )
+>>>>>>> upstream/master

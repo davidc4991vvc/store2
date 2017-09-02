@@ -1,5 +1,9 @@
 // license:BSD-3-Clause
+<<<<<<< HEAD
 // copyright-holders:Phil Stroffolino
+=======
+// copyright-holders:K.Wilkins,Derrick Renaud
+>>>>>>> upstream/master
 /*************************************************************************
 
     audio\firetrk.c

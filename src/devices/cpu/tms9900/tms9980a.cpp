@@ -51,6 +51,10 @@
    Michael Zapf, 2012
 */
 
+<<<<<<< HEAD
+=======
+#include "emu.h"
+>>>>>>> upstream/master
 #include "tms9980a.h"
 
 /*
@@ -74,8 +78,13 @@
     Constructor
 ****************************************************************************/
 
+<<<<<<< HEAD
 tms9980a_device::tms9980a_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
 	: tms99xx_device(mconfig, TMS9980A, "TMS9980A", tag, 8, 14, 11, owner, clock, "tms9980a", __FILE__)
+=======
+tms9980a_device::tms9980a_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: tms99xx_device(mconfig, TMS9980A, tag, 8, 14, 11, owner, clock)
+>>>>>>> upstream/master
 {
 }
 
@@ -92,16 +101,28 @@ void tms9980a_device::resolve_lines()
 	m_dbin_line.resolve();
 }
 
+<<<<<<< HEAD
 UINT16 tms9980a_device::read_workspace_register_debug(int reg)
 {
 	int temp = m_icount;
 	int addr = (WP+(reg<<1)) & 0xfffe & m_prgaddr_mask;
 	UINT16 value = (m_prgspace->read_byte(addr) << 8) | (m_prgspace->read_byte(addr+1) & 0xff);
+=======
+uint16_t tms9980a_device::read_workspace_register_debug(int reg)
+{
+	int temp = m_icount;
+	int addr = (WP+(reg<<1)) & 0xfffe & m_prgaddr_mask;
+	uint16_t value = (m_prgspace->read_byte(addr) << 8) | (m_prgspace->read_byte(addr+1) & 0xff);
+>>>>>>> upstream/master
 	m_icount = temp;
 	return value;
 }
 
+<<<<<<< HEAD
 void tms9980a_device::write_workspace_register_debug(int reg, UINT16 data)
+=======
+void tms9980a_device::write_workspace_register_debug(int reg, uint16_t data)
+>>>>>>> upstream/master
 {
 	int temp = m_icount;
 	int addr = (WP+(reg<<1)) & 0xfffe & m_prgaddr_mask;
@@ -175,7 +196,11 @@ void tms9980a_device::execute_set_input(int irqline, int state)
 */
 void tms9980a_device::mem_read()
 {
+<<<<<<< HEAD
 	UINT8 value;
+=======
+	uint8_t value;
+>>>>>>> upstream/master
 	switch (m_mem_phase)
 	{
 	case 1:
@@ -260,18 +285,30 @@ void tms9980a_device::acquire_instruction()
 
 
 /**************************************************************************/
+<<<<<<< HEAD
 UINT32 tms9980a_device::execute_min_cycles() const
+=======
+uint32_t tms9980a_device::execute_min_cycles() const
+>>>>>>> upstream/master
 {
 	return 2;
 }
 
 // TODO: Compute this value, just a wild guess for the average
+<<<<<<< HEAD
 UINT32 tms9980a_device::execute_max_cycles() const
+=======
+uint32_t tms9980a_device::execute_max_cycles() const
+>>>>>>> upstream/master
 {
 	return 10;
 }
 
+<<<<<<< HEAD
 UINT32 tms9980a_device::execute_input_lines() const
+=======
+uint32_t tms9980a_device::execute_input_lines() const
+>>>>>>> upstream/master
 {
 	return 8;
 }
@@ -281,16 +318,25 @@ UINT32 tms9980a_device::execute_input_lines() const
 // execute_burn = nop
 
 // device_disasm_interface overrides
+<<<<<<< HEAD
 UINT32 tms9980a_device::disasm_min_opcode_bytes() const
+=======
+uint32_t tms9980a_device::disasm_min_opcode_bytes() const
+>>>>>>> upstream/master
 {
 	return 2;
 }
 
+<<<<<<< HEAD
 UINT32 tms9980a_device::disasm_max_opcode_bytes() const
+=======
+uint32_t tms9980a_device::disasm_max_opcode_bytes() const
+>>>>>>> upstream/master
 {
 	return 6;
 }
 
+<<<<<<< HEAD
 offs_t tms9980a_device::disasm_disassemble(char *buffer, offs_t pc, const UINT8 *oprom, const UINT8 *opram, UINT32 options)
 {
 	extern CPU_DISASSEMBLE( tms9980 );
@@ -298,3 +344,12 @@ offs_t tms9980a_device::disasm_disassemble(char *buffer, offs_t pc, const UINT8 
 }
 
 const device_type TMS9980A = &device_creator<tms9980a_device>;
+=======
+offs_t tms9980a_device::disasm_disassemble(std::ostream &stream, offs_t pc, const uint8_t *oprom, const uint8_t *opram, uint32_t options)
+{
+	extern CPU_DISASSEMBLE( tms9980 );
+	return CPU_DISASSEMBLE_NAME(tms9980)(this, stream, pc, oprom, opram, options);
+}
+
+DEFINE_DEVICE_TYPE(TMS9980A, tms9980a_device, "tms9980a", "TMS9980A")
+>>>>>>> upstream/master

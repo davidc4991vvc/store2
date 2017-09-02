@@ -1,8 +1,15 @@
 // license:BSD-3-Clause
 // copyright-holders:Olivier Galibert
+<<<<<<< HEAD
 #include "lpc-acpi.h"
 
 const device_type LPC_ACPI = &device_creator<lpc_acpi_device>;
+=======
+#include "emu.h"
+#include "lpc-acpi.h"
+
+DEFINE_DEVICE_TYPE(LPC_ACPI, lpc_acpi_device, "lpc_acpi", "LPC ACPI")
+>>>>>>> upstream/master
 
 DEVICE_ADDRESS_MAP_START(map, 32, lpc_acpi_device)
 	AM_RANGE(0x00, 0x03) AM_READWRITE16(pm1_sts_r,        pm1_sts_w,        0x0000ffff)
@@ -36,6 +43,7 @@ DEVICE_ADDRESS_MAP_START(map, 32, lpc_acpi_device)
 	AM_RANGE(0x70, 0x73) AM_READWRITE8 (sw_irq_gen_r,     sw_irq_gen_w,     0x000000ff)
 ADDRESS_MAP_END
 
+<<<<<<< HEAD
 lpc_acpi_device::lpc_acpi_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
 	: lpc_device(mconfig, LPC_ACPI, "LPC ACPI", tag, owner, clock, "lpc_acpi", __FILE__)
 {
@@ -43,6 +51,15 @@ lpc_acpi_device::lpc_acpi_device(const machine_config &mconfig, const char *tag,
 
 void lpc_acpi_device::map_device(UINT64 memory_window_start, UINT64 memory_window_end, UINT64 memory_offset, address_space *memory_space,
 									UINT64 io_window_start, UINT64 io_window_end, UINT64 io_offset, address_space *io_space)
+=======
+lpc_acpi_device::lpc_acpi_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: lpc_device(mconfig, LPC_ACPI, tag, owner, clock)
+{
+}
+
+void lpc_acpi_device::map_device(uint64_t memory_window_start, uint64_t memory_window_end, uint64_t memory_offset, address_space *memory_space,
+									uint64_t io_window_start, uint64_t io_window_end, uint64_t io_offset, address_space *io_space)
+>>>>>>> upstream/master
 {
 	io_space->install_device(io_offset, io_window_end, *this, &lpc_acpi_device::map);
 }

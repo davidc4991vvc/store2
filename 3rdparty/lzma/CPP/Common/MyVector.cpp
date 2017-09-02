@@ -1,6 +1,7 @@
 // Common/MyVector.cpp
 
 #include "StdAfx.h"
+<<<<<<< HEAD
 
 #include <string.h>
 
@@ -85,3 +86,5 @@ void CBaseRecordVector::Delete(int index, int num)
     _size -= num;
   }
 }
+=======
+>>>>>>> upstream/master

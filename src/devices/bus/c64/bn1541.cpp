@@ -8,6 +8,10 @@
 
 **********************************************************************/
 
+<<<<<<< HEAD
+=======
+#include "emu.h"
+>>>>>>> upstream/master
 #include "bn1541.h"
 
 
@@ -24,7 +28,11 @@
 //  DEVICE DEFINITIONS
 //**************************************************************************
 
+<<<<<<< HEAD
 const device_type C64_BN1541 = &device_creator<c64_bn1541_device>;
+=======
+DEFINE_DEVICE_TYPE(C64_BN1541, c64_bn1541_device, "c64_bn1541", "C64 Burst Nibbler 1541/1571 Parallel Cable")
+>>>>>>> upstream/master
 
 
 
@@ -60,8 +68,13 @@ device_c64_floppy_parallel_interface::~device_c64_floppy_parallel_interface()
 //  c64_bn1541_device - constructor
 //-------------------------------------------------
 
+<<<<<<< HEAD
 c64_bn1541_device::c64_bn1541_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock) :
 	device_t(mconfig, C64_BN1541, "C64 Burst Nibbler 1541/1571 Parallel Cable", tag, owner, clock, "c64_bn1541", __FILE__),
+=======
+c64_bn1541_device::c64_bn1541_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock) :
+	device_t(mconfig, C64_BN1541, tag, owner, clock),
+>>>>>>> upstream/master
 	device_pet_user_port_interface(mconfig, *this),
 	device_c64_floppy_parallel_interface(mconfig, *this), m_parallel_output(0)
 {
@@ -74,6 +87,7 @@ c64_bn1541_device::c64_bn1541_device(const machine_config &mconfig, const char *
 
 void c64_bn1541_device::device_start()
 {
+<<<<<<< HEAD
 	device_iterator iter(machine().root_device());
 
 	for (device_t *device = iter.first(); device != NULL; device = iter.next())
@@ -85,6 +99,15 @@ void c64_bn1541_device::device_start()
 			if (subdevice->interface(m_other) && subdevice != this)
 			{
 				if (LOG) logerror("Parallel device %s\n", subdevice->tag());
+=======
+	for (device_t &device : device_iterator(machine().root_device()))
+	{
+		for (device_t &subdevice : device_iterator(device))
+		{
+			if (subdevice.interface(m_other) && &subdevice != this)
+			{
+				if (LOG) logerror("Parallel device %s\n", subdevice.tag());
+>>>>>>> upstream/master
 
 				// grab the first 1541/1571 and run to the hills
 				m_other->m_other = this;
@@ -99,7 +122,11 @@ void c64_bn1541_device::device_start()
 //  parallel_data_w -
 //-------------------------------------------------
 
+<<<<<<< HEAD
 void c64_bn1541_device::parallel_data_w(UINT8 data)
+=======
+void c64_bn1541_device::parallel_data_w(uint8_t data)
+>>>>>>> upstream/master
 {
 	if (LOG) logerror("1541 parallel data %02x\n", data);
 
@@ -132,7 +159,11 @@ void c64_bn1541_device::parallel_strobe_w(int state)
 
 void c64_bn1541_device::update_output()
 {
+<<<<<<< HEAD
 	if (m_other != NULL)
+=======
+	if (m_other != nullptr)
+>>>>>>> upstream/master
 	{
 		m_other->parallel_data_w(m_parallel_output);
 	}
@@ -147,7 +178,11 @@ WRITE_LINE_MEMBER(c64_bn1541_device::input_8)
 {
 	if (LOG) logerror("C64 parallel strobe %u\n", state);
 
+<<<<<<< HEAD
 	if (m_other != NULL)
+=======
+	if (m_other != nullptr)
+>>>>>>> upstream/master
 	{
 		m_other->parallel_strobe_w(state);
 	}

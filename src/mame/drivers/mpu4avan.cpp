@@ -7,7 +7,10 @@
   I think some might be dual unit setups, some roms are marked top/bottom
 */
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> upstream/master
 #include "emu.h"
 #include "includes/mpu4.h"
 
@@ -16,8 +19,11 @@ INPUT_PORTS_EXTERN( mpu4 );
 
 #define GAME_FLAGS (MACHINE_NOT_WORKING|MACHINE_REQUIRES_ARTWORK|MACHINE_MECHANICAL)
 
+<<<<<<< HEAD
 
 
+=======
+>>>>>>> upstream/master
 #undef GAME_CUSTOM
 #define GAME_CUSTOM(year, setname,parent,name,offset,length,hash,company,title) \
 	ROM_START( setname ) \

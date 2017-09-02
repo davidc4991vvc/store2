@@ -6,13 +6,21 @@
 
 **********************************************************************/
 
+<<<<<<< HEAD
+=======
+#include "emu.h"
+>>>>>>> upstream/master
 #include "pachinko.h"
 
 //**************************************************************************
 //  DEVICE DEFINITIONS
 //**************************************************************************
 
+<<<<<<< HEAD
 const device_type NES_PACHINKO = &device_creator<nes_pachinko_device>;
+=======
+DEFINE_DEVICE_TYPE(NES_PACHINKO, nes_pachinko_device, "nes_pachinko", "Famicom Pachinko Controller")
+>>>>>>> upstream/master
 
 
 static INPUT_PORTS_START( nes_pachinko )
@@ -47,11 +55,20 @@ ioport_constructor nes_pachinko_device::device_input_ports() const
 //  nes_pachinko_device - constructor
 //-------------------------------------------------
 
+<<<<<<< HEAD
 nes_pachinko_device::nes_pachinko_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock) :
 					device_t(mconfig, NES_PACHINKO, "Famicom Pachinko Controller", tag, owner, clock, "nes_pachinko", __FILE__),
 					device_nes_control_port_interface(mconfig, *this),
 					m_joypad(*this, "JOYPAD"),
 					m_trigger(*this, "TRIGGER"), m_latch(0)
+=======
+nes_pachinko_device::nes_pachinko_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock) :
+	device_t(mconfig, NES_PACHINKO, tag, owner, clock),
+	device_nes_control_port_interface(mconfig, *this),
+	m_joypad(*this, "JOYPAD"),
+	m_trigger(*this, "TRIGGER"),
+	m_latch(0)
+>>>>>>> upstream/master
 {
 }
 
@@ -80,9 +97,15 @@ void nes_pachinko_device::device_reset()
 //  read
 //-------------------------------------------------
 
+<<<<<<< HEAD
 UINT8 nes_pachinko_device::read_exp(offs_t offset)
 {
 	UINT8 ret = 0;
+=======
+uint8_t nes_pachinko_device::read_exp(offs_t offset)
+{
+	uint8_t ret = 0;
+>>>>>>> upstream/master
 	// this controller behaves like a standard P3 joypad, with longer stream of inputs
 	if (offset == 0)    //$4016
 	{
@@ -96,7 +119,11 @@ UINT8 nes_pachinko_device::read_exp(offs_t offset)
 //  write
 //-------------------------------------------------
 
+<<<<<<< HEAD
 void nes_pachinko_device::write(UINT8 data)
+=======
+void nes_pachinko_device::write(uint8_t data)
+>>>>>>> upstream/master
 {
 	if (data & 0x01)
 		return;

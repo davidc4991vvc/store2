@@ -83,6 +83,10 @@ Notes:
 */
 
 
+<<<<<<< HEAD
+=======
+#include "emu.h"
+>>>>>>> upstream/master
 #include "s1410.h"
 #include "cpu/z80/z80.h"
 #include "imagedev/harddriv.h"
@@ -101,7 +105,11 @@ Notes:
 //  DEVICE DEFINITIONS
 //**************************************************************************
 
+<<<<<<< HEAD
 const device_type S1410 = &device_creator<s1410_device>;
+=======
+DEFINE_DEVICE_TYPE(S1410, s1410_device, "s1410", "Xebec S1410")
+>>>>>>> upstream/master
 
 //-------------------------------------------------
 //  ROM( s1410 )
@@ -122,7 +130,11 @@ ROM_END
 //  rom_region - device-specific ROM region
 //-------------------------------------------------
 
+<<<<<<< HEAD
 const rom_entry *s1410_device::device_rom_region() const
+=======
+const tiny_rom_entry *s1410_device::device_rom_region() const
+>>>>>>> upstream/master
 {
 	return ROM_NAME( s1410 );
 }
@@ -159,10 +171,17 @@ ADDRESS_MAP_END
 
 
 //-------------------------------------------------
+<<<<<<< HEAD
 //  MACHINE_DRIVER( s1410 )
 //-------------------------------------------------
 
 static MACHINE_CONFIG_FRAGMENT( s1410 )
+=======
+//  device_add_mconfig - add device configuration
+//-------------------------------------------------
+
+MACHINE_CONFIG_MEMBER( s1410_device::device_add_mconfig )
+>>>>>>> upstream/master
 	MCFG_CPU_ADD(Z8400A_TAG, Z80, XTAL_16MHz/4)
 	MCFG_CPU_PROGRAM_MAP(s1410_mem)
 	MCFG_CPU_IO_MAP(s1410_io)
@@ -172,6 +191,7 @@ static MACHINE_CONFIG_FRAGMENT( s1410 )
 MACHINE_CONFIG_END
 
 
+<<<<<<< HEAD
 //-------------------------------------------------
 //  machine_config_additions - device-specific
 //  machine configurations
@@ -183,6 +203,8 @@ machine_config_constructor s1410_device::device_mconfig_additions() const
 }
 
 
+=======
+>>>>>>> upstream/master
 
 //**************************************************************************
 //  LIVE DEVICE
@@ -192,8 +214,13 @@ machine_config_constructor s1410_device::device_mconfig_additions() const
 //  s1410_device - constructor
 //-------------------------------------------------
 
+<<<<<<< HEAD
 s1410_device::s1410_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
 	: scsihd_device(mconfig, S1410, "Xebec S1410", tag, owner, clock, "s1410", __FILE__)
+=======
+s1410_device::s1410_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: scsihd_device(mconfig, S1410, tag, owner, clock)
+>>>>>>> upstream/master
 {
 }
 
@@ -205,7 +232,11 @@ s1410_device::s1410_device(const machine_config &mconfig, const char *tag, devic
 #define S1410_CMD_READ_SEC_BUFFER ( 0x10 )
 #define S1410_CMD_RAM_DIAGS ( 0xe0 )
 #define S1410_CMD_DRIVE_DIAGS ( 0xe3 )
+<<<<<<< HEAD
 #define S1410_CMD_CONTROLER_DIAGS ( 0xe4 )
+=======
+#define S1410_CMD_CONTROLLER_DIAGS ( 0xe4 )
+>>>>>>> upstream/master
 
 #define S1410_STATUS_NOT_READY ( 0x04 )
 
@@ -256,7 +287,11 @@ void s1410_device::ExecCommand()
 
 		if ((m_disk) && (m_blocks))
 		{
+<<<<<<< HEAD
 			dynamic_buffer data(m_sector_bytes);
+=======
+			std::vector<uint8_t> data(m_sector_bytes);
+>>>>>>> upstream/master
 			memset(&data[0], 0xc6, m_sector_bytes);
 
 			while (m_blocks > 0)
@@ -302,7 +337,11 @@ void s1410_device::ExecCommand()
 	case S1410_CMD_CHECK_TRACK_FORMAT:
 	case S1410_CMD_RAM_DIAGS:
 	case S1410_CMD_DRIVE_DIAGS:
+<<<<<<< HEAD
 	case S1410_CMD_CONTROLER_DIAGS:
+=======
+	case S1410_CMD_CONTROLLER_DIAGS:
+>>>>>>> upstream/master
 		m_phase = SCSI_PHASE_STATUS;
 		m_status_code = SCSI_STATUS_CODE_GOOD;
 		m_transfer_length = 0;
@@ -314,7 +353,11 @@ void s1410_device::ExecCommand()
 	}
 }
 
+<<<<<<< HEAD
 void s1410_device::WriteData( UINT8 *data, int dataLength )
+=======
+void s1410_device::WriteData( uint8_t *data, int dataLength )
+>>>>>>> upstream/master
 {
 	switch( command[ 0 ] )
 	{
@@ -333,9 +376,15 @@ void s1410_device::WriteData( UINT8 *data, int dataLength )
 				break;
 			}
 
+<<<<<<< HEAD
 			UINT16 tracks = ((data[0]<<8)+data[1]);
 			UINT8 heads = data[2];
 			UINT32 capacity = tracks * heads * sectorsPerTrack * m_sector_bytes;
+=======
+			uint16_t tracks = ((data[0]<<8)+data[1]);
+			uint8_t heads = data[2];
+			uint32_t capacity = tracks * heads * sectorsPerTrack * m_sector_bytes;
+>>>>>>> upstream/master
 
 			logerror("S1410_CMD_INIT_DRIVE_PARAMS Tracks=%d, Heads=%d, Capacity=%d\n",tracks,heads,capacity);
 		}
@@ -347,7 +396,11 @@ void s1410_device::WriteData( UINT8 *data, int dataLength )
 	}
 }
 
+<<<<<<< HEAD
 void s1410_device::ReadData( UINT8 *data, int dataLength )
+=======
+void s1410_device::ReadData( uint8_t *data, int dataLength )
+>>>>>>> upstream/master
 {
 	switch( command[ 0 ] )
 	{

@@ -25,6 +25,7 @@
 ***************************************************************************/
 
 #include "emu.h"
+<<<<<<< HEAD
 #include "cpu/m68000/m68000.h"
 #include "cpu/tms34010/tms34010.h"
 #include "cpu/mcs51/mcs51.h"
@@ -32,6 +33,17 @@
 #include "includes/artmagic.h"
 #include "sound/okim6295.h"
 #include "machine/nvram.h"
+=======
+#include "includes/artmagic.h"
+
+#include "cpu/m68000/m68000.h"
+#include "cpu/mcs51/mcs51.h"
+#include "cpu/tms34010/tms34010.h"
+#include "machine/nvram.h"
+#include "sound/okim6295.h"
+#include "screen.h"
+#include "speaker.h"
+>>>>>>> upstream/master
 
 
 #define MASTER_CLOCK_40MHz      (XTAL_40MHz)
@@ -67,6 +79,11 @@ WRITE_LINE_MEMBER(artmagic_state::m68k_gen_int)
 
 void artmagic_state::machine_start()
 {
+<<<<<<< HEAD
+=======
+	m_irq_off_timer = timer_alloc(TIMER_IRQ_OFF);
+
+>>>>>>> upstream/master
 	save_item(NAME(m_tms_irq));
 	save_item(NAME(m_hack_irq));
 	save_item(NAME(m_prot_input_index));
@@ -99,7 +116,11 @@ WRITE16_MEMBER(artmagic_state::control_w)
 	/* OKI banking here */
 	if (offset == 0)
 	{
+<<<<<<< HEAD
 		m_oki->set_bank_base((((data >> 4) & 1) * 0x40000) % m_oki->region()->bytes());
+=======
+		m_oki->set_rom_bank((data >> 4) & 1);
+>>>>>>> upstream/master
 	}
 
 	logerror("%06X:control_w(%d) = %04X\n", space.device().safe_pc(), offset, data);
@@ -122,7 +143,11 @@ void artmagic_state::device_timer(emu_timer &timer, device_timer_id id, int para
 		update_irq_state();
 		break;
 	default:
+<<<<<<< HEAD
 		assert_always(FALSE, "Unknown id in artmagic_state::device_timer");
+=======
+		assert_always(false, "Unknown id in artmagic_state::device_timer");
+>>>>>>> upstream/master
 	}
 }
 
@@ -130,12 +155,20 @@ void artmagic_state::device_timer(emu_timer &timer, device_timer_id id, int para
 READ16_MEMBER(artmagic_state::ultennis_hack_r)
 {
 	/* IRQ5 points to: jsr (a5); rte */
+<<<<<<< HEAD
 	UINT32 pc = space.device().safe_pc();
+=======
+	uint32_t pc = space.device().safe_pc();
+>>>>>>> upstream/master
 	if (pc == 0x18c2 || pc == 0x18e4)
 	{
 		m_hack_irq = 1;
 		update_irq_state();
+<<<<<<< HEAD
 		timer_set(attotime::from_usec(1), TIMER_IRQ_OFF);
+=======
+		m_irq_off_timer->adjust(attotime::from_usec(1));
+>>>>>>> upstream/master
 	}
 	return ioport("300000")->read();
 }
@@ -161,6 +194,7 @@ void artmagic_state::ultennis_protection()
 		case 0x01:  /* 01 aaaa bbbb cccc dddd (xxxx) */
 			if (m_prot_input_index == 9)
 			{
+<<<<<<< HEAD
 				UINT16 a = m_prot_input[1] | (m_prot_input[2] << 8);
 				UINT16 b = m_prot_input[3] | (m_prot_input[4] << 8);
 				UINT16 c = m_prot_input[5] | (m_prot_input[6] << 8);
@@ -170,6 +204,17 @@ void artmagic_state::ultennis_protection()
 					x = (x * c) >> 16;
 				else
 					x = -(((UINT16)-x * c) >> 16);
+=======
+				uint16_t a = m_prot_input[1] | (m_prot_input[2] << 8);
+				uint16_t b = m_prot_input[3] | (m_prot_input[4] << 8);
+				uint16_t c = m_prot_input[5] | (m_prot_input[6] << 8);
+				uint16_t d = m_prot_input[7] | (m_prot_input[8] << 8);
+				uint16_t x = a - b;
+				if ((int16_t)x >= 0)
+					x = (x * c) >> 16;
+				else
+					x = -(((uint16_t)-x * c) >> 16);
+>>>>>>> upstream/master
 				x += d;
 				m_prot_output[0] = x;
 				m_prot_output[1] = x >> 8;
@@ -195,10 +240,17 @@ void artmagic_state::ultennis_protection()
 			*/
 			if (m_prot_input_index == 7)
 			{
+<<<<<<< HEAD
 				UINT16 a = (INT16)(m_prot_input[1] | (m_prot_input[2] << 8));
 				UINT16 b = (INT16)(m_prot_input[3] | (m_prot_input[4] << 8));
 				/*UINT16 c = (INT16)(m_prot_input[5] | (m_prot_input[6] << 8));*/
 				UINT32 x = a * a * (b/2);
+=======
+				uint16_t a = (int16_t)(m_prot_input[1] | (m_prot_input[2] << 8));
+				uint16_t b = (int16_t)(m_prot_input[3] | (m_prot_input[4] << 8));
+				/*uint16_t c = (int16_t)(m_prot_input[5] | (m_prot_input[6] << 8));*/
+				uint32_t x = a * a * (b/2);
+>>>>>>> upstream/master
 				m_prot_output[0] = x;
 				m_prot_output[1] = x >> 8;
 				m_prot_output[2] = x >> 16;
@@ -212,7 +264,11 @@ void artmagic_state::ultennis_protection()
 		case 0x03:  /* 03 (xxxx) */
 			if (m_prot_input_index == 1)
 			{
+<<<<<<< HEAD
 				UINT16 x = m_prot_save;
+=======
+				uint16_t x = m_prot_save;
+>>>>>>> upstream/master
 				m_prot_output[0] = x;
 				m_prot_output[1] = x >> 8;
 				m_prot_output_index = 0;
@@ -224,7 +280,11 @@ void artmagic_state::ultennis_protection()
 		case 0x04:  /* 04 aaaa */
 			if (m_prot_input_index == 3)
 			{
+<<<<<<< HEAD
 				UINT16 a = m_prot_input[1] | (m_prot_input[2] << 8);
+=======
+				uint16_t a = m_prot_input[1] | (m_prot_input[2] << 8);
+>>>>>>> upstream/master
 				m_prot_save = a;
 				m_prot_input_index = m_prot_output_index = 0;
 			}
@@ -251,6 +311,7 @@ void artmagic_state::cheesech_protection()
 		case 0x01:  /* 01 aaaa bbbb (xxxx) */
 			if (m_prot_input_index == 5)
 			{
+<<<<<<< HEAD
 				UINT16 a = m_prot_input[1] | (m_prot_input[2] << 8);
 				UINT16 b = m_prot_input[3] | (m_prot_input[4] << 8);
 				UINT16 c = 0x4000;      /* seems to be hard-coded */
@@ -260,6 +321,17 @@ void artmagic_state::cheesech_protection()
 					x = (x * c) >> 16;
 				else
 					x = -(((UINT16)-x * c) >> 16);
+=======
+				uint16_t a = m_prot_input[1] | (m_prot_input[2] << 8);
+				uint16_t b = m_prot_input[3] | (m_prot_input[4] << 8);
+				uint16_t c = 0x4000;      /* seems to be hard-coded */
+				uint16_t d = 0x00a0;      /* seems to be hard-coded */
+				uint16_t x = a - b;
+				if ((int16_t)x >= 0)
+					x = (x * c) >> 16;
+				else
+					x = -(((uint16_t)-x * c) >> 16);
+>>>>>>> upstream/master
 				x += d;
 				m_prot_output[0] = x;
 				m_prot_output[1] = x >> 8;
@@ -272,7 +344,11 @@ void artmagic_state::cheesech_protection()
 		case 0x03:  /* 03 (xxxx) */
 			if (m_prot_input_index == 1)
 			{
+<<<<<<< HEAD
 				UINT16 x = m_prot_save;
+=======
+				uint16_t x = m_prot_save;
+>>>>>>> upstream/master
 				m_prot_output[0] = x;
 				m_prot_output[1] = x >> 8;
 				m_prot_output_index = 0;
@@ -284,7 +360,11 @@ void artmagic_state::cheesech_protection()
 		case 0x04:  /* 04 aaaa */
 			if (m_prot_input_index == 3)
 			{
+<<<<<<< HEAD
 				UINT16 a = m_prot_input[1] | (m_prot_input[2] << 8);
+=======
+				uint16_t a = m_prot_input[1] | (m_prot_input[2] << 8);
+>>>>>>> upstream/master
 				m_prot_save = a;
 				m_prot_input_index = m_prot_output_index = 0;
 			}
@@ -306,6 +386,7 @@ void artmagic_state::stonebal_protection()
 		case 0x01:  /* 01 aaaa bbbb cccc dddd (xxxx) */
 			if (m_prot_input_index == 9)
 			{
+<<<<<<< HEAD
 				UINT16 a = m_prot_input[1] | (m_prot_input[2] << 8);
 				UINT16 b = m_prot_input[3] | (m_prot_input[4] << 8);
 				UINT16 c = m_prot_input[5] | (m_prot_input[6] << 8);
@@ -315,6 +396,17 @@ void artmagic_state::stonebal_protection()
 					x = (x * d) >> 16;
 				else
 					x = -(((UINT16)-x * d) >> 16);
+=======
+				uint16_t a = m_prot_input[1] | (m_prot_input[2] << 8);
+				uint16_t b = m_prot_input[3] | (m_prot_input[4] << 8);
+				uint16_t c = m_prot_input[5] | (m_prot_input[6] << 8);
+				uint16_t d = m_prot_input[7] | (m_prot_input[8] << 8);
+				uint16_t x = a - b;
+				if ((int16_t)x >= 0)
+					x = (x * d) >> 16;
+				else
+					x = -(((uint16_t)-x * d) >> 16);
+>>>>>>> upstream/master
 				x += c;
 				m_prot_output[0] = x;
 				m_prot_output[1] = x >> 8;
@@ -327,8 +419,13 @@ void artmagic_state::stonebal_protection()
 		case 0x02:  /* 02 aaaa (xx) */
 			if (m_prot_input_index == 3)
 			{
+<<<<<<< HEAD
 				/*UINT16 a = m_prot_input[1] | (m_prot_input[2] << 8);*/
 				UINT8 x = 0xa5;
+=======
+				/*uint16_t a = m_prot_input[1] | (m_prot_input[2] << 8);*/
+				uint8_t x = 0xa5;
+>>>>>>> upstream/master
 				m_prot_output[0] = x;
 				m_prot_output_index = 0;
 			}
@@ -339,7 +436,11 @@ void artmagic_state::stonebal_protection()
 		case 0x03:  /* 03 (xxxx) */
 			if (m_prot_input_index == 1)
 			{
+<<<<<<< HEAD
 				UINT16 x = m_prot_save;
+=======
+				uint16_t x = m_prot_save;
+>>>>>>> upstream/master
 				m_prot_output[0] = x;
 				m_prot_output[1] = x >> 8;
 				m_prot_output_index = 0;
@@ -351,7 +452,11 @@ void artmagic_state::stonebal_protection()
 		case 0x04:  /* 04 aaaa */
 			if (m_prot_input_index == 3)
 			{
+<<<<<<< HEAD
 				UINT16 a = m_prot_input[1] | (m_prot_input[2] << 8);
+=======
+				uint16_t a = m_prot_input[1] | (m_prot_input[2] << 8);
+>>>>>>> upstream/master
 				m_prot_save = a;
 				m_prot_input_index = m_prot_output_index = 0;
 			}
@@ -437,9 +542,23 @@ static ADDRESS_MAP_START( stonebal_map, AS_PROGRAM, 16, artmagic_state )
 	AM_RANGE(0x380000, 0x380007) AM_DEVREADWRITE("tms", tms34010_device, host_r, host_w)
 ADDRESS_MAP_END
 
+<<<<<<< HEAD
 READ16_MEMBER(artmagic_state::unk_r)
 {
 	return machine().rand();
+=======
+// TODO: jumps to undefined area at PC=33a0 -> 230000, presumably protection device provides a code snippet
+READ16_MEMBER(artmagic_state::shtstar_unk_r)
+{
+	// bits 7-4 should be 0
+	// bit 2 and 0 are status ready related.
+	return 4 | 1; //machine().rand();
+}
+
+READ16_MEMBER(artmagic_state::shtstar_unk_2_r)
+{
+	return 1;
+>>>>>>> upstream/master
 }
 
 static ADDRESS_MAP_START( shtstar_map, AS_PROGRAM, 16, artmagic_state )
@@ -454,8 +573,13 @@ static ADDRESS_MAP_START( shtstar_map, AS_PROGRAM, 16, artmagic_state )
 	AM_RANGE(0x3c0008, 0x3c0009) AM_READ_PORT("3c0008")
 	AM_RANGE(0x3c000a, 0x3c000b) AM_READ_PORT("3c000a")
 
+<<<<<<< HEAD
 	AM_RANGE(0x3c0012, 0x3c0013) AM_READ(unk_r)
 	AM_RANGE(0x3c0014, 0x3c0015) AM_NOP
+=======
+	AM_RANGE(0x3c0012, 0x3c0013) AM_READ(shtstar_unk_r)
+	AM_RANGE(0x3c0016, 0x3c0017) AM_READ(shtstar_unk_2_r)
+>>>>>>> upstream/master
 
 	AM_RANGE(0x300000, 0x300003) AM_WRITE(control_w) AM_SHARE("control")
 	AM_RANGE(0x3c0004, 0x3c0007) AM_WRITE(protection_bit_w)
@@ -596,7 +720,11 @@ static INPUT_PORTS_START( cheesech )
 	PORT_BIT( 0xff00, IP_ACTIVE_LOW, IPT_UNUSED )
 
 	PORT_START("30000a")
+<<<<<<< HEAD
 	PORT_BIT( 0x0001, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, artmagic_state,prot_r, NULL)    /* protection data */
+=======
+	PORT_BIT( 0x0001, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, artmagic_state,prot_r, nullptr)    /* protection data */
+>>>>>>> upstream/master
 	PORT_BIT( 0x0002, IP_ACTIVE_HIGH, IPT_SPECIAL )     /* protection ready */
 	PORT_BIT( 0x00fc, IP_ACTIVE_LOW, IPT_UNKNOWN )
 	PORT_BIT( 0xff00, IP_ACTIVE_LOW, IPT_UNUSED )
@@ -788,7 +916,11 @@ static INPUT_PORTS_START( shtstar )
 	PORT_BIT( 0xff00, IP_ACTIVE_LOW, IPT_UNUSED )
 
 	PORT_START("3c000a")
+<<<<<<< HEAD
 	PORT_BIT( 0x0001, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, artmagic_state,prot_r, NULL)    /* protection data */
+=======
+	PORT_BIT( 0x0001, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, artmagic_state,prot_r, nullptr)    /* protection data */
+>>>>>>> upstream/master
 	PORT_BIT( 0x0002, IP_ACTIVE_HIGH, IPT_SPECIAL )     /* protection ready */
 	PORT_BIT( 0x00fc, IP_ACTIVE_LOW, IPT_UNKNOWN )
 	PORT_BIT( 0xff00, IP_ACTIVE_LOW, IPT_UNUSED )
@@ -801,7 +933,11 @@ INPUT_PORTS_END
  *
  *************************************/
 
+<<<<<<< HEAD
 static MACHINE_CONFIG_START( artmagic, artmagic_state )
+=======
+static MACHINE_CONFIG_START( artmagic )
+>>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", M68000, MASTER_CLOCK_25MHz/2)
@@ -809,7 +945,11 @@ static MACHINE_CONFIG_START( artmagic, artmagic_state )
 
 	MCFG_CPU_ADD("tms", TMS34010, MASTER_CLOCK_40MHz)
 	MCFG_CPU_PROGRAM_MAP(tms_map)
+<<<<<<< HEAD
 	MCFG_TMS340X0_HALT_ON_RESET(TRUE) /* halt on reset */
+=======
+	MCFG_TMS340X0_HALT_ON_RESET(true) /* halt on reset */
+>>>>>>> upstream/master
 	MCFG_TMS340X0_PIXEL_CLOCK(MASTER_CLOCK_40MHz/6) /* pixel clock */
 	MCFG_TMS340X0_PIXELS_PER_CLOCK(1) /* pixels per clock */
 	MCFG_TMS340X0_SCANLINE_RGB32_CB(artmagic_state, scanline)              /* scanline update (rgb32) */
@@ -831,7 +971,11 @@ static MACHINE_CONFIG_START( artmagic, artmagic_state )
 	/* sound hardware */
 	MCFG_SPEAKER_STANDARD_MONO("mono")
 
+<<<<<<< HEAD
 	MCFG_OKIM6295_ADD("oki", MASTER_CLOCK_40MHz/3/10, OKIM6295_PIN7_LOW)
+=======
+	MCFG_OKIM6295_ADD("oki", MASTER_CLOCK_40MHz/3/10, PIN7_LOW)
+>>>>>>> upstream/master
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 0.65)
 MACHINE_CONFIG_END
 
@@ -963,7 +1107,11 @@ u1601.bin     32M Mask       8642h  /  Gfx
 
 ROM_START( stonebal )
 	ROM_REGION( 0x80000, "maincpu", 0 ) /* 64k for 68000 code */
+<<<<<<< HEAD
 	ROM_LOAD16_BYTE( "u102",     0x00000, 0x40000, CRC(712feda1) SHA1(c5b385f425786566fa274fe166a7116615a8ce86) )
+=======
+	ROM_LOAD16_BYTE( "u102",     0x00000, 0x40000, CRC(712feda1) SHA1(c5b385f425786566fa274fe166a7116615a8ce86) ) /* 4 Players kit, v1-20 13/12/1994 */
+>>>>>>> upstream/master
 	ROM_LOAD16_BYTE( "u101",     0x00001, 0x40000, CRC(4f1656a9) SHA1(720717ae4166b3ec50bb572197a8c6c96b284648) )
 
 	ROM_REGION16_LE( 0x400000, "gfx1", 0 )
@@ -971,13 +1119,21 @@ ROM_START( stonebal )
 	ROM_LOAD( "u1601.bin", 0x200000, 0x200000, CRC(dbe893f0) SHA1(71a8a022decc0ff7d4c65f7e6e0cbba9e0b5582c) )
 
 	ROM_REGION( 0x80000, "oki", 0 )
+<<<<<<< HEAD
 	ROM_LOAD( "u1801.bin", 0x00000, 0x80000, CRC(d98f7378) SHA1(700df7f29c039b96791c2704a67f01a722dc96dc) )
+=======
+	ROM_LOAD( "sb_snd_9-9-94.u1801", 0x00000, 0x80000, CRC(d98f7378) SHA1(700df7f29c039b96791c2704a67f01a722dc96dc) ) /* labeled  SB snd 9/9/94 */
+>>>>>>> upstream/master
 ROM_END
 
 
 ROM_START( stonebal2 )
 	ROM_REGION( 0x80000, "maincpu", 0 ) /* 64k for 68000 code */
+<<<<<<< HEAD
 	ROM_LOAD16_BYTE( "u102.bin", 0x00000, 0x40000, CRC(b3c4f64f) SHA1(6327e9f3cd9deb871a6910cf1f006c8ee143e859) )
+=======
+	ROM_LOAD16_BYTE( "u102.bin", 0x00000, 0x40000, CRC(b3c4f64f) SHA1(6327e9f3cd9deb871a6910cf1f006c8ee143e859) ) /* 2 Players kit, v1-20 7/11/1994 */
+>>>>>>> upstream/master
 	ROM_LOAD16_BYTE( "u101.bin", 0x00001, 0x40000, CRC(fe373f74) SHA1(bafac4bbd1aae4ccc4ae16205309483f1bbdd464) )
 
 	ROM_REGION16_LE( 0x400000, "gfx1", 0 )
@@ -985,7 +1141,25 @@ ROM_START( stonebal2 )
 	ROM_LOAD( "u1601.bin", 0x200000, 0x200000, CRC(dbe893f0) SHA1(71a8a022decc0ff7d4c65f7e6e0cbba9e0b5582c) )
 
 	ROM_REGION( 0x80000, "oki", 0 )
+<<<<<<< HEAD
 	ROM_LOAD( "u1801.bin", 0x00000, 0x80000, CRC(d98f7378) SHA1(700df7f29c039b96791c2704a67f01a722dc96dc) )
+=======
+	ROM_LOAD( "sb_snd_9-9-94.u1801", 0x00000, 0x80000, CRC(d98f7378) SHA1(700df7f29c039b96791c2704a67f01a722dc96dc) ) /* labeled  SB snd 9/9/94 */
+ROM_END
+
+
+ROM_START( stonebal2o )
+	ROM_REGION( 0x80000, "maincpu", 0 ) /* 64k for 68000 code */
+	ROM_LOAD16_BYTE( "sb_o_2p_24-10.u102", 0x00000, 0x40000, CRC(ab58c6b2) SHA1(6e29646d4b0802733d04e722909c03b87761c759) ) /* 2 Players kit, v1-20 21/10/1994 */
+	ROM_LOAD16_BYTE( "sb_e_2p_24-10.u101", 0x00001, 0x40000, CRC(ea967835) SHA1(12655f0dc44981f4a49ed45f271d5eb24f2cc5c6) ) /* Yes the Odd / Even labels are backwards & chips dated 24/10 */
+
+	ROM_REGION16_LE( 0x400000, "gfx1", 0 )
+	ROM_LOAD( "u1600.bin", 0x000000, 0x200000, CRC(d2ffe9ff) SHA1(1c5dcbd8208e45458da9db7621f6b8602bca0fae) )
+	ROM_LOAD( "u1601.bin", 0x200000, 0x200000, CRC(dbe893f0) SHA1(71a8a022decc0ff7d4c65f7e6e0cbba9e0b5582c) )
+
+	ROM_REGION( 0x80000, "oki", 0 )
+	ROM_LOAD( "sb_snd_9-9-94.u1801", 0x00000, 0x80000, CRC(d98f7378) SHA1(700df7f29c039b96791c2704a67f01a722dc96dc) ) /* labeled  SB snd 9/9/94 */
+>>>>>>> upstream/master
 ROM_END
 
 /*
@@ -1169,9 +1343,19 @@ DRIVER_INIT_MEMBER(artmagic_state,shtstar)
  *
  *************************************/
 
+<<<<<<< HEAD
 GAME( 1993, ultennis, 0,        artmagic, ultennis, artmagic_state, ultennis, ROT0, "Art & Magic", "Ultimate Tennis", MACHINE_SUPPORTS_SAVE )
 GAME( 1993, ultennisj,ultennis, artmagic, ultennis, artmagic_state, ultennis, ROT0, "Art & Magic (Banpresto license)", "Ultimate Tennis (v 1.4, Japan)", MACHINE_SUPPORTS_SAVE )
 GAME( 1994, cheesech, 0,        cheesech, cheesech, artmagic_state, cheesech, ROT0, "Art & Magic", "Cheese Chase", MACHINE_SUPPORTS_SAVE )
 GAME( 1994, stonebal, 0,        stonebal, stonebal, artmagic_state, stonebal, ROT0, "Art & Magic", "Stone Ball (4 Players)", MACHINE_SUPPORTS_SAVE )
 GAME( 1994, stonebal2,stonebal, stonebal, stoneba2, artmagic_state, stonebal, ROT0, "Art & Magic", "Stone Ball (2 Players)", MACHINE_SUPPORTS_SAVE )
 GAME( 1994, shtstar, 0, shtstar, shtstar, artmagic_state, shtstar, ROT0, "Nova", "Shooting Star", MACHINE_NOT_WORKING )
+=======
+GAME( 1993, ultennis,   0,        artmagic, ultennis, artmagic_state, ultennis, ROT0, "Art & Magic", "Ultimate Tennis", MACHINE_SUPPORTS_SAVE )
+GAME( 1993, ultennisj,  ultennis, artmagic, ultennis, artmagic_state, ultennis, ROT0, "Art & Magic (Banpresto license)", "Ultimate Tennis (v 1.4, Japan)", MACHINE_SUPPORTS_SAVE )
+GAME( 1994, cheesech,   0,        cheesech, cheesech, artmagic_state, cheesech, ROT0, "Art & Magic", "Cheese Chase", MACHINE_SUPPORTS_SAVE )
+GAME( 1994, stonebal,   0,        stonebal, stonebal, artmagic_state, stonebal, ROT0, "Art & Magic", "Stone Ball (4 Players, v1-20 13/12/1994)", MACHINE_SUPPORTS_SAVE )
+GAME( 1994, stonebal2,  stonebal, stonebal, stoneba2, artmagic_state, stonebal, ROT0, "Art & Magic", "Stone Ball (2 Players, v1-20 7/11/1994)", MACHINE_SUPPORTS_SAVE )
+GAME( 1994, stonebal2o, stonebal, stonebal, stoneba2, artmagic_state, stonebal, ROT0, "Art & Magic", "Stone Ball (2 Players, v1-20 21/10/1994)", MACHINE_SUPPORTS_SAVE )
+GAME( 1994, shtstar,    0,        shtstar,  shtstar,  artmagic_state, shtstar,  ROT0, "Nova", "Shooting Star", MACHINE_NOT_WORKING )
+>>>>>>> upstream/master

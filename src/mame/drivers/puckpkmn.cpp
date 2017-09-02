@@ -51,7 +51,11 @@ Notes:
 #include "sound/2612intf.h"
 
 #include "includes/megadriv.h"
+<<<<<<< HEAD
 
+=======
+#include "includes/megadrvb.h"
+>>>>>>> upstream/master
 
 /* Puckman Pockimon Input Ports */
 static INPUT_PORTS_START( puckpkmn )
@@ -275,7 +279,11 @@ static ADDRESS_MAP_START( puckpkmna_map, AS_PROGRAM, 16, md_boot_state )
 	AM_RANGE(0x70001c, 0x70001d) AM_READ(puckpkmna_70001c_r)
 ADDRESS_MAP_END
 
+<<<<<<< HEAD
 static MACHINE_CONFIG_START( puckpkmn, md_boot_state )
+=======
+static MACHINE_CONFIG_START( puckpkmn )
+>>>>>>> upstream/master
 	MCFG_FRAGMENT_ADD(md_ntsc)
 
 	MCFG_CPU_MODIFY("maincpu")
@@ -285,7 +293,11 @@ static MACHINE_CONFIG_START( puckpkmn, md_boot_state )
 
 	MCFG_DEVICE_REMOVE("genesis_snd_z80")
 
+<<<<<<< HEAD
 	MCFG_OKIM6295_ADD("oki", XTAL_4MHz / 4, OKIM6295_PIN7_HIGH)
+=======
+	MCFG_OKIM6295_ADD("oki", XTAL_4MHz / 4, PIN7_HIGH)
+>>>>>>> upstream/master
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "lspeaker", 0.25)
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "rspeaker",0.25)
 MACHINE_CONFIG_END
@@ -377,7 +389,11 @@ ROM sockets U63 & U64 empty
 
 DRIVER_INIT_MEMBER(md_boot_state,puckpkmn)
 {
+<<<<<<< HEAD
 	UINT8 *rom = memregion("maincpu")->base();
+=======
+	uint8_t *rom = memregion("maincpu")->base();
+>>>>>>> upstream/master
 	size_t len = memregion("maincpu")->bytes();
 	int i;
 
@@ -488,4 +504,8 @@ ROM_END
 GAME( 2000, puckpkmn, 0,        puckpkmn,  puckpkmn, md_boot_state, puckpkmn, ROT0, "Genie",                  "Puckman Pockimon (set 1)", 0 )
 GAME( 2000, puckpkmna,puckpkmn, puckpkmna, puckpkmn, md_boot_state, puckpkmn, ROT0, "IBS",                    "Puckman Pockimon (set 2)", 0 )
 GAME( 2000, puckpkmnb,puckpkmn, puckpkmna, puckpkmn, md_boot_state, puckpkmn, ROT0, "Sun Mixing",             "Puckman Pockimon (set 3)", 0 )
+<<<<<<< HEAD
 GAME( 2000, jzth,     0,        jzth,      jzth, md_boot_state,     puckpkmn, ROT0, "<unknown>",              "Jue Zhan Tian Huang", MACHINE_IMPERFECT_SOUND )
+=======
+GAME( 2000, jzth,     0,        jzth,      jzth,     md_boot_state, puckpkmn, ROT0, "<unknown>",              "Jue Zhan Tian Huang", MACHINE_IMPERFECT_SOUND )
+>>>>>>> upstream/master

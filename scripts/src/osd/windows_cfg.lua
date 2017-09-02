@@ -3,21 +3,32 @@
 
 defines {
 	"OSD_WINDOWS",
+<<<<<<< HEAD
 	"_WIN32_WINNT=0x0501",
 }
 
 configuration { "mingw*-gcc or vs*" }
+=======
+	"WIN32_LEAN_AND_MEAN",
+	"NOMINMAX",
+}
+
+configuration { "mingw* or vs*" }
+>>>>>>> upstream/master
 	defines {
 		"UNICODE",
 		"_UNICODE",
 		"main=utf8_main",
 	}
 
+<<<<<<< HEAD
 configuration { "Debug" }
 	defines {
 		"MALLOC_DEBUG",
 	}
 
+=======
+>>>>>>> upstream/master
 configuration { "vs*" }
 	flags {
 		"Unicode",
@@ -25,6 +36,26 @@ configuration { "vs*" }
 
 configuration { }
 
+<<<<<<< HEAD
+=======
+if not _OPTIONS["MODERN_WIN_API"] then
+	_OPTIONS["MODERN_WIN_API"] = "0"
+end
+
+if _OPTIONS["MODERN_WIN_API"]=="1" then
+	defines {
+		"WINVER=0x0602",
+		"_WIN32_WINNT=0x0602",
+		"NTDDI_VERSION=0x06030000",
+		"MODERN_WIN_API",
+	}
+else
+	defines {
+		"_WIN32_WINNT=0x0501",
+	}
+end
+
+>>>>>>> upstream/master
 if not _OPTIONS["DONT_USE_NETWORK"] then
 	defines {
 		"USE_NETWORK",
@@ -34,7 +65,11 @@ end
 
 if _OPTIONS["USE_SDL"]=="1" then
 	defines {
+<<<<<<< HEAD
 		"SDLMAME_SDL2=0",
+=======
+		"SDLMAME_SDL2=1",
+>>>>>>> upstream/master
 		"USE_XINPUT=0",
 		"USE_SDL=1",
 		"USE_SDL_SOUND",

@@ -1,5 +1,10 @@
+<<<<<<< HEAD
 // license:???
 // copyright-holders:Marc Lafontaine
+=======
+// license:BSD-3-Clause
+// copyright-holders:Aaron Giles
+>>>>>>> upstream/master
 /***************************************************************************
 
     video.c
@@ -45,7 +50,11 @@
 */
 PALETTE_INIT_MEMBER(tp84_state, tp84)
 {
+<<<<<<< HEAD
 	const UINT8 *color_prom = memregion("proms")->base();
+=======
+	const uint8_t *color_prom = memregion("proms")->base();
+>>>>>>> upstream/master
 	static const int resistances[4] = { 1000, 470, 220, 100 };
 	double weights[4];
 	int i;
@@ -53,8 +62,13 @@ PALETTE_INIT_MEMBER(tp84_state, tp84)
 	/* compute the color output resistor weights */
 	compute_resistor_weights(0, 255, -1.0,
 			4, resistances, weights, 470, 0,
+<<<<<<< HEAD
 			0, 0, 0, 0, 0,
 			0, 0, 0, 0, 0);
+=======
+			0, nullptr, nullptr, 0, 0,
+			0, nullptr, nullptr, 0, 0);
+>>>>>>> upstream/master
 
 	/* create a lookup table for the palette */
 	for (i = 0; i < 0x100; i++)
@@ -96,7 +110,11 @@ PALETTE_INIT_MEMBER(tp84_state, tp84)
 
 		for (j = 0; j < 8; j++)
 		{
+<<<<<<< HEAD
 			UINT8 ctabentry = ((~i & 0x100) >> 1) | (j << 4) | (color_prom[i] & 0x0f);
+=======
+			uint8_t ctabentry = ((~i & 0x100) >> 1) | (j << 4) | (color_prom[i] & 0x0f);
+>>>>>>> upstream/master
 			palette.set_pen_indirect(((i & 0x100) << 3) | (j << 8) | (i & 0xff), ctabentry);
 		}
 	}
@@ -144,8 +162,13 @@ TILE_GET_INFO_MEMBER(tp84_state::get_fg_tile_info)
 
 void tp84_state::video_start()
 {
+<<<<<<< HEAD
 	m_bg_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(tp84_state::get_bg_tile_info),this), TILEMAP_SCAN_ROWS, 8, 8, 32, 32);
 	m_fg_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(tp84_state::get_fg_tile_info),this), TILEMAP_SCAN_ROWS, 8, 8, 32, 32);
+=======
+	m_bg_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(tp84_state::get_bg_tile_info),this), TILEMAP_SCAN_ROWS, 8, 8, 32, 32);
+	m_fg_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(tp84_state::get_fg_tile_info),this), TILEMAP_SCAN_ROWS, 8, 8, 32, 32);
+>>>>>>> upstream/master
 }
 
 
@@ -171,7 +194,11 @@ void tp84_state::draw_sprites(bitmap_ind16 &bitmap, const rectangle &cliprect)
 }
 
 
+<<<<<<< HEAD
 UINT32 tp84_state::screen_update_tp84(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+=======
+uint32_t tp84_state::screen_update_tp84(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+>>>>>>> upstream/master
 {
 	rectangle clip = cliprect;
 	const rectangle &visarea = screen.visible_area();
@@ -183,8 +210,13 @@ UINT32 tp84_state::screen_update_tp84(screen_device &screen, bitmap_ind16 &bitma
 		m_bg_tilemap->set_scrollx(0, *m_scroll_x);
 		m_bg_tilemap->set_scrolly(0, *m_scroll_y);
 
+<<<<<<< HEAD
 		machine().tilemap().set_flip_all(((*m_flipscreen_x & 0x01) ? TILEMAP_FLIPX : 0) |
 										((*m_flipscreen_y & 0x01) ? TILEMAP_FLIPY : 0));
+=======
+		machine().tilemap().set_flip_all((m_flipscreen_x ? TILEMAP_FLIPX : 0) |
+										(m_flipscreen_y ? TILEMAP_FLIPY : 0));
+>>>>>>> upstream/master
 	}
 
 	m_bg_tilemap->draw(screen, bitmap, cliprect, 0, 0);

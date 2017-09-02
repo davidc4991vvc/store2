@@ -1,4 +1,9 @@
+<<<<<<< HEAD
 
+=======
+// license:BSD-3-Clause
+// copyright-holders:Sven Gothel
+>>>>>>> upstream/master
 #pragma optimize (on)
 #pragma debug (off)
 

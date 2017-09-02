@@ -4,17 +4,26 @@
 #include "emu.h"
 #include "nomapper.h"
 
+<<<<<<< HEAD
 const device_type MSX_CART_NOMAPPER = &device_creator<msx_cart_nomapper>;
 
 
 msx_cart_nomapper::msx_cart_nomapper(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
 	: device_t(mconfig, MSX_CART_NOMAPPER, "MSX Cartridge - ROM", tag, owner, clock, "msx_cart_nomapper", __FILE__)
+=======
+DEFINE_DEVICE_TYPE(MSX_CART_NOMAPPER, msx_cart_nomapper_device, "msx_cart_nomapper", "MSX Cartridge - ROM")
+
+
+msx_cart_nomapper_device::msx_cart_nomapper_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: device_t(mconfig, MSX_CART_NOMAPPER, tag, owner, clock)
+>>>>>>> upstream/master
 	, msx_cart_interface(mconfig, *this)
 	, m_start_address(0)
 	, m_end_address(0)
 {
 }
 
+<<<<<<< HEAD
 void msx_cart_nomapper::device_start()
 {
 }
@@ -23,6 +32,16 @@ void msx_cart_nomapper::initialize_cartridge()
 {
 	UINT32 size = get_rom_size();
 	UINT8 *rom = get_rom_base();
+=======
+void msx_cart_nomapper_device::device_start()
+{
+}
+
+void msx_cart_nomapper_device::initialize_cartridge()
+{
+	uint32_t size = get_rom_size();
+	uint8_t *rom = get_rom_base();
+>>>>>>> upstream/master
 
 	// determine start address
 	// default to $4000
@@ -33,7 +52,11 @@ void msx_cart_nomapper::initialize_cartridge()
 		/* 8KB/16KB */
 		case 0x2000: case 0x4000:
 		{
+<<<<<<< HEAD
 			UINT16 start = rom[3] << 8 | rom[2];
+=======
+			uint16_t start = rom[3] << 8 | rom[2];
+>>>>>>> upstream/master
 
 			// start address of $0000: call address in the $4000 region: $4000, else $8000
 			if (start == 0)
@@ -56,7 +79,11 @@ void msx_cart_nomapper::initialize_cartridge()
 			// take default, check when no "AB" at $0000, but "AB" at $4000
 			if (rom[0] != 'A' && rom[1] != 'B' && rom[0x4000] == 'A' && rom[0x4001] == 'B')
 			{
+<<<<<<< HEAD
 				UINT16 start = rom[0x4003] << 8 | rom[0x4002];
+=======
+				uint16_t start = rom[0x4003] << 8 | rom[0x4002];
+>>>>>>> upstream/master
 
 				// start address of $0000 and call address in the $4000 region, or start address outside the $8000 region: $0000, else default
 				if ((start == 0 && (rom[0x4005] & 0xc0) == 0x40) || start < 0x8000 || start >= 0xc000)
@@ -81,10 +108,17 @@ void msx_cart_nomapper::initialize_cartridge()
 			break;
 	}
 
+<<<<<<< HEAD
 	m_end_address = MIN(m_start_address + size, 0x10000);
 }
 
 READ8_MEMBER(msx_cart_nomapper::read_cart)
+=======
+	m_end_address = std::min<uint32_t>(m_start_address + size, 0x10000);
+}
+
+READ8_MEMBER(msx_cart_nomapper_device::read_cart)
+>>>>>>> upstream/master
 {
 	if ( offset >= m_start_address && offset < m_end_address )
 	{

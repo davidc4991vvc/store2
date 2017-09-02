@@ -15,12 +15,24 @@
 ***************************************************************************/
 
 #include "emu.h"
+<<<<<<< HEAD
 #include "cpu/z80/z80.h"
 #include "machine/kabuki.h"  // needed for decoding functions only
 #include "includes/cbasebal.h"
 #include "machine/eepromser.h"
 #include "sound/okim6295.h"
 #include "sound/2413intf.h"
+=======
+#include "includes/cbasebal.h"
+
+#include "cpu/z80/z80.h"
+#include "machine/kabuki.h"  // needed for decoding functions only
+#include "machine/eepromser.h"
+#include "sound/okim6295.h"
+#include "sound/ym2413.h"
+#include "screen.h"
+#include "speaker.h"
+>>>>>>> upstream/master
 
 
 /*************************************
@@ -78,10 +90,17 @@ WRITE8_MEMBER(cbasebal_state::bankedram_w)
 
 WRITE8_MEMBER(cbasebal_state::cbasebal_coinctrl_w)
 {
+<<<<<<< HEAD
 	coin_lockout_w(machine(), 0, ~data & 0x04);
 	coin_lockout_w(machine(), 1, ~data & 0x08);
 	coin_counter_w(machine(), 0, data & 0x01);
 	coin_counter_w(machine(), 1, data & 0x02);
+=======
+	machine().bookkeeping().coin_lockout_w(0, ~data & 0x04);
+	machine().bookkeeping().coin_lockout_w(1, ~data & 0x08);
+	machine().bookkeeping().coin_counter_w(0, data & 0x01);
+	machine().bookkeeping().coin_counter_w(1, data & 0x02);
+>>>>>>> upstream/master
 }
 
 
@@ -99,7 +118,11 @@ static ADDRESS_MAP_START( cbasebal_map, AS_PROGRAM, 8, cbasebal_state )
 	AM_RANGE(0xfe00, 0xffff) AM_RAM AM_SHARE("spriteram")
 ADDRESS_MAP_END
 
+<<<<<<< HEAD
 static ADDRESS_MAP_START( decrypted_opcodes_map, AS_DECRYPTED_OPCODES, 8, cbasebal_state )
+=======
+static ADDRESS_MAP_START( decrypted_opcodes_map, AS_OPCODES, 8, cbasebal_state )
+>>>>>>> upstream/master
 	AM_RANGE(0x0000, 0x7fff) AM_ROMBANK("bank0d")
 	AM_RANGE(0x8000, 0xbfff) AM_ROMBANK("bank1d")
 ADDRESS_MAP_END
@@ -255,7 +278,11 @@ void cbasebal_state::machine_reset()
 	m_scroll_y[1] = 0;
 }
 
+<<<<<<< HEAD
 static MACHINE_CONFIG_START( cbasebal, cbasebal_state )
+=======
+static MACHINE_CONFIG_START( cbasebal )
+>>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", Z80, 6000000)   /* ??? */
@@ -284,7 +311,11 @@ static MACHINE_CONFIG_START( cbasebal, cbasebal_state )
 	/* sound hardware */
 	MCFG_SPEAKER_STANDARD_MONO("mono")
 
+<<<<<<< HEAD
 	MCFG_OKIM6295_ADD("oki", 1056000, OKIM6295_PIN7_HIGH) // clock frequency & pin 7 not verified
+=======
+	MCFG_OKIM6295_ADD("oki", 1056000, PIN7_HIGH) // clock frequency & pin 7 not verified
+>>>>>>> upstream/master
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 0.50)
 
 	MCFG_SOUND_ADD("ymsnd", YM2413, 3579545)
@@ -335,6 +366,7 @@ ROM_END
 
 DRIVER_INIT_MEMBER(cbasebal_state,cbasebal)
 {
+<<<<<<< HEAD
 	UINT8 *src = memregion("maincpu")->base();
 	int size = memregion("maincpu")->bytes();
 	UINT8 *dst = auto_alloc_array(machine(), UINT8, size);
@@ -342,6 +374,15 @@ DRIVER_INIT_MEMBER(cbasebal_state,cbasebal)
 	membank("bank1")->configure_entries(0, 32, src + 0x10000, 0x4000);
 	membank("bank0d")->set_base(dst);
 	membank("bank1d")->configure_entries(0, 32, dst + 0x10000, 0x4000);
+=======
+	uint8_t *src = memregion("maincpu")->base();
+	int size = memregion("maincpu")->bytes();
+	m_decoded = std::make_unique<uint8_t[]>(size);
+	pang_decode(src, m_decoded.get(), size);
+	membank("bank1")->configure_entries(0, 32, src + 0x10000, 0x4000);
+	membank("bank0d")->set_base(m_decoded.get());
+	membank("bank1d")->configure_entries(0, 32, m_decoded.get() + 0x10000, 0x4000);
+>>>>>>> upstream/master
 }
 
 

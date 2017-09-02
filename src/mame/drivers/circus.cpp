@@ -46,10 +46,19 @@ D000      Paddle Position and Interrupt Reset (where applicable)
 ***************************************************************************/
 
 #include "emu.h"
+<<<<<<< HEAD
 #include "cpu/m6502/m6502.h"
 #include "sound/samples.h"
 #include "includes/circus.h"
 
+=======
+#include "includes/circus.h"
+
+#include "cpu/m6502/m6502.h"
+#include "screen.h"
+#include "speaker.h"
+
+>>>>>>> upstream/master
 #include "circus.lh"
 #include "crash.lh"
 
@@ -280,7 +289,11 @@ void circus_state::machine_reset()
 }
 
 
+<<<<<<< HEAD
 static MACHINE_CONFIG_START( circus, circus_state )
+=======
+static MACHINE_CONFIG_START( circus )
+>>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", M6502, XTAL_11_289MHz / 16) /* 705.562kHz */
@@ -299,7 +312,11 @@ static MACHINE_CONFIG_START( circus, circus_state )
 
 	MCFG_GFXDECODE_ADD("gfxdecode", "palette", circus)
 
+<<<<<<< HEAD
 	MCFG_PALETTE_ADD_BLACK_AND_WHITE("palette")
+=======
+	MCFG_PALETTE_ADD_MONOCHROME("palette")
+>>>>>>> upstream/master
 
 	/* sound hardware */
 	MCFG_SPEAKER_STANDARD_MONO("mono")
@@ -315,7 +332,11 @@ static MACHINE_CONFIG_START( circus, circus_state )
 MACHINE_CONFIG_END
 
 
+<<<<<<< HEAD
 static MACHINE_CONFIG_START( robotbwl, circus_state )
+=======
+static MACHINE_CONFIG_START( robotbwl )
+>>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", M6502, XTAL_11_289MHz / 16) /* 705.562kHz */
@@ -334,7 +355,11 @@ static MACHINE_CONFIG_START( robotbwl, circus_state )
 
 	MCFG_GFXDECODE_ADD("gfxdecode", "palette", robotbwl)
 
+<<<<<<< HEAD
 	MCFG_PALETTE_ADD_BLACK_AND_WHITE("palette")
+=======
+	MCFG_PALETTE_ADD_MONOCHROME("palette")
+>>>>>>> upstream/master
 
 	/* sound hardware */
 	MCFG_SPEAKER_STANDARD_MONO("mono")
@@ -357,7 +382,11 @@ TIMER_DEVICE_CALLBACK_MEMBER(circus_state::crash_scanline)
 		m_maincpu->set_input_line(0, ASSERT_LINE);
 }
 
+<<<<<<< HEAD
 static MACHINE_CONFIG_START( crash, circus_state )
+=======
+static MACHINE_CONFIG_START( crash )
+>>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", M6502, XTAL_11_289MHz / 16) /* 705.562kHz */
@@ -376,7 +405,11 @@ static MACHINE_CONFIG_START( crash, circus_state )
 
 	MCFG_GFXDECODE_ADD("gfxdecode", "palette", circus)
 
+<<<<<<< HEAD
 	MCFG_PALETTE_ADD_BLACK_AND_WHITE("palette")
+=======
+	MCFG_PALETTE_ADD_MONOCHROME("palette")
+>>>>>>> upstream/master
 
 	/* sound hardware */
 	MCFG_SPEAKER_STANDARD_MONO("mono")
@@ -391,7 +424,11 @@ static MACHINE_CONFIG_START( crash, circus_state )
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 0.80)
 MACHINE_CONFIG_END
 
+<<<<<<< HEAD
 static MACHINE_CONFIG_START( ripcord, circus_state )
+=======
+static MACHINE_CONFIG_START( ripcord )
+>>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", M6502, XTAL_11_289MHz / 16) /* 705.562kHz */
@@ -410,7 +447,11 @@ static MACHINE_CONFIG_START( ripcord, circus_state )
 
 	MCFG_GFXDECODE_ADD("gfxdecode", "palette", circus)
 
+<<<<<<< HEAD
 	MCFG_PALETTE_ADD_BLACK_AND_WHITE("palette")
+=======
+	MCFG_PALETTE_ADD_MONOCHROME("palette")
+>>>>>>> upstream/master
 
 	/* sound hardware */
 	MCFG_SPEAKER_STANDARD_MONO("mono")
@@ -578,9 +619,18 @@ DRIVER_INIT_MEMBER(circus_state,ripcord)
 }
 
 
+<<<<<<< HEAD
 GAMEL(1977, circus,   0,      circus,   circus, circus_state,   circus,   ROT0, "Exidy / Taito", "Circus / Acrobat TV", MACHINE_SUPPORTS_SAVE | MACHINE_IMPERFECT_SOUND, layout_circus )
 GAMEL(1977, springbd, circus, circus,   circus, circus_state,   circus,   ROT0, "bootleg (Sub-Electro)", "Springboard (bootleg of Circus)", MACHINE_SUPPORTS_SAVE | MACHINE_IMPERFECT_SOUND, layout_circus ) // looks like a text hack, but we've seen 2 identical copies so it's worth supporting
 GAME( 1977, robotbwl, 0,      robotbwl, robotbwl, circus_state, robotbwl, ROT0, "Exidy", "Robot Bowl", MACHINE_SUPPORTS_SAVE | MACHINE_IMPERFECT_SOUND )
 GAMEL(1979, crash,    0,      crash,    crash, circus_state,    crash,    ROT0, "Exidy", "Crash", MACHINE_SUPPORTS_SAVE | MACHINE_IMPERFECT_SOUND, layout_crash )
 GAMEL(1979, smash,    crash,  crash,    crash, circus_state,    crash,    ROT0, "bootleg", "Smash (Crash bootleg)", MACHINE_SUPPORTS_SAVE | MACHINE_IMPERFECT_SOUND, layout_crash ) // looks like a text hack, but it also had a different bezel
 GAME( 1979, ripcord,  0,      ripcord,  ripcord, circus_state,  ripcord,  ROT0, "Exidy", "Rip Cord", MACHINE_SUPPORTS_SAVE | MACHINE_IMPERFECT_SOUND )
+=======
+GAMEL(1977, circus,   0,      circus,   circus,   circus_state, circus,   ROT0, "Exidy / Taito", "Circus / Acrobat TV", MACHINE_SUPPORTS_SAVE | MACHINE_IMPERFECT_SOUND, layout_circus )
+GAMEL(1977, springbd, circus, circus,   circus,   circus_state, circus,   ROT0, "bootleg (Sub-Electro)", "Springboard (bootleg of Circus)", MACHINE_SUPPORTS_SAVE | MACHINE_IMPERFECT_SOUND, layout_circus ) // looks like a text hack, but we've seen 2 identical copies so it's worth supporting
+GAME( 1977, robotbwl, 0,      robotbwl, robotbwl, circus_state, robotbwl, ROT0, "Exidy", "Robot Bowl", MACHINE_SUPPORTS_SAVE | MACHINE_IMPERFECT_SOUND )
+GAMEL(1979, crash,    0,      crash,    crash,    circus_state, crash,    ROT0, "Exidy", "Crash", MACHINE_SUPPORTS_SAVE | MACHINE_IMPERFECT_SOUND, layout_crash )
+GAMEL(1979, smash,    crash,  crash,    crash,    circus_state, crash,    ROT0, "bootleg", "Smash (Crash bootleg)", MACHINE_SUPPORTS_SAVE | MACHINE_IMPERFECT_SOUND, layout_crash ) // looks like a text hack, but it also had a different bezel
+GAME( 1979, ripcord,  0,      ripcord,  ripcord,  circus_state, ripcord,  ROT0, "Exidy", "Rip Cord", MACHINE_SUPPORTS_SAVE | MACHINE_IMPERFECT_SOUND )
+>>>>>>> upstream/master

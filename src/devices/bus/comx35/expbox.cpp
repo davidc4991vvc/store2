@@ -46,6 +46,10 @@ Notes:
 
 */
 
+<<<<<<< HEAD
+=======
+#include "emu.h"
+>>>>>>> upstream/master
 #include "expbox.h"
 
 
@@ -65,7 +69,11 @@ Notes:
 //  DEVICE DEFINITIONS
 //**************************************************************************
 
+<<<<<<< HEAD
 const device_type COMX_EB = &device_creator<comx_eb_device>;
+=======
+DEFINE_DEVICE_TYPE(COMX_EB, comx_eb_device, "comx_eb", "COMX-35E Expansion Box")
+>>>>>>> upstream/master
 
 
 //-------------------------------------------------
@@ -87,17 +95,28 @@ ROM_END
 //  rom_region - device-specific ROM region
 //-------------------------------------------------
 
+<<<<<<< HEAD
 const rom_entry *comx_eb_device::device_rom_region() const
+=======
+const tiny_rom_entry *comx_eb_device::device_rom_region() const
+>>>>>>> upstream/master
 {
 	return ROM_NAME( comx_eb );
 }
 
 
 //-------------------------------------------------
+<<<<<<< HEAD
 //  MACHINE_CONFIG_FRAGMENT( comx_eb )
 //-------------------------------------------------
 
 static MACHINE_CONFIG_FRAGMENT( comx_eb )
+=======
+//  device_add_mconfig - add device configuration
+//-------------------------------------------------
+
+MACHINE_CONFIG_MEMBER( comx_eb_device::device_add_mconfig )
+>>>>>>> upstream/master
 	MCFG_COMX_EXPANSION_SLOT_ADD(SLOT1_TAG, comx_expansion_cards, "fd")
 	MCFG_COMX_EXPANSION_SLOT_IRQ_CALLBACK(WRITELINE(comx_eb_device, slot1_irq_w))
 	MCFG_COMX_EXPANSION_SLOT_ADD(SLOT2_TAG, comx_expansion_cards, "clm")
@@ -109,6 +128,7 @@ static MACHINE_CONFIG_FRAGMENT( comx_eb )
 MACHINE_CONFIG_END
 
 
+<<<<<<< HEAD
 //-------------------------------------------------
 //  machine_config_additions - device-specific
 //  machine configurations
@@ -120,6 +140,8 @@ machine_config_constructor comx_eb_device::device_mconfig_additions() const
 }
 
 
+=======
+>>>>>>> upstream/master
 
 //**************************************************************************
 //  LIVE DEVICE
@@ -129,8 +151,13 @@ machine_config_constructor comx_eb_device::device_mconfig_additions() const
 //  comx_eb_device - constructor
 //-------------------------------------------------
 
+<<<<<<< HEAD
 comx_eb_device::comx_eb_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock) :
 	device_t(mconfig, COMX_EB, "COMX-35E Expansion Box", tag, owner, clock, "comx_eb", __FILE__),
+=======
+comx_eb_device::comx_eb_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock) :
+	device_t(mconfig, COMX_EB, tag, owner, clock),
+>>>>>>> upstream/master
 	device_comx_expansion_card_interface(mconfig, *this),
 	m_rom(*this, "e000"),
 	m_select(0)
@@ -149,9 +176,15 @@ void comx_eb_device::device_start()
 	m_expansion_slot[2] = dynamic_cast<comx_expansion_slot_device *>(subdevice(SLOT3_TAG));
 	m_expansion_slot[3] = dynamic_cast<comx_expansion_slot_device *>(subdevice(SLOT4_TAG));
 
+<<<<<<< HEAD
 	for (int slot = 0; slot < MAX_EB_SLOTS; slot++)
 	{
 		m_irq[slot] = CLEAR_LINE;
+=======
+	for (auto & elem : m_irq)
+	{
+		elem = CLEAR_LINE;
+>>>>>>> upstream/master
 	}
 }
 
@@ -162,12 +195,21 @@ void comx_eb_device::device_start()
 
 void comx_eb_device::device_reset()
 {
+<<<<<<< HEAD
 	for (int slot = 0; slot < MAX_EB_SLOTS; slot++)
 	{
 		if (m_expansion_slot[slot] != NULL)
 		{
 			m_expansion_slot[slot]->device().reset();
 			m_expansion_slot[slot]->ds_w(0);
+=======
+	for (auto & elem : m_expansion_slot)
+	{
+		if (elem != nullptr)
+		{
+			elem->device().reset();
+			elem->ds_w(0);
+>>>>>>> upstream/master
 		}
 	}
 }
@@ -181,11 +223,19 @@ int comx_eb_device::comx_ef4_r()
 {
 	int state = CLEAR_LINE;
 
+<<<<<<< HEAD
 	for (int slot = 0; slot < MAX_EB_SLOTS; slot++)
 	{
 		if (m_expansion_slot[slot] != NULL)
 		{
 			state |= m_expansion_slot[slot]->ef4_r();
+=======
+	for (auto & elem : m_expansion_slot)
+	{
+		if (elem != nullptr)
+		{
+			state |= elem->ef4_r();
+>>>>>>> upstream/master
 		}
 	}
 
@@ -199,11 +249,19 @@ int comx_eb_device::comx_ef4_r()
 
 void comx_eb_device::comx_q_w(int state)
 {
+<<<<<<< HEAD
 	for (int slot = 0; slot < MAX_EB_SLOTS; slot++)
 	{
 		if (m_expansion_slot[slot] != NULL)
 		{
 			m_expansion_slot[slot]->q_w(state);
+=======
+	for (auto & elem : m_expansion_slot)
+	{
+		if (elem != nullptr)
+		{
+			elem->q_w(state);
+>>>>>>> upstream/master
 		}
 	}
 }
@@ -213,9 +271,15 @@ void comx_eb_device::comx_q_w(int state)
 //  comx_mrd_r - memory read
 //-------------------------------------------------
 
+<<<<<<< HEAD
 UINT8 comx_eb_device::comx_mrd_r(address_space &space, offs_t offset, int *extrom)
 {
 	UINT8 data = 0;
+=======
+uint8_t comx_eb_device::comx_mrd_r(address_space &space, offs_t offset, int *extrom)
+{
+	uint8_t data = 0;
+>>>>>>> upstream/master
 
 	if (offset >= 0x1000 && offset < 0x1800)
 	{
@@ -230,7 +294,11 @@ UINT8 comx_eb_device::comx_mrd_r(address_space &space, offs_t offset, int *extro
 	{
 		for (int slot = 0; slot < MAX_EB_SLOTS; slot++)
 		{
+<<<<<<< HEAD
 			if (BIT(m_select, slot) && m_expansion_slot[slot] != NULL)
+=======
+			if (BIT(m_select, slot) && m_expansion_slot[slot] != nullptr)
+>>>>>>> upstream/master
 			{
 				data |= m_expansion_slot[slot]->mrd_r(space, offset, extrom);
 			}
@@ -245,11 +313,19 @@ UINT8 comx_eb_device::comx_mrd_r(address_space &space, offs_t offset, int *extro
 //  comx_mwr_w - memory write
 //-------------------------------------------------
 
+<<<<<<< HEAD
 void comx_eb_device::comx_mwr_w(address_space &space, offs_t offset, UINT8 data)
 {
 	for (int slot = 0; slot < MAX_EB_SLOTS; slot++)
 	{
 		if (BIT(m_select, slot) && m_expansion_slot[slot] != NULL)
+=======
+void comx_eb_device::comx_mwr_w(address_space &space, offs_t offset, uint8_t data)
+{
+	for (int slot = 0; slot < MAX_EB_SLOTS; slot++)
+	{
+		if (BIT(m_select, slot) && m_expansion_slot[slot] != nullptr)
+>>>>>>> upstream/master
 		{
 			m_expansion_slot[slot]->mwr_w(space, offset, data);
 		}
@@ -261,6 +337,7 @@ void comx_eb_device::comx_mwr_w(address_space &space, offs_t offset, UINT8 data)
 //  comx_io_r - I/O read
 //-------------------------------------------------
 
+<<<<<<< HEAD
 UINT8 comx_eb_device::comx_io_r(address_space &space, offs_t offset)
 {
 	UINT8 data = 0;
@@ -268,6 +345,15 @@ UINT8 comx_eb_device::comx_io_r(address_space &space, offs_t offset)
 	for (int slot = 0; slot < MAX_EB_SLOTS; slot++)
 	{
 		if (BIT(m_select, slot) && m_expansion_slot[slot] != NULL)
+=======
+uint8_t comx_eb_device::comx_io_r(address_space &space, offs_t offset)
+{
+	uint8_t data = 0;
+
+	for (int slot = 0; slot < MAX_EB_SLOTS; slot++)
+	{
+		if (BIT(m_select, slot) && m_expansion_slot[slot] != nullptr)
+>>>>>>> upstream/master
 		{
 			data |= m_expansion_slot[slot]->io_r(space, offset);
 		}
@@ -281,7 +367,11 @@ UINT8 comx_eb_device::comx_io_r(address_space &space, offs_t offset)
 //  comx_io_w - I/O write
 //-------------------------------------------------
 
+<<<<<<< HEAD
 void comx_eb_device::comx_io_w(address_space &space, offs_t offset, UINT8 data)
+=======
+void comx_eb_device::comx_io_w(address_space &space, offs_t offset, uint8_t data)
+>>>>>>> upstream/master
 {
 	if (offset == 1 && !(BIT(data, 0)))
 	{
@@ -289,7 +379,11 @@ void comx_eb_device::comx_io_w(address_space &space, offs_t offset, UINT8 data)
 
 		for (int slot = 0; slot < MAX_EB_SLOTS; slot++)
 		{
+<<<<<<< HEAD
 			if (m_expansion_slot[slot] != NULL)
+=======
+			if (m_expansion_slot[slot] != nullptr)
+>>>>>>> upstream/master
 			{
 				m_expansion_slot[slot]->ds_w(BIT(m_select, slot));
 			}
@@ -298,7 +392,11 @@ void comx_eb_device::comx_io_w(address_space &space, offs_t offset, UINT8 data)
 
 	for (int slot = 0; slot < MAX_EB_SLOTS; slot++)
 	{
+<<<<<<< HEAD
 		if (BIT(m_select, slot) && m_expansion_slot[slot] != NULL)
+=======
+		if (BIT(m_select, slot) && m_expansion_slot[slot] != nullptr)
+>>>>>>> upstream/master
 		{
 			m_expansion_slot[slot]->io_w(space, offset, data);
 		}

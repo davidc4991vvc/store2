@@ -1,5 +1,11 @@
 // license:BSD-3-Clause
 // copyright-holders:Phil Stroffolino
+<<<<<<< HEAD
+=======
+
+#include "machine/gen_latch.h"
+
+>>>>>>> upstream/master
 class tsamurai_state : public driver_device
 {
 public:
@@ -11,6 +17,10 @@ public:
 		m_audio3(*this, "audio3"),
 		m_gfxdecode(*this, "gfxdecode"),
 		m_palette(*this, "palette"),
+<<<<<<< HEAD
+=======
+		m_soundlatch(*this, "soundlatch"),
+>>>>>>> upstream/master
 		m_videoram(*this, "videoram"),
 		m_colorram(*this, "colorram"),
 		m_bg_videoram(*this, "bg_videoram"),
@@ -22,11 +32,20 @@ public:
 	optional_device<cpu_device> m_audio3;
 	required_device<gfxdecode_device> m_gfxdecode;
 	required_device<palette_device> m_palette;
+<<<<<<< HEAD
 
 	required_shared_ptr<UINT8> m_videoram;
 	optional_shared_ptr<UINT8> m_colorram;
 	optional_shared_ptr<UINT8> m_bg_videoram;
 	required_shared_ptr<UINT8> m_spriteram;
+=======
+	optional_device<generic_latch_8_device> m_soundlatch; // vsgongf only
+
+	required_shared_ptr<uint8_t> m_videoram;
+	optional_shared_ptr<uint8_t> m_colorram;
+	optional_shared_ptr<uint8_t> m_bg_videoram;
+	required_shared_ptr<uint8_t> m_spriteram;
+>>>>>>> upstream/master
 
 	tilemap_t *m_background;
 	tilemap_t *m_foreground;
@@ -51,15 +70,26 @@ public:
 	int m_key_count; //debug only
 
 	// common
+<<<<<<< HEAD
 	DECLARE_WRITE8_MEMBER(nmi_enable_w);
 	DECLARE_WRITE8_MEMBER(coincounter_w);
 	DECLARE_WRITE8_MEMBER(textbank1_w);
+=======
+	DECLARE_WRITE_LINE_MEMBER(nmi_enable_w);
+	DECLARE_WRITE_LINE_MEMBER(coin1_counter_w);
+	DECLARE_WRITE_LINE_MEMBER(coin2_counter_w);
+	DECLARE_WRITE_LINE_MEMBER(textbank1_w);
+>>>>>>> upstream/master
 	DECLARE_WRITE8_MEMBER(fg_videoram_w);
 
 	// tsamurai and m660 specific
 	DECLARE_WRITE8_MEMBER(bg_videoram_w);
 	DECLARE_WRITE8_MEMBER(fg_colorram_w);
+<<<<<<< HEAD
 	DECLARE_WRITE8_MEMBER(flip_screen_w);
+=======
+	DECLARE_WRITE_LINE_MEMBER(flip_screen_w);
+>>>>>>> upstream/master
 	DECLARE_WRITE8_MEMBER(scrolly_w);
 	DECLARE_WRITE8_MEMBER(scrollx_w);
 	DECLARE_WRITE8_MEMBER(bgcolor_w);
@@ -75,7 +105,11 @@ public:
 	DECLARE_READ8_MEMBER(tsamurai_unknown_d803_r);
 
 	// m660 specific
+<<<<<<< HEAD
 	DECLARE_WRITE8_MEMBER(m660_textbank2_w);
+=======
+	DECLARE_WRITE_LINE_MEMBER(textbank2_w);
+>>>>>>> upstream/master
 	DECLARE_READ8_MEMBER(m660_unknown_d803_r);
 	DECLARE_WRITE8_MEMBER(m660_sound_command3_w);
 	DECLARE_READ8_MEMBER(m660_sound_command3_r);
@@ -91,17 +125,30 @@ public:
 	TILE_GET_INFO_MEMBER(get_fg_tile_info);
 	TILE_GET_INFO_MEMBER(get_vsgongf_tile_info);
 
+<<<<<<< HEAD
 	virtual void machine_start();
 	DECLARE_MACHINE_START(m660);
 	DECLARE_MACHINE_START(tsamurai);
 	DECLARE_MACHINE_START(vsgongf);
 	virtual void video_start();
+=======
+	virtual void machine_start() override;
+	DECLARE_MACHINE_START(m660);
+	DECLARE_MACHINE_START(tsamurai);
+	DECLARE_MACHINE_START(vsgongf);
+	virtual void video_start() override;
+>>>>>>> upstream/master
 	DECLARE_VIDEO_START(m660);
 	DECLARE_VIDEO_START(tsamurai);
 	DECLARE_VIDEO_START(vsgongf);
 
+<<<<<<< HEAD
 	UINT32 screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
 	UINT32 screen_update_vsgongf(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
+=======
+	uint32_t screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
+	uint32_t screen_update_vsgongf(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
+>>>>>>> upstream/master
 	void draw_sprites(bitmap_ind16 &bitmap, const rectangle &cliprect );
 
 	INTERRUPT_GEN_MEMBER(interrupt);

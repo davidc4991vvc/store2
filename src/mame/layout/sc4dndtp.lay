@@ -1281,4 +1281,8 @@
 <bezel name="reel6" element="Steppers" state="0"><bounds x="290" y="350" width="10" height="5" /></bezel>
 <bezel name="sreel6" element="SteppersReel6" state="0"><bounds x="250" y="300" width="50" height="50" /></bezel>
 </view>
+<<<<<<< HEAD
 </mamelayout>
+=======
+</mamelayout>
+>>>>>>> upstream/master

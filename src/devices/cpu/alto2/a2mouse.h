@@ -51,7 +51,11 @@
  * sequence: 10 -> 70 -> e0 -> 80
  * </PRE>
  */
+<<<<<<< HEAD
 UINT8* m_madr_a32;
+=======
+uint8_t* m_madr_a32;
+>>>>>>> upstream/master
 
 //! mouse context
 struct {
@@ -59,11 +63,19 @@ struct {
 	int y;                                      //!< current Y coordinate
 	int dx;                                     //!< destination X coordinate (real mouse X)
 	int dy;                                     //!< destination Y coordinate (real mouse Y)
+<<<<<<< HEAD
 	UINT8 latch;                                //!< current latch value
 	UINT8 phase;                                //!< current read latch phase
 }   m_mouse;
 
 UINT16 mouse_read();                            //!< return the mouse motion flags
+=======
+	uint8_t latch;                                //!< current latch value
+	uint8_t phase;                                //!< current read latch phase
+}   m_mouse;
+
+uint16_t mouse_read();                            //!< return the mouse motion flags
+>>>>>>> upstream/master
 void init_mouse();                              //!< initialize the mouse context
 void exit_mouse();                              //!< deinitialize the mouse context
 void reset_mouse();                             //!< reset the mouse context

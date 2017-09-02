@@ -6,6 +6,10 @@
 
 **********************************************************************/
 
+<<<<<<< HEAD
+=======
+#include "emu.h"
+>>>>>>> upstream/master
 #include "emb.h"
 
 
@@ -31,7 +35,11 @@
 //  DEVICE DEFINITIONS
 //**************************************************************************
 
+<<<<<<< HEAD
 const device_type WANGPC_EMB = &device_creator<wangpc_emb_device>;
+=======
+DEFINE_DEVICE_TYPE(WANGPC_EMB, wangpc_emb_device, "wangpc_emb", "Wang PC-PM031-B Extended Memory Board")
+>>>>>>> upstream/master
 
 
 
@@ -43,10 +51,18 @@ const device_type WANGPC_EMB = &device_creator<wangpc_emb_device>;
 //  wangpc_emb_device - constructor
 //-------------------------------------------------
 
+<<<<<<< HEAD
 wangpc_emb_device::wangpc_emb_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock) :
 	device_t(mconfig, WANGPC_EMB, "Wang PC-PM031-B", tag, owner, clock, "wangpc_emb", __FILE__),
 	device_wangpcbus_card_interface(mconfig, *this),
 	m_ram(*this, "ram"), m_option(0), m_parity_error(0), m_parity_odd(0)
+=======
+wangpc_emb_device::wangpc_emb_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock) :
+	device_t(mconfig, WANGPC_EMB, tag, owner, clock),
+	device_wangpcbus_card_interface(mconfig, *this),
+	m_ram(*this, "ram"),
+	m_option(0), m_parity_error(0), m_parity_odd(0)
+>>>>>>> upstream/master
 {
 }
 
@@ -83,9 +99,15 @@ void wangpc_emb_device::device_reset()
 //  wangpcbus_mrdc_r - memory read
 //-------------------------------------------------
 
+<<<<<<< HEAD
 UINT16 wangpc_emb_device::wangpcbus_mrdc_r(address_space &space, offs_t offset, UINT16 mem_mask)
 {
 	UINT16 data = 0xffff;
+=======
+uint16_t wangpc_emb_device::wangpcbus_mrdc_r(address_space &space, offs_t offset, uint16_t mem_mask)
+{
+	uint16_t data = 0xffff;
+>>>>>>> upstream/master
 
 	for (int bank = 0; bank < 4; bank++)
 	{
@@ -103,7 +125,11 @@ UINT16 wangpc_emb_device::wangpcbus_mrdc_r(address_space &space, offs_t offset, 
 //  wangpcbus_amwc_w - memory write
 //-------------------------------------------------
 
+<<<<<<< HEAD
 void wangpc_emb_device::wangpcbus_amwc_w(address_space &space, offs_t offset, UINT16 mem_mask, UINT16 data)
+=======
+void wangpc_emb_device::wangpcbus_amwc_w(address_space &space, offs_t offset, uint16_t mem_mask, uint16_t data)
+>>>>>>> upstream/master
 {
 	for (int bank = 0; bank < 4; bank++)
 	{
@@ -119,9 +145,15 @@ void wangpc_emb_device::wangpcbus_amwc_w(address_space &space, offs_t offset, UI
 //  wangpcbus_iorc_r - I/O read
 //-------------------------------------------------
 
+<<<<<<< HEAD
 UINT16 wangpc_emb_device::wangpcbus_iorc_r(address_space &space, offs_t offset, UINT16 mem_mask)
 {
 	UINT16 data = 0xffff;
+=======
+uint16_t wangpc_emb_device::wangpcbus_iorc_r(address_space &space, offs_t offset, uint16_t mem_mask)
+{
+	uint16_t data = 0xffff;
+>>>>>>> upstream/master
 
 	if (sad(offset))
 	{
@@ -147,7 +179,11 @@ UINT16 wangpc_emb_device::wangpcbus_iorc_r(address_space &space, offs_t offset, 
 //  wangpcbus_aiowc_w - I/O write
 //-------------------------------------------------
 
+<<<<<<< HEAD
 void wangpc_emb_device::wangpcbus_aiowc_w(address_space &space, offs_t offset, UINT16 mem_mask, UINT16 data)
+=======
+void wangpc_emb_device::wangpcbus_aiowc_w(address_space &space, offs_t offset, uint16_t mem_mask, uint16_t data)
+>>>>>>> upstream/master
 {
 	if (sad(offset))
 	{

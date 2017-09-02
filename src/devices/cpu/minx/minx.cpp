@@ -45,8 +45,13 @@ TODO:
 */
 
 #include "emu.h"
+<<<<<<< HEAD
 #include "debugger.h"
 #include "minx.h"
+=======
+#include "minx.h"
+#include "debugger.h"
+>>>>>>> upstream/master
 
 #define FLAG_I  0x80
 #define FLAG_D  0x40
@@ -72,23 +77,46 @@ TODO:
 #define GET_MINX_PC     ( ( m_PC & 0x8000 ) ? ( m_V << 15 ) | (m_PC & 0x7FFF ) : m_PC )
 
 
+<<<<<<< HEAD
 const device_type MINX = &device_creator<minx_cpu_device>;
 
 
 minx_cpu_device::minx_cpu_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
 	: cpu_device(mconfig, MINX, "Nintendo Minx", tag, owner, clock, "minx", __FILE__)
+=======
+DEFINE_DEVICE_TYPE(MINX, minx_cpu_device, "minx", "Nintendo Minx")
+
+
+minx_cpu_device::minx_cpu_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: cpu_device(mconfig, MINX, tag, owner, clock)
+>>>>>>> upstream/master
 	, m_program_config("program", ENDIANNESS_BIG, 8, 24, 0)
 {
 }
 
+<<<<<<< HEAD
 
 UINT16 minx_cpu_device::rd16( UINT32 offset )
+=======
+device_memory_interface::space_config_vector minx_cpu_device::memory_space_config() const
+{
+	return space_config_vector {
+		std::make_pair(AS_PROGRAM, &m_program_config)
+	};
+}
+
+uint16_t minx_cpu_device::rd16( uint32_t offset )
+>>>>>>> upstream/master
 {
 	return RD( offset ) | ( RD( offset + 1 ) << 8 );
 }
 
 
+<<<<<<< HEAD
 void minx_cpu_device::wr16( UINT32 offset, UINT16 data )
+=======
+void minx_cpu_device::wr16( uint32_t offset, uint16_t data )
+>>>>>>> upstream/master
 {
 	WR( offset, ( data & 0x00FF ) );
 	WR( offset + 1, ( data >> 8 ) );
@@ -114,19 +142,32 @@ void minx_cpu_device::device_start()
 	state_add( MINX_XI, "XI", m_XI ).formatstr("%02X");
 	state_add( MINX_YI, "YI", m_YI ).formatstr("%02X");
 
+<<<<<<< HEAD
 	state_add(STATE_GENPC, "curpc", m_curpc).formatstr("%06X").noshow();
+=======
+	state_add(STATE_GENPC, "GENPC", m_curpc).formatstr("%06X").noshow();
+	state_add(STATE_GENPCBASE, "CURPC", m_curpc).formatstr("%06X").noshow();
+>>>>>>> upstream/master
 	state_add(STATE_GENFLAGS, "GENFLAGS", m_flags).formatstr("%14s").noshow();
 
 	m_icountptr = &m_icount;
 }
 
 
+<<<<<<< HEAD
 void minx_cpu_device::state_string_export(const device_state_entry &entry, std::string &str)
+=======
+void minx_cpu_device::state_string_export(const device_state_entry &entry, std::string &str) const
+>>>>>>> upstream/master
 {
 	switch (entry.index())
 	{
 		case STATE_GENFLAGS:
+<<<<<<< HEAD
 			strprintf(str, "%c%c%c%c%c%c%c%c-%c%c%c%c%c",
+=======
+			str = string_format("%c%c%c%c%c%c%c%c-%c%c%c%c%c",
+>>>>>>> upstream/master
 				m_F & FLAG_I ? 'I' : '.',
 				m_F & FLAG_D ? 'D' : '.',
 				m_F & FLAG_L ? 'L' : '.',
@@ -155,17 +196,29 @@ void minx_cpu_device::device_reset()
 }
 
 
+<<<<<<< HEAD
 UINT8 minx_cpu_device::rdop()
 {
 	UINT8 op = RD( GET_MINX_PC );
+=======
+uint8_t minx_cpu_device::rdop()
+{
+	uint8_t op = RD( GET_MINX_PC );
+>>>>>>> upstream/master
 	m_PC++;
 	return op;
 }
 
 
+<<<<<<< HEAD
 UINT16 minx_cpu_device::rdop16()
 {
 	UINT16 op = rdop();
+=======
+uint16_t minx_cpu_device::rdop16()
+{
+	uint16_t op = rdop();
+>>>>>>> upstream/master
 	op = op | ( rdop() << 8 );
 	return op;
 }
@@ -227,8 +280,15 @@ void minx_cpu_device::execute_set_input(int inputnum, int state)
 }
 
 
+<<<<<<< HEAD
 offs_t minx_cpu_device::disasm_disassemble(char *buffer, offs_t pc, const UINT8 *oprom, const UINT8 *opram, UINT32 options)
 {
 	extern CPU_DISASSEMBLE( minx );
 	return CPU_DISASSEMBLE_NAME(minx)(this, buffer, pc, oprom, opram, options);
+=======
+offs_t minx_cpu_device::disasm_disassemble(std::ostream &stream, offs_t pc, const uint8_t *oprom, const uint8_t *opram, uint32_t options)
+{
+	extern CPU_DISASSEMBLE( minx );
+	return CPU_DISASSEMBLE_NAME(minx)(this, stream, pc, oprom, opram, options);
+>>>>>>> upstream/master
 }

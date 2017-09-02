@@ -21,6 +21,7 @@ ToDo:
 
 **************************************************************************************/
 
+<<<<<<< HEAD
 #include "machine/genpin.h"
 #include "cpu/m6800/m6800.h"
 #include "cpu/i8085/i8085.h"
@@ -28,6 +29,20 @@ ToDo:
 #include "sound/beep.h"
 #include "micropin.lh"
 
+=======
+#include "emu.h"
+#include "machine/genpin.h"
+
+#include "cpu/i8085/i8085.h"
+#include "cpu/m6800/m6800.h"
+#include "machine/6821pia.h"
+#include "sound/beep.h"
+#include "speaker.h"
+
+#include "micropin.lh"
+
+
+>>>>>>> upstream/master
 class micropin_state : public genpin_class
 {
 public:
@@ -52,11 +67,19 @@ public:
 	DECLARE_DRIVER_INIT(micropin);
 	TIMER_DEVICE_CALLBACK_MEMBER(timer_a);
 private:
+<<<<<<< HEAD
 	UINT8 m_row;
 	UINT8 m_counter;
 	UINT8 m_beep_time;
 	UINT8 m_led_time[8];
 	virtual void machine_reset();
+=======
+	uint8_t m_row;
+	uint8_t m_counter;
+	uint8_t m_beep_time;
+	uint8_t m_led_time[8];
+	virtual void machine_reset() override;
+>>>>>>> upstream/master
 	optional_device<m6800_cpu_device> m_v1cpu;
 	optional_device<i8085a_cpu_device> m_v2cpu;
 	optional_device<pia6821_device> m_pia51;
@@ -188,9 +211,15 @@ WRITE8_MEMBER( micropin_state::p50a_w )
 	m_counter++;
 	if (m_counter == 1)
 	{
+<<<<<<< HEAD
 		static const UINT8 patterns[16] = { 0x3f, 0x06, 0x5b, 0x4f, 0x66, 0x6d, 0x7c, 0x07, 0x7f, 0x67, 0x58, 0x4c, 0x62, 0x69, 0x78, 0 }; // 7448
 		output_set_digit_value(m_row, patterns[data&15]);
 		output_set_digit_value(m_row+20, patterns[data>>4]);
+=======
+		static const uint8_t patterns[16] = { 0x3f, 0x06, 0x5b, 0x4f, 0x66, 0x6d, 0x7c, 0x07, 0x7f, 0x67, 0x58, 0x4c, 0x62, 0x69, 0x78, 0 }; // 7448
+		output().set_digit_value(m_row, patterns[data&15]);
+		output().set_digit_value(m_row+20, patterns[data>>4]);
+>>>>>>> upstream/master
 	}
 }
 
@@ -199,9 +228,15 @@ WRITE8_MEMBER( micropin_state::p50b_w )
 	m_counter++;
 	if (m_counter == 2)
 	{
+<<<<<<< HEAD
 		static const UINT8 patterns[16] = { 0x3f, 0x06, 0x5b, 0x4f, 0x66, 0x6d, 0x7c, 0x07, 0x7f, 0x67, 0x58, 0x4c, 0x62, 0x69, 0x78, 0 }; // 7448
 		output_set_digit_value(m_row+40, patterns[data&15]);
 		output_set_digit_value(m_row+60, patterns[data>>4]);
+=======
+		static const uint8_t patterns[16] = { 0x3f, 0x06, 0x5b, 0x4f, 0x66, 0x6d, 0x7c, 0x07, 0x7f, 0x67, 0x58, 0x4c, 0x62, 0x69, 0x78, 0 }; // 7448
+		output().set_digit_value(m_row+40, patterns[data&15]);
+		output().set_digit_value(m_row+60, patterns[data>>4]);
+>>>>>>> upstream/master
 	}
 }
 
@@ -213,7 +248,11 @@ WRITE_LINE_MEMBER( micropin_state::p50ca2_w )
 		char wordnum[8];
 		sprintf(wordnum,"led%d", m_row);
 		m_led_time[m_row] = 48; // 12 gives blinking leds; they blink in pinmame but is it correct?
+<<<<<<< HEAD
 		output_set_value(wordnum, 0); // turn on
+=======
+		output().set_value(wordnum, 0); // turn on
+>>>>>>> upstream/master
 	}
 }
 
@@ -224,8 +263,13 @@ WRITE_LINE_MEMBER( micropin_state::p50ca2_w )
 //   make the tones, and turn it off if no new commands arrive within .1 second.
 WRITE8_MEMBER( micropin_state::p51a_w )
 {
+<<<<<<< HEAD
 	static UINT16 frequency[16] = { 387, 435, 488, 517, 581, 652, 691, 775, 870, 977, 1035, 1161, 1304, 1381, 1550, 1740 };
 	m_beep->set_frequency(frequency[data & 15]);
+=======
+	static uint16_t frequency[16] = { 387, 435, 488, 517, 581, 652, 691, 775, 870, 977, 1035, 1161, 1304, 1381, 1550, 1740 };
+	m_beep->set_clock(frequency[data & 15]);
+>>>>>>> upstream/master
 	m_beep_time = 10; // number of 10ms intervals before it is silenced
 	m_beep->set_state(1);
 }
@@ -248,7 +292,11 @@ TIMER_DEVICE_CALLBACK_MEMBER( micropin_state::timer_a )
 
 	// turn off round leds that aren't being refreshed
 
+<<<<<<< HEAD
 	UINT8 i;
+=======
+	uint8_t i;
+>>>>>>> upstream/master
 	char wordnum[8];
 
 	for (i = 0; i < 8; i++)
@@ -259,7 +307,11 @@ TIMER_DEVICE_CALLBACK_MEMBER( micropin_state::timer_a )
 			if (m_led_time[i] == 0)
 			{
 				sprintf(wordnum,"led%d", i);
+<<<<<<< HEAD
 				output_set_value(wordnum, 1); // turn off
+=======
+				output().set_value(wordnum, 1); // turn off
+>>>>>>> upstream/master
 			}
 		}
 	}
@@ -267,7 +319,11 @@ TIMER_DEVICE_CALLBACK_MEMBER( micropin_state::timer_a )
 
 void micropin_state::machine_reset()
 {
+<<<<<<< HEAD
 	UINT8 i;
+=======
+	uint8_t i;
+>>>>>>> upstream/master
 	m_row = 0;
 	m_beep_time = 5;
 	for (i = 0; i < 8; i++)
@@ -278,7 +334,11 @@ DRIVER_INIT_MEMBER( micropin_state, micropin )
 {
 }
 
+<<<<<<< HEAD
 static MACHINE_CONFIG_START( micropin, micropin_state )
+=======
+static MACHINE_CONFIG_START( micropin )
+>>>>>>> upstream/master
 	/* basic machine hardware */
 	MCFG_CPU_ADD("v1cpu", M6800, XTAL_2MHz / 2)
 	MCFG_CPU_PROGRAM_MAP(micropin_map)
@@ -292,7 +352,11 @@ static MACHINE_CONFIG_START( micropin, micropin_state )
 	/* Sound */
 	MCFG_FRAGMENT_ADD( genpin_audio )
 	MCFG_SPEAKER_STANDARD_MONO("mono")
+<<<<<<< HEAD
 	MCFG_SOUND_ADD("beeper", BEEP, 0)
+=======
+	MCFG_SOUND_ADD("beeper", BEEP, 387)
+>>>>>>> upstream/master
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 0.50)
 
 	/* Devices */
@@ -315,7 +379,11 @@ static MACHINE_CONFIG_START( micropin, micropin_state )
 	MCFG_TIMER_DRIVER_ADD_PERIODIC("timer_a", micropin_state, timer_a, attotime::from_hz(100))
 MACHINE_CONFIG_END
 
+<<<<<<< HEAD
 static MACHINE_CONFIG_START( pentacup2, micropin_state )
+=======
+static MACHINE_CONFIG_START( pentacup2 )
+>>>>>>> upstream/master
 	/* basic machine hardware */
 	MCFG_CPU_ADD("v2cpu", I8085A, 2000000)
 	MCFG_CPU_PROGRAM_MAP(pentacup2_map)

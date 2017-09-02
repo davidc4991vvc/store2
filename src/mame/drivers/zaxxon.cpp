@@ -254,6 +254,7 @@
 ***************************************************************************/
 
 #include "emu.h"
+<<<<<<< HEAD
 #include "cpu/z80/z80.h"
 #include "sound/sn76496.h"
 #include "sound/samples.h"
@@ -262,6 +263,20 @@
 #include "audio/segasnd.h"
 #include "includes/zaxxon.h"
 
+=======
+#include "includes/zaxxon.h"
+#include "audio/segasnd.h"
+
+#include "cpu/z80/z80.h"
+#include "machine/gen_latch.h"
+#include "machine/i8255.h"
+#include "machine/segacrpt_device.h"
+#include "sound/samples.h"
+#include "sound/sn76496.h"
+
+#include "screen.h"
+#include "speaker.h"
+>>>>>>> upstream/master
 
 
 /*************************************
@@ -299,6 +314,7 @@ INPUT_CHANGED_MEMBER(zaxxon_state::service_switch)
 }
 
 
+<<<<<<< HEAD
 INTERRUPT_GEN_MEMBER(zaxxon_state::vblank_int)
 {
 	if (m_int_enabled)
@@ -309,6 +325,18 @@ INTERRUPT_GEN_MEMBER(zaxxon_state::vblank_int)
 WRITE8_MEMBER(zaxxon_state::int_enable_w)
 {
 	m_int_enabled = data & 1;
+=======
+WRITE_LINE_MEMBER(zaxxon_state::vblank_int)
+{
+	if (state && m_int_enabled)
+		m_maincpu->set_input_line(0, ASSERT_LINE);
+}
+
+
+WRITE_LINE_MEMBER(zaxxon_state::int_enable_w)
+{
+	m_int_enabled = state;
+>>>>>>> upstream/master
 	if (!m_int_enabled)
 		m_maincpu->set_input_line(0, CLEAR_LINE);
 }
@@ -326,7 +354,10 @@ void zaxxon_state::machine_start()
 	/* register for save states */
 	save_item(NAME(m_int_enabled));
 	save_item(NAME(m_coin_status));
+<<<<<<< HEAD
 	save_item(NAME(m_coin_enable));
+=======
+>>>>>>> upstream/master
 }
 
 
@@ -349,7 +380,11 @@ READ8_MEMBER(zaxxon_state::razmataz_counter_r)
 
 CUSTOM_INPUT_MEMBER(zaxxon_state::razmataz_dial_r)
 {
+<<<<<<< HEAD
 	int num = (FPTR)param;
+=======
+	int num = (uintptr_t)param;
+>>>>>>> upstream/master
 	int res;
 
 	int delta = m_dials[num]->read();
@@ -378,34 +413,76 @@ CUSTOM_INPUT_MEMBER(zaxxon_state::razmataz_dial_r)
  *
  *************************************/
 
+<<<<<<< HEAD
 WRITE8_MEMBER(zaxxon_state::zaxxon_coin_counter_w)
 {
 	coin_counter_w(machine(), offset, data & 0x01);
+=======
+WRITE8_MEMBER(zaxxon_state::zaxxon_control_w)
+{
+	// address decode for E0F8/E0F9 (74LS138 @ U57) has its G2B enable input in common with this latch
+	bool a3 = BIT(offset, 3);
+	m_mainlatch[1]->write_bit((a3 ? 4 : 0) | (offset & 3), BIT(data, 0));
+	if (a3 && !BIT(offset, 1))
+		bg_position_w(space, offset & 1, data);
+}
+
+
+WRITE_LINE_MEMBER(zaxxon_state::coin_counter_a_w)
+{
+	machine().bookkeeping().coin_counter_w(0, state);
+}
+
+
+WRITE_LINE_MEMBER(zaxxon_state::coin_counter_b_w)
+{
+	machine().bookkeeping().coin_counter_w(1, state);
+>>>>>>> upstream/master
 }
 
 
 // There is no external coin lockout circuitry; instead, the pcb simply latches
+<<<<<<< HEAD
 // the coin input, which then needs to be explicitly cleared by the game.
 WRITE8_MEMBER(zaxxon_state::zaxxon_coin_enable_w)
 {
 	m_coin_enable[offset] = data & 1;
 	if (!m_coin_enable[offset])
 		m_coin_status[offset] = 0;
+=======
+// each coin input, which then needs to be explicitly cleared by the game.
+// Each coin input first passes through a debounce circuit consisting of a
+// LS175 quad flip-flop and LS10 3-input NAND gate, which is not emulated.
+WRITE_LINE_MEMBER(zaxxon_state::coin_enable_w)
+{
+	for (int n = 0; n < 3; n++)
+		if (!BIT(m_mainlatch[0]->output_state(), n))
+			m_coin_status[n] = 0;
+>>>>>>> upstream/master
 }
 
 
 INPUT_CHANGED_MEMBER(zaxxon_state::zaxxon_coin_inserted)
 {
+<<<<<<< HEAD
 	if (newval)
 	{
 		m_coin_status[(int)(FPTR)param] = m_coin_enable[(int)(FPTR)param];
 	}
+=======
+	if (newval && BIT(m_mainlatch[0]->output_state(), (int)(uintptr_t)param))
+		m_coin_status[(int)(uintptr_t)param] = 1;
+>>>>>>> upstream/master
 }
 
 
 CUSTOM_INPUT_MEMBER(zaxxon_state::zaxxon_coin_r)
 {
+<<<<<<< HEAD
 	return m_coin_status[(int)(FPTR)param];
+=======
+	return m_coin_status[(int)(uintptr_t)param];
+>>>>>>> upstream/master
 }
 
 
@@ -427,6 +504,7 @@ static ADDRESS_MAP_START( zaxxon_map, AS_PROGRAM, 8, zaxxon_state )
 	AM_RANGE(0xc002, 0xc002) AM_MIRROR(0x18fc) AM_READ_PORT("DSW02")
 	AM_RANGE(0xc003, 0xc003) AM_MIRROR(0x18fc) AM_READ_PORT("DSW03")
 	AM_RANGE(0xc100, 0xc100) AM_MIRROR(0x18ff) AM_READ_PORT("SW100")
+<<<<<<< HEAD
 	AM_RANGE(0xc000, 0xc002) AM_MIRROR(0x18f8) AM_WRITE(zaxxon_coin_enable_w)
 	AM_RANGE(0xc003, 0xc004) AM_MIRROR(0x18f8) AM_WRITE(zaxxon_coin_counter_w)
 	AM_RANGE(0xc006, 0xc006) AM_MIRROR(0x18f8) AM_WRITE(zaxxon_flipscreen_w)
@@ -439,6 +517,14 @@ static ADDRESS_MAP_START( zaxxon_map, AS_PROGRAM, 8, zaxxon_state )
 ADDRESS_MAP_END
 
 static ADDRESS_MAP_START( decrypted_opcodes_map, AS_DECRYPTED_OPCODES, 8, zaxxon_state )
+=======
+	AM_RANGE(0xc000, 0xc007) AM_MIRROR(0x18f8) AM_DEVWRITE("mainlatch1", ls259_device, write_d0)
+	AM_RANGE(0xe03c, 0xe03f) AM_MIRROR(0x1f00) AM_DEVREADWRITE("ppi8255", i8255_device, read, write)
+	AM_RANGE(0xe0f0, 0xe0f3) AM_MIRROR(0x1f00) AM_SELECT(0x0008) AM_WRITE(zaxxon_control_w)
+ADDRESS_MAP_END
+
+static ADDRESS_MAP_START( decrypted_opcodes_map, AS_OPCODES, 8, zaxxon_state )
+>>>>>>> upstream/master
 	AM_RANGE(0x0000, 0x5fff) AM_ROM AM_SHARE("decrypted_opcodes")
 ADDRESS_MAP_END
 
@@ -453,6 +539,7 @@ static ADDRESS_MAP_START( ixion_map, AS_PROGRAM, 8, zaxxon_state )
 	AM_RANGE(0xc002, 0xc002) AM_MIRROR(0x18fc) AM_READ_PORT("DSW02")
 	AM_RANGE(0xc003, 0xc003) AM_MIRROR(0x18fc) AM_READ_PORT("DSW03")
 	AM_RANGE(0xc100, 0xc100) AM_MIRROR(0x18ff) AM_READ_PORT("SW100")
+<<<<<<< HEAD
 	AM_RANGE(0xc000, 0xc002) AM_MIRROR(0x18f8) AM_WRITE(zaxxon_coin_enable_w)
 	AM_RANGE(0xc003, 0xc004) AM_MIRROR(0x18f8) AM_WRITE(zaxxon_coin_counter_w)
 	AM_RANGE(0xc006, 0xc006) AM_MIRROR(0x18f8) AM_WRITE(zaxxon_flipscreen_w)
@@ -462,6 +549,11 @@ static ADDRESS_MAP_START( ixion_map, AS_PROGRAM, 8, zaxxon_state )
 	AM_RANGE(0xe0f8, 0xe0f9) AM_MIRROR(0x1f00) AM_WRITE(zaxxon_bg_position_w)
 	AM_RANGE(0xe0fa, 0xe0fa) AM_MIRROR(0x1f00) AM_WRITE(zaxxon_bg_color_w)
 	AM_RANGE(0xe0fb, 0xe0fb) AM_MIRROR(0x1f00) AM_WRITE(zaxxon_bg_enable_w)
+=======
+	AM_RANGE(0xc000, 0xc007) AM_MIRROR(0x18f8) AM_DEVWRITE("mainlatch1", ls259_device, write_d0)
+	AM_RANGE(0xe03c, 0xe03c) AM_MIRROR(0x1f00) AM_DEVREADWRITE("usbsnd", usb_sound_device, status_r, data_w)
+	AM_RANGE(0xe0f0, 0xe0f3) AM_MIRROR(0x1f00) AM_SELECT(0x0008) AM_WRITE(zaxxon_control_w)
+>>>>>>> upstream/master
 ADDRESS_MAP_END
 
 
@@ -476,6 +568,7 @@ static ADDRESS_MAP_START( congo_map, AS_PROGRAM, 8, zaxxon_state )
 	AM_RANGE(0xc002, 0xc002) AM_MIRROR(0x1fc4) AM_READ_PORT("DSW02")
 	AM_RANGE(0xc003, 0xc003) AM_MIRROR(0x1fc4) AM_READ_PORT("DSW03")
 	AM_RANGE(0xc008, 0xc008) AM_MIRROR(0x1fc7) AM_READ_PORT("SW100")
+<<<<<<< HEAD
 	AM_RANGE(0xc018, 0xc01a) AM_MIRROR(0x1fc0) AM_WRITE(zaxxon_coin_enable_w)
 	AM_RANGE(0xc01b, 0xc01c) AM_MIRROR(0x1fc0) AM_WRITE(zaxxon_coin_counter_w)
 	AM_RANGE(0xc01d, 0xc01d) AM_MIRROR(0x1fc0) AM_WRITE(zaxxon_bg_enable_w)
@@ -488,6 +581,13 @@ static ADDRESS_MAP_START( congo_map, AS_PROGRAM, 8, zaxxon_state )
 	AM_RANGE(0xc028, 0xc029) AM_MIRROR(0x1fc4) AM_WRITE(zaxxon_bg_position_w)
 	AM_RANGE(0xc030, 0xc033) AM_MIRROR(0x1fc4) AM_WRITE(congo_sprite_custom_w)
 	AM_RANGE(0xc038, 0xc03f) AM_MIRROR(0x1fc0) AM_WRITE(soundlatch_byte_w)
+=======
+	AM_RANGE(0xc018, 0xc01f) AM_MIRROR(0x1fc0) AM_DEVWRITE("mainlatch1", ls259_device, write_d0)
+	AM_RANGE(0xc020, 0xc027) AM_MIRROR(0x1fc0) AM_DEVWRITE("mainlatch2", ls259_device, write_d0)
+	AM_RANGE(0xc028, 0xc029) AM_MIRROR(0x1fc4) AM_WRITE(bg_position_w)
+	AM_RANGE(0xc030, 0xc033) AM_MIRROR(0x1fc4) AM_WRITE(congo_sprite_custom_w)
+	AM_RANGE(0xc038, 0xc03f) AM_MIRROR(0x1fc0) AM_DEVWRITE("soundlatch", generic_latch_8_device, write)
+>>>>>>> upstream/master
 ADDRESS_MAP_END
 
 
@@ -910,18 +1010,42 @@ GFXDECODE_END
  *
  *************************************/
 
+<<<<<<< HEAD
 static MACHINE_CONFIG_START( root, zaxxon_state )
+=======
+static MACHINE_CONFIG_START( root )
+>>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", Z80, MASTER_CLOCK/16)
 	MCFG_CPU_PROGRAM_MAP(zaxxon_map)
+<<<<<<< HEAD
 	MCFG_CPU_VBLANK_INT_DRIVER("screen", zaxxon_state,  vblank_int)
+=======
+>>>>>>> upstream/master
 
 	MCFG_DEVICE_ADD("ppi8255", I8255A, 0)
 	MCFG_I8255_OUT_PORTA_CB(WRITE8(zaxxon_state, zaxxon_sound_a_w))
 	MCFG_I8255_OUT_PORTB_CB(WRITE8(zaxxon_state, zaxxon_sound_b_w))
 	MCFG_I8255_OUT_PORTC_CB(WRITE8(zaxxon_state, zaxxon_sound_c_w))
 
+<<<<<<< HEAD
+=======
+	MCFG_DEVICE_ADD("mainlatch1", LS259, 0) // U55 on Zaxxon IC Board A
+	MCFG_ADDRESSABLE_LATCH_Q0_OUT_CB(WRITELINE(zaxxon_state, coin_enable_w)) // COIN EN A
+	MCFG_ADDRESSABLE_LATCH_Q1_OUT_CB(WRITELINE(zaxxon_state, coin_enable_w)) // COIN EN B
+	MCFG_ADDRESSABLE_LATCH_Q2_OUT_CB(WRITELINE(zaxxon_state, coin_enable_w)) // SERV EN
+	MCFG_ADDRESSABLE_LATCH_Q3_OUT_CB(WRITELINE(zaxxon_state, coin_counter_a_w)) // COUNT A
+	MCFG_ADDRESSABLE_LATCH_Q4_OUT_CB(WRITELINE(zaxxon_state, coin_counter_b_w)) // COUNT B
+	MCFG_ADDRESSABLE_LATCH_Q6_OUT_CB(WRITELINE(zaxxon_state, flipscreen_w)) // FLIP
+
+	MCFG_DEVICE_ADD("mainlatch2", LS259, 0) // U56 on Zaxxon IC Board A
+	MCFG_ADDRESSABLE_LATCH_Q0_OUT_CB(WRITELINE(zaxxon_state, int_enable_w)) // INTON
+	MCFG_ADDRESSABLE_LATCH_Q1_OUT_CB(WRITELINE(zaxxon_state, fg_color_w)) // CREF 1
+	MCFG_ADDRESSABLE_LATCH_Q6_OUT_CB(WRITELINE(zaxxon_state, bg_color_w)) // CREF 3
+	MCFG_ADDRESSABLE_LATCH_Q7_OUT_CB(WRITELINE(zaxxon_state, bg_enable_w)) // BEN
+
+>>>>>>> upstream/master
 	/* video hardware */
 	MCFG_GFXDECODE_ADD("gfxdecode", "palette", zaxxon)
 	MCFG_PALETTE_ADD("palette", 256)
@@ -931,13 +1055,18 @@ static MACHINE_CONFIG_START( root, zaxxon_state )
 	MCFG_SCREEN_RAW_PARAMS(PIXEL_CLOCK, HTOTAL, HBEND, HBSTART, VTOTAL, VBEND, VBSTART)
 	MCFG_SCREEN_UPDATE_DRIVER(zaxxon_state, screen_update_zaxxon)
 	MCFG_SCREEN_PALETTE("palette")
+<<<<<<< HEAD
 
+=======
+	MCFG_SCREEN_VBLANK_CALLBACK(WRITELINE(zaxxon_state, vblank_int))
+>>>>>>> upstream/master
 MACHINE_CONFIG_END
 
 
 static MACHINE_CONFIG_DERIVED( zaxxon, root )
 
 	/* sound hardware */
+<<<<<<< HEAD
 	MCFG_SPEAKER_STANDARD_MONO("mono")
 	MCFG_FRAGMENT_ADD(zaxxon_samples)
 MACHINE_CONFIG_END
@@ -955,12 +1084,44 @@ static MACHINE_CONFIG_DERIVED( futspy, root )
 	/* encryption */
 	MCFG_DEVICE_MODIFY("maincpu")
 	MCFG_CPU_DECRYPTED_OPCODES_MAP(decrypted_opcodes_map)
+=======
+	MCFG_SPEAKER_STANDARD_MONO("speaker")
+	MCFG_FRAGMENT_ADD(zaxxon_samples)
+MACHINE_CONFIG_END
+
+
+
+static MACHINE_CONFIG_DERIVED( szaxxon, zaxxon )
+	MCFG_CPU_MODIFY("maincpu")
+	MCFG_CPU_DECRYPTED_OPCODES_MAP(decrypted_opcodes_map)
+MACHINE_CONFIG_END
+
+
+static MACHINE_CONFIG_DERIVED( szaxxone, zaxxon )
+	MCFG_CPU_REPLACE("maincpu", SEGA_315_5013, MASTER_CLOCK/16)
+	MCFG_CPU_PROGRAM_MAP(zaxxon_map)
+	MCFG_CPU_DECRYPTED_OPCODES_MAP(decrypted_opcodes_map)
+	MCFG_SEGACRPT_SET_DECRYPTED_TAG(":decrypted_opcodes")
+	MCFG_SEGACRPT_SET_SIZE(0x6000)
+MACHINE_CONFIG_END
+
+
+
+static MACHINE_CONFIG_DERIVED( futspye, root )
+	MCFG_CPU_REPLACE("maincpu", SEGA_315_5061, MASTER_CLOCK/16)
+	MCFG_CPU_PROGRAM_MAP(zaxxon_map)
+	MCFG_CPU_DECRYPTED_OPCODES_MAP(decrypted_opcodes_map)
+	MCFG_SEGACRPT_SET_DECRYPTED_TAG(":decrypted_opcodes")
+	MCFG_SEGACRPT_SET_SIZE(0x6000)
+
+>>>>>>> upstream/master
 
 	/* video hardware */
 	MCFG_SCREEN_MODIFY("screen")
 	MCFG_SCREEN_UPDATE_DRIVER(zaxxon_state, screen_update_futspy)
 
 	/* sound hardware */
+<<<<<<< HEAD
 	MCFG_SPEAKER_STANDARD_MONO("mono")
 	MCFG_FRAGMENT_ADD(zaxxon_samples)
 MACHINE_CONFIG_END
@@ -971,6 +1132,22 @@ static MACHINE_CONFIG_DERIVED( razmataz, root )
 	MCFG_CPU_MODIFY("maincpu")
 	MCFG_CPU_PROGRAM_MAP(ixion_map)
 	MCFG_CPU_DECRYPTED_OPCODES_MAP(decrypted_opcodes_map)
+=======
+	MCFG_SPEAKER_STANDARD_MONO("speaker")
+	MCFG_FRAGMENT_ADD(zaxxon_samples)
+
+MACHINE_CONFIG_END
+
+
+
+
+static MACHINE_CONFIG_DERIVED( razmataze, root )
+	MCFG_CPU_REPLACE("maincpu", SEGA_315_5098,  MASTER_CLOCK/16)
+	MCFG_CPU_PROGRAM_MAP(ixion_map)
+	MCFG_CPU_DECRYPTED_OPCODES_MAP(decrypted_opcodes_map)
+	MCFG_SEGACRPT_SET_DECRYPTED_TAG(":decrypted_opcodes")
+	MCFG_SEGACRPT_SET_SIZE(0x6000)
+>>>>>>> upstream/master
 
 	MCFG_DEVICE_REMOVE("ppi8255")
 
@@ -980,22 +1157,57 @@ static MACHINE_CONFIG_DERIVED( razmataz, root )
 	MCFG_SCREEN_UPDATE_DRIVER(zaxxon_state, screen_update_razmataz)
 
 	/* sound hardware */
+<<<<<<< HEAD
 	MCFG_SPEAKER_STANDARD_MONO("mono")
 	MCFG_SEGAUSBROM_ADD("usbsnd")
 MACHINE_CONFIG_END
 
+=======
+	MCFG_SPEAKER_STANDARD_MONO("speaker")
+	MCFG_SEGAUSBROM_ADD("usbsnd")
+MACHINE_CONFIG_END
+
+static MACHINE_CONFIG_DERIVED( ixion, razmataze )
+	MCFG_CPU_REPLACE("maincpu", SEGA_315_5013, MASTER_CLOCK/16)
+	MCFG_CPU_PROGRAM_MAP(ixion_map)
+	MCFG_CPU_DECRYPTED_OPCODES_MAP(decrypted_opcodes_map)
+	MCFG_SEGACRPT_SET_DECRYPTED_TAG(":decrypted_opcodes")
+	MCFG_SEGACRPT_SET_SIZE(0x6000)
+
+	MCFG_DEVICE_MODIFY("mainlatch1")
+	MCFG_ADDRESSABLE_LATCH_Q6_OUT_CB(NOOP) // flip screen not used
+MACHINE_CONFIG_END
+>>>>>>> upstream/master
 
 static MACHINE_CONFIG_DERIVED( congo, root )
 
 	MCFG_CPU_MODIFY("maincpu")
 	MCFG_CPU_PROGRAM_MAP(congo_map)
 
+<<<<<<< HEAD
 	MCFG_DEVICE_REMOVE("ppi8255")
 	MCFG_DEVICE_ADD("ppi8255", I8255A, 0)
 	MCFG_I8255_IN_PORTA_CB(READ8(driver_device, soundlatch_byte_r))
 	MCFG_I8255_OUT_PORTB_CB(WRITE8(zaxxon_state, congo_sound_b_w))
 	MCFG_I8255_OUT_PORTC_CB(WRITE8(zaxxon_state, congo_sound_c_w))
 
+=======
+	MCFG_DEVICE_REPLACE("ppi8255", I8255A, 0)
+	MCFG_I8255_IN_PORTA_CB(DEVREAD8("soundlatch", generic_latch_8_device, read))
+	MCFG_I8255_OUT_PORTB_CB(WRITE8(zaxxon_state, congo_sound_b_w))
+	MCFG_I8255_OUT_PORTC_CB(WRITE8(zaxxon_state, congo_sound_c_w))
+
+	MCFG_DEVICE_MODIFY("mainlatch1") // U52 on Control Board
+	MCFG_ADDRESSABLE_LATCH_Q5_OUT_CB(WRITELINE(zaxxon_state, bg_enable_w)) // BEN
+	MCFG_ADDRESSABLE_LATCH_Q7_OUT_CB(WRITELINE(zaxxon_state, int_enable_w)) // INTON
+
+	MCFG_DEVICE_MODIFY("mainlatch2") // U53 on Control Board
+	MCFG_ADDRESSABLE_LATCH_Q0_OUT_CB(NOOP) // not used
+	MCFG_ADDRESSABLE_LATCH_Q3_OUT_CB(WRITELINE(zaxxon_state, bg_color_w)) // CREF 3
+	MCFG_ADDRESSABLE_LATCH_Q6_OUT_CB(WRITELINE(zaxxon_state, congo_fg_bank_w)) // BS
+	MCFG_ADDRESSABLE_LATCH_Q7_OUT_CB(WRITELINE(zaxxon_state, congo_color_bank_w)) // CBS
+
+>>>>>>> upstream/master
 	MCFG_CPU_ADD("audiocpu", Z80, SOUND_CLOCK)
 	MCFG_CPU_PROGRAM_MAP(congo_sound_map)
 	MCFG_CPU_PERIODIC_INT_DRIVER(zaxxon_state, irq0_line_hold,  (double)SOUND_CLOCK/16/16/16/4)
@@ -1010,6 +1222,7 @@ static MACHINE_CONFIG_DERIVED( congo, root )
 	MCFG_SCREEN_UPDATE_DRIVER(zaxxon_state, screen_update_congo)
 
 	/* sound hardware */
+<<<<<<< HEAD
 	MCFG_SPEAKER_STANDARD_MONO("mono")
 
 	MCFG_SOUND_ADD("sn1", SN76489A, SOUND_CLOCK) // schematic shows sn76489A
@@ -1017,6 +1230,17 @@ static MACHINE_CONFIG_DERIVED( congo, root )
 
 	MCFG_SOUND_ADD("sn2", SN76489A, SOUND_CLOCK/4) // schematic shows sn76489A
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 1.0)
+=======
+	MCFG_SPEAKER_STANDARD_MONO("speaker")
+
+	MCFG_GENERIC_LATCH_8_ADD("soundlatch")
+
+	MCFG_SOUND_ADD("sn1", SN76489A, SOUND_CLOCK) // schematic shows sn76489A
+	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "speaker", 1.0)
+
+	MCFG_SOUND_ADD("sn2", SN76489A, SOUND_CLOCK/4) // schematic shows sn76489A
+	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "speaker", 1.0)
+>>>>>>> upstream/master
 
 	MCFG_FRAGMENT_ADD(congo_samples)
 MACHINE_CONFIG_END
@@ -1031,6 +1255,7 @@ MACHINE_CONFIG_END
 
 ROM_START( zaxxon )
 	ROM_REGION( 0x6000, "maincpu", 0 )
+<<<<<<< HEAD
 	ROM_LOAD( "zaxxon3.u27",  0x0000, 0x2000, CRC(6e2b4a30) SHA1(80ac53c554c84226b119cbe3cf3470bcdbcd5762) )
 	ROM_LOAD( "zaxxon2.u28",  0x2000, 0x2000, CRC(1c9ea398) SHA1(0cd259be3fa80f3d53dfa76d5ca06773cdfe5945) )
 	ROM_LOAD( "zaxxon1.u29",  0x4000, 0x1000, CRC(1c123ef9) SHA1(2588be06ea7baca6112d58c78a1eeb98aad8a02e) )
@@ -1058,10 +1283,40 @@ ROM_START( zaxxon )
 	ROM_REGION( 0x0200, "proms", 0 )
 	ROM_LOAD( "zaxxon.u98",   0x0000, 0x0100, CRC(6cc6695b) SHA1(01ae8450ccc302e1a5ae74230d44f6f531a962e2) )
 	ROM_LOAD( "zaxxon.u72",   0x0100, 0x0100, CRC(deaa21f7) SHA1(0cf08fb62f77d93ff7cb883c633e0db35906e11d) )
+=======
+	ROM_LOAD( "zaxxon_rom3d.u27",  0x0000, 0x2000, CRC(6e2b4a30) SHA1(80ac53c554c84226b119cbe3cf3470bcdbcd5762) ) /* These 3 roms had a red D stamped on them */
+	ROM_LOAD( "zaxxon_rom2d.u28",  0x2000, 0x2000, CRC(1c9ea398) SHA1(0cd259be3fa80f3d53dfa76d5ca06773cdfe5945) )
+	ROM_LOAD( "zaxxon_rom1d.u29",  0x4000, 0x1000, CRC(1c123ef9) SHA1(2588be06ea7baca6112d58c78a1eeb98aad8a02e) )
+
+	ROM_REGION( 0x1000, "gfx_tx", 0 )
+	ROM_LOAD( "zaxxon_rom14.u68", 0x0000, 0x0800, CRC(07bf8c52) SHA1(425157a1625b1bd5169c3218b958010bf6af12bb) )
+	ROM_LOAD( "zaxxon_rom15.u69", 0x0800, 0x0800, CRC(c215edcb) SHA1(f1ded2173eb139f48d2ca86c5ef00acbe6c11cd3) )
+
+	ROM_REGION( 0x6000, "gfx_bg", 0 )
+	ROM_LOAD( "zaxxon_rom6.u113", 0x0000, 0x2000, CRC(6e07bb68) SHA1(a002f3441b0f0044615ce71ecbd14edadba16270) )
+	ROM_LOAD( "zaxxon_rom5.u112", 0x2000, 0x2000, CRC(0a5bce6a) SHA1(a86543727389931244ba8a576b543d7ac05a2585) )
+	ROM_LOAD( "zaxxon_rom4.u111", 0x4000, 0x2000, CRC(a5bf1465) SHA1(a8cd27dfb4a606bae8bfddcf936e69e980fb1977) )
+
+	ROM_REGION( 0x6000, "gfx_spr", 0 )
+	ROM_LOAD( "zaxxon_rom11.u77", 0x0000, 0x2000, CRC(eaf0dd4b) SHA1(194e2ca0a806e0cb6bb7cc8341d1fc6f2ea911f6) )
+	ROM_LOAD( "zaxxon_rom12.u78", 0x2000, 0x2000, CRC(1c5369c7) SHA1(af6a5984c3cedfa8c9efcd669f4f205b51a433b2) )
+	ROM_LOAD( "zaxxon_rom13.u79", 0x4000, 0x2000, CRC(ab4e8a9a) SHA1(4ac79cccc30e4adfa878b36101e97e20ac010438) )
+
+	ROM_REGION( 0x8000, "tilemap_dat", 0 )
+	ROM_LOAD( "zaxxon_rom8.u91",  0x0000, 0x2000, CRC(28d65063) SHA1(e1f90716236c61df61bdc6915a8e390cb4dcbf15) )
+	ROM_LOAD( "zaxxon_rom7.u90",  0x2000, 0x2000, CRC(6284c200) SHA1(d26a9049541479b8b19f5aa0690cf4aaa787c9b5) )
+	ROM_LOAD( "zaxxon_rom10.u93", 0x4000, 0x2000, CRC(a95e61fd) SHA1(a0f8c15ff75affa3532abf8f340811cf415421fd) )
+	ROM_LOAD( "zaxxon_rom9.u92",  0x6000, 0x2000, CRC(7e42691f) SHA1(2124363be8f590b74e2b15dd3f90d77dd9ca9528) )
+
+	ROM_REGION( 0x0200, "proms", 0 )
+	ROM_LOAD( "mro16.u76",   0x0000, 0x0100, CRC(6cc6695b) SHA1(01ae8450ccc302e1a5ae74230d44f6f531a962e2) ) /* BPROM from TI stamped as J214A2  MRO16 */
+	ROM_LOAD( "zaxxon.u72",  0x0100, 0x0100, CRC(deaa21f7) SHA1(0cf08fb62f77d93ff7cb883c633e0db35906e11d) ) /* Same data as PR-5167 from Super Zaxxon */
+>>>>>>> upstream/master
 ROM_END
 
 ROM_START( zaxxon2 )
 	ROM_REGION( 0x6000, "maincpu", 0 )
+<<<<<<< HEAD
 	ROM_LOAD( "zaxxon3a.u27", 0x0000, 0x2000, CRC(b18e428a) SHA1(d3ff077e37a3ed8a9cc32cba19e1694b79df6b30) )
 	ROM_LOAD( "zaxxon2.u28",  0x2000, 0x2000, CRC(1c9ea398) SHA1(0cd259be3fa80f3d53dfa76d5ca06773cdfe5945) )
 	ROM_LOAD( "zaxxon1a.u29", 0x4000, 0x1000, CRC(1977d933) SHA1(b0100a51a85928b8df3b07b27c9e7e4f929d7893) )
@@ -1089,10 +1344,40 @@ ROM_START( zaxxon2 )
 	ROM_REGION( 0x0200, "proms", 0 )
 	ROM_LOAD( "zaxxon.u98",   0x0000, 0x0100, CRC(6cc6695b) SHA1(01ae8450ccc302e1a5ae74230d44f6f531a962e2) )
 	ROM_LOAD( "j214a2.72",    0x0100, 0x0100, CRC(a9e1fb43) SHA1(57dbcfe2438fd090c08594818549aeea6339eab2) )
+=======
+	ROM_LOAD( "zaxxon_rom3a.u27", 0x0000, 0x2000, CRC(b18e428a) SHA1(d3ff077e37a3ed8a9cc32cba19e1694b79df6b30) ) /* Need to verify proper revision level via ROM label */
+	ROM_LOAD( "zaxxon_rom2a.u28", 0x2000, 0x2000, CRC(1c9ea398) SHA1(0cd259be3fa80f3d53dfa76d5ca06773cdfe5945) ) /* Need to verify proper revision level via ROM label */
+	ROM_LOAD( "zaxxon_rom1a.u29", 0x4000, 0x1000, CRC(1977d933) SHA1(b0100a51a85928b8df3b07b27c9e7e4f929d7893) ) /* Need to verify proper revision level via ROM label */
+
+	ROM_REGION( 0x1000, "gfx_tx", 0 )
+	ROM_LOAD( "zaxxon_rom14.u68", 0x0000, 0x0800, CRC(07bf8c52) SHA1(425157a1625b1bd5169c3218b958010bf6af12bb) )
+	ROM_LOAD( "zaxxon_rom15.u69", 0x0800, 0x0800, CRC(c215edcb) SHA1(f1ded2173eb139f48d2ca86c5ef00acbe6c11cd3) )
+
+	ROM_REGION( 0x6000, "gfx_bg", 0 )
+	ROM_LOAD( "zaxxon_rom6.u113", 0x0000, 0x2000, CRC(6e07bb68) SHA1(a002f3441b0f0044615ce71ecbd14edadba16270) )
+	ROM_LOAD( "zaxxon_rom5.u112", 0x2000, 0x2000, CRC(0a5bce6a) SHA1(a86543727389931244ba8a576b543d7ac05a2585) )
+	ROM_LOAD( "zaxxon_rom4.u111", 0x4000, 0x2000, CRC(a5bf1465) SHA1(a8cd27dfb4a606bae8bfddcf936e69e980fb1977) )
+
+	ROM_REGION( 0x6000, "gfx_spr", 0 )
+	ROM_LOAD( "zaxxon_rom11.u77", 0x0000, 0x2000, CRC(eaf0dd4b) SHA1(194e2ca0a806e0cb6bb7cc8341d1fc6f2ea911f6) )
+	ROM_LOAD( "zaxxon_rom12.u78", 0x2000, 0x2000, CRC(1c5369c7) SHA1(af6a5984c3cedfa8c9efcd669f4f205b51a433b2) )
+	ROM_LOAD( "zaxxon_rom13.u79", 0x4000, 0x2000, CRC(ab4e8a9a) SHA1(4ac79cccc30e4adfa878b36101e97e20ac010438) )
+
+	ROM_REGION( 0x8000, "tilemap_dat", 0 )
+	ROM_LOAD( "zaxxon_rom8.u91",  0x0000, 0x2000, CRC(28d65063) SHA1(e1f90716236c61df61bdc6915a8e390cb4dcbf15) )
+	ROM_LOAD( "zaxxon_rom7.u90",  0x2000, 0x2000, CRC(6284c200) SHA1(d26a9049541479b8b19f5aa0690cf4aaa787c9b5) )
+	ROM_LOAD( "zaxxon_rom10.u93", 0x4000, 0x2000, CRC(a95e61fd) SHA1(a0f8c15ff75affa3532abf8f340811cf415421fd) )
+	ROM_LOAD( "zaxxon_rom9.u92",  0x6000, 0x2000, CRC(7e42691f) SHA1(2124363be8f590b74e2b15dd3f90d77dd9ca9528) )
+
+	ROM_REGION( 0x0200, "proms", 0 )
+	ROM_LOAD( "mro16.u76",   0x0000, 0x0100, CRC(6cc6695b) SHA1(01ae8450ccc302e1a5ae74230d44f6f531a962e2) ) /* BPROM from TI stamped as J214A2  MRO16 */
+	ROM_LOAD( "mro17.u41",   0x0100, 0x0100, CRC(a9e1fb43) SHA1(57dbcfe2438fd090c08594818549aeea6339eab2) ) /* BPROM from TI stamped as J214A2  MRO17 */
+>>>>>>> upstream/master
 ROM_END
 
 ROM_START( zaxxon3 )
 	ROM_REGION( 0x6000, "maincpu", 0 )
+<<<<<<< HEAD
 	ROM_LOAD( "zaxxon3_alt.u27", 0x0000, 0x2000, CRC(2f2f2b7c) SHA1(009b6f8943b35bf933c56e9538377be3e1db6a6d) )
 	ROM_LOAD( "zaxxon2_alt.u28", 0x2000, 0x2000, CRC(ae7e1c38) SHA1(896f920e04c182eced3a3714b45a1d96e45b4473) )
 	ROM_LOAD( "zaxxon1_alt.u29", 0x4000, 0x1000, CRC(cc67c097) SHA1(d258b2900a173b0f3f8acd94b6b636ce3324616d) )
@@ -1121,6 +1406,35 @@ ROM_START( zaxxon3 )
 	ROM_REGION( 0x0200, "proms", 0 )
 	ROM_LOAD( "zaxxon.u98",   0x0000, 0x0100, CRC(6cc6695b) SHA1(01ae8450ccc302e1a5ae74230d44f6f531a962e2) )
 	ROM_LOAD( "j214a2.72",    0x0100, 0x0100, CRC(a9e1fb43) SHA1(57dbcfe2438fd090c08594818549aeea6339eab2) )
+=======
+	ROM_LOAD( "zaxxon3_alt.u27", 0x0000, 0x2000, CRC(2f2f2b7c) SHA1(009b6f8943b35bf933c56e9538377be3e1db6a6d) ) /* Need to verify proper revision level via ROM label */
+	ROM_LOAD( "zaxxon2_alt.u28", 0x2000, 0x2000, CRC(ae7e1c38) SHA1(896f920e04c182eced3a3714b45a1d96e45b4473) ) /* Need to verify proper revision level via ROM label */
+	ROM_LOAD( "zaxxon1_alt.u29", 0x4000, 0x1000, CRC(cc67c097) SHA1(d258b2900a173b0f3f8acd94b6b636ce3324616d) ) /* Need to verify proper revision level via ROM label */
+
+	ROM_REGION( 0x1000, "gfx_tx", 0 )
+	ROM_LOAD( "zaxxon_rom14.u68", 0x0000, 0x0800, CRC(07bf8c52) SHA1(425157a1625b1bd5169c3218b958010bf6af12bb) )
+	ROM_LOAD( "zaxxon_rom15.u69", 0x0800, 0x0800, CRC(c215edcb) SHA1(f1ded2173eb139f48d2ca86c5ef00acbe6c11cd3) )
+
+	ROM_REGION( 0x6000, "gfx_bg", 0 )
+	ROM_LOAD( "zaxxon_rom6.u113", 0x0000, 0x2000, CRC(6e07bb68) SHA1(a002f3441b0f0044615ce71ecbd14edadba16270) )
+	ROM_LOAD( "zaxxon_rom5.u112", 0x2000, 0x2000, CRC(0a5bce6a) SHA1(a86543727389931244ba8a576b543d7ac05a2585) )
+	ROM_LOAD( "zaxxon_rom4.u111", 0x4000, 0x2000, CRC(a5bf1465) SHA1(a8cd27dfb4a606bae8bfddcf936e69e980fb1977) )
+
+	ROM_REGION( 0x6000, "gfx_spr", 0 )
+	ROM_LOAD( "zaxxon_rom11.u77", 0x0000, 0x2000, CRC(eaf0dd4b) SHA1(194e2ca0a806e0cb6bb7cc8341d1fc6f2ea911f6) )
+	ROM_LOAD( "zaxxon_rom12.u78", 0x2000, 0x2000, CRC(1c5369c7) SHA1(af6a5984c3cedfa8c9efcd669f4f205b51a433b2) )
+	ROM_LOAD( "zaxxon_rom13.u79", 0x4000, 0x2000, CRC(ab4e8a9a) SHA1(4ac79cccc30e4adfa878b36101e97e20ac010438) )
+
+	ROM_REGION( 0x8000, "tilemap_dat", 0 )
+	ROM_LOAD( "zaxxon_rom8.u91",  0x0000, 0x2000, CRC(28d65063) SHA1(e1f90716236c61df61bdc6915a8e390cb4dcbf15) )
+	ROM_LOAD( "zaxxon_rom7.u90",  0x2000, 0x2000, CRC(6284c200) SHA1(d26a9049541479b8b19f5aa0690cf4aaa787c9b5) )
+	ROM_LOAD( "zaxxon_rom10.u93", 0x4000, 0x2000, CRC(a95e61fd) SHA1(a0f8c15ff75affa3532abf8f340811cf415421fd) )
+	ROM_LOAD( "zaxxon_rom9.u92",  0x6000, 0x2000, CRC(7e42691f) SHA1(2124363be8f590b74e2b15dd3f90d77dd9ca9528) )
+
+	ROM_REGION( 0x0200, "proms", 0 )
+	ROM_LOAD( "mro16.u76",   0x0000, 0x0100, CRC(6cc6695b) SHA1(01ae8450ccc302e1a5ae74230d44f6f531a962e2) ) /* BPROM from TI stamped as J214A2  MRO16 */
+	ROM_LOAD( "mro17.u41",   0x0100, 0x0100, CRC(a9e1fb43) SHA1(57dbcfe2438fd090c08594818549aeea6339eab2) ) /* BPROM from TI stamped as J214A2  MRO17 */
+>>>>>>> upstream/master
 ROM_END
 
 ROM_START( zaxxonj )
@@ -1150,12 +1464,18 @@ ROM_START( zaxxonj )
 	ROM_LOAD( "zaxxon_rom9.u59",  0x6000, 0x2000, CRC(7e42691f) SHA1(2124363be8f590b74e2b15dd3f90d77dd9ca9528) )
 
 	ROM_REGION( 0x0200, "proms", 0 )
+<<<<<<< HEAD
 	ROM_LOAD( "mro_16.u76",   0x0000, 0x0100, CRC(6cc6695b) SHA1(01ae8450ccc302e1a5ae74230d44f6f531a962e2) )
 	ROM_LOAD( "mro_17.u41",   0x0100, 0x0100, CRC(a9e1fb43) SHA1(57dbcfe2438fd090c08594818549aeea6339eab2) )
+=======
+	ROM_LOAD( "mro16.u76",   0x0000, 0x0100, CRC(6cc6695b) SHA1(01ae8450ccc302e1a5ae74230d44f6f531a962e2) ) /* BPROM from TI stamped as J214A2  MRO16 */
+	ROM_LOAD( "mro17.u41",   0x0100, 0x0100, CRC(a9e1fb43) SHA1(57dbcfe2438fd090c08594818549aeea6339eab2) ) /* BPROM from TI stamped as J214A2  MRO17 */
+>>>>>>> upstream/master
 ROM_END
 
 ROM_START( zaxxonb )
 	ROM_REGION( 0x6000, "maincpu", 0 )
+<<<<<<< HEAD
 	ROM_LOAD( "zaxxonb3.u27", 0x0000, 0x2000, CRC(125bca1c) SHA1(f4160966d42e5282736cde8a276204ba8910ca61) )
 	ROM_LOAD( "zaxxonb2.u28", 0x2000, 0x2000, CRC(c088df92) SHA1(c0c6cd8dcf6db65129980331fa9ecc3800b63436) )
 	ROM_LOAD( "zaxxonb1.u29", 0x4000, 0x1000, CRC(e7bdc417) SHA1(209f0d259f60b984c84229bb31af1ef939adc73e) )
@@ -1183,6 +1503,35 @@ ROM_START( zaxxonb )
 	ROM_REGION( 0x0200, "proms", 0 )
 	ROM_LOAD( "zaxxon.u98",   0x0000, 0x0100, CRC(6cc6695b) SHA1(01ae8450ccc302e1a5ae74230d44f6f531a962e2) )
 	ROM_LOAD( "zaxxon.u72",   0x0100, 0x0100, CRC(deaa21f7) SHA1(0cf08fb62f77d93ff7cb883c633e0db35906e11d) )
+=======
+	ROM_LOAD( "jackson_rom3.u27", 0x0000, 0x2000, CRC(125bca1c) SHA1(f4160966d42e5282736cde8a276204ba8910ca61) ) /* Need to verify ALL the labels in this set */
+	ROM_LOAD( "jackson_rom2.u28", 0x2000, 0x2000, CRC(c088df92) SHA1(c0c6cd8dcf6db65129980331fa9ecc3800b63436) ) /* Same data as ROM2 from the Japanese set */
+	ROM_LOAD( "jackson_rom1.u29", 0x4000, 0x1000, CRC(e7bdc417) SHA1(209f0d259f60b984c84229bb31af1ef939adc73e) )
+
+	ROM_REGION( 0x1000, "gfx_tx", 0 )
+	ROM_LOAD( "zaxxon_rom14.u54", 0x0000, 0x0800, CRC(07bf8c52) SHA1(425157a1625b1bd5169c3218b958010bf6af12bb) )
+	ROM_LOAD( "zaxxon_rom15.u55", 0x0800, 0x0800, CRC(c215edcb) SHA1(f1ded2173eb139f48d2ca86c5ef00acbe6c11cd3) )
+
+	ROM_REGION( 0x6000, "gfx_bg", 0 )
+	ROM_LOAD( "zaxxon_rom6.u70",  0x0000, 0x2000, CRC(6e07bb68) SHA1(a002f3441b0f0044615ce71ecbd14edadba16270) )
+	ROM_LOAD( "zaxxon_rom5.u69",  0x2000, 0x2000, CRC(0a5bce6a) SHA1(a86543727389931244ba8a576b543d7ac05a2585) )
+	ROM_LOAD( "zaxxon_rom4.u68",  0x4000, 0x2000, CRC(a5bf1465) SHA1(a8cd27dfb4a606bae8bfddcf936e69e980fb1977) )
+
+	ROM_REGION( 0x6000, "gfx_spr", 0 )
+	ROM_LOAD( "zaxxon_rom11.u59", 0x0000, 0x2000, CRC(eaf0dd4b) SHA1(194e2ca0a806e0cb6bb7cc8341d1fc6f2ea911f6) )
+	ROM_LOAD( "zaxxon_rom12.u60", 0x2000, 0x2000, CRC(1c5369c7) SHA1(af6a5984c3cedfa8c9efcd669f4f205b51a433b2) )
+	ROM_LOAD( "zaxxon_rom13.u61", 0x4000, 0x2000, CRC(ab4e8a9a) SHA1(4ac79cccc30e4adfa878b36101e97e20ac010438) )
+
+	ROM_REGION( 0x8000, "tilemap_dat", 0 )
+	ROM_LOAD( "zaxxon_rom8.u58",  0x0000, 0x2000, CRC(28d65063) SHA1(e1f90716236c61df61bdc6915a8e390cb4dcbf15) )
+	ROM_LOAD( "zaxxon_rom7.u57",  0x2000, 0x2000, CRC(6284c200) SHA1(d26a9049541479b8b19f5aa0690cf4aaa787c9b5) )
+	ROM_LOAD( "zaxxon_rom10.u60", 0x4000, 0x2000, CRC(a95e61fd) SHA1(a0f8c15ff75affa3532abf8f340811cf415421fd) )
+	ROM_LOAD( "zaxxon_rom9.u59",  0x6000, 0x2000, CRC(7e42691f) SHA1(2124363be8f590b74e2b15dd3f90d77dd9ca9528) )
+
+	ROM_REGION( 0x0200, "proms", 0 )
+	ROM_LOAD( "mro16.u76",   0x0000, 0x0100, CRC(6cc6695b) SHA1(01ae8450ccc302e1a5ae74230d44f6f531a962e2) ) /* BPROM from TI stamped as J214A2  MRO16 */
+	ROM_LOAD( "zaxxon.u72",  0x0100, 0x0100, CRC(deaa21f7) SHA1(0cf08fb62f77d93ff7cb883c633e0db35906e11d) )
+>>>>>>> upstream/master
 ROM_END
 
 
@@ -1476,13 +1825,21 @@ DRIVER_INIT_MEMBER(zaxxon_state,zaxxonj)
     (e.g. 0xc0 is XORed with H)
     therefore in the following tables we only keep track of A, B, C, D, E, F, G and H.
 */
+<<<<<<< HEAD
 	static const UINT8 data_xortable[2][8] =
+=======
+	static const uint8_t data_xortable[2][8] =
+>>>>>>> upstream/master
 	{
 		{ 0x0a,0x0a,0x22,0x22,0xaa,0xaa,0x82,0x82 },    /* ...............0 */
 		{ 0xa0,0xaa,0x28,0x22,0xa0,0xaa,0x28,0x22 },    /* ...............1 */
 	};
 
+<<<<<<< HEAD
 	static const UINT8 opcode_xortable[8][8] =
+=======
+	static const uint8_t opcode_xortable[8][8] =
+>>>>>>> upstream/master
 	{
 		{ 0x8a,0x8a,0x02,0x02,0x8a,0x8a,0x02,0x02 },    /* .......0...0...0 */
 		{ 0x80,0x80,0x08,0x08,0xa8,0xa8,0x20,0x20 },    /* .......0...0...1 */
@@ -1494,12 +1851,20 @@ DRIVER_INIT_MEMBER(zaxxon_state,zaxxonj)
 		{ 0x02,0x08,0x2a,0x20,0x20,0x2a,0x08,0x02 }     /* .......1...1...1 */
 	};
 
+<<<<<<< HEAD
 	UINT8 *rom = memregion("maincpu")->base();
+=======
+	uint8_t *rom = memregion("maincpu")->base();
+>>>>>>> upstream/master
 
 	for (int A = 0x0000; A < 0x6000; A++)
 	{
 		int i,j;
+<<<<<<< HEAD
 		UINT8 src;
+=======
+		uint8_t src;
+>>>>>>> upstream/master
 
 		src = rom[A];
 
@@ -1522,6 +1887,7 @@ DRIVER_INIT_MEMBER(zaxxon_state,zaxxonj)
 }
 
 
+<<<<<<< HEAD
 DRIVER_INIT_MEMBER(zaxxon_state,szaxxon)
 {
 	static const UINT8 convtable[32][4] =
@@ -1612,6 +1978,17 @@ DRIVER_INIT_MEMBER(zaxxon_state,razmataz)
 	pgmspace.install_read_port(0xc004, 0xc004, 0, 0x18f3, "SW04");
 	pgmspace.install_read_port(0xc008, 0xc008, 0, 0x18f3, "SW08");
 	pgmspace.install_read_port(0xc00c, 0xc00c, 0, 0x18f3, "SW0C");
+=======
+
+DRIVER_INIT_MEMBER(zaxxon_state,razmataz)
+{
+	address_space &pgmspace = m_maincpu->space(AS_PROGRAM);
+
+	/* additional input ports are wired */
+	pgmspace.install_read_port(0xc004, 0xc004, 0x18f3, "SW04");
+	pgmspace.install_read_port(0xc008, 0xc008, 0x18f3, "SW08");
+	pgmspace.install_read_port(0xc00c, 0xc00c, 0x18f3, "SW0C");
+>>>>>>> upstream/master
 
 	/* unknown behavior expected here */
 	pgmspace.install_read_handler(0xc80a, 0xc80a, read8_delegate(FUNC(zaxxon_state::razmataz_counter_r),this));
@@ -1630,6 +2007,7 @@ DRIVER_INIT_MEMBER(zaxxon_state,razmataz)
  *************************************/
 
 /* these games run on standard Zaxxon hardware */
+<<<<<<< HEAD
 GAME( 1982, zaxxon,   0,      zaxxon,   zaxxon, driver_device,   0,        ROT90,  "Sega",    "Zaxxon (set 1)",  MACHINE_IMPERFECT_SOUND | MACHINE_SUPPORTS_SAVE )
 GAME( 1982, zaxxon2,  zaxxon, zaxxon,   zaxxon, driver_device,   0,        ROT90,  "Sega",    "Zaxxon (set 2)",  MACHINE_IMPERFECT_SOUND | MACHINE_SUPPORTS_SAVE )
 GAME( 1982, zaxxon3,  zaxxon, zaxxon,   zaxxon, driver_device,   0,        ROT90,  "Sega",    "Zaxxon (set 3)",  MACHINE_IMPERFECT_SOUND | MACHINE_SUPPORTS_SAVE )
@@ -1652,3 +2030,27 @@ GAME( 1983, ixion,    0,      razmataz, ixion, zaxxon_state,     szaxxon,  ROT27
 GAME( 1983, congo,    0,      congo,    congo, driver_device,    0,        ROT90,  "Sega",    "Congo Bongo (Rev C, 2 board stack)", MACHINE_IMPERFECT_SOUND | MACHINE_SUPPORTS_SAVE )
 GAME( 1983, congoa,   congo,  congo,    congo, driver_device,    0,        ROT90,  "Sega",    "Congo Bongo (Rev C, 3 board stack)", MACHINE_IMPERFECT_SOUND | MACHINE_SUPPORTS_SAVE )
 GAME( 1983, tiptop,   congo,  congo,    congo, driver_device,    0,        ROT90,  "Sega",    "Tip Top (3 board stack)",     MACHINE_IMPERFECT_SOUND | MACHINE_SUPPORTS_SAVE )
+=======
+GAME( 1982, zaxxon,   0,      zaxxon,    zaxxon,   zaxxon_state,   0,        ROT90,  "Sega",    "Zaxxon (set 1, rev D)",        MACHINE_IMPERFECT_SOUND | MACHINE_SUPPORTS_SAVE )
+GAME( 1982, zaxxon2,  zaxxon, zaxxon,    zaxxon,   zaxxon_state,   0,        ROT90,  "Sega",    "Zaxxon (set 2, unknown rev)",  MACHINE_IMPERFECT_SOUND | MACHINE_SUPPORTS_SAVE )
+GAME( 1982, zaxxon3,  zaxxon, zaxxon,    zaxxon,   zaxxon_state,   0,        ROT90,  "Sega",    "Zaxxon (set 3, unknown rev)",  MACHINE_IMPERFECT_SOUND | MACHINE_SUPPORTS_SAVE )
+GAME( 1982, zaxxonj,  zaxxon, szaxxon,   zaxxon,   zaxxon_state,   zaxxonj,  ROT90,  "Sega",    "Zaxxon (Japan)",               MACHINE_IMPERFECT_SOUND | MACHINE_SUPPORTS_SAVE )
+GAME( 1982, zaxxonb,  zaxxon, szaxxon,   zaxxon,   zaxxon_state,   zaxxonj,  ROT90,  "bootleg", "Jackson",                      MACHINE_IMPERFECT_SOUND | MACHINE_SUPPORTS_SAVE )
+
+/* standard Zaxxon hardware but extra sound board plugged into 8255 PPI socket and encrypted cpu */
+GAME( 1982, szaxxon,  0,      szaxxone,  szaxxon,  zaxxon_state,   0,        ROT90,  "Sega",    "Super Zaxxon (315-5013)",  MACHINE_IMPERFECT_SOUND | MACHINE_SUPPORTS_SAVE )
+
+/* standard Zaxxon hardware? but encrypted cpu */
+GAME( 1984, futspy,   0,      futspye,   futspy,   zaxxon_state,   0,        ROT90,  "Sega",    "Future Spy (315-5061)",  MACHINE_IMPERFECT_SOUND | MACHINE_SUPPORTS_SAVE )
+
+/* these games run on modified Zaxxon hardware with no skewing, extra inputs, and a */
+/* G-80 Universal Sound Board */
+GAME( 1983, razmataz, 0,      razmataze, razmataz, zaxxon_state,   razmataz, ROT90,  "Sega",    "Razzmatazz",        MACHINE_IMPERFECT_SOUND | MACHINE_SUPPORTS_SAVE )
+GAME( 1983, ixion,    0,      ixion,     ixion,    zaxxon_state,   0,        ROT270, "Sega",    "Ixion (prototype)", MACHINE_IMPERFECT_SOUND | MACHINE_SUPPORTS_SAVE)
+
+/* these games run on a slightly newer Zaxxon hardware with more ROM space and a */
+/* custom sprite DMA chip */
+GAME( 1983, congo,    0,      congo,     congo,   zaxxon_state,    0,        ROT90,  "Sega",    "Congo Bongo (Rev C, 2 board stack)", MACHINE_IMPERFECT_SOUND | MACHINE_SUPPORTS_SAVE )
+GAME( 1983, congoa,   congo,  congo,     congo,   zaxxon_state,    0,        ROT90,  "Sega",    "Congo Bongo (Rev C, 3 board stack)", MACHINE_IMPERFECT_SOUND | MACHINE_SUPPORTS_SAVE )
+GAME( 1983, tiptop,   congo,  congo,     congo,   zaxxon_state,    0,        ROT90,  "Sega",    "Tip Top (3 board stack)",            MACHINE_IMPERFECT_SOUND | MACHINE_SUPPORTS_SAVE )
+>>>>>>> upstream/master

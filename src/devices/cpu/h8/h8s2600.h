@@ -11,12 +11,20 @@
 
 ***************************************************************************/
 
+<<<<<<< HEAD
 #ifndef __H8S2600_H__
 #define __H8S2600_H__
+=======
+#ifndef MAME_CPU_H8_H8S2600_H
+#define MAME_CPU_H8_H8S2600_H
+
+#pragma once
+>>>>>>> upstream/master
 
 #include "h8s2000.h"
 
 class h8s2600_device : public h8s2000_device {
+<<<<<<< HEAD
 public:
 	h8s2600_device(const machine_config &mconfig, device_type type, const char *name, const char *tag, device_t *owner, UINT32 clock, const char *shortname, const char *source, address_map_delegate map_delegate);
 
@@ -27,6 +35,17 @@ protected:
 
 	virtual void do_exec_full();
 	virtual void do_exec_partial();
+=======
+protected:
+	static const disasm_entry disasm_entries[];
+
+	h8s2600_device(const machine_config &mconfig, device_type type, const char *tag, device_t *owner, uint32_t clock, address_map_delegate map_delegate);
+
+	virtual offs_t disasm_disassemble(std::ostream &stream, offs_t pc, const uint8_t *oprom, const uint8_t *opram, uint32_t options) override;
+
+	virtual void do_exec_full() override;
+	virtual void do_exec_partial() override;
+>>>>>>> upstream/master
 
 #define O(o) void o ## _full(); void o ## _partial()
 	O(clrmac);
@@ -36,4 +55,8 @@ protected:
 #undef O
 };
 
+<<<<<<< HEAD
 #endif
+=======
+#endif // MAME_CPU_H8_H8S2600_H
+>>>>>>> upstream/master

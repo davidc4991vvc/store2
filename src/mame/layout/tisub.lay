@@ -94,6 +94,7 @@
 		</text>
 	</element>
 
+<<<<<<< HEAD
 	<element name="start" defstate="0">
 		<rect state="1">
 			<color red="0.0" green="1.0" blue="0.0" />
@@ -111,6 +112,8 @@
 		</text>
 	</element>
 
+=======
+>>>>>>> upstream/master
 	<element name="unknown" defstate="0">
 		<rect state="1">
 			<color red="0.0" green="0.0" blue="0.0" />

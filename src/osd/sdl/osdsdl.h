@@ -3,15 +3,19 @@
 #ifndef _osdsdl_h_
 #define _osdsdl_h_
 
+<<<<<<< HEAD
 #include "sdlinc.h"
 
 #include "watchdog.h"
 #include "clifront.h"
+=======
+>>>>>>> upstream/master
 #include "modules/lib/osdobj_common.h"
 #include "modules/osdmodule.h"
 #include "modules/font/font_module.h"
 
 //============================================================
+<<<<<<< HEAD
 //  System dependent defines
 //============================================================
 
@@ -33,6 +37,8 @@
 #endif
 
 //============================================================
+=======
+>>>>>>> upstream/master
 //  Defines
 //============================================================
 
@@ -119,6 +125,7 @@ public:
 	const char *keymap_file() const { return value(SDLOPTION_KEYMAP_FILE); }
 
 	// joystick mapping
+<<<<<<< HEAD
 	const char *joy_index(int index) const { std::string temp; return value(strformat(temp, "%s%d", SDLOPTION_JOYINDEX, index).c_str()); }
 	bool sixaxis() const { return bool_value(SDLOPTION_SIXAXIS); }
 
@@ -126,6 +133,13 @@ public:
 	const char *mouse_index(int index) const { std::string temp; return value(strformat(temp, "%s%d", SDLOPTION_MOUSEINDEX, index).c_str()); }
 	const char *keyboard_index(int index) const { std::string temp; return value(strformat(temp, "%s%d", SDLOPTION_KEYBINDEX, index).c_str()); }
 #endif
+=======
+	const char *joy_index(int index) const { return value(string_format("%s%d", SDLOPTION_JOYINDEX, index).c_str()); }
+	bool sixaxis() const { return bool_value(SDLOPTION_SIXAXIS); }
+
+	const char *mouse_index(int index) const { return value(string_format("%s%d", SDLOPTION_MOUSEINDEX, index).c_str()); }
+	const char *keyboard_index(int index) const { return value(string_format("%s%d", SDLOPTION_KEYBINDEX, index).c_str()); }
+>>>>>>> upstream/master
 
 	const char *video_driver() const { return value(SDLOPTION_VIDEODRIVER); }
 	const char *render_driver() const { return value(SDLOPTION_RENDERDRIVER); }
@@ -147,6 +161,7 @@ public:
 	virtual ~sdl_osd_interface();
 
 	// general overridables
+<<<<<<< HEAD
 	virtual void init(running_machine &machine);
 	virtual void update(bool skip_redraw);
 
@@ -180,6 +195,41 @@ private:
 
 	watchdog *m_watchdog;
 
+=======
+	virtual void init(running_machine &machine) override;
+	virtual void update(bool skip_redraw) override;
+
+	// input overridables
+	virtual void customize_input_type_list(simple_list<input_type_entry> &typelist) override;
+
+	virtual void video_register() override;
+
+	virtual bool video_init() override;
+	virtual bool window_init() override;
+
+	virtual void video_exit() override;
+	virtual void window_exit() override;
+
+	// sdl specific
+	void poll_inputs(running_machine &machine);
+	void release_keys();
+	bool should_hide_mouse();
+	void process_events_buf();
+
+	virtual sdl_options &options() override { return m_options; }
+
+protected:
+	virtual void build_slider_list() override;
+	virtual void update_slider_list() override;
+
+private:
+	virtual void osd_exit() override;
+
+	void extract_video_config();
+	void output_oslog(const char *buffer);
+
+	sdl_options &m_options;
+>>>>>>> upstream/master
 };
 
 //============================================================

@@ -2,9 +2,16 @@
 
 #include "StdAfx.h"
 
+<<<<<<< HEAD
 #include "Common/ComTry.h"
 
 #include "Windows/PropVariant.h"
+=======
+#include "../../../Common/ComTry.h"
+
+#include "../../../Windows/FileName.h"
+#include "../../../Windows/PropVariant.h"
+>>>>>>> upstream/master
 
 #include "../../Common/FileStreams.h"
 
@@ -39,12 +46,22 @@ STDMETHODIMP COpenCallbackImp::GetProperty(PROPID propID, PROPVARIANT *value)
   COM_TRY_BEGIN
   NCOM::CPropVariant prop;
   if (_subArchiveMode)
+<<<<<<< HEAD
     switch(propID)
     {
       case kpidName: prop = _subArchiveName; break;
     }
   else
     switch(propID)
+=======
+    switch (propID)
+    {
+      case kpidName: prop = _subArchiveName; break;
+      // case kpidSize:  prop = _subArchiveSize; break; // we don't use it now
+    }
+  else
+    switch (propID)
+>>>>>>> upstream/master
     {
       case kpidName:  prop = _fileInfo.Name; break;
       case kpidIsDir:  prop = _fileInfo.IsDir(); break;
@@ -59,6 +76,7 @@ STDMETHODIMP COpenCallbackImp::GetProperty(PROPID propID, PROPVARIANT *value)
   COM_TRY_END
 }
 
+<<<<<<< HEAD
 int COpenCallbackImp::FindName(const UString &name)
 {
   for (int i = 0; i < FileNames.Size(); i++)
@@ -86,14 +104,61 @@ struct CInFileStreamVol: public CInFileStream
 STDMETHODIMP COpenCallbackImp::GetStream(const wchar_t *name, IInStream **inStream)
 {
   COM_TRY_BEGIN
+=======
+struct CInFileStreamVol: public CInFileStream
+{
+  int FileNameIndex;
+  COpenCallbackImp *OpenCallbackImp;
+  CMyComPtr<IArchiveOpenCallback> OpenCallbackRef;
+ 
+  ~CInFileStreamVol()
+  {
+    if (OpenCallbackRef)
+      OpenCallbackImp->FileNames_WasUsed[FileNameIndex] = false;
+  }
+};
+
+
+// from ArchiveExtractCallback.cpp
+bool IsSafePath(const UString &path);
+
+STDMETHODIMP COpenCallbackImp::GetStream(const wchar_t *name, IInStream **inStream)
+{
+  COM_TRY_BEGIN
+  *inStream = NULL;
+  
+>>>>>>> upstream/master
   if (_subArchiveMode)
     return S_FALSE;
   if (Callback)
   {
     RINOK(Callback->Open_CheckBreak());
   }
+<<<<<<< HEAD
   *inStream = NULL;
   FString fullPath = _folderPrefix + us2fs(name);
+=======
+
+  UString name2 = name;
+
+  
+  #ifndef _SFX
+  
+  #ifdef _WIN32
+  name2.Replace(L'/', WCHAR_PATH_SEPARATOR);
+  #endif
+
+  // if (!allowAbsVolPaths)
+  if (!IsSafePath(name2))
+    return S_FALSE;
+  
+  #endif
+
+
+  FString fullPath;
+  if (!NFile::NName::GetFullPath(_folderPrefix, us2fs(name2), fullPath))
+    return S_FALSE;
+>>>>>>> upstream/master
   if (!_fileInfo.Find(fullPath))
     return S_FALSE;
   if (_fileInfo.IsDir())
@@ -101,6 +166,7 @@ STDMETHODIMP COpenCallbackImp::GetStream(const wchar_t *name, IInStream **inStre
   CInFileStreamVol *inFile = new CInFileStreamVol;
   CMyComPtr<IInStream> inStreamTemp = inFile;
   if (!inFile->Open(fullPath))
+<<<<<<< HEAD
     return ::GetLastError();
   *inStream = inStreamTemp.Detach();
   inFile->Name = name;
@@ -108,6 +174,22 @@ STDMETHODIMP COpenCallbackImp::GetStream(const wchar_t *name, IInStream **inStre
   inFile->OpenCallbackRef = this;
   FileNames.Add(name);
   TotalSize += _fileInfo.Size;
+=======
+  {
+    DWORD lastError = ::GetLastError();
+    if (lastError == 0)
+      return E_FAIL;
+    return HRESULT_FROM_WIN32(lastError);
+  }
+
+  FileSizes.Add(_fileInfo.Size);
+  FileNames.Add(name2);
+  inFile->FileNameIndex = FileNames_WasUsed.Add(true);
+  inFile->OpenCallbackImp = this;
+  inFile->OpenCallbackRef = this;
+  // TotalSize += _fileInfo.Size;
+  *inStream = inStreamTemp.Detach();
+>>>>>>> upstream/master
   return S_OK;
   COM_TRY_END
 }
@@ -125,6 +207,10 @@ STDMETHODIMP COpenCallbackImp::CryptoGetTextPassword(BSTR *password)
   }
   if (!Callback)
     return E_NOTIMPL;
+<<<<<<< HEAD
+=======
+  PasswordWasAsked = true;
+>>>>>>> upstream/master
   return Callback->Open_CryptoGetTextPassword(password);
   COM_TRY_END
 }

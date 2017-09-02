@@ -18,6 +18,7 @@
 //  arcadia_rom_device - constructor
 //-------------------------------------------------
 
+<<<<<<< HEAD
 const device_type ARCADIA_ROM_STD = &device_creator<arcadia_rom_device>;
 const device_type ARCADIA_ROM_GOLF = &device_creator<arcadia_golf_device>;
 
@@ -36,6 +37,24 @@ arcadia_rom_device::arcadia_rom_device(const machine_config &mconfig, const char
 
 arcadia_golf_device::arcadia_golf_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
 					: arcadia_rom_device(mconfig, ARCADIA_ROM_GOLF, "Emerson Arcadia Golf Cart", tag, owner, clock, "arcadia_golf", __FILE__)
+=======
+DEFINE_DEVICE_TYPE(ARCADIA_ROM_STD,  arcadia_rom_device,  "arcadia_rom",  "Emerson Arcadia Standard Carts")
+DEFINE_DEVICE_TYPE(ARCADIA_ROM_GOLF, arcadia_golf_device, "arcadia_golf", "Emerson Arcadia Golf Cart")
+
+
+arcadia_rom_device::arcadia_rom_device(const machine_config &mconfig, device_type type, const char *tag, device_t *owner, uint32_t clock)
+	: device_t(mconfig, type, tag, owner, clock), device_arcadia_cart_interface(mconfig, *this)
+{
+}
+
+arcadia_rom_device::arcadia_rom_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: arcadia_rom_device(mconfig, ARCADIA_ROM_STD, tag, owner, clock)
+{
+}
+
+arcadia_golf_device::arcadia_golf_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: arcadia_rom_device(mconfig, ARCADIA_ROM_GOLF, tag, owner, clock)
+>>>>>>> upstream/master
 {
 }
 

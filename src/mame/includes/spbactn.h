@@ -1,8 +1,17 @@
 // license:BSD-3-Clause
+<<<<<<< HEAD
 // copyright-holders:David Haywood, Stephh
 
 #include "video/tecmo_spr.h"
 #include "video/tecmo_mix.h"
+=======
+// copyright-holders:David Haywood
+
+#include "machine/gen_latch.h"
+#include "video/tecmo_spr.h"
+#include "video/tecmo_mix.h"
+#include "screen.h"
+>>>>>>> upstream/master
 
 class spbactn_state : public driver_device
 {
@@ -16,6 +25,10 @@ public:
 		m_palette(*this, "palette"),
 		m_sprgen(*this, "spritegen"),
 		m_mixer(*this, "mixer"),
+<<<<<<< HEAD
+=======
+		m_soundlatch(*this, "soundlatch"),
+>>>>>>> upstream/master
 		m_bgvideoram(*this, "bgvideoram"),
 		m_fgvideoram(*this, "fgvideoram"),
 		m_spvideoram(*this, "spvideoram"),
@@ -30,12 +43,22 @@ public:
 	required_device<palette_device> m_palette;
 	required_device<tecmo_spr_device> m_sprgen;
 	required_device<tecmo_mix_device> m_mixer;
+<<<<<<< HEAD
 
 	required_shared_ptr<UINT16> m_bgvideoram;
 	required_shared_ptr<UINT16> m_fgvideoram;
 	required_shared_ptr<UINT16> m_spvideoram;
 	optional_shared_ptr<UINT8> m_extraram;
 	optional_shared_ptr<UINT8> m_extraram2;
+=======
+	required_device<generic_latch_8_device> m_soundlatch;
+
+	required_shared_ptr<uint16_t> m_bgvideoram;
+	required_shared_ptr<uint16_t> m_fgvideoram;
+	required_shared_ptr<uint16_t> m_spvideoram;
+	optional_shared_ptr<uint8_t> m_extraram;
+	optional_shared_ptr<uint8_t> m_extraram2;
+>>>>>>> upstream/master
 
 	tilemap_t    *m_bg_tilemap;
 	tilemap_t    *m_fg_tilemap;
@@ -57,8 +80,11 @@ public:
 	bitmap_ind16 m_sprite_bitmap;
 
 
+<<<<<<< HEAD
 	DECLARE_WRITE16_MEMBER(soundcommand_w);
 
+=======
+>>>>>>> upstream/master
 	DECLARE_WRITE16_MEMBER( spbatnp_90002_w );
 	DECLARE_WRITE16_MEMBER( spbatnp_90006_w );
 	DECLARE_WRITE16_MEMBER( spbatnp_9000a_w );
@@ -73,8 +99,13 @@ public:
 
 
 	//virtual void video_start();
+<<<<<<< HEAD
 	UINT32 screen_update_spbactn(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect);
 	UINT32 screen_update_spbactnp(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect);
+=======
+	uint32_t screen_update_spbactn(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect);
+	uint32_t screen_update_spbactnp(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect);
+>>>>>>> upstream/master
 	int draw_video(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect, bool alt_sprites);
 
 	// temp hack

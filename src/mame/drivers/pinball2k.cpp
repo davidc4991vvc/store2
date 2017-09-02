@@ -20,11 +20,22 @@
 
 #include "emu.h"
 #include "cpu/i386/i386.h"
+<<<<<<< HEAD
 #include "machine/lpci.h"
 #include "machine/pcshare.h"
 #include "machine/pckeybrd.h"
 #include "machine/idectrl.h"
 #include "video/ramdac.h"
+=======
+#include "machine/idectrl.h"
+#include "machine/lpci.h"
+#include "machine/pckeybrd.h"
+#include "machine/pcshare.h"
+#include "video/ramdac.h"
+#include "screen.h"
+#include "speaker.h"
+
+>>>>>>> upstream/master
 
 class pinball2k_state : public pcat_base_state
 {
@@ -39,6 +50,7 @@ public:
 		m_screen(*this, "screen"),
 		m_palette(*this, "palette") { }
 
+<<<<<<< HEAD
 	required_shared_ptr<UINT32> m_main_ram;
 	required_shared_ptr<UINT32> m_cga_ram;
 	required_shared_ptr<UINT32> m_bios_ram;
@@ -65,11 +77,43 @@ public:
 	UINT8 m_parallel_pointer;
 	UINT8 m_parallel_latched;
 	UINT32 m_parport;
+=======
+	required_shared_ptr<uint32_t> m_main_ram;
+	required_shared_ptr<uint32_t> m_cga_ram;
+	required_shared_ptr<uint32_t> m_bios_ram;
+	required_shared_ptr<uint32_t> m_vram;
+	required_device<gfxdecode_device> m_gfxdecode;
+	required_device<screen_device> m_screen;
+	required_device<palette_device> m_palette;
+	uint8_t m_pal[768];
+
+
+	uint32_t m_disp_ctrl_reg[256/4];
+	int m_frame_width;
+	int m_frame_height;
+
+	uint32_t m_memory_ctrl_reg[256/4];
+	int m_pal_index;
+
+	uint32_t m_biu_ctrl_reg[256/4];
+
+	uint8_t m_mediagx_config_reg_sel;
+	uint8_t m_mediagx_config_regs[256];
+
+	//uint8_t m_controls_data;
+	uint8_t m_parallel_pointer;
+	uint8_t m_parallel_latched;
+	uint32_t m_parport;
+>>>>>>> upstream/master
 	//int m_control_num;
 	//int m_control_num2;
 	//int m_control_read;
 
+<<<<<<< HEAD
 	UINT32 m_cx5510_regs[256/4];
+=======
+	uint32_t m_cx5510_regs[256/4];
+>>>>>>> upstream/master
 
 	DECLARE_READ32_MEMBER(disp_ctrl_r);
 	DECLARE_WRITE32_MEMBER(disp_ctrl_w);
@@ -77,11 +121,16 @@ public:
 	DECLARE_WRITE32_MEMBER(memory_ctrl_w);
 	DECLARE_READ32_MEMBER(biu_ctrl_r);
 	DECLARE_WRITE32_MEMBER(biu_ctrl_w);
+<<<<<<< HEAD
 	DECLARE_WRITE32_MEMBER(bios_ram_w);
 	DECLARE_READ32_MEMBER(parallel_port_r);
 	DECLARE_WRITE32_MEMBER(parallel_port_w);
 	DECLARE_READ32_MEMBER(ad1847_r);
 	DECLARE_WRITE32_MEMBER(ad1847_w);
+=======
+	DECLARE_READ32_MEMBER(parallel_port_r);
+	DECLARE_WRITE32_MEMBER(parallel_port_w);
+>>>>>>> upstream/master
 	DECLARE_READ8_MEMBER(io20_r);
 	DECLARE_WRITE8_MEMBER(io20_w);
 	DECLARE_READ32_MEMBER(port400_r);
@@ -89,10 +138,17 @@ public:
 	DECLARE_READ32_MEMBER(port800_r);
 	DECLARE_WRITE32_MEMBER(port800_w);
 	DECLARE_DRIVER_INIT(pinball2k);
+<<<<<<< HEAD
 	virtual void machine_start();
 	virtual void machine_reset();
 	virtual void video_start();
 	UINT32 screen_update_mediagx(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect);
+=======
+	virtual void machine_start() override;
+	virtual void machine_reset() override;
+	virtual void video_start() override;
+	uint32_t screen_update_mediagx(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect);
+>>>>>>> upstream/master
 	void draw_char(bitmap_rgb32 &bitmap, const rectangle &cliprect, gfx_element *gfx, int ch, int att, int x, int y);
 	void draw_framebuffer(bitmap_rgb32 &bitmap, const rectangle &cliprect);
 	void draw_cga(bitmap_rgb32 &bitmap, const rectangle &cliprect);
@@ -152,7 +208,11 @@ void pinball2k_state::video_start()
 void pinball2k_state::draw_char(bitmap_rgb32 &bitmap, const rectangle &cliprect, gfx_element *gfx, int ch, int att, int x, int y)
 {
 	int i,j;
+<<<<<<< HEAD
 	const UINT8 *dp;
+=======
+	const uint8_t *dp;
+>>>>>>> upstream/master
 	int index = 0;
 	const pen_t *pens = m_palette->pens();
 
@@ -160,10 +220,17 @@ void pinball2k_state::draw_char(bitmap_rgb32 &bitmap, const rectangle &cliprect,
 
 	for (j=y; j < y+8; j++)
 	{
+<<<<<<< HEAD
 		UINT32 *p = &bitmap.pix32(j);
 		for (i=x; i < x+8; i++)
 		{
 			UINT8 pen = dp[index++];
+=======
+		uint32_t *p = &bitmap.pix32(j);
+		for (i=x; i < x+8; i++)
+		{
+			uint8_t pen = dp[index++];
+>>>>>>> upstream/master
 			if (pen)
 				p[i] = pens[gfx->colorbase() + (att & 0xf)];
 			else
@@ -204,6 +271,7 @@ void pinball2k_state::draw_framebuffer(bitmap_rgb32 &bitmap, const rectangle &cl
 
 	if (m_disp_ctrl_reg[DC_OUTPUT_CFG] & 0x1)        // 8-bit mode
 	{
+<<<<<<< HEAD
 		UINT8 *framebuf = (UINT8*)&m_vram[m_disp_ctrl_reg[DC_FB_ST_OFFSET]/4];
 		UINT8 *pal = m_pal;
 
@@ -211,6 +279,15 @@ void pinball2k_state::draw_framebuffer(bitmap_rgb32 &bitmap, const rectangle &cl
 		{
 			UINT32 *p = &bitmap.pix32(j);
 			UINT8 *si = &framebuf[j * line_delta];
+=======
+		uint8_t *framebuf = (uint8_t*)&m_vram[m_disp_ctrl_reg[DC_FB_ST_OFFSET]/4];
+		uint8_t *pal = m_pal;
+
+		for (j=0; j < m_frame_height; j++)
+		{
+			uint32_t *p = &bitmap.pix32(j);
+			uint8_t *si = &framebuf[j * line_delta];
+>>>>>>> upstream/master
 			for (i=0; i < m_frame_width; i++)
 			{
 				int c = *si++;
@@ -224,18 +301,30 @@ void pinball2k_state::draw_framebuffer(bitmap_rgb32 &bitmap, const rectangle &cl
 	}
 	else            // 16-bit
 	{
+<<<<<<< HEAD
 		UINT16 *framebuf = (UINT16*)&m_vram[m_disp_ctrl_reg[DC_FB_ST_OFFSET]/4];
+=======
+		uint16_t *framebuf = (uint16_t*)&m_vram[m_disp_ctrl_reg[DC_FB_ST_OFFSET]/4];
+>>>>>>> upstream/master
 
 		// RGB 5-6-5 mode
 		if ((m_disp_ctrl_reg[DC_OUTPUT_CFG] & 0x2) == 0)
 		{
 			for (j=0; j < m_frame_height; j++)
 			{
+<<<<<<< HEAD
 				UINT32 *p = &bitmap.pix32(j);
 				UINT16 *si = &framebuf[j * (line_delta/2)];
 				for (i=0; i < m_frame_width; i++)
 				{
 					UINT16 c = *si++;
+=======
+				uint32_t *p = &bitmap.pix32(j);
+				uint16_t *si = &framebuf[j * (line_delta/2)];
+				for (i=0; i < m_frame_width; i++)
+				{
+					uint16_t c = *si++;
+>>>>>>> upstream/master
 					int r = ((c >> 11) & 0x1f) << 3;
 					int g = ((c >> 5) & 0x3f) << 2;
 					int b = (c & 0x1f) << 3;
@@ -249,11 +338,19 @@ void pinball2k_state::draw_framebuffer(bitmap_rgb32 &bitmap, const rectangle &cl
 		{
 			for (j=0; j < m_frame_height; j++)
 			{
+<<<<<<< HEAD
 				UINT32 *p = &bitmap.pix32(j);
 				UINT16 *si = &framebuf[j * (line_delta/2)];
 				for (i=0; i < m_frame_width; i++)
 				{
 					UINT16 c = *si++;
+=======
+				uint32_t *p = &bitmap.pix32(j);
+				uint16_t *si = &framebuf[j * (line_delta/2)];
+				for (i=0; i < m_frame_width; i++)
+				{
+					uint16_t c = *si++;
+>>>>>>> upstream/master
 					int r = ((c >> 10) & 0x1f) << 3;
 					int g = ((c >> 5) & 0x1f) << 3;
 					int b = (c & 0x1f) << 3;
@@ -269,7 +366,11 @@ void pinball2k_state::draw_cga(bitmap_rgb32 &bitmap, const rectangle &cliprect)
 {
 	int i, j;
 	gfx_element *gfx = m_gfxdecode->gfx(0);
+<<<<<<< HEAD
 	UINT32 *cga = m_cga_ram;
+=======
+	uint32_t *cga = m_cga_ram;
+>>>>>>> upstream/master
 	int index = 0;
 
 	for (j=0; j < 25; j++)
@@ -288,7 +389,11 @@ void pinball2k_state::draw_cga(bitmap_rgb32 &bitmap, const rectangle &cliprect)
 	}
 }
 
+<<<<<<< HEAD
 UINT32 pinball2k_state::screen_update_mediagx(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect)
+=======
+uint32_t pinball2k_state::screen_update_mediagx(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect)
+>>>>>>> upstream/master
 {
 	bitmap.fill(0, cliprect);
 
@@ -303,7 +408,11 @@ UINT32 pinball2k_state::screen_update_mediagx(screen_device &screen, bitmap_rgb3
 
 READ32_MEMBER(pinball2k_state::disp_ctrl_r)
 {
+<<<<<<< HEAD
 	UINT32 r = m_disp_ctrl_reg[offset];
+=======
+	uint32_t r = m_disp_ctrl_reg[offset];
+>>>>>>> upstream/master
 
 	switch (offset)
 	{
@@ -394,7 +503,11 @@ WRITE32_MEMBER(pinball2k_state::bios_ram_w)
 
 READ8_MEMBER(pinball2k_state::io20_r)
 {
+<<<<<<< HEAD
 	UINT8 r = 0;
+=======
+	uint8_t r = 0;
+>>>>>>> upstream/master
 
 	// 0x22, 0x23, Cyrix configuration registers
 	if (offset == 0x00)
@@ -440,7 +553,11 @@ WRITE32_MEMBER(pinball2k_state::port800_w)
 
 READ32_MEMBER(pinball2k_state::parallel_port_r)
 {
+<<<<<<< HEAD
 	UINT32 r = 0;
+=======
+	uint32_t r = 0;
+>>>>>>> upstream/master
 
 	return r;
 }
@@ -449,7 +566,11 @@ WRITE32_MEMBER(pinball2k_state::parallel_port_w)
 {
 }
 
+<<<<<<< HEAD
 static UINT32 cx5510_pci_r(device_t *busdevice, device_t *device, int function, int reg, UINT32 mem_mask)
+=======
+static uint32_t cx5510_pci_r(device_t *busdevice, device_t *device, int function, int reg, uint32_t mem_mask)
+>>>>>>> upstream/master
 {
 	pinball2k_state *state = busdevice->machine().driver_data<pinball2k_state>();
 
@@ -462,7 +583,11 @@ static UINT32 cx5510_pci_r(device_t *busdevice, device_t *device, int function, 
 	return state->m_cx5510_regs[reg/4];
 }
 
+<<<<<<< HEAD
 static void cx5510_pci_w(device_t *busdevice, device_t *device, int function, int reg, UINT32 data, UINT32 mem_mask)
+=======
+static void cx5510_pci_w(device_t *busdevice, device_t *device, int function, int reg, uint32_t data, uint32_t mem_mask)
+>>>>>>> upstream/master
 {
 	pinball2k_state *state = busdevice->machine().driver_data<pinball2k_state>();
 
@@ -581,17 +706,29 @@ void pinball2k_state::machine_start()
 
 void pinball2k_state::machine_reset()
 {
+<<<<<<< HEAD
 	UINT8 *rom = memregion("bios")->base();
+=======
+	uint8_t *rom = memregion("bios")->base();
+>>>>>>> upstream/master
 
 	memcpy(m_bios_ram, rom, 0x40000);
 	m_maincpu->reset();
 }
 
+<<<<<<< HEAD
 static ADDRESS_MAP_START( ramdac_map, AS_0, 8, pinball2k_state )
 	AM_RANGE(0x000, 0x3ff) AM_DEVREADWRITE("ramdac",ramdac_device,ramdac_pal_r,ramdac_rgb666_w)
 ADDRESS_MAP_END
 
 static MACHINE_CONFIG_START( mediagx, pinball2k_state )
+=======
+static ADDRESS_MAP_START( ramdac_map, 0, 8, pinball2k_state )
+	AM_RANGE(0x000, 0x3ff) AM_DEVREADWRITE("ramdac",ramdac_device,ramdac_pal_r,ramdac_rgb666_w)
+ADDRESS_MAP_END
+
+static MACHINE_CONFIG_START( mediagx )
+>>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", MEDIAGX, 166000000)
@@ -602,9 +739,15 @@ static MACHINE_CONFIG_START( mediagx, pinball2k_state )
 	MCFG_FRAGMENT_ADD( pcat_common )
 
 	MCFG_PCI_BUS_LEGACY_ADD("pcibus", 0)
+<<<<<<< HEAD
 	MCFG_PCI_BUS_LEGACY_DEVICE(18, NULL, cx5510_pci_r, cx5510_pci_w)
 
 	MCFG_IDE_CONTROLLER_ADD("ide", ata_devices, "hdd", NULL, true)
+=======
+	MCFG_PCI_BUS_LEGACY_DEVICE(18, nullptr, cx5510_pci_r, cx5510_pci_w)
+
+	MCFG_IDE_CONTROLLER_ADD("ide", ata_devices, "hdd", nullptr, true)
+>>>>>>> upstream/master
 	MCFG_ATA_INTERFACE_IRQ_HANDLER(DEVWRITELINE("pic8259_2", pic8259_device, ir6_w))
 
 	MCFG_RAMDAC_ADD("ramdac", ramdac_map, "palette")

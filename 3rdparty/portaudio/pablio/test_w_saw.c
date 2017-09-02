@@ -1,5 +1,9 @@
 /*
+<<<<<<< HEAD
  * $Id: test_w_saw.c 1083 2006-08-23 07:30:49Z rossb $
+=======
+ * $Id$
+>>>>>>> upstream/master
  * test_w_saw.c
  * Generate stereo sawtooth waveforms.
  *

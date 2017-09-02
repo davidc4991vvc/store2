@@ -6,6 +6,7 @@
 
 **********************************************************************/
 
+<<<<<<< HEAD
 #pragma once
 
 #ifndef __SNES_CARTS_H__
@@ -24,8 +25,19 @@
 #include "sufami.h"
 #include "upd.h"
 #include "event.h"
+=======
+#ifndef MAME_BUS_SNES_SNES_CARTS_H
+#define MAME_BUS_SNES_SNES_CARTS_H
+
+#pragma once
+
+>>>>>>> upstream/master
 
 // supported devices
 SLOT_INTERFACE_EXTERN(snes_cart);
 
+<<<<<<< HEAD
 #endif // __SNES_CARTS_H__
+=======
+#endif // MAME_BUS_SNES_SNES_CARTS_H
+>>>>>>> upstream/master

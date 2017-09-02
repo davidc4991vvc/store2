@@ -76,7 +76,11 @@ void taitoh_state::syvalion_draw_sprites( bitmap_ind16 &bitmap, const rectangle 
 	/* Y chain size is 16/32?/64/64? pixels. X chain size
 	   is always 64 pixels. */
 
+<<<<<<< HEAD
 	address_space &space = machine().driver_data()->generic_space();
+=======
+	address_space &space = machine().dummy_space();
+>>>>>>> upstream/master
 	static const int size[] = { 1, 2, 4, 4 };
 	int x0, y0, x, y, dx, ex, zx;
 	int ysize;
@@ -169,7 +173,11 @@ void taitoh_state::recordbr_draw_sprites( bitmap_ind16 &bitmap, const rectangle 
 	/* Y chain size is 16/32?/64/64? pixels. X chain size
 	   is always 64 pixels. */
 
+<<<<<<< HEAD
 	address_space &space = machine().driver_data()->generic_space();
+=======
+	address_space &space = machine().dummy_space();
+>>>>>>> upstream/master
 	static const int size[] = { 1, 2, 4, 4 };
 	int x0, y0, x, y, dx, dy, ex, ey, zx, zy;
 	int ysize;
@@ -281,7 +289,11 @@ void taitoh_state::dleague_draw_sprites( bitmap_ind16 &bitmap, const rectangle &
 	/* Y chain size is 16/32?/64/64? pixels. X chain size
 	   is always 64 pixels. */
 
+<<<<<<< HEAD
 	address_space &space = machine().driver_data()->generic_space();
+=======
+	address_space &space = machine().dummy_space();
+>>>>>>> upstream/master
 	static const int size[] = { 1, 2, 4, 4 };
 	int x0, y0, x, y, dx, ex, zx;
 	int ysize;
@@ -392,7 +404,11 @@ void taitoh_state::taitoh_log_vram()
 
 /**************************************************************************/
 
+<<<<<<< HEAD
 UINT32 taitoh_state::screen_update_syvalion(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+=======
+uint32_t taitoh_state::screen_update_syvalion(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+>>>>>>> upstream/master
 {
 	m_tc0080vco->tilemap_update();
 
@@ -409,7 +425,11 @@ UINT32 taitoh_state::screen_update_syvalion(screen_device &screen, bitmap_ind16 
 }
 
 
+<<<<<<< HEAD
 UINT32 taitoh_state::screen_update_recordbr(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+=======
+uint32_t taitoh_state::screen_update_recordbr(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+>>>>>>> upstream/master
 {
 	m_tc0080vco->tilemap_update();
 
@@ -438,7 +458,11 @@ UINT32 taitoh_state::screen_update_recordbr(screen_device &screen, bitmap_ind16 
 }
 
 
+<<<<<<< HEAD
 UINT32 taitoh_state::screen_update_dleague(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+=======
+uint32_t taitoh_state::screen_update_dleague(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+>>>>>>> upstream/master
 {
 	m_tc0080vco->tilemap_update();
 

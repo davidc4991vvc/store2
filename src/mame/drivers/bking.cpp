@@ -1,5 +1,10 @@
+<<<<<<< HEAD
 // license:???
 // copyright-holders:Ed Mueller, Mike Balfour, Zsolt Vasvari
+=======
+// license:BSD-3-Clause
+// copyright-holders:Mike Balfour, Zsolt Vasvari
+>>>>>>> upstream/master
 /***************************************************************************
 
 
@@ -18,26 +23,47 @@ DIP Locations verified for:
 ***************************************************************************/
 
 #include "emu.h"
+<<<<<<< HEAD
 #include "cpu/z80/z80.h"
 #include "cpu/m6805/m6805.h"
 #include "sound/ay8910.h"
 #include "sound/dac.h"
 #include "includes/bking.h"
+=======
+#include "includes/bking.h"
+
+#include "cpu/m6805/m6805.h"
+#include "cpu/z80/z80.h"
+#include "machine/watchdog.h"
+#include "sound/ay8910.h"
+#include "sound/dac.h"
+#include "sound/volt_reg.h"
+#include "speaker.h"
+>>>>>>> upstream/master
 
 
 READ8_MEMBER(bking_state::bking_sndnmi_disable_r)
 {
+<<<<<<< HEAD
 	m_sound_nmi_enable = 0;
+=======
+	m_soundnmi->in_w<1>(0);
+>>>>>>> upstream/master
 	return 0;
 }
 
 WRITE8_MEMBER(bking_state::bking_sndnmi_enable_w)
 {
+<<<<<<< HEAD
 	m_sound_nmi_enable = 1;
+=======
+	m_soundnmi->in_w<1>(1);
+>>>>>>> upstream/master
 }
 
 WRITE8_MEMBER(bking_state::bking_soundlatch_w)
 {
+<<<<<<< HEAD
 	int i, code = 0;
 
 	for (i = 0;i < 8;i++)
@@ -47,6 +73,9 @@ WRITE8_MEMBER(bking_state::bking_soundlatch_w)
 	soundlatch_byte_w(space, offset, code);
 	if (m_sound_nmi_enable)
 		m_audiocpu->set_input_line(INPUT_LINE_NMI, PULSE_LINE);
+=======
+	m_soundlatch->write(space, offset, BITSWAP8(data, 0, 1, 2, 3, 4, 5, 6, 7));
+>>>>>>> upstream/master
 }
 
 WRITE8_MEMBER(bking_state::bking3_addr_l_w)
@@ -61,7 +90,11 @@ WRITE8_MEMBER(bking_state::bking3_addr_h_w)
 
 READ8_MEMBER(bking_state::bking3_extrarom_r)
 {
+<<<<<<< HEAD
 	UINT8 *rom = memregion("user2")->base();
+=======
+	uint8_t *rom = memregion("user2")->base();
+>>>>>>> upstream/master
 	return rom[m_addr_h * 256 + m_addr_l];
 }
 
@@ -76,6 +109,18 @@ READ8_MEMBER(bking_state::bking3_ext_check_r)
 	return 0x31; //no "bad rom.", no "bad ext."
 }
 
+<<<<<<< HEAD
+=======
+READ8_MEMBER(bking_state::bking3_mcu_status_r)
+{
+	// bit 0 = when 1, MCU is ready to receive data from main CPU
+	// bit 1 = when 1, MCU has sent data to the main CPU
+	return
+		((CLEAR_LINE == m_bmcu->host_semaphore_r()) ? 0x01 : 0x00) |
+		((CLEAR_LINE != m_bmcu->mcu_semaphore_r()) ? 0x02 : 0x00);
+}
+
+>>>>>>> upstream/master
 static ADDRESS_MAP_START( bking_map, AS_PROGRAM, 8, bking_state )
 	AM_RANGE(0x0000, 0x7fff) AM_ROM
 	AM_RANGE(0x8000, 0x83ff) AM_RAM
@@ -91,7 +136,11 @@ static ADDRESS_MAP_START( bking_io_map, AS_IO, 8, bking_state )
 	AM_RANGE(0x04, 0x04) AM_READ_PORT("DSWC") AM_WRITE(bking_xld3_w)
 	AM_RANGE(0x05, 0x05) AM_READWRITE(bking_input_port_5_r, bking_yld3_w)
 	AM_RANGE(0x06, 0x06) AM_READWRITE(bking_input_port_6_r, bking_msk_w)
+<<<<<<< HEAD
 	AM_RANGE(0x07, 0x07) AM_WRITE(watchdog_reset_w)
+=======
+	AM_RANGE(0x07, 0x07) AM_DEVWRITE("watchdog", watchdog_timer_device, reset_w)
+>>>>>>> upstream/master
 	AM_RANGE(0x08, 0x08) AM_WRITE(bking_cont1_w)
 	AM_RANGE(0x09, 0x09) AM_WRITE(bking_cont2_w)
 	AM_RANGE(0x0a, 0x0a) AM_WRITE(bking_cont3_w)
@@ -110,7 +159,11 @@ static ADDRESS_MAP_START( bking3_io_map, AS_IO, 8, bking_state )
 	AM_RANGE(0x04, 0x04) AM_READ_PORT("DSWC") AM_WRITE(bking_xld3_w)
 	AM_RANGE(0x05, 0x05) AM_READWRITE(bking_input_port_5_r, bking_yld3_w)
 	AM_RANGE(0x06, 0x06) AM_READWRITE(bking_input_port_6_r, bking_msk_w)
+<<<<<<< HEAD
 	AM_RANGE(0x07, 0x07) AM_WRITE(watchdog_reset_w)
+=======
+	AM_RANGE(0x07, 0x07) AM_DEVWRITE("watchdog", watchdog_timer_device, reset_w)
+>>>>>>> upstream/master
 	AM_RANGE(0x08, 0x08) AM_WRITE(bking_cont1_w)
 	AM_RANGE(0x09, 0x09) AM_WRITE(bking_cont2_w)
 	AM_RANGE(0x0a, 0x0a) AM_WRITE(bking_cont3_w)
@@ -118,8 +171,13 @@ static ADDRESS_MAP_START( bking3_io_map, AS_IO, 8, bking_state )
 //  AM_RANGE(0x0c, 0x0c) AM_WRITE(bking_eport2_w)   this is not shown to be connected anywhere
 	AM_RANGE(0x0d, 0x0d) AM_WRITE(bking_hitclr_w)
 	AM_RANGE(0x07, 0x1f) AM_READ(bking_pos_r)
+<<<<<<< HEAD
 	AM_RANGE(0x2f, 0x2f) AM_DEVREADWRITE("bmcu", buggychl_mcu_device, buggychl_mcu_r, buggychl_mcu_w)
 	AM_RANGE(0x4f, 0x4f) AM_DEVREAD("bmcu", buggychl_mcu_device, buggychl_mcu_status_r) AM_WRITE(unk_w)
+=======
+	AM_RANGE(0x2f, 0x2f) AM_DEVREADWRITE("bmcu", taito68705_mcu_device, data_r, data_w)
+	AM_RANGE(0x4f, 0x4f) AM_READWRITE(bking3_mcu_status_r, unk_w)
+>>>>>>> upstream/master
 	AM_RANGE(0x60, 0x60) AM_READ(bking3_extrarom_r)
 	AM_RANGE(0x6f, 0x6f) AM_READWRITE(bking3_ext_check_r, bking3_addr_h_w)
 	AM_RANGE(0x8f, 0x8f) AM_WRITE(bking3_addr_l_w)
@@ -133,11 +191,16 @@ static ADDRESS_MAP_START( bking_audio_map, AS_PROGRAM, 8, bking_state )
 	AM_RANGE(0x4401, 0x4401) AM_DEVREAD("ay1", ay8910_device, data_r)
 	AM_RANGE(0x4402, 0x4403) AM_DEVWRITE("ay2", ay8910_device, address_data_w)
 	AM_RANGE(0x4403, 0x4403) AM_DEVREAD("ay2", ay8910_device, data_r)
+<<<<<<< HEAD
 	AM_RANGE(0x4800, 0x4800) AM_READ(soundlatch_byte_r)
+=======
+	AM_RANGE(0x4800, 0x4800) AM_DEVREAD("soundlatch", generic_latch_8_device, read)
+>>>>>>> upstream/master
 	AM_RANGE(0x4802, 0x4802) AM_READWRITE(bking_sndnmi_disable_r, bking_sndnmi_enable_w)
 	AM_RANGE(0xe000, 0xefff) AM_ROM   /* Space for diagnostic ROM */
 ADDRESS_MAP_END
 
+<<<<<<< HEAD
 #if 0
 READ8_MEMBER(bking_state::bking3_68705_port_a_r)
 {
@@ -200,6 +263,8 @@ READ8_MEMBER(bking_state::bking3_68705_port_c_r)
 	return port_c_in;
 }
 #endif
+=======
+>>>>>>> upstream/master
 
 static INPUT_PORTS_START( bking )
 	PORT_START("IN0")
@@ -396,9 +461,12 @@ void bking_state::machine_start()
 	save_item(NAME(m_palette_bank));
 	save_item(NAME(m_controller));
 	save_item(NAME(m_hit));
+<<<<<<< HEAD
 
 	/* sound */
 	save_item(NAME(m_sound_nmi_enable));
+=======
+>>>>>>> upstream/master
 }
 
 MACHINE_START_MEMBER(bking_state,bking3)
@@ -433,13 +501,20 @@ void bking_state::machine_reset()
 	m_hit = 0;
 
 	/* sound */
+<<<<<<< HEAD
 	m_sound_nmi_enable = 1;
+=======
+	m_soundnmi->in_w<1>(0);
+>>>>>>> upstream/master
 }
 
 MACHINE_RESET_MEMBER(bking_state,bking3)
 {
+<<<<<<< HEAD
 	m_mcu->set_input_line(0, CLEAR_LINE);
 
+=======
+>>>>>>> upstream/master
 	bking_state::machine_reset();
 
 	/* misc */
@@ -447,7 +522,11 @@ MACHINE_RESET_MEMBER(bking_state,bking3)
 	m_addr_l = 0;
 }
 
+<<<<<<< HEAD
 static MACHINE_CONFIG_START( bking, bking_state )
+=======
+static MACHINE_CONFIG_START( bking )
+>>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("main_cpu", Z80, XTAL_12MHz/4) /* 3 MHz */
@@ -463,6 +542,11 @@ static MACHINE_CONFIG_START( bking, bking_state )
 	/* - periodic IRQ, with frequency 6000000/(4*16*16*10*16) = 36.621 Hz, */
 	MCFG_CPU_PERIODIC_INT_DRIVER(bking_state, irq0_line_hold,  (double)6000000/(4*16*16*10*16))
 
+<<<<<<< HEAD
+=======
+	MCFG_WATCHDOG_ADD("watchdog")
+
+>>>>>>> upstream/master
 	/* video hardware */
 	MCFG_SCREEN_ADD("screen", RASTER)
 	MCFG_SCREEN_REFRESH_RATE(60)
@@ -470,7 +554,11 @@ static MACHINE_CONFIG_START( bking, bking_state )
 	MCFG_SCREEN_SIZE(32*8, 32*8)
 	MCFG_SCREEN_VISIBLE_AREA(0*8, 32*8-1, 2*8, 30*8-1)
 	MCFG_SCREEN_UPDATE_DRIVER(bking_state, screen_update_bking)
+<<<<<<< HEAD
 	MCFG_SCREEN_VBLANK_DRIVER(bking_state, screen_eof_bking)
+=======
+	MCFG_SCREEN_VBLANK_CALLBACK(WRITELINE(bking_state, screen_vblank_bking))
+>>>>>>> upstream/master
 	MCFG_SCREEN_PALETTE("palette")
 
 	MCFG_GFXDECODE_ADD("gfxdecode", "palette", bking)
@@ -478,6 +566,7 @@ static MACHINE_CONFIG_START( bking, bking_state )
 	MCFG_PALETTE_INIT_OWNER(bking_state, bking)
 
 	/* sound hardware */
+<<<<<<< HEAD
 	MCFG_SPEAKER_STANDARD_MONO("mono")
 
 	MCFG_SOUND_ADD("ay1", AY8910, XTAL_6MHz/4)
@@ -490,6 +579,27 @@ static MACHINE_CONFIG_START( bking, bking_state )
 
 	MCFG_DAC_ADD("dac")
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 0.25)
+=======
+	MCFG_SPEAKER_STANDARD_MONO("speaker")
+
+	MCFG_GENERIC_LATCH_8_ADD("soundlatch")
+	MCFG_GENERIC_LATCH_DATA_PENDING_CB(DEVWRITELINE("soundnmi", input_merger_device, in_w<0>))
+
+	MCFG_INPUT_MERGER_ALL_HIGH("soundnmi")
+	MCFG_INPUT_MERGER_OUTPUT_HANDLER(INPUTLINE("audiocpu", INPUT_LINE_NMI))
+
+	MCFG_SOUND_ADD("ay1", AY8910, XTAL_6MHz/4)
+	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "speaker", 0.25)
+
+	MCFG_SOUND_ADD("ay2", AY8910, XTAL_6MHz/4)
+	MCFG_AY8910_PORT_A_WRITE_CB(DEVWRITE8("dac", dac_byte_interface, write))
+	MCFG_AY8910_PORT_B_WRITE_CB(WRITE8(bking_state, port_b_w))
+	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "speaker", 0.25)
+
+	MCFG_SOUND_ADD("dac", DAC_8BIT_R2R, 0) MCFG_SOUND_ROUTE(ALL_OUTPUTS, "speaker", 0.25) // unknown DAC
+	MCFG_DEVICE_ADD("vref", VOLTAGE_REGULATOR, 0) MCFG_VOLTAGE_REGULATOR_OUTPUT(5.0)
+	MCFG_SOUND_ROUTE_EX(0, "dac", 1.0, DAC_VREF_POS_INPUT) MCFG_SOUND_ROUTE_EX(0, "dac", -1.0, DAC_VREF_NEG_INPUT)
+>>>>>>> upstream/master
 MACHINE_CONFIG_END
 
 static MACHINE_CONFIG_DERIVED( bking3, bking )
@@ -498,9 +608,13 @@ static MACHINE_CONFIG_DERIVED( bking3, bking )
 	MCFG_CPU_MODIFY("main_cpu")
 	MCFG_CPU_IO_MAP(bking3_io_map)
 
+<<<<<<< HEAD
 	MCFG_CPU_ADD("mcu", M68705, XTAL_3MHz)      /* xtal is 3MHz, divided by 4 internally */
 	MCFG_CPU_PROGRAM_MAP(buggychl_mcu_map)
 	MCFG_DEVICE_ADD("bmcu", BUGGYCHL_MCU, 0)
+=======
+	MCFG_DEVICE_ADD("bmcu", TAITO68705_MCU, XTAL_3MHz)      /* xtal is 3MHz, divided by 4 internally */
+>>>>>>> upstream/master
 
 	MCFG_MACHINE_START_OVERRIDE(bking_state,bking3)
 	MCFG_MACHINE_RESET_OVERRIDE(bking_state,bking3)
@@ -767,7 +881,11 @@ ROM_START( bking3 )
 	ROM_LOAD( "a24-19.4d",    0x1000, 0x1000, CRC(817f9c2a) SHA1(7365ecf2700e1fd13016408f5493f8d51aab5bbd) )
 	ROM_LOAD( "a24-20.4b",    0x2000, 0x1000, CRC(0e9e16d6) SHA1(43c69602a8d9c34c527ce54472db84168acc4ef4) )
 
+<<<<<<< HEAD
 	ROM_REGION( 0x0800, "mcu", 0 )  /* 2k for the microcontroller */
+=======
+	ROM_REGION( 0x0800, "bmcu:mcu", 0 )  /* 2k for the microcontroller */
+>>>>>>> upstream/master
 	ROM_LOAD( "a24_22.ic17",  0x000000, 0x000800, CRC(27c497d5) SHA1(c6c72bbf0537da53148fa0a56d412ab46129d29c) )  //M68705P5S uC 3MHz xtal
 
 	ROM_REGION( 0x6000, "gfx1", 0 ) /* Tiles */
@@ -798,6 +916,12 @@ ROM_START( bking3 )
 ROM_END
 
 
+<<<<<<< HEAD
 GAME( 1982, bking,  0, bking,  bking,  driver_device, 0, ROT270, "Taito Corporation", "Birdie King", MACHINE_SUPPORTS_SAVE )
 GAME( 1983, bking2, 0, bking,  bking2, driver_device, 0, ROT90,  "Taito Corporation", "Birdie King 2", MACHINE_SUPPORTS_SAVE )
 GAME( 1984, bking3, 0, bking3, bking2, driver_device, 0, ROT90,  "Taito Corporation", "Birdie King 3", MACHINE_SUPPORTS_SAVE )
+=======
+GAME( 1982, bking,  0, bking,  bking,  bking_state, 0, ROT270, "Taito Corporation", "Birdie King",   MACHINE_SUPPORTS_SAVE )
+GAME( 1983, bking2, 0, bking,  bking2, bking_state, 0, ROT90,  "Taito Corporation", "Birdie King 2", MACHINE_SUPPORTS_SAVE )
+GAME( 1984, bking3, 0, bking3, bking2, bking_state, 0, ROT90,  "Taito Corporation", "Birdie King 3", MACHINE_SUPPORTS_SAVE )
+>>>>>>> upstream/master

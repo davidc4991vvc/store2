@@ -9,6 +9,10 @@
 #include "emu.h"
 #include "includes/turbo.h"
 #include "sound/samples.h"
+<<<<<<< HEAD
+=======
+#include "speaker.h"
+>>>>>>> upstream/master
 
 
 #define DISCRETE_TEST (0)
@@ -76,7 +80,11 @@ WRITE8_MEMBER(turbo_state::turbo_sound_a_w)
 #if (!DISCRETE_TEST)
 #endif
 #if (!DISCRETE_TEST)
+<<<<<<< HEAD
 	UINT8 diff = data ^ m_sound_state[0];
+=======
+	uint8_t diff = data ^ m_sound_state[0];
+>>>>>>> upstream/master
 #endif
 	m_sound_state[0] = data;
 
@@ -124,12 +132,20 @@ WRITE8_MEMBER(turbo_state::turbo_sound_a_w)
 
 WRITE8_MEMBER(turbo_state::turbo_sound_b_w)
 {
+<<<<<<< HEAD
 	UINT8 diff = data ^ m_sound_state[1];
+=======
+	uint8_t diff = data ^ m_sound_state[1];
+>>>>>>> upstream/master
 	m_sound_state[1] = data;
 
 	/* ACC0-ACC5 */
 	m_turbo_accel = data & 0x3f;
+<<<<<<< HEAD
 	output_set_value("tachometer", m_turbo_accel);
+=======
+	output().set_value("tachometer", m_turbo_accel);
+>>>>>>> upstream/master
 
 	/* /AMBU: channel 4 */
 	if ((diff & 0x40) && !(data & 0x40) && !m_samples->playing(4)) m_samples->start(4, 8, true);
@@ -152,7 +168,11 @@ WRITE8_MEMBER(turbo_state::turbo_sound_c_w)
 	m_turbo_bsel = (data >> 2) & 3;
 
 	/* SPEED0-3 */
+<<<<<<< HEAD
 	output_set_value("speed", (data >> 4) & 0x0f);
+=======
+	output().set_value("speed", (data >> 4) & 0x0f);
+>>>>>>> upstream/master
 
 	/* update any samples */
 	turbo_update_samples();
@@ -178,11 +198,19 @@ static const char *const turbo_sample_names[] =
 	"skidding", /* 6: Spin */
 	"idle",     /* 7: Idle */
 	"ambulanc", /* 8: Ambulance */
+<<<<<<< HEAD
 	0
 };
 
 
 MACHINE_CONFIG_FRAGMENT( turbo_samples )
+=======
+	nullptr
+};
+
+
+MACHINE_CONFIG_START( turbo_samples )
+>>>>>>> upstream/master
 
 	/* this is the cockpit speaker configuration */
 	MCFG_SPEAKER_ADD("fspeaker", 0.0, 0.0, 1.0)     /* front */
@@ -294,7 +322,11 @@ WRITE8_MEMBER(turbo_state::subroc3d_sound_a_w)
 }
 
 
+<<<<<<< HEAD
 inline void turbo_state::subroc3d_update_volume(int leftchan, UINT8 dis, UINT8 dir)
+=======
+inline void turbo_state::subroc3d_update_volume(int leftchan, uint8_t dis, uint8_t dir)
+>>>>>>> upstream/master
 {
 	float volume = (float)(15 - dis) / 16.0f;
 	float lvol, rvol;
@@ -316,7 +348,11 @@ inline void turbo_state::subroc3d_update_volume(int leftchan, UINT8 dis, UINT8 d
 
 WRITE8_MEMBER(turbo_state::subroc3d_sound_b_w)
 {
+<<<<<<< HEAD
 	UINT8 diff = data ^ m_sound_state[1];
+=======
+	uint8_t diff = data ^ m_sound_state[1];
+>>>>>>> upstream/master
 	m_sound_state[1] = data;
 
 	/* bit 0 latches direction/volume for missile */
@@ -370,7 +406,11 @@ WRITE8_MEMBER(turbo_state::subroc3d_sound_b_w)
 
 WRITE8_MEMBER(turbo_state::subroc3d_sound_c_w)
 {
+<<<<<<< HEAD
 	UINT8 diff = data ^ m_sound_state[2];
+=======
+	uint8_t diff = data ^ m_sound_state[2];
+>>>>>>> upstream/master
 	m_sound_state[2] = data;
 
 	/* /FIRE TRIG */
@@ -425,10 +465,17 @@ static const char *const subroc3d_sample_names[] =
 	"09",   /*  8: prolog sound */
 	"11",   /*  9: alarm 0 */
 	"12",   /* 10: alarm 1 */
+<<<<<<< HEAD
 	0
 };
 
 MACHINE_CONFIG_FRAGMENT( subroc3d_samples )
+=======
+	nullptr
+};
+
+MACHINE_CONFIG_START( subroc3d_samples )
+>>>>>>> upstream/master
 	MCFG_SPEAKER_STANDARD_STEREO("lspeaker", "rspeaker")
 
 	MCFG_SOUND_ADD("samples", SAMPLES, 0)
@@ -486,7 +533,11 @@ void turbo_state::buckrog_update_samples()
 
 WRITE8_MEMBER(turbo_state::buckrog_sound_a_w)
 {
+<<<<<<< HEAD
 	UINT8 diff = data ^ m_sound_state[0];
+=======
+	uint8_t diff = data ^ m_sound_state[0];
+>>>>>>> upstream/master
 	m_sound_state[0] = data;
 
 	/* clock HIT DIS from bits 0-2 */
@@ -510,7 +561,11 @@ WRITE8_MEMBER(turbo_state::buckrog_sound_a_w)
 
 WRITE8_MEMBER(turbo_state::buckrog_sound_b_w)
 {
+<<<<<<< HEAD
 	UINT8 diff = data ^ m_sound_state[1];
+=======
+	uint8_t diff = data ^ m_sound_state[1];
+>>>>>>> upstream/master
 	m_sound_state[1] = data;
 
 	/* /ALARM3: channel 0 */
@@ -569,11 +624,19 @@ static const char *const buckrog_sample_names[]=
 	"shipsnd1", /* 8 */
 	"shipsnd2", /* 9 */
 	"shipsnd3", /* 10 */
+<<<<<<< HEAD
 	0
 };
 
 
 MACHINE_CONFIG_FRAGMENT( buckrog_samples )
+=======
+	nullptr
+};
+
+
+MACHINE_CONFIG_START( buckrog_samples )
+>>>>>>> upstream/master
 	MCFG_SPEAKER_STANDARD_MONO("mono")
 	MCFG_SOUND_ADD("samples", SAMPLES, 0)
 	MCFG_SAMPLES_CHANNELS(6)

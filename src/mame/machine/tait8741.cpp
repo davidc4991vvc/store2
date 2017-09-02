@@ -13,7 +13,11 @@ Taito 8741 emulation
 #include "tait8741.h"
 
 #define VERBOSE 0
+<<<<<<< HEAD
 #define LOG(x) do { if (VERBOSE) printf x; } while (0)
+=======
+#include "logmacro.h"
+>>>>>>> upstream/master
 
 /****************************************************************************
 
@@ -33,10 +37,17 @@ gladiatr and Great Swordsman set.
 #define CMD_08 1
 #define CMD_4a 2
 
+<<<<<<< HEAD
 const device_type TAITO8741_4PACK = &device_creator<taito8741_4pack_device>;
 
 taito8741_4pack_device::taito8741_4pack_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
 	: device_t(mconfig, TAITO8741_4PACK, "I8741 MCU Simulation (Taito 4Pack)", tag, owner, clock, "taito8741_4pack", __FILE__),
+=======
+DEFINE_DEVICE_TYPE(TAITO8741_4PACK, taito8741_4pack_device, "taito8741_4pack", "I8741 MCU Simulation (Taito 4Pack)")
+
+taito8741_4pack_device::taito8741_4pack_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: device_t(mconfig, TAITO8741_4PACK, tag, owner, clock),
+>>>>>>> upstream/master
 	m_port_handler_0_r(*this),
 	m_port_handler_1_r(*this),
 	m_port_handler_2_r(*this),
@@ -70,7 +81,11 @@ int taito8741_4pack_device::hostcmd_r(I8741 *st)
 
 /* TAITO8741 I8741 emulation */
 
+<<<<<<< HEAD
 void taito8741_4pack_device::serial_rx(I8741 *st,UINT8 *data)
+=======
+void taito8741_4pack_device::serial_rx(I8741 *st,uint8_t *data)
+>>>>>>> upstream/master
 {
 	memcpy(st->rxd,data,8);
 }
@@ -91,7 +106,11 @@ TIMER_CALLBACK_MEMBER( taito8741_4pack_device::serial_tx )
 		sst = &m_taito8741[st->connect];
 		/* transfer data */
 		serial_rx(sst,st->txd);
+<<<<<<< HEAD
 		LOG(("8741-%d Serial data TX to %d\n",num,st->connect));
+=======
+		LOG("8741-%d Serial data TX to %d\n",num,st->connect);
+>>>>>>> upstream/master
 		if( sst->mode==TAITO8741_SLAVE)
 			sst->serial_out = 1;
 	}
@@ -127,7 +146,11 @@ void taito8741_4pack_device::update(int num)
 		st = &m_taito8741[num];
 		if( st->connect != -1 )
 				sst = &m_taito8741[st->connect];
+<<<<<<< HEAD
 		else sst = 0;
+=======
+		else sst = nullptr;
+>>>>>>> upstream/master
 		next = -1;
 		/* check pending command */
 		switch(st->phase)
@@ -275,7 +298,11 @@ int taito8741_4pack_device::status_r(int num)
 {
 	I8741 *st = &m_taito8741[num];
 	update(num);
+<<<<<<< HEAD
 	LOG(("%s:8741-%d ST Read %02x\n",machine().describe_context(),num,st->status));
+=======
+	LOG("%s:8741-%d ST Read %02x\n",machine().describe_context(),num,st->status);
+>>>>>>> upstream/master
 	return st->status;
 }
 
@@ -285,7 +312,11 @@ int taito8741_4pack_device::data_r(int num)
 	I8741 *st = &m_taito8741[num];
 	int ret = st->toData;
 	st->status &= 0xfe;
+<<<<<<< HEAD
 	LOG(("%s:8741-%d DATA Read %02x\n",machine().describe_context(),num,ret));
+=======
+	LOG("%s:8741-%d DATA Read %02x\n",machine().describe_context(),num,ret);
+>>>>>>> upstream/master
 
 	/* update chip */
 	update(num);
@@ -303,7 +334,11 @@ int taito8741_4pack_device::data_r(int num)
 void taito8741_4pack_device::data_w(int num, int data)
 {
 	I8741 *st = &m_taito8741[num];
+<<<<<<< HEAD
 	LOG(("%s:8741-%d DATA Write %02x\n",machine().describe_context(),num,data));
+=======
+	LOG("%s:8741-%d DATA Write %02x\n",machine().describe_context(),num,data);
+>>>>>>> upstream/master
 	st->fromData = data;
 	st->status |= 0x02;
 	/* update chip */
@@ -314,14 +349,22 @@ void taito8741_4pack_device::data_w(int num, int data)
 void taito8741_4pack_device::command_w(int num, int data)
 {
 	I8741 *st = &m_taito8741[num];
+<<<<<<< HEAD
 	LOG(("%s:8741-%d CMD Write %02x\n",machine().describe_context(),num,data));
+=======
+	LOG("%s:8741-%d CMD Write %02x\n",machine().describe_context(),num,data);
+>>>>>>> upstream/master
 	st->fromCmd = data;
 	st->status |= 0x04;
 	/* update chip */
 	update(num);
 }
 
+<<<<<<< HEAD
 UINT8 taito8741_4pack_device::port_read(int num, int offset)
+=======
+uint8_t taito8741_4pack_device::port_read(int num, int offset)
+>>>>>>> upstream/master
 {
 	switch(num)
 	{
@@ -332,6 +375,7 @@ UINT8 taito8741_4pack_device::port_read(int num, int offset)
 		default : return 0;
 	}
 }
+<<<<<<< HEAD
 
 /****************************************************************************
 
@@ -512,3 +556,5 @@ UINT8 josvolly8741_4pack_device::port_read(int num)
 		default : return 0;
 	}
 }
+=======
+>>>>>>> upstream/master

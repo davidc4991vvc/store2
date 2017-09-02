@@ -50,9 +50,16 @@ TODO:
 
 #include "emu.h"
 #include "cpu/i86/i186.h"
+<<<<<<< HEAD
 #include "video/clgd542x.h"
 #include "sound/upd7759.h"
 #include "machine/nvram.h"
+=======
+#include "machine/nvram.h"
+#include "sound/upd7759.h"
+#include "video/clgd542x.h"
+#include "speaker.h"
+>>>>>>> upstream/master
 
 
 class gambl186_state : public driver_device
@@ -67,17 +74,28 @@ public:
 	optional_device<upd7759_device> m_upd7759;
 	int m_comms_state;
 	int m_comms_ind;
+<<<<<<< HEAD
 	UINT8 m_comms_data[1002];
+=======
+	uint8_t m_comms_data[1002];
+>>>>>>> upstream/master
 	int m_comms_cmd;
 	int m_comms_expect;
 	int m_comms_blocks;
 	bool m_comms_ack;
 
+<<<<<<< HEAD
 	virtual void machine_start();
 	DECLARE_READ16_MEMBER(comms_r);
 	DECLARE_WRITE16_MEMBER(comms_w);
 	DECLARE_WRITE16_MEMBER(data_bank_w);
 	DECLARE_READ16_MEMBER(upd_r);
+=======
+	virtual void machine_start() override;
+	DECLARE_READ16_MEMBER(comms_r);
+	DECLARE_WRITE16_MEMBER(comms_w);
+	DECLARE_WRITE16_MEMBER(data_bank_w);
+>>>>>>> upstream/master
 	DECLARE_WRITE16_MEMBER(upd_w);
 };
 
@@ -86,11 +104,19 @@ void gambl186_state::machine_start()
 	membank("data_bank")->configure_entries(0, 4, memregion("data")->base(), 0x40000);
 }
 
+<<<<<<< HEAD
 static const UINT8 password[] = {5, 2, 0, 3, 0, 0, 2, 4, 5, 6, 0x16};
 
 READ16_MEMBER(gambl186_state::comms_r)
 {
 	UINT16 retval = 0;
+=======
+static const uint8_t password[] = {5, 2, 0, 3, 0, 0, 2, 4, 5, 6, 0x16};
+
+READ16_MEMBER(gambl186_state::comms_r)
+{
+	uint16_t retval = 0;
+>>>>>>> upstream/master
 
 	if ((offset == 0) && ACCESSING_BITS_0_7) //port 680 == data
 	{
@@ -293,7 +319,11 @@ WRITE16_MEMBER(gambl186_state::comms_w)
 					data = 5;
 				}
 
+<<<<<<< HEAD
 				m_comms_data[++m_comms_ind] = (UINT8) data;
+=======
+				m_comms_data[++m_comms_ind] = (uint8_t) data;
+>>>>>>> upstream/master
 			}
 
 			m_comms_ack = false;
@@ -348,8 +378,13 @@ WRITE16_MEMBER(gambl186_state::upd_w)
 //  m_upd7759->reset_w(0);
 //  m_upd7759->reset_w(1);
 
+<<<<<<< HEAD
 //  if (mem_mask&0x00ff) m_upd7759->port_w(space, 0, data & 0xff);
 //  if (mem_mask&0xff00) m_upd7759->port_w(space, 0, (data >> 8) & 0xff);
+=======
+//  if (ACCESSING_BITS_0_7) m_upd7759->port_w(space, 0, data & 0xff);
+//  if (ACCESSING_BITS_8_15) m_upd7759->port_w(space, 0, (data >> 8) & 0xff);
+>>>>>>> upstream/master
 	data = (data >> 8);
 	popmessage("sample index: %02x", data);
 
@@ -465,7 +500,11 @@ INPUT_PORTS_END
 
 
 
+<<<<<<< HEAD
 static MACHINE_CONFIG_START( gambl186, gambl186_state )
+=======
+static MACHINE_CONFIG_START( gambl186 )
+>>>>>>> upstream/master
 	MCFG_CPU_ADD("maincpu", I80186, XTAL_40MHz)
 	MCFG_CPU_PROGRAM_MAP(gambl186_map)
 	MCFG_CPU_IO_MAP(gambl186_io)
@@ -510,6 +549,26 @@ ROM_START( gambl186a )
 ROM_END
 
 
+<<<<<<< HEAD
 /*    YEAR  NAME       PARENT    MACHINE   INPUT     STATE          INIT  ROT     COMPANY    FULLNAME             FLAGS... */
 GAME( 1997, gambl186,  0,        gambl186, gambl186, driver_device, 0,    ROT0,  "EGD",     "Multi Game (V398)",  MACHINE_NOT_WORKING | MACHINE_NO_SOUND )
 GAME( 199?, gambl186a, gambl186, gambl186, gambl186, driver_device, 0,    ROT0,  "EGD",     "Multi Game (V399)",  MACHINE_NOT_WORKING | MACHINE_NO_SOUND )
+=======
+ROM_START( gambl186b )
+	ROM_REGION( 0x100000, "data", 0 )
+	ROM_LOAD16_BYTE( "IE3.7.8.bin", 0x00000, 0x80000, CRC(cc27886c) SHA1(cb27af74dffe86c564ba8a0ad711f4232330cf1b) )
+	ROM_LOAD16_BYTE( "IO3.7.8.bin", 0x00001, 0x80000, CRC(c69bf3ad) SHA1(eb612e903a9b184c2dd363e081ee8f650a4f2f90) )
+
+	ROM_REGION( 0x40000, "ipl", 0 )
+	ROM_LOAD16_BYTE( "SE3.8.6T.bin", 0x00000, 0x20000,CRC(158bd3a3) SHA1(846f382f145f8c4c36bd75fef12717b41e91c70b))
+	ROM_LOAD16_BYTE( "SO3.8.6T.bin", 0x00001, 0x20000, CRC(4bd275d3) SHA1(6b84f54e723408b06b71e89f7de6a8014fd9ecfd) )
+
+	ROM_REGION( 0x20000, "upd", 0 ) // upd7759 sound samples
+	ROM_LOAD( "SOUND3.9.8.bin", 0x00000, 0x20000, CRC(1d6d1743) SHA1(df0e8d311ccaf77fb5dfc341124a11051154e79c) )
+ROM_END
+
+// version numbering isn't clear, rom labels don't agree with test mode display.
+GAME( 1997, gambl186,  0,        gambl186, gambl186, gambl186_state, 0,    ROT0,  "EGD",     "Multi Game (Versione 4.0.3 - 1.5.7, 05-FEV-99(397)) (V398?)",  MACHINE_NOT_WORKING | MACHINE_NO_SOUND ) // Versione 4.0.3 (1.5.7), csmb15A, CSMB_0015A (IT), - 05-FEV-99(397)
+GAME( 1997, gambl186a, gambl186, gambl186, gambl186, gambl186_state, 0,    ROT0,  "EGD",     "Multi Game (Versione 4.0.3 - 1.5.7, 05-FEV-99(397)) (V399?)",  MACHINE_NOT_WORKING | MACHINE_NO_SOUND ) // same?
+GAME( 1997, gambl186b, gambl186, gambl186, gambl186, gambl186_state, 0,    ROT0,  "EGD",     "Multi Game (Versione 3.8.6T - 1.5.6, 25-AUG-97) (V378?)",      MACHINE_NOT_WORKING | MACHINE_NO_SOUND ) // Versione 3.8.6T (1.5.6), mult5_it, CSMB-0000F (IT), 25-AUG-97
+>>>>>>> upstream/master

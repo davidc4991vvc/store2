@@ -15,7 +15,11 @@
  * mid-instruction sequence break.  And it enables us to emulate the control panel fairly
  * accurately.
  *
+<<<<<<< HEAD
  * Additionnally, IOT functions have been modified to be external: IOT callback pointers are set
+=======
+ * Additionally, IOT functions have been modified to be external: IOT callback pointers are set
+>>>>>>> upstream/master
  * at emulation initiation, and most IOT callback functions are part of the machine emulation.
  *
  *
@@ -377,6 +381,7 @@
 #define PREVIOUS_PC     ((PC & ADDRESS_EXTENSION_MASK) | ((PC-1) & BASE_ADDRESS_MASK))
 
 
+<<<<<<< HEAD
 const device_type PDP1 = &device_creator<pdp1_device>;
 
 
@@ -387,12 +392,35 @@ pdp1_device::pdp1_device(const machine_config &mconfig, const char *tag, device_
 	m_is_octal = true;
 }
 
+=======
+DEFINE_DEVICE_TYPE(PDP1, pdp1_device, "pdp1_cpu", "PDP1")
+
+
+pdp1_device::pdp1_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: cpu_device(mconfig, PDP1, tag, owner, clock)
+	, m_program_config("program", ENDIANNESS_BIG, 32, 18, 0)
+{
+	m_program_config.m_is_octal = true;
+}
+
+device_memory_interface::space_config_vector pdp1_device::memory_space_config() const
+{
+	return space_config_vector {
+		std::make_pair(AS_PROGRAM, &m_program_config)
+	};
+}
+>>>>>>> upstream/master
 
 void pdp1_device::device_config_complete()
 {
 	// inherit a copy of the static data
+<<<<<<< HEAD
 	const pdp1_reset_param_t *intf = reinterpret_cast<const pdp1_reset_param_t *>(static_config());
 	if (intf != NULL)
+=======
+	const pdp1_reset_param_t *intf = m_reset_param;
+	if (intf != nullptr)
+>>>>>>> upstream/master
 		*static_cast<pdp1_reset_param_t *>(this) = *intf;
 
 	// or initialize to defaults if none provided
@@ -404,18 +432,31 @@ void pdp1_device::device_config_complete()
 		hw_mul_div = 0;
 		type_20_sbs = 0;
 
+<<<<<<< HEAD
 		for (int i = 0; i < 64; i++)
 		{
 			memset(&extern_iot[i], 0, sizeof(extern_iot[i]));
+=======
+		for (auto & elem : extern_iot)
+		{
+			memset(&elem, 0, sizeof(elem));
+>>>>>>> upstream/master
 		}
 	}
 }
 
 
+<<<<<<< HEAD
 offs_t pdp1_device::disasm_disassemble(char *buffer, offs_t pc, const UINT8 *oprom, const UINT8 *opram, UINT32 options)
 {
 	extern CPU_DISASSEMBLE( pdp1 );
 	return CPU_DISASSEMBLE_NAME(pdp1)(this, buffer, pc, oprom, opram, options);
+=======
+offs_t pdp1_device::disasm_disassemble(std::ostream &stream, offs_t pc, const uint8_t *oprom, const uint8_t *opram, uint32_t options)
+{
+	extern CPU_DISASSEMBLE( pdp1 );
+	return CPU_DISASSEMBLE_NAME(pdp1)(this, stream, pc, oprom, opram, options);
+>>>>>>> upstream/master
 }
 
 
@@ -425,7 +466,11 @@ offs_t pdp1_device::disasm_disassemble(char *buffer, offs_t pc, const UINT8 *opr
     There are several interrupt lines.  With the standard sequence break system, all lines
     are logically or'ed to trigger a single interrupt level.  Interrupts can be triggered
     by either a pulse or a level on the interrupt lines.  With the optional type 120 sequence
+<<<<<<< HEAD
     break system, each of 16 lines triggers is wired to a different priority level: additionnally,
+=======
+    break system, each of 16 lines triggers is wired to a different priority level: additionally,
+>>>>>>> upstream/master
     each interrupt line can be masked out, and interrupt can be triggered through software.
 
     Also, instructions can be interrupted in the middle of execution.  This is done by
@@ -640,6 +685,10 @@ void pdp1_device::device_start()
 	state_add( PDP1_IOS,       "IOS", m_ios).mask(1).formatstr("%1X");
 
 	state_add( STATE_GENPC, "GENPC", m_pc ).noshow();
+<<<<<<< HEAD
+=======
+	state_add( STATE_GENPCBASE, "CURPC", m_pc ).noshow();
+>>>>>>> upstream/master
 	state_add( STATE_GENFLAGS, "GENFLAGS", m_pf ).formatstr("%13s").noshow();
 
 	m_icountptr = &m_icount;
@@ -737,12 +786,20 @@ void pdp1_device::state_export(const device_state_entry &entry)
 }
 
 
+<<<<<<< HEAD
 void pdp1_device::state_string_export(const device_state_entry &entry, std::string &str)
+=======
+void pdp1_device::state_string_export(const device_state_entry &entry, std::string &str) const
+>>>>>>> upstream/master
 {
 	switch (entry.index())
 	{
 		case STATE_GENFLAGS:
+<<<<<<< HEAD
 			strprintf(str, "%c%c%c%c%c%c-%c%c%c%c%c%c",
+=======
+			str = string_format("%c%c%c%c%c%c-%c%c%c%c%c%c",
+>>>>>>> upstream/master
 					(FLAGS & 040) ? '1' : '.',
 					(FLAGS & 020) ? '2' : '.',
 					(FLAGS & 010) ? '3' : '.',
@@ -771,7 +828,11 @@ void pdp1_device::device_reset()
       except cal and jda, and with the addition of jmp and jsp)
     * 2 for memory reference instructions
 */
+<<<<<<< HEAD
 static const UINT8 instruction_kind[32] =
+=======
+static const uint8_t instruction_kind[32] =
+>>>>>>> upstream/master
 {
 /*      and ior xor xct         cal/jda */
 	0,  3,  3,  3,  3,  0,  0,  2,
@@ -834,9 +895,15 @@ void pdp1_device::execute_run()
 					}
 					else if ((IR == DIO) || (IR == DAC))    /* dio or dac instruction ? */
 					{   /* there is a discrepancy: the pdp1 handbook tells that only dio should be used,
+<<<<<<< HEAD
                         but the lisp tape uses the dac instruction instead */
 						/* Yet maintenance manual p. 6-25 states clearly that the data is located
 						in IO and transfered to MB, so DAC is likely to be a mistake. */
+=======
+					    but the lisp tape uses the dac instruction instead */
+						/* Yet maintenance manual p. 6-25 states clearly that the data is located
+						in IO and transferred to MB, so DAC is likely to be a mistake. */
+>>>>>>> upstream/master
 						m_rim_step = 2;
 					}
 					else
@@ -1122,9 +1189,15 @@ void pdp1_device::execute_instruction()
 		}
 	case SUB:       /* Subtract */
 		{   /* maintenance manual 7-14 seems to imply that substract does not test for -0.
+<<<<<<< HEAD
               The sim 2.3 source says so explicitely, though they do not give a reference.
               It sounds a bit weird, but the reason is probably that doing so would
               require additionnal logic that does not exist. */
+=======
+		      The sim 2.3 source says so explicitely, though they do not give a reference.
+		      It sounds a bit weird, but the reason is probably that doing so would
+		      require additional logic that does not exist. */
+>>>>>>> upstream/master
 			/* overflow is set if the 2 operands have the same sign and the final result has another */
 			int ov2;    /* 1 if the operands have the same sign*/
 
@@ -1251,7 +1324,11 @@ void pdp1_device::execute_instruction()
 			/* As a side note, the order of -0 detection and overflow checking does not matter,
 			because the sum of two positive number cannot give 0777777 (since positive
 			numbers are 0377777 at most, their sum is 0777776 at most).
+<<<<<<< HEAD
 			Additionnally, we cannot have carry set and a result equal to 0777777  (since numbers
+=======
+			Additionally, we cannot have carry set and a result equal to 0777777  (since numbers
+>>>>>>> upstream/master
 			are 0777777 at most, their sum is 01777776 at most): this is nice, because it makes
 			the sequence:
 			    AC = (AC + (AC >> 18)) & 0777777;   // propagate carry around

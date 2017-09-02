@@ -2,13 +2,22 @@
 // copyright-holders:David Graves
 #include "emu.h"
 #include "includes/slapshot.h"
+<<<<<<< HEAD
+=======
+#include "screen.h"
+>>>>>>> upstream/master
 
 /**********************************************************/
 
 void slapshot_state::video_start()
 {
+<<<<<<< HEAD
 	m_spriteram_delayed = auto_alloc_array(machine(), UINT16, m_spriteram.bytes() / 2);
 	m_spriteram_buffered = auto_alloc_array(machine(), UINT16, m_spriteram.bytes() / 2);
+=======
+	m_spriteram_delayed = std::make_unique<uint16_t[]>(m_spriteram.bytes() / 2);
+	m_spriteram_buffered = std::make_unique<uint16_t[]>(m_spriteram.bytes() / 2);
+>>>>>>> upstream/master
 	m_spritelist = auto_alloc_array(machine(), struct slapshot_tempsprite, 0x400);
 
 	m_sprites_disabled = 1;
@@ -20,8 +29,13 @@ void slapshot_state::video_start()
 	save_item(NAME(m_sprites_master_scrolly));
 	save_item(NAME(m_sprites_flipscreen));
 	save_item(NAME(m_prepare_sprites));
+<<<<<<< HEAD
 	save_pointer(NAME(m_spriteram_delayed), m_spriteram.bytes() / 2);
 	save_pointer(NAME(m_spriteram_buffered), m_spriteram.bytes() / 2);
+=======
+	save_pointer(NAME(m_spriteram_delayed.get()), m_spriteram.bytes() / 2);
+	save_pointer(NAME(m_spriteram_buffered.get()), m_spriteram.bytes() / 2);
+>>>>>>> upstream/master
 }
 
 /************************************************************
@@ -87,7 +101,11 @@ void slapshot_state::draw_sprites( screen_device &screen, bitmap_ind16 &bitmap, 
 	int code, color, spritedata, spritecont, flipx, flipy;
 	int xcurrent, ycurrent, big_sprite = 0;
 	int y_no = 0, x_no = 0, xlatch = 0, ylatch = 0, last_continuation_tile = 0;   /* for zooms */
+<<<<<<< HEAD
 	UINT32 zoomword, zoomx, zoomy, zx = 0, zy = 0, zoomxlatch = 0, zoomylatch = 0;   /* for zooms */
+=======
+	uint32_t zoomword, zoomx, zoomy, zx = 0, zy = 0, zoomxlatch = 0, zoomylatch = 0;   /* for zooms */
+>>>>>>> upstream/master
 	int scroll1x, scroll1y;
 	int scrollx = 0, scrolly = 0;
 	int curx, cury;
@@ -354,7 +372,11 @@ void slapshot_state::draw_sprites( screen_device &screen, bitmap_ind16 &bitmap, 
 	}
 
 
+<<<<<<< HEAD
 	/* this happens only if primsks != NULL */
+=======
+	/* this happens only if primsks != nullptr */
+>>>>>>> upstream/master
 	while (sprite_ptr != m_spritelist)
 	{
 		sprite_ptr--;
@@ -374,7 +396,11 @@ void slapshot_state::taito_handle_sprite_buffering(  )
 {
 	if (m_prepare_sprites)   /* no buffering */
 	{
+<<<<<<< HEAD
 		memcpy(m_spriteram_buffered, m_spriteram, m_spriteram.bytes());
+=======
+		memcpy(m_spriteram_buffered.get(), m_spriteram, m_spriteram.bytes());
+>>>>>>> upstream/master
 		m_prepare_sprites = 0;
 	}
 }
@@ -418,7 +444,11 @@ void slapshot_state::taito_update_sprites_active_area(  )
 	}
 }
 
+<<<<<<< HEAD
 void slapshot_state::screen_eof_taito_no_buffer(screen_device &screen, bool state)
+=======
+WRITE_LINE_MEMBER(slapshot_state::screen_vblank_taito_no_buffer)
+>>>>>>> upstream/master
 {
 	// rising edge
 	if (state)
@@ -446,6 +476,7 @@ One exception is the "puck" in early attract which is
 a bg layer given priority over some sprites.
 ********************************************************************/
 
+<<<<<<< HEAD
 UINT32 slapshot_state::screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
 {
 	address_space &space = machine().driver_data()->generic_space();
@@ -453,6 +484,15 @@ UINT32 slapshot_state::screen_update(screen_device &screen, bitmap_ind16 &bitmap
 	UINT8 tilepri[5];
 	UINT8 spritepri[4];
 	UINT16 priority;
+=======
+uint32_t slapshot_state::screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+{
+	address_space &space = machine().dummy_space();
+	uint8_t layer[5];
+	uint8_t tilepri[5];
+	uint8_t spritepri[4];
+	uint16_t priority;
+>>>>>>> upstream/master
 
 #ifdef MAME_DEBUG
 	if (machine().input().code_pressed_once (KEYCODE_Z))

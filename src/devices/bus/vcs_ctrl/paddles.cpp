@@ -6,6 +6,10 @@
 
 **********************************************************************/
 
+<<<<<<< HEAD
+=======
+#include "emu.h"
+>>>>>>> upstream/master
 #include "paddles.h"
 
 
@@ -14,7 +18,11 @@
 //  DEVICE DEFINITIONS
 //**************************************************************************
 
+<<<<<<< HEAD
 const device_type VCS_PADDLES = &device_creator<vcs_paddles_device>;
+=======
+DEFINE_DEVICE_TYPE(VCS_PADDLES, vcs_paddles_device, "vcs_paddles", "Atari / CBM Dual paddles")
+>>>>>>> upstream/master
 
 
 static INPUT_PORTS_START( vcs_paddles )
@@ -50,8 +58,13 @@ ioport_constructor vcs_paddles_device::device_input_ports() const
 //  vcs_paddles_device - constructor
 //-------------------------------------------------
 
+<<<<<<< HEAD
 vcs_paddles_device::vcs_paddles_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock) :
 	device_t(mconfig, VCS_PADDLES, "Atari / CBM Digital paddles", tag, owner, clock, "vcs_paddles", __FILE__),
+=======
+vcs_paddles_device::vcs_paddles_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock) :
+	device_t(mconfig, VCS_PADDLES, tag, owner, clock),
+>>>>>>> upstream/master
 	device_vcs_control_port_interface(mconfig, *this),
 	m_joy(*this, "JOY"),
 	m_potx(*this, "POTX"),
@@ -73,7 +86,11 @@ void vcs_paddles_device::device_start()
 //  vcs_joy_r - joystick read
 //-------------------------------------------------
 
+<<<<<<< HEAD
 UINT8 vcs_paddles_device::vcs_joy_r()
+=======
+uint8_t vcs_paddles_device::vcs_joy_r()
+>>>>>>> upstream/master
 {
 	return m_joy->read();
 }
@@ -83,7 +100,11 @@ UINT8 vcs_paddles_device::vcs_joy_r()
 //  vcs_pot_x_r - potentiometer X read
 //-------------------------------------------------
 
+<<<<<<< HEAD
 UINT8 vcs_paddles_device::vcs_pot_x_r()
+=======
+uint8_t vcs_paddles_device::vcs_pot_x_r()
+>>>>>>> upstream/master
 {
 	return m_potx->read();
 }
@@ -93,7 +114,11 @@ UINT8 vcs_paddles_device::vcs_pot_x_r()
 //  vcs_pot_y_r - potentiometer Y read
 //-------------------------------------------------
 
+<<<<<<< HEAD
 UINT8 vcs_paddles_device::vcs_pot_y_r()
+=======
+uint8_t vcs_paddles_device::vcs_pot_y_r()
+>>>>>>> upstream/master
 {
 	return m_poty->read();
 }

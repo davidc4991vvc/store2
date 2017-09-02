@@ -2,21 +2,37 @@
 
 #include "StdAfx.h"
 
+<<<<<<< HEAD
 #include "Common/StringConvert.h"
 #include "Common/Wildcard.h"
 
 #include "Windows/FileName.h"
+=======
+#include "../../../Common/StringConvert.h"
+#include "../../../Common/Wildcard.h"
+
+#include "../../../Windows/FileName.h"
+>>>>>>> upstream/master
 
 #include "WorkDir.h"
 
 using namespace NWindows;
 using namespace NFile;
+<<<<<<< HEAD
 using namespace NDirectory;
+=======
+using namespace NDir;
+>>>>>>> upstream/master
 
 FString GetWorkDir(const NWorkDir::CInfo &workDirInfo, const FString &path, FString &fileName)
 {
   NWorkDir::NMode::EEnum mode = workDirInfo.Mode;
+<<<<<<< HEAD
   #ifndef UNDER_CE
+=======
+  
+  #if defined(_WIN32) && !defined(UNDER_CE)
+>>>>>>> upstream/master
   if (workDirInfo.ForRemovableOnly)
   {
     mode = NWorkDir::NMode::kCurrent;
@@ -36,13 +52,24 @@ FString GetWorkDir(const NWorkDir::CInfo &workDirInfo, const FString &path, FStr
     */
   }
   #endif
+<<<<<<< HEAD
   int pos = path.ReverseFind(FCHAR_PATH_SEPARATOR) + 1;
   fileName = path.Mid(pos);
+=======
+  
+  int pos = path.ReverseFind_PathSepar() + 1;
+  fileName = path.Ptr(pos);
+  
+>>>>>>> upstream/master
   switch (mode)
   {
     case NWorkDir::NMode::kCurrent:
     {
+<<<<<<< HEAD
       return path.Left(pos);;
+=======
+      return path.Left(pos);
+>>>>>>> upstream/master
     }
     case NWorkDir::NMode::kSpecified:
     {
@@ -66,7 +93,11 @@ HRESULT CWorkDirTempFile::CreateTempFile(const FString &originalPath)
   workDirInfo.Load();
   FString namePart;
   FString workDir = GetWorkDir(workDirInfo, originalPath, namePart);
+<<<<<<< HEAD
   CreateComplexDirectory(workDir);
+=======
+  CreateComplexDir(workDir);
+>>>>>>> upstream/master
   CTempFile tempFile;
   _outStreamSpec = new COutFileStream;
   OutStream = _outStreamSpec;

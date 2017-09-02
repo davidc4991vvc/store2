@@ -33,14 +33,24 @@ public:
 		: driver_device(mconfig, type, tag),
 			m_cpu(*this, "maincpu"),
 			m_ram(*this, "ram"),
+<<<<<<< HEAD
 			m_space(NULL)
+=======
+			m_space(nullptr)
+>>>>>>> upstream/master
 	{
 	}
 
 	// timer callback; used to wrest control of the system
+<<<<<<< HEAD
 	virtual void device_timer(emu_timer &timer, device_timer_id id, int param, void *ptr)
 	{
 		static const UINT32 sample_instructions[] =
+=======
+	virtual void device_timer(emu_timer &timer, device_timer_id id, int param, void *ptr) override
+	{
+		static const u32 sample_instructions[] =
+>>>>>>> upstream/master
 		{
 			0x3d40f900,     // li r10,0xf9000000
 			0x394af000,     // addi r10,r10,-0x1000
@@ -52,11 +62,19 @@ public:
 		};
 
 		// iterate over instructions
+<<<<<<< HEAD
 		for (int instnum = 0; instnum < ARRAY_LENGTH(sample_instructions); instnum++)
 		{
 			// write the instruction to execute, followed by a BLR which will terminate the
 			// basic block in the DRC
 			m_space->write_dword(RAM_BASE, sample_instructions[instnum]);
+=======
+		for (auto & sample_instruction : sample_instructions)
+		{
+			// write the instruction to execute, followed by a BLR which will terminate the
+			// basic block in the DRC
+			m_space->write_dword(RAM_BASE, sample_instruction);
+>>>>>>> upstream/master
 			m_space->write_dword(RAM_BASE + 4, 0x4e800020);
 
 			// initialize the register state
@@ -92,7 +110,11 @@ public:
 	}
 
 	// startup code; do basic configuration and set a timer to go off immediately
+<<<<<<< HEAD
 	virtual void machine_start()
+=======
+	virtual void machine_start() override
+>>>>>>> upstream/master
 	{
 		// find the CPU's address space
 		m_space = &m_cpu->space(AS_PROGRAM);
@@ -108,7 +130,11 @@ public:
 	void dump_state(bool disassemble)
 	{
 		char buffer[256];
+<<<<<<< HEAD
 		UINT8 instruction[32];
+=======
+		u8 instruction[32];
+>>>>>>> upstream/master
 		buffer[0] = 0;
 		int bytes = 0;
 		if (disassemble)
@@ -123,7 +149,11 @@ public:
 		}
 
 		// output the registers
+<<<<<<< HEAD
 		printf("PC : %08X", UINT32(m_cpu->state_int(PPC_PC)));
+=======
+		printf("PC : %08X", u32(m_cpu->state_int(PPC_PC)));
+>>>>>>> upstream/master
 		if (disassemble && bytes > 0)
 		{
 			printf(" => ");
@@ -134,12 +164,21 @@ public:
 		printf("\n");
 		for (int regnum = 0; regnum < 32; regnum++)
 		{
+<<<<<<< HEAD
 			printf("R%-2d: %08X   ", regnum, UINT32(m_cpu->state_int(PPC_R0 + regnum)));
 			if (regnum % 4 == 3) printf("\n");
 		}
 		printf("CR : %08X   LR : %08X   CTR: %08X   XER: %08X\n",
 				UINT32(m_cpu->state_int(PPC_CR)), UINT32(m_cpu->state_int(PPC_LR)),
 				UINT32(m_cpu->state_int(PPC_CTR)), UINT32(m_cpu->state_int(PPC_XER)));
+=======
+			printf("R%-2d: %08X   ", regnum, u32(m_cpu->state_int(PPC_R0 + regnum)));
+			if (regnum % 4 == 3) printf("\n");
+		}
+		printf("CR : %08X   LR : %08X   CTR: %08X   XER: %08X\n",
+				u32(m_cpu->state_int(PPC_CR)), u32(m_cpu->state_int(PPC_LR)),
+				u32(m_cpu->state_int(PPC_CTR)), u32(m_cpu->state_int(PPC_XER)));
+>>>>>>> upstream/master
 		for (int regnum = 0; regnum < 32; regnum++)
 		{
 			printf("F%-2d: %10g   ", regnum, u2d(m_cpu->state_int(PPC_F0 + regnum)));
@@ -150,8 +189,13 @@ public:
 	// report reads from anywhere
 	READ64_MEMBER( general_r )
 	{
+<<<<<<< HEAD
 		UINT64 fulloffs = offset;
 		UINT64 result = fulloffs + (fulloffs << 8) + (fulloffs << 16) + (fulloffs << 24) + (fulloffs << 32);
+=======
+		u64 fulloffs = offset;
+		u64 result = fulloffs + (fulloffs << 8) + (fulloffs << 16) + (fulloffs << 24) + (fulloffs << 32);
+>>>>>>> upstream/master
 		printf("Read from %08X & %08X%08X = %08X%08X\n", offset * 8, (int)((mem_mask&0xffffffff00000000LL) >> 32) , (int)(mem_mask&0xffffffff), (int)((result&0xffffffff00000000LL) >> 32), (int)(result&0xffffffff));
 		return result;
 	}
@@ -165,7 +209,11 @@ public:
 private:
 	// internal state
 	required_device<ppc603e_device> m_cpu;
+<<<<<<< HEAD
 	required_shared_ptr<UINT64> m_ram;
+=======
+	required_shared_ptr<u64> m_ram;
+>>>>>>> upstream/master
 	address_space *m_space;
 };
 

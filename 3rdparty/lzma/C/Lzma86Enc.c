@@ -1,5 +1,11 @@
 /* Lzma86Enc.c -- LZMA + x86 (BCJ) Filter Encoder
+<<<<<<< HEAD
 2009-08-14 : Igor Pavlov : Public domain */
+=======
+2016-05-16 : Igor Pavlov : Public domain */
+
+#include "Precomp.h"
+>>>>>>> upstream/master
 
 #include <string.h>
 
@@ -11,6 +17,7 @@
 
 #define SZE_OUT_OVERFLOW SZE_DATA_ERROR
 
+<<<<<<< HEAD
 static void *SzAlloc(void *p, size_t size) { p = p; return MyAlloc(size); }
 static void SzFree(void *p, void *address) { p = p; MyFree(address); }
 
@@ -18,6 +25,11 @@ int Lzma86_Encode(Byte *dest, size_t *destLen, const Byte *src, size_t srcLen,
     int level, UInt32 dictSize, int filterMode)
 {
   ISzAlloc g_Alloc = { SzAlloc, SzFree };
+=======
+int Lzma86_Encode(Byte *dest, size_t *destLen, const Byte *src, size_t srcLen,
+    int level, UInt32 dictSize, int filterMode)
+{
+>>>>>>> upstream/master
   size_t outSize2 = *destLen;
   Byte *filteredStream;
   Bool useFilter;
@@ -99,7 +111,11 @@ int Lzma86_Encode(Byte *dest, size_t *destLen, const Byte *src, size_t srcLen,
         }
       }
     }
+<<<<<<< HEAD
     dest[0] = (bestIsFiltered ? 1 : 0);
+=======
+    dest[0] = (Byte)(bestIsFiltered ? 1 : 0);
+>>>>>>> upstream/master
     *destLen = LZMA86_HEADER_SIZE + minSize;
   }
   if (useFilter)

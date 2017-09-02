@@ -1,5 +1,10 @@
 // license:BSD-3-Clause
 // copyright-holders:David Haywood
+<<<<<<< HEAD
+=======
+
+#include "machine/gen_latch.h"
+>>>>>>> upstream/master
 #include "sound/msm5205.h"
 #include "video/tecmo_spr.h"
 
@@ -15,6 +20,10 @@ public:
 		m_gfxdecode(*this, "gfxdecode"),
 		m_palette(*this, "palette"),
 		m_sprgen(*this, "spritegen"),
+<<<<<<< HEAD
+=======
+		m_soundlatch(*this, "soundlatch"),
+>>>>>>> upstream/master
 		m_txvideoram(*this, "txvideoram"),
 		m_bgvideoram(*this, "bgvideoram"),
 		m_bg2videoram(*this, "bg2videoram"),
@@ -28,19 +37,35 @@ public:
 	required_device<gfxdecode_device> m_gfxdecode;
 	required_device<palette_device> m_palette;
 	required_device<tecmo_spr_device> m_sprgen;
+<<<<<<< HEAD
 
 	required_shared_ptr<UINT8> m_txvideoram;
 	required_shared_ptr<UINT8> m_bgvideoram;
 	required_shared_ptr<UINT8> m_bg2videoram;
 	required_shared_ptr<UINT8> m_spriteram;
+=======
+	required_device<generic_latch_8_device> m_soundlatch;
+
+	required_shared_ptr<uint8_t> m_txvideoram;
+	required_shared_ptr<uint8_t> m_bgvideoram;
+	required_shared_ptr<uint8_t> m_bg2videoram;
+	required_shared_ptr<uint8_t> m_spriteram;
+>>>>>>> upstream/master
 
 	tilemap_t *m_tx_tilemap;
 	tilemap_t *m_bg_tilemap;
 	tilemap_t *m_bg2_tilemap;
+<<<<<<< HEAD
 	UINT16 m_xscroll;
 	UINT16 m_yscroll;
 	UINT16 m_bg2xscroll;
 	UINT16 m_bg2yscroll;
+=======
+	uint16_t m_xscroll;
+	uint16_t m_yscroll;
+	uint16_t m_bg2xscroll;
+	uint16_t m_bg2yscroll;
+>>>>>>> upstream/master
 	int m_adpcm_pos[2];
 	int m_adpcm_end[2];
 	int m_adpcm_data[2];
@@ -48,7 +73,10 @@ public:
 	DECLARE_WRITE8_MEMBER(coincounter_w);
 	DECLARE_WRITE8_MEMBER(boardb_bankswitch_w);
 	DECLARE_WRITE8_MEMBER(boardc_bankswitch_w);
+<<<<<<< HEAD
 	DECLARE_WRITE8_MEMBER(sound_command_w);
+=======
+>>>>>>> upstream/master
 	DECLARE_WRITE8_MEMBER(trigger_nmi);
 	DECLARE_WRITE8_MEMBER(adpcm_start_w);
 	DECLARE_WRITE8_MEMBER(adpcm_end_w);
@@ -69,12 +97,21 @@ public:
 	TILE_GET_INFO_MEMBER(get_bg_tile_info);
 	TILE_GET_INFO_MEMBER(get_bg2_tile_info);
 
+<<<<<<< HEAD
 	virtual void machine_start();
 	virtual void machine_reset();
 	virtual void video_start();
 
 	UINT32 screen_update_left(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
 	UINT32 screen_update_right(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
+=======
+	virtual void machine_start() override;
+	virtual void machine_reset() override;
+	virtual void video_start() override;
+
+	uint32_t screen_update_left(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
+	uint32_t screen_update_right(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
+>>>>>>> upstream/master
 
 	void adpcm_int(msm5205_device *device, int chip);
 	DECLARE_WRITE_LINE_MEMBER(adpcm_int_1);

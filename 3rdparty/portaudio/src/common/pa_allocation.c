@@ -1,5 +1,9 @@
 /*
+<<<<<<< HEAD
  * $Id: pa_allocation.c 1097 2006-08-26 08:27:53Z rossb $
+=======
+ * $Id$
+>>>>>>> upstream/master
  * Portable Audio I/O Library allocation group implementation
  * memory allocation group for tracking allocation groups
  *

@@ -1,6 +1,15 @@
 // license:BSD-3-Clause
 // copyright-holders:Andrew Gardner
+<<<<<<< HEAD
 #define NO_MEM_TRACKING
+=======
+#include "emu.h"
+#include <QtWidgets/QHBoxLayout>
+#include <QtWidgets/QVBoxLayout>
+#include <QtWidgets/QAction>
+#include <QtWidgets/QMenu>
+#include <QtWidgets/QMenuBar>
+>>>>>>> upstream/master
 
 #include "dasmwindow.h"
 
@@ -10,11 +19,19 @@
 
 
 DasmWindow::DasmWindow(running_machine* machine, QWidget* parent) :
+<<<<<<< HEAD
 	WindowQt(machine, NULL)
 {
 	setWindowTitle("Debug: Disassembly View");
 
 	if (parent != NULL)
+=======
+	WindowQt(machine, nullptr)
+{
+	setWindowTitle("Debug: Disassembly View");
+
+	if (parent != nullptr)
+>>>>>>> upstream/master
 	{
 		QPoint parentPos = parent->pos();
 		setGeometry(parentPos.x()+100, parentPos.y()+100, 800, 400);
@@ -30,17 +47,29 @@ DasmWindow::DasmWindow(running_machine* machine, QWidget* parent) :
 
 	// The input edit
 	m_inputEdit = new QLineEdit(topSubFrame);
+<<<<<<< HEAD
 	connect(m_inputEdit, SIGNAL(returnPressed()), this, SLOT(expressionSubmitted()));
+=======
+	connect(m_inputEdit, &QLineEdit::returnPressed, this, &DasmWindow::expressionSubmitted);
+>>>>>>> upstream/master
 
 	// The cpu combo box
 	m_cpuComboBox = new QComboBox(topSubFrame);
 	m_cpuComboBox->setObjectName("cpu");
 	m_cpuComboBox->setMinimumWidth(300);
+<<<<<<< HEAD
 	connect(m_cpuComboBox, SIGNAL(currentIndexChanged(int)), this, SLOT(cpuChanged(int)));
 
 	// The main disasm window
 	m_dasmView = new DebuggerView(DVT_DISASSEMBLY, m_machine, this);
 	connect(m_dasmView, SIGNAL(updated()), this, SLOT(dasmViewUpdated()));
+=======
+	connect(m_cpuComboBox, static_cast<void(QComboBox::*)(int)>(&QComboBox::currentIndexChanged), this, &DasmWindow::cpuChanged);
+
+	// The main disasm window
+	m_dasmView = new DebuggerView(DVT_DISASSEMBLY, m_machine, this);
+	connect(m_dasmView, &DebuggerView::updated, this, &DasmWindow::dasmViewUpdated);
+>>>>>>> upstream/master
 
 	// Force a recompute of the disassembly region
 	downcast<debug_view_disasm*>(m_dasmView->view())->set_expression("curpc");
@@ -77,9 +106,15 @@ DasmWindow::DasmWindow(running_machine* machine, QWidget* parent) :
 	m_breakpointToggleAct->setShortcut(Qt::Key_F9);
 	m_breakpointEnableAct->setShortcut(Qt::SHIFT + Qt::Key_F9);
 	m_runToCursorAct->setShortcut(Qt::Key_F4);
+<<<<<<< HEAD
 	connect(m_breakpointToggleAct, SIGNAL(triggered(bool)), this, SLOT(toggleBreakpointAtCursor(bool)));
 	connect(m_breakpointEnableAct, SIGNAL(triggered(bool)), this, SLOT(enableBreakpointAtCursor(bool)));
 	connect(m_runToCursorAct, SIGNAL(triggered(bool)), this, SLOT(runToCursor(bool)));
+=======
+	connect(m_breakpointToggleAct, &QAction::triggered, this, &DasmWindow::toggleBreakpointAtCursor);
+	connect(m_breakpointEnableAct, &QAction::triggered, this, &DasmWindow::enableBreakpointAtCursor);
+	connect(m_runToCursorAct, &QAction::triggered, this, &DasmWindow::runToCursor);
+>>>>>>> upstream/master
 
 	// Right bar options
 	QActionGroup* rightBarGroup = new QActionGroup(this);
@@ -95,9 +130,15 @@ DasmWindow::DasmWindow(running_machine* machine, QWidget* parent) :
 	rightActComments->setActionGroup(rightBarGroup);
 	rightActRaw->setShortcut(QKeySequence("Ctrl+R"));
 	rightActEncrypted->setShortcut(QKeySequence("Ctrl+E"));
+<<<<<<< HEAD
 	rightActComments->setShortcut(QKeySequence("Ctrl+C"));
 	rightActRaw->setChecked(true);
 	connect(rightBarGroup, SIGNAL(triggered(QAction*)), this, SLOT(rightBarChanged(QAction*)));
+=======
+	rightActComments->setShortcut(QKeySequence("Ctrl+N"));
+	rightActRaw->setChecked(true);
+	connect(rightBarGroup, &QActionGroup::triggered, this, &DasmWindow::rightBarChanged);
+>>>>>>> upstream/master
 
 	// Assemble the options menu
 	QMenu* optionsMenu = menuBar()->addMenu("&Options");
@@ -138,9 +179,15 @@ void DasmWindow::toggleBreakpointAtCursor(bool changedTo)
 		device_debug *const cpuinfo = device->debug();
 
 		// Find an existing breakpoint at this address
+<<<<<<< HEAD
 		INT32 bpindex = -1;
 		for (device_debug::breakpoint* bp = cpuinfo->breakpoint_first();
 				bp != NULL;
+=======
+		int32_t bpindex = -1;
+		for (device_debug::breakpoint* bp = cpuinfo->breakpoint_first();
+				bp != nullptr;
+>>>>>>> upstream/master
 				bp = bp->next())
 		{
 			if (address == bp->address())
@@ -153,16 +200,28 @@ void DasmWindow::toggleBreakpointAtCursor(bool changedTo)
 		// If none exists, add a new one
 		if (bpindex == -1)
 		{
+<<<<<<< HEAD
 			bpindex = cpuinfo->breakpoint_set(address, NULL, NULL);
 			debug_console_printf(*m_machine, "Breakpoint %X set\n", bpindex);
+=======
+			bpindex = cpuinfo->breakpoint_set(address, nullptr, nullptr);
+			m_machine->debugger().console().printf("Breakpoint %X set\n", bpindex);
+>>>>>>> upstream/master
 		}
 		else
 		{
 			cpuinfo->breakpoint_clear(bpindex);
+<<<<<<< HEAD
 			debug_console_printf(*m_machine, "Breakpoint %X cleared\n", bpindex);
 		}
 		m_machine->debug_view().update_all();
 		debugger_refresh_display(*m_machine);
+=======
+			m_machine->debugger().console().printf("Breakpoint %X cleared\n", bpindex);
+		}
+		m_machine->debug_view().update_all();
+		m_machine->debugger().refresh_display();
+>>>>>>> upstream/master
 	}
 
 	refreshAll();
@@ -179,6 +238,7 @@ void DasmWindow::enableBreakpointAtCursor(bool changedTo)
 
 		// Find an existing breakpoint at this address
 		device_debug::breakpoint* bp = cpuinfo->breakpoint_first();
+<<<<<<< HEAD
 		while ((bp != NULL) && (bp->address() != address))
 			bp = bp->next();
 
@@ -188,6 +248,17 @@ void DasmWindow::enableBreakpointAtCursor(bool changedTo)
 			debug_console_printf(*m_machine, "Breakpoint %X %s\n", (UINT32)bp->index(), bp->enabled() ? "enabled" : "disabled");
 			m_machine->debug_view().update_all();
 			debugger_refresh_display(*m_machine);
+=======
+		while ((bp != nullptr) && (bp->address() != address))
+			bp = bp->next();
+
+		if (bp != nullptr)
+		{
+			cpuinfo->breakpoint_enable(bp->index(), !bp->enabled());
+			m_machine->debugger().console().printf("Breakpoint %X %s\n", (uint32_t)bp->index(), bp->enabled() ? "enabled" : "disabled");
+			m_machine->debug_view().update_all();
+			m_machine->debugger().refresh_display();
+>>>>>>> upstream/master
 		}
 	}
 
@@ -237,10 +308,17 @@ void DasmWindow::dasmViewUpdated()
 
 		// Find an existing breakpoint at this address
 		device_debug::breakpoint* bp = cpuinfo->breakpoint_first();
+<<<<<<< HEAD
 		while ((bp != NULL) && (bp->address() != address))
 			bp = bp->next();
 
 		if (bp != NULL)
+=======
+		while ((bp != nullptr) && (bp->address() != address))
+			bp = bp->next();
+
+		if (bp != nullptr)
+>>>>>>> upstream/master
 		{
 			haveBreakpoint = true;
 			breakpointEnabled = bp->enabled();
@@ -257,6 +335,7 @@ void DasmWindow::dasmViewUpdated()
 
 void DasmWindow::populateComboBox()
 {
+<<<<<<< HEAD
 	if (m_dasmView == NULL)
 		return;
 
@@ -266,6 +345,15 @@ void DasmWindow::populateComboBox()
 			source = source->next())
 	{
 		m_cpuComboBox->addItem(source->name());
+=======
+	if (m_dasmView == nullptr)
+		return;
+
+	m_cpuComboBox->clear();
+	for (const debug_view_source &source : m_dasmView->view()->source_list())
+	{
+		m_cpuComboBox->addItem(source.name());
+>>>>>>> upstream/master
 	}
 }
 
@@ -300,6 +388,7 @@ void DasmWindowQtConfig::applyToQWidget(QWidget* widget)
 	rightBarGroup->actions()[m_rightBar]->trigger();
 }
 
+<<<<<<< HEAD
 void DasmWindowQtConfig::addToXmlDataNode(xml_data_node* node) const
 {
 	WindowQtConfig::addToXmlDataNode(node);
@@ -312,4 +401,18 @@ void DasmWindowQtConfig::recoverFromXmlNode(xml_data_node* node)
 	WindowQtConfig::recoverFromXmlNode(node);
 	m_cpu = xml_get_attribute_int(node, "cpu", m_cpu);
 	m_rightBar = xml_get_attribute_int(node, "rightbar", m_rightBar);
+=======
+void DasmWindowQtConfig::addToXmlDataNode(util::xml::data_node &node) const
+{
+	WindowQtConfig::addToXmlDataNode(node);
+	node.set_attribute_int("cpu", m_cpu);
+	node.set_attribute_int("rightbar", m_rightBar);
+}
+
+void DasmWindowQtConfig::recoverFromXmlNode(util::xml::data_node const &node)
+{
+	WindowQtConfig::recoverFromXmlNode(node);
+	m_cpu = node.get_attribute_int("cpu", m_cpu);
+	m_rightBar = node.get_attribute_int("rightbar", m_rightBar);
+>>>>>>> upstream/master
 }

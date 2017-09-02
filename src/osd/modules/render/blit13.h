@@ -5,12 +5,21 @@
 //  INLINE
 //============================================================
 
+<<<<<<< HEAD
 inline UINT32 premult32(const UINT32 pixel)
 {
 	const UINT16 a = (pixel >> 24) & 0xff;
 	const UINT16 r = (pixel >> 16) & 0xff;
 	const UINT16 g = (pixel >> 8) & 0xff;
 	const UINT16 b = (pixel >> 0) & 0xff;
+=======
+inline uint32_t premult32(const uint32_t pixel)
+{
+	const uint16_t a = (pixel >> 24) & 0xff;
+	const uint16_t r = (pixel >> 16) & 0xff;
+	const uint16_t g = (pixel >> 8) & 0xff;
+	const uint16_t b = (pixel >> 0) & 0xff;
+>>>>>>> upstream/master
 
 	return 0xFF000000 |
 		((r * a) / 255) << 16 |
@@ -18,6 +27,7 @@ inline UINT32 premult32(const UINT32 pixel)
 		((b * a) / 255);
 }
 
+<<<<<<< HEAD
 inline UINT32 CLUL(const UINT32 x)
 {
 	return ((INT32) x < 0) ? 0 : ((x > 65535) ? 255 : x >> 8);
@@ -29,10 +39,24 @@ inline UINT32 ycc_to_rgb(const UINT8 y, const UINT8 cb, const UINT8 cr)
 	const UINT32 r = (common +            409 * cr);
 	const UINT32 g = (common - 100 * cb - 208 * cr + 91776);
 	const UINT32 b = (common + 516 * cb - 13696);
+=======
+inline uint32_t CLUL(const uint32_t x)
+{
+	return ((int32_t) x < 0) ? 0 : ((x > 65535) ? 255 : x >> 8);
+}
+
+inline uint32_t ycc_to_rgb(const uint8_t y, const uint8_t cb, const uint8_t cr)
+{
+	const uint32_t common = 298 * y - 56992;
+	const uint32_t r = (common +            409 * cr);
+	const uint32_t g = (common - 100 * cb - 208 * cr + 91776);
+	const uint32_t b = (common + 516 * cb - 13696);
+>>>>>>> upstream/master
 
 	return 0xff000000 | (CLUL(r)<<16) | (CLUL(g)<<8) | (CLUL(b));
 }
 
+<<<<<<< HEAD
 inline UINT32 pixel_ycc_to_rgb(const UINT16 *pixel)
 {
 	const UINT32 p = *(UINT32 *)((FPTR) pixel & ~3);
@@ -42,6 +66,17 @@ inline UINT32 pixel_ycc_to_rgb(const UINT16 *pixel)
 inline UINT32 pixel_ycc_to_rgb_pal(const UINT16 *pixel, const rgb_t *palette)
 {
 	const UINT32 p = *(UINT32 *)((FPTR) pixel & ~3);
+=======
+inline uint32_t pixel_ycc_to_rgb(const uint16_t *pixel)
+{
+	const uint32_t p = *(uint32_t *)((uintptr_t) pixel & ~3);
+	return ycc_to_rgb((*pixel >> 8) & 0xff, (p) & 0xff, (p>>16) & 0xff);
+}
+
+inline uint32_t pixel_ycc_to_rgb_pal(const uint16_t *pixel, const rgb_t *palette)
+{
+	const uint32_t p = *(uint32_t *)((uintptr_t) pixel & ~3);
+>>>>>>> upstream/master
 	return ycc_to_rgb(palette[(*pixel >> 8) & 0xff], (p) & 0xff, (p>>16) & 0xff);
 }
 
@@ -104,12 +139,21 @@ FUNCTOR(op_yuv16pal_yuy2,
 				((src<<8)&0xff00ff00);)
 
 FUNCTOR(op_yuv16_argb32,
+<<<<<<< HEAD
 		return (UINT64) ycc_to_rgb((src >>  8) & 0xff, src & 0xff , (src>>16) & 0xff)
 	| ((UINT64)ycc_to_rgb((src >> 24) & 0xff, src & 0xff , (src>>16) & 0xff) << 32); )
 
 FUNCTOR(op_yuv16pal_argb32,
 		return (UINT64)ycc_to_rgb(palbase[(src >>  8) & 0xff], src & 0xff , (src>>16) & 0xff)
 	| ((UINT64)ycc_to_rgb(palbase[(src >> 24) & 0xff], src & 0xff , (src>>16) & 0xff) << 32);)
+=======
+		return (uint64_t) ycc_to_rgb((src >>  8) & 0xff, src & 0xff , (src>>16) & 0xff)
+	| ((uint64_t)ycc_to_rgb((src >> 24) & 0xff, src & 0xff , (src>>16) & 0xff) << 32); )
+
+FUNCTOR(op_yuv16pal_argb32,
+		return (uint64_t)ycc_to_rgb(palbase[(src >>  8) & 0xff], src & 0xff , (src>>16) & 0xff)
+	| ((uint64_t)ycc_to_rgb(palbase[(src >> 24) & 0xff], src & 0xff , (src>>16) & 0xff) << 32);)
+>>>>>>> upstream/master
 
 FUNCTOR(op_yuv16_argb32rot, return pixel_ycc_to_rgb(&src) ; )
 
@@ -135,18 +179,30 @@ template<typename _src_type, typename _dest_type, typename _op, int _len_div>
 struct blit_texcopy : public blit_base
 {
 	blit_texcopy() : blit_base(sizeof(_dest_type) / _len_div, false, false) { }
+<<<<<<< HEAD
 	void texop(const texture_info *texture, const render_texinfo *texsource) const
+=======
+	void texop(const texture_info *texture, const render_texinfo *texsource) const override
+>>>>>>> upstream/master
 	{
 		ATTR_UNUSED const rgb_t *palbase = texsource->palette;
 		int x, y;
 		/* loop over Y */
 		for (y = 0; y < texsource->height; y++) {
 			_src_type *src = (_src_type *)texsource->base + y * texsource->rowpixels / (_len_div);
+<<<<<<< HEAD
 			_dest_type *dst = (_dest_type *)((UINT8 *)texture->m_pixels + y * texture->m_pitch);
 			x = texsource->width / (_len_div);
 			while (x > 0) {
 				*dst++ = m_op.op(*src, palbase);
 				src++;
+=======
+			_dest_type *dst = (_dest_type *)((uint8_t *)texture->m_pixels + y * texture->m_pitch);
+			x = texsource->width / (_len_div);
+			while (x > 0) {
+				*dst++ = m_op.op(*src, palbase);
+				++src;
+>>>>>>> upstream/master
 				x--;
 			}
 		}
@@ -162,7 +218,11 @@ template<typename _src_type, typename _dest_type, typename _op>
 struct blit_texrot : public blit_base
 {
 	blit_texrot() : blit_base(sizeof(_dest_type), true, false) { }
+<<<<<<< HEAD
 	void texop(const texture_info *texture, const render_texinfo *texsource) const
+=======
+	void texop(const texture_info *texture, const render_texinfo *texsource) const override
+>>>>>>> upstream/master
 	{
 		ATTR_UNUSED const rgb_t *palbase = texsource->palette;
 		int x, y;
@@ -171,9 +231,15 @@ struct blit_texrot : public blit_base
 		int dvdx = setup->dvdx;
 		/* loop over Y */
 		for (y = 0; y < setup->rotheight; y++) {
+<<<<<<< HEAD
 			INT32 curu = setup->startu + y * setup->dudy;
 			INT32 curv = setup->startv + y * setup->dvdy;
 			_dest_type *dst = (_dest_type *)((UINT8 *)texture->m_pixels + y * texture->m_pitch);
+=======
+			int32_t curu = setup->startu + y * setup->dudy;
+			int32_t curv = setup->startv + y * setup->dvdy;
+			_dest_type *dst = (_dest_type *)((uint8_t *)texture->m_pixels + y * texture->m_pitch);
+>>>>>>> upstream/master
 			x = setup->rotwidth;
 			while (x>0) {
 				_src_type *src = (_src_type *) texsource->base + (curv >> 16) * texsource->rowpixels + (curu >> 16);
@@ -195,7 +261,11 @@ template<typename _src_type, typename _dest_type>
 struct blit_texpass : public blit_base
 {
 	blit_texpass() : blit_base(sizeof(_dest_type), false, true) { }
+<<<<<<< HEAD
 	void texop(const texture_info *texture, const render_texinfo *texsource) const
+=======
+	void texop(const texture_info *texture, const render_texinfo *texsource) const override
+>>>>>>> upstream/master
 	{
 	}
 };
@@ -204,6 +274,7 @@ struct blit_texpass : public blit_base
 		const struct blit_texpass<b, c> texcopy_ ## a;
 
 
+<<<<<<< HEAD
 TEXCOPYA(rgb32_argb32,  UINT32, UINT32, 1)
 TEXCOPYP(rgb32_rgb32,   UINT32, UINT32)
 
@@ -256,3 +327,57 @@ TEXROTA(pal16a_rgb32,  UINT16, UINT32)
 
 TEXROTA(yuv16_argb32rot, UINT16, UINT32)
 TEXROTA(yuv16pal_argb32rot, UINT16, UINT32)
+=======
+TEXCOPYA(rgb32_argb32,  uint32_t, uint32_t, 1)
+TEXCOPYP(rgb32_rgb32,   uint32_t, uint32_t)
+
+TEXCOPYA(rgb32pal_argb32,  uint32_t, uint32_t, 1)
+TEXCOPYA(pal16_argb32,  uint16_t, uint32_t, 1)
+TEXCOPYA(pal16a_argb32,  uint16_t, uint32_t, 1)
+TEXCOPYA(rgb15_argb32,  uint16_t, uint32_t, 1)
+TEXCOPYA(rgb15pal_argb32,  uint16_t, uint32_t, 1)
+
+TEXCOPYA(pal16_argb1555,  uint16_t, uint16_t, 1)
+TEXCOPYA(rgb15_argb1555,  uint16_t, uint16_t, 1)
+TEXCOPYA(rgb15pal_argb1555,  uint16_t, uint16_t, 1)
+
+TEXCOPYP(argb32_argb32,  uint32_t, uint32_t)
+TEXCOPYA(argb32_rgb32, uint32_t, uint32_t, 1)
+TEXCOPYA(pal16a_rgb32,  uint16_t, uint32_t, 1)
+
+TEXCOPYA(yuv16_argb32, uint32_t, uint64_t, 2)
+TEXCOPYA(yuv16pal_argb32, uint32_t, uint64_t, 2)
+
+TEXCOPYP(yuv16_uyvy, uint16_t, uint16_t)
+TEXCOPYP(rgb15_rgb555, uint16_t, uint16_t)
+
+TEXCOPYA(yuv16pal_uyvy, uint16_t, uint16_t, 1)
+
+TEXCOPYA(yuv16_yvyu, uint32_t, uint32_t, 2)
+TEXCOPYA(yuv16pal_yvyu, uint16_t, uint16_t, 1)
+
+TEXCOPYA(yuv16_yuy2, uint32_t, uint32_t, 2)
+TEXCOPYA(yuv16pal_yuy2, uint32_t, uint32_t, 2)
+
+
+
+TEXROTA(argb32_argb32, uint32_t, uint32_t)
+TEXROTA(rgb32_argb32,  uint32_t, uint32_t)
+TEXROTA(pal16_argb32,  uint16_t, uint32_t)
+TEXROTA(pal16_rgb32,  uint16_t, uint32_t)
+
+TEXROTA(rgb32pal_argb32,  uint32_t, uint32_t)
+TEXROTA(pal16a_argb32,  uint16_t, uint32_t)
+TEXROTA(rgb15_argb32,  uint16_t, uint32_t)
+TEXROTA(rgb15pal_argb32,  uint16_t, uint32_t)
+
+TEXROTA(pal16_argb1555,  uint16_t, uint16_t)
+TEXROTA(rgb15_argb1555,  uint16_t, uint16_t)
+TEXROTA(rgb15pal_argb1555,  uint16_t, uint16_t)
+
+TEXROTA(argb32_rgb32, uint32_t, uint32_t)
+TEXROTA(pal16a_rgb32,  uint16_t, uint32_t)
+
+TEXROTA(yuv16_argb32rot, uint16_t, uint32_t)
+TEXROTA(yuv16pal_argb32rot, uint16_t, uint32_t)
+>>>>>>> upstream/master

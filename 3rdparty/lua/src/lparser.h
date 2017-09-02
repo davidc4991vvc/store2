@@ -1,5 +1,9 @@
 /*
+<<<<<<< HEAD
 ** $Id: lparser.h,v 1.74 2014/10/25 11:50:46 roberto Exp $
+=======
+** $Id: lparser.h,v 1.76 2015/12/30 18:16:13 roberto Exp $
+>>>>>>> upstream/master
 ** Lua Parser
 ** See Copyright Notice in lua.h
 */
@@ -13,6 +17,7 @@
 
 
 /*
+<<<<<<< HEAD
 ** Expression descriptor
 */
 
@@ -32,6 +37,40 @@ typedef enum {
   VRELOCABLE,	/* info = instruction pc */
   VCALL,	/* info = instruction pc */
   VVARARG	/* info = instruction pc */
+=======
+** Expression and variable descriptor.
+** Code generation for variables and expressions can be delayed to allow
+** optimizations; An 'expdesc' structure describes a potentially-delayed
+** variable/expression. It has a description of its "main" value plus a
+** list of conditional jumps that can also produce its value (generated
+** by short-circuit operators 'and'/'or').
+*/
+
+/* kinds of variables/expressions */
+typedef enum {
+  VVOID,  /* when 'expdesc' describes the last expression a list,
+             this kind means an empty list (so, no expression) */
+  VNIL,  /* constant nil */
+  VTRUE,  /* constant true */
+  VFALSE,  /* constant false */
+  VK,  /* constant in 'k'; info = index of constant in 'k' */
+  VKFLT,  /* floating constant; nval = numerical float value */
+  VKINT,  /* integer constant; nval = numerical integer value */
+  VNONRELOC,  /* expression has its value in a fixed register;
+                 info = result register */
+  VLOCAL,  /* local variable; info = local register */
+  VUPVAL,  /* upvalue variable; info = index of upvalue in 'upvalues' */
+  VINDEXED,  /* indexed variable;
+                ind.vt = whether 't' is register or upvalue;
+                ind.t = table register or upvalue;
+                ind.idx = key's R/K index */
+  VJMP,  /* expression is a test/comparison;
+            info = pc of corresponding jump instruction */
+  VRELOCABLE,  /* expression can put result in any register;
+                  info = instruction pc */
+  VCALL,  /* expression is a function call; info = instruction pc */
+  VVARARG  /* vararg expression; info = instruction pc */
+>>>>>>> upstream/master
 } expkind;
 
 
@@ -41,14 +80,23 @@ typedef enum {
 typedef struct expdesc {
   expkind k;
   union {
+<<<<<<< HEAD
+=======
+    lua_Integer ival;    /* for VKINT */
+    lua_Number nval;  /* for VKFLT */
+    int info;  /* for generic use */
+>>>>>>> upstream/master
     struct {  /* for indexed variables (VINDEXED) */
       short idx;  /* index (R/K) */
       lu_byte t;  /* table (register or upvalue) */
       lu_byte vt;  /* whether 't' is register (VLOCAL) or upvalue (VUPVAL) */
     } ind;
+<<<<<<< HEAD
     int info;  /* for generic use */
     lua_Number nval;  /* for VKFLT */
     lua_Integer ival;    /* for VKINT */
+=======
+>>>>>>> upstream/master
   } u;
   int t;  /* patch list of 'exit when true' */
   int f;  /* patch list of 'exit when false' */

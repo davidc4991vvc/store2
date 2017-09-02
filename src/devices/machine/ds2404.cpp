@@ -18,14 +18,23 @@
 //**************************************************************************
 
 // device type definition
+<<<<<<< HEAD
 const device_type DS2404 = &device_creator<ds2404_device>;
+=======
+DEFINE_DEVICE_TYPE(DS2404, ds2404_device, "ds2404", "DS2404 EconoRAM Time Chip")
+>>>>>>> upstream/master
 
 //-------------------------------------------------
 //  ds2404_device - constructor
 //-------------------------------------------------
 
+<<<<<<< HEAD
 ds2404_device::ds2404_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
 	: device_t(mconfig, DS2404, "DS2404", tag, owner, clock, "ds2404", __FILE__),
+=======
+ds2404_device::ds2404_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: device_t(mconfig, DS2404, tag, owner, clock),
+>>>>>>> upstream/master
 		device_nvram_interface(mconfig, *this), m_tick_timer(nullptr), m_ref_year(0), m_ref_month(0), m_ref_day(0),
 		m_address(0),
 		m_offset(0),
@@ -43,7 +52,11 @@ ds2404_device::ds2404_device(const machine_config &mconfig, const char *tag, dev
 //  to set the reference year
 //-------------------------------------------------
 
+<<<<<<< HEAD
 void ds2404_device::static_set_ref_year(device_t &device, UINT32 year)
+=======
+void ds2404_device::static_set_ref_year(device_t &device, uint32_t year)
+>>>>>>> upstream/master
 {
 	ds2404_device &ds2404 = downcast<ds2404_device &>(device);
 	ds2404.m_ref_year = year;
@@ -55,7 +68,11 @@ void ds2404_device::static_set_ref_year(device_t &device, UINT32 year)
 //  to set the reference month
 //-------------------------------------------------
 
+<<<<<<< HEAD
 void ds2404_device::static_set_ref_month(device_t &device, UINT8 month)
+=======
+void ds2404_device::static_set_ref_month(device_t &device, uint8_t month)
+>>>>>>> upstream/master
 {
 	ds2404_device &ds2404 = downcast<ds2404_device &>(device);
 	ds2404.m_ref_month = month;
@@ -67,7 +84,11 @@ void ds2404_device::static_set_ref_month(device_t &device, UINT8 month)
 //  to set the reference day
 //-------------------------------------------------
 
+<<<<<<< HEAD
 void ds2404_device::static_set_ref_day(device_t &device, UINT8 day)
+=======
+void ds2404_device::static_set_ref_day(device_t &device, uint8_t day)
+>>>>>>> upstream/master
 {
 	ds2404_device &ds2404 = downcast<ds2404_device &>(device);
 	ds2404.m_ref_day = day;
@@ -99,15 +120,24 @@ void ds2404_device::device_start()
 	m_rtc[3] = (current_time >> 16) & 0xff;
 	m_rtc[4] = (current_time >> 24) & 0xff;
 
+<<<<<<< HEAD
 	for (int i = 0; i < 8; i++)
 		m_state[i] = DS2404_STATE_IDLE;
+=======
+	for (auto & elem : m_state)
+		elem = DS2404_STATE_IDLE;
+>>>>>>> upstream/master
 
 	m_tick_timer = timer_alloc(0);
 	m_tick_timer->adjust(attotime::from_hz(256), 0, attotime::from_hz(256));
 }
 
 
+<<<<<<< HEAD
 void ds2404_device::ds2404_rom_cmd(UINT8 cmd)
+=======
+void ds2404_device::ds2404_rom_cmd(uint8_t cmd)
+>>>>>>> upstream/master
 {
 	switch(cmd)
 	{
@@ -121,7 +151,11 @@ void ds2404_device::ds2404_rom_cmd(UINT8 cmd)
 	}
 }
 
+<<<<<<< HEAD
 void ds2404_device::ds2404_cmd(UINT8 cmd)
+=======
+void ds2404_device::ds2404_cmd(uint8_t cmd)
+>>>>>>> upstream/master
 {
 	switch(cmd)
 	{
@@ -155,7 +189,11 @@ void ds2404_device::ds2404_cmd(UINT8 cmd)
 	}
 }
 
+<<<<<<< HEAD
 UINT8 ds2404_device::ds2404_readmem()
+=======
+uint8_t ds2404_device::ds2404_readmem()
+>>>>>>> upstream/master
 {
 	if( m_address < 0x200 )
 	{
@@ -168,7 +206,11 @@ UINT8 ds2404_device::ds2404_readmem()
 	return 0;
 }
 
+<<<<<<< HEAD
 void ds2404_device::ds2404_writemem(UINT8 value)
+=======
+void ds2404_device::ds2404_writemem(uint8_t value)
+>>>>>>> upstream/master
 {
 	if( m_address < 0x200 )
 	{
@@ -194,7 +236,11 @@ WRITE8_MEMBER( ds2404_device::ds2404_3w_reset_w )
 
 READ8_MEMBER( ds2404_device::ds2404_data_r )
 {
+<<<<<<< HEAD
 	UINT8 value = 0;
+=======
+	uint8_t value = 0;
+>>>>>>> upstream/master
 	switch(m_state[m_state_ptr])
 	{
 		case DS2404_STATE_IDLE:
@@ -353,10 +399,17 @@ void ds2404_device::device_timer(emu_timer &timer, device_timer_id id, int param
 		case 0:
 		{
 			// tick
+<<<<<<< HEAD
 			for(int i = 0; i < 5; i++)
 			{
 				m_rtc[ i ]++;
 				if(m_rtc[ i ] != 0)
+=======
+			for(auto & elem : m_rtc)
+			{
+				elem++;
+				if(elem != 0)
+>>>>>>> upstream/master
 				{
 					break;
 				}
@@ -366,7 +419,11 @@ void ds2404_device::device_timer(emu_timer &timer, device_timer_id id, int param
 		}
 
 		default:
+<<<<<<< HEAD
 			assert_always(FALSE, "Unknown id in ds2404_device::device_timer");
+=======
+			assert_always(false, "Unknown id in ds2404_device::device_timer");
+>>>>>>> upstream/master
 			break;
 	}
 }

@@ -1,7 +1,14 @@
 // license:BSD-3-Clause
 // copyright-holders:Fabio Priuli
+<<<<<<< HEAD
 #ifndef __SPC1000_VDP_H__
 #define __SPC1000_VDP_H__
+=======
+#ifndef MAME_BUS_SPC1000_VDP_H
+#define MAME_BUS_SPC1000_VDP_H
+
+#pragma once
+>>>>>>> upstream/master
 
 #include "exp.h"
 #include "video/tms9928a.h"
@@ -13,6 +20,7 @@
 
 // ======================> spc1000_vdp_exp_device
 
+<<<<<<< HEAD
 class spc1000_vdp_exp_device : public device_t,
 						public device_spc1000_card_interface
 {
@@ -30,6 +38,22 @@ public:
 
 	virtual DECLARE_READ8_MEMBER(read);
 	virtual DECLARE_WRITE8_MEMBER(write);
+=======
+class spc1000_vdp_exp_device : public device_t, public device_spc1000_card_interface
+{
+public:
+	// construction/destruction
+	spc1000_vdp_exp_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
+
+protected:
+	// device-level overrides
+	virtual void device_start() override;
+	virtual void device_reset() override;
+	virtual void device_add_mconfig(machine_config &config) override;
+
+	virtual DECLARE_READ8_MEMBER(read) override;
+	virtual DECLARE_WRITE8_MEMBER(write) override;
+>>>>>>> upstream/master
 
 	DECLARE_WRITE_LINE_MEMBER(vdp_interrupt);
 
@@ -40,6 +64,12 @@ private:
 
 
 // device type definition
+<<<<<<< HEAD
 extern const device_type SPC1000_VDP_EXP;
 
 #endif  /* __SPC1000_VDP_H__ */
+=======
+DECLARE_DEVICE_TYPE(SPC1000_VDP_EXP, spc1000_vdp_exp_device)
+
+#endif // MAME_BUS_SPC1000_VDP_H
+>>>>>>> upstream/master

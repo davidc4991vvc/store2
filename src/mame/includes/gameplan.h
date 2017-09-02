@@ -10,6 +10,11 @@ driver by Chris Moore
 
 #include "machine/6522via.h"
 #include "machine/6532riot.h"
+<<<<<<< HEAD
+=======
+#include "machine/gen_latch.h"
+#include "screen.h"
+>>>>>>> upstream/master
 
 #define GAMEPLAN_MAIN_MASTER_CLOCK       (XTAL_3_579545MHz)
 #define GAMEPLAN_AUDIO_MASTER_CLOCK      (XTAL_3_579545MHz)
@@ -43,6 +48,7 @@ public:
 			m_via_0(*this, "via6522_0"),
 			m_via_1(*this, "via6522_1"),
 			m_via_2(*this, "via6522_2"),
+<<<<<<< HEAD
 			m_screen(*this, "screen") { }
 
 	/* machine state */
@@ -56,6 +62,22 @@ public:
 	UINT8    m_video_y;
 	UINT8    m_video_command;
 	UINT8    m_video_data;
+=======
+			m_screen(*this, "screen"),
+			m_soundlatch(*this, "soundlatch") { }
+
+	/* machine state */
+	uint8_t   m_current_port;
+	optional_shared_ptr<uint8_t> m_trvquest_question;
+
+	/* video state */
+	std::unique_ptr<uint8_t[]>   m_videoram;
+	size_t   m_videoram_size;
+	uint8_t    m_video_x;
+	uint8_t    m_video_y;
+	uint8_t    m_video_command;
+	uint8_t    m_video_data;
+>>>>>>> upstream/master
 	emu_timer *m_via_0_ca1_timer;
 
 	/* devices */
@@ -66,6 +88,12 @@ public:
 	required_device<via6522_device> m_via_1;
 	required_device<via6522_device> m_via_2;
 	required_device<screen_device> m_screen;
+<<<<<<< HEAD
+=======
+	optional_device<generic_latch_8_device> m_soundlatch;
+
+
+>>>>>>> upstream/master
 	DECLARE_WRITE8_MEMBER(io_select_w);
 	DECLARE_READ8_MEMBER(io_port_r);
 	DECLARE_WRITE_LINE_MEMBER(coin_w);
@@ -83,8 +111,13 @@ public:
 	DECLARE_VIDEO_START(leprechn);
 	DECLARE_VIDEO_START(trvquest);
 	DECLARE_VIDEO_START(common);
+<<<<<<< HEAD
 	UINT32 screen_update_gameplan(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect);
 	UINT32 screen_update_leprechn(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect);
+=======
+	uint32_t screen_update_gameplan(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect);
+	uint32_t screen_update_leprechn(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect);
+>>>>>>> upstream/master
 	INTERRUPT_GEN_MEMBER(trvquest_interrupt);
 	TIMER_CALLBACK_MEMBER(clear_screen_done_callback);
 	TIMER_CALLBACK_MEMBER(via_irq_delayed);
@@ -102,7 +135,11 @@ public:
 	DECLARE_WRITE_LINE_MEMBER(trvquest_misc_w);
 
 protected:
+<<<<<<< HEAD
 	virtual void device_timer(emu_timer &timer, device_timer_id id, int param, void *ptr);
+=======
+	virtual void device_timer(emu_timer &timer, device_timer_id id, int param, void *ptr) override;
+>>>>>>> upstream/master
 };
 
 /*----------- defined in video/gameplan.c -----------*/

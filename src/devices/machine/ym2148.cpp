@@ -13,11 +13,19 @@ TODO:
 #include "ym2148.h"
 
 
+<<<<<<< HEAD
 const device_type YM2148 = &device_creator<ym2148_device>;
 
 
 ym2148_device::ym2148_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
 	: device_t(mconfig, YM2148, "YM2148", tag, owner, clock, "ym2148", __FILE__)
+=======
+DEFINE_DEVICE_TYPE(YM2148, ym2148_device, "ym2148", "Yamaha YM2148 MIDI/Keyboard Interface")
+
+
+ym2148_device::ym2148_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: device_t(mconfig, YM2148, tag, owner, clock)
+>>>>>>> upstream/master
 	, device_serial_interface(mconfig, *this)
 	, m_txd_handler(*this)
 	, m_irq_handler(*this)
@@ -102,7 +110,11 @@ void ym2148_device::transmit_clock()
 		/* if diserial has bits to send, make them so */
 		if (!is_transmit_register_empty())
 		{
+<<<<<<< HEAD
 			UINT8 data = transmit_register_get_data_bit();
+=======
+			uint8_t data = transmit_register_get_data_bit();
+>>>>>>> upstream/master
 			m_tx_busy = true;
 			m_txd_handler(data);
 		}
@@ -197,7 +209,11 @@ WRITE8_MEMBER(ym2148_device::write)
 }
 
 
+<<<<<<< HEAD
 UINT8 ym2148_device::get_irq_vector()
+=======
+uint8_t ym2148_device::get_irq_vector()
+>>>>>>> upstream/master
 {
 	return (m_irq_state == ASSERT_LINE) ? m_irq_vector : m_external_irq_vector;
 }

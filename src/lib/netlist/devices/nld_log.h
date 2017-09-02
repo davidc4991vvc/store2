@@ -18,6 +18,7 @@
 #ifndef NLD_LOG_H_
 #define NLD_LOG_H_
 
+<<<<<<< HEAD
 #include "nl_base.h"
 #include "plib/pstream.h"
 
@@ -54,5 +55,17 @@ private:
 #endif
 
 NETLIB_NAMESPACE_DEVICES_END()
+=======
+#include "../nl_setup.h"
+
+#define LOG(name, cI)                                                        \
+		NET_REGISTER_DEV(??PG, name)                                         \
+		NET_CONNECT(name, I, cI)
+
+#define LOGD(name, cI, cI2)                                                 \
+		NET_REGISTER_DEV(LOGD, name)                                        \
+		NET_CONNECT(name, I, cI)                                            \
+		NET_CONNECT(name, I2, cI2)
+>>>>>>> upstream/master
 
 #endif /* NLD_LOG_H_ */

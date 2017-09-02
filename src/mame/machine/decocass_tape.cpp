@@ -7,9 +7,16 @@
  ***********************************************************************/
 
 #include "emu.h"
+<<<<<<< HEAD
 #include "cpu/m6502/m6502.h"
 #include "cpu/mcs48/mcs48.h"
 #include "machine/decocass_tape.h"
+=======
+#include "machine/decocass_tape.h"
+
+#include "cpu/m6502/m6502.h"
+#include "cpu/mcs48/mcs48.h"
+>>>>>>> upstream/master
 
 #define LOG_CASSETTE_STATE      0
 
@@ -54,6 +61,7 @@
 #define REGION_BOT_GAP_LEN_CLOCKS       TAPE_MSEC_TO_CLOCKS(300)    /* 300ms */
 #define REGION_BOT_GAP_END_CLOCK        (REGION_BOT_GAP_START_CLOCK+REGION_BOT_GAP_LEN_CLOCKS)
 
+<<<<<<< HEAD
 static UINT16 tape_crc16_byte(UINT16 crc, UINT8 data);
 
 const device_type DECOCASS_TAPE = &device_creator<decocass_tape_device>;
@@ -61,10 +69,20 @@ const device_type DECOCASS_TAPE = &device_creator<decocass_tape_device>;
 decocass_tape_device::decocass_tape_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
 	: device_t(mconfig, DECOCASS_TAPE, "DECO Cassette Tape", tag, owner, clock, "decocass_tape", __FILE__),
 	m_tape_timer(NULL),
+=======
+static uint16_t tape_crc16_byte(uint16_t crc, uint8_t data);
+
+DEFINE_DEVICE_TYPE(DECOCASS_TAPE, decocass_tape_device, "decocass_tape", "DECO Cassette Tape")
+
+decocass_tape_device::decocass_tape_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: device_t(mconfig, DECOCASS_TAPE, tag, owner, clock),
+	m_tape_timer(nullptr),
+>>>>>>> upstream/master
 	m_speed(0),
 	m_region(REGION_LEADER),
 	m_bitnum(0),
 	m_clockpos(0),
+<<<<<<< HEAD
 	m_numclocks(0)
 {
 	for (int i = 0; i < 256; i++)
@@ -79,6 +97,13 @@ decocass_tape_device::decocass_tape_device(const machine_config &mconfig, const 
 
 void decocass_tape_device::device_config_complete()
 {
+=======
+	m_numclocks(0),
+	m_tape_data(*this, DEVICE_SELF)
+{
+	for (auto & elem : m_crc16)
+	elem = 0;
+>>>>>>> upstream/master
 }
 
 //-------------------------------------------------
@@ -91,6 +116,7 @@ void decocass_tape_device::device_start()
 
 	/* fetch the data pointer */
 	m_tape_timer = machine().scheduler().timer_alloc(timer_expired_delegate(FUNC(decocass_tape_device::tape_clock_callback), this));
+<<<<<<< HEAD
 	if (region() == NULL)
 		return;
 	UINT8 *regionbase = region()->base();
@@ -98,6 +124,14 @@ void decocass_tape_device::device_start()
 	/* scan for the first non-empty block in the image */
 	for (offs = region()->bytes() - 1; offs >= 0; offs--)
 		if (regionbase[offs] != 0)
+=======
+	if (!m_tape_data.found())
+		return;
+
+	/* scan for the first non-empty block in the image */
+	for (offs = m_tape_data.bytes() - 1; offs >= 0; offs--)
+		if (m_tape_data[offs] != 0)
+>>>>>>> upstream/master
 			break;
 	numblocks = ((offs | 0xff) + 1) / 256;
 	assert(numblocks < ARRAY_LENGTH(m_crc16));
@@ -108,12 +142,20 @@ void decocass_tape_device::device_start()
 	/* compute CRCs for each block */
 	for (curblock = 0; curblock < numblocks; curblock++)
 	{
+<<<<<<< HEAD
 		UINT16 crc = 0;
+=======
+		uint16_t crc = 0;
+>>>>>>> upstream/master
 		int testval;
 
 		/* first CRC the 256 bytes of data */
 		for (offs = 256 * curblock; offs < 256 * curblock + 256; offs++)
+<<<<<<< HEAD
 			crc = tape_crc16_byte(crc, regionbase[offs]);
+=======
+			crc = tape_crc16_byte(crc, m_tape_data[offs]);
+>>>>>>> upstream/master
 
 		/* then find a pair of bytes that will bring the CRC to 0 (any better way than brute force?) */
 		for (testval = 0; testval < 0x10000; testval++)
@@ -143,7 +185,11 @@ void decocass_tape_device::device_reset()
     CRC data
 -------------------------------------------------*/
 
+<<<<<<< HEAD
 static UINT16 tape_crc16_byte(UINT16 crc, UINT8 data)
+=======
+static uint16_t tape_crc16_byte(uint16_t crc, uint8_t data)
+>>>>>>> upstream/master
 {
 	int bit;
 
@@ -214,7 +260,11 @@ const char *decocass_tape_device::describe_state()
 
 		/* in the main data area, the clock alternates at the clock rate */
 		if (m_bytenum >= BYTE_LEADIN && m_bytenum <= BYTE_LEADOUT)
+<<<<<<< HEAD
 			clk = ((UINT32)(m_clockpos - REGION_BOT_GAP_END_CLOCK) & 1) ? 0 : 1;
+=======
+			clk = ((uint32_t)(m_clockpos - REGION_BOT_GAP_END_CLOCK) & 1) ? 0 : 1;
+>>>>>>> upstream/master
 		else if (m_bytenum == BYTE_LONGCLOCK)
 			clk = 1;
 		else
@@ -264,7 +314,11 @@ TIMER_CALLBACK_MEMBER( decocass_tape_device::tape_clock_callback )
 	/* everything else is data */
 	else
 	{
+<<<<<<< HEAD
 		UINT32 dataclock = m_clockpos - REGION_BOT_GAP_END_CLOCK;
+=======
+		uint32_t dataclock = m_clockpos - REGION_BOT_GAP_END_CLOCK;
+>>>>>>> upstream/master
 
 		/* compute the block number */
 		m_region = (tape_region)(REGION_DATA_BLOCK_0 + dataclock / (TAPE_CLOCKS_PER_BYTE * BYTE_BLOCK_TOTAL));
@@ -289,10 +343,16 @@ TIMER_CALLBACK_MEMBER( decocass_tape_device::tape_clock_callback )
     bits from the tape
 -------------------------------------------------*/
 
+<<<<<<< HEAD
 UINT8 decocass_tape_device::get_status_bits()
 {
 	UINT8 tape_bits = 0;
 	UINT8 *tape_data = region()->base();
+=======
+uint8_t decocass_tape_device::get_status_bits()
+{
+	uint8_t tape_bits = 0;
+>>>>>>> upstream/master
 
 	/* bit 0x20 is the BOT/EOT signal, which is also set in the leader/trailer area */
 	if (m_region == REGION_LEADER || m_region == REGION_BOT || m_region == REGION_EOT || m_region == REGION_TRAILER)
@@ -303,11 +363,19 @@ UINT8 decocass_tape_device::get_status_bits()
 	if (m_region >= REGION_DATA_BLOCK_0 && m_region <= REGION_DATA_BLOCK_255)
 	{
 		int blocknum = m_region - REGION_DATA_BLOCK_0;
+<<<<<<< HEAD
 		UINT8 byteval = 0x00;
 
 		/* in the main data area, the clock alternates at the clock rate */
 		if (m_bytenum >= BYTE_LEADIN && m_bytenum <= BYTE_LEADOUT)
 			tape_bits |= ((UINT32)(m_clockpos - REGION_BOT_GAP_END_CLOCK) & 1) ? 0x00 : 0x40;
+=======
+		uint8_t byteval = 0x00;
+
+		/* in the main data area, the clock alternates at the clock rate */
+		if (m_bytenum >= BYTE_LEADIN && m_bytenum <= BYTE_LEADOUT)
+			tape_bits |= ((uint32_t)(m_clockpos - REGION_BOT_GAP_END_CLOCK) & 1) ? 0x00 : 0x40;
+>>>>>>> upstream/master
 
 		/* in the longclock area, the clock holds high */
 		else if (m_bytenum == BYTE_LONGCLOCK)
@@ -325,7 +393,11 @@ UINT8 decocass_tape_device::get_status_bits()
 
 		/* data block bytes are data */
 		else if (m_bytenum >= BYTE_DATA_0 && m_bytenum <= BYTE_DATA_255)
+<<<<<<< HEAD
 			byteval = tape_data[blocknum * 256 + (m_bytenum - BYTE_DATA_0)];
+=======
+			byteval = m_tape_data[blocknum * 256 + (m_bytenum - BYTE_DATA_0)];
+>>>>>>> upstream/master
 
 		/* CRC MSB */
 		else if (m_bytenum == BYTE_CRC16_MSB)
@@ -344,6 +416,7 @@ UINT8 decocass_tape_device::get_status_bits()
 
 
 /*-------------------------------------------------
+<<<<<<< HEAD
     tape_is_present - return TRUE if the tape is
     present
 -------------------------------------------------*/
@@ -351,6 +424,15 @@ UINT8 decocass_tape_device::get_status_bits()
 UINT8 decocass_tape_device::is_present()
 {
 	return region() != NULL;
+=======
+    tape_is_present - return true if the tape is
+    present
+-------------------------------------------------*/
+
+bool decocass_tape_device::is_present()
+{
+	return m_tape_data.found();
+>>>>>>> upstream/master
 }
 
 
@@ -359,10 +441,17 @@ UINT8 decocass_tape_device::is_present()
     playback
 -------------------------------------------------*/
 
+<<<<<<< HEAD
 void decocass_tape_device::change_speed(INT8 newspeed)
 {
 	attotime newperiod;
 	INT8 absnewspeed;
+=======
+void decocass_tape_device::change_speed(int8_t newspeed)
+{
+	attotime newperiod;
+	int8_t absnewspeed;
+>>>>>>> upstream/master
 
 	/* do nothing if speed has not changed */
 	if (m_speed == newspeed)

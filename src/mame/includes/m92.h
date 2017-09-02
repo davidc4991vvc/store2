@@ -8,14 +8,25 @@
 
 #include "video/bufsprite.h"
 #include "sound/okim6295.h"
+<<<<<<< HEAD
 #include "machine/pic8259.h"
+=======
+#include "machine/gen_latch.h"
+#include "machine/pic8259.h"
+#include "screen.h"
+>>>>>>> upstream/master
 
 struct M92_pf_layer_info
 {
 	tilemap_t *     tmap;
 	tilemap_t *     wide_tmap;
+<<<<<<< HEAD
 	UINT16          vram_base;
 	UINT16          control[4];
+=======
+	uint16_t          vram_base;
+	uint16_t          control[4];
+>>>>>>> upstream/master
 };
 
 class m92_state : public driver_device
@@ -37,12 +48,22 @@ public:
 			m_gfxdecode(*this, "gfxdecode"),
 			m_screen(*this, "screen"),
 			m_palette(*this, "palette"),
+<<<<<<< HEAD
 			m_upd71059c(*this, "upd71059c")
 	{ }
 
 	required_device<buffered_spriteram16_device> m_spriteram;
 	required_shared_ptr<UINT16> m_vram_data;
 	required_shared_ptr<UINT16> m_spritecontrol;
+=======
+			m_upd71059c(*this, "upd71059c"),
+			m_soundlatch(*this, "soundlatch")
+	{ }
+
+	required_device<buffered_spriteram16_device> m_spriteram;
+	required_shared_ptr<uint16_t> m_vram_data;
+	required_shared_ptr<uint16_t> m_spritecontrol;
+>>>>>>> upstream/master
 	required_device<cpu_device> m_maincpu;
 	optional_device<cpu_device> m_soundcpu;
 	optional_device<okim6295_device> m_oki;
@@ -50,6 +71,7 @@ public:
 	required_device<screen_device> m_screen;
 	required_device<palette_device> m_palette;
 	required_device<pic8259_device> m_upd71059c;
+<<<<<<< HEAD
 
 	IRQ_CALLBACK_MEMBER(m92_irq_callback);
 
@@ -63,6 +85,20 @@ public:
 	INT32 m_sprite_list;
 	UINT8 m_palette_bank;
 	std::vector<UINT16> m_paletteram;
+=======
+	optional_device<generic_latch_8_device> m_soundlatch;
+
+	emu_timer *m_spritebuffer_timer;
+	uint16_t m_sound_status;
+	uint32_t m_raster_irq_position;
+	uint16_t m_videocontrol;
+	uint8_t m_sprite_buffer_busy;
+	M92_pf_layer_info m_pf_layer[3];
+	uint16_t m_pf_master_control[4];
+	int32_t m_sprite_list;
+	uint8_t m_palette_bank;
+	std::vector<uint16_t> m_paletteram;
+>>>>>>> upstream/master
 
 	DECLARE_READ16_MEMBER(m92_eeprom_r);
 	DECLARE_WRITE16_MEMBER(m92_eeprom_w);
@@ -95,15 +131,26 @@ public:
 	DECLARE_MACHINE_RESET(m92);
 	DECLARE_VIDEO_START(m92);
 	DECLARE_VIDEO_START(ppan);
+<<<<<<< HEAD
 	UINT32 screen_update_m92(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
 	UINT32 screen_update_ppan(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
+=======
+	uint32_t screen_update_m92(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
+	uint32_t screen_update_ppan(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
+>>>>>>> upstream/master
 	TIMER_DEVICE_CALLBACK_MEMBER(m92_scanline_interrupt);
 	void draw_sprites(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
 	void ppan_draw_sprites(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
 	void m92_update_scroll_positions();
 	void m92_draw_tiles(screen_device &screen, bitmap_ind16 &bitmap,const rectangle &cliprect);
+<<<<<<< HEAD
 	void m92_sprite_interrupt();
 
 protected:
 	virtual void device_timer(emu_timer &timer, device_timer_id id, int param, void *ptr);
+=======
+
+protected:
+	virtual void device_timer(emu_timer &timer, device_timer_id id, int param, void *ptr) override;
+>>>>>>> upstream/master
 };

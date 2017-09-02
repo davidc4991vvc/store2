@@ -42,8 +42,17 @@
 
 *********************************************************************/
 
+<<<<<<< HEAD
 #ifndef __IQ151CART_H__
 #define __IQ151CART_H__
+=======
+#ifndef MAME_BUS_IQ151_IQ151_H
+#define MAME_BUS_IQ151_IQ151_H
+
+#pragma once
+
+#include "softlist_dev.h"
+>>>>>>> upstream/master
 
 /***************************************************************************
     TYPE DEFINITIONS
@@ -55,6 +64,7 @@ class device_iq151cart_interface : public device_slot_card_interface
 {
 public:
 	// construction/destruction
+<<<<<<< HEAD
 	device_iq151cart_interface(const machine_config &mconfig, device_t &device);
 	virtual ~device_iq151cart_interface();
 
@@ -67,6 +77,22 @@ public:
 
 	// video update
 	virtual void video_update(bitmap_ind16 &bitmap, const rectangle &cliprect) { }
+=======
+	virtual ~device_iq151cart_interface();
+
+	// reading and writing
+	virtual void read(offs_t offset, uint8_t &data) { }
+	virtual void write(offs_t offset, uint8_t data) { }
+	virtual void io_read(offs_t offset, uint8_t &data) { }
+	virtual void io_write(offs_t offset, uint8_t data) { }
+	virtual uint8_t* get_cart_base() { return nullptr; }
+
+	// video update
+	virtual void video_update(bitmap_ind16 &bitmap, const rectangle &cliprect) { }
+
+protected:
+	device_iq151cart_interface(const machine_config &mconfig, device_t &device);
+>>>>>>> upstream/master
 };
 
 // ======================> iq151cart_slot_device
@@ -77,6 +103,7 @@ class iq151cart_slot_device : public device_t,
 {
 public:
 	// construction/destruction
+<<<<<<< HEAD
 	iq151cart_slot_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
 	virtual ~iq151cart_slot_device();
 
@@ -113,6 +140,42 @@ public:
 	virtual void write(offs_t offset, UINT8 data);
 	virtual void io_read(offs_t offset, UINT8 &data);
 	virtual void io_write(offs_t offset, UINT8 data);
+=======
+	iq151cart_slot_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
+	virtual ~iq151cart_slot_device();
+
+	template <class Object> static devcb_base &set_out_irq0_callback(device_t &device, Object &&cb) { return downcast<iq151cart_slot_device &>(device).m_out_irq0_cb.set_callback(std::forward<Object>(cb)); }
+	template <class Object> static devcb_base &set_out_irq1_callback(device_t &device, Object &&cb) { return downcast<iq151cart_slot_device &>(device).m_out_irq1_cb.set_callback(std::forward<Object>(cb)); }
+	template <class Object> static devcb_base &set_out_irq2_callback(device_t &device, Object &&cb) { return downcast<iq151cart_slot_device &>(device).m_out_irq2_cb.set_callback(std::forward<Object>(cb)); }
+	template <class Object> static devcb_base &set_out_irq3_callback(device_t &device, Object &&cb) { return downcast<iq151cart_slot_device &>(device).m_out_irq3_cb.set_callback(std::forward<Object>(cb)); }
+	template <class Object> static devcb_base &set_out_irq4_callback(device_t &device, Object &&cb) { return downcast<iq151cart_slot_device &>(device).m_out_irq4_cb.set_callback(std::forward<Object>(cb)); }
+	template <class Object> static devcb_base &set_out_drq_callback(device_t &device, Object &&cb) { return downcast<iq151cart_slot_device &>(device).m_out_drq_cb.set_callback(std::forward<Object>(cb)); }
+
+	// device-level overrides
+	virtual void device_start() override;
+
+	// image-level overrides
+	virtual image_init_result call_load() override;
+	virtual const software_list_loader &get_software_list_loader() const override { return rom_software_list_loader::instance(); }
+
+	virtual iodevice_t image_type() const override { return IO_CARTSLOT; }
+	virtual bool is_readable()  const override { return 1; }
+	virtual bool is_writeable() const override { return 0; }
+	virtual bool is_creatable() const override { return 0; }
+	virtual bool must_be_loaded() const override { return 0; }
+	virtual bool is_reset_on_load() const override { return 1; }
+	virtual const char *image_interface() const override { return "iq151_cart"; }
+	virtual const char *file_extensions() const override { return "bin,rom"; }
+
+	// slot interface overrides
+	virtual std::string get_default_card_software(get_default_card_software_hook &hook) const override;
+
+	// reading and writing
+	virtual void read(offs_t offset, uint8_t &data);
+	virtual void write(offs_t offset, uint8_t data);
+	virtual void io_read(offs_t offset, uint8_t &data);
+	virtual void io_write(offs_t offset, uint8_t data);
+>>>>>>> upstream/master
 	virtual void video_update(bitmap_ind16 &bitmap, const rectangle &cliprect);
 
 	devcb_write_line                m_out_irq0_cb;
@@ -127,7 +190,11 @@ public:
 
 
 // device type definition
+<<<<<<< HEAD
 extern const device_type IQ151CART_SLOT;
+=======
+DECLARE_DEVICE_TYPE(IQ151CART_SLOT, iq151cart_slot_device)
+>>>>>>> upstream/master
 
 
 /***************************************************************************
@@ -152,4 +219,8 @@ extern const device_type IQ151CART_SLOT;
 #define MCFG_IQ151CART_SLOT_OUT_DRQ_CB(_devcb) \
 	devcb = &iq151cart_slot_device::set_out_drq_callback(*device, DEVCB_##_devcb);
 
+<<<<<<< HEAD
 #endif /* __IQ151CART_H__ */
+=======
+#endif // MAME_BUS_IQ151_IQ151_H
+>>>>>>> upstream/master

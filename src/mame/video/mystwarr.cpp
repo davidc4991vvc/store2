@@ -16,6 +16,7 @@
 // reading the original raw data
 void mystwarr_state::decode_tiles()
 {
+<<<<<<< HEAD
 	UINT8 *s = memregion("gfx1")->base();
 	int len = memregion("gfx1")->bytes();
 	UINT8 *pFinish = s+len-3;
@@ -25,6 +26,17 @@ void mystwarr_state::decode_tiles()
 
 	decoded = auto_alloc_array(machine(), UINT8, len);
 	d = decoded;
+=======
+	uint8_t *s = memregion("gfx1")->base();
+	int len = memregion("gfx1")->bytes();
+	uint8_t *pFinish = s+len-3;
+	uint8_t *d;
+
+	int gfxnum = m_k056832->get_gfx_num();
+
+	m_decoded = std::make_unique<uint8_t[]>(len);
+	d = m_decoded.get();
+>>>>>>> upstream/master
 
 	// now convert the data into a drawable format so we can decode it
 	while (s < pFinish)
@@ -52,7 +64,11 @@ void mystwarr_state::decode_tiles()
 		d += 5;
 	}
 
+<<<<<<< HEAD
 	m_gfxdecode->gfx(gfxnum)->set_source(decoded);
+=======
+	m_k056832->gfx(gfxnum)->set_source(m_decoded.get());
+>>>>>>> upstream/master
 }
 
 
@@ -131,8 +147,13 @@ K055673_CB_MEMBER(mystwarr_state::martchmp_sprite_callback)
 TILE_GET_INFO_MEMBER(mystwarr_state::get_gai_936_tile_info)
 {
 	int tileno, colour;
+<<<<<<< HEAD
 	UINT8 *ROM = memregion("gfx4")->base();
 	UINT8 *dat1 = ROM, *dat2 = ROM + 0x20000, *dat3 = ROM + 0x60000;
+=======
+	uint8_t *ROM = memregion("gfx4")->base();
+	uint8_t *dat1 = ROM, *dat2 = ROM + 0x20000, *dat3 = ROM + 0x60000;
+>>>>>>> upstream/master
 
 	tileno = dat3[tile_index] | ((dat2[tile_index]&0x3f)<<8);
 
@@ -164,15 +185,24 @@ VIDEO_START_MEMBER(mystwarr_state, gaiapols)
 	K053936_wraparound_enable(0, 1);
 	K053936GP_set_offset(0, -10,  0); // floor tiles in demo loop2 (Elaine vs. boss)
 
+<<<<<<< HEAD
 	m_ult_936_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(mystwarr_state::get_gai_936_tile_info),this), TILEMAP_SCAN_ROWS,  16, 16, 512, 512);
+=======
+	m_ult_936_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(mystwarr_state::get_gai_936_tile_info),this), TILEMAP_SCAN_ROWS,  16, 16, 512, 512);
+>>>>>>> upstream/master
 	m_ult_936_tilemap->set_transparent_pen(0);
 }
 
 TILE_GET_INFO_MEMBER(mystwarr_state::get_ult_936_tile_info)
 {
 	int tileno, colour;
+<<<<<<< HEAD
 	UINT8 *ROM = memregion("gfx4")->base();
 	UINT8 *dat1 = ROM, *dat2 = ROM + 0x40000;
+=======
+	uint8_t *ROM = memregion("gfx4")->base();
+	uint8_t *dat1 = ROM, *dat2 = ROM + 0x40000;
+>>>>>>> upstream/master
 
 	tileno = dat2[tile_index] | ((dat1[tile_index]&0x1f)<<8);
 
@@ -199,7 +229,11 @@ VIDEO_START_MEMBER(mystwarr_state, dadandrn)
 	K053936_wraparound_enable(0, 1);
 	K053936GP_set_offset(0, -8, 0); // Brainy's laser
 
+<<<<<<< HEAD
 	m_ult_936_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(mystwarr_state::get_ult_936_tile_info),this), TILEMAP_SCAN_ROWS,  16, 16, 512, 512);
+=======
+	m_ult_936_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(mystwarr_state::get_ult_936_tile_info),this), TILEMAP_SCAN_ROWS,  16, 16, 512, 512);
+>>>>>>> upstream/master
 	m_ult_936_tilemap->set_transparent_pen(0);
 }
 
@@ -266,7 +300,11 @@ VIDEO_START_MEMBER(mystwarr_state, martchmp)
 
 
 
+<<<<<<< HEAD
 UINT32 mystwarr_state::screen_update_mystwarr(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect)
+=======
+uint32_t mystwarr_state::screen_update_mystwarr(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect)
+>>>>>>> upstream/master
 {
 	int i, old, blendmode=0;
 
@@ -281,11 +319,19 @@ UINT32 mystwarr_state::screen_update_mystwarr(screen_device &screen, bitmap_rgb3
 
 	m_sprite_colorbase = m_k055555->K055555_get_palette_index(4)<<5;
 
+<<<<<<< HEAD
 	konamigx_mixer(screen, bitmap, cliprect, 0, 0, 0, 0, blendmode, 0, 0);
 	return 0;
 }
 
 UINT32 mystwarr_state::screen_update_metamrph(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect)
+=======
+	konamigx_mixer(screen, bitmap, cliprect, nullptr, 0, nullptr, 0, blendmode, nullptr, 0);
+	return 0;
+}
+
+uint32_t mystwarr_state::screen_update_metamrph(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect)
+>>>>>>> upstream/master
 {
 	int i, old;
 
@@ -298,11 +344,19 @@ UINT32 mystwarr_state::screen_update_metamrph(screen_device &screen, bitmap_rgb3
 
 	m_sprite_colorbase = m_k055555->K055555_get_palette_index(4)<<4;
 
+<<<<<<< HEAD
 	konamigx_mixer(screen, bitmap, cliprect, 0, GXSUB_K053250 | GXSUB_4BPP, 0, 0, 0, 0, 0);
 	return 0;
 }
 
 UINT32 mystwarr_state::screen_update_martchmp(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect)
+=======
+	konamigx_mixer(screen, bitmap, cliprect, nullptr, GXSUB_K053250 | GXSUB_4BPP, nullptr, 0, 0, nullptr, 0);
+	return 0;
+}
+
+uint32_t mystwarr_state::screen_update_martchmp(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect)
+>>>>>>> upstream/master
 {
 	int i, old, blendmode;
 
@@ -321,7 +375,11 @@ UINT32 mystwarr_state::screen_update_martchmp(screen_device &screen, bitmap_rgb3
 	// not quite right
 	blendmode = (m_oinprion==0xef && m_k054338->register_r(K338_REG_PBLEND)) ? ((1<<16|GXMIX_BLEND_FORCE)<<2) : 0;
 
+<<<<<<< HEAD
 	konamigx_mixer(screen, bitmap, cliprect, 0, 0, 0, 0, blendmode, 0, 0);
+=======
+	konamigx_mixer(screen, bitmap, cliprect, nullptr, 0, nullptr, 0, blendmode, nullptr, 0);
+>>>>>>> upstream/master
 	return 0;
 }
 
@@ -383,8 +441,13 @@ WRITE16_MEMBER(mystwarr_state::ddd_053936_clip_w)
 // reference: 223e5c in gaiapolis (ROMs 34j and 36m)
 READ16_MEMBER(mystwarr_state::gai_053936_tilerom_0_r)
 {
+<<<<<<< HEAD
 	UINT8 *ROM1 = (UINT8 *)memregion("gfx4")->base();
 	UINT8 *ROM2 = (UINT8 *)memregion("gfx4")->base();
+=======
+	uint8_t *ROM1 = (uint8_t *)memregion("gfx4")->base();
+	uint8_t *ROM2 = (uint8_t *)memregion("gfx4")->base();
+>>>>>>> upstream/master
 
 	ROM1 += 0x20000;
 	ROM2 += 0x20000+0x40000;
@@ -394,8 +457,13 @@ READ16_MEMBER(mystwarr_state::gai_053936_tilerom_0_r)
 
 READ16_MEMBER(mystwarr_state::ddd_053936_tilerom_0_r)
 {
+<<<<<<< HEAD
 	UINT8 *ROM1 = (UINT8 *)memregion("gfx4")->base();
 	UINT8 *ROM2 = (UINT8 *)memregion("gfx4")->base();
+=======
+	uint8_t *ROM1 = (uint8_t *)memregion("gfx4")->base();
+	uint8_t *ROM2 = (uint8_t *)memregion("gfx4")->base();
+>>>>>>> upstream/master
 
 	ROM2 += 0x40000;
 
@@ -405,7 +473,11 @@ READ16_MEMBER(mystwarr_state::ddd_053936_tilerom_0_r)
 // reference: 223e1a in gaiapolis (ROM 36j)
 READ16_MEMBER(mystwarr_state::ddd_053936_tilerom_1_r)
 {
+<<<<<<< HEAD
 	UINT8 *ROM = (UINT8 *)memregion("gfx4")->base();
+=======
+	uint8_t *ROM = (uint8_t *)memregion("gfx4")->base();
+>>>>>>> upstream/master
 
 	return ROM[offset/2];
 }
@@ -413,7 +485,11 @@ READ16_MEMBER(mystwarr_state::ddd_053936_tilerom_1_r)
 // reference: 223db0 in gaiapolis (ROMs 32n, 29n, 26n)
 READ16_MEMBER(mystwarr_state::gai_053936_tilerom_2_r)
 {
+<<<<<<< HEAD
 	UINT8 *ROM = (UINT8 *)memregion("gfx3")->base();
+=======
+	uint8_t *ROM = (uint8_t *)memregion("gfx3")->base();
+>>>>>>> upstream/master
 
 	offset += (m_roz_rombank * 0x100000);
 
@@ -422,14 +498,22 @@ READ16_MEMBER(mystwarr_state::gai_053936_tilerom_2_r)
 
 READ16_MEMBER(mystwarr_state::ddd_053936_tilerom_2_r)
 {
+<<<<<<< HEAD
 	UINT8 *ROM = (UINT8 *)memregion("gfx3")->base();
+=======
+	uint8_t *ROM = (uint8_t *)memregion("gfx3")->base();
+>>>>>>> upstream/master
 
 	offset += (m_roz_rombank * 0x100000);
 
 	return ROM[offset]<<8;
 }
 
+<<<<<<< HEAD
 UINT32 mystwarr_state::screen_update_dadandrn(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect)/* and gaiapols */
+=======
+uint32_t mystwarr_state::screen_update_dadandrn(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect)/* and gaiapols */
+>>>>>>> upstream/master
 {
 	int i, newbase, dirty, rozmode;
 
@@ -482,6 +566,10 @@ UINT32 mystwarr_state::screen_update_dadandrn(screen_device &screen, bitmap_rgb3
 			popmessage("K053936: PSAC colorbase changed");
 	}
 
+<<<<<<< HEAD
 	konamigx_mixer(screen, bitmap, cliprect, (m_roz_enable) ? m_ult_936_tilemap : 0, rozmode, 0, 0, 0, 0, 0);
+=======
+	konamigx_mixer(screen, bitmap, cliprect, (m_roz_enable) ? m_ult_936_tilemap : nullptr, rozmode, nullptr, 0, 0, nullptr, 0);
+>>>>>>> upstream/master
 	return 0;
 }

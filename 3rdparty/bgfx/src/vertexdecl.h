@@ -1,6 +1,11 @@
 /*
+<<<<<<< HEAD
  * Copyright 2011-2015 Branimir Karadzic. All rights reserved.
  * License: http://www.opensource.org/licenses/BSD-2-Clause
+=======
+ * Copyright 2011-2017 Branimir Karadzic. All rights reserved.
+ * License: https://github.com/bkaradzic/bgfx#license-bsd-2-clause
+>>>>>>> upstream/master
  */
 
 #ifndef BGFX_VERTEXDECL_H_HEADER_GUARD
@@ -30,10 +35,17 @@ namespace bgfx
 	AttribType::Enum idToAttribType(uint16_t id);
 
 	///
+<<<<<<< HEAD
 	int32_t write(bx::WriterI* _writer, const bgfx::VertexDecl& _decl);
 
 	///
 	int32_t read(bx::ReaderI* _reader, bgfx::VertexDecl& _decl);
+=======
+	int32_t write(bx::WriterI* _writer, const bgfx::VertexDecl& _decl, bx::Error* _err = NULL);
+
+	///
+	int32_t read(bx::ReaderI* _reader, bgfx::VertexDecl& _decl, bx::Error* _err = NULL);
+>>>>>>> upstream/master
 
 } // namespace bgfx
 

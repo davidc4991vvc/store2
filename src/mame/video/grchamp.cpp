@@ -1,5 +1,9 @@
 // license:BSD-3-Clause
+<<<<<<< HEAD
 // copyright-holders:Ernesto Corvi, Phil Stroffolino
+=======
+// copyright-holders:Ernesto Corvi, Phil Stroffolino,Hans Andersson
+>>>>>>> upstream/master
 /*  Video hardware for Taito Grand Champion */
 
 /* updated by Hans Andersson, dec 2005     */
@@ -15,7 +19,11 @@
 
 PALETTE_INIT_MEMBER(grchamp_state, grchamp)
 {
+<<<<<<< HEAD
 	const UINT8 *color_prom = memregion("proms")->base();
+=======
+	const uint8_t *color_prom = memregion("proms")->base();
+>>>>>>> upstream/master
 	static const int resistances[3] = { 100, 270, 470 };
 	double rweights[3], gweights[3], bweights[2];
 	int i;
@@ -102,10 +110,17 @@ void grchamp_state::video_start()
 	m_work_bitmap.allocate(32,32);
 
 	/* allocate tilemaps for each of the three sections */
+<<<<<<< HEAD
 	m_text_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(grchamp_state::get_text_tile_info),this), TILEMAP_SCAN_ROWS,  8,8, 32,32);
 	m_left_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(grchamp_state::get_left_tile_info),this), tilemap_mapper_delegate(FUNC(grchamp_state::get_memory_offset),this),  8,8, 64,32);
 	m_right_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(grchamp_state::get_right_tile_info),this), tilemap_mapper_delegate(FUNC(grchamp_state::get_memory_offset),this),  8,8, 64,32);
 	m_center_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(grchamp_state::get_center_tile_info),this), tilemap_mapper_delegate(FUNC(grchamp_state::get_memory_offset),this),  8,8, 64,32);
+=======
+	m_left_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(grchamp_state::get_left_tile_info),this), tilemap_mapper_delegate(FUNC(grchamp_state::get_memory_offset),this),  8,8, 64,32);
+	m_text_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(grchamp_state::get_text_tile_info),this), TILEMAP_SCAN_ROWS,  8,8, 32,32);
+	m_right_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(grchamp_state::get_right_tile_info),this), tilemap_mapper_delegate(FUNC(grchamp_state::get_memory_offset),this),  8,8, 64,32);
+	m_center_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(grchamp_state::get_center_tile_info),this), tilemap_mapper_delegate(FUNC(grchamp_state::get_memory_offset),this),  8,8, 64,32);
+>>>>>>> upstream/master
 }
 
 #if 0
@@ -180,8 +195,13 @@ void grchamp_state::draw_sprites(bitmap_ind16 &bitmap, const rectangle &cliprect
 {
 	gfx_element *gfx = m_gfxdecode->gfx(5);
 	int bank = (m_cpu0_out[0] & 0x20) ? 0x40 : 0x00;
+<<<<<<< HEAD
 	const UINT8 *source = m_spriteram + 0x40;
 	const UINT8 *finish = source + 0x40;
+=======
+	const uint8_t *source = m_spriteram + 0x40;
+	const uint8_t *finish = source + 0x40;
+>>>>>>> upstream/master
 
 	while (source < finish)
 	{
@@ -202,7 +222,11 @@ void grchamp_state::draw_sprites(bitmap_ind16 &bitmap, const rectangle &cliprect
 #endif
 
 
+<<<<<<< HEAD
 void grchamp_state::draw_objects(int y, UINT8 *objdata)
+=======
+void grchamp_state::draw_objects(int y, uint8_t *objdata)
+>>>>>>> upstream/master
 {
 /*
     CPU 5/7:
@@ -239,7 +263,11 @@ void grchamp_state::draw_objects(int y, UINT8 *objdata)
 
 
 */
+<<<<<<< HEAD
 	const UINT8 *prom = memregion("proms")->base() + 0x20;
+=======
+	const uint8_t *prom = memregion("proms")->base() + 0x20;
+>>>>>>> upstream/master
 	gfx_element *gfx;
 	int change = (m_cpu0_out[0] & 0x20) << 3;
 	int num;
@@ -272,7 +300,11 @@ void grchamp_state::draw_objects(int y, UINT8 *objdata)
 			int code = (codeflip & 0x3f) + (change >> 2);
 			int yflip = (codeflip & 0x80) ? 0x0f : 0x00;
 			int xflip = (codeflip & 0x40) ? 0x0f : 0x00;
+<<<<<<< HEAD
 			const UINT8 *src = gfx->get_data(code) + ((dy ^ yflip) & 15) * gfx->rowbytes();
+=======
+			const uint8_t *src = gfx->get_data(code) + ((dy ^ yflip) & 15) * gfx->rowbytes();
+>>>>>>> upstream/master
 
 			/* the third byte is: color in bits 0-2 */
 			int color = (m_spriteram[0x42 + (dataoffs & ~0x20)] & 0x07) << 2;
@@ -316,7 +348,11 @@ void grchamp_state::draw_objects(int y, UINT8 *objdata)
 		int dy = sy + ~y;
 		int color = (m_spriteram[0x01 + dataoffs] & 0x07) << 2;
 		int code = m_videoram[hprime | ((dy & 0xf8) << 2)] + change;
+<<<<<<< HEAD
 		const UINT8 *src = gfx->get_data(code) + (dy & 7) * gfx->rowbytes();
+=======
+		const uint8_t *src = gfx->get_data(code) + (dy & 7) * gfx->rowbytes();
+>>>>>>> upstream/master
 		int x;
 
 		/* draw 8 pixels */
@@ -343,7 +379,11 @@ void grchamp_state::draw_objects(int y, UINT8 *objdata)
 }
 
 
+<<<<<<< HEAD
 UINT32 grchamp_state::screen_update(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect)
+=======
+uint32_t grchamp_state::screen_update(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect)
+>>>>>>> upstream/master
 {
 	static const rgb_t objpix_lookup[8] =
 	{
@@ -358,9 +398,15 @@ UINT32 grchamp_state::screen_update(screen_device &screen, bitmap_rgb32 &bitmap,
 	};
 
 	const pen_t *bgpen = m_palette->pens();
+<<<<<<< HEAD
 	const UINT8 *amedata = memregion("gfx5")->base();
 	const UINT8 *headdata = memregion("gfx6")->base();
 	const UINT8 *pldata = memregion("gfx7")->base();
+=======
+	const uint8_t *amedata = memregion("gfx5")->base();
+	const uint8_t *headdata = memregion("gfx6")->base();
+	const uint8_t *pldata = memregion("gfx7")->base();
+>>>>>>> upstream/master
 	bitmap_ind16 &lpixmap = m_left_tilemap->pixmap();
 	bitmap_ind16 &rpixmap = m_right_tilemap->pixmap();
 	bitmap_ind16 &cpixmap = m_center_tilemap->pixmap();
@@ -394,10 +440,17 @@ UINT32 grchamp_state::screen_update(screen_device &screen, bitmap_rgb32 &bitmap,
 
 		/* get source/dest pointers */
 		/* the Y counter starts counting when VBLANK goes to 0, which is at Y=16 */
+<<<<<<< HEAD
 		UINT16 *lrsrc = &lrpixmap.pix16((lryscroll + y - 16) & 0xff);
 		UINT16 *csrc = &cpixmap.pix16((cyscroll + y - 16) & 0xff);
 		UINT32 *dest = &bitmap.pix32(y);
 		UINT8 objdata[256];
+=======
+		uint16_t *lrsrc = &lrpixmap.pix16((lryscroll + y - 16) & 0xff);
+		uint16_t *csrc = &cpixmap.pix16((cyscroll + y - 16) & 0xff);
+		uint32_t *dest = &bitmap.pix32(y);
+		uint8_t objdata[256];
+>>>>>>> upstream/master
 
 		/* draw the objects for this scanline */
 		draw_objects(y, objdata);

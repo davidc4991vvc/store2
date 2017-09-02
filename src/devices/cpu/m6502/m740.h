@@ -8,13 +8,19 @@
 
 ***************************************************************************/
 
+<<<<<<< HEAD
 #ifndef __M740_H__
 #define __M740_H__
+=======
+#ifndef MAME_CPU_M6502_M740_H
+#define MAME_CPU_M6502_M740_H
+>>>>>>> upstream/master
 
 #include "m6502.h"
 
 class m740_device : public m6502_device {
 public:
+<<<<<<< HEAD
 		enum
 		{
 			M740_INT0_LINE = INPUT_LINE_IRQ0,   // (fffc)
@@ -63,6 +69,57 @@ protected:
 	void do_adc_dt(UINT8 val);
 	void do_adc_ndt(UINT8 val);
 	void do_adct(UINT8 val);
+=======
+	enum
+	{
+		M740_INT0_LINE = INPUT_LINE_IRQ0,   // (fffc)
+		M740_INT1_LINE,  // (fffa)
+		M740_INT2_LINE,  // (fff8)
+		M740_INT3_LINE,  // (fff6)
+		M740_INT4_LINE,  // (fff4)
+		M740_INT5_LINE,  // (fff2)
+		M740_INT6_LINE,  // (fff0)
+		M740_INT7_LINE,  // (ffee)
+		M740_INT8_LINE,  // (ffec)
+		M740_INT9_LINE,  // (ffea)
+		M740_INT10_LINE, // (ffe8)
+		M740_INT11_LINE, // (ffe6)
+		M740_INT12_LINE, // (ffe4)
+		M740_INT13_LINE, // (ffe2)
+		M740_INT14_LINE, // (ffe0)
+		M740_MAX_INT_LINE = M740_INT14_LINE,
+		M740_SET_OVERFLOW = m6502_device::V_LINE
+	};
+
+	m740_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
+
+	virtual void device_start() override;
+	virtual void device_reset() override;
+
+	static const disasm_entry disasm_entries[0x200];
+
+	virtual void state_string_export(const device_state_entry &entry, std::string &str) const override;
+
+	virtual offs_t disasm_disassemble(std::ostream &stream, offs_t pc, const uint8_t *oprom, const uint8_t *opram, uint32_t options) override;
+	virtual void do_exec_full() override;
+	virtual void do_exec_partial() override;
+	virtual void execute_set_input(int inputnum, int state) override;
+
+protected:
+	m740_device(const machine_config &mconfig, device_type type, const char *tag, device_t *owner, uint32_t clock);
+
+#define O(o) void o ## _full(); void o ## _partial()
+
+	uint8_t do_clb(uint8_t in, uint8_t bit);
+	uint8_t do_seb(uint8_t in, uint8_t bit);
+	uint8_t do_rrf(uint8_t in);
+	void do_sbc_dt(uint8_t val);
+	void do_sbc_ndt(uint8_t val);
+	void do_sbct(uint8_t val);
+	void do_adc_dt(uint8_t val);
+	void do_adc_ndt(uint8_t val);
+	void do_adct(uint8_t val);
+>>>>>>> upstream/master
 
 	// m740 opcodes
 	O(brk740_imp);
@@ -94,12 +151,23 @@ protected:
 
 #undef O
 
+<<<<<<< HEAD
 	UINT32 m_irq_multiplex;
 	UINT16 m_irq_vector;
+=======
+	uint32_t m_irq_multiplex;
+	uint16_t m_irq_vector;
+>>>>>>> upstream/master
 
 	void set_irq_line(int line, int state);
 };
 
+<<<<<<< HEAD
 extern const device_type M740;
 
 #endif
+=======
+DECLARE_DEVICE_TYPE(M740, m740_device)
+
+#endif // MAME_CPU_M6502_M740_H
+>>>>>>> upstream/master

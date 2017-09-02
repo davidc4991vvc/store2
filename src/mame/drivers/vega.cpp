@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 // license:LGPL-2.1+
+=======
+// license:BSD-3-Clause
+>>>>>>> upstream/master
 // copyright-holders:Tomasz Slanina
 /***************************************************************************
 Vega by Olympia
@@ -80,6 +84,11 @@ TODO:
 #include "machine/i8255.h"
 #include "machine/ins8154.h"
 #include "sound/ay8910.h"
+<<<<<<< HEAD
+=======
+#include "screen.h"
+#include "speaker.h"
+>>>>>>> upstream/master
 
 
 struct vega_obj
@@ -102,6 +111,7 @@ class vega_state : public driver_device
 public:
 
 	vega_state(const machine_config &mconfig, device_type type, const char *tag)
+<<<<<<< HEAD
 	: driver_device(mconfig, type, tag),
 	m_maincpu(*this, "maincpu"),
 	m_i8255(*this, "ppi8255"),
@@ -109,6 +119,17 @@ public:
 	m_ay8910(*this, "ay8910"),
 	m_gfxdecode(*this, "gfxdecode"),
 	m_palette(*this, "palette") {}
+=======
+		: driver_device(mconfig, type, tag)
+		, m_maincpu(*this, "maincpu")
+		, m_i8255(*this, "ppi8255")
+		, m_ins8154(*this, "ins8154")
+		, m_ay8910(*this, "ay8910")
+		, m_gfxdecode(*this, "gfxdecode")
+		, m_palette(*this, "palette")
+	{
+	}
+>>>>>>> upstream/master
 
 	required_device<cpu_device>     m_maincpu;
 	required_device<i8255_device>   m_i8255;
@@ -124,8 +145,13 @@ public:
 	int m_tmp;
 	int m_t1;
 
+<<<<<<< HEAD
 	UINT8 m_ins8154_ram[0x80];
 	UINT8 m_txt_ram[0x400];
+=======
+	uint8_t m_ins8154_ram[0x80];
+	uint8_t m_txt_ram[0x400];
+>>>>>>> upstream/master
 
 	vega_obj    m_obj[NUM_OBJ];
 
@@ -137,7 +163,11 @@ public:
 	DECLARE_WRITE8_MEMBER(extern_w);
 	DECLARE_WRITE8_MEMBER(p2_w);
 	DECLARE_READ8_MEMBER(p2_r);
+<<<<<<< HEAD
 	DECLARE_READ8_MEMBER(t1_r);
+=======
+	DECLARE_READ_LINE_MEMBER(t1_r);
+>>>>>>> upstream/master
 	DECLARE_WRITE8_MEMBER(rombank_w);
 
 	DECLARE_READ8_MEMBER(txtram_r);
@@ -159,11 +189,19 @@ public:
 	DECLARE_DRIVER_INIT(vega);
 
 
+<<<<<<< HEAD
 	virtual void machine_start();
 	virtual void machine_reset();
 	DECLARE_PALETTE_INIT(vega);
 	void draw_tilemap(screen_device& screen, bitmap_ind16& bitmap, const rectangle& cliprect);
 	UINT32 screen_update_vega(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
+=======
+	virtual void machine_start() override;
+	virtual void machine_reset() override;
+	DECLARE_PALETTE_INIT(vega);
+	void draw_tilemap(screen_device& screen, bitmap_ind16& bitmap, const rectangle& cliprect);
+	uint32_t screen_update_vega(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
+>>>>>>> upstream/master
 };
 
 WRITE8_MEMBER(vega_state::extern_w)
@@ -370,7 +408,11 @@ WRITE8_MEMBER(vega_state::p2_w)
 	m_p2_data=data;
 }
 
+<<<<<<< HEAD
 READ8_MEMBER(vega_state::t1_r)
+=======
+READ_LINE_MEMBER(vega_state::t1_r)
+>>>>>>> upstream/master
 {
 	return machine().rand();
 }
@@ -386,6 +428,7 @@ static ADDRESS_MAP_START( vega_map, AS_PROGRAM, 8, vega_state )
 	AM_RANGE(0x800, 0xfff) AM_ROM
 ADDRESS_MAP_END
 
+<<<<<<< HEAD
 /*
 MCS48_PORT_P0   = 0x100,
     MCS48_PORT_P1   = 0x101,
@@ -401,6 +444,10 @@ static ADDRESS_MAP_START( vega_io_map, AS_IO, 8, vega_state )
 	AM_RANGE(MCS48_PORT_P2, MCS48_PORT_P2) AM_READWRITE(p2_r, p2_w)//102
 	AM_RANGE(MCS48_PORT_T1, MCS48_PORT_T1) AM_READ(t1_r) //111
 	AM_RANGE(MCS48_PORT_PROG, MCS48_PORT_PROG) AM_WRITENOP /* prog - inputs CLK */
+=======
+static ADDRESS_MAP_START( vega_io_map, AS_IO, 8, vega_state )
+	AM_RANGE(0x00, 0xff) AM_READWRITE(extern_r, extern_w)
+>>>>>>> upstream/master
 ADDRESS_MAP_END
 
 
@@ -495,7 +542,11 @@ PALETTE_INIT_MEMBER(vega_state, vega)
 void vega_state::draw_tilemap(screen_device& screen, bitmap_ind16& bitmap, const rectangle& cliprect)
 {
 	{
+<<<<<<< HEAD
 	UINT8 *map_lookup = memregion("tilemaps")->base();
+=======
+	uint8_t *map_lookup = memregion("tilemaps")->base();
+>>>>>>> upstream/master
 
 	int offset_y=m_tilemap_offset_y;
 	int offset_x=m_tilemap_offset_x;
@@ -547,7 +598,11 @@ void vega_state::draw_tilemap(screen_device& screen, bitmap_ind16& bitmap, const
 
 }
 
+<<<<<<< HEAD
 UINT32 vega_state::screen_update_vega(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+=======
+uint32_t vega_state::screen_update_vega(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+>>>>>>> upstream/master
 {
 	++m_frame_counter;
 
@@ -559,7 +614,11 @@ UINT32 vega_state::screen_update_vega(screen_device &screen, bitmap_ind16 &bitma
 	{
 		int x,y;
 		int idx=0;
+<<<<<<< HEAD
 		UINT8 *color_lookup = memregion("proms")->base() + 0x200;
+=======
+		uint8_t *color_lookup = memregion("proms")->base() + 0x200;
+>>>>>>> upstream/master
 
 		for(y=0;y<25;++y)
 			for(x=0;x<40;++x)
@@ -625,7 +684,11 @@ UINT32 vega_state::screen_update_vega(screen_device &screen, bitmap_ind16 &bitma
 			int x0=m_obj[OBJ_PLAYER].m_x;
 			int y0=255-m_obj[OBJ_PLAYER].m_y-32;
 
+<<<<<<< HEAD
 			UINT8 *sprite_lookup = memregion("proms")->base();
+=======
+			uint8_t *sprite_lookup = memregion("proms")->base();
+>>>>>>> upstream/master
 
 
 			for(int x=0;x<16;++x)
@@ -798,12 +861,25 @@ void vega_state::machine_start()
 }
 
 
+<<<<<<< HEAD
 static MACHINE_CONFIG_START( vega, vega_state )
 
 
 	MCFG_CPU_ADD("maincpu", I8035, 4000000)
 	MCFG_CPU_PROGRAM_MAP(vega_map)
 	MCFG_CPU_IO_MAP(vega_io_map)
+=======
+static MACHINE_CONFIG_START( vega )
+	MCFG_CPU_ADD("maincpu", I8035, 4000000)
+	MCFG_CPU_PROGRAM_MAP(vega_map)
+	MCFG_CPU_IO_MAP(vega_io_map)
+	MCFG_MCS48_PORT_P1_IN_CB(IOPORT("DSW"))
+	MCFG_MCS48_PORT_P1_OUT_CB(WRITE8(vega_state, rombank_w))
+	MCFG_MCS48_PORT_P2_IN_CB(READ8(vega_state, p2_r))
+	MCFG_MCS48_PORT_P2_OUT_CB(WRITE8(vega_state, p2_w))
+	MCFG_MCS48_PORT_T1_IN_CB(READLINE(vega_state, t1_r))
+	MCFG_MCS48_PORT_PROG_OUT_CB(NOOP) /* prog - inputs CLK */
+>>>>>>> upstream/master
 	MCFG_CPU_VBLANK_INT_DRIVER("screen", vega_state, irq0_line_hold)
 
 	MCFG_DEVICE_ADD("ppi8255", I8255A, 0)
@@ -883,7 +959,11 @@ ROM_END
 
 DRIVER_INIT_MEMBER(vega_state, vega)
 {
+<<<<<<< HEAD
 	UINT8 *ROM = memregion("maincpu")->base();
+=======
+	uint8_t *ROM = memregion("maincpu")->base();
+>>>>>>> upstream/master
 	membank("bank1")->configure_entries(0, 2, &ROM[0x1000], 0x800);
 }
 

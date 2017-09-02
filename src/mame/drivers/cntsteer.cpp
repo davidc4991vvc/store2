@@ -32,8 +32,17 @@
 #include "emu.h"
 #include "cpu/m6502/m6502.h"
 #include "cpu/m6809/m6809.h"
+<<<<<<< HEAD
 #include "sound/ay8910.h"
 #include "sound/dac.h"
+=======
+#include "machine/gen_latch.h"
+#include "sound/ay8910.h"
+#include "sound/dac.h"
+#include "sound/volt_reg.h"
+#include "screen.h"
+#include "speaker.h"
+>>>>>>> upstream/master
 
 
 class cntsteer_state : public driver_device
@@ -49,6 +58,7 @@ public:
 		m_audiocpu(*this, "audiocpu"),
 		m_subcpu(*this, "subcpu"),
 		m_gfxdecode(*this, "gfxdecode"),
+<<<<<<< HEAD
 		m_palette(*this, "palette") { }
 
 	/* memory pointers */
@@ -56,6 +66,16 @@ public:
 	required_shared_ptr<UINT8> m_videoram;
 	required_shared_ptr<UINT8> m_colorram;
 	required_shared_ptr<UINT8> m_videoram2;
+=======
+		m_palette(*this, "palette"),
+		m_soundlatch(*this, "soundlatch") { }
+
+	/* memory pointers */
+	required_shared_ptr<uint8_t> m_spriteram;
+	required_shared_ptr<uint8_t> m_videoram;
+	required_shared_ptr<uint8_t> m_colorram;
+	required_shared_ptr<uint8_t> m_videoram2;
+>>>>>>> upstream/master
 
 	/* video-related */
 	tilemap_t  *m_bg_tilemap;
@@ -81,6 +101,10 @@ public:
 	required_device<cpu_device> m_subcpu;
 	required_device<gfxdecode_device> m_gfxdecode;
 	required_device<palette_device> m_palette;
+<<<<<<< HEAD
+=======
+	required_device<generic_latch_8_device> m_soundlatch;
+>>>>>>> upstream/master
 
 	DECLARE_WRITE8_MEMBER(zerotrgt_vregs_w);
 	DECLARE_WRITE8_MEMBER(cntsteer_vregs_w);
@@ -107,8 +131,13 @@ public:
 	DECLARE_MACHINE_RESET(zerotrgt);
 	DECLARE_VIDEO_START(zerotrgt);
 	DECLARE_PALETTE_INIT(zerotrgt);
+<<<<<<< HEAD
 	UINT32 screen_update_cntsteer(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
 	UINT32 screen_update_zerotrgt(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
+=======
+	uint32_t screen_update_cntsteer(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
+	uint32_t screen_update_zerotrgt(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
+>>>>>>> upstream/master
 	INTERRUPT_GEN_MEMBER(subcpu_vblank_irq);
 	INTERRUPT_GEN_MEMBER(sound_interrupt);
 	void zerotrgt_draw_sprites( bitmap_ind16 &bitmap, const rectangle &cliprect );
@@ -119,7 +148,11 @@ public:
 
 PALETTE_INIT_MEMBER(cntsteer_state,zerotrgt)
 {
+<<<<<<< HEAD
 	const UINT8 *color_prom = memregion("proms")->base();
+=======
+	const uint8_t *color_prom = memregion("proms")->base();
+>>>>>>> upstream/master
 	int i;
 	for (i = 0; i < palette.entries(); i++)
 	{
@@ -164,8 +197,13 @@ TILE_GET_INFO_MEMBER(cntsteer_state::get_fg_tile_info)
 
 VIDEO_START_MEMBER(cntsteer_state,cntsteer)
 {
+<<<<<<< HEAD
 	m_bg_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(cntsteer_state::get_bg_tile_info),this), TILEMAP_SCAN_COLS, 16, 16, 64, 64);
 	m_fg_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(cntsteer_state::get_fg_tile_info),this), TILEMAP_SCAN_ROWS_FLIP_X, 8, 8, 32, 32);
+=======
+	m_bg_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(cntsteer_state::get_bg_tile_info),this), TILEMAP_SCAN_COLS, 16, 16, 64, 64);
+	m_fg_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(cntsteer_state::get_fg_tile_info),this), TILEMAP_SCAN_ROWS_FLIP_X, 8, 8, 32, 32);
+>>>>>>> upstream/master
 
 	m_fg_tilemap->set_transparent_pen(0);
 
@@ -174,8 +212,13 @@ VIDEO_START_MEMBER(cntsteer_state,cntsteer)
 
 VIDEO_START_MEMBER(cntsteer_state,zerotrgt)
 {
+<<<<<<< HEAD
 	m_bg_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(cntsteer_state::get_bg_tile_info),this), TILEMAP_SCAN_ROWS, 16, 16, 64, 64);
 	m_fg_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(cntsteer_state::get_fg_tile_info),this), TILEMAP_SCAN_ROWS_FLIP_X, 8, 8, 32, 32);
+=======
+	m_bg_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(cntsteer_state::get_bg_tile_info),this), TILEMAP_SCAN_ROWS, 16, 16, 64, 64);
+	m_fg_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(cntsteer_state::get_fg_tile_info),this), TILEMAP_SCAN_ROWS_FLIP_X, 8, 8, 32, 32);
+>>>>>>> upstream/master
 
 	m_fg_tilemap->set_transparent_pen(0);
 
@@ -300,7 +343,11 @@ void cntsteer_state::cntsteer_draw_sprites( bitmap_ind16 &bitmap, const rectangl
 	}
 }
 
+<<<<<<< HEAD
 UINT32 cntsteer_state::screen_update_zerotrgt(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+=======
+uint32_t cntsteer_state::screen_update_zerotrgt(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+>>>>>>> upstream/master
 {
 	if (m_disable_roz)
 		bitmap.fill(m_palette->pen(8 * m_bg_color_bank), cliprect);
@@ -349,7 +396,11 @@ UINT32 cntsteer_state::screen_update_zerotrgt(screen_device &screen, bitmap_ind1
 	return 0;
 }
 
+<<<<<<< HEAD
 UINT32 cntsteer_state::screen_update_cntsteer(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+=======
+uint32_t cntsteer_state::screen_update_cntsteer(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+>>>>>>> upstream/master
 {
 	if (m_disable_roz)
 		bitmap.fill(m_palette->pen(8 * m_bg_color_bank), cliprect);
@@ -410,7 +461,11 @@ UINT32 cntsteer_state::screen_update_cntsteer(screen_device &screen, bitmap_ind1
 */
 WRITE8_MEMBER(cntsteer_state::zerotrgt_vregs_w)
 {
+<<<<<<< HEAD
 //  static UINT8 test[5];
+=======
+//  static uint8_t test[5];
+>>>>>>> upstream/master
 
 //  test[offset] = data;
 //    popmessage("%02x %02x %02x %02x %02x",test[0],test[1],test[2],test[3],test[4]);
@@ -435,7 +490,11 @@ WRITE8_MEMBER(cntsteer_state::zerotrgt_vregs_w)
 
 WRITE8_MEMBER(cntsteer_state::cntsteer_vregs_w)
 {
+<<<<<<< HEAD
 //  static UINT8 test[5];
+=======
+//  static uint8_t test[5];
+>>>>>>> upstream/master
 
 //  test[offset] = data;
 //   popmessage("%02x %02x %02x %02x %02x",test[0],test[1],test[2],test[3],test[4]);
@@ -498,7 +557,11 @@ WRITE8_MEMBER(cntsteer_state::gekitsui_sub_irq_ack)
 
 WRITE8_MEMBER(cntsteer_state::cntsteer_sound_w)
 {
+<<<<<<< HEAD
 	soundlatch_byte_w(space, 0, data);
+=======
+	m_soundlatch->write(space, 0, data);
+>>>>>>> upstream/master
 	m_audiocpu->set_input_line(0, HOLD_LINE);
 }
 
@@ -521,24 +584,34 @@ WRITE8_MEMBER(cntsteer_state::cntsteer_sub_irq_w)
 
 WRITE8_MEMBER(cntsteer_state::cntsteer_sub_nmi_w)
 {
+<<<<<<< HEAD
 //  if (data)
 	machine().scheduler().synchronize(); // force resync
 
 	//m_subcpu->set_input_line(M6809_IRQ_LINE, ASSERT_LINE);
+=======
+>>>>>>> upstream/master
 	m_maincpu->set_input_line(M6809_IRQ_LINE, CLEAR_LINE);
 //  popmessage("%02x", data);
 }
 
 WRITE8_MEMBER(cntsteer_state::cntsteer_main_irq_w)
 {
+<<<<<<< HEAD
 	machine().scheduler().synchronize(); // force resync
+=======
+>>>>>>> upstream/master
 	m_maincpu->set_input_line(M6809_IRQ_LINE, ASSERT_LINE);
 }
 
 /* Convert weird input handling with MAME standards.*/
 READ8_MEMBER(cntsteer_state::cntsteer_adx_r)
 {
+<<<<<<< HEAD
 	UINT8 res = 0, adx_val;
+=======
+	uint8_t res = 0, adx_val;
+>>>>>>> upstream/master
 	adx_val = ioport("AN_STEERING")->read();
 
 	if (adx_val >= 0x70 && adx_val <= 0x90)
@@ -633,7 +706,11 @@ INTERRUPT_GEN_MEMBER(cntsteer_state::subcpu_vblank_irq)
 	//       That's my best guess so far about how Slave is supposed to stop execution on Master CPU, the lack of any realistic write
 	//       between these operations brings us to this.
 	//       Game currently returns error on MIX CPU RAM because halt-ing BACK CPU doesn't happen when it should of course ...
+<<<<<<< HEAD
 //  UINT8 dp_r = (UINT8)device.state().state_int(M6809_DP);
+=======
+//  uint8_t dp_r = (uint8_t)device.state().state_int(M6809_DP);
+>>>>>>> upstream/master
 //  m_maincpu->set_input_line(INPUT_LINE_HALT, dp_r ? ASSERT_LINE : CLEAR_LINE);
 	m_subcpu->set_input_line(M6809_IRQ_LINE, ASSERT_LINE);
 }
@@ -651,7 +728,11 @@ static ADDRESS_MAP_START( sound_map, AS_PROGRAM, 8, cntsteer_state )
 	AM_RANGE(0x4000, 0x4000) AM_DEVWRITE("ay1", ay8910_device, address_w)
 	AM_RANGE(0x6000, 0x6000) AM_DEVWRITE("ay2", ay8910_device, data_w)
 	AM_RANGE(0x8000, 0x8000) AM_DEVWRITE("ay2", ay8910_device, address_w)
+<<<<<<< HEAD
 	AM_RANGE(0xa000, 0xa000) AM_READ(soundlatch_byte_r)
+=======
+	AM_RANGE(0xa000, 0xa000) AM_DEVREAD("soundlatch", generic_latch_8_device, read)
+>>>>>>> upstream/master
 	AM_RANGE(0xd000, 0xd000) AM_WRITE(nmimask_w)
 	AM_RANGE(0xe000, 0xffff) AM_ROM
 ADDRESS_MAP_END
@@ -903,7 +984,11 @@ MACHINE_RESET_MEMBER(cntsteer_state,cntsteer)
 	MACHINE_RESET_CALL_MEMBER(zerotrgt);
 }
 
+<<<<<<< HEAD
 static MACHINE_CONFIG_START( cntsteer, cntsteer_state )
+=======
+static MACHINE_CONFIG_START( cntsteer )
+>>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", M6809, 2000000)      /* ? */
@@ -941,6 +1026,7 @@ static MACHINE_CONFIG_START( cntsteer, cntsteer_state )
 	MCFG_VIDEO_START_OVERRIDE(cntsteer_state,cntsteer)
 
 	/* sound hardware */
+<<<<<<< HEAD
 	MCFG_SPEAKER_STANDARD_MONO("mono")
 	MCFG_SOUND_ADD("ay1", AY8910, 1500000)
 	MCFG_AY8910_PORT_A_WRITE_CB(DEVWRITE8("dac", dac_device, write_unsigned8))
@@ -954,6 +1040,25 @@ static MACHINE_CONFIG_START( cntsteer, cntsteer_state )
 MACHINE_CONFIG_END
 
 static MACHINE_CONFIG_START( zerotrgt, cntsteer_state )
+=======
+	MCFG_SPEAKER_STANDARD_MONO("speaker")
+
+	MCFG_GENERIC_LATCH_8_ADD("soundlatch")
+
+	MCFG_SOUND_ADD("ay1", AY8910, 1500000)
+	MCFG_AY8910_PORT_A_WRITE_CB(DEVWRITE8("dac", dac_byte_interface, write))
+	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "speaker", 0.5)
+
+	MCFG_SOUND_ADD("ay2", AY8910, 1500000)
+	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "speaker", 0.5)
+
+	MCFG_SOUND_ADD("dac", DAC_8BIT_R2R, 0) MCFG_SOUND_ROUTE(ALL_OUTPUTS, "speaker", 0.25) // unknown DAC
+	MCFG_DEVICE_ADD("vref", VOLTAGE_REGULATOR, 0) MCFG_VOLTAGE_REGULATOR_OUTPUT(5.0)
+	MCFG_SOUND_ROUTE_EX(0, "dac", 1.0, DAC_VREF_POS_INPUT) MCFG_SOUND_ROUTE_EX(0, "dac", -1.0, DAC_VREF_NEG_INPUT)
+MACHINE_CONFIG_END
+
+static MACHINE_CONFIG_START( zerotrgt )
+>>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", M6809, 2000000)      /* ? */
@@ -989,6 +1094,7 @@ static MACHINE_CONFIG_START( zerotrgt, cntsteer_state )
 	MCFG_VIDEO_START_OVERRIDE(cntsteer_state,zerotrgt)
 
 	/* sound hardware */
+<<<<<<< HEAD
 	MCFG_SPEAKER_STANDARD_MONO("mono")
 
 	MCFG_SOUND_ADD("ay1", AY8910, 1500000)
@@ -996,6 +1102,17 @@ static MACHINE_CONFIG_START( zerotrgt, cntsteer_state )
 
 	MCFG_SOUND_ADD("ay2", AY8910, 1500000)
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 0.50)
+=======
+	MCFG_SPEAKER_STANDARD_MONO("speaker")
+
+	MCFG_GENERIC_LATCH_8_ADD("soundlatch")
+
+	MCFG_SOUND_ADD("ay1", AY8910, 1500000)
+	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "speaker", 0.5)
+
+	MCFG_SOUND_ADD("ay2", AY8910, 1500000)
+	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "speaker", 0.5)
+>>>>>>> upstream/master
 MACHINE_CONFIG_END
 
 /***************************************************************************/
@@ -1175,8 +1292,13 @@ ROM_END
 
 void cntsteer_state::zerotrgt_rearrange_gfx( int romsize, int romarea )
 {
+<<<<<<< HEAD
 	UINT8 *src = memregion("gfx4")->base();
 	UINT8 *dst = memregion("gfx3")->base();
+=======
+	uint8_t *src = memregion("gfx4")->base();
+	uint8_t *dst = memregion("gfx3")->base();
+>>>>>>> upstream/master
 	int rm;
 	int cnt1;
 
@@ -1195,7 +1317,11 @@ void cntsteer_state::zerotrgt_rearrange_gfx( int romsize, int romarea )
 #if 0
 DRIVER_INIT_MEMBER(cntsteer_state,cntsteer)
 {
+<<<<<<< HEAD
 	UINT8 *RAM = memregion("subcpu")->base();
+=======
+	uint8_t *RAM = memregion("subcpu")->base();
+>>>>>>> upstream/master
 
 	RAM[0xc2cf] = 0x43; /* Patch out Cpu 1 ram test - it never ends..?! */
 	RAM[0xc2d0] = 0x43;
@@ -1214,7 +1340,14 @@ DRIVER_INIT_MEMBER(cntsteer_state,zerotrgt)
 
 /***************************************************************************/
 
+<<<<<<< HEAD
 GAME( 1985, zerotrgt,  0,        zerotrgt,  zerotrgt, cntsteer_state,  zerotrgt, ROT0,   "Data East Corporation", "Zero Target (World, CW)", MACHINE_IMPERFECT_GRAPHICS|MACHINE_IMPERFECT_SOUND|MACHINE_NO_COCKTAIL|MACHINE_NOT_WORKING|MACHINE_SUPPORTS_SAVE )
 GAME( 1985, zerotrgta, zerotrgt, zerotrgt,  zerotrgta, cntsteer_state, zerotrgt, ROT0,   "Data East Corporation", "Zero Target (World, CT)", MACHINE_IMPERFECT_GRAPHICS|MACHINE_IMPERFECT_SOUND|MACHINE_NO_COCKTAIL|MACHINE_NOT_WORKING|MACHINE_SUPPORTS_SAVE )
 GAME( 1985, gekitsui,  zerotrgt, zerotrgt,  zerotrgta, cntsteer_state, zerotrgt, ROT0,   "Data East Corporation", "Gekitsui Oh (Japan)", MACHINE_IMPERFECT_GRAPHICS|MACHINE_IMPERFECT_SOUND|MACHINE_NO_COCKTAIL|MACHINE_NOT_WORKING|MACHINE_SUPPORTS_SAVE )
 GAME( 1985, cntsteer,  0,        cntsteer,  cntsteer, cntsteer_state,  zerotrgt, ROT270, "Data East Corporation", "Counter Steer (Japan)", MACHINE_IMPERFECT_GRAPHICS|MACHINE_IMPERFECT_SOUND|MACHINE_WRONG_COLORS|MACHINE_NO_COCKTAIL|MACHINE_NOT_WORKING|MACHINE_SUPPORTS_SAVE )
+=======
+GAME( 1985, zerotrgt,  0,        zerotrgt,  zerotrgt,  cntsteer_state, zerotrgt, ROT0,   "Data East Corporation", "Zero Target (World, CW)", MACHINE_IMPERFECT_GRAPHICS|MACHINE_IMPERFECT_SOUND|MACHINE_NO_COCKTAIL|MACHINE_NOT_WORKING|MACHINE_SUPPORTS_SAVE )
+GAME( 1985, zerotrgta, zerotrgt, zerotrgt,  zerotrgta, cntsteer_state, zerotrgt, ROT0,   "Data East Corporation", "Zero Target (World, CT)", MACHINE_IMPERFECT_GRAPHICS|MACHINE_IMPERFECT_SOUND|MACHINE_NO_COCKTAIL|MACHINE_NOT_WORKING|MACHINE_SUPPORTS_SAVE )
+GAME( 1985, gekitsui,  zerotrgt, zerotrgt,  zerotrgta, cntsteer_state, zerotrgt, ROT0,   "Data East Corporation", "Gekitsui Oh (Japan)",     MACHINE_IMPERFECT_GRAPHICS|MACHINE_IMPERFECT_SOUND|MACHINE_NO_COCKTAIL|MACHINE_NOT_WORKING|MACHINE_SUPPORTS_SAVE )
+GAME( 1985, cntsteer,  0,        cntsteer,  cntsteer,  cntsteer_state, zerotrgt, ROT270, "Data East Corporation", "Counter Steer (Japan)",   MACHINE_IMPERFECT_GRAPHICS|MACHINE_IMPERFECT_SOUND|MACHINE_WRONG_COLORS|MACHINE_NO_COCKTAIL|MACHINE_NOT_WORKING|MACHINE_SUPPORTS_SAVE )
+>>>>>>> upstream/master

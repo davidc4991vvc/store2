@@ -16,11 +16,24 @@
 ***************************************************************************/
 
 #include "emu.h"
+<<<<<<< HEAD
 #include "cpu/m68000/m68000.h"
 #include "cpu/z80/z80.h"
 #include "sound/3812intf.h"
 #include "sound/okim6295.h"
 #include "machine/nvram.h"
+=======
+
+#include "cpu/m68000/m68000.h"
+#include "cpu/z80/z80.h"
+#include "machine/nvram.h"
+#include "sound/3812intf.h"
+#include "sound/okim6295.h"
+
+#include "screen.h"
+#include "speaker.h"
+
+>>>>>>> upstream/master
 #include "saiyukip.lh"
 
 
@@ -38,15 +51,26 @@ public:
 		m_gfxdecode(*this, "gfxdecode"),
 		m_palette(*this, "palette")  { }
 
+<<<<<<< HEAD
 	required_shared_ptr<UINT16> m_vram_0;
 	required_shared_ptr<UINT16> m_vram_1;
 	required_shared_ptr<UINT16> m_vram_2;
 	required_shared_ptr<UINT16> m_vram_3;
+=======
+	required_shared_ptr<uint16_t> m_vram_0;
+	required_shared_ptr<uint16_t> m_vram_1;
+	required_shared_ptr<uint16_t> m_vram_2;
+	required_shared_ptr<uint16_t> m_vram_3;
+>>>>>>> upstream/master
 	tilemap_t *m_tilemap_0;
 	tilemap_t *m_tilemap_1;
 	tilemap_t *m_tilemap_2;
 	tilemap_t *m_tilemap_3;
+<<<<<<< HEAD
 	required_shared_ptr<UINT8> m_z80_wram;
+=======
+	required_shared_ptr<uint8_t> m_z80_wram;
+>>>>>>> upstream/master
 	int m_umipoker_scrolly[4];
 	DECLARE_READ8_MEMBER(z80_rom_readback_r);
 	DECLARE_READ8_MEMBER(z80_shared_ram_r);
@@ -69,10 +93,17 @@ public:
 	TILE_GET_INFO_MEMBER(get_tile_info_1);
 	TILE_GET_INFO_MEMBER(get_tile_info_2);
 	TILE_GET_INFO_MEMBER(get_tile_info_3);
+<<<<<<< HEAD
 	virtual void machine_start();
 	virtual void machine_reset();
 	virtual void video_start();
 	UINT32 screen_update_umipoker(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
+=======
+	virtual void machine_start() override;
+	virtual void machine_reset() override;
+	virtual void video_start() override;
+	uint32_t screen_update_umipoker(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
+>>>>>>> upstream/master
 	required_device<cpu_device> m_maincpu;
 	required_device<gfxdecode_device> m_gfxdecode;
 	required_device<palette_device> m_palette;
@@ -124,10 +155,17 @@ TILE_GET_INFO_MEMBER(umipoker_state::get_tile_info_3)
 
 void umipoker_state::video_start()
 {
+<<<<<<< HEAD
 	m_tilemap_0 = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(umipoker_state::get_tile_info_0),this),TILEMAP_SCAN_ROWS,8,8,64,32);
 	m_tilemap_1 = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(umipoker_state::get_tile_info_1),this),TILEMAP_SCAN_ROWS,8,8,64,32);
 	m_tilemap_2 = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(umipoker_state::get_tile_info_2),this),TILEMAP_SCAN_ROWS,8,8,64,32);
 	m_tilemap_3 = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(umipoker_state::get_tile_info_3),this),TILEMAP_SCAN_ROWS,8,8,64,32);
+=======
+	m_tilemap_0 = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(umipoker_state::get_tile_info_0),this),TILEMAP_SCAN_ROWS,8,8,64,32);
+	m_tilemap_1 = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(umipoker_state::get_tile_info_1),this),TILEMAP_SCAN_ROWS,8,8,64,32);
+	m_tilemap_2 = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(umipoker_state::get_tile_info_2),this),TILEMAP_SCAN_ROWS,8,8,64,32);
+	m_tilemap_3 = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(umipoker_state::get_tile_info_3),this),TILEMAP_SCAN_ROWS,8,8,64,32);
+>>>>>>> upstream/master
 
 	m_tilemap_0->set_transparent_pen(0);
 	m_tilemap_1->set_transparent_pen(0);
@@ -136,7 +174,11 @@ void umipoker_state::video_start()
 
 }
 
+<<<<<<< HEAD
 UINT32 umipoker_state::screen_update_umipoker(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+=======
+uint32_t umipoker_state::screen_update_umipoker(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+>>>>>>> upstream/master
 {
 	m_tilemap_0->set_scrolly(0, m_umipoker_scrolly[0]);
 	m_tilemap_1->set_scrolly(0, m_umipoker_scrolly[1]);
@@ -155,7 +197,11 @@ UINT32 umipoker_state::screen_update_umipoker(screen_device &screen, bitmap_ind1
 
 READ8_MEMBER(umipoker_state::z80_rom_readback_r)
 {
+<<<<<<< HEAD
 	UINT8 *ROM = memregion("audiocpu")->base();
+=======
+	uint8_t *ROM = memregion("audiocpu")->base();
+>>>>>>> upstream/master
 
 	return ROM[offset];
 }
@@ -254,12 +300,21 @@ WRITE16_MEMBER(umipoker_state::lamps_w)
   --x- ---- ---- ----  START lamp.
 
 */
+<<<<<<< HEAD
 	output_set_lamp_value(0, (data >> 5) & 1);      /* Lamp 0 - RIGHT */
 	output_set_lamp_value(1, (data >> 9) & 1);      /* Lamp 1 - TAKE */
 	output_set_lamp_value(2, (data >> 10) & 1);     /* Lamp 2 - D-UP */
 	output_set_lamp_value(3, (data >> 11) & 1);     /* Lamp 3 - BET */
 	output_set_lamp_value(4, (data >> 12) & 1);     /* Lamp 4 - LEFT/STOP */
 	output_set_lamp_value(5, (data >> 13) & 1);     /* Lamp 5 - START */
+=======
+	output().set_lamp_value(0, (data >> 5) & 1);      /* Lamp 0 - RIGHT */
+	output().set_lamp_value(1, (data >> 9) & 1);      /* Lamp 1 - TAKE */
+	output().set_lamp_value(2, (data >> 10) & 1);     /* Lamp 2 - D-UP */
+	output().set_lamp_value(3, (data >> 11) & 1);     /* Lamp 3 - BET */
+	output().set_lamp_value(4, (data >> 12) & 1);     /* Lamp 4 - LEFT/STOP */
+	output().set_lamp_value(5, (data >> 13) & 1);     /* Lamp 5 - START */
+>>>>>>> upstream/master
 }
 
 WRITE16_MEMBER(umipoker_state::umi_counters_w)
@@ -278,9 +333,15 @@ WRITE16_MEMBER(umipoker_state::umi_counters_w)
   xxxx xxxx x--x xxx-  Unknown / Not used.
 
 */
+<<<<<<< HEAD
 	coin_counter_w(machine(), 0, data & 0x20);  /* COIN 1 */
 	coin_counter_w(machine(), 1, data & 0x40);  /* COIN 2 */
 	coin_counter_w(machine(), 2, data & 0x01);  /* PAYOUT */
+=======
+	machine().bookkeeping().coin_counter_w(0, data & 0x20);  /* COIN 1 */
+	machine().bookkeeping().coin_counter_w(1, data & 0x40);  /* COIN 2 */
+	machine().bookkeeping().coin_counter_w(2, data & 0x01);  /* PAYOUT */
+>>>>>>> upstream/master
 }
 
 WRITE16_MEMBER(umipoker_state::saiyu_counters_w)
@@ -300,9 +361,15 @@ WRITE16_MEMBER(umipoker_state::saiyu_counters_w)
   x--x xxx- xxxx xxxx  Unknown / Not used.
 
 */
+<<<<<<< HEAD
 	coin_counter_w(machine(), 0, data & 0x2000);    /* COIN 1 */
 	coin_counter_w(machine(), 1, data & 0x4000);    /* COIN 2 */
 	coin_counter_w(machine(), 2, data & 0x0100);    /* PAYOUT */
+=======
+	machine().bookkeeping().coin_counter_w(0, data & 0x2000);    /* COIN 1 */
+	machine().bookkeeping().coin_counter_w(1, data & 0x4000);    /* COIN 2 */
+	machine().bookkeeping().coin_counter_w(2, data & 0x0100);    /* PAYOUT */
+>>>>>>> upstream/master
 }
 
 
@@ -652,7 +719,11 @@ void umipoker_state::machine_reset()
 }
 
 // TODO: clocks
+<<<<<<< HEAD
 static MACHINE_CONFIG_START( umipoker, umipoker_state )
+=======
+static MACHINE_CONFIG_START( umipoker )
+>>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu",M68000,16000000) // TMP68HC000-16
@@ -688,7 +759,11 @@ static MACHINE_CONFIG_START( umipoker, umipoker_state )
 	MCFG_SOUND_ADD("ym", YM3812, 4000000 / 2)
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 1.0)
 
+<<<<<<< HEAD
 	MCFG_OKIM6295_ADD("oki", 4000000 / 2, OKIM6295_PIN7_HIGH) // clock frequency & pin 7 not verified
+=======
+	MCFG_OKIM6295_ADD("oki", 4000000 / 2, PIN7_HIGH) // clock frequency & pin 7 not verified
+>>>>>>> upstream/master
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 1.0)
 MACHINE_CONFIG_END
 
@@ -758,6 +833,10 @@ DRIVER_INIT_MEMBER(umipoker_state,saiyukip)
 *              Game Drivers               *
 ******************************************/
 
+<<<<<<< HEAD
 /*     YEAR  NAME       PARENT    MACHINE    INPUT      INIT      ROT    COMPANY                  FULLNAME                                 FLAGS   LAYOUT      */
+=======
+//     YEAR  NAME       PARENT    MACHINE    INPUT     STATE            INIT      ROT   COMPANY                  FULLNAME                                  FLAGS   LAYOUT
+>>>>>>> upstream/master
 GAME(  1997, umipoker,  0,        umipoker,  umipoker, umipoker_state,  umipoker, ROT0, "World Station Co.,LTD", "Umi de Poker / Marine Paradise (Japan)", 0 )                      // title screen is toggleable thru a dsw
 GAMEL( 1998, saiyukip,  0,        umipoker,  saiyukip, umipoker_state,  saiyukip, ROT0, "World Station Co.,LTD", "Slot Poker Saiyuki (Japan)",             0,      layout_saiyukip )

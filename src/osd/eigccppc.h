@@ -41,10 +41,17 @@
 -------------------------------------------------*/
 
 #define mul_32x32_hi _mul_32x32_hi
+<<<<<<< HEAD
 INLINE INT32 ATTR_CONST ATTR_FORCE_INLINE
 _mul_32x32_hi(INT32 val1, INT32 val2)
 {
 	register INT32 result;
+=======
+static inline int32_t ATTR_CONST ATTR_FORCE_INLINE
+_mul_32x32_hi(int32_t val1, int32_t val2)
+{
+	int32_t result;
+>>>>>>> upstream/master
 
 	__asm__ (
 		" mulhw  %[result], %[val1], %[val2] \n"
@@ -64,10 +71,17 @@ _mul_32x32_hi(INT32 val1, INT32 val2)
 -------------------------------------------------*/
 
 #define mulu_32x32_hi _mulu_32x32_hi
+<<<<<<< HEAD
 INLINE UINT32 ATTR_CONST ATTR_FORCE_INLINE
 _mulu_32x32_hi(UINT32 val1, UINT32 val2)
 {
 	register UINT32 result;
+=======
+static inline uint32_t ATTR_CONST ATTR_FORCE_INLINE
+_mulu_32x32_hi(uint32_t val1, uint32_t val2)
+{
+	uint32_t result;
+>>>>>>> upstream/master
 
 	__asm__ (
 		" mulhwu  %[result], %[val1], %[val2] \n"
@@ -89,10 +103,17 @@ _mulu_32x32_hi(UINT32 val1, UINT32 val2)
 
 #if !defined(__ppc64__) && !defined(__PPC64__) && !defined(_ARCH_PPC64)
 #define mul_32x32_shift _mul_32x32_shift
+<<<<<<< HEAD
 INLINE INT32 ATTR_CONST ATTR_FORCE_INLINE
 _mul_32x32_shift(INT32 val1, INT32 val2, UINT8 shift)
 {
 	register INT32 result;
+=======
+static inline int32_t ATTR_CONST ATTR_FORCE_INLINE
+_mul_32x32_shift(int32_t val1, int32_t val2, uint8_t shift)
+{
+	int32_t result;
+>>>>>>> upstream/master
 
 	/* Valid for (0 <= shift <= 32) */
 	__asm__ (
@@ -123,10 +144,17 @@ _mul_32x32_shift(INT32 val1, INT32 val2, UINT8 shift)
 
 #if !defined(__ppc64__) && !defined(__PPC64__) && !defined(_ARCH_PPC64)
 #define mulu_32x32_shift _mulu_32x32_shift
+<<<<<<< HEAD
 INLINE UINT32 ATTR_CONST ATTR_FORCE_INLINE
 _mulu_32x32_shift(UINT32 val1, UINT32 val2, UINT8 shift)
 {
 	register UINT32 result;
+=======
+static inline uint32_t ATTR_CONST ATTR_FORCE_INLINE
+_mulu_32x32_shift(uint32_t val1, uint32_t val2, uint8_t shift)
+{
+	uint32_t result;
+>>>>>>> upstream/master
 
 	/* Valid for (0 <= shift <= 32) */
 	__asm__ (
@@ -222,10 +250,17 @@ _mulu_32x32_shift(UINT32 val1, UINT32 val2, UINT8 shift)
 -------------------------------------------------*/
 
 #define recip_approx _recip_approx
+<<<<<<< HEAD
 INLINE float ATTR_CONST ATTR_FORCE_INLINE
 _recip_approx(float value)
 {
 	register float result;
+=======
+static inline float ATTR_CONST ATTR_FORCE_INLINE
+_recip_approx(float value)
+{
+	float result;
+>>>>>>> upstream/master
 
 	__asm__ (
 		" fres  %[result], %[value] \n"
@@ -248,10 +283,17 @@ _recip_approx(float value)
 -------------------------------------------------*/
 
 #define count_leading_zeros _count_leading_zeros
+<<<<<<< HEAD
 INLINE UINT8 ATTR_CONST ATTR_FORCE_INLINE
 _count_leading_zeros(UINT32 value)
 {
 	register UINT32 result;
+=======
+static inline uint8_t ATTR_CONST ATTR_FORCE_INLINE
+_count_leading_zeros(uint32_t value)
+{
+	uint32_t result;
+>>>>>>> upstream/master
 
 	__asm__ (
 		" cntlzw  %[result], %[value] \n"
@@ -269,10 +311,17 @@ _count_leading_zeros(UINT32 value)
 -------------------------------------------------*/
 
 #define count_leading_ones _count_leading_ones
+<<<<<<< HEAD
 INLINE UINT8 ATTR_CONST ATTR_FORCE_INLINE
 _count_leading_ones(UINT32 value)
 {
 	register UINT32 result;
+=======
+static inline uint8_t ATTR_CONST ATTR_FORCE_INLINE
+_count_leading_ones(uint32_t value)
+{
+	uint32_t result;
+>>>>>>> upstream/master
 
 	__asm__ (
 		" not     %[result], %[value]  \n"
@@ -284,6 +333,7 @@ _count_leading_ones(UINT32 value)
 	return result;
 }
 
+<<<<<<< HEAD
 
 
 /***************************************************************************
@@ -490,4 +540,6 @@ INLINE INT64 ATTR_UNUSED ATTR_FORCE_INLINE _get_profile_ticks(void)
 	return osd_ticks();
 }
 
+=======
+>>>>>>> upstream/master
 #endif /* __EIGCCPPC__ */

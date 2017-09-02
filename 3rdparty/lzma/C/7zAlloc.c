@@ -1,5 +1,11 @@
 /* 7zAlloc.c -- Allocation functions
+<<<<<<< HEAD
 2010-10-29 : Igor Pavlov : Public domain */
+=======
+2015-11-09 : Igor Pavlov : Public domain */
+
+#include "Precomp.h"
+>>>>>>> upstream/master
 
 #include "7zAlloc.h"
 
@@ -20,11 +26,19 @@ int g_allocCountTemp = 0;
 
 void *SzAlloc(void *p, size_t size)
 {
+<<<<<<< HEAD
   p = p;
   if (size == 0)
     return 0;
   #ifdef _SZ_ALLOC_DEBUG
   fprintf(stderr, "\nAlloc %10d bytes; count = %10d", size, g_allocCount);
+=======
+  UNUSED_VAR(p);
+  if (size == 0)
+    return 0;
+  #ifdef _SZ_ALLOC_DEBUG
+  fprintf(stderr, "\nAlloc %10u bytes; count = %10d", (unsigned)size, g_allocCount);
+>>>>>>> upstream/master
   g_allocCount++;
   #endif
   return malloc(size);
@@ -32,7 +46,11 @@ void *SzAlloc(void *p, size_t size)
 
 void SzFree(void *p, void *address)
 {
+<<<<<<< HEAD
   p = p;
+=======
+  UNUSED_VAR(p);
+>>>>>>> upstream/master
   #ifdef _SZ_ALLOC_DEBUG
   if (address != 0)
   {
@@ -45,11 +63,19 @@ void SzFree(void *p, void *address)
 
 void *SzAllocTemp(void *p, size_t size)
 {
+<<<<<<< HEAD
   p = p;
   if (size == 0)
     return 0;
   #ifdef _SZ_ALLOC_DEBUG
   fprintf(stderr, "\nAlloc_temp %10d bytes;  count = %10d", size, g_allocCountTemp);
+=======
+  UNUSED_VAR(p);
+  if (size == 0)
+    return 0;
+  #ifdef _SZ_ALLOC_DEBUG
+  fprintf(stderr, "\nAlloc_temp %10u bytes;  count = %10d", (unsigned)size, g_allocCountTemp);
+>>>>>>> upstream/master
   g_allocCountTemp++;
   #ifdef _WIN32
   return HeapAlloc(GetProcessHeap(), 0, size);
@@ -60,7 +86,11 @@ void *SzAllocTemp(void *p, size_t size)
 
 void SzFreeTemp(void *p, void *address)
 {
+<<<<<<< HEAD
   p = p;
+=======
+  UNUSED_VAR(p);
+>>>>>>> upstream/master
   #ifdef _SZ_ALLOC_DEBUG
   if (address != 0)
   {

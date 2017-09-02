@@ -33,7 +33,11 @@
 
 PALETTE_INIT_MEMBER(trackfld_state,trackfld)
 {
+<<<<<<< HEAD
 	const UINT8 *color_prom = memregion("proms")->base();
+=======
+	const uint8_t *color_prom = memregion("proms")->base();
+>>>>>>> upstream/master
 	static const int resistances_rg[3] = { 1000, 470, 220 };
 	static const int resistances_b [2] = { 470, 220 };
 	double rweights[3], gweights[3], bweights[2];
@@ -77,14 +81,22 @@ PALETTE_INIT_MEMBER(trackfld_state,trackfld)
 	/* sprites */
 	for (i = 0; i < 0x100; i++)
 	{
+<<<<<<< HEAD
 		UINT8 ctabentry = color_prom[i] & 0x0f;
+=======
+		uint8_t ctabentry = color_prom[i] & 0x0f;
+>>>>>>> upstream/master
 		palette.set_pen_indirect(i, ctabentry);
 	}
 
 	/* characters */
 	for (i = 0x100; i < 0x200; i++)
 	{
+<<<<<<< HEAD
 		UINT8 ctabentry = (color_prom[i] & 0x0f) | 0x10;
+=======
+		uint8_t ctabentry = (color_prom[i] & 0x0f) | 0x10;
+>>>>>>> upstream/master
 		palette.set_pen_indirect(i, ctabentry);
 	}
 }
@@ -101,6 +113,7 @@ WRITE8_MEMBER(trackfld_state::trackfld_colorram_w)
 	m_bg_tilemap->mark_tile_dirty(offset);
 }
 
+<<<<<<< HEAD
 WRITE8_MEMBER(trackfld_state::trackfld_flipscreen_w)
 {
 	if (flip_screen() != data)
@@ -108,6 +121,12 @@ WRITE8_MEMBER(trackfld_state::trackfld_flipscreen_w)
 		flip_screen_set(data);
 		machine().tilemap().mark_all_dirty();
 	}
+=======
+WRITE_LINE_MEMBER(trackfld_state::flipscreen_w)
+{
+	flip_screen_set(state);
+	machine().tilemap().mark_all_dirty();
+>>>>>>> upstream/master
 }
 
 WRITE8_MEMBER(trackfld_state::atlantol_gfxbank_w)
@@ -172,7 +191,11 @@ TILE_GET_INFO_MEMBER(trackfld_state::get_bg_tile_info)
 
 VIDEO_START_MEMBER(trackfld_state,trackfld)
 {
+<<<<<<< HEAD
 	m_bg_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(trackfld_state::get_bg_tile_info),this), TILEMAP_SCAN_ROWS, 8, 8, 64, 32);
+=======
+	m_bg_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(trackfld_state::get_bg_tile_info),this), TILEMAP_SCAN_ROWS, 8, 8, 64, 32);
+>>>>>>> upstream/master
 	m_bg_tilemap->set_scroll_rows(32);
 	m_sprites_gfx_banked = 0;
 }
@@ -188,8 +211,13 @@ VIDEO_START_MEMBER(trackfld_state,atlantol)
 
 void trackfld_state::draw_sprites( bitmap_ind16 &bitmap, const rectangle &cliprect )
 {
+<<<<<<< HEAD
 	UINT8 *spriteram = m_spriteram;
 	UINT8 *spriteram_2 = m_spriteram2;
+=======
+	uint8_t *spriteram = m_spriteram;
+	uint8_t *spriteram_2 = m_spriteram2;
+>>>>>>> upstream/master
 	int offs;
 
 	for (offs = m_spriteram.bytes() - 2; offs >= 0; offs -= 2)
@@ -241,7 +269,11 @@ void trackfld_state::draw_sprites( bitmap_ind16 &bitmap, const rectangle &clipre
 
 
 
+<<<<<<< HEAD
 UINT32 trackfld_state::screen_update_trackfld(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+=======
+uint32_t trackfld_state::screen_update_trackfld(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+>>>>>>> upstream/master
 {
 	int row, scrollx;
 

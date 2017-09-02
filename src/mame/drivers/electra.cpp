@@ -51,16 +51,27 @@ public:
 	}
 
 	// devices
+<<<<<<< HEAD
 	required_device<netlist_mame_device_t> m_maincpu;
+=======
+	required_device<netlist_mame_device> m_maincpu;
+>>>>>>> upstream/master
 	required_device<fixedfreq_device> m_video;
 
 protected:
 
 	// driver_device overrides
+<<<<<<< HEAD
 	virtual void machine_start();
 	virtual void machine_reset();
 
 	virtual void video_start();
+=======
+	virtual void machine_start() override;
+	virtual void machine_reset() override;
+
+	virtual void video_start() override;
+>>>>>>> upstream/master
 
 private:
 
@@ -94,7 +105,11 @@ void electra_state::video_start()
 {
 }
 
+<<<<<<< HEAD
 static MACHINE_CONFIG_START( electra, electra_state )
+=======
+static MACHINE_CONFIG_START( electra )
+>>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_DEVICE_ADD("maincpu", NETLIST_CPU, NETLIST_CLOCK)
@@ -128,4 +143,8 @@ ROM_START( avenger )
 ROM_END
 
 
+<<<<<<< HEAD
 GAME( 1975, avenger,  0, electra, 0, driver_device,  0, ROT0, "Electra", "Avenger [TTL]", MACHINE_IS_SKELETON )
+=======
+GAME( 1975, avenger,  0, electra, 0, electra_state,  0, ROT0, "Electra", "Avenger [TTL]", MACHINE_IS_SKELETON )
+>>>>>>> upstream/master

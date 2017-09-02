@@ -21,13 +21,21 @@
 //  GLOBAL VARIABLES
 //**************************************************************************
 
+<<<<<<< HEAD
 const device_type BML3BUS_MP1805 = &device_creator<bml3bus_mp1805_device>;
+=======
+DEFINE_DEVICE_TYPE(BML3BUS_MP1805, bml3bus_mp1805_device, "bml3mp1805", "Hitachi MP-1805 Floppy Controller Card")
+>>>>>>> upstream/master
 
 static const floppy_interface bml3_mp1805_floppy_interface =
 {
 	FLOPPY_STANDARD_3_SSDD,
 	LEGACY_FLOPPY_OPTIONS_NAME(default),
+<<<<<<< HEAD
 	NULL
+=======
+	nullptr
+>>>>>>> upstream/master
 };
 
 WRITE_LINE_MEMBER( bml3bus_mp1805_device::bml3_mc6843_intrq_w )
@@ -45,17 +53,21 @@ ROM_START( mp1805 )
 	ROM_LOAD( "mp1805.rom", 0xf800, 0x0800, BAD_DUMP CRC(b532d8d9) SHA1(6f1160356d5bf64b5926b1fdb60db414edf65f22))
 ROM_END
 
+<<<<<<< HEAD
 MACHINE_CONFIG_FRAGMENT( mp1805 )
 	MCFG_DEVICE_ADD( "mc6843", MC6843, 0 )
 	MCFG_MC6843_IRQ_CALLBACK(WRITELINE(bml3bus_mp1805_device, bml3_mc6843_intrq_w))
 	MCFG_LEGACY_FLOPPY_4_DRIVES_ADD(bml3_mp1805_floppy_interface)
 MACHINE_CONFIG_END
+=======
+>>>>>>> upstream/master
 
 /***************************************************************************
     FUNCTION PROTOTYPES
 ***************************************************************************/
 
 //-------------------------------------------------
+<<<<<<< HEAD
 //  machine_config_additions - device-specific
 //  machine configurations
 //-------------------------------------------------
@@ -64,12 +76,26 @@ machine_config_constructor bml3bus_mp1805_device::device_mconfig_additions() con
 {
 	return MACHINE_CONFIG_NAME( mp1805 );
 }
+=======
+//  device_add_mconfig - add device configuration
+//-------------------------------------------------
+
+MACHINE_CONFIG_MEMBER( bml3bus_mp1805_device::device_add_mconfig )
+	MCFG_DEVICE_ADD( "mc6843", MC6843, 0 )
+	MCFG_MC6843_IRQ_CALLBACK(WRITELINE(bml3bus_mp1805_device, bml3_mc6843_intrq_w))
+	MCFG_LEGACY_FLOPPY_4_DRIVES_ADD(bml3_mp1805_floppy_interface)
+MACHINE_CONFIG_END
+>>>>>>> upstream/master
 
 //-------------------------------------------------
 //  rom_region - device-specific ROM region
 //-------------------------------------------------
 
+<<<<<<< HEAD
 const rom_entry *bml3bus_mp1805_device::device_rom_region() const
+=======
+const tiny_rom_entry *bml3bus_mp1805_device::device_rom_region() const
+>>>>>>> upstream/master
 {
 	return ROM_NAME( mp1805 );
 }
@@ -92,7 +118,11 @@ WRITE8_MEMBER( bml3bus_mp1805_device::bml3_mp1805_w)
 	// TODO: MESS UI for flipping disk? Note that D88 images are double-sided, but the physical drive is single-sided
 	int side = 0;
 	int motor = BIT(data, 7);
+<<<<<<< HEAD
 	const char *floppy_name = NULL;
+=======
+	const char *floppy_name = nullptr;
+>>>>>>> upstream/master
 	switch (drive_select) {
 	case 1:
 		drive = 0;
@@ -137,8 +167,13 @@ WRITE8_MEMBER( bml3bus_mp1805_device::bml3_mp1805_w)
 //  LIVE DEVICE
 //**************************************************************************
 
+<<<<<<< HEAD
 bml3bus_mp1805_device::bml3bus_mp1805_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock) :
 	device_t(mconfig, BML3BUS_MP1805, "Hitachi MP-1805 Floppy Controller Card", tag, owner, clock, "bml3mp1805", __FILE__),
+=======
+bml3bus_mp1805_device::bml3bus_mp1805_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock) :
+	device_t(mconfig, BML3BUS_MP1805, tag, owner, clock),
+>>>>>>> upstream/master
 	device_bml3bus_card_interface(mconfig, *this),
 	m_mc6843(*this, "mc6843"), m_rom(nullptr)
 {
@@ -161,7 +196,11 @@ void bml3bus_mp1805_device::device_start()
 	space_prg.install_readwrite_handler(0xff18, 0xff1f, read8_delegate( FUNC(mc6843_device::read), (mc6843_device*)m_mc6843), write8_delegate(FUNC(mc6843_device::write), (mc6843_device*)m_mc6843) );
 	space_prg.install_readwrite_handler(0xff20, 0xff20, read8_delegate( FUNC(bml3bus_mp1805_device::bml3_mp1805_r), this), write8_delegate(FUNC(bml3bus_mp1805_device::bml3_mp1805_w), this) );
 	// overwriting the main ROM (rather than using e.g. install_rom) should mean that bank switches for RAM expansion still work...
+<<<<<<< HEAD
 	UINT8 *mainrom = device().machine().root_device().memregion("maincpu")->base();
+=======
+	uint8_t *mainrom = device().machine().root_device().memregion("maincpu")->base();
+>>>>>>> upstream/master
 	memcpy(mainrom + 0xf800, m_rom + 0xf800, 0x800);
 }
 

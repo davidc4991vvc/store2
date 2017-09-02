@@ -10,7 +10,11 @@ import sys
 
 files_included = ['src/emu/emu.h']
 
+<<<<<<< HEAD
 include_dirs = ['src/emu/', 'src/devices/', 'src/mame/']
+=======
+include_dirs = ['src/emu/', 'src/devices/', 'src/mame/', 'src/lib/']
+>>>>>>> upstream/master
 
 mappings = dict()
 
@@ -27,7 +31,11 @@ def file_exists(root, srcfile, folder, inc_dir):
     includes.extend(inc_dir)
     for line in includes:
         try:
+<<<<<<< HEAD
             fp = open(root + line + srcfile, 'rb')
+=======
+            fp = open(root + line + srcfile, 'r')
+>>>>>>> upstream/master
             fp.close()
             return line + srcfile
         except IOError:
@@ -36,7 +44,11 @@ def file_exists(root, srcfile, folder, inc_dir):
 
 def add_c_if_exists(root, fullname):
     try:
+<<<<<<< HEAD
         fp = open(root + fullname, 'rb')
+=======
+        fp = open(root + fullname, 'r')
+>>>>>>> upstream/master
         fp.close()
         deps_files_included.append(fullname)
     except IOError:
@@ -61,7 +73,11 @@ def add_rest_if_exists(root, srcfile,folder):
 
 def parse_file_for_deps(root, srcfile, folder):
     try:
+<<<<<<< HEAD
         fp = open(root + srcfile, 'rb')
+=======
+        fp = open(root + srcfile, 'r')
+>>>>>>> upstream/master
     except IOError:
         return 1
     in_comment = 0
@@ -73,11 +89,19 @@ def parse_file_for_deps(root, srcfile, folder):
         while srcptr < len(line):
             c = line[srcptr]
             srcptr+=1
+<<<<<<< HEAD
             if c==13 or c==10:
                 if c==13 and line[srcptr]==10:
                     srcptr+=1
                 continue
             if c==' ' or c==9:
+=======
+            if ord(c)==13 or ord(c)==10:
+                if ord(c)==13 and ord(line[srcptr])==10:
+                    srcptr+=1
+                continue
+            if c==' ' or ord(c)==9:
+>>>>>>> upstream/master
                 continue
             if in_comment==1 and c=='*' and line[srcptr]=='/' :
                 srcptr+=1
@@ -112,7 +136,11 @@ def parse_file_for_deps(root, srcfile, folder):
 
 def parse_file(root, srcfile, folder):
     try:
+<<<<<<< HEAD
         fp = open(root + srcfile, 'rb')
+=======
+        fp = open(root + srcfile, 'r')
+>>>>>>> upstream/master
     except IOError:
         return 1
     in_comment = 0
@@ -124,11 +152,19 @@ def parse_file(root, srcfile, folder):
         while srcptr < len(line):
             c = line[srcptr]
             srcptr+=1
+<<<<<<< HEAD
             if c==13 or c==10:
                 if c==13 and line[srcptr]==10:
                     srcptr+=1
                 continue
             if c==' ' or c==9:
+=======
+            if ord(c)==13 or ord(c)==10:
+                if ord(c)==13 and ord(line[srcptr])==10:
+                    srcptr+=1
+                continue
+            if c==' ' or ord(c)==9:
+>>>>>>> upstream/master
                 continue
             if in_comment==1 and c=='*' and line[srcptr]=='/' :
                 srcptr+=1
@@ -160,13 +196,20 @@ def parse_file(root, srcfile, folder):
                    files_included.append(fullname)
                    newfolder = fullname.rsplit('/', 1)[0] + '/'
                    parse_file(root, fullname, newfolder)
+<<<<<<< HEAD
                    if (fullname.endswith('.h')):
+=======
+                   if (fullname.endswith('.h') and not("src/emu" in fullname) and not("src/devices" in fullname) and not("src/lib" in fullname) and not("src/osd" in fullname)):
+                       parse_file_for_deps(root, fullname.replace('.h','.cpp'), newfolder)
+                   elif fullname.endswith('.h'):
+>>>>>>> upstream/master
                        parse_file(root, fullname.replace('.h','.cpp'), newfolder)
                continue
     fp.close()
     return 0
 
 def parse_file_for_drivers(root, srcfile):
+<<<<<<< HEAD
     try:
         fp = open(root + srcfile, 'rb')
     except IOError:
@@ -205,11 +248,21 @@ def parse_file_for_drivers(root, srcfile):
             if content.startswith('COMP') or content.startswith('CONS') or content.startswith('GAME') or content.startswith('SYST')  or content.startswith('GAMEL'):
                name = content[4:]
                drivers.append(name.rsplit(',', 14)[1])
+=======
+    srcfile = srcfile.replace('\\','/')
+    if srcfile.startswith('src/mame/drivers'):
+       splitname = srcfile.split('/', 4)
+       drivers.append(splitname[3])
+>>>>>>> upstream/master
     return 0
 
 def parse_lua_file(srcfile):
     try:
+<<<<<<< HEAD
         fp = open(srcfile, 'rb')
+=======
+        fp = open(srcfile, 'r')
+>>>>>>> upstream/master
     except IOError:
         sys.stderr.write("Unable to open source file '%s'\n" % srcfile)
         return 1
@@ -233,6 +286,10 @@ parse_lua_file(root +'scripts/src/cpu.lua')
 parse_lua_file(root +'scripts/src/machine.lua')
 parse_lua_file(root +'scripts/src/sound.lua')
 parse_lua_file(root +'scripts/src/video.lua')
+<<<<<<< HEAD
+=======
+parse_lua_file(root +'scripts/src/formats.lua')
+>>>>>>> upstream/master
 
 for filename in sys.argv[2].rsplit(',') :
     deps_files_included.append(filename.replace('\\','/'))
@@ -244,6 +301,7 @@ for filename in deps_files_included:
 for filename in sys.argv[2].rsplit(',') :
     parse_file_for_drivers(root,filename)
 
+<<<<<<< HEAD
 
 # display output
 if sys.argv[3]=='drivers':
@@ -273,6 +331,18 @@ if sys.argv[3]=='drivers':
 if sys.argv[3]=='target':
     for line in components:
         sys.stdout.write("%s\n" % line)
+=======
+# display output
+if sys.argv[3]=='drivers':
+    #output the list of externs first
+    for drv in sorted(drivers):
+        print(drv)
+    print("")
+
+if sys.argv[3]=='target':
+    for line in components:
+        sys.stdout.write("%s\n" % line)    
+>>>>>>> upstream/master
     sys.stdout.write('\n')
     sys.stdout.write('function createProjects_mame_%s(_target, _subtarget)\n' % sys.argv[4])
     sys.stdout.write('    project ("mame_%s")\n' % sys.argv[4])
@@ -287,6 +357,7 @@ if sys.argv[3]=='target':
     sys.stdout.write('        MAME_DIR .. "src/mame",\n')
     sys.stdout.write('        MAME_DIR .. "src/lib",\n')
     sys.stdout.write('        MAME_DIR .. "src/lib/util",\n')
+<<<<<<< HEAD
     sys.stdout.write('        MAME_DIR .. "3rdparty",\n')
     sys.stdout.write('        GEN_DIR  .. "mame/layout",\n')
     sys.stdout.write('        GEN_DIR  .. "mess/layout",\n')
@@ -296,6 +367,14 @@ if sys.argv[3]=='target':
     sys.stdout.write('            MAME_DIR .. "3rdparty/zlib",\n')
     sys.stdout.write('        }\n')
     sys.stdout.write('    end\n')
+=======
+    sys.stdout.write('        MAME_DIR .. "src/lib/netlist",\n')
+    sys.stdout.write('        MAME_DIR .. "3rdparty",\n')
+    sys.stdout.write('        GEN_DIR  .. "mame/layout",\n')
+    sys.stdout.write('        ext_includedir("zlib"),\n')
+    sys.stdout.write('        ext_includedir("flac"),\n')
+    sys.stdout.write('    }\n')
+>>>>>>> upstream/master
     sys.stdout.write('\n')
     sys.stdout.write('    files{\n')
     for line in deps_files_included:

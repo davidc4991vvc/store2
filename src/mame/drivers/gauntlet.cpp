@@ -121,12 +121,24 @@
 
 
 #include "emu.h"
+<<<<<<< HEAD
 #include "cpu/m68000/m68000.h"
 #include "cpu/m6502/m6502.h"
 #include "sound/tms5220.h"
 #include "sound/2151intf.h"
 #include "sound/pokey.h"
 #include "includes/gauntlet.h"
+=======
+#include "includes/gauntlet.h"
+#include "cpu/m68000/m68000.h"
+#include "cpu/m6502/m6502.h"
+#include "machine/eeprompar.h"
+#include "machine/watchdog.h"
+#include "sound/tms5220.h"
+#include "sound/ym2151.h"
+#include "sound/pokey.h"
+#include "speaker.h"
+>>>>>>> upstream/master
 
 
 
@@ -149,7 +161,11 @@ void gauntlet_state::scanline_update(screen_device &screen, int scanline)
 
 	/* sound IRQ is on 32V */
 	if (scanline & 32)
+<<<<<<< HEAD
 		m_soundcomm->sound_irq_gen(m_audiocpu);
+=======
+		m_soundcomm->sound_irq_gen(*m_audiocpu);
+>>>>>>> upstream/master
 	else
 		m_soundcomm->sound_irq_ack_r(space, 0);
 }
@@ -188,6 +204,7 @@ WRITE16_MEMBER(gauntlet_state::sound_reset_w)
 		if ((oldword ^ m_sound_reset_val) & 1)
 		{
 			m_audiocpu->set_input_line(INPUT_LINE_RESET, (m_sound_reset_val & 1) ? CLEAR_LINE : ASSERT_LINE);
+<<<<<<< HEAD
 			m_soundcomm->sound_cpu_reset();
 			if (m_sound_reset_val & 1)
 			{
@@ -198,6 +215,15 @@ WRITE16_MEMBER(gauntlet_state::sound_reset_w)
 				set_ym2151_volume(0);
 				set_pokey_volume(0);
 				set_tms5220_volume(0);
+=======
+			m_soundctl->clear_w(m_sound_reset_val & 1);
+			m_soundcomm->sound_cpu_reset();
+			if (m_sound_reset_val & 1)
+			{
+				m_ym2151->set_output_gain(ALL_OUTPUTS, 0.0f);
+				m_pokey->set_output_gain(ALL_OUTPUTS, 0.0f);
+				m_tms5220->set_output_gain(ALL_OUTPUTS, 0.0f);
+>>>>>>> upstream/master
 			}
 		}
 	}
@@ -213,12 +239,19 @@ WRITE16_MEMBER(gauntlet_state::sound_reset_w)
 
 READ8_MEMBER(gauntlet_state::switch_6502_r)
 {
+<<<<<<< HEAD
 	tms5220_device *tms5220 = machine().device<tms5220_device>("tms");
+=======
+>>>>>>> upstream/master
 	int temp = 0x30;
 
 	if (m_soundcomm->main_to_sound_ready()) temp ^= 0x80;
 	if (m_soundcomm->sound_to_main_ready()) temp ^= 0x40;
+<<<<<<< HEAD
 	if (!tms5220->readyq_r()) temp ^= 0x20;
+=======
+	if (!m_tms5220->readyq_r()) temp ^= 0x20;
+>>>>>>> upstream/master
 	if (!(ioport("803008")->read() & 0x0008)) temp ^= 0x10;
 
 	return temp;
@@ -231,6 +264,7 @@ READ8_MEMBER(gauntlet_state::switch_6502_r)
  *
  *************************************/
 
+<<<<<<< HEAD
 WRITE8_MEMBER(gauntlet_state::sound_ctl_w)
 {
 	tms5220_device *tms5220 = machine().device<tms5220_device>("tms");
@@ -253,6 +287,24 @@ WRITE8_MEMBER(gauntlet_state::sound_ctl_w)
 			tms5220->set_frequency(ATARI_CLOCK_14MHz/2 / (16 - data));
 			break;
 	}
+=======
+WRITE_LINE_MEMBER(gauntlet_state::speech_squeak_w)
+{
+	uint8_t data = 5 | (state ? 2 : 0);
+	m_tms5220->set_unscaled_clock(ATARI_CLOCK_14MHz/2 / (16 - data));
+}
+
+WRITE_LINE_MEMBER(gauntlet_state::coin_counter_left_w)
+{
+	// coins 1 & 2 combined
+	machine().bookkeeping().coin_counter_w(0, state);
+}
+
+WRITE_LINE_MEMBER(gauntlet_state::coin_counter_right_w)
+{
+	// coins 3 & 4 combined
+	machine().bookkeeping().coin_counter_w(1, state);
+>>>>>>> upstream/master
 }
 
 
@@ -265,9 +317,15 @@ WRITE8_MEMBER(gauntlet_state::sound_ctl_w)
 
 WRITE8_MEMBER(gauntlet_state::mixer_w)
 {
+<<<<<<< HEAD
 	set_ym2151_volume((data & 7) * 100 / 7);
 	set_pokey_volume(((data >> 3) & 3) * 100 / 3);
 	set_tms5220_volume(((data >> 5) & 7) * 100 / 7);
+=======
+	m_ym2151->set_output_gain(ALL_OUTPUTS, (data & 7) / 7.0f);
+	m_pokey->set_output_gain(ALL_OUTPUTS, ((data >> 3) & 3) / 3.0f);
+	m_tms5220->set_output_gain(ALL_OUTPUTS, ((data >> 5) & 7) / 7.0f);
+>>>>>>> upstream/master
 }
 
 
@@ -287,17 +345,28 @@ static ADDRESS_MAP_START( main_map, AS_PROGRAM, 16, gauntlet_state )
 
 	/* MBUS */
 	AM_RANGE(0x800000, 0x801fff) AM_MIRROR(0x2fc000) AM_RAM
+<<<<<<< HEAD
 	AM_RANGE(0x802000, 0x802fff) AM_MIRROR(0x2fc000) AM_DEVREADWRITE8("eeprom", atari_eeprom_device, read, write, 0x00ff)
+=======
+	AM_RANGE(0x802000, 0x802fff) AM_MIRROR(0x2fc000) AM_DEVREADWRITE8("eeprom", eeprom_parallel_28xx_device, read, write, 0x00ff)
+>>>>>>> upstream/master
 	AM_RANGE(0x803000, 0x803001) AM_MIRROR(0x2fcef0) AM_READ_PORT("803000")
 	AM_RANGE(0x803002, 0x803003) AM_MIRROR(0x2fcef0) AM_READ_PORT("803002")
 	AM_RANGE(0x803004, 0x803005) AM_MIRROR(0x2fcef0) AM_READ_PORT("803004")
 	AM_RANGE(0x803006, 0x803007) AM_MIRROR(0x2fcef0) AM_READ_PORT("803006")
 	AM_RANGE(0x803008, 0x803009) AM_MIRROR(0x2fcef0) AM_READ_PORT("803008")
 	AM_RANGE(0x80300e, 0x80300f) AM_MIRROR(0x2fcef0) AM_DEVREAD8("soundcomm", atari_sound_comm_device, main_response_r, 0x00ff)
+<<<<<<< HEAD
 	AM_RANGE(0x803100, 0x803101) AM_MIRROR(0x2fce8e) AM_WRITE(watchdog_reset16_w)
 	AM_RANGE(0x803120, 0x803121) AM_MIRROR(0x2fce8e) AM_DEVWRITE("soundcomm", atari_sound_comm_device, sound_reset_w)
 	AM_RANGE(0x803140, 0x803141) AM_MIRROR(0x2fce8e) AM_WRITE(video_int_ack_w)
 	AM_RANGE(0x803150, 0x803151) AM_MIRROR(0x2fce8e) AM_DEVWRITE("eeprom", atari_eeprom_device, unlock_write)
+=======
+	AM_RANGE(0x803100, 0x803101) AM_MIRROR(0x2fce8e) AM_DEVWRITE("watchdog", watchdog_timer_device, reset16_w)
+	AM_RANGE(0x803120, 0x803121) AM_MIRROR(0x2fce8e) AM_DEVWRITE("soundcomm", atari_sound_comm_device, sound_reset_w)
+	AM_RANGE(0x803140, 0x803141) AM_MIRROR(0x2fce8e) AM_WRITE(video_int_ack_w)
+	AM_RANGE(0x803150, 0x803151) AM_MIRROR(0x2fce8e) AM_DEVWRITE("eeprom", eeprom_parallel_28xx_device, unlock_write)
+>>>>>>> upstream/master
 	AM_RANGE(0x803170, 0x803171) AM_MIRROR(0x2fce8e) AM_DEVWRITE8("soundcomm", atari_sound_comm_device, main_command_w, 0x00ff)
 
 	/* VBUS */
@@ -326,7 +395,12 @@ static ADDRESS_MAP_START( sound_map, AS_PROGRAM, 8, gauntlet_state )
 	AM_RANGE(0x1000, 0x100f) AM_MIRROR(0x27c0) AM_DEVWRITE("soundcomm", atari_sound_comm_device, sound_response_w)
 	AM_RANGE(0x1010, 0x101f) AM_MIRROR(0x27c0) AM_DEVREAD("soundcomm", atari_sound_comm_device, sound_command_r)
 	AM_RANGE(0x1020, 0x102f) AM_MIRROR(0x27c0) AM_READ_PORT("COIN") AM_WRITE(mixer_w)
+<<<<<<< HEAD
 	AM_RANGE(0x1030, 0x103f) AM_MIRROR(0x27c0) AM_READWRITE(switch_6502_r, sound_ctl_w)
+=======
+	AM_RANGE(0x1030, 0x1030) AM_MIRROR(0x27cf) AM_READ(switch_6502_r)
+	AM_RANGE(0x1030, 0x1037) AM_MIRROR(0x27c8) AM_DEVWRITE("soundctl", ls259_device, write_d7)
+>>>>>>> upstream/master
 	AM_RANGE(0x1800, 0x180f) AM_MIRROR(0x27c0) AM_DEVREADWRITE("pokey", pokey_device, read, write)
 	AM_RANGE(0x1810, 0x1811) AM_MIRROR(0x27ce) AM_DEVREADWRITE("ymsnd", ym2151_device, read, write)
 	AM_RANGE(0x1820, 0x182f) AM_MIRROR(0x27c0) AM_DEVWRITE("tms", tms5220_device, data_w)
@@ -402,10 +476,17 @@ INPUT_PORTS_END
 
 static INPUT_PORTS_START( vindctr2 )
 	PORT_START("803000")
+<<<<<<< HEAD
 	PORT_BIT( 0x0001, IP_ACTIVE_LOW, IPT_BUTTON1 ) PORT_PLAYER(1)
 	PORT_BIT( 0x0002, IP_ACTIVE_LOW, IPT_BUTTON3 ) PORT_PLAYER(1)
 	PORT_BIT( 0x0004, IP_ACTIVE_LOW, IPT_BUTTON2 ) PORT_PLAYER(1)
 	PORT_BIT( 0x0008, IP_ACTIVE_LOW, IPT_BUTTON4 ) PORT_PLAYER(1)
+=======
+	PORT_BIT( 0x0001, IP_ACTIVE_LOW, IPT_BUTTON1 ) PORT_PLAYER(1) PORT_NAME("P1 Left Stick Fire")
+	PORT_BIT( 0x0002, IP_ACTIVE_LOW, IPT_BUTTON3 ) PORT_PLAYER(1) PORT_NAME("P1 Right Stick Fire")
+	PORT_BIT( 0x0004, IP_ACTIVE_LOW, IPT_BUTTON2 ) PORT_PLAYER(1) PORT_NAME("P1 Left Stick Thumb")
+	PORT_BIT( 0x0008, IP_ACTIVE_LOW, IPT_BUTTON4 ) PORT_PLAYER(1) PORT_NAME("P1 Right Stick Thumb")
+>>>>>>> upstream/master
 	PORT_BIT( 0x0010, IP_ACTIVE_LOW, IPT_JOYSTICKLEFT_UP ) PORT_2WAY PORT_PLAYER(1)
 	PORT_BIT( 0x0020, IP_ACTIVE_LOW, IPT_JOYSTICKRIGHT_UP ) PORT_2WAY PORT_PLAYER(1)
 	PORT_BIT( 0x0040, IP_ACTIVE_LOW, IPT_JOYSTICKLEFT_DOWN ) PORT_2WAY PORT_PLAYER(1)
@@ -413,10 +494,17 @@ static INPUT_PORTS_START( vindctr2 )
 	PORT_BIT( 0xff00, IP_ACTIVE_LOW, IPT_UNUSED )
 
 	PORT_START("803002")
+<<<<<<< HEAD
 	PORT_BIT( 0x0001, IP_ACTIVE_LOW, IPT_BUTTON1 ) PORT_PLAYER(2)
 	PORT_BIT( 0x0002, IP_ACTIVE_LOW, IPT_BUTTON3 ) PORT_PLAYER(2)
 	PORT_BIT( 0x0004, IP_ACTIVE_LOW, IPT_BUTTON2 ) PORT_PLAYER(2)
 	PORT_BIT( 0x0008, IP_ACTIVE_LOW, IPT_BUTTON4 ) PORT_PLAYER(2)
+=======
+	PORT_BIT( 0x0001, IP_ACTIVE_LOW, IPT_BUTTON1 ) PORT_PLAYER(2) PORT_NAME("P2 Left Stick Fire")
+	PORT_BIT( 0x0002, IP_ACTIVE_LOW, IPT_BUTTON3 ) PORT_PLAYER(2) PORT_NAME("P2 Right Stick Fire")
+	PORT_BIT( 0x0004, IP_ACTIVE_LOW, IPT_BUTTON2 ) PORT_PLAYER(2) PORT_NAME("P2 Left Stick Thumb")
+	PORT_BIT( 0x0008, IP_ACTIVE_LOW, IPT_BUTTON4 ) PORT_PLAYER(2) PORT_NAME("P2 Right Stick Thumb")
+>>>>>>> upstream/master
 	PORT_BIT( 0x0010, IP_ACTIVE_LOW, IPT_JOYSTICKLEFT_UP ) PORT_2WAY PORT_PLAYER(2)
 	PORT_BIT( 0x0020, IP_ACTIVE_LOW, IPT_JOYSTICKRIGHT_UP ) PORT_2WAY PORT_PLAYER(2)
 	PORT_BIT( 0x0040, IP_ACTIVE_LOW, IPT_JOYSTICKLEFT_DOWN ) PORT_2WAY PORT_PLAYER(2)
@@ -492,22 +580,36 @@ GFXDECODE_END
  *
  *************************************/
 
+<<<<<<< HEAD
 static MACHINE_CONFIG_START( gauntlet, gauntlet_state )
+=======
+static MACHINE_CONFIG_START( gauntlet_base )
+>>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", M68010, ATARI_CLOCK_14MHz/2)
 	MCFG_CPU_PROGRAM_MAP(main_map)
 	MCFG_DEVICE_VBLANK_INT_DRIVER("screen", atarigen_state, video_int_gen)
 
+<<<<<<< HEAD
 	MCFG_SLAPSTIC_ADD("slapstic")
 
+=======
+>>>>>>> upstream/master
 	MCFG_CPU_ADD("audiocpu", M6502, ATARI_CLOCK_14MHz/8)
 	MCFG_CPU_PROGRAM_MAP(sound_map)
 
 	MCFG_MACHINE_START_OVERRIDE(gauntlet_state,gauntlet)
 	MCFG_MACHINE_RESET_OVERRIDE(gauntlet_state,gauntlet)
 
+<<<<<<< HEAD
 	MCFG_ATARI_EEPROM_2804_ADD("eeprom")
+=======
+	MCFG_EEPROM_2804_ADD("eeprom")
+	MCFG_EEPROM_28XX_LOCK_AFTER_WRITE(true)
+
+	MCFG_WATCHDOG_ADD("watchdog")
+>>>>>>> upstream/master
 
 	/* video hardware */
 	MCFG_GFXDECODE_ADD("gfxdecode", "palette", gauntlet)
@@ -545,9 +647,44 @@ static MACHINE_CONFIG_START( gauntlet, gauntlet_state )
 	MCFG_SOUND_ADD("tms", TMS5220C, ATARI_CLOCK_14MHz/2/11) /* potentially ATARI_CLOCK_14MHz/2/9 as well */
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "lspeaker", 0.80)
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "rspeaker", 0.80)
+<<<<<<< HEAD
 MACHINE_CONFIG_END
 
 
+=======
+
+	MCFG_DEVICE_ADD("soundctl", LS259, 0) // 16T/U
+	MCFG_ADDRESSABLE_LATCH_Q0_OUT_CB(DEVWRITELINE("ymsnd", ym2151_device, reset_w)) // music reset, low reset
+	MCFG_ADDRESSABLE_LATCH_Q1_OUT_CB(DEVWRITELINE("tms", tms5220_device, wsq_w)) // speech write, active low
+	MCFG_ADDRESSABLE_LATCH_Q2_OUT_CB(DEVWRITELINE("tms", tms5220_device, rsq_w)) // speech reset, active low
+	MCFG_ADDRESSABLE_LATCH_Q3_OUT_CB(WRITELINE(gauntlet_state, speech_squeak_w)) // speech squeak, low = 650 Hz
+	MCFG_ADDRESSABLE_LATCH_Q4_OUT_CB(WRITELINE(gauntlet_state, coin_counter_right_w))
+	MCFG_ADDRESSABLE_LATCH_Q5_OUT_CB(WRITELINE(gauntlet_state, coin_counter_left_w))
+MACHINE_CONFIG_END
+
+
+static MACHINE_CONFIG_DERIVED( gauntlet, gauntlet_base )
+	MCFG_SLAPSTIC_ADD("slapstic", 104)
+MACHINE_CONFIG_END
+
+
+static MACHINE_CONFIG_DERIVED( gaunt2p, gauntlet_base )
+	MCFG_SLAPSTIC_ADD("slapstic", 107)
+MACHINE_CONFIG_END
+
+
+static MACHINE_CONFIG_DERIVED( gauntlet2, gauntlet_base )
+	MCFG_SLAPSTIC_ADD("slapstic", 106)
+MACHINE_CONFIG_END
+
+
+static MACHINE_CONFIG_DERIVED( vindctr2, gauntlet_base )
+	MCFG_SLAPSTIC_ADD("slapstic", 118)
+MACHINE_CONFIG_END
+
+
+
+>>>>>>> upstream/master
 
 /*************************************
  *
@@ -1617,8 +1754,13 @@ ROM_END
 
 void gauntlet_state::swap_memory(void *ptr1, void *ptr2, int bytes)
 {
+<<<<<<< HEAD
 	UINT8 *p1 = (UINT8 *)ptr1;
 	UINT8 *p2 = (UINT8 *)ptr2;
+=======
+	uint8_t *p1 = (uint8_t *)ptr1;
+	uint8_t *p2 = (uint8_t *)ptr2;
+>>>>>>> upstream/master
 	while (bytes--)
 	{
 		int temp = *p1;
@@ -1627,10 +1769,17 @@ void gauntlet_state::swap_memory(void *ptr1, void *ptr2, int bytes)
 	}
 }
 
+<<<<<<< HEAD
 void gauntlet_state::common_init(int slapstic, int vindctr2)
 {
 	UINT8 *rom = memregion("maincpu")->base();
 	slapstic_configure(*m_maincpu, 0x038000, 0, slapstic);
+=======
+void gauntlet_state::common_init(int vindctr2)
+{
+	uint8_t *rom = memregion("maincpu")->base();
+	slapstic_configure(*m_maincpu, 0x038000, 0, memregion("maincpu")->base() + 0x38000);
+>>>>>>> upstream/master
 
 	/* swap the top and bottom halves of the main CPU ROM images */
 	swap_memory(rom + 0x000000, rom + 0x008000, 0x8000);
@@ -1646,6 +1795,7 @@ void gauntlet_state::common_init(int slapstic, int vindctr2)
 
 DRIVER_INIT_MEMBER(gauntlet_state,gauntlet)
 {
+<<<<<<< HEAD
 	common_init(104, 0);
 }
 
@@ -1659,16 +1809,27 @@ DRIVER_INIT_MEMBER(gauntlet_state,gaunt2p)
 DRIVER_INIT_MEMBER(gauntlet_state,gauntlet2)
 {
 	common_init(106, 0);
+=======
+	common_init(0);
+>>>>>>> upstream/master
 }
 
 
 DRIVER_INIT_MEMBER(gauntlet_state,vindctr2)
 {
+<<<<<<< HEAD
 	UINT8 *gfx2_base = memregion("gfx2")->base();
 	dynamic_buffer data(0x8000);
 	int i;
 
 	common_init(118, 1);
+=======
+	uint8_t *gfx2_base = memregion("gfx2")->base();
+	std::vector<uint8_t> data(0x8000);
+	int i;
+
+	common_init(1);
+>>>>>>> upstream/master
 
 	/* highly strange -- the address bits on the chip at 2J (and only that
 	   chip) are scrambled -- this is verified on the schematics! */
@@ -1689,6 +1850,7 @@ DRIVER_INIT_MEMBER(gauntlet_state,vindctr2)
  *
  *************************************/
 
+<<<<<<< HEAD
 GAME( 1985, gauntlet,    0,        gauntlet, gauntlet, gauntlet_state, gauntlet,  ROT0, "Atari Games", "Gauntlet (rev 14)", 0 )
 GAME( 1985, gauntlets,   gauntlet, gauntlet, gauntlet, gauntlet_state, gauntlet,  ROT0, "Atari Games", "Gauntlet (Spanish, rev 15)", 0 )
 GAME( 1985, gauntletj,   gauntlet, gauntlet, gauntlet, gauntlet_state, gauntlet,  ROT0, "Atari Games", "Gauntlet (Japanese, rev 13)", 0 )
@@ -1721,3 +1883,37 @@ GAME( 1986, gaunt22pg, gaunt2,   gauntlet, gauntlet, gauntlet_state, gauntlet2, 
 GAME( 1988, vindctr2,   0,        gauntlet, vindctr2, gauntlet_state, vindctr2,  ROT0, "Atari Games", "Vindicators Part II (rev 3)", 0 )
 GAME( 1988, vindctr2r2, vindctr2, gauntlet, vindctr2, gauntlet_state, vindctr2,  ROT0, "Atari Games", "Vindicators Part II (rev 2)", 0 )
 GAME( 1988, vindctr2r1, vindctr2, gauntlet, vindctr2, gauntlet_state, vindctr2,  ROT0, "Atari Games", "Vindicators Part II (rev 1)", 0 )
+=======
+GAME( 1985, gauntlet,     0,        gauntlet,  gauntlet, gauntlet_state, gauntlet,  ROT0, "Atari Games", "Gauntlet (rev 14)", 0 )
+GAME( 1985, gauntlets,    gauntlet, gauntlet,  gauntlet, gauntlet_state, gauntlet,  ROT0, "Atari Games", "Gauntlet (Spanish, rev 15)", 0 )
+GAME( 1985, gauntletj,    gauntlet, gauntlet,  gauntlet, gauntlet_state, gauntlet,  ROT0, "Atari Games", "Gauntlet (Japanese, rev 13)", 0 )
+GAME( 1985, gauntletg,    gauntlet, gauntlet,  gauntlet, gauntlet_state, gauntlet,  ROT0, "Atari Games", "Gauntlet (German, rev 10)", 0 )
+GAME( 1985, gauntletj12,  gauntlet, gauntlet,  gauntlet, gauntlet_state, gauntlet,  ROT0, "Atari Games", "Gauntlet (Japanese, rev 12)", 0 )
+GAME( 1985, gauntletr9,   gauntlet, gauntlet,  gauntlet, gauntlet_state, gauntlet,  ROT0, "Atari Games", "Gauntlet (rev 9)", 0 )
+GAME( 1985, gauntletgr8,  gauntlet, gauntlet,  gauntlet, gauntlet_state, gauntlet,  ROT0, "Atari Games", "Gauntlet (German, rev 8)", 0 )
+GAME( 1985, gauntletr7,   gauntlet, gauntlet,  gauntlet, gauntlet_state, gauntlet,  ROT0, "Atari Games", "Gauntlet (rev 7)", 0 )
+GAME( 1985, gauntletgr6,  gauntlet, gauntlet,  gauntlet, gauntlet_state, gauntlet,  ROT0, "Atari Games", "Gauntlet (German, rev 6)", 0 )
+GAME( 1985, gauntletr5,   gauntlet, gauntlet,  gauntlet, gauntlet_state, gauntlet,  ROT0, "Atari Games", "Gauntlet (rev 5)", 0 )
+GAME( 1985, gauntletr4,   gauntlet, gauntlet,  gauntlet, gauntlet_state, gauntlet,  ROT0, "Atari Games", "Gauntlet (rev 4)", 0 )
+GAME( 1985, gauntletgr3,  gauntlet, gauntlet,  gauntlet, gauntlet_state, gauntlet,  ROT0, "Atari Games", "Gauntlet (German, rev 3)", 0 )
+GAME( 1985, gauntletr2,   gauntlet, gauntlet,  gauntlet, gauntlet_state, gauntlet,  ROT0, "Atari Games", "Gauntlet (rev 2)", 0 )
+GAME( 1985, gauntletr1,   gauntlet, gauntlet,  gauntlet, gauntlet_state, gauntlet,  ROT0, "Atari Games", "Gauntlet (rev 1)", 0 )
+
+GAME( 1985, gauntlet2p,   gauntlet, gaunt2p,   gauntlet, gauntlet_state, gauntlet,  ROT0, "Atari Games", "Gauntlet (2 Players, rev 6)", 0 )
+GAME( 1985, gauntlet2pj,  gauntlet, gaunt2p,   gauntlet, gauntlet_state, gauntlet,  ROT0, "Atari Games", "Gauntlet (2 Players, Japanese, rev 5)", 0 )
+GAME( 1985, gauntlet2pg,  gauntlet, gaunt2p,   gauntlet, gauntlet_state, gauntlet,  ROT0, "Atari Games", "Gauntlet (2 Players, German, rev 4)", 0 )
+GAME( 1985, gauntlet2pr3, gauntlet, gaunt2p,   gauntlet, gauntlet_state, gauntlet,  ROT0, "Atari Games", "Gauntlet (2 Players, rev 3)", 0 )
+GAME( 1985, gauntlet2pj2, gauntlet, gaunt2p,   gauntlet, gauntlet_state, gauntlet,  ROT0, "Atari Games", "Gauntlet (2 Players, Japanese, rev 2)", 0 )
+GAME( 1985, gauntlet2pg1, gauntlet, gaunt2p,   gauntlet, gauntlet_state, gauntlet,  ROT0, "Atari Games", "Gauntlet (2 Players, German, rev 1)", 0 )
+
+GAME( 1986, gaunt2,       0,        gauntlet2, gauntlet, gauntlet_state, gauntlet,  ROT0, "Atari Games", "Gauntlet II", 0 )
+GAME( 1986, gaunt2g,      gaunt2,   gauntlet2, gauntlet, gauntlet_state, gauntlet,  ROT0, "Atari Games", "Gauntlet II (German)", 0 )
+
+GAME( 1986, gaunt22p,     gaunt2,   gauntlet2, gauntlet, gauntlet_state, gauntlet,  ROT0, "Atari Games", "Gauntlet II (2 Players, rev 2)", 0 )
+GAME( 1986, gaunt22p1,    gaunt2,   gauntlet2, gauntlet, gauntlet_state, gauntlet,  ROT0, "Atari Games", "Gauntlet II (2 Players, rev 1)", 0 )
+GAME( 1986, gaunt22pg,    gaunt2,   gauntlet2, gauntlet, gauntlet_state, gauntlet,  ROT0, "Atari Games", "Gauntlet II (2 Players, German)", 0 )
+
+GAME( 1988, vindctr2,     0,        vindctr2,  vindctr2, gauntlet_state, vindctr2,  ROT0, "Atari Games", "Vindicators Part II (rev 3)", 0 )
+GAME( 1988, vindctr2r2,   vindctr2, vindctr2,  vindctr2, gauntlet_state, vindctr2,  ROT0, "Atari Games", "Vindicators Part II (rev 2)", 0 )
+GAME( 1988, vindctr2r1,   vindctr2, vindctr2,  vindctr2, gauntlet_state, vindctr2,  ROT0, "Atari Games", "Vindicators Part II (rev 1)", 0 )
+>>>>>>> upstream/master

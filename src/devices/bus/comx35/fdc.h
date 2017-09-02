@@ -6,12 +6,20 @@
 
 **********************************************************************/
 
+<<<<<<< HEAD
 #pragma once
 
 #ifndef __COMX_FD__
 #define __COMX_FD__
 
 #include "emu.h"
+=======
+#ifndef MAME_BUS_COMX35_FD_H
+#define MAME_BUS_COMX35_FD_H
+
+#pragma once
+
+>>>>>>> upstream/master
 #include "exp.h"
 #include "formats/comx35_dsk.h"
 #include "machine/wd_fdc.h"
@@ -29,6 +37,7 @@ class comx_fd_device : public device_t,
 {
 public:
 	// construction/destruction
+<<<<<<< HEAD
 	comx_fd_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
 
 	// optional information overrides
@@ -52,6 +61,31 @@ protected:
 private:
 	// internal state
 	required_device<wd1770_t> m_fdc;
+=======
+	comx_fd_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
+
+protected:
+	// device-level overrides
+	virtual void device_start() override;
+	virtual void device_reset() override;
+
+	// optional information overrides
+	virtual const tiny_rom_entry *device_rom_region() const override;
+	virtual void device_add_mconfig(machine_config &config) override;
+
+	// device_comx_expansion_card_interface overrides
+	virtual int comx_ef4_r() override;
+	virtual void comx_q_w(int state) override;
+	virtual uint8_t comx_mrd_r(address_space &space, offs_t offset, int *extrom) override;
+	virtual uint8_t comx_io_r(address_space &space, offs_t offset) override;
+	virtual void comx_io_w(address_space &space, offs_t offset, uint8_t data) override;
+
+private:
+	DECLARE_FLOPPY_FORMATS( floppy_formats );
+
+	// internal state
+	required_device<wd1770_device> m_fdc;
+>>>>>>> upstream/master
 	required_device<floppy_connector> m_floppy0;
 	required_device<floppy_connector> m_floppy1;
 	required_memory_region m_rom;
@@ -64,7 +98,14 @@ private:
 
 
 // device type definition
+<<<<<<< HEAD
 extern const device_type COMX_FD;
 
 
 #endif
+=======
+DECLARE_DEVICE_TYPE(COMX_FD, comx_fd_device)
+
+
+#endif // MAME_BUS_COMX35_FD_H
+>>>>>>> upstream/master

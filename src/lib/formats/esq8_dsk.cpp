@@ -75,7 +75,11 @@ bool esq8img_format::supports_save() const
 
 void esq8img_format::find_size(io_generic *io, int &track_count, int &head_count, int &sector_count)
 {
+<<<<<<< HEAD
 	UINT64 size = io_generic_size(io);
+=======
+	uint64_t size = io_generic_size(io);
+>>>>>>> upstream/master
 	track_count = 80;
 	head_count = 1;
 	sector_count = 6;
@@ -88,7 +92,11 @@ void esq8img_format::find_size(io_generic *io, int &track_count, int &head_count
 	track_count = head_count = sector_count = 0;
 }
 
+<<<<<<< HEAD
 int esq8img_format::identify(io_generic *io, UINT32 form_factor)
+=======
+int esq8img_format::identify(io_generic *io, uint32_t form_factor)
+>>>>>>> upstream/master
 {
 	int track_count, head_count, sector_count;
 	find_size(io, track_count, head_count, sector_count);
@@ -98,12 +106,20 @@ int esq8img_format::identify(io_generic *io, UINT32 form_factor)
 	return 0;
 }
 
+<<<<<<< HEAD
 bool esq8img_format::load(io_generic *io, UINT32 form_factor, floppy_image *image)
+=======
+bool esq8img_format::load(io_generic *io, uint32_t form_factor, floppy_image *image)
+>>>>>>> upstream/master
 {
 	int track_count, head_count, sector_count;
 	find_size(io, track_count, head_count, sector_count);
 
+<<<<<<< HEAD
 	UINT8 sectdata[(5*1024) + 512];
+=======
+	uint8_t sectdata[(5*1024) + 512];
+>>>>>>> upstream/master
 	desc_s sectors[6];
 	for(int i=0; i<sector_count; i++) {
 		if (i < 5)
@@ -151,7 +167,11 @@ bool esq8img_format::save(io_generic *io, floppy_image *image)
 	if(sector_count != 6)
 		sector_count = 6;
 
+<<<<<<< HEAD
 	UINT8 sectdata[10*512];
+=======
+	uint8_t sectdata[10*512];
+>>>>>>> upstream/master
 	int track_size = (5*1024) + 512;
 
 	for(int track=0; track < track_count; track++) {

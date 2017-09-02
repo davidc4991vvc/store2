@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 // license:LGPL-2.1+
+=======
+// license:BSD-3-Clause
+>>>>>>> upstream/master
 // copyright-holders:Tomasz Slanina, David Haywood
 /****************************************************************************************
 Chanbara
@@ -53,6 +57,11 @@ ToDo:
 #include "emu.h"
 #include "cpu/m6809/m6809.h"
 #include "sound/2203intf.h"
+<<<<<<< HEAD
+=======
+#include "screen.h"
+#include "speaker.h"
+>>>>>>> upstream/master
 
 
 class chanbara_state : public driver_device
@@ -70,17 +79,30 @@ public:
 		m_palette(*this, "palette"){ }
 
 	/* memory pointers */
+<<<<<<< HEAD
 	required_shared_ptr<UINT8> m_videoram;
 	required_shared_ptr<UINT8> m_colorram;
 	required_shared_ptr<UINT8> m_spriteram;
 	required_shared_ptr<UINT8> m_videoram2;
 	required_shared_ptr<UINT8> m_colorram2;
+=======
+	required_shared_ptr<uint8_t> m_videoram;
+	required_shared_ptr<uint8_t> m_colorram;
+	required_shared_ptr<uint8_t> m_spriteram;
+	required_shared_ptr<uint8_t> m_videoram2;
+	required_shared_ptr<uint8_t> m_colorram2;
+>>>>>>> upstream/master
 
 	/* video-related */
 	tilemap_t  *m_bg_tilemap;
 	tilemap_t  *m_bg2_tilemap;
+<<<<<<< HEAD
 	UINT8    m_scroll;
 	UINT8    m_scrollhi;
+=======
+	uint8_t    m_scroll;
+	uint8_t    m_scrollhi;
+>>>>>>> upstream/master
 
 	/* devices */
 	required_device<cpu_device> m_maincpu;
@@ -96,6 +118,7 @@ public:
 	DECLARE_DRIVER_INIT(chanbara);
 	TILE_GET_INFO_MEMBER(get_bg_tile_info);
 	TILE_GET_INFO_MEMBER(get_bg2_tile_info);
+<<<<<<< HEAD
 	virtual void machine_start();
 	virtual void machine_reset();
 	virtual void video_start();
@@ -103,12 +126,24 @@ public:
 	UINT32 screen_update_chanbara(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
 	void draw_sprites( bitmap_ind16 &bitmap, const rectangle &cliprect );
 	DECLARE_WRITE_LINE_MEMBER(sound_irq);
+=======
+	virtual void machine_start() override;
+	virtual void machine_reset() override;
+	virtual void video_start() override;
+	DECLARE_PALETTE_INIT(chanbara);
+	uint32_t screen_update_chanbara(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
+	void draw_sprites( bitmap_ind16 &bitmap, const rectangle &cliprect );
+>>>>>>> upstream/master
 };
 
 
 PALETTE_INIT_MEMBER(chanbara_state, chanbara)
 {
+<<<<<<< HEAD
 	const UINT8 *color_prom = memregion("proms")->base();
+=======
+	const uint8_t *color_prom = memregion("proms")->base();
+>>>>>>> upstream/master
 	int i, red, green, blue;
 
 	for (i = 0; i < palette.entries(); i++)
@@ -166,8 +201,13 @@ TILE_GET_INFO_MEMBER(chanbara_state::get_bg2_tile_info)
 
 void chanbara_state::video_start()
 {
+<<<<<<< HEAD
 	m_bg_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(chanbara_state::get_bg_tile_info),this), TILEMAP_SCAN_ROWS,8, 8, 32, 32);
 	m_bg2_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(chanbara_state::get_bg2_tile_info),this), TILEMAP_SCAN_ROWS,16, 16, 16, 32);
+=======
+	m_bg_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(chanbara_state::get_bg_tile_info),this), TILEMAP_SCAN_ROWS,8, 8, 32, 32);
+	m_bg2_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(chanbara_state::get_bg2_tile_info),this), TILEMAP_SCAN_ROWS,16, 16, 16, 32);
+>>>>>>> upstream/master
 	m_bg_tilemap->set_transparent_pen(0);
 }
 
@@ -182,7 +222,11 @@ void chanbara_state::draw_sprites( bitmap_ind16 &bitmap, const rectangle &clipre
 			int attr = m_spriteram[offs + 0];
 			int code = m_spriteram[offs + 1];
 			int color = m_spriteram[offs + 0x80] & 0x1f;
+<<<<<<< HEAD
 			int flipx = 0;
+=======
+			int flipx = attr & 4;
+>>>>>>> upstream/master
 			int flipy = attr & 2;
 			int sx = 240 - m_spriteram[offs + 3];
 			int sy = 232 - m_spriteram[offs + 2];
@@ -214,7 +258,11 @@ void chanbara_state::draw_sprites( bitmap_ind16 &bitmap, const rectangle &clipre
 	}
 }
 
+<<<<<<< HEAD
 UINT32 chanbara_state::screen_update_chanbara(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+=======
+uint32_t chanbara_state::screen_update_chanbara(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+>>>>>>> upstream/master
 {
 	m_bg2_tilemap->set_scrolly(0, m_scroll | (m_scrollhi << 8));
 	m_bg2_tilemap->draw(screen, bitmap, cliprect, 0, 0);
@@ -372,11 +420,14 @@ WRITE8_MEMBER(chanbara_state::chanbara_ay_out_1_w)
 	//if (data & 0xf8)    printf("chanbara_ay_out_1_w unused bits set %02x\n", data & 0xf8);
 }
 
+<<<<<<< HEAD
 WRITE_LINE_MEMBER(chanbara_state::sound_irq)
 {
 	m_maincpu->set_input_line(0, state);
 }
 
+=======
+>>>>>>> upstream/master
 void chanbara_state::machine_start()
 {
 	save_item(NAME(m_scroll));
@@ -389,7 +440,11 @@ void chanbara_state::machine_reset()
 	m_scrollhi = 0;
 }
 
+<<<<<<< HEAD
 static MACHINE_CONFIG_START( chanbara, chanbara_state )
+=======
+static MACHINE_CONFIG_START( chanbara )
+>>>>>>> upstream/master
 
 	MCFG_CPU_ADD("maincpu", M6809, 12000000/8)
 	MCFG_CPU_PROGRAM_MAP(chanbara_map)
@@ -412,7 +467,11 @@ static MACHINE_CONFIG_START( chanbara, chanbara_state )
 	MCFG_SPEAKER_STANDARD_MONO("mono")
 
 	MCFG_SOUND_ADD("ymsnd", YM2203, 12000000/8)
+<<<<<<< HEAD
 	MCFG_YM2203_IRQ_HANDLER(WRITELINE(chanbara_state, sound_irq))
+=======
+	MCFG_YM2203_IRQ_HANDLER(INPUTLINE("maincpu", 0))
+>>>>>>> upstream/master
 
 
 	MCFG_AY8910_PORT_A_WRITE_CB(WRITE8(chanbara_state, chanbara_ay_out_0_w))
@@ -461,9 +520,15 @@ ROM_END
 
 DRIVER_INIT_MEMBER(chanbara_state,chanbara)
 {
+<<<<<<< HEAD
 	UINT8   *src = memregion("gfx4")->base();
 	UINT8   *dst = memregion("gfx3")->base() + 0x4000;
 	UINT8   *bg = memregion("user1")->base();
+=======
+	uint8_t   *src = memregion("gfx4")->base();
+	uint8_t   *dst = memregion("gfx3")->base() + 0x4000;
+	uint8_t   *bg = memregion("user1")->base();
+>>>>>>> upstream/master
 
 	int i;
 	for (i = 0; i < 0x1000; i++)

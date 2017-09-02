@@ -256,8 +256,14 @@ Logic:
 ***************************************************************************/
 
 #include "emu.h"
+<<<<<<< HEAD
 #include "audio/cage.h"
 #include "includes/metalmx.h"
+=======
+#include "includes/metalmx.h"
+#include "screen.h"
+#include "speaker.h"
+>>>>>>> upstream/master
 
 
 /*************************************
@@ -279,19 +285,33 @@ void metalmx_state::video_start()
 {
 }
 
+<<<<<<< HEAD
 UINT32 metalmx_state::screen_update_metalmx(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
 {
 	/* TODO: TMS34020 should take care of this */
 
 //  UINT32 *src_base = &gsp_vram[(vreg_base[0x40/4] & 0x40) ? 0x20000 : 0];
 	UINT16 *src_base = m_gsp_vram;
+=======
+uint32_t metalmx_state::screen_update_metalmx(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+{
+	/* TODO: TMS34020 should take care of this */
+
+//  uint32_t *src_base = &gsp_vram[(vreg_base[0x40/4] & 0x40) ? 0x20000 : 0];
+	uint16_t *src_base = m_gsp_vram;
+>>>>>>> upstream/master
 	int y;
 
 	for (y = 0; y < 384; ++y)
 	{
 		int x;
+<<<<<<< HEAD
 		UINT16 *src = &src_base[512 * y];
 		UINT16 *dst = &bitmap.pix16(y);
+=======
+		uint16_t *src = &src_base[512 * y];
+		uint16_t *dst = &bitmap.pix16(y);
+>>>>>>> upstream/master
 
 		for(x = 0; x < 512; x++)
 			*dst++ = *src++;
@@ -344,7 +364,11 @@ WRITE32_MEMBER(metalmx_state::reset_w)
 
 READ32_MEMBER(metalmx_state::sound_data_r)
 {
+<<<<<<< HEAD
 	UINT32 result = 0;
+=======
+	uint32_t result = 0;
+>>>>>>> upstream/master
 
 	if (ACCESSING_BITS_0_15)
 		result |= m_cage->control_r();
@@ -386,7 +410,11 @@ WRITE32_MEMBER(metalmx_state::dsp32c_1_w)
 
 READ32_MEMBER(metalmx_state::dsp32c_1_r)
 {
+<<<<<<< HEAD
 	UINT32 data;
+=======
+	uint32_t data;
+>>>>>>> upstream/master
 
 	offset <<= 1;
 
@@ -415,7 +443,11 @@ WRITE32_MEMBER(metalmx_state::dsp32c_2_w)
 
 READ32_MEMBER(metalmx_state::dsp32c_2_r)
 {
+<<<<<<< HEAD
 	UINT32 data;
+=======
+	uint32_t data;
+>>>>>>> upstream/master
 
 	offset <<= 1;
 
@@ -433,7 +465,11 @@ READ32_MEMBER(metalmx_state::dsp32c_2_r)
 
 /*************************************
  *
+<<<<<<< HEAD
  *  Host/TMS34020 accesors
+=======
+ *  Host/TMS34020 accessors
+>>>>>>> upstream/master
  *
  *************************************/
 
@@ -448,7 +484,11 @@ WRITE32_MEMBER(metalmx_state::host_gsp_w)
 READ32_MEMBER(metalmx_state::host_gsp_r)
 {
 	address_space &gsp_space = m_gsp->space(AS_PROGRAM);
+<<<<<<< HEAD
 	UINT32 val;
+=======
+	uint32_t val;
+>>>>>>> upstream/master
 
 	val  = gsp_space.read_word((0xc0000000 + (offset << 5) + 0x10) / 8);
 	val |= gsp_space.read_word((0xc0000000 + (offset << 5)) / 8) << 16;
@@ -482,11 +522,14 @@ WRITE32_MEMBER(metalmx_state::host_vram_w)
 	COMBINE_DATA(m_gsp_vram + offset * 2);
 }
 
+<<<<<<< HEAD
 WRITE_LINE_MEMBER(metalmx_state::tms_interrupt)
 {
 	m_maincpu->set_input_line(4, state ? HOLD_LINE : CLEAR_LINE);
 }
 
+=======
+>>>>>>> upstream/master
 
 WRITE32_MEMBER(metalmx_state::timer_w)
 {
@@ -689,7 +732,11 @@ INPUT_PORTS_END
  *
  *************************************/
 
+<<<<<<< HEAD
 static MACHINE_CONFIG_START( metalmx, metalmx_state )
+=======
+static MACHINE_CONFIG_START( metalmx )
+>>>>>>> upstream/master
 
 	MCFG_CPU_ADD("maincpu", M68EC020, XTAL_14_31818MHz)
 	MCFG_CPU_PROGRAM_MAP(main_map)
@@ -700,10 +747,17 @@ static MACHINE_CONFIG_START( metalmx, metalmx_state )
 
 	MCFG_CPU_ADD("gsp", TMS34020, 40000000)         /* Unverified */
 	MCFG_CPU_PROGRAM_MAP(gsp_map)
+<<<<<<< HEAD
 	MCFG_TMS340X0_HALT_ON_RESET(TRUE) /* halt on reset */
 	MCFG_TMS340X0_PIXEL_CLOCK(4000000) /* pixel clock */
 	MCFG_TMS340X0_PIXELS_PER_CLOCK(2) /* pixels per clock */
 	MCFG_TMS340X0_OUTPUT_INT_CB(WRITELINE(metalmx_state, tms_interrupt))
+=======
+	MCFG_TMS340X0_HALT_ON_RESET(true) /* halt on reset */
+	MCFG_TMS340X0_PIXEL_CLOCK(4000000) /* pixel clock */
+	MCFG_TMS340X0_PIXELS_PER_CLOCK(2) /* pixels per clock */
+	MCFG_TMS340X0_OUTPUT_INT_CB(INPUTLINE("maincpu", 4))
+>>>>>>> upstream/master
 
 	MCFG_CPU_ADD("dsp32c_1", DSP32C, 40000000)      /* Unverified */
 	MCFG_CPU_PROGRAM_MAP(dsp32c_1_map)
@@ -730,7 +784,11 @@ MACHINE_CONFIG_END
 
 DRIVER_INIT_MEMBER(metalmx_state,metalmx)
 {
+<<<<<<< HEAD
 	UINT8 *adsp_boot = (UINT8*)memregion("adsp")->base();
+=======
+	uint8_t *adsp_boot = (uint8_t*)memregion("adsp")->base();
+>>>>>>> upstream/master
 
 	m_adsp->load_boot_data(adsp_boot, m_adsp_internal_program_ram);
 }

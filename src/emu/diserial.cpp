@@ -27,8 +27,13 @@ device_serial_interface::device_serial_interface(const machine_config &mconfig, 
 	m_tra_flags(TRANSMIT_REGISTER_EMPTY),
 	m_tra_bit_count_transmitted(0),
 	m_tra_bit_count(0),
+<<<<<<< HEAD
 	m_rcv_clock(NULL),
 	m_tra_clock(NULL),
+=======
+	m_rcv_clock(nullptr),
+	m_tra_clock(nullptr),
+>>>>>>> upstream/master
 	m_rcv_rate(attotime::never),
 	m_tra_rate(attotime::never),
 	m_rcv_line(0),
@@ -56,6 +61,7 @@ device_serial_interface::~device_serial_interface()
 {
 }
 
+<<<<<<< HEAD
 void device_serial_interface::register_save_state(save_manager &save, device_t *device)
 {
 	const char *module = device->name();
@@ -86,10 +92,45 @@ void device_serial_interface::interface_pre_start()
 {
 	m_rcv_clock = device().timer_alloc(RCV_TIMER_ID);
 	m_tra_clock = device().timer_alloc(TRA_TIMER_ID);
+=======
+void device_serial_interface::interface_pre_start()
+{
+	if (!m_rcv_clock)
+		m_rcv_clock = device().machine().scheduler().timer_alloc(timer_expired_delegate(FUNC(device_serial_interface::rcv_clock), this));
+	if (!m_tra_clock)
+		m_tra_clock = device().machine().scheduler().timer_alloc(timer_expired_delegate(FUNC(device_serial_interface::tra_clock), this));
+>>>>>>> upstream/master
 	m_rcv_clock_state = false;
 	m_tra_clock_state = false;
 }
 
+<<<<<<< HEAD
+=======
+void device_serial_interface::interface_post_start()
+{
+	device().save_item(NAME(m_df_start_bit_count));
+	device().save_item(NAME(m_df_word_length));
+	device().save_item(NAME(m_df_parity));
+	device().save_item(NAME(m_df_stop_bit_count));
+	device().save_item(NAME(m_rcv_register_data));
+	device().save_item(NAME(m_rcv_flags));
+	device().save_item(NAME(m_rcv_bit_count_received));
+	device().save_item(NAME(m_rcv_bit_count));
+	device().save_item(NAME(m_rcv_byte_received));
+	device().save_item(NAME(m_rcv_framing_error));
+	device().save_item(NAME(m_rcv_parity_error));
+	device().save_item(NAME(m_tra_register_data));
+	device().save_item(NAME(m_tra_flags));
+	device().save_item(NAME(m_tra_bit_count_transmitted));
+	device().save_item(NAME(m_tra_bit_count));
+	device().save_item(NAME(m_rcv_rate));
+	device().save_item(NAME(m_tra_rate));
+	device().save_item(NAME(m_rcv_line));
+	device().save_item(NAME(m_tra_clock_state));
+	device().save_item(NAME(m_rcv_clock_state));
+}
+
+>>>>>>> upstream/master
 void device_serial_interface::set_rcv_rate(const attotime &rate)
 {
 	m_rcv_rate = rate/2;
@@ -153,6 +194,7 @@ WRITE_LINE_MEMBER(device_serial_interface::clock_w)
 	rx_clock_w(state);
 }
 
+<<<<<<< HEAD
 void device_serial_interface::device_timer(emu_timer &timer, device_timer_id id, int param, void *ptr)
 {
 	switch(id) {
@@ -161,6 +203,8 @@ void device_serial_interface::device_timer(emu_timer &timer, device_timer_id id,
 	}
 }
 
+=======
+>>>>>>> upstream/master
 
 void device_serial_interface::set_data_frame(int start_bit_count, int data_bit_count, parity_t parity, stop_bits_t stop_bits)
 {
@@ -295,7 +339,11 @@ void device_serial_interface::receive_register_update_bit(int bit)
 
 void device_serial_interface::receive_register_extract()
 {
+<<<<<<< HEAD
 	UINT8 data;
+=======
+	u8 data;
+>>>>>>> upstream/master
 
 	receive_register_reset();
 
@@ -369,7 +417,11 @@ void device_serial_interface::transmit_register_add_bit(int bit)
 
 
 /* generate data in stream format ready for transfer */
+<<<<<<< HEAD
 void device_serial_interface::transmit_register_setup(UINT8 data_byte)
+=======
+void device_serial_interface::transmit_register_setup(u8 data_byte)
+>>>>>>> upstream/master
 {
 	int i;
 	unsigned char transmit_data;
@@ -425,8 +477,13 @@ void device_serial_interface::transmit_register_setup(UINT8 data_byte)
 		transmit_register_add_bit(parity);
 	}
 
+<<<<<<< HEAD
 	/* stop bit(s) */
 	for (i=0; i<m_df_stop_bit_count; i++)
+=======
+	/* stop bit(s) + 1 extra bit as delay between bytes, needed to get 1 stop bit to work.  */
+	for (i=0; i<=m_df_stop_bit_count; i++)
+>>>>>>> upstream/master
 	{
 		transmit_register_add_bit(1);
 	}
@@ -434,13 +491,21 @@ void device_serial_interface::transmit_register_setup(UINT8 data_byte)
 
 
 /* get a bit from the transmit register */
+<<<<<<< HEAD
 UINT8 device_serial_interface::transmit_register_get_data_bit()
+=======
+u8 device_serial_interface::transmit_register_get_data_bit()
+>>>>>>> upstream/master
 {
 	int bit;
 
 	bit = (m_tra_register_data>>(m_tra_bit_count-1-m_tra_bit_count_transmitted))&1;
 
 	m_tra_bit_count_transmitted++;
+<<<<<<< HEAD
+=======
+	//device().logerror("%d bits transmitted\n", m_tra_bit_count_transmitted);
+>>>>>>> upstream/master
 
 	/* have all bits of this stream formatted byte been sent? */
 	if (m_tra_bit_count_transmitted==m_tra_bit_count)

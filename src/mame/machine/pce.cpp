@@ -110,8 +110,13 @@ MACHINE_START_MEMBER(pce_state,pce)
 
 MACHINE_RESET_MEMBER(pce_state,mess_pce)
 {
+<<<<<<< HEAD
 	for (int joy_i = 0; joy_i < 5; joy_i++)
 		m_joy_6b_packet[joy_i] = 0;
+=======
+	for (auto & elem : m_joy_6b_packet)
+		elem = 0;
+>>>>>>> upstream/master
 
 	/* Note: Arcade Card BIOS contents are the same as System 3, only internal HW differs.
 	   We use a category to select between modes (some games can be run in either S-CD or A-CD modes) */
@@ -134,7 +139,11 @@ MACHINE_RESET_MEMBER(pce_state,mess_pce)
 WRITE8_MEMBER(pce_state::mess_pce_joystick_w)
 {
 	int joy_i;
+<<<<<<< HEAD
 	UINT8 joy_type = m_joy_type->read();
+=======
+	uint8_t joy_type = m_joy_type->read();
+>>>>>>> upstream/master
 
 	m_maincpu->io_set_buffer(data);
 
@@ -162,8 +171,13 @@ WRITE8_MEMBER(pce_state::mess_pce_joystick_w)
 
 READ8_MEMBER(pce_state::mess_pce_joystick_r)
 {
+<<<<<<< HEAD
 	UINT8 joy_type = m_joy_type->read();
 	UINT8 ret, data;
+=======
+	uint8_t joy_type = m_joy_type->read();
+	uint8_t ret, data;
+>>>>>>> upstream/master
 
 	if (m_joystick_port_select <= 4)
 	{

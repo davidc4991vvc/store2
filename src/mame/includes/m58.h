@@ -1,5 +1,18 @@
+<<<<<<< HEAD
 // license:???
 // copyright-holders:Lee Taylor, John Clegg
+=======
+// license:BSD-3-Clause
+// copyright-holders:Lee Taylor
+// thanks-to:John Clegg
+/****************************************************************************
+
+    Irem M58 hardware
+
+****************************************************************************/
+#include "screen.h"
+
+>>>>>>> upstream/master
 class m58_state : public driver_device
 {
 public:
@@ -14,7 +27,12 @@ public:
 		m_scroll_x_low(*this, "scroll_x_low"),
 		m_scroll_x_high(*this, "scroll_x_high"),
 		m_scroll_y_low(*this, "scroll_y_low"),
+<<<<<<< HEAD
 		m_score_panel_disabled(*this, "score_disable") { }
+=======
+		m_score_panel_disabled(*this, "score_disable")
+	{ }
+>>>>>>> upstream/master
 
 	/* devices */
 	required_device<cpu_device> m_maincpu;
@@ -23,6 +41,7 @@ public:
 	required_device<palette_device> m_palette;
 
 	/* memory pointers */
+<<<<<<< HEAD
 	required_shared_ptr<UINT8> m_videoram;
 	required_shared_ptr<UINT8> m_spriteram;
 	required_shared_ptr<UINT8> m_scroll_x_low;
@@ -33,19 +52,39 @@ public:
 	/* video-related */
 	tilemap_t*             m_bg_tilemap;
 	bitmap_ind16             m_scroll_panel_bitmap;
+=======
+	required_shared_ptr<uint8_t> m_videoram;
+	required_shared_ptr<uint8_t> m_spriteram;
+	required_shared_ptr<uint8_t> m_scroll_x_low;
+	required_shared_ptr<uint8_t> m_scroll_x_high;
+	required_shared_ptr<uint8_t> m_scroll_y_low;
+	required_shared_ptr<uint8_t> m_score_panel_disabled;
+
+	/* video-related */
+	tilemap_t* m_bg_tilemap;
+	bitmap_ind16 m_scroll_panel_bitmap;
+>>>>>>> upstream/master
 
 	DECLARE_WRITE8_MEMBER(videoram_w);
 	DECLARE_WRITE8_MEMBER(scroll_panel_w);
 	DECLARE_WRITE8_MEMBER(flipscreen_w);
 
+<<<<<<< HEAD
 	DECLARE_DRIVER_INIT(yard85);
 	virtual void video_start();
+=======
+	virtual void video_start() override;
+>>>>>>> upstream/master
 	DECLARE_PALETTE_INIT(m58);
 
 	TILE_GET_INFO_MEMBER(get_bg_tile_info);
 	TILEMAP_MAPPER_MEMBER(tilemap_scan_rows);
 
+<<<<<<< HEAD
 	UINT32 screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
+=======
+	uint32_t screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
+>>>>>>> upstream/master
 	void draw_sprites(bitmap_ind16 &bitmap, const rectangle &cliprect );
 	void draw_panel( bitmap_ind16 &bitmap, const rectangle &cliprect );
 };

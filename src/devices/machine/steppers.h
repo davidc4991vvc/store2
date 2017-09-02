@@ -12,8 +12,15 @@
 ///////////////////////////////////////////////////////////////////////////
 
 
+<<<<<<< HEAD
 #ifndef INC_STEPPERS
 #define INC_STEPPERS
+=======
+#ifndef MAME_MACHINE_STEPPERS_H
+#define MAME_MACHINE_STEPPERS_H
+
+#pragma once
+>>>>>>> upstream/master
 
 #define NOT_A_REEL              0
 #define STARPOINT_48STEP_REEL   1           /* STARPOINT RMXXX reel unit */
@@ -95,12 +102,17 @@
 #define MCFG_STEPPER_OPTIC_CALLBACK(_write) \
 	devcb = &stepper_device::set_optic_handler(*device, DEVCB_##_write);
 
+<<<<<<< HEAD
 class stepper_device;
 extern const device_type STEPPER;
+=======
+DECLARE_DEVICE_TYPE(STEPPER, stepper_device)
+>>>>>>> upstream/master
 
 class stepper_device : public device_t
 {
 public:
+<<<<<<< HEAD
 	stepper_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
 
 	template<class _Object> static devcb_base &set_optic_handler(device_t &device, _Object object) { return downcast<stepper_device &>(device).m_optic_cb.set_callback(object); }
@@ -127,15 +139,53 @@ public:
 			case STARPOINT_200STEP_REEL :
 			case GAMESMAN_200STEP_REEL :
 			case ECOIN_200STEP_REEL :
+=======
+	stepper_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
+
+	template <class Object> static devcb_base &set_optic_handler(device_t &device, Object &&cb) { return downcast<stepper_device &>(device).m_optic_cb.set_callback(std::forward<Object>(cb)); }
+
+	static void set_reel_type(device_t &device, uint8_t type)
+	{
+		downcast<stepper_device &>(device).m_type = type;
+		switch ( type )
+		{
+		default:
+		case STARPOINT_48STEP_REEL:  /* STARPOINT RMxxx */
+		case BARCREST_48STEP_REEL :  /* Barcrest Reel unit */
+		case MPU3_48STEP_REEL :
+		case GAMESMAN_48STEP_REEL :  /* Gamesman GMxxxx */
+		case PROJECT_48STEP_REEL :
+			downcast<stepper_device &>(device).m_max_steps = (48*2);
+			break;
+		case GAMESMAN_100STEP_REEL :
+			downcast<stepper_device &>(device).m_max_steps = (100*2);
+			break;
+		case STARPOINT_144STEP_DICE :/* STARPOINT 1DCU DICE mechanism */
+			//Dice reels are 48 step motors, but complete three full cycles between opto updates
+			downcast<stepper_device &>(device).m_max_steps = ((48*3)*2);
+			break;
+		case STARPOINT_200STEP_REEL :
+		case GAMESMAN_200STEP_REEL :
+		case ECOIN_200STEP_REEL :
+>>>>>>> upstream/master
 			downcast<stepper_device &>(device).m_max_steps = (200*2);
 			break;
 		}
 	}
+<<<<<<< HEAD
 	static void set_max_steps(device_t &device, INT16 steps) { downcast<stepper_device &>(device).m_max_steps = steps; }
 	static void set_start_index(device_t &device, INT16 index) { downcast<stepper_device &>(device).m_index_start = index; }
 	static void set_end_index(device_t &device, INT16 index) { downcast<stepper_device &>(device).m_index_end = index; }
 	static void set_index_pattern(device_t &device, INT16 index) { downcast<stepper_device &>(device).m_index_patt = index; }
 	static void set_init_phase(device_t &device, UINT8 phase)
+=======
+
+	static void set_max_steps(device_t &device, int16_t steps) { downcast<stepper_device &>(device).m_max_steps = steps; }
+	static void set_start_index(device_t &device, int16_t index) { downcast<stepper_device &>(device).m_index_start = index; }
+	static void set_end_index(device_t &device, int16_t index) { downcast<stepper_device &>(device).m_index_end = index; }
+	static void set_index_pattern(device_t &device, int16_t index) { downcast<stepper_device &>(device).m_index_patt = index; }
+	static void set_init_phase(device_t &device, uint8_t phase)
+>>>>>>> upstream/master
 	{
 		downcast<stepper_device &>(device).m_initphase = phase;
 		downcast<stepper_device &>(device).m_phase = phase;
@@ -143,7 +193,11 @@ public:
 	}
 
 	/* update a motor */
+<<<<<<< HEAD
 	int update(UINT8 pattern);
+=======
+	int update(uint8_t pattern);
+>>>>>>> upstream/master
 
 	/* get current position in half steps */
 	int get_position()          { return m_step_pos; }
@@ -154,6 +208,7 @@ public:
 
 protected:
 	// device-level overrides
+<<<<<<< HEAD
 	virtual void device_start();
 	virtual void device_reset();
 
@@ -171,9 +226,32 @@ private:
 	INT16 m_index_end;    /* end position of index (in half steps) */
 	INT16 m_index_patt;   /* pattern needed on coils (0=don't care) */
 	UINT8 m_optic;
+=======
+	virtual void device_start() override;
+	virtual void device_reset() override;
+
+private:
+	uint8_t m_pattern;      /* coil pattern */
+	uint8_t m_old_pattern;  /* old coil pattern */
+	uint8_t m_initphase;
+	uint8_t m_phase;        /* motor phase */
+	uint8_t m_old_phase;    /* old phase */
+	uint8_t m_type;         /* reel type */
+	int16_t m_step_pos;     /* step position 0 - max_steps */
+	int16_t m_max_steps;    /* maximum step position */
+	int32_t m_abs_step_pos; /* absolute step position */
+	int16_t m_index_start;  /* start position of index (in half steps) */
+	int16_t m_index_end;    /* end position of index (in half steps) */
+	int16_t m_index_patt;   /* pattern needed on coils (0=don't care) */
+	uint8_t m_optic;
+>>>>>>> upstream/master
 
 	void update_optic();
 	devcb_write_line m_optic_cb;
 };
 
+<<<<<<< HEAD
 #endif
+=======
+#endif // MAME_MACHINE_STEPPERS_H
+>>>>>>> upstream/master

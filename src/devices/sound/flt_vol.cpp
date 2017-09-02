@@ -1,20 +1,35 @@
+<<<<<<< HEAD
 // license:???
+=======
+// license:BSD-3-Clause
+>>>>>>> upstream/master
 // copyright-holders:Derrick Renaud, Couriersud
 #include "emu.h"
 #include "flt_vol.h"
 
 
 // device type definition
+<<<<<<< HEAD
 const device_type FILTER_VOLUME = &device_creator<filter_volume_device>;
+=======
+DEFINE_DEVICE_TYPE(FILTER_VOLUME, filter_volume_device, "filter_volume", "Volume Filter")
+>>>>>>> upstream/master
 
 //-------------------------------------------------
 //  filter_volume_device - constructor
 //-------------------------------------------------
 
+<<<<<<< HEAD
 filter_volume_device::filter_volume_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
 	: device_t(mconfig, FILTER_VOLUME, "Volume Filter", tag, owner, clock, "filter_volume", __FILE__),
 		device_sound_interface(mconfig, *this),
 		m_stream(NULL),
+=======
+filter_volume_device::filter_volume_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: device_t(mconfig, FILTER_VOLUME, tag, owner, clock),
+		device_sound_interface(mconfig, *this),
+		m_stream(nullptr),
+>>>>>>> upstream/master
 		m_gain(0)
 {
 }
@@ -48,5 +63,10 @@ void filter_volume_device::sound_stream_update(sound_stream &stream, stream_samp
 
 void filter_volume_device::flt_volume_set_volume(float volume)
 {
+<<<<<<< HEAD
 	m_gain = (int)(volume * 256);
+=======
+	m_stream->update();
+	m_gain = int(volume * 256);
+>>>>>>> upstream/master
 }

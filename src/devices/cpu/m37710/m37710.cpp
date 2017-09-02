@@ -1,7 +1,11 @@
 // license:BSD-3-Clause
 // copyright-holders:R. Belmont, Karl Stenerud, hap
 /*
+<<<<<<< HEAD
     Mitsubishi M37702/37710 CPU Emulator
+=======
+    Mitsubishi M37702/37710/37720 CPU Emulator
+>>>>>>> upstream/master
 
     The 7700 series is based on the WDC 65C816 core, with the following
     notable changes:
@@ -62,9 +66,16 @@
 #define M37710_DEBUG    (0) // enables verbose logging for peripherals, etc.
 
 
+<<<<<<< HEAD
 const device_type M37702M2 = &device_creator<m37702m2_device>;
 const device_type M37702S1 = &device_creator<m37702s1_device>;
 const device_type M37710S4 = &device_creator<m37710s4_device>;
+=======
+DEFINE_DEVICE_TYPE(M37702M2, m37702m2_device, "m37702m2", "M37702M2")
+DEFINE_DEVICE_TYPE(M37702S1, m37702s1_device, "m37702s1", "M37702S1")
+DEFINE_DEVICE_TYPE(M37710S4, m37710s4_device, "m37710s4", "M37710S4")
+DEFINE_DEVICE_TYPE(M37720S1, m37720s1_device, "m37720s1", "M37720S1")
+>>>>>>> upstream/master
 
 
 // On-board RAM, ROM, and peripherals
@@ -72,7 +83,11 @@ const device_type M37710S4 = &device_creator<m37710s4_device>;
 // M37702M2: 512 bytes internal RAM, 16K internal mask ROM
 // (M37702E2: same with EPROM instead of mask ROM)
 DEVICE_ADDRESS_MAP_START( map, 16, m37702m2_device )
+<<<<<<< HEAD
 	AM_RANGE(0x000000, 0x00007f) AM_READWRITE(m37710_internal_word_r, m37710_internal_word_w)
+=======
+	AM_RANGE(0x000000, 0x00007f) AM_READWRITE8(m37710_internal_r, m37710_internal_w, 0xffff)
+>>>>>>> upstream/master
 	AM_RANGE(0x000080, 0x00027f) AM_RAM
 	AM_RANGE(0x00c000, 0x00ffff) AM_ROM AM_REGION(M37710_INTERNAL_ROM_REGION, 0)
 ADDRESS_MAP_END
@@ -80,13 +95,18 @@ ADDRESS_MAP_END
 
 // M37702S1: 512 bytes internal RAM, no internal ROM
 DEVICE_ADDRESS_MAP_START( map, 16, m37702s1_device )
+<<<<<<< HEAD
 	AM_RANGE(0x000000, 0x00007f) AM_READWRITE(m37710_internal_word_r, m37710_internal_word_w)
+=======
+	AM_RANGE(0x000000, 0x00007f) AM_READWRITE8(m37710_internal_r, m37710_internal_w, 0xffff)
+>>>>>>> upstream/master
 	AM_RANGE(0x000080, 0x00027f) AM_RAM
 ADDRESS_MAP_END
 
 
 // M37710S4: 2048 bytes internal RAM, no internal ROM
 DEVICE_ADDRESS_MAP_START( map, 16, m37710s4_device )
+<<<<<<< HEAD
 	AM_RANGE(0x000000, 0x00007f) AM_READWRITE(m37710_internal_word_r, m37710_internal_word_w)
 	AM_RANGE(0x000080, 0x00087f) AM_RAM
 ADDRESS_MAP_END
@@ -96,41 +116,94 @@ ADDRESS_MAP_END
 
 m37710_cpu_device::m37710_cpu_device(const machine_config &mconfig, device_type type, const char *name, const char *tag, device_t *owner, UINT32 clock, const char *shortname, const char *source, address_map_delegate map_delegate)
 	: cpu_device(mconfig, type, name, tag, owner, clock, shortname, source)
+=======
+	AM_RANGE(0x000000, 0x00007f) AM_READWRITE8(m37710_internal_r, m37710_internal_w, 0xffff)
+	AM_RANGE(0x000080, 0x00087f) AM_RAM
+ADDRESS_MAP_END
+
+// M37720S1: 512 bytes internal RAM, no internal ROM, built-in DMA
+DEVICE_ADDRESS_MAP_START( map, 16, m37720s1_device )
+	AM_RANGE(0x000000, 0x00007f) AM_READWRITE8(m37710_internal_r, m37710_internal_w, 0xffff)
+	AM_RANGE(0x000080, 0x00027f) AM_RAM
+ADDRESS_MAP_END
+
+// many other combinations of RAM and ROM size exist
+
+
+m37710_cpu_device::m37710_cpu_device(const machine_config &mconfig, device_type type, const char *tag, device_t *owner, uint32_t clock, address_map_delegate map_delegate)
+	: cpu_device(mconfig, type, tag, owner, clock)
+>>>>>>> upstream/master
 	, m_program_config("program", ENDIANNESS_LITTLE, 16, 24, 0, map_delegate)
 	, m_io_config("io", ENDIANNESS_LITTLE, 8, 16, 0)
 {
 }
 
 
+<<<<<<< HEAD
 m37702m2_device::m37702m2_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
 	: m37710_cpu_device(mconfig, M37702M2, "M37702M2", tag, owner, clock, "m37702m2", __FILE__, address_map_delegate(FUNC(m37702m2_device::map), this))
+=======
+m37702m2_device::m37702m2_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: m37702m2_device(mconfig, M37702M2, tag, owner, clock)
+>>>>>>> upstream/master
 {
 }
 
 
+<<<<<<< HEAD
 m37702m2_device::m37702m2_device(const machine_config &mconfig, device_type type, const char *name, const char *tag, device_t *owner, UINT32 clock, const char *shortname, const char *source)
 	: m37710_cpu_device(mconfig, type, name, tag, owner, clock, shortname, source, address_map_delegate(FUNC(m37702m2_device::map), this))
+=======
+m37702m2_device::m37702m2_device(const machine_config &mconfig, device_type type, const char *tag, device_t *owner, uint32_t clock)
+	: m37710_cpu_device(mconfig, type, tag, owner, clock, address_map_delegate(FUNC(m37702m2_device::map), this))
+>>>>>>> upstream/master
 {
 }
 
 
+<<<<<<< HEAD
 m37702s1_device::m37702s1_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
 	: m37710_cpu_device(mconfig, M37702S1, "M37702S1", tag, owner, clock, "m37702s1", __FILE__, address_map_delegate(FUNC(m37702s1_device::map), this))
+=======
+m37702s1_device::m37702s1_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: m37710_cpu_device(mconfig, M37702S1, tag, owner, clock, address_map_delegate(FUNC(m37702s1_device::map), this))
+>>>>>>> upstream/master
 {
 }
 
 
+<<<<<<< HEAD
 m37710s4_device::m37710s4_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
 	: m37710_cpu_device(mconfig, M37710S4, "M37710S4", tag, owner, clock, "m37710s4", __FILE__, address_map_delegate(FUNC(m37710s4_device::map), this))
 {
 }
 
+=======
+m37710s4_device::m37710s4_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: m37710_cpu_device(mconfig, M37710S4, tag, owner, clock, address_map_delegate(FUNC(m37710s4_device::map), this))
+{
+}
+
+m37720s1_device::m37720s1_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: m37710_cpu_device(mconfig, M37720S1, tag, owner, clock, address_map_delegate(FUNC(m37720s1_device::map), this))
+{
+}
+
+std::vector<std::pair<int, const address_space_config *>> m37710_cpu_device::memory_space_config() const
+{
+	return std::vector<std::pair<int, const address_space_config *>> {
+		std::make_pair(AS_PROGRAM, &m_program_config),
+		std::make_pair(AS_IO,      &m_io_config)
+	};
+}
+>>>>>>> upstream/master
 
 /* interrupt control mapping */
 
 const int m37710_cpu_device::m37710_irq_levels[M37710_LINE_MAX] =
 {
 	// maskable
+<<<<<<< HEAD
 	0x70,   // ADC           0
 	0x73,   // UART 1 XMIT   1
 	0x74,   // UART 1 RECV   2
@@ -147,6 +220,28 @@ const int m37710_cpu_device::m37710_irq_levels[M37710_LINE_MAX] =
 	0x7f,   // IRQ 2         13
 	0x7e,   // IRQ 1         14
 	0x7d,   // IRQ 0         15
+=======
+	0x6f,   // DMA3          0
+	0x6e,   // DMA2          1
+	0x6d,   // DMA1          2
+	0x6c,   // DMA0          3
+	0x70,   // ADC           4
+	0x73,   // UART 1 XMIT   5
+	0x74,   // UART 1 RECV   6
+	0x71,   // UART 0 XMIT   7
+	0x72,   // UART 0 RECV   8
+	0x7c,   // Timer B2      9
+	0x7b,   // Timer B1     10
+	0x7a,   // Timer B0     11
+	0x79,   // Timer A4     12
+	0x78,   // Timer A3     13
+	0x77,   // Timer A2     14
+	0x76,   // Timer A1     15
+	0x75,   // Timer A0     16
+	0x7f,                                                                                                                                                                                          // IRQ 2         13
+	0x7e,   // IRQ 1        18
+	0x7d,   // IRQ 0        19
+>>>>>>> upstream/master
 
 	// non-maskable
 	0,  // watchdog
@@ -159,6 +254,13 @@ const int m37710_cpu_device::m37710_irq_levels[M37710_LINE_MAX] =
 const int m37710_cpu_device::m37710_irq_vectors[M37710_LINE_MAX] =
 {
 	// maskable
+<<<<<<< HEAD
+=======
+	0xffce, // DMA3
+	0xffd0, // DMA2
+	0xffd2, // DMA1
+	0xffd4, // DMA0
+>>>>>>> upstream/master
 	0xffd6, // A-D converter
 	0xffd8, // UART1 transmit
 	0xffda, // UART1 receive
@@ -198,7 +300,11 @@ const char *const m37710_cpu_device::m37710_rnames[128] =
 	"Port P3 reg",
 	"Port P2 dir reg",
 	"Port P3 dir reg",
+<<<<<<< HEAD
 	"Port P4 reg",
+=======
+	"Port P4 reg",      // 10 (0x0A) - ports 0, 1, 2, 3 don't exist on 37720
+>>>>>>> upstream/master
 	"Port P5 reg",
 	"Port P4 dir reg",
 	"Port P5 dir reg",
@@ -286,6 +392,7 @@ const char *const m37710_cpu_device::m37710_rnames[128] =
 	"",
 	"Watchdog reset",       // 0x60
 	"Watchdog frequency",   // 0x61
+<<<<<<< HEAD
 	"",
 	"",
 	"",
@@ -300,6 +407,22 @@ const char *const m37710_cpu_device::m37710_rnames[128] =
 	"",
 	"",
 	"",
+=======
+	"Real-time output control",
+	"",
+	"DRAM control",
+	"",
+	"Refresh timer",
+	"",
+	"DMAC control L",
+	"DMAC control H",
+	"",
+	"",
+	"DMA0 IRQ ctrl",
+	"DMA1 IRQ ctrl",
+	"DMA2 IRQ ctrl",
+	"DMA3 IRQ ctrl",
+>>>>>>> upstream/master
 	"A/D IRQ ctrl",
 	"UART0 xmit IRQ ctrl",      // 0x70
 	"UART0 recv IRQ ctrl",
@@ -328,9 +451,17 @@ TIMER_CALLBACK_MEMBER( m37710_cpu_device::m37710_timer_cb )
 	int which = param;
 	int curirq = M37710_LINE_TIMERA0 - which;
 
+<<<<<<< HEAD
 	m_timers[which]->adjust(m_reload[which], param);
 
 	m37710_set_irq_line(curirq, HOLD_LINE);
+=======
+//  logerror("Timer %d expired\n", which);
+
+	m_timers[which]->adjust(m_reload[which], param);
+
+	m37710_set_irq_line(curirq, ASSERT_LINE);
+>>>>>>> upstream/master
 	signal_interrupt_trigger();
 }
 
@@ -458,9 +589,15 @@ void m37710_cpu_device::m37710_recalc_timer(int timer)
 	}
 }
 
+<<<<<<< HEAD
 UINT8 m37710_cpu_device::m37710_internal_r(int offset)
 {
 	UINT8 d;
+=======
+READ8_MEMBER(m37710_cpu_device::m37710_internal_r)
+{
+	uint8_t d;
+>>>>>>> upstream/master
 
 	#if M37710_DEBUG
 	if (offset > 1)
@@ -567,11 +704,19 @@ UINT8 m37710_cpu_device::m37710_internal_r(int offset)
 	return m_m37710_regs[offset];
 }
 
+<<<<<<< HEAD
 void m37710_cpu_device::m37710_internal_w(int offset, UINT8 data)
 {
 	int i;
 	UINT8 prevdata;
 	UINT8 d;
+=======
+WRITE8_MEMBER(m37710_cpu_device::m37710_internal_w)
+{
+	int i;
+	uint8_t prevdata;
+	uint8_t d;
+>>>>>>> upstream/master
 
 	#if M37710_DEBUG
 	if (offset != 0x60) // filter out watchdog
@@ -659,6 +804,7 @@ void m37710_cpu_device::m37710_internal_w(int offset, UINT8 data)
 	}
 }
 
+<<<<<<< HEAD
 READ16_MEMBER( m37710_cpu_device::m37710_internal_word_r )
 {
 	UINT16 ret = 0;
@@ -680,6 +826,8 @@ WRITE16_MEMBER( m37710_cpu_device::m37710_internal_word_w )
 }
 
 
+=======
+>>>>>>> upstream/master
 const m37710_cpu_device::opcode_func *m37710_cpu_device::m37710i_opcodes[4] =
 {
 	m37710i_opcodes_M0X0,
@@ -785,7 +933,10 @@ void m37710_cpu_device::m37710i_update_irqs()
 		// let's do it...
 		// push PB, then PC, then status
 		CLK(13);
+<<<<<<< HEAD
 //      osd_printf_debug("taking IRQ %d: PC = %06x, SP = %04x, IPL %d\n", wantedIRQ, REG_PB | REG_PC, REG_S, m_ipl);
+=======
+>>>>>>> upstream/master
 		m37710i_push_8(REG_PB>>16);
 		m37710i_push_16(REG_PC);
 		m37710i_push_8(m_ipl);
@@ -797,7 +948,10 @@ void m37710_cpu_device::m37710i_update_irqs()
 		// then PB=0, PC=(vector)
 		REG_PB = 0;
 		REG_PC = m37710_read_16(m37710_irq_vectors[wantedIRQ]);
+<<<<<<< HEAD
 //      logerror("IRQ @ %06x\n", REG_PB | REG_PC);
+=======
+>>>>>>> upstream/master
 	}
 }
 
@@ -939,6 +1093,7 @@ void m37710_cpu_device::m37710_set_irq_line(int line, int state)
 
 CPU_DISASSEMBLE( m37710 )
 {
+<<<<<<< HEAD
 	return m7700_disassemble(buffer, (pc&0xffff), pc>>16, oprom, 0, 0);
 }
 
@@ -946,6 +1101,15 @@ CPU_DISASSEMBLE( m37710 )
 offs_t m37710_cpu_device::disasm_disassemble(char *buffer, offs_t pc, const UINT8 *oprom, const UINT8 *opram, UINT32 options)
 {
 	return m7700_disassemble(buffer, (pc&0xffff), pc>>16, oprom, FLAG_M, FLAG_X);
+=======
+	return m7700_disassemble(stream, (pc&0xffff), pc>>16, oprom, 0, 0);
+}
+
+
+offs_t m37710_cpu_device::disasm_disassemble(std::ostream &stream, offs_t pc, const uint8_t *oprom, const uint8_t *opram, uint32_t options)
+{
+	return m7700_disassemble(stream, (pc&0xffff), pc>>16, oprom, FLAG_M, FLAG_X);
+>>>>>>> upstream/master
 }
 
 
@@ -1066,6 +1230,10 @@ void m37710_cpu_device::device_start()
 	state_add( M37710_IRQ_STATE, "IRQ", m_line_irq).formatstr("%01X");
 
 	state_add( STATE_GENPC, "GENPC", m_debugger_pc ).callimport().callexport().noshow();
+<<<<<<< HEAD
+=======
+	state_add( STATE_GENPCBASE, "CURPC", m_debugger_pc ).callimport().callexport().noshow();
+>>>>>>> upstream/master
 	state_add( STATE_GENFLAGS, "GENFLAGS", m_debugger_p ).formatstr("%8s").noshow();
 
 	m_icountptr = &m_ICount;
@@ -1098,6 +1266,10 @@ void m37710_cpu_device::state_import(const device_state_entry &entry)
 			break;
 
 		case STATE_GENPC:
+<<<<<<< HEAD
+=======
+		case STATE_GENPCBASE:
+>>>>>>> upstream/master
 			REG_PB = m_debugger_pc & 0xff0000;
 			m37710_set_pc(m_debugger_pc & 0xffff);
 			break;
@@ -1130,18 +1302,30 @@ void m37710_cpu_device::state_export(const device_state_entry &entry)
 			break;
 
 		case STATE_GENPC:
+<<<<<<< HEAD
+=======
+		case STATE_GENPCBASE:
+>>>>>>> upstream/master
 			m_debugger_pc = (REG_PB | REG_PC);
 			break;
 	}
 }
 
 
+<<<<<<< HEAD
 void m37710_cpu_device::state_string_export(const device_state_entry &entry, std::string &str)
+=======
+void m37710_cpu_device::state_string_export(const device_state_entry &entry, std::string &str) const
+>>>>>>> upstream/master
 {
 	switch (entry.index())
 	{
 		case STATE_GENFLAGS:
+<<<<<<< HEAD
 			strprintf(str, "%c%c%c%c%c%c%c%c",
+=======
+			str = string_format("%c%c%c%c%c%c%c%c",
+>>>>>>> upstream/master
 				m_flag_n & NFLAG_SET ? 'N':'.',
 				m_flag_v & VFLAG_SET ? 'V':'.',
 				m_flag_m & MFLAG_SET ? 'M':'.',
@@ -1180,7 +1364,11 @@ void m37710_cpu_device::execute_set_input(int inputnum, int state)
 }
 
 
+<<<<<<< HEAD
 void m37710_cpu_device::m37710i_set_execution_mode(UINT32 mode)
+=======
+void m37710_cpu_device::m37710i_set_execution_mode(uint32_t mode)
+>>>>>>> upstream/master
 {
 	m_opcodes = m37710i_opcodes[mode];
 	m_opcodes42 = m37710i_opcodes2[mode];
@@ -1196,7 +1384,11 @@ void m37710_cpu_device::m37710i_set_execution_mode(UINT32 mode)
 /* =============================== INTERRUPTS ============================= */
 /* ======================================================================== */
 
+<<<<<<< HEAD
 void m37710_cpu_device::m37710i_interrupt_software(UINT32 vector)
+=======
+void m37710_cpu_device::m37710i_interrupt_software(uint32_t vector)
+>>>>>>> upstream/master
 {
 	CLK(13);
 	m37710i_push_8(REG_PB>>16);

@@ -7,6 +7,10 @@
 *************************************************************************/
 
 #include "sound/discrete.h"
+<<<<<<< HEAD
+=======
+#include "screen.h"
+>>>>>>> upstream/master
 
 /* Discrete Sound Input Nodes */
 #define HITME_DOWNCOUNT_VAL      NODE_01
@@ -26,7 +30,11 @@ public:
 		m_screen(*this, "screen") { }
 
 	/* memory pointers */
+<<<<<<< HEAD
 	required_shared_ptr<UINT8> m_videoram;
+=======
+	required_shared_ptr<uint8_t> m_videoram;
+>>>>>>> upstream/master
 
 	/* video-related */
 	tilemap_t  *m_tilemap;
@@ -41,6 +49,7 @@ public:
 	DECLARE_WRITE8_MEMBER(output_port_0_w);
 	DECLARE_WRITE8_MEMBER(output_port_1_w);
 	TILE_GET_INFO_MEMBER(get_hitme_tile_info);
+<<<<<<< HEAD
 	virtual void machine_start();
 	virtual void machine_reset();
 	virtual void video_start();
@@ -49,6 +58,16 @@ public:
 	UINT32 screen_update_barricad(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
 	UINT8 read_port_and_t0( int port );
 	UINT8 read_port_and_t0_and_hblank( int port );
+=======
+	virtual void machine_start() override;
+	virtual void machine_reset() override;
+	virtual void video_start() override;
+	DECLARE_VIDEO_START(barricad);
+	uint32_t screen_update_hitme(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
+	uint32_t screen_update_barricad(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
+	uint8_t read_port_and_t0( int port );
+	uint8_t read_port_and_t0_and_hblank( int port );
+>>>>>>> upstream/master
 	required_device<cpu_device> m_maincpu;
 	required_device<discrete_device> m_discrete;
 	required_device<gfxdecode_device> m_gfxdecode;

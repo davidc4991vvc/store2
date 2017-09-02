@@ -1,5 +1,11 @@
 /* SfxSetup.c - 7z SFX Setup
+<<<<<<< HEAD
 2010-12-13 : Igor Pavlov : Public domain */
+=======
+2016-05-16 : Igor Pavlov : Public domain */
+
+#include "Precomp.h"
+>>>>>>> upstream/master
 
 #ifndef UNICODE
 #define UNICODE
@@ -18,6 +24,7 @@
 #include "../../7zCrc.h"
 #include "../../7zFile.h"
 #include "../../CpuArch.h"
+<<<<<<< HEAD
 
 #define k_EXE_ExtIndex 1
 
@@ -41,6 +48,32 @@ static const char *kNames[] =
   "install",
   "run",
   "start"
+=======
+#include "../../DllSecur.h"
+
+#define k_EXE_ExtIndex 2
+
+static const char * const kExts[] =
+{
+    "bat"
+  , "cmd"
+  , "exe"
+  , "inf"
+  , "msi"
+  #ifdef UNDER_CE
+  , "cab"
+  #endif
+  , "html"
+  , "htm"
+};
+
+static const char * const kNames[] =
+{
+    "setup"
+  , "install"
+  , "run"
+  , "start"
+>>>>>>> upstream/master
 };
 
 static unsigned FindExt(const wchar_t *s, unsigned *extLen)
@@ -61,7 +94,11 @@ static unsigned FindExt(const wchar_t *s, unsigned *extLen)
 
 #define MAKE_CHAR_UPPER(c) ((((c) >= 'a' && (c) <= 'z') ? (c) -= 0x20 : (c)))
 
+<<<<<<< HEAD
 static unsigned FindItem(const char **items, unsigned num, const wchar_t *s, unsigned len)
+=======
+static unsigned FindItem(const char * const *items, unsigned num, const wchar_t *s, unsigned len)
+>>>>>>> upstream/master
 {
   unsigned i;
   for (i = 0; i < num; i++)
@@ -73,7 +110,11 @@ static unsigned FindItem(const char **items, unsigned num, const wchar_t *s, uns
       continue;
     for (j = 0; j < len; j++)
     {
+<<<<<<< HEAD
       unsigned c = item[j];
+=======
+      unsigned c = (Byte)item[j];
+>>>>>>> upstream/master
       if (c != s[j] && MAKE_CHAR_UPPER(c) != s[j])
         break;
     }
@@ -86,7 +127,11 @@ static unsigned FindItem(const char **items, unsigned num, const wchar_t *s, uns
 #ifdef _CONSOLE
 static BOOL WINAPI HandlerRoutine(DWORD ctrlType)
 {
+<<<<<<< HEAD
   ctrlType = ctrlType;
+=======
+  UNUSED_VAR(ctrlType);
+>>>>>>> upstream/master
   return TRUE;
 }
 #endif
@@ -142,7 +187,11 @@ static Bool FindSignature(CSzFile *stream, UInt64 *resPos)
     processed -= k7zStartHeaderSize;
     for (pos = 0; pos <= processed; pos++)
     {
+<<<<<<< HEAD
       for (; buf[pos] != '7' && pos <= processed; pos++);
+=======
+      for (; pos <= processed && buf[pos] != '7'; pos++);
+>>>>>>> upstream/master
       if (pos > processed)
         break;
       if (memcmp(buf + pos, k7zSignature, k7zSignatureSize) == 0)
@@ -180,6 +229,10 @@ static WRes RemoveDirWithSubItems(WCHAR *path)
   path[len] = L'\0';
   if (handle == INVALID_HANDLE_VALUE)
     return GetLastError();
+<<<<<<< HEAD
+=======
+  
+>>>>>>> upstream/master
   for (;;)
   {
     if (wcscmp(fd.cFileName, L".") != 0 &&
@@ -188,7 +241,11 @@ static WRes RemoveDirWithSubItems(WCHAR *path)
       wcscpy(path + len, fd.cFileName);
       if ((fd.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY) != 0)
       {
+<<<<<<< HEAD
         wcscat(path, L"\\");
+=======
+        wcscat(path, WSTRING_PATH_SEPARATOR);
+>>>>>>> upstream/master
         res = RemoveDirWithSubItems(path);
       }
       else
@@ -197,9 +254,17 @@ static WRes RemoveDirWithSubItems(WCHAR *path)
         if (DeleteFileW(path) == 0)
           res = GetLastError();
       }
+<<<<<<< HEAD
       if (res != 0)
         break;
     }
+=======
+    
+      if (res != 0)
+        break;
+    }
+  
+>>>>>>> upstream/master
     if (!FindNextFileW(handle, &fd))
     {
       res = GetLastError();
@@ -208,6 +273,10 @@ static WRes RemoveDirWithSubItems(WCHAR *path)
       break;
     }
   }
+<<<<<<< HEAD
+=======
+  
+>>>>>>> upstream/master
   path[len] = L'\0';
   FindClose(handle);
   if (res == 0)
@@ -238,19 +307,38 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
   ISzAlloc allocTempImp;
   WCHAR sfxPath[MAX_PATH + 2];
   WCHAR path[MAX_PATH * 3 + 2];
+<<<<<<< HEAD
+=======
+  #ifndef UNDER_CE
+  WCHAR workCurDir[MAX_PATH + 32];
+  #endif
+>>>>>>> upstream/master
   size_t pathLen;
   DWORD winRes;
   const wchar_t *cmdLineParams;
   const char *errorMessage = NULL;
   Bool useShellExecute = True;
+<<<<<<< HEAD
+=======
+  DWORD exitCode = 0;
+
+  LoadSecurityDlls();
+>>>>>>> upstream/master
 
   #ifdef _CONSOLE
   SetConsoleCtrlHandler(HandlerRoutine, TRUE);
   #else
+<<<<<<< HEAD
   hInstance = hInstance;
   hPrevInstance = hPrevInstance;
   lpCmdLine = lpCmdLine;
   nCmdShow = nCmdShow;
+=======
+  UNUSED_VAR(hInstance);
+  UNUSED_VAR(hPrevInstance);
+  UNUSED_VAR(lpCmdLine);
+  UNUSED_VAR(nCmdShow);
+>>>>>>> upstream/master
   #endif
 
   CrcGenerateTable();
@@ -292,6 +380,10 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
       return 1;
     pathLen = wcslen(path);
     d = (GetTickCount() << 12) ^ (GetCurrentThreadId() << 14) ^ GetCurrentProcessId();
+<<<<<<< HEAD
+=======
+    
+>>>>>>> upstream/master
     for (i = 0;; i++, d += GetTickCount())
     {
       if (i >= 100)
@@ -309,7 +401,11 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
         {
           unsigned t = value & 0xF;
           value >>= 4;
+<<<<<<< HEAD
           s[7 - k] = (char)((t < 10) ? ('0' + t) : ('A' + (t - 10)));
+=======
+          s[7 - k] = (wchar_t)((t < 10) ? ('0' + t) : ('A' + (t - 10)));
+>>>>>>> upstream/master
         }
         s[k] = '\0';
       }
@@ -318,7 +414,11 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
         continue;
       if (CreateDirectoryW(path, NULL))
       {
+<<<<<<< HEAD
         wcscat(path, L"\\");
+=======
+        wcscat(path, WSTRING_PATH_SEPARATOR);
+>>>>>>> upstream/master
         pathLen = wcslen(path);
         break;
       }
@@ -328,6 +428,13 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
         break;
       }
     }
+<<<<<<< HEAD
+=======
+    
+    #ifndef UNDER_CE
+    wcscpy(workCurDir, path);
+    #endif
+>>>>>>> upstream/master
     if (res != SZ_OK)
       errorMessage = "Can't create temp folder";
   }
@@ -367,6 +474,10 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
   {
     res = SzArEx_Open(&db, &lookStream.s, &allocImp, &allocTempImp);
   }
+<<<<<<< HEAD
+=======
+  
+>>>>>>> upstream/master
   if (res == SZ_OK)
   {
     UInt32 executeFileIndex = (UInt32)(Int32)-1;
@@ -376,6 +487,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
     Byte *outBuffer = 0; /* it must be 0 before first call for each new archive. */
     size_t outBufferSize = 0;  /* it can have any value before first call (if outBuffer = 0) */
     
+<<<<<<< HEAD
     for (i = 0; i < db.db.NumFiles; i++)
     {
       size_t offset = 0;
@@ -386,6 +498,15 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
       len = SzArEx_GetFileNameUtf16(&db, i, NULL);
       
       if (len >= MAX_PATH)
+=======
+    for (i = 0; i < db.NumFiles; i++)
+    {
+      size_t offset = 0;
+      size_t outSizeProcessed = 0;
+      WCHAR *temp;
+
+      if (SzArEx_GetFileNameUtf16(&db, i, NULL) >= MAX_PATH)
+>>>>>>> upstream/master
       {
         res = SZ_ERROR_FAIL;
         break;
@@ -418,7 +539,11 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
           }
         }
 
+<<<<<<< HEAD
         if (f->IsDir)
+=======
+        if (SzArEx_IsDir(&db, i))
+>>>>>>> upstream/master
         {
           MyCreateDir(path);
           continue;
@@ -453,6 +578,10 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
             break;
           }
         }
+<<<<<<< HEAD
+=======
+  
+>>>>>>> upstream/master
         processedSize = outSizeProcessed;
         if (File_Write(&outFile, outBuffer + offset, &processedSize) != 0 || processedSize != outSizeProcessed)
         {
@@ -461,11 +590,20 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
         }
         
         #ifdef USE_WINDOWS_FILE
+<<<<<<< HEAD
         if (f->MTimeDefined)
         {
           FILETIME mTime;
           mTime.dwLowDateTime = f->MTime.Low;
           mTime.dwHighDateTime = f->MTime.High;
+=======
+        if (SzBitWithVals_Check(&db.MTime, i))
+        {
+          const CNtfsFileTime *t = db.MTime.Vals + i;
+          FILETIME mTime;
+          mTime.dwLowDateTime = t->Low;
+          mTime.dwHighDateTime = t->High;
+>>>>>>> upstream/master
           SetFileTime(outFile.handle, NULL, NULL, &mTime);
         }
         #endif
@@ -481,8 +619,13 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
           }
         }
         #ifdef USE_WINDOWS_FILE
+<<<<<<< HEAD
         if (f->AttribDefined)
           SetFileAttributesW(path, f->Attrib);
+=======
+        if (SzBitWithVals_Check(&db.Attribs, i))
+          SetFileAttributesW(path, db.Attribs.Vals[i]);
+>>>>>>> upstream/master
         #endif
       }
     }
@@ -513,6 +656,21 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
   if (res == SZ_OK)
   {
     HANDLE hProcess = 0;
+<<<<<<< HEAD
+=======
+    
+    #ifndef UNDER_CE
+    WCHAR oldCurDir[MAX_PATH + 2];
+    oldCurDir[0] = 0;
+    {
+      DWORD needLen = GetCurrentDirectory(MAX_PATH + 1, oldCurDir);
+      if (needLen == 0 || needLen > MAX_PATH)
+        oldCurDir[0] = 0;
+      SetCurrentDirectory(workCurDir);
+    }
+    #endif
+    
+>>>>>>> upstream/master
     if (useShellExecute)
     {
       SHELLEXECUTEINFO ei;
@@ -556,18 +714,37 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
         hProcess = pi.hProcess;
       }
     }
+<<<<<<< HEAD
     if (hProcess != 0)
     {
       WaitForSingleObject(hProcess, INFINITE);
       CloseHandle(hProcess);
     }
+=======
+    
+    if (hProcess != 0)
+    {
+      WaitForSingleObject(hProcess, INFINITE);
+      if (!GetExitCodeProcess(hProcess, &exitCode))
+        exitCode = 1;
+      CloseHandle(hProcess);
+    }
+    
+    #ifndef UNDER_CE
+    SetCurrentDirectory(oldCurDir);
+    #endif
+>>>>>>> upstream/master
   }
 
   path[pathLen] = L'\0';
   RemoveDirWithSubItems(path);
 
   if (res == SZ_OK)
+<<<<<<< HEAD
     return 0;
+=======
+    return (int)exitCode;
+>>>>>>> upstream/master
   
   {
     if (res == SZ_ERROR_UNSUPPORTED)
@@ -581,6 +758,10 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
       if (!errorMessage)
         errorMessage = "ERROR";
     }
+<<<<<<< HEAD
+=======
+ 
+>>>>>>> upstream/master
     if (errorMessage)
       PrintErrorMessage(errorMessage);
   }

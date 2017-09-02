@@ -107,19 +107,37 @@
 
 *******************************************************************************************/
 
+<<<<<<< HEAD
 #define MAIN_CLOCK    XTAL_12MHz
 #define SEC_CLOCK     XTAL_14_31818MHz
 
 #define CPU_CLOCK     MAIN_CLOCK
 
 
+=======
+>>>>>>> upstream/master
 #include "emu.h"
 #include "cpu/m68000/m68000.h"
 #include "sound/okim6295.h"
 #include "machine/nvram.h"
+<<<<<<< HEAD
 #include "mil4000.lh"
 
 
+=======
+#include "screen.h"
+#include "speaker.h"
+
+#include "mil4000.lh"
+
+
+#define MAIN_CLOCK    XTAL_12MHz
+#define SEC_CLOCK     XTAL_14_31818MHz
+
+#define CPU_CLOCK     MAIN_CLOCK
+
+
+>>>>>>> upstream/master
 class mil4000_state : public driver_device
 {
 public:
@@ -132,18 +150,32 @@ public:
 		m_maincpu(*this, "maincpu"),
 		m_gfxdecode(*this, "gfxdecode") { }
 
+<<<<<<< HEAD
 	required_shared_ptr<UINT16> m_sc0_vram;
 	required_shared_ptr<UINT16> m_sc1_vram;
 	required_shared_ptr<UINT16> m_sc2_vram;
 	required_shared_ptr<UINT16> m_sc3_vram;
+=======
+	required_shared_ptr<uint16_t> m_sc0_vram;
+	required_shared_ptr<uint16_t> m_sc1_vram;
+	required_shared_ptr<uint16_t> m_sc2_vram;
+	required_shared_ptr<uint16_t> m_sc3_vram;
+>>>>>>> upstream/master
 	tilemap_t *m_sc0_tilemap;
 	tilemap_t *m_sc1_tilemap;
 	tilemap_t *m_sc2_tilemap;
 	tilemap_t *m_sc3_tilemap;
+<<<<<<< HEAD
 	UINT16 m_vblank;
 	UINT16 m_hblank;
 	UINT8 mcucomm;
 	UINT8 mcudata;
+=======
+	uint16_t m_vblank;
+	uint16_t m_hblank;
+	uint8_t mcucomm;
+	uint8_t mcudata;
+>>>>>>> upstream/master
 	DECLARE_READ16_MEMBER(hvretrace_r);
 	DECLARE_READ16_MEMBER(unk_r);
 	DECLARE_READ16_MEMBER(chewheel_mcu_r);
@@ -158,8 +190,13 @@ public:
 	TILE_GET_INFO_MEMBER(get_sc1_tile_info);
 	TILE_GET_INFO_MEMBER(get_sc2_tile_info);
 	TILE_GET_INFO_MEMBER(get_sc3_tile_info);
+<<<<<<< HEAD
 	virtual void video_start();
 	UINT32 screen_update_mil4000(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
+=======
+	virtual void video_start() override;
+	uint32_t screen_update_mil4000(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
+>>>>>>> upstream/master
 	required_device<cpu_device> m_maincpu;
 	required_device<gfxdecode_device> m_gfxdecode;
 };
@@ -167,7 +204,11 @@ public:
 
 TILE_GET_INFO_MEMBER(mil4000_state::get_sc0_tile_info)
 {
+<<<<<<< HEAD
 	UINT32 data = (m_sc0_vram[tile_index*2]<<16) | m_sc0_vram[tile_index*2+1];
+=======
+	uint32_t data = (m_sc0_vram[tile_index*2]<<16) | m_sc0_vram[tile_index*2+1];
+>>>>>>> upstream/master
 	int tile = data >> 14;
 	int color = (m_sc0_vram[tile_index*2+1] & 0x1f)+0;
 
@@ -179,7 +220,11 @@ TILE_GET_INFO_MEMBER(mil4000_state::get_sc0_tile_info)
 
 TILE_GET_INFO_MEMBER(mil4000_state::get_sc1_tile_info)
 {
+<<<<<<< HEAD
 	UINT32 data = (m_sc1_vram[tile_index*2]<<16) | m_sc1_vram[tile_index*2+1];
+=======
+	uint32_t data = (m_sc1_vram[tile_index*2]<<16) | m_sc1_vram[tile_index*2+1];
+>>>>>>> upstream/master
 	int tile = data >> 14;
 	int color = (m_sc1_vram[tile_index*2+1] & 0x1f)+0x10;
 
@@ -191,7 +236,11 @@ TILE_GET_INFO_MEMBER(mil4000_state::get_sc1_tile_info)
 
 TILE_GET_INFO_MEMBER(mil4000_state::get_sc2_tile_info)
 {
+<<<<<<< HEAD
 	UINT32 data = (m_sc2_vram[tile_index*2]<<16) | m_sc2_vram[tile_index*2+1];
+=======
+	uint32_t data = (m_sc2_vram[tile_index*2]<<16) | m_sc2_vram[tile_index*2+1];
+>>>>>>> upstream/master
 	int tile = data >> 14;
 	int color = (m_sc2_vram[tile_index*2+1] & 0x1f)+0x20;
 
@@ -203,7 +252,11 @@ TILE_GET_INFO_MEMBER(mil4000_state::get_sc2_tile_info)
 
 TILE_GET_INFO_MEMBER(mil4000_state::get_sc3_tile_info)
 {
+<<<<<<< HEAD
 	UINT32 data = (m_sc3_vram[tile_index*2]<<16) | m_sc3_vram[tile_index*2+1];
+=======
+	uint32_t data = (m_sc3_vram[tile_index*2]<<16) | m_sc3_vram[tile_index*2+1];
+>>>>>>> upstream/master
 	int tile = data >> 14;
 	int color = (m_sc3_vram[tile_index*2+1] & 0x1f)+0x30;
 
@@ -215,17 +268,28 @@ TILE_GET_INFO_MEMBER(mil4000_state::get_sc3_tile_info)
 
 void mil4000_state::video_start()
 {
+<<<<<<< HEAD
 	m_sc0_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(mil4000_state::get_sc0_tile_info),this),TILEMAP_SCAN_ROWS,8,8,64,64);
 	m_sc1_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(mil4000_state::get_sc1_tile_info),this),TILEMAP_SCAN_ROWS,8,8,64,64);
 	m_sc2_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(mil4000_state::get_sc2_tile_info),this),TILEMAP_SCAN_ROWS,8,8,64,64);
 	m_sc3_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(mil4000_state::get_sc3_tile_info),this),TILEMAP_SCAN_ROWS,8,8,64,64);
+=======
+	m_sc0_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(mil4000_state::get_sc0_tile_info),this),TILEMAP_SCAN_ROWS,8,8,64,64);
+	m_sc1_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(mil4000_state::get_sc1_tile_info),this),TILEMAP_SCAN_ROWS,8,8,64,64);
+	m_sc2_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(mil4000_state::get_sc2_tile_info),this),TILEMAP_SCAN_ROWS,8,8,64,64);
+	m_sc3_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(mil4000_state::get_sc3_tile_info),this),TILEMAP_SCAN_ROWS,8,8,64,64);
+>>>>>>> upstream/master
 
 	m_sc1_tilemap->set_transparent_pen(0);
 	m_sc2_tilemap->set_transparent_pen(0);
 	m_sc3_tilemap->set_transparent_pen(0);
 }
 
+<<<<<<< HEAD
 UINT32 mil4000_state::screen_update_mil4000(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+=======
+uint32_t mil4000_state::screen_update_mil4000(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+>>>>>>> upstream/master
 {
 	m_sc0_tilemap->draw(screen, bitmap, cliprect, 0,0);
 	m_sc1_tilemap->draw(screen, bitmap, cliprect, 0,0);
@@ -237,7 +301,11 @@ UINT32 mil4000_state::screen_update_mil4000(screen_device &screen, bitmap_ind16 
 /*TODO*/
 READ16_MEMBER(mil4000_state::hvretrace_r)
 {
+<<<<<<< HEAD
 	UINT16 res;
+=======
+	uint16_t res;
+>>>>>>> upstream/master
 
 	res = 0;
 
@@ -297,6 +365,7 @@ WRITE16_MEMBER(mil4000_state::output_w)
 	int i;
 
 	for(i=0;i<3;i++)
+<<<<<<< HEAD
 		coin_counter_w(machine(), i, data & 0x2000);
 
 	output_set_lamp_value(0, (data) & 1);       /* HOLD1 */
@@ -306,6 +375,17 @@ WRITE16_MEMBER(mil4000_state::output_w)
 	output_set_lamp_value(4, (data >> 4) & 1);  /* HOLD5 */
 	output_set_lamp_value(5, (data >> 5) & 1);  /* START */
 	output_set_lamp_value(6, (data >> 6) & 1);  /* PREMIO */
+=======
+		machine().bookkeeping().coin_counter_w(i, data & 0x2000);
+
+	output().set_lamp_value(0, (data) & 1);       /* HOLD1 */
+	output().set_lamp_value(1, (data >> 1) & 1);  /* HOLD2 */
+	output().set_lamp_value(2, (data >> 2) & 1);  /* HOLD3 */
+	output().set_lamp_value(3, (data >> 3) & 1);  /* HOLD4 */
+	output().set_lamp_value(4, (data >> 4) & 1);  /* HOLD5 */
+	output().set_lamp_value(5, (data >> 5) & 1);  /* START */
+	output().set_lamp_value(6, (data >> 6) & 1);  /* PREMIO */
+>>>>>>> upstream/master
 
 //  popmessage("%04x\n",data);
 }
@@ -534,7 +614,11 @@ static GFXDECODE_START( mil4000 )
 GFXDECODE_END
 
 
+<<<<<<< HEAD
 static MACHINE_CONFIG_START( mil4000, mil4000_state )
+=======
+static MACHINE_CONFIG_START( mil4000 )
+>>>>>>> upstream/master
 	MCFG_CPU_ADD("maincpu", M68000, CPU_CLOCK)
 	MCFG_CPU_PROGRAM_MAP(mil4000_map)
 	// irq 2/4/5 point to the same place, others invalid
@@ -556,7 +640,11 @@ static MACHINE_CONFIG_START( mil4000, mil4000_state )
 	MCFG_GFXDECODE_ADD("gfxdecode", "palette", mil4000)
 
 	MCFG_SPEAKER_STANDARD_MONO("mono")
+<<<<<<< HEAD
 	MCFG_OKIM6295_ADD("oki", 1000000, OKIM6295_PIN7_HIGH) // frequency from 1000 kHz resonator. pin 7 high not verified.
+=======
+	MCFG_OKIM6295_ADD("oki", 1000000, PIN7_HIGH) // frequency from 1000 kHz resonator. pin 7 high not verified.
+>>>>>>> upstream/master
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 1.0)
 MACHINE_CONFIG_END
 
@@ -745,6 +833,7 @@ ROM_START( chewheel )
 ROM_END
 
 
+<<<<<<< HEAD
 /*     YEAR  NAME      PARENT    MACHINE   INPUT    STATE          INIT    ROT     COMPANY              FULLNAME                              FLAGS                       LAYOUT  */
 GAMEL( 2000, mil4000,  0,        mil4000,  mil4000, driver_device, 0,      ROT0,  "Sure Milano",       "Millennium Nuovo 4000 (Version 2.0)", 0,                          layout_mil4000 )
 GAMEL( 2000, mil4000a, mil4000,  mil4000,  mil4000, driver_device, 0,      ROT0,  "Sure Milano",       "Millennium Nuovo 4000 (Version 1.8)", 0,                          layout_mil4000 )
@@ -752,3 +841,12 @@ GAMEL( 2000, mil4000b, mil4000,  mil4000,  mil4000, driver_device, 0,      ROT0,
 GAMEL( 2000, mil4000c, mil4000,  mil4000,  mil4000, driver_device, 0,      ROT0,  "Sure Milano",       "Millennium Nuovo 4000 (Version 1.6)", 0,                          layout_mil4000 )
 GAMEL( 200?, top21,    0,        mil4000,  mil4000, driver_device, 0,      ROT0,  "Assogiochi Assago", "Top XXI (Version 1.2)",               0,                          layout_mil4000 )
 GAMEL( 200?, chewheel, 0,        chewheel, mil4000, driver_device, 0,      ROT0,  "Assogiochi Assago", "Cherry Wheel (Version 1.7)",          MACHINE_UNEMULATED_PROTECTION, layout_mil4000 )
+=======
+//     YEAR  NAME      PARENT    MACHINE   INPUT    STATE          INIT    ROT     COMPANY              FULLNAME                              FLAGS                          LAYOUT
+GAMEL( 2000, mil4000,  0,        mil4000,  mil4000, mil4000_state, 0,      ROT0,  "Sure Milano",       "Millennium Nuovo 4000 (Version 2.0)", 0,                             layout_mil4000 )
+GAMEL( 2000, mil4000a, mil4000,  mil4000,  mil4000, mil4000_state, 0,      ROT0,  "Sure Milano",       "Millennium Nuovo 4000 (Version 1.8)", 0,                             layout_mil4000 )
+GAMEL( 2000, mil4000b, mil4000,  mil4000,  mil4000, mil4000_state, 0,      ROT0,  "Sure Milano",       "Millennium Nuovo 4000 (Version 1.5)", 0,                             layout_mil4000 )
+GAMEL( 2000, mil4000c, mil4000,  mil4000,  mil4000, mil4000_state, 0,      ROT0,  "Sure Milano",       "Millennium Nuovo 4000 (Version 1.6)", 0,                             layout_mil4000 )
+GAMEL( 200?, top21,    0,        mil4000,  mil4000, mil4000_state, 0,      ROT0,  "Assogiochi Assago", "Top XXI (Version 1.2)",               0,                             layout_mil4000 )
+GAMEL( 200?, chewheel, 0,        chewheel, mil4000, mil4000_state, 0,      ROT0,  "Assogiochi Assago", "Cherry Wheel (Version 1.7)",          MACHINE_UNEMULATED_PROTECTION, layout_mil4000 )
+>>>>>>> upstream/master

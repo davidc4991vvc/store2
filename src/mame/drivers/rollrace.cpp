@@ -10,14 +10,28 @@ Issues:
 ***************************************************************************/
 
 #include "emu.h"
+<<<<<<< HEAD
 #include "cpu/z80/z80.h"
 #include "sound/ay8910.h"
 #include "includes/rollrace.h"
+=======
+#include "includes/rollrace.h"
+
+#include "cpu/z80/z80.h"
+#include "machine/74259.h"
+#include "machine/gen_latch.h"
+#include "sound/ay8910.h"
+#include "screen.h"
+#include "speaker.h"
+>>>>>>> upstream/master
 
 
 void rollrace_state::machine_start()
 {
+<<<<<<< HEAD
 	save_item(NAME(m_charbank));
+=======
+>>>>>>> upstream/master
 	save_item(NAME(m_bkgpage));
 	save_item(NAME(m_bkgflip));
 	save_item(NAME(m_chrbank));
@@ -40,9 +54,15 @@ WRITE8_MEMBER(rollrace_state::fake_d800_w)
 /*  logerror("d900: %02X\n",data);*/
 }
 
+<<<<<<< HEAD
 WRITE8_MEMBER(rollrace_state::nmi_mask_w)
 {
 	m_nmi_mask = data & 1;
+=======
+WRITE_LINE_MEMBER(rollrace_state::nmi_mask_w)
+{
+	m_nmi_mask = state;
+>>>>>>> upstream/master
 }
 
 WRITE8_MEMBER(rollrace_state::sound_nmi_mask_w)
@@ -50,6 +70,18 @@ WRITE8_MEMBER(rollrace_state::sound_nmi_mask_w)
 	m_sound_nmi_mask = data & 1;
 }
 
+<<<<<<< HEAD
+=======
+WRITE_LINE_MEMBER(rollrace_state::coin_counter_1_w)
+{
+	machine().bookkeeping().coin_counter_w(0, state);
+}
+
+WRITE_LINE_MEMBER(rollrace_state::coin_counter_2_w)
+{
+	machine().bookkeeping().coin_counter_w(1, state);
+}
+>>>>>>> upstream/master
 
 static ADDRESS_MAP_START( rollrace_map, AS_PROGRAM, 8, rollrace_state )
 	AM_RANGE(0x0000, 0x7fff) AM_ROM
@@ -57,9 +89,15 @@ static ADDRESS_MAP_START( rollrace_map, AS_PROGRAM, 8, rollrace_state )
 	AM_RANGE(0xc000, 0xcfff) AM_RAM
 	AM_RANGE(0xd806, 0xd806) AM_READNOP /* looks like a watchdog, bit4 checked*/
 	AM_RANGE(0xd900, 0xd900) AM_READWRITE(fake_d800_r,fake_d800_w) /* protection ??*/
+<<<<<<< HEAD
 	AM_RANGE(0xe000, 0xe3ff) AM_RAM AM_SHARE("videoram")
 	AM_RANGE(0xe400, 0xe47f) AM_RAM AM_SHARE("colorram")
 	AM_RANGE(0xe800, 0xe800) AM_WRITE(soundlatch_byte_w)
+=======
+	AM_RANGE(0xe000, 0xe3ff) AM_RAM_WRITE(vram_w) AM_SHARE("videoram")
+	AM_RANGE(0xe400, 0xe47f) AM_RAM_WRITE(cram_w) AM_SHARE("colorram")
+	AM_RANGE(0xe800, 0xe800) AM_DEVWRITE("soundlatch", generic_latch_8_device, write)
+>>>>>>> upstream/master
 	AM_RANGE(0xec00, 0xec0f) AM_NOP /* Analog sound effects ?? ec00 sound enable ?*/
 	AM_RANGE(0xf000, 0xf0ff) AM_RAM AM_SHARE("spriteram")
 	AM_RANGE(0xf400, 0xf400) AM_WRITE(backgroundcolor_w)
@@ -69,18 +107,26 @@ static ADDRESS_MAP_START( rollrace_map, AS_PROGRAM, 8, rollrace_state )
 	AM_RANGE(0xf803, 0xf803) AM_WRITE(flipy_w)
 	AM_RANGE(0xf804, 0xf804) AM_READ_PORT("DSW1")
 	AM_RANGE(0xf805, 0xf805) AM_READ_PORT("DSW2")
+<<<<<<< HEAD
 	AM_RANGE(0xfc00, 0xfc00) AM_WRITE(flipx_w)
 	AM_RANGE(0xfc01, 0xfc01) AM_WRITE(nmi_mask_w)
 	AM_RANGE(0xfc02, 0xfc03) AM_WRITENOP /* coin counters */
 	AM_RANGE(0xfc04, 0xfc05) AM_WRITE(charbank_w)
 	AM_RANGE(0xfc06, 0xfc06) AM_WRITE(spritebank_w)
+=======
+	AM_RANGE(0xfc00, 0xfc07) AM_DEVWRITE("mainlatch", ls259_device, write_d0)
+>>>>>>> upstream/master
 ADDRESS_MAP_END
 
 
 static ADDRESS_MAP_START( rollrace_sound_map, AS_PROGRAM, 8, rollrace_state )
 	AM_RANGE(0x0000, 0x0fff) AM_ROM
 	AM_RANGE(0x2000, 0x2fff) AM_RAM
+<<<<<<< HEAD
 	AM_RANGE(0x3000, 0x3000) AM_READ(soundlatch_byte_r) AM_WRITE(sound_nmi_mask_w)
+=======
+	AM_RANGE(0x3000, 0x3000) AM_DEVREAD("soundlatch", generic_latch_8_device, read) AM_WRITE(sound_nmi_mask_w)
+>>>>>>> upstream/master
 	AM_RANGE(0x4000, 0x4001) AM_DEVWRITE("ay1", ay8910_device, address_data_w)
 	AM_RANGE(0x5000, 0x5001) AM_DEVWRITE("ay2", ay8910_device, address_data_w)
 	AM_RANGE(0x6000, 0x6001) AM_DEVWRITE("ay3", ay8910_device, address_data_w)
@@ -236,7 +282,11 @@ INTERRUPT_GEN_MEMBER(rollrace_state::sound_timer_irq)
 		device.execute().set_input_line(INPUT_LINE_NMI, PULSE_LINE);
 }
 
+<<<<<<< HEAD
 static MACHINE_CONFIG_START( rollrace, rollrace_state )
+=======
+static MACHINE_CONFIG_START( rollrace )
+>>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", Z80,XTAL_24MHz/8) /* verified on pcb */
@@ -247,12 +297,28 @@ static MACHINE_CONFIG_START( rollrace, rollrace_state )
 	MCFG_CPU_PROGRAM_MAP(rollrace_sound_map)
 	MCFG_CPU_PERIODIC_INT_DRIVER(rollrace_state, sound_timer_irq, 4*60)
 
+<<<<<<< HEAD
+=======
+	MCFG_DEVICE_ADD("mainlatch", LS259, 0)
+	MCFG_ADDRESSABLE_LATCH_Q0_OUT_CB(WRITELINE(rollrace_state, flipx_w))
+	MCFG_ADDRESSABLE_LATCH_Q1_OUT_CB(WRITELINE(rollrace_state, nmi_mask_w))
+	MCFG_ADDRESSABLE_LATCH_Q2_OUT_CB(WRITELINE(rollrace_state, coin_counter_1_w))
+	MCFG_ADDRESSABLE_LATCH_Q3_OUT_CB(WRITELINE(rollrace_state, coin_counter_2_w))
+	MCFG_ADDRESSABLE_LATCH_Q4_OUT_CB(WRITELINE(rollrace_state, charbank_0_w))
+	MCFG_ADDRESSABLE_LATCH_Q5_OUT_CB(WRITELINE(rollrace_state, charbank_1_w))
+	MCFG_ADDRESSABLE_LATCH_Q6_OUT_CB(WRITELINE(rollrace_state, spritebank_w))
+
+>>>>>>> upstream/master
 	/* video hardware */
 	MCFG_SCREEN_ADD("screen", RASTER)
 	MCFG_SCREEN_REFRESH_RATE(60)
 	MCFG_SCREEN_VBLANK_TIME(ATTOSECONDS_IN_USEC(2500) /* not accurate */)
 	MCFG_SCREEN_SIZE(256, 256)
+<<<<<<< HEAD
 	MCFG_SCREEN_VISIBLE_AREA(16,255,16, 255-16)
+=======
+	MCFG_SCREEN_VISIBLE_AREA(0,256-1,16, 255-16)
+>>>>>>> upstream/master
 	MCFG_SCREEN_UPDATE_DRIVER(rollrace_state, screen_update)
 	MCFG_SCREEN_PALETTE("palette")
 
@@ -263,6 +329,11 @@ static MACHINE_CONFIG_START( rollrace, rollrace_state )
 	/* sound hardware */
 	MCFG_SPEAKER_STANDARD_STEREO("lspeaker", "rspeaker")
 
+<<<<<<< HEAD
+=======
+	MCFG_GENERIC_LATCH_8_ADD("soundlatch")
+
+>>>>>>> upstream/master
 	MCFG_SOUND_ADD("ay1", AY8910,XTAL_24MHz/16) /* verified on pcb */
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "rspeaker", 0.10)
 
@@ -277,8 +348,13 @@ static MACHINE_CONFIG_DERIVED( rollace2, rollrace )
 
 	/* basic machine hardware */
 
+<<<<<<< HEAD
 	MCFG_SCREEN_MODIFY("screen")
 	MCFG_SCREEN_VISIBLE_AREA(0,255-24,16, 255-16)
+=======
+//  MCFG_SCREEN_MODIFY("screen")
+//  MCFG_SCREEN_VISIBLE_AREA(0,256-1,16, 255-16)
+>>>>>>> upstream/master
 MACHINE_CONFIG_END
 
 
@@ -431,6 +507,12 @@ ROM_START( rollace2 )
 ROM_END
 
 
+<<<<<<< HEAD
 GAME( 1983, fightrol, 0,        rollrace, rollrace, driver_device, 0, ROT270, "Kaneko (Taito license)", "Fighting Roller", MACHINE_IMPERFECT_SOUND | MACHINE_SUPPORTS_SAVE )
 GAME( 1983, rollace,  fightrol, rollrace, rollrace, driver_device, 0, ROT270, "Kaneko (Williams license)", "Roller Aces (set 1)", MACHINE_IMPERFECT_SOUND | MACHINE_SUPPORTS_SAVE )
 GAME( 1983, rollace2, fightrol, rollace2, rollrace, driver_device, 0, ROT90,  "Kaneko (Williams license)", "Roller Aces (set 2)", MACHINE_IMPERFECT_SOUND | MACHINE_SUPPORTS_SAVE )
+=======
+GAME( 1983, fightrol, 0,        rollrace, rollrace, rollrace_state, 0, ROT270, "Kaneko (Taito license)",    "Fighting Roller",     MACHINE_IMPERFECT_SOUND | MACHINE_SUPPORTS_SAVE )
+GAME( 1983, rollace,  fightrol, rollrace, rollrace, rollrace_state, 0, ROT270, "Kaneko (Williams license)", "Roller Aces (set 1)", MACHINE_IMPERFECT_SOUND | MACHINE_SUPPORTS_SAVE )
+GAME( 1983, rollace2, fightrol, rollace2, rollrace, rollrace_state, 0, ROT90,  "Kaneko (Williams license)", "Roller Aces (set 2)", MACHINE_IMPERFECT_SOUND | MACHINE_SUPPORTS_SAVE )
+>>>>>>> upstream/master

@@ -1,13 +1,35 @@
 // license:BSD-3-Clause
 // copyright-holders:Ville Linde
+<<<<<<< HEAD
 /* Analog Devices ADSP-2106x SHARC emulator v2.0
+=======
+/* Analog Devices ADSP-2106x SHARC emulator v3.0
+>>>>>>> upstream/master
 
    Written by Ville Linde
 */
 
 #include "emu.h"
+<<<<<<< HEAD
 #include "debugger.h"
 #include "sharc.h"
+=======
+#include "sharc.h"
+#include "sharcfe.h"
+
+#include "debugger.h"
+
+
+#define DISABLE_FAST_REGISTERS      1
+
+
+
+#define CACHE_SIZE                      (2 * 1024 * 1024)
+#define COMPILE_BACKWARDS_BYTES         128
+#define COMPILE_FORWARDS_BYTES          512
+#define COMPILE_MAX_INSTRUCTIONS        ((COMPILE_BACKWARDS_BYTES/4) + (COMPILE_FORWARDS_BYTES/4))
+#define COMPILE_MAX_SEQUENCE            64
+>>>>>>> upstream/master
 
 
 enum
@@ -20,7 +42,11 @@ enum
 	SHARC_R8,       SHARC_R9,       SHARC_R10,      SHARC_R11,
 	SHARC_R12,      SHARC_R13,      SHARC_R14,      SHARC_R15,
 	SHARC_SYSCON,   SHARC_SYSSTAT,  SHARC_MRF,      SHARC_MRB,
+<<<<<<< HEAD
 	SHARC_STSTKP,   SHARC_PCSTKP,   SHARC_LSTKP,
+=======
+	SHARC_STSTKP,   SHARC_PCSTKP,   SHARC_LSTKP,    SHARC_CURLCNTR,
+>>>>>>> upstream/master
 	SHARC_FADDR,    SHARC_DADDR,
 	SHARC_I0,       SHARC_I1,       SHARC_I2,       SHARC_I3,
 	SHARC_I4,       SHARC_I5,       SHARC_I6,       SHARC_I7,
@@ -40,6 +66,7 @@ enum
 	SHARC_B12,      SHARC_B13,      SHARC_B14,      SHARC_B15
 };
 
+<<<<<<< HEAD
 
 #define ROPCODE(pc)     ((UINT64)(m_internal_ram[((pc-0x20000) * 3) + 0]) << 32) | \
 						((UINT64)(m_internal_ram[((pc-0x20000) * 3) + 1]) << 16) | \
@@ -85,15 +112,94 @@ void adsp21062_device::CHANGE_PC_DELAYED(UINT32 newpc)
 
 	m_delay_slot1 = m_pc;
 	m_delay_slot2 = m_daddr;
+=======
+DEFINE_DEVICE_TYPE(ADSP21062, adsp21062_device, "adsp21062", "ADSP21062")
+
+static ADDRESS_MAP_START( internal_pgm, AS_PROGRAM, 64, adsp21062_device )
+	AM_RANGE(0x20000, 0x24fff) AM_READWRITE(pm0_r, pm0_w)
+	AM_RANGE(0x28000, 0x2cfff) AM_READWRITE(pm1_r, pm1_w)
+	AM_RANGE(0x30000, 0x34fff) AM_READWRITE(pm1_r, pm1_w)
+	AM_RANGE(0x38000, 0x3cfff) AM_READWRITE(pm1_r, pm1_w)
+ADDRESS_MAP_END
+
+static ADDRESS_MAP_START( internal_data, AS_DATA, 32, adsp21062_device )
+	AM_RANGE(0x00000, 0x000ff) AM_READWRITE(iop_r, iop_w)
+	AM_RANGE(0x20000, 0x27fff) AM_RAM AM_SHARE("block0")
+	AM_RANGE(0x28000, 0x2ffff) AM_RAM AM_SHARE("block1")
+	AM_RANGE(0x30000, 0x37fff) AM_RAM AM_SHARE("block1")
+	AM_RANGE(0x38000, 0x3ffff) AM_RAM AM_SHARE("block1")
+	AM_RANGE(0x40000, 0x4ffff) AM_READWRITE(dmw0_r, dmw0_w)
+	AM_RANGE(0x50000, 0x5ffff) AM_READWRITE(dmw1_r, dmw1_w)
+	AM_RANGE(0x60000, 0x6ffff) AM_READWRITE(dmw1_r, dmw1_w)
+	AM_RANGE(0x70000, 0x7ffff) AM_READWRITE(dmw1_r, dmw1_w)
+ADDRESS_MAP_END
+
+adsp21062_device::adsp21062_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: cpu_device(mconfig, ADSP21062, tag, owner, clock)
+	, m_program_config("program", ENDIANNESS_LITTLE, 64, 24, -3, ADDRESS_MAP_NAME(internal_pgm))
+	, m_data_config("data", ENDIANNESS_LITTLE, 32, 32, -2, ADDRESS_MAP_NAME(internal_data))
+	, m_boot_mode(BOOT_MODE_HOST)
+	, m_cache(CACHE_SIZE + sizeof(sharc_internal_state))
+	, m_drcuml(nullptr)
+	, m_drcfe(nullptr)
+	, m_block0(*this, "block0")
+	, m_block1(*this, "block1")
+	, m_enable_drc(false)
+{
+}
+
+device_memory_interface::space_config_vector adsp21062_device::memory_space_config() const
+{
+	return space_config_vector {
+		std::make_pair(AS_PROGRAM, &m_program_config),
+		std::make_pair(AS_DATA,    &m_data_config)
+	};
+}
+
+offs_t adsp21062_device::disasm_disassemble(std::ostream &stream, offs_t pc, const uint8_t *oprom, const uint8_t *opram, uint32_t options)
+{
+	extern CPU_DISASSEMBLE( sharc );
+	return CPU_DISASSEMBLE_NAME(sharc)(this, stream, pc, oprom, opram, options);
+}
+
+void adsp21062_device::enable_recompiler()
+{
+	m_enable_drc = allow_drc();
+}
+
+
+void adsp21062_device::CHANGE_PC(uint32_t newpc)
+{
+	m_core->pc = newpc;
+	m_core->daddr = newpc;
+	m_core->faddr = newpc+1;
+	m_core->nfaddr = newpc+2;
+}
+
+void adsp21062_device::CHANGE_PC_DELAYED(uint32_t newpc)
+{
+	m_core->nfaddr = newpc;
+
+	m_core->delay_slot1 = m_core->pc;
+	m_core->delay_slot2 = m_core->daddr;
+>>>>>>> upstream/master
 }
 
 TIMER_CALLBACK_MEMBER(adsp21062_device::sharc_iop_delayed_write_callback)
 {
+<<<<<<< HEAD
 	switch (m_iop_delayed_reg)
 	{
 		case 0x1c:
 		{
 			if (m_iop_delayed_data & 0x1)
+=======
+	switch (m_core->iop_delayed_reg)
+	{
+		case 0x1c:
+		{
+			if (m_core->iop_delayed_data & 0x1)
+>>>>>>> upstream/master
 			{
 				sharc_dma_exec(6);
 			}
@@ -102,13 +208,18 @@ TIMER_CALLBACK_MEMBER(adsp21062_device::sharc_iop_delayed_write_callback)
 
 		case 0x1d:
 		{
+<<<<<<< HEAD
 			if (m_iop_delayed_data & 0x1)
+=======
+			if (m_core->iop_delayed_data & 0x1)
+>>>>>>> upstream/master
 			{
 				sharc_dma_exec(7);
 			}
 			break;
 		}
 
+<<<<<<< HEAD
 		default:    fatalerror("SHARC: sharc_iop_delayed_write: unknown IOP register %02X\n", m_iop_delayed_reg);
 	}
 
@@ -128,11 +239,120 @@ void adsp21062_device::sharc_iop_delayed_w(UINT32 reg, UINT32 data, int cycles)
 UINT32 adsp21062_device::sharc_iop_r(UINT32 address)
 {
 	switch (address)
+=======
+		default:    fatalerror("SHARC: sharc_iop_delayed_write: unknown IOP register %02X\n", m_core->iop_delayed_reg);
+	}
+
+	m_core->delayed_iop_timer->adjust(attotime::never, 0);
+}
+
+void adsp21062_device::sharc_iop_delayed_w(uint32_t reg, uint32_t data, int cycles)
+{
+	m_core->iop_delayed_reg = reg;
+	m_core->iop_delayed_data = data;
+
+	m_core->delayed_iop_timer->adjust(cycles_to_attotime(cycles), 0);
+}
+
+// 0 012 0h 0l 1h
+// 1 453 2h 2l 1l
+// 2 678 3h 3l 4h
+// 3 ab9 5h 5l 4l
+// 4 cde 6h 6l 7h
+
+READ64_MEMBER( adsp21062_device::pm0_r)
+{
+	offs_t slot = offset >> 12;
+	offs_t base = (offset & 0xfff) + (slot >> 1) * (3<<12);
+	if(slot & 1)
+		return (uint64_t(m_block0[base + 0x2000]) << 16) | (m_block0[base + 0x1000] & 0xffff);
+	else
+		return (uint64_t(m_block0[base         ]) << 16) | (m_block0[base + 0x1000] >> 16);
+}
+
+WRITE64_MEMBER(adsp21062_device::pm0_w)
+{
+	offs_t slot = offset >> 12;
+	offs_t base = (offset & 0xfff) + (slot >> 1) * (3<<12);
+	if(slot & 1) {
+		if(ACCESSING_BITS_0_15)
+			m_block0[base + 0x1000] = (m_block0[base + 0x1000] & 0xffff0000) | (data & 0xffff);
+		m_block0[base + 0x2000] = (m_block0[base + 0x2000] & ~(mem_mask >> 16)) | ((data & mem_mask) >> 16);
+	} else {
+		m_block0[base + 0x0000] = (m_block0[base + 0x0000] & ~(mem_mask >> 16)) | ((data & mem_mask) >> 16);
+		if(ACCESSING_BITS_0_15)
+			m_block0[base + 0x1000] = (m_block0[base + 0x1000] & 0xffff) | ((data & 0xffff) << 16);
+	}
+}
+
+READ64_MEMBER( adsp21062_device::pm1_r)
+{
+	offs_t slot = offset >> 12;
+	offs_t base = (offset & 0xfff) + (slot >> 1) * (3<<12);
+	if(slot & 1)
+		return (uint64_t(m_block1[base + 0x2000]) << 16) | (m_block1[base + 0x1000] & 0xffff);
+	else
+		return (uint64_t(m_block1[base         ]) << 16) | (m_block1[base + 0x1000] >> 16);
+}
+
+WRITE64_MEMBER(adsp21062_device::pm1_w)
+{
+	offs_t slot = offset >> 12;
+	offs_t base = (offset & 0xfff) + (slot >> 1) * (3<<12);
+	if(slot & 1) {
+		if(ACCESSING_BITS_0_15)
+			m_block1[base + 0x1000] = (m_block1[base + 0x1000] & 0xffff0000) | (data & 0xffff);
+		m_block1[base + 0x2000] = (m_block1[base + 0x2000] & ~(mem_mask >> 16)) | ((data & mem_mask) >> 16);
+	} else {
+		m_block1[base + 0x0000] = (m_block1[base + 0x0000] & ~(mem_mask >> 16)) | ((data & mem_mask) >> 16);
+		if(ACCESSING_BITS_0_15)
+			m_block1[base + 0x1000] = (m_block1[base + 0x1000] & 0xffff) | ((data & 0xffff) << 16);
+	}
+}
+
+READ32_MEMBER( adsp21062_device::dmw0_r)
+{
+	if(offset & 1)
+		return m_block0[offset >> 1] >> 16;
+	else
+		return m_block0[offset >> 1] & 0xffff;
+}
+
+WRITE32_MEMBER(adsp21062_device::dmw0_w)
+{
+	if(offset & 1)
+		m_block0[offset >> 1] = (m_block0[offset >> 1] & 0xffff) | (data << 16);
+	else
+		m_block0[offset >> 1] = (m_block0[offset >> 1] & 0xffff0000) | (data & 0xffff);
+}
+
+READ32_MEMBER( adsp21062_device::dmw1_r)
+{
+	if(offset & 1)
+		return m_block1[offset >> 1] >> 16;
+	else
+		return m_block1[offset >> 1] & 0xffff;
+}
+
+WRITE32_MEMBER(adsp21062_device::dmw1_w)
+{
+	if(offset & 1)
+		m_block1[offset >> 1] = (m_block1[offset >> 1] & 0xffff) | (data << 16);
+	else
+		m_block1[offset >> 1] = (m_block1[offset >> 1] & 0xffff0000) | (data & 0xffff);
+}
+
+/* IOP registers */
+READ32_MEMBER( adsp21062_device::iop_r)
+{
+	switch (offset)
+>>>>>>> upstream/master
 	{
 		case 0x00: return 0;    // System configuration
 
 		case 0x37:      // DMA status
 		{
+<<<<<<< HEAD
 			return m_dma_status;
 		}
 		default:        fatalerror("sharc_iop_r: Unimplemented IOP reg %02X at %08X\n", address, m_pc);
@@ -142,12 +362,24 @@ UINT32 adsp21062_device::sharc_iop_r(UINT32 address)
 void adsp21062_device::sharc_iop_w(UINT32 address, UINT32 data)
 {
 	switch (address)
+=======
+			return m_core->dma_status;
+		}
+		default:        fatalerror("sharc_iop_r: Unimplemented IOP reg %02X at %08X\n", offset, m_core->pc);
+	}
+}
+
+WRITE32_MEMBER(adsp21062_device::iop_w)
+{
+	switch (offset)
+>>>>>>> upstream/master
 	{
 		case 0x00: break;       // System configuration
 		case 0x02: break;       // External Memory Wait State Configuration
 		case 0x04: // External port DMA buffer 0
 		/* TODO: Last Bronx uses this to init the program, int_index however is 0? */
 		{
+<<<<<<< HEAD
 			external_dma_write(m_extdma_shift,data);
 			m_extdma_shift++;
 			if(m_extdma_shift == 3)
@@ -166,6 +398,26 @@ void adsp21062_device::sharc_iop_w(UINT32 address, UINT32 data)
 			{
 				m_extdma_shift = 0;
 				m_dma[6].int_index ++;
+=======
+			external_dma_write(m_core->extdma_shift,data);
+			m_core->extdma_shift++;
+			if(m_core->extdma_shift == 3)
+				m_core->extdma_shift = 0;
+
+			#if 0
+			uint64_t r = pm_read48(m_core->dma[6].int_index);
+
+			r &= ~((uint64_t)(0xffff) << (m_core->extdma_shift*16));
+			r |= ((uint64_t)data & 0xffff) << (m_core->extdma_shift*16);
+
+			pm_write48(m_core->dma[6].int_index, r);
+
+			m_core->extdma_shift++;
+			if (m_core->extdma_shift == 3)
+			{
+				m_core->extdma_shift = 0;
+				m_core->dma[6].int_index ++;
+>>>>>>> upstream/master
 			}
 			#endif
 		}
@@ -186,13 +438,18 @@ void adsp21062_device::sharc_iop_w(UINT32 address, UINT32 data)
 		// DMA 6
 		case 0x1c:
 		{
+<<<<<<< HEAD
 			m_dma[6].control = data;
+=======
+			m_core->dma[6].control = data;
+>>>>>>> upstream/master
 			sharc_iop_delayed_w(0x1c, data, 1);
 			break;
 		}
 
 		case 0x20: break;
 
+<<<<<<< HEAD
 		case 0x40: m_dma[6].int_index = data; return;
 		case 0x41: m_dma[6].int_modifier = data; return;
 		case 0x42: m_dma[6].int_count = data; return;
@@ -201,15 +458,30 @@ void adsp21062_device::sharc_iop_w(UINT32 address, UINT32 data)
 		case 0x45: m_dma[6].ext_index = data; return;
 		case 0x46: m_dma[6].ext_modifier = data; return;
 		case 0x47: m_dma[6].ext_count = data; return;
+=======
+		case 0x40: m_core->dma[6].int_index = data; return;
+		case 0x41: m_core->dma[6].int_modifier = data; return;
+		case 0x42: m_core->dma[6].int_count = data; return;
+		case 0x43: m_core->dma[6].chain_ptr = data; return;
+		case 0x44: m_core->dma[6].gen_purpose = data; return;
+		case 0x45: m_core->dma[6].ext_index = data; return;
+		case 0x46: m_core->dma[6].ext_modifier = data; return;
+		case 0x47: m_core->dma[6].ext_count = data; return;
+>>>>>>> upstream/master
 
 		// DMA 7
 		case 0x1d:
 		{
+<<<<<<< HEAD
 			m_dma[7].control = data;
+=======
+			m_core->dma[7].control = data;
+>>>>>>> upstream/master
 			sharc_iop_delayed_w(0x1d, data, 30);
 			break;
 		}
 
+<<<<<<< HEAD
 		case 0x48: m_dma[7].int_index = data; return;
 		case 0x49: m_dma[7].int_modifier = data; return;
 		case 0x4a: m_dma[7].int_count = data; return;
@@ -220,13 +492,31 @@ void adsp21062_device::sharc_iop_w(UINT32 address, UINT32 data)
 		case 0x4f: m_dma[7].ext_count = data; return;
 
 		default:        fatalerror("sharc_iop_w: Unimplemented IOP reg %02X, %08X at %08X\n", address, data, m_pc);
+=======
+		case 0x48: m_core->dma[7].int_index = data; return;
+		case 0x49: m_core->dma[7].int_modifier = data; return;
+		case 0x4a: m_core->dma[7].int_count = data; return;
+		case 0x4b: m_core->dma[7].chain_ptr = data; return;
+		case 0x4c: m_core->dma[7].gen_purpose = data; return;
+		case 0x4d: m_core->dma[7].ext_index = data; return;
+		case 0x4e: m_core->dma[7].ext_modifier = data; return;
+		case 0x4f: m_core->dma[7].ext_count = data; return;
+
+		default:        fatalerror("sharc_iop_w: Unimplemented IOP reg %02X, %08X at %08X\n", offset, data, m_core->pc);
+>>>>>>> upstream/master
 	}
 }
 
 
+<<<<<<< HEAD
 #include "sharcmem.inc"
 #include "sharcdma.inc"
 #include "sharcops.inc"
+=======
+#include "sharcmem.hxx"
+#include "sharcdma.hxx"
+#include "sharcops.hxx"
+>>>>>>> upstream/master
 #include "sharcops.h"
 
 
@@ -243,7 +533,11 @@ void adsp21062_device::build_opcode_table()
 
 	for (i=0; i < 512; i++)
 	{
+<<<<<<< HEAD
 		UINT16 op = i << 7;
+=======
+		uint16_t op = i << 7;
+>>>>>>> upstream/master
 
 		for (j=0; j < num_ops; j++)
 		{
@@ -264,34 +558,55 @@ void adsp21062_device::build_opcode_table()
 
 /*****************************************************************************/
 
+<<<<<<< HEAD
 void adsp21062_device::external_iop_write(UINT32 address, UINT32 data)
+=======
+void adsp21062_device::external_iop_write(uint32_t address, uint32_t data)
+>>>>>>> upstream/master
 {
 	if (address == 0x1c)
 	{
 		if (data != 0)
 		{
+<<<<<<< HEAD
 			m_dma[6].control = data;
+=======
+			m_core->dma[6].control = data;
+>>>>>>> upstream/master
 		}
 	}
 	else
 	{
 		osd_printf_debug("SHARC IOP write %08X, %08X\n", address, data);
+<<<<<<< HEAD
 		sharc_iop_w(address, data);
 	}
 }
 
 void adsp21062_device::external_dma_write(UINT32 address, UINT64 data)
+=======
+		m_data->write_dword(address << 2, data);
+	}
+}
+
+void adsp21062_device::external_dma_write(uint32_t address, uint64_t data)
+>>>>>>> upstream/master
 {
 	/*
 	All addresses in the 17-bit index registers are offset by 0x0002 0000, the
 	first internal RAM location, before they are used by the DMA controller.
 	*/
 
+<<<<<<< HEAD
 	switch ((m_dma[6].control >> 6) & 0x3)
+=======
+	switch ((m_core->dma[6].control >> 6) & 0x3)
+>>>>>>> upstream/master
 	{
 		case 2:         // 16/48 packing
 		{
 			int shift = address % 3;
+<<<<<<< HEAD
 			UINT64 r = pm_read48((m_dma[6].int_index & 0x1ffff) | 0x20000);
 
 			r &= ~((UINT64)(0xffff) << (shift*16));
@@ -302,12 +617,28 @@ void adsp21062_device::external_dma_write(UINT32 address, UINT64 data)
 			if (shift == 2)
 			{
 				m_dma[6].int_index += m_dma[6].int_modifier;
+=======
+			uint64_t r = pm_read48((m_core->dma[6].int_index & 0x1ffff) | 0x20000);
+
+			r &= ~((uint64_t)(0xffff) << (shift*16));
+			r |= (data & 0xffff) << (shift*16);
+
+			pm_write48((m_core->dma[6].int_index & 0x1ffff) | 0x20000, r);
+
+			if (shift == 2)
+			{
+				m_core->dma[6].int_index += m_core->dma[6].int_modifier;
+>>>>>>> upstream/master
 			}
 			break;
 		}
 		default:
 		{
+<<<<<<< HEAD
 			fatalerror("sharc_external_dma_write: unimplemented packing mode %d\n", (m_dma[6].control >> 6) & 0x3);
+=======
+			fatalerror("sharc_external_dma_write: unimplemented packing mode %d\n", (m_core->dma[6].control >> 6) & 0x3);
+>>>>>>> upstream/master
 		}
 	}
 }
@@ -316,11 +647,18 @@ void adsp21062_device::device_start()
 {
 	int saveindex;
 
+<<<<<<< HEAD
+=======
+	m_core = (sharc_internal_state *)m_cache.alloc_near(sizeof(sharc_internal_state));
+	memset(m_core, 0, sizeof(sharc_internal_state));
+
+>>>>>>> upstream/master
 	m_program = &space(AS_PROGRAM);
 	m_data = &space(AS_DATA);
 
 	build_opcode_table();
 
+<<<<<<< HEAD
 	m_internal_ram_block0 = &m_internal_ram[0];
 	m_internal_ram_block1 = &m_internal_ram[0x20000/2];
 
@@ -339,10 +677,126 @@ void adsp21062_device::device_start()
 		m_dma_op[i].chained_direction = 0;
 		m_dma_op[i].active = false;
 		m_dma_op[i].timer = machine().scheduler().timer_alloc(timer_expired_delegate(FUNC(adsp21062_device::sharc_dma_callback), this));
+=======
+	// init UML generator
+	uint32_t umlflags = 0;
+	m_drcuml = std::make_unique<drcuml_state>(*this, m_cache, umlflags, 1, 24, 0);
+
+	// add UML symbols
+	m_drcuml->symbol_add(&m_core->pc, sizeof(m_core->pc), "pc");
+	m_drcuml->symbol_add(&m_core->icount, sizeof(m_core->icount), "icount");
+
+	for (int i=0; i < 16; i++)
+	{
+		char buf[10];
+		sprintf(buf, "r%d", i);
+		m_drcuml->symbol_add(&m_core->r[i], sizeof(m_core->r[i]), buf);
+
+		if (i < 8)
+		{
+			sprintf(buf, "dag_i%d", i);
+			m_drcuml->symbol_add(&m_core->dag1.i[i & 7], sizeof(m_core->dag1.i[i & 7]), buf);
+			sprintf(buf, "dag_m%d", i);
+			m_drcuml->symbol_add(&m_core->dag1.m[i & 7], sizeof(m_core->dag1.m[i & 7]), buf);
+			sprintf(buf, "dag_l%d", i);
+			m_drcuml->symbol_add(&m_core->dag1.l[i & 7], sizeof(m_core->dag1.l[i & 7]), buf);
+			sprintf(buf, "dag_b%d", i);
+			m_drcuml->symbol_add(&m_core->dag1.b[i & 7], sizeof(m_core->dag1.b[i & 7]), buf);
+		}
+		else
+		{
+			sprintf(buf, "dag_i%d", i);
+			m_drcuml->symbol_add(&m_core->dag2.i[i & 7], sizeof(m_core->dag2.i[i & 7]), buf);
+			sprintf(buf, "dag_m%d", i);
+			m_drcuml->symbol_add(&m_core->dag2.m[i & 7], sizeof(m_core->dag2.m[i & 7]), buf);
+			sprintf(buf, "dag_l%d", i);
+			m_drcuml->symbol_add(&m_core->dag2.l[i & 7], sizeof(m_core->dag2.l[i & 7]), buf);
+			sprintf(buf, "dag_b%d", i);
+			m_drcuml->symbol_add(&m_core->dag2.b[i & 7], sizeof(m_core->dag2.b[i & 7]), buf);
+		}
+	}
+
+	m_drcuml->symbol_add(&m_core->astat, sizeof(m_core->astat), "astat");
+	m_drcuml->symbol_add(&m_core->mode1, sizeof(m_core->mode1), "mode1");
+	m_drcuml->symbol_add(&m_core->mode2, sizeof(m_core->mode2), "mode2");
+	m_drcuml->symbol_add(&m_core->lcntr, sizeof(m_core->lcntr), "lcntr");
+	m_drcuml->symbol_add(&m_core->curlcntr, sizeof(m_core->curlcntr), "curlcntr");
+	m_drcuml->symbol_add(&m_core->imask, sizeof(m_core->imask), "imask");
+	m_drcuml->symbol_add(&m_core->imaskp, sizeof(m_core->imaskp), "imaskp");
+	m_drcuml->symbol_add(&m_core->irptl, sizeof(m_core->irptl), "irptl");
+	m_drcuml->symbol_add(&m_core->ustat1, sizeof(m_core->ustat1), "ustat1");
+	m_drcuml->symbol_add(&m_core->ustat2, sizeof(m_core->ustat2), "ustat2");
+	m_drcuml->symbol_add(&m_core->stky, sizeof(m_core->stky), "stky");
+
+	m_drcuml->symbol_add(&m_core->astat_drc.az, sizeof(m_core->astat_drc.az), "astat_az");
+	m_drcuml->symbol_add(&m_core->astat_drc.ac, sizeof(m_core->astat_drc.ac), "astat_ac");
+	m_drcuml->symbol_add(&m_core->astat_drc.an, sizeof(m_core->astat_drc.an), "astat_an");
+	m_drcuml->symbol_add(&m_core->astat_drc.av, sizeof(m_core->astat_drc.av), "astat_av");
+	m_drcuml->symbol_add(&m_core->astat_drc.ai, sizeof(m_core->astat_drc.ai), "astat_ai");
+	m_drcuml->symbol_add(&m_core->astat_drc.as, sizeof(m_core->astat_drc.as), "astat_as");
+	m_drcuml->symbol_add(&m_core->astat_drc.mv, sizeof(m_core->astat_drc.mv), "astat_mv");
+	m_drcuml->symbol_add(&m_core->astat_drc.mn, sizeof(m_core->astat_drc.mn), "astat_mn");
+	m_drcuml->symbol_add(&m_core->astat_drc.mu, sizeof(m_core->astat_drc.mu), "astat_mu");
+	m_drcuml->symbol_add(&m_core->astat_drc.mi, sizeof(m_core->astat_drc.mi), "astat_mi");
+	m_drcuml->symbol_add(&m_core->astat_drc.sz, sizeof(m_core->astat_drc.sz), "astat_sz");
+	m_drcuml->symbol_add(&m_core->astat_drc.sv, sizeof(m_core->astat_drc.sv), "astat_sv");
+	m_drcuml->symbol_add(&m_core->astat_drc.ss, sizeof(m_core->astat_drc.ss), "astat_ss");
+
+	m_drcuml->symbol_add(&m_core->arg0, sizeof(m_core->arg0), "arg0");
+	m_drcuml->symbol_add(&m_core->arg1, sizeof(m_core->arg1), "arg1");
+	m_drcuml->symbol_add(&m_core->arg2, sizeof(m_core->arg2), "arg2");
+	m_drcuml->symbol_add(&m_core->arg3, sizeof(m_core->arg3), "arg3");
+
+	m_drcuml->symbol_add(&m_core->dreg_temp, sizeof(m_core->dreg_temp), "dreg_temp");
+	m_drcuml->symbol_add(&m_core->lstkp, sizeof(m_core->lstkp), "lstkp");
+	m_drcuml->symbol_add(&m_core->px, sizeof(m_core->px), "px");
+
+	m_drcfe = std::make_unique<sharc_frontend>(this, COMPILE_BACKWARDS_BYTES, COMPILE_FORWARDS_BYTES, COMPILE_MAX_SEQUENCE);
+
+	for (int i = 0; i < 16; i++)
+	{
+		m_regmap[i] = uml::mem(&m_core->r[i]);
+	}
+
+	// I0-3 used by the DRC, rest can be assigned to fast registers
+	if (!DISABLE_FAST_REGISTERS)
+	{
+		drcbe_info beinfo;
+		m_drcuml->get_backend_info(beinfo);
+		if (beinfo.direct_iregs > 4)
+			m_regmap[0] = uml::I4;
+		if (beinfo.direct_iregs > 5)
+			m_regmap[1] = uml::I5;
+		if (beinfo.direct_iregs > 6)
+			m_regmap[2] = uml::I6;
+		if (beinfo.direct_iregs > 7)
+			m_regmap[3] = uml::I7;
+	}
+
+	m_core->cache_dirty = 1;
+
+
+	m_core->delayed_iop_timer = machine().scheduler().timer_alloc(timer_expired_delegate(FUNC(adsp21062_device::sharc_iop_delayed_write_callback), this));
+
+	for (auto & elem : m_core->dma_op)
+	{
+		elem.src = 0;
+		elem.dst = 0;
+		elem.chain_ptr = 0;
+		elem.src_modifier = 0;
+		elem.dst_modifier = 0;
+		elem.src_count = 0;
+		elem.dst_count = 0;
+		elem.pmode = 0;
+		elem.chained_direction = 0;
+		elem.active = false;
+		elem.timer = machine().scheduler().timer_alloc(timer_expired_delegate(FUNC(adsp21062_device::sharc_dma_callback), this));
+>>>>>>> upstream/master
 	}
 
 	for (int i=0; i < 16; i++)
 	{
+<<<<<<< HEAD
 		m_r[i].r = 0;
 		m_reg_alt[i].r = 0;
 	}
@@ -635,16 +1089,319 @@ void adsp21062_device::device_start()
 	state_add( STATE_GENPC, "GENPC", m_pc).noshow();
 
 	m_icountptr = &m_icount;
+=======
+		m_core->r[i].r = 0;
+		m_core->reg_alt[i].r = 0;
+	}
+	m_core->mrf = 0;
+	m_core->mrb = 0;
+	for (auto & elem : m_core->pcstack)
+	{
+		elem = 0;
+	}
+	for (int i=0; i < 6; i++)
+	{
+		m_core->lcstack[i] = 0;
+		m_core->lastack[i] = 0;
+	}
+	m_core->pcstk = 0;
+	m_core->laddr.addr = m_core->laddr.code = m_core->laddr.loop_type = 0;
+	m_core->curlcntr = 0;
+	m_core->lcntr = 0;
+	for (int i=0; i < 8; i++)
+	{
+		m_core->dag1.i[i] = m_core->dag1.m[i] = m_core->dag1.b[i] = m_core->dag1.l[i] = 0;
+		m_core->dag2.i[i] = m_core->dag2.m[i] = m_core->dag2.b[i] = m_core->dag2.l[i] = 0;
+		m_core->dag1_alt.i[i] = m_core->dag1_alt.m[i] = m_core->dag1_alt.b[i] = m_core->dag1_alt.l[i] = 0;
+		m_core->dag2_alt.i[i] = m_core->dag2_alt.m[i] = m_core->dag2_alt.b[i] = m_core->dag2_alt.l[i] = 0;
+	}
+	for (auto & elem : m_core->dma)
+	{
+		elem.control = 0;
+		elem.int_index = 0;
+		elem.int_modifier = 0;
+		elem.int_count = 0;
+		elem.chain_ptr = 0;
+		elem.gen_purpose = 0;
+		elem.ext_index = 0;
+		elem.ext_modifier = 0;
+		elem.ext_count = 0;
+	}
+	m_core->mode1 = 0;
+	m_core->mode2 = 0;
+	m_core->astat = 0;
+	m_core->irptl = 0;
+	m_core->imask = 0;
+	m_core->imaskp = 0;
+	m_core->ustat1 = 0;
+	m_core->ustat2 = 0;
+	m_core->flag[0] = m_core->flag[1] = m_core->flag[2] = m_core->flag[3] = 0;
+	m_core->syscon = 0;
+	m_core->sysstat = 0;
+	for (auto & elem : m_core->status_stack)
+	{
+		elem.mode1 = 0;
+		elem.astat = 0;
+	}
+	m_core->status_stkp = 0;
+	m_core->px = 0;
+	m_core->opcode = 0;
+	m_core->irq_pending = 0;
+	m_core->active_irq_num = 0;
+	m_core->dma_status = 0;
+	m_core->iop_delayed_reg = 0;
+	m_core->iop_delayed_data = 0;
+	m_core->delay_slot1 = 0;
+	m_core->delay_slot2 = 0;
+	m_core->systemreg_latency_cycles = 0;
+	m_core->systemreg_latency_reg = 0;
+	m_core->systemreg_latency_data = 0;
+	m_core->systemreg_previous_data = 0;
+	m_core->astat_old = 0;
+	m_core->astat_old_old = 0;
+	m_core->astat_old_old_old = 0;
+
+	m_core->fp0 = 0.0f;
+	m_core->fp1 = 1.0f;
+
+	save_item(NAME(m_core->pc));
+	save_pointer(NAME(&m_core->r[0].r), ARRAY_LENGTH(m_core->r));
+	save_pointer(NAME(&m_core->reg_alt[0].r), ARRAY_LENGTH(m_core->reg_alt));
+	save_item(NAME(m_core->mrf));
+	save_item(NAME(m_core->mrb));
+
+	save_item(NAME(m_core->pcstack));
+	save_item(NAME(m_core->lcstack));
+	save_item(NAME(m_core->lastack));
+	save_item(NAME(m_core->lstkp));
+
+	save_item(NAME(m_core->faddr));
+	save_item(NAME(m_core->daddr));
+	save_item(NAME(m_core->pcstk));
+	save_item(NAME(m_core->pcstkp));
+	save_item(NAME(m_core->laddr.addr));
+	save_item(NAME(m_core->laddr.code));
+	save_item(NAME(m_core->laddr.loop_type));
+	save_item(NAME(m_core->curlcntr));
+	save_item(NAME(m_core->lcntr));
+
+	save_item(NAME(m_core->dag1.i));
+	save_item(NAME(m_core->dag1.m));
+	save_item(NAME(m_core->dag1.b));
+	save_item(NAME(m_core->dag1.l));
+	save_item(NAME(m_core->dag2.i));
+	save_item(NAME(m_core->dag2.m));
+	save_item(NAME(m_core->dag2.b));
+	save_item(NAME(m_core->dag2.l));
+	save_item(NAME(m_core->dag1_alt.i));
+	save_item(NAME(m_core->dag1_alt.m));
+	save_item(NAME(m_core->dag1_alt.b));
+	save_item(NAME(m_core->dag1_alt.l));
+	save_item(NAME(m_core->dag2_alt.i));
+	save_item(NAME(m_core->dag2_alt.m));
+	save_item(NAME(m_core->dag2_alt.b));
+	save_item(NAME(m_core->dag2_alt.l));
+
+	for (saveindex = 0; saveindex < ARRAY_LENGTH(m_core->dma); saveindex++)
+	{
+		save_item(NAME(m_core->dma[saveindex].control), saveindex);
+		save_item(NAME(m_core->dma[saveindex].int_index), saveindex);
+		save_item(NAME(m_core->dma[saveindex].int_modifier), saveindex);
+		save_item(NAME(m_core->dma[saveindex].int_count), saveindex);
+		save_item(NAME(m_core->dma[saveindex].chain_ptr), saveindex);
+		save_item(NAME(m_core->dma[saveindex].gen_purpose), saveindex);
+		save_item(NAME(m_core->dma[saveindex].ext_index), saveindex);
+		save_item(NAME(m_core->dma[saveindex].ext_modifier), saveindex);
+		save_item(NAME(m_core->dma[saveindex].ext_count), saveindex);
+	}
+
+	save_item(NAME(m_core->mode1));
+	save_item(NAME(m_core->mode2));
+	save_item(NAME(m_core->astat));
+	save_item(NAME(m_core->stky));
+	save_item(NAME(m_core->irptl));
+	save_item(NAME(m_core->imask));
+	save_item(NAME(m_core->imaskp));
+	save_item(NAME(m_core->ustat1));
+	save_item(NAME(m_core->ustat2));
+
+	save_item(NAME(m_core->flag));
+
+	save_item(NAME(m_core->syscon));
+	save_item(NAME(m_core->sysstat));
+
+	for (saveindex = 0; saveindex < ARRAY_LENGTH(m_core->status_stack); saveindex++)
+	{
+		save_item(NAME(m_core->status_stack[saveindex].mode1), saveindex);
+		save_item(NAME(m_core->status_stack[saveindex].astat), saveindex);
+	}
+	save_item(NAME(m_core->status_stkp));
+
+	save_item(NAME(m_core->px));
+
+	save_item(NAME(m_core->opcode));
+
+	save_item(NAME(m_core->nfaddr));
+
+	save_item(NAME(m_core->idle));
+	save_item(NAME(m_core->irq_pending));
+	save_item(NAME(m_core->active_irq_num));
+
+	for (saveindex = 0; saveindex < ARRAY_LENGTH(m_core->dma_op); saveindex++)
+	{
+		save_item(NAME(m_core->dma_op[saveindex].src), saveindex);
+		save_item(NAME(m_core->dma_op[saveindex].dst), saveindex);
+		save_item(NAME(m_core->dma_op[saveindex].chain_ptr), saveindex);
+		save_item(NAME(m_core->dma_op[saveindex].src_modifier), saveindex);
+		save_item(NAME(m_core->dma_op[saveindex].dst_modifier), saveindex);
+		save_item(NAME(m_core->dma_op[saveindex].src_count), saveindex);
+		save_item(NAME(m_core->dma_op[saveindex].dst_count), saveindex);
+		save_item(NAME(m_core->dma_op[saveindex].pmode), saveindex);
+		save_item(NAME(m_core->dma_op[saveindex].chained_direction), saveindex);
+		save_item(NAME(m_core->dma_op[saveindex].active), saveindex);
+	}
+
+	save_item(NAME(m_core->dma_status));
+
+	save_item(NAME(m_core->interrupt_active));
+
+	save_item(NAME(m_core->iop_delayed_reg));
+	save_item(NAME(m_core->iop_delayed_data));
+
+	save_item(NAME(m_core->delay_slot1));
+	save_item(NAME(m_core->delay_slot2));
+
+	save_item(NAME(m_core->systemreg_latency_cycles));
+	save_item(NAME(m_core->systemreg_latency_reg));
+	save_item(NAME(m_core->systemreg_latency_data));
+	save_item(NAME(m_core->systemreg_previous_data));
+
+	save_item(NAME(m_core->astat_old));
+	save_item(NAME(m_core->astat_old_old));
+	save_item(NAME(m_core->astat_old_old_old));
+
+	state_add( SHARC_PC,     "PC", m_core->pc).formatstr("%08X");
+	state_add( SHARC_PCSTK,  "PCSTK", m_core->pcstk).formatstr("%08X");
+	state_add( SHARC_PCSTKP, "PCSTKP", m_core->pcstkp).formatstr("%08X");
+	state_add( SHARC_LSTKP,  "LSTKP", m_core->lstkp).formatstr("%08X");
+	state_add( SHARC_FADDR,  "FADDR", m_core->faddr).formatstr("%08X");
+	state_add( SHARC_DADDR,  "DADDR", m_core->daddr).formatstr("%08X");
+	state_add( SHARC_MODE1,  "MODE1", m_core->mode1).formatstr("%08X");
+	state_add( SHARC_MODE2,  "MODE2", m_core->mode2).formatstr("%08X");
+	state_add( SHARC_ASTAT,  "ASTAT", m_core->astat).formatstr("%08X");
+	state_add( SHARC_IRPTL,  "IRPTL", m_core->irptl).formatstr("%08X");
+	state_add( SHARC_IMASK,  "IMASK", m_core->imask).formatstr("%08X");
+	state_add( SHARC_USTAT1, "USTAT1", m_core->ustat1).formatstr("%08X");
+	state_add( SHARC_USTAT2, "USTAT2", m_core->ustat2).formatstr("%08X");
+	state_add( SHARC_CURLCNTR, "CURLCNTR", m_core->curlcntr).formatstr("%08X");
+	state_add( SHARC_STSTKP, "STSTKP", m_core->status_stkp).formatstr("%08X");
+
+	state_add( SHARC_R0,     "R0", m_core->r[0].r).formatstr("%08X");
+	state_add( SHARC_R1,     "R1", m_core->r[1].r).formatstr("%08X");
+	state_add( SHARC_R2,     "R2", m_core->r[2].r).formatstr("%08X");
+	state_add( SHARC_R3,     "R3", m_core->r[3].r).formatstr("%08X");
+	state_add( SHARC_R4,     "R4", m_core->r[4].r).formatstr("%08X");
+	state_add( SHARC_R5,     "R5", m_core->r[5].r).formatstr("%08X");
+	state_add( SHARC_R6,     "R6", m_core->r[6].r).formatstr("%08X");
+	state_add( SHARC_R7,     "R7", m_core->r[7].r).formatstr("%08X");
+	state_add( SHARC_R8,     "R8", m_core->r[8].r).formatstr("%08X");
+	state_add( SHARC_R9,     "R9", m_core->r[9].r).formatstr("%08X");
+	state_add( SHARC_R10,    "R10", m_core->r[10].r).formatstr("%08X");
+	state_add( SHARC_R11,    "R11", m_core->r[11].r).formatstr("%08X");
+	state_add( SHARC_R12,    "R12", m_core->r[12].r).formatstr("%08X");
+	state_add( SHARC_R13,    "R13", m_core->r[13].r).formatstr("%08X");
+	state_add( SHARC_R14,    "R14", m_core->r[14].r).formatstr("%08X");
+	state_add( SHARC_R15,    "R15", m_core->r[15].r).formatstr("%08X");
+
+	state_add( SHARC_I0,     "I0", m_core->dag1.i[0]).formatstr("%08X");
+	state_add( SHARC_I1,     "I1", m_core->dag1.i[1]).formatstr("%08X");
+	state_add( SHARC_I2,     "I2", m_core->dag1.i[2]).formatstr("%08X");
+	state_add( SHARC_I3,     "I3", m_core->dag1.i[3]).formatstr("%08X");
+	state_add( SHARC_I4,     "I4", m_core->dag1.i[4]).formatstr("%08X");
+	state_add( SHARC_I5,     "I5", m_core->dag1.i[5]).formatstr("%08X");
+	state_add( SHARC_I6,     "I6", m_core->dag1.i[6]).formatstr("%08X");
+	state_add( SHARC_I7,     "I7", m_core->dag1.i[7]).formatstr("%08X");
+	state_add( SHARC_I8,     "I8", m_core->dag2.i[0]).formatstr("%08X");
+	state_add( SHARC_I9,     "I9", m_core->dag2.i[1]).formatstr("%08X");
+	state_add( SHARC_I10,    "I10", m_core->dag2.i[2]).formatstr("%08X");
+	state_add( SHARC_I11,    "I11", m_core->dag2.i[3]).formatstr("%08X");
+	state_add( SHARC_I12,    "I12", m_core->dag2.i[4]).formatstr("%08X");
+	state_add( SHARC_I13,    "I13", m_core->dag2.i[5]).formatstr("%08X");
+	state_add( SHARC_I14,    "I14", m_core->dag2.i[6]).formatstr("%08X");
+	state_add( SHARC_I15,    "I15", m_core->dag2.i[7]).formatstr("%08X");
+
+	state_add( SHARC_M0,     "M0", m_core->dag1.m[0]).formatstr("%08X");
+	state_add( SHARC_M1,     "M1", m_core->dag1.m[1]).formatstr("%08X");
+	state_add( SHARC_M2,     "M2", m_core->dag1.m[2]).formatstr("%08X");
+	state_add( SHARC_M3,     "M3", m_core->dag1.m[3]).formatstr("%08X");
+	state_add( SHARC_M4,     "M4", m_core->dag1.m[4]).formatstr("%08X");
+	state_add( SHARC_M5,     "M5", m_core->dag1.m[5]).formatstr("%08X");
+	state_add( SHARC_M6,     "M6", m_core->dag1.m[6]).formatstr("%08X");
+	state_add( SHARC_M7,     "M7", m_core->dag1.m[7]).formatstr("%08X");
+	state_add( SHARC_M8,     "M8", m_core->dag2.m[0]).formatstr("%08X");
+	state_add( SHARC_M9,     "M9", m_core->dag2.m[1]).formatstr("%08X");
+	state_add( SHARC_M10,    "M10", m_core->dag2.m[2]).formatstr("%08X");
+	state_add( SHARC_M11,    "M11", m_core->dag2.m[3]).formatstr("%08X");
+	state_add( SHARC_M12,    "M12", m_core->dag2.m[4]).formatstr("%08X");
+	state_add( SHARC_M13,    "M13", m_core->dag2.m[5]).formatstr("%08X");
+	state_add( SHARC_M14,    "M14", m_core->dag2.m[6]).formatstr("%08X");
+	state_add( SHARC_M15,    "M15", m_core->dag2.m[7]).formatstr("%08X");
+
+	state_add( SHARC_L0,     "L0", m_core->dag1.l[0]).formatstr("%08X");
+	state_add( SHARC_L1,     "L1", m_core->dag1.l[1]).formatstr("%08X");
+	state_add( SHARC_L2,     "L2", m_core->dag1.l[2]).formatstr("%08X");
+	state_add( SHARC_L3,     "L3", m_core->dag1.l[3]).formatstr("%08X");
+	state_add( SHARC_L4,     "L4", m_core->dag1.l[4]).formatstr("%08X");
+	state_add( SHARC_L5,     "L5", m_core->dag1.l[5]).formatstr("%08X");
+	state_add( SHARC_L6,     "L6", m_core->dag1.l[6]).formatstr("%08X");
+	state_add( SHARC_L7,     "L7", m_core->dag1.l[7]).formatstr("%08X");
+	state_add( SHARC_L8,     "L8", m_core->dag2.l[0]).formatstr("%08X");
+	state_add( SHARC_L9,     "L9", m_core->dag2.l[1]).formatstr("%08X");
+	state_add( SHARC_L10,    "L10", m_core->dag2.l[2]).formatstr("%08X");
+	state_add( SHARC_L11,    "L11", m_core->dag2.l[3]).formatstr("%08X");
+	state_add( SHARC_L12,    "L12", m_core->dag2.l[4]).formatstr("%08X");
+	state_add( SHARC_L13,    "L13", m_core->dag2.l[5]).formatstr("%08X");
+	state_add( SHARC_L14,    "L14", m_core->dag2.l[6]).formatstr("%08X");
+	state_add( SHARC_L15,    "L15", m_core->dag2.l[7]).formatstr("%08X");
+
+	state_add( SHARC_B0,     "B0", m_core->dag1.b[0]).formatstr("%08X");
+	state_add( SHARC_B1,     "B1", m_core->dag1.b[1]).formatstr("%08X");
+	state_add( SHARC_B2,     "B2", m_core->dag1.b[2]).formatstr("%08X");
+	state_add( SHARC_B3,     "B3", m_core->dag1.b[3]).formatstr("%08X");
+	state_add( SHARC_B4,     "B4", m_core->dag1.b[4]).formatstr("%08X");
+	state_add( SHARC_B5,     "B5", m_core->dag1.b[5]).formatstr("%08X");
+	state_add( SHARC_B6,     "B6", m_core->dag1.b[6]).formatstr("%08X");
+	state_add( SHARC_B7,     "B7", m_core->dag1.b[7]).formatstr("%08X");
+	state_add( SHARC_B8,     "B8", m_core->dag2.b[0]).formatstr("%08X");
+	state_add( SHARC_B9,     "B9", m_core->dag2.b[1]).formatstr("%08X");
+	state_add( SHARC_B10,    "B10", m_core->dag2.b[2]).formatstr("%08X");
+	state_add( SHARC_B11,    "B11", m_core->dag2.b[3]).formatstr("%08X");
+	state_add( SHARC_B12,    "B12", m_core->dag2.b[4]).formatstr("%08X");
+	state_add( SHARC_B13,    "B13", m_core->dag2.b[5]).formatstr("%08X");
+	state_add( SHARC_B14,    "B14", m_core->dag2.b[6]).formatstr("%08X");
+	state_add( SHARC_B15,    "B15", m_core->dag2.b[7]).formatstr("%08X");
+
+	state_add( STATE_GENPC, "GENPC", m_core->pc).noshow();
+	state_add( STATE_GENPCBASE, "CURPC", m_core->pc).noshow();
+
+	m_icountptr = &m_core->icount;
+>>>>>>> upstream/master
 }
 
 void adsp21062_device::device_reset()
 {
+<<<<<<< HEAD
 	memset(m_internal_ram, 0, 2 * 0x10000 * sizeof(UINT16));
+=======
+	memset(m_block0, 0, 0x8000 * sizeof(uint32_t));
+	memset(m_block1, 0, 0x8000 * sizeof(uint32_t));
+>>>>>>> upstream/master
 
 	switch(m_boot_mode)
 	{
 		case BOOT_MODE_EPROM:
 		{
+<<<<<<< HEAD
 			m_dma[6].int_index      = 0x20000;
 			m_dma[6].int_modifier   = 1;
 			m_dma[6].int_count      = 0x100;
@@ -652,20 +1409,40 @@ void adsp21062_device::device_reset()
 			m_dma[6].ext_modifier   = 1;
 			m_dma[6].ext_count      = 0x600;
 			m_dma[6].control        = 0x2a1;
+=======
+			m_core->dma[6].int_index      = 0x20000;
+			m_core->dma[6].int_modifier   = 1;
+			m_core->dma[6].int_count      = 0x100;
+			m_core->dma[6].ext_index      = 0x400000;
+			m_core->dma[6].ext_modifier   = 1;
+			m_core->dma[6].ext_count      = 0x600;
+			m_core->dma[6].control        = 0x2a1;
+>>>>>>> upstream/master
 
 			sharc_dma_exec(6);
 			dma_op(6);
 
+<<<<<<< HEAD
 			m_dma_op[6].timer->adjust(attotime::never, 0);
+=======
+			m_core->dma_op[6].timer->adjust(attotime::never, 0);
+>>>>>>> upstream/master
 			break;
 		}
 
 		case BOOT_MODE_HOST:
 		{
+<<<<<<< HEAD
 			m_dma[6].int_index      = 0x20000;
 			m_dma[6].int_modifier   = 1;
 			m_dma[6].int_count      = 0x100;
 			m_dma[6].control        = 0xa1;
+=======
+			m_core->dma[6].int_index      = 0x20000;
+			m_core->dma[6].int_modifier   = 1;
+			m_core->dma[6].int_count      = 0x100;
+			m_core->dma[6].control        = 0xa1;
+>>>>>>> upstream/master
 			break;
 		}
 
@@ -673,6 +1450,7 @@ void adsp21062_device::device_reset()
 			fatalerror("SHARC: Unimplemented boot mode %d\n", m_boot_mode);
 	}
 
+<<<<<<< HEAD
 	m_pc = 0x20004;
 	m_extdma_shift = 0;
 	m_daddr = m_pc + 1;
@@ -685,6 +1463,22 @@ void adsp21062_device::device_reset()
 	m_lstkp = 0;
 	m_pcstkp = 0;
 	m_interrupt_active = 0;
+=======
+	m_core->pc = 0x20004;
+	m_core->extdma_shift = 0;
+	m_core->daddr = m_core->pc + 1;
+	m_core->faddr = m_core->daddr + 1;
+	m_core->nfaddr = m_core->faddr+1;
+
+	m_core->idle = 0;
+	m_core->stky = 0x5400000;
+
+	m_core->lstkp = 0;
+	m_core->pcstkp = 0;
+	m_core->interrupt_active = 0;
+
+	m_drcfe->flush();
+>>>>>>> upstream/master
 }
 
 
@@ -694,11 +1488,19 @@ void adsp21062_device::execute_set_input(int irqline, int state)
 	{
 		if (state == ASSERT_LINE)
 		{
+<<<<<<< HEAD
 			m_irq_active |= 1 << (8-irqline);
 		}
 		else
 		{
 			m_irq_active &= ~(1 << (8-irqline));
+=======
+			m_core->irq_pending |= 1 << (8-irqline);
+		}
+		else
+		{
+			m_core->irq_pending &= ~(1 << (8-irqline));
+>>>>>>> upstream/master
 		}
 	}
 	else if (irqline >= SHARC_INPUT_FLAG0 && irqline <= SHARC_INPUT_FLAG3)
@@ -712,9 +1514,15 @@ void adsp21062_device::set_flag_input(int flag_num, int state)
 	if (flag_num >= 0 && flag_num < 4)
 	{
 		// Check if flag is set to input in MODE2 (bit == 0)
+<<<<<<< HEAD
 		if ((m_mode2 & (1 << (flag_num+15))) == 0)
 		{
 			m_flag[flag_num] = state ? 1 : 0;
+=======
+		if ((m_core->mode2 & (1 << (flag_num+15))) == 0)
+		{
+			m_core->flag[flag_num] = state ? 1 : 0;
+>>>>>>> upstream/master
 		}
 		else
 		{
@@ -726,19 +1534,29 @@ void adsp21062_device::set_flag_input(int flag_num, int state)
 void adsp21062_device::check_interrupts()
 {
 	int i;
+<<<<<<< HEAD
 	if ((m_imask & m_irq_active) && (m_mode1 & MODE1_IRPTEN) && !m_interrupt_active &&
 		m_pc != m_delay_slot1 && m_pc != m_delay_slot2)
+=======
+	if ((m_core->imask & m_core->irq_pending) && (m_core->mode1 & MODE1_IRPTEN) && !m_core->interrupt_active &&
+		m_core->pc != m_core->delay_slot1 && m_core->pc != m_core->delay_slot2)
+>>>>>>> upstream/master
 	{
 		int which = 0;
 		for (i=0; i < 32; i++)
 		{
+<<<<<<< HEAD
 			if (m_irq_active & (1 << i))
+=======
+			if (m_core->irq_pending & (1 << i))
+>>>>>>> upstream/master
 			{
 				break;
 			}
 			which++;
 		}
 
+<<<<<<< HEAD
 		if (m_idle)
 		{
 			PUSH_PC(m_pc+1);
@@ -749,6 +1567,18 @@ void adsp21062_device::check_interrupts()
 		}
 
 		m_irptl |= 1 << which;
+=======
+		if (m_core->idle)
+		{
+			PUSH_PC(m_core->pc+1);
+		}
+		else
+		{
+			PUSH_PC(m_core->daddr);
+		}
+
+		m_core->irptl |= 1 << which;
+>>>>>>> upstream/master
 
 		if (which >= 6 && which <= 8)
 		{
@@ -759,15 +1589,23 @@ void adsp21062_device::check_interrupts()
 
 		/* TODO: alter IMASKP */
 
+<<<<<<< HEAD
 		m_active_irq_num = which;
 		m_irq_active &= ~(1 << which);
 
 		m_interrupt_active = 1;
+=======
+		m_core->active_irq_num = which;
+		m_core->irq_pending &= ~(1 << which);
+
+		m_core->interrupt_active = 1;
+>>>>>>> upstream/master
 	}
 }
 
 void adsp21062_device::execute_run()
 {
+<<<<<<< HEAD
 	if (m_idle && m_irq_active == 0)
 	{
 		m_icount = 0;
@@ -808,6 +1646,71 @@ void adsp21062_device::execute_run()
 						if (m_pc - looptop > 2)
 						{
 							m_astat = m_astat_old_old_old;
+=======
+	static bool first = true;
+	if(first) {
+		first = false;
+		machine().debug_break();
+	}
+
+	if (m_enable_drc)
+	{
+		if (m_core->irq_pending != 0)
+		{
+			m_core->idle = 0;
+		}
+		execute_run_drc();
+		return;
+	}
+	else
+	{
+		if (m_core->idle && m_core->irq_pending == 0)
+		{
+			m_core->icount = 0;
+			debugger_instruction_hook(this, m_core->daddr);
+		}
+		if (m_core->irq_pending != 0)
+		{
+			check_interrupts();
+			m_core->idle = 0;
+		}
+
+		while (m_core->icount > 0 && !m_core->idle)
+		{
+			m_core->pc = m_core->daddr;
+			m_core->daddr = m_core->faddr;
+			m_core->faddr = m_core->nfaddr;
+			m_core->nfaddr++;
+
+			m_core->astat_old_old_old = m_core->astat_old_old;
+			m_core->astat_old_old = m_core->astat_old;
+			m_core->astat_old = m_core->astat;
+
+			static bool first = true;
+			if(first) {
+				first = false;
+				machine().debug_break();
+			}
+
+			debugger_instruction_hook(this, m_core->pc);
+
+			m_core->opcode = m_program->read_qword(m_core->pc << 3);
+
+			// handle looping
+			if (m_core->pc == m_core->laddr.addr)
+			{
+				switch (m_core->laddr.loop_type)
+				{
+				case 0:     // arithmetic condition-based
+				{
+					int condition = m_core->laddr.code;
+
+					{
+						uint32_t looptop = TOP_PC();
+						if (m_core->pc - looptop > 2)
+						{
+							m_core->astat = m_core->astat_old_old_old;
+>>>>>>> upstream/master
 						}
 					}
 
@@ -821,7 +1724,11 @@ void adsp21062_device::execute_run()
 						CHANGE_PC(TOP_PC());
 					}
 
+<<<<<<< HEAD
 					m_astat = m_astat_old;
+=======
+					m_core->astat = m_core->astat_old;
+>>>>>>> upstream/master
 					break;
 				}
 				case 1:     // counter-based, length 1
@@ -836,9 +1743,15 @@ void adsp21062_device::execute_run()
 				}
 				case 3:     // counter-based, length >2
 				{
+<<<<<<< HEAD
 					--m_lcstack[m_lstkp];
 					--m_curlcntr;
 					if (m_curlcntr == 0)
+=======
+					--m_core->lcstack[m_core->lstkp];
+					--m_core->curlcntr;
+					if (m_core->curlcntr == 0)
+>>>>>>> upstream/master
 					{
 						POP_LOOP();
 						POP_PC();
@@ -848,6 +1761,7 @@ void adsp21062_device::execute_run()
 						CHANGE_PC(TOP_PC());
 					}
 				}
+<<<<<<< HEAD
 			}
 		}
 
@@ -957,4 +1871,27 @@ bool adsp21062_device::memory_readop(offs_t offset, int size, UINT64 &value)
 	}
 
 	return false;
+=======
+				}
+			}
+
+			(this->*m_sharc_op[(m_core->opcode >> 39) & 0x1ff])();
+
+
+
+
+			// System register latency effect
+			if (m_core->systemreg_latency_cycles > 0)
+			{
+				--m_core->systemreg_latency_cycles;
+				if (m_core->systemreg_latency_cycles <= 0)
+				{
+					systemreg_write_latency_effect();
+				}
+			}
+
+			--m_core->icount;
+		};
+	}
+>>>>>>> upstream/master
 }

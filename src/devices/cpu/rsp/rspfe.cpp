@@ -10,7 +10,14 @@
 
 #include "emu.h"
 #include "rspfe.h"
+<<<<<<< HEAD
 #include "rsp.h"
+=======
+
+#include "rsp.h"
+#include "rspdefs.h"
+
+>>>>>>> upstream/master
 
 //**************************************************************************
 //  RSP FRONTEND
@@ -20,7 +27,11 @@
 //  rsp_frontend - constructor
 //-------------------------------------------------
 
+<<<<<<< HEAD
 rsp_frontend::rsp_frontend(rsp_device &rsp, UINT32 window_start, UINT32 window_end, UINT32 max_sequence)
+=======
+rsp_frontend::rsp_frontend(rsp_device &rsp, uint32_t window_start, uint32_t window_end, uint32_t max_sequence)
+>>>>>>> upstream/master
 	: drc_frontend(rsp, window_start, window_end, max_sequence),
 		m_rsp(rsp)
 {
@@ -34,10 +45,17 @@ rsp_frontend::rsp_frontend(rsp_device &rsp, UINT32 window_start, UINT32 window_e
 
 bool rsp_frontend::describe(opcode_desc &desc, const opcode_desc *prev)
 {
+<<<<<<< HEAD
 	UINT32 op, opswitch;
 
 	// fetch the opcode
 	op = desc.opptr.l[0] = m_rsp.m_direct->read_dword(desc.physpc | 0x1000);
+=======
+	uint32_t op, opswitch;
+
+	// fetch the opcode
+	op = desc.opptr.l[0] = m_rsp.m_direct->read_dword((desc.physpc & 0x00000fff) | 0x1000);
+>>>>>>> upstream/master
 
 	// all instructions are 4 bytes and default to a single cycle each
 	desc.length = 4;
@@ -157,7 +175,11 @@ bool rsp_frontend::describe(opcode_desc &desc, const opcode_desc *prev)
 //  single instruction in the 'special' group
 //-------------------------------------------------
 
+<<<<<<< HEAD
 bool rsp_frontend::describe_special(UINT32 op, opcode_desc &desc)
+=======
+bool rsp_frontend::describe_special(uint32_t op, opcode_desc &desc)
+>>>>>>> upstream/master
 {
 	switch (op & 63)
 	{
@@ -219,7 +241,11 @@ bool rsp_frontend::describe_special(UINT32 op, opcode_desc &desc)
 //  single instruction in the 'regimm' group
 //-------------------------------------------------
 
+<<<<<<< HEAD
 bool rsp_frontend::describe_regimm(UINT32 op, opcode_desc &desc)
+=======
+bool rsp_frontend::describe_regimm(uint32_t op, opcode_desc &desc)
+>>>>>>> upstream/master
 {
 	switch (RTREG)
 	{
@@ -262,7 +288,11 @@ bool rsp_frontend::describe_regimm(UINT32 op, opcode_desc &desc)
 //  single instruction in the COP0 group
 //-------------------------------------------------
 
+<<<<<<< HEAD
 bool rsp_frontend::describe_cop0(UINT32 op, opcode_desc &desc)
+=======
+bool rsp_frontend::describe_cop0(uint32_t op, opcode_desc &desc)
+>>>>>>> upstream/master
 {
 	switch (RSREG)
 	{
@@ -287,7 +317,11 @@ bool rsp_frontend::describe_cop0(UINT32 op, opcode_desc &desc)
 //  single instruction in the COP2 group
 //-------------------------------------------------
 
+<<<<<<< HEAD
 bool rsp_frontend::describe_cop2(UINT32 op, opcode_desc &desc)
+=======
+bool rsp_frontend::describe_cop2(uint32_t op, opcode_desc &desc)
+>>>>>>> upstream/master
 {
 	switch (RSREG)
 	{

@@ -39,31 +39,54 @@ that is longer than 39 characters. */
 
 struct UINT16BE
 {
+<<<<<<< HEAD
 	UINT8 bytes[2];
+=======
+	uint8_t bytes[2];
+>>>>>>> upstream/master
 };
 
 struct UINT32BE
 {
+<<<<<<< HEAD
 	UINT8 bytes[4];
 };
 
 INLINE UINT16 get_UINT16BE(UINT16BE word)
+=======
+	uint8_t bytes[4];
+};
+
+static inline uint16_t get_UINT16BE(UINT16BE word)
+>>>>>>> upstream/master
 {
 	return (word.bytes[0] << 8) | word.bytes[1];
 }
 
+<<<<<<< HEAD
 INLINE void set_UINT16BE(UINT16BE *word, UINT16 data)
+=======
+static inline void set_UINT16BE(UINT16BE *word, uint16_t data)
+>>>>>>> upstream/master
 {
 	word->bytes[0] = (data >> 8) & 0xff;
 	word->bytes[1] = data & 0xff;
 }
 
+<<<<<<< HEAD
 INLINE UINT32 get_UINT32BE(UINT32BE word)
+=======
+static inline uint32_t get_UINT32BE(UINT32BE word)
+>>>>>>> upstream/master
 {
 	return (word.bytes[0] << 24) | (word.bytes[1] << 16) | (word.bytes[2] << 8) | word.bytes[3];
 }
 
+<<<<<<< HEAD
 INLINE void set_UINT32BE(UINT32BE *word, UINT32 data)
+=======
+static inline void set_UINT32BE(UINT32BE *word, uint32_t data)
+>>>>>>> upstream/master
 {
 	word->bytes[0] = (data >> 24) & 0xff;
 	word->bytes[1] = (data >> 16) & 0xff;
@@ -107,6 +130,7 @@ struct ti990_sc0
 {
 	char        vnm[8];         /* volume name */
 	UINT16BE    tna;            /* total number of ADUs */
+<<<<<<< HEAD
 	UINT8       sbm;            /* starting sector of bit maps */
 	UINT8       tbm;            /* total bit maps */
 	UINT16BE    rl;             /* track 01 record length */
@@ -118,13 +142,30 @@ struct ti990_sc0
 	UINT8       fill01[8];      /* * * RESERVED * * */
 	UINT16BE    lt1;            /* system loader track (copy 2) */
 	UINT8       fill02[8];      /* * * RESERVED * * */
+=======
+	uint8_t       sbm;            /* starting sector of bit maps */
+	uint8_t       tbm;            /* total bit maps */
+	UINT16BE    rl;             /* track 01 record length */
+	UINT16BE    slt;            /* system loader track address */
+	uint8_t       fill00[6];      /* * * RESERVED * * */
+	UINT16BE    nba;            /* total number of bad ADUs on disk */
+	UINT16BE    sle;            /* system loader entry point */
+	UINT16BE    sll;            /* system loader length */
+	uint8_t       fill01[8];      /* * * RESERVED * * */
+	UINT16BE    lt1;            /* system loader track (copy 2) */
+	uint8_t       fill02[8];      /* * * RESERVED * * */
+>>>>>>> upstream/master
 	char        pi1[8];         /* primary system file name */
 	char        pi2[8];         /* secondary system file name */
 	UINT16BE    pif;            /* system selector */
 	UINT16BE    vda;            /* volume directory ADU */
 	UINT16BE    vpl;            /* vcatalog physical record length */
 	UINT16BE    spa;            /* sectors per ADU */
+<<<<<<< HEAD
 	UINT8       dcd[4];         /* disk creation date */
+=======
+	uint8_t       dcd[4];         /* disk creation date */
+>>>>>>> upstream/master
 	char        pf1[8];         /* primary program file */
 	char        pf2[8];         /* secondary program file */
 	UINT16BE    pff;            /* program file switch */
@@ -214,7 +255,11 @@ struct ti990_fdr
 	UINT16BE    hkc;            /* hask key count: the number of file descriptor records that are present in the directory that hashed to this record number */
 	UINT16BE    hkv;            /* hask key value: the result of the hash algorithm for the file name actually covered in this record */
 	char        fnm[8];         /* file name */
+<<<<<<< HEAD
 	UINT8       rsv[2];         /* reserved */
+=======
+	uint8_t       rsv[2];         /* reserved */
+>>>>>>> upstream/master
 	UINT16BE    fl1;            /* flags word 1 */
 	UINT16BE    flg;            /* flags word 2 */
 	UINT16BE    prs;            /* physical record size */
@@ -232,6 +277,7 @@ struct ti990_fdr
 	UINT16BE    btr;            /* B-tree roots block # */
 	UINT32BE    ebq;            /* empty block queue head */
 	UINT16BE    kdr;            /* key descriptions record # */
+<<<<<<< HEAD
 	UINT8       ud[6];          /* last update date */
 	UINT8       cd[6];          /* creation date */
 	UINT8       apb;            /* ADU's per block */
@@ -245,6 +291,21 @@ struct ti990_fdr
 	UINT16BE    psa;            /* public security attribute */
 	ti990_ace   ace[9];         /* 9 access control entries */
 	UINT8       fil[2];         /* not used */
+=======
+	uint8_t       ud[6];          /* last update date */
+	uint8_t       cd[6];          /* creation date */
+	uint8_t       apb;            /* ADU's per block */
+	uint8_t       bpa;            /* blocks per ADU */
+	UINT16BE    mrs;            /* minimumu KIF record size */
+	uint8_t       sat[64];        /* secondary allocation table: 16 2-word entries.  The first word of an entry contains the size, in ADUs, of the secondary allocation.  The second word contains the starting ADU of the allocation. */
+
+/* bytes >86 to >100 are optional */
+	uint8_t       res[10];        /* reserved: seem to be actually meaningful (at least under DX10 3.6.x) */
+	char        uid[8];         /* user id of file creator */
+	UINT16BE    psa;            /* public security attribute */
+	ti990_ace   ace[9];         /* 9 access control entries */
+	uint8_t       fil[2];         /* not used */
+>>>>>>> upstream/master
 };
 
 /*
@@ -284,6 +345,7 @@ struct ti990_cdr
 	UINT16BE    fill00;         /* reserved */
 	UINT16BE    fill01;         /* reserved */
 	UINT16BE    fdf;            /* flags (same as fdr.flg) */
+<<<<<<< HEAD
 	UINT8       flg;            /* channel flzgs */
 	UINT8       iid;            /* owner task installed ID */
 	UINT8       typ;            /* default resource type */
@@ -297,6 +359,21 @@ struct ti990_cdr
 	UINT16BE    psa;            /* public security attribute */
 	UINT8       scg[94];        /* "SDT with 9 control groups" (whatever it means - and, no, 94 is not dividable by 9) */
 	UINT8       fill06[8];      /* reserved */
+=======
+	uint8_t       flg;            /* channel flzgs */
+	uint8_t       iid;            /* owner task installed ID */
+	uint8_t       typ;            /* default resource type */
+	uint8_t       tf;             /* resource type flags */
+	UINT16BE    mxl;            /* maximum message length */
+	uint8_t       fill04[6];      /* reserved (and, no, I don't know where fill02 and fill03 have gone) */
+	UINT16BE    rna;            /* record number of next CDR or ADR */
+	UINT16BE    raf;            /* record # of actual FDR */
+	uint8_t       fill05[110];    /* reserved */
+	char        uid[8];         /* user ID of channel creator */
+	UINT16BE    psa;            /* public security attribute */
+	uint8_t       scg[94];        /* "SDT with 9 control groups" (whatever it means - and, no, 94 is not dividable by 9) */
+	uint8_t       fill06[8];      /* reserved */
+>>>>>>> upstream/master
 };
 
 /*
@@ -322,6 +399,7 @@ union directory_entry
 struct tifile_header
 {
 	char tifiles[8];        /* always '\7TIFILES' */
+<<<<<<< HEAD
 	UINT8 secsused_MSB;     /* file length in sectors (big-endian) */
 	UINT8 secsused_LSB;
 	UINT8 flags;            /* see enum above */
@@ -331,6 +409,17 @@ struct tifile_header
 	UINT8 fixrecs_MSB;      /* file length in records (big-endian) */
 	UINT8 fixrecs_LSB;
 	UINT8 res[128-16];      /* reserved */
+=======
+	uint8_t secsused_MSB;     /* file length in sectors (big-endian) */
+	uint8_t secsused_LSB;
+	uint8_t flags;            /* see enum above */
+	uint8_t recspersec;       /* records per sector */
+	uint8_t eof;              /* current position of eof in last sector (0->255)*/
+	uint8_t reclen;           /* bytes per record ([1,255] 0->256) */
+	uint8_t fixrecs_MSB;      /* file length in records (big-endian) */
+	uint8_t fixrecs_LSB;
+	uint8_t res[128-16];      /* reserved */
+>>>>>>> upstream/master
 };
 
 
@@ -339,7 +428,11 @@ struct tifile_header
 */
 struct catalog_entry
 {
+<<<<<<< HEAD
 	UINT16 fdr_secnum;
+=======
+	uint16_t fdr_secnum;
+>>>>>>> upstream/master
 	char filename[10];
 };
 
@@ -368,7 +461,11 @@ struct ti990_phys_sec_address
 */
 struct ti990_image
 {
+<<<<<<< HEAD
 	imgtool_stream *file_handle;        /* imgtool file handle */
+=======
+	imgtool::stream *file_handle;        /* imgtool file handle */
+>>>>>>> upstream/master
 	ti990_geometry geometry;    /* geometry */
 	ti990_sc0 sec0;             /* cached copy of sector 0 */
 };
@@ -385,6 +482,7 @@ struct ti990_iterator
 	directory_entry xdr[MAX_DIR_LEVEL]; /* fdr records */
 };
 
+<<<<<<< HEAD
 
 static imgtoolerr_t ti990_image_init(imgtool_image *img, imgtool_stream *f);
 static void ti990_image_exit(imgtool_image *img);
@@ -399,6 +497,27 @@ static imgtoolerr_t ti990_image_writefile(imgtool_partition *partition, const ch
 static imgtoolerr_t ti990_image_deletefile(imgtool_partition *partition, const char *fpath);
 #endif
 static imgtoolerr_t ti990_image_create(imgtool_image *image, imgtool_stream *f, option_resolution *createoptions);
+=======
+static ti990_image *get_ti990_image(imgtool::image &image)
+{
+	return (ti990_image *)image.extra_bytes();
+}
+
+
+static imgtoolerr_t ti990_image_init(imgtool::image &img, imgtool::stream::ptr &&stream);
+static void ti990_image_exit(imgtool::image &img);
+static void ti990_image_info(imgtool::image &img, std::ostream &stream);
+static imgtoolerr_t ti990_image_beginenum(imgtool::directory &enumeration, const char *path);
+static imgtoolerr_t ti990_image_nextenum(imgtool::directory &enumeration, imgtool_dirent &ent);
+static void ti990_image_closeenum(imgtool::directory &enumeration);
+static imgtoolerr_t ti990_image_freespace(imgtool::partition &partition, uint64_t *size);
+#ifdef UNUSED_FUNCTION
+static imgtoolerr_t ti990_image_readfile(imgtool::partition &partition, const char *fpath, imgtool::stream *destf);
+static imgtoolerr_t ti990_image_writefile(imgtool::partition &partition, const char *fpath, imgtool::stream *sourcef, util::option_resolution *writeoptions);
+static imgtoolerr_t ti990_image_deletefile(imgtool::partition &partition, const char *fpath);
+#endif
+static imgtoolerr_t ti990_image_create(imgtool::image &image, imgtool::stream::ptr &&stream, util::option_resolution *createoptions);
+>>>>>>> upstream/master
 
 enum
 {
@@ -409,7 +528,11 @@ enum
 	ti990_createopts_sectorsize = 'E'
 };
 
+<<<<<<< HEAD
 static OPTION_GUIDE_START( ti990_create_optionguide )
+=======
+OPTION_GUIDE_START( ti990_create_optionguide )
+>>>>>>> upstream/master
 	/*OPTION_STRING(ti990_createopts_volname, "label",  "Volume name" )*/
 	OPTION_INT(ti990_createopts_cylinders, "cylinders", "Cylinders" )
 	OPTION_INT(ti990_createopts_heads, "heads", "Heads" )
@@ -421,7 +544,11 @@ OPTION_GUIDE_END
 #define symb2str(a) symb2str2(a)
 #define ti990_create_optionspecs "B1-[145]-" symb2str(MAX_CYLINDERS)";C1-[4]-" symb2str(MAX_HEADS)";D1-[32]-" symb2str(MAX_SECTORS_PER_TRACK)";E" symb2str(MIN_SECTOR_SIZE)"-[256]-" symb2str(MAX_SECTOR_SIZE)";"
 
+<<<<<<< HEAD
 void ti990_get_info(const imgtool_class *imgclass, UINT32 state, union imgtoolinfo *info)
+=======
+void ti990_get_info(const imgtool_class *imgclass, uint32_t state, union imgtoolinfo *info)
+>>>>>>> upstream/master
 {
 	switch(state)
 	{
@@ -442,7 +569,11 @@ void ti990_get_info(const imgtool_class *imgclass, UINT32 state, union imgtoolin
 		case IMGTOOLINFO_PTR_DELETE_FILE:                   /* info->delete_file = ti990_image_deletefile; */ break;
 		case IMGTOOLINFO_PTR_CREATE:                        info->create = ti990_image_create; break;
 
+<<<<<<< HEAD
 		case IMGTOOLINFO_PTR_CREATEIMAGE_OPTGUIDE:          info->createimage_optguide = ti990_create_optionguide; break;
+=======
+		case IMGTOOLINFO_PTR_CREATEIMAGE_OPTGUIDE:          info->createimage_optguide = &ti990_create_optionguide; break;
+>>>>>>> upstream/master
 		case IMGTOOLINFO_STR_CREATEIMAGE_OPTSPEC:           strcpy(info->s = imgtool_temp_str(), ti990_create_optionspecs); break;
 	}
 }
@@ -531,7 +662,11 @@ static unsigned phys_address_to_offset(const ti990_phys_sec_address *address, co
     dest: pointer to destination buffer
     len: length of data to read
 */
+<<<<<<< HEAD
 static int read_sector_physical_len(imgtool_stream *file_handle, const ti990_phys_sec_address *address, const ti990_geometry *geometry, void *dest, int len)
+=======
+static int read_sector_physical_len(imgtool::stream &file_handle, const ti990_phys_sec_address *address, const ti990_geometry *geometry, void *dest, int len)
+>>>>>>> upstream/master
 {
 	int reply;
 
@@ -539,11 +674,19 @@ static int read_sector_physical_len(imgtool_stream *file_handle, const ti990_phy
 		return 1;
 
 	/* seek to sector */
+<<<<<<< HEAD
 	reply = stream_seek(file_handle, phys_address_to_offset(address, geometry), SEEK_SET);
 	if (reply)
 		return 1;
 	/* read it */
 	reply = stream_read(file_handle, dest, len);
+=======
+	reply = file_handle.seek(phys_address_to_offset(address, geometry), SEEK_SET);
+	if (reply)
+		return 1;
+	/* read it */
+	reply = file_handle.read(dest, len);
+>>>>>>> upstream/master
 	if (reply != len)
 		return 1;
 
@@ -559,7 +702,11 @@ static int read_sector_physical_len(imgtool_stream *file_handle, const ti990_phy
     geometry: disk geometry (sectors per track, tracks per side, sides)
     dest: pointer to a destination buffer of geometry->bytes_per_sector bytes
 */
+<<<<<<< HEAD
 static int read_sector_physical(imgtool_stream *file_handle, const ti990_phys_sec_address *address, const ti990_geometry *geometry, void *dest)
+=======
+static int read_sector_physical(imgtool::stream *file_handle, const ti990_phys_sec_address *address, const ti990_geometry *geometry, void *dest)
+>>>>>>> upstream/master
 {
 	return read_sector_physical_len(file_handle, address, geometry, dest, geometry->bytes_per_sector);
 }
@@ -574,7 +721,11 @@ static int read_sector_physical(imgtool_stream *file_handle, const ti990_phys_se
     src: pointer to source buffer
     len: length of source buffer
 */
+<<<<<<< HEAD
 static int write_sector_physical_len(imgtool_stream *file_handle, const ti990_phys_sec_address *address, const ti990_geometry *geometry, const void *src, int len)
+=======
+static int write_sector_physical_len(imgtool::stream &file_handle, const ti990_phys_sec_address *address, const ti990_geometry *geometry, const void *src, int len)
+>>>>>>> upstream/master
 {
 	int reply;
 
@@ -582,17 +733,29 @@ static int write_sector_physical_len(imgtool_stream *file_handle, const ti990_ph
 		return 1;
 
 	/* seek to sector */
+<<<<<<< HEAD
 	reply = stream_seek(file_handle, phys_address_to_offset(address, geometry), SEEK_SET);
 	if (reply)
 		return 1;
 	/* write it */
 	reply = stream_write(file_handle, src, len);
+=======
+	reply = file_handle.seek(phys_address_to_offset(address, geometry), SEEK_SET);
+	if (reply)
+		return 1;
+	/* write it */
+	reply = file_handle.write(src, len);
+>>>>>>> upstream/master
 	if (reply != len)
 		return 1;
 	/* pad with 0s if needed */
 	if (len < geometry->bytes_per_sector)
 	{
+<<<<<<< HEAD
 		reply = stream_fill(file_handle, 0, geometry->bytes_per_sector - len);
+=======
+		reply = file_handle.fill(0, geometry->bytes_per_sector - len);
+>>>>>>> upstream/master
 
 		if (reply != geometry->bytes_per_sector - len)
 			return 1;
@@ -610,7 +773,11 @@ static int write_sector_physical_len(imgtool_stream *file_handle, const ti990_ph
     geometry: disk geometry (sectors per track, tracks per side, sides)
     dest: pointer to a source buffer of geometry->bytes_per_sector bytes
 */
+<<<<<<< HEAD
 static int write_sector_physical(imgtool_stream *file_handle, const ti990_phys_sec_address *address, const ti990_geometry *geometry, const void *src)
+=======
+static int write_sector_physical(imgtool::stream *file_handle, const ti990_phys_sec_address *address, const ti990_geometry *geometry, const void *src)
+>>>>>>> upstream/master
 {
 	return write_sector_physical_len(file_handle, address, geometry, src, geometry->bytes_per_sector);
 }
@@ -636,7 +803,11 @@ static void log_address_to_phys_address(int secnum, const ti990_geometry *geomet
     dest: pointer to destination buffer
     len: length of data to read
 */
+<<<<<<< HEAD
 static int read_sector_logical_len(imgtool_stream *file_handle, int secnum, const ti990_geometry *geometry, void *dest, int len)
+=======
+static int read_sector_logical_len(imgtool::stream &file_handle, int secnum, const ti990_geometry *geometry, void *dest, int len)
+>>>>>>> upstream/master
 {
 	ti990_phys_sec_address address;
 
@@ -655,7 +826,11 @@ static int read_sector_logical_len(imgtool_stream *file_handle, int secnum, cons
     geometry: disk geometry (sectors per track, tracks per side, sides)
     dest: pointer to a destination buffer of geometry->bytes_per_sector bytes
 */
+<<<<<<< HEAD
 static int read_sector_logical(imgtool_stream *file_handle, int secnum, const ti990_geometry *geometry, void *dest)
+=======
+static int read_sector_logical(imgtool::stream *file_handle, int secnum, const ti990_geometry *geometry, void *dest)
+>>>>>>> upstream/master
 {
 	return read_sector_logical_len(file_handle, secnum, geometry, dest, geometry->bytes_per_sector);
 }
@@ -670,7 +845,11 @@ static int read_sector_logical(imgtool_stream *file_handle, int secnum, const ti
     src: pointer to source buffer
     len: length of source buffer
 */
+<<<<<<< HEAD
 static int write_sector_logical_len(imgtool_stream *file_handle, int secnum, const ti990_geometry *geometry, const void *src, int len)
+=======
+static int write_sector_logical_len(imgtool::stream &file_handle, int secnum, const ti990_geometry *geometry, const void *src, int len)
+>>>>>>> upstream/master
 {
 	ti990_phys_sec_address address;
 
@@ -688,7 +867,11 @@ static int write_sector_logical_len(imgtool_stream *file_handle, int secnum, con
     geometry: disk geometry (sectors per track, tracks per side, sides)
     dest: pointer to a source buffer of geometry->bytes_per_sector bytes
 */
+<<<<<<< HEAD
 static int write_sector_logical(imgtool_stream *file_handle, int secnum, const ti990_geometry *geometry, const void *src)
+=======
+static int write_sector_logical(imgtool::stream &file_handle, int secnum, const ti990_geometry *geometry, const void *src)
+>>>>>>> upstream/master
 {
 	return write_sector_logical_len(file_handle, secnum, geometry, src, geometry->bytes_per_sector);
 }
@@ -1106,15 +1289,26 @@ static int qsort_catalog_compare(const void *p1, const void *p2)
 /*
     Open a file as a ti990_image.
 */
+<<<<<<< HEAD
 static imgtoolerr_t ti990_image_init(imgtool_image *img, imgtool_stream *f)
 {
 	ti990_image *image = (ti990_image *) imgtool_image_extra_bytes(img);
+=======
+static imgtoolerr_t ti990_image_init(imgtool::image &img, imgtool::stream::ptr &&stream)
+{
+	ti990_image *image = get_ti990_image(img);
+>>>>>>> upstream/master
 	disk_image_header header;
 	int reply;
 	unsigned totsecs;
 
+<<<<<<< HEAD
 	image->file_handle = f;
 	reply = stream_read(f, &header, sizeof(header));
+=======
+	image->file_handle = stream.get();
+	reply = image->file_handle->read(&header, sizeof(header));
+>>>>>>> upstream/master
 	if (reply != sizeof(header))
 		return IMGTOOLERR_READERROR;
 
@@ -1131,14 +1325,22 @@ static imgtoolerr_t ti990_image_init(imgtool_image *img, imgtool_stream *f)
 		|| (image->geometry.heads > MAX_HEADS)
 		|| (image->geometry.cylinders > MAX_CYLINDERS)
 		|| (totsecs < 1)
+<<<<<<< HEAD
 		|| (stream_size(f) != header_len + totsecs*image->geometry.bytes_per_sector))
+=======
+		|| (image->file_handle->size() != header_len + totsecs*image->geometry.bytes_per_sector))
+>>>>>>> upstream/master
 	{
 		return IMGTOOLERR_CORRUPTIMAGE;
 	}
 
 	{
 		ti990_phys_sec_address address = { 0, 0, 0 };
+<<<<<<< HEAD
 		reply = read_sector_physical_len(f, &address, &image->geometry, & image->sec0, sizeof(image->sec0));
+=======
+		reply = read_sector_physical_len(*image->file_handle, &address, &image->geometry, & image->sec0, sizeof(image->sec0));
+>>>>>>> upstream/master
 	}
 	if (reply)
 	{
@@ -1156,16 +1358,27 @@ static imgtoolerr_t ti990_image_init(imgtool_image *img, imgtool_stream *f)
 		return IMGTOOLERR_CORRUPTIMAGE;
 	}
 
+<<<<<<< HEAD
+=======
+	image->file_handle = stream.release();
+>>>>>>> upstream/master
 	return IMGTOOLERR_SUCCESS;
 }
 
 /*
     close a ti990_image
 */
+<<<<<<< HEAD
 static void ti990_image_exit(imgtool_image *img)
 {
 	ti990_image *image = (ti990_image *) imgtool_image_extra_bytes(img);
 	stream_close(image->file_handle);
+=======
+static void ti990_image_exit(imgtool::image &img)
+{
+	ti990_image *image = get_ti990_image(img);
+	delete image->file_handle;
+>>>>>>> upstream/master
 }
 
 /*
@@ -1173,29 +1386,50 @@ static void ti990_image_exit(imgtool_image *img)
 
     Currently returns the volume name
 */
+<<<<<<< HEAD
 static void ti990_image_info(imgtool_image *img, char *string, size_t len)
 {
 	ti990_image *image = (ti990_image *) imgtool_image_extra_bytes(img);
+=======
+static void ti990_image_info(imgtool::image &img, std::ostream &stream)
+{
+	ti990_image *image = get_ti990_image(img);
+>>>>>>> upstream/master
 	char vol_name[9];
 
 	fname_to_str(vol_name, image->sec0.vnm, 9);
 
+<<<<<<< HEAD
 	snprintf(string, len, "%s", vol_name);
+=======
+	stream << vol_name;
+>>>>>>> upstream/master
 }
 
 /*
     Open the disk catalog for enumeration
 */
+<<<<<<< HEAD
 static imgtoolerr_t ti990_image_beginenum(imgtool_directory *enumeration, const char *path)
 {
 	ti990_image *image = (ti990_image *) imgtool_image_extra_bytes(imgtool_directory_image(enumeration));
 	ti990_iterator *iter = (ti990_iterator *) imgtool_directory_extrabytes(enumeration);
+=======
+static imgtoolerr_t ti990_image_beginenum(imgtool::directory &enumeration, const char *path)
+{
+	ti990_image *image = (ti990_image *) enumeration.image().extra_bytes();
+	ti990_iterator *iter = (ti990_iterator *) enumeration.extra_bytes();
+>>>>>>> upstream/master
 	ti990_dor dor;
 	int reply;
 
 	iter->image = image;
 
+<<<<<<< HEAD
 	reply = read_sector_logical_len(iter->image->file_handle,
+=======
+	reply = read_sector_logical_len(*iter->image->file_handle,
+>>>>>>> upstream/master
 									(unsigned) get_UINT16BE(iter->image->sec0.vda) * get_UINT16BE(iter->image->sec0.spa),
 									& iter->image->geometry, &dor, sizeof(dor));
 
@@ -1212,18 +1446,32 @@ static imgtoolerr_t ti990_image_beginenum(imgtool_directory *enumeration, const 
 /*
     Enumerate disk catalog next entry
 */
+<<<<<<< HEAD
 static imgtoolerr_t ti990_image_nextenum(imgtool_directory *enumeration, imgtool_dirent *ent)
 {
 	ti990_iterator *iter = (ti990_iterator *) imgtool_directory_extrabytes(enumeration);
+=======
+static imgtoolerr_t ti990_image_nextenum(imgtool::directory &enumeration, imgtool_dirent &ent)
+{
+	ti990_iterator *iter = (ti990_iterator *) enumeration.extra_bytes();
+>>>>>>> upstream/master
 	int flag;
 	int reply = 0;
 
 
+<<<<<<< HEAD
 	ent->corrupt = 0;
 	ent->eof = 0;
 
 	while ((iter->level >= 0)
 			&& (! (reply = read_sector_logical_len(iter->image->file_handle,
+=======
+	ent.corrupt = 0;
+	ent.eof = 0;
+
+	while ((iter->level >= 0)
+			&& (! (reply = read_sector_logical_len(*iter->image->file_handle,
+>>>>>>> upstream/master
 													iter->level ? (unsigned) get_UINT16BE(iter->xdr[iter->level-1].fdr.paa) * get_UINT16BE(iter->image->sec0.spa) + (iter->index[iter->level]+1)
 																: (unsigned) get_UINT16BE(iter->image->sec0.vda) * get_UINT16BE(iter->image->sec0.spa) + (iter->index[iter->level]+1),
 													& iter->image->geometry, &iter->xdr[iter->level],
@@ -1238,19 +1486,28 @@ static imgtoolerr_t ti990_image_nextenum(imgtool_directory *enumeration, imgtool
 
 	if (iter->level < 0)
 	{
+<<<<<<< HEAD
 		ent->eof = 1;
+=======
+		ent.eof = 1;
+>>>>>>> upstream/master
 	}
 	else if (reply)
 		return IMGTOOLERR_READERROR;
 	else
 	{
 #if 0
+<<<<<<< HEAD
 		fname_to_str(ent->filename, iter->xdr[iter->level].fdr.fnm, ARRAY_LENGTH(ent->filename));
+=======
+		fname_to_str(ent.filename, iter->xdr[iter->level].fdr.fnm, ARRAY_LENGTH(ent.filename));
+>>>>>>> upstream/master
 #else
 		{
 			int i;
 			char buf[9];
 
+<<<<<<< HEAD
 			ent->filename[0] = '\0';
 			for (i=0; i<iter->level; i++)
 			{
@@ -1260,6 +1517,17 @@ static imgtoolerr_t ti990_image_nextenum(imgtool_directory *enumeration, imgtool
 			}
 			fname_to_str(buf, iter->xdr[iter->level].fdr.fnm, 9);
 			strncat(ent->filename, buf, ARRAY_LENGTH(ent->filename) - 1);
+=======
+			ent.filename[0] = '\0';
+			for (i=0; i<iter->level; i++)
+			{
+				fname_to_str(buf, iter->xdr[i].fdr.fnm, 9);
+				strncat(ent.filename, buf, ARRAY_LENGTH(ent.filename) - 1);
+				strncat(ent.filename, ".", ARRAY_LENGTH(ent.filename) - 1);
+			}
+			fname_to_str(buf, iter->xdr[iter->level].fdr.fnm, 9);
+			strncat(ent.filename, buf, ARRAY_LENGTH(ent.filename) - 1);
+>>>>>>> upstream/master
 		}
 #endif
 
@@ -1267,16 +1535,26 @@ static imgtoolerr_t ti990_image_nextenum(imgtool_directory *enumeration, imgtool
 		flag = get_UINT16BE(iter->xdr[iter->level].fdr.flg);
 		if (flag & fdr_flg_cdr)
 		{
+<<<<<<< HEAD
 			snprintf(ent->attr, ARRAY_LENGTH(ent->attr), "CHANNEL");
 
 			ent->filesize = 0;
+=======
+			snprintf(ent.attr, ARRAY_LENGTH(ent.attr), "CHANNEL");
+
+			ent.filesize = 0;
+>>>>>>> upstream/master
 		}
 		else if (flag & fdr_flg_ali)
 		{
 			ti990_fdr target_fdr;
 			char buf[9];
 
+<<<<<<< HEAD
 			reply = read_sector_logical_len(iter->image->file_handle,
+=======
+			reply = read_sector_logical_len(*iter->image->file_handle,
+>>>>>>> upstream/master
 												iter->level ? ((unsigned) get_UINT16BE(iter->xdr[iter->level-1].fdr.paa) * get_UINT16BE(iter->image->sec0.spa) + get_UINT16BE(iter->xdr[iter->level].adr.raf))
 															: ((unsigned) get_UINT16BE(iter->image->sec0.vda) * get_UINT16BE(iter->image->sec0.spa) + get_UINT16BE(iter->xdr[iter->level].adr.raf)),
 												& iter->image->geometry, &target_fdr,
@@ -1285,9 +1563,15 @@ static imgtoolerr_t ti990_image_nextenum(imgtool_directory *enumeration, imgtool
 
 			fname_to_str(buf, target_fdr.fnm, 9);
 
+<<<<<<< HEAD
 			snprintf(ent->attr, ARRAY_LENGTH(ent->attr), "ALIAS OF %s", buf);
 
 			ent->filesize = 0;
+=======
+			snprintf(ent.attr, ARRAY_LENGTH(ent.attr), "ALIAS OF %s", buf);
+
+			ent.filesize = 0;
+>>>>>>> upstream/master
 		}
 		else
 		{
@@ -1335,7 +1619,11 @@ static imgtoolerr_t ti990_image_nextenum(imgtool_directory *enumeration, imgtool
 				}
 				break;
 			}
+<<<<<<< HEAD
 			snprintf(ent->attr, ARRAY_LENGTH(ent->attr),
+=======
+			snprintf(ent.attr, ARRAY_LENGTH(ent.attr),
+>>>>>>> upstream/master
 						"%s %c %s%s%s%s%s", fmt, (flag & fdr_flg_all) ? 'N' : 'C', type,
 							(flag & fdr_flg_blb) ? "" : " BLK",
 							(flag & fdr_flg_tmp) ? " TMP" : "",
@@ -1343,17 +1631,30 @@ static imgtoolerr_t ti990_image_nextenum(imgtool_directory *enumeration, imgtool
 							(flag & fdr_flg_dpb) ? " DPT" : "");
 
 			/* len in blocks */
+<<<<<<< HEAD
 			ent->filesize = get_UINT32BE(iter->xdr[iter->level].fdr.bkm);
 			if ((((flag >> fdr_flg_ft_shift) & 3) == 3) || get_UINT16BE(iter->xdr[iter->level].fdr.ofm))
 				ent->filesize++;
+=======
+			ent.filesize = get_UINT32BE(iter->xdr[iter->level].fdr.bkm);
+			if ((((flag >> fdr_flg_ft_shift) & 3) == 3) || get_UINT16BE(iter->xdr[iter->level].fdr.ofm))
+				ent.filesize++;
+>>>>>>> upstream/master
 
 			/* convert to ADUs */
 			if (iter->xdr[iter->level].fdr.apb > 1)
 				/* more than one ADU per block */
+<<<<<<< HEAD
 				ent->filesize *= iter->xdr[iter->level].fdr.apb;
 			else if (iter->xdr[iter->level].fdr.bpa > 1)
 				/* more than one block per ADU */
 				ent->filesize = (ent->filesize + iter->xdr[iter->level].fdr.bpa - 1) / iter->xdr[iter->level].fdr.bpa;
+=======
+				ent.filesize *= iter->xdr[iter->level].fdr.apb;
+			else if (iter->xdr[iter->level].fdr.bpa > 1)
+				/* more than one block per ADU */
+				ent.filesize = (ent.filesize + iter->xdr[iter->level].fdr.bpa - 1) / iter->xdr[iter->level].fdr.bpa;
+>>>>>>> upstream/master
 		}
 		iter->index[iter->level]++;
 
@@ -1382,7 +1683,11 @@ static imgtoolerr_t ti990_image_nextenum(imgtool_directory *enumeration, imgtool
 			if (get_UINT16BE(iter->xdr[iter->level].fdr.saa) != 0)
 				printf("ninou");
 
+<<<<<<< HEAD
 			read_sector_logical_len(iter->image->file_handle,
+=======
+			read_sector_logical_len(*iter->image->file_handle,
+>>>>>>> upstream/master
 									get_UINT16BE(iter->xdr[iter->level].fdr.paa) * get_UINT16BE(iter->image->sec0.spa),
 									& iter->image->geometry, &dor, sizeof(dor));
 
@@ -1406,17 +1711,28 @@ static imgtoolerr_t ti990_image_nextenum(imgtool_directory *enumeration, imgtool
 /*
     Free enumerator
 */
+<<<<<<< HEAD
 static void ti990_image_closeenum(imgtool_directory *enumeration)
+=======
+static void ti990_image_closeenum(imgtool::directory &enumeration)
+>>>>>>> upstream/master
 {
 }
 
 /*
     Compute free space on disk image (in ADUs)
 */
+<<<<<<< HEAD
 static imgtoolerr_t ti990_image_freespace(imgtool_partition *partition, UINT64 *size)
 {
 	imgtool_image *img = imgtool_partition_image(partition);
 	ti990_image *image = (ti990_image *) imgtool_image_extra_bytes(img);
+=======
+static imgtoolerr_t ti990_image_freespace(imgtool::partition &partition, uint64_t *size)
+{
+	imgtool::image &img(partition.image());
+	ti990_image *image = get_ti990_image(img);
+>>>>>>> upstream/master
 	int totadus = get_UINT16BE(image->sec0.tna);
 	int adu, record, sub_adu;
 	char buf[256];
@@ -1431,7 +1747,11 @@ static imgtoolerr_t ti990_image_freespace(imgtool_partition *partition, UINT64 *
 	sub_adu = 0;
 	while (adu<totadus)
 	{
+<<<<<<< HEAD
 		read_sector_logical_len(image->file_handle, image->sec0.sbm + record, &image->geometry, buf, sizeof(buf));
+=======
+		read_sector_logical_len(*image->file_handle, image->sec0.sbm + record, &image->geometry, buf, sizeof(buf));
+>>>>>>> upstream/master
 
 		while ((adu < totadus) && (sub_adu < 2032))
 		{
@@ -1453,10 +1773,17 @@ static imgtoolerr_t ti990_image_freespace(imgtool_partition *partition, UINT64 *
 /*
     Extract a file from a ti990_image.
 */
+<<<<<<< HEAD
 static imgtoolerr_t ti990_image_readfile(imgtool_partition *partition, const char *fpath, imgtool_stream *destf)
 {
 	imgtool_image *img = imgtool_partition_image(partition);
 	ti990_image *image = (ti990_image *) imgtool_image_extra_bytes(img);
+=======
+static imgtoolerr_t ti990_image_readfile(imgtool::partition &partition, const char *fpath, imgtool::stream *destf)
+{
+	imgtool::image *img = &partition->image();
+	ti990_image *image = get_ti990_image(img);
+>>>>>>> upstream/master
 	int catalog_index, fdr_secnum, parent_fdr_secnum;
 	imgtoolerr_t reply;
 
@@ -1478,7 +1805,11 @@ static imgtoolerr_t ti990_image_readfile(imgtool_partition *partition, const cha
 	int i, lnks_index;
 	int cur_sec, last_sec;
 	int secsused;
+<<<<<<< HEAD
 	UINT8 buf[256];
+=======
+	uint8_t buf[256];
+>>>>>>> upstream/master
 	int reply;
 
 	str_to_fname(ti_fname, filename);
@@ -1506,7 +1837,11 @@ static imgtoolerr_t ti990_image_readfile(imgtool_partition *partition, const cha
 	for (i=0; i<(128-14); i++)
 		dst_header.res[i] = 0;
 
+<<<<<<< HEAD
 	if (stream_write(destf, & dst_header, 128) != 128)
+=======
+	if (destf->write(& dst_header, 128) != 128)
+>>>>>>> upstream/master
 		return IMGTOOLERR_WRITEERROR;
 
 
@@ -1532,7 +1867,11 @@ static imgtoolerr_t ti990_image_readfile(imgtool_partition *partition, const cha
 			if (read_sector_logical(image->file_handle, cur_sec, & image->geometry, buf))
 				return IMGTOOLERR_READERROR;
 
+<<<<<<< HEAD
 			if (stream_write(destf, buf, 256) != 256)
+=======
+			if (destf->write(buf, 256) != 256)
+>>>>>>> upstream/master
 				return IMGTOOLERR_WRITEERROR;
 
 			i++;
@@ -1550,10 +1889,17 @@ static imgtoolerr_t ti990_image_readfile(imgtool_partition *partition, const cha
 /*
     Add a file to a ti990_image.
 */
+<<<<<<< HEAD
 static imgtoolerr_t ti990_image_writefile(imgtool_partition *partition, const char *fpath, imgtool_stream *sourcef, option_resolution *writeoptions)
 {
 	imgtool_image *img = imgtool_partition_image(partition);
 	ti990_image *image = (ti990_image *) imgtool_image_extra_bytes(img);
+=======
+static imgtoolerr_t ti990_image_writefile(imgtool::partition &partition, const char *fpath, imgtool::stream *sourcef, util::option_resolution *writeoptions)
+{
+	imgtool::image *img = &partition->image();
+	ti990_image *image = get_ti990_image(img);
+>>>>>>> upstream/master
 	int catalog_index, fdr_secnum, parent_fdr_secnum;
 	imgtoolerr_t reply;
 
@@ -1576,7 +1922,11 @@ static imgtoolerr_t ti990_image_writefile(imgtool_partition *partition, const ch
 	int i, lnks_index;
 	int cur_sec, last_sec;
 	int secsused;
+<<<<<<< HEAD
 	UINT8 buf[256];
+=======
+	uint8_t buf[256];
+>>>>>>> upstream/master
 	int reply;
 	int fdr_secnum;
 
@@ -1592,7 +1942,11 @@ static imgtoolerr_t ti990_image_writefile(imgtool_partition *partition, const ch
 		return reply;
 	}
 
+<<<<<<< HEAD
 	if (stream_read(sourcef, & src_header, 128) != 128)
+=======
+	if (sourcef->read(& src_header, 128) != 128)
+>>>>>>> upstream/master
 		return IMGTOOLERR_READERROR;
 
 	/* create new file */
@@ -1637,7 +1991,11 @@ static imgtoolerr_t ti990_image_writefile(imgtool_partition *partition, const ch
 			if (cur_sec >= totsecs)
 				return IMGTOOLERR_CORRUPTIMAGE;
 
+<<<<<<< HEAD
 			if (stream_read(sourcef, buf, 256) != 256)
+=======
+			if (sourcef->read(buf, 256) != 256)
+>>>>>>> upstream/master
 				return IMGTOOLERR_READERROR;
 
 			if (write_sector_logical(image->file_handle, cur_sec, & image->geometry, buf))
@@ -1674,10 +2032,17 @@ static imgtoolerr_t ti990_image_writefile(imgtool_partition *partition, const ch
 /*
     Delete a file from a ti990_image.
 */
+<<<<<<< HEAD
 static imgtoolerr_t ti990_image_deletefile(imgtool_partition *partition, const char *fpath)
 {
 	imgtool_image *img = imgtool_partition_image(partition);
 	ti990_image *image = (ti990_image *) imgtool_image_extra_bytes(img);
+=======
+static imgtoolerr_t ti990_image_deletefile(imgtool::partition &partition, const char *fpath)
+{
+	imgtool::image *img = &partition->image();
+	ti990_image *image = get_ti990_image(img);
+>>>>>>> upstream/master
 	int catalog_index, fdr_secnum, parent_fdr_secnum;
 	imgtoolerr_t reply;
 
@@ -1700,7 +2065,11 @@ static imgtoolerr_t ti990_image_deletefile(imgtool_partition *partition, const c
 	int secsused;
 	int catalog_index;
 	int reply;
+<<<<<<< HEAD
 	UINT8 buf[256];
+=======
+	uint8_t buf[256];
+>>>>>>> upstream/master
 
 	str_to_fname(ti_fname, filename);
 
@@ -1764,23 +2133,39 @@ static imgtoolerr_t ti990_image_deletefile(imgtool_partition *partition, const c
 /*
     Create a blank ti990_image.
 */
+<<<<<<< HEAD
 static imgtoolerr_t ti990_image_create(imgtool_image *image, imgtool_stream *f, option_resolution *createoptions)
+=======
+static imgtoolerr_t ti990_image_create(imgtool::image &image, imgtool::stream::ptr &&stream, util::option_resolution *createoptions)
+>>>>>>> upstream/master
 {
 	//const char *volname;
 	ti990_geometry geometry;
 	unsigned totsecs;
 	disk_image_header header;
 	ti990_sc0 sec0;
+<<<<<<< HEAD
 	UINT8 empty_sec[MAX_SECTOR_SIZE];
+=======
+	uint8_t empty_sec[MAX_SECTOR_SIZE];
+>>>>>>> upstream/master
 	int reply;
 	int i;
 
 	/* read options */
+<<<<<<< HEAD
 	//volname = option_resolution_lookup_string(createoptions, ti990_createopts_volname);
 	geometry.cylinders = option_resolution_lookup_int(createoptions, ti990_createopts_cylinders);
 	geometry.heads = option_resolution_lookup_int(createoptions, ti990_createopts_heads);
 	geometry.sectors_per_track = option_resolution_lookup_int(createoptions, ti990_createopts_sectors);
 	geometry.bytes_per_sector = option_resolution_lookup_int(createoptions, ti990_createopts_sectorsize);
+=======
+	//volname = createoptions->lookup_string(ti990_createopts_volname);
+	geometry.cylinders = createoptions->lookup_int(ti990_createopts_cylinders);
+	geometry.heads = createoptions->lookup_int(ti990_createopts_heads);
+	geometry.sectors_per_track = createoptions->lookup_int(ti990_createopts_sectors);
+	geometry.bytes_per_sector = createoptions->lookup_int(ti990_createopts_sectorsize);
+>>>>>>> upstream/master
 
 	totsecs = geometry.cylinders * geometry.heads * geometry.sectors_per_track;
 
@@ -1790,7 +2175,11 @@ static imgtoolerr_t ti990_image_create(imgtool_image *image, imgtool_stream *f, 
 	set_UINT32BE(& header.sectors_per_track, geometry.sectors_per_track);
 	set_UINT32BE(& header.bytes_per_sector, geometry.bytes_per_sector);
 
+<<<<<<< HEAD
 	reply = stream_write(f, &header, sizeof(header));
+=======
+	reply = stream->write(&header, sizeof(header));
+>>>>>>> upstream/master
 	if (reply != sizeof(header))
 	{
 		return IMGTOOLERR_WRITEERROR;
@@ -1803,7 +2192,11 @@ static imgtoolerr_t ti990_image_create(imgtool_image *image, imgtool_stream *f, 
 
 
 	/* write sector 0 */
+<<<<<<< HEAD
 	if (write_sector_logical(f, 0, & geometry, &sec0))
+=======
+	if (write_sector_logical(*stream, 0, & geometry, &sec0))
+>>>>>>> upstream/master
 		return IMGTOOLERR_WRITEERROR;
 
 
@@ -1811,7 +2204,11 @@ static imgtoolerr_t ti990_image_create(imgtool_image *image, imgtool_stream *f, 
 	memset(empty_sec, 0, geometry.bytes_per_sector);
 
 	for (i=1; i<totsecs; i++)
+<<<<<<< HEAD
 		if (write_sector_logical(f, i, & geometry, empty_sec))
+=======
+		if (write_sector_logical(*stream, i, & geometry, empty_sec))
+>>>>>>> upstream/master
 			return IMGTOOLERR_WRITEERROR;
 
 	return (imgtoolerr_t)0;

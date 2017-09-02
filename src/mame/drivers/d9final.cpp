@@ -7,8 +7,16 @@
     driver by Angelo Salese & David Haywood
 
     TODO:
+<<<<<<< HEAD
     - Don't know where the ES8712 & RTC62421b chips route;
     - A bunch of missing port outputs;
+=======
+    - Don't know where the ES8712 samples come from;
+    - Main CPU banking is wrong;
+    - Some inputs not understood;
+    - A bunch of missing port outputs (including payout);
+    - NVRAM;
+>>>>>>> upstream/master
     - screen disable? Start-up fading looks horrible;
     - Game looks IGS-esque, is there any correlation?
 
@@ -23,7 +31,15 @@
 
 #include "emu.h"
 #include "cpu/z80/z80.h"
+<<<<<<< HEAD
 #include "sound/2413intf.h"
+=======
+#include "machine/msm6242.h"
+#include "sound/es8712.h"
+#include "sound/ym2413.h"
+#include "screen.h"
+#include "speaker.h"
+>>>>>>> upstream/master
 
 
 class d9final_state : public driver_device
@@ -40,9 +56,15 @@ public:
 	required_device<cpu_device> m_maincpu;
 	required_device<gfxdecode_device> m_gfxdecode;
 
+<<<<<<< HEAD
 	required_shared_ptr<UINT8> m_lo_vram;
 	required_shared_ptr<UINT8> m_hi_vram;
 	required_shared_ptr<UINT8> m_cram;
+=======
+	required_shared_ptr<uint8_t> m_lo_vram;
+	required_shared_ptr<uint8_t> m_hi_vram;
+	required_shared_ptr<uint8_t> m_cram;
+>>>>>>> upstream/master
 
 	tilemap_t *m_sc0_tilemap;
 
@@ -54,10 +76,17 @@ public:
 
 	TILE_GET_INFO_MEMBER(get_sc0_tile_info);
 
+<<<<<<< HEAD
 	virtual void machine_start();
 	virtual void video_start();
 
 	UINT32 screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
+=======
+	virtual void machine_start() override;
+	virtual void video_start() override;
+
+	uint32_t screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
+>>>>>>> upstream/master
 };
 
 
@@ -75,10 +104,17 @@ TILE_GET_INFO_MEMBER(d9final_state::get_sc0_tile_info)
 
 void d9final_state::video_start()
 {
+<<<<<<< HEAD
 	m_sc0_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(d9final_state::get_sc0_tile_info),this),TILEMAP_SCAN_ROWS,8,8,64,32);
 }
 
 UINT32 d9final_state::screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+=======
+	m_sc0_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(d9final_state::get_sc0_tile_info),this),TILEMAP_SCAN_ROWS,8,8,64,32);
+}
+
+uint32_t d9final_state::screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+>>>>>>> upstream/master
 {
 	m_sc0_tilemap->draw(screen, bitmap, cliprect, 0,0);
 	return 0;
@@ -125,7 +161,12 @@ static ADDRESS_MAP_START( d9final_map, AS_PROGRAM, 8, d9final_state )
 	AM_RANGE(0xd000, 0xd7ff) AM_RAM_WRITE(sc0_lovram) AM_SHARE("lo_vram")
 	AM_RANGE(0xd800, 0xdfff) AM_RAM_WRITE(sc0_hivram) AM_SHARE("hi_vram")
 	AM_RANGE(0xe000, 0xe7ff) AM_RAM_WRITE(sc0_cram) AM_SHARE("cram")
+<<<<<<< HEAD
 	AM_RANGE(0xf000, 0xf000) AM_READ(prot_latch_r)
+=======
+	AM_RANGE(0xf000, 0xf007) AM_READ(prot_latch_r) //AM_DEVREADWRITE("essnd", es8712_device, read, write)
+	AM_RANGE(0xf800, 0xf80f) AM_DEVREADWRITE("rtc", rtc62421_device, read, write)
+>>>>>>> upstream/master
 ADDRESS_MAP_END
 
 static ADDRESS_MAP_START( d9final_io, AS_IO, 8, d9final_state )
@@ -143,12 +184,21 @@ ADDRESS_MAP_END
 
 static INPUT_PORTS_START( d9final )
 	PORT_START("IN0")
+<<<<<<< HEAD
 	PORT_BIT( 0x01, IP_ACTIVE_LOW, IPT_SERVICE2 ) PORT_NAME("Reset")
 	PORT_BIT( 0x0e, IP_ACTIVE_LOW, IPT_UNKNOWN )
 	PORT_BIT( 0x10, IP_ACTIVE_LOW, IPT_GAMBLE_KEYOUT )
 	PORT_BIT( 0x20, IP_ACTIVE_LOW, IPT_UNKNOWN )
 	PORT_BIT( 0x40, IP_ACTIVE_LOW, IPT_SERVICE )
 	PORT_BIT( 0x80, IP_ACTIVE_LOW, IPT_SERVICE1 ) PORT_NAME("Analyzer")
+=======
+	PORT_BIT( 0x01, IP_ACTIVE_LOW, IPT_MEMORY_RESET )
+	PORT_BIT( 0x0e, IP_ACTIVE_LOW, IPT_UNKNOWN )
+	PORT_BIT( 0x10, IP_ACTIVE_LOW, IPT_GAMBLE_KEYOUT )
+	PORT_BIT( 0x20, IP_ACTIVE_LOW, IPT_UNKNOWN )
+	PORT_BIT( 0x40, IP_ACTIVE_LOW, IPT_GAMBLE_SERVICE )
+	PORT_BIT( 0x80, IP_ACTIVE_LOW, IPT_GAMBLE_BOOK )
+>>>>>>> upstream/master
 
 	PORT_START("IN1")
 	PORT_BIT( 0x03, IP_ACTIVE_LOW, IPT_UNKNOWN )
@@ -157,7 +207,11 @@ static INPUT_PORTS_START( d9final )
 	PORT_BIT( 0x10, IP_ACTIVE_LOW, IPT_GAMBLE_TAKE )
 	PORT_BIT( 0x20, IP_ACTIVE_LOW, IPT_GAMBLE_BET )
 	PORT_BIT( 0x40, IP_ACTIVE_LOW, IPT_GAMBLE_LOW )
+<<<<<<< HEAD
 	PORT_BIT( 0x80, IP_ACTIVE_LOW, IPT_GAMBLE_DEAL )
+=======
+	PORT_BIT( 0x80, IP_ACTIVE_LOW, IPT_START1 )
+>>>>>>> upstream/master
 
 	PORT_START("IN2")
 	PORT_BIT( 0x01, IP_ACTIVE_LOW, IPT_UNUSED ) //another reset button
@@ -282,9 +336,16 @@ GFXDECODE_END
 void d9final_state::machine_start()
 {
 	membank("bank1")->configure_entries(0, 8, memregion("maincpu")->base() + 0x10000, 0x4000);
+<<<<<<< HEAD
 }
 
 static MACHINE_CONFIG_START( d9final, d9final_state )
+=======
+	membank("bank1")->set_entry(0);
+}
+
+static MACHINE_CONFIG_START( d9final )
+>>>>>>> upstream/master
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", Z80, 24000000/4)/* ? MHz */
 	MCFG_CPU_PROGRAM_MAP(d9final_map)
@@ -309,6 +370,14 @@ static MACHINE_CONFIG_START( d9final, d9final_state )
 
 	MCFG_SOUND_ADD("ymsnd", YM2413, XTAL_3_579545MHz)
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 0.5)
+<<<<<<< HEAD
+=======
+
+	//MCFG_DEVICE_ADD("essnd", ES8712, 24000000/3) // clock unknown
+	//MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 1.0)
+
+	MCFG_DEVICE_ADD("rtc", RTC62421, XTAL_32_768kHz) // internal oscillator
+>>>>>>> upstream/master
 MACHINE_CONFIG_END
 
 
@@ -326,4 +395,8 @@ ROM_END
 
 
 
+<<<<<<< HEAD
 GAME( 1992, d9final, 0, d9final, d9final, driver_device, 0, ROT0, "Excellent System", "Dream 9 Final (v2.24)", MACHINE_SUPPORTS_SAVE )
+=======
+GAME( 1992, d9final, 0, d9final, d9final, d9final_state, 0, ROT0, "Excellent System", "Dream 9 Final (v2.24)", MACHINE_SUPPORTS_SAVE )
+>>>>>>> upstream/master

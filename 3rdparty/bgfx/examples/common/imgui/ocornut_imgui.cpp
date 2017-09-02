@@ -1,13 +1,22 @@
 /*
  * Copyright 2014-2015 Daniel Collin. All rights reserved.
+<<<<<<< HEAD
  * License: http://www.opensource.org/licenses/BSD-2-Clause
  */
 
 #include <bgfx/bgfx.h>
+=======
+ * License: https://github.com/bkaradzic/bgfx#license-bsd-2-clause
+ */
+
+#include <bgfx/bgfx.h>
+#include <bgfx/embedded_shader.h>
+>>>>>>> upstream/master
 #include <bx/allocator.h>
 #include <bx/fpumath.h>
 #include <bx/timer.h>
 #include <ocornut-imgui/imgui.h>
+<<<<<<< HEAD
 #include <ocornut-imgui/imgui_wm.h>
 #include "imgui.h"
 #include "ocornut_imgui.h"
@@ -15,6 +24,18 @@
 
 #ifndef USE_ENTRY
 #	define USE_ENTRY defined(SCI_NAMESPACE)
+=======
+#include "imgui.h"
+#include "ocornut_imgui.h"
+#include "../bgfx_utils.h"
+
+#ifndef USE_ENTRY
+#	if defined(SCI_NAMESPACE)
+#		define USE_ENTRY 1
+#	else
+#		define USE_ENTRY 0
+#	endif // defined(SCI_NAMESPACE)
+>>>>>>> upstream/master
 #endif // USE_ENTRY
 
 #if USE_ENTRY
@@ -29,6 +50,7 @@
 #include "vs_ocornut_imgui.bin.h"
 #include "fs_ocornut_imgui.bin.h"
 
+<<<<<<< HEAD
 void viewCallback(const ImDrawList* _parentList, const ImDrawCmd* _cmd);
 
 class PlatformWindow : public ImGuiWM::PlatformWindow
@@ -228,6 +250,32 @@ protected:
 		PreUpdate();
 		Update();
 	}
+=======
+#include "roboto_regular.ttf.h"
+#include "robotomono_regular.ttf.h"
+#include "icons_kenney.ttf.h"
+#include "icons_font_awesome.ttf.h"
+
+static const bgfx::EmbeddedShader s_embeddedShaders[] =
+{
+	BGFX_EMBEDDED_SHADER(vs_ocornut_imgui),
+	BGFX_EMBEDDED_SHADER(fs_ocornut_imgui),
+
+	BGFX_EMBEDDED_SHADER_END()
+};
+
+struct FontRangeMerge
+{
+	const void* data;
+	size_t      size;
+	ImWchar     ranges[3];
+};
+
+static FontRangeMerge s_fontRangeMerge[] =
+{
+	{ s_iconsKenneyTtf,      sizeof(s_iconsKenneyTtf),      { ICON_MIN_KI, ICON_MAX_KI, 0 } },
+	{ s_iconsFontAwesomeTtf, sizeof(s_iconsFontAwesomeTtf), { ICON_MIN_FA, ICON_MAX_FA, 0 } },
+>>>>>>> upstream/master
 };
 
 struct OcornutImguiContext
@@ -248,6 +296,7 @@ struct OcornutImguiContext
 			bgfx::setViewTransform(m_viewId, NULL, ortho);
 		}
 
+<<<<<<< HEAD
 #if USE_ENTRY
 		for (uint32_t ii = 1; ii < BX_COUNTOF(m_window); ++ii)
 		{
@@ -285,6 +334,8 @@ struct OcornutImguiContext
 		}
 #endif // USE_ENTRY
 
+=======
+>>>>>>> upstream/master
 		// Render command lists
 		for (int32_t ii = 0, num = _drawData->CmdListsCount; ii < num; ++ii)
 		{
@@ -295,8 +346,12 @@ struct OcornutImguiContext
 			uint32_t numVertices = (uint32_t)drawList->VtxBuffer.size();
 			uint32_t numIndices  = (uint32_t)drawList->IdxBuffer.size();
 
+<<<<<<< HEAD
 			if (!bgfx::checkAvailTransientVertexBuffer(numVertices, m_decl)
 			||  !bgfx::checkAvailTransientIndexBuffer(numIndices) )
+=======
+			if (!checkAvailTransientBuffers(numVertices, m_decl, numIndices) )
+>>>>>>> upstream/master
 			{
 				// not enough space in transient buffer just quit drawing the rest...
 				break;
@@ -306,10 +361,17 @@ struct OcornutImguiContext
 			bgfx::allocTransientIndexBuffer(&tib, numIndices);
 
 			ImDrawVert* verts = (ImDrawVert*)tvb.data;
+<<<<<<< HEAD
 			memcpy(verts, drawList->VtxBuffer.begin(), numVertices * sizeof(ImDrawVert) );
 
 			ImDrawIdx* indices = (ImDrawIdx*)tib.data;
 			memcpy(indices, drawList->IdxBuffer.begin(), numIndices * sizeof(ImDrawIdx) );
+=======
+			bx::memCopy(verts, drawList->VtxBuffer.begin(), numVertices * sizeof(ImDrawVert) );
+
+			ImDrawIdx* indices = (ImDrawIdx*)tib.data;
+			bx::memCopy(indices, drawList->IdxBuffer.begin(), numIndices * sizeof(ImDrawIdx) );
+>>>>>>> upstream/master
 
 			uint32_t offset = 0;
 			for (const ImDrawCmd* cmd = drawList->CmdBuffer.begin(), *cmdEnd = drawList->CmdBuffer.end(); cmd != cmdEnd; ++cmd)
@@ -327,15 +389,31 @@ struct OcornutImguiContext
 						;
 
 					bgfx::TextureHandle th = m_texture;
+<<<<<<< HEAD
 
 					if (NULL != cmd->TextureId)
 					{
 						union { ImTextureID ptr; struct { uint16_t flags; bgfx::TextureHandle handle; } s; } texture = { cmd->TextureId };
+=======
+					bgfx::ProgramHandle program = m_program;
+
+					if (NULL != cmd->TextureId)
+					{
+						union { ImTextureID ptr; struct { bgfx::TextureHandle handle; uint8_t flags; uint8_t mip; } s; } texture = { cmd->TextureId };
+>>>>>>> upstream/master
 						state |= 0 != (IMGUI_FLAGS_ALPHA_BLEND & texture.s.flags)
 							? BGFX_STATE_BLEND_FUNC(BGFX_STATE_BLEND_SRC_ALPHA, BGFX_STATE_BLEND_INV_SRC_ALPHA)
 							: BGFX_STATE_NONE
 							;
 						th = texture.s.handle;
+<<<<<<< HEAD
+=======
+						if (0 != texture.s.mip)
+						{
+							extern bgfx::ProgramHandle imguiGetImageProgram(uint8_t _mip);
+							program = imguiGetImageProgram(texture.s.mip);
+						}
+>>>>>>> upstream/master
 					}
 					else
 					{
@@ -353,7 +431,11 @@ struct OcornutImguiContext
 					bgfx::setTexture(0, s_tex, th);
 					bgfx::setVertexBuffer(&tvb, 0, numVertices);
 					bgfx::setIndexBuffer(&tib, offset, cmd->ElemCount);
+<<<<<<< HEAD
 					bgfx::submit(m_viewId, m_program);
+=======
+					bgfx::submit(cmd->ViewId, program);
+>>>>>>> upstream/master
 				}
 
 				offset += cmd->ElemCount;
@@ -361,7 +443,11 @@ struct OcornutImguiContext
 		}
 	}
 
+<<<<<<< HEAD
 	void create(const void* _data, uint32_t _size, float _fontSize, bx::AllocatorI* _allocator)
+=======
+	void create(float _fontSize, bx::AllocatorI* _allocator)
+>>>>>>> upstream/master
 	{
 		m_viewId = 255;
 		m_allocator = _allocator;
@@ -380,6 +466,11 @@ struct OcornutImguiContext
 		io.DeltaTime   = 1.0f / 60.0f;
 		io.IniFilename = NULL;
 
+<<<<<<< HEAD
+=======
+		setupStyle(true);
+
+>>>>>>> upstream/master
 #if defined(SCI_NAMESPACE)
 		io.KeyMap[ImGuiKey_Tab]        = (int)entry::Key::Tab;
 		io.KeyMap[ImGuiKey_LeftArrow]  = (int)entry::Key::Left;
@@ -400,6 +491,7 @@ struct OcornutImguiContext
 		io.KeyMap[ImGuiKey_Z]          = (int)entry::Key::KeyZ;
 #endif // defined(SCI_NAMESPACE)
 
+<<<<<<< HEAD
 		const bgfx::Memory* vsmem;
 		const bgfx::Memory* fsmem;
 
@@ -430,6 +522,14 @@ struct OcornutImguiContext
 		bgfx::ShaderHandle vsh = bgfx::createShader(vsmem);
 		bgfx::ShaderHandle fsh = bgfx::createShader(fsmem);
 		m_program = bgfx::createProgram(vsh, fsh, true);
+=======
+		bgfx::RendererType::Enum type = bgfx::getRendererType();
+		m_program = bgfx::createProgram(
+			  bgfx::createEmbeddedShader(s_embeddedShaders, type, "vs_ocornut_imgui")
+			, bgfx::createEmbeddedShader(s_embeddedShaders, type, "fs_ocornut_imgui")
+			, true
+			);
+>>>>>>> upstream/master
 
 		m_decl
 			.begin()
@@ -443,6 +543,7 @@ struct OcornutImguiContext
 		uint8_t* data;
 		int32_t width;
 		int32_t height;
+<<<<<<< HEAD
 		void* font = ImGui::MemAlloc(_size);
 		memcpy(font, _data, _size);
 		io.Fonts->AddFontFromMemoryTTF(font, _size, _fontSize);
@@ -451,12 +552,46 @@ struct OcornutImguiContext
 
 		m_texture = bgfx::createTexture2D( (uint16_t)width
 			, (uint16_t)height
+=======
+		{
+			ImFontConfig config;
+			config.FontDataOwnedByAtlas = false;
+			config.MergeMode = false;
+//			config.MergeGlyphCenterV = true;
+
+			m_font[ImGui::Font::Regular] = io.Fonts->AddFontFromMemoryTTF( (void*)s_robotoRegularTtf,     sizeof(s_robotoRegularTtf),     _fontSize,      &config);
+			m_font[ImGui::Font::Mono   ] = io.Fonts->AddFontFromMemoryTTF( (void*)s_robotoMonoRegularTtf, sizeof(s_robotoMonoRegularTtf), _fontSize-3.0f, &config);
+
+			config.MergeMode = true;
+			config.DstFont   = m_font[ImGui::Font::Regular];
+
+			for (uint32_t ii = 0; ii < BX_COUNTOF(s_fontRangeMerge); ++ii)
+			{
+				const FontRangeMerge& frm = s_fontRangeMerge[ii];
+
+				io.Fonts->AddFontFromMemoryTTF( (void*)frm.data
+						, (int)frm.size
+						, _fontSize-3.0f
+						, &config
+						, frm.ranges
+						);
+			}
+		}
+
+		io.Fonts->GetTexDataAsRGBA32(&data, &width, &height);
+
+		m_texture = bgfx::createTexture2D(
+			  (uint16_t)width
+			, (uint16_t)height
+			, false
+>>>>>>> upstream/master
 			, 1
 			, bgfx::TextureFormat::BGRA8
 			, 0
 			, bgfx::copy(data, width*height*4)
 			);
 
+<<<<<<< HEAD
 		ImGuiStyle& style = ImGui::GetStyle();
 		style.FrameRounding = 4.0f;
 
@@ -508,12 +643,19 @@ struct OcornutImguiContext
 			m_wm->DockWith(w3, w0, ImGuiWM::E_DOCK_ORIENTATION_BOTTOM);
 		}
 #endif // 0
+=======
+		ImGui::InitDockContext();
+>>>>>>> upstream/master
 	}
 
 	void destroy()
 	{
+<<<<<<< HEAD
 		m_wm->Exit();
 		BX_DELETE(m_allocator, m_wm);
+=======
+		ImGui::ShutdownDockContext();
+>>>>>>> upstream/master
 		ImGui::Shutdown();
 
 		bgfx::destroyUniform(s_tex);
@@ -523,10 +665,87 @@ struct OcornutImguiContext
 		m_allocator = NULL;
 	}
 
+<<<<<<< HEAD
 	void beginFrame(int32_t _mx, int32_t _my, uint8_t _button, int32_t _scroll, int _width, int _height, char _inputChar, uint8_t _viewId)
 	{
 		m_viewId        = _viewId;
 		m_defaultViewId = _viewId;
+=======
+	void setupStyle(bool _dark)
+	{
+		// Doug Binks' darl color scheme
+		// https://gist.github.com/dougbinks/8089b4bbaccaaf6fa204236978d165a9
+		ImGuiStyle& style = ImGui::GetStyle();
+
+		style.FrameRounding = 4.0f;
+
+		// light style from Pacome Danhiez (user itamago)
+		// https://github.com/ocornut/imgui/pull/511#issuecomment-175719267
+		style.Colors[ImGuiCol_Text]                  = ImVec4(0.00f, 0.00f, 0.00f, 1.00f);
+		style.Colors[ImGuiCol_TextDisabled]          = ImVec4(0.60f, 0.60f, 0.60f, 1.00f);
+		style.Colors[ImGuiCol_WindowBg]              = ImVec4(0.94f, 0.94f, 0.94f, 1.00f);
+		style.Colors[ImGuiCol_ChildWindowBg]         = ImVec4(0.00f, 0.00f, 0.00f, 0.00f);
+		style.Colors[ImGuiCol_Border]                = ImVec4(0.00f, 0.00f, 0.00f, 0.39f);
+		style.Colors[ImGuiCol_BorderShadow]          = ImVec4(1.00f, 1.00f, 1.00f, 0.10f);
+		style.Colors[ImGuiCol_FrameBg]               = ImVec4(1.00f, 1.00f, 1.00f, 1.00f);
+		style.Colors[ImGuiCol_FrameBgHovered]        = ImVec4(0.26f, 0.59f, 0.98f, 0.40f);
+		style.Colors[ImGuiCol_FrameBgActive]         = ImVec4(0.26f, 0.59f, 0.98f, 0.67f);
+		style.Colors[ImGuiCol_TitleBg]               = ImVec4(0.96f, 0.96f, 0.96f, 1.00f);
+		style.Colors[ImGuiCol_TitleBgCollapsed]      = ImVec4(1.00f, 1.00f, 1.00f, 0.51f);
+		style.Colors[ImGuiCol_TitleBgActive]         = ImVec4(0.82f, 0.82f, 0.82f, 1.00f);
+		style.Colors[ImGuiCol_MenuBarBg]             = ImVec4(0.86f, 0.86f, 0.86f, 1.00f);
+		style.Colors[ImGuiCol_ScrollbarBg]           = ImVec4(0.98f, 0.98f, 0.98f, 0.53f);
+		style.Colors[ImGuiCol_ScrollbarGrab]         = ImVec4(0.69f, 0.69f, 0.69f, 0.80f);
+		style.Colors[ImGuiCol_ScrollbarGrabHovered]  = ImVec4(0.49f, 0.49f, 0.49f, 0.80f);
+		style.Colors[ImGuiCol_ScrollbarGrabActive]   = ImVec4(0.49f, 0.49f, 0.49f, 1.00f);
+		style.Colors[ImGuiCol_ComboBg]               = ImVec4(0.86f, 0.86f, 0.86f, 0.99f);
+		style.Colors[ImGuiCol_CheckMark]             = ImVec4(0.26f, 0.59f, 0.98f, 1.00f);
+		style.Colors[ImGuiCol_SliderGrab]            = ImVec4(0.26f, 0.59f, 0.98f, 0.78f);
+		style.Colors[ImGuiCol_SliderGrabActive]      = ImVec4(0.26f, 0.59f, 0.98f, 1.00f);
+		style.Colors[ImGuiCol_Button]                = ImVec4(0.26f, 0.59f, 0.98f, 0.40f);
+		style.Colors[ImGuiCol_ButtonHovered]         = ImVec4(0.26f, 0.59f, 0.98f, 1.00f);
+		style.Colors[ImGuiCol_ButtonActive]          = ImVec4(0.06f, 0.53f, 0.98f, 1.00f);
+		style.Colors[ImGuiCol_Header]                = ImVec4(0.26f, 0.59f, 0.98f, 0.31f);
+		style.Colors[ImGuiCol_HeaderHovered]         = ImVec4(0.26f, 0.59f, 0.98f, 0.80f);
+		style.Colors[ImGuiCol_HeaderActive]          = ImVec4(0.26f, 0.59f, 0.98f, 1.00f);
+		style.Colors[ImGuiCol_Column]                = ImVec4(0.39f, 0.39f, 0.39f, 1.00f);
+		style.Colors[ImGuiCol_ColumnHovered]         = ImVec4(0.26f, 0.59f, 0.98f, 0.78f);
+		style.Colors[ImGuiCol_ColumnActive]          = ImVec4(0.26f, 0.59f, 0.98f, 1.00f);
+		style.Colors[ImGuiCol_ResizeGrip]            = ImVec4(1.00f, 1.00f, 1.00f, 0.50f);
+		style.Colors[ImGuiCol_ResizeGripHovered]     = ImVec4(0.26f, 0.59f, 0.98f, 0.67f);
+		style.Colors[ImGuiCol_ResizeGripActive]      = ImVec4(0.26f, 0.59f, 0.98f, 0.95f);
+		style.Colors[ImGuiCol_CloseButton]           = ImVec4(0.59f, 0.59f, 0.59f, 0.50f);
+		style.Colors[ImGuiCol_CloseButtonHovered]    = ImVec4(0.98f, 0.39f, 0.36f, 1.00f);
+		style.Colors[ImGuiCol_CloseButtonActive]     = ImVec4(0.98f, 0.39f, 0.36f, 1.00f);
+		style.Colors[ImGuiCol_PlotLines]             = ImVec4(0.39f, 0.39f, 0.39f, 1.00f);
+		style.Colors[ImGuiCol_PlotLinesHovered]      = ImVec4(1.00f, 0.43f, 0.35f, 1.00f);
+		style.Colors[ImGuiCol_PlotHistogram]         = ImVec4(0.90f, 0.70f, 0.00f, 1.00f);
+		style.Colors[ImGuiCol_PlotHistogramHovered]  = ImVec4(1.00f, 0.60f, 0.00f, 1.00f);
+		style.Colors[ImGuiCol_TextSelectedBg]        = ImVec4(0.26f, 0.59f, 0.98f, 0.35f);
+		style.Colors[ImGuiCol_PopupBg]               = ImVec4(1.00f, 1.00f, 1.00f, 0.94f);
+		style.Colors[ImGuiCol_ModalWindowDarkening]  = ImVec4(0.20f, 0.20f, 0.20f, 0.35f);
+
+		if (_dark)
+		{
+			for (int i = 0; i <= ImGuiCol_COUNT; i++)
+			{
+				ImVec4& col = style.Colors[i];
+				float H, S, V;
+				ImGui::ColorConvertRGBtoHSV( col.x, col.y, col.z, H, S, V );
+
+				if( S < 0.1f )
+				{
+					V = 1.0f - V;
+				}
+				ImGui::ColorConvertHSVtoRGB( H, S, V, col.x, col.y, col.z );
+			}
+		}
+	}
+
+	void beginFrame(int32_t _mx, int32_t _my, uint8_t _button, int32_t _scroll, int _width, int _height, char _inputChar, uint8_t _viewId)
+	{
+		m_viewId = _viewId;
+>>>>>>> upstream/master
 
 		ImGuiIO& io = ImGui::GetIO();
 		if (_inputChar < 0x7f)
@@ -561,6 +780,7 @@ struct OcornutImguiContext
 #endif // defined(SCI_NAMESPACE)
 
 		ImGui::NewFrame();
+<<<<<<< HEAD
 
 #if 0
 		ImGui::ShowTestWindow(); //Debug only.
@@ -571,11 +791,20 @@ struct OcornutImguiContext
 		bool opened = true;
 		ShowExampleAppCustomNodeGraph(&opened);
 #endif // 0
+=======
+		ImGui::PushStyleVar(ImGuiStyleVar_ViewId, (float)_viewId);
+
+		ImGuizmo::BeginFrame();
+>>>>>>> upstream/master
 	}
 
 	void endFrame()
 	{
+<<<<<<< HEAD
 		m_wm->Run();
+=======
+		ImGui::PopStyleVar(1);
+>>>>>>> upstream/master
 		ImGui::Render();
 	}
 
@@ -584,6 +813,7 @@ struct OcornutImguiContext
 	bgfx::ProgramHandle m_program;
 	bgfx::TextureHandle m_texture;
 	bgfx::UniformHandle s_tex;
+<<<<<<< HEAD
 	WindowManager* m_wm;
 	int64_t m_last;
 	int32_t m_lastScroll;
@@ -606,10 +836,17 @@ struct OcornutImguiContext
 
 	Window m_window[16];
 #endif // USE_ENTRY
+=======
+	ImFont* m_font[ImGui::Font::Count];
+	int64_t m_last;
+	int32_t m_lastScroll;
+	uint8_t m_viewId;
+>>>>>>> upstream/master
 };
 
 static OcornutImguiContext s_ctx;
 
+<<<<<<< HEAD
 #if USE_ENTRY
 
 void viewCallback(const ImDrawList* /*_parentList*/, const ImDrawCmd* _cmd)
@@ -662,6 +899,8 @@ void imguiUpdateWindow(const entry::WindowState& _state)
 }
 #endif // USE_ENTRY
 
+=======
+>>>>>>> upstream/master
 void* OcornutImguiContext::memAlloc(size_t _size)
 {
 	return BX_ALLOC(s_ctx.m_allocator, _size);
@@ -672,6 +911,7 @@ void OcornutImguiContext::memFree(void* _ptr)
 	BX_FREE(s_ctx.m_allocator, _ptr);
 }
 
+<<<<<<< HEAD
 void OcornutImguiContext::renderDrawLists(ImDrawData* draw_data)
 {
 	s_ctx.render(draw_data);
@@ -680,6 +920,16 @@ void OcornutImguiContext::renderDrawLists(ImDrawData* draw_data)
 void IMGUI_create(const void* _data, uint32_t _size, float _fontSize, bx::AllocatorI* _allocator)
 {
 	s_ctx.create(_data, _size, _fontSize, _allocator);
+=======
+void OcornutImguiContext::renderDrawLists(ImDrawData* _drawData)
+{
+	s_ctx.render(_drawData);
+}
+
+void IMGUI_create(float _fontSize, bx::AllocatorI* _allocator)
+{
+	s_ctx.create(_fontSize, _allocator);
+>>>>>>> upstream/master
 }
 
 void IMGUI_destroy()
@@ -696,3 +946,14 @@ void IMGUI_endFrame()
 {
 	s_ctx.endFrame();
 }
+<<<<<<< HEAD
+=======
+
+namespace ImGui
+{
+	void PushFont(Font::Enum _font)
+	{
+		PushFont(s_ctx.m_font[_font]);
+	}
+} // namespace ImGui
+>>>>>>> upstream/master

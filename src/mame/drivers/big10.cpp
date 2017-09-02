@@ -63,6 +63,12 @@
 #include "sound/ay8910.h"
 #include "video/v9938.h"
 #include "machine/nvram.h"
+<<<<<<< HEAD
+=======
+#include "machine/ticket.h"
+#include "screen.h"
+#include "speaker.h"
+>>>>>>> upstream/master
 
 
 class big10_state : public driver_device
@@ -72,6 +78,7 @@ public:
 		: driver_device(mconfig, type, tag)
 		, m_v9938(*this, "v9938")
 		, m_maincpu(*this, "maincpu")
+<<<<<<< HEAD
 		, m_in1(*this, "IN1")
 		, m_in2(*this, "IN2")
 		, m_in3(*this, "IN3")
@@ -113,6 +120,26 @@ void big10_state::machine_reset()
 }
 
 
+=======
+		, m_hopper(*this, "hopper")
+		, m_in(*this, "IN%u", 1)
+	{ }
+
+	required_device<v9938_device> m_v9938;
+	uint8_t m_mux_data;
+	DECLARE_READ8_MEMBER(mux_r);
+	DECLARE_WRITE8_MEMBER(mux_w);
+	required_device<cpu_device> m_maincpu;
+	required_device<ticket_dispenser_device> m_hopper;
+	required_ioport_array<6> m_in;
+};
+
+
+#define HOPPER_PULSE        40          // time between hopper pulses in milliseconds
+#define VDP_MEM             0x40000
+
+
+>>>>>>> upstream/master
 /****************************************
 *  Input Ports Demux & Common Routines  *
 ****************************************/
@@ -121,10 +148,16 @@ void big10_state::machine_reset()
 WRITE8_MEMBER(big10_state::mux_w)
 {
 	m_mux_data = ~data;
+<<<<<<< HEAD
+=======
+	m_hopper->write(space, 0, (data & 0x40) << 1);
+	machine().output().set_lamp_value(1, BIT(~data, 7)); // maybe a coin counter?
+>>>>>>> upstream/master
 }
 
 READ8_MEMBER(big10_state::mux_r)
 {
+<<<<<<< HEAD
 	switch(m_mux_data)
 	{
 		case 1: return m_in1->read();
@@ -133,6 +166,14 @@ READ8_MEMBER(big10_state::mux_r)
 	}
 
 	return m_mux_data;
+=======
+	uint8_t result = 0xff;
+	for (int b = 0; b < 6; b++)
+		if (BIT(m_mux_data, b))
+			result &= m_in[b]->read();
+
+	return result;
+>>>>>>> upstream/master
 }
 
 
@@ -163,9 +204,15 @@ ADDRESS_MAP_END
 static INPUT_PORTS_START( big10 )
 
 	PORT_START("SYSTEM")
+<<<<<<< HEAD
 	PORT_BIT( 0x01, IP_ACTIVE_LOW, IPT_SERVICE ) PORT_TOGGLE    /* Service Mode */
 	PORT_BIT( 0x02, IP_ACTIVE_LOW, IPT_SERVICE ) PORT_CODE(KEYCODE_R) PORT_NAME("Reset")
 	PORT_BIT( 0x04, IP_ACTIVE_LOW, IPT_OTHER )   PORT_CODE(KEYCODE_W) PORT_NAME("Payout")
+=======
+	PORT_BIT( 0x01, IP_ACTIVE_LOW, IPT_GAMBLE_BOOK ) PORT_NAME("Analyze Mode") PORT_TOGGLE
+	PORT_BIT( 0x02, IP_ACTIVE_LOW, IPT_MEMORY_RESET )
+	PORT_BIT( 0x04, IP_ACTIVE_LOW, IPT_GAMBLE_PAYOUT )
+>>>>>>> upstream/master
 	PORT_BIT( 0x08, IP_ACTIVE_LOW, IPT_COIN1 )   PORT_IMPULSE(2)
 	PORT_BIT( 0x10, IP_ACTIVE_LOW, IPT_UNKNOWN )                    // in test mode, go to the game whilst keep pressed.
 	PORT_BIT( 0x20, IP_ACTIVE_LOW, IPT_UNKNOWN )                    // in test mode, go to the game whilst keep pressed.
@@ -173,6 +220,7 @@ static INPUT_PORTS_START( big10 )
 	PORT_BIT( 0x80, IP_ACTIVE_LOW, IPT_COIN3 )   PORT_IMPULSE(2)
 
 	PORT_START("IN1")
+<<<<<<< HEAD
 	PORT_BIT( 0x01, IP_ACTIVE_LOW, IPT_BUTTON7 )  PORT_CODE(KEYCODE_0_PAD) PORT_NAME("Number 0")
 	PORT_BIT( 0x02, IP_ACTIVE_LOW, IPT_BUTTON8 )  PORT_CODE(KEYCODE_1_PAD) PORT_NAME("Number 1")
 	PORT_BIT( 0x04, IP_ACTIVE_LOW, IPT_BUTTON9 )  PORT_CODE(KEYCODE_2_PAD) PORT_NAME("Number 2")
@@ -213,6 +261,55 @@ static INPUT_PORTS_START( big10 )
 	PORT_DIPNAME( 0x08, 0x08, DEF_STR( Unknown ) )          PORT_DIPLOCATION("DSW1:5")
 	PORT_DIPSETTING(    0x08, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
+=======
+	PORT_BIT( 0x01, IP_ACTIVE_LOW, IPT_KEYPAD )   PORT_CODE(KEYCODE_0_PAD) PORT_NAME("Number 0")
+	PORT_BIT( 0x02, IP_ACTIVE_LOW, IPT_KEYPAD )   PORT_CODE(KEYCODE_1_PAD) PORT_NAME("Number 1")
+	PORT_BIT( 0x04, IP_ACTIVE_LOW, IPT_KEYPAD )   PORT_CODE(KEYCODE_2_PAD) PORT_NAME("Number 2")
+	PORT_BIT( 0x08, IP_ACTIVE_LOW, IPT_KEYPAD )   PORT_CODE(KEYCODE_3_PAD) PORT_NAME("Number 3")
+	PORT_BIT( 0x10, IP_ACTIVE_LOW, IPT_KEYPAD )   PORT_CODE(KEYCODE_4_PAD) PORT_NAME("Number 4")
+	PORT_BIT( 0x20, IP_ACTIVE_LOW, IPT_KEYPAD )   PORT_CODE(KEYCODE_5_PAD) PORT_NAME("Number 5")
+	PORT_BIT( 0x40, IP_ACTIVE_LOW, IPT_KEYPAD )   PORT_CODE(KEYCODE_6_PAD) PORT_NAME("Number 6")
+	PORT_BIT( 0x80, IP_ACTIVE_LOW, IPT_KEYPAD )   PORT_CODE(KEYCODE_7_PAD) PORT_NAME("Number 7")
+
+	PORT_START("IN2")
+	PORT_BIT( 0x01, IP_ACTIVE_LOW, IPT_KEYPAD )   PORT_CODE(KEYCODE_8_PAD)     PORT_NAME("Number 8")
+	PORT_BIT( 0x02, IP_ACTIVE_LOW, IPT_KEYPAD )   PORT_CODE(KEYCODE_9_PAD)     PORT_NAME("Number 9")
+	PORT_BIT( 0x04, IP_ACTIVE_LOW, IPT_OTHER )    PORT_CODE(KEYCODE_F)         PORT_NAME("Flip Flop")
+	PORT_BIT( 0x08, IP_ACTIVE_LOW, IPT_OTHER )    PORT_CODE(KEYCODE_ENTER_PAD) PORT_NAME("Select")
+	PORT_BIT( 0x10, IP_ACTIVE_LOW, IPT_OTHER )    PORT_CODE(KEYCODE_Z)         PORT_NAME("Select 10")
+	PORT_BIT( 0x20, IP_ACTIVE_LOW, IPT_OTHER )    PORT_CODE(KEYCODE_MINUS_PAD) PORT_NAME("Cancel All")
+	PORT_BIT( 0x40, IP_ACTIVE_LOW, IPT_START )    PORT_NAME("Start")
+	PORT_BIT( 0x80, IP_ACTIVE_LOW, IPT_GAMBLE_BET )
+
+	PORT_START("IN3")
+	PORT_BIT( 0x01, IP_ACTIVE_LOW, IPT_GAMBLE_D_UP )
+	PORT_BIT( 0x02, IP_ACTIVE_LOW, IPT_GAMBLE_TAKE )
+	PORT_BIT( 0x04, IP_ACTIVE_LOW, IPT_GAMBLE_HIGH ) PORT_NAME("Big")
+	PORT_BIT( 0x08, IP_ACTIVE_LOW, IPT_GAMBLE_LOW ) PORT_NAME("Small")
+	PORT_BIT( 0x70, IP_ACTIVE_LOW, IPT_UNUSED )
+	PORT_BIT( 0x80, IP_ACTIVE_LOW, IPT_UNKNOWN )    // in test mode triggers a sound and screen turns black, hanging the game.
+
+	PORT_START("IN4")
+	PORT_BIT( 0xff, IP_ACTIVE_LOW, IPT_UNKNOWN )
+
+	PORT_START("IN5")
+	PORT_BIT( 0xff, IP_ACTIVE_LOW, IPT_UNKNOWN )
+
+	PORT_START("IN6")
+	PORT_BIT( 0xff, IP_ACTIVE_LOW, IPT_UNKNOWN )
+
+	PORT_START("DSW1")
+	PORT_DIPNAME( 0x03, 0x03, "Credit Limit?" )             PORT_DIPLOCATION("DSW1:8,7")
+	PORT_DIPSETTING(    0x00, "500" )
+	PORT_DIPSETTING(    0x01, "1000" )
+	PORT_DIPSETTING(    0x02, "3000" )
+	PORT_DIPSETTING(    0x03, "9999" )
+	PORT_DIPNAME( 0x0c, 0x0c, "Unknown" )                   PORT_DIPLOCATION("DSW1:6,5") // $C17E
+	PORT_DIPSETTING(    0x00, "0" )
+	PORT_DIPSETTING(    0x04, "1" )
+	PORT_DIPSETTING(    0x08, "2" )
+	PORT_DIPSETTING(    0x0c, "3" )
+>>>>>>> upstream/master
 	PORT_DIPNAME( 0x30, 0x30, "Main Game Rate" )            PORT_DIPLOCATION("DSW1:4,3")
 	PORT_DIPSETTING(    0x00, "60%" )
 	PORT_DIPSETTING(    0x10, "70%" )
@@ -234,7 +331,11 @@ INPUT_PORTS_END
 *           Machine Driver            *
 **************************************/
 
+<<<<<<< HEAD
 static MACHINE_CONFIG_START( big10, big10_state )
+=======
+static MACHINE_CONFIG_START( big10 )
+>>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", Z80, MASTER_CLOCK/6)    /* guess */
@@ -245,7 +346,11 @@ static MACHINE_CONFIG_START( big10, big10_state )
 
 	/* video hardware */
 	MCFG_V9938_ADD("v9938", "screen", VDP_MEM, MASTER_CLOCK)
+<<<<<<< HEAD
 	MCFG_V99X8_INTERRUPT_CALLBACK(WRITELINE(big10_state, big10_vdp_interrupt))
+=======
+	MCFG_V99X8_INTERRUPT_CALLBACK(INPUTLINE("maincpu", 0))
+>>>>>>> upstream/master
 	MCFG_V99X8_SCREEN_ADD_NTSC("screen", "v9938", MASTER_CLOCK)
 
 	/* sound hardware */
@@ -255,6 +360,11 @@ static MACHINE_CONFIG_START( big10, big10_state )
 	MCFG_AY8910_PORT_B_READ_CB(IOPORT("DSW1"))
 	MCFG_AY8910_PORT_A_WRITE_CB(WRITE8(big10_state, mux_w))
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 0.30)
+<<<<<<< HEAD
+=======
+
+	MCFG_TICKET_DISPENSER_ADD("hopper", attotime::from_msec(HOPPER_PULSE), TICKET_MOTOR_ACTIVE_LOW, TICKET_STATUS_ACTIVE_LOW )
+>>>>>>> upstream/master
 MACHINE_CONFIG_END
 
 
@@ -274,5 +384,10 @@ ROM_END
 *           Game Driver(s)            *
 **************************************/
 
+<<<<<<< HEAD
 /*    YEAR  NAME      PARENT    MACHINE   INPUT     STATE          INIT      ROT      COMPANY      FULLNAME   FLAGS  */
 GAME( 198?, big10,    0,        big10,    big10,    driver_device, 0,        ROT0,   "<unknown>", "Big 10",   0 )
+=======
+/*    YEAR  NAME      PARENT    MACHINE   INPUT     STATE          INIT      ROT      COMPANY      FULLNAME    FLAGS  */
+GAME( 198?, big10,    0,        big10,    big10,    big10_state,   0,        ROT0,   "<unknown>",  "Big 10",   0 )
+>>>>>>> upstream/master

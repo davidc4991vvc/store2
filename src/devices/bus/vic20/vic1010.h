@@ -6,17 +6,26 @@
 
 **********************************************************************/
 
+<<<<<<< HEAD
 #pragma once
 
 #ifndef __VIC1010__
 #define __VIC1010__
 
 #include "emu.h"
+=======
+#ifndef MAME_BUS_VIC20_VIC1010_H
+#define MAME_BUS_VIC20_VIC1010_H
+
+#pragma once
+
+>>>>>>> upstream/master
 #include "exp.h"
 
 
 
 //**************************************************************************
+<<<<<<< HEAD
 //  MACROS/CONSTANTS
 //**************************************************************************
 
@@ -25,6 +34,8 @@
 
 
 //**************************************************************************
+=======
+>>>>>>> upstream/master
 //  TYPE DEFINITIONS
 //**************************************************************************
 
@@ -35,6 +46,7 @@ class vic1010_device :  public device_t,
 {
 public:
 	// construction/destruction
+<<<<<<< HEAD
 	vic1010_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
 
 	// optional information overrides
@@ -58,12 +70,38 @@ private:
 	required_device<vic20_expansion_slot_device> m_slot6;
 
 	vic20_expansion_slot_device *m_expansion_slot[MAX_SLOTS];
+=======
+	vic1010_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
+
+protected:
+	// device-level overrides
+	virtual void device_start() override;
+	virtual void device_reset() override;
+
+	// optional information overrides
+	virtual void device_add_mconfig(machine_config &config) override;
+
+	// device_vic20_expansion_card_interface overrides
+	virtual uint8_t vic20_cd_r(address_space &space, offs_t offset, uint8_t data, int ram1, int ram2, int ram3, int blk1, int blk2, int blk3, int blk5, int io2, int io3) override;
+	virtual void vic20_cd_w(address_space &space, offs_t offset, uint8_t data, int ram1, int ram2, int ram3, int blk1, int blk2, int blk3, int blk5, int io2, int io3) override;
+
+private:
+	static constexpr unsigned MAX_SLOTS = 6;
+
+	required_device_array<vic20_expansion_slot_device, MAX_SLOTS> m_expansion_slot;
+>>>>>>> upstream/master
 };
 
 
 // device type definition
+<<<<<<< HEAD
 extern const device_type VIC1010;
 
 
 
 #endif
+=======
+DECLARE_DEVICE_TYPE(VIC1010, vic1010_device)
+
+#endif // MAME_BUS_VIC20_VIC1010_H
+>>>>>>> upstream/master

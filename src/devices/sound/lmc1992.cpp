@@ -20,17 +20,29 @@
 
 */
 
+<<<<<<< HEAD
 #include "lmc1992.h"
 
+=======
+#include "emu.h"
+#include "lmc1992.h"
+
+//#define VERBOSE 1
+#include "logmacro.h"
+
+>>>>>>> upstream/master
 
 
 //**************************************************************************
 //  MACROS / CONSTANTS
 //**************************************************************************
 
+<<<<<<< HEAD
 #define LOG 0
 
 
+=======
+>>>>>>> upstream/master
 #define MICROWIRE_DEVICE_ADDRESS    2
 
 
@@ -63,7 +75,11 @@ enum
 //**************************************************************************
 
 // devices
+<<<<<<< HEAD
 const device_type LMC1992 = &device_creator<lmc1992_device>;
+=======
+DEFINE_DEVICE_TYPE(LMC1992, lmc1992_device, "lmc1992", "LMC1992")
+>>>>>>> upstream/master
 
 
 
@@ -82,47 +98,83 @@ inline void lmc1992_device::execute_command(int addr, int data)
 	case FUNCTION_INPUT_SELECT:
 		if (data == INPUT_SELECT_OPEN)
 		{
+<<<<<<< HEAD
 			if (LOG) logerror("LMC1992 '%s' Input Select : OPEN\n", tag());
 		}
 		else
 		{
 			if (LOG) logerror("LMC1992 '%s' Input Select : INPUT%u\n", tag(), data);
+=======
+			LOG("LMC1992 Input Select : OPEN\n");
+		}
+		else
+		{
+			LOG("LMC1992 Input Select : INPUT%u\n", data);
+>>>>>>> upstream/master
 		}
 		m_input = data;
 		break;
 
 	case FUNCTION_BASS:
+<<<<<<< HEAD
 		if (LOG) logerror("LMC1992 '%s' Bass : %i dB\n", tag(), -40 + (data * 2));
+=======
+		LOG("LMC1992 Bass : %i dB\n", -40 + (data * 2));
+>>>>>>> upstream/master
 		m_bass = data;
 		break;
 
 	case FUNCTION_TREBLE:
+<<<<<<< HEAD
 		if (LOG) logerror("LMC1992 '%s' Treble : %i dB\n", tag(), -40 + (data * 2));
+=======
+		LOG("LMC1992 Treble : %i dB\n", -40 + (data * 2));
+>>>>>>> upstream/master
 		m_treble = data;
 		break;
 
 	case FUNCTION_VOLUME:
+<<<<<<< HEAD
 		if (LOG) logerror("LMC1992 '%s' Volume : %i dB\n", tag(), -80 + (data * 2));
+=======
+		LOG("LMC1992 Volume : %i dB\n", -80 + (data * 2));
+>>>>>>> upstream/master
 		m_volume = data;
 		break;
 
 	case FUNCTION_RIGHT_FRONT_FADER:
+<<<<<<< HEAD
 		if (LOG) logerror("LMC1992 '%s' Right Front Fader : %i dB\n", tag(), -40 + (data * 2));
+=======
+		LOG("LMC1992 Right Front Fader : %i dB\n", -40 + (data * 2));
+>>>>>>> upstream/master
 		m_fader_rf = data;
 		break;
 
 	case FUNCTION_LEFT_FRONT_FADER:
+<<<<<<< HEAD
 		if (LOG) logerror("LMC1992 '%s' Left Front Fader : %i dB\n", tag(), -40 + (data * 2));
+=======
+		LOG("LMC1992 Left Front Fader : %i dB\n", -40 + (data * 2));
+>>>>>>> upstream/master
 		m_fader_lf = data;
 		break;
 
 	case FUNCTION_RIGHT_REAR_FADER:
+<<<<<<< HEAD
 		if (LOG) logerror("LMC1992 '%s' Right Rear Fader : %i dB\n", tag(), -40 + (data * 2));
+=======
+		LOG("LMC1992 Right Rear Fader : %i dB\n", -40 + (data * 2));
+>>>>>>> upstream/master
 		m_fader_rr = data;
 		break;
 
 	case FUNCTION_LEFT_REAR_FADER:
+<<<<<<< HEAD
 		if (LOG) logerror("LMC1992 '%s' Left Rear Fader : %i dB\n", tag(), -40 + (data * 2));
+=======
+		LOG("LMC1992 Left Rear Fader : %i dB\n", -40 + (data * 2));
+>>>>>>> upstream/master
 		m_fader_lr = data;
 		break;
 	}
@@ -138,9 +190,15 @@ inline void lmc1992_device::execute_command(int addr, int data)
 //  lmc1992_device - constructor
 //-------------------------------------------------
 
+<<<<<<< HEAD
 lmc1992_device::lmc1992_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
 	: device_t(mconfig, LMC1992, "LMC1992", tag, owner, clock, "lmc1992", __FILE__),
 		device_sound_interface(mconfig, *this)
+=======
+lmc1992_device::lmc1992_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: device_t(mconfig, LMC1992, tag, owner, clock)
+	, device_sound_interface(mconfig, *this)
+>>>>>>> upstream/master
 {
 }
 
@@ -218,9 +276,15 @@ WRITE_LINE_MEMBER( lmc1992_device::enable_w )
 {
 	if ((m_enable == 0) && (state == 1))
 	{
+<<<<<<< HEAD
 		UINT8 device_addr = (m_si & 0xc000) >> 14;
 		UINT8 addr = (m_si & 0x3800) >> 11;
 		UINT8 data = (m_si & 0x07e0) >> 5;
+=======
+		uint8_t device_addr = (m_si & 0xc000) >> 14;
+		uint8_t addr = (m_si & 0x3800) >> 11;
+		uint8_t data = (m_si & 0x07e0) >> 5;
+>>>>>>> upstream/master
 
 		if (device_addr == MICROWIRE_DEVICE_ADDRESS)
 		{

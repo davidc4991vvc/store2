@@ -20,10 +20,17 @@
   Palette color
 ***************************************************************************/
 
+<<<<<<< HEAD
 void psychic5_state::change_palette(int offset, UINT8* palram, int palbase)
 {
 	UINT8 lo = palram[(offset) & ~1];
 	UINT8 hi = palram[(offset) | 1];
+=======
+void psychic5_state::change_palette(int offset, uint8_t* palram, int palbase)
+{
+	uint8_t lo = palram[(offset) & ~1];
+	uint8_t hi = palram[(offset) | 1];
+>>>>>>> upstream/master
 
 	int color = offset >> 1;
 
@@ -35,7 +42,11 @@ void psychic5_state::change_palette(int offset, UINT8* palram, int palbase)
 
 void psychic5_state::change_bg_palette(int color, int lo_offs, int hi_offs)
 {
+<<<<<<< HEAD
 	UINT8 r,g,b,lo,hi,ir,ig,ib,ix;
+=======
+	uint8_t r,g,b,lo,hi,ir,ig,ib,ix;
+>>>>>>> upstream/master
 	rgb_t irgb;
 
 	/* red,green,blue intensities */
@@ -57,7 +68,11 @@ void psychic5_state::change_bg_palette(int color, int lo_offs, int hi_offs)
 	/* Grey background enable */
 	if (m_bg_control[4] & 2)
 	{
+<<<<<<< HEAD
 		UINT8 val = (r + g + b) / 3;        /* Grey */
+=======
+		uint8_t val = (r + g + b) / 3;        /* Grey */
+>>>>>>> upstream/master
 		/* Just leave plain grey */
 		m_palette->set_pen_color(color,m_blend->func(rgb_t(val,val,val),irgb,ix));
 	}
@@ -191,8 +206,13 @@ VIDEO_START_MEMBER(psychic5_state,psychic5)
 {
 	video_start();
 
+<<<<<<< HEAD
 	m_bg_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(psychic5_state::get_bg_tile_info),this), TILEMAP_SCAN_COLS, 16, 16, 64, 32);
 	m_fg_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(psychic5_state::get_fg_tile_info),this), TILEMAP_SCAN_COLS,  8,  8, 32, 32);
+=======
+	m_bg_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(psychic5_state::get_bg_tile_info),this), TILEMAP_SCAN_COLS, 16, 16, 64, 32);
+	m_fg_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(psychic5_state::get_fg_tile_info),this), TILEMAP_SCAN_COLS,  8,  8, 32, 32);
+>>>>>>> upstream/master
 	m_fg_tilemap->set_transparent_pen(15);
 
 	save_item(NAME(m_title_screen));
@@ -203,8 +223,13 @@ VIDEO_START_MEMBER(psychic5_state,bombsa)
 {
 	video_start();
 
+<<<<<<< HEAD
 	m_bg_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(psychic5_state::get_bg_tile_info),this), TILEMAP_SCAN_COLS, 16, 16, 128, 32);
 	m_fg_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(psychic5_state::get_fg_tile_info),this), TILEMAP_SCAN_COLS,  8,  8,  32, 32);
+=======
+	m_bg_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(psychic5_state::get_bg_tile_info),this), TILEMAP_SCAN_COLS, 16, 16, 128, 32);
+	m_fg_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(psychic5_state::get_fg_tile_info),this), TILEMAP_SCAN_COLS,  8,  8,  32, 32);
+>>>>>>> upstream/master
 	m_fg_tilemap->set_transparent_pen(15);
 
 	save_item(NAME(m_bombsa_unknown));
@@ -226,7 +251,11 @@ VIDEO_RESET_MEMBER(psychic5_state,psychic5)
 
 #define DRAW_SPRITE(code, sx, sy) \
 	if (m_blend) \
+<<<<<<< HEAD
 		m_blend->drawgfx(m_palette, bitmap, cliprect, m_gfxdecode->gfx(0), code, color, flipx, flipy, sx, sy, 15); \
+=======
+		m_blend->drawgfx(*m_palette, bitmap, cliprect, m_gfxdecode->gfx(0), code, color, flipx, flipy, sx, sy, 15); \
+>>>>>>> upstream/master
 	else \
 		m_gfxdecode->gfx(0)->transpen(bitmap, cliprect, code, color, flipx, flipy, sx, sy, 15);
 
@@ -236,6 +265,11 @@ void psychic5_state::draw_sprites(bitmap_rgb32 &bitmap, const rectangle &cliprec
 	for (int offs = 0; offs < m_spriteram.bytes(); offs += 16)
 	{
 		int attr  = m_spriteram[offs + 13];
+<<<<<<< HEAD
+=======
+		if(attr & 2) // Bombs Away: disable sprite if enabled
+			continue;
+>>>>>>> upstream/master
 		int code  = m_spriteram[offs + 14] | ((attr & 0xc0) << 2);
 		int color = m_spriteram[offs + 15] & 0x0f;
 		int flipx = attr & 0x10;
@@ -334,11 +368,19 @@ void psychic5_state::draw_background(screen_device &screen, bitmap_rgb32 &bitmap
 	m_bg_tilemap->draw(screen, bitmap, clip, 0, 0);
 }
 
+<<<<<<< HEAD
 UINT32 psychic5_state::screen_update_psychic5(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect)
 {
 	UINT16 bg_scrollx = m_bg_control[0] | (m_bg_control[1] << 8);
 	m_bg_tilemap->set_scrollx(0, bg_scrollx);
 	UINT16 bg_scrolly = m_bg_control[2] | (m_bg_control[3] << 8);
+=======
+uint32_t psychic5_state::screen_update_psychic5(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect)
+{
+	uint16_t bg_scrollx = m_bg_control[0] | (m_bg_control[1] << 8);
+	m_bg_tilemap->set_scrollx(0, bg_scrollx);
+	uint16_t bg_scrolly = m_bg_control[2] | (m_bg_control[3] << 8);
+>>>>>>> upstream/master
 	m_bg_tilemap->set_scrolly(0, bg_scrolly);
 
 	bitmap.fill(m_palette->black_pen(), cliprect);
@@ -350,11 +392,19 @@ UINT32 psychic5_state::screen_update_psychic5(screen_device &screen, bitmap_rgb3
 	return 0;
 }
 
+<<<<<<< HEAD
 UINT32 psychic5_state::screen_update_bombsa(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect)
 {
 	UINT16 bg_scrollx = m_bg_control[0] | (m_bg_control[1] << 8);
 	m_bg_tilemap->set_scrollx(0, bg_scrollx);
 	UINT16 bg_scrolly = m_bg_control[2] | (m_bg_control[3] << 8);
+=======
+uint32_t psychic5_state::screen_update_bombsa(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect)
+{
+	uint16_t bg_scrollx = m_bg_control[0] | (m_bg_control[1] << 8);
+	m_bg_tilemap->set_scrollx(0, bg_scrollx);
+	uint16_t bg_scrolly = m_bg_control[2] | (m_bg_control[3] << 8);
+>>>>>>> upstream/master
 	m_bg_tilemap->set_scrolly(0, bg_scrolly);
 	bitmap.fill(m_palette->black_pen(), cliprect);
 

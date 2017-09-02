@@ -1,12 +1,22 @@
 // license:BSD-3-Clause
 // copyright-holders:Carl,Olivier Galibert
 
+<<<<<<< HEAD
 #include "i8271.h"
 
 const device_type I8271 = &device_creator<i8271_device>;
 
 i8271_device::i8271_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
 	: device_t(mconfig, I8271, "Intel 8271", tag, owner, clock, "i8271", __FILE__), ready_connected(false), mode(0), main_phase(0),
+=======
+#include "emu.h"
+#include "i8271.h"
+
+DEFINE_DEVICE_TYPE(I8271, i8271_device, "i8271", "Intel 8271 FDC")
+
+i8271_device::i8271_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: device_t(mconfig, I8271, tag, owner, clock), ready_connected(false), mode(0), main_phase(0),
+>>>>>>> upstream/master
 	intrq_cb(*this),
 	drq_cb(*this),
 	hdl_cb(*this),
@@ -50,12 +60,21 @@ void i8271_device::device_start()
 			floppy_connector *con = subdevice<floppy_connector>(name);
 			if(con) {
 				flopi[i].dev = con->get_device();
+<<<<<<< HEAD
 				if (flopi[i].dev != NULL)
 					flopi[i].dev->setup_index_pulse_cb(floppy_image_device::index_pulse_cb(FUNC(i8271_device::index_callback), this));
 			} else
 				flopi[i].dev = NULL;
 		} else
 			flopi[i].dev = NULL;
+=======
+				if (flopi[i].dev != nullptr)
+					flopi[i].dev->setup_index_pulse_cb(floppy_image_device::index_pulse_cb(&i8271_device::index_callback, this));
+			} else
+				flopi[i].dev = nullptr;
+		} else
+			flopi[i].dev = nullptr;
+>>>>>>> upstream/master
 
 		flopi[i].main_state = IDLE;
 		flopi[i].sub_state = IDLE;
@@ -71,7 +90,11 @@ void i8271_device::device_start()
 	cur_live.tm = attotime::never;
 	cur_live.state = IDLE;
 	cur_live.next_state = -1;
+<<<<<<< HEAD
 	cur_live.fi = NULL;
+=======
+	cur_live.fi = nullptr;
+>>>>>>> upstream/master
 }
 
 void i8271_device::device_reset()
@@ -88,6 +111,7 @@ void i8271_device::soft_reset()
 		flopi[i].live = false;
 		flopi[i].ready = get_ready(i);
 	}
+<<<<<<< HEAD
 	set_irq(false);
 	set_drq(false);
 	command_pos = 0;
@@ -96,6 +120,17 @@ void i8271_device::soft_reset()
 	cur_live.state = IDLE;
 	cur_live.next_state = -1;
 	cur_live.fi = NULL;
+=======
+	hdl_cb(false);
+	set_irq(false);
+	set_drq(false);
+	command_pos = 0;
+	cur_live.fi = nullptr;
+	cur_live.tm = attotime::never;
+	cur_live.state = IDLE;
+	cur_live.next_state = -1;
+	cur_live.fi = nullptr;
+>>>>>>> upstream/master
 	rr = 0;
 	scan_sec = 0;
 	moder = 0xc0;
@@ -119,6 +154,7 @@ bool i8271_device::get_ready(int fid)
 
 void i8271_device::set_floppy(floppy_image_device *flop)
 {
+<<<<<<< HEAD
 	for(int fid=0; fid<2; fid++) {
 		if(flopi[fid].dev)
 			flopi[fid].dev->setup_index_pulse_cb(floppy_image_device::index_pulse_cb());
@@ -126,11 +162,24 @@ void i8271_device::set_floppy(floppy_image_device *flop)
 	}
 	if(flop)
 		flop->setup_index_pulse_cb(floppy_image_device::index_pulse_cb(FUNC(i8271_device::index_callback), this));
+=======
+	for(auto & elem : flopi) {
+		if(elem.dev)
+			elem.dev->setup_index_pulse_cb(floppy_image_device::index_pulse_cb());
+		elem.dev = flop;
+	}
+	if(flop)
+		flop->setup_index_pulse_cb(floppy_image_device::index_pulse_cb(&i8271_device::index_callback, this));
+>>>>>>> upstream/master
 }
 
 READ8_MEMBER(i8271_device::sr_r)
 {
+<<<<<<< HEAD
 	UINT32 ret = (irq ? SR_IRQ : 0);
+=======
+	uint32_t ret = (irq ? SR_IRQ : 0);
+>>>>>>> upstream/master
 	switch(main_phase) {
 	case PHASE_CMD:
 		ret |= SR_CF;
@@ -199,7 +248,11 @@ WRITE8_MEMBER(i8271_device::param_w)
 	}
 }
 
+<<<<<<< HEAD
 bool i8271_device::set_output(UINT8 data)
+=======
+bool i8271_device::set_output(uint8_t data)
+>>>>>>> upstream/master
 {
 	if(main_phase == PHASE_EXEC) {
 		if(drq) {
@@ -212,7 +265,11 @@ bool i8271_device::set_output(UINT8 data)
 	return true;
 }
 
+<<<<<<< HEAD
 bool i8271_device::get_input(UINT8 *data)
+=======
+bool i8271_device::get_input(uint8_t *data)
+>>>>>>> upstream/master
 {
 	if(main_phase == PHASE_EXEC) {
 		if(drq) {
@@ -303,7 +360,11 @@ void i8271_device::live_sync()
 				cur_live.pll.stop_writing(cur_live.fi->dev, cur_live.tm);
 				cur_live.tm = attotime::never;
 				cur_live.fi->live = false;
+<<<<<<< HEAD
 				cur_live.fi = 0;
+=======
+				cur_live.fi = nullptr;
+>>>>>>> upstream/master
 			}
 		}
 		cur_live.next_state = -1;
@@ -321,7 +382,11 @@ void i8271_device::live_abort()
 	if(cur_live.fi) {
 		cur_live.pll.stop_writing(cur_live.fi->dev, cur_live.tm);
 		cur_live.fi->live = false;
+<<<<<<< HEAD
 		cur_live.fi = 0;
+=======
+		cur_live.fi = nullptr;
+>>>>>>> upstream/master
 	}
 
 	cur_live.tm = attotime::never;
@@ -469,7 +534,11 @@ void i8271_device::live_run(attotime limit)
 		case SCAN_SECTOR_DATA_BYTE:
 			if(!scan_done)
 			{
+<<<<<<< HEAD
 				UINT8 data = 0;
+=======
+				uint8_t data = 0;
+>>>>>>> upstream/master
 				if(!get_input(&data)) {
 					live_delay(IDLE);
 					return;
@@ -544,7 +613,11 @@ void i8271_device::live_run(attotime limit)
 				cur_live.crc = 0xffff;
 				live_write_raw(BIT(command[0], 2) ? 0xf56a : 0xf56f);
 			} else if(cur_live.byte_counter < 7+sector_size) {
+<<<<<<< HEAD
 				UINT8 data = 0;
+=======
+				uint8_t data = 0;
+>>>>>>> upstream/master
 				if(!get_input(&data)) {
 					live_delay(IDLE);
 					return;
@@ -601,7 +674,11 @@ void i8271_device::live_run(attotime limit)
 				cur_live.crc = 0xffff;
 				live_write_raw(0xf57e);
 			} else if(cur_live.byte_counter < 11) {
+<<<<<<< HEAD
 				UINT8 data = 0;
+=======
+				uint8_t data = 0;
+>>>>>>> upstream/master
 				if(!get_input(&data)) {
 					live_delay(IDLE);
 					return;
@@ -887,6 +964,10 @@ void i8271_device::command_end(floppy_info &fi, bool data_completion)
 {
 	logerror("%s: command done (%s) - %02x\n", tag(), data_completion ? "data" : "seek", rr);
 	fi.main_state = fi.sub_state = IDLE;
+<<<<<<< HEAD
+=======
+	idle_icnt = 0;
+>>>>>>> upstream/master
 	main_phase = PHASE_RESULT;
 	set_irq(true);
 }
@@ -981,6 +1062,10 @@ void i8271_device::seek_continue(floppy_info &fi)
 void i8271_device::read_data_start(floppy_info &fi)
 {
 	fi.main_state = READ_DATA;
+<<<<<<< HEAD
+=======
+	hdl_cb(true);
+>>>>>>> upstream/master
 	fi.sub_state = HEAD_LOAD_DONE;
 
 	logerror("%s: command read%s data%s cmd=%02x crn=(%d, %d, %d) len=%02x rate=%d\n",
@@ -1010,6 +1095,10 @@ void i8271_device::read_data_start(floppy_info &fi)
 void i8271_device::scan_start(floppy_info &fi)
 {
 	fi.main_state = SCAN_DATA;
+<<<<<<< HEAD
+=======
+	hdl_cb(true);
+>>>>>>> upstream/master
 	fi.sub_state = HEAD_LOAD_DONE;
 
 	logerror("%s: command scan%s data%s cmd=%02x crn=(%d, %d, %d) len=%02x rate=%d\n",
@@ -1041,6 +1130,10 @@ void i8271_device::scan_start(floppy_info &fi)
 void i8271_device::verify_data_start(floppy_info &fi)
 {
 	fi.main_state = VERIFY_DATA;
+<<<<<<< HEAD
+=======
+	hdl_cb(true);
+>>>>>>> upstream/master
 	fi.sub_state = HEAD_LOAD_DONE;
 
 	logerror("%s: command verify%s data%s cmd=%02x crn=(%d, %d, %d) len=%02x rate=%d\n",
@@ -1098,6 +1191,10 @@ void i8271_device::read_data_continue(floppy_info &fi)
 			return;
 
 		case SEEK_WAIT_STEP_TIME_DONE:
+<<<<<<< HEAD
+=======
+			hdl_cb(true);
+>>>>>>> upstream/master
 			do {
 				if(fi.pcn > command[1])
 					fi.pcn--;
@@ -1181,7 +1278,13 @@ void i8271_device::read_data_continue(floppy_info &fi)
 void i8271_device::write_data_start(floppy_info &fi)
 {
 	fi.main_state = WRITE_DATA;
+<<<<<<< HEAD
 	fi.sub_state = HEAD_LOAD_DONE;
+=======
+	hdl_cb(true);
+	fi.sub_state = HEAD_LOAD_DONE;
+
+>>>>>>> upstream/master
 	logerror("%s: command write%s data%s cmd=%02x crn=(%d, %d, %d) len=%02x rate=%d\n",
 				tag(),
 				command[0] & 0x04 ? " deleted" : "",
@@ -1238,6 +1341,10 @@ void i8271_device::write_data_continue(floppy_info &fi)
 			return;
 
 		case SEEK_WAIT_STEP_TIME_DONE:
+<<<<<<< HEAD
+=======
+			hdl_cb(true);
+>>>>>>> upstream/master
 			do {
 				if(fi.pcn > command[1])
 					fi.pcn--;
@@ -1303,7 +1410,11 @@ void i8271_device::write_data_continue(floppy_info &fi)
 	}
 }
 
+<<<<<<< HEAD
 int i8271_device::calc_sector_size(UINT8 size)
+=======
+int i8271_device::calc_sector_size(uint8_t size)
+>>>>>>> upstream/master
 {
 	return size > 7 ? 16384 : 128 << size;
 }
@@ -1311,6 +1422,10 @@ int i8271_device::calc_sector_size(UINT8 size)
 void i8271_device::format_track_start(floppy_info &fi)
 {
 	fi.main_state = FORMAT_TRACK;
+<<<<<<< HEAD
+=======
+	hdl_cb(true);
+>>>>>>> upstream/master
 	fi.sub_state = HEAD_LOAD_DONE;
 
 	logerror("%s: command format track c=%02x n=%02x sc=%02x gap3=%02x gap5=%02x gap1=%02x\n",
@@ -1364,6 +1479,10 @@ void i8271_device::format_track_continue(floppy_info &fi)
 			return;
 
 		case SEEK_WAIT_STEP_TIME_DONE:
+<<<<<<< HEAD
+=======
+			hdl_cb(true);
+>>>>>>> upstream/master
 			do {
 				if(fi.pcn > command[1])
 					fi.pcn--;
@@ -1402,6 +1521,10 @@ void i8271_device::format_track_continue(floppy_info &fi)
 void i8271_device::read_id_start(floppy_info &fi)
 {
 	fi.main_state = READ_ID;
+<<<<<<< HEAD
+=======
+	hdl_cb(true);
+>>>>>>> upstream/master
 	fi.sub_state = HEAD_LOAD_DONE;
 
 	logerror("%s: command read id, rate=%d\n",
@@ -1457,6 +1580,10 @@ void i8271_device::read_id_continue(floppy_info &fi)
 			return;
 
 		case SEEK_WAIT_STEP_TIME_DONE:
+<<<<<<< HEAD
+=======
+			hdl_cb(true);
+>>>>>>> upstream/master
 			do {
 				if(fi.pcn > command[1])
 					fi.pcn--;
@@ -1540,8 +1667,12 @@ void i8271_device::device_timer(emu_timer &timer, device_timer_id id, int param,
 
 void i8271_device::index_callback(floppy_image_device *floppy, int state)
 {
+<<<<<<< HEAD
 	for(int fid=0; fid<2; fid++) {
 		floppy_info &fi = flopi[fid];
+=======
+	for(auto & fi : flopi) {
+>>>>>>> upstream/master
 		if(fi.dev != floppy)
 			continue;
 
@@ -1554,6 +1685,16 @@ void i8271_device::index_callback(floppy_image_device *floppy, int state)
 			continue;
 		}
 
+<<<<<<< HEAD
+=======
+		if (fi.main_state == IDLE) {
+			idle_icnt++;
+			if (icnt != 0x0f && idle_icnt >= icnt) {
+				hdl_cb(false);
+			}
+		}
+
+>>>>>>> upstream/master
 		switch(fi.sub_state) {
 		case IDLE:
 		case SEEK_MOVE:
@@ -1667,16 +1808,26 @@ bool i8271_device::write_one_bit(const attotime &limit)
 	return false;
 }
 
+<<<<<<< HEAD
 void i8271_device::live_write_raw(UINT16 raw)
+=======
+void i8271_device::live_write_raw(uint16_t raw)
+>>>>>>> upstream/master
 {
 	//  logerror("write %04x %04x\n", raw, cur_live.crc);
 	cur_live.shift_reg = raw;
 	cur_live.data_bit_context = raw & 1;
 }
 
+<<<<<<< HEAD
 void i8271_device::live_write_fm(UINT8 fm)
 {
 	UINT16 raw = 0xaaaa;
+=======
+void i8271_device::live_write_fm(uint8_t fm)
+{
+	uint16_t raw = 0xaaaa;
+>>>>>>> upstream/master
 	for(int i=0; i<8; i++)
 		if(fm & (0x80 >> i))
 			raw |= 0x4000 >> (2*i);

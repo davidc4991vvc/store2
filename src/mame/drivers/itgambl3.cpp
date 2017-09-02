@@ -40,11 +40,21 @@
 
 ************************************************************************/
 
+<<<<<<< HEAD
 #define MAIN_CLOCK  XTAL_16MHz
 
 #include "emu.h"
 #include "cpu/h8/h83048.h"
 #include "sound/okim6295.h"
+=======
+#include "emu.h"
+#include "cpu/h8/h83048.h"
+#include "sound/okim6295.h"
+#include "screen.h"
+#include "speaker.h"
+
+#define MAIN_CLOCK  XTAL_16MHz
+>>>>>>> upstream/master
 
 
 class itgambl3_state : public driver_device
@@ -58,10 +68,17 @@ public:
 	int m_test_x;
 	int m_test_y;
 	int m_start_offs;
+<<<<<<< HEAD
 	virtual void machine_reset();
 	virtual void video_start();
 	DECLARE_PALETTE_INIT(itgambl3);
 	UINT32 screen_update_itgambl3(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect);
+=======
+	virtual void machine_reset() override;
+	virtual void video_start() override;
+	DECLARE_PALETTE_INIT(itgambl3);
+	uint32_t screen_update_itgambl3(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect);
+>>>>>>> upstream/master
 	required_device<cpu_device> m_maincpu;
 	required_device<palette_device> m_palette;
 };
@@ -79,10 +96,17 @@ void itgambl3_state::video_start()
 }
 
 /* (dirty) debug code for looking 8bpps blitter-based gfxs */
+<<<<<<< HEAD
 UINT32 itgambl3_state::screen_update_itgambl3(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect)
 {
 	int x,y,count;
 	const UINT8 *blit_ram = memregion("gfx1")->base();
+=======
+uint32_t itgambl3_state::screen_update_itgambl3(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect)
+{
+	int x,y,count;
+	const uint8_t *blit_ram = memregion("gfx1")->base();
+>>>>>>> upstream/master
 
 	if(machine().input().code_pressed(KEYCODE_Z))
 		m_test_x++;
@@ -118,7 +142,11 @@ UINT32 itgambl3_state::screen_update_itgambl3(screen_device &screen, bitmap_rgb3
 	{
 		for(x=0;x<m_test_x;x++)
 		{
+<<<<<<< HEAD
 			UINT32 color;
+=======
+			uint32_t color;
+>>>>>>> upstream/master
 
 			color = (blit_ram[count] & 0xff)>>0;
 
@@ -256,7 +284,11 @@ PALETTE_INIT_MEMBER(itgambl3_state, itgambl3)
 *     Machine Drivers     *
 **************************/
 
+<<<<<<< HEAD
 static MACHINE_CONFIG_START( itgambl3, itgambl3_state )
+=======
+static MACHINE_CONFIG_START( itgambl3 )
+>>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", H83044, MAIN_CLOCK) /* wrong CPU, but we have not a M16C core ATM */
@@ -277,7 +309,11 @@ static MACHINE_CONFIG_START( itgambl3, itgambl3_state )
 
 	/* sound hardware */
 	MCFG_SPEAKER_STANDARD_MONO("mono")
+<<<<<<< HEAD
 	MCFG_OKIM6295_ADD("oki", MAIN_CLOCK/16, OKIM6295_PIN7_HIGH) /* 1MHz */
+=======
+	MCFG_OKIM6295_ADD("oki", MAIN_CLOCK/16, PIN7_HIGH) /* 1MHz */
+>>>>>>> upstream/master
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 1.0)
 MACHINE_CONFIG_END
 
@@ -513,6 +549,7 @@ ROM_END
 *      Game Drivers      *
 *************************/
 
+<<<<<<< HEAD
 /*    YEAR  NAME      PARENT  MACHINE   INPUT     INIT ROT    COMPANY        FULLNAME        FLAGS  */
 GAME( 200?, ejollyx5, 0,      itgambl3, itgambl3, driver_device, 0,   ROT0, "Solar Games",           "Euro Jolly X5",                  MACHINE_IS_SKELETON )
 GAME( 200?, grandprx, 0,      itgambl3, itgambl3, driver_device, 0,   ROT0, "4fun",                  "Grand Prix",                     MACHINE_IS_SKELETON )
@@ -520,3 +557,12 @@ GAME( 200?, supjolly, 0,      itgambl3, itgambl3, driver_device, 0,   ROT0, "<un
 GAME( 200?, x5jokers, 0,      itgambl3, itgambl3, driver_device, 0,   ROT0, "Electronic Projects",   "X Five Jokers (Version 1.12)",   MACHINE_IS_SKELETON )
 GAME( 200?, queenotg, 0,      itgambl3, itgambl3, driver_device, 0,   ROT0, "<unknown>",             "Queen of the Games",             MACHINE_IS_SKELETON )
 GAME( 200?, ejollyx9, 0,      itgambl3, itgambl3, driver_device, 0,   ROT0, "Solar Games",           "Euro Jolly X9",                  MACHINE_IS_SKELETON )
+=======
+//    YEAR  NAME      PARENT  MACHINE   INPUT     STATE           INIT ROT   COMPANY                  FULLNAME                          FLAGS
+GAME( 200?, ejollyx5, 0,      itgambl3, itgambl3, itgambl3_state, 0,   ROT0, "Solar Games",           "Euro Jolly X5",                  MACHINE_IS_SKELETON )
+GAME( 200?, grandprx, 0,      itgambl3, itgambl3, itgambl3_state, 0,   ROT0, "4fun",                  "Grand Prix",                     MACHINE_IS_SKELETON )
+GAME( 200?, supjolly, 0,      itgambl3, itgambl3, itgambl3_state, 0,   ROT0, "<unknown>",             "Super Jolly",                    MACHINE_IS_SKELETON )
+GAME( 200?, x5jokers, 0,      itgambl3, itgambl3, itgambl3_state, 0,   ROT0, "Electronic Projects",   "X Five Jokers (Version 1.12)",   MACHINE_IS_SKELETON )
+GAME( 200?, queenotg, 0,      itgambl3, itgambl3, itgambl3_state, 0,   ROT0, "<unknown>",             "Queen of the Games",             MACHINE_IS_SKELETON )
+GAME( 200?, ejollyx9, 0,      itgambl3, itgambl3, itgambl3_state, 0,   ROT0, "Solar Games",           "Euro Jolly X9",                  MACHINE_IS_SKELETON )
+>>>>>>> upstream/master

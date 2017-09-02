@@ -67,9 +67,15 @@ TILE_GET_INFO_MEMBER(twincobr_state::get_tx_tile_info)
 
 void twincobr_state::twincobr_create_tilemaps()
 {
+<<<<<<< HEAD
 	m_bg_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(twincobr_state::get_bg_tile_info),this),TILEMAP_SCAN_ROWS,8,8,64,64);
 	m_fg_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(twincobr_state::get_fg_tile_info),this),TILEMAP_SCAN_ROWS,8,8,64,64);
 	m_tx_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(twincobr_state::get_tx_tile_info),this),TILEMAP_SCAN_ROWS,8,8,64,32);
+=======
+	m_bg_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(twincobr_state::get_bg_tile_info),this),TILEMAP_SCAN_ROWS,8,8,64,64);
+	m_fg_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(twincobr_state::get_fg_tile_info),this),TILEMAP_SCAN_ROWS,8,8,64,64);
+	m_tx_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(twincobr_state::get_tx_tile_info),this),TILEMAP_SCAN_ROWS,8,8,64,32);
+>>>>>>> upstream/master
 
 	m_bg_tilemap->set_scrolldx(-55, -134 );
 	m_fg_tilemap->set_scrolldx(-55, -134 );
@@ -93,6 +99,7 @@ VIDEO_START_MEMBER(twincobr_state,toaplan0)
 
 	twincobr_create_tilemaps();
 
+<<<<<<< HEAD
 	m_txvideoram16 = auto_alloc_array_clear(machine(), UINT16, m_txvideoram_size);
 	m_fgvideoram16 = auto_alloc_array_clear(machine(), UINT16, m_fgvideoram_size);
 	m_bgvideoram16 = auto_alloc_array_clear(machine(), UINT16, m_bgvideoram_size);
@@ -102,6 +109,17 @@ VIDEO_START_MEMBER(twincobr_state,toaplan0)
 	save_pointer(NAME(m_txvideoram16), m_txvideoram_size);
 	save_pointer(NAME(m_fgvideoram16), m_fgvideoram_size);
 	save_pointer(NAME(m_bgvideoram16), m_bgvideoram_size);
+=======
+	m_txvideoram16 = make_unique_clear<uint16_t[]>(m_txvideoram_size);
+	m_fgvideoram16 = make_unique_clear<uint16_t[]>(m_fgvideoram_size);
+	m_bgvideoram16 = make_unique_clear<uint16_t[]>(m_bgvideoram_size);
+
+	m_display_on = 0;
+
+	save_pointer(NAME(m_txvideoram16.get()), m_txvideoram_size);
+	save_pointer(NAME(m_fgvideoram16.get()), m_fgvideoram_size);
+	save_pointer(NAME(m_bgvideoram16.get()), m_bgvideoram_size);
+>>>>>>> upstream/master
 	save_item(NAME(m_txoffs));
 	save_item(NAME(m_fgoffs));
 	save_item(NAME(m_bgoffs));
@@ -292,14 +310,22 @@ WRITE8_MEMBER(twincobr_state::wardner_videoram_w)
 
 READ8_MEMBER(twincobr_state::wardner_sprite_r)
 {
+<<<<<<< HEAD
 	UINT16 *spriteram16 = reinterpret_cast<UINT16 *>(m_spriteram8->live());
+=======
+	uint16_t *spriteram16 = reinterpret_cast<uint16_t *>(m_spriteram8->live());
+>>>>>>> upstream/master
 	int shift = (offset & 1) * 8;
 	return spriteram16[offset/2] >> shift;
 }
 
 WRITE8_MEMBER(twincobr_state::wardner_sprite_w)
 {
+<<<<<<< HEAD
 	UINT16 *spriteram16 = reinterpret_cast<UINT16 *>(m_spriteram8->live());
+=======
+	uint16_t *spriteram16 = reinterpret_cast<uint16_t *>(m_spriteram8->live());
+>>>>>>> upstream/master
 	if (offset & 1)
 		spriteram16[offset/2] = (spriteram16[offset/2] & 0x00ff) | (data << 8);
 	else
@@ -350,6 +376,7 @@ void twincobr_state::twincobr_log_vram()
 }
 
 
+<<<<<<< HEAD
 UINT32 twincobr_state::screen_update_toaplan0(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
 {
 	twincobr_log_vram();
@@ -357,13 +384,26 @@ UINT32 twincobr_state::screen_update_toaplan0(screen_device &screen, bitmap_ind1
 	UINT16 *buffered_spriteram16;
 	UINT32 bytes;
 	if (m_spriteram16 != NULL)
+=======
+uint32_t twincobr_state::screen_update_toaplan0(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+{
+	twincobr_log_vram();
+
+	uint16_t *buffered_spriteram16;
+	uint32_t bytes;
+	if (m_spriteram16 != nullptr)
+>>>>>>> upstream/master
 	{
 		buffered_spriteram16 = m_spriteram16->buffer();
 		bytes = m_spriteram16->bytes();
 	}
 	else
 	{
+<<<<<<< HEAD
 		buffered_spriteram16 = reinterpret_cast<UINT16 *>(m_spriteram8->buffer());
+=======
+		buffered_spriteram16 = reinterpret_cast<uint16_t *>(m_spriteram8->buffer());
+>>>>>>> upstream/master
 		bytes = m_spriteram8->bytes();
 	}
 

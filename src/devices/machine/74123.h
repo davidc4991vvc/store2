@@ -45,12 +45,20 @@
 
 *****************************************************************************/
 
+<<<<<<< HEAD
 #pragma once
 
 #ifndef __TTL74123_H__
 #define __TTL74123_H__
 
 #include "emu.h"
+=======
+#ifndef MAME_MACHINE_74123_H
+#define MAME_MACHINE_74123_H
+
+#pragma once
+
+>>>>>>> upstream/master
 
 
 
@@ -96,7 +104,11 @@ class ttl74123_device :  public device_t
 {
 public:
 	// construction/destruction
+<<<<<<< HEAD
 	ttl74123_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
+=======
+	ttl74123_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
+>>>>>>> upstream/master
 
 	static void set_connection_type(device_t &device, int type) { downcast<ttl74123_device &>(device).m_connection_type = type; }
 	static void set_resistor_value(device_t &device, double value) { downcast<ttl74123_device &>(device).m_res = value; }
@@ -104,7 +116,11 @@ public:
 	static void set_a_pin_value(device_t &device, int value) { downcast<ttl74123_device &>(device).m_a = value; }
 	static void set_b_pin_value(device_t &device, int value) { downcast<ttl74123_device &>(device).m_b = value; }
 	static void set_clear_pin_value(device_t &device, int value) { downcast<ttl74123_device &>(device).m_clear = value; }
+<<<<<<< HEAD
 	template<class _Object> static devcb_base &set_output_changed_callback(device_t &device, _Object object) { return downcast<ttl74123_device &>(device).m_output_changed_cb.set_callback(object); }
+=======
+	template <class Object> static devcb_base &set_output_changed_callback(device_t &device, Object &&cb) { return downcast<ttl74123_device &>(device).m_output_changed_cb.set_callback(std::forward<Object>(cb)); }
+>>>>>>> upstream/master
 
 	DECLARE_WRITE8_MEMBER(a_w);
 	DECLARE_WRITE8_MEMBER(b_w);
@@ -113,15 +129,23 @@ public:
 
 protected:
 	// device-level overrides
+<<<<<<< HEAD
 	virtual void device_start();
 	virtual void device_reset();
 	virtual void device_post_load() { }
 	virtual void device_clock_changed() { }
+=======
+	virtual void device_start() override;
+	virtual void device_reset() override;
+	virtual void device_post_load() override { }
+	virtual void device_clock_changed() override { }
+>>>>>>> upstream/master
 
 	TIMER_CALLBACK_MEMBER( output_callback );
 	TIMER_CALLBACK_MEMBER( clear_callback );
 
 private:
+<<<<<<< HEAD
 
 	int timer_running();
 	void start_pulse();
@@ -129,6 +153,12 @@ private:
 	void set_output();
 	attotime compute_duration();
 	void clear();
+=======
+	int timer_running();
+	void start_pulse();
+	void set_output();
+	attotime compute_duration();
+>>>>>>> upstream/master
 
 	emu_timer *m_timer;
 	int m_connection_type;  /* the hook up type - one of the constants above */
@@ -142,6 +172,12 @@ private:
 
 
 // device type definition
+<<<<<<< HEAD
 extern const device_type TTL74123;
 
 #endif
+=======
+DECLARE_DEVICE_TYPE(TTL74123, ttl74123_device)
+
+#endif // MAME_MACHINE_74123_H
+>>>>>>> upstream/master

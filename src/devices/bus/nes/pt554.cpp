@@ -16,6 +16,10 @@
 
 #include "emu.h"
 #include "pt554.h"
+<<<<<<< HEAD
+=======
+#include "speaker.h"
+>>>>>>> upstream/master
 
 
 #ifdef NES_PCB_DEBUG
@@ -31,12 +35,21 @@
 //  constructor
 //-------------------------------------------------
 
+<<<<<<< HEAD
 const device_type NES_BANDAI_PT554 = &device_creator<nes_bandai_pt554_device>;
 
 
 nes_bandai_pt554_device::nes_bandai_pt554_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
 					: nes_cnrom_device(mconfig, NES_BANDAI_PT554, "NES Cart Bandai PT-554 PCB", tag, owner, clock, "nes_bandai_pt554", __FILE__),
 						m_samples(*this, "samples")
+=======
+DEFINE_DEVICE_TYPE(NES_BANDAI_PT554, nes_bandai_pt554_device, "nes_bandai_pt554", "NES Cart Bandai BT-554 PCB")
+
+
+nes_bandai_pt554_device::nes_bandai_pt554_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: nes_cnrom_device(mconfig, NES_BANDAI_PT554, tag, owner, clock)
+	, m_samples(*this, "samples")
+>>>>>>> upstream/master
 {
 }
 
@@ -79,6 +92,7 @@ static const char *const pt554_sample_names[] =
 	"05",
 	"06",
 	"07",
+<<<<<<< HEAD
 	0
 };
 
@@ -87,6 +101,17 @@ static const char *const pt554_sample_names[] =
 //-------------------------------------------------
 
 static MACHINE_CONFIG_FRAGMENT( pt554 )
+=======
+	nullptr
+};
+
+
+//-------------------------------------------------
+//  device_add_mconfig - add device configuration
+//-------------------------------------------------
+
+MACHINE_CONFIG_MEMBER( nes_bandai_pt554_device::device_add_mconfig )
+>>>>>>> upstream/master
 
 	// additional sound hardware
 	MCFG_SPEAKER_STANDARD_MONO("addon")
@@ -96,6 +121,7 @@ static MACHINE_CONFIG_FRAGMENT( pt554 )
 	MCFG_SAMPLES_NAMES(pt554_sample_names)
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "addon", 0.50)
 MACHINE_CONFIG_END
+<<<<<<< HEAD
 
 //-------------------------------------------------
 //  machine_config_additions
@@ -105,3 +131,5 @@ machine_config_constructor nes_bandai_pt554_device::device_mconfig_additions() c
 {
 	return MACHINE_CONFIG_NAME( pt554 );
 }
+=======
+>>>>>>> upstream/master

@@ -6,15 +6,28 @@
 
 ***************************************************************************/
 
+<<<<<<< HEAD
 #include "mc2661.h"
 
+=======
+#include "emu.h"
+#include "mc2661.h"
+
+//#define VERBOSE 1
+#include "logmacro.h"
+
+>>>>>>> upstream/master
 
 
 //**************************************************************************
 //  DEVICE DEFINITIONS
 //**************************************************************************
 
+<<<<<<< HEAD
 const device_type MC2661 = &device_creator<mc2661_device>;
+=======
+DEFINE_DEVICE_TYPE(MC2661, mc2661_device, "mc2661", "MC2661")
+>>>>>>> upstream/master
 
 
 
@@ -22,10 +35,14 @@ const device_type MC2661 = &device_creator<mc2661_device>;
 //  MACROS / CONSTANTS
 //**************************************************************************
 
+<<<<<<< HEAD
 #define LOG 0
 
 
 UINT32 baud_rates[16] =
+=======
+uint32_t baud_rates[16] =
+>>>>>>> upstream/master
 {
 	50, 75, 110, 135 /*134.5*/, 150, 300, 600, 1200, 1800, 2000, 2400, 3600, 4800, 7200, 9600, 19200
 };
@@ -94,8 +111,13 @@ enum
 //  mc2661_device - constructor
 //-------------------------------------------------
 
+<<<<<<< HEAD
 mc2661_device::mc2661_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock) :
 	device_t(mconfig, MC2661, "MC2661", tag, owner, clock, "mc2661", __FILE__),
+=======
+mc2661_device::mc2661_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock) :
+	device_t(mconfig, MC2661, tag, owner, clock),
+>>>>>>> upstream/master
 	device_serial_interface(mconfig, *this),
 	m_write_txd(*this),
 	m_write_rxrdy(*this),
@@ -221,7 +243,11 @@ void mc2661_device::rcv_complete()
 
 READ8_MEMBER( mc2661_device::read )
 {
+<<<<<<< HEAD
 	UINT8 data = 0;
+=======
+	uint8_t data = 0;
+>>>>>>> upstream/master
 
 	switch (offset & 0x03)
 	{
@@ -264,7 +290,11 @@ WRITE8_MEMBER( mc2661_device::write )
 	switch (offset & 0x03)
 	{
 	case REGISTER_HOLDING:
+<<<<<<< HEAD
 		if (LOG) logerror("MC2661 '%s' Transmit Holding Register: %02x\n", tag(), data);
+=======
+		LOG("MC2661 Transmit Holding Register: %02x\n", data);
+>>>>>>> upstream/master
 
 		m_thr = data;
 		if(COMMAND_TXEN)
@@ -283,7 +313,11 @@ WRITE8_MEMBER( mc2661_device::write )
 		break;
 
 	case REGISTER_SYNC:
+<<<<<<< HEAD
 		if (LOG) logerror("MC2661 '%s' Sync Register %u: %02x\n", tag(), m_sync_index + 1, data);
+=======
+		LOG("MC2661 Sync Register %u: %02x\n", m_sync_index + 1, data);
+>>>>>>> upstream/master
 
 		m_sync[m_sync_index] = data;
 
@@ -292,7 +326,11 @@ WRITE8_MEMBER( mc2661_device::write )
 		break;
 
 	case REGISTER_MODE:
+<<<<<<< HEAD
 		if (LOG) logerror("MC2661 '%s' Mode Register %u: %02x\n", tag(), m_mode_index + 1, data);
+=======
+		LOG("MC2661 Mode Register %u: %02x\n", m_mode_index + 1, data);
+>>>>>>> upstream/master
 
 		m_mr[m_mode_index] = data;
 
@@ -331,8 +369,13 @@ WRITE8_MEMBER( mc2661_device::write )
 		}
 		if(m_mode_index == 1)
 		{
+<<<<<<< HEAD
 			UINT32 rx_baud = baud_rates[data & 0x0f];
 			UINT32 tx_baud = baud_rates[data & 0x0f];
+=======
+			uint32_t rx_baud = baud_rates[data & 0x0f];
+			uint32_t tx_baud = baud_rates[data & 0x0f];
+>>>>>>> upstream/master
 			if(data & 0x10)  // internal receiver clock
 			{
 //              if((m_mr[0] & 0x03) != 0)
@@ -383,7 +426,11 @@ WRITE8_MEMBER( mc2661_device::write )
 		break;
 
 	case REGISTER_COMMAND:
+<<<<<<< HEAD
 		if (LOG) logerror("MC2661 '%s' Command Register: %02x\n", tag(), data);
+=======
+		LOG("MC2661 Command Register: %02x\n", data);
+>>>>>>> upstream/master
 
 		m_cr = data & 0xef;
 
@@ -431,7 +478,11 @@ WRITE8_MEMBER( mc2661_device::write )
 
 WRITE_LINE_MEMBER( mc2661_device::dsr_w )
 {
+<<<<<<< HEAD
 	if (LOG) logerror("MC2661 '%s' Data Set Ready: %u\n", tag(), state);
+=======
+	LOG("MC2661 Data Set Ready: %u\n", state);
+>>>>>>> upstream/master
 
 	if (state)
 	{
@@ -450,7 +501,11 @@ WRITE_LINE_MEMBER( mc2661_device::dsr_w )
 
 WRITE_LINE_MEMBER( mc2661_device::dcd_w )
 {
+<<<<<<< HEAD
 	if (LOG) logerror("MC2661 '%s' Data Carrier Detect: %u\n", tag(), state);
+=======
+	LOG("MC2661 Data Carrier Detect: %u\n", state);
+>>>>>>> upstream/master
 
 	if (state)
 	{
@@ -469,7 +524,11 @@ WRITE_LINE_MEMBER( mc2661_device::dcd_w )
 
 WRITE_LINE_MEMBER( mc2661_device::cts_w )
 {
+<<<<<<< HEAD
 	if (LOG) logerror("MC2661 '%s' Clear to Send: %u\n", tag(), state);
+=======
+	LOG("MC2661 Clear to Send: %u\n", state);
+>>>>>>> upstream/master
 }
 
 
@@ -491,9 +550,12 @@ READ_LINE_MEMBER( mc2661_device::txemt_r )
 {
 	return (m_sr & STATUS_TXEMT) ? ASSERT_LINE : CLEAR_LINE;
 }
+<<<<<<< HEAD
 
 
 void mc2661_device::device_timer(emu_timer &timer, device_timer_id id, int param, void *ptr)
 {
 	device_serial_interface::device_timer(timer, id, param, ptr);
 }
+=======
+>>>>>>> upstream/master

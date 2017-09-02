@@ -1,8 +1,17 @@
 // license:BSD-3-Clause
 // copyright-holders:Fabio Priuli,Acho A. Tang, R. Belmont
+<<<<<<< HEAD
 #pragma once
 #ifndef __K051960_H__
 #define __K051960_H__
+=======
+#ifndef MAME_VIDEO_K051960_H
+#define MAME_VIDEO_K051960_H
+
+#pragma once
+
+#include "screen.h"
+>>>>>>> upstream/master
 
 enum
 {
@@ -22,7 +31,11 @@ typedef device_delegate<void (int *code, int *color, int *priority, int *shadow)
 	k051960_device::set_plane_order(*device, _order);
 
 #define MCFG_K051960_SCREEN_TAG(_tag) \
+<<<<<<< HEAD
 		k051960_device::set_screen_tag(*device, owner, _tag);
+=======
+	k051960_device::set_screen_tag(*device, "^" _tag);
+>>>>>>> upstream/master
 
 #define MCFG_K051960_IRQ_HANDLER(_devcb) \
 	devcb = &k051960_device::set_irq_handler(*device, DEVCB_##_devcb);
@@ -31,8 +44,12 @@ typedef device_delegate<void (int *code, int *color, int *priority, int *shadow)
 	devcb = &k051960_device::set_nmi_handler(*device, DEVCB_##_devcb);
 
 
+<<<<<<< HEAD
 class k051960_device : public device_t,
 							public device_gfx_interface
+=======
+class k051960_device : public device_t, public device_gfx_interface
+>>>>>>> upstream/master
 {
 	static const gfx_layout spritelayout;
 	static const gfx_layout spritelayout_reverse;
@@ -42,6 +59,7 @@ class k051960_device : public device_t,
 	DECLARE_GFXDECODE_MEMBER(gfxinfo_gradius3);
 
 public:
+<<<<<<< HEAD
 	k051960_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
 	~k051960_device() {}
 
@@ -50,11 +68,24 @@ public:
 
 	template<class _Object> static devcb_base &set_nmi_handler(device_t &device, _Object object)
 		{ return downcast<k051960_device &>(device).m_nmi_handler.set_callback(object); }
+=======
+	k051960_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
+
+	template <class Object> static devcb_base &set_irq_handler(device_t &device, Object &&cb)
+	{ return downcast<k051960_device &>(device).m_irq_handler.set_callback(std::forward<Object>(cb)); }
+
+	template <class Object> static devcb_base &set_nmi_handler(device_t &device, Object &&cb)
+	{ return downcast<k051960_device &>(device).m_nmi_handler.set_callback(std::forward<Object>(cb)); }
+>>>>>>> upstream/master
 
 	// static configuration
 	static void set_k051960_callback(device_t &device, k051960_cb_delegate callback) { downcast<k051960_device &>(device).m_k051960_cb = callback; }
 	static void set_plane_order(device_t &device, int order);
+<<<<<<< HEAD
 	static void set_screen_tag(device_t &device, device_t *owner, const char *tag);
+=======
+	static void set_screen_tag(device_t &device, const char *tag);
+>>>>>>> upstream/master
 
 	/*
 	The callback is passed:
@@ -82,6 +113,7 @@ public:
 
 protected:
 	// device-level overrides
+<<<<<<< HEAD
 	virtual void device_start();
 	virtual void device_reset();
 
@@ -94,6 +126,18 @@ private:
 
 	const char *m_screen_tag;
 	screen_device *m_screen;
+=======
+	virtual void device_start() override;
+	virtual void device_reset() override;
+
+private:
+	// internal state
+	std::unique_ptr<uint8_t[]>   m_ram;
+
+	required_region_ptr<uint8_t> m_sprite_rom;
+
+	required_device<screen_device> m_screen;
+>>>>>>> upstream/master
 	emu_timer *m_scanline_timer;
 
 	k051960_cb_delegate m_k051960_cb;
@@ -102,7 +146,11 @@ private:
 	devcb_write_line m_firq_handler;
 	devcb_write_line m_nmi_handler;
 
+<<<<<<< HEAD
 	UINT8    m_spriterombank[3];
+=======
+	uint8_t    m_spriterombank[3];
+>>>>>>> upstream/master
 	int      m_romoffset;
 	int      m_spriteflip, m_readroms;
 	int m_nmi_enabled;
@@ -110,6 +158,12 @@ private:
 	int k051960_fetchromdata( int byte );
 };
 
+<<<<<<< HEAD
 extern const device_type K051960;
 
 #endif
+=======
+DECLARE_DEVICE_TYPE(K051960, k051960_device)
+
+#endif // MAME_VIDEO_K051960_H
+>>>>>>> upstream/master

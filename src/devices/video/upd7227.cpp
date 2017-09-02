@@ -9,6 +9,7 @@
 #include "emu.h"
 #include "upd7227.h"
 
+<<<<<<< HEAD
 
 
 //**************************************************************************
@@ -16,6 +17,10 @@
 //**************************************************************************
 
 #define LOG 0
+=======
+//#define VERBOSE 1
+#include "logmacro.h"
+>>>>>>> upstream/master
 
 
 
@@ -23,7 +28,11 @@
 //  DEVICE DEFINITIONS
 //**************************************************************************
 
+<<<<<<< HEAD
 const device_type UPD7227 = &device_creator<upd7227_device>;
+=======
+DEFINE_DEVICE_TYPE(UPD7227, upd7227_device, "upd7227", "NEC uPD7227")
+>>>>>>> upstream/master
 
 
 static ADDRESS_MAP_START( upd7227_map, AS_PROGRAM, 8, upd7227_device )
@@ -41,6 +50,7 @@ ADDRESS_MAP_END
 //  upd7227_device - constructor
 //-------------------------------------------------
 
+<<<<<<< HEAD
 upd7227_device::upd7227_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
 	: device_t(mconfig, UPD7227, "uPD7227", tag, owner, clock, "upd7227", __FILE__),
 		device_memory_interface(mconfig, *this),
@@ -50,6 +60,17 @@ upd7227_device::upd7227_device(const machine_config &mconfig, const char *tag, d
 		m_sck(1),
 		m_si(1),
 		m_so(1)
+=======
+upd7227_device::upd7227_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: device_t(mconfig, UPD7227, tag, owner, clock)
+	, device_memory_interface(mconfig, *this)
+	, m_space_config("videoram", ENDIANNESS_BIG, 8, 7, 0, *ADDRESS_MAP_NAME(upd7227_map))
+	, m_cs(1)
+	, m_cd(1)
+	, m_sck(1)
+	, m_si(1)
+	, m_so(1)
+>>>>>>> upstream/master
 {
 }
 
@@ -96,9 +117,17 @@ void upd7227_device::device_reset()
 //  any address spaces owned by this device
 //-------------------------------------------------
 
+<<<<<<< HEAD
 const address_space_config *upd7227_device::memory_space_config(address_spacenum spacenum) const
 {
 	return (spacenum == 0) ? &m_space_config : NULL;
+=======
+device_memory_interface::space_config_vector upd7227_device::memory_space_config() const
+{
+	return space_config_vector {
+		std::make_pair(0, &m_space_config)
+	};
+>>>>>>> upstream/master
 }
 
 
@@ -106,7 +135,11 @@ const address_space_config *upd7227_device::memory_space_config(address_spacenum
 //  update_screen - update screen
 //-------------------------------------------------
 
+<<<<<<< HEAD
 UINT32 upd7227_device::screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+=======
+uint32_t upd7227_device::screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+>>>>>>> upstream/master
 {
 	return 0;
 }

@@ -5,6 +5,10 @@
     JPM IMPACT with Video hardware
 
 ****************************************************************************/
+<<<<<<< HEAD
+=======
+#include "machine/meters.h"
+>>>>>>> upstream/master
 #include "machine/roc10937.h"
 #include "machine/steppers.h"
 #include "cpu/tms34010/tms34010.h"
@@ -12,6 +16,7 @@
 
 struct duart_t
 {
+<<<<<<< HEAD
 	UINT8 MR1A, MR2A;
 	UINT8 SRA, CSRA;
 	UINT8 CRA;
@@ -30,10 +35,31 @@ struct duart_t
 	{
 		UINT8 CTUR, CTLR;
 		UINT16 CT;
+=======
+	uint8_t MR1A, MR2A;
+	uint8_t SRA, CSRA;
+	uint8_t CRA;
+	uint8_t RBA, TBA;
+
+	uint8_t IPCR;
+	uint8_t ACR;
+	uint8_t ISR, IMR;
+
+	union
+	{
+		uint8_t CUR, CLR;
+		uint16_t CR;
+	};
+	union
+	{
+		uint8_t CTUR, CTLR;
+		uint16_t CT;
+>>>>>>> upstream/master
 	};
 
 	int tc;
 
+<<<<<<< HEAD
 	UINT8 MR1B, MR2B;
 	UINT8 SRB, CSRB;
 	UINT8 CRB;
@@ -44,14 +70,33 @@ struct duart_t
 	UINT8 OP;
 	UINT8 OPR;
 	UINT8 OPCR;
+=======
+	uint8_t MR1B, MR2B;
+	uint8_t SRB, CSRB;
+	uint8_t CRB;
+	uint8_t RBB, TBB;
+
+	uint8_t IVR;
+	uint8_t IP;
+	uint8_t OP;
+	uint8_t OPR;
+	uint8_t OPCR;
+>>>>>>> upstream/master
 };
 
 struct bt477_t
 {
+<<<<<<< HEAD
 	UINT8 address;
 	UINT8 addr_cnt;
 	UINT8 pixmask;
 	UINT8 command;
+=======
+	uint8_t address;
+	uint8_t addr_cnt;
+	uint8_t pixmask;
+	uint8_t command;
+>>>>>>> upstream/master
 	rgb_t color;
 };
 
@@ -71,6 +116,7 @@ public:
 		m_reel2(*this, "reel2"),
 		m_reel3(*this, "reel3"),
 		m_reel4(*this, "reel4"),
+<<<<<<< HEAD
 		m_reel5(*this, "reel5")
 		{ }
 
@@ -81,6 +127,19 @@ public:
 	UINT8 m_touch_data[3];
 	int m_lamp_strobe;
 	UINT8 m_Lamps[256];
+=======
+		m_reel5(*this, "reel5"),
+		m_meters(*this, "meters")
+		{ }
+
+	uint8_t m_tms_irq;
+	uint8_t m_duart_1_irq;
+	struct duart_t m_duart_1;
+	uint8_t m_touch_cnt;
+	uint8_t m_touch_data[3];
+	int m_lamp_strobe;
+	uint8_t m_Lamps[256];
+>>>>>>> upstream/master
 	int m_optic_pattern;
 	DECLARE_WRITE_LINE_MEMBER(reel0_optic_cb) { if (state) m_optic_pattern |= 0x01; else m_optic_pattern &= ~0x01; }
 	DECLARE_WRITE_LINE_MEMBER(reel1_optic_cb) { if (state) m_optic_pattern |= 0x02; else m_optic_pattern &= ~0x02; }
@@ -94,8 +153,13 @@ public:
 	int m_slidesout;
 	int m_hopper[3];
 	int m_motor[3];
+<<<<<<< HEAD
 	optional_device<s16lf01_t> m_vfd;
 	optional_shared_ptr<UINT16> m_vram;
+=======
+	optional_device<s16lf01_device> m_vfd;
+	optional_shared_ptr<uint16_t> m_vram;
+>>>>>>> upstream/master
 	struct bt477_t m_bt477;
 	DECLARE_READ16_MEMBER(duart_1_r);
 	DECLARE_WRITE16_MEMBER(duart_1_w);
@@ -145,4 +209,8 @@ public:
 	optional_device<stepper_device> m_reel3;
 	optional_device<stepper_device> m_reel4;
 	optional_device<stepper_device> m_reel5;
+<<<<<<< HEAD
+=======
+	required_device<meters_device> m_meters;
+>>>>>>> upstream/master
 };

@@ -163,25 +163,45 @@ Added Multiple Coin Feature:
 
 
 #include "emu.h"
+<<<<<<< HEAD
 #include "cpu/z80/z80.h"
 #include "sound/2608intf.h"
 #include "sound/2610intf.h"
 #include "includes/fromance.h"
+=======
+#include "includes/fromance.h"
+
+#include "cpu/z80/z80.h"
+#include "machine/gen_latch.h"
+#include "sound/2608intf.h"
+#include "sound/2610intf.h"
+#include "speaker.h"
+>>>>>>> upstream/master
 
 
 class pipedrm_state : public fromance_state
 {
 public:
 	pipedrm_state(const machine_config &mconfig, device_type type, const char *tag)
+<<<<<<< HEAD
 		: fromance_state(mconfig, type, tag)
 	{ }
 
+=======
+		: fromance_state(mconfig, type, tag),
+		m_soundlatch(*this, "soundlatch")
+	{ }
+
+	required_device<generic_latch_8_device> m_soundlatch;
+
+>>>>>>> upstream/master
 	DECLARE_MACHINE_START(pipedrm);
 	DECLARE_MACHINE_RESET(pipedrm);
 	DECLARE_DRIVER_INIT(pipedrm);
 	DECLARE_DRIVER_INIT(hatris);
 	DECLARE_WRITE8_MEMBER( pipedrm_bankswitch_w );
 	DECLARE_WRITE8_MEMBER( sound_bankswitch_w );
+<<<<<<< HEAD
 	TIMER_CALLBACK_MEMBER( delayed_command_w );
 	DECLARE_WRITE8_MEMBER( sound_command_w );
 	DECLARE_WRITE8_MEMBER( sound_command_nonmi_w );
@@ -189,6 +209,9 @@ public:
 	DECLARE_READ8_MEMBER( pending_command_r );
 	DECLARE_READ8_MEMBER( sound_command_r );
 	DECLARE_WRITE_LINE_MEMBER(irqhandler);
+=======
+	DECLARE_READ8_MEMBER( pending_command_r );
+>>>>>>> upstream/master
 };
 
 
@@ -233,6 +256,7 @@ WRITE8_MEMBER(pipedrm_state::sound_bankswitch_w )
  *
  *************************************/
 
+<<<<<<< HEAD
 TIMER_CALLBACK_MEMBER(pipedrm_state::delayed_command_w)
 {
 	m_sound_command = param & 0xff;
@@ -278,6 +302,14 @@ READ8_MEMBER(pipedrm_state::sound_command_r )
 
 
 
+=======
+READ8_MEMBER(pipedrm_state::pending_command_r )
+{
+	return m_soundlatch->pending_r();
+}
+
+
+>>>>>>> upstream/master
 /*************************************
  *
  *  Main CPU memory handlers
@@ -295,9 +327,14 @@ ADDRESS_MAP_END
 
 static ADDRESS_MAP_START( main_portmap, AS_IO, 8, pipedrm_state )
 	ADDRESS_MAP_GLOBAL_MASK(0xff)
+<<<<<<< HEAD
 	AM_RANGE(0x10, 0x10) AM_WRITE(fromance_crtc_data_w)
 	AM_RANGE(0x11, 0x11) AM_WRITE(fromance_crtc_register_w)
 	AM_RANGE(0x20, 0x20) AM_READ_PORT("P1") AM_WRITE(sound_command_w)
+=======
+	AM_RANGE(0x10, 0x11) AM_DEVWRITE("gga", vsystem_gga_device, write)
+	AM_RANGE(0x20, 0x20) AM_READ_PORT("P1") AM_DEVWRITE("soundlatch", generic_latch_8_device, write)
+>>>>>>> upstream/master
 	AM_RANGE(0x21, 0x21) AM_READ_PORT("P2") AM_WRITE(pipedrm_bankswitch_w)
 	AM_RANGE(0x22, 0x25) AM_WRITE(fromance_scroll_w)
 	AM_RANGE(0x22, 0x22) AM_READ_PORT("DSW1")
@@ -324,8 +361,13 @@ ADDRESS_MAP_END
 static ADDRESS_MAP_START( sound_portmap, AS_IO, 8, pipedrm_state )
 	ADDRESS_MAP_GLOBAL_MASK(0xff)
 	AM_RANGE(0x04, 0x04) AM_WRITE(sound_bankswitch_w)
+<<<<<<< HEAD
 	AM_RANGE(0x16, 0x16) AM_READ(sound_command_r)
 	AM_RANGE(0x17, 0x17) AM_WRITE(pending_command_clear_w)
+=======
+	AM_RANGE(0x16, 0x16) AM_DEVREAD("soundlatch", generic_latch_8_device, read)
+	AM_RANGE(0x17, 0x17) AM_DEVWRITE("soundlatch", generic_latch_8_device, acknowledge_w)
+>>>>>>> upstream/master
 	AM_RANGE(0x18, 0x1b) AM_DEVREADWRITE("ymsnd", ym2610_device, read, write)
 ADDRESS_MAP_END
 
@@ -333,8 +375,13 @@ ADDRESS_MAP_END
 static ADDRESS_MAP_START( hatris_sound_portmap, AS_IO, 8, pipedrm_state )
 	ADDRESS_MAP_GLOBAL_MASK(0xff)
 	AM_RANGE(0x00, 0x03) AM_MIRROR(0x08) AM_DEVREADWRITE("ymsnd", ym2608_device, read, write)
+<<<<<<< HEAD
 	AM_RANGE(0x04, 0x04) AM_READ(sound_command_r)
 	AM_RANGE(0x05, 0x05) AM_READWRITE(pending_command_r, pending_command_clear_w)
+=======
+	AM_RANGE(0x04, 0x04) AM_DEVREAD("soundlatch", generic_latch_8_device, read)
+	AM_RANGE(0x05, 0x05) AM_READ(pending_command_r) AM_DEVWRITE("soundlatch", generic_latch_8_device, acknowledge_w)
+>>>>>>> upstream/master
 ADDRESS_MAP_END
 
 
@@ -570,6 +617,7 @@ static GFXDECODE_START( hatris )
 GFXDECODE_END
 
 
+<<<<<<< HEAD
 
 /*************************************
  *
@@ -582,6 +630,8 @@ WRITE_LINE_MEMBER(pipedrm_state::irqhandler)
 	m_subcpu->set_input_line(0, state ? ASSERT_LINE : CLEAR_LINE);
 }
 
+=======
+>>>>>>> upstream/master
 /*************************************
  *
  *  Machine driver
@@ -598,20 +648,26 @@ MACHINE_START_MEMBER(pipedrm_state,pipedrm)
 	membank("bank2")->configure_entries(0, 2, memregion("sub")->base() + 0x10000, 0x8000);
 	membank("bank2")->set_entry(0);
 
+<<<<<<< HEAD
 	/* state save */
 	save_item(NAME(m_pending_command));
 	save_item(NAME(m_sound_command));
 
+=======
+>>>>>>> upstream/master
 	/* video-related elements are saved in video_start */
 }
 
 MACHINE_RESET_MEMBER(pipedrm_state,pipedrm)
 {
+<<<<<<< HEAD
 	int i;
 
 	m_pending_command = 0;
 	m_sound_command = 0;
 
+=======
+>>>>>>> upstream/master
 	m_flipscreen_old = -1;
 	m_scrollx_ofs = 0x159;
 	m_scrolly_ofs = 0x10;
@@ -623,6 +679,7 @@ MACHINE_RESET_MEMBER(pipedrm_state,pipedrm)
 	m_scrolly[1] = 0;
 	m_gfxreg = 0;
 	m_flipscreen = 0;
+<<<<<<< HEAD
 	m_crtc_register = 0;
 
 	for (i = 0; i < 0x10; i++)
@@ -630,6 +687,11 @@ MACHINE_RESET_MEMBER(pipedrm_state,pipedrm)
 }
 
 static MACHINE_CONFIG_START( pipedrm, pipedrm_state )
+=======
+}
+
+static MACHINE_CONFIG_START( pipedrm )
+>>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", Z80,12000000/2)
@@ -657,27 +719,50 @@ static MACHINE_CONFIG_START( pipedrm, pipedrm_state )
 	MCFG_PALETTE_ADD("palette", 2048)
 	MCFG_PALETTE_FORMAT(xRRRRRGGGGGBBBBB)
 
+<<<<<<< HEAD
+=======
+	MCFG_DEVICE_ADD("gga", VSYSTEM_GGA, XTAL_14_31818MHz / 2) // divider not verified
+
+	MCFG_VSYSTEM_GGA_REGISTER_WRITE_CB(WRITE8(fromance_state, fromance_gga_data_w))
+
+>>>>>>> upstream/master
 	MCFG_DEVICE_ADD("vsystem_spr_old", VSYSTEM_SPR2, 0)
 	MCFG_VSYSTEM_SPR2_SET_GFXREGION(2)
 	MCFG_VSYSTEM_SPR2_SET_OFFSETS(-13, -6)
 	MCFG_VSYSTEM_SPR2_SET_PRITYPE(3)
 	MCFG_VSYSTEM_SPR2_GFXDECODE("gfxdecode")
+<<<<<<< HEAD
 	MCFG_VSYSTEM_SPR2_PALETTE("palette")
+=======
+>>>>>>> upstream/master
 
 	MCFG_VIDEO_START_OVERRIDE(pipedrm_state,pipedrm)
 
 	/* sound hardware */
 	MCFG_SPEAKER_STANDARD_MONO("mono")
 
+<<<<<<< HEAD
 	MCFG_SOUND_ADD("ymsnd", YM2610, 8000000)
 	MCFG_YM2610_IRQ_HANDLER(WRITELINE(pipedrm_state, irqhandler))
+=======
+	MCFG_GENERIC_LATCH_8_ADD("soundlatch")
+	MCFG_GENERIC_LATCH_DATA_PENDING_CB(INPUTLINE("sub", INPUT_LINE_NMI))
+	MCFG_GENERIC_LATCH_SEPARATE_ACKNOWLEDGE(true)
+
+	MCFG_SOUND_ADD("ymsnd", YM2610, 8000000)
+	MCFG_YM2610_IRQ_HANDLER(INPUTLINE("sub", 0))
+>>>>>>> upstream/master
 	MCFG_SOUND_ROUTE(0, "mono", 0.50)
 	MCFG_SOUND_ROUTE(1, "mono", 1.0)
 	MCFG_SOUND_ROUTE(2, "mono", 1.0)
 MACHINE_CONFIG_END
 
 
+<<<<<<< HEAD
 static MACHINE_CONFIG_START( hatris, pipedrm_state )
+=======
+static MACHINE_CONFIG_START( hatris )
+>>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", Z80,12000000/2)
@@ -705,13 +790,32 @@ static MACHINE_CONFIG_START( hatris, pipedrm_state )
 	MCFG_PALETTE_ADD("palette", 2048)
 	MCFG_PALETTE_FORMAT(xRRRRRGGGGGBBBBB)
 
+<<<<<<< HEAD
+=======
+	MCFG_DEVICE_ADD("gga", VSYSTEM_GGA, XTAL_14_31818MHz / 2) // divider not verified
+
+	MCFG_VSYSTEM_GGA_REGISTER_WRITE_CB(WRITE8(fromance_state, fromance_gga_data_w))
+
+>>>>>>> upstream/master
 	MCFG_VIDEO_START_OVERRIDE(pipedrm_state,hatris)
 
 	/* sound hardware */
 	MCFG_SPEAKER_STANDARD_MONO("mono")
 
+<<<<<<< HEAD
 	MCFG_SOUND_ADD("ymsnd", YM2608, 8000000)
 	MCFG_YM2608_IRQ_HANDLER(WRITELINE(pipedrm_state, irqhandler))
+=======
+	MCFG_GENERIC_LATCH_8_ADD("soundlatch")
+	MCFG_GENERIC_LATCH_SEPARATE_ACKNOWLEDGE(true)
+	// Hatris polls commands *and* listens to the NMI; this causes it to miss
+	// sound commands. It's possible the NMI isn't really hooked up on the YM2608
+	// sound board.
+	//MCFG_GENERIC_LATCH_DATA_PENDING_CB(INPUTLINE("sub", INPUT_LINE_NMI))
+
+	MCFG_SOUND_ADD("ymsnd", YM2608, 8000000)
+	MCFG_YM2608_IRQ_HANDLER(INPUTLINE("sub", 0))
+>>>>>>> upstream/master
 	MCFG_SOUND_ROUTE(0, "mono", 0.50)
 	MCFG_SOUND_ROUTE(1, "mono", 1.0)
 	MCFG_SOUND_ROUTE(2, "mono", 1.0)
@@ -873,9 +977,15 @@ ROM_START( hatris )
 
 	ROM_REGION( 0x80000, "gfx1", 0 )
 	ROM_LOAD( "b0-ic56.bin", 0x00000, 0x20000, CRC(34f337a4) SHA1(ad74bb3fbfd16c9e92daa1cf5c5e522d11ba7dfb) )
+<<<<<<< HEAD
 	ROM_FILL(                0x20000, 0x20000, 0 )
 	ROM_LOAD( "b1-ic73.bin", 0x40000, 0x08000, CRC(6351d0ba) SHA1(6d6b2e23f0569e625414de11803955df60bbbd48) )
 	ROM_FILL(                0x48000, 0x18000, 0 )
+=======
+	ROM_FILL(                0x20000, 0x20000, 0x00000 )
+	ROM_LOAD( "b1-ic73.bin", 0x40000, 0x08000, CRC(6351d0ba) SHA1(6d6b2e23f0569e625414de11803955df60bbbd48) )
+	ROM_FILL(                0x48000, 0x18000, 0x00000 )
+>>>>>>> upstream/master
 
 	ROM_REGION( 0x40000, "gfx2", 0 )
 	ROM_LOAD( "a0-ic55.bin", 0x00000, 0x20000, CRC(7b7bc619) SHA1(b661c772e33aa7352dcdc20c4a9a84ed25ff89d7) )
@@ -895,9 +1005,15 @@ ROM_START( hatrisj )
 
 	ROM_REGION( 0x80000, "gfx1", 0 )
 	ROM_LOAD( "b0-ic56.bin", 0x00000, 0x20000, CRC(34f337a4) SHA1(ad74bb3fbfd16c9e92daa1cf5c5e522d11ba7dfb) )
+<<<<<<< HEAD
 	ROM_FILL(                0x20000, 0x20000, 0 )
 	ROM_LOAD( "b1-ic73.bin", 0x40000, 0x08000, CRC(6351d0ba) SHA1(6d6b2e23f0569e625414de11803955df60bbbd48) )
 	ROM_FILL(                0x48000, 0x18000, 0 )
+=======
+	ROM_FILL(                0x20000, 0x20000, 0x00000 )
+	ROM_LOAD( "b1-ic73.bin", 0x40000, 0x08000, CRC(6351d0ba) SHA1(6d6b2e23f0569e625414de11803955df60bbbd48) )
+	ROM_FILL(                0x48000, 0x18000, 0x00000 )
+>>>>>>> upstream/master
 
 	ROM_REGION( 0x40000, "gfx2", 0 )
 	ROM_LOAD( "a0-ic55.bin", 0x00000, 0x20000, CRC(7b7bc619) SHA1(b661c772e33aa7352dcdc20c4a9a84ed25ff89d7) )
@@ -919,14 +1035,21 @@ DRIVER_INIT_MEMBER(pipedrm_state,pipedrm)
 {
 	const memory_share *share = memshare("palette");
 	/* sprite RAM lives at the end of palette RAM */
+<<<<<<< HEAD
 	m_spriteram.set_target((UINT8*)share->ptr() + 0xc00, 0x400);
+=======
+	m_spriteram.set_target((uint8_t*)share->ptr() + 0xc00, 0x400);
+>>>>>>> upstream/master
 	m_maincpu->space(AS_PROGRAM).install_ram(0xcc00, 0xcfff, m_spriteram);
 }
 
 
 DRIVER_INIT_MEMBER(pipedrm_state,hatris)
 {
+<<<<<<< HEAD
 	m_maincpu->space(AS_IO).install_write_handler(0x20, 0x20, write8_delegate(FUNC(pipedrm_state::sound_command_nonmi_w),this));
+=======
+>>>>>>> upstream/master
 	m_maincpu->space(AS_IO).install_write_handler(0x21, 0x21, write8_delegate(FUNC(pipedrm_state::fromance_gfxreg_w),this));
 }
 
@@ -938,9 +1061,18 @@ DRIVER_INIT_MEMBER(pipedrm_state,hatris)
  *
  *************************************/
 
+<<<<<<< HEAD
 GAME( 1990, pipedrm,  0,       pipedrm, pipedrm, pipedrm_state, pipedrm, ROT0, "Video System Co.", "Pipe Dream (World)", MACHINE_SUPPORTS_SAVE )
 GAME( 1990, pipedrmu, pipedrm, pipedrm, pipedrm, pipedrm_state, pipedrm, ROT0, "Video System Co.", "Pipe Dream (US)", MACHINE_SUPPORTS_SAVE )
 GAME( 1990, pipedrmj, pipedrm, pipedrm, pipedrm, pipedrm_state, pipedrm, ROT0, "Video System Co.", "Pipe Dream (Japan)", MACHINE_SUPPORTS_SAVE )
 GAME( 1990, pipedrmt, pipedrm, pipedrm, pipedrm, pipedrm_state, pipedrm, ROT0, "Video System Co.", "Pipe Dream (Taiwan)", MACHINE_SUPPORTS_SAVE )
 GAME( 1990, hatris,   0,       hatris,  hatris, pipedrm_state,  hatris,  ROT0, "Video System Co.", "Hatris (US)", MACHINE_SUPPORTS_SAVE )
 GAME( 1990, hatrisj,  hatris,  hatris,  hatris, pipedrm_state,  hatris,  ROT0, "Video System Co.", "Hatris (Japan)", MACHINE_SUPPORTS_SAVE )
+=======
+GAME( 1990, pipedrm,  0,       pipedrm, pipedrm, pipedrm_state, pipedrm, ROT0, "Video System Co.", "Pipe Dream (World)",  MACHINE_SUPPORTS_SAVE )
+GAME( 1990, pipedrmu, pipedrm, pipedrm, pipedrm, pipedrm_state, pipedrm, ROT0, "Video System Co.", "Pipe Dream (US)",     MACHINE_SUPPORTS_SAVE )
+GAME( 1990, pipedrmj, pipedrm, pipedrm, pipedrm, pipedrm_state, pipedrm, ROT0, "Video System Co.", "Pipe Dream (Japan)",  MACHINE_SUPPORTS_SAVE )
+GAME( 1990, pipedrmt, pipedrm, pipedrm, pipedrm, pipedrm_state, pipedrm, ROT0, "Video System Co.", "Pipe Dream (Taiwan)", MACHINE_SUPPORTS_SAVE )
+GAME( 1990, hatris,   0,       hatris,  hatris,  pipedrm_state, hatris,  ROT0, "Video System Co.", "Hatris (US)",         MACHINE_SUPPORTS_SAVE )
+GAME( 1990, hatrisj,  hatris,  hatris,  hatris,  pipedrm_state, hatris,  ROT0, "Video System Co.", "Hatris (Japan)",      MACHINE_SUPPORTS_SAVE )
+>>>>>>> upstream/master

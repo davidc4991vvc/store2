@@ -36,7 +36,11 @@
  *          +-------++----+----+----+----+----+
  *
  *          Reset count function: Please refer to
+<<<<<<< HEAD
  *          National Semiconductor datasheet (timing diagramm)
+=======
+ *          National Semiconductor datasheet (timing diagram)
+>>>>>>> upstream/master
  *
  *  Naming conventions follow National Semiconductor datasheet
  *
@@ -45,6 +49,7 @@
 #ifndef NLD_9310_H_
 #define NLD_9310_H_
 
+<<<<<<< HEAD
 #include "nl_base.h"
 
 #define TTL_9310(_name, _CLK, _ENP, _ENT, _CLRQ, _LOADQ, _A, _B, _C, _D)            \
@@ -107,5 +112,23 @@ NETLIB_DEVICE(9310,
 NETLIB_DEVICE_DERIVED_PURE(9310_dip, 9310);
 
 NETLIB_NAMESPACE_DEVICES_END()
+=======
+#include "../nl_setup.h"
+
+#define TTL_9310(name, cCLK, cENP, cENT, cCLRQ, cLOADQ, cA, cB, cC, cD)         \
+		NET_REGISTER_DEV(TTL_9310, name)                                        \
+		NET_CONNECT(name, CLK, cCLK)                                            \
+		NET_CONNECT(name, ENP,  cENP)                                           \
+		NET_CONNECT(name, ENT,  cENT)                                           \
+		NET_CONNECT(name, CLRQ, cCLRQ)                                          \
+		NET_CONNECT(name, LOADQ,_LOADQ)                                         \
+		NET_CONNECT(name, A,    cA)                                             \
+		NET_CONNECT(name, B,    cB)                                             \
+		NET_CONNECT(name, C,    cC)                                             \
+		NET_CONNECT(name, D,    cD)
+
+#define TTL_9310_DIP(name)                                                      \
+		NET_REGISTER_DEV(TTL_9310_DIP, name)
+>>>>>>> upstream/master
 
 #endif /* NLD_9310_H_ */

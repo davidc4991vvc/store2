@@ -890,10 +890,17 @@ static int PaQa_SingleLoopBackTest( UserOptions *userOptions, TestParameters *te
 	{
 		printf( "OK" );
 	}
+<<<<<<< HEAD
     
 	printf( "\n" );
     
 				
+=======
+
+    // Print the # errors so far to make it easier to see where the error occured.
+	printf( " - #errs = %d\n", g_testsFailed );
+
+>>>>>>> upstream/master
 	PaQa_TeardownLoopbackContext( &loopbackContext );
 	if( numBadChannels > 0 )
 	{
@@ -1376,25 +1383,41 @@ int TestSampleFormatConversion( void )
 	PaQa_ConvertFromFloat( floatInput, 4, paUInt8, ucharOutput );
 	for( i=0; i<4; i++ )
 	{
+<<<<<<< HEAD
 		QA_ASSERT_CLOSE( "paFloat32 -> paUInt8 -> error", ucharInput[i], ucharOutput[i], 1 );
+=======
+		QA_ASSERT_CLOSE_INT( "paFloat32 -> paUInt8 -> error", ucharInput[i], ucharOutput[i], 1 );
+>>>>>>> upstream/master
 	}
 	
 	PaQa_ConvertFromFloat( floatInput, 4, paInt8, charOutput );
 	for( i=0; i<4; i++ )
 	{
+<<<<<<< HEAD
 		QA_ASSERT_CLOSE( "paFloat32 -> paInt8 -> error", charInput[i], charOutput[i], 1 );
+=======
+		QA_ASSERT_CLOSE_INT( "paFloat32 -> paInt8 -> error", charInput[i], charOutput[i], 1 );
+>>>>>>> upstream/master
 	}
 	
 	PaQa_ConvertFromFloat( floatInput, 4, paInt16, shortOutput );
 	for( i=0; i<4; i++ )
 	{
+<<<<<<< HEAD
 		QA_ASSERT_CLOSE( "paFloat32 -> paInt16 error", shortInput[i], shortOutput[i], 1 );
+=======
+		QA_ASSERT_CLOSE_INT( "paFloat32 -> paInt16 error", shortInput[i], shortOutput[i], 1 );
+>>>>>>> upstream/master
 	}
 		
 	PaQa_ConvertFromFloat( floatInput, 4, paInt32, intOutput );
 	for( i=0; i<4; i++ )
 	{
+<<<<<<< HEAD
 		QA_ASSERT_CLOSE( "paFloat32 -> paInt32 error", intInput[i], intOutput[i], 0x00010000 );
+=======
+		QA_ASSERT_CLOSE_INT( "paFloat32 -> paInt32 error", intInput[i], intOutput[i], 0x00010000 );
+>>>>>>> upstream/master
 	}
 	
 	

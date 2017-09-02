@@ -10,8 +10,15 @@ pages; and multiple pieces of rom/ram/components can occur in a single slot.
 
 ***********************************************************************************************************/
 
+<<<<<<< HEAD
 #ifndef __MSX_SLOT_SLOT_H
 #define __MSX_SLOT_SLOT_H
+=======
+#ifndef MAME_BUS_MSX_SLOT_SLOT_H
+#define MAME_BUS_MSX_SLOT_SLOT_H
+
+#pragma once
+>>>>>>> upstream/master
 
 #define MCFG_MSX_INTERNAL_SLOT_ADD(_tag, _type, _startpage, _numpages) \
 	MCFG_DEVICE_ADD(_tag, _type, 0) \
@@ -22,18 +29,35 @@ class msx_internal_slot_interface
 {
 public:
 	msx_internal_slot_interface();
+<<<<<<< HEAD
 
 	// static configuration helpers
 	static void set_start_address(device_t &device, UINT32 start_address);
 	static void set_size(device_t &device, UINT32 size);
+=======
+	virtual ~msx_internal_slot_interface() { }
+
+	// static configuration helpers
+	static void set_start_address(device_t &device, uint32_t start_address);
+	static void set_size(device_t &device, uint32_t size);
+>>>>>>> upstream/master
 
 	virtual DECLARE_READ8_MEMBER(read) { return 0xFF; }
 	virtual DECLARE_WRITE8_MEMBER(write) { }
 
 protected:
+<<<<<<< HEAD
 	UINT32 m_start_address;
 	UINT32 m_size;
 	UINT32 m_end_address;
 };
 
 #endif
+=======
+	uint32_t m_start_address;
+	uint32_t m_size;
+	uint32_t m_end_address;
+};
+
+#endif // MAME_BUS_MSX_SLOT_SLOT_H
+>>>>>>> upstream/master

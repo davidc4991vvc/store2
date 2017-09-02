@@ -10,14 +10,22 @@ Actually same HW as the Cisco Heat ones.
 
 TODO:
 -Understand what "devices" area needs to make this working.It's likely that the upper switches
+<<<<<<< HEAD
 controls the UFO's and the lower switches the astronauts.
+=======
+ controls the UFO's and the lower switches the astronauts.
+>>>>>>> upstream/master
 -Back tilemap paging is likely to be incorrect.
 -3D Artworks for the UFO's,Astronauts etc.
 -Merge to the Cisco Heat driver.
 
 Notes:
 -The real HW is a redemption machine with two guns, similar to the "Cosmo Gang the Video"
+<<<<<<< HEAD
 (Namco) bonus games.
+=======
+(Namco) redemption version.
+>>>>>>> upstream/master
 
 m68k irq table vectors
 lev 1 : 0x64 : 0000 04f0 - rte
@@ -60,6 +68,14 @@ JALCF1   BIN     1,048,576  02-07-99  1:11a JALCF1.BIN
 #include "emu.h"
 #include "cpu/m68000/m68000.h"
 #include "sound/okim6295.h"
+<<<<<<< HEAD
+=======
+#include "video/ms1_tmap.h"
+#include "screen.h"
+#include "speaker.h"
+
+#include "acommand.lh"
+>>>>>>> upstream/master
 
 
 class acommand_state : public driver_device
@@ -67,14 +83,19 @@ class acommand_state : public driver_device
 public:
 	acommand_state(const machine_config &mconfig, device_type type, const char *tag)
 		: driver_device(mconfig, type, tag),
+<<<<<<< HEAD
 		m_ac_bgvram(*this, "ac_bgvram"),
 		m_ac_txvram(*this, "ac_txvram"),
 		m_spriteram(*this, "spriteram"),
 		m_ac_devram(*this, "ac_devram"),
+=======
+		m_spriteram(*this, "spriteram"),
+>>>>>>> upstream/master
 		m_maincpu(*this, "maincpu"),
 		m_oki1(*this, "oki1"),
 		m_oki2(*this, "oki2"),
 		m_gfxdecode(*this, "gfxdecode"),
+<<<<<<< HEAD
 		m_palette(*this, "palette") { }
 
 	required_shared_ptr<UINT16> m_ac_bgvram;
@@ -103,15 +124,50 @@ public:
 	TIMER_DEVICE_CALLBACK_MEMBER(acommand_scanline);
 	void draw_sprites(bitmap_ind16 &bitmap, const rectangle &cliprect, int priority, int pri_mask);
 	void draw_led(bitmap_ind16 &bitmap, int x, int y,UINT8 value);
+=======
+		m_palette(*this, "palette"),
+		m_bgtmap(*this, "bgtmap"),
+		m_txtmap(*this, "txtmap") { }
+
+	required_shared_ptr<uint16_t> m_spriteram;
+	std::unique_ptr<uint16_t[]> m_ac_vregs;
+	uint16_t m_7seg0;
+	uint16_t m_7seg1;
+	uint16_t m_ufo_lane[5];
+	uint8_t m_boss_door;
+	DECLARE_WRITE8_MEMBER(oki_bank_w);
+	DECLARE_WRITE16_MEMBER(output_7seg0_w);
+	DECLARE_WRITE16_MEMBER(output_7seg1_w);
+	DECLARE_WRITE16_MEMBER(output_lamps_w);
+
+	DECLARE_READ16_MEMBER(ext_devices_0_r);
+	DECLARE_WRITE16_MEMBER(ext_devices_0_w);
+	DECLARE_READ16_MEMBER(ext_devices_1_r);
+	DECLARE_WRITE16_MEMBER(ext_devices_1_w);
+	DECLARE_WRITE16_MEMBER(ext_devices_2_w);
+
+	DECLARE_WRITE16_MEMBER(ac_unk2_w);
+	TILEMAP_MAPPER_MEMBER(bg_scan);
+	virtual void video_start() override;
+	uint32_t screen_update_acommand(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
+	TIMER_DEVICE_CALLBACK_MEMBER(acommand_scanline);
+	void draw_sprites(bitmap_ind16 &bitmap, const rectangle &cliprect, int priority, int pri_mask);
+>>>>>>> upstream/master
 	required_device<cpu_device> m_maincpu;
 	required_device<okim6295_device> m_oki1;
 	required_device<okim6295_device> m_oki2;
 	required_device<gfxdecode_device> m_gfxdecode;
 	required_device<palette_device> m_palette;
+<<<<<<< HEAD
+=======
+	required_device<megasys1_tilemap_device> m_bgtmap;
+	required_device<megasys1_tilemap_device> m_txtmap;
+>>>>>>> upstream/master
 };
 
 
 
+<<<<<<< HEAD
 TILEMAP_MAPPER_MEMBER(acommand_state::bg_scan)
 {
 	/* logical (col,row) -> memory offset */
@@ -139,6 +195,11 @@ TILE_GET_INFO_MEMBER(acommand_state::ac_get_tx_tile_info)
 void acommand_state::draw_sprites(bitmap_ind16 &bitmap, const rectangle &cliprect, int priority, int pri_mask)
 {
 	UINT16 *spriteram16 = m_spriteram;
+=======
+void acommand_state::draw_sprites(bitmap_ind16 &bitmap, const rectangle &cliprect, int priority, int pri_mask)
+{
+	uint16_t *spriteram16 = m_spriteram;
+>>>>>>> upstream/master
 	int offs;
 
 	for (offs = 0;offs < m_spriteram.bytes()/2;offs += 8)
@@ -152,8 +213,14 @@ void acommand_state::draw_sprites(bitmap_ind16 &bitmap, const rectangle &cliprec
 			int h = ((spriteram16[offs+0] & 0xf0) >> 4);
 			int sy = (spriteram16[offs+4] & 0x0ff) - ((h+1)*0x10);
 /**/        int pri = spriteram16[offs+5];
+<<<<<<< HEAD
 /**/        int flipy = ((spriteram16[offs+1] & 0x0200) >> 9);
 /**/        int flipx = ((spriteram16[offs+1] & 0x0100) >> 8);
+=======
+/**/        int flipy = ((spriteram16[offs+1] & 0x2000) >> 13);
+			// "this is the boss" uses flip x
+			int flipx = ((spriteram16[offs+1] & 0x1000) >> 12);
+>>>>>>> upstream/master
 
 			int xx,yy,x;
 			int delta = 16;
@@ -173,18 +240,33 @@ void acommand_state::draw_sprites(bitmap_ind16 &bitmap, const rectangle &cliprec
 			yy = h;
 			do
 			{
+<<<<<<< HEAD
 				x = sx;
 				xx = w;
 				do
 				{
 					m_gfxdecode->gfx(2)->transpen(bitmap,cliprect,
+=======
+				x = flipx ? sx + w*16 : sx;
+				xx = w;
+				do
+				{
+					m_gfxdecode->gfx(0)->transpen(bitmap,cliprect,
+>>>>>>> upstream/master
 							code,
 							color,
 							flipx, flipy,
 							((x + 16) & 0x1ff) - 16,sy & 0x1ff,15);
 
 					code++;
+<<<<<<< HEAD
 					x += delta;
+=======
+					if(flipx)
+						x -= delta;
+					else
+						x += delta;
+>>>>>>> upstream/master
 				} while (--xx >= 0);
 
 				sy += delta;
@@ -196,6 +278,7 @@ void acommand_state::draw_sprites(bitmap_ind16 &bitmap, const rectangle &cliprec
 
 void acommand_state::video_start()
 {
+<<<<<<< HEAD
 	m_tx_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(acommand_state::ac_get_tx_tile_info),this),TILEMAP_SCAN_COLS,8,8,512,32);
 	m_bg_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(acommand_state::ac_get_bg_tile_info),this),tilemap_mapper_delegate(FUNC(acommand_state::bg_scan),this),16,16,256,16);
 
@@ -461,20 +544,183 @@ WRITE16_MEMBER(acommand_state::ac_unk2_w)
 {
 	if(data)
 		popmessage("UNK-2 enabled %04x",data);
+=======
+	m_ac_vregs = std::make_unique<uint16_t[]>(0x80/2);
+}
+
+
+uint32_t acommand_state::screen_update_acommand(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+{
+	// reference has black pen background, as weird it might sound
+	bitmap.fill(m_palette->black_pen(), cliprect);
+
+	m_bgtmap->draw(screen, bitmap, cliprect, 0, 0);
+	draw_sprites(bitmap,cliprect,0,0);
+	m_txtmap->draw(screen, bitmap, cliprect, 0, 0);
+
+	return 0;
+}
+
+
+/******************************************************************************************/
+
+/*This is always zero ATM*/
+WRITE16_MEMBER(acommand_state::ac_unk2_w)
+{
+	if(data)
+		popmessage("UNK-2 enabled %04x",data);
+}
+
+/*************************************
+ *
+ * I/O
+ *
+ ************************************/
+
+WRITE8_MEMBER(acommand_state::oki_bank_w)
+{
+	m_oki1->set_rom_bank(data & 0x3);
+	m_oki2->set_rom_bank((data & 0x30) >> 4);
+}
+
+
+/*                                    0    1    2    3    4    5    6    7    8    9    a    b    c    d    e    f*/
+static const uint8_t led_fill[0x10] = { 0x3f,0x06,0x5b,0x4f,0x66,0x6d,0x7d,0x07,0x7f,0x6f,0x00,0x00,0x00,0x00,0x00,0x00};
+
+WRITE16_MEMBER(acommand_state::output_7seg0_w)
+{
+	COMBINE_DATA(&m_7seg0);
+
+	// nybble 0,1,2: left 7segs, nybble 3: right 7seg 1st digit
+	for (int i = 0; i < 4; i++)
+		output().set_digit_value(i, led_fill[m_7seg0 >> (i*4) & 0xf]);
+}
+
+WRITE16_MEMBER(acommand_state::output_7seg1_w)
+{
+	COMBINE_DATA(&m_7seg1);
+
+	// nybble 0,1: right 7seg 2nd,3rd digit
+	for (int i = 0; i < 2; i++)
+		output().set_digit_value(i+4, led_fill[m_7seg1 >> (i*4) & 0xf]);
+
+	// other: ?
+}
+
+/*
+    "Upper switch / Under Switch"
+    xx-x ---- xx-x xx-x
+    -x-- ---- ---- ---- Catch Switch - 3
+    --x- ---- ---- ---- Lower Switch - 3
+    ---x ---- ---- ---- Upper Switch - 3
+    ---- -x-- ---- ---- Catch Switch - 2
+    ---- --x- ---- ---- Lower Switch - 2
+    ---- ---x ---- ---- Upper Switch - 2
+    ---- ---- -x-- ---- Catch Switch - 1
+    ---- ---- --x- ---- Lower Switch - 1 (active high)
+    ---- ---- ---x ---- Upper Switch - 1 (active low)
+    ---- ---- ---- --xx Boss Door - Motor
+    state of UFO lanes:
+    0x0
+    0x1
+    0x2
+    0x3
+    0x4
+    0x5 ufo lane limit switch
+    0x6
+    0x7 astronaut switch or jamming
+    0x8
+    0x9 ufo lane switch or motor
+    0xa astronaut switch or jamming
+    0xb ufo lane switch or motor
+    0xc ""
+    0xd ufo lane limit switch
+    0xe astronaut switch or jamming
+    0xf ""
+*/
+READ16_MEMBER(acommand_state::ext_devices_0_r)
+{
+	return 0xfffc | m_boss_door;
+}
+
+WRITE16_MEMBER(acommand_state::ext_devices_0_w)
+{
+	printf("%04x EXT 0\n",data);
+	m_boss_door = data & 3;
+	m_ufo_lane[0] = (data >> 8) & 0x1f;
+}
+
+/*
+    ---- ---- --x- ---- Lower Switch - 5
+    ---- ---- ---x ---- Upper Switch - 5
+    ---- ---- ---- --x- Lower Switch - 4 (active high)
+    ---- ---- ---- ---x Upper Switch - 4 (active low)
+*/
+READ16_MEMBER(acommand_state::ext_devices_1_r)
+{
+	return 0xffff;
+}
+
+WRITE16_MEMBER(acommand_state::ext_devices_1_w)
+{
+	//printf("%04x EXT 1\n",data);
+	m_ufo_lane[1] = (data >> 0) & 0x1f;
+	m_ufo_lane[2] = (data >> 8) & 0x1f;
+}
+
+WRITE16_MEMBER(acommand_state::ext_devices_2_w)
+{
+	//printf("%04x EXT 2\n",data);
+	m_ufo_lane[3] = (data >> 0) & 0x1f;
+	m_ufo_lane[4] = (data >> 8) & 0x1f;
+}
+
+WRITE16_MEMBER(acommand_state::output_lamps_w)
+{
+	machine().bookkeeping().coin_counter_w(0, data & 0x40);
+	machine().bookkeeping().coin_counter_w(1, data & 0x80);
+
+	// --xx --xx lamps
+>>>>>>> upstream/master
 }
 
 static ADDRESS_MAP_START( acommand_map, AS_PROGRAM, 16, acommand_state )
 	AM_RANGE(0x000000, 0x03ffff) AM_ROM
+<<<<<<< HEAD
 	AM_RANGE(0x082000, 0x082005) AM_WRITE(ac_bgscroll_w)
 	AM_RANGE(0x082100, 0x082105) AM_WRITE(ac_txscroll_w)
 	AM_RANGE(0x082208, 0x082209) AM_WRITE(ac_unk2_w)
 	AM_RANGE(0x0a0000, 0x0a3fff) AM_RAM_WRITE(ac_bgvram_w) AM_SHARE("ac_bgvram")
 	AM_RANGE(0x0b0000, 0x0b3fff) AM_RAM_WRITE(ac_txvram_w) AM_SHARE("ac_txvram")
+=======
+	AM_RANGE(0x082000, 0x082005) AM_DEVWRITE("bgtmap", megasys1_tilemap_device, scroll_w)
+	AM_RANGE(0x082100, 0x082105) AM_DEVWRITE("txtmap", megasys1_tilemap_device, scroll_w)
+	AM_RANGE(0x082208, 0x082209) AM_WRITE(ac_unk2_w)
+	AM_RANGE(0x0a0000, 0x0a3fff) AM_RAM_DEVWRITE("bgtmap", megasys1_tilemap_device, write) AM_SHARE("bgtmap")
+	AM_RANGE(0x0b0000, 0x0b3fff) AM_RAM_DEVWRITE("txtmap", megasys1_tilemap_device, write) AM_SHARE("txtmap")
+>>>>>>> upstream/master
 	AM_RANGE(0x0b8000, 0x0bffff) AM_RAM_DEVWRITE("palette", palette_device, write) AM_SHARE("palette")
 	AM_RANGE(0x0f0000, 0x0f7fff) AM_RAM
 	AM_RANGE(0x0f8000, 0x0f8fff) AM_RAM AM_SHARE("spriteram")
 	AM_RANGE(0x0f9000, 0x0fffff) AM_RAM
+<<<<<<< HEAD
 	AM_RANGE(0x100000, 0x1000ff) AM_READ(ac_devices_r) AM_WRITE(ac_devices_w) AM_SHARE("ac_devram")
+=======
+
+	AM_RANGE(0x100000, 0x100001) AM_WRITE8(oki_bank_w,0x00ff)
+	AM_RANGE(0x100008, 0x100009) AM_READ_PORT("IN0") AM_WRITE(output_lamps_w)
+	AM_RANGE(0x100014, 0x100017) AM_DEVREADWRITE8("oki1", okim6295_device, read, write, 0x00ff)
+	AM_RANGE(0x100018, 0x10001b) AM_DEVREADWRITE8("oki2", okim6295_device, read, write, 0x00ff)
+
+	AM_RANGE(0x100040, 0x100041) AM_READWRITE(ext_devices_0_r,ext_devices_0_w)
+	AM_RANGE(0x100044, 0x100045) AM_READWRITE(ext_devices_1_r,ext_devices_1_w)
+	AM_RANGE(0x100048, 0x100049) AM_WRITE(ext_devices_2_w)
+
+	AM_RANGE(0x100050, 0x100051) AM_WRITE(output_7seg0_w)
+	AM_RANGE(0x100054, 0x100055) AM_WRITE(output_7seg1_w)
+	AM_RANGE(0x10005c, 0x10005d) AM_READ_PORT("DSW")
+
+>>>>>>> upstream/master
 ADDRESS_MAP_END
 
 static INPUT_PORTS_START( acommand )
@@ -512,7 +758,11 @@ static INPUT_PORTS_START( acommand )
 	PORT_DIPSETTING(      0x8000, DEF_STR( Off ) )
 	PORT_DIPSETTING(      0x0000, DEF_STR( On ) )
 
+<<<<<<< HEAD
 	PORT_START("IN1")
+=======
+	PORT_START("DSW")
+>>>>>>> upstream/master
 	PORT_DIPNAME( 0x0001, 0x0001, "IN2" )
 	PORT_DIPSETTING(      0x0001, DEF_STR( Off ) )
 	PORT_DIPSETTING(      0x0000, DEF_STR( On ) )
@@ -563,6 +813,7 @@ static INPUT_PORTS_START( acommand )
 	PORT_DIPSETTING(      0x0000, DEF_STR( On ) )
 INPUT_PORTS_END
 
+<<<<<<< HEAD
 static const gfx_layout charlayout =
 {
 	8,8,
@@ -574,6 +825,8 @@ static const gfx_layout charlayout =
 	32*8
 };
 
+=======
+>>>>>>> upstream/master
 static const gfx_layout tilelayout =
 {
 	16,16,
@@ -588,8 +841,11 @@ static const gfx_layout tilelayout =
 };
 
 static GFXDECODE_START( acommand )
+<<<<<<< HEAD
 	GFXDECODE_ENTRY( "gfx1", 0, charlayout, 0x2700, 16 ) /*???*/
 	GFXDECODE_ENTRY( "gfx2", 0, tilelayout, 0x0f00, 256 )
+=======
+>>>>>>> upstream/master
 	GFXDECODE_ENTRY( "gfx3", 0, tilelayout, 0x1800, 256 )
 GFXDECODE_END
 
@@ -604,7 +860,11 @@ TIMER_DEVICE_CALLBACK_MEMBER(acommand_state::acommand_scanline)
 		m_maincpu->set_input_line(3, HOLD_LINE);
 }
 
+<<<<<<< HEAD
 static MACHINE_CONFIG_START( acommand, acommand_state )
+=======
+static MACHINE_CONFIG_START( acommand )
+>>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu",M68000,12000000)
@@ -624,6 +884,7 @@ static MACHINE_CONFIG_START( acommand, acommand_state )
 	MCFG_PALETTE_ADD("palette", 0x4000)
 	MCFG_PALETTE_FORMAT(RRRRGGGGBBBBRGBx)
 
+<<<<<<< HEAD
 	/* sound hardware */
 	MCFG_SPEAKER_STANDARD_STEREO("lspeaker", "rspeaker")
 
@@ -632,6 +893,19 @@ static MACHINE_CONFIG_START( acommand, acommand_state )
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "rspeaker", 1.0)
 
 	MCFG_OKIM6295_ADD("oki2", 2112000, OKIM6295_PIN7_HIGH) // clock frequency & pin 7 not verified
+=======
+	MCFG_MEGASYS1_TILEMAP_ADD("bgtmap", "palette", 0x0f00)
+	MCFG_MEGASYS1_TILEMAP_ADD("txtmap", "palette", 0x2700)
+
+	/* sound hardware */
+	MCFG_SPEAKER_STANDARD_STEREO("lspeaker", "rspeaker")
+
+	MCFG_OKIM6295_ADD("oki1", 2112000, PIN7_HIGH) // clock frequency & pin 7 not verified
+	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "lspeaker", 1.0)
+	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "rspeaker", 1.0)
+
+	MCFG_OKIM6295_ADD("oki2", 2112000, PIN7_HIGH) // clock frequency & pin 7 not verified
+>>>>>>> upstream/master
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "lspeaker", 1.0)
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "rspeaker", 1.0)
 MACHINE_CONFIG_END
@@ -647,10 +921,17 @@ ROM_START( acommand )
 	ROM_LOAD16_BYTE( "jalcf3.bin",   0x000000, 0x020000, CRC(f031abf7) SHA1(e381742fd6a6df4ddae42ddb3a074a55dc550b3c) )
 	ROM_LOAD16_BYTE( "jalcf4.bin",   0x000001, 0x020000, CRC(dd0c0540) SHA1(3e788fcb30ae725bd0ec9b57424e3946db1e946f) )
 
+<<<<<<< HEAD
 	ROM_REGION( 0x20000, "gfx1", 0 ) /* BG0 */
 	ROM_LOAD( "jalcf6.bin",   0x000000, 0x020000, CRC(442173d6) SHA1(56c02bc2761967040127977ecabe844fc45e2218) )
 
 	ROM_REGION( 0x080000, "gfx2", 0 ) /* BG1 */
+=======
+	ROM_REGION( 0x20000, "txtmap", 0 ) /* BG0 */
+	ROM_LOAD( "jalcf6.bin",   0x000000, 0x020000, CRC(442173d6) SHA1(56c02bc2761967040127977ecabe844fc45e2218) )
+
+	ROM_REGION( 0x080000, "bgtmap", 0 ) /* BG1 */
+>>>>>>> upstream/master
 	ROM_LOAD( "jalcf5.bin",   0x000000, 0x080000, CRC(ff0be97f) SHA1(5ccab778318dec30849d7b7f25091d4aab8bde32) )
 
 	ROM_REGION( 0x400000, "gfx3", 0 ) /* SPR */
@@ -674,4 +955,8 @@ ROM_START( acommand )
 	ROM_LOAD( "jalmr17.bin",   0x080000, 0x080000, CRC(9d428fb7) SHA1(02f72938d73db932bd217620a175a05215f6016a) )
 ROM_END
 
+<<<<<<< HEAD
 GAME( 1994, acommand,  0,       acommand,  acommand, driver_device,  0, ROT0, "Jaleco", "Alien Command" , MACHINE_NOT_WORKING | MACHINE_MECHANICAL)
+=======
+GAMEL( 1994, acommand,  0,      acommand,  acommand, acommand_state,  0, ROT0, "Jaleco", "Alien Command" , MACHINE_NOT_WORKING | MACHINE_MECHANICAL, layout_acommand )
+>>>>>>> upstream/master

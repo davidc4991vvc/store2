@@ -11,6 +11,10 @@
 
 #include "emu.h"
 #include "includes/galpani2.h"
+<<<<<<< HEAD
+=======
+#include "screen.h"
+>>>>>>> upstream/master
 
 /*
 304000:0040 0000 0100 0000-0000 0000 0000 0000      (Sprites regs)
@@ -27,7 +31,11 @@
 
 
 #ifdef UNUSED_DEFINITION
+<<<<<<< HEAD
 inline UINT16 galpani2_state::galpani2_bg8_regs_r(address_space &space, offs_t offset, int n)
+=======
+inline uint16_t galpani2_state::galpani2_bg8_regs_r(address_space &space, offs_t offset, int n)
+>>>>>>> upstream/master
 {
 	switch (offset * 2)
 	{
@@ -45,7 +53,11 @@ inline UINT16 galpani2_state::galpani2_bg8_regs_r(address_space &space, offs_t o
     c04         0003 flip, 0300 flip?
     c1c/e       01ff scroll, 3000 ?
 */
+<<<<<<< HEAD
 inline void galpani2_state::galpani2_bg8_regs_w(address_space &space, offs_t offset, UINT16 data, UINT16 mem_mask, int _n_)
+=======
+inline void galpani2_state::galpani2_bg8_regs_w(address_space &space, offs_t offset, uint16_t data, uint16_t mem_mask, int _n_)
+>>>>>>> upstream/master
 {
 	COMBINE_DATA(&m_bg8_regs[_n_][offset]);
 }
@@ -98,14 +110,22 @@ void galpani2_state::copybg8(screen_device &screen, bitmap_rgb32 &bitmap, const 
 {
 	int x = + ( *m_bg8_scrollx[layer] + 0x200 - 0x1be );
 	int y = + ( *m_bg8_scrolly[layer] + 0x200 - 0x0f5 );
+<<<<<<< HEAD
 	UINT16* ram = m_bg8[layer];
+=======
+	uint16_t* ram = m_bg8[layer];
+>>>>>>> upstream/master
 
 	const pen_t *clut = &m_bg8palette->pen(0);
 	for (int xx = 0; xx < 320; xx++)
 	{
 		for (int yy = 0; yy < 240; yy++)
 		{
+<<<<<<< HEAD
 			UINT16 pen = ram[(((y + yy) & 0xff) * 512) + ((x + xx) & 0x1ff)];
+=======
+			uint16_t pen = ram[(((y + yy) & 0xff) * 512) + ((x + xx) & 0x1ff)];
+>>>>>>> upstream/master
 			if (pen) bitmap.pix32(yy, xx) = clut[pen & 0xff];
 		}
 	}
@@ -118,7 +138,11 @@ void galpani2_state::copybg8(screen_device &screen, bitmap_rgb32 &bitmap, const 
 // (or is this just wrong format / layout due to protection?)
 void galpani2_state::copybg15(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect)
 {
+<<<<<<< HEAD
 	UINT16* ram = m_bg15 + 0x40000/2;
+=======
+	uint16_t* ram = m_bg15 + 0x40000/2;
+>>>>>>> upstream/master
 
 	//int x = 0;
 	//int y = 0;
@@ -128,13 +152,21 @@ void galpani2_state::copybg15(screen_device &screen, bitmap_rgb32 &bitmap, const
 	{
 		for (int yy = 0; yy < 240; yy++)
 		{
+<<<<<<< HEAD
 			UINT16 pen = ram[(xx * 0x800) + yy];
+=======
+			uint16_t pen = ram[(xx * 0x800) + yy];
+>>>>>>> upstream/master
 			bitmap.pix32(yy, xx) = clut[pen & 0x7fff];
 		}
 	}
 }
 
+<<<<<<< HEAD
 UINT32 galpani2_state::screen_update_galpani2(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect)
+=======
+uint32_t galpani2_state::screen_update_galpani2(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect)
+>>>>>>> upstream/master
 {
 	int layers_ctrl = -1;
 

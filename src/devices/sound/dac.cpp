@@ -1,4 +1,5 @@
 // license:BSD-3-Clause
+<<<<<<< HEAD
 // copyright-holders:Aaron Giles
 /***************************************************************************
 
@@ -90,3 +91,23 @@ void dac_device::sound_stream_update(sound_stream &stream, stream_sample_t **inp
 	for (int samp = 0; samp < samples; samp++)
 		outputs[0][samp] = m_output;
 }
+=======
+// copyright-holders:smf
+/***************************************************************************
+
+    dac.cpp
+
+    Four quadrant multiplying DAC.
+
+    Binary Weighted Resistor Network, R-2R Ladder & PWM
+
+    Binary, Ones Complement, Twos Complement or Sign Magnitude coding
+
+***************************************************************************/
+
+#define DAC_GENERATOR_EPILOG(_dac_type, _dac_class, _dac_description, _dac_shortname) \
+DEFINE_DEVICE_TYPE(_dac_type, _dac_class, _dac_shortname, _dac_description)
+
+#include "emu.h"
+#include "dac.h"
+>>>>>>> upstream/master

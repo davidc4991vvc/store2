@@ -5,15 +5,26 @@
  *   Xerox AltoII display interface
  *
  *****************************************************************************/
+<<<<<<< HEAD
+=======
+#include "emu.h"
+>>>>>>> upstream/master
 #include "alto2cpu.h"
 #include "a2roms.h"
 
 /**
  * @brief PROM a38 contains the STOPWAKE' and MBEMBPTY' signals for the FIFO
+<<<<<<< HEAD
  * <PRE>
  * The inputs to a38 are the UNLOAD counter RA[0-3] and the DDR<- counter
  * WA[0-3], and the designer decided to reverse the address lines :-)
  *
+=======
+ * The inputs to a38 are the UNLOAD counter RA[0-3] and the DDR<- counter
+ * WA[0-3], and the designer decided to reverse the address lines :-)
+ *
+ * <PRE>
+>>>>>>> upstream/master
  *  a38  counter
  *  -------------
  *   A0  RA[0]
@@ -35,7 +46,11 @@
 static const prom_load_t pl_displ_a38 =
 {
 	"displ.a38",
+<<<<<<< HEAD
 	0,
+=======
+	nullptr,
+>>>>>>> upstream/master
 	"fd30beb7",
 	"65e4a19ba4ff748d525122128c514abedd55d866",
 	/* size */  0400,
@@ -46,6 +61,7 @@ static const prom_load_t pl_displ_a38 =
 	/* shift */ 0,
 	/* dmap */  DMAP_DEFAULT,
 	/* dand */  ZERO,
+<<<<<<< HEAD
 	/* type */  sizeof(UINT8)
 };
 
@@ -54,6 +70,16 @@ static const prom_load_t pl_displ_a38 =
 
 //! PROM a38 bit O3 is MBEMPTY' (FIFO is empty if bit is zero)
 #define FIFO_MBEMPTY(a38) (0 == (a38 & disp_a38_MBEMPTY) ? true : false)
+=======
+	/* type */  sizeof(uint8_t)
+};
+
+//! PROM a38 bit O1 is STOPWAKE' (stop DWT if bit is zero)
+#define FIFO_STOPWAKE(a38) ((a38 & disp_a38_STOPWAKE) ? false : true)
+
+//! PROM a38 bit O3 is MBEMPTY' (FIFO is empty if bit is zero)
+#define FIFO_MBEMPTY(a38) ((a38 & disp_a38_MBEMPTY) ? false : true)
+>>>>>>> upstream/master
 
 /**
  * @brief emulation of PROM a63 in the display schematics page 8
@@ -123,7 +149,11 @@ static const prom_load_t pl_displ_a38 =
 static const prom_load_t pl_displ_a63 =
 {
 	"displ.a63",
+<<<<<<< HEAD
 	0,
+=======
+	nullptr,
+>>>>>>> upstream/master
 	"82a20d60",
 	"39d90703568be5419ada950e112d99227873fdea",
 	/* size */  0040,
@@ -134,7 +164,11 @@ static const prom_load_t pl_displ_a63 =
 	/* shift */ 0,
 	/* dmap */  DMAP_DEFAULT,
 	/* dand */  ZERO,
+<<<<<<< HEAD
 	/* type */  sizeof(UINT8)
+=======
+	/* type */  sizeof(uint8_t)
+>>>>>>> upstream/master
 };
 
 //!< test the HBLANK (horizontal blanking) signal in PROM a63 being high
@@ -155,10 +189,17 @@ static const prom_load_t pl_displ_a63 =
  * Address lines are driven by H[1] to H[128] of the horz. line counters.
  * PROM is enabled when H[256] and H[512] are both 0.
  *
+<<<<<<< HEAD
  * Q1 is VSYNC for the odd field (with H1024=0)
  * Q2 is VSYNC for the even field (with H1024=1)
  * Q3 is VBLANK for the odd field (with H1024=0)
  * Q4 is VBLANK for the even field (with H1024=1)
+=======
+ * Q1 is VSYNC for the odd field (with H1024=1)
+ * Q2 is VSYNC for the even field (with H1024=0)
+ * Q3 is VBLANK for the odd field (with H1024=1)
+ * Q4 is VBLANK for the even field (with H1024=0)
+>>>>>>> upstream/master
  * </PRE>
  */
 
@@ -166,7 +207,11 @@ static const prom_load_t pl_displ_a63 =
 static const prom_load_t pl_displ_a66 =
 {
 	"displ.a66",
+<<<<<<< HEAD
 	0,
+=======
+	nullptr,
+>>>>>>> upstream/master
 	"9f91aad9",
 	"69b1d4c71f4e18103112e8601850c2654e9265cf",
 	/* size */  0400,
@@ -177,7 +222,11 @@ static const prom_load_t pl_displ_a66 =
 	/* shift */ 0,
 	/* dmap */  DMAP_DEFAULT,
 	/* dand */  ZERO,
+<<<<<<< HEAD
 	/* type */  sizeof(UINT8)
+=======
+	/* type */  sizeof(uint8_t)
+>>>>>>> upstream/master
 };
 
 //! test the VSYNC (vertical synchronisation) signal in PROM a66 being high
@@ -189,7 +238,11 @@ static const prom_load_t pl_displ_a66 =
 /**
  * @brief double the bits for a byte (left and right of display word) to a word
  */
+<<<<<<< HEAD
 static const UINT16 double_bits[256] = {
+=======
+static const uint16_t double_bits[256] = {
+>>>>>>> upstream/master
 	0x0000,0x0003,0x000c,0x000f,0x0030,0x0033,0x003c,0x003f,
 	0x00c0,0x00c3,0x00cc,0x00cf,0x00f0,0x00f3,0x00fc,0x00ff,
 	0x0300,0x0303,0x030c,0x030f,0x0330,0x0333,0x033c,0x033f,
@@ -224,6 +277,7 @@ static const UINT16 double_bits[256] = {
 	0xffc0,0xffc3,0xffcc,0xffcf,0xfff0,0xfff3,0xfffc,0xffff
 };
 
+<<<<<<< HEAD
 #define HLC1    ((m_dsp.hlc >>  0) & 1)     //!< horizontal line counter bit 0 (mid of the scanline)
 #define HLC2    ((m_dsp.hlc >>  1) & 1)     //!< horizontal line counter bit 1
 #define HLC4    ((m_dsp.hlc >>  2) & 1)     //!< horizontal line counter bit 2
@@ -235,6 +289,19 @@ static const UINT16 double_bits[256] = {
 #define HLC256  ((m_dsp.hlc >>  8) & 1)     //!< horizontal line counter bit 8
 #define HLC512  ((m_dsp.hlc >>  9) & 1)     //!< horizontal line counter bit 9
 #define HLC1024 ((m_dsp.hlc >> 10) & 1)     //!< horizontal line counter bit 10 (odd/even field)
+=======
+#define HLC1    X_BIT(m_dsp.hlc,16,15)    //!< horizontal line counter bit 0 (mid of the scanline)
+#define HLC2    X_BIT(m_dsp.hlc,16,14)    //!< horizontal line counter bit 1
+#define HLC4    X_BIT(m_dsp.hlc,16,13)    //!< horizontal line counter bit 2
+#define HLC8    X_BIT(m_dsp.hlc,16,12)    //!< horizontal line counter bit 3
+#define HLC16   X_BIT(m_dsp.hlc,16,11)    //!< horizontal line counter bit 4
+#define HLC32   X_BIT(m_dsp.hlc,16,10)    //!< horizontal line counter bit 5
+#define HLC64   X_BIT(m_dsp.hlc,16, 9)    //!< horizontal line counter bit 6
+#define HLC128  X_BIT(m_dsp.hlc,16, 8)    //!< horizontal line counter bit 7
+#define HLC256  X_BIT(m_dsp.hlc,16, 7)    //!< horizontal line counter bit 8
+#define HLC512  X_BIT(m_dsp.hlc,16, 6)    //!< horizontal line counter bit 9
+#define HLC1024 X_BIT(m_dsp.hlc,16, 5)    //!< horizontal line counter bit 10 (odd/even field
+>>>>>>> upstream/master
 
 #define GET_SETMODE_SPEEDY(mode) X_RDBITS(mode,16,0,0)  //!< get the pixel clock speed from a SETMODE<- bus value
 #define GET_SETMODE_INVERSE(mode) X_RDBITS(mode,16,1,1) //!< get the inverse video flag from a SETMODE<- bus value
@@ -242,6 +309,7 @@ static const UINT16 double_bits[256] = {
 //!< helper to extract A3-A0 from a PROM a63 value
 #define A63_NEXT(n) ((n >> 2) & 017)
 
+<<<<<<< HEAD
 //! update the internal bitmap to a byte array
 void alto2_cpu_device::update_bitmap_word(UINT16* bitmap, int x, int y, UINT16 word)
 {
@@ -271,6 +339,24 @@ void alto2_cpu_device::update_bitmap_word(UINT16* bitmap, int x, int y, UINT16 w
 	*pix++ = (word >>  2) & 1;
 	*pix++ = (word >>  1) & 1;
 	*pix++ = (word >>  0) & 1;
+=======
+//! update the internal frame buffer and draw the scanline segment if changed
+void alto2_cpu_device::update_framebuf_word(uint16_t* framebuf, int x, int y, uint16_t word)
+{
+	if (y >= A2_DISP_TOTAL_HEIGHT)
+		return;
+	int xpword = (m_dsp.xpreg ^ 01777) / 16;
+	// mixing with the cursor
+	if (x == xpword++)
+		word ^= (m_dsp.csr << (m_dsp.xpreg % 16)) >> 16;
+	if (x == xpword)
+		word ^= (m_dsp.csr << (m_dsp.xpreg % 16)) & 0xffff;
+	// no change?
+	if (word == framebuf[x])
+		return;
+	framebuf[x] = word;
+	draw_scanline8(*m_dsp.bitmap, x * 16, y, 16, m_dsp.patterns + 16 * word, nullptr);
+>>>>>>> upstream/master
 }
 
 /**
@@ -279,6 +365,7 @@ void alto2_cpu_device::update_bitmap_word(UINT16* bitmap, int x, int y, UINT16 w
 void alto2_cpu_device::unload_word()
 {
 	int x = m_unload_word;
+<<<<<<< HEAD
 	int y = ((m_dsp.hlc - m_dsp.vblank) & ~02001) ^ HLC1024;
 
 	if (y < 0 || y >= ALTO2_DISPLAY_HEIGHT || x >= ALTO2_DISPLAY_VISIBLE_WORDS)
@@ -289,6 +376,17 @@ void alto2_cpu_device::unload_word()
 	UINT16* bitmap = m_dsp.raw_bitmap  + y * ALTO2_DISPLAY_SCANLINE_WORDS;
 	UINT16 word = m_dsp.inverse;
 	UINT8 a38 = m_disp_a38[m_dsp.ra * 16 + m_dsp.wa];
+=======
+	int y = m_dsp.scanline;
+
+	if (x >= A2_DISP_VISIBLE_WORDS) {
+		m_unload_time = -1;
+		return;
+	}
+	uint16_t* framebuf = m_dsp.framebuf.get() + y * A2_DISP_SCANLINE_WORDS;
+	uint16_t word = m_dsp.inverse;
+	uint8_t a38 = m_disp_a38[m_dsp.ra * 16 + m_dsp.wa];
+>>>>>>> upstream/master
 	if (FIFO_MBEMPTY(a38))
 	{
 		LOG((this,LOG_DISPL,1, " DSP FIFO underrun y:%d x:%d\n", y, x));
@@ -296,13 +394,20 @@ void alto2_cpu_device::unload_word()
 	else
 	{
 		word ^= m_dsp.fifo[m_dsp.ra];
+<<<<<<< HEAD
 		m_dsp.ra = (m_dsp.ra + 1) % ALTO2_DISPLAY_FIFO;
 		LOG((this,LOG_DISPL,3, " DSP pull %04x from FIFO[%02o] y:%d x:%d\n",
 				word, (m_dsp.ra - 1) & (ALTO2_DISPLAY_FIFO - 1), y, x));
+=======
+		m_dsp.ra = (m_dsp.ra + 1) % A2_DISP_FIFO;
+		LOG((this,LOG_DISPL,3, " DSP pull %04x from FIFO[%02o] y:%d x:%d\n",
+				word, (m_dsp.ra - 1) & (A2_DISP_FIFO - 1), y, x));
+>>>>>>> upstream/master
 	}
 
 	if (m_dsp.halfclock)
 	{
+<<<<<<< HEAD
 		UINT16 word1 = double_bits[word / 256];
 		UINT16 word2 = double_bits[word % 256];
 		update_bitmap_word(bitmap, x, y, word1);
@@ -321,6 +426,26 @@ void alto2_cpu_device::unload_word()
 		m_unload_time += ALTO2_DISPLAY_BITTIME(16);
 	}
 	if (x < ALTO2_DISPLAY_VISIBLE_WORDS)
+=======
+		const uint16_t word1 = double_bits[word / 256];
+		update_framebuf_word(framebuf, x, y, word1);
+		x++;
+		if (x < A2_DISP_VISIBLE_WORDS)
+		{
+			const uint16_t word2 = double_bits[word % 256];
+			update_framebuf_word(framebuf, x, y, word2);
+			x++;
+		}
+		m_unload_time += A2_DISP_BITTIME(32);
+	}
+	else
+	{
+		update_framebuf_word(framebuf, x, y, word);
+		x++;
+		m_unload_time += A2_DISP_BITTIME(16);
+	}
+	if (x < A2_DISP_VISIBLE_WORDS)
+>>>>>>> upstream/master
 		m_unload_word = x;
 	else
 		m_unload_time = -1;
@@ -340,17 +465,31 @@ void alto2_cpu_device::display_state_machine()
 		LOG((this,LOG_DISPL,2," HLC=%d", m_dsp.hlc));
 	}
 
+<<<<<<< HEAD
 	UINT8 a63 = m_disp_a63[m_dsp.state];
+=======
+	const uint8_t a63 = m_disp_a63[m_dsp.state];
+>>>>>>> upstream/master
 	if (A63_HLCGATE(a63))
 	{
 		// count horizontal line counters and wrap
 		m_dsp.hlc += 1;
+<<<<<<< HEAD
 		if (m_dsp.hlc > ALTO2_DISPLAY_HLC_END)
 			m_dsp.hlc = ALTO2_DISPLAY_HLC_START;
+=======
+		if (m_dsp.hlc > A2_DISP_HLC_END) {
+			m_dsp.hlc = A2_DISP_HLC_START;
+			m_dsp.scanline = 0;
+		} else if (m_dsp.hlc == 1024) {
+			m_dsp.scanline = 1;
+		}
+>>>>>>> upstream/master
 		// wake up the memory refresh task _twice_ on each scanline
 		m_task_wakeup |= 1 << task_mrt;
 	}
 	// PROM a66 is disabled, if any of HLC256 or HLC512 are high
+<<<<<<< HEAD
 	UINT8 a66 = (HLC256 || HLC512) ? 017 : m_disp_a66[m_dsp.hlc & 0377];
 
 	// next address from PROM a63, use A4 from HLC1
@@ -377,6 +516,37 @@ void alto2_cpu_device::display_state_machine()
 				// TODO: upade odd or even field of the internal bitmap now?
 			}
 		}
+=======
+	const uint8_t a66 = (HLC256 | HLC512) ? 017 : m_disp_a66[m_dsp.hlc & 0377];
+
+	// next address from PROM a63, use A4 from HLC1
+	const uint8_t next = ((HLC1 ^ 1) << 4) | A63_NEXT(a63);
+
+	if (A66_VBLANK(a66))
+	{
+		LOG((this,LOG_DISPL,1, " VBLANK"));
+		// Rising edge of VBLANK?
+		if (!A66_VBLANK(m_dsp.a66)) {
+			// synchronize on MAME video timing
+			if (!m_dsp.vblank) {
+				m_display_time += A2_DISP_BITTIME(1);
+				return;
+			}
+			m_dsp.vblank = false;
+		}
+
+		// VSYNC is always within VBLANK, thus we handle it only here
+		if (A66_VSYNC(a66) && !A66_VSYNC(m_dsp.a66))
+		{
+			LOG((this,LOG_DISPL,1, " VSYNC/ (wake DVT)"));
+			/*
+			 * The display vertical task DVT is woken once per field
+			 * at the beginning of vertical retrace.
+			 */
+			m_task_wakeup |= 1 << task_dvt;
+		}
+		m_dsp.inverse = 0xffff;
+>>>>>>> upstream/master
 	}
 	else
 	{
@@ -405,9 +575,16 @@ void alto2_cpu_device::display_state_machine()
 		}
 		if (!A63_HBLANK(a63) && A63_HBLANK(m_dsp.a63))
 		{
+<<<<<<< HEAD
 			// Falling edge of a63 HBLANK starts unloading of FIFO words
 			LOG((this,LOG_DISPL,1, " HBLANK\\ UNLOAD"));
 			m_unload_time = ALTO2_DISPLAY_BITTIME(m_dsp.halfclock ? 32 : 16);
+=======
+			m_dsp.scanline += 2;
+			// Falling edge of a63 HBLANK starts unloading of FIFO words
+			LOG((this,LOG_DISPL,1, " HBLANK\\ UNLOAD"));
+			m_unload_time = A2_DISP_BITTIME(m_dsp.halfclock ? 40+32 : 40+16);
+>>>>>>> upstream/master
 			m_unload_word = 0;
 		}
 	}
@@ -418,7 +595,11 @@ void alto2_cpu_device::display_state_machine()
 	 * if DHT is not blocked, and if the buffer is not full, DWT wakeups
 	 * are generated.
 	 */
+<<<<<<< HEAD
 	UINT8 a38 = m_disp_a38[m_dsp.ra * 16 + m_dsp.wa];
+=======
+	uint8_t a38 = m_disp_a38[m_dsp.ra * 16 + m_dsp.wa];
+>>>>>>> upstream/master
 	if (!m_dsp.dwt_blocks && !m_dsp.dht_blocks && !FIFO_STOPWAKE(a38))
 	{
 		m_task_wakeup |= 1 << task_dwt;
@@ -480,7 +661,11 @@ void alto2_cpu_device::display_state_machine()
 	m_dsp.a63 = a63;
 	m_dsp.a66 = a66;
 	m_dsp.state = next;
+<<<<<<< HEAD
 	m_dsp_time += ALTO2_DISPLAY_BITTIME(32);
+=======
+	m_display_time += A2_DISP_BITTIME(32);
+>>>>>>> upstream/master
 }
 
 /**
@@ -490,7 +675,11 @@ void alto2_cpu_device::display_state_machine()
  */
 void alto2_cpu_device::f2_late_evenfield()
 {
+<<<<<<< HEAD
 	UINT16 r = HLC1024 ^ 1;
+=======
+	uint16_t r = HLC1024 ^ 1;
+>>>>>>> upstream/master
 	LOG((this,LOG_DISPL,2,"  EVENFIELD branch (%#o | %#o)\n", m_next2, r));
 	m_next2 |= r;
 }
@@ -498,9 +687,15 @@ void alto2_cpu_device::f2_late_evenfield()
 /**
  * @brief initialize the display context to useful values
  *
+<<<<<<< HEAD
  * Zap the display context to all 0s.
  * Allocate a bitmap array to save blitting to the screen when
  * there is no change in the data words.
+=======
+ * Zap the display context.
+ * Allocate a framebuf array to save updating the bitmap when
+ * there is no change in the data word.
+>>>>>>> upstream/master
  */
 void alto2_cpu_device::init_disp()
 {
@@ -519,17 +714,23 @@ void alto2_cpu_device::init_disp()
 	save_item(NAME(m_dsp.dwt_blocks));
 	save_item(NAME(m_dsp.curt_blocks));
 	save_item(NAME(m_dsp.curt_wakeup));
+<<<<<<< HEAD
 	save_item(NAME(m_dsp.vblank));
 	save_item(NAME(m_dsp.xpreg));
 	save_item(NAME(m_dsp.csr));
 	save_item(NAME(m_dsp.curxpos));
 	save_item(NAME(m_dsp.cursor0));
 	save_item(NAME(m_dsp.cursor1));
+=======
+	save_item(NAME(m_dsp.xpreg));
+	save_item(NAME(m_dsp.csr));
+>>>>>>> upstream/master
 
 	m_disp_a38 = prom_load(machine(), &pl_displ_a38, memregion("displ_a38")->base());
 	m_disp_a63 = prom_load(machine(), &pl_displ_a63, memregion("displ_a63")->base());
 	m_disp_a66 = prom_load(machine(), &pl_displ_a66, memregion("displ_a66")->base());
 
+<<<<<<< HEAD
 	m_dsp.hlc = ALTO2_DISPLAY_HLC_START;
 
 	m_dsp.raw_bitmap = auto_alloc_array(machine(), UINT16, ALTO2_DISPLAY_HEIGHT * ALTO2_DISPLAY_SCANLINE_WORDS);
@@ -538,6 +739,20 @@ void alto2_cpu_device::init_disp()
 		m_dsp.scanline[y] = auto_alloc_array(machine(), UINT8, ALTO2_DISPLAY_TOTAL_WIDTH);
 
 	m_dsp.bitmap = auto_bitmap_ind16_alloc(machine(), ALTO2_DISPLAY_WIDTH, ALTO2_DISPLAY_HEIGHT + ALTO2_FAKE_STATUS_H);
+=======
+	m_dsp.hlc = A2_DISP_HLC_START;
+
+	m_dsp.framebuf = std::make_unique<uint16_t[]>(A2_DISP_TOTAL_HEIGHT * A2_DISP_SCANLINE_WORDS);
+	m_dsp.patterns = auto_alloc_array(machine(), uint8_t, 65536 * 16);
+	for (int y = 0; y < 65536; y++) {
+		uint8_t* dst = m_dsp.patterns + y * 16;
+		for (int x = 0; x < 16; x++)
+			*dst++ = (~y >> (15 - x)) & 1;
+	}
+
+	// Allocate a bitmap including the V/H blank areas
+	m_dsp.bitmap = std::make_unique<bitmap_ind16>(A2_DISP_TOTAL_WIDTH, A2_DISP_TOTAL_HEIGHT);
+>>>>>>> upstream/master
 	m_dsp.state = 0;
 }
 
@@ -549,11 +764,19 @@ void alto2_cpu_device::exit_disp()
 void alto2_cpu_device::reset_disp()
 {
 	m_dsp.state = 0;
+<<<<<<< HEAD
 	m_dsp.hlc = ALTO2_DISPLAY_HLC_START;
+=======
+	m_dsp.hlc = A2_DISP_HLC_START;
+>>>>>>> upstream/master
 	m_dsp.a63 = 0;
 	m_dsp.a66 = 0;
 	m_dsp.setmode = 0;
 	m_dsp.inverse = 0;
+<<<<<<< HEAD
+=======
+	m_dsp.scanline = 0;
+>>>>>>> upstream/master
 	m_dsp.halfclock = false;
 	m_dsp.wa = 0;
 	m_dsp.ra = 0;
@@ -561,6 +784,7 @@ void alto2_cpu_device::reset_disp()
 	m_dsp.dwt_blocks = false;
 	m_dsp.curt_blocks = false;
 	m_dsp.curt_wakeup = false;
+<<<<<<< HEAD
 	m_dsp.vblank = 0;
 	m_dsp.xpreg = 0;
 	m_dsp.csr = 0;
@@ -590,10 +814,22 @@ UINT32 alto2_cpu_device::screen_update(screen_device &screen, bitmap_ind16 &bitm
 	for (int y = ALTO2_DISPLAY_HEIGHT; y < ALTO2_DISPLAY_HEIGHT + ALTO2_FAKE_STATUS_H; y++)
 		draw_scanline8(*m_dsp.bitmap, 0, y, ALTO2_DISPLAY_WIDTH, m_dsp.scanline[y], palette_bw);
 	// copy bitmap
+=======
+	m_dsp.vblank = false;
+	m_dsp.xpreg = 0;
+	m_dsp.csr = 0;
+	memset(m_dsp.framebuf.get(), 1, sizeof(uint16_t) * A2_DISP_HEIGHT * A2_DISP_SCANLINE_WORDS);
+}
+
+/* Video update */
+uint32_t alto2_cpu_device::screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+{
+>>>>>>> upstream/master
 	copybitmap(bitmap, *m_dsp.bitmap, 0, 0, 0, 0, cliprect);
 	return 0;
 }
 
+<<<<<<< HEAD
 void alto2_cpu_device::screen_eof(screen_device &screen, bool state)
 {
 	if (state)
@@ -871,4 +1107,9 @@ void alto2_cpu_device::fake_status_printf(int x, const char* format, ...)
 	char* src = buff;
 	while (*src)
 		fake_status_putch(x++, *src++);
+=======
+void alto2_cpu_device::screen_vblank()
+{
+	m_dsp.vblank = true;
+>>>>>>> upstream/master
 }

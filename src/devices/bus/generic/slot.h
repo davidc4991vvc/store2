@@ -1,7 +1,17 @@
 // license:BSD-3-Clause
 // copyright-holders:Fabio Priuli
+<<<<<<< HEAD
 #ifndef __GENERIC_SLOT_H
 #define __GENERIC_SLOT_H
+=======
+#ifndef MAME_BUS_GENERIC_SLOT_H
+#define MAME_BUS_GENERIC_SLOT_H
+
+#pragma once
+
+#include "softlist_dev.h"
+
+>>>>>>> upstream/master
 
 /***************************************************************************
  TYPE DEFINITIONS
@@ -14,7 +24,10 @@ class device_generic_cart_interface : public device_slot_card_interface
 {
 public:
 	// construction/destruction
+<<<<<<< HEAD
 	device_generic_cart_interface(const machine_config &mconfig, device_t &device);
+=======
+>>>>>>> upstream/master
 	virtual ~device_generic_cart_interface();
 
 	// reading and writing
@@ -26,6 +39,7 @@ public:
 	virtual DECLARE_WRITE8_MEMBER(write_ram) {};
 
 	virtual void rom_alloc(size_t size, int width, endianness_t end, const char *tag);
+<<<<<<< HEAD
 	virtual void ram_alloc(UINT32 size);
 
 	UINT8* get_rom_base()  { return m_rom; }
@@ -40,6 +54,31 @@ public:
 	UINT8  *m_rom;
 	UINT32  m_rom_size;
 	dynamic_buffer m_ram;
+=======
+	virtual void ram_alloc(uint32_t size);
+
+	uint8_t* get_rom_base()  { return m_rom; }
+	uint32_t get_rom_size() { return m_rom_size; }
+
+	uint8_t* get_region_base()  { if (m_region.found()) return m_region->base(); return nullptr; }
+	uint32_t get_region_size() { if (m_region.found()) return m_region->bytes(); return 0; }
+
+	uint8_t* get_ram_base() { return &m_ram[0]; }
+	uint32_t get_ram_size() { return m_ram.size(); }
+
+	void save_ram() { device().save_item(NAME(m_ram)); }
+
+protected:
+	device_generic_cart_interface(const machine_config &mconfig, device_t &device);
+
+	// internal state
+	uint8_t  *m_rom;
+	uint32_t  m_rom_size;
+	std::vector<uint8_t> m_ram;
+
+	// this replaces m_rom for non-user configurable carts!
+	optional_memory_region  m_region;
+>>>>>>> upstream/master
 };
 
 
@@ -55,7 +94,11 @@ enum
 
 
 #define MCFG_GENERIC_MANDATORY       \
+<<<<<<< HEAD
 	static_cast<generic_slot_device *>(device)->set_must_be_loaded(TRUE);
+=======
+	static_cast<generic_slot_device *>(device)->set_must_be_loaded(true);
+>>>>>>> upstream/master
 
 #define MCFG_GENERIC_WIDTH(_width)       \
 	static_cast<generic_slot_device *>(device)->set_width(_width);
@@ -73,10 +116,17 @@ enum
 	static_cast<generic_slot_device *>(device)->set_extensions(_ext);
 
 #define MCFG_GENERIC_LOAD(_class, _method)                                \
+<<<<<<< HEAD
 	generic_slot_device::static_set_device_load(*device, device_image_load_delegate(&DEVICE_IMAGE_LOAD_NAME(_class,_method), #_class "::device_image_load_" #_method, downcast<_class *>(owner)));
 
 #define MCFG_GENERIC_UNLOAD(_class, _method)                            \
 	generic_slot_device::static_set_device_unload(*device, device_image_func_delegate(&DEVICE_IMAGE_UNLOAD_NAME(_class,_method), #_class "::device_image_unload_" #_method, downcast<_class *>(owner)));
+=======
+	generic_slot_device::static_set_device_load(*device, device_image_load_delegate(&DEVICE_IMAGE_LOAD_NAME(_class,_method), downcast<_class *>(owner)));
+
+#define MCFG_GENERIC_UNLOAD(_class, _method)                            \
+	generic_slot_device::static_set_device_unload(*device, device_image_func_delegate(&DEVICE_IMAGE_UNLOAD_NAME(_class,_method), downcast<_class *>(owner)));
+>>>>>>> upstream/master
 
 
 
@@ -88,7 +138,11 @@ class generic_slot_device : public device_t,
 {
 public:
 	// construction/destruction
+<<<<<<< HEAD
 	generic_slot_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
+=======
+	generic_slot_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
+>>>>>>> upstream/master
 	virtual ~generic_slot_device();
 
 	static void static_set_device_load(device_t &device, device_image_load_delegate callback) { downcast<generic_slot_device &>(device).m_device_image_load = callback; }
@@ -102,6 +156,7 @@ public:
 	void set_endian(endianness_t end) { m_endianness = end; }
 
 	// device-level overrides
+<<<<<<< HEAD
 	virtual void device_start();
 	virtual void device_config_complete();
 
@@ -125,6 +180,29 @@ public:
 
 	// slot interface overrides
 	virtual void get_default_card_software(std::string &result);
+=======
+	virtual void device_start() override;
+
+	// image-level overrides
+	virtual image_init_result call_load() override;
+	virtual void call_unload() override;
+	virtual const software_list_loader &get_software_list_loader() const override { return rom_software_list_loader::instance(); }
+
+	uint32_t common_get_size(const char *region);
+	void common_load_rom(uint8_t *ROM, uint32_t len, const char *region);
+
+	virtual iodevice_t image_type() const override { return IO_CARTSLOT; }
+	virtual bool is_readable()  const override { return 1; }
+	virtual bool is_writeable() const override { return 0; }
+	virtual bool is_creatable() const override { return 0; }
+	virtual bool must_be_loaded() const override { return m_must_be_loaded; }
+	virtual bool is_reset_on_load() const override { return 1; }
+	virtual const char *image_interface() const override { return m_interface; }
+	virtual const char *file_extensions() const override { return m_extensions; }
+
+	// slot interface overrides
+	virtual std::string get_default_card_software(get_default_card_software_hook &hook) const override;
+>>>>>>> upstream/master
 
 	// reading and writing
 	virtual DECLARE_READ8_MEMBER(read_rom);
@@ -135,6 +213,7 @@ public:
 	virtual DECLARE_WRITE8_MEMBER(write_ram);
 
 	virtual void rom_alloc(size_t size, int width, endianness_t end) { if (m_cart) m_cart->rom_alloc(size, width, end, tag()); }
+<<<<<<< HEAD
 	virtual void ram_alloc(UINT32 size)  { if (m_cart) m_cart->ram_alloc(size); }
 
 	UINT8* get_rom_base()  { if (m_cart) return m_cart->get_rom_base(); return NULL; }
@@ -145,6 +224,37 @@ public:
 
 protected:
 
+=======
+	virtual void ram_alloc(uint32_t size)  { if (m_cart) m_cart->ram_alloc(size); }
+
+	uint8_t* get_rom_base()
+	{
+		if (m_cart)
+		{
+			if (!user_loadable())
+				return m_cart->get_region_base();
+			else
+				return m_cart->get_rom_base();
+		}
+		return nullptr;
+	}
+	uint32_t get_rom_size()
+	{
+		if (m_cart)
+		{
+			if (!user_loadable())
+				return m_cart->get_region_size();
+			else
+				return m_cart->get_rom_size();
+		}
+		return 0;
+	}
+	uint8_t* get_ram_base() { if (m_cart) return m_cart->get_ram_base(); return nullptr; }
+
+	void save_ram() { if (m_cart && m_cart->get_ram_size()) m_cart->save_ram(); }
+
+protected:
+>>>>>>> upstream/master
 	const char *m_interface;
 	const char *m_default_card;
 	const char *m_extensions;
@@ -158,7 +268,11 @@ protected:
 
 
 // device type definition
+<<<<<<< HEAD
 extern const device_type GENERIC_SOCKET;
+=======
+DECLARE_DEVICE_TYPE(GENERIC_SOCKET, generic_slot_device)
+>>>>>>> upstream/master
 
 
 /***************************************************************************
@@ -167,6 +281,7 @@ extern const device_type GENERIC_SOCKET;
 
 #define MCFG_GENERIC_CARTSLOT_ADD(_tag, _slot_intf, _dev_intf) \
 	MCFG_DEVICE_ADD(_tag, GENERIC_SOCKET, 0) \
+<<<<<<< HEAD
 	MCFG_DEVICE_SLOT_INTERFACE(_slot_intf, NULL, false) \
 	MCFG_GENERIC_INTERFACE(_dev_intf)
 #define MCFG_GENERIC_SOCKET_ADD(_tag, _slot_intf, _dev_intf) \
@@ -174,3 +289,18 @@ extern const device_type GENERIC_SOCKET;
 	MCFG_DEVICE_SLOT_INTERFACE(_slot_intf, NULL, false) \
 	MCFG_GENERIC_INTERFACE(_dev_intf)
 #endif
+=======
+	MCFG_DEVICE_SLOT_INTERFACE(_slot_intf, nullptr, false) \
+	MCFG_GENERIC_INTERFACE(_dev_intf)
+#define MCFG_GENERIC_SOCKET_ADD(_tag, _slot_intf, _dev_intf) \
+	MCFG_DEVICE_ADD(_tag, GENERIC_SOCKET, 0) \
+	MCFG_DEVICE_SLOT_INTERFACE(_slot_intf, nullptr, false) \
+	MCFG_GENERIC_INTERFACE(_dev_intf)
+
+#define MCFG_GENERIC_CARTSLOT_ADD_WITH_DEFAULT(_tag, _slot_intf, _dev_intf, _default) \
+	MCFG_DEVICE_ADD(_tag, GENERIC_SOCKET, 0) \
+	MCFG_DEVICE_SLOT_INTERFACE(_slot_intf, _default, false) \
+	MCFG_GENERIC_INTERFACE(_dev_intf)
+
+#endif // MAME_BUS_GENERIC_SLOT_H
+>>>>>>> upstream/master

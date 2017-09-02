@@ -46,12 +46,21 @@ To Do:
 ***************************************************************************/
 
 #include "emu.h"
+<<<<<<< HEAD
+=======
+#include "includes/fuukifg2.h"
+
+>>>>>>> upstream/master
 #include "cpu/z80/z80.h"
 #include "cpu/m68000/m68000.h"
 #include "sound/2203intf.h"
 #include "sound/3812intf.h"
+<<<<<<< HEAD
 #include "sound/okim6295.h"
 #include "includes/fuukifg2.h"
+=======
+#include "speaker.h"
+>>>>>>> upstream/master
 
 
 /***************************************************************************
@@ -64,8 +73,13 @@ To Do:
 
 WRITE16_MEMBER(fuuki16_state::vregs_w)
 {
+<<<<<<< HEAD
 	UINT16 old_data = m_vregs[offset];
 	UINT16 new_data = COMBINE_DATA(&m_vregs[offset]);
+=======
+	uint16_t old_data = m_vregs[offset];
+	uint16_t new_data = COMBINE_DATA(&m_vregs[offset]);
+>>>>>>> upstream/master
 	if ((offset == 0x1c/2) && old_data != new_data)
 	{
 		const rectangle &visarea = m_screen->visible_area();
@@ -74,6 +88,7 @@ WRITE16_MEMBER(fuuki16_state::vregs_w)
 	}
 }
 
+<<<<<<< HEAD
 WRITE16_MEMBER(fuuki16_state::sound_command_w)
 {
 	if (ACCESSING_BITS_0_7)
@@ -83,6 +98,14 @@ WRITE16_MEMBER(fuuki16_state::sound_command_w)
 //      space.device().execute().spin_until_time(attotime::from_usec(50));   // Allow the other CPU to reply
 		machine().scheduler().boost_interleave(attotime::zero, attotime::from_usec(50)); // Fixes glitching in rasters
 	}
+=======
+WRITE8_MEMBER( fuuki16_state::sound_command_w )
+{
+	m_soundlatch->write(space,0,data & 0xff);
+	m_audiocpu->set_input_line(INPUT_LINE_NMI, PULSE_LINE);
+//      space.device().execute().spin_until_time(attotime::from_usec(50));   // Allow the other CPU to reply
+	machine().scheduler().boost_interleave(attotime::zero, attotime::from_usec(50)); // Fixes glitching in rasters
+>>>>>>> upstream/master
 }
 
 static ADDRESS_MAP_START( fuuki16_map, AS_PROGRAM, 16, fuuki16_state )
@@ -97,7 +120,11 @@ static ADDRESS_MAP_START( fuuki16_map, AS_PROGRAM, 16, fuuki16_state )
 	AM_RANGE(0x800000, 0x800001) AM_READ_PORT("SYSTEM")
 	AM_RANGE(0x810000, 0x810001) AM_READ_PORT("P1_P2")
 	AM_RANGE(0x880000, 0x880001) AM_READ_PORT("DSW")
+<<<<<<< HEAD
 	AM_RANGE(0x8a0000, 0x8a0001) AM_WRITE(sound_command_w)                                          // To Sound CPU
+=======
+	AM_RANGE(0x8a0000, 0x8a0001) AM_WRITE8(sound_command_w, 0x00ff)                                          // To Sound CPU
+>>>>>>> upstream/master
 	AM_RANGE(0x8c0000, 0x8c001f) AM_RAM_WRITE(vregs_w) AM_SHARE("vregs")                        // Video Registers
 	AM_RANGE(0x8d0000, 0x8d0003) AM_RAM AM_SHARE("unknown")                                         //
 	AM_RANGE(0x8e0000, 0x8e0001) AM_RAM AM_SHARE("priority")                                            //
@@ -127,7 +154,11 @@ WRITE8_MEMBER(fuuki16_state::oki_banking_w)
 	    data & 0x10 is always set
 	*/
 
+<<<<<<< HEAD
 	m_oki->set_bank_base(((data & 6) >> 1) * 0x40000);
+=======
+	m_oki->set_rom_bank((data & 6) >> 1);
+>>>>>>> upstream/master
 }
 
 static ADDRESS_MAP_START( fuuki16_sound_map, AS_PROGRAM, 8, fuuki16_state )
@@ -139,7 +170,11 @@ ADDRESS_MAP_END
 static ADDRESS_MAP_START( fuuki16_sound_io_map, AS_IO, 8, fuuki16_state )
 	ADDRESS_MAP_GLOBAL_MASK(0xff)
 	AM_RANGE(0x00, 0x00) AM_WRITE(sound_rombank_w)  // ROM Bank
+<<<<<<< HEAD
 	AM_RANGE(0x11, 0x11) AM_READ(soundlatch_byte_r) AM_WRITENOP // From Main CPU / ? To Main CPU ?
+=======
+	AM_RANGE(0x11, 0x11) AM_DEVREAD("soundlatch", generic_latch_8_device, read) AM_WRITENOP // From Main CPU / ? To Main CPU ?
+>>>>>>> upstream/master
 	AM_RANGE(0x20, 0x20) AM_WRITE(oki_banking_w)    // Oki Banking
 	AM_RANGE(0x30, 0x30) AM_WRITENOP    // ? In the NMI routine
 	AM_RANGE(0x40, 0x41) AM_DEVWRITE("ym1", ym2203_device, write)
@@ -413,14 +448,22 @@ void fuuki16_state::device_timer(emu_timer &timer, device_timer_id id, int param
 		m_raster_interrupt_timer->adjust(m_screen->frame_period());
 		break;
 	default:
+<<<<<<< HEAD
 		assert_always(FALSE, "Unknown id in fuuki16_state::device_timer");
+=======
+		assert_always(false, "Unknown id in fuuki16_state::device_timer");
+>>>>>>> upstream/master
 	}
 }
 
 
 void fuuki16_state::machine_start()
 {
+<<<<<<< HEAD
 	UINT8 *ROM = memregion("audiocpu")->base();
+=======
+	uint8_t *ROM = memregion("audiocpu")->base();
+>>>>>>> upstream/master
 
 	membank("bank1")->configure_entries(0, 3, &ROM[0x10000], 0x8000);
 
@@ -440,7 +483,11 @@ void fuuki16_state::machine_reset()
 }
 
 
+<<<<<<< HEAD
 static MACHINE_CONFIG_START( fuuki16, fuuki16_state )
+=======
+static MACHINE_CONFIG_START( fuuki16 )
+>>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", M68000, XTAL_32MHz / 2) /* 16 MHz */
@@ -469,6 +516,11 @@ static MACHINE_CONFIG_START( fuuki16, fuuki16_state )
 	/* sound hardware */
 	MCFG_SPEAKER_STANDARD_STEREO("lspeaker", "rspeaker")
 
+<<<<<<< HEAD
+=======
+	MCFG_GENERIC_LATCH_8_ADD("soundlatch")
+
+>>>>>>> upstream/master
 	MCFG_SOUND_ADD("ym1", YM2203, XTAL_28_64MHz / 8) /* 3.58 MHz */
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "lspeaker", 0.15)
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "rspeaker", 0.15)
@@ -478,7 +530,11 @@ static MACHINE_CONFIG_START( fuuki16, fuuki16_state )
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "lspeaker", 0.30)
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "rspeaker", 0.30)
 
+<<<<<<< HEAD
 	MCFG_OKIM6295_ADD("oki", XTAL_32MHz / 32, OKIM6295_PIN7_HIGH) /* 1 Mhz */
+=======
+	MCFG_OKIM6295_ADD("oki", XTAL_32MHz / 32, PIN7_HIGH) /* 1 Mhz */
+>>>>>>> upstream/master
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "lspeaker", 0.85)
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "rspeaker", 0.85)
 MACHINE_CONFIG_END
@@ -665,6 +721,12 @@ ROM_END
 
 ***************************************************************************/
 
+<<<<<<< HEAD
 GAME( 1995, gogomile,  0,        fuuki16, gogomile,  driver_device, 0, ROT0, "Fuuki", "Susume! Mile Smile / Go Go! Mile Smile (newer)", MACHINE_SUPPORTS_SAVE )
 GAME( 1995, gogomileo, gogomile, fuuki16, gogomileo, driver_device, 0, ROT0, "Fuuki", "Susume! Mile Smile / Go Go! Mile Smile (older)", MACHINE_SUPPORTS_SAVE )
 GAME( 1996, pbancho,   0,        fuuki16, pbancho,   driver_device, 0, ROT0, "Fuuki", "Gyakuten!! Puzzle Bancho (Japan)", MACHINE_SUPPORTS_SAVE )
+=======
+GAME( 1995, gogomile,  0,        fuuki16, gogomile,  fuuki16_state, 0, ROT0, "Fuuki", "Susume! Mile Smile / Go Go! Mile Smile (newer)", MACHINE_SUPPORTS_SAVE )
+GAME( 1995, gogomileo, gogomile, fuuki16, gogomileo, fuuki16_state, 0, ROT0, "Fuuki", "Susume! Mile Smile / Go Go! Mile Smile (older)", MACHINE_SUPPORTS_SAVE )
+GAME( 1996, pbancho,   0,        fuuki16, pbancho,   fuuki16_state, 0, ROT0, "Fuuki", "Gyakuten!! Puzzle Bancho (Japan)",               MACHINE_SUPPORTS_SAVE )
+>>>>>>> upstream/master

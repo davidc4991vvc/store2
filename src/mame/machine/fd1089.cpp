@@ -66,7 +66,11 @@
         {
             if ("we must encrypt this data table position")
             {
+<<<<<<< HEAD
                 UINT8 byteval;
+=======
+                uint8_t byteval;
+>>>>>>> upstream/master
 
                 do
                 {
@@ -88,7 +92,11 @@
         {
             if ("we mustn't encrypt this data table position")
             {
+<<<<<<< HEAD
                 UINT8 byteval;
+=======
+                uint8_t byteval;
+>>>>>>> upstream/master
 
                 do
                 {
@@ -142,11 +150,19 @@
 //**************************************************************************
 
 // device type definition
+<<<<<<< HEAD
 const device_type FD1089A = &device_creator<fd1089a_device>;
 const device_type FD1089B = &device_creator<fd1089b_device>;
 
 // common base lookup table, shared between A and B variants
 const UINT8 fd1089_base_device::s_basetable_fd1089[0x100] =
+=======
+DEFINE_DEVICE_TYPE(FD1089A, fd1089a_device, "fd1089a", "Hitachi FD1089A Encrypted CPU")
+DEFINE_DEVICE_TYPE(FD1089B, fd1089b_device, "fd1089b", "Hitachi FD1089B Encrypted CPU")
+
+// common base lookup table, shared between A and B variants
+const uint8_t fd1089_base_device::s_basetable_fd1089[0x100] =
+>>>>>>> upstream/master
 {
 	0x00,0x1c,0x76,0x6a,0x5e,0x42,0x24,0x38,0x4b,0x67,0xad,0x81,0xe9,0xc5,0x03,0x2f,
 	0x45,0x69,0xaf,0x83,0xe7,0xcb,0x01,0x2d,0x02,0x1e,0x78,0x64,0x5c,0x40,0x2a,0x36,
@@ -208,7 +224,11 @@ const fd1089_base_device::decrypt_parameters fd1089_base_device::s_data_params_a
 	{ 0xac, 1,6,3,5,0,7,4,2 },
 };
 
+<<<<<<< HEAD
 static ADDRESS_MAP_START( decrypted_opcodes_map, AS_DECRYPTED_OPCODES, 16, fd1094_device )
+=======
+static ADDRESS_MAP_START( decrypted_opcodes_map, AS_OPCODES, 16, fd1094_device )
+>>>>>>> upstream/master
 	AM_RANGE(0x00000, 0xfffff) AM_ROM AM_SHARE(":fd1089_decrypted_opcodes")
 ADDRESS_MAP_END
 
@@ -221,6 +241,7 @@ ADDRESS_MAP_END
 //  fd1089_base_device - constructor
 //-------------------------------------------------
 
+<<<<<<< HEAD
 fd1089_base_device::fd1089_base_device(const machine_config &mconfig, device_type type, const char *name, const char *tag, device_t *owner, UINT32 clock, const char *shortname, const char *source)
 	: m68000_device(mconfig, tag, owner, clock, shortname, source),
 		m_decrypted_opcodes(*this, ":fd1089_decrypted_opcodes")
@@ -239,6 +260,25 @@ fd1089a_device::fd1089a_device(const machine_config &mconfig, const char *tag, d
 
 fd1089b_device::fd1089b_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
 	: fd1089_base_device(mconfig, FD1089B, "FD1089B", tag, owner, clock, "fd1089b", __FILE__)
+=======
+fd1089_base_device::fd1089_base_device(const machine_config &mconfig, device_type type, const char *tag, device_t *owner, uint32_t clock)
+	: m68000_device(mconfig, type, tag, owner, clock),
+		m_region(*this, DEVICE_SELF),
+		m_key(*this, "key"),
+		m_decrypted_opcodes(*this, ":fd1089_decrypted_opcodes")
+{
+	// add the decrypted opcodes map
+	set_addrmap(AS_OPCODES, ADDRESS_MAP_NAME(decrypted_opcodes_map));
+}
+
+fd1089a_device::fd1089a_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: fd1089_base_device(mconfig, FD1089A, tag, owner, clock)
+{
+}
+
+fd1089b_device::fd1089b_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: fd1089_base_device(mconfig, FD1089B, tag, owner, clock)
+>>>>>>> upstream/master
 {
 }
 
@@ -251,6 +291,7 @@ void fd1089_base_device::device_start()
 	// start the base device
 	m68000_device::device_start();
 
+<<<<<<< HEAD
 	// find the key
 	m_key = memregion("key")->base();
 	if (m_key == NULL)
@@ -263,6 +304,13 @@ void fd1089_base_device::device_start()
 
 	// determine length and resize our internal buffers
 	UINT32 romsize = region()->bytes();
+=======
+	// get a pointer to the ROM region
+	uint16_t *rombase = reinterpret_cast<uint16_t *>(m_region->base());
+
+	// determine length and resize our internal buffers
+	uint32_t romsize = m_region->bytes();
+>>>>>>> upstream/master
 	m_plaintext.resize(romsize/2);
 
 	// copy the plaintext
@@ -284,7 +332,11 @@ void fd1089_base_device::device_start()
 //  decode
 //-------------------------------------------------
 
+<<<<<<< HEAD
 UINT8 fd1089_base_device::rearrange_key(UINT8 table, bool opcode)
+=======
+uint8_t fd1089_base_device::rearrange_key(uint8_t table, bool opcode)
+>>>>>>> upstream/master
 {
 	if (!opcode)
 	{
@@ -341,13 +393,21 @@ UINT8 fd1089_base_device::rearrange_key(UINT8 table, bool opcode)
 //  according to FD1089A rules
 //-------------------------------------------------
 
+<<<<<<< HEAD
 UINT8 fd1089a_device::decode(UINT8 val, UINT8 key, bool opcode)
+=======
+uint8_t fd1089a_device::decode(uint8_t val, uint8_t key, bool opcode)
+>>>>>>> upstream/master
 {
 	// special case - don't decrypt
 	if (key == 0x40)
 		return val;
 
+<<<<<<< HEAD
 	UINT8 table = rearrange_key(key, opcode);
+=======
+	uint8_t table = rearrange_key(key, opcode);
+>>>>>>> upstream/master
 
 	const decrypt_parameters &p = s_addr_params[table >> 4];
 	val = BITSWAP8(val, p.s7,p.s6,p.s5,p.s4,p.s3,p.s2,p.s1,p.s0) ^ p.xorval;
@@ -361,7 +421,11 @@ UINT8 fd1089a_device::decode(UINT8 val, UINT8 key, bool opcode)
 
 	val = s_basetable_fd1089[val];
 
+<<<<<<< HEAD
 	UINT8 family = table & 0x07;
+=======
+	uint8_t family = table & 0x07;
+>>>>>>> upstream/master
 	if (opcode == 0)
 	{
 		if (BIT(~table,6) & BIT(table,2)) family ^= 8;
@@ -401,13 +465,21 @@ UINT8 fd1089a_device::decode(UINT8 val, UINT8 key, bool opcode)
 //  according to FD1089B rules
 //-------------------------------------------------
 
+<<<<<<< HEAD
 UINT8 fd1089b_device::decode(UINT8 val, UINT8 key, bool opcode)
+=======
+uint8_t fd1089b_device::decode(uint8_t val, uint8_t key, bool opcode)
+>>>>>>> upstream/master
 {
 	// special case - don't decrypt
 	if (key == 0x40)
 		return val;
 
+<<<<<<< HEAD
 	UINT8 table = rearrange_key(key, opcode);
+=======
+	uint8_t table = rearrange_key(key, opcode);
+>>>>>>> upstream/master
 
 	const decrypt_parameters &p = s_addr_params[table >> 4];
 	val = BITSWAP8(val, p.s7,p.s6,p.s5,p.s4,p.s3,p.s2,p.s1,p.s0) ^ p.xorval;
@@ -421,7 +493,11 @@ UINT8 fd1089b_device::decode(UINT8 val, UINT8 key, bool opcode)
 
 	val = s_basetable_fd1089[val];
 
+<<<<<<< HEAD
 	UINT8 xorval = 0;
+=======
+	uint8_t xorval = 0;
+>>>>>>> upstream/master
 	if (opcode == 0)
 	{
 		if (BIT(~table,6) & BIT(table,2)) xorval ^= 0x01;
@@ -460,7 +536,11 @@ UINT8 fd1089b_device::decode(UINT8 val, UINT8 key, bool opcode)
 //  as either an opcode or as data
 //-------------------------------------------------
 
+<<<<<<< HEAD
 UINT16 fd1089_base_device::decrypt_one(offs_t addr, UINT16 val, const UINT8 *key, bool opcode)
+=======
+uint16_t fd1089_base_device::decrypt_one(offs_t addr, uint16_t val, const uint8_t *key, bool opcode)
+>>>>>>> upstream/master
 {
 	// pick the translation table from bits ff022a of the address
 	int tbl_num =   ((addr & 0x000002) >> 1) |
@@ -469,7 +549,11 @@ UINT16 fd1089_base_device::decrypt_one(offs_t addr, UINT16 val, const UINT8 *key
 					((addr & 0x000200) >> 6) |
 					((addr & 0xff0000) >> 12);
 
+<<<<<<< HEAD
 	UINT16 src =    ((val & 0x0008) >> 3) |
+=======
+	uint16_t src =    ((val & 0x0008) >> 3) |
+>>>>>>> upstream/master
 					((val & 0x0040) >> 5) |
 					((val & 0xfc00) >> 8);
 
@@ -488,6 +572,7 @@ UINT16 fd1089_base_device::decrypt_one(offs_t addr, UINT16 val, const UINT8 *key
 //  and data
 //-------------------------------------------------
 
+<<<<<<< HEAD
 void fd1089_base_device::decrypt(offs_t baseaddr, UINT32 size, const UINT16 *srcptr, UINT16 *opcodesptr, UINT16 *dataptr)
 {
 	for (offs_t offset = 0; offset < size; offset += 2)
@@ -495,5 +580,14 @@ void fd1089_base_device::decrypt(offs_t baseaddr, UINT32 size, const UINT16 *src
 		UINT16 src = srcptr[offset / 2];
 		opcodesptr[offset / 2] = decrypt_one(baseaddr + offset, src, m_key, true);
 		dataptr[offset / 2] = decrypt_one(baseaddr + offset, src, m_key, false);
+=======
+void fd1089_base_device::decrypt(offs_t baseaddr, uint32_t size, const uint16_t *srcptr, uint16_t *opcodesptr, uint16_t *dataptr)
+{
+	for (offs_t offset = 0; offset < size; offset += 2)
+	{
+		uint16_t src = srcptr[offset / 2];
+		opcodesptr[offset / 2] = decrypt_one(baseaddr + offset, src, &m_key[0], true);
+		dataptr[offset / 2] = decrypt_one(baseaddr + offset, src, &m_key[0], false);
+>>>>>>> upstream/master
 	}
 }

@@ -1,5 +1,10 @@
+<<<<<<< HEAD
 // license:???
 // copyright-holders:Eisuke Watanabe
+=======
+// license:BSD-3-Clause
+// copyright-holders:Hau
+>>>>>>> upstream/master
 /***************************************************************************
 
   video.c
@@ -52,7 +57,11 @@ VIDEO_START_MEMBER(qdrmfgp_state,qdrmfgp2)
 
 ***************************************************************************/
 
+<<<<<<< HEAD
 UINT32 qdrmfgp_state::screen_update_qdrmfgp(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+=======
+uint32_t qdrmfgp_state::screen_update_qdrmfgp(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+>>>>>>> upstream/master
 {
 	bitmap.fill(m_palette->black_pen(), cliprect);
 

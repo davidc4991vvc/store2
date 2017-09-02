@@ -6,8 +6,27 @@
 
 **********************************************************************/
 
+<<<<<<< HEAD
 #include "snes_carts.h"
 
+=======
+#include "emu.h"
+#include "snes_carts.h"
+
+#include "rom.h"
+#include "rom21.h"
+#include "bsx.h"
+#include "sa1.h"
+#include "sdd1.h"
+#include "sfx.h"
+#include "sgb.h"
+#include "spc7110.h"
+#include "sufami.h"
+#include "upd.h"
+#include "event.h"
+
+
+>>>>>>> upstream/master
 SLOT_INTERFACE_START(snes_cart)
 	SLOT_INTERFACE_INTERNAL("lorom",         SNS_LOROM)
 	SLOT_INTERFACE_INTERNAL("lorom_bsx",     SNS_LOROM_BSX) // LoROM + BS-X slot - unsupported
@@ -19,6 +38,10 @@ SLOT_INTERFACE_START(snes_cart)
 	SLOT_INTERFACE_INTERNAL("lorom_sdd1",    SNS_LOROM_SDD1)
 	SLOT_INTERFACE_INTERNAL("lorom_sfx",     SNS_LOROM_SUPERFX)
 	SLOT_INTERFACE_INTERNAL("lorom_sgb",     SNS_LOROM_SUPERGB) // SuperGB base cart - unsupported
+<<<<<<< HEAD
+=======
+	SLOT_INTERFACE_INTERNAL("lorom_sgb2",    SNS_LOROM_SUPERGB2) // SuperGB2 base cart - unsupported
+>>>>>>> upstream/master
 	SLOT_INTERFACE_INTERNAL("lorom_st010",   SNS_LOROM_SETA10)
 	SLOT_INTERFACE_INTERNAL("lorom_st011",   SNS_LOROM_SETA11)
 	SLOT_INTERFACE_INTERNAL("lorom_st018",   SNS_LOROM) // Cart + ST018 - unsupported

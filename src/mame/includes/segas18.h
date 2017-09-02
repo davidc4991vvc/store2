@@ -9,8 +9,15 @@
 #include "cpu/m68000/m68000.h"
 #include "cpu/mcs51/mcs51.h"
 #include "cpu/z80/z80.h"
+<<<<<<< HEAD
 #include "machine/nvram.h"
 #include "machine/segaic16.h"
+=======
+#include "machine/gen_latch.h"
+#include "machine/nvram.h"
+#include "machine/segaic16.h"
+#include "machine/upd4701.h"
+>>>>>>> upstream/master
 #include "machine/315_5296.h"
 #include "video/315_5313.h"
 #include "video/segaic16.h"
@@ -27,6 +34,10 @@ public:
 		: sega_16bit_common_base(mconfig, type, tag),
 			m_mapper(*this, "mapper"),
 			m_maincpu(*this, "maincpu"),
+<<<<<<< HEAD
+=======
+			m_maincpu_region(*this, "maincpu"),
+>>>>>>> upstream/master
 			m_soundcpu(*this, "soundcpu"),
 			m_mcu(*this, "mcu"),
 			m_vdp(*this, "gen_vdp"),
@@ -35,6 +46,11 @@ public:
 			m_sprites(*this, "sprites"),
 			m_segaic16vid(*this, "segaic16vid"),
 			m_gfxdecode(*this, "gfxdecode"),
+<<<<<<< HEAD
+=======
+			m_soundlatch(*this, "soundlatch"),
+			m_upd4701(*this, {"upd1", "upd2", "upd3"}),
+>>>>>>> upstream/master
 			m_workram(*this, "workram"),
 			m_romboard(ROM_BOARD_INVALID),
 			m_grayscale_enable(false),
@@ -44,8 +60,11 @@ public:
 			m_lghost_value(0),
 			m_lghost_select(0)
 	{
+<<<<<<< HEAD
 		memset(m_wwally_last_x, 0, sizeof(m_wwally_last_x));
 		memset(m_wwally_last_y, 0, sizeof(m_wwally_last_y));
+=======
+>>>>>>> upstream/master
 	}
 
 	// driver init
@@ -58,9 +77,15 @@ public:
 	DECLARE_DRIVER_INIT(hamaway);
 
 	// memory mapping
+<<<<<<< HEAD
 	void memory_mapper(sega_315_5195_mapper_device &mapper, UINT8 index);
 	UINT8 mapper_sound_r();
 	void mapper_sound_w(UINT8 data);
+=======
+	void memory_mapper(sega_315_5195_mapper_device &mapper, uint8_t index);
+	uint8_t mapper_sound_r();
+	void mapper_sound_w(uint8_t data);
+>>>>>>> upstream/master
 
 	// read/write handlers
 	DECLARE_WRITE8_MEMBER( rom_5874_bank_w );
@@ -83,7 +108,11 @@ public:
 	DECLARE_WRITE16_MEMBER( wwally_custom_io_w );
 
 	// video rendering
+<<<<<<< HEAD
 	UINT32 screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
+=======
+	uint32_t screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
+>>>>>>> upstream/master
 
 	DECLARE_WRITE_LINE_MEMBER(vdp_sndirqline_callback_s18);
 	DECLARE_WRITE_LINE_MEMBER(vdp_lv6irqline_callback_s18);
@@ -115,6 +144,7 @@ protected:
 	};
 
 	// device overrides
+<<<<<<< HEAD
 	virtual void machine_reset();
 	virtual void video_start();
 	virtual void device_timer(emu_timer &timer, device_timer_id id, int param, void *ptr);
@@ -122,11 +152,25 @@ protected:
 	// internal helpers
 	void init_generic(segas18_rom_board rom_board);
 	void set_vdp_mixing(UINT8 mixing);
+=======
+	virtual void machine_start() override;
+	virtual void machine_reset() override;
+	virtual void video_start() override;
+	virtual void device_timer(emu_timer &timer, device_timer_id id, int param, void *ptr) override;
+
+	// internal helpers
+	void init_generic(segas18_rom_board rom_board);
+	void set_vdp_mixing(uint8_t mixing);
+>>>>>>> upstream/master
 	void draw_vdp(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect, int priority);
 
 	// devices
 	required_device<sega_315_5195_mapper_device> m_mapper;
 	required_device<m68000_device> m_maincpu;
+<<<<<<< HEAD
+=======
+	required_memory_region m_maincpu_region;
+>>>>>>> upstream/master
 	required_device<z80_device> m_soundcpu;
 	optional_device<i8751_device> m_mcu;
 	required_device<sega315_5313_device> m_vdp;
@@ -135,9 +179,17 @@ protected:
 	required_device<sega_sys16b_sprite_device> m_sprites;
 	required_device<segaic16_video_device> m_segaic16vid;
 	required_device<gfxdecode_device> m_gfxdecode;
+<<<<<<< HEAD
 
 	// memory pointers
 	required_shared_ptr<UINT16> m_workram;
+=======
+	required_device<generic_latch_8_device> m_soundlatch;
+	optional_device_array<upd4701_device, 3> m_upd4701;
+
+	// memory pointers
+	required_shared_ptr<uint16_t> m_workram;
+>>>>>>> upstream/master
 
 	// configuration
 	segas18_rom_board   m_romboard;
@@ -147,6 +199,7 @@ protected:
 	// internal state
 	int                 m_grayscale_enable;
 	int                 m_vdp_enable;
+<<<<<<< HEAD
 	UINT8               m_vdp_mixing;
 	bitmap_ind16        m_temp_bitmap;
 	UINT8               m_mcu_data;
@@ -156,4 +209,13 @@ protected:
 	UINT8               m_wwally_last_y[3];
 	UINT8               m_lghost_value;
 	UINT8               m_lghost_select;
+=======
+	uint8_t               m_vdp_mixing;
+	bitmap_ind16        m_temp_bitmap;
+	uint8_t               m_mcu_data;
+
+	// game-specific state
+	uint8_t               m_lghost_value;
+	uint8_t               m_lghost_select;
+>>>>>>> upstream/master
 };

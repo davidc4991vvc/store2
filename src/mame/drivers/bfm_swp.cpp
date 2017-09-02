@@ -104,6 +104,11 @@ TEST.TXT - suggests the content of a prototype version, which was expanded to ma
 #include "emu.h"
 #include "machine/68340.h"
 #include "sound/ymz280b.h"
+<<<<<<< HEAD
+=======
+#include "screen.h"
+#include "speaker.h"
+>>>>>>> upstream/master
 
 class bfm_swp_state : public driver_device
 {
@@ -113,14 +118,23 @@ public:
 			m_maincpu(*this, "maincpu")
 	{ }
 
+<<<<<<< HEAD
 	UINT32* m_cpuregion;
 	UINT32* m_mainram;
+=======
+	uint32_t* m_cpuregion;
+	std::unique_ptr<uint32_t[]> m_mainram;
+>>>>>>> upstream/master
 
 	DECLARE_READ32_MEMBER(bfm_swp_mem_r);
 	DECLARE_WRITE32_MEMBER(bfm_swp_mem_w);
 
 
+<<<<<<< HEAD
 	UINT32 screen_update(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect)
+=======
+	uint32_t screen_update(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect)
+>>>>>>> upstream/master
 	{
 		return 0;
 	}
@@ -128,15 +142,25 @@ public:
 protected:
 
 	// devices
+<<<<<<< HEAD
 	required_device<m68340cpu_device> m_maincpu;
 
 	virtual void machine_start();
+=======
+	required_device<m68340_cpu_device> m_maincpu;
+
+	virtual void machine_start() override;
+>>>>>>> upstream/master
 };
 
 READ32_MEMBER(bfm_swp_state::bfm_swp_mem_r)
 {
 	int pc = space.device().safe_pc();
+<<<<<<< HEAD
 	int cs = m68340_get_cs(m_maincpu, offset * 4);
+=======
+	int cs = m_maincpu->get_cs(offset * 4);
+>>>>>>> upstream/master
 
 	switch ( cs )
 	{
@@ -158,7 +182,11 @@ READ32_MEMBER(bfm_swp_state::bfm_swp_mem_r)
 WRITE32_MEMBER(bfm_swp_state::bfm_swp_mem_w)
 {
 	int pc = space.device().safe_pc();
+<<<<<<< HEAD
 	int cs = m68340_get_cs(m_maincpu, offset * 4);
+=======
+	int cs = m_maincpu->get_cs(offset * 4);
+>>>>>>> upstream/master
 
 	switch ( cs )
 	{
@@ -190,13 +218,22 @@ INPUT_PORTS_END
 
 void bfm_swp_state::machine_start()
 {
+<<<<<<< HEAD
 	m_cpuregion = (UINT32*)memregion( "maincpu" )->base();
 	m_mainram = (UINT32*)auto_alloc_array_clear(machine(), UINT32, 0x10000);
+=======
+	m_cpuregion = (uint32_t*)memregion( "maincpu" )->base();
+	m_mainram = make_unique_clear<uint32_t[]>(0x10000);
+>>>>>>> upstream/master
 
 }
 
 
+<<<<<<< HEAD
 static MACHINE_CONFIG_START( bfm_swp, bfm_swp_state )
+=======
+static MACHINE_CONFIG_START( bfm_swp )
+>>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", M68340, 16000000)
@@ -299,7 +336,14 @@ ROM_END
 
 
 
+<<<<<<< HEAD
 GAME( 199?, c3_rtime        , 0         , bfm_swp, bfm_swp, driver_device, 0, ROT0, "BFM", "Radio Times (Bellfruit) (Cobra 3)", MACHINE_IS_SKELETON )
 GAME( 199?, c3_telly        , 0         , bfm_swp, bfm_swp, driver_device, 0, ROT0, "BFM", "Telly Addicts (Bellfruit) (Cobra 3)", MACHINE_IS_SKELETON )
 GAME( 199?, c3_totp         , 0         , bfm_swp, bfm_swp, driver_device, 0, ROT0, "BFM", "Top of the Pops (Bellfruit) (Cobra 3?)", MACHINE_IS_SKELETON )
 GAME( 199?, c3_ppays        , 0         , bfm_swp, bfm_swp, driver_device, 0, ROT0, "BFM", "The Phrase That Pays (Bellfruit) (Cobra 3?)", MACHINE_IS_SKELETON )
+=======
+GAME( 199?, c3_rtime        , 0         , bfm_swp, bfm_swp, bfm_swp_state, 0, ROT0, "BFM", "Radio Times (Bellfruit) (Cobra 3)", MACHINE_IS_SKELETON )
+GAME( 199?, c3_telly        , 0         , bfm_swp, bfm_swp, bfm_swp_state, 0, ROT0, "BFM", "Telly Addicts (Bellfruit) (Cobra 3)", MACHINE_IS_SKELETON )
+GAME( 199?, c3_totp         , 0         , bfm_swp, bfm_swp, bfm_swp_state, 0, ROT0, "BFM", "Top of the Pops (Bellfruit) (Cobra 3?)", MACHINE_IS_SKELETON )
+GAME( 199?, c3_ppays        , 0         , bfm_swp, bfm_swp, bfm_swp_state, 0, ROT0, "BFM", "The Phrase That Pays (Bellfruit) (Cobra 3?)", MACHINE_IS_SKELETON )
+>>>>>>> upstream/master

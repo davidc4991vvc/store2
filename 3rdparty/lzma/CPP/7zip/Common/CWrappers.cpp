@@ -12,14 +12,22 @@
 
 #define CONVERT_PR_VAL(x) (x == PROGRESS_UNKNOWN_VALUE ? NULL : &x)
 
+<<<<<<< HEAD
 static SRes CompressProgress(void *pp, UInt64 inSize, UInt64 outSize)
+=======
+static SRes CompressProgress(void *pp, UInt64 inSize, UInt64 outSize) throw()
+>>>>>>> upstream/master
 {
   CCompressProgressWrap *p = (CCompressProgressWrap *)pp;
   p->Res = p->Progress->SetRatioInfo(CONVERT_PR_VAL(inSize), CONVERT_PR_VAL(outSize));
   return (SRes)p->Res;
 }
 
+<<<<<<< HEAD
 CCompressProgressWrap::CCompressProgressWrap(ICompressProgressInfo *progress)
+=======
+CCompressProgressWrap::CCompressProgressWrap(ICompressProgressInfo *progress) throw()
+>>>>>>> upstream/master
 {
   p.Progress = CompressProgress;
   Progress = progress;
@@ -30,7 +38,11 @@ static const UInt32 kStreamStepSize = (UInt32)1 << 31;
 
 SRes HRESULT_To_SRes(HRESULT res, SRes defaultRes)
 {
+<<<<<<< HEAD
   switch(res)
+=======
+  switch (res)
+>>>>>>> upstream/master
   {
     case S_OK: return SZ_OK;
     case E_OUTOFMEMORY: return SZ_ERROR_MEM;
@@ -42,18 +54,30 @@ SRes HRESULT_To_SRes(HRESULT res, SRes defaultRes)
   return defaultRes;
 }
 
+<<<<<<< HEAD
 static SRes MyRead(void *object, void *data, size_t *size)
+=======
+static SRes MyRead(void *object, void *data, size_t *size) throw()
+>>>>>>> upstream/master
 {
   CSeqInStreamWrap *p = (CSeqInStreamWrap *)object;
   UInt32 curSize = ((*size < kStreamStepSize) ? (UInt32)*size : kStreamStepSize);
   p->Res = (p->Stream->Read(data, curSize, &curSize));
   *size = curSize;
+<<<<<<< HEAD
+=======
+  p->Processed += curSize;
+>>>>>>> upstream/master
   if (p->Res == S_OK)
     return SZ_OK;
   return HRESULT_To_SRes(p->Res, SZ_ERROR_READ);
 }
 
+<<<<<<< HEAD
 static size_t MyWrite(void *object, const void *data, size_t size)
+=======
+static size_t MyWrite(void *object, const void *data, size_t size) throw()
+>>>>>>> upstream/master
 {
   CSeqOutStreamWrap *p = (CSeqOutStreamWrap *)object;
   if (p->Stream)
@@ -68,6 +92,7 @@ static size_t MyWrite(void *object, const void *data, size_t size)
   return size;
 }
 
+<<<<<<< HEAD
 CSeqInStreamWrap::CSeqInStreamWrap(ISequentialInStream *stream)
 {
   p.Read = MyRead;
@@ -75,6 +100,16 @@ CSeqInStreamWrap::CSeqInStreamWrap(ISequentialInStream *stream)
 }
 
 CSeqOutStreamWrap::CSeqOutStreamWrap(ISequentialOutStream *stream)
+=======
+CSeqInStreamWrap::CSeqInStreamWrap(ISequentialInStream *stream) throw()
+{
+  p.Read = MyRead;
+  Stream = stream;
+  Processed = 0;
+}
+
+CSeqOutStreamWrap::CSeqOutStreamWrap(ISequentialOutStream *stream) throw()
+>>>>>>> upstream/master
 {
   p.Write = MyWrite;
   Stream = stream;
@@ -82,9 +117,15 @@ CSeqOutStreamWrap::CSeqOutStreamWrap(ISequentialOutStream *stream)
   Processed = 0;
 }
 
+<<<<<<< HEAD
 HRESULT SResToHRESULT(SRes res)
 {
   switch(res)
+=======
+HRESULT SResToHRESULT(SRes res) throw()
+{
+  switch (res)
+>>>>>>> upstream/master
   {
     case SZ_OK: return S_OK;
     case SZ_ERROR_MEM: return E_OUTOFMEMORY;
@@ -96,7 +137,11 @@ HRESULT SResToHRESULT(SRes res)
   return E_FAIL;
 }
 
+<<<<<<< HEAD
 static SRes InStreamWrap_Read(void *pp, void *data, size_t *size)
+=======
+static SRes InStreamWrap_Read(void *pp, void *data, size_t *size) throw()
+>>>>>>> upstream/master
 {
   CSeekInStreamWrap *p = (CSeekInStreamWrap *)pp;
   UInt32 curSize = ((*size < kStreamStepSize) ? (UInt32)*size : kStreamStepSize);
@@ -105,11 +150,19 @@ static SRes InStreamWrap_Read(void *pp, void *data, size_t *size)
   return (p->Res == S_OK) ? SZ_OK : SZ_ERROR_READ;
 }
 
+<<<<<<< HEAD
 static SRes InStreamWrap_Seek(void *pp, Int64 *offset, ESzSeek origin)
 {
   CSeekInStreamWrap *p = (CSeekInStreamWrap *)pp;
   UInt32 moveMethod;
   switch(origin)
+=======
+static SRes InStreamWrap_Seek(void *pp, Int64 *offset, ESzSeek origin) throw()
+{
+  CSeekInStreamWrap *p = (CSeekInStreamWrap *)pp;
+  UInt32 moveMethod;
+  switch (origin)
+>>>>>>> upstream/master
   {
     case SZ_SEEK_SET: moveMethod = STREAM_SEEK_SET; break;
     case SZ_SEEK_CUR: moveMethod = STREAM_SEEK_CUR; break;
@@ -122,7 +175,11 @@ static SRes InStreamWrap_Seek(void *pp, Int64 *offset, ESzSeek origin)
   return (p->Res == S_OK) ? SZ_OK : SZ_ERROR_READ;
 }
 
+<<<<<<< HEAD
 CSeekInStreamWrap::CSeekInStreamWrap(IInStream *stream)
+=======
+CSeekInStreamWrap::CSeekInStreamWrap(IInStream *stream) throw()
+>>>>>>> upstream/master
 {
   Stream = stream;
   p.Read = InStreamWrap_Read;
@@ -133,13 +190,21 @@ CSeekInStreamWrap::CSeekInStreamWrap(IInStream *stream)
 
 /* ---------- CByteInBufWrap ---------- */
 
+<<<<<<< HEAD
 void CByteInBufWrap::Free()
+=======
+void CByteInBufWrap::Free() throw()
+>>>>>>> upstream/master
 {
   ::MidFree(Buf);
   Buf = 0;
 }
 
+<<<<<<< HEAD
 bool CByteInBufWrap::Alloc(UInt32 size)
+=======
+bool CByteInBufWrap::Alloc(UInt32 size) throw()
+>>>>>>> upstream/master
 {
   if (Buf == 0 || size != Size)
   {
@@ -150,7 +215,11 @@ bool CByteInBufWrap::Alloc(UInt32 size)
   return (Buf != 0);
 }
 
+<<<<<<< HEAD
 Byte CByteInBufWrap::ReadByteFromNewBlock()
+=======
+Byte CByteInBufWrap::ReadByteFromNewBlock() throw()
+>>>>>>> upstream/master
 {
   if (Res == S_OK)
   {
@@ -166,7 +235,11 @@ Byte CByteInBufWrap::ReadByteFromNewBlock()
   return 0;
 }
 
+<<<<<<< HEAD
 static Byte Wrap_ReadByte(void *pp)
+=======
+static Byte Wrap_ReadByte(void *pp) throw()
+>>>>>>> upstream/master
 {
   CByteInBufWrap *p = (CByteInBufWrap *)pp;
   if (p->Cur != p->Lim)
@@ -182,13 +255,21 @@ CByteInBufWrap::CByteInBufWrap(): Buf(0)
 
 /* ---------- CByteOutBufWrap ---------- */
 
+<<<<<<< HEAD
 void CByteOutBufWrap::Free()
+=======
+void CByteOutBufWrap::Free() throw()
+>>>>>>> upstream/master
 {
   ::MidFree(Buf);
   Buf = 0;
 }
 
+<<<<<<< HEAD
 bool CByteOutBufWrap::Alloc(size_t size)
+=======
+bool CByteOutBufWrap::Alloc(size_t size) throw()
+>>>>>>> upstream/master
 {
   if (Buf == 0 || size != Size)
   {
@@ -199,7 +280,11 @@ bool CByteOutBufWrap::Alloc(size_t size)
   return (Buf != 0);
 }
 
+<<<<<<< HEAD
 HRESULT CByteOutBufWrap::Flush()
+=======
+HRESULT CByteOutBufWrap::Flush() throw()
+>>>>>>> upstream/master
 {
   if (Res == S_OK)
   {
@@ -212,7 +297,11 @@ HRESULT CByteOutBufWrap::Flush()
   return Res;
 }
 
+<<<<<<< HEAD
 static void Wrap_WriteByte(void *pp, Byte b)
+=======
+static void Wrap_WriteByte(void *pp, Byte b) throw()
+>>>>>>> upstream/master
 {
   CByteOutBufWrap *p = (CByteOutBufWrap *)pp;
   Byte *dest = p->Cur;
@@ -222,7 +311,11 @@ static void Wrap_WriteByte(void *pp, Byte b)
     p->Flush();
 }
 
+<<<<<<< HEAD
 CByteOutBufWrap::CByteOutBufWrap(): Buf(0)
+=======
+CByteOutBufWrap::CByteOutBufWrap() throw(): Buf(0)
+>>>>>>> upstream/master
 {
   p.Write = Wrap_WriteByte;
 }

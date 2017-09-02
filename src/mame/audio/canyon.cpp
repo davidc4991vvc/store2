@@ -28,6 +28,7 @@ WRITE8_MEMBER(canyon_state::canyon_explode_w)
 }
 
 
+<<<<<<< HEAD
 WRITE8_MEMBER(canyon_state::canyon_attract_w)
 {
 	m_discrete->write(space, NODE_RELATIVE(CANYON_ATTRACT1_EN, (offset & 0x01)), offset & 0x02);
@@ -40,6 +41,8 @@ WRITE8_MEMBER(canyon_state::canyon_whistle_w)
 }
 
 
+=======
+>>>>>>> upstream/master
 /************************************************************************/
 /* canyon Sound System Analog emulation                                 */
 /************************************************************************/

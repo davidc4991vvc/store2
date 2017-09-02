@@ -27,6 +27,7 @@
 
 struct text_buffer
 {
+<<<<<<< HEAD
 	char *                  buffer;
 	INT32 *                 lineoffs;
 	INT32                   bufsize;
@@ -37,6 +38,18 @@ struct text_buffer
 	INT32                   lineend;
 	UINT32                  linestartseq;
 	INT32                   maxwidth;
+=======
+	char *      buffer;
+	s32 *       lineoffs;
+	s32         bufsize;
+	s32         bufstart;
+	s32         bufend;
+	s32         linesize;
+	s32         linestart;
+	s32         lineend;
+	u32         linestartseq;
+	s32         maxwidth;
+>>>>>>> upstream/master
 };
 
 
@@ -50,9 +63,15 @@ struct text_buffer
     currently held in the buffer
 -------------------------------------------------*/
 
+<<<<<<< HEAD
 INLINE INT32 buffer_used(text_buffer *text)
 {
 	INT32 used = text->bufend - text->bufstart;
+=======
+static inline s32 buffer_used(text_buffer *text)
+{
+	s32 used = text->bufend - text->bufstart;
+>>>>>>> upstream/master
 	if (used < 0)
 		used += text->bufsize;
 	return used;
@@ -64,7 +83,11 @@ INLINE INT32 buffer_used(text_buffer *text)
     available in the buffer
 -------------------------------------------------*/
 
+<<<<<<< HEAD
 INLINE INT32 buffer_space(text_buffer *text)
+=======
+static inline s32 buffer_space(text_buffer *text)
+>>>>>>> upstream/master
 {
 	return text->bufsize - buffer_used(text);
 }
@@ -81,11 +104,16 @@ INLINE INT32 buffer_space(text_buffer *text)
     text_buffer_alloc - allocate a new text buffer
 -------------------------------------------------*/
 
+<<<<<<< HEAD
 text_buffer *text_buffer_alloc(UINT32 bytes, UINT32 lines)
+=======
+text_buffer *text_buffer_alloc(u32 bytes, u32 lines)
+>>>>>>> upstream/master
 {
 	text_buffer *text;
 
 	/* allocate memory for the text buffer object */
+<<<<<<< HEAD
 	text = (text_buffer *)global_alloc(text_buffer);
 	if (!text)
 		return NULL;
@@ -100,11 +128,31 @@ text_buffer *text_buffer_alloc(UINT32 bytes, UINT32 lines)
 
 	/* allocate memory for the lines array */
 	text->lineoffs = (INT32 *)global_alloc_array(INT32, lines);
+=======
+	text = global_alloc_nothrow(text_buffer);
+	if (!text)
+		return nullptr;
+
+	/* allocate memory for the buffer itself */
+	text->buffer = global_alloc_array_nothrow(char, bytes);
+	if (!text->buffer)
+	{
+		global_free(text);
+		return nullptr;
+	}
+
+	/* allocate memory for the lines array */
+	text->lineoffs = global_alloc_array_nothrow(s32, lines);
+>>>>>>> upstream/master
 	if (!text->lineoffs)
 	{
 		global_free_array(text->buffer);
 		global_free(text);
+<<<<<<< HEAD
 		return NULL;
+=======
+		return nullptr;
+>>>>>>> upstream/master
 	}
 
 	/* initialize the buffer description */
@@ -179,11 +227,19 @@ void text_buffer_print(text_buffer *text, const char *data)
 
 void text_buffer_print_wrap(text_buffer *text, const char *data, int wrapcol)
 {
+<<<<<<< HEAD
 	INT32 stopcol = (wrapcol < MAX_LINE_LENGTH) ? wrapcol : MAX_LINE_LENGTH;
 	INT32 needed_space;
 
 	/* we need to ensure there is enough space for this string plus enough for the max line length */
 	needed_space = (INT32)strlen(data) + MAX_LINE_LENGTH;
+=======
+	s32 stopcol = (wrapcol < MAX_LINE_LENGTH) ? wrapcol : MAX_LINE_LENGTH;
+	s32 needed_space;
+
+	/* we need to ensure there is enough space for this string plus enough for the max line length */
+	needed_space = s32(strlen(data)) + MAX_LINE_LENGTH;
+>>>>>>> upstream/master
 
 	/* make space in the buffer if we need to */
 	while (buffer_space(text) < needed_space && text->linestart != text->lineend)
@@ -261,7 +317,11 @@ void text_buffer_print_wrap(text_buffer *text, const char *data, int wrapcol)
 		}
 	}
 
+<<<<<<< HEAD
 	/* NULL terminate what we have on this line */
+=======
+	/* nullptr terminate what we have on this line */
+>>>>>>> upstream/master
 	text->buffer[text->bufend] = 0;
 }
 
@@ -278,7 +338,11 @@ void text_buffer_print_wrap(text_buffer *text, const char *data, int wrapcol)
     width of all lines seen so far
 -------------------------------------------------*/
 
+<<<<<<< HEAD
 UINT32 text_buffer_max_width(text_buffer *text)
+=======
+u32 text_buffer_max_width(text_buffer *text)
+>>>>>>> upstream/master
 {
 	return text->maxwidth;
 }
@@ -289,9 +353,15 @@ UINT32 text_buffer_max_width(text_buffer *text)
     lines in the text buffer
 -------------------------------------------------*/
 
+<<<<<<< HEAD
 UINT32 text_buffer_num_lines(text_buffer *text)
 {
 	INT32 lines = text->lineend + 1 - text->linestart;
+=======
+u32 text_buffer_num_lines(text_buffer *text)
+{
+	s32 lines = text->lineend + 1 - text->linestart;
+>>>>>>> upstream/master
 	if (lines <= 0)
 		lines += text->linesize;
 	return lines;
@@ -303,7 +373,11 @@ UINT32 text_buffer_num_lines(text_buffer *text)
     line index into a sequence number
 -------------------------------------------------*/
 
+<<<<<<< HEAD
 UINT32 text_buffer_line_index_to_seqnum(text_buffer *text, UINT32 index)
+=======
+u32 text_buffer_line_index_to_seqnum(text_buffer *text, u32 index)
+>>>>>>> upstream/master
 {
 	return text->linestartseq + index;
 }
@@ -314,11 +388,20 @@ UINT32 text_buffer_line_index_to_seqnum(text_buffer *text, UINT32 index)
     an indexed line in the buffer
 -------------------------------------------------*/
 
+<<<<<<< HEAD
 const char *text_buffer_get_seqnum_line(text_buffer *text, UINT32 seqnum)
 {
 	UINT32 numlines = text_buffer_num_lines(text);
 	UINT32 index = seqnum - text->linestartseq;
 	if (index >= numlines)
 		return NULL;
+=======
+const char *text_buffer_get_seqnum_line(text_buffer *text, u32 seqnum)
+{
+	u32 numlines = text_buffer_num_lines(text);
+	u32 index = seqnum - text->linestartseq;
+	if (index >= numlines)
+		return nullptr;
+>>>>>>> upstream/master
 	return &text->buffer[text->lineoffs[(text->linestart + index) % text->linesize]];
 }

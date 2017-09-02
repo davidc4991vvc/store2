@@ -84,8 +84,13 @@ WRITE32_MEMBER( beathead_state::vram_copy_w )
 
 WRITE32_MEMBER( beathead_state::finescroll_w )
 {
+<<<<<<< HEAD
 	UINT32 oldword = m_finescroll;
 	UINT32 newword = COMBINE_DATA(&m_finescroll);
+=======
+	uint32_t oldword = m_finescroll;
+	uint32_t newword = COMBINE_DATA(&m_finescroll);
+>>>>>>> upstream/master
 
 	/* if VBLANK is going off on a scanline other than the last, suspend time */
 	if ((oldword & 8) && !(newword & 8) && m_screen->vpos() != 261)
@@ -139,16 +144,26 @@ WRITE32_MEMBER( beathead_state::hsync_ram_w )
  *
  *************************************/
 
+<<<<<<< HEAD
 UINT32 beathead_state::screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
 {
 	UINT8 *videoram = reinterpret_cast<UINT8 *>(m_videoram.target());
+=======
+uint32_t beathead_state::screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+{
+	uint8_t *videoram = reinterpret_cast<uint8_t *>(m_videoram.target());
+>>>>>>> upstream/master
 	int x, y;
 
 	/* generate the final screen */
 	for (y = cliprect.min_y; y <= cliprect.max_y; y++)
 	{
 		pen_t pen_base = (*m_palette_select & 0x7f) * 256;
+<<<<<<< HEAD
 		UINT16 scanline[336];
+=======
+		uint16_t scanline[336];
+>>>>>>> upstream/master
 
 		/* blanking */
 		if (m_finescroll & 8)
@@ -167,7 +182,11 @@ UINT32 beathead_state::screen_update(screen_device &screen, bitmap_ind16 &bitmap
 		}
 
 		/* then draw it */
+<<<<<<< HEAD
 		draw_scanline16(bitmap, cliprect.min_x, y, cliprect.width(), &scanline[cliprect.min_x], NULL);
+=======
+		draw_scanline16(bitmap, cliprect.min_x, y, cliprect.width(), &scanline[cliprect.min_x], nullptr);
+>>>>>>> upstream/master
 	}
 	return 0;
 }

@@ -6,6 +6,10 @@
 //
 //============================================================
 
+<<<<<<< HEAD
+=======
+#include "emu.h"
+>>>>>>> upstream/master
 #include "disasmbasewininfo.h"
 
 #include "debugviewinfo.h"
@@ -25,7 +29,11 @@ disasmbasewin_info::disasmbasewin_info(debugger_windows_interface &debugger, boo
 		return;
 
 	m_views[0].reset(global_alloc(disasmview_info(debugger, *this, window())));
+<<<<<<< HEAD
 	if ((m_views[0] == NULL) || !m_views[0]->is_valid())
+=======
+	if ((m_views[0] == nullptr) || !m_views[0]->is_valid())
+>>>>>>> upstream/master
 	{
 		m_views[0].reset();
 		return;
@@ -39,7 +47,11 @@ disasmbasewin_info::disasmbasewin_info(debugger_windows_interface &debugger, boo
 	AppendMenu(optionsmenu, MF_DISABLED | MF_SEPARATOR, 0, TEXT(""));
 	AppendMenu(optionsmenu, MF_ENABLED, ID_SHOW_RAW, TEXT("Raw opcodes\tCtrl+R"));
 	AppendMenu(optionsmenu, MF_ENABLED, ID_SHOW_ENCRYPTED, TEXT("Encrypted opcodes\tCtrl+E"));
+<<<<<<< HEAD
 	AppendMenu(optionsmenu, MF_ENABLED, ID_SHOW_COMMENTS, TEXT("Comments\tCtrl+M"));
+=======
+	AppendMenu(optionsmenu, MF_ENABLED, ID_SHOW_COMMENTS, TEXT("Comments\tCtrl+N"));
+>>>>>>> upstream/master
 	AppendMenu(GetMenu(window()), MF_ENABLED | MF_POPUP, (UINT_PTR)optionsmenu, TEXT("Options"));
 
 	// set up the view to track the initial expression
@@ -115,10 +127,17 @@ void disasmbasewin_info::update_menu()
 
 		// first find an existing breakpoint at this address
 		device_debug::breakpoint *bp = debug->breakpoint_first();
+<<<<<<< HEAD
 		while ((bp != NULL) && (bp->address() != address))
 			bp = bp->next();
 
 		if (bp == NULL)
+=======
+		while ((bp != nullptr) && (bp->address() != address))
+			bp = bp->next();
+
+		if (bp == nullptr)
+>>>>>>> upstream/master
 		{
 			ModifyMenu(menu, ID_TOGGLE_BREAKPOINT, MF_BYCOMMAND, ID_TOGGLE_BREAKPOINT, TEXT("Set breakpoint at cursor\tF9"));
 			ModifyMenu(menu, ID_DISABLE_BREAKPOINT, MF_BYCOMMAND, ID_DISABLE_BREAKPOINT, TEXT("Disable breakpoint at cursor\tShift+F9"));
@@ -131,7 +150,11 @@ void disasmbasewin_info::update_menu()
 			else
 				ModifyMenu(menu, ID_DISABLE_BREAKPOINT, MF_BYCOMMAND, ID_DISABLE_BREAKPOINT, TEXT("Enable breakpoint at cursor\tShift+F9"));
 		}
+<<<<<<< HEAD
 		bool const available = (bp != NULL) && (!is_main_console() || dasmview->source_is_visible_cpu());
+=======
+		bool const available = (bp != nullptr) && (!is_main_console() || dasmview->source_is_visible_cpu());
+>>>>>>> upstream/master
 		EnableMenuItem(menu, ID_DISABLE_BREAKPOINT, MF_BYCOMMAND | (available ? MF_ENABLED : MF_GRAYED));
 	}
 	else
@@ -165,10 +188,17 @@ bool disasmbasewin_info::handle_command(WPARAM wparam, LPARAM lparam)
 			{
 				offs_t const address = dasmview->selected_address();
 				device_debug *const debug = dasmview->source_device()->debug();
+<<<<<<< HEAD
 				INT32 bpindex = -1;
 
 				// first find an existing breakpoint at this address
 				for (device_debug::breakpoint *bp = debug->breakpoint_first(); bp != NULL; bp = bp->next())
+=======
+				int32_t bpindex = -1;
+
+				// first find an existing breakpoint at this address
+				for (device_debug::breakpoint *bp = debug->breakpoint_first(); bp != nullptr; bp = bp->next())
+>>>>>>> upstream/master
 				{
 					if (address == bp->address())
 					{
@@ -182,25 +212,44 @@ bool disasmbasewin_info::handle_command(WPARAM wparam, LPARAM lparam)
 				{
 					if (bpindex == -1)
 					{
+<<<<<<< HEAD
 						bpindex = debug->breakpoint_set(address, NULL, NULL);
 						debug_console_printf(machine(), "Breakpoint %X set\n", bpindex);
+=======
+						bpindex = debug->breakpoint_set(address, nullptr, nullptr);
+						machine().debugger().console().printf("Breakpoint %X set\n", bpindex);
+>>>>>>> upstream/master
 					}
 					else
 					{
 						debug->breakpoint_clear(bpindex);
+<<<<<<< HEAD
 						debug_console_printf(machine(), "Breakpoint %X cleared\n", bpindex);
 					}
 					machine().debug_view().update_all();
 					debugger_refresh_display(machine());
+=======
+						machine().debugger().console().printf("Breakpoint %X cleared\n", bpindex);
+					}
+					machine().debug_view().update_all();
+					machine().debugger().refresh_display();
+>>>>>>> upstream/master
 				}
 				else if (dasmview->source_is_visible_cpu())
 				{
 					std::string command;
 					if (bpindex == -1)
+<<<<<<< HEAD
 						strprintf(command, "bpset 0x%X", address);
 					else
 						strprintf(command, "bpclear 0x%X", bpindex);
 					debug_console_execute_command(machine(), command.c_str(), 1);
+=======
+						command = string_format("bpset 0x%X", address);
+					else
+						command = string_format("bpclear 0x%X", bpindex);
+					machine().debugger().console().execute_command(command.c_str(), true);
+>>>>>>> upstream/master
 				}
 			}
 			return true;
@@ -213,24 +262,43 @@ bool disasmbasewin_info::handle_command(WPARAM wparam, LPARAM lparam)
 
 				// first find an existing breakpoint at this address
 				device_debug::breakpoint *bp = debug->breakpoint_first();
+<<<<<<< HEAD
 				while ((bp != NULL) && (bp->address() != address))
 					bp = bp->next();
 
 				// if it doesn't exist, add a new one
 				if (bp != NULL)
+=======
+				while ((bp != nullptr) && (bp->address() != address))
+					bp = bp->next();
+
+				// if it doesn't exist, add a new one
+				if (bp != nullptr)
+>>>>>>> upstream/master
 				{
 					if (!is_main_console())
 					{
 						debug->breakpoint_enable(bp->index(), !bp->enabled());
+<<<<<<< HEAD
 						debug_console_printf(machine(), "Breakpoint %X %s\n", (UINT32)bp->index(), bp->enabled() ? "enabled" : "disabled");
 						machine().debug_view().update_all();
 						debugger_refresh_display(machine());
+=======
+						machine().debugger().console().printf("Breakpoint %X %s\n", (uint32_t)bp->index(), bp->enabled() ? "enabled" : "disabled");
+						machine().debug_view().update_all();
+						machine().debugger().refresh_display();
+>>>>>>> upstream/master
 					}
 					else if (dasmview->source_is_visible_cpu())
 					{
 						std::string command;
+<<<<<<< HEAD
 						strprintf(command, bp->enabled() ? "bpdisable 0x%X" : "bpenable 0x%X", (UINT32)bp->index());
 						debug_console_execute_command(machine(), command.c_str(), 1);
+=======
+						command = string_format(bp->enabled() ? "bpdisable 0x%X" : "bpenable 0x%X", (uint32_t)bp->index());
+						machine().debugger().console().execute_command(command.c_str(), true);
+>>>>>>> upstream/master
 					}
 				}
 			}
@@ -243,8 +311,13 @@ bool disasmbasewin_info::handle_command(WPARAM wparam, LPARAM lparam)
 				if (dasmview->source_is_visible_cpu())
 				{
 					std::string command;
+<<<<<<< HEAD
 					strprintf(command, "go 0x%X", address);
 					debug_console_execute_command(machine(), command.c_str(), 1);
+=======
+					command = string_format("go 0x%X", address);
+					machine().debugger().console().execute_command(command.c_str(), true);
+>>>>>>> upstream/master
 				}
 				else
 				{

@@ -1,9 +1,18 @@
+<<<<<<< HEAD
 // license:???
 // copyright-holders:K.Wilkins, Derrick Renaud, Frank Palazzolo, Couriersud
 #pragma once
 
 #ifndef __DISCRETE_H__
 #define __DISCRETE_H__
+=======
+// license:BSD-3-Clause
+// copyright-holders:K.Wilkins,Couriersud,Derrick Renaud,Frank Palazzolo
+#ifndef MAME_SOUND_DISCRETE_H
+#define MAME_SOUND_DISCRETE_H
+
+#pragma once
+>>>>>>> upstream/master
 
 #include "machine/rescap.h"
 
@@ -378,7 +387,11 @@
  ***********************************************************************
  *
  * DISCRETE_CONSTANT - Single output, fixed at compile time.
+<<<<<<< HEAD
  *                     This is usefull as a placeholder for
+=======
+ *                     This is useful as a placeholder for
+>>>>>>> upstream/master
  *                     incomplete circuits.
  *
  *                        .----------.
@@ -446,7 +459,11 @@
  *       it if needed.
  *       If you need to access a stream from a discrete task, the stream node
  *       must be part of that task. If a given stream is used in two tasks or
+<<<<<<< HEAD
  *       a task and the main task, you must declare two stream nodes acccessing the
+=======
+ *       a task and the main task, you must declare two stream nodes accessing the
+>>>>>>> upstream/master
  *       same stream input NUM.
  *
  * EXAMPLES: see scramble, frogger
@@ -479,7 +496,11 @@
  *                               types above if needed, or use separately with 7492.
  *                           DISC_OUT_IS_ENERGY - This will uses the x_time to
  *                                                anti-alias the count.  Might be
+<<<<<<< HEAD
  *                                                usefull if not connected to other
+=======
+ *                                                useful if not connected to other
+>>>>>>> upstream/master
  *                                                modules.
  *                           DISC_OUT_HAS_XTIME - This will generate x_time if
  *                                                being used with DISC_CLK_IS_FREQ.
@@ -488,7 +509,11 @@
  *
  *     DISCRETE_COUNTER(name of node,
  *                      enable node or static value,
+<<<<<<< HEAD
  *                      reset node or static value, (reset when TRUE)
+=======
+ *                      reset node or static value, (reset when true)
+>>>>>>> upstream/master
  *                      clock node or static value,
  *                      min count static value,
  *                      max count static value,
@@ -513,7 +538,11 @@
  ***********************************************************************
  *
  * DISCRETE_LFSR_NOISE - Noise waveform generator node, generates
+<<<<<<< HEAD
  *                       psuedo random digital stream at the requested
+=======
+ *                       pseudo random digital stream at the requested
+>>>>>>> upstream/master
  *                       clock frequency.
  *
  *  Declaration syntax
@@ -767,7 +796,11 @@
  *
  ***********************************************************************
  *
+<<<<<<< HEAD
  * DISCRETE_TRIANGLEW  - Triagular waveform generator, generates
+=======
+ * DISCRETE_TRIANGLEW  - Triangular waveform generator, generates
+>>>>>>> upstream/master
  *                       equal ramp up/down at chosen frequency
  *
  *                        .------------.
@@ -1148,7 +1181,11 @@
  *        vInRise  voltage that triggers the gate input to go high (vGate) on rise
  *        vInFall  voltage that triggers the gate input to go low (0V) on fall
  *        clamp    internal diode clamp:  [-clamp ... vb+clamp] if clamp>= 0
+<<<<<<< HEAD
  *        options  bitmaped options
+=======
+ *        options  bitmapped options
+>>>>>>> upstream/master
  *
  *     There is a macro DEFAULT_CD40XX_VALUES(_vB) which may be used to initialize the
  *     structure with .... = { 5, DEFAULT_CD40XX_VALUES(5), DISC_OSC_INVERTER_IS_TYPE1}
@@ -1602,7 +1639,11 @@
  *     DISC_OUT_ACTIVE_HIGH  0x00 - output active high (DEFAULT)
  *
  *  NOTE: A width of 0 seconds will output a pulse of 1 sample.
+<<<<<<< HEAD
  *        This is useful for a guaranteed minimun pulse, regardless
+=======
+ *        This is useful for a guaranteed minimum pulse, regardless
+>>>>>>> upstream/master
  *        of the sample rate.
  *
  * EXAMPLES: see Polaris
@@ -1805,7 +1846,11 @@
  =======================================================================
  ***********************************************************************
  *
+<<<<<<< HEAD
  * DISCRETE_COMP_ADDER - Selecatable parallel component adder.
+=======
+ * DISCRETE_COMP_ADDER - Selectable parallel component adder.
+>>>>>>> upstream/master
  *                       The total netlist out will be the parallel sum of all
  *                       components with their corresponding data bit = 1.
  *                       Set cDefault to 0 if not used.
@@ -1904,9 +1949,15 @@
  *                           ...,
  *                           address of v_junction table)
  *
+<<<<<<< HEAD
  *    v_junction table can be set to NULL if you want all diodes to
  *                     default to a 0.5V drop.  Otherwise use a
  *                     table of doubles to specify juntion voltages.
+=======
+ *    v_junction table can be set to nullptr if you want all diodes to
+ *                     default to a 0.5V drop.  Otherwise use a
+ *                     table of doubles to specify junction voltages.
+>>>>>>> upstream/master
  *
  * EXAMPLES: see dkong
  *
@@ -2202,7 +2253,11 @@
  *   When the output of the function is 0, then the connection is held at 0V or gnd.
  *   When the output of the function is 1, then the function is an open circuit.
  *
+<<<<<<< HEAD
  *   DISC_OP_AMP_TRIGGER_FUNCTION_NONE       - Not used, cicuit open.
+=======
+ *   DISC_OP_AMP_TRIGGER_FUNCTION_NONE       - Not used, circuit open.
+>>>>>>> upstream/master
  *   DISC_OP_AMP_TRIGGER_FUNCTION_TRG0       - Gnd when trigger 0 is 0.
  *   DISC_OP_AMP_TRIGGER_FUNCTION_TRG0_INV   - Gnd when trigger 0 is 1.
  *   DISC_OP_AMP_TRIGGER_FUNCTION_TRG1       - Gnd when trigger 1 is 0.
@@ -2773,7 +2828,11 @@
  *     DISCRETE_RCDISC5(NODE_11,NODE_10,10,100,CAP_U(1))
  *
  *  When enabled by NODE_10, C discharges from 10v as indicated by RC
+<<<<<<< HEAD
  *  of 100R & 1uF. If not enabled, the capcitors keeps it load and may
+=======
+ *  of 100R & 1uF. If not enabled, the capacitors keeps it load and may
+>>>>>>> upstream/master
  *  still be charged through input1. The switch is assumed to be a CD4066,
  *  thus if not enabled the output will be drawn by R to GND since
  *  the switch is in high impedance mode.
@@ -3028,8 +3087,13 @@
  *                            rate, then the output may change state more then once
  *                            during the sample.  Using this flag will cause
  *                            the output to be the number of falling edges that
+<<<<<<< HEAD
  *                            happened during the sample.  This is usefull to feed
  *                            to counter circuits.  The Output Type flag is ingnored
+=======
+ *                            happened during the sample.  This is useful to feed
+ *                            to counter circuits.  The Output Type flag is ignored
+>>>>>>> upstream/master
  *                            when this flag is used.
  *     DISC_555_OUT_COUNT_R - Same as DISC_555_OUT_COUNT_F but with rising edges.
  *     DISC_555_OUT_ENERGY  - Same SQW, but will help reduce aliasing effects.
@@ -3184,7 +3248,11 @@
  *         v_pos;           - B+ voltage of 555
  *         v_cc_source;     - Voltage of the Constant Current source
  *         v_out_high;      - High output voltage of 555 (Defaults to v_pos - 1.2V)
+<<<<<<< HEAD
  *         v_cc_junction;   - The voltage drop of the Constant Current source transitor
+=======
+ *         v_cc_junction;   - The voltage drop of the Constant Current source transistor
+>>>>>>> upstream/master
  *                            (0 if Op Amp)
  *  }
  *
@@ -3303,7 +3371,11 @@
  *
  *  Waveform Types:
  *     DISC_566_OUT_SQUARE   - Pin 3 Square Wave Output (DEFAULT)
+<<<<<<< HEAD
  *     DISC_566_OUT_ENERGY   - Pin 3 anti-alaised Square Wave Output
+=======
+ *     DISC_566_OUT_ENERGY   - Pin 3 anti-aliased Square Wave Output
+>>>>>>> upstream/master
  *     DISC_566_OUT_TRIANGLE - Pin 4 Triangle Wave Output
  *     DISC_566_OUT_LOGIC    - Internal Flip/Flop Output
  *     DISC_566_COUNT_F      - # of falling edges
@@ -3467,8 +3539,11 @@
  *
  ************************************************************************/
 
+<<<<<<< HEAD
 #include "sound/wavwrite.h"
 
+=======
+>>>>>>> upstream/master
 /*************************************
  *
  *  macros
@@ -3638,7 +3713,11 @@ enum
 
 #define DISC_OP_AMP_FILTER_TYPE_MASK        (0xf0 | DISC_OP_AMP_IS_NORTON)  // Used only internally.
 
+<<<<<<< HEAD
 /* Sallen-Key filter Opions */
+=======
+/* Sallen-Key filter Options */
+>>>>>>> upstream/master
 #define DISC_SALLEN_KEY_LOW_PASS            0x01
 #define DISC_SALLEN_KEY_HIGH_PASS           0x02
 
@@ -3702,7 +3781,11 @@ enum
 #define DISC_566_OUT_AC                     0x10
 
 #define DISC_566_OUT_SQUARE                 0x00    /* Squarewave */
+<<<<<<< HEAD
 #define DISC_566_OUT_ENERGY                 0x01    /* anti-alaised Squarewave */
+=======
+#define DISC_566_OUT_ENERGY                 0x01    /* anti-aliased Squarewave */
+>>>>>>> upstream/master
 #define DISC_566_OUT_TRIANGLE               0x02    /* Triangle waveform */
 #define DISC_566_OUT_LOGIC                  0x03    /* 0/1 logic output */
 #define DISC_566_OUT_COUNT_F                0x04
@@ -3758,15 +3841,26 @@ public:
 	vector_t(int initial) {
 		m_count = 0;
 		m_allocated = initial;
+<<<<<<< HEAD
 		m_arr = global_alloc_array_clear(_ElementType, m_allocated);
+=======
+		m_arr = make_unique_clear<_ElementType[]>(m_allocated);
+>>>>>>> upstream/master
 	}
 	vector_t()  {
 		m_count = 0;
 		m_allocated = 16;
+<<<<<<< HEAD
 		m_arr = global_alloc_array_clear(_ElementType, m_allocated);
 	}
 	~vector_t() {
 		global_free_array(m_arr);
+=======
+		m_arr = make_unique_clear<_ElementType[]>(m_allocated);
+	}
+	~vector_t() {
+		m_arr = nullptr;
+>>>>>>> upstream/master
 	}
 	_ElementType& operator [] (unsigned int index) const // get array item
 	{
@@ -3779,7 +3873,11 @@ public:
 		if (m_allocated < 16)
 			m_allocated = 16;
 		m_count = a.count();
+<<<<<<< HEAD
 		m_arr = global_alloc_array_clear(_ElementType, m_allocated);
+=======
+		m_arr = make_unique_clear<_ElementType[]>(m_allocated);
+>>>>>>> upstream/master
 		for (int i=0; i < m_count; i++)
 			m_arr[i] = a[i];
 	}
@@ -3790,7 +3888,11 @@ public:
 		if (m_allocated < 16)
 			m_allocated = 16;
 		m_count = a.count();
+<<<<<<< HEAD
 		m_arr = global_alloc_array_clear(_ElementType, m_allocated);
+=======
+		m_arr = make_unique_clear<_ElementType[]>(m_allocated);
+>>>>>>> upstream/master
 		for (int i=0; i < m_count; i++)
 			m_arr[i] = a[i];
 		return *this;
@@ -3800,12 +3902,23 @@ public:
 	{
 		if (m_count >= m_allocated)
 		{
+<<<<<<< HEAD
 			m_allocated *= 2;
 			_ElementType *newarr = global_alloc_array_clear(_ElementType, m_allocated);
 			for (int i=0; i < m_count; i++)
 				newarr[i] = m_arr[i];
 			global_free_array(m_arr);
 			m_arr = newarr;
+=======
+			auto oldarr = make_unique_clear<_ElementType[]>(m_allocated);
+			for (int i = 0; i < m_count; i++)
+				oldarr[i] = m_arr[i];
+
+			m_allocated *= 2;
+			m_arr = make_unique_clear<_ElementType[]>(m_allocated);
+			for (int i = 0; i < m_count; i++)
+				m_arr[i] = oldarr[i];
+>>>>>>> upstream/master
 		}
 		m_arr[m_count] = object;
 		m_count++;
@@ -3819,10 +3932,17 @@ public:
 	}
 	inline void clear(void) { m_count = 0;  }
 	inline int count(void) const { return m_count; }
+<<<<<<< HEAD
 	inline _ElementType *begin_ptr(void) const { return m_arr; }
 	inline _ElementType *end_ptr(void) const { return m_arr + (m_count - 1); }
 private:
 	_ElementType    *m_arr;
+=======
+	inline _ElementType *begin_ptr(void) const { return m_arr.get(); }
+	inline _ElementType *end_ptr(void) const { return m_arr.get() + (m_count - 1); }
+private:
+	std::unique_ptr<_ElementType[]> m_arr;
+>>>>>>> upstream/master
 	int m_count;
 	int m_allocated;
 };
@@ -3856,7 +3976,11 @@ struct discrete_lfsr_desc
 
 struct discrete_op_amp_osc_info
 {
+<<<<<<< HEAD
 	UINT32  type;
+=======
+	uint32_t  type;
+>>>>>>> upstream/master
 	double  r1;
 	double  r2;
 	double  r3;
@@ -3882,16 +4006,26 @@ struct discrete_schmitt_osc_desc
 	double  trshRise;   // voltage that triggers the gate input to go high (vGate) on rise
 	double  trshFall;   // voltage that triggers the gate input to go low (0V) on fall
 	double  vGate;      // the output high voltage of the gate that gets fedback through rFeedback
+<<<<<<< HEAD
 	int     options;    // bitmaped options
+=======
+	int     options;    // bitmapped options
+>>>>>>> upstream/master
 };
 
 
 struct discrete_comp_adder_table
 {
 	int     type;
+<<<<<<< HEAD
 	double  cDefault;               // Default componet.  0 if not used.
 	int     length;
 	double  c[DISC_LADDER_MAXRES];  // Componet table
+=======
+	double  cDefault;               // Default component.  0 if not used.
+	int     length;
+	double  c[DISC_LADDER_MAXRES];  // Component table
+>>>>>>> upstream/master
 };
 
 
@@ -3908,7 +4042,11 @@ struct discrete_dac_r1_ladder
 
 struct discrete_integrate_info
 {
+<<<<<<< HEAD
 	UINT32  type;
+=======
+	uint32_t  type;
+>>>>>>> upstream/master
 	double  r1;     // r1a + r1b
 	double  r2;     // r2a + r2b
 	double  r3;     // r3a + r3b
@@ -3939,7 +4077,11 @@ struct discrete_mixer_desc
 
 struct discrete_op_amp_info
 {
+<<<<<<< HEAD
 	UINT32  type;
+=======
+	uint32_t  type;
+>>>>>>> upstream/master
 	double  r1;
 	double  r2;
 	double  r3;
@@ -3952,7 +4094,11 @@ struct discrete_op_amp_info
 
 struct discrete_op_amp_1sht_info
 {
+<<<<<<< HEAD
 	UINT32  type;
+=======
+	uint32_t  type;
+>>>>>>> upstream/master
 	double  r1;
 	double  r2;
 	double  r3;
@@ -4031,7 +4177,11 @@ struct discrete_555_cc_desc
 	double  v_pos;          /* B+ voltage of 555 */
 	double  v_cc_source;    /* Voltage of the Constant Current source */
 	double  v_out_high;     /* High output voltage of 555 (Defaults to v_pos - 1.2V) */
+<<<<<<< HEAD
 	double  v_cc_junction;  /* The voltage drop of the Constant Current source transitor (0 if Op Amp) */
+=======
+	double  v_cc_junction;  /* The voltage drop of the Constant Current source transistor (0 if Op Amp) */
+>>>>>>> upstream/master
 };
 
 
@@ -4240,7 +4390,11 @@ class discrete_input_interface
 public:
 	virtual ~discrete_input_interface() { }
 
+<<<<<<< HEAD
 	virtual void input_write(int sub_node, UINT8 data ) = 0;
+=======
+	virtual void input_write(int sub_node, uint8_t data ) = 0;
+>>>>>>> upstream/master
 };
 
 class discrete_sound_output_interface
@@ -4282,7 +4436,11 @@ class discrete_device : public device_t
 
 protected:
 	// construction/destruction
+<<<<<<< HEAD
 	discrete_device(const machine_config &mconfig, device_type type, const char *name, const char *tag, device_t *owner, UINT32 clock);
+=======
+	discrete_device(const machine_config &mconfig, device_type type, const char *tag, device_t *owner, uint32_t clock);
+>>>>>>> upstream/master
 
 public:
 	// inline configuration helpers
@@ -4292,6 +4450,15 @@ public:
 	DECLARE_WRITE8_MEMBER(write);
 	virtual ~discrete_device(void);
 
+<<<<<<< HEAD
+=======
+	template<int DiscreteInput>
+	DECLARE_WRITE_LINE_MEMBER(write_line)
+	{
+		write(machine().dummy_space(), DiscreteInput, state ? 1 : 0);
+	}
+
+>>>>>>> upstream/master
 	/* --------------------------------- */
 
 	virtual void update_to_current_time(void) const {  }
@@ -4321,9 +4488,15 @@ public:
 protected:
 
 	// device-level overrides
+<<<<<<< HEAD
 	virtual void device_start();
 	virtual void device_reset();
 	virtual void device_stop();
+=======
+	virtual void device_start() override;
+	virtual void device_reset() override;
+	virtual void device_stop() override;
+>>>>>>> upstream/master
 
 	// configuration state
 	const discrete_block *m_intf;
@@ -4360,8 +4533,13 @@ private:
 
 	/* profiling */
 	int                     m_profiling;
+<<<<<<< HEAD
 	UINT64                  m_total_samples;
 	UINT64                  m_total_stream_updates;
+=======
+	uint64_t                  m_total_samples;
+	uint64_t                  m_total_stream_updates;
+>>>>>>> upstream/master
 };
 
 // ======================> discrete_sound_device
@@ -4371,22 +4549,38 @@ class discrete_sound_device :   public discrete_device,
 {
 public:
 	// construction/destruction
+<<<<<<< HEAD
 	discrete_sound_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
+=======
+	discrete_sound_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
+>>>>>>> upstream/master
 	virtual ~discrete_sound_device(void) { };
 
 	/* --------------------------------- */
 
+<<<<<<< HEAD
 	virtual void update_to_current_time(void) const { m_stream->update(); }
+=======
+	virtual void update_to_current_time(void) const override { m_stream->update(); }
+>>>>>>> upstream/master
 
 	sound_stream *get_stream(void) { return m_stream; }
 protected:
 
 	// device-level overrides
+<<<<<<< HEAD
 	virtual void device_start();
 	virtual void device_reset();
 
 	// device_sound_interface overrides
 	virtual void sound_stream_update(sound_stream &stream, stream_sample_t **inputs, stream_sample_t **outputs, int samples);
+=======
+	virtual void device_start() override;
+	virtual void device_reset() override;
+
+	// device_sound_interface overrides
+	virtual void sound_stream_update(sound_stream &stream, stream_sample_t **inputs, stream_sample_t **outputs, int samples) override;
+>>>>>>> upstream/master
 
 private:
 	/* the output stream */
@@ -4399,7 +4593,11 @@ private:
 };
 
 // device type definition
+<<<<<<< HEAD
 extern const device_type DISCRETE;
+=======
+DECLARE_DEVICE_TYPE(DISCRETE, discrete_sound_device)
+>>>>>>> upstream/master
 
 /*************************************
  *
@@ -4422,9 +4620,15 @@ public:
 
 	virtual int max_output(void) { return 1; };
 
+<<<<<<< HEAD
 	inline bool interface(discrete_step_interface *&intf) const { intf = m_step_intf; return (intf != NULL); }
 	inline bool interface(discrete_input_interface *&intf) const { intf = m_input_intf; return (intf != NULL); }
 	inline bool interface(discrete_sound_output_interface *&intf) const { intf = m_output_intf; return (intf != NULL); }
+=======
+	inline bool interface(discrete_step_interface *&intf) const { intf = m_step_intf; return (intf != nullptr); }
+	inline bool interface(discrete_input_interface *&intf) const { intf = m_input_intf; return (intf != nullptr); }
+	inline bool interface(discrete_sound_output_interface *&intf) const { intf = m_output_intf; return (intf != nullptr); }
+>>>>>>> upstream/master
 
 	/* get the input value from node #n */
 	inline double input(int n) { return *(m_input[n]); }
@@ -4492,13 +4696,21 @@ template <class C>
 class discrete_node_factory : public discrete_node_base_factory
 {
 public:
+<<<<<<< HEAD
 	discrete_base_node *Create(discrete_device * pdev, const discrete_block *block);
+=======
+	discrete_base_node *Create(discrete_device * pdev, const discrete_block *block) override;
+>>>>>>> upstream/master
 };
 
 template <class C>
 discrete_base_node * discrete_node_factory<C>::Create(discrete_device * pdev, const discrete_block *block)
 {
+<<<<<<< HEAD
 	discrete_base_node *r = auto_alloc_clear(pdev->machine(), C);
+=======
+	discrete_base_node *r = auto_alloc_clear(pdev->machine(), <C>());
+>>>>>>> upstream/master
 
 	r->init(pdev, block);
 	return r;
@@ -4531,7 +4743,11 @@ discrete_base_node *discrete_create_node(discrete_device * pdev, const discrete_
 #define DSC_SND_ENTRY(_nod, _class, _dss, _num, _iact, _iinit, _custom, _name) { _nod,  &discrete_create_node< DISCRETE_CLASS_NAME(_class) >, _dss, _num, _iact, _iinit, _custom, _name, # _class }
 
 
+<<<<<<< HEAD
 #define DISCRETE_SOUND_END                                              DSC_SND_ENTRY( NODE_00, special, DSS_NULL     , 0, DSE( NODE_NC ), DSE( 0 ) ,NULL  ,"DISCRETE_SOUND_END" )  };
+=======
+#define DISCRETE_SOUND_END                                              DSC_SND_ENTRY( NODE_00, special, DSS_NULL     , 0, DSE( NODE_NC ), DSE( 0 ) ,nullptr  ,"DISCRETE_SOUND_END" )  };
+>>>>>>> upstream/master
 #define DSE( ... ) { __VA_ARGS__ }
 
 /*      Module Name                                                       out,  enum value,      #in,   {variable inputs},              {static inputs},    data pointer,   "name" */
@@ -4539,6 +4755,7 @@ discrete_base_node *discrete_create_node(discrete_device * pdev, const discrete_
 /* from disc_inp.inc */
 #define DISCRETE_ADJUSTMENT(NODE,MIN,MAX,LOGLIN,TAG)                    DSC_SND_ENTRY( NODE, dss_adjustment  , DSS_NODE        , 6, DSE( NODE_NC,NODE_NC,NODE_NC,NODE_NC,NODE_NC,NODE_NC ), DSE( MIN,MAX,LOGLIN,0   ,0   ,100  ), TAG   , "DISCRETE_ADJUSTMENT" ),
 #define DISCRETE_ADJUSTMENTX(NODE,MIN,MAX,LOGLIN,TAG,PMIN,PMAX)         DSC_SND_ENTRY( NODE, dss_adjustment  , DSS_NODE        , 6, DSE( NODE_NC,NODE_NC,NODE_NC,NODE_NC,NODE_NC,NODE_NC ), DSE( MIN,MAX,LOGLIN,0   ,PMIN,PMAX ), TAG   , "DISCRETE_ADJUSTMENTX"  ),
+<<<<<<< HEAD
 #define DISCRETE_CONSTANT(NODE,CONST)                                   DSC_SND_ENTRY( NODE, dss_constant    , DSS_NODE        , 1, DSE( NODE_NC ), DSE( CONST ) ,NULL  ,"DISCRETE_CONSTANT" ),
 #define DISCRETE_INPUT_DATA(NODE)                                       DSC_SND_ENTRY( NODE, dss_input_data  , DSS_NODE        , 3, DSE( NODE_NC,NODE_NC,NODE_NC ), DSE( 1,0,0 ), NULL, "DISCRETE_INPUT_DATA" ),
 #define DISCRETE_INPUTX_DATA(NODE,GAIN,OFFSET,INIT)                     DSC_SND_ENTRY( NODE, dss_input_data  , DSS_NODE        , 3, DSE( NODE_NC,NODE_NC,NODE_NC ), DSE( GAIN,OFFSET,INIT ), NULL, "DISCRETE_INPUTX_DATA" ),
@@ -4726,3 +4943,192 @@ discrete_base_node *discrete_create_node(discrete_device * pdev, const discrete_
 
 
 #endif /* __DISCRETE_H__ */
+=======
+#define DISCRETE_CONSTANT(NODE,CONST)                                   DSC_SND_ENTRY( NODE, dss_constant    , DSS_NODE        , 1, DSE( NODE_NC ), DSE( CONST ) ,nullptr  ,"DISCRETE_CONSTANT" ),
+#define DISCRETE_INPUT_DATA(NODE)                                       DSC_SND_ENTRY( NODE, dss_input_data  , DSS_NODE        , 3, DSE( NODE_NC,NODE_NC,NODE_NC ), DSE( 1,0,0 ), nullptr, "DISCRETE_INPUT_DATA" ),
+#define DISCRETE_INPUTX_DATA(NODE,GAIN,OFFSET,INIT)                     DSC_SND_ENTRY( NODE, dss_input_data  , DSS_NODE        , 3, DSE( NODE_NC,NODE_NC,NODE_NC ), DSE( GAIN,OFFSET,INIT ), nullptr, "DISCRETE_INPUTX_DATA" ),
+#define DISCRETE_INPUT_LOGIC(NODE)                                      DSC_SND_ENTRY( NODE, dss_input_logic , DSS_NODE        , 3, DSE( NODE_NC,NODE_NC,NODE_NC ), DSE( 1,0,0 ), nullptr, "DISCRETE_INPUT_LOGIC" ),
+#define DISCRETE_INPUTX_LOGIC(NODE,GAIN,OFFSET,INIT)                    DSC_SND_ENTRY( NODE, dss_input_logic , DSS_NODE        , 3, DSE( NODE_NC,NODE_NC,NODE_NC ), DSE( GAIN,OFFSET,INIT ), nullptr, "DISCRETE_INPUTX_LOGIC" ),
+#define DISCRETE_INPUT_NOT(NODE)                                        DSC_SND_ENTRY( NODE, dss_input_not   , DSS_NODE        , 3, DSE( NODE_NC,NODE_NC,NODE_NC ), DSE( 1,0,0 ), nullptr, "DISCRETE_INPUT_NOT" ),
+#define DISCRETE_INPUTX_NOT(NODE,GAIN,OFFSET,INIT)                      DSC_SND_ENTRY( NODE, dss_input_not   , DSS_NODE        , 3, DSE( NODE_NC,NODE_NC,NODE_NC ), DSE( GAIN,OFFSET,INIT ), nullptr, "DISCRETE_INPUTX_NOT" ),
+#define DISCRETE_INPUT_PULSE(NODE,INIT)                                 DSC_SND_ENTRY( NODE, dss_input_pulse , DSS_NODE        , 3, DSE( NODE_NC,NODE_NC,NODE_NC ), DSE( 1,0,INIT ), nullptr, "DISCRETE_INPUT_PULSE" ),
+
+#define DISCRETE_INPUT_STREAM(NODE, NUM)                                DSC_SND_ENTRY( NODE, dss_input_stream, DSS_NODE        , 3, DSE( static_cast<int>(NUM),NODE_NC,NODE_NC ), DSE( NUM,1,0 ), nullptr, "DISCRETE_INPUT_STREAM" ),
+#define DISCRETE_INPUTX_STREAM(NODE, NUM, GAIN,OFFSET)                  DSC_SND_ENTRY( NODE, dss_input_stream, DSS_NODE        , 3, DSE( static_cast<int>(NUM),NODE_NC,NODE_NC ), DSE( NUM,GAIN,OFFSET ), nullptr, "DISCRETE_INPUTX_STREAM" ),
+
+#define DISCRETE_INPUT_BUFFER(NODE, NUM)                                DSC_SND_ENTRY( NODE, dss_input_buffer, DSS_NODE        , 3, DSE( static_cast<int>(NUM),NODE_NC,NODE_NC ), DSE( NUM,1,0 ), nullptr, "DISCRETE_INPUT_BUFFER" ),
+
+/* from disc_wav.inc */
+/* generic modules */
+#define DISCRETE_COUNTER(NODE,ENAB,RESET,CLK,MIN,MAX,DIR,INIT0,CLKTYPE) DSC_SND_ENTRY( NODE, dss_counter     , DSS_NODE        , 8, DSE( static_cast<int>(ENAB),static_cast<int>(RESET),static_cast<int>(CLK),NODE_NC,NODE_NC,static_cast<int>(DIR),static_cast<int>(INIT0),NODE_NC ), DSE( ENAB,RESET,CLK,MIN,MAX,DIR,INIT0,CLKTYPE ), nullptr, "DISCRETE_COUNTER" ),
+#define DISCRETE_COUNTER_7492(NODE,ENAB,RESET,CLK,CLKTYPE)              DSC_SND_ENTRY( NODE, dss_counter     , DSS_NODE        , 8, DSE( static_cast<int>(ENAB),static_cast<int>(RESET),static_cast<int>(CLK),NODE_NC,NODE_NC,NODE_NC,NODE_NC,NODE_NC ), DSE( ENAB,RESET,CLK,CLKTYPE,0,1,0,DISC_COUNTER_IS_7492 ), nullptr, "DISCRETE_COUNTER_7492" ),
+#define DISCRETE_LFSR_NOISE(NODE,ENAB,RESET,CLK,AMPL,FEED,BIAS,LFSRTB)  DSC_SND_ENTRY( NODE, dss_lfsr_noise  , DSS_NODE        , 6, DSE( static_cast<int>(ENAB),static_cast<int>(RESET),static_cast<int>(CLK),static_cast<int>(AMPL),static_cast<int>(FEED),static_cast<int>(BIAS) ), DSE( ENAB,RESET,CLK,AMPL,FEED,BIAS ), LFSRTB, "DISCRETE_LFSR_NOISE" ),
+#define DISCRETE_NOISE(NODE,ENAB,FREQ,AMPL,BIAS)                        DSC_SND_ENTRY( NODE, dss_noise       , DSS_NODE        , 4, DSE( static_cast<int>(ENAB),static_cast<int>(FREQ),static_cast<int>(AMPL),static_cast<int>(BIAS) ), DSE( ENAB,FREQ,AMPL,BIAS ), nullptr, "DISCRETE_NOISE" ),
+#define DISCRETE_NOTE(NODE,ENAB,CLK,DATA,MAX1,MAX2,CLKTYPE)             DSC_SND_ENTRY( NODE, dss_note        , DSS_NODE        , 6, DSE( static_cast<int>(ENAB),static_cast<int>(CLK),static_cast<int>(DATA),NODE_NC,NODE_NC,NODE_NC ), DSE( ENAB,CLK,DATA,MAX1,MAX2,CLKTYPE ), nullptr, "DISCRETE_NOTE" ),
+#define DISCRETE_SAWTOOTHWAVE(NODE,ENAB,FREQ,AMPL,BIAS,GRAD,PHASE)      DSC_SND_ENTRY( NODE, dss_sawtoothwave, DSS_NODE        , 6, DSE( static_cast<int>(ENAB),static_cast<int>(FREQ),static_cast<int>(AMPL),static_cast<int>(BIAS),NODE_NC,NODE_NC ), DSE( ENAB,FREQ,AMPL,BIAS,GRAD,PHASE ), nullptr, "DISCRETE_SAWTOOTHWAVE" ),
+#define DISCRETE_SINEWAVE(NODE,ENAB,FREQ,AMPL,BIAS,PHASE)               DSC_SND_ENTRY( NODE, dss_sinewave    , DSS_NODE        , 5, DSE( static_cast<int>(ENAB),static_cast<int>(FREQ),static_cast<int>(AMPL),static_cast<int>(BIAS),NODE_NC ), DSE( ENAB,FREQ,AMPL,BIAS,PHASE ), nullptr, "DISCRETE_SINEWAVE" ),
+#define DISCRETE_SQUAREWAVE(NODE,ENAB,FREQ,AMPL,DUTY,BIAS,PHASE)        DSC_SND_ENTRY( NODE, dss_squarewave  , DSS_NODE        , 6, DSE( static_cast<int>(ENAB),static_cast<int>(FREQ),static_cast<int>(AMPL),static_cast<int>(DUTY),static_cast<int>(BIAS),NODE_NC ), DSE( ENAB,FREQ,AMPL,DUTY,BIAS,PHASE ), nullptr, "DISCRETE_SQUAREWAVE" ),
+#define DISCRETE_SQUAREWFIX(NODE,ENAB,FREQ,AMPL,DUTY,BIAS,PHASE)        DSC_SND_ENTRY( NODE, dss_squarewfix  , DSS_NODE        , 6, DSE( static_cast<int>(ENAB),static_cast<int>(FREQ),static_cast<int>(AMPL),static_cast<int>(DUTY),static_cast<int>(BIAS),NODE_NC ), DSE( ENAB,FREQ,AMPL,DUTY,BIAS,PHASE ), nullptr, "DISCRETE_SQUAREWFIX" ),
+#define DISCRETE_SQUAREWAVE2(NODE,ENAB,AMPL,T_OFF,T_ON,BIAS,TSHIFT)     DSC_SND_ENTRY( NODE, dss_squarewave2 , DSS_NODE        , 6, DSE( static_cast<int>(ENAB),static_cast<int>(AMPL),static_cast<int>(T_OFF),static_cast<int>(T_ON),static_cast<int>(BIAS),NODE_NC ), DSE( ENAB,AMPL,T_OFF,T_ON,BIAS,TSHIFT ), nullptr, "DISCRETE_SQUAREWAVE2" ),
+#define DISCRETE_TRIANGLEWAVE(NODE,ENAB,FREQ,AMPL,BIAS,PHASE)           DSC_SND_ENTRY( NODE, dss_trianglewave, DSS_NODE        , 5, DSE( static_cast<int>(ENAB),static_cast<int>(FREQ),static_cast<int>(AMPL),static_cast<int>(BIAS),NODE_NC ), DSE( ENAB,FREQ,AMPL,BIAS,PHASE ), nullptr, "DISCRETE_TRIANGLEWAVE" ),
+/* Component specific */
+#define DISCRETE_INVERTER_OSC(NODE,ENAB,MOD,RCHARGE,RP,C,R2,INFO)       DSC_SND_ENTRY( NODE, dss_inverter_osc, DSS_NODE        , 6, DSE( static_cast<int>(ENAB),static_cast<int>(MOD),NODE_NC,NODE_NC,NODE_NC,NODE_NC ), DSE( ENAB,MOD,RCHARGE,RP,C,R2 ), INFO, "DISCRETE_INVERTER_OSC" ),
+#define DISCRETE_OP_AMP_OSCILLATOR(NODE,ENAB,INFO)                      DSC_SND_ENTRY( NODE, dss_op_amp_osc  , DSS_NODE        , 1, DSE( static_cast<int>(ENAB) ), DSE( ENAB ), INFO, "DISCRETE_OP_AMP_OSCILLATOR" ),
+#define DISCRETE_OP_AMP_VCO1(NODE,ENAB,VMOD1,INFO)                      DSC_SND_ENTRY( NODE, dss_op_amp_osc  , DSS_NODE        , 2, DSE( static_cast<int>(ENAB),static_cast<int>(VMOD1) ), DSE( ENAB,VMOD1 ), INFO, "DISCRETE_OP_AMP_VCO1" ),
+#define DISCRETE_OP_AMP_VCO2(NODE,ENAB,VMOD1,VMOD2,INFO)                DSC_SND_ENTRY( NODE, dss_op_amp_osc  , DSS_NODE        , 3, DSE( static_cast<int>(ENAB),static_cast<int>(VMOD1),static_cast<int>(VMOD2) ), DSE( ENAB,VMOD1,VMOD2 ), INFO, "DISCRETE_OP_AMP_VCO2" ),
+#define DISCRETE_SCHMITT_OSCILLATOR(NODE,ENAB,INP0,AMPL,TABLE)          DSC_SND_ENTRY( NODE, dss_schmitt_osc , DSS_NODE        , 3, DSE( static_cast<int>(ENAB),static_cast<int>(INP0),static_cast<int>(AMPL) ), DSE( ENAB,INP0,AMPL ), TABLE, "DISCRETE_SCHMITT_OSCILLATOR" ),
+/* Not yet implemented */
+#define DISCRETE_ADSR_ENV(NODE,ENAB,TRIGGER,GAIN,ADSRTB)                DSC_SND_ENTRY( NODE, dss_adsr        , DSS_NODE        , 3, DSE( static_cast<int>(ENAB),static_cast<int>(TRIGGER),static_cast<int>(GAIN) ), DSE( ENAB,TRIGGER,GAIN ), ADSRTB, "DISCRETE_ADSR_ENV" ),
+
+/* from disc_mth.inc */
+/* generic modules */
+#define DISCRETE_ADDER2(NODE,ENAB,INP0,INP1)                            DSC_SND_ENTRY( NODE, dst_adder       , DSS_NODE        , 3, DSE( static_cast<int>(ENAB),static_cast<int>(INP0),static_cast<int>(INP1) ), DSE( ENAB,INP0,INP1 ), nullptr, "DISCRETE_ADDER2" ),
+#define DISCRETE_ADDER3(NODE,ENAB,INP0,INP1,INP2)                       DSC_SND_ENTRY( NODE, dst_adder       , DSS_NODE        , 4, DSE( static_cast<int>(ENAB),static_cast<int>(INP0),static_cast<int>(INP1),static_cast<int>(INP2) ), DSE( ENAB,INP0,INP1,INP2 ), nullptr, "DISCRETE_ADDER3" ),
+#define DISCRETE_ADDER4(NODE,ENAB,INP0,INP1,INP2,INP3)                  DSC_SND_ENTRY( NODE, dst_adder       , DSS_NODE        , 5, DSE( static_cast<int>(ENAB),static_cast<int>(INP0),static_cast<int>(INP1),static_cast<int>(INP2),static_cast<int>(INP3) ), DSE( ENAB,INP0,INP1,INP2,INP3 ), nullptr, "DISCRETE_ADDER4" ),
+#define DISCRETE_CLAMP(NODE,INP0,MIN,MAX)                               DSC_SND_ENTRY( NODE, dst_clamp       , DSS_NODE        , 3, DSE( static_cast<int>(INP0),static_cast<int>(MIN),static_cast<int>(MAX) ), DSE( INP0,MIN,MAX ), nullptr, "DISCRETE_CLAMP" ),
+#define DISCRETE_DIVIDE(NODE,ENAB,INP0,INP1)                            DSC_SND_ENTRY( NODE, dst_divide      , DSS_NODE        , 3, DSE( static_cast<int>(ENAB),static_cast<int>(INP0),static_cast<int>(INP1) ), DSE( ENAB,INP0,INP1 ), nullptr, "DISCRETE_DIVIDE" ),
+#define DISCRETE_GAIN(NODE,INP0,GAIN)                                   DSC_SND_ENTRY( NODE, dst_gain        , DSS_NODE        , 3, DSE( static_cast<int>(INP0),NODE_NC,NODE_NC ), DSE( INP0,GAIN,0 ), nullptr, "DISCRETE_GAIN" ),
+#define DISCRETE_INVERT(NODE,INP0)                                      DSC_SND_ENTRY( NODE, dst_gain        , DSS_NODE        , 3, DSE( static_cast<int>(INP0),NODE_NC,NODE_NC ), DSE( INP0,-1,0 ), nullptr, "DISCRETE_INVERT" ),
+#define DISCRETE_LOGIC_INVERT(NODE,INP0)                                DSC_SND_ENTRY( NODE, dst_logic_inv   , DSS_NODE        , 1, DSE( static_cast<int>(INP0) ), DSE( INP0 ), nullptr, "DISCRETE_LOGIC_INVERT" ),
+
+#define DISCRETE_BIT_DECODE(NODE, INP, BIT_N, VOUT)                     DSC_SND_ENTRY( NODE, dst_bits_decode , DSS_NODE        , 4, DSE( static_cast<int>(INP),NODE_NC,NODE_NC,NODE_NC ), DSE( INP,BIT_N,BIT_N,VOUT ), nullptr, "DISCRETE_BIT_DECODE" ),
+#define DISCRETE_BITS_DECODE(NODE, INP, BIT_FROM, BIT_TO, VOUT)         DSC_SND_ENTRY( NODE, dst_bits_decode , DSS_NODE        , 4, DSE( static_cast<int>(INP),NODE_NC,NODE_NC,NODE_NC ), DSE( INP,BIT_FROM,BIT_TO,VOUT ), nullptr, "DISCRETE_BITS_DECODE" ),
+
+#define DISCRETE_LOGIC_AND(NODE,INP0,INP1)                              DSC_SND_ENTRY( NODE, dst_logic_and   , DSS_NODE        , 4, DSE( static_cast<int>(INP0),static_cast<int>(INP1),NODE_NC,NODE_NC ), DSE( INP0,INP1,1.0,1.0 ), nullptr, "DISCRETE_LOGIC_AND" ),
+#define DISCRETE_LOGIC_AND3(NODE,INP0,INP1,INP2)                        DSC_SND_ENTRY( NODE, dst_logic_and   , DSS_NODE        , 4, DSE( static_cast<int>(INP0),static_cast<int>(INP1),static_cast<int>(INP2),NODE_NC ), DSE( INP0,INP1,INP2,1.0 ), nullptr, "DISCRETE_LOGIC_AND3" ),
+#define DISCRETE_LOGIC_AND4(NODE,INP0,INP1,INP2,INP3)                   DSC_SND_ENTRY( NODE, dst_logic_and   , DSS_NODE        , 4, DSE( static_cast<int>(INP0),static_cast<int>(INP1),static_cast<int>(INP2),static_cast<int>(INP3) ), DSE( INP0,INP1,INP2,INP3 ) ,nullptr, "DISCRETE_LOGIC_AND4" ),
+#define DISCRETE_LOGIC_NAND(NODE,INP0,INP1)                             DSC_SND_ENTRY( NODE, dst_logic_nand  , DSS_NODE        , 4, DSE( static_cast<int>(INP0),static_cast<int>(INP1),NODE_NC,NODE_NC ), DSE( INP0,INP1,1.0,1.0 ), nullptr, "DISCRETE_LOGIC_NAND" ),
+#define DISCRETE_LOGIC_NAND3(NODE,INP0,INP1,INP2)                       DSC_SND_ENTRY( NODE, dst_logic_nand  , DSS_NODE        , 4, DSE( static_cast<int>(INP0),static_cast<int>(INP1),static_cast<int>(INP2),NODE_NC ), DSE( INP0,INP1,INP2,1.0 ), nullptr, "DISCRETE_LOGIC_NAND3" ),
+#define DISCRETE_LOGIC_NAND4(NODE,INP0,INP1,INP2,INP3)                  DSC_SND_ENTRY( NODE, dst_logic_nand  , DSS_NODE        , 4, DSE( static_cast<int>(INP0),static_cast<int>(INP1),static_cast<int>(INP2),static_cast<int>(INP3) ), DSE( INP0,INP1,INP2,INP3 ), nullptr, ")DISCRETE_LOGIC_NAND4" ),
+#define DISCRETE_LOGIC_OR(NODE,INP0,INP1)                               DSC_SND_ENTRY( NODE, dst_logic_or    , DSS_NODE        , 4, DSE( static_cast<int>(INP0),static_cast<int>(INP1),NODE_NC,NODE_NC ), DSE( INP0,INP1,0.0,0.0 ), nullptr, "DISCRETE_LOGIC_OR" ),
+#define DISCRETE_LOGIC_OR3(NODE,INP0,INP1,INP2)                         DSC_SND_ENTRY( NODE, dst_logic_or    , DSS_NODE        , 4, DSE( static_cast<int>(INP0),static_cast<int>(INP1),static_cast<int>(INP2),NODE_NC ), DSE( INP0,INP1,INP2,0.0 ), nullptr, "DISCRETE_LOGIC_OR3" ),
+#define DISCRETE_LOGIC_OR4(NODE,INP0,INP1,INP2,INP3)                    DSC_SND_ENTRY( NODE, dst_logic_or    , DSS_NODE        , 4, DSE( static_cast<int>(INP0),static_cast<int>(INP1),static_cast<int>(INP2),static_cast<int>(INP3) ), DSE( INP0,INP1,INP2,INP3 ), nullptr, "DISCRETE_LOGIC_OR4" ),
+#define DISCRETE_LOGIC_NOR(NODE,INP0,INP1)                              DSC_SND_ENTRY( NODE, dst_logic_nor   , DSS_NODE        , 4, DSE( static_cast<int>(INP0),static_cast<int>(INP1),NODE_NC,NODE_NC ), DSE( INP0,INP1,0.0,0.0 ), nullptr, "DISCRETE_LOGIC_NOR" ),
+#define DISCRETE_LOGIC_NOR3(NODE,INP0,INP1,INP2)                        DSC_SND_ENTRY( NODE, dst_logic_nor   , DSS_NODE        , 4, DSE( static_cast<int>(INP0),static_cast<int>(INP1),static_cast<int>(INP2),NODE_NC ), DSE( INP0,INP1,INP2,0.0 ), nullptr, "DISCRETE_LOGIC_NOR3" ),
+#define DISCRETE_LOGIC_NOR4(NODE,INP0,INP1,INP2,INP3)                   DSC_SND_ENTRY( NODE, dst_logic_nor   , DSS_NODE        , 4, DSE( static_cast<int>(INP0),static_cast<int>(INP1),static_cast<int>(INP2),static_cast<int>(INP3) ), DSE( INP0,INP1,INP2,INP3 ), nullptr, "DISCRETE_LOGIC_NOR4" ),
+#define DISCRETE_LOGIC_XOR(NODE,INP0,INP1)                              DSC_SND_ENTRY( NODE, dst_logic_xor   , DSS_NODE        , 2, DSE( static_cast<int>(INP0),static_cast<int>(INP1) ), DSE( INP0,INP1 ), nullptr, "DISCRETE_LOGIC_XOR" ),
+#define DISCRETE_LOGIC_XNOR(NODE,INP0,INP1)                             DSC_SND_ENTRY( NODE, dst_logic_nxor  , DSS_NODE        , 2, DSE( static_cast<int>(INP0),static_cast<int>(INP1) ), DSE( INP0,INP1 ), nullptr, "DISCRETE_LOGIC_XNOR" ),
+#define DISCRETE_LOGIC_DFLIPFLOP(NODE,RESET,SET,CLK,INP)                DSC_SND_ENTRY( NODE, dst_logic_dff   , DSS_NODE        , 4, DSE( static_cast<int>(RESET),static_cast<int>(SET),static_cast<int>(CLK),static_cast<int>(INP) ), DSE( RESET,SET,CLK,INP ), nullptr, "DISCRETE_LOGIC_DFLIPFLOP" ),
+#define DISCRETE_LOGIC_JKFLIPFLOP(NODE,RESET,SET,CLK,J,K)               DSC_SND_ENTRY( NODE, dst_logic_jkff  , DSS_NODE        , 5, DSE( static_cast<int>(RESET),static_cast<int>(SET),static_cast<int>(CLK),static_cast<int>(J),static_cast<int>(K) ), DSE( RESET,SET,CLK,J,K ), nullptr, "DISCRETE_LOGIC_JKFLIPFLOP" ),
+#define DISCRETE_LOGIC_SHIFT(NODE,INP0,RESET,CLK,SIZE,OPTIONS)          DSC_SND_ENTRY( NODE, dst_logic_shift , DSS_NODE        , 5, DSE( static_cast<int>(INP0),static_cast<int>(RESET),static_cast<int>(CLK),NODE_NC,NODE_NC ), DSE( INP0,RESET,CLK,SIZE,OPTIONS ), nullptr, "DISCRETE_LOGIC_SHIFT" ),
+#define DISCRETE_LOOKUP_TABLE(NODE,ADDR,SIZE,TABLE)                     DSC_SND_ENTRY( NODE, dst_lookup_table, DSS_NODE        , 2, DSE( static_cast<int>(ADDR),NODE_NC ), DSE( ADDR,SIZE ), TABLE, "DISCRETE_LOOKUP_TABLE" ),
+#define DISCRETE_MULTIPLEX2(NODE,ADDR,INP0,INP1)                        DSC_SND_ENTRY( NODE, dst_multiplex   , DSS_NODE        , 3, DSE( static_cast<int>(ADDR),static_cast<int>(INP0),static_cast<int>(INP1) ), DSE( ADDR,INP0,INP1 ), nullptr, "DISCRETE_MULTIPLEX2" ),
+#define DISCRETE_MULTIPLEX4(NODE,ADDR,INP0,INP1,INP2,INP3)              DSC_SND_ENTRY( NODE, dst_multiplex   , DSS_NODE        , 5, DSE( static_cast<int>(ADDR),static_cast<int>(INP0),static_cast<int>(INP1),static_cast<int>(INP2),static_cast<int>(INP3) ), DSE( ADDR,INP0,INP1,INP2,INP3 ), nullptr, "DISCRETE_MULTIPLEX4" ),
+#define DISCRETE_MULTIPLEX8(NODE,ADDR,INP0,INP1,INP2,INP3,INP4,INP5,INP6,INP7) DSC_SND_ENTRY( NODE, dst_multiplex, DSS_NODE    , 9, DSE( static_cast<int>(ADDR),static_cast<int>(INP0),static_cast<int>(INP1),static_cast<int>(INP2),static_cast<int>(INP3),static_cast<int>(INP4),static_cast<int>(INP5),static_cast<int>(INP6),static_cast<int>(INP7) ), DSE( ADDR,INP0,INP1,INP2,INP3,INP4,INP5,INP6,INP7 ), nullptr, "DISCRETE_MULTIPLEX8" ),
+#define DISCRETE_MULTIPLY(NODE,INP0,INP1)                               DSC_SND_ENTRY( NODE, dst_gain        , DSS_NODE        , 3, DSE( static_cast<int>(INP0),static_cast<int>(INP1),NODE_NC ), DSE( INP0,INP1,0 ), nullptr, "DISCRETE_MULTIPLY" ),
+#define DISCRETE_MULTADD(NODE,INP0,INP1,INP2)                           DSC_SND_ENTRY( NODE, dst_gain        , DSS_NODE        , 3, DSE( static_cast<int>(INP0),static_cast<int>(INP1),static_cast<int>(INP2) ), DSE( INP0,INP1,INP2 ), nullptr, "DISCRETE_MULTADD" ),
+#define DISCRETE_ONESHOT(NODE,TRIG,AMPL,WIDTH,TYPE)                     DSC_SND_ENTRY( NODE, dst_oneshot     , DSS_NODE        , 5, DSE( 0,static_cast<int>(TRIG),static_cast<int>(AMPL),static_cast<int>(WIDTH),NODE_NC ), DSE( 0,TRIG,AMPL,WIDTH,TYPE ), nullptr, "DISCRETE_ONESHOT" ),
+#define DISCRETE_ONESHOTR(NODE,RESET,TRIG,AMPL,WIDTH,TYPE)              DSC_SND_ENTRY( NODE, dst_oneshot     , DSS_NODE        , 5, DSE( static_cast<int>(RESET),static_cast<int>(TRIG),static_cast<int>(AMPL),static_cast<int>(WIDTH),NODE_NC ), DSE( RESET,TRIG,AMPL,WIDTH,TYPE ), nullptr, "One Shot Resetable" ),
+#define DISCRETE_ONOFF(NODE,ENAB,INP0)                                  DSC_SND_ENTRY( NODE, dst_gain        , DSS_NODE        , 3, DSE( static_cast<int>(ENAB),static_cast<int>(INP0),NODE_NC ), DSE( 0,1,0 ), nullptr, "DISCRETE_ONOFF" ),
+#define DISCRETE_RAMP(NODE,ENAB,RAMP,GRAD,START,END,CLAMP)              DSC_SND_ENTRY( NODE, dst_ramp        , DSS_NODE        , 6, DSE( static_cast<int>(ENAB),static_cast<int>(RAMP),static_cast<int>(GRAD),static_cast<int>(START),static_cast<int>(END),static_cast<int>(CLAMP) ), DSE( ENAB,RAMP,GRAD,START,END,CLAMP ), nullptr, "DISCRETE_RAMP" ),
+#define DISCRETE_SAMPLHOLD(NODE,INP0,CLOCK,CLKTYPE)                     DSC_SND_ENTRY( NODE, dst_samphold    , DSS_NODE        , 3, DSE( static_cast<int>(INP0),static_cast<int>(CLOCK),NODE_NC ), DSE( INP0,CLOCK,CLKTYPE ), nullptr, "DISCRETE_SAMPLHOLD" ),
+#define DISCRETE_SWITCH(NODE,ENAB,SWITCH,INP0,INP1)                     DSC_SND_ENTRY( NODE, dst_switch      , DSS_NODE        , 4, DSE( static_cast<int>(ENAB),static_cast<int>(SWITCH),static_cast<int>(INP0),static_cast<int>(INP1) ), DSE( ENAB,SWITCH,INP0,INP1 ), nullptr, "DISCRETE_SWITCH" ),
+#define DISCRETE_ASWITCH(NODE,CTRL,INP,THRESHOLD)                       DSC_SND_ENTRY( NODE, dst_aswitch     , DSS_NODE        , 3, DSE( static_cast<int>(CTRL),static_cast<int>(INP),static_cast<int>(THRESHOLD) ), DSE( CTRL,INP, THRESHOLD), nullptr, "Analog Switch" ),
+#define DISCRETE_TRANSFORM2(NODE,INP0,INP1,FUNCT)                       DSC_SND_ENTRY( NODE, dst_transform   , DSS_NODE        , 2, DSE( static_cast<int>(INP0),static_cast<int>(INP1) ), DSE( INP0,INP1 ), FUNCT, "DISCRETE_TRANSFORM2" ),
+#define DISCRETE_TRANSFORM3(NODE,INP0,INP1,INP2,FUNCT)                  DSC_SND_ENTRY( NODE, dst_transform   , DSS_NODE        , 3, DSE( static_cast<int>(INP0),static_cast<int>(INP1),static_cast<int>(INP2) ), DSE( INP0,INP1,INP2 ), FUNCT, "DISCRETE_TRANSFORM3" ),
+#define DISCRETE_TRANSFORM4(NODE,INP0,INP1,INP2,INP3,FUNCT)             DSC_SND_ENTRY( NODE, dst_transform   , DSS_NODE        , 4, DSE( static_cast<int>(INP0),static_cast<int>(INP1),static_cast<int>(INP2),static_cast<int>(INP3) ), DSE( INP0,INP1,INP2,INP3 ), FUNCT, "DISCRETE_TRANSFORM4" ),
+#define DISCRETE_TRANSFORM5(NODE,INP0,INP1,INP2,INP3,INP4,FUNCT)        DSC_SND_ENTRY( NODE, dst_transform   , DSS_NODE        , 5, DSE( static_cast<int>(INP0),static_cast<int>(INP1),static_cast<int>(INP2),static_cast<int>(INP3),static_cast<int>(INP4) ), DSE( INP0,INP1,INP2,INP3,INP4 ), FUNCT, "DISCRETE_TRANSFORM5" ),
+/* Component specific */
+#define DISCRETE_COMP_ADDER(NODE,DATA,TABLE)                            DSC_SND_ENTRY( NODE, dst_comp_adder  , DSS_NODE        , 1, DSE( static_cast<int>(DATA) ), DSE( DATA ), TABLE, "DISCRETE_COMP_ADDER" ),
+#define DISCRETE_DAC_R1(NODE,DATA,VDATA,LADDER)                         DSC_SND_ENTRY( NODE, dst_dac_r1      , DSS_NODE        , 2, DSE( static_cast<int>(DATA),NODE_NC ), DSE( DATA,VDATA ), LADDER, "DISCRETE_DAC_R1" ),
+#define DISCRETE_DIODE_MIXER2(NODE,IN0,IN1,TABLE)                       DSC_SND_ENTRY( NODE, dst_diode_mix   , DSS_NODE        , 2, DSE( static_cast<int>(IN0),static_cast<int>(IN1) ), DSE( IN0,IN1 ), TABLE, "DISCRETE_DIODE_MIXER2" ),
+#define DISCRETE_DIODE_MIXER3(NODE,IN0,IN1,IN2,TABLE)                   DSC_SND_ENTRY( NODE, dst_diode_mix   , DSS_NODE        , 3, DSE( static_cast<int>(IN0),static_cast<int>(IN1),static_cast<int>(IN2) ), DSE( IN0,IN1,IN2 ), TABLE, "DISCRETE_DIODE_MIXER3" ),
+#define DISCRETE_DIODE_MIXER4(NODE,IN0,IN1,IN2,IN3,TABLE)               DSC_SND_ENTRY( NODE, dst_diode_mix   , DSS_NODE        , 4, DSE( static_cast<int>(IN0),static_cast<int>(IN1),static_cast<int>(IN2),static_cast<int>(IN3) ), DSE( IN0,IN1,IN2,IN3 ), TABLE, "DISCRETE_DIODE_MIXER4" ),
+#define DISCRETE_INTEGRATE(NODE,TRG0,TRG1,INFO)                         DSC_SND_ENTRY( NODE, dst_integrate   , DSS_NODE        , 2, DSE( static_cast<int>(TRG0),static_cast<int>(TRG1) ), DSE( TRG0,TRG1 ), INFO, "DISCRETE_INTEGRATE" ),
+#define DISCRETE_MIXER2(NODE,ENAB,IN0,IN1,INFO)                         DSC_SND_ENTRY( NODE, dst_mixer       , DSS_NODE        , 3, DSE( static_cast<int>(ENAB),static_cast<int>(IN0),static_cast<int>(IN1) ), DSE( ENAB,IN0,IN1 ), INFO, "DISCRETE_MIXER2" ),
+#define DISCRETE_MIXER3(NODE,ENAB,IN0,IN1,IN2,INFO)                     DSC_SND_ENTRY( NODE, dst_mixer       , DSS_NODE        , 4, DSE( static_cast<int>(ENAB),static_cast<int>(IN0),static_cast<int>(IN1),static_cast<int>(IN2) ), DSE( ENAB,IN0,IN1,IN2 ), INFO, "DISCRETE_MIXER3" ),
+#define DISCRETE_MIXER4(NODE,ENAB,IN0,IN1,IN2,IN3,INFO)                 DSC_SND_ENTRY( NODE, dst_mixer       , DSS_NODE        , 5, DSE( static_cast<int>(ENAB),static_cast<int>(IN0),static_cast<int>(IN1),static_cast<int>(IN2),static_cast<int>(IN3) ), DSE( ENAB,IN0,IN1,IN2,IN3 ), INFO, "DISCRETE_MIXER4" ),
+#define DISCRETE_MIXER5(NODE,ENAB,IN0,IN1,IN2,IN3,IN4,INFO)             DSC_SND_ENTRY( NODE, dst_mixer       , DSS_NODE        , 6, DSE( static_cast<int>(ENAB),static_cast<int>(IN0),static_cast<int>(IN1),static_cast<int>(IN2),static_cast<int>(IN3),static_cast<int>(IN4) ), DSE( ENAB,IN0,IN1,IN2,IN3,IN4 ), INFO, "DISCRETE_MIXER5" ),
+#define DISCRETE_MIXER6(NODE,ENAB,IN0,IN1,IN2,IN3,IN4,IN5,INFO)         DSC_SND_ENTRY( NODE, dst_mixer       , DSS_NODE        , 7, DSE( static_cast<int>(ENAB),static_cast<int>(IN0),static_cast<int>(IN1),static_cast<int>(IN2),static_cast<int>(IN3),static_cast<int>(IN4),static_cast<int>(IN5) ), DSE( ENAB,IN0,IN1,IN2,IN3,IN4,IN5 ), INFO, "DISCRETE_MIXER6" ),
+#define DISCRETE_MIXER7(NODE,ENAB,IN0,IN1,IN2,IN3,IN4,IN5,IN6,INFO)     DSC_SND_ENTRY( NODE, dst_mixer       , DSS_NODE        , 8, DSE( static_cast<int>(ENAB),static_cast<int>(IN0),static_cast<int>(IN1),static_cast<int>(IN2),static_cast<int>(IN3),static_cast<int>(IN4),static_cast<int>(IN5),static_cast<int>(IN6) ), DSE( ENAB,IN0,IN1,IN2,IN3,IN4,IN5,IN6 ), INFO, "DISCRETE_MIXER7" ),
+#define DISCRETE_MIXER8(NODE,ENAB,IN0,IN1,IN2,IN3,IN4,IN5,IN6,IN7,INFO) DSC_SND_ENTRY( NODE, dst_mixer       , DSS_NODE        , 9, DSE( static_cast<int>(ENAB),static_cast<int>(IN0),static_cast<int>(IN1),static_cast<int>(IN2),static_cast<int>(IN3),static_cast<int>(IN4),static_cast<int>(IN5),static_cast<int>(IN6),static_cast<int>(IN7) ), DSE( ENAB,IN0,IN1,IN2,IN3,IN4,IN5,IN6,IN7 ), INFO, "DISCRETE_MIXER8" ),
+#define DISCRETE_OP_AMP(NODE,ENAB,IN0,IN1,INFO)                         DSC_SND_ENTRY( NODE, dst_op_amp      , DSS_NODE        , 3, DSE( static_cast<int>(ENAB),static_cast<int>(IN0),static_cast<int>(IN1) ), DSE( ENAB,IN0,IN1 ), INFO, "DISCRETE_OP_AMP" ),
+#define DISCRETE_OP_AMP_ONESHOT(NODE,TRIG,INFO)                         DSC_SND_ENTRY( NODE, dst_op_amp_1sht , DSS_NODE        , 1, DSE( static_cast<int>(TRIG) ), DSE( TRIG ), INFO, "DISCRETE_OP_AMP_ONESHOT" ),
+#define DISCRETE_OP_AMP_TRIG_VCA(NODE,TRG0,TRG1,TRG2,IN0,IN1,INFO)      DSC_SND_ENTRY( NODE, dst_tvca_op_amp , DSS_NODE        , 5, DSE( static_cast<int>(TRG0),static_cast<int>(TRG1),static_cast<int>(TRG2),static_cast<int>(IN0),static_cast<int>(IN1) ), DSE( TRG0,TRG1,TRG2,IN0,IN1 ), INFO, "DISCRETE_OP_AMP_TRIG_VCA" ),
+#define DISCRETE_VCA(NODE,ENAB,IN0,CTRL,TYPE)                           DSC_SND_ENTRY( NODE, dst_vca         , DSS_NODE        , 4, DSE( static_cast<int>(ENAB),static_cast<int>(IN0),static_cast<int>(CTRL),NODE_NC ), DSE( ENAB,IN0,CTRL,TYPE ), nullptr, "DISCRETE_VCA" ),
+#define DISCRETE_XTIME_BUFFER(NODE,IN0,LOW,HIGH)                        DSC_SND_ENTRY( NODE, dst_xtime_buffer, DSS_NODE        , 4, DSE( static_cast<int>(IN0),static_cast<int>(LOW),static_cast<int>(HIGH),NODE_NC ), DSE( IN0,LOW,HIGH,0 ), nullptr, "DISCRETE_XTIME_BUFFER" ),
+#define DISCRETE_XTIME_INVERTER(NODE,IN0,LOW,HIGH)                      DSC_SND_ENTRY( NODE, dst_xtime_buffer, DSS_NODE        , 4, DSE( static_cast<int>(IN0),static_cast<int>(LOW),static_cast<int>(HIGH),NODE_NC ), DSE( IN0,LOW,HIGH,1 ), nullptr, "DISCRETE_XTIME_INVERTER" ),
+#define DISCRETE_XTIME_AND(NODE,IN0,IN1,LOW,HIGH)                       DSC_SND_ENTRY( NODE, dst_xtime_and   , DSS_NODE        , 5, DSE( static_cast<int>(IN0),static_cast<int>(IN1),static_cast<int>(LOW),static_cast<int>(HIGH),NODE_NC ), DSE( IN0,IN1,LOW,HIGH,0 ), nullptr, "DISCRETE_XTIME_AND" ),
+#define DISCRETE_XTIME_NAND(NODE,IN0,IN1,LOW,HIGH)                      DSC_SND_ENTRY( NODE, dst_xtime_and   , DSS_NODE        , 5, DSE( static_cast<int>(IN0),static_cast<int>(IN1),static_cast<int>(LOW),static_cast<int>(HIGH),NODE_NC ), DSE( IN0,IN1,LOW,HIGH,1 ), nullptr, "DISCRETE_XTIME_NAND" ),
+#define DISCRETE_XTIME_OR(NODE,IN0,IN1,LOW,HIGH)                        DSC_SND_ENTRY( NODE, dst_xtime_or    , DSS_NODE        , 5, DSE( static_cast<int>(IN0),static_cast<int>(IN1),static_cast<int>(LOW),static_cast<int>(HIGH),NODE_NC ), DSE( IN0,IN1,LOW,HIGH,0 ), nullptr, "DISCRETE_XTIME_OR" ),
+#define DISCRETE_XTIME_NOR(NODE,IN0,IN1,LOW,HIGH)                       DSC_SND_ENTRY( NODE, dst_xtime_or    , DSS_NODE        , 5, DSE( static_cast<int>(IN0),static_cast<int>(IN1),static_cast<int>(LOW),static_cast<int>(HIGH),NODE_NC ), DSE( IN0,IN1,LOW,HIGH,1 ), nullptr, "DISCRETE_XTIME_NOR" ),
+#define DISCRETE_XTIME_XOR(NODE,IN0,IN1,LOW,HIGH)                       DSC_SND_ENTRY( NODE, dst_xtime_xor   , DSS_NODE        , 5, DSE( static_cast<int>(IN0),static_cast<int>(IN1),static_cast<int>(LOW),static_cast<int>(HIGH),NODE_NC ), DSE( IN0,IN1,LOW,HIGH,0 ), nullptr, "DISCRETE_XTIME_XOR" ),
+#define DISCRETE_XTIME_XNOR(NODE,IN0,IN1,LOW,HIGH)                      DSC_SND_ENTRY( NODE, dst_xtime_xnor  , DSS_NODE        , 5, DSE( static_cast<int>(IN0),static_cast<int>(IN1),static_cast<int>(LOW),static_cast<int>(HIGH),NODE_NC ), DSE( IN0,IN1,LOW,HIGH,1 ), nullptr, "DISCRETE_XTIME_XNOR" ),
+
+/* from disc_flt.inc */
+/* generic modules */
+#define DISCRETE_FILTER1(NODE,ENAB,INP0,FREQ,TYPE)                      DSC_SND_ENTRY( NODE, dst_filter1     , DSS_NODE        , 4, DSE( static_cast<int>(ENAB),static_cast<int>(INP0),NODE_NC,NODE_NC ), DSE( ENAB,INP0,FREQ,TYPE ), nullptr, "DISCRETE_FILTER1" ),
+#define DISCRETE_FILTER2(NODE,ENAB,INP0,FREQ,DAMP,TYPE)                 DSC_SND_ENTRY( NODE, dst_filter2     , DSS_NODE        , 5, DSE( static_cast<int>(ENAB),static_cast<int>(INP0),NODE_NC,NODE_NC,NODE_NC ), DSE( ENAB,INP0,FREQ,DAMP,TYPE ), nullptr, "DISCRETE_FILTER2" ),
+/* Component specific */
+#define DISCRETE_SALLEN_KEY_FILTER(NODE,ENAB,INP0,TYPE,INFO)            DSC_SND_ENTRY( NODE, dst_sallen_key  , DSS_NODE        , 3, DSE( static_cast<int>(ENAB),static_cast<int>(INP0),NODE_NC ), DSE( ENAB,INP0,TYPE ), INFO, "DISCRETE_SALLEN_KEY_FILTER" ),
+#define DISCRETE_CRFILTER(NODE,INP0,RVAL,CVAL)                          DSC_SND_ENTRY( NODE, dst_crfilter    , DSS_NODE        , 3, DSE( static_cast<int>(INP0),static_cast<int>(OPT_NODE(RVAL)),static_cast<int>(OPT_NODE(CVAL)) ), DSE( INP0,RVAL,CVAL ), nullptr, "DISCRETE_CRFILTER" ),
+#define DISCRETE_CRFILTER_VREF(NODE,INP0,RVAL,CVAL,VREF)                DSC_SND_ENTRY( NODE, dst_crfilter    , DSS_NODE        , 4, DSE( static_cast<int>(INP0),static_cast<int>(OPT_NODE(RVAL)),static_cast<int>(OPT_NODE(CVAL)),static_cast<int>(VREF) ), DSE( INP0,RVAL,CVAL,VREF ), nullptr, "DISCRETE_CRFILTER_VREF" ),
+#define DISCRETE_OP_AMP_FILTER(NODE,ENAB,INP0,INP1,TYPE,INFO)           DSC_SND_ENTRY( NODE, dst_op_amp_filt , DSS_NODE        , 4, DSE( static_cast<int>(ENAB),static_cast<int>(INP0),static_cast<int>(INP1),NODE_NC ), DSE( ENAB,INP0,INP1,TYPE ), INFO, "DISCRETE_OP_AMP_FILTER" ),
+#define DISCRETE_RC_CIRCUIT_1(NODE,INP0,INP1,RVAL,CVAL)                 DSC_SND_ENTRY( NODE, dst_rc_circuit_1, DSS_NODE        , 4, DSE( static_cast<int>(INP0),static_cast<int>(INP1),NODE_NC,NODE_NC ), DSE( INP0,INP1,RVAL,CVAL ), nullptr, "DISCRETE_RC_CIRCUIT_1" ),
+#define DISCRETE_RCDISC(NODE,ENAB,INP0,RVAL,CVAL)                       DSC_SND_ENTRY( NODE, dst_rcdisc      , DSS_NODE        , 4, DSE( static_cast<int>(ENAB),static_cast<int>(INP0),NODE_NC,NODE_NC ), DSE( ENAB,INP0,RVAL,CVAL ), nullptr, "DISCRETE_RCDISC" ),
+#define DISCRETE_RCDISC2(NODE,SWITCH,INP0,RVAL0,INP1,RVAL1,CVAL)        DSC_SND_ENTRY( NODE, dst_rcdisc2     , DSS_NODE        , 6, DSE( static_cast<int>(SWITCH),static_cast<int>(INP0),NODE_NC,static_cast<int>(INP1),NODE_NC,NODE_NC ), DSE( SWITCH,INP0,RVAL0,INP1,RVAL1,CVAL ), nullptr, "DISCRETE_RCDISC2" ),
+#define DISCRETE_RCDISC3(NODE,ENAB,INP0,RVAL0,RVAL1,CVAL,DJV)           DSC_SND_ENTRY( NODE, dst_rcdisc3     , DSS_NODE        , 6, DSE( static_cast<int>(ENAB),static_cast<int>(INP0),NODE_NC,NODE_NC,NODE_NC,NODE_NC ), DSE( ENAB,INP0,RVAL0,RVAL1,CVAL,DJV ), nullptr, "DISCRETE_RCDISC3" ),
+#define DISCRETE_RCDISC4(NODE,ENAB,INP0,RVAL0,RVAL1,RVAL2,CVAL,VP,TYPE) DSC_SND_ENTRY( NODE, dst_rcdisc4     , DSS_NODE        , 8, DSE( static_cast<int>(ENAB),static_cast<int>(INP0),NODE_NC,NODE_NC,NODE_NC,NODE_NC,NODE_NC,NODE_NC ), DSE( ENAB,INP0,RVAL0,RVAL1,RVAL2,CVAL,VP,TYPE ), nullptr, "DISCRETE_RCDISC4" ),
+#define DISCRETE_RCDISC5(NODE,ENAB,INP0,RVAL,CVAL)                      DSC_SND_ENTRY( NODE, dst_rcdisc5     , DSS_NODE        , 4, DSE( static_cast<int>(ENAB),static_cast<int>(INP0),NODE_NC,NODE_NC ), DSE( ENAB,INP0,RVAL,CVAL ), nullptr, "DISCRETE_RCDISC5" ),
+#define DISCRETE_RCDISC_MODULATED(NODE,INP0,INP1,RVAL0,RVAL1,RVAL2,RVAL3,CVAL,VP)   DSC_SND_ENTRY( NODE, dst_rcdisc_mod, DSS_NODE        , 8, DSE( static_cast<int>(INP0),static_cast<int>(INP1),NODE_NC,NODE_NC,NODE_NC,NODE_NC,NODE_NC,NODE_NC ), DSE( INP0,INP1,RVAL0,RVAL1,RVAL2,RVAL3,CVAL,VP ), nullptr, "DISCRETE_RCDISC_MODULATED" ),
+#define DISCRETE_RCFILTER(NODE,INP0,RVAL,CVAL)                          DSC_SND_ENTRY( NODE, dst_rcfilter    , DSS_NODE        , 3, DSE( static_cast<int>(INP0),static_cast<int>(OPT_NODE(RVAL)),static_cast<int>(OPT_NODE(CVAL)) ), DSE( INP0,RVAL,CVAL ), nullptr, "DISCRETE_RCFILTER" ),
+#define DISCRETE_RCFILTER_VREF(NODE,INP0,RVAL,CVAL,VREF)                DSC_SND_ENTRY( NODE, dst_rcfilter    , DSS_NODE        , 4, DSE( static_cast<int>(INP0),static_cast<int>(OPT_NODE(RVAL)),static_cast<int>(OPT_NODE(CVAL)),static_cast<int>(VREF) ), DSE( INP0,RVAL,CVAL,VREF ), nullptr, "DISCRETE_RCFILTER_VREF" ),
+#define DISCRETE_RCFILTER_SW(NODE,ENAB,INP0,SW,RVAL,CVAL1,CVAL2,CVAL3,CVAL4) DSC_SND_ENTRY( NODE, dst_rcfilter_sw, DSS_NODE    , 8, DSE( static_cast<int>(ENAB),static_cast<int>(INP0),static_cast<int>(SW),NODE_NC,NODE_NC,NODE_NC,NODE_NC,NODE_NC ), DSE( ENAB,INP0,SW,RVAL,CVAL1,CVAL2,CVAL3,CVAL4 ), nullptr, "DISCRETE_RCFILTER_SW" ),
+#define DISCRETE_RCINTEGRATE(NODE,INP0,RVAL0,RVAL1,RVAL2,CVAL,vP,TYPE)  DSC_SND_ENTRY( NODE, dst_rcintegrate , DSS_NODE        , 7, DSE( static_cast<int>(INP0),NODE_NC,NODE_NC,NODE_NC,NODE_NC,NODE_NC,NODE_NC ), DSE( INP0,RVAL0,RVAL1,RVAL2,CVAL,vP,TYPE ), nullptr, "DISCRETE_RCINTEGRATE" ),
+/* For testing - seem to be buggered.  Use versions not ending in N. */
+#define DISCRETE_RCDISCN(NODE,ENAB,INP0,RVAL,CVAL)                      DSC_SND_ENTRY( NODE, dst_rcdiscn     , DSS_NODE        , 4, DSE( static_cast<int>(ENAB),static_cast<int>(INP0),NODE_NC,NODE_NC ), DSE( ENAB,INP0,RVAL,CVAL ), nullptr, "DISCRETE_RCDISCN" ),
+#define DISCRETE_RCDISC2N(NODE,SWITCH,INP0,RVAL0,INP1,RVAL1,CVAL)       DSC_SND_ENTRY( NODE, dst_rcdisc2n    , DSS_NODE        , 6, DSE( static_cast<int>(SWITCH),static_cast<int>(INP0),NODE_NC,static_cast<int>(INP1),NODE_NC,NODE_NC ), DSE( SWITCH,INP0,RVAL0,INP1,RVAL1,CVAL ), nullptr, "DISCRETE_RCDISC2N" ),
+#define DISCRETE_RCFILTERN(NODE,ENAB,INP0,RVAL,CVAL)                    DSC_SND_ENTRY( NODE, dst_rcfiltern   , DSS_NODE        , 4, DSE( static_cast<int>(ENAB),static_cast<int>(INP0),NODE_NC,NODE_NC ), DSE( ENAB,INP0,RVAL,CVAL ), nullptr, "DISCRETE_RCFILTERN" ),
+
+/* from disc_dev.inc */
+/* generic modules */
+#define DISCRETE_CUSTOM1(NODE,CLASS,IN0,INFO)                                 DSC_SND_ENTRY( NODE, CLASS, DST_CUSTOM      , 1, DSE( static_cast<int>(IN0) ), DSE( IN0 ), INFO, "DISCRETE_CUSTOM1" ),
+#define DISCRETE_CUSTOM2(NODE,CLASS,IN0,IN1,INFO)                             DSC_SND_ENTRY( NODE, CLASS, DST_CUSTOM      , 2, DSE( static_cast<int>(IN0),static_cast<int>(IN1) ), DSE( IN0,IN1 ), INFO, "DISCRETE_CUSTOM2" ),
+#define DISCRETE_CUSTOM3(NODE,CLASS,IN0,IN1,IN2,INFO)                         DSC_SND_ENTRY( NODE, CLASS, DST_CUSTOM      , 3, DSE( static_cast<int>(IN0),static_cast<int>(IN1),static_cast<int>(IN2) ), DSE( IN0,IN1,IN2 ), INFO, "DISCRETE_CUSTOM3" ),
+#define DISCRETE_CUSTOM4(NODE,CLASS,IN0,IN1,IN2,IN3,INFO)                     DSC_SND_ENTRY( NODE, CLASS, DST_CUSTOM      , 4, DSE( static_cast<int>(IN0),static_cast<int>(IN1),static_cast<int>(IN2),static_cast<int>(IN3) ), DSE( IN0,IN1,IN2,IN3 ), INFO, "DISCRETE_CUSTOM4" ),
+#define DISCRETE_CUSTOM5(NODE,CLASS,IN0,IN1,IN2,IN3,IN4,INFO)                 DSC_SND_ENTRY( NODE, CLASS, DST_CUSTOM      , 5, DSE( static_cast<int>(IN0),static_cast<int>(IN1),static_cast<int>(IN2),static_cast<int>(IN3),static_cast<int>(IN4) ), DSE( IN0,IN1,IN2,IN3,IN4 ), INFO, "DISCRETE_CUSTOM5" ),
+#define DISCRETE_CUSTOM6(NODE,CLASS,IN0,IN1,IN2,IN3,IN4,IN5,INFO)             DSC_SND_ENTRY( NODE, CLASS, DST_CUSTOM      , 6, DSE( static_cast<int>(IN0),static_cast<int>(IN1),static_cast<int>(IN2),static_cast<int>(IN3),static_cast<int>(IN4),static_cast<int>(IN5) ), DSE( IN0,IN1,IN2,IN3,IN4,IN5 ), INFO, "DISCRETE_CUSTOM6" ),
+#define DISCRETE_CUSTOM7(NODE,CLASS,IN0,IN1,IN2,IN3,IN4,IN5,IN6,INFO)         DSC_SND_ENTRY( NODE, CLASS, DST_CUSTOM      , 7, DSE( static_cast<int>(IN0),static_cast<int>(IN1),static_cast<int>(IN2),static_cast<int>(IN3),static_cast<int>(IN4),static_cast<int>(IN5),static_cast<int>(IN6) ), DSE( IN0,IN1,IN2,IN3,IN4,IN5,IN6 ), INFO, "DISCRETE_CUSTOM7" ),
+#define DISCRETE_CUSTOM8(NODE,CLASS,IN0,IN1,IN2,IN3,IN4,IN5,IN6,IN7,INFO)     DSC_SND_ENTRY( NODE, CLASS, DST_CUSTOM      , 8, DSE( static_cast<int>(IN0),static_cast<int>(IN1),static_cast<int>(IN2),static_cast<int>(IN3),static_cast<int>(IN4),static_cast<int>(IN5),static_cast<int>(IN6),static_cast<int>(IN7) ), DSE( IN0,IN1,IN2,IN3,IN4,IN5,IN6,IN7 ), INFO, "DISCRETE_CUSTOM8" ),
+#define DISCRETE_CUSTOM9(NODE,CLASS,IN0,IN1,IN2,IN3,IN4,IN5,IN6,IN7,IN8,INFO) DSC_SND_ENTRY( NODE, CLASS, DST_CUSTOM      , 9, DSE( static_cast<int>(IN0),static_cast<int>(IN1),static_cast<int>(IN2),static_cast<int>(IN3),static_cast<int>(IN4),static_cast<int>(IN5),static_cast<int>(IN6),static_cast<int>(IN7),static_cast<int>(IN8) ), DSE( IN0,IN1,IN2,IN3,IN4,IN5,IN6,IN7,IN8 ), INFO, "DISCRETE_CUSTOM9" ),
+
+/* Component specific */
+#define DISCRETE_555_ASTABLE(NODE,RESET,R1,R2,C,OPTIONS)                DSC_SND_ENTRY( NODE, dsd_555_astbl   , DSS_NODE        , 5, DSE( static_cast<int>(RESET),static_cast<int>(R1),static_cast<int>(R2),static_cast<int>(C),NODE_NC ), DSE( RESET,R1,R2,C,-1 ), OPTIONS, "DISCRETE_555_ASTABLE" ),
+#define DISCRETE_555_ASTABLE_CV(NODE,RESET,R1,R2,C,CTRLV,OPTIONS)       DSC_SND_ENTRY( NODE, dsd_555_astbl   , DSS_NODE        , 5, DSE( static_cast<int>(RESET),static_cast<int>(R1),static_cast<int>(R2),static_cast<int>(C),static_cast<int>(CTRLV) ), DSE( RESET,R1,R2,C,CTRLV ), OPTIONS, "DISCRETE_555_ASTABLE_CV" ),
+#define DISCRETE_555_MSTABLE(NODE,RESET,TRIG,R,C,OPTIONS)               DSC_SND_ENTRY( NODE, dsd_555_mstbl   , DSS_NODE        , 4, DSE( static_cast<int>(RESET),static_cast<int>(TRIG),static_cast<int>(R),static_cast<int>(C) ), DSE( RESET,TRIG,R,C ), OPTIONS, "DISCRETE_555_MSTABLE" ),
+#define DISCRETE_555_CC(NODE,RESET,VIN,R,C,RBIAS,RGND,RDIS,OPTIONS)     DSC_SND_ENTRY( NODE, dsd_555_cc      , DSS_NODE        , 7, DSE( static_cast<int>(RESET),static_cast<int>(VIN),static_cast<int>(R),static_cast<int>(C),static_cast<int>(RBIAS),static_cast<int>(RGND),static_cast<int>(RDIS) ), DSE( RESET,VIN,R,C,RBIAS,RGND,RDIS ), OPTIONS, "DISCRETE_555_CC" ),
+#define DISCRETE_555_VCO1(NODE,RESET,VIN,OPTIONS)                       DSC_SND_ENTRY( NODE, dsd_555_vco1    , DSS_NODE        , 3, DSE( static_cast<int>(RESET),static_cast<int>(VIN),NODE_NC ), DSE( RESET,VIN,-1 ), OPTIONS, "DISCRETE_555_VCO1" ),
+#define DISCRETE_555_VCO1_CV(NODE,RESET,VIN,CTRLV,OPTIONS)              DSC_SND_ENTRY( NODE, dsd_555_vco1    , DSS_NODE        , 3, DSE( static_cast<int>(RESET),static_cast<int>(VIN),static_cast<int>(CTRLV) ), DSE( RESET,VIN,CTRLV ), OPTIONS, "DISCRETE_555_VCO1_CV" ),
+#define DISCRETE_566(NODE,VMOD,R,C,VPOS,VNEG,VCHARGE,OPTIONS)           DSC_SND_ENTRY( NODE, dsd_566         , DSS_NODE        , 7, DSE( static_cast<int>(VMOD),static_cast<int>(R),static_cast<int>(C),NODE_NC,NODE_NC,static_cast<int>(VCHARGE),NODE_NC ), DSE( VMOD,R,C,VPOS,VNEG,VCHARGE,OPTIONS ), nullptr, "DISCRETE_566" ),
+#define DISCRETE_74LS624(NODE,ENAB,VMOD,VRNG,C,R_FREQ_IN,C_FREQ_IN,R_RNG_IN,OUTTYPE) DSC_SND_ENTRY( NODE, dsd_ls624   , DSS_NODE        , 8, DSE( static_cast<int>(ENAB),static_cast<int>(VMOD),NODE_NC,NODE_NC,NODE_NC,NODE_NC,NODE_NC,NODE_NC ), DSE( ENAB,VMOD,VRNG,C,R_FREQ_IN,C_FREQ_IN,R_RNG_IN,OUTTYPE ), nullptr, "DISCRETE_74LS624" ),
+
+/* NOP */
+#define DISCRETE_NOP(NODE)                                              DSC_SND_ENTRY( NODE, dss_nop         , DSS_NOP         , 0, DSE( 0 ), DSE( 0 ), nullptr, "DISCRETE_NOP" ),
+
+/* logging */
+#define DISCRETE_CSVLOG1(NODE1)                                         DSC_SND_ENTRY( NODE_SPECIAL, dso_csvlog  , DSO_CSVLOG  , 1, DSE( static_cast<int>(NODE1) ), DSE( NODE1 ), nullptr, "DISCRETE_CSVLOG1" ),
+#define DISCRETE_CSVLOG2(NODE1,NODE2)                                   DSC_SND_ENTRY( NODE_SPECIAL, dso_csvlog  , DSO_CSVLOG  , 2, DSE( static_cast<int>(NODE1),static_cast<int>(NODE2) ), DSE( NODE1,NODE2 ), nullptr, "DISCRETE_CSVLOG2" ),
+#define DISCRETE_CSVLOG3(NODE1,NODE2,NODE3)                             DSC_SND_ENTRY( NODE_SPECIAL, dso_csvlog  , DSO_CSVLOG  , 3, DSE( static_cast<int>(NODE1),static_cast<int>(NODE2),static_cast<int>(NODE3) ), DSE( NODE1,NODE2,NODE3 ), nullptr, "DISCRETE_CSVLOG3" ),
+#define DISCRETE_CSVLOG4(NODE1,NODE2,NODE3,NODE4)                       DSC_SND_ENTRY( NODE_SPECIAL, dso_csvlog  , DSO_CSVLOG  , 4, DSE( static_cast<int>(NODE1),static_cast<int>(NODE2),static_cast<int>(NODE3),static_cast<int>(NODE4) ), DSE( NODE1,NODE2,NODE3,NODE4 ), nullptr, "DISCRETE_CSVLOG4" ),
+#define DISCRETE_CSVLOG5(NODE1,NODE2,NODE3,NODE4,NODE5)                 DSC_SND_ENTRY( NODE_SPECIAL, dso_csvlog  , DSO_CSVLOG  , 5, DSE( static_cast<int>(NODE1),static_cast<int>(NODE2),static_cast<int>(NODE3),static_cast<int>(NODE4),static_cast<int>(NODE5) ), DSE( NODE1,NODE2,NODE3,NODE4,NODE5 ), nullptr, "DISCRETE_CSVLOG5" ),
+#define DISCRETE_WAVLOG1(NODE1,GAIN1)                                   DSC_SND_ENTRY( NODE_SPECIAL, dso_wavlog  , DSO_WAVLOG  , 2, DSE( static_cast<int>(NODE1),NODE_NC ), DSE( NODE1,GAIN1 ), nullptr, "DISCRETE_WAVLOG1" ),
+#define DISCRETE_WAVLOG2(NODE1,GAIN1,NODE2,GAIN2)                       DSC_SND_ENTRY( NODE_SPECIAL, dso_wavlog  , DSO_WAVLOG  , 4, DSE( static_cast<int>(NODE1),NODE_NC,static_cast<int>(NODE2),NODE_NC ), DSE( NODE1,GAIN1,NODE2,GAIN2 ), nullptr, "DISCRETE_WAVLOG2" ),
+
+/* import */
+#define DISCRETE_IMPORT(INFO)                                           DSC_SND_ENTRY( NODE_SPECIAL, special     , DSO_IMPORT  , 0, DSE( 0 ), DSE( 0 ), &(INFO##_discrete_interface), "DISCRETE_IMPORT" ),
+#define DISCRETE_DELETE(NODE_FROM, NODE_TO)                             DSC_SND_ENTRY( NODE_SPECIAL, special     , DSO_DELETE  , 2, DSE( static_cast<int>(NODE_FROM), static_cast<int>(NODE_TO) ), DSE( NODE_FROM, NODE_TO ), nullptr, "DISCRETE_DELETE" ),
+#define DISCRETE_REPLACE                                                DSC_SND_ENTRY( NODE_SPECIAL, special     , DSO_REPLACE , 0, DSE( 0 ), DSE( 0 ), nullptr, "DISCRETE_REPLACE" ),
+
+/* parallel tasks */
+
+#define DISCRETE_TASK_START(TASK_GROUP)                                 DSC_SND_ENTRY( NODE_SPECIAL, special     , DSO_TASK_START, 2, DSE( NODE_NC, NODE_NC ), DSE( TASK_GROUP, 0 ), nullptr, "DISCRETE_TASK_START" ),
+#define DISCRETE_TASK_END()                                             DSC_SND_ENTRY( NODE_SPECIAL, special     , DSO_TASK_END  , 0, DSE( 0 ), DSE( 0 ), nullptr, "DISCRETE_TASK_END" ),
+//#define DISCRETE_TASK_SYNC()                                          DSC_SND_ENTRY( NODE_SPECIAL, special     , DSO_TASK_SYNC , 0, DSE( 0 ), DSE( 0 ), nullptr, "DISCRETE_TASK_SYNC" ),
+
+/* output */
+#define DISCRETE_OUTPUT(OPNODE,GAIN)                                   DSC_SND_ENTRY( NODE_SPECIAL, dso_output   , DSO_OUTPUT   ,2, DSE( static_cast<int>(OPNODE),NODE_NC ), DSE( 0,GAIN ), nullptr, "DISCRETE_OUTPUT" ),
+
+
+
+#endif // MAME_SOUND_DISCRETE_H
+>>>>>>> upstream/master

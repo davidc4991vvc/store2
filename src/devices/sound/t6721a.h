@@ -30,12 +30,20 @@
 
 **********************************************************************/
 
+<<<<<<< HEAD
 #pragma once
 
 #ifndef __T6721__
 #define __T6721__
 
 #include "emu.h"
+=======
+#ifndef MAME_SOUND_T6721A_H
+#define MAME_SOUND_T6721A_H
+
+#pragma once
+
+>>>>>>> upstream/master
 
 
 
@@ -44,6 +52,7 @@
 //**************************************************************************
 
 #define MCFG_T6721A_EOS_HANDLER(_eos) \
+<<<<<<< HEAD
 	downcast<t6721a_device *>(device)->set_eos_callback(DEVCB_##_eos);
 
 #define MCFG_T6721A_PHI2_HANDLER(_phi2) \
@@ -54,6 +63,18 @@
 
 #define MCFG_T6721A_APD_HANDLER(_apd) \
 	downcast<t6721a_device *>(device)->set_apd_callback(DEVCB_##_apd);
+=======
+	devcb = &downcast<t6721a_device *>(device)->set_eos_callback(DEVCB_##_eos);
+
+#define MCFG_T6721A_PHI2_HANDLER(_phi2) \
+	devcb = &downcast<t6721a_device *>(device)->set_phi2_callback(DEVCB_##_phi2);
+
+#define MCFG_T6721A_DTRD_HANDLER(_dtrd) \
+	devcb = &downcast<t6721a_device *>(device)->set_dtrd_callback(DEVCB_##_dtrd);
+
+#define MCFG_T6721A_APD_HANDLER(_apd) \
+	devcb = &downcast<t6721a_device *>(device)->set_apd_callback(DEVCB_##_apd);
+>>>>>>> upstream/master
 
 
 
@@ -67,6 +88,7 @@ class t6721a_device : public device_t,
 						public device_sound_interface
 {
 public:
+<<<<<<< HEAD
 	t6721a_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
 
 	// static configuration helpers
@@ -74,6 +96,15 @@ public:
 	template<class _phi2> void set_phi2_callback(_phi2 phi2) { m_write_phi2.set_callback(phi2); }
 	template<class _dtrd> void set_dtrd_callback(_dtrd dtrd) { m_write_dtrd.set_callback(dtrd); }
 	template<class _apd> void set_apd_callback(_apd apd) { m_write_apd.set_callback(apd); }
+=======
+	t6721a_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
+
+	// static configuration helpers
+	template <class Object> devcb_base &set_eos_callback(Object &&eos) { return m_write_eos.set_callback(std::forward<Object>(eos)); }
+	template <class Object> devcb_base &set_phi2_callback(Object &&phi2) { return m_write_phi2.set_callback(std::forward<Object>(phi2)); }
+	template <class Object> devcb_base &set_dtrd_callback(Object &&dtrd) { return m_write_dtrd.set_callback(std::forward<Object>(dtrd)); }
+	template <class Object> devcb_base &set_apd_callback(Object &&apd) { return m_write_apd.set_callback(std::forward<Object>(apd)); }
+>>>>>>> upstream/master
 
 	DECLARE_READ8_MEMBER( read );
 	DECLARE_WRITE8_MEMBER( write );
@@ -84,10 +115,17 @@ public:
 
 protected:
 	// device-level overrides
+<<<<<<< HEAD
 	virtual void device_start();
 
 	// device_sound_interface overrides
 	virtual void sound_stream_update(sound_stream &stream, stream_sample_t **inputs, stream_sample_t **outputs, int samples);
+=======
+	virtual void device_start() override;
+
+	// device_sound_interface overrides
+	virtual void sound_stream_update(sound_stream &stream, stream_sample_t **inputs, stream_sample_t **outputs, int samples) override;
+>>>>>>> upstream/master
 
 private:
 	enum
@@ -116,8 +154,14 @@ private:
 
 
 // device type definition
+<<<<<<< HEAD
 extern const device_type T6721A;
 
 
 
 #endif
+=======
+DECLARE_DEVICE_TYPE(T6721A, t6721a_device)
+
+#endif // MAME_SOUND_T6721A_H
+>>>>>>> upstream/master

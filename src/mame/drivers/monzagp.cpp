@@ -32,6 +32,11 @@ Lower board (MGP_01):
 #include "emu.h"
 #include "cpu/mcs48/mcs48.h"
 #include "machine/nvram.h"
+<<<<<<< HEAD
+=======
+#include "video/resnet.h"
+#include "screen.h"
+>>>>>>> upstream/master
 
 #include "monzagp.lh"
 
@@ -45,8 +50,16 @@ public:
 		m_palette(*this, "palette"),
 		m_nvram(*this, "nvram"),
 		m_gfx1(*this, "gfx1"),
+<<<<<<< HEAD
 		m_tile_attr(*this, "unk1"),
 		m_proms(*this, "proms"),
+=======
+		m_gfx2(*this, "gfx2"),
+		m_gfx3(*this, "gfx3"),
+		m_tile_attr(*this, "unk1"),
+		m_proms(*this, "proms"),
+		m_steering_wheel(*this, "WHEEL"),
+>>>>>>> upstream/master
 		m_in0(*this, "IN0"),
 		m_in1(*this, "IN1"),
 		m_dsw(*this, "DSW")
@@ -57,23 +70,39 @@ public:
 	DECLARE_WRITE8_MEMBER(port1_w);
 	DECLARE_WRITE8_MEMBER(port2_w);
 	DECLARE_READ8_MEMBER(port2_r);
+<<<<<<< HEAD
 	DECLARE_WRITE8_MEMBER(port3_w);
 	virtual void video_start();
 	TIMER_DEVICE_CALLBACK_MEMBER(time_tick_timer);
 	DECLARE_PALETTE_INIT(monzagp);
 	UINT32 screen_update_monzagp(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
+=======
+	virtual void video_start() override;
+	TIMER_DEVICE_CALLBACK_MEMBER(time_tick_timer);
+	DECLARE_PALETTE_INIT(monzagp);
+	uint32_t screen_update_monzagp(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
+>>>>>>> upstream/master
 	required_device<cpu_device> m_maincpu;
 	required_device<gfxdecode_device> m_gfxdecode;
 	required_device<palette_device> m_palette;
 	required_device<nvram_device> m_nvram;
 	required_memory_region m_gfx1;
+<<<<<<< HEAD
 	required_memory_region m_tile_attr;
 	required_memory_region m_proms;
+=======
+	required_memory_region m_gfx2;
+	required_memory_region m_gfx3;
+	required_memory_region m_tile_attr;
+	required_memory_region m_proms;
+	required_ioport m_steering_wheel;
+>>>>>>> upstream/master
 	required_ioport m_in0;
 	required_ioport m_in1;
 	required_ioport m_dsw;
 
 private:
+<<<<<<< HEAD
 	UINT8 m_p1;
 	UINT8 m_p2;
 	UINT8 m_video_ctrl[2][8];
@@ -82,6 +111,18 @@ private:
 	UINT8 m_mycar_pos;
 	UINT8 *m_vram;
 	UINT8 *m_score_ram;
+=======
+	uint8_t m_p1;
+	uint8_t m_p2;
+	uint8_t m_video_ctrl[2][8];
+	bool  m_time_tick;
+	bool  m_cp_ruote;
+	uint8_t m_collisions_ff;
+	uint8_t m_collisions_clk;
+	uint8_t m_mycar_pos;
+	std::unique_ptr<uint8_t[]> m_vram;
+	std::unique_ptr<uint8_t[]> m_score_ram;
+>>>>>>> upstream/master
 };
 
 
@@ -93,10 +134,50 @@ TIMER_DEVICE_CALLBACK_MEMBER(monzagp_state::time_tick_timer)
 
 PALETTE_INIT_MEMBER(monzagp_state, monzagp)
 {
+<<<<<<< HEAD
+=======
+	static const int r_resistances[3] = { 220, 1000, 3300 };
+	static const int g_resistances[3] = { 100, 470 , 1500 };
+	static const int b_resistances[3] = { 100, 470 , 1500 };
+	double rweights[3], gweights[3], bweights[3];
+
+	// compute the color output resistor weights
+	compute_resistor_weights(0, 255, -1.0,
+			3, &r_resistances[0], rweights, 0, 0,
+			3, &g_resistances[0], gweights, 0, 0,
+			3, &b_resistances[0], bweights, 0, 0);
+
+	for (int i = 0; i < 0x100; i++)
+	{
+		int bit0 = 0, bit1 = 0, bit2 = 0;
+		uint8_t d = m_proms->base()[0x400 + i] ^ 0x0f;
+
+		if (d & 0x08)
+		{
+			bit1 = BIT(i, 0);
+			bit2 = BIT(i, 1);
+		}
+
+		// red component
+		bit0 = (d >> 2) & 0x01;
+		int r = combine_3_weights(rweights, bit0, bit1, bit2);
+
+		// green component
+		bit0 = (d >> 1) & 0x01;
+		int g = combine_3_weights(gweights, bit0, bit1, bit2);
+
+		// blue component
+		bit0 = (d >> 0) & 0x01;
+		int b = combine_3_weights(bweights, bit0, bit1, bit2);
+
+		palette.set_pen_color(i, rgb_t(r, g, b));
+	}
+>>>>>>> upstream/master
 }
 
 void monzagp_state::video_start()
 {
+<<<<<<< HEAD
 	m_vram = auto_alloc_array(machine(), UINT8, 0x800);
 	m_score_ram = auto_alloc_array(machine(), UINT8, 0x100);
 	m_time_tick = 0;
@@ -109,6 +190,22 @@ void monzagp_state::video_start()
 }
 
 UINT32 monzagp_state::screen_update_monzagp(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+=======
+	m_vram = std::make_unique<uint8_t[]>(0x800);
+	m_score_ram = std::make_unique<uint8_t[]>(0x100);
+	m_time_tick = 0;
+	m_cp_ruote = 0;
+	m_mycar_pos = 0;
+	m_collisions_ff = 0;
+	m_collisions_clk = 0;
+	save_pointer(NAME(m_vram.get()), 0x800);
+	save_pointer(NAME(m_score_ram.get()), 0x100);
+
+	m_nvram->set_base(m_score_ram.get(), 0x100);
+}
+
+uint32_t monzagp_state::screen_update_monzagp(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+>>>>>>> upstream/master
 {
 /*
     for(int i=0;i<8;i++)
@@ -122,6 +219,7 @@ UINT32 monzagp_state::screen_update_monzagp(screen_device &screen, bitmap_ind16 
 	bitmap.fill(0, cliprect);
 
 	// background tilemap
+<<<<<<< HEAD
 	UINT8 *tile_table = m_proms->base() + 0x100;
 	UINT8 start_tile = m_video_ctrl[0][0] >> 5;
 
@@ -133,11 +231,33 @@ UINT32 monzagp_state::screen_update_monzagp(screen_device &screen, bitmap_ind16 
 		for(int x=0;x<64;x++)
 		{
 			UINT8 tile_attr = m_tile_attr->base()[((start_x >> 5) & 0x07) | (((start_x >> 8) & 0x3f) << 3) | ((start_x >> 6) & 0x200)];
+=======
+	uint8_t *tile_table = m_proms->base() + 0x100;
+	uint8_t *collisions_prom = m_proms->base() + 0x200;
+
+	uint8_t start_tile = m_video_ctrl[0][0] ^ 0xff;
+	uint8_t inv_counter = m_video_ctrl[0][1] ^ 0xff;
+	uint8_t mycar_y = m_mycar_pos;
+	bool inv = false;
+
+	for(int y=0; y<=256; y++, start_tile += inv ? -1 : +1)
+	{
+		if (inv_counter++ == 0xff)
+			inv = true;
+
+		uint16_t start_x = (((m_video_ctrl[0][3] << 8) | m_video_ctrl[0][2]) ^ 0xffff);
+		uint8_t mycar_x = m_video_ctrl[1][2];
+
+		for(int x=0; x<=256; x++, start_x++)
+		{
+			uint8_t tile_attr = m_tile_attr->base()[((start_x >> 5) & 0x1ff) | ((m_video_ctrl[0][3] & 0x80) ? 0 : 0x200)];
+>>>>>>> upstream/master
 
 			//if (tile_attr & 0x10)         printf("dark on\n");
 			//if (tile_attr & 0x20)         printf("light on\n");
 			//if (tile_attr & 0x40)         printf("bridge\n");
 
+<<<<<<< HEAD
 			int tile_idx = tile_table[((tile_attr & 0x0f) << 4) | (inv ? 0x08 : 0) | (start_tile & 0x07)];
 			int tile = (tile_idx << 3) | (((start_x) >> 2) & 0x07);
 
@@ -176,6 +296,54 @@ UINT32 monzagp_state::screen_update_monzagp(screen_device &screen, bitmap_ind16 
 					m_video_ctrl[1][2] + x, m_mycar_pos + (1 - y) * 16,
 					3);
 			}
+=======
+			int tile_idx = tile_table[((tile_attr & 0x0f) << 4) | (inv ? 0x08 : 0) | ((start_tile >> 5) & 0x07)];
+
+			int bit_pos = 3 - (start_x & 3);
+			uint8_t tile_data = m_gfx3->base()[(tile_idx << 8) | (((start_x << 3) & 0xe0) ^ 0x80) | (start_tile & 0x1f)];
+			uint8_t tile_color = (BIT(tile_data, 4 + bit_pos) << 1) | BIT(tile_data, bit_pos);
+			int color = (tile_idx << 2) | tile_color;
+
+
+			// other cars sprites
+			bool othercars = false;
+			// TODO: other cars sprites
+
+
+			// my car sprite
+			bool mycar = false;
+			int mycar_size = m_video_ctrl[1][3] & 0x20 ? 16 : 32;
+			if ((m_video_ctrl[1][3] & 0x18) && x >= m_video_ctrl[1][2] && x < m_video_ctrl[1][2] + 4*8 && y > m_mycar_pos - mycar_size  && y < m_mycar_pos + mycar_size)
+			{
+				int hpos = x - mycar_x;
+				int vpos = y > mycar_y ? ((y - mycar_y) ^ 0x1f) : mycar_y - y;
+				int sprite_idx = (((m_video_ctrl[1][3] & 0x18)) << 2) | (hpos & 0x1c) | (((m_video_ctrl[1][3] & 0x06) >> 1) ^ 0x03);
+
+				if (y <= mycar_y - 16  || y >= mycar_y + 16)            sprite_idx ^= 0x61;
+				else if (m_cp_ruote && (m_video_ctrl[1][3] & 0x10))     sprite_idx ^= 0x01;
+
+				int bitpos = 3 - (hpos & 3);
+				uint8_t sprite_data = m_gfx2->base()[(sprite_idx << 5) | (vpos & 0x1f)];
+				uint8_t sprite_color = (BIT(sprite_data, 4 + bitpos) << 1) | BIT(sprite_data, bitpos);
+
+				if ((sprite_color & 3) != 3)
+				{
+					color = 0x100 + sprite_color;
+					if (y > mycar_y - 16 && y < mycar_y + 16)
+						mycar = true;
+				}
+			}
+
+			if (cliprect.contains(x, y))
+				bitmap.pix16(y, x) = color;
+
+			// collisions
+			uint8_t coll_prom_addr = BITSWAP8(tile_idx, 7, 6, 5, 4, 2, 0, 1, 3);
+			uint8_t collisions = collisions_prom[((mycar && othercars) ? 0 : 0x80) | (inv ? 0x40 : 0) | (coll_prom_addr << 2) | (mycar ? 0 : 0x02) | (tile_color & 0x01)];
+			m_collisions_ff |= ((m_collisions_clk ^ collisions) & collisions);
+			m_collisions_clk = collisions;
+		}
+>>>>>>> upstream/master
 	}
 
 	// characters
@@ -202,7 +370,11 @@ ADDRESS_MAP_END
 
 READ8_MEMBER(monzagp_state::port_r)
 {
+<<<<<<< HEAD
 	UINT8 data = 0xff;
+=======
+	uint8_t data = 0xff;
+>>>>>>> upstream/master
 	if (!(m_p1 & 0x01))             // 8350 videoram
 	{
 		//printf("ext 0 r P1:%02x P2:%02x %02x\n", m_p1, m_p2, offset);
@@ -241,6 +413,7 @@ READ8_MEMBER(monzagp_state::port_r)
 	if (!(m_p1 & 0x80))
 	{
 		//printf("ext 7 r P1:%02x P2:%02x %02x\n", m_p1, m_p2, offset);
+<<<<<<< HEAD
 		data = 0;
 		if(machine().input().code_pressed(KEYCODE_1_PAD))      data |= 0x01;
 		if(machine().input().code_pressed(KEYCODE_2_PAD))      data |= 0x02;
@@ -249,6 +422,9 @@ READ8_MEMBER(monzagp_state::port_r)
 
 		if (m_time_tick)
 			data |= 0x10;
+=======
+		data = m_collisions_ff | (m_time_tick ? 0x10 : 0);
+>>>>>>> upstream/master
 	}
 
 	return data;
@@ -299,8 +475,13 @@ WRITE8_MEMBER(monzagp_state::port_w)
 		if ((ram_offset & 0x07) == 0)
 		{
 			// 74LS47 BCD-to-Seven-Segment Decoder
+<<<<<<< HEAD
 			static UINT8 bcd2hex[] = { 0x3f, 0x06, 0x5b, 0x4f, 0x66, 0x6d, 0x7c, 0x07, 0x7f, 0x67, 0x58, 0x4c, 0x62, 0x49, 0x78, 0x00 };
 			output_set_digit_value(ram_offset >> 3, bcd2hex[data & 0x0f]);
+=======
+			static uint8_t bcd2hex[] = { 0x3f, 0x06, 0x5b, 0x4f, 0x66, 0x6d, 0x7c, 0x07, 0x7f, 0x67, 0x58, 0x4c, 0x62, 0x49, 0x78, 0x00 };
+			output().set_digit_value(ram_offset >> 3, bcd2hex[data & 0x0f]);
+>>>>>>> upstream/master
 		}
 	}
 	if (!(m_p1 & 0x80))
@@ -308,6 +489,25 @@ WRITE8_MEMBER(monzagp_state::port_w)
 		//printf("ext 7 w P1:%02x P2:%02x, %02x = %02x\n", m_p1, m_p2, offset, data);
 		m_video_ctrl[0][(offset>>0) & 0x07] = data;
 		m_video_ctrl[1][(offset>>3) & 0x07] = data;
+<<<<<<< HEAD
+=======
+
+		if (((offset>>0) & 0x07) == 0x04)           m_collisions_ff = 0;
+		if (((offset>>3) & 0x07) == 0x04)           m_mycar_pos = 0xbf;
+
+		if ((m_video_ctrl[1][3] & 1) == 0)
+		{
+			if (((offset>>3) & 0x07) == 0x00)       m_mycar_pos++;
+			if (((offset>>3) & 0x07) == 0x01)       m_mycar_pos--;
+		}
+
+		if ((offset & 0x80) && (m_video_ctrl[1][3] & 0x01))
+		{
+			uint8_t steering_wheel = m_steering_wheel->read();
+			if (steering_wheel & 0x01)              m_mycar_pos--;
+			if (steering_wheel & 0x02)              m_mycar_pos++;
+		}
+>>>>>>> upstream/master
 	}
 }
 
@@ -331,11 +531,21 @@ WRITE8_MEMBER(monzagp_state::port2_w)
 
 static ADDRESS_MAP_START( monzagp_io, AS_IO, 8, monzagp_state )
 	AM_RANGE(0x00, 0xff) AM_READWRITE(port_r, port_w)
+<<<<<<< HEAD
 	AM_RANGE(MCS48_PORT_P1, MCS48_PORT_P1) AM_WRITE(port1_w)
 	AM_RANGE(MCS48_PORT_P2, MCS48_PORT_P2) AM_READWRITE(port2_r, port2_w)
 ADDRESS_MAP_END
 
 static INPUT_PORTS_START( monzagp )
+=======
+ADDRESS_MAP_END
+
+static INPUT_PORTS_START( monzagp )
+	PORT_START("WHEEL")
+	PORT_BIT( 0x01, IP_ACTIVE_HIGH, IPT_JOYSTICK_LEFT )
+	PORT_BIT( 0x02, IP_ACTIVE_HIGH, IPT_JOYSTICK_RIGHT )
+
+>>>>>>> upstream/master
 	PORT_START("IN0")
 	PORT_BIT( 0x20, IP_ACTIVE_HIGH, IPT_TILT )
 	PORT_BIT( 0x40, IP_ACTIVE_LOW, IPT_COIN1 )
@@ -409,10 +619,20 @@ static GFXDECODE_START( monzagp )
 	GFXDECODE_ENTRY( "gfx3", 0x0000, tile_layout,   0, 8 )
 GFXDECODE_END
 
+<<<<<<< HEAD
 static MACHINE_CONFIG_START( monzagp, monzagp_state )
 	MCFG_CPU_ADD("maincpu", I8035, 12000000/4) /* 400KHz ??? - Main board Crystal is 12MHz */
 	MCFG_CPU_PROGRAM_MAP(monzagp_map)
 	MCFG_CPU_IO_MAP(monzagp_io)
+=======
+static MACHINE_CONFIG_START( monzagp )
+	MCFG_CPU_ADD("maincpu", I8035, 12000000/4) /* 400KHz ??? - Main board Crystal is 12MHz */
+	MCFG_CPU_PROGRAM_MAP(monzagp_map)
+	MCFG_CPU_IO_MAP(monzagp_io)
+	MCFG_MCS48_PORT_P1_OUT_CB(WRITE8(monzagp_state, port1_w))
+	MCFG_MCS48_PORT_P2_IN_CB(READ8(monzagp_state, port2_r))
+	MCFG_MCS48_PORT_P2_OUT_CB(WRITE8(monzagp_state, port2_w))
+>>>>>>> upstream/master
 	MCFG_CPU_VBLANK_INT_DRIVER("screen", monzagp_state, irq0_line_hold)
 
 	/* video hardware */
@@ -508,5 +728,10 @@ ROM_START( monzagpb )
 ROM_END
 
 
+<<<<<<< HEAD
 GAMEL( 1981, monzagp,  0,       monzagp, monzagp, driver_device, 0, ROT270, "Olympia", "Monza GP", MACHINE_NOT_WORKING|MACHINE_NO_SOUND, layout_monzagp )
 GAMEL( 1981, monzagpb, monzagp, monzagp, monzagp, driver_device, 0, ROT270, "bootleg", "Monza GP (bootleg)", MACHINE_NOT_WORKING|MACHINE_NO_SOUND, layout_monzagp )
+=======
+GAMEL( 1981, monzagp,  0,       monzagp, monzagp, monzagp_state, 0, ROT270, "Olympia", "Monza GP",           MACHINE_NOT_WORKING|MACHINE_NO_SOUND, layout_monzagp )
+GAMEL( 1981, monzagpb, monzagp, monzagp, monzagp, monzagp_state, 0, ROT270, "bootleg", "Monza GP (bootleg)", MACHINE_NOT_WORKING|MACHINE_NO_SOUND, layout_monzagp )
+>>>>>>> upstream/master

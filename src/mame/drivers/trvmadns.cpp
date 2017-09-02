@@ -90,6 +90,11 @@ Technology = NMOS
 #include "emu.h"
 #include "cpu/z80/z80.h"
 #include "sound/ay8910.h"
+<<<<<<< HEAD
+=======
+#include "screen.h"
+#include "speaker.h"
+>>>>>>> upstream/master
 
 
 class trvmadns_state : public driver_device
@@ -105,8 +110,13 @@ public:
 		m_generic_paletteram_8(*this, "paletteram") { }
 
 	tilemap_t *m_bg_tilemap;
+<<<<<<< HEAD
 	required_shared_ptr<UINT8> m_gfxram;
 	required_shared_ptr<UINT8> m_tileram;
+=======
+	required_shared_ptr<uint8_t> m_gfxram;
+	required_shared_ptr<uint8_t> m_tileram;
+>>>>>>> upstream/master
 	int m_old_data;
 	DECLARE_WRITE8_MEMBER(trvmadns_banking_w);
 	DECLARE_WRITE8_MEMBER(trvmadns_gfxram_w);
@@ -115,6 +125,7 @@ public:
 	DECLARE_WRITE8_MEMBER(w3);
 	DECLARE_WRITE8_MEMBER(trvmadns_tileram_w);
 	TILE_GET_INFO_MEMBER(get_bg_tile_info);
+<<<<<<< HEAD
 	virtual void machine_reset();
 	virtual void video_start();
 	UINT32 screen_update_trvmadns(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
@@ -122,12 +133,25 @@ public:
 	required_device<gfxdecode_device> m_gfxdecode;
 	required_device<palette_device> m_palette;
 	required_shared_ptr<UINT8> m_generic_paletteram_8;
+=======
+	virtual void machine_reset() override;
+	virtual void video_start() override;
+	uint32_t screen_update_trvmadns(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
+	required_device<cpu_device> m_maincpu;
+	required_device<gfxdecode_device> m_gfxdecode;
+	required_device<palette_device> m_palette;
+	required_shared_ptr<uint8_t> m_generic_paletteram_8;
+>>>>>>> upstream/master
 };
 
 
 WRITE8_MEMBER(trvmadns_state::trvmadns_banking_w)
 {
+<<<<<<< HEAD
 	UINT8 *rom;
+=======
+	uint8_t *rom;
+>>>>>>> upstream/master
 	int address = 0;
 
 	if((data & 0xf0) == 0xa0)
@@ -294,7 +318,11 @@ static const gfx_layout charlayout =
 };
 
 static GFXDECODE_START( trvmadns )
+<<<<<<< HEAD
 	GFXDECODE_ENTRY( NULL, 0x6000, charlayout, 0, 4 ) // doesn't matter where we point this, all the tiles are decoded while the game runs
+=======
+	GFXDECODE_ENTRY( nullptr, 0x6000, charlayout, 0, 4 ) // doesn't matter where we point this, all the tiles are decoded while the game runs
+>>>>>>> upstream/master
 GFXDECODE_END
 
 TILE_GET_INFO_MEMBER(trvmadns_state::get_bg_tile_info)
@@ -319,14 +347,22 @@ TILE_GET_INFO_MEMBER(trvmadns_state::get_bg_tile_info)
 
 void trvmadns_state::video_start()
 {
+<<<<<<< HEAD
 	m_bg_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(trvmadns_state::get_bg_tile_info),this), TILEMAP_SCAN_ROWS, 8, 8, 32, 32);
+=======
+	m_bg_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(trvmadns_state::get_bg_tile_info),this), TILEMAP_SCAN_ROWS, 8, 8, 32, 32);
+>>>>>>> upstream/master
 
 //  fg_tilemap->set_transparent_pen(1);
 
 	m_gfxdecode->gfx(0)->set_source(m_gfxram);
 }
 
+<<<<<<< HEAD
 UINT32 trvmadns_state::screen_update_trvmadns(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+=======
+uint32_t trvmadns_state::screen_update_trvmadns(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+>>>>>>> upstream/master
 {
 	int x,y,count;
 	gfx_element *gfx = m_gfxdecode->gfx(0);
@@ -377,7 +413,11 @@ void trvmadns_state::machine_reset()
 	m_old_data = -1;
 }
 
+<<<<<<< HEAD
 static MACHINE_CONFIG_START( trvmadns, trvmadns_state )
+=======
+static MACHINE_CONFIG_START( trvmadns )
+>>>>>>> upstream/master
 	MCFG_CPU_ADD("maincpu", Z80, XTAL_10MHz/4) // Most likely 2.5MHz (less likely 5MHz (10MHz/2))
 	MCFG_CPU_PROGRAM_MAP(cpu_map)
 	MCFG_CPU_IO_MAP(io_map)
@@ -461,5 +501,10 @@ ROM_START( trvmadnsa )
 	// empty space, for 3 roms (each one max 0x8000 bytes long)
 ROM_END
 
+<<<<<<< HEAD
 GAME( 1985, trvmadns,         0, trvmadns, trvmadns, driver_device, 0, ROT0, "Thunderhead Inc.", "Trivia Madness - Series A Question set", MACHINE_WRONG_COLORS | MACHINE_NOT_WORKING )
 GAME( 1985, trvmadnsa, trvmadns, trvmadns, trvmadns, driver_device, 0, ROT0, "Thunderhead Inc.", "Trivia Madness - Series B Question set", MACHINE_WRONG_COLORS | MACHINE_NOT_WORKING )
+=======
+GAME( 1985, trvmadns,         0, trvmadns, trvmadns, trvmadns_state, 0, ROT0, "Thunderhead Inc.", "Trivia Madness - Series A Question set", MACHINE_WRONG_COLORS | MACHINE_NOT_WORKING )
+GAME( 1985, trvmadnsa, trvmadns, trvmadns, trvmadns, trvmadns_state, 0, ROT0, "Thunderhead Inc.", "Trivia Madness - Series B Question set", MACHINE_WRONG_COLORS | MACHINE_NOT_WORKING )
+>>>>>>> upstream/master

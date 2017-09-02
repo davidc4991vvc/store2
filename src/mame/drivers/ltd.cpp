@@ -40,11 +40,24 @@ ToDo:
 
 ********************************************************************************/
 
+<<<<<<< HEAD
 #include "machine/genpin.h"
 #include "cpu/m6800/m6800.h"
 #include "sound/ay8910.h"
 #include "ltd.lh"
 
+=======
+#include "emu.h"
+#include "machine/genpin.h"
+
+#include "cpu/m6800/m6801.h"
+#include "sound/ay8910.h"
+#include "speaker.h"
+
+#include "ltd.lh"
+
+
+>>>>>>> upstream/master
 class ltd_state : public genpin_class
 {
 public:
@@ -70,6 +83,7 @@ public:
 private:
 	bool m_timer_r;
 	bool m_clear;
+<<<<<<< HEAD
 	UINT8 m_counter;
 	UINT8 m_digit;
 	UINT8 m_game;
@@ -78,6 +92,16 @@ private:
 	virtual void machine_reset();
 	required_device<cpu_device> m_maincpu;
 	required_shared_ptr<UINT8> m_p_ram;
+=======
+	uint8_t m_counter;
+	uint8_t m_digit;
+	uint8_t m_game;
+	uint8_t m_out_offs;
+	uint8_t m_port2;
+	virtual void machine_reset() override;
+	required_device<cpu_device> m_maincpu;
+	required_shared_ptr<uint8_t> m_p_ram;
+>>>>>>> upstream/master
 };
 
 
@@ -266,7 +290,11 @@ READ8_MEMBER( ltd_state:: port1_r )
 {
 	if (~m_port2 & 0x10)
 	{
+<<<<<<< HEAD
 		UINT8 row = m_digit >> 4;
+=======
+		uint8_t row = m_digit >> 4;
+>>>>>>> upstream/master
 
 		if (row==0)
 			return ioport("X0")->read();
@@ -299,8 +327,13 @@ WRITE8_MEMBER( ltd_state::port1_w )
 {
 	if (m_port2 & 0x10)
 	{
+<<<<<<< HEAD
 		UINT8 row = m_digit & 15;
 		UINT8 segment = BITSWAP8(data, 7, 0, 1, 2, 3, 4, 5, 6);
+=======
+		uint8_t row = m_digit & 15;
+		uint8_t segment = BITSWAP8(data, 7, 0, 1, 2, 3, 4, 5, 6);
+>>>>>>> upstream/master
 
 		switch (m_counter)
 		{
@@ -315,21 +348,36 @@ WRITE8_MEMBER( ltd_state::port1_w )
 				if (m_clear)
 				{
 					if (row>7)
+<<<<<<< HEAD
 						output_set_digit_value(row+2, segment); // P2
 					else
 						output_set_digit_value(row, segment); // P1
+=======
+						output().set_digit_value(row+2, segment); // P2
+					else
+						output().set_digit_value(row, segment); // P1
+>>>>>>> upstream/master
 				}
 				break;
 			case 8:
 				if (m_clear)
 				{
 					if (row>13)
+<<<<<<< HEAD
 						output_set_digit_value(row+26, segment); // credits / ball
 					else
 					if (row>7)
 						output_set_digit_value(row+22, segment); // P4
 					else
 						output_set_digit_value(row+20, segment); // P3
+=======
+						output().set_digit_value(row+26, segment); // credits / ball
+					else
+					if (row>7)
+						output().set_digit_value(row+22, segment); // P4
+					else
+						output().set_digit_value(row+20, segment); // P3
+>>>>>>> upstream/master
 				}
 				break;
 		}
@@ -370,8 +418,13 @@ DRIVER_INIT_MEMBER( ltd_state, ltd )
 DRIVER_INIT_MEMBER( ltd_state, atla_ltd )
 {
 	m_game = 1;
+<<<<<<< HEAD
 	output_set_digit_value(0, 0x3f);
 	output_set_digit_value(10, 0x3f);
+=======
+	output().set_digit_value(0, 0x3f);
+	output().set_digit_value(10, 0x3f);
+>>>>>>> upstream/master
 }
 
 DRIVER_INIT_MEMBER( ltd_state, bhol_ltd )
@@ -387,8 +440,13 @@ DRIVER_INIT_MEMBER( ltd_state, zephy )
 TIMER_DEVICE_CALLBACK_MEMBER( ltd_state::timer_r )
 {
 	m_timer_r ^= 1;
+<<<<<<< HEAD
 	m_maincpu->set_input_line(M6800_IRQ_LINE, (m_timer_r) ? CLEAR_LINE : ASSERT_LINE);
 	static const UINT8 patterns[16] = { 0x3f, 0x06, 0x5b, 0x4f, 0x66, 0x6d, 0x7c, 0x07, 0x7f, 0x67, 0x58, 0x4c, 0x62, 0x69, 0x78, 0 }; // 7447
+=======
+	m_maincpu->set_input_line(M6802_IRQ_LINE, (m_timer_r) ? CLEAR_LINE : ASSERT_LINE);
+	static const uint8_t patterns[16] = { 0x3f, 0x06, 0x5b, 0x4f, 0x66, 0x6d, 0x7c, 0x07, 0x7f, 0x67, 0x58, 0x4c, 0x62, 0x69, 0x78, 0 }; // 7447
+>>>>>>> upstream/master
 	m_out_offs++;
 	if (m_out_offs > 0x7f) m_out_offs = 0x60;
 
@@ -401,6 +459,7 @@ TIMER_DEVICE_CALLBACK_MEMBER( ltd_state::timer_r )
 				switch(m_out_offs-0x60)
 				{
 					case 0:
+<<<<<<< HEAD
 						output_set_digit_value(1, patterns[m_p_ram[m_out_offs]&15]);
 						output_set_digit_value(2, patterns[m_p_ram[m_out_offs]>>4]);
 						break;
@@ -419,6 +478,26 @@ TIMER_DEVICE_CALLBACK_MEMBER( ltd_state::timer_r )
 					case 8:
 						output_set_digit_value(41, patterns[m_p_ram[m_out_offs]&15]);
 						output_set_digit_value(40, patterns[m_p_ram[m_out_offs]>>4]);
+=======
+						output().set_digit_value(1, patterns[m_p_ram[m_out_offs]&15]);
+						output().set_digit_value(2, patterns[m_p_ram[m_out_offs]>>4]);
+						break;
+					case 1:
+						output().set_digit_value(11, patterns[m_p_ram[m_out_offs]&15]);
+						output().set_digit_value(12, patterns[m_p_ram[m_out_offs]>>4]);
+						break;
+					case 2:
+						output().set_digit_value(3, patterns[m_p_ram[m_out_offs]&15]);
+						output().set_digit_value(4, patterns[m_p_ram[m_out_offs]>>4]);
+						break;
+					case 3:
+						output().set_digit_value(13, patterns[m_p_ram[m_out_offs]&15]);
+						output().set_digit_value(14, patterns[m_p_ram[m_out_offs]>>4]);
+						break;
+					case 8:
+						output().set_digit_value(41, patterns[m_p_ram[m_out_offs]&15]);
+						output().set_digit_value(40, patterns[m_p_ram[m_out_offs]>>4]);
+>>>>>>> upstream/master
 						break;
 				}
 				break;
@@ -428,6 +507,7 @@ TIMER_DEVICE_CALLBACK_MEMBER( ltd_state::timer_r )
 				switch(m_out_offs-0x60)
 				{
 					case 0:
+<<<<<<< HEAD
 						output_set_digit_value(0, patterns[m_p_ram[m_out_offs]&15]);
 						output_set_digit_value(1, patterns[m_p_ram[m_out_offs]>>4]);
 						break;
@@ -454,6 +534,34 @@ TIMER_DEVICE_CALLBACK_MEMBER( ltd_state::timer_r )
 					case 8:
 						output_set_digit_value(41, patterns[m_p_ram[m_out_offs]&15]);
 						output_set_digit_value(40, patterns[m_p_ram[m_out_offs]>>4]);
+=======
+						output().set_digit_value(0, patterns[m_p_ram[m_out_offs]&15]);
+						output().set_digit_value(1, patterns[m_p_ram[m_out_offs]>>4]);
+						break;
+					case 1:
+						output().set_digit_value(10, patterns[m_p_ram[m_out_offs]&15]);
+						output().set_digit_value(11, patterns[m_p_ram[m_out_offs]>>4]);
+						break;
+					case 2:
+						output().set_digit_value(2, patterns[m_p_ram[m_out_offs]&15]);
+						output().set_digit_value(3, patterns[m_p_ram[m_out_offs]>>4]);
+						break;
+					case 3:
+						output().set_digit_value(12, patterns[m_p_ram[m_out_offs]&15]);
+						output().set_digit_value(13, patterns[m_p_ram[m_out_offs]>>4]);
+						break;
+					case 4:
+						output().set_digit_value(4, patterns[m_p_ram[m_out_offs]&15]);
+						output().set_digit_value(5, patterns[m_p_ram[m_out_offs]>>4]);
+						break;
+					case 5:
+						output().set_digit_value(14, patterns[m_p_ram[m_out_offs]&15]);
+						output().set_digit_value(15, patterns[m_p_ram[m_out_offs]>>4]);
+						break;
+					case 8:
+						output().set_digit_value(41, patterns[m_p_ram[m_out_offs]&15]);
+						output().set_digit_value(40, patterns[m_p_ram[m_out_offs]>>4]);
+>>>>>>> upstream/master
 						break;
 				}
 				break;
@@ -463,6 +571,7 @@ TIMER_DEVICE_CALLBACK_MEMBER( ltd_state::timer_r )
 				switch(m_out_offs-0x60)
 				{
 					case 0:
+<<<<<<< HEAD
 						output_set_digit_value(0, patterns[m_p_ram[m_out_offs]&15]);
 						output_set_digit_value(1, patterns[m_p_ram[m_out_offs]>>4]);
 						break;
@@ -501,6 +610,46 @@ TIMER_DEVICE_CALLBACK_MEMBER( ltd_state::timer_r )
 					case 9:
 						output_set_digit_value(40, patterns[m_p_ram[m_out_offs]&15]);
 						output_set_digit_value(41, patterns[m_p_ram[m_out_offs]>>4]);
+=======
+						output().set_digit_value(0, patterns[m_p_ram[m_out_offs]&15]);
+						output().set_digit_value(1, patterns[m_p_ram[m_out_offs]>>4]);
+						break;
+					case 1:
+						output().set_digit_value(2, patterns[m_p_ram[m_out_offs]&15]);
+						output().set_digit_value(3, patterns[m_p_ram[m_out_offs]>>4]);
+						break;
+					case 2:
+						output().set_digit_value(4, patterns[m_p_ram[m_out_offs]&15]);
+						output().set_digit_value(5, patterns[m_p_ram[m_out_offs]>>4]);
+						break;
+					case 3:
+						output().set_digit_value(10, patterns[m_p_ram[m_out_offs]&15]);
+						output().set_digit_value(11, patterns[m_p_ram[m_out_offs]>>4]);
+						break;
+					case 4:
+						output().set_digit_value(12, patterns[m_p_ram[m_out_offs]&15]);
+						output().set_digit_value(13, patterns[m_p_ram[m_out_offs]>>4]);
+						break;
+					case 5:
+						output().set_digit_value(14, patterns[m_p_ram[m_out_offs]&15]);
+						output().set_digit_value(15, patterns[m_p_ram[m_out_offs]>>4]);
+						break;
+					case 6:
+						output().set_digit_value(20, patterns[m_p_ram[m_out_offs]&15]);
+						output().set_digit_value(21, patterns[m_p_ram[m_out_offs]>>4]);
+						break;
+					case 7:
+						output().set_digit_value(22, patterns[m_p_ram[m_out_offs]&15]);
+						output().set_digit_value(23, patterns[m_p_ram[m_out_offs]>>4]);
+						break;
+					case 8:
+						output().set_digit_value(24, patterns[m_p_ram[m_out_offs]&15]);
+						output().set_digit_value(25, patterns[m_p_ram[m_out_offs]>>4]);
+						break;
+					case 9:
+						output().set_digit_value(40, patterns[m_p_ram[m_out_offs]&15]);
+						output().set_digit_value(41, patterns[m_p_ram[m_out_offs]>>4]);
+>>>>>>> upstream/master
 						break;
 				}
 				break;
@@ -510,7 +659,11 @@ TIMER_DEVICE_CALLBACK_MEMBER( ltd_state::timer_r )
 	}
 }
 
+<<<<<<< HEAD
 static MACHINE_CONFIG_START( ltd3, ltd_state )
+=======
+static MACHINE_CONFIG_START( ltd3 )
+>>>>>>> upstream/master
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", M6802, XTAL_3_579545MHz)
 	MCFG_CPU_PROGRAM_MAP(ltd3_map)
@@ -526,7 +679,11 @@ static MACHINE_CONFIG_START( ltd3, ltd_state )
 	MCFG_TIMER_DRIVER_ADD_PERIODIC("timer_r", ltd_state, timer_r, attotime::from_hz(500))
 MACHINE_CONFIG_END
 
+<<<<<<< HEAD
 static MACHINE_CONFIG_START( ltd4, ltd_state )
+=======
+static MACHINE_CONFIG_START( ltd4 )
+>>>>>>> upstream/master
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", M6803, XTAL_3_579545MHz) // guess, no details available
 	MCFG_CPU_PROGRAM_MAP(ltd4_map)
@@ -548,6 +705,20 @@ static MACHINE_CONFIG_START( ltd4, ltd_state )
 MACHINE_CONFIG_END
 
 /*-------------------------------------------------------------------
+<<<<<<< HEAD
+=======
+/ Arizona
+/-------------------------------------------------------------------*/
+ROM_START(arizona)
+	ROM_REGION(0x1000, "roms", 0)
+	ROM_LOAD("arizltd.bin", 0x0000, 0x0400, CRC(908f00d8) SHA1(98f28f1aedbad43e0e096959fdef45e038405473))
+	ROM_RELOAD(0x0400, 0x0400)
+	ROM_RELOAD(0x0800, 0x0400)
+	ROM_RELOAD(0x0c00, 0x0400)
+ROM_END
+
+/*-------------------------------------------------------------------
+>>>>>>> upstream/master
 / Atlantis
 /-------------------------------------------------------------------*/
 ROM_START(atla_ltd)
@@ -557,6 +728,69 @@ ROM_START(atla_ltd)
 ROM_END
 
 /*-------------------------------------------------------------------
+<<<<<<< HEAD
+=======
+/ Disco Dancing
+/-------------------------------------------------------------------*/
+ROM_START(discodan)
+	ROM_REGION(0x1000, "roms", 0)
+	ROM_LOAD("disco.bin", 0x0000, 0x0800, CRC(83c79157) SHA1(286fd0c984870639fcd7d7b8f6a5a5ddabcddcf5))
+	ROM_RELOAD(0x0800, 0x0800)
+ROM_END
+
+/*-------------------------------------------------------------------
+/ Hustler
+/-------------------------------------------------------------------*/
+ROM_START(hustlerp)
+	ROM_REGION(0x1000, "roms", 0)
+	ROM_LOAD("hustler_1.bin", 0x0000, 0x0800, CRC(43f323f5) SHA1(086b81699bea08b10b4231e398f4f689395355b0))
+	ROM_RELOAD(0x0800, 0x0800)
+ROM_END
+
+/*-------------------------------------------------------------------
+/ Martian Queen
+/-------------------------------------------------------------------*/
+
+// No good dump available
+
+/*-------------------------------------------------------------------
+/ King Kong
+/-------------------------------------------------------------------*/
+
+ROM_START(kkongltd)
+	ROM_REGION(0x1000, "roms", 0)
+	ROM_LOAD("kong.bin", 0x0000, 0x0800, CRC(5b2a3123) SHA1(eee417d17d3272ee63c728915af84da33f1f73a2))
+	ROM_RELOAD(0x0800, 0x0800)
+ROM_END
+
+/*-------------------------------------------------------------------
+/ Viking King
+/-------------------------------------------------------------------*/
+
+ROM_START(vikngkng)
+	ROM_REGION(0x1000, "roms", 0)
+	ROM_LOAD("vikking.bin", 0x0000, 0x0800, CRC(aa32d158) SHA1(b24294ae4ecb2ab3119ad7fe79ef567b19ac792a))
+	ROM_RELOAD(0x0800, 0x0800)
+ROM_END
+
+/*-------------------------------------------------------------------
+/ Force
+/-------------------------------------------------------------------*/
+
+ROM_START(force)
+	ROM_REGION(0x1000, "roms", 0)
+	ROM_LOAD("forceltd.bin", 0x0000, 0x0800, CRC(48f9ebbe) SHA1(8aaab352fb21263b1b93ffefd9b5169284083beb))
+	ROM_RELOAD(0x0800, 0x0800)
+ROM_END
+
+/*-------------------------------------------------------------------
+/ Space Poker
+/-------------------------------------------------------------------*/
+
+// No good dump available
+
+/*-------------------------------------------------------------------
+>>>>>>> upstream/master
 / Black Hole
 /-------------------------------------------------------------------*/
 ROM_START(bhol_ltd)
@@ -566,6 +800,18 @@ ROM_START(bhol_ltd)
 ROM_END
 
 /*-------------------------------------------------------------------
+<<<<<<< HEAD
+=======
+/ Cowboy Eight Ball
+/-------------------------------------------------------------------*/
+
+ROM_START(cowboy)
+	ROM_REGION(0x1000, "roms", 0)
+	ROM_LOAD("cowboy3p.bin", 0x0000, 0x1000, CRC(5afa29af) SHA1(a5ccf5cd17c63d4292222b792535187b1bcfa786))
+ROM_END
+
+/*-------------------------------------------------------------------
+>>>>>>> upstream/master
 / Zephy
 /-------------------------------------------------------------------*/
 ROM_START(zephy)
@@ -573,16 +819,40 @@ ROM_START(zephy)
 	ROM_LOAD("zephy.l2", 0x0000, 0x1000, CRC(8dd11287) SHA1(8133d0c797eb0fdb56d83fc55da91bfc3cddc9e3))
 ROM_END
 
+<<<<<<< HEAD
 /*-------------------------------------------------------------------
 / Cowboy Eight Ball
 /-------------------------------------------------------------------*/
 ROM_START(cowboy)
+=======
+ROM_START(zephya)
+	ROM_REGION(0x1000, "roms", 0)
+	ROM_LOAD("zephy1.bin", 0x0000, 0x1000, CRC(ae189c8a) SHA1(c309b436ef94cd5c266c88fe5f222261e083e4eb))
+ROM_END
+
+/*-------------------------------------------------------------------
+/ Cowboy Eight Ball 2
+/-------------------------------------------------------------------*/
+ROM_START(cowboy2)
+>>>>>>> upstream/master
 	ROM_REGION(0x2000, "roms", 0)
 	ROM_LOAD("cowboy_l.bin", 0x0000, 0x1000, CRC(87befe2a) SHA1(93fdf40b10e53d7d95e5dc72923b6be887411fc0))
 	ROM_LOAD("cowboy_h.bin", 0x1000, 0x1000, CRC(105e5d7b) SHA1(75edeab8c8ba19f334479133802acbc25f405763))
 ROM_END
 
 /*-------------------------------------------------------------------
+<<<<<<< HEAD
+=======
+/ Haunted Hotel
+/-------------------------------------------------------------------*/
+ROM_START(hhotel)
+	ROM_REGION(0x2000, "roms", 0)
+	ROM_LOAD("hh1.bin", 0x0000, 0x1000, CRC(a107a683) SHA1(5bb79d9a0a6b33f067cdd54942784c67ab557909))
+	ROM_LOAD("hh2.bin", 0x1000, 0x1000, CRC(e0c2ebc1) SHA1(131240589162c7b3f44a2bb951945c7d64f89c8d))
+ROM_END
+
+/*-------------------------------------------------------------------
+>>>>>>> upstream/master
 / Mr. & Mrs. Pec-Men
 /-------------------------------------------------------------------*/
 ROM_START(pecmen)
@@ -601,10 +871,20 @@ ROM_START(alcapone)
 ROM_END
 
 /*-------------------------------------------------------------------
+<<<<<<< HEAD
+=======
+/ Alien Warrior
+/-------------------------------------------------------------------*/
+
+// No good dump available
+
+/*-------------------------------------------------------------------
+>>>>>>> upstream/master
 / Columbia
 /-------------------------------------------------------------------*/
 ROM_START(columbia)
 	ROM_REGION(0x2000, "roms", 0)
+<<<<<<< HEAD
 	ROM_LOAD("columb-d.bin", 0x0000, 0x1000, NO_DUMP)
 	ROM_LOAD("columb-e.bin", 0x1000, 0x1000, CRC(013abca0) SHA1(269376af92368d214c3d09ec6d3eb653841666f3))
 ROM_END
@@ -619,3 +899,55 @@ GAME(1981, cowboy,   0,  ltd4,  ltd4, ltd_state, ltd,      ROT0, "LTD", "Cowboy 
 GAME(1981, pecmen,   0,  ltd4,  ltd4, ltd_state, ltd,      ROT0, "LTD", "Mr. & Mrs. Pec-Men", MACHINE_IS_SKELETON_MECHANICAL)
 GAME(1981, alcapone, 0,  ltd4,  ltd4, ltd_state, ltd,      ROT0, "LTD", "Al Capone",          MACHINE_IS_SKELETON_MECHANICAL)
 GAME(1982, columbia, 0,  ltd4,  ltd4, ltd_state, ltd,      ROT0, "LTD", "Columbia",           MACHINE_IS_SKELETON_MECHANICAL)
+=======
+	ROM_LOAD("columb-l.bin", 0x0000, 0x1000, CRC(ac345dee) SHA1(14f03fa8059de5cd69cc83638aa6533fbcead37e))
+	ROM_LOAD("columb-h.bin", 0x1000, 0x1000, CRC(acd2a85b) SHA1(30889ee4230ce05f6060f926b2137bbf5939db2d))
+ROM_END
+
+/*-------------------------------------------------------------------
+/ Time Machine
+/-------------------------------------------------------------------*/
+ROM_START(tmacltd4)
+	ROM_REGION(0x2000, "roms", 0)
+	ROM_LOAD("tm4-l.bin", 0x0000, 0x1000, NO_DUMP)
+	ROM_LOAD("tm4-h.bin", 0x1000, 0x1000, CRC(f5f97992) SHA1(ba31f71a600e7061b500e0750f50643503e52a80))
+ROM_END
+
+ROM_START(tmacltd2)
+	ROM_REGION(0x2000, "roms", 0)
+	ROM_LOAD("tm4-l.bin", 0x0000, 0x1000, NO_DUMP)
+	ROM_LOAD("tm4-h.bin", 0x1000, 0x1000, CRC(f717c9db) SHA1(9ca5819b707fa20edfc289734e1aa189ae242aa3))
+ROM_END
+
+/*-------------------------------------------------------------------
+/ Trick Shooter
+/-------------------------------------------------------------------*/
+ROM_START(tricksht)
+	ROM_REGION(0x2000, "roms", 0)
+	ROM_LOAD("tricks-l.bin", 0x0000, 0x1000, CRC(951413ff) SHA1(f4a28f7b41cb077377433dc7bfb6647e5d392481))
+	ROM_LOAD("tricks-h.bin", 0x1000, 0x1000, CRC(2e4efb51) SHA1(3dd20addecf4b47bd68b05d557c378d1dbbbd892))
+ROM_END
+
+// system 3
+GAME(1981, arizona,          0,  ltd3,  ltd3, ltd_state, atla_ltd, ROT0, "LTD", "Arizona",                           MACHINE_IS_SKELETON_MECHANICAL)
+GAME(1981, atla_ltd,         0,  ltd3,  ltd3, ltd_state, atla_ltd, ROT0, "LTD", "Atlantis (LTD)",                    MACHINE_MECHANICAL | MACHINE_NOT_WORKING | MACHINE_NO_SOUND )
+GAME(1981, discodan,         0,  ltd3,  ltd3, ltd_state, atla_ltd, ROT0, "LTD", "Disco Dancing",                     MACHINE_IS_SKELETON_MECHANICAL)
+GAME(1981, hustlerp,         0,  ltd3,  ltd3, ltd_state, atla_ltd, ROT0, "LTD", "Hustler",                           MACHINE_IS_SKELETON_MECHANICAL)
+GAME(1981, kkongltd,         0,  ltd3,  ltd3, ltd_state, atla_ltd, ROT0, "LTD", "King Kong",                         MACHINE_IS_SKELETON_MECHANICAL)
+GAME(198?, vikngkng,         0,  ltd3,  ltd3, ltd_state, atla_ltd, ROT0, "LTD", "Viking King",                       MACHINE_IS_SKELETON_MECHANICAL)
+GAME(1981, force,            0,  ltd3,  ltd3, ltd_state, atla_ltd, ROT0, "LTD", "Force",                             MACHINE_IS_SKELETON_MECHANICAL)
+GAME(1981, bhol_ltd,         0,  ltd3,  ltd3, ltd_state, bhol_ltd, ROT0, "LTD", "Black Hole (LTD)",                  MACHINE_MECHANICAL | MACHINE_NOT_WORKING | MACHINE_NO_SOUND )
+GAME(1981, cowboy,           0,  ltd3,  ltd3, ltd_state, zephy,    ROT0, "LTD", "Cowboy Eight Ball",                 MACHINE_IS_SKELETON_MECHANICAL)
+GAME(1981, zephy,            0,  ltd3,  ltd3, ltd_state, zephy,    ROT0, "LTD", "Zephy",                             MACHINE_IS_SKELETON_MECHANICAL)
+GAME(1981, zephya,       zephy,  ltd3,  ltd3, ltd_state, zephy,    ROT0, "LTD", "Zephy (alternate set)",             MACHINE_IS_SKELETON_MECHANICAL)
+
+// system 4
+GAME(1982, cowboy2,          0,  ltd4,  ltd4, ltd_state, ltd,      ROT0, "LTD", "Cowboy Eight Ball 2",               MACHINE_IS_SKELETON_MECHANICAL)
+GAME(1981, hhotel,           0,  ltd4,  ltd4, ltd_state, ltd,      ROT0, "LTD", "Haunted Hotel",                     MACHINE_IS_SKELETON_MECHANICAL)
+GAME(1981, pecmen,           0,  ltd4,  ltd4, ltd_state, ltd,      ROT0, "LTD", "Mr. & Mrs. Pec-Men",                MACHINE_IS_SKELETON_MECHANICAL)
+GAME(1981, alcapone,         0,  ltd4,  ltd4, ltd_state, ltd,      ROT0, "LTD", "Al Capone",                         MACHINE_IS_SKELETON_MECHANICAL)
+GAME(1982, columbia,         0,  ltd4,  ltd4, ltd_state, ltd,      ROT0, "LTD", "Columbia",                          MACHINE_IS_SKELETON_MECHANICAL)
+GAME(1981, tmacltd4,         0,  ltd4,  ltd4, ltd_state, ltd,      ROT0, "LTD", "Time Machine (LTD, 4 players)",     MACHINE_IS_SKELETON_MECHANICAL)
+GAME(1981, tmacltd2,  tmacltd4,  ltd4,  ltd4, ltd_state, ltd,      ROT0, "LTD", "Time Machine (LTD, 2 players)",     MACHINE_IS_SKELETON_MECHANICAL)
+GAME(1982, tricksht,         0,  ltd4,  ltd4, ltd_state, ltd,      ROT0, "LTD", "Trick Shooter",                     MACHINE_IS_SKELETON_MECHANICAL)
+>>>>>>> upstream/master

@@ -6,6 +6,10 @@
 
 *********************************************************************/
 
+<<<<<<< HEAD
+=======
+#include "emu.h"
+>>>>>>> upstream/master
 #include "pc83.h"
 
 
@@ -22,7 +26,11 @@
 //  DEVICE DEFINITIONS
 //**************************************************************************
 
+<<<<<<< HEAD
 const device_type PC_KBD_IBM_PC_83 = &device_creator<ibm_pc_83_keyboard_device>;
+=======
+DEFINE_DEVICE_TYPE(PC_KBD_IBM_PC_83, ibm_pc_83_keyboard_device, "kb_pc83", "IBM PC Keyboard")
+>>>>>>> upstream/master
 
 
 //-------------------------------------------------
@@ -39,13 +47,18 @@ ROM_END
 //  rom_region - device-specific ROM region
 //-------------------------------------------------
 
+<<<<<<< HEAD
 const rom_entry *ibm_pc_83_keyboard_device::device_rom_region() const
+=======
+const tiny_rom_entry *ibm_pc_83_keyboard_device::device_rom_region() const
+>>>>>>> upstream/master
 {
 	return ROM_NAME( ibm_pc_83_keyboard );
 }
 
 
 //-------------------------------------------------
+<<<<<<< HEAD
 //  ADDRESS_MAP( kb_io )
 //-------------------------------------------------
 
@@ -64,10 +77,22 @@ ADDRESS_MAP_END
 static MACHINE_CONFIG_FRAGMENT( ibm_pc_83_keyboard )
 	MCFG_CPU_ADD(I8048_TAG, I8048, MCS48_LC_CLOCK(IND_U(47), CAP_P(20)))
 	MCFG_CPU_IO_MAP(ibm_pc_83_keyboard_io)
+=======
+//  device_add_mconfig - add device configuration
+//-------------------------------------------------
+
+MACHINE_CONFIG_MEMBER( ibm_pc_83_keyboard_device::device_add_mconfig )
+	MCFG_CPU_ADD(I8048_TAG, I8048, MCS48_LC_CLOCK(IND_U(47), CAP_P(20)))
+	MCFG_MCS48_PORT_BUS_OUT_CB(WRITE8(ibm_pc_83_keyboard_device, bus_w))
+	MCFG_MCS48_PORT_P1_IN_CB(READ8(ibm_pc_83_keyboard_device, p1_r))
+	MCFG_MCS48_PORT_P2_OUT_CB(WRITE8(ibm_pc_83_keyboard_device, p2_w))
+	MCFG_MCS48_PORT_T0_IN_CB(READLINE(ibm_pc_83_keyboard_device, t0_r))
+>>>>>>> upstream/master
 MACHINE_CONFIG_END
 
 
 //-------------------------------------------------
+<<<<<<< HEAD
 //  machine_config_additions - device-specific
 //  machine configurations
 //-------------------------------------------------
@@ -79,6 +104,8 @@ machine_config_constructor ibm_pc_83_keyboard_device::device_mconfig_additions()
 
 
 //-------------------------------------------------
+=======
+>>>>>>> upstream/master
 //  INPUT_PORTS( ibm_pc_83_keyboard )
 //-------------------------------------------------
 
@@ -248,6 +275,7 @@ ioport_constructor ibm_pc_83_keyboard_device::device_input_ports() const
 //  ibm_pc_83_keyboard_device - constructor
 //-------------------------------------------------
 
+<<<<<<< HEAD
 ibm_pc_83_keyboard_device::ibm_pc_83_keyboard_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
 	: device_t(mconfig, PC_KBD_IBM_PC_83, "IBM PC Keyboard", tag, owner, clock, "kb_pc83", __FILE__),
 		device_pc_kbd_interface(mconfig, *this),
@@ -276,6 +304,14 @@ ibm_pc_83_keyboard_device::ibm_pc_83_keyboard_device(const machine_config &mconf
 		m_dr21(*this, "DR21"),
 		m_dr22(*this, "DR22"),
 		m_dr23(*this, "DR23"), m_cnt(0)
+=======
+ibm_pc_83_keyboard_device::ibm_pc_83_keyboard_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock) :
+	device_t(mconfig, PC_KBD_IBM_PC_83, tag, owner, clock),
+	device_pc_kbd_interface(mconfig, *this),
+	m_maincpu(*this, I8048_TAG),
+	m_dr(*this, "DR%02u", 0),
+	m_cnt(0)
+>>>>>>> upstream/master
 {
 }
 
@@ -347,7 +383,11 @@ READ8_MEMBER( ibm_pc_83_keyboard_device::p1_r )
 
 	*/
 
+<<<<<<< HEAD
 	UINT8 data = 0;
+=======
+	uint8_t data = 0;
+>>>>>>> upstream/master
 
 	data |= clock_signal();
 	data |= data_signal() << 1;
@@ -383,6 +423,7 @@ WRITE8_MEMBER( ibm_pc_83_keyboard_device::p2_w )
 
 
 //-------------------------------------------------
+<<<<<<< HEAD
 //  t1_r -
 //-------------------------------------------------
 
@@ -416,6 +457,20 @@ READ8_MEMBER( ibm_pc_83_keyboard_device::t1_r )
 	case 21: data = m_dr21->read(); break;
 	case 22: data = m_dr22->read(); break;
 	case 23: data = m_dr23->read(); break;
+=======
+//  t0_r -
+//-------------------------------------------------
+
+READ_LINE_MEMBER( ibm_pc_83_keyboard_device::t0_r )
+{
+	uint8_t data = 0xff;
+
+	int keylatch = m_cnt >> 2;
+
+	if (keylatch < 24)
+	{
+		data = m_dr[keylatch]->read();
+>>>>>>> upstream/master
 	}
 
 	int sense = m_cnt & 0x03;

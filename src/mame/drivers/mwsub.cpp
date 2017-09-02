@@ -13,6 +13,10 @@ TODO:
 
 #include "emu.h"
 #include "cpu/z80/z80.h"
+<<<<<<< HEAD
+=======
+#include "machine/watchdog.h"
+>>>>>>> upstream/master
 
 #include "submar.lh"
 
@@ -67,7 +71,11 @@ WRITE8_MEMBER(submar_state::submar_motor_w)
 	// d6: stir water
 	// d7: n/c
 	for (int i = 0; i < 8; i++)
+<<<<<<< HEAD
 		output_set_indexed_value("motor", i, data >> i & 1);
+=======
+		output().set_indexed_value("motor", i, data >> i & 1);
+>>>>>>> upstream/master
 }
 
 WRITE8_MEMBER(submar_state::submar_lamp_w)
@@ -81,7 +89,11 @@ WRITE8_MEMBER(submar_state::submar_lamp_w)
 	// d6: front ship hit
 	// d7: scenery
 	for (int i = 0; i < 8; i++)
+<<<<<<< HEAD
 		output_set_lamp_value(i, data >> i & 1);
+=======
+		output().set_lamp_value(i, data >> i & 1);
+>>>>>>> upstream/master
 }
 
 WRITE8_MEMBER(submar_state::submar_solenoid_w)
@@ -89,7 +101,11 @@ WRITE8_MEMBER(submar_state::submar_solenoid_w)
 	// d0-d4: ship1-5
 	// d5-d7: n/c
 	for (int i = 0; i < 8; i++)
+<<<<<<< HEAD
 		output_set_indexed_value("solenoid", i, data >> i & 1);
+=======
+		output().set_indexed_value("solenoid", i, data >> i & 1);
+>>>>>>> upstream/master
 }
 
 WRITE8_MEMBER(submar_state::submar_sound_w)
@@ -107,12 +123,21 @@ WRITE8_MEMBER(submar_state::submar_sound_w)
 WRITE8_MEMBER(submar_state::submar_led_w)
 {
 	// 7447 (BCD to LED segment)
+<<<<<<< HEAD
 	const UINT8 _7447_map[16] =
 		{ 0x3f,0x06,0x5b,0x4f,0x66,0x6d,0x7c,0x07,0x7f,0x67,0x58,0x4c,0x62,0x69,0x78,0x00 };
 
 	// 2 digits per write. port 4: time, port 5: score
 	output_set_digit_value((offset << 1 & 2) | 0, _7447_map[data >> 4]);
 	output_set_digit_value((offset << 1 & 2) | 1, _7447_map[data & 0x0f]);
+=======
+	const uint8_t _7447_map[16] =
+		{ 0x3f,0x06,0x5b,0x4f,0x66,0x6d,0x7c,0x07,0x7f,0x67,0x58,0x4c,0x62,0x69,0x78,0x00 };
+
+	// 2 digits per write. port 4: time, port 5: score
+	output().set_digit_value((offset << 1 & 2) | 0, _7447_map[data >> 4]);
+	output().set_digit_value((offset << 1 & 2) | 1, _7447_map[data & 0x0f]);
+>>>>>>> upstream/master
 }
 
 WRITE8_MEMBER(submar_state::submar_irq_clear_w)
@@ -134,7 +159,11 @@ static ADDRESS_MAP_START( submar_portmap, AS_IO, 8, submar_state )
 	AM_RANGE(0x02, 0x02) AM_WRITE(submar_solenoid_w)
 	AM_RANGE(0x03, 0x03) AM_READ_PORT("DSW") AM_WRITE(submar_sound_w)
 	AM_RANGE(0x04, 0x05) AM_WRITE(submar_led_w)
+<<<<<<< HEAD
 	AM_RANGE(0x06, 0x06) AM_WRITE(watchdog_reset_w)
+=======
+	AM_RANGE(0x06, 0x06) AM_DEVWRITE("watchdog", watchdog_timer_device, reset_w)
+>>>>>>> upstream/master
 	AM_RANGE(0x07, 0x07) AM_WRITE(submar_irq_clear_w)
 ADDRESS_MAP_END
 
@@ -195,7 +224,11 @@ INPUT_PORTS_END
 
 ***************************************************************************/
 
+<<<<<<< HEAD
 static MACHINE_CONFIG_START( submar, submar_state )
+=======
+static MACHINE_CONFIG_START( submar )
+>>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", Z80, XTAL_19_968MHz/8)
@@ -203,6 +236,11 @@ static MACHINE_CONFIG_START( submar, submar_state )
 	MCFG_CPU_PROGRAM_MAP(submar_map)
 	MCFG_CPU_IO_MAP(submar_portmap)
 
+<<<<<<< HEAD
+=======
+	MCFG_WATCHDOG_ADD("watchdog")
+
+>>>>>>> upstream/master
 	/* no video! */
 
 	/* sound hardware */
@@ -224,4 +262,8 @@ ROM_START( submar )
 ROM_END
 
 
+<<<<<<< HEAD
 GAMEL( 1979, submar, 0, submar, submar, driver_device, 0, ROT0, "Midway", "Submarine (Midway)", MACHINE_NO_SOUND | MACHINE_NOT_WORKING | MACHINE_MECHANICAL, layout_submar )
+=======
+GAMEL( 1979, submar, 0, submar, submar, submar_state, 0, ROT0, "Midway", "Submarine (Midway)", MACHINE_NO_SOUND | MACHINE_NOT_WORKING | MACHINE_MECHANICAL, layout_submar )
+>>>>>>> upstream/master

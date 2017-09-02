@@ -50,10 +50,20 @@
 ****************************************************************************/
 
 #include "emu.h"
+<<<<<<< HEAD
 #include "cpu/z80/z80.h"
 #include "audio/irem.h"
 #include "includes/iremipt.h"
 #include "includes/m57.h"
+=======
+#include "includes/m57.h"
+#include "includes/iremipt.h"
+
+#include "cpu/z80/z80.h"
+#include "audio/irem.h"
+
+#include "screen.h"
+>>>>>>> upstream/master
 
 
 #define MASTER_CLOCK        XTAL_18_432MHz
@@ -225,7 +235,11 @@ GFXDECODE_END
  *
  *************************************/
 
+<<<<<<< HEAD
 static MACHINE_CONFIG_START( m57, m57_state )
+=======
+static MACHINE_CONFIG_START( m57 )
+>>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", Z80, XTAL_18_432MHz/6)  /* verified on pcb */
@@ -330,5 +344,10 @@ ROM_END
  *
  *************************************/
 
+<<<<<<< HEAD
 GAME( 1983, troangel, 0,        m57,   troangel, driver_device, 0, ROT0, "Irem", "Tropical Angel", MACHINE_SUPPORTS_SAVE )
 GAME( 1983, newtangl, troangel, m57,   troangel, driver_device, 0, ROT0, "Irem", "New Tropical Angel", MACHINE_SUPPORTS_SAVE )
+=======
+GAME( 1983, troangel, 0,        m57,   troangel, m57_state, 0, ROT0, "Irem", "Tropical Angel", MACHINE_SUPPORTS_SAVE )
+GAME( 1983, newtangl, troangel, m57,   troangel, m57_state, 0, ROT0, "Irem", "New Tropical Angel", MACHINE_SUPPORTS_SAVE )
+>>>>>>> upstream/master

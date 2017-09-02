@@ -1,12 +1,18 @@
 /*
+<<<<<<< HEAD
  * Copyright 2010-2015 Branimir Karadzic. All rights reserved.
  * License: http://www.opensource.org/licenses/BSD-2-Clause
+=======
+ * Copyright 2010-2017 Branimir Karadzic. All rights reserved.
+ * License: https://github.com/bkaradzic/bx#license-bsd-2-clause
+>>>>>>> upstream/master
  */
 
 #ifndef BX_MUTEX_H_HEADER_GUARD
 #define BX_MUTEX_H_HEADER_GUARD
 
 #include "bx.h"
+<<<<<<< HEAD
 #include "cpu.h"
 #include "os.h"
 #include "sem.h"
@@ -59,6 +65,12 @@ namespace bx
 	}
 #endif // BX_PLATFORM_
 
+=======
+
+namespace bx
+{
+	///
+>>>>>>> upstream/master
 	class Mutex
 	{
 		BX_CLASS(Mutex
@@ -67,6 +79,7 @@ namespace bx
 			);
 
 	public:
+<<<<<<< HEAD
 		Mutex()
 		{
 			pthread_mutexattr_t attr;
@@ -97,6 +110,25 @@ namespace bx
 		pthread_mutex_t m_handle;
 	};
 
+=======
+		///
+		Mutex();
+
+		///
+		~Mutex();
+
+		///
+		void lock();
+
+		///
+		void unlock();
+
+	private:
+		BX_ALIGN_DECL(16, uint8_t) m_internal[64];
+	};
+
+	///
+>>>>>>> upstream/master
 	class MutexScope
 	{
 		BX_CLASS(MutexScope
@@ -106,6 +138,7 @@ namespace bx
 			);
 
 	public:
+<<<<<<< HEAD
 		MutexScope(Mutex& _mutex)
 			: m_mutex(_mutex)
 		{
@@ -116,11 +149,19 @@ namespace bx
 		{
 			m_mutex.unlock();
 		}
+=======
+		///
+		MutexScope(Mutex& _mutex);
+
+		///
+		~MutexScope();
+>>>>>>> upstream/master
 
 	private:
 		Mutex& m_mutex;
 	};
 
+<<<<<<< HEAD
 	typedef Mutex LwMutex;
 
 	class LwMutexScope
@@ -150,5 +191,10 @@ namespace bx
 } // namespace bx
 
 #endif // BX_CONFIG_SUPPORTS_THREADING
+=======
+} // namespace bx
+
+#include "inline/mutex.inl"
+>>>>>>> upstream/master
 
 #endif // BX_MUTEX_H_HEADER_GUARD

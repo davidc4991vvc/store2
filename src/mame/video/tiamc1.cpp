@@ -36,6 +36,18 @@ WRITE8_MEMBER(tiamc1_state::tiamc1_videoram_w)
 	}
 }
 
+<<<<<<< HEAD
+=======
+WRITE8_MEMBER(tiamc1_state::kot_videoram_w)
+{
+	if ((m_layers_ctrl & 1) == 0)
+	{
+		m_tileram[offset] = data;
+		m_bg_tilemap1->mark_tile_dirty(offset);
+	}
+}
+
+>>>>>>> upstream/master
 WRITE8_MEMBER(tiamc1_state::tiamc1_bankswitch_w)
 {
 	if ((data & 128) != (m_layers_ctrl & 128))
@@ -44,6 +56,15 @@ WRITE8_MEMBER(tiamc1_state::tiamc1_bankswitch_w)
 	m_layers_ctrl = data;
 }
 
+<<<<<<< HEAD
+=======
+WRITE8_MEMBER(tiamc1_state::kot_bankswitch_w)
+{
+	m_gfxdecode->gfx(0)->set_source(m_charram + (data >> 1) * 0x100);
+	m_layers_ctrl = data;
+}
+
+>>>>>>> upstream/master
 WRITE8_MEMBER(tiamc1_state::tiamc1_sprite_x_w)
 {
 	m_spriteram_x[offset] = data;
@@ -74,9 +95,30 @@ WRITE8_MEMBER(tiamc1_state::tiamc1_bg_hshift_w)
 	m_bg_hshift = data;
 }
 
+<<<<<<< HEAD
 WRITE8_MEMBER(tiamc1_state::tiamc1_palette_w)
 {
 	m_palette->set_pen_color(offset, m_palette_ptr[data]);
+=======
+WRITE8_MEMBER(tiamc1_state::tiamc1_bg_bplctrl_w)
+{
+	m_bg_bplctrl = data;
+	update_bg_palette();
+}
+
+WRITE8_MEMBER(tiamc1_state::tiamc1_palette_w)
+{
+	m_paletteram[offset] = data;
+	m_palette->set_pen_color(offset, m_palette_ptr[data]);
+	update_bg_palette();
+}
+
+void tiamc1_state::update_bg_palette()
+{
+	uint8_t bplmask = ((m_bg_bplctrl >> 0) & 1) | ((m_bg_bplctrl >> 1) & 2) | ((m_bg_bplctrl >> 2) & 4) | ((m_bg_bplctrl >> 3) & 8);
+	for (int i = 0; i < 16; i++)
+		m_palette->set_pen_color(i + 16, m_palette_ptr[m_paletteram[i | bplmask]]);
+>>>>>>> upstream/master
 }
 
 PALETTE_INIT_MEMBER(tiamc1_state, tiamc1)
@@ -95,7 +137,11 @@ PALETTE_INIT_MEMBER(tiamc1_state, tiamc1)
 	int r, g, b, ir, ig, ib;
 	float tcol;
 
+<<<<<<< HEAD
 	m_palette_ptr = auto_alloc_array(machine(), rgb_t, 256);
+=======
+	m_palette_ptr = std::make_unique<rgb_t[]>(256);
+>>>>>>> upstream/master
 
 	for (col = 0; col < 256; col++) {
 		ir = (col >> 3) & 7;
@@ -124,6 +170,7 @@ TILE_GET_INFO_MEMBER(tiamc1_state::get_bg2_tile_info)
 
 void tiamc1_state::video_start()
 {
+<<<<<<< HEAD
 	UINT8 *video_ram;
 
 	video_ram = auto_alloc_array_clear(machine(), UINT8, 0x3040);
@@ -148,6 +195,34 @@ void tiamc1_state::video_start()
 
 	m_bg_vshift = 0;
 	m_bg_hshift = 0;
+=======
+	m_videoram = make_unique_clear<uint8_t[]>(0x3050);
+
+		m_charram = m_videoram.get() + 0x0800;     /* Ram is banked */
+		m_tileram = m_videoram.get() + 0x0000;
+
+	m_spriteram_y = m_videoram.get() + 0x3000;
+	m_spriteram_x = m_videoram.get() + 0x3010;
+	m_spriteram_n = m_videoram.get() + 0x3020;
+	m_spriteram_a = m_videoram.get() + 0x3030;
+	m_paletteram  = m_videoram.get() + 0x3040;
+
+	save_pointer(NAME(m_videoram.get()), 0x3050);
+
+	m_bg_tilemap1 = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(tiamc1_state::get_bg1_tile_info),this), TILEMAP_SCAN_ROWS,
+			8, 8, 32, 32);
+
+	m_bg_tilemap2 = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(tiamc1_state::get_bg2_tile_info),this), TILEMAP_SCAN_ROWS,
+			8, 8, 32, 32);
+	m_bg_tilemap1->set_scrolldx(4, 4);
+	m_bg_tilemap2->set_scrolldx(4, 4);
+	m_bg_tilemap1->set_palette_offset(16);
+	m_bg_tilemap2->set_palette_offset(16);
+
+	m_bg_vshift = 0;
+	m_bg_hshift = 0;
+	m_bg_bplctrl = 0;
+>>>>>>> upstream/master
 
 	save_item(NAME(m_layers_ctrl));
 	save_item(NAME(m_bg_vshift));
@@ -156,6 +231,37 @@ void tiamc1_state::video_start()
 	m_gfxdecode->gfx(0)->set_source(m_charram);
 }
 
+<<<<<<< HEAD
+=======
+VIDEO_START_MEMBER(tiamc1_state, kot)
+{
+	m_charram = memregion("gfx2")->base();
+
+	m_videoram    = make_unique_clear<uint8_t[]>(0x450);
+	m_tileram     = m_videoram.get() + 0x000;
+	m_spriteram_y = m_videoram.get() + 0x400;
+	m_spriteram_x = m_videoram.get() + 0x410;
+	m_spriteram_n = m_videoram.get() + 0x420;
+	m_spriteram_a = m_videoram.get() + 0x430;
+	m_paletteram  = m_videoram.get() + 0x440;
+
+	save_pointer(NAME(m_videoram.get()), 0x450);
+
+	m_bg_tilemap1 = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(tiamc1_state::get_bg1_tile_info), this), TILEMAP_SCAN_ROWS,
+		8, 8, 32, 32);
+
+	m_bg_tilemap1->set_scrolldx(4, 4);
+
+	m_bg_vshift = 0;
+	m_bg_hshift = 0;
+
+	save_item(NAME(m_layers_ctrl));
+	save_item(NAME(m_bg_vshift));
+	save_item(NAME(m_bg_hshift));
+
+	m_gfxdecode->gfx(0)->set_source(m_charram);
+}
+>>>>>>> upstream/master
 void tiamc1_state::draw_sprites(bitmap_ind16 &bitmap, const rectangle &cliprect)
 {
 	int offs;
@@ -179,7 +285,11 @@ void tiamc1_state::draw_sprites(bitmap_ind16 &bitmap, const rectangle &cliprect)
 	}
 }
 
+<<<<<<< HEAD
 UINT32 tiamc1_state::screen_update_tiamc1(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+=======
+uint32_t tiamc1_state::screen_update_tiamc1(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+>>>>>>> upstream/master
 {
 	int i;
 
@@ -205,3 +315,21 @@ UINT32 tiamc1_state::screen_update_tiamc1(screen_device &screen, bitmap_ind16 &b
 
 	return 0;
 }
+<<<<<<< HEAD
+=======
+
+uint32_t tiamc1_state::screen_update_kot(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+{
+	for (int i = 0; i < 32; i++)
+		m_bg_tilemap1->set_scrolly(i, m_bg_vshift);
+
+	for (int i = 0; i < 32; i++)
+		m_bg_tilemap1->set_scrollx(i, m_bg_hshift);
+
+	m_bg_tilemap1->draw(screen, bitmap, cliprect, 0, 0);
+
+	draw_sprites(bitmap, cliprect);
+
+	return 0;
+}
+>>>>>>> upstream/master

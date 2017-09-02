@@ -6,6 +6,10 @@
 
 **********************************************************************/
 
+<<<<<<< HEAD
+=======
+#include "emu.h"
+>>>>>>> upstream/master
 #include "vic1112.h"
 
 
@@ -23,7 +27,11 @@
 //  DEVICE DEFINITIONS
 //**************************************************************************
 
+<<<<<<< HEAD
 const device_type VIC1112 = &device_creator<vic1112_device>;
+=======
+DEFINE_DEVICE_TYPE(VIC1112, vic1112_device, "vic1112", "VIC-1112 IEEE-488 Interface")
+>>>>>>> upstream/master
 
 
 WRITE_LINE_MEMBER( vic1112_device::via0_irq_w )
@@ -50,7 +58,11 @@ READ8_MEMBER( vic1112_device::via0_pb_r )
 
 	*/
 
+<<<<<<< HEAD
 	UINT8 data = 0;
+=======
+	uint8_t data = 0;
+>>>>>>> upstream/master
 
 	data |= m_bus->eoi_r() << 3;
 	data |= m_bus->dav_r() << 4;
@@ -93,10 +105,17 @@ WRITE_LINE_MEMBER( vic1112_device::via1_irq_w )
 
 
 //-------------------------------------------------
+<<<<<<< HEAD
 //  MACHINE_DRIVER( vic1112 )
 //-------------------------------------------------
 
 static MACHINE_CONFIG_FRAGMENT( vic1112 )
+=======
+//  device_add_mconfig - add device configuration
+//-------------------------------------------------
+
+MACHINE_CONFIG_MEMBER( vic1112_device::device_add_mconfig )
+>>>>>>> upstream/master
 	MCFG_DEVICE_ADD(M6522_0_TAG, VIA6522, 0)
 	MCFG_VIA6522_READPB_HANDLER(READ8(vic1112_device, via0_pb_r))
 	MCFG_VIA6522_WRITEPB_HANDLER(WRITE8(vic1112_device, via0_pb_w))
@@ -109,11 +128,16 @@ static MACHINE_CONFIG_FRAGMENT( vic1112 )
 	MCFG_VIA6522_CB2_HANDLER(DEVWRITELINE(IEEE488_TAG, ieee488_device, eoi_w))
 	MCFG_VIA6522_IRQ_HANDLER(WRITELINE(vic1112_device, via1_irq_w))
 
+<<<<<<< HEAD
 	MCFG_CBM_IEEE488_ADD(NULL)
+=======
+	MCFG_CBM_IEEE488_ADD(nullptr)
+>>>>>>> upstream/master
 	MCFG_IEEE488_SRQ_CALLBACK(DEVWRITELINE(M6522_1_TAG, via6522_device, write_cb1))
 MACHINE_CONFIG_END
 
 
+<<<<<<< HEAD
 //-------------------------------------------------
 //  machine_config_additions - device-specific
 //  machine configurations
@@ -125,6 +149,8 @@ machine_config_constructor vic1112_device::device_mconfig_additions() const
 }
 
 
+=======
+>>>>>>> upstream/master
 
 //**************************************************************************
 //  LIVE DEVICE
@@ -134,12 +160,22 @@ machine_config_constructor vic1112_device::device_mconfig_additions() const
 //  vic1112_device - constructor
 //-------------------------------------------------
 
+<<<<<<< HEAD
 vic1112_device::vic1112_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
 	: device_t(mconfig, VIC1112, "VIC1112", tag, owner, clock, "vic1112", __FILE__),
 		device_vic20_expansion_card_interface(mconfig, *this),
 		m_via0(*this, M6522_0_TAG),
 		m_via1(*this, M6522_1_TAG),
 		m_bus(*this, IEEE488_TAG), m_via0_irq(0), m_via1_irq(0)
+=======
+vic1112_device::vic1112_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: device_t(mconfig, VIC1112, tag, owner, clock)
+	, device_vic20_expansion_card_interface(mconfig, *this)
+	, m_via0(*this, M6522_0_TAG)
+	, m_via1(*this, M6522_1_TAG)
+	, m_bus(*this, IEEE488_TAG)
+	, m_via0_irq(0), m_via1_irq(0)
+>>>>>>> upstream/master
 {
 }
 
@@ -171,6 +207,7 @@ void vic1112_device::device_reset()
 //  vic20_cd_r - cartridge data read
 //-------------------------------------------------
 
+<<<<<<< HEAD
 UINT8 vic1112_device::vic20_cd_r(address_space &space, offs_t offset, UINT8 data, int ram1, int ram2, int ram3, int blk1, int blk2, int blk3, int blk5, int io2, int io3)
 {
 	if (!io2)
@@ -183,13 +220,24 @@ UINT8 vic1112_device::vic20_cd_r(address_space &space, offs_t offset, UINT8 data
 		{
 			data = m_via0->read(space, offset & 0x0f);
 		}
+=======
+uint8_t vic1112_device::vic20_cd_r(address_space &space, offs_t offset, uint8_t data, int ram1, int ram2, int ram3, int blk1, int blk2, int blk3, int blk5, int io2, int io3)
+{
+	if (!io2)
+	{
+		data = (BIT(offset, 4) ? m_via1 : m_via0)->read(space, offset & 0x0f);
+>>>>>>> upstream/master
 	}
 	else if (!blk5)
 	{
 		if (offset & 0x1000)
+<<<<<<< HEAD
 		{
 			data = m_blk5[offset & 0x17ff];
 		}
+=======
+			data = m_blk5[offset & 0x17ff];
+>>>>>>> upstream/master
 	}
 
 	return data;
@@ -200,6 +248,7 @@ UINT8 vic1112_device::vic20_cd_r(address_space &space, offs_t offset, UINT8 data
 //  vic20_cd_w - cartridge data write
 //-------------------------------------------------
 
+<<<<<<< HEAD
 void vic1112_device::vic20_cd_w(address_space &space, offs_t offset, UINT8 data, int ram1, int ram2, int ram3, int blk1, int blk2, int blk3, int blk5, int io2, int io3)
 {
 	if (!io2)
@@ -212,5 +261,12 @@ void vic1112_device::vic20_cd_w(address_space &space, offs_t offset, UINT8 data,
 		{
 			m_via0->write(space, offset & 0x0f, data);
 		}
+=======
+void vic1112_device::vic20_cd_w(address_space &space, offs_t offset, uint8_t data, int ram1, int ram2, int ram3, int blk1, int blk2, int blk3, int blk5, int io2, int io3)
+{
+	if (!io2)
+	{
+		(BIT(offset, 4) ? m_via1 : m_via0)->write(space, offset & 0x0f, data);
+>>>>>>> upstream/master
 	}
 }

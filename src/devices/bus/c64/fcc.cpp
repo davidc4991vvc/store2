@@ -21,6 +21,10 @@
 
 */
 
+<<<<<<< HEAD
+=======
+#include "emu.h"
+>>>>>>> upstream/master
 #include "fcc.h"
 
 
@@ -36,7 +40,11 @@
 //  DEVICE DEFINITIONS
 //**************************************************************************
 
+<<<<<<< HEAD
 const device_type C64_FCC = &device_creator<c64_final_chesscard_device>;
+=======
+DEFINE_DEVICE_TYPE(C64_FCC, c64_final_chesscard_device, "c64_fcc", "Final ChessCard")
+>>>>>>> upstream/master
 
 
 //-------------------------------------------------
@@ -53,7 +61,11 @@ ROM_END
 //  rom_region - device-specific ROM region
 //-------------------------------------------------
 
+<<<<<<< HEAD
 const rom_entry *c64_final_chesscard_device::device_rom_region() const
+=======
+const tiny_rom_entry *c64_final_chesscard_device::device_rom_region() const
+>>>>>>> upstream/master
 {
 	return ROM_NAME( c64_fcc );
 }
@@ -70,16 +82,24 @@ ADDRESS_MAP_END
 
 
 //-------------------------------------------------
+<<<<<<< HEAD
 //  MACHINE_CONFIG_FRAGMENT( c64_fcc )
 //-------------------------------------------------
 
 static MACHINE_CONFIG_FRAGMENT( c64_fcc )
+=======
+//  device_add_mconfig - add device configuration
+//-------------------------------------------------
+
+MACHINE_CONFIG_MEMBER( c64_final_chesscard_device::device_add_mconfig )
+>>>>>>> upstream/master
 	MCFG_CPU_ADD(G65SC02P4_TAG, M65SC02, XTAL_5MHz)
 	MCFG_CPU_PROGRAM_MAP(c64_fcc_map)
 MACHINE_CONFIG_END
 
 
 //-------------------------------------------------
+<<<<<<< HEAD
 //  machine_config_additions - device-specific
 //  machine configurations
 //-------------------------------------------------
@@ -91,6 +111,8 @@ machine_config_constructor c64_final_chesscard_device::device_mconfig_additions(
 
 
 //-------------------------------------------------
+=======
+>>>>>>> upstream/master
 //  INPUT_PORTS( c64_fcc )
 //-------------------------------------------------
 
@@ -118,8 +140,13 @@ ioport_constructor c64_final_chesscard_device::device_input_ports() const
 //  c64_final_chesscard_device - constructor
 //-------------------------------------------------
 
+<<<<<<< HEAD
 c64_final_chesscard_device::c64_final_chesscard_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock) :
 	device_t(mconfig, C64_FCC, "Final ChessCard", tag, owner, clock, "c64_fcc", __FILE__),
+=======
+c64_final_chesscard_device::c64_final_chesscard_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock) :
+	device_t(mconfig, C64_FCC, tag, owner, clock),
+>>>>>>> upstream/master
 	device_c64_expansion_card_interface(mconfig, *this),
 	device_nvram_interface(mconfig, *this),
 	m_maincpu(*this, G65SC02P4_TAG),
@@ -156,7 +183,11 @@ void c64_final_chesscard_device::device_reset()
 //  c64_cd_r - cartridge data read
 //-------------------------------------------------
 
+<<<<<<< HEAD
 UINT8 c64_final_chesscard_device::c64_cd_r(address_space &space, offs_t offset, UINT8 data, int sphi2, int ba, int roml, int romh, int io1, int io2)
+=======
+uint8_t c64_final_chesscard_device::c64_cd_r(address_space &space, offs_t offset, uint8_t data, int sphi2, int ba, int roml, int romh, int io1, int io2)
+>>>>>>> upstream/master
 {
 	if (!roml)
 	{
@@ -182,7 +213,11 @@ UINT8 c64_final_chesscard_device::c64_cd_r(address_space &space, offs_t offset, 
 //  c64_cd_w - cartridge data write
 //-------------------------------------------------
 
+<<<<<<< HEAD
 void c64_final_chesscard_device::c64_cd_w(address_space &space, offs_t offset, UINT8 data, int sphi2, int ba, int roml, int romh, int io1, int io2)
+=======
+void c64_final_chesscard_device::c64_cd_w(address_space &space, offs_t offset, uint8_t data, int sphi2, int ba, int roml, int romh, int io1, int io2)
+>>>>>>> upstream/master
 {
 	if (!roml)
 	{

@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 // license:LGPL-2.1+
+=======
+// license:BSD-3-Clause
+>>>>>>> upstream/master
 // copyright-holders:Tomasz Slanina
 /***************************************************************************
 
@@ -31,7 +35,11 @@ void taitoo_state::parentj_draw_sprites( bitmap_ind16 &bitmap, const rectangle &
 	/* Y chain size is 16/32?/64/64? pixels. X chain size
 	   is always 64 pixels. */
 
+<<<<<<< HEAD
 	address_space &space = machine().driver_data()->generic_space();
+=======
+	address_space &space = machine().dummy_space();
+>>>>>>> upstream/master
 	static const int size[] = { 1, 2, 4, 4 };
 	int x0, y0, x, y, dx, dy, ex, ey, zx, zy;
 	int ysize;
@@ -139,7 +147,11 @@ void taitoo_state::parentj_draw_sprites( bitmap_ind16 &bitmap, const rectangle &
 }
 
 
+<<<<<<< HEAD
 UINT32 taitoo_state::screen_update_parentj(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+=======
+uint32_t taitoo_state::screen_update_parentj(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+>>>>>>> upstream/master
 {
 	m_tc0080vco->tilemap_update();
 

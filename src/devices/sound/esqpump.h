@@ -1,11 +1,19 @@
 // license:BSD-3-Clause
 // copyright-holders:Christian Brunschen
+<<<<<<< HEAD
 #pragma once
 
 #ifndef _ESQPUMP_H_
 #define _ESQPUMP_H_
 
 #include "emu.h"
+=======
+#ifndef MAME_SOUND_ESQPUMP_H
+#define MAME_SOUND_ESQPUMP_H
+
+#pragma once
+
+>>>>>>> upstream/master
 #include "sound/es5506.h"
 #include "cpu/es5510/es5510.h"
 
@@ -14,11 +22,18 @@
 #define PUMP_FAKE_ESP_PROCESSING 0
 #define PUMP_REPLACE_ESP_PROGRAM 0
 
+<<<<<<< HEAD
 class esq_5505_5510_pump : public device_t,
 	public device_sound_interface
 {
 public:
 	esq_5505_5510_pump(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
+=======
+class esq_5505_5510_pump_device : public device_t, public device_sound_interface
+{
+public:
+	esq_5505_5510_pump_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
+>>>>>>> upstream/master
 
 	void set_otis(es5505_device *otis) { m_otis = otis; }
 	void set_esp(es5510_device *esp) { m_esp = esp; }
@@ -70,6 +85,7 @@ public:
 
 protected:
 	// device-level overrides
+<<<<<<< HEAD
 	virtual void device_start();
 	virtual void device_stop();
 	virtual void device_reset();
@@ -79,6 +95,17 @@ protected:
 
 	// timer callback overrides
 	virtual void device_timer(emu_timer &timer, device_timer_id id, int param, void *ptr);
+=======
+	virtual void device_start() override;
+	virtual void device_stop() override;
+	virtual void device_reset() override;
+
+	// sound stream update overrides
+	virtual void sound_stream_update(sound_stream &stream, stream_sample_t **inputs, stream_sample_t **outputs, int samples) override;
+
+	// timer callback overrides
+	virtual void device_timer(emu_timer &timer, device_timer_id id, int param, void *ptr) override;
+>>>>>>> upstream/master
 
 private:
 	// internal state:
@@ -114,11 +141,21 @@ private:
 #endif
 
 #if !PUMP_FAKE_ESP_PROCESSING && PUMP_REPLACE_ESP_PROGRAM
+<<<<<<< HEAD
 	INT16 e[0x4000];
+=======
+	int16_t e[0x4000];
+>>>>>>> upstream/master
 	int ei;
 #endif
 };
 
+<<<<<<< HEAD
 extern const device_type ESQ_5505_5510_PUMP;
 
 #endif
+=======
+DECLARE_DEVICE_TYPE(ESQ_5505_5510_PUMP, esq_5505_5510_pump_device)
+
+#endif // MAME_SOUND_ESQPUMP_H
+>>>>>>> upstream/master

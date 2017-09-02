@@ -22,7 +22,11 @@
  *  Gx831 Pop'n Music 2 (1999.04)
  *  Gx980 Pop'n Music 3 (1999.09)
  *
+<<<<<<< HEAD
  *  ????? Pop'n Stage (1999.11)
+=======
+ *  GQ970 Pop'n Stage (1999.11)
+>>>>>>> upstream/master
  *  Gx970 Pop'n Stage EX (2000.03)
  *
  *  Chips:
@@ -66,6 +70,7 @@ hard drive  3.5 adapter     long 3.5 IDE cable      3.5 adapter   PCB
 */
 
 #include "emu.h"
+<<<<<<< HEAD
 #include "cpu/m68000/m68000.h"
 #include "machine/ataintf.h"
 #include "sound/k054539.h"
@@ -73,6 +78,17 @@ hard drive  3.5 adapter     long 3.5 IDE cable      3.5 adapter   PCB
 #include "machine/idehd.h"
 
 
+=======
+#include "includes/djmain.h"
+
+#include "cpu/m68000/m68000.h"
+#include "machine/ataintf.h"
+#include "sound/k054539.h"
+#include "machine/idehd.h"
+
+#include "screen.h"
+#include "speaker.h"
+>>>>>>> upstream/master
 
 
 
@@ -102,7 +118,11 @@ WRITE32_MEMBER(djmain_state::sndram_bank_w)
 
 READ32_MEMBER(djmain_state::sndram_r)
 {
+<<<<<<< HEAD
 	UINT32 data = 0;
+=======
+	uint32_t data = 0;
+>>>>>>> upstream/master
 
 	if (ACCESSING_BITS_24_31)
 		data |= m_sndram[offset * 4] << 24;
@@ -154,7 +174,11 @@ WRITE32_MEMBER(djmain_state::obj_ctrl_w)
 
 READ32_MEMBER(djmain_state::obj_rom_r)
 {
+<<<<<<< HEAD
 	UINT8 *mem8 = memregion("gfx1")->base();
+=======
+	uint8_t *mem8 = memregion("gfx1")->base();
+>>>>>>> upstream/master
 	int bank = m_obj_regs[0x28/4] >> 16;
 
 	offset += bank * 0x200;
@@ -190,7 +214,11 @@ WRITE32_MEMBER(djmain_state::v_ctrl_w)
 
 READ32_MEMBER(djmain_state::v_rom_r)
 {
+<<<<<<< HEAD
 	UINT8 *mem8 = memregion("gfx2")->base();
+=======
+	uint8_t *mem8 = memregion("gfx2")->base();
+>>>>>>> upstream/master
 	int bank = m_k056832->word_r(space, 0x34/2, 0xffff);
 
 	offset *= 2;
@@ -223,6 +251,7 @@ READ8_MEMBER(djmain_state::inp2_r)
 
 READ32_MEMBER(djmain_state::turntable_r)
 {
+<<<<<<< HEAD
 	UINT32 result = 0;
 	static const char *const ttnames[] = { "TT1", "TT2" };
 
@@ -232,6 +261,16 @@ READ32_MEMBER(djmain_state::turntable_r)
 		int delta;
 
 		pos = read_safe(ioport(ttnames[m_turntable_select]), 0);
+=======
+	uint32_t result = 0;
+
+	if (ACCESSING_BITS_8_15)
+	{
+		uint8_t pos;
+		int delta;
+
+		pos = m_turntable[m_turntable_select].read_safe(0);
+>>>>>>> upstream/master
 		delta = pos - m_turntable_last_pos[m_turntable_select];
 		if (delta < -128)
 			delta += 256;
@@ -291,10 +330,17 @@ WRITE32_MEMBER(djmain_state::light_ctrl_1_w)
 {
 	if (ACCESSING_BITS_16_31)
 	{
+<<<<<<< HEAD
 		output_set_value("right-red-hlt",  !(data & 0x08000000));   // Right red HIGHLIGHT
 		output_set_value("left-red-hlt",   !(data & 0x04000000));   // Left red HIGHLIGHT
 		output_set_value("left-blue-hlt",  !(data & 0x02000000));   // Left blue HIGHLIGHT
 		output_set_value("right-blue-hlt", !(data & 0x00200000));   // Right blue HIGHLIGHT
+=======
+		output().set_value("right-red-hlt",  !(data & 0x08000000));   // Right red HIGHLIGHT
+		output().set_value("left-red-hlt",   !(data & 0x04000000));   // Left red HIGHLIGHT
+		output().set_value("left-blue-hlt",  !(data & 0x02000000));   // Left blue HIGHLIGHT
+		output().set_value("right-blue-hlt", !(data & 0x00200000));   // Right blue HIGHLIGHT
+>>>>>>> upstream/master
 	}
 }
 
@@ -302,11 +348,19 @@ WRITE32_MEMBER(djmain_state::light_ctrl_2_w)
 {
 	if (ACCESSING_BITS_16_31)
 	{
+<<<<<<< HEAD
 		output_set_value("left-ssr",       !!(data & 0x08000000));  // SSR
 		output_set_value("right-ssr",      !!(data & 0x08000000));  // SSR
 		set_led_status(machine(), 0, data & 0x00010000);            // 1P START
 		set_led_status(machine(), 1, data & 0x00020000);            // 2P START
 		set_led_status(machine(), 2, data & 0x00040000);            // EFFECT
+=======
+		output().set_value("left-ssr",       !!(data & 0x08000000));  // SSR
+		output().set_value("right-ssr",      !!(data & 0x08000000));  // SSR
+		output().set_led_value(0, data & 0x00010000);            // 1P START
+		output().set_led_value(1, data & 0x00020000);            // 2P START
+		output().set_led_value(2, data & 0x00040000);            // EFFECT
+>>>>>>> upstream/master
 	}
 }
 
@@ -1196,7 +1250,10 @@ INPUT_PORTS_END
 
 //--------- Pop'n Stage
 
+<<<<<<< HEAD
 #ifdef UNUSED_DEFINITION
+=======
+>>>>>>> upstream/master
 static INPUT_PORTS_START( popnstage )
 	PORT_START("BTN1")
 	PORT_BIT( 0x10, IP_ACTIVE_LOW, IPT_BUTTON1 ) PORT_PLAYER(1)
@@ -1289,7 +1346,10 @@ static INPUT_PORTS_START( popnstage )
 	PORT_DIPUNKNOWN_DIPLOC( 0x02, 0x02, "SW3:5" )
 	PORT_DIPUNKNOWN_DIPLOC( 0x01, 0x01, "SW3:6" )
 INPUT_PORTS_END
+<<<<<<< HEAD
 #endif
+=======
+>>>>>>> upstream/master
 
 #ifdef UNUSED_DEFINITION
 static INPUT_PORTS_START( popnstex )
@@ -1342,10 +1402,17 @@ GFXDECODE_END
 void djmain_state::machine_start()
 {
 	ide_hdd_device *hdd = m_ata->subdevice<ata_slot_device>("0")->subdevice<ide_hdd_device>("hdd");
+<<<<<<< HEAD
 	if (m_ata_master_password != NULL)
 		hdd->set_master_password(m_ata_master_password);
 
 	if (m_ata_user_password != NULL)
+=======
+	if (m_ata_master_password != nullptr)
+		hdd->set_master_password(m_ata_master_password);
+
+	if (m_ata_user_password != nullptr)
+>>>>>>> upstream/master
 		hdd->set_user_password(m_ata_user_password);
 
 	save_item(NAME(m_sndram_bank));
@@ -1364,9 +1431,15 @@ void djmain_state::machine_reset()
 	sndram_set_bank();
 
 	/* reset LEDs */
+<<<<<<< HEAD
 	set_led_status(machine(), 0, 1);
 	set_led_status(machine(), 1, 1);
 	set_led_status(machine(), 2, 1);
+=======
+	output().set_led_value(0, 1);
+	output().set_led_value(1, 1);
+	output().set_led_value(2, 1);
+>>>>>>> upstream/master
 }
 
 
@@ -1377,7 +1450,11 @@ void djmain_state::machine_reset()
  *
  *************************************/
 
+<<<<<<< HEAD
 static MACHINE_CONFIG_START( djmainj, djmain_state )
+=======
+static MACHINE_CONFIG_START( djmainj )
+>>>>>>> upstream/master
 
 	/* basic machine hardware */
 	// popn3 works 9.6 MHz or slower in some songs */
@@ -1386,7 +1463,11 @@ static MACHINE_CONFIG_START( djmainj, djmain_state )
 	MCFG_CPU_PROGRAM_MAP(maincpu_djmainj)
 	MCFG_CPU_VBLANK_INT_DRIVER("screen", djmain_state,  vb_interrupt)
 
+<<<<<<< HEAD
 	MCFG_ATA_INTERFACE_ADD("ata", ata_devices, "hdd", NULL, true)
+=======
+	MCFG_ATA_INTERFACE_ADD("ata", ata_devices, "hdd", nullptr, true)
+>>>>>>> upstream/master
 	MCFG_ATA_INTERFACE_IRQ_HANDLER(WRITELINE(djmain_state, ide_interrupt))
 
 	/* video hardware */
@@ -1403,8 +1484,12 @@ static MACHINE_CONFIG_START( djmainj, djmain_state )
 
 	MCFG_DEVICE_ADD("k056832", K056832, 0)
 	MCFG_K056832_CB(djmain_state, tile_callback)
+<<<<<<< HEAD
 	MCFG_K056832_CONFIG("gfx2", 1, K056832_BPP_4dj, 1, 1, "none")
 	MCFG_K056832_GFXDECODE("gfxdecode")
+=======
+	MCFG_K056832_CONFIG("gfx2", K056832_BPP_4dj, 1, 1, "none")
+>>>>>>> upstream/master
 	MCFG_K056832_PALETTE("palette")
 
 	MCFG_K055555_ADD("k055555")
@@ -1886,6 +1971,31 @@ ROM_START( popn3 )
 	ROM_REGION( 0x1000000, "shared", ROMREGION_ERASE00 )        /* K054539 RAM */
 ROM_END
 
+<<<<<<< HEAD
+=======
+ROM_START( popnstage )
+	ROM_REGION( 0x100000, "maincpu", 0 )        /* MC68EC020FG25 MPU */
+	ROM_LOAD16_BYTE( "970jba01.6a", 0x000000, 0x80000, NO_DUMP )
+	ROM_LOAD16_BYTE( "970jba02.8a", 0x000001, 0x80000, NO_DUMP )
+
+	ROM_REGION( 0x200000, "gfx1", 0)        /* SPRITE */
+	ROM_LOAD16_BYTE( "970jba03.19a", 0x000000, 0x80000, NO_DUMP )
+	ROM_LOAD16_BYTE( "970jba04.20a", 0x000001, 0x80000, NO_DUMP )
+	ROM_LOAD16_BYTE( "970jba05.22a", 0x100000, 0x80000, NO_DUMP )
+	ROM_LOAD16_BYTE( "970jba06.24a", 0x100001, 0x80000, NO_DUMP )
+
+	ROM_REGION( 0x200000, "gfx2", 0 )       /* TILEMAP */
+	ROM_LOAD16_BYTE( "970jba07.22d", 0x000000, 0x80000, NO_DUMP )
+	ROM_LOAD16_BYTE( "970jba08.23d", 0x000001, 0x80000, NO_DUMP )
+	ROM_LOAD16_BYTE( "970jba09.25d", 0x100000, 0x80000, NO_DUMP )
+	ROM_LOAD16_BYTE( "970jba10.27d", 0x100001, 0x80000, NO_DUMP )
+
+	DISK_REGION( "ata:0:hdd:image" )            /* IDE HARD DRIVE */
+	DISK_IMAGE( "970jba11", 0, SHA1(72e92b73b22a8f35e9faca93211e5acf781e66bb) )  /* GQ970  pop'n stage 1.5 ver1.00  1999/10/15 (C) KONAMI */
+
+	ROM_REGION( 0x1000000, "shared", ROMREGION_ERASE00 )        /* K054539 RAM */
+ROM_END
+>>>>>>> upstream/master
 
 #if 0
 // for reference, these sets have not been verified
@@ -1967,11 +2077,19 @@ ROM_END
 
 DRIVER_INIT_MEMBER(djmain_state,beatmania)
 {
+<<<<<<< HEAD
 	m_ata_master_password = NULL;
 	m_ata_user_password = NULL;
 }
 
 static const UINT8 beatmania_master_password[2 + 32] =
+=======
+	m_ata_master_password = nullptr;
+	m_ata_user_password = nullptr;
+}
+
+static const uint8_t beatmania_master_password[2 + 32] =
+>>>>>>> upstream/master
 {
 	0x01, 0x00,
 	0x4d, 0x47, 0x43, 0x28, 0x4b, 0x29, 0x4e, 0x4f,
@@ -1982,7 +2100,11 @@ static const UINT8 beatmania_master_password[2 + 32] =
 
 DRIVER_INIT_MEMBER(djmain_state,hmcompmx)
 {
+<<<<<<< HEAD
 	static const UINT8 hmcompmx_user_password[2 + 32] =
+=======
+	static const uint8_t hmcompmx_user_password[2 + 32] =
+>>>>>>> upstream/master
 	{
 		0x00, 0x00,
 		0x44, 0x42, 0x56, 0x4b, 0x3a, 0x34, 0x38, 0x2a,
@@ -1999,7 +2121,11 @@ DRIVER_INIT_MEMBER(djmain_state,hmcompmx)
 
 DRIVER_INIT_MEMBER(djmain_state,bm4thmix)
 {
+<<<<<<< HEAD
 	static const UINT8 bm4thmix_user_password[2 + 32] =
+=======
+	static const uint8_t bm4thmix_user_password[2 + 32] =
+>>>>>>> upstream/master
 	{
 		0x00, 0x00,
 		0x44, 0x42, 0x29, 0x4b, 0x2f, 0x2c, 0x4c, 0x32,
@@ -2015,7 +2141,11 @@ DRIVER_INIT_MEMBER(djmain_state,bm4thmix)
 
 DRIVER_INIT_MEMBER(djmain_state,bm5thmix)
 {
+<<<<<<< HEAD
 	static const UINT8 bm5thmix_user_password[2 + 32] =
+=======
+	static const uint8_t bm5thmix_user_password[2 + 32] =
+>>>>>>> upstream/master
 	{
 		0x00, 0x00,
 		0x44, 0x42, 0x56, 0x4b, 0x37, 0x35, 0x4a, 0x23,
@@ -2032,7 +2162,11 @@ DRIVER_INIT_MEMBER(djmain_state,bm5thmix)
 
 DRIVER_INIT_MEMBER(djmain_state,bmclubmx)
 {
+<<<<<<< HEAD
 	static const UINT8 bmclubmx_user_password[2 + 32] =
+=======
+	static const uint8_t bmclubmx_user_password[2 + 32] =
+>>>>>>> upstream/master
 	{
 		0x00, 0x00,
 		0x44, 0x20, 0x30, 0x57, 0x3c, 0x3f, 0x38, 0x32,
@@ -2050,7 +2184,11 @@ DRIVER_INIT_MEMBER(djmain_state,bmclubmx)
 
 DRIVER_INIT_MEMBER(djmain_state,bmcompm2)
 {
+<<<<<<< HEAD
 	static const UINT8 bmcompm2_user_password[2 + 32] =
+=======
+	static const uint8_t bmcompm2_user_password[2 + 32] =
+>>>>>>> upstream/master
 	{
 		0x00, 0x00,
 		0x3a, 0x20, 0x31, 0x3e, 0x46, 0x2c, 0x35, 0x46,
@@ -2067,7 +2205,11 @@ DRIVER_INIT_MEMBER(djmain_state,bmcompm2)
 
 DRIVER_INIT_MEMBER(djmain_state,hmcompm2)
 {
+<<<<<<< HEAD
 	static const UINT8 hmcompm2_user_password[2 + 32] =
+=======
+	static const uint8_t hmcompm2_user_password[2 + 32] =
+>>>>>>> upstream/master
 	{
 		0x00, 0x00,
 		0x3b, 0x39, 0x24, 0x3e, 0x4e, 0x59, 0x5c, 0x32,
@@ -2084,7 +2226,11 @@ DRIVER_INIT_MEMBER(djmain_state,hmcompm2)
 
 DRIVER_INIT_MEMBER(djmain_state,bmdct)
 {
+<<<<<<< HEAD
 	static const UINT8 bmdct_user_password[2 + 32] =
+=======
+	static const uint8_t bmdct_user_password[2 + 32] =
+>>>>>>> upstream/master
 	{
 		0x00, 0x00,
 		0x52, 0x47, 0x30, 0x3f, 0x2f, 0x39, 0x54, 0x5e,
@@ -2101,7 +2247,11 @@ DRIVER_INIT_MEMBER(djmain_state,bmdct)
 
 DRIVER_INIT_MEMBER(djmain_state,bmcorerm)
 {
+<<<<<<< HEAD
 	static const UINT8 bmcorerm_user_password[2 + 32] =
+=======
+	static const uint8_t bmcorerm_user_password[2 + 32] =
+>>>>>>> upstream/master
 	{
 		0x00, 0x00,
 		0x44, 0x42, 0x56, 0x4b, 0x3f, 0x4d, 0x4a, 0x27,
@@ -2118,7 +2268,11 @@ DRIVER_INIT_MEMBER(djmain_state,bmcorerm)
 
 DRIVER_INIT_MEMBER(djmain_state,bm6thmix)
 {
+<<<<<<< HEAD
 	static const UINT8 bm6thmix_user_password[2 + 32] =
+=======
+	static const uint8_t bm6thmix_user_password[2 + 32] =
+>>>>>>> upstream/master
 	{
 		0x00, 0x00,
 		0x44, 0x42, 0x56, 0x4b, 0x3d, 0x4d, 0x4a, 0x23,
@@ -2135,7 +2289,11 @@ DRIVER_INIT_MEMBER(djmain_state,bm6thmix)
 
 DRIVER_INIT_MEMBER(djmain_state,bm7thmix)
 {
+<<<<<<< HEAD
 	static const UINT8 bm7thmix_user_password[2 + 32] =
+=======
+	static const uint8_t bm7thmix_user_password[2 + 32] =
+>>>>>>> upstream/master
 	{
 		0x00, 0x00,
 		0x44, 0x42, 0x56, 0x4b, 0x3f, 0x4e, 0x4a, 0x25,
@@ -2152,7 +2310,11 @@ DRIVER_INIT_MEMBER(djmain_state,bm7thmix)
 
 DRIVER_INIT_MEMBER(djmain_state,bmfinal)
 {
+<<<<<<< HEAD
 	static const UINT8 bmfinal_user_password[2 + 32] =
+=======
+	static const uint8_t bmfinal_user_password[2 + 32] =
+>>>>>>> upstream/master
 	{
 		0x00, 0x00,
 		0x44, 0x42, 0x56, 0x4b, 0x3f, 0x4f, 0x4a, 0x23,
@@ -2196,6 +2358,10 @@ GAME( 2002, bmfinal,  0,        djmainj,   bm6thmix, djmain_state, bmfinal,   RO
 GAME( 1998, popn1,    0,        djmaina,   popn1,    djmain_state, beatmania, ROT0, "Konami", "Pop'n Music 1 (ver AA-A)", 0 )
 GAME( 1998, popn2,    0,        djmainj,   popn2,    djmain_state, beatmania, ROT0, "Konami", "Pop'n Music 2 (ver JA-A)", 0 )
 GAME( 1998, popn3,    0,        djmainj,   popn2,    djmain_state, beatmania, ROT0, "Konami", "Pop'n Music 3 (ver JA-A)", 0 )
+<<<<<<< HEAD
+=======
+GAME( 1999, popnstage,0,        djmainj,   popnstage,djmain_state, beatmania, ROT0, "Konami", "Pop'n Stage (ver JB-A)", MACHINE_NOT_WORKING )
+>>>>>>> upstream/master
 
 // for reference, these sets have not been verified
 //GAME( 1998, bm3rdmxb, bm3rdmix, djmainj,   bm3rdmix, djmain_state, beatmania, ROT0, "Konami", "beatmania 3rd MIX (ver JA-B)", 0 )

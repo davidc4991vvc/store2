@@ -60,6 +60,7 @@ WRITE16_MEMBER(shadfrce_state::bg1videoram_w)
 
 void shadfrce_state::video_start()
 {
+<<<<<<< HEAD
 	m_fgtilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(shadfrce_state::get_fgtile_info),this),TILEMAP_SCAN_ROWS,    8,  8,64,32);
 	m_fgtilemap->set_transparent_pen(0);
 
@@ -69,6 +70,17 @@ void shadfrce_state::video_start()
 	m_bg1tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(shadfrce_state::get_bg1tile_info),this),TILEMAP_SCAN_ROWS, 16, 16,32,32);
 
 	m_spvideoram_old = auto_alloc_array(machine(), UINT16, m_spvideoram.bytes()/2);
+=======
+	m_fgtilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(shadfrce_state::get_fgtile_info),this),TILEMAP_SCAN_ROWS,    8,  8,64,32);
+	m_fgtilemap->set_transparent_pen(0);
+
+	m_bg0tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(shadfrce_state::get_bg0tile_info),this),TILEMAP_SCAN_ROWS, 16, 16,32,32);
+	m_bg0tilemap->set_transparent_pen(0);
+
+	m_bg1tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(shadfrce_state::get_bg1tile_info),this),TILEMAP_SCAN_ROWS, 16, 16,32,32);
+
+	m_spvideoram_old = std::make_unique<uint16_t[]>(m_spvideoram.bytes()/2);
+>>>>>>> upstream/master
 
 	save_item(NAME(m_video_enable));
 	save_item(NAME(m_irqs_enable));
@@ -118,8 +130,13 @@ void shadfrce_state::draw_sprites(screen_device &screen, bitmap_ind16 &bitmap, c
 	*/
 
 	gfx_element *gfx = m_gfxdecode->gfx(1);
+<<<<<<< HEAD
 	UINT16 *finish = m_spvideoram_old;
 	UINT16 *source = finish + 0x2000/2 - 8;
+=======
+	uint16_t *finish = m_spvideoram_old.get();
+	uint16_t *source = finish + 0x2000/2 - 8;
+>>>>>>> upstream/master
 	int hcount;
 	while( source>=finish )
 	{
@@ -148,7 +165,11 @@ void shadfrce_state::draw_sprites(screen_device &screen, bitmap_ind16 &bitmap, c
 	}
 }
 
+<<<<<<< HEAD
 UINT32 shadfrce_state::screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+=======
+uint32_t shadfrce_state::screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+>>>>>>> upstream/master
 {
 	screen.priority().fill(0, cliprect);
 
@@ -167,12 +188,20 @@ UINT32 shadfrce_state::screen_update(screen_device &screen, bitmap_ind16 &bitmap
 	return 0;
 }
 
+<<<<<<< HEAD
 void shadfrce_state::screen_eof(screen_device &screen, bool state)
+=======
+WRITE_LINE_MEMBER(shadfrce_state::screen_vblank)
+>>>>>>> upstream/master
 {
 	// rising edge
 	if (state)
 	{
 		/* looks like sprites are *two* frames ahead */
+<<<<<<< HEAD
 		memcpy(m_spvideoram_old, m_spvideoram, m_spvideoram.bytes());
+=======
+		memcpy(m_spvideoram_old.get(), m_spvideoram, m_spvideoram.bytes());
+>>>>>>> upstream/master
 	}
 }

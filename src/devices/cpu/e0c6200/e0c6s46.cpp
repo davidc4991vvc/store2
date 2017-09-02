@@ -15,6 +15,10 @@
 
 */
 
+<<<<<<< HEAD
+=======
+#include "emu.h"
+>>>>>>> upstream/master
 #include "e0c6s46.h"
 
 enum
@@ -27,7 +31,11 @@ enum
 	IRQREG_INPUT1
 };
 
+<<<<<<< HEAD
 const device_type E0C6S46 = &device_creator<e0c6s46_device>;
+=======
+DEFINE_DEVICE_TYPE(E0C6S46, e0c6s46_device, "e0c6s46", "Seiko Epson E0C6S46")
+>>>>>>> upstream/master
 
 
 // internal memory maps
@@ -45,11 +53,18 @@ ADDRESS_MAP_END
 
 
 // device definitions
+<<<<<<< HEAD
 e0c6s46_device::e0c6s46_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
 	: e0c6200_cpu_device(mconfig, E0C6S46, "E0C6S46", tag, owner, clock, ADDRESS_MAP_NAME(e0c6s46_program), ADDRESS_MAP_NAME(e0c6s46_data), "e0c6s46", __FILE__)
 	, m_vram1(*this, "vram1")
 	, m_vram2(*this, "vram2"), m_osc(0), m_svd(0), m_lcd_control(0), m_lcd_contrast(0)
 		, m_pixel_update_handler(nullptr)
+=======
+e0c6s46_device::e0c6s46_device(const machine_config &mconfig, const char *tag, device_t *owner, u32 clock)
+	: e0c6200_cpu_device(mconfig, E0C6S46, tag, owner, clock, ADDRESS_MAP_NAME(e0c6s46_program), ADDRESS_MAP_NAME(e0c6s46_data))
+	, m_vram1(*this, "vram1")
+	, m_vram2(*this, "vram2"), m_osc(0), m_svd(0), m_lcd_control(0), m_lcd_contrast(0)
+>>>>>>> upstream/master
 	, m_write_r0(*this), m_write_r1(*this), m_write_r2(*this), m_write_r3(*this), m_write_r4(*this)
 	, m_read_p0(*this), m_read_p1(*this), m_read_p2(*this), m_read_p3(*this)
 	, m_write_p0(*this), m_write_p1(*this), m_write_p2(*this), m_write_p3(*this), m_r_dir(0), m_p_dir(0), m_p_pullup(0), m_dfk0(0), m_256_src_pulse(0), m_core_256_handle(nullptr),
@@ -83,6 +98,11 @@ void e0c6s46_device::device_start()
 	m_write_p2.resolve_safe();
 	m_write_p3.resolve_safe();
 
+<<<<<<< HEAD
+=======
+	m_pixel_update_cb.bind_relative_to(*owner());
+
+>>>>>>> upstream/master
 	// create timers
 	m_core_256_handle = machine().scheduler().timer_alloc(timer_expired_delegate(FUNC(e0c6s46_device::core_256_cb), this));
 	m_core_256_handle->adjust(attotime::from_ticks(64, unscaled_clock()));
@@ -279,7 +299,11 @@ void e0c6s46_device::execute_set_input(int line, int state)
 
 	state = (state) ? 1 : 0;
 	int port = line >> 2 & 1;
+<<<<<<< HEAD
 	UINT8 bit = 1 << (line & 3);
+=======
+	u8 bit = 1 << (line & 3);
+>>>>>>> upstream/master
 
 	m_port_k[port] = (m_port_k[port] & ~bit) | (state ? bit : 0);
 }
@@ -292,13 +316,21 @@ void e0c6s46_device::execute_set_input(int line, int state)
 
 // R output ports
 
+<<<<<<< HEAD
 void e0c6s46_device::write_r(UINT8 port, UINT8 data)
+=======
+void e0c6s46_device::write_r(u8 port, u8 data)
+>>>>>>> upstream/master
 {
 	data &= 0xf;
 	m_port_r[port] = data;
 
 	// ports R0x-R3x can be high-impedance
+<<<<<<< HEAD
 	UINT8 out = data;
+=======
+	u8 out = data;
+>>>>>>> upstream/master
 	if (port < 4 && !(m_r_dir >> port & 1))
 		out = 0xf;
 
@@ -327,14 +359,22 @@ void e0c6s46_device::write_r4_out()
 	// R40: _FOUT(clock inverted output)
 	// R42: FOUT or _BZ
 	// R43: BZ(buzzer)
+<<<<<<< HEAD
 	UINT8 out = (m_port_r[4] & 2) | (m_bz_pulse << 3) | (m_bz_pulse << 2 ^ 4);
+=======
+	u8 out = (m_port_r[4] & 2) | (m_bz_pulse << 3) | (m_bz_pulse << 2 ^ 4);
+>>>>>>> upstream/master
 	m_write_r4(4, out, 0xff);
 }
 
 
 // P I/O ports
 
+<<<<<<< HEAD
 void e0c6s46_device::write_p(UINT8 port, UINT8 data)
+=======
+void e0c6s46_device::write_p(u8 port, u8 data)
+>>>>>>> upstream/master
 {
 	data &= 0xf;
 	m_port_p[port] = data;
@@ -352,7 +392,11 @@ void e0c6s46_device::write_p(UINT8 port, UINT8 data)
 	}
 }
 
+<<<<<<< HEAD
 UINT8 e0c6s46_device::read_p(UINT8 port)
+=======
+u8 e0c6s46_device::read_p(u8 port)
+>>>>>>> upstream/master
 {
 	// return written value if port direction is set to output
 	if (m_p_dir >> port & 1)
@@ -416,7 +460,11 @@ void e0c6s46_device::clock_clktimer()
 	m_clktimer_count++;
 
 	// irq on falling edge of 32, 8, 2, 1hz
+<<<<<<< HEAD
 	UINT8 flag = 0;
+=======
+	u8 flag = 0;
+>>>>>>> upstream/master
 	if ((m_clktimer_count & 0x07) == 0)
 		flag |= 1;
 	if ((m_clktimer_count & 0x1f) == 0)
@@ -488,7 +536,11 @@ void e0c6s46_device::clock_prgtimer()
 bool e0c6s46_device::prgtimer_reset_prescaler()
 {
 	// only 2 to 7 are clock dividers
+<<<<<<< HEAD
 	UINT8 sel = m_prgtimer_select & 7;
+=======
+	u8 sel = m_prgtimer_select & 7;
+>>>>>>> upstream/master
 	if (sel >= 2)
 		m_prgtimer_handle->adjust(attotime::from_ticks(2 << (sel ^ 7), unscaled_clock()));
 
@@ -572,12 +624,20 @@ void e0c6s46_device::clock_bz_1shot()
 //  LCD Driver
 //-------------------------------------------------
 
+<<<<<<< HEAD
 UINT32 e0c6s46_device::screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+=======
+u32 e0c6s46_device::screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+>>>>>>> upstream/master
 {
 	// call this 32 times per second (osc1/1024: 32hz at default clock of 32768hz)
 	for (int bank = 0; bank < 2; bank++)
 	{
+<<<<<<< HEAD
 		const UINT8* vram = bank ? m_vram2 : m_vram1;
+=======
+		const u8* vram = bank ? m_vram2 : m_vram1;
+>>>>>>> upstream/master
 
 		// determine operating mode
 		bool lcd_on = false;
@@ -601,8 +661,13 @@ UINT32 e0c6s46_device::screen_update(screen_device &screen, bitmap_ind16 &bitmap
 				int seg = offset / 2;
 				int com = bank * 8 + (offset & 1) * 4 + c;
 
+<<<<<<< HEAD
 				if (m_pixel_update_handler != NULL)
 					m_pixel_update_handler(*this, bitmap, cliprect, m_lcd_contrast, seg, com, pixel);
+=======
+				if (!m_pixel_update_cb.isnull())
+					m_pixel_update_cb(bitmap, cliprect, m_lcd_contrast, seg, com, pixel);
+>>>>>>> upstream/master
 				else if (cliprect.contains(seg, com))
 					bitmap.pix16(com, seg) = pixel;
 			}
@@ -626,8 +691,13 @@ READ8_MEMBER(e0c6s46_device::io_r)
 		case 0x00: case 0x01: case 0x02: case 0x03: case 0x04: case 0x05:
 		{
 			// irq flags are reset(acked) when read
+<<<<<<< HEAD
 			UINT8 flag = m_irqflag[offset];
 			if (!space.debugger_access())
+=======
+			u8 flag = m_irqflag[offset];
+			if (!machine().side_effect_disabled())
+>>>>>>> upstream/master
 				m_irqflag[offset] = 0;
 			return flag;
 		}
@@ -704,7 +774,11 @@ READ8_MEMBER(e0c6s46_device::io_r)
 			break;
 
 		default:
+<<<<<<< HEAD
 			if (!space.debugger_access())
+=======
+			if (!machine().side_effect_disabled())
+>>>>>>> upstream/master
 				logerror("%s unknown io_r from $0F%02X at $%04X\n", tag(), offset, m_prev_pc);
 			break;
 	}
@@ -719,7 +793,11 @@ WRITE8_MEMBER(e0c6s46_device::io_w)
 		// irq masks
 		case 0x10: case 0x11: case 0x12: case 0x13: case 0x14: case 0x15:
 		{
+<<<<<<< HEAD
 			static const UINT8 maskmask[6] = { 0xf, 3, 1, 1, 0xf, 0xf };
+=======
+			static const u8 maskmask[6] = { 0xf, 3, 1, 1, 0xf, 0xf };
+>>>>>>> upstream/master
 			m_irqmask[offset-0x10] = data & maskmask[offset-0x10];
 			m_possible_irq = true;
 			break;
@@ -888,7 +966,11 @@ WRITE8_MEMBER(e0c6s46_device::io_w)
 			break;
 
 		default:
+<<<<<<< HEAD
 			if (machine().phase() > MACHINE_PHASE_RESET)
+=======
+			if (machine().phase() > machine_phase::RESET)
+>>>>>>> upstream/master
 				logerror("%s unknown io_w $%X to $0F%02X at $%04X\n", tag(), data, offset, m_prev_pc);
 			break;
 	}

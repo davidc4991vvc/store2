@@ -22,7 +22,13 @@ TODO:
 #include "emu.h"
 #include "cpu/i8085/i8085.h"
 #include "machine/i8155.h"
+<<<<<<< HEAD
 #include "sound/dac.h"
+=======
+#include "sound/spkrdev.h"
+#include "screen.h"
+#include "speaker.h"
+>>>>>>> upstream/master
 
 
 class horse_state : public driver_device
@@ -31,6 +37,7 @@ public:
 	horse_state(const machine_config &mconfig, device_type type, const char *tag)
 		: driver_device(mconfig, type, tag),
 		m_maincpu(*this, "maincpu"),
+<<<<<<< HEAD
 		m_dac(*this, "dac"),
 		m_video_ram(*this, "video_ram"),
 		m_color_ram(*this, "color_ram") { }
@@ -60,20 +67,63 @@ void horse_state::machine_start()
 	save_item(NAME(m_output));
 }
 
+=======
+		m_speaker(*this, "speaker"),
+		m_inp_matrix(*this, "IN.%u", 0),
+		m_vram(*this, "vram")
+	{ }
+
+	required_device<cpu_device> m_maincpu;
+	required_device<speaker_sound_device> m_speaker;
+	required_ioport_array<4> m_inp_matrix;
+	required_shared_ptr<uint8_t> m_vram;
+
+	std::unique_ptr<uint8_t[]> m_colorram;
+	uint8_t m_output;
+
+	DECLARE_READ8_MEMBER(colorram_r) { return m_colorram[(offset >> 2 & 0x1e0) | (offset & 0x1f)] | 0x0f; }
+	DECLARE_WRITE8_MEMBER(colorram_w) { m_colorram[(offset >> 2 & 0x1e0) | (offset & 0x1f)] = data & 0xf0; }
+	DECLARE_READ8_MEMBER(input_r);
+	DECLARE_WRITE8_MEMBER(output_w);
+
+	virtual void machine_start() override;
+	uint32_t screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
+	INTERRUPT_GEN_MEMBER(interrupt);
+};
+
+void horse_state::machine_start()
+{
+	m_colorram = std::make_unique<uint8_t []>(0x200);
+	save_pointer(NAME(m_colorram.get()), 0x200);
+	save_item(NAME(m_output));
+}
+
+
+
+>>>>>>> upstream/master
 /***************************************************************************
 
   Video
 
 ***************************************************************************/
 
+<<<<<<< HEAD
 UINT32 horse_state::screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+=======
+uint32_t horse_state::screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+>>>>>>> upstream/master
 {
 	for (int y = cliprect.min_y; y <= cliprect.max_y; y++)
 	{
 		for (int x = 0; x < 32; x++)
 		{
+<<<<<<< HEAD
 			UINT8 data = m_video_ram[y << 5 | x];
 			UINT8 color = m_color_ram[(y << 3 & 0x780) | x] >> 4;
+=======
+			uint8_t data = m_vram[y << 5 | x];
+			uint8_t color = m_colorram[(y << 1 & 0x1e0) | x] >> 4;
+>>>>>>> upstream/master
 
 			for (int i = 0; i < 8; i++)
 				bitmap.pix16(y, x << 3 | i) = (data >> i & 1) ? color : 0;
@@ -84,6 +134,10 @@ UINT32 horse_state::screen_update(screen_device &screen, bitmap_ind16 &bitmap, c
 }
 
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> upstream/master
 /***************************************************************************
 
   I/O
@@ -93,8 +147,13 @@ UINT32 horse_state::screen_update(screen_device &screen, bitmap_ind16 &bitmap, c
 static ADDRESS_MAP_START( horse_map, AS_PROGRAM, 8, horse_state )
 	AM_RANGE(0x0000, 0x37ff) AM_ROM
 	AM_RANGE(0x4000, 0x40ff) AM_DEVREADWRITE("i8155", i8155_device, memory_r, memory_w)
+<<<<<<< HEAD
 	AM_RANGE(0x6000, 0x7fff) AM_RAM AM_SHARE("video_ram")
 	AM_RANGE(0x8000, 0x879f) AM_RAM AM_SHARE("color_ram") AM_MIRROR(0x0860)
+=======
+	AM_RANGE(0x6000, 0x7fff) AM_RAM AM_SHARE("vram")
+	AM_RANGE(0x8000, 0x87ff) AM_MIRROR(0x0800) AM_READWRITE(colorram_r, colorram_w)
+>>>>>>> upstream/master
 ADDRESS_MAP_END
 
 static ADDRESS_MAP_START( horse_io_map, AS_IO, 8, horse_state )
@@ -104,6 +163,7 @@ ADDRESS_MAP_END
 
 READ8_MEMBER(horse_state::input_r)
 {
+<<<<<<< HEAD
 	switch (m_output >> 6 & 3)
 	{
 		case 0: return ioport("IN0")->read();
@@ -113,6 +173,9 @@ READ8_MEMBER(horse_state::input_r)
 	}
 
 	return 0xff;
+=======
+	return m_inp_matrix[m_output >> 6 & 3]->read();
+>>>>>>> upstream/master
 }
 
 WRITE8_MEMBER(horse_state::output_w)
@@ -124,10 +187,14 @@ WRITE8_MEMBER(horse_state::output_w)
 	// other bits: ?
 }
 
+<<<<<<< HEAD
 WRITE_LINE_MEMBER(horse_state::timer_out)
 {
 	m_dac->write_signed8(state ? 0x7f : 0);
 }
+=======
+
+>>>>>>> upstream/master
 
 /***************************************************************************
 
@@ -136,7 +203,11 @@ WRITE_LINE_MEMBER(horse_state::timer_out)
 ***************************************************************************/
 
 static INPUT_PORTS_START( horse )
+<<<<<<< HEAD
 	PORT_START("IN0")
+=======
+	PORT_START("IN.0")
+>>>>>>> upstream/master
 	PORT_DIPNAME( 0x07, 0x07, DEF_STR( Coinage ) )  PORT_DIPLOCATION("SW:1,2,3")
 	PORT_DIPSETTING( 0x01, DEF_STR( 1C_1C ) )
 	PORT_DIPSETTING( 0x02, DEF_STR( 1C_2C ) )
@@ -158,7 +229,11 @@ static INPUT_PORTS_START( horse )
 	PORT_BIT( 0x40, IP_ACTIVE_LOW, IPT_UNKNOWN )
 	PORT_BIT( 0x80, IP_ACTIVE_LOW, IPT_UNKNOWN )
 
+<<<<<<< HEAD
 	PORT_START("IN1")
+=======
+	PORT_START("IN.1")
+>>>>>>> upstream/master
 	PORT_BIT( 0x01, IP_ACTIVE_LOW, IPT_UNKNOWN )
 	PORT_BIT( 0x02, IP_ACTIVE_LOW, IPT_UNKNOWN )
 	PORT_BIT( 0x04, IP_ACTIVE_LOW, IPT_UNKNOWN )
@@ -168,7 +243,11 @@ static INPUT_PORTS_START( horse )
 	PORT_BIT( 0x40, IP_ACTIVE_LOW, IPT_UNKNOWN )
 	PORT_BIT( 0x80, IP_ACTIVE_LOW, IPT_UNKNOWN )
 
+<<<<<<< HEAD
 	PORT_START("IN2")
+=======
+	PORT_START("IN.2")
+>>>>>>> upstream/master
 	PORT_BIT( 0x01, IP_ACTIVE_LOW, IPT_UNKNOWN )
 	PORT_BIT( 0x02, IP_ACTIVE_LOW, IPT_UNKNOWN )
 	PORT_BIT( 0x04, IP_ACTIVE_LOW, IPT_UNKNOWN )
@@ -177,9 +256,19 @@ static INPUT_PORTS_START( horse )
 	PORT_BIT( 0x20, IP_ACTIVE_LOW, IPT_GAMBLE_PAYOUT )
 	PORT_BIT( 0x40, IP_ACTIVE_LOW, IPT_TILT )
 	PORT_BIT( 0x80, IP_ACTIVE_LOW, IPT_COIN1 )
+<<<<<<< HEAD
 INPUT_PORTS_END
 
 
+=======
+
+	PORT_START("IN.3")
+	PORT_BIT( 0xff, IP_ACTIVE_LOW, IPT_UNKNOWN )
+INPUT_PORTS_END
+
+
+
+>>>>>>> upstream/master
 /***************************************************************************
 
   Machine Config
@@ -192,7 +281,11 @@ INTERRUPT_GEN_MEMBER(horse_state::interrupt)
 	device.execute().set_input_line(I8085_RST75_LINE, CLEAR_LINE);
 }
 
+<<<<<<< HEAD
 static MACHINE_CONFIG_START( horse, horse_state )
+=======
+static MACHINE_CONFIG_START( horse )
+>>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", I8085A, XTAL_12MHz / 2)
@@ -200,11 +293,18 @@ static MACHINE_CONFIG_START( horse, horse_state )
 	MCFG_CPU_IO_MAP(horse_io_map)
 	MCFG_CPU_VBLANK_INT_DRIVER("screen", horse_state,  interrupt)
 
+<<<<<<< HEAD
 	MCFG_DEVICE_ADD("i8155", I8155, XTAL_12MHz / 2)
 	MCFG_I8155_IN_PORTA_CB(READ8(horse_state, input_r))
 	MCFG_I8155_OUT_PORTB_CB(WRITE8(horse_state, output_w))
 	//port C output (but unused)
 	MCFG_I8155_OUT_TIMEROUT_CB(WRITELINE(horse_state, timer_out))
+=======
+	MCFG_DEVICE_ADD("i8155", I8155, XTAL_12MHz / 2) // port A input, B output, C output but unused
+	MCFG_I8155_IN_PORTA_CB(READ8(horse_state, input_r))
+	MCFG_I8155_OUT_PORTB_CB(WRITE8(horse_state, output_w))
+	MCFG_I8155_OUT_TIMEROUT_CB(DEVWRITELINE("speaker", speaker_sound_device, level_w))
+>>>>>>> upstream/master
 
 	/* video hardware */
 	MCFG_SCREEN_ADD("screen", RASTER)
@@ -214,17 +314,28 @@ static MACHINE_CONFIG_START( horse, horse_state )
 	MCFG_SCREEN_VISIBLE_AREA(0*8, 32*8-1, 1*8, 31*8-1)
 	MCFG_SCREEN_UPDATE_DRIVER(horse_state, screen_update)
 	MCFG_SCREEN_PALETTE("palette")
+<<<<<<< HEAD
 
+=======
+>>>>>>> upstream/master
 	MCFG_PALETTE_ADD_3BIT_BGR("palette")
 
 	/* sound hardware */
 	MCFG_SPEAKER_STANDARD_MONO("mono")
+<<<<<<< HEAD
 
 	MCFG_DAC_ADD("dac")
+=======
+	MCFG_SOUND_ADD("speaker", SPEAKER_SOUND, 0)
+>>>>>>> upstream/master
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 0.25)
 MACHINE_CONFIG_END
 
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> upstream/master
 /***************************************************************************
 
   Game drivers
@@ -243,4 +354,8 @@ ROM_START( unkhorse )
 ROM_END
 
 
+<<<<<<< HEAD
 GAME( 1981?, unkhorse, 0, horse, horse, driver_device, 0, ROT270, "<unknown>", "unknown Japanese horse gambling game", MACHINE_SUPPORTS_SAVE ) // copyright not shown, datecodes on pcb suggests early-1981
+=======
+GAME( 1981?, unkhorse, 0, horse, horse, horse_state, 0, ROT270, "<unknown>", "unknown Japanese horse gambling game", MACHINE_SUPPORTS_SAVE ) // copyright not shown, datecodes on pcb suggests early-1981
+>>>>>>> upstream/master

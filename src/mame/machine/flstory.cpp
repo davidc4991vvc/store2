@@ -12,6 +12,7 @@
 #include "emu.h"
 #include "includes/flstory.h"
 
+<<<<<<< HEAD
 /***************************************************************************
 
  Fairy Land Story 68705 protection interface
@@ -182,6 +183,20 @@ READ8_MEMBER(flstory_state::onna34ro_mcu_status_r)
 #define VICTNINE_MCU_SEED   (m_workram[0x685])
 
 static const UINT8 victnine_mcu_data[0x100] =
+=======
+READ8_MEMBER(flstory_state::flstory_mcu_status_r)
+{
+	// bit 0 = when 1, MCU is ready to receive data from main CPU
+	// bit 1 = when 1, MCU has sent data to the main CPU
+	return
+		((CLEAR_LINE == m_bmcu->host_semaphore_r()) ? 0x01 : 0x00) |
+		((CLEAR_LINE != m_bmcu->mcu_semaphore_r()) ? 0x02 : 0x00);
+}
+
+#define VICTNINE_MCU_SEED   (m_workram[0x685])
+
+static const uint8_t victnine_mcu_data[0x100] =
+>>>>>>> upstream/master
 {
 	0x3e, 0x08, 0xdd, 0x29, 0xcb, 0x14, 0xfd, 0x29,
 	0xcb, 0x15, 0xd9, 0x29, 0xd9, 0x30, 0x0d, 0xd9,
@@ -219,7 +234,11 @@ static const UINT8 victnine_mcu_data[0x100] =
 
 WRITE8_MEMBER(flstory_state::victnine_mcu_w)
 {
+<<<<<<< HEAD
 	UINT8 seed = VICTNINE_MCU_SEED;
+=======
+	uint8_t seed = VICTNINE_MCU_SEED;
+>>>>>>> upstream/master
 
 	if (!seed && (data & 0x37) == 0x37)
 	{

@@ -31,12 +31,20 @@
 
 **********************************************************************/
 
+<<<<<<< HEAD
 #pragma once
 
 #ifndef __VIP_EXPANSION_SLOT__
 #define __VIP_EXPANSION_SLOT__
 
 #include "emu.h"
+=======
+#ifndef MAME_BUS_VIP_EXP_H
+#define MAME_BUS_VIP_EXP_H
+
+#pragma once
+
+>>>>>>> upstream/master
 
 
 
@@ -81,6 +89,7 @@ class vip_expansion_slot_device : public device_t,
 {
 public:
 	// construction/destruction
+<<<<<<< HEAD
 	vip_expansion_slot_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
 
 	template<class _Object> static devcb_base &set_int_wr_callback(device_t &device, _Object object) { return downcast<vip_expansion_slot_device &>(device).m_write_int.set_callback(object); }
@@ -95,6 +104,22 @@ public:
 	UINT8 dma_r(address_space &space, offs_t offset);
 	void dma_w(address_space &space, offs_t offset, UINT8 data);
 	UINT32 screen_update(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect);
+=======
+	vip_expansion_slot_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
+
+	template <class Object> static devcb_base &set_int_wr_callback(device_t &device, Object &&cb) { return downcast<vip_expansion_slot_device &>(device).m_write_int.set_callback(std::forward<Object>(cb)); }
+	template <class Object> static devcb_base &set_dma_out_wr_callback(device_t &device, Object &&cb) { return downcast<vip_expansion_slot_device &>(device).m_write_dma_out.set_callback(std::forward<Object>(cb)); }
+	template <class Object> static devcb_base &set_dma_in_wr_callback(device_t &device, Object &&cb) { return downcast<vip_expansion_slot_device &>(device).m_write_dma_in.set_callback(std::forward<Object>(cb)); }
+
+	// computer interface
+	uint8_t program_r(address_space &space, offs_t offset, int cs, int cdef, int *minh);
+	void program_w(address_space &space, offs_t offset, uint8_t data, int cdef, int *minh);
+	uint8_t io_r(address_space &space, offs_t offset);
+	void io_w(address_space &space, offs_t offset, uint8_t data);
+	uint8_t dma_r(address_space &space, offs_t offset);
+	void dma_w(address_space &space, offs_t offset, uint8_t data);
+	uint32_t screen_update(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect);
+>>>>>>> upstream/master
 	DECLARE_READ_LINE_MEMBER( ef1_r );
 	DECLARE_READ_LINE_MEMBER( ef3_r );
 	DECLARE_READ_LINE_MEMBER( ef4_r );
@@ -109,7 +134,11 @@ public:
 
 protected:
 	// device-level overrides
+<<<<<<< HEAD
 	virtual void device_start();
+=======
+	virtual void device_start() override;
+>>>>>>> upstream/master
 
 	devcb_write_line m_write_int;
 	devcb_write_line m_write_dma_out;
@@ -125,6 +154,7 @@ class device_vip_expansion_card_interface : public device_slot_card_interface
 {
 	friend class vip_expansion_slot_device;
 
+<<<<<<< HEAD
 public:
 	// construction/destruction
 	device_vip_expansion_card_interface(const machine_config &mconfig, device_t &device);
@@ -141,27 +171,60 @@ protected:
 	virtual void vip_dma_w(address_space &space, offs_t offset, UINT8 data) { };
 
 	virtual UINT32 vip_screen_update(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect) { return 0; }
+=======
+protected:
+	// construction/destruction
+	device_vip_expansion_card_interface(const machine_config &mconfig, device_t &device);
+
+	// runtime
+	virtual uint8_t vip_program_r(address_space &space, offs_t offset, int cs, int cdef, int *minh) { return 0xff; }
+	virtual void vip_program_w(address_space &space, offs_t offset, uint8_t data, int cdef, int *minh) { }
+
+	virtual uint8_t vip_io_r(address_space &space, offs_t offset) { return 0xff; }
+	virtual void vip_io_w(address_space &space, offs_t offset, uint8_t data) { }
+
+	virtual uint8_t vip_dma_r(address_space &space, offs_t offset) { return 0xff; }
+	virtual void vip_dma_w(address_space &space, offs_t offset, uint8_t data) { }
+
+	virtual uint32_t vip_screen_update(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect) { return 0; }
+>>>>>>> upstream/master
 
 	virtual int vip_ef1_r() { return CLEAR_LINE; }
 	virtual int vip_ef3_r() { return CLEAR_LINE; }
 	virtual int vip_ef4_r() { return CLEAR_LINE; }
 
+<<<<<<< HEAD
 	virtual void vip_sc_w(int data) { };
 
 	virtual void vip_q_w(int state) { };
 
 	virtual void vip_run_w(int state) { };
+=======
+	virtual void vip_sc_w(int data) { }
+
+	virtual void vip_q_w(int state) { }
+
+	virtual void vip_run_w(int state) { }
+>>>>>>> upstream/master
 
 	vip_expansion_slot_device *m_slot;
 };
 
 
 // device type definition
+<<<<<<< HEAD
 extern const device_type VIP_EXPANSION_SLOT;
+=======
+DECLARE_DEVICE_TYPE(VIP_EXPANSION_SLOT, vip_expansion_slot_device)
+>>>>>>> upstream/master
 
 
 SLOT_INTERFACE_EXTERN( vip_expansion_cards );
 
+<<<<<<< HEAD
 
 
 #endif
+=======
+#endif // MAME_BUS_VIP_EXP_H
+>>>>>>> upstream/master

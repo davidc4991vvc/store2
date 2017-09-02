@@ -6,6 +6,10 @@
 
 **********************************************************************/
 
+<<<<<<< HEAD
+=======
+#include "emu.h"
+>>>>>>> upstream/master
 #include "ds75160a.h"
 
 
@@ -14,7 +18,11 @@
 //  DEVICE TYPE DEFINITIONS
 //**************************************************************************
 
+<<<<<<< HEAD
 const device_type DS75160A = &device_creator<ds75160a_device>;
+=======
+DEFINE_DEVICE_TYPE(DS75160A, ds75160a_device, "ds75160a", "DS75160A GPIB Transceiver")
+>>>>>>> upstream/master
 
 
 
@@ -26,8 +34,13 @@ const device_type DS75160A = &device_creator<ds75160a_device>;
 //  ds75160a_device - constructor
 //-------------------------------------------------
 
+<<<<<<< HEAD
 ds75160a_device::ds75160a_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
 	: device_t(mconfig, DS75160A, "DS75160A", tag, owner, clock, "ds75160a", __FILE__),
+=======
+ds75160a_device::ds75160a_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: device_t(mconfig, DS75160A, tag, owner, clock),
+>>>>>>> upstream/master
 		m_read(*this),
 		m_write(*this),
 		m_data(0xff),
@@ -60,7 +73,11 @@ void ds75160a_device::device_start()
 
 READ8_MEMBER( ds75160a_device::read )
 {
+<<<<<<< HEAD
 	UINT8 data = 0;
+=======
+	uint8_t data = 0;
+>>>>>>> upstream/master
 
 	if (!m_te)
 	{

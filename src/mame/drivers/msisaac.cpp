@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 // license:???
+=======
+// license:GPL-2.0+
+>>>>>>> upstream/master
 // copyright-holders:Jarek Burczynski
 /****************************************************************************
 
@@ -9,16 +13,31 @@
 ****************************************************************************/
 
 #include "emu.h"
+<<<<<<< HEAD
 #include "cpu/z80/z80.h"
 #include "cpu/m6805/m6805.h"
 #include "sound/ay8910.h"
 #include "includes/msisaac.h"
+=======
+#include "includes/msisaac.h"
+
+#include "cpu/z80/z80.h"
+#include "cpu/m6805/m6805.h"
+#include "sound/ay8910.h"
+#include "screen.h"
+#include "speaker.h"
+
+>>>>>>> upstream/master
 
 /*
 TO DO:
   - sprites are probably banked differently (no way to be sure until MCU dump is available)
   - TA7630 emulation needs filter support (characteristics depend on the frequency)
+<<<<<<< HEAD
   - TA7630 volume table is hand tuned to match the sample, but still slighty off.
+=======
+  - TA7630 volume table is hand tuned to match the sample, but still slightly off.
+>>>>>>> upstream/master
 */
 
 
@@ -32,7 +51,11 @@ TIMER_CALLBACK_MEMBER(msisaac_state::nmi_callback)
 
 WRITE8_MEMBER(msisaac_state::sound_command_w)
 {
+<<<<<<< HEAD
 	soundlatch_byte_w(space, 0, data);
+=======
+	m_soundlatch->write(space, 0, data);
+>>>>>>> upstream/master
 	machine().scheduler().synchronize(timer_expired_delegate(FUNC(msisaac_state::nmi_callback),this), data);
 }
 
@@ -59,7 +82,11 @@ WRITE8_MEMBER(msisaac_state::flip_screen_w)
 
 WRITE8_MEMBER(msisaac_state::msisaac_coin_counter_w)
 {
+<<<<<<< HEAD
 	coin_counter_w(machine(), offset,data);
+=======
+	machine().bookkeeping().coin_counter_w(offset,data);
+>>>>>>> upstream/master
 }
 #endif
 
@@ -115,7 +142,11 @@ MCU simulation TODO:
 			//6-down
 			//7-leftdwn
 
+<<<<<<< HEAD
 			UINT8 val= (ioport("IN1")->read() >> 2) & 0x0f;
+=======
+			uint8_t val= (ioport("IN1")->read() >> 2) & 0x0f;
+>>>>>>> upstream/master
 			/* bit0 = left
 			   bit1 = right
 			   bit2 = down
@@ -131,7 +162,11 @@ MCU simulation TODO:
 			/*       0000   0001   0010   0011      0100   0101   0110   0111     1000   1001   1010   1011   1100   1101   1110   1111 */
 			/*      nochange left  right nochange   down downlft dwnrght down     up     upleft uprgt  up    nochnge left   right  nochange */
 
+<<<<<<< HEAD
 			static const INT8 table[16] = { -1,    2,    6,     -1,       0,   1,      7,      0,       4,     3,     5,    4,     -1,     2,     6,    -1 };
+=======
+			static const int8_t table[16] = { -1,    2,    6,     -1,       0,   1,      7,      0,       4,     3,     5,    4,     -1,     2,     6,    -1 };
+>>>>>>> upstream/master
 
 			if (table[val] >= 0)
 				m_direction = table[val];
@@ -262,7 +297,11 @@ static ADDRESS_MAP_START( msisaac_sound_map, AS_PROGRAM, 8, msisaac_state )
 	AM_RANGE(0x8010, 0x801d) AM_DEVWRITE("msm", msm5232_device, write)
 	AM_RANGE(0x8020, 0x8020) AM_WRITE(sound_control_0_w)
 	AM_RANGE(0x8030, 0x8030) AM_WRITE(sound_control_1_w)
+<<<<<<< HEAD
 	AM_RANGE(0xc000, 0xc000) AM_READ(soundlatch_byte_r)
+=======
+	AM_RANGE(0xc000, 0xc000) AM_DEVREAD("soundlatch", generic_latch_8_device, read)
+>>>>>>> upstream/master
 	AM_RANGE(0xc001, 0xc001) AM_WRITE(nmi_enable_w)
 	AM_RANGE(0xc002, 0xc002) AM_WRITE(nmi_disable_w)
 	AM_RANGE(0xc003, 0xc003) AM_WRITENOP /*???*/ /* this is NOT mixer_enable */
@@ -459,7 +498,11 @@ void msisaac_state::machine_reset()
 #endif
 }
 
+<<<<<<< HEAD
 static MACHINE_CONFIG_START( msisaac, msisaac_state )
+=======
+static MACHINE_CONFIG_START( msisaac )
+>>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", Z80, 4000000)
@@ -494,6 +537,11 @@ static MACHINE_CONFIG_START( msisaac, msisaac_state )
 	/* sound hardware */
 	MCFG_SPEAKER_STANDARD_MONO("mono")
 
+<<<<<<< HEAD
+=======
+	MCFG_GENERIC_LATCH_8_ADD("soundlatch")
+
+>>>>>>> upstream/master
 	MCFG_SOUND_ADD("ay1", AY8910, 2000000)
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 0.15)
 
@@ -552,4 +600,8 @@ ROM_START( msisaac )
 ROM_END
 
 
+<<<<<<< HEAD
 GAME( 1985, msisaac, 0,     msisaac, msisaac, driver_device, 0, ROT270, "Taito Corporation", "Metal Soldier Isaac II", MACHINE_UNEMULATED_PROTECTION | MACHINE_NO_COCKTAIL | MACHINE_SUPPORTS_SAVE )
+=======
+GAME( 1985, msisaac, 0,     msisaac, msisaac, msisaac_state, 0, ROT270, "Taito Corporation", "Metal Soldier Isaac II", MACHINE_UNEMULATED_PROTECTION | MACHINE_NO_COCKTAIL | MACHINE_SUPPORTS_SAVE )
+>>>>>>> upstream/master

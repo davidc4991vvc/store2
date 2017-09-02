@@ -73,6 +73,15 @@
 ***************************************************************************************************/
 
 
+<<<<<<< HEAD
+=======
+#include "emu.h"
+#include "cpu/i86/i186.h"
+#include "cpu/adsp2100/adsp2100.h"
+#include "screen.h"
+
+
+>>>>>>> upstream/master
 #define MAIN_CLOCK        XTAL_40MHz          // Pletronics 40.000 MHz. Crystal. Used for CPU clock.
 #define VIDEO_CLOCK       XTAL_14_31818MHz    // Pletronics MP49 14.31818 MHz. Crystal. Used in common VGA ISA cards.
 
@@ -80,11 +89,14 @@
 												// (16 * 115200 baud, 192 * 9600 baud, 1536 * 1200 baud, etc...)
 
 
+<<<<<<< HEAD
 #include "emu.h"
 #include "cpu/i86/i186.h"
 #include "cpu/adsp2100/adsp2100.h"
 
 
+=======
+>>>>>>> upstream/master
 class wms_state : public driver_device
 {
 public:
@@ -95,7 +107,11 @@ public:
 
 	DECLARE_DRIVER_INIT(wms);
 	DECLARE_READ8_MEMBER(test_r);
+<<<<<<< HEAD
 		UINT32 screen_update_wms(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
+=======
+		uint32_t screen_update_wms(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
+>>>>>>> upstream/master
 
 protected:
 
@@ -105,7 +121,11 @@ protected:
 private:
 };
 
+<<<<<<< HEAD
 UINT32 wms_state::screen_update_wms(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+=======
+uint32_t wms_state::screen_update_wms(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+>>>>>>> upstream/master
 {
 	return 0;
 }
@@ -164,7 +184,11 @@ static GFXDECODE_START( wms )
 GFXDECODE_END
 
 
+<<<<<<< HEAD
 static MACHINE_CONFIG_START( wms, wms_state )
+=======
+static MACHINE_CONFIG_START( wms )
+>>>>>>> upstream/master
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", I80188, MAIN_CLOCK )    // AMD N80C188-20, ( 40 MHz. internally divided by 2)
 	MCFG_CPU_PROGRAM_MAP(wms_map)

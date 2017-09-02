@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 // license:???
+=======
+// license:BSD-3-Clause
+>>>>>>> upstream/master
 // copyright-holders:Angelo Salese, Roberto Fresca
 /*************************************************************************************************
 
@@ -308,6 +312,7 @@
 
 **************************************************************************************************/
 
+<<<<<<< HEAD
 
 #define MASTER_CLOCK    XTAL_12MHz
 #define CPU_CLOCK       (MASTER_CLOCK/4)
@@ -323,42 +328,89 @@
 #include "video/mc6845.h"
 #include "machine/nvram.h"
 #include "video/resnet.h"
+=======
+#include "emu.h"
+#include "cpu/z80/z80.h"
+#include "machine/eepromser.h"
+#include "machine/i8255.h"
+#include "machine/nvram.h"
+#include "machine/v3021.h"
+#include "machine/watchdog.h"
+#include "sound/ay8910.h"
+#include "video/mc6845.h"
+#include "video/resnet.h"
+#include "screen.h"
+#include "speaker.h"
+>>>>>>> upstream/master
 
 #include "fortecrd.lh"
 
 
+<<<<<<< HEAD
+=======
+#define MASTER_CLOCK    XTAL_12MHz
+#define CPU_CLOCK       (MASTER_CLOCK/4)
+#define CRTC_CLOCK      (MASTER_CLOCK/8)
+#define AY_CLOCK        (MASTER_CLOCK/8)
+
+
+>>>>>>> upstream/master
 class fortecar_state : public driver_device
 {
 public:
 	fortecar_state(const machine_config &mconfig, device_type type, const char *tag)
 		: driver_device(mconfig, type, tag),
 		m_maincpu(*this,"maincpu"),
+<<<<<<< HEAD
+=======
+		m_watchdog(*this, "watchdog"),
+>>>>>>> upstream/master
 		m_vram(*this, "vram"),
 		m_eeprom(*this, "eeprom"),
 		m_gfxdecode(*this, "gfxdecode"),
 		m_palette(*this, "palette")  { }
 
 	required_device<cpu_device> m_maincpu;
+<<<<<<< HEAD
 	required_shared_ptr<UINT8> m_vram;
+=======
+	required_device<watchdog_timer_device> m_watchdog;
+	required_shared_ptr<uint8_t> m_vram;
+>>>>>>> upstream/master
 	DECLARE_WRITE8_MEMBER(ppi0_portc_w);
 	DECLARE_READ8_MEMBER(ppi0_portc_r);
 	DECLARE_WRITE8_MEMBER(ayporta_w);
 	DECLARE_WRITE8_MEMBER(ayportb_w);
 	DECLARE_DRIVER_INIT(fortecar);
+<<<<<<< HEAD
 	virtual void machine_reset();
 	virtual void video_start();
 	DECLARE_PALETTE_INIT(fortecar);
 	UINT32 screen_update_fortecar(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
+=======
+	virtual void machine_reset() override;
+	virtual void video_start() override;
+	DECLARE_PALETTE_INIT(fortecar);
+	uint32_t screen_update_fortecar(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
+>>>>>>> upstream/master
 	required_device<eeprom_serial_93cxx_device> m_eeprom;
 	required_device<gfxdecode_device> m_gfxdecode;
 	required_device<palette_device> m_palette;
 };
 
 
+<<<<<<< HEAD
+=======
+/***********************************
+*         Video Hardware           *
+***********************************/
+
+>>>>>>> upstream/master
 void fortecar_state::video_start()
 {
 }
 
+<<<<<<< HEAD
 UINT32 fortecar_state::screen_update_fortecar(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
 {
 	int x,y,count;
@@ -369,15 +421,33 @@ UINT32 fortecar_state::screen_update_fortecar(screen_device &screen, bitmap_ind1
 		for(x=0;x<0x4b;x++)
 		{
 			int tile,color,bpp;
+=======
+uint32_t fortecar_state::screen_update_fortecar(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+{
+	int x, y, count;
+	count = 0;
+
+	for (y = 0; y < 0x1e; y++)
+	{
+		for(x = 0; x < 0x4b; x++)
+		{
+			int tile, color, bpp;
+>>>>>>> upstream/master
 
 			tile = (m_vram[(count*4)+1] | (m_vram[(count*4)+2]<<8)) & 0xfff;
 			color = m_vram[(count*4)+3] & 0x1f;
 			bpp = (m_vram[(count*4)+3] & 0x20) >> 5;
 
 			if(bpp)
+<<<<<<< HEAD
 				color&=0x3;
 
 			m_gfxdecode->gfx(bpp)->opaque(bitmap,cliprect,tile,color,0,0,x*8,y*8);
+=======
+				color &= 0x3;
+
+			m_gfxdecode->gfx(bpp)->opaque(bitmap, cliprect, tile, color, 0, 0, x*8, y*8);
+>>>>>>> upstream/master
 			count++;
 
 		}
@@ -388,7 +458,11 @@ UINT32 fortecar_state::screen_update_fortecar(screen_device &screen, bitmap_ind1
 
 PALETTE_INIT_MEMBER(fortecar_state, fortecar)
 {
+<<<<<<< HEAD
 	const UINT8 *color_prom = memregion("proms")->base();
+=======
+	const uint8_t *color_prom = memregion("proms")->base();
+>>>>>>> upstream/master
 /* Video resistors...
 
 O1 (LS374) R1K  RED
@@ -407,7 +481,11 @@ R = 82 Ohms Pull Down.
 	static const int resistances_b [2] = { 510, 220 };
 	double weights_r[3], weights_g[3], weights_b[2];
 
+<<<<<<< HEAD
 	compute_resistor_weights(0, 255,    -1.0,
+=======
+	compute_resistor_weights(0, 255, -1.0,
+>>>>>>> upstream/master
 			3,  resistances_rg, weights_r,  82, 0,
 			3,  resistances_rg, weights_g,  82, 0,
 			2,  resistances_b,  weights_b,  82, 0);
@@ -438,6 +516,13 @@ R = 82 Ohms Pull Down.
 }
 
 
+<<<<<<< HEAD
+=======
+/***********************************
+*        Misc R/W Handlers         *
+***********************************/
+
+>>>>>>> upstream/master
 WRITE8_MEMBER(fortecar_state::ppi0_portc_w)
 {
 /*
@@ -456,7 +541,11 @@ DOUT PPI_PC4
 READ8_MEMBER(fortecar_state::ppi0_portc_r)
 {
 //  popmessage("%s",machine().describe_context());
+<<<<<<< HEAD
 	return ((m_eeprom->do_read()<<4) & 0x10);
+=======
+	return ((m_eeprom->do_read() << 4) & 0x10);
+>>>>>>> upstream/master
 }
 
 WRITE8_MEMBER(fortecar_state::ayporta_w)
@@ -487,7 +576,11 @@ WRITE8_MEMBER(fortecar_state::ayporta_w)
 	int i;
 
 	for(i = 0; i < 8; i++)
+<<<<<<< HEAD
 		output_set_lamp_value(i, (data >> i) & 1);
+=======
+		output().set_lamp_value(i, (data >> i) & 1);
+>>>>>>> upstream/master
 }
 
 
@@ -508,12 +601,24 @@ Seems to work properly, but must be checked closely...
 */
 	if (((data >> 7) & 0x01) == 0)      /* check for bit7 */
 	{
+<<<<<<< HEAD
 		machine().watchdog_reset();
+=======
+		m_watchdog->watchdog_reset();
+>>>>>>> upstream/master
 	}
 
 //  logerror("AY port B write %02x\n",data);
 }
 
+<<<<<<< HEAD
+=======
+
+/***********************************
+*      Memory Map Information      *
+***********************************/
+
+>>>>>>> upstream/master
 static ADDRESS_MAP_START( fortecar_map, AS_PROGRAM, 8, fortecar_state )
 	AM_RANGE(0x0000, 0xbfff) AM_ROM
 	AM_RANGE(0xc000, 0xc7ff) AM_ROM
@@ -545,6 +650,14 @@ Error messages:
 
 */
 
+<<<<<<< HEAD
+=======
+
+/***********************************
+*           Input Ports            *
+***********************************/
+
+>>>>>>> upstream/master
 static INPUT_PORTS_START( fortecar )
 	PORT_START("DSW")   /* 8bit */
 	PORT_DIPNAME( 0x01, 0x01, "DSW-1" )             PORT_DIPLOCATION("DSW:1")
@@ -594,6 +707,13 @@ static INPUT_PORTS_START( fortecar )
 INPUT_PORTS_END
 
 
+<<<<<<< HEAD
+=======
+/***************************************
+*           Graphics Layouts           *
+***************************************/
+
+>>>>>>> upstream/master
 static const gfx_layout tiles8x8_layout_3bpp =
 {
 	8, 8,
@@ -617,12 +737,25 @@ static const gfx_layout tiles8x8_layout_6bpp =
 };
 
 
+<<<<<<< HEAD
+=======
+/****************************************
+*      Graphics Decode Information      *
+****************************************/
+
+>>>>>>> upstream/master
 static GFXDECODE_START( fortecar )
 	GFXDECODE_ENTRY( "gfx1", 0, tiles8x8_layout_3bpp, 0x000, 0x20 )
 	GFXDECODE_ENTRY( "gfx1", 0, tiles8x8_layout_6bpp, 0x100, 0x04 )
 GFXDECODE_END
 
 
+<<<<<<< HEAD
+=======
+/***********************************
+*      Machine Start & Reset       *
+***********************************/
+>>>>>>> upstream/master
 
 void fortecar_state::machine_reset()
 {
@@ -634,12 +767,26 @@ void fortecar_state::machine_reset()
 }
 
 
+<<<<<<< HEAD
 static MACHINE_CONFIG_START( fortecar, fortecar_state )
+=======
+/***********************************
+*         Machine Drivers          *
+***********************************/
+
+static MACHINE_CONFIG_START( fortecar )
+>>>>>>> upstream/master
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", Z80, CPU_CLOCK)      /* 3 MHz, measured */
 	MCFG_CPU_PROGRAM_MAP(fortecar_map)
 	MCFG_CPU_IO_MAP(fortecar_ports)
+<<<<<<< HEAD
 	MCFG_CPU_VBLANK_INT_DRIVER("screen", fortecar_state,  nmi_line_pulse)
+=======
+	MCFG_CPU_VBLANK_INT_DRIVER("screen", fortecar_state, nmi_line_pulse)
+
+	MCFG_WATCHDOG_ADD("watchdog")
+>>>>>>> upstream/master
 	MCFG_WATCHDOG_TIME_INIT(attotime::from_msec(200))   /* guess */
 
 	MCFG_NVRAM_ADD_0FILL("nvram")
@@ -653,7 +800,10 @@ static MACHINE_CONFIG_START( fortecar, fortecar_state )
 	MCFG_SCREEN_UPDATE_DRIVER(fortecar_state, screen_update_fortecar)
 	MCFG_SCREEN_PALETTE("palette")
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> upstream/master
 	MCFG_EEPROM_SERIAL_93C56_ADD("eeprom")
 	MCFG_EEPROM_SERIAL_DEFAULT_VALUE(0)
 
@@ -684,6 +834,32 @@ static MACHINE_CONFIG_START( fortecar, fortecar_state )
 MACHINE_CONFIG_END
 
 
+<<<<<<< HEAD
+=======
+/*******************************
+*          ROMs Load           *
+*******************************/
+
+ROM_START( fortecrd )
+	ROM_REGION( 0x10000, "maincpu", 0 )
+	ROM_LOAD( "forte_card.u7", 0x00000, 0x010000, CRC(79fc6dd3) SHA1(5454f2ee12b62d573b61c54e48398f43332b000e) )
+
+	ROM_REGION( 0x30000, "gfx1", 0 )
+	ROM_LOAD( "forte_card.u38", 0x00000, 0x10000, CRC(258fb7bf) SHA1(cd75001fe40836b2dc229caddfc38f6076df7a79) )
+	ROM_LOAD( "forte_card.u39", 0x10000, 0x10000, CRC(3d9c478e) SHA1(eb86115d1c36038f2c80cd116f5aeddd94036424) )
+	ROM_LOAD( "forte_card.u40", 0x20000, 0x10000, CRC(9693bb83) SHA1(e3e3bc750c89a1edd1072ce3890b2ce498dec633) )
+
+	ROM_REGION( 0x0800, "nvram", 0 )    /* default NVRAM */
+	ROM_LOAD( "fortecrd_nvram.u6", 0x0000, 0x0800, CRC(7d3e7eb5) SHA1(788fe7adc381bcc6eaefed33f5aa1081340608a0) )
+
+	ROM_REGION16_BE( 0x0100, "eeprom", 0 )   /* default serial EEPROM */
+	ROM_LOAD16_WORD_SWAP( "forte_card_93cs56_serial_12345678.u13", 0x0000, 0x0100, CRC(2fc5961d) SHA1(f958c8b2b4e48cc6e5a607a6751acde5592bd27f) )
+
+	ROM_REGION( 0x0200, "proms", 0 )
+	ROM_LOAD( "forte_card_82s147.u47", 0x0000, 0x0200, CRC(7e631818) SHA1(ac08b0de30260278af3a1c5dee5810d4304cb9ca) )
+ROM_END
+
+>>>>>>> upstream/master
 ROM_START( fortecar )
 	ROM_REGION( 0x10000, "maincpu", 0 )
 	ROM_LOAD( "fortecar.u7", 0x00000, 0x010000, CRC(2a4b3429) SHA1(8fa630dac949e758678a1a36b05b3412abe8ae16)  )
@@ -697,13 +873,18 @@ ROM_START( fortecar )
 	ROM_REGION( 0x0800, "nvram", 0 )    /* default NVRAM */
 	ROM_LOAD( "fortecrd_nvram.u6", 0x0000, 0x0800, BAD_DUMP CRC(7d3e7eb5) SHA1(788fe7adc381bcc6eaefed33f5aa1081340608a0) )
 
+<<<<<<< HEAD
 	ROM_REGION( 0x0100, "eeprom", 0 )   /* default serial EEPROM */
+=======
+	ROM_REGION16_BE( 0x0100, "eeprom", 0 )   /* default serial EEPROM */
+>>>>>>> upstream/master
 	ROM_LOAD16_WORD_SWAP( "forte_card_93cs56_serial_12345678.u13", 0x0000, 0x0100, BAD_DUMP CRC(2fc5961d) SHA1(f958c8b2b4e48cc6e5a607a6751acde5592bd27f) )
 
 	ROM_REGION( 0x200, "proms", 0 )
 	ROM_LOAD( "forte_card_82s147.u47", 0x0000, 0x0200, BAD_DUMP CRC(7e631818) SHA1(ac08b0de30260278af3a1c5dee5810d4304cb9ca) )
 ROM_END
 
+<<<<<<< HEAD
 ROM_START( fortecrd )
 	ROM_REGION( 0x10000, "maincpu", 0 )
 	ROM_LOAD( "forte_card.u7", 0x00000, 0x010000, CRC(79fc6dd3) SHA1(5454f2ee12b62d573b61c54e48398f43332b000e) )
@@ -725,11 +906,29 @@ ROM_END
 
 
 DRIVER_INIT_MEMBER(fortecar_state,fortecar)
+=======
+
+/***********************************
+*           Driver Init            *
+***********************************/
+
+DRIVER_INIT_MEMBER(fortecar_state, fortecar)
+>>>>>>> upstream/master
 {
 	// ...
 }
 
 
+<<<<<<< HEAD
 /*     YEAR  NAME      PARENT    MACHINE   INPUT     STATE           INIT      ROT    COMPANY       FULLNAME                        FLAGS             LAYOUT */
 GAMEL( 1994, fortecar, 0,        fortecar, fortecar, fortecar_state, fortecar, ROT0, "Fortex Ltd", "Forte Card (Ver 103, English)", MACHINE_NOT_WORKING, layout_fortecrd )
 GAMEL( 1994, fortecrd, fortecar, fortecar, fortecar, fortecar_state, fortecar, ROT0, "Fortex Ltd", "Forte Card (Ver 110, Spanish)", 0,                layout_fortecrd )
+=======
+/***********************************
+*          Game Drivers            *
+***********************************/
+
+//     YEAR  NAME      PARENT    MACHINE   INPUT     STATE           INIT      ROT   COMPANY        FULLNAME                        FLAGS                LAYOUT
+GAMEL( 1994, fortecrd, 0,        fortecar, fortecar, fortecar_state, fortecar, ROT0, "Fortex Ltd", "Forte Card (Ver 110, Spanish)", 0,                   layout_fortecrd )
+GAMEL( 1994, fortecar, fortecrd, fortecar, fortecar, fortecar_state, fortecar, ROT0, "Fortex Ltd", "Forte Card (Ver 103, English)", MACHINE_NOT_WORKING, layout_fortecrd )
+>>>>>>> upstream/master

@@ -10,7 +10,10 @@
 
 #import "debugview.h"
 
+<<<<<<< HEAD
 #include "emu.h"
+=======
+>>>>>>> upstream/master
 
 #import <Cocoa/Cocoa.h>
 

@@ -34,10 +34,20 @@ metlclsh:
 ***************************************************************************/
 
 #include "emu.h"
+<<<<<<< HEAD
 #include "cpu/m6809/m6809.h"
 #include "sound/2203intf.h"
 #include "sound/3526intf.h"
 #include "includes/metlclsh.h"
+=======
+#include "includes/metlclsh.h"
+
+#include "cpu/m6809/m6809.h"
+#include "sound/2203intf.h"
+#include "sound/3526intf.h"
+#include "screen.h"
+#include "speaker.h"
+>>>>>>> upstream/master
 
 
 /***************************************************************************
@@ -270,7 +280,11 @@ void metlclsh_state::machine_reset()
 	m_gfxbank = 0;
 }
 
+<<<<<<< HEAD
 static MACHINE_CONFIG_START( metlclsh, metlclsh_state )
+=======
+static MACHINE_CONFIG_START( metlclsh )
+>>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", M6809, 1500000)        // ?
@@ -305,7 +319,11 @@ static MACHINE_CONFIG_START( metlclsh, metlclsh_state )
 	MCFG_SOUND_ROUTE(3, "mono", 0.50)
 
 	MCFG_SOUND_ADD("ym2", YM3526, 3000000)
+<<<<<<< HEAD
 	MCFG_YM3526_IRQ_HANDLER(DEVWRITELINE("maincpu", m6809_device, irq_line))
+=======
+	MCFG_YM3526_IRQ_HANDLER(INPUTLINE("maincpu", M6809_IRQ_LINE))
+>>>>>>> upstream/master
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 0.50)
 MACHINE_CONFIG_END
 
@@ -413,4 +431,8 @@ ROM_START( metlclsh )
 	ROM_LOAD( "82s123.prm",   0x0000, 0x20, CRC(6844cc88) SHA1(89d23367aa6ff541205416e82781fe938dfeeb52) )
 ROM_END
 
+<<<<<<< HEAD
 GAME( 1985, metlclsh, 0, metlclsh, metlclsh, driver_device, 0, ROT0, "Data East", "Metal Clash (Japan)", MACHINE_SUPPORTS_SAVE )
+=======
+GAME( 1985, metlclsh, 0, metlclsh, metlclsh, metlclsh_state, 0, ROT0, "Data East", "Metal Clash (Japan)", MACHINE_SUPPORTS_SAVE )
+>>>>>>> upstream/master

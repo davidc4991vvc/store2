@@ -61,10 +61,20 @@ D.9B         [f99cac4b] /
 */
 
 #include "emu.h"
+<<<<<<< HEAD
 #include "cpu/z80/z80.h"
 #include "cpu/nec/nec.h"
 #include "audio/t5182.h"
 
+=======
+#include "audio/t5182.h"
+
+#include "cpu/nec/nec.h"
+#include "cpu/z80/z80.h"
+#include "screen.h"
+#include "speaker.h"
+
+>>>>>>> upstream/master
 
 class panicr_state : public driver_device
 {
@@ -87,18 +97,30 @@ public:
 	required_device<screen_device> m_screen;
 	required_device<palette_device> m_palette;
 
+<<<<<<< HEAD
 	required_shared_ptr<UINT8> m_mainram;
 	required_shared_ptr<UINT8> m_spriteram;
 	required_shared_ptr<UINT8> m_textram;
 	required_shared_ptr<UINT8> m_spritebank;
+=======
+	required_shared_ptr<uint8_t> m_mainram;
+	required_shared_ptr<uint8_t> m_spriteram;
+	required_shared_ptr<uint8_t> m_textram;
+	required_shared_ptr<uint8_t> m_spritebank;
+>>>>>>> upstream/master
 
 	tilemap_t *m_bgtilemap;
 	tilemap_t *m_infotilemap_2;
 	tilemap_t *m_txttilemap;
 
 	int m_scrollx;
+<<<<<<< HEAD
 	bitmap_ind16 *m_temprender;
 	bitmap_ind16 *m_tempbitmap_1;
+=======
+	std::unique_ptr<bitmap_ind16> m_temprender;
+	std::unique_ptr<bitmap_ind16> m_tempbitmap_1;
+>>>>>>> upstream/master
 	rectangle m_tempbitmap_clip;
 
 	DECLARE_READ8_MEMBER(collision_r);
@@ -109,6 +131,7 @@ public:
 	DECLARE_WRITE8_MEMBER(t5182shared_w);
 
 	TILE_GET_INFO_MEMBER(get_bgtile_info);
+<<<<<<< HEAD
 	TILE_GET_INFO_MEMBER(get_infotile_info);
 	TILE_GET_INFO_MEMBER(get_infotile_info_2);
 	TILE_GET_INFO_MEMBER(get_infotile_info_3);
@@ -120,6 +143,16 @@ public:
 	DECLARE_PALETTE_INIT(panicr);
 
 	UINT32 screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
+=======
+	TILE_GET_INFO_MEMBER(get_infotile_info_2);
+	TILE_GET_INFO_MEMBER(get_txttile_info);
+
+	DECLARE_DRIVER_INIT(panicr);
+	virtual void video_start() override;
+	DECLARE_PALETTE_INIT(panicr);
+
+	uint32_t screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
+>>>>>>> upstream/master
 	void draw_sprites(bitmap_ind16 &bitmap,const rectangle &cliprect );
 
 	TIMER_DEVICE_CALLBACK_MEMBER(scanline);
@@ -139,7 +172,11 @@ public:
 
 PALETTE_INIT_MEMBER(panicr_state, panicr)
 {
+<<<<<<< HEAD
 	const UINT8 *color_prom = memregion("proms")->base();
+=======
+	const uint8_t *color_prom = memregion("proms")->base();
+>>>>>>> upstream/master
 	int i;
 
 	/* create a lookup table for the palette */
@@ -158,7 +195,11 @@ PALETTE_INIT_MEMBER(panicr_state, panicr)
 	// txt lookup table
 	for (i = 0; i < 0x100; i++)
 	{
+<<<<<<< HEAD
 		UINT8 ctabentry;
+=======
+		uint8_t ctabentry;
+>>>>>>> upstream/master
 
 		if (color_prom[i] & 0x40)
 			ctabentry = 0;
@@ -171,7 +212,11 @@ PALETTE_INIT_MEMBER(panicr_state, panicr)
 	// tile lookup table
 	for (i = 0x000; i < 0x100; i++)
 	{
+<<<<<<< HEAD
 		UINT8 ctabentry = (color_prom[i+0x100] & 0x3f) | 0x00;
+=======
+		uint8_t ctabentry = (color_prom[i+0x100] & 0x3f) | 0x00;
+>>>>>>> upstream/master
 
 		palette.set_pen_indirect(((i&0x0f) + ((i&0xf0)<<1))  +0x200, ctabentry);
 		palette.set_pen_indirect(((i&0x0f) + ((i&0xf0)<<1))  +0x210, ctabentry);
@@ -180,7 +225,11 @@ PALETTE_INIT_MEMBER(panicr_state, panicr)
 	// sprite lookup table
 	for (i = 0x000; i < 0x100; i++)
 	{
+<<<<<<< HEAD
 		UINT8 ctabentry;
+=======
+		uint8_t ctabentry;
+>>>>>>> upstream/master
 
 		if (color_prom[i+0x200] & 0x40)
 			ctabentry = 0;
@@ -240,10 +289,17 @@ TILE_GET_INFO_MEMBER(panicr_state::get_txttile_info)
 
 void panicr_state::video_start()
 {
+<<<<<<< HEAD
 	m_bgtilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(panicr_state::get_bgtile_info),this),TILEMAP_SCAN_ROWS,16,16,1024,16 );
 	m_infotilemap_2 = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(panicr_state::get_infotile_info_2),this),TILEMAP_SCAN_ROWS,16,16,1024,16 );
 
 	m_txttilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(panicr_state::get_txttile_info),this),TILEMAP_SCAN_ROWS,8,8,32,32 );
+=======
+	m_bgtilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(panicr_state::get_bgtile_info),this),TILEMAP_SCAN_ROWS,16,16,1024,16 );
+	m_infotilemap_2 = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(panicr_state::get_infotile_info_2),this),TILEMAP_SCAN_ROWS,16,16,1024,16 );
+
+	m_txttilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(panicr_state::get_txttile_info),this),TILEMAP_SCAN_ROWS,8,8,32,32 );
+>>>>>>> upstream/master
 	m_txttilemap->configure_groups(*m_gfxdecode->gfx(0), 0);
 
 	save_item(NAME(m_scrollx));
@@ -285,7 +341,11 @@ void panicr_state::draw_sprites(bitmap_ind16 &bitmap,const rectangle &cliprect )
 	}
 }
 
+<<<<<<< HEAD
 UINT32 panicr_state::screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+=======
+uint32_t panicr_state::screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+>>>>>>> upstream/master
 {
 	m_bgtilemap->set_scrollx(0, m_scrollx);
 	m_bgtilemap->draw(screen, *m_temprender, m_tempbitmap_clip, 0,0);
@@ -301,12 +361,21 @@ UINT32 panicr_state::screen_update(screen_device &screen, bitmap_ind16 &bitmap, 
 
 	for (int y=0;y<256;y++)
 	{
+<<<<<<< HEAD
 		UINT16* srcline = &m_temprender->pix16(y);
 		UINT16* dstline = &bitmap.pix16(y);
 
 		for (int x=0;x<256;x++)
 		{
 			UINT16 dat = srcline[x];
+=======
+		uint16_t* srcline = &m_temprender->pix16(y);
+		uint16_t* dstline = &bitmap.pix16(y);
+
+		for (int x=0;x<256;x++)
+		{
+			uint16_t dat = srcline[x];
+>>>>>>> upstream/master
 
 			dstline[x] = ((dat & 0x00f) | ((dat & 0x1e0)>>0)) + 0x200;
 
@@ -318,12 +387,21 @@ UINT32 panicr_state::screen_update(screen_device &screen, bitmap_ind16 &bitmap, 
 
 	for (int y=0;y<256;y++)
 	{
+<<<<<<< HEAD
 		UINT16* srcline = &m_temprender->pix16(y);
 		UINT16* dstline = &bitmap.pix16(y);
 
 		for (int x=0;x<256;x++)
 		{
 			UINT16 dat = srcline[x];
+=======
+		uint16_t* srcline = &m_temprender->pix16(y);
+		uint16_t* dstline = &bitmap.pix16(y);
+
+		for (int x=0;x<256;x++)
+		{
+			uint16_t dat = srcline[x];
+>>>>>>> upstream/master
 			if (dat & 0x10)
 				dstline[x] = ((dat & 0x00f) | ((dat & 0x1e0)>>0)) + 0x200;
 
@@ -356,7 +434,11 @@ READ8_MEMBER(panicr_state::collision_r)
 	// there is a 3rd additional bit that is used as priority, we're not concerned about that here
 
 	m_infotilemap_2->set_scrollx(0, m_scrollx & 0xffff);
+<<<<<<< HEAD
 	m_infotilemap_2->draw(m_screen, *m_tempbitmap_1, m_tempbitmap_clip, 0,0);
+=======
+	m_infotilemap_2->draw(*m_screen, *m_tempbitmap_1, m_tempbitmap_clip, 0,0);
+>>>>>>> upstream/master
 
 
 	int actual_column = offset&0x3f;
@@ -369,8 +451,13 @@ READ8_MEMBER(panicr_state::collision_r)
 	actual_column &= 0xff;
 
 
+<<<<<<< HEAD
 	UINT8 ret = 0;
 	UINT16* srcline = &m_tempbitmap_1->pix16(actual_line);
+=======
+	uint8_t ret = 0;
+	uint16_t* srcline = &m_tempbitmap_1->pix16(actual_line);
+>>>>>>> upstream/master
 
 
 	ret |= (srcline[(actual_column+0)&0xff]&3) << 6;
@@ -402,8 +489,13 @@ WRITE8_MEMBER(panicr_state::scrollx_hi_w)
 WRITE8_MEMBER(panicr_state::output_w)
 {
 	// d6, d7: play counter? (it only triggers on 1st coin)
+<<<<<<< HEAD
 	coin_counter_w(machine(), 0, (data & 0x40) ? 1 : 0);
 	coin_counter_w(machine(), 1, (data & 0x80) ? 1 : 0);
+=======
+	machine().bookkeeping().coin_counter_w(0, (data & 0x40) ? 1 : 0);
+	machine().bookkeeping().coin_counter_w(1, (data & 0x80) ? 1 : 0);
+>>>>>>> upstream/master
 
 	logerror("output_w %02x\n", data);
 
@@ -605,7 +697,11 @@ TIMER_DEVICE_CALLBACK_MEMBER(panicr_state::scanline)
 		m_maincpu->set_input_line_and_vector(0, HOLD_LINE, 0xc8/4);
 }
 
+<<<<<<< HEAD
 static MACHINE_CONFIG_START( panicr, panicr_state )
+=======
+static MACHINE_CONFIG_START( panicr )
+>>>>>>> upstream/master
 	MCFG_CPU_ADD("maincpu", V20,MASTER_CLOCK/2) /* Sony 8623h9 CXQ70116D-8 (V20 compatible) */
 	MCFG_CPU_PROGRAM_MAP(panicr_map)
 	MCFG_TIMER_DRIVER_ADD_SCANLINE("scantimer", panicr_state, scanline, "screen", 0, 1)
@@ -717,8 +813,13 @@ ROM_END
 
 DRIVER_INIT_MEMBER(panicr_state,panicr)
 {
+<<<<<<< HEAD
 	dynamic_buffer buf(0x80000);
 	UINT8 *rom;
+=======
+	std::vector<uint8_t> buf(0x80000);
+	uint8_t *rom;
+>>>>>>> upstream/master
 	int size;
 	int i,j;
 
@@ -821,8 +922,13 @@ DRIVER_INIT_MEMBER(panicr_state,panicr)
 		}
 	}
 
+<<<<<<< HEAD
 	m_tempbitmap_1 = auto_bitmap_ind16_alloc(machine(),256,256);
 	m_temprender = auto_bitmap_ind16_alloc(machine(),256,256);
+=======
+	m_tempbitmap_1 = std::make_unique<bitmap_ind16>(256,256);
+	m_temprender = std::make_unique<bitmap_ind16>(256,256);
+>>>>>>> upstream/master
 	m_tempbitmap_clip.set(0, 256-1, 0, 256-1);
 
 	m_tempbitmap_1->fill(0, m_tempbitmap_clip);

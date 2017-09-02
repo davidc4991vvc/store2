@@ -56,6 +56,10 @@
 
 */
 
+<<<<<<< HEAD
+=======
+#include "emu.h"
+>>>>>>> upstream/master
 #include "multiscreen.h"
 
 
@@ -77,7 +81,11 @@
 //  DEVICE DEFINITIONS
 //**************************************************************************
 
+<<<<<<< HEAD
 const device_type C64_MULTISCREEN = &device_creator<c64_multiscreen_cartridge_device>;
+=======
+DEFINE_DEVICE_TYPE(C64_MULTISCREEN, c64_multiscreen_cartridge_device, "c64_mscr", "C64 Multiscreen cartridge")
+>>>>>>> upstream/master
 
 
 //-------------------------------------------------
@@ -95,7 +103,11 @@ ROM_END
 //  rom_region - device-specific ROM region
 //-------------------------------------------------
 
+<<<<<<< HEAD
 const rom_entry *c64_multiscreen_cartridge_device::device_rom_region() const
+=======
+const tiny_rom_entry *c64_multiscreen_cartridge_device::device_rom_region() const
+>>>>>>> upstream/master
 {
 	return ROM_NAME( c64_multiscreen );
 }
@@ -107,10 +119,17 @@ ADDRESS_MAP_END
 
 
 //-------------------------------------------------
+<<<<<<< HEAD
 //  MACHINE_CONFIG_FRAGMENT( c64_multiscreen )
 //-------------------------------------------------
 
 static MACHINE_CONFIG_FRAGMENT( c64_multiscreen )
+=======
+//  device_add_mconfig - add device configuration
+//-------------------------------------------------
+
+MACHINE_CONFIG_MEMBER( c64_multiscreen_cartridge_device::device_add_mconfig )
+>>>>>>> upstream/master
 	MCFG_CPU_ADD(MC6802P_TAG, M6802, XTAL_4MHz)
 	MCFG_CPU_PROGRAM_MAP(multiscreen_mem)
 
@@ -119,6 +138,7 @@ static MACHINE_CONFIG_FRAGMENT( c64_multiscreen )
 MACHINE_CONFIG_END
 
 
+<<<<<<< HEAD
 //-------------------------------------------------
 //  machine_config_additions - device-specific
 //  machine configurations
@@ -131,6 +151,8 @@ machine_config_constructor c64_multiscreen_cartridge_device::device_mconfig_addi
 
 
 
+=======
+>>>>>>> upstream/master
 //**************************************************************************
 //  LIVE DEVICE
 //**************************************************************************
@@ -139,8 +161,13 @@ machine_config_constructor c64_multiscreen_cartridge_device::device_mconfig_addi
 //  c64_multiscreen_cartridge_device - constructor
 //-------------------------------------------------
 
+<<<<<<< HEAD
 c64_multiscreen_cartridge_device::c64_multiscreen_cartridge_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock) :
 	device_t(mconfig, C64_MULTISCREEN, "C64 Multiscreen cartridge", tag, owner, clock, "c64_mscr", __FILE__),
+=======
+c64_multiscreen_cartridge_device::c64_multiscreen_cartridge_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock) :
+	device_t(mconfig, C64_MULTISCREEN, tag, owner, clock),
+>>>>>>> upstream/master
 	device_c64_expansion_card_interface(mconfig, *this), m_bank(0)
 {
 }
@@ -171,7 +198,11 @@ void c64_multiscreen_cartridge_device::device_reset()
 //  c64_cd_r - cartridge data read
 //-------------------------------------------------
 
+<<<<<<< HEAD
 UINT8 c64_multiscreen_cartridge_device::c64_cd_r(address_space &space, offs_t offset, UINT8 data, int sphi2, int ba, int roml, int romh, int io1, int io2)
+=======
+uint8_t c64_multiscreen_cartridge_device::c64_cd_r(address_space &space, offs_t offset, uint8_t data, int sphi2, int ba, int roml, int romh, int io1, int io2)
+>>>>>>> upstream/master
 {
 	if (!roml)
 	{
@@ -208,7 +239,11 @@ UINT8 c64_multiscreen_cartridge_device::c64_cd_r(address_space &space, offs_t of
 //  c64_cd_w - cartridge data write
 //-------------------------------------------------
 
+<<<<<<< HEAD
 void c64_multiscreen_cartridge_device::c64_cd_w(address_space &space, offs_t offset, UINT8 data, int sphi2, int ba, int roml, int romh, int io1, int io2)
+=======
+void c64_multiscreen_cartridge_device::c64_cd_w(address_space &space, offs_t offset, uint8_t data, int sphi2, int ba, int roml, int romh, int io1, int io2)
+>>>>>>> upstream/master
 {
 	if (offset >= 0x8000 && offset < 0xa000)
 	{

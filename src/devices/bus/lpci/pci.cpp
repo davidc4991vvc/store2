@@ -80,7 +80,11 @@
 //  GLOBAL VARIABLES
 //**************************************************************************
 
+<<<<<<< HEAD
 const device_type PCI_BUS = &device_creator<pci_bus_device>;
+=======
+DEFINE_DEVICE_TYPE(PCI_BUS, pci_bus_device, "pci_bus", "PCI Bus")
+>>>>>>> upstream/master
 
 //**************************************************************************
 //  LIVE DEVICE
@@ -89,12 +93,21 @@ const device_type PCI_BUS = &device_creator<pci_bus_device>;
 //-------------------------------------------------
 //  pci_bus_device - constructor
 //-------------------------------------------------
+<<<<<<< HEAD
 pci_bus_device::pci_bus_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock) :
 		device_t(mconfig, PCI_BUS, "PCI Bus", tag, owner, clock, "pci_bus", __FILE__), m_busnum(0),
 		m_father(NULL), m_address(0), m_devicenum(0), m_busnumber(0), m_busnumaddr(nullptr)
 {
 	for (int i = 0; i < ARRAY_LENGTH(m_devtag); i++) {
 		m_devtag[i]= NULL;
+=======
+pci_bus_device::pci_bus_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock) :
+	device_t(mconfig, PCI_BUS, tag, owner, clock), m_busnum(0),
+	m_father(nullptr), m_address(0), m_devicenum(0), m_busnumber(0), m_busnumaddr(nullptr)
+{
+	for (auto & elem : m_devtag) {
+		elem= nullptr;
+>>>>>>> upstream/master
 	}
 	m_siblings_count = 0;
 }
@@ -105,7 +118,11 @@ pci_bus_device::pci_bus_device(const machine_config &mconfig, const char *tag, d
 
 READ32_MEMBER( pci_bus_device::read )
 {
+<<<<<<< HEAD
 	UINT32 result = 0xffffffff;
+=======
+	uint32_t result = 0xffffffff;
+>>>>>>> upstream/master
 	int function, reg;
 
 	offset %= 2;
@@ -119,7 +136,11 @@ READ32_MEMBER( pci_bus_device::read )
 		case 1:
 			if (m_devicenum != -1)
 			{
+<<<<<<< HEAD
 				if (m_busnumaddr->m_device[m_devicenum] != NULL)
+=======
+				if (m_busnumaddr->m_device[m_devicenum] != nullptr)
+>>>>>>> upstream/master
 				{
 					function = (m_address >> 8) & 0x07;
 					reg = (m_address >> 0) & 0xfc;
@@ -149,10 +170,17 @@ pci_bus_device *pci_bus_device::pci_search_bustree(int busnum, int devicenum, pc
 	for (a = 0; a < pcibus->m_siblings_count; a++)
 	{
 		ret = pci_search_bustree(busnum, devicenum, pcibus->m_siblings[a]);
+<<<<<<< HEAD
 		if (ret != NULL)
 			return ret;
 	}
 	return NULL;
+=======
+		if (ret != nullptr)
+			return ret;
+	}
+	return nullptr;
+>>>>>>> upstream/master
 }
 
 
@@ -175,7 +203,11 @@ WRITE32_MEMBER( pci_bus_device::write )
 				int busnum = (m_address >> 16) & 0xff;
 				int devicenum = (m_address >> 11) & 0x1f;
 				m_busnumaddr = pci_search_bustree(busnum, devicenum, this);
+<<<<<<< HEAD
 				if (m_busnumaddr != NULL)
+=======
+				if (m_busnumaddr != nullptr)
+>>>>>>> upstream/master
 				{
 					m_busnumber = busnum;
 					m_devicenum = devicenum;
@@ -190,7 +222,11 @@ WRITE32_MEMBER( pci_bus_device::write )
 		case 1:
 			if (m_devicenum != -1)
 			{
+<<<<<<< HEAD
 				if (m_busnumaddr->m_device[m_devicenum] != NULL)
+=======
+				if (m_busnumaddr->m_device[m_devicenum] != nullptr)
+>>>>>>> upstream/master
 				{
 					int function = (m_address >> 8) & 0x07;
 					int reg = (m_address >> 0) & 0xfc;
@@ -207,6 +243,7 @@ WRITE32_MEMBER( pci_bus_device::write )
 
 READ64_MEMBER(pci_bus_device::read_64be)
 {
+<<<<<<< HEAD
 	UINT64 result = 0;
 	mem_mask = FLIPENDIAN_INT64(mem_mask);
 	if (ACCESSING_BITS_0_31)
@@ -214,12 +251,26 @@ READ64_MEMBER(pci_bus_device::read_64be)
 	if (ACCESSING_BITS_32_63)
 		result |= (UINT64)read(space, offset * 2 + 1, mem_mask >> 32) << 32;
 	return FLIPENDIAN_INT64(result);
+=======
+	uint64_t result = 0;
+	mem_mask = flipendian_int64(mem_mask);
+	if (ACCESSING_BITS_0_31)
+		result |= (uint64_t)read(space, offset * 2 + 0, mem_mask >> 0) << 0;
+	if (ACCESSING_BITS_32_63)
+		result |= (uint64_t)read(space, offset * 2 + 1, mem_mask >> 32) << 32;
+	return flipendian_int64(result);
+>>>>>>> upstream/master
 }
 
 WRITE64_MEMBER(pci_bus_device::write_64be)
 {
+<<<<<<< HEAD
 	data = FLIPENDIAN_INT64(data);
 	mem_mask = FLIPENDIAN_INT64(mem_mask);
+=======
+	data = flipendian_int64(data);
+	mem_mask = flipendian_int64(mem_mask);
+>>>>>>> upstream/master
 	if (ACCESSING_BITS_0_31)
 		write(space, offset * 2 + 0, data >> 0, mem_mask >> 0);
 	if (ACCESSING_BITS_32_63)
@@ -262,6 +313,7 @@ void pci_bus_device::device_start()
 	for (int i = 0; i < ARRAY_LENGTH(m_devtag); i++)
 	{
 		sprintf(id, "%d", i);
+<<<<<<< HEAD
 		pci_connector *conn = downcast<pci_connector *>(subdevice(id));
 		if (conn!=NULL)
 			m_device[i] = conn->get_device();
@@ -270,6 +322,16 @@ void pci_bus_device::device_start()
 	}
 
 	if (m_father != NULL) {
+=======
+		pci_connector_device *conn = downcast<pci_connector_device *>(subdevice(id));
+		if (conn!=nullptr)
+			m_device[i] = conn->get_device();
+		else
+			m_device[i] = nullptr;
+	}
+
+	if (m_father != nullptr) {
+>>>>>>> upstream/master
 		pci_bus_device *father = machine().device<pci_bus_device>(m_father);
 		if (father)
 			father->add_sibling(this, m_busnum);
@@ -311,15 +373,24 @@ pci_device_interface::~pci_device_interface()
 }
 
 
+<<<<<<< HEAD
 const device_type PCI_CONNECTOR = &device_creator<pci_connector>;
 
 
 pci_connector::pci_connector(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock) :
 	device_t(mconfig, PCI_CONNECTOR, "PCI device connector abstraction", tag, owner, clock, "pci_connector", __FILE__),
+=======
+DEFINE_DEVICE_TYPE(PCI_CONNECTOR, pci_connector_device, "pci_connector", "PCI device connector abstraction")
+
+
+pci_connector_device::pci_connector_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock) :
+	device_t(mconfig, PCI_CONNECTOR, tag, owner, clock),
+>>>>>>> upstream/master
 	device_slot_interface(mconfig, *this)
 {
 }
 
+<<<<<<< HEAD
 pci_connector::~pci_connector()
 {
 }
@@ -329,6 +400,17 @@ void pci_connector::device_start()
 }
 
 pci_device_interface *pci_connector::get_device()
+=======
+pci_connector_device::~pci_connector_device()
+{
+}
+
+void pci_connector_device::device_start()
+{
+}
+
+pci_device_interface *pci_connector_device::get_device()
+>>>>>>> upstream/master
 {
 	return dynamic_cast<pci_device_interface *>(get_card_device());
 }

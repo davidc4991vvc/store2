@@ -15,7 +15,11 @@ Notes:
 
 TODO:
 - 02851: tetriskr: Corrupt game graphics after some time of gameplay, caused by a wrong
+<<<<<<< HEAD
   reading of the i/o $3c8 bit 1.
+=======
+  reading of the i/o $3c8 bit 1. (seems fixed?)
+>>>>>>> upstream/master
 - Add a proper FDC device.
 - Filetto: Add UM5100 sound chip, might be connected to the prototyping card;
 - buzzer sound has issues in both games
@@ -57,6 +61,7 @@ the main program is 9th October 1990.
 ******************************************************************************************/
 
 #include "emu.h"
+<<<<<<< HEAD
 #include "cpu/i86/i86.h"
 #include "machine/pit8253.h"
 #include "machine/i8255.h"
@@ -67,12 +72,20 @@ the main program is 9th October 1990.
 #include "bus/isa/isa.h"
 #include "bus/isa/cga.h"
 
+=======
+#include "bus/isa/cga.h"
+#include "cpu/i86/i86.h"
+#include "sound/hc55516.h"
+#include "machine/bankdev.h"
+#include "machine/genpc.h"
+>>>>>>> upstream/master
 
 class pcxt_state : public driver_device
 {
 public:
 	pcxt_state(const machine_config &mconfig, device_type type, const char *tag)
 		: driver_device(mconfig, type, tag),
+<<<<<<< HEAD
 			m_pit8253(*this, "pit8253"),
 			m_pic8259_1(*this, "pic8259_1"),
 			m_dma8237_1(*this, "dma8237_1") ,
@@ -95,6 +108,17 @@ public:
 	required_device<pit8253_device> m_pit8253;
 	required_device<pic8259_device> m_pic8259_1;
 	required_device<am9517a_device> m_dma8237_1;
+=======
+		m_maincpu(*this, "maincpu"),
+		m_mb(*this, "mb"),
+		m_bank(*this, "bank"){ }
+
+	int m_lastvalue;
+	uint8_t m_disk_data[2];
+	uint8_t m_port_b_data;
+	uint8_t m_status;
+	uint8_t m_clr_status;
+>>>>>>> upstream/master
 
 	DECLARE_READ8_MEMBER(disk_iobank_r);
 	DECLARE_WRITE8_MEMBER(disk_iobank_w);
@@ -102,16 +126,20 @@ public:
 	DECLARE_READ8_MEMBER(fdc765_data_r);
 	DECLARE_WRITE8_MEMBER(fdc765_data_w);
 	DECLARE_WRITE8_MEMBER(fdc_dor_w);
+<<<<<<< HEAD
 	DECLARE_READ8_MEMBER(pc_dma_read_byte);
 	DECLARE_WRITE8_MEMBER(pc_dma_write_byte);
 	DECLARE_READ8_MEMBER(dma_page_select_r);
 	DECLARE_WRITE8_MEMBER(dma_page_select_w);
 	DECLARE_WRITE8_MEMBER(tetriskr_bg_bank_w);
 	DECLARE_WRITE_LINE_MEMBER(ibm5150_pit8253_out2_changed);
+=======
+>>>>>>> upstream/master
 	DECLARE_READ8_MEMBER(port_a_r);
 	DECLARE_READ8_MEMBER(port_b_r);
 	DECLARE_READ8_MEMBER(port_c_r);
 	DECLARE_WRITE8_MEMBER(port_b_w);
+<<<<<<< HEAD
 	DECLARE_WRITE8_MEMBER(wss_1_w);
 	DECLARE_WRITE8_MEMBER(wss_2_w);
 	DECLARE_WRITE8_MEMBER(sys_reset_w);
@@ -128,6 +156,13 @@ public:
 	void pcxt_speaker_set_spkrdata(UINT8 data);
 	required_device<cpu_device> m_maincpu;
 	required_device<speaker_sound_device> m_speaker;
+=======
+
+	virtual void machine_reset() override;
+	required_device<cpu_device> m_maincpu;
+	required_device<pc_noppi_mb_device> m_mb;
+	optional_device<address_map_bank_device> m_bank;
+>>>>>>> upstream/master
 };
 
 
@@ -135,19 +170,33 @@ class isa8_cga_filetto_device : public isa8_cga_device
 {
 public:
 	// construction/destruction
+<<<<<<< HEAD
 	isa8_cga_filetto_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
 
 	virtual const rom_entry *device_rom_region() const;
 };
 
 const device_type ISA8_CGA_FILETTO = &device_creator<isa8_cga_filetto_device>;
+=======
+	isa8_cga_filetto_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
+
+	virtual const tiny_rom_entry *device_rom_region() const override;
+};
+
+DEFINE_DEVICE_TYPE(ISA8_CGA_FILETTO, isa8_cga_filetto_device, "filetto_cga", "ISA8_CGA_FILETTO")
+>>>>>>> upstream/master
 
 //-------------------------------------------------
 //  isa8_cga_filetto_device - constructor
 //-------------------------------------------------
 
+<<<<<<< HEAD
 isa8_cga_filetto_device::isa8_cga_filetto_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock) :
 		isa8_cga_device( mconfig, ISA8_CGA_FILETTO, "ISA8_CGA_FILETTO", tag, owner, clock, "filetto_cga", __FILE__)
+=======
+isa8_cga_filetto_device::isa8_cga_filetto_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock) :
+	isa8_cga_device(mconfig, ISA8_CGA_FILETTO, tag, owner, clock)
+>>>>>>> upstream/master
 {
 }
 
@@ -156,7 +205,11 @@ ROM_START( filetto_cga )
 	ROM_LOAD("u67.bin", 0x0000, 0x2000, CRC(09710122) SHA1(de84bdd9245df287bbd3bb808f0c3531d13a3545) )
 ROM_END
 
+<<<<<<< HEAD
 const rom_entry *isa8_cga_filetto_device::device_rom_region() const
+=======
+const tiny_rom_entry *isa8_cga_filetto_device::device_rom_region() const
+>>>>>>> upstream/master
 {
 	return ROM_NAME( filetto_cga );
 }
@@ -167,28 +220,49 @@ class isa8_cga_tetriskr_device : public isa8_cga_superimpose_device
 {
 public:
 	// construction/destruction
+<<<<<<< HEAD
 	isa8_cga_tetriskr_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
 
 	virtual UINT32 screen_update(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect);
 	virtual void device_start();
 	virtual const rom_entry *device_rom_region() const;
+=======
+	isa8_cga_tetriskr_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
+
+	virtual uint32_t screen_update(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect) override;
+	virtual void device_start() override;
+	virtual const tiny_rom_entry *device_rom_region() const override;
+>>>>>>> upstream/master
 
 	DECLARE_READ8_MEMBER(bg_bank_r);
 	DECLARE_WRITE8_MEMBER(bg_bank_w);
 private:
+<<<<<<< HEAD
 	UINT8 m_bg_bank;
+=======
+	uint8_t m_bg_bank;
+>>>>>>> upstream/master
 };
 
 
 /* for superimposing CGA over a different source video (i.e. tetriskr) */
+<<<<<<< HEAD
 const device_type ISA8_CGA_TETRISKR = &device_creator<isa8_cga_tetriskr_device>;
+=======
+DEFINE_DEVICE_TYPE(ISA8_CGA_TETRISKR, isa8_cga_tetriskr_device, "tetriskr_cga", "ISA8_CGA_TETRISKR")
+>>>>>>> upstream/master
 
 //-------------------------------------------------
 //  isa8_cga_tetriskr_device - constructor
 //-------------------------------------------------
 
+<<<<<<< HEAD
 isa8_cga_tetriskr_device::isa8_cga_tetriskr_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock) :
 		isa8_cga_superimpose_device( mconfig, ISA8_CGA_TETRISKR, "ISA8_CGA_TETRISKR", tag, owner, clock, "tetriskr_cga", __FILE__)
+=======
+isa8_cga_tetriskr_device::isa8_cga_tetriskr_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock) :
+	isa8_cga_superimpose_device(mconfig, ISA8_CGA_TETRISKR, tag, owner, clock)
+>>>>>>> upstream/master
 {
 }
 
@@ -197,7 +271,11 @@ void isa8_cga_tetriskr_device::device_start()
 {
 	m_bg_bank = 0;
 	isa8_cga_superimpose_device::device_start();
+<<<<<<< HEAD
 	m_isa->install_device(0x3c0, 0x3c0, 0, 0,  read8_delegate( FUNC(isa8_cga_tetriskr_device::bg_bank_r), this ), write8_delegate( FUNC(isa8_cga_tetriskr_device::bg_bank_w), this ) );
+=======
+	m_isa->install_device(0x3c0, 0x3c0, read8_delegate( FUNC(isa8_cga_tetriskr_device::bg_bank_r), this ), write8_delegate( FUNC(isa8_cga_tetriskr_device::bg_bank_w), this ) );
+>>>>>>> upstream/master
 }
 
 WRITE8_MEMBER(isa8_cga_tetriskr_device::bg_bank_w)
@@ -211,6 +289,7 @@ READ8_MEMBER(isa8_cga_tetriskr_device::bg_bank_r)
 }
 
 
+<<<<<<< HEAD
 UINT32 isa8_cga_tetriskr_device::screen_update(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect)
 {
 	int x,y;
@@ -220,6 +299,17 @@ UINT32 isa8_cga_tetriskr_device::screen_update(screen_device &screen, bitmap_rgb
 	//popmessage("%04x",m_start_offs);
 
 	bitmap.fill(rgb_t::black, cliprect);
+=======
+uint32_t isa8_cga_tetriskr_device::screen_update(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect)
+{
+	int x,y;
+	int yi;
+	const uint8_t *bg_rom = memregion("gfx2")->base();
+
+	//popmessage("%04x",m_start_offs);
+
+	bitmap.fill(rgb_t::black(), cliprect);
+>>>>>>> upstream/master
 
 	for(y=0;y<200/8;y++)
 	{
@@ -227,7 +317,11 @@ UINT32 isa8_cga_tetriskr_device::screen_update(screen_device &screen, bitmap_rgb
 		{
 			for(x=0;x<320/8;x++)
 			{
+<<<<<<< HEAD
 				UINT8 color;
+=======
+				uint8_t color;
+>>>>>>> upstream/master
 				int xi,pen_i;
 
 				for(xi=0;xi<8;xi++)
@@ -248,7 +342,10 @@ UINT32 isa8_cga_tetriskr_device::screen_update(screen_device &screen, bitmap_rgb
 	return 0;
 }
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> upstream/master
 ROM_START( tetriskr_cga )
 	ROM_REGION( 0x2000, "gfx1",ROMREGION_ERASE00 ) /* gfx - 1bpp font*/
 	ROM_LOAD( "b-3.u36", 0x1800, 0x0800, CRC(1a636f9a) SHA1(a356cc57914d0c9b9127670b55d1f340e64b1ac9) )
@@ -265,7 +362,11 @@ ROM_START( tetriskr_cga )
 	ROM_LOAD( "b-9.u43", 0x70000, 0x10000, CRC(4ea22349) SHA1(14dfd3dbd51f8bd6f3290293b8ea1c165e8cf7fd))
 ROM_END
 
+<<<<<<< HEAD
 const rom_entry *isa8_cga_tetriskr_device::device_rom_region() const
+=======
+const tiny_rom_entry *isa8_cga_tetriskr_device::device_rom_region() const
+>>>>>>> upstream/master
 {
 	return ROM_NAME( tetriskr_cga );
 }
@@ -301,17 +402,26 @@ WRITE8_MEMBER(pcxt_state::disk_iobank_w)
     sets the selected rom that appears in $C0000-$CFFFF
 
 */
+<<<<<<< HEAD
 	int newbank = 0;
+=======
+	int bank = 0;
+>>>>>>> upstream/master
 
 //  printf("bank %d set to %02X\n", offset,data);
 
 	if (data == 0xF0)
 	{
+<<<<<<< HEAD
 		newbank = 0;
+=======
+		bank = 0;
+>>>>>>> upstream/master
 	}
 	else
 	{
 		if((m_lastvalue == 0xF0) && (data == 0xF2))
+<<<<<<< HEAD
 			newbank = 0;
 		else if ((m_lastvalue == 0xF1) && (data == 0xF2))
 			newbank = 1;
@@ -328,12 +438,25 @@ WRITE8_MEMBER(pcxt_state::disk_iobank_w)
 		m_bank = newbank;
 		membank("bank1")->set_base(memregion("game_prg")->base() + 0x10000 * m_bank );
 	}
+=======
+			bank = 0;
+		else if ((m_lastvalue == 0xF1) && (data == 0xF2))
+			bank = 1;
+		else if ((m_lastvalue == 0xF0) && (data == 0xF3))
+			bank = 2;
+		else if ((m_lastvalue == 0xF1) && (data == 0xF3))
+			bank = 3;
+	}
+
+	m_bank->set_bank(bank);
+>>>>>>> upstream/master
 
 	m_lastvalue = data;
 
 	m_disk_data[offset] = data;
 }
 
+<<<<<<< HEAD
 /*********************************
 Pit8253
 *********************************/
@@ -378,6 +501,11 @@ READ8_MEMBER(pcxt_state::port_a_r)
 		return 0x00;//Keyboard is disconnected
 		//return 0xaa;//Keyboard code
 	}
+=======
+READ8_MEMBER(pcxt_state::port_a_r)
+{
+	return 0xaa;//harmless keyboard error occurs without this
+>>>>>>> upstream/master
 }
 
 READ8_MEMBER(pcxt_state::port_b_r)
@@ -387,6 +515,7 @@ READ8_MEMBER(pcxt_state::port_b_r)
 
 READ8_MEMBER(pcxt_state::port_c_r)
 {
+<<<<<<< HEAD
 	if ( m_port_b_data & 0x01 )
 	{
 		m_wss2_data = ( m_wss2_data & ~0x10 ) | ( m_pit_out2 ? 0x10 : 0x00 );
@@ -394,6 +523,9 @@ READ8_MEMBER(pcxt_state::port_c_r)
 	m_wss2_data = ( m_wss2_data & ~0x20 ) | ( m_pit_out2 ? 0x20 : 0x00 );
 
 	return m_wss2_data;//TODO
+=======
+	return 0x00;// DIPS?
+>>>>>>> upstream/master
 }
 
 /*'buzzer' sound routes here*/
@@ -401,6 +533,7 @@ READ8_MEMBER(pcxt_state::port_c_r)
 /* The Korean Tetris uses it as a regular buzzer,probably the sound is all in there...*/
 WRITE8_MEMBER(pcxt_state::port_b_w)
 {
+<<<<<<< HEAD
 	/* PPI controller port B*/
 	m_pit8253->write_gate2(BIT(data, 0));
 	pcxt_speaker_set_spkrdata( data & 0x02 );
@@ -430,6 +563,15 @@ WRITE8_MEMBER(pcxt_state::sys_reset_w)
 }
 
 
+=======
+	m_mb->m_pit8253->write_gate2(BIT(data, 0));
+	m_mb->pc_speaker_set_spkrdata(BIT(data, 1));
+	m_port_b_data = data;
+// device_t *cvsd = machine().device("cvsd");
+//  hc55516_digit_w(cvsd, data);
+}
+
+>>>>>>> upstream/master
 /*Floppy Disk Controller 765 device*/
 /*Currently we only emulate it at a point that the BIOS will pass the checks*/
 
@@ -439,8 +581,12 @@ WRITE8_MEMBER(pcxt_state::sys_reset_w)
 
 READ8_MEMBER(pcxt_state::fdc765_status_r)
 {
+<<<<<<< HEAD
 	UINT8 tmp;
 //  popmessage("Read FDC status @ PC=%05x",space.device().safe_pc());
+=======
+	uint8_t tmp;
+>>>>>>> upstream/master
 	tmp = m_status | 0x80;
 	m_clr_status++;
 	if(m_clr_status == 0x10)
@@ -454,7 +600,11 @@ READ8_MEMBER(pcxt_state::fdc765_status_r)
 READ8_MEMBER(pcxt_state::fdc765_data_r)
 {
 	m_status = (FDC_READ);
+<<<<<<< HEAD
 	m_pic8259_1->ir6_w(0);
+=======
+	m_mb->m_pic8259->ir6_w(0);
+>>>>>>> upstream/master
 	return 0xc0;
 }
 
@@ -466,6 +616,7 @@ WRITE8_MEMBER(pcxt_state::fdc765_data_w)
 
 WRITE8_MEMBER(pcxt_state::fdc_dor_w)
 {
+<<<<<<< HEAD
 	/* TODO: properly hook-up upd765 FDC there */
 	m_pic8259_1->ir6_w(1);
 }
@@ -591,17 +742,54 @@ static ADDRESS_MAP_START( filetto_io, AS_IO, 8, pcxt_state )
 	AM_RANGE(0x0201, 0x0201) AM_READ_PORT("COIN") //game port
 	AM_RANGE(0x0310, 0x0311) AM_READWRITE(disk_iobank_r,disk_iobank_w) //Prototyping card
 	AM_RANGE(0x0312, 0x0312) AM_READ_PORT("IN0") //Prototyping card,read only
+=======
+	m_mb->m_pic8259->ir6_w(1);
+}
+
+static ADDRESS_MAP_START( filetto_map, AS_PROGRAM, 8, pcxt_state )
+	AM_RANGE(0xc0000, 0xcffff) AM_DEVICE("bank", address_map_bank_device, amap8)
+	AM_RANGE(0xf0000, 0xfffff) AM_ROM AM_REGION("bios", 0)
+ADDRESS_MAP_END
+
+static ADDRESS_MAP_START( filetto_io, AS_IO, 8, pcxt_state )
+	ADDRESS_MAP_GLOBAL_MASK(0x3ff)
+	AM_RANGE(0x0060, 0x0060) AM_READ(port_a_r)  //not a real 8255
+	AM_RANGE(0x0061, 0x0061) AM_READWRITE(port_b_r, port_b_w)
+	AM_RANGE(0x0062, 0x0062) AM_READ(port_c_r)
+	AM_RANGE(0x0000, 0x00ff) AM_DEVICE("mb", pc_noppi_mb_device, map)
+	AM_RANGE(0x0201, 0x0201) AM_READ_PORT("COIN") //game port
+	AM_RANGE(0x0310, 0x0311) AM_READWRITE(disk_iobank_r,disk_iobank_w) //Prototyping card
+	AM_RANGE(0x0312, 0x0312) AM_READ_PORT("IN0") //Prototyping card,read only
+	AM_RANGE(0x03f2, 0x03f2) AM_WRITE(fdc_dor_w)
+	AM_RANGE(0x03f4, 0x03f4) AM_READ(fdc765_status_r) //765 Floppy Disk Controller (FDC) Status
+	AM_RANGE(0x03f5, 0x03f5) AM_READWRITE(fdc765_data_r,fdc765_data_w)//FDC Data
+ADDRESS_MAP_END
+
+static ADDRESS_MAP_START( tetriskr_map, AS_PROGRAM, 8, pcxt_state )
+	AM_RANGE(0xf0000, 0xfffff) AM_ROM AM_REGION("bios", 0)
+>>>>>>> upstream/master
 ADDRESS_MAP_END
 
 static ADDRESS_MAP_START( tetriskr_io, AS_IO, 8, pcxt_state )
 	ADDRESS_MAP_GLOBAL_MASK(0x3ff)
+<<<<<<< HEAD
 	AM_IMPORT_FROM( pcxt_io_common )
 	AM_RANGE(0x0200, 0x020f) AM_RAM //game port
+=======
+	AM_RANGE(0x0000, 0x00ff) AM_DEVICE("mb", pc_noppi_mb_device, map)
+>>>>>>> upstream/master
 	AM_RANGE(0x03c8, 0x03c8) AM_READ_PORT("IN0")
 	AM_RANGE(0x03c9, 0x03c9) AM_READ_PORT("IN1")
 //  AM_RANGE(0x03ce, 0x03ce) AM_READ_PORT("IN1") //read then discarded?
 ADDRESS_MAP_END
 
+<<<<<<< HEAD
+=======
+static ADDRESS_MAP_START( bank_map, 0, 8, pcxt_state )
+	AM_RANGE(0x00000, 0x3ffff) AM_ROM AM_REGION("game_prg", 0)
+ADDRESS_MAP_END
+
+>>>>>>> upstream/master
 static INPUT_PORTS_START( filetto )
 	PORT_START("IN0")
 	PORT_BIT( 0x01, IP_ACTIVE_LOW, IPT_JOYSTICK_DOWN ) PORT_4WAY PORT_PLAYER(1)
@@ -681,6 +869,7 @@ INPUT_PORTS_END
 
 void pcxt_state::machine_reset()
 {
+<<<<<<< HEAD
 	m_bank = -1;
 	m_lastvalue = -1;
 
@@ -691,11 +880,18 @@ void pcxt_state::machine_reset()
 }
 
 SLOT_INTERFACE_START( filetto_isa8_cards )
+=======
+	m_lastvalue = -1;
+}
+
+static SLOT_INTERFACE_START( filetto_isa8_cards )
+>>>>>>> upstream/master
 	SLOT_INTERFACE_INTERNAL("filetto",  ISA8_CGA_FILETTO)
 	SLOT_INTERFACE_INTERNAL("tetriskr", ISA8_CGA_TETRISKR)
 SLOT_INTERFACE_END
 
 
+<<<<<<< HEAD
 static MACHINE_CONFIG_FRAGMENT(pcxt)
 	MCFG_CPU_ADD("maincpu", I8088, XTAL_14_31818MHz/3)
 	MCFG_CPU_PROGRAM_MAP(filetto_map)
@@ -780,6 +976,51 @@ ROM_START( filetto )
 	ROM_RELOAD(         0xfa000, 0x2000 )
 	ROM_RELOAD(         0xf6000, 0x2000 )
 	ROM_RELOAD(         0xf2000, 0x2000 )
+=======
+static MACHINE_CONFIG_START( filetto )
+	MCFG_CPU_ADD("maincpu", I8088, XTAL_14_31818MHz/3)
+	MCFG_CPU_PROGRAM_MAP(filetto_map)
+	MCFG_CPU_IO_MAP(filetto_io)
+	MCFG_CPU_IRQ_ACKNOWLEDGE_DEVICE("mb:pic8259", pic8259_device, inta_cb)
+	MCFG_PCNOPPI_MOTHERBOARD_ADD("mb","maincpu")
+	MCFG_ISA8_SLOT_ADD("mb:isa", "isa1", filetto_isa8_cards, "filetto", true)
+
+	MCFG_SOUND_ADD("voice", HC55516, 8000000/4)//8923S-UM5100 is a HC55536 with ROM hook-up
+	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mb:mono", 0.60)
+	MCFG_RAM_ADD(RAM_TAG)
+	MCFG_RAM_DEFAULT_SIZE("640K")
+
+	MCFG_DEVICE_ADD("bank", ADDRESS_MAP_BANK, 0)
+	MCFG_DEVICE_PROGRAM_MAP(bank_map)
+	MCFG_ADDRESS_MAP_BANK_ENDIANNESS(ENDIANNESS_LITTLE)
+	MCFG_ADDRESS_MAP_BANK_DATABUS_WIDTH(8)
+	MCFG_ADDRESS_MAP_BANK_ADDRBUS_WIDTH(18)
+	MCFG_ADDRESS_MAP_BANK_STRIDE(0x10000)
+MACHINE_CONFIG_END
+
+static MACHINE_CONFIG_START( tetriskr )
+	MCFG_CPU_ADD("maincpu", I8088, XTAL_14_31818MHz/3)
+	MCFG_CPU_PROGRAM_MAP(tetriskr_map)
+	MCFG_CPU_IO_MAP(tetriskr_io)
+	MCFG_CPU_IRQ_ACKNOWLEDGE_DEVICE("mb:pic8259", pic8259_device, inta_cb)
+	MCFG_PCNOPPI_MOTHERBOARD_ADD("mb","maincpu")
+
+	MCFG_ISA8_SLOT_ADD("mb:isa", "isa1", filetto_isa8_cards, "tetriskr", true)
+	MCFG_RAM_ADD(RAM_TAG)
+	MCFG_RAM_DEFAULT_SIZE("640K")
+MACHINE_CONFIG_END
+
+ROM_START( filetto )
+	ROM_REGION( 0x10000, "bios", 0 )
+	ROM_LOAD("u49.bin", 0xc000, 0x2000, CRC(1be6948a) SHA1(9c433f63d347c211ee4663f133e8417221bc4bf0))
+	ROM_RELOAD(         0x8000, 0x2000 )
+	ROM_RELOAD(         0x4000, 0x2000 )
+	ROM_RELOAD(         0x0000, 0x2000 )
+	ROM_LOAD("u55.bin", 0xe000, 0x2000, CRC(1e455ed7) SHA1(786d18ce0ab1af45fc538a2300853e497488f0d4) )
+	ROM_RELOAD(         0xa000, 0x2000 )
+	ROM_RELOAD(         0x6000, 0x2000 )
+	ROM_RELOAD(         0x2000, 0x2000 )
+>>>>>>> upstream/master
 
 	ROM_REGION( 0x40000, "game_prg", 0 ) // program data
 	ROM_LOAD( "m0.u1", 0x00000, 0x10000, CRC(2408289d) SHA1(eafc144a557a79b58bcb48545cb9c9778e61fcd3) )
@@ -793,6 +1034,7 @@ ROM_START( filetto )
 ROM_END
 
 ROM_START( tetriskr )
+<<<<<<< HEAD
 	ROM_REGION( 0x100000, "maincpu", 0 ) /* code */
 	ROM_LOAD( "b-10.u10", 0xf0000, 0x10000, CRC(efc2a0f6) SHA1(5f0f1e90237bee9b78184035a32055b059a91eb3) )
 ROM_END
@@ -809,3 +1051,11 @@ DRIVER_INIT_MEMBER(pcxt_state,tetriskr)
 
 GAME( 1990, filetto,  0, filetto,  filetto, pcxt_state,  filetto,  ROT0,  "Novarmatic", "Filetto (v1.05 901009)",MACHINE_IMPERFECT_SOUND )
 GAME( 1988?,tetriskr, 0, tetriskr, tetriskr, pcxt_state, tetriskr, ROT0,  "bootleg",    "Tetris (bootleg of Mirrorsoft PC-XT Tetris version)", MACHINE_IMPERFECT_SOUND | MACHINE_NOT_WORKING )
+=======
+	ROM_REGION( 0x10000, "bios", 0 ) /* code */
+	ROM_LOAD( "b-10.u10", 0x0000, 0x10000, CRC(efc2a0f6) SHA1(5f0f1e90237bee9b78184035a32055b059a91eb3) )
+ROM_END
+
+GAME( 1990, filetto,  0, filetto,  filetto,  pcxt_state,  0,  ROT0,  "Novarmatic", "Filetto (v1.05 901009)",                             MACHINE_IMPERFECT_SOUND )
+GAME( 1988?,tetriskr, 0, tetriskr, tetriskr, pcxt_state,  0,  ROT0,  "bootleg",    "Tetris (Korean bootleg of Mirrorsoft PC-XT Tetris)", MACHINE_IMPERFECT_SOUND )
+>>>>>>> upstream/master

@@ -48,18 +48,31 @@
 
 #include "emu.h"
 #include "maria.h"
+<<<<<<< HEAD
+=======
+#include "screen.h"
+>>>>>>> upstream/master
 
 
 #define TRIGGER_HSYNC   64717
 
 #define READ_MEM(x) space.read_byte(x)
 
+<<<<<<< HEAD
 const device_type ATARI_MARIA = &device_creator<atari_maria_device>;
 
 
 
 atari_maria_device::atari_maria_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
 					: device_t(mconfig, ATARI_MARIA, "Atari MARIA", tag, owner, clock, "atari_maria", __FILE__)
+=======
+DEFINE_DEVICE_TYPE(ATARI_MARIA, atari_maria_device, "atari_maria", "Atari MARIA")
+
+
+
+atari_maria_device::atari_maria_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: device_t(mconfig, ATARI_MARIA, tag, owner, clock)
+>>>>>>> upstream/master
 {
 }
 
@@ -93,12 +106,21 @@ void atari_maria_device::device_start()
 
 void atari_maria_device::device_reset()
 {
+<<<<<<< HEAD
 	for (int i = 0; i < 32; i++)
 		m_maria_palette[i] = 0;
 
 	for (int i = 0; i < 2; i++)
 		for (int j = 0; j < 160; j++)
 			m_line_ram[i][j] = 0;
+=======
+	for (auto & elem : m_maria_palette)
+		elem = 0;
+
+	for (auto & elem : m_line_ram)
+		for (int j = 0; j < 160; j++)
+			elem[j] = 0;
+>>>>>>> upstream/master
 
 	m_active_buffer = 0;
 
@@ -136,7 +158,11 @@ int atari_maria_device::is_holey(unsigned int addr)
 		return 0;
 }
 
+<<<<<<< HEAD
 int atari_maria_device::write_line_ram(int addr, UINT8 offset, int pal)
+=======
+int atari_maria_device::write_line_ram(int addr, uint8_t offset, int pal)
+>>>>>>> upstream/master
 {
 	address_space& space = m_cpu->space(AS_PROGRAM);
 	int c;
@@ -171,10 +197,17 @@ int atari_maria_device::write_line_ram(int addr, UINT8 offset, int pal)
 void atari_maria_device::draw_scanline()
 {
 	address_space& space = m_cpu->space(AS_PROGRAM);
+<<<<<<< HEAD
 	UINT16 graph_adr, data_addr;
 	int width, pal, ind;
 	UINT8 hpos;
 	UINT16 dl;
+=======
+	uint16_t graph_adr, data_addr;
+	int width, pal, ind;
+	uint8_t hpos;
+	uint16_t dl;
+>>>>>>> upstream/master
 	int d, c, pixel_cell, cells;
 	int maria_cycles;
 
@@ -290,7 +323,11 @@ void atari_maria_device::draw_scanline()
 
 	// draw line buffer to screen
 	m_active_buffer = !m_active_buffer; // switch buffers
+<<<<<<< HEAD
 	UINT16 *scanline;
+=======
+	uint16_t *scanline;
+>>>>>>> upstream/master
 	scanline = &m_bitmap.pix16(m_screen->vpos());
 
 
@@ -403,7 +440,11 @@ void atari_maria_device::startdma(int lines)
 ***************************************************************************/
 
 /* This routine is called at the start of vblank to refresh the screen */
+<<<<<<< HEAD
 UINT32 atari_maria_device::screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+=======
+uint32_t atari_maria_device::screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+>>>>>>> upstream/master
 {
 	copybitmap(bitmap, m_bitmap, 0, 0, 0, 0, cliprect);
 	return 0;

@@ -25,6 +25,7 @@ public:
 	required_device<gfxdecode_device> m_gfxdecode;
 	required_device<palette_device> m_palette;
 
+<<<<<<< HEAD
 	required_shared_ptr<UINT8> m_videoram;
 	required_shared_ptr<UINT8> m_spriteram;
 	required_shared_ptr<UINT8> m_attributesram;
@@ -39,6 +40,22 @@ public:
 	UINT8 m_imago_sprites[0x800*3];
 	UINT16 m_imago_sprites_address;
 	UINT8 m_imago_sprites_bank;
+=======
+	required_shared_ptr<uint8_t> m_videoram;
+	required_shared_ptr<uint8_t> m_spriteram;
+	required_shared_ptr<uint8_t> m_attributesram;
+	optional_shared_ptr<uint8_t> m_background_color;
+	optional_shared_ptr<uint8_t> m_imago_fg_videoram;
+
+	int m_hardware_type;
+	uint16_t m_charbank;
+	uint8_t m_colorbank;
+	uint8_t m_nmi_mask;
+	uint8_t m_sound_nmi_mask;
+	uint8_t m_imago_sprites[0x800*3];
+	uint16_t m_imago_sprites_address;
+	uint8_t m_imago_sprites_bank;
+>>>>>>> upstream/master
 
 	tilemap_t *m_bg_tilemap;
 	tilemap_t *m_fg_tilemap;
@@ -49,6 +66,7 @@ public:
 	DECLARE_READ8_MEMBER(flyboy_custom2_io_r);
 	DECLARE_READ8_MEMBER(jumpcoas_custom_io_r);
 	DECLARE_READ8_MEMBER(boggy84_custom_io_r);
+<<<<<<< HEAD
 	DECLARE_WRITE8_MEMBER(imago_dma_irq_w);
 	DECLARE_WRITE8_MEMBER(imago_sprites_bank_w);
 	DECLARE_WRITE8_MEMBER(imago_sprites_dma_w);
@@ -65,6 +83,24 @@ public:
 	DECLARE_WRITE8_MEMBER(fastfred_flip_screen_y_w);
 	DECLARE_WRITE8_MEMBER(imago_fg_videoram_w);
 	DECLARE_WRITE8_MEMBER(imago_charbank_w);
+=======
+	DECLARE_WRITE_LINE_MEMBER(imago_dma_irq_w);
+	DECLARE_WRITE8_MEMBER(imago_sprites_bank_w);
+	DECLARE_WRITE8_MEMBER(imago_sprites_dma_w);
+	DECLARE_READ8_MEMBER(imago_sprites_offset_r);
+	DECLARE_WRITE_LINE_MEMBER(nmi_mask_w);
+	DECLARE_WRITE8_MEMBER(sound_nmi_mask_w);
+	DECLARE_WRITE8_MEMBER(fastfred_videoram_w);
+	DECLARE_WRITE8_MEMBER(fastfred_attributes_w);
+	DECLARE_WRITE_LINE_MEMBER(charbank1_w);
+	DECLARE_WRITE_LINE_MEMBER(charbank2_w);
+	DECLARE_WRITE_LINE_MEMBER(colorbank1_w);
+	DECLARE_WRITE_LINE_MEMBER(colorbank2_w);
+	DECLARE_WRITE_LINE_MEMBER(flip_screen_x_w);
+	DECLARE_WRITE_LINE_MEMBER(flip_screen_y_w);
+	DECLARE_WRITE8_MEMBER(imago_fg_videoram_w);
+	DECLARE_WRITE_LINE_MEMBER(imago_charbank_w);
+>>>>>>> upstream/master
 
 	DECLARE_DRIVER_INIT(fastfred);
 	DECLARE_DRIVER_INIT(flyboy);
@@ -82,13 +118,22 @@ public:
 	INTERRUPT_GEN_MEMBER(vblank_irq);
 	INTERRUPT_GEN_MEMBER(sound_timer_irq);
 
+<<<<<<< HEAD
 	virtual void machine_start();
+=======
+	virtual void machine_start() override;
+>>>>>>> upstream/master
 	DECLARE_PALETTE_INIT(fastfred);
 	DECLARE_MACHINE_START(imago);
 	DECLARE_VIDEO_START(fastfred);
 	DECLARE_VIDEO_START(imago);
 
+<<<<<<< HEAD
 	UINT32 screen_update_fastfred(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
 	UINT32 screen_update_imago(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
+=======
+	uint32_t screen_update_fastfred(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
+	uint32_t screen_update_imago(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
+>>>>>>> upstream/master
 	void draw_sprites(bitmap_ind16 &bitmap, const rectangle &cliprect);
 };

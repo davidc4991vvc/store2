@@ -18,7 +18,11 @@
 ***************************************************************************/
 
 #include "emu.h"
+<<<<<<< HEAD
 #include "emuopts.h"
+=======
+#include "inputdev.h"
+>>>>>>> upstream/master
 
 
 
@@ -27,7 +31,11 @@
 //**************************************************************************
 
 // invalid memory value for axis polling
+<<<<<<< HEAD
 const INT32 INVALID_AXIS_VALUE      = 0x7fffffff;
+=======
+const s32 INVALID_AXIS_VALUE      = 0x7fffffff;
+>>>>>>> upstream/master
 
 // additional expanded input codes for sequences
 const input_code input_seq::end_code(DEVICE_CLASS_INTERNAL, 0, ITEM_CLASS_INVALID, ITEM_MODIFIER_NONE, ITEM_ID_SEQ_END);
@@ -44,6 +52,7 @@ const input_seq input_seq::empty_seq;
 //  TYPE DEFINITIONS
 //**************************************************************************
 
+<<<<<<< HEAD
 // ======================> input_device_switch_item
 
 // derived input item representing a switch input
@@ -101,12 +110,18 @@ public:
 };
 
 
+=======
+>>>>>>> upstream/master
 // ======================> code_string_table
 
 // simple class to match codes to strings
 struct code_string_table
 {
+<<<<<<< HEAD
 	UINT32 operator[](const char *string) const
+=======
+	u32 operator[](const char *string) const
+>>>>>>> upstream/master
 	{
 		for (const code_string_table *current = this; current->m_code != ~0; current++)
 			if (strcmp(current->m_string, string) == 0)
@@ -114,15 +129,26 @@ struct code_string_table
 		return ~0;
 	}
 
+<<<<<<< HEAD
 	const char *operator[](UINT32 code) const
+=======
+	const char *operator[](u32 code) const
+>>>>>>> upstream/master
 	{
 		for (const code_string_table *current = this; current->m_code != ~0; current++)
 			if (current->m_code == code)
 				return current->m_string;
+<<<<<<< HEAD
 		return NULL;
 	}
 
 	UINT32                  m_code;
+=======
+		return nullptr;
+	}
+
+	u32                     m_code;
+>>>>>>> upstream/master
 	const char *            m_string;
 };
 
@@ -240,6 +266,14 @@ static const code_string_table itemid_token_table[] =
 	{ ITEM_ID_F13,           "F13" },
 	{ ITEM_ID_F14,           "F14" },
 	{ ITEM_ID_F15,           "F15" },
+<<<<<<< HEAD
+=======
+	{ ITEM_ID_F16,           "F16" },
+	{ ITEM_ID_F17,           "F17" },
+	{ ITEM_ID_F18,           "F18" },
+	{ ITEM_ID_F19,           "F19" },
+	{ ITEM_ID_F20,           "F20" },
+>>>>>>> upstream/master
 	{ ITEM_ID_ESC,           "ESC" },
 	{ ITEM_ID_TILDE,         "TILDE" },
 	{ ITEM_ID_MINUS,         "MINUS" },
@@ -283,6 +317,13 @@ static const code_string_table itemid_token_table[] =
 	{ ITEM_ID_PLUS_PAD,      "PLUSPAD" },
 	{ ITEM_ID_DEL_PAD,       "DELPAD" },
 	{ ITEM_ID_ENTER_PAD,     "ENTERPAD" },
+<<<<<<< HEAD
+=======
+	{ ITEM_ID_BS_PAD,        "BSPAD" },
+	{ ITEM_ID_TAB_PAD,       "TABPAD" },
+	{ ITEM_ID_00_PAD,        "00PAD" },
+	{ ITEM_ID_000_PAD,       "000PAD" },
+>>>>>>> upstream/master
 	{ ITEM_ID_PRTSCR,        "PRTSCR" },
 	{ ITEM_ID_PAUSE,         "PAUSE" },
 	{ ITEM_ID_LSHIFT,        "LSHIFT" },
@@ -298,9 +339,12 @@ static const code_string_table itemid_token_table[] =
 	{ ITEM_ID_RWIN,          "RWIN" },
 	{ ITEM_ID_MENU,          "MENU" },
 	{ ITEM_ID_CANCEL,        "CANCEL" },
+<<<<<<< HEAD
 	{ ITEM_ID_KANA,          "KANA" },
 	{ ITEM_ID_CONVERT,       "CONVERT" },
 	{ ITEM_ID_NONCONVERT,    "NONCONVERT" },
+=======
+>>>>>>> upstream/master
 
 	// standard mouse/joystick/gun codes
 	{ ITEM_ID_XAXIS,         "XAXIS" },
@@ -414,12 +458,17 @@ static const code_string_table itemid_token_table[] =
 	{ ITEM_ID_ADD_RELATIVE15,"ADDREL15" },
 	{ ITEM_ID_ADD_RELATIVE16,"ADDREL16" },
 
+<<<<<<< HEAD
 	{ ~0U,                   NULL }
+=======
+	{ ~0U,                   nullptr }
+>>>>>>> upstream/master
 };
 
 
 
 //**************************************************************************
+<<<<<<< HEAD
 //  GLOBAL VARIABLES
 //**************************************************************************
 
@@ -604,6 +653,8 @@ input_code::input_code(input_device &device, input_item_id itemid)
 
 
 //**************************************************************************
+=======
+>>>>>>> upstream/master
 //  INPUT SEQ
 //**************************************************************************
 
@@ -614,7 +665,11 @@ input_code::input_code(input_device &device, input_item_id itemid)
 
 input_seq &input_seq::operator+=(input_code code)
 {
+<<<<<<< HEAD
 	// if not enough room, return FALSE
+=======
+	// if not enough room, return false
+>>>>>>> upstream/master
 	int curlength = length();
 	if (curlength < ARRAY_LENGTH(m_code) - 1)
 	{
@@ -676,10 +731,17 @@ bool input_seq::is_valid() const
 	input_item_class lastclass = ITEM_CLASS_INVALID;
 	input_code lastcode = INPUT_CODE_INVALID;
 	int positive_code_count = 0;
+<<<<<<< HEAD
 	for (int seqnum = 0; seqnum < ARRAY_LENGTH(m_code); seqnum++)
 	{
 		// invalid codes are never permitted
 		input_code code = m_code[seqnum];
+=======
+	for (auto code : m_code)
+	{
+		// invalid codes are never permitted
+
+>>>>>>> upstream/master
 		if (code == INPUT_CODE_INVALID)
 			return false;
 
@@ -720,7 +782,11 @@ bool input_seq::is_valid() const
 			// non-switch items can't have a NOT
 			input_item_class itemclass = code.item_class();
 			if (itemclass != ITEM_CLASS_SWITCH && lastcode == not_code)
+<<<<<<< HEAD
 				return FALSE;
+=======
+				return false;
+>>>>>>> upstream/master
 
 			// absolute/relative items must all be the same class
 			if ((lastclass == ITEM_CLASS_ABSOLUTE && itemclass != ITEM_CLASS_ABSOLUTE) ||
@@ -776,14 +842,21 @@ void input_seq::backspace()
 
 void input_seq::replace(input_code oldcode, input_code newcode)
 {
+<<<<<<< HEAD
 	for (int codenum = 0; codenum < ARRAY_LENGTH(m_code); codenum++)
 		if (m_code[codenum] == oldcode)
 			m_code[codenum] = newcode;
+=======
+	for (auto & elem : m_code)
+		if (elem == oldcode)
+			elem = newcode;
+>>>>>>> upstream/master
 }
 
 
 
 //**************************************************************************
+<<<<<<< HEAD
 //  INPUT DEVICE
 //**************************************************************************
 
@@ -1060,6 +1133,45 @@ input_manager::input_manager(running_machine &machine)
 	m_class[DEVICE_CLASS_MOUSE] = &m_mouse_class;
 	m_class[DEVICE_CLASS_JOYSTICK] = &m_joystick_class;
 	m_class[DEVICE_CLASS_LIGHTGUN] = &m_lightgun_class;
+=======
+//  INPUT MANAGER
+//**************************************************************************
+
+//-------------------------------------------------
+//  input_manager - constructor
+//-------------------------------------------------
+
+input_manager::input_manager(running_machine &machine)
+	: m_machine(machine),
+		m_poll_seq_last_ticks(0),
+		m_poll_seq_class(ITEM_CLASS_SWITCH)
+{
+	// reset code memory
+	reset_memory();
+
+	// create pointers for the classes
+	m_class[DEVICE_CLASS_KEYBOARD] = std::make_unique<input_class_keyboard>(*this);
+	m_class[DEVICE_CLASS_MOUSE] = std::make_unique<input_class_mouse>(*this);
+	m_class[DEVICE_CLASS_LIGHTGUN] = std::make_unique<input_class_lightgun>(*this);
+	m_class[DEVICE_CLASS_JOYSTICK] = std::make_unique<input_class_joystick>(*this);
+
+#ifdef MAME_DEBUG
+	for (input_device_class devclass = DEVICE_CLASS_FIRST_VALID; devclass <= DEVICE_CLASS_LAST_VALID; ++devclass)
+	{
+		assert(m_class[devclass] != nullptr);
+		assert(m_class[devclass]->devclass() == devclass);
+	}
+#endif
+}
+
+
+//-------------------------------------------------
+//  input_manager - destructor
+//-------------------------------------------------
+
+input_manager::~input_manager()
+{
+>>>>>>> upstream/master
 }
 
 
@@ -1068,17 +1180,28 @@ input_manager::input_manager(running_machine &machine)
 //  input code
 //-------------------------------------------------
 
+<<<<<<< HEAD
 INT32 input_manager::code_value(input_code code)
 {
 	g_profiler.start(PROFILER_INPUT);
 	INT32 result = 0;
+=======
+s32 input_manager::code_value(input_code code)
+{
+	g_profiler.start(PROFILER_INPUT);
+	s32 result = 0;
+>>>>>>> upstream/master
 
 	// dummy loop to allow clean early exits
 	do
 	{
 		// return 0 for any invalid devices
 		input_device *device = device_from_code(code);
+<<<<<<< HEAD
 		if (device == NULL)
+=======
+		if (device == nullptr)
+>>>>>>> upstream/master
 			break;
 
 		// also return 0 if the device class is disabled
@@ -1103,7 +1226,11 @@ INT32 input_manager::code_value(input_code code)
 			// lookup the item for the appropriate index
 			code.set_device_index(curindex);
 			input_device_item *item = item_from_code(code);
+<<<<<<< HEAD
 			if (item == NULL)
+=======
+			if (item == nullptr)
+>>>>>>> upstream/master
 				continue;
 
 			// process items according to their native type
@@ -1189,9 +1316,15 @@ void input_manager::reset_polling()
 	for (input_device_class devclass = DEVICE_CLASS_FIRST_VALID; devclass <= DEVICE_CLASS_LAST_VALID; ++devclass)
 		for (int devnum = 0; devnum <= m_class[devclass]->maxindex(); devnum++)
 		{
+<<<<<<< HEAD
 			// fetch the device; ignore if NULL
 			input_device *device = m_class[devclass]->device(devnum);
 			if (device == NULL)
+=======
+			// fetch the device; ignore if nullptr
+			input_device *device = m_class[devclass]->device(devnum);
+			if (device == nullptr)
+>>>>>>> upstream/master
 				continue;
 
 			// iterate over items within each device
@@ -1199,8 +1332,13 @@ void input_manager::reset_polling()
 			{
 				// for any non-switch items, set memory equal to the current value
 				input_device_item *item = device->item(itemid);
+<<<<<<< HEAD
 				if (item != NULL && item->itemclass() != ITEM_CLASS_SWITCH)
 					item->set_memory(code_value(input_code(*device, itemid)));
+=======
+				if (item != nullptr && item->itemclass() != ITEM_CLASS_SWITCH)
+					item->set_memory(code_value(item->code()));
+>>>>>>> upstream/master
 			}
 		}
 }
@@ -1216,18 +1354,30 @@ input_code input_manager::poll_switches()
 	for (input_device_class devclass = DEVICE_CLASS_FIRST_VALID; devclass <= DEVICE_CLASS_LAST_VALID; ++devclass)
 		for (int devnum = 0; devnum <= m_class[devclass]->maxindex(); devnum++)
 		{
+<<<<<<< HEAD
 			// fetch the device; ignore if NULL
 			input_device *device = m_class[devclass]->device(devnum);
 			if (device == NULL)
+=======
+			// fetch the device; ignore if nullptr
+			input_device *device = m_class[devclass]->device(devnum);
+			if (device == nullptr)
+>>>>>>> upstream/master
 				continue;
 
 			// iterate over items within each device
 			for (input_item_id itemid = ITEM_ID_FIRST_VALID; itemid <= device->maxitem(); ++itemid)
 			{
 				input_device_item *item = device->item(itemid);
+<<<<<<< HEAD
 				if (item != NULL)
 				{
 					input_code code(*device, itemid);
+=======
+				if (item != nullptr)
+				{
+					input_code code = item->code();
+>>>>>>> upstream/master
 
 					// if the item is natively a switch, poll it
 					if (item->itemclass() == ITEM_CLASS_SWITCH)
@@ -1294,20 +1444,35 @@ input_code input_manager::poll_switches()
 input_code input_manager::poll_keyboard_switches()
 {
 	// iterate over devices within each class
+<<<<<<< HEAD
 	for (int devnum = 0; devnum < m_keyboard_class.maxindex(); devnum++)
 	{
 		// fetch the device; ignore if NULL
 		input_device *device = m_keyboard_class.device(devnum);
 		if (device == NULL)
+=======
+	input_class &keyboard_class = device_class(DEVICE_CLASS_KEYBOARD);
+	for (int devnum = 0; devnum < keyboard_class.maxindex(); devnum++)
+	{
+		// fetch the device; ignore if nullptr
+		input_device *device = keyboard_class.device(devnum);
+		if (device == nullptr)
+>>>>>>> upstream/master
 			continue;
 
 		// iterate over items within each device
 		for (input_item_id itemid = ITEM_ID_FIRST_VALID; itemid <= device->maxitem(); ++itemid)
 		{
 			input_device_item *item = device->item(itemid);
+<<<<<<< HEAD
 			if (item != NULL && item->itemclass() == ITEM_CLASS_SWITCH)
 			{
 				input_code code(*device, itemid);
+=======
+			if (item != nullptr && item->itemclass() == ITEM_CLASS_SWITCH)
+			{
+				input_code code = item->code();
+>>>>>>> upstream/master
 				if (code_pressed_once(code))
 					return code;
 			}
@@ -1332,14 +1497,22 @@ bool input_manager::code_check_axis(input_device_item &item, input_code code)
 
 	// ignore min/max for lightguns
 	// so the selection will not be affected by a gun going out of range
+<<<<<<< HEAD
 	INT32 curval = code_value(code);
+=======
+	s32 curval = code_value(code);
+>>>>>>> upstream/master
 	if (code.device_class() == DEVICE_CLASS_LIGHTGUN &&
 		(code.item_id() == ITEM_ID_XAXIS || code.item_id() == ITEM_ID_YAXIS) &&
 		(curval == INPUT_ABSOLUTE_MAX || curval == INPUT_ABSOLUTE_MIN))
 		return false;
 
 	// compute the diff against memory
+<<<<<<< HEAD
 	INT32 diff = curval - item.memory();
+=======
+	s32 diff = curval - item.memory();
+>>>>>>> upstream/master
 	if (diff < 0)
 		diff = -diff;
 
@@ -1370,18 +1543,30 @@ input_code input_manager::poll_axes()
 	for (input_device_class devclass = DEVICE_CLASS_FIRST_VALID; devclass <= DEVICE_CLASS_LAST_VALID; ++devclass)
 		for (int devnum = 0; devnum <= m_class[devclass]->maxindex(); devnum++)
 		{
+<<<<<<< HEAD
 			// fetch the device; ignore if NULL
 			input_device *device = m_class[devclass]->device(devnum);
 			if (device == NULL)
+=======
+			// fetch the device; ignore if nullptr
+			input_device *device = m_class[devclass]->device(devnum);
+			if (device == nullptr)
+>>>>>>> upstream/master
 				continue;
 
 			// iterate over items within each device
 			for (input_item_id itemid = ITEM_ID_FIRST_VALID; itemid <= device->maxitem(); ++itemid)
 			{
 				input_device_item *item = device->item(itemid);
+<<<<<<< HEAD
 				if (item != NULL && item->itemclass() != ITEM_CLASS_SWITCH)
 				{
 					input_code code(*device, itemid);
+=======
+				if (item != nullptr && item->itemclass() != ITEM_CLASS_SWITCH)
+				{
+					input_code code = item->code();
+>>>>>>> upstream/master
 					if (code_check_axis(*item, code))
 						return code;
 				}
@@ -1405,8 +1590,13 @@ input_device *input_manager::device_from_code(input_code code) const
 	if (devclass >= DEVICE_CLASS_FIRST_VALID && devclass <= DEVICE_CLASS_LAST_VALID)
 		return m_class[devclass]->device(code.device_index());
 
+<<<<<<< HEAD
 	// otherwise, return NULL
 	return NULL;
+=======
+	// otherwise, return nullptr
+	return nullptr;
+>>>>>>> upstream/master
 }
 
 
@@ -1419,8 +1609,13 @@ input_device_item *input_manager::item_from_code(input_code code) const
 {
 	// first get the device; if none, then we don't have an item
 	input_device *device = device_from_code(code);
+<<<<<<< HEAD
 	if (device == NULL)
 		return NULL;
+=======
+	if (device == nullptr)
+		return nullptr;
+>>>>>>> upstream/master
 
 	// then return the device's item
 	return device->item(code.item_id());
@@ -1435,8 +1630,13 @@ input_device_item *input_manager::item_from_code(input_code code) const
 void input_manager::reset_memory()
 {
 	// reset all entries in switch memory to invalid
+<<<<<<< HEAD
 	for (int memnum = 0; memnum < ARRAY_LENGTH(m_switch_memory); memnum++)
 		m_switch_memory[memnum] = INPUT_CODE_INVALID;
+=======
+	for (auto & elem : m_switch_memory)
+		elem = INPUT_CODE_INVALID;
+>>>>>>> upstream/master
 }
 
 
@@ -1452,8 +1652,17 @@ input_code input_manager::code_from_itemid(input_item_id itemid) const
 		for (int devnum = 0; devnum <= m_class[devclass]->maxindex(); devnum++)
 		{
 			input_device *device = m_class[devclass]->device(devnum);
+<<<<<<< HEAD
 			if (device != NULL && device->item(itemid) != NULL)
 				return input_code(*device, itemid);
+=======
+			if (device != nullptr)
+			{
+				input_device_item *item = device->item(itemid);
+				if (item != nullptr)
+					return item->code();
+			}
+>>>>>>> upstream/master
 		}
 
 	return INPUT_CODE_INVALID;
@@ -1465,6 +1674,7 @@ input_code input_manager::code_from_itemid(input_item_id itemid) const
 //  friendly name
 //-------------------------------------------------
 
+<<<<<<< HEAD
 const char *input_manager::code_name(std::string &str, input_code code) const
 {
 	str.clear();
@@ -1473,13 +1683,25 @@ const char *input_manager::code_name(std::string &str, input_code code) const
 	input_device_item *item = item_from_code(code);
 	if (item == NULL)
 		return str.c_str();
+=======
+std::string input_manager::code_name(input_code code) const
+{
+	// if nothing there, return an empty string
+	input_device_item *item = item_from_code(code);
+	if (item == nullptr)
+		return std::string();
+>>>>>>> upstream/master
 
 	// determine the devclass part
 	const char *devclass = (*devclass_string_table)[code.device_class()];
 
 	// determine the devindex part
+<<<<<<< HEAD
 	std::string devindex;
 	strprintf(devindex, "%d", code.device_index() + 1);
+=======
+	std::string devindex = string_format("%d", code.device_index() + 1);
+>>>>>>> upstream/master
 
 	// if we're unifying all devices, don't display a number
 	if (!m_class[code.device_class()]->multi())
@@ -1487,7 +1709,11 @@ const char *input_manager::code_name(std::string &str, input_code code) const
 
 	// keyboard 0 doesn't show a class or index if it is the only one
 	input_device_class device_class = item->device().devclass();
+<<<<<<< HEAD
 	if (device_class == DEVICE_CLASS_KEYBOARD && m_keyboard_class.maxindex() == 0)
+=======
+	if (device_class == DEVICE_CLASS_KEYBOARD && m_class[device_class]->maxindex() == 0)
+>>>>>>> upstream/master
 	{
 		devclass = "";
 		devindex.clear();
@@ -1505,17 +1731,29 @@ const char *input_manager::code_name(std::string &str, input_code code) const
 			devcode = "";
 
 	// concatenate the strings
+<<<<<<< HEAD
 	str.assign(devclass);
+=======
+	std::string str(devclass);
+>>>>>>> upstream/master
 	if (!devindex.empty())
 		str.append(" ").append(devindex);
 	if (devcode[0] != 0)
 		str.append(" ").append(devcode);
+<<<<<<< HEAD
 	if (modifier != NULL)
+=======
+	if (modifier != nullptr)
+>>>>>>> upstream/master
 		str.append(" ").append(modifier);
 
 	// delete any leading spaces
 	strtrimspace(str);
+<<<<<<< HEAD
 	return str.c_str();
+=======
+	return str;
+>>>>>>> upstream/master
 }
 
 
@@ -1523,40 +1761,68 @@ const char *input_manager::code_name(std::string &str, input_code code) const
 //  code_to_token - create a token for a given code
 //-------------------------------------------------
 
+<<<<<<< HEAD
 const char *input_manager::code_to_token(std::string &str, input_code code) const
+=======
+std::string input_manager::code_to_token(input_code code) const
+>>>>>>> upstream/master
 {
 	// determine the devclass part
 	const char *devclass = (*devclass_token_table)[code.device_class()];
 
 	// determine the devindex part; keyboard 0 doesn't show an index
+<<<<<<< HEAD
 	std::string devindex;
 	strprintf(devindex, "%d", code.device_index() + 1);
+=======
+	std::string devindex = string_format("%d", code.device_index() + 1);
+>>>>>>> upstream/master
 	if (code.device_class() == DEVICE_CLASS_KEYBOARD && code.device_index() == 0)
 		devindex.clear();
 
 	// determine the itemid part; look up in the table if we don't have a token
 	input_device_item *item = item_from_code(code);
+<<<<<<< HEAD
 	const char *devcode = (item != NULL) ? item->token() : "UNKNOWN";
+=======
+	const char *devcode = (item != nullptr) ? item->token() : "UNKNOWN";
+>>>>>>> upstream/master
 
 	// determine the modifier part
 	const char *modifier = (*modifier_token_table)[code.item_modifier()];
 
 	// determine the itemclass part; if we match the native class, we don't include this
 	const char *itemclass = "";
+<<<<<<< HEAD
 	if (item == NULL || item->itemclass() != code.item_class())
 		itemclass = (*itemclass_token_table)[code.item_class()];
 
 	// concatenate the strings
 	str.assign(devclass);
+=======
+	if (item == nullptr || item->itemclass() != code.item_class())
+		itemclass = (*itemclass_token_table)[code.item_class()];
+
+	// concatenate the strings
+	std::string str(devclass);
+>>>>>>> upstream/master
 	if (!devindex.empty())
 		str.append("_").append(devindex);
 	if (devcode[0] != 0)
 		str.append("_").append(devcode);
+<<<<<<< HEAD
 	if (modifier != NULL)
 		str.append("_").append(modifier);
 	if (itemclass[0] != 0)
 		str.append("_").append(itemclass);
 	return str.c_str();
+=======
+	if (modifier != nullptr)
+		str.append("_").append(modifier);
+	if (itemclass[0] != 0)
+		str.append("_").append(itemclass);
+	return str;
+>>>>>>> upstream/master
 }
 
 
@@ -1574,10 +1840,17 @@ input_code input_manager::code_from_token(const char *_token)
 	{
 		// make a token up to the next underscore
 		char *score = (char *)strchr(_token, '_');
+<<<<<<< HEAD
 		token[numtokens++].assign(_token, (score == NULL) ? strlen(_token) : (score - _token));
 
 		// if we hit the end, we're done, else advance our pointer
 		if (score == NULL)
+=======
+		token[numtokens++].assign(_token, (score == nullptr) ? strlen(_token) : (score - _token));
+
+		// if we hit the end, we're done, else advance our pointer
+		if (score == nullptr)
+>>>>>>> upstream/master
 			break;
 		_token = score + 1;
 	}
@@ -1612,14 +1885,22 @@ input_code input_manager::code_from_token(const char *_token)
 	{
 		// if this is an invalid device, we have nothing to look up
 		input_device *device = m_class[devclass]->device(devindex);
+<<<<<<< HEAD
 		if (device == NULL)
+=======
+		if (device == nullptr)
+>>>>>>> upstream/master
 			return INPUT_CODE_INVALID;
 
 		// if not a standard code, look it up in the device specific codes
 		for (itemid = ITEM_ID_FIRST_VALID; itemid <= device->maxitem(); ++itemid)
 		{
 			input_device_item *item = device->item(itemid);
+<<<<<<< HEAD
 			if (item != NULL && token[curtok].compare(item->token()) == 0)
+=======
+			if (item != nullptr && token[curtok].compare(item->token()) == 0)
+>>>>>>> upstream/master
 			{
 				// take the itemclass from the item
 				itemclass = item->itemclass();
@@ -1647,7 +1928,11 @@ input_code input_manager::code_from_token(const char *_token)
 	// if we have another token, it is the item class
 	if (curtok < numtokens)
 	{
+<<<<<<< HEAD
 		UINT32 temp = (*itemclass_token_table)[token[curtok].c_str()];
+=======
+		u32 temp = (*itemclass_token_table)[token[curtok].c_str()];
+>>>>>>> upstream/master
 		if (temp != ~0)
 		{
 			curtok++;
@@ -1665,6 +1950,20 @@ input_code input_manager::code_from_token(const char *_token)
 
 
 //-------------------------------------------------
+<<<<<<< HEAD
+=======
+//  standard_token - return the standard token for
+//  the given input item ID
+//-------------------------------------------------
+
+const char *input_manager::standard_token(input_item_id itemid) const
+{
+	return itemid <= ITEM_ID_MAXIMUM ? (*itemid_token_table)[itemid] : nullptr;
+}
+
+
+//-------------------------------------------------
+>>>>>>> upstream/master
 //  seq_pressed - return true if the given sequence
 //  of switch inputs is "pressed"
 //-------------------------------------------------
@@ -1721,14 +2020,22 @@ bool input_manager::seq_pressed(const input_seq &seq)
 //  defined in an input sequence
 //-------------------------------------------------
 
+<<<<<<< HEAD
 INT32 input_manager::seq_axis_value(const input_seq &seq, input_item_class &itemclass)
+=======
+s32 input_manager::seq_axis_value(const input_seq &seq, input_item_class &itemclass)
+>>>>>>> upstream/master
 {
 	// start with no valid classes
 	input_item_class itemclasszero = ITEM_CLASS_INVALID;
 	itemclass = ITEM_CLASS_INVALID;
 
 	// iterate over all of the codes
+<<<<<<< HEAD
 	INT32 result = 0;
+=======
+	s32 result = 0;
+>>>>>>> upstream/master
 	bool invert = false;
 	bool enable = true;
 	for (int codenum = 0; ; codenum++)
@@ -1765,7 +2072,11 @@ INT32 input_manager::seq_axis_value(const input_seq &seq, input_item_class &item
 			// non-switch codes are analog values
 			else
 			{
+<<<<<<< HEAD
 				INT32 value = code_value(code);
+=======
+				s32 value = code_value(code);
+>>>>>>> upstream/master
 
 				// if we got a 0 value, don't do anything except remember the first type
 				if (value == 0)
@@ -1816,7 +2127,11 @@ void input_manager::seq_poll_start(input_item_class itemclass, const input_seq *
 	m_poll_seq.reset();
 
 	// grab the starting sequence to append to, and append an OR
+<<<<<<< HEAD
 	if (startseq != NULL)
+=======
+	if (startseq != nullptr)
+>>>>>>> upstream/master
 	{
 		m_poll_seq = *startseq;
 		if (m_poll_seq.length() > 0)
@@ -1930,17 +2245,28 @@ bool input_manager::seq_poll()
 //  sequence
 //-------------------------------------------------
 
+<<<<<<< HEAD
 const char *input_manager::seq_name(std::string &str, const input_seq &seq) const
+=======
+std::string input_manager::seq_name(const input_seq &seq) const
+>>>>>>> upstream/master
 {
 	// make a copy of our sequence, removing any invalid bits
 	input_code clean_codes[sizeof(seq) / sizeof(input_code)];
 	int clean_index = 0;
+<<<<<<< HEAD
 	std::string codestr;
+=======
+>>>>>>> upstream/master
 	for (int codenum = 0; seq[codenum] != input_seq::end_code; codenum++)
 	{
 		// if this is a code item which is not valid, don't copy it and remove any preceding ORs/NOTs
 		input_code code = seq[codenum];
+<<<<<<< HEAD
 		if (!code.internal() && *(code_name(codestr, code)) == 0)
+=======
+		if (!code.internal() && code_name(code).empty())
+>>>>>>> upstream/master
 		{
 			while (clean_index > 0 && clean_codes[clean_index - 1].internal())
 				clean_index--;
@@ -1951,10 +2277,17 @@ const char *input_manager::seq_name(std::string &str, const input_seq &seq) cons
 
 	// special case: empty
 	if (clean_index == 0)
+<<<<<<< HEAD
 		return str.assign((seq.length() == 0) ? "None" : "n/a").c_str();
 
 	// start with an empty buffer
 	str.clear();
+=======
+		return std::string((seq.length() == 0) ? "None" : "n/a");
+
+	// start with an empty buffer
+	std::string str;
+>>>>>>> upstream/master
 
 	// loop until we hit the end
 	for (int codenum = 0; codenum < clean_index; codenum++)
@@ -1972,9 +2305,15 @@ const char *input_manager::seq_name(std::string &str, const input_seq &seq) cons
 
 		// otherwise, assume it is an input code and ask the input system to generate it
 		else
+<<<<<<< HEAD
 			str.append(code_name(codestr, code));
 	}
 	return str.c_str();
+=======
+			str.append(code_name(code));
+	}
+	return str;
+>>>>>>> upstream/master
 }
 
 
@@ -1983,6 +2322,7 @@ const char *input_manager::seq_name(std::string &str, const input_seq &seq) cons
 //  a sequence
 //-------------------------------------------------
 
+<<<<<<< HEAD
 const char *input_manager::seq_to_tokens(std::string &str, const input_seq &seq) const
 {
 	// start with an empty buffer
@@ -1990,6 +2330,14 @@ const char *input_manager::seq_to_tokens(std::string &str, const input_seq &seq)
 
 	// loop until we hit the end
 	std::string codestr;
+=======
+std::string input_manager::seq_to_tokens(const input_seq &seq) const
+{
+	// start with an empty buffer
+	std::string str;
+
+	// loop until we hit the end
+>>>>>>> upstream/master
 	for (int codenum = 0; seq[codenum] != input_seq::end_code; codenum++)
 	{
 		// append a space if not the first code
@@ -2007,9 +2355,15 @@ const char *input_manager::seq_to_tokens(std::string &str, const input_seq &seq)
 
 		// otherwise, assume it is an input code and ask the input system to generate it
 		else
+<<<<<<< HEAD
 			str.append(code_to_token(codestr, code));
 	}
 	return str.c_str();
+=======
+			str.append(code_to_token(code));
+	}
+	return str;
+>>>>>>> upstream/master
 }
 
 
@@ -2024,12 +2378,22 @@ void input_manager::seq_from_tokens(input_seq &seq, const char *string)
 	seq.reset();
 
 	// loop until we're done
+<<<<<<< HEAD
 	std::string strcopy = string;
 	char *str = const_cast<char *>(strcopy.c_str());
 	while (1)
 	{
 		// trim any leading spaces
 		while (*str != 0 && isspace((UINT8)*str))
+=======
+	std::vector<char> strcopy(string, string + std::strlen(string) + 1);
+	char *str = &strcopy[0];
+	unsigned operators = 0;
+	while (1)
+	{
+		// trim any leading spaces
+		while (*str != 0 && isspace(u8(*str)))
+>>>>>>> upstream/master
 			str++;
 
 		// bail if we're done
@@ -2038,13 +2402,19 @@ void input_manager::seq_from_tokens(input_seq &seq, const char *string)
 
 		// find the end of the token and make it upper-case along the way
 		char *strtemp;
+<<<<<<< HEAD
 		for (strtemp = str; *strtemp != 0 && !isspace((UINT8)*strtemp); strtemp++)
 			*strtemp = toupper((UINT8)*strtemp);
+=======
+		for (strtemp = str; *strtemp != 0 && !isspace(u8(*strtemp)); strtemp++)
+			*strtemp = toupper(u8(*strtemp));
+>>>>>>> upstream/master
 		char origspace = *strtemp;
 		*strtemp = 0;
 
 		// look for common stuff
 		input_code code;
+<<<<<<< HEAD
 		if (strcmp(str, "OR") == 0)
 			code = input_seq::or_code;
 		else if (strcmp(str, "NOT") == 0)
@@ -2056,6 +2426,53 @@ void input_manager::seq_from_tokens(input_seq &seq, const char *string)
 
 		// translate and add to the sequence
 		seq += code;
+=======
+		bool is_operator;
+		if (strcmp(str, "OR") == 0)
+		{
+			code = input_seq::or_code;
+			is_operator = true;
+		}
+		else if (strcmp(str, "NOT") == 0)
+		{
+			code = input_seq::not_code;
+			is_operator = true;
+		}
+		else if (strcmp(str, "DEFAULT") == 0)
+		{
+			code = input_seq::default_code;
+			is_operator = false;
+		}
+		else
+		{
+			code = code_from_token(str);
+			is_operator = false;
+		}
+
+		// translate and add to the sequence
+		if (is_operator)
+		{
+			++operators;
+			seq += code;
+		}
+		else
+		{
+			if (code.device_class() < DEVICE_CLASS_FIRST_VALID)
+			{
+				osd_printf_warning("Input: Dropping invalid input token %s\n", str);
+				while (operators)
+				{
+					seq.backspace();
+					--operators;
+				}
+			}
+			else
+			{
+				operators = 0;
+				seq += code;
+			}
+		}
+>>>>>>> upstream/master
 
 		// advance
 		if (origspace == 0)
@@ -2064,6 +2481,7 @@ void input_manager::seq_from_tokens(input_seq &seq, const char *string)
 	}
 }
 
+<<<<<<< HEAD
 
 //-------------------------------------------------
 //  set_global_joystick_map - set the joystick map
@@ -2379,4 +2797,70 @@ INT32 input_device_absolute_item::read_as_absolute(input_item_modifier modifier)
 	if (modifier == ITEM_MODIFIER_NEG)
 		result = MAX(-result, 0) * 2 + INPUT_ABSOLUTE_MIN;
 	return result;
+=======
+//-------------------------------------------------
+//  map_device_to_controller - map device to
+//  controller based on device map table
+//-------------------------------------------------
+
+bool input_manager::map_device_to_controller(const devicemap_table_type *devicemap_table)
+{
+	if (nullptr == devicemap_table)
+		return true;
+
+	for (devicemap_table_type::const_iterator it = devicemap_table->begin(); it != devicemap_table->end(); it++)
+	{
+		const char *deviceid = it->first.c_str();
+		const char *controllername = it->second.c_str();
+
+		// tokenize the controller name into device class and index (i.e. controller name should be of the form "GUNCODE_1")
+		std::string token[2];
+		int numtokens;
+		const char *_token = controllername;
+		for (numtokens = 0; numtokens < ARRAY_LENGTH(token); )
+		{
+			// make a token up to the next underscore
+			char *score = (char *)strchr(_token, '_');
+			token[numtokens++].assign(_token, (score == nullptr) ? strlen(_token) : (score - _token));
+
+			// if we hit the end, we're done, else advance our pointer
+			if (score == nullptr)
+				break;
+			_token = score + 1;
+		}
+		if (2 != numtokens)
+			return false;
+
+		// first token should be the devclass
+		input_device_class devclass = input_device_class((*devclass_token_table)[strmakeupper(token[0]).c_str()]);
+		if (devclass == ~input_device_class(0))
+			return false;
+
+		// second token should be the devindex
+		int devindex = 0;
+		if (1 != sscanf(token[1].c_str(), "%d", &devindex))
+			return false;
+		devindex--;
+
+		if (devindex >= DEVICE_INDEX_MAXIMUM)
+			return false;
+
+		// enumerate through devices and look for a match
+		input_class *input_devclass = m_class[devclass].get();
+		for (int devnum = 0; devnum <= input_devclass->maxindex(); devnum++)
+		{
+			input_device *device = input_devclass->device(devnum);
+			if (device != nullptr && device->match_device_id(deviceid))
+			{
+				// remap devindex
+				input_devclass->remap_device_index(device->devindex(), devindex);
+				osd_printf_verbose("Input: Remapped %s #%d: %s (device id: %s)\n", input_devclass->name(), devindex, device->name(), device->id());
+
+				break;
+			}
+		}
+	}
+
+	return true;
+>>>>>>> upstream/master
 }

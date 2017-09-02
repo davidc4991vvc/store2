@@ -1,11 +1,19 @@
+<<<<<<< HEAD
 // license:???
+=======
+// license:BSD-3-Clause
+>>>>>>> upstream/master
 // copyright-holders:Derrick Renaud, Couriersud
 #include "emu.h"
 #include "flt_rc.h"
 
 
 // device type definition
+<<<<<<< HEAD
 const device_type FILTER_RC = &device_creator<filter_rc_device>;
+=======
+DEFINE_DEVICE_TYPE(FILTER_RC, filter_rc_device, "filter_rc", "RC Filter")
+>>>>>>> upstream/master
 
 
 //**************************************************************************
@@ -16,6 +24,7 @@ const device_type FILTER_RC = &device_creator<filter_rc_device>;
 //  filter_rc_device - constructor
 //-------------------------------------------------
 
+<<<<<<< HEAD
 filter_rc_device::filter_rc_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
 	: device_t(mconfig, FILTER_RC, "RC Filter", tag, owner, clock, "filter_rc", __FILE__),
 		device_sound_interface(mconfig, *this),
@@ -23,6 +32,15 @@ filter_rc_device::filter_rc_device(const machine_config &mconfig, const char *ta
 		m_k(0),
 		m_memory(0),
 		m_type(FLT_RC_LOWPASS),
+=======
+filter_rc_device::filter_rc_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: device_t(mconfig, FILTER_RC, tag, owner, clock),
+		device_sound_interface(mconfig, *this),
+		m_stream(nullptr),
+		m_k(0),
+		m_memory(0),
+		m_type(LOWPASS),
+>>>>>>> upstream/master
 		m_R1(1),
 		m_R2(1),
 		m_R3(1),
@@ -62,15 +80,24 @@ void filter_rc_device::sound_stream_update(sound_stream &stream, stream_sample_t
 
 	switch (m_type)
 	{
+<<<<<<< HEAD
 		case FLT_RC_LOWPASS:
+=======
+		case LOWPASS:
+>>>>>>> upstream/master
 			while (samples--)
 			{
 				memory += ((*src++ - memory) * m_k) / 0x10000;
 				*dst++ = memory;
 			}
 			break;
+<<<<<<< HEAD
 		case FLT_RC_HIGHPASS:
 		case FLT_RC_AC:
+=======
+		case HIGHPASS:
+		case AC:
+>>>>>>> upstream/master
 			while (samples--)
 			{
 				*dst++ = *src - memory;
@@ -88,7 +115,11 @@ void filter_rc_device::recalc()
 
 	switch (m_type)
 	{
+<<<<<<< HEAD
 		case FLT_RC_LOWPASS:
+=======
+		case LOWPASS:
+>>>>>>> upstream/master
 			if (m_C == 0.0)
 			{
 				/* filter disabled */
@@ -97,8 +128,13 @@ void filter_rc_device::recalc()
 			}
 			Req = (m_R1 * (m_R2 + m_R3)) / (m_R1 + m_R2 + m_R3);
 			break;
+<<<<<<< HEAD
 		case FLT_RC_HIGHPASS:
 		case FLT_RC_AC:
+=======
+		case HIGHPASS:
+		case AC:
+>>>>>>> upstream/master
 			if (m_C == 0.0)
 			{
 				/* filter disabled */

@@ -6,8 +6,17 @@
 
 **********************************************************************/
 
+<<<<<<< HEAD
 #include "grip.h"
 
+=======
+#include "emu.h"
+#include "grip.h"
+
+#include "screen.h"
+#include "speaker.h"
+
+>>>>>>> upstream/master
 
 
 //**************************************************************************
@@ -31,7 +40,11 @@
 //  DEVICE DEFINITIONS
 //**************************************************************************
 
+<<<<<<< HEAD
 const device_type ECB_GRIP21 = &device_creator<grip_device>;
+=======
+DEFINE_DEVICE_TYPE(ECB_GRIP21, ecb_grip21_device, "ecb_grip21", "Conitec Datensysteme GRIP-2.1")
+>>>>>>> upstream/master
 
 
 
@@ -105,7 +118,11 @@ ROM_END
 //  rom_region - device-specific ROM region
 //-------------------------------------------------
 
+<<<<<<< HEAD
 const rom_entry *grip_device::device_rom_region() const
+=======
+const tiny_rom_entry *ecb_grip21_device::device_rom_region() const
+>>>>>>> upstream/master
 {
 	return ROM_NAME( grip21 );
 }
@@ -120,7 +137,11 @@ const rom_entry *grip_device::device_rom_region() const
 //  ADDRESS_MAP( grip_mem )
 //-------------------------------------------------
 
+<<<<<<< HEAD
 static ADDRESS_MAP_START( grip_mem, AS_PROGRAM, 8, grip_device )
+=======
+static ADDRESS_MAP_START( grip_mem, AS_PROGRAM, 8, ecb_grip21_device )
+>>>>>>> upstream/master
 	AM_RANGE(0x0000, 0x3fff) AM_ROM
 	AM_RANGE(0x4000, 0x47ff) AM_RAM
 	AM_RANGE(0x8000, 0xffff) AM_RAMBANK("videoram")
@@ -131,7 +152,11 @@ ADDRESS_MAP_END
 //  ADDRESS_MAP( grip_io )
 //-------------------------------------------------
 
+<<<<<<< HEAD
 static ADDRESS_MAP_START( grip_io, AS_IO, 8, grip_device )
+=======
+static ADDRESS_MAP_START( grip_io, AS_IO, 8, ecb_grip21_device )
+>>>>>>> upstream/master
 	ADDRESS_MAP_GLOBAL_MASK(0xff)
 	AM_RANGE(0x00, 0x00) AM_READWRITE(cxstb_r, cxstb_w)
 //  AM_RANGE(0x10, 0x10) AM_WRITE(ccon_w)
@@ -223,12 +248,21 @@ ADDRESS_MAP_END
 //  mc6845
 //-------------------------------------------------
 
+<<<<<<< HEAD
 MC6845_UPDATE_ROW( grip_device::crtc_update_row )
 {
 	for (int column = 0; column < x_count; column++)
 	{
 		UINT16 address = (m_page << 12) | (((ma + column) & 0xfff) << 3) | (ra & 0x07);
 		UINT8 data = m_video_ram[address];
+=======
+MC6845_UPDATE_ROW( ecb_grip21_device::crtc_update_row )
+{
+	for (int column = 0; column < x_count; column++)
+	{
+		uint16_t address = (m_page << 12) | (((ma + column) & 0xfff) << 3) | (ra & 0x07);
+		uint8_t data = m_video_ram[address];
+>>>>>>> upstream/master
 
 		for (int bit = 0; bit < 8; bit++)
 		{
@@ -240,15 +274,24 @@ MC6845_UPDATE_ROW( grip_device::crtc_update_row )
 	}
 }
 /*
+<<<<<<< HEAD
 MC6845_UPDATE_ROW( grip_device::grip5_update_row )
+=======
+MC6845_UPDATE_ROW( ecb_grip21_device::grip5_update_row )
+>>>>>>> upstream/master
 {
     const rgb_t *palette = m_palette->palette()->entry_list_raw();
     int column, bit;
 
     for (column = 0; column < x_count; column++)
     {
+<<<<<<< HEAD
         UINT16 address = (m_dpage << 12) | (((ma + column) & 0xfff) << 3) | (ra & 0x07);
         UINT8 data = m_video_ram[address];
+=======
+        uint16_t address = (m_dpage << 12) | (((ma + column) & 0xfff) << 3) | (ra & 0x07);
+        uint8_t data = m_video_ram[address];
+>>>>>>> upstream/master
 
         for (bit = 0; bit < 8; bit++)
         {
@@ -260,18 +303,30 @@ MC6845_UPDATE_ROW( grip_device::grip5_update_row )
     }
 }
 
+<<<<<<< HEAD
 MC6845_ON_UPDATE_ADDR_CHANGED( grip_device::grip5_addr_changed )
+=======
+MC6845_ON_UPDATE_ADDR_CHANGED( ecb_grip21_device::grip5_addr_changed )
+>>>>>>> upstream/master
 {
 }
 */
 
+<<<<<<< HEAD
 static const INT16 speaker_levels[] = { -32768, 0, 32767, 0 };
+=======
+static const int16_t speaker_levels[] = { -32768, 0, 32767, 0 };
+>>>>>>> upstream/master
 
 //-------------------------------------------------
 //  I8255A interface
 //-------------------------------------------------
 
+<<<<<<< HEAD
 READ8_MEMBER( grip_device::ppi_pa_r )
+=======
+READ8_MEMBER( ecb_grip21_device::ppi_pa_r )
+>>>>>>> upstream/master
 {
 	/*
 
@@ -291,7 +346,11 @@ READ8_MEMBER( grip_device::ppi_pa_r )
 	return m_ppi_pa;
 }
 
+<<<<<<< HEAD
 WRITE8_MEMBER( grip_device::ppi_pa_w )
+=======
+WRITE8_MEMBER( ecb_grip21_device::ppi_pa_w )
+>>>>>>> upstream/master
 {
 	/*
 
@@ -311,7 +370,11 @@ WRITE8_MEMBER( grip_device::ppi_pa_w )
 	m_ppi_pa = data;
 }
 
+<<<<<<< HEAD
 READ8_MEMBER( grip_device::ppi_pb_r )
+=======
+READ8_MEMBER( ecb_grip21_device::ppi_pb_r )
+>>>>>>> upstream/master
 {
 	/*
 
@@ -331,7 +394,11 @@ READ8_MEMBER( grip_device::ppi_pb_r )
 	return m_keydata;
 }
 
+<<<<<<< HEAD
 WRITE8_MEMBER( grip_device::ppi_pc_w )
+=======
+WRITE8_MEMBER( ecb_grip21_device::ppi_pc_w )
+>>>>>>> upstream/master
 {
 	/*
 
@@ -367,12 +434,20 @@ WRITE8_MEMBER( grip_device::ppi_pc_w )
 //  Z80STI_INTERFACE( sti_intf )
 //-------------------------------------------------
 
+<<<<<<< HEAD
 WRITE_LINE_MEMBER(grip_device::write_centronics_busy)
+=======
+WRITE_LINE_MEMBER(ecb_grip21_device::write_centronics_busy)
+>>>>>>> upstream/master
 {
 	m_centronics_busy = state;
 }
 
+<<<<<<< HEAD
 READ8_MEMBER( grip_device::sti_gpio_r )
+=======
+READ8_MEMBER( ecb_grip21_device::sti_gpio_r )
+>>>>>>> upstream/master
 {
 	/*
 
@@ -389,7 +464,11 @@ READ8_MEMBER( grip_device::sti_gpio_r )
 
 	*/
 
+<<<<<<< HEAD
 	UINT8 data = 0x20;
+=======
+	uint8_t data = 0x20;
+>>>>>>> upstream/master
 
 	// display enable
 	data |= m_crtc->de_r() << 1;
@@ -409,7 +488,11 @@ READ8_MEMBER( grip_device::sti_gpio_r )
 	return data;
 }
 
+<<<<<<< HEAD
 WRITE_LINE_MEMBER( grip_device::speaker_w )
+=======
+WRITE_LINE_MEMBER( ecb_grip21_device::speaker_w )
+>>>>>>> upstream/master
 {
 	int level = state && ((m_vol1 << 1) | m_vol0);
 
@@ -423,7 +506,11 @@ WRITE_LINE_MEMBER( grip_device::speaker_w )
 static const z80_daisy_config grip_daisy_chain[] =
 {
 	{ Z80STI_TAG },
+<<<<<<< HEAD
 	{ NULL }
+=======
+	{ nullptr }
+>>>>>>> upstream/master
 };
 
 
@@ -431,7 +518,11 @@ static const z80_daisy_config grip_daisy_chain[] =
 //  ASCII_KEYBOARD_INTERFACE( kb_intf )
 //-------------------------------------------------
 
+<<<<<<< HEAD
 WRITE8_MEMBER( grip_device::kb_w )
+=======
+void ecb_grip21_device::kb_w(uint8_t data)
+>>>>>>> upstream/master
 {
 	if (!m_kbf)
 	{
@@ -447,6 +538,7 @@ WRITE8_MEMBER( grip_device::kb_w )
 //  MACHINE CONFIGURATION
 //**************************************************************************
 
+<<<<<<< HEAD
 //-------------------------------------------------
 //  MACHINE_CONFIG_FRAGMENT( grip )
 //-------------------------------------------------
@@ -455,18 +547,38 @@ static MACHINE_CONFIG_FRAGMENT( grip )
 	// basic machine hardware
 	MCFG_CPU_ADD(Z80_TAG, Z80, XTAL_16MHz/4)
 	MCFG_CPU_CONFIG(grip_daisy_chain)
+=======
+
+//-------------------------------------------------
+//  device_add_mconfig - add device configuration
+//-------------------------------------------------
+
+
+MACHINE_CONFIG_MEMBER( ecb_grip21_device::device_add_mconfig )
+	// basic machine hardware
+	MCFG_CPU_ADD(Z80_TAG, Z80, XTAL_16MHz/4)
+	MCFG_Z80_DAISY_CHAIN(grip_daisy_chain)
+>>>>>>> upstream/master
 	MCFG_CPU_PROGRAM_MAP(grip_mem)
 	MCFG_CPU_IO_MAP(grip_io)
 
 	// video hardware
+<<<<<<< HEAD
 	MCFG_SCREEN_ADD(SCREEN_TAG, RASTER)
+=======
+	MCFG_SCREEN_ADD_MONOCHROME(SCREEN_TAG, RASTER, rgb_t::white())
+>>>>>>> upstream/master
 	MCFG_SCREEN_REFRESH_RATE(50)
 	MCFG_SCREEN_VBLANK_TIME(ATTOSECONDS_IN_USEC(2500)) // not accurate
 	MCFG_SCREEN_UPDATE_DEVICE(MC6845_TAG, mc6845_device, screen_update)
 	MCFG_SCREEN_SIZE(640, 480)
 	MCFG_SCREEN_VISIBLE_AREA(0, 640-1, 0, 480-1)
 
+<<<<<<< HEAD
 	MCFG_PALETTE_ADD_BLACK_AND_WHITE("palette")
+=======
+	MCFG_PALETTE_ADD_MONOCHROME("palette")
+>>>>>>> upstream/master
 
 	// sound hardware
 	MCFG_SPEAKER_STANDARD_MONO("mono")
@@ -478,13 +590,18 @@ static MACHINE_CONFIG_FRAGMENT( grip )
 	MCFG_MC6845_ADD(MC6845_TAG, MC6845, SCREEN_TAG, XTAL_16MHz/4)
 	MCFG_MC6845_SHOW_BORDER_AREA(true)
 	MCFG_MC6845_CHAR_WIDTH(8)
+<<<<<<< HEAD
 	MCFG_MC6845_UPDATE_ROW_CB(grip_device, crtc_update_row)
+=======
+	MCFG_MC6845_UPDATE_ROW_CB(ecb_grip21_device, crtc_update_row)
+>>>>>>> upstream/master
 	MCFG_MC6845_OUT_DE_CB(DEVWRITELINE(Z80STI_TAG, z80sti_device, i1_w))
 	MCFG_MC6845_OUT_CUR_CB(DEVWRITELINE(Z80STI_TAG, z80sti_device, i1_w))
 
 //  MCFG_MC6845_ADD(HD6345_TAG, HD6345, SCREEN_TAG, XTAL_16MHz/4)
 
 	MCFG_DEVICE_ADD(I8255A_TAG, I8255A, 0)
+<<<<<<< HEAD
 	MCFG_I8255_IN_PORTA_CB(READ8(grip_device, ppi_pa_r))
 	MCFG_I8255_OUT_PORTA_CB(WRITE8(grip_device, ppi_pa_w))
 	MCFG_I8255_IN_PORTB_CB(READ8(grip_device, ppi_pb_r))
@@ -494,16 +611,33 @@ static MACHINE_CONFIG_FRAGMENT( grip )
 	MCFG_Z80STI_OUT_INT_CB(INPUTLINE(Z80_TAG, INPUT_LINE_IRQ0))
 	MCFG_Z80STI_IN_GPIO_CB(READ8(grip_device, sti_gpio_r))
 	MCFG_Z80STI_OUT_TBO_CB(WRITELINE(grip_device, speaker_w))
+=======
+	MCFG_I8255_IN_PORTA_CB(READ8(ecb_grip21_device, ppi_pa_r))
+	MCFG_I8255_OUT_PORTA_CB(WRITE8(ecb_grip21_device, ppi_pa_w))
+	MCFG_I8255_IN_PORTB_CB(READ8(ecb_grip21_device, ppi_pb_r))
+	MCFG_I8255_OUT_PORTC_CB(WRITE8(ecb_grip21_device, ppi_pc_w))
+
+	MCFG_DEVICE_ADD(Z80STI_TAG, Z80STI, XTAL_16MHz/4)
+	MCFG_Z80STI_OUT_INT_CB(INPUTLINE(Z80_TAG, INPUT_LINE_IRQ0))
+	MCFG_Z80STI_IN_GPIO_CB(READ8(ecb_grip21_device, sti_gpio_r))
+	MCFG_Z80STI_OUT_TBO_CB(WRITELINE(ecb_grip21_device, speaker_w))
+>>>>>>> upstream/master
 	MCFG_Z80STI_OUT_TCO_CB(DEVWRITELINE(Z80STI_TAG, z80sti_device, tc_w))
 	MCFG_Z80STI_OUT_TDO_CB(DEVWRITELINE(Z80STI_TAG, z80sti_device, tc_w))
 
 	MCFG_CENTRONICS_ADD(CENTRONICS_TAG, centronics_devices, "printer")
+<<<<<<< HEAD
 	MCFG_CENTRONICS_BUSY_HANDLER(WRITELINE(grip_device, write_centronics_busy))
 	MCFG_CENTRONICS_FAULT_HANDLER(WRITELINE(grip_device, write_centronics_fault))
+=======
+	MCFG_CENTRONICS_BUSY_HANDLER(WRITELINE(ecb_grip21_device, write_centronics_busy))
+	MCFG_CENTRONICS_FAULT_HANDLER(WRITELINE(ecb_grip21_device, write_centronics_fault))
+>>>>>>> upstream/master
 
 	MCFG_CENTRONICS_OUTPUT_LATCH_ADD("cent_data_out", CENTRONICS_TAG)
 
 	MCFG_DEVICE_ADD("keyboard", GENERIC_KEYBOARD, 0)
+<<<<<<< HEAD
 	MCFG_GENERIC_KEYBOARD_CB(WRITE8(grip_device, kb_w))
 MACHINE_CONFIG_END
 
@@ -519,6 +653,12 @@ machine_config_constructor grip_device::device_mconfig_additions() const
 }
 
 
+=======
+	MCFG_GENERIC_KEYBOARD_CB(PUT(ecb_grip21_device, kb_w))
+MACHINE_CONFIG_END
+
+
+>>>>>>> upstream/master
 //**************************************************************************
 //  INPUT PORTS
 //**************************************************************************
@@ -598,7 +738,11 @@ INPUT_PORTS_END
 //  input_ports - device-specific input ports
 //-------------------------------------------------
 
+<<<<<<< HEAD
 ioport_constructor grip_device::device_input_ports() const
+=======
+ioport_constructor ecb_grip21_device::device_input_ports() const
+>>>>>>> upstream/master
 {
 	return INPUT_PORTS_NAME( grip );
 }
@@ -610,11 +754,19 @@ ioport_constructor grip_device::device_input_ports() const
 //**************************************************************************
 
 //-------------------------------------------------
+<<<<<<< HEAD
 //  grip_device - constructor
 //-------------------------------------------------
 
 grip_device::grip_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock) :
 	device_t(mconfig, ECB_GRIP21, "GRIP-2.1", tag, owner, clock, "grip", __FILE__),
+=======
+//  ecb_grip21_device - constructor
+//-------------------------------------------------
+
+ecb_grip21_device::ecb_grip21_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock) :
+	device_t(mconfig, ECB_GRIP21, tag, owner, clock),
+>>>>>>> upstream/master
 	device_ecbbus_card_interface(mconfig, *this),
 	m_ppi(*this, I8255A_TAG),
 	m_sti(*this, Z80STI_TAG),
@@ -625,7 +777,12 @@ grip_device::grip_device(const machine_config &mconfig, const char *tag, device_
 	m_video_ram(*this, "video_ram"),
 	m_j3a(*this, "J3A"),
 	m_j3b(*this, "J3B"),
+<<<<<<< HEAD
 	m_j7(*this, "J7"), m_centronics_busy(0), m_centronics_fault(0), m_vol0(0), m_vol1(0), m_ia(0), m_ib(0), m_keydata(0), m_kbf(0), m_lps(0), m_page(0), m_flash(0), m_base(0), m_ppi_pa(0), m_ppi_pc(0), m_kb_timer(nullptr)
+=======
+	m_j7(*this, "J7"),
+	m_centronics_busy(0), m_centronics_fault(0), m_vol0(0), m_vol1(0), m_ia(0), m_ib(0), m_keydata(0), m_kbf(0), m_lps(0), m_page(0), m_flash(0), m_base(0), m_ppi_pa(0), m_ppi_pc(0), m_kb_timer(nullptr)
+>>>>>>> upstream/master
 {
 }
 
@@ -633,7 +790,11 @@ grip_device::grip_device(const machine_config &mconfig, const char *tag, device_
 //  device_start - device-specific startup
 //-------------------------------------------------
 
+<<<<<<< HEAD
 void grip_device::device_start()
+=======
+void ecb_grip21_device::device_start()
+>>>>>>> upstream/master
 {
 	// allocate video RAM
 	m_video_ram.allocate(VIDEORAM_SIZE);
@@ -659,7 +820,11 @@ void grip_device::device_start()
 /*
 void grip5_state::machine_start()
 {
+<<<<<<< HEAD
     grip_device::machine_start();
+=======
+    ecb_grip21_device::machine_start();
+>>>>>>> upstream/master
 
     // setup ROM banking
     membank("eprom")->configure_entries(0, 2, memregion(Z80_TAG)->base(), 0x4000);
@@ -674,7 +839,11 @@ void grip5_state::machine_start()
 //  device_reset - device-specific reset
 //-------------------------------------------------
 
+<<<<<<< HEAD
 void grip_device::device_reset()
+=======
+void ecb_grip21_device::device_reset()
+>>>>>>> upstream/master
 {
 	m_base = m_j7->read();
 	m_page = 0;
@@ -686,7 +855,11 @@ void grip_device::device_reset()
 //  vol0_w - volume 0
 //-------------------------------------------------
 
+<<<<<<< HEAD
 WRITE8_MEMBER( grip_device::vol0_w )
+=======
+WRITE8_MEMBER( ecb_grip21_device::vol0_w )
+>>>>>>> upstream/master
 {
 	m_vol0 = BIT(data, 7);
 }
@@ -696,7 +869,11 @@ WRITE8_MEMBER( grip_device::vol0_w )
 //  vol1_w - volume 1
 //-------------------------------------------------
 
+<<<<<<< HEAD
 WRITE8_MEMBER( grip_device::vol1_w )
+=======
+WRITE8_MEMBER( ecb_grip21_device::vol1_w )
+>>>>>>> upstream/master
 {
 	m_vol1 = BIT(data, 7);
 }
@@ -706,7 +883,11 @@ WRITE8_MEMBER( grip_device::vol1_w )
 //  flash_w -
 //-------------------------------------------------
 
+<<<<<<< HEAD
 WRITE8_MEMBER( grip_device::flash_w )
+=======
+WRITE8_MEMBER( ecb_grip21_device::flash_w )
+>>>>>>> upstream/master
 {
 	m_flash = BIT(data, 7);
 }
@@ -716,7 +897,11 @@ WRITE8_MEMBER( grip_device::flash_w )
 //  page_w - video page select
 //-------------------------------------------------
 
+<<<<<<< HEAD
 WRITE8_MEMBER( grip_device::page_w )
+=======
+WRITE8_MEMBER( ecb_grip21_device::page_w )
+>>>>>>> upstream/master
 {
 	m_page = BIT(data, 7);
 
@@ -728,12 +913,20 @@ WRITE8_MEMBER( grip_device::page_w )
 //  stat_r -
 //-------------------------------------------------
 
+<<<<<<< HEAD
 WRITE_LINE_MEMBER(grip_device::write_centronics_fault)
+=======
+WRITE_LINE_MEMBER(ecb_grip21_device::write_centronics_fault)
+>>>>>>> upstream/master
 {
 	m_centronics_fault = state;
 }
 
+<<<<<<< HEAD
 READ8_MEMBER( grip_device::stat_r )
+=======
+READ8_MEMBER( ecb_grip21_device::stat_r )
+>>>>>>> upstream/master
 {
 	/*
 
@@ -750,7 +943,11 @@ READ8_MEMBER( grip_device::stat_r )
 
 	*/
 
+<<<<<<< HEAD
 	UINT8 data = 0;
+=======
+	uint8_t data = 0;
+>>>>>>> upstream/master
 	int js0 = 0, js1 = 0;
 
 	// JS0
@@ -791,7 +988,11 @@ READ8_MEMBER( grip_device::stat_r )
 //  lrs_r -
 //-------------------------------------------------
 
+<<<<<<< HEAD
 READ8_MEMBER( grip_device::lrs_r )
+=======
+READ8_MEMBER( ecb_grip21_device::lrs_r )
+>>>>>>> upstream/master
 {
 	m_lps = 0;
 
@@ -803,7 +1004,11 @@ READ8_MEMBER( grip_device::lrs_r )
 //  lrs_w -
 //-------------------------------------------------
 
+<<<<<<< HEAD
 WRITE8_MEMBER( grip_device::lrs_w )
+=======
+WRITE8_MEMBER( ecb_grip21_device::lrs_w )
+>>>>>>> upstream/master
 {
 	m_lps = 0;
 }
@@ -813,7 +1018,11 @@ WRITE8_MEMBER( grip_device::lrs_w )
 //  cxstb_r - centronics strobe
 //-------------------------------------------------
 
+<<<<<<< HEAD
 READ8_MEMBER( grip_device::cxstb_r )
+=======
+READ8_MEMBER( ecb_grip21_device::cxstb_r )
+>>>>>>> upstream/master
 {
 	m_centronics->write_strobe(0);
 	m_centronics->write_strobe(1);
@@ -826,7 +1035,11 @@ READ8_MEMBER( grip_device::cxstb_r )
 //  cxstb_w - centronics strobe
 //-------------------------------------------------
 
+<<<<<<< HEAD
 WRITE8_MEMBER( grip_device::cxstb_w )
+=======
+WRITE8_MEMBER( ecb_grip21_device::cxstb_w )
+>>>>>>> upstream/master
 {
 	m_centronics->write_strobe(0);
 	m_centronics->write_strobe(1);
@@ -858,9 +1071,15 @@ WRITE8_MEMBER( grip5_state::dpage_w )
 //  ecbbus_io_r - I/O read
 //-------------------------------------------------
 
+<<<<<<< HEAD
 UINT8 grip_device::ecbbus_io_r(offs_t offset)
 {
 	UINT8 data = 0;
+=======
+uint8_t ecb_grip21_device::ecbbus_io_r(offs_t offset)
+{
+	uint8_t data = 0;
+>>>>>>> upstream/master
 
 	if ((offset & 0xfe) == m_base)
 	{
@@ -886,7 +1105,11 @@ UINT8 grip_device::ecbbus_io_r(offs_t offset)
 //  ecbbus_io_w - I/O write
 //-------------------------------------------------
 
+<<<<<<< HEAD
 void grip_device::ecbbus_io_w(offs_t offset, UINT8 data)
+=======
+void ecb_grip21_device::ecbbus_io_w(offs_t offset, uint8_t data)
+>>>>>>> upstream/master
 {
 	if ((offset & 0xfe) == m_base)
 	{

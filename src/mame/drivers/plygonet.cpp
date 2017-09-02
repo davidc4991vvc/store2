@@ -64,6 +64,7 @@
 */
 
 #include "emu.h"
+<<<<<<< HEAD
 
 #include "cpu/m68000/m68000.h"
 #include "cpu/z80/z80.h"
@@ -71,6 +72,17 @@
 #include "sound/k054539.h"
 #include "machine/eepromser.h"
 #include "includes/plygonet.h"
+=======
+#include "includes/plygonet.h"
+
+#include "cpu/m68000/m68000.h"
+#include "cpu/z80/z80.h"
+#include "machine/watchdog.h"
+#include "sound/k054539.h"
+#include "screen.h"
+#include "speaker.h"
+
+>>>>>>> upstream/master
 
 enum { BANK_GROUP_A, BANK_GROUP_B, INVALID_BANK_GROUP };
 
@@ -108,8 +120,13 @@ WRITE8_MEMBER(polygonet_state::polygonet_sys_w)
 		    D17 = COIN2        - Coin counter 2
 		    D16 = COIN1        - Coin counter 1
 		*/
+<<<<<<< HEAD
 			coin_counter_w(machine(), 0, data & 1);
 			coin_counter_w(machine(), 1, data & 2);
+=======
+			machine().bookkeeping().coin_counter_w(0, data & 1);
+			machine().bookkeeping().coin_counter_w(1, data & 2);
+>>>>>>> upstream/master
 
 			if (~data & 0x20)
 				m_maincpu->set_input_line(M68K_IRQ_5, CLEAR_LINE);
@@ -143,7 +160,11 @@ READ8_MEMBER(polygonet_state::sound_comms_r)
 			return 0;
 
 		case 2:
+<<<<<<< HEAD
 			return soundlatch_byte_r(space, 0);
+=======
+			return m_soundlatch->read(space, 0);
+>>>>>>> upstream/master
 
 		default:
 			break;
@@ -173,11 +194,19 @@ WRITE8_MEMBER(polygonet_state::sound_comms_w)
 			break;
 
 		case 6:
+<<<<<<< HEAD
 			soundlatch2_byte_w(space, 0, data);
 			break;
 
 		case 7:
 			soundlatch3_byte_w(space, 0, data);
+=======
+			m_soundlatch2->write(space, 0, data);
+			break;
+
+		case 7:
+			m_soundlatch3->write(space, 0, data);
+>>>>>>> upstream/master
 			break;
 
 		default:
@@ -194,8 +223,13 @@ WRITE32_MEMBER(polygonet_state::sound_irq_w)
 /* DSP communications */
 READ32_MEMBER(polygonet_state::dsp_host_interface_r)
 {
+<<<<<<< HEAD
 	UINT32 value;
 	UINT8 hi_addr = offset << 1;
+=======
+	uint32_t value;
+	uint8_t hi_addr = offset << 1;
+>>>>>>> upstream/master
 
 	if (mem_mask == 0x0000ff00) { hi_addr++; }  /* Low byte */
 	if (mem_mask == 0xff000000) {}              /* High byte */
@@ -237,13 +271,21 @@ WRITE32_MEMBER(polygonet_state::shared_ram_write)
 	}
 
 	/* write to the current dsp56k word */
+<<<<<<< HEAD
 	if (mem_mask & 0xffff0000)
+=======
+	if (ACCESSING_BITS_16_31)
+>>>>>>> upstream/master
 	{
 		m_dsp56k_shared_ram_16[(offset<<1)] = (m_shared_ram[offset] & 0xffff0000) >> 16 ;
 	}
 
 	/* write to the next dsp56k word */
+<<<<<<< HEAD
 	if (mem_mask & 0x0000ffff)
+=======
+	if (ACCESSING_BITS_0_15)
+>>>>>>> upstream/master
 	{
 		m_dsp56k_shared_ram_16[(offset<<1)+1] = (m_shared_ram[offset] & 0x0000ffff) ;
 	}
@@ -270,8 +312,13 @@ WRITE32_MEMBER(polygonet_state::dsp_w_lines)
 
 WRITE32_MEMBER(polygonet_state::dsp_host_interface_w)
 {
+<<<<<<< HEAD
 	UINT8 hi_data = 0x00;
 	UINT8 hi_addr = offset << 1;
+=======
+	uint8_t hi_data = 0x00;
+	uint8_t hi_addr = offset << 1;
+>>>>>>> upstream/master
 
 	if (mem_mask == 0x0000ff00) { hi_addr++; }  /* Low byte */
 	if (mem_mask == 0xff000000) {}              /* High byte */
@@ -315,9 +362,15 @@ READ16_MEMBER(polygonet_state::dsp56k_bootload_r)
                                  bit 0002 turns on *just* before this happens.
 */
 
+<<<<<<< HEAD
 static UINT8 dsp56k_bank_group(device_t* cpu)
 {
 	UINT16 portC = ((dsp56k_device *)cpu)->get_peripheral_memory(0xffe3);
+=======
+static uint8_t dsp56k_bank_group(device_t* cpu)
+{
+	uint16_t portC = downcast<dsp56k_device *>(cpu)->get_peripheral_memory(0xffe3);
+>>>>>>> upstream/master
 
 	/* If bank group B is on, it overrides bank group A */
 	if (portC & 0x0002)
@@ -328,6 +381,7 @@ static UINT8 dsp56k_bank_group(device_t* cpu)
 	return INVALID_BANK_GROUP;
 }
 
+<<<<<<< HEAD
 static UINT8 dsp56k_bank_num(device_t* cpu, UINT8 bank_group)
 {
 	UINT16 portC = ((dsp56k_device *)cpu)->get_peripheral_memory(0xffe3);
@@ -336,12 +390,27 @@ static UINT8 dsp56k_bank_num(device_t* cpu, UINT8 bank_group)
 	{
 		const UINT16 bit3   = (portC & 0x0010) >> 2;
 		const UINT16 bits21 = (portC & 0x000c) >> 2;
+=======
+static uint8_t dsp56k_bank_num(device_t* cpu, uint8_t bank_group)
+{
+	uint16_t portC = downcast<dsp56k_device *>(cpu)->get_peripheral_memory(0xffe3);
+
+	if (bank_group == BANK_GROUP_A)
+	{
+		const uint16_t bit3   = (portC & 0x0010) >> 2;
+		const uint16_t bits21 = (portC & 0x000c) >> 2;
+>>>>>>> upstream/master
 		return (bit3 | bits21);
 	}
 	else if (bank_group == BANK_GROUP_B)
 	{
+<<<<<<< HEAD
 		const UINT16 bits32 = (portC & 0x0180) >> 6;
 		const UINT16 bit1   = (portC & 0x0001) >> 0;
+=======
+		const uint16_t bits32 = (portC & 0x0180) >> 6;
+		const uint16_t bit1   = (portC & 0x0001) >> 0;
+>>>>>>> upstream/master
 		return (bits32 | bit1);
 	}
 	else if (bank_group == INVALID_BANK_GROUP)
@@ -356,18 +425,30 @@ static UINT8 dsp56k_bank_num(device_t* cpu, UINT8 bank_group)
 /* BANK HANDLERS */
 READ16_MEMBER(polygonet_state::dsp56k_ram_bank00_read)
 {
+<<<<<<< HEAD
 	UINT8 en_group = dsp56k_bank_group(&space.device());
 	UINT8 bank_num = dsp56k_bank_num(&space.device(), en_group);
 	UINT32 driver_bank_offset = (en_group * dsp56k_bank00_size * 8) + (bank_num * dsp56k_bank00_size);
+=======
+	uint8_t en_group = dsp56k_bank_group(&space.device());
+	uint8_t bank_num = dsp56k_bank_num(&space.device(), en_group);
+	uint32_t driver_bank_offset = (en_group * dsp56k_bank00_size * 8) + (bank_num * dsp56k_bank00_size);
+>>>>>>> upstream/master
 
 	return m_dsp56k_bank00_ram[driver_bank_offset + offset];
 }
 
 WRITE16_MEMBER(polygonet_state::dsp56k_ram_bank00_write)
 {
+<<<<<<< HEAD
 	UINT8 en_group = dsp56k_bank_group(&space.device());
 	UINT8 bank_num = dsp56k_bank_num(&space.device(), en_group);
 	UINT32 driver_bank_offset = (en_group * dsp56k_bank00_size * 8) + (bank_num * dsp56k_bank00_size);
+=======
+	uint8_t en_group = dsp56k_bank_group(&space.device());
+	uint8_t bank_num = dsp56k_bank_num(&space.device(), en_group);
+	uint32_t driver_bank_offset = (en_group * dsp56k_bank00_size * 8) + (bank_num * dsp56k_bank00_size);
+>>>>>>> upstream/master
 
 	COMBINE_DATA(&m_dsp56k_bank00_ram[driver_bank_offset + offset]);
 }
@@ -375,18 +456,30 @@ WRITE16_MEMBER(polygonet_state::dsp56k_ram_bank00_write)
 
 READ16_MEMBER(polygonet_state::dsp56k_ram_bank01_read)
 {
+<<<<<<< HEAD
 	UINT8 en_group = dsp56k_bank_group(&space.device());
 	UINT8 bank_num = dsp56k_bank_num(&space.device(), en_group);
 	UINT32 driver_bank_offset = (en_group * dsp56k_bank01_size * 8) + (bank_num * dsp56k_bank01_size);
+=======
+	uint8_t en_group = dsp56k_bank_group(&space.device());
+	uint8_t bank_num = dsp56k_bank_num(&space.device(), en_group);
+	uint32_t driver_bank_offset = (en_group * dsp56k_bank01_size * 8) + (bank_num * dsp56k_bank01_size);
+>>>>>>> upstream/master
 
 	return m_dsp56k_bank01_ram[driver_bank_offset + offset];
 }
 
 WRITE16_MEMBER(polygonet_state::dsp56k_ram_bank01_write)
 {
+<<<<<<< HEAD
 	UINT8 en_group = dsp56k_bank_group(&space.device());
 	UINT8 bank_num = dsp56k_bank_num(&space.device(), en_group);
 	UINT32 driver_bank_offset = (en_group * dsp56k_bank01_size * 8) + (bank_num * dsp56k_bank01_size);
+=======
+	uint8_t en_group = dsp56k_bank_group(&space.device());
+	uint8_t bank_num = dsp56k_bank_num(&space.device(), en_group);
+	uint32_t driver_bank_offset = (en_group * dsp56k_bank01_size * 8) + (bank_num * dsp56k_bank01_size);
+>>>>>>> upstream/master
 
 	COMBINE_DATA(&m_dsp56k_bank01_ram[driver_bank_offset + offset]);
 
@@ -397,18 +490,30 @@ WRITE16_MEMBER(polygonet_state::dsp56k_ram_bank01_write)
 
 READ16_MEMBER(polygonet_state::dsp56k_ram_bank02_read)
 {
+<<<<<<< HEAD
 	UINT8 en_group = dsp56k_bank_group(&space.device());
 	UINT8 bank_num = dsp56k_bank_num(&space.device(), en_group);
 	UINT32 driver_bank_offset = (en_group * dsp56k_bank02_size * 8) + (bank_num * dsp56k_bank02_size);
+=======
+	uint8_t en_group = dsp56k_bank_group(&space.device());
+	uint8_t bank_num = dsp56k_bank_num(&space.device(), en_group);
+	uint32_t driver_bank_offset = (en_group * dsp56k_bank02_size * 8) + (bank_num * dsp56k_bank02_size);
+>>>>>>> upstream/master
 
 	return m_dsp56k_bank02_ram[driver_bank_offset + offset];
 }
 
 WRITE16_MEMBER(polygonet_state::dsp56k_ram_bank02_write)
 {
+<<<<<<< HEAD
 	UINT8 en_group = dsp56k_bank_group(&space.device());
 	UINT8 bank_num = dsp56k_bank_num(&space.device(), en_group);
 	UINT32 driver_bank_offset = (en_group * dsp56k_bank02_size * 8) + (bank_num * dsp56k_bank02_size);
+=======
+	uint8_t en_group = dsp56k_bank_group(&space.device());
+	uint8_t bank_num = dsp56k_bank_num(&space.device(), en_group);
+	uint32_t driver_bank_offset = (en_group * dsp56k_bank02_size * 8) + (bank_num * dsp56k_bank02_size);
+>>>>>>> upstream/master
 
 	COMBINE_DATA(&m_dsp56k_bank02_ram[driver_bank_offset + offset]);
 }
@@ -416,18 +521,30 @@ WRITE16_MEMBER(polygonet_state::dsp56k_ram_bank02_write)
 
 READ16_MEMBER(polygonet_state::dsp56k_shared_ram_read)
 {
+<<<<<<< HEAD
 	UINT8 en_group = dsp56k_bank_group(&space.device());
 	UINT8 bank_num = dsp56k_bank_num(&space.device(), en_group);
 	UINT32 driver_bank_offset = (en_group * dsp56k_shared_ram_16_size * 8) + (bank_num * dsp56k_shared_ram_16_size);
+=======
+	uint8_t en_group = dsp56k_bank_group(&space.device());
+	uint8_t bank_num = dsp56k_bank_num(&space.device(), en_group);
+	uint32_t driver_bank_offset = (en_group * dsp56k_shared_ram_16_size * 8) + (bank_num * dsp56k_shared_ram_16_size);
+>>>>>>> upstream/master
 
 	return m_dsp56k_shared_ram_16[driver_bank_offset + offset];
 }
 
 WRITE16_MEMBER(polygonet_state::dsp56k_shared_ram_write)
 {
+<<<<<<< HEAD
 	UINT8 en_group = dsp56k_bank_group(&space.device());
 	UINT8 bank_num = dsp56k_bank_num(&space.device(), en_group);
 	UINT32 driver_bank_offset = (en_group * dsp56k_shared_ram_16_size * 8) + (bank_num * dsp56k_shared_ram_16_size);
+=======
+	uint8_t en_group = dsp56k_bank_group(&space.device());
+	uint8_t bank_num = dsp56k_bank_num(&space.device(), en_group);
+	uint32_t driver_bank_offset = (en_group * dsp56k_shared_ram_16_size * 8) + (bank_num * dsp56k_shared_ram_16_size);
+>>>>>>> upstream/master
 
 	COMBINE_DATA(&m_dsp56k_shared_ram_16[driver_bank_offset + offset]);
 
@@ -444,18 +561,30 @@ WRITE16_MEMBER(polygonet_state::dsp56k_shared_ram_write)
 
 READ16_MEMBER(polygonet_state::dsp56k_ram_bank04_read)
 {
+<<<<<<< HEAD
 	UINT8 en_group = dsp56k_bank_group(&space.device());
 	UINT8 bank_num = dsp56k_bank_num(&space.device(), en_group);
 	UINT32 driver_bank_offset = (en_group * dsp56k_bank04_size * 8) + (bank_num * dsp56k_bank04_size);
+=======
+	uint8_t en_group = dsp56k_bank_group(&space.device());
+	uint8_t bank_num = dsp56k_bank_num(&space.device(), en_group);
+	uint32_t driver_bank_offset = (en_group * dsp56k_bank04_size * 8) + (bank_num * dsp56k_bank04_size);
+>>>>>>> upstream/master
 
 	return m_dsp56k_bank04_ram[driver_bank_offset + offset];
 }
 
 WRITE16_MEMBER(polygonet_state::dsp56k_ram_bank04_write)
 {
+<<<<<<< HEAD
 	UINT8 en_group = dsp56k_bank_group(&space.device());
 	UINT8 bank_num = dsp56k_bank_num(&space.device(), en_group);
 	UINT32 driver_bank_offset = (en_group * dsp56k_bank04_size * 8) + (bank_num * dsp56k_bank04_size);
+=======
+	uint8_t en_group = dsp56k_bank_group(&space.device());
+	uint8_t bank_num = dsp56k_bank_num(&space.device(), en_group);
+	uint32_t driver_bank_offset = (en_group * dsp56k_bank04_size * 8) + (bank_num * dsp56k_bank04_size);
+>>>>>>> upstream/master
 
 	COMBINE_DATA(&m_dsp56k_bank04_ram[driver_bank_offset + offset]);
 }
@@ -480,7 +609,11 @@ static ADDRESS_MAP_START( main_map, AS_PROGRAM, 32, polygonet_state )
 	AM_RANGE(0x600000, 0x600007) AM_WRITE8(sound_comms_w, 0xffffffff)
 	AM_RANGE(0x600008, 0x60000b) AM_READ8(sound_comms_r, 0xffffffff)
 	AM_RANGE(0x640000, 0x640003) AM_WRITE(sound_irq_w)
+<<<<<<< HEAD
 	AM_RANGE(0x680000, 0x680003) AM_WRITE(watchdog_reset32_w)
+=======
+	AM_RANGE(0x680000, 0x680003) AM_DEVWRITE("watchdog", watchdog_timer_device, reset32_w)
+>>>>>>> upstream/master
 	AM_RANGE(0x700000, 0x73ffff) AM_ROM AM_REGION("gfx2", 0)
 	AM_RANGE(0x780000, 0x79ffff) AM_ROM AM_REGION("gfx1", 0)
 	AM_RANGE(0xff8000, 0xffffff) AM_RAM
@@ -531,9 +664,15 @@ static ADDRESS_MAP_START( sound_map, AS_PROGRAM, 8, polygonet_state )
 	AM_RANGE(0xe230, 0xe3ff) AM_RAM
 	AM_RANGE(0xe400, 0xe62f) AM_READNOP AM_WRITENOP // Second 054539 (not present)
 	AM_RANGE(0xe630, 0xe7ff) AM_RAM
+<<<<<<< HEAD
 	AM_RANGE(0xf000, 0xf000) AM_WRITE(soundlatch_byte_w)
 	AM_RANGE(0xf002, 0xf002) AM_READ(soundlatch2_byte_r)
 	AM_RANGE(0xf003, 0xf003) AM_READ(soundlatch3_byte_r)
+=======
+	AM_RANGE(0xf000, 0xf000) AM_DEVWRITE("soundlatch", generic_latch_8_device, write)
+	AM_RANGE(0xf002, 0xf002) AM_DEVREAD("soundlatch2", generic_latch_8_device, read)
+	AM_RANGE(0xf003, 0xf003) AM_DEVREAD("soundlatch3", generic_latch_8_device, read)
+>>>>>>> upstream/master
 	AM_RANGE(0xf800, 0xf800) AM_WRITE(sound_ctrl_w)
 ADDRESS_MAP_END
 
@@ -601,7 +740,11 @@ WRITE_LINE_MEMBER(polygonet_state::k054539_nmi_gen)
 	m_sound_intck = state;
 }
 
+<<<<<<< HEAD
 static MACHINE_CONFIG_START( plygonet, polygonet_state )
+=======
+static MACHINE_CONFIG_START( plygonet )
+>>>>>>> upstream/master
 
 	MCFG_CPU_ADD("maincpu", M68EC020, XTAL_32MHz/2)
 	MCFG_CPU_PROGRAM_MAP(main_map)
@@ -618,6 +761,11 @@ static MACHINE_CONFIG_START( plygonet, polygonet_state )
 
 	MCFG_EEPROM_SERIAL_ER5911_8BIT_ADD("eeprom")
 
+<<<<<<< HEAD
+=======
+	MCFG_WATCHDOG_ADD("watchdog")
+
+>>>>>>> upstream/master
 	MCFG_GFXDECODE_ADD("gfxdecode", "palette", plygonet)
 
 	/* video hardware */
@@ -637,6 +785,13 @@ static MACHINE_CONFIG_START( plygonet, polygonet_state )
 	/* sound hardware */
 	MCFG_SPEAKER_STANDARD_STEREO("lspeaker", "rspeaker")
 
+<<<<<<< HEAD
+=======
+	MCFG_GENERIC_LATCH_8_ADD("soundlatch")
+	MCFG_GENERIC_LATCH_8_ADD("soundlatch2")
+	MCFG_GENERIC_LATCH_8_ADD("soundlatch3")
+
+>>>>>>> upstream/master
 	MCFG_DEVICE_ADD("k054539_1", K054539, XTAL_18_432MHz)
 	MCFG_K054539_REGION_OVERRRIDE("shared")
 	MCFG_K054539_TIMER_HANDLER(WRITELINE(polygonet_state, k054539_nmi_gen))
@@ -770,6 +925,12 @@ ROM_START( polynetw )
 	ROM_LOAD( "polynetw.nv", 0x0000, 0x0080, CRC(8f39d644) SHA1(8733e1a288ba20c4b04b3aedde52801d05cebdf9) )
 ROM_END
 
+<<<<<<< HEAD
 /*          ROM       parent   machine   inp        init */
 GAME( 1993, plygonet, 0,       plygonet, polygonet, polygonet_state, polygonet, ROT90, "Konami", "Polygonet Commanders (ver UAA)", MACHINE_NOT_WORKING | MACHINE_SUPPORTS_SAVE )
 GAME( 1993, polynetw, 0,       plygonet, polynetw, polygonet_state,  polygonet, ROT90, "Konami", "Poly-Net Warriors (ver JAA)", MACHINE_NOT_WORKING | MACHINE_SUPPORTS_SAVE )
+=======
+//    YEAR  NAME      PARENT   MACHINE   INPUT      STATE            INIT
+GAME( 1993, plygonet, 0,       plygonet, polygonet, polygonet_state, polygonet, ROT90, "Konami", "Polygonet Commanders (ver UAA)", MACHINE_NOT_WORKING | MACHINE_SUPPORTS_SAVE )
+GAME( 1993, polynetw, 0,       plygonet, polynetw,  polygonet_state, polygonet, ROT90, "Konami", "Poly-Net Warriors (ver JAA)",    MACHINE_NOT_WORKING | MACHINE_SUPPORTS_SAVE )
+>>>>>>> upstream/master

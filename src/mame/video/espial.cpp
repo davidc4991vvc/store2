@@ -33,7 +33,11 @@
 
 PALETTE_INIT_MEMBER(espial_state, espial)
 {
+<<<<<<< HEAD
 	const UINT8 *color_prom = memregion("proms")->base();
+=======
+	const uint8_t *color_prom = memregion("proms")->base();
+>>>>>>> upstream/master
 	int i;
 
 	for (i = 0; i < palette.entries(); i++)
@@ -70,9 +74,15 @@ PALETTE_INIT_MEMBER(espial_state, espial)
 
 TILE_GET_INFO_MEMBER(espial_state::get_tile_info)
 {
+<<<<<<< HEAD
 	UINT8 code = m_videoram[tile_index];
 	UINT8 col = m_colorram[tile_index];
 	UINT8 attr = m_attributeram[tile_index];
+=======
+	uint8_t code = m_videoram[tile_index];
+	uint8_t col = m_colorram[tile_index];
+	uint8_t attr = m_attributeram[tile_index];
+>>>>>>> upstream/master
 	SET_TILE_INFO_MEMBER(0,
 					code | ((attr & 0x03) << 8),
 					col & 0x3f,
@@ -89,7 +99,11 @@ TILE_GET_INFO_MEMBER(espial_state::get_tile_info)
 
 void espial_state::video_start()
 {
+<<<<<<< HEAD
 	m_bg_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(espial_state::get_tile_info),this), TILEMAP_SCAN_ROWS, 8, 8, 32, 32);
+=======
+	m_bg_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(espial_state::get_tile_info),this), TILEMAP_SCAN_ROWS, 8, 8, 32, 32);
+>>>>>>> upstream/master
 	m_bg_tilemap->set_scroll_cols(32);
 
 	save_item(NAME(m_flipscreen));
@@ -98,7 +112,11 @@ void espial_state::video_start()
 VIDEO_START_MEMBER(espial_state,netwars)
 {
 	/* Net Wars has a tile map that's twice as big as Espial's */
+<<<<<<< HEAD
 	m_bg_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(espial_state::get_tile_info),this), TILEMAP_SCAN_ROWS, 8, 8, 32, 64);
+=======
+	m_bg_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(espial_state::get_tile_info),this), TILEMAP_SCAN_ROWS, 8, 8, 32, 64);
+>>>>>>> upstream/master
 
 	m_bg_tilemap->set_scroll_cols(32);
 	m_bg_tilemap->set_scrolldy(0, 0x100);
@@ -219,7 +237,11 @@ void espial_state::draw_sprites( bitmap_ind16 &bitmap, const rectangle &cliprect
 }
 
 
+<<<<<<< HEAD
 UINT32 espial_state::screen_update_espial(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+=======
+uint32_t espial_state::screen_update_espial(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+>>>>>>> upstream/master
 {
 	m_bg_tilemap->draw(screen, bitmap, cliprect, 0, 0);
 	draw_sprites(bitmap, cliprect);

@@ -6,6 +6,10 @@
 //
 //============================================================
 
+<<<<<<< HEAD
+=======
+#include "emu.h"
+>>>>>>> upstream/master
 #import "errorlogview.h"
 
 #include "debug/debugvw.h"

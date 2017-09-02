@@ -121,11 +121,21 @@ Notes:
 **************************************************************************/
 
 #include "emu.h"
+<<<<<<< HEAD
+=======
+#include "includes/lastduel.h"
+
+>>>>>>> upstream/master
 #include "cpu/z80/z80.h"
 #include "cpu/m68000/m68000.h"
 #include "sound/2203intf.h"
 #include "sound/okim6295.h"
+<<<<<<< HEAD
 #include "includes/lastduel.h"
+=======
+#include "screen.h"
+#include "speaker.h"
+>>>>>>> upstream/master
 
 
 /******************************************************************************/
@@ -133,7 +143,11 @@ Notes:
 WRITE16_MEMBER(lastduel_state::lastduel_sound_w)
 {
 	if (ACCESSING_BITS_0_7)
+<<<<<<< HEAD
 		soundlatch_byte_w(space, 0, data & 0xff);
+=======
+		m_soundlatch->write(space, 0, data & 0xff);
+>>>>>>> upstream/master
 }
 
 /******************************************************************************/
@@ -176,7 +190,11 @@ static ADDRESS_MAP_START( sound_map, AS_PROGRAM, 8, lastduel_state )
 	AM_RANGE(0xe000, 0xe7ff) AM_RAM
 	AM_RANGE(0xe800, 0xe801) AM_DEVREADWRITE("ym1", ym2203_device, read, write)
 	AM_RANGE(0xf000, 0xf001) AM_DEVREADWRITE("ym2", ym2203_device, read, write)
+<<<<<<< HEAD
 	AM_RANGE(0xf800, 0xf800) AM_READ(soundlatch_byte_r)
+=======
+	AM_RANGE(0xf800, 0xf800) AM_DEVREAD("soundlatch", generic_latch_8_device, read)
+>>>>>>> upstream/master
 ADDRESS_MAP_END
 
 WRITE8_MEMBER(lastduel_state::mg_bankswitch_w)
@@ -191,7 +209,11 @@ static ADDRESS_MAP_START( madgear_sound_map, AS_PROGRAM, 8, lastduel_state )
 	AM_RANGE(0xf000, 0xf001) AM_DEVREADWRITE("ym1", ym2203_device, read, write)
 	AM_RANGE(0xf002, 0xf003) AM_DEVREADWRITE("ym2", ym2203_device, read, write)
 	AM_RANGE(0xf004, 0xf004) AM_DEVWRITE("oki", okim6295_device, write)
+<<<<<<< HEAD
 	AM_RANGE(0xf006, 0xf006) AM_READ(soundlatch_byte_r)
+=======
+	AM_RANGE(0xf006, 0xf006) AM_DEVREAD("soundlatch", generic_latch_8_device, read)
+>>>>>>> upstream/master
 	AM_RANGE(0xf00a, 0xf00a) AM_WRITE(mg_bankswitch_w)
 ADDRESS_MAP_END
 
@@ -445,12 +467,15 @@ GFXDECODE_END
 
 /******************************************************************************/
 
+<<<<<<< HEAD
 /* handler called by the 2203 emulator when the internal timers cause an IRQ */
 WRITE_LINE_MEMBER(lastduel_state::irqhandler)
 {
 	m_audiocpu->set_input_line(0, state ? ASSERT_LINE : CLEAR_LINE);
 }
 
+=======
+>>>>>>> upstream/master
 TIMER_DEVICE_CALLBACK_MEMBER(lastduel_state::lastduel_timer_cb)
 {
 	m_maincpu->set_input_line(4, HOLD_LINE); /* Controls */
@@ -469,7 +494,11 @@ MACHINE_START_MEMBER(lastduel_state,lastduel)
 
 MACHINE_START_MEMBER(lastduel_state,madgear)
 {
+<<<<<<< HEAD
 	UINT8 *ROM = memregion("audiocpu")->base();
+=======
+	uint8_t *ROM = memregion("audiocpu")->base();
+>>>>>>> upstream/master
 
 	membank("bank1")->configure_entries(0, 2, &ROM[0x10000], 0x4000);
 
@@ -486,7 +515,11 @@ void lastduel_state::machine_reset()
 		m_scroll[i] = 0;
 }
 
+<<<<<<< HEAD
 static MACHINE_CONFIG_START( lastduel, lastduel_state )
+=======
+static MACHINE_CONFIG_START( lastduel )
+>>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", M68000, 10000000) // Unconfirmed - could be 8MHz
@@ -507,7 +540,11 @@ static MACHINE_CONFIG_START( lastduel, lastduel_state )
 	MCFG_SCREEN_SIZE(64*8, 32*8)
 	MCFG_SCREEN_VISIBLE_AREA(8*8, (64-8)*8-1, 1*8, 31*8-1 )
 	MCFG_SCREEN_UPDATE_DRIVER(lastduel_state, screen_update_lastduel)
+<<<<<<< HEAD
 	MCFG_SCREEN_VBLANK_DEVICE("spriteram", buffered_spriteram16_device, vblank_copy_rising)
+=======
+	MCFG_SCREEN_VBLANK_CALLBACK(DEVWRITELINE("spriteram", buffered_spriteram16_device, vblank_copy_rising))
+>>>>>>> upstream/master
 	MCFG_SCREEN_PALETTE("palette")
 
 	MCFG_BUFFERED_SPRITERAM16_ADD("spriteram")
@@ -520,8 +557,15 @@ static MACHINE_CONFIG_START( lastduel, lastduel_state )
 	/* sound hardware */
 	MCFG_SPEAKER_STANDARD_MONO("mono")
 
+<<<<<<< HEAD
 	MCFG_SOUND_ADD("ym1", YM2203, XTAL_3_579545MHz)
 	MCFG_YM2203_IRQ_HANDLER(WRITELINE(lastduel_state, irqhandler))
+=======
+	MCFG_GENERIC_LATCH_8_ADD("soundlatch")
+
+	MCFG_SOUND_ADD("ym1", YM2203, XTAL_3_579545MHz)
+	MCFG_YM2203_IRQ_HANDLER(INPUTLINE("audiocpu", 0))
+>>>>>>> upstream/master
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 0.40)
 
 	MCFG_SOUND_ADD("ym2", YM2203, XTAL_3_579545MHz)
@@ -529,7 +573,11 @@ static MACHINE_CONFIG_START( lastduel, lastduel_state )
 MACHINE_CONFIG_END
 
 
+<<<<<<< HEAD
 static MACHINE_CONFIG_START( madgear, lastduel_state )
+=======
+static MACHINE_CONFIG_START( madgear )
+>>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", M68000, XTAL_10MHz)
@@ -550,7 +598,11 @@ static MACHINE_CONFIG_START( madgear, lastduel_state )
 	MCFG_SCREEN_SIZE(64*8, 32*8)
 	MCFG_SCREEN_VISIBLE_AREA(8*8, (64-8)*8-1, 1*8, 31*8-1 )
 	MCFG_SCREEN_UPDATE_DRIVER(lastduel_state, screen_update_madgear)
+<<<<<<< HEAD
 	MCFG_SCREEN_VBLANK_DEVICE("spriteram", buffered_spriteram16_device, vblank_copy_rising)
+=======
+	MCFG_SCREEN_VBLANK_CALLBACK(DEVWRITELINE("spriteram", buffered_spriteram16_device, vblank_copy_rising))
+>>>>>>> upstream/master
 	MCFG_SCREEN_PALETTE("palette")
 
 	MCFG_BUFFERED_SPRITERAM16_ADD("spriteram")
@@ -563,14 +615,25 @@ static MACHINE_CONFIG_START( madgear, lastduel_state )
 	/* sound hardware */
 	MCFG_SPEAKER_STANDARD_MONO("mono")
 
+<<<<<<< HEAD
 	MCFG_SOUND_ADD("ym1", YM2203, XTAL_3_579545MHz)
 	MCFG_YM2203_IRQ_HANDLER(WRITELINE(lastduel_state, irqhandler))
+=======
+	MCFG_GENERIC_LATCH_8_ADD("soundlatch")
+
+	MCFG_SOUND_ADD("ym1", YM2203, XTAL_3_579545MHz)
+	MCFG_YM2203_IRQ_HANDLER(INPUTLINE("audiocpu", 0))
+>>>>>>> upstream/master
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 0.40)
 
 	MCFG_SOUND_ADD("ym2", YM2203, XTAL_3_579545MHz)
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 0.40)
 
+<<<<<<< HEAD
 	MCFG_OKIM6295_ADD("oki", XTAL_10MHz/10, OKIM6295_PIN7_HIGH)
+=======
+	MCFG_OKIM6295_ADD("oki", XTAL_10MHz/10, PIN7_HIGH)
+>>>>>>> upstream/master
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 0.98)
 MACHINE_CONFIG_END
 
@@ -892,6 +955,7 @@ ROM_END
 
 /******************************************************************************/
 
+<<<<<<< HEAD
 GAME( 1988, lastduel,  0,        lastduel, lastduel, driver_device, 0, ROT270, "Capcom",  "Last Duel (US New Ver.)", MACHINE_SUPPORTS_SAVE )
 GAME( 1988, lastduelo, lastduel, lastduel, lastduel, driver_device, 0, ROT270, "Capcom",  "Last Duel (US Old Ver.)", MACHINE_SUPPORTS_SAVE )
 GAME( 1988, lastduelj, lastduel, lastduel, lastduel, driver_device, 0, ROT270, "Capcom",  "Last Duel (Japan)", MACHINE_SUPPORTS_SAVE )
@@ -905,3 +969,18 @@ GAME( 1988, ledstorm,  madgear,  madgear,  madgear, driver_device,  0, ROT270, "
 
 GAME( 1988, leds2011,  0,        madgear,  madgear, driver_device,  0, ROT270, "Capcom",  "Led Storm Rally 2011 (World)", MACHINE_SUPPORTS_SAVE )
 GAME( 1988, leds2011u, leds2011, madgear,  madgear, driver_device,  0, ROT270, "Capcom",  "Led Storm Rally 2011 (US)", MACHINE_SUPPORTS_SAVE )
+=======
+GAME( 1988, lastduel,  0,        lastduel, lastduel, lastduel_state, 0, ROT270, "Capcom",  "Last Duel (US New Ver.)", MACHINE_SUPPORTS_SAVE )
+GAME( 1988, lastduelo, lastduel, lastduel, lastduel, lastduel_state, 0, ROT270, "Capcom",  "Last Duel (US Old Ver.)", MACHINE_SUPPORTS_SAVE )
+GAME( 1988, lastduelj, lastduel, lastduel, lastduel, lastduel_state, 0, ROT270, "Capcom",  "Last Duel (Japan)", MACHINE_SUPPORTS_SAVE )
+GAME( 1988, lastduelb, lastduel, lastduel, lastduel, lastduel_state, 0, ROT270, "bootleg", "Last Duel (bootleg)", MACHINE_SUPPORTS_SAVE )
+
+// are both Mad Gear and Led Storm really US sets, both have a (c) Capcom USA, but so do several World sets from Capcom during this era, including Led Storm Rally 2011.  None of these display a region warning, 2011 does.
+// the region warning text is however still present in the ROM (albeit unused) and does appear to indicate both are US sets, so it's possible the title was revised to avoid confusion with the older Led Storm Rally 2011.
+GAME( 1989, madgear,   0,        madgear,  madgear, lastduel_state,  0, ROT270, "Capcom",  "Mad Gear (US)", MACHINE_SUPPORTS_SAVE )
+GAME( 1989, madgearj,  madgear,  madgear,  madgear, lastduel_state,  0, ROT270, "Capcom",  "Mad Gear (Japan)", MACHINE_SUPPORTS_SAVE )
+GAME( 1988, ledstorm,  madgear,  madgear,  madgear, lastduel_state,  0, ROT270, "Capcom",  "Led Storm (US)", MACHINE_SUPPORTS_SAVE )
+
+GAME( 1988, leds2011,  0,        madgear,  madgear, lastduel_state,  0, ROT270, "Capcom",  "Led Storm Rally 2011 (World)", MACHINE_SUPPORTS_SAVE )
+GAME( 1988, leds2011u, leds2011, madgear,  madgear, lastduel_state,  0, ROT270, "Capcom",  "Led Storm Rally 2011 (US)", MACHINE_SUPPORTS_SAVE )
+>>>>>>> upstream/master

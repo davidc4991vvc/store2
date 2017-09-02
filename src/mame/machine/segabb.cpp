@@ -1,8 +1,15 @@
 // license:BSD-3-Clause
 // copyright-holders:Olivier Galibert
+<<<<<<< HEAD
 #include "segabb.h"
 
 const device_type SEGA_LINDBERGH_BASEBOARD = &device_creator<sega_lindbergh_baseboard_device>;
+=======
+#include "emu.h"
+#include "segabb.h"
+
+DEFINE_DEVICE_TYPE(SEGA_LINDBERGH_BASEBOARD, sega_lindbergh_baseboard_device, "lindbergh_baseboard", "Sega Lindbergh Baseboard")
+>>>>>>> upstream/master
 
 DEVICE_ADDRESS_MAP_START(map1, 32, sega_lindbergh_baseboard_device)
 ADDRESS_MAP_END
@@ -13,8 +20,13 @@ ADDRESS_MAP_END
 DEVICE_ADDRESS_MAP_START(map3, 32, sega_lindbergh_baseboard_device)
 ADDRESS_MAP_END
 
+<<<<<<< HEAD
 sega_lindbergh_baseboard_device::sega_lindbergh_baseboard_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
 	: pci_device(mconfig, SEGA_LINDBERGH_BASEBOARD, "Sega Lindbergh Baseboard", tag, owner, clock, "sega_lindbergh_baseboard", __FILE__)
+=======
+sega_lindbergh_baseboard_device::sega_lindbergh_baseboard_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: pci_device(mconfig, SEGA_LINDBERGH_BASEBOARD, tag, owner, clock)
+>>>>>>> upstream/master
 {
 }
 

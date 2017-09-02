@@ -3,6 +3,7 @@
 #include "emu.h"
 #include "latch.h"
 
+<<<<<<< HEAD
 const device_type OUTPUT_LATCH = &device_creator<output_latch_device>;
 
 output_latch_device::output_latch_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
@@ -24,11 +25,21 @@ output_latch_device::output_latch_device(const machine_config &mconfig, const ch
 	m_bit5_handler(*this),
 	m_bit6_handler(*this),
 	m_bit7_handler(*this)
+=======
+DEFINE_DEVICE_TYPE(OUTPUT_LATCH, output_latch_device, "output_latch", "Output Latch")
+
+output_latch_device::output_latch_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: device_t(mconfig, OUTPUT_LATCH, tag, owner, clock)
+	, m_bit_handlers{ { *this }, { *this }, { *this }, { *this }, { *this }, { *this }, { *this }, { *this } }
+	, m_bits{ -1, -1, -1, -1, -1, -1, -1, -1 }
+	, m_resolved(false)
+>>>>>>> upstream/master
 {
 }
 
 void output_latch_device::device_start()
 {
+<<<<<<< HEAD
 	save_item(NAME(m_bit0));
 	save_item(NAME(m_bit1));
 	save_item(NAME(m_bit2));
@@ -40,10 +51,17 @@ void output_latch_device::device_start()
 }
 
 void output_latch_device::write(UINT8 data)
+=======
+	save_item(NAME(m_bits));
+}
+
+void output_latch_device::write(uint8_t data)
+>>>>>>> upstream/master
 {
 	if (!m_resolved)
 	{
 		// HACK: move to device_config_complete() when devcb supports that
+<<<<<<< HEAD
 		m_bit0_handler.resolve_safe();
 		m_bit1_handler.resolve_safe();
 		m_bit2_handler.resolve_safe();
@@ -52,10 +70,15 @@ void output_latch_device::write(UINT8 data)
 		m_bit5_handler.resolve_safe();
 		m_bit6_handler.resolve_safe();
 		m_bit7_handler.resolve_safe();
+=======
+		for (devcb_write_line &handler : m_bit_handlers)
+			handler.resolve_safe();
+>>>>>>> upstream/master
 
 		m_resolved = true;
 	}
 
+<<<<<<< HEAD
 	int bit0 = (data >> 0) & 1;
 	if (m_bit0 != bit0)
 	{
@@ -118,5 +141,16 @@ void output_latch_device::write(UINT8 data)
 		m_bit7 = bit7;
 		if (!m_bit7_handler.isnull())
 			m_bit7_handler(bit7);
+=======
+	for (unsigned i = 0; 8 > i; ++i)
+	{
+		int const bit = BIT(data, i);
+		if (bit != m_bits[i])
+		{
+			m_bits[i] = bit;
+			if (!m_bit_handlers[i].isnull())
+				m_bit_handlers[i](bit);
+		}
+>>>>>>> upstream/master
 	}
 }

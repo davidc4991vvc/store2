@@ -7,10 +7,21 @@ Ping Pong (c) 1985 Konami
 ***************************************************************************/
 
 #include "emu.h"
+<<<<<<< HEAD
 #include "cpu/z80/z80.h"
 #include "sound/sn76496.h"
 #include "machine/nvram.h"
 #include "includes/pingpong.h"
+=======
+#include "includes/pingpong.h"
+
+#include "cpu/z80/z80.h"
+#include "sound/sn76496.h"
+#include "machine/nvram.h"
+#include "machine/watchdog.h"
+#include "screen.h"
+#include "speaker.h"
+>>>>>>> upstream/master
 
 
 
@@ -38,7 +49,11 @@ WRITE8_MEMBER(pingpong_state::cashquiz_question_bank_low_w)
 		static const char * const bankname[] = { "bank1", "bank2", "bank3", "bank4", "bank5", "bank6", "bank7", "bank8" };
 		const char *bank = bankname[data & 7];
 		int bankaddr = m_question_addr_high | ((data - 0x60) * 0x100);
+<<<<<<< HEAD
 		UINT8 *questions = memregion("user1")->base() + bankaddr;
+=======
+		uint8_t *questions = memregion("user1")->base() + bankaddr;
+>>>>>>> upstream/master
 		membank(bank)->set_base(questions);
 
 	}
@@ -51,8 +66,13 @@ WRITE8_MEMBER(pingpong_state::coin_w)
 	m_intenable = data & 0x0c;
 
 	/* bit 0/1 = coin counters */
+<<<<<<< HEAD
 	coin_counter_w(machine(), 0,data & 1);
 	coin_counter_w(machine(), 1,data & 2);
+=======
+	machine().bookkeeping().coin_counter_w(0,data & 1);
+	machine().bookkeeping().coin_counter_w(1,data & 2);
+>>>>>>> upstream/master
 
 	/* other bits unknown */
 }
@@ -99,7 +119,11 @@ static ADDRESS_MAP_START( pingpong_map, AS_PROGRAM, 8, pingpong_state )
 	AM_RANGE(0xa000, 0xa000) AM_WRITE(coin_w)   /* coin counters + irq enables */
 	AM_RANGE(0xa200, 0xa200) AM_WRITENOP        /* SN76496 data latch */
 	AM_RANGE(0xa400, 0xa400) AM_DEVWRITE("snsnd", sn76496_device, write)    /* trigger read */
+<<<<<<< HEAD
 	AM_RANGE(0xa600, 0xa600) AM_WRITE(watchdog_reset_w)
+=======
+	AM_RANGE(0xa600, 0xa600) AM_DEVWRITE("watchdog", watchdog_timer_device, reset_w)
+>>>>>>> upstream/master
 ADDRESS_MAP_END
 
 static ADDRESS_MAP_START( merlinmm_map, AS_PROGRAM, 8, pingpong_state )
@@ -120,7 +144,11 @@ static ADDRESS_MAP_START( merlinmm_map, AS_PROGRAM, 8, pingpong_state )
 	AM_RANGE(0xa180, 0xa180) AM_READ_PORT("IN3")
 	AM_RANGE(0xa200, 0xa200) AM_WRITENOP        /* SN76496 data latch */
 	AM_RANGE(0xa400, 0xa400) AM_DEVWRITE("snsnd", sn76496_device, write)    /* trigger read */
+<<<<<<< HEAD
 	AM_RANGE(0xa600, 0xa600) AM_WRITE(watchdog_reset_w)
+=======
+	AM_RANGE(0xa600, 0xa600) AM_DEVWRITE("watchdog", watchdog_timer_device, reset_w)
+>>>>>>> upstream/master
 ADDRESS_MAP_END
 
 
@@ -442,12 +470,20 @@ static GFXDECODE_START( pingpong )
 GFXDECODE_END
 
 
+<<<<<<< HEAD
 static MACHINE_CONFIG_START( pingpong, pingpong_state )
+=======
+static MACHINE_CONFIG_START( pingpong )
+>>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu",Z80,18432000/6)      /* 3.072 MHz (probably) */
 	MCFG_CPU_PROGRAM_MAP(pingpong_map)
 	MCFG_TIMER_DRIVER_ADD_SCANLINE("scantimer", pingpong_state, pingpong_interrupt, "screen", 0, 1)
+<<<<<<< HEAD
+=======
+	MCFG_WATCHDOG_ADD("watchdog")
+>>>>>>> upstream/master
 
 	/* video hardware */
 	MCFG_SCREEN_ADD("screen", RASTER)
@@ -558,7 +594,11 @@ ROM_END
 
 DRIVER_INIT_MEMBER(pingpong_state,merlinmm)
 {
+<<<<<<< HEAD
 	UINT8 *ROM = memregion("maincpu")->base();
+=======
+	uint8_t *ROM = memregion("maincpu")->base();
+>>>>>>> upstream/master
 	int i;
 
 	/* decrypt program code */
@@ -568,7 +608,11 @@ DRIVER_INIT_MEMBER(pingpong_state,merlinmm)
 
 DRIVER_INIT_MEMBER(pingpong_state,cashquiz)
 {
+<<<<<<< HEAD
 	UINT8 *ROM;
+=======
+	uint8_t *ROM;
+>>>>>>> upstream/master
 	int i;
 
 	/* decrypt program code */
@@ -607,6 +651,12 @@ DRIVER_INIT_MEMBER(pingpong_state,cashquiz)
 }
 
 
+<<<<<<< HEAD
 GAME( 1985, pingpong, 0, pingpong, pingpong, driver_device, 0,         ROT0, "Konami", "Konami's Ping-Pong", 0 )
 GAME( 1986, merlinmm, 0, merlinmm, merlinmm, pingpong_state, merlinmm, ROT90,"Zilec-Zenitone", "Merlins Money Maze", 0 )
 GAME( 1986, cashquiz, 0, merlinmm, cashquiz, pingpong_state, cashquiz, ROT0, "Zilec-Zenitone", "Cash Quiz (Type B, Version 5)", MACHINE_IMPERFECT_GRAPHICS )
+=======
+GAME( 1985, pingpong, 0, pingpong, pingpong, pingpong_state, 0,        ROT0,  "Konami",         "Konami's Ping-Pong",            0 )
+GAME( 1986, merlinmm, 0, merlinmm, merlinmm, pingpong_state, merlinmm, ROT90, "Zilec-Zenitone", "Merlins Money Maze",            0 )
+GAME( 1986, cashquiz, 0, merlinmm, cashquiz, pingpong_state, cashquiz, ROT0,  "Zilec-Zenitone", "Cash Quiz (Type B, Version 5)", MACHINE_IMPERFECT_GRAPHICS )
+>>>>>>> upstream/master

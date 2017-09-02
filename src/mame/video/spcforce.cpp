@@ -12,6 +12,7 @@
 #include "includes/spcforce.h"
 
 
+<<<<<<< HEAD
 WRITE8_MEMBER(spcforce_state::flip_screen_w)
 {
 	flip_screen_set(~data & 0x01);
@@ -19,6 +20,15 @@ WRITE8_MEMBER(spcforce_state::flip_screen_w)
 
 
 UINT32 spcforce_state::screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+=======
+WRITE_LINE_MEMBER(spcforce_state::flip_screen_w)
+{
+	flip_screen_set(!state);
+}
+
+
+uint32_t spcforce_state::screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+>>>>>>> upstream/master
 {
 	int offs;
 	int flip = flip_screen();

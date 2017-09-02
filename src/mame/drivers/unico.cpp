@@ -25,12 +25,24 @@ Year + Game         PCB             Notes
 ***************************************************************************/
 
 #include "emu.h"
+<<<<<<< HEAD
 #include "cpu/m68000/m68000.h"
 #include "machine/eepromser.h"
 #include "includes/unico.h"
 #include "sound/2151intf.h"
 #include "sound/3812intf.h"
 #include "sound/okim6295.h"
+=======
+#include "includes/unico.h"
+
+#include "cpu/m68000/m68000.h"
+#include "machine/eepromser.h"
+#include "sound/3812intf.h"
+#include "sound/okim6295.h"
+#include "sound/ym2151.h"
+#include "speaker.h"
+
+>>>>>>> upstream/master
 
 /***************************************************************************
 
@@ -49,7 +61,11 @@ WRITE16_MEMBER(unico_state::burglarx_sound_bank_w)
 	if (ACCESSING_BITS_8_15)
 	{
 		int bank = (data >> 8 ) & 1;
+<<<<<<< HEAD
 		m_oki->set_bank_base(0x40000 * bank );
+=======
+		m_oki->set_rom_bank(bank);
+>>>>>>> upstream/master
 	}
 }
 
@@ -87,6 +103,7 @@ WRITE16_MEMBER(unico_state::zeropnt_sound_bank_w)
 		   contains garbage. Indeed, only banks 0&1 are used */
 
 		int bank = (data >> 8 ) & 1;
+<<<<<<< HEAD
 		UINT8 *dst  = memregion("oki")->base();
 		UINT8 *src  = dst + 0x80000 + 0x20000 + 0x20000 * bank;
 		memcpy(dst + 0x20000, src, 0x20000);
@@ -94,6 +111,15 @@ WRITE16_MEMBER(unico_state::zeropnt_sound_bank_w)
 		coin_counter_w(machine(), 0,data & 0x1000);
 		set_led_status(machine(), 0,data & 0x0800); // Start 1
 		set_led_status(machine(), 1,data & 0x0400); // Start 2
+=======
+		uint8_t *dst  = memregion("oki")->base();
+		uint8_t *src  = dst + 0x80000 + 0x20000 + 0x20000 * bank;
+		memcpy(dst + 0x20000, src, 0x20000);
+
+		machine().bookkeeping().coin_counter_w(0,data & 0x1000);
+		output().set_led_value(0,data & 0x0800); // Start 1
+		output().set_led_value(1,data & 0x0400); // Start 2
+>>>>>>> upstream/master
 	}
 }
 
@@ -176,8 +202,13 @@ WRITE32_MEMBER(unico_state::zeropnt2_sound_bank_w)
 	if (ACCESSING_BITS_24_31)
 	{
 		int bank = ((data >> 24) & 3) % 4;
+<<<<<<< HEAD
 		UINT8 *dst  = memregion("oki1")->base();
 		UINT8 *src  = dst + 0x80000 + 0x20000 + 0x20000 * bank;
+=======
+		uint8_t *dst  = memregion("oki1")->base();
+		uint8_t *src  = dst + 0x80000 + 0x20000 + 0x20000 * bank;
+>>>>>>> upstream/master
 		memcpy(dst + 0x20000, src, 0x20000);
 	}
 }
@@ -186,9 +217,15 @@ WRITE32_MEMBER(unico_state::zeropnt2_leds_w)
 {
 	if (ACCESSING_BITS_16_23)
 	{
+<<<<<<< HEAD
 		coin_counter_w(machine(), 0,data & 0x00010000);
 		set_led_status(machine(), 0,data & 0x00800000); // Start 1
 		set_led_status(machine(), 1,data & 0x00400000); // Start 2
+=======
+		machine().bookkeeping().coin_counter_w(0,data & 0x00010000);
+		output().set_led_value(0,data & 0x00800000); // Start 1
+		output().set_led_value(1,data & 0x00400000); // Start 2
+>>>>>>> upstream/master
 	}
 }
 
@@ -567,7 +604,11 @@ MACHINE_RESET_MEMBER(unico_state,unico)
                                 Burglar X
 ***************************************************************************/
 
+<<<<<<< HEAD
 static MACHINE_CONFIG_START( burglarx, unico_state )
+=======
+static MACHINE_CONFIG_START( burglarx )
+>>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", M68000, XTAL_32MHz/2) /* 16MHz */
@@ -597,7 +638,11 @@ static MACHINE_CONFIG_START( burglarx, unico_state )
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "lspeaker", 0.40)
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "rspeaker", 0.40)
 
+<<<<<<< HEAD
 	MCFG_OKIM6295_ADD("oki", XTAL_32MHz/32, OKIM6295_PIN7_HIGH) // clock frequency & pin 7 not verified
+=======
+	MCFG_OKIM6295_ADD("oki", XTAL_32MHz/32, PIN7_HIGH) // clock frequency & pin 7 not verified
+>>>>>>> upstream/master
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "lspeaker", 0.80)
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "rspeaker", 0.80)
 MACHINE_CONFIG_END
@@ -613,7 +658,11 @@ MACHINE_RESET_MEMBER(unico_state,zeropt)
 	MACHINE_RESET_CALL_MEMBER(unico);
 }
 
+<<<<<<< HEAD
 static MACHINE_CONFIG_START( zeropnt, unico_state )
+=======
+static MACHINE_CONFIG_START( zeropnt )
+>>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", M68000, XTAL_32MHz/2) /* 16MHz */
@@ -643,7 +692,11 @@ static MACHINE_CONFIG_START( zeropnt, unico_state )
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "lspeaker", 0.40)
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "rspeaker", 0.40)
 
+<<<<<<< HEAD
 	MCFG_OKIM6295_ADD("oki", XTAL_32MHz/32, OKIM6295_PIN7_HIGH) // clock frequency & pin 7 not verified
+=======
+	MCFG_OKIM6295_ADD("oki", XTAL_32MHz/32, PIN7_HIGH) // clock frequency & pin 7 not verified
+>>>>>>> upstream/master
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "lspeaker", 0.80)
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "rspeaker", 0.80)
 MACHINE_CONFIG_END
@@ -654,7 +707,11 @@ MACHINE_CONFIG_END
                                 Zero Point 2
 ***************************************************************************/
 
+<<<<<<< HEAD
 static MACHINE_CONFIG_START( zeropnt2, unico_state )
+=======
+static MACHINE_CONFIG_START( zeropnt2 )
+>>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", M68EC020, XTAL_32MHz/2) /* 16MHz */
@@ -686,11 +743,19 @@ static MACHINE_CONFIG_START( zeropnt2, unico_state )
 	MCFG_SOUND_ROUTE(0, "lspeaker", 0.70)
 	MCFG_SOUND_ROUTE(1, "rspeaker", 0.70)
 
+<<<<<<< HEAD
 	MCFG_OKIM6295_ADD("oki1", XTAL_32MHz/32, OKIM6295_PIN7_HIGH) // clock frequency & pin 7 not verified
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "lspeaker", 0.40)
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "rspeaker", 0.40)
 
 	MCFG_OKIM6295_ADD("oki2", XTAL_14_31818MHz/4, OKIM6295_PIN7_HIGH) // clock frequency & pin 7 not verified
+=======
+	MCFG_OKIM6295_ADD("oki1", XTAL_32MHz/32, PIN7_HIGH) // clock frequency & pin 7 not verified
+	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "lspeaker", 0.40)
+	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "rspeaker", 0.40)
+
+	MCFG_OKIM6295_ADD("oki2", XTAL_14_31818MHz/4, PIN7_HIGH) // clock frequency & pin 7 not verified
+>>>>>>> upstream/master
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "lspeaker", 0.20)
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "rspeaker", 0.20)
 MACHINE_CONFIG_END
@@ -1047,8 +1112,16 @@ ROM_END
 
 ***************************************************************************/
 
+<<<<<<< HEAD
 GAME( 1997, burglarx, 0,       burglarx, burglarx, driver_device, 0, ROT0, "Unico", "Burglar X" , 0 )
 GAME( 1998, zeropnt,  0,       zeropnt,  zeropnt,  driver_device, 0, ROT0, "Unico", "Zero Point (set 1)", 0 )
 GAME( 1998, zeropnta, zeropnt, zeropnt,  zeropnt,  driver_device, 0, ROT0, "Unico", "Zero Point (set 2)", 0 )
 GAME( 1998, zeropntj, zeropnt, zeropnt,  zeropnt,  driver_device, 0, ROT0, "Unico", "Zero Point (Japan)", 0 )
 GAME( 1999, zeropnt2, 0,       zeropnt2, zeropnt2, driver_device, 0, ROT0, "Unico", "Zero Point 2", 0 )
+=======
+GAME( 1997, burglarx, 0,       burglarx, burglarx, unico_state, 0, ROT0, "Unico", "Burglar X" ,         0 )
+GAME( 1998, zeropnt,  0,       zeropnt,  zeropnt,  unico_state, 0, ROT0, "Unico", "Zero Point (set 1)", 0 )
+GAME( 1998, zeropnta, zeropnt, zeropnt,  zeropnt,  unico_state, 0, ROT0, "Unico", "Zero Point (set 2)", 0 )
+GAME( 1998, zeropntj, zeropnt, zeropnt,  zeropnt,  unico_state, 0, ROT0, "Unico", "Zero Point (Japan)", 0 )
+GAME( 1999, zeropnt2, 0,       zeropnt2, zeropnt2, unico_state, 0, ROT0, "Unico", "Zero Point 2",       0 )
+>>>>>>> upstream/master

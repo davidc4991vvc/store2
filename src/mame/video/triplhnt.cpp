@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 // license:???
+=======
+// license:BSD-3-Clause
+>>>>>>> upstream/master
 // copyright-holders:Stefan Jokisch
 /***************************************************************************
 
@@ -22,7 +26,20 @@ void triplhnt_state::video_start()
 {
 	m_screen->register_screen_bitmap(m_helper);
 
+<<<<<<< HEAD
 	m_bg_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(triplhnt_state::get_tile_info),this), TILEMAP_SCAN_ROWS, 16, 16, 16, 16);
+=======
+	m_bg_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(triplhnt_state::get_tile_info),this), TILEMAP_SCAN_ROWS, 16, 16, 16, 16);
+
+	m_hit_timer = timer_alloc(TIMER_HIT);
+
+	save_item(NAME(m_cmos));
+	save_item(NAME(m_da_latch));
+	save_item(NAME(m_cmos_latch));
+	save_item(NAME(m_hit_code));
+	save_item(NAME(m_sprite_zoom));
+	save_item(NAME(m_sprite_bank));
+>>>>>>> upstream/master
 }
 
 
@@ -31,22 +48,36 @@ void triplhnt_state::device_timer(emu_timer &timer, device_timer_id id, int para
 	switch (id)
 	{
 	case TIMER_HIT:
+<<<<<<< HEAD
 		triplhnt_set_collision(param);
 		break;
 	default:
 		assert_always(FALSE, "Unknown id in triplhnt_state::device_timer");
+=======
+		set_collision(param);
+		break;
+	default:
+		assert_always(false, "Unknown id in triplhnt_state::device_timer");
+>>>>>>> upstream/master
 	}
 }
 
 
 void triplhnt_state::draw_sprites(bitmap_ind16 &bitmap, const rectangle &cliprect)
 {
+<<<<<<< HEAD
 	int i;
 
 	int hit_line = 999;
 	int hit_code = 999;
 
 	for (i = 0; i < 16; i++)
+=======
+	int hit_line = 999;
+	int hit_code = 999;
+
+	for (int i = 0; i < 16; i++)
+>>>>>>> upstream/master
 	{
 		rectangle rect;
 
@@ -107,11 +138,19 @@ void triplhnt_state::draw_sprites(bitmap_ind16 &bitmap, const rectangle &cliprec
 	}
 
 	if (hit_line != 999 && hit_code != 999)
+<<<<<<< HEAD
 		timer_set(m_screen->time_until_pos(hit_line), TIMER_HIT, hit_code);
 }
 
 
 UINT32 triplhnt_state::screen_update_triplhnt(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+=======
+		m_hit_timer->adjust(m_screen->time_until_pos(hit_line), hit_code);
+}
+
+
+uint32_t triplhnt_state::screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+>>>>>>> upstream/master
 {
 	m_bg_tilemap->mark_all_dirty();
 
@@ -119,7 +158,11 @@ UINT32 triplhnt_state::screen_update_triplhnt(screen_device &screen, bitmap_ind1
 
 	draw_sprites(bitmap, cliprect);
 
+<<<<<<< HEAD
 	address_space &space = machine().driver_data()->generic_space();
+=======
+	address_space &space = machine().dummy_space();
+>>>>>>> upstream/master
 	m_discrete->write(space, TRIPLHNT_BEAR_ROAR_DATA, m_playfield_ram[0xfa] & 15);
 	m_discrete->write(space, TRIPLHNT_SHOT_DATA, m_playfield_ram[0xfc] & 15);
 	return 0;

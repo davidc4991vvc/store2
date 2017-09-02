@@ -1,7 +1,12 @@
 // license:BSD-3-Clause
 // copyright-holders:Olivier Galibert
+<<<<<<< HEAD
 #ifndef MB8795_H
 #define MB8795_H
+=======
+#ifndef MAME_MACHINE_MB8795_H
+#define MAME_MACHINE_MB8795_H
+>>>>>>> upstream/master
 
 #define MCFG_MB8795_ADD(_tag, _tx_irq, _rx_irq, _tx_drq, _rx_drq)    \
 	MCFG_DEVICE_ADD(_tag, MB8795, 0)                                 \
@@ -24,12 +29,21 @@ class mb8795_device :   public device_t,
 						public device_network_interface
 {
 public:
+<<<<<<< HEAD
 	mb8795_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
 
 	template<class _Object> static devcb_base &set_tx_irq_wr_callback(device_t &device, _Object object) { return downcast<mb8795_device &>(device).irq_tx_cb.set_callback(object); }
 	template<class _Object> static devcb_base &set_rx_irq_wr_callback(device_t &device, _Object object) { return downcast<mb8795_device &>(device).irq_rx_cb.set_callback(object); }
 	template<class _Object> static devcb_base &set_tx_drq_wr_callback(device_t &device, _Object object) { return downcast<mb8795_device &>(device).drq_tx_cb.set_callback(object); }
 	template<class _Object> static devcb_base &set_rx_drq_wr_callback(device_t &device, _Object object) { return downcast<mb8795_device &>(device).drq_rx_cb.set_callback(object); }
+=======
+	mb8795_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
+
+	template <class Object> static devcb_base &set_tx_irq_wr_callback(device_t &device, Object &&cb) { return downcast<mb8795_device &>(device).irq_tx_cb.set_callback(std::forward<Object>(cb)); }
+	template <class Object> static devcb_base &set_rx_irq_wr_callback(device_t &device, Object &&cb) { return downcast<mb8795_device &>(device).irq_rx_cb.set_callback(std::forward<Object>(cb)); }
+	template <class Object> static devcb_base &set_tx_drq_wr_callback(device_t &device, Object &&cb) { return downcast<mb8795_device &>(device).drq_tx_cb.set_callback(std::forward<Object>(cb)); }
+	template <class Object> static devcb_base &set_rx_drq_wr_callback(device_t &device, Object &&cb) { return downcast<mb8795_device &>(device).drq_rx_cb.set_callback(std::forward<Object>(cb)); }
+>>>>>>> upstream/master
 
 	DECLARE_ADDRESS_MAP(map, 8);
 
@@ -50,6 +64,7 @@ public:
 	DECLARE_READ8_MEMBER(mac_r);
 	DECLARE_WRITE8_MEMBER(mac_w);
 
+<<<<<<< HEAD
 	void tx_dma_w(UINT8 data, bool eof);
 	void rx_dma_r(UINT8 &data, bool &eof);
 
@@ -59,6 +74,17 @@ protected:
 	virtual void device_timer(emu_timer &timer, device_timer_id id, int param, void *ptr);
 
 	virtual void recv_cb(UINT8 *buf, int len);
+=======
+	void tx_dma_w(uint8_t data, bool eof);
+	void rx_dma_r(uint8_t &data, bool &eof);
+
+protected:
+	virtual void device_start() override;
+	virtual void device_reset() override;
+	virtual void device_timer(emu_timer &timer, device_timer_id id, int param, void *ptr) override;
+
+	virtual void recv_cb(uint8_t *buf, int len) override;
+>>>>>>> upstream/master
 
 private:
 	enum { TIMER_TX, TIMER_RX };
@@ -101,10 +127,17 @@ private:
 		EN_RST_RESET        = 0x80 /* reset interface */
 	};
 
+<<<<<<< HEAD
 	UINT8 mac[6];
 	UINT8 txbuf[2000], rxbuf[2000];
 	UINT8 txstat, txmask, rxstat, rxmask, txmode, rxmode;
 	UINT16 txlen, rxlen, txcount;
+=======
+	uint8_t mac[6];
+	uint8_t txbuf[2000], rxbuf[2000];
+	uint8_t txstat, txmask, rxstat, rxmask, txmode, rxmode;
+	uint16_t txlen, rxlen, txcount;
+>>>>>>> upstream/master
 	bool drq_tx, drq_rx, irq_tx, irq_rx;
 	emu_timer *timer_tx, *timer_rx;
 
@@ -120,5 +153,11 @@ private:
 };
 
 extern const device_type MB8795;
+<<<<<<< HEAD
 
 #endif
+=======
+DECLARE_DEVICE_TYPE(MB8795, mb8795_device)
+
+#endif // MAME_MACHINE_MB8795_H
+>>>>>>> upstream/master

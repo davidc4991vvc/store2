@@ -33,9 +33,15 @@ static const char *const cr2str[] =
 
 
 /* Sign extend N-bit number.  */
+<<<<<<< HEAD
 static INT32 sign_ext(UINT32 x, int n)
 {
 	INT32 t;
+=======
+static int32_t sign_ext(uint32_t x, int n)
+{
+	int32_t t;
+>>>>>>> upstream/master
 	t = x >> (n - 1);
 	t = ((-t) << n) | x;
 	return t;
@@ -44,6 +50,7 @@ static INT32 sign_ext(UINT32 x, int n)
 
 /* Basic integer 3-address register format:
  *   mnemonic %rs1,%rs2,%rd  */
+<<<<<<< HEAD
 static void int_12d(char *buf, char *mnemonic, UINT32 pc, UINT32 insn)
 {
 	/* Possibly prefix shrd with 'd.' */
@@ -52,67 +59,124 @@ static void int_12d(char *buf, char *mnemonic, UINT32 pc, UINT32 insn)
 			get_isrc1 (insn), get_isrc2 (insn), get_idest (insn));
 	else
 		sprintf(buf, "%s\t%%r%d,%%r%d,%%r%d", mnemonic,
+=======
+static void int_12d(std::ostream &stream, char *mnemonic, uint32_t pc, uint32_t insn)
+{
+	/* Possibly prefix shrd with 'd.' */
+	if (((insn & 0xfc000000) == 0xb0000000) && (insn & 0x200))
+		util::stream_format(stream, "d.%s\t%%r%d,%%r%d,%%r%d", mnemonic,
+			get_isrc1 (insn), get_isrc2 (insn), get_idest (insn));
+	else
+		util::stream_format(stream, "%s\t%%r%d,%%r%d,%%r%d", mnemonic,
+>>>>>>> upstream/master
 			get_isrc1 (insn), get_isrc2 (insn), get_idest (insn));
 }
 
 
 /* Basic integer 3-address imm16 format:
  *   mnemonic #imm16,%rs2,%rd  */
+<<<<<<< HEAD
 static void int_i2d(char *buf, char *mnemonic, UINT32 pc, UINT32 insn)
+=======
+static void int_i2d(std::ostream &stream, char *mnemonic, uint32_t pc, uint32_t insn)
+>>>>>>> upstream/master
 {
 	/* Sign extend the 16-bit immediate.
 	   Print as hex for the bitwise operations.  */
 	int upper_6bits = (insn >> 26) & 0x3f;
 	if (upper_6bits >= 0x30 && upper_6bits <= 0x3f)
+<<<<<<< HEAD
 		sprintf(buf, "%s\t0x%04x,%%r%d,%%r%d", mnemonic,
 			(UINT32)(get_imm16 (insn)), get_isrc2 (insn), get_idest (insn));
 	else
 		sprintf(buf, "%s\t%d,%%r%d,%%r%d", mnemonic,
+=======
+		util::stream_format(stream, "%s\t0x%04x,%%r%d,%%r%d", mnemonic,
+			(uint32_t)(get_imm16 (insn)), get_isrc2 (insn), get_idest (insn));
+	else
+		util::stream_format(stream, "%s\t%d,%%r%d,%%r%d", mnemonic,
+>>>>>>> upstream/master
 			sign_ext(get_imm16 (insn), 16), get_isrc2 (insn), get_idest (insn));
 }
 
 
 /* Integer (mixed) 2-address  isrc1ni,fdest.  */
+<<<<<<< HEAD
 static void int_1d(char *buf, char *mnemonic, UINT32 pc, UINT32 insn)
 {
 	sprintf(buf, "%s\t%%r%d,%%f%d", mnemonic, get_isrc1 (insn), get_fdest (insn));
+=======
+static void int_1d(std::ostream &stream, char *mnemonic, uint32_t pc, uint32_t insn)
+{
+	util::stream_format(stream, "%s\t%%r%d,%%f%d", mnemonic, get_isrc1 (insn), get_fdest (insn));
+>>>>>>> upstream/master
 }
 
 
 /* Integer (mixed) 2-address  csrc2,idest.  */
+<<<<<<< HEAD
 static void int_cd(char *buf, char *mnemonic, UINT32 pc, UINT32 insn)
 {
 	sprintf(buf, "%s\t%%%s,%%r%d", mnemonic, cr2str[get_creg (insn)], get_idest (insn));
+=======
+static void int_cd(std::ostream &stream, char *mnemonic, uint32_t pc, uint32_t insn)
+{
+	util::stream_format(stream, "%s\t%%%s,%%r%d", mnemonic, cr2str[get_creg (insn)], get_idest (insn));
+>>>>>>> upstream/master
 }
 
 
 /* Integer (mixed) 2-address  isrc1,csrc2.  */
+<<<<<<< HEAD
 static void int_1c(char *buf, char *mnemonic, UINT32 pc, UINT32 insn)
 {
 	sprintf(buf, "%s\t%%r%d,%%%s", mnemonic, get_isrc1(insn), cr2str[get_creg (insn)]);
+=======
+static void int_1c(std::ostream &stream, char *mnemonic, uint32_t pc, uint32_t insn)
+{
+	util::stream_format(stream, "%s\t%%r%d,%%%s", mnemonic, get_isrc1(insn), cr2str[get_creg (insn)]);
+>>>>>>> upstream/master
 }
 
 
 /* Integer 1-address register format:
  *   mnemonic %rs1  */
+<<<<<<< HEAD
 static void int_1(char *buf, char *mnemonic, UINT32 pc, UINT32 insn)
 {
 	sprintf(buf, "%s\t%%r%d", mnemonic, get_isrc1 (insn));
+=======
+static void int_1(std::ostream &stream, char *mnemonic, uint32_t pc, uint32_t insn)
+{
+	util::stream_format(stream, "%s\t%%r%d", mnemonic, get_isrc1 (insn));
+>>>>>>> upstream/master
 }
 
 
 /* Integer no-address register format:
  *   mnemonic  */
+<<<<<<< HEAD
 static void int_0(char *buf, char *mnemonic, UINT32 pc, UINT32 insn)
 {
 	sprintf(buf, "%s", mnemonic);
+=======
+static void int_0(std::ostream &stream, char *mnemonic, uint32_t pc, uint32_t insn)
+{
+	util::stream_format(stream, "%s", mnemonic);
+>>>>>>> upstream/master
 }
 
 
 /* Basic floating-point 3-address register format:
  *   mnemonic %fs1,%fs2,%fd  */
+<<<<<<< HEAD
 static void flop_12d(char *buf, char *mnemonic, UINT32 pc, UINT32 insn)
 {
+=======
+static void flop_12d(std::ostream &stream, char *mnemonic, uint32_t pc, uint32_t insn)
+{
+	char newname[256];
+>>>>>>> upstream/master
 	const char *const suffix[4] = { "ss", "sd", "ds", "dd" };
 	const char *prefix_d, *prefix_p;
 	prefix_p = (insn & 0x400) ? "p" : "";
@@ -126,7 +190,10 @@ static void flop_12d(char *buf, char *mnemonic, UINT32 pc, UINT32 insn)
 		int is_pfam = insn & 0x400;
 		if (!is_pfam)
 		{
+<<<<<<< HEAD
 			char newname[256];
+=======
+>>>>>>> upstream/master
 			char *op = mnemonic;
 			char *np = newname + 1;
 			newname[0] = 'm';
@@ -151,13 +218,21 @@ static void flop_12d(char *buf, char *mnemonic, UINT32 pc, UINT32 insn)
 		const char *const mn[2] = { "fgt.", "fle." };
 		int r = (insn & 0x080) >> 7;
 		int s = (insn & 0x100) ? 3 : 0;
+<<<<<<< HEAD
 		sprintf(buf, "%s%s%s%s\t%%f%d,%%f%d,%%f%d", prefix_d, prefix_p, mn[r],
+=======
+		util::stream_format(stream, "%s%s%s%s\t%%f%d,%%f%d,%%f%d", prefix_d, prefix_p, mn[r],
+>>>>>>> upstream/master
 			suffix[s], get_fsrc1 (insn), get_fsrc2 (insn), get_fdest (insn));
 	}
 	else
 	{
 		int s = (insn & 0x180) >> 7;
+<<<<<<< HEAD
 		sprintf(buf, "%s%s%s%s\t%%f%d,%%f%d,%%f%d", prefix_d, prefix_p, mnemonic,
+=======
+		util::stream_format(stream, "%s%s%s%s\t%%f%d,%%f%d,%%f%d", prefix_d, prefix_p, mnemonic,
+>>>>>>> upstream/master
 			suffix[s], get_fsrc1 (insn), get_fsrc2 (insn), get_fdest (insn));
 	}
 }
@@ -165,43 +240,67 @@ static void flop_12d(char *buf, char *mnemonic, UINT32 pc, UINT32 insn)
 
 /* Floating-point 2-address register format:
  *   mnemonic %fs1,%fd  */
+<<<<<<< HEAD
 static void flop_1d(char *buf, char *mnemonic, UINT32 pc, UINT32 insn)
+=======
+static void flop_1d(std::ostream &stream, char *mnemonic, uint32_t pc, uint32_t insn)
+>>>>>>> upstream/master
 {
 	const char *const suffix[4] = { "ss", "sd", "ds", "dd" };
 	const char *prefix_d, *prefix_p;
 	int s = (insn & 0x180) >> 7;
 	prefix_p = (insn & 0x400) ? "p" : "";
 	prefix_d = (insn & 0x200) ? "d." : "";
+<<<<<<< HEAD
 	sprintf(buf, "%s%s%s%s\t%%f%d,%%f%d", prefix_d, prefix_p, mnemonic,
+=======
+	util::stream_format(stream, "%s%s%s%s\t%%f%d,%%f%d", prefix_d, prefix_p, mnemonic,
+>>>>>>> upstream/master
 		suffix[s], get_fsrc1 (insn), get_fdest (insn));
 }
 
 
 /* Floating-point 2-address register format:
  *   mnemonic %fs2,%fd  */
+<<<<<<< HEAD
 static void flop_2d(char *buf, char *mnemonic, UINT32 pc, UINT32 insn)
+=======
+static void flop_2d(std::ostream &stream, char *mnemonic, uint32_t pc, uint32_t insn)
+>>>>>>> upstream/master
 {
 	const char *const suffix[4] = { "ss", "sd", "ds", "dd" };
 	const char *prefix_d;
 	int s = (insn & 0x180) >> 7;
 	prefix_d = (insn & 0x200) ? "d." : "";
+<<<<<<< HEAD
 	sprintf(buf, "%s%s%s\t%%f%d,%%f%d", prefix_d, mnemonic, suffix[s],
+=======
+	util::stream_format(stream, "%s%s%s\t%%f%d,%%f%d", prefix_d, mnemonic, suffix[s],
+>>>>>>> upstream/master
 		get_fsrc2 (insn), get_fdest (insn));
 }
 
 
 /* Floating-point (mixed) 2-address register format:
  *  fxfr fsrc1,idest.  */
+<<<<<<< HEAD
 static void flop_fxfr(char *buf, char *mnemonic, UINT32 pc, UINT32 insn)
 {
 	const char *prefix_d = (insn & 0x200) ? "d." : "";
 	sprintf(buf, "%s%s\t%%f%d,%%r%d", prefix_d, mnemonic, get_fsrc1 (insn),
+=======
+static void flop_fxfr(std::ostream &stream, char *mnemonic, uint32_t pc, uint32_t insn)
+{
+	const char *prefix_d = (insn & 0x200) ? "d." : "";
+	util::stream_format(stream, "%s%s\t%%f%d,%%r%d", prefix_d, mnemonic, get_fsrc1 (insn),
+>>>>>>> upstream/master
 		get_idest (insn));
 }
 
 
 /* Branch with reg,reg,sbroff format:
  *   mnemonic %rs1,%rs2,sbroff  */
+<<<<<<< HEAD
 static void int_12S(char *buf, char *mnemonic, UINT32 pc, UINT32 insn)
 {
 	INT32 sbroff = sign_ext ((((insn >> 5) & 0xf800) | (insn & 0x07ff)), 16);
@@ -209,11 +308,21 @@ static void int_12S(char *buf, char *mnemonic, UINT32 pc, UINT32 insn)
 
 	sprintf(buf, "%s\t%%r%d,%%r%d,0x%08x", mnemonic, get_isrc1 (insn),
 		get_isrc2 (insn), (UINT32)rel);
+=======
+static void int_12S(std::ostream &stream, char *mnemonic, uint32_t pc, uint32_t insn)
+{
+	int32_t sbroff = sign_ext ((((insn >> 5) & 0xf800) | (insn & 0x07ff)), 16);
+	int32_t rel = (int32_t)pc + (sbroff << 2) + 4;
+
+	util::stream_format(stream, "%s\t%%r%d,%%r%d,0x%08x", mnemonic, get_isrc1 (insn),
+		get_isrc2 (insn), (uint32_t)rel);
+>>>>>>> upstream/master
 }
 
 
 /* Branch with #const5,reg,sbroff format:
  *   mnemonic #const5,%rs2,sbroff  */
+<<<<<<< HEAD
 static void int_i2S(char *buf, char *mnemonic, UINT32 pc, UINT32 insn)
 {
 	INT32 sbroff = sign_ext ((((insn >> 5) & 0xf800) | (insn & 0x07ff)), 16);
@@ -221,29 +330,55 @@ static void int_i2S(char *buf, char *mnemonic, UINT32 pc, UINT32 insn)
 
 	sprintf(buf, "%s\t%d,%%r%d,0x%08x", mnemonic, ((insn >> 11) & 0x1f),
 		get_isrc2 (insn), (UINT32)rel);
+=======
+static void int_i2S(std::ostream &stream, char *mnemonic, uint32_t pc, uint32_t insn)
+{
+	int32_t sbroff = sign_ext ((((insn >> 5) & 0xf800) | (insn & 0x07ff)), 16);
+	int32_t rel = (int32_t)pc + (sbroff << 2) + 4;
+
+	util::stream_format(stream, "%s\t%d,%%r%d,0x%08x", mnemonic, ((insn >> 11) & 0x1f),
+		get_isrc2 (insn), (uint32_t)rel);
+>>>>>>> upstream/master
 }
 
 
 /* Branch with lbroff format:
  *   mnemonic lbroff  */
+<<<<<<< HEAD
 static void int_L(char *buf, char *mnemonic, UINT32 pc, UINT32 insn)
 {
 	INT32 lbroff =  sign_ext ((insn & 0x03ffffff), 26);
 	INT32 rel = (INT32)pc + (lbroff << 2) + 4;
 
 	sprintf(buf, "%s\t0x%08x", mnemonic, (UINT32)rel);
+=======
+static void int_L(std::ostream &stream, char *mnemonic, uint32_t pc, uint32_t insn)
+{
+	int32_t lbroff =  sign_ext ((insn & 0x03ffffff), 26);
+	int32_t rel = (int32_t)pc + (lbroff << 2) + 4;
+
+	util::stream_format(stream, "%s\t0x%08x", mnemonic, (uint32_t)rel);
+>>>>>>> upstream/master
 }
 
 
 /* Integer load.
  *  ld.{b,s,l} isrc1(isrc2),idest
  *  ld.{b,s,l} #const(isrc2),idest  */
+<<<<<<< HEAD
 static void int_ldx(char *buf, char *mnemonic, UINT32 pc, UINT32 insn)
+=======
+static void int_ldx(std::ostream &stream, char *mnemonic, uint32_t pc, uint32_t insn)
+>>>>>>> upstream/master
 {
 	/* Operand size, in bytes.  */
 	int sizes[4] = { 1, 1, 2, 4 };
 	const char *const suffix[4] = { "b", "b", "s", "l" };
+<<<<<<< HEAD
 	UINT32 idx = 0;
+=======
+	uint32_t idx;
+>>>>>>> upstream/master
 
 	/* Bits 28 and 0 determine the operand size.  */
 	idx = ((insn >> 27) & 2) | (insn & 1);
@@ -252,6 +387,7 @@ static void int_ldx(char *buf, char *mnemonic, UINT32 pc, UINT32 insn)
 	if (insn & 0x04000000)
 	{
 		/* Chop off lower bits of displacement.  */
+<<<<<<< HEAD
 		INT32 immsrc1 = sign_ext (get_imm16 (insn), 16);
 		int size = sizes[idx];
 		immsrc1 &= ~(size - 1);
@@ -260,19 +396,39 @@ static void int_ldx(char *buf, char *mnemonic, UINT32 pc, UINT32 insn)
 	}
 	else
 		sprintf(buf, "%s%s\t%%r%d(%%r%d),%%r%d", mnemonic, suffix[idx],
+=======
+		int32_t immsrc1 = sign_ext (get_imm16 (insn), 16);
+		int size = sizes[idx];
+		immsrc1 &= ~(size - 1);
+		util::stream_format(stream, "%s%s\t%d(%%r%d),%%r%d", mnemonic, suffix[idx],
+			immsrc1, get_isrc2 (insn), get_idest (insn));
+	}
+	else
+		util::stream_format(stream, "%s%s\t%%r%d(%%r%d),%%r%d", mnemonic, suffix[idx],
+>>>>>>> upstream/master
 			get_isrc1 (insn), get_isrc2 (insn), get_idest (insn));
 }
 
 
 /* Integer store: st.b isrc1ni,#const(isrc2)  */
+<<<<<<< HEAD
 static void int_stx(char *buf, char *mnemonic, UINT32 pc, UINT32 insn)
+=======
+static void int_stx(std::ostream &stream, char *mnemonic, uint32_t pc, uint32_t insn)
+>>>>>>> upstream/master
 {
 	/* Operand size, in bytes.  */
 	int sizes[4] = { 1, 1, 2, 4 };
 	const char *const suffix[4] = { "b", "b", "s", "l" };
+<<<<<<< HEAD
 	int idx = 0;
 	int size;
 	INT32 immsrc = sign_ext ((((insn >> 5) & 0xf800) | (insn & 0x07ff)), 16);
+=======
+	int idx;
+	int size;
+	int32_t immsrc = sign_ext ((((insn >> 5) & 0xf800) | (insn & 0x07ff)), 16);
+>>>>>>> upstream/master
 
 	/* Bits 28 and 0 determine the operand size.  */
 	idx = ((insn >> 27) & 2) | (insn & 1);
@@ -280,7 +436,11 @@ static void int_stx(char *buf, char *mnemonic, UINT32 pc, UINT32 insn)
 	/* Chop off lower bits of displacement.  */
 	size = sizes[idx];
 	immsrc &= ~(size - 1);
+<<<<<<< HEAD
 	sprintf(buf, "%s%s\t%%r%d,%d(%%r%d)", mnemonic, suffix[idx],
+=======
+	util::stream_format(stream, "%s%s\t%%r%d,%d(%%r%d)", mnemonic, suffix[idx],
+>>>>>>> upstream/master
 		get_isrc1 (insn), immsrc, get_isrc2 (insn));
 }
 
@@ -291,6 +451,7 @@ static void int_stx(char *buf, char *mnemonic, UINT32 pc, UINT32 insn)
  *  "fst.y fdest,isrc1(isrc2)", "fst.y fdest,isrc1(isrc2)++",
  *  "fst.y fdest,#const(isrc2)" or "fst.y fdest,#const(isrc2)++"
  *  Where y = {l,d,q}.  Note, there is no pfld.q, though.  */
+<<<<<<< HEAD
 static void int_fldst(char *buf, char *mnemonic, UINT32 pc, UINT32 insn)
 {
 	INT32 immsrc1 = sign_ext (get_imm16 (insn), 16);
@@ -302,6 +463,19 @@ static void int_fldst(char *buf, char *mnemonic, UINT32 pc, UINT32 insn)
 	int auto_inc = (insn & 1);
 	const char *const auto_suff[2] = { "", "++" };
 	int piped = (insn & 0x40000000) >> 29;
+=======
+static void int_fldst(std::ostream &stream, char *mnemonic, uint32_t pc, uint32_t insn)
+{
+	int32_t immsrc1 = sign_ext (get_imm16 (insn), 16);
+	/* Operand size, in bytes.  */
+	int sizes[4] = { 8, 4, 16, 4 };
+	const char *const suffix[4] = { "d", "l", "q", "l" };
+	int idx;
+	int size;
+	int auto_inc = (insn & 1);
+	const char *const auto_suff[2] = { "", "++" };
+	int piped = (insn & 0x40000000) >> 30;
+>>>>>>> upstream/master
 	const char *const piped_suff[2] = { "", "p" };
 	int upper_6bits = (insn >> 26) & 0x3f;
 	int is_load = (upper_6bits == 8 || upper_6bits == 9 || upper_6bits == 24
@@ -314,14 +488,22 @@ static void int_fldst(char *buf, char *mnemonic, UINT32 pc, UINT32 insn)
 	/* There is no pipelined load quad on XR.  */
 	if (piped && size == 16)
 	{
+<<<<<<< HEAD
 		sprintf (buf, ".long\t%#08x; *", insn);
+=======
+		util::stream_format(stream, ".long\t%#08x; *", insn);
+>>>>>>> upstream/master
 		return;
 	}
 
 	/* There is only a 64-bit pixel store.  */
 	if ((upper_6bits == 15) && size != 8)
 	{
+<<<<<<< HEAD
 		sprintf (buf, ".long\t%#08x", insn);
+=======
+		util::stream_format(stream, ".long\t%#08x", insn);
+>>>>>>> upstream/master
 		return;
 	}
 
@@ -331,21 +513,37 @@ static void int_fldst(char *buf, char *mnemonic, UINT32 pc, UINT32 insn)
 		/* Chop off lower bits of displacement.  */
 		immsrc1 &= ~(size - 1);
 		if (is_load)
+<<<<<<< HEAD
 			sprintf(buf, "%s%s%s\t%d(%%r%d)%s,%%f%d", piped_suff[piped], mnemonic,
 				suffix[idx], immsrc1, get_isrc2 (insn), auto_suff[auto_inc],
 				get_fdest (insn));
 		else
 			sprintf(buf, "%s%s\t%%f%d,%d(%%r%d)%s", mnemonic, suffix[idx],
+=======
+			util::stream_format(stream, "%s%s%s\t%d(%%r%d)%s,%%f%d", piped_suff[piped], mnemonic,
+				suffix[idx], immsrc1, get_isrc2 (insn), auto_suff[auto_inc],
+				get_fdest (insn));
+		else
+			util::stream_format(stream, "%s%s\t%%f%d,%d(%%r%d)%s", mnemonic, suffix[idx],
+>>>>>>> upstream/master
 				get_fdest (insn), immsrc1, get_isrc2 (insn), auto_suff[auto_inc]);
 	}
 	else
 	{
 		if (is_load)
+<<<<<<< HEAD
 			sprintf(buf, "%s%s%s\t%%r%d(%%r%d)%s,%%f%d", piped_suff[piped],
 				mnemonic, suffix[idx], get_isrc1 (insn), get_isrc2 (insn),
 				auto_suff[auto_inc], get_fdest (insn));
 		else
 			sprintf(buf, "%s%s\t%%f%d,%%r%d(%%r%d)%s", mnemonic, suffix[idx],
+=======
+			util::stream_format(stream, "%s%s%s\t%%r%d(%%r%d)%s,%%f%d", piped_suff[piped],
+				mnemonic, suffix[idx], get_isrc1 (insn), get_isrc2 (insn),
+				auto_suff[auto_inc], get_fdest (insn));
+		else
+			util::stream_format(stream, "%s%s\t%%f%d,%%r%d(%%r%d)%s", mnemonic, suffix[idx],
+>>>>>>> upstream/master
 				get_fdest (insn), get_isrc1 (insn), get_isrc2 (insn),
 				auto_suff[auto_inc]);
 	}
@@ -353,12 +551,21 @@ static void int_fldst(char *buf, char *mnemonic, UINT32 pc, UINT32 insn)
 
 
 /* flush #const(isrc2)[++].  */
+<<<<<<< HEAD
 static void int_flush(char *buf, char *mnemonic, UINT32 pc, UINT32 insn)
 {
 	const char *const auto_suff[2] = { "", "++" };
 	INT32 immsrc = sign_ext (get_imm16 (insn), 16);
 	immsrc &= ~(16-1);
 	sprintf(buf, "%s\t%d(%%r%d)%s", mnemonic, immsrc, get_isrc2 (insn),
+=======
+static void int_flush(std::ostream &stream, char *mnemonic, uint32_t pc, uint32_t insn)
+{
+	const char *const auto_suff[2] = { "", "++" };
+	int32_t immsrc = sign_ext (get_imm16 (insn), 16);
+	immsrc &= ~(16-1);
+	util::stream_format(stream, "%s\t%d(%%r%d)%s", mnemonic, immsrc, get_isrc2 (insn),
+>>>>>>> upstream/master
 		auto_suff[(insn & 1)]);
 }
 
@@ -375,7 +582,11 @@ struct decode_tbl_t
 {
 	/* Disassembly function for this opcode.
 	   Call with buffer, mnemonic, pc, insn.  */
+<<<<<<< HEAD
 	void (*insn_dis)(char *, char *, UINT32, UINT32);
+=======
+	void (*insn_dis)(std::ostream &, char *, uint32_t, uint32_t);
+>>>>>>> upstream/master
 
 	/* Flags for this opcode.  */
 	char flags;
@@ -398,7 +609,11 @@ static const decode_tbl_t decode_tbl[64] =
 	{ int_stx,   DEC_DECODED, "st."        }, /* st.b isrc1ni,#const(isrc2).  */
 	{ int_ldx,   DEC_DECODED, "ld."        }, /* ld.{s,l} isrc1(isrc2),idest.  */
 	{ int_ldx,   DEC_DECODED, "ld."        }, /* ld.{s,l} #const(isrc2),idest.  */
+<<<<<<< HEAD
 	{ 0,         0           , 0           },
+=======
+	{ nullptr,         0           , nullptr           },
+>>>>>>> upstream/master
 	{ int_stx,   DEC_DECODED, "st."        }, /* st.{s,l} isrc1ni,#const(isrc2),idest.*/
 	{ int_fldst, DEC_DECODED, "fld."       }, /* fld.{l,d,q} isrc1(isrc2)[++],fdest.  */
 	{ int_fldst, DEC_DECODED, "fld."       }, /* fld.{l,d,q} #const(isrc2)[++],fdest. */
@@ -410,8 +625,13 @@ static const decode_tbl_t decode_tbl[64] =
 	{ int_fldst, DEC_DECODED, "pstd."      }, /* pst.d fdest,#const(isrc2)[++].       */
 	{ int_1,     DEC_DECODED, "bri"        }, /* bri isrc1ni.                         */
 	{ int_12d,   DEC_DECODED, "trap"       }, /* trap isrc1ni,isrc2,idest.            */
+<<<<<<< HEAD
 	{ 0,         DEC_MORE,    0            }, /* FP ESCAPE FORMAT, more decode.       */
 	{ 0,         DEC_MORE,    0            }, /* CORE ESCAPE FORMAT, more decode.     */
+=======
+	{ nullptr,         DEC_MORE,    nullptr            }, /* FP ESCAPE FORMAT, more decode.       */
+	{ nullptr,         DEC_MORE,    nullptr            }, /* CORE ESCAPE FORMAT, more decode.     */
+>>>>>>> upstream/master
 	{ int_12S,   DEC_DECODED, "btne"       }, /* btne isrc1,isrc2,sbroff.             */
 	{ int_i2S,   DEC_DECODED, "btne"       }, /* btne #const,isrc2,sbroff.            */
 	{ int_12S,   DEC_DECODED, "bte"        }, /* bte isrc1,isrc2,sbroff.              */
@@ -442,6 +662,7 @@ static const decode_tbl_t decode_tbl[64] =
 	{ int_i2d,   DEC_DECODED, "shra"       }, /* shra #const,isrc2,idest.   */
 	{ int_12d,   DEC_DECODED, "and"        }, /* and isrc1,isrc2,idest.     */
 	{ int_i2d,   DEC_DECODED, "and"        }, /* and #const,isrc2,idest.    */
+<<<<<<< HEAD
 	{ 0,         0           , 0           },
 	{ int_i2d,   DEC_DECODED, "andh"       }, /* andh #const,isrc2,idest.   */
 	{ int_12d,   DEC_DECODED, "andnot"     }, /* andnot isrc1,isrc2,idest.  */
@@ -455,6 +676,21 @@ static const decode_tbl_t decode_tbl[64] =
 	{ int_12d,   DEC_DECODED, "xor"        }, /* xor isrc1,isrc2,idest.     */
 	{ int_i2d,   DEC_DECODED, "xor"        }, /* xor #const,isrc2,idest.    */
 	{ 0,         0           , 0           },
+=======
+	{ nullptr,         0           , nullptr           },
+	{ int_i2d,   DEC_DECODED, "andh"       }, /* andh #const,isrc2,idest.   */
+	{ int_12d,   DEC_DECODED, "andnot"     }, /* andnot isrc1,isrc2,idest.  */
+	{ int_i2d,   DEC_DECODED, "andnot"     }, /* andnot #const,isrc2,idest. */
+	{ nullptr,         0           , nullptr           },
+	{ int_i2d,   DEC_DECODED, "andnoth"    }, /* andnoth #const,isrc2,idest.*/
+	{ int_12d,   DEC_DECODED, "or"         }, /* or isrc1,isrc2,idest.      */
+	{ int_i2d,   DEC_DECODED, "or"         }, /* or #const,isrc2,idest.     */
+	{ nullptr,         0           , nullptr           },
+	{ int_i2d,   DEC_DECODED, "orh"        }, /* orh #const,isrc2,idest.    */
+	{ int_12d,   DEC_DECODED, "xor"        }, /* xor isrc1,isrc2,idest.     */
+	{ int_i2d,   DEC_DECODED, "xor"        }, /* xor #const,isrc2,idest.    */
+	{ nullptr,         0           , nullptr           },
+>>>>>>> upstream/master
 	{ int_i2d,   DEC_DECODED, "xorh"       }, /* xorh #const,isrc2,idest.   */
 };
 
@@ -462,6 +698,7 @@ static const decode_tbl_t decode_tbl[64] =
 /* Second-level decode table (i.e., for the 3 core escape opcode bits).  */
 static const decode_tbl_t core_esc_decode_tbl[8] =
 {
+<<<<<<< HEAD
 	{ 0,         0          , 0           },
 	{ int_0,     DEC_DECODED, "lock"      }, /* lock.           */
 	{ int_1,     DEC_DECODED, "calli"     }, /* calli isrc1ni.  */
@@ -469,6 +706,15 @@ static const decode_tbl_t core_esc_decode_tbl[8] =
 	{ int_0,     DEC_DECODED, "intovr"    }, /* intovr.         */
 	{ 0,         0          , 0           },
 	{ 0,         0          , 0           },
+=======
+	{ nullptr,         0          , nullptr           },
+	{ int_0,     DEC_DECODED, "lock"      }, /* lock.           */
+	{ int_1,     DEC_DECODED, "calli"     }, /* calli isrc1ni.  */
+	{ nullptr,         0          , nullptr           },
+	{ int_0,     DEC_DECODED, "intovr"    }, /* intovr.         */
+	{ nullptr,         0          , nullptr           },
+	{ nullptr,         0          , nullptr           },
+>>>>>>> upstream/master
 	{ int_0,     DEC_DECODED, "unlock"    }, /* unlock.         */
 };
 
@@ -518,6 +764,7 @@ static const decode_tbl_t fp_decode_tbl[128] =
 	{ flop_2d,   DEC_DECODED, "frcp."     }, /* 0x22 frcp.{ss,sd,dd} */
 	{ flop_2d,   DEC_DECODED, "frsqr."    }, /* 0x23 frsqr.{ss,sd,dd} */
 	{ flop_12d,  DEC_DECODED, "pfmul3.dd" }, /* 0x24 pfmul3.dd */
+<<<<<<< HEAD
 	{ 0,         0          , 0           }, /* 0x25 */
 	{ 0,         0          , 0           }, /* 0x26 */
 	{ 0,         0          , 0           }, /* 0x27 */
@@ -529,12 +776,26 @@ static const decode_tbl_t fp_decode_tbl[128] =
 	{ 0,         0          , 0           }, /* 0x2D */
 	{ 0,         0          , 0           }, /* 0x2E */
 	{ 0,         0          , 0           }, /* 0x2F */
+=======
+	{ nullptr,         0          , nullptr           }, /* 0x25 */
+	{ nullptr,         0          , nullptr           }, /* 0x26 */
+	{ nullptr,         0          , nullptr           }, /* 0x27 */
+	{ nullptr,         0          , nullptr           }, /* 0x28 */
+	{ nullptr,         0          , nullptr           }, /* 0x29 */
+	{ nullptr,         0          , nullptr           }, /* 0x2A */
+	{ nullptr,         0          , nullptr           }, /* 0x2B */
+	{ nullptr,         0          , nullptr           }, /* 0x2C */
+	{ nullptr,         0          , nullptr           }, /* 0x2D */
+	{ nullptr,         0          , nullptr           }, /* 0x2E */
+	{ nullptr,         0          , nullptr           }, /* 0x2F */
+>>>>>>> upstream/master
 	{ flop_12d,  DEC_DECODED, "fadd."     }, /* 0x30, [p]fadd.{ss,sd,dd} */
 	{ flop_12d,  DEC_DECODED, "fsub."     }, /* 0x31, [p]fsub.{ss,sd,dd} */
 	{ flop_1d,   DEC_DECODED, "fix."      }, /* 0x32, [p]fix.{ss,sd,dd} */
 	{ flop_1d,   DEC_DECODED, "famov."    }, /* 0x33, [p]famov.{ss,sd,ds,dd} */
 	{ flop_12d,  DEC_DECODED, "f{gt,le}"  }, /* 0x34, pf{gt,le}.{ss,dd} */
 	{ flop_12d,  DEC_DECODED, "feq."      }, /* 0x35, pfeq.{ss,dd} */
+<<<<<<< HEAD
 	{ 0,         0          , 0           }, /* 0x36 */
 	{ 0,         0          , 0           }, /* 0x37 */
 	{ 0,         0          , 0           }, /* 0x38 */
@@ -609,10 +870,87 @@ static const decode_tbl_t fp_decode_tbl[128] =
 	{ 0,         0          , 0           }, /* 0x7D */
 	{ 0,         0          , 0           }, /* 0x7E */
 	{ 0,         0          , 0           }, /* 0x7F */
+=======
+	{ nullptr,         0          , nullptr           }, /* 0x36 */
+	{ nullptr,         0          , nullptr           }, /* 0x37 */
+	{ nullptr,         0          , nullptr           }, /* 0x38 */
+	{ nullptr,         0          , nullptr           }, /* 0x39 */
+	{ flop_1d,   DEC_DECODED, "ftrunc."   }, /* 0x3A, [p]ftrunc.{ss,sd,dd} */
+	{ nullptr,         0          , nullptr           }, /* 0x3B */
+	{ nullptr,         0          , nullptr           }, /* 0x3C */
+	{ nullptr,         0          , nullptr           }, /* 0x3D */
+	{ nullptr,         0          , nullptr           }, /* 0x3E */
+	{ nullptr,         0          , nullptr           }, /* 0x3F */
+	{ flop_fxfr, DEC_DECODED, "fxfr"      }, /* 0x40, fxfr fsrc1,idest. */
+	{ nullptr,         0          , nullptr           }, /* 0x41 */
+	{ nullptr,         0          , nullptr           }, /* 0x42 */
+	{ nullptr,         0          , nullptr           }, /* 0x43 */
+	{ nullptr,         0          , nullptr           }, /* 0x44 */
+	{ nullptr,         0          , nullptr           }, /* 0x45 */
+	{ nullptr,         0          , nullptr           }, /* 0x46 */
+	{ nullptr,         0          , nullptr           }, /* 0x47 */
+	{ nullptr,         0          , nullptr           }, /* 0x48 */
+	{ flop_12d,  DEC_DECODED, "fiadd."    }, /* 0x49, [p]fiadd.{ss,dd} */
+	{ nullptr,         0          , nullptr           }, /* 0x4A */
+	{ nullptr,         0          , nullptr           }, /* 0x4B */
+	{ nullptr,         0          , nullptr           }, /* 0x4C */
+	{ flop_12d,  DEC_DECODED, "fisub."    }, /* 0x4D, [p]fisub.{ss,dd} */
+	{ nullptr,         0          , nullptr           }, /* 0x4E */
+	{ nullptr,         0          , nullptr           }, /* 0x4F */
+	{ flop_12d,  DEC_DECODED, "faddp"     }, /* 0x50, [p]faddp */
+	{ flop_12d,  DEC_DECODED, "faddz"     }, /* 0x51, [p]faddz */
+	{ nullptr,         0          , nullptr           }, /* 0x52 */
+	{ nullptr,         0          , nullptr           }, /* 0x53 */
+	{ nullptr,         0          , nullptr           }, /* 0x54 */
+	{ nullptr,         0          , nullptr           }, /* 0x55 */
+	{ nullptr,         0          , nullptr           }, /* 0x56 */
+	{ flop_12d,  DEC_DECODED, "fzchkl"    }, /* 0x57, [p]fzchkl */
+	{ nullptr,         0          , nullptr           }, /* 0x58 */
+	{ nullptr,         0          , nullptr           }, /* 0x59 */
+	{ flop_1d,   DEC_DECODED, "form"      }, /* 0x5A, [p]form.dd */
+	{ nullptr,         0          , nullptr           }, /* 0x5B */
+	{ nullptr,         0          , nullptr           }, /* 0x5C */
+	{ nullptr,         0          , nullptr           }, /* 0x5D */
+	{ nullptr,         0          , nullptr           }, /* 0x5E */
+	{ flop_12d,  DEC_DECODED, "fzchks"    }, /* 0x5F, [p]fzchks */
+	{ nullptr,         0          , nullptr           }, /* 0x60 */
+	{ nullptr,         0          , nullptr           }, /* 0x61 */
+	{ nullptr,         0          , nullptr           }, /* 0x62 */
+	{ nullptr,         0          , nullptr           }, /* 0x63 */
+	{ nullptr,         0          , nullptr           }, /* 0x64 */
+	{ nullptr,         0          , nullptr           }, /* 0x65 */
+	{ nullptr,         0          , nullptr           }, /* 0x66 */
+	{ nullptr,         0          , nullptr           }, /* 0x67 */
+	{ nullptr,         0          , nullptr           }, /* 0x68 */
+	{ nullptr,         0          , nullptr           }, /* 0x69 */
+	{ nullptr,         0          , nullptr           }, /* 0x6A */
+	{ nullptr,         0          , nullptr           }, /* 0x6B */
+	{ nullptr,         0          , nullptr           }, /* 0x6C */
+	{ nullptr,         0          , nullptr           }, /* 0x6D */
+	{ nullptr,         0          , nullptr           }, /* 0x6E */
+	{ nullptr,         0          , nullptr           }, /* 0x6F */
+	{ nullptr,         0          , nullptr           }, /* 0x70 */
+	{ nullptr,         0          , nullptr           }, /* 0x71 */
+	{ nullptr,         0          , nullptr           }, /* 0x72 */
+	{ nullptr,         0          , nullptr           }, /* 0x73 */
+	{ nullptr,         0          , nullptr           }, /* 0x74 */
+	{ nullptr,         0          , nullptr           }, /* 0x75 */
+	{ nullptr,         0          , nullptr           }, /* 0x76 */
+	{ nullptr,         0          , nullptr           }, /* 0x77 */
+	{ nullptr,         0          , nullptr           }, /* 0x78 */
+	{ nullptr,         0          , nullptr           }, /* 0x79 */
+	{ nullptr,         0          , nullptr           }, /* 0x7A */
+	{ nullptr,         0          , nullptr           }, /* 0x7B */
+	{ nullptr,         0          , nullptr           }, /* 0x7C */
+	{ nullptr,         0          , nullptr           }, /* 0x7D */
+	{ nullptr,         0          , nullptr           }, /* 0x7E */
+	{ nullptr,         0          , nullptr           }, /* 0x7F */
+>>>>>>> upstream/master
 };
 
 
 /* Replaces tabs with spaces.  */
+<<<<<<< HEAD
 static void i860_dasm_tab_replacer(char* buf, int tab_size)
 {
 	int i = 0;
@@ -625,12 +963,24 @@ static void i860_dasm_tab_replacer(char* buf, int tab_size)
 		if (buf[i] != '\t')
 		{
 			tab_buf[tab_count] = buf[i];
+=======
+static void i860_dasm_tab_replacer(std::ostream &stream, const std::string &buf, int tab_size)
+{
+	int tab_count = 0;
+
+	for (char ch : buf)
+	{
+		if (ch != '\t')
+		{
+			stream << ch;
+>>>>>>> upstream/master
 			tab_count++;
 		}
 		else
 		{
 			while (tab_count % tab_size != 0)
 			{
+<<<<<<< HEAD
 				strcat(tab_buf, " ");
 				tab_count++;
 			}
@@ -646,6 +996,21 @@ static void i860_dasm_tab_replacer(char* buf, int tab_size)
 CPU_DISASSEMBLE( i860 )
 {
 	UINT32 insn = (oprom[0] << 0) |
+=======
+				stream << ' ';
+				tab_count++;
+			}
+		}
+	}
+}
+
+
+static offs_t internal_disasm_i860(cpu_device *device, std::ostream &main_stream, offs_t pc, const uint8_t *oprom, const uint8_t *opram, int options)
+{
+	std::stringstream stream;
+
+	uint32_t insn = (oprom[0] << 0) |
+>>>>>>> upstream/master
 		(oprom[1] << 8)  |
 		(oprom[2] << 16) |
 		(oprom[3] << 24);
@@ -656,7 +1021,11 @@ CPU_DISASSEMBLE( i860 )
 	if (flags & DEC_DECODED)
 	{
 		const char *s = decode_tbl[upper_6bits].mnemonic;
+<<<<<<< HEAD
 		decode_tbl[upper_6bits].insn_dis (buffer, (char *)s, pc, insn);
+=======
+		decode_tbl[upper_6bits].insn_dis (stream, (char *)s, pc, insn);
+>>>>>>> upstream/master
 		unrecognized_op = 0;
 	}
 	else if (flags & DEC_MORE)
@@ -668,7 +1037,11 @@ CPU_DISASSEMBLE( i860 )
 			const char *s = fp_decode_tbl[insn & 0x7f].mnemonic;
 			if (fp_flags & DEC_DECODED)
 			{
+<<<<<<< HEAD
 				fp_decode_tbl[insn & 0x7f].insn_dis (buffer, (char *)s, pc, insn);
+=======
+				fp_decode_tbl[insn & 0x7f].insn_dis (stream, (char *)s, pc, insn);
+>>>>>>> upstream/master
 				unrecognized_op = 0;
 			}
 		}
@@ -679,19 +1052,39 @@ CPU_DISASSEMBLE( i860 )
 			const char *s = core_esc_decode_tbl[insn & 0x3].mnemonic;
 			if (esc_flags & DEC_DECODED)
 			{
+<<<<<<< HEAD
 				core_esc_decode_tbl[insn & 0x3].insn_dis (buffer, (char *)s, pc, insn);
+=======
+				core_esc_decode_tbl[insn & 0x3].insn_dis (stream, (char *)s, pc, insn);
+>>>>>>> upstream/master
 				unrecognized_op = 0;
 			}
 		}
 	}
 
 	if (unrecognized_op)
+<<<<<<< HEAD
 		sprintf (buffer, ".long\t%#08x", insn);
 
 	/* Replace tabs with spaces */
 	i860_dasm_tab_replacer(buffer, 10);
+=======
+		util::stream_format(stream, ".long\t%#08x", insn);
+
+	/* Replace tabs with spaces */
+	i860_dasm_tab_replacer(main_stream, stream.str(), 10);
+>>>>>>> upstream/master
 
 	/* Return number of bytes disassembled.  */
 	/* MAME dasm flags haven't been added yet */
 	return (4);
 }
+<<<<<<< HEAD
+=======
+
+
+CPU_DISASSEMBLE(i860)
+{
+	return internal_disasm_i860(device, stream, pc, oprom, opram, options);
+}
+>>>>>>> upstream/master

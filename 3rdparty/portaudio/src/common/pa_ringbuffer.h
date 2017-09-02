@@ -1,7 +1,11 @@
 #ifndef PA_RINGBUFFER_H
 #define PA_RINGBUFFER_H
 /*
+<<<<<<< HEAD
  * $Id: pa_ringbuffer.h 1873 2012-10-07 19:00:11Z philburk $
+=======
+ * $Id$
+>>>>>>> upstream/master
  * Portable Audio I/O Library
  * Ring Buffer utility.
  *

@@ -16,7 +16,11 @@
 *****************************************************************************************
 
   You can find more about this game and the emulation evolution at
+<<<<<<< HEAD
   http://www.robertofresca.com.ar/
+=======
+  http://www.robertofresca.com/
+>>>>>>> upstream/master
 
 *****************************************************************************************
 
@@ -48,10 +52,17 @@
   the 2114 find the 74148 or 74ls148, all 9980 cpu's use one, pin3 will generate a reset.
   The 5517 ram is compatible with 6116 or 2018.
 
+<<<<<<< HEAD
   The 9980 has 3 interupt inputs, but they are binary.
   The ls148 encodes the interupts to the cpu - the highest interupt is reset.
 
   I tried pulling pin 3 of the 74ls148 low and yes, this sets up the reset interupt
+=======
+  The 9980 has 3 interrupt inputs, but they are binary.
+  The ls148 encodes the interrupts to the cpu - the highest interrupt is reset.
+
+  I tried pulling pin 3 of the 74ls148 low and yes, this sets up the reset interrupt
+>>>>>>> upstream/master
   on pins 23, 24 and 25. The TC5517 checks out ok as a 6116.
 
   The crystal seems ok and this clock makes it throught to pin 34 of the MPU.
@@ -193,6 +204,7 @@
 
 ****************************************************************************************/
 
+<<<<<<< HEAD
 #define MASTER_CLOCK    XTAL_6MHz              /* confirmed */
 #define CPU_CLOCK      (MASTER_CLOCK / 2)      /* guess */
 #define CRTC_CLOCK     (MASTER_CLOCK / 8)      /* guess */
@@ -201,6 +213,17 @@
 #include "cpu/tms9900/tms9980a.h"
 #include "video/mc6845.h"
 #include "machine/nvram.h"
+=======
+#include "emu.h"
+#include "cpu/tms9900/tms9980a.h"
+#include "machine/nvram.h"
+#include "video/mc6845.h"
+#include "screen.h"
+
+#define MASTER_CLOCK    XTAL_6MHz              /* confirmed */
+#define CPU_CLOCK      (MASTER_CLOCK / 2)      /* guess */
+#define CRTC_CLOCK     (MASTER_CLOCK / 8)      /* guess */
+>>>>>>> upstream/master
 
 
 class jubilee_state : public driver_device
@@ -213,6 +236,7 @@ public:
 		m_maincpu(*this, "maincpu"),
 		m_gfxdecode(*this, "gfxdecode") { }
 
+<<<<<<< HEAD
 	UINT8 mux_sel;
 	UINT8 muxlamps;
 
@@ -227,6 +251,21 @@ public:
 	TILE_GET_INFO_MEMBER(get_bg_tile_info);
 	virtual void video_start();
 	UINT32 screen_update_jubileep(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
+=======
+	uint8_t mux_sel;
+	uint8_t muxlamps;
+
+	required_shared_ptr<uint8_t> m_videoram;
+	required_shared_ptr<uint8_t> m_colorram;
+	tilemap_t *m_bg_tilemap;
+	DECLARE_WRITE8_MEMBER(jubileep_videoram_w);
+	DECLARE_WRITE8_MEMBER(jubileep_colorram_w);
+	DECLARE_WRITE8_MEMBER(unk_w);
+	DECLARE_READ8_MEMBER(mux_port_r);
+	TILE_GET_INFO_MEMBER(get_bg_tile_info);
+	virtual void video_start() override;
+	uint32_t screen_update_jubileep(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
+>>>>>>> upstream/master
 	INTERRUPT_GEN_MEMBER(jubileep_interrupt);
 	required_device<cpu_device> m_maincpu;
 	required_device<gfxdecode_device> m_gfxdecode;
@@ -268,11 +307,19 @@ TILE_GET_INFO_MEMBER(jubilee_state::get_bg_tile_info)
 
 void jubilee_state::video_start()
 {
+<<<<<<< HEAD
 	m_bg_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(jubilee_state::get_bg_tile_info), this), TILEMAP_SCAN_ROWS, 8, 8, 32, 32);
 	m_bg_tilemap->set_scrolldx(8, 0); /* guess */
 }
 
 UINT32 jubilee_state::screen_update_jubileep(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+=======
+	m_bg_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(jubilee_state::get_bg_tile_info), this), TILEMAP_SCAN_ROWS, 8, 8, 32, 32);
+	m_bg_tilemap->set_scrolldx(8, 0); /* guess */
+}
+
+uint32_t jubilee_state::screen_update_jubileep(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+>>>>>>> upstream/master
 {
 	m_bg_tilemap->draw(screen, bitmap, cliprect, 0, 0);
 	return 0;
@@ -407,19 +454,31 @@ WRITE8_MEMBER(jubilee_state::unk_w)
 	{
 		if (muxlamps == 1)
 			{
+<<<<<<< HEAD
 				output_set_lamp_value(0, (data & 1));  /* lamp */
+=======
+				output().set_lamp_value(0, (data & 1));  /* lamp */
+>>>>>>> upstream/master
 				logerror("CRU: LAAAAAAMP 0 write to address %04x: %d\n", offset<<1, data & 1);
 //              popmessage("LAMP 0");
 			}
 		if (muxlamps == 2)
 			{
+<<<<<<< HEAD
 				output_set_lamp_value(3, (data & 1));  /* lamp */
+=======
+				output().set_lamp_value(3, (data & 1));  /* lamp */
+>>>>>>> upstream/master
 				logerror("CRU: LAAAAAAMP 3 write to address %04x: %d\n", offset<<1, data & 1);
 //              popmessage("LAMP 3");
 			}
 		if (muxlamps == 3)
 			{
+<<<<<<< HEAD
 				output_set_lamp_value(6, (data & 1));  /* lamp */
+=======
+				output().set_lamp_value(6, (data & 1));  /* lamp */
+>>>>>>> upstream/master
 				logerror("CRU: LAAAAAAMP 6 write to address %04x: %d\n", offset<<1, data & 1);
 //              popmessage("LAMP 6");
 			}
@@ -429,19 +488,31 @@ WRITE8_MEMBER(jubilee_state::unk_w)
 	{
 		if (muxlamps == 1)
 			{
+<<<<<<< HEAD
 				output_set_lamp_value(1, (data & 1));  /* lamp */
+=======
+				output().set_lamp_value(1, (data & 1));  /* lamp */
+>>>>>>> upstream/master
 				logerror("CRU: LAAAAAAMP 1 write to address %04x: %d\n", offset<<1, data & 1);
 //              popmessage("LAMP 1");
 			}
 		if (muxlamps == 2)
 			{
+<<<<<<< HEAD
 				output_set_lamp_value(4, (data & 1));  /* lamp */
+=======
+				output().set_lamp_value(4, (data & 1));  /* lamp */
+>>>>>>> upstream/master
 				logerror("CRU: LAAAAAAMP 4 write to address %04x: %d\n", offset<<1, data & 1);
 //              popmessage("LAMP 4");
 			}
 		if (muxlamps == 3)
 			{
+<<<<<<< HEAD
 				output_set_lamp_value(7, (data & 1));  /* lamp */
+=======
+				output().set_lamp_value(7, (data & 1));  /* lamp */
+>>>>>>> upstream/master
 				logerror("CRU: LAAAAAAMP 7 write to address %04x: %d\n", offset<<1, data & 1);
 //              popmessage("LAMP 7");
 			}
@@ -451,19 +522,31 @@ WRITE8_MEMBER(jubilee_state::unk_w)
 	{
 		if (muxlamps == 1)
 			{
+<<<<<<< HEAD
 				output_set_lamp_value(2, (data & 1));  /* lamp */
+=======
+				output().set_lamp_value(2, (data & 1));  /* lamp */
+>>>>>>> upstream/master
 				logerror("CRU: LAAAAAAMP 2 write to address %04x: %d\n", offset<<1, data & 1);
 //              popmessage("LAMP 2");
 			}
 		if (muxlamps == 2)
 			{
+<<<<<<< HEAD
 				output_set_lamp_value(5, (data & 1));  /* lamp */
+=======
+				output().set_lamp_value(5, (data & 1));  /* lamp */
+>>>>>>> upstream/master
 				logerror("CRU: LAAAAAAMP 5 write to address %04x: %d\n", offset<<1, data & 1);
 //              popmessage("LAMP 5");
 			}
 		if (muxlamps == 3)
 			{
+<<<<<<< HEAD
 				output_set_lamp_value(8, (data & 1));  /* lamp */
+=======
+				output().set_lamp_value(8, (data & 1));  /* lamp */
+>>>>>>> upstream/master
 				logerror("CRU: LAAAAAAMP 8 write to address %04x: %d\n", offset<<1, data & 1);
 //              popmessage("LAMP 8");
 			}
@@ -567,7 +650,11 @@ READ8_MEMBER(jubilee_state::mux_port_r)
 
 static ADDRESS_MAP_START( jubileep_cru_map, AS_IO, 8, jubilee_state )
 	AM_RANGE(0x00c8, 0x00c8) AM_READ(mux_port_r)    /* multiplexed input port */
+<<<<<<< HEAD
 	AM_RANGE(0x0000, 0x0fff) AM_WRITE(unk_w)
+=======
+	AM_RANGE(0x0000, 0x07ff) AM_WRITE(unk_w)
+>>>>>>> upstream/master
 ADDRESS_MAP_END
 
 /* I/O byte R/W
@@ -656,7 +743,11 @@ GFXDECODE_END
 *    Machine Drivers     *
 *************************/
 
+<<<<<<< HEAD
 static MACHINE_CONFIG_START( jubileep, jubilee_state )
+=======
+static MACHINE_CONFIG_START( jubileep )
+>>>>>>> upstream/master
 
 	// Main CPU TMS9980A, no line connections.
 	MCFG_TMS99xx_ADD("maincpu", TMS9980A, CPU_CLOCK, jubileep_map, jubileep_cru_map)
@@ -706,5 +797,10 @@ ROM_END
 *      Game Drivers      *
 *************************/
 
+<<<<<<< HEAD
 /*    YEAR  NAME      PARENT  MACHINE   INPUT     STATE          INIT  ROT    COMPANY    FULLNAME                    FLAGS */
 GAME( 1985, jubileep, 0,      jubileep, jubileep, driver_device, 0,    ROT0, "Jubilee", "Double-Up Poker (Jubilee)", MACHINE_NO_SOUND )
+=======
+//    YEAR  NAME      PARENT  MACHINE   INPUT     STATE          INIT  ROT   COMPANY    FULLNAME                     FLAGS
+GAME( 1985, jubileep, 0,      jubileep, jubileep, jubilee_state, 0,    ROT0, "Jubilee", "Double-Up Poker (Jubilee)", MACHINE_NO_SOUND )
+>>>>>>> upstream/master

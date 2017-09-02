@@ -296,9 +296,15 @@ WRITE_LINE_MEMBER( jaguar_state::dsp_cpu_int )
  *
  *************************************/
 
+<<<<<<< HEAD
 void jaguar_state::set_palette(UINT16 vmode)
 {
 	static const UINT8 red_lookup[256] =
+=======
+void jaguar_state::set_palette(uint16_t vmode)
+{
+	static const uint8_t red_lookup[256] =
+>>>>>>> upstream/master
 	{
 			0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
 			34, 34, 34, 34, 34, 34, 34, 34, 34, 34, 34, 34, 34, 34, 19,  0,
@@ -318,7 +324,11 @@ void jaguar_state::set_palette(UINT16 vmode)
 		255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255
 	};
 
+<<<<<<< HEAD
 	static const UINT8 grn_lookup[256] =
+=======
+	static const uint8_t grn_lookup[256] =
+>>>>>>> upstream/master
 	{
 			0, 17, 34, 51, 68, 85,102,119,136,153,170,187,204,221,238,255,
 			0, 19, 38, 57, 77, 96,115,134,154,173,182,211,231,250,255,255,
@@ -338,7 +348,11 @@ void jaguar_state::set_palette(UINT16 vmode)
 			0, 17, 34, 51, 68, 85,102,119,136,153,170,187,204,221,238,255
 	};
 
+<<<<<<< HEAD
 	static const UINT8 blu_lookup[256] =
+=======
+	static const uint8_t blu_lookup[256] =
+>>>>>>> upstream/master
 	{
 		255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,
 		255,255,255,255,255,255,255,255,255,255,255,255,255,255,240,221,
@@ -369,9 +383,15 @@ void jaguar_state::set_palette(UINT16 vmode)
 		case 0x002:
 			for (i = 0; i < 65536; i++)
 			{
+<<<<<<< HEAD
 				UINT8 r = (red_lookup[i >> 8] * (i & 0xff)) >> 8;
 				UINT8 g = (grn_lookup[i >> 8] * (i & 0xff)) >> 8;
 				UINT8 b = (blu_lookup[i >> 8] * (i & 0xff)) >> 8;
+=======
+				uint8_t r = (red_lookup[i >> 8] * (i & 0xff)) >> 8;
+				uint8_t g = (grn_lookup[i >> 8] * (i & 0xff)) >> 8;
+				uint8_t b = (blu_lookup[i >> 8] * (i & 0xff)) >> 8;
+>>>>>>> upstream/master
 				m_pen_table[i] = rgb_t(r, g, b);
 			}
 			break;
@@ -380,9 +400,15 @@ void jaguar_state::set_palette(UINT16 vmode)
 		case 0x100:
 			for (i = 0; i < 65536; i++)
 			{
+<<<<<<< HEAD
 				UINT8 r = (red_lookup[i >> 8] * (i & 0xff)) >> 8;
 				UINT8 g = (grn_lookup[i >> 8] * (i & 0xff)) >> 8;
 				UINT8 b = (blu_lookup[i >> 8] * (i & 0xff)) >> 8;
+=======
+				uint8_t r = (red_lookup[i >> 8] * (i & 0xff)) >> 8;
+				uint8_t g = (grn_lookup[i >> 8] * (i & 0xff)) >> 8;
+				uint8_t b = (blu_lookup[i >> 8] * (i & 0xff)) >> 8;
+>>>>>>> upstream/master
 
 				/* if the low bit is set, treat it as 5-5-5 RGB instead */
 				if (i & 1)
@@ -433,9 +459,15 @@ void jaguar_state::set_palette(UINT16 vmode)
 
 void jaguar_state::blitter_run()
 {
+<<<<<<< HEAD
 	UINT32 command = m_blitter_regs[B_CMD] & STATIC_COMMAND_MASK;
 	UINT32 a1flags = m_blitter_regs[A1_FLAGS] & STATIC_FLAGS_MASK;
 	UINT32 a2flags = m_blitter_regs[A2_FLAGS] & STATIC_FLAGS_MASK;
+=======
+	uint32_t command = m_blitter_regs[B_CMD] & STATIC_COMMAND_MASK;
+	uint32_t a1flags = m_blitter_regs[A1_FLAGS] & STATIC_FLAGS_MASK;
+	uint32_t a2flags = m_blitter_regs[A2_FLAGS] & STATIC_FLAGS_MASK;
+>>>>>>> upstream/master
 
 	g_profiler.start(PROFILER_USER1);
 
@@ -490,8 +522,13 @@ void jaguar_state::blitter_run()
 
 if (LOG_BLITTER_STATS)
 {
+<<<<<<< HEAD
 static UINT32 blitter_stats[1000][4];
 static UINT64 blitter_pixels[1000];
+=======
+static uint32_t blitter_stats[1000][4];
+static uint64_t blitter_pixels[1000];
+>>>>>>> upstream/master
 static int blitter_count = 0;
 static int reps = 0;
 int i;
@@ -517,7 +554,11 @@ if (++reps % 100 == 99)
 	for (i = 0; i < blitter_count; i++)
 		osd_printf_debug("  CMD=%08X A1=%08X A2=%08X %6d times, %08X%08X pixels\n",
 				blitter_stats[i][0], blitter_stats[i][1], blitter_stats[i][2],
+<<<<<<< HEAD
 				blitter_stats[i][3], (UINT32)(blitter_pixels[i] >> 32), (UINT32)(blitter_pixels[i]));
+=======
+				blitter_stats[i][3], (uint32_t)(blitter_pixels[i] >> 32), (uint32_t)(blitter_pixels[i]));
+>>>>>>> upstream/master
 	osd_printf_debug("---\n");
 }
 }
@@ -543,7 +584,11 @@ READ32_MEMBER( jaguar_state::blitter_r )
 WRITE32_MEMBER( jaguar_state::blitter_w )
 {
 	COMBINE_DATA(&m_blitter_regs[offset]);
+<<<<<<< HEAD
 	if ((offset == B_CMD) && (mem_mask & 0x0000ffff))
+=======
+	if ((offset == B_CMD) && ACCESSING_BITS_0_15)
+>>>>>>> upstream/master
 	{
 		m_blitter_status = 0;
 		int inner_count = m_blitter_regs[B_COUNT] & 0xffff;
@@ -579,7 +624,11 @@ READ16_MEMBER( jaguar_state::tom_regs_r )
 
 		case VC:
 		{
+<<<<<<< HEAD
 			UINT8 half_line;
+=======
+			uint8_t half_line;
+>>>>>>> upstream/master
 
 			if(m_screen->hpos() >= (m_screen->width() / 2))
 				half_line = 1;
@@ -595,7 +644,11 @@ READ16_MEMBER( jaguar_state::tom_regs_r )
 
 WRITE16_MEMBER( jaguar_state::tom_regs_w )
 {
+<<<<<<< HEAD
 	UINT32 reg_store = m_gpu_regs[offset];
+=======
+	uint32_t reg_store = m_gpu_regs[offset];
+>>>>>>> upstream/master
 	attotime sample_period;
 	if (offset < GPU_REGS)
 	{
@@ -647,10 +700,17 @@ WRITE16_MEMBER( jaguar_state::tom_regs_w )
 				if (reg_store != m_gpu_regs[offset])
 				{
 					int hperiod = 2 * ((m_gpu_regs[HP] & 0x3ff) + 1);
+<<<<<<< HEAD
 					int hbend = effective_hvalue(ENABLE_BORDERS ? m_gpu_regs[HBE] : MIN(m_gpu_regs[HDB1], m_gpu_regs[HDB2]));
 					int hbstart = effective_hvalue(m_gpu_regs[ENABLE_BORDERS ? HBB : HDE]);
 					int vperiod = (m_gpu_regs[VP] & 0x7ff) + 1;
 					int vbend = MAX(m_gpu_regs[VBE],m_gpu_regs[VDB]) & 0x7ff;
+=======
+					int hbend = effective_hvalue(ENABLE_BORDERS ? m_gpu_regs[HBE] : std::min(m_gpu_regs[HDB1], m_gpu_regs[HDB2]));
+					int hbstart = effective_hvalue(m_gpu_regs[ENABLE_BORDERS ? HBB : HDE]);
+					int vperiod = (m_gpu_regs[VP] & 0x7ff) + 1;
+					int vbend = std::max(m_gpu_regs[VBE],m_gpu_regs[VDB]) & 0x7ff;
+>>>>>>> upstream/master
 					int vbstart = m_gpu_regs[VBB] & 0x7ff;
 
 					/* adjust for the half-lines */
@@ -751,11 +811,19 @@ void jaguar_state::scanline_update(int param)
 	/* only run if video is enabled and we are past the "display begin" */
 	if ((m_gpu_regs[VMODE] & 1) && vc >= (m_gpu_regs[VDB] & 0x7ff))
 	{
+<<<<<<< HEAD
 		UINT32 *dest = &m_screen_bitmap.pix32(vc >> 1);
 		int maxx = visarea.max_x;
 		int hde = effective_hvalue(m_gpu_regs[HDE]) >> 1;
 		UINT16 x,scanline[760];
 		UINT8 y,pixel_width = ((m_gpu_regs[VMODE]>>10)&3)+1;
+=======
+		uint32_t *dest = &m_screen_bitmap.pix32(vc >> 1);
+		int maxx = visarea.max_x;
+		int hde = effective_hvalue(m_gpu_regs[HDE]) >> 1;
+		uint16_t x,scanline[760];
+		uint8_t y,pixel_width = ((m_gpu_regs[VMODE]>>10)&3)+1;
+>>>>>>> upstream/master
 
 		/* if we are first on this scanline, clear to the border color */
 		if (ENABLE_BORDERS && vc % 2 == 0)
@@ -774,9 +842,15 @@ void jaguar_state::scanline_update(int param)
 			for (x = 0; x < 760 && hdb <= maxx && hdb < hde; x+=2)
 				for (y = 0; y < pixel_width; y++)
 				{
+<<<<<<< HEAD
 					UINT8 r = m_pen_table[(scanline[x]&0xff)|256];
 					UINT8 g = m_pen_table[(scanline[x]>>8)|512];
 					UINT8 b = m_pen_table[scanline[x+1]&0xff];
+=======
+					uint8_t r = m_pen_table[(scanline[x]&0xff)|256];
+					uint8_t g = m_pen_table[(scanline[x]>>8)|512];
+					uint8_t b = m_pen_table[scanline[x+1]&0xff];
+>>>>>>> upstream/master
 					dest[hdb++] = rgb_t(r, g, b);
 				}
 		}
@@ -838,7 +912,11 @@ void jaguar_state::device_postload()
  *
  *************************************/
 
+<<<<<<< HEAD
 UINT32 jaguar_state::screen_update(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect)
+=======
+uint32_t jaguar_state::screen_update(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect)
+>>>>>>> upstream/master
 {
 	/* if not enabled, just blank */
 	if (!(m_gpu_regs[VMODE] & 1))
@@ -861,7 +939,11 @@ UINT32 jaguar_state::screen_update(screen_device &screen, bitmap_rgb32 &bitmap, 
  *************************************/
 
 #define INCLUDE_OBJECT_PROCESSOR
+<<<<<<< HEAD
 #include "jagobj.inc"
+=======
+#include "jagobj.hxx"
+>>>>>>> upstream/master
 
 
 
@@ -876,7 +958,11 @@ UINT32 jaguar_state::screen_update(screen_device &screen, bitmap_rgb32 &bitmap, 
 #define COMMAND     command
 #define A1FIXED     a1flags
 #define A2FIXED     a2flags
+<<<<<<< HEAD
 #include "jagblit.inc"
+=======
+#include "jagblit.hxx"
+>>>>>>> upstream/master
 #undef A2FIXED
 #undef A1FIXED
 #undef COMMAND
@@ -887,7 +973,11 @@ UINT32 jaguar_state::screen_update(screen_device &screen, bitmap_rgb32 &bitmap, 
 #define COMMAND     0x09800001
 #define A1FIXED     0x010020
 #define A2FIXED     0x010020
+<<<<<<< HEAD
 #include "jagblit.inc"
+=======
+#include "jagblit.hxx"
+>>>>>>> upstream/master
 #undef A2FIXED
 #undef A1FIXED
 #undef COMMAND
@@ -897,7 +987,11 @@ UINT32 jaguar_state::screen_update(screen_device &screen, bitmap_rgb32 &bitmap, 
 #define COMMAND     0x09800009
 #define A1FIXED     0x000020
 #define A2FIXED     0x000020
+<<<<<<< HEAD
 #include "jagblit.inc"
+=======
+#include "jagblit.hxx"
+>>>>>>> upstream/master
 #undef A2FIXED
 #undef A1FIXED
 #undef COMMAND
@@ -907,7 +1001,11 @@ UINT32 jaguar_state::screen_update(screen_device &screen, bitmap_rgb32 &bitmap, 
 #define COMMAND     0x01800009
 #define A1FIXED     0x000028
 #define A2FIXED     0x000028
+<<<<<<< HEAD
 #include "jagblit.inc"
+=======
+#include "jagblit.hxx"
+>>>>>>> upstream/master
 #undef A2FIXED
 #undef A1FIXED
 #undef COMMAND
@@ -917,7 +1015,11 @@ UINT32 jaguar_state::screen_update(screen_device &screen, bitmap_rgb32 &bitmap, 
 #define COMMAND     0x01800001
 #define A1FIXED     0x000018
 #define A2FIXED     0x000018
+<<<<<<< HEAD
 #include "jagblit.inc"
+=======
+#include "jagblit.hxx"
+>>>>>>> upstream/master
 #undef A2FIXED
 #undef A1FIXED
 #undef COMMAND
@@ -927,7 +1029,11 @@ UINT32 jaguar_state::screen_update(screen_device &screen, bitmap_rgb32 &bitmap, 
 #define COMMAND     0x01c00001
 #define A1FIXED     0x000018
 #define A2FIXED     0x000018
+<<<<<<< HEAD
 #include "jagblit.inc"
+=======
+#include "jagblit.hxx"
+>>>>>>> upstream/master
 #undef A2FIXED
 #undef A1FIXED
 #undef COMMAND
@@ -938,7 +1044,11 @@ UINT32 jaguar_state::screen_update(screen_device &screen, bitmap_rgb32 &bitmap, 
 #define COMMAND     0x00010000
 #define A1FIXED     a1flags
 #define A2FIXED     a2flags
+<<<<<<< HEAD
 #include "jagblit.inc"
+=======
+#include "jagblit.hxx"
+>>>>>>> upstream/master
 #undef A2FIXED
 #undef A1FIXED
 #undef COMMAND
@@ -948,7 +1058,11 @@ UINT32 jaguar_state::screen_update(screen_device &screen, bitmap_rgb32 &bitmap, 
 #define COMMAND     0x01800001
 #define A1FIXED     a1flags
 #define A2FIXED     a2flags
+<<<<<<< HEAD
 #include "jagblit.inc"
+=======
+#include "jagblit.hxx"
+>>>>>>> upstream/master
 #undef A2FIXED
 #undef A1FIXED
 #undef COMMAND
@@ -958,7 +1072,11 @@ UINT32 jaguar_state::screen_update(screen_device &screen, bitmap_rgb32 &bitmap, 
 #define COMMAND     ((command & 0xf0000f00) | 0x01800001)
 #define A1FIXED     a1flags
 #define A2FIXED     a2flags
+<<<<<<< HEAD
 #include "jagblit.inc"
+=======
+#include "jagblit.hxx"
+>>>>>>> upstream/master
 #undef A2FIXED
 #undef A1FIXED
 #undef COMMAND

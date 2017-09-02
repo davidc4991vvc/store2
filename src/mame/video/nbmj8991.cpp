@@ -132,7 +132,11 @@ WRITE8_MEMBER(nbmj8991_state::clut_w)
 void nbmj8991_state::vramflip()
 {
 	int x, y;
+<<<<<<< HEAD
 	UINT8 color1, color2;
+=======
+	uint8_t color1, color2;
+>>>>>>> upstream/master
 	int width = m_screen->width();
 	int height = m_screen->height();
 
@@ -161,7 +165,11 @@ void nbmj8991_state::vramflip()
 
 void nbmj8991_state::update_pixel(int x, int y)
 {
+<<<<<<< HEAD
 	UINT8 color = m_videoram[(y * m_screen->width()) + x];
+=======
+	uint8_t color = m_videoram[(y * m_screen->width()) + x];
+>>>>>>> upstream/master
 	m_tmpbitmap.pix16(y, x) = color;
 }
 
@@ -173,13 +181,21 @@ void nbmj8991_state::device_timer(emu_timer &timer, device_timer_id id, int para
 		m_nb1413m3->m_busyflag = 1;
 		break;
 	default:
+<<<<<<< HEAD
 		assert_always(FALSE, "Unknown id in nbmj8991_state::device_timer");
+=======
+		assert_always(false, "Unknown id in nbmj8991_state::device_timer");
+>>>>>>> upstream/master
 	}
 }
 
 void nbmj8991_state::gfxdraw()
 {
+<<<<<<< HEAD
 	UINT8 *GFX = memregion("gfx1")->base();
+=======
+	uint8_t *GFX = memregion("gfx1")->base();
+>>>>>>> upstream/master
 	int width = m_screen->width();
 
 	int x, y;
@@ -188,7 +204,11 @@ void nbmj8991_state::gfxdraw()
 	int sizex, sizey;
 	int skipx, skipy;
 	int ctrx, ctry;
+<<<<<<< HEAD
 	UINT8 color, color1, color2;
+=======
+	uint8_t color, color1, color2;
+>>>>>>> upstream/master
 	int gfxaddr, gfxlen;
 
 	m_nb1413m3->m_busyctr = 0;
@@ -294,9 +314,15 @@ void nbmj8991_state::video_start()
 	int height = m_screen->height();
 
 	m_screen->register_screen_bitmap(m_tmpbitmap);
+<<<<<<< HEAD
 	m_videoram = auto_alloc_array(machine(), UINT8, width * height);
 	m_clut = auto_alloc_array(machine(), UINT8, 0x800);
 	memset(m_videoram, 0x00, (width * height * sizeof(UINT8)));
+=======
+	m_videoram = std::make_unique<uint8_t[]>(width * height);
+	m_clut = std::make_unique<uint8_t[]>(0x800);
+	memset(m_videoram.get(), 0x00, (width * height * sizeof(uint8_t)));
+>>>>>>> upstream/master
 
 	m_screen_refresh = 1;
 
@@ -313,8 +339,13 @@ void nbmj8991_state::video_start()
 	save_item(NAME(m_dispflag));
 	save_item(NAME(m_flipscreen));
 	save_item(NAME(m_clutsel));
+<<<<<<< HEAD
 	save_pointer(NAME(m_videoram), width * height);
 	save_pointer(NAME(m_clut), 0x800);
+=======
+	save_pointer(NAME(m_videoram.get()), width * height);
+	save_pointer(NAME(m_clut.get()), 0x800);
+>>>>>>> upstream/master
 	save_item(NAME(m_flipscreen_old));
 
 	machine().save().register_postload(save_prepost_delegate(FUNC(nbmj8991_state::postload), this));
@@ -325,7 +356,11 @@ void nbmj8991_state::postload()
 	m_screen_refresh = 1;
 }
 
+<<<<<<< HEAD
 UINT32 nbmj8991_state::screen_update_type1(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+=======
+uint32_t nbmj8991_state::screen_update_type1(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+>>>>>>> upstream/master
 {
 	int x, y;
 
@@ -364,7 +399,11 @@ UINT32 nbmj8991_state::screen_update_type1(screen_device &screen, bitmap_ind16 &
 	return 0;
 }
 
+<<<<<<< HEAD
 UINT32 nbmj8991_state::screen_update_type2(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+=======
+uint32_t nbmj8991_state::screen_update_type2(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+>>>>>>> upstream/master
 {
 	int x, y;
 

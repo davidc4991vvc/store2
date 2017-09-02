@@ -2,6 +2,10 @@
  * jmemmgr.c
  *
  * Copyright (C) 1991-1997, Thomas G. Lane.
+<<<<<<< HEAD
+=======
+ * Modified 2011-2012 by Guido Vollbeding.
+>>>>>>> upstream/master
  * This file is part of the Independent JPEG Group's software.
  * For conditions of distribution and use, see the accompanying README file.
  *
@@ -213,7 +217,11 @@ print_mem_stats (j_common_ptr cinfo, int pool_id)
 #endif /* MEM_STATS */
 
 
+<<<<<<< HEAD
 LOCAL(void)
+=======
+LOCAL(noreturn_t)
+>>>>>>> upstream/master
 out_of_memory (j_common_ptr cinfo, int which)
 /* Report an out-of-memory error and stop execution */
 /* If we compiled MEM_STATS support, report alloc requests before dying */
@@ -821,7 +829,11 @@ access_virt_sarray (j_common_ptr cinfo, jvirt_sarray_ptr ptr,
       undef_row -= ptr->cur_start_row; /* make indexes relative to buffer */
       end_row -= ptr->cur_start_row;
       while (undef_row < end_row) {
+<<<<<<< HEAD
 	jzero_far((void FAR *) ptr->mem_buffer[undef_row], bytesperrow);
+=======
+	FMEMZERO((void FAR *) ptr->mem_buffer[undef_row], bytesperrow);
+>>>>>>> upstream/master
 	undef_row++;
       }
     } else {
@@ -906,7 +918,11 @@ access_virt_barray (j_common_ptr cinfo, jvirt_barray_ptr ptr,
       undef_row -= ptr->cur_start_row; /* make indexes relative to buffer */
       end_row -= ptr->cur_start_row;
       while (undef_row < end_row) {
+<<<<<<< HEAD
 	jzero_far((void FAR *) ptr->mem_buffer[undef_row], bytesperrow);
+=======
+	FMEMZERO((void FAR *) ptr->mem_buffer[undef_row], bytesperrow);
+>>>>>>> upstream/master
 	undef_row++;
       }
     } else {

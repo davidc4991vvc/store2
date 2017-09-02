@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 // license:???
+=======
+// license:BSD-3-Clause
+>>>>>>> upstream/master
 // copyright-holders:Paul Leaman
 /***************************************************************************
 
@@ -24,12 +28,21 @@ public:
 
 	/* devices / memory pointers */
 	required_device<cpu_device> m_maincpu;
+<<<<<<< HEAD
 	required_shared_ptr<UINT8> m_videoram;
 	required_shared_ptr<UINT8> m_colorram;
 	required_shared_ptr<UINT8> m_scrollx;
 	required_shared_ptr<UINT8> m_scrolly;
 	required_shared_ptr<UINT8> m_bgscrollx;
 	required_shared_ptr<UINT8> m_spriteram;
+=======
+	required_shared_ptr<uint8_t> m_videoram;
+	required_shared_ptr<uint8_t> m_colorram;
+	required_shared_ptr<uint8_t> m_scrollx;
+	required_shared_ptr<uint8_t> m_scrolly;
+	required_shared_ptr<uint8_t> m_bgscrollx;
+	required_shared_ptr<uint8_t> m_spriteram;
+>>>>>>> upstream/master
 	required_device<gfxdecode_device> m_gfxdecode;
 	required_device<palette_device> m_palette;
 
@@ -43,7 +56,11 @@ public:
 	int     m_bg2_on;
 
 	/* protection */
+<<<<<<< HEAD
 	UINT8   m_prot_value;
+=======
+	uint8_t   m_prot_value;
+>>>>>>> upstream/master
 	DECLARE_WRITE8_MEMBER(c1943_protection_w);
 	DECLARE_READ8_MEMBER(c1943_protection_r);
 	DECLARE_READ8_MEMBER(_1943b_c007_r);
@@ -57,10 +74,18 @@ public:
 	TILE_GET_INFO_MEMBER(c1943_get_bg2_tile_info);
 	TILE_GET_INFO_MEMBER(c1943_get_bg_tile_info);
 	TILE_GET_INFO_MEMBER(c1943_get_fg_tile_info);
+<<<<<<< HEAD
 	virtual void machine_start();
 	virtual void machine_reset();
 	virtual void video_start();
 	DECLARE_PALETTE_INIT(1943);
 	UINT32 screen_update_1943(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
+=======
+	virtual void machine_start() override;
+	virtual void machine_reset() override;
+	virtual void video_start() override;
+	DECLARE_PALETTE_INIT(1943);
+	uint32_t screen_update_1943(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
+>>>>>>> upstream/master
 	void draw_sprites( bitmap_ind16 &bitmap, const rectangle &cliprect, int priority );
 };

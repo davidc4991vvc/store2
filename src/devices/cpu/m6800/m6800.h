@@ -2,10 +2,17 @@
 // copyright-holders:Aaron Giles
 /*** m6800: Portable 6800 class emulator *************************************/
 
+<<<<<<< HEAD
 #pragma once
 
 #ifndef __M6800_H__
 #define __M6800_H__
+=======
+#ifndef MAME_CPU_M6800_M6800_H
+#define MAME_CPU_M6800_M6800_H
+
+#pragma once
+>>>>>>> upstream/master
 
 
 enum
@@ -16,6 +23,7 @@ enum
 
 enum
 {
+<<<<<<< HEAD
 	M6800_IRQ_LINE = 0,             /* IRQ line number */
 	M6801_TIN_LINE,                 /* P20/Tin Input Capture line (eddge sense)     */
 									/* Active eddge is selecrable by internal reg.  */
@@ -23,10 +31,14 @@ enum
 									/* fall  eddge : ASSERT_LINE -> CLEAR_LINE      */
 									/* it is usuali to use PULSE_LINE state         */
 	M6801_SC1_LINE
+=======
+	M6800_IRQ_LINE = 0              /* IRQ line number */
+>>>>>>> upstream/master
 };
 
 enum
 {
+<<<<<<< HEAD
 	M6801_MODE_0 = 0,
 	M6801_MODE_1,
 	M6801_MODE_2,
@@ -35,10 +47,14 @@ enum
 	M6801_MODE_5,
 	M6801_MODE_6,
 	M6801_MODE_7
+=======
+	M6802_IRQ_LINE = M6800_IRQ_LINE
+>>>>>>> upstream/master
 };
 
 enum
 {
+<<<<<<< HEAD
 	M6801_PORT1 = 0x100,
 	M6801_PORT2,
 	M6801_PORT3,
@@ -51,12 +67,18 @@ enum
 #define MCFG_M6801_SER_TX(_devcb) \
 	m6800_cpu_device::set_out_sertx_func(*device, DEVCB_##_devcb);
 
+=======
+	M6808_IRQ_LINE = M6800_IRQ_LINE
+};
+
+>>>>>>> upstream/master
 class m6800_cpu_device :  public cpu_device
 {
 public:
 	typedef void (m6800_cpu_device::*op_func)();
 
 	// construction/destruction
+<<<<<<< HEAD
 	m6800_cpu_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
 	m6800_cpu_device(const machine_config &mconfig, device_type type, const char *name, const char *tag, device_t *owner, UINT32 clock, const char *shortname, const char *source, bool has_io, int clock_divider, const m6800_cpu_device::op_func *insn, const UINT8 *cycles, address_map_constructor internal = NULL);
 
@@ -93,20 +115,59 @@ protected:
 	virtual UINT32 disasm_min_opcode_bytes() const { return 1; }
 	virtual UINT32 disasm_max_opcode_bytes() const { return 4; }
 	virtual offs_t disasm_disassemble(char *buffer, offs_t pc, const UINT8 *oprom, const UINT8 *opram, UINT32 options);
+=======
+	m6800_cpu_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
+
+protected:
+	enum
+	{
+		M6800_WAI = 8,          /* set when WAI is waiting for an interrupt */
+		M6800_SLP = 0x10        /* HD63701 only */
+	};
+
+	m6800_cpu_device(const machine_config &mconfig, device_type type, const char *tag, device_t *owner, uint32_t clock, const m6800_cpu_device::op_func *insn, const uint8_t *cycles, address_map_constructor internal);
+
+	// device-level overrides
+	virtual void device_start() override;
+	virtual void device_reset() override;
+
+	// device_execute_interface overrides
+	virtual uint32_t execute_min_cycles() const override { return 1; }
+	virtual uint32_t execute_max_cycles() const override { return 12; }
+	virtual uint32_t execute_input_lines() const override { return 2; }
+	virtual uint32_t execute_default_irq_vector() const override { return 0; }
+	virtual void execute_run() override;
+	virtual void execute_set_input(int inputnum, int state) override;
+
+	// device_memory_interface overrides
+	virtual space_config_vector memory_space_config() const override;
+
+	// device_state_interface overrides
+	virtual void state_string_export(const device_state_entry &entry, std::string &str) const override;
+
+	// device_disasm_interface overrides
+	virtual uint32_t disasm_min_opcode_bytes() const override { return 1; }
+	virtual uint32_t disasm_max_opcode_bytes() const override { return 4; }
+	virtual offs_t disasm_disassemble(std::ostream &stream, offs_t pc, const uint8_t *oprom, const uint8_t *opram, uint32_t options) override;
+>>>>>>> upstream/master
 
 	address_space_config m_program_config;
 	address_space_config m_decrypted_opcodes_config;
 	address_space_config m_io_config;
+<<<<<<< HEAD
 	bool m_has_io;
 
 	devcb_write_line m_out_sc2_func;
 	devcb_write_line m_out_sertx_func;
+=======
+>>>>>>> upstream/master
 
 	PAIR    m_ppc;            /* Previous program counter */
 	PAIR    m_pc;             /* Program counter */
 	PAIR    m_s;              /* Stack pointer */
 	PAIR    m_x;              /* Index register */
 	PAIR    m_d;              /* Accumulators */
+<<<<<<< HEAD
 	UINT8   m_cc;             /* Condition codes */
 	UINT8   m_wai_state;      /* WAI opcode state ,(or sleep opcode state) */
 	UINT8   m_nmi_state;      /* NMI line state */
@@ -114,10 +175,18 @@ protected:
 	UINT8   m_irq_state[3];   /* IRQ line state [IRQ1,TIN,SC1] */
 	UINT8   m_ic_eddge;       /* InputCapture eddge , b.0=fall,b.1=raise */
 	int     m_sc1_state;
+=======
+	uint8_t   m_cc;             /* Condition codes */
+	uint8_t   m_wai_state;      /* WAI opcode state ,(or sleep opcode state) */
+	uint8_t   m_nmi_state;      /* NMI line state */
+	uint8_t   m_nmi_pending;    /* NMI pending */
+	uint8_t   m_irq_state[3];   /* IRQ line state [IRQ1,TIN,SC1] */
+>>>>>>> upstream/master
 
 	/* Memory spaces */
 	address_space *m_program, *m_decrypted_opcodes;
 	direct_read_data *m_direct, *m_decrypted_opcodes_direct;
+<<<<<<< HEAD
 	address_space *m_io;
 
 	const op_func *m_insn;
@@ -180,6 +249,32 @@ protected:
 	void serial_receive();
 	TIMER_CALLBACK_MEMBER( sci_tick );
 	void set_os3(int state);
+=======
+
+	const op_func *m_insn;
+	const uint8_t *m_cycles;            /* clock cycle of instruction table */
+
+	int     m_icount;
+
+	PAIR m_ea;        /* effective address */
+
+	static const uint8_t flags8i[256];
+	static const uint8_t flags8d[256];
+	static const uint8_t cycles_6800[256];
+	static const uint8_t cycles_nsc8105[256];
+	static const op_func m6800_insn[256];
+	static const op_func nsc8105_insn[256];
+
+	uint32_t RM16(uint32_t Addr );
+	void WM16(uint32_t Addr, PAIR *p );
+	void enter_interrupt(const char *message,uint16_t irq_vector);
+	virtual void m6800_check_irq2() { }
+	void CHECK_IRQ_LINES();
+	virtual void increment_counter(int amount);
+	virtual void EAT_CYCLES();
+	virtual void CLEANUP_COUNTERS() { }
+	virtual void TAKE_TRAP() { }
+>>>>>>> upstream/master
 
 	void aba();
 	void abx();
@@ -290,7 +385,13 @@ protected:
 	void eorb_ex();
 	void eorb_im();
 	void eorb_ix();
+<<<<<<< HEAD
 	void illegal();
+=======
+	void illegl1();
+	void illegl2();
+	void illegl3();
+>>>>>>> upstream/master
 	void inc_ex();
 	void inc_ix();
 	void inca();
@@ -426,6 +527,7 @@ protected:
 	void cpx_im();
 	void cpx_ix();
 	void trap();
+<<<<<<< HEAD
 };
 
 
@@ -441,12 +543,17 @@ protected:
 	virtual UINT64 execute_clocks_to_cycles(UINT64 clocks) const { return (clocks + 4 - 1) / 4; }
 	virtual UINT64 execute_cycles_to_clocks(UINT64 cycles) const { return (cycles * 4); }
 	virtual offs_t disasm_disassemble(char *buffer, offs_t pc, const UINT8 *oprom, const UINT8 *opram, UINT32 options);
+=======
+	void btst_ix();
+	void stx_nsc();
+>>>>>>> upstream/master
 };
 
 
 class m6802_cpu_device : public m6800_cpu_device
 {
 public:
+<<<<<<< HEAD
 	m6802_cpu_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
 	m6802_cpu_device(const machine_config &mconfig, device_type type, const char *name, const char *tag, device_t *owner, UINT32 clock, const char *shortname, const char *source, const m6800_cpu_device::op_func *insn, const UINT8 *cycles);
 
@@ -464,12 +571,23 @@ public:
 
 protected:
 	virtual offs_t disasm_disassemble(char *buffer, offs_t pc, const UINT8 *oprom, const UINT8 *opram, UINT32 options);
+=======
+	m6802_cpu_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
+
+protected:
+	m6802_cpu_device(const machine_config &mconfig, device_type type, const char *tag, device_t *owner, uint32_t clock, const m6800_cpu_device::op_func *insn, const uint8_t *cycles);
+
+	virtual uint64_t execute_clocks_to_cycles(uint64_t clocks) const override { return (clocks + 4 - 1) / 4; }
+	virtual uint64_t execute_cycles_to_clocks(uint64_t cycles) const override { return (cycles * 4); }
+	virtual offs_t disasm_disassemble(std::ostream &stream, offs_t pc, const uint8_t *oprom, const uint8_t *opram, uint32_t options) override;
+>>>>>>> upstream/master
 };
 
 
 class m6808_cpu_device : public m6802_cpu_device
 {
 public:
+<<<<<<< HEAD
 	m6808_cpu_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
 
 protected:
@@ -495,12 +613,19 @@ public:
 
 protected:
 	virtual offs_t disasm_disassemble(char *buffer, offs_t pc, const UINT8 *oprom, const UINT8 *opram, UINT32 options);
+=======
+	m6808_cpu_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
+
+protected:
+	virtual offs_t disasm_disassemble(std::ostream &stream, offs_t pc, const uint8_t *oprom, const uint8_t *opram, uint32_t options) override;
+>>>>>>> upstream/master
 };
 
 
 class nsc8105_cpu_device : public m6802_cpu_device
 {
 public:
+<<<<<<< HEAD
 	nsc8105_cpu_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
 
 protected:
@@ -543,3 +668,18 @@ extern const device_type HD6303R;
 extern const device_type HD6303Y;
 
 #endif /* __M6800_H__ */
+=======
+	nsc8105_cpu_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
+
+protected:
+	virtual offs_t disasm_disassemble(std::ostream &stream, offs_t pc, const uint8_t *oprom, const uint8_t *opram, uint32_t options) override;
+};
+
+
+DECLARE_DEVICE_TYPE(M6800, m6800_cpu_device)
+DECLARE_DEVICE_TYPE(M6802, m6802_cpu_device)
+DECLARE_DEVICE_TYPE(M6808, m6808_cpu_device)
+DECLARE_DEVICE_TYPE(NSC8105, nsc8105_cpu_device)
+
+#endif // MAME_CPU_M6800_M6800_H
+>>>>>>> upstream/master

@@ -19,9 +19,17 @@
 
 #include "emu.h"
 #include "cpu/z80/z80.h"
+<<<<<<< HEAD
 #include "sound/2203intf.h"
 #include "machine/tc009xlvc.h"
 #include "machine/i8255.h"
+=======
+#include "machine/i8255.h"
+#include "machine/tc009xlvc.h"
+#include "sound/2203intf.h"
+#include "screen.h"
+#include "speaker.h"
+>>>>>>> upstream/master
 
 class dfruit_state : public driver_device
 {
@@ -30,11 +38,16 @@ public:
 		: driver_device(mconfig, type, tag),
 		m_maincpu(*this, "maincpu"),
 		m_vdp(*this, "tc0091lvc")
+<<<<<<< HEAD
 		{ }
+=======
+	{ }
+>>>>>>> upstream/master
 
 	required_device<cpu_device> m_maincpu;
 	required_device<tc0091lvc_device> m_vdp;
 
+<<<<<<< HEAD
 	virtual void video_start();
 	UINT32 screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
 	void screen_eof(screen_device &screen, bool state);
@@ -43,6 +56,16 @@ public:
 	UINT8 m_rom_bank;
 	UINT8 m_irq_vector[3];
 	UINT8 m_irq_enable;
+=======
+	virtual void video_start() override;
+	uint32_t screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
+	DECLARE_WRITE_LINE_MEMBER(screen_vblank);
+
+	uint8_t m_ram_bank[4];
+	uint8_t m_rom_bank;
+	uint8_t m_irq_vector[3];
+	uint8_t m_irq_enable;
+>>>>>>> upstream/master
 
 	DECLARE_READ8_MEMBER(dfruit_rom_r);
 
@@ -64,8 +87,13 @@ public:
 	DECLARE_READ8_MEMBER(dfruit_irq_enable_r);
 	DECLARE_WRITE8_MEMBER(dfruit_irq_enable_w);
 
+<<<<<<< HEAD
 	UINT8 ram_bank_r(UINT16 offset, UINT8 bank_num);
 	void ram_bank_w(UINT16 offset, UINT8 data, UINT8 bank_num);
+=======
+	uint8_t ram_bank_r(uint16_t offset, uint8_t bank_num);
+	void ram_bank_w(uint16_t offset, uint8_t data, uint8_t bank_num);
+>>>>>>> upstream/master
 	TIMER_DEVICE_CALLBACK_MEMBER(dfruit_irq_scanline);
 };
 
@@ -73,7 +101,11 @@ void dfruit_state::video_start()
 {
 }
 
+<<<<<<< HEAD
 UINT32 dfruit_state::screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+=======
+uint32_t dfruit_state::screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+>>>>>>> upstream/master
 {
 	bitmap.fill(0, cliprect);
 
@@ -82,7 +114,11 @@ UINT32 dfruit_state::screen_update(screen_device &screen, bitmap_ind16 &bitmap, 
 	return 0;
 }
 
+<<<<<<< HEAD
 void dfruit_state::screen_eof(screen_device &screen, bool state)
+=======
+WRITE_LINE_MEMBER(dfruit_state::screen_vblank)
+>>>>>>> upstream/master
 {
 	if (state)
 	{
@@ -92,7 +128,11 @@ void dfruit_state::screen_eof(screen_device &screen, bool state)
 
 READ8_MEMBER(dfruit_state::dfruit_rom_r)
 {
+<<<<<<< HEAD
 	UINT8 *ROM = memregion("maincpu")->base();
+=======
+	uint8_t *ROM = memregion("maincpu")->base();
+>>>>>>> upstream/master
 
 	return ROM[offset + m_rom_bank * 0x2000];
 }
@@ -137,13 +177,21 @@ WRITE8_MEMBER(dfruit_state::dfruit_ram_bank_w)
 	m_ram_bank[offset] = data;
 }
 
+<<<<<<< HEAD
 UINT8 dfruit_state::ram_bank_r(UINT16 offset, UINT8 bank_num)
+=======
+uint8_t dfruit_state::ram_bank_r(uint16_t offset, uint8_t bank_num)
+>>>>>>> upstream/master
 {
 	address_space &vdp_space = machine().device<tc0091lvc_device>("tc0091lvc")->space();
 	return vdp_space.read_byte(offset + (m_ram_bank[bank_num]) * 0x1000);;
 }
 
+<<<<<<< HEAD
 void dfruit_state::ram_bank_w(UINT16 offset, UINT8 data, UINT8 bank_num)
+=======
+void dfruit_state::ram_bank_w(uint16_t offset, uint8_t data, uint8_t bank_num)
+>>>>>>> upstream/master
 {
 	address_space &vdp_space = machine().device<tc0091lvc_device>("tc0091lvc")->space();
 	vdp_space.write_byte(offset + (m_ram_bank[bank_num]) * 0x1000,data);;
@@ -337,7 +385,11 @@ static const gfx_layout char_layout =
 static GFXDECODE_START( dfruit )
 	GFXDECODE_ENTRY( "gfx1", 0, bg2_layout, 0, 16 )
 	GFXDECODE_ENTRY( "gfx1", 0, sp2_layout, 0, 16 )
+<<<<<<< HEAD
 	//GFXDECODE_ENTRY( NULL,           0, char_layout,  0, 16 )  // Ram-based
+=======
+	//GFXDECODE_ENTRY( nullptr,           0, char_layout,  0, 16 )  // Ram-based
+>>>>>>> upstream/master
 GFXDECODE_END
 
 TIMER_DEVICE_CALLBACK_MEMBER(dfruit_state::dfruit_irq_scanline)
@@ -362,7 +414,11 @@ TIMER_DEVICE_CALLBACK_MEMBER(dfruit_state::dfruit_irq_scanline)
 
 #define MASTER_CLOCK XTAL_14MHz
 
+<<<<<<< HEAD
 static MACHINE_CONFIG_START( dfruit, dfruit_state )
+=======
+static MACHINE_CONFIG_START( dfruit )
+>>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu",Z80,MASTER_CLOCK/2) //!!! TC0091LVC !!!
@@ -379,7 +435,11 @@ static MACHINE_CONFIG_START( dfruit, dfruit_state )
 	MCFG_SCREEN_SIZE(64*8, 32*8)
 	MCFG_SCREEN_VISIBLE_AREA(0*8, 40*8-1, 2*8, 30*8-1)
 	MCFG_SCREEN_UPDATE_DRIVER(dfruit_state, screen_update)
+<<<<<<< HEAD
 	MCFG_SCREEN_VBLANK_DRIVER(dfruit_state, screen_eof)
+=======
+	MCFG_SCREEN_VBLANK_CALLBACK(WRITELINE(dfruit_state, screen_vblank))
+>>>>>>> upstream/master
 	MCFG_SCREEN_PALETTE("palette")
 
 	MCFG_GFXDECODE_ADD("gfxdecode", "palette", dfruit )
@@ -387,7 +447,10 @@ static MACHINE_CONFIG_START( dfruit, dfruit_state )
 
 	MCFG_DEVICE_ADD("tc0091lvc", TC0091LVC, 0)
 	MCFG_TC0091LVC_GFXDECODE("gfxdecode")
+<<<<<<< HEAD
 	MCFG_TC0091LVC_PALETTE("palette")
+=======
+>>>>>>> upstream/master
 
 	MCFG_DEVICE_ADD("ppi8255_0", I8255A, 0)
 	MCFG_I8255_IN_PORTA_CB(IOPORT("IN0"))
@@ -416,4 +479,8 @@ ROM_START( dfruit )
 	ROM_LOAD( "c2.ic10", 0x00000, 0x80000, CRC(d869ab24) SHA1(382e874a846855a7f6f8811625aaa30d9dfa1ce2) )
 ROM_END
 
+<<<<<<< HEAD
 GAME( 1993, dfruit,  0,   dfruit, dfruit, driver_device,  0, ROT0, "Nippon Data Kiki / Star Fish", "Fruit Dream (Japan)", MACHINE_IMPERFECT_GRAPHICS )
+=======
+GAME( 1993, dfruit,  0,   dfruit, dfruit, dfruit_state,  0, ROT0, "Nippon Data Kiki / Star Fish", "Fruit Dream (Japan)", MACHINE_IMPERFECT_GRAPHICS )
+>>>>>>> upstream/master

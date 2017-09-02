@@ -40,7 +40,11 @@ static const char *const s_mnemonic[] =
 #define _OVER DASMFLAG_STEP_OVER
 #define _OUT  DASMFLAG_STEP_OUT
 
+<<<<<<< HEAD
 static const UINT32 s_flags[] =
+=======
+static const uint32_t s_flags[] =
+>>>>>>> upstream/master
 {
 	0    ,0    ,0    ,0    ,_OVER,0    ,0    ,0    ,
 	_OVER,0    ,_OVER,0    ,0    ,0    ,0    ,0    ,
@@ -55,7 +59,11 @@ static const UINT32 s_flags[] =
 
 struct z80dasm
 {
+<<<<<<< HEAD
 	UINT8 mnemonic;
+=======
+	uint8_t mnemonic;
+>>>>>>> upstream/master
 	const char *arguments;
 };
 
@@ -214,6 +222,7 @@ static const z80dasm mnemonic_ed[256] =
 	{zDB,"?"},      {zDB,"?"},      {zDB,"?"},      {zDB,"?"},
 	{zDB,"?"},      {zDB,"?"},      {zDB,"?"},      {zDB,"?"},
 	{zIN,"b,(c)"},  {zOUT,"(c),b"}, {zSBC,"hl,bc"}, {zLD,"(W),bc"},
+<<<<<<< HEAD
 	{zNEG,0},       {zRETN,0},      {zIM,"0"},      {zLD,"i,a"},
 	{zIN,"c,(c)"},  {zOUT,"(c),c"}, {zADC,"hl,bc"}, {zLD,"bc,(W)"},
 	{zNEG,"*"},     {zRETI,0},      {zIM,"0"},      {zLD,"r,a"},
@@ -229,6 +238,23 @@ static const z80dasm mnemonic_ed[256] =
 	{zNEG,"*"},     {zRETN,0},      {zIM,"1"},      {zDB,"?"},
 	{zIN,"a,(c)"},  {zOUT,"(c),a"}, {zADC,"hl,sp"}, {zLD,"sp,(W)"},
 	{zNEG,"*"},     {zRETI,0},      {zIM,"2"},      {zDB,"?"},
+=======
+	{zNEG,nullptr},       {zRETN,nullptr},      {zIM,"0"},      {zLD,"i,a"},
+	{zIN,"c,(c)"},  {zOUT,"(c),c"}, {zADC,"hl,bc"}, {zLD,"bc,(W)"},
+	{zNEG,"*"},     {zRETI,nullptr},      {zIM,"0"},      {zLD,"r,a"},
+	{zIN,"d,(c)"},  {zOUT,"(c),d"}, {zSBC,"hl,de"}, {zLD,"(W),de"},
+	{zNEG,"*"},     {zRETN,nullptr},      {zIM,"1"},      {zLD,"a,i"},
+	{zIN,"e,(c)"},  {zOUT,"(c),e"}, {zADC,"hl,de"}, {zLD,"de,(W)"},
+	{zNEG,"*"},     {zRETI,nullptr},      {zIM,"2"},      {zLD,"a,r"},
+	{zIN,"h,(c)"},  {zOUT,"(c),h"}, {zSBC,"hl,hl"}, {zLD,"(W),hl"},
+	{zNEG,"*"},     {zRETN,nullptr},      {zIM,"0"},      {zRRD,"(hl)"},
+	{zIN,"l,(c)"},  {zOUT,"(c),l"}, {zADC,"hl,hl"}, {zLD,"hl,(W)"},
+	{zNEG,"*"},     {zRETI,nullptr},      {zIM,"0"},      {zRLD,"(hl)"},
+	{zIN,"0,(c)"},  {zOUT,"(c),0"}, {zSBC,"hl,sp"}, {zLD,"(W),sp"},
+	{zNEG,"*"},     {zRETN,nullptr},      {zIM,"1"},      {zDB,"?"},
+	{zIN,"a,(c)"},  {zOUT,"(c),a"}, {zADC,"hl,sp"}, {zLD,"sp,(W)"},
+	{zNEG,"*"},     {zRETI,nullptr},      {zIM,"2"},      {zDB,"?"},
+>>>>>>> upstream/master
 	{zDB,"?"},      {zDB,"?"},      {zDB,"?"},      {zDB,"?"},
 	{zDB,"?"},      {zDB,"?"},      {zDB,"?"},      {zDB,"?"},
 	{zDB,"?"},      {zDB,"?"},      {zDB,"?"},      {zDB,"?"},
@@ -237,6 +263,7 @@ static const z80dasm mnemonic_ed[256] =
 	{zDB,"?"},      {zDB,"?"},      {zDB,"?"},      {zDB,"?"},
 	{zDB,"?"},      {zDB,"?"},      {zDB,"?"},      {zDB,"?"},
 	{zDB,"?"},      {zDB,"?"},      {zDB,"?"},      {zDB,"?"},
+<<<<<<< HEAD
 	{zLDI,0},       {zCPI,0},       {zINI,0},       {zOUTI,0},
 	{zDB,"?"},      {zDB,"?"},      {zDB,"?"},      {zDB,"?"},
 	{zLDD,0},       {zCPD,0},       {zIND,0},       {zOUTD,0},
@@ -244,6 +271,15 @@ static const z80dasm mnemonic_ed[256] =
 	{zLDIR,0},      {zCPIR,0},      {zINIR,0},      {zOTIR,0},
 	{zDB,"?"},      {zDB,"?"},      {zDB,"?"},      {zDB,"?"},
 	{zLDDR,0},      {zCPDR,0},      {zINDR,0},      {zOTDR,0},
+=======
+	{zLDI,nullptr},       {zCPI,nullptr},       {zINI,nullptr},       {zOUTI,nullptr},
+	{zDB,"?"},      {zDB,"?"},      {zDB,"?"},      {zDB,"?"},
+	{zLDD,nullptr},       {zCPD,nullptr},       {zIND,nullptr},       {zOUTD,nullptr},
+	{zDB,"?"},      {zDB,"?"},      {zDB,"?"},      {zDB,"?"},
+	{zLDIR,nullptr},      {zCPIR,nullptr},      {zINIR,nullptr},      {zOTIR,nullptr},
+	{zDB,"?"},      {zDB,"?"},      {zDB,"?"},      {zDB,"?"},
+	{zLDDR,nullptr},      {zCPDR,nullptr},      {zINDR,nullptr},      {zOTDR,nullptr},
+>>>>>>> upstream/master
 	{zDB,"?"},      {zDB,"?"},      {zDB,"?"},      {zDB,"?"},
 	{zDB,"?"},      {zDB,"?"},      {zDB,"?"},      {zDB,"?"},
 	{zDB,"?"},      {zDB,"?"},      {zDB,"?"},      {zDB,"?"},
@@ -333,6 +369,7 @@ static const z80dasm mnemonic_xx[256] =
 
 static const z80dasm mnemonic_main[256] =
 {
+<<<<<<< HEAD
 	{zNOP,0},       {zLD,"bc,N"},   {zLD,"(bc),a"}, {zINC,"bc"},
 	{zINC,"b"},     {zDEC,"b"},     {zLD,"b,B"},    {zRLCA,0},
 	{zEX,"af,af'"}, {zADD,"hl,bc"}, {zLD,"a,(bc)"}, {zDEC,"bc"},
@@ -349,6 +386,24 @@ static const z80dasm mnemonic_main[256] =
 	{zINC,"(hl)"},  {zDEC,"(hl)"},  {zLD,"(hl),B"}, {zSCF,0},
 	{zJR,"c,O"},    {zADD,"hl,sp"}, {zLD,"a,(W)"},  {zDEC,"sp"},
 	{zINC,"a"},     {zDEC,"a"},     {zLD,"a,B"},    {zCCF,0},
+=======
+	{zNOP,nullptr},       {zLD,"bc,N"},   {zLD,"(bc),a"}, {zINC,"bc"},
+	{zINC,"b"},     {zDEC,"b"},     {zLD,"b,B"},    {zRLCA,nullptr},
+	{zEX,"af,af'"}, {zADD,"hl,bc"}, {zLD,"a,(bc)"}, {zDEC,"bc"},
+	{zINC,"c"},     {zDEC,"c"},     {zLD,"c,B"},    {zRRCA,nullptr},
+	{zDJNZ,"O"},    {zLD,"de,N"},   {zLD,"(de),a"}, {zINC,"de"},
+	{zINC,"d"},     {zDEC,"d"},     {zLD,"d,B"},    {zRLA,nullptr},
+	{zJR,"O"},      {zADD,"hl,de"}, {zLD,"a,(de)"}, {zDEC,"de"},
+	{zINC,"e"},     {zDEC,"e"},     {zLD,"e,B"},    {zRRA,nullptr},
+	{zJR,"nz,O"},   {zLD,"hl,N"},   {zLD,"(W),hl"}, {zINC,"hl"},
+	{zINC,"h"},     {zDEC,"h"},     {zLD,"h,B"},    {zDAA,nullptr},
+	{zJR,"z,O"},    {zADD,"hl,hl"}, {zLD,"hl,(W)"}, {zDEC,"hl"},
+	{zINC,"l"},     {zDEC,"l"},     {zLD,"l,B"},    {zCPL,nullptr},
+	{zJR,"nc,O"},   {zLD,"sp,N"},   {zLD,"(W),a"},  {zINC,"sp"},
+	{zINC,"(hl)"},  {zDEC,"(hl)"},  {zLD,"(hl),B"}, {zSCF,nullptr},
+	{zJR,"c,O"},    {zADD,"hl,sp"}, {zLD,"a,(W)"},  {zDEC,"sp"},
+	{zINC,"a"},     {zDEC,"a"},     {zLD,"a,B"},    {zCCF,nullptr},
+>>>>>>> upstream/master
 	{zLD,"b,b"},    {zLD,"b,c"},    {zLD,"b,d"},    {zLD,"b,e"},
 	{zLD,"b,h"},    {zLD,"b,l"},    {zLD,"b,(hl)"}, {zLD,"b,a"},
 	{zLD,"c,b"},    {zLD,"c,c"},    {zLD,"c,d"},    {zLD,"c,e"},
@@ -362,7 +417,11 @@ static const z80dasm mnemonic_main[256] =
 	{zLD,"l,b"},    {zLD,"l,c"},    {zLD,"l,d"},    {zLD,"l,e"},
 	{zLD,"l,h"},    {zLD,"l,l"},    {zLD,"l,(hl)"}, {zLD,"l,a"},
 	{zLD,"(hl),b"}, {zLD,"(hl),c"}, {zLD,"(hl),d"}, {zLD,"(hl),e"},
+<<<<<<< HEAD
 	{zLD,"(hl),h"}, {zLD,"(hl),l"}, {zHLT,0},       {zLD,"(hl),a"},
+=======
+	{zLD,"(hl),h"}, {zLD,"(hl),l"}, {zHLT,nullptr},       {zLD,"(hl),a"},
+>>>>>>> upstream/master
 	{zLD,"a,b"},    {zLD,"a,c"},    {zLD,"a,d"},    {zLD,"a,e"},
 	{zLD,"a,h"},    {zLD,"a,l"},    {zLD,"a,(hl)"}, {zLD,"a,a"},
 	{zADD,"a,b"},   {zADD,"a,c"},   {zADD,"a,d"},   {zADD,"a,e"},
@@ -383,16 +442,25 @@ static const z80dasm mnemonic_main[256] =
 	{zCP,"h"},      {zCP,"l"},      {zCP,"(hl)"},   {zCP,"a"},
 	{zRET,"nz"},    {zPOP,"bc"},    {zJP,"nz,A"},   {zJP,"A"},
 	{zCALL,"nz,A"}, {zPUSH,"bc"},   {zADD,"a,B"},   {zRST,"V"},
+<<<<<<< HEAD
 	{zRET,"z"},     {zRET,0},       {zJP,"z,A"},    {zDB,"cb"},
 	{zCALL,"z,A"},  {zCALL,"A"},    {zADC,"a,B"},   {zRST,"V"},
 	{zRET,"nc"},    {zPOP,"de"},    {zJP,"nc,A"},   {zOUT,"(P),a"},
 	{zCALL,"nc,A"}, {zPUSH,"de"},   {zSUB,"B"},     {zRST,"V"},
 	{zRET,"c"},     {zEXX,0},       {zJP,"c,A"},    {zIN,"a,(P)"},
+=======
+	{zRET,"z"},     {zRET,nullptr},       {zJP,"z,A"},    {zDB,"cb"},
+	{zCALL,"z,A"},  {zCALL,"A"},    {zADC,"a,B"},   {zRST,"V"},
+	{zRET,"nc"},    {zPOP,"de"},    {zJP,"nc,A"},   {zOUT,"(P),a"},
+	{zCALL,"nc,A"}, {zPUSH,"de"},   {zSUB,"B"},     {zRST,"V"},
+	{zRET,"c"},     {zEXX,nullptr},       {zJP,"c,A"},    {zIN,"a,(P)"},
+>>>>>>> upstream/master
 	{zCALL,"c,A"},  {zDB,"dd"},     {zSBC,"a,B"},   {zRST,"V"},
 	{zRET,"po"},    {zPOP,"hl"},    {zJP,"po,A"},   {zEX,"(sp),hl"},
 	{zCALL,"po,A"}, {zPUSH,"hl"},   {zAND,"B"},     {zRST,"V"},
 	{zRET,"pe"},    {zJP,"(hl)"},   {zJP,"pe,A"},   {zEX,"de,hl"},
 	{zCALL,"pe,A"}, {zDB,"ed"},     {zXOR,"B"},     {zRST,"V"},
+<<<<<<< HEAD
 	{zRET,"p"},     {zPOP,"af"},    {zJP,"p,A"},    {zDI,0},
 	{zCALL,"p,A"},  {zPUSH,"af"},   {zOR,"B"},      {zRST,"V"},
 	{zRET,"m"},     {zLD,"sp,hl"},  {zJP,"m,A"},    {zEI,0},
@@ -400,11 +468,24 @@ static const z80dasm mnemonic_main[256] =
 };
 
 static char sign(INT8 offset)
+=======
+	{zRET,"p"},     {zPOP,"af"},    {zJP,"p,A"},    {zDI,nullptr},
+	{zCALL,"p,A"},  {zPUSH,"af"},   {zOR,"B"},      {zRST,"V"},
+	{zRET,"m"},     {zLD,"sp,hl"},  {zJP,"m,A"},    {zEI,nullptr},
+	{zCALL,"m,A"},  {zDB,"fd"},     {zCP,"B"},      {zRST,"V"}
+};
+
+static char sign(int8_t offset)
+>>>>>>> upstream/master
 {
 	return (offset < 0)? '-':'+';
 }
 
+<<<<<<< HEAD
 static int offs(INT8 offset)
+=======
+static int offs(int8_t offset)
+>>>>>>> upstream/master
 {
 	if (offset < 0) return -offset;
 	return offset;
@@ -413,6 +494,7 @@ static int offs(INT8 offset)
 /****************************************************************************
  * Disassemble opcode at PC and return number of bytes it takes
  ****************************************************************************/
+<<<<<<< HEAD
 CPU_DISASSEMBLE( z80 )
 {
 	const z80dasm *d;
@@ -425,6 +507,18 @@ CPU_DISASSEMBLE( z80 )
 
 	ixy = "oops!!";
 	dst = buffer;
+=======
+CPU_DISASSEMBLE(z80)
+{
+	const z80dasm *d;
+	const char *src, *ixy;
+	int8_t offset = 0;
+	uint8_t op, op1 = 0;
+	uint16_t ea;
+	int pos = 0;
+
+	ixy = "oops!!";
+>>>>>>> upstream/master
 
 	op = oprom[pos++];
 
@@ -443,7 +537,11 @@ CPU_DISASSEMBLE( z80 )
 		op1 = oprom[pos++];
 		if( op1 == 0xcb )
 		{
+<<<<<<< HEAD
 			offset = (INT8) opram[pos++];
+=======
+			offset = (int8_t) opram[pos++];
+>>>>>>> upstream/master
 			op1 = opram[pos++]; /* fourth byte from opbase.ram! */
 			d = &mnemonic_xx_cb[op1];
 		}
@@ -454,7 +552,11 @@ CPU_DISASSEMBLE( z80 )
 		op1 = oprom[pos++];
 		if( op1 == 0xcb )
 		{
+<<<<<<< HEAD
 			offset = (INT8) opram[pos++];
+=======
+			offset = (int8_t) opram[pos++];
+>>>>>>> upstream/master
 			op1 = opram[pos++]; /* fourth byte from opbase.ram! */
 			d = &mnemonic_xx_cb[op1];
 		}
@@ -467,27 +569,44 @@ CPU_DISASSEMBLE( z80 )
 
 	if( d->arguments )
 	{
+<<<<<<< HEAD
 		dst += sprintf(dst, "%-4s ", s_mnemonic[d->mnemonic]);
+=======
+		util::stream_format(stream, "%-4s ", s_mnemonic[d->mnemonic]);
+>>>>>>> upstream/master
 		src = d->arguments;
 		while( *src )
 		{
 			switch( *src )
 			{
 			case '?':   /* illegal opcode */
+<<<<<<< HEAD
 				dst += sprintf( dst, "$%02x,$%02x", op, op1 );
+=======
+				util::stream_format(stream, "$%02x,$%02x", op, op1 );
+>>>>>>> upstream/master
 				break;
 			case 'A':
 				ea = opram[pos+0] + ( opram[pos+1] << 8 );
 				pos += 2;
+<<<<<<< HEAD
 				dst += sprintf( dst, "$%04X", ea );
 				break;
 			case 'B':   /* Byte op arg */
 				ea = opram[pos++];
 				dst += sprintf( dst, "$%02X", ea );
+=======
+				util::stream_format(stream, "$%04X", ea );
+				break;
+			case 'B':   /* Byte op arg */
+				ea = opram[pos++];
+				util::stream_format(stream, "$%02X", ea );
+>>>>>>> upstream/master
 				break;
 			case 'N':   /* Immediate 16 bit */
 				ea = opram[pos+0] + ( opram[pos+1] << 8 );
 				pos += 2;
+<<<<<<< HEAD
 				dst += sprintf( dst, "$%04X", ea );
 				break;
 			case 'O':   /* Offset relative to PC */
@@ -501,10 +620,26 @@ CPU_DISASSEMBLE( z80 )
 			case 'V':   /* Restart vector */
 				ea = op & 0x38;
 				dst += sprintf( dst, "$%02X", ea );
+=======
+				util::stream_format(stream, "$%04X", ea );
+				break;
+			case 'O':   /* Offset relative to PC */
+				offset = (int8_t) opram[pos++];
+				util::stream_format(stream, "$%04X", (pc + offset + 2) & 0xffff);
+				break;
+			case 'P':   /* Port number */
+				ea = opram[pos++];
+				util::stream_format(stream, "$%02X", ea );
+				break;
+			case 'V':   /* Restart vector */
+				ea = op & 0x38;
+				util::stream_format(stream, "$%02X", ea );
+>>>>>>> upstream/master
 				break;
 			case 'W':   /* Memory address word */
 				ea = opram[pos+0] + ( opram[pos+1] << 8 );
 				pos += 2;
+<<<<<<< HEAD
 				dst += sprintf( dst, "$%04X", ea );
 				break;
 			case 'X':
@@ -526,6 +661,28 @@ CPU_DISASSEMBLE( z80 )
 	else
 	{
 		dst += sprintf(dst, "%s", s_mnemonic[d->mnemonic]);
+=======
+				util::stream_format(stream, "$%04X", ea );
+				break;
+			case 'X':
+				offset = (int8_t) opram[pos++];
+				/* fall through */
+			case 'Y':
+				util::stream_format(stream,"(%s%c$%02x)", ixy, sign(offset), offs(offset) );
+				break;
+			case 'I':
+				util::stream_format(stream, "%s", ixy);
+				break;
+			default:
+				stream << *src;
+			}
+			src++;
+		}
+	}
+	else
+	{
+		util::stream_format(stream, "%s", s_mnemonic[d->mnemonic]);
+>>>>>>> upstream/master
 	}
 
 	return pos | s_flags[d->mnemonic] | DASMFLAG_SUPPORTED;

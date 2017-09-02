@@ -1,6 +1,11 @@
 /*
+<<<<<<< HEAD
  * Copyright 2011-2015 Branimir Karadzic. All rights reserved.
  * License: http://www.opensource.org/licenses/BSD-2-Clause
+=======
+ * Copyright 2011-2017 Branimir Karadzic. All rights reserved.
+ * License: https://github.com/bkaradzic/bgfx#license-bsd-2-clause
+>>>>>>> upstream/master
  */
 
 #include "common.h"
@@ -8,6 +13,11 @@
 
 #include <bx/allocator.h>
 #include <bx/string.h>
+<<<<<<< HEAD
+=======
+#include <bx/crtimpl.h>
+
+>>>>>>> upstream/master
 #include "aviwriter.h"
 
 #include <inttypes.h>
@@ -61,6 +71,7 @@ static const uint16_t s_cubeIndices[36] =
 	6, 3, 7,
 };
 
+<<<<<<< HEAD
 void saveTga(const char* _filePath, uint32_t _width, uint32_t _height, uint32_t _srcPitch, const void* _src, bool _grayscale, bool _yflip)
 {
 	FILE* file = fopen(_filePath, "wb");
@@ -119,6 +130,60 @@ long int fsize(FILE* _file)
 	long int size = ftell(_file);
 	fseek(_file, pos, SEEK_SET);
 	return size;
+=======
+void imageWriteTga(bx::WriterI* _writer, uint32_t _width, uint32_t _height, uint32_t _pitch, const void* _src, bool _grayscale, bool _yflip, bx::Error* _err)
+{
+	BX_ERROR_SCOPE(_err);
+
+	uint8_t type = _grayscale ? 3 :  2;
+	uint8_t bpp  = _grayscale ? 8 : 32;
+
+	uint8_t header[18] = {};
+	header[ 2] = type;
+	header[12] =  _width     &0xff;
+	header[13] = (_width >>8)&0xff;
+	header[14] =  _height    &0xff;
+	header[15] = (_height>>8)&0xff;
+	header[16] = bpp;
+	header[17] = 32;
+
+	bx::write(_writer, header, sizeof(header), _err);
+
+	uint32_t dstPitch = _width*bpp/8;
+	if (_yflip)
+	{
+		uint8_t* data = (uint8_t*)_src + _pitch*_height - _pitch;
+		for (uint32_t yy = 0; yy < _height; ++yy)
+		{
+			bx::write(_writer, data, dstPitch, _err);
+			data -= _pitch;
+		}
+	}
+	else if (_pitch == dstPitch)
+	{
+		bx::write(_writer, _src, _height*_pitch, _err);
+	}
+	else
+	{
+		uint8_t* data = (uint8_t*)_src;
+		for (uint32_t yy = 0; yy < _height; ++yy)
+		{
+			bx::write(_writer, data, dstPitch, _err);
+			data += _pitch;
+		}
+	}
+}
+
+void saveTga(const char* _filePath, uint32_t _width, uint32_t _height, uint32_t _srcPitch, const void* _src, bool _grayscale, bool _yflip)
+{
+	bx::CrtFileWriter writer;
+	bx::Error err;
+	if (bx::open(&writer, _filePath, false, &err) )
+	{
+		imageWriteTga(&writer, _width, _height, _srcPitch, _src, _grayscale, _yflip, &err);
+		bx::close(&writer);
+	}
+>>>>>>> upstream/master
 }
 
 struct BgfxCallback : public bgfx::CallbackI
@@ -130,7 +195,11 @@ struct BgfxCallback : public bgfx::CallbackI
 	virtual void fatal(bgfx::Fatal::Enum _code, const char* _str) BX_OVERRIDE
 	{
 		// Something unexpected happened, inform user and bail out.
+<<<<<<< HEAD
 		dbgPrintf("Fatal error: 0x%08x: %s", _code, _str);
+=======
+		bx::debugPrintf("Fatal error: 0x%08x: %s", _code, _str);
+>>>>>>> upstream/master
 
 		// Must terminate, continuing will cause crash anyway.
 		abort();
@@ -138,8 +207,13 @@ struct BgfxCallback : public bgfx::CallbackI
 
 	virtual void traceVargs(const char* _filePath, uint16_t _line, const char* _format, va_list _argList) BX_OVERRIDE
 	{
+<<<<<<< HEAD
 		dbgPrintf("%s (%d): ", _filePath, _line);
 		dbgPrintfVargs(_format, _argList);
+=======
+		bx::debugPrintf("%s (%d): ", _filePath, _line);
+		bx::debugPrintfVargs(_format, _argList);
+>>>>>>> upstream/master
 	}
 
 	virtual uint32_t cacheReadSize(uint64_t _id) BX_OVERRIDE
@@ -148,11 +222,20 @@ struct BgfxCallback : public bgfx::CallbackI
 		bx::snprintf(filePath, sizeof(filePath), "temp/%016" PRIx64, _id);
 
 		// Use cache id as filename.
+<<<<<<< HEAD
 		FILE* file = fopen(filePath, "rb");
 		if (NULL != file)
 		{
 			uint32_t size = fsize(file);
 			fclose(file);
+=======
+		bx::FileReaderI* reader = entry::getFileReader();
+		bx::Error err;
+		if (bx::open(reader, filePath, &err) )
+		{
+			uint32_t size = (uint32_t)bx::getSize(reader);
+			bx::close(reader);
+>>>>>>> upstream/master
 			// Return size of shader file.
 			return size;
 		}
@@ -167,12 +250,22 @@ struct BgfxCallback : public bgfx::CallbackI
 		bx::snprintf(filePath, sizeof(filePath), "temp/%016" PRIx64, _id);
 
 		// Use cache id as filename.
+<<<<<<< HEAD
 		FILE* file = fopen(filePath, "rb");
 		if (NULL != file)
 		{
 			// Read shader.
 			size_t result = fread(_data, 1, _size, file);
 			fclose(file);
+=======
+		bx::FileReaderI* reader = entry::getFileReader();
+		bx::Error err;
+		if (bx::open(reader, filePath, &err) )
+		{
+			// Read shader.
+			uint32_t result = bx::read(reader, _data, _size, &err);
+			bx::close(reader);
+>>>>>>> upstream/master
 
 			// Make sure that read size matches requested size.
 			return result == _size;
@@ -188,12 +281,22 @@ struct BgfxCallback : public bgfx::CallbackI
 		bx::snprintf(filePath, sizeof(filePath), "temp/%016" PRIx64, _id);
 
 		// Use cache id as filename.
+<<<<<<< HEAD
 		FILE* file = fopen(filePath, "wb");
 		if (NULL != file)
 		{
 			// Write shader to cache location.
 			fwrite(_data, 1, _size, file);
 			fclose(file);
+=======
+		bx::FileWriterI* writer = entry::getFileWriter();
+		bx::Error err;
+		if (bx::open(writer, filePath, false, &err) )
+		{
+			// Write shader to cache location.
+			bx::write(writer, _data, _size, &err);
+			bx::close(writer);
+>>>>>>> upstream/master
 		}
 	}
 
@@ -202,6 +305,7 @@ struct BgfxCallback : public bgfx::CallbackI
 		char temp[1024];
 
 		// Save screen shot as TGA.
+<<<<<<< HEAD
 		bx::snprintf(temp, BX_COUNTOF(temp), "%s.mip0.tga", _filePath);
 		saveTga(temp, _width, _height, _pitch, _data, false, _yflip);
 
@@ -258,14 +362,25 @@ struct BgfxCallback : public bgfx::CallbackI
 				saveTga(temp, 2, height, 8, _data, false, _yflip);
 			}
 		}
+=======
+		bx::snprintf(temp, BX_COUNTOF(temp), "%s.tga", _filePath);
+		saveTga(temp, _width, _height, _pitch, _data, false, _yflip);
+>>>>>>> upstream/master
 	}
 
 	virtual void captureBegin(uint32_t _width, uint32_t _height, uint32_t /*_pitch*/, bgfx::TextureFormat::Enum /*_format*/, bool _yflip) BX_OVERRIDE
 	{
+<<<<<<< HEAD
 		m_writer = new AviWriter(entry::getFileWriter() );
 		if (!m_writer->open("temp/capture.avi", _width, _height, 60, _yflip) )
 		{
 			delete m_writer;
+=======
+		m_writer = BX_NEW(entry::getAllocator(), AviWriter)(entry::getFileWriter() );
+		if (!m_writer->open("temp/capture.avi", _width, _height, 60, _yflip) )
+		{
+			BX_DELETE(entry::getAllocator(), m_writer);
+>>>>>>> upstream/master
 			m_writer = NULL;
 		}
 	}
@@ -275,7 +390,11 @@ struct BgfxCallback : public bgfx::CallbackI
 		if (NULL != m_writer)
 		{
 			m_writer->close();
+<<<<<<< HEAD
 			delete m_writer;
+=======
+			BX_DELETE(entry::getAllocator(), m_writer);
+>>>>>>> upstream/master
 			m_writer = NULL;
 		}
 	}
@@ -291,7 +410,11 @@ struct BgfxCallback : public bgfx::CallbackI
 	AviWriter* m_writer;
 };
 
+<<<<<<< HEAD
 class BgfxAllocator : public bx::ReallocatorI
+=======
+class BgfxAllocator : public bx::AllocatorI
+>>>>>>> upstream/master
 {
 public:
 	BgfxAllocator()
@@ -304,6 +427,7 @@ public:
 	{
 	}
 
+<<<<<<< HEAD
 	virtual void* alloc(size_t _size, size_t _align, const char* _file, uint32_t _line) BX_OVERRIDE
 	{
 		if (BX_CONFIG_ALLOCATOR_NATURAL_ALIGNMENT >= _align)
@@ -341,6 +465,46 @@ public:
 		{
 			void* ptr = ::realloc(_ptr, _size);
 			dbgPrintf("%s(%d): REALLOC %p (old %p) of %d byte(s)\n", _file, _line, ptr, _ptr, _size);
+=======
+	virtual void* realloc(void* _ptr, size_t _size, size_t _align, const char* _file, uint32_t _line) BX_OVERRIDE
+	{
+		if (0 == _size)
+		{
+			if (NULL != _ptr)
+			{
+				if (BX_CONFIG_ALLOCATOR_NATURAL_ALIGNMENT >= _align)
+				{
+					bx::debugPrintf("%s(%d): FREE %p\n", _file, _line, _ptr);
+					::free(_ptr);
+					--m_numBlocks;
+				}
+				else
+				{
+					bx::alignedFree(this, _ptr, _align, _file, _line);
+				}
+			}
+
+			return NULL;
+		}
+		else if (NULL == _ptr)
+		{
+			if (BX_CONFIG_ALLOCATOR_NATURAL_ALIGNMENT >= _align)
+			{
+				void* ptr = ::malloc(_size);
+				bx::debugPrintf("%s(%d): ALLOC %p of %d byte(s)\n", _file, _line, ptr, _size);
+				++m_numBlocks;
+				m_maxBlocks = bx::uint32_max(m_maxBlocks, m_numBlocks);
+				return ptr;
+			}
+
+			return bx::alignedAlloc(this, _size, _align, _file, _line);
+		}
+
+		if (BX_CONFIG_ALLOCATOR_NATURAL_ALIGNMENT >= _align)
+		{
+			void* ptr = ::realloc(_ptr, _size);
+			bx::debugPrintf("%s(%d): REALLOC %p (old %p) of %d byte(s)\n", _file, _line, ptr, _ptr, _size);
+>>>>>>> upstream/master
 
 			if (NULL == _ptr)
 			{
@@ -356,7 +520,11 @@ public:
 
 	void dumpStats() const
 	{
+<<<<<<< HEAD
 		dbgPrintf("Allocator stats: num blocks %d (peak: %d)\n", m_numBlocks, m_maxBlocks);
+=======
+		bx::debugPrintf("Allocator stats: num blocks %d (peak: %d)\n", m_numBlocks, m_maxBlocks);
+>>>>>>> upstream/master
 	}
 
 private:
@@ -376,7 +544,11 @@ int _main_(int _argc, char** _argv)
 
 	// Enumerate supported backend renderers.
 	bgfx::RendererType::Enum renderers[bgfx::RendererType::Count];
+<<<<<<< HEAD
 	uint8_t numRenderers = bgfx::getSupportedRenderers(renderers);
+=======
+	uint8_t numRenderers = bgfx::getSupportedRenderers(BX_COUNTOF(renderers), renderers);
+>>>>>>> upstream/master
 
 	bgfx::init(bgfx::RendererType::Count == args.m_type
 		? renderers[bx::getHPCounter() % numRenderers] /* randomize renderer */
@@ -457,7 +629,11 @@ int _main_(int _argc, char** _argv)
 		float view[16];
 		float proj[16];
 		bx::mtxLookAt(view, eye, at);
+<<<<<<< HEAD
 		bx::mtxProj(proj, 60.0f, float(width)/float(height), 0.1f, 100.0f);
+=======
+		bx::mtxProj(proj, 60.0f, float(width)/float(height), 0.1f, 100.0f, bgfx::getCaps()->homogeneousDepth);
+>>>>>>> upstream/master
 
 		// Set view and projection matrix for view 0.
 		bgfx::setViewTransform(0, view, proj);
@@ -493,7 +669,12 @@ int _main_(int _argc, char** _argv)
 		// Take screen shot at frame 150.
 		if (150 == frame)
 		{
+<<<<<<< HEAD
 			bgfx::saveScreenShot("temp/frame150");
+=======
+			bgfx::FrameBufferHandle fbh = BGFX_INVALID_HANDLE;
+			bgfx::requestScreenShot(fbh, "temp/frame150");
+>>>>>>> upstream/master
 		}
 
 		// Advance to next frame. Rendering thread will be kicked to

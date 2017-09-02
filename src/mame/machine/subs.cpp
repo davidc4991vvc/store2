@@ -179,15 +179,27 @@ READ8_MEMBER(subs_state::options_r)
 /***************************************************************************
 lamp1_w
 ***************************************************************************/
+<<<<<<< HEAD
 WRITE8_MEMBER(subs_state::lamp1_w)
 {
 	set_led_status(machine(), 0,~offset & 1);
+=======
+WRITE_LINE_MEMBER(subs_state::lamp1_w)
+{
+	output().set_led_value(0, !state);
+>>>>>>> upstream/master
 }
 
 /***************************************************************************
 lamp2_w
 ***************************************************************************/
+<<<<<<< HEAD
 WRITE8_MEMBER(subs_state::lamp2_w)
 {
 	set_led_status(machine(), 1,~offset & 1);
+=======
+WRITE_LINE_MEMBER(subs_state::lamp2_w)
+{
+	output().set_led_value(1, !state);
+>>>>>>> upstream/master
 }

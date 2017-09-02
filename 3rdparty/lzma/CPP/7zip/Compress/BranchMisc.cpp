@@ -2,6 +2,7 @@
 
 #include "StdAfx.h"
 
+<<<<<<< HEAD
 #include "../../../C/Bra.h"
 
 #include "BranchMisc.h"
@@ -35,3 +36,24 @@ UInt32 CBC_IA64_Encoder::SubFilter(Byte *data, UInt32 size)
 
 UInt32 CBC_IA64_Decoder::SubFilter(Byte *data, UInt32 size)
   {  return (UInt32)::IA64_Convert(data, size, _bufferPos, 0); }
+=======
+#include "BranchMisc.h"
+
+namespace NCompress {
+namespace NBranch {
+
+STDMETHODIMP CCoder::Init()
+{
+  _bufferPos = 0;
+  return S_OK;
+}
+
+STDMETHODIMP_(UInt32) CCoder::Filter(Byte *data, UInt32 size)
+{
+  UInt32 processed = (UInt32)BraFunc(data, size, _bufferPos, _encode);
+  _bufferPos += processed;
+  return processed;
+}
+
+}}
+>>>>>>> upstream/master

@@ -46,7 +46,11 @@ TO_MAN= lua.1 luac.1
 
 # Lua version and release.
 V= 5.3
+<<<<<<< HEAD
 R= $V.0
+=======
+R= $V.4
+>>>>>>> upstream/master
 
 # Targets start here.
 all:	$(PLAT)

@@ -35,9 +35,28 @@ VIDEO_START_MEMBER(jedi_state,jedi)
 	/* register for saving */
 	save_item(NAME(m_vscroll));
 	save_item(NAME(m_hscroll));
+<<<<<<< HEAD
 }
 
 
+=======
+	save_item(NAME(m_foreground_bank));
+	save_item(NAME(m_video_off));
+}
+
+
+WRITE_LINE_MEMBER(jedi_state::foreground_bank_w)
+{
+	m_foreground_bank = state;
+}
+
+
+WRITE_LINE_MEMBER(jedi_state::video_off_w)
+{
+	m_video_off = state;
+}
+
+>>>>>>> upstream/master
 
 /*************************************
  *
@@ -73,7 +92,11 @@ void jedi_state::get_pens(pen_t *pens)
 	{
 		int r, g, b, bits, intensity;
 
+<<<<<<< HEAD
 		UINT16 color = m_paletteram[offs] | (m_paletteram[offs | 0x400] << 8);
+=======
+		uint16_t color = m_paletteram[offs] | (m_paletteram[offs | 0x400] << 8);
+>>>>>>> upstream/master
 
 		intensity = (color >> 9) & 7;
 		bits = (color >> 6) & 7;
@@ -133,6 +156,7 @@ void jedi_state::draw_background_and_text(bitmap_rgb32 &bitmap, const rectangle 
 	int y;
 	int background_line_buffer[0x200];  /* RAM chip at 2A */
 
+<<<<<<< HEAD
 	UINT8 *tx_gfx = memregion("gfx1")->base();
 	UINT8 *bg_gfx = memregion("gfx2")->base();
 	UINT8 *prom1 = &memregion("proms")->base()[0x0000 | ((*m_smoothing_table & 0x03) << 8)];
@@ -142,6 +166,17 @@ void jedi_state::draw_background_and_text(bitmap_rgb32 &bitmap, const rectangle 
 	int tx_bank = *m_foreground_bank;
 	UINT8 *tx_ram = m_foregroundram;
 	UINT8 *bg_ram = m_backgroundram;
+=======
+	uint8_t *tx_gfx = memregion("gfx1")->base();
+	uint8_t *bg_gfx = memregion("gfx2")->base();
+	uint8_t *prom1 = &memregion("proms")->base()[0x0000 | ((*m_smoothing_table & 0x03) << 8)];
+	uint8_t *prom2 = &memregion("proms")->base()[0x0800 | ((*m_smoothing_table & 0x03) << 8)];
+	int vscroll = m_vscroll;
+	int hscroll = m_hscroll;
+	int tx_bank = m_foreground_bank;
+	uint8_t *tx_ram = m_foregroundram;
+	uint8_t *bg_ram = m_backgroundram;
+>>>>>>> upstream/master
 
 	memset(background_line_buffer, 0, 0x200 * sizeof(int));
 
@@ -165,7 +200,11 @@ void jedi_state::draw_background_and_text(bitmap_rgb32 &bitmap, const rectangle 
 			offs_t bg_offs = ((sy & 0x1f0) << 1) | ((sx & 0x1f0) >> 4);
 
 			/* get the character codes */
+<<<<<<< HEAD
 			int tx_code = ((tx_bank & 0x80) << 1) | tx_ram[tx_offs];
+=======
+			int tx_code = (tx_bank << 8) | tx_ram[tx_offs];
+>>>>>>> upstream/master
 			int bg_bank = bg_ram[0x0400 | bg_offs];
 			int bg_code = bg_ram[0x0000 | bg_offs] |
 							((bg_bank & 0x01) << 8) |
@@ -231,23 +270,39 @@ void jedi_state::draw_background_and_text(bitmap_rgb32 &bitmap, const rectangle 
 void jedi_state::draw_sprites(bitmap_rgb32 &bitmap, const rectangle &cliprect)
 {
 	offs_t offs;
+<<<<<<< HEAD
 	UINT8 *spriteram = m_spriteram;
 	UINT8 *gfx3 = memregion("gfx3")->base();
+=======
+	uint8_t *spriteram = m_spriteram;
+	uint8_t *gfx3 = memregion("gfx3")->base();
+>>>>>>> upstream/master
 
 	for (offs = 0x00; offs < 0x30; offs++)
 	{
 		int sy;
 		int y_size;
+<<<<<<< HEAD
 		UINT8 *gfx;
 
 		/* coordinates adjustments made to match screenshot */
 		UINT8 y = 240 - spriteram[offs + 0x80] + 1;
+=======
+		uint8_t *gfx;
+
+		/* coordinates adjustments made to match screenshot */
+		uint8_t y = 240 - spriteram[offs + 0x80] + 1;
+>>>>>>> upstream/master
 		int flip_x = spriteram[offs + 0x40] & 0x10;
 		int flip_y = spriteram[offs + 0x40] & 0x20;
 		int tall = spriteram[offs + 0x40] & 0x08;
 
 		/* shuffle the bank bits in */
+<<<<<<< HEAD
 		UINT16 code = spriteram[offs] |
+=======
+		uint16_t code = spriteram[offs] |
+>>>>>>> upstream/master
 						((spriteram[offs + 0x40] & 0x04) << 8) |
 						((spriteram[offs + 0x40] & 0x40) << 3) |
 						((spriteram[offs + 0x40] & 0x02) << 7);
@@ -270,7 +325,11 @@ void jedi_state::draw_sprites(bitmap_rgb32 &bitmap, const rectangle &cliprect)
 		for (sy = 0; sy < y_size; sy++)
 		{
 			int i;
+<<<<<<< HEAD
 			UINT16 x = spriteram[offs + 0x100] + ((spriteram[offs + 0x40] & 0x01) << 8) - 2;
+=======
+			uint16_t x = spriteram[offs + 0x100] + ((spriteram[offs + 0x40] & 0x01) << 8) - 2;
+>>>>>>> upstream/master
 
 			if ((y < cliprect.min_y) || (y > cliprect.max_y))
 				continue;
@@ -281,13 +340,22 @@ void jedi_state::draw_sprites(bitmap_rgb32 &bitmap, const rectangle &cliprect)
 			for (i = 0; i < 2; i++)
 			{
 				int sx;
+<<<<<<< HEAD
 				UINT8 data1 = *(0x00000 + gfx);
 				UINT8 data2 = *(0x10000 + gfx);
+=======
+				uint8_t data1 = *(0x00000 + gfx);
+				uint8_t data2 = *(0x10000 + gfx);
+>>>>>>> upstream/master
 
 				for (sx = 0; sx < 4; sx++)
 				{
 					/* the sprite pixel determines pen address bits A4-A7 */
+<<<<<<< HEAD
 					UINT32 col = ((data1 & 0x80) >> 0) | ((data1 & 0x08) << 3) | ((data2 & 0x80) >> 2) | ((data2 & 0x08) << 1);
+=======
+					uint32_t col = ((data1 & 0x80) >> 0) | ((data1 & 0x08) << 3) | ((data2 & 0x80) >> 2) | ((data2 & 0x08) << 1);
+>>>>>>> upstream/master
 
 					x = x & 0x1ff;
 
@@ -323,11 +391,19 @@ void jedi_state::draw_sprites(bitmap_rgb32 &bitmap, const rectangle &cliprect)
  *
  *************************************/
 
+<<<<<<< HEAD
 UINT32 jedi_state::screen_update_jedi(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect)
 {
 	/* if no video, clear it all to black */
 	if (*m_video_off & 0x01)
 		bitmap.fill(rgb_t::black, cliprect);
+=======
+uint32_t jedi_state::screen_update_jedi(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect)
+{
+	/* if no video, clear it all to black */
+	if (m_video_off)
+		bitmap.fill(rgb_t::black(), cliprect);
+>>>>>>> upstream/master
 	else
 	{
 		/* draw the background/text layers, followed by the sprites
@@ -348,7 +424,11 @@ UINT32 jedi_state::screen_update_jedi(screen_device &screen, bitmap_rgb32 &bitma
  *
  *************************************/
 
+<<<<<<< HEAD
 MACHINE_CONFIG_FRAGMENT( jedi_video )
+=======
+MACHINE_CONFIG_START( jedi_video )
+>>>>>>> upstream/master
 	MCFG_SCREEN_ADD("screen", RASTER)
 	MCFG_SCREEN_REFRESH_RATE(60)
 	MCFG_SCREEN_SIZE(64*8, 262) /* verify vert size */

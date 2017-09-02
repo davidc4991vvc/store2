@@ -1,6 +1,12 @@
 // license:BSD-3-Clause
 // copyright-holders:Takahiro Nogi
+<<<<<<< HEAD
 #include "includes/nb1413m3.h"
+=======
+
+#include "includes/nb1413m3.h"
+#include "screen.h"
+>>>>>>> upstream/master
 
 class nbmj8891_state : public driver_device
 {
@@ -11,16 +17,31 @@ public:
 	};
 
 	nbmj8891_state(const machine_config &mconfig, device_type type, const char *tag)
+<<<<<<< HEAD
 		: driver_device(mconfig, type, tag) ,
 		m_maincpu(*this, "maincpu"),
 		m_nb1413m3(*this, "nb1413m3"),
 		m_screen(*this, "screen"),
 		m_palette(*this, "palette")   { }
+=======
+		: driver_device(mconfig, type, tag)
+		, m_maincpu(*this, "maincpu")
+		, m_nb1413m3(*this, "nb1413m3")
+		, m_screen(*this, "screen")
+		, m_palette(*this, "palette")
+		, m_clut_ptr(*this, "protection")
+	{
+	}
+>>>>>>> upstream/master
 
 	required_device<cpu_device> m_maincpu;
 	required_device<nb1413m3_device> m_nb1413m3;
 	required_device<screen_device> m_screen;
 	required_device<palette_device> m_palette;
+<<<<<<< HEAD
+=======
+	optional_region_ptr<uint8_t> m_clut_ptr;
+>>>>>>> upstream/master
 
 	int m_scrolly;
 	int m_blitter_destx;
@@ -39,10 +60,17 @@ public:
 	int m_gfxdraw_mode;
 	bitmap_ind16 m_tmpbitmap0;
 	bitmap_ind16 m_tmpbitmap1;
+<<<<<<< HEAD
 	UINT8 *m_videoram0;
 	UINT8 *m_videoram1;
 	UINT8 *m_palette_ptr;
 	UINT8 *m_clut;
+=======
+	std::unique_ptr<uint8_t[]> m_videoram0;
+	std::unique_ptr<uint8_t[]> m_videoram1;
+	std::unique_ptr<uint8_t[]> m_palette_ptr;
+	std::unique_ptr<uint8_t[]> m_clut;
+>>>>>>> upstream/master
 	int m_param_old[0x10];
 	int m_param_cnt;
 	int m_flipscreen_old;
@@ -81,10 +109,17 @@ public:
 	DECLARE_DRIVER_INIT(mjfocus);
 	DECLARE_DRIVER_INIT(pairsnb);
 	DECLARE_DRIVER_INIT(mjnanpas);
+<<<<<<< HEAD
 	virtual void video_start();
 	DECLARE_VIDEO_START(_1layer);
 
 	UINT32 screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
+=======
+	virtual void video_start() override;
+	DECLARE_VIDEO_START(_1layer);
+
+	uint32_t screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
+>>>>>>> upstream/master
 	void vramflip(int vram);
 	void update_pixel0(int x, int y);
 	void update_pixel1(int x, int y);
@@ -94,5 +129,9 @@ public:
 	void postload();
 
 protected:
+<<<<<<< HEAD
 	virtual void device_timer(emu_timer &timer, device_timer_id id, int param, void *ptr);
+=======
+	virtual void device_timer(emu_timer &timer, device_timer_id id, int param, void *ptr) override;
+>>>>>>> upstream/master
 };

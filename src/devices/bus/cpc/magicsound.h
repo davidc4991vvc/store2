@@ -22,10 +22,18 @@
  *
  */
 
+<<<<<<< HEAD
 #ifndef MAGICSOUND_H_
 #define MAGICSOUND_H_
 
 #include "emu.h"
+=======
+#ifndef MAME_BUS_CPC_MAGICSOUND_H
+#define MAME_BUS_CPC_MAGICSOUND_H
+
+#pragma once
+
+>>>>>>> upstream/master
 #include "cpcexp.h"
 #include "sound/dmadac.h"
 #include "sound/dac.h"
@@ -38,16 +46,33 @@ class al_magicsound_device  : public device_t,
 {
 public:
 	// construction/destruction
+<<<<<<< HEAD
 	al_magicsound_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
 
 	// optional information overrides
 	virtual machine_config_constructor device_mconfig_additions() const;
+=======
+	al_magicsound_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
+>>>>>>> upstream/master
 
 	DECLARE_READ8_MEMBER(dmac_r);
 	DECLARE_WRITE8_MEMBER(dmac_w);
 	DECLARE_WRITE8_MEMBER(timer_w);
 	DECLARE_WRITE8_MEMBER(volume_w);
 	DECLARE_WRITE8_MEMBER(mapper_w);
+<<<<<<< HEAD
+=======
+
+protected:
+	// device-level overrides
+	virtual void device_start() override;
+	virtual void device_reset() override;
+
+	// optional information overrides
+	virtual void device_add_mconfig(machine_config &config) override;
+
+private:
+>>>>>>> upstream/master
 	DECLARE_WRITE_LINE_MEMBER(da0_w);
 	DECLARE_READ8_MEMBER(dma_read_byte);
 	DECLARE_WRITE8_MEMBER(dma_write_byte);
@@ -60,6 +85,7 @@ public:
 	DECLARE_WRITE_LINE_MEMBER(sam2_w);
 	DECLARE_WRITE_LINE_MEMBER(sam3_w);
 
+<<<<<<< HEAD
 protected:
 	// device-level overrides
 	virtual void device_start();
@@ -69,12 +95,18 @@ private:
 	cpc_expansion_slot_device *m_slot;
 
 	required_device<dac_device> m_dac1;
+=======
+	cpc_expansion_slot_device *m_slot;
+
+	required_device<dac_byte_interface> m_dac;
+>>>>>>> upstream/master
 	required_device<am9517a_device> m_dmac;
 	required_device<pit8254_device> m_timer1;
 	required_device<pit8254_device> m_timer2;
 
 	void set_timer_gate(bool state);
 
+<<<<<<< HEAD
 	UINT8 m_volume[4];
 	UINT32 m_page[4][4];
 	UINT8 m_output[4];
@@ -89,3 +121,19 @@ extern const device_type AL_MAGICSOUND;
 
 
 #endif /* MAGICSOUND_H_ */
+=======
+	uint8_t m_volume[4];
+	uint32_t m_page[4][4];
+	uint8_t m_output[4];
+	bool m_dack[4];
+	int8_t m_current_channel;
+	ram_device* m_ramptr;
+	uint8_t m_current_output;
+};
+
+// device type definition
+DECLARE_DEVICE_TYPE(AL_MAGICSOUND, al_magicsound_device)
+
+
+#endif // MAME_BUS_CPC_MAGICSOUND_H
+>>>>>>> upstream/master

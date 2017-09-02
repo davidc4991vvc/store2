@@ -58,11 +58,16 @@ struct sh4_state
 
 	int pcfsel;                 // last pcflush entry set
 	int maxpcfsel;              // highest valid pcflush entry
+<<<<<<< HEAD
 	UINT32 pcflushes[16];       // pcflush entries
+=======
+	uint32_t pcflushes[16];       // pcflush entries
+>>>>>>> upstream/master
 
 	drc_cache *         cache;              /* pointer to the DRC code cache */
 	drcuml_state *      drcuml;             /* DRC UML generator state */
 	sh4_frontend *      drcfe;              /* pointer to the DRC front-end class */
+<<<<<<< HEAD
 	UINT32              drcoptions;         /* configurable DRC options */
 
 	/* internal stuff */
@@ -73,6 +78,18 @@ struct sh4_state
 	UINT32              arg0;               /* print_debug argument 1 */
 	UINT32              arg1;               /* print_debug argument 2 */
 	UINT32              irq;                /* irq we're taking */
+=======
+	uint32_t              drcoptions;         /* configurable DRC options */
+
+	/* internal stuff */
+	uint8_t               cache_dirty;        /* true if we need to flush the cache */
+
+	/* parameters for subroutines */
+	uint64_t              numcycles;          /* return value from gettotalcycles */
+	uint32_t              arg0;               /* print_debug argument 1 */
+	uint32_t              arg1;               /* print_debug argument 2 */
+	uint32_t              irq;                /* irq we're taking */
+>>>>>>> upstream/master
 
 	/* register mappings */
 	uml::parameter  regmap[16];                 /* parameter to register mappings for all 16 integer registers */
@@ -89,8 +106,13 @@ struct sh4_state
 	uml::code_handle *  nocode;                 /* nocode */
 	uml::code_handle *  out_of_cycles;              /* out of cycles exception handler */
 
+<<<<<<< HEAD
 	UINT32 prefadr;
 	UINT32 target;
+=======
+	uint32_t prefadr;
+	uint32_t target;
+>>>>>>> upstream/master
 };
 #endif
 
@@ -98,12 +120,17 @@ struct sh4_state
 class sh4_frontend : public drc_frontend
 {
 public:
+<<<<<<< HEAD
 	sh4_frontend(sh4_state &state, UINT32 window_start, UINT32 window_end, UINT32 max_sequence);
+=======
+	sh4_frontend(sh4_state &state, uint32_t window_start, uint32_t window_end, uint32_t max_sequence);
+>>>>>>> upstream/master
 
 protected:
 	virtual bool describe(opcode_desc &desc, const opcode_desc *prev);
 
 private:
+<<<<<<< HEAD
 	bool describe_group_0(opcode_desc &desc, const opcode_desc *prev, UINT16 opcode);
 	bool describe_group_2(opcode_desc &desc, const opcode_desc *prev, UINT16 opcode);
 	bool describe_group_3(opcode_desc &desc, const opcode_desc *prev, UINT16 opcode);
@@ -112,6 +139,16 @@ private:
 	bool describe_group_8(opcode_desc &desc, const opcode_desc *prev, UINT16 opcode);
 	bool describe_group_12(opcode_desc &desc, const opcode_desc *prev, UINT16 opcode);
 	bool describe_group_15(opcode_desc &desc, const opcode_desc *prev, UINT16 opcode);
+=======
+	bool describe_group_0(opcode_desc &desc, const opcode_desc *prev, uint16_t opcode);
+	bool describe_group_2(opcode_desc &desc, const opcode_desc *prev, uint16_t opcode);
+	bool describe_group_3(opcode_desc &desc, const opcode_desc *prev, uint16_t opcode);
+	bool describe_group_4(opcode_desc &desc, const opcode_desc *prev, uint16_t opcode);
+	bool describe_group_6(opcode_desc &desc, const opcode_desc *prev, uint16_t opcode);
+	bool describe_group_8(opcode_desc &desc, const opcode_desc *prev, uint16_t opcode);
+	bool describe_group_12(opcode_desc &desc, const opcode_desc *prev, uint16_t opcode);
+	bool describe_group_15(opcode_desc &desc, const opcode_desc *prev, uint16_t opcode);
+>>>>>>> upstream/master
 
 	sh4_state &m_context;
 };

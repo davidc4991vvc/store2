@@ -7,16 +7,29 @@
   Also see tms9900.h for types of TMS99xx processors.
 */
 
+<<<<<<< HEAD
 #ifndef __TMS9995_H__
 #define __TMS9995_H__
 
 #include "emu.h"
+=======
+#ifndef MAME_CPU_TMS9995_TMS9995_H
+#define MAME_CPU_TMS9995_TMS9995_H
+
+#pragma once
+
+>>>>>>> upstream/master
 #include "debugger.h"
 #include "tms99com.h"
 
 // device type definition
+<<<<<<< HEAD
 extern const device_type TMS9995;
 extern const device_type TMS9995_MP9537;
+=======
+DECLARE_DEVICE_TYPE(TMS9995, tms9995_device)
+DECLARE_DEVICE_TYPE(TMS9995_MP9537, tms9995_mp9537_device)
+>>>>>>> upstream/master
 
 enum
 {
@@ -48,18 +61,34 @@ enum
 class tms9995_device : public cpu_device
 {
 public:
+<<<<<<< HEAD
 	tms9995_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
 	tms9995_device(const machine_config &mconfig, device_type type, const char *name, const char *tag, device_t *owner, UINT32 clock, const char *shortname, const char *source);
+=======
+	tms9995_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
+>>>>>>> upstream/master
 
 	// READY input line. When asserted (high), the memory is ready for data exchange.
 	// We chose to use a direct method instead of a delegate to keep performance
 	// footprint low; this method may be called very frequently.
+<<<<<<< HEAD
 	void set_ready(int state);
+=======
+	DECLARE_WRITE_LINE_MEMBER( ready_line );
+>>>>>>> upstream/master
 
 	// HOLD input line. When asserted (low), the CPU is requested to release the
 	// data and address bus and enter the HOLD state. The entrance of this state
 	// is acknowledged by the HOLDA output line.
+<<<<<<< HEAD
 	void set_hold(int state);
+=======
+	DECLARE_WRITE_LINE_MEMBER( hold_line );
+
+	// RESET input line. Unlike the standard set_input_line, this input method
+	// is synchronous and will immediately lead to a reset of the CPU.
+	DECLARE_WRITE_LINE_MEMBER( reset_line );
+>>>>>>> upstream/master
 
 	// Callbacks
 	template<class _Object> static devcb_base &static_set_extop_callback(device_t &device, _Object object) { return downcast<tms9995_device &>(device).m_external_operation.set_callback(object); }
@@ -69,12 +98,17 @@ public:
 	template<class _Object> static devcb_base &static_set_dbin_callback(device_t &device, _Object object) { return downcast<tms9995_device &>(device).m_dbin_line.set_callback(object); }
 
 	// For debugger access
+<<<<<<< HEAD
 	UINT8 debug_read_onchip_memory(offs_t addr) { return m_onchip_memory[addr & 0xff]; };
+=======
+	uint8_t debug_read_onchip_memory(offs_t addr) { return m_onchip_memory[addr & 0xff]; };
+>>>>>>> upstream/master
 	bool is_onchip(offs_t addrb) { return (((addrb & 0xff00)==0xf000 && (addrb < 0xf0fc)) || ((addrb & 0xfffc)==0xfffc)) && !m_mp9537; }
 
 	void set_overflow_interrupt( int enable ) { m_check_overflow = (enable!=0); }
 
 protected:
+<<<<<<< HEAD
 	// device-level overrides
 	virtual void        device_start();
 	virtual void        device_stop();
@@ -96,12 +130,38 @@ protected:
 
 	UINT64 execute_clocks_to_cycles(UINT64 clocks) const { return clocks / 4.0; }
 	UINT64 execute_cycles_to_clocks(UINT64 cycles) const { return cycles * 4.0; }
+=======
+	tms9995_device(const machine_config &mconfig, device_type type, const char *tag, device_t *owner, uint32_t clock);
+
+	// device-level overrides
+	virtual void        device_start() override;
+	virtual void        device_stop() override;
+	virtual void        device_reset() override;
+
+	// device_execute_interface overrides
+	virtual uint32_t      execute_min_cycles() const override;
+	virtual uint32_t      execute_max_cycles() const override;
+	virtual uint32_t      execute_input_lines() const override;
+	virtual void        execute_set_input(int irqline, int state) override;
+	virtual void        execute_run() override;
+
+	// device_disasm_interface overrides
+	virtual uint32_t      disasm_min_opcode_bytes() const override;
+	virtual uint32_t      disasm_max_opcode_bytes() const override;
+	virtual offs_t      disasm_disassemble(std::ostream &stream, offs_t pc, const uint8_t *oprom, const uint8_t *opram, uint32_t options) override;
+
+	virtual space_config_vector memory_space_config() const override;
+
+	uint64_t execute_clocks_to_cycles(uint64_t clocks) const override { return clocks / 4.0; }
+	uint64_t execute_cycles_to_clocks(uint64_t cycles) const override { return cycles * 4.0; }
+>>>>>>> upstream/master
 
 	// Variant of the TMS9995 without internal RAM and decrementer
 	bool    m_mp9537;
 
 private:
 	// State / debug management
+<<<<<<< HEAD
 	UINT16  m_state_any;
 	static const char* s_statename[];
 	void    state_import(const device_state_entry &entry);
@@ -121,18 +181,47 @@ private:
 
 	// 256 bytes of onchip memory
 	UINT8   m_onchip_memory[256];
+=======
+	uint16_t  m_state_any;
+	static const char* s_statename[];
+	void    state_import(const device_state_entry &entry) override;
+	void    state_export(const device_state_entry &entry) override;
+	void    state_string_export(const device_state_entry &entry, std::string &str) const override;
+	uint16_t  read_workspace_register_debug(int reg);
+	void    write_workspace_register_debug(int reg, uint16_t data);
+
+	// TMS9995 hardware registers
+	uint16_t  WP;     // Workspace pointer
+	uint16_t  PC;     // Program counter
+	uint16_t  ST;     // Status register
+
+	// The TMS9995 has a prefetch feature which causes a wrong display of the PC.
+	// We use this additional member for the debugger only.
+	uint16_t  PC_debug;
+
+	// 256 bytes of onchip memory
+	uint8_t   m_onchip_memory[256];
+>>>>>>> upstream/master
 
 	const address_space_config      m_program_config;
 	const address_space_config      m_io_config;
 	address_space*                  m_prgspace;
 	address_space*                  m_cru;
 
+<<<<<<< HEAD
 
 	// Processor states
 	bool    m_idle_state;
 	bool    m_nmi_state;
 //  bool    m_irq_state;
 	bool    m_hold_state;
+=======
+	// Processor states
+	bool    m_idle_state;
+	bool    m_nmi_state;
+	bool    m_hold_state;
+	bool    m_hold_requested;
+>>>>>>> upstream/master
 
 	// READY handling. The READY line is operated before the clock
 	// pulse falls. As the ready line is only set once in this emulation we
@@ -161,9 +250,12 @@ private:
 	// single-bit accesses.
 	int     m_pass;
 
+<<<<<<< HEAD
 	// For parity operations
 	int     m_parity;
 
+=======
+>>>>>>> upstream/master
 	// For Format 1 instruction; determines whether the next operand address
 	// derivation is for the source or address operand
 	bool    m_get_destination;
@@ -205,7 +297,11 @@ private:
 	inline void pulse_clock(int count);
 
 	// Signal the hold state via the external line
+<<<<<<< HEAD
 	inline void set_hold_state(bool state);
+=======
+	void set_hold_state(bool state);
+>>>>>>> upstream/master
 
 	// Only used for the DIV(S) operations. It seems sufficient to let the
 	// command terminate at this point, so this method just calls command_terminated.
@@ -213,7 +309,11 @@ private:
 
 	// Decode the given 16-bit value which has been retrieved by a prefetch or
 	// during an X operation.
+<<<<<<< HEAD
 	void    decode(UINT16 inst);
+=======
+	void    decode(uint16_t inst);
+>>>>>>> upstream/master
 
 	// Store the interrupt mask part of the ST. This is used when processing
 	// an interrupt, passing the new mask from the service_interrupt part to
@@ -221,6 +321,7 @@ private:
 	int     m_intmask;
 
 	// Stored address
+<<<<<<< HEAD
 	UINT16  m_address;
 
 	// Stores the recently read word or the word to be written
@@ -241,6 +342,28 @@ private:
 
 	// Copy of the value
 	UINT16  m_value_copy;
+=======
+	uint16_t  m_address;
+
+	// Stores the recently read word or the word to be written
+	uint16_t  m_current_value;
+
+	// Stores the value of the source operand in multi-operand instructions
+	uint16_t  m_source_value;
+
+	// During indexed addressing, this value is added to get the final address value.
+	uint16_t  m_address_add;
+
+	// During indirect/auto-increment addressing, this copy of the address must
+	// be preserved while writing the new value to the register.
+	uint16_t  m_address_saved;
+
+	// Another copy of the address
+	uint16_t  m_address_copy;
+
+	// Copy of the value
+	uint16_t  m_value_copy;
+>>>>>>> upstream/master
 
 	// Stores the recent register number. Only used to pass the register
 	// number during the operand address derivation.
@@ -253,6 +376,7 @@ private:
 	void trigger_decrementer();
 
 	// Start value
+<<<<<<< HEAD
 	UINT16  m_starting_count_storage_register;
 
 	// Current decrementer value.
@@ -265,12 +389,27 @@ private:
 	bool    m_cru_first_read;
 	int     m_cru_bits_left;
 	UINT32  m_cru_read;
+=======
+	uint16_t  m_starting_count_storage_register;
+
+	// Current decrementer value.
+	uint16_t  m_decrementer_value;
+
+	// ============== CRU support ======================
+
+	uint16_t  m_cru_address;
+	uint16_t  m_cru_value;
+	bool    m_cru_first_read;
+	int     m_cru_bits_left;
+	uint32_t  m_cru_read;
+>>>>>>> upstream/master
 
 	// CPU-internal CRU flags
 	bool    m_flag[16];
 
 	// ============== Prefetch support =====================
 
+<<<<<<< HEAD
 	struct decoded_instruction
 	{
 		UINT16          IR;
@@ -287,6 +426,24 @@ private:
 	// pointer is just switched to the other one.
 	tms9995_device::decoded_instruction     m_decoded[2];
 	tms9995_device::decoded_instruction*    m_instruction;
+=======
+	// We implement the prefetch mechanism by two separate datasets for
+	// the decoded commands. When the next instruction shall be started,
+	// the contents from the pre* members are copied to the main members.
+
+	uint16_t  IR;
+	uint16_t  m_command;
+	int     m_index;
+	bool    m_byteop;
+
+	uint16_t  m_pre_IR;
+	uint16_t  m_pre_command;
+	int     m_pre_index;
+	bool    m_pre_byteop;
+
+	// State of the currently executed instruction
+	int     m_inst_state;
+>>>>>>> upstream/master
 
 	// ================ Microprogram support ========================
 
@@ -294,7 +451,11 @@ private:
 	void build_command_lookup_table();
 
 	// Sequence of micro-operations
+<<<<<<< HEAD
 	typedef const UINT8* microprogram;
+=======
+	typedef const uint8_t* microprogram;
+>>>>>>> upstream/master
 
 	// Method pointer
 	typedef void (tms9995_device::*ophandler)(void);
@@ -302,7 +463,11 @@ private:
 	// Opcode list entry
 	struct tms_instruction
 	{
+<<<<<<< HEAD
 		UINT16              opcode;
+=======
+		uint16_t              opcode;
+>>>>>>> upstream/master
 		int                 id;
 		int                 format;
 		microprogram        prog;       // Microprogram
@@ -311,6 +476,7 @@ private:
 	// Lookup table entry
 	struct lookup_entry
 	{
+<<<<<<< HEAD
 		lookup_entry *next_digit;
 		const tms_instruction *entry;
 	};
@@ -320,18 +486,40 @@ private:
 
 	// List of allocated tables (used for easy clean-up on exit)
 	lookup_entry*   m_lotables[32];
+=======
+		std::unique_ptr<lookup_entry[]> next_digit;
+		int index; // pointing to the static instruction list
+	};
+
+	// Pointer to the lookup table; the entry point for searching the command
+	std::unique_ptr<lookup_entry[]>   m_command_lookup_table;
+>>>>>>> upstream/master
 
 	// List of pointers for micro-operations
 	static const tms9995_device::ophandler s_microoperation[];
 
 	static const tms9995_device::tms_instruction s_command[];
 
+<<<<<<< HEAD
+=======
+	// Index of the interrupt program
+	int     m_interrupt_mp_index;
+
+	// Index of the operand address derivation subprogram
+	int     m_operand_address_derivation_index;
+
+>>>>>>> upstream/master
 	// Micro-operation program counter (as opposed to the program counter PC)
 	int     MPC;
 
 	// Calling microprogram (used when data derivation is called)
+<<<<<<< HEAD
 	const UINT8*    m_caller;
 	int             m_caller_MPC;
+=======
+	int     m_caller_index;
+	int     m_caller_MPC;
+>>>>>>> upstream/master
 
 	// Table of microprograms
 	static const microprogram mp_table[];
@@ -341,8 +529,13 @@ private:
 
 	// Status register update
 	inline void set_status_bit(int bit, bool state);
+<<<<<<< HEAD
 	inline void compare_and_set_lae(UINT16 value1, UINT16 value2);
 	void set_status_parity(UINT8 value);
+=======
+	inline void compare_and_set_lae(uint16_t value1, uint16_t value2);
+	void set_status_parity(uint8_t value);
+>>>>>>> upstream/master
 
 	// Micro-operation declarations
 	void int_prefetch_and_decode();
@@ -382,7 +575,10 @@ private:
 	void alu_lst_lwp();
 	void alu_mov();
 	void alu_multiply();
+<<<<<<< HEAD
 //  void alu_multiply_signed();
+=======
+>>>>>>> upstream/master
 	void alu_rtwp();
 	void alu_sbo_sbz();
 	void alu_shift();
@@ -409,7 +605,11 @@ private:
 	// 1  1  1   LREX
 	//
 	// We could realize this via the CRU access as well, but the data bus access
+<<<<<<< HEAD
 	// is not that simple to emulate. For the sake of homogenity between the
+=======
+	// is not that simple to emulate. For the sake of homogeneity between the
+>>>>>>> upstream/master
 	// chip emulations we use a dedicated callback.
 	devcb_write8   m_external_operation;
 
@@ -436,11 +636,20 @@ private:
 class tms9995_mp9537_device : public tms9995_device
 {
 public:
+<<<<<<< HEAD
 	tms9995_mp9537_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
 	: tms9995_device(mconfig, TMS9995_MP9537, "TMS9995-MP9537", tag, owner, clock, "tms9995_mp9537", __FILE__)
+=======
+	tms9995_mp9537_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+		: tms9995_device(mconfig, TMS9995_MP9537, tag, owner, clock)
+>>>>>>> upstream/master
 	{
 		m_mp9537 = true;
 	}
 };
 
+<<<<<<< HEAD
 #endif /* __TMS9995_H__ */
+=======
+#endif // MAME_CPU_TMS9995_TMS9995_H
+>>>>>>> upstream/master

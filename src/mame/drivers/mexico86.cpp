@@ -21,7 +21,11 @@ Notes:
 - kicknrun does a PS4 STOP ERROR shortly after boot, but works afterwards.
   PS4 is the MC6801U4 mcu.
 
+<<<<<<< HEAD
 - Kiki Kaikai suffers from random lock-up's. It happens when the sound
+=======
+- Kiki Kaikai suffers from random lock-ups. It happens when the sound
+>>>>>>> upstream/master
   CPU misses CTS from YM2203. The processor will loop infinitely and the main
   CPU will in turn wait forever. It's difficult to meet the required level
   of synchronization. This is kludged by filtering the 2203's busy signal.
@@ -35,11 +39,16 @@ Notes:
   figure it all out. Indeed, the 68705 code reads all the memory locations
   related to the missing collision detection, but does nothing with them.
 
+<<<<<<< HEAD
 - In the KiKi KaiKai MCU simulation, I don't bother supporting the coinage dip
   switch settings. Therefore, it's hardwired to be 1 coin / 1 credit.
 
 - Kick and Run is a rom swap for Kiki KaiKai as the pal chips are all A85-0x
   A85 is the Taito rom code for Kiki KaiKai.  Even the MCU is socketted!
+=======
+- Kick and Run is a rom swap for Kiki KaiKai as the pal chips are all A85-0x
+  A85 is the Taito rom code for Kiki KaiKai.  Even the MCU is socketed!
+>>>>>>> upstream/master
 
 Note MCU labeling:
 
@@ -53,11 +62,20 @@ PS4  J8635      PS4  J8541       PS4  J8648
 ***************************************************************************/
 
 #include "emu.h"
+<<<<<<< HEAD
 #include "cpu/z80/z80.h"
 #include "cpu/m6805/m6805.h"
 #include "sound/2203intf.h"
 #include "includes/mexico86.h"
 
+=======
+#include "includes/mexico86.h"
+
+#include "cpu/z80/z80.h"
+#include "screen.h"
+#include "speaker.h"
+
+>>>>>>> upstream/master
 
 /*************************************
  *
@@ -67,7 +85,11 @@ PS4  J8635      PS4  J8541       PS4  J8648
 
 READ8_MEMBER(mexico86_state::kiki_ym2203_r)
 {
+<<<<<<< HEAD
 	UINT8 result = m_ymsnd->read(space, offset);
+=======
+	u8 result = m_ymsnd->read(space, offset);
+>>>>>>> upstream/master
 
 	if (offset == 0)
 		result &= 0x7f;
@@ -104,6 +126,7 @@ static ADDRESS_MAP_START( mexico86_sound_map, AS_PROGRAM, 8, mexico86_state )
 	AM_RANGE(0xc000, 0xc001) AM_READ(kiki_ym2203_r) AM_DEVWRITE("ymsnd", ym2203_device, write)
 ADDRESS_MAP_END
 
+<<<<<<< HEAD
 static ADDRESS_MAP_START( mexico86_m68705_map, AS_PROGRAM, 8, mexico86_state )
 	ADDRESS_MAP_GLOBAL_MASK(0x7ff)
 	AM_RANGE(0x0000, 0x0000) AM_READWRITE(mexico86_68705_port_a_r,mexico86_68705_port_a_w)
@@ -117,6 +140,8 @@ static ADDRESS_MAP_START( mexico86_m68705_map, AS_PROGRAM, 8, mexico86_state )
 	AM_RANGE(0x0080, 0x07ff) AM_ROM
 ADDRESS_MAP_END
 
+=======
+>>>>>>> upstream/master
 WRITE8_MEMBER(mexico86_state::mexico86_sub_output_w)
 {
 	/*--x- ---- coin lockout 2*/
@@ -224,8 +249,12 @@ static INPUT_PORTS_START( mexico86 )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
 
 	PORT_START("IN3")
+<<<<<<< HEAD
 	/* the following is actually service coin 1 */
 	PORT_BIT( 0x01, IP_ACTIVE_LOW, IPT_SERVICE ) PORT_NAME("Advance") PORT_CODE(KEYCODE_F1)
+=======
+	PORT_BIT( 0x01, IP_ACTIVE_LOW, IPT_SERVICE1 )
+>>>>>>> upstream/master
 	PORT_BIT( 0x02, IP_ACTIVE_LOW, IPT_UNKNOWN )
 	PORT_BIT( 0x04, IP_ACTIVE_LOW, IPT_TILT )
 	PORT_BIT( 0x08, IP_ACTIVE_LOW, IPT_START1 )
@@ -283,8 +312,13 @@ static INPUT_PORTS_START( kikikai )
 	PORT_BIT( 0x02, IP_ACTIVE_LOW, IPT_JOYSTICK_DOWN ) PORT_8WAY
 	PORT_BIT( 0x04, IP_ACTIVE_LOW, IPT_JOYSTICK_LEFT ) PORT_8WAY
 	PORT_BIT( 0x08, IP_ACTIVE_LOW, IPT_JOYSTICK_RIGHT ) PORT_8WAY
+<<<<<<< HEAD
 	PORT_BIT( 0x10, IP_ACTIVE_LOW, IPT_BUTTON1 )
 	PORT_BIT( 0x20, IP_ACTIVE_LOW, IPT_BUTTON2 )
+=======
+	PORT_BIT( 0x10, IP_ACTIVE_LOW, IPT_BUTTON1 ) // Ofuda in service mode
+	PORT_BIT( 0x20, IP_ACTIVE_LOW, IPT_BUTTON2 ) // Oharai
+>>>>>>> upstream/master
 	PORT_BIT( 0x40, IP_ACTIVE_LOW, IPT_UNKNOWN )
 	PORT_BIT( 0x80, IP_ACTIVE_LOW, IPT_UNKNOWN )
 
@@ -293,8 +327,13 @@ static INPUT_PORTS_START( kikikai )
 	PORT_BIT( 0x02, IP_ACTIVE_LOW, IPT_JOYSTICK_DOWN ) PORT_8WAY PORT_COCKTAIL
 	PORT_BIT( 0x04, IP_ACTIVE_LOW, IPT_JOYSTICK_LEFT ) PORT_8WAY PORT_COCKTAIL
 	PORT_BIT( 0x08, IP_ACTIVE_LOW, IPT_JOYSTICK_RIGHT ) PORT_8WAY PORT_COCKTAIL
+<<<<<<< HEAD
 	PORT_BIT( 0x10, IP_ACTIVE_LOW, IPT_BUTTON2 ) PORT_COCKTAIL
 	PORT_BIT( 0x20, IP_ACTIVE_LOW, IPT_BUTTON1 ) PORT_COCKTAIL
+=======
+	PORT_BIT( 0x10, IP_ACTIVE_LOW, IPT_BUTTON1 ) PORT_COCKTAIL
+	PORT_BIT( 0x20, IP_ACTIVE_LOW, IPT_BUTTON2 ) PORT_COCKTAIL
+>>>>>>> upstream/master
 	PORT_BIT( 0x40, IP_ACTIVE_LOW, IPT_UNKNOWN )
 	PORT_BIT( 0x80, IP_ACTIVE_LOW, IPT_UNKNOWN )
 
@@ -359,7 +398,11 @@ static INPUT_PORTS_START( kikikai )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
 
 	PORT_START("IN3")
+<<<<<<< HEAD
 	PORT_BIT( 0x01, IP_ACTIVE_LOW, IPT_COIN3 )
+=======
+	PORT_BIT( 0x01, IP_ACTIVE_LOW, IPT_SERVICE1 )
+>>>>>>> upstream/master
 	PORT_BIT( 0x02, IP_ACTIVE_LOW, IPT_UNKNOWN )
 	PORT_BIT( 0x04, IP_ACTIVE_LOW, IPT_TILT )
 	PORT_BIT( 0x08, IP_ACTIVE_LOW, IPT_START1 )
@@ -401,6 +444,7 @@ GFXDECODE_END
 
 void mexico86_state::machine_start()
 {
+<<<<<<< HEAD
 	UINT8 *ROM = memregion("maincpu")->base();
 
 	membank("bank1")->configure_entries(0, 6, &ROM[0x10000], 0x4000);
@@ -411,19 +455,37 @@ void mexico86_state::machine_start()
 	save_item(NAME(m_port_b_in));
 	save_item(NAME(m_port_b_out));
 	save_item(NAME(m_ddr_b));
+=======
+	u8 *const ROM = memregion("maincpu")->base();
+
+	membank("bank1")->configure_entries(0, 6, &ROM[0x08000], 0x4000);
+
+	save_item(NAME(m_port_a_out));
+	save_item(NAME(m_port_b_out));
+>>>>>>> upstream/master
 	save_item(NAME(m_address));
 	save_item(NAME(m_latch));
 
 	save_item(NAME(m_mcu_running));
 	save_item(NAME(m_mcu_initialised));
 	save_item(NAME(m_coin_last));
+<<<<<<< HEAD
 
 	save_item(NAME(m_charbank));
+=======
+	save_item(NAME(m_coin_fract));
+
+	save_item(NAME(m_charbank));
+
+	m_port_a_out = 0xff;
+	m_port_b_out = 0xff;
+>>>>>>> upstream/master
 }
 
 void mexico86_state::machine_reset()
 {
 	/*TODO: check the PCB and see how the halt / reset lines are connected. */
+<<<<<<< HEAD
 	if (m_subcpu != NULL)
 		m_subcpu->set_input_line(INPUT_LINE_RESET, (ioport("DSW1")->read() & 0x80) ? ASSERT_LINE : CLEAR_LINE);
 
@@ -433,17 +495,32 @@ void mexico86_state::machine_reset()
 	m_port_b_in = 0;
 	m_port_b_out = 0;
 	m_ddr_b = 0;
+=======
+	if (m_subcpu != nullptr)
+		m_subcpu->set_input_line(INPUT_LINE_RESET, (ioport("DSW1")->read() & 0x80) ? ASSERT_LINE : CLEAR_LINE);
+
+>>>>>>> upstream/master
 	m_address = 0;
 	m_latch = 0;
 
 	m_mcu_running = 0;
 	m_mcu_initialised = 0;
+<<<<<<< HEAD
 	m_coin_last = 0;
+=======
+	m_coin_last[0] = false;
+	m_coin_last[1] = false;
+	m_coin_fract = 0;
+>>>>>>> upstream/master
 
 	m_charbank = 0;
 }
 
+<<<<<<< HEAD
 static MACHINE_CONFIG_START( mexico86, mexico86_state )
+=======
+static MACHINE_CONFIG_START( mexico86 )
+>>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu",Z80, 24000000/4)      /* 6 MHz, Uses clock divided 24MHz OSC */
@@ -453,8 +530,15 @@ static MACHINE_CONFIG_START( mexico86, mexico86_state )
 	MCFG_CPU_PROGRAM_MAP(mexico86_sound_map)
 	MCFG_CPU_VBLANK_INT_DRIVER("screen", mexico86_state,  irq0_line_hold)
 
+<<<<<<< HEAD
 	MCFG_CPU_ADD("mcu", M68705, 4000000) /* xtal is 4MHz, divided by 4 internally */
 	MCFG_CPU_PROGRAM_MAP(mexico86_m68705_map)
+=======
+	MCFG_CPU_ADD("mcu", M68705P3, 4000000) /* xtal is 4MHz, divided by 4 internally */
+	MCFG_M68705_PORTC_R_CB(IOPORT("IN0"));
+	MCFG_M68705_PORTA_W_CB(WRITE8(mexico86_state, mexico86_68705_port_a_w));
+	MCFG_M68705_PORTB_W_CB(WRITE8(mexico86_state, mexico86_68705_port_b_w));
+>>>>>>> upstream/master
 	MCFG_CPU_VBLANK_INT_DRIVER("screen", mexico86_state, mexico86_m68705_interrupt)
 
 	MCFG_CPU_ADD("sub", Z80, 8000000/2)      /* 4 MHz, Uses 8Mhz OSC */
@@ -474,7 +558,11 @@ static MACHINE_CONFIG_START( mexico86, mexico86_state )
 	MCFG_SCREEN_PALETTE("palette")
 
 	MCFG_GFXDECODE_ADD("gfxdecode", "palette", mexico86)
+<<<<<<< HEAD
 	MCFG_PALETTE_ADD_RRRRGGGGBBBB_PROMS("palette", 256)
+=======
+	MCFG_PALETTE_ADD_RRRRGGGGBBBB_PROMS("palette", "proms", 256)
+>>>>>>> upstream/master
 
 	/* sound hardware */
 	MCFG_SPEAKER_STANDARD_MONO("mono")
@@ -525,9 +613,14 @@ MACHINE_CONFIG_END
 ROM_START( kikikai )
 	ROM_REGION( 0x28000, "maincpu", 0 )
 	ROM_LOAD( "a85-17.h16", 0x00000, 0x08000, CRC(c141d5ab) SHA1(fe3622ba283e514416c43a44f83f922a958b27cd) ) /* 1st half, main code        */
+<<<<<<< HEAD
 	ROM_CONTINUE(           0x20000, 0x08000 )             /* 2nd half, banked at 0x8000 */
 	ROM_LOAD( "a85-16.h18", 0x10000, 0x10000, CRC(4094d750) SHA1(05e0ad177a3eb144b203784ecb6242a0fc5c4d4d) ) /* banked at 0x8000           */
 	ROM_COPY(  "maincpu", 0x10000, 0x08000, 0x04000 ) // set as default to avoid banking problems
+=======
+	ROM_CONTINUE(           0x18000, 0x08000 )             /* 2nd half, banked at 0x8000 */
+	ROM_LOAD( "a85-16.h18", 0x08000, 0x10000, CRC(4094d750) SHA1(05e0ad177a3eb144b203784ecb6242a0fc5c4d4d) ) /* banked at 0x8000           */
+>>>>>>> upstream/master
 
 	ROM_REGION( 0x10000, "audiocpu", 0 )
 	ROM_LOAD( "a85-11.f6", 0x0000, 0x8000, CRC(cc3539db) SHA1(4239a40fdee65cba613e4b4ec54cf7899480e366) )
@@ -551,9 +644,14 @@ ROM_END
 ROM_START( knightb )
 	ROM_REGION( 0x28000, "maincpu", 0 )
 	ROM_LOAD( "a85-17.h16", 0x00000, 0x08000, CRC(c141d5ab) SHA1(fe3622ba283e514416c43a44f83f922a958b27cd) ) /* 1st half, main code        */
+<<<<<<< HEAD
 	ROM_CONTINUE(           0x20000, 0x08000 )             /* 2nd half, banked at 0x8000 */
 	ROM_LOAD( "a85-16.h18", 0x10000, 0x10000, CRC(4094d750) SHA1(05e0ad177a3eb144b203784ecb6242a0fc5c4d4d) ) /* banked at 0x8000           */
 	ROM_COPY(  "maincpu", 0x10000, 0x08000, 0x04000 ) // set as default to avoid banking problems
+=======
+	ROM_CONTINUE(           0x18000, 0x08000 )             /* 2nd half, banked at 0x8000 */
+	ROM_LOAD( "a85-16.h18", 0x08000, 0x10000, CRC(4094d750) SHA1(05e0ad177a3eb144b203784ecb6242a0fc5c4d4d) ) /* banked at 0x8000           */
+>>>>>>> upstream/master
 
 	ROM_REGION( 0x10000, "audiocpu", 0 )
 	ROM_LOAD( "a85-11.f6", 0x0000, 0x8000, CRC(cc3539db) SHA1(4239a40fdee65cba613e4b4ec54cf7899480e366) )
@@ -576,9 +674,14 @@ ROM_END
 ROM_START( kicknrun )
 	ROM_REGION( 0x28000, "maincpu", 0 )
 	ROM_LOAD( "a87-08.h16", 0x00000, 0x08000, CRC(715e1b04) SHA1(60b7259758ec73f1cc945556e9c2b25766b745a8) ) /* 1st half, main code        */
+<<<<<<< HEAD
 	ROM_CONTINUE(           0x20000, 0x08000 )             /* 2nd half, banked at 0x8000 */
 	ROM_LOAD( "a87-07.h18", 0x10000, 0x10000, CRC(6cb6ebfe) SHA1(fca61fc2ad8fadc1e15b9ff84c7469b68d16e885) ) /* banked at 0x8000           */
 	ROM_COPY(  "maincpu", 0x10000, 0x08000, 0x04000 ) // set as default to avoid banking problems
+=======
+	ROM_CONTINUE(           0x18000, 0x08000 )             /* 2nd half, banked at 0x8000 */
+	ROM_LOAD( "a87-07.h18", 0x08000, 0x10000, CRC(6cb6ebfe) SHA1(fca61fc2ad8fadc1e15b9ff84c7469b68d16e885) ) /* banked at 0x8000           */
+>>>>>>> upstream/master
 
 	ROM_REGION( 0x10000, "audiocpu", 0 )
 	ROM_LOAD( "a87-06.f6", 0x0000, 0x8000, CRC(1625b587) SHA1(7336384e13c114915de5e439df5731ce3fc2054a) )
@@ -609,9 +712,14 @@ ROM_END
 ROM_START( kicknrunu )
 	ROM_REGION( 0x28000, "maincpu", 0 )
 	ROM_LOAD( "a87-23.h16", 0x00000, 0x08000, CRC(37182560) SHA1(8db393131f50af88b2e7489d6aae65bad0a5a65b) ) /* 1st half, main code        */
+<<<<<<< HEAD
 	ROM_CONTINUE(           0x20000, 0x08000 )             /* 2nd half, banked at 0x8000 */
 	ROM_LOAD( "a87-22.h18", 0x10000, 0x10000, CRC(3b5a8354) SHA1(e0db4cb0657989d5a21f9a8d4e8f842adba636ad) ) /* banked at 0x8000           */
 	ROM_COPY(  "maincpu", 0x10000, 0x08000, 0x04000 ) // set as default to avoid banking problems
+=======
+	ROM_CONTINUE(           0x18000, 0x08000 )             /* 2nd half, banked at 0x8000 */
+	ROM_LOAD( "a87-22.h18", 0x08000, 0x10000, CRC(3b5a8354) SHA1(e0db4cb0657989d5a21f9a8d4e8f842adba636ad) ) /* banked at 0x8000           */
+>>>>>>> upstream/master
 
 	ROM_REGION( 0x10000, "audiocpu", 0 )
 	ROM_LOAD( "a87-06.f6", 0x0000, 0x8000, CRC(1625b587) SHA1(7336384e13c114915de5e439df5731ce3fc2054a) )
@@ -642,9 +750,14 @@ ROM_END
 ROM_START( mexico86 )
 	ROM_REGION( 0x28000, "maincpu", 0 )
 	ROM_LOAD( "2_g.bin",    0x00000, 0x08000, CRC(2bbfe0fb) SHA1(8f047e001ea8e49d28f73e546c82812af1c2533c) ) /* 1st half, main code        */
+<<<<<<< HEAD
 	ROM_CONTINUE(           0x20000, 0x08000 )             /* 2nd half, banked at 0x8000 */
 	ROM_LOAD( "1_f.bin",    0x10000, 0x10000, CRC(0b93e68e) SHA1(c6fbcce83103e3e71a7a1ef9f18a10622ed6b951) ) /* banked at 0x8000           */
 	ROM_COPY(  "maincpu", 0x10000, 0x08000, 0x04000 ) //set as default to avoid banking problems
+=======
+	ROM_CONTINUE(           0x18000, 0x08000 )             /* 2nd half, banked at 0x8000 */
+	ROM_LOAD( "1_f.bin",    0x08000, 0x10000, CRC(0b93e68e) SHA1(c6fbcce83103e3e71a7a1ef9f18a10622ed6b951) ) /* banked at 0x8000           */
+>>>>>>> upstream/master
 
 	ROM_REGION( 0x10000, "audiocpu", 0 )
 	ROM_LOAD( "a87-06.f6", 0x0000, 0x8000, CRC(1625b587) SHA1(7336384e13c114915de5e439df5731ce3fc2054a) )
@@ -671,6 +784,53 @@ ROM_START( mexico86 )
 	ROM_LOAD( "a87-11.g14", 0x0200, 0x0100, CRC(14f6c28d) SHA1(8c60974e4607906a3f77260bdd0704af60d596fc) )
 ROM_END
 
+<<<<<<< HEAD
+=======
+ROM_START( mexico86a )
+	ROM_REGION( 0x28000, "maincpu", 0 )
+	ROM_LOAD( "2.bin",    0x00000, 0x08000, CRC(397c93ad) SHA1(6b28d284cafb86f3efd13033984caa1a221a8a14) ) /* 1st half, main code        */
+	ROM_CONTINUE(           0x18000, 0x08000 )             /* 2nd half, banked at 0x8000 */
+	ROM_LOAD( "1.bin",    0x08000, 0x10000, CRC(0b93e68e) SHA1(c6fbcce83103e3e71a7a1ef9f18a10622ed6b951) ) /* banked at 0x8000           */
+
+	ROM_REGION( 0x10000, "audiocpu", 0 )
+	ROM_LOAD( "3x.bin", 0x0000, 0x8000, CRC(abbbf6c4) SHA1(27456d8607e0a246f0c2ad1bc57ee7e4ec37b278) ) // 0x1FEF is 0x2f instead of 0x0f, causes checksum failure, bad?
+	ROM_LOAD( "3.bin", 0x0000, 0x8000, CRC(1625b587) SHA1(7336384e13c114915de5e439df5731ce3fc2054a) )
+
+	ROM_REGION( 0x0800, "mcu", 0 )    /* 2k for the microcontroller */
+	ROM_LOAD( "68_h.bin",   0x0000, 0x0800, CRC(ff92f816) SHA1(0015c3f2ed014052b3fa376409e3a7cca36fac72) ) // missing in this set, not dumped or never present??
+
+	ROM_REGION( 0x10000, "sub", 0 )    /* 64k for the cpu on the sub board */
+	ROM_LOAD( "8.bin",  0x0000, 0x4000, CRC(6a2ad32f) SHA1(42d4b97b25d219902ad215793f1d2c006ffe94dc) )
+
+	ROM_REGION( 0x40000, "gfx1", ROMREGION_INVERT )
+	ROM_LOAD( "4.bin",    0x08000, 0x08000, CRC(57cfdbca) SHA1(89c305c380c3de14a956ee4bc85d3a0d343b638e) )
+	ROM_CONTINUE(           0x00000, 0x08000 )
+	ROM_LOAD( "5.bin",    0x10000, 0x08000, CRC(e42fa143) SHA1(02d7e0e01af1cecc3952f6355987118098d346c3) )
+	ROM_RELOAD(             0x18000, 0x08000 )
+	ROM_LOAD( "6.bin",    0x28000, 0x08000, CRC(a4607989) SHA1(6832147603a146c34cc1809e839c8e034d0dacc5) )
+	ROM_CONTINUE(           0x20000, 0x08000 )
+	ROM_LOAD( "7.bin",    0x30000, 0x08000, CRC(245036b1) SHA1(108d9959de869b4fdf766abeade1486acec13bf2) )
+	ROM_RELOAD(             0x38000, 0x08000 )
+
+	ROM_REGION( 0x0300, "proms", 0 )
+	ROM_LOAD( "n82s129n.1.bin", 0x0000, 0x0100, CRC(be6eb1f0) SHA1(f4d00e9b12bf116bf84edb2ff6caab158094b668) ) /* all proms are 63S141AN or compatible type */
+	ROM_LOAD( "n82s129n.3.bin", 0x0100, 0x0100, CRC(3e953444) SHA1(e9c84ca9390fd7c73738a8b681a02e87fbd51bb4) )
+	ROM_LOAD( "n82s129n.2.bin", 0x0200, 0x0100, CRC(14f6c28d) SHA1(8c60974e4607906a3f77260bdd0704af60d596fc) )
+
+	ROM_REGION( 0x0300, "plds", 0 )
+	ROM_LOAD( "ampal16l8pc.1.bin", 0x0000, 0x0104, CRC(634f3a5b) SHA1(af895a10563e0011c9e6546de2bb61fb8c93bcf4) )
+	ROM_LOAD( "ampal16l8pc.3.bin", 0x0000, 0x0104, CRC(f9ce900a) SHA1(c2b4626a4663a3dedd70e04833b9968e58ae372b) )
+	ROM_LOAD( "ampal16l8pc.4.bin", 0x0000, 0x0104, CRC(39120b6f) SHA1(d44291f72566f2ad61ab6e612c2c6212076ef541) )
+	ROM_LOAD( "ampal16l8pc.5.bin", 0x0000, 0x0104, CRC(1d27f7b9) SHA1(7fe3cb474c599acd7b5fe74bef8f2bae582f2ce9) )
+	ROM_LOAD( "ampal16l8pc.6.bin", 0x0000, 0x0104, CRC(9f941c8e) SHA1(34728a572132c23bd2887452ec7ad38504d392d7) )
+	ROM_LOAD( "ampal16l8pc.7.bin", 0x0000, 0x0104, CRC(9f941c8e) SHA1(34728a572132c23bd2887452ec7ad38504d392d7) )
+
+	ROM_LOAD( "ampal16r4pc.2.bin", 0x0000, 0x0104, CRC(213a71d1) SHA1(a83b1c089fae72b8216533d0733491c3dc3630af) )
+ROM_END
+
+
+
+>>>>>>> upstream/master
 
 /*************************************
  *
@@ -678,8 +838,17 @@ ROM_END
  *
  *************************************/
 
+<<<<<<< HEAD
 GAME( 1986, kikikai,  0,        kikikai,  kikikai, driver_device,  0, ROT90, "Taito Corporation", "KiKi KaiKai", MACHINE_SUPPORTS_SAVE )
 GAME( 1986, knightb,  kikikai,  knightb,  kikikai, driver_device,  0, ROT90, "bootleg", "Knight Boy", MACHINE_SUPPORTS_SAVE )
 GAME( 1986, kicknrun, 0,        mexico86, mexico86, driver_device, 0, ROT0,  "Taito Corporation", "Kick and Run (World)", MACHINE_SUPPORTS_SAVE )
 GAME( 1986, kicknrunu,kicknrun, mexico86, mexico86, driver_device, 0, ROT0,  "Taito America Corp", "Kick and Run (US)", MACHINE_SUPPORTS_SAVE )
 GAME( 1986, mexico86, kicknrun, mexico86, mexico86, driver_device, 0, ROT0,  "bootleg", "Mexico 86 (bootleg of Kick and Run)", MACHINE_SUPPORTS_SAVE )
+=======
+GAME( 1986, kikikai,  0,        kikikai,  kikikai,  mexico86_state, 0, ROT90, "Taito Corporation",  "KiKi KaiKai",                                 MACHINE_SUPPORTS_SAVE )
+GAME( 1986, knightb,  kikikai,  knightb,  kikikai,  mexico86_state, 0, ROT90, "bootleg",            "Knight Boy",                                  MACHINE_SUPPORTS_SAVE )
+GAME( 1986, kicknrun, 0,        mexico86, mexico86, mexico86_state, 0, ROT0,  "Taito Corporation",  "Kick and Run (World)",                        MACHINE_SUPPORTS_SAVE )
+GAME( 1986, kicknrunu,kicknrun, mexico86, mexico86, mexico86_state, 0, ROT0,  "Taito America Corp", "Kick and Run (US)",                           MACHINE_SUPPORTS_SAVE )
+GAME( 1986, mexico86, kicknrun, mexico86, mexico86, mexico86_state, 0, ROT0,  "bootleg",            "Mexico 86 (bootleg of Kick and Run) (set 1)", MACHINE_SUPPORTS_SAVE )
+GAME( 1986, mexico86a,kicknrun, mexico86, mexico86, mexico86_state, 0, ROT0,  "bootleg",            "Mexico 86 (bootleg of Kick and Run) (set 2)", MACHINE_NOT_WORKING | MACHINE_SUPPORTS_SAVE )
+>>>>>>> upstream/master

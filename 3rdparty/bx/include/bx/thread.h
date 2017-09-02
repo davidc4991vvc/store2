@@ -1,11 +1,17 @@
 /*
+<<<<<<< HEAD
  * Copyright 2010-2015 Branimir Karadzic. All rights reserved.
  * License: http://www.opensource.org/licenses/BSD-2-Clause
+=======
+ * Copyright 2010-2017 Branimir Karadzic. All rights reserved.
+ * License: https://github.com/bkaradzic/bx#license-bsd-2-clause
+>>>>>>> upstream/master
  */
 
 #ifndef BX_THREAD_H_HEADER_GUARD
 #define BX_THREAD_H_HEADER_GUARD
 
+<<<<<<< HEAD
 #if BX_PLATFORM_POSIX
 #	include <pthread.h>
 #elif BX_PLATFORM_WINRT
@@ -22,6 +28,17 @@ namespace bx
 {
 	typedef int32_t (*ThreadFn)(void* _userData);
 
+=======
+#include "bx.h"
+#include "semaphore.h"
+
+namespace bx
+{
+	///
+	typedef int32_t (*ThreadFn)(void* _userData);
+
+	///
+>>>>>>> upstream/master
 	class Thread
 	{
 		BX_CLASS(Thread
@@ -30,6 +47,7 @@ namespace bx
 			);
 
 	public:
+<<<<<<< HEAD
 		Thread()
 #if BX_PLATFORM_WINDOWS || BX_PLATFORM_XBOX360 || BX_PLATFORM_WINRT
 			: m_handle(INVALID_HANDLE_VALUE)
@@ -221,6 +239,34 @@ namespace bx
 #elif BX_PLATFORM_POSIX
 		pthread_t m_handle;
 #endif // BX_PLATFORM_
+=======
+		///
+		Thread();
+
+		///
+		virtual ~Thread();
+
+		///
+		void init(ThreadFn _fn, void* _userData = NULL, uint32_t _stackSize = 0, const char* _name = NULL);
+
+		///
+		void shutdown();
+
+		///
+		bool isRunning() const;
+
+		///
+		int32_t getExitCode() const;
+
+		///
+		void setThreadName(const char* _name);
+
+	private:
+		friend struct ThreadInternal;
+		int32_t entry();
+
+		BX_ALIGN_DECL(16, uint8_t) m_internal[64];
+>>>>>>> upstream/master
 
 		ThreadFn  m_fn;
 		void*     m_userData;
@@ -230,6 +276,7 @@ namespace bx
 		bool      m_running;
 	};
 
+<<<<<<< HEAD
 #if BX_PLATFORM_WINDOWS
 	class TlsData
 	{
@@ -297,4 +344,28 @@ namespace bx
 
 #endif // BX_CONFIG_SUPPORTS_THREADING
 
+=======
+	///
+	class TlsData
+	{
+	public:
+		///
+		TlsData();
+
+		///
+		~TlsData();
+
+		///
+		void* get() const;
+
+		///
+		void set(void* _ptr);
+
+	private:
+		BX_ALIGN_DECL(16, uint8_t) m_internal[64];
+	};
+
+} // namespace bx
+
+>>>>>>> upstream/master
 #endif // BX_THREAD_H_HEADER_GUARD

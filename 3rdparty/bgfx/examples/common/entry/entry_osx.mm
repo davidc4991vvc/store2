@@ -1,6 +1,11 @@
 /*
+<<<<<<< HEAD
  * Copyright 2011-2015 Branimir Karadzic. All rights reserved.
  * License: http://www.opensource.org/licenses/BSD-2-Clause
+=======
+ * Copyright 2011-2017 Branimir Karadzic. All rights reserved.
+ * License: https://github.com/bkaradzic/bgfx#license-bsd-2-clause
+>>>>>>> upstream/master
  */
 
 #include "entry_p.h"
@@ -9,7 +14,11 @@
 
 #import <Cocoa/Cocoa.h>
 
+<<<<<<< HEAD
 #include <bgfx/bgfxplatform.h>
+=======
+#include <bgfx/platform.h>
+>>>>>>> upstream/master
 
 #include <bx/uint32_t.h>
 #include <bx/thread.h>
@@ -46,7 +55,23 @@
 
 namespace entry
 {
+<<<<<<< HEAD
 	static WindowHandle s_defaultWindow = { 0 };	// TODO: Add support for more windows
+=======
+	///
+	inline void osxSetNSWindow(void* _window, void* _nsgl = NULL)
+	{
+		bgfx::PlatformData pd;
+		pd.ndt          = NULL;
+		pd.nwh          = _window;
+		pd.context      = _nsgl;
+		pd.backBuffer   = NULL;
+		pd.backBufferDS = NULL;
+		bgfx::setPlatformData(pd);
+	}
+
+	static WindowHandle s_defaultWindow = { 0 };
+>>>>>>> upstream/master
 	static uint8_t s_translateKey[256];
 
 	struct MainThreadEntry
@@ -271,7 +296,10 @@ namespace entry
 
 					case NSLeftMouseDown:
 					{
+<<<<<<< HEAD
 						// TODO: remove!
+=======
+>>>>>>> upstream/master
 						// Command + Left Mouse Button acts as middle! This just a temporary solution!
 						// This is because the average OSX user doesn't have middle mouse click.
 						MouseButton::Enum mb = ([event modifierFlags] & NSCommandKeyMask) ? MouseButton::Middle : MouseButton::Left;
@@ -460,7 +488,11 @@ namespace entry
 			m_window[0] = window;
 			m_windowFrame = [window frame];
 
+<<<<<<< HEAD
 			bgfx::osxSetNSWindow(window);
+=======
+			osxSetNSWindow(window);
+>>>>>>> upstream/master
 
 			MainThreadEntry mte;
 			mte.m_argc = _argc;
@@ -469,11 +501,25 @@ namespace entry
 			bx::Thread thread;
 			thread.init(mte.threadFunc, &mte);
 
+<<<<<<< HEAD
 			while (!(m_exit = [dg applicationHasTerminated]) )
 			{
 				if (bgfx::RenderFrame::Exiting == bgfx::renderFrame() )
 				{
 					break;
+=======
+			WindowHandle handle = { 0 };
+			m_eventQueue.postSizeEvent(handle, ENTRY_DEFAULT_WIDTH, ENTRY_DEFAULT_HEIGHT);
+
+			while (!(m_exit = [dg applicationHasTerminated]) )
+			{
+				@autoreleasepool
+				{
+					if (bgfx::RenderFrame::Exiting == bgfx::renderFrame() )
+					{
+						break;
+					}
+>>>>>>> upstream/master
 				}
 
 				while (dispatchEvent(peekEvent() ) )

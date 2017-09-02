@@ -9,7 +9,11 @@
 
 
   preliminary video based on llcharm / g4u5 set ONLY
+<<<<<<< HEAD
   there is clearly a way to set the base adddress for the tiles, or they should get
+=======
+  there is clearly a way to set the base address for the tiles, or they should get
+>>>>>>> upstream/master
   DMAd elsewhere before use.
 
   ends up making some accesses to the rom area because the pointer it gets from RAM is 0
@@ -28,8 +32,15 @@
 
 #include "emu.h"
 #include "cpu/m68000/m68000.h"
+<<<<<<< HEAD
 #include "video/pc_vga.h"
 #include "machine/mcf5206e.h"
+=======
+#include "machine/mcf5206e.h"
+#include "video/pc_vga.h"
+#include "speaker.h"
+
+>>>>>>> upstream/master
 
 class gaminator_state : public driver_device
 {
@@ -75,7 +86,11 @@ INPUT_PORTS_END
 
 
 
+<<<<<<< HEAD
 static MACHINE_CONFIG_START( gaminator, gaminator_state )
+=======
+static MACHINE_CONFIG_START( gaminator )
+>>>>>>> upstream/master
 	MCFG_CPU_ADD("maincpu", MCF5206E, 40000000) /* definitely Coldfire, model / clock uncertain */
 	MCFG_CPU_PROGRAM_MAP(gaminator_map)
 	MCFG_CPU_VBLANK_INT_DRIVER("screen", gaminator_state,  irq6_line_hold) // irq6 seems to be needed to get past the ROM checking

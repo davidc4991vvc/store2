@@ -3,6 +3,14 @@ bx
 
 Base library.
 
+<<<<<<< HEAD
+=======
+[![Build Status](https://travis-ci.org/bkaradzic/bx.svg?branch=master)](https://travis-ci.org/bkaradzic/bx)
+[![Build status](https://ci.appveyor.com/api/projects/status/edras3mltmoy31g5?svg=true)](https://ci.appveyor.com/project/bkaradzic/bx)
+[![License](https://img.shields.io/badge/license-BSD--2%20clause-blue.svg)](https://bkaradzic.github.io/bgfx/license.html)
+[![Join the chat at https://gitter.im/bkaradzic/bgfx](https://badges.gitter.im/bkaradzic/bgfx.svg)](https://gitter.im/bkaradzic/bgfx)
+
+>>>>>>> upstream/master
 Contact
 -------
 
@@ -14,7 +22,11 @@ https://github.com/bkaradzic/bx
 [License (BSD 2-clause)](https://github.com/bkaradzic/bx/blob/master/LICENSE)
 -----------------------------------------------------------------------------
 
+<<<<<<< HEAD
 	Copyright 2010-2015 Branimir Karadzic. All rights reserved.
+=======
+	Copyright 2010-2017 Branimir Karadzic. All rights reserved.
+>>>>>>> upstream/master
 	
 	https://github.com/bkaradzic/bx
 	

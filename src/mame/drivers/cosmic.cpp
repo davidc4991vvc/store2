@@ -35,11 +35,21 @@ cosmicg - board can operate in b&w mode if there is no PROM, in this case
 
 
 #include "emu.h"
+<<<<<<< HEAD
 #include "cpu/tms9900/tms9980a.h"
 #include "cpu/z80/z80.h"
 #include "sound/samples.h"
 #include "sound/dac.h"
 #include "includes/cosmic.h"
+=======
+#include "includes/cosmic.h"
+
+#include "cpu/tms9900/tms9980a.h"
+#include "cpu/z80/z80.h"
+#include "sound/samples.h"
+#include "sound/volt_reg.h"
+#include "speaker.h"
+>>>>>>> upstream/master
 
 
 /* Schematics show 12 triggers for discrete sound circuits */
@@ -101,21 +111,44 @@ WRITE8_MEMBER(cosmic_state::panic_sound_output_w)
 					m_samples->stop(4);
 				break;
 
+<<<<<<< HEAD
 		case 10:    m_dac->write_unsigned8(data); break;/* Bonus */
 		case 15:    if (data) m_samples->start(0, 6); break;    /* Player Die */
 		case 16:    if (data) m_samples->start(5, 7); break;    /* Enemy Laugh */
 		case 17:    if (data) m_samples->start(0, 10); break;   /* Coin - Not triggered by software */
+=======
+		case 10:    m_dac->write(BIT(data, 7)); break; /* Bonus */
+>>>>>>> upstream/master
 		}
 	}
 
 	#ifdef MAME_DEBUG
+<<<<<<< HEAD
 	logerror("Sound output %x=%x\n", offset, data);
+=======
+	logerror("panic_sound_output_w %x=%x\n", offset, data);
+>>>>>>> upstream/master
 	#endif
 }
 
 WRITE8_MEMBER(cosmic_state::panic_sound_output2_w)
 {
+<<<<<<< HEAD
 	panic_sound_output_w(space, offset + 15, data);
+=======
+	if (m_sound_enabled)
+	{
+		switch (offset)
+		{
+		case 0:     if (data) m_samples->start(0, 6); break;    /* Player Die */
+		case 1:    if (data) m_samples->start(5, 7); break;    /* Enemy Laugh */
+		}
+	}
+
+#ifdef MAME_DEBUG
+	logerror("panic_sound_output2_w %x=%x\n", offset, data);
+#endif
+>>>>>>> upstream/master
 }
 
 WRITE8_MEMBER(cosmic_state::cosmicg_output_w)
@@ -136,10 +169,17 @@ WRITE8_MEMBER(cosmic_state::cosmicg_output_w)
 		switch (offset)
 		{
 		/* The schematics show a direct link to the sound amp  */
+<<<<<<< HEAD
 		/* as other cosmic series games, but it never seems to */
 		/* be used for anything. It is implemented for sake of */
 		/* completness. Maybe it plays a tune if you win ?     */
 		case 1: m_dac->write_unsigned8(-data); break;
+=======
+		/* as other cosmic series games, but it is toggled     */
+		/* once during game over. It is implemented for sake   */
+		/* of completness.                                     */
+		case 1: m_dac->write(BIT(data, 0)); break; /* Game Over */
+>>>>>>> upstream/master
 		case 2: if (data) m_samples->start(0, m_march_select); break;   /* March Sound */
 		case 3: m_march_select = (m_march_select & 0xfe) | data; break;
 		case 4: m_march_select = (m_march_select & 0xfd) | (data << 1); break;
@@ -167,7 +207,11 @@ WRITE8_MEMBER(cosmic_state::cosmicg_output_w)
 				break;
 
 		case 9: if (data) m_samples->start(3, 11); break;   /* Got Ship */
+<<<<<<< HEAD
 //      case 11: watchdog_reset_w(0, 0); break;             /* Watchdog */
+=======
+		case 11: /* watchdog_reset_w(0, 0); */ break;   /* Watchdog? only toggles during game play */
+>>>>>>> upstream/master
 		case 13:    if (data) m_samples->start(8, 13 - m_gun_die_select); break;  /* Got Monster / Gunshot */
 		case 14:    m_gun_die_select = data; break;
 		case 15:    if (data) m_samples->start(5, 14); break;   /* Coin Extend (extra base) */
@@ -175,7 +219,11 @@ WRITE8_MEMBER(cosmic_state::cosmicg_output_w)
 	}
 
 	#ifdef MAME_DEBUG
+<<<<<<< HEAD
 	if (offset != 11) logerror("Output %x=%x\n", offset, data);
+=======
+	if (offset != 11) logerror("cosmicg_output_w %x=%x\n", offset, data);
+>>>>>>> upstream/master
 	#endif
 }
 
@@ -203,6 +251,11 @@ WRITE8_MEMBER(cosmic_state::cosmica_sound_output_w)
 		{
 		case 0: if (data) m_samples->start(1, 2); break; /*Dive Bombing Type A*/
 
+<<<<<<< HEAD
+=======
+		case 1: break; /* game writes 0 when alien shot */
+
+>>>>>>> upstream/master
 		case 2: /*Dive Bombing Type B (Main Control)*/
 			if (data)
 			{
@@ -212,55 +265,103 @@ WRITE8_MEMBER(cosmic_state::cosmica_sound_output_w)
 					if (m_samples->playing(2))
 					{
 						m_samples->stop(2);
+<<<<<<< HEAD
 						m_samples->start(2, 3); break;
 					}
 					else
 						m_samples->start(2, 3); break;
+=======
+						m_samples->start(2, 3);
+					}
+					else
+						m_samples->start(2, 3);
+					break;
+>>>>>>> upstream/master
 
 				case 3:
 					if (m_samples->playing(3))
 					{
 						m_samples->stop(3);
+<<<<<<< HEAD
 						m_samples->start(3, 4); break;
 					}
 					else
 						m_samples->start(3, 4); break;
+=======
+						m_samples->start(3, 4);
+					}
+					else
+						m_samples->start(3, 4);
+					break;
+>>>>>>> upstream/master
 
 				case 4:
 					if (m_samples->playing(4))
 					{
 						m_samples->stop(4);
+<<<<<<< HEAD
 						m_samples->start(4, 5); break;
 					}
 					else
 						m_samples->start(4, 5); break;
+=======
+						m_samples->start(4, 5);
+					}
+					else
+						m_samples->start(4, 5);
+					break;
+>>>>>>> upstream/master
 
 				case 5:
 					if (m_samples->playing(5))
 					{
 						m_samples->stop(5);
+<<<<<<< HEAD
 						m_samples->start(5, 6); break;
 					}
 					else
 						m_samples->start(5, 6); break;
+=======
+						m_samples->start(5, 6);
+					}
+					else
+						m_samples->start(5, 6);
+					break;
+>>>>>>> upstream/master
 
 				case 6:
 					if (m_samples->playing(6))
 					{
 						m_samples->stop(6);
+<<<<<<< HEAD
 						m_samples->start(6, 7); break;
 					}
 					else
 						m_samples->start(6, 7); break;
+=======
+						m_samples->start(6, 7);
+					}
+					else
+						m_samples->start(6, 7);
+					break;
+>>>>>>> upstream/master
 
 				case 7:
 					if (m_samples->playing(7))
 					{
 						m_samples->stop(7);
+<<<<<<< HEAD
 						m_samples->start(7, 8); break;
 					}
 					else
 						m_samples->start(7, 8); break;
+=======
+						m_samples->start(7, 8);
+					}
+					else
+						m_samples->start(7, 8);
+					break;
+>>>>>>> upstream/master
 				}
 			}
 
@@ -305,10 +406,21 @@ WRITE8_MEMBER(cosmic_state::cosmica_sound_output_w)
 	}
 
 	#ifdef MAME_DEBUG
+<<<<<<< HEAD
 	logerror("Sound output %x=%x\n", offset, data);
 	#endif
 }
 
+=======
+	logerror("cosmica_sound_output_w %x=%x\n", offset, data);
+	#endif
+}
+
+WRITE8_MEMBER(cosmic_state::dac_w)
+{
+	m_dac->write(BIT(data, 7));
+}
+>>>>>>> upstream/master
 
 READ8_MEMBER(cosmic_state::cosmica_pixel_clock_r)
 {
@@ -318,12 +430,20 @@ READ8_MEMBER(cosmic_state::cosmica_pixel_clock_r)
 READ8_MEMBER(cosmic_state::cosmicg_port_0_r)
 {
 	/* The top four address lines from the CRTC are bits 0-3 */
+<<<<<<< HEAD
 	return (ioport("IN0")->read() & 0xf0) | ((m_screen->vpos() & 0xf0) >> 4);
+=======
+	return (m_in_ports[0]->read() & 0xf0) | ((m_screen->vpos() & 0xf0) >> 4);
+>>>>>>> upstream/master
 }
 
 READ8_MEMBER(cosmic_state::magspot_coinage_dip_r)
 {
+<<<<<<< HEAD
 	return (read_safe(ioport("DSW"), 0) & (1 << (7 - offset))) ? 0 : 1;
+=======
+	return (m_dsw.read_safe(0) & (1 << (7 - offset))) ? 0 : 1;
+>>>>>>> upstream/master
 }
 
 
@@ -331,8 +451,13 @@ READ8_MEMBER(cosmic_state::magspot_coinage_dip_r)
 
 READ8_MEMBER(cosmic_state::nomnlnd_port_0_1_r)
 {
+<<<<<<< HEAD
 	int control = ioport(offset ? "IN1" : "IN0")->read();
 	int fire = ioport("IN3")->read();
+=======
+	int control = m_in_ports[offset]->read();
+	int fire = m_in_ports[3]->read();
+>>>>>>> upstream/master
 
 	/* If firing - stop tank */
 	if ((fire & 0xc0) == 0) return 0xff;
@@ -400,7 +525,11 @@ static ADDRESS_MAP_START( magspot_map, AS_PROGRAM, 8, cosmic_state )
 	AM_RANGE(0x0000, 0x2fff) AM_ROM
 	AM_RANGE(0x3800, 0x3807) AM_READ(magspot_coinage_dip_r)
 	AM_RANGE(0x4000, 0x401f) AM_WRITEONLY AM_SHARE("spriteram")
+<<<<<<< HEAD
 	AM_RANGE(0x4800, 0x4800) AM_DEVWRITE("dac", dac_device, write_unsigned8)
+=======
+	AM_RANGE(0x4800, 0x4800) AM_WRITE(dac_w)
+>>>>>>> upstream/master
 	AM_RANGE(0x480c, 0x480d) AM_WRITE(cosmic_color_register_w)
 	AM_RANGE(0x480f, 0x480f) AM_WRITE(flip_screen_w)
 	AM_RANGE(0x5000, 0x5000) AM_READ_PORT("IN0")
@@ -411,10 +540,20 @@ static ADDRESS_MAP_START( magspot_map, AS_PROGRAM, 8, cosmic_state )
 ADDRESS_MAP_END
 
 
+<<<<<<< HEAD
 
 INPUT_CHANGED_MEMBER(cosmic_state::panic_coin_inserted)
 {
 	panic_sound_output_w(m_maincpu->space(AS_PROGRAM), 17, newval == 0);
+=======
+WRITE_LINE_MEMBER(cosmic_state::panic_coin_inserted)
+{
+	if (m_sound_enabled && !state) m_samples->start(0, 10);   /* Coin - Not triggered by software */
+
+#ifdef MAME_DEBUG
+	logerror("panic_coin_inserted %x\n", state);
+#endif
+>>>>>>> upstream/master
 }
 
 static INPUT_PORTS_START( panic )
@@ -469,8 +608,13 @@ static INPUT_PORTS_START( panic )
 	PORT_BIT( 0x08, IP_ACTIVE_LOW, IPT_UNKNOWN )
 	PORT_BIT( 0x10, IP_ACTIVE_LOW, IPT_UNKNOWN )
 	PORT_BIT( 0x20, IP_ACTIVE_LOW, IPT_UNKNOWN )
+<<<<<<< HEAD
 	PORT_BIT( 0x40, IP_ACTIVE_LOW, IPT_COIN1 ) PORT_CHANGED_MEMBER(DEVICE_SELF, cosmic_state,panic_coin_inserted, 0)
 	PORT_BIT( 0x80, IP_ACTIVE_LOW, IPT_COIN2 ) PORT_CHANGED_MEMBER(DEVICE_SELF, cosmic_state,panic_coin_inserted, 0)
+=======
+	PORT_BIT( 0x40, IP_ACTIVE_LOW, IPT_COIN1 ) PORT_WRITE_LINE_DEVICE_MEMBER(DEVICE_SELF, cosmic_state, panic_coin_inserted)
+	PORT_BIT( 0x80, IP_ACTIVE_LOW, IPT_COIN2 ) PORT_WRITE_LINE_DEVICE_MEMBER(DEVICE_SELF, cosmic_state, panic_coin_inserted)
+>>>>>>> upstream/master
 INPUT_PORTS_END
 
 INPUT_CHANGED_MEMBER(cosmic_state::cosmica_coin_inserted)
@@ -899,7 +1043,11 @@ static const char *const cosmica_sample_names[] =
 	"loudexp",
 	"smallexp",
 	"coin",
+<<<<<<< HEAD
 	0       /* end of array */
+=======
+	nullptr       /* end of array */
+>>>>>>> upstream/master
 };
 
 
@@ -917,7 +1065,11 @@ static const char *const panic_sample_names[] =
 	"extral",
 	"oxygen",
 	"coin",
+<<<<<<< HEAD
 	0
+=======
+	nullptr
+>>>>>>> upstream/master
 };
 
 
@@ -939,7 +1091,11 @@ static const char *const cosmicg_sample_names[] =
 	"cg_gun",   /* Gun Shot */
 	"cg_gotm",  /* Got Monster */
 	"cg_ext",   /* Coin Extend */
+<<<<<<< HEAD
 	0
+=======
+	nullptr
+>>>>>>> upstream/master
 };
 
 
@@ -975,7 +1131,11 @@ MACHINE_RESET_MEMBER(cosmic_state,cosmicg)
 	m_maincpu->set_input_line(INT_9980A_RESET, CLEAR_LINE);
 }
 
+<<<<<<< HEAD
 static MACHINE_CONFIG_START( cosmic, cosmic_state )
+=======
+static MACHINE_CONFIG_START( cosmic )
+>>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", Z80,Z80_MASTER_CLOCK/6) /* 1.8026 MHz */
@@ -1020,15 +1180,27 @@ static MACHINE_CONFIG_DERIVED( panic, cosmic )
 	MCFG_SCREEN_UPDATE_DRIVER(cosmic_state, screen_update_panic)
 
 	/* sound hardware */
+<<<<<<< HEAD
 	MCFG_SPEAKER_STANDARD_MONO("mono")
+=======
+	MCFG_SPEAKER_STANDARD_MONO("speaker")
+>>>>>>> upstream/master
 
 	MCFG_SOUND_ADD("samples", SAMPLES, 0)
 	MCFG_SAMPLES_CHANNELS(9)
 	MCFG_SAMPLES_NAMES(panic_sample_names)
+<<<<<<< HEAD
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 0.25)
 
 	MCFG_DAC_ADD("dac")
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 1.0)
+=======
+	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "speaker", 0.25)
+
+	MCFG_SOUND_ADD("dac", DAC_1BIT, 0) MCFG_SOUND_ROUTE(ALL_OUTPUTS, "speaker", 0.5)
+	MCFG_DEVICE_ADD("vref", VOLTAGE_REGULATOR, 0) MCFG_VOLTAGE_REGULATOR_OUTPUT(5.0)
+	MCFG_SOUND_ROUTE_EX(0, "dac", 1.0, DAC_VREF_POS_INPUT)
+>>>>>>> upstream/master
 MACHINE_CONFIG_END
 
 
@@ -1048,11 +1220,16 @@ static MACHINE_CONFIG_DERIVED( cosmica, cosmic )
 	MCFG_SCREEN_UPDATE_DRIVER(cosmic_state, screen_update_cosmica)
 
 	/* sound hardware */
+<<<<<<< HEAD
 	MCFG_SPEAKER_STANDARD_MONO("mono")
+=======
+	MCFG_SPEAKER_STANDARD_MONO("speaker")
+>>>>>>> upstream/master
 
 	MCFG_SOUND_ADD("samples", SAMPLES, 0)
 	MCFG_SAMPLES_CHANNELS(13)
 	MCFG_SAMPLES_NAMES(cosmica_sample_names)
+<<<<<<< HEAD
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 0.25)
 
 	MCFG_DAC_ADD("dac")
@@ -1061,6 +1238,12 @@ static MACHINE_CONFIG_DERIVED( cosmica, cosmic )
 MACHINE_CONFIG_END
 
 static MACHINE_CONFIG_START( cosmicg, cosmic_state )
+=======
+	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "speaker", 0.25)
+MACHINE_CONFIG_END
+
+static MACHINE_CONFIG_START( cosmicg )
+>>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_TMS99xx_ADD("maincpu", TMS9980A, COSMICG_MASTER_CLOCK/8, cosmicg_map, cosmicg_io_map)
@@ -1084,15 +1267,28 @@ static MACHINE_CONFIG_START( cosmicg, cosmic_state )
 	MCFG_PALETTE_INIT_OWNER(cosmic_state,cosmicg)
 
 	/* sound hardware */
+<<<<<<< HEAD
 	MCFG_SPEAKER_STANDARD_MONO("mono")
+=======
+	MCFG_SPEAKER_STANDARD_MONO("speaker")
+>>>>>>> upstream/master
 
 	MCFG_SOUND_ADD("samples", SAMPLES, 0)
 	MCFG_SAMPLES_CHANNELS(9)
 	MCFG_SAMPLES_NAMES(cosmicg_sample_names)
+<<<<<<< HEAD
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 0.25)
 
 	MCFG_DAC_ADD("dac")
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 1.0)
+=======
+	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "speaker", 0.25)
+
+	MCFG_SOUND_ADD("dac", DAC_1BIT, 0) MCFG_SOUND_ROUTE(ALL_OUTPUTS, "speaker", 0.5) // NE556
+	MCFG_DEVICE_ADD("vref", VOLTAGE_REGULATOR, 0) MCFG_VOLTAGE_REGULATOR_OUTPUT(5.0)
+	MCFG_SOUND_ROUTE_EX(0, "dac", 1.0, DAC_VREF_POS_INPUT)
+	// Other DACs include 3-bit binary-weighted (100K/50K/25K) DAC combined with another NE556 for attack march
+>>>>>>> upstream/master
 MACHINE_CONFIG_END
 
 
@@ -1112,10 +1308,18 @@ static MACHINE_CONFIG_DERIVED( magspot, cosmic )
 	MCFG_SCREEN_UPDATE_DRIVER(cosmic_state, screen_update_magspot)
 
 	/* sound hardware */
+<<<<<<< HEAD
 	MCFG_SPEAKER_STANDARD_MONO("mono")
 
 	MCFG_DAC_ADD("dac")
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 1.0)
+=======
+	MCFG_SPEAKER_STANDARD_MONO("speaker")
+
+	MCFG_SOUND_ADD("dac", DAC_1BIT, 0) MCFG_SOUND_ROUTE(ALL_OUTPUTS, "speaker", 0.5)
+	MCFG_DEVICE_ADD("vref", VOLTAGE_REGULATOR, 0) MCFG_VOLTAGE_REGULATOR_OUTPUT(5.0)
+	MCFG_SOUND_ROUTE_EX(0, "dac", 1.0, DAC_VREF_POS_INPUT)
+>>>>>>> upstream/master
 MACHINE_CONFIG_END
 
 
@@ -1145,10 +1349,18 @@ static MACHINE_CONFIG_DERIVED( nomnlnd, cosmic )
 	MCFG_SCREEN_UPDATE_DRIVER(cosmic_state, screen_update_nomnlnd)
 
 	/* sound hardware */
+<<<<<<< HEAD
 	MCFG_SPEAKER_STANDARD_MONO("mono")
 
 	MCFG_DAC_ADD("dac")
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 1.0)
+=======
+	MCFG_SPEAKER_STANDARD_MONO("speaker")
+
+	MCFG_SOUND_ADD("dac", DAC_1BIT, 0) MCFG_SOUND_ROUTE(ALL_OUTPUTS, "speaker", 0.5)
+	MCFG_DEVICE_ADD("vref", VOLTAGE_REGULATOR, 0) MCFG_VOLTAGE_REGULATOR_OUTPUT(5.0)
+	MCFG_SOUND_ROUTE_EX(0, "dac", 1.0, DAC_VREF_POS_INPUT)
+>>>>>>> upstream/master
 MACHINE_CONFIG_END
 
 
@@ -1523,14 +1735,24 @@ DRIVER_INIT_MEMBER(cosmic_state,cosmicg)
 {
 	/* Program ROMs have data pins connected different from normal */
 	offs_t offs, len;
+<<<<<<< HEAD
 	UINT8 *rom;
+=======
+	uint8_t *rom;
+>>>>>>> upstream/master
 	len = memregion("maincpu")->bytes();
 	rom = memregion("maincpu")->base();
 	for (offs = 0; offs < len; offs++)
 	{
+<<<<<<< HEAD
 		UINT8 scrambled = rom[offs];
 
 		UINT8 normal = (scrambled >> 3 & 0x11)
+=======
+		uint8_t scrambled = rom[offs];
+
+		uint8_t normal = (scrambled >> 3 & 0x11)
+>>>>>>> upstream/master
 						| (scrambled >> 1 & 0x22)
 						| (scrambled << 1 & 0x44)
 						| (scrambled << 3 & 0x88);
@@ -1562,7 +1784,11 @@ DRIVER_INIT_MEMBER(cosmic_state,nomnlnd)
 	m_maincpu->space(AS_PROGRAM).install_read_handler(0x5000, 0x5001, read8_delegate(FUNC(cosmic_state::nomnlnd_port_0_1_r),this));
 	m_maincpu->space(AS_PROGRAM).nop_write(0x4800, 0x4800);
 	m_maincpu->space(AS_PROGRAM).install_write_handler(0x4807, 0x4807, write8_delegate(FUNC(cosmic_state::cosmic_background_enable_w),this));
+<<<<<<< HEAD
 	m_maincpu->space(AS_PROGRAM).install_write_handler(0x480a, 0x480a, write8_delegate(FUNC(dac_device::write_unsigned8),(dac_device*)m_dac));
+=======
+	m_maincpu->space(AS_PROGRAM).install_write_handler(0x480a, 0x480a, write8_delegate(FUNC(cosmic_state::dac_w), this));
+>>>>>>> upstream/master
 }
 
 DRIVER_INIT_MEMBER(cosmic_state,panic)
@@ -1571,6 +1797,7 @@ DRIVER_INIT_MEMBER(cosmic_state,panic)
 }
 
 
+<<<<<<< HEAD
 GAME( 1979, cosmicg,  0,       cosmicg,  cosmicg, cosmic_state,  cosmicg, ROT270, "Universal", "Cosmic Guerilla", MACHINE_IMPERFECT_SOUND | MACHINE_NO_COCKTAIL /*| MACHINE_SUPPORTS_SAVE */)
 GAME( 1979, cosmicgi, cosmicg, cosmicg,  cosmicg, cosmic_state,  cosmicg, ROT270, "bootleg (Inder)", "Cosmic Guerilla (Spanish bootleg)", MACHINE_IMPERFECT_SOUND | MACHINE_NO_COCKTAIL  /*| MACHINE_SUPPORTS_SAVE */)
 GAME( 1979, cosmica,  0,       cosmica,  cosmica, cosmic_state,  cosmica, ROT270, "Universal", "Cosmic Alien (version II)", MACHINE_IMPERFECT_SOUND | MACHINE_SUPPORTS_SAVE )
@@ -1586,4 +1813,21 @@ GAME( 1980, panic3,   panic,   panic,    panic, cosmic_state,    panic,   ROT270
 GAME( 1980, panich,   panic,   panic,    panic, cosmic_state,    panic,   ROT270, "Universal", "Space Panic (harder)", MACHINE_IMPERFECT_SOUND | MACHINE_SUPPORTS_SAVE )
 GAME( 1980, panicger, panic,   panic,    panic, cosmic_state,    panic,   ROT270, "Universal (ADP Automaten license)", "Space Panic (German)", MACHINE_IMPERFECT_SOUND | MACHINE_SUPPORTS_SAVE )
 GAME( 1980, devzone,  0,       devzone,  devzone, cosmic_state,  devzone, ROT270, "Universal", "Devil Zone", MACHINE_IMPERFECT_SOUND | MACHINE_SUPPORTS_SAVE )
+=======
+GAME( 1979, cosmicg,  0,       cosmicg,  cosmicg,  cosmic_state, cosmicg, ROT270, "Universal", "Cosmic Guerilla", MACHINE_IMPERFECT_SOUND | MACHINE_NO_COCKTAIL /*| MACHINE_SUPPORTS_SAVE */)
+GAME( 1979, cosmicgi, cosmicg, cosmicg,  cosmicg,  cosmic_state, cosmicg, ROT270, "bootleg (Inder)", "Cosmic Guerilla (Spanish bootleg)", MACHINE_IMPERFECT_SOUND | MACHINE_NO_COCKTAIL  /*| MACHINE_SUPPORTS_SAVE */)
+GAME( 1979, cosmica,  0,       cosmica,  cosmica,  cosmic_state, cosmica, ROT270, "Universal", "Cosmic Alien (version II)", MACHINE_IMPERFECT_SOUND | MACHINE_SUPPORTS_SAVE )
+GAME( 1979, cosmica1, cosmica, cosmica,  cosmica,  cosmic_state, cosmica, ROT270, "Universal", "Cosmic Alien (first version)", MACHINE_IMPERFECT_SOUND | MACHINE_SUPPORTS_SAVE )
+GAME( 1979, cosmica2, cosmica, cosmica,  cosmica,  cosmic_state, cosmica, ROT270, "Universal", "Cosmic Alien (early version II?)", MACHINE_IMPERFECT_SOUND | MACHINE_SUPPORTS_SAVE )
+GAME( 1980, nomnlnd,  0,       nomnlnd,  nomnlnd,  cosmic_state, nomnlnd, ROT270, "Universal", "No Man's Land", MACHINE_IMPERFECT_SOUND | MACHINE_SUPPORTS_SAVE )
+GAME( 1980, nomnlndg, nomnlnd, nomnlnd,  nomnlndg, cosmic_state, nomnlnd, ROT270, "Universal (Gottlieb license)", "No Man's Land (Gottlieb)", MACHINE_IMPERFECT_SOUND | MACHINE_SUPPORTS_SAVE )
+GAME( 1980, magspot,  0,       magspot,  magspot,  cosmic_state, 0,       ROT270, "Universal", "Magical Spot", MACHINE_IMPERFECT_SOUND | MACHINE_SUPPORTS_SAVE )
+GAME( 1980, magspot2, 0,       magspot,  magspot,  cosmic_state, 0,       ROT270, "Universal", "Magical Spot II", MACHINE_IMPERFECT_SOUND | MACHINE_SUPPORTS_SAVE )
+GAME( 1980, panic,    0,       panic,    panic,    cosmic_state, panic,   ROT270, "Universal", "Space Panic (version E)", MACHINE_IMPERFECT_SOUND | MACHINE_SUPPORTS_SAVE )
+GAME( 1980, panic2,   panic,   panic,    panic,    cosmic_state, panic,   ROT270, "Universal", "Space Panic (set 2)", MACHINE_IMPERFECT_SOUND | MACHINE_SUPPORTS_SAVE )
+GAME( 1980, panic3,   panic,   panic,    panic,    cosmic_state, panic,   ROT270, "Universal", "Space Panic (set 3)", MACHINE_IMPERFECT_SOUND | MACHINE_SUPPORTS_SAVE )
+GAME( 1980, panich,   panic,   panic,    panic,    cosmic_state, panic,   ROT270, "Universal", "Space Panic (harder)", MACHINE_IMPERFECT_SOUND | MACHINE_SUPPORTS_SAVE )
+GAME( 1980, panicger, panic,   panic,    panic,    cosmic_state, panic,   ROT270, "Universal (ADP Automaten license)", "Space Panic (German)", MACHINE_IMPERFECT_SOUND | MACHINE_SUPPORTS_SAVE )
+GAME( 1980, devzone,  0,       devzone,  devzone,  cosmic_state, devzone, ROT270, "Universal", "Devil Zone", MACHINE_IMPERFECT_SOUND | MACHINE_SUPPORTS_SAVE )
+>>>>>>> upstream/master
 GAME( 1980, devzone2, devzone, devzone,  devzone2, cosmic_state, devzone, ROT270, "Universal", "Devil Zone (easier)", MACHINE_IMPERFECT_SOUND | MACHINE_SUPPORTS_SAVE )

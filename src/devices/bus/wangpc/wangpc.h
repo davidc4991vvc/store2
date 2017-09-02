@@ -9,12 +9,20 @@
 
 **********************************************************************/
 
+<<<<<<< HEAD
 #pragma once
 
 #ifndef __WANGPC_BUS__
 #define __WANGPC_BUS__
 
 #include "emu.h"
+=======
+#ifndef MAME_BUS_WANGPC_WANGPC_H
+#define MAME_BUS_WANGPC_WANGPC_H
+
+#pragma once
+
+>>>>>>> upstream/master
 
 
 
@@ -78,6 +86,7 @@
 
 class wangpcbus_device;
 
+<<<<<<< HEAD
 class wangpcbus_slot_device : public device_t,
 								public device_slot_interface
 {
@@ -87,10 +96,24 @@ public:
 
 	// device-level overrides
 	virtual void device_start();
+=======
+class wangpcbus_slot_device : public device_t, public device_slot_interface
+{
+public:
+	// construction/destruction
+	wangpcbus_slot_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
+>>>>>>> upstream/master
 
 	// inline configuration
 	static void static_set_wangpcbus_slot(device_t &device, int sid);
 
+<<<<<<< HEAD
+=======
+protected:
+	// device-level overrides
+	virtual void device_start() override;
+
+>>>>>>> upstream/master
 private:
 	// configuration
 	wangpcbus_device  *m_bus;
@@ -99,7 +122,11 @@ private:
 
 
 // device type definition
+<<<<<<< HEAD
 extern const device_type WANGPC_BUS_SLOT;
+=======
+DECLARE_DEVICE_TYPE(WANGPC_BUS_SLOT, wangpcbus_slot_device)
+>>>>>>> upstream/master
 
 
 class device_wangpcbus_card_interface;
@@ -111,6 +138,7 @@ class wangpcbus_device : public device_t
 {
 public:
 	// construction/destruction
+<<<<<<< HEAD
 	wangpcbus_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
 	~wangpcbus_device() { m_device_list.detach_all(); }
 
@@ -124,6 +152,21 @@ public:
 	template<class _Object> static devcb_base &set_drq2_wr_callback(device_t &device, _Object object) { return downcast<wangpcbus_device &>(device).m_write_drq2.set_callback(object); }
 	template<class _Object> static devcb_base &set_drq3_wr_callback(device_t &device, _Object object) { return downcast<wangpcbus_device &>(device).m_write_drq3.set_callback(object); }
 	template<class _Object> static devcb_base &set_ioerror_wr_callback(device_t &device, _Object object) { return downcast<wangpcbus_device &>(device).m_write_ioerror.set_callback(object); }
+=======
+	wangpcbus_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
+	~wangpcbus_device() { m_device_list.detach_all(); }
+
+	template <class Object> static devcb_base &set_irq2_wr_callback(device_t &device, Object &&cb) { return downcast<wangpcbus_device &>(device).m_write_irq2.set_callback(std::forward<Object>(cb)); }
+	template <class Object> static devcb_base &set_irq3_wr_callback(device_t &device, Object &&cb) { return downcast<wangpcbus_device &>(device).m_write_irq3.set_callback(std::forward<Object>(cb)); }
+	template <class Object> static devcb_base &set_irq4_wr_callback(device_t &device, Object &&cb) { return downcast<wangpcbus_device &>(device).m_write_irq4.set_callback(std::forward<Object>(cb)); }
+	template <class Object> static devcb_base &set_irq5_wr_callback(device_t &device, Object &&cb) { return downcast<wangpcbus_device &>(device).m_write_irq5.set_callback(std::forward<Object>(cb)); }
+	template <class Object> static devcb_base &set_irq6_wr_callback(device_t &device, Object &&cb) { return downcast<wangpcbus_device &>(device).m_write_irq6.set_callback(std::forward<Object>(cb)); }
+	template <class Object> static devcb_base &set_irq7_wr_callback(device_t &device, Object &&cb) { return downcast<wangpcbus_device &>(device).m_write_irq7.set_callback(std::forward<Object>(cb)); }
+	template <class Object> static devcb_base &set_drq1_wr_callback(device_t &device, Object &&cb) { return downcast<wangpcbus_device &>(device).m_write_drq1.set_callback(std::forward<Object>(cb)); }
+	template <class Object> static devcb_base &set_drq2_wr_callback(device_t &device, Object &&cb) { return downcast<wangpcbus_device &>(device).m_write_drq2.set_callback(std::forward<Object>(cb)); }
+	template <class Object> static devcb_base &set_drq3_wr_callback(device_t &device, Object &&cb) { return downcast<wangpcbus_device &>(device).m_write_drq3.set_callback(std::forward<Object>(cb)); }
+	template <class Object> static devcb_base &set_ioerror_wr_callback(device_t &device, Object &&cb) { return downcast<wangpcbus_device &>(device).m_write_ioerror.set_callback(std::forward<Object>(cb)); }
+>>>>>>> upstream/master
 
 	void add_card(device_wangpcbus_card_interface *card, int sid);
 
@@ -134,8 +177,13 @@ public:
 	DECLARE_READ16_MEMBER( sad_r );
 	DECLARE_WRITE16_MEMBER( sad_w );
 
+<<<<<<< HEAD
 	UINT8 dack_r(address_space &space, int line);
 	void dack_w(address_space &space, int line, UINT8 data);
+=======
+	uint8_t dack_r(address_space &space, int line);
+	void dack_w(address_space &space, int line, uint8_t data);
+>>>>>>> upstream/master
 
 	DECLARE_READ8_MEMBER( dack0_r ) { return dack_r(space, 0); }
 	DECLARE_WRITE8_MEMBER( dack0_w ) { dack_w(space, 0, data); }
@@ -162,7 +210,11 @@ public:
 
 protected:
 	// device-level overrides
+<<<<<<< HEAD
 	virtual void device_start();
+=======
+	virtual void device_start() override;
+>>>>>>> upstream/master
 
 private:
 	devcb_write_line   m_write_irq2;
@@ -181,7 +233,11 @@ private:
 
 
 // device type definition
+<<<<<<< HEAD
 extern const device_type WANGPC_BUS;
+=======
+DECLARE_DEVICE_TYPE(WANGPC_BUS, wangpcbus_device)
+>>>>>>> upstream/master
 
 
 // ======================> device_wangpcbus_card_interface
@@ -190,6 +246,7 @@ extern const device_type WANGPC_BUS;
 class device_wangpcbus_card_interface : public device_slot_card_interface
 {
 	friend class wangpcbus_device;
+<<<<<<< HEAD
 
 public:
 	// construction/destruction
@@ -217,12 +274,48 @@ public:
 	wangpcbus_slot_device *m_slot;
 
 	int m_sid;
+=======
+	template <class ElementType> friend class simple_list;
+
+public:
+	device_wangpcbus_card_interface *next() const { return m_next; }
+
+	// memory access
+	virtual uint16_t wangpcbus_mrdc_r(address_space &space, offs_t offset, uint16_t mem_mask) { return 0; }
+	virtual void wangpcbus_amwc_w(address_space &space, offs_t offset, uint16_t mem_mask, uint16_t data) { }
+
+	// I/O access
+	virtual uint16_t wangpcbus_iorc_r(address_space &space, offs_t offset, uint16_t mem_mask) { return 0; }
+	virtual void wangpcbus_aiowc_w(address_space &space, offs_t offset, uint16_t mem_mask, uint16_t data) { }
+	bool sad(offs_t offset) const { return (offset & 0xf80) == (0x800 | (m_sid << 7)); }
+
+	// DMA
+	virtual uint8_t wangpcbus_dack_r(address_space &space, int line) { return 0; }
+	virtual void wangpcbus_dack_w(address_space &space, int line, uint8_t data) { }
+	virtual void wangpcbus_tc_w(int state) { }
+	virtual bool wangpcbus_have_dack(int line) { return false; }
+
+protected:
+	// construction/destruction
+	device_wangpcbus_card_interface(const machine_config &mconfig, device_t &device);
+
+	wangpcbus_device *m_bus;
+	wangpcbus_slot_device *m_slot;
+
+	int m_sid;
+
+private:
+>>>>>>> upstream/master
 	device_wangpcbus_card_interface *m_next;
 };
 
 
 SLOT_INTERFACE_EXTERN( wangpc_cards );
 
+<<<<<<< HEAD
 
 
 #endif
+=======
+#endif // MAME_BUS_WANGPC_WANGPC_H
+>>>>>>> upstream/master

@@ -1,6 +1,11 @@
 /*
+<<<<<<< HEAD
  * Copyright 2010-2015 Branimir Karadzic. All rights reserved.
  * License: http://www.opensource.org/licenses/BSD-2-Clause
+=======
+ * Copyright 2010-2017 Branimir Karadzic. All rights reserved.
+ * License: https://github.com/bkaradzic/bx#license-bsd-2-clause
+>>>>>>> upstream/master
  */
 
 #ifndef BX_RNG_H_HEADER_GUARD
@@ -8,6 +13,7 @@
 
 #include "bx.h"
 #include "fpumath.h"
+<<<<<<< HEAD
 
 namespace bx
 {
@@ -33,12 +39,31 @@ namespace bx
 			m_w = 18000*(m_w&65535)+(m_w>>16);
 			return (m_z<<16)+m_w;
 		}
+=======
+#include "uint32_t.h"
+
+namespace bx
+{
+	/// George Marsaglia's MWC
+	class RngMwc
+	{
+	public:
+		///
+		RngMwc(uint32_t _z = 12345, uint32_t _w = 65435);
+
+		///
+		void reset(uint32_t _z = 12345, uint32_t _w = 65435);
+
+		///
+		uint32_t gen();
+>>>>>>> upstream/master
 
 	private:
 		uint32_t m_z;
 		uint32_t m_w;
 	};
 
+<<<<<<< HEAD
 	// George Marsaglia's FIB
 	class RngFib
 	{
@@ -61,12 +86,27 @@ namespace bx
 			m_a = m_b-m_a;
 			return m_a;
 		}
+=======
+	/// George Marsaglia's FIB
+	class RngFib
+	{
+	public:
+		///
+		RngFib(uint32_t _a = 9983651, uint32_t _b = 95746118);
+
+		///
+		void reset(uint32_t _a = 9983651, uint32_t _b = 95746118);
+
+		///
+		uint32_t gen();
+>>>>>>> upstream/master
 
 	private:
 		uint32_t m_a;
 		uint32_t m_b;
 	};
 
+<<<<<<< HEAD
 	// George Marsaglia's SHR3
 	class RngShr3
 	{
@@ -88,12 +128,27 @@ namespace bx
 			m_jsr ^= m_jsr<<5;
 			return m_jsr;
 		}
+=======
+	/// George Marsaglia's SHR3
+	class RngShr3
+	{
+	public:
+		///
+		RngShr3(uint32_t _jsr = 34221);
+
+		///
+		void reset(uint32_t _jsr = 34221);
+
+		///
+		uint32_t gen();
+>>>>>>> upstream/master
 
 	private:
 		uint32_t m_jsr;
 	};
 
 	/// Returns random number between 0.0f and 1.0f.
+<<<<<<< HEAD
 	template <typename Ty>
 	inline float frnd(Ty* _rng)
 	{
@@ -144,10 +199,31 @@ namespace bx
 		_result[1] = dir[1];
 		_result[2] = dir[2];
 	}
+=======
+	template <typename Rng>
+	float frnd(Rng* _rng);
+
+	/// Returns random number between -1.0f and 1.0f.
+	template <typename Rng>
+	float frndh(Rng* _rng);
+
+	/// Generate random point on unit circle.
+	template <typename Rng>
+	void randUnitCircle(float _result[3], Rng* _rng);
+
+	/// Generate random point on unit sphere.
+	template <typename Rng>
+	void randUnitSphere(float _result[3], Rng* _rng);
+
+	/// Generate random point on unit hemisphere.
+	template <typename Ty>
+	void randUnitHemisphere(float _result[3], Ty* _rng, const float _normal[3]);
+>>>>>>> upstream/master
 
 	/// Sampling with Hammersley and Halton Points
 	/// http://www.cse.cuhk.edu.hk/~ttwong/papers/udpoint/udpoints.html
 	///
+<<<<<<< HEAD
 	static inline void generateSphereHammersley(void* _data, uint32_t _stride, uint32_t _num, float _scale = 1.0f)
 	{
 		uint8_t* data = (uint8_t*)_data;
@@ -179,4 +255,16 @@ namespace bx
 
 } // namespace bx
 
+=======
+	void generateSphereHammersley(void* _data, uint32_t _stride, uint32_t _num, float _scale = 1.0f);
+
+	/// Fisher-Yates shuffle.
+	template<typename Rng, typename Ty>
+	void shuffle(Rng* _rng, Ty* _array, uint32_t _num);
+
+} // namespace bx
+
+#include "inline/rng.inl"
+
+>>>>>>> upstream/master
 #endif // BX_RNG_H_HEADER_GUARD

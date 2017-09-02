@@ -1,10 +1,18 @@
 PROG = 7zDec
+<<<<<<< HEAD
 CXX = g++
+=======
+CXX = gcc
+>>>>>>> upstream/master
 LIB =
 RM = rm -f
 CFLAGS = -c -O2 -Wall
 
+<<<<<<< HEAD
 OBJS = 7zMain.o 7zAlloc.o 7zBuf.o 7zBuf2.o 7zCrc.o 7zCrcOpt.o 7zDec.o 7zIn.o CpuArch.o LzmaDec.o Lzma2Dec.o Bra.o Bra86.o Bcj2.o Ppmd7.o Ppmd7Dec.o 7zFile.o 7zStream.o
+=======
+OBJS = 7zMain.o 7zAlloc.o 7zArcIn.o 7zBuf.o 7zBuf2.o 7zCrc.o 7zCrcOpt.o 7zDec.o CpuArch.o Delta.o LzmaDec.o Lzma2Dec.o Bra.o Bra86.o BraIA64.o Bcj2.o Ppmd7.o Ppmd7Dec.o 7zFile.o 7zStream.o
+>>>>>>> upstream/master
 
 all: $(PROG)
 
@@ -14,9 +22,18 @@ $(PROG): $(OBJS)
 7zMain.o: 7zMain.c
 	$(CXX) $(CFLAGS) 7zMain.c
 
+<<<<<<< HEAD
 7zAlloc.o: 7zAlloc.c
 	$(CXX) $(CFLAGS) ../../7zAlloc.c
 
+=======
+7zAlloc.o: ../../7zAlloc.c
+	$(CXX) $(CFLAGS) ../../7zAlloc.c
+
+7zArcIn.o: ../../7zArcIn.c
+	$(CXX) $(CFLAGS) ../../7zArcIn.c
+
+>>>>>>> upstream/master
 7zBuf.o: ../../7zBuf.c
 	$(CXX) $(CFLAGS) ../../7zBuf.c
 
@@ -32,12 +49,21 @@ $(PROG): $(OBJS)
 7zDec.o: ../../7zDec.c
 	$(CXX) $(CFLAGS) -D_7ZIP_PPMD_SUPPPORT ../../7zDec.c
 
+<<<<<<< HEAD
 7zIn.o: ../../7zIn.c
 	$(CXX) $(CFLAGS) ../../7zIn.c
 
 CpuArch.o: ../../CpuArch.c
 	$(CXX) $(CFLAGS) ../../CpuArch.c
 
+=======
+CpuArch.o: ../../CpuArch.c
+	$(CXX) $(CFLAGS) ../../CpuArch.c
+
+Delta.o: ../../Delta.c
+	$(CXX) $(CFLAGS) ../../Delta.c
+
+>>>>>>> upstream/master
 LzmaDec.o: ../../LzmaDec.c
 	$(CXX) $(CFLAGS) ../../LzmaDec.c
 
@@ -50,6 +76,12 @@ Bra.o: ../../Bra.c
 Bra86.o: ../../Bra86.c
 	$(CXX) $(CFLAGS) ../../Bra86.c
 
+<<<<<<< HEAD
+=======
+BraIA64.o: ../../BraIA64.c
+	$(CXX) $(CFLAGS) ../../BraIA64.c
+
+>>>>>>> upstream/master
 Bcj2.o: ../../Bcj2.c
 	$(CXX) $(CFLAGS) ../../Bcj2.c
 
@@ -67,4 +99,7 @@ Ppmd7Dec.o: ../../Ppmd7Dec.c
 
 clean:
 	-$(RM) $(PROG) $(OBJS)
+<<<<<<< HEAD
 
+=======
+>>>>>>> upstream/master

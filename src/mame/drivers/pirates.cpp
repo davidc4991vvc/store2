@@ -90,10 +90,20 @@ Notes:
 ---*/
 
 #include "emu.h"
+<<<<<<< HEAD
 #include "cpu/m68000/m68000.h"
 #include "machine/eepromser.h"
 #include "sound/okim6295.h"
 #include "includes/pirates.h"
+=======
+#include "includes/pirates.h"
+
+#include "cpu/m68000/m68000.h"
+#include "machine/eepromser.h"
+#include "sound/okim6295.h"
+#include "screen.h"
+#include "speaker.h"
+>>>>>>> upstream/master
 
 
 WRITE16_MEMBER(pirates_state::out_w)
@@ -106,7 +116,11 @@ WRITE16_MEMBER(pirates_state::out_w)
 		m_eeprom->clk_write((data & 0x02) ? ASSERT_LINE : CLEAR_LINE);
 
 		/* bit 6 selects oki bank */
+<<<<<<< HEAD
 		m_oki->set_bank_base((data & 0x40) ? 0x40000 : 0x00000);
+=======
+		m_oki->set_rom_bank((data >> 6) & 1);
+>>>>>>> upstream/master
 
 		/* bit 7 used (function unknown) */
 	}
@@ -200,7 +214,11 @@ static INPUT_PORTS_START( pirates )
 	PORT_BIT( 0x0010, IP_ACTIVE_HIGH,IPT_SPECIAL ) PORT_READ_LINE_DEVICE_MEMBER("eeprom", eeprom_serial_93cxx_device, do_read)  // EEPROM data
 	PORT_BIT( 0x0020, IP_ACTIVE_HIGH, IPT_UNKNOWN )     // seems checked in "test mode"
 	PORT_BIT( 0x0040, IP_ACTIVE_HIGH, IPT_UNKNOWN )     // seems checked in "test mode"
+<<<<<<< HEAD
 	PORT_BIT( 0x0080, IP_ACTIVE_HIGH,IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, pirates_state,prot_r, NULL)      // protection
+=======
+	PORT_BIT( 0x0080, IP_ACTIVE_HIGH,IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, pirates_state,prot_r, nullptr)      // protection
+>>>>>>> upstream/master
 	/* What do these bits do ? */
 	PORT_BIT( 0x0100, IP_ACTIVE_HIGH, IPT_UNKNOWN )
 	PORT_BIT( 0x0200, IP_ACTIVE_HIGH, IPT_UNKNOWN )
@@ -248,7 +266,11 @@ GFXDECODE_END
 
 /* Machine Driver + Related bits */
 
+<<<<<<< HEAD
 static MACHINE_CONFIG_START( pirates, pirates_state )
+=======
+static MACHINE_CONFIG_START( pirates )
+>>>>>>> upstream/master
 	MCFG_CPU_ADD("maincpu", M68000, 16000000) /* 16mhz */
 	MCFG_CPU_PROGRAM_MAP(pirates_map)
 	MCFG_CPU_VBLANK_INT_DRIVER("screen", pirates_state,  irq1_line_hold)
@@ -272,7 +294,11 @@ static MACHINE_CONFIG_START( pirates, pirates_state )
 
 	MCFG_SPEAKER_STANDARD_MONO("mono")
 
+<<<<<<< HEAD
 	MCFG_OKIM6295_ADD("oki", 1333333, OKIM6295_PIN7_LOW)
+=======
+	MCFG_OKIM6295_ADD("oki", 1333333, PIN7_LOW)
+>>>>>>> upstream/master
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 1.0)
 MACHINE_CONFIG_END
 
@@ -302,6 +328,33 @@ ROM_START( pirates )
 	ROM_LOAD( "s89_49d4.bin", 0x000000, 0x080000, CRC(63a739ec) SHA1(c57f657225e62b3c9c5f0c7185ad7a87794d55f4) )
 ROM_END
 
+<<<<<<< HEAD
+=======
+ROM_START( piratesb )
+	ROM_REGION( 0x100000, "maincpu", 0 ) /* 68000 Code (encrypted) */
+	ROM_LOAD16_BYTE( "U15",  0x00000, 0x80000, CRC(0cfd6415) SHA1(ff5d3631702f64351afa3b7435a6977ae856dff7) )
+	ROM_LOAD16_BYTE( "U16",  0x00001, 0x80000, CRC(98cece02) SHA1(79858623a2b6ae24067e0ba1af009444bafba490) )
+
+	ROM_REGION( 0x200000, "gfx1", 0 ) /* GFX (encrypted) */
+	ROM_LOAD( "U34", 0x000000, 0x080000, CRC(89fda216) SHA1(ea31e750460e67a24972b04171230633eb2b6d9d) )
+	ROM_LOAD( "U35", 0x080000, 0x080000, CRC(40e069b4) SHA1(515d12cbb29bdbf3f3016e5bbe14941209978095) )
+	ROM_LOAD( "U48", 0x100000, 0x080000, CRC(26d78518) SHA1(c293f1194f8ef38241d149cf1db1a511a7fb4936) )
+	ROM_LOAD( "U49", 0x180000, 0x080000, CRC(f31696ea) SHA1(f5ab59e441317b02b615a1cdc6d075c5bdcdea73) )
+
+	ROM_REGION( 0x200000, "gfx2", 0 ) /* GFX (encrypted) */
+	ROM_LOAD( "U69", 0x000000, 0x080000, CRC(c78a276f) SHA1(d5127593e68f9e8f2878803c652a35a1c6d82b2c) )
+	ROM_LOAD( "U70", 0x080000, 0x080000, CRC(9f0bad96) SHA1(b8f910aa259192e261815392f5d7c9c7dabe0b4d) )
+	ROM_LOAD( "U71", 0x100000, 0x080000, CRC(0bb7c816) SHA1(bc786b6d04ae964f0ea5d6dd314fd7b18f8872e8) ) // 1 bit different, is one of them bad?
+	ROM_LOAD( "U72", 0x180000, 0x080000, CRC(1c41bd2c) SHA1(fba264a3c195f303337223a74cbad5eec5c457ec) )
+
+	ROM_REGION( 0x080000, "oki", 0) /* OKI samples (encrypted) */
+	ROM_LOAD( "U31", 0x000000, 0x080000, CRC(63a739ec) SHA1(c57f657225e62b3c9c5f0c7185ad7a87794d55f4) )
+ROM_END
+
+
+
+
+>>>>>>> upstream/master
 ROM_START( genix )
 	ROM_REGION( 0x100000, "maincpu", 0 ) /* 68000 Code (encrypted) */
 	ROM_LOAD16_BYTE( "1.15",  0x00000, 0x80000, CRC(d26abfb0) SHA1(4a89ba7504f86cb612796c376f359ab61ec3d902) )
@@ -327,16 +380,26 @@ ROM_END
 
 void pirates_state::decrypt_68k()
 {
+<<<<<<< HEAD
 	UINT16 *rom = (UINT16 *)memregion("maincpu")->base();
 	size_t rom_size = memregion("maincpu")->bytes();
 	std::vector<UINT16> buf(rom_size/2);
+=======
+	uint16_t *rom = (uint16_t *)memregion("maincpu")->base();
+	size_t rom_size = memregion("maincpu")->bytes();
+	std::vector<uint16_t> buf(rom_size/2);
+>>>>>>> upstream/master
 
 	memcpy (&buf[0], rom, rom_size);
 
 	for (int i=0; i<rom_size/2; i++)
 	{
 		int adrl, adrr;
+<<<<<<< HEAD
 		UINT8 vl, vr;
+=======
+		uint8_t vl, vr;
+>>>>>>> upstream/master
 
 		adrl = BITSWAP24(i,23,22,21,20,19,18,4,8,3,14,2,15,17,0,9,13,10,5,16,7,12,6,1,11);
 		vl = BITSWAP8(buf[adrl],    4,2,7,1,6,5,0,3);
@@ -351,12 +414,20 @@ void pirates_state::decrypt_68k()
 void pirates_state::decrypt_p()
 {
 	int rom_size;
+<<<<<<< HEAD
 	UINT8 *rom;
+=======
+	uint8_t *rom;
+>>>>>>> upstream/master
 	int i;
 
 	rom_size = memregion("gfx1")->bytes();
 
+<<<<<<< HEAD
 	dynamic_buffer buf(rom_size);
+=======
+	std::vector<uint8_t> buf(rom_size);
+>>>>>>> upstream/master
 
 	rom = memregion("gfx1")->base();
 	memcpy (&buf[0], rom, rom_size);
@@ -374,12 +445,20 @@ void pirates_state::decrypt_p()
 void pirates_state::decrypt_s()
 {
 	int rom_size;
+<<<<<<< HEAD
 	UINT8 *rom;
+=======
+	uint8_t *rom;
+>>>>>>> upstream/master
 	int i;
 
 	rom_size = memregion("gfx2")->bytes();
 
+<<<<<<< HEAD
 	dynamic_buffer buf(rom_size);
+=======
+	std::vector<uint8_t> buf(rom_size);
+>>>>>>> upstream/master
 
 	rom = memregion("gfx2")->base();
 	memcpy (&buf[0], rom, rom_size);
@@ -398,12 +477,20 @@ void pirates_state::decrypt_s()
 void pirates_state::decrypt_oki()
 {
 	int rom_size;
+<<<<<<< HEAD
 	UINT8 *rom;
+=======
+	uint8_t *rom;
+>>>>>>> upstream/master
 	int i;
 
 	rom_size = memregion("oki")->bytes();
 
+<<<<<<< HEAD
 	dynamic_buffer buf(rom_size);
+=======
+	std::vector<uint8_t> buf(rom_size);
+>>>>>>> upstream/master
 
 	rom = memregion("oki")->base();
 	memcpy (&buf[0], rom, rom_size);
@@ -418,7 +505,11 @@ void pirates_state::decrypt_oki()
 
 DRIVER_INIT_MEMBER(pirates_state,pirates)
 {
+<<<<<<< HEAD
 	UINT16 *rom = (UINT16 *)memregion("maincpu")->base();
+=======
+	uint16_t *rom = (uint16_t *)memregion("maincpu")->base();
+>>>>>>> upstream/master
 
 	decrypt_68k();
 	decrypt_p();
@@ -443,8 +534,17 @@ DRIVER_INIT_MEMBER(pirates_state,genix)
 	m_maincpu->space(AS_PROGRAM).install_read_handler(0x109e98, 0x109e9b, read16_delegate(FUNC(pirates_state::genix_prot_r),this));
 }
 
+<<<<<<< HEAD
 
 /* GAME */
 
 GAME( 1994, pirates, 0, pirates, pirates, pirates_state, pirates, 0, "NIX", "Pirates", MACHINE_SUPPORTS_SAVE )
 GAME( 1994, genix,   0, pirates, pirates, pirates_state, genix,   0, "NIX", "Genix Family", MACHINE_SUPPORTS_SAVE )
+=======
+/* GAME */
+
+GAME( 1994, pirates,  0,       pirates, pirates, pirates_state, pirates,  0, "NIX", "Pirates (set 1)", MACHINE_SUPPORTS_SAVE )
+GAME( 1995, piratesb, pirates, pirates, pirates, pirates_state, pirates,  0, "NIX", "Pirates (set 2)", MACHINE_SUPPORTS_SAVE ) // shows 'Copyright 1995' instead of (c)1994 Nix, but isn't unprotected, various changes to the names in the credis + a few other minor alterations
+
+GAME( 1994, genix,    0,       pirates, pirates, pirates_state, genix,    0, "NIX", "Genix Family",    MACHINE_SUPPORTS_SAVE )
+>>>>>>> upstream/master

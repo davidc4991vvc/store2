@@ -6,6 +6,10 @@
 
 **********************************************************************/
 
+<<<<<<< HEAD
+=======
+#include "emu.h"
+>>>>>>> upstream/master
 #include "64k.h"
 
 
@@ -14,7 +18,11 @@
 //  DEVICE DEFINITIONS
 //**************************************************************************
 
+<<<<<<< HEAD
 const device_type PET_64K = &device_creator<pet_64k_expansion_device>;
+=======
+DEFINE_DEVICE_TYPE(PET_64K, pet_64k_expansion_device, "pet_64k", "PET 64KB RAM")
+>>>>>>> upstream/master
 
 
 
@@ -26,9 +34,15 @@ const device_type PET_64K = &device_creator<pet_64k_expansion_device>;
 //  read_ram -
 //-------------------------------------------------
 
+<<<<<<< HEAD
 inline UINT8 pet_64k_expansion_device::read_ram(offs_t offset)
 {
 	UINT8 data = 0;
+=======
+inline uint8_t pet_64k_expansion_device::read_ram(offs_t offset)
+{
+	uint8_t data;
+>>>>>>> upstream/master
 
 	if (offset < 0xc000)
 	{
@@ -47,7 +61,11 @@ inline UINT8 pet_64k_expansion_device::read_ram(offs_t offset)
 //  write_ram -
 //-------------------------------------------------
 
+<<<<<<< HEAD
 inline void pet_64k_expansion_device::write_ram(offs_t offset, UINT8 data)
+=======
+inline void pet_64k_expansion_device::write_ram(offs_t offset, uint8_t data)
+>>>>>>> upstream/master
 {
 	if (offset < 0xc000)
 	{
@@ -75,8 +93,13 @@ inline void pet_64k_expansion_device::write_ram(offs_t offset, UINT8 data)
 //  pet_64k_expansion_device - constructor
 //-------------------------------------------------
 
+<<<<<<< HEAD
 pet_64k_expansion_device::pet_64k_expansion_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock) :
 	device_t(mconfig, PET_64K, "PET 64KB RAM", tag, owner, clock, "pet_64k", __FILE__),
+=======
+pet_64k_expansion_device::pet_64k_expansion_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock) :
+	device_t(mconfig, PET_64K, tag, owner, clock),
+>>>>>>> upstream/master
 	device_pet_expansion_card_interface(mconfig, *this),
 	m_ram(*this, "ram"),
 	m_ctrl(0)
@@ -122,7 +145,11 @@ int pet_64k_expansion_device::pet_norom_r(address_space &space, offs_t offset, i
 //  pet_bd_r - buffered data read
 //-------------------------------------------------
 
+<<<<<<< HEAD
 UINT8 pet_64k_expansion_device::pet_bd_r(address_space &space, offs_t offset, UINT8 data, int &sel)
+=======
+uint8_t pet_64k_expansion_device::pet_bd_r(address_space &space, offs_t offset, uint8_t data, int &sel)
+>>>>>>> upstream/master
 {
 	if (BIT(m_ctrl, 7))
 	{
@@ -163,7 +190,11 @@ UINT8 pet_64k_expansion_device::pet_bd_r(address_space &space, offs_t offset, UI
 //  pet_bd_w - buffered data write
 //-------------------------------------------------
 
+<<<<<<< HEAD
 void pet_64k_expansion_device::pet_bd_w(address_space &space, offs_t offset, UINT8 data, int &sel)
+=======
+void pet_64k_expansion_device::pet_bd_w(address_space &space, offs_t offset, uint8_t data, int &sel)
+>>>>>>> upstream/master
 {
 	if (BIT(m_ctrl, 7))
 	{

@@ -4,6 +4,7 @@
 
     315-5838 - Decathlete (ST-V)
     317-0229 - Dead or Alive (Model 2A)
+<<<<<<< HEAD
 
     Package Type: TQFP100
 
@@ -19,6 +20,35 @@
     This is similar to how some 5881 games were set up, with the ST-V versions decrypting
     data directly from ROM and the Model 2 ones using a RAM source buffer.
 
+=======
+    317-0229 - Name Club / Name Club Ver 2 (ST-V) (tested as RCDD2 in the service menu!)
+    317-0230 - Winnie The Pooh Vol 2 / 3
+    317-0231 - Print Club Love Love / Print Club Love Love Ver 2 (ST-V)
+
+    Several Print Club (ST-V) carts have
+    an unpopulated space marked '317-0229' on the PCB
+
+    Package Type: TQFP100
+
+    Decathlete accesses the chip at 2 different addresses, however, I don't think there
+    are 2 channels / sets of registers, instead the 2nd set of addresses are just a
+    mirror that allows access to a different set of source roms; the tables etc. are
+    re-uploaded before every transfer.
+
+    Dead of Alive has the source data in RAM, not ROM.
+    This is similar to how some 5881 games were set up, with the ST-V versions decrypting
+    data directly from ROM and the Model 2 ones using a RAM source buffer.
+
+    Decathlete decompresses all graphic data with the chip.
+
+    The Name Club games use the chip for decompressing data for the printer (full size
+    versions of the graphics?)
+
+    Print Club Love Love decrypts some start up code/data required for booting.
+
+    Dead or Alive decrypts a string that is checked on startup, nothing else.
+
+>>>>>>> upstream/master
     Looking at the values read I don't think there is any address based encryption, for
     example many blocks where you'd expect a zero fill start with repeating patterns
     of 8f708f70 (different lengths) channel would appear to relate to compressed 0x00 data
@@ -36,12 +66,21 @@
 #include "emu.h"
 #include "machine/315-5838_317-0229_comp.h"
 
+<<<<<<< HEAD
 extern const device_type SEGA315_5838_COMP = &device_creator<sega_315_5838_comp_device>;
 
 //#define DEBUG_DATA_DUMP
 
 sega_315_5838_comp_device::sega_315_5838_comp_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
 	: device_t(mconfig, SEGA315_5838_COMP, "Sega 315-5838 / 317-0029 Compression (Encryption?)", tag, owner, clock, "sega315_5838", __FILE__)
+=======
+DEFINE_DEVICE_TYPE(SEGA315_5838_COMP, sega_315_5838_comp_device, "sega315_5838", "Sega 315-5838 / 317-0229 Compression (Encryption?)")
+
+//#define DEBUG_DATA_DUMP
+
+sega_315_5838_comp_device::sega_315_5838_comp_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: device_t(mconfig, SEGA315_5838_COMP, tag, owner, clock)
+>>>>>>> upstream/master
 {
 }
 
@@ -49,18 +88,29 @@ sega_315_5838_comp_device::sega_315_5838_comp_device(const machine_config &mconf
 
 void sega_315_5838_comp_device::device_start()
 {
+<<<<<<< HEAD
 	for (int i = 0; i < 2; i++)
 	{
 		m_channel[i].m_decathlt_lastcount = 0;
 		m_channel[i].m_decathlt_prot_uploadmode = 0;
 		m_channel[i].m_decathlt_prot_uploadoffset = 0;
 		m_channel[i].m_read_ch.bind_relative_to(*owner());
+=======
+	m_decathlt_lastcount = 0;
+	m_decathlt_prot_uploadmode = 0;
+	m_decathlt_prot_uploadoffset = 0;
+
+	for (auto & elem : m_channel)
+	{
+		elem.m_read_ch.bind_relative_to(*owner());
+>>>>>>> upstream/master
 
 	}
 }
 
 void sega_315_5838_comp_device::device_reset()
 {
+<<<<<<< HEAD
 	for (int i = 0; i < 2; i++)
 	{
 		m_channel[i].m_srcoffset = 0;
@@ -69,6 +119,12 @@ void sega_315_5838_comp_device::device_reset()
 		m_channel[i].m_decathlt_prot_uploadoffset = 0;
 	}
 
+=======
+	m_srcoffset = 0;
+	m_decathlt_lastcount = 0;
+	m_decathlt_prot_uploadmode = 0;
+	m_decathlt_prot_uploadoffset = 0;
+>>>>>>> upstream/master
 	m_protstate = 0;
 }
 
@@ -95,6 +151,7 @@ READ32_MEMBER(sega_315_5838_comp_device::decathlt_prot2_r)
 }
 
 
+<<<<<<< HEAD
 UINT32 sega_315_5838_comp_device::genericdecathlt_prot_r(UINT32 mem_mask, int channel)
 {
 //  UINT32 *fake0 = (UINT32*)memregion( ":fake0" )->base();
@@ -118,11 +175,37 @@ UINT32 sega_315_5838_comp_device::genericdecathlt_prot_r(UINT32 mem_mask, int ch
 		fwrite(&tempdata, 1, 4, tempfile);
 		#else
 		logerror("read addr %08x, blah_r %08x - read count count %08x\n", m_channel[channel].m_srcoffset*2, tempdata,  m_channel[channel].m_decathlt_lastcount*4);
+=======
+uint32_t sega_315_5838_comp_device::genericdecathlt_prot_r(uint32_t mem_mask, int channel)
+{
+//  uint32_t *fake0 = (uint32_t*)memregion( ":fake0" )->base();
+//  uint32_t retvalue = 0xffff;
+
+	switch (m_srcoffset)
+	{
+		default:
+
+		m_decathlt_lastcount++;
+
+		uint32_t tempdata = 0;
+		tempdata |= m_channel[channel].m_read_ch(m_srcoffset) << 0;
+		m_srcoffset++;
+		tempdata |= m_channel[channel].m_read_ch(m_srcoffset) << 16;
+		m_srcoffset++;
+
+
+		#ifdef DEBUG_DATA_DUMP
+		//printf("read addr %08x, blah_r %08x - read count count %08x\n", m_srcoffset*2, tempdata,  m_decathlt_lastcount*4);
+		fwrite(&tempdata, 1, 4, tempfile);
+		#else
+		logerror("read addr %08x, blah_r %08x - read count count %08x\n", m_srcoffset*2, tempdata,  m_decathlt_lastcount*4);
+>>>>>>> upstream/master
 		#endif
 
 		return tempdata;
 #if 0
 		case 0x03228e4:
+<<<<<<< HEAD
 			if (fake0) retvalue = fake0[(((0x20080/4)+m_channel[channel].m_decathlt_lastcount))];
 			m_channel[channel].m_decathlt_lastcount++;
 			return retvalue;
@@ -140,6 +223,25 @@ UINT32 sega_315_5838_comp_device::genericdecathlt_prot_r(UINT32 mem_mask, int ch
 		case 0x01efaf0:
 			if (fake0) retvalue = fake0[(((0x60000/4)+m_channel[channel].m_decathlt_lastcount))];
 			m_channel[channel].m_decathlt_lastcount++;
+=======
+			if (fake0) retvalue = fake0[(((0x20080/4)+m_decathlt_lastcount))];
+			m_decathlt_lastcount++;
+			return retvalue;
+
+		case 0x00a9f3a:
+			if (fake0) retvalue = fake0[(((0x00000/4)+m_decathlt_lastcount))];
+			m_decathlt_lastcount++;
+			return retvalue;
+
+		case 0x0213ab4:
+			if (fake0) retvalue = fake0[(((0x40000/4)+m_decathlt_lastcount))];
+			m_decathlt_lastcount++;
+			return retvalue;
+
+		case 0x01efaf0:
+			if (fake0) retvalue = fake0[(((0x60000/4)+m_decathlt_lastcount))];
+			m_decathlt_lastcount++;
+>>>>>>> upstream/master
 			return retvalue;
 
 		case 0x033f16c:
@@ -177,6 +279,7 @@ UINT32 sega_315_5838_comp_device::genericdecathlt_prot_r(UINT32 mem_mask, int ch
 	return 0xffffffff;
 }
 
+<<<<<<< HEAD
 void sega_315_5838_comp_device::set_prot_addr(UINT32 data, UINT32 mem_mask, int channel)
 {
 //  printf("set_prot_addr\n");
@@ -188,6 +291,19 @@ void sega_315_5838_comp_device::set_prot_addr(UINT32 data, UINT32 mem_mask, int 
 	if (mem_mask == 0x0000ffff)
 	{
 		printf("set source address to %08x (channel %d)\n", m_channel[channel].m_srcoffset, channel);
+=======
+void sega_315_5838_comp_device::set_prot_addr(uint32_t data, uint32_t mem_mask, int channel)
+{
+//  printf("set_prot_addr\n");
+	COMBINE_DATA(&m_srcoffset);
+
+	//if (m_decathlt_part==0) logerror("%d, last read count was %06x\n",channel, m_decathlt_lastcount*4);
+	m_decathlt_lastcount = 0;
+
+	if (mem_mask == 0x0000ffff)
+	{
+		printf("set source address to %08x (channel %d)\n", m_srcoffset, channel);
+>>>>>>> upstream/master
 	}
 
 
@@ -198,24 +314,40 @@ void sega_315_5838_comp_device::set_prot_addr(UINT32 data, UINT32 mem_mask, int 
 			fclose(tempfile);
 
 		char filename[256];
+<<<<<<< HEAD
 		sprintf(filename, "%d_compressed_%08x", channel, m_channel[channel].m_srcoffset * 2);
+=======
+		sprintf(filename, "%d_compressed_%08x", channel, m_srcoffset * 2);
+>>>>>>> upstream/master
 		tempfile = fopen(filename, "w+b");
 
 		// the table and dictionary are uploaded repeatedly, usually before groups of data transfers but
 		// it's always the same tables (one pair for each channel)
 		{
 			FILE* fp;
+<<<<<<< HEAD
 			sprintf(filename, "%d_compressed_table1", channel);
 			fp = fopen(filename, "w+b");
 			fwrite(&m_channel[channel].m_decathlt_prottable1, 24, 2, fp);
+=======
+			sprintf(filename, "%d_compressed_table1_%08x", channel, m_srcoffset * 2);
+			fp = fopen(filename, "w+b");
+			fwrite(&m_decathlt_prottable1, 24, 2, fp);
+>>>>>>> upstream/master
 			fclose(fp);
 		}
 
 		{
 			FILE* fp;
+<<<<<<< HEAD
 			sprintf(filename, "%d_compressed_dictionary", channel);
 			fp = fopen(filename, "w+b");
 			fwrite(&m_channel[channel].m_decathlt_dictionary, 128, 2, fp);
+=======
+			sprintf(filename, "%d_compressed_dictionary_%08x", channel, m_srcoffset * 2);
+			fp = fopen(filename, "w+b");
+			fwrite(&m_decathlt_dictionaryy, 128, 2, fp);
+>>>>>>> upstream/master
 			fclose(fp);
 		}
 	}
@@ -223,11 +355,16 @@ void sega_315_5838_comp_device::set_prot_addr(UINT32 data, UINT32 mem_mask, int 
 
 }
 
+<<<<<<< HEAD
 void sega_315_5838_comp_device::set_upload_mode(UINT16 data, int channel)
+=======
+void sega_315_5838_comp_device::set_upload_mode(uint16_t data, int channel)
+>>>>>>> upstream/master
 {
 	if ((data == 0x8000) || (data == 0x0000))
 	{
 	//  logerror("changed to upload mode 1\n");
+<<<<<<< HEAD
 		m_channel[channel].m_decathlt_prot_uploadmode = 1;
 		m_channel[channel].m_decathlt_prot_uploadoffset = 0;
 	}
@@ -235,6 +372,15 @@ void sega_315_5838_comp_device::set_upload_mode(UINT16 data, int channel)
 	{
 		m_channel[channel].m_decathlt_prot_uploadmode = 2;
 		m_channel[channel].m_decathlt_prot_uploadoffset = 0;
+=======
+		m_decathlt_prot_uploadmode = 1;
+		m_decathlt_prot_uploadoffset = 0;
+	}
+	else if ((data == 0x8080) || (data == 0x0080))
+	{
+		m_decathlt_prot_uploadmode = 2;
+		m_decathlt_prot_uploadoffset = 0;
+>>>>>>> upstream/master
 	}
 	else
 	{
@@ -242,16 +388,25 @@ void sega_315_5838_comp_device::set_upload_mode(UINT16 data, int channel)
 	}
 }
 
+<<<<<<< HEAD
 void sega_315_5838_comp_device::upload_table_data(UINT16 data, int channel)
 {
 	if (m_channel[channel].m_decathlt_prot_uploadmode == 1)
 	{
 		if (m_channel[channel].m_decathlt_prot_uploadoffset >= 24)
+=======
+void sega_315_5838_comp_device::upload_table_data(uint16_t data, int channel)
+{
+	if (m_decathlt_prot_uploadmode == 1)
+	{
+		if (m_decathlt_prot_uploadoffset >= 24)
+>>>>>>> upstream/master
 		{
 			fatalerror("upload mode 1 error, too big\n");
 			return;
 		}
 
+<<<<<<< HEAD
 		//logerror("uploading table 1 %04x %04x\n",m_channel[channel].m_decathlt_prot_uploadoffset, data&0xffff);
 		m_channel[channel].m_decathlt_prottable1[m_channel[channel].m_decathlt_prot_uploadoffset] = data & 0xffff;
 		m_channel[channel].m_decathlt_prot_uploadoffset++;
@@ -260,19 +415,39 @@ void sega_315_5838_comp_device::upload_table_data(UINT16 data, int channel)
 	else if (m_channel[channel].m_decathlt_prot_uploadmode == 2)
 	{
 		if (m_channel[channel].m_decathlt_prot_uploadoffset >= 128)
+=======
+		//logerror("uploading table 1 %04x %04x\n",m_decathlt_prot_uploadoffset, data&0xffff);
+		m_decathlt_prottable1[m_decathlt_prot_uploadoffset] = data & 0xffff;
+		m_decathlt_prot_uploadoffset++;
+		printf("unk table 1 %04x (channel %d)\n", data & 0xffff, channel);
+	}
+	else if (m_decathlt_prot_uploadmode == 2)
+	{
+		if (m_decathlt_prot_uploadoffset >= 128)
+>>>>>>> upstream/master
 		{
 			fatalerror("upload mode 2 error, too big\n");
 			return;
 		}
 
+<<<<<<< HEAD
 		//logerror("uploading table 2 %04x %04x\n",m_channel[channel].m_decathlt_prot_uploadoffset, data&0xffff);
 		m_channel[channel].m_decathlt_dictionary[m_channel[channel].m_decathlt_prot_uploadoffset] = data & 0xffff;
 		m_channel[channel].m_decathlt_prot_uploadoffset++;
+=======
+		//logerror("uploading table 2 %04x %04x\n",m_decathlt_prot_uploadoffset, data&0xffff);
+		m_decathlt_dictionaryy[m_decathlt_prot_uploadoffset] = data & 0xffff;
+		m_decathlt_prot_uploadoffset++;
+>>>>>>> upstream/master
 		printf("dictionary %04x (channel %d)\n", data & 0xffff, channel);
 	}
 }
 
+<<<<<<< HEAD
 void sega_315_5838_comp_device::write_prot_data(UINT32 data, UINT32 mem_mask, int channel, int rev_words)
+=======
+void sega_315_5838_comp_device::write_prot_data(uint32_t data, uint32_t mem_mask, int channel, int rev_words)
+>>>>>>> upstream/master
 {
 	if (mem_mask==0xffff0000)
 	{
@@ -318,7 +493,11 @@ void sega_315_5838_comp_device::install_decathlt_protection()
 
 READ32_MEMBER(sega_315_5838_comp_device::doa_prot_r)
 {
+<<<<<<< HEAD
 	UINT32 retval = 0;
+=======
+	uint32_t retval = 0;
+>>>>>>> upstream/master
 
 	if (offset == 0x7ff8/4)
 	{

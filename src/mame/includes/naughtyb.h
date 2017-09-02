@@ -1,6 +1,10 @@
 // license:BSD-3-Clause
 // copyright-holders:Brad Oliver,Sal and John Bugliarisi,Paul Priest
 #include "audio/pleiads.h"
+<<<<<<< HEAD
+=======
+#include "screen.h"
+>>>>>>> upstream/master
 
 class naughtyb_state : public driver_device
 {
@@ -24,16 +28,28 @@ public:
 	required_device<screen_device> m_screen;
 	required_device<palette_device> m_palette;
 
+<<<<<<< HEAD
 	required_shared_ptr<UINT8> m_videoram;
 	required_shared_ptr<UINT8> m_videoram2;
 	required_shared_ptr<UINT8> m_scrollreg;
 
 	UINT8 m_popflame_prot_seed;
+=======
+	required_shared_ptr<uint8_t> m_videoram;
+	required_shared_ptr<uint8_t> m_videoram2;
+	required_shared_ptr<uint8_t> m_scrollreg;
+
+	uint8_t m_popflame_prot_seed;
+>>>>>>> upstream/master
 	int m_r_index;
 	int m_prot_count;
 	int m_question_offset;
 	int m_cocktail;
+<<<<<<< HEAD
 	UINT8 m_palreg;
+=======
+	uint8_t m_palreg;
+>>>>>>> upstream/master
 	int m_bankreg;
 	bitmap_ind16 m_tmpbitmap;
 
@@ -50,8 +66,15 @@ public:
 
 	DECLARE_DRIVER_INIT(trvmstr);
 	DECLARE_DRIVER_INIT(popflame);
+<<<<<<< HEAD
 	virtual void video_start();
 	DECLARE_PALETTE_INIT(naughtyb);
 
 	UINT32 screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
+=======
+	virtual void video_start() override;
+	DECLARE_PALETTE_INIT(naughtyb);
+
+	uint32_t screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
+>>>>>>> upstream/master
 };

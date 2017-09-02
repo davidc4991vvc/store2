@@ -17,18 +17,28 @@
 //
 //
 
+<<<<<<< HEAD
 static inline int clamp(int v)
 {
 	if (v<-32768) return -32768;
 	if (v>32767) return 32767;
 	return v;
+=======
+static constexpr int clamp(int v)
+{
+	return (v<-32768) ? -32768 : (v>32767) ? 32767 : v;
+>>>>>>> upstream/master
 }
 
 //
 //
 //
 
+<<<<<<< HEAD
 reverb::reverb(const int hz, const int maxdelay)
+=======
+spu_device::reverb::reverb(const int hz, const int maxdelay)
+>>>>>>> upstream/master
 	:  yp(0),
 		max_delay(maxdelay),
 		sound_hz(hz)
@@ -54,7 +64,11 @@ reverb::reverb(const int hz, const int maxdelay)
 //
 //
 
+<<<<<<< HEAD
 reverb::~reverb()
+=======
+spu_device::reverb::~reverb()
+>>>>>>> upstream/master
 {
 	for (int c=0; c<2; c++)
 	{
@@ -70,7 +84,11 @@ reverb::~reverb()
 //
 //
 
+<<<<<<< HEAD
 void reverb::bandpass(signed short *sp,
+=======
+void spu_device::reverb::bandpass(signed short *sp,
+>>>>>>> upstream/master
 											const reverb_params *rp,
 											const unsigned int sz)
 {
@@ -98,7 +116,11 @@ void reverb::bandpass(signed short *sp,
 	}
 }
 
+<<<<<<< HEAD
 void reverb::comb_allpass1(signed short *sp,
+=======
+void spu_device::reverb::comb_allpass1(signed short *sp,
+>>>>>>> upstream/master
 														signed short *dp,
 														const comb_param &comb_delay,
 														const int comb_gain,
@@ -148,7 +170,11 @@ void reverb::comb_allpass1(signed short *sp,
 //
 //
 
+<<<<<<< HEAD
 void reverb::comb_allpass4(signed short *sp,
+=======
+void spu_device::reverb::comb_allpass4(signed short *sp,
+>>>>>>> upstream/master
 														signed short *dp,
 														const comb_param &comb_delay,
 														const int comb_gain,
@@ -235,7 +261,11 @@ void reverb::comb_allpass4(signed short *sp,
 //
 //
 
+<<<<<<< HEAD
 void reverb::comb_allpass(signed short *sp,
+=======
+void spu_device::reverb::comb_allpass(signed short *sp,
+>>>>>>> upstream/master
 													signed short *dp,
 													const reverb_params *rp,
 													const int wetvol_l,
@@ -312,7 +342,11 @@ void reverb::comb_allpass(signed short *sp,
 //
 //
 
+<<<<<<< HEAD
 void reverb::process(signed short *output,
+=======
+void spu_device::reverb::process(signed short *output,
+>>>>>>> upstream/master
 										signed short *reverb_input,
 										const reverb_params *rp,
 										const int wetvol_l,

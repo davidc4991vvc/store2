@@ -1,5 +1,9 @@
 // license:BSD-3-Clause
+<<<<<<< HEAD
 // copyright-holders:David Haywood, Stephh
+=======
+// copyright-holders:David Haywood
+>>>>>>> upstream/master
 /* Xyonix *********************************************************************
 
 driver by David Haywood and Stephh
@@ -23,9 +27,17 @@ TODO:
 ******************************************************************************/
 
 #include "emu.h"
+<<<<<<< HEAD
 #include "cpu/z80/z80.h"
 #include "sound/sn76496.h"
 #include "includes/xyonix.h"
+=======
+#include "includes/xyonix.h"
+#include "cpu/z80/z80.h"
+#include "sound/sn76496.h"
+#include "screen.h"
+#include "speaker.h"
+>>>>>>> upstream/master
 
 
 void xyonix_state::machine_start()
@@ -60,8 +72,13 @@ void xyonix_state::handle_coins(int coin)
 			m_credits += coinage_table[tmp][1];
 			m_coins -= coinage_table[tmp][0];
 		}
+<<<<<<< HEAD
 		coin_lockout_global_w(machine(), 0); /* Unlock all coin slots */
 		coin_counter_w(machine(),1,1); coin_counter_w(machine(),1,0); /* Count slot B */
+=======
+		machine().bookkeeping().coin_lockout_global_w(0); /* Unlock all coin slots */
+		machine().bookkeeping().coin_counter_w(1,1); machine().bookkeeping().coin_counter_w(1,0); /* Count slot B */
+>>>>>>> upstream/master
 	}
 
 	if (coin & 2)   // Coin 1 !
@@ -73,8 +90,13 @@ void xyonix_state::handle_coins(int coin)
 			m_credits += coinage_table[tmp][1];
 			m_coins -= coinage_table[tmp][0];
 		}
+<<<<<<< HEAD
 		coin_lockout_global_w(machine(), 0); /* Unlock all coin slots */
 		coin_counter_w(machine(),0,1); coin_counter_w(machine(),0,0); /* Count slot A */
+=======
+		machine().bookkeeping().coin_lockout_global_w(0); /* Unlock all coin slots */
+		machine().bookkeeping().coin_counter_w(0,1); machine().bookkeeping().coin_counter_w(0,0); /* Count slot A */
+>>>>>>> upstream/master
 	}
 
 	if (m_credits >= 9)
@@ -222,7 +244,11 @@ GFXDECODE_END
 
 /* MACHINE driver *************************************************************/
 
+<<<<<<< HEAD
 static MACHINE_CONFIG_START( xyonix, xyonix_state )
+=======
+static MACHINE_CONFIG_START( xyonix )
+>>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", Z80,16000000 / 4)        /* 4 MHz ? */
@@ -273,4 +299,8 @@ ROM_END
 
 /* GAME drivers **************************************************************/
 
+<<<<<<< HEAD
 GAME( 1989, xyonix, 0, xyonix, xyonix, driver_device, 0, ROT0, "Philko", "Xyonix", MACHINE_SUPPORTS_SAVE )
+=======
+GAME( 1989, xyonix, 0, xyonix, xyonix, xyonix_state, 0, ROT0, "Philko", "Xyonix", MACHINE_SUPPORTS_SAVE )
+>>>>>>> upstream/master

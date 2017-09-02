@@ -37,7 +37,11 @@ static const struct CassetteModulation sc3000_bit_modulation =
     sc3000_bit_identify - identify cassette
 -------------------------------------------------*/
 
+<<<<<<< HEAD
 static casserr_t sc3000_bit_identify(cassette_image *cassette, struct CassetteOptions *opts)
+=======
+static cassette_image::error sc3000_bit_identify(cassette_image *cassette, struct CassetteOptions *opts)
+>>>>>>> upstream/master
 {
 	return cassette_modulation_identify( cassette, &sc3000_bit_modulation, opts);
 }
@@ -49,6 +53,7 @@ static casserr_t sc3000_bit_identify(cassette_image *cassette, struct CassetteOp
 #define MODULATE(_value) \
 	for (int i = 0; i < (_value ? 2 : 1); i++) { \
 		err = cassette_put_modulated_data_bit(cassette, 0, time_index, _value, &sc3000_bit_modulation, &time_displacement);\
+<<<<<<< HEAD
 		if (err) return err;\
 		time_index += time_displacement;\
 	}
@@ -61,6 +66,20 @@ static casserr_t sc3000_bit_load(cassette_image *cassette)
 	double time_index = 0.0;
 	double time_displacement;
 	UINT8 data;
+=======
+		if (err != cassette_image::error::SUCCESS) return err;\
+		time_index += time_displacement;\
+	}
+
+static cassette_image::error sc3000_bit_load(cassette_image *cassette)
+{
+	cassette_image::error err;
+	uint64_t image_size = cassette_image_size(cassette);
+	uint64_t image_pos = 0;
+	double time_index = 0.0;
+	double time_displacement;
+	uint8_t data;
+>>>>>>> upstream/master
 
 	while (image_pos < image_size)
 	{
@@ -78,7 +97,11 @@ static casserr_t sc3000_bit_load(cassette_image *cassette)
 
 		case ' ':
 			err = cassette_put_sample( cassette, 0, time_index, 1/1200.0, 0);
+<<<<<<< HEAD
 			if (err) return err;
+=======
+			if (err != cassette_image::error::SUCCESS) return err;
+>>>>>>> upstream/master
 			time_index += 1/1200.0;
 			break;
 		}
@@ -86,7 +109,11 @@ static casserr_t sc3000_bit_load(cassette_image *cassette)
 		image_pos++;
 	}
 
+<<<<<<< HEAD
 	return CASSETTE_ERROR_SUCCESS;
+=======
+	return cassette_image::error::SUCCESS;
+>>>>>>> upstream/master
 }
 
 /*-------------------------------------------------
@@ -98,7 +125,11 @@ const struct CassetteFormat sc3000_bit_format =
 	"bit",
 	sc3000_bit_identify,
 	sc3000_bit_load,
+<<<<<<< HEAD
 	NULL
+=======
+	nullptr
+>>>>>>> upstream/master
 };
 
 CASSETTE_FORMATLIST_START( sc3000_cassette_formats )

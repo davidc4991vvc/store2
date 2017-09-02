@@ -21,12 +21,20 @@
 
 **********************************************************************/
 
+<<<<<<< HEAD
 #pragma once
 
 #ifndef __MC6852__
 #define __MC6852__
 
 #include "emu.h"
+=======
+#ifndef MAME_MACHINE_MC6852_H
+#define MAME_MACHINE_MC6852_H
+
+#pragma once
+
+>>>>>>> upstream/master
 #include <queue>
 
 
@@ -66,6 +74,7 @@ class mc6852_device :   public device_t,
 {
 public:
 	// construction/destruction
+<<<<<<< HEAD
 	mc6852_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
 
 	static void set_rx_clock(device_t &device, int clock) { downcast<mc6852_device &>(device).m_rx_clock = clock; }
@@ -74,6 +83,16 @@ public:
 	template<class _Object> static devcb_base &set_irq_wr_callback(device_t &device, _Object object) { return downcast<mc6852_device &>(device).m_write_irq.set_callback(object); }
 	template<class _Object> static devcb_base &set_sm_dtr_wr_callback(device_t &device, _Object object) { return downcast<mc6852_device &>(device).m_write_sm_dtr.set_callback(object); }
 	template<class _Object> static devcb_base &set_tuf_wr_callback(device_t &device, _Object object) { return downcast<mc6852_device &>(device).m_write_tuf.set_callback(object); }
+=======
+	mc6852_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
+
+	static void set_rx_clock(device_t &device, int clock) { downcast<mc6852_device &>(device).m_rx_clock = clock; }
+	static void set_tx_clock(device_t &device, int clock) { downcast<mc6852_device &>(device).m_tx_clock = clock; }
+	template <class Object> static devcb_base &set_tx_data_wr_callback(device_t &device, Object &&cb) { return downcast<mc6852_device &>(device).m_write_tx_data.set_callback(std::forward<Object>(cb)); }
+	template <class Object> static devcb_base &set_irq_wr_callback(device_t &device, Object &&cb) { return downcast<mc6852_device &>(device).m_write_irq.set_callback(std::forward<Object>(cb)); }
+	template <class Object> static devcb_base &set_sm_dtr_wr_callback(device_t &device, Object &&cb) { return downcast<mc6852_device &>(device).m_write_sm_dtr.set_callback(std::forward<Object>(cb)); }
+	template <class Object> static devcb_base &set_tuf_wr_callback(device_t &device, Object &&cb) { return downcast<mc6852_device &>(device).m_write_tuf.set_callback(std::forward<Object>(cb)); }
+>>>>>>> upstream/master
 
 	DECLARE_READ8_MEMBER( read );
 	DECLARE_WRITE8_MEMBER( write );
@@ -89,6 +108,7 @@ public:
 
 protected:
 	// device-level overrides
+<<<<<<< HEAD
 	virtual void device_start();
 	virtual void device_reset();
 	virtual void device_timer(emu_timer &timer, device_timer_id id, int m_param, void *ptr);
@@ -99,11 +119,74 @@ protected:
 	virtual void rcv_complete();
 
 private:
+=======
+	virtual void device_start() override;
+	virtual void device_reset() override;
+
+	// device_serial_interface overrides
+	virtual void tra_callback() override;
+	virtual void tra_complete() override;
+	virtual void rcv_complete() override;
+
+private:
+	enum
+	{
+		S_IRQ = 0x80,
+		S_PE = 0x40,
+		S_RX_OVRN = 0x20,
+		S_TUF = 0x10,
+		S_CTS = 0x08,
+		S_DCD = 0x04,
+		S_TDRA = 0x02,
+		S_RDA = 0x01
+	};
+
+	enum
+	{
+		C1_AC_MASK = 0xc0,
+		C1_AC_C2 = 0x00,
+		C1_AC_C3 = 0x40,
+		C1_AC_SYNC = 0x80,
+		C1_AC_TX_FIFO = 0xc0,
+		C1_AC2 = 0x80,
+		C1_AC1 = 0x40,
+		C1_RIE = 0x20,
+		C1_TIE = 0x10,
+		C1_CLEAR_SYNC = 0x08,
+		C1_STRIP_SYNC = 0x04,
+		C1_TX_RS = 0x02,
+		C1_RX_RS = 0x01
+	};
+
+	enum
+	{
+		C2_EIE = 0x80,
+		C2_TX_SYNC = 0x40,
+		C2_WS_MASK = 0x38,
+		C2_WS3 = 0x20,
+		C2_WS2 = 0x10,
+		C2_WS1 = 0x08,
+		C2_1_2_BYTE = 0x04,
+		C2_PC_MASK = 0x03,
+		C2_PC2 = 0x02,
+		C2_PC1 = 0x01
+	};
+
+	enum
+	{
+		C3_CTUF = 0x08,
+		C3_CTS = 0x04,
+		C3_1_2_SYNC = 0x02,
+		C3_E_I_SYNC = 0x01
+	};
+
+>>>>>>> upstream/master
 	devcb_write_line       m_write_tx_data;
 	devcb_write_line       m_write_irq;
 	devcb_write_line       m_write_sm_dtr;
 	devcb_write_line       m_write_tuf;
 
+<<<<<<< HEAD
 	UINT8 m_status;         // status register
 	UINT8 m_cr[3];          // control registers
 	UINT8 m_scr;            // sync code register
@@ -114,6 +197,18 @@ private:
 
 	std::queue<UINT8> m_rx_fifo;
 	std::queue<UINT8> m_tx_fifo;
+=======
+	uint8_t m_status;         // status register
+	uint8_t m_cr[3];          // control registers
+	uint8_t m_scr;            // sync code register
+	uint8_t m_tdr;            // transmit data register
+	uint8_t m_tsr;            // transmit shift register
+	uint8_t m_rdr;            // receive data register
+	uint8_t m_rsr;            // receive shift register
+
+	std::queue<uint8_t> m_rx_fifo;
+	std::queue<uint8_t> m_tx_fifo;
+>>>>>>> upstream/master
 
 	int m_rx_clock;
 	int m_tx_clock;
@@ -125,8 +220,14 @@ private:
 
 
 // device type definition
+<<<<<<< HEAD
 extern const device_type MC6852;
 
 
 
 #endif
+=======
+DECLARE_DEVICE_TYPE(MC6852, mc6852_device)
+
+#endif // MAME_MACHINE_MC6852_H
+>>>>>>> upstream/master

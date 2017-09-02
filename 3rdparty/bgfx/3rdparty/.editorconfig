@@ -1,9 +1,46 @@
 root = true
 
+<<<<<<< HEAD
+=======
+[etc1/*]
+indent_style = space
+indent_size  = 4
+
+>>>>>>> upstream/master
 [fcpp/*]
 indent_style = space
 indent_size  = 2
 
+<<<<<<< HEAD
 [ocornut-imgui/*]
 indent_style = space
 indent_size  = 4
+=======
+[iqa/*]
+indent_style = tab
+indent_size  = 4
+
+[libsquish/*]
+indent_style = tab
+indent_size  = 4
+
+[ocornut-imgui/*]
+indent_style = space
+indent_size  = 4
+
+[ocornut-imgui/*.inl]
+indent_style = space
+indent_size  = 4
+
+[pvrtc/*]
+indent_style = space
+indent_size  = 4
+
+[remotery/*]
+indent_style = space
+indent_size  = 4
+
+[glsl-optimizer/*]
+indent_style = space
+indent_size  = 3
+>>>>>>> upstream/master

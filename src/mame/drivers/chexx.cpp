@@ -17,11 +17,22 @@ Electro-mechanical bubble hockey games:
 
 #include "emu.h"
 #include "cpu/m6502/m6502.h"
+<<<<<<< HEAD
 #include "sound/ay8910.h"
 #include "sound/digitalk.h"
 #include "machine/6522via.h"
 #include "chexx.lh"
 
+=======
+#include "machine/6522via.h"
+#include "sound/ay8910.h"
+#include "sound/digitalk.h"
+#include "speaker.h"
+
+#include "chexx.lh"
+
+
+>>>>>>> upstream/master
 #define MAIN_CLOCK XTAL_4MHz
 
 class chexx_state : public driver_device
@@ -43,11 +54,19 @@ public:
 	optional_device<ay8910_device> m_aysnd; // only faceoffh
 
 	// vars
+<<<<<<< HEAD
 	UINT8  m_port_a, m_port_b;
 	UINT8  m_bank;
 	UINT32 m_shift;
 	UINT8  m_lamp;
 	UINT8  m_ay_cmd, m_ay_data;
+=======
+	uint8_t  m_port_a, m_port_b;
+	uint8_t  m_bank;
+	uint32_t m_shift;
+	uint8_t  m_lamp;
+	uint8_t  m_ay_cmd, m_ay_data;
+>>>>>>> upstream/master
 
 	// callbacks
 	TIMER_DEVICE_CALLBACK_MEMBER(update);
@@ -70,11 +89,19 @@ public:
 	DECLARE_WRITE8_MEMBER(lamp_w);
 
 	// digitalker
+<<<<<<< HEAD
 	void digitalker_set_bank(UINT8 bank);
 
 	// driver_device overrides
 	virtual void machine_start();
 	virtual void machine_reset();
+=======
+	void digitalker_set_bank(uint8_t bank);
+
+	// driver_device overrides
+	virtual void machine_start() override;
+	virtual void machine_reset() override;
+>>>>>>> upstream/master
 };
 
 
@@ -82,13 +109,21 @@ public:
 
 READ8_MEMBER(chexx_state::via_a_in)
 {
+<<<<<<< HEAD
 	UINT8 ret = 0;
+=======
+	uint8_t ret = 0;
+>>>>>>> upstream/master
 	logerror("%s: VIA read A: %02X\n", machine().describe_context(), ret);
 	return ret;
 }
 READ8_MEMBER(chexx_state::via_b_in)
 {
+<<<<<<< HEAD
 	UINT8 ret = 0;
+=======
+	uint8_t ret = 0;
+>>>>>>> upstream/master
 	logerror("%s: VIA read B: %02X\n", machine().describe_context(), ret);
 	return ret;
 }
@@ -107,7 +142,11 @@ WRITE8_MEMBER(chexx_state::via_b_out)
 
 	digitalker_set_bank(data & 3);
 	m_digitalker->set_output_gain(0, BIT(data,2) ? 1.0f : 0.0f); // bit 2 controls the Digitalker output
+<<<<<<< HEAD
 	coin_counter_w(machine(), 0, BIT(~data,3));
+=======
+	machine().bookkeeping().coin_counter_w(0, BIT(~data,3));
+>>>>>>> upstream/master
 	// bit 4 is EJECT
 	// bit 7 is related to speaker out
 
@@ -131,6 +170,7 @@ WRITE_LINE_MEMBER(chexx_state::via_cb2_out)
 	m_shift = ((m_shift << 1) & 0xffffff) | state;
 
 	// 7segs (score)
+<<<<<<< HEAD
 	static const UINT8 patterns[16] = { 0x3f, 0x06, 0x5b, 0x4f, 0x66, 0x6d, 0x7c, 0x07, 0x7f, 0x67, 0, 0, 0, 0, 0, 0 }; // 4511
 
 	output_set_digit_value(0, patterns[(m_shift >> (16+4)) & 0xf]);
@@ -143,6 +183,20 @@ WRITE_LINE_MEMBER(chexx_state::via_cb2_out)
 	output_set_led_value(0, BIT(m_shift,2));
 	output_set_led_value(1, BIT(m_shift,1));
 	output_set_led_value(2, BIT(m_shift,0));
+=======
+	static const uint8_t patterns[16] = { 0x3f, 0x06, 0x5b, 0x4f, 0x66, 0x6d, 0x7c, 0x07, 0x7f, 0x67, 0, 0, 0, 0, 0, 0 }; // 4511
+
+	output().set_digit_value(0, patterns[(m_shift >> (16+4)) & 0xf]);
+	output().set_digit_value(1, patterns[(m_shift >> (16+0)) & 0xf]);
+
+	output().set_digit_value(2, patterns[(m_shift >>  (8+4)) & 0xf]);
+	output().set_digit_value(3, patterns[(m_shift >>  (8+0)) & 0xf]);
+
+	// Leds (period being played)
+	output().set_led_value(0, BIT(m_shift,2));
+	output().set_led_value(1, BIT(m_shift,1));
+	output().set_led_value(2, BIT(m_shift,0));
+>>>>>>> upstream/master
 
 //  logerror("%s: VIA write CB2 = %02X\n", machine().describe_context(), state);
 }
@@ -154,8 +208,13 @@ WRITE_LINE_MEMBER(chexx_state::via_irq_out)
 
 READ8_MEMBER(chexx_state::input_r)
 {
+<<<<<<< HEAD
 	UINT8 ret = ioport("DSW")->read();          // bits 0-3
 	UINT8 inp = ioport("INPUT")->read();        // bit 7 (multiplexed)
+=======
+	uint8_t ret = ioport("DSW")->read();          // bits 0-3
+	uint8_t inp = ioport("INPUT")->read();        // bit 7 (multiplexed)
+>>>>>>> upstream/master
 
 	for (int i = 0; i < 8; ++i)
 		if ( ((~m_port_a) & (1 << i)) && ((~inp) & (1 << i)) )
@@ -178,8 +237,13 @@ ADDRESS_MAP_END
 WRITE8_MEMBER(chexx_state::lamp_w)
 {
 	m_lamp = data;
+<<<<<<< HEAD
 	output_set_lamp_value(0, BIT(m_lamp,0));
 	output_set_lamp_value(1, BIT(m_lamp,1));
+=======
+	output().set_lamp_value(0, BIT(m_lamp,0));
+	output().set_lamp_value(1, BIT(m_lamp,1));
+>>>>>>> upstream/master
 }
 
 WRITE8_MEMBER(chexx_state::ay_w)
@@ -250,12 +314,21 @@ void chexx_state::machine_start()
 {
 }
 
+<<<<<<< HEAD
 void chexx_state::digitalker_set_bank(UINT8 bank)
 {
 	if (m_bank != bank)
 	{
 		UINT8 *src = memregion("samples")->base();
 		UINT8 *dst = memregion("digitalker")->base();
+=======
+void chexx_state::digitalker_set_bank(uint8_t bank)
+{
+	if (m_bank != bank)
+	{
+		uint8_t *src = memregion("samples")->base();
+		uint8_t *dst = memregion("digitalker")->base();
+>>>>>>> upstream/master
 
 		memcpy(dst, src + bank * 0x4000, 0x4000);
 
@@ -272,7 +345,11 @@ void chexx_state::machine_reset()
 TIMER_DEVICE_CALLBACK_MEMBER(chexx_state::update)
 {
 	// NMI on coin-in
+<<<<<<< HEAD
 	UINT8 coin = (~ioport("COIN")->read()) & 0x03;
+=======
+	uint8_t coin = (~ioport("COIN")->read()) & 0x03;
+>>>>>>> upstream/master
 	m_maincpu->set_input_line(INPUT_LINE_NMI, coin ? ASSERT_LINE : CLEAR_LINE);
 
 	// VIA CA1 connected to Digitalker INTR line
@@ -280,7 +357,11 @@ TIMER_DEVICE_CALLBACK_MEMBER(chexx_state::update)
 
 #if 0
 	// Play the digitalker samples (it's not hooked up correctly yet)
+<<<<<<< HEAD
 	static UINT8 sample = 0, bank = 0;
+=======
+	static uint8_t sample = 0, bank = 0;
+>>>>>>> upstream/master
 
 	if (machine().input().code_pressed_once(KEYCODE_Q))
 		--bank;
@@ -309,7 +390,11 @@ TIMER_DEVICE_CALLBACK_MEMBER(chexx_state::update)
 #endif
 }
 
+<<<<<<< HEAD
 static MACHINE_CONFIG_START( chexx83, chexx_state )
+=======
+static MACHINE_CONFIG_START( chexx83 )
+>>>>>>> upstream/master
 
 	// basic machine hardware
 	MCFG_CPU_ADD("maincpu", M6502, MAIN_CLOCK/2)
@@ -416,5 +501,10 @@ ROM_START( faceoffh )
 	ROM_FILL(         0xe000, 0x2000, 0xff ) // unpopulated
 ROM_END
 
+<<<<<<< HEAD
 GAME( 1983, chexx83,  0,       chexx83,  chexx83, driver_device, 0, ROT270, "ICE",                                                 "Chexx (EM Bubble Hockey, 1983 1.1)", MACHINE_NOT_WORKING | MACHINE_MECHANICAL | MACHINE_NO_SOUND )
 GAME( 1983, faceoffh, chexx83, faceoffh, chexx83, driver_device, 0, ROT270, "SoftLogic (Entertainment Enterprises, Ltd. license)", "Face-Off (EM Bubble Hockey)",        MACHINE_NOT_WORKING | MACHINE_MECHANICAL | MACHINE_IMPERFECT_SOUND )
+=======
+GAME( 1983, chexx83,  0,       chexx83,  chexx83, chexx_state, 0, ROT270, "ICE",                                                 "Chexx (EM Bubble Hockey, 1983 1.1)", MACHINE_NOT_WORKING | MACHINE_MECHANICAL | MACHINE_NO_SOUND )
+GAME( 1983, faceoffh, chexx83, faceoffh, chexx83, chexx_state, 0, ROT270, "SoftLogic (Entertainment Enterprises, Ltd. license)", "Face-Off (EM Bubble Hockey)",        MACHINE_NOT_WORKING | MACHINE_MECHANICAL | MACHINE_IMPERFECT_SOUND )
+>>>>>>> upstream/master

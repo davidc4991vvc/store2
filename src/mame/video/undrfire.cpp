@@ -2,6 +2,10 @@
 // copyright-holders:Bryan McPhail, David Graves
 #include "emu.h"
 #include "includes/undrfire.h"
+<<<<<<< HEAD
+=======
+#include "screen.h"
+>>>>>>> upstream/master
 
 
 
@@ -11,7 +15,11 @@ void undrfire_state::video_start()
 {
 	int i;
 
+<<<<<<< HEAD
 	m_spritelist = auto_alloc_array(machine(), struct uf_tempsprite, 0x4000);
+=======
+	m_spritelist = std::make_unique<uf_tempsprite[]>(0x4000);
+>>>>>>> upstream/master
 
 	for (i = 0; i < 16384; i++) /* Fix later - some weird colours in places */
 		m_palette->set_pen_color(i, rgb_t(0,0,0));
@@ -66,8 +74,13 @@ Heavy use is made of sprite zooming.
 
 void undrfire_state::draw_sprites(screen_device &screen, bitmap_ind16 &bitmap,const rectangle &cliprect,const int *primasks,int x_offs,int y_offs)
 {
+<<<<<<< HEAD
 	UINT32 *spriteram32 = m_spriteram;
 	UINT16 *spritemap = (UINT16 *)memregion("user1")->base();
+=======
+	uint32_t *spriteram32 = m_spriteram;
+	uint16_t *spritemap = (uint16_t *)memregion("user1")->base();
+>>>>>>> upstream/master
 	int offs, data, tilenum, color, flipx, flipy;
 	int x, y, priority, dblsize, curx, cury;
 	int sprites_flipscreen = 0;
@@ -77,7 +90,11 @@ void undrfire_state::draw_sprites(screen_device &screen, bitmap_ind16 &bitmap,co
 
 	/* pdrawgfx() needs us to draw sprites front to back, so we have to build a list
 	   while processing sprite ram and then draw them all at the end */
+<<<<<<< HEAD
 	struct uf_tempsprite *sprite_ptr = m_spritelist;
+=======
+	struct uf_tempsprite *sprite_ptr = m_spritelist.get();
+>>>>>>> upstream/master
 
 	for (offs = (m_spriteram.bytes()/4-4);offs >= 0;offs -= 4)
 	{
@@ -191,8 +208,13 @@ void undrfire_state::draw_sprites(screen_device &screen, bitmap_ind16 &bitmap,co
 logerror("Sprite number %04x had %02x invalid chunks\n",tilenum,bad_chunks);
 	}
 
+<<<<<<< HEAD
 	/* this happens only if primsks != NULL */
 	while (sprite_ptr != m_spritelist)
+=======
+	/* this happens only if primsks != nullptr */
+	while (sprite_ptr != m_spritelist.get())
+>>>>>>> upstream/master
 	{
 		sprite_ptr--;
 
@@ -209,9 +231,15 @@ logerror("Sprite number %04x had %02x invalid chunks\n",tilenum,bad_chunks);
 
 void undrfire_state::draw_sprites_cbombers(screen_device &screen, bitmap_ind16 &bitmap,const rectangle &cliprect,const int *primasks,int x_offs,int y_offs)
 {
+<<<<<<< HEAD
 	UINT32 *spriteram32 = m_spriteram;
 	UINT16 *spritemap = (UINT16 *)memregion("user1")->base();
 	UINT8 *spritemapHibit = (UINT8 *)memregion("user2")->base();
+=======
+	uint32_t *spriteram32 = m_spriteram;
+	uint16_t *spritemap = (uint16_t *)memregion("user1")->base();
+	uint8_t *spritemapHibit = (uint8_t *)memregion("user2")->base();
+>>>>>>> upstream/master
 
 	int offs, data, tilenum, color, flipx, flipy;
 	int x, y, priority, dblsize, curx, cury;
@@ -222,7 +250,11 @@ void undrfire_state::draw_sprites_cbombers(screen_device &screen, bitmap_ind16 &
 
 	/* pdrawgfx() needs us to draw sprites front to back, so we have to build a list
 	   while processing sprite ram and then draw them all at the end */
+<<<<<<< HEAD
 	struct uf_tempsprite *sprite_ptr = m_spritelist;
+=======
+	struct uf_tempsprite *sprite_ptr = m_spritelist.get();
+>>>>>>> upstream/master
 
 	for (offs = (m_spriteram.bytes()/4-4);offs >= 0;offs -= 4)
 	{
@@ -325,8 +357,13 @@ void undrfire_state::draw_sprites_cbombers(screen_device &screen, bitmap_ind16 &
 		}
 	}
 
+<<<<<<< HEAD
 	/* this happens only if primsks != NULL */
 	while (sprite_ptr != m_spritelist)
+=======
+	/* this happens only if primsks != nullptr */
+	while (sprite_ptr != m_spritelist.get())
+>>>>>>> upstream/master
 	{
 		sprite_ptr--;
 
@@ -345,12 +382,21 @@ void undrfire_state::draw_sprites_cbombers(screen_device &screen, bitmap_ind16 &
                 SCREEN REFRESH
 **************************************************************/
 
+<<<<<<< HEAD
 UINT32 undrfire_state::screen_update_undrfire(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
 {
 	address_space &space = machine().driver_data()->generic_space();
 	UINT8 layer[5];
 	UINT8 scclayer[3];
 	UINT16 priority;
+=======
+uint32_t undrfire_state::screen_update_undrfire(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+{
+	address_space &space = machine().dummy_space();
+	uint8_t layer[5];
+	uint8_t scclayer[3];
+	uint16_t priority;
+>>>>>>> upstream/master
 
 #ifdef MAME_DEBUG
 	if (machine().input().code_pressed_once (KEYCODE_X))
@@ -486,12 +532,21 @@ UINT32 undrfire_state::screen_update_undrfire(screen_device &screen, bitmap_ind1
 }
 
 
+<<<<<<< HEAD
 UINT32 undrfire_state::screen_update_cbombers(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
 {
 	address_space &space = machine().driver_data()->generic_space();
 	UINT8 layer[5];
 	UINT8 scclayer[3];
 	UINT16 priority;
+=======
+uint32_t undrfire_state::screen_update_cbombers(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+{
+	address_space &space = machine().dummy_space();
+	uint8_t layer[5];
+	uint8_t scclayer[3];
+	uint16_t priority;
+>>>>>>> upstream/master
 
 #ifdef MAME_DEBUG
 	if (machine().input().code_pressed_once (KEYCODE_X))

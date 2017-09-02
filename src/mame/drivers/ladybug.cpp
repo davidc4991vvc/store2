@@ -61,6 +61,7 @@ TODO:
  */
 
 #include "emu.h"
+<<<<<<< HEAD
 #include "cpu/z80/z80.h"
 #include "sound/sn76496.h"
 #include "includes/ladybug.h"
@@ -124,6 +125,16 @@ WRITE8_MEMBER(ladybug_state::sraider_misc_w)
 			break;
 	}
 }
+=======
+#include "includes/ladybug.h"
+
+#include "cpu/z80/z80.h"
+#include "machine/74259.h"
+#include "sound/sn76496.h"
+#include "screen.h"
+#include "speaker.h"
+
+>>>>>>> upstream/master
 
 static ADDRESS_MAP_START( ladybug_map, AS_PROGRAM, 8, ladybug_state )
 	AM_RANGE(0x0000, 0x5fff) AM_ROM
@@ -134,7 +145,11 @@ static ADDRESS_MAP_START( ladybug_map, AS_PROGRAM, 8, ladybug_state )
 	AM_RANGE(0x9001, 0x9001) AM_READ_PORT("IN1")
 	AM_RANGE(0x9002, 0x9002) AM_READ_PORT("DSW0")
 	AM_RANGE(0x9003, 0x9003) AM_READ_PORT("DSW1")
+<<<<<<< HEAD
 	AM_RANGE(0xa000, 0xa000) AM_WRITE(ladybug_flipscreen_w)
+=======
+	AM_RANGE(0xa000, 0xa007) AM_DEVWRITE("videolatch", ls259_device, write_d0)
+>>>>>>> upstream/master
 	AM_RANGE(0xb000, 0xbfff) AM_DEVWRITE("sn1", sn76489_device, write)
 	AM_RANGE(0xc000, 0xcfff) AM_DEVWRITE("sn2", sn76489_device, write)
 	AM_RANGE(0xd000, 0xd3ff) AM_RAM_WRITE(ladybug_videoram_w) AM_SHARE("videoram")
@@ -142,6 +157,7 @@ static ADDRESS_MAP_START( ladybug_map, AS_PROGRAM, 8, ladybug_state )
 	AM_RANGE(0xe000, 0xe000) AM_READ_PORT("IN2")
 ADDRESS_MAP_END
 
+<<<<<<< HEAD
 static ADDRESS_MAP_START( decrypted_opcodes_map, AS_DECRYPTED_OPCODES, 8, ladybug_state )
 	AM_RANGE(0x0000, 0x5fff) AM_ROM AM_SHARE("decrypted_opcodes")
 ADDRESS_MAP_END
@@ -187,6 +203,12 @@ ADDRESS_MAP_END
 
 
 
+=======
+static ADDRESS_MAP_START( decrypted_opcodes_map, AS_OPCODES, 8, ladybug_state )
+	AM_RANGE(0x0000, 0x5fff) AM_ROM AM_SHARE("decrypted_opcodes")
+ADDRESS_MAP_END
+
+>>>>>>> upstream/master
 INPUT_CHANGED_MEMBER(ladybug_state::coin1_inserted)
 {
 	/* left coin insertion causes an NMI */
@@ -211,7 +233,11 @@ CUSTOM_INPUT_MEMBER(ladybug_state::ladybug_p1_control_r)
 
 CUSTOM_INPUT_MEMBER(ladybug_state::ladybug_p2_control_r)
 {
+<<<<<<< HEAD
 	UINT32 ret;
+=======
+	uint32_t ret;
+>>>>>>> upstream/master
 
 	/* upright cabinet only uses a single set of controls */
 	if (m_port_dsw0->read() & 0x20)
@@ -225,13 +251,21 @@ CUSTOM_INPUT_MEMBER(ladybug_state::ladybug_p2_control_r)
 
 static INPUT_PORTS_START( ladybug )
 	PORT_START("IN0")
+<<<<<<< HEAD
 	PORT_BIT( 0x1f, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, ladybug_state,ladybug_p1_control_r, NULL)
+=======
+	PORT_BIT( 0x1f, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, ladybug_state,ladybug_p1_control_r, nullptr)
+>>>>>>> upstream/master
 	PORT_BIT( 0x20, IP_ACTIVE_LOW, IPT_START1 )
 	PORT_BIT( 0x40, IP_ACTIVE_LOW, IPT_START2 )
 	PORT_BIT( 0x80, IP_ACTIVE_LOW, IPT_TILT )
 
 	PORT_START("IN1")
+<<<<<<< HEAD
 	PORT_BIT( 0x1f, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, ladybug_state,ladybug_p2_control_r, NULL)
+=======
+	PORT_BIT( 0x1f, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, ladybug_state,ladybug_p2_control_r, nullptr)
+>>>>>>> upstream/master
 	/* This should be connected to the 4V clock. I don't think the game uses it. */
 	PORT_BIT( 0x20, IP_ACTIVE_LOW, IPT_UNKNOWN )
 	/* Note that there are TWO VBlank inputs, one is active low, the other active */
@@ -567,6 +601,7 @@ static INPUT_PORTS_START( dorodon )
 	PORT_BIT( 0x02, IP_ACTIVE_HIGH, IPT_COIN2 ) PORT_CHANGED_MEMBER(DEVICE_SELF, ladybug_state,coin2_inserted, 0)
 INPUT_PORTS_END
 
+<<<<<<< HEAD
 static INPUT_PORTS_START( sraider )
 	PORT_START("IN0")   /* IN0 */
 	PORT_BIT( 0x01, IP_ACTIVE_LOW, IPT_JOYSTICK_LEFT ) PORT_4WAY
@@ -642,6 +677,8 @@ static INPUT_PORTS_START( sraider )
 	PORT_DIPSETTING(    0x00, DEF_STR( Free_Play ) )
 INPUT_PORTS_END
 
+=======
+>>>>>>> upstream/master
 static const gfx_layout charlayout =
 {
 	8,8,    /* 8*8 characters */
@@ -675,6 +712,7 @@ static const gfx_layout spritelayout2 =
 	16*8    /* every sprite takes 16 consecutive bytes */
 };
 
+<<<<<<< HEAD
 static const gfx_layout gridlayout =
 {
 	8,8,    /* 8*8 characters */
@@ -697,12 +735,15 @@ static const gfx_layout gridlayout2 =
 	8*8 /* every char takes 8 consecutive bytes */
 };
 
+=======
+>>>>>>> upstream/master
 static GFXDECODE_START( ladybug )
 	GFXDECODE_ENTRY( "gfx1", 0, charlayout,      0,  8 )
 	GFXDECODE_ENTRY( "gfx2", 0, spritelayout,  4*8, 16 )
 	GFXDECODE_ENTRY( "gfx2", 0, spritelayout2, 4*8, 16 )
 GFXDECODE_END
 
+<<<<<<< HEAD
 static GFXDECODE_START( sraider )
 	GFXDECODE_ENTRY( "gfx1", 0, charlayout,              0,  8 )
 	GFXDECODE_ENTRY( "gfx2", 0, spritelayout,          4*8, 16 )
@@ -712,10 +753,13 @@ static GFXDECODE_START( sraider )
 GFXDECODE_END
 
 
+=======
+>>>>>>> upstream/master
 MACHINE_START_MEMBER(ladybug_state,ladybug)
 {
 }
 
+<<<<<<< HEAD
 MACHINE_START_MEMBER(ladybug_state,sraider)
 {
 	save_item(NAME(m_grid_color));
@@ -757,6 +801,9 @@ MACHINE_RESET_MEMBER(ladybug_state,sraider)
 }
 
 static MACHINE_CONFIG_START( ladybug, ladybug_state )
+=======
+static MACHINE_CONFIG_START( ladybug )
+>>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", Z80, 4000000)   /* 4 MHz */
@@ -778,6 +825,12 @@ static MACHINE_CONFIG_START( ladybug, ladybug_state )
 	MCFG_PALETTE_INDIRECT_ENTRIES(32)
 	MCFG_PALETTE_INIT_OWNER(ladybug_state,ladybug)
 
+<<<<<<< HEAD
+=======
+	MCFG_DEVICE_ADD("videolatch", LS259, 0) // L5 on video board or H3 on single board
+	MCFG_ADDRESSABLE_LATCH_Q0_OUT_CB(WRITELINE(ladybug_state, flipscreen_w)) // no other outputs used
+
+>>>>>>> upstream/master
 	MCFG_VIDEO_START_OVERRIDE(ladybug_state,ladybug)
 
 	/* sound hardware */
@@ -795,6 +848,7 @@ static MACHINE_CONFIG_DERIVED( dorodon, ladybug )
 	MCFG_CPU_DECRYPTED_OPCODES_MAP(decrypted_opcodes_map)
 MACHINE_CONFIG_END
 
+<<<<<<< HEAD
 static MACHINE_CONFIG_START( sraider, ladybug_state )
 
 	/* basic machine hardware */
@@ -846,6 +900,8 @@ static MACHINE_CONFIG_START( sraider, ladybug_state )
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 1.0)
 MACHINE_CONFIG_END
 
+=======
+>>>>>>> upstream/master
 
 /***************************************************************************
 
@@ -862,6 +918,14 @@ ROM_START( ladybug )
 	ROM_LOAD( "l5.j4", 0x4000, 0x1000, CRC(ad6af809) SHA1(276275d56c725b9d90eeb44c317ceb06bac27ae7) ) /* PCB silkscreened ROM5 */
 	ROM_LOAD( "l6.k4", 0x5000, 0x1000, CRC(cf1acca4) SHA1(c05de7de4bd05d5c2af6aa752e057a9286f3effc) ) /* PCB silkscreened ROM6 */
 
+<<<<<<< HEAD
+=======
+	// also found on an original PCB with 3x 0x2000 program ROMs (identical code-wise)
+	//ROM_LOAD( "2a", 0x0000, 0x2000, CRC(b01c773b) SHA1(4e79eba05e92a614f707488b0e4245f3f86f2531) )
+	//ROM_LOAD( "2c", 0x2000, 0x2000, CRC(600b7302) SHA1(bd933d22e261f7d8e37a514725dcad204fab0c68) )
+	//ROM_LOAD( "2e", 0x4000, 0x2000, CRC(9a96396a) SHA1(d355092ef1666e4fd4479160c9baf4dffcbad4c5) )
+
+>>>>>>> upstream/master
 	ROM_REGION( 0x2000, "gfx1", 0 ) /* Located on the UNIVERSAL 8106-B video PCB */
 	ROM_LOAD( "l9.f7", 0x0000, 0x1000, CRC(77b1da1e) SHA1(58cb82417396a3d96acfc864f091b1a5988f228d) )
 	ROM_LOAD( "l0.h7", 0x1000, 0x1000, CRC(aa82e00b) SHA1(83a5b745e58844b6dd7d05dfe9dbb5959aaf5c40) )
@@ -899,7 +963,11 @@ ROM_START( ladybugb )
 	ROM_LOAD( "10-3.c4", 0x0040, 0x0020, CRC(27fa3a50) SHA1(7cf59b7a37c156640d6ea91554d1c4276c1780e0) ) /* ?? */
 ROM_END
 
+<<<<<<< HEAD
 ROM_START( ladybgb2 )
+=======
+ROM_START( ladybugb2 ) // bootleg by Model Racing, PCB marked CS299, manual names it "Coccinelle" (ladybugs in Italian)
+>>>>>>> upstream/master
 	ROM_REGION( 0x10000, "maincpu", 0 )
 	ROM_LOAD( "lb1b.cpu", 0x0000, 0x1000, CRC(35d61e65) SHA1(43b797f1882e0acbf6685deea82de77e78d2c917) )
 	ROM_LOAD( "lb2b.cpu", 0x1000, 0x1000, CRC(a13e0fe4) SHA1(9e2876d8390d2b072d064b197057089a25c13a4a) )
@@ -912,7 +980,11 @@ ROM_START( ladybgb2 )
 	ROM_LOAD( "l9.f7", 0x0000, 0x1000, CRC(77b1da1e) SHA1(58cb82417396a3d96acfc864f091b1a5988f228d) )
 	ROM_LOAD( "l0.h7", 0x1000, 0x1000, CRC(aa82e00b) SHA1(83a5b745e58844b6dd7d05dfe9dbb5959aaf5c40) )
 
+<<<<<<< HEAD
 	ROM_REGION( 0x2000, "gfx2", 0 ) /* Located on the UNIVERSAL 8106-A2 CPU PCB */
+=======
+	ROM_REGION( 0x2000, "gfx2", 0 )
+>>>>>>> upstream/master
 	ROM_LOAD( "l8.l7", 0x0000, 0x1000, CRC(8b99910b) SHA1(0bc812cf872f04eacedb50feed53f1aa8a1f24b9) )
 	ROM_LOAD( "l7.m7", 0x1000, 0x1000, CRC(86a5b448) SHA1(f8585a6fcf921e3e21f112dd2de474cb53cef290) )
 
@@ -1017,6 +1089,7 @@ ROM_START( dorodon2 )
 	ROM_LOAD( "dorodon.bp2", 0x0040, 0x0020, CRC(27fa3a50) SHA1(7cf59b7a37c156640d6ea91554d1c4276c1780e0) ) /* timing?? */
 ROM_END
 
+<<<<<<< HEAD
 ROM_START( sraider )
 	ROM_REGION( 0x10000, "maincpu", 0 )
 	ROM_LOAD( "sraid3.r4",    0x0000, 0x2000, CRC(0f389774) SHA1(c67596e6bf00175ff0a241506cd2f88114d05933) )
@@ -1046,19 +1119,27 @@ ROM_START( sraider )
 ROM_END
 
 
+=======
+>>>>>>> upstream/master
 DRIVER_INIT_MEMBER(ladybug_state,dorodon)
 {
 	/* decode the opcodes */
 
 	offs_t i;
+<<<<<<< HEAD
 	UINT8 *rom = memregion("maincpu")->base();
 	UINT8 *table = memregion("user1")->base();
+=======
+	uint8_t *rom = memregion("maincpu")->base();
+	uint8_t *table = memregion("user1")->base();
+>>>>>>> upstream/master
 
 	for (i = 0; i < 0x6000; i++)
 		m_decrypted_opcodes[i] = table[rom[i]];
 }
 
 
+<<<<<<< HEAD
 GAME( 1981, cavenger, 0,       ladybug, cavenger, driver_device, 0,       ROT0,   "Universal", "Cosmic Avenger", MACHINE_SUPPORTS_SAVE )
 GAME( 1981, ladybug,  0,       ladybug, ladybug, driver_device,  0,       ROT270, "Universal", "Lady Bug", MACHINE_SUPPORTS_SAVE )
 GAME( 1981, ladybugb, ladybug, ladybug, ladybug, driver_device,  0,       ROT270, "bootleg",   "Lady Bug (bootleg set 1)", MACHINE_SUPPORTS_SAVE )
@@ -1067,3 +1148,12 @@ GAME( 1982, dorodon,  0,       dorodon, dorodon, ladybug_state,  dorodon, ROT270
 GAME( 1982, dorodon2, dorodon, dorodon, dorodon, ladybug_state,  dorodon, ROT270, "UPL (Falcon license?)", "Dorodon (set 2)", MACHINE_SUPPORTS_SAVE ) // "
 GAME( 1982, snapjack, 0,       ladybug, snapjack, driver_device, 0,       ROT0,   "Universal", "Snap Jack", MACHINE_SUPPORTS_SAVE )
 GAME( 1982, sraider,  0,       sraider, sraider, driver_device,  0,       ROT270, "Universal", "Space Raider", MACHINE_SUPPORTS_SAVE )
+=======
+GAME( 1981, cavenger,  0,       ladybug, cavenger, ladybug_state, 0,       ROT0,   "Universal",              "Cosmic Avenger",                          MACHINE_SUPPORTS_SAVE )
+GAME( 1981, ladybug,   0,       ladybug, ladybug,  ladybug_state, 0,       ROT270, "Universal",              "Lady Bug",                                MACHINE_SUPPORTS_SAVE )
+GAME( 1981, ladybugb,  ladybug, ladybug, ladybug,  ladybug_state, 0,       ROT270, "bootleg",                "Lady Bug (bootleg set 1)",                MACHINE_SUPPORTS_SAVE )
+GAME( 1981, ladybugb2, ladybug, ladybug, ladybug,  ladybug_state, 0,       ROT270, "bootleg (Model Racing)", "Coccinelle (bootleg of Lady Bug, set 2)", MACHINE_SUPPORTS_SAVE ) // title removed, but manual names it Coccinelle
+GAME( 1982, dorodon,   0,       dorodon, dorodon,  ladybug_state, dorodon, ROT270, "UPL (Falcon license?)",  "Dorodon (set 1)",                         MACHINE_SUPPORTS_SAVE ) // license or bootleg?
+GAME( 1982, dorodon2,  dorodon, dorodon, dorodon,  ladybug_state, dorodon, ROT270, "UPL (Falcon license?)",  "Dorodon (set 2)",                         MACHINE_SUPPORTS_SAVE ) // "
+GAME( 1982, snapjack,  0,       ladybug, snapjack, ladybug_state, 0,       ROT0,   "Universal",              "Snap Jack",                               MACHINE_SUPPORTS_SAVE )
+>>>>>>> upstream/master

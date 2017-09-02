@@ -9,12 +9,20 @@
 
 ***************************************************************************/
 
+<<<<<<< HEAD
 #pragma once
 
 #ifndef __RSP_H__
 #define __RSP_H__
 
 #include "emu.h"
+=======
+#ifndef MAME_CPU_RSP_RSP_H
+#define MAME_CPU_RSP_RSP_H
+
+#pragma once
+
+>>>>>>> upstream/master
 #include "cpu/drcfe.h"
 #include "cpu/drcuml.h"
 
@@ -66,6 +74,7 @@ enum
 	RSP_V24, RSP_V25, RSP_V26, RSP_V27, RSP_V28, RSP_V29, RSP_V30, RSP_V31
 };
 
+<<<<<<< HEAD
 /***************************************************************************
     HELPER MACROS
 ***************************************************************************/
@@ -92,6 +101,8 @@ enum
 #define UIMMVAL         ((UINT16)op)
 #define LIMMVAL         (op & 0x03ffffff)
 
+=======
+>>>>>>> upstream/master
 #define RSP_STATUS_HALT          0x0001
 #define RSP_STATUS_BROKE         0x0002
 #define RSP_STATUS_DMABUSY       0x0004
@@ -137,6 +148,7 @@ class rsp_device : public cpu_device
 
 public:
 	// construction/destruction
+<<<<<<< HEAD
 	rsp_device(const machine_config &mconfig, const char *_tag, device_t *_owner, UINT32 _clock);
 
 	void resolve_cb();
@@ -150,6 +162,21 @@ public:
 	void rspdrc_set_options(UINT32 options);
 	void rsp_add_dmem(UINT32 *base);
 	void rsp_add_imem(UINT32 *base);
+=======
+	rsp_device(const machine_config &mconfig, const char *_tag, device_t *_owner, uint32_t _clock);
+
+	void resolve_cb();
+	template <class Object> static devcb_base &static_set_dp_reg_r_callback(device_t &device, Object &&cb) { return downcast<rsp_device &>(device).m_dp_reg_r_func.set_callback(std::forward<Object>(cb)); }
+	template <class Object> static devcb_base &static_set_dp_reg_w_callback(device_t &device, Object &&cb) { return downcast<rsp_device &>(device).m_dp_reg_w_func.set_callback(std::forward<Object>(cb)); }
+	template <class Object> static devcb_base &static_set_sp_reg_r_callback(device_t &device, Object &&cb) { return downcast<rsp_device &>(device).m_sp_reg_r_func.set_callback(std::forward<Object>(cb)); }
+	template <class Object> static devcb_base &static_set_sp_reg_w_callback(device_t &device, Object &&cb) { return downcast<rsp_device &>(device).m_sp_reg_w_func.set_callback(std::forward<Object>(cb)); }
+	template <class Object> static devcb_base &static_set_status_callback(device_t &device, Object &&cb) { return downcast<rsp_device &>(device).m_sp_set_status_func.set_callback(std::forward<Object>(cb)); }
+
+	void rspdrc_flush_drc_cache();
+	void rspdrc_set_options(uint32_t options);
+	void rsp_add_dmem(uint32_t *base);
+	void rsp_add_imem(uint32_t *base);
+>>>>>>> upstream/master
 
 	void ccfunc_read8();
 	void ccfunc_read16();
@@ -159,6 +186,7 @@ public:
 	void ccfunc_write32();
 	void ccfunc_get_cop0_reg();
 	void ccfunc_set_cop0_reg();
+<<<<<<< HEAD
 	void ccfunc_unimplemented_opcode();
 	void ccfunc_sp_set_status_cb();
 	void ccfunc_unimplemented();
@@ -193,13 +221,54 @@ protected:
 	virtual offs_t disasm_disassemble(char *buffer, offs_t pc, const UINT8 *oprom, const UINT8 *opram, UINT32 options);
 
 	void unimplemented_opcode(UINT32 op);
+=======
+	void ccfunc_sp_set_status_cb();
+	void ccfunc_unimplemented();
+
+	uint8_t* get_dmem() { return m_dmem8; }
+
+protected:
+	// device-level overrides
+	virtual void device_start() override;
+	virtual void device_reset() override;
+	virtual void device_stop() override;
+
+	// device_execute_interface overrides
+	virtual uint32_t execute_min_cycles() const override { return 1; }
+	virtual uint32_t execute_max_cycles() const override { return 1; }
+	virtual uint32_t execute_input_lines() const override { return 1; }
+	virtual uint32_t execute_default_irq_vector() const override { return 0; }
+	virtual void execute_run() override;
+	virtual void execute_set_input(int inputnum, int state) override { }
+
+	// device_memory_interface overrides
+	virtual space_config_vector memory_space_config() const override;
+
+	// device_state_interface overrides
+	virtual void state_import(const device_state_entry &entry) override;
+	virtual void state_export(const device_state_entry &entry) override;
+	virtual void state_string_export(const device_state_entry &entry, std::string &str) const override;
+
+	// device_disasm_interface overrides
+	virtual uint32_t disasm_min_opcode_bytes() const override { return 4; }
+	virtual uint32_t disasm_max_opcode_bytes() const override { return 4; }
+	virtual offs_t disasm_disassemble(std::ostream &stream, offs_t pc, const uint8_t *oprom, const uint8_t *opram, uint32_t options) override;
+
+	void unimplemented_opcode(uint32_t op);
+>>>>>>> upstream/master
 
 	/* internal compiler state */
 	struct compiler_state
 	{
+<<<<<<< HEAD
 		UINT32              cycles;                   /* accumulated cycles */
 		UINT8               checkints;                /* need to check interrupts before next instruction */
 		UINT8               checksoftints;            /* need to check software interrupts before next instruction */
+=======
+		uint32_t              cycles;                   /* accumulated cycles */
+		uint8_t               checkints;                /* need to check interrupts before next instruction */
+		uint8_t               checksoftints;            /* need to check software interrupts before next instruction */
+>>>>>>> upstream/master
 		uml::code_label     labelnum;                 /* index for local labels */
 	};
 
@@ -211,12 +280,17 @@ private:
 	{
 		offs_t              start;                      /* start of the RAM block */
 		offs_t              end;                        /* end of the RAM block */
+<<<<<<< HEAD
 		UINT8               readonly;                   /* TRUE if read-only */
+=======
+		bool                readonly;                   /* true if read-only */
+>>>>>>> upstream/master
 		void *              base;                       /* base in memory where the RAM lives */
 	};
 
 	/* core state */
 	drc_cache           m_cache;                      /* pointer to the DRC code cache */
+<<<<<<< HEAD
 	drcuml_state *      m_drcuml;                     /* DRC UML generator state */
 	rsp_frontend *      m_drcfe;                      /* pointer to the DRC front-end state */
 	UINT32              m_drcoptions;                 /* configurable DRC options */
@@ -229,6 +303,20 @@ private:
 	const char *        m_format;                     /* format string for print_debug */
 	UINT32              m_arg2;                       /* print_debug argument 3 */
 	UINT32              m_arg3;                       /* print_debug argument 4 */
+=======
+	std::unique_ptr<drcuml_state>      m_drcuml;                     /* DRC UML generator state */
+	std::unique_ptr<rsp_frontend>      m_drcfe;                      /* pointer to the DRC front-end state */
+	uint32_t              m_drcoptions;                 /* configurable DRC options */
+
+	/* internal stuff */
+	uint8_t               m_cache_dirty;                /* true if we need to flush the cache */
+
+	/* parameters for subroutines */
+	uint64_t              m_numcycles;                  /* return value from gettotalcycles */
+	const char *        m_format;                     /* format string for print_debug */
+	uint32_t              m_arg2;                       /* print_debug argument 3 */
+	uint32_t              m_arg3;                       /* print_debug argument 4 */
+>>>>>>> upstream/master
 
 	/* register mappings */
 	uml::parameter   m_regmap[34];                 /* parameter to register mappings for all 32 integer registers */
@@ -246,11 +334,19 @@ private:
 
 	struct internal_rsp_state
 	{
+<<<<<<< HEAD
 		UINT32 pc;
 		UINT32 r[35];
 		UINT32 arg0;
 		UINT32 arg1;
 		UINT32 jmpdest;
+=======
+		uint32_t pc;
+		uint32_t r[35];
+		uint32_t arg0;
+		uint32_t arg1;
+		uint32_t jmpdest;
+>>>>>>> upstream/master
 		int icount;
 	};
 
@@ -258,17 +354,26 @@ private:
 
 	FILE *m_exec_output;
 
+<<<<<<< HEAD
 	UINT32 m_sr;
 	UINT32 m_step_count;
 
 	UINT32 m_ppc;
 	UINT32 m_nextpc;
+=======
+	uint32_t m_sr;
+	uint32_t m_step_count;
+
+	uint32_t m_ppc;
+	uint32_t m_nextpc;
+>>>>>>> upstream/master
 
 	address_space *m_program;
 protected:
 	direct_read_data *m_direct;
 
 private:
+<<<<<<< HEAD
 	rsp_cop2    *m_cop2;
 
 	UINT32 *m_dmem32;
@@ -280,6 +385,19 @@ private:
 	UINT8 *m_imem8;
 
 	UINT32 m_debugger_temp;
+=======
+	std::unique_ptr<rsp_cop2>    m_cop2;
+
+	uint32_t *m_dmem32;
+	uint16_t *m_dmem16;
+	uint8_t *m_dmem8;
+
+	uint32_t *m_imem32;
+	uint16_t *m_imem16;
+	uint8_t *m_imem8;
+
+	uint32_t m_debugger_temp;
+>>>>>>> upstream/master
 	bool m_isdrc;
 
 	devcb_read32 m_dp_reg_r_func;
@@ -288,6 +406,7 @@ private:
 	devcb_write32 m_sp_reg_w_func;
 	devcb_write32 m_sp_set_status_func;
 
+<<<<<<< HEAD
 	UINT8 READ8(UINT32 address);
 	UINT16 READ16(UINT32 address);
 	UINT32 READ32(UINT32 address);
@@ -304,6 +423,24 @@ private:
 	void DM_WRITE8(UINT32 address, UINT8 data);
 	void DM_WRITE16(UINT32 address, UINT16 data);
 	void DM_WRITE32(UINT32 address, UINT32 data);
+=======
+	uint8_t READ8(uint32_t address);
+	uint16_t READ16(uint32_t address);
+	uint32_t READ32(uint32_t address);
+	void WRITE8(uint32_t address, uint8_t data);
+	void WRITE16(uint32_t address, uint16_t data);
+	void WRITE32(uint32_t address, uint32_t data);
+	uint32_t get_cop0_reg(int reg);
+	void set_cop0_reg(int reg, uint32_t data);
+	void load_fast_iregs(drcuml_block *block);
+	void save_fast_iregs(drcuml_block *block);
+	uint8_t DM_READ8(uint32_t address);
+	uint16_t DM_READ16(uint32_t address);
+	uint32_t DM_READ32(uint32_t address);
+	void DM_WRITE8(uint32_t address, uint8_t data);
+	void DM_WRITE16(uint32_t address, uint16_t data);
+	void DM_WRITE32(uint32_t address, uint32_t data);
+>>>>>>> upstream/master
 	void rspcom_init();
 	void execute_run_drc();
 	void code_flush_cache();
@@ -312,6 +449,7 @@ private:
 	void static_generate_nocode_handler();
 	void static_generate_out_of_cycles();
 	void static_generate_memory_accessor(int size, int iswrite, const char *name, uml::code_handle *&handleptr);
+<<<<<<< HEAD
 	void generate_update_cycles(drcuml_block *block, compiler_state *compiler, uml::parameter param, int allow_exception);
 	void generate_checksum_block(drcuml_block *block, compiler_state *compiler, const opcode_desc *seqhead, const opcode_desc *seqlast);
 	void generate_sequence_instruction(drcuml_block *block, compiler_state *compiler, const opcode_desc *desc);
@@ -331,3 +469,24 @@ extern const device_type RSP;
 
 
 #endif /* __RSP_H__ */
+=======
+	void generate_update_cycles(drcuml_block *block, compiler_state *compiler, uml::parameter param, bool allow_exception);
+	void generate_checksum_block(drcuml_block *block, compiler_state *compiler, const opcode_desc *seqhead, const opcode_desc *seqlast);
+	void generate_sequence_instruction(drcuml_block *block, compiler_state *compiler, const opcode_desc *desc);
+	void generate_delay_slot_and_branch(drcuml_block *block, compiler_state *compiler, const opcode_desc *desc, uint8_t linkreg);
+	void generate_branch(drcuml_block *block, compiler_state *compiler, const opcode_desc *desc);
+	bool generate_opcode(drcuml_block *block, compiler_state *compiler, const opcode_desc *desc);
+	bool generate_special(drcuml_block *block, compiler_state *compiler, const opcode_desc *desc);
+	bool generate_regimm(drcuml_block *block, compiler_state *compiler, const opcode_desc *desc);
+	bool generate_cop0(drcuml_block *block, compiler_state *compiler, const opcode_desc *desc);
+	void log_add_disasm_comment(drcuml_block *block, uint32_t pc, uint32_t op);
+};
+
+
+DECLARE_DEVICE_TYPE(RSP, rsp_device)
+
+extern offs_t rsp_dasm_one(std::ostream &stream, offs_t pc, uint32_t op);
+
+
+#endif // MAME_CPU_RSP_RSP_H
+>>>>>>> upstream/master

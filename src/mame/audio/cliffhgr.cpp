@@ -1,7 +1,12 @@
 // license:BSD-3-Clause
 // copyright-holders:Aaron Giles,Ernesto Corvi
 #include "emu.h"
+<<<<<<< HEAD
 #include "sound/discrete.h"
+=======
+#include "audio/cliffhgr.h"
+
+>>>>>>> upstream/master
 
 #define CLIFF_ENABLE_SND_1  NODE_01
 #define CLIFF_ENABLE_SND_2  NODE_02

@@ -227,7 +227,11 @@ D5 = Spare (Not used)
 
 WRITE8_MEMBER(nitedrvr_state::nitedrvr_out1_w)
 {
+<<<<<<< HEAD
 	set_led_status(machine(), 0, data & 0x10);
+=======
+	output().set_led_value(0, data & 0x10);
+>>>>>>> upstream/master
 
 	m_crash_en = data & 0x01;
 
@@ -252,7 +256,11 @@ TIMER_DEVICE_CALLBACK_MEMBER(nitedrvr_state::nitedrvr_crash_toggle_callback)
 	if (m_crash_en && m_crash_data_en)
 	{
 		m_crash_data--;
+<<<<<<< HEAD
 		address_space &space = machine().driver_data()->generic_space();
+=======
+		address_space &space = machine().dummy_space();
+>>>>>>> upstream/master
 		m_discrete->write(space, NITEDRVR_BANG_DATA, m_crash_data);  // Crash Volume
 		if (!m_crash_data)
 			m_crash_data_en = 0;    // Done counting?

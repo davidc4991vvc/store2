@@ -40,15 +40,25 @@
  *          +-------++----+----+----+----+----+
  *
  *          Reset count function: Please refer to
+<<<<<<< HEAD
  *          National Semiconductor datasheet (timing diagramm)
  *
  *  Naming conventions follow National Semiconductor datasheet
  *
+=======
+ *          National Semiconductor datasheet (timing diagram)
+ *
+ *  Naming conventions follow National Semiconductor datasheet
+ *
+ *  TODO: DM74161 is compatible to DM9316 (both asynchronous clear)
+ *        DM74163 has asynchronous clear (on L to H transition of clock)
+>>>>>>> upstream/master
  */
 
 #ifndef NLD_9316_H_
 #define NLD_9316_H_
 
+<<<<<<< HEAD
 #include "nl_base.h"
 
 #define TTL_9316(_name, _CLK, _ENP, _ENT, _CLRQ, _LOADQ, _A, _B, _C, _D)            \
@@ -112,5 +122,23 @@ NETLIB_DEVICE(9316,
 NETLIB_DEVICE_DERIVED_PURE(9316_dip, 9316);
 
 NETLIB_NAMESPACE_DEVICES_END()
+=======
+#include "../nl_setup.h"
+
+#define TTL_9316(name, cCLK, cENP, cENT, cCLRQ, cLOADQ, cA, cB, cC, cD)         \
+		NET_REGISTER_DEV(TTL_9316, name)                                        \
+		NET_CONNECT(name, CLK, cCLK)                                            \
+		NET_CONNECT(name, ENP,  cENP)                                           \
+		NET_CONNECT(name, ENT,  cENT)                                           \
+		NET_CONNECT(name, CLRQ, cCLRQ)                                          \
+		NET_CONNECT(name, LOADQ, cLOADQ)                                        \
+		NET_CONNECT(name, A,    cA)                                             \
+		NET_CONNECT(name, B,    cB)                                             \
+		NET_CONNECT(name, C,    cC)                                             \
+		NET_CONNECT(name, D,    cD)
+
+#define TTL_9316_DIP(name)                                                      \
+		NET_REGISTER_DEV(TTL_9316_DIP, name)
+>>>>>>> upstream/master
 
 #endif /* NLD_9316_H_ */

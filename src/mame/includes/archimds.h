@@ -13,6 +13,10 @@
 #include "sound/dac.h"
 #include "machine/i2cmem.h"
 #include "machine/wd_fdc.h"
+<<<<<<< HEAD
+=======
+#include "screen.h"
+>>>>>>> upstream/master
 
 // interrupt definitions.  these are for the real Archimedes computer - arcade
 // and gambling knockoffs likely are a bit different.
@@ -55,7 +59,13 @@ public:
 		m_region_maincpu(*this, "maincpu"),
 		m_region_vram(*this, "vram"),
 		m_screen(*this, "screen"),
+<<<<<<< HEAD
 		m_palette(*this, "palette") { }
+=======
+		m_palette(*this, "palette"),
+		m_dac(*this, { "dac0", "dac1", "dac2", "dac3", "dac4", "dac5", "dac6", "dac7" })
+		{ }
+>>>>>>> upstream/master
 
 	optional_device<aakart_device> m_kart;
 	void archimedes_init();
@@ -82,6 +92,7 @@ public:
 	DECLARE_WRITE_LINE_MEMBER( a310_kart_rx_w );
 	DECLARE_WRITE_LINE_MEMBER( a310_kart_tx_w );
 
+<<<<<<< HEAD
 	UINT8 m_i2c_clk;
 	INT16 m_memc_pages[0x2000]; // the logical RAM area is 32 megs, and the smallest page size is 4k
 	UINT32 m_vidc_regs[256];
@@ -92,18 +103,39 @@ public:
 
 	UINT32 screen_update(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect);
 	virtual void device_timer(emu_timer &timer, device_timer_id id, int param, void *ptr);
+=======
+	uint8_t m_i2c_clk;
+	int16_t m_memc_pages[0x2000]; // the logical RAM area is 32 megs, and the smallest page size is 4k
+	uint32_t m_vidc_regs[256];
+	uint8_t m_cursor_vram[0x200];
+	uint8_t m_ioc_regs[0x80/4];
+	uint8_t m_vidc_bpp_mode;
+	uint8_t m_vidc_interlace;
+	uint16_t m_vidc_vblank_time;
+
+	uint32_t screen_update(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect);
+	virtual void device_timer(emu_timer &timer, device_timer_id id, int param, void *ptr) override;
+>>>>>>> upstream/master
 
 protected:
 	required_device<cpu_device> m_maincpu;
 	optional_device<i2cmem_device> m_i2cmem;
+<<<<<<< HEAD
 	optional_device<wd1772_t> m_fdc;
+=======
+	optional_device<wd1772_device> m_fdc;
+>>>>>>> upstream/master
 	optional_device<floppy_connector> m_floppy0;
 	optional_device<floppy_connector> m_floppy1;
 	required_memory_region m_region_maincpu;
 	required_memory_region m_region_vram;
 	required_device<screen_device> m_screen;
 	required_device<palette_device> m_palette;
+<<<<<<< HEAD
 	dac_device *m_dac[8];
+=======
+	required_device_array<dac_word_interface, 8> m_dac;
+>>>>>>> upstream/master
 
 private:
 
@@ -123,6 +155,7 @@ private:
 	DECLARE_READ32_MEMBER(ioc_ctrl_r);
 	DECLARE_WRITE32_MEMBER(ioc_ctrl_w);
 
+<<<<<<< HEAD
 	UINT32 *m_archimedes_memc_physmem;
 	UINT32 m_memc_pagesize;
 	int m_memc_latchrom;
@@ -136,6 +169,21 @@ private:
 	emu_timer *m_timer[4], *m_snd_timer, *m_vid_timer;
 	emu_timer *m_vbl_timer;
 	UINT8 m_floppy_select;
+=======
+	uint32_t *m_archimedes_memc_physmem;
+	uint32_t m_memc_pagesize;
+	int m_memc_latchrom;
+	uint32_t m_ioc_timercnt[4], m_ioc_timerout[4];
+	uint32_t m_vidc_vidstart, m_vidc_vidend, m_vidc_vidinit, m_vidc_vidcur,m_vidc_cinit;
+	uint32_t m_vidc_sndstart, m_vidc_sndend, m_vidc_sndcur, m_vidc_sndendcur;
+	uint8_t m_video_dma_on,m_audio_dma_on;
+	uint8_t m_vidc_pixel_clk;
+	uint8_t m_vidc_stereo_reg[8];
+	bool m_cursor_enabled;
+	emu_timer *m_timer[4], *m_snd_timer, *m_vid_timer;
+	emu_timer *m_vbl_timer;
+	uint8_t m_floppy_select;
+>>>>>>> upstream/master
 	bool check_floppy_ready();
 };
 

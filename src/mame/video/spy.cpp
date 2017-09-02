@@ -46,7 +46,11 @@ K051960_CB_MEMBER(spy_state::sprite_callback)
 
 ***************************************************************************/
 
+<<<<<<< HEAD
 UINT32 spy_state::screen_update_spy(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+=======
+uint32_t spy_state::screen_update_spy(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+>>>>>>> upstream/master
 {
 	m_k052109->tilemap_update();
 

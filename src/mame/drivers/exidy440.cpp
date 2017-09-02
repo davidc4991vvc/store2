@@ -283,7 +283,11 @@ CUSTOM_INPUT_MEMBER(exidy440_state::firq_vblank_r)
 CUSTOM_INPUT_MEMBER(exidy440_state::hitnmiss_button1_r)
 {
 	/* button 1 shows up in two bits */
+<<<<<<< HEAD
 	UINT32 button1 = ioport("HITNMISS_BUTTON1")->read();
+=======
+	uint32_t button1 = ioport("HITNMISS_BUTTON1")->read();
+>>>>>>> upstream/master
 	return (button1 << 1) | button1;
 }
 
@@ -295,10 +299,17 @@ CUSTOM_INPUT_MEMBER(exidy440_state::hitnmiss_button1_r)
  *
  *************************************/
 
+<<<<<<< HEAD
 void exidy440_state::exidy440_bank_select(UINT8 bank)
 {
 	/* for the showdown case, bank 0 is a PLD */
 	if (m_showdown_bank_data[0] != NULL)
+=======
+void exidy440_state::exidy440_bank_select(uint8_t bank)
+{
+	/* for the showdown case, bank 0 is a PLD */
+	if (m_showdown_bank_data[0] != nullptr)
+>>>>>>> upstream/master
 	{
 		if (bank == 0 && m_bank != 0)
 			m_maincpu->space(AS_PROGRAM).install_read_handler(0x4000, 0x7fff, read8_delegate(FUNC(exidy440_state::showdown_bank0_r),this));
@@ -375,7 +386,11 @@ WRITE8_MEMBER(exidy440_state::exidy440_input_port_3_w)
 
 WRITE8_MEMBER(exidy440_state::exidy440_coin_counter_w)
 {
+<<<<<<< HEAD
 	coin_counter_w(machine(), 0, data & 1);
+=======
+	machine().bookkeeping().coin_counter_w(0, data & 1);
+>>>>>>> upstream/master
 }
 
 
@@ -390,7 +405,11 @@ READ8_MEMBER(exidy440_state::showdown_bank0_r)
 {
 	/* showdown relies on different values from different memory locations */
 	/* yukon relies on multiple reads from the same location returning different values */
+<<<<<<< HEAD
 	UINT8 result = 0xff;
+=======
+	uint8_t result = 0xff;
+>>>>>>> upstream/master
 
 	/* fetch the special data if a bank is selected */
 	if (m_showdown_bank_select >= 0)
@@ -429,7 +448,11 @@ READ8_MEMBER(exidy440_state::topsecex_input_port_5_r)
 
 WRITE8_MEMBER(exidy440_state::topsecex_yscroll_w)
 {
+<<<<<<< HEAD
 	*m_topsecex_yscroll = data;
+=======
+	m_topsecex_yscroll = data;
+>>>>>>> upstream/master
 }
 
 
@@ -443,7 +466,11 @@ WRITE8_MEMBER(exidy440_state::topsecex_yscroll_w)
 void exidy440_state::machine_start()
 {
 	/* the EEROM lives in the uppermost 8k of the top bank */
+<<<<<<< HEAD
 	UINT8 *rom = memregion("maincpu")->base();
+=======
+	uint8_t *rom = memregion("maincpu")->base();
+>>>>>>> upstream/master
 
 	machine().device<nvram_device>("nvram")->set_base(&rom[0x10000 + 15 * 0x4000 + 0x2000], 0x2000);
 }
@@ -526,8 +553,13 @@ static INPUT_PORTS_START( crossbow )
 	PORT_DIPSETTING(    0x30, DEF_STR( Normal ) )
 	PORT_DIPSETTING(    0x20, DEF_STR( Hard ) )
 	PORT_DIPSETTING(    0x10, DEF_STR( Hardest ) )
+<<<<<<< HEAD
 	PORT_BIT( 0x40, IP_ACTIVE_LOW, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, exidy440_state,firq_beam_r, NULL)
 	PORT_BIT( 0x80, IP_ACTIVE_LOW, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, exidy440_state,firq_vblank_r, NULL)
+=======
+	PORT_BIT( 0x40, IP_ACTIVE_LOW, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, exidy440_state,firq_beam_r, nullptr)
+	PORT_BIT( 0x80, IP_ACTIVE_LOW, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, exidy440_state,firq_vblank_r, nullptr)
+>>>>>>> upstream/master
 
 	PORT_START("IN1")       /* audio board dips */
 	COINAGE
@@ -567,8 +599,13 @@ static INPUT_PORTS_START( cheyenne )
 	PORT_DIPSETTING(    0x00, DEF_STR( Normal ) )
 	PORT_DIPSETTING(    0x10, DEF_STR( Hard ) )
 	PORT_DIPSETTING(    0x20, DEF_STR( Hardest ) )
+<<<<<<< HEAD
 	PORT_BIT( 0x40, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, exidy440_state,firq_beam_r, NULL)
 	PORT_BIT( 0x80, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, exidy440_state,firq_vblank_r, NULL)
+=======
+	PORT_BIT( 0x40, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, exidy440_state,firq_beam_r, nullptr)
+	PORT_BIT( 0x80, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, exidy440_state,firq_vblank_r, nullptr)
+>>>>>>> upstream/master
 
 	PORT_START("IN1")       /* audio board dips */
 	COINAGE
@@ -608,8 +645,13 @@ static INPUT_PORTS_START( combat )
 	PORT_DIPSETTING(    0x00, DEF_STR( Normal ) )
 	PORT_DIPSETTING(    0x10, DEF_STR( Hard ) )
 	PORT_DIPSETTING(    0x20, DEF_STR( Hardest ) )
+<<<<<<< HEAD
 	PORT_BIT( 0x40, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, exidy440_state,firq_beam_r, NULL)
 	PORT_BIT( 0x80, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, exidy440_state,firq_vblank_r, NULL)
+=======
+	PORT_BIT( 0x40, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, exidy440_state,firq_beam_r, nullptr)
+	PORT_BIT( 0x80, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, exidy440_state,firq_vblank_r, nullptr)
+>>>>>>> upstream/master
 
 	PORT_START("IN1")       /* audio board dips */
 	COINAGE
@@ -649,8 +691,13 @@ static INPUT_PORTS_START( catch22 )
 	PORT_DIPSETTING(    0x00, DEF_STR( Normal ) )
 	PORT_DIPSETTING(    0x10, DEF_STR( Hard ) )
 	PORT_DIPSETTING(    0x20, DEF_STR( Hardest ) )
+<<<<<<< HEAD
 	PORT_BIT( 0x40, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, exidy440_state,firq_beam_r, NULL)
 	PORT_BIT( 0x80, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, exidy440_state,firq_vblank_r, NULL)
+=======
+	PORT_BIT( 0x40, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, exidy440_state,firq_beam_r, nullptr)
+	PORT_BIT( 0x80, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, exidy440_state,firq_vblank_r, nullptr)
+>>>>>>> upstream/master
 
 	PORT_START("IN1")       /* audio board dips */
 	COINAGE
@@ -692,8 +739,13 @@ static INPUT_PORTS_START( cracksht )
 	PORT_DIPSETTING(    0x00, DEF_STR( Normal ) )
 	PORT_DIPSETTING(    0x10, DEF_STR( Hard ) )
 	PORT_DIPSETTING(    0x20, DEF_STR( Hardest ) )
+<<<<<<< HEAD
 	PORT_BIT( 0x40, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, exidy440_state,firq_beam_r, NULL)
 	PORT_BIT( 0x80, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, exidy440_state,firq_vblank_r, NULL)
+=======
+	PORT_BIT( 0x40, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, exidy440_state,firq_beam_r, nullptr)
+	PORT_BIT( 0x80, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, exidy440_state,firq_vblank_r, nullptr)
+>>>>>>> upstream/master
 
 	PORT_START("IN1")       /* audio board dips */
 	COINAGE
@@ -730,8 +782,13 @@ static INPUT_PORTS_START( claypign )
 	PORT_DIPSETTING(    0x00, DEF_STR( Normal ) )
 	PORT_DIPSETTING(    0x10, DEF_STR( Hard ) )
 	PORT_DIPSETTING(    0x20, DEF_STR( Hardest ) )
+<<<<<<< HEAD
 	PORT_BIT( 0x40, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, exidy440_state,firq_beam_r, NULL)
 	PORT_BIT( 0x80, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, exidy440_state,firq_vblank_r, NULL)
+=======
+	PORT_BIT( 0x40, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, exidy440_state,firq_beam_r, nullptr)
+	PORT_BIT( 0x80, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, exidy440_state,firq_vblank_r, nullptr)
+>>>>>>> upstream/master
 
 	PORT_START("IN1")       /* audio board dips */
 	COINAGE
@@ -772,8 +829,13 @@ static INPUT_PORTS_START( chiller )
 	PORT_DIPSETTING(    0x00, DEF_STR( Normal ) )
 	PORT_DIPSETTING(    0x10, DEF_STR( Hard ) )
 	PORT_DIPSETTING(    0x20, DEF_STR( Hardest ) )
+<<<<<<< HEAD
 	PORT_BIT( 0x40, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, exidy440_state,firq_beam_r, NULL)
 	PORT_BIT( 0x80, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, exidy440_state,firq_vblank_r, NULL)
+=======
+	PORT_BIT( 0x40, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, exidy440_state,firq_beam_r, nullptr)
+	PORT_BIT( 0x80, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, exidy440_state,firq_vblank_r, nullptr)
+>>>>>>> upstream/master
 
 	PORT_START("IN1")       /* audio board dips */
 	COINAGE
@@ -811,8 +873,13 @@ static INPUT_PORTS_START( topsecex )
 	PORT_DIPSETTING(    0x00, DEF_STR( Normal ) )
 	PORT_DIPSETTING(    0x10, DEF_STR( Hard ) )
 	PORT_DIPSETTING(    0x20, DEF_STR( Hardest ) )
+<<<<<<< HEAD
 	PORT_BIT( 0x40, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, exidy440_state,firq_beam_r, NULL)
 	PORT_BIT( 0x80, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, exidy440_state,firq_vblank_r, NULL)
+=======
+	PORT_BIT( 0x40, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, exidy440_state,firq_beam_r, nullptr)
+	PORT_BIT( 0x80, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, exidy440_state,firq_vblank_r, nullptr)
+>>>>>>> upstream/master
 
 	PORT_START("IN1")       /* audio board dips */
 	COINAGE
@@ -848,7 +915,11 @@ INPUT_PORTS_END
 
 static INPUT_PORTS_START( hitnmiss )
 	PORT_START("IN0")       /* player inputs and logic board dips */
+<<<<<<< HEAD
 	PORT_BIT( 0x03, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, exidy440_state,hitnmiss_button1_r, NULL)
+=======
+	PORT_BIT( 0x03, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, exidy440_state,hitnmiss_button1_r, nullptr)
+>>>>>>> upstream/master
 	PORT_DIPNAME( 0x0c, 0x00, "Seconds" )
 	PORT_DIPSETTING(    0x04, "20" )
 	PORT_DIPSETTING(    0x00, "30" )
@@ -859,8 +930,13 @@ static INPUT_PORTS_START( hitnmiss )
 	PORT_DIPSETTING(    0x00, DEF_STR( Normal ) )
 	PORT_DIPSETTING(    0x10, DEF_STR( Hard ) )
 	PORT_DIPSETTING(    0x20, DEF_STR( Hardest ) )
+<<<<<<< HEAD
 	PORT_BIT( 0x40, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, exidy440_state,firq_beam_r, NULL)
 	PORT_BIT( 0x80, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, exidy440_state,firq_vblank_r, NULL)
+=======
+	PORT_BIT( 0x40, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, exidy440_state,firq_beam_r, nullptr)
+	PORT_BIT( 0x80, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, exidy440_state,firq_vblank_r, nullptr)
+>>>>>>> upstream/master
 
 	PORT_START("IN1")       /* audio board dips */
 	COINAGE
@@ -892,7 +968,11 @@ INPUT_PORTS_END
 
 static INPUT_PORTS_START( whodunit )
 	PORT_START("IN0")       /* player inputs and logic board dips */
+<<<<<<< HEAD
 	PORT_BIT( 0x01, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, exidy440_state,firq_vblank_r, NULL)
+=======
+	PORT_BIT( 0x01, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, exidy440_state,firq_vblank_r, nullptr)
+>>>>>>> upstream/master
 	PORT_BIT( 0x02, IP_ACTIVE_HIGH, IPT_BUTTON1 )
 	PORT_DIPNAME( 0x0c, 0x00, DEF_STR( Lives ) )
 	PORT_DIPSETTING(    0x04, "2" )
@@ -904,8 +984,13 @@ static INPUT_PORTS_START( whodunit )
 	PORT_DIPSETTING(    0x00, DEF_STR( Normal ) )
 	PORT_DIPSETTING(    0x10, DEF_STR( Hard ) )
 	PORT_DIPSETTING(    0x20, DEF_STR( Hardest ) )
+<<<<<<< HEAD
 	PORT_BIT( 0x40, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, exidy440_state,firq_beam_r, NULL)
 	PORT_BIT( 0x80, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, exidy440_state,firq_vblank_r, NULL)
+=======
+	PORT_BIT( 0x40, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, exidy440_state,firq_beam_r, nullptr)
+	PORT_BIT( 0x80, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, exidy440_state,firq_vblank_r, nullptr)
+>>>>>>> upstream/master
 
 	PORT_START("IN1")       /* audio board dips */
 	COINAGE
@@ -943,8 +1028,13 @@ static INPUT_PORTS_START( showdown )
 	PORT_DIPSETTING(    0x00, DEF_STR( Normal ) )
 	PORT_DIPSETTING(    0x10, DEF_STR( Hard ) )
 	PORT_DIPSETTING(    0x20, DEF_STR( Hardest ) )
+<<<<<<< HEAD
 	PORT_BIT( 0x40, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, exidy440_state,firq_beam_r, NULL)
 	PORT_BIT( 0x80, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, exidy440_state,firq_vblank_r, NULL)
+=======
+	PORT_BIT( 0x40, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, exidy440_state,firq_beam_r, nullptr)
+	PORT_BIT( 0x80, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, exidy440_state,firq_vblank_r, nullptr)
+>>>>>>> upstream/master
 
 	PORT_START("IN1")       /* audio board dips */
 	COINAGE
@@ -992,7 +1082,11 @@ INPUT_PORTS_END
  *
  *************************************/
 
+<<<<<<< HEAD
 static MACHINE_CONFIG_START( exidy440, exidy440_state )
+=======
+static MACHINE_CONFIG_START( exidy440 )
+>>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", M6809, MAIN_CPU_CLOCK)
@@ -1994,7 +2088,11 @@ ROM_END
 
 DRIVER_INIT_MEMBER(exidy440_state,exidy440)
 {
+<<<<<<< HEAD
 	m_showdown_bank_data[0] = m_showdown_bank_data[1] = NULL;
+=======
+	m_showdown_bank_data[0] = m_showdown_bank_data[1] = nullptr;
+>>>>>>> upstream/master
 }
 
 
@@ -2014,19 +2112,31 @@ DRIVER_INIT_MEMBER(exidy440_state,topsecex)
 	m_maincpu->space(AS_PROGRAM).install_read_port(0x2ec6, 0x2ec6, "AN0");
 	m_maincpu->space(AS_PROGRAM).install_read_port(0x2ec7, 0x2ec7, "IN4");
 
+<<<<<<< HEAD
 	m_topsecex_yscroll = m_maincpu->space(AS_PROGRAM).install_write_handler(0x2ec1, 0x2ec1, write8_delegate(FUNC(exidy440_state::topsecex_yscroll_w),this));
+=======
+	m_maincpu->space(AS_PROGRAM).install_write_handler(0x2ec1, 0x2ec1, write8_delegate(FUNC(exidy440_state::topsecex_yscroll_w),this));
+>>>>>>> upstream/master
 }
 
 
 DRIVER_INIT_MEMBER(exidy440_state,showdown)
 {
+<<<<<<< HEAD
 	static const UINT8 bankdata0[0x18] =
+=======
+	static const uint8_t bankdata0[0x18] =
+>>>>>>> upstream/master
 	{
 		0x15,0x40,0xc1,0x8d,0x4c,0x84,0x0e,0xce,
 		0x52,0xd0,0x99,0x48,0x80,0x09,0xc9,0x45,
 		0xc4,0x8e,0x5a,0x92,0x18,0xd8,0x51,0xc0
 	};
+<<<<<<< HEAD
 	static const UINT8 bankdata1[0x18] =
+=======
+	static const uint8_t bankdata1[0x18] =
+>>>>>>> upstream/master
 	{
 		0x11,0x51,0xc0,0x89,0x4d,0x85,0x0c,0xcc,
 		0x46,0xd2,0x98,0x59,0x91,0x08,0xc8,0x41,
@@ -2043,13 +2153,21 @@ DRIVER_INIT_MEMBER(exidy440_state,showdown)
 
 DRIVER_INIT_MEMBER(exidy440_state,yukon)
 {
+<<<<<<< HEAD
 	static const UINT8 bankdata0[0x18] =
+=======
+	static const uint8_t bankdata0[0x18] =
+>>>>>>> upstream/master
 	{
 		0x31,0x40,0xc1,0x95,0x54,0x90,0x16,0xd6,
 		0x62,0xe0,0xa5,0x44,0x80,0x05,0xc5,0x51,
 		0xd0,0x96,0x66,0xa2,0x24,0xe4,0x61,0xc0
 	};
+<<<<<<< HEAD
 	static const UINT8 bankdata1[0x18] =
+=======
+	static const uint8_t bankdata1[0x18] =
+>>>>>>> upstream/master
 	{
 		0x21,0x61,0xc0,0x85,0x55,0x91,0x14,0xd4,
 		0x52,0xe2,0xa4,0x65,0xa1,0x04,0xc4,0x41,
@@ -2071,6 +2189,7 @@ DRIVER_INIT_MEMBER(exidy440_state,yukon)
  *
  *************************************/
 
+<<<<<<< HEAD
 GAME( 1983, crossbow, 0,        exidy440, crossbow, exidy440_state, exidy440, ROT0, "Exidy", "Crossbow (version 2.0)", 0 )
 GAME( 1984, cheyenne, 0,        exidy440, cheyenne, exidy440_state, exidy440, ROT0, "Exidy", "Cheyenne (version 1.0)", 0 )
 GAME( 1985, combat,   0,        exidy440, combat, exidy440_state,   exidy440, ROT0, "Exidy", "Combat (version 3.0)", 0 )
@@ -2086,3 +2205,20 @@ GAME( 1988, whodunit8,whodunit, exidy440, whodunit, exidy440_state, exidy440, RO
 GAME( 1988, showdown, 0,        exidy440, showdown, exidy440_state, showdown, ROT0, "Exidy", "Showdown (version 5.0)", 0 )
 GAME( 1989, yukon,    0,        exidy440, showdown, exidy440_state, yukon,    ROT0, "Exidy", "Yukon (version 2.0)", 0 )
 GAME( 1989, yukon1,   yukon,    exidy440, showdown, exidy440_state, yukon,    ROT0, "Exidy", "Yukon (version 1.0)", 0 )
+=======
+GAME( 1983, crossbow, 0,        exidy440, crossbow, exidy440_state, exidy440, ROT0, "Exidy", "Crossbow (version 2.0)",           0 )
+GAME( 1984, cheyenne, 0,        exidy440, cheyenne, exidy440_state, exidy440, ROT0, "Exidy", "Cheyenne (version 1.0)",           0 )
+GAME( 1985, combat,   0,        exidy440, combat,   exidy440_state, exidy440, ROT0, "Exidy", "Combat (version 3.0)",             0 )
+GAME( 1985, catch22,  combat,   exidy440, catch22,  exidy440_state, exidy440, ROT0, "Exidy", "Catch-22 (version 8.0)",           0 )
+GAME( 1985, cracksht, 0,        exidy440, cracksht, exidy440_state, exidy440, ROT0, "Exidy", "Crackshot (version 2.0)",          0 )
+GAME( 1986, claypign, 0,        exidy440, claypign, exidy440_state, claypign, ROT0, "Exidy", "Clay Pigeon (version 2.0)",        0 )
+GAME( 1986, chiller,  0,        exidy440, chiller,  exidy440_state, exidy440, ROT0, "Exidy", "Chiller (version 3.0)",            0 )
+GAME( 1986, topsecex, 0,        topsecex, topsecex, exidy440_state, topsecex, ROT0, "Exidy", "Top Secret (Exidy) (version 1.0)", 0 )
+GAME( 1987, hitnmiss, 0,        exidy440, hitnmiss, exidy440_state, exidy440, ROT0, "Exidy", "Hit 'n Miss (version 3.0)",        0 )
+GAME( 1987, hitnmiss2,hitnmiss, exidy440, hitnmiss, exidy440_state, exidy440, ROT0, "Exidy", "Hit 'n Miss (version 2.0)",        0 )
+GAME( 1988, whodunit, 0,        exidy440, whodunit, exidy440_state, exidy440, ROT0, "Exidy", "Who Dunit (version 9.0)",          0 )
+GAME( 1988, whodunit8,whodunit, exidy440, whodunit, exidy440_state, exidy440, ROT0, "Exidy", "Who Dunit (version 8.0)",          0 )
+GAME( 1988, showdown, 0,        exidy440, showdown, exidy440_state, showdown, ROT0, "Exidy", "Showdown (version 5.0)",           0 )
+GAME( 1989, yukon,    0,        exidy440, showdown, exidy440_state, yukon,    ROT0, "Exidy", "Yukon (version 2.0)",              0 )
+GAME( 1989, yukon1,   yukon,    exidy440, showdown, exidy440_state, yukon,    ROT0, "Exidy", "Yukon (version 1.0)",              0 )
+>>>>>>> upstream/master

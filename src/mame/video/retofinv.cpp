@@ -14,27 +14,39 @@
 
 PALETTE_INIT_MEMBER(retofinv_state, retofinv)
 {
+<<<<<<< HEAD
 	const UINT8 *color_prom = memregion("proms")->base();
+=======
+	const uint8_t *palette_prom = memregion("palette")->base();
+	const uint8_t *clut_prom = memregion("clut")->base();
+>>>>>>> upstream/master
 	int i;
 
 	/* create a lookup table for the palette */
 	for (i = 0; i < 0x100; i++)
 	{
+<<<<<<< HEAD
 		int r = pal4bit(color_prom[i + 0x000]);
 		int g = pal4bit(color_prom[i + 0x100]);
 		int b = pal4bit(color_prom[i + 0x200]);
+=======
+		int r = pal4bit(palette_prom[i + 0x000]);
+		int g = pal4bit(palette_prom[i + 0x100]);
+		int b = pal4bit(palette_prom[i + 0x200]);
+>>>>>>> upstream/master
 
 		palette.set_indirect_color(i, rgb_t(r, g, b));
 	}
 
+<<<<<<< HEAD
 	/* color_prom now points to the beginning of the lookup table */
 	color_prom += 0x300;
 
-
+=======
 	/* fg chars (1bpp) */
 	for (i = 0; i < 0x200; i++)
 	{
-		UINT8 ctabentry;
+		uint8_t ctabentry;
 
 		if (i & 0x01)
 			ctabentry = i >> 1;
@@ -44,11 +56,62 @@ PALETTE_INIT_MEMBER(retofinv_state, retofinv)
 		palette.set_pen_indirect(i, ctabentry);
 	}
 
+	/* sprites and bg tiles clut */
+	for (i = 0; i < 0x800; i++)
+	{
+		// descramble the address
+		int j = BITSWAP16(i,15,14,13,12,11,10,9,8,7,6,5,4,3,0,1,2);
+		palette.set_pen_indirect(i + 0x200, clut_prom[j]);
+	}
+}
+
+PALETTE_INIT_MEMBER(retofinv_state, retofinv_bl)
+{
+	const uint8_t *palette_prom = memregion("palette")->base();
+	const uint8_t *clut_prom = memregion("clut")->base();
+	int i;
+
+	/* create a lookup table for the palette */
+	for (i = 0; i < 0x100; i++)
+	{
+		int r = pal4bit(palette_prom[i + 0x000]);
+		int g = pal4bit(palette_prom[i + 0x100]);
+		int b = pal4bit(palette_prom[i + 0x200]);
+
+		palette.set_indirect_color(i, rgb_t(r, g, b));
+	}
+>>>>>>> upstream/master
+
+	/* fg chars (1bpp) */
+	for (i = 0; i < 0x200; i++)
+	{
+<<<<<<< HEAD
+		UINT8 ctabentry;
+=======
+		uint8_t ctabentry;
+>>>>>>> upstream/master
+
+		if (i & 0x01)
+			ctabentry = i >> 1;
+		else
+			ctabentry = 0;
+
+		palette.set_pen_indirect(i, ctabentry);
+	}
+
+<<<<<<< HEAD
 	/* sprites and bg tiles */
 	for (i = 0; i < 0x800; i++)
 	{
 		UINT8 ctabentry = BITSWAP8(color_prom[i],4,5,6,7,3,2,1,0);
 		palette.set_pen_indirect(i + 0x200, ctabentry);
+=======
+	/* sprites and bg tiles clut */
+	for (i = 0; i < 0x800; i++)
+	{
+		// descramble the data
+		palette.set_pen_indirect(i + 0x200, BITSWAP8(clut_prom[i], 4,5,6,7,3,2,1,0));
+>>>>>>> upstream/master
 	}
 }
 
@@ -101,8 +164,13 @@ TILE_GET_INFO_MEMBER(retofinv_state::fg_get_tile_info)
 
 void retofinv_state::video_start()
 {
+<<<<<<< HEAD
 	m_bg_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(retofinv_state::bg_get_tile_info),this),tilemap_mapper_delegate(FUNC(retofinv_state::tilemap_scan),this),8,8,36,28);
 	m_fg_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(retofinv_state::fg_get_tile_info),this),tilemap_mapper_delegate(FUNC(retofinv_state::tilemap_scan),this),8,8,36,28);
+=======
+	m_bg_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(retofinv_state::bg_get_tile_info),this),tilemap_mapper_delegate(FUNC(retofinv_state::tilemap_scan),this),8,8,36,28);
+	m_fg_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(retofinv_state::fg_get_tile_info),this),tilemap_mapper_delegate(FUNC(retofinv_state::tilemap_scan),this),8,8,36,28);
+>>>>>>> upstream/master
 
 	m_fg_tilemap->configure_groups(*m_gfxdecode->gfx(0), 0);
 
@@ -166,9 +234,15 @@ WRITE8_MEMBER(retofinv_state::gfx_ctrl_w)
 
 void retofinv_state::draw_sprites(bitmap_ind16 &bitmap)
 {
+<<<<<<< HEAD
 	UINT8 *spriteram = m_sharedram + 0x0780;
 	UINT8 *spriteram_2 = m_sharedram + 0x0f80;
 	UINT8 *spriteram_3 = m_sharedram + 0x1780;
+=======
+	uint8_t *spriteram = m_sharedram + 0x0780;
+	uint8_t *spriteram_2 = m_sharedram + 0x0f80;
+	uint8_t *spriteram_3 = m_sharedram + 0x1780;
+>>>>>>> upstream/master
 	int offs;
 	const rectangle spritevisiblearea(2*8, 34*8-1, 0*8, 28*8-1);
 
@@ -219,7 +293,11 @@ void retofinv_state::draw_sprites(bitmap_ind16 &bitmap)
 
 
 
+<<<<<<< HEAD
 UINT32 retofinv_state::screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+=======
+uint32_t retofinv_state::screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+>>>>>>> upstream/master
 {
 	m_bg_tilemap->draw(screen, bitmap, cliprect, 0,0);
 	draw_sprites(bitmap);

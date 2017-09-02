@@ -35,7 +35,11 @@
 #include "asc.h"
 
 // device type definition
+<<<<<<< HEAD
 const device_type ASC = &device_creator<asc_device>;
+=======
+DEFINE_DEVICE_TYPE(ASC, asc_device, "asc", "ASC")
+>>>>>>> upstream/master
 
 //**************************************************************************
 //  LIVE DEVICE
@@ -45,11 +49,20 @@ const device_type ASC = &device_creator<asc_device>;
 //  asc_device - constructor
 //-------------------------------------------------
 
+<<<<<<< HEAD
 asc_device::asc_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
 	: device_t(mconfig, ASC, "ASC", tag, owner, clock, "asc", __FILE__),
 		device_sound_interface(mconfig, *this),
 		write_irq(*this),
 		m_chip_type(0)
+=======
+asc_device::asc_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: device_t(mconfig, ASC, tag, owner, clock)
+	, device_sound_interface(mconfig, *this)
+	, write_irq(*this)
+	, m_chip_type(asc_type::ASC)
+	, m_timer(nullptr)
+>>>>>>> upstream/master
 {
 }
 
@@ -59,7 +72,11 @@ asc_device::asc_device(const machine_config &mconfig, const char *tag, device_t 
 //  the chip type
 //-------------------------------------------------
 
+<<<<<<< HEAD
 void asc_device::static_set_type(device_t &device, int type)
+=======
+void asc_device::static_set_type(device_t &device, asc_type type)
+>>>>>>> upstream/master
 {
 	asc_device &asc = downcast<asc_device &>(device);
 	asc.m_chip_type = type;
@@ -76,7 +93,11 @@ void asc_device::device_start()
 
 	memset(m_regs, 0, sizeof(m_regs));
 
+<<<<<<< HEAD
 	m_timer = timer_alloc(0, NULL);
+=======
+	m_timer = timer_alloc(0, nullptr);
+>>>>>>> upstream/master
 
 	save_item(NAME(m_fifo_a_rdptr));
 	save_item(NAME(m_fifo_b_rdptr));
@@ -131,7 +152,11 @@ void asc_device::sound_stream_update(sound_stream &stream, stream_sample_t **inp
 {
 	stream_sample_t *outL, *outR;
 	int i, ch;
+<<<<<<< HEAD
 	static UINT32 wtoffs[2] = { 0, 0x200 };
+=======
+	static uint32_t wtoffs[2] = { 0, 0x200 };
+>>>>>>> upstream/master
 
 	outL = outputs[0];
 	outR = outputs[1];
@@ -148,10 +173,17 @@ void asc_device::sound_stream_update(sound_stream &stream, stream_sample_t **inp
 		case 1: // FIFO mode
 			for (i = 0; i < samples; i++)
 			{
+<<<<<<< HEAD
 				INT8 smpll, smplr;
 
 				smpll = (INT8)m_fifo_a[m_fifo_a_rdptr]^0x80;
 				smplr = (INT8)m_fifo_b[m_fifo_b_rdptr]^0x80;
+=======
+				int8_t smpll, smplr;
+
+				smpll = (int8_t)m_fifo_a[m_fifo_a_rdptr]^0x80;
+				smplr = (int8_t)m_fifo_b[m_fifo_b_rdptr]^0x80;
+>>>>>>> upstream/master
 
 				// don't advance the sample pointer if there are no more samples
 				if (m_fifo_cap_a)
@@ -170,7 +202,11 @@ void asc_device::sound_stream_update(sound_stream &stream, stream_sample_t **inp
 
 				switch (m_chip_type)
 				{
+<<<<<<< HEAD
 					case ASC_TYPE_SONORA:
+=======
+					case asc_type::SONORA:
+>>>>>>> upstream/master
 						if (m_fifo_cap_a < 0x200)
 						{
 							m_regs[R_FIFOSTAT-0x800] |= 0x4;    // fifo less than half full
@@ -212,8 +248,13 @@ void asc_device::sound_stream_update(sound_stream &stream, stream_sample_t **inp
 		case 2: // wavetable mode
 			for (i = 0; i < samples; i++)
 			{
+<<<<<<< HEAD
 				INT32 mixL, mixR;
 				INT8 smpl;
+=======
+				int32_t mixL, mixR;
+				int8_t smpl;
+>>>>>>> upstream/master
 
 				mixL = mixR = 0;
 
@@ -224,11 +265,19 @@ void asc_device::sound_stream_update(sound_stream &stream, stream_sample_t **inp
 
 					if (ch < 2)
 					{
+<<<<<<< HEAD
 						smpl = (INT8)m_fifo_a[((m_phase[ch]>>15)&0x1ff) + wtoffs[ch&1]];
 					}
 					else
 					{
 						smpl = (INT8)m_fifo_b[((m_phase[ch]>>15)&0x1ff) + wtoffs[ch&1]];
+=======
+						smpl = (int8_t)m_fifo_a[((m_phase[ch]>>15)&0x1ff) + wtoffs[ch&1]];
+					}
+					else
+					{
+						smpl = (int8_t)m_fifo_b[((m_phase[ch]>>15)&0x1ff) + wtoffs[ch&1]];
+>>>>>>> upstream/master
 					}
 
 					smpl ^= 0x80;
@@ -251,7 +300,11 @@ void asc_device::sound_stream_update(sound_stream &stream, stream_sample_t **inp
 
 READ8_MEMBER( asc_device::read )
 {
+<<<<<<< HEAD
 	UINT8 rv;
+=======
+	uint8_t rv;
+>>>>>>> upstream/master
 
 //  printf("ASC: read at %x\n", offset);
 
@@ -272,6 +325,7 @@ READ8_MEMBER( asc_device::read )
 			case R_VERSION:
 				switch (m_chip_type)
 				{
+<<<<<<< HEAD
 					case ASC_TYPE_ASC:
 						return 0;
 
@@ -282,6 +336,18 @@ READ8_MEMBER( asc_device::read )
 						return 0xe8;
 
 					case ASC_TYPE_SONORA:
+=======
+					case asc_type::ASC:
+						return 0;
+
+					case asc_type::V8:
+					case asc_type::EAGLE:
+					case asc_type::SPICE:
+					case asc_type::VASP:
+						return 0xe8;
+
+					case asc_type::SONORA:
+>>>>>>> upstream/master
 						return 0xbc;
 
 					default:    // return the actual register value
@@ -292,10 +358,17 @@ READ8_MEMBER( asc_device::read )
 			case R_MODE:
 				switch (m_chip_type)
 				{
+<<<<<<< HEAD
 					case ASC_TYPE_V8:
 					case ASC_TYPE_EAGLE:
 					case ASC_TYPE_SPICE:
 					case ASC_TYPE_VASP:
+=======
+					case asc_type::V8:
+					case asc_type::EAGLE:
+					case asc_type::SPICE:
+					case asc_type::VASP:
+>>>>>>> upstream/master
 						return 1;
 
 					default:
@@ -306,10 +379,17 @@ READ8_MEMBER( asc_device::read )
 			case R_CONTROL:
 				switch (m_chip_type)
 				{
+<<<<<<< HEAD
 					case ASC_TYPE_V8:
 					case ASC_TYPE_EAGLE:
 					case ASC_TYPE_SPICE:
 					case ASC_TYPE_VASP:
+=======
+					case asc_type::V8:
+					case asc_type::EAGLE:
+					case asc_type::SPICE:
+					case asc_type::VASP:
+>>>>>>> upstream/master
 						return 1;
 
 					default:
@@ -318,7 +398,11 @@ READ8_MEMBER( asc_device::read )
 				break;
 
 			case R_FIFOSTAT:
+<<<<<<< HEAD
 				if (m_chip_type == ASC_TYPE_V8)
+=======
+				if (m_chip_type == asc_type::V8)
+>>>>>>> upstream/master
 				{
 					rv = 3;
 				}

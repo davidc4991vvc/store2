@@ -37,11 +37,19 @@ TILE_GET_INFO_MEMBER(pirates_state::get_bg_tile_info)
 
 void pirates_state::video_start()
 {
+<<<<<<< HEAD
 	m_tx_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(pirates_state::get_tx_tile_info),this),TILEMAP_SCAN_COLS,8,8,36,32);
 
 	/* Not sure how big they can be, Pirates uses only 32 columns, Genix 44 */
 	m_fg_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(pirates_state::get_fg_tile_info),this),TILEMAP_SCAN_COLS,8,8,64,32);
 	m_bg_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(pirates_state::get_bg_tile_info),this),TILEMAP_SCAN_COLS,     8,8,64,32);
+=======
+	m_tx_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(pirates_state::get_tx_tile_info),this),TILEMAP_SCAN_COLS,8,8,36,32);
+
+	/* Not sure how big they can be, Pirates uses only 32 columns, Genix 44 */
+	m_fg_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(pirates_state::get_fg_tile_info),this),TILEMAP_SCAN_COLS,8,8,64,32);
+	m_bg_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(pirates_state::get_bg_tile_info),this),TILEMAP_SCAN_COLS,     8,8,64,32);
+>>>>>>> upstream/master
 
 	m_tx_tilemap->set_transparent_pen(0);
 	m_fg_tilemap->set_transparent_pen(0);
@@ -72,8 +80,13 @@ WRITE16_MEMBER(pirates_state::bg_tileram_w)
 void pirates_state::draw_sprites(bitmap_ind16 &bitmap, const rectangle &cliprect)
 {
 	gfx_element *gfx = m_gfxdecode->gfx(1);
+<<<<<<< HEAD
 	UINT16 *source = m_spriteram + 4;
 	UINT16 *finish = source + 0x800/2-4;
+=======
+	uint16_t *source = m_spriteram + 4;
+	uint16_t *finish = source + 0x800/2-4;
+>>>>>>> upstream/master
 
 	while( source<finish )
 	{
@@ -101,7 +114,11 @@ void pirates_state::draw_sprites(bitmap_ind16 &bitmap, const rectangle &cliprect
 	}
 }
 
+<<<<<<< HEAD
 UINT32 pirates_state::screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+=======
+uint32_t pirates_state::screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+>>>>>>> upstream/master
 {
 	m_bg_tilemap->set_scrollx(0,m_scroll[0]);
 	m_fg_tilemap->set_scrollx(0,m_scroll[0]);

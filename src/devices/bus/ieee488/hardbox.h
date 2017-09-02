@@ -6,10 +6,17 @@
 
 **********************************************************************/
 
+<<<<<<< HEAD
 #pragma once
 
 #ifndef __PET_HARDBOX__
 #define __PET_HARDBOX__
+=======
+#ifndef MAME_BUS_IEEE488_HARDBOX_H
+#define MAME_BUS_IEEE488_HARDBOX_H
+
+#pragma once
+>>>>>>> upstream/master
 
 #include "ieee488.h"
 #include "cpu/z80/z80.h"
@@ -31,6 +38,7 @@ class hardbox_device :  public device_t,
 {
 public:
 	// construction/destruction
+<<<<<<< HEAD
 	hardbox_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
 
 	// optional information overrides
@@ -38,6 +46,24 @@ public:
 	virtual machine_config_constructor device_mconfig_additions() const;
 	virtual ioport_constructor device_input_ports() const;
 
+=======
+	hardbox_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
+
+protected:
+	// device-level overrides
+	virtual void device_start() override;
+	virtual void device_reset_after_children() override;
+
+	// optional information overrides
+	virtual const tiny_rom_entry *device_rom_region() const override;
+	virtual void device_add_mconfig(machine_config &config) override;
+	virtual ioport_constructor device_input_ports() const override;
+
+	// device_ieee488_interface overrides
+	virtual void ieee488_ifc(int state) override;
+
+private:
+>>>>>>> upstream/master
 	DECLARE_READ8_MEMBER( ppi0_pa_r );
 	DECLARE_WRITE8_MEMBER( ppi0_pb_w );
 	DECLARE_READ8_MEMBER( ppi0_pc_r );
@@ -47,6 +73,7 @@ public:
 	DECLARE_READ8_MEMBER( ppi1_pc_r );
 	DECLARE_WRITE8_MEMBER( ppi1_pc_w );
 
+<<<<<<< HEAD
 protected:
 	// device-level overrides
 	virtual void device_start();
@@ -56,6 +83,8 @@ protected:
 	virtual void ieee488_ifc(int state);
 
 private:
+=======
+>>>>>>> upstream/master
 	enum
 	{
 		LED_A,
@@ -64,14 +93,25 @@ private:
 	};
 
 	required_device<cpu_device> m_maincpu;
+<<<<<<< HEAD
 	required_device<corvus_hdc_t> m_hdc;
+=======
+	required_device<corvus_hdc_device> m_hdc;
+>>>>>>> upstream/master
 
 	int m_ifc;  // Tracks previous state of IEEE-488 IFC line
 };
 
 // device type definition
+<<<<<<< HEAD
 extern const device_type HARDBOX;
 
 
 
 #endif
+=======
+DECLARE_DEVICE_TYPE(HARDBOX, hardbox_device)
+
+
+#endif // MAME_BUS_IEEE488_HARDBOX_H
+>>>>>>> upstream/master

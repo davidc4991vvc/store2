@@ -19,11 +19,22 @@ Dip locations and factory settings verified with manual
 ***************************************************************************/
 
 #include "emu.h"
+<<<<<<< HEAD
 #include "cpu/m6809/hd6309.h"
 #include "cpu/m6809/m6809.h"
 #include "sound/2151intf.h"
 #include "includes/konamipt.h"
 #include "includes/contra.h"
+=======
+#include "includes/contra.h"
+#include "includes/konamipt.h"
+
+#include "cpu/m6809/hd6309.h"
+#include "cpu/m6809/m6809.h"
+#include "machine/gen_latch.h"
+#include "sound/ym2151.h"
+#include "speaker.h"
+>>>>>>> upstream/master
 
 
 INTERRUPT_GEN_MEMBER(contra_state::contra_interrupt)
@@ -46,6 +57,7 @@ WRITE8_MEMBER(contra_state::contra_sh_irqtrigger_w)
 WRITE8_MEMBER(contra_state::contra_coin_counter_w)
 {
 	if (data & 0x01)
+<<<<<<< HEAD
 		coin_counter_w(machine(), 0, data & 0x01);
 
 	if (data & 0x02)
@@ -59,6 +71,15 @@ WRITE8_MEMBER(contra_state::cpu_sound_command_w)
 
 
 
+=======
+		machine().bookkeeping().coin_counter_w(0, data & 0x01);
+
+	if (data & 0x02)
+		machine().bookkeeping().coin_counter_w(1, (data & 0x02) >> 1);
+}
+
+
+>>>>>>> upstream/master
 static ADDRESS_MAP_START( contra_map, AS_PROGRAM, 8, contra_state )
 	AM_RANGE(0x0000, 0x0007) AM_WRITE(contra_K007121_ctrl_0_w)
 	AM_RANGE(0x0010, 0x0010) AM_READ_PORT("SYSTEM")
@@ -71,7 +92,11 @@ static ADDRESS_MAP_START( contra_map, AS_PROGRAM, 8, contra_state )
 
 	AM_RANGE(0x0018, 0x0018) AM_WRITE(contra_coin_counter_w)
 	AM_RANGE(0x001a, 0x001a) AM_WRITE(contra_sh_irqtrigger_w)
+<<<<<<< HEAD
 	AM_RANGE(0x001c, 0x001c) AM_WRITE(cpu_sound_command_w)
+=======
+	AM_RANGE(0x001c, 0x001c) AM_DEVWRITE("soundlatch", generic_latch_8_device, write)
+>>>>>>> upstream/master
 	AM_RANGE(0x001e, 0x001e) AM_WRITENOP    /* ? */
 	AM_RANGE(0x0060, 0x0067) AM_WRITE(contra_K007121_ctrl_1_w)
 
@@ -97,7 +122,11 @@ static ADDRESS_MAP_START( contra_map, AS_PROGRAM, 8, contra_state )
 ADDRESS_MAP_END
 
 static ADDRESS_MAP_START( sound_map, AS_PROGRAM, 8, contra_state )
+<<<<<<< HEAD
 	AM_RANGE(0x0000, 0x0000) AM_READ(soundlatch_byte_r)
+=======
+	AM_RANGE(0x0000, 0x0000) AM_DEVREAD("soundlatch", generic_latch_8_device, read)
+>>>>>>> upstream/master
 	AM_RANGE(0x2000, 0x2001) AM_DEVREADWRITE("ymsnd", ym2151_device, read, write)
 	AM_RANGE(0x4000, 0x4000) AM_WRITENOP /* read triggers irq reset and latch read (in the hardware only). */
 	AM_RANGE(0x6000, 0x67ff) AM_RAM
@@ -193,12 +222,20 @@ GFXDECODE_END
 
 void contra_state::machine_start()
 {
+<<<<<<< HEAD
 	UINT8 *ROM = memregion("maincpu")->base();
+=======
+	uint8_t *ROM = memregion("maincpu")->base();
+>>>>>>> upstream/master
 
 	membank("bank1")->configure_entries(0, 16, &ROM[0x10000], 0x2000);
 }
 
+<<<<<<< HEAD
 static MACHINE_CONFIG_START( contra, contra_state )
+=======
+static MACHINE_CONFIG_START( contra )
+>>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", HD6309, XTAL_24MHz / 2 /* 3000000*4? */)
@@ -236,6 +273,11 @@ static MACHINE_CONFIG_START( contra, contra_state )
 	/* sound hardware */
 	MCFG_SPEAKER_STANDARD_STEREO("lspeaker", "rspeaker")
 
+<<<<<<< HEAD
+=======
+	MCFG_GENERIC_LATCH_8_ADD("soundlatch")
+
+>>>>>>> upstream/master
 	MCFG_YM2151_ADD("ymsnd", XTAL_3_579545MHz)
 	MCFG_SOUND_ROUTE(0, "lspeaker", 0.60)
 	MCFG_SOUND_ROUTE(1, "rspeaker", 0.60)
@@ -563,6 +605,7 @@ ROM_START( contrabj1 )
 	ROM_LOAD( "633f11.20g",   0x0300, 0x0100, CRC(14ca5e19) SHA1(eeee2f8b3d1e4acf47de1e74c4e507ff924591e7) )    /* 007121 #1 char lookup table */
 ROM_END
 
+<<<<<<< HEAD
 GAME( 1987, contra,    0,      contra, contra,  driver_device, 0, ROT90, "Konami", "Contra (US / Asia, set 1)", MACHINE_SUPPORTS_SAVE )
 GAME( 1987, contra1,   contra, contra, contra,  driver_device, 0, ROT90, "Konami", "Contra (US / Asia, set 2)", MACHINE_SUPPORTS_SAVE )
 GAME( 1987, contrae,   contra, contra, contra,  driver_device, 0, ROT90, "Konami", "Contra (US / Asia, set 3)", MACHINE_SUPPORTS_SAVE )
@@ -573,3 +616,15 @@ GAME( 1987, gryzor1,   contra, contra, gryzor,  driver_device, 0, ROT90, "Konami
 GAME( 1987, contrab,   contra, contra, contra,  driver_device, 0, ROT90, "bootleg", "Contra (bootleg)", MACHINE_SUPPORTS_SAVE )
 GAME( 1987, contrabj,  contra, contra, contra,  driver_device, 0, ROT90, "bootleg", "Contra (Japan bootleg, set 1)", MACHINE_SUPPORTS_SAVE )
 GAME( 1987, contrabj1, contra, contra, contra,  driver_device, 0, ROT90, "bootleg", "Contra (Japan bootleg, set 2)", MACHINE_SUPPORTS_SAVE )
+=======
+GAME( 1987, contra,    0,      contra, contra,  contra_state, 0, ROT90, "Konami",  "Contra (US / Asia, set 1)",     MACHINE_SUPPORTS_SAVE )
+GAME( 1987, contra1,   contra, contra, contra,  contra_state, 0, ROT90, "Konami",  "Contra (US / Asia, set 2)",     MACHINE_SUPPORTS_SAVE )
+GAME( 1987, contrae,   contra, contra, contra,  contra_state, 0, ROT90, "Konami",  "Contra (US / Asia, set 3)",     MACHINE_SUPPORTS_SAVE )
+GAME( 1987, contraj,   contra, contra, contra,  contra_state, 0, ROT90, "Konami",  "Contra (Japan, set 1)",         MACHINE_SUPPORTS_SAVE )
+GAME( 1987, contraj1,  contra, contra, contra,  contra_state, 0, ROT90, "Konami",  "Contra (Japan, set 2)",         MACHINE_SUPPORTS_SAVE )
+GAME( 1987, gryzor,    contra, contra, gryzor,  contra_state, 0, ROT90, "Konami",  "Gryzor (set 1)",                MACHINE_SUPPORTS_SAVE )
+GAME( 1987, gryzor1,   contra, contra, gryzor,  contra_state, 0, ROT90, "Konami",  "Gryzor (set 2)",                MACHINE_SUPPORTS_SAVE )
+GAME( 1987, contrab,   contra, contra, contra,  contra_state, 0, ROT90, "bootleg", "Contra (bootleg)",              MACHINE_SUPPORTS_SAVE )
+GAME( 1987, contrabj,  contra, contra, contra,  contra_state, 0, ROT90, "bootleg", "Contra (Japan bootleg, set 1)", MACHINE_SUPPORTS_SAVE )
+GAME( 1987, contrabj1, contra, contra, contra,  contra_state, 0, ROT90, "bootleg", "Contra (Japan bootleg, set 2)", MACHINE_SUPPORTS_SAVE )
+>>>>>>> upstream/master

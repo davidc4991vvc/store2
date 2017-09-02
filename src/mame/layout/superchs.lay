@@ -52,7 +52,11 @@
 		<screen index="0">
 			<bounds left="0" top="0" right="640" bottom="480" />
 		</screen>
+<<<<<<< HEAD
 		<bezel element="shifter" inputtag="INPUTS" inputmask="0x00002000">
+=======
+		<bezel element="shifter" inputtag="SWITCHES" inputmask="0x20">
+>>>>>>> upstream/master
 			<bounds x="606" y="414" width="32" height="64" />
 			<color alpha="0.6" />
 		</bezel>
@@ -61,7 +65,11 @@
 		<screen index="0">
 			<bounds left="0" top="0" right="640" bottom="480" />
 		</screen>
+<<<<<<< HEAD
 		<bezel element="shifter" inputtag="INPUTS" inputmask="0x00002000">
+=======
+		<bezel element="shifter" inputtag="SWITCHES" inputmask="0x20">
+>>>>>>> upstream/master
 			<bounds x="2" y="414" width="32" height="64" />
 			<color alpha="0.6" />
 		</bezel>
@@ -73,7 +81,11 @@
 		<screen index="0">
 			<bounds left="0" top="0" right="800" bottom="450" />
 		</screen>
+<<<<<<< HEAD
 		<bezel element="shifter" inputtag="INPUTS" inputmask="0x00002000">
+=======
+		<bezel element="shifter" inputtag="SWITCHES" inputmask="0x20">
+>>>>>>> upstream/master
 			<bounds x="766" y="384" width="32" height="64" />
 			<color alpha="0.6" />
 		</bezel>
@@ -82,7 +94,11 @@
 		<screen index="0">
 			<bounds left="0" top="0" right="800" bottom="450" />
 		</screen>
+<<<<<<< HEAD
 		<bezel element="shifter" inputtag="INPUTS" inputmask="0x00002000">
+=======
+		<bezel element="shifter" inputtag="SWITCHES" inputmask="0x20">
+>>>>>>> upstream/master
 			<bounds x="2" y="384" width="32" height="64" />
 			<color alpha="0.6" />
 		</bezel>

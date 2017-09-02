@@ -51,7 +51,11 @@ filemap(const char *name,
     close(fd);
     return 1;
   }
+<<<<<<< HEAD
   p = (void *)mmap((caddr_t)0, (size_t)nbytes, PROT_READ,
+=======
+  p = (void *)mmap((void *)0, (size_t)nbytes, PROT_READ,
+>>>>>>> upstream/master
                    MAP_FILE|MAP_PRIVATE, fd, (off_t)0);
   if (p == (void *)-1) {
     perror(name);
@@ -59,7 +63,11 @@ filemap(const char *name,
     return 0;
   }
   processor(p, nbytes, name, arg);
+<<<<<<< HEAD
   munmap((caddr_t)p, nbytes);
+=======
+  munmap((void *)p, nbytes);
+>>>>>>> upstream/master
   close(fd);
   return 1;
 }

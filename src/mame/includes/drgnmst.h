@@ -16,14 +16,20 @@ public:
 		m_rowscrollram(*this, "rowscrollram"),
 		m_vidregs2(*this, "vidregs2"),
 		m_spriteram(*this, "spriteram"),
+<<<<<<< HEAD
 			m_oki_1(*this, "oki1"),
 			m_oki_2(*this, "oki2") ,
+=======
+		m_oki_1(*this, "oki1"),
+		m_oki_2(*this, "oki2") ,
+>>>>>>> upstream/master
 		m_maincpu(*this, "maincpu"),
 		m_audiocpu(*this, "audiocpu"),
 		m_gfxdecode(*this, "gfxdecode"),
 		m_palette(*this, "palette") { }
 
 	/* memory pointers */
+<<<<<<< HEAD
 	required_shared_ptr<UINT16> m_vidregs;
 	required_shared_ptr<UINT16> m_fg_videoram;
 	required_shared_ptr<UINT16> m_bg_videoram;
@@ -31,6 +37,15 @@ public:
 	required_shared_ptr<UINT16> m_rowscrollram;
 	required_shared_ptr<UINT16> m_vidregs2;
 	required_shared_ptr<UINT16> m_spriteram;
+=======
+	required_shared_ptr<uint16_t> m_vidregs;
+	required_shared_ptr<uint16_t> m_fg_videoram;
+	required_shared_ptr<uint16_t> m_bg_videoram;
+	required_shared_ptr<uint16_t> m_md_videoram;
+	required_shared_ptr<uint16_t> m_rowscrollram;
+	required_shared_ptr<uint16_t> m_vidregs2;
+	required_shared_ptr<uint16_t> m_spriteram;
+>>>>>>> upstream/master
 
 	/* video-related */
 	tilemap_t     *m_bg_tilemap;
@@ -38,6 +53,7 @@ public:
 	tilemap_t     *m_md_tilemap;
 
 	/* misc */
+<<<<<<< HEAD
 	UINT16      m_snd_command;
 	UINT16      m_snd_flag;
 	UINT8       m_oki_control;
@@ -45,6 +61,15 @@ public:
 	UINT8       m_pic16c5x_port0;
 	UINT8       m_oki0_bank;
 	UINT8       m_oki1_bank;
+=======
+	uint16_t      m_snd_command;
+	uint16_t      m_snd_flag;
+	uint8_t       m_oki_control;
+	uint8_t       m_oki_command;
+	uint8_t       m_pic16c5x_port0;
+	uint8_t       m_oki0_bank;
+	uint8_t       m_oki1_bank;
+>>>>>>> upstream/master
 
 	/* devices */
 	required_device<okim6295_device> m_oki_1;
@@ -58,7 +83,10 @@ public:
 	DECLARE_WRITE8_MEMBER(drgnmst_pcm_banksel_w);
 	DECLARE_WRITE8_MEMBER(drgnmst_oki_w);
 	DECLARE_WRITE8_MEMBER(drgnmst_snd_control_w);
+<<<<<<< HEAD
 	DECLARE_READ_LINE_MEMBER(PIC16C5X_T0_clk_r);
+=======
+>>>>>>> upstream/master
 	DECLARE_WRITE16_MEMBER(drgnmst_fg_videoram_w);
 	DECLARE_WRITE16_MEMBER(drgnmst_bg_videoram_w);
 	DECLARE_WRITE16_MEMBER(drgnmst_md_videoram_w);
@@ -69,12 +97,21 @@ public:
 	TILEMAP_MAPPER_MEMBER(drgnmst_fg_tilemap_scan_cols);
 	TILEMAP_MAPPER_MEMBER(drgnmst_md_tilemap_scan_cols);
 	TILEMAP_MAPPER_MEMBER(drgnmst_bg_tilemap_scan_cols);
+<<<<<<< HEAD
 	virtual void machine_start();
 	virtual void machine_reset();
 	virtual void video_start();
 	UINT32 screen_update_drgnmst(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
 	void draw_sprites( bitmap_ind16 &bitmap,const rectangle &cliprect );
 	UINT8 drgnmst_asciitohex( UINT8 data );
+=======
+	virtual void machine_start() override;
+	virtual void machine_reset() override;
+	virtual void video_start() override;
+	uint32_t screen_update_drgnmst(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
+	void draw_sprites( bitmap_ind16 &bitmap,const rectangle &cliprect );
+	uint8_t drgnmst_asciitohex( uint8_t data );
+>>>>>>> upstream/master
 	required_device<cpu_device> m_maincpu;
 	required_device<pic16c55_device> m_audiocpu;
 	required_device<gfxdecode_device> m_gfxdecode;

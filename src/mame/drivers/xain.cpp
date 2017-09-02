@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 // license:???
+=======
+// license:BSD-3-Clause
+>>>>>>> upstream/master
 // copyright-holders:Carlos A. Lozano, Rob Rosenbrock, Phil Stroffolino
 /***************************************************************************
 
@@ -140,10 +144,19 @@ Updates by Bryan McPhail, 12/12/2004:
 ***************************************************************************/
 
 #include "emu.h"
+<<<<<<< HEAD
 #include "cpu/m6809/m6809.h"
 #include "cpu/m6805/m6805.h"
 #include "sound/2203intf.h"
 #include "includes/xain.h"
+=======
+#include "includes/xain.h"
+
+#include "cpu/m6809/m6809.h"
+#include "sound/2203intf.h"
+#include "speaker.h"
+
+>>>>>>> upstream/master
 
 #define MASTER_CLOCK        XTAL_12MHz
 #define CPU_CLOCK           MASTER_CLOCK / 8
@@ -222,12 +235,15 @@ WRITE8_MEMBER(xain_state::cpuB_bankswitch_w)
 	membank("bank2")->set_entry(data & 1);
 }
 
+<<<<<<< HEAD
 WRITE8_MEMBER(xain_state::sound_command_w)
 {
 	soundlatch_byte_w(space,offset,data);
 	m_audiocpu->set_input_line(M6809_IRQ_LINE, HOLD_LINE);
 }
 
+=======
+>>>>>>> upstream/master
 WRITE8_MEMBER(xain_state::main_irq_w)
 {
 	switch (offset)
@@ -257,6 +273,7 @@ WRITE8_MEMBER(xain_state::irqB_clear_w)
 	m_subcpu->set_input_line(M6809_IRQ_LINE, CLEAR_LINE);
 }
 
+<<<<<<< HEAD
 READ8_MEMBER(xain_state::m68705_r)
 {
 	m_mcu_ready = 1;
@@ -272,6 +289,8 @@ WRITE8_MEMBER(xain_state::m68705_w)
 		m_mcu->set_input_line(0, ASSERT_LINE);
 }
 
+=======
+>>>>>>> upstream/master
 CUSTOM_INPUT_MEMBER(xain_state::vblank_r)
 {
 	return m_vblank;
@@ -284,6 +303,7 @@ CUSTOM_INPUT_MEMBER(xain_state::vblank_r)
 
 ***************************************************************************/
 
+<<<<<<< HEAD
 READ8_MEMBER(xain_state::m68705_port_a_r)
 {
 	return (m_port_a_out & m_ddr_a) | (m_port_a_in & ~m_ddr_a);
@@ -371,21 +391,38 @@ CUSTOM_INPUT_MEMBER(xain_state::mcu_status_r)
 	}
 
 	return res;
+=======
+CUSTOM_INPUT_MEMBER(xain_state::mcu_status_r)
+{
+	// bit 0 is host MCU flag, bit 1 is host semaphore flag (both active low)
+	return
+			((m_mcu && (CLEAR_LINE != m_mcu->mcu_semaphore_r())) ? 0x00 : 0x01) |
+			((m_mcu && (CLEAR_LINE != m_mcu->host_semaphore_r())) ? 0x00 : 0x02);
+>>>>>>> upstream/master
 }
 
 READ8_MEMBER(xain_state::mcu_comm_reset_r)
 {
+<<<<<<< HEAD
 	m_mcu_ready = 1;
 	m_mcu_accept = 1;
 
 	if (m_mcu != NULL)
 		m_mcu->set_input_line(0, CLEAR_LINE);
+=======
+	if (m_mcu)
+		m_mcu->reset_w(PULSE_LINE);
+>>>>>>> upstream/master
 
 	return 0xff;
 }
 
 
+<<<<<<< HEAD
 static ADDRESS_MAP_START( main_map, AS_PROGRAM, 8, xain_state )
+=======
+static ADDRESS_MAP_START( bootleg_map, AS_PROGRAM, 8, xain_state )
+>>>>>>> upstream/master
 	AM_RANGE(0x0000, 0x1fff) AM_RAM AM_SHARE("share1")
 	AM_RANGE(0x2000, 0x27ff) AM_RAM_WRITE(charram_w) AM_SHARE("charram")
 	AM_RANGE(0x2800, 0x2fff) AM_RAM_WRITE(bgram1_w) AM_SHARE("bgram1")
@@ -397,6 +434,7 @@ static ADDRESS_MAP_START( main_map, AS_PROGRAM, 8, xain_state )
 	AM_RANGE(0x3a02, 0x3a02) AM_READ_PORT("DSW0")
 	AM_RANGE(0x3a02, 0x3a03) AM_WRITE(scrollyP1_w)
 	AM_RANGE(0x3a03, 0x3a03) AM_READ_PORT("DSW1")
+<<<<<<< HEAD
 	AM_RANGE(0x3a04, 0x3a04) AM_READ(m68705_r)
 	AM_RANGE(0x3a04, 0x3a05) AM_WRITE(scrollxP0_w)
 	AM_RANGE(0x3a05, 0x3a05) AM_READ_PORT("VBLANK")
@@ -406,6 +444,14 @@ static ADDRESS_MAP_START( main_map, AS_PROGRAM, 8, xain_state )
 	AM_RANGE(0x3a09, 0x3a0c) AM_WRITE(main_irq_w)
 	AM_RANGE(0x3a0d, 0x3a0d) AM_WRITE(flipscreen_w)
 	AM_RANGE(0x3a0e, 0x3a0e) AM_WRITE(m68705_w)
+=======
+	AM_RANGE(0x3a04, 0x3a05) AM_WRITE(scrollxP0_w)
+	AM_RANGE(0x3a05, 0x3a05) AM_READ_PORT("VBLANK")
+	AM_RANGE(0x3a06, 0x3a07) AM_WRITE(scrollyP0_w)
+	AM_RANGE(0x3a08, 0x3a08) AM_DEVWRITE("soundlatch", generic_latch_8_device, write)
+	AM_RANGE(0x3a09, 0x3a0c) AM_WRITE(main_irq_w)
+	AM_RANGE(0x3a0d, 0x3a0d) AM_WRITE(flipscreen_w)
+>>>>>>> upstream/master
 	AM_RANGE(0x3a0f, 0x3a0f) AM_WRITE(cpuA_bankswitch_w)
 	AM_RANGE(0x3c00, 0x3dff) AM_DEVWRITE("palette", palette_device, write) AM_SHARE("palette")
 	AM_RANGE(0x3e00, 0x3fff) AM_DEVWRITE("palette", palette_device, write_ext) AM_SHARE("palette_ext")
@@ -413,6 +459,16 @@ static ADDRESS_MAP_START( main_map, AS_PROGRAM, 8, xain_state )
 	AM_RANGE(0x8000, 0xffff) AM_ROM
 ADDRESS_MAP_END
 
+<<<<<<< HEAD
+=======
+static ADDRESS_MAP_START( main_map, AS_PROGRAM, 8, xain_state )
+	AM_IMPORT_FROM(bootleg_map)
+	AM_RANGE(0x3a04, 0x3a04) AM_DEVREAD("mcu", taito68705_mcu_device, data_r)
+	AM_RANGE(0x3a06, 0x3a06) AM_READ(mcu_comm_reset_r)
+	AM_RANGE(0x3a0e, 0x3a0e) AM_DEVWRITE("mcu", taito68705_mcu_device, data_w)
+ADDRESS_MAP_END
+
+>>>>>>> upstream/master
 static ADDRESS_MAP_START( cpu_map_B, AS_PROGRAM, 8, xain_state )
 	AM_RANGE(0x0000, 0x1fff) AM_RAM AM_SHARE("share1")
 	AM_RANGE(0x2000, 0x2000) AM_WRITE(irqA_assert_w)
@@ -422,6 +478,7 @@ static ADDRESS_MAP_START( cpu_map_B, AS_PROGRAM, 8, xain_state )
 	AM_RANGE(0x8000, 0xffff) AM_ROM
 ADDRESS_MAP_END
 
+<<<<<<< HEAD
 static ADDRESS_MAP_START( mcu_map, AS_PROGRAM, 8, xain_state )
 	ADDRESS_MAP_GLOBAL_MASK(0x7ff)
 	AM_RANGE(0x0000, 0x0000) AM_READWRITE(m68705_port_a_r, m68705_port_a_w)
@@ -439,6 +496,11 @@ ADDRESS_MAP_END
 static ADDRESS_MAP_START( sound_map, AS_PROGRAM, 8, xain_state )
 	AM_RANGE(0x0000, 0x07ff) AM_RAM
 	AM_RANGE(0x1000, 0x1000) AM_READ(soundlatch_byte_r)
+=======
+static ADDRESS_MAP_START( sound_map, AS_PROGRAM, 8, xain_state )
+	AM_RANGE(0x0000, 0x07ff) AM_RAM
+	AM_RANGE(0x1000, 0x1000) AM_DEVREAD("soundlatch", generic_latch_8_device, read)
+>>>>>>> upstream/master
 	AM_RANGE(0x2800, 0x2801) AM_DEVWRITE("ym1", ym2203_device, write)
 	AM_RANGE(0x3000, 0x3001) AM_DEVWRITE("ym2", ym2203_device, write)
 	AM_RANGE(0x4000, 0xffff) AM_ROM
@@ -515,8 +577,13 @@ static INPUT_PORTS_START( xsleena )
 	PORT_START("VBLANK")
 	PORT_BIT( 0x03, IP_ACTIVE_LOW,  IPT_UNUSED )
 	PORT_BIT( 0x04, IP_ACTIVE_LOW,  IPT_COIN3 )
+<<<<<<< HEAD
 	PORT_BIT( 0x18, IP_ACTIVE_HIGH, IPT_SPECIAL) PORT_CUSTOM_MEMBER(DEVICE_SELF, xain_state, mcu_status_r, NULL)
 	PORT_BIT( 0x20, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, xain_state, vblank_r, NULL)   /* VBLANK */
+=======
+	PORT_BIT( 0x18, IP_ACTIVE_HIGH, IPT_SPECIAL) PORT_CUSTOM_MEMBER(DEVICE_SELF, xain_state, mcu_status_r, nullptr)
+	PORT_BIT( 0x20, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, xain_state, vblank_r, nullptr)   /* VBLANK */
+>>>>>>> upstream/master
 	PORT_BIT( 0xc0, IP_ACTIVE_LOW,  IPT_UNUSED )
 INPUT_PORTS_END
 
@@ -559,6 +626,7 @@ void xain_state::machine_start()
 	membank("bank2")->set_entry(0);
 
 	save_item(NAME(m_vblank));
+<<<<<<< HEAD
 
 	if (m_mcu)
 	{
@@ -579,6 +647,11 @@ void xain_state::machine_start()
 }
 
 static MACHINE_CONFIG_START( xsleena, xain_state )
+=======
+}
+
+static MACHINE_CONFIG_START( xsleena )
+>>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", M6809, CPU_CLOCK)
@@ -591,9 +664,13 @@ static MACHINE_CONFIG_START( xsleena, xain_state )
 	MCFG_CPU_ADD("audiocpu", M6809, CPU_CLOCK)
 	MCFG_CPU_PROGRAM_MAP(sound_map)
 
+<<<<<<< HEAD
 	MCFG_CPU_ADD("mcu", M68705, MCU_CLOCK)
 	MCFG_CPU_PROGRAM_MAP(mcu_map)
 
+=======
+	MCFG_DEVICE_ADD("mcu", TAITO68705_MCU, MCU_CLOCK)
+>>>>>>> upstream/master
 
 	MCFG_QUANTUM_PERFECT_CPU("maincpu")
 
@@ -610,6 +687,12 @@ static MACHINE_CONFIG_START( xsleena, xain_state )
 	/* sound hardware */
 	MCFG_SPEAKER_STANDARD_MONO("mono")
 
+<<<<<<< HEAD
+=======
+	MCFG_GENERIC_LATCH_8_ADD("soundlatch")
+	MCFG_GENERIC_LATCH_DATA_PENDING_CB(INPUTLINE("audiocpu", M6809_IRQ_LINE))
+
+>>>>>>> upstream/master
 	MCFG_SOUND_ADD("ym1", YM2203, MCU_CLOCK)
 	MCFG_YM2203_IRQ_HANDLER(INPUTLINE("audiocpu", M6809_FIRQ_LINE))
 	MCFG_SOUND_ROUTE(0, "mono", 0.50)
@@ -626,6 +709,12 @@ MACHINE_CONFIG_END
 
 
 static MACHINE_CONFIG_DERIVED( xsleenab, xsleena )
+<<<<<<< HEAD
+=======
+	MCFG_CPU_MODIFY("maincpu")
+	MCFG_CPU_PROGRAM_MAP(bootleg_map)
+
+>>>>>>> upstream/master
 	MCFG_DEVICE_REMOVE("mcu")
 MACHINE_CONFIG_END
 
@@ -650,7 +739,11 @@ ROM_START( xsleena )
 	ROM_REGION( 0x10000, "audiocpu", 0 )
 	ROM_LOAD( "p2-0.ic49",     0x8000, 0x8000, CRC(a5318cb8) SHA1(35fb28c5598e39f22552bb036ae356b78422f080) )
 
+<<<<<<< HEAD
 	ROM_REGION( 0x800, "mcu", 0 )
+=======
+	ROM_REGION( 0x800, "mcu:mcu", 0 )
+>>>>>>> upstream/master
 	ROM_LOAD( "pz-0.113",      0x0000, 0x0800, CRC(a432a907) SHA1(4708a40e3a82dec2c5a64bc5da884a37d503cb6b) ) /* MC68705P5S MCU internal code */
 
 	ROM_REGION( 0x08000, "gfx1", 0 )
@@ -704,7 +797,11 @@ ROM_START( xsleenaj )
 	ROM_REGION( 0x10000, "audiocpu", 0 )
 	ROM_LOAD( "p2-0.ic49",     0x8000, 0x8000, CRC(a5318cb8) SHA1(35fb28c5598e39f22552bb036ae356b78422f080) )
 
+<<<<<<< HEAD
 	ROM_REGION( 0x800, "mcu", 0 )
+=======
+	ROM_REGION( 0x800, "mcu:mcu", 0 )
+>>>>>>> upstream/master
 	ROM_LOAD( "pz-0.113",      0x0000, 0x0800, CRC(a432a907) SHA1(4708a40e3a82dec2c5a64bc5da884a37d503cb6b) ) /* MC68705P5S MCU internal code */
 
 	ROM_REGION( 0x08000, "gfx1", 0 )
@@ -758,7 +855,11 @@ ROM_START( solrwarr )
 	ROM_REGION( 0x10000, "audiocpu", 0 )
 	ROM_LOAD( "p2-0.ic49",     0x8000, 0x8000, CRC(a5318cb8) SHA1(35fb28c5598e39f22552bb036ae356b78422f080) )
 
+<<<<<<< HEAD
 	ROM_REGION( 0x800, "mcu", 0 )
+=======
+	ROM_REGION( 0x800, "mcu:mcu", 0 )
+>>>>>>> upstream/master
 	ROM_LOAD( "pz-0.113",      0x0000, 0x0800, CRC(a432a907) SHA1(4708a40e3a82dec2c5a64bc5da884a37d503cb6b) ) /* MC68705P5S MCU internal code */
 
 	ROM_REGION( 0x08000, "gfx1", 0 )
@@ -849,8 +950,68 @@ ROM_START( xsleenab )
 	ROM_LOAD( "pt-0.ic59",    0x00000, 0x0100, CRC(fed32888) SHA1(4e9330456b20f7198c1e27ca1ae7200f25595599) ) /* BPROM type MB7114E  Priority (not used) */
 ROM_END
 
+<<<<<<< HEAD
 
 GAME( 1986, xsleena,  0,       xsleena,  xsleena, driver_device, 0, ROT0, "Technos Japan (Taito license)", "Xain'd Sleena (World)", MACHINE_SUPPORTS_SAVE )
 GAME( 1986, xsleenaj, xsleena, xsleena,  xsleena, driver_device, 0, ROT0, "Technos Japan", "Xain'd Sleena (Japan)", MACHINE_SUPPORTS_SAVE )
 GAME( 1986, solrwarr, xsleena, xsleena,  xsleena, driver_device, 0, ROT0, "Technos Japan (Taito / Memetron license)", "Solar-Warrior (US)", MACHINE_SUPPORTS_SAVE )
 GAME( 1986, xsleenab, xsleena, xsleenab, xsleena, driver_device, 0, ROT0, "bootleg", "Xain'd Sleena (bootleg)", MACHINE_SUPPORTS_SAVE )
+=======
+ROM_START( xsleenaba )
+	ROM_REGION( 0x14000, "maincpu", 0 )
+	ROM_LOAD( "xs87b-10.7d",    0x08000, 0x8000, CRC(3d5f9fb4) SHA1(d315b5415a471e05ee61b84fcaf739c75f890061) )
+	ROM_LOAD( "xs87b-11.7c",    0x04000, 0x4000, CRC(81c80d54) SHA1(2049c5843c6134560d8fbacf020cbff34833ded7) )
+	ROM_CONTINUE(             0x10000, 0x4000 )
+
+	ROM_REGION( 0x14000, "sub", 0 )
+	ROM_LOAD( "p1-0.ic29",    0x08000, 0x8000, CRC(a1a860e2) SHA1(fb2b152bfafc44608039774436ddf3b17eed979c) )
+	ROM_LOAD( "p0-0.ic15",    0x04000, 0x4000, CRC(948b9757) SHA1(3ea840cc47ae6a66f3e5f6a2f3e88475dcfe1840) )
+	ROM_CONTINUE(             0x10000, 0x4000 )
+
+	ROM_REGION( 0x10000, "audiocpu", 0 )
+	ROM_LOAD( "p2-0.ic49",     0x8000, 0x8000, CRC(a5318cb8) SHA1(35fb28c5598e39f22552bb036ae356b78422f080) )
+
+	ROM_REGION( 0x08000, "gfx1", 0 )
+	ROM_LOAD( "pb-01.ic24",   0x00000, 0x8000, CRC(83c00dd8) SHA1(8e9b19281039b63072270c7a63d9fb30cda570fd) ) /* chars */
+
+	ROM_REGION( 0x40000, "gfx2", 0 )
+	ROM_LOAD( "pk-0.ic136",   0x00000, 0x8000, CRC(11eb4247) SHA1(5d2f1fa07b8fb1c6bebfdb02c39282d29813791b) ) /* tiles */
+	ROM_LOAD( "pl-0.ic135",   0x08000, 0x8000, CRC(422b536e) SHA1(d5985c0bd1c840cb6f0da6b177a2caaff6db5a04) )
+	ROM_LOAD( "pm-0.ic134",   0x10000, 0x8000, CRC(828c1b0c) SHA1(cb9b64073b0ade3885f61545191db4c445e3066b) )
+	ROM_LOAD( "pn-0.ic133",   0x18000, 0x8000, CRC(d37939e0) SHA1(301d9f6720857c64a4e070444a07a38138ddd4ef) )
+	ROM_LOAD( "pc-0.ic114",   0x20000, 0x8000, CRC(8f0aa1a7) SHA1(be3fdb6204b77dba28b14c5b880d65d7c1d6a161) )
+	ROM_LOAD( "pd-0.ic113",   0x28000, 0x8000, CRC(45681910) SHA1(60c3eb4bc08bf11bf09bcd27549c6427fafbb1fb) )
+	ROM_LOAD( "pe-0.ic112",   0x30000, 0x8000, CRC(a8eeabc8) SHA1(e5dc31df0b223b65144af3602be5bcb2ff9eebbd) )
+	ROM_LOAD( "pf-0.ic111",   0x38000, 0x8000, CRC(e59a2f27) SHA1(4643cea85f8613c36b416f46f9d1753fa9839237) )
+
+	ROM_REGION( 0x40000, "gfx3", 0 )
+	ROM_LOAD( "p5-0.ic44",    0x00000, 0x8000, CRC(5c6c453c) SHA1(68c0028d15da8f5e53f09e3d154d18cd9f219601) ) /* tiles */
+	ROM_LOAD( "p4-0.ic45",    0x08000, 0x8000, CRC(59d87a9a) SHA1(f23cb9a9d6c6249a8a1f8e2acbc235086b008c7b) )
+	ROM_LOAD( "p3-0.ic46",    0x10000, 0x8000, CRC(84884a2e) SHA1(5087010a72226e91a084a61b5089c110dba7e933) )
+	/* 0x60000-0x67fff empty */
+	ROM_LOAD( "p6-0.ic43",    0x20000, 0x8000, CRC(8d637639) SHA1(301a7893de8f1bb526f5075e2af8203b8af4b0d3) )
+	ROM_LOAD( "p7-0.ic42",    0x28000, 0x8000, CRC(71eec4e6) SHA1(3417c52a39a6fc43c51ad707168180f54153177a) )
+	ROM_LOAD( "p8-0.ic41",    0x30000, 0x8000, CRC(7fc9704f) SHA1(b6f353fb7fec58f68b9e28be2aa29146ac64ffd4) )
+	/* 0x80000-0x87fff empty */
+
+	ROM_REGION( 0x40000, "gfx4", 0 )
+	ROM_LOAD( "po-0.ic131",   0x00000, 0x8000, CRC(252976ae) SHA1(534c9148d33e453f3541543a8c0eb4afc59c7de8) ) /* sprites */
+	ROM_LOAD( "pp-0.ic130",   0x08000, 0x8000, CRC(e6f1e8d5) SHA1(2ee0227361d1f1358f5b5964dab7e691243cd9ae) )
+	ROM_LOAD( "pq-0.ic129",   0x10000, 0x8000, CRC(785381ed) SHA1(95bf4eb29830c589a9793a4138e645e5b77f0c06) )
+	ROM_LOAD( "pr-0.ic128",   0x18000, 0x8000, CRC(59754e3d) SHA1(d1781dbc83965fc84492f7282d6813507ba1e81b) )
+	ROM_LOAD( "pg-0.ic109",   0x20000, 0x8000, CRC(4d977f33) SHA1(30b446ddb2f32354334ea780c435f2407d128808) )
+	ROM_LOAD( "ph-0.ic108",   0x28000, 0x8000, CRC(3f3b62a0) SHA1(ab7e8f0ff707771401e679b6151ad0ea85cfc792) )
+	ROM_LOAD( "pi-0.ic107",   0x30000, 0x8000, CRC(76641ee3) SHA1(8fba0fa6639e7bdfb3f7be5e945a55b64411d242) )
+	ROM_LOAD( "pj-0.ic106",   0x38000, 0x8000, CRC(37671f36) SHA1(1494eec4ecde9ae1f1101aa13eb301b3f3d06602) )
+
+	ROM_REGION( 0x0100, "proms", 0 ) /* Priority */
+	ROM_LOAD( "pt-0.ic59",    0x00000, 0x0100, CRC(fed32888) SHA1(4e9330456b20f7198c1e27ca1ae7200f25595599) ) /* BPROM type MB7114E  Priority (not used) */
+ROM_END
+
+
+GAME( 1986, xsleena,   0,       xsleena,  xsleena, xain_state, 0, ROT0, "Technos Japan (Taito license)",            "Xain'd Sleena (World)",             MACHINE_SUPPORTS_SAVE )
+GAME( 1986, xsleenaj,  xsleena, xsleena,  xsleena, xain_state, 0, ROT0, "Technos Japan",                            "Xain'd Sleena (Japan)",             MACHINE_SUPPORTS_SAVE )
+GAME( 1986, solrwarr,  xsleena, xsleena,  xsleena, xain_state, 0, ROT0, "Technos Japan (Taito / Memetron license)", "Solar-Warrior (US)",                MACHINE_SUPPORTS_SAVE )
+GAME( 1986, xsleenab,  xsleena, xsleenab, xsleena, xain_state, 0, ROT0, "bootleg",                                  "Xain'd Sleena (bootleg)",           MACHINE_SUPPORTS_SAVE )
+GAME( 1987, xsleenaba, xsleena, xsleenab, xsleena, xain_state, 0, ROT0, "bootleg",                                  "Xain'd Sleena (bootleg, bugfixed)", MACHINE_SUPPORTS_SAVE ) // newer bootleg, fixes some of the issues with the other one
+>>>>>>> upstream/master

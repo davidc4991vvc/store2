@@ -10,6 +10,10 @@
 #include "debugger.h"
 #include "includes/dc.h"
 #include "cpu/sh4/sh4.h"
+<<<<<<< HEAD
+=======
+#include "cpu/arm7/arm7core.h"
+>>>>>>> upstream/master
 #include "machine/mie.h"
 #include "machine/naomig1.h"
 #include "video/powervr2.h"
@@ -77,7 +81,11 @@ static const char *const sysctrl_names[] =
 
 #endif
 
+<<<<<<< HEAD
 void dc_state::generic_dma(UINT32 main_adr, void *dma_ptr, UINT32 length, UINT32 size, bool to_mainram)
+=======
+void dc_state::generic_dma(uint32_t main_adr, void *dma_ptr, uint32_t length, uint32_t size, bool to_mainram)
+>>>>>>> upstream/master
 {
 	sh4_ddt_dma ddt;
 	if(to_mainram)
@@ -194,7 +202,11 @@ TIMER_CALLBACK_MEMBER(dc_state::ch2_dma_irq)
 
 void dc_state::g2_dma_execute(address_space &space, int channel)
 {
+<<<<<<< HEAD
 	UINT32 src,dst,size;
+=======
+	uint32_t src,dst,size;
+>>>>>>> upstream/master
 	dst = m_g2_dma[channel].g2_addr;
 	src = m_g2_dma[channel].root_addr;
 	size = 0;
@@ -234,13 +246,18 @@ void dc_state::g2_dma_execute(address_space &space, int channel)
 // register decode helpers
 
 // this accepts only 32-bit accesses
+<<<<<<< HEAD
 int dc_state::decode_reg32_64(UINT32 offset, UINT64 mem_mask, UINT64 *shift)
+=======
+int dc_state::decode_reg32_64(uint32_t offset, uint64_t mem_mask, uint64_t *shift)
+>>>>>>> upstream/master
 {
 	int reg = offset * 2;
 
 	*shift = 0;
 
 	// non 32-bit accesses have not yet been seen here, we need to know when they are
+<<<<<<< HEAD
 	if ((mem_mask != U64(0xffffffff00000000)) && (mem_mask != U64(0x00000000ffffffff)))
 	{
 		osd_printf_verbose("%s:Wrong mask!\n", machine().describe_context());
@@ -248,6 +265,15 @@ int dc_state::decode_reg32_64(UINT32 offset, UINT64 mem_mask, UINT64 *shift)
 	}
 
 	if (mem_mask == U64(0xffffffff00000000))
+=======
+	if ((mem_mask != 0xffffffff00000000U) && (mem_mask != 0x00000000ffffffffU))
+	{
+		osd_printf_verbose("%s:Wrong mask!\n", machine().describe_context().c_str());
+		//machine().debug_break();
+	}
+
+	if (mem_mask == 0xffffffff00000000U)
+>>>>>>> upstream/master
 	{
 		reg++;
 		*shift = 32;
@@ -257,13 +283,18 @@ int dc_state::decode_reg32_64(UINT32 offset, UINT64 mem_mask, UINT64 *shift)
 }
 
 // this accepts only 32 and 16 bit accesses
+<<<<<<< HEAD
 int dc_state::decode_reg3216_64(UINT32 offset, UINT64 mem_mask, UINT64 *shift)
+=======
+int dc_state::decode_reg3216_64(uint32_t offset, uint64_t mem_mask, uint64_t *shift)
+>>>>>>> upstream/master
 {
 	int reg = offset * 2;
 
 	*shift = 0;
 
 	// non 16&32-bit accesses have not yet been seen here, we need to know when they are
+<<<<<<< HEAD
 	if ((mem_mask != U64(0x0000ffff00000000)) && (mem_mask != U64(0x000000000000ffff)) &&
 		(mem_mask != U64(0xffffffff00000000)) && (mem_mask != U64(0x00000000ffffffff)))
 	{
@@ -272,6 +303,16 @@ int dc_state::decode_reg3216_64(UINT32 offset, UINT64 mem_mask, UINT64 *shift)
 	}
 
 	if (mem_mask & U64(0x0000ffff00000000))
+=======
+	if ((mem_mask != 0x0000ffff00000000U) && (mem_mask != 0x000000000000ffffU) &&
+		(mem_mask != 0xffffffff00000000U) && (mem_mask != 0x00000000ffffffffU))
+	{
+		osd_printf_verbose("%s:Wrong mask!\n", machine().describe_context().c_str());
+		//machine().debug_break();
+	}
+
+	if (ACCESSING_BITS_32_47)
+>>>>>>> upstream/master
 	{
 		reg++;
 		*shift = 32;
@@ -282,7 +323,11 @@ int dc_state::decode_reg3216_64(UINT32 offset, UINT64 mem_mask, UINT64 *shift)
 
 int dc_state::dc_compute_interrupt_level()
 {
+<<<<<<< HEAD
 	UINT32 ln,lx,le;
+=======
+	uint32_t ln,lx,le;
+>>>>>>> upstream/master
 
 	ln=dc_sysctrl_regs[SB_ISTNRM] & dc_sysctrl_regs[SB_IML6NRM];
 	lx=dc_sysctrl_regs[SB_ISTEXT] & dc_sysctrl_regs[SB_IML6EXT];
@@ -367,23 +412,36 @@ void dc_state::dc_update_interrupt_status()
 READ64_MEMBER(dc_state::dc_sysctrl_r )
 {
 	int reg;
+<<<<<<< HEAD
 	UINT64 shift;
+=======
+	uint64_t shift;
+>>>>>>> upstream/master
 
 	reg = decode_reg32_64(offset, mem_mask, &shift);
 
 	#if DEBUG_SYSCTRL
 	if ((reg != 0x40) && (reg != 0x41) && (reg != 0x42) && (reg != 0x23) && (reg > 2))  // filter out IRQ status reads
 	{
+<<<<<<< HEAD
 		osd_printf_verbose("SYSCTRL: [%08x] read %x @ %x (reg %x: %s), mask %" I64FMT "x (PC=%x)\n", 0x5f6800+reg*4, dc_sysctrl_regs[reg], offset, reg, sysctrl_names[reg], mem_mask, space.device().safe_pc());
 	}
 	#endif
 
 	return (UINT64)dc_sysctrl_regs[reg] << shift;
+=======
+		osd_printf_verbose("%s",string_format("SYSCTRL: [%08x] read %x @ %x (reg %x: %s), mask %x (PC=%x)\n", 0x5f6800+reg*4, dc_sysctrl_regs[reg], offset, reg, sysctrl_names[reg], mem_mask, space.device().safe_pc()).c_str());
+	}
+	#endif
+
+	return (uint64_t)dc_sysctrl_regs[reg] << shift;
+>>>>>>> upstream/master
 }
 
 WRITE64_MEMBER(dc_state::dc_sysctrl_w )
 {
 	int reg;
+<<<<<<< HEAD
 	UINT64 shift;
 	UINT32 old,dat;
 	UINT32 address;
@@ -391,6 +449,15 @@ WRITE64_MEMBER(dc_state::dc_sysctrl_w )
 
 	reg = decode_reg32_64(offset, mem_mask, &shift);
 	dat = (UINT32)(data >> shift);
+=======
+	uint64_t shift;
+	uint32_t old,dat;
+	uint32_t address;
+	struct sh4_ddt_dma ddtdata;
+
+	reg = decode_reg32_64(offset, mem_mask, &shift);
+	dat = (uint32_t)(data >> shift);
+>>>>>>> upstream/master
 	old = dc_sysctrl_regs[reg];
 	dc_sysctrl_regs[reg] = dat; // 5f6800+off*4=dat
 	switch (reg)
@@ -472,14 +539,22 @@ WRITE64_MEMBER(dc_state::dc_sysctrl_w )
 	#if DEBUG_SYSCTRL
 	if ((reg != 0x40) && (reg != 0x42) && (reg > 2))    // filter out IRQ acks and ch2 dma
 	{
+<<<<<<< HEAD
 		osd_printf_verbose("SYSCTRL: write %" I64FMT "x to %x (reg %x), mask %" I64FMT "x\n", data>>shift, offset, reg, /*sysctrl_names[reg],*/ mem_mask);
+=======
+		osd_printf_verbose("%s",string_format("SYSCTRL: write %x to %x (reg %x), mask %x\n", data>>shift, offset, reg, /*sysctrl_names[reg],*/ mem_mask).c_str());
+>>>>>>> upstream/master
 	}
 	#endif
 }
 
 READ64_MEMBER(dc_state::dc_gdrom_r )
 {
+<<<<<<< HEAD
 	UINT32 off;
+=======
+	uint32_t off;
+>>>>>>> upstream/master
 
 	if ((int)~mem_mask & 1)
 	{
@@ -500,41 +575,74 @@ READ64_MEMBER(dc_state::dc_gdrom_r )
 
 WRITE64_MEMBER(dc_state::dc_gdrom_w )
 {
+<<<<<<< HEAD
 	UINT32 dat,off;
 
 	if ((int)~mem_mask & 1)
 	{
 		dat=(UINT32)(data >> 32);
+=======
+	uint32_t dat,off;
+
+	if ((int)~mem_mask & 1)
+	{
+		dat=(uint32_t)(data >> 32);
+>>>>>>> upstream/master
 		off=(offset << 1) | 1;
 	}
 	else
 	{
+<<<<<<< HEAD
 		dat=(UINT32)data;
 		off=offset << 1;
 	}
 
 	osd_printf_verbose("GDROM: [%08x=%x]write %" I64FMT "x to %x, mask %" I64FMT "x\n", 0x5f7000+off*4, dat, data, offset, mem_mask);
+=======
+		dat=(uint32_t)data;
+		off=offset << 1;
+	}
+
+	osd_printf_verbose("%s",string_format("GDROM: [%08x=%x]write %x to %x, mask %x\n", 0x5f7000+off*4, dat, data, offset, mem_mask).c_str());
+>>>>>>> upstream/master
 }
 
 READ64_MEMBER(dc_state::dc_g2_ctrl_r )
 {
 	int reg;
+<<<<<<< HEAD
 	UINT64 shift;
 
 	reg = decode_reg32_64(offset, mem_mask, &shift);
 	osd_printf_verbose("G2CTRL:  Unmapped read %08x\n", 0x5f7800+reg*4);
 	return (UINT64)g2bus_regs[reg] << shift;
+=======
+	uint64_t shift;
+
+	reg = decode_reg32_64(offset, mem_mask, &shift);
+	osd_printf_verbose("G2CTRL:  Unmapped read %08x\n", 0x5f7800+reg*4);
+	return (uint64_t)g2bus_regs[reg] << shift;
+>>>>>>> upstream/master
 }
 
 WRITE64_MEMBER(dc_state::dc_g2_ctrl_w )
 {
 	int reg;
+<<<<<<< HEAD
 	UINT64 shift;
 	UINT32 dat;
 	UINT8 old;
 
 	reg = decode_reg32_64(offset, mem_mask, &shift);
 	dat = (UINT32)(data >> shift);
+=======
+	uint64_t shift;
+	uint32_t dat;
+	uint8_t old;
+
+	reg = decode_reg32_64(offset, mem_mask, &shift);
+	dat = (uint32_t)(data >> shift);
+>>>>>>> upstream/master
 
 	g2bus_regs[reg] = dat; // 5f7800+reg*4=dat
 
@@ -584,20 +692,32 @@ WRITE64_MEMBER(dc_state::dc_g2_ctrl_w )
 	}
 }
 
+<<<<<<< HEAD
 int dc_state::decode_reg_64(UINT32 offset, UINT64 mem_mask, UINT64 *shift)
+=======
+int dc_state::decode_reg_64(uint32_t offset, uint64_t mem_mask, uint64_t *shift)
+>>>>>>> upstream/master
 {
 	int reg = offset * 2;
 
 	*shift = 0;
 
 	// non 32-bit accesses have not yet been seen here, we need to know when they are
+<<<<<<< HEAD
 	if ((mem_mask != U64(0xffffffff00000000)) && (mem_mask != U64(0x00000000ffffffff)))
+=======
+	if ((mem_mask != 0xffffffff00000000U) && (mem_mask != 0x00000000ffffffffU))
+>>>>>>> upstream/master
 	{
 		/*assume to return the lower 32-bits ONLY*/
 		return reg & 0xffffffff;
 	}
 
+<<<<<<< HEAD
 	if (mem_mask == U64(0xffffffff00000000))
+=======
+	if (mem_mask == 0xffffffff00000000U)
+>>>>>>> upstream/master
 	{
 		reg++;
 		*shift = 32;
@@ -609,7 +729,11 @@ int dc_state::decode_reg_64(UINT32 offset, UINT64 mem_mask, UINT64 *shift)
 READ64_MEMBER(dc_state::dc_modem_r )
 {
 	int reg;
+<<<<<<< HEAD
 	UINT64 shift;
+=======
+	uint64_t shift;
+>>>>>>> upstream/master
 
 	reg = decode_reg32_64(offset, mem_mask, &shift);
 
@@ -617,7 +741,11 @@ READ64_MEMBER(dc_state::dc_modem_r )
 	// our PVR emulation is apparently not good enough for that to work yet though.
 	if (reg == 0x280/4)
 	{
+<<<<<<< HEAD
 		return U64(0xffffffffffffffff);
+=======
+		return 0xffffffffffffffffU;
+>>>>>>> upstream/master
 	}
 
 	osd_printf_verbose("MODEM:  Unmapped read %08x\n", 0x600000+reg*4);
@@ -627,12 +755,21 @@ READ64_MEMBER(dc_state::dc_modem_r )
 WRITE64_MEMBER(dc_state::dc_modem_w )
 {
 	int reg;
+<<<<<<< HEAD
 	UINT64 shift;
 	UINT32 dat;
 
 	reg = decode_reg32_64(offset, mem_mask, &shift);
 	dat = (UINT32)(data >> shift);
 	osd_printf_verbose("MODEM: [%08x=%x] write %" I64FMT "x to %x, mask %" I64FMT "x\n", 0x600000+reg*4, dat, data, offset, mem_mask);
+=======
+	uint64_t shift;
+	uint32_t dat;
+
+	reg = decode_reg32_64(offset, mem_mask, &shift);
+	dat = (uint32_t)(data >> shift);
+	osd_printf_verbose("%s",string_format("MODEM: [%08x=%x] write %x to %x, mask %x\n", 0x600000+reg*4, dat, data, offset, mem_mask).c_str());
+>>>>>>> upstream/master
 }
 
 #define SAVE_G2DMA(x) \
@@ -649,7 +786,11 @@ void dc_state::machine_start()
 {
 	// dccons doesn't have a specific g1 device yet
 	if(m_naomig1)
+<<<<<<< HEAD
 		m_naomig1->set_dma_cb(naomi_g1_device::dma_cb(FUNC(dc_state::generic_dma), this));
+=======
+		m_naomig1->set_dma_cb(naomi_g1_device::dma_cb(&dc_state::generic_dma, this));
+>>>>>>> upstream/master
 
 	// save states
 	save_pointer(NAME(dc_sysctrl_regs), 0x200/4);
@@ -674,7 +815,11 @@ void dc_state::machine_reset()
 
 READ32_MEMBER(dc_state::dc_aica_reg_r)
 {
+<<<<<<< HEAD
 //  osd_printf_verbose("AICA REG: [%08x] read %" I64FMT "x, mask %" I64FMT "x\n", 0x700000+reg*4, (UINT64)offset, mem_mask);
+=======
+//  osd_printf_verbose("%s",string_format("AICA REG: [%08x] read %x, mask %x\n", 0x700000+reg*4, (uint64_t)offset, mem_mask).c_str());
+>>>>>>> upstream/master
 
 	if(offset == 0x2c00/4)
 		return m_armrst;
@@ -705,7 +850,11 @@ WRITE32_MEMBER(dc_state::dc_aica_reg_w)
 
 	m_aica->write(space, offset*2, data, 0xffff);
 
+<<<<<<< HEAD
 //  osd_printf_verbose("AICA REG: [%08x=%x] write %x to %x, mask %" I64FMT "x\n", 0x700000+reg*4, data, offset, mem_mask);
+=======
+//  osd_printf_verbose("%s",string_format("AICA REG: [%08x=%x] write %x to %x, mask %x\n", 0x700000+reg*4, data, offset, mem_mask).c_str());
+>>>>>>> upstream/master
 }
 
 READ32_MEMBER(dc_state::dc_arm_aica_r)
@@ -718,7 +867,52 @@ WRITE32_MEMBER(dc_state::dc_arm_aica_w)
 	m_aica->write(space, offset*2, data, mem_mask&0xffff);
 }
 
+<<<<<<< HEAD
+=======
+READ64_MEMBER(dc_state::sh4_soundram_r )
+{
+	return *((uint64_t *)dc_sound_ram.target()+offset);
+}
+
+WRITE64_MEMBER(dc_state::sh4_soundram_w )
+{
+	COMBINE_DATA((uint64_t *)dc_sound_ram.target() + offset);
+}
+
+WRITE_LINE_MEMBER(dc_state::aica_irq)
+{
+	m_soundcpu->set_input_line(ARM7_FIRQ_LINE, state ? ASSERT_LINE : CLEAR_LINE);
+}
+
+WRITE_LINE_MEMBER(dc_state::sh4_aica_irq)
+{
+	if(state)
+		dc_sysctrl_regs[SB_ISTEXT] |= IST_EXT_AICA;
+	else
+		dc_sysctrl_regs[SB_ISTEXT] &= ~IST_EXT_AICA;
+
+	dc_update_interrupt_status();
+}
+
+MACHINE_RESET_MEMBER(dc_state,dc_console)
+{
+	dc_state::machine_reset();
+	m_aica->set_ram_base(dc_sound_ram, 2*1024*1024);
+}
+
+>>>>>>> upstream/master
 TIMER_DEVICE_CALLBACK_MEMBER(dc_state::dc_scanline)
 {
 	m_powervr2->pvr_scanline_timer(param);
 }
+<<<<<<< HEAD
+=======
+
+// crude cheat pending SH4 DRC, especially useful for inp playback
+INPUT_CHANGED_MEMBER(dc_state::mastercpu_cheat_r)
+{
+	const u32 CPU_CLOCK = (200000000);
+	const u32 timing_value[4] = { CPU_CLOCK, CPU_CLOCK/2, CPU_CLOCK/4, CPU_CLOCK/16 };
+	m_maincpu->set_unscaled_clock(timing_value[newval]);
+}
+>>>>>>> upstream/master

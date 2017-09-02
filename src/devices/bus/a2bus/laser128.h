@@ -8,10 +8,18 @@
 
 *********************************************************************/
 
+<<<<<<< HEAD
 #ifndef __A2BUS_LASER128__
 #define __A2BUS_LASER128__
 
 #include "emu.h"
+=======
+#ifndef MAME_BUS_A2BUS_LASER128_H
+#define MAME_BUS_A2BUS_LASER128_H
+
+#pragma once
+
+>>>>>>> upstream/master
 #include "a2bus.h"
 
 //**************************************************************************
@@ -24,6 +32,7 @@ class a2bus_laser128_device:
 {
 public:
 	// construction/destruction
+<<<<<<< HEAD
 	a2bus_laser128_device(const machine_config &mconfig, device_type type, const char *name, const char *tag, device_t *owner, UINT32 clock, const char *shortname, const char *source);
 	a2bus_laser128_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
 
@@ -45,10 +54,38 @@ protected:
 private:
 	UINT8 *m_rom;
 	UINT8 m_slot7_ram[0x800];
+=======
+	a2bus_laser128_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
+
+protected:
+	a2bus_laser128_device(const machine_config &mconfig, device_type type, const char *tag, device_t *owner, uint32_t clock);
+
+	virtual void device_start() override;
+	virtual void device_reset() override;
+	virtual void device_add_mconfig(machine_config &config) override;
+
+	// overrides of standard a2bus slot functions
+	virtual uint8_t read_c0nx(address_space &space, uint8_t offset) override;
+	virtual void write_c0nx(address_space &space, uint8_t offset, uint8_t data) override;
+	virtual uint8_t read_cnxx(address_space &space, uint8_t offset) override;
+	virtual uint8_t read_c800(address_space &space, uint16_t offset) override;
+	virtual void write_c800(address_space &space, uint16_t offset, uint8_t data) override;
+	virtual bool take_c800() override;
+
+private:
+	uint8_t *m_rom;
+	uint8_t m_slot7_ram[0x800];
+>>>>>>> upstream/master
 	int m_slot7_bank, m_slot7_ram_bank;
 };
 
 // device type definition
+<<<<<<< HEAD
 extern const device_type A2BUS_LASER128;
 
 #endif /* __A2BUS_LASER128__ */
+=======
+DECLARE_DEVICE_TYPE(A2BUS_LASER128, a2bus_laser128_device)
+
+#endif // MAME_BUS_A2BUS_LASER128_H
+>>>>>>> upstream/master

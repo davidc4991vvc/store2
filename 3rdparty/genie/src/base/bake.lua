@@ -129,6 +129,13 @@
 			end
 		end
 
+<<<<<<< HEAD
+=======
+		if obj.allfiles ~= nil then
+			adjustpathlist(obj.allfiles)
+		end
+
+>>>>>>> upstream/master
 		for name, value in pairs(obj) do
 			local field = premake.fields[name]
 			if field and value and not keeprelative[name] then
@@ -145,7 +152,33 @@
 		end
 	end
 
+<<<<<<< HEAD
 
+=======
+	local function removevalue(tbl, remove)
+		for index, item in ipairs(tbl) do
+			if item == remove then
+				table.remove(tbl, index)
+				break
+			end
+		end
+	end
+
+	local function removevalues(tbl, removes)
+		for k, v in pairs(tbl) do
+			for _, pattern in ipairs(removes) do
+				if pattern == tbl[k] then
+					if type(k) == "number" then
+						table.remove(tbl, k)
+					else
+						tbl[k] = nil
+					end
+					break
+				end
+			end
+		end
+	end
+>>>>>>> upstream/master
 
 --
 -- Merge all of the fields from one object into another. String values are overwritten,
@@ -157,6 +190,7 @@
 --    The source object, containing the settings to added to the destination.
 --
 
+<<<<<<< HEAD
 	local function mergefield(kind, dest, src)
 		local tbl = dest or { }
 		if kind == "keyvalue" or kind == "keypath" then
@@ -166,6 +200,23 @@
 		else
 			for _, item in ipairs(src) do
 				if not tbl[item] then
+=======
+	local function mergefield(kind, dest, src, mergecopiestotail)
+		local tbl = dest or { }
+		if kind == "keyvalue" or kind == "keypath" then
+			for key, value in pairs(src) do
+				tbl[key] = mergefield("list", tbl[key], value, mergecopiestotail)
+			end
+		else
+			for _, item in ipairs(src) do
+				if tbl[item] then
+					if mergecopiestotail then
+						removevalue(tbl, item)
+						table.insert(tbl, item)
+						tbl[item] = item
+					end
+				else
+>>>>>>> upstream/master
 					table.insert(tbl, item)
 					tbl[item] = item
 				end
@@ -174,6 +225,7 @@
 		return tbl
 	end
 
+<<<<<<< HEAD
 	local function removevalues(tbl, removes)
 		for i=#tbl,1,-1 do
 			for _, pattern in ipairs(removes) do
@@ -185,6 +237,8 @@
 		end
 	end
 
+=======
+>>>>>>> upstream/master
 	local function mergeobject(dest, src)
 		-- if there's nothing to add, quick out
 		if not src then
@@ -197,7 +251,11 @@
 				local field = premake.fields[fieldname]
 				if field then
 					if type(value) == "table" then
+<<<<<<< HEAD
 						dest[fieldname] = mergefield(field.kind, dest[fieldname], value)
+=======
+						dest[fieldname] = mergefield(field.kind, dest[fieldname], value, field.mergecopiestotail)
+>>>>>>> upstream/master
 						if src.removes then
 							removes = src.removes[fieldname]
 							if removes then
@@ -602,7 +660,28 @@
   		end
   	end
 
+<<<<<<< HEAD
 
+=======
+--
+-- Build an inverse dictionary of literal vpaths for fast lookup
+--
+
+    local function inverseliteralvpaths()
+        for sln in premake.solution.each() do
+            for _,prj in ipairs(sln.projects) do
+                prj.inversevpaths = {}
+                for replacement, patterns in pairs(prj.vpaths or {}) do
+                    for _, pattern in ipairs(patterns) do
+                        if string.find(pattern, "*") == nil then
+                            prj.inversevpaths[pattern] = replacement
+                        end
+                    end
+                end
+            end
+        end
+    end
+>>>>>>> upstream/master
 --
 -- Main function, controls the process of flattening the configurations.
 --
@@ -621,6 +700,18 @@
 			sln.location = sln.location or sln.basedir
 		end
 
+<<<<<<< HEAD
+=======
+        -- convert paths for imported projects to be relative to solution location
+		for sln in premake.solution.each() do
+			for _, iprj in ipairs(sln.importedprojects) do
+				iprj.location = path.getabsolute(iprj.location)
+			end
+		end
+
+        inverseliteralvpaths()
+
+>>>>>>> upstream/master
 		-- collapse configuration blocks, so that there is only one block per build
 		-- configuration/platform pair, filtered to the current operating environment
 		for sln in premake.solution.each() do
@@ -647,6 +738,32 @@
 			end
 		end
 
+<<<<<<< HEAD
+=======
+		-- mark all configurations that have been removed via their removes table.
+		for sln in premake.solution.each() do
+			for prjIx, prj in ipairs(sln.projects) do
+				for cfgName, cfg in pairs(prj.__configs) do
+					cfg.build = true
+
+					local removes = nil
+
+					if cfg.removes ~= nil then
+						removes = cfg.removes["platforms"];
+					end
+
+					if removes ~= nil  then
+						for _,p in ipairs(removes) do
+							if p == cfg.platform then
+								cfg.build = false
+							end
+						end
+					end
+				end
+			end
+		end
+
+>>>>>>> upstream/master
 		-- Remove all usage projects.
 		for sln in premake.solution.each() do
 			local removeList = {};
@@ -697,10 +814,18 @@
 		end
 
 		-- adjust the kind as required by the target system
+<<<<<<< HEAD
+=======
+		if cfg.kind == "Bundle" and not _ACTION:match("xcode[0-9]") then
+			cfg.kind = "SharedLib"
+		end
+
+>>>>>>> upstream/master
 		if cfg.kind == "SharedLib" and platform.nosharedlibs then
 			cfg.kind = "StaticLib"
 		end
 
+<<<<<<< HEAD
 		-- remove excluded files from the file list
 		local removefiles = cfg.removefiles
 		if _ACTION == 'gmake' then
@@ -709,11 +834,45 @@
 		local files = {}
 		for _, fname in ipairs(cfg.files) do
 			if not table.icontains(removefiles, fname) then
+=======
+		local removefiles = cfg.removefiles
+		if _ACTION == 'gmake' or _ACTION == 'ninja' then
+			removefiles = table.join(removefiles, cfg.excludes)
+		end
+
+		-- build a table of removed files, indexed by file name
+		local removefilesDict = {}
+		for _, fname in ipairs(removefiles) do
+			removefilesDict[fname] = true
+		end
+
+		-- remove excluded files from the file list
+		local files = {}
+		for _, fname in ipairs(cfg.files) do
+			if removefilesDict[fname] == nil then
+>>>>>>> upstream/master
 				table.insert(files, fname)
 			end
 		end
 		cfg.files = files
 
+<<<<<<< HEAD
+=======
+		-- remove excluded files from the project's allfiles list, and
+		-- un-duplify it
+		local allfiles = {}
+		local allfilesDict = {}
+		for _, fname in ipairs(cfg.allfiles) do
+			if allfilesDict[fname] == nil then
+				if removefilesDict[fname] == nil then
+					allfilesDict[fname] = true
+					table.insert(allfiles, fname)
+				end
+			end
+		end
+		cfg.allfiles = allfiles
+
+>>>>>>> upstream/master
 		-- fixup the data
 		for name, field in pairs(premake.fields) do
 			-- re-key flag fields for faster lookups
@@ -724,11 +883,47 @@
 		end
 
 		-- build configuration objects for all files
+<<<<<<< HEAD
 		cfg.__fileconfigs = { }
 		for _, fname in ipairs(cfg.files) do
 			local fcfg = { }
 			fcfg.name = fname
 			cfg.__fileconfigs[fname] = fcfg
 			table.insert(cfg.__fileconfigs, fcfg)
+=======
+		-- TODO: can I build this as a tree instead, and avoid the extra
+		-- step of building it later?
+		local cfgfields = {
+			{"__fileconfigs",    cfg.files},
+			{"__allfileconfigs", cfg.allfiles},
+		}
+
+		for _, cfgfield in ipairs(cfgfields) do
+			local fieldname = cfgfield[1]
+			local field     = cfgfield[2]
+
+			cfg[fieldname] = { }
+			for _, fname in ipairs(field) do
+				local fcfg = {}
+
+				-- Only do this if the script has called enablefilelevelconfig()
+				if premake._filelevelconfig then
+					cfg.terms.required = fname:lower()
+					for _, blk in ipairs(cfg.project.blocks) do
+						-- BK - `iskeywordsmatch` call is super slow for large projects...
+						if (premake.iskeywordsmatch(blk.keywords, cfg.terms)) then
+							mergeobject(fcfg, blk)
+						end
+					end
+				end
+
+				-- add indexed by name and integer
+				-- TODO: when everything is converted to trees I won't need
+				-- to index by name any longer
+				fcfg.name = fname
+				cfg[fieldname][fname] = fcfg
+				table.insert(cfg[fieldname], fcfg)
+			end
+>>>>>>> upstream/master
 		end
 	end

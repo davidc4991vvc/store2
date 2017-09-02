@@ -1,7 +1,16 @@
+<<<<<<< HEAD
 // license:???
 // copyright-holders:Wilbert Pol,Stefan Jokisch
 #ifndef _VIDEO_TIA_H_
 #define _VIDEO_TIA_H_
+=======
+// license:BSD-3-Clause
+// copyright-holders:Wilbert Pol,Stefan Jokisch
+#ifndef MAME_VIDEO_VIDEO_TIA_H
+#define MAME_VIDEO_VIDEO_TIA_H
+
+#pragma once
+>>>>>>> upstream/master
 
 //**************************************************************************
 //  MACROS / CONSTANTS
@@ -50,7 +59,11 @@ class tia_video_device :    public device_t,
 							public device_video_interface
 {
 public:
+<<<<<<< HEAD
 	UINT32 screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
+=======
+	uint32_t screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
+>>>>>>> upstream/master
 
 	template<class _Object> static devcb_base &set_read_input_port_callback(device_t &device, _Object object) { return downcast<tia_video_device &>(device).m_read_input_port_cb.set_callback(object); }
 	template<class _Object> static devcb_base &set_databus_contents_callback(device_t &device, _Object object) { return downcast<tia_video_device &>(device).m_databus_contents_cb.set_callback(object); }
@@ -61,6 +74,7 @@ public:
 
 protected:
 	// construction/destruction
+<<<<<<< HEAD
 	tia_video_device(const machine_config &mconfig, device_type type, const char *name, const char *shortname, const char *tag, device_t *owner, UINT32 clock);
 
 	// device-level overrides
@@ -78,6 +92,25 @@ protected:
 	void drawBL(UINT8* p, UINT8* col);
 	void drawPF(UINT8* p, UINT8 *col);
 	int collision_check(UINT8* p1, UINT8* p2, int x1, int x2);
+=======
+	tia_video_device(const machine_config &mconfig, device_type type, const char *tag, device_t *owner, uint32_t clock);
+
+	// device-level overrides
+	virtual void device_start() override;
+	virtual void device_reset() override;
+
+	void draw_sprite_helper(uint8_t* p, uint8_t *col, struct player_gfx *gfx, uint8_t GRP, uint8_t COLUP, uint8_t REFP);
+	void draw_missile_helper(uint8_t* p, uint8_t* col, int horz, int skipdelay, int latch, int start, uint8_t RESMP, uint8_t ENAM, uint8_t NUSIZ, uint8_t COLUM);
+	void draw_playfield_helper(uint8_t* p, uint8_t* col, int horz, uint8_t COLU, uint8_t REFPF);
+	void draw_ball_helper(uint8_t* p, uint8_t* col, int horz, uint8_t ENAB);
+	void drawS0(uint8_t* p, uint8_t* col);
+	void drawS1(uint8_t* p, uint8_t* col);
+	void drawM0(uint8_t* p, uint8_t* col);
+	void drawM1(uint8_t* p, uint8_t* col);
+	void drawBL(uint8_t* p, uint8_t* col);
+	void drawPF(uint8_t* p, uint8_t *col);
+	int collision_check(uint8_t* p1, uint8_t* p2, int x1, int x2);
+>>>>>>> upstream/master
 	int current_x();
 	int current_y();
 	void setup_pXgfx(void);
@@ -117,8 +150,13 @@ private:
 	struct player_gfx p0gfx;
 	struct player_gfx p1gfx;
 
+<<<<<<< HEAD
 	UINT64 frame_cycles;
 	UINT64 paddle_start;
+=======
+	uint64_t frame_cycles;
+	uint64_t paddle_start;
+>>>>>>> upstream/master
 
 	int horzP0;
 	int horzP1;
@@ -144,6 +182,7 @@ private:
 	int prev_x;
 	int prev_y;
 
+<<<<<<< HEAD
 	UINT8 VSYNC;
 	UINT8 VBLANK;
 	UINT8 COLUP0;
@@ -201,6 +240,65 @@ private:
 	bitmap_ind16 *helper[3];
 
 	UINT16 screen_height;
+=======
+	uint8_t VSYNC;
+	uint8_t VBLANK;
+	uint8_t COLUP0;
+	uint8_t COLUP1;
+	uint8_t COLUBK;
+	uint8_t COLUPF;
+	uint8_t CTRLPF;
+	uint8_t GRP0;
+	uint8_t GRP1;
+	uint8_t REFP0;
+	uint8_t REFP1;
+	uint8_t HMP0;
+	uint8_t HMP1;
+	uint8_t HMM0;
+	uint8_t HMM1;
+	uint8_t HMBL;
+	uint8_t VDELP0;
+	uint8_t VDELP1;
+	uint8_t VDELBL;
+	uint8_t NUSIZ0;
+	uint8_t NUSIZ1;
+	uint8_t ENAM0;
+	uint8_t ENAM1;
+	uint8_t ENABL;
+	uint8_t CXM0P;
+	uint8_t CXM1P;
+	uint8_t CXP0FB;
+	uint8_t CXP1FB;
+	uint8_t CXM0FB;
+	uint8_t CXM1FB;
+	uint8_t CXBLPF;
+	uint8_t CXPPMM;
+	uint8_t RESMP0;
+	uint8_t RESMP1;
+	uint8_t PF0;
+	uint8_t PF1;
+	uint8_t PF2;
+	uint8_t INPT4;
+	uint8_t INPT5;
+
+	uint8_t prevGRP0;
+	uint8_t prevGRP1;
+	uint8_t prevENABL;
+
+	int HMOVE_started;
+	int HMOVE_started_previous;
+	uint8_t HMP0_latch;
+	uint8_t HMP1_latch;
+	uint8_t HMM0_latch;
+	uint8_t HMM1_latch;
+	uint8_t HMBL_latch;
+	uint8_t REFLECT;      /* Should playfield be reflected or not */
+	uint8_t NUSIZx_changed;
+
+	std::unique_ptr<bitmap_ind16> helper[3];
+
+	uint16_t screen_height;
+>>>>>>> upstream/master
 
 	void register_save_state();
 };
@@ -208,28 +306,55 @@ private:
 class tia_pal_video_device : public tia_video_device
 {
 public:
+<<<<<<< HEAD
 	tia_pal_video_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
 
 	DECLARE_PALETTE_INIT(tia_pal);
 
 protected:
 	virtual machine_config_constructor device_mconfig_additions() const;
+=======
+	tia_pal_video_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
+
+protected:
+	virtual void device_add_mconfig(machine_config &config) override;
+
+private:
+	DECLARE_PALETTE_INIT(tia_pal);
+>>>>>>> upstream/master
 };
 
 class tia_ntsc_video_device : public tia_video_device
 {
 public:
+<<<<<<< HEAD
 	tia_ntsc_video_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
 
 	DECLARE_PALETTE_INIT(tia_ntsc);
 
 protected:
 	virtual machine_config_constructor device_mconfig_additions() const;
+=======
+	tia_ntsc_video_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
+
+protected:
+	virtual void device_add_mconfig(machine_config &config) override;
+
+private:
+	DECLARE_PALETTE_INIT(tia_ntsc);
+>>>>>>> upstream/master
 };
 
 
 // device type definition
+<<<<<<< HEAD
 extern const device_type TIA_PAL_VIDEO;
 extern const device_type TIA_NTSC_VIDEO;
 
 #endif /* _VIDEO_TIA_H_ */
+=======
+DECLARE_DEVICE_TYPE(TIA_PAL_VIDEO, tia_pal_video_device)
+DECLARE_DEVICE_TYPE(TIA_NTSC_VIDEO, tia_ntsc_video_device)
+
+#endif // MAME_VIDEO_TIA_H
+>>>>>>> upstream/master

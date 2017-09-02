@@ -10,11 +10,16 @@
         - M48T37
         - M48T58
         - MK48T08
+<<<<<<< HEAD
+=======
+        - MK48T12
+>>>>>>> upstream/master
 
 ***************************************************************************/
 
 #include "emu.h"
 #include "machine/timekpr.h"
+<<<<<<< HEAD
 
 
 // device type definition
@@ -23,6 +28,17 @@ const device_type M48T35 = &device_creator<m48t35_device>;
 const device_type M48T37 = &device_creator<m48t37_device>;
 const device_type M48T58 = &device_creator<m48t58_device>;
 const device_type MK48T08 = &device_creator<mk48t08_device>;
+=======
+#include "machine/timehelp.h"
+
+// device type definition
+DEFINE_DEVICE_TYPE(M48T02,  m48t02_device,  "m48t02",  "M48T02 Timekeeper")
+DEFINE_DEVICE_TYPE(M48T35,  m48t35_device,  "m48t35",  "M48T35 Timekeeper")
+DEFINE_DEVICE_TYPE(M48T37,  m48t37_device,  "m48t37",  "M48T37 Timekeeper")
+DEFINE_DEVICE_TYPE(M48T58,  m48t58_device,  "m48t58",  "M48T58 Timekeeper")
+DEFINE_DEVICE_TYPE(MK48T08, mk48t08_device, "mk48t08", "MK48T08 Timekeeper")
+DEFINE_DEVICE_TYPE(MK48T12, mk48t12_device, "mk48t12", "MK48T12 Timekeeper")
+>>>>>>> upstream/master
 
 
 /***************************************************************************
@@ -54,13 +70,18 @@ const device_type MK48T08 = &device_creator<mk48t08_device>;
 
 #define FLAGS_BL ( 0x10 ) /* MK48T08/M48T37: not emulated */
 #define FLAGS_AF ( 0x40 ) /* M48T37: not emulated */
+<<<<<<< HEAD
 #define FLAGS_WDF ( 0x80 ) /* M48T37: not emulated */
+=======
+#define FLAGS_WDF ( 0x80 ) /* M48T37 */
+>>>>>>> upstream/master
 
 
 /***************************************************************************
     INLINE FUNCTIONS
 ***************************************************************************/
 
+<<<<<<< HEAD
 INLINE UINT8 make_bcd(UINT8 data)
 {
 	return ( ( ( data / 10 ) % 10 ) << 4 ) + ( data % 10 );
@@ -95,6 +116,9 @@ static int inc_bcd( UINT8 *data, int mask, int min, int max )
 }
 
 static void counter_to_ram( UINT8 *data, int offset, int counter )
+=======
+static void counter_to_ram( uint8_t *data, int offset, int counter )
+>>>>>>> upstream/master
 {
 	if( offset >= 0 )
 	{
@@ -102,7 +126,11 @@ static void counter_to_ram( UINT8 *data, int offset, int counter )
 	}
 }
 
+<<<<<<< HEAD
 static int counter_from_ram( UINT8 *data, int offset )
+=======
+static int counter_from_ram( uint8_t *data, int offset )
+>>>>>>> upstream/master
 {
 	if( offset >= 0 )
 	{
@@ -119,6 +147,7 @@ static int counter_from_ram( UINT8 *data, int offset )
 //  timekeeper_device_config - constructor
 //-------------------------------------------------
 
+<<<<<<< HEAD
 timekeeper_device::timekeeper_device(const machine_config &mconfig, device_type type, const char *name, const char *tag, device_t *owner, UINT32 clock, const char *shortname, const char *source)
 	: device_t(mconfig, type, name, tag, owner, clock, shortname, source),
 		device_nvram_interface(mconfig, *this)
@@ -128,6 +157,22 @@ timekeeper_device::timekeeper_device(const machine_config &mconfig, device_type 
 m48t02_device::m48t02_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
 	: timekeeper_device(mconfig, M48T02, "M48T02 Timekeeper", tag, owner, clock, "m48t02", __FILE__)
 {
+=======
+timekeeper_device::timekeeper_device(const machine_config &mconfig, device_type type, const char *tag, device_t *owner, uint32_t clock, int size)
+	: device_t(mconfig, type, tag, owner, clock)
+	, device_nvram_interface(mconfig, *this)
+	, m_reset_cb(*this)
+	, m_irq_cb(*this)
+	, m_default_data(*this, DEVICE_SELF, size)
+	, m_size(size)
+{
+}
+
+m48t02_device::m48t02_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: timekeeper_device(mconfig, M48T02, tag, owner, clock, 0x800)
+{
+	m_offset_watchdog = -1;
+>>>>>>> upstream/master
 	m_offset_control = 0x7f8;
 	m_offset_seconds = 0x7f9;
 	m_offset_minutes = 0x7fa;
@@ -138,12 +183,21 @@ m48t02_device::m48t02_device(const machine_config &mconfig, const char *tag, dev
 	m_offset_year = 0x7ff;
 	m_offset_century = -1;
 	m_offset_flags = -1;
+<<<<<<< HEAD
 	m_size = 0x800;
 }
 
 m48t35_device::m48t35_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
 	: timekeeper_device(mconfig, M48T35, "M48T35 Timekeeper", tag, owner, clock, "m48t35", __FILE__)
 {
+=======
+}
+
+m48t35_device::m48t35_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: timekeeper_device(mconfig, M48T35, tag, owner, clock, 0x8000)
+{
+	m_offset_watchdog = -1;
+>>>>>>> upstream/master
 	m_offset_control = 0x7ff8;
 	m_offset_seconds = 0x7ff9;
 	m_offset_minutes = 0x7ffa;
@@ -154,12 +208,21 @@ m48t35_device::m48t35_device(const machine_config &mconfig, const char *tag, dev
 	m_offset_year = 0x7fff;
 	m_offset_century = -1;
 	m_offset_flags = -1;
+<<<<<<< HEAD
 	m_size = 0x8000;
 }
 
 m48t37_device::m48t37_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
 	: timekeeper_device(mconfig, M48T37, "M48T37 Timekeeper", tag, owner, clock, "m48t37", __FILE__)
 {
+=======
+}
+
+m48t37_device::m48t37_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: timekeeper_device(mconfig, M48T37, tag, owner, clock, 0x8000)
+{
+	m_offset_watchdog = 0x7ff7;
+>>>>>>> upstream/master
 	m_offset_control = 0x7ff8;
 	m_offset_seconds = 0x7ff9;
 	m_offset_minutes = 0x7ffa;
@@ -170,12 +233,21 @@ m48t37_device::m48t37_device(const machine_config &mconfig, const char *tag, dev
 	m_offset_year = 0x7fff;
 	m_offset_century = 0x7ff1;
 	m_offset_flags = 0x7ff0;
+<<<<<<< HEAD
 	m_size = 0x8000;
 }
 
 m48t58_device::m48t58_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
 	: timekeeper_device(mconfig, M48T58, "M48T58 Timekeeper", tag, owner, clock, "m48t58", __FILE__)
 {
+=======
+}
+
+m48t58_device::m48t58_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: timekeeper_device(mconfig, M48T58, tag, owner, clock, 0x2000)
+{
+	m_offset_watchdog = -1;
+>>>>>>> upstream/master
 	m_offset_control = 0x1ff8;
 	m_offset_seconds = 0x1ff9;
 	m_offset_minutes = 0x1ffa;
@@ -186,12 +258,21 @@ m48t58_device::m48t58_device(const machine_config &mconfig, const char *tag, dev
 	m_offset_year = 0x1fff;
 	m_offset_century = -1;
 	m_offset_flags = -1;
+<<<<<<< HEAD
 	m_size = 0x2000;
 }
 
 mk48t08_device::mk48t08_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
 	: timekeeper_device(mconfig, MK48T08, "MK48T08 Timekeeper", tag, owner, clock, "m48t08", __FILE__)
 {
+=======
+}
+
+mk48t08_device::mk48t08_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: timekeeper_device(mconfig, MK48T08, tag, owner, clock, 0x2000)
+{
+	m_offset_watchdog = -1;
+>>>>>>> upstream/master
 	m_offset_control = 0x1ff8;
 	m_offset_seconds = 0x1ff9;
 	m_offset_minutes = 0x1ffa;
@@ -202,7 +283,25 @@ mk48t08_device::mk48t08_device(const machine_config &mconfig, const char *tag, d
 	m_offset_year = 0x1fff;
 	m_offset_century = 0x1ff1;
 	m_offset_flags = 0x1ff0;
+<<<<<<< HEAD
 	m_size = 0x2000;
+=======
+}
+
+mk48t12_device::mk48t12_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: timekeeper_device(mconfig, MK48T12, tag, owner, clock, 0x2000)
+{
+	m_offset_watchdog = -1;
+	m_offset_control = 0x7f8;
+	m_offset_seconds = 0x7f9;
+	m_offset_minutes = 0x7fa;
+	m_offset_hours = 0x7fb;
+	m_offset_day = 0x7fc;
+	m_offset_date = 0x7fd;
+	m_offset_month = 0x7fe;
+	m_offset_year = 0x7ff;
+	m_offset_century = -1;
+>>>>>>> upstream/master
 }
 
 
@@ -215,11 +314,16 @@ void timekeeper_device::device_start()
 	system_time systime;
 
 	/* validate some basic stuff */
+<<<<<<< HEAD
 	assert(this != NULL);
+=======
+	assert(this != nullptr);
+>>>>>>> upstream/master
 
 	machine().base_datetime(systime);
 
 	m_control = 0;
+<<<<<<< HEAD
 	m_seconds = make_bcd( systime.local_time.second );
 	m_minutes = make_bcd( systime.local_time.minute );
 	m_hours = make_bcd( systime.local_time.hour );
@@ -236,6 +340,18 @@ void timekeeper_device::device_start()
 		assert( region()->bytes() == m_size );
 	}
 
+=======
+	m_seconds = time_helper::make_bcd( systime.local_time.second );
+	m_minutes = time_helper::make_bcd( systime.local_time.minute );
+	m_hours = time_helper::make_bcd( systime.local_time.hour );
+	m_day = time_helper::make_bcd( systime.local_time.weekday + 1 );
+	m_date = time_helper::make_bcd( systime.local_time.mday );
+	m_month = time_helper::make_bcd( systime.local_time.month + 1 );
+	m_year = time_helper::make_bcd( systime.local_time.year % 100 );
+	m_century = time_helper::make_bcd( systime.local_time.year / 100 );
+	m_data.resize( m_size );
+
+>>>>>>> upstream/master
 	save_item( NAME(m_control) );
 	save_item( NAME(m_seconds) );
 	save_item( NAME(m_minutes) );
@@ -246,9 +362,22 @@ void timekeeper_device::device_start()
 	save_item( NAME(m_year) );
 	save_item( NAME(m_century) );
 	save_item( NAME(m_data) );
+<<<<<<< HEAD
 
 	emu_timer *timer = timer_alloc();
 	timer->adjust(attotime::from_seconds(1), 0, attotime::from_seconds(1));
+=======
+	save_item( NAME(m_watchdog_delay));
+
+	emu_timer *timer = timer_alloc();
+	timer->adjust(attotime::from_seconds(1), 0, attotime::from_seconds(1));
+
+	m_watchdog_timer = machine().scheduler().timer_alloc(timer_expired_delegate(FUNC(timekeeper_device::watchdog_callback), this));
+	m_watchdog_timer->adjust(attotime::never);
+	m_reset_cb.resolve_safe();
+	m_irq_cb.resolve_safe();
+
+>>>>>>> upstream/master
 }
 
 //-------------------------------------------------
@@ -291,6 +420,7 @@ void timekeeper_device::device_timer(emu_timer &timer, device_timer_id id, int p
 		return;
 	}
 
+<<<<<<< HEAD
 	int carry = inc_bcd( &m_seconds, MASK_SECONDS, 0x00, 0x59 );
 	if( carry )
 	{
@@ -299,10 +429,21 @@ void timekeeper_device::device_timer(emu_timer &timer, device_timer_id id, int p
 	if( carry )
 	{
 		carry = inc_bcd( &m_hours, MASK_HOURS, 0x00, 0x23 );
+=======
+	int carry = time_helper::inc_bcd( &m_seconds, MASK_SECONDS, 0x00, 0x59 );
+	if( carry )
+	{
+		carry = time_helper::inc_bcd( &m_minutes, MASK_MINUTES, 0x00, 0x59 );
+	}
+	if( carry )
+	{
+		carry = time_helper::inc_bcd( &m_hours, MASK_HOURS, 0x00, 0x23 );
+>>>>>>> upstream/master
 	}
 
 	if( carry )
 	{
+<<<<<<< HEAD
 		UINT8 maxdays;
 		static const UINT8 daysinmonth[] = { 0x31, 0x28, 0x31, 0x30, 0x31, 0x30, 0x31, 0x31, 0x30, 0x31, 0x30, 0x31 };
 
@@ -310,6 +451,15 @@ void timekeeper_device::device_timer(emu_timer &timer, device_timer_id id, int p
 
 		UINT8 month = from_bcd( m_month );
 		UINT8 year = from_bcd( m_year );
+=======
+		uint8_t maxdays;
+		static const uint8_t daysinmonth[] = { 0x31, 0x28, 0x31, 0x30, 0x31, 0x30, 0x31, 0x31, 0x30, 0x31, 0x30, 0x31 };
+
+		time_helper::inc_bcd( &m_day, MASK_DAY, 0x01, 0x07 );
+
+		uint8_t month = time_helper::from_bcd( m_month );
+		uint8_t year = time_helper::from_bcd( m_year );
+>>>>>>> upstream/master
 
 		if( month == 2 && ( year % 4 ) == 0 )
 		{
@@ -324,6 +474,7 @@ void timekeeper_device::device_timer(emu_timer &timer, device_timer_id id, int p
 			maxdays = 0x31;
 		}
 
+<<<<<<< HEAD
 		carry = inc_bcd( &m_date, MASK_DATE, 0x01, maxdays );
 	}
 	if( carry )
@@ -337,6 +488,21 @@ void timekeeper_device::device_timer(emu_timer &timer, device_timer_id id, int p
 	if( carry )
 	{
 		carry = inc_bcd( &m_century, MASK_CENTURY, 0x00, 0x99 );
+=======
+		carry = time_helper::inc_bcd( &m_date, MASK_DATE, 0x01, maxdays );
+	}
+	if( carry )
+	{
+		carry = time_helper::inc_bcd( &m_month, MASK_MONTH, 0x01, 0x12 );
+	}
+	if( carry )
+	{
+		carry = time_helper::inc_bcd( &m_year, MASK_YEAR, 0x00, 0x99 );
+	}
+	if( carry )
+	{
+		carry = time_helper::inc_bcd( &m_century, MASK_CENTURY, 0x00, 0x99 );
+>>>>>>> upstream/master
 
 		if( type() == M48T35 ||
 			type() == M48T58 )
@@ -354,6 +520,32 @@ void timekeeper_device::device_timer(emu_timer &timer, device_timer_id id, int p
 	}
 }
 
+<<<<<<< HEAD
+=======
+TIMER_CALLBACK_MEMBER(timekeeper_device::watchdog_callback)
+{
+	// Set Flag
+	m_data[m_offset_flags] |= FLAGS_WDF;
+	// WDS (bit 7) selects callback
+	if (m_data[m_offset_watchdog] & 0x80) {
+		// Clear watchdog register
+		m_data[m_offset_watchdog] = 0;
+		m_reset_cb(ASSERT_LINE);
+	}
+	else {
+		m_irq_cb(ASSERT_LINE);
+	}
+	//printf("watchdog_callback: WD Control: %02x WD Flags: %02x\n", m_data[m_offset_watchdog], m_data[m_offset_flags]);
+}
+
+WRITE8_MEMBER(timekeeper_device::watchdog_write)
+{
+	if ((m_data[m_offset_watchdog] & 0x7f) != 0) {
+		m_watchdog_timer->adjust(m_watchdog_delay);
+	}
+}
+
+>>>>>>> upstream/master
 WRITE8_MEMBER( timekeeper_device::write )
 {
 	if( offset == m_offset_control )
@@ -373,20 +565,52 @@ WRITE8_MEMBER( timekeeper_device::write )
 			m_day = ( m_day & ~DAY_CEB ) | ( data & DAY_CEB );
 		}
 	}
+<<<<<<< HEAD
+=======
+	else if (offset == m_offset_watchdog && type() == M48T37)
+	{
+		if ((data & 0x7f) == 0) {
+			m_watchdog_timer->adjust(attotime::never);
+		}
+		else {
+			// Calculate the time unit
+			m_watchdog_delay = attotime::from_usec(62500);
+			m_watchdog_delay *= 4 << (data & 0x3);
+			// Adjust by multiplier
+			m_watchdog_delay *= (data >> 2) & 0x1f;
+			m_watchdog_timer->adjust(m_watchdog_delay);
+			//printf("write: setting watchdog to %s WatchdogReg = 0x%02x\n", m_watchdog_delay.as_string(), data);
+		}
+	}
+>>>>>>> upstream/master
 
 	m_data[ offset ] = data;
 }
 
 READ8_MEMBER( timekeeper_device::read )
 {
+<<<<<<< HEAD
 	UINT8 result = m_data[ offset ];
+=======
+	uint8_t result = m_data[ offset ];
+>>>>>>> upstream/master
 	if( offset == m_offset_date && type() == M48T58 )
 	{
 		result &= ~DATE_BL;
 	}
+<<<<<<< HEAD
 	else if( offset == m_offset_flags && (type() == MK48T08 || type() == M48T37) )
 	{
 		result = 0;
+=======
+	else if( offset == m_offset_flags && type() == M48T37 )
+	{
+		// Clear the watchdog flag
+		m_data[m_offset_flags] &= ~FLAGS_WDF;
+		// Clear callbacks
+		m_reset_cb(CLEAR_LINE);
+		m_irq_cb(CLEAR_LINE);
+>>>>>>> upstream/master
 	}
 	return result;
 }
@@ -398,7 +622,11 @@ READ8_MEMBER( timekeeper_device::read )
 
 void timekeeper_device::nvram_default()
 {
+<<<<<<< HEAD
 	if( m_default_data != NULL )
+=======
+	if (m_default_data.found())
+>>>>>>> upstream/master
 	{
 		memcpy( &m_data[0], m_default_data, m_size );
 	}

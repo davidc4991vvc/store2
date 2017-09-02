@@ -24,10 +24,17 @@ void hnayayoi_state::common_vh_start( int num_pixmaps )
 	{
 		if (i < m_total_pixmaps)
 		{
+<<<<<<< HEAD
 			m_pixmap[i] = auto_alloc_array(machine(), UINT8, 256 * 256);
 		}
 		else
 			m_pixmap[i] = NULL;
+=======
+			m_pixmap[i] = auto_alloc_array(machine(), uint8_t, 256 * 256);
+		}
+		else
+			m_pixmap[i] = nullptr;
+>>>>>>> upstream/master
 	}
 }
 
@@ -128,7 +135,11 @@ void hnayayoi_state::copy_pixel( int x, int y, int pen )
 
 WRITE8_MEMBER(hnayayoi_state::dynax_blitter_rev1_start_w)
 {
+<<<<<<< HEAD
 	UINT8 *rom = memregion("gfx1")->base();
+=======
+	uint8_t *rom = memregion("gfx1")->base();
+>>>>>>> upstream/master
 	int romlen = memregion("gfx1")->bytes();
 	int sx = m_blit_dest & 0xff;
 	int sy = m_blit_dest >> 8;
@@ -224,15 +235,25 @@ WRITE8_MEMBER(hnayayoi_state::hnayayoi_palbank_w)
 void hnayayoi_state::draw_layer_interleaved( bitmap_ind16 &bitmap, const rectangle &cliprect, int left_pixmap, int right_pixmap, int palbase, int transp )
 {
 	int county, countx, pen;
+<<<<<<< HEAD
 	UINT8 *src1 = m_pixmap[left_pixmap];
 	UINT8 *src2 = m_pixmap[right_pixmap];
 	UINT16 *dstbase = &bitmap.pix16(0);
+=======
+	uint8_t *src1 = m_pixmap[left_pixmap];
+	uint8_t *src2 = m_pixmap[right_pixmap];
+	uint16_t *dstbase = &bitmap.pix16(0);
+>>>>>>> upstream/master
 
 	palbase *= 16;
 
 	for (county = 255; county >= 0; county--, dstbase += bitmap.rowpixels())
 	{
+<<<<<<< HEAD
 		UINT16 *dst = dstbase;
+=======
+		uint16_t *dst = dstbase;
+>>>>>>> upstream/master
 
 		if (transp)
 		{
@@ -256,7 +277,11 @@ void hnayayoi_state::draw_layer_interleaved( bitmap_ind16 &bitmap, const rectang
 }
 
 
+<<<<<<< HEAD
 UINT32 hnayayoi_state::screen_update_hnayayoi(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+=======
+uint32_t hnayayoi_state::screen_update_hnayayoi(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+>>>>>>> upstream/master
 {
 	int col0 = (m_palbank >>  0) & 0x0f;
 	int col1 = (m_palbank >>  4) & 0x0f;

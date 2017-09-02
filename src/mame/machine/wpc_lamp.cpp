@@ -4,12 +4,21 @@
 #include "emu.h"
 #include "wpc_lamp.h"
 
+<<<<<<< HEAD
 const device_type WPC_LAMP = &device_creator<wpc_lamp_device>;
 
 wpc_lamp_device::wpc_lamp_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock) :
 	device_t(mconfig, WPC_LAMP, "Williams Pinball Controller Lamp Control", tag, owner, clock, "wpc_lamp", __FILE__)
 {
 	names = NULL;
+=======
+DEFINE_DEVICE_TYPE(WPC_LAMP, wpc_lamp_device, "wpc_lamp", "Williams Pinball Controller Lamp Control")
+
+wpc_lamp_device::wpc_lamp_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock) :
+	device_t(mconfig, WPC_LAMP, tag, owner, clock)
+{
+	names = nullptr;
+>>>>>>> upstream/master
 }
 
 wpc_lamp_device::~wpc_lamp_device()
@@ -60,7 +69,11 @@ void wpc_lamp_device::device_reset()
 void wpc_lamp_device::device_timer(emu_timer &timer, device_timer_id id, int param, void *ptr)
 {
 	for(int i=0; i<64; i++) {
+<<<<<<< HEAD
 		UINT8 s = state[i];
+=======
+		uint8_t s = state[i];
+>>>>>>> upstream/master
 		state[i] = s >> 1;
 		if((s & 0xc0) == 0x40 || (s & 0xc0) == 0x80) {
 			char buffer[256];
@@ -68,7 +81,11 @@ void wpc_lamp_device::device_timer(emu_timer &timer, device_timer_id id, int par
 				sprintf(buffer, "l:%s", names[i]);
 			else
 				sprintf(buffer, "l:%d%d", 1+(i >> 3), 1 + (i & 7));
+<<<<<<< HEAD
 			output_set_value(buffer, (s & 0xc0) == 0x80);
+=======
+			machine().output().set_value(buffer, (s & 0xc0) == 0x80);
+>>>>>>> upstream/master
 		}
 	}
 }

@@ -1,6 +1,10 @@
 // license:BSD-3-Clause
 // copyright-holders:Paul Priest, David Haywood, Luca Elia
 #include "video/fuukifg.h"
+<<<<<<< HEAD
+=======
+#include "screen.h"
+>>>>>>> upstream/master
 
 /* Define clocks based on actual OSC on the PCB */
 
@@ -28,7 +32,11 @@ public:
 		m_screen(*this, "screen"),
 		m_palette(*this, "palette"),
 		m_fuukivid(*this, "fuukivid"),
+<<<<<<< HEAD
 		m_vram(*this, "vram"),
+=======
+		m_vram(*this, "vram.%u", 0),
+>>>>>>> upstream/master
 		m_vregs(*this, "vregs"),
 		m_priority(*this, "priority"),
 		m_tilebank(*this, "tilebank")
@@ -42,6 +50,7 @@ public:
 	required_device<fuukivid_device> m_fuukivid;
 
 	/* memory pointers */
+<<<<<<< HEAD
 	required_shared_ptr_array<UINT32,4> m_vram;
 	required_shared_ptr<UINT32> m_vregs;
 	required_shared_ptr<UINT32> m_priority;
@@ -52,12 +61,28 @@ public:
 	/* video-related */
 	tilemap_t     *m_tilemap[4];
 	UINT32      m_spr_buffered_tilebank[2];
+=======
+	required_shared_ptr_array<uint32_t,4> m_vram;
+	required_shared_ptr<uint32_t> m_vregs;
+	required_shared_ptr<uint32_t> m_priority;
+	required_shared_ptr<uint32_t> m_tilebank;
+	//uint32_t *    m_buf_spriteram;
+	//uint32_t *    m_buf_spriteram2;
+
+	/* video-related */
+	tilemap_t     *m_tilemap[4];
+	uint32_t      m_spr_buffered_tilebank[2];
+>>>>>>> upstream/master
 
 	/* misc */
 	emu_timer   *m_level_1_interrupt_timer;
 	emu_timer   *m_vblank_interrupt_timer;
 	emu_timer   *m_raster_interrupt_timer;
+<<<<<<< HEAD
 	UINT8       m_shared_ram[16];
+=======
+	uint8_t       m_shared_ram[16];
+>>>>>>> upstream/master
 
 	DECLARE_READ32_MEMBER(snd_020_r);
 	DECLARE_WRITE32_MEMBER(snd_020_w);
@@ -76,6 +101,7 @@ public:
 	TILE_GET_INFO_MEMBER(get_tile_info_2);
 	TILE_GET_INFO_MEMBER(get_tile_info_3);
 
+<<<<<<< HEAD
 	virtual void machine_start();
 	virtual void machine_reset();
 	virtual void video_start();
@@ -90,4 +116,19 @@ public:
 
 protected:
 	virtual void device_timer(emu_timer &timer, device_timer_id id, int param, void *ptr);
+=======
+	virtual void machine_start() override;
+	virtual void machine_reset() override;
+	virtual void video_start() override;
+
+	uint32_t screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
+	DECLARE_WRITE_LINE_MEMBER(screen_vblank);
+	inline void get_tile_info8bpp(tile_data &tileinfo, tilemap_memory_index tile_index, int _N_);
+	inline void get_tile_info4bpp(tile_data &tileinfo, tilemap_memory_index tile_index, int _N_);
+	inline void vram_w(offs_t offset, uint32_t data, uint32_t mem_mask, int _N_);
+	void draw_layer( screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect, int i, int flag, int pri );
+
+protected:
+	virtual void device_timer(emu_timer &timer, device_timer_id id, int param, void *ptr) override;
+>>>>>>> upstream/master
 };

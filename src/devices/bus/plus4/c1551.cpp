@@ -6,6 +6,10 @@
 
 **********************************************************************/
 
+<<<<<<< HEAD
+=======
+#include "emu.h"
+>>>>>>> upstream/master
 #include "c1551.h"
 
 
@@ -26,7 +30,11 @@
 //  DEVICE DEFINITIONS
 //**************************************************************************
 
+<<<<<<< HEAD
 const device_type C1551 = &device_creator<c1551_t>;
+=======
+DEFINE_DEVICE_TYPE(C1551, c1551_device, "c1551", "Commodore 1551")
+>>>>>>> upstream/master
 
 
 //-------------------------------------------------
@@ -46,7 +54,11 @@ ROM_END
 //  rom_region - device-specific ROM region
 //-------------------------------------------------
 
+<<<<<<< HEAD
 const rom_entry *c1551_t::device_rom_region() const
+=======
+const tiny_rom_entry *c1551_device::device_rom_region() const
+>>>>>>> upstream/master
 {
 	return ROM_NAME( c1551 );
 }
@@ -56,7 +68,11 @@ const rom_entry *c1551_t::device_rom_region() const
 //  M6510_INTERFACE( cpu_intf )
 //-------------------------------------------------
 
+<<<<<<< HEAD
 READ8_MEMBER( c1551_t::port_r )
+=======
+READ8_MEMBER( c1551_device::port_r )
+>>>>>>> upstream/master
 {
 	/*
 
@@ -73,7 +89,11 @@ READ8_MEMBER( c1551_t::port_r )
 
 	*/
 
+<<<<<<< HEAD
 	UINT8 data = 0;
+=======
+	uint8_t data = 0;
+>>>>>>> upstream/master
 
 	// write protect sense
 	data |= !m_floppy->wpt_r() << 4;
@@ -84,7 +104,11 @@ READ8_MEMBER( c1551_t::port_r )
 	return data;
 }
 
+<<<<<<< HEAD
 WRITE8_MEMBER( c1551_t::port_w )
+=======
+WRITE8_MEMBER( c1551_device::port_w )
+>>>>>>> upstream/master
 {
 	/*
 
@@ -108,7 +132,11 @@ WRITE8_MEMBER( c1551_t::port_w )
 	m_ga->mtr_w(BIT(data, 2));
 
 	// activity LED
+<<<<<<< HEAD
 	output_set_led_value(LED_ACT, BIT(data, 3));
+=======
+	machine().output().set_led_value(LED_ACT, BIT(data, 3));
+>>>>>>> upstream/master
 
 	// density select
 	m_ga->ds_w((data >> 5) & 0x03);
@@ -119,7 +147,11 @@ WRITE8_MEMBER( c1551_t::port_w )
 //  tpi6525_interface tpi0_intf
 //-------------------------------------------------
 
+<<<<<<< HEAD
 READ8_MEMBER( c1551_t::tcbm_data_r )
+=======
+READ8_MEMBER( c1551_device::tcbm_data_r )
+>>>>>>> upstream/master
 {
 	/*
 
@@ -139,7 +171,11 @@ READ8_MEMBER( c1551_t::tcbm_data_r )
 	return m_tcbm_data;
 }
 
+<<<<<<< HEAD
 WRITE8_MEMBER( c1551_t::tcbm_data_w )
+=======
+WRITE8_MEMBER( c1551_device::tcbm_data_w )
+>>>>>>> upstream/master
 {
 	/*
 
@@ -159,9 +195,15 @@ WRITE8_MEMBER( c1551_t::tcbm_data_w )
 	m_tcbm_data = data;
 }
 
+<<<<<<< HEAD
 READ8_MEMBER( c1551_t::tpi0_r )
 {
 	UINT8 data = m_tpi0->read(space, offset);
+=======
+READ8_MEMBER( c1551_device::tpi0_r )
+{
+	uint8_t data = m_tpi0->read(space, offset);
+>>>>>>> upstream/master
 
 	m_ga->ted_w(0);
 	m_ga->ted_w(1);
@@ -169,7 +211,11 @@ READ8_MEMBER( c1551_t::tpi0_r )
 	return data;
 }
 
+<<<<<<< HEAD
 WRITE8_MEMBER( c1551_t::tpi0_w )
+=======
+WRITE8_MEMBER( c1551_device::tpi0_w )
+>>>>>>> upstream/master
 {
 	m_tpi0->write(space, offset, data);
 
@@ -177,7 +223,11 @@ WRITE8_MEMBER( c1551_t::tpi0_w )
 	m_ga->ted_w(1);
 }
 
+<<<<<<< HEAD
 READ8_MEMBER( c1551_t::tpi0_pc_r )
+=======
+READ8_MEMBER( c1551_device::tpi0_pc_r )
+>>>>>>> upstream/master
 {
 	/*
 
@@ -194,7 +244,11 @@ READ8_MEMBER( c1551_t::tpi0_pc_r )
 
 	*/
 
+<<<<<<< HEAD
 	UINT8 data = 0;
+=======
+	uint8_t data = 0;
+>>>>>>> upstream/master
 
 	// JP1
 	data |= m_jp1->read() << 5;
@@ -208,7 +262,11 @@ READ8_MEMBER( c1551_t::tpi0_pc_r )
 	return data;
 }
 
+<<<<<<< HEAD
 WRITE8_MEMBER( c1551_t::tpi0_pc_w )
+=======
+WRITE8_MEMBER( c1551_device::tpi0_pc_w )
+>>>>>>> upstream/master
 {
 	/*
 
@@ -242,7 +300,11 @@ WRITE8_MEMBER( c1551_t::tpi0_pc_w )
 //  tpi6525_interface tpi1_intf
 //-------------------------------------------------
 
+<<<<<<< HEAD
 READ8_MEMBER( c1551_t::tpi1_pb_r )
+=======
+READ8_MEMBER( c1551_device::tpi1_pb_r )
+>>>>>>> upstream/master
 {
 	/*
 
@@ -262,7 +324,11 @@ READ8_MEMBER( c1551_t::tpi1_pb_r )
 	return m_status & 0x03;
 }
 
+<<<<<<< HEAD
 READ8_MEMBER( c1551_t::tpi1_pc_r )
+=======
+READ8_MEMBER( c1551_device::tpi1_pc_r )
+>>>>>>> upstream/master
 {
 	/*
 
@@ -279,7 +345,11 @@ READ8_MEMBER( c1551_t::tpi1_pc_r )
 
 	*/
 
+<<<<<<< HEAD
 	UINT8 data = 0;
+=======
+	uint8_t data = 0;
+>>>>>>> upstream/master
 
 	// TCBM acknowledge
 	data |= m_ack << 7;
@@ -287,7 +357,11 @@ READ8_MEMBER( c1551_t::tpi1_pc_r )
 	return data;
 }
 
+<<<<<<< HEAD
 WRITE8_MEMBER( c1551_t::tpi1_pc_w )
+=======
+WRITE8_MEMBER( c1551_device::tpi1_pc_w )
+>>>>>>> upstream/master
 {
 	/*
 
@@ -312,7 +386,11 @@ WRITE8_MEMBER( c1551_t::tpi1_pc_w )
 //  ADDRESS_MAP( c1551_mem )
 //-------------------------------------------------
 
+<<<<<<< HEAD
 static ADDRESS_MAP_START( c1551_mem, AS_PROGRAM, 8, c1551_t )
+=======
+static ADDRESS_MAP_START( c1551_mem, AS_PROGRAM, 8, c1551_device )
+>>>>>>> upstream/master
 	AM_RANGE(0x0000, 0x07ff) AM_MIRROR(0x0800) AM_RAM
 	AM_RANGE(0x4000, 0x4007) AM_MIRROR(0x3ff8) AM_READWRITE(tpi0_r, tpi0_w)
 	AM_RANGE(0xc000, 0xffff) AM_ROM AM_REGION(M6510T_TAG, 0)
@@ -332,13 +410,18 @@ SLOT_INTERFACE_END
 //  FLOPPY_FORMATS( floppy_formats )
 //-------------------------------------------------
 
+<<<<<<< HEAD
 FLOPPY_FORMATS_MEMBER( c1551_t::floppy_formats )
+=======
+FLOPPY_FORMATS_MEMBER( c1551_device::floppy_formats )
+>>>>>>> upstream/master
 	FLOPPY_D64_FORMAT,
 	FLOPPY_G64_FORMAT
 FLOPPY_FORMATS_END
 
 
 //-------------------------------------------------
+<<<<<<< HEAD
 //  MACHINE_DRIVER( c1551 )
 //-------------------------------------------------
 
@@ -346,10 +429,20 @@ static MACHINE_CONFIG_FRAGMENT( c1551 )
 	MCFG_CPU_ADD(M6510T_TAG, M6510T, XTAL_16MHz/8)
 	MCFG_CPU_PROGRAM_MAP(c1551_mem)
 	MCFG_M6510T_PORT_CALLBACKS(READ8(c1551_t, port_r), WRITE8(c1551_t, port_w))
+=======
+//  device_add_mconfig - add device configuration
+//-------------------------------------------------
+
+MACHINE_CONFIG_MEMBER( c1551_device::device_add_mconfig )
+	MCFG_CPU_ADD(M6510T_TAG, M6510T, XTAL_16MHz/8)
+	MCFG_CPU_PROGRAM_MAP(c1551_mem)
+	MCFG_M6510T_PORT_CALLBACKS(READ8(c1551_device, port_r), WRITE8(c1551_device, port_w))
+>>>>>>> upstream/master
 	MCFG_QUANTUM_PERFECT_CPU(M6510T_TAG)
 
 	MCFG_PLS100_ADD(PLA_TAG)
 	MCFG_DEVICE_ADD(M6523_0_TAG, TPI6525, 0)
+<<<<<<< HEAD
 	MCFG_TPI6525_IN_PA_CB(READ8(c1551_t, tcbm_data_r))
 	MCFG_TPI6525_OUT_PA_CB(WRITE8(c1551_t, tcbm_data_w))
 	MCFG_TPI6525_IN_PB_CB(DEVREAD8(C64H156_TAG, c64h156_device, yb_r))
@@ -366,12 +459,31 @@ static MACHINE_CONFIG_FRAGMENT( c1551 )
 	MCFG_DEVICE_ADD(C64H156_TAG, C64H156, XTAL_16MHz)
 	MCFG_64H156_BYTE_CALLBACK(DEVWRITELINE(C64H156_TAG, c64h156_device, atni_w))
 	MCFG_FLOPPY_DRIVE_ADD(C64H156_TAG":0", c1551_floppies, "525ssqd", c1551_t::floppy_formats)
+=======
+	MCFG_TPI6525_IN_PA_CB(READ8(c1551_device, tcbm_data_r))
+	MCFG_TPI6525_OUT_PA_CB(WRITE8(c1551_device, tcbm_data_w))
+	MCFG_TPI6525_IN_PB_CB(DEVREAD8(C64H156_TAG, c64h156_device, yb_r))
+	MCFG_TPI6525_OUT_PB_CB(DEVWRITE8(C64H156_TAG, c64h156_device, yb_w))
+	MCFG_TPI6525_IN_PC_CB(READ8(c1551_device, tpi0_pc_r))
+	MCFG_TPI6525_OUT_PC_CB(WRITE8(c1551_device, tpi0_pc_w))
+	MCFG_DEVICE_ADD(M6523_1_TAG, TPI6525, 0)
+	MCFG_TPI6525_IN_PA_CB(READ8(c1551_device, tcbm_data_r))
+	MCFG_TPI6525_OUT_PA_CB(WRITE8(c1551_device, tcbm_data_w))
+	MCFG_TPI6525_IN_PB_CB(READ8(c1551_device, tpi1_pb_r))
+	MCFG_TPI6525_IN_PC_CB(READ8(c1551_device, tpi1_pc_r))
+	MCFG_TPI6525_OUT_PC_CB(WRITE8(c1551_device, tpi1_pc_w))
+
+	MCFG_DEVICE_ADD(C64H156_TAG, C64H156, XTAL_16MHz)
+	MCFG_64H156_BYTE_CALLBACK(DEVWRITELINE(C64H156_TAG, c64h156_device, atni_w))
+	MCFG_FLOPPY_DRIVE_ADD_FIXED(C64H156_TAG":0", c1551_floppies, "525ssqd", c1551_device::floppy_formats)
+>>>>>>> upstream/master
 
 	MCFG_PLUS4_PASSTHRU_EXPANSION_SLOT_ADD()
 MACHINE_CONFIG_END
 
 
 //-------------------------------------------------
+<<<<<<< HEAD
 //  machine_config_additions - device-specific
 //  machine configurations
 //-------------------------------------------------
@@ -383,6 +495,8 @@ machine_config_constructor c1551_t::device_mconfig_additions() const
 
 
 //-------------------------------------------------
+=======
+>>>>>>> upstream/master
 //  INPUT_PORTS( c1551 )
 //-------------------------------------------------
 
@@ -398,7 +512,11 @@ INPUT_PORTS_END
 //  input_ports - device-specific input ports
 //-------------------------------------------------
 
+<<<<<<< HEAD
 ioport_constructor c1551_t::device_input_ports() const
+=======
+ioport_constructor c1551_device::device_input_ports() const
+>>>>>>> upstream/master
 {
 	return INPUT_PORTS_NAME( c1551 );
 }
@@ -410,6 +528,7 @@ ioport_constructor c1551_t::device_input_ports() const
 //**************************************************************************
 
 //-------------------------------------------------
+<<<<<<< HEAD
 //  c1551_t - constructor
 //-------------------------------------------------
 
@@ -429,6 +548,28 @@ c1551_t::c1551_t(const machine_config &mconfig, const char *tag, device_t *owner
 		m_dav(1),
 		m_ack(1),
 		m_dev(0), m_irq_timer(nullptr)
+=======
+//  c1551_device - constructor
+//-------------------------------------------------
+
+c1551_device::c1551_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: device_t(mconfig, C1551, tag, owner, clock)
+	, device_plus4_expansion_card_interface(mconfig, *this)
+	, m_maincpu(*this, M6510T_TAG)
+	, m_tpi0(*this, M6523_0_TAG)
+	, m_tpi1(*this, M6523_1_TAG)
+	, m_ga(*this, C64H156_TAG)
+	, m_pla(*this, PLA_TAG)
+	, m_floppy(*this, C64H156_TAG":0:525ssqd")
+	, m_exp(*this, PLUS4_EXPANSION_SLOT_TAG)
+	, m_jp1(*this, "JP1")
+	, m_tcbm_data(0xff)
+	, m_status(1)
+	, m_dav(1)
+	, m_ack(1)
+	, m_dev(0)
+	, m_irq_timer(nullptr)
+>>>>>>> upstream/master
 {
 }
 
@@ -437,7 +578,11 @@ c1551_t::c1551_t(const machine_config &mconfig, const char *tag, device_t *owner
 //  device_start - device-specific startup
 //-------------------------------------------------
 
+<<<<<<< HEAD
 void c1551_t::device_start()
+=======
+void c1551_device::device_start()
+>>>>>>> upstream/master
 {
 	// allocate timers
 	m_irq_timer = timer_alloc();
@@ -459,7 +604,11 @@ void c1551_t::device_start()
 //  device_reset - device-specific reset
 //-------------------------------------------------
 
+<<<<<<< HEAD
 void c1551_t::device_reset()
+=======
+void c1551_device::device_reset()
+>>>>>>> upstream/master
 {
 	m_maincpu->reset();
 
@@ -479,7 +628,11 @@ void c1551_t::device_reset()
 //  device_timer - handler timer events
 //-------------------------------------------------
 
+<<<<<<< HEAD
 void c1551_t::device_timer(emu_timer &timer, device_timer_id id, int param, void *ptr)
+=======
+void c1551_device::device_timer(emu_timer &timer, device_timer_id id, int param, void *ptr)
+>>>>>>> upstream/master
 {
 	m_maincpu->set_input_line(M6502_IRQ_LINE, param);
 
@@ -500,12 +653,21 @@ void c1551_t::device_timer(emu_timer &timer, device_timer_id id, int param, void
 //  tpi1_selected -
 //-------------------------------------------------
 
+<<<<<<< HEAD
 bool c1551_t::tpi1_selected(offs_t offset)
 {
 #ifdef PLA_DUMPED
 	int mux = 0, ras = 0, phi0 = 0, f7 = 0;
 	UINT16 input = A5 << 15 | A6 << 14 | A7 << 13 | A8 << 12 | A9 << 11 | mux << 10 | A10 << 9 | m_dev << 8 | ras << 7 | phi0 << 6 | A15 << 5 | A14 << 4 | A13 << 3 | A12 << 2 | A11 << 1 | f7;
 	UINT8 data = m_pla->read(input);
+=======
+bool c1551_device::tpi1_selected(offs_t offset)
+{
+#ifdef PLA_DUMPED
+	int mux = 0, ras = 0, phi0 = 0, f7 = 0;
+	uint16_t input = A5 << 15 | A6 << 14 | A7 << 13 | A8 << 12 | A9 << 11 | mux << 10 | A10 << 9 | m_dev << 8 | ras << 7 | phi0 << 6 | A15 << 5 | A14 << 4 | A13 << 3 | A12 << 2 | A11 << 1 | f7;
+	uint8_t data = m_pla->read(input);
+>>>>>>> upstream/master
 	return BIT(data, 0) ? true : false;
 #endif
 
@@ -524,7 +686,11 @@ bool c1551_t::tpi1_selected(offs_t offset)
 //  plus4_cd_r - cartridge data read
 //-------------------------------------------------
 
+<<<<<<< HEAD
 UINT8 c1551_t::plus4_cd_r(address_space &space, offs_t offset, UINT8 data, int ba, int cs0, int c1l, int c2l, int cs1, int c1h, int c2h)
+=======
+uint8_t c1551_device::plus4_cd_r(address_space &space, offs_t offset, uint8_t data, int ba, int cs0, int c1l, int c2l, int cs1, int c1h, int c2h)
+>>>>>>> upstream/master
 {
 	data = m_exp->cd_r(space, offset, data, ba, cs0, c1l, c2l, cs1, c1h, c2h);
 
@@ -541,7 +707,11 @@ UINT8 c1551_t::plus4_cd_r(address_space &space, offs_t offset, UINT8 data, int b
 //  plus4_cd_w - cartridge data write
 //-------------------------------------------------
 
+<<<<<<< HEAD
 void c1551_t::plus4_cd_w(address_space &space, offs_t offset, UINT8 data, int ba, int cs0, int c1l, int c2l, int cs1, int c1h, int c2h)
+=======
+void c1551_device::plus4_cd_w(address_space &space, offs_t offset, uint8_t data, int ba, int cs0, int c1l, int c2l, int cs1, int c1h, int c2h)
+>>>>>>> upstream/master
 {
 	if (tpi1_selected(offset))
 	{

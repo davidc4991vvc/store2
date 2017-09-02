@@ -15,12 +15,17 @@
 
 #include "emu.h"
 #include "nubus_cb264.h"
+<<<<<<< HEAD
+=======
+#include "screen.h"
+>>>>>>> upstream/master
 
 #define CB264_SCREEN_NAME   "cb264_screen"
 #define CB264_ROM_REGION    "cb264_rom"
 
 #define VRAM_SIZE   (0x200000)  // 2 megs, maxed out
 
+<<<<<<< HEAD
 MACHINE_CONFIG_FRAGMENT( cb264 )
 	MCFG_SCREEN_ADD( CB264_SCREEN_NAME, RASTER)
 	MCFG_SCREEN_UPDATE_DEVICE(DEVICE_SELF, nubus_cb264_device, screen_update)
@@ -28,6 +33,8 @@ MACHINE_CONFIG_FRAGMENT( cb264 )
 	MCFG_SCREEN_SIZE(1024,768)
 	MCFG_SCREEN_VISIBLE_AREA(0, 640-1, 0, 480-1)
 MACHINE_CONFIG_END
+=======
+>>>>>>> upstream/master
 
 ROM_START( cb264 )
 	ROM_REGION(0x4000, CB264_ROM_REGION, 0)
@@ -39,6 +46,7 @@ ROM_END
 //  GLOBAL VARIABLES
 //**************************************************************************
 
+<<<<<<< HEAD
 const device_type NUBUS_CB264 = &device_creator<nubus_cb264_device>;
 
 
@@ -51,12 +59,32 @@ machine_config_constructor nubus_cb264_device::device_mconfig_additions() const
 {
 	return MACHINE_CONFIG_NAME( cb264 );
 }
+=======
+DEFINE_DEVICE_TYPE(NUBUS_CB264, nubus_cb264_device, "nb_c264", "RasterOps ColorBoard 264 video card")
+
+
+//-------------------------------------------------
+//  device_add_mconfig - add device configuration
+//-------------------------------------------------
+
+MACHINE_CONFIG_MEMBER( nubus_cb264_device::device_add_mconfig )
+	MCFG_SCREEN_ADD( CB264_SCREEN_NAME, RASTER)
+	MCFG_SCREEN_UPDATE_DEVICE(DEVICE_SELF, nubus_cb264_device, screen_update)
+	MCFG_SCREEN_RAW_PARAMS(25175000, 800, 0, 640, 525, 0, 480)
+	MCFG_SCREEN_SIZE(1024,768)
+	MCFG_SCREEN_VISIBLE_AREA(0, 640-1, 0, 480-1)
+MACHINE_CONFIG_END
+>>>>>>> upstream/master
 
 //-------------------------------------------------
 //  rom_region - device-specific ROM region
 //-------------------------------------------------
 
+<<<<<<< HEAD
 const rom_entry *nubus_cb264_device::device_rom_region() const
+=======
+const tiny_rom_entry *nubus_cb264_device::device_rom_region() const
+>>>>>>> upstream/master
 {
 	return ROM_NAME( cb264 );
 }
@@ -69,6 +97,7 @@ const rom_entry *nubus_cb264_device::device_rom_region() const
 //  nubus_cb264_device - constructor
 //-------------------------------------------------
 
+<<<<<<< HEAD
 nubus_cb264_device::nubus_cb264_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock) :
 		device_t(mconfig, NUBUS_CB264, "RasterOps ColorBoard 264 video card", tag, owner, clock, "nb_cb264", __FILE__),
 		device_nubus_card_interface(mconfig, *this), m_cb264_mode(0), m_cb264_vbl_disable(0), m_cb264_toggle(0), m_count(0), m_clutoffs(0)
@@ -78,6 +107,17 @@ nubus_cb264_device::nubus_cb264_device(const machine_config &mconfig, const char
 nubus_cb264_device::nubus_cb264_device(const machine_config &mconfig, device_type type, const char *name, const char *tag, device_t *owner, UINT32 clock, const char *shortname, const char *source) :
 		device_t(mconfig, type, name, tag, owner, clock, shortname, source),
 		device_nubus_card_interface(mconfig, *this), m_cb264_mode(0), m_cb264_vbl_disable(0), m_cb264_toggle(0), m_count(0), m_clutoffs(0)
+=======
+nubus_cb264_device::nubus_cb264_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock) :
+	nubus_cb264_device(mconfig, NUBUS_CB264, tag, owner, clock)
+{
+}
+
+nubus_cb264_device::nubus_cb264_device(const machine_config &mconfig, device_type type, const char *tag, device_t *owner, uint32_t clock) :
+	device_t(mconfig, type, tag, owner, clock),
+	device_nubus_card_interface(mconfig, *this),
+	m_cb264_mode(0), m_cb264_vbl_disable(0), m_cb264_toggle(0), m_count(0), m_clutoffs(0)
+>>>>>>> upstream/master
 {
 }
 
@@ -87,7 +127,11 @@ nubus_cb264_device::nubus_cb264_device(const machine_config &mconfig, device_typ
 
 void nubus_cb264_device::device_start()
 {
+<<<<<<< HEAD
 	UINT32 slotspace;
+=======
+	uint32_t slotspace;
+>>>>>>> upstream/master
 
 	// set_nubus_device makes m_slot valid
 	set_nubus_device();
@@ -98,7 +142,11 @@ void nubus_cb264_device::device_start()
 //  printf("[cb264 %p] slotspace = %x\n", this, slotspace);
 
 	m_vram.resize(VRAM_SIZE);
+<<<<<<< HEAD
 	install_bank(slotspace, slotspace+VRAM_SIZE-1, 0, 0, "bank_cb264", &m_vram[0]);
+=======
+	install_bank(slotspace, slotspace+VRAM_SIZE-1, "bank_cb264", &m_vram[0]);
+>>>>>>> upstream/master
 
 	m_nubus->install_device(slotspace+0xff6000, slotspace+0xff60ff, read32_delegate(FUNC(nubus_cb264_device::cb264_r), this), write32_delegate(FUNC(nubus_cb264_device::cb264_w), this));
 	m_nubus->install_device(slotspace+0xff7000, slotspace+0xff70ff, read32_delegate(FUNC(nubus_cb264_device::cb264_ramdac_r), this), write32_delegate(FUNC(nubus_cb264_device::cb264_ramdac_w), this));
@@ -125,11 +173,19 @@ void nubus_cb264_device::device_reset()
 
 ***************************************************************************/
 
+<<<<<<< HEAD
 UINT32 nubus_cb264_device::screen_update(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect)
 {
 	UINT32 *scanline, *base;
 	int x, y;
 	UINT8 pixels;
+=======
+uint32_t nubus_cb264_device::screen_update(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect)
+{
+	uint32_t *scanline, *base;
+	int x, y;
+	uint8_t pixels;
+>>>>>>> upstream/master
 
 	if (!m_cb264_vbl_disable)
 	{
@@ -205,7 +261,11 @@ UINT32 nubus_cb264_device::screen_update(screen_device &screen, bitmap_rgb32 &bi
 		case 4: // 24 bpp
 		case 7: // ???
 			{
+<<<<<<< HEAD
 				UINT32 *vram32 = (UINT32 *)&m_vram[0];
+=======
+				uint32_t *vram32 = (uint32_t *)&m_vram[0];
+>>>>>>> upstream/master
 
 				for (y = 0; y < 480; y++)
 				{

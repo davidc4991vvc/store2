@@ -16,12 +16,21 @@ TODO:
 *******************************************************************/
 
 #include "emu.h"
+<<<<<<< HEAD
 #include "debugger.h"
 #include "tlcs900.h"
 
 
 const device_type TMP95C061 = &device_creator<tmp95c061_device>;
 const device_type TMP95C063 = &device_creator<tmp95c063_device>;
+=======
+#include "tlcs900.h"
+#include "debugger.h"
+
+
+DEFINE_DEVICE_TYPE(TMP95C061, tmp95c061_device, "tmp95c061", "TMP95C061")
+DEFINE_DEVICE_TYPE(TMP95C063, tmp95c063_device, "tmp95c063", "TMP95C063")
+>>>>>>> upstream/master
 
 
 static ADDRESS_MAP_START( tmp95c061_mem8, AS_PROGRAM, 8, tmp95c061_device )
@@ -42,14 +51,24 @@ static ADDRESS_MAP_START(tmp95c063_mem16, AS_PROGRAM, 16, tmp95c063_device )
 ADDRESS_MAP_END
 
 
+<<<<<<< HEAD
 tlcs900h_device::tlcs900h_device(const machine_config &mconfig, device_type type, const char *name, const char *tag, device_t *owner, UINT32 clock, const char *shortname)
 	: cpu_device(mconfig, type, name, tag, owner, clock, shortname, __FILE__),
+=======
+tlcs900h_device::tlcs900h_device(const machine_config &mconfig, device_type type, const char *tag, device_t *owner, uint32_t clock)
+	: cpu_device(mconfig, type, tag, owner, clock),
+>>>>>>> upstream/master
 	m_am8_16(0)
 {
 }
 
+<<<<<<< HEAD
 tmp95c061_device::tmp95c061_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
 	: tlcs900h_device(mconfig, TMP95C061, "TMP95C061", tag, owner, clock, "tmp95c061" ),
+=======
+tmp95c061_device::tmp95c061_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: tlcs900h_device(mconfig, TMP95C061, tag, owner, clock),
+>>>>>>> upstream/master
 	m_port1_read(*this),
 	m_port1_write(*this),
 	m_port2_write(*this),
@@ -69,6 +88,16 @@ tmp95c061_device::tmp95c061_device(const machine_config &mconfig, const char *ta
 {
 }
 
+<<<<<<< HEAD
+=======
+device_memory_interface::space_config_vector tlcs900h_device::memory_space_config() const
+{
+	return space_config_vector {
+		std::make_pair(AS_PROGRAM, &m_program_config)
+	};
+}
+
+>>>>>>> upstream/master
 //-------------------------------------------------
 //  device_config_complete - perform any
 //  operations now that the configuration is
@@ -87,8 +116,13 @@ void tmp95c061_device::device_config_complete()
 	}
 }
 
+<<<<<<< HEAD
 tmp95c063_device::tmp95c063_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
 	: tlcs900h_device(mconfig, TMP95C063, "TMP95C063", tag, owner, clock, "tmp95c063"),
+=======
+tmp95c063_device::tmp95c063_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: tlcs900h_device(mconfig, TMP95C063, tag, owner, clock),
+>>>>>>> upstream/master
 	m_port1_read(*this),
 	m_port1_write(*this),
 	m_port2_write(*this),
@@ -110,7 +144,19 @@ tmp95c063_device::tmp95c063_device(const machine_config &mconfig, const char *ta
 	m_portd_read(*this),
 	m_portd_write(*this),
 	m_porte_read(*this),
+<<<<<<< HEAD
 	m_porte_write(*this)
+=======
+	m_porte_write(*this),
+	m_an0_read(*this),
+	m_an1_read(*this),
+	m_an2_read(*this),
+	m_an3_read(*this),
+	m_an4_read(*this),
+	m_an5_read(*this),
+	m_an6_read(*this),
+	m_an7_read(*this)
+>>>>>>> upstream/master
 {
 }
 
@@ -133,10 +179,17 @@ void tmp95c063_device::device_config_complete()
 }
 
 
+<<<<<<< HEAD
 offs_t tlcs900h_device::disasm_disassemble(char *buffer, offs_t pc, const UINT8 *oprom, const UINT8 *opram, UINT32 options)
 {
 	extern CPU_DISASSEMBLE( tlcs900 );
 	return CPU_DISASSEMBLE_NAME(tlcs900)(this, buffer, pc, oprom, opram, options);
+=======
+offs_t tlcs900h_device::disasm_disassemble(std::ostream &stream, offs_t pc, const uint8_t *oprom, const uint8_t *opram, uint32_t options)
+{
+	extern CPU_DISASSEMBLE( tlcs900 );
+	return CPU_DISASSEMBLE_NAME(tlcs900)(this, stream, pc, oprom, opram, options);
+>>>>>>> upstream/master
 }
 
 
@@ -259,9 +312,15 @@ offs_t tlcs900h_device::disasm_disassemble(char *buffer, offs_t pc, const UINT8 
 #define FLAG_SF     0x80
 
 
+<<<<<<< HEAD
 inline UINT8 tlcs900h_device::RDOP()
 {
 	UINT8 data;
+=======
+inline uint8_t tlcs900h_device::RDOP()
+{
+	uint8_t data;
+>>>>>>> upstream/master
 
 	if ( m_prefetch_clear )
 	{
@@ -356,6 +415,7 @@ void tlcs900h_device::device_start()
 	state_add( TLCS900_DMAD0, "DMAD0", m_dmad[0].d ).formatstr("%08X");
 	state_add( TLCS900_DMAC0, "DMAC0", m_dmac[0].w.l ).formatstr("%04X");
 	state_add( TLCS900_DMAM0, "DMAM0", m_dmam[0].b.l ).formatstr("%02X");
+<<<<<<< HEAD
 	state_add( TLCS900_DMAS1, "DMAS0", m_dmas[1].d ).formatstr("%08X");
 	state_add( TLCS900_DMAD1, "DMAD0", m_dmad[1].d ).formatstr("%08X");
 	state_add( TLCS900_DMAC1, "DMAC0", m_dmac[1].w.l ).formatstr("%04X");
@@ -370,18 +430,43 @@ void tlcs900h_device::device_start()
 	state_add( TLCS900_DMAM3, "DMAM0", m_dmam[3].b.l ).formatstr("%02X");
 
 	state_add( STATE_GENPC, "GENPC", m_pc.d ).noshow();
+=======
+	state_add( TLCS900_DMAS1, "DMAS1", m_dmas[1].d ).formatstr("%08X");
+	state_add( TLCS900_DMAD1, "DMAD1", m_dmad[1].d ).formatstr("%08X");
+	state_add( TLCS900_DMAC1, "DMAC1", m_dmac[1].w.l ).formatstr("%04X");
+	state_add( TLCS900_DMAM1, "DMAM1", m_dmam[1].b.l ).formatstr("%02X");
+	state_add( TLCS900_DMAS2, "DMAS2", m_dmas[2].d ).formatstr("%08X");
+	state_add( TLCS900_DMAD2, "DMAD2", m_dmad[2].d ).formatstr("%08X");
+	state_add( TLCS900_DMAC2, "DMAC2", m_dmac[2].w.l ).formatstr("%04X");
+	state_add( TLCS900_DMAM2, "DMAM2", m_dmam[2].b.l ).formatstr("%02X");
+	state_add( TLCS900_DMAS3, "DMAS3", m_dmas[3].d ).formatstr("%08X");
+	state_add( TLCS900_DMAD3, "DMAD3", m_dmad[3].d ).formatstr("%08X");
+	state_add( TLCS900_DMAC3, "DMAC3", m_dmac[3].w.l ).formatstr("%04X");
+	state_add( TLCS900_DMAM3, "DMAM3", m_dmam[3].b.l ).formatstr("%02X");
+
+	state_add( STATE_GENPC, "GENPC", m_pc.d ).noshow();
+	state_add( STATE_GENPCBASE, "CURPC", m_pc.d ).noshow();
+>>>>>>> upstream/master
 	state_add( STATE_GENFLAGS, "GENFLAGS", m_sr.w.l ).formatstr("%12s").noshow();
 
 	m_icountptr = &m_icount;
 }
 
 
+<<<<<<< HEAD
 void tlcs900h_device::state_string_export(const device_state_entry &entry, std::string &str)
+=======
+void tlcs900h_device::state_string_export(const device_state_entry &entry, std::string &str) const
+>>>>>>> upstream/master
 {
 	switch (entry.index())
 	{
 		case STATE_GENFLAGS:
+<<<<<<< HEAD
 			strprintf(str, "%c%d%c%d%c%c%c%c%c%c%c%c",
+=======
+			str = string_format("%c%d%c%d%c%c%c%c%c%c%c%c",
+>>>>>>> upstream/master
 					m_sr.w.l & 0x8000 ? 'S' : 'U',
 					( m_sr.w.l & 0x7000 ) >> 12,
 					m_sr.w.l & 0x0800 ? 'M' : 'N',
@@ -517,14 +602,24 @@ void tmp95c061_device::device_reset()
 }
 
 
+<<<<<<< HEAD
 #include "900tbl.inc"
+=======
+#include "900tbl.hxx"
+>>>>>>> upstream/master
 
 
 #define TMP95C061_NUM_MASKABLE_IRQS   22
 static const struct {
+<<<<<<< HEAD
 	UINT8 reg;
 	UINT8 iff;
 	UINT8 vector;
+=======
+	uint8_t reg;
+	uint8_t iff;
+	uint8_t vector;
+>>>>>>> upstream/master
 } tmp95c061_irq_vector_map[TMP95C061_NUM_MASKABLE_IRQS] =
 {
 	{ TMP95C061_INTETC32, 0x80, 0x80 },   /* INTTC3 */
@@ -555,7 +650,11 @@ static const struct {
 
 int tmp95c061_device::tlcs900_process_hdma( int channel )
 {
+<<<<<<< HEAD
 	UINT8 vector = ( m_reg[0x7c + channel] & 0x1f ) << 2;
+=======
+	uint8_t vector = ( m_reg[0x7c + channel] & 0x1f ) << 2;
+>>>>>>> upstream/master
 
 	/* Check if any HDMA actions should be performed */
 	if ( vector >= 0x28 && vector != 0x3C && vector < 0x74 )
@@ -742,7 +841,11 @@ void tmp95c061_device::tlcs900_check_irqs()
 	}
 
 	/* Check highest allowed priority irq */
+<<<<<<< HEAD
 	for ( i = MAX( 1, ( ( m_sr.b.h & 0x70 ) >> 4 ) ); i < 7; i++ )
+=======
+	for ( i = std::max( 1, ( ( m_sr.b.h & 0x70 ) >> 4 ) ); i < 7; i++ )
+>>>>>>> upstream/master
 	{
 		if ( irq_vectors[i] >= 0 )
 		{
@@ -754,7 +857,11 @@ void tmp95c061_device::tlcs900_check_irqs()
 	/* Take irq */
 	if ( irq >= 0 )
 	{
+<<<<<<< HEAD
 		UINT8 vector = tmp95c061_irq_vector_map[irq].vector;
+=======
+		uint8_t vector = tmp95c061_irq_vector_map[irq].vector;
+>>>>>>> upstream/master
 
 		m_xssp.d -= 4;
 		WRMEML( m_xssp.d, m_pc.d );
@@ -856,7 +963,11 @@ void tmp95c061_device::tlcs900_change_tff( int which, int change )
 
 void tmp95c061_device::tlcs900_handle_timers()
 {
+<<<<<<< HEAD
 	UINT32  old_pre = m_timer_pre;
+=======
+	uint32_t  old_pre = m_timer_pre;
+>>>>>>> upstream/master
 
 	/* Is the pre-scaler active */
 	if ( m_reg[TMP95C061_TRUN] & 0x80 )
@@ -1441,9 +1552,15 @@ WRITE8_MEMBER( tmp95c061_device::internal_w )
 
 #define TMP95C063_NUM_MASKABLE_IRQS 30
 static const struct {
+<<<<<<< HEAD
 	UINT8 reg;
 	UINT8 iff;
 	UINT8 vector;
+=======
+	uint8_t reg;
+	uint8_t iff;
+	uint8_t vector;
+>>>>>>> upstream/master
 } tmp95c063_irq_vector_map[TMP95C063_NUM_MASKABLE_IRQS] =
 {
 	{ TMP95C063_INTETC23, 0x80, 0xa0 },     /* INTTC3 */
@@ -1467,7 +1584,11 @@ static const struct {
 	{ TMP95C063_INTET23, 0x08, 0x58 },      /* INTT2 */
 	{ TMP95C063_INTET01, 0x80, 0x54 },      /* INTT1 */
 	{ TMP95C063_INTET01, 0x08, 0x50 },      /* INTT0 */
+<<<<<<< HEAD
 	{ TMP95C063_INTE78, 0x80, 0x4c },       /* INT8 */
+=======
+	{ TMP95C063_INTE78, 0x80, 0x4c },       /* int8_t */
+>>>>>>> upstream/master
 	{ TMP95C063_INTE78, 0x08, 0x48 },       /* INT7 */
 	{ TMP95C063_INTE56, 0x80, 0x44 },       /* INT6 */
 	{ TMP95C063_INTE56, 0x08, 0x40 },       /* INT5 */
@@ -1483,7 +1604,11 @@ void tmp95c063_device::tlcs900_handle_timers()
 {
 	// TODO: implement timers 4-7
 
+<<<<<<< HEAD
 	UINT32  old_pre = m_timer_pre;
+=======
+	uint32_t  old_pre = m_timer_pre;
+>>>>>>> upstream/master
 
 	/* Is the pre-scaler active */
 	if ( m_reg[TMP95C063_T8RUN] & 0x80 )
@@ -1696,7 +1821,11 @@ void tmp95c063_device::tlcs900_check_irqs()
 	}
 
 	/* Check highest allowed priority irq */
+<<<<<<< HEAD
 	for ( i = MAX( 1, ( ( m_sr.b.h & 0x70 ) >> 4 ) ); i < 7; i++ )
+=======
+	for ( i = std::max( 1, ( ( m_sr.b.h & 0x70 ) >> 4 ) ); i < 7; i++ )
+>>>>>>> upstream/master
 	{
 		if ( irq_vectors[i] >= 0 )
 		{
@@ -1708,7 +1837,11 @@ void tmp95c063_device::tlcs900_check_irqs()
 	/* Take irq */
 	if ( irq >= 0 )
 	{
+<<<<<<< HEAD
 		UINT8 vector = tmp95c063_irq_vector_map[irq].vector;
+=======
+		uint8_t vector = tmp95c063_irq_vector_map[irq].vector;
+>>>>>>> upstream/master
 
 		m_xssp.d -= 4;
 		WRMEML( m_xssp.d, m_pc.d );
@@ -1732,7 +1865,155 @@ void tmp95c063_device::tlcs900_check_irqs()
 
 void tmp95c063_device::tlcs900_handle_ad()
 {
+<<<<<<< HEAD
 	// TODO
+=======
+	if ( m_ad_cycles_left > 0 )
+	{
+		m_ad_cycles_left -= m_cycles;
+		if ( m_ad_cycles_left <= 0 )
+		{
+			int ad_value;
+
+			/* Store A/D converted value */
+			if ((m_reg[TMP95C063_ADMOD1] & 0x10) == 0)      // conversion channel fixed
+			{
+				switch( m_reg[TMP95C063_ADMOD2] & 0x07 )
+				{
+				case 0x00:  // AN0
+					ad_value = m_an0_read(0) & 0x3ff;
+					m_reg[TMP95C063_ADREG04L] = (ad_value & 0x3) << 6;
+					m_reg[TMP95C063_ADREG04H] = (ad_value >> 2) & 0xff;
+					break;
+				case 0x01:  // AN1
+					ad_value = m_an1_read(0) & 0x3ff;
+					m_reg[TMP95C063_ADREG15L] = (ad_value & 0x3) << 6;
+					m_reg[TMP95C063_ADREG15H] = (ad_value >> 2) & 0xff;
+					break;
+				case 0x02:  // AN2
+					ad_value = m_an2_read(0) & 0x3ff;
+					m_reg[TMP95C063_ADREG26L] = (ad_value & 0x3) << 6;
+					m_reg[TMP95C063_ADREG26H] = (ad_value >> 2) & 0xff;
+					break;
+				case 0x03:  // AN3
+					ad_value = m_an3_read(0) & 0x3ff;
+					m_reg[TMP95C063_ADREG37L] = (ad_value & 0x3) << 6;
+					m_reg[TMP95C063_ADREG37H] = (ad_value >> 2) & 0xff;
+					break;
+				case 0x04:  // AN4
+					ad_value = m_an4_read(0) & 0x3ff;
+					m_reg[TMP95C063_ADREG04L] = (ad_value & 0x3) << 6;
+					m_reg[TMP95C063_ADREG04H] = (ad_value >> 2) & 0xff;
+					break;
+				case 0x05:  // AN5
+					ad_value = m_an5_read(0) & 0x3ff;
+					m_reg[TMP95C063_ADREG15L] = (ad_value & 0x3) << 6;
+					m_reg[TMP95C063_ADREG15H] = (ad_value >> 2) & 0xff;
+					break;
+				case 0x06:  // AN6
+					ad_value = m_an6_read(0) & 0x3ff;
+					m_reg[TMP95C063_ADREG26L] = (ad_value & 0x3) << 6;
+					m_reg[TMP95C063_ADREG26H] = (ad_value >> 2) & 0xff;
+					break;
+				case 0x07:  // AN7
+					ad_value = m_an7_read(0) & 0x3ff;
+					m_reg[TMP95C063_ADREG37L] = (ad_value & 0x3) << 6;
+					m_reg[TMP95C063_ADREG37H] = (ad_value >> 2) & 0xff;
+					break;
+				}
+			}
+			else            // conversion channel sweep
+			{
+				switch( m_reg[TMP95C063_ADMOD2] & 0x07 )
+				{
+					case 0x00:      // AN0
+						ad_value = m_an0_read(0) & 0x3ff;
+						m_reg[TMP95C063_ADREG04L] = (ad_value & 0x3) << 6;
+						m_reg[TMP95C063_ADREG04H] = (ad_value >> 2) & 0xff;
+						break;
+					case 0x01:      // AN0 -> AN1
+						ad_value = m_an0_read(0) & 0x3ff;
+						m_reg[TMP95C063_ADREG04L] = (ad_value & 0x3) << 6;
+						m_reg[TMP95C063_ADREG04H] = (ad_value >> 2) & 0xff;
+						ad_value = m_an1_read(0) & 0x3ff;
+						m_reg[TMP95C063_ADREG15L] = (ad_value & 0x3) << 6;
+						m_reg[TMP95C063_ADREG15H] = (ad_value >> 2) & 0xff;
+						break;
+					case 0x02:      // AN0 -> AN1 -> AN2
+						ad_value = m_an0_read(0) & 0x3ff;
+						m_reg[TMP95C063_ADREG04L] = (ad_value & 0x3) << 6;
+						m_reg[TMP95C063_ADREG04H] = (ad_value >> 2) & 0xff;
+						ad_value = m_an1_read(0) & 0x3ff;
+						m_reg[TMP95C063_ADREG15L] = (ad_value & 0x3) << 6;
+						m_reg[TMP95C063_ADREG15H] = (ad_value >> 2) & 0xff;
+						ad_value = m_an2_read(0) & 0x3ff;
+						m_reg[TMP95C063_ADREG26L] = (ad_value & 0x3) << 6;
+						m_reg[TMP95C063_ADREG26H] = (ad_value >> 2) & 0xff;
+						break;
+					case 0x03:      // AN0 -> AN1 -> AN2 -> AN3
+						ad_value = m_an0_read(0) & 0x3ff;
+						m_reg[TMP95C063_ADREG04L] = (ad_value & 0x3) << 6;
+						m_reg[TMP95C063_ADREG04H] = (ad_value >> 2) & 0xff;
+						ad_value = m_an1_read(0) & 0x3ff;
+						m_reg[TMP95C063_ADREG15L] = (ad_value & 0x3) << 6;
+						m_reg[TMP95C063_ADREG15H] = (ad_value >> 2) & 0xff;
+						ad_value = m_an2_read(0) & 0x3ff;
+						m_reg[TMP95C063_ADREG26L] = (ad_value & 0x3) << 6;
+						m_reg[TMP95C063_ADREG26H] = (ad_value >> 2) & 0xff;
+						ad_value = m_an3_read(0) & 0x3ff;
+						m_reg[TMP95C063_ADREG37L] = (ad_value & 0x3) << 6;
+						m_reg[TMP95C063_ADREG37H] = (ad_value >> 2) & 0xff;
+						break;
+					case 0x04:      // AN4
+						ad_value = m_an4_read(0) & 0x3ff;
+						m_reg[TMP95C063_ADREG04L] = (ad_value & 0x3) << 6;
+						m_reg[TMP95C063_ADREG04H] = (ad_value >> 2) & 0xff;
+						break;
+					case 0x05:      // AN4 -> AN5
+						ad_value = m_an4_read(0) & 0x3ff;
+						m_reg[TMP95C063_ADREG04L] = (ad_value & 0x3) << 6;
+						m_reg[TMP95C063_ADREG04H] = (ad_value >> 2) & 0xff;
+						ad_value = m_an5_read(0) & 0x3ff;
+						m_reg[TMP95C063_ADREG15L] = (ad_value & 0x3) << 6;
+						m_reg[TMP95C063_ADREG15H] = (ad_value >> 2) & 0xff;
+						break;
+					case 0x06:      // AN4 -> AN5 -> AN6
+						ad_value = m_an4_read(0) & 0x3ff;
+						m_reg[TMP95C063_ADREG04L] = (ad_value & 0x3) << 6;
+						m_reg[TMP95C063_ADREG04H] = (ad_value >> 2) & 0xff;
+						ad_value = m_an5_read(0) & 0x3ff;
+						m_reg[TMP95C063_ADREG15L] = (ad_value & 0x3) << 6;
+						m_reg[TMP95C063_ADREG15H] = (ad_value >> 2) & 0xff;
+						ad_value = m_an6_read(0) & 0x3ff;
+						m_reg[TMP95C063_ADREG26L] = (ad_value & 0x3) << 6;
+						m_reg[TMP95C063_ADREG26H] = (ad_value >> 2) & 0xff;
+						break;
+					case 0x07:      // AN4 -> AN5 -> AN6 -> AN7
+						ad_value = m_an4_read(0) & 0x3ff;
+						m_reg[TMP95C063_ADREG04L] = (ad_value & 0x3) << 6;
+						m_reg[TMP95C063_ADREG04H] = (ad_value >> 2) & 0xff;
+						ad_value = m_an5_read(0) & 0x3ff;
+						m_reg[TMP95C063_ADREG15L] = (ad_value & 0x3) << 6;
+						m_reg[TMP95C063_ADREG15H] = (ad_value >> 2) & 0xff;
+						ad_value = m_an6_read(0) & 0x3ff;
+						m_reg[TMP95C063_ADREG26L] = (ad_value & 0x3) << 6;
+						m_reg[TMP95C063_ADREG26H] = (ad_value >> 2) & 0xff;
+						ad_value = m_an7_read(0) & 0x3ff;
+						m_reg[TMP95C063_ADREG37L] = (ad_value & 0x3) << 6;
+						m_reg[TMP95C063_ADREG37H] = (ad_value >> 2) & 0xff;
+						break;
+				}
+			}
+
+			/* Clear BUSY flag, set END flag */
+			m_reg[TMP95C063_ADMOD1] &= ~ 0x40;
+			m_reg[TMP95C063_ADMOD1] |= 0x80;
+
+			m_reg[TMP95C063_INTE0AD] |= 0x80;
+			m_check_irqs = 1;
+		}
+	}
+>>>>>>> upstream/master
 }
 
 
@@ -1762,6 +2043,17 @@ void tmp95c063_device::device_start()
 	m_portd_write.resolve_safe();
 	m_porte_read.resolve_safe(0);
 	m_porte_write.resolve_safe();
+<<<<<<< HEAD
+=======
+	m_an0_read.resolve_safe(0);
+	m_an1_read.resolve_safe(0);
+	m_an2_read.resolve_safe(0);
+	m_an3_read.resolve_safe(0);
+	m_an4_read.resolve_safe(0);
+	m_an5_read.resolve_safe(0);
+	m_an6_read.resolve_safe(0);
+	m_an7_read.resolve_safe(0);
+>>>>>>> upstream/master
 }
 
 void tmp95c063_device::device_reset()
@@ -2050,6 +2342,29 @@ WRITE8_MEMBER( tmp95c063_device::internal_w )
 	case TMP95C063_IIMC:
 		break;
 
+<<<<<<< HEAD
+=======
+	case TMP95C063_ADMOD1:
+		// conversion start
+		if (data & 0x04)
+		{
+			data &= ~0x04;
+			data |= 0x40;
+
+			switch ((m_reg[TMP95C063_ADMOD2] >> 4) & 3)
+			{
+				case 0: m_ad_cycles_left = 160; break;
+				case 1: m_ad_cycles_left = 320; break;
+				case 2: m_ad_cycles_left = 640; break;
+				case 3: m_ad_cycles_left = 1280; break;
+			}
+		}
+		break;
+
+	case TMP95C063_ADMOD2:
+		break;
+
+>>>>>>> upstream/master
 	default:
 		break;
 	}

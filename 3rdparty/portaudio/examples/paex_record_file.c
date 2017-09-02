@@ -52,6 +52,14 @@
 #include <process.h>
 #endif
 
+<<<<<<< HEAD
+=======
+static ring_buffer_size_t rbs_min(ring_buffer_size_t a, ring_buffer_size_t b)
+{
+    return (a < b) ? a : b;
+}
+
+>>>>>>> upstream/master
 /* #define SAMPLE_RATE  (17932) // Test failure to open with this value. */
 #define FILE_NAME       "audio_data.raw"
 #define SAMPLE_RATE  (44100)
@@ -243,7 +251,11 @@ static int recordCallback( const void *inputBuffer, void *outputBuffer,
 {
     paTestData *data = (paTestData*)userData;
     ring_buffer_size_t elementsWriteable = PaUtil_GetRingBufferWriteAvailable(&data->ringBuffer);
+<<<<<<< HEAD
     ring_buffer_size_t elementsToWrite = min(elementsWriteable, (ring_buffer_size_t)(framesPerBuffer * NUM_CHANNELS));
+=======
+    ring_buffer_size_t elementsToWrite = rbs_min(elementsWriteable, (ring_buffer_size_t)(framesPerBuffer * NUM_CHANNELS));
+>>>>>>> upstream/master
     const SAMPLE *rptr = (const SAMPLE*)inputBuffer;
 
     (void) outputBuffer; /* Prevent unused variable warnings. */
@@ -268,7 +280,11 @@ static int playCallback( const void *inputBuffer, void *outputBuffer,
 {
     paTestData *data = (paTestData*)userData;
     ring_buffer_size_t elementsToPlay = PaUtil_GetRingBufferReadAvailable(&data->ringBuffer);
+<<<<<<< HEAD
     ring_buffer_size_t elementsToRead = min(elementsToPlay, (ring_buffer_size_t)(framesPerBuffer * NUM_CHANNELS));
+=======
+    ring_buffer_size_t elementsToRead = rbs_min(elementsToPlay, (ring_buffer_size_t)(framesPerBuffer * NUM_CHANNELS));
+>>>>>>> upstream/master
     SAMPLE* wptr = (SAMPLE*)outputBuffer;
 
     (void) inputBuffer; /* Prevent unused variable warnings. */

@@ -6,6 +6,10 @@
 
 **********************************************************************/
 
+<<<<<<< HEAD
+=======
+#include "emu.h"
+>>>>>>> upstream/master
 #include "p1_hdc.h"
 
 
@@ -32,6 +36,7 @@
 //  DEVICE DEFINITIONS
 //**************************************************************************
 
+<<<<<<< HEAD
 const device_type P1_HDC = &device_creator<p1_hdc_device>;
 
 static MACHINE_CONFIG_FRAGMENT( hdc_b942 )
@@ -45,6 +50,9 @@ static MACHINE_CONFIG_FRAGMENT( hdc_b942 )
 	MCFG_HARDDISK_ADD("hard0")
 	MCFG_HARDDISK_ADD("hard1")
 MACHINE_CONFIG_END
+=======
+DEFINE_DEVICE_TYPE(P1_HDC, p1_hdc_device, "p1_hdc", "Poisk-1 MFM disk B942")
+>>>>>>> upstream/master
 
 
 //-------------------------------------------------
@@ -66,6 +74,7 @@ ROM_END
 
 
 //-------------------------------------------------
+<<<<<<< HEAD
 //  machine_config_additions - device-specific
 //  machine configurations
 //-------------------------------------------------
@@ -74,15 +83,37 @@ machine_config_constructor p1_hdc_device::device_mconfig_additions() const
 {
 	return MACHINE_CONFIG_NAME( hdc_b942 );
 }
+=======
+//  device_add_mconfig - add device configuration
+//-------------------------------------------------
+
+MACHINE_CONFIG_MEMBER( p1_hdc_device::device_add_mconfig )
+	MCFG_DEVICE_ADD(KM1809VG7_TAG, WD2010, 5000000) // XXX clock?
+	MCFG_WD2010_IN_DRDY_CB(VCC)
+	MCFG_WD2010_IN_INDEX_CB(VCC)
+	MCFG_WD2010_IN_WF_CB(VCC)
+	MCFG_WD2010_IN_TK000_CB(VCC)
+	MCFG_WD2010_IN_SC_CB(VCC)
+
+	MCFG_HARDDISK_ADD("hard0")
+	MCFG_HARDDISK_ADD("hard1")
+MACHINE_CONFIG_END
+>>>>>>> upstream/master
 
 
 //-------------------------------------------------
 //  rom_region - device-specific ROM region
 //-------------------------------------------------
 
+<<<<<<< HEAD
 const rom_entry *p1_hdc_device::device_rom_region() const
 {
 	return ROM_NAME( p1_hdc );
+=======
+const tiny_rom_entry *p1_hdc_device::device_rom_region() const
+{
+	return ROM_NAME(p1_hdc);
+>>>>>>> upstream/master
 }
 
 
@@ -93,21 +124,40 @@ const rom_entry *p1_hdc_device::device_rom_region() const
 
 READ8_MEMBER(p1_hdc_device::p1_HDC_r)
 {
+<<<<<<< HEAD
 	UINT8 data = 0x00;
 
 	switch (offset >> 8) {
 		case 8:     data = m_hdc->read(space, offset & 255);
 	}
 	DBG_LOG(1,"hdc",("R $%04x == $%02x\n", offset, data));
+=======
+	uint8_t data = 0x00;
+
+	switch (offset >> 8)
+	{
+	case 8:
+		data = m_hdc->read(space, offset & 255);
+	}
+	DBG_LOG(1, "hdc", ("R $%04x == $%02x\n", offset, data));
+>>>>>>> upstream/master
 
 	return data;
 }
 
 WRITE8_MEMBER(p1_hdc_device::p1_HDC_w)
 {
+<<<<<<< HEAD
 	DBG_LOG(1,"hdc",("W $%04x <- $%02x\n", offset, data));
 	switch (offset >> 8) {
 		case 8:     m_hdc->write(space, offset & 255, data, 0);
+=======
+	DBG_LOG(1, "hdc", ("W $%04x <- $%02x\n", offset, data));
+	switch (offset >> 8)
+	{
+	case 8:
+		m_hdc->write(space, offset & 255, data, 0);
+>>>>>>> upstream/master
 	}
 }
 
@@ -115,10 +165,17 @@ WRITE8_MEMBER(p1_hdc_device::p1_HDC_w)
 //  p1_hdc_device - constructor
 //-------------------------------------------------
 
+<<<<<<< HEAD
 p1_hdc_device::p1_hdc_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock) :
 	device_t(mconfig, P1_HDC, "Poisk-1 MFM disk B942", tag, owner, clock, "p1_hdc", __FILE__),
 	device_isa8_card_interface( mconfig, *this ),
 	m_hdc(*this, KM1809VG7_TAG)
+=======
+p1_hdc_device::p1_hdc_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: device_t(mconfig, P1_HDC, tag, owner, clock)
+	, device_isa8_card_interface(mconfig, *this)
+	, m_hdc(*this, KM1809VG7_TAG)
+>>>>>>> upstream/master
 {
 }
 
@@ -130,8 +187,13 @@ p1_hdc_device::p1_hdc_device(const machine_config &mconfig, const char *tag, dev
 void p1_hdc_device::device_start()
 {
 	set_isa_device();
+<<<<<<< HEAD
 	m_isa->install_rom(this, 0xe2000, 0xe27ff, 0, 0, "XXX", "p1_hdc");
 	m_isa->install_memory(0xd0000, 0xd0fff, 0, 0,
+=======
+	m_isa->install_rom(this, 0xe2000, 0xe27ff, "XXX", "p1_hdc");
+	m_isa->install_memory(0xd0000, 0xd0fff,
+>>>>>>> upstream/master
 		READ8_DELEGATE(p1_hdc_device, p1_HDC_r),
 		WRITE8_DELEGATE(p1_hdc_device, p1_HDC_w) );
 }

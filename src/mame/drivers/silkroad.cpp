@@ -7,10 +7,20 @@
 /* and preliminary sound hookup by R. Belmont + fixes by Pierpaolo Prazzoli */
 
 #include "emu.h"
+<<<<<<< HEAD
 #include "cpu/m68000/m68000.h"
 #include "sound/2151intf.h"
 #include "sound/okim6295.h"
 #include "includes/silkroad.h"
+=======
+#include "includes/silkroad.h"
+
+#include "cpu/m68000/m68000.h"
+#include "sound/okim6295.h"
+#include "sound/ym2151.h"
+#include "screen.h"
+#include "speaker.h"
+>>>>>>> upstream/master
 
 /*
 
@@ -141,7 +151,11 @@ WRITE32_MEMBER(silkroad_state::silk_6295_bank_w)
 	{
 		int bank = (data & 0x3000000) >> 24;
 		if(bank < 3)
+<<<<<<< HEAD
 			m_oki1->set_bank_base(0x40000 * (bank));
+=======
+			m_oki1->set_rom_bank(bank);
+>>>>>>> upstream/master
 	}
 }
 
@@ -149,8 +163,13 @@ WRITE32_MEMBER(silkroad_state::silk_coin_counter_w)
 {
 	if (ACCESSING_BITS_16_23)
 	{
+<<<<<<< HEAD
 		coin_counter_w(machine(), 0, data & 0x10000);
 		coin_counter_w(machine(), 1, data & 0x80000);
+=======
+		machine().bookkeeping().coin_counter_w(0, data & 0x10000);
+		machine().bookkeeping().coin_counter_w(1, data & 0x80000);
+>>>>>>> upstream/master
 	}
 }
 
@@ -270,7 +289,11 @@ static GFXDECODE_START( silkroad )
 	GFXDECODE_ENTRY( "gfx1", 0, tiles16x16x6_layout,  0x0000, 256 )
 GFXDECODE_END
 
+<<<<<<< HEAD
 static MACHINE_CONFIG_START( silkroad, silkroad_state )
+=======
+static MACHINE_CONFIG_START( silkroad )
+>>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", M68EC020, XTAL_32MHz/2) /* 16MHz */
@@ -297,11 +320,19 @@ static MACHINE_CONFIG_START( silkroad, silkroad_state )
 	MCFG_SOUND_ROUTE(0, "lspeaker", 1.0)
 	MCFG_SOUND_ROUTE(1, "rspeaker", 1.0)
 
+<<<<<<< HEAD
 	MCFG_OKIM6295_ADD("oki1", 1056000, OKIM6295_PIN7_HIGH) // clock frequency & pin 7 not verified
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "lspeaker", 0.45)
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "rspeaker", 0.45)
 
 	MCFG_OKIM6295_ADD("oki2", 2112000, OKIM6295_PIN7_HIGH) // clock frequency & pin 7 not verified
+=======
+	MCFG_OKIM6295_ADD("oki1", XTAL_32MHz/32, PIN7_HIGH) // clock frequency & pin 7 not verified (was 1056000)
+	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "lspeaker", 0.45)
+	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "rspeaker", 0.45)
+
+	MCFG_OKIM6295_ADD("oki2", XTAL_32MHz/16, PIN7_HIGH) // clock frequency & pin 7 not verified (was 2112000)
+>>>>>>> upstream/master
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "lspeaker", 0.45)
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "rspeaker", 0.45)
 MACHINE_CONFIG_END
@@ -390,5 +421,10 @@ ROM_START( silkroada )
 ROM_END
 
 
+<<<<<<< HEAD
 GAME( 1999, silkroad,         0, silkroad, silkroad, driver_device, 0, ROT0, "Unico", "The Legend of Silkroad", MACHINE_SUPPORTS_SAVE )
 GAME( 1999, silkroada, silkroad, silkroad, silkroad, driver_device, 0, ROT0, "Unico", "The Legend of Silkroad (larger ROMs)", MACHINE_SUPPORTS_SAVE ) // same content but fewer GFX roms of a larger size
+=======
+GAME( 1999, silkroad,  0,        silkroad, silkroad, silkroad_state, 0, ROT0, "Unico", "The Legend of Silkroad",               MACHINE_SUPPORTS_SAVE )
+GAME( 1999, silkroada, silkroad, silkroad, silkroad, silkroad_state, 0, ROT0, "Unico", "The Legend of Silkroad (larger ROMs)", MACHINE_SUPPORTS_SAVE ) // same content but fewer GFX roms of a larger size
+>>>>>>> upstream/master

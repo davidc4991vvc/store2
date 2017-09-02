@@ -1,6 +1,10 @@
 /*
 * Copyright 2013 Jeremie Roy. All rights reserved.
+<<<<<<< HEAD
 * License: http://www.opensource.org/licenses/BSD-2-Clause
+=======
+* License: https://github.com/bkaradzic/bgfx#license-bsd-2-clause
+>>>>>>> upstream/master
 */
 
 #include <wchar.h> // wcslen
@@ -10,12 +14,22 @@
 
 TextMetrics::TextMetrics(FontManager* _fontManager)
 	: m_fontManager(_fontManager)
+<<<<<<< HEAD
 	, m_width(0)
 	, m_height(0)
 	, m_x(0)
 	, m_lineHeight(0)
 	, m_lineGap(0)
 {
+=======
+{
+	clearText();
+}
+
+void TextMetrics::clearText()
+{
+	m_width = m_height = m_x = m_lineHeight = m_lineGap = 0;
+>>>>>>> upstream/master
 }
 
 void TextMetrics::appendText(FontHandle _fontHandle, const char* _string)
@@ -50,7 +64,10 @@ void TextMetrics::appendText(FontHandle _fontHandle, const char* _string)
 					m_lineGap = font.lineGap;
 					m_lineHeight = font.ascender - font.descender;					
 					m_x = 0;
+<<<<<<< HEAD
 					break;
+=======
+>>>>>>> upstream/master
 				}
 
 				m_x += glyph->advance_x;
@@ -97,7 +114,10 @@ void TextMetrics::appendText(FontHandle _fontHandle, const wchar_t* _string)
 				m_lineGap = font.lineGap;
 				m_lineHeight = font.ascender - font.descender;
 				m_x = 0;
+<<<<<<< HEAD
 				break;
+=======
+>>>>>>> upstream/master
 			}
 
 			m_x += glyph->advance_x;

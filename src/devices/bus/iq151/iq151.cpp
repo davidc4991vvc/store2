@@ -8,7 +8,10 @@
 
 #include "emu.h"
 #include "iq151.h"
+<<<<<<< HEAD
 #include "emuopts.h"
+=======
+>>>>>>> upstream/master
 
 #define  LOG    0
 
@@ -21,7 +24,11 @@
 //  GLOBAL VARIABLES
 //**************************************************************************
 
+<<<<<<< HEAD
 const device_type IQ151CART_SLOT = &device_creator<iq151cart_slot_device>;
+=======
+DEFINE_DEVICE_TYPE(IQ151CART_SLOT, iq151cart_slot_device, "iq151cart_slot", "IQ151 cartridge slot")
+>>>>>>> upstream/master
 
 //**************************************************************************
 //    IQ151 cartridge interface
@@ -53,6 +60,7 @@ device_iq151cart_interface::~device_iq151cart_interface()
 //-------------------------------------------------
 //  iq151cart_slot_device - constructor
 //-------------------------------------------------
+<<<<<<< HEAD
 iq151cart_slot_device::iq151cart_slot_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock) :
 		device_t(mconfig, IQ151CART_SLOT, "IQ151 cartridge slot", tag, owner, clock, "iq151cart_slot", __FILE__),
 		device_slot_interface(mconfig, *this),
@@ -63,6 +71,19 @@ iq151cart_slot_device::iq151cart_slot_device(const machine_config &mconfig, cons
 		m_out_irq3_cb(*this),
 		m_out_irq4_cb(*this),
 		m_out_drq_cb(*this), m_cart(nullptr)
+=======
+iq151cart_slot_device::iq151cart_slot_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock) :
+	device_t(mconfig, IQ151CART_SLOT, tag, owner, clock),
+	device_slot_interface(mconfig, *this),
+	device_image_interface(mconfig, *this),
+	m_out_irq0_cb(*this),
+	m_out_irq1_cb(*this),
+	m_out_irq2_cb(*this),
+	m_out_irq3_cb(*this),
+	m_out_irq4_cb(*this),
+	m_out_drq_cb(*this),
+	m_cart(nullptr)
+>>>>>>> upstream/master
 {
 }
 
@@ -93,6 +114,7 @@ void iq151cart_slot_device::device_start()
 
 }
 
+<<<<<<< HEAD
 //-------------------------------------------------
 //  device_config_complete - perform any
 //  operations now that the configuration is
@@ -105,12 +127,18 @@ void iq151cart_slot_device::device_config_complete()
 	update_names();
 }
 
+=======
+>>>>>>> upstream/master
 
 /*-------------------------------------------------
     read
 -------------------------------------------------*/
 
+<<<<<<< HEAD
 void iq151cart_slot_device::read(offs_t offset, UINT8 &data)
+=======
+void iq151cart_slot_device::read(offs_t offset, uint8_t &data)
+>>>>>>> upstream/master
 {
 	if (m_cart)
 		m_cart->read(offset, data);
@@ -120,7 +148,11 @@ void iq151cart_slot_device::read(offs_t offset, UINT8 &data)
     write
 -------------------------------------------------*/
 
+<<<<<<< HEAD
 void iq151cart_slot_device::write(offs_t offset, UINT8 data)
+=======
+void iq151cart_slot_device::write(offs_t offset, uint8_t data)
+>>>>>>> upstream/master
 {
 	if (m_cart)
 		m_cart->write(offset, data);
@@ -130,7 +162,11 @@ void iq151cart_slot_device::write(offs_t offset, UINT8 data)
     IO read
 -------------------------------------------------*/
 
+<<<<<<< HEAD
 void iq151cart_slot_device::io_read(offs_t offset, UINT8 &data)
+=======
+void iq151cart_slot_device::io_read(offs_t offset, uint8_t &data)
+>>>>>>> upstream/master
 {
 	if (m_cart)
 		m_cart->io_read(offset, data);
@@ -141,7 +177,11 @@ void iq151cart_slot_device::io_read(offs_t offset, UINT8 &data)
    IO write
 -------------------------------------------------*/
 
+<<<<<<< HEAD
 void iq151cart_slot_device::io_write(offs_t offset, UINT8 data)
+=======
+void iq151cart_slot_device::io_write(offs_t offset, uint8_t data)
+>>>>>>> upstream/master
 {
 	if (m_cart)
 		m_cart->io_write(offset, data);
@@ -163,6 +203,7 @@ void iq151cart_slot_device::video_update(bitmap_ind16 &bitmap, const rectangle &
     call load
 -------------------------------------------------*/
 
+<<<<<<< HEAD
 bool iq151cart_slot_device::call_load()
 {
 	if (m_cart)
@@ -173,6 +214,18 @@ bool iq151cart_slot_device::call_load()
 		if (cart_base != NULL)
 		{
 			if (software_entry() == NULL)
+=======
+image_init_result iq151cart_slot_device::call_load()
+{
+	if (m_cart)
+	{
+		offs_t read_length;
+		uint8_t *cart_base = m_cart->get_cart_base();
+
+		if (cart_base != nullptr)
+		{
+			if (!loaded_through_softlist())
+>>>>>>> upstream/master
 			{
 				read_length = length();
 				fread(m_cart->get_cart_base(), read_length);
@@ -184,6 +237,7 @@ bool iq151cart_slot_device::call_load()
 			}
 		}
 		else
+<<<<<<< HEAD
 			return IMAGE_INIT_FAIL;
 	}
 
@@ -198,13 +252,25 @@ bool iq151cart_slot_device::call_softlist_load(software_list_device &swlist, con
 {
 	load_software_part_region(*this, swlist, swname, start_entry );
 	return TRUE;
+=======
+			return image_init_result::FAIL;
+	}
+
+	return image_init_result::PASS;
+>>>>>>> upstream/master
 }
 
 /*-------------------------------------------------
     get default card software
 -------------------------------------------------*/
 
+<<<<<<< HEAD
 void iq151cart_slot_device::get_default_card_software(std::string &result)
 {
 	software_get_default_slot(result, "basic6");
+=======
+std::string iq151cart_slot_device::get_default_card_software(get_default_card_software_hook &hook) const
+{
+	return software_get_default_slot("basic6");
+>>>>>>> upstream/master
 }

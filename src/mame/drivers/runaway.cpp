@@ -13,10 +13,19 @@
 ****************************************************************************/
 
 #include "emu.h"
+<<<<<<< HEAD
 #include "cpu/m6502/m6502.h"
 #include "machine/atari_vg.h"
 #include "sound/pokey.h"
 #include "includes/runaway.h"
+=======
+#include "includes/runaway.h"
+
+#include "cpu/m6502/m6502.h"
+#include "machine/atari_vg.h"
+#include "sound/pokey.h"
+#include "speaker.h"
+>>>>>>> upstream/master
 
 
 TIMER_CALLBACK_MEMBER(runaway_state::interrupt_callback)
@@ -47,7 +56,11 @@ void runaway_state::machine_reset()
 
 READ8_MEMBER(runaway_state::runaway_input_r)
 {
+<<<<<<< HEAD
 	UINT8 val = 0;
+=======
+	uint8_t val = 0;
+>>>>>>> upstream/master
 
 	if (ioport("3000D7")->read() & (1 << offset))
 	{
@@ -70,7 +83,11 @@ READ8_MEMBER(runaway_state::runaway_pot_r)
 
 WRITE8_MEMBER(runaway_state::runaway_led_w)
 {
+<<<<<<< HEAD
 	set_led_status(machine(), offset, ~data & 1);
+=======
+	output().set_led_value(offset, ~data & 1);
+>>>>>>> upstream/master
 }
 
 
@@ -325,7 +342,11 @@ static GFXDECODE_START( qwak )
 GFXDECODE_END
 
 
+<<<<<<< HEAD
 static MACHINE_CONFIG_START( runaway, runaway_state )
+=======
+static MACHINE_CONFIG_START( runaway )
+>>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", M6502, 12096000 / 8) /* ? */
@@ -412,5 +433,10 @@ ROM_START( qwak )
 ROM_END
 
 
+<<<<<<< HEAD
 GAME( 1982, qwak,    0, qwak,    qwak, driver_device,    0, ROT270, "Atari", "Qwak (prototype)", MACHINE_SUPPORTS_SAVE )
 GAME( 1982, runaway, 0, runaway, runaway, driver_device, 0, ROT0,   "Atari", "Runaway (prototype)", MACHINE_SUPPORTS_SAVE )
+=======
+GAME( 1982, qwak,    0, qwak,    qwak,    runaway_state, 0, ROT270, "Atari", "Qwak (prototype)", MACHINE_SUPPORTS_SAVE )
+GAME( 1982, runaway, 0, runaway, runaway, runaway_state, 0, ROT0,   "Atari", "Runaway (prototype)", MACHINE_SUPPORTS_SAVE )
+>>>>>>> upstream/master

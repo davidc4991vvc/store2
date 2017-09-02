@@ -60,6 +60,7 @@ SLOT_INTERFACE_END
 static const z80_daisy_config kc_d004_daisy_chain[] =
 {
 	{ Z80CTC_TAG },
+<<<<<<< HEAD
 	{ NULL }
 };
 
@@ -93,6 +94,11 @@ static MACHINE_CONFIG_FRAGMENT(kc_d004_gide)
 MACHINE_CONFIG_END
 
 
+=======
+	{ nullptr }
+};
+
+>>>>>>> upstream/master
 ROM_START( kc_d004 )
 	ROM_REGION(0x2000, Z80_TAG, 0)
 	ROM_LOAD_OPTIONAL("d004v20.bin",    0x0000, 0x2000, CRC(4f3494f1) SHA1(66f476de78fb474d9ac61c6eaffce3354fd66776))
@@ -117,8 +123,13 @@ ROM_END
 //  GLOBAL VARIABLES
 //**************************************************************************
 
+<<<<<<< HEAD
 const device_type KC_D004 = &device_creator<kc_d004_device>;
 const device_type KC_D004_GIDE = &device_creator<kc_d004_gide_device>;
+=======
+DEFINE_DEVICE_TYPE(KC_D004,      kc_d004_device,      "kc_d004",      "D004 Floppy Disk Interface")
+DEFINE_DEVICE_TYPE(KC_D004_GIDE, kc_d004_gide_device, "kc_d004_gide", "D004 Floppy Disk + GIDE Interface")
+>>>>>>> upstream/master
 
 //**************************************************************************
 //  LIVE DEVICE
@@ -128,6 +139,7 @@ const device_type KC_D004_GIDE = &device_creator<kc_d004_gide_device>;
 //  kc_d004_device - constructor
 //-------------------------------------------------
 
+<<<<<<< HEAD
 kc_d004_device::kc_d004_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
 		: device_t(mconfig, KC_D004, "D004 Floppy Disk Interface", tag, owner, clock, "kc_d004", __FILE__),
 		device_kcexp_interface( mconfig, *this ),
@@ -152,6 +164,25 @@ kc_d004_device::kc_d004_device(const machine_config &mconfig, device_type type, 
 		m_floppy3(*this, UPD765_TAG ":3"),
 		m_koppel_ram(*this, "koppelram"), m_reset_timer(nullptr), m_rom(nullptr), m_rom_base(0), m_enabled(0), m_connected(0), m_floppy(nullptr)
 	{
+=======
+kc_d004_device::kc_d004_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: kc_d004_device(mconfig, KC_D004, tag, owner, clock)
+{
+}
+
+kc_d004_device::kc_d004_device(const machine_config &mconfig, device_type type, const char *tag, device_t *owner, uint32_t clock)
+	: device_t(mconfig, type, tag, owner, clock),
+	device_kcexp_interface( mconfig, *this ),
+	m_cpu(*this, Z80_TAG),
+	m_fdc(*this, UPD765_TAG),
+	m_floppy0(*this, UPD765_TAG ":0"),
+	m_floppy1(*this, UPD765_TAG ":1"),
+	m_floppy2(*this, UPD765_TAG ":2"),
+	m_floppy3(*this, UPD765_TAG ":3"),
+	m_koppel_ram(*this, "koppelram"),
+	m_reset_timer(nullptr), m_rom(nullptr), m_rom_base(0), m_enabled(0), m_connected(0), m_floppy(nullptr)
+{
+>>>>>>> upstream/master
 }
 
 //-------------------------------------------------
@@ -180,6 +211,7 @@ void kc_d004_device::device_reset()
 }
 
 //-------------------------------------------------
+<<<<<<< HEAD
 //  device_mconfig_additions
 //-------------------------------------------------
 
@@ -187,12 +219,40 @@ machine_config_constructor kc_d004_device::device_mconfig_additions() const
 {
 	return MACHINE_CONFIG_NAME( kc_d004 );
 }
+=======
+//  device_add_mconfig - add device configuration
+//-------------------------------------------------
+
+MACHINE_CONFIG_MEMBER(kc_d004_device::device_add_mconfig)
+	MCFG_CPU_ADD(Z80_TAG, Z80, XTAL_8MHz/2)
+	MCFG_CPU_PROGRAM_MAP(kc_d004_mem)
+	MCFG_CPU_IO_MAP(kc_d004_io)
+	MCFG_Z80_DAISY_CHAIN(kc_d004_daisy_chain)
+
+	MCFG_DEVICE_ADD(Z80CTC_TAG, Z80CTC, XTAL_8MHz/2)
+	MCFG_Z80CTC_INTR_CB(INPUTLINE(Z80_TAG, 0))
+	MCFG_Z80CTC_ZC0_CB(DEVWRITELINE(Z80CTC_TAG, z80ctc_device, trg1))
+	MCFG_Z80CTC_ZC1_CB(DEVWRITELINE(Z80CTC_TAG, z80ctc_device, trg2))
+	MCFG_Z80CTC_ZC2_CB(DEVWRITELINE(Z80CTC_TAG, z80ctc_device, trg3))
+
+	MCFG_UPD765A_ADD(UPD765_TAG, false, false)
+	MCFG_UPD765_INTRQ_CALLBACK(WRITELINE(kc_d004_device, fdc_irq))
+	MCFG_FLOPPY_DRIVE_ADD(UPD765_TAG ":0", kc_d004_floppies, "525qd", kc_d004_device::floppy_formats)
+	MCFG_FLOPPY_DRIVE_ADD(UPD765_TAG ":1", kc_d004_floppies, "525qd", kc_d004_device::floppy_formats)
+	MCFG_FLOPPY_DRIVE_ADD(UPD765_TAG ":2", kc_d004_floppies, "525qd", kc_d004_device::floppy_formats)
+	MCFG_FLOPPY_DRIVE_ADD(UPD765_TAG ":3", kc_d004_floppies, "525qd", kc_d004_device::floppy_formats)
+MACHINE_CONFIG_END
+>>>>>>> upstream/master
 
 //-------------------------------------------------
 //  device_rom_region
 //-------------------------------------------------
 
+<<<<<<< HEAD
 const rom_entry *kc_d004_device::device_rom_region() const
+=======
+const tiny_rom_entry *kc_d004_device::device_rom_region() const
+>>>>>>> upstream/master
 {
 	return ROM_NAME( kc_d004 );
 }
@@ -215,7 +275,11 @@ void kc_d004_device::device_timer(emu_timer &timer, device_timer_id id, int para
     set module status
 -------------------------------------------------*/
 
+<<<<<<< HEAD
 void kc_d004_device::control_w(UINT8 data)
+=======
+void kc_d004_device::control_w(uint8_t data)
+>>>>>>> upstream/master
 {
 	m_enabled = BIT(data, 0);
 	m_connected = BIT(data, 2);
@@ -226,7 +290,11 @@ void kc_d004_device::control_w(UINT8 data)
     read
 -------------------------------------------------*/
 
+<<<<<<< HEAD
 void kc_d004_device::read(offs_t offset, UINT8 &data)
+=======
+void kc_d004_device::read(offs_t offset, uint8_t &data)
+>>>>>>> upstream/master
 {
 	if (offset >= m_rom_base && offset < (m_rom_base + 0x2000) && m_enabled)
 		data = m_rom[offset & 0x1fff];
@@ -236,11 +304,19 @@ void kc_d004_device::read(offs_t offset, UINT8 &data)
 //  IO read
 //-------------------------------------------------
 
+<<<<<<< HEAD
 void kc_d004_device::io_read(offs_t offset, UINT8 &data)
 {
 	if ((offset & 0xff) == 0x80)
 	{
 		UINT8 slot_id = (offset>>8) & 0xff;
+=======
+void kc_d004_device::io_read(offs_t offset, uint8_t &data)
+{
+	if ((offset & 0xff) == 0x80)
+	{
+		uint8_t slot_id = (offset>>8) & 0xff;
+>>>>>>> upstream/master
 
 		if (slot_id == 0xfc)
 			data = module_id_r();
@@ -266,11 +342,19 @@ void kc_d004_device::io_read(offs_t offset, UINT8 &data)
 //  IO write
 //-------------------------------------------------
 
+<<<<<<< HEAD
 void kc_d004_device::io_write(offs_t offset, UINT8 data)
 {
 	if ((offset & 0xff) == 0x80)
 	{
 		UINT8 slot_id = (offset>>8) & 0xff;
+=======
+void kc_d004_device::io_write(offs_t offset, uint8_t data)
+{
+	if ((offset & 0xff) == 0x80)
+	{
+		uint8_t slot_id = (offset>>8) & 0xff;
+>>>>>>> upstream/master
 
 		if (slot_id == 0xfc)
 			control_w(data);
@@ -325,7 +409,11 @@ READ8_MEMBER(kc_d004_device::hw_input_gate_r)
 	    bit 4: Index pulse from disc
 	*/
 
+<<<<<<< HEAD
 	UINT8 hw_input_gate = 0x0f;
+=======
+	uint8_t hw_input_gate = 0x0f;
+>>>>>>> upstream/master
 
 	if (m_floppy && !m_floppy->idx_r())
 		hw_input_gate |= 0x10;
@@ -353,7 +441,11 @@ WRITE8_MEMBER(kc_d004_device::fdd_select_w)
 	else if (data & 0x08)
 		m_floppy = m_floppy3->get_device();
 	else
+<<<<<<< HEAD
 		m_floppy = NULL;
+=======
+		m_floppy = nullptr;
+>>>>>>> upstream/master
 
 	if (m_floppy)
 		m_floppy->mon_w(0);
@@ -382,6 +474,7 @@ WRITE_LINE_MEMBER(kc_d004_device::fdc_irq)
 //  kc_d004_gide_device - constructor
 //-------------------------------------------------
 
+<<<<<<< HEAD
 kc_d004_gide_device::kc_d004_gide_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
 		: kc_d004_device(mconfig, KC_D004, "D004 Floppy Disk + GIDE Interface", tag, owner, clock, "kc_d004gide", __FILE__),
 		m_ata(*this, ATA_TAG), m_ata_data(0), m_lh(0)
@@ -396,13 +489,37 @@ machine_config_constructor kc_d004_gide_device::device_mconfig_additions() const
 {
 	return MACHINE_CONFIG_NAME( kc_d004_gide );
 }
+=======
+kc_d004_gide_device::kc_d004_gide_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: kc_d004_device(mconfig, KC_D004_GIDE, tag, owner, clock),
+	m_ata(*this, ATA_TAG), m_ata_data(0), m_lh(0)
+{
+}
+
+//-------------------------------------------------
+//  device_add_mconfig - add device configuration
+//-------------------------------------------------
+
+MACHINE_CONFIG_MEMBER(kc_d004_gide_device::device_add_mconfig)
+	kc_d004_device::device_add_mconfig(config);
+
+	MCFG_CPU_MODIFY(Z80_TAG)
+	MCFG_CPU_IO_MAP(kc_d004_gide_io)
+
+	MCFG_ATA_INTERFACE_ADD(ATA_TAG, ata_devices, "hdd", nullptr, false)
+MACHINE_CONFIG_END
+>>>>>>> upstream/master
 
 
 //-------------------------------------------------
 //  device_rom_region
 //-------------------------------------------------
 
+<<<<<<< HEAD
 const rom_entry *kc_d004_gide_device::device_rom_region() const
+=======
+const tiny_rom_entry *kc_d004_gide_device::device_rom_region() const
+>>>>>>> upstream/master
 {
 	return ROM_NAME( kc_d004_gide );
 }
@@ -425,12 +542,21 @@ void kc_d004_gide_device::device_reset()
 
 READ8_MEMBER(kc_d004_gide_device::gide_r)
 {
+<<<<<<< HEAD
 	UINT8 data = 0xff;
 	UINT8 io_addr = offset & 0x0f;
 
 	if (io_addr == 0x05)
 	{
 		UINT8 rtc_addr = (offset >> 8) & 0x0f;
+=======
+	uint8_t data = 0xff;
+	uint8_t io_addr = offset & 0x0f;
+
+	if (io_addr == 0x05)
+	{
+		uint8_t rtc_addr = (offset >> 8) & 0x0f;
+>>>>>>> upstream/master
 
 		// TODO RTC-72421
 		logerror("GIDE %s read RTC 0x%02x\n", tag(), rtc_addr);
@@ -474,11 +600,19 @@ READ8_MEMBER(kc_d004_gide_device::gide_r)
 
 WRITE8_MEMBER(kc_d004_gide_device::gide_w)
 {
+<<<<<<< HEAD
 	UINT8 io_addr = offset & 0x0f;
 
 	if (io_addr == 0x05)
 	{
 		UINT8 rtc_addr = (offset >> 8) & 0x0f;
+=======
+	uint8_t io_addr = offset & 0x0f;
+
+	if (io_addr == 0x05)
+	{
+		uint8_t rtc_addr = (offset >> 8) & 0x0f;
+>>>>>>> upstream/master
 
 		// TODO RTC-72421
 		logerror("GIDE %s wrire RTC 0x%02x 0x%02x\n", tag(), rtc_addr, data);

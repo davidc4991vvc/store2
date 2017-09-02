@@ -1,5 +1,12 @@
 // license:BSD-3-Clause
 // copyright-holders:David Haywood
+<<<<<<< HEAD
+=======
+
+#include "machine/gen_latch.h"
+#include "screen.h"
+
+>>>>>>> upstream/master
 class wwfsstar_state : public driver_device
 {
 public:
@@ -10,6 +17,10 @@ public:
 		m_gfxdecode(*this, "gfxdecode"),
 		m_screen(*this, "screen"),
 		m_palette(*this, "palette"),
+<<<<<<< HEAD
+=======
+		m_soundlatch(*this, "soundlatch"),
+>>>>>>> upstream/master
 		m_spriteram(*this, "spriteram"),
 		m_fg0_videoram(*this, "fg0_videoram"),
 		m_bg0_videoram(*this, "bg0_videoram") { }
@@ -19,10 +30,18 @@ public:
 	required_device<gfxdecode_device> m_gfxdecode;
 	required_device<screen_device> m_screen;
 	required_device<palette_device> m_palette;
+<<<<<<< HEAD
 
 	required_shared_ptr<UINT16> m_spriteram;
 	required_shared_ptr<UINT16> m_fg0_videoram;
 	required_shared_ptr<UINT16> m_bg0_videoram;
+=======
+	required_device<generic_latch_8_device> m_soundlatch;
+
+	required_shared_ptr<uint16_t> m_spriteram;
+	required_shared_ptr<uint16_t> m_fg0_videoram;
+	required_shared_ptr<uint16_t> m_bg0_videoram;
+>>>>>>> upstream/master
 
 	int m_vblank;
 	int m_scrollx;
@@ -31,7 +50,10 @@ public:
 	tilemap_t *m_bg0_tilemap;
 
 	DECLARE_WRITE16_MEMBER(scroll_w);
+<<<<<<< HEAD
 	DECLARE_WRITE16_MEMBER(sound_w);
+=======
+>>>>>>> upstream/master
 	DECLARE_WRITE16_MEMBER(flipscreen_w);
 	DECLARE_WRITE16_MEMBER(irqack_w);
 	DECLARE_WRITE16_MEMBER(fg0_videoram_w);
@@ -45,8 +67,14 @@ public:
 	TILEMAP_MAPPER_MEMBER(bg0_scan);
 	TILE_GET_INFO_MEMBER(get_bg0_tile_info);
 
+<<<<<<< HEAD
 	virtual void video_start();
 
 	UINT32 screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
+=======
+	virtual void video_start() override;
+
+	uint32_t screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
+>>>>>>> upstream/master
 	void draw_sprites(bitmap_ind16 &bitmap, const rectangle &cliprect );
 };

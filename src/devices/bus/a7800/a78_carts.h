@@ -1,9 +1,16 @@
 // license:BSD-3-Clause
 // copyright-holders:Fabio Priuli
+<<<<<<< HEAD
 #ifndef __A78_CARTS_H
 #define __A78_CARTS_H
 
 #include "emu.h"
+=======
+#ifndef MAME_BUS_A7800_A78_CARTS_H
+#define MAME_BUS_A7800_A78_CARTS_H
+
+#pragma once
+>>>>>>> upstream/master
 
 #include "rom.h"
 #include "xboard.h"
@@ -17,6 +24,10 @@ static SLOT_INTERFACE_START(a7800_cart)
 	SLOT_INTERFACE_INTERNAL("a78_sg_pokey", A78_ROM_SG_POKEY)
 	SLOT_INTERFACE_INTERNAL("a78_sg_ram",   A78_ROM_SG_RAM)
 	SLOT_INTERFACE_INTERNAL("a78_sg9",      A78_ROM_SG9)
+<<<<<<< HEAD
+=======
+	SLOT_INTERFACE_INTERNAL("a78_mram",     A78_ROM_MRAM)
+>>>>>>> upstream/master
 	SLOT_INTERFACE_INTERNAL("a78_abs",      A78_ROM_ABSOLUTE)
 	SLOT_INTERFACE_INTERNAL("a78_act",      A78_ROM_ACTIVISION)
 	SLOT_INTERFACE_INTERNAL("a78_hsc",      A78_HISCORE)
@@ -36,4 +47,8 @@ SLOT_INTERFACE_END
 // supported devices
 SLOT_INTERFACE_EXTERN(a78_cart);
 
+<<<<<<< HEAD
 #endif
+=======
+#endif // MAME_BUS_A7800_A78_CARTS_H
+>>>>>>> upstream/master

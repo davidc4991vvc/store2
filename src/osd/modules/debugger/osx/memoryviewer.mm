@@ -6,23 +6,43 @@
 //
 //============================================================
 
+<<<<<<< HEAD
+=======
+#include "emu.h"
+>>>>>>> upstream/master
 #import "memoryviewer.h"
 
 #import "debugconsole.h"
 #import "debugview.h"
 #import "memoryview.h"
 
+<<<<<<< HEAD
 #include "debug/debugcpu.h"
 #include "debug/dvmemory.h"
 
+=======
+#include "debugger.h"
+#include "debug/debugcpu.h"
+#include "debug/dvmemory.h"
+
+#include "util/xmlfile.h"
+
+>>>>>>> upstream/master
 
 @implementation MAMEMemoryViewer
 
 - (id)initWithMachine:(running_machine &)m console:(MAMEDebugConsole *)c {
+<<<<<<< HEAD
 	NSScrollView	*memoryScroll;
 	NSView			*expressionContainer;
 	NSPopUpButton	*actionButton;
 	NSRect			expressionFrame;
+=======
+	NSScrollView    *memoryScroll;
+	NSView          *expressionContainer;
+	NSPopUpButton   *actionButton;
+	NSRect          expressionFrame;
+>>>>>>> upstream/master
 
 	if (!(self = [super initWithMachine:m title:@"Memory" console:c]))
 		return nil;
@@ -52,7 +72,11 @@
 
 	// adjust sizes to make it fit nicely
 	expressionFrame = [expressionField frame];
+<<<<<<< HEAD
 	expressionFrame.size.height = MAX(expressionFrame.size.height, [subviewButton frame].size.height);
+=======
+	expressionFrame.size.height = std::max(expressionFrame.size.height, [subviewButton frame].size.height);
+>>>>>>> upstream/master
 	expressionFrame.size.width = (contentBounds.size.width - expressionFrame.size.height) / 2;
 	[expressionField setFrame:expressionFrame];
 	expressionFrame.origin.x = expressionFrame.size.width;
@@ -86,6 +110,10 @@
 	[memoryScroll setHasVerticalScroller:YES];
 	[memoryScroll setAutohidesScrollers:YES];
 	[memoryScroll setBorderType:NSNoBorder];
+<<<<<<< HEAD
+=======
+	[memoryScroll setDrawsBackground:NO];
+>>>>>>> upstream/master
 	[memoryScroll setDocumentView:memoryView];
 	[memoryView release];
 	[[window contentView] addSubview:memoryScroll];
@@ -103,7 +131,11 @@
 	[actionButton release];
 
 	// set default state
+<<<<<<< HEAD
 	[memoryView selectSubviewForDevice:debug_cpu_get_visible_cpu(*machine)];
+=======
+	[memoryView selectSubviewForDevice:machine->debugger().cpu().get_visible_cpu()];
+>>>>>>> upstream/master
 	[memoryView setExpression:@"0"];
 	[expressionField setStringValue:@"0"];
 	[expressionField selectText:self];
@@ -170,4 +202,24 @@
 	[window setTitle:[NSString stringWithFormat:@"Memory: %@", [memoryView selectedSubviewName]]];
 }
 
+<<<<<<< HEAD
+=======
+
+- (void)saveConfigurationToNode:(util::xml::data_node *)node {
+	[super saveConfigurationToNode:node];
+	node->set_attribute_int("type", MAME_DEBUGGER_WINDOW_TYPE_MEMORY_VIEWER);
+	node->set_attribute_int("memoryregion", [memoryView selectedSubviewIndex]);
+	[memoryView saveConfigurationToNode:node];
+}
+
+
+- (void)restoreConfigurationFromNode:(util::xml::data_node const *)node {
+	[super restoreConfigurationFromNode:node];
+	int const region = node->get_attribute_int("memoryregion", [memoryView selectedSubviewIndex]);
+	[memoryView selectSubviewAtIndex:region];
+	[subviewButton selectItemAtIndex:[subviewButton indexOfItemWithTag:[memoryView selectedSubviewIndex]]];
+	[memoryView restoreConfigurationFromNode:node];
+}
+
+>>>>>>> upstream/master
 @end

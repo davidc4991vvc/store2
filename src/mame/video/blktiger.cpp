@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 // license:???
+=======
+// license:BSD-3-Clause
+>>>>>>> upstream/master
 // copyright-holders:Paul Leaman
 #include "emu.h"
 #include "includes/blktiger.h"
@@ -30,14 +34,22 @@ TILE_GET_INFO_MEMBER(blktiger_state::get_bg_tile_info)
 {
 	/* the tile priority table is a guess compiled by looking at the game. It
 	   was not derived from a PROM so it could be wrong. */
+<<<<<<< HEAD
 	static const UINT8 split_table[16] =
+=======
+	static const uint8_t split_table[16] =
+>>>>>>> upstream/master
 	{
 		3,3,2,2,
 		1,1,0,0,
 		0,0,0,0,
 		0,0,0,0
 	};
+<<<<<<< HEAD
 	UINT8 attr = m_scroll_ram[2 * tile_index + 1];
+=======
+	uint8_t attr = m_scroll_ram[2 * tile_index + 1];
+>>>>>>> upstream/master
 	int color = (attr & 0x78) >> 3;
 	SET_TILE_INFO_MEMBER(1,
 			m_scroll_ram[2 * tile_index] + ((attr & 0x07) << 8),
@@ -48,7 +60,11 @@ TILE_GET_INFO_MEMBER(blktiger_state::get_bg_tile_info)
 
 TILE_GET_INFO_MEMBER(blktiger_state::get_tx_tile_info)
 {
+<<<<<<< HEAD
 	UINT8 attr = m_txvideoram[tile_index + 0x400];
+=======
+	uint8_t attr = m_txvideoram[tile_index + 0x400];
+>>>>>>> upstream/master
 	SET_TILE_INFO_MEMBER(0,
 			m_txvideoram[tile_index] + ((attr & 0xe0) << 3),
 			attr & 0x1f,
@@ -69,11 +85,19 @@ void blktiger_state::video_start()
 	m_objon = 1;
 	m_screen_layout = 0;
 
+<<<<<<< HEAD
 	m_scroll_ram = auto_alloc_array(machine(), UINT8, BGRAM_BANK_SIZE * BGRAM_BANKS);
 
 	m_tx_tilemap =    &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(blktiger_state::get_tx_tile_info),this), TILEMAP_SCAN_ROWS, 8, 8, 32, 32);
 	m_bg_tilemap8x4 = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(blktiger_state::get_bg_tile_info),this), tilemap_mapper_delegate(FUNC(blktiger_state::bg8x4_scan),this), 16, 16, 128, 64);
 	m_bg_tilemap4x8 = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(blktiger_state::get_bg_tile_info),this), tilemap_mapper_delegate(FUNC(blktiger_state::bg4x8_scan),this), 16, 16, 64, 128);
+=======
+	m_scroll_ram = std::make_unique<uint8_t[]>(BGRAM_BANK_SIZE * BGRAM_BANKS);
+
+	m_tx_tilemap =    &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(blktiger_state::get_tx_tile_info),this), TILEMAP_SCAN_ROWS, 8, 8, 32, 32);
+	m_bg_tilemap8x4 = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(blktiger_state::get_bg_tile_info),this), tilemap_mapper_delegate(FUNC(blktiger_state::bg8x4_scan),this), 16, 16, 128, 64);
+	m_bg_tilemap4x8 = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(blktiger_state::get_bg_tile_info),this), tilemap_mapper_delegate(FUNC(blktiger_state::bg4x8_scan),this), 16, 16, 64, 128);
+>>>>>>> upstream/master
 
 	m_tx_tilemap->set_transparent_pen(3);
 
@@ -86,7 +110,11 @@ void blktiger_state::video_start()
 	m_bg_tilemap4x8->set_transmask(2, 0xff00, 0x80ff);
 	m_bg_tilemap4x8->set_transmask(3, 0xf000, 0x8fff);
 
+<<<<<<< HEAD
 	save_pointer(NAME(m_scroll_ram), BGRAM_BANK_SIZE * BGRAM_BANKS);
+=======
+	save_pointer(NAME(m_scroll_ram.get()), BGRAM_BANK_SIZE * BGRAM_BANKS);
+>>>>>>> upstream/master
 }
 
 
@@ -147,8 +175,13 @@ WRITE8_MEMBER(blktiger_state::blktiger_scrollx_w)
 WRITE8_MEMBER(blktiger_state::blktiger_video_control_w)
 {
 	/* bits 0 and 1 are coin counters */
+<<<<<<< HEAD
 	coin_counter_w(machine(), 0,data & 1);
 	coin_counter_w(machine(), 1,data & 2);
+=======
+	machine().bookkeeping().coin_counter_w(0,data & 1);
+	machine().bookkeeping().coin_counter_w(1,data & 2);
+>>>>>>> upstream/master
 
 	/* bit 5 resets the sound CPU */
 	m_audiocpu->set_input_line(INPUT_LINE_RESET, (data & 0x20) ? ASSERT_LINE : CLEAR_LINE);
@@ -187,7 +220,11 @@ WRITE8_MEMBER(blktiger_state::blktiger_screen_layout_w)
 
 void blktiger_state::draw_sprites( bitmap_ind16 &bitmap, const rectangle &cliprect )
 {
+<<<<<<< HEAD
 	UINT8 *buffered_spriteram = m_spriteram->buffer();
+=======
+	uint8_t *buffered_spriteram = m_spriteram->buffer();
+>>>>>>> upstream/master
 	int offs;
 
 	/* Draw the sprites. */
@@ -215,7 +252,11 @@ void blktiger_state::draw_sprites( bitmap_ind16 &bitmap, const rectangle &clipre
 	}
 }
 
+<<<<<<< HEAD
 UINT32 blktiger_state::screen_update_blktiger(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+=======
+uint32_t blktiger_state::screen_update_blktiger(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+>>>>>>> upstream/master
 {
 	bitmap.fill(1023, cliprect);
 

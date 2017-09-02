@@ -65,9 +65,27 @@ TILE_GET_INFO_MEMBER(sauro_state::get_tile_info_fg)
 static const int scroll2_map[8] = {2, 1, 4, 3, 6, 5, 0, 7};
 static const int scroll2_map_flip[8] = {0, 7, 2, 1, 4, 3, 6, 5};
 
+<<<<<<< HEAD
 WRITE8_MEMBER(sauro_state::sauro_palette_bank_w)
 {
 	m_palette_bank = (data & 0x03) << 4;
+=======
+WRITE_LINE_MEMBER(sauro_state::sauro_palette_bank0_w)
+{
+	if (state)
+		m_palette_bank |= 0x10;
+	else
+		m_palette_bank &= ~0x10;
+	machine().tilemap().mark_all_dirty();
+}
+
+WRITE_LINE_MEMBER(sauro_state::sauro_palette_bank1_w)
+{
+	if (state)
+		m_palette_bank |= 0x20;
+	else
+		m_palette_bank &= ~0x20;
+>>>>>>> upstream/master
 	machine().tilemap().mark_all_dirty();
 }
 
@@ -81,10 +99,17 @@ WRITE8_MEMBER(sauro_state::sauro_scroll_fg_w)
 
 VIDEO_START_MEMBER(sauro_state,sauro)
 {
+<<<<<<< HEAD
 	m_bg_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(sauro_state::get_tile_info_bg),this), TILEMAP_SCAN_COLS,
 			8, 8, 32, 32);
 
 	m_fg_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(sauro_state::get_tile_info_fg),this), TILEMAP_SCAN_COLS,
+=======
+	m_bg_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(sauro_state::get_tile_info_bg),this), TILEMAP_SCAN_COLS,
+			8, 8, 32, 32);
+
+	m_fg_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(sauro_state::get_tile_info_fg),this), TILEMAP_SCAN_COLS,
+>>>>>>> upstream/master
 			8, 8, 32, 32);
 
 	m_fg_tilemap->set_transparent_pen(0);
@@ -95,7 +120,11 @@ VIDEO_START_MEMBER(sauro_state,sauro)
 
 void sauro_state::sauro_draw_sprites(bitmap_ind16 &bitmap, const rectangle &cliprect)
 {
+<<<<<<< HEAD
 	UINT8 *spriteram = m_spriteram;
+=======
+	uint8_t *spriteram = m_spriteram;
+>>>>>>> upstream/master
 	int offs,code,sx,sy,color,flipx;
 	int flipy = flip_screen();
 
@@ -140,7 +169,11 @@ void sauro_state::sauro_draw_sprites(bitmap_ind16 &bitmap, const rectangle &clip
 	}
 }
 
+<<<<<<< HEAD
 UINT32 sauro_state::screen_update_sauro(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+=======
+uint32_t sauro_state::screen_update_sauro(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+>>>>>>> upstream/master
 {
 	m_bg_tilemap->draw(screen, bitmap, cliprect, 0, 0);
 	m_fg_tilemap->draw(screen, bitmap, cliprect, 0, 0);
@@ -152,13 +185,21 @@ UINT32 sauro_state::screen_update_sauro(screen_device &screen, bitmap_ind16 &bit
 
 VIDEO_START_MEMBER(sauro_state,trckydoc)
 {
+<<<<<<< HEAD
 	m_bg_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(sauro_state::get_tile_info_bg),this), TILEMAP_SCAN_COLS,
+=======
+	m_bg_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(sauro_state::get_tile_info_bg),this), TILEMAP_SCAN_COLS,
+>>>>>>> upstream/master
 			8, 8, 32, 32);
 }
 
 void sauro_state::trckydoc_draw_sprites(bitmap_ind16 &bitmap, const rectangle &cliprect)
 {
+<<<<<<< HEAD
 	UINT8 *spriteram = m_spriteram;
+=======
+	uint8_t *spriteram = m_spriteram;
+>>>>>>> upstream/master
 	int offs,code,sy,color,flipx,sx;
 	int flipy = flip_screen();
 
@@ -211,7 +252,11 @@ void sauro_state::trckydoc_draw_sprites(bitmap_ind16 &bitmap, const rectangle &c
 	}
 }
 
+<<<<<<< HEAD
 UINT32 sauro_state::screen_update_trckydoc(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+=======
+uint32_t sauro_state::screen_update_trckydoc(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+>>>>>>> upstream/master
 {
 	m_bg_tilemap->draw(screen, bitmap, cliprect, 0, 0);
 	trckydoc_draw_sprites(bitmap, cliprect);

@@ -24,6 +24,7 @@
 #ifndef NLD_82S16_H_
 #define NLD_82S16_H_
 
+<<<<<<< HEAD
 #include "nl_base.h"
 
 #define TTL_82S16(_name)                                     \
@@ -50,5 +51,13 @@ NETLIB_DEVICE(82S16,
 NETLIB_DEVICE_DERIVED_PURE(82S16_dip, 82S16);
 
 NETLIB_NAMESPACE_DEVICES_END()
+=======
+#include "../nl_setup.h"
+
+#define TTL_82S16(name)                                     \
+		NET_REGISTER_DEV(TTL_82S16, name)
+#define TTL_82S16_DIP(name)                                 \
+		NET_REGISTER_DEV(TTL_82S16_DIP, name)
+>>>>>>> upstream/master
 
 #endif /* NLD_82S16_H_ */

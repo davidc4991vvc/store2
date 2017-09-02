@@ -6,6 +6,10 @@
 #define __I386_H__
 
 #include "i386.h"
+<<<<<<< HEAD
+=======
+#include "i386dasm.h"
+>>>>>>> upstream/master
 
 //#define DEBUG_MISSING_OPCODE
 
@@ -15,8 +19,11 @@
 #define MMXOP(XX)       mmx_##XX
 #define SSEOP(XX)       sse_##XX
 
+<<<<<<< HEAD
 extern int i386_dasm_one(char *buffer, UINT32 pc, const UINT8 *oprom, int mode);
 
+=======
+>>>>>>> upstream/master
 enum SREGS { ES, CS, SS, DS, FS, GS };
 
 enum BREGS
@@ -277,6 +284,7 @@ enum smram_intel_p5
 #define MXCSR_FZ  (1<<15) // Flush to Zero
 
 union MMX_REG {
+<<<<<<< HEAD
 	UINT32 d[2];
 	INT32  i[2];
 	UINT16 w[4];
@@ -286,11 +294,26 @@ union MMX_REG {
 	float  f[2];
 	UINT64 q;
 	INT64  l;
+=======
+	uint32_t d[2];
+	int32_t  i[2];
+	uint16_t w[4];
+	int16_t  s[4];
+	uint8_t  b[8];
+	int8_t   c[8];
+	float  f[2];
+	uint64_t q;
+	int64_t  l;
+>>>>>>> upstream/master
 };
 
 extern int i386_parity_table[256];
 
+<<<<<<< HEAD
 #define FAULT_THROW(fault,error) { throw (UINT64)(fault | (UINT64)error << 32); }
+=======
+#define FAULT_THROW(fault,error) { throw (uint64_t)(fault | (uint64_t)error << 32); }
+>>>>>>> upstream/master
 #define PF_THROW(error) { m_cr[2] = address; FAULT_THROW(FAULT_PF,error); }
 
 #define PROTECTED_MODE      (m_cr[0] & 0x1)
@@ -309,16 +332,26 @@ extern int i386_parity_table[256];
 
 #define SetCF8(x)           {m_CF = ((x) & 0x100) ? 1 : 0; }
 #define SetCF16(x)          {m_CF = ((x) & 0x10000) ? 1 : 0; }
+<<<<<<< HEAD
 #define SetCF32(x)          {m_CF = ((x) & (((UINT64)1) << 32)) ? 1 : 0; }
+=======
+#define SetCF32(x)          {m_CF = ((x) & (((uint64_t)1) << 32)) ? 1 : 0; }
+>>>>>>> upstream/master
 
 #define SetSF(x)            (m_SF = (x))
 #define SetZF(x)            (m_ZF = (x))
 #define SetAF(x,y,z)        (m_AF = (((x) ^ ((y) ^ (z))) & 0x10) ? 1 : 0)
 #define SetPF(x)            (m_PF = i386_parity_table[(x) & 0xFF])
 
+<<<<<<< HEAD
 #define SetSZPF8(x)         {m_ZF = ((UINT8)(x)==0);  m_SF = ((x)&0x80) ? 1 : 0; m_PF = i386_parity_table[x & 0xFF]; }
 #define SetSZPF16(x)        {m_ZF = ((UINT16)(x)==0);  m_SF = ((x)&0x8000) ? 1 : 0; m_PF = i386_parity_table[x & 0xFF]; }
 #define SetSZPF32(x)        {m_ZF = ((UINT32)(x)==0);  m_SF = ((x)&0x80000000) ? 1 : 0; m_PF = i386_parity_table[x & 0xFF]; }
+=======
+#define SetSZPF8(x)         {m_ZF = ((uint8_t)(x)==0);  m_SF = ((x)&0x80) ? 1 : 0; m_PF = i386_parity_table[x & 0xFF]; }
+#define SetSZPF16(x)        {m_ZF = ((uint16_t)(x)==0);  m_SF = ((x)&0x8000) ? 1 : 0; m_PF = i386_parity_table[x & 0xFF]; }
+#define SetSZPF32(x)        {m_ZF = ((uint32_t)(x)==0);  m_SF = ((x)&0x80000000) ? 1 : 0; m_PF = i386_parity_table[x & 0xFF]; }
+>>>>>>> upstream/master
 
 #define MMX(n)              (*((MMX_REG *)(&m_x87_reg[(n)].low)))
 #define XMM(n)              m_sse_reg[(n)]
@@ -362,7 +395,11 @@ extern MODRM_TABLE i386_MODRM_table[256];
 
 /***********************************************************************************/
 
+<<<<<<< HEAD
 UINT32 i386_device::i386_translate(int segment, UINT32 ip, int rwn)
+=======
+uint32_t i386_device::i386_translate(int segment, uint32_t ip, int rwn)
+>>>>>>> upstream/master
 {
 	// TODO: segment limit access size, execution permission, handle exception thrown from exception handler
 	if(PROTECTED_MODE && !V8086_MODE && (rwn != -1))
@@ -381,7 +418,11 @@ UINT32 i386_device::i386_translate(int segment, UINT32 ip, int rwn)
 
 #define VTLB_FLAG_DIRTY 0x100
 
+<<<<<<< HEAD
 vtlb_entry i386_device::get_permissions(UINT32 pte, int wp)
+=======
+vtlb_entry i386_device::get_permissions(uint32_t pte, int wp)
+>>>>>>> upstream/master
 {
 	vtlb_entry ret = VTLB_READ_ALLOWED | ((pte & 4) ? VTLB_USER_READ_ALLOWED : 0);
 	if(!wp)
@@ -393,12 +434,21 @@ vtlb_entry i386_device::get_permissions(UINT32 pte, int wp)
 
 bool i386_device::i386_translate_address(int intention, offs_t *address, vtlb_entry *entry)
 {
+<<<<<<< HEAD
 	UINT32 a = *address;
 	UINT32 pdbr = m_cr[3] & 0xfffff000;
 	UINT32 directory = (a >> 22) & 0x3ff;
 	UINT32 table = (a >> 12) & 0x3ff;
 	vtlb_entry perm = 0;
 	bool ret = false;
+=======
+	uint32_t a = *address;
+	uint32_t pdbr = m_cr[3] & 0xfffff000;
+	uint32_t directory = (a >> 22) & 0x3ff;
+	uint32_t table = (a >> 12) & 0x3ff;
+	vtlb_entry perm = 0;
+	bool ret;
+>>>>>>> upstream/master
 	bool user = (intention & TRANSLATE_USER_MASK) ? true : false;
 	bool write = (intention & TRANSLATE_WRITE) ? true : false;
 	bool debug = (intention & TRANSLATE_DEBUG_MASK) ? true : false;
@@ -410,7 +460,11 @@ bool i386_device::i386_translate_address(int intention, offs_t *address, vtlb_en
 		return true;
 	}
 
+<<<<<<< HEAD
 	UINT32 page_dir = m_program->read_dword(pdbr + directory * 4);
+=======
+	uint32_t page_dir = m_program->read_dword(pdbr + directory * 4);
+>>>>>>> upstream/master
 	if(page_dir & 1)
 	{
 		if ((page_dir & 0x80) && (m_cr[4] & 0x10))
@@ -439,7 +493,11 @@ bool i386_device::i386_translate_address(int intention, offs_t *address, vtlb_en
 		}
 		else
 		{
+<<<<<<< HEAD
 			UINT32 page_entry = m_program->read_dword((page_dir & 0xfffff000) + (table * 4));
+=======
+			uint32_t page_entry = m_program->read_dword((page_dir & 0xfffff000) + (table * 4));
+>>>>>>> upstream/master
 			if(!(page_entry & 1))
 				ret = false;
 			else
@@ -481,6 +539,7 @@ bool i386_device::i386_translate_address(int intention, offs_t *address, vtlb_en
 
 //#define TEST_TLB
 
+<<<<<<< HEAD
 int i386_device::translate_address(int pl, int type, UINT32 *address, UINT32 *error)
 {
 	if(!(m_cr[0] & 0x80000000)) // Some (very few) old OS's won't work with this
@@ -488,13 +547,26 @@ int i386_device::translate_address(int pl, int type, UINT32 *address, UINT32 *er
 
 	const vtlb_entry *table = vtlb_table(m_vtlb);
 	UINT32 index = *address >> 12;
+=======
+bool i386_device::translate_address(int pl, int type, uint32_t *address, uint32_t *error)
+{
+	if(!(m_cr[0] & 0x80000000)) // Some (very few) old OS's won't work with this
+		return true;
+
+	const vtlb_entry *table = vtlb_table();
+	uint32_t index = *address >> 12;
+>>>>>>> upstream/master
 	vtlb_entry entry = table[index];
 	if(type == TRANSLATE_FETCH)
 		type = TRANSLATE_READ;
 	if(pl == 3)
 		type |= TRANSLATE_USER_MASK;
 #ifdef TEST_TLB
+<<<<<<< HEAD
 	UINT32 test_addr = *address;
+=======
+	uint32_t test_addr = *address;
+>>>>>>> upstream/master
 #endif
 
 	if(!(entry & VTLB_FLAG_VALID) || ((type & TRANSLATE_WRITE) && !(entry & VTLB_FLAG_DIRTY)))
@@ -504,14 +576,22 @@ int i386_device::translate_address(int pl, int type, UINT32 *address, UINT32 *er
 			*error = ((type & TRANSLATE_WRITE) ? 2 : 0) | ((m_CPL == 3) ? 4 : 0);
 			if(entry)
 				*error |= 1;
+<<<<<<< HEAD
 			return FALSE;
 		}
 		vtlb_dynload(m_vtlb, index, *address, entry);
 		return TRUE;
+=======
+			return false;
+		}
+		vtlb_dynload(index, *address, entry);
+		return true;
+>>>>>>> upstream/master
 	}
 	if(!(entry & (1 << type)))
 	{
 		*error = ((type & TRANSLATE_WRITE) ? 2 : 0) | ((m_CPL == 3) ? 4 : 0) | 1;
+<<<<<<< HEAD
 		return FALSE;
 	}
 	*address = (entry & 0xfffff000) | (*address & 0xfff);
@@ -524,21 +604,46 @@ int i386_device::translate_address(int pl, int type, UINT32 *address, UINT32 *er
 }
 
 void i386_device::CHANGE_PC(UINT32 pc)
+=======
+		return false;
+	}
+	*address = (entry & 0xfffff000) | (*address & 0xfff);
+#ifdef TEST_TLB
+	int test_ret = i386_translate_address(type | TRANSLATE_DEBUG_MASK, &test_addr, nullptr);
+	if(!test_ret || (test_addr != *address))
+		logerror("TLB-PTE mismatch! %06X %06X %06x\n", *address, test_addr, m_pc);
+#endif
+	return true;
+}
+
+void i386_device::CHANGE_PC(uint32_t pc)
+>>>>>>> upstream/master
 {
 	m_pc = i386_translate(CS, pc, -1 );
 }
 
+<<<<<<< HEAD
 void i386_device::NEAR_BRANCH(INT32 offs)
+=======
+void i386_device::NEAR_BRANCH(int32_t offs)
+>>>>>>> upstream/master
 {
 	/* TODO: limit */
 	m_eip += offs;
 	m_pc += offs;
 }
 
+<<<<<<< HEAD
 UINT8 i386_device::FETCH()
 {
 	UINT8 value;
 	UINT32 address = m_pc, error;
+=======
+uint8_t i386_device::FETCH()
+{
+	uint8_t value;
+	uint32_t address = m_pc, error;
+>>>>>>> upstream/master
 
 	if(!translate_address(m_CPL,TRANSLATE_FETCH,&address,&error))
 		PF_THROW(error);
@@ -552,12 +657,21 @@ UINT8 i386_device::FETCH()
 	m_pc++;
 	return value;
 }
+<<<<<<< HEAD
 UINT16 i386_device::FETCH16()
 {
 	UINT16 value;
 	UINT32 address = m_pc, error;
 
 	if( address & 0x1 ) {       /* Unaligned read */
+=======
+uint16_t i386_device::FETCH16()
+{
+	uint16_t value;
+	uint32_t address = m_pc, error;
+
+	if( !WORD_ALIGNED(address) ) {       /* Unaligned read */
+>>>>>>> upstream/master
 		value = (FETCH() << 0);
 		value |= (FETCH() << 8);
 	} else {
@@ -570,12 +684,21 @@ UINT16 i386_device::FETCH16()
 	}
 	return value;
 }
+<<<<<<< HEAD
 UINT32 i386_device::FETCH32()
 {
 	UINT32 value;
 	UINT32 address = m_pc, error;
 
 	if( m_pc & 0x3 ) {      /* Unaligned read */
+=======
+uint32_t i386_device::FETCH32()
+{
+	uint32_t value;
+	uint32_t address = m_pc, error;
+
+	if( !DWORD_ALIGNED(m_pc) ) {      /* Unaligned read */
+>>>>>>> upstream/master
 		value = (FETCH() << 0);
 		value |= (FETCH() << 8);
 		value |= (FETCH() << 16);
@@ -592,9 +715,15 @@ UINT32 i386_device::FETCH32()
 	return value;
 }
 
+<<<<<<< HEAD
 UINT8 i386_device::READ8(UINT32 ea)
 {
 	UINT32 address = ea, error;
+=======
+uint8_t i386_device::READ8(uint32_t ea)
+{
+	uint32_t address = ea, error;
+>>>>>>> upstream/master
 
 	if(!translate_address(m_CPL,TRANSLATE_READ,&address, &error))
 		PF_THROW(error);
@@ -602,12 +731,21 @@ UINT8 i386_device::READ8(UINT32 ea)
 	address &= m_a20_mask;
 	return m_program->read_byte(address);
 }
+<<<<<<< HEAD
 UINT16 i386_device::READ16(UINT32 ea)
 {
 	UINT16 value;
 	UINT32 address = ea, error;
 
 	if( ea & 0x1 ) {        /* Unaligned read */
+=======
+uint16_t i386_device::READ16(uint32_t ea)
+{
+	uint16_t value;
+	uint32_t address = ea, error;
+
+	if( !WORD_ALIGNED(ea) ) {        /* Unaligned read */
+>>>>>>> upstream/master
 		value = (READ8( address+0 ) << 0);
 		value |= (READ8( address+1 ) << 8);
 	} else {
@@ -619,12 +757,21 @@ UINT16 i386_device::READ16(UINT32 ea)
 	}
 	return value;
 }
+<<<<<<< HEAD
 UINT32 i386_device::READ32(UINT32 ea)
 {
 	UINT32 value;
 	UINT32 address = ea, error;
 
 	if( ea & 0x3 ) {        /* Unaligned read */
+=======
+uint32_t i386_device::READ32(uint32_t ea)
+{
+	uint32_t value;
+	uint32_t address = ea, error;
+
+	if( !DWORD_ALIGNED(ea) ) {        /* Unaligned read */
+>>>>>>> upstream/master
 		value = (READ8( address+0 ) << 0);
 		value |= (READ8( address+1 ) << 8);
 		value |= (READ8( address+2 ) << 16),
@@ -639,6 +786,7 @@ UINT32 i386_device::READ32(UINT32 ea)
 	return value;
 }
 
+<<<<<<< HEAD
 UINT64 i386_device::READ64(UINT32 ea)
 {
 	UINT64 value;
@@ -653,11 +801,28 @@ UINT64 i386_device::READ64(UINT32 ea)
 		value |= (((UINT64) READ8( address+5 )) << 40);
 		value |= (((UINT64) READ8( address+6 )) << 48);
 		value |= (((UINT64) READ8( address+7 )) << 56);
+=======
+uint64_t i386_device::READ64(uint32_t ea)
+{
+	uint64_t value;
+	uint32_t address = ea, error;
+
+	if( !QWORD_ALIGNED(ea) ) {        /* Unaligned read */
+		value = (((uint64_t) READ8( address+0 )) << 0);
+		value |= (((uint64_t) READ8( address+1 )) << 8);
+		value |= (((uint64_t) READ8( address+2 )) << 16);
+		value |= (((uint64_t) READ8( address+3 )) << 24);
+		value |= (((uint64_t) READ8( address+4 )) << 32);
+		value |= (((uint64_t) READ8( address+5 )) << 40);
+		value |= (((uint64_t) READ8( address+6 )) << 48);
+		value |= (((uint64_t) READ8( address+7 )) << 56);
+>>>>>>> upstream/master
 	} else {
 		if(!translate_address(m_CPL,TRANSLATE_READ,&address,&error))
 			PF_THROW(error);
 
 		address &= m_a20_mask;
+<<<<<<< HEAD
 		value = (((UINT64) m_program->read_dword( address+0 )) << 0);
 		value |= (((UINT64) m_program->read_dword( address+4 )) << 32);
 	}
@@ -666,6 +831,16 @@ UINT64 i386_device::READ64(UINT32 ea)
 UINT8 i386_device::READ8PL0(UINT32 ea)
 {
 	UINT32 address = ea, error;
+=======
+		value = (((uint64_t) m_program->read_dword( address+0 )) << 0);
+		value |= (((uint64_t) m_program->read_dword( address+4 )) << 32);
+	}
+	return value;
+}
+uint8_t i386_device::READ8PL0(uint32_t ea)
+{
+	uint32_t address = ea, error;
+>>>>>>> upstream/master
 
 	if(!translate_address(0,TRANSLATE_READ,&address,&error))
 		PF_THROW(error);
@@ -673,12 +848,21 @@ UINT8 i386_device::READ8PL0(UINT32 ea)
 	address &= m_a20_mask;
 	return m_program->read_byte(address);
 }
+<<<<<<< HEAD
 UINT16 i386_device::READ16PL0(UINT32 ea)
 {
 	UINT16 value;
 	UINT32 address = ea, error;
 
 	if( ea & 0x1 ) {        /* Unaligned read */
+=======
+uint16_t i386_device::READ16PL0(uint32_t ea)
+{
+	uint16_t value;
+	uint32_t address = ea, error;
+
+	if( !WORD_ALIGNED(ea) ) {        /* Unaligned read */
+>>>>>>> upstream/master
 		value = (READ8PL0( address+0 ) << 0);
 		value |= (READ8PL0( address+1 ) << 8);
 	} else {
@@ -691,12 +875,21 @@ UINT16 i386_device::READ16PL0(UINT32 ea)
 	return value;
 }
 
+<<<<<<< HEAD
 UINT32 i386_device::READ32PL0(UINT32 ea)
 {
 	UINT32 value;
 	UINT32 address = ea, error;
 
 	if( ea & 0x3 ) {        /* Unaligned read */
+=======
+uint32_t i386_device::READ32PL0(uint32_t ea)
+{
+	uint32_t value;
+	uint32_t address = ea, error;
+
+	if( !DWORD_ALIGNED(ea) ) {        /* Unaligned read */
+>>>>>>> upstream/master
 		value = (READ8PL0( address+0 ) << 0);
 		value |= (READ8PL0( address+1 ) << 8);
 		value |= (READ8PL0( address+2 ) << 16);
@@ -711,16 +904,28 @@ UINT32 i386_device::READ32PL0(UINT32 ea)
 	return value;
 }
 
+<<<<<<< HEAD
 void i386_device::WRITE_TEST(UINT32 ea)
 {
 	UINT32 address = ea, error;
+=======
+void i386_device::WRITE_TEST(uint32_t ea)
+{
+	uint32_t address = ea, error;
+>>>>>>> upstream/master
 	if(!translate_address(m_CPL,TRANSLATE_WRITE,&address,&error))
 		PF_THROW(error);
 }
 
+<<<<<<< HEAD
 void i386_device::WRITE8(UINT32 ea, UINT8 value)
 {
 	UINT32 address = ea, error;
+=======
+void i386_device::WRITE8(uint32_t ea, uint8_t value)
+{
+	uint32_t address = ea, error;
+>>>>>>> upstream/master
 
 	if(!translate_address(m_CPL,TRANSLATE_WRITE,&address,&error))
 		PF_THROW(error);
@@ -728,11 +933,19 @@ void i386_device::WRITE8(UINT32 ea, UINT8 value)
 	address &= m_a20_mask;
 	m_program->write_byte(address, value);
 }
+<<<<<<< HEAD
 void i386_device::WRITE16(UINT32 ea, UINT16 value)
 {
 	UINT32 address = ea, error;
 
 	if( ea & 0x1 ) {        /* Unaligned write */
+=======
+void i386_device::WRITE16(uint32_t ea, uint16_t value)
+{
+	uint32_t address = ea, error;
+
+	if( !WORD_ALIGNED(ea) ) {        /* Unaligned write */
+>>>>>>> upstream/master
 		WRITE8( address+0, value & 0xff );
 		WRITE8( address+1, (value >> 8) & 0xff );
 	} else {
@@ -743,11 +956,19 @@ void i386_device::WRITE16(UINT32 ea, UINT16 value)
 		m_program->write_word(address, value);
 	}
 }
+<<<<<<< HEAD
 void i386_device::WRITE32(UINT32 ea, UINT32 value)
 {
 	UINT32 address = ea, error;
 
 	if( ea & 0x3 ) {        /* Unaligned write */
+=======
+void i386_device::WRITE32(uint32_t ea, uint32_t value)
+{
+	uint32_t address = ea, error;
+
+	if( !DWORD_ALIGNED(ea) ) {        /* Unaligned write */
+>>>>>>> upstream/master
 		WRITE8( address+0, value & 0xff );
 		WRITE8( address+1, (value >> 8) & 0xff );
 		WRITE8( address+2, (value >> 16) & 0xff );
@@ -761,11 +982,19 @@ void i386_device::WRITE32(UINT32 ea, UINT32 value)
 	}
 }
 
+<<<<<<< HEAD
 void i386_device::WRITE64(UINT32 ea, UINT64 value)
 {
 	UINT32 address = ea, error;
 
 	if( ea & 0x7 ) {        /* Unaligned write */
+=======
+void i386_device::WRITE64(uint32_t ea, uint64_t value)
+{
+	uint32_t address = ea, error;
+
+	if( !QWORD_ALIGNED(ea) ) {        /* Unaligned write */
+>>>>>>> upstream/master
 		WRITE8( address+0, value & 0xff );
 		WRITE8( address+1, (value >> 8) & 0xff );
 		WRITE8( address+2, (value >> 16) & 0xff );
@@ -786,80 +1015,141 @@ void i386_device::WRITE64(UINT32 ea, UINT64 value)
 
 /***********************************************************************************/
 
+<<<<<<< HEAD
 UINT8 i386_device::OR8(UINT8 dst, UINT8 src)
 {
 	UINT8 res = dst | src;
+=======
+uint8_t i386_device::OR8(uint8_t dst, uint8_t src)
+{
+	uint8_t res = dst | src;
+>>>>>>> upstream/master
 	m_CF = m_OF = 0;
 	SetSZPF8(res);
 	return res;
 }
+<<<<<<< HEAD
 UINT16 i386_device::OR16(UINT16 dst, UINT16 src)
 {
 	UINT16 res = dst | src;
+=======
+uint16_t i386_device::OR16(uint16_t dst, uint16_t src)
+{
+	uint16_t res = dst | src;
+>>>>>>> upstream/master
 	m_CF = m_OF = 0;
 	SetSZPF16(res);
 	return res;
 }
+<<<<<<< HEAD
 UINT32 i386_device::OR32(UINT32 dst, UINT32 src)
 {
 	UINT32 res = dst | src;
+=======
+uint32_t i386_device::OR32(uint32_t dst, uint32_t src)
+{
+	uint32_t res = dst | src;
+>>>>>>> upstream/master
 	m_CF = m_OF = 0;
 	SetSZPF32(res);
 	return res;
 }
 
+<<<<<<< HEAD
 UINT8 i386_device::AND8(UINT8 dst, UINT8 src)
 {
 	UINT8 res = dst & src;
+=======
+uint8_t i386_device::AND8(uint8_t dst, uint8_t src)
+{
+	uint8_t res = dst & src;
+>>>>>>> upstream/master
 	m_CF = m_OF = 0;
 	SetSZPF8(res);
 	return res;
 }
+<<<<<<< HEAD
 UINT16 i386_device::AND16(UINT16 dst, UINT16 src)
 {
 	UINT16 res = dst & src;
+=======
+uint16_t i386_device::AND16(uint16_t dst, uint16_t src)
+{
+	uint16_t res = dst & src;
+>>>>>>> upstream/master
 	m_CF = m_OF = 0;
 	SetSZPF16(res);
 	return res;
 }
+<<<<<<< HEAD
 UINT32 i386_device::AND32(UINT32 dst, UINT32 src)
 {
 	UINT32 res = dst & src;
+=======
+uint32_t i386_device::AND32(uint32_t dst, uint32_t src)
+{
+	uint32_t res = dst & src;
+>>>>>>> upstream/master
 	m_CF = m_OF = 0;
 	SetSZPF32(res);
 	return res;
 }
 
+<<<<<<< HEAD
 UINT8 i386_device::XOR8(UINT8 dst, UINT8 src)
 {
 	UINT8 res = dst ^ src;
+=======
+uint8_t i386_device::XOR8(uint8_t dst, uint8_t src)
+{
+	uint8_t res = dst ^ src;
+>>>>>>> upstream/master
 	m_CF = m_OF = 0;
 	SetSZPF8(res);
 	return res;
 }
+<<<<<<< HEAD
 UINT16 i386_device::XOR16(UINT16 dst, UINT16 src)
 {
 	UINT16 res = dst ^ src;
+=======
+uint16_t i386_device::XOR16(uint16_t dst, uint16_t src)
+{
+	uint16_t res = dst ^ src;
+>>>>>>> upstream/master
 	m_CF = m_OF = 0;
 	SetSZPF16(res);
 	return res;
 }
+<<<<<<< HEAD
 UINT32 i386_device::XOR32(UINT32 dst, UINT32 src)
 {
 	UINT32 res = dst ^ src;
+=======
+uint32_t i386_device::XOR32(uint32_t dst, uint32_t src)
+{
+	uint32_t res = dst ^ src;
+>>>>>>> upstream/master
 	m_CF = m_OF = 0;
 	SetSZPF32(res);
 	return res;
 }
 
 #define SUB8(dst, src) SBB8(dst, src, 0)
+<<<<<<< HEAD
 UINT8 i386_device::SBB8(UINT8 dst, UINT8 src, UINT8 b)
 {
 	UINT16 res = (UINT16)dst - (UINT16)src - (UINT8)b;
+=======
+uint8_t i386_device::SBB8(uint8_t dst, uint8_t src, uint8_t b)
+{
+	uint16_t res = (uint16_t)dst - (uint16_t)src - (uint8_t)b;
+>>>>>>> upstream/master
 	SetCF8(res);
 	SetOF_Sub8(res,src,dst);
 	SetAF(res,src,dst);
 	SetSZPF8(res);
+<<<<<<< HEAD
 	return (UINT8)res;
 }
 
@@ -867,10 +1157,20 @@ UINT8 i386_device::SBB8(UINT8 dst, UINT8 src, UINT8 b)
 UINT16 i386_device::SBB16(UINT16 dst, UINT16 src, UINT16 b)
 {
 	UINT32 res = (UINT32)dst - (UINT32)src - (UINT32)b;
+=======
+	return (uint8_t)res;
+}
+
+#define SUB16(dst, src) SBB16(dst, src, 0)
+uint16_t i386_device::SBB16(uint16_t dst, uint16_t src, uint16_t b)
+{
+	uint32_t res = (uint32_t)dst - (uint32_t)src - (uint32_t)b;
+>>>>>>> upstream/master
 	SetCF16(res);
 	SetOF_Sub16(res,src,dst);
 	SetAF(res,src,dst);
 	SetSZPF16(res);
+<<<<<<< HEAD
 	return (UINT16)res;
 }
 
@@ -878,10 +1178,20 @@ UINT16 i386_device::SBB16(UINT16 dst, UINT16 src, UINT16 b)
 UINT32 i386_device::SBB32(UINT32 dst, UINT32 src, UINT32 b)
 {
 	UINT64 res = (UINT64)dst - (UINT64)src - (UINT64) b;
+=======
+	return (uint16_t)res;
+}
+
+#define SUB32(dst, src) SBB32(dst, src, 0)
+uint32_t i386_device::SBB32(uint32_t dst, uint32_t src, uint32_t b)
+{
+	uint64_t res = (uint64_t)dst - (uint64_t)src - (uint64_t) b;
+>>>>>>> upstream/master
 	SetCF32(res);
 	SetOF_Sub32(res,src,dst);
 	SetAF(res,src,dst);
 	SetSZPF32(res);
+<<<<<<< HEAD
 	return (UINT32)res;
 }
 
@@ -889,10 +1199,20 @@ UINT32 i386_device::SBB32(UINT32 dst, UINT32 src, UINT32 b)
 UINT8 i386_device::ADC8(UINT8 dst, UINT8 src, UINT8 c)
 {
 	UINT16 res = (UINT16)dst + (UINT16)src + (UINT16)c;
+=======
+	return (uint32_t)res;
+}
+
+#define ADD8(dst, src) ADC8(dst, src, 0)
+uint8_t i386_device::ADC8(uint8_t dst, uint8_t src, uint8_t c)
+{
+	uint16_t res = (uint16_t)dst + (uint16_t)src + (uint16_t)c;
+>>>>>>> upstream/master
 	SetCF8(res);
 	SetOF_Add8(res,src,dst);
 	SetAF(res,src,dst);
 	SetSZPF8(res);
+<<<<<<< HEAD
 	return (UINT8)res;
 }
 
@@ -900,10 +1220,20 @@ UINT8 i386_device::ADC8(UINT8 dst, UINT8 src, UINT8 c)
 UINT16 i386_device::ADC16(UINT16 dst, UINT16 src, UINT8 c)
 {
 	UINT32 res = (UINT32)dst + (UINT32)src + (UINT32)c;
+=======
+	return (uint8_t)res;
+}
+
+#define ADD16(dst, src) ADC16(dst, src, 0)
+uint16_t i386_device::ADC16(uint16_t dst, uint16_t src, uint8_t c)
+{
+	uint32_t res = (uint32_t)dst + (uint32_t)src + (uint32_t)c;
+>>>>>>> upstream/master
 	SetCF16(res);
 	SetOF_Add16(res,src,dst);
 	SetAF(res,src,dst);
 	SetSZPF16(res);
+<<<<<<< HEAD
 	return (UINT16)res;
 }
 
@@ -911,10 +1241,20 @@ UINT16 i386_device::ADC16(UINT16 dst, UINT16 src, UINT8 c)
 UINT32 i386_device::ADC32(UINT32 dst, UINT32 src, UINT32 c)
 {
 	UINT64 res = (UINT64)dst + (UINT64)src + (UINT64) c;
+=======
+	return (uint16_t)res;
+}
+
+#define ADD32(dst, src) ADC32(dst, src, 0)
+uint32_t i386_device::ADC32(uint32_t dst, uint32_t src, uint32_t c)
+{
+	uint64_t res = (uint64_t)dst + (uint64_t)src + (uint64_t) c;
+>>>>>>> upstream/master
 	SetCF32(res);
 	SetOF_Add32(res,src,dst);
 	SetAF(res,src,dst);
 	SetSZPF32(res);
+<<<<<<< HEAD
 	return (UINT32)res;
 }
 
@@ -966,13 +1306,72 @@ UINT32 i386_device::DEC32(UINT32 dst)
 	SetAF(res,1,dst);
 	SetSZPF32(res);
 	return (UINT32)res;
+=======
+	return (uint32_t)res;
+}
+
+uint8_t i386_device::INC8(uint8_t dst)
+{
+	uint16_t res = (uint16_t)dst + 1;
+	SetOF_Add8(res,1,dst);
+	SetAF(res,1,dst);
+	SetSZPF8(res);
+	return (uint8_t)res;
+}
+uint16_t i386_device::INC16(uint16_t dst)
+{
+	uint32_t res = (uint32_t)dst + 1;
+	SetOF_Add16(res,1,dst);
+	SetAF(res,1,dst);
+	SetSZPF16(res);
+	return (uint16_t)res;
+}
+uint32_t i386_device::INC32(uint32_t dst)
+{
+	uint64_t res = (uint64_t)dst + 1;
+	SetOF_Add32(res,1,dst);
+	SetAF(res,1,dst);
+	SetSZPF32(res);
+	return (uint32_t)res;
+}
+
+uint8_t i386_device::DEC8(uint8_t dst)
+{
+	uint16_t res = (uint16_t)dst - 1;
+	SetOF_Sub8(res,1,dst);
+	SetAF(res,1,dst);
+	SetSZPF8(res);
+	return (uint8_t)res;
+}
+uint16_t i386_device::DEC16(uint16_t dst)
+{
+	uint32_t res = (uint32_t)dst - 1;
+	SetOF_Sub16(res,1,dst);
+	SetAF(res,1,dst);
+	SetSZPF16(res);
+	return (uint16_t)res;
+}
+uint32_t i386_device::DEC32(uint32_t dst)
+{
+	uint64_t res = (uint64_t)dst - 1;
+	SetOF_Sub32(res,1,dst);
+	SetAF(res,1,dst);
+	SetSZPF32(res);
+	return (uint32_t)res;
+>>>>>>> upstream/master
 }
 
 
 
+<<<<<<< HEAD
 void i386_device::PUSH16(UINT16 value)
 {
 	UINT32 ea, new_esp;
+=======
+void i386_device::PUSH16(uint16_t value)
+{
+	uint32_t ea, new_esp;
+>>>>>>> upstream/master
 	if( STACK_32BIT ) {
 		new_esp = REG32(ESP) - 2;
 		ea = i386_translate(SS, new_esp, 1);
@@ -985,9 +1384,15 @@ void i386_device::PUSH16(UINT16 value)
 		REG16(SP) = new_esp;
 	}
 }
+<<<<<<< HEAD
 void i386_device::PUSH32(UINT32 value)
 {
 	UINT32 ea, new_esp;
+=======
+void i386_device::PUSH32(uint32_t value)
+{
+	uint32_t ea, new_esp;
+>>>>>>> upstream/master
 	if( STACK_32BIT ) {
 		new_esp = REG32(ESP) - 4;
 		ea = i386_translate(SS, new_esp, 1);
@@ -1000,6 +1405,7 @@ void i386_device::PUSH32(UINT32 value)
 		REG16(SP) = new_esp;
 	}
 }
+<<<<<<< HEAD
 void i386_device::PUSH8(UINT8 value)
 {
 	if( m_operand_size ) {
@@ -1013,6 +1419,38 @@ UINT8 i386_device::POP8()
 {
 	UINT8 value;
 	UINT32 ea, new_esp;
+=======
+
+void i386_device::PUSH32SEG(uint32_t value)
+{
+	uint32_t ea, new_esp;
+	if( STACK_32BIT ) {
+		new_esp = REG32(ESP) - 4;
+		ea = i386_translate(SS, new_esp, 1);
+		((m_cpu_version & 0xf00) == 0x300) ? WRITE16(ea, value) : WRITE32(ea, value ); // 486 also?
+		REG32(ESP) = new_esp;
+	} else {
+		new_esp = (REG16(SP) - 4) & 0xffff;
+		ea = i386_translate(SS, new_esp, 1);
+		((m_cpu_version & 0xf00) == 0x300) ? WRITE16(ea, value) : WRITE32(ea, value );
+		REG16(SP) = new_esp;
+	}
+}
+
+void i386_device::PUSH8(uint8_t value)
+{
+	if( m_operand_size ) {
+		PUSH32((int32_t)(int8_t)value);
+	} else {
+		PUSH16((int16_t)(int8_t)value);
+	}
+}
+
+uint8_t i386_device::POP8()
+{
+	uint8_t value;
+	uint32_t ea, new_esp;
+>>>>>>> upstream/master
 	if( STACK_32BIT ) {
 		new_esp = REG32(ESP) + 1;
 		ea = i386_translate(SS, new_esp - 1, 0);
@@ -1026,10 +1464,17 @@ UINT8 i386_device::POP8()
 	}
 	return value;
 }
+<<<<<<< HEAD
 UINT16 i386_device::POP16()
 {
 	UINT16 value;
 	UINT32 ea, new_esp;
+=======
+uint16_t i386_device::POP16()
+{
+	uint16_t value;
+	uint32_t ea, new_esp;
+>>>>>>> upstream/master
 	if( STACK_32BIT ) {
 		new_esp = REG32(ESP) + 2;
 		ea = i386_translate(SS, new_esp - 2, 0);
@@ -1043,10 +1488,17 @@ UINT16 i386_device::POP16()
 	}
 	return value;
 }
+<<<<<<< HEAD
 UINT32 i386_device::POP32()
 {
 	UINT32 value;
 	UINT32 ea, new_esp;
+=======
+uint32_t i386_device::POP32()
+{
+	uint32_t value;
+	uint32_t ea, new_esp;
+>>>>>>> upstream/master
 	if( STACK_32BIT ) {
 		new_esp = REG32(ESP) + 4;
 		ea = i386_translate(SS, new_esp - 4, 0);
@@ -1083,11 +1535,19 @@ void i386_device::BUMP_DI(int adjustment)
     I/O ACCESS
 ***********************************************************************************/
 
+<<<<<<< HEAD
 void i386_device::check_ioperm(offs_t port, UINT8 mask)
 {
 	UINT8 IOPL, map;
 	UINT16 IOPB;
 	UINT32 address;
+=======
+void i386_device::check_ioperm(offs_t port, uint8_t mask)
+{
+	uint8_t IOPL, map;
+	uint16_t IOPB;
+	uint32_t address;
+>>>>>>> upstream/master
 
 	if(!PROTECTED_MODE)
 		return;
@@ -1110,23 +1570,39 @@ void i386_device::check_ioperm(offs_t port, UINT8 mask)
 		FAULT_THROW(FAULT_GP,0);
 }
 
+<<<<<<< HEAD
 UINT8 i386_device::READPORT8(offs_t port)
+=======
+uint8_t i386_device::READPORT8(offs_t port)
+>>>>>>> upstream/master
 {
 	check_ioperm(port, 1);
 	return m_io->read_byte(port);
 }
 
+<<<<<<< HEAD
 void i386_device::WRITEPORT8(offs_t port, UINT8 value)
+=======
+void i386_device::WRITEPORT8(offs_t port, uint8_t value)
+>>>>>>> upstream/master
 {
 	check_ioperm(port, 1);
 	m_io->write_byte(port, value);
 }
 
+<<<<<<< HEAD
 UINT16 i386_device::READPORT16(offs_t port)
 {
 	if (port & 1)
 	{
 		UINT16 value = READPORT8(port);
+=======
+uint16_t i386_device::READPORT16(offs_t port)
+{
+	if (port & 1)
+	{
+		uint16_t value = READPORT8(port);
+>>>>>>> upstream/master
 		value |= (READPORT8(port + 1) << 8);
 		return value;
 	}
@@ -1137,7 +1613,11 @@ UINT16 i386_device::READPORT16(offs_t port)
 	}
 }
 
+<<<<<<< HEAD
 void i386_device::WRITEPORT16(offs_t port, UINT16 value)
+=======
+void i386_device::WRITEPORT16(offs_t port, uint16_t value)
+>>>>>>> upstream/master
 {
 	if (port & 1)
 	{
@@ -1151,11 +1631,19 @@ void i386_device::WRITEPORT16(offs_t port, UINT16 value)
 	}
 }
 
+<<<<<<< HEAD
 UINT32 i386_device::READPORT32(offs_t port)
 {
 	if (port & 3)
 	{
 		UINT32 value = READPORT8(port);
+=======
+uint32_t i386_device::READPORT32(offs_t port)
+{
+	if (port & 3)
+	{
+		uint32_t value = READPORT8(port);
+>>>>>>> upstream/master
 		value |= (READPORT8(port + 1) << 8);
 		value |= (READPORT8(port + 2) << 16);
 		value |= (READPORT8(port + 3) << 24);
@@ -1168,7 +1656,11 @@ UINT32 i386_device::READPORT32(offs_t port)
 	}
 }
 
+<<<<<<< HEAD
 void i386_device::WRITEPORT32(offs_t port, UINT32 value)
+=======
+void i386_device::WRITEPORT32(offs_t port, uint32_t value)
+>>>>>>> upstream/master
 {
 	if (port & 3)
 	{
@@ -1189,7 +1681,11 @@ void i386_device::WRITEPORT32(offs_t port, UINT32 value)
 ***********************************************************************************/
 
 // Pentium MSR handling
+<<<<<<< HEAD
 UINT64 i386_device::pentium_msr_read(UINT32 offset,UINT8 *valid_msr)
+=======
+uint64_t i386_device::pentium_msr_read(uint32_t offset,uint8_t *valid_msr)
+>>>>>>> upstream/master
 {
 	switch(offset)
 	{
@@ -1232,7 +1728,11 @@ UINT64 i386_device::pentium_msr_read(UINT32 offset,UINT8 *valid_msr)
 	return -1;
 }
 
+<<<<<<< HEAD
 void i386_device::pentium_msr_write(UINT32 offset, UINT64 data, UINT8 *valid_msr)
+=======
+void i386_device::pentium_msr_write(uint32_t offset, uint64_t data, uint8_t *valid_msr)
+>>>>>>> upstream/master
 {
 	switch(offset)
 	{
@@ -1271,14 +1771,22 @@ void i386_device::pentium_msr_write(UINT32 offset, UINT64 data, UINT8 *valid_msr
 			logerror("WRMSR: Writing test MSR %x", offset);
 			break;
 		}
+<<<<<<< HEAD
 		logerror("WRMSR: invalid MSR write %08x (%08x%08x) at %08x\n",offset,(UINT32)(data >> 32),(UINT32)data,m_pc-2);
+=======
+		logerror("WRMSR: invalid MSR write %08x (%08x%08x) at %08x\n",offset,(uint32_t)(data >> 32),(uint32_t)data,m_pc-2);
+>>>>>>> upstream/master
 		*valid_msr = 0;
 		break;
 	}
 }
 
 // P6 (Pentium Pro, Pentium II, Pentium III) MSR handling
+<<<<<<< HEAD
 UINT64 i386_device::p6_msr_read(UINT32 offset,UINT8 *valid_msr)
+=======
+uint64_t i386_device::p6_msr_read(uint32_t offset,uint8_t *valid_msr)
+>>>>>>> upstream/master
 {
 	switch(offset)
 	{
@@ -1311,7 +1819,11 @@ UINT64 i386_device::p6_msr_read(UINT32 offset,UINT8 *valid_msr)
 	return -1;
 }
 
+<<<<<<< HEAD
 void i386_device::p6_msr_write(UINT32 offset, UINT64 data, UINT8 *valid_msr)
+=======
+void i386_device::p6_msr_write(uint32_t offset, uint64_t data, uint8_t *valid_msr)
+>>>>>>> upstream/master
 {
 	switch(offset)
 	{
@@ -1331,7 +1843,11 @@ void i386_device::p6_msr_write(UINT32 offset, UINT64 data, UINT8 *valid_msr)
 		*valid_msr = 1;
 		break;
 	default:
+<<<<<<< HEAD
 		logerror("WRMSR: unimplemented register called %08x (%08x%08x) at %08x\n",offset,(UINT32)(data >> 32),(UINT32)data,m_pc-2);
+=======
+		logerror("WRMSR: unimplemented register called %08x (%08x%08x) at %08x\n",offset,(uint32_t)(data >> 32),(uint32_t)data,m_pc-2);
+>>>>>>> upstream/master
 		*valid_msr = 1;
 		break;
 	}
@@ -1339,7 +1855,11 @@ void i386_device::p6_msr_write(UINT32 offset, UINT64 data, UINT8 *valid_msr)
 
 
 // PIV (Pentium 4+)
+<<<<<<< HEAD
 UINT64 i386_device::piv_msr_read(UINT32 offset,UINT8 *valid_msr)
+=======
+uint64_t i386_device::piv_msr_read(uint32_t offset,uint8_t *valid_msr)
+>>>>>>> upstream/master
 {
 	switch(offset)
 	{
@@ -1351,21 +1871,36 @@ UINT64 i386_device::piv_msr_read(UINT32 offset,UINT8 *valid_msr)
 	return -1;
 }
 
+<<<<<<< HEAD
 void i386_device::piv_msr_write(UINT32 offset, UINT64 data, UINT8 *valid_msr)
+=======
+void i386_device::piv_msr_write(uint32_t offset, uint64_t data, uint8_t *valid_msr)
+>>>>>>> upstream/master
 {
 	switch(offset)
 	{
 	default:
+<<<<<<< HEAD
 		logerror("WRMSR: unimplemented register called %08x (%08x%08x) at %08x\n",offset,(UINT32)(data >> 32),(UINT32)data,m_pc-2);
+=======
+		logerror("WRMSR: unimplemented register called %08x (%08x%08x) at %08x\n",offset,(uint32_t)(data >> 32),(uint32_t)data,m_pc-2);
+>>>>>>> upstream/master
 		*valid_msr = 1;
 		break;
 	}
 }
 
+<<<<<<< HEAD
 UINT64 i386_device::MSR_READ(UINT32 offset,UINT8 *valid_msr)
 {
 	UINT64 res;
 	UINT8 cpu_type = (m_cpu_version >> 8) & 0x0f;
+=======
+uint64_t i386_device::MSR_READ(uint32_t offset,uint8_t *valid_msr)
+{
+	uint64_t res;
+	uint8_t cpu_type = (m_cpu_version >> 8) & 0x0f;
+>>>>>>> upstream/master
 
 	*valid_msr = 0;
 
@@ -1388,10 +1923,17 @@ UINT64 i386_device::MSR_READ(UINT32 offset,UINT8 *valid_msr)
 	return res;
 }
 
+<<<<<<< HEAD
 void i386_device::MSR_WRITE(UINT32 offset, UINT64 data, UINT8 *valid_msr)
 {
 	*valid_msr = 0;
 	UINT8 cpu_type = (m_cpu_version >> 8) & 0x0f;
+=======
+void i386_device::MSR_WRITE(uint32_t offset, uint64_t data, uint8_t *valid_msr)
+{
+	*valid_msr = 0;
+	uint8_t cpu_type = (m_cpu_version >> 8) & 0x0f;
+>>>>>>> upstream/master
 
 	switch(cpu_type)
 	{

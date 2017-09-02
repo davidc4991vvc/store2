@@ -1,8 +1,16 @@
+<<<<<<< HEAD
 // license:???
 // copyright-holders:Derrick Renaud
 /*************************************************************************
 
     audio\triplhnt.c
+=======
+// license:BSD-3-Clause
+// copyright-holders:Derrick Renaud
+/*************************************************************************
+
+    audio\triplhnt.cpp
+>>>>>>> upstream/master
 
 *************************************************************************/
 #include "emu.h"
@@ -15,7 +23,11 @@ const char *const triplhnt_sample_names[] =
 	"*triplhnt",
 	"bear_rac",
 	"witch",
+<<<<<<< HEAD
 	0
+=======
+	nullptr
+>>>>>>> upstream/master
 };
 
 /************************************************************************/

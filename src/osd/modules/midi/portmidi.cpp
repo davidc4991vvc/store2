@@ -10,11 +10,15 @@
 
 #ifndef NO_USE_MIDI
 
+<<<<<<< HEAD
 #ifndef USE_SYSTEM_PORTMIDI
 #include "portmidi/pm_common/portmidi.h"
 #else
 #include <portmidi.h>
 #endif
+=======
+#include <portmidi.h>
+>>>>>>> upstream/master
 #include "osdcore.h"
 #include "corealloc.h"
 #include "modules/osdmodule.h"
@@ -30,11 +34,19 @@ public:
 	}
 	virtual ~pm_module() { }
 
+<<<<<<< HEAD
 	virtual int init(const osd_options &options);
 	virtual void exit();
 
 	osd_midi_device *create_midi_device();
 	void list_midi_devices(void);
+=======
+	virtual int init(const osd_options &options)override;
+	virtual void exit()override;
+
+	virtual osd_midi_device *create_midi_device() override;
+	virtual void list_midi_devices(void) override;
+>>>>>>> upstream/master
 };
 
 
@@ -46,6 +58,7 @@ static const int RX_EVENT_BUF_SIZE = 512;
 class osd_midi_device_pm : public osd_midi_device
 {
 public:
+<<<<<<< HEAD
 	osd_midi_device_pm(): pmStream(NULL), xmit_cnt(0), last_status(0), rx_sysex(false) { }
 	virtual ~osd_midi_device_pm() { }
 	virtual bool open_input(const char *devname);
@@ -54,13 +67,29 @@ public:
 	virtual bool poll();
 	virtual int read(UINT8 *pOut);
 	virtual void write(UINT8 data);
+=======
+	osd_midi_device_pm(): pmStream(nullptr), xmit_cnt(0), last_status(0), rx_sysex(false) { }
+	virtual ~osd_midi_device_pm() { }
+	virtual bool open_input(const char *devname) override;
+	virtual bool open_output(const char *devname) override;
+	virtual void close() override;
+	virtual bool poll() override;
+	virtual int read(uint8_t *pOut) override;
+	virtual void write(uint8_t data) override;
+>>>>>>> upstream/master
 
 private:
 	PortMidiStream *pmStream;
 	PmEvent rx_evBuf[RX_EVENT_BUF_SIZE];
+<<<<<<< HEAD
 	UINT8 xmit_in[4]; // Pm_Messages mean we can at most have 3 residue bytes
 	int xmit_cnt;
 	UINT8 last_status;
+=======
+	uint8_t xmit_in[4]; // Pm_Messages mean we can at most have 3 residue bytes
+	int xmit_cnt;
+	uint8_t last_status;
+>>>>>>> upstream/master
 	bool rx_sysex;
 };
 
@@ -147,7 +176,11 @@ bool osd_midi_device_pm::open_input(const char *devname)
 
 	if (found_dev >= 0)
 	{
+<<<<<<< HEAD
 		if (Pm_OpenInput(&stm, found_dev, NULL, RX_EVENT_BUF_SIZE, NULL, NULL) == pmNoError)
+=======
+		if (Pm_OpenInput(&stm, found_dev, nullptr, RX_EVENT_BUF_SIZE, nullptr, nullptr) == pmNoError)
+>>>>>>> upstream/master
 		{
 			pmStream = stm;
 			return true;
@@ -194,7 +227,11 @@ bool osd_midi_device_pm::open_output(const char *devname)
 
 	if (found_dev >= 0)
 	{
+<<<<<<< HEAD
 		if (Pm_OpenOutput(&stm, found_dev, NULL, 100, NULL, NULL, 0) == pmNoError)
+=======
+		if (Pm_OpenOutput(&stm, found_dev, nullptr, 100, nullptr, nullptr, 0) == pmNoError)
+>>>>>>> upstream/master
 		{
 			pmStream = stm;
 			return true;
@@ -223,7 +260,11 @@ bool osd_midi_device_pm::poll()
 	return (chk == pmGotData) ? true : false;
 }
 
+<<<<<<< HEAD
 int osd_midi_device_pm::read(UINT8 *pOut)
+=======
+int osd_midi_device_pm::read(uint8_t *pOut)
+>>>>>>> upstream/master
 {
 	int msgsRead = Pm_Read(pmStream, rx_evBuf, RX_EVENT_BUF_SIZE);
 	int bytesOut = 0;
@@ -235,7 +276,11 @@ int osd_midi_device_pm::read(UINT8 *pOut)
 
 	for (int msg = 0; msg < msgsRead; msg++)
 	{
+<<<<<<< HEAD
 		UINT8 status = Pm_MessageStatus(rx_evBuf[msg].message);
+=======
+		uint8_t status = Pm_MessageStatus(rx_evBuf[msg].message);
+>>>>>>> upstream/master
 
 		if (rx_sysex)
 		{
@@ -262,7 +307,11 @@ int osd_midi_device_pm::read(UINT8 *pOut)
 			{
 				for (int i = 0; i < 4; i++)
 				{
+<<<<<<< HEAD
 					UINT8 byte = rx_evBuf[msg].message & 0xff;
+=======
+					uint8_t byte = rx_evBuf[msg].message & 0xff;
+>>>>>>> upstream/master
 					*pOut++ = byte;
 					bytesOut++;
 					if (byte == MIDI_EOX)
@@ -293,7 +342,11 @@ int osd_midi_device_pm::read(UINT8 *pOut)
 							*pOut++ = status;   // this should be OK: the shortest legal sysex is F0 tt dd F7, I believe
 							*pOut++ = (rx_evBuf[msg].message>>8) & 0xff;
 							*pOut++ = (rx_evBuf[msg].message>>16) & 0xff;
+<<<<<<< HEAD
 							UINT8 last = *pOut++ = (rx_evBuf[msg].message>>24) & 0xff;
+=======
+							uint8_t last = *pOut++ = (rx_evBuf[msg].message>>24) & 0xff;
+>>>>>>> upstream/master
 							bytesOut += 4;
 							rx_sysex = (last != MIDI_EOX);
 							break;
@@ -331,7 +384,11 @@ int osd_midi_device_pm::read(UINT8 *pOut)
 	return bytesOut;
 }
 
+<<<<<<< HEAD
 void osd_midi_device_pm::write(UINT8 data)
+=======
+void osd_midi_device_pm::write(uint8_t data)
+>>>>>>> upstream/master
 {
 	int bytes_needed = 0;
 	PmEvent ev;

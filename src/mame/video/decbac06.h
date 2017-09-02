@@ -1,6 +1,15 @@
 // license:BSD-3-Clause
 // copyright-holders:Bryan McPhail, David Haywood
+<<<<<<< HEAD
 /* BAC06 */
+=======
+#ifndef MAME_VIDEO_DECOBAC06_H
+#define MAME_VIDEO_DECOBAC06_H
+
+#pragma once
+
+#include <memory>
+>>>>>>> upstream/master
 
 #define MCFG_BAC06_BOOTLEG_DISABLE_8x8 \
 	deco_bac06_device::disable_8x8(*device);
@@ -15,14 +24,24 @@
 class deco_bac06_device : public device_t
 {
 public:
+<<<<<<< HEAD
 	deco_bac06_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
+=======
+	deco_bac06_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
+>>>>>>> upstream/master
 
 	// static configuration
 	static void static_set_gfxdecode_tag(device_t &device, const char *tag);
 	static void set_gfx_region_wide(device_t &device, int region8x8, int region16x16, int wide);
 
+<<<<<<< HEAD
 	UINT16* m_pf_data;
 	UINT16* m_pf_rowscroll, *m_pf_colscroll;
+=======
+	std::unique_ptr<uint16_t[]> m_pf_data;
+	std::unique_ptr<uint16_t[]> m_pf_rowscroll;
+	std::unique_ptr<uint16_t[]> m_pf_colscroll;
+>>>>>>> upstream/master
 
 	tilemap_t* m_pf8x8_tilemap[3];
 	tilemap_t* m_pf16x16_tilemap[3];
@@ -53,10 +72,17 @@ public:
 	}
 
 	void create_tilemaps(int region8x8,int region16x16);
+<<<<<<< HEAD
 	UINT16 m_pf_control_0[8];
 	UINT16 m_pf_control_1[8];
 
 	void deco_bac06_pf_draw(bitmap_ind16 &bitmap,const rectangle &cliprect,int flags,UINT16 penmask, UINT16 pencondition,UINT16 colprimask, UINT16 colpricondition);
+=======
+	uint16_t m_pf_control_0[8];
+	uint16_t m_pf_control_1[8];
+
+	void deco_bac06_pf_draw(bitmap_ind16 &bitmap,const rectangle &cliprect,int flags,uint16_t penmask, uint16_t pencondition,uint16_t colprimask, uint16_t colpricondition);
+>>>>>>> upstream/master
 	void deco_bac06_pf_draw_bootleg(bitmap_ind16 &bitmap,const rectangle &cliprect,int flags, int mode, int type);
 
 
@@ -72,12 +98,20 @@ public:
 	  For now we have this get_flip_state function so that drivers can query the bit and set other
 	  flip flags accordingly
 	*/
+<<<<<<< HEAD
 	UINT8 get_flip_state(void) { return m_pf_control_0[0]&0x80; };
+=======
+	uint8_t get_flip_state(void) { return m_pf_control_0[0]&0x80; };
+>>>>>>> upstream/master
 
 
 	void set_colmask(int data) { m_gfxcolmask = data; }
 	void set_bppmultmask( int mult, int mask ) { m_bppmult = mult; m_bppmask = mask; } // stadium hero has 3bpp tiles
+<<<<<<< HEAD
 	UINT8 m_gfxcolmask;
+=======
+	uint8_t m_gfxcolmask;
+>>>>>>> upstream/master
 	int m_rambank; // external connection?
 
 	/* 16-bit accessors */
@@ -115,6 +149,7 @@ public:
 	DECLARE_WRITE8_MEMBER( pf_rowscroll_8bit_swap_w );
 
 protected:
+<<<<<<< HEAD
 	virtual void device_start();
 	virtual void device_reset();
 
@@ -124,16 +159,36 @@ protected:
 
 	UINT8 m_bppmult;
 	UINT8 m_bppmask;
+=======
+	virtual void device_start() override;
+	virtual void device_reset() override;
+
+	uint8_t m_gfxregion8x8;
+	uint8_t m_gfxregion16x16;
+	int m_wide;
+
+	uint8_t m_bppmult;
+	uint8_t m_bppmask;
+>>>>>>> upstream/master
 
 	void custom_tilemap_draw(bitmap_ind16 &bitmap,
 							const rectangle &cliprect,
 							tilemap_t *tilemap_ptr,
+<<<<<<< HEAD
 							const UINT16 *rowscroll_ptr,
 							const UINT16 *colscroll_ptr,
 							const UINT16 *control0,
 							const UINT16 *control1,
 							int flags,
 							UINT16 penmask, UINT16 pencondition,UINT16 colprimask, UINT16 colpricondition);
+=======
+							const uint16_t *rowscroll_ptr,
+							const uint16_t *colscroll_ptr,
+							const uint16_t *control0,
+							const uint16_t *control1,
+							int flags,
+							uint16_t penmask, uint16_t pencondition,uint16_t colprimask, uint16_t colpricondition);
+>>>>>>> upstream/master
 
 private:
 	TILEMAP_MAPPER_MEMBER(tile_shape0_scan);
@@ -147,7 +202,19 @@ private:
 	required_device<gfxdecode_device> m_gfxdecode;
 };
 
+<<<<<<< HEAD
 extern const device_type DECO_BAC06;
 
 #define MCFG_DECO_BAC06_GFXDECODE(_gfxtag) \
 	deco_bac06_device::static_set_gfxdecode_tag(*device, "^" _gfxtag);
+=======
+DECLARE_DEVICE_TYPE(DECO_BAC06, deco_bac06_device)
+
+#define MCFG_DECO_BAC06_GFXDECODE(_gfxtag) \
+	deco_bac06_device::static_set_gfxdecode_tag(*device, "^" _gfxtag);
+
+#define MCFG_DECO_BAC06_GFX_REGION_WIDE(_8x8, _16x16, _wide) \
+	deco_bac06_device::set_gfx_region_wide(*device, _8x8, _16x16, _wide);
+
+#endif // MAME_VIDEO_DECOBAC06_H
+>>>>>>> upstream/master

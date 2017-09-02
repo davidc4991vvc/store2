@@ -1,5 +1,9 @@
 /* 7zFile.h -- File IO
+<<<<<<< HEAD
 2009-11-24 : Igor Pavlov : Public domain */
+=======
+2013-01-18 : Igor Pavlov : Public domain */
+>>>>>>> upstream/master
 
 #ifndef __7Z_FILE_H
 #define __7Z_FILE_H
@@ -14,7 +18,11 @@
 #include <stdio.h>
 #endif
 
+<<<<<<< HEAD
 #include "Types.h"
+=======
+#include "7zTypes.h"
+>>>>>>> upstream/master
 
 EXTERN_C_BEGIN
 

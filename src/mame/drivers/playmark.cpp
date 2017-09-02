@@ -61,6 +61,7 @@ TODO:
 ***************************************************************************/
 
 #include "emu.h"
+<<<<<<< HEAD
 #include "cpu/m68000/m68000.h"
 #include "machine/eepromser.h"
 #include "cpu/pic16c5x/pic16c5x.h"
@@ -68,14 +69,31 @@ TODO:
 #include "includes/playmark.h"
 #include "machine/ticket.h"
 #include "machine/nvram.h"
+=======
+#include "includes/playmark.h"
+
+#include "cpu/m68000/m68000.h"
+#include "cpu/pic16c5x/pic16c5x.h"
+#include "machine/eepromser.h"
+#include "machine/nvram.h"
+#include "machine/ticket.h"
+#include "screen.h"
+#include "sound/okim6295.h"
+#include "speaker.h"
+>>>>>>> upstream/master
 
 
 WRITE16_MEMBER(playmark_state::coinctrl_w)
 {
 	if (ACCESSING_BITS_8_15)
 	{
+<<<<<<< HEAD
 		coin_counter_w(machine(), 0, data & 0x0100);
 		coin_counter_w(machine(), 1, data & 0x0200);
+=======
+		machine().bookkeeping().coin_counter_w(0, data & 0x0100);
+		machine().bookkeeping().coin_counter_w(1, data & 0x0200);
+>>>>>>> upstream/master
 	}
 	if (data & 0xfcff)
 		logerror("Writing %04x to unknown coin control bits\n", data);
@@ -93,10 +111,17 @@ WRITE16_MEMBER(playmark_state::wbeachvl_coin_eeprom_w)
 	if (ACCESSING_BITS_0_7)
 	{
 		/* bits 0-3 are coin counters? (only 0 used?) */
+<<<<<<< HEAD
 		coin_counter_w(machine(), 0, data & 0x01);
 		coin_counter_w(machine(), 1, data & 0x02);
 		coin_counter_w(machine(), 2, data & 0x04);
 		coin_counter_w(machine(), 3, data & 0x08);
+=======
+		machine().bookkeeping().coin_counter_w(0, data & 0x01);
+		machine().bookkeeping().coin_counter_w(1, data & 0x02);
+		machine().bookkeeping().coin_counter_w(2, data & 0x04);
+		machine().bookkeeping().coin_counter_w(3, data & 0x08);
+>>>>>>> upstream/master
 
 		/* bits 5-7 control EEPROM */
 		m_eeprom->cs_write((data & 0x20) ? ASSERT_LINE : CLEAR_LINE);
@@ -124,8 +149,13 @@ WRITE16_MEMBER(playmark_state::hotmind_coin_eeprom_w)
 		}
 		machine().device<ticket_dispenser_device>("ticket")->write(space, 0, (data & 0x08) ? 0x80 : 0);
 
+<<<<<<< HEAD
 		coin_counter_w(machine(), 0, data & 0x20);      /* Coin In counter - transistor driven */
 		coin_counter_w(machine(), 1, data & 0x40);      /* Token/Ticket Out counter - transistor driven */
+=======
+		machine().bookkeeping().coin_counter_w(0, data & 0x20);      /* Coin In counter - transistor driven */
+		machine().bookkeeping().coin_counter_w(1, data & 0x40);      /* Token/Ticket Out counter - transistor driven */
+>>>>>>> upstream/master
 
 		m_eeprom->cs_write((data & 1) ? ASSERT_LINE : CLEAR_LINE);
 		m_eeprom->di_write((data & 4) >> 2);
@@ -152,15 +182,25 @@ WRITE16_MEMBER(playmark_state::luckboomh_dispenser_w)
 		}
 		machine().device<ticket_dispenser_device>("ticket")->write(space, 0, (data & 0x08) ? 0x80 : 0);
 
+<<<<<<< HEAD
 		coin_counter_w(machine(), 0, data & 0x20);      /* Coin In counter - transistor driven */
 		coin_counter_w(machine(), 1, data & 0x40);      /* Token/Ticket Out counter - transistor driven */
+=======
+		machine().bookkeeping().coin_counter_w(0, data & 0x20);      /* Coin In counter - transistor driven */
+		machine().bookkeeping().coin_counter_w(1, data & 0x40);      /* Token/Ticket Out counter - transistor driven */
+>>>>>>> upstream/master
 	}
 }
 
 WRITE16_MEMBER(playmark_state::hrdtimes_coin_w)
 {
+<<<<<<< HEAD
 	coin_counter_w(machine(), 0, data & 0x01);
 	coin_counter_w(machine(), 1, data & 0x02);
+=======
+	machine().bookkeeping().coin_counter_w(0, data & 0x01);
+	machine().bookkeeping().coin_counter_w(1, data & 0x02);
+>>>>>>> upstream/master
 }
 
 WRITE16_MEMBER(playmark_state::playmark_snd_command_w)
@@ -207,6 +247,7 @@ READ8_MEMBER(playmark_state::playmark_snd_flag_r)
 
 WRITE8_MEMBER(playmark_state::playmark_oki_banking_w)
 {
+<<<<<<< HEAD
 	logerror("PC$%03x Writing %02x to PortA  (OKI bank select) previous bank was %02x\n",space.device().safe_pcbase(),data,m_old_oki_bank);
 
 	if (m_old_oki_bank != (data & 7))
@@ -218,6 +259,13 @@ WRITE8_MEMBER(playmark_state::playmark_oki_banking_w)
 			m_oki->set_bank_base(0x40000 * (m_old_oki_bank - 1));
 		}
 	}
+=======
+	logerror("PC$%03x Writing %02x to PortA  (OKI bank select)\n",space.device().safe_pcbase(),data);
+
+	int bank = data & 7;
+
+	m_okibank->set_entry(bank & (m_oki_numbanks - 1));
+>>>>>>> upstream/master
 }
 
 WRITE8_MEMBER(playmark_state::playmark_oki_w)
@@ -252,6 +300,7 @@ WRITE8_MEMBER(playmark_state::hrdtimes_snd_control_w)
 {
 	/*  This port controls communications to and from the 68K and the OKI device. See playmark_snd_control_w above. OKI banking is also handled here. */
 
+<<<<<<< HEAD
 	if (m_old_oki_bank != (data & 3))
 	{
 //      logerror("PC$%03x Writing %02x to PortC (OKI bank select bits). Previous bank was %02x\n",space.device().safe_pcbase(),(data&3),m_old_oki_bank);
@@ -263,6 +312,10 @@ WRITE8_MEMBER(playmark_state::hrdtimes_snd_control_w)
 			m_oki->set_bank_base(0x40000 * m_old_oki_bank);
 		}
 	}
+=======
+	int bank = data & 3;
+	m_okibank->set_entry(bank & (m_oki_numbanks - 1));
+>>>>>>> upstream/master
 
 	m_oki_control = data;
 
@@ -274,12 +327,15 @@ WRITE8_MEMBER(playmark_state::hrdtimes_snd_control_w)
 }
 
 
+<<<<<<< HEAD
 READ_LINE_MEMBER(playmark_state::PIC16C5X_T0_clk_r)
 {
 	return 0;
 }
 
 
+=======
+>>>>>>> upstream/master
 /***************************** 68000 Memory Maps ****************************/
 
 static ADDRESS_MAP_START( bigtwin_main_map, AS_PROGRAM, 16, playmark_state )
@@ -340,7 +396,11 @@ static ADDRESS_MAP_START( wbeachvl_main_map, AS_PROGRAM, 16, playmark_state )
 	AM_RANGE(0x710018, 0x710019) AM_READ_PORT("P3")
 	AM_RANGE(0x71001a, 0x71001b) AM_READ_PORT("P4")
 //  AM_RANGE(0x71001c, 0x71001d) AM_READ(playmark_snd_status???)
+<<<<<<< HEAD
 //  AM_RANGE(0x71001e, 0x71001f) AM_WRITE(playmark_snd_command_w)
+=======
+	AM_RANGE(0x71001e, 0x71001f) AM_WRITE(playmark_snd_command_w)
+>>>>>>> upstream/master
 	AM_RANGE(0x780000, 0x780fff) AM_DEVWRITE("palette", palette_device, write) AM_SHARE("palette")
 	AM_RANGE(0xff0000, 0xffffff) AM_RAM
 ADDRESS_MAP_END
@@ -426,6 +486,15 @@ static ADDRESS_MAP_START( luckboomh_main_map, AS_PROGRAM, 16, playmark_state )
 	AM_RANGE(0xff8000, 0xffffff) AM_RAM
 ADDRESS_MAP_END
 
+<<<<<<< HEAD
+=======
+static ADDRESS_MAP_START( oki_map, 0, 8, playmark_state )
+	AM_RANGE(0x00000, 0x1ffff) AM_ROM
+	AM_RANGE(0x20000, 0x3ffff) AM_ROMBANK("okibank")
+ADDRESS_MAP_END
+
+
+>>>>>>> upstream/master
 
 static INPUT_PORTS_START( bigtwin )
 	PORT_START("SYSTEM")
@@ -1169,6 +1238,23 @@ static GFXDECODE_START( bigtwinb )
 	GFXDECODE_ENTRY( "gfx1", 0x40000, hotmind_charlayout,  0x200, 16 )    /* colors 0x200-0x2ff */
 GFXDECODE_END
 
+<<<<<<< HEAD
+=======
+void playmark_state::configure_oki_banks()
+{
+	if (m_okibank)
+	{
+		const uint32_t len    =   memregion("oki")->bytes();
+		uint8_t *rgn          =   memregion("oki")->base();
+
+		m_oki_numbanks = len / 0x20000;
+
+		m_okibank->configure_entries(0, m_oki_numbanks, rgn, 0x20000);
+		m_okibank->set_entry(1);
+	}
+}
+
+>>>>>>> upstream/master
 MACHINE_START_MEMBER(playmark_state,playmark)
 {
 	save_item(NAME(m_bgscrollx));
@@ -1183,10 +1269,20 @@ MACHINE_START_MEMBER(playmark_state,playmark)
 	save_item(NAME(m_snd_flag));
 	save_item(NAME(m_oki_control));
 	save_item(NAME(m_oki_command));
+<<<<<<< HEAD
 	save_item(NAME(m_old_oki_bank));
 	save_item(NAME(m_dispenser_latch));
 }
 
+=======
+	save_item(NAME(m_dispenser_latch));
+
+	configure_oki_banks();
+}
+
+
+
+>>>>>>> upstream/master
 MACHINE_RESET_MEMBER(playmark_state,playmark)
 {
 	m_bgscrollx = 0;
@@ -1201,11 +1297,18 @@ MACHINE_RESET_MEMBER(playmark_state,playmark)
 	m_snd_flag = 0;
 	m_oki_control = 0;
 	m_oki_command = 0;
+<<<<<<< HEAD
 	m_old_oki_bank = 0;
 	m_dispenser_latch = 0;
 }
 
 static MACHINE_CONFIG_START( bigtwin, playmark_state )
+=======
+	m_dispenser_latch = 0;
+}
+
+static MACHINE_CONFIG_START( bigtwin )
+>>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", M68000, 12000000)   /* 12 MHz */
@@ -1218,7 +1321,10 @@ static MACHINE_CONFIG_START( bigtwin, playmark_state )
 	MCFG_PIC16C5x_WRITE_B_CB(WRITE8(playmark_state, playmark_oki_w))
 	MCFG_PIC16C5x_READ_C_CB(READ8(playmark_state, playmark_snd_flag_r))
 	MCFG_PIC16C5x_WRITE_C_CB(WRITE8(playmark_state, playmark_snd_control_w))
+<<<<<<< HEAD
 	MCFG_PIC16C5x_T0_CB(READLINE(playmark_state, PIC16C5X_T0_clk_r))
+=======
+>>>>>>> upstream/master
 
 	MCFG_MACHINE_START_OVERRIDE(playmark_state,playmark)
 	MCFG_MACHINE_RESET_OVERRIDE(playmark_state,playmark)
@@ -1241,11 +1347,20 @@ static MACHINE_CONFIG_START( bigtwin, playmark_state )
 	/* sound hardware */
 	MCFG_SPEAKER_STANDARD_MONO("mono")
 
+<<<<<<< HEAD
 	MCFG_OKIM6295_ADD("oki", 1000000, OKIM6295_PIN7_HIGH)
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 1.0)
 MACHINE_CONFIG_END
 
 static MACHINE_CONFIG_START( bigtwinb, playmark_state )
+=======
+	MCFG_OKIM6295_ADD("oki", 1000000, PIN7_HIGH)
+	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 1.0)
+	MCFG_DEVICE_ADDRESS_MAP(0, oki_map)
+MACHINE_CONFIG_END
+
+static MACHINE_CONFIG_START( bigtwinb )
+>>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", M68000, XTAL_24MHz/2)
@@ -1258,7 +1373,10 @@ static MACHINE_CONFIG_START( bigtwinb, playmark_state )
 	MCFG_PIC16C5x_WRITE_B_CB(WRITE8(playmark_state, playmark_oki_w))
 	MCFG_PIC16C5x_READ_C_CB(READ8(playmark_state, playmark_snd_flag_r))
 	MCFG_PIC16C5x_WRITE_C_CB(WRITE8(playmark_state, playmark_snd_control_w))
+<<<<<<< HEAD
 	MCFG_PIC16C5x_T0_CB(READLINE(playmark_state, PIC16C5X_T0_clk_r))
+=======
+>>>>>>> upstream/master
 
 	MCFG_MACHINE_START_OVERRIDE(playmark_state,playmark)
 	MCFG_MACHINE_RESET_OVERRIDE(playmark_state,playmark)
@@ -1281,11 +1399,20 @@ static MACHINE_CONFIG_START( bigtwinb, playmark_state )
 	/* sound hardware */
 	MCFG_SPEAKER_STANDARD_MONO("mono")
 
+<<<<<<< HEAD
 	MCFG_OKIM6295_ADD("oki", 1000000, OKIM6295_PIN7_HIGH)
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 1.0)
 MACHINE_CONFIG_END
 
 static MACHINE_CONFIG_START( wbeachvl, playmark_state )
+=======
+	MCFG_OKIM6295_ADD("oki", 1000000, PIN7_HIGH)
+	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 1.0)
+	MCFG_DEVICE_ADDRESS_MAP(0, oki_map)
+MACHINE_CONFIG_END
+
+static MACHINE_CONFIG_START( wbeachvl )
+>>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", M68000, 12000000)   /* 12 MHz */
@@ -1293,13 +1420,21 @@ static MACHINE_CONFIG_START( wbeachvl, playmark_state )
 	MCFG_CPU_VBLANK_INT_DRIVER("screen", playmark_state,  irq2_line_hold)
 
 	MCFG_CPU_ADD("audiocpu", PIC16C57, XTAL_24MHz/2)    /* 12MHz with internal 4x divisor */
+<<<<<<< HEAD
 	MCFG_PIC16C5x_WRITE_A_CB(WRITE8(playmark_state, playmark_oki_banking_w))
+=======
+	MCFG_PIC16C5x_WRITE_A_CB(WRITE8(playmark_state, playmark_oki_banking_w)) // wrong?
+>>>>>>> upstream/master
 	MCFG_PIC16C5x_READ_B_CB(READ8(playmark_state, playmark_snd_command_r))
 	MCFG_PIC16C5x_WRITE_B_CB(WRITE8(playmark_state, playmark_oki_w))
 	MCFG_PIC16C5x_READ_C_CB(READ8(playmark_state, playmark_snd_flag_r))
 	MCFG_PIC16C5x_WRITE_C_CB(WRITE8(playmark_state, playmark_snd_control_w))
+<<<<<<< HEAD
 	MCFG_PIC16C5x_T0_CB(READLINE(playmark_state, PIC16C5X_T0_clk_r))
 	MCFG_DEVICE_DISABLE()       /* Internal code is not dumped yet */
+=======
+//  MCFG_PIC16C5x_WRITE_C_CB(WRITE8(playmark_state, hrdtimes_snd_control_w)) // probably closer to this, but this only supports 2 sample bank bits
+>>>>>>> upstream/master
 
 	MCFG_EEPROM_SERIAL_93C46_ADD("eeprom")
 	MCFG_EEPROM_SERIAL_DEFAULT_VALUE(0)
@@ -1325,11 +1460,20 @@ static MACHINE_CONFIG_START( wbeachvl, playmark_state )
 	/* sound hardware */
 	MCFG_SPEAKER_STANDARD_MONO("mono")
 
+<<<<<<< HEAD
 	MCFG_OKIM6295_ADD("oki", 1000000, OKIM6295_PIN7_HIGH)
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 1.0)
 MACHINE_CONFIG_END
 
 static MACHINE_CONFIG_START( excelsr, playmark_state )
+=======
+	MCFG_OKIM6295_ADD("oki", 1000000, PIN7_HIGH)
+	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 1.0)
+	MCFG_DEVICE_ADDRESS_MAP(0, oki_map)
+MACHINE_CONFIG_END
+
+static MACHINE_CONFIG_START( excelsr )
+>>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", M68000, XTAL_24MHz/2)   /* 12 MHz */
@@ -1342,7 +1486,10 @@ static MACHINE_CONFIG_START( excelsr, playmark_state )
 	MCFG_PIC16C5x_WRITE_B_CB(WRITE8(playmark_state, playmark_oki_w))
 	MCFG_PIC16C5x_READ_C_CB(READ8(playmark_state, playmark_snd_flag_r))
 	MCFG_PIC16C5x_WRITE_C_CB(WRITE8(playmark_state, playmark_snd_control_w))
+<<<<<<< HEAD
 	MCFG_PIC16C5x_T0_CB(READLINE(playmark_state, PIC16C5X_T0_clk_r))
+=======
+>>>>>>> upstream/master
 
 	MCFG_MACHINE_START_OVERRIDE(playmark_state,playmark)
 	MCFG_MACHINE_RESET_OVERRIDE(playmark_state,playmark)
@@ -1365,11 +1512,20 @@ static MACHINE_CONFIG_START( excelsr, playmark_state )
 	/* sound hardware */
 	MCFG_SPEAKER_STANDARD_MONO("mono")
 
+<<<<<<< HEAD
 	MCFG_OKIM6295_ADD("oki", XTAL_1MHz, OKIM6295_PIN7_HIGH) /* 1MHz resonator */
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 1.0)
 MACHINE_CONFIG_END
 
 static MACHINE_CONFIG_START( hrdtimes, playmark_state )
+=======
+	MCFG_OKIM6295_ADD("oki", XTAL_1MHz, PIN7_HIGH) /* 1MHz resonator */
+	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 1.0)
+	MCFG_DEVICE_ADDRESS_MAP(0, oki_map)
+MACHINE_CONFIG_END
+
+static MACHINE_CONFIG_START( hrdtimes )
+>>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", M68000, XTAL_24MHz/2)   /* verified on pcb */
@@ -1382,7 +1538,10 @@ static MACHINE_CONFIG_START( hrdtimes, playmark_state )
 	MCFG_PIC16C5x_WRITE_B_CB(WRITE8(playmark_state, playmark_oki_w))
 	MCFG_PIC16C5x_READ_C_CB(READ8(playmark_state, playmark_snd_flag_r))
 	MCFG_PIC16C5x_WRITE_C_CB(WRITE8(playmark_state, hrdtimes_snd_control_w))
+<<<<<<< HEAD
 	MCFG_PIC16C5x_T0_CB(READLINE(playmark_state, PIC16C5X_T0_clk_r))
+=======
+>>>>>>> upstream/master
 	MCFG_DEVICE_DISABLE()       /* Internal code is not dumped yet */
 
 	MCFG_MACHINE_START_OVERRIDE(playmark_state,playmark)
@@ -1406,11 +1565,20 @@ static MACHINE_CONFIG_START( hrdtimes, playmark_state )
 	/* sound hardware */
 	MCFG_SPEAKER_STANDARD_MONO("mono")
 
+<<<<<<< HEAD
 	MCFG_OKIM6295_ADD("oki", XTAL_1MHz, OKIM6295_PIN7_HIGH) /* verified on pcb */
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 1.0)
 MACHINE_CONFIG_END
 
 static MACHINE_CONFIG_START( hotmind, playmark_state )
+=======
+	MCFG_OKIM6295_ADD("oki", XTAL_1MHz, PIN7_HIGH) /* verified on pcb */
+	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 1.0)
+	MCFG_DEVICE_ADDRESS_MAP(0, oki_map)
+MACHINE_CONFIG_END
+
+static MACHINE_CONFIG_START( hotmind )
+>>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", M68000, XTAL_24MHz/2)   /* verified on pcb */
@@ -1423,7 +1591,10 @@ static MACHINE_CONFIG_START( hotmind, playmark_state )
 	MCFG_PIC16C5x_WRITE_B_CB(WRITE8(playmark_state, playmark_oki_w))
 	MCFG_PIC16C5x_READ_C_CB(READ8(playmark_state, playmark_snd_flag_r))
 	MCFG_PIC16C5x_WRITE_C_CB(WRITE8(playmark_state, hrdtimes_snd_control_w))
+<<<<<<< HEAD
 	MCFG_PIC16C5x_T0_CB(READLINE(playmark_state, PIC16C5X_T0_clk_r))
+=======
+>>>>>>> upstream/master
 
 	MCFG_EEPROM_SERIAL_93C46_ADD("eeprom")
 	MCFG_EEPROM_SERIAL_DEFAULT_VALUE(0)
@@ -1452,11 +1623,20 @@ static MACHINE_CONFIG_START( hotmind, playmark_state )
 	/* sound hardware */
 	MCFG_SPEAKER_STANDARD_MONO("mono")
 
+<<<<<<< HEAD
 	MCFG_OKIM6295_ADD("oki", XTAL_1MHz, OKIM6295_PIN7_HIGH)  /* verified on pcb */
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 1.0)
 MACHINE_CONFIG_END
 
 static MACHINE_CONFIG_START( luckboomh, playmark_state )
+=======
+	MCFG_OKIM6295_ADD("oki", XTAL_1MHz, PIN7_HIGH)  /* verified on pcb */
+	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 1.0)
+	MCFG_DEVICE_ADDRESS_MAP(0, oki_map)
+MACHINE_CONFIG_END
+
+static MACHINE_CONFIG_START( luckboomh )
+>>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", M68000, XTAL_24MHz/2)   /* verified on pcb */
@@ -1469,7 +1649,10 @@ static MACHINE_CONFIG_START( luckboomh, playmark_state )
 	MCFG_PIC16C5x_WRITE_B_CB(WRITE8(playmark_state, playmark_oki_w))
 	MCFG_PIC16C5x_READ_C_CB(READ8(playmark_state, playmark_snd_flag_r))
 	MCFG_PIC16C5x_WRITE_C_CB(WRITE8(playmark_state, hrdtimes_snd_control_w))
+<<<<<<< HEAD
 	MCFG_PIC16C5x_T0_CB(READLINE(playmark_state, PIC16C5X_T0_clk_r))
+=======
+>>>>>>> upstream/master
 
 	MCFG_NVRAM_ADD_0FILL("nvram")
 
@@ -1497,8 +1680,14 @@ static MACHINE_CONFIG_START( luckboomh, playmark_state )
 	/* sound hardware */
 	MCFG_SPEAKER_STANDARD_MONO("mono")
 
+<<<<<<< HEAD
 	MCFG_OKIM6295_ADD("oki", XTAL_1MHz, OKIM6295_PIN7_HIGH)  /* verified on pcb */
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 1.0)
+=======
+	MCFG_OKIM6295_ADD("oki", XTAL_1MHz, PIN7_HIGH)  /* verified on pcb */
+	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 1.0)
+	MCFG_DEVICE_ADDRESS_MAP(0, oki_map)
+>>>>>>> upstream/master
 MACHINE_CONFIG_END
 
 
@@ -1573,8 +1762,14 @@ ROM_START( wbeachvl )
 	ROM_LOAD16_BYTE( "wbv_02.bin",   0x000000, 0x40000, CRC(c7cca29e) SHA1(03af361081d688c4204a95f7f5babcc598b72c23) )
 	ROM_LOAD16_BYTE( "wbv_03.bin",   0x000001, 0x40000, CRC(db4e69d5) SHA1(119bf35a463d279ddde67ab08f6f1bab9f05cf0c) )
 
+<<<<<<< HEAD
 	ROM_REGION( 0x1000, "audiocpu", ROMREGION_ERASE00 ) /* sound (PIC16C57) */
 	ROM_LOAD( "pic16c57",     0x0000, 0x1000, NO_DUMP )
+=======
+	ROM_REGION( 0x1009, "audiocpu", ROMREGION_ERASE00 ) /* sound (PIC16C57) */
+	// 0x1000 rom data (actually 0x800 12-bit words), + 0x9 config bytes
+	ROM_LOAD( "pic16c57",       0x00000, 0x1009, CRC(35439064) SHA1(ab0c5bafd76a2cb2a2e5ddb9d0578fd7e2241e43) )
+>>>>>>> upstream/master
 
 	ROM_REGION( 0x600000, "gfx1", 0 )
 	ROM_LOAD( "wbv_10.bin",   0x000000, 0x80000, CRC(50680f0b) SHA1(ed76ef6ced70ba7e9558162aa94bbe9f19bbabe6) )
@@ -1591,6 +1786,7 @@ ROM_START( wbeachvl )
 	ROM_LOAD( "wbv_09.bin",   0x580000, 0x20000, CRC(894ce354) SHA1(331aeabbe10cd645776da2dc0829acc2275e72dc) )
 	/* 5a0000-5fffff is empty */
 
+<<<<<<< HEAD
 	ROM_REGION( 0x100000, "user2", 0 )  /* OKIM6295 samples */
 	ROM_LOAD( "wbv_01.bin",   0x00000, 0x100000, CRC(ac33f25f) SHA1(5d9ed16650aeb297d565376a99b31c88ab611668) )
 
@@ -1611,6 +1807,12 @@ ROM_START( wbeachvl )
 	ROM_COPY( "user2", 0x0c0000, 0x160000, 0x020000)
 	ROM_COPY( "user2", 0x000000, 0x180000, 0x020000)
 	ROM_COPY( "user2", 0x0e0000, 0x1a0000, 0x020000)
+=======
+	/* $00000-$20000 stays the same in all sound banks, */
+	/* the second half of the bank is what gets switched */
+	ROM_REGION( 0x100000, "oki", 0 ) /* Samples */
+	ROM_LOAD( "wbv_01.bin",   0x00000, 0x100000, CRC(ac33f25f) SHA1(5d9ed16650aeb297d565376a99b31c88ab611668) )
+>>>>>>> upstream/master
 ROM_END
 
 ROM_START( wbeachvl2 )
@@ -1618,8 +1820,14 @@ ROM_START( wbeachvl2 )
 	ROM_LOAD16_BYTE( "2.bin",   0x000000, 0x40000, CRC(8993487e) SHA1(c927ae655807f9046f66ff96a30bd2c6fa671566) )
 	ROM_LOAD16_BYTE( "3.bin",   0x000001, 0x40000, CRC(15904789) SHA1(640c80bbf7302529e1a39c2ae60e018ecb176478) )
 
+<<<<<<< HEAD
 	ROM_REGION( 0x1000, "audiocpu", ROMREGION_ERASE00 ) /* sound (PIC16C57) */
 	ROM_LOAD( "pic16c57",     0x0000, 0x1000, NO_DUMP )
+=======
+	ROM_REGION( 0x1009, "audiocpu", ROMREGION_ERASE00 ) /* sound (PIC16C57) */
+	// 0x1000 rom data (actually 0x800 12-bit words), + 0x9 config bytes
+	ROM_LOAD( "pic16c57",       0x00000, 0x1009, CRC(35439064) SHA1(ab0c5bafd76a2cb2a2e5ddb9d0578fd7e2241e43) )
+>>>>>>> upstream/master
 
 	ROM_REGION( 0x600000, "gfx1", 0 )
 	ROM_LOAD( "wbv_10.bin",   0x000000, 0x80000, CRC(50680f0b) SHA1(ed76ef6ced70ba7e9558162aa94bbe9f19bbabe6) )
@@ -1636,6 +1844,7 @@ ROM_START( wbeachvl2 )
 	ROM_LOAD( "wbv_09.bin",   0x580000, 0x20000, CRC(894ce354) SHA1(331aeabbe10cd645776da2dc0829acc2275e72dc) )
 	/* 5a0000-5fffff is empty */
 
+<<<<<<< HEAD
 	ROM_REGION( 0x100000, "user2", 0 )  /* OKIM6295 samples */
 	ROM_LOAD( "wbv_01.bin",   0x00000, 0x100000, CRC(ac33f25f) SHA1(5d9ed16650aeb297d565376a99b31c88ab611668) )
 
@@ -1656,6 +1865,12 @@ ROM_START( wbeachvl2 )
 	ROM_COPY( "user2", 0x0c0000, 0x160000, 0x020000)
 	ROM_COPY( "user2", 0x000000, 0x180000, 0x020000)
 	ROM_COPY( "user2", 0x0e0000, 0x1a0000, 0x020000)
+=======
+	/* $00000-$20000 stays the same in all sound banks, */
+	/* the second half of the bank is what gets switched */
+	ROM_REGION( 0x100000, "oki", 0 ) /* Samples */
+	ROM_LOAD( "wbv_01.bin",   0x00000, 0x100000, CRC(ac33f25f) SHA1(5d9ed16650aeb297d565376a99b31c88ab611668) )
+>>>>>>> upstream/master
 ROM_END
 
 ROM_START( wbeachvl3 )
@@ -1663,8 +1878,14 @@ ROM_START( wbeachvl3 )
 	ROM_LOAD16_BYTE( "2.u16",   0x000000, 0x40000, CRC(f0f4c282) SHA1(94850b45368c3d09629852adc8ca08164b7a7a94) )
 	ROM_LOAD16_BYTE( "3.u15",   0x000001, 0x40000, CRC(99775c21) SHA1(fa80a81c59142abcf751352d7a7f9e0d3b5172c9) )
 
+<<<<<<< HEAD
 	ROM_REGION( 0x1000, "audiocpu", ROMREGION_ERASE00 ) /* sound (PIC16C57) */
 	ROM_LOAD( "pic16c57",     0x0000, 0x1000, NO_DUMP )
+=======
+	ROM_REGION( 0x1009, "audiocpu", ROMREGION_ERASE00 ) /* sound (PIC16C57) */
+	// 0x1000 rom data (actually 0x800 12-bit words), + 0x9 config bytes
+	ROM_LOAD( "pic16c57",       0x00000, 0x1009, CRC(35439064) SHA1(ab0c5bafd76a2cb2a2e5ddb9d0578fd7e2241e43) )
+>>>>>>> upstream/master
 
 	ROM_REGION( 0x600000, "gfx1", 0 )
 	ROM_LOAD( "wbv_10.bin",   0x000000, 0x80000, CRC(50680f0b) SHA1(ed76ef6ced70ba7e9558162aa94bbe9f19bbabe6) )
@@ -1681,6 +1902,7 @@ ROM_START( wbeachvl3 )
 	ROM_LOAD( "wbv_09.bin",   0x580000, 0x20000, CRC(894ce354) SHA1(331aeabbe10cd645776da2dc0829acc2275e72dc) )
 	/* 5a0000-5fffff is empty */
 
+<<<<<<< HEAD
 	ROM_REGION( 0x100000, "user2", 0 )  /* OKIM6295 samples */
 	ROM_LOAD( "wbv_01.bin",   0x00000, 0x100000, CRC(ac33f25f) SHA1(5d9ed16650aeb297d565376a99b31c88ab611668) )
 
@@ -1701,12 +1923,23 @@ ROM_START( wbeachvl3 )
 	ROM_COPY( "user2", 0x0c0000, 0x160000, 0x020000)
 	ROM_COPY( "user2", 0x000000, 0x180000, 0x020000)
 	ROM_COPY( "user2", 0x0e0000, 0x1a0000, 0x020000)
+=======
+	/* $00000-$20000 stays the same in all sound banks, */
+	/* the second half of the bank is what gets switched */
+	ROM_REGION( 0x100000, "oki", 0 ) /* Samples */
+	ROM_LOAD( "wbv_01.bin",   0x00000, 0x100000, CRC(ac33f25f) SHA1(5d9ed16650aeb297d565376a99b31c88ab611668) )
+>>>>>>> upstream/master
 ROM_END
 
 ROM_START( excelsr )
 	ROM_REGION( 0x300000, "maincpu", 0 )    /* 68000 code */
+<<<<<<< HEAD
 	ROM_LOAD16_BYTE( "22.u301", 0x000001, 0x80000, CRC(f0aa1c1b) SHA1(5ed68181defe6cde6f4979508f0cfce9e9743912) )
 	ROM_LOAD16_BYTE( "19.u302", 0x000000, 0x80000, CRC(9a8acddc) SHA1(c7868317998bb98c630685a0b242ffd1fbdc54ed) )
+=======
+	ROM_LOAD16_BYTE( "22.u301", 0x000001, 0x80000, CRC(f0aa1c1b) SHA1(5ed68181defe6cde6f4979508f0cfce9e9743912) ) // sldh w/excelsra
+	ROM_LOAD16_BYTE( "19.u302", 0x000000, 0x80000, CRC(9a8acddc) SHA1(c7868317998bb98c630685a0b242ffd1fbdc54ed) ) // sldh w/excelsra
+>>>>>>> upstream/master
 	ROM_LOAD16_BYTE( "21.u303", 0x100001, 0x80000, CRC(fdf9bd64) SHA1(783e3b8b70f8751915715e2455990c1c8eec6a71) )
 	ROM_LOAD16_BYTE( "18.u304", 0x100000, 0x80000, CRC(fe517e0e) SHA1(fa074c3848046b59f1026f9ce1f264b49560668d) )
 	ROM_LOAD16_BYTE( "20.u305", 0x200001, 0x80000, CRC(8692afe9) SHA1(b4411bad64a9a6efd8eb13dcf7c5eebfb5681f3d) )
@@ -1730,6 +1963,7 @@ ROM_START( excelsr )
 	ROM_LOAD( "23.u323",      0x100000, 0x80000, CRC(d8e1453b) SHA1(a3edb05abe486d4cce30f5caf14be619b6886f7c) )
 	ROM_LOAD( "27.u324",      0x180000, 0x80000, CRC(eca2c079) SHA1(a07957b427d55c8ca1efb0e83ee3b603f06bed58) )
 
+<<<<<<< HEAD
 	ROM_REGION( 0x80000, "user2", 0 )   /* OKIM6295 samples */
 	ROM_LOAD( "16.i013",      0x000000, 0x80000, CRC(7ed9da5d) SHA1(352f1e89613feb1902b6d87adb996ed1c1d8108e) )
 
@@ -1742,6 +1976,12 @@ ROM_START( excelsr )
 	ROM_COPY( "user2", 0x040000, 0x060000, 0x020000)
 	ROM_COPY( "user2", 0x000000, 0x080000, 0x020000)
 	ROM_COPY( "user2", 0x060000, 0x0a0000, 0x020000)
+=======
+	/* $00000-$20000 stays the same in all sound banks, */
+	/* the second half of the bank is what gets switched */
+	ROM_REGION( 0x80000, "oki", 0 ) /* Samples */
+	ROM_LOAD( "16.i013",      0x000000, 0x80000, CRC(7ed9da5d) SHA1(352f1e89613feb1902b6d87adb996ed1c1d8108e) )
+>>>>>>> upstream/master
 ROM_END
 
 ROM_START( excelsra )
@@ -1771,6 +2011,7 @@ ROM_START( excelsra )
 	ROM_LOAD( "23.u323",      0x100000, 0x80000, CRC(d8e1453b) SHA1(a3edb05abe486d4cce30f5caf14be619b6886f7c) )
 	ROM_LOAD( "27.u324",      0x180000, 0x80000, CRC(eca2c079) SHA1(a07957b427d55c8ca1efb0e83ee3b603f06bed58) )
 
+<<<<<<< HEAD
 	ROM_REGION( 0x80000, "user2", 0 )   /* OKIM6295 samples */
 	ROM_LOAD( "16.i013",      0x000000, 0x80000, CRC(7ed9da5d) SHA1(352f1e89613feb1902b6d87adb996ed1c1d8108e) )
 
@@ -1783,6 +2024,12 @@ ROM_START( excelsra )
 	ROM_COPY( "user2", 0x040000, 0x060000, 0x020000)
 	ROM_COPY( "user2", 0x000000, 0x080000, 0x020000)
 	ROM_COPY( "user2", 0x060000, 0x0a0000, 0x020000)
+=======
+	/* $00000-$20000 stays the same in all sound banks, */
+	/* the second half of the bank is what gets switched */
+	ROM_REGION( 0x80000, "oki", 0 ) /* Samples */
+	ROM_LOAD( "16.i013",      0x000000, 0x80000, CRC(7ed9da5d) SHA1(352f1e89613feb1902b6d87adb996ed1c1d8108e) )
+>>>>>>> upstream/master
 ROM_END
 
 ROM_START( hrdtimes )
@@ -1810,6 +2057,7 @@ ROM_START( hrdtimes )
 
 	/* $00000-$20000 stays the same in all sound banks, */
 	/* the second half of the bank is what gets switched */
+<<<<<<< HEAD
 	ROM_REGION( 0x100000, "oki", 0 ) /* Samples */
 	ROM_LOAD( "30.io13",      0x00000, 0x20000, CRC(fa5e50ae) SHA1(f3bd87c83fca9269cc2f19db1fbf55540c96f931) )
 	ROM_CONTINUE(             0x60000, 0x20000 )
@@ -1819,6 +2067,10 @@ ROM_START( hrdtimes )
 	ROM_COPY( "oki", 0x00000, 0x40000, 0x20000 )
 	ROM_COPY( "oki", 0x00000, 0x80000, 0x20000 )
 	ROM_COPY( "oki", 0x00000, 0xc0000, 0x20000 )
+=======
+	ROM_REGION( 0x80000, "oki", 0 ) /* Samples */
+	ROM_LOAD( "30.io13",      0x00000, 0x80000, CRC(fa5e50ae) SHA1(f3bd87c83fca9269cc2f19db1fbf55540c96f931) )
+>>>>>>> upstream/master
 ROM_END
 
 /* Different revision of the PCB, uses larger gfx ROMs, however the content is the same */
@@ -1844,6 +2096,7 @@ ROM_START( hrdtimesa )
 
 	/* $00000-$20000 stays the same in all sound banks, */
 	/* the second half of the bank is what gets switched */
+<<<<<<< HEAD
 	ROM_REGION( 0x100000, "oki", 0 ) /* Samples */
 	ROM_LOAD( "io13.bin",     0x00000, 0x20000, CRC(fa5e50ae) SHA1(f3bd87c83fca9269cc2f19db1fbf55540c96f931) )
 	ROM_CONTINUE(             0x60000, 0x20000 )
@@ -1853,6 +2106,10 @@ ROM_START( hrdtimesa )
 	ROM_COPY( "oki", 0x00000, 0x40000, 0x20000 )
 	ROM_COPY( "oki", 0x00000, 0x80000, 0x20000 )
 	ROM_COPY( "oki", 0x00000, 0xc0000, 0x20000 )
+=======
+	ROM_REGION( 0x80000, "oki", 0 ) /* Samples */
+	ROM_LOAD( "io13.bin",     0x00000, 0x80000, CRC(fa5e50ae) SHA1(f3bd87c83fca9269cc2f19db1fbf55540c96f931) )
+>>>>>>> upstream/master
 ROM_END
 
 /*
@@ -1926,11 +2183,16 @@ ROM_START( hotmind )
 	ROM_LOAD16_BYTE( "25.u84",       0x40000, 0x20000, CRC(c4fd4445) SHA1(ab0c5a328a312740595b5c92a1050527140518f3) )
 	ROM_LOAD16_BYTE( "29.u83",       0x40001, 0x20000, CRC(0bebfb53) SHA1(d4342f808141b70af98c370004153a31d120e2a4) )
 
+<<<<<<< HEAD
 	ROM_REGION( 0x80000, "oki", 0 ) /* Samples */
 	ROM_LOAD( "20.io13",      0x00000, 0x20000, CRC(0bf3a3e5) SHA1(2ae06f37a6bcd20bc5fbaa90d970aba2ebf3cf5a) )
 	ROM_CONTINUE(             0x60000, 0x20000 )
 	ROM_COPY( "oki", 0x00000, 0x20000, 0x20000 )
 	ROM_COPY( "oki", 0x00000, 0x40000, 0x20000 )
+=======
+	ROM_REGION( 0x40000, "oki", 0 ) /* Samples */
+	ROM_LOAD( "20.io13",      0x00000, 0x40000, CRC(0bf3a3e5) SHA1(2ae06f37a6bcd20bc5fbaa90d970aba2ebf3cf5a) )
+>>>>>>> upstream/master
 
 	ROM_REGION( 0x8000, "plds", 0 )     /* These were read protected */
 	ROM_LOAD( "palce16v8h-25-pc4_u58.jed",   0x0000, 0xb89,  BAD_DUMP CRC(ba88c1da) SHA1(9b55e96eee44a467bdfbf760137ccb2fb3afedf0) )
@@ -1969,6 +2231,7 @@ ROM_START( luckboomh )
 	ROM_LOAD16_BYTE( "25.u84",       0x40000, 0x20000, CRC(e1ab5cf5) SHA1(f76d00537cfd6f09439e44071875bf021622fd07) )
 	ROM_LOAD16_BYTE( "29.u83",       0x40001, 0x20000, CRC(9572d2d4) SHA1(90d55b1f13dc93041160530e8c1ce8def6e02bcf) )
 
+<<<<<<< HEAD
 	ROM_REGION( 0x80000, "oki", 0 ) /* Samples */
 	ROM_LOAD( "20.io13",      0x00000, 0x20000, CRC(0d42c0a3) SHA1(1b1d4c7dcbb063e8bf133063770b753947d1a017) )
 	ROM_CONTINUE(             0x60000, 0x20000 )
@@ -1978,6 +2241,15 @@ ROM_END
 
 
 UINT8 playmark_state::playmark_asciitohex(UINT8 data)
+=======
+	ROM_REGION( 0x40000, "oki", 0 ) /* Samples */
+	ROM_LOAD( "20.io13",      0x00000, 0x40000, CRC(0d42c0a3) SHA1(1b1d4c7dcbb063e8bf133063770b753947d1a017) )
+ROM_END
+
+
+
+uint8_t playmark_state::playmark_asciitohex(uint8_t data)
+>>>>>>> upstream/master
 {
 	/* Convert ASCII data to HEX */
 
@@ -1990,12 +2262,21 @@ UINT8 playmark_state::playmark_asciitohex(UINT8 data)
 
 void playmark_state::playmark_decode_pic_hex_dump(void)
 {
+<<<<<<< HEAD
 	UINT8 *playmark_PICROM_HEX = memregion("user1")->base();
 	UINT16 *playmark_PICROM = (UINT16 *)memregion("audiocpu")->base();
 	INT32 offs, data;
 	UINT16 src_pos = 0;
 	UINT16 dst_pos = 0;
 	UINT8 data_hi, data_lo;
+=======
+	uint8_t *playmark_PICROM_HEX = memregion("user1")->base();
+	uint16_t *playmark_PICROM = (uint16_t *)memregion("audiocpu")->base();
+	int32_t offs, data;
+	uint16_t src_pos = 0;
+	uint16_t dst_pos = 0;
+	uint8_t data_hi, data_lo;
+>>>>>>> upstream/master
 
 	/**** Convert the PIC16C57 ASCII HEX dumps to pure HEX ****/
 	do
@@ -2061,6 +2342,7 @@ DRIVER_INIT_MEMBER(playmark_state,pic_decode)
 
 GAME( 1995, bigtwin,   0,        bigtwin,   bigtwin,   playmark_state, pic_decode, ROT0, "Playmark", "Big Twin", MACHINE_SUPPORTS_SAVE )
 GAME( 1995, bigtwinb,  bigtwin,  bigtwinb,  bigtwinb,  playmark_state, pic_decode, ROT0, "Playmark", "Big Twin (No Girls Conversion)", MACHINE_SUPPORTS_SAVE )
+<<<<<<< HEAD
 GAME( 1995, wbeachvl,  0,        wbeachvl,  wbeachvl,  driver_device,  0,          ROT0, "Playmark", "World Beach Volley (set 1)", MACHINE_NO_SOUND | MACHINE_SUPPORTS_SAVE )
 GAME( 1995, wbeachvl2, wbeachvl, wbeachvl,  wbeachvl,  driver_device,  0,          ROT0, "Playmark", "World Beach Volley (set 2)", MACHINE_NO_SOUND | MACHINE_SUPPORTS_SAVE )
 GAME( 1995, wbeachvl3, wbeachvl, wbeachvl,  wbeachvl,  driver_device,  0,          ROT0, "Playmark", "World Beach Volley (set 3)", MACHINE_NO_SOUND | MACHINE_SUPPORTS_SAVE )
@@ -2068,5 +2350,14 @@ GAME( 1996, excelsr,   0,        excelsr,   excelsr,   playmark_state, pic_decod
 GAME( 1996, excelsra,  excelsr,  excelsr,   excelsr,   playmark_state, pic_decode, ROT0, "Playmark", "Excelsior (set 2)", MACHINE_SUPPORTS_SAVE )
 GAME( 1994, hrdtimes,  0,        hrdtimes,  hrdtimes,  driver_device,  0,          ROT0, "Playmark", "Hard Times (set 1)", MACHINE_NO_SOUND | MACHINE_SUPPORTS_SAVE )
 GAME( 1994, hrdtimesa, hrdtimes, hrdtimes,  hrdtimes,  driver_device,  0,          ROT0, "Playmark", "Hard Times (set 2)", MACHINE_NO_SOUND | MACHINE_SUPPORTS_SAVE )
+=======
+GAME( 1995, wbeachvl,  0,        wbeachvl,  wbeachvl,  playmark_state, 0,          ROT0, "Playmark", "World Beach Volley (set 1)", MACHINE_IMPERFECT_SOUND | MACHINE_SUPPORTS_SAVE )
+GAME( 1995, wbeachvl2, wbeachvl, wbeachvl,  wbeachvl,  playmark_state, 0,          ROT0, "Playmark", "World Beach Volley (set 2)", MACHINE_IMPERFECT_SOUND | MACHINE_SUPPORTS_SAVE )
+GAME( 1995, wbeachvl3, wbeachvl, wbeachvl,  wbeachvl,  playmark_state, 0,          ROT0, "Playmark", "World Beach Volley (set 3)", MACHINE_IMPERFECT_SOUND | MACHINE_SUPPORTS_SAVE )
+GAME( 1996, excelsr,   0,        excelsr,   excelsr,   playmark_state, pic_decode, ROT0, "Playmark", "Excelsior (set 1)", MACHINE_SUPPORTS_SAVE )
+GAME( 1996, excelsra,  excelsr,  excelsr,   excelsr,   playmark_state, pic_decode, ROT0, "Playmark", "Excelsior (set 2)", MACHINE_SUPPORTS_SAVE )
+GAME( 1994, hrdtimes,  0,        hrdtimes,  hrdtimes,  playmark_state, 0,          ROT0, "Playmark", "Hard Times (set 1)", MACHINE_NO_SOUND | MACHINE_SUPPORTS_SAVE )
+GAME( 1994, hrdtimesa, hrdtimes, hrdtimes,  hrdtimes,  playmark_state, 0,          ROT0, "Playmark", "Hard Times (set 2)", MACHINE_NO_SOUND | MACHINE_SUPPORTS_SAVE )
+>>>>>>> upstream/master
 GAME( 1995, hotmind,   0,        hotmind,   hotmind,   playmark_state, pic_decode, ROT0, "Playmark", "Hot Mind (Hard Times hardware)", MACHINE_SUPPORTS_SAVE )
 GAME( 1996, luckboomh, luckboom, luckboomh, luckboomh, playmark_state, pic_decode, ROT0, "Playmark", "Lucky Boom (Hard Times hardware)", MACHINE_IMPERFECT_GRAPHICS | MACHINE_SUPPORTS_SAVE )

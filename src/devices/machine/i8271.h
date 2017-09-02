@@ -1,9 +1,17 @@
 // license:BSD-3-Clause
 // copyright-holders:Carl,Olivier Galibert
+<<<<<<< HEAD
 #ifndef I8271N_H_
 #define I8271N_H_
 
 #include "emu.h"
+=======
+#ifndef MAME_MACHINE_I8271_H
+#define MAME_MACHINE_I8271_H
+
+#pragma once
+
+>>>>>>> upstream/master
 #include "imagedev/floppy.h"
 #include "fdc_pll.h"
 
@@ -26,6 +34,7 @@
 class i8271_device : public device_t
 {
 public:
+<<<<<<< HEAD
 	i8271_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
 	~i8271_device() {}
 
@@ -33,6 +42,14 @@ public:
 	template<class _Object> static devcb_base &set_drq_wr_callback(device_t &device, _Object object) { return downcast<i8271_device &>(device).drq_cb.set_callback(object); }
 	template<class _Object> static devcb_base &set_hdl_wr_callback(device_t &device, _Object object) { return downcast<i8271_device &>(device).hdl_cb.set_callback(object); }
 	template<class _Object> static devcb_base &set_opt_wr_callback(device_t &device, _Object object) { return downcast<i8271_device &>(device).opt_cb.set_callback(object); }
+=======
+	i8271_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
+
+	template <class Object> static devcb_base &set_intrq_wr_callback(device_t &device, Object &&cb) { return downcast<i8271_device &>(device).intrq_cb.set_callback(std::forward<Object>(cb)); }
+	template <class Object> static devcb_base &set_drq_wr_callback(device_t &device, Object &&cb) { return downcast<i8271_device &>(device).drq_cb.set_callback(std::forward<Object>(cb)); }
+	template <class Object> static devcb_base &set_hdl_wr_callback(device_t &device, Object &&cb) { return downcast<i8271_device &>(device).hdl_cb.set_callback(std::forward<Object>(cb)); }
+	template <class Object> static devcb_base &set_opt_wr_callback(device_t &device, Object &&cb) { return downcast<i8271_device &>(device).opt_cb.set_callback(std::forward<Object>(cb)); }
+>>>>>>> upstream/master
 
 	DECLARE_READ8_MEMBER (sr_r);
 	DECLARE_READ8_MEMBER (rr_r);
@@ -53,9 +70,15 @@ public:
 	void soft_reset();
 
 protected:
+<<<<<<< HEAD
 	virtual void device_start();
 	virtual void device_reset();
 	virtual void device_timer(emu_timer &timer, device_timer_id id, int param, void *ptr);
+=======
+	virtual void device_start() override;
+	virtual void device_reset() override;
+	virtual void device_timer(emu_timer &timer, device_timer_id id, int param, void *ptr) override;
+>>>>>>> upstream/master
 
 private:
 	enum {
@@ -177,7 +200,11 @@ private:
 		int id;
 		int main_state, sub_state;
 		int dir, counter;
+<<<<<<< HEAD
 		UINT8 pcn, badtrack[2];
+=======
+		uint8_t pcn, badtrack[2];
+>>>>>>> upstream/master
 		bool live, index, ready;
 	};
 
@@ -187,12 +214,21 @@ private:
 		attotime tm;
 		int state, next_state;
 		floppy_info *fi;
+<<<<<<< HEAD
 		UINT16 shift_reg;
 		UINT16 crc;
 		int bit_counter, byte_counter, previous_type;
 		bool data_separator_phase, data_bit_context;
 		UINT8 data_reg;
 		UINT8 idbuf[6];
+=======
+		uint16_t shift_reg;
+		uint16_t crc;
+		int bit_counter, byte_counter, previous_type;
+		bool data_separator_phase, data_bit_context;
+		uint8_t data_reg;
+		uint8_t idbuf[6];
+>>>>>>> upstream/master
 		fdc_pll_t pll;
 	};
 
@@ -209,12 +245,22 @@ private:
 	floppy_info flopi[2];
 
 	int command_pos, sectors_read, scan_len;
+<<<<<<< HEAD
 	UINT8 command[6], dma_data, oport;
 	UINT8 rr, scan_sec, moder;
 	UINT8 precomp, perpmode, scan_cnt[2];
 	UINT8 srate, hset, icnt, hload;
 	int sector_size;
 	int cur_rate;
+=======
+	uint8_t command[6], dma_data, oport;
+	uint8_t rr, scan_sec, moder;
+	uint8_t precomp, perpmode, scan_cnt[2];
+	uint8_t srate, hset, icnt, hload;
+	int sector_size;
+	int cur_rate;
+	int idle_icnt;
+>>>>>>> upstream/master
 
 	static std::string tts(attotime t);
 	std::string ttsn();
@@ -244,9 +290,13 @@ private:
 	void set_irq(bool state);
 	bool get_ready(int fid);
 
+<<<<<<< HEAD
 	void enable_transfer();
 	void disable_transfer();
 	int calc_sector_size(UINT8 size);
+=======
+	int calc_sector_size(uint8_t size);
+>>>>>>> upstream/master
 
 	int check_command();
 	void start_command(int cmd);
@@ -282,6 +332,7 @@ private:
 	void live_delay(int state);
 	void live_sync();
 	void live_run(attotime limit = attotime::never);
+<<<<<<< HEAD
 	void live_write_raw(UINT16 raw);
 	void live_write_fm(UINT8 fm);
 
@@ -294,3 +345,17 @@ private:
 extern const device_type I8271;
 
 #endif
+=======
+	void live_write_raw(uint16_t raw);
+	void live_write_fm(uint8_t fm);
+
+	bool read_one_bit(const attotime &limit);
+	bool write_one_bit(const attotime &limit);
+	bool set_output(uint8_t data);
+	bool get_input(uint8_t *data);
+};
+
+DECLARE_DEVICE_TYPE(I8271, i8271_device)
+
+#endif // MAME_MACHINE_I8271_H
+>>>>>>> upstream/master

@@ -13,6 +13,10 @@
 #include "machine/latch8.h"
 #include "machine/z80dma.h"
 #include "machine/i8257.h"
+<<<<<<< HEAD
+=======
+#include "screen.h"
+>>>>>>> upstream/master
 
 
 /*
@@ -94,6 +98,7 @@ class dkong_state : public driver_device
 {
 public:
 	dkong_state(const machine_config &mconfig, device_type type, const char *tag)
+<<<<<<< HEAD
 		: driver_device(mconfig, type, tag),
 		m_maincpu(*this, "maincpu"),
 		m_soundcpu(*this, "soundcpu"),
@@ -121,6 +126,37 @@ public:
 		m_z80dma(*this, "z80dma"),
 		m_dma8257(*this, "dma8257")
 	{ }
+=======
+		: driver_device(mconfig, type, tag)
+		, m_maincpu(*this, "maincpu")
+		, m_soundcpu(*this, "soundcpu")
+		, m_eeprom(*this, "eeprom")
+		, m_dev_n2a03a(*this, "n2a03a")
+		, m_dev_n2a03b(*this, "n2a03b")
+		, m_dev_vp2(*this, "virtual_p2")
+		, m_dev_6h(*this, "ls259.6h")
+		, m_discrete(*this, "discrete")
+		, m_video_ram(*this,"video_ram")
+		, m_sprite_ram(*this,"sprite_ram")
+		, m_snd_rom(*this, "soundcpu")
+		, m_vidhw(DKONG_BOARD)
+		, m_sig30Hz(0)
+		, m_blue_level(0)
+		, m_cv1(0)
+		, m_cv2(0)
+		, m_vg1(0)
+		, m_vg2(0)
+		, m_vg3(0)
+		, m_cv3(0)
+		, m_cv4(0)
+		, m_gfxdecode(*this, "gfxdecode")
+		, m_screen(*this, "screen")
+		, m_palette(*this, "palette")
+		, m_z80dma(*this, "z80dma")
+		, m_dma8257(*this, "dma8257")
+	{
+	}
+>>>>>>> upstream/master
 
 	/* devices */
 	required_device<cpu_device> m_maincpu;
@@ -133,6 +169,7 @@ public:
 	optional_device<discrete_device> m_discrete;
 
 	/* memory pointers */
+<<<<<<< HEAD
 	required_shared_ptr<UINT8> m_video_ram;
 	required_shared_ptr<UINT8> m_sprite_ram;
 
@@ -142,11 +179,25 @@ public:
 
 	/* sound state */
 	const UINT8       *m_snd_rom;
+=======
+	required_shared_ptr<uint8_t> m_video_ram;
+	required_shared_ptr<uint8_t> m_sprite_ram;
+
+	/* machine states */
+	uint8_t               m_hardware_type;
+	uint8_t               m_nmi_mask;
+
+	std::unique_ptr<uint8_t[]> m_decrypted;
+
+	/* sound state */
+	optional_region_ptr<uint8_t>  m_snd_rom;
+>>>>>>> upstream/master
 
 	/* video state */
 	tilemap_t           *m_bg_tilemap;
 
 	bitmap_ind16  m_bg_bits;
+<<<<<<< HEAD
 	const UINT8 *     m_color_codes;
 	emu_timer *       m_scanline_timer;
 	INT8              m_vidhw;          /* Selected video hardware RS Conversion / TKG04 */
@@ -163,10 +214,29 @@ public:
 	UINT8             m_rflip_sig;
 	UINT8             m_star_ff;
 	UINT8             m_blue_level;
+=======
+	const uint8_t *     m_color_codes;
+	emu_timer *       m_scanline_timer;
+	int8_t              m_vidhw;          /* Selected video hardware RS Conversion / TKG04 */
+
+	/* radar scope */
+
+	uint8_t *           m_gfx4;
+	uint8_t *           m_gfx3;
+	int               m_gfx3_len;
+
+	uint8_t             m_sig30Hz;
+	uint8_t             m_lfsr_5I;
+	uint8_t             m_grid_sig;
+	uint8_t             m_rflip_sig;
+	uint8_t             m_star_ff;
+	uint8_t             m_blue_level;
+>>>>>>> upstream/master
 	double            m_cd4049_a;
 	double            m_cd4049_b;
 
 	/* Specific states */
+<<<<<<< HEAD
 	INT8              m_decrypt_counter;
 
 	/* 2650 protection */
@@ -183,6 +253,24 @@ public:
 	UINT8             m_sprite_bank;
 	UINT8             m_dma_latch;
 	UINT8             m_flip;
+=======
+	int8_t              m_decrypt_counter;
+
+	/* 2650 protection */
+	uint8_t             m_protect_type;
+	uint8_t             m_hunchloopback;
+	uint8_t             m_prot_cnt;
+	uint8_t             m_main_fo;
+
+	/* Save state relevant */
+	uint8_t             m_gfx_bank;
+	uint8_t             m_palette_bank;
+	uint8_t             m_grid_on;
+	uint16_t            m_grid_col;
+	uint8_t             m_sprite_bank;
+	uint8_t             m_dma_latch;
+	uint8_t             m_flip;
+>>>>>>> upstream/master
 
 	/* radarscp_step */
 	double m_cv1;
@@ -205,7 +293,11 @@ public:
 	int m_counter;
 
 	/* reverse address lookup map - hunchbkd */
+<<<<<<< HEAD
 	INT16             m_rev_map[0x200];
+=======
+	int16_t             m_rev_map[0x200];
+>>>>>>> upstream/master
 	DECLARE_READ8_MEMBER(hb_dma_read_byte);
 	DECLARE_WRITE8_MEMBER(hb_dma_write_byte);
 	DECLARE_WRITE8_MEMBER(dkong3_coin_counter_w);
@@ -261,6 +353,7 @@ public:
 	DECLARE_MACHINE_RESET(strtheat);
 	DECLARE_MACHINE_RESET(drakton);
 	DECLARE_WRITE8_MEMBER(M58817_command_w);
+<<<<<<< HEAD
 	DECLARE_READ8_MEMBER(M58817_status_r);
 	DECLARE_READ8_MEMBER(dkong_voice_status_r);
 	DECLARE_READ8_MEMBER(dkong_tune_r);
@@ -268,13 +361,28 @@ public:
 	UINT32 screen_update_dkong(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
 	UINT32 screen_update_pestplce(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
 	UINT32 screen_update_spclforc(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
+=======
+	DECLARE_READ8_MEMBER(dkong_voice_status_r);
+	DECLARE_READ8_MEMBER(dkong_tune_r);
+	DECLARE_WRITE8_MEMBER(dkong_p1_w);
+	DECLARE_READ8_MEMBER(sound_t0_r);
+	DECLARE_READ8_MEMBER(sound_t1_r);
+	uint32_t screen_update_dkong(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
+	uint32_t screen_update_pestplce(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
+	uint32_t screen_update_spclforc(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
+>>>>>>> upstream/master
 	INTERRUPT_GEN_MEMBER(s2650_interrupt);
 	INTERRUPT_GEN_MEMBER(vblank_irq);
 	TIMER_CALLBACK_MEMBER(scanline_callback);
 	DECLARE_WRITE_LINE_MEMBER(busreq_w);
 
+<<<<<<< HEAD
 	void braze_decrypt_rom(UINT8 *dest);
 	void drakton_decrypt_rom(UINT8 mod, int offs, int *bs);
+=======
+	void braze_decrypt_rom(uint8_t *dest);
+	void drakton_decrypt_rom(uint8_t mod, int offs, int *bs);
+>>>>>>> upstream/master
 	DECLARE_READ8_MEMBER(memory_read_byte);
 	DECLARE_WRITE8_MEMBER(memory_write_byte);
 	double CD4049(double x);
@@ -284,7 +392,11 @@ private:
 	void radarscp_step(int line_cnt);
 	void radarscp_scanline(int scanline);
 	void check_palette(void);
+<<<<<<< HEAD
 	void draw_sprites(bitmap_ind16 &bitmap, const rectangle &cliprect, UINT32 mask_bank, UINT32 shift_bits);
+=======
+	void draw_sprites(bitmap_ind16 &bitmap, const rectangle &cliprect, uint32_t mask_bank, uint32_t shift_bits);
+>>>>>>> upstream/master
 	void radarscp_draw_background(bitmap_ind16 &bitmap, const rectangle &cliprect);
 
 };

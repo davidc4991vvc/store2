@@ -58,7 +58,11 @@ void snk68_state::common_video_start()
 
 void snk68_state::video_start()
 {
+<<<<<<< HEAD
 	m_fg_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(snk68_state::get_pow_tile_info),this), TILEMAP_SCAN_COLS, 8, 8, 32, 32);
+=======
+	m_fg_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(snk68_state::get_pow_tile_info),this), TILEMAP_SCAN_COLS, 8, 8, 32, 32);
+>>>>>>> upstream/master
 	m_fg_tile_offset = 0;
 
 	common_video_start();
@@ -68,7 +72,11 @@ void snk68_state::video_start()
 
 VIDEO_START_MEMBER(snk68_state,searchar)
 {
+<<<<<<< HEAD
 	m_fg_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(snk68_state::get_searchar_tile_info),this), TILEMAP_SCAN_COLS, 8, 8, 32, 32);
+=======
+	m_fg_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(snk68_state::get_searchar_tile_info),this), TILEMAP_SCAN_COLS, 8, 8, 32, 32);
+>>>>>>> upstream/master
 
 	common_video_start();
 }
@@ -79,6 +87,7 @@ VIDEO_START_MEMBER(snk68_state,searchar)
 
 ***************************************************************************/
 
+<<<<<<< HEAD
 READ16_MEMBER(snk68_state::spriteram_r)
 {
 	// streetsj expects the MSB of every 32-bit word to be FF. Presumably RAM
@@ -109,6 +118,8 @@ WRITE16_MEMBER(snk68_state::spriteram_w)
 	}
 }
 
+=======
+>>>>>>> upstream/master
 READ16_MEMBER(snk68_state::pow_fg_videoram_r)
 {
 	// RAM is only 8-bit
@@ -134,7 +145,11 @@ WRITE16_MEMBER(snk68_state::pow_flipscreen_w)
 	if (ACCESSING_BITS_0_7)
 	{
 		flip_screen_set(data & 0x08);
+<<<<<<< HEAD
 
+=======
+		m_sprites->set_flip(data & 0x08);
+>>>>>>> upstream/master
 		m_sprite_flip_axis = data & 0x04;   // for streetsm? though might not be present on this board
 
 		if (m_fg_tile_offset != ((data & 0x70) << 4))
@@ -150,6 +165,10 @@ WRITE16_MEMBER(snk68_state::searchar_flipscreen_w)
 	if (ACCESSING_BITS_0_7)
 	{
 		flip_screen_set(data & 0x08);
+<<<<<<< HEAD
+=======
+		m_sprites->set_flip(data & 0x08);
+>>>>>>> upstream/master
 		m_sprite_flip_axis = data & 0x04;
 	}
 }
@@ -161,6 +180,7 @@ WRITE16_MEMBER(snk68_state::searchar_flipscreen_w)
 
 ***************************************************************************/
 
+<<<<<<< HEAD
 void snk68_state::draw_sprites(bitmap_ind16 &bitmap, const rectangle &cliprect, int group)
 {
 	const UINT16* tiledata = &m_spriteram[0x800*group];
@@ -254,6 +274,14 @@ UINT32 snk68_state::screen_update(screen_device &screen, bitmap_ind16 &bitmap, c
 	draw_sprites(bitmap, cliprect, 2);
 	draw_sprites(bitmap, cliprect, 3);
 	draw_sprites(bitmap, cliprect, 1);
+=======
+
+uint32_t snk68_state::screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+{
+	bitmap.fill(0x7ff, cliprect);
+
+	m_sprites->draw_sprites_all(bitmap, cliprect);
+>>>>>>> upstream/master
 
 	m_fg_tilemap->draw(screen, bitmap, cliprect, 0, 0);
 	return 0;

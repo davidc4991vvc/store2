@@ -33,27 +33,43 @@
 
 ***************************************************************************/
 
+<<<<<<< HEAD
 #pragma once
 
 #ifndef __F3853_H__
 #define __F3853_H__
 
 #include "emu.h"
+=======
+#ifndef MAME_MACHINE_F3853_H
+#define MAME_MACHINE_F3853_H
+
+#pragma once
+
+>>>>>>> upstream/master
 
 //**************************************************************************
 //  INTERFACE CONFIGURATION MACROS
 //**************************************************************************
 
 #define MCFG_F3853_EXT_INPUT_CB(_class, _method) \
+<<<<<<< HEAD
 	f3853_device::set_interrupt_req_callback(*device, f3853_interrupt_req_delegate(&_class::_method, #_class "::" #_method, downcast<_class *>(owner)));
+=======
+	f3853_device::set_interrupt_req_callback(*device, f3853_device::interrupt_req_delegate(&_class::_method, #_class "::" #_method, downcast<_class *>(owner)));
+>>>>>>> upstream/master
 
 /***************************************************************************
     TYPE DEFINITIONS
 ***************************************************************************/
 
+<<<<<<< HEAD
 typedef device_delegate<void (UINT16 addr, int level)> f3853_interrupt_req_delegate;
 
 #define F3853_INTERRUPT_REQ_CB(_name) void _name(UINT16 addr, int level)
+=======
+#define F3853_INTERRUPT_REQ_CB(_name) void _name(uint16_t addr, int level)
+>>>>>>> upstream/master
 
 
 // ======================> f3853_device
@@ -61,10 +77,19 @@ typedef device_delegate<void (UINT16 addr, int level)> f3853_interrupt_req_deleg
 class f3853_device :  public device_t
 {
 public:
+<<<<<<< HEAD
 	// construction/destruction
 	f3853_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
 
 	static void set_interrupt_req_callback(device_t &device, f3853_interrupt_req_delegate callback) { downcast<f3853_device &>(device).m_interrupt_req_cb = callback; }
+=======
+	typedef device_delegate<void (uint16_t addr, int level)> interrupt_req_delegate;
+
+	// construction/destruction
+	f3853_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
+
+	static void set_interrupt_req_callback(device_t &device, interrupt_req_delegate &&callback) { downcast<f3853_device &>(device).m_interrupt_req_cb = std::move(callback); }
+>>>>>>> upstream/master
 
 	DECLARE_READ8_MEMBER(read);
 	DECLARE_WRITE8_MEMBER(write);
@@ -72,6 +97,7 @@ public:
 	void set_external_interrupt_in_line(int level);
 	void set_priority_in_line(int level);
 
+<<<<<<< HEAD
 protected:
 	// device-level overrides
 	virtual void device_start();
@@ -101,10 +127,49 @@ private:
 	emu_timer *m_timer;
 
 	UINT8 m_value_to_cycle[0x100];
+=======
+	TIMER_CALLBACK_MEMBER(timer_callback);
+
+protected:
+	// device-level overrides
+	virtual void device_start() override;
+	virtual void device_reset() override;
+	virtual void device_post_load() override { }
+	virtual void device_clock_changed() override { }
+
+private:
+	uint16_t interrupt_vector() const { return m_low | (uint16_t(m_high) << 8); }
+	uint16_t timer_interrupt_vector() const { return interrupt_vector() & ~uint16_t(0x0080); }
+	uint16_t external_interrupt_vector() const { return interrupt_vector() | uint16_t(0x0080); }
+
+	void set_interrupt_request_line();
+	void timer_start(uint8_t value);
+
+	interrupt_req_delegate m_interrupt_req_cb;
+	uint8_t m_high;
+	uint8_t m_low; // Bit 7 is set to 0 for timer interrupts, 1 for external interrupts
+	int32_t m_external_enable;
+	int32_t m_timer_enable;
+
+	int32_t m_request_flipflop;
+
+	int32_t m_priority_line;              /* inverted level*/
+	int32_t m_external_interrupt_line;    /* inverted level */
+
+	emu_timer *m_timer;
+
+	uint8_t m_value_to_cycle[0x100];
+>>>>>>> upstream/master
 };
 
 
 // device type definition
+<<<<<<< HEAD
 extern const device_type F3853;
 
 #endif /* __F3853_H__ */
+=======
+DECLARE_DEVICE_TYPE(F3853, f3853_device)
+
+#endif // MAME_MACHINE_F3853_H
+>>>>>>> upstream/master

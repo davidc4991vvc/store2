@@ -1,8 +1,15 @@
 // license:BSD-3-Clause
 // copyright-holders:Olivier Galibert
+<<<<<<< HEAD
 #include "lpc-pit.h"
 
 const device_type LPC_PIT = &device_creator<lpc_pit_device>;
+=======
+#include "emu.h"
+#include "lpc-pit.h"
+
+DEFINE_DEVICE_TYPE(LPC_PIT, lpc_pit_device, "lpc_pit", "LPC PIT")
+>>>>>>> upstream/master
 
 DEVICE_ADDRESS_MAP_START(map, 32, lpc_pit_device)
 	AM_RANGE(0x40, 0x43) AM_READWRITE8(status_r, access_w,  0x00ffffff)
@@ -11,6 +18,7 @@ DEVICE_ADDRESS_MAP_START(map, 32, lpc_pit_device)
 	AM_RANGE(0x50, 0x53) AM_WRITE8    (          control_w, 0xff000000)
 ADDRESS_MAP_END
 
+<<<<<<< HEAD
 lpc_pit_device::lpc_pit_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
 	: lpc_device(mconfig, LPC_PIT, "LPC PIT", tag, owner, clock, "lpc_pit", __FILE__)
 {
@@ -18,6 +26,15 @@ lpc_pit_device::lpc_pit_device(const machine_config &mconfig, const char *tag, d
 
 void lpc_pit_device::map_device(UINT64 memory_window_start, UINT64 memory_window_end, UINT64 memory_offset, address_space *memory_space,
 									UINT64 io_window_start, UINT64 io_window_end, UINT64 io_offset, address_space *io_space)
+=======
+lpc_pit_device::lpc_pit_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: lpc_device(mconfig, LPC_PIT, tag, owner, clock)
+{
+}
+
+void lpc_pit_device::map_device(uint64_t memory_window_start, uint64_t memory_window_end, uint64_t memory_offset, address_space *memory_space,
+									uint64_t io_window_start, uint64_t io_window_end, uint64_t io_offset, address_space *io_space)
+>>>>>>> upstream/master
 {
 	io_space->install_device(io_offset, io_window_end, *this, &lpc_pit_device::map);
 }

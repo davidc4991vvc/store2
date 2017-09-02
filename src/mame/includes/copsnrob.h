@@ -6,7 +6,13 @@
 
 *************************************************************************/
 
+<<<<<<< HEAD
 #include "sound/discrete.h"
+=======
+#include "machine/74259.h"
+#include "sound/discrete.h"
+#include "screen.h"
+>>>>>>> upstream/master
 
 
 class copsnrob_state : public driver_device
@@ -27,6 +33,7 @@ public:
 		m_palette(*this, "palette") { }
 
 	/* memory pointers */
+<<<<<<< HEAD
 	required_shared_ptr<UINT8> m_trucky;
 	required_shared_ptr<UINT8> m_truckram;
 	required_shared_ptr<UINT8> m_bulletsram;
@@ -43,6 +50,24 @@ public:
 	virtual void machine_start();
 	virtual void machine_reset();
 	UINT32 screen_update_copsnrob(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
+=======
+	required_shared_ptr<uint8_t> m_trucky;
+	required_shared_ptr<uint8_t> m_truckram;
+	required_shared_ptr<uint8_t> m_bulletsram;
+	required_shared_ptr<uint8_t> m_carimage;
+	required_shared_ptr<uint8_t> m_cary;
+	required_shared_ptr<uint8_t> m_videoram;
+	required_device<discrete_device> m_discrete;
+	/* misc */
+	uint8_t          m_misc;
+	uint8_t          m_ic_h3_data;
+	DECLARE_READ8_MEMBER(copsnrob_misc_r);
+	DECLARE_WRITE8_MEMBER(copsnrob_misc2_w);
+	DECLARE_WRITE_LINE_MEMBER(one_start_w);
+	virtual void machine_start() override;
+	virtual void machine_reset() override;
+	uint32_t screen_update_copsnrob(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
+>>>>>>> upstream/master
 	required_device<cpu_device> m_maincpu;
 	required_device<gfxdecode_device> m_gfxdecode;
 	required_device<screen_device> m_screen;
@@ -50,4 +75,8 @@ public:
 };
 
 /*----------- defined in audio/copsnrob.c -----------*/
+<<<<<<< HEAD
 DISCRETE_SOUND_EXTERN( copsnrob );
+=======
+MACHINE_CONFIG_EXTERN(copsnrob_audio);
+>>>>>>> upstream/master

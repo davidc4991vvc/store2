@@ -17,7 +17,11 @@
 #define LVIV_LVT_HEADER_PILOT_LENGTH        5190
 #define LVIV_LVT_BLOCK_PILOT_LENGTH         1298
 
+<<<<<<< HEAD
 static INT16 *lviv_emit_level(INT16 *p, int count, int level)
+=======
+static int16_t *lviv_emit_level(int16_t *p, int count, int level)
+>>>>>>> upstream/master
 {
 	int i;
 
@@ -28,7 +32,11 @@ static INT16 *lviv_emit_level(INT16 *p, int count, int level)
 	return p;
 }
 
+<<<<<<< HEAD
 static INT16* lviv_output_bit(INT16 *p, UINT8 b)
+=======
+static int16_t* lviv_output_bit(int16_t *p, uint8_t b)
+>>>>>>> upstream/master
 {
 	if (b)
 	{
@@ -45,7 +53,11 @@ static INT16* lviv_output_bit(INT16 *p, UINT8 b)
 		return p;
 }
 
+<<<<<<< HEAD
 static INT16* lviv_output_byte(INT16 *p, UINT8 byte)
+=======
+static int16_t* lviv_output_byte(int16_t *p, uint8_t byte)
+>>>>>>> upstream/master
 {
 	int i;
 
@@ -61,7 +73,11 @@ static INT16* lviv_output_byte(INT16 *p, UINT8 byte)
 
 /*************************************************************************************/
 
+<<<<<<< HEAD
 static int lviv_cassette_calculate_size_in_samples(const UINT8 *bytes, int length)
+=======
+static int lviv_cassette_calculate_size_in_samples(const uint8_t *bytes, int length)
+>>>>>>> upstream/master
 {
 	int size;
 
@@ -76,10 +92,17 @@ static int lviv_cassette_calculate_size_in_samples(const UINT8 *bytes, int lengt
 
 /*************************************************************************************/
 
+<<<<<<< HEAD
 static int lviv_cassette_fill_wave(INT16 *buffer, int length, UINT8 *bytes)
 {
 	int i;
 	INT16 * p = buffer;
+=======
+static int lviv_cassette_fill_wave(int16_t *buffer, int length, uint8_t *bytes)
+{
+	int i;
+	int16_t * p = buffer;
+>>>>>>> upstream/master
 
 	int data_size;
 
@@ -124,14 +147,22 @@ static const struct CassetteLegacyWaveFiller lviv_legacy_fill_wave =
 
 
 
+<<<<<<< HEAD
 static casserr_t lviv_lvt_identify(cassette_image *cassette, struct CassetteOptions *opts)
+=======
+static cassette_image::error lviv_lvt_identify(cassette_image *cassette, struct CassetteOptions *opts)
+>>>>>>> upstream/master
 {
 	return cassette_legacy_identify(cassette, opts, &lviv_legacy_fill_wave);
 }
 
 
 
+<<<<<<< HEAD
 static casserr_t lviv_lvt_load(cassette_image *cassette)
+=======
+static cassette_image::error lviv_lvt_load(cassette_image *cassette)
+>>>>>>> upstream/master
 {
 	return cassette_legacy_construct(cassette, &lviv_legacy_fill_wave);
 }
@@ -143,7 +174,11 @@ static const struct CassetteFormat lviv_lvt_image_format =
 	"lvt,lvr,lv0,lv1,lv2,lv3",
 	lviv_lvt_identify,
 	lviv_lvt_load,
+<<<<<<< HEAD
 	NULL
+=======
+	nullptr
+>>>>>>> upstream/master
 };
 
 

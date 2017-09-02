@@ -21,10 +21,18 @@ TODO:
 
 *******************************************************************************/
 
+<<<<<<< HEAD
 #ifndef _VIDEO_MCD212_H_
 #define _VIDEO_MCD212_H_
 
 #include "emu.h"
+=======
+#ifndef MAME_VIDEO_MCD212_H
+#define MAME_VIDEO_MCD212_H
+
+#pragma once
+
+>>>>>>> upstream/master
 
 #define MCD212_CURCNT_COLOR         0x00000f    // Cursor color
 #define MCD212_CURCNT_CUW           0x008000    // Cursor width
@@ -102,9 +110,15 @@ TODO:
 #define MCD212_DDR_MT_16            0x0c00  // 16x1
 #define MCD212_DDR_MT_SHIFT         10
 
+<<<<<<< HEAD
 typedef UINT8 BYTE68K;
 typedef UINT16 WORD68K;
 typedef INT16 SWORD68K;
+=======
+typedef uint8_t BYTE68K;
+typedef uint16_t WORD68K;
+typedef int16_t SWORD68K;
+>>>>>>> upstream/master
 
 #define BYTE68K_MAX 255
 
@@ -129,7 +143,11 @@ class mcd212_device : public device_t,
 {
 public:
 	// construction/destruction
+<<<<<<< HEAD
 	mcd212_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
+=======
+	mcd212_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
+>>>>>>> upstream/master
 
 	// device members
 	DECLARE_READ16_MEMBER( regs_r );
@@ -142,6 +160,7 @@ public:
 
 	struct channel_t
 	{
+<<<<<<< HEAD
 		UINT8 csrr;
 		UINT16 csrw;
 		UINT16 dcr;
@@ -174,6 +193,40 @@ public:
 		UINT32 mosaic_hold_b;
 		UINT8 weight_factor_a[768];
 		UINT8 weight_factor_b[768];
+=======
+		uint8_t csrr;
+		uint16_t csrw;
+		uint16_t dcr;
+		uint16_t vsr;
+		uint16_t ddr;
+		uint16_t dcp;
+		uint32_t dca;
+		uint8_t clut_r[256];
+		uint8_t clut_g[256];
+		uint8_t clut_b[256];
+		uint32_t image_coding_method;
+		uint32_t transparency_control;
+		uint32_t plane_order;
+		uint32_t clut_bank;
+		uint32_t transparent_color_a;
+		uint32_t reserved0;
+		uint32_t transparent_color_b;
+		uint32_t mask_color_a;
+		uint32_t reserved1;
+		uint32_t mask_color_b;
+		uint32_t dyuv_abs_start_a;
+		uint32_t dyuv_abs_start_b;
+		uint32_t reserved2;
+		uint32_t cursor_position;
+		uint32_t cursor_control;
+		uint32_t cursor_pattern[16];
+		uint32_t region_control[8];
+		uint32_t backdrop_color;
+		uint32_t mosaic_hold_a;
+		uint32_t mosaic_hold_b;
+		uint8_t weight_factor_a[768];
+		uint8_t weight_factor_b[768];
+>>>>>>> upstream/master
 	};
 
 	struct ab_t
@@ -205,24 +258,39 @@ public:
 
 protected:
 	// device-level overrides
+<<<<<<< HEAD
 	virtual void device_start();
 	virtual void device_reset();
+=======
+	virtual void device_start() override;
+	virtual void device_reset() override;
+>>>>>>> upstream/master
 
 private:
 	// internal state
 	channel_t m_channel[2];
 	emu_timer *m_scan_timer;
+<<<<<<< HEAD
 	UINT8 m_region_flag_0[768];
 	UINT8 m_region_flag_1[768];
 
 	bitmap_rgb32 m_bitmap;
 
 	static const UINT32 s_4bpp_color[16];
+=======
+	uint8_t m_region_flag_0[768];
+	uint8_t m_region_flag_1[768];
+
+	bitmap_rgb32 m_bitmap;
+
+	static const uint32_t s_4bpp_color[16];
+>>>>>>> upstream/master
 
 	ab_t m_ab;
 
 	void update_region_arrays();
 
+<<<<<<< HEAD
 	void set_vsr(int channel, UINT32 value);
 	UINT32 get_vsr(int channel);
 
@@ -242,12 +310,39 @@ private:
 	void mix_lines(UINT8 *plane_a_r, UINT8 *plane_a_g, UINT8 *plane_a_b, UINT8 *plane_b_r, UINT8 *plane_b_g, UINT8 *plane_b_b, UINT32 *out);
 
 	void draw_cursor(UINT32 *scanline, int y);
+=======
+	void set_vsr(int channel, uint32_t value);
+	uint32_t get_vsr(int channel);
+
+	void set_dcp(int channel, uint32_t value);
+	uint32_t get_dcp(int channel);
+
+	void set_display_parameters(int channel, uint8_t value);
+	void update_visible_area();
+	uint32_t get_screen_width();
+
+	void process_ica(int channel);
+	void process_dca(int channel);
+	void process_vsr(int channel, uint8_t *pixels_r, uint8_t *pixels_g, uint8_t *pixels_b);
+
+	void set_register(int channel, uint8_t reg, uint32_t value);
+
+	void mix_lines(uint8_t *plane_a_r, uint8_t *plane_a_g, uint8_t *plane_a_b, uint8_t *plane_b_r, uint8_t *plane_b_g, uint8_t *plane_b_b, uint32_t *out);
+
+	void draw_cursor(uint32_t *scanline, int y);
+>>>>>>> upstream/master
 	void draw_scanline(int y);
 
 	void draw_lcd(int y);
 };
 
 // device type definition
+<<<<<<< HEAD
 extern const device_type MACHINE_MCD212;
 
 #endif // _VIDEO_MCD212_H_
+=======
+DECLARE_DEVICE_TYPE(MACHINE_MCD212, mcd212_device)
+
+#endif // MAME_VIDEO_MCD212_H
+>>>>>>> upstream/master

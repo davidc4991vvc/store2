@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 // license:LGPL-2.1+
+=======
+// license:BSD-3-Clause
+>>>>>>> upstream/master
 // copyright-holders:Tomasz Slanina
 /***************************************************************************
 
@@ -60,7 +64,11 @@ TILE_GET_INFO_MEMBER(nycaptor_state::get_tile_info)
 
 void nycaptor_state::video_start()
 {
+<<<<<<< HEAD
 	m_bg_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(nycaptor_state::get_tile_info),this), TILEMAP_SCAN_ROWS, 8, 8, 32, 32 );
+=======
+	m_bg_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(nycaptor_state::get_tile_info),this), TILEMAP_SCAN_ROWS, 8, 8, 32, 32 );
+>>>>>>> upstream/master
 
 	m_bg_tilemap->set_transmask(0, 0xf800, 0x7ff); //split 0
 	m_bg_tilemap->set_transmask(1, 0xfe00, 0x01ff);//split 1
@@ -85,9 +93,12 @@ WRITE8_MEMBER(nycaptor_state::nycaptor_videoram_w)
 
 WRITE8_MEMBER(nycaptor_state::nycaptor_palette_w)
 {
+<<<<<<< HEAD
 	if (m_gametype == 2) //colt
 		return;
 
+=======
+>>>>>>> upstream/master
 	if (offset & 0x100)
 		m_palette->write_ext(space, (offset & 0xff) + (m_palette_bank << 8), data);
 	else
@@ -206,7 +217,11 @@ void nycaptor_state::nycaptor_setmask(  )
 }
 #endif
 
+<<<<<<< HEAD
 UINT32 nycaptor_state::screen_update_nycaptor(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+=======
+uint32_t nycaptor_state::screen_update_nycaptor(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+>>>>>>> upstream/master
 {
 #if NYCAPTOR_DEBUG
 	nycaptor_setmask();

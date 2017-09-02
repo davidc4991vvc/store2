@@ -14,6 +14,7 @@
 ***************************************************************************/
 
 #include "emu.h"
+<<<<<<< HEAD
 #include "machine/eepromser.h"
 #include "deco104.h"
 
@@ -22,6 +23,14 @@
 
 
 deco146port_xx port104_table[] = {
+=======
+#include "deco104.h"
+
+#include "machine/eepromser.h"
+
+
+static deco146port_xx const port104_table[] = {
+>>>>>>> upstream/master
 	/* 0x000 */ { 0x04,          { NIB3__, NIB0__, NIB1__, NIB2__ } , 1, 1 },
 	/* 0x002 */ { 0x2a,          { NIB1__, NIB3__, NIB0__, NIB2__ } , 0, 1 },
 	/* 0x004 */ { 0x5e,          { NIB0__, NIB1__, NIB2__, NIB3__ } , 0, 0 },
@@ -1051,12 +1060,21 @@ deco146port_xx port104_table[] = {
 
 
 
+<<<<<<< HEAD
 const device_type DECO104PROT = &device_creator<deco104_device>;
 
 
 
 deco104_device::deco104_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
 	: deco_146_base_device(mconfig, DECO104PROT, "DECO 104 Protection", tag, owner, clock, "deco104", __FILE__)
+=======
+DEFINE_DEVICE_TYPE(DECO104PROT, deco104_device, "deco104", "DECO 104 Protection")
+
+
+
+deco104_device::deco104_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: deco_146_base_device(mconfig, DECO104PROT, tag, owner, clock)
+>>>>>>> upstream/master
 {
 	m_bankswitch_swap_read_address = 0x66;
 	m_magic_read_address_xor = 0x2a4;
@@ -1071,10 +1089,13 @@ deco104_device::deco104_device(const machine_config &mconfig, const char *tag, d
 
 
 
+<<<<<<< HEAD
 void deco104_device::device_config_complete()
 {
 }
 
+=======
+>>>>>>> upstream/master
 void deco104_device::device_start()
 {
 	deco_146_base_device::device_start();

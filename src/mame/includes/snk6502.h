@@ -5,10 +5,18 @@
     rokola hardware
 
 *************************************************************************/
+<<<<<<< HEAD
 
 #include "sound/discrete.h"
 #include "sound/samples.h"
 #include "sound/sn76477.h"
+=======
+#ifndef MAME_INCLUDES_SNK6502_H
+#define MAME_INCLUDES_SNK6502_H
+
+#pragma once
+
+>>>>>>> upstream/master
 
 class snk6502_sound_device;
 
@@ -31,18 +39,31 @@ public:
 	required_device<gfxdecode_device> m_gfxdecode;
 	required_device<palette_device> m_palette;
 
+<<<<<<< HEAD
 	required_shared_ptr<UINT8> m_videoram;
 	required_shared_ptr<UINT8> m_videoram2;
 	required_shared_ptr<UINT8> m_colorram;
 	required_shared_ptr<UINT8> m_charram;
 
 	UINT8 m_sasuke_counter;
+=======
+	required_shared_ptr<uint8_t> m_videoram;
+	required_shared_ptr<uint8_t> m_videoram2;
+	required_shared_ptr<uint8_t> m_colorram;
+	required_shared_ptr<uint8_t> m_charram;
+
+	uint8_t m_sasuke_counter;
+>>>>>>> upstream/master
 	int m_charbank;
 	int m_backcolor;
 	tilemap_t *m_bg_tilemap;
 	tilemap_t *m_fg_tilemap;
 	rgb_t m_palette_val[64];
+<<<<<<< HEAD
 	UINT8 m_irq_mask;
+=======
+	uint8_t m_irq_mask;
+>>>>>>> upstream/master
 
 	// common
 	DECLARE_WRITE8_MEMBER(videoram_w);
@@ -53,6 +74,10 @@ public:
 	DECLARE_WRITE8_MEMBER(scrollx_w);
 	DECLARE_WRITE8_MEMBER(scrolly_w);
 	DECLARE_WRITE8_MEMBER(flipscreen_w);
+<<<<<<< HEAD
+=======
+	DECLARE_WRITE8_MEMBER(fantasy_flipscreen_w);
+>>>>>>> upstream/master
 	DECLARE_WRITE8_MEMBER(satansat_b002_w);
 	DECLARE_WRITE8_MEMBER(satansat_backcolor_w);
 
@@ -65,7 +90,11 @@ public:
 	TILE_GET_INFO_MEMBER(satansat_get_bg_tile_info);
 	TILE_GET_INFO_MEMBER(satansat_get_fg_tile_info);
 
+<<<<<<< HEAD
 	virtual void machine_start();
+=======
+	virtual void machine_start() override;
+>>>>>>> upstream/master
 	DECLARE_MACHINE_RESET(sasuke);
 	DECLARE_VIDEO_START(satansat);
 	DECLARE_PALETTE_INIT(satansat);
@@ -76,7 +105,11 @@ public:
 	DECLARE_MACHINE_RESET(pballoon);
 	DECLARE_VIDEO_START(pballoon);
 
+<<<<<<< HEAD
 	UINT32 screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
+=======
+	uint32_t screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
+>>>>>>> upstream/master
 
 	INTERRUPT_GEN_MEMBER(satansat_interrupt);
 	INTERRUPT_GEN_MEMBER(snk6502_interrupt);
@@ -86,6 +119,7 @@ public:
 	void postload();
 };
 
+<<<<<<< HEAD
 
 /*----------- defined in audio/snk6502.c -----------*/
 
@@ -158,3 +192,6 @@ DISCRETE_SOUND_EXTERN( fantasy );
 extern const char *const sasuke_sample_names[];
 extern const char *const vanguard_sample_names[];
 extern const char *const fantasy_sample_names[];
+=======
+#endif // MAME_INCLUDES_SNK6502_H
+>>>>>>> upstream/master

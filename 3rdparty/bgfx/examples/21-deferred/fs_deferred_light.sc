@@ -1,8 +1,13 @@
 $input v_texcoord0
 
 /*
+<<<<<<< HEAD
  * Copyright 2011-2015 Branimir Karadzic. All rights reserved.
  * License: http://www.opensource.org/licenses/BSD-2-Clause
+=======
+ * Copyright 2011-2017 Branimir Karadzic. All rights reserved.
+ * License: https://github.com/bkaradzic/bgfx#license-bsd-2-clause
+>>>>>>> upstream/master
  */
 
 #include "../common/common.sh"
@@ -56,11 +61,19 @@ vec3 calcLight(int _idx, vec3 _wpos, vec3 _normal, vec3 _view)
 
 float toClipSpaceDepth(float _depthTextureZ)
 {
+<<<<<<< HEAD
 #if BGFX_SHADER_LANGUAGE_HLSL
 	return _depthTextureZ;
 #else
 	return _depthTextureZ * 2.0 - 1.0;
 #endif // BGFX_SHADER_LANGUAGE_HLSL
+=======
+#if BGFX_SHADER_LANGUAGE_HLSL || BGFX_SHADER_LANGUAGE_PSSL || BGFX_SHADER_LANGUAGE_METAL
+	return _depthTextureZ;
+#else
+	return _depthTextureZ * 2.0 - 1.0;
+#endif // BGFX_SHADER_LANGUAGE_HLSL || BGFX_SHADER_LANGUAGE_PSSL || BGFX_SHADER_LANGUAGE_METAL
+>>>>>>> upstream/master
 }
 
 vec3 clipToWorld(mat4 _invViewProj, vec3 _clipPos)
@@ -72,6 +85,7 @@ vec3 clipToWorld(mat4 _invViewProj, vec3 _clipPos)
 void main()
 {
 	vec3  normal      = decodeNormalUint(texture2D(s_normal, v_texcoord0).xyz);
+<<<<<<< HEAD
 	float deviceDepth = texture2D(s_depth,  v_texcoord0).x;
 	float depth       = toClipSpaceDepth(deviceDepth);
 
@@ -79,6 +93,15 @@ void main()
 #if BGFX_SHADER_LANGUAGE_HLSL
 	clip.y = -clip.y;
 #endif // BGFX_SHADER_LANGUAGE_HLSL
+=======
+	float deviceDepth = texture2D(s_depth, v_texcoord0).x;
+	float depth       = toClipSpaceDepth(deviceDepth);
+
+	vec3 clip = vec3(v_texcoord0 * 2.0 - 1.0, depth);
+#if BGFX_SHADER_LANGUAGE_HLSL || BGFX_SHADER_LANGUAGE_PSSL || BGFX_SHADER_LANGUAGE_METAL
+	clip.y = -clip.y;
+#endif // BGFX_SHADER_LANGUAGE_HLSL || BGFX_SHADER_LANGUAGE_PSSL || BGFX_SHADER_LANGUAGE_METAL
+>>>>>>> upstream/master
 	vec3 wpos = clipToWorld(u_mtx, clip);
 
 	vec3 view = mul(u_view, vec4(wpos, 0.0) ).xyz;

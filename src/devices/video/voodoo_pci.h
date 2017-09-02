@@ -2,8 +2,15 @@
 // copyright-holders:Ted Green
 // 3dfx Voodoo Graphics SST-1/2 emulator.
 
+<<<<<<< HEAD
 #ifndef VOODOO_PCI_H
 #define VOODOO_PCI_H
+=======
+#ifndef MAME_VIDEO_VOODOO_PCI_H
+#define MAME_VIDEO_VOODOO_PCI_H
+
+#pragma once
+>>>>>>> upstream/master
 
 #include "machine/pci.h"
 #include "voodoo.h"
@@ -21,6 +28,7 @@
 
 class voodoo_pci_device : public pci_device {
 public:
+<<<<<<< HEAD
 	voodoo_pci_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
 	virtual void map_extra(UINT64 memory_window_start, UINT64 memory_window_end, UINT64 memory_offset, address_space *memory_space,
 							UINT64 io_window_start, UINT64 io_window_end, UINT64 io_offset, address_space *io_space);
@@ -29,11 +37,22 @@ public:
 	UINT32 screen_update(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect);
 	virtual DECLARE_ADDRESS_MAP(config_map, 32);
 
+=======
+	voodoo_pci_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
+	virtual void map_extra(uint64_t memory_window_start, uint64_t memory_window_end, uint64_t memory_offset, address_space *memory_space,
+							uint64_t io_window_start, uint64_t io_window_end, uint64_t io_offset, address_space *io_space) override;
+
+	uint32_t screen_update(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect);
+	virtual DECLARE_ADDRESS_MAP(config_map, 32) override;
+
+	void postload(void);
+>>>>>>> upstream/master
 	void set_cpu_tag(const char *tag);
 	static void set_type(const int type) {m_type = type;}
 	void set_fbmem(const int fbmem) {m_fbmem = fbmem;}
 	void set_tmumem(const int tmumem0, const int tmumem1) {m_tmumem0 = tmumem0; m_tmumem1 = tmumem1;}
 
+<<<<<<< HEAD
 	DECLARE_READ32_MEMBER(  pcictrl_r);
 	DECLARE_WRITE32_MEMBER( pcictrl_w);
 
@@ -48,12 +67,38 @@ private:
 	const char *m_cpu_tag;
 
 	UINT32 m_pcictrl_reg[0x10];
+=======
+	DECLARE_READ32_MEMBER(pcictrl_r);
+	DECLARE_WRITE32_MEMBER(pcictrl_w);
+
+	DECLARE_READ32_MEMBER(vga_r);
+	DECLARE_WRITE32_MEMBER(vga_w);
+
+protected:
+	virtual void device_start() override;
+	virtual void device_reset() override;
+	virtual void device_add_mconfig(machine_config &config) override;
+
+private:
+	required_device<voodoo_device> m_voodoo;
+	static int m_type; // FIXME: all voodoo have to be the same?  really?
+	int m_fbmem, m_tmumem0, m_tmumem1;
+	const char *m_cpu_tag;
+
+	uint32_t m_pcictrl_reg[0x20];
+>>>>>>> upstream/master
 	DECLARE_ADDRESS_MAP(voodoo_reg_map, 32);
 	DECLARE_ADDRESS_MAP(banshee_reg_map, 32);
 	DECLARE_ADDRESS_MAP(lfb_map, 32);
 	DECLARE_ADDRESS_MAP(io_map, 32);
 };
 
+<<<<<<< HEAD
 extern const device_type VOODOO_PCI;
 
 #endif
+=======
+DECLARE_DEVICE_TYPE(VOODOO_PCI, voodoo_pci_device)
+
+#endif // MAME_VIDEO_VOODOO_PCI_H
+>>>>>>> upstream/master

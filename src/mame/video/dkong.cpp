@@ -200,7 +200,11 @@ static const res_net_info radarscp_grid_net_info =
 
 PALETTE_INIT_MEMBER(dkong_state,dkong2b)
 {
+<<<<<<< HEAD
 	const UINT8 *color_prom = memregion("proms")->base();
+=======
+	const uint8_t *color_prom = memregion("proms")->base();
+>>>>>>> upstream/master
 	std::vector<rgb_t> rgb;
 	int i;
 
@@ -229,7 +233,11 @@ PALETTE_INIT_MEMBER(dkong_state,dkong2b)
 #ifdef UNUSED_FUNCTION
 PALETTE_INIT_MEMBER(dkong_state,dkong4b)
 {
+<<<<<<< HEAD
 	const UINT8 *color_prom = memregion("proms")->base();
+=======
+	const uint8_t *color_prom = memregion("proms")->base();
+>>>>>>> upstream/master
 	int i;
 	int r,g,b;
 
@@ -267,7 +275,11 @@ PALETTE_INIT_MEMBER(dkong_state,dkong4b)
 
 PALETTE_INIT_MEMBER(dkong_state,radarscp)
 {
+<<<<<<< HEAD
 	const UINT8 *color_prom = memregion("proms")->base();
+=======
+	const uint8_t *color_prom = memregion("proms")->base();
+>>>>>>> upstream/master
 	int i;
 	int r,g,b;
 
@@ -330,7 +342,11 @@ PALETTE_INIT_MEMBER(dkong_state,radarscp)
 
 PALETTE_INIT_MEMBER(dkong_state,radarscp1)
 {
+<<<<<<< HEAD
 	const UINT8 *color_prom = memregion("proms")->base();
+=======
+	const uint8_t *color_prom = memregion("proms")->base();
+>>>>>>> upstream/master
 	int i;
 	int r,g,b;
 
@@ -429,7 +445,11 @@ PALETTE_INIT_MEMBER(dkong_state,radarscp1)
 
 PALETTE_INIT_MEMBER(dkong_state,dkong3)
 {
+<<<<<<< HEAD
 	const UINT8 *color_prom = memregion("proms")->base();
+=======
+	const uint8_t *color_prom = memregion("proms")->base();
+>>>>>>> upstream/master
 	std::vector<rgb_t> rgb;
 
 	compute_res_net_all(rgb, color_prom, dkong3_decode_info, dkong3_net_info);
@@ -536,7 +556,11 @@ WRITE8_MEMBER(dkong_state::dkong_spritebank_w)
 
 ***************************************************************************/
 
+<<<<<<< HEAD
 void dkong_state::draw_sprites(bitmap_ind16 &bitmap, const rectangle &cliprect, UINT32 mask_bank, UINT32 shift_bits)
+=======
+void dkong_state::draw_sprites(bitmap_ind16 &bitmap, const rectangle &cliprect, uint32_t mask_bank, uint32_t shift_bits)
+>>>>>>> upstream/master
 {
 	int offs;
 	int scanline_vf;    /* buffering scanline including flip */
@@ -678,7 +702,11 @@ inline double dkong_state::CD4049(double x)
 #define RC32    ((18e3 + 68e3) * 33e-6)
 #define RC4     (90e3 * 0.47e-6)
 #define dt      (1./60./(double) VTOTAL)
+<<<<<<< HEAD
 #define period2 (((INT64)(PIXEL_CLOCK) * ( 33L * 68L )) / (INT32)10000000L / 3)  /*  period/2 in pixel ... */
+=======
+#define period2 (((int64_t)(PIXEL_CLOCK) * ( 33L * 68L )) / (int32_t)10000000L / 3)  /*  period/2 in pixel ... */
+>>>>>>> upstream/master
 
 void dkong_state::radarscp_step(int line_cnt)
 {
@@ -708,8 +736,12 @@ void dkong_state::radarscp_step(int line_cnt)
 	 */
 
 	/* Now mix with SND02 (sound 2) line - on 74ls259, bit2 */
+<<<<<<< HEAD
 	address_space &space = machine().driver_data()->generic_space();
 	m_rflip_sig = m_dev_6h->bit2_r(space, 0) & m_lfsr_5I;
+=======
+	m_rflip_sig = m_dev_6h->bit2_r() & m_lfsr_5I;
+>>>>>>> upstream/master
 
 	/* blue background generation */
 
@@ -774,7 +806,11 @@ void dkong_state::radarscp_step(int line_cnt)
 	 *
 	 * Mixed with ANS line (bit 5) from Port B of 8039
 	 */
+<<<<<<< HEAD
 	if (m_grid_on && m_dev_vp2->bit5_r(space, 0))
+=======
+	if (m_grid_on && m_dev_vp2->bit5_r())
+>>>>>>> upstream/master
 	{
 		diff = (0.0 - m_cv3);
 		diff = diff - diff*exp(0.0 - (1.0/RC32 * dt) );
@@ -807,10 +843,17 @@ void dkong_state::radarscp_step(int line_cnt)
 
 void dkong_state::radarscp_draw_background(bitmap_ind16 &bitmap, const rectangle &cliprect)
 {
+<<<<<<< HEAD
 	const UINT8     *htable = NULL;
 	int             x,y;
 	UINT8           draw_ok;
 	UINT16          *pixel;
+=======
+	const uint8_t     *htable = nullptr;
+	int             x,y;
+	uint8_t           draw_ok;
+	uint16_t          *pixel;
+>>>>>>> upstream/master
 
 	if (m_hardware_type == HARDWARE_TRS01)
 		htable = m_gfx4;
@@ -835,10 +878,17 @@ void dkong_state::radarscp_draw_background(bitmap_ind16 &bitmap, const rectangle
 
 void dkong_state::radarscp_scanline(int scanline)
 {
+<<<<<<< HEAD
 	const UINT8 *table = m_gfx3;
 	int         table_len = m_gfx3_len;
 	int             x,y,offset;
 	UINT16          *pixel;
+=======
+	const uint8_t *table = m_gfx3;
+	int         table_len = m_gfx3_len;
+	int             x,y,offset;
+	uint16_t          *pixel;
+>>>>>>> upstream/master
 	const rectangle &visarea = m_screen->visible_area();
 
 	y = scanline;
@@ -890,7 +940,11 @@ void dkong_state::check_palette()
 	int newset;
 
 	port = ioport("VIDHW");
+<<<<<<< HEAD
 	if (port != NULL)
+=======
+	if (port != nullptr)
+>>>>>>> upstream/master
 	{
 		newset = port->read();
 		if (newset != m_vidhw)
@@ -899,10 +953,17 @@ void dkong_state::check_palette()
 			switch (newset)
 			{
 				case DKONG_RADARSCP_CONVERSION:
+<<<<<<< HEAD
 					PALETTE_INIT_NAME(radarscp)(m_palette);
 					break;
 				case DKONG_BOARD:
 					PALETTE_INIT_NAME(dkong2b)(m_palette);
+=======
+					PALETTE_INIT_NAME(radarscp)(*m_palette);
+					break;
+				case DKONG_BOARD:
+					PALETTE_INIT_NAME(dkong2b)(*m_palette);
+>>>>>>> upstream/master
 					break;
 			}
 		}
@@ -965,10 +1026,17 @@ VIDEO_START_MEMBER(dkong_state,dkong)
 			/* fall through */
 		case HARDWARE_TKG04:
 		case HARDWARE_TKG02:
+<<<<<<< HEAD
 			m_bg_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(dkong_state::dkong_bg_tile_info),this), TILEMAP_SCAN_ROWS,  8, 8, 32, 32);
 			break;
 		case HARDWARE_TRS01:
 			m_bg_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(dkong_state::radarscp1_bg_tile_info),this), TILEMAP_SCAN_ROWS,  8, 8, 32, 32);
+=======
+			m_bg_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(dkong_state::dkong_bg_tile_info),this), TILEMAP_SCAN_ROWS,  8, 8, 32, 32);
+			break;
+		case HARDWARE_TRS01:
+			m_bg_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(dkong_state::radarscp1_bg_tile_info),this), TILEMAP_SCAN_ROWS,  8, 8, 32, 32);
+>>>>>>> upstream/master
 
 			m_screen->register_screen_bitmap(m_bg_bits);
 			m_gfx4 = memregion("gfx4")->base();
@@ -981,7 +1049,11 @@ VIDEO_START_MEMBER(dkong_state,dkong)
 	}
 }
 
+<<<<<<< HEAD
 UINT32 dkong_state::screen_update_dkong(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+=======
+uint32_t dkong_state::screen_update_dkong(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+>>>>>>> upstream/master
 {
 	machine().tilemap().set_flip_all(m_flip ? TILEMAP_FLIPX | TILEMAP_FLIPY : 0);
 
@@ -1005,7 +1077,11 @@ UINT32 dkong_state::screen_update_dkong(screen_device &screen, bitmap_ind16 &bit
 	return 0;
 }
 
+<<<<<<< HEAD
 UINT32 dkong_state::screen_update_pestplce(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+=======
+uint32_t dkong_state::screen_update_pestplce(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+>>>>>>> upstream/master
 {
 	int offs;
 
@@ -1026,7 +1102,11 @@ UINT32 dkong_state::screen_update_pestplce(screen_device &screen, bitmap_ind16 &
 	return 0;
 }
 
+<<<<<<< HEAD
 UINT32 dkong_state::screen_update_spclforc(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+=======
+uint32_t dkong_state::screen_update_spclforc(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+>>>>>>> upstream/master
 {
 	m_bg_tilemap->draw(screen, bitmap, cliprect, 0, 0);
 

@@ -9,6 +9,7 @@
 #ifndef __WIN_VIDEO__
 #define __WIN_VIDEO__
 
+<<<<<<< HEAD
 #include "render.h"
 #include "winmain.h"
 
@@ -87,12 +88,16 @@ private:
 	int m_y;
 	osd_dim m_d;
 };
+=======
+#include "modules/osdhelper.h"
+>>>>>>> upstream/master
 
 inline osd_rect RECT_to_osd_rect(const RECT &r)
 {
 	return osd_rect(r.left, r.top, r.right - r.left, r.bottom - r.top);
 }
 
+<<<<<<< HEAD
 class osd_monitor_info
 {
 public:
@@ -229,4 +234,6 @@ struct osd_video_config
 
 extern osd_video_config video_config;
 
+=======
+>>>>>>> upstream/master
 #endif

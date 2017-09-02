@@ -12,9 +12,19 @@ palazzol@home.com
 ***************************************************************************/
 
 #include "emu.h"
+<<<<<<< HEAD
 #include "cpu/i8085/i8085.h"
 #include "sound/samples.h"
 #include "includes/starcrus.h"
+=======
+#include "includes/starcrus.h"
+
+#include "cpu/i8085/i8085.h"
+#include "sound/samples.h"
+#include "screen.h"
+#include "speaker.h"
+
+>>>>>>> upstream/master
 
 static ADDRESS_MAP_START( starcrus_map, AS_PROGRAM, 8, starcrus_state )
 	AM_RANGE(0x0000, 0x0fff) AM_ROM
@@ -126,11 +136,19 @@ static const char *const starcrus_sample_names[] =
 	"explos1",  /* explosion sound, first part, channel 1 */
 	"explos2",  /* explosion sound, second part, channel 1 */
 	"launch",   /* launch sound, channels 2 and 3 */
+<<<<<<< HEAD
 	0
 };
 
 
 static MACHINE_CONFIG_START( starcrus, starcrus_state )
+=======
+	nullptr
+};
+
+
+static MACHINE_CONFIG_START( starcrus )
+>>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", I8080,9750000/9)  /* 8224 chip is a divide by 9 */
@@ -149,7 +167,11 @@ static MACHINE_CONFIG_START( starcrus, starcrus_state )
 
 	MCFG_GFXDECODE_ADD("gfxdecode", "palette", starcrus)
 
+<<<<<<< HEAD
 	MCFG_PALETTE_ADD_BLACK_AND_WHITE("palette")
+=======
+	MCFG_PALETTE_ADD_MONOCHROME("palette")
+>>>>>>> upstream/master
 
 	/* sound hardware */
 	MCFG_SPEAKER_STANDARD_MONO("mono")
@@ -189,4 +211,8 @@ ROM_START( starcrus )
 ROM_END
 
 
+<<<<<<< HEAD
 GAME( 1977, starcrus, 0, starcrus, starcrus, driver_device, 0, ROT0, "Ramtek", "Star Cruiser", MACHINE_IMPERFECT_SOUND | MACHINE_SUPPORTS_SAVE )
+=======
+GAME( 1977, starcrus, 0, starcrus, starcrus, starcrus_state, 0, ROT0, "Ramtek", "Star Cruiser", MACHINE_IMPERFECT_SOUND | MACHINE_SUPPORTS_SAVE )
+>>>>>>> upstream/master

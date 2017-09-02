@@ -6,12 +6,20 @@
 
 **********************************************************************/
 
+<<<<<<< HEAD
 #pragma once
 
 #ifndef __S100_DJDMA__
 #define __S100_DJDMA__
 
 #include "emu.h"
+=======
+#ifndef MAME_BUS_S100_DJDMA_H
+#define MAME_BUS_S100_DJDMA_H
+
+#pragma once
+
+>>>>>>> upstream/master
 #include "s100.h"
 #include "cpu/z80/z80.h"
 
@@ -28,6 +36,7 @@ class s100_djdma_device : public device_t,
 {
 public:
 	// construction/destruction
+<<<<<<< HEAD
 	s100_djdma_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
 
 	// optional information overrides
@@ -41,11 +50,29 @@ protected:
 
 private:
 	// internal state
+=======
+	s100_djdma_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
+
+protected:
+	// device-level overrides
+	virtual void device_start() override;
+	virtual void device_reset() override;
+
+	// optional information overrides
+	virtual void device_add_mconfig(machine_config &config) override;
+	virtual const tiny_rom_entry *device_rom_region() const override;
+>>>>>>> upstream/master
 };
 
 
 // device type definition
+<<<<<<< HEAD
 extern const device_type S100_DJDMA;
 
 
 #endif
+=======
+DECLARE_DEVICE_TYPE(S100_DJDMA, s100_djdma_device)
+
+#endif // MAME_BUS_S100_DJDMA_H
+>>>>>>> upstream/master

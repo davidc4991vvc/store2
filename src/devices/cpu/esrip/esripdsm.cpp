@@ -17,7 +17,11 @@
     DISASSEMBLY HOOK (TODO: FINISH)
 ***************************************************************************/
 
+<<<<<<< HEAD
 CPU_DISASSEMBLE( esrip )
+=======
+CPU_DISASSEMBLE(esrip)
+>>>>>>> upstream/master
 {
 #if 0
 	static const char* const jmp_types[] =
@@ -45,6 +49,7 @@ CPU_DISASSEMBLE( esrip )
 	};
 #endif
 
+<<<<<<< HEAD
 	UINT64 inst = BIG_ENDIANIZE_INT64(*(UINT64 *)oprom);
 
 	UINT32 inst_hi = inst >> 32;
@@ -61,6 +66,24 @@ CPU_DISASSEMBLE( esrip )
 	UINT8 ctrl3 = (inst_hi) & 0xff;
 
 	sprintf(buffer, "%.4x %c%c%c%c %.2x %s%s%s%s%s%s%s%s %c%s%s%s %c%c%c%c%c%c%c%c",
+=======
+	uint64_t inst = big_endianize_int64(*(uint64_t *)oprom);
+
+	uint32_t inst_hi = inst >> 32;
+	uint32_t inst_lo = inst & 0xffffffff;
+
+	uint16_t ins = (inst_hi >> 16) & 0xffff;
+	uint8_t  ctrl = (inst_hi >> 8) & 0xff;
+	uint8_t  jmp_dest = (inst_lo >> 8) & 0xff;
+
+	uint8_t jmp_ctrl = (ctrl >> 3) & 0x1f;
+
+	uint8_t ctrl1 = (inst_lo >> 16) & 0xff;
+	uint8_t ctrl2 = (inst_lo >> 24) & 0xff;
+	uint8_t ctrl3 = (inst_hi) & 0xff;
+
+	util::stream_format(stream, "%04x %c%c%c%c %02x %s%s%s%s%s%s%s%s %c%s%s%s %c%c%c%c%c%c%c%c",
+>>>>>>> upstream/master
 			ins,
 			ctrl & 1 ? 'D' : ' ',
 			ctrl & 2 ? ' ' : 'Y',

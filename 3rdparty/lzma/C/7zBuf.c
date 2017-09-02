@@ -1,7 +1,13 @@
 /* 7zBuf.c -- Byte Buffer
+<<<<<<< HEAD
 2008-03-28
 Igor Pavlov
 Public domain */
+=======
+2013-01-21 : Igor Pavlov : Public domain */
+
+#include "Precomp.h"
+>>>>>>> upstream/master
 
 #include "7zBuf.h"
 

@@ -32,7 +32,11 @@
  *
  *  Q0 The output logic level of Q before the indicated input conditions were established
  *
+<<<<<<< HEAD
  *  R:  0 --> 1
+=======
+ *  R:  0 -. 1
+>>>>>>> upstream/master
  *
  *  Naming conventions follow National Semiconductor datasheet
  *
@@ -42,6 +46,7 @@
 #ifndef NLD_7474_H_
 #define NLD_7474_H_
 
+<<<<<<< HEAD
 #include "nld_signal.h"
 
 #define TTL_7474(_name, _CLK, _D, _CLRQ, _PREQ)                                     \
@@ -82,5 +87,18 @@ NETLIB_DEVICE(7474_dip,
 );
 
 NETLIB_NAMESPACE_DEVICES_END()
+=======
+#include "../nl_setup.h"
+
+#define TTL_7474(name, cCLK, cD, cCLRQ, cPREQ)                                  \
+		NET_REGISTER_DEV(TTL_7474, name)                                        \
+		NET_CONNECT(name, CLK, cCLK)                                            \
+		NET_CONNECT(name, D,  cD)                                               \
+		NET_CONNECT(name, CLRQ,  cCLRQ)                                         \
+		NET_CONNECT(name, PREQ,  cPREQ)
+
+#define TTL_7474_DIP(name)                                                      \
+		NET_REGISTER_DEV(TTL_7474_DIP, name)
+>>>>>>> upstream/master
 
 #endif /* NLD_7474_H_ */

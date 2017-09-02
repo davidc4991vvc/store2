@@ -18,6 +18,12 @@
 #include "emu.h"
 #include "wave.h"
 
+<<<<<<< HEAD
+=======
+#include "speaker.h"
+
+
+>>>>>>> upstream/master
 #define ALWAYS_PLAY_SOUND   0
 
 
@@ -28,6 +34,7 @@ void wave_device::static_set_cassette_tag(device_t &device, const char *cassette
 	wave.m_cassette_tag = cassette_tag;
 }
 
+<<<<<<< HEAD
 const device_type WAVE = &device_creator<wave_device>;
 
 wave_device::wave_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
@@ -44,6 +51,15 @@ wave_device::wave_device(const machine_config &mconfig, const char *tag, device_
 //-------------------------------------------------
 
 void wave_device::device_config_complete()
+=======
+DEFINE_DEVICE_TYPE(WAVE, wave_device, "wave", "Wave")
+
+wave_device::wave_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: device_t(mconfig, WAVE, tag, owner, clock)
+	, device_sound_interface(mconfig, *this)
+	, m_cassette_tag(nullptr)
+	, m_cass(nullptr)
+>>>>>>> upstream/master
 {
 }
 
@@ -72,7 +88,11 @@ void wave_device::sound_stream_update(sound_stream &stream, stream_sample_t **in
 	double time_index;
 	double duration;
 	stream_sample_t *left_buffer = outputs[0];
+<<<<<<< HEAD
 	stream_sample_t *right_buffer = NULL;
+=======
+	stream_sample_t *right_buffer = nullptr;
+>>>>>>> upstream/master
 	int i;
 
 	speaker_device_iterator spkiter(m_cass->machine().root_device());
@@ -96,9 +116,15 @@ void wave_device::sound_stream_update(sound_stream &stream, stream_sample_t **in
 
 		for (i = samples - 1; i >= 0; i--)
 		{
+<<<<<<< HEAD
 			left_buffer[i] = ((INT16 *) left_buffer)[i];
 			if (speakers > 1)
 				right_buffer[i] = ((INT16 *) right_buffer)[i];
+=======
+			left_buffer[i] = ((int16_t *) left_buffer)[i];
+			if (speakers > 1)
+				right_buffer[i] = ((int16_t *) right_buffer)[i];
+>>>>>>> upstream/master
 		}
 	}
 	else

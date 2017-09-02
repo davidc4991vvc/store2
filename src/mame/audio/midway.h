@@ -7,11 +7,19 @@
     Functions to emulate general the various Midway sound cards.
 
 ***************************************************************************/
+<<<<<<< HEAD
 
 #pragma once
 
 #ifndef __MIDWAY_AUDIO__
 #define __MIDWAY_AUDIO__
+=======
+#ifndef MAME_AUDIO_MIDWAY_H
+#define MAME_AUDIO_MIDWAY_H
+
+#pragma once
+
+>>>>>>> upstream/master
 
 #include "cpu/z80/z80.h"
 #include "cpu/m68000/m68000.h"
@@ -27,15 +35,23 @@
 //  GLOBAL VARIABLES
 //**************************************************************************
 
+<<<<<<< HEAD
 extern const device_type MIDWAY_SSIO;
 extern const device_type MIDWAY_CHIP_SQUEAK_DELUXE;
 extern const device_type MIDWAY_SOUNDS_GOOD;
 extern const device_type MIDWAY_TURBO_CHIP_SQUEAK;
 extern const device_type MIDWAY_SQUAWK_N_TALK;
+=======
+DECLARE_DEVICE_TYPE(MIDWAY_SSIO,               midway_ssio_device)
+DECLARE_DEVICE_TYPE(MIDWAY_SOUNDS_GOOD,        midway_sounds_good_device)
+DECLARE_DEVICE_TYPE(MIDWAY_TURBO_CHEAP_SQUEAK, midway_turbo_cheap_squeak_device)
+DECLARE_DEVICE_TYPE(MIDWAY_SQUAWK_N_TALK,      midway_squawk_n_talk_device)
+>>>>>>> upstream/master
 
 
 
 //**************************************************************************
+<<<<<<< HEAD
 //  DEVICE CONFIGURATION MACROS
 //**************************************************************************
 
@@ -52,6 +68,8 @@ extern const device_type MIDWAY_SQUAWK_N_TALK;
 
 
 //**************************************************************************
+=======
+>>>>>>> upstream/master
 //  TYPE DEFINITIONS
 //**************************************************************************
 
@@ -62,7 +80,11 @@ class midway_ssio_device :  public device_t,
 {
 public:
 	// construction/destruction
+<<<<<<< HEAD
 	midway_ssio_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
+=======
+	midway_ssio_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
+>>>>>>> upstream/master
 
 	// read/write
 	DECLARE_READ8_MEMBER(read);
@@ -72,6 +94,7 @@ public:
 	DECLARE_WRITE8_MEMBER(ioport_write);
 
 	// configuration
+<<<<<<< HEAD
 	void set_custom_input(int which, UINT8 mask, read8_delegate handler);
 	void set_custom_output(int which, UINT8 mask, write8_delegate handler);
 
@@ -93,6 +116,24 @@ protected:
 	virtual void device_start();
 	virtual void device_reset();
 	virtual void device_timer(emu_timer &timer, device_timer_id id, int param, void *ptr);
+=======
+	void set_custom_input(int which, uint8_t mask, read8_delegate handler);
+	void set_custom_output(int which, uint8_t mask, write8_delegate handler);
+
+	// internal communications
+	DECLARE_READ8_MEMBER(irq_clear);
+	DECLARE_WRITE8_MEMBER(status_w);
+	DECLARE_READ8_MEMBER(data_r);
+
+protected:
+	// device-level overrides
+	virtual const tiny_rom_entry *device_rom_region() const override;
+	virtual void device_add_mconfig(machine_config &config) override;
+	virtual ioport_constructor device_input_ports() const override;
+	virtual void device_start() override;
+	virtual void device_reset() override;
+	virtual void device_timer(emu_timer &timer, device_timer_id id, int param, void *ptr) override;
+>>>>>>> upstream/master
 
 private:
 	// internal helpers
@@ -104,6 +145,7 @@ private:
 	required_device<ay8910_device> m_ay0;
 	required_device<ay8910_device> m_ay1;
 
+<<<<<<< HEAD
 	// internal state
 	UINT8 m_data[4];
 	UINT8 m_status;
@@ -158,6 +200,32 @@ private:
 	// internal state
 	UINT8 m_status;
 	UINT16 m_dacval;
+=======
+	// I/O ports
+	optional_ioport_array<5> m_ports;
+
+	// internal state
+	uint8_t m_data[4];
+	uint8_t m_status;
+	uint8_t m_14024_count;
+	uint8_t m_mute;
+	uint8_t m_overall[2];
+	uint8_t m_duty_cycle[2][3];
+	uint8_t m_ayvolume_lookup[16];
+
+	// I/O port overrides
+	uint8_t m_custom_input_mask[5];
+	read8_delegate m_custom_input[5];
+	uint8_t m_custom_output_mask[2];
+	write8_delegate m_custom_output[2];
+
+	INTERRUPT_GEN_MEMBER(clock_14024);
+	DECLARE_WRITE8_MEMBER(porta0_w);
+	DECLARE_WRITE8_MEMBER(portb0_w);
+	DECLARE_WRITE8_MEMBER(porta1_w);
+	DECLARE_WRITE8_MEMBER(portb1_w);
+
+>>>>>>> upstream/master
 };
 
 
@@ -168,13 +236,18 @@ class midway_sounds_good_device :   public device_t,
 {
 public:
 	// construction/destruction
+<<<<<<< HEAD
 	midway_sounds_good_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
+=======
+	midway_sounds_good_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
+>>>>>>> upstream/master
 
 	// read/write
 	DECLARE_READ8_MEMBER(read);
 	DECLARE_WRITE8_MEMBER(write);
 	DECLARE_WRITE_LINE_MEMBER(reset_write);
 
+<<<<<<< HEAD
 	// internal communications
 	DECLARE_WRITE8_MEMBER(porta_w);
 	DECLARE_WRITE8_MEMBER(portb_w);
@@ -186,11 +259,20 @@ protected:
 	virtual void device_start();
 	virtual void device_reset();
 	virtual void device_timer(emu_timer &timer, device_timer_id id, int param, void *ptr);
+=======
+protected:
+	// device-level overrides
+	virtual void device_add_mconfig(machine_config &config) override;
+	virtual void device_start() override;
+	virtual void device_reset() override;
+	virtual void device_timer(emu_timer &timer, device_timer_id id, int param, void *ptr) override;
+>>>>>>> upstream/master
 
 private:
 	// devices
 	required_device<m68000_device> m_cpu;
 	required_device<pia6821_device> m_pia;
+<<<<<<< HEAD
 	required_device<dac_device> m_dac;
 
 	// internal state
@@ -202,17 +284,40 @@ private:
 // ======================> midway_turbo_chip_squeak_device
 
 class midway_turbo_chip_squeak_device : public device_t,
+=======
+	required_device<dac_word_interface> m_dac;
+
+	// internal state
+	uint8_t m_status;
+	uint16_t m_dacval;
+
+	// internal communications
+	DECLARE_WRITE8_MEMBER(porta_w);
+	DECLARE_WRITE8_MEMBER(portb_w);
+	DECLARE_WRITE_LINE_MEMBER(irq_w);
+};
+
+
+// ======================> midway_turbo_cheap_squeak_device
+
+class midway_turbo_cheap_squeak_device : public device_t,
+>>>>>>> upstream/master
 										public device_mixer_interface
 {
 public:
 	// construction/destruction
+<<<<<<< HEAD
 	midway_turbo_chip_squeak_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
+=======
+	midway_turbo_cheap_squeak_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
+>>>>>>> upstream/master
 
 	// read/write
 	DECLARE_READ8_MEMBER(read);
 	DECLARE_WRITE8_MEMBER(write);
 	DECLARE_WRITE_LINE_MEMBER(reset_write);
 
+<<<<<<< HEAD
 	// internal communications
 	DECLARE_WRITE8_MEMBER(porta_w);
 	DECLARE_WRITE8_MEMBER(portb_w);
@@ -224,16 +329,37 @@ protected:
 	virtual void device_start();
 	virtual void device_reset();
 	virtual void device_timer(emu_timer &timer, device_timer_id id, int param, void *ptr);
+=======
+protected:
+	// device-level overrides
+	virtual void device_add_mconfig(machine_config &config) override;
+	virtual void device_start() override;
+	virtual void device_reset() override;
+	virtual void device_timer(emu_timer &timer, device_timer_id id, int param, void *ptr) override;
+>>>>>>> upstream/master
 
 private:
 	// devices
 	required_device<m6809e_device> m_cpu;
 	required_device<pia6821_device> m_pia;
+<<<<<<< HEAD
 	required_device<dac_device> m_dac;
 
 	// internal state
 	UINT8 m_status;
 	UINT16 m_dacval;
+=======
+	required_device<dac_word_interface> m_dac;
+
+	// internal state
+	uint8_t m_status;
+	uint16_t m_dacval;
+
+	// internal communications
+	DECLARE_WRITE8_MEMBER(porta_w);
+	DECLARE_WRITE8_MEMBER(portb_w);
+	DECLARE_WRITE_LINE_MEMBER(irq_w);
+>>>>>>> upstream/master
 };
 
 
@@ -244,13 +370,18 @@ class midway_squawk_n_talk_device : public device_t,
 {
 public:
 	// construction/destruction
+<<<<<<< HEAD
 	midway_squawk_n_talk_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
+=======
+	midway_squawk_n_talk_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
+>>>>>>> upstream/master
 
 	// read/write
 	DECLARE_WRITE8_MEMBER(write);
 	DECLARE_WRITE_LINE_MEMBER(reset_write);
 
 	// internal communications
+<<<<<<< HEAD
 	DECLARE_WRITE8_MEMBER(porta1_w);
 	DECLARE_WRITE8_MEMBER(dac_w);
 	DECLARE_WRITE8_MEMBER(porta2_w);
@@ -263,6 +394,16 @@ protected:
 	virtual void device_start();
 	virtual void device_reset();
 	virtual void device_timer(emu_timer &timer, device_timer_id id, int param, void *ptr);
+=======
+	DECLARE_WRITE8_MEMBER(dac_w);
+
+protected:
+	// device-level overrides
+	virtual void device_add_mconfig(machine_config &config) override;
+	virtual void device_start() override;
+	virtual void device_reset() override;
+	virtual void device_timer(emu_timer &timer, device_timer_id id, int param, void *ptr) override;
+>>>>>>> upstream/master
 
 private:
 	// devices
@@ -272,8 +413,19 @@ private:
 	optional_device<tms5200_device> m_tms5200;
 
 	// internal state
+<<<<<<< HEAD
 	UINT8 m_tms_command;
 	UINT8 m_tms_strobes;
+=======
+	uint8_t m_tms_command;
+	uint8_t m_tms_strobes;
+
+	// internal communications
+	DECLARE_WRITE8_MEMBER(porta1_w);
+	DECLARE_WRITE8_MEMBER(porta2_w);
+	DECLARE_WRITE8_MEMBER(portb2_w);
+	DECLARE_WRITE_LINE_MEMBER(irq_w);
+>>>>>>> upstream/master
 };
 
 
@@ -282,8 +434,16 @@ private:
 #define SSIO_INPUT_PORTS(ssio) \
 	AM_RANGE(0x00, 0x04) AM_MIRROR(0x18) AM_DEVREAD(ssio, midway_ssio_device, ioport_read) \
 	AM_RANGE(0x07, 0x07) AM_MIRROR(0x18) AM_DEVREAD(ssio, midway_ssio_device, read) \
+<<<<<<< HEAD
 	AM_RANGE(0x00, 0x07) AM_MIRROR(0x03) AM_DEVWRITE(ssio, midway_ssio_device, ioport_write) \
 	AM_RANGE(0x1c, 0x1f) AM_DEVWRITE(ssio, midway_ssio_device, write)
 
 
 #endif /* __MIDWAY_AUDIO__ */
+=======
+	AM_RANGE(0x00, 0x07) AM_DEVWRITE(ssio, midway_ssio_device, ioport_write) \
+	AM_RANGE(0x1c, 0x1f) AM_DEVWRITE(ssio, midway_ssio_device, write)
+
+
+#endif // MAME_AUDIO_MIDWAY_H
+>>>>>>> upstream/master

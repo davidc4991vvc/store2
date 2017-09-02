@@ -6,12 +6,20 @@
 
 **********************************************************************/
 
+<<<<<<< HEAD
 #pragma once
 
 #ifndef __C1571__
 #define __C1571__
 
 #include "emu.h"
+=======
+#ifndef MAME_BUS_CBMIEC_C1571_H
+#define MAME_BUS_CBMIEC_C1571_H
+
+#pragma once
+
+>>>>>>> upstream/master
 #include "cbmiec.h"
 #include "bus/c64/bn1541.h"
 #include "cpu/m6502/m6502.h"
@@ -36,6 +44,7 @@
 //  TYPE DEFINITIONS
 //**************************************************************************
 
+<<<<<<< HEAD
 // ======================> c1571_t
 
 class c1571_t :  public device_t,
@@ -51,6 +60,15 @@ public:
 	virtual const rom_entry *device_rom_region() const;
 	virtual machine_config_constructor device_mconfig_additions() const;
 	virtual ioport_constructor device_input_ports() const;
+=======
+// ======================> c1571_device
+
+class c1571_device : public device_t, public device_cbm_iec_interface, public device_c64_floppy_parallel_interface
+{
+public:
+	// construction/destruction
+	c1571_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
+>>>>>>> upstream/master
 
 	DECLARE_WRITE_LINE_MEMBER( via0_irq_w );
 	DECLARE_READ8_MEMBER( via0_pa_r );
@@ -73,13 +91,17 @@ public:
 
 	DECLARE_WRITE_LINE_MEMBER( byte_w );
 
+<<<<<<< HEAD
 	DECLARE_WRITE_LINE_MEMBER( wpt_w );
 
+=======
+>>>>>>> upstream/master
 	DECLARE_FLOPPY_FORMATS( floppy_formats );
 
 	void wpt_callback(floppy_image_device *floppy, int state);
 
 protected:
+<<<<<<< HEAD
 	// device-level overrides
 	virtual void device_start();
 	virtual void device_reset();
@@ -93,6 +115,28 @@ protected:
 	// device_c64_floppy_parallel_interface overrides
 	virtual void parallel_data_w(UINT8 data);
 	virtual void parallel_strobe_w(int state);
+=======
+	c1571_device(const machine_config &mconfig, device_type type, const char *tag, device_t *owner, uint32_t clock);
+
+	// device-level overrides
+	virtual void device_start() override;
+	virtual void device_reset() override;
+
+	// optional information overrides
+	virtual const tiny_rom_entry *device_rom_region() const override;
+	virtual void device_add_mconfig(machine_config &config) override;
+	virtual ioport_constructor device_input_ports() const override;
+
+	// device_cbm_iec_interface overrides
+	virtual void cbm_iec_srq(int state) override;
+	virtual void cbm_iec_atn(int state) override;
+	virtual void cbm_iec_data(int state) override;
+	virtual void cbm_iec_reset(int state) override;
+
+	// device_c64_floppy_parallel_interface overrides
+	virtual void parallel_data_w(uint8_t data) override;
+	virtual void parallel_strobe_w(int state) override;
+>>>>>>> upstream/master
 
 	enum
 	{
@@ -106,7 +150,11 @@ protected:
 	required_device<via6522_device> m_via0;
 	required_device<via6522_device> m_via1;
 	required_device<mos6526_device> m_cia;
+<<<<<<< HEAD
 	required_device<wd1770_t> m_fdc;
+=======
+	required_device<wd1770_device> m_fdc;
+>>>>>>> upstream/master
 	required_device<c64h156_device> m_ga;
 	required_device<floppy_image_device> m_floppy;
 	required_ioport m_address;
@@ -127,6 +175,7 @@ protected:
 };
 
 
+<<<<<<< HEAD
 // ======================> c1570_t
 
 class c1570_t :  public c1571_t
@@ -153,11 +202,43 @@ public:
 	virtual const rom_entry *device_rom_region() const;
 	virtual machine_config_constructor device_mconfig_additions() const;
 
+=======
+// ======================> c1570_device
+
+class c1570_device :  public c1571_device
+{
+public:
+	// construction/destruction
+	c1570_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
+
+protected:
+	// optional information overrides
+	virtual const tiny_rom_entry *device_rom_region() const override;
+	virtual void device_add_mconfig(machine_config &config) override;
+};
+
+
+// ======================> c1571cr_device
+
+class c1571cr_device :  public c1571_device
+{
+public:
+	// construction/destruction
+	c1571cr_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
+
+protected:
+	// optional information overrides
+	virtual const tiny_rom_entry *device_rom_region() const override;
+	virtual void device_add_mconfig(machine_config &config) override;
+
+private:
+>>>>>>> upstream/master
 	DECLARE_WRITE8_MEMBER( via0_pa_w );
 	DECLARE_WRITE8_MEMBER( via0_pb_w );
 };
 
 
+<<<<<<< HEAD
 // ======================> mini_chief_t
 
 class mini_chief_t :  public c1571_t
@@ -170,6 +251,22 @@ public:
 	virtual const rom_entry *device_rom_region() const;
 	virtual machine_config_constructor device_mconfig_additions() const;
 
+=======
+// ======================> mini_chief_device
+
+class mini_chief_device :  public c1571_device
+{
+public:
+	// construction/destruction
+	mini_chief_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
+
+protected:
+	// optional information overrides
+	virtual const tiny_rom_entry *device_rom_region() const override;
+	virtual void device_add_mconfig(machine_config &config) override;
+
+private:
+>>>>>>> upstream/master
 	DECLARE_READ8_MEMBER( cia_pa_r );
 	DECLARE_WRITE8_MEMBER( cia_pa_w );
 	DECLARE_WRITE8_MEMBER( cia_pb_w );
@@ -177,6 +274,7 @@ public:
 
 
 // device type definition
+<<<<<<< HEAD
 extern const device_type C1570;
 extern const device_type C1571;
 extern const device_type C1571CR;
@@ -185,3 +283,11 @@ extern const device_type MINI_CHIEF;
 
 
 #endif
+=======
+DECLARE_DEVICE_TYPE(C1570,      c1570_device)
+DECLARE_DEVICE_TYPE(C1571,      c1571_device)
+DECLARE_DEVICE_TYPE(C1571CR,    c1571cr_device)
+DECLARE_DEVICE_TYPE(MINI_CHIEF, mini_chief_device)
+
+#endif // MAME_BUS_CBMIEC_C1571_H
+>>>>>>> upstream/master

@@ -1,6 +1,11 @@
 /*
+<<<<<<< HEAD
  * Copyright 2011-2015 Branimir Karadzic. All rights reserved.
  * License: http://www.opensource.org/licenses/BSD-2-Clause
+=======
+ * Copyright 2011-2017 Branimir Karadzic. All rights reserved.
+ * License: https://github.com/bkaradzic/bgfx#license-bsd-2-clause
+>>>>>>> upstream/master
  */
 
 #ifndef BGFX_RENDERER_D3D_H_HEADER_GUARD
@@ -21,6 +26,15 @@
 
 namespace bgfx
 {
+<<<<<<< HEAD
+=======
+#if BX_PLATFORM_XBOXONE
+	typedef ::IGraphicsUnknown IUnknown;
+#else
+	typedef ::IUnknown IUnknown;
+#endif // BX_PLATFORM_XBOXONE
+
+>>>>>>> upstream/master
 #define _DX_CHECK(_call) \
 			BX_MACRO_BLOCK_BEGIN \
 				HRESULT __hr__ = _call; \
@@ -90,13 +104,28 @@ namespace bgfx
 #	define PIX_ENDEVENT()
 #endif // BGFX_CONFIG_DEBUG_PIX
 
+<<<<<<< HEAD
+=======
+#define D3DCOLOR_FRAME   D3DCOLOR_RGBA(0xff, 0xd7, 0xc9, 0xff)
+#define D3DCOLOR_VIEW    D3DCOLOR_RGBA(0xe4, 0xb4, 0x8e, 0xff)
+#define D3DCOLOR_VIEW_L  D3DCOLOR_RGBA(0xf9, 0xee, 0xe5, 0xff)
+#define D3DCOLOR_VIEW_R  D3DCOLOR_RGBA(0xe8, 0xd3, 0xc0, 0xff)
+#define D3DCOLOR_DRAW    D3DCOLOR_RGBA(0xc6, 0xe5, 0xb9, 0xff)
+#define D3DCOLOR_COMPUTE D3DCOLOR_RGBA(0xa7, 0xdb, 0xd8, 0xff)
+#define D3DCOLOR_MARKER  D3DCOLOR_RGBA(0xff, 0x00, 0x00, 0xff)
+
+>>>>>>> upstream/master
 	inline int getRefCount(IUnknown* _interface)
 	{
 		_interface->AddRef();
 		return _interface->Release();
 	}
 
+<<<<<<< HEAD
 	template <typename Ty>
+=======
+	template<typename Ty>
+>>>>>>> upstream/master
 	class StateCacheT
 	{
 	public:
@@ -104,6 +133,14 @@ namespace bgfx
 		{
 			invalidate(_key);
 			m_hashMap.insert(stl::make_pair(_key, _value) );
+<<<<<<< HEAD
+=======
+			BX_CHECK(isGraphicsDebuggerPresent()
+				|| 1 == getRefCount(_value), "Interface ref count %d, hash %" PRIx64 "."
+				, getRefCount(_value)
+				, _key
+				);
+>>>>>>> upstream/master
 		}
 
 		Ty* find(uint64_t _key)
@@ -148,6 +185,7 @@ namespace bgfx
 		HashMap m_hashMap;
 	};
 
+<<<<<<< HEAD
 	class StateCache
 	{
 	public:
@@ -197,12 +235,15 @@ namespace bgfx
 	{
 	}
 
+=======
+>>>>>>> upstream/master
 	template<>
 	inline void release<IUnknown*>(IUnknown* _ptr)
 	{
 		DX_RELEASE(_ptr, 0);
 	}
 
+<<<<<<< HEAD
 	template <typename Ty, uint16_t MaxHandleT>
 	class StateCacheLru
 	{
@@ -314,6 +355,8 @@ namespace bgfx
 		Data m_data[MaxHandleT];
 	};
 
+=======
+>>>>>>> upstream/master
 } // namespace bgfx
 
 #endif // BGFX_RENDERER_D3D_H_HEADER_GUARD

@@ -16,7 +16,11 @@ WRITE8_MEMBER(mexico86_state::mexico86_bankswitch_w)
 
 
 
+<<<<<<< HEAD
 UINT32 mexico86_state::screen_update_mexico86(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+=======
+uint32_t mexico86_state::screen_update_mexico86(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+>>>>>>> upstream/master
 {
 	int offs;
 	int sx, sy, xc, yc;
@@ -42,9 +46,15 @@ UINT32 mexico86_state::screen_update_mexico86(screen_device &screen, bitmap_ind1
 			continue;
 
 		/* skip empty sprites */
+<<<<<<< HEAD
 		/* this is dword aligned so the UINT32 * cast shouldn't give problems */
 		/* on any architecture */
 		if (*(UINT32 *)(&m_objectram[offs]) == 0)
+=======
+		/* this is dword aligned so the uint32_t * cast shouldn't give problems */
+		/* on any architecture */
+		if (*(uint32_t *)(&m_objectram[offs]) == 0)
+>>>>>>> upstream/master
 			continue;
 
 		gfx_num = m_objectram[offs + 1];
@@ -98,7 +108,11 @@ UINT32 mexico86_state::screen_update_mexico86(screen_device &screen, bitmap_ind1
 	return 0;
 }
 
+<<<<<<< HEAD
 UINT32 mexico86_state::screen_update_kikikai(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+=======
+uint32_t mexico86_state::screen_update_kikikai(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+>>>>>>> upstream/master
 {
 	int offs;
 	int sx, sy, yc;
@@ -111,7 +125,11 @@ UINT32 mexico86_state::screen_update_kikikai(screen_device &screen, bitmap_ind16
 	sx = 0;
 	for (offs = 0; offs < m_objectram.bytes(); offs += 4)
 	{
+<<<<<<< HEAD
 		if (*(UINT32*)(m_objectram + offs) == 0)
+=======
+		if (*(uint32_t*)(m_objectram + offs) == 0)
+>>>>>>> upstream/master
 			continue;
 
 		ty = m_objectram[offs];

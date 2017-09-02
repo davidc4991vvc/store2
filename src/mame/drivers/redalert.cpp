@@ -81,7 +81,11 @@
     the MAME soundrom (red alert) it is marked exactly the same "w3s1"(IC5).
     The Bprom matched the Red Alert set also... marked "W3" i think?
     it's hard to see because the sticker has been damaged.
+<<<<<<< HEAD
     The other eproms exept one did not match anything in MAME,
+=======
+    The other eproms except one did not match anything in MAME,
+>>>>>>> upstream/master
     and only one of those had the eprom type markings on it... I read all
     like that type.
 
@@ -387,7 +391,11 @@ INPUT_PORTS_END
  *
  *************************************/
 
+<<<<<<< HEAD
 static MACHINE_CONFIG_START( redalert, redalert_state )
+=======
+static MACHINE_CONFIG_START( redalert )
+>>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", M6502, MAIN_CPU_CLOCK)
@@ -401,7 +409,11 @@ static MACHINE_CONFIG_START( redalert, redalert_state )
 	MCFG_FRAGMENT_ADD(redalert_audio)
 MACHINE_CONFIG_END
 
+<<<<<<< HEAD
 static MACHINE_CONFIG_START( ww3, redalert_state )
+=======
+static MACHINE_CONFIG_START( ww3 )
+>>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", M6502, MAIN_CPU_CLOCK)
@@ -415,7 +427,11 @@ static MACHINE_CONFIG_START( ww3, redalert_state )
 	MCFG_FRAGMENT_ADD(ww3_audio)
 MACHINE_CONFIG_END
 
+<<<<<<< HEAD
 static MACHINE_CONFIG_START( panther, redalert_state )
+=======
+static MACHINE_CONFIG_START( panther )
+>>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", M6502, MAIN_CPU_CLOCK)
@@ -429,7 +445,11 @@ static MACHINE_CONFIG_START( panther, redalert_state )
 	MCFG_FRAGMENT_ADD(ww3_audio)
 MACHINE_CONFIG_END
 
+<<<<<<< HEAD
 static MACHINE_CONFIG_START( demoneye, redalert_state )
+=======
+static MACHINE_CONFIG_START( demoneye )
+>>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", M6502, MAIN_CPU_CLOCK)
@@ -538,7 +558,14 @@ ROM_END
  *
  *************************************/
 
+<<<<<<< HEAD
 GAME( 1981, panther,  0,        panther,  panther, driver_device,  0, ROT270, "Irem",               "Panther",    MACHINE_NO_SOUND | MACHINE_SUPPORTS_SAVE )
 GAME( 1981, redalert, 0,        redalert, redalert, driver_device, 0, ROT270, "Irem (GDI license)", "Red Alert",  MACHINE_IMPERFECT_SOUND | MACHINE_SUPPORTS_SAVE )
 GAME( 1981, ww3,      redalert, ww3,      redalert, driver_device, 0, ROT270, "Irem",               "WW III",     MACHINE_IMPERFECT_SOUND | MACHINE_SUPPORTS_SAVE )
 GAME( 1981, demoneye, 0,        demoneye, demoneye, driver_device, 0, ROT270, "Irem",               "Demoneye-X", MACHINE_NOT_WORKING | MACHINE_IMPERFECT_GRAPHICS | MACHINE_IMPERFECT_SOUND | MACHINE_SUPPORTS_SAVE )
+=======
+GAME( 1981, panther,  0,        panther,  panther,  redalert_state, 0, ROT270, "Irem",               "Panther",    MACHINE_NO_SOUND | MACHINE_SUPPORTS_SAVE )
+GAME( 1981, redalert, 0,        redalert, redalert, redalert_state, 0, ROT270, "Irem (GDI license)", "Red Alert",  MACHINE_IMPERFECT_SOUND | MACHINE_SUPPORTS_SAVE )
+GAME( 1981, ww3,      redalert, ww3,      redalert, redalert_state, 0, ROT270, "Irem",               "WW III",     MACHINE_IMPERFECT_SOUND | MACHINE_SUPPORTS_SAVE )
+GAME( 1981, demoneye, 0,        demoneye, demoneye, redalert_state, 0, ROT270, "Irem",               "Demoneye-X", MACHINE_NOT_WORKING | MACHINE_IMPERFECT_GRAPHICS | MACHINE_IMPERFECT_SOUND | MACHINE_SUPPORTS_SAVE )
+>>>>>>> upstream/master

@@ -6,6 +6,10 @@
 
 **********************************************************************/
 
+<<<<<<< HEAD
+=======
+#include "emu.h"
+>>>>>>> upstream/master
 #include "superpet.h"
 #include "bus/rs232/rs232.h"
 #include "cpu/m6809/m6809.h"
@@ -27,7 +31,11 @@
 //  DEVICE DEFINITIONS
 //**************************************************************************
 
+<<<<<<< HEAD
 const device_type SUPERPET = &device_creator<superpet_device>;
+=======
+DEFINE_DEVICE_TYPE(SUPERPET, superpet_device, "pet_superpet", "Commodore SuperPET")
+>>>>>>> upstream/master
 
 
 //-------------------------------------------------
@@ -49,7 +57,11 @@ ROM_END
 //  rom_region - device-specific ROM region
 //-------------------------------------------------
 
+<<<<<<< HEAD
 const rom_entry *superpet_device::device_rom_region() const
+=======
+const tiny_rom_entry *superpet_device::device_rom_region() const
+>>>>>>> upstream/master
 {
 	return ROM_NAME( superpet );
 }
@@ -65,10 +77,17 @@ ADDRESS_MAP_END
 
 
 //-------------------------------------------------
+<<<<<<< HEAD
 //  MACHINE_CONFIG_FRAGMENT( superpet )
 //-------------------------------------------------
 
 static MACHINE_CONFIG_FRAGMENT( superpet )
+=======
+//  device_add_mconfig - add device configuration
+//-------------------------------------------------
+
+MACHINE_CONFIG_MEMBER( superpet_device::device_add_mconfig )
+>>>>>>> upstream/master
 	MCFG_CPU_ADD(M6809_TAG, M6809, XTAL_16MHz/16)
 	MCFG_CPU_PROGRAM_MAP(superpet_mem)
 
@@ -79,7 +98,11 @@ static MACHINE_CONFIG_FRAGMENT( superpet )
 	MCFG_MOS6551_IRQ_HANDLER(WRITELINE(superpet_device, acia_irq_w))
 	MCFG_MOS6551_TXD_HANDLER(DEVWRITELINE(RS232_TAG, rs232_port_device, write_txd))
 
+<<<<<<< HEAD
 	MCFG_RS232_PORT_ADD(RS232_TAG, default_rs232_devices, NULL)
+=======
+	MCFG_RS232_PORT_ADD(RS232_TAG, default_rs232_devices, nullptr)
+>>>>>>> upstream/master
 	MCFG_RS232_RXD_HANDLER(DEVWRITELINE(MOS6551_TAG, mos6551_device, write_rxd))
 	MCFG_RS232_DCD_HANDLER(DEVWRITELINE(MOS6551_TAG, mos6551_device, write_dcd))
 	MCFG_RS232_DSR_HANDLER(DEVWRITELINE(MOS6551_TAG, mos6551_device, write_dsr))
@@ -88,6 +111,7 @@ MACHINE_CONFIG_END
 
 
 //-------------------------------------------------
+<<<<<<< HEAD
 //  machine_config_additions - device-specific
 //  machine configurations
 //-------------------------------------------------
@@ -99,6 +123,8 @@ machine_config_constructor superpet_device::device_mconfig_additions() const
 
 
 //-------------------------------------------------
+=======
+>>>>>>> upstream/master
 //  INPUT_PORTS( superpet )
 //-------------------------------------------------
 
@@ -174,8 +200,13 @@ inline bool superpet_device::is_ram_writable()
 //  superpet_device - constructor
 //-------------------------------------------------
 
+<<<<<<< HEAD
 superpet_device::superpet_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock) :
 	device_t(mconfig, SUPERPET, "SuperPET", tag, owner, clock, "pet_superpet", __FILE__),
+=======
+superpet_device::superpet_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock) :
+	device_t(mconfig, SUPERPET, tag, owner, clock),
+>>>>>>> upstream/master
 	device_pet_expansion_card_interface(mconfig, *this),
 	m_maincpu(*this, M6809_TAG),
 	m_acia(*this, MOS6551_TAG),
@@ -243,7 +274,11 @@ int superpet_device::pet_norom_r(address_space &space, offs_t offset, int sel)
 //  pet_bd_r - buffered data read
 //-------------------------------------------------
 
+<<<<<<< HEAD
 UINT8 superpet_device::pet_bd_r(address_space &space, offs_t offset, UINT8 data, int &sel)
+=======
+uint8_t superpet_device::pet_bd_r(address_space &space, offs_t offset, uint8_t data, int &sel)
+>>>>>>> upstream/master
 {
 	int norom = pet_norom_r(space, offset, sel);
 
@@ -304,7 +339,11 @@ UINT8 superpet_device::pet_bd_r(address_space &space, offs_t offset, UINT8 data,
 //  pet_bd_w - buffered data write
 //-------------------------------------------------
 
+<<<<<<< HEAD
 void superpet_device::pet_bd_w(address_space &space, offs_t offset, UINT8 data, int &sel)
+=======
+void superpet_device::pet_bd_w(address_space &space, offs_t offset, uint8_t data, int &sel)
+>>>>>>> upstream/master
 {
 	switch (sel)
 	{

@@ -37,6 +37,10 @@
     MZ, Aug 2015
 */
 
+<<<<<<< HEAD
+=======
+#include "emu.h"
+>>>>>>> upstream/master
 #include "at29x.h"
 
 #define TRACE_PRG 0
@@ -54,6 +58,7 @@ enum
     Constructor for all variants
 */
 
+<<<<<<< HEAD
 at29x_device::at29x_device(const machine_config &mconfig, device_type type, const char *name, const char *tag, device_t *owner, UINT32 clock, const char *shortname, const char *source)
 	: device_t(mconfig, type, name, tag, owner, clock, shortname, source),
 	device_nvram_interface(mconfig, *this),
@@ -61,6 +66,15 @@ at29x_device::at29x_device(const machine_config &mconfig, device_type type, cons
 	m_word_width(8),
 	m_device_id(0),
 	m_sector_size(0),
+=======
+at29x_device::at29x_device(const machine_config &mconfig, device_type type, const char *tag, device_t *owner, uint32_t clock, int memory_size, int device_id, int sector_size)
+	: device_t(mconfig, type, tag, owner, clock),
+	device_nvram_interface(mconfig, *this),
+	m_memory_size(memory_size),   // bytes
+	m_word_width(8),
+	m_device_id(device_id),
+	m_sector_size(sector_size),
+>>>>>>> upstream/master
 	m_cycle_time(10),    // ms
 	m_boot_block_size(16*1024),
 	m_version(0)
@@ -70,34 +84,52 @@ at29x_device::at29x_device(const machine_config &mconfig, device_type type, cons
 /*
     Constructor for AT29C020
 */
+<<<<<<< HEAD
 at29c020_device::at29c020_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
 	: at29x_device(mconfig, AT29C020, "ATMEL 29C020 256K x 8 FEEPROM", tag, owner, clock, "at29c020", __FILE__)
 {
 	m_memory_size = 256*1024;
 	m_device_id = 0xda;
 	m_sector_size = 256;
+=======
+at29c020_device::at29c020_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: at29x_device(mconfig, AT29C020, tag, owner, clock, 256*1024, 0xda, 256)
+{
+>>>>>>> upstream/master
 }
 
 /*
     Constructor for AT29C040
 */
+<<<<<<< HEAD
 at29c040_device::at29c040_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
 	: at29x_device(mconfig, AT29C040, "ATMEL 29C040 512K x 8 FEEPROM", tag, owner, clock, "at29c040", __FILE__)
 {
 	m_memory_size = 512*1024;
 	m_device_id = 0x5b;
 	m_sector_size = 512;
+=======
+at29c040_device::at29c040_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: at29x_device(mconfig, AT29C040, tag, owner, clock, 512*1024, 0x5b, 512)
+{
+>>>>>>> upstream/master
 }
 
 /*
     Constructor for AT29C040A
 */
+<<<<<<< HEAD
 at29c040a_device::at29c040a_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
 	: at29x_device(mconfig, AT29C040A, "ATMEL 29C040A 512K x 8 FEEPROM", tag, owner, clock, "at29c040a", __FILE__)
 {
 	m_memory_size = 512*1024;
 	m_device_id = 0xa4;
 	m_sector_size = 256;
+=======
+at29c040a_device::at29c040a_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: at29x_device(mconfig, AT29C040A, tag, owner, clock, 512*1024, 0xa4, 256)
+{
+>>>>>>> upstream/master
 }
 
 
@@ -108,7 +140,11 @@ at29c040a_device::at29c040a_device(const machine_config &mconfig, const char *ta
 
 void at29x_device::nvram_default()
 {
+<<<<<<< HEAD
 	memset(m_eememory, 0, m_memory_size+2);
+=======
+	memset(m_eememory.get(), 0, m_memory_size+2);
+>>>>>>> upstream/master
 }
 
 //-------------------------------------------------
@@ -118,7 +154,11 @@ void at29x_device::nvram_default()
 
 void at29x_device::nvram_read(emu_file &file)
 {
+<<<<<<< HEAD
 	file.read(m_eememory, m_memory_size+2);
+=======
+	file.read(m_eememory.get(), m_memory_size+2);
+>>>>>>> upstream/master
 }
 
 //-------------------------------------------------
@@ -131,7 +171,11 @@ void at29x_device::nvram_write(emu_file &file)
 	// If we don't write (because there were no changes), the file will be wiped
 	if (TRACE_PRG) logerror("%s: Write to NVRAM file\n", tag());
 	m_eememory[0] = m_version;
+<<<<<<< HEAD
 	file.write(m_eememory, m_memory_size+2);
+=======
+	file.write(m_eememory.get(), m_memory_size+2);
+>>>>>>> upstream/master
 }
 
 /*
@@ -157,7 +201,11 @@ void at29x_device::device_timer(emu_timer &timer, device_timer_id id, int param,
 
 	case PGM_3:
 		// Programming cycle end; now burn the buffer into the flash EEPROM
+<<<<<<< HEAD
 		memcpy(m_eememory + 2 + get_sector_number(m_programming_last_offset) * m_sector_size, m_programming_buffer, m_sector_size);
+=======
+		memcpy(m_eememory.get() + 2 + get_sector_number(m_programming_last_offset) * m_sector_size, m_programming_buffer.get(), m_sector_size);
+>>>>>>> upstream/master
 
 		if (TRACE_PRG) logerror("%s: Sector write completed at location %04x\n", tag(), m_programming_last_offset);
 
@@ -366,7 +414,11 @@ WRITE8_MEMBER( at29x_device::write )
 					else
 					{
 						if (TRACE_STATE) logerror("%s: Erase chip\n", tag());
+<<<<<<< HEAD
 						memset(m_eememory+2, 0xff, m_memory_size);
+=======
+						memset(m_eememory.get()+2, 0xff, m_memory_size);
+>>>>>>> upstream/master
 					}
 				}
 				break;
@@ -460,7 +512,11 @@ WRITE8_MEMBER( at29x_device::write )
 		{   // enter programming mode
 			if (TRACE_STATE) logerror("%s: Enter programming mode (m_pgm=%d, m_sdp=%d)\n", tag(), m_pgm, m_sdp);
 			// Clear the programming buffer
+<<<<<<< HEAD
 			memset(m_programming_buffer, 0xff, m_sector_size);
+=======
+			memset(m_programming_buffer.get(), 0xff, m_sector_size);
+>>>>>>> upstream/master
 			m_pgm = PGM_2;
 		}
 	}
@@ -477,10 +533,17 @@ WRITE8_MEMBER( at29x_device::write )
 	}
 }
 
+<<<<<<< HEAD
 void at29x_device::device_start(void)
 {
 	m_programming_buffer = global_alloc_array(UINT8, m_sector_size);
 	m_eememory = global_alloc_array(UINT8, m_memory_size+2);
+=======
+void at29x_device::device_start()
+{
+	m_programming_buffer = std::make_unique<uint8_t[]>(m_sector_size);
+	m_eememory = std::make_unique<uint8_t[]>(m_memory_size+2);
+>>>>>>> upstream/master
 	m_programming_timer = timer_alloc(PRGTIMER);
 
 	// TODO: Complete 16-bit handling
@@ -490,8 +553,13 @@ void at29x_device::device_start(void)
 
 void at29x_device::device_stop(void)
 {
+<<<<<<< HEAD
 	global_free_array(m_programming_buffer);
 	global_free_array(m_eememory);
+=======
+	m_programming_buffer = nullptr;
+	m_eememory = nullptr;
+>>>>>>> upstream/master
 }
 
 void at29x_device::device_reset(void)
@@ -520,6 +588,12 @@ void at29x_device::device_reset(void)
 	m_programming_last_offset = 0;
 }
 
+<<<<<<< HEAD
 const device_type AT29C020 = &device_creator<at29c020_device>;
 const device_type AT29C040 = &device_creator<at29c040_device>;
 const device_type AT29C040A = &device_creator<at29c040a_device>;
+=======
+DEFINE_DEVICE_TYPE(AT29C020,  at29c020_device,  "at29c020",  "ATMEL 29C020 256Kx8 FEEPROM")
+DEFINE_DEVICE_TYPE(AT29C040,  at29c040_device,  "at29c040",  "ATMEL 29C040 512Kx8 FEEPROM")
+DEFINE_DEVICE_TYPE(AT29C040A, at29c040a_device, "at29c040a", "ATMEL 29C040A 512Kx8 FEEPROM")
+>>>>>>> upstream/master

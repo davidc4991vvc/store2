@@ -8,10 +8,18 @@
 
 *********************************************************************/
 
+<<<<<<< HEAD
 #ifndef __A2BUS_RAMCARD16K__
 #define __A2BUS_RAMCARD16K__
 
 #include "emu.h"
+=======
+#ifndef MAME_BUS_A2BUS_RAMCARD16K_H
+#define MAME_BUS_A2BUS_RAMCARD16K_H
+
+#pragma once
+
+>>>>>>> upstream/master
 #include "a2bus.h"
 
 //**************************************************************************
@@ -24,6 +32,7 @@ class a2bus_ramcard_device:
 {
 public:
 	// construction/destruction
+<<<<<<< HEAD
 	a2bus_ramcard_device(const machine_config &mconfig, device_type type, const char *name, const char *tag, device_t *owner, UINT32 clock, const char *shortname, const char *source);
 	a2bus_ramcard_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
 
@@ -53,3 +62,35 @@ private:
 extern const device_type A2BUS_RAMCARD16K;
 
 #endif /* __A2BUS_RAMCARD16K__ */
+=======
+	a2bus_ramcard_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
+
+protected:
+	a2bus_ramcard_device(const machine_config &mconfig, device_type type, const char *tag, device_t *owner, uint32_t clock);
+
+	virtual void device_start() override;
+	virtual void device_reset() override;
+
+	// overrides of standard a2bus slot functions
+	virtual uint8_t read_c0nx(address_space &space, uint8_t offset) override;
+	virtual void write_c0nx(address_space &space, uint8_t offset, uint8_t data) override;
+	virtual uint8_t read_inh_rom(address_space &space, uint16_t offset) override;
+	virtual void write_inh_rom(address_space &space, uint16_t offset, uint8_t data) override;
+	virtual uint16_t inh_start() override { return 0xd000; }
+	virtual uint16_t inh_end() override { return 0xffff; }
+	virtual int inh_type() override;
+
+private:
+	void do_io(int offset, bool writing);
+
+	int m_inh_state;
+	bool m_prewrite;
+	int m_dxxx_bank;
+	uint8_t m_ram[16*1024];
+};
+
+// device type definition
+DECLARE_DEVICE_TYPE(A2BUS_RAMCARD16K, a2bus_ramcard_device)
+
+#endif // MAME_BUS_A2BUS_RAMCARD16K_H
+>>>>>>> upstream/master

@@ -40,8 +40,15 @@
 
 *****************************************************************************/
 
+<<<<<<< HEAD
 #ifndef TTL74148_H
 #define TTL74148_H
+=======
+#ifndef MAME_DEVICES_MACHINE_74148_H
+#define MAME_DEVICES_MACHINE_74148_H
+
+#pragma once
+>>>>>>> upstream/master
 
 
 typedef device_delegate<void (void)> ttl74148_output_delegate;
@@ -52,7 +59,11 @@ typedef device_delegate<void (void)> ttl74148_output_delegate;
 class ttl74148_device : public device_t
 {
 public:
+<<<<<<< HEAD
 	ttl74148_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
+=======
+	ttl74148_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
+>>>>>>> upstream/master
 	~ttl74148_device() {}
 
 	static void set_output_callback(device_t &device, ttl74148_output_delegate callback) { downcast<ttl74148_device &>(device).m_output_cb = callback; }
@@ -68,8 +79,13 @@ public:
 
 protected:
 	// device-level overrides
+<<<<<<< HEAD
 	virtual void device_start();
 	virtual void device_reset();
+=======
+	virtual void device_start() override;
+	virtual void device_reset() override;
+>>>>>>> upstream/master
 private:
 	// internal state
 	ttl74148_output_delegate m_output_cb;
@@ -89,11 +105,19 @@ private:
 	int m_last_enable_output;
 };
 
+<<<<<<< HEAD
 extern const device_type TTL74148;
+=======
+DECLARE_DEVICE_TYPE(TTL74148, ttl74148_device)
+>>>>>>> upstream/master
 
 
 #define MCFG_74148_OUTPUT_CB(_class, _method) \
 	ttl74148_device::set_output_callback(*device, ttl74148_output_delegate(&_class::_method, #_class "::" #_method, downcast<_class *>(owner)));
 
 
+<<<<<<< HEAD
 #endif
+=======
+#endif // MAME_DEVICES_MACHINE_74148_H
+>>>>>>> upstream/master

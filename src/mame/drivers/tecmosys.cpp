@@ -20,7 +20,11 @@ T.Slanina 20040530 :
 
  20080528
  - Removed ROM patches and debug keypresses
+<<<<<<< HEAD
  - Added protection simulation in machine/tecmosys.c
+=======
+ - Added protection simulation in machine/tecmosys.cpp
+>>>>>>> upstream/master
  - Fixed inputs
  - Added watchdog
 
@@ -183,6 +187,7 @@ ae500w07.ad1 - M6295 Samples (23c4001)
 */
 
 #include "emu.h"
+<<<<<<< HEAD
 #include "cpu/z80/z80.h"
 #include "machine/eepromser.h"
 #include "includes/tecmosys.h"
@@ -212,6 +217,27 @@ WRITE16_MEMBER(tecmosys_state::sound_w)
 		soundlatch_byte_w(space, 0x00, data & 0xff);
 		m_audiocpu->set_input_line(INPUT_LINE_NMI, PULSE_LINE);
 	}
+=======
+#include "includes/tecmosys.h"
+
+#include "cpu/m68000/m68000.h"
+#include "cpu/z80/z80.h"
+#include "sound/262intf.h"
+#include "sound/okim6295.h"
+#include "sound/ymz280b.h"
+#include "speaker.h"
+
+
+READ8_MEMBER(tecmosys_state::sound_command_pending_r)
+{
+	return m_soundlatch->pending_r();
+}
+
+WRITE8_MEMBER(tecmosys_state::sound_nmi_disable_w)
+{
+	// 00 and FF are the only values written here; the latter value is set during initialization and NMI processing
+	m_soundnmi->in_w<1>(data == 0);
+>>>>>>> upstream/master
 }
 
 /*
@@ -240,7 +266,11 @@ WRITE16_MEMBER(tecmosys_state::unk880000_w)
 			break;
 
 		case 0x22/2:
+<<<<<<< HEAD
 			machine().watchdog_reset();
+=======
+			m_watchdog->watchdog_reset();
+>>>>>>> upstream/master
 			//logerror( "watchdog_w( %06x, %04x ) @ %06x\n", (offset * 2)+0x880000, data, space.device().safe_pc() );
 			break;
 
@@ -252,7 +282,11 @@ WRITE16_MEMBER(tecmosys_state::unk880000_w)
 
 READ16_MEMBER(tecmosys_state::unk880000_r)
 {
+<<<<<<< HEAD
 	//UINT16 ret = m_880000regs[offset];
+=======
+	//uint16_t ret = m_880000regs[offset];
+>>>>>>> upstream/master
 
 	logerror( "unk880000_r( %06x ) @ %06x = %04x\n", (offset * 2 ) +0x880000, space.device().safe_pc(), m_880000regs[offset] );
 
@@ -317,9 +351,15 @@ static ADDRESS_MAP_START( main_map, AS_PROGRAM, 16, tecmosys_state )
 	AM_RANGE(0xd00000, 0xd00001) AM_READ_PORT("P1")
 	AM_RANGE(0xd00002, 0xd00003) AM_READ_PORT("P2")
 	AM_RANGE(0xd80000, 0xd80001) AM_READ(eeprom_r)
+<<<<<<< HEAD
 	AM_RANGE(0xe00000, 0xe00001) AM_WRITE(sound_w )
 	AM_RANGE(0xe80000, 0xe80001) AM_WRITE(prot_data_w)
 	AM_RANGE(0xf00000, 0xf00001) AM_READ(sound_r)
+=======
+	AM_RANGE(0xe00000, 0xe00001) AM_DEVWRITE8("soundlatch", generic_latch_8_device, write, 0x00ff)
+	AM_RANGE(0xe80000, 0xe80001) AM_WRITE(prot_data_w)
+	AM_RANGE(0xf00000, 0xf00001) AM_READ8(sound_command_pending_r, 0x00ff)
+>>>>>>> upstream/master
 	AM_RANGE(0xf80000, 0xf80001) AM_READ(prot_data_r)
 ADDRESS_MAP_END
 
@@ -331,9 +371,15 @@ WRITE8_MEMBER(tecmosys_state::z80_bank_w)
 
 WRITE8_MEMBER(tecmosys_state::oki_bank_w)
 {
+<<<<<<< HEAD
 	UINT8 upperbank = (data & 0x30) >> 4;
 	UINT8 lowerbank = (data & 0x03) >> 0;
 	UINT8* region = memregion("oki")->base();
+=======
+	uint8_t upperbank = (data & 0x30) >> 4;
+	uint8_t lowerbank = (data & 0x03) >> 0;
+	uint8_t* region = memregion("oki")->base();
+>>>>>>> upstream/master
 
 	memcpy( region+0x00000, region+0x80000 + lowerbank * 0x20000, 0x20000  );
 	memcpy( region+0x20000, region+0x80000 + upperbank * 0x20000, 0x20000  );
@@ -351,8 +397,13 @@ static ADDRESS_MAP_START( io_map, AS_IO, 8, tecmosys_state )
 	AM_RANGE(0x10, 0x10) AM_DEVREADWRITE("oki", okim6295_device, read, write)
 	AM_RANGE(0x20, 0x20) AM_WRITE(oki_bank_w)
 	AM_RANGE(0x30, 0x30) AM_WRITE(z80_bank_w)
+<<<<<<< HEAD
 	AM_RANGE(0x40, 0x40) AM_READ(soundlatch_byte_r)
 	AM_RANGE(0x50, 0x50) AM_WRITE(soundlatch2_byte_w)
+=======
+	AM_RANGE(0x40, 0x40) AM_DEVREAD("soundlatch", generic_latch_8_device, read)
+	AM_RANGE(0x50, 0x50) AM_WRITE(sound_nmi_disable_w)
+>>>>>>> upstream/master
 	AM_RANGE(0x60, 0x61) AM_DEVREADWRITE("ymz", ymz280b_device, read, write)
 ADDRESS_MAP_END
 
@@ -433,6 +484,7 @@ static GFXDECODE_START( tecmosys )
 GFXDECODE_END
 
 
+<<<<<<< HEAD
 
 WRITE_LINE_MEMBER(tecmosys_state::sound_irq)
 {
@@ -440,6 +492,8 @@ WRITE_LINE_MEMBER(tecmosys_state::sound_irq)
 	m_audiocpu->set_input_line(0, state ? ASSERT_LINE : CLEAR_LINE);
 }
 
+=======
+>>>>>>> upstream/master
 void tecmosys_state::machine_start()
 {
 	membank("bank1")->configure_entries(0, 16, memregion("audiocpu")->base(), 0x4000);
@@ -449,11 +503,21 @@ void tecmosys_state::machine_start()
 	save_item(NAME(m_device_value));
 }
 
+<<<<<<< HEAD
 static MACHINE_CONFIG_START( deroon, tecmosys_state )
 	MCFG_CPU_ADD("maincpu", M68000, XTAL_16MHz)
 	MCFG_CPU_PROGRAM_MAP(main_map)
 	MCFG_CPU_VBLANK_INT_DRIVER("screen", tecmosys_state,  irq1_line_hold)
 	MCFG_WATCHDOG_VBLANK_INIT(400) // guess
+=======
+static MACHINE_CONFIG_START( deroon )
+	MCFG_CPU_ADD("maincpu", M68000, XTAL_16MHz)
+	MCFG_CPU_PROGRAM_MAP(main_map)
+	MCFG_CPU_VBLANK_INT_DRIVER("screen", tecmosys_state,  irq1_line_hold)
+
+	MCFG_WATCHDOG_ADD("watchdog")
+	MCFG_WATCHDOG_VBLANK_INIT("screen", 400) // guess
+>>>>>>> upstream/master
 
 	MCFG_CPU_ADD("audiocpu", Z80, XTAL_16MHz/2 )
 	MCFG_CPU_PROGRAM_MAP(sound_map)
@@ -480,14 +544,29 @@ static MACHINE_CONFIG_START( deroon, tecmosys_state )
 	/* sound hardware */
 	MCFG_SPEAKER_STANDARD_STEREO("lspeaker", "rspeaker")
 
+<<<<<<< HEAD
 	MCFG_SOUND_ADD("ymf", YMF262, XTAL_14_31818MHz)
 	MCFG_YMF262_IRQ_HANDLER(WRITELINE(tecmosys_state, sound_irq))
+=======
+	MCFG_GENERIC_LATCH_8_ADD("soundlatch")
+	MCFG_GENERIC_LATCH_DATA_PENDING_CB(DEVWRITELINE("soundnmi", input_merger_device, in_w<0>))
+
+	MCFG_INPUT_MERGER_ALL_HIGH("soundnmi")
+	MCFG_INPUT_MERGER_OUTPUT_HANDLER(INPUTLINE("audiocpu", INPUT_LINE_NMI))
+
+	MCFG_SOUND_ADD("ymf", YMF262, XTAL_14_31818MHz)
+	MCFG_YMF262_IRQ_HANDLER(INPUTLINE("audiocpu", 0))
+>>>>>>> upstream/master
 	MCFG_SOUND_ROUTE(0, "lspeaker", 1.00)
 	MCFG_SOUND_ROUTE(1, "rspeaker", 1.00)
 	MCFG_SOUND_ROUTE(2, "lspeaker", 1.00)
 	MCFG_SOUND_ROUTE(3, "rspeaker", 1.00)
 
+<<<<<<< HEAD
 	MCFG_OKIM6295_ADD("oki", XTAL_16MHz/8, OKIM6295_PIN7_HIGH)
+=======
+	MCFG_OKIM6295_ADD("oki", XTAL_16MHz/8, PIN7_HIGH)
+>>>>>>> upstream/master
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "lspeaker", 0.50)
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "rspeaker", 0.50)
 
@@ -628,13 +707,21 @@ ROM_END
 
 void tecmosys_state::descramble()
 {
+<<<<<<< HEAD
 	UINT8 *gfxsrc  = memregion( "gfx1" )->base();
+=======
+	uint8_t *gfxsrc  = memregion( "gfx1" )->base();
+>>>>>>> upstream/master
 	size_t srcsize = memregion( "gfx1" )->bytes();
 	int i;
 
 	for (i=0; i < srcsize; i+=4)
 	{
+<<<<<<< HEAD
 		UINT8 tmp[4];
+=======
+		uint8_t tmp[4];
+>>>>>>> upstream/master
 
 		tmp[2] = ((gfxsrc[i+0]&0xf0)>>0) | ((gfxsrc[i+1]&0xf0)>>4); //  0, 1, 2, 3   8, 9,10,11
 		tmp[3] = ((gfxsrc[i+0]&0x0f)<<4) | ((gfxsrc[i+1]&0x0f)<<0); //  4, 5, 6, 7, 12,13,14,15
@@ -666,6 +753,10 @@ DRIVER_INIT_MEMBER(tecmosys_state,tkdensha)
 	prot_init(2);
 }
 
+<<<<<<< HEAD
 GAME( 1995, deroon,           0, deroon, deroon, tecmosys_state, deroon,     ROT0, "Tecmo", "Deroon DeroDero", MACHINE_SUPPORTS_SAVE )
+=======
+GAME( 1995, deroon,           0, deroon, deroon, tecmosys_state, deroon,     ROT0, "Tecmo", "Deroon DeroDero",                         MACHINE_SUPPORTS_SAVE )
+>>>>>>> upstream/master
 GAME( 1996, tkdensho,         0, deroon, deroon, tecmosys_state, tkdensho,   ROT0, "Tecmo", "Toukidenshou - Angel Eyes (VER. 960614)", MACHINE_SUPPORTS_SAVE )
 GAME( 1996, tkdenshoa, tkdensho, deroon, deroon, tecmosys_state, tkdensha,   ROT0, "Tecmo", "Toukidenshou - Angel Eyes (VER. 960427)", MACHINE_SUPPORTS_SAVE )

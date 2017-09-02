@@ -7,7 +7,10 @@
 //============================================================
 
 // standard windows headers
+<<<<<<< HEAD
 #define WIN32_LEAN_AND_MEAN
+=======
+>>>>>>> upstream/master
 #include <windows.h>
 
 // MAME headers
@@ -15,6 +18,7 @@
 #include "emuopts.h"
 #include "render.h"
 #include "uiinput.h"
+<<<<<<< HEAD
 #ifdef USE_SCALE_EFFECTS
 #include "osdscale.h"
 #endif /* USE_SCALE_EFFECTS */
@@ -26,6 +30,16 @@
 #include "input.h"
 #include "strconv.h"
 
+=======
+
+// MAMEOS headers
+#include "winmain.h"
+#include "window.h"
+#include "strconv.h"
+
+#include "modules/osdwindow.h"
+
+>>>>>>> upstream/master
 //============================================================
 //  CONSTANTS
 //============================================================
@@ -37,6 +51,7 @@
 
 osd_video_config video_config;
 
+<<<<<<< HEAD
 // monitor info
 osd_monitor_info *osd_monitor_info::list = NULL;
 
@@ -49,16 +64,21 @@ static int cur_scale_ysize;
 //  LOCAL VARIABLES
 //============================================================
 
+=======
+>>>>>>> upstream/master
 
 //============================================================
 //  PROTOTYPES
 //============================================================
 
+<<<<<<< HEAD
 static void init_monitors(void);
 
 static void check_osd_inputs(running_machine &machine);
 
 static float get_aspect(const char *defdata, const char *data, int report_error);
+=======
+>>>>>>> upstream/master
 static void get_resolution(const char *defdata, const char *data, osd_window_config *config, int report_error);
 
 
@@ -67,6 +87,7 @@ static void get_resolution(const char *defdata, const char *data, osd_window_con
 //============================================================
 
 // FIXME: Temporary workaround
+<<<<<<< HEAD
 static osd_window_config   windows[MAX_WINDOWS];        // configuration data per-window
 
 bool windows_osd_interface::video_init()
@@ -79,20 +100,42 @@ bool windows_osd_interface::video_init()
 	// set up monitors first
 	init_monitors();
 
+=======
+static osd_window_config   windows[MAX_VIDEO_WINDOWS];        // configuration data per-window
+
+bool windows_osd_interface::video_init()
+{
+	// extract data from the options
+	extract_video_config();
+
+>>>>>>> upstream/master
 	// initialize the window system so we can make windows
 	window_init();
 
 	// create the windows
 	windows_options &options = downcast<windows_options &>(machine().options());
+<<<<<<< HEAD
 	for (index = 0; index < video_config.numscreens; index++)
 		win_window_info::create(machine(), index, osd_monitor_info::pick_monitor(options, index), &windows[index]);
 	if (video_config.mode != VIDEO_MODE_NONE)
 		SetForegroundWindow(win_window_list->m_hwnd);
+=======
+	for (int index = 0; index < video_config.numscreens; index++)
+	{
+		win_window_info::create(machine(), index, m_monitor_module->pick_monitor(options, index), &windows[index]);
+	}
+
+	if (video_config.mode != VIDEO_MODE_NONE)
+		SetForegroundWindow(std::static_pointer_cast<win_window_info>(osd_common_t::s_window_list.front())->platform_window());
+>>>>>>> upstream/master
 
 	return true;
 }
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> upstream/master
 //============================================================
 //  video_exit
 //============================================================
@@ -100,6 +143,7 @@ bool windows_osd_interface::video_init()
 void windows_osd_interface::video_exit()
 {
 	window_exit();
+<<<<<<< HEAD
 
 	// free all of our monitor information
 	while (osd_monitor_info::list != NULL)
@@ -180,17 +224,27 @@ osd_monitor_info *win_monitor_info::monitor_from_handle(HMONITOR hmonitor)
 
 
 //============================================================
+=======
+}
+
+//============================================================
+>>>>>>> upstream/master
 //  update
 //============================================================
 
 void windows_osd_interface::update(bool skip_redraw)
 {
+<<<<<<< HEAD
 	// ping the watchdog on each update
 	winmain_watchdog_ping();
+=======
+	osd_common_t::update(skip_redraw);
+>>>>>>> upstream/master
 
 	// if we're not skipping this redraw, update all windows
 	if (!skip_redraw)
 	{
+<<<<<<< HEAD
 #ifdef USE_SCALE_EFFECTS
 		extern int win_scale_res_changed;
 		win_scale_res_changed = 0;
@@ -204,20 +258,31 @@ void windows_osd_interface::update(bool skip_redraw)
 #endif /* USE_SCALE_EFFECTS */
 //      profiler_mark(PROFILER_BLIT);
 		for (win_window_info *window = win_window_list; window != NULL; window = window->m_next)
+=======
+//      profiler_mark(PROFILER_BLIT);
+		for (auto window : osd_common_t::s_window_list)
+>>>>>>> upstream/master
 			window->update();
 //      profiler_mark(PROFILER_END);
 	}
 
 	// poll the joystick values here
+<<<<<<< HEAD
 	winwindow_process_events(machine(), TRUE, FALSE);
 	wininput_poll(machine());
 	check_osd_inputs(machine());
+=======
+	winwindow_process_events(machine(), true, false);
+	poll_input(machine());
+	check_osd_inputs();
+>>>>>>> upstream/master
 	// if we're running, disable some parts of the debugger
 	if ((machine().debug_flags & DEBUG_FLAG_OSD_ENABLED) != 0)
 		debugger_update();
 }
 
 
+<<<<<<< HEAD
 
 
 
@@ -334,10 +399,13 @@ finishit:
 }
 
 
+=======
+>>>>>>> upstream/master
 //============================================================
 //  check_osd_inputs
 //============================================================
 
+<<<<<<< HEAD
 static void check_osd_inputs(running_machine &machine)
 {
 	// check for toggling fullscreen mode
@@ -354,6 +422,24 @@ static void check_osd_inputs(running_machine &machine)
 
 	// check for taking fullscreen video
 	if (ui_input_pressed(machine, IPT_OSD_4))
+=======
+void windows_osd_interface::check_osd_inputs()
+{
+	// check for toggling fullscreen mode
+	if (machine().ui_input().pressed(IPT_OSD_1))
+		winwindow_toggle_full_screen();
+
+	// check for taking fullscreen snap
+	if (machine().ui_input().pressed(IPT_OSD_2))
+		winwindow_take_snap();
+
+	// check for taking fullscreen video
+	if (machine().ui_input().pressed(IPT_OSD_3))
+		winwindow_take_video();
+
+	// check for taking fullscreen video
+	if (machine().ui_input().pressed(IPT_OSD_4))
+>>>>>>> upstream/master
 		winwindow_toggle_fsfx();
 }
 
@@ -367,6 +453,7 @@ void windows_osd_interface::extract_video_config()
 {
 	const char *stemp;
 
+<<<<<<< HEAD
 #ifdef USE_SCALE_EFFECTS
 	stemp = options().value(OPTION_SCALE_EFFECT);
 
@@ -379,6 +466,8 @@ void windows_osd_interface::extract_video_config()
 	}
 #endif /* USE_SCALE_EFFECTS */
 
+=======
+>>>>>>> upstream/master
 	// global options: extract the data
 	video_config.windowed      = options().window();
 	video_config.prescale      = options().prescale();
@@ -403,6 +492,7 @@ void windows_osd_interface::extract_video_config()
 		video_config.mode = VIDEO_MODE_D3D;
 	else if (strcmp(stemp, "auto") == 0)
 		video_config.mode = VIDEO_MODE_D3D;
+<<<<<<< HEAD
 	else if (strcmp(stemp, "ddraw") == 0)
 		video_config.mode = VIDEO_MODE_DDRAW;
 	else if (strcmp(stemp, "gdi") == 0)
@@ -416,6 +506,17 @@ void windows_osd_interface::extract_video_config()
 		video_config.mode = VIDEO_MODE_NONE;
 		if (options().seconds_to_run() == 0)
 			osd_printf_warning(_WINDOWS("Warning: -video none doesn't make much sense without -seconds_to_run\n"));
+=======
+	else if (strcmp(stemp, "gdi") == 0)
+		video_config.mode = VIDEO_MODE_GDI;
+	else if (strcmp(stemp, "bgfx") == 0)
+		video_config.mode = VIDEO_MODE_BGFX;
+	else if (strcmp(stemp, "none") == 0)
+	{
+		video_config.mode = VIDEO_MODE_NONE;
+		if (!emulator_info::standalone() && options().seconds_to_run() == 0)
+			osd_printf_warning("Warning: -video none doesn't make much sense without -seconds_to_run\n");
+>>>>>>> upstream/master
 	}
 #if (USE_OPENGL)
 	else if (strcmp(stemp, "opengl") == 0)
@@ -423,7 +524,11 @@ void windows_osd_interface::extract_video_config()
 #endif
 	else
 	{
+<<<<<<< HEAD
 		osd_printf_warning(_WINDOWS("Invalid video value %s; reverting to gdi\n"), stemp);
+=======
+		osd_printf_warning("Invalid video value %s; reverting to gdi\n", stemp);
+>>>>>>> upstream/master
 		video_config.mode = VIDEO_MODE_GDI;
 	}
 	video_config.waitvsync     = options().wait_vsync();
@@ -431,9 +536,12 @@ void windows_osd_interface::extract_video_config()
 	video_config.triplebuf     = options().triple_buffer();
 	video_config.switchres     = options().switch_res();
 
+<<<<<<< HEAD
 	// ddraw options: extract the data
 	video_config.hwstretch     = options().hwstretch();
 
+=======
+>>>>>>> upstream/master
 	if (video_config.prescale < 1 || video_config.prescale > 3)
 	{
 		osd_printf_warning("Invalid prescale option, reverting to '1'\n");
@@ -463,7 +571,11 @@ void windows_osd_interface::extract_video_config()
 					strcpy(video_config.glsl_shader_mamebm[i], stemp);
 					video_config.glsl_shader_mamebm_num++;
 				} else {
+<<<<<<< HEAD
 					video_config.glsl_shader_mamebm[i] = NULL;
+=======
+					video_config.glsl_shader_mamebm[i] = nullptr;
+>>>>>>> upstream/master
 				}
 			}
 
@@ -478,7 +590,11 @@ void windows_osd_interface::extract_video_config()
 					strcpy(video_config.glsl_shader_scrn[i], stemp);
 					video_config.glsl_shader_scrn_num++;
 				} else {
+<<<<<<< HEAD
 					video_config.glsl_shader_scrn[i] = NULL;
+=======
+					video_config.glsl_shader_scrn[i] = nullptr;
+>>>>>>> upstream/master
 				}
 			}
 		} else {
@@ -487,12 +603,20 @@ void windows_osd_interface::extract_video_config()
 			video_config.glsl_shader_mamebm_num=0;
 			for(i=0; i<GLSL_SHADER_MAX; i++)
 			{
+<<<<<<< HEAD
 				video_config.glsl_shader_mamebm[i] = NULL;
+=======
+				video_config.glsl_shader_mamebm[i] = nullptr;
+>>>>>>> upstream/master
 			}
 			video_config.glsl_shader_scrn_num=0;
 			for(i=0; i<GLSL_SHADER_MAX; i++)
 			{
+<<<<<<< HEAD
 				video_config.glsl_shader_scrn[i] = NULL;
+=======
+				video_config.glsl_shader_scrn[i] = nullptr;
+>>>>>>> upstream/master
 			}
 		}
 
@@ -501,6 +625,7 @@ void windows_osd_interface::extract_video_config()
 }
 
 
+<<<<<<< HEAD
 
 //============================================================
 //  get_aspect
@@ -522,6 +647,8 @@ static float get_aspect(const char *defdata, const char *data, int report_error)
 }
 
 
+=======
+>>>>>>> upstream/master
 //============================================================
 //  get_resolution
 //============================================================
@@ -537,7 +664,11 @@ static void get_resolution(const char *defdata, const char *data, osd_window_con
 	}
 
 	if (sscanf(data, "%dx%dx%d", &config->width, &config->height, &config->depth) < 2 && report_error)
+<<<<<<< HEAD
 		osd_printf_error(_WINDOWS("Illegal resolution value = %s\n"), data);
+=======
+		osd_printf_error("Illegal resolution value = %s\n", data);
+>>>>>>> upstream/master
 
 	const char * at_pos = strchr(data, '@');
 	if (at_pos)

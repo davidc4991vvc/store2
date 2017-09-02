@@ -2,6 +2,7 @@
 // copyright-holders:Curt Coder
 /**********************************************************************
 
+<<<<<<< HEAD
     Wang PC PM-001B Medium-Resolution Video Controller emulation
 
 **********************************************************************/
@@ -12,6 +13,17 @@
 #define __WANGPC_TIG__
 
 #include "emu.h"
+=======
+    Wang PC Text/Image/Graphics controller emulation
+
+**********************************************************************/
+
+#ifndef MAME_BUS_WANGPC_TIG_H
+#define MAME_BUS_WANGPC_TIG_H
+
+#pragma once
+
+>>>>>>> upstream/master
 #include "wangpc.h"
 #include "video/upd7220.h"
 
@@ -28,6 +40,7 @@ class wangpc_tig_device : public device_t,
 {
 public:
 	// construction/destruction
+<<<<<<< HEAD
 	wangpc_tig_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
 
 	// optional information overrides
@@ -51,19 +64,55 @@ protected:
 	virtual bool wangpcbus_have_dack(int line);
 
 private:
+=======
+	wangpc_tig_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
+
+protected:
+	// device-level overrides
+	virtual void device_start() override;
+	virtual void device_reset() override;
+	virtual const tiny_rom_entry *device_rom_region() const override;
+	virtual void device_add_mconfig(machine_config &config) override;
+
+	// device_wangpcbus_card_interface overrides
+	virtual uint16_t wangpcbus_iorc_r(address_space &space, offs_t offset, uint16_t mem_mask) override;
+	virtual void wangpcbus_aiowc_w(address_space &space, offs_t offset, uint16_t mem_mask, uint16_t data) override;
+	virtual uint8_t wangpcbus_dack_r(address_space &space, int line) override;
+	virtual void wangpcbus_dack_w(address_space &space, int line, uint8_t data) override;
+	virtual bool wangpcbus_have_dack(int line) override;
+
+private:
+	uint32_t screen_update(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect);
+
+	UPD7220_DRAW_TEXT_LINE_MEMBER( hgdc_draw_text );
+	UPD7220_DISPLAY_PIXELS_MEMBER( hgdc_display_pixels );
+
+>>>>>>> upstream/master
 	// internal state
 	required_device<upd7220_device> m_hgdc0;
 	required_device<upd7220_device> m_hgdc1;
 
+<<<<<<< HEAD
 	UINT8 m_option;
 	UINT8 m_attr[16];
 	UINT8 m_underline;
+=======
+	uint8_t m_option;
+	uint8_t m_attr[16];
+	uint8_t m_underline;
+>>>>>>> upstream/master
 	required_device<palette_device> m_palette;
 };
 
 
 // device type definition
+<<<<<<< HEAD
 extern const device_type WANGPC_TIG;
 
 
 #endif
+=======
+DECLARE_DEVICE_TYPE(WANGPC_TIG, wangpc_tig_device)
+
+#endif // MAME_BUS_WANGPC_TIG_H
+>>>>>>> upstream/master

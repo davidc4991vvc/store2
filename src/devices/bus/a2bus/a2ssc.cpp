@@ -8,6 +8,10 @@
 
 *********************************************************************/
 
+<<<<<<< HEAD
+=======
+#include "emu.h"
+>>>>>>> upstream/master
 #include "a2ssc.h"
 #include "bus/rs232/rs232.h"
 
@@ -20,12 +24,17 @@
 //  GLOBAL VARIABLES
 //**************************************************************************
 
+<<<<<<< HEAD
 const device_type A2BUS_SSC = &device_creator<a2bus_ssc_device>;
+=======
+DEFINE_DEVICE_TYPE(A2BUS_SSC, a2bus_ssc_device, "a2ssc", "Apple Super Serial Card")
+>>>>>>> upstream/master
 
 #define SSC_ROM_REGION  "ssc_rom"
 #define SSC_ACIA_TAG    "ssc_acia"
 #define SSC_RS232_TAG   "ssc_rs232"
 
+<<<<<<< HEAD
 MACHINE_CONFIG_FRAGMENT( ssc )
 	MCFG_DEVICE_ADD(SSC_ACIA_TAG, MOS6551, 0)
 	MCFG_MOS6551_XTAL(XTAL_1_8432MHz)
@@ -39,6 +48,8 @@ MACHINE_CONFIG_FRAGMENT( ssc )
 	MCFG_RS232_CTS_HANDLER(DEVWRITELINE(SSC_ACIA_TAG, mos6551_device, write_cts))
 MACHINE_CONFIG_END
 
+=======
+>>>>>>> upstream/master
 ROM_START( ssc )
 	ROM_REGION(0x000800, SSC_ROM_REGION, 0)
 	ROM_LOAD( "341-0065-a.bin", 0x000000, 0x000800, CRC(b7539d4c) SHA1(6dab633470c6bc4cb3e81d09fda46597caf8ee57) )
@@ -105,6 +116,7 @@ ioport_constructor a2bus_ssc_device::device_input_ports() const
 }
 
 //-------------------------------------------------
+<<<<<<< HEAD
 //  machine_config_additions - device-specific
 //  machine configurations
 //-------------------------------------------------
@@ -113,12 +125,33 @@ machine_config_constructor a2bus_ssc_device::device_mconfig_additions() const
 {
 	return MACHINE_CONFIG_NAME( ssc );
 }
+=======
+//  device_add_mconfig - add device configuration
+//-------------------------------------------------
+
+MACHINE_CONFIG_MEMBER( a2bus_ssc_device::device_add_mconfig )
+	MCFG_DEVICE_ADD(SSC_ACIA_TAG, MOS6551, 0)
+	MCFG_MOS6551_XTAL(XTAL_1_8432MHz)
+	MCFG_MOS6551_IRQ_HANDLER(WRITELINE(a2bus_ssc_device, acia_irq_w))
+	MCFG_MOS6551_TXD_HANDLER(DEVWRITELINE(SSC_RS232_TAG, rs232_port_device, write_txd))
+
+	MCFG_RS232_PORT_ADD(SSC_RS232_TAG, default_rs232_devices, nullptr)
+	MCFG_RS232_RXD_HANDLER(DEVWRITELINE(SSC_ACIA_TAG, mos6551_device, write_rxd))
+	MCFG_RS232_DCD_HANDLER(DEVWRITELINE(SSC_ACIA_TAG, mos6551_device, write_dcd))
+	MCFG_RS232_DSR_HANDLER(DEVWRITELINE(SSC_ACIA_TAG, mos6551_device, write_dsr))
+	MCFG_RS232_CTS_HANDLER(DEVWRITELINE(SSC_ACIA_TAG, mos6551_device, write_cts))
+MACHINE_CONFIG_END
+>>>>>>> upstream/master
 
 //-------------------------------------------------
 //  rom_region - device-specific ROM region
 //-------------------------------------------------
 
+<<<<<<< HEAD
 const rom_entry *a2bus_ssc_device::device_rom_region() const
+=======
+const tiny_rom_entry *a2bus_ssc_device::device_rom_region() const
+>>>>>>> upstream/master
 {
 	return ROM_NAME( ssc );
 }
@@ -127,6 +160,7 @@ const rom_entry *a2bus_ssc_device::device_rom_region() const
 //  LIVE DEVICE
 //**************************************************************************
 
+<<<<<<< HEAD
 a2bus_ssc_device::a2bus_ssc_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock) :
 		device_t(mconfig, A2BUS_SSC, "Apple Super Serial Card", tag, owner, clock, "a2ssc", __FILE__),
 		device_a2bus_card_interface(mconfig, *this),
@@ -139,6 +173,15 @@ a2bus_ssc_device::a2bus_ssc_device(const machine_config &mconfig, const char *ta
 
 a2bus_ssc_device::a2bus_ssc_device(const machine_config &mconfig, device_type type, const char *name, const char *tag, device_t *owner, UINT32 clock, const char *shortname, const char *source) :
 		device_t(mconfig, type, name, tag, owner, clock, shortname, source),
+=======
+a2bus_ssc_device::a2bus_ssc_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock) :
+		a2bus_ssc_device(mconfig, A2BUS_SSC, tag, owner, clock)
+{
+}
+
+a2bus_ssc_device::a2bus_ssc_device(const machine_config &mconfig, device_type type, const char *tag, device_t *owner, uint32_t clock) :
+		device_t(mconfig, type, tag, owner, clock),
+>>>>>>> upstream/master
 		device_a2bus_card_interface(mconfig, *this),
 		m_dsw1(*this, "DSW1"),
 		m_dsw2(*this, "DSW2"),
@@ -168,7 +211,11 @@ void a2bus_ssc_device::device_reset()
     read_cnxx - called for reads from this card's cnxx space
 -------------------------------------------------*/
 
+<<<<<<< HEAD
 UINT8 a2bus_ssc_device::read_cnxx(address_space &space, UINT8 offset)
+=======
+uint8_t a2bus_ssc_device::read_cnxx(address_space &space, uint8_t offset)
+>>>>>>> upstream/master
 {
 	return m_rom[(offset&0xff)+0x700];
 }
@@ -177,7 +224,11 @@ UINT8 a2bus_ssc_device::read_cnxx(address_space &space, UINT8 offset)
     read_c800 - called for reads from this card's c800 space
 -------------------------------------------------*/
 
+<<<<<<< HEAD
 UINT8 a2bus_ssc_device::read_c800(address_space &space, UINT16 offset)
+=======
+uint8_t a2bus_ssc_device::read_c800(address_space &space, uint16_t offset)
+>>>>>>> upstream/master
 {
 	return m_rom[offset];
 }
@@ -186,7 +237,11 @@ UINT8 a2bus_ssc_device::read_c800(address_space &space, UINT16 offset)
     read_c0nx - called for reads from this card's c0nx space
 -------------------------------------------------*/
 
+<<<<<<< HEAD
 UINT8 a2bus_ssc_device::read_c0nx(address_space &space, UINT8 offset)
+=======
+uint8_t a2bus_ssc_device::read_c0nx(address_space &space, uint8_t offset)
+>>>>>>> upstream/master
 {
 	// dips at C0n1/C0n2, ACIA at C0n8/9/A/B
 
@@ -212,7 +267,11 @@ UINT8 a2bus_ssc_device::read_c0nx(address_space &space, UINT8 offset)
     write_c0nx - called for writes to this card's c0nx space
 -------------------------------------------------*/
 
+<<<<<<< HEAD
 void a2bus_ssc_device::write_c0nx(address_space &space, UINT8 offset, UINT8 data)
+=======
+void a2bus_ssc_device::write_c0nx(address_space &space, uint8_t offset, uint8_t data)
+>>>>>>> upstream/master
 {
 	switch (offset)
 	{

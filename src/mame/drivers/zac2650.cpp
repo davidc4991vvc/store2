@@ -15,10 +15,19 @@
  */
 
 #include "emu.h"
+<<<<<<< HEAD
 #include "cpu/s2650/s2650.h"
 
 #include "tinv2650.lh"
 #include "includes/zac2650.h"
+=======
+#include "includes/zac2650.h"
+
+#include "cpu/s2650/s2650.h"
+#include "speaker.h"
+
+#include "tinv2650.lh"
+>>>>>>> upstream/master
 
 
 /***********************************************************************************************/
@@ -36,10 +45,13 @@ static ADDRESS_MAP_START( main_map, AS_PROGRAM, 8, zac2650_state )
 	AM_RANGE(0x1f00, 0x1fff) AM_READWRITE(zac_s2636_r, zac_s2636_w) AM_SHARE("s2636_0_ram")
 ADDRESS_MAP_END
 
+<<<<<<< HEAD
 static ADDRESS_MAP_START( port_map, AS_IO, 8, zac2650_state )
 	AM_RANGE(S2650_SENSE_PORT, S2650_SENSE_PORT) AM_READ_PORT("SENSE")
 ADDRESS_MAP_END
 
+=======
+>>>>>>> upstream/master
 static INPUT_PORTS_START( tinvader )
 	PORT_START("1E80")
 	PORT_BIT( 0x01, IP_ACTIVE_LOW, IPT_START1 )
@@ -84,9 +96,12 @@ static INPUT_PORTS_START( tinvader )
 	PORT_BIT( 0x40, IP_ACTIVE_LOW, IPT_UNUSED )
 	PORT_BIT( 0x80, IP_ACTIVE_LOW, IPT_UNUSED )
 
+<<<<<<< HEAD
 	PORT_START("SENSE")
 	PORT_BIT( 0x80, IP_ACTIVE_LOW, IPT_CUSTOM ) PORT_VBLANK("screen")
 
+=======
+>>>>>>> upstream/master
 	PORT_START("1E85")
 	PORT_BIT( 0xff, IP_ACTIVE_LOW, IPT_UNUSED )
 
@@ -152,9 +167,12 @@ static INPUT_PORTS_START( dodgem )
 	PORT_BIT( 0x40, IP_ACTIVE_LOW, IPT_UNUSED )
 	PORT_BIT( 0x80, IP_ACTIVE_LOW, IPT_UNUSED )
 
+<<<<<<< HEAD
 	PORT_START("SENSE")
 	PORT_BIT( 0x80, IP_ACTIVE_LOW, IPT_CUSTOM ) PORT_VBLANK("screen")
 
+=======
+>>>>>>> upstream/master
 	PORT_START("1E85")
 	PORT_DIPNAME( 0x03, 0x00, DEF_STR( Difficulty ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( Very_Easy) )
@@ -189,10 +207,17 @@ INPUT_PORTS_END
 
 PALETTE_INIT_MEMBER(zac2650_state, zac2650)
 {
+<<<<<<< HEAD
 	palette.set_pen_color(0,rgb_t::black);
 	palette.set_pen_color(1,rgb_t::white);
 	palette.set_pen_color(2,rgb_t::black);
 	palette.set_pen_color(3,rgb_t::black);
+=======
+	palette.set_pen_color(0, rgb_t::black());
+	palette.set_pen_color(1, rgb_t::white());
+	palette.set_pen_color(2, rgb_t::black());
+	palette.set_pen_color(3, rgb_t::black());
+>>>>>>> upstream/master
 }
 
 /************************************************************************************************
@@ -233,16 +258,28 @@ static const gfx_layout s2636_character =
 
 static GFXDECODE_START( tinvader )
 	GFXDECODE_SCALE( "gfx1", 0, tinvader_character,   0, 2, 3, 3 )
+<<<<<<< HEAD
 	GFXDECODE_SCALE( NULL,   0x1F00, s2636_character, 0, 2, 4, 3 )  /* dynamic */
 	GFXDECODE_SCALE( NULL,   0x1F00, s2636_character, 0, 2, 8, 6 )  /* dynamic */
 GFXDECODE_END
 
 static MACHINE_CONFIG_START( tinvader, zac2650_state )
+=======
+	GFXDECODE_SCALE( nullptr,   0x1F00, s2636_character, 0, 2, 4, 3 )  /* dynamic */
+	GFXDECODE_SCALE( nullptr,   0x1F00, s2636_character, 0, 2, 8, 6 )  /* dynamic */
+GFXDECODE_END
+
+static MACHINE_CONFIG_START( tinvader )
+>>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", S2650, 3800000/4)
 	MCFG_CPU_PROGRAM_MAP(main_map)
+<<<<<<< HEAD
 	MCFG_CPU_IO_MAP(port_map)
+=======
+	MCFG_S2650_SENSE_INPUT(DEVREADLINE("screen", screen_device, vblank)) MCFG_DEVCB_INVERT
+>>>>>>> upstream/master
 
 	/* video hardware */
 	MCFG_SCREEN_ADD("screen", RASTER)
@@ -261,7 +298,10 @@ static MACHINE_CONFIG_START( tinvader, zac2650_state )
 	MCFG_SPEAKER_STANDARD_MONO("mono")
 
 	MCFG_DEVICE_ADD("s2636", S2636, 0)
+<<<<<<< HEAD
 	MCFG_S2636_WORKRAM_SIZE(0x100)
+=======
+>>>>>>> upstream/master
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 0.25)
 MACHINE_CONFIG_END
 
@@ -317,6 +357,12 @@ ROM_START( dodgem )
 ROM_END
 
 
+<<<<<<< HEAD
 GAMEL(1979?,tinv2650, 0,        tinvader, tinvader, driver_device, 0, ROT270, "Zaccaria / Zelco", "The Invaders", MACHINE_IMPERFECT_SOUND | MACHINE_SUPPORTS_SAVE, layout_tinv2650 )
 GAME( 1979?,sia2650,  tinv2650, tinvader, sinvader, driver_device, 0, ROT270, "bootleg (Sidam)", "Super Invader Attack (bootleg of The Invaders)", MACHINE_IMPERFECT_SOUND | MACHINE_SUPPORTS_SAVE ) // 1980?
 GAME( 1979, dodgem,   0,        tinvader, dodgem,   driver_device, 0, ROT0,   "Zaccaria", "Dodgem", MACHINE_IMPERFECT_SOUND | MACHINE_SUPPORTS_SAVE )
+=======
+GAMEL(1979?,tinv2650, 0,        tinvader, tinvader, zac2650_state, 0, ROT270, "Zaccaria / Zelco", "The Invaders", MACHINE_IMPERFECT_SOUND | MACHINE_SUPPORTS_SAVE, layout_tinv2650 )
+GAME( 1979?,sia2650,  tinv2650, tinvader, sinvader, zac2650_state, 0, ROT270, "bootleg (Sidam)",  "Super Invader Attack (bootleg of The Invaders)", MACHINE_IMPERFECT_SOUND | MACHINE_SUPPORTS_SAVE ) // 1980?
+GAME( 1979, dodgem,   0,        tinvader, dodgem,   zac2650_state, 0, ROT0,   "Zaccaria",         "Dodgem", MACHINE_IMPERFECT_SOUND | MACHINE_SUPPORTS_SAVE )
+>>>>>>> upstream/master

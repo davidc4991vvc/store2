@@ -10,8 +10,16 @@
 
 #include "hashing.h"
 #include <zlib.h>
+<<<<<<< HEAD
 
 
+=======
+#include <iomanip>
+#include <sstream>
+
+
+namespace util {
+>>>>>>> upstream/master
 //**************************************************************************
 //  CONSTANTS
 //**************************************************************************
@@ -63,13 +71,21 @@ bool sha1_t::from_string(const char *string, int length)
 		return false;
 
 	// iterate through our raw buffer
+<<<<<<< HEAD
 	for (int bytenum = 0; bytenum < sizeof(m_raw); bytenum++)
+=======
+	for (auto & elem : m_raw)
+>>>>>>> upstream/master
 	{
 		int upper = char_to_hex(*string++);
 		int lower = char_to_hex(*string++);
 		if (upper == -1 || lower == -1)
 			return false;
+<<<<<<< HEAD
 		m_raw[bytenum] = (upper << 4) | lower;
+=======
+		elem = (upper << 4) | lower;
+>>>>>>> upstream/master
 	}
 	return true;
 }
@@ -79,12 +95,23 @@ bool sha1_t::from_string(const char *string, int length)
 //  as_string - convert to a string
 //-------------------------------------------------
 
+<<<<<<< HEAD
 const char *sha1_t::as_string(std::string &buffer) const
 {
 	buffer.clear();
 	for (int i = 0; i < ARRAY_LENGTH(m_raw); i++)
 		strcatprintf(buffer, "%02x", m_raw[i]);
 	return buffer.c_str();
+=======
+std::string sha1_t::as_string() const
+{
+	std::ostringstream buffer;
+	buffer.fill('0');
+	buffer << std::hex;
+	for (auto & elem : m_raw)
+		buffer << std::setw(2) << unsigned(elem);
+	return buffer.str();
+>>>>>>> upstream/master
 }
 
 
@@ -106,13 +133,21 @@ bool md5_t::from_string(const char *string, int length)
 		return false;
 
 	// iterate through our raw buffer
+<<<<<<< HEAD
 	for (int bytenum = 0; bytenum < sizeof(m_raw); bytenum++)
+=======
+	for (auto & elem : m_raw)
+>>>>>>> upstream/master
 	{
 		int upper = char_to_hex(*string++);
 		int lower = char_to_hex(*string++);
 		if (upper == -1 || lower == -1)
 			return false;
+<<<<<<< HEAD
 		m_raw[bytenum] = (upper << 4) | lower;
+=======
+		elem = (upper << 4) | lower;
+>>>>>>> upstream/master
 	}
 	return true;
 }
@@ -122,12 +157,23 @@ bool md5_t::from_string(const char *string, int length)
 //  as_string - convert to a string
 //-------------------------------------------------
 
+<<<<<<< HEAD
 const char *md5_t::as_string(std::string &buffer) const
 {
 	buffer.clear();
 	for (int i = 0; i < ARRAY_LENGTH(m_raw); i++)
 		strcatprintf(buffer, "%02x", m_raw[i]);
 	return buffer.c_str();
+=======
+std::string md5_t::as_string() const
+{
+	std::ostringstream buffer;
+	buffer.fill('0');
+	buffer << std::hex;
+	for (auto & elem : m_raw)
+		buffer << std::setw(2) << unsigned(elem);
+	return buffer.str();
+>>>>>>> upstream/master
 }
 
 
@@ -166,10 +212,16 @@ bool crc32_t::from_string(const char *string, int length)
 //  as_string - convert to a string
 //-------------------------------------------------
 
+<<<<<<< HEAD
 const char *crc32_t::as_string(std::string &buffer) const
 {
 	strprintf(buffer, "%08x", m_raw);
 	return buffer.c_str();
+=======
+std::string crc32_t::as_string() const
+{
+	return string_format("%08x", m_raw);
+>>>>>>> upstream/master
 }
 
 
@@ -178,7 +230,11 @@ const char *crc32_t::as_string(std::string &buffer) const
 //  the currently-accumulated value
 //-------------------------------------------------
 
+<<<<<<< HEAD
 void crc32_creator::append(const void *data, UINT32 length)
+=======
+void crc32_creator::append(const void *data, uint32_t length)
+>>>>>>> upstream/master
 {
 	m_accum.m_raw = crc32(m_accum, reinterpret_cast<const Bytef *>(data), length);
 }
@@ -214,6 +270,7 @@ bool crc16_t::from_string(const char *string, int length)
 	return true;
 }
 
+<<<<<<< HEAD
 
 //-------------------------------------------------
 //  as_string - convert to a string
@@ -234,6 +291,37 @@ const char *crc16_t::as_string(std::string &buffer) const
 void crc16_creator::append(const void *data, UINT32 length)
 {
 	static const UINT16 s_table[256] =
+=======
+/**
+ * @fn  std::string crc16_t::as_string() const
+ *
+ * @brief   -------------------------------------------------
+ *            as_string - convert to a string
+ *          -------------------------------------------------.
+ *
+ * @return  a std::string.
+ */
+
+std::string crc16_t::as_string() const
+{
+	return string_format("%04x", m_raw);
+}
+
+/**
+ * @fn  void crc16_creator::append(const void *data, uint32_t length)
+ *
+ * @brief   -------------------------------------------------
+ *            append - hash a block of data, appending to the currently-accumulated value
+ *          -------------------------------------------------.
+ *
+ * @param   data    The data.
+ * @param   length  The length.
+ */
+
+void crc16_creator::append(const void *data, uint32_t length)
+{
+	static const uint16_t s_table[256] =
+>>>>>>> upstream/master
 	{
 		0x0000, 0x1021, 0x2042, 0x3063, 0x4084, 0x50a5, 0x60c6, 0x70e7,
 		0x8108, 0x9129, 0xa14a, 0xb16b, 0xc18c, 0xd1ad, 0xe1ce, 0xf1ef,
@@ -269,11 +357,23 @@ void crc16_creator::append(const void *data, UINT32 length)
 		0x6e17, 0x7e36, 0x4e55, 0x5e74, 0x2e93, 0x3eb2, 0x0ed1, 0x1ef0
 	};
 
+<<<<<<< HEAD
 	const UINT8 *src = reinterpret_cast<const UINT8 *>(data);
 
 	// fetch the current value into a local and rip through the source data
 	UINT16 crc = m_accum.m_raw;
+=======
+	const uint8_t *src = reinterpret_cast<const uint8_t *>(data);
+
+	// fetch the current value into a local and rip through the source data
+	uint16_t crc = m_accum.m_raw;
+>>>>>>> upstream/master
 	while (length-- != 0)
 		crc = (crc << 8) ^ s_table[(crc >> 8) ^ *src++];
 	m_accum.m_raw = crc;
 }
+<<<<<<< HEAD
+=======
+
+} // namespace util
+>>>>>>> upstream/master

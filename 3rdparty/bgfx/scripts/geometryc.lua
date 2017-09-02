@@ -1,6 +1,11 @@
 --
+<<<<<<< HEAD
 -- Copyright 2010-2015 Branimir Karadzic. All rights reserved.
 -- License: http://www.opensource.org/licenses/BSD-2-Clause
+=======
+-- Copyright 2010-2017 Branimir Karadzic. All rights reserved.
+-- License: https://github.com/bkaradzic/bgfx#license-bsd-2-clause
+>>>>>>> upstream/master
 --
 
 project "geometryc"
@@ -25,9 +30,24 @@ project "geometryc"
 		path.join(BGFX_DIR, "examples/common/bounds.**"),
 	}
 
+<<<<<<< HEAD
+=======
+	links {
+		"bx",
+	}
+
+	configuration { "mingw-*" }
+		targetextension ".exe"
+
+>>>>>>> upstream/master
 	configuration { "osx" }
 		links {
 			"Cocoa.framework",
 		}
 
+<<<<<<< HEAD
+=======
+	configuration {}
+
+>>>>>>> upstream/master
 	strip()

@@ -4,12 +4,21 @@
 #include "emu.h"
 #include "wpc_out.h"
 
+<<<<<<< HEAD
 const device_type WPC_OUT = &device_creator<wpc_out_device>;
 
 wpc_out_device::wpc_out_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock) :
 	device_t(mconfig, WPC_OUT, "Williams Pinball Controller Output Control", tag, owner, clock, "wpc_out", __FILE__)
 {
 	names = NULL;
+=======
+DEFINE_DEVICE_TYPE(WPC_OUT, wpc_out_device, "wpc_out", "Williams Pinball Controller Output Control")
+
+wpc_out_device::wpc_out_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock) :
+	device_t(mconfig, WPC_OUT, tag, owner, clock)
+{
+	names = nullptr;
+>>>>>>> upstream/master
 }
 
 wpc_out_device::~wpc_out_device()
@@ -35,7 +44,11 @@ void wpc_out_device::gi_update()
 {
 	attotime now = machine().time();
 	attotime delta = now - previous_gi_update;
+<<<<<<< HEAD
 	UINT32 delta_us = delta.as_ticks(1e6);
+=======
+	uint32_t delta_us = delta.as_ticks(1e6);
+>>>>>>> upstream/master
 	for(int i=0; i<gi_count; i++)
 		if(gi & (1 <<i))
 			gi_time[i] += delta_us;
@@ -55,16 +68,27 @@ void wpc_out_device::send_output(int sid, int state)
 		sprintf(buffer, "u:output %02d", sid);
 		name = buffer;
 	}
+<<<<<<< HEAD
 	output_set_value(name, state);
 
 	if(sid == 41)
 		coin_counter_w(machine(), 0, state);
+=======
+	machine().output().set_value(name, state);
+
+	if(sid == 41)
+		machine().bookkeeping().coin_counter_w(0, state);
+>>>>>>> upstream/master
 }
 
 WRITE8_MEMBER(wpc_out_device::out_w)
 {
 	first_after_led = false;
+<<<<<<< HEAD
 	UINT8 diff = state[offset] ^ data;
+=======
+	uint8_t diff = state[offset] ^ data;
+>>>>>>> upstream/master
 	state[offset] = data;
 	if(diff)
 		for(int i=0; i<8; i++)
@@ -108,7 +132,11 @@ WRITE8_MEMBER(wpc_out_device::gi_w)
 WRITE8_MEMBER(wpc_out_device::led_w)
 {
 	first_after_led = true;
+<<<<<<< HEAD
 	output_set_value("L:cpu led", data & 0x80 ? 1 : 0);
+=======
+	machine().output().set_value("L:cpu led", data & 0x80 ? 1 : 0);
+>>>>>>> upstream/master
 }
 
 void wpc_out_device::device_start()

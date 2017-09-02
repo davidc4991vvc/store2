@@ -1,3 +1,8 @@
+<<<<<<< HEAD
+=======
+# license:BSD-3-Clause
+# copyright-holders:Olivier Galibert
+>>>>>>> upstream/master
 fetch
 	if(irq_requested) {
 		int level;
@@ -13,9 +18,15 @@ fetch
 		standard_irq_callback(OP1);
 		check_irq();
 	}
+<<<<<<< HEAD
 	if(machine().debug_flags & DEBUG_FLAG_ENABLED)
 		debugger_instruction_hook(this, PC);
 	PPC = PC;
+=======
+	PPC = PC;
+	if(machine().debug_flags & DEBUG_FLAG_ENABLED)
+		debugger_instruction_hook(this, PC);
+>>>>>>> upstream/master
 	OP1 = read_pc();
 	if(OP1 == 0xfe) {
 		OP1 = read_pc();
@@ -24,9 +35,15 @@ fetch
 		inst_state = OP1;
 
 fetch_noirq
+<<<<<<< HEAD
 	if(machine().debug_flags & DEBUG_FLAG_ENABLED)
 		debugger_instruction_hook(this, PC);
 	PPC = PC;
+=======
+	PPC = PC;
+	if(machine().debug_flags & DEBUG_FLAG_ENABLED)
+		debugger_instruction_hook(this, PC);
+>>>>>>> upstream/master
 	OP1 = read_pc();
 	if(OP1 == 0xfe) {
 		OP1 = read_pc();
@@ -35,7 +52,11 @@ fetch_noirq
 		inst_state = OP1;
 
 eadr  rel8
+<<<<<<< HEAD
 	OP1 = INT8(read_pc());
+=======
+	OP1 = int8_t(read_pc());
+>>>>>>> upstream/master
 
 eadr  rel11
 	OP1 = read_pc();
@@ -49,11 +70,19 @@ eadr  rel16
 
 eadr  rrel8
 	OP2 = read_pc();
+<<<<<<< HEAD
 	OP1 = INT8(read_pc());
 
 eadr  brrel8
 	OP2 = read_pc();
 	OP1 = INT8(read_pc());
+=======
+	OP1 = int8_t(read_pc());
+
+eadr  brrel8
+	OP2 = read_pc();
+	OP1 = int8_t(read_pc());
+>>>>>>> upstream/master
 
 eadr  direct_1
 	OP1 = read_pc();
@@ -132,7 +161,11 @@ eadr  indexed_1
 		OPI &= 0xfe;
 		OP1 |= read_pc() << 8;
 	} else
+<<<<<<< HEAD
 		OP1 = INT8(OP1);
+=======
+		OP1 = int8_t(OP1);
+>>>>>>> upstream/master
 	if(OPI) {
 		OP1 += reg_r16(OPI);
 	}
@@ -194,7 +227,11 @@ macro post_indexed $cycles1 $cycles2
 
 06    ext   direct_1
 	OP1 &= 0xfc;
+<<<<<<< HEAD
 	TMP = INT16(reg_r16(OP1));
+=======
+	TMP = int16_t(reg_r16(OP1));
+>>>>>>> upstream/master
 	set_nz16(TMP);
 	reg_w16(OP1+2, TMP >> 16);
 	next(4);
@@ -214,10 +251,17 @@ macro post_indexed $cycles1 $cycles2
 		PSW |= F_ST;
 	if(OP1 >= 1 && OP1 <= 16 && (TMP & (0x0001 << (OP1-1))))
 		PSW |= F_C;
+<<<<<<< HEAD
 	TMP = UINT16(TMP) >> OP1;
 	if(!TMP)
 		PSW |= F_Z;
 	else if(INT16(TMP) < 0)
+=======
+	TMP = uint16_t(TMP) >> OP1;
+	if(!TMP)
+		PSW |= F_Z;
+	else if(int16_t(TMP) < 0)
+>>>>>>> upstream/master
 		PSW |= F_N;
 	reg_w16(OP2, TMP);
 	next(OP1 ? 7+OP1 : 8);
@@ -232,10 +276,17 @@ macro post_indexed $cycles1 $cycles2
 		PSW |= F_ST;
 	if(OP1 >= 1 && OP1 <= 16 && (TMP & (0x8000 >> (OP1-1))))
 		PSW |= F_C;
+<<<<<<< HEAD
 	TMP = UINT16(TMP << OP1);
 	if(!TMP)
 		PSW |= F_Z;
 	else if(INT16(TMP) < 0)
+=======
+	TMP = uint16_t(TMP << OP1);
+	if(!TMP)
+		PSW |= F_Z;
+	else if(int16_t(TMP) < 0)
+>>>>>>> upstream/master
 		PSW |= F_N;
 	reg_w16(OP2, TMP);
 	next(OP1 ? 7+OP1 : 8);
@@ -250,10 +301,17 @@ macro post_indexed $cycles1 $cycles2
 		PSW |= F_ST;
 	if(OP1 >= 1 && OP1 <= 16 && (TMP & (0x0001 << (OP1-1))))
 		PSW |= F_C;
+<<<<<<< HEAD
 	TMP = INT16(TMP) >> OP1;
 	if(!TMP)
 		PSW |= F_Z;
 	else if(INT16(TMP) < 0)
+=======
+	TMP = int16_t(TMP) >> OP1;
+	if(!TMP)
+		PSW |= F_Z;
+	else if(int16_t(TMP) < 0)
+>>>>>>> upstream/master
 		PSW |= F_N;
 	reg_w16(OP2, TMP);
 	next(OP1 ? 7+OP1 : 8);
@@ -273,7 +331,11 @@ macro post_indexed $cycles1 $cycles2
 	TMP = TMP >> OP1;
 	if(!TMP)
 		PSW |= F_Z;
+<<<<<<< HEAD
 	else if(INT32(TMP) < 0)
+=======
+	else if(int32_t(TMP) < 0)
+>>>>>>> upstream/master
 		PSW |= F_N;
 	reg_w16(OP2, TMP);
 	reg_w16(OP2+2, TMP >> 16);
@@ -294,7 +356,11 @@ macro post_indexed $cycles1 $cycles2
 	TMP = TMP << OP1;
 	if(!TMP)
 		PSW |= F_Z;
+<<<<<<< HEAD
 	else if(INT32(TMP) < 0)
+=======
+	else if(int32_t(TMP) < 0)
+>>>>>>> upstream/master
 		PSW |= F_N;
 	reg_w16(OP2, TMP);
 	reg_w16(OP2+2, TMP >> 16);
@@ -312,10 +378,17 @@ macro post_indexed $cycles1 $cycles2
 		PSW |= F_ST;
 	if(OP1 >= 1 && (TMP & (0x00000001 << (OP1-1))))
 		PSW |= F_C;
+<<<<<<< HEAD
 	TMP = INT32(TMP) >> OP1;
 	if(!TMP)
 		PSW |= F_Z;
 	else if(INT32(TMP) < 0)
+=======
+	TMP = int32_t(TMP) >> OP1;
+	if(!TMP)
+		PSW |= F_Z;
+	else if(int32_t(TMP) < 0)
+>>>>>>> upstream/master
 		PSW |= F_N;
 	reg_w16(OP2, TMP);
 	reg_w16(OP2+2, TMP >> 16);
@@ -325,7 +398,11 @@ macro post_indexed $cycles1 $cycles2
 	OP2 &= 0xfc;
 	TMP = reg_r16(OP2);
 	TMP |= reg_r16(OP2+2) << 16;
+<<<<<<< HEAD
 	for(OP3 = 0; OP3 < 31 && INT32(TMP) >= 0; OP3++);
+=======
+	for(OP3 = 0; OP3 < 31 && int32_t(TMP) >= 0; OP3++);
+>>>>>>> upstream/master
 	PSW &= ~(F_Z|F_N|F_C);
 	if(!TMP)
 		PSW |= F_Z;
@@ -358,7 +435,11 @@ macro post_indexed $cycles1 $cycles2
 
 16    extb  direct_1
 	OP1 &= 0xfe;
+<<<<<<< HEAD
 	TMP = INT8(reg_r8(OP1));
+=======
+	TMP = int8_t(reg_r8(OP1));
+>>>>>>> upstream/master
 	set_nz8(TMP);
 	reg_w16(OP1, TMP);
 	next(4);
@@ -378,10 +459,17 @@ macro post_indexed $cycles1 $cycles2
 		PSW |= F_ST;
 	if(OP1 >= 1 && OP1 <= 8 && (TMP & (0x01 << (OP1-1))))
 		PSW |= F_C;
+<<<<<<< HEAD
 	TMP = UINT8(TMP) >> OP1;
 	if(!TMP)
 		PSW |= F_Z;
 	else if(INT8(TMP) < 0)
+=======
+	TMP = uint8_t(TMP) >> OP1;
+	if(!TMP)
+		PSW |= F_Z;
+	else if(int8_t(TMP) < 0)
+>>>>>>> upstream/master
 		PSW |= F_N;
 	reg_w8(OP2, TMP);
 	next(OP1 ? 7+OP1 : 8);
@@ -396,10 +484,17 @@ macro post_indexed $cycles1 $cycles2
 		PSW |= F_ST;
 	if(OP1 >= 1 && OP1 <= 8 && (TMP & (0x80 >> (OP1-1))))
 		PSW |= F_C;
+<<<<<<< HEAD
 	TMP = UINT8(TMP << OP1);
 	if(!TMP)
 		PSW |= F_Z;
 	else if(INT8(TMP) < 0)
+=======
+	TMP = uint8_t(TMP << OP1);
+	if(!TMP)
+		PSW |= F_Z;
+	else if(int8_t(TMP) < 0)
+>>>>>>> upstream/master
 		PSW |= F_N;
 	reg_w8(OP2, TMP);
 	next(OP1 ? 7+OP1 : 8);
@@ -414,10 +509,17 @@ macro post_indexed $cycles1 $cycles2
 		PSW |= F_ST;
 	if(OP1 >= 1 && OP1 <= 8 && (TMP & (0x01 << (OP1-1))))
 		PSW |= F_C;
+<<<<<<< HEAD
 	TMP = UINT8(INT8(TMP) >> OP1);
 	if(!TMP)
 		PSW |= F_Z;
 	else if(INT8(TMP) < 0)
+=======
+	TMP = uint8_t(int8_t(TMP) >> OP1);
+	if(!TMP)
+		PSW |= F_Z;
+	else if(int8_t(TMP) < 0)
+>>>>>>> upstream/master
 		PSW |= F_N;
 	reg_w8(OP2, TMP);
 	next(OP1 ? 7+OP1 : 8);
@@ -558,14 +660,22 @@ macro post_indexed $cycles1 $cycles2
 
 fe4c  mul   direct_3
 	TMP = reg_r16(OP1);
+<<<<<<< HEAD
 	TMP = INT16(reg_r16(OP2)) * INT16(TMP);
+=======
+	TMP = int16_t(reg_r16(OP2)) * int16_t(TMP);
+>>>>>>> upstream/master
 	OP3 &= 0xfc;
 	reg_w16(OP3, TMP);
 	reg_w16(OP3+2, TMP >> 16);
 	next(30);
 
 fe4d  mul   immed_3w
+<<<<<<< HEAD
 	TMP = INT16(OP1) * INT16(reg_r16(OP2));
+=======
+	TMP = int16_t(OP1) * int16_t(reg_r16(OP2));
+>>>>>>> upstream/master
 	OP3 &= 0xfc;
 	reg_w16(OP3, TMP);
 	reg_w16(OP3+2, TMP >> 16);
@@ -573,7 +683,11 @@ fe4d  mul   immed_3w
 
 fe4e  mul   indirect_3
 	TMP = any_r16(OP1);
+<<<<<<< HEAD
 	TMP = INT16(reg_r16(OP2)) * INT16(TMP);
+=======
+	TMP = int16_t(reg_r16(OP2)) * int16_t(TMP);
+>>>>>>> upstream/master
 	OP3 &= 0xfc;
 	reg_w16(OP3, TMP);
 	reg_w16(OP3+2, TMP >> 16);
@@ -581,7 +695,11 @@ fe4e  mul   indirect_3
 
 fe4f  mul   indexed_3
 	TMP = any_r16(OP1);
+<<<<<<< HEAD
 	TMP = INT16(reg_r16(OP2)) * INT16(TMP);
+=======
+	TMP = int16_t(reg_r16(OP2)) * int16_t(TMP);
+>>>>>>> upstream/master
 	OP3 &= 0xfc;
 	reg_w16(OP3, TMP);
 	reg_w16(OP3+2, TMP >> 16);
@@ -685,24 +803,40 @@ fe4f  mul   indexed_3
 
 fe5c  mulb  direct_3
 	TMP = reg_r8(OP1);
+<<<<<<< HEAD
 	TMP = INT8(reg_r8(OP2)) * INT8(TMP);
+=======
+	TMP = int8_t(reg_r8(OP2)) * int8_t(TMP);
+>>>>>>> upstream/master
 	reg_w16(OP3, TMP);
 	next(22);
 
 fe5d  mulb  immed_3b
+<<<<<<< HEAD
 	TMP = INT8(OP1) * INT8(reg_r8(OP2));
+=======
+	TMP = int8_t(OP1) * int8_t(reg_r8(OP2));
+>>>>>>> upstream/master
 	reg_w16(OP3, TMP);
 	next(22);
 
 fe5e  mulb  indirect_3
 	TMP = any_r8(OP1);
+<<<<<<< HEAD
 	TMP = INT8(reg_r8(OP2)) * INT8(TMP);
+=======
+	TMP = int8_t(reg_r8(OP2)) * int8_t(TMP);
+>>>>>>> upstream/master
 	reg_w16(OP3, TMP);
 	post_indirect 1 24 25 // +5 when external
 
 fe5f  mulb  indexed_3
 	TMP = any_r8(OP1);
+<<<<<<< HEAD
 	TMP = INT8(reg_r8(OP2)) * INT8(TMP);
+=======
+	TMP = int8_t(reg_r8(OP2)) * int8_t(TMP);
+>>>>>>> upstream/master
 	reg_w16(OP3, TMP);
 	post_indexed 24 25 // +5 when external
 
@@ -813,14 +947,22 @@ fe5f  mulb  indexed_3
 fe6c  mul   direct_2
 	OP2 &= 0xfc;
 	TMP = reg_r16(OP1);
+<<<<<<< HEAD
 	TMP = INT16(reg_r16(OP2)) * INT16(TMP);
+=======
+	TMP = int16_t(reg_r16(OP2)) * int16_t(TMP);
+>>>>>>> upstream/master
 	reg_w16(OP2, TMP);
 	reg_w16(OP2+2, TMP >> 16);
 	next(29);
 
 fe6d  mul   immed_2w
 	OP2 &= 0xfc;
+<<<<<<< HEAD
 	TMP = INT16(OP1) * INT16(reg_r16(OP2));
+=======
+	TMP = int16_t(OP1) * int16_t(reg_r16(OP2));
+>>>>>>> upstream/master
 	reg_w16(OP2, TMP);
 	reg_w16(OP2+2, TMP >> 16);
 	next(30);
@@ -828,7 +970,11 @@ fe6d  mul   immed_2w
 fe6e  mul   indirect_2
 	OP2 &= 0xfc;
 	TMP = any_r16(OP1);
+<<<<<<< HEAD
 	TMP = INT16(reg_r16(OP2)) * INT16(TMP);
+=======
+	TMP = int16_t(reg_r16(OP2)) * int16_t(TMP);
+>>>>>>> upstream/master
 	reg_w16(OP2, TMP);
 	reg_w16(OP2+2, TMP >> 16);
 	post_indirect 2 31 32 // +5 when external
@@ -836,7 +982,11 @@ fe6e  mul   indirect_2
 fe6f  mul   indexed_2
 	OP2 &= 0xfc;
 	TMP = any_r16(OP1);
+<<<<<<< HEAD
 	TMP = INT16(reg_r16(OP2)) * INT16(TMP);
+=======
+	TMP = int16_t(reg_r16(OP2)) * int16_t(TMP);
+>>>>>>> upstream/master
 	reg_w16(OP2, TMP);
 	reg_w16(OP2+2, TMP >> 16);
 	post_indexed 31 32 // +5 when external
@@ -944,27 +1094,43 @@ fe6f  mul   indexed_2
 fe7c  mulb  direct_2
 	OP2 &= 0xfe;
 	TMP = reg_r8(OP1);
+<<<<<<< HEAD
 	TMP = INT8(reg_r16(OP2)) * INT8(TMP);
+=======
+	TMP = int8_t(reg_r16(OP2)) * int8_t(TMP);
+>>>>>>> upstream/master
 	reg_w16(OP2, TMP);
 	next(21);
 
 fe7d  mulb  immed_2b
 	OP2 &= 0xfe;
+<<<<<<< HEAD
 	TMP = INT8(OP1) * INT8(reg_r8(OP2));
+=======
+	TMP = int8_t(OP1) * int8_t(reg_r8(OP2));
+>>>>>>> upstream/master
 	reg_w16(OP2, TMP);
 	next(21);
 
 fe7e  mulb  indirect_2
 	OP2 &= 0xfe;
 	TMP = any_r8(OP1);
+<<<<<<< HEAD
 	TMP = INT8(reg_r8(OP2)) * INT8(TMP);
+=======
+	TMP = int8_t(reg_r8(OP2)) * int8_t(TMP);
+>>>>>>> upstream/master
 	reg_w16(OP2, TMP);
 	post_indirect 1 23 24 // +5 when external
 
 fe7f  mulb  indexed_2
 	OP2 &= 0xfe;
 	TMP = any_r16(OP1);
+<<<<<<< HEAD
 	TMP = INT8(reg_r16(OP2)) * INT8(TMP);
+=======
+	TMP = int8_t(reg_r16(OP2)) * int8_t(TMP);
+>>>>>>> upstream/master
 	reg_w16(OP2, TMP);
 	post_indexed 23 24 // +5 when external
 
@@ -1048,7 +1214,11 @@ fe7f  mulb  indexed_2
 	if(OP1) {
 		TMP = reg_r16(OP2);
 		TMP |= reg_r16(OP2+2);
+<<<<<<< HEAD
 		UINT32 TMP2 = TMP / OP1;
+=======
+		uint32_t TMP2 = TMP / OP1;
+>>>>>>> upstream/master
 		if(TMP2 > 65535)
 			PSW |= F_V|F_VT;
 		TMP = TMP % OP1;
@@ -1064,7 +1234,11 @@ fe7f  mulb  indexed_2
 	if(OP1) {
 		TMP = reg_r16(OP2);
 		TMP |= reg_r16(OP2+2);
+<<<<<<< HEAD
 		UINT32 TMP2 = TMP / OP1;
+=======
+		uint32_t TMP2 = TMP / OP1;
+>>>>>>> upstream/master
 		if(TMP2 > 65535)
 			PSW |= F_V|F_VT;
 		TMP = TMP % OP1;
@@ -1077,11 +1251,19 @@ fe7f  mulb  indexed_2
 8e    divu  indirect_2
 	OP2 &= 0xfc;
 	PSW &= ~F_V;
+<<<<<<< HEAD
 	UINT32 d = any_r16(OP1);
 	if(d) {
 		TMP = reg_r16(OP2);
 		TMP |= reg_r16(OP2+2);
 		UINT32 TMP2 = TMP / d;
+=======
+	uint32_t d = any_r16(OP1);
+	if(d) {
+		TMP = reg_r16(OP2);
+		TMP |= reg_r16(OP2+2);
+		uint32_t TMP2 = TMP / d;
+>>>>>>> upstream/master
 		if(TMP2 > 65535)
 			PSW |= F_V|F_VT;
 		TMP = TMP % d;
@@ -1094,11 +1276,19 @@ fe7f  mulb  indexed_2
 8f    divu  indexed_2
 	OP2 &= 0xfc;
 	PSW &= ~F_V;
+<<<<<<< HEAD
 	UINT32 d = any_r16(OP1);
 	if(d) {
 		TMP = reg_r16(OP2);
 		TMP |= reg_r16(OP2+2);
 		UINT32 TMP2 = TMP / d;
+=======
+	uint32_t d = any_r16(OP1);
+	if(d) {
+		TMP = reg_r16(OP2);
+		TMP |= reg_r16(OP2+2);
+		uint32_t TMP2 = TMP / d;
+>>>>>>> upstream/master
 		if(TMP2 > 65535)
 			PSW |= F_V|F_VT;
 		TMP = TMP % d;
@@ -1115,10 +1305,17 @@ fe8c  div   direct_2
 	if(OP1) {
 		TMP = reg_r16(OP2);
 		TMP |= reg_r16(OP2+2);
+<<<<<<< HEAD
 		INT32 TMP2 = INT32(TMP) / INT16(OP1);
 		if(TMP2 > 32767 || TMP2 < -32768)
 			PSW |= F_V|F_VT;
 		TMP = TMP % INT16(OP1);
+=======
+		int32_t TMP2 = int32_t(TMP) / int16_t(OP1);
+		if(TMP2 > 32767 || TMP2 < -32768)
+			PSW |= F_V|F_VT;
+		TMP = TMP % int16_t(OP1);
+>>>>>>> upstream/master
 		TMP = (TMP2 & 0xffff) | ((TMP & 0xffff) << 16);
 		reg_w16(OP2, TMP);
 		reg_w16(OP2+2, TMP >> 16);
@@ -1131,10 +1328,17 @@ fe8d  div   immed_2w
 	if(OP1) {
 		TMP = reg_r16(OP2);
 		TMP |= reg_r16(OP2+2);
+<<<<<<< HEAD
 		INT32 TMP2 = INT32(TMP) / INT16(OP1);
 		if(TMP2 > 32767 || TMP2 < -32768)
 			PSW |= F_V|F_VT;
 		TMP = TMP % INT16(OP1);
+=======
+		int32_t TMP2 = int32_t(TMP) / int16_t(OP1);
+		if(TMP2 > 32767 || TMP2 < -32768)
+			PSW |= F_V|F_VT;
+		TMP = TMP % int16_t(OP1);
+>>>>>>> upstream/master
 		TMP = (TMP2 & 0xffff) | ((TMP & 0xffff) << 16);
 		reg_w16(OP2, TMP);
 		reg_w16(OP2+2, TMP >> 16);
@@ -1144,11 +1348,19 @@ fe8d  div   immed_2w
 fe8e  div   indirect_2
 	OP2 &= 0xfc;
 	PSW &= ~F_V;
+<<<<<<< HEAD
 	INT32 d = INT16(any_r16(OP1));
 	if(d) {
 		TMP = reg_r16(OP2);
 		TMP |= reg_r16(OP2+2);
 		INT32 TMP2 = INT32(TMP) / d;
+=======
+	int32_t d = int16_t(any_r16(OP1));
+	if(d) {
+		TMP = reg_r16(OP2);
+		TMP |= reg_r16(OP2+2);
+		int32_t TMP2 = int32_t(TMP) / d;
+>>>>>>> upstream/master
 		if(TMP2 > 32767 || TMP2 < -32768)
 			PSW |= F_V|F_VT;
 		TMP = TMP % d;
@@ -1161,11 +1373,19 @@ fe8e  div   indirect_2
 fe8f  div   indexed_2
 	OP2 &= 0xfc;
 	PSW &= ~F_V;
+<<<<<<< HEAD
 	INT32 d = INT16(any_r16(OP1));
 	if(d) {
 		TMP = reg_r16(OP2);
 		TMP |= reg_r16(OP2+2);
 		INT32 TMP2 = INT32(TMP) / d;
+=======
+	int32_t d = int16_t(any_r16(OP1));
+	if(d) {
+		TMP = reg_r16(OP2);
+		TMP |= reg_r16(OP2+2);
+		int32_t TMP2 = int32_t(TMP) / d;
+>>>>>>> upstream/master
 		if(TMP2 > 32767 || TMP2 < -32768)
 			PSW |= F_V|F_VT;
 		TMP = TMP % d;
@@ -1253,7 +1473,11 @@ fe8f  div   indexed_2
 	OP1 = reg_r8(OP1);
 	if(OP1) {
 		TMP = reg_r16(OP2);
+<<<<<<< HEAD
 		UINT32 TMP2 = TMP / OP1;
+=======
+		uint32_t TMP2 = TMP / OP1;
+>>>>>>> upstream/master
 		if(TMP2 > 255)
 			PSW |= F_V|F_VT;
 		TMP = TMP % OP1;
@@ -1266,7 +1490,11 @@ fe8f  div   indexed_2
 	PSW &= ~F_V;
 	if(OP1) {
 		TMP = reg_r16(OP2);
+<<<<<<< HEAD
 		UINT32 TMP2 = TMP / OP1;
+=======
+		uint32_t TMP2 = TMP / OP1;
+>>>>>>> upstream/master
 		if(TMP2 > 255)
 			PSW |= F_V|F_VT;
 		TMP = TMP % OP1;
@@ -1277,10 +1505,17 @@ fe8f  div   indexed_2
 
 9e    divub indirect_2
 	PSW &= ~F_V;
+<<<<<<< HEAD
 	UINT32 d = any_r8(OP1);
 	if(d) {
 		TMP = reg_r16(OP2);
 		UINT32 TMP2 = TMP / d;
+=======
+	uint32_t d = any_r8(OP1);
+	if(d) {
+		TMP = reg_r16(OP2);
+		uint32_t TMP2 = TMP / d;
+>>>>>>> upstream/master
 		if(TMP2 > 255)
 			PSW |= F_V|F_VT;
 		TMP = TMP % d;
@@ -1291,10 +1526,17 @@ fe8f  div   indexed_2
 
 9f    divub indexed_2
 	PSW &= ~F_V;
+<<<<<<< HEAD
 	UINT32 d = any_r8(OP1);
 	if(d) {
 		TMP = reg_r16(OP2);
 		UINT32 TMP2 = TMP / d;
+=======
+	uint32_t d = any_r8(OP1);
+	if(d) {
+		TMP = reg_r16(OP2);
+		uint32_t TMP2 = TMP / d;
+>>>>>>> upstream/master
 		if(TMP2 > 255)
 			PSW |= F_V|F_VT;
 		TMP = TMP % d;
@@ -1308,10 +1550,17 @@ fe9c  divb  direct_2
 	OP1 = reg_r8(OP1);
 	if(OP1) {
 		TMP = reg_r16(OP2);
+<<<<<<< HEAD
 		UINT32 TMP2 = INT16(TMP) / INT8(OP1);
 		if(INT16(TMP2) > 127 || INT16(TMP2) < -128)
 			PSW |= F_V|F_VT;
 		TMP = INT16(TMP) % INT8(OP1);
+=======
+		uint32_t TMP2 = int16_t(TMP) / int8_t(OP1);
+		if(int16_t(TMP2) > 127 || int16_t(TMP2) < -128)
+			PSW |= F_V|F_VT;
+		TMP = int16_t(TMP) % int8_t(OP1);
+>>>>>>> upstream/master
 		TMP = (TMP2 & 0xff) | ((TMP & 0xff) << 8);
 		reg_w16(OP2, TMP);
 	}
@@ -1321,10 +1570,17 @@ fe9d  divb  immed_2b
 	PSW &= ~F_V;
 	if(OP1) {
 		TMP = reg_r16(OP2);
+<<<<<<< HEAD
 		UINT32 TMP2 = INT16(TMP) / INT8(OP1);
 		if(INT16(TMP2) > 127 || INT16(TMP2) < -128)
 			PSW |= F_V|F_VT;
 		TMP = INT16(TMP) % INT8(OP1);
+=======
+		uint32_t TMP2 = int16_t(TMP) / int8_t(OP1);
+		if(int16_t(TMP2) > 127 || int16_t(TMP2) < -128)
+			PSW |= F_V|F_VT;
+		TMP = int16_t(TMP) % int8_t(OP1);
+>>>>>>> upstream/master
 		TMP = (TMP2 & 0xff) | ((TMP & 0xff) << 8);
 		reg_w16(OP2, TMP);
 	}
@@ -1332,6 +1588,7 @@ fe9d  divb  immed_2b
 
 fe9e  divb  indirect_2
 	PSW &= ~F_V;
+<<<<<<< HEAD
 	INT32 d = INT8(any_r8(OP1));
 	if(d) {
 		TMP = reg_r16(OP2);
@@ -1339,6 +1596,15 @@ fe9e  divb  indirect_2
 		if(INT16(TMP2) > 127 || INT16(TMP2) < -128)
 			PSW |= F_V|F_VT;
 		TMP = INT16(TMP) % d;
+=======
+	int32_t d = int8_t(any_r8(OP1));
+	if(d) {
+		TMP = reg_r16(OP2);
+		uint32_t TMP2 = int16_t(TMP) / d;
+		if(int16_t(TMP2) > 127 || int16_t(TMP2) < -128)
+			PSW |= F_V|F_VT;
+		TMP = int16_t(TMP) % d;
+>>>>>>> upstream/master
 		TMP = (TMP2 & 0xff) | ((TMP & 0xff) << 8);
 		reg_w16(OP2, TMP);
 	}
@@ -1346,6 +1612,7 @@ fe9e  divb  indirect_2
 
 fe9f  divb  indexed_2
 	PSW &= ~F_V;
+<<<<<<< HEAD
 	INT32 d = INT8(any_r8(OP1));
 	if(d) {
 		TMP = reg_r16(OP2);
@@ -1353,6 +1620,15 @@ fe9f  divb  indexed_2
 		if(INT16(TMP2) > 127 || INT16(TMP2) < -128)
 			PSW |= F_V|F_VT;
 		TMP = INT16(TMP) % d;
+=======
+	int32_t d = int8_t(any_r8(OP1));
+	if(d) {
+		TMP = reg_r16(OP2);
+		uint32_t TMP2 = int16_t(TMP) / d;
+		if(int16_t(TMP2) > 127 || int16_t(TMP2) < -128)
+			PSW |= F_V|F_VT;
+		TMP = int16_t(TMP) % d;
+>>>>>>> upstream/master
 		TMP = (TMP2 & 0xff) | ((TMP & 0xff) << 8);
 		reg_w16(OP2, TMP);
 	}
@@ -1421,6 +1697,7 @@ ab    subc  indexed_2
 	post_indexed 6 7 // +5 when external
 
 ac    ldbze direct_2
+<<<<<<< HEAD
 	reg_w16(OP2, UINT8(reg_r8(OP1)));
 	next(4);
 
@@ -1434,6 +1711,21 @@ ae    ldbze indirect_2
 
 af    ldbze indexed_2
 	reg_w16(OP2, UINT8(any_r8(OP1)));
+=======
+	reg_w16(OP2, uint8_t(reg_r8(OP1)));
+	next(4);
+
+ad    ldbze immed_2b
+	reg_w16(OP2, uint8_t(OP1));
+	next(4);
+
+ae    ldbze indirect_2
+	reg_w16(OP2, uint8_t(any_r8(OP1)));
+	post_indirect 1 6 7 // +5 when external
+
+af    ldbze indexed_2
+	reg_w16(OP2, uint8_t(any_r8(OP1)));
+>>>>>>> upstream/master
 	post_indexed 6 7 // +5 when external
 
 b0    ldb   direct_2
@@ -1499,6 +1791,7 @@ bb    subcb indexed_2
 	post_indexed 6 7 // +5 when external
 
 bc    ldbse direct_2
+<<<<<<< HEAD
 	reg_w16(OP2, INT8(reg_r8(OP1)));
 	next(4);
 
@@ -1512,6 +1805,21 @@ be    ldbse indirect_2
 
 bf    ldbse indexed_2
 	reg_w16(OP2, INT8(any_r8(OP1)));
+=======
+	reg_w16(OP2, int8_t(reg_r8(OP1)));
+	next(4);
+
+bd    ldbse immed_2b
+	reg_w16(OP2, int8_t(OP1));
+	next(4);
+
+be    ldbse indirect_2
+	reg_w16(OP2, int8_t(any_r8(OP1)));
+	post_indirect 1 6 7 // +5 when external
+
+bf    ldbse indexed_2
+	reg_w16(OP2, int8_t(any_r8(OP1)));
+>>>>>>> upstream/master
 	post_indexed 6 7 // +5 when external
 
 c0    st    direct_2
@@ -1750,7 +2058,11 @@ df    je    rel8
 
 e0    djnz  rrel8
 	TMP = reg_r8(OP2);
+<<<<<<< HEAD
 	TMP = UINT8(TMP-1);
+=======
+	TMP = uint8_t(TMP-1);
+>>>>>>> upstream/master
 	reg_w8(OP2, TMP);
 	if(TMP) {
 		PC += OP1;

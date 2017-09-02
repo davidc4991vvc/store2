@@ -18,6 +18,10 @@
 
 */
 
+<<<<<<< HEAD
+=======
+#include "emu.h"
+>>>>>>> upstream/master
 #include "saa5050.h"
 
 
@@ -25,6 +29,7 @@
 //  DEVICE DEFINITIONS
 //**************************************************************************
 
+<<<<<<< HEAD
 const device_type SAA5050 = &device_creator<saa5050_device>;
 const device_type SAA5051 = &device_creator<saa5051_device>;
 const device_type SAA5052 = &device_creator<saa5052_device>;
@@ -33,6 +38,16 @@ const device_type SAA5054 = &device_creator<saa5054_device>;
 const device_type SAA5055 = &device_creator<saa5055_device>;
 const device_type SAA5056 = &device_creator<saa5056_device>;
 const device_type SAA5057 = &device_creator<saa5057_device>;
+=======
+DEFINE_DEVICE_TYPE(SAA5050, saa5050_device, "saa5050", "Mullard SA5050")
+DEFINE_DEVICE_TYPE(SAA5051, saa5051_device, "saa5051", "Mullard SA5051")
+DEFINE_DEVICE_TYPE(SAA5052, saa5052_device, "saa5052", "Mullard SA5052")
+DEFINE_DEVICE_TYPE(SAA5053, saa5053_device, "saa5053", "Mullard SA5053")
+DEFINE_DEVICE_TYPE(SAA5054, saa5054_device, "saa5054", "Mullard SA5054")
+DEFINE_DEVICE_TYPE(SAA5055, saa5055_device, "saa5055", "Mullard SA5055")
+DEFINE_DEVICE_TYPE(SAA5056, saa5056_device, "saa5056", "Mullard SA5056")
+DEFINE_DEVICE_TYPE(SAA5057, saa5057_device, "saa5057", "Mullard SA5057")
+>>>>>>> upstream/master
 
 
 //-------------------------------------------------
@@ -111,7 +126,11 @@ ROM_END
 
 ROM_START( saa5057 )
 	ROM_REGION( 0x500, "chargen", 0 )
+<<<<<<< HEAD
 	ROM_LOAD("saa5057", 0x0140, 0x08c0, BAD_DUMP CRC(d6664fb3) SHA1(5a93445dde03066073e2909a935900e5f8439d81))
+=======
+	ROM_LOAD("saa5057", 0x0140, 0x03c0, BAD_DUMP CRC(d6664fb3) SHA1(5a93445dde03066073e2909a935900e5f8439d81))
+>>>>>>> upstream/master
 ROM_END
 
 
@@ -119,42 +138,74 @@ ROM_END
 //  rom_region - device-specific ROM region
 //-------------------------------------------------
 
+<<<<<<< HEAD
 const rom_entry *saa5050_device::device_rom_region() const
+=======
+const tiny_rom_entry *saa5050_device::device_rom_region() const
+>>>>>>> upstream/master
 {
 	return ROM_NAME( saa5050 );
 }
 
+<<<<<<< HEAD
 const rom_entry *saa5051_device::device_rom_region() const
+=======
+const tiny_rom_entry *saa5051_device::device_rom_region() const
+>>>>>>> upstream/master
 {
 	return ROM_NAME( saa5051 );
 }
 
+<<<<<<< HEAD
 const rom_entry *saa5052_device::device_rom_region() const
+=======
+const tiny_rom_entry *saa5052_device::device_rom_region() const
+>>>>>>> upstream/master
 {
 	return ROM_NAME( saa5052 );
 }
 
+<<<<<<< HEAD
 const rom_entry *saa5053_device::device_rom_region() const
+=======
+const tiny_rom_entry *saa5053_device::device_rom_region() const
+>>>>>>> upstream/master
 {
 	return ROM_NAME( saa5053 );
 }
 
+<<<<<<< HEAD
 const rom_entry *saa5054_device::device_rom_region() const
+=======
+const tiny_rom_entry *saa5054_device::device_rom_region() const
+>>>>>>> upstream/master
 {
 	return ROM_NAME( saa5054 );
 }
 
+<<<<<<< HEAD
 const rom_entry *saa5055_device::device_rom_region() const
+=======
+const tiny_rom_entry *saa5055_device::device_rom_region() const
+>>>>>>> upstream/master
 {
 	return ROM_NAME( saa5055 );
 }
 
+<<<<<<< HEAD
 const rom_entry *saa5056_device::device_rom_region() const
+=======
+const tiny_rom_entry *saa5056_device::device_rom_region() const
+>>>>>>> upstream/master
 {
 	return ROM_NAME( saa5056 );
 }
 
+<<<<<<< HEAD
 const rom_entry *saa5057_device::device_rom_region() const
+=======
+const tiny_rom_entry *saa5057_device::device_rom_region() const
+>>>>>>> upstream/master
 {
 	return ROM_NAME( saa5057 );
 }
@@ -173,8 +224,13 @@ const rom_entry *saa5057_device::device_rom_region() const
 //  saa5050_device - constructor
 //-------------------------------------------------
 
+<<<<<<< HEAD
 saa5050_device::saa5050_device(const machine_config &mconfig, device_type type, const char *name, const char *tag, device_t *owner, UINT32 clock, const char *shortname, const char *source) :
 	device_t(mconfig, type, name, tag, owner, clock, shortname, source),
+=======
+saa5050_device::saa5050_device(const machine_config &mconfig, device_type type, const char *tag, device_t *owner, uint32_t clock) :
+	device_t(mconfig, type, tag, owner, clock),
+>>>>>>> upstream/master
 	m_char_rom(*this, "chargen"),
 	m_read_d(*this),
 	m_frame_count(0),
@@ -184,6 +240,7 @@ saa5050_device::saa5050_device(const machine_config &mconfig, device_type type, 
 {
 }
 
+<<<<<<< HEAD
 saa5050_device::saa5050_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock) :
 	device_t(mconfig, SAA5050, "SAA5050 Video", tag, owner, clock, "saa5050", __FILE__),
 	m_char_rom(*this, "chargen"),
@@ -215,6 +272,47 @@ saa5056_device::saa5056_device(const machine_config &mconfig, const char *tag, d
 
 saa5057_device::saa5057_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
 	: saa5050_device(mconfig, SAA5057, "SAA5057", tag, owner, clock, "saa5057", __FILE__) { }
+=======
+saa5050_device::saa5050_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock) :
+	saa5050_device(mconfig, SAA5050, tag, owner, clock)
+{
+}
+
+saa5051_device::saa5051_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: saa5050_device(mconfig, SAA5051, tag, owner, clock)
+{
+}
+
+saa5052_device::saa5052_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: saa5050_device(mconfig, SAA5052, tag, owner, clock)
+{
+}
+
+saa5053_device::saa5053_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: saa5050_device(mconfig, SAA5053, tag, owner, clock)
+{
+}
+
+saa5054_device::saa5054_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: saa5050_device(mconfig, SAA5054, tag, owner, clock)
+{
+}
+
+saa5055_device::saa5055_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: saa5050_device(mconfig, SAA5055, tag, owner, clock)
+{
+}
+
+saa5056_device::saa5056_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: saa5050_device(mconfig, SAA5056, tag, owner, clock)
+{
+}
+
+saa5057_device::saa5057_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: saa5050_device(mconfig, SAA5057, tag, owner, clock)
+{
+}
+>>>>>>> upstream/master
 
 
 
@@ -268,7 +366,11 @@ void saa5050_device::device_reset()
 //  process_control_character -
 //-------------------------------------------------
 
+<<<<<<< HEAD
 void saa5050_device::process_control_character(UINT8 data)
+=======
+void saa5050_device::process_control_character(uint8_t data)
+>>>>>>> upstream/master
 {
 	m_hold_clear = false;
 	m_hold_off = false;
@@ -372,9 +474,15 @@ void saa5050_device::set_next_chartype()
 //  get_gfx_data - graphics generator
 //-------------------------------------------------
 
+<<<<<<< HEAD
 UINT16 saa5050_device::get_gfx_data(UINT8 data, offs_t row, bool separated)
 {
 	UINT16 c = 0;
+=======
+uint16_t saa5050_device::get_gfx_data(uint8_t data, offs_t row, bool separated)
+{
+	uint16_t c = 0;
+>>>>>>> upstream/master
 	switch (row >> 1)
 	{
 	case 0: case 1:
@@ -416,9 +524,15 @@ UINT16 saa5050_device::get_gfx_data(UINT8 data, offs_t row, bool separated)
 //  get_rom_data - read rom
 //-------------------------------------------------
 
+<<<<<<< HEAD
 UINT16 saa5050_device::get_rom_data(UINT8 data, offs_t row)
 {
 	UINT16 c;
+=======
+uint16_t saa5050_device::get_rom_data(uint8_t data, offs_t row)
+{
+	uint16_t c;
+>>>>>>> upstream/master
 	if (row < 0 || row >= 20)
 	{
 		c = 0;
@@ -436,7 +550,11 @@ UINT16 saa5050_device::get_rom_data(UINT8 data, offs_t row)
 //  character_rounding
 //-------------------------------------------------
 
+<<<<<<< HEAD
 UINT16 saa5050_device::character_rounding(UINT16 a, UINT16 b)
+=======
+uint16_t saa5050_device::character_rounding(uint16_t a, uint16_t b)
+>>>>>>> upstream/master
 {
 	return a | ((a >> 1) & b & ~(b >> 1)) | ((a << 1) & b & ~(b << 1));
 }
@@ -446,7 +564,11 @@ UINT16 saa5050_device::character_rounding(UINT16 a, UINT16 b)
 //  get_character_data -
 //-------------------------------------------------
 
+<<<<<<< HEAD
 void saa5050_device::get_character_data(UINT8 data)
+=======
+void saa5050_device::get_character_data(uint8_t data)
+>>>>>>> upstream/master
 {
 	m_double_height_old = m_double_height;
 	m_prev_col = m_fg;
@@ -565,7 +687,11 @@ WRITE_LINE_MEMBER( saa5050_device::lose_w )
 //  write - character data write
 //-------------------------------------------------
 
+<<<<<<< HEAD
 void saa5050_device::write(UINT8 data)
+=======
+void saa5050_device::write(uint8_t data)
+>>>>>>> upstream/master
 {
 	m_code = data & 0x7f;
 }
@@ -614,7 +740,11 @@ int saa5050_device::get_rgb()
 //  screen_update -
 //-------------------------------------------------
 
+<<<<<<< HEAD
 UINT32 saa5050_device::screen_update(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect)
+=======
+uint32_t saa5050_device::screen_update(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect)
+>>>>>>> upstream/master
 {
 	dew_w(1);
 	dew_w(0);
@@ -632,7 +762,11 @@ UINT32 saa5050_device::screen_update(screen_device &screen, bitmap_rgb32 &bitmap
 
 		for (int sx = 0; sx < m_cols; sx++)
 		{
+<<<<<<< HEAD
 			UINT8 code = m_read_d(video_ram_addr++);
+=======
+			uint8_t code = m_read_d(video_ram_addr++);
+>>>>>>> upstream/master
 
 			write(code & 0x7f);
 

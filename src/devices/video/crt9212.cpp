@@ -6,6 +6,7 @@
 
 **********************************************************************/
 
+<<<<<<< HEAD
 #include "crt9212.h"
 
 
@@ -15,14 +16,28 @@
 //**************************************************************************
 
 const device_type CRT9212 = &device_creator<crt9212_t>;
+=======
+#include "emu.h"
+#include "crt9212.h"
+
+//#define VERBOSE 1
+#include "logmacro.h"
+>>>>>>> upstream/master
 
 
 
 //**************************************************************************
+<<<<<<< HEAD
 //  MACROS / CONSTANTS
 //**************************************************************************
 
 #define LOG 0
+=======
+//  DEVICE DEFINITIONS
+//**************************************************************************
+
+DEFINE_DEVICE_TYPE(CRT9212, crt9212_device, "crt9212", "SMC CRT9212 DRB")
+>>>>>>> upstream/master
 
 
 
@@ -31,11 +46,19 @@ const device_type CRT9212 = &device_creator<crt9212_t>;
 //**************************************************************************
 
 //-------------------------------------------------
+<<<<<<< HEAD
 //  crt9212_t - constructor
 //-------------------------------------------------
 
 crt9212_t::crt9212_t(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock) :
 	device_t(mconfig, CRT9212, "SMC CRT9212", tag, owner, clock, "crt9212", __FILE__),
+=======
+//  crt9212_device - constructor
+//-------------------------------------------------
+
+crt9212_device::crt9212_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock) :
+	device_t(mconfig, CRT9212, tag, owner, clock),
+>>>>>>> upstream/master
 	m_write_dout(*this),
 	m_write_rof(*this),
 	m_write_wof(*this),
@@ -63,7 +86,11 @@ crt9212_t::crt9212_t(const machine_config &mconfig, const char *tag, device_t *o
 //  device_start - device-specific startup
 //-------------------------------------------------
 
+<<<<<<< HEAD
 void crt9212_t::device_start()
+=======
+void crt9212_device::device_start()
+>>>>>>> upstream/master
 {
 	// resolve callbacks
 	m_write_dout.resolve_safe();
@@ -96,7 +123,11 @@ void crt9212_t::device_start()
 //  clrcnt_w - clear counter
 //-------------------------------------------------
 
+<<<<<<< HEAD
 WRITE_LINE_MEMBER( crt9212_t::clrcnt_w )
+=======
+WRITE_LINE_MEMBER( crt9212_device::clrcnt_w )
+>>>>>>> upstream/master
 {
 	if (m_clrcnt && !state)
 	{
@@ -111,7 +142,11 @@ WRITE_LINE_MEMBER( crt9212_t::clrcnt_w )
 //  rclk_w - read clock
 //-------------------------------------------------
 
+<<<<<<< HEAD
 WRITE_LINE_MEMBER( crt9212_t::rclk_w )
+=======
+WRITE_LINE_MEMBER( crt9212_device::rclk_w )
+>>>>>>> upstream/master
 {
 	if (!m_rclk && state)
 	{
@@ -138,7 +173,11 @@ WRITE_LINE_MEMBER( crt9212_t::rclk_w )
 			m_clrcnt_edge = false;
 		}
 
+<<<<<<< HEAD
 		if (m_ren_int && (m_rac < CRT9212_RAM_SIZE))
+=======
+		if (m_ren_int && (m_rac < RAM_SIZE))
+>>>>>>> upstream/master
 		{
 			// output data
 			m_write_dout(m_ram[m_rac][!m_buffer]);
@@ -146,7 +185,11 @@ WRITE_LINE_MEMBER( crt9212_t::rclk_w )
 			// increment read address counter
 			m_rac++;
 
+<<<<<<< HEAD
 			if (m_rac == CRT9212_RAM_SIZE - 1)
+=======
+			if (m_rac == RAM_SIZE - 1)
+>>>>>>> upstream/master
 			{
 				// set read overflow
 				m_write_rof(1);
@@ -164,11 +207,19 @@ WRITE_LINE_MEMBER( crt9212_t::rclk_w )
 //  wclk_w - write clock
 //-------------------------------------------------
 
+<<<<<<< HEAD
 WRITE_LINE_MEMBER( crt9212_t::wclk_w )
 {
 	if (!m_wclk && state)
 	{
 		if (m_wen_int && (m_wac < CRT9212_RAM_SIZE))
+=======
+WRITE_LINE_MEMBER( crt9212_device::wclk_w )
+{
+	if (!m_wclk && state)
+	{
+		if (m_wen_int && (m_wac < RAM_SIZE))
+>>>>>>> upstream/master
 		{
 			// input data
 			m_ram[m_rac][m_buffer] = m_data_latch;
@@ -176,7 +227,11 @@ WRITE_LINE_MEMBER( crt9212_t::wclk_w )
 			// increment write address counter
 			m_wac++;
 
+<<<<<<< HEAD
 			if (m_wac == CRT9212_RAM_SIZE - 1)
+=======
+			if (m_wac == RAM_SIZE - 1)
+>>>>>>> upstream/master
 			{
 				// set write overflow
 				m_write_wof(1);

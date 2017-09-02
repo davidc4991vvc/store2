@@ -1,5 +1,9 @@
 /*
+<<<<<<< HEAD
  * $Id: pa_unix_util.c 1510 2010-06-10 08:05:29Z dmitrykos $
+=======
+ * $Id$
+>>>>>>> upstream/master
  * Portable Audio I/O Library
  * UNIX platform-specific support functions
  *

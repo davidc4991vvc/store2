@@ -13,6 +13,7 @@
 
 void playch10_state::machine_reset()
 {
+<<<<<<< HEAD
 	/* initialize latches and flip-flops */
 	m_pc10_nmi_enable = m_pc10_dog_di = m_pc10_dispmask = m_pc10_sdcs = m_pc10_int_detect = 0;
 
@@ -20,6 +21,12 @@ void playch10_state::machine_reset()
 
 	m_cart_sel = 0;
 	m_cntrl_mask = 1;
+=======
+	m_pc10_int_detect = 0;
+
+	m_pc10_game_mode = 0;
+	m_pc10_dispmask_old = 0;
+>>>>>>> upstream/master
 
 	m_input_latch[0] = m_input_latch[1] = 0;
 
@@ -38,26 +45,43 @@ void playch10_state::machine_reset()
 
 void playch10_state::machine_start()
 {
+<<<<<<< HEAD
 	m_vrom = memregion("gfx2")->base();
 
 	/* allocate 4K of nametable ram here */
 	/* move to individual boards as documentation of actual boards allows */
 	m_nt_ram = auto_alloc_array(machine(), UINT8, 0x1000);
+=======
+	m_vrom = (m_vrom_region != nullptr) ? m_vrom_region->base() : nullptr;
+
+	/* allocate 4K of nametable ram here */
+	/* move to individual boards as documentation of actual boards allows */
+	m_nt_ram = std::make_unique<uint8_t[]>(0x1000);
+>>>>>>> upstream/master
 
 	machine().device("ppu")->memory().space(AS_PROGRAM).install_readwrite_handler(0, 0x1fff, read8_delegate(FUNC(playch10_state::pc10_chr_r),this), write8_delegate(FUNC(playch10_state::pc10_chr_w),this));
 	machine().device("ppu")->memory().space(AS_PROGRAM).install_readwrite_handler(0x2000, 0x3eff, read8_delegate(FUNC(playch10_state::pc10_nt_r),this),write8_delegate(FUNC(playch10_state::pc10_nt_w),this));
 
+<<<<<<< HEAD
 	if (NULL != m_vram)
+=======
+	if (nullptr != m_vram)
+>>>>>>> upstream/master
 		set_videoram_bank(0, 8, 0, 8);
 	else pc10_set_videorom_bank(0, 8, 0, 8);
 
 	nvram_device *nvram = machine().device<nvram_device>("nvram");
+<<<<<<< HEAD
 	if (nvram != NULL)
+=======
+	if (nvram != nullptr)
+>>>>>>> upstream/master
 		nvram->set_base(memregion("cart" )->base() + 0x6000, 0x1000);
 }
 
 MACHINE_START_MEMBER(playch10_state,playch10_hboard)
 {
+<<<<<<< HEAD
 	m_vrom = memregion("gfx2")->base();
 
 	/* allocate 4K of nametable ram here */
@@ -66,6 +90,16 @@ MACHINE_START_MEMBER(playch10_state,playch10_hboard)
 	/* allocate vram */
 
 	m_vram = auto_alloc_array(machine(), UINT8, 0x2000);
+=======
+	m_vrom = (m_vrom_region != nullptr) ? m_vrom_region->base() : nullptr;
+
+	/* allocate 4K of nametable ram here */
+	/* move to individual boards as documentation of actual boards allows */
+	m_nt_ram = std::make_unique<uint8_t[]>(0x1000);
+	/* allocate vram */
+
+	m_vram = std::make_unique<uint8_t[]>(0x2000);
+>>>>>>> upstream/master
 
 	machine().device("ppu")->memory().space(AS_PROGRAM).install_readwrite_handler(0, 0x1fff, read8_delegate(FUNC(playch10_state::pc10_chr_r),this), write8_delegate(FUNC(playch10_state::pc10_chr_w),this));
 	machine().device("ppu")->memory().space(AS_PROGRAM).install_readwrite_handler(0x2000, 0x3eff, read8_delegate(FUNC(playch10_state::pc10_nt_r),this), write8_delegate(FUNC(playch10_state::pc10_nt_w),this));
@@ -82,7 +116,11 @@ CUSTOM_INPUT_MEMBER(playch10_state::pc10_int_detect_r)
 	return ~m_pc10_int_detect & 1;
 }
 
+<<<<<<< HEAD
 WRITE8_MEMBER(playch10_state::pc10_SDCS_w)
+=======
+WRITE_LINE_MEMBER(playch10_state::sdcs_w)
+>>>>>>> upstream/master
 {
 	/*
 	    Hooked to CLR on LS194A - Sheet 2, bottom left.
@@ -90,6 +128,7 @@ WRITE8_MEMBER(playch10_state::pc10_SDCS_w)
 	    It's used to keep the screen black during redraws.
 	    Also hooked to the video sram. Prevent writes.
 	*/
+<<<<<<< HEAD
 	m_pc10_sdcs = ~data & 1;
 }
 
@@ -104,10 +143,27 @@ WRITE8_MEMBER(playch10_state::pc10_DISPMASK_w)
 }
 
 WRITE8_MEMBER(playch10_state::pc10_SOUNDMASK_w)
+=======
+	m_pc10_sdcs = !state;
+}
+
+WRITE_LINE_MEMBER(playch10_state::cntrl_mask_w)
+{
+	m_cntrl_mask = !state;
+}
+
+WRITE_LINE_MEMBER(playch10_state::disp_mask_w)
+{
+	m_pc10_dispmask = !state;
+}
+
+WRITE_LINE_MEMBER(playch10_state::sound_mask_w)
+>>>>>>> upstream/master
 {
 	/* should mute the APU - unimplemented yet */
 }
 
+<<<<<<< HEAD
 WRITE8_MEMBER(playch10_state::pc10_NMIENABLE_w)
 {
 	m_pc10_nmi_enable = data & 1;
@@ -131,6 +187,21 @@ WRITE8_MEMBER(playch10_state::pc10_GAMESTOP_w)
 WRITE8_MEMBER(playch10_state::pc10_PPURES_w)
 {
 	if (data & 1)
+=======
+WRITE_LINE_MEMBER(playch10_state::nmi_enable_w)
+{
+	m_pc10_nmi_enable = state;
+}
+
+WRITE_LINE_MEMBER(playch10_state::dog_di_w)
+{
+	m_pc10_dog_di = state;
+}
+
+WRITE_LINE_MEMBER(playch10_state::ppu_reset_w)
+{
+	if (state)
+>>>>>>> upstream/master
 		machine().device("ppu")->reset();
 }
 
@@ -141,10 +212,16 @@ READ8_MEMBER(playch10_state::pc10_detectclr_r)
 	return 0;
 }
 
+<<<<<<< HEAD
 WRITE8_MEMBER(playch10_state::pc10_CARTSEL_w)
 {
 	m_cart_sel &= ~(1 << offset);
 	m_cart_sel |= (data & 1) << offset;
+=======
+WRITE8_MEMBER(playch10_state::cart_sel_w)
+{
+	m_cart_sel = data;
+>>>>>>> upstream/master
 }
 
 
@@ -230,7 +307,11 @@ READ8_MEMBER(playch10_state::pc10_in1_r)
 		int trigger = ioport("P1")->read();
 		int x = ioport("GUNX")->read();
 		int y = ioport("GUNY")->read();
+<<<<<<< HEAD
 		UINT32 pix, color_base;
+=======
+		uint32_t pix, color_base;
+>>>>>>> upstream/master
 
 		/* no sprite hit (yet) */
 		ret |= 0x08;
@@ -299,6 +380,7 @@ void playch10_state::pc10_set_mirroring(int mirroring )
 	switch (mirroring)
 	{
 	case PPU_MIRROR_LOW:
+<<<<<<< HEAD
 		m_nametable[0] = m_nametable[1] = m_nametable[2] = m_nametable[3] = m_nt_ram;
 		break;
 	case PPU_MIRROR_HIGH:
@@ -322,6 +404,31 @@ void playch10_state::pc10_set_mirroring(int mirroring )
 		m_nametable[1] = m_nt_ram + 0x400;
 		m_nametable[2] = m_nt_ram + 0x800;
 		m_nametable[3] = m_nt_ram + 0xc00;
+=======
+		m_nametable[0] = m_nametable[1] = m_nametable[2] = m_nametable[3] = m_nt_ram.get();
+		break;
+	case PPU_MIRROR_HIGH:
+		m_nametable[0] = m_nametable[1] = m_nametable[2] = m_nametable[3] = m_nt_ram.get() + 0x400;
+		break;
+	case PPU_MIRROR_HORZ:
+		m_nametable[0] = m_nt_ram.get();
+		m_nametable[1] = m_nt_ram.get();
+		m_nametable[2] = m_nt_ram.get() + 0x400;
+		m_nametable[3] = m_nt_ram.get() + 0x400;
+		break;
+	case PPU_MIRROR_VERT:
+		m_nametable[0] = m_nt_ram.get();
+		m_nametable[1] = m_nt_ram.get() + 0x400;
+		m_nametable[2] = m_nt_ram.get();
+		m_nametable[3] = m_nt_ram.get()+ 0x400;
+		break;
+	case PPU_MIRROR_NONE:
+	default:
+		m_nametable[0] = m_nt_ram.get();
+		m_nametable[1] = m_nt_ram.get() + 0x400;
+		m_nametable[2] = m_nt_ram.get() + 0x800;
+		m_nametable[3] = m_nt_ram.get() + 0xc00;
+>>>>>>> upstream/master
 		break;
 	}
 }
@@ -375,7 +482,11 @@ void playch10_state::set_videoram_bank( int first, int count, int bank, int size
 	for (i = 0; i < count; i++)
 	{
 		m_chr_page[i + first].writable = 1;
+<<<<<<< HEAD
 		m_chr_page[i + first].chr = m_vram + (((i * 0x400) + (bank * size * 0x400)) & 0x1fff);
+=======
+		m_chr_page[i + first].chr = m_vram.get() + (((i * 0x400) + (bank * size * 0x400)) & 0x1fff);
+>>>>>>> upstream/master
 	}
 }
 
@@ -387,7 +498,11 @@ void playch10_state::set_videoram_bank( int first, int count, int bank, int size
 
 DRIVER_INIT_MEMBER(playch10_state,playch10)
 {
+<<<<<<< HEAD
 	m_vram = NULL;
+=======
+	m_vram = nullptr;
+>>>>>>> upstream/master
 
 	/* set the controller to default */
 	m_pc10_gun_controller = 0;
@@ -410,7 +525,11 @@ DRIVER_INIT_MEMBER(playch10_state,pc_gun)
 	DRIVER_INIT_CALL(playch10);
 
 	/* we have no vram, make sure switching games doesn't point to an old allocation */
+<<<<<<< HEAD
 	m_vram = NULL;
+=======
+	m_vram = nullptr;
+>>>>>>> upstream/master
 
 	/* set the control type */
 	m_pc10_gun_controller = 1;
@@ -520,7 +639,11 @@ WRITE8_MEMBER(playch10_state::mmc1_rom_switch_w)
 			case 3: /* program banking */
 				{
 					int bank = (m_mmc1_shiftreg & m_mmc1_rom_mask) * 0x4000;
+<<<<<<< HEAD
 					UINT8 *prg = memregion("cart")->base();
+=======
+					uint8_t *prg = memregion("cart")->base();
+>>>>>>> upstream/master
 
 					if (!size16k)
 					{
@@ -567,7 +690,11 @@ DRIVER_INIT_MEMBER(playch10_state,pcaboard)
 	m_mirroring = PPU_MIRROR_VERT;
 
 	/* we have no vram, make sure switching games doesn't point to an old allocation */
+<<<<<<< HEAD
 	m_vram = NULL;
+=======
+	m_vram = nullptr;
+>>>>>>> upstream/master
 }
 
 /**********************************************************************************/
@@ -576,14 +703,22 @@ DRIVER_INIT_MEMBER(playch10_state,pcaboard)
 WRITE8_MEMBER(playch10_state::bboard_rom_switch_w)
 {
 	int bankoffset = 0x10000 + ((data & 7) * 0x4000);
+<<<<<<< HEAD
 	UINT8 *prg = memregion("cart")->base();
+=======
+	uint8_t *prg = memregion("cart")->base();
+>>>>>>> upstream/master
 
 	memcpy(&prg[0x08000], &prg[bankoffset], 0x4000);
 }
 
 DRIVER_INIT_MEMBER(playch10_state,pcbboard)
 {
+<<<<<<< HEAD
 	UINT8 *prg = memregion("cart")->base();
+=======
+	uint8_t *prg = memregion("cart")->base();
+>>>>>>> upstream/master
 
 	/* We do manual banking, in case the code falls through */
 	/* Copy the initial banks */
@@ -596,7 +731,11 @@ DRIVER_INIT_MEMBER(playch10_state,pcbboard)
 	DRIVER_INIT_CALL(playch10);
 
 	/* allocate vram */
+<<<<<<< HEAD
 	m_vram = auto_alloc_array(machine(), UINT8, 0x2000);
+=======
+	m_vram = std::make_unique<uint8_t[]>(0x2000);
+>>>>>>> upstream/master
 
 	/* set the mirroring here */
 	m_mirroring = PPU_MIRROR_VERT;
@@ -618,7 +757,11 @@ DRIVER_INIT_MEMBER(playch10_state,pccboard)
 	machine().device("cart")->memory().space(AS_PROGRAM).install_write_handler(0x6000, 0x6000, write8_delegate(FUNC(playch10_state::cboard_vrom_switch_w),this));
 
 	/* we have no vram, make sure switching games doesn't point to an old allocation */
+<<<<<<< HEAD
 	m_vram = NULL;
+=======
+	m_vram = nullptr;
+>>>>>>> upstream/master
 
 	/* common init */
 	DRIVER_INIT_CALL(playch10);
@@ -629,7 +772,11 @@ DRIVER_INIT_MEMBER(playch10_state,pccboard)
 
 DRIVER_INIT_MEMBER(playch10_state,pcdboard)
 {
+<<<<<<< HEAD
 	UINT8 *prg = memregion("cart")->base();
+=======
+	uint8_t *prg = memregion("cart")->base();
+>>>>>>> upstream/master
 
 	/* We do manual banking, in case the code falls through */
 	/* Copy the initial banks */
@@ -644,7 +791,11 @@ DRIVER_INIT_MEMBER(playch10_state,pcdboard)
 	/* common init */
 	DRIVER_INIT_CALL(playch10);
 	/* allocate vram */
+<<<<<<< HEAD
 	m_vram = auto_alloc_array(machine(), UINT8, 0x2000);
+=======
+	m_vram = std::make_unique<uint8_t[]>(0x2000);
+>>>>>>> upstream/master
 	/* special init */
 	set_videoram_bank(0, 8, 0, 8);
 }
@@ -660,7 +811,11 @@ DRIVER_INIT_MEMBER(playch10_state,pcdboard_2)
 	DRIVER_INIT_CALL(pcdboard);
 
 	/* allocate vram */
+<<<<<<< HEAD
 	m_vram = auto_alloc_array(machine(), UINT8, 0x2000);
+=======
+	m_vram = std::make_unique<uint8_t[]>(0x2000);
+>>>>>>> upstream/master
 	/* special init */
 	set_videoram_bank(0, 8, 0, 8);
 }
@@ -701,7 +856,11 @@ WRITE8_MEMBER(playch10_state::eboard_rom_switch_w)
 		case 0x2000: /* code bank switching */
 			{
 				int bankoffset = 0x10000 + (data & 0x0f) * 0x2000;
+<<<<<<< HEAD
 				UINT8 *prg = memregion("cart")->base();
+=======
+				uint8_t *prg = memregion("cart")->base();
+>>>>>>> upstream/master
 				memcpy(&prg[0x08000], &prg[bankoffset], 0x2000);
 			}
 		break;
@@ -739,11 +898,18 @@ WRITE8_MEMBER(playch10_state::eboard_rom_switch_w)
 
 DRIVER_INIT_MEMBER(playch10_state,pceboard)
 {
+<<<<<<< HEAD
 	ppu2c0x_device *ppu = machine().device<ppu2c0x_device>("ppu");
 	UINT8 *prg = memregion("cart")->base();
 
 	/* we have no vram, make sure switching games doesn't point to an old allocation */
 	m_vram = NULL;
+=======
+	uint8_t *prg = memregion("cart")->base();
+
+	/* we have no vram, make sure switching games doesn't point to an old allocation */
+	m_vram = nullptr;
+>>>>>>> upstream/master
 
 	/* We do manual banking, in case the code falls through */
 	/* Copy the initial banks */
@@ -753,7 +919,11 @@ DRIVER_INIT_MEMBER(playch10_state,pceboard)
 	machine().device("cart")->memory().space(AS_PROGRAM).install_write_handler(0x8000, 0xffff, write8_delegate(FUNC(playch10_state::eboard_rom_switch_w),this));
 
 	/* ppu_latch callback */
+<<<<<<< HEAD
 	ppu->set_latch(ppu2c0x_latch_delegate(FUNC(playch10_state::mapper9_latch),this));
+=======
+	m_ppu->set_latch(ppu2c0x_device::latch_delegate(FUNC(playch10_state::mapper9_latch),this));
+>>>>>>> upstream/master
 
 	/* nvram at $6000-$6fff */
 	machine().device("cart")->memory().space(AS_PROGRAM).install_ram(0x6000, 0x6fff);
@@ -767,11 +937,19 @@ DRIVER_INIT_MEMBER(playch10_state,pceboard)
 
 DRIVER_INIT_MEMBER(playch10_state,pcfboard)
 {
+<<<<<<< HEAD
 	UINT8 *prg = memregion("cart")->base();
 	UINT32 len = memregion("cart")->bytes();
 
 	/* we have no vram, make sure switching games doesn't point to an old allocation */
 	m_vram = NULL;
+=======
+	uint8_t *prg = memregion("cart")->base();
+	uint32_t len = memregion("cart")->bytes();
+
+	/* we have no vram, make sure switching games doesn't point to an old allocation */
+	m_vram = nullptr;
+>>>>>>> upstream/master
 
 	/* We do manual banking, in case the code falls through */
 	/* Copy the initial banks */
@@ -793,7 +971,11 @@ DRIVER_INIT_MEMBER(playch10_state,pcfboard_2)
 	/* extra ram at $6000-$6fff */
 	machine().device("cart")->memory().space(AS_PROGRAM).install_ram(0x6000, 0x6fff);
 
+<<<<<<< HEAD
 	m_vram = NULL;
+=======
+	m_vram = nullptr;
+>>>>>>> upstream/master
 
 	/* common init */
 	DRIVER_INIT_CALL(pcfboard);
@@ -805,7 +987,11 @@ DRIVER_INIT_MEMBER(playch10_state,pcfboard_2)
 
 void playch10_state::gboard_scanline_cb( int scanline, int vblank, int blanked )
 {
+<<<<<<< HEAD
 	if (scanline < PPU_BOTTOM_VISIBLE_SCANLINE)
+=======
+	if (scanline < ppu2c0x_device::BOTTOM_VISIBLE_SCANLINE)
+>>>>>>> upstream/master
 	{
 		int priorCount = m_IRQ_count;
 		if (m_IRQ_count == 0)
@@ -832,7 +1018,11 @@ WRITE8_MEMBER(playch10_state::gboard_rom_switch_w)
 			if (m_gboard_last_bank != (data & 0xc0))
 			{
 				int bank;
+<<<<<<< HEAD
 				UINT8 *prg = memregion("cart")->base();
+=======
+				uint8_t *prg = memregion("cart")->base();
+>>>>>>> upstream/master
 
 				/* reset the banks */
 				if (m_gboard_command & 0x40)
@@ -862,7 +1052,11 @@ WRITE8_MEMBER(playch10_state::gboard_rom_switch_w)
 
 		case 0x0001:
 			{
+<<<<<<< HEAD
 				UINT8 cmd = m_gboard_command & 0x07;
+=======
+				uint8_t cmd = m_gboard_command & 0x07;
+>>>>>>> upstream/master
 				int page = (m_gboard_command & 0x80) >> 5;
 				int bank;
 
@@ -885,7 +1079,11 @@ WRITE8_MEMBER(playch10_state::gboard_rom_switch_w)
 
 					case 6: /* program banking */
 					{
+<<<<<<< HEAD
 						UINT8 *prg = memregion("cart")->base();
+=======
+						uint8_t *prg = memregion("cart")->base();
+>>>>>>> upstream/master
 						if (m_gboard_command & 0x40)
 						{
 							/* high bank */
@@ -910,7 +1108,11 @@ WRITE8_MEMBER(playch10_state::gboard_rom_switch_w)
 					case 7: /* program banking */
 						{
 							/* mid bank */
+<<<<<<< HEAD
 							UINT8 *prg = memregion("cart")->base();
+=======
+							uint8_t *prg = memregion("cart")->base();
+>>>>>>> upstream/master
 							m_gboard_banks[1] = data & 0x1f;
 							bank = m_gboard_banks[1] * 0x2000 + 0x10000;
 
@@ -955,9 +1157,14 @@ WRITE8_MEMBER(playch10_state::gboard_rom_switch_w)
 
 DRIVER_INIT_MEMBER(playch10_state,pcgboard)
 {
+<<<<<<< HEAD
 	ppu2c0x_device *ppu = machine().device<ppu2c0x_device>("ppu");
 	UINT8 *prg = memregion("cart")->base();
 	m_vram = NULL;
+=======
+	uint8_t *prg = memregion("cart")->base();
+	m_vram = nullptr;
+>>>>>>> upstream/master
 
 	/* We do manual banking, in case the code falls through */
 	/* Copy the initial banks */
@@ -981,12 +1188,20 @@ DRIVER_INIT_MEMBER(playch10_state,pcgboard)
 	/* common init */
 	DRIVER_INIT_CALL(playch10);
 
+<<<<<<< HEAD
 	ppu->set_scanline_callback(ppu2c0x_scanline_delegate(FUNC(playch10_state::gboard_scanline_cb),this));
+=======
+	m_ppu->set_scanline_callback(ppu2c0x_device::scanline_delegate(FUNC(playch10_state::gboard_scanline_cb),this));
+>>>>>>> upstream/master
 }
 
 DRIVER_INIT_MEMBER(playch10_state,pcgboard_type2)
 {
+<<<<<<< HEAD
 	m_vram = NULL;
+=======
+	m_vram = nullptr;
+>>>>>>> upstream/master
 	/* common init */
 	DRIVER_INIT_CALL(pcgboard);
 
@@ -1000,7 +1215,11 @@ DRIVER_INIT_MEMBER(playch10_state,pcgboard_type2)
 WRITE8_MEMBER(playch10_state::iboard_rom_switch_w)
 {
 	int bank = data & 7;
+<<<<<<< HEAD
 	UINT8 *prg = memregion("cart")->base();
+=======
+	uint8_t *prg = memregion("cart")->base();
+>>>>>>> upstream/master
 
 	if (data & 0x10)
 		pc10_set_mirroring(PPU_MIRROR_HIGH);
@@ -1012,7 +1231,11 @@ WRITE8_MEMBER(playch10_state::iboard_rom_switch_w)
 
 DRIVER_INIT_MEMBER(playch10_state,pciboard)
 {
+<<<<<<< HEAD
 	UINT8 *prg = memregion("cart")->base();
+=======
+	uint8_t *prg = memregion("cart")->base();
+>>>>>>> upstream/master
 
 	/* We do manual banking, in case the code falls through */
 	/* Copy the initial banks */
@@ -1025,7 +1248,11 @@ DRIVER_INIT_MEMBER(playch10_state,pciboard)
 	DRIVER_INIT_CALL(playch10);
 
 	/* allocate vram */
+<<<<<<< HEAD
 	m_vram = auto_alloc_array(machine(), UINT8, 0x2000);
+=======
+	m_vram = std::make_unique<uint8_t[]>(0x2000);
+>>>>>>> upstream/master
 	/* special init */
 	set_videoram_bank(0, 8, 0, 8);
 }
@@ -1039,7 +1266,11 @@ WRITE8_MEMBER(playch10_state::hboard_rom_switch_w)
 	{
 		case 0x0001:
 			{
+<<<<<<< HEAD
 				UINT8 cmd = m_gboard_command & 0x07;
+=======
+				uint8_t cmd = m_gboard_command & 0x07;
+>>>>>>> upstream/master
 				int page = (m_gboard_command & 0x80) >> 5;
 
 				switch (cmd)
@@ -1081,7 +1312,11 @@ WRITE8_MEMBER(playch10_state::hboard_rom_switch_w)
 
 DRIVER_INIT_MEMBER(playch10_state,pchboard)
 {
+<<<<<<< HEAD
 	UINT8 *prg = memregion("cart")->base();
+=======
+	uint8_t *prg = memregion("cart")->base();
+>>>>>>> upstream/master
 	memcpy(&prg[0x08000], &prg[0x4c000], 0x4000);
 	memcpy(&prg[0x0c000], &prg[0x4c000], 0x4000);
 
@@ -1100,6 +1335,11 @@ DRIVER_INIT_MEMBER(playch10_state,pchboard)
 
 	/* common init */
 	DRIVER_INIT_CALL(playch10);
+<<<<<<< HEAD
+=======
+
+	m_ppu->set_scanline_callback(ppu2c0x_device::scanline_delegate(FUNC(playch10_state::gboard_scanline_cb),this));
+>>>>>>> upstream/master
 }
 
 /**********************************************************************************/
@@ -1107,7 +1347,11 @@ DRIVER_INIT_MEMBER(playch10_state,pchboard)
 
 DRIVER_INIT_MEMBER(playch10_state,pckboard)
 {
+<<<<<<< HEAD
 	UINT8 *prg = memregion("cart")->base();
+=======
+	uint8_t *prg = memregion("cart")->base();
+>>>>>>> upstream/master
 
 	/* We do manual banking, in case the code falls through */
 	/* Copy the initial banks */
@@ -1125,7 +1369,11 @@ DRIVER_INIT_MEMBER(playch10_state,pckboard)
 	DRIVER_INIT_CALL(playch10);
 
 	/* allocate vram */
+<<<<<<< HEAD
 	m_vram = auto_alloc_array(machine(), UINT8, 0x2000);
+=======
+	m_vram = std::make_unique<uint8_t[]>(0x2000);
+>>>>>>> upstream/master
 	/* special init */
 	set_videoram_bank(0, 8, 0, 8);
 }

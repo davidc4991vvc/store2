@@ -1,5 +1,9 @@
 // license:BSD-3-Clause
 // copyright-holders:Carl
+<<<<<<< HEAD
+=======
+#include "emu.h"
+>>>>>>> upstream/master
 #include "i286.h"
 #include "debugger.h"
 #include "i86inline.h"
@@ -92,7 +96,11 @@
 
 /* these come from the 80286 timings in OPCODE.LST */
 /* many of these numbers are suspect TODO: add protmode insns*/
+<<<<<<< HEAD
 const UINT8 i80286_cpu_device::m_i80286_timing[] =
+=======
+const uint8_t i80286_cpu_device::m_i80286_timing[] =
+>>>>>>> upstream/master
 {
 	23,17,          /* exception, IRET */
 		0, 2, 3, 1, /* INTs */
@@ -164,11 +172,20 @@ const UINT8 i80286_cpu_device::m_i80286_timing[] =
 	13,             /* (80186) BOUND */
 };
 
+<<<<<<< HEAD
 const device_type I80286 = &device_creator<i80286_cpu_device>;
 
 i80286_cpu_device::i80286_cpu_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
 	: i8086_common_cpu_device(mconfig, I80286, "I80286", tag, owner, clock, "i80286", __FILE__)
 	, m_program_config("program", ENDIANNESS_LITTLE, 16, 24, 0)
+=======
+DEFINE_DEVICE_TYPE(I80286, i80286_cpu_device, "i80286", "I80286")
+
+i80286_cpu_device::i80286_cpu_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: i8086_common_cpu_device(mconfig, I80286, tag, owner, clock)
+	, m_program_config("program", ENDIANNESS_LITTLE, 16, 24, 0)
+	, m_opcodes_config("opcodes", ENDIANNESS_LITTLE, 16, 24, 0)
+>>>>>>> upstream/master
 	, m_io_config("io", ENDIANNESS_LITTLE, 16, 16, 0)
 	, m_out_shutdown_func(*this)
 {
@@ -242,6 +259,7 @@ void i80286_cpu_device::device_start()
 	save_item(NAME(m_amask));
 	save_item(NAME(m_shutdown));
 
+<<<<<<< HEAD
 	state_add( I286_ES, "ES", m_sregs[ES] ).callimport().callexport().formatstr("%04X");
 	state_add( I286_ES_BASE, "ESBASE", m_base[ES]).callimport().callexport().formatstr("%06X");
 	state_add( I286_ES_LIMIT, "ESLIMIT", m_limit[ES]).callimport().callexport().formatstr("%04X");
@@ -289,6 +307,114 @@ void i80286_cpu_device::state_string_export(const device_state_entry &entry, std
 			{
 				UINT16 flags = CompressFlags();
 				strprintf(str, "%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c",
+=======
+	state_add( I286_ES, "ES", m_sregs[ES] ).formatstr("%04X");
+	state_add( I286_ES_BASE, "ESBASE", m_base[ES]).formatstr("%06X");
+	state_add( I286_ES_LIMIT, "ESLIMIT", m_limit[ES]).formatstr("%04X");
+	state_add( I286_ES_FLAGS, "ESFLAGS", m_rights[ES]).formatstr("%02X");
+	state_add( I286_CS, "CS", m_sregs[CS] ).callimport().formatstr("%04X");
+	state_add( I286_CS_BASE, "CSBASE", m_base[CS]).callimport().formatstr("%06X");
+	state_add( I286_CS_LIMIT, "CSLIMIT", m_limit[CS]).formatstr("%04X");
+	state_add( I286_CS_FLAGS, "CSFLAGS", m_rights[CS]).formatstr("%02X");
+	state_add( I286_SS, "SS", m_sregs[SS] ).formatstr("%04X");
+	state_add( I286_SS_BASE, "SSBASE", m_base[SS]).formatstr("%06X");
+	state_add( I286_SS_LIMIT, "SSLIMIT", m_limit[SS]).formatstr("%04X");
+	state_add( I286_SS_FLAGS, "SSFLAGS", m_rights[SS]).formatstr("%02X");
+	state_add( I286_DS, "DS", m_sregs[DS] ).formatstr("%04X");
+	state_add( I286_DS_BASE, "DSBASE", m_base[DS]).formatstr("%06X");
+	state_add( I286_DS_LIMIT, "DSLIMIT", m_limit[DS]).formatstr("%04X");
+	state_add( I286_DS_FLAGS, "DSFLAGS", m_rights[DS]).formatstr("%02X");
+	state_add( I286_GDTR_BASE, "GDTRBASE", m_gdtr.base).formatstr("%06X");
+	state_add( I286_GDTR_LIMIT, "GDTRLIMIT", m_gdtr.limit).formatstr("%04X");
+	state_add( I286_IDTR_BASE, "IDTRBASE", m_idtr.base).formatstr("%06X");
+	state_add( I286_IDTR_LIMIT, "IDTRLIMIT", m_idtr.limit).formatstr("%04X");
+	state_add( I286_LDTR, "LDTR", m_ldtr.sel ).formatstr("%04X");
+	state_add( I286_LDTR_BASE, "LDTRBASE", m_ldtr.base).formatstr("%06X");
+	state_add( I286_LDTR_LIMIT, "LDTRLIMIT", m_ldtr.limit).formatstr("%04X");
+	state_add( I286_LDTR_FLAGS, "LDTRFLAGS", m_ldtr.rights).formatstr("%02X");
+	state_add( I286_TR, "TR", m_tr.sel ).formatstr("%04X");
+	state_add( I286_TR_BASE, "TRBASE", m_tr.base).formatstr("%06X");
+	state_add( I286_TR_LIMIT, "TRLIMIT", m_tr.limit).formatstr("%04X");
+	state_add( I286_TR_FLAGS, "TRFLAGS", m_tr.rights).formatstr("%02X");
+	state_add( I286_MSW, "MSW", m_msw ).formatstr("%04X");
+	state_add( I286_VECTOR, "V", m_int_vector).formatstr("%02X");
+
+	state_add( I286_PC, "PC", m_pc).callimport().formatstr("%06X");
+	state_add( STATE_GENPCBASE, "CURPC", m_pc ).callimport().formatstr("%06X").noshow();
+	state_add( I8086_HALT, "HALT", m_halt ).mask(1);
+
+	m_out_shutdown_func.resolve_safe();
+}
+
+device_memory_interface::space_config_vector i80286_cpu_device::memory_space_config() const
+{
+	if(has_configured_map(AS_OPCODES))
+		return space_config_vector {
+			std::make_pair(AS_PROGRAM, &m_program_config),
+			std::make_pair(AS_OPCODES, &m_opcodes_config),
+			std::make_pair(AS_IO,      &m_io_config)
+		};
+	else
+		return space_config_vector {
+			std::make_pair(AS_PROGRAM, &m_program_config),
+			std::make_pair(AS_IO,      &m_io_config)
+		};
+}
+
+
+//-------------------------------------------------
+//  state_import - import state into the device,
+//  after it has been set
+//-------------------------------------------------
+
+void i80286_cpu_device::state_import(const device_state_entry &entry)
+{
+	switch (entry.index())
+	{
+	case I286_IP:
+	case I286_CS_BASE:
+		m_pc = m_base[CS] + m_ip;
+		break;
+
+	case I286_CS:
+		// TODO: should this call data_descriptor to update the current segment?
+		break;
+
+	case STATE_GENPC:
+	case STATE_GENPCBASE:
+		if (m_pc - m_base[CS] > m_limit[CS])
+		{
+			// TODO: should this call data_descriptor instead of ignoring jumps outside the current segment?
+			if (PM)
+			{
+				m_pc = m_base[CS] + m_ip;
+			}
+			else
+			{
+				m_sregs[CS] = m_pc >> 4;
+				m_base[CS] = m_sregs[CS] << 4;
+			}
+		}
+		m_ip = m_pc - m_base[CS];
+		break;
+	}
+}
+
+
+//-------------------------------------------------
+//  state_string_export - export state as a string
+//  for the debugger
+//-------------------------------------------------
+
+void i80286_cpu_device::state_string_export(const device_state_entry &entry, std::string &str) const
+{
+	switch (entry.index())
+	{
+		case STATE_GENFLAGS:
+			{
+				uint16_t flags = CompressFlags();
+				str = string_format("%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c",
+>>>>>>> upstream/master
 					flags & 0x8000 ? '0':'.',
 					flags & 0x4000 ? 'N':'.',
 					flags & 0x2000 ? 'I':'.',
@@ -310,12 +436,20 @@ void i80286_cpu_device::state_string_export(const device_state_entry &entry, std
 	}
 }
 
+<<<<<<< HEAD
 bool i80286_cpu_device::memory_translate(address_spacenum spacenum, int intention, offs_t &address)
+=======
+bool i80286_cpu_device::memory_translate(int spacenum, int intention, offs_t &address)
+>>>>>>> upstream/master
 {
 	if(spacenum == AS_PROGRAM)
 		address &= m_amask;
 
+<<<<<<< HEAD
 	return TRUE;
+=======
+	return true;
+>>>>>>> upstream/master
 }
 
 void i80286_cpu_device::execute_set_input(int inptnum, int state)
@@ -351,10 +485,17 @@ void i80286_cpu_device::execute_set_input(int inptnum, int state)
 // of the nvram.  if yes, after init, it sets the stack pointer to the value in 0040:0067
 // in the bios data segment then pops es and ds off that stack, does popa then a far ret.
 
+<<<<<<< HEAD
 void i80286_cpu_device::trap(UINT32 error)
 {
 	int error_code = error & 0xffff;
 	UINT16 number = error >> 16;
+=======
+void i80286_cpu_device::trap(uint32_t error)
+{
+	int error_code = error & 0xffff;
+	uint16_t number = error >> 16;
+>>>>>>> upstream/master
 	if(error_code == 0xffff)
 		error_code = -1;
 	m_ip = m_prev_ip;
@@ -381,7 +522,11 @@ void i80286_cpu_device::trap(UINT32 error)
 				interrupt_descriptor(number,1,-1);
 		}
 	}
+<<<<<<< HEAD
 	catch(UINT32 e)
+=======
+	catch(uint32_t e)
+>>>>>>> upstream/master
 	{
 		trap(e);
 	}
@@ -393,10 +538,17 @@ void i80286_cpu_device::trap(UINT32 error)
 	m_trap_level = 0;
 }
 
+<<<<<<< HEAD
 UINT32 i80286_cpu_device::selector_address(UINT16 sel)
 {
 	UINT32 base;
 	UINT16 limit;
+=======
+uint32_t i80286_cpu_device::selector_address(uint16_t sel)
+{
+	uint32_t base;
+	uint16_t limit;
+>>>>>>> upstream/master
 	if(TBL(sel))
 	{
 		base = m_ldtr.base;
@@ -410,7 +562,11 @@ UINT32 i80286_cpu_device::selector_address(UINT16 sel)
 	return ((IDX(sel) >= limit) || !IDXTBL(sel) ? -1 : base + IDX(sel));
 }
 
+<<<<<<< HEAD
 int i80286_cpu_device::verify(UINT16 selector, int operation, UINT8 rights, bool valid)
+=======
+int i80286_cpu_device::verify(uint16_t selector, int operation, uint8_t rights, bool valid)
+>>>>>>> upstream/master
 {
 	if(!IDXTBL(selector) && !valid)
 		return FAULT_GP;
@@ -437,7 +593,11 @@ int i80286_cpu_device::verify(UINT16 selector, int operation, UINT8 rights, bool
 
 void i80286_cpu_device::pop_seg(int reg)
 {
+<<<<<<< HEAD
 	UINT16 sel;
+=======
+	uint16_t sel;
+>>>>>>> upstream/master
 	if(PM)
 		check_permission(SS, m_regs.w[SP], 2, I8086_READ);
 	sel = read_word(m_base[SS] + m_regs.w[SP]);
@@ -445,6 +605,7 @@ void i80286_cpu_device::pop_seg(int reg)
 	m_regs.w[SP] += 2;
 }
 
+<<<<<<< HEAD
 void i80286_cpu_device::data_descriptor(int reg, UINT16 selector, int cpl, UINT32 trap, UINT16 offset, int size)
 {
 	if(PM)
@@ -452,6 +613,15 @@ void i80286_cpu_device::data_descriptor(int reg, UINT16 selector, int cpl, UINT3
 		UINT16 desc[3];
 		UINT8 r;
 		UINT32 addr;
+=======
+void i80286_cpu_device::data_descriptor(int reg, uint16_t selector, int cpl, uint32_t trap, uint16_t offset, int size)
+{
+	if(PM)
+	{
+		uint16_t desc[3];
+		uint8_t r;
+		uint32_t addr;
+>>>>>>> upstream/master
 		if((reg != SS) && !IDXTBL(selector))
 		{
 			m_sregs[reg] = 0;
@@ -520,16 +690,28 @@ void i80286_cpu_device::data_descriptor(int reg, UINT16 selector, int cpl, UINT3
 	m_valid[reg] = 1;
 }
 
+<<<<<<< HEAD
 void i80286_cpu_device::data_descriptor(int reg, UINT16 selector)
+=======
+void i80286_cpu_device::data_descriptor(int reg, uint16_t selector)
+>>>>>>> upstream/master
 {
 	data_descriptor(reg, selector, CPL, TRAP(FAULT_GP,IDXTBL(selector)));
 }
 
+<<<<<<< HEAD
 void i80286_cpu_device::switch_task(UINT16 ntask, int type)
 {
 	UINT16 ndesc[3], desc[3], ntss[22], otss[22], flags;
 	UINT8 r, lr;
 	UINT32 naddr, oaddr, ldtaddr;
+=======
+void i80286_cpu_device::switch_task(uint16_t ntask, int type)
+{
+	uint16_t ndesc[3], desc[3], ntss[22], otss[22], flags;
+	uint8_t r, lr;
+	uint32_t naddr, oaddr, ldtaddr;
+>>>>>>> upstream/master
 	int i;
 	logerror("i286: %06x This program uses TSSs, how rare. Please report this to the developers.\n", pc());
 
@@ -656,7 +838,11 @@ void i80286_cpu_device::switch_task(UINT16 ntask, int type)
 	{
 		code_descriptor(ntss[TSS_CS], ntss[TSS_IP], 0);
 	}
+<<<<<<< HEAD
 	catch (UINT32 e)
+=======
+	catch (uint32_t e)
+>>>>>>> upstream/master
 	{
 		int error_code = e & 0xffff;
 		if(error_code == FAULT_GP)
@@ -668,6 +854,7 @@ void i80286_cpu_device::switch_task(UINT16 ntask, int type)
 	data_descriptor(DS, ntss[TSS_DS], CPL, TRAP(FAULT_TS, IDXTBL(ntss[TSS_DS])));
 }
 
+<<<<<<< HEAD
 void i80286_cpu_device::code_descriptor(UINT16 selector, UINT16 offset, int gate)
 {
 	if(PM)
@@ -675,6 +862,15 @@ void i80286_cpu_device::code_descriptor(UINT16 selector, UINT16 offset, int gate
 		UINT16 desc[3];
 		UINT8 r;
 		UINT32 addr;
+=======
+void i80286_cpu_device::code_descriptor(uint16_t selector, uint16_t offset, int gate)
+{
+	if(PM)
+	{
+		uint16_t desc[3];
+		uint8_t r;
+		uint32_t addr;
+>>>>>>> upstream/master
 		if((addr = selector_address(selector)) == -1)
 			throw TRAP(FAULT_GP, IDXTBL(selector));
 
@@ -713,7 +909,11 @@ void i80286_cpu_device::code_descriptor(UINT16 selector, UINT16 offset, int gate
 		}
 		else
 		{ // systemdescriptor
+<<<<<<< HEAD
 			UINT16 gatesel = GATESEL(desc);
+=======
+			uint16_t gatesel = GATESEL(desc);
+>>>>>>> upstream/master
 
 			if(!gate)
 				throw TRAP(FAULT_GP, IDXTBL(selector)); // tss cs must be segment
@@ -726,7 +926,11 @@ void i80286_cpu_device::code_descriptor(UINT16 selector, UINT16 offset, int gate
 			{
 				case CALLGATE:
 				{
+<<<<<<< HEAD
 					UINT16 gatedesc[3];
+=======
+					uint16_t gatedesc[3];
+>>>>>>> upstream/master
 					if((addr = selector_address(gatesel)) == -1)
 						throw TRAP(FAULT_GP, IDXTBL(gatesel));
 
@@ -748,8 +952,13 @@ void i80286_cpu_device::code_descriptor(UINT16 selector, UINT16 offset, int gate
 					if (!CONF(r) && (DPL(r) < CPL))
 					{
 						// inner call
+<<<<<<< HEAD
 						UINT16 tss_ss, tss_sp, oldss, oldsp;
 						UINT32 oldstk;
+=======
+						uint16_t tss_ss, tss_sp, oldss, oldsp;
+						uint32_t oldstk;
+>>>>>>> upstream/master
 						int i;
 						if(gate == NT_JMP)
 							throw TRAP(FAULT_GP, IDXTBL(gatesel)); // can't jmp to inner
@@ -812,8 +1021,13 @@ void i80286_cpu_device::code_descriptor(UINT16 selector, UINT16 offset, int gate
 
 void i80286_cpu_device::interrupt_descriptor(int number, int hwint, int error)
 {
+<<<<<<< HEAD
 	UINT16 desc[3], gatesel, flags = CompressFlags();
 	UINT8 r;
+=======
+	uint16_t desc[3], gatesel, flags = CompressFlags();
+	uint8_t r;
+>>>>>>> upstream/master
 	hwint = hwint ? 1 : 0;
 
 	if(number == -1)
@@ -830,8 +1044,13 @@ void i80286_cpu_device::interrupt_descriptor(int number, int hwint, int error)
 		PUSH(flags & ~0xf000);
 		m_TF = m_IF = 0;
 
+<<<<<<< HEAD
 		UINT16 dest_off = read_word(number * 4 + 0);
 		UINT16 dest_seg = read_word(number * 4 + 2);
+=======
+		uint16_t dest_off = read_word(number * 4 + 0);
+		uint16_t dest_seg = read_word(number * 4 + 2);
+>>>>>>> upstream/master
 
 		PUSH(m_sregs[CS]);
 		PUSH(m_ip);
@@ -860,7 +1079,11 @@ void i80286_cpu_device::interrupt_descriptor(int number, int hwint, int error)
 			{
 				switch_task(gatesel, NT_CALL);
 			}
+<<<<<<< HEAD
 			catch (UINT32 e)
+=======
+			catch (uint32_t e)
+>>>>>>> upstream/master
 			{
 				throw e + hwint;
 			}
@@ -872,8 +1095,13 @@ void i80286_cpu_device::interrupt_descriptor(int number, int hwint, int error)
 		case INTGATE:
 		case TRAPGATE:
 		{
+<<<<<<< HEAD
 			UINT16 gatedesc[3];
 			UINT32 addr;
+=======
+			uint16_t gatedesc[3];
+			uint32_t addr;
+>>>>>>> upstream/master
 
 			if((addr = selector_address(gatesel)) == -1)
 				throw TRAP(FAULT_GP, (IDXTBL(gatesel) + hwint));
@@ -894,7 +1122,11 @@ void i80286_cpu_device::interrupt_descriptor(int number, int hwint, int error)
 			if(!CONF(r) && (DPL(r) < CPL))
 			{
 				// inner call
+<<<<<<< HEAD
 				UINT16 tss_ss, tss_sp, oldss, oldsp;
+=======
+				uint16_t tss_ss, tss_sp, oldss, oldsp;
+>>>>>>> upstream/master
 				tss_ss = read_word(m_tr.base + TSS_SS0 * 2 + (DPL(r) * 4));
 				tss_sp = read_word(m_tr.base + TSS_SP0 * 2 + (DPL(r) * 4));
 
@@ -931,34 +1163,51 @@ void i80286_cpu_device::interrupt_descriptor(int number, int hwint, int error)
 	}
 }
 
+<<<<<<< HEAD
 UINT8 i80286_cpu_device::read_port_byte(UINT16 port)
+=======
+uint8_t i80286_cpu_device::read_port_byte(uint16_t port)
+>>>>>>> upstream/master
 {
 	if(PM && (CPL > m_IOPL))
 		throw TRAP(FAULT_GP, 0);
 	return m_io->read_byte(port);
 }
 
+<<<<<<< HEAD
 UINT16 i80286_cpu_device::read_port_word(UINT16 port)
+=======
+uint16_t i80286_cpu_device::read_port_word(uint16_t port)
+>>>>>>> upstream/master
 {
 	if(PM && (CPL > m_IOPL))
 		throw TRAP(FAULT_GP, 0);
 	return m_io->read_word_unaligned(port);
 }
 
+<<<<<<< HEAD
 void i80286_cpu_device::write_port_byte(UINT16 port, UINT8 data)
+=======
+void i80286_cpu_device::write_port_byte(uint16_t port, uint8_t data)
+>>>>>>> upstream/master
 {
 	if(PM && (CPL > m_IOPL))
 		throw TRAP(FAULT_GP, 0);
 	m_io->write_byte(port, data);
 }
 
+<<<<<<< HEAD
 void i80286_cpu_device::write_port_word(UINT16 port, UINT16 data)
+=======
+void i80286_cpu_device::write_port_word(uint16_t port, uint16_t data)
+>>>>>>> upstream/master
 {
 	if(PM && (CPL > m_IOPL))
 		throw TRAP(FAULT_GP, 0);
 	m_io->write_word_unaligned(port, data);
 }
 
+<<<<<<< HEAD
 UINT8 i80286_cpu_device::fetch_op()
 {
 	UINT8 data;
@@ -966,10 +1215,20 @@ UINT8 i80286_cpu_device::fetch_op()
 		throw TRAP(FAULT_GP, 0);
 
 	data = m_direct->read_byte( pc() & m_amask, m_fetch_xor );
+=======
+uint8_t i80286_cpu_device::fetch_op()
+{
+	uint8_t data;
+	if(m_ip > m_limit[CS])
+		throw TRAP(FAULT_GP, 0);
+
+	data = m_direct_opcodes->read_byte( pc() & m_amask, m_fetch_xor );
+>>>>>>> upstream/master
 	m_ip++;
 	return data;
 }
 
+<<<<<<< HEAD
 UINT8 i80286_cpu_device::fetch()
 {
 	UINT8 data;
@@ -977,11 +1236,24 @@ UINT8 i80286_cpu_device::fetch()
 		throw TRAP(FAULT_GP, 0);
 
 	data = m_direct->read_byte( pc() & m_amask, m_fetch_xor );
+=======
+uint8_t i80286_cpu_device::fetch()
+{
+	uint8_t data;
+	if(m_ip > m_limit[CS])
+		throw TRAP(FAULT_GP, 0);
+
+	data = m_direct_opcodes->read_byte( pc() & m_amask, m_fetch_xor );
+>>>>>>> upstream/master
 	m_ip++;
 	return data;
 }
 
+<<<<<<< HEAD
 UINT32 i80286_cpu_device::calc_addr(int seg, UINT16 offset, int size, int op, bool override)
+=======
+uint32_t i80286_cpu_device::calc_addr(int seg, uint16_t offset, int size, int op, bool override)
+>>>>>>> upstream/master
 {
 	seg = (m_seg_prefix && (seg==DS || seg==SS) && override) ? m_prefix_seg : seg;
 	if(op != I8086_NONE)
@@ -1053,7 +1325,11 @@ void i80286_cpu_device::execute_run()
 
 			debugger_instruction_hook( this, pc() & m_amask );
 
+<<<<<<< HEAD
 			UINT8 op = fetch_op();
+=======
+			uint8_t op = fetch_op();
+>>>>>>> upstream/master
 
 			switch(op)
 			{
@@ -1065,15 +1341,25 @@ void i80286_cpu_device::execute_run()
 				case 0x0f:
 				{
 					unsigned next = fetch_op();
+<<<<<<< HEAD
 					UINT16 desc[3], tmp, msw, sel;
 					UINT8 r;
 					UINT32 addr;
+=======
+					uint16_t desc[3], tmp, msw, sel;
+					uint8_t r;
+					uint32_t addr;
+>>>>>>> upstream/master
 
 					switch (next)
 					{
 						case 0:
 							if(!PM)
+<<<<<<< HEAD
 								throw TRAP(FAULT_UD, (UINT16)-1);
+=======
+								throw TRAP(FAULT_UD, (uint16_t)-1);
+>>>>>>> upstream/master
 							m_modrm = fetch();
 							switch (m_modrm & 0x38)
 							{
@@ -1166,15 +1452,26 @@ void i80286_cpu_device::execute_run()
 									break;
 
 								default:
+<<<<<<< HEAD
 									throw TRAP(FAULT_UD, (UINT16)-1);
+=======
+									throw TRAP(FAULT_UD, (uint16_t)-1);
+>>>>>>> upstream/master
 							}
 							break;
 						case 1:
 						{
+<<<<<<< HEAD
 							UINT32 ea;
 							m_modrm = fetch();
 							if((m_modrm >= 0xc0) && (m_modrm < 0xe0))
 								throw TRAP(FAULT_UD, (UINT16)-1);
+=======
+							uint32_t ea;
+							m_modrm = fetch();
+							if((m_modrm >= 0xc0) && (m_modrm < 0xe0))
+								throw TRAP(FAULT_UD, (uint16_t)-1);
+>>>>>>> upstream/master
 							switch (m_modrm & 0x38)
 							{
 								case 0: /* sgdt */
@@ -1213,13 +1510,21 @@ void i80286_cpu_device::execute_run()
 									m_msw = (m_msw & 1) | msw;
 									break;
 								default:
+<<<<<<< HEAD
 									throw TRAP(FAULT_UD, (UINT16)-1);
+=======
+									throw TRAP(FAULT_UD, (uint16_t)-1);
+>>>>>>> upstream/master
 							}
 							break;
 						}
 						case 2: /* LAR */
 							if(!PM)
+<<<<<<< HEAD
 								throw TRAP(FAULT_UD, (UINT16)-1);
+=======
+								throw TRAP(FAULT_UD, (uint16_t)-1);
+>>>>>>> upstream/master
 							m_modrm = fetch_op();
 							tmp = GetRMWord();
 							if((addr = selector_address(tmp)) == -1)
@@ -1242,7 +1547,11 @@ void i80286_cpu_device::execute_run()
 							break;
 						case 3: /* LSL */
 							if(!PM)
+<<<<<<< HEAD
 								throw TRAP(FAULT_UD, (UINT16)-1);
+=======
+								throw TRAP(FAULT_UD, (uint16_t)-1);
+>>>>>>> upstream/master
 							m_modrm = fetch_op();
 							tmp = GetRMWord();
 							if((addr = selector_address(tmp)) == -1)
@@ -1307,7 +1616,11 @@ reg.base = BASE(desc); (void)(r); reg.limit = LIMIT(desc); }
 							m_msw &= ~8;
 							break;
 						default:
+<<<<<<< HEAD
 							throw TRAP(FAULT_UD, (UINT16)-1);
+=======
+							throw TRAP(FAULT_UD, (uint16_t)-1);
+>>>>>>> upstream/master
 					}
 					break;
 				}
@@ -1331,7 +1644,11 @@ reg.base = BASE(desc); (void)(r); reg.limit = LIMIT(desc); }
 				case 0x60: // i_pusha
 				{
 					check_permission(SS, m_regs.w[SP]-16, 16, I8086_WRITE);
+<<<<<<< HEAD
 					UINT32 tmp = m_regs.w[SP];
+=======
+					uint32_t tmp = m_regs.w[SP];
+>>>>>>> upstream/master
 					PUSH(m_regs.w[AX]);
 					PUSH(m_regs.w[CX]);
 					PUSH(m_regs.w[DX]);
@@ -1359,7 +1676,11 @@ reg.base = BASE(desc); (void)(r); reg.limit = LIMIT(desc); }
 
 				case 0x62: // i_bound
 				{
+<<<<<<< HEAD
 					UINT32 low,high,tmp;
+=======
+					uint32_t low,high,tmp;
+>>>>>>> upstream/master
 					m_modrm = fetch();
 					low = GetRMWord();
 					high = GetnextRMWord();
@@ -1367,14 +1688,23 @@ reg.base = BASE(desc); (void)(r); reg.limit = LIMIT(desc); }
 					if (tmp<low || tmp>high)
 						interrupt(5);
 					CLK(BOUND);
+<<<<<<< HEAD
 					logerror("%s: %06x: bound %04x high %04x low %04x tmp\n", tag(), pc(), high, low, tmp);
+=======
+					logerror("%06x: bound %04x high %04x low %04x tmp\n", pc(), high, low, tmp);
+>>>>>>> upstream/master
 				}
 				break;
 
 				case 0x63: // arpl
 				{
+<<<<<<< HEAD
 					UINT16 tmp, source;
 					if (!PM) throw TRAP(FAULT_UD,(UINT16)-1);
+=======
+					uint16_t tmp, source;
+					if (!PM) throw TRAP(FAULT_UD,(uint16_t)-1);
+>>>>>>> upstream/master
 
 					m_modrm=fetch_op();
 					tmp=GetRMWord();
@@ -1397,28 +1727,48 @@ reg.base = BASE(desc); (void)(r); reg.limit = LIMIT(desc); }
 
 				case 0x69: // i_imul_d16
 				{
+<<<<<<< HEAD
 					UINT32 tmp;
 					DEF_r16w();
 					tmp = fetch_word();
 					m_dst = (INT32)((INT16)m_src)*(INT32)((INT16)tmp);
 					m_CarryVal = m_OverVal = (((INT32)m_dst) >> 15 != 0) && (((INT32)m_dst) >> 15 != -1);
+=======
+					uint32_t tmp;
+					DEF_r16w();
+					tmp = fetch_word();
+					m_dst = (int32_t)((int16_t)m_src)*(int32_t)((int16_t)tmp);
+					m_CarryVal = m_OverVal = (((int32_t)m_dst) >> 15 != 0) && (((int32_t)m_dst) >> 15 != -1);
+>>>>>>> upstream/master
 					RegWord(m_dst);
 					CLKM(IMUL_RRI16, IMUL_RMI16);
 				}
 				break;
 
 				case 0x6a: // i_push_d8
+<<<<<<< HEAD
 					PUSH( (UINT16)((INT16)((INT8)fetch())) );
+=======
+					PUSH( (uint16_t)((int16_t)((int8_t)fetch())) );
+>>>>>>> upstream/master
 					CLK(PUSH_IMM);
 					break;
 
 				case 0x6b: // i_imul_d8
 				{
+<<<<<<< HEAD
 					UINT32 src2;
 					DEF_r16w();
 					src2= (UINT16)((INT16)((INT8)fetch()));
 					m_dst = (INT32)((INT16)m_src)*(INT32)((INT16)src2);
 					m_CarryVal = m_OverVal = (((INT32)m_dst) >> 15 != 0) && (((INT32)m_dst) >> 15 != -1);
+=======
+					uint32_t src2;
+					DEF_r16w();
+					src2= (uint16_t)((int16_t)((int8_t)fetch()));
+					m_dst = (int32_t)((int16_t)m_src)*(int32_t)((int16_t)src2);
+					m_CarryVal = m_OverVal = (((int32_t)m_dst) >> 15 != 0) && (((int32_t)m_dst) >> 15 != -1);
+>>>>>>> upstream/master
 					RegWord(m_dst);
 					CLKM(IMUL_RRI8, IMUL_RMI8);
 				}
@@ -1444,8 +1794,13 @@ reg.base = BASE(desc); (void)(r); reg.limit = LIMIT(desc); }
 					m_modrm = fetch();
 					if((m_modrm & 0x38) > 0x18)
 					{
+<<<<<<< HEAD
 						logerror("%s: %06x: Mov Sreg - Invalid register\n", tag(), pc());
 						throw TRAP(FAULT_UD, (UINT16)-1);
+=======
+						logerror("%06x: Mov Sreg - Invalid register\n", pc());
+						throw TRAP(FAULT_UD, (uint16_t)-1);
+>>>>>>> upstream/master
 					}
 					PutRMWord(m_sregs[(m_modrm & 0x38) >> 3]);
 					CLKM(MOV_RS,MOV_MS);
@@ -1468,15 +1823,24 @@ reg.base = BASE(desc); (void)(r); reg.limit = LIMIT(desc); }
 							data_descriptor(DS, m_src);
 							break;
 						default:
+<<<<<<< HEAD
 							logerror("%s: %06x: Mov Sreg - Invalid register\n", tag(), pc());
 							throw TRAP(FAULT_UD, (UINT16)-1);
+=======
+							logerror("%06x: Mov Sreg - Invalid register\n", pc());
+							throw TRAP(FAULT_UD, (uint16_t)-1);
+>>>>>>> upstream/master
 					}
 					break;
 
 				case 0x8f: // i_popw
 				{
 					m_modrm = fetch();
+<<<<<<< HEAD
 					UINT16 tmp = read_word(calc_addr(SS, m_regs.w[SP], 2, I8086_READ, false));
+=======
+					uint16_t tmp = read_word(calc_addr(SS, m_regs.w[SP], 2, I8086_READ, false));
+>>>>>>> upstream/master
 					PutRMWord( tmp );
 					m_regs.w[SP] += 2;
 					CLKM(POP_R16,POP_M16);
@@ -1485,10 +1849,17 @@ reg.base = BASE(desc); (void)(r); reg.limit = LIMIT(desc); }
 
 				case 0x9a: // i_call_far
 				{
+<<<<<<< HEAD
 					UINT16 cs = m_sregs[CS];
 					UINT16 tmp = fetch_word();
 					UINT16 tmp2 = fetch_word();
 					UINT16 ip = m_ip;
+=======
+					uint16_t cs = m_sregs[CS];
+					uint16_t tmp = fetch_word();
+					uint16_t tmp2 = fetch_word();
+					uint16_t ip = m_ip;
+>>>>>>> upstream/master
 					code_descriptor(tmp2, tmp, NT_CALL);
 					PUSH(cs);
 					PUSH(ip);
@@ -1498,13 +1869,21 @@ reg.base = BASE(desc); (void)(r); reg.limit = LIMIT(desc); }
 
 				case 0x9b: // i_wait
 					if((m_msw & 0x0a) == 0x0a)
+<<<<<<< HEAD
 						throw TRAP(FAULT_NM, (UINT16)-1);
+=======
+						throw TRAP(FAULT_NM, (uint16_t)-1);
+>>>>>>> upstream/master
 					CLK(WAIT);
 					break;
 
 				case 0x9c: // pushf
 				{
+<<<<<<< HEAD
 					UINT16 flags = CompressFlags();
+=======
+					uint16_t flags = CompressFlags();
+>>>>>>> upstream/master
 					if(!PM)
 						flags &= ~0xf000;
 					PUSH(flags);
@@ -1514,7 +1893,11 @@ reg.base = BASE(desc); (void)(r); reg.limit = LIMIT(desc); }
 
 				case 0x9d: // popf
 				{
+<<<<<<< HEAD
 					UINT16 flags;
+=======
+					uint16_t flags;
+>>>>>>> upstream/master
 					flags = POP();
 					CLK(POPF);
 					load_flags(flags, CPL);
@@ -1523,7 +1906,11 @@ reg.base = BASE(desc); (void)(r); reg.limit = LIMIT(desc); }
 
 				case 0xc0: // i_rotshft_bd8
 				{
+<<<<<<< HEAD
 					UINT8 c;
+=======
+					uint8_t c;
+>>>>>>> upstream/master
 					m_modrm = fetch();
 					m_src = GetRMByte();
 					m_dst = m_src;
@@ -1549,7 +1936,11 @@ reg.base = BASE(desc); (void)(r); reg.limit = LIMIT(desc); }
 
 				case 0xc1: // i_rotshft_wd8
 				{
+<<<<<<< HEAD
 					UINT8 c;
+=======
+					uint8_t c;
+>>>>>>> upstream/master
 					m_modrm = fetch();
 					m_src = GetRMWord();
 					m_dst = m_src;
@@ -1577,8 +1968,13 @@ reg.base = BASE(desc); (void)(r); reg.limit = LIMIT(desc); }
 				{
 					m_modrm = fetch();
 					if(m_modrm >= 0xc0)
+<<<<<<< HEAD
 						throw TRAP(FAULT_UD, (UINT16)-1);
 					UINT16 tmp = GetRMWord();
+=======
+						throw TRAP(FAULT_UD, (uint16_t)-1);
+					uint16_t tmp = GetRMWord();
+>>>>>>> upstream/master
 					data_descriptor(ES, GetnextRMWord());
 					RegWord(tmp);
 					CLK(LOAD_PTR);
@@ -1589,8 +1985,13 @@ reg.base = BASE(desc); (void)(r); reg.limit = LIMIT(desc); }
 				{
 					m_modrm = fetch();
 					if(m_modrm >= 0xc0)
+<<<<<<< HEAD
 						throw TRAP(FAULT_UD, (UINT16)-1);
 					UINT16 tmp = GetRMWord();
+=======
+						throw TRAP(FAULT_UD, (uint16_t)-1);
+					uint16_t tmp = GetRMWord();
+>>>>>>> upstream/master
 					data_descriptor(DS, GetnextRMWord());
 					RegWord(tmp);
 					CLK(LOAD_PTR);
@@ -1599,8 +2000,13 @@ reg.base = BASE(desc); (void)(r); reg.limit = LIMIT(desc); }
 
 				case 0xc8: // i_enter
 				{
+<<<<<<< HEAD
 					UINT16 nb = fetch();
 					UINT32 level;
+=======
+					uint16_t nb = fetch();
+					uint32_t level;
+>>>>>>> upstream/master
 
 					nb |= fetch() << 8;
 					level = fetch();
@@ -1642,7 +2048,11 @@ reg.base = BASE(desc); (void)(r); reg.limit = LIMIT(desc); }
 				case 0xcf: // iret
 				{
 					int oldcpl = (PM) ? CPL : 0;
+<<<<<<< HEAD
 					UINT16 flags = far_return(1, 0);
+=======
+					uint16_t flags = far_return(1, 0);
+>>>>>>> upstream/master
 					CLK(IRET);
 					load_flags(flags, oldcpl);
 					break;
@@ -1650,7 +2060,11 @@ reg.base = BASE(desc); (void)(r); reg.limit = LIMIT(desc); }
 
 				case 0xd2: // i_rotshft_bcl
 				{
+<<<<<<< HEAD
 					UINT8 c;
+=======
+					uint8_t c;
+>>>>>>> upstream/master
 
 					m_modrm = fetch();
 					m_src = GetRMByte();
@@ -1677,7 +2091,11 @@ reg.base = BASE(desc); (void)(r); reg.limit = LIMIT(desc); }
 
 				case 0xd3: // i_rotshft_wcl
 				{
+<<<<<<< HEAD
 					UINT8 c;
+=======
+					uint8_t c;
+>>>>>>> upstream/master
 
 					m_modrm = fetch();
 					m_src = GetRMWord();
@@ -1711,7 +2129,11 @@ reg.base = BASE(desc); (void)(r); reg.limit = LIMIT(desc); }
 				case 0xde:
 				case 0xdf:
 					if((m_msw & 8) || (m_msw & 4))
+<<<<<<< HEAD
 						throw TRAP(FAULT_NM, (UINT16)-1);
+=======
+						throw TRAP(FAULT_NM, (uint16_t)-1);
+>>>>>>> upstream/master
 					m_modrm = fetch();
 					GetRMByte();
 					CLK(NOP);
@@ -1721,8 +2143,13 @@ reg.base = BASE(desc); (void)(r); reg.limit = LIMIT(desc); }
 
 				case 0xea: // i_jmp_far
 				{
+<<<<<<< HEAD
 					UINT16 tmp = fetch_word();
 					UINT16 tmp1 = fetch_word();
+=======
+					uint16_t tmp = fetch_word();
+					uint16_t tmp1 = fetch_word();
+>>>>>>> upstream/master
 					code_descriptor(tmp1, tmp, NT_JMP);
 					CLK(JMP_FAR);
 					break;
@@ -1731,13 +2158,21 @@ reg.base = BASE(desc); (void)(r); reg.limit = LIMIT(desc); }
 				case 0xf0: // i_lock
 					if(PM && (CPL > m_IOPL))
 						throw TRAP(FAULT_GP, 0);
+<<<<<<< HEAD
 					logerror("%s: %06x: Warning - BUSLOCK\n", tag(), pc());
+=======
+					logerror("%06x: Warning - BUSLOCK\n", pc());
+>>>>>>> upstream/master
 					m_no_interrupt = 1;
 					CLK(NOP);
 					break;
 
 				case 0xf4: // i_hlt
+<<<<<<< HEAD
 					if(PM && (CPL > m_IOPL))
+=======
+					if(PM && CPL)
+>>>>>>> upstream/master
 						throw TRAP(FAULT_GP, 0);
 					m_icount = 0;
 					m_halt = true;
@@ -1759,7 +2194,11 @@ reg.base = BASE(desc); (void)(r); reg.limit = LIMIT(desc); }
 
 				case 0xff: // i_ffpre
 					{
+<<<<<<< HEAD
 						UINT32 tmp, tmp1;
+=======
+						uint32_t tmp, tmp1;
+>>>>>>> upstream/master
 						m_modrm = fetch();
 						tmp = GetRMWord();
 						switch ( m_modrm & 0x38 )
@@ -1787,7 +2226,11 @@ reg.base = BASE(desc); (void)(r); reg.limit = LIMIT(desc); }
 							break;
 						case 0x18:  /* CALL FAR */
 						{
+<<<<<<< HEAD
 							UINT16 ip = m_ip;
+=======
+							uint16_t ip = m_ip;
+>>>>>>> upstream/master
 							tmp1 = m_sregs[CS];
 							code_descriptor(GetnextRMWord(), tmp, NT_CALL);
 							PUSH(tmp1);
@@ -1808,8 +2251,13 @@ reg.base = BASE(desc); (void)(r); reg.limit = LIMIT(desc); }
 							CLKM(PUSH_R16,PUSH_M16);
 							break;
 						default:
+<<<<<<< HEAD
 							logerror("%s: %06x: FF Pre with unimplemented mod\n", tag(), pc());
 							throw TRAP(FAULT_UD,(UINT16)-1);
+=======
+							logerror("%06x: FF Pre with unimplemented mod\n", pc());
+							throw TRAP(FAULT_UD,(uint16_t)-1);
+>>>>>>> upstream/master
 						}
 					}
 					break;
@@ -1818,8 +2266,13 @@ reg.base = BASE(desc); (void)(r); reg.limit = LIMIT(desc); }
 				case 0xf3:
 				{
 					bool pass = false;
+<<<<<<< HEAD
 					UINT8 next = repx_op();
 					UINT16 c = m_regs.w[CX];
+=======
+					uint8_t next = repx_op();
+					uint16_t c = m_regs.w[CX];
+>>>>>>> upstream/master
 
 					switch (next)
 					{
@@ -1844,14 +2297,24 @@ reg.base = BASE(desc); (void)(r); reg.limit = LIMIT(desc); }
 					if(!common_op(op))
 					{
 						m_icount -= 10; // UD fault timing?
+<<<<<<< HEAD
 						logerror("%s: %06x: Invalid Opcode %02x\n", tag(), pc(), op);
 						m_ip = m_prev_ip;
 						throw TRAP(FAULT_UD, (UINT16)-1);
+=======
+						logerror("%06x: Invalid Opcode %02x\n", pc(), op);
+						m_ip = m_prev_ip;
+						throw TRAP(FAULT_UD, (uint16_t)-1);
+>>>>>>> upstream/master
 					}
 					break;
 			}
 		}
+<<<<<<< HEAD
 		catch(UINT32 e)
+=======
+		catch(uint32_t e)
+>>>>>>> upstream/master
 		{
 			trap(e);
 		}
@@ -1859,6 +2322,7 @@ reg.base = BASE(desc); (void)(r); reg.limit = LIMIT(desc); }
 }
 
 
+<<<<<<< HEAD
 void i80286_cpu_device::load_flags(UINT16 flags, int cpl)
 {
 	UINT16 oldflags = CompressFlags();
@@ -1866,6 +2330,15 @@ void i80286_cpu_device::load_flags(UINT16 flags, int cpl)
 	if(PM && cpl)
 	{
 		UINT16 mask = 0x3000;
+=======
+void i80286_cpu_device::load_flags(uint16_t flags, int cpl)
+{
+	uint16_t oldflags = CompressFlags();
+	flags &= ~0x8000;
+	if(PM && cpl)
+	{
+		uint16_t mask = 0x3000;
+>>>>>>> upstream/master
 		if(cpl > m_IOPL)
 			mask |= 0x200;
 		flags &= ~mask;
@@ -1879,9 +2352,15 @@ void i80286_cpu_device::load_flags(UINT16 flags, int cpl)
 		m_fire_trap = 1;
 }
 
+<<<<<<< HEAD
 UINT16 i80286_cpu_device::far_return(int iret, int bytes)
 {
 	UINT16 sel, off, flags = 0;
+=======
+uint16_t i80286_cpu_device::far_return(int iret, int bytes)
+{
+	uint16_t sel, off, flags = 0;
+>>>>>>> upstream/master
 	int spaddr;
 
 	if(PM && m_NT && iret)
@@ -1902,7 +2381,11 @@ UINT16 i80286_cpu_device::far_return(int iret, int bytes)
 
 	if(PM)
 	{
+<<<<<<< HEAD
 		UINT16 desc[3], newsp, newss;
+=======
+		uint16_t desc[3], newsp, newss;
+>>>>>>> upstream/master
 		int addr, r;
 
 		if((addr = selector_address(sel)) == -1)
@@ -1968,10 +2451,17 @@ UINT16 i80286_cpu_device::far_return(int iret, int bytes)
 	return flags;
 }
 
+<<<<<<< HEAD
 void i80286_cpu_device::check_permission(UINT8 check_seg, UINT32 offset, UINT16 size, int operation)
 {
 	int trap = 0;
 	UINT8 rights;
+=======
+void i80286_cpu_device::check_permission(uint8_t check_seg, uint32_t offset, uint16_t size, int operation)
+{
+	int trap;
+	uint8_t rights;
+>>>>>>> upstream/master
 	if(PM)
 	{
 		rights = m_rights[check_seg];

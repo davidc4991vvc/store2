@@ -5,8 +5,13 @@
  *
  */
 
+<<<<<<< HEAD
 #ifndef __E05A30_H__
 #define __E05A30_H__
+=======
+#ifndef MAME_MACHINE_E05A30_H
+#define MAME_MACHINE_E05A30_H
+>>>>>>> upstream/master
 
 /***************************************************************************
     DEVICE CONFIGURATION MACROS
@@ -46,6 +51,7 @@
 class e05a30_device : public device_t
 {
 public:
+<<<<<<< HEAD
 	e05a30_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
 	~e05a30_device() {}
 
@@ -58,6 +64,19 @@ public:
 	template<class _Object> static devcb_base &set_centronics_perror_wr_callback(device_t &device, _Object object) { return downcast<e05a30_device &>(device).m_write_centronics_perror.set_callback(object); }
 	template<class _Object> static devcb_base &set_centronics_fault_wr_callback(device_t &device, _Object object) { return downcast<e05a30_device &>(device).m_write_centronics_fault.set_callback(object); }
 	template<class _Object> static devcb_base &set_centronics_select_wr_callback(device_t &device, _Object object) { return downcast<e05a30_device &>(device).m_write_centronics_select.set_callback(object); }
+=======
+	e05a30_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
+
+	template <class Object> static devcb_base &set_printhead_wr_callback(device_t &device, Object &&cb) { return downcast<e05a30_device &>(device).m_write_printhead.set_callback(std::forward<Object>(cb)); }
+	template <class Object> static devcb_base &set_pf_stepper_wr_callback(device_t &device, Object &&cb) { return downcast<e05a30_device &>(device).m_write_pf_stepper.set_callback(std::forward<Object>(cb)); }
+	template <class Object> static devcb_base &set_cr_stepper_wr_callback(device_t &device, Object &&cb) { return downcast<e05a30_device &>(device).m_write_cr_stepper.set_callback(std::forward<Object>(cb)); }
+	template <class Object> static devcb_base &set_ready_wr_callback(device_t &device, Object &&cb) { return downcast<e05a30_device &>(device).m_write_ready.set_callback(std::forward<Object>(cb)); }
+	template <class Object> static devcb_base &set_centronics_ack_wr_callback(device_t &device, Object &&cb) { return downcast<e05a30_device &>(device).m_write_centronics_ack.set_callback(std::forward<Object>(cb)); }
+	template <class Object> static devcb_base &set_centronics_busy_wr_callback(device_t &device, Object &&cb) { return downcast<e05a30_device &>(device).m_write_centronics_busy.set_callback(std::forward<Object>(cb)); }
+	template <class Object> static devcb_base &set_centronics_perror_wr_callback(device_t &device, Object &&cb) { return downcast<e05a30_device &>(device).m_write_centronics_perror.set_callback(std::forward<Object>(cb)); }
+	template <class Object> static devcb_base &set_centronics_fault_wr_callback(device_t &device, Object &&cb) { return downcast<e05a30_device &>(device).m_write_centronics_fault.set_callback(std::forward<Object>(cb)); }
+	template <class Object> static devcb_base &set_centronics_select_wr_callback(device_t &device, Object &&cb) { return downcast<e05a30_device &>(device).m_write_centronics_select.set_callback(std::forward<Object>(cb)); }
+>>>>>>> upstream/master
 
 	DECLARE_WRITE8_MEMBER( write );
 	DECLARE_READ8_MEMBER( read );
@@ -75,8 +94,13 @@ public:
 
 protected:
 	// device-level overrides
+<<<<<<< HEAD
 	virtual void device_start();
 	virtual void device_reset();
+=======
+	virtual void device_start() override;
+	virtual void device_reset() override;
+>>>>>>> upstream/master
 
 private:
 	/* callbacks */
@@ -90,6 +114,7 @@ private:
 	devcb_write_line m_write_centronics_fault;
 	devcb_write_line m_write_centronics_select;
 
+<<<<<<< HEAD
 	void update_printhead(int pos, UINT8 data);
 	void update_pf_stepper(UINT8 data);
 	void update_cr_stepper(UINT8 data);
@@ -113,3 +138,28 @@ private:
 extern const device_type E05A30;
 
 #endif /* __E05A30_H__ */
+=======
+	void update_printhead(int pos, uint8_t data);
+	void update_pf_stepper(uint8_t data);
+	void update_cr_stepper(uint8_t data);
+
+	/* port 0x05 and 0x06 (9-bit) */
+	uint16_t m_printhead;
+	/* port 0x07 (4-bit) */
+	uint8_t m_pf_stepper;
+	/* port 0x08 (4-bit) */
+	uint8_t m_cr_stepper;
+
+	/* Centronics stuff */
+	uint8_t m_centronics_data;
+	int m_centronics_busy;
+	int m_centronics_nack;
+	uint8_t m_centronics_strobe;
+	uint8_t m_centronics_data_latch;
+	uint8_t m_centronics_data_latched;
+};
+
+DECLARE_DEVICE_TYPE(E05A30, e05a30_device)
+
+#endif // MAME_MACHINE_E05A30_H
+>>>>>>> upstream/master

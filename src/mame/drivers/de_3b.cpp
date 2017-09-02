@@ -44,6 +44,7 @@ public:
 protected:
 
 	// driver_device overrides
+<<<<<<< HEAD
 	virtual void machine_reset();
 public:
 	DECLARE_DRIVER_INIT(de_3b);
@@ -54,6 +55,18 @@ public:
 	bool m_ca1;
 	bool m_irq_active;
 	UINT8 m_sound_data;
+=======
+	virtual void machine_reset() override;
+public:
+	DECLARE_DRIVER_INIT(de_3b);
+
+	uint8_t m_strobe;
+	uint8_t m_kbdrow;
+	uint8_t m_diag;
+	bool m_ca1;
+	bool m_irq_active;
+	uint8_t m_sound_data;
+>>>>>>> upstream/master
 
 };
 
@@ -181,7 +194,11 @@ WRITE8_MEMBER( de_3b_state::pia2c_pb_w )
 }
 READ8_MEMBER(de_3b_state::display_r)
 {
+<<<<<<< HEAD
 	UINT8 ret = 0x00;
+=======
+	uint8_t ret = 0x00;
+>>>>>>> upstream/master
 
 	switch(offset)
 	{
@@ -239,7 +256,11 @@ DRIVER_INIT_MEMBER(de_3b_state,de_3b)
 {
 }
 
+<<<<<<< HEAD
 static MACHINE_CONFIG_START( de_3b, de_3b_state )
+=======
+static MACHINE_CONFIG_START( de_3b )
+>>>>>>> upstream/master
 	/* basic machine hardware */
 	MCFG_DECOCPU_TYPE3B_ADD("decocpu",XTAL_8MHz / 2, ":maincpu")
 	MCFG_DECOCPU_DISPLAY(READ8(de_3b_state,display_r),WRITE8(de_3b_state,display_w))
@@ -257,7 +278,11 @@ static MACHINE_CONFIG_START( de_3b, de_3b_state )
 MACHINE_CONFIG_END
 
 
+<<<<<<< HEAD
 static MACHINE_CONFIG_START( detest, de_3b_state )
+=======
+static MACHINE_CONFIG_START( detest )
+>>>>>>> upstream/master
 	/* basic machine hardware */
 	MCFG_DECOCPU_TYPE3B_ADD("decocpu",XTAL_8MHz / 2, ":maincpu")
 
@@ -293,6 +318,35 @@ ROM_START(batmanf3)
 	ROM_LOAD("bmfu21.bin", 0x080000, 0x80000, CRC(e41a516d) SHA1(9c41803a01046e57f8bd8759fe5e62ad6abaa80c))
 ROM_END
 
+<<<<<<< HEAD
+=======
+ROM_START(batmanf2)
+	ROM_REGION(0x10000, "maincpu", 0)
+	ROM_LOAD("batcpua.202", 0x0000, 0x10000, CRC(3e2fe40b) SHA1(afacbbc8af319110149b25c35ef03dcf019ca8da))
+	ROM_REGION(0x01000000, "cpu3", 0)
+	ROM_LOAD16_BYTE("bmfrom0.200", 0x00000000, 0x00080000, CRC(17086824) SHA1(37f2d463d7cc15739fb18000c81dbc1e79c1549a))
+	ROM_LOAD16_BYTE("bmfrom3.200", 0x00000001, 0x00080000, CRC(9c8a9a8f) SHA1(8dce048cac657da66478ae0b6bd000a2648a118a))
+	ROM_REGION(0x010000, "soundcpu", 0)
+	ROM_LOAD("bmfu7.bin", 0x0000, 0x10000, CRC(58c0d144) SHA1(88a404d3625c7c154892282598b4949ac97de12b))
+	ROM_REGION(0x1000000, "bsmt", 0)
+	ROM_LOAD("bmfu17.bin", 0x000000, 0x80000, CRC(edcd5c10) SHA1(561f22fb7817f64e09ef6adda646f58f31b80bf4))
+	ROM_LOAD("bmfu21.bin", 0x080000, 0x80000, CRC(e41a516d) SHA1(9c41803a01046e57f8bd8759fe5e62ad6abaa80c))
+ROM_END
+
+ROM_START(batmanf1)
+	ROM_REGION(0x10000, "maincpu", 0)
+	ROM_LOAD("batcpua.102", 0x0000, 0x10000, CRC(aafba427) SHA1(485fa3b76569a8c9ed640e9fa8fd714fdd2268b8))
+	ROM_REGION(0x01000000, "cpu3", 0)
+	ROM_LOAD16_BYTE("bmfrom0.100", 0x00000000, 0x00080000, CRC(4d65a45c) SHA1(b4a112f8a70ad887e1a23291bcec1d55bd7277c1))
+	ROM_LOAD16_BYTE("bmfrom3.100", 0x00000001, 0x00080000, CRC(b4b774d1) SHA1(5dacfb5cedc597dbb2d72e83de4979eb19b19d72))
+	ROM_REGION(0x010000, "soundcpu", 0)
+	ROM_LOAD("bmfu7.bin", 0x0000, 0x10000, CRC(58c0d144) SHA1(88a404d3625c7c154892282598b4949ac97de12b))
+	ROM_REGION(0x1000000, "bsmt", 0)
+	ROM_LOAD("bmfu17.bin", 0x000000, 0x80000, CRC(edcd5c10) SHA1(561f22fb7817f64e09ef6adda646f58f31b80bf4))
+	ROM_LOAD("bmfu21.bin", 0x080000, 0x80000, CRC(e41a516d) SHA1(9c41803a01046e57f8bd8759fe5e62ad6abaa80c))
+ROM_END
+
+>>>>>>> upstream/master
 ROM_START(bmf_uk)
 	ROM_REGION(0x10000, "maincpu", 0)
 	ROM_LOAD("batnove.401", 0x0000, 0x10000, CRC(80f6e4af) SHA1(dd233d2150dcb50b74a70e6ff89c74a3f0d8fae1))
@@ -491,6 +545,22 @@ ROM_START(baywatch)
 	ROM_LOAD("bayw.u21", 0x080000, 0x80000, CRC(b7598881) SHA1(19d1dde1cb6634a7c7b5cdb4fa01cd09cc7d7777))
 ROM_END
 
+<<<<<<< HEAD
+=======
+ROM_START(bay_d400)
+	ROM_REGION(0x10000, "maincpu", 0)
+	ROM_LOAD("baycpud.400", 0x0000, 0x10000, CRC(45019616) SHA1(5a1e04cdfa00f179f010c09fae52d090553cd82e))
+	ROM_REGION(0x01000000, "cpu3", 0)
+	ROM_LOAD16_BYTE("bayrom0d.400", 0x00000000, 0x00080000, CRC(3f195829) SHA1(a10a1b7f125f239b0eff87ee6667c8250b7ffc87))
+	ROM_LOAD16_BYTE("bayrom3d.400", 0x00000001, 0x00080000, CRC(ae3d8585) SHA1(28b38ebc2755ffb3859f8091a9bf50d868794a3e))
+	ROM_REGION(0x010000, "soundcpu", 0)
+	ROM_LOAD("bayw.u7", 0x0000, 0x10000, CRC(90d6d8a8) SHA1(482c5643453f21a078257aa13398845ef19cab3c))
+	ROM_REGION(0x1000000, "bsmt", 0)
+	ROM_LOAD("bayw.u17", 0x000000, 0x80000, CRC(b20fde56) SHA1(2f2db49245e4a6a8251cbe896b2437fcec88d42d))
+	ROM_LOAD("bayw.u21", 0x080000, 0x80000, CRC(b7598881) SHA1(19d1dde1cb6634a7c7b5cdb4fa01cd09cc7d7777))
+ROM_END
+
+>>>>>>> upstream/master
 ROM_START(bay_e400)
 	ROM_REGION(0x10000, "maincpu", 0)
 	ROM_LOAD("baycpua2.400", 0x0000, 0x10000, CRC(07b77fe2) SHA1(4f81a5b3d821907e06d6b547117ad39c238a900c))
@@ -505,6 +575,22 @@ ROM_START(bay_e400)
 	ROM_LOAD("bw-u36.bin", 0x100000, 0x80000, CRC(1877abc5) SHA1(13ca231a486495a83cc1d9c6dde558a57eb4abe1))
 ROM_END
 
+<<<<<<< HEAD
+=======
+ROM_START(bay_d300)
+	ROM_REGION(0x10000, "maincpu", 0)
+	ROM_LOAD("baycpud.300", 0x0000, 0x10000, CRC(c160f045) SHA1(d1f75d5ba292b25278539b01e0f4908276d34e34))
+	ROM_REGION(0x01000000, "cpu3", 0)
+	ROM_LOAD16_BYTE("bayrom0d.300", 0x00000000, 0x00080000, CRC(3f195829) SHA1(a10a1b7f125f239b0eff87ee6667c8250b7ffc87))
+	ROM_LOAD16_BYTE("bayrom3d.300", 0x00000001, 0x00080000, CRC(ae3d8585) SHA1(28b38ebc2755ffb3859f8091a9bf50d868794a3e))
+	ROM_REGION(0x010000, "soundcpu", 0)
+	ROM_LOAD("bayw.u7", 0x0000, 0x10000, CRC(90d6d8a8) SHA1(482c5643453f21a078257aa13398845ef19cab3c))
+	ROM_REGION(0x1000000, "bsmt", 0)
+	ROM_LOAD("bayw.u17", 0x000000, 0x80000, CRC(b20fde56) SHA1(2f2db49245e4a6a8251cbe896b2437fcec88d42d))
+	ROM_LOAD("bayw.u21", 0x080000, 0x80000, CRC(b7598881) SHA1(19d1dde1cb6634a7c7b5cdb4fa01cd09cc7d7777))
+ROM_END
+
+>>>>>>> upstream/master
 /*-------------------------------------------------------------
 / Mary Shelley's Frankenstein - CPU Rev 3b /DMD  Type 3 2x512K Rom - 64K CPU Rom
 /------------------------------------------------------------*/
@@ -625,6 +711,7 @@ ROM_START(detest)
 ROM_END
 
 
+<<<<<<< HEAD
 GAME(1995,  batmanf,    0,              de_3b,  de_3b, de_3b_state, de_3b,  ROT0,   "Sega",             "Batman Forever (4.0)",                 MACHINE_IS_SKELETON_MECHANICAL)
 GAME(1995,  batmanf3,   batmanf,        de_3b,  de_3b, de_3b_state, de_3b,  ROT0,   "Sega",             "Batman Forever (3.0)",                 MACHINE_IS_SKELETON_MECHANICAL)
 GAME(1995,  bmf_uk,     batmanf,        de_3b,  de_3b, de_3b_state, de_3b,  ROT0,   "Sega",             "Batman Forever (English)",             MACHINE_IS_SKELETON_MECHANICAL)
@@ -651,3 +738,35 @@ GAME(1994,  mav_400,    mav_402,        de_3b,  de_3b, de_3b_state, de_3b,  ROT0
 GAME(1994,  mav_100,    mav_402,        de_3b,  de_3b, de_3b_state, de_3b,  ROT0,   "Sega",             "Maverick (1.00)",                      MACHINE_IS_SKELETON_MECHANICAL)
 GAME(1998,  detest,     0,              detest, de_3b, de_3b_state, de_3b,  ROT0,   "Data East",        "Data East Test Chip",                  MACHINE_IS_SKELETON_MECHANICAL)
 GAME(1996,  ctcheese,   0,              de_3b,  de_3b, de_3b_state, de_3b,  ROT0,   "Sega",             "Cut The Cheese (Redemption)",          MACHINE_IS_SKELETON_MECHANICAL)
+=======
+GAME(1995,  batmanf,    0,              de_3b,  de_3b, de_3b_state, de_3b,  ROT0,   "Sega",       "Batman Forever (4.0)",                  MACHINE_IS_SKELETON_MECHANICAL)
+GAME(1995,  batmanf3,   batmanf,        de_3b,  de_3b, de_3b_state, de_3b,  ROT0,   "Sega",       "Batman Forever (3.0)",                  MACHINE_IS_SKELETON_MECHANICAL)
+GAME(1995,  batmanf2,   batmanf,        de_3b,  de_3b, de_3b_state, de_3b,  ROT0,   "Sega",       "Batman Forever (2.02)",                 MACHINE_IS_SKELETON_MECHANICAL)
+GAME(1995,  batmanf1,   batmanf,        de_3b,  de_3b, de_3b_state, de_3b,  ROT0,   "Sega",       "Batman Forever (1.02)",                 MACHINE_IS_SKELETON_MECHANICAL)
+GAME(1995,  bmf_uk,     batmanf,        de_3b,  de_3b, de_3b_state, de_3b,  ROT0,   "Sega",       "Batman Forever (English)",              MACHINE_IS_SKELETON_MECHANICAL)
+GAME(1995,  bmf_cn,     batmanf,        de_3b,  de_3b, de_3b_state, de_3b,  ROT0,   "Sega",       "Batman Forever (Canadian)",             MACHINE_IS_SKELETON_MECHANICAL)
+GAME(1995,  bmf_no,     batmanf,        de_3b,  de_3b, de_3b_state, de_3b,  ROT0,   "Sega",       "Batman Forever (Norwegian)",            MACHINE_IS_SKELETON_MECHANICAL)
+GAME(1995,  bmf_sv,     batmanf,        de_3b,  de_3b, de_3b_state, de_3b,  ROT0,   "Sega",       "Batman Forever (Swedish)",              MACHINE_IS_SKELETON_MECHANICAL)
+GAME(1995,  bmf_at,     batmanf,        de_3b,  de_3b, de_3b_state, de_3b,  ROT0,   "Sega",       "Batman Forever (Austrian)",             MACHINE_IS_SKELETON_MECHANICAL)
+GAME(1995,  bmf_ch,     batmanf,        de_3b,  de_3b, de_3b_state, de_3b,  ROT0,   "Sega",       "Batman Forever (Swiss)",                MACHINE_IS_SKELETON_MECHANICAL)
+GAME(1995,  bmf_de,     batmanf,        de_3b,  de_3b, de_3b_state, de_3b,  ROT0,   "Sega",       "Batman Forever (German)",               MACHINE_IS_SKELETON_MECHANICAL)
+GAME(1995,  bmf_be,     batmanf,        de_3b,  de_3b, de_3b_state, de_3b,  ROT0,   "Sega",       "Batman Forever (Belgian)",              MACHINE_IS_SKELETON_MECHANICAL)
+GAME(1995,  bmf_fr,     batmanf,        de_3b,  de_3b, de_3b_state, de_3b,  ROT0,   "Sega",       "Batman Forever (French)",               MACHINE_IS_SKELETON_MECHANICAL)
+GAME(1995,  bmf_nl,     batmanf,        de_3b,  de_3b, de_3b_state, de_3b,  ROT0,   "Sega",       "Batman Forever (Dutch)",                MACHINE_IS_SKELETON_MECHANICAL)
+GAME(1995,  bmf_it,     batmanf,        de_3b,  de_3b, de_3b_state, de_3b,  ROT0,   "Sega",       "Batman Forever (Italian)",              MACHINE_IS_SKELETON_MECHANICAL)
+GAME(1995,  bmf_sp,     batmanf,        de_3b,  de_3b, de_3b_state, de_3b,  ROT0,   "Sega",       "Batman Forever (Spanish)",              MACHINE_IS_SKELETON_MECHANICAL)
+GAME(1995,  bmf_jp,     batmanf,        de_3b,  de_3b, de_3b_state, de_3b,  ROT0,   "Sega",       "Batman Forever (Japanese)",             MACHINE_IS_SKELETON_MECHANICAL)
+GAME(1995,  bmf_time,   batmanf,        de_3b,  de_3b, de_3b_state, de_3b,  ROT0,   "Sega",       "Batman Forever (Timed Play)",           MACHINE_IS_SKELETON_MECHANICAL)
+GAME(1995,  baywatch,   0,              de_3b,  de_3b, de_3b_state, de_3b,  ROT0,   "Sega",       "Baywatch",                              MACHINE_IS_SKELETON_MECHANICAL)
+GAME(1995,  bay_d300,   baywatch,       de_3b,  de_3b, de_3b_state, de_3b,  ROT0,   "Sega",       "Baywatch (3.00 Dutch)",                 MACHINE_IS_SKELETON_MECHANICAL)
+GAME(1995,  bay_d400,   baywatch,       de_3b,  de_3b, de_3b_state, de_3b,  ROT0,   "Sega",       "Baywatch (4.00 English)",               MACHINE_IS_SKELETON_MECHANICAL)
+GAME(1995,  bay_e400,   baywatch,       de_3b,  de_3b, de_3b_state, de_3b,  ROT0,   "Sega",       "Baywatch (4.00 Dutch)",                 MACHINE_IS_SKELETON_MECHANICAL)
+GAME(1994,  frankst,    0,              de_3b,  de_3b, de_3b_state, de_3b,  ROT0,   "Sega",       "Mary Shelley's Frankenstein",           MACHINE_IS_SKELETON_MECHANICAL)
+GAME(1995,  frankstg,   frankst,        de_3b,  de_3b, de_3b_state, de_3b,  ROT0,   "Sega",       "Mary Shelley's Frankenstein (Germany)", MACHINE_IS_SKELETON_MECHANICAL)
+GAME(1994,  mav_402,    0,              de_3b,  de_3b, de_3b_state, de_3b,  ROT0,   "Sega",       "Maverick (Display Rev. 4.02)",          MACHINE_IS_SKELETON_MECHANICAL)
+GAME(1994,  mav_401,    mav_402,        de_3b,  de_3b, de_3b_state, de_3b,  ROT0,   "Sega",       "Maverick (Display Rev. 4.01)",          MACHINE_IS_SKELETON_MECHANICAL)
+GAME(1994,  mav_400,    mav_402,        de_3b,  de_3b, de_3b_state, de_3b,  ROT0,   "Sega",       "Maverick (Display Rev. 4.00)",          MACHINE_IS_SKELETON_MECHANICAL)
+GAME(1994,  mav_100,    mav_402,        de_3b,  de_3b, de_3b_state, de_3b,  ROT0,   "Sega",       "Maverick (1.00)",                       MACHINE_IS_SKELETON_MECHANICAL)
+GAME(1998,  detest,     0,              detest, de_3b, de_3b_state, de_3b,  ROT0,   "Data East",  "Data East Test Chip",                   MACHINE_IS_SKELETON_MECHANICAL)
+GAME(1996,  ctcheese,   0,              de_3b,  de_3b, de_3b_state, de_3b,  ROT0,   "Sega",       "Cut The Cheese (Redemption)",           MACHINE_IS_SKELETON_MECHANICAL)
+>>>>>>> upstream/master

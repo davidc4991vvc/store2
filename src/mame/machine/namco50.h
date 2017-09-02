@@ -1,7 +1,14 @@
 // license:BSD-3-Clause
 // copyright-holders:Aaron Giles
+<<<<<<< HEAD
 #ifndef NAMCO50_H
 #define NAMCO50_H
+=======
+#ifndef MAME_MACHINE_NAMCO50_H
+#define MAME_MACHINE_NAMCO50_H
+
+#pragma once
+>>>>>>> upstream/master
 
 #include "cpu/mb88xx/mb88xx.h"
 
@@ -13,7 +20,11 @@
 class namco_50xx_device : public device_t
 {
 public:
+<<<<<<< HEAD
 	namco_50xx_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
+=======
+	namco_50xx_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
+>>>>>>> upstream/master
 
 	WRITE8_MEMBER( write );
 	WRITE_LINE_MEMBER(read_request);
@@ -26,9 +37,15 @@ public:
 
 protected:
 	// device-level overrides
+<<<<<<< HEAD
 	virtual void device_start();
 	virtual const rom_entry *device_rom_region() const;
 	virtual machine_config_constructor device_mconfig_additions() const;
+=======
+	virtual void device_start() override;
+	virtual const tiny_rom_entry *device_rom_region() const override;
+	virtual void device_add_mconfig(machine_config &config) override;
+>>>>>>> upstream/master
 
 	TIMER_CALLBACK_MEMBER( latch_callback );
 	TIMER_CALLBACK_MEMBER( readrequest_callback );
@@ -37,6 +54,7 @@ protected:
 private:
 	// internal state
 	required_device<mb88_cpu_device> m_cpu;
+<<<<<<< HEAD
 	UINT8                   m_latched_cmd;
 	UINT8                   m_latched_rw;
 	UINT8                   m_portO;
@@ -45,3 +63,13 @@ private:
 extern const device_type NAMCO_50XX;
 
 #endif  /* NAMCO50_H */
+=======
+	uint8_t                   m_latched_cmd;
+	uint8_t                   m_latched_rw;
+	uint8_t                   m_portO;
+};
+
+DECLARE_DEVICE_TYPE(NAMCO_50XX, namco_50xx_device)
+
+#endif // MAME_MACHINE_NAMCO50_H
+>>>>>>> upstream/master

@@ -3,11 +3,16 @@
 
 // MELPS 4 opcode handlers
 
+<<<<<<< HEAD
+=======
+#include "emu.h"
+>>>>>>> upstream/master
 #include "melps4.h"
 
 
 // internal helpers
 
+<<<<<<< HEAD
 inline UINT8 melps4_cpu_device::ram_r()
 {
 	UINT8 address = (m_z << 6 | m_x << 4 | m_y) & m_datamask;
@@ -17,6 +22,17 @@ inline UINT8 melps4_cpu_device::ram_r()
 inline void melps4_cpu_device::ram_w(UINT8 data)
 {
 	UINT8 address = (m_z << 6 | m_x << 4 | m_y) & m_datamask;
+=======
+inline uint8_t melps4_cpu_device::ram_r()
+{
+	uint8_t address = (m_z << 6 | m_x << 4 | m_y) & m_datamask;
+	return m_data->read_byte(address) & 0xf;
+}
+
+inline void melps4_cpu_device::ram_w(uint8_t data)
+{
+	uint8_t address = (m_z << 6 | m_x << 4 | m_y) & m_datamask;
+>>>>>>> upstream/master
 	m_data->write_byte(address, data & 0xf);
 }
 
@@ -134,7 +150,11 @@ void melps4_cpu_device::op_lcps()
 		m_cps = m_op & 1;
 
 		// swap registers
+<<<<<<< HEAD
 		UINT8 x, y, z, cy;
+=======
+		uint8_t x, y, z, cy;
+>>>>>>> upstream/master
 		x = m_x;
 		y = m_y;
 		z = m_z;
@@ -171,7 +191,11 @@ void melps4_cpu_device::op_tam()
 void melps4_cpu_device::op_xam()
 {
 	// XAM j: exchange RAM with A, xor X with j
+<<<<<<< HEAD
 	UINT8 a = m_a;
+=======
+	uint8_t a = m_a;
+>>>>>>> upstream/master
 	m_a = ram_r();
 	ram_w(a);
 	m_x ^= m_op & 3;
@@ -227,7 +251,11 @@ void melps4_cpu_device::op_amcs()
 void melps4_cpu_device::op_a()
 {
 	// A n: add immediate to A, skip next on no carry (except when n=6)
+<<<<<<< HEAD
 	UINT8 n = m_op & 0xf;
+=======
+	uint8_t n = m_op & 0xf;
+>>>>>>> upstream/master
 	m_a += n;
 	m_skip = !(m_a & 0x10 || n == 6);
 	m_a &= 0xf;
@@ -260,7 +288,11 @@ void melps4_cpu_device::op_cma()
 void melps4_cpu_device::op_rl()
 {
 	// RL(undocumented): rotate A left through carry
+<<<<<<< HEAD
 	UINT8 c = m_a >> 3 & 1;
+=======
+	uint8_t c = m_a >> 3 & 1;
+>>>>>>> upstream/master
 	m_a = (m_a << 1 | m_cy) & 0xf;
 	m_cy = c;
 }
@@ -268,7 +300,11 @@ void melps4_cpu_device::op_rl()
 void melps4_cpu_device::op_rr()
 {
 	// RR(undocumented): rotate A right through carry
+<<<<<<< HEAD
 	UINT8 c = m_a & 1;
+=======
+	uint8_t c = m_a & 1;
+>>>>>>> upstream/master
 	m_a = m_a >> 1 | m_cy << 3;
 	m_cy = c;
 }
@@ -333,7 +369,11 @@ void melps4_cpu_device::op_taj()
 void melps4_cpu_device::op_xal()
 {
 	// XAL: exchange A with L
+<<<<<<< HEAD
 	UINT8 a = m_a;
+=======
+	uint8_t a = m_a;
+>>>>>>> upstream/master
 	m_a = m_l;
 	m_l = a;
 }
@@ -341,7 +381,11 @@ void melps4_cpu_device::op_xal()
 void melps4_cpu_device::op_xah()
 {
 	// XAH: exchange A with H
+<<<<<<< HEAD
 	UINT8 a = m_a;
+=======
+	uint8_t a = m_a;
+>>>>>>> upstream/master
 	m_a = m_h;
 	m_h = a;
 }
@@ -362,7 +406,11 @@ void melps4_cpu_device::op_dec()
 void melps4_cpu_device::op_shl()
 {
 	// SHL: set bit in L or H designated by C
+<<<<<<< HEAD
 	UINT8 mask = 1 << (m_c & 3);
+=======
+	uint8_t mask = 1 << (m_c & 3);
+>>>>>>> upstream/master
 	if (m_c & 4)
 		m_h |= mask;
 	else
@@ -372,7 +420,11 @@ void melps4_cpu_device::op_shl()
 void melps4_cpu_device::op_rhl()
 {
 	// RHL: reset bit in L or H designated by C
+<<<<<<< HEAD
 	UINT8 mask = 1 << (m_c & 3);
+=======
+	uint8_t mask = 1 << (m_c & 3);
+>>>>>>> upstream/master
 	if (m_c & 4)
 		m_h &= ~mask;
 	else
@@ -498,7 +550,11 @@ void melps4_cpu_device::op_b()
 	// - short call: subroutine page
 	// - short jump: current page, or sub. page + 1 when in sub. mode
 	// - long jump/call(B/BM preceded by SP): temp SP register
+<<<<<<< HEAD
 	UINT8 page = m_pc >> 7;
+=======
+	uint8_t page = m_pc >> 7;
+>>>>>>> upstream/master
 	if ((m_prev_op & ~0xf) == m_sp_mask)
 	{
 		m_sm = false;

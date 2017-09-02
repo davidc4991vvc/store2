@@ -1,4 +1,8 @@
 #include <metal_stdlib>
+<<<<<<< HEAD
+=======
+#pragma clang diagnostic ignored "-Wparentheses-equality"
+>>>>>>> upstream/master
 using namespace metal;
 struct xlatMtlShaderInput {
   float4 _inVertex [[attribute(0)]];
@@ -17,8 +21,13 @@ struct xlatMtlShaderUniform {
 vertex xlatMtlShaderOutput xlatMtlMain (xlatMtlShaderInput _mtl_i [[stage_in]], constant xlatMtlShaderUniform& _mtl_u [[buffer(0)]])
 {
   xlatMtlShaderOutput _mtl_o;
+<<<<<<< HEAD
   half2 tmpvar_1;
   half4 tmpvar_2;
+=======
+  half2 tmpvar_1 = 0;
+  half4 tmpvar_2 = 0;
+>>>>>>> upstream/master
   tmpvar_2.w = _mtl_i._color.w;
   tmpvar_2.xyz = (_mtl_i._color.xyz + _mtl_i._inNormal);
   tmpvar_1 = half2(_mtl_i._uv0);

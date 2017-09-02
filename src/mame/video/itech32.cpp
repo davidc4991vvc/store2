@@ -168,8 +168,13 @@ void itech32_state::video_start()
 	int i;
 
 	/* allocate memory */
+<<<<<<< HEAD
 	m_videoram = auto_alloc_array(machine(), UINT16, VRAM_WIDTH * (m_vram_height + 16) * 2);
 	memset(m_videoram, 0xff, VRAM_WIDTH * (m_vram_height + 16) * 2 * 2);
+=======
+	m_videoram = std::make_unique<uint16_t[]>(VRAM_WIDTH * (m_vram_height + 16) * 2);
+	memset(m_videoram.get(), 0xff, VRAM_WIDTH * (m_vram_height + 16) * 2 * 2);
+>>>>>>> upstream/master
 
 	/* videoplane[0] is the foreground; videoplane[1] is the background */
 	m_videoplane[0] = &m_videoram[0 * VRAM_WIDTH * (m_vram_height + 16) + 8 * VRAM_WIDTH];
@@ -198,6 +203,18 @@ void itech32_state::video_start()
 	m_scanline_timer = machine().scheduler().timer_alloc(timer_expired_delegate(FUNC(itech32_state::scanline_interrupt),this));
 	m_enable_latch[0] = 1;
 	m_enable_latch[1] = (m_planes > 1) ? 1 : 0;
+<<<<<<< HEAD
+=======
+
+	save_item(NAME(m_xfer_xcount));
+	save_item(NAME(m_xfer_ycount));
+	save_item(NAME(m_xfer_xcur));
+	save_item(NAME(m_xfer_ycur));
+	save_item(NAME(m_grom_bank));
+	save_item(NAME(m_color_latch));
+	save_item(NAME(m_enable_latch));
+	save_pointer(NAME(m_videoram.get()), VRAM_WIDTH * (m_vram_height + 16) * 2);
+>>>>>>> upstream/master
 }
 
 
@@ -412,9 +429,15 @@ TIMER_CALLBACK_MEMBER(itech32_state::scanline_interrupt)
  *
  *************************************/
 
+<<<<<<< HEAD
 void itech32_state::draw_raw(UINT16 *base, UINT16 color)
 {
 	UINT8 *src = &m_grom_base[(m_grom_bank | ((VIDEO_TRANSFER_ADDRHI & 0xff) << 16) | VIDEO_TRANSFER_ADDRLO) % m_grom_size];
+=======
+void itech32_state::draw_raw(uint16_t *base, uint16_t color)
+{
+	uint8_t *src = &m_grom_base[(m_grom_bank | ((VIDEO_TRANSFER_ADDRHI & 0xff) << 16) | VIDEO_TRANSFER_ADDRLO) % m_grom_size];
+>>>>>>> upstream/master
 	int transparent_pen = (VIDEO_TRANSFER_FLAGS & XFERFLAG_TRANSPARENT) ? 0xff : -1;
 	int width = VIDEO_TRANSFER_WIDTH << 8;
 	int height = ADJUSTED_HEIGHT(VIDEO_TRANSFER_HEIGHT) << 8;
@@ -443,7 +466,11 @@ void itech32_state::draw_raw(UINT16 *base, UINT16 color)
 	/* loop over Y in src pixels */
 	for (y = 0; y < height; y += ysrcstep, sy += ydststep)
 	{
+<<<<<<< HEAD
 		UINT8 *rowsrc = &src[(y >> 8) * (width >> 8)];
+=======
+		uint8_t *rowsrc = &src[(y >> 8) * (width >> 8)];
+>>>>>>> upstream/master
 
 		/* simpler case: VIDEO_YSTEP_PER_X is zero */
 		if (VIDEO_YSTEP_PER_X == 0)
@@ -451,7 +478,11 @@ void itech32_state::draw_raw(UINT16 *base, UINT16 color)
 			/* clip in the Y direction */
 			if (sy >= m_scaled_clip_rect.min_y && sy < m_scaled_clip_rect.max_y)
 			{
+<<<<<<< HEAD
 				UINT32 dstoffs;
+=======
+				uint32_t dstoffs;
+>>>>>>> upstream/master
 
 				/* direction matters here */
 				sx = startx;
@@ -520,9 +551,15 @@ void itech32_state::draw_raw(UINT16 *base, UINT16 color)
 }
 
 
+<<<<<<< HEAD
 void itech32_state::draw_raw_drivedge(UINT16 *base, UINT16 *zbase, UINT16 color)
 {
 	UINT8 *src = &m_grom_base[(m_grom_bank | ((VIDEO_TRANSFER_ADDRHI & 0xff) << 16) | VIDEO_TRANSFER_ADDRLO) % m_grom_size];
+=======
+void itech32_state::draw_raw_drivedge(uint16_t *base, uint16_t *zbase, uint16_t color)
+{
+	uint8_t *src = &m_grom_base[(m_grom_bank | ((VIDEO_TRANSFER_ADDRHI & 0xff) << 16) | VIDEO_TRANSFER_ADDRLO) % m_grom_size];
+>>>>>>> upstream/master
 	int transparent_pen = (VIDEO_TRANSFER_FLAGS & XFERFLAG_TRANSPARENT) ? 0xff : -1;
 	int width = VIDEO_TRANSFER_WIDTH << 8;
 	int height = ADJUSTED_HEIGHT(VIDEO_TRANSFER_HEIGHT) << 8;
@@ -532,9 +569,15 @@ void itech32_state::draw_raw_drivedge(UINT16 *base, UINT16 *zbase, UINT16 color)
 	int startx = ((VIDEO_TRANSFER_X & 0xfff) << 8) + 0x80;
 	int xdststep = 0x100;
 	int ydststep = VIDEO_DST_YSTEP;
+<<<<<<< HEAD
 	INT32 z0 = m_drivedge_zbuf_control[2] & 0x7ff00;
 	INT32 zmatch = (m_drivedge_zbuf_control[2] & 0x1f) << 11;
 	INT32 srcdelta = 0;
+=======
+	int32_t z0 = m_drivedge_zbuf_control[2] & 0x7ff00;
+	int32_t zmatch = (m_drivedge_zbuf_control[2] & 0x1f) << 11;
+	int32_t srcdelta = 0;
+>>>>>>> upstream/master
 	int x, y;
 
 	/* adjust for (lack of) clipping */
@@ -554,7 +597,11 @@ void itech32_state::draw_raw_drivedge(UINT16 *base, UINT16 *zbase, UINT16 color)
 	/* loop over Y in src pixels */
 	for (y = 0; y < height; y += ysrcstep, sy += ydststep)
 	{
+<<<<<<< HEAD
 		UINT8 *rowsrc = src + (srcdelta >> 8);
+=======
+		uint8_t *rowsrc = src + (srcdelta >> 8);
+>>>>>>> upstream/master
 
 		/* in the polygon case, we don't factor in the Y */
 		if (VIDEO_TRANSFER_FLAGS != 0x5490)
@@ -568,8 +615,13 @@ void itech32_state::draw_raw_drivedge(UINT16 *base, UINT16 *zbase, UINT16 color)
 			/* clip in the Y direction */
 			if (sy >= m_scaled_clip_rect.min_y && sy < m_scaled_clip_rect.max_y)
 			{
+<<<<<<< HEAD
 				UINT32 dstoffs, zbufoffs;
 				INT32 z = z0;
+=======
+				uint32_t dstoffs, zbufoffs;
+				int32_t z = z0;
+>>>>>>> upstream/master
 
 				/* direction matters here */
 				sx = startx;
@@ -577,7 +629,11 @@ void itech32_state::draw_raw_drivedge(UINT16 *base, UINT16 *zbase, UINT16 color)
 				{
 					/* skip left pixels */
 					for (x = 0; x < width && sx < m_scaled_clip_rect.min_x; x += xsrcstep, sx += xdststep)
+<<<<<<< HEAD
 						z += (INT32)m_drivedge_zbuf_control[0];
+=======
+						z += (int32_t)m_drivedge_zbuf_control[0];
+>>>>>>> upstream/master
 
 					/* compute the address */
 					dstoffs = compute_safe_address(sx >> 8, sy >> 8) - (sx >> 8);
@@ -594,7 +650,11 @@ void itech32_state::draw_raw_drivedge(UINT16 *base, UINT16 *zbase, UINT16 color)
 								base[(dstoffs + (sx >> 8)) & m_vram_mask] = pixel | color;
 								zbase[(zbufoffs + (sx >> 8)) & m_vram_mask] = (z >> 8) | zmatch;
 							}
+<<<<<<< HEAD
 							z += (INT32)m_drivedge_zbuf_control[0];
+=======
+							z += (int32_t)m_drivedge_zbuf_control[0];
+>>>>>>> upstream/master
 						}
 					}
 					else if (m_drivedge_zbuf_control[3] & 0x4000)
@@ -604,7 +664,11 @@ void itech32_state::draw_raw_drivedge(UINT16 *base, UINT16 *zbase, UINT16 color)
 							int pixel = rowsrc[x >> 8];
 							if (pixel != transparent_pen && zmatch == (zbase[(zbufoffs + (sx >> 8)) & m_vram_mask] & (0x1f << 11)))
 								base[(dstoffs + (sx >> 8)) & m_vram_mask] = pixel | color;
+<<<<<<< HEAD
 							z += (INT32)m_drivedge_zbuf_control[0];
+=======
+							z += (int32_t)m_drivedge_zbuf_control[0];
+>>>>>>> upstream/master
 						}
 					}
 					else
@@ -617,7 +681,11 @@ void itech32_state::draw_raw_drivedge(UINT16 *base, UINT16 *zbase, UINT16 color)
 								base[(dstoffs + (sx >> 8)) & m_vram_mask] = pixel | color;
 								zbase[(zbufoffs + (sx >> 8)) & m_vram_mask] = (z >> 8) | zmatch;
 							}
+<<<<<<< HEAD
 							z += (INT32)m_drivedge_zbuf_control[0];
+=======
+							z += (int32_t)m_drivedge_zbuf_control[0];
+>>>>>>> upstream/master
 						}
 					}
 				}
@@ -625,7 +693,11 @@ void itech32_state::draw_raw_drivedge(UINT16 *base, UINT16 *zbase, UINT16 color)
 				{
 					/* skip right pixels */
 					for (x = 0; x < width && sx >= m_scaled_clip_rect.max_x; x += xsrcstep, sx += xdststep)
+<<<<<<< HEAD
 						z += (INT32)m_drivedge_zbuf_control[0];
+=======
+						z += (int32_t)m_drivedge_zbuf_control[0];
+>>>>>>> upstream/master
 
 					/* compute the address */
 					dstoffs = compute_safe_address(sx >> 8, sy >> 8) - (sx >> 8);
@@ -642,7 +714,11 @@ void itech32_state::draw_raw_drivedge(UINT16 *base, UINT16 *zbase, UINT16 color)
 								base[(dstoffs + (sx >> 8)) & m_vram_mask] = pixel | color;
 								zbase[(zbufoffs + (sx >> 8)) & m_vram_mask] = (z >> 8) | zmatch;
 							}
+<<<<<<< HEAD
 							z += (INT32)m_drivedge_zbuf_control[0];
+=======
+							z += (int32_t)m_drivedge_zbuf_control[0];
+>>>>>>> upstream/master
 						}
 					}
 					else if (m_drivedge_zbuf_control[3] & 0x4000)
@@ -652,7 +728,11 @@ void itech32_state::draw_raw_drivedge(UINT16 *base, UINT16 *zbase, UINT16 color)
 							int pixel = rowsrc[x >> 8];
 							if (pixel != transparent_pen && zmatch == (zbase[(zbufoffs + (sx >> 8)) & m_vram_mask] & (0x1f << 11)))
 								base[(dstoffs + (sx >> 8)) & m_vram_mask] = pixel | color;
+<<<<<<< HEAD
 							z += (INT32)m_drivedge_zbuf_control[0];
+=======
+							z += (int32_t)m_drivedge_zbuf_control[0];
+>>>>>>> upstream/master
 						}
 					}
 					else
@@ -665,7 +745,11 @@ void itech32_state::draw_raw_drivedge(UINT16 *base, UINT16 *zbase, UINT16 color)
 								base[(dstoffs + (sx >> 8)) & m_vram_mask] = pixel | color;
 								zbase[(zbufoffs + (sx >> 8)) & m_vram_mask] = (z >> 8) | zmatch;
 							}
+<<<<<<< HEAD
 							z += (INT32)m_drivedge_zbuf_control[0];
+=======
+							z += (int32_t)m_drivedge_zbuf_control[0];
+>>>>>>> upstream/master
 						}
 					}
 				}
@@ -677,7 +761,11 @@ void itech32_state::draw_raw_drivedge(UINT16 *base, UINT16 *zbase, UINT16 color)
 		{
 			int ystep = (VIDEO_TRANSFER_FLAGS & XFERFLAG_DYDXSIGN) ? -VIDEO_YSTEP_PER_X : VIDEO_YSTEP_PER_X;
 			int ty = sy;
+<<<<<<< HEAD
 			INT32 z = z0;
+=======
+			int32_t z = z0;
+>>>>>>> upstream/master
 
 			/* render all pixels */
 			sx = startx;
@@ -692,7 +780,11 @@ void itech32_state::draw_raw_drivedge(UINT16 *base, UINT16 *zbase, UINT16 color)
 							base[compute_safe_address(sx >> 8, ty >> 8)] = pixel | color;
 							zbase[compute_safe_address(sx >> 8, ty >> 8)] = (z >> 8) | zmatch;
 						}
+<<<<<<< HEAD
 						z += (INT32)m_drivedge_zbuf_control[0];
+=======
+						z += (int32_t)m_drivedge_zbuf_control[0];
+>>>>>>> upstream/master
 					}
 			}
 			else if (m_drivedge_zbuf_control[3] & 0x4000)
@@ -701,13 +793,21 @@ void itech32_state::draw_raw_drivedge(UINT16 *base, UINT16 *zbase, UINT16 color)
 					if (m_scaled_clip_rect.contains(sx, ty))
 					{
 						int pixel = rowsrc[x >> 8];
+<<<<<<< HEAD
 						UINT16 *zbuf = &zbase[compute_safe_address(sx >> 8, ty >> 8)];
+=======
+						uint16_t *zbuf = &zbase[compute_safe_address(sx >> 8, ty >> 8)];
+>>>>>>> upstream/master
 						if (pixel != transparent_pen && zmatch == (*zbuf & (0x1f << 11)))
 						{
 							base[compute_safe_address(sx >> 8, ty >> 8)] = pixel | color;
 							*zbuf = (z >> 8) | zmatch;
 						}
+<<<<<<< HEAD
 						z += (INT32)m_drivedge_zbuf_control[0];
+=======
+						z += (int32_t)m_drivedge_zbuf_control[0];
+>>>>>>> upstream/master
 					}
 			}
 			else
@@ -716,13 +816,21 @@ void itech32_state::draw_raw_drivedge(UINT16 *base, UINT16 *zbase, UINT16 color)
 					if (m_scaled_clip_rect.contains(sx, ty))
 					{
 						int pixel = rowsrc[x >> 8];
+<<<<<<< HEAD
 						UINT16 *zbuf = &zbase[compute_safe_address(sx >> 8, ty >> 8)];
+=======
+						uint16_t *zbuf = &zbase[compute_safe_address(sx >> 8, ty >> 8)];
+>>>>>>> upstream/master
 						if (pixel != transparent_pen && ((z >> 8) <= (*zbuf & 0x7ff)))
 						{
 							base[compute_safe_address(sx >> 8, ty >> 8)] = pixel | color;
 							*zbuf = (z >> 8) | zmatch;
 						}
+<<<<<<< HEAD
 						z += (INT32)m_drivedge_zbuf_control[0];
+=======
+						z += (int32_t)m_drivedge_zbuf_control[0];
+>>>>>>> upstream/master
 					}
 			}
 		}
@@ -736,11 +844,19 @@ void itech32_state::draw_raw_drivedge(UINT16 *base, UINT16 *zbase, UINT16 color)
 		/* update the per-scanline parameters */
 		if (VIDEO_TRANSFER_FLAGS == 0x5490)
 		{
+<<<<<<< HEAD
 			startx += (INT32)((VIDEO_LEFTSTEPHI << 16) | VIDEO_LEFTSTEPLO);
 			m_scaled_clip_rect.max_x += (INT32)((VIDEO_RIGHTSTEPHI << 16) | VIDEO_RIGHTSTEPLO);
 			srcdelta += (INT16)VIDEO_STARTSTEP;
 		}
 		z0 += (INT32)m_drivedge_zbuf_control[1];
+=======
+			startx += (int32_t)((VIDEO_LEFTSTEPHI << 16) | VIDEO_LEFTSTEPLO);
+			m_scaled_clip_rect.max_x += (int32_t)((VIDEO_RIGHTSTEPHI << 16) | VIDEO_RIGHTSTEPLO);
+			srcdelta += (int16_t)VIDEO_STARTSTEP;
+		}
+		z0 += (int32_t)m_drivedge_zbuf_control[1];
+>>>>>>> upstream/master
 	}
 
 	/* restore cliprects */
@@ -802,9 +918,15 @@ do {                                                \
  *
  *************************************/
 
+<<<<<<< HEAD
 inline void itech32_state::draw_rle_fast(UINT16 *base, UINT16 color)
 {
 	UINT8 *src = &m_grom_base[(m_grom_bank | ((VIDEO_TRANSFER_ADDRHI & 0xff) << 16) | VIDEO_TRANSFER_ADDRLO) % m_grom_size];
+=======
+inline void itech32_state::draw_rle_fast(uint16_t *base, uint16_t color)
+{
+	uint8_t *src = &m_grom_base[(m_grom_bank | ((VIDEO_TRANSFER_ADDRHI & 0xff) << 16) | VIDEO_TRANSFER_ADDRLO) % m_grom_size];
+>>>>>>> upstream/master
 	int transparent_pen = (VIDEO_TRANSFER_FLAGS & XFERFLAG_TRANSPARENT) ? 0xff : -1;
 	int width = VIDEO_TRANSFER_WIDTH;
 	int height = ADJUSTED_HEIGHT(VIDEO_TRANSFER_HEIGHT);
@@ -829,7 +951,11 @@ inline void itech32_state::draw_rle_fast(UINT16 *base, UINT16 color)
 	/* loop over Y in src pixels */
 	for (y = 0; y < height; y++, sy += ydststep)
 	{
+<<<<<<< HEAD
 		UINT32 dstoffs;
+=======
+		uint32_t dstoffs;
+>>>>>>> upstream/master
 
 		/* clip in the Y direction */
 		if (sy < m_scaled_clip_rect.min_y || sy >= m_scaled_clip_rect.max_y)
@@ -879,9 +1005,15 @@ inline void itech32_state::draw_rle_fast(UINT16 *base, UINT16 color)
 }
 
 
+<<<<<<< HEAD
 inline void itech32_state::draw_rle_fast_xflip(UINT16 *base, UINT16 color)
 {
 	UINT8 *src = &m_grom_base[(m_grom_bank | ((VIDEO_TRANSFER_ADDRHI & 0xff) << 16) | VIDEO_TRANSFER_ADDRLO) % m_grom_size];
+=======
+inline void itech32_state::draw_rle_fast_xflip(uint16_t *base, uint16_t color)
+{
+	uint8_t *src = &m_grom_base[(m_grom_bank | ((VIDEO_TRANSFER_ADDRHI & 0xff) << 16) | VIDEO_TRANSFER_ADDRLO) % m_grom_size];
+>>>>>>> upstream/master
 	int transparent_pen = (VIDEO_TRANSFER_FLAGS & XFERFLAG_TRANSPARENT) ? 0xff : -1;
 	int width = VIDEO_TRANSFER_WIDTH;
 	int height = ADJUSTED_HEIGHT(VIDEO_TRANSFER_HEIGHT);
@@ -906,7 +1038,11 @@ inline void itech32_state::draw_rle_fast_xflip(UINT16 *base, UINT16 color)
 	/* loop over Y in src pixels */
 	for (y = 0; y < height; y++, sy += ydststep)
 	{
+<<<<<<< HEAD
 		UINT32 dstoffs;
+=======
+		uint32_t dstoffs;
+>>>>>>> upstream/master
 
 		/* clip in the Y direction */
 		if (sy < m_scaled_clip_rect.min_y || sy >= m_scaled_clip_rect.max_y)
@@ -963,9 +1099,15 @@ inline void itech32_state::draw_rle_fast_xflip(UINT16 *base, UINT16 color)
  *
  *************************************/
 
+<<<<<<< HEAD
 inline void itech32_state::draw_rle_slow(UINT16 *base, UINT16 color)
 {
 	UINT8 *src = &m_grom_base[(m_grom_bank | ((VIDEO_TRANSFER_ADDRHI & 0xff) << 16) | VIDEO_TRANSFER_ADDRLO) % m_grom_size];
+=======
+inline void itech32_state::draw_rle_slow(uint16_t *base, uint16_t color)
+{
+	uint8_t *src = &m_grom_base[(m_grom_bank | ((VIDEO_TRANSFER_ADDRHI & 0xff) << 16) | VIDEO_TRANSFER_ADDRLO) % m_grom_size];
+>>>>>>> upstream/master
 	int transparent_pen = (VIDEO_TRANSFER_FLAGS & XFERFLAG_TRANSPARENT) ? 0xff : -1;
 	int width = VIDEO_TRANSFER_WIDTH;
 	int height = ADJUSTED_HEIGHT(VIDEO_TRANSFER_HEIGHT);
@@ -988,7 +1130,11 @@ inline void itech32_state::draw_rle_slow(UINT16 *base, UINT16 color)
 	/* loop over Y in src pixels */
 	for (y = 0; y < height; y++, sy += ydststep)
 	{
+<<<<<<< HEAD
 		UINT32 dstoffs;
+=======
+		uint32_t dstoffs;
+>>>>>>> upstream/master
 
 		/* clip in the Y direction */
 		if (sy < m_scaled_clip_rect.min_y || sy >= m_scaled_clip_rect.max_y)
@@ -1041,7 +1187,11 @@ inline void itech32_state::draw_rle_slow(UINT16 *base, UINT16 color)
 
 
 
+<<<<<<< HEAD
 void itech32_state::draw_rle(UINT16 *base, UINT16 color)
+=======
+void itech32_state::draw_rle(uint16_t *base, uint16_t color)
+>>>>>>> upstream/master
 {
 	/* adjust for (lack of) clipping */
 	if (!(VIDEO_TRANSFER_FLAGS & XFERFLAG_CLIP))
@@ -1070,13 +1220,21 @@ void itech32_state::draw_rle(UINT16 *base, UINT16 color)
  *
  *************************************/
 
+<<<<<<< HEAD
 void itech32_state::shiftreg_clear(UINT16 *base, UINT16 *zbase)
+=======
+void itech32_state::shiftreg_clear(uint16_t *base, uint16_t *zbase)
+>>>>>>> upstream/master
 {
 	int ydir = (VIDEO_TRANSFER_FLAGS & XFERFLAG_YFLIP) ? -1 : 1;
 	int height = ADJUSTED_HEIGHT(VIDEO_TRANSFER_HEIGHT);
 	int sx = VIDEO_TRANSFER_X & 0xfff;
 	int sy = VIDEO_TRANSFER_Y & 0xfff;
+<<<<<<< HEAD
 	UINT16 *src;
+=======
+	uint16_t *src;
+>>>>>>> upstream/master
 	int y;
 
 	/* first line is the source */
@@ -1089,8 +1247,13 @@ void itech32_state::shiftreg_clear(UINT16 *base, UINT16 *zbase)
 		memcpy(&base[compute_safe_address(sx, sy)], src, 512*2);
 		if (zbase)
 		{
+<<<<<<< HEAD
 			UINT16 zval = ((m_drivedge_zbuf_control[2] >> 8) & 0x7ff) | ((m_drivedge_zbuf_control[2] & 0x1f) << 11);
 			UINT16 *dst = &zbase[compute_safe_address(sx, sy)];
+=======
+			uint16_t zval = ((m_drivedge_zbuf_control[2] >> 8) & 0x7ff) | ((m_drivedge_zbuf_control[2] & 0x1f) << 11);
+			uint16_t *dst = &zbase[compute_safe_address(sx, sy)];
+>>>>>>> upstream/master
 			int x;
 			for (x = 0; x < 512; x++)
 				*dst++ = zval;
@@ -1169,8 +1332,13 @@ void itech32_state::handle_video_command()
 			}
 			else
 			{
+<<<<<<< HEAD
 				if (m_enable_latch[0]) shiftreg_clear(m_videoplane[0], NULL);
 				if (m_enable_latch[1]) shiftreg_clear(m_videoplane[1], NULL);
+=======
+				if (m_enable_latch[0]) shiftreg_clear(m_videoplane[0], nullptr);
+				if (m_enable_latch[1]) shiftreg_clear(m_videoplane[1], nullptr);
+>>>>>>> upstream/master
 			}
 
 			g_profiler.stop();
@@ -1360,38 +1528,63 @@ READ32_MEMBER(itech32_state::itech020_video_r)
  *
  *************************************/
 
+<<<<<<< HEAD
 UINT32 itech32_state::screen_update_itech32(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+=======
+uint32_t itech32_state::screen_update_itech32(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+>>>>>>> upstream/master
 {
 	int y;
 
 	/* loop over height */
 	for (y = cliprect.min_y; y <= cliprect.max_y; y++)
 	{
+<<<<<<< HEAD
 		UINT16 *src1 = &m_videoplane[0][compute_safe_address(VIDEO_DISPLAY_XORIGIN1, VIDEO_DISPLAY_YORIGIN1 + y)];
+=======
+		uint16_t *src1 = &m_videoplane[0][compute_safe_address(VIDEO_DISPLAY_XORIGIN1, VIDEO_DISPLAY_YORIGIN1 + y)];
+>>>>>>> upstream/master
 
 		/* handle multi-plane case */
 		if (m_planes > 1)
 		{
+<<<<<<< HEAD
 			UINT16 *src2 = &m_videoplane[1][compute_safe_address(VIDEO_DISPLAY_XORIGIN2 + VIDEO_DISPLAY_XSCROLL2, VIDEO_DISPLAY_YORIGIN2 + VIDEO_DISPLAY_YSCROLL2 + y)];
 			UINT16 scanline[384];
+=======
+			uint16_t *src2 = &m_videoplane[1][compute_safe_address(VIDEO_DISPLAY_XORIGIN2 + VIDEO_DISPLAY_XSCROLL2, VIDEO_DISPLAY_YORIGIN2 + VIDEO_DISPLAY_YSCROLL2 + y)];
+			uint16_t scanline[384];
+>>>>>>> upstream/master
 			int x;
 
 			/* blend the pixels in the scanline; color xxFF is transparent */
 			for (x = cliprect.min_x; x <= cliprect.max_x; x++)
 			{
+<<<<<<< HEAD
 				UINT16 pixel = src1[x];
+=======
+				uint16_t pixel = src1[x];
+>>>>>>> upstream/master
 				if ((pixel & 0xff) == 0xff)
 					pixel = src2[x];
 				scanline[x] = pixel;
 			}
 
 			/* draw from the buffer */
+<<<<<<< HEAD
 			draw_scanline16(bitmap, cliprect.min_x, y, cliprect.width(), &scanline[cliprect.min_x], NULL);
+=======
+			draw_scanline16(bitmap, cliprect.min_x, y, cliprect.width(), &scanline[cliprect.min_x], nullptr);
+>>>>>>> upstream/master
 		}
 
 		/* otherwise, draw directly from VRAM */
 		else
+<<<<<<< HEAD
 			draw_scanline16(bitmap, cliprect.min_x, y, cliprect.width(), &src1[cliprect.min_x], NULL);
+=======
+			draw_scanline16(bitmap, cliprect.min_x, y, cliprect.width(), &src1[cliprect.min_x], nullptr);
+>>>>>>> upstream/master
 	}
 	return 0;
 }

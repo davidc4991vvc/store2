@@ -35,6 +35,10 @@
 #include "emu.h"
 #include "cpu/h8/h83002.h"
 #include "sound/ymz280b.h"
+<<<<<<< HEAD
+=======
+#include "speaker.h"
+>>>>>>> upstream/master
 
 
 class maygayep_state : public driver_device
@@ -80,11 +84,19 @@ INPUT_PORTS_END
 
 DRIVER_INIT_MEMBER(maygayep_state,maygayep)
 {
+<<<<<<< HEAD
 	UINT8 *src = memregion( "maincpu" )->base();
 
 	for (int i=0x100;i<0x210;i++)
 	{
 		UINT8 val = src[i^1];
+=======
+	uint8_t *src = memregion( "maincpu" )->base();
+
+	for (int i=0x100;i<0x210;i++)
+	{
+		uint8_t val = src[i^1];
+>>>>>>> upstream/master
 
 		if (i%0x40 == 0) printf("\n");
 
@@ -102,7 +114,11 @@ DRIVER_INIT_MEMBER(maygayep_state,maygayep)
 
 }
 
+<<<<<<< HEAD
 static MACHINE_CONFIG_START( maygayep, maygayep_state )
+=======
+static MACHINE_CONFIG_START( maygayep )
+>>>>>>> upstream/master
 	MCFG_CPU_ADD("maincpu", H83002, 16000000 )
 	MCFG_CPU_PROGRAM_MAP( maygayep_map )
 

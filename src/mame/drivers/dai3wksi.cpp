@@ -1,5 +1,10 @@
+<<<<<<< HEAD
 // license:???
 // copyright-holders:Derrick Renaud
+=======
+// license:BSD-3-Clause
+// copyright-holders:Hau,Derrick Renaud
+>>>>>>> upstream/master
 /*
 
 -Galaxy Force
@@ -38,10 +43,21 @@ Driver Notes:
 */
 
 #include "emu.h"
+<<<<<<< HEAD
 #include "cpu/z80/z80.h"
 #include "sound/samples.h"
 #include "machine/rescap.h"
 #include "sound/sn76477.h"
+=======
+
+#include "cpu/z80/z80.h"
+#include "machine/rescap.h"
+#include "sound/samples.h"
+#include "sound/sn76477.h"
+#include "screen.h"
+#include "speaker.h"
+
+>>>>>>> upstream/master
 
 #define USE_SAMPLES     (1)
 
@@ -73,6 +89,7 @@ public:
 	required_device<palette_device> m_palette;
 
 	/* video */
+<<<<<<< HEAD
 	required_shared_ptr<UINT8> m_dai3wksi_videoram;
 	int         m_dai3wksi_flipscreen;
 	int         m_dai3wksi_redscreen;
@@ -82,6 +99,17 @@ public:
 	/* sound */
 	UINT8       m_port_last1;
 	UINT8       m_port_last2;
+=======
+	required_shared_ptr<uint8_t> m_dai3wksi_videoram;
+	int         m_dai3wksi_flipscreen;
+	int         m_dai3wksi_redscreen;
+	int         m_dai3wksi_redterop;
+	uint32_t screen_update_dai3wksi(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect);
+
+	/* sound */
+	uint8_t       m_port_last1;
+	uint8_t       m_port_last2;
+>>>>>>> upstream/master
 	int         m_enabled_sound;
 	int         m_sound3_counter;
 	DECLARE_WRITE8_MEMBER(dai3wksi_audio_1_w);
@@ -91,8 +119,13 @@ public:
 	/* i/o ports */
 	required_ioport m_in2;
 
+<<<<<<< HEAD
 	virtual void machine_start();
 	virtual void machine_reset();
+=======
+	virtual void machine_start() override;
+	virtual void machine_reset() override;
+>>>>>>> upstream/master
 };
 
 
@@ -102,7 +135,11 @@ public:
  *
  *************************************/
 
+<<<<<<< HEAD
 static const UINT8 vr_prom1[64*8*2]={
+=======
+static const uint8_t vr_prom1[64*8*2]={
+>>>>>>> upstream/master
 	6, 6,6,6,6,6,6,6,6, 6,6,6,6,6,6,6,6, 3,3,3,3,3,3,3,3, 5,5,5,5,5,5,5,5, 3,3,3,3,3,3,3,3, 2,2,2,2,2,2,2,2, 6,6,6,6,6,6,6,6, 4,4,4,4,4,4,4,
 	6, 6,6,6,6,6,6,6,6, 6,6,6,6,6,6,6,6, 3,3,3,3,3,3,3,3, 5,5,5,5,5,5,5,5, 3,3,3,3,3,3,3,3, 2,2,2,2,2,2,2,2, 6,6,6,6,6,6,6,6, 4,4,4,4,4,4,4,
 	6, 6,6,6,6,6,6,6,6, 6,6,6,6,6,6,6,6, 3,3,3,3,3,3,3,3, 5,5,5,5,5,5,5,5, 3,3,3,3,3,3,3,3, 2,2,2,2,2,2,2,2, 6,6,6,6,6,6,6,6, 4,4,4,4,4,4,4,
@@ -122,7 +159,11 @@ static const UINT8 vr_prom1[64*8*2]={
 	3, 3,3,2,2,6,6,6,6, 6,6,6,6,6,6,6,6, 3,3,3,3,3,3,3,3, 5,5,5,5,5,5,5,5, 3,3,3,3,3,3,3,3, 2,2,2,2,2,2,2,2, 6,6,6,6,6,6,6,6, 4,4,4,4,4,4,4,
 };
 
+<<<<<<< HEAD
 static const UINT8 vr_prom2[64*8*2]={
+=======
+static const uint8_t vr_prom2[64*8*2]={
+>>>>>>> upstream/master
 	6, 6,6,6,6,6,6,6,6, 6,6,6,6,6,6,6,6, 3,3,3,3,3,3,3,3, 7,7,7,7,7,7,7,7, 3,3,3,3,3,3,3,3, 2,2,2,2,2,2,2,2, 6,6,6,6,6,6,6,6, 4,4,4,4,4,4,4,
 	6, 6,6,6,6,6,6,6,6, 6,6,6,6,6,6,6,6, 3,3,3,3,3,3,3,3, 7,7,7,7,7,7,7,7, 3,3,3,3,3,3,3,3, 2,2,2,2,2,2,2,2, 6,6,6,6,6,6,6,6, 4,4,4,4,4,4,4,
 	6, 6,6,6,6,6,6,6,6, 6,6,6,6,6,6,6,6, 3,3,3,3,3,3,3,3, 7,7,7,7,7,7,7,7, 3,3,3,3,3,3,3,3, 2,2,2,2,2,2,2,2, 6,6,6,6,6,6,6,6, 4,4,4,4,4,4,4,
@@ -142,6 +183,7 @@ static const UINT8 vr_prom2[64*8*2]={
 	3, 3,3,2,2,6,6,6,6, 6,6,6,6,6,6,6,6, 3,3,3,3,3,3,3,3, 7,7,7,7,7,7,7,7, 3,3,3,3,3,3,3,3, 2,2,2,2,2,2,2,2, 6,6,6,6,6,6,6,6, 4,4,4,4,4,4,4,
 };
 
+<<<<<<< HEAD
 UINT32 dai3wksi_state::screen_update_dai3wksi(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect)
 {
 	for (offs_t offs = 0; offs < m_dai3wksi_videoram.bytes(); offs++)
@@ -150,6 +192,16 @@ UINT32 dai3wksi_state::screen_update_dai3wksi(screen_device &screen, bitmap_rgb3
 		UINT8 y = offs >> 6;
 		UINT8 data = m_dai3wksi_videoram[offs];
 		UINT8 color;
+=======
+uint32_t dai3wksi_state::screen_update_dai3wksi(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect)
+{
+	for (offs_t offs = 0; offs < m_dai3wksi_videoram.bytes(); offs++)
+	{
+		uint8_t x = offs << 2;
+		uint8_t y = offs >> 6;
+		uint8_t data = m_dai3wksi_videoram[offs];
+		uint8_t color;
+>>>>>>> upstream/master
 		int value = (x >> 2) + ((y >> 5) << 6) + 64 * 8 * (m_dai3wksi_redterop ? 1 : 0);
 
 		if (m_dai3wksi_redscreen)
@@ -166,7 +218,11 @@ UINT32 dai3wksi_state::screen_update_dai3wksi(screen_device &screen, bitmap_rgb3
 
 		for (int i = 0; i <= 3; i++)
 		{
+<<<<<<< HEAD
 			rgb_t pen = (data & (1 << i)) ? m_palette->pen_color(color) : rgb_t::black;
+=======
+			rgb_t pen = (data & (1 << i)) ? m_palette->pen_color(color) : rgb_t::black();
+>>>>>>> upstream/master
 
 			if (m_dai3wksi_flipscreen)
 				bitmap.pix32(255-y, 255-x) = pen;
@@ -207,7 +263,11 @@ UINT32 dai3wksi_state::screen_update_dai3wksi(screen_device &screen, bitmap_rgb3
 #if (USE_SAMPLES)
 WRITE8_MEMBER(dai3wksi_state::dai3wksi_audio_1_w)
 {
+<<<<<<< HEAD
 	UINT8 rising_bits = data & ~m_port_last1;
+=======
+	uint8_t rising_bits = data & ~m_port_last1;
+>>>>>>> upstream/master
 
 	m_enabled_sound = data & 0x80;
 
@@ -226,7 +286,11 @@ WRITE8_MEMBER(dai3wksi_state::dai3wksi_audio_1_w)
 
 WRITE8_MEMBER(dai3wksi_state::dai3wksi_audio_2_w)
 {
+<<<<<<< HEAD
 	UINT8 rising_bits = data & ~m_port_last2;
+=======
+	uint8_t rising_bits = data & ~m_port_last2;
+>>>>>>> upstream/master
 
 	m_dai3wksi_flipscreen = data & 0x10;
 	m_dai3wksi_redscreen  = ~data & 0x20;
@@ -274,7 +338,11 @@ static const char *const dai3wksi_sample_names[] =
 	"5",
 	"6",
 	"6-2",
+<<<<<<< HEAD
 	0
+=======
+	nullptr
+>>>>>>> upstream/master
 };
 
 
@@ -396,7 +464,11 @@ void dai3wksi_state::machine_reset()
 }
 
 
+<<<<<<< HEAD
 static MACHINE_CONFIG_START( dai3wksi, dai3wksi_state )
+=======
+static MACHINE_CONFIG_START( dai3wksi )
+>>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", Z80, XTAL_10MHz/4)
@@ -547,4 +619,8 @@ ROM_END
  *
  *************************************/
 
+<<<<<<< HEAD
 GAME( 1979, dai3wksi, 0, dai3wksi, dai3wksi, driver_device, 0, ROT270, "Sun Electronics", "Dai San Wakusei Meteor (Japan)", MACHINE_WRONG_COLORS | MACHINE_IMPERFECT_SOUND | MACHINE_SUPPORTS_SAVE )
+=======
+GAME( 1979, dai3wksi, 0, dai3wksi, dai3wksi, dai3wksi_state, 0, ROT270, "Sun Electronics", "Dai San Wakusei Meteor (Japan)", MACHINE_WRONG_COLORS | MACHINE_IMPERFECT_SOUND | MACHINE_SUPPORTS_SAVE )
+>>>>>>> upstream/master

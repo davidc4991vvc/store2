@@ -6,14 +6,23 @@ t10spc.h
 
 ***************************************************************************/
 
+<<<<<<< HEAD
 #ifndef _T10SPC_H_
 #define _T10SPC_H_
 
 #include "emu.h"
+=======
+#ifndef MAME_MACHINE_T10SPC_H
+#define MAME_MACHINE_T10SPC_H
+
+#pragma once
+
+>>>>>>> upstream/master
 
 class t10spc
 {
 public:
+<<<<<<< HEAD
 	virtual ~t10spc() {};
 	virtual void SetDevice( void *device ) = 0;
 	virtual void GetDevice( void **device ) = 0;
@@ -22,6 +31,20 @@ public:
 	virtual void ExecCommand();
 	virtual void WriteData( UINT8 *data, int dataLength );
 	virtual void ReadData( UINT8 *data, int dataLength );
+=======
+	t10spc() : commandLength(0), m_transfer_length(0), m_phase(0), m_status_code(), m_sense_key(0), m_sense_asc(0), m_sense_ascq(0), m_sense_information(0), m_sector_bytes(0), m_device(nullptr)
+	{
+	}
+
+	virtual ~t10spc() { }
+	virtual void SetDevice( void *device ) = 0;
+	virtual void GetDevice( void **device ) = 0;
+
+	virtual void SetCommand( uint8_t *command, int commandLength );
+	virtual void ExecCommand();
+	virtual void WriteData( uint8_t *data, int dataLength );
+	virtual void ReadData( uint8_t *data, int dataLength );
+>>>>>>> upstream/master
 	void GetLength( int *transferLength ) { *transferLength = m_transfer_length; }
 	virtual void GetPhase( int *phase ) { *phase = m_phase; }
 
@@ -29,13 +52,24 @@ protected:
 	virtual void t10_start(device_t &device);
 	virtual void t10_reset();
 
+<<<<<<< HEAD
 	int SCSILengthFromUINT8( UINT8 *length ) { if( *length == 0 ) { return 256; } return *length; }
 	int SCSILengthFromUINT16( UINT8 *length ) { return ( *(length) << 8 ) | *(length + 1 ); }
+=======
+	int SCSILengthFromUINT8( uint8_t *length ) { if( *length == 0 ) { return 256; } return *length; }
+	int SCSILengthFromUINT16( uint8_t *length ) { return ( *(length) << 8 ) | *(length + 1 ); }
+>>>>>>> upstream/master
 
 	enum sense_key_t
 	{
 		SCSI_SENSE_KEY_NO_SENSE = 0,
+<<<<<<< HEAD
 		SCSI_SENSE_KEY_ILLEGAL_REQUEST = 5
+=======
+		SCSI_SENSE_KEY_MEDIUM_ERROR = 2,
+		SCSI_SENSE_KEY_ILLEGAL_REQUEST = 5,
+		SCSI_SENSE_KEY_UNIT_ATTENTION = 6
+>>>>>>> upstream/master
 	};
 
 	enum sense_asc_ascq_t
@@ -111,15 +145,26 @@ protected:
 
 	void set_sense(sense_key_t key, sense_asc_ascq_t asc_ascq);
 
+<<<<<<< HEAD
 	UINT8 command[ 32 ];
+=======
+	uint8_t command[ 32 ];
+>>>>>>> upstream/master
 	int commandLength;
 	int m_transfer_length;
 	int m_phase;
 	status_code_t m_status_code;
+<<<<<<< HEAD
 	UINT8 m_sense_key;
 	UINT8 m_sense_asc;
 	UINT8 m_sense_ascq;
 	UINT32 m_sense_information;
+=======
+	uint8_t m_sense_key;
+	uint8_t m_sense_asc;
+	uint8_t m_sense_ascq;
+	uint32_t m_sense_information;
+>>>>>>> upstream/master
 	int m_sector_bytes;
 	device_t *m_device;
 };
@@ -133,4 +178,8 @@ protected:
 #define SCSI_PHASE_BUS_FREE ( 8 )
 #define SCSI_PHASE_SELECT ( 9 )
 
+<<<<<<< HEAD
 #endif
+=======
+#endif // MAME_MACHINE_T10SPC_H
+>>>>>>> upstream/master

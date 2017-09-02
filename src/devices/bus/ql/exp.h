@@ -42,12 +42,19 @@
 
 **********************************************************************/
 
+<<<<<<< HEAD
 #pragma once
 
 #ifndef __QL_EXPANSION_SLOT__
 #define __QL_EXPANSION_SLOT__
 
 #include "emu.h"
+=======
+#ifndef MAME_BUS_QL_EXP_H
+#define MAME_BUS_QL_EXP_H
+
+#pragma once
+>>>>>>> upstream/master
 
 
 
@@ -61,6 +68,7 @@
 
 
 #define MCFG_QL_EXPANSION_SLOT_IPL0L_CALLBACK(_write) \
+<<<<<<< HEAD
 	devcb = &ql_expansion_slot_t::set_ipl0l_wr_callback(*device, DEVCB_##_write);
 
 #define MCFG_QL_EXPANSION_SLOT_IPL1L_CALLBACK(_write) \
@@ -71,6 +79,18 @@
 
 #define MCFG_QL_EXPANSION_SLOT_EXTINTL_CALLBACK(_write) \
 	devcb = &ql_expansion_slot_t::set_extintl_wr_callback(*device, DEVCB_##_write);
+=======
+	devcb = &ql_expansion_slot_device::set_ipl0l_wr_callback(*device, DEVCB_##_write);
+
+#define MCFG_QL_EXPANSION_SLOT_IPL1L_CALLBACK(_write) \
+	devcb = &ql_expansion_slot_device::set_ipl1l_wr_callback(*device, DEVCB_##_write);
+
+#define MCFG_QL_EXPANSION_SLOT_BERRL_CALLBACK(_write) \
+	devcb = &ql_expansion_slot_device::set_berrl_wr_callback(*device, DEVCB_##_write);
+
+#define MCFG_QL_EXPANSION_SLOT_EXTINTL_CALLBACK(_write) \
+	devcb = &ql_expansion_slot_device::set_extintl_wr_callback(*device, DEVCB_##_write);
+>>>>>>> upstream/master
 
 
 
@@ -80,27 +100,44 @@
 
 // ======================> device_ql_expansion_card_interface
 
+<<<<<<< HEAD
 class ql_expansion_slot_t;
 
 class device_ql_expansion_card_interface : public device_slot_card_interface
 {
 	friend class ql_expansion_slot_t;
+=======
+class ql_expansion_slot_device;
+
+class device_ql_expansion_card_interface : public device_slot_card_interface
+{
+	friend class ql_expansion_slot_device;
+>>>>>>> upstream/master
 
 public:
 	// construction/destruction
 	device_ql_expansion_card_interface(const machine_config &mconfig, device_t &device);
 
 	virtual void romoeh_w(int state) { m_romoeh = state; }
+<<<<<<< HEAD
 	virtual UINT8 read(address_space &space, offs_t offset, UINT8 data) { return data; }
 	virtual void write(address_space &space, offs_t offset, UINT8 data) { }
 
 protected:
 	ql_expansion_slot_t  *m_slot;
+=======
+	virtual uint8_t read(address_space &space, offs_t offset, uint8_t data) { return data; }
+	virtual void write(address_space &space, offs_t offset, uint8_t data) { }
+
+protected:
+	ql_expansion_slot_device  *m_slot;
+>>>>>>> upstream/master
 
 	int m_romoeh;
 };
 
 
+<<<<<<< HEAD
 // ======================> ql_expansion_slot_t
 
 class ql_expansion_slot_t : public device_t,
@@ -118,6 +155,24 @@ public:
 	// computer interface
 	UINT8 read(address_space &space, offs_t offset, UINT8 data) { if (m_card) data = m_card->read(space, offset, data); return data; }
 	void write(address_space &space, offs_t offset, UINT8 data) { if (m_card) m_card->write(space, offset, data); }
+=======
+// ======================> ql_expansion_slot_device
+
+class ql_expansion_slot_device : public device_t, public device_slot_interface
+{
+public:
+	// construction/destruction
+	ql_expansion_slot_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
+
+	template <class Object> static devcb_base &set_ipl0l_wr_callback(device_t &device, Object &&cb) { return downcast<ql_expansion_slot_device &>(device).m_write_ipl0l.set_callback(std::forward<Object>(cb)); }
+	template <class Object> static devcb_base &set_ipl1l_wr_callback(device_t &device, Object &&cb) { return downcast<ql_expansion_slot_device &>(device).m_write_ipl1l.set_callback(std::forward<Object>(cb)); }
+	template <class Object> static devcb_base &set_berrl_wr_callback(device_t &device, Object &&cb) { return downcast<ql_expansion_slot_device &>(device).m_write_berrl.set_callback(std::forward<Object>(cb)); }
+	template <class Object> static devcb_base &set_extintl_wr_callback(device_t &device, Object &&cb) { return downcast<ql_expansion_slot_device &>(device).m_write_extintl.set_callback(std::forward<Object>(cb)); }
+
+	// computer interface
+	uint8_t read(address_space &space, offs_t offset, uint8_t data) { if (m_card) data = m_card->read(space, offset, data); return data; }
+	void write(address_space &space, offs_t offset, uint8_t data) { if (m_card) m_card->write(space, offset, data); }
+>>>>>>> upstream/master
 	DECLARE_WRITE_LINE_MEMBER( romoeh_w ) { if (m_card) m_card->romoeh_w(state); }
 
 	// card interface
@@ -128,8 +183,13 @@ public:
 
 protected:
 	// device-level overrides
+<<<<<<< HEAD
 	virtual void device_start();
 	virtual void device_reset() { if (get_card_device()) get_card_device()->reset(); }
+=======
+	virtual void device_start() override;
+	virtual void device_reset() override { if (get_card_device()) get_card_device()->reset(); }
+>>>>>>> upstream/master
 
 	devcb_write_line   m_write_ipl0l;
 	devcb_write_line   m_write_ipl1l;
@@ -141,11 +201,19 @@ protected:
 
 
 // device type definition
+<<<<<<< HEAD
 extern const device_type QL_EXPANSION_SLOT;
+=======
+DECLARE_DEVICE_TYPE(QL_EXPANSION_SLOT, ql_expansion_slot_device)
+>>>>>>> upstream/master
 
 
 SLOT_INTERFACE_EXTERN( ql_expansion_cards );
 
 
+<<<<<<< HEAD
 
 #endif
+=======
+#endif // MAME_BUS_QL_EXP_H
+>>>>>>> upstream/master

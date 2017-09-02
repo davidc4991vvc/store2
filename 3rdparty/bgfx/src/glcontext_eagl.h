@@ -1,6 +1,11 @@
 /*
+<<<<<<< HEAD
  * Copyright 2011-2015 Branimir Karadzic. All rights reserved.
  * License: http://www.opensource.org/licenses/BSD-2-Clause
+=======
+ * Copyright 2011-2017 Branimir Karadzic. All rights reserved.
+ * License: https://github.com/bkaradzic/bgfx#license-bsd-2-clause
+>>>>>>> upstream/master
  */
 
 #ifndef BGFX_GLCONTEXT_EAGL_H_HEADER_GUARD
@@ -15,7 +20,15 @@ namespace bgfx { namespace gl
 	struct GlContext
 	{
 		GlContext()
+<<<<<<< HEAD
 			: m_context(0)
+=======
+			: m_current(0)
+			, m_context(0)
+			, m_fbo(0)
+			, m_colorRbo(0)
+			, m_depthStencilRbo(0)
+>>>>>>> upstream/master
 		{
 		}
 
@@ -41,7 +54,11 @@ namespace bgfx { namespace gl
 			return 0 != m_context;
 		}
 
+<<<<<<< HEAD
 		void* m_view;
+=======
+		SwapChainGL* m_current;
+>>>>>>> upstream/master
 		void* m_context;
 
 		GLuint m_fbo;

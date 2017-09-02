@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 // license:???
+=======
+// license:BSD-3-Clause
+>>>>>>> upstream/master
 // copyright-holders:Paul Leaman
 /***************************************************************************
 
@@ -16,10 +20,22 @@
 ***************************************************************************/
 
 #include "emu.h"
+<<<<<<< HEAD
 #include "cpu/z80/z80.h"
 #include "sound/2203intf.h"
 #include "cpu/mcs51/mcs51.h"
 #include "includes/blktiger.h"
+=======
+#include "includes/blktiger.h"
+
+#include "cpu/mcs51/mcs51.h"
+#include "cpu/z80/z80.h"
+#include "machine/gen_latch.h"
+#include "machine/watchdog.h"
+#include "sound/2203intf.h"
+#include "screen.h"
+#include "speaker.h"
+>>>>>>> upstream/master
 
 
 /**************************************************
@@ -63,8 +79,13 @@ WRITE8_MEMBER(blktiger_state::blktiger_coinlockout_w)
 {
 	if (ioport("COIN_LOCKOUT")->read() & 0x01)
 	{
+<<<<<<< HEAD
 		coin_lockout_w(machine(), 0,~data & 0x01);
 		coin_lockout_w(machine(), 1,~data & 0x02);
+=======
+		machine().bookkeeping().coin_lockout_w(0,~data & 0x01);
+		machine().bookkeeping().coin_lockout_w(1,~data & 0x02);
+>>>>>>> upstream/master
 	}
 }
 
@@ -82,6 +103,7 @@ ADDRESS_MAP_END
 
 static ADDRESS_MAP_START( blktiger_io_map, AS_IO, 8, blktiger_state )
 	ADDRESS_MAP_GLOBAL_MASK(0xff)
+<<<<<<< HEAD
 	AM_RANGE(0x00, 0x00) AM_READ_PORT("IN0")    AM_WRITE(soundlatch_byte_w)
 	AM_RANGE(0x01, 0x01) AM_READ_PORT("IN1")    AM_WRITE(blktiger_bankswitch_w)
 	AM_RANGE(0x02, 0x02) AM_READ_PORT("IN2")
@@ -89,6 +111,15 @@ static ADDRESS_MAP_START( blktiger_io_map, AS_IO, 8, blktiger_state )
 	AM_RANGE(0x04, 0x04) AM_READ_PORT("DSW1")   AM_WRITE(blktiger_video_control_w)
 	AM_RANGE(0x05, 0x05) AM_READ_PORT("FREEZE")
 	AM_RANGE(0x06, 0x06) AM_WRITE(watchdog_reset_w)
+=======
+	AM_RANGE(0x00, 0x00) AM_READ_PORT("IN0") AM_DEVWRITE("soundlatch", generic_latch_8_device, write)
+	AM_RANGE(0x01, 0x01) AM_READ_PORT("IN1") AM_WRITE(blktiger_bankswitch_w)
+	AM_RANGE(0x02, 0x02) AM_READ_PORT("IN2")
+	AM_RANGE(0x03, 0x03) AM_READ_PORT("DSW0") AM_WRITE(blktiger_coinlockout_w)
+	AM_RANGE(0x04, 0x04) AM_READ_PORT("DSW1") AM_WRITE(blktiger_video_control_w)
+	AM_RANGE(0x05, 0x05) AM_READ_PORT("FREEZE")
+	AM_RANGE(0x06, 0x06) AM_DEVWRITE("watchdog", watchdog_timer_device, reset_w)
+>>>>>>> upstream/master
 	AM_RANGE(0x07, 0x07) AM_READWRITE(blktiger_from_mcu_r,blktiger_to_mcu_w)     /* Software protection (7) */
 	AM_RANGE(0x08, 0x09) AM_WRITE(blktiger_scrollx_w)
 	AM_RANGE(0x0a, 0x0b) AM_WRITE(blktiger_scrolly_w)
@@ -99,6 +130,7 @@ ADDRESS_MAP_END
 
 static ADDRESS_MAP_START( blktigerbl_io_map, AS_IO, 8, blktiger_state )
 	ADDRESS_MAP_GLOBAL_MASK(0xff)
+<<<<<<< HEAD
 	AM_RANGE(0x00, 0x00) AM_READ_PORT("IN0")    AM_WRITE(soundlatch_byte_w)
 	AM_RANGE(0x01, 0x01) AM_READ_PORT("IN1")    AM_WRITE(blktiger_bankswitch_w)
 	AM_RANGE(0x02, 0x02) AM_READ_PORT("IN2")
@@ -106,6 +138,15 @@ static ADDRESS_MAP_START( blktigerbl_io_map, AS_IO, 8, blktiger_state )
 	AM_RANGE(0x04, 0x04) AM_READ_PORT("DSW1")   AM_WRITE(blktiger_video_control_w)
 	AM_RANGE(0x05, 0x05) AM_READ_PORT("FREEZE")
 	AM_RANGE(0x06, 0x06) AM_WRITE(watchdog_reset_w)
+=======
+	AM_RANGE(0x00, 0x00) AM_READ_PORT("IN0") AM_DEVWRITE("soundlatch", generic_latch_8_device, write)
+	AM_RANGE(0x01, 0x01) AM_READ_PORT("IN1") AM_WRITE(blktiger_bankswitch_w)
+	AM_RANGE(0x02, 0x02) AM_READ_PORT("IN2")
+	AM_RANGE(0x03, 0x03) AM_READ_PORT("DSW0") AM_WRITE(blktiger_coinlockout_w)
+	AM_RANGE(0x04, 0x04) AM_READ_PORT("DSW1") AM_WRITE(blktiger_video_control_w)
+	AM_RANGE(0x05, 0x05) AM_READ_PORT("FREEZE")
+	AM_RANGE(0x06, 0x06) AM_DEVWRITE("watchdog", watchdog_timer_device, reset_w)
+>>>>>>> upstream/master
 	AM_RANGE(0x07, 0x07) AM_NOP  /* Software protection (7) */
 	AM_RANGE(0x08, 0x09) AM_WRITE(blktiger_scrollx_w)
 	AM_RANGE(0x0a, 0x0b) AM_WRITE(blktiger_scrolly_w)
@@ -117,7 +158,11 @@ ADDRESS_MAP_END
 static ADDRESS_MAP_START( blktiger_sound_map, AS_PROGRAM, 8, blktiger_state )
 	AM_RANGE(0x0000, 0x7fff) AM_ROM
 	AM_RANGE(0xc000, 0xc7ff) AM_RAM
+<<<<<<< HEAD
 	AM_RANGE(0xc800, 0xc800) AM_READ(soundlatch_byte_r)
+=======
+	AM_RANGE(0xc800, 0xc800) AM_DEVREAD("soundlatch", generic_latch_8_device, read)
+>>>>>>> upstream/master
 	AM_RANGE(0xe000, 0xe001) AM_DEVREADWRITE("ym1", ym2203_device, read, write)
 	AM_RANGE(0xe002, 0xe003) AM_DEVREADWRITE("ym2", ym2203_device, read, write)
 ADDRESS_MAP_END
@@ -259,6 +304,7 @@ static GFXDECODE_START( blktiger )
 GFXDECODE_END
 
 
+<<<<<<< HEAD
 
 /* handler called by the 2203 emulator when the internal timers cause an IRQ */
 WRITE_LINE_MEMBER(blktiger_state::irqhandler)
@@ -266,6 +312,8 @@ WRITE_LINE_MEMBER(blktiger_state::irqhandler)
 	m_audiocpu->set_input_line(0, state ? ASSERT_LINE : CLEAR_LINE);
 }
 
+=======
+>>>>>>> upstream/master
 void blktiger_state::machine_start()
 {
 	/* configure bankswitching */
@@ -297,7 +345,11 @@ void blktiger_state::machine_reset()
 	m_i8751_latch = 0;
 }
 
+<<<<<<< HEAD
 static MACHINE_CONFIG_START( blktiger, blktiger_state )
+=======
+static MACHINE_CONFIG_START( blktiger )
+>>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", Z80, XTAL_24MHz/4)  /* verified on pcb */
@@ -313,6 +365,10 @@ static MACHINE_CONFIG_START( blktiger, blktiger_state )
 	MCFG_CPU_IO_MAP(blktiger_mcu_io_map)
 	//MCFG_CPU_VBLANK_INT_DRIVER("screen", blktiger_state,  irq0_line_hold)
 
+<<<<<<< HEAD
+=======
+	MCFG_WATCHDOG_ADD("watchdog")
+>>>>>>> upstream/master
 
 	/* video hardware */
 	MCFG_SCREEN_ADD("screen", RASTER)
@@ -321,7 +377,11 @@ static MACHINE_CONFIG_START( blktiger, blktiger_state )
 	MCFG_SCREEN_SIZE(32*8, 32*8)
 	MCFG_SCREEN_VISIBLE_AREA(0*8, 32*8-1, 2*8, 30*8-1)
 	MCFG_SCREEN_UPDATE_DRIVER(blktiger_state, screen_update_blktiger)
+<<<<<<< HEAD
 	MCFG_SCREEN_VBLANK_DEVICE("spriteram", buffered_spriteram8_device, vblank_copy_rising)
+=======
+	MCFG_SCREEN_VBLANK_CALLBACK(DEVWRITELINE("spriteram", buffered_spriteram8_device, vblank_copy_rising))
+>>>>>>> upstream/master
 	MCFG_SCREEN_PALETTE("palette")
 
 	MCFG_GFXDECODE_ADD("gfxdecode", "palette", blktiger)
@@ -334,8 +394,15 @@ static MACHINE_CONFIG_START( blktiger, blktiger_state )
 	/* sound hardware */
 	MCFG_SPEAKER_STANDARD_MONO("mono")
 
+<<<<<<< HEAD
 	MCFG_SOUND_ADD("ym1", YM2203, XTAL_3_579545MHz) /* verified on pcb */
 	MCFG_YM2203_IRQ_HANDLER(WRITELINE(blktiger_state, irqhandler))
+=======
+	MCFG_GENERIC_LATCH_8_ADD("soundlatch")
+
+	MCFG_SOUND_ADD("ym1", YM2203, XTAL_3_579545MHz) /* verified on pcb */
+	MCFG_YM2203_IRQ_HANDLER(INPUTLINE("audiocpu", 0))
+>>>>>>> upstream/master
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 0.15)
 
 	MCFG_SOUND_ADD("ym2", YM2203, XTAL_3_579545MHz) /* verified on pcb */
@@ -599,9 +666,15 @@ ROM_END
 
 DRIVER_INIT_MEMBER(blktiger_state,blktigerb3)
 {
+<<<<<<< HEAD
 	UINT8 *src = memregion("audiocpu")->base();
 	int len = 0x8000;
 	dynamic_buffer buffer(len);
+=======
+	uint8_t *src = memregion("audiocpu")->base();
+	int len = 0x8000;
+	std::vector<uint8_t> buffer(len);
+>>>>>>> upstream/master
 
 	for (int i = 0; i < len; i++)
 	{
@@ -614,11 +687,20 @@ DRIVER_INIT_MEMBER(blktiger_state,blktigerb3)
 
 	memcpy(src, &buffer[0], len);
 }
+<<<<<<< HEAD
 GAME( 1987, blktiger,   0,        blktiger,   blktiger, driver_device, 0, ROT0, "Capcom",  "Black Tiger",                 MACHINE_SUPPORTS_SAVE )
 GAME( 1987, blktigera,  blktiger, blktiger,   blktiger, driver_device, 0, ROT0, "Capcom",  "Black Tiger (older)",         MACHINE_SUPPORTS_SAVE )
 GAME( 1987, blktigerb1, blktiger, blktigerbl, blktiger, driver_device, 0, ROT0, "bootleg", "Black Tiger (bootleg set 1)", MACHINE_SUPPORTS_SAVE )
 GAME( 1987, blktigerb2, blktiger, blktigerbl, blktiger, driver_device, 0, ROT0, "bootleg", "Black Tiger (bootleg set 2)", MACHINE_SUPPORTS_SAVE )
 GAME( 1987, blkdrgon,   blktiger, blktiger,   blktiger, driver_device, 0, ROT0, "Capcom",  "Black Dragon (Japan)",        MACHINE_SUPPORTS_SAVE )
 GAME( 1987, blkdrgonb,  blktiger, blktigerbl, blktiger, driver_device, 0, ROT0, "bootleg", "Black Dragon (bootleg)",      MACHINE_SUPPORTS_SAVE )
+=======
+GAME( 1987, blktiger,   0,        blktiger,   blktiger, blktiger_state, 0, ROT0, "Capcom",  "Black Tiger",                 MACHINE_SUPPORTS_SAVE )
+GAME( 1987, blktigera,  blktiger, blktiger,   blktiger, blktiger_state, 0, ROT0, "Capcom",  "Black Tiger (older)",         MACHINE_SUPPORTS_SAVE )
+GAME( 1987, blktigerb1, blktiger, blktigerbl, blktiger, blktiger_state, 0, ROT0, "bootleg", "Black Tiger (bootleg set 1)", MACHINE_SUPPORTS_SAVE )
+GAME( 1987, blktigerb2, blktiger, blktigerbl, blktiger, blktiger_state, 0, ROT0, "bootleg", "Black Tiger (bootleg set 2)", MACHINE_SUPPORTS_SAVE )
+GAME( 1987, blkdrgon,   blktiger, blktiger,   blktiger, blktiger_state, 0, ROT0, "Capcom",  "Black Dragon (Japan)",        MACHINE_SUPPORTS_SAVE )
+GAME( 1987, blkdrgonb,  blktiger, blktigerbl, blktiger, blktiger_state, 0, ROT0, "bootleg", "Black Dragon (bootleg)",      MACHINE_SUPPORTS_SAVE )
+>>>>>>> upstream/master
 // this board has Capcom markings (boards 87118-A-X1 / 87118-B-X1, but no MCU, a mix of bootleg Black Tiger and Black Dragon roms, and an address swapped sound rom? is the latter an alternative security measure?
 GAME( 1987, blktigerb3, blktiger, blktigerbl, blktiger, blktiger_state, blktigerb3, ROT0, "bootleg", "Black Tiger / Black Dragon (mixed bootleg?)", MACHINE_SUPPORTS_SAVE )

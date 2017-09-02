@@ -19,11 +19,19 @@
 
 #define ORAO_HEADER_SIZE 360
 
+<<<<<<< HEAD
 static INT16    wave_data;
 static int      len;
 
 static void orao_output_wave( INT16 **buffer, int length ) {
 	if ( buffer == NULL ) {
+=======
+static int16_t    wave_data;
+static int      len;
+
+static void orao_output_wave( int16_t **buffer, int length ) {
+	if ( buffer == nullptr ) {
+>>>>>>> upstream/master
 		return;
 	}
 
@@ -32,11 +40,19 @@ static void orao_output_wave( INT16 **buffer, int length ) {
 		*buffer = *buffer + 1;
 	}
 }
+<<<<<<< HEAD
 static int orao_cas_to_wav_size( const UINT8 *casdata, int caslen ) {
 	int i,j,size;
 	UINT8 b;
 
 	if (casdata == NULL) return -1;
+=======
+static int orao_cas_to_wav_size( const uint8_t *casdata, int caslen ) {
+	int i,j,size;
+	uint8_t b;
+
+	if (casdata == nullptr) return -1;
+>>>>>>> upstream/master
 	if (caslen <= ORAO_HEADER_SIZE) {
 		return -1;
 	}
@@ -55,11 +71,19 @@ static int orao_cas_to_wav_size( const UINT8 *casdata, int caslen ) {
 	return size;
 }
 
+<<<<<<< HEAD
 static int orao_cas_fill_wave( INT16 *buffer, int length, UINT8 *bytes ) {
 	int i,j,size;
 	UINT8 b;
 	size = 0;
 	if (bytes == NULL) return -1;
+=======
+static int orao_cas_fill_wave( int16_t *buffer, int length, uint8_t *bytes ) {
+	int i,j,size;
+	uint8_t b;
+	size = 0;
+	if (bytes == nullptr) return -1;
+>>>>>>> upstream/master
 	for (i=ORAO_HEADER_SIZE;i<len-ORAO_HEADER_SIZE;i++) {
 		for (j=0;j<8;j++) {
 			b = (bytes[i] >> j) & 1;
@@ -97,13 +121,21 @@ static const struct CassetteLegacyWaveFiller orao_legacy_fill_wave = {
 
 
 
+<<<<<<< HEAD
 static casserr_t orao_cassette_identify( cassette_image *cassette, struct CassetteOptions *opts ) {
+=======
+static cassette_image::error orao_cassette_identify( cassette_image *cassette, struct CassetteOptions *opts ) {
+>>>>>>> upstream/master
 	return cassette_legacy_identify( cassette, opts, &orao_legacy_fill_wave );
 }
 
 
 
+<<<<<<< HEAD
 static casserr_t orao_cassette_load( cassette_image *cassette ) {
+=======
+static cassette_image::error orao_cassette_load( cassette_image *cassette ) {
+>>>>>>> upstream/master
 	return cassette_legacy_construct( cassette, &orao_legacy_fill_wave );
 }
 
@@ -113,7 +145,11 @@ static const struct CassetteFormat orao_cassette_format = {
 	"tap",
 	orao_cassette_identify,
 	orao_cassette_load,
+<<<<<<< HEAD
 	NULL
+=======
+	nullptr
+>>>>>>> upstream/master
 };
 
 

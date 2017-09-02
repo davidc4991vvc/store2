@@ -40,7 +40,11 @@ Up to 4096 bytes can be addressed.
 
 #define VERBOSE_LEVEL ( 0 )
 
+<<<<<<< HEAD
 INLINE void ATTR_PRINTF( 3, 4 ) verboselog( device_t *device, int n_level, const char *s_fmt, ... )
+=======
+static inline void ATTR_PRINTF( 3, 4 ) verboselog( device_t *device, int n_level, const char *s_fmt, ... )
+>>>>>>> upstream/master
 {
 	if( VERBOSE_LEVEL >= n_level )
 	{
@@ -49,7 +53,11 @@ INLINE void ATTR_PRINTF( 3, 4 ) verboselog( device_t *device, int n_level, const
 		va_start( v, s_fmt );
 		vsprintf( buf, s_fmt, v );
 		va_end( v );
+<<<<<<< HEAD
 		device->logerror( "%s: I2CMEM(%s) %s", device->machine().describe_context( ), device->tag(), buf );
+=======
+		device->logerror( "%s: I2CMEM %s", device->machine().describe_context(), buf );
+>>>>>>> upstream/master
 	}
 }
 
@@ -58,12 +66,16 @@ INLINE void ATTR_PRINTF( 3, 4 ) verboselog( device_t *device, int n_level, const
 //**************************************************************************
 
 // device type definition
+<<<<<<< HEAD
 const device_type I2CMEM = &device_creator<i2cmem_device>;
 
 static ADDRESS_MAP_START( i2cmem_map8, AS_PROGRAM, 8, i2cmem_device )
 	AM_RANGE(0x0000, 0x0fff) AM_RAM
 ADDRESS_MAP_END
 
+=======
+DEFINE_DEVICE_TYPE(I2CMEM, i2cmem_device, "i2cmem", "I2C Memory")
+>>>>>>> upstream/master
 
 
 //**************************************************************************
@@ -74,10 +86,17 @@ ADDRESS_MAP_END
 //  i2cmem_device - constructor
 //-------------------------------------------------
 
+<<<<<<< HEAD
 i2cmem_device::i2cmem_device( const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock )
 	: device_t(mconfig, I2CMEM, "I2C Memory", tag, owner, clock, "i2cmem", __FILE__),
 		device_memory_interface(mconfig, *this),
 		device_nvram_interface(mconfig, *this),
+=======
+i2cmem_device::i2cmem_device( const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock )
+	: device_t(mconfig, I2CMEM, tag, owner, clock),
+	device_nvram_interface(mconfig, *this),
+	m_region(*this, DEVICE_SELF),
+>>>>>>> upstream/master
 	m_slave_address( I2CMEM_SLAVE_ADDRESS ),
 	m_page_size( 0 ),
 	m_data_size( 0 ),
@@ -95,6 +114,7 @@ i2cmem_device::i2cmem_device( const machine_config &mconfig, const char *tag, de
 }
 
 
+<<<<<<< HEAD
 //-------------------------------------------------
 //  device_config_complete - perform any
 //  operations now that the configuration is
@@ -114,6 +134,8 @@ void i2cmem_device::device_config_complete()
 
 	m_space_config = address_space_config( "i2cmem", ENDIANNESS_BIG, 8,  address_bits, 0, *ADDRESS_MAP_NAME( i2cmem_map8 ) );
 }
+=======
+>>>>>>> upstream/master
 
 
 //-------------------------------------------------
@@ -122,6 +144,10 @@ void i2cmem_device::device_config_complete()
 
 void i2cmem_device::device_start()
 {
+<<<<<<< HEAD
+=======
+	m_data = std::make_unique<uint8_t []>(m_data_size);
+>>>>>>> upstream/master
 	m_page.resize( m_page_size );
 
 	save_item( NAME(m_scl) );
@@ -136,6 +162,10 @@ void i2cmem_device::device_start()
 	save_item( NAME(m_shift) );
 	save_item( NAME(m_devsel) );
 	save_item( NAME(m_byteaddr) );
+<<<<<<< HEAD
+=======
+	save_pointer( &m_data[0], "m_data", m_data_size );
+>>>>>>> upstream/master
 	if ( m_page_size > 0 )
 	{
 		save_item( NAME(m_page) );
@@ -153,6 +183,7 @@ void i2cmem_device::device_reset()
 
 
 //-------------------------------------------------
+<<<<<<< HEAD
 //  memory_space_config - return a description of
 //  any address spaces owned by this device
 //-------------------------------------------------
@@ -164,12 +195,15 @@ const address_space_config *i2cmem_device::memory_space_config( address_spacenum
 
 
 //-------------------------------------------------
+=======
+>>>>>>> upstream/master
 //  nvram_default - called to initialize NVRAM to
 //  its default state
 //-------------------------------------------------
 
 void i2cmem_device::nvram_default()
 {
+<<<<<<< HEAD
 	int i2cmem_bytes = m_data_size;
 
 	UINT16 default_value = 0xff;
@@ -184,6 +218,16 @@ void i2cmem_device::nvram_default()
 		if( m_region->bytes() != i2cmem_bytes )
 		{
 			fatalerror( "i2cmem region '%s' wrong size (expected size = 0x%X)\n", tag(), i2cmem_bytes );
+=======
+	memset(&m_data[0], 0xff, m_data_size);
+
+	/* populate from a memory region if present */
+	if (m_region.found())
+	{
+		if( m_region->bytes() != m_data_size )
+		{
+			fatalerror( "i2cmem region '%s' wrong size (expected size = 0x%X)\n", tag(), m_data_size );
+>>>>>>> upstream/master
 		}
 
 		if( m_region->bytewidth() != 1 )
@@ -191,9 +235,13 @@ void i2cmem_device::nvram_default()
 			fatalerror( "i2cmem region '%s' needs to be an 8-bit region\n", tag() );
 		}
 
+<<<<<<< HEAD
 		UINT8 *default_data = m_region->base();
 		for( offs_t offs = 0; offs < i2cmem_bytes; offs++ )
 			m_addrspace[ 0 ]->write_byte( offs, default_data[offs] );
+=======
+		memcpy(&m_data[0], m_region->base(), m_data_size);
+>>>>>>> upstream/master
 	}
 }
 
@@ -205,6 +253,7 @@ void i2cmem_device::nvram_default()
 
 void i2cmem_device::nvram_read( emu_file &file )
 {
+<<<<<<< HEAD
 	int i2cmem_bytes = m_data_size;
 	dynamic_buffer buffer ( i2cmem_bytes );
 
@@ -214,6 +263,9 @@ void i2cmem_device::nvram_read( emu_file &file )
 	{
 		m_addrspace[ 0 ]->write_byte( offs, buffer[ offs ] );
 	}
+=======
+	file.read( &m_data[0], m_data_size );
+>>>>>>> upstream/master
 }
 
 //-------------------------------------------------
@@ -223,6 +275,7 @@ void i2cmem_device::nvram_read( emu_file &file )
 
 void i2cmem_device::nvram_write( emu_file &file )
 {
+<<<<<<< HEAD
 	int i2cmem_bytes = m_data_size;
 	dynamic_buffer buffer ( i2cmem_bytes );
 
@@ -232,6 +285,9 @@ void i2cmem_device::nvram_write( emu_file &file )
 	}
 
 	file.write( &buffer[0], i2cmem_bytes );
+=======
+	file.write( &m_data[0], m_data_size );
+>>>>>>> upstream/master
 }
 
 
@@ -375,7 +431,11 @@ WRITE_LINE_MEMBER( i2cmem_device::write_scl )
 
 								for( int i = 0; i < m_page_size; i++ )
 								{
+<<<<<<< HEAD
 									m_addrspace[ 0 ]->write_byte( offset + i, m_page[ i ] );
+=======
+									m_data[offset + i] = m_page[ i ];
+>>>>>>> upstream/master
 								}
 
 								m_page_offset = 0;
@@ -386,7 +446,11 @@ WRITE_LINE_MEMBER( i2cmem_device::write_scl )
 							int offset = data_offset();
 
 							verboselog( this, 1, "data[ %04x ] <- %02x\n", offset, m_shift );
+<<<<<<< HEAD
 							m_addrspace[ 0 ]->write_byte( offset, m_shift );
+=======
+							m_data[ offset ] = m_shift;
+>>>>>>> upstream/master
 
 							m_byteaddr++;
 						}
@@ -419,7 +483,11 @@ WRITE_LINE_MEMBER( i2cmem_device::write_scl )
 					{
 						int offset = data_offset();
 
+<<<<<<< HEAD
 						m_shift = m_addrspace[ 0 ]->read_byte( offset );
+=======
+						m_shift = m_data[offset];
+>>>>>>> upstream/master
 						verboselog( this, 1, "data[ %04x ] -> %02x\n", offset, m_shift );
 						m_byteaddr++;
 					}

@@ -19,11 +19,27 @@
 #include "emu.h"
 #include "huc6260.h"
 
+<<<<<<< HEAD
 #define LOG 0
 
 #define HUC6260_HSYNC_LENGTH    237
 #define HUC6260_HSYNC_START     ( HUC6260_WPF - HUC6260_HSYNC_LENGTH )
 
+=======
+#include "screen.h"
+
+//#define VERBOSE 1
+#include "logmacro.h"
+
+
+#define HUC6260_HSYNC_LENGTH    237
+#define HUC6260_HSYNC_START     ( huc6260_device::WPF - HUC6260_HSYNC_LENGTH )
+
+
+constexpr unsigned huc6260_device::PALETTE_SIZE;
+constexpr unsigned huc6260_device::WPF;
+constexpr unsigned huc6260_device::LPF;
+>>>>>>> upstream/master
 
 PALETTE_INIT_MEMBER(huc6260_device, huc6260)
 {
@@ -42,11 +58,19 @@ PALETTE_INIT_MEMBER(huc6260_device, huc6260)
 }
 
 
+<<<<<<< HEAD
 const device_type HUC6260 = &device_creator<huc6260_device>;
 
 
 huc6260_device::huc6260_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
 	:   device_t(mconfig, HUC6260, "HuC6260 VCE", tag, owner, clock, "huc6260", __FILE__),
+=======
+DEFINE_DEVICE_TYPE(HUC6260, huc6260_device, "huc6260", "Hudson HuC6260 VCE")
+
+
+huc6260_device::huc6260_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	:   device_t(mconfig, HUC6260, tag, owner, clock),
+>>>>>>> upstream/master
 		device_video_interface(mconfig, *this),
 		m_next_pixel_data_cb(*this),
 		m_time_til_next_event_cb(*this),
@@ -62,7 +86,11 @@ void huc6260_device::device_timer(emu_timer &timer, device_timer_id id, int para
 	int hpos = m_screen->hpos();
 	int h = m_last_h;
 	int v = m_last_v;
+<<<<<<< HEAD
 	UINT16 *bitmap_line = &m_bmp->pix16(v);
+=======
+	uint16_t *bitmap_line = &m_bmp->pix16(v);
+>>>>>>> upstream/master
 
 	while ( h != hpos || v != vpos )
 	{
@@ -72,6 +100,7 @@ void huc6260_device::device_timer(emu_timer &timer, device_timer_id id, int para
 			/* Get next pixel information */
 			m_pixel_data = m_next_pixel_data_cb( 0, 0xffff );
 			g_profiler.stop();
+<<<<<<< HEAD
 			if ( m_greyscales )
 			{
 				m_pixel_data += 512;
@@ -81,6 +110,13 @@ void huc6260_device::device_timer(emu_timer &timer, device_timer_id id, int para
 		bitmap_line[ h ] = m_palette[ m_pixel_data ];
 		m_pixel_clock = ( m_pixel_clock + 1 ) % m_pixels_per_clock;
 		h = ( h + 1 ) % HUC6260_WPF;
+=======
+		}
+
+		bitmap_line[ h ] = m_palette[ m_pixel_data ] | m_greyscales;
+		m_pixel_clock = ( m_pixel_clock + 1 ) % m_pixels_per_clock;
+		h = ( h + 1 ) % WPF;
+>>>>>>> upstream/master
 
 		switch( h )
 		{
@@ -89,7 +125,11 @@ void huc6260_device::device_timer(emu_timer &timer, device_timer_id id, int para
 //          if ( v == 0 )
 //          {
 //              /* Check if the screen should be resized */
+<<<<<<< HEAD
 //              m_height = HUC6260_LPF - ( m_blur ? 1 : 0 );
+=======
+//              m_height = LPF - ( m_blur ? 1 : 0 );
+>>>>>>> upstream/master
 //              if ( m_height != video_screen_get_height( m_screen ) )
 //              {
 //                  rectangle visible_area;
@@ -100,7 +140,11 @@ void huc6260_device::device_timer(emu_timer &timer, device_timer_id id, int para
 //                  visible_area.max_x = 64 + 1024 + 64 - 1;
 //                  visible_area.max_y = 18 + 242 - 1;
 //
+<<<<<<< HEAD
 //                  video_screen_configure( m_screen, HUC6260_WPF, m_height, &visible_area, HZ_TO_ATTOSECONDS( device->clock / ( HUC6260_WPF * m_height ) ) );
+=======
+//                  video_screen_configure( m_screen, WPF, m_height, &visible_area, HZ_TO_ATTOSECONDS( device->clock / ( WPF * m_height ) ) );
+>>>>>>> upstream/master
 //              }
 //          }
 			break;
@@ -146,7 +190,11 @@ void huc6260_device::device_timer(emu_timer &timer, device_timer_id id, int para
 
 	/* Ask our slave device for time until next possible event */
 	{
+<<<<<<< HEAD
 		UINT16 next_event_clocks = m_time_til_next_event_cb( 0, 0xffff );
+=======
+		uint16_t next_event_clocks = m_time_til_next_event_cb( 0, 0xffff );
+>>>>>>> upstream/master
 		int event_hpos, event_vpos;
 
 		/* Adjust for pixel clocks per pixel */
@@ -157,10 +205,17 @@ void huc6260_device::device_timer(emu_timer &timer, device_timer_id id, int para
 
 		event_hpos = hpos + next_event_clocks;
 		event_vpos = vpos;
+<<<<<<< HEAD
 		while ( event_hpos > HUC6260_WPF )
 		{
 			event_vpos += 1;
 			event_hpos -= HUC6260_WPF;
+=======
+		while ( event_hpos > WPF )
+		{
+			event_vpos += 1;
+			event_hpos -= WPF;
+>>>>>>> upstream/master
 		}
 
 		if ( event_vpos < v || ( event_vpos == v && event_hpos <= h ) )
@@ -198,7 +253,11 @@ WRITE8_MEMBER(huc6260_device::palette_direct_write)
 
 READ8_MEMBER( huc6260_device::read )
 {
+<<<<<<< HEAD
 	UINT8 data = 0xFF;
+=======
+	uint8_t data = 0xFF;
+>>>>>>> upstream/master
 
 	switch ( offset & 7 )
 	{
@@ -223,7 +282,11 @@ WRITE8_MEMBER( huc6260_device::write )
 	switch ( offset & 7 )
 	{
 		case 0x00:  /* Control register */
+<<<<<<< HEAD
 			m_greyscales = data & 0x80;
+=======
+			m_greyscales = (data & 0x80) << 2; // setup the greyscale base
+>>>>>>> upstream/master
 			m_blur = data & 0x04;
 			m_pixels_per_clock = ( data & 0x02 ) ? 2 : ( ( data & 0x01 ) ? 3 : 4 );
 			break;
@@ -253,7 +316,11 @@ WRITE8_MEMBER( huc6260_device::write )
 void huc6260_device::device_start()
 {
 	m_timer = timer_alloc();
+<<<<<<< HEAD
 	m_bmp = auto_bitmap_ind16_alloc( machine(), HUC6260_WPF, HUC6260_LPF );
+=======
+	m_bmp = std::make_unique<bitmap_ind16>(WPF, LPF);
+>>>>>>> upstream/master
 
 	/* Resolve callbacks */
 	m_hsync_changed_cb.resolve();
@@ -295,6 +362,7 @@ void huc6260_device::device_reset()
 	m_timer->adjust( m_screen->time_until_pos( ( m_screen->vpos() + 1 ) % 263, 0 ) );
 }
 
+<<<<<<< HEAD
 static MACHINE_CONFIG_FRAGMENT( huc6260 )
 	MCFG_PALETTE_ADD("palette",  HUC6260_PALETTE_SIZE )
 	MCFG_PALETTE_INIT_OWNER(huc6260_device, huc6260)
@@ -309,3 +377,13 @@ machine_config_constructor huc6260_device::device_mconfig_additions() const
 {
 	return MACHINE_CONFIG_NAME( huc6260 );
 }
+=======
+//-------------------------------------------------
+//  device_add_mconfig - add device configuration
+//-------------------------------------------------
+
+MACHINE_CONFIG_MEMBER( huc6260_device::device_add_mconfig )
+	MCFG_PALETTE_ADD("palette",  huc6260_device::PALETTE_SIZE)
+	MCFG_PALETTE_INIT_OWNER(huc6260_device, huc6260)
+MACHINE_CONFIG_END
+>>>>>>> upstream/master

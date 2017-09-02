@@ -5,10 +5,18 @@
  *
  */
 
+<<<<<<< HEAD
 #include "ns11prot.h"
 
 ns11_keycus_device::ns11_keycus_device(const machine_config &mconfig, device_type type, const char *name, const char *tag, device_t *owner, UINT32 clock, const char *shortname, const char *source) :
 	device_t(mconfig, type, name, tag, owner, clock, shortname, source)
+=======
+#include "emu.h"
+#include "ns11prot.h"
+
+ns11_keycus_device::ns11_keycus_device(const machine_config &mconfig, device_type type, const char *tag, device_t *owner, uint32_t clock) :
+	device_t(mconfig, type, tag, owner, clock)
+>>>>>>> upstream/master
 {
 }
 
@@ -28,8 +36,13 @@ void ns11_keycus_device::device_reset()
 
 /* tekken 2 */
 
+<<<<<<< HEAD
 keycus_c406_device::keycus_c406_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock) :
 	ns11_keycus_device(mconfig, KEYCUS_C406, "Namco C406 KEYCUS", tag, owner, clock, "keycus_c406", __FILE__)
+=======
+keycus_c406_device::keycus_c406_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock) :
+	ns11_keycus_device(mconfig, KEYCUS_C406, tag, owner, clock)
+>>>>>>> upstream/master
 {
 }
 
@@ -64,12 +77,21 @@ WRITE16_MEMBER(keycus_c406_device::write)
 	logerror( "keycus_c406_device::write unexpected offset=%d data=%04x\n", offset, data );
 }
 
+<<<<<<< HEAD
 const device_type KEYCUS_C406 = &device_creator<keycus_c406_device>;
 
 /* soul edge */
 
 keycus_c409_device::keycus_c409_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock) :
 	ns11_keycus_device(mconfig, KEYCUS_C409, "Namco C409 KEYCUS", tag, owner, clock, "keycus_c409", __FILE__)
+=======
+DEFINE_DEVICE_TYPE(KEYCUS_C406, keycus_c406_device, "keycus_c406", "Namco C406 KEYCUS")
+
+/* soul edge */
+
+keycus_c409_device::keycus_c409_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock) :
+	ns11_keycus_device(mconfig, KEYCUS_C409, tag, owner, clock)
+>>>>>>> upstream/master
 {
 }
 
@@ -104,12 +126,21 @@ WRITE16_MEMBER(keycus_c409_device::write)
 	logerror( "keycus_c409_device::write unexpected offset=%d data=%04x\n", offset, data );
 }
 
+<<<<<<< HEAD
 const device_type KEYCUS_C409 = &device_creator<keycus_c409_device>;
 
 /* dunk mania */
 
 keycus_c410_device::keycus_c410_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock) :
 	ns11_keycus_device(mconfig, KEYCUS_C410, "Namco C410 KEYCUS", tag, owner, clock, "keycus_c410", __FILE__)
+=======
+DEFINE_DEVICE_TYPE(KEYCUS_C409, keycus_c409_device, "keycus_c409", "Namco C409 KEYCUS")
+
+/* dunk mania */
+
+keycus_c410_device::keycus_c410_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock) :
+	ns11_keycus_device(mconfig, KEYCUS_C410, tag, owner, clock)
+>>>>>>> upstream/master
 {
 }
 
@@ -117,7 +148,11 @@ READ16_MEMBER(keycus_c410_device::read)
 {
 	if( m_p2 == 0 )
 	{
+<<<<<<< HEAD
 		UINT16 value = m_p1;
+=======
+		uint16_t value = m_p1;
+>>>>>>> upstream/master
 		if( value == 0xfffe )
 		{
 			value = 410;
@@ -158,12 +193,21 @@ WRITE16_MEMBER(keycus_c410_device::write)
 	logerror( "keycus_c410_device::write unexpected offset=%d data=%04x\n", offset, data );
 }
 
+<<<<<<< HEAD
 const device_type KEYCUS_C410 = &device_creator<keycus_c410_device>;
 
 /* prime goal ex */
 
 keycus_c411_device::keycus_c411_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock) :
 	ns11_keycus_device(mconfig, KEYCUS_C411, "Namco C411 KEYCUS", tag, owner, clock, "keycus_c411", __FILE__)
+=======
+DEFINE_DEVICE_TYPE(KEYCUS_C410, keycus_c410_device, "keycus_c410", "Namco C410 KEYCUS")
+
+/* prime goal ex */
+
+keycus_c411_device::keycus_c411_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock) :
+	ns11_keycus_device(mconfig, KEYCUS_C411, tag, owner, clock)
+>>>>>>> upstream/master
 {
 }
 
@@ -171,7 +215,11 @@ READ16_MEMBER(keycus_c411_device::read)
 {
 	if( m_p2 == 0x0000 && ( ( ( m_p1 == 0x0000 || m_p1 == 0x100 ) && m_p3 == 0xff7f ) || ( m_p1 == 0x7256 ) ) )
 	{
+<<<<<<< HEAD
 		UINT16 value = m_p3;
+=======
+		uint16_t value = m_p3;
+>>>>>>> upstream/master
 		if( m_p1 != 0x7256 )
 		{
 			value = 411;
@@ -214,12 +262,21 @@ WRITE16_MEMBER(keycus_c411_device::write)
 	logerror( "keycus_c411_device::write unexpected offset=%d data=%04x\n", offset, data );
 }
 
+<<<<<<< HEAD
 const device_type KEYCUS_C411 = &device_creator<keycus_c411_device>;
 
 /* xevious 3d/g */
 
 keycus_c430_device::keycus_c430_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock) :
 	ns11_keycus_device(mconfig, KEYCUS_C430, "Namco C430 KEYCUS", tag, owner, clock, "keycus_c430", __FILE__)
+=======
+DEFINE_DEVICE_TYPE(KEYCUS_C411, keycus_c411_device, "keycus_c411", "Namco C411 KEYCUS")
+
+/* xevious 3d/g */
+
+keycus_c430_device::keycus_c430_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock) :
+	ns11_keycus_device(mconfig, KEYCUS_C430, tag, owner, clock)
+>>>>>>> upstream/master
 {
 }
 
@@ -227,7 +284,11 @@ READ16_MEMBER(keycus_c430_device::read)
 {
 	if( m_p2 == 0x0000 && ( ( m_p1 == 0xbfff && m_p3 == 0x0000 ) || m_p3 == 0xe296 ) )
 	{
+<<<<<<< HEAD
 		UINT16 value = m_p1;
+=======
+		uint16_t value = m_p1;
+>>>>>>> upstream/master
 
 		if( m_p3 != 0xe296 )
 		{
@@ -273,12 +334,21 @@ WRITE16_MEMBER(keycus_c430_device::write)
 	logerror( "keycus_c430_device::write unexpected offset=%d data=%04x\n", offset, data );
 }
 
+<<<<<<< HEAD
 const device_type KEYCUS_C430 = &device_creator<keycus_c430_device>;
 
 /* dancing eyes */
 
 keycus_c431_device::keycus_c431_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock) :
 	ns11_keycus_device(mconfig, KEYCUS_C431, "Namco C431 KEYCUS", tag, owner, clock, "keycus_c431", __FILE__)
+=======
+DEFINE_DEVICE_TYPE(KEYCUS_C430, keycus_c430_device, "keycus_c430", "Namco C430 KEYCUS")
+
+/* dancing eyes */
+
+keycus_c431_device::keycus_c431_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock) :
+	ns11_keycus_device(mconfig, KEYCUS_C431, tag, owner, clock)
+>>>>>>> upstream/master
 {
 }
 
@@ -286,7 +356,11 @@ READ16_MEMBER(keycus_c431_device::read)
 {
 	if( m_p2 == 0x0000 && ( ( ( m_p1 == 0x0000 || m_p1 == 0xab50 ) && m_p3 == 0x7fff ) || m_p1 == 0x9e61 ) )
 	{
+<<<<<<< HEAD
 		UINT16 value = m_p3;
+=======
+		uint16_t value = m_p3;
+>>>>>>> upstream/master
 
 		if( m_p1 != 0x9e61 )
 		{
@@ -331,12 +405,21 @@ WRITE16_MEMBER(keycus_c431_device::write)
 	logerror( "keycus_c431_device::write unexpected offset=%d data=%04x\n", offset, data );
 }
 
+<<<<<<< HEAD
 const device_type KEYCUS_C431 = &device_creator<keycus_c431_device>;
 
 /* pocket racer */
 
 keycus_c432_device::keycus_c432_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock) :
 	ns11_keycus_device(mconfig, KEYCUS_C432, "Namco C432 KEYCUS", tag, owner, clock, "keycus_c432", __FILE__)
+=======
+DEFINE_DEVICE_TYPE(KEYCUS_C431, keycus_c431_device, "keycus_c431", "Namco C431 KEYCUS")
+
+/* pocket racer */
+
+keycus_c432_device::keycus_c432_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock) :
+	ns11_keycus_device(mconfig, KEYCUS_C432, tag, owner, clock)
+>>>>>>> upstream/master
 {
 }
 
@@ -344,7 +427,11 @@ READ16_MEMBER(keycus_c432_device::read)
 {
 	if( m_p1 == 0x0000 && ( ( ( m_p3 == 0x0000 || m_p3 == 0x00dc ) && m_p2 == 0xefff ) || m_p3 == 0x2f15 ) )
 	{
+<<<<<<< HEAD
 		UINT16 value = m_p2;
+=======
+		uint16_t value = m_p2;
+>>>>>>> upstream/master
 
 		if( m_p3 != 0x00002f15 )
 		{
@@ -391,12 +478,21 @@ WRITE16_MEMBER(keycus_c432_device::write)
 	logerror( "keycus_c432_device::write unexpected offset=%d data=%04x\n", offset, data );
 }
 
+<<<<<<< HEAD
 const device_type KEYCUS_C432 = &device_creator<keycus_c432_device>;
 
 /* star sweep */
 
 keycus_c442_device::keycus_c442_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock) :
 	ns11_keycus_device(mconfig, KEYCUS_C442, "Namco C442 KEYCUS", tag, owner, clock, "keycus_c442", __FILE__)
+=======
+DEFINE_DEVICE_TYPE(KEYCUS_C432, keycus_c432_device, "keycus_c432", "Namco C432 KEYCUS")
+
+/* star sweep */
+
+keycus_c442_device::keycus_c442_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock) :
+	ns11_keycus_device(mconfig, KEYCUS_C442, tag, owner, clock)
+>>>>>>> upstream/master
 {
 }
 
@@ -439,12 +535,21 @@ WRITE16_MEMBER(keycus_c442_device::write)
 	logerror( "keycus_c442_device::write unexpected offset=%d data=%04x\n", offset, data );
 }
 
+<<<<<<< HEAD
 const device_type KEYCUS_C442 = &device_creator<keycus_c442_device>;
 
 /* kosodate quiz my angel 3 / point blank 2 */
 
 keycus_c443_device::keycus_c443_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock) :
 	ns11_keycus_device(mconfig, KEYCUS_C443, "Namco C443 KEYCUS", tag, owner, clock, "keycus_c443", __FILE__)
+=======
+DEFINE_DEVICE_TYPE(KEYCUS_C442, keycus_c442_device, "keycus_c442", "Namco C442 KEYCUS")
+
+/* kosodate quiz my angel 3 / point blank 2 */
+
+keycus_c443_device::keycus_c443_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock) :
+	ns11_keycus_device(mconfig, KEYCUS_C443, tag, owner, clock)
+>>>>>>> upstream/master
 {
 }
 
@@ -485,4 +590,8 @@ WRITE16_MEMBER(keycus_c443_device::write)
 	logerror( "keycus_c443_device::write unexpected offset=%d data=%04x\n", offset, data );
 }
 
+<<<<<<< HEAD
 const device_type KEYCUS_C443 = &device_creator<keycus_c443_device>;
+=======
+DEFINE_DEVICE_TYPE(KEYCUS_C443, keycus_c443_device, "keycus_c443", "Namco C443 KEYCUS")
+>>>>>>> upstream/master

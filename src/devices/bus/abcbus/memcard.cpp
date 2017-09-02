@@ -54,6 +54,10 @@ Notes:
 
 */
 
+<<<<<<< HEAD
+=======
+#include "emu.h"
+>>>>>>> upstream/master
 #include "memcard.h"
 
 
@@ -62,7 +66,11 @@ Notes:
 //  DEVICE DEFINITIONS
 //**************************************************************************
 
+<<<<<<< HEAD
 const device_type ABC_MEMORY_CARD = &device_creator<abc_memory_card_t>;
+=======
+DEFINE_DEVICE_TYPE(ABC_MEMORY_CARD, abc_memory_card_device, "abc_mem", "ABC Memory Card")
+>>>>>>> upstream/master
 
 
 //-------------------------------------------------
@@ -94,7 +102,11 @@ ROM_END
 //  rom_region - device-specific ROM region
 //-------------------------------------------------
 
+<<<<<<< HEAD
 const rom_entry *abc_memory_card_t::device_rom_region() const
+=======
+const tiny_rom_entry *abc_memory_card_device::device_rom_region() const
+>>>>>>> upstream/master
 {
 	return ROM_NAME( abc_dos );
 }
@@ -106,11 +118,19 @@ const rom_entry *abc_memory_card_t::device_rom_region() const
 //**************************************************************************
 
 //-------------------------------------------------
+<<<<<<< HEAD
 //  abc_memory_card_t - constructor
 //-------------------------------------------------
 
 abc_memory_card_t::abc_memory_card_t(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock) :
 	device_t(mconfig, ABC_MEMORY_CARD, "ABC Memory Card", tag, owner, clock, "abc_mem", __FILE__),
+=======
+//  abc_memory_card_device - constructor
+//-------------------------------------------------
+
+abc_memory_card_device::abc_memory_card_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock) :
+	device_t(mconfig, ABC_MEMORY_CARD, tag, owner, clock),
+>>>>>>> upstream/master
 	device_abcbus_card_interface(mconfig, *this),
 	m_dos_rom(*this, "dos"),
 	m_iec_rom(*this, "iec"),
@@ -124,7 +144,11 @@ abc_memory_card_t::abc_memory_card_t(const machine_config &mconfig, const char *
 //  device_start - device-specific startup
 //-------------------------------------------------
 
+<<<<<<< HEAD
 void abc_memory_card_t::device_start()
+=======
+void abc_memory_card_device::device_start()
+>>>>>>> upstream/master
 {
 }
 
@@ -138,9 +162,15 @@ void abc_memory_card_t::device_start()
 //  abcbus_xmemfl -
 //-------------------------------------------------
 
+<<<<<<< HEAD
 UINT8 abc_memory_card_t::abcbus_xmemfl(offs_t offset)
 {
 	UINT8 data = 0xff;
+=======
+uint8_t abc_memory_card_device::abcbus_xmemfl(offs_t offset)
+{
+	uint8_t data = 0xff;
+>>>>>>> upstream/master
 
 	if (offset >= 0x6000 && offset < 0x7000)
 	{

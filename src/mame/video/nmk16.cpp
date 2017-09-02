@@ -1,5 +1,11 @@
+<<<<<<< HEAD
 // license:???
 // copyright-holders:Mirko Buffoni,Richard Bush,Nicola Salmoria,Bryan McPhail,David Haywood,R. Belmont,Alex Marshall,Angelo Salese,Luca Elia
+=======
+// license:BSD-3-Clause
+// copyright-holders:Mirko Buffoni,Nicola Salmoria,Bryan McPhail,David Haywood,R. Belmont,Alex Marshall,Angelo Salese,Luca Elia
+// thanks-to:Richard Bush
+>>>>>>> upstream/master
 /* notes...
 
  drawing sprites in a single pass with pdrawgfx breaks Thunder Dragon 2,
@@ -92,7 +98,11 @@ TILE_GET_INFO_MEMBER(nmk16_state::bjtwin_get_bg_tile_info)
 
 TILE_GET_INFO_MEMBER(nmk16_state::get_tile_info_0_8bit)
 {
+<<<<<<< HEAD
 	UINT16 code = m_nmk_bgvideoram0[tile_index];
+=======
+	uint16_t code = m_nmk_bgvideoram0[tile_index];
+>>>>>>> upstream/master
 	SET_TILE_INFO_MEMBER(1,
 			code,
 			0,
@@ -108,25 +118,42 @@ TILE_GET_INFO_MEMBER(nmk16_state::get_tile_info_0_8bit)
 
 void nmk16_state::nmk16_video_init()
 {
+<<<<<<< HEAD
 	m_spriteram_old = auto_alloc_array_clear(machine(), UINT16, 0x1000/2);
 	m_spriteram_old2 = auto_alloc_array_clear(machine(), UINT16, 0x1000/2);
 
 	m_videoshift = 0;        /* 256x224 screen, no shift */
 	m_background_bitmap = NULL;
+=======
+	m_spriteram_old = make_unique_clear<uint16_t[]>(0x1000/2);
+	m_spriteram_old2 = make_unique_clear<uint16_t[]>(0x1000/2);
+
+	m_videoshift = 0;        /* 256x224 screen, no shift */
+	m_background_bitmap = nullptr;
+>>>>>>> upstream/master
 	m_simple_scroll = 1;
 }
 
 
 VIDEO_START_MEMBER(nmk16_state,bioship)
 {
+<<<<<<< HEAD
 	m_bg_tilemap0 = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(nmk16_state::macross_get_bg0_tile_info),this), tilemap_mapper_delegate(FUNC(nmk16_state::afega_tilemap_scan_pages),this),16,16,TILES_PER_PAGE_X*PAGES_PER_TMAP_X,TILES_PER_PAGE_Y*PAGES_PER_TMAP_Y);
 	m_tx_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(nmk16_state::macross_get_tx_tile_info),this),TILEMAP_SCAN_COLS,8,8,32,32);
+=======
+	m_bg_tilemap0 = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(nmk16_state::macross_get_bg0_tile_info),this), tilemap_mapper_delegate(FUNC(nmk16_state::afega_tilemap_scan_pages),this),16,16,TILES_PER_PAGE_X*PAGES_PER_TMAP_X,TILES_PER_PAGE_Y*PAGES_PER_TMAP_Y);
+	m_tx_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(nmk16_state::macross_get_tx_tile_info),this),TILEMAP_SCAN_COLS,8,8,32,32);
+>>>>>>> upstream/master
 
 	m_bg_tilemap0->set_transparent_pen(15);
 	m_tx_tilemap->set_transparent_pen(15);
 
 	nmk16_video_init();
+<<<<<<< HEAD
 	m_background_bitmap = auto_bitmap_ind16_alloc(machine(),8192,512);
+=======
+	m_background_bitmap = std::make_unique<bitmap_ind16>(8192,512);
+>>>>>>> upstream/master
 	m_bioship_background_bank=0;
 	m_redraw_bitmap = 1;
 
@@ -134,9 +161,15 @@ VIDEO_START_MEMBER(nmk16_state,bioship)
 
 VIDEO_START_MEMBER(nmk16_state,strahl)
 {
+<<<<<<< HEAD
 	m_bg_tilemap0 = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(nmk16_state::macross_get_bg0_tile_info),this), tilemap_mapper_delegate(FUNC(nmk16_state::afega_tilemap_scan_pages),this),16,16,TILES_PER_PAGE_X*PAGES_PER_TMAP_X,TILES_PER_PAGE_Y*PAGES_PER_TMAP_Y);
 	m_fg_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(nmk16_state::strahl_get_fg_tile_info),this), tilemap_mapper_delegate(FUNC(nmk16_state::afega_tilemap_scan_pages),this),16,16,TILES_PER_PAGE_X*PAGES_PER_TMAP_X,TILES_PER_PAGE_Y*PAGES_PER_TMAP_Y);
 	m_tx_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(nmk16_state::macross_get_tx_tile_info),this),TILEMAP_SCAN_COLS,8,8,32,32);
+=======
+	m_bg_tilemap0 = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(nmk16_state::macross_get_bg0_tile_info),this), tilemap_mapper_delegate(FUNC(nmk16_state::afega_tilemap_scan_pages),this),16,16,TILES_PER_PAGE_X*PAGES_PER_TMAP_X,TILES_PER_PAGE_Y*PAGES_PER_TMAP_Y);
+	m_fg_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(nmk16_state::strahl_get_fg_tile_info),this), tilemap_mapper_delegate(FUNC(nmk16_state::afega_tilemap_scan_pages),this),16,16,TILES_PER_PAGE_X*PAGES_PER_TMAP_X,TILES_PER_PAGE_Y*PAGES_PER_TMAP_Y);
+	m_tx_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(nmk16_state::macross_get_tx_tile_info),this),TILEMAP_SCAN_COLS,8,8,32,32);
+>>>>>>> upstream/master
 
 	m_fg_tilemap->set_transparent_pen(15);
 	m_tx_tilemap->set_transparent_pen(15);
@@ -148,8 +181,13 @@ VIDEO_START_MEMBER(nmk16_state,strahl)
 
 VIDEO_START_MEMBER(nmk16_state,macross)
 {
+<<<<<<< HEAD
 	m_bg_tilemap0 = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(nmk16_state::macross_get_bg0_tile_info),this), tilemap_mapper_delegate(FUNC(nmk16_state::afega_tilemap_scan_pages),this),16,16,TILES_PER_PAGE_X*PAGES_PER_TMAP_X,TILES_PER_PAGE_Y*PAGES_PER_TMAP_Y);
 	m_tx_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(nmk16_state::macross_get_tx_tile_info),this),TILEMAP_SCAN_COLS,8,8,32,32);
+=======
+	m_bg_tilemap0 = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(nmk16_state::macross_get_bg0_tile_info),this), tilemap_mapper_delegate(FUNC(nmk16_state::afega_tilemap_scan_pages),this),16,16,TILES_PER_PAGE_X*PAGES_PER_TMAP_X,TILES_PER_PAGE_Y*PAGES_PER_TMAP_Y);
+	m_tx_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(nmk16_state::macross_get_tx_tile_info),this),TILEMAP_SCAN_COLS,8,8,32,32);
+>>>>>>> upstream/master
 
 	m_tx_tilemap->set_transparent_pen(15);
 
@@ -158,8 +196,13 @@ VIDEO_START_MEMBER(nmk16_state,macross)
 
 VIDEO_START_MEMBER(nmk16_state,gunnail)
 {
+<<<<<<< HEAD
 	m_bg_tilemap0 = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(nmk16_state::macross_get_bg0_tile_info),this), tilemap_mapper_delegate(FUNC(nmk16_state::afega_tilemap_scan_pages),this),16,16,TILES_PER_PAGE_X*PAGES_PER_TMAP_X,TILES_PER_PAGE_Y*PAGES_PER_TMAP_Y);
 	m_tx_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(nmk16_state::macross_get_tx_tile_info),this),TILEMAP_SCAN_COLS,8,8,64,32);
+=======
+	m_bg_tilemap0 = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(nmk16_state::macross_get_bg0_tile_info),this), tilemap_mapper_delegate(FUNC(nmk16_state::afega_tilemap_scan_pages),this),16,16,TILES_PER_PAGE_X*PAGES_PER_TMAP_X,TILES_PER_PAGE_Y*PAGES_PER_TMAP_Y);
+	m_tx_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(nmk16_state::macross_get_tx_tile_info),this),TILEMAP_SCAN_COLS,8,8,64,32);
+>>>>>>> upstream/master
 
 	m_tx_tilemap->set_transparent_pen(15);
 	m_bg_tilemap0->set_scroll_rows(512);
@@ -172,12 +215,21 @@ VIDEO_START_MEMBER(nmk16_state,gunnail)
 
 VIDEO_START_MEMBER(nmk16_state,macross2)
 {
+<<<<<<< HEAD
 	m_bg_tilemap0 = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(nmk16_state::macross_get_bg0_tile_info),this), tilemap_mapper_delegate(FUNC(nmk16_state::afega_tilemap_scan_pages),this),16,16,TILES_PER_PAGE_X*PAGES_PER_TMAP_X,TILES_PER_PAGE_Y*PAGES_PER_TMAP_Y);
 	m_bg_tilemap1 = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(nmk16_state::macross_get_bg1_tile_info),this), tilemap_mapper_delegate(FUNC(nmk16_state::afega_tilemap_scan_pages),this),16,16,TILES_PER_PAGE_X*PAGES_PER_TMAP_X,TILES_PER_PAGE_Y*PAGES_PER_TMAP_Y);
 	m_bg_tilemap2 = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(nmk16_state::macross_get_bg2_tile_info),this), tilemap_mapper_delegate(FUNC(nmk16_state::afega_tilemap_scan_pages),this),16,16,TILES_PER_PAGE_X*PAGES_PER_TMAP_X,TILES_PER_PAGE_Y*PAGES_PER_TMAP_Y);
 	m_bg_tilemap3 = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(nmk16_state::macross_get_bg3_tile_info),this), tilemap_mapper_delegate(FUNC(nmk16_state::afega_tilemap_scan_pages),this),16,16,TILES_PER_PAGE_X*PAGES_PER_TMAP_X,TILES_PER_PAGE_Y*PAGES_PER_TMAP_Y);
 
 	m_tx_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(nmk16_state::macross_get_tx_tile_info),this),TILEMAP_SCAN_COLS,8,8,64,32);
+=======
+	m_bg_tilemap0 = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(nmk16_state::macross_get_bg0_tile_info),this), tilemap_mapper_delegate(FUNC(nmk16_state::afega_tilemap_scan_pages),this),16,16,TILES_PER_PAGE_X*PAGES_PER_TMAP_X,TILES_PER_PAGE_Y*PAGES_PER_TMAP_Y);
+	m_bg_tilemap1 = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(nmk16_state::macross_get_bg1_tile_info),this), tilemap_mapper_delegate(FUNC(nmk16_state::afega_tilemap_scan_pages),this),16,16,TILES_PER_PAGE_X*PAGES_PER_TMAP_X,TILES_PER_PAGE_Y*PAGES_PER_TMAP_Y);
+	m_bg_tilemap2 = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(nmk16_state::macross_get_bg2_tile_info),this), tilemap_mapper_delegate(FUNC(nmk16_state::afega_tilemap_scan_pages),this),16,16,TILES_PER_PAGE_X*PAGES_PER_TMAP_X,TILES_PER_PAGE_Y*PAGES_PER_TMAP_Y);
+	m_bg_tilemap3 = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(nmk16_state::macross_get_bg3_tile_info),this), tilemap_mapper_delegate(FUNC(nmk16_state::afega_tilemap_scan_pages),this),16,16,TILES_PER_PAGE_X*PAGES_PER_TMAP_X,TILES_PER_PAGE_Y*PAGES_PER_TMAP_Y);
+
+	m_tx_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(nmk16_state::macross_get_tx_tile_info),this),TILEMAP_SCAN_COLS,8,8,64,32);
+>>>>>>> upstream/master
 
 	m_tx_tilemap->set_transparent_pen(15);
 
@@ -194,7 +246,11 @@ VIDEO_START_MEMBER(nmk16_state,raphero)
 
 VIDEO_START_MEMBER(nmk16_state,bjtwin)
 {
+<<<<<<< HEAD
 	m_bg_tilemap0 = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(nmk16_state::bjtwin_get_bg_tile_info),this),TILEMAP_SCAN_COLS,8,8,64,32);
+=======
+	m_bg_tilemap0 = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(nmk16_state::bjtwin_get_bg_tile_info),this),TILEMAP_SCAN_COLS,8,8,64,32);
+>>>>>>> upstream/master
 
 	nmk16_video_init();
 	m_videoshift = 64;  /* 384x224 screen, leftmost 64 pixels have to be retrieved */
@@ -391,7 +447,11 @@ WRITE16_MEMBER(nmk16_state::bioship_bank_w)
 
 // manybloc uses extra flip bits on the sprites, but these break other games
 
+<<<<<<< HEAD
 inline void nmk16_state::nmk16_draw_sprite(bitmap_ind16 &bitmap, const rectangle &cliprect, UINT16 *spr)
+=======
+inline void nmk16_state::nmk16_draw_sprite(bitmap_ind16 &bitmap, const rectangle &cliprect, uint16_t *spr)
+>>>>>>> upstream/master
 {
 	if(!(spr[0] & 0x0001))
 		return;
@@ -432,7 +492,11 @@ inline void nmk16_state::nmk16_draw_sprite(bitmap_ind16 &bitmap, const rectangle
 	} while (--yy >= 0);
 }
 
+<<<<<<< HEAD
 inline void nmk16_state::nmk16_draw_sprite_flipsupported(bitmap_ind16 &bitmap, const rectangle &cliprect, UINT16 *spr)
+=======
+inline void nmk16_state::nmk16_draw_sprite_flipsupported(bitmap_ind16 &bitmap, const rectangle &cliprect, uint16_t *spr)
+>>>>>>> upstream/master
 {
 	if(!(spr[0] & 0x0001))
 		return;
@@ -486,7 +550,11 @@ void nmk16_state::nmk16_draw_sprites_swap(bitmap_ind16 &bitmap, const rectangle 
 	for (i = 0; i < 0x100; i++)
 	{
 		int spr = BITSWAP8(i, bittbl[0], bittbl[1], bittbl[2], bittbl[3], bittbl[4], bittbl[5], bittbl[6], bittbl[7]);
+<<<<<<< HEAD
 		nmk16_draw_sprite(bitmap, cliprect, m_spriteram_old2 + (spr * 16/2));
+=======
+		nmk16_draw_sprite(bitmap, cliprect, m_spriteram_old2.get() + (spr * 16/2));
+>>>>>>> upstream/master
 	}
 }
 
@@ -497,7 +565,11 @@ void nmk16_state::nmk16_draw_sprites_swap_flipsupported(bitmap_ind16 &bitmap, co
 	for ( i = 0; i < 0x100; i++ )
 	{
 		int spr = BITSWAP8(i, bittbl[0], bittbl[1], bittbl[2], bittbl[3], bittbl[4], bittbl[5], bittbl[6], bittbl[7]);
+<<<<<<< HEAD
 		nmk16_draw_sprite_flipsupported(bitmap, cliprect, m_spriteram_old2 + (spr * 16/2));
+=======
+		nmk16_draw_sprite_flipsupported(bitmap, cliprect, m_spriteram_old2.get() + (spr * 16/2));
+>>>>>>> upstream/master
 	}
 }
 
@@ -507,7 +579,11 @@ void nmk16_state::nmk16_draw_sprites(bitmap_ind16 &bitmap, const rectangle &clip
 
 	for (offs = 0; offs < 0x1000/2; offs += 8)
 	{
+<<<<<<< HEAD
 		nmk16_draw_sprite(bitmap, cliprect, m_spriteram_old2 + offs);
+=======
+		nmk16_draw_sprite(bitmap, cliprect, m_spriteram_old2.get() + offs);
+>>>>>>> upstream/master
 	}
 }
 
@@ -517,7 +593,11 @@ void nmk16_state::nmk16_draw_sprites_flipsupported(bitmap_ind16 &bitmap, const r
 
 	for (offs = 0; offs < 0x1000/2; offs += 8)
 	{
+<<<<<<< HEAD
 		nmk16_draw_sprite_flipsupported(bitmap, cliprect, m_spriteram_old2 + offs);
+=======
+		nmk16_draw_sprite_flipsupported(bitmap, cliprect, m_spriteram_old2.get() + offs);
+>>>>>>> upstream/master
 	}
 }
 
@@ -578,7 +658,11 @@ int nmk16_state::nmk16_bg_sprflip_tx_update(screen_device &screen, bitmap_ind16 
 
 int nmk16_state::nmk16_bioshipbg_sprflip_tx_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
 {
+<<<<<<< HEAD
 	UINT16 *tilerom = (UINT16 *)memregion("gfx5")->base();
+=======
+	uint16_t *tilerom = (uint16_t *)memregion("gfx5")->base();
+>>>>>>> upstream/master
 	int scrollx=-(m_bioship_scroll[1] + m_bioship_scroll[0]*256);
 	int scrolly=-(m_bioship_scroll[3] + m_bioship_scroll[2]*256);
 
@@ -592,7 +676,11 @@ int nmk16_state::nmk16_bioshipbg_sprflip_tx_update(screen_device &screen, bitmap
 
 		/* Draw background from tile rom */
 		for (offs = 0;offs <0x1000;offs++) {
+<<<<<<< HEAD
 				UINT16 data = tilerom[offs+bank];
+=======
+				uint16_t data = tilerom[offs+bank];
+>>>>>>> upstream/master
 				int numtile = data&0xfff;
 				int color = (data&0xf000)>>12;
 
@@ -693,8 +781,13 @@ int nmk16_state::nmk16_complexbg_sprswap_tx_update(screen_device &screen, bitmap
 	}
 	else
 	{
+<<<<<<< HEAD
 		UINT16 yscroll = ((m_gunnail_scrollram[2]&0xff)<<8) | ((m_gunnail_scrollram[3]&0xff)<<0);
 		UINT16 xscroll = ((m_gunnail_scrollram[0]&0xff)<<8) | ((m_gunnail_scrollram[1]&0xff)<<0);
+=======
+		uint16_t yscroll = ((m_gunnail_scrollram[2]&0xff)<<8) | ((m_gunnail_scrollram[3]&0xff)<<0);
+		uint16_t xscroll = ((m_gunnail_scrollram[0]&0xff)<<8) | ((m_gunnail_scrollram[1]&0xff)<<0);
+>>>>>>> upstream/master
 		int tilemap_bank_select;
 		tilemap_t* bg_tilemap = m_bg_tilemap0;
 
@@ -731,27 +824,46 @@ int nmk16_state::nmk16_complexbg_sprswap_tx_update(screen_device &screen, bitmap
 
 ***************************************************************************/
 
+<<<<<<< HEAD
 UINT32 nmk16_state::screen_update_macross(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+=======
+uint32_t nmk16_state::screen_update_macross(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+>>>>>>> upstream/master
 {
 	return nmk16_bg_spr_tx_update(screen, bitmap, cliprect);
 }
 
+<<<<<<< HEAD
 UINT32 nmk16_state::screen_update_manybloc(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+=======
+uint32_t nmk16_state::screen_update_manybloc(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+>>>>>>> upstream/master
 {
 	return nmk16_bg_sprflip_tx_update(screen, bitmap, cliprect);
 }
 
+<<<<<<< HEAD
 UINT32 nmk16_state::screen_update_tharrier(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
 {
 	/* I think the protection device probably copies this to the regs... */
 	UINT16 tharrier_scroll = m_mainram[0x9f00/2];
+=======
+uint32_t nmk16_state::screen_update_tharrier(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+{
+	/* I think the protection device probably copies this to the regs... */
+	uint16_t tharrier_scroll = m_mainram[0x9f00/2];
+>>>>>>> upstream/master
 
 	m_bg_tilemap0->set_scrollx(0,tharrier_scroll);
 
 	return nmk16_bg_sprflip_tx_update(screen, bitmap, cliprect);
 }
 
+<<<<<<< HEAD
 UINT32 nmk16_state::screen_update_tdragon2(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+=======
+uint32_t nmk16_state::screen_update_tdragon2(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+>>>>>>> upstream/master
 {
 	static int bittbl[8] = {
 	4, 6, 5, 7, 3, 2, 1, 0
@@ -760,7 +872,11 @@ UINT32 nmk16_state::screen_update_tdragon2(screen_device &screen, bitmap_ind16 &
 	return nmk16_complexbg_sprswap_tx_update(screen, bitmap, cliprect, bittbl);
 }
 
+<<<<<<< HEAD
 UINT32 nmk16_state::screen_update_gunnail(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+=======
+uint32_t nmk16_state::screen_update_gunnail(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+>>>>>>> upstream/master
 {
 	static int bittbl[8] = {
 	7, 6, 5, 4, 3, 2, 1, 0
@@ -769,17 +885,29 @@ UINT32 nmk16_state::screen_update_gunnail(screen_device &screen, bitmap_ind16 &b
 	return nmk16_complexbg_sprswap_tx_update(screen, bitmap, cliprect, bittbl);
 }
 
+<<<<<<< HEAD
 UINT32 nmk16_state::screen_update_bioship(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+=======
+uint32_t nmk16_state::screen_update_bioship(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+>>>>>>> upstream/master
 {
 	return nmk16_bioshipbg_sprflip_tx_update(screen, bitmap, cliprect);
 }
 
+<<<<<<< HEAD
 UINT32 nmk16_state::screen_update_strahl(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+=======
+uint32_t nmk16_state::screen_update_strahl(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+>>>>>>> upstream/master
 {
 	return nmk16_bg_fg_spr_tx_update(screen, bitmap, cliprect);
 }
 
+<<<<<<< HEAD
 UINT32 nmk16_state::screen_update_bjtwin(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+=======
+uint32_t nmk16_state::screen_update_bjtwin(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+>>>>>>> upstream/master
 {
 	return nmk16_bg_spr_update(screen, bitmap, cliprect);
 }
@@ -795,6 +923,7 @@ UINT32 nmk16_state::screen_update_bjtwin(screen_device &screen, bitmap_ind16 &bi
 
 VIDEO_START_MEMBER(nmk16_state,afega)
 {
+<<<<<<< HEAD
 	m_spriteram_old = auto_alloc_array_clear(machine(), UINT16, 0x1000/2);
 	m_spriteram_old2 = auto_alloc_array_clear(machine(), UINT16, 0x1000/2);
 
@@ -805,6 +934,22 @@ VIDEO_START_MEMBER(nmk16_state,afega)
 	m_tx_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(nmk16_state::macross_get_tx_tile_info),this), TILEMAP_SCAN_COLS,
 								8,8,
 								32,32);
+=======
+	m_spriteram_old = make_unique_clear<uint16_t[]>(0x1000/2);
+	m_spriteram_old2 = make_unique_clear<uint16_t[]>(0x1000/2);
+
+	m_bg_tilemap0 = &machine().tilemap().create(
+			*m_gfxdecode,
+			tilemap_get_info_delegate(FUNC(nmk16_state::macross_get_bg0_tile_info),this),
+			tilemap_mapper_delegate(FUNC(nmk16_state::afega_tilemap_scan_pages),this),
+			16,16, TILES_PER_PAGE_X*PAGES_PER_TMAP_X,TILES_PER_PAGE_Y*PAGES_PER_TMAP_Y);
+
+	m_tx_tilemap = &machine().tilemap().create(
+			*m_gfxdecode,
+			tilemap_get_info_delegate(FUNC(nmk16_state::macross_get_tx_tile_info),this),
+			TILEMAP_SCAN_COLS,
+			8,8, 32,32);
+>>>>>>> upstream/master
 
 	m_tx_tilemap->set_transparent_pen(0xf);
 }
@@ -812,6 +957,7 @@ VIDEO_START_MEMBER(nmk16_state,afega)
 
 VIDEO_START_MEMBER(nmk16_state,grdnstrm)
 {
+<<<<<<< HEAD
 	m_spriteram_old = auto_alloc_array_clear(machine(), UINT16, 0x1000/2);
 	m_spriteram_old2 = auto_alloc_array_clear(machine(), UINT16, 0x1000/2);
 
@@ -823,6 +969,23 @@ VIDEO_START_MEMBER(nmk16_state,grdnstrm)
 	m_tx_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(nmk16_state::macross_get_tx_tile_info),this), TILEMAP_SCAN_COLS,
 								8,8,
 								32,32);
+=======
+	m_spriteram_old = make_unique_clear<uint16_t[]>(0x1000/2);
+	m_spriteram_old2 = make_unique_clear<uint16_t[]>(0x1000/2);
+
+
+	m_bg_tilemap0 = &machine().tilemap().create(
+			*m_gfxdecode,
+			tilemap_get_info_delegate(FUNC(nmk16_state::get_tile_info_0_8bit),this),
+			tilemap_mapper_delegate(FUNC(nmk16_state::afega_tilemap_scan_pages),this),
+			16,16, TILES_PER_PAGE_X*PAGES_PER_TMAP_X,TILES_PER_PAGE_Y*PAGES_PER_TMAP_Y);
+
+	m_tx_tilemap = &machine().tilemap().create(
+			*m_gfxdecode,
+			tilemap_get_info_delegate(FUNC(nmk16_state::macross_get_tx_tile_info),this),
+			TILEMAP_SCAN_COLS,
+			8,8, 32,32);
+>>>>>>> upstream/master
 
 	m_tx_tilemap->set_transparent_pen(0xf);
 }
@@ -830,6 +993,7 @@ VIDEO_START_MEMBER(nmk16_state,grdnstrm)
 
 VIDEO_START_MEMBER(nmk16_state,firehawk)
 {
+<<<<<<< HEAD
 	m_spriteram_old = auto_alloc_array_clear(machine(), UINT16, 0x1000/2);
 	m_spriteram_old2 = auto_alloc_array_clear(machine(), UINT16, 0x1000/2);
 
@@ -841,6 +1005,23 @@ VIDEO_START_MEMBER(nmk16_state,firehawk)
 	m_tx_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(nmk16_state::macross_get_tx_tile_info),this), TILEMAP_SCAN_COLS,
 								8,8,
 								32,32);
+=======
+	m_spriteram_old = make_unique_clear<uint16_t[]>(0x1000/2);
+	m_spriteram_old2 = make_unique_clear<uint16_t[]>(0x1000/2);
+
+
+	m_bg_tilemap0 = &machine().tilemap().create(
+			*m_gfxdecode,
+			tilemap_get_info_delegate(FUNC(nmk16_state::get_tile_info_0_8bit),this),
+			tilemap_mapper_delegate(FUNC(nmk16_state::afega_tilemap_scan_pages),this),
+			16,16, TILES_PER_PAGE_X*PAGES_PER_TMAP_X,TILES_PER_PAGE_Y*PAGES_PER_TMAP_Y);
+
+	m_tx_tilemap = &machine().tilemap().create(
+			*m_gfxdecode,
+			tilemap_get_info_delegate(FUNC(nmk16_state::macross_get_tx_tile_info),this),
+			TILEMAP_SCAN_COLS,
+			8,8, 32,32);
+>>>>>>> upstream/master
 
 	m_tx_tilemap->set_transparent_pen(0xf);
 }
@@ -891,12 +1072,21 @@ void nmk16_state::redhawki_video_update(screen_device &screen, bitmap_ind16 &bit
 	nmk16_draw_sprites_flipsupported(bitmap,cliprect);
 }
 
+<<<<<<< HEAD
 UINT32 nmk16_state::screen_update_afega(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)   { video_update(screen,bitmap,cliprect, 1, -0x100,+0x000, 0x0001);  return 0; }
 UINT32 nmk16_state::screen_update_bubl2000(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect){ video_update(screen,bitmap,cliprect, 0, -0x100,+0x000, 0x0001);  return 0; } // no flipscreen support, I really would confirmation from the schematics
 UINT32 nmk16_state::screen_update_redhawkb(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect){ video_update(screen,bitmap,cliprect, 0, +0x000,+0x100, 0x0001);  return 0; }
 UINT32 nmk16_state::screen_update_redhawki(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect){ redhawki_video_update(screen,bitmap,cliprect); return 0;} // strange scroll regs
 
 UINT32 nmk16_state::screen_update_firehawk(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+=======
+uint32_t nmk16_state::screen_update_afega(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)   { video_update(screen,bitmap,cliprect, 1, -0x100,+0x000, 0x0001);  return 0; }
+uint32_t nmk16_state::screen_update_bubl2000(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect){ video_update(screen,bitmap,cliprect, 0, -0x100,+0x000, 0x0001);  return 0; } // no flipscreen support, I really would confirmation from the schematics
+uint32_t nmk16_state::screen_update_redhawkb(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect){ video_update(screen,bitmap,cliprect, 0, +0x000,+0x100, 0x0001);  return 0; }
+uint32_t nmk16_state::screen_update_redhawki(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect){ redhawki_video_update(screen,bitmap,cliprect); return 0;} // strange scroll regs
+
+uint32_t nmk16_state::screen_update_firehawk(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+>>>>>>> upstream/master
 {
 	m_bg_tilemap0->set_scrolly(0, m_afega_scroll_1[1] + 0x100);
 	m_bg_tilemap0->set_scrollx(0, m_afega_scroll_0[1] - 0x100);

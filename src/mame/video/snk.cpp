@@ -1,5 +1,11 @@
+<<<<<<< HEAD
 // license:???
 // copyright-holders:Marco Cassili,Ernesto Corvi,Tim Lindquist,Carlos A. Lozano,Bryan McPhail,Jarek Parchanski,Nicola Salmoria,Tomasz Slanina,Phil Stroffolino,Acho A. Tang,Victor Trucco
+=======
+// license:BSD-3-Clause
+// copyright-holders:Ernesto Corvi,Tim Lindquist,Carlos A. Lozano,Bryan McPhail,Jarek Parchanski,Nicola Salmoria,Tomasz Slanina,Phil Stroffolino,Acho A. Tang,Victor Trucco
+// thanks-to:Marco Cassili
+>>>>>>> upstream/master
 #include "emu.h"
 #include "includes/snk.h"
 
@@ -29,7 +35,11 @@
 
 PALETTE_INIT_MEMBER(snk_state,tnk3)
 {
+<<<<<<< HEAD
 	const UINT8 *color_prom = memregion("proms")->base();
+=======
+	const uint8_t *color_prom = memregion("proms")->base();
+>>>>>>> upstream/master
 	int i;
 	int num_colors = 0x400;
 
@@ -224,9 +234,15 @@ VIDEO_START_MEMBER(snk_state,marvins)
 {
 	VIDEO_START_CALL_MEMBER(snk_3bpp_shadow);
 
+<<<<<<< HEAD
 	m_tx_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(snk_state::marvins_get_tx_tile_info),this), tilemap_mapper_delegate(FUNC(snk_state::marvins_tx_scan_cols),this), 8, 8, 36, 28);
 	m_fg_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(snk_state::marvins_get_fg_tile_info),this), TILEMAP_SCAN_COLS,    8, 8, 64, 32);
 	m_bg_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(snk_state::marvins_get_bg_tile_info),this), TILEMAP_SCAN_COLS,    8, 8, 64, 32);
+=======
+	m_tx_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(snk_state::marvins_get_tx_tile_info),this), tilemap_mapper_delegate(FUNC(snk_state::marvins_tx_scan_cols),this), 8, 8, 36, 28);
+	m_fg_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(snk_state::marvins_get_fg_tile_info),this), TILEMAP_SCAN_COLS,    8, 8, 64, 32);
+	m_bg_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(snk_state::marvins_get_bg_tile_info),this), TILEMAP_SCAN_COLS,    8, 8, 64, 32);
+>>>>>>> upstream/master
 
 	m_tx_tilemap->set_transparent_pen(15);
 	m_tx_tilemap->set_scrolldy(8, 8);
@@ -245,8 +261,13 @@ VIDEO_START_MEMBER(snk_state,jcross)
 {
 	VIDEO_START_CALL_MEMBER(snk_3bpp_shadow);
 
+<<<<<<< HEAD
 	m_tx_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(snk_state::marvins_get_tx_tile_info),this), tilemap_mapper_delegate(FUNC(snk_state::marvins_tx_scan_cols),this), 8, 8, 36, 28);
 	m_bg_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(snk_state::aso_get_bg_tile_info),this),     TILEMAP_SCAN_COLS,    8, 8, 64, 64);
+=======
+	m_tx_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(snk_state::marvins_get_tx_tile_info),this), tilemap_mapper_delegate(FUNC(snk_state::marvins_tx_scan_cols),this), 8, 8, 36, 28);
+	m_bg_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(snk_state::aso_get_bg_tile_info),this),     TILEMAP_SCAN_COLS,    8, 8, 64, 64);
+>>>>>>> upstream/master
 
 	m_tx_tilemap->set_transparent_pen(15);
 	m_tx_tilemap->set_scrolldy(8, 8);
@@ -264,8 +285,13 @@ VIDEO_START_MEMBER(snk_state,sgladiat)
 {
 	VIDEO_START_CALL_MEMBER(snk_3bpp_shadow);
 
+<<<<<<< HEAD
 	m_tx_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(snk_state::marvins_get_tx_tile_info),this), tilemap_mapper_delegate(FUNC(snk_state::marvins_tx_scan_cols),this), 8, 8, 36, 28);
 	m_bg_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(snk_state::aso_get_bg_tile_info),this),     TILEMAP_SCAN_COLS,    8, 8, 64, 32);
+=======
+	m_tx_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(snk_state::marvins_get_tx_tile_info),this), tilemap_mapper_delegate(FUNC(snk_state::marvins_tx_scan_cols),this), 8, 8, 36, 28);
+	m_bg_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(snk_state::aso_get_bg_tile_info),this),     TILEMAP_SCAN_COLS,    8, 8, 64, 32);
+>>>>>>> upstream/master
 
 	m_tx_tilemap->set_transparent_pen(15);
 	m_tx_tilemap->set_scrolldy(8, 8);
@@ -304,8 +330,13 @@ VIDEO_START_MEMBER(snk_state,tnk3)
 {
 	VIDEO_START_CALL_MEMBER(snk_3bpp_shadow);
 
+<<<<<<< HEAD
 	m_tx_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(snk_state::marvins_get_tx_tile_info),this), tilemap_mapper_delegate(FUNC(snk_state::marvins_tx_scan_cols),this), 8, 8, 36, 28);
 	m_bg_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(snk_state::tnk3_get_bg_tile_info),this),    TILEMAP_SCAN_COLS,    8, 8, 64, 64);
+=======
+	m_tx_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(snk_state::marvins_get_tx_tile_info),this), tilemap_mapper_delegate(FUNC(snk_state::marvins_tx_scan_cols),this), 8, 8, 36, 28);
+	m_bg_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(snk_state::tnk3_get_bg_tile_info),this),    TILEMAP_SCAN_COLS,    8, 8, 64, 64);
+>>>>>>> upstream/master
 
 	m_tx_tilemap->set_transparent_pen(15);
 	m_tx_tilemap->set_scrolldy(8, 8);
@@ -322,8 +353,13 @@ VIDEO_START_MEMBER(snk_state,ikari)
 {
 	VIDEO_START_CALL_MEMBER(snk_3bpp_shadow);
 
+<<<<<<< HEAD
 	m_tx_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(snk_state::ikari_get_tx_tile_info),this), tilemap_mapper_delegate(FUNC(snk_state::marvins_tx_scan_cols),this),  8,  8, 36, 28);
 	m_bg_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(snk_state::ikari_get_bg_tile_info),this), TILEMAP_SCAN_COLS,    16, 16, 32, 32);
+=======
+	m_tx_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(snk_state::ikari_get_tx_tile_info),this), tilemap_mapper_delegate(FUNC(snk_state::marvins_tx_scan_cols),this),  8,  8, 36, 28);
+	m_bg_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(snk_state::ikari_get_bg_tile_info),this), TILEMAP_SCAN_COLS,    16, 16, 32, 32);
+>>>>>>> upstream/master
 
 	m_tx_tilemap->set_transparent_pen(15);
 	m_tx_tilemap->set_scrolldy(8, 8);
@@ -344,8 +380,13 @@ VIDEO_START_MEMBER(snk_state,gwar)
 
 	memset(m_empty_tile, 0xf, sizeof(m_empty_tile));
 
+<<<<<<< HEAD
 	m_tx_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(snk_state::gwar_get_tx_tile_info),this), TILEMAP_SCAN_COLS,  8,  8, 50, 32);
 	m_bg_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(snk_state::gwar_get_bg_tile_info),this), TILEMAP_SCAN_COLS, 16, 16, 32, 32);
+=======
+	m_tx_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(snk_state::gwar_get_tx_tile_info),this), TILEMAP_SCAN_COLS,  8,  8, 50, 32);
+	m_bg_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(snk_state::gwar_get_bg_tile_info),this), TILEMAP_SCAN_COLS, 16, 16, 32, 32);
+>>>>>>> upstream/master
 
 	m_tx_tilemap->set_transparent_pen(15);
 
@@ -584,10 +625,17 @@ WRITE8_MEMBER(snk_state::ikari_unknown_video_w)
 	   Changing palette bank is necessary to fix colors in test mode. */
 
 
+<<<<<<< HEAD
 if (data != 0x20 && // normal
 	data != 0x31 && // ikari test
 	data != 0xaa)   // victroad spurious during boot
 	popmessage("attrs %02x contact MAMEDEV", data);
+=======
+	if (data != 0x20 && // normal
+		data != 0x31 && // ikari test
+		data != 0xaa)   // victroad spurious during boot
+		popmessage("attrs %02x contact MAMEDEV", data);
+>>>>>>> upstream/master
 
 	m_tx_tilemap->set_palette_offset((data & 0x01) << 4);
 	if (m_tx_tile_offset != ((data & 0x10) << 4))
@@ -663,7 +711,11 @@ WRITE8_MEMBER(snk_state::tdfever_spriteram_w)
 void snk_state::marvins_draw_sprites(bitmap_ind16 &bitmap, const rectangle &cliprect, const int scrollx, const int scrolly, const int from, const int to)
 {
 	gfx_element *gfx = m_gfxdecode->gfx(3);
+<<<<<<< HEAD
 	const UINT8 *source, *finish;
+=======
+	const uint8_t *source, *finish;
+>>>>>>> upstream/master
 
 	source = m_spriteram + from*4;
 	finish = m_spriteram + to*4;
@@ -705,7 +757,11 @@ void snk_state::marvins_draw_sprites(bitmap_ind16 &bitmap, const rectangle &clip
 
 void snk_state::tnk3_draw_sprites(bitmap_ind16 &bitmap, const rectangle &cliprect, const int xscroll, const int yscroll)
 {
+<<<<<<< HEAD
 	UINT8 *spriteram = m_spriteram;
+=======
+	uint8_t *spriteram = m_spriteram;
+>>>>>>> upstream/master
 	gfx_element *gfx = m_gfxdecode->gfx(2);
 	const int size = gfx->width();
 	int tile_number, attributes, color, sx, sy;
@@ -767,7 +823,11 @@ void snk_state::tnk3_draw_sprites(bitmap_ind16 &bitmap, const rectangle &cliprec
 }
 
 
+<<<<<<< HEAD
 void snk_state::ikari_draw_sprites(bitmap_ind16 &bitmap, const rectangle &cliprect, const int start, const int xscroll, const int yscroll, const UINT8 *source, const int gfxnum )
+=======
+void snk_state::ikari_draw_sprites(bitmap_ind16 &bitmap, const rectangle &cliprect, const int start, const int xscroll, const int yscroll, const uint8_t *source, const int gfxnum )
+>>>>>>> upstream/master
 {
 	gfx_element *gfx = m_gfxdecode->gfx(gfxnum);
 	const int size = gfx->width();
@@ -837,7 +897,11 @@ byte3: attributes
     -xx-x--- (bank number)
     x------- (x offset bit8)
 */
+<<<<<<< HEAD
 void snk_state::tdfever_draw_sprites(bitmap_ind16 &bitmap, const rectangle &cliprect,   const int xscroll, const int yscroll, const UINT8 *source, const int gfxnum,
+=======
+void snk_state::tdfever_draw_sprites(bitmap_ind16 &bitmap, const rectangle &cliprect,   const int xscroll, const int yscroll, const uint8_t *source, const int gfxnum,
+>>>>>>> upstream/master
 										const int hw_xflip, const int from, const int to)
 {
 	gfx_element *gfx = m_gfxdecode->gfx(gfxnum);
@@ -900,7 +964,11 @@ void snk_state::tdfever_draw_sprites(bitmap_ind16 &bitmap, const rectangle &clip
 
 /**************************************************************/
 
+<<<<<<< HEAD
 UINT32 snk_state::screen_update_marvins(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+=======
+uint32_t snk_state::screen_update_marvins(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+>>>>>>> upstream/master
 {
 	m_bg_tilemap->set_scrollx(0, m_bg_scrollx);
 	m_bg_tilemap->set_scrolly(0, m_bg_scrolly);
@@ -917,7 +985,11 @@ UINT32 snk_state::screen_update_marvins(screen_device &screen, bitmap_ind16 &bit
 }
 
 
+<<<<<<< HEAD
 UINT32 snk_state::screen_update_tnk3(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+=======
+uint32_t snk_state::screen_update_tnk3(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+>>>>>>> upstream/master
 {
 	m_bg_tilemap->set_scrollx(0, m_bg_scrollx);
 	m_bg_tilemap->set_scrolly(0, m_bg_scrolly);
@@ -929,8 +1001,26 @@ UINT32 snk_state::screen_update_tnk3(screen_device &screen, bitmap_ind16 &bitmap
 	return 0;
 }
 
+<<<<<<< HEAD
 
 UINT32 snk_state::screen_update_ikari(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+=======
+uint32_t snk_state::screen_update_fitegolf2(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+{
+	m_bg_tilemap->set_scrollx(0, m_bg_scrollx);
+	m_bg_tilemap->set_scrolly(0, m_bg_scrolly);
+
+	m_bg_tilemap->draw(screen, bitmap, cliprect, 0, 0);
+	tnk3_draw_sprites(bitmap, cliprect, m_sp16_scrollx+1, m_sp16_scrolly); // needs an extra offset?? neither this or fitegolf actually write to sprite offset registers tho?
+	m_tx_tilemap->draw(screen, bitmap, cliprect, 0, 0);
+
+	return 0;
+}
+
+
+
+uint32_t snk_state::screen_update_ikari(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+>>>>>>> upstream/master
 {
 	m_bg_tilemap->set_scrollx(0, m_bg_scrollx);
 	m_bg_tilemap->set_scrolly(0, m_bg_scrolly);
@@ -946,7 +1036,11 @@ UINT32 snk_state::screen_update_ikari(screen_device &screen, bitmap_ind16 &bitma
 }
 
 
+<<<<<<< HEAD
 UINT32 snk_state::screen_update_gwar(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+=======
+uint32_t snk_state::screen_update_gwar(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+>>>>>>> upstream/master
 {
 	m_bg_tilemap->set_scrollx(0, m_bg_scrollx);
 	m_bg_tilemap->set_scrolly(0, m_bg_scrolly);
@@ -963,7 +1057,11 @@ UINT32 snk_state::screen_update_gwar(screen_device &screen, bitmap_ind16 &bitmap
 }
 
 
+<<<<<<< HEAD
 UINT32 snk_state::screen_update_tdfever(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+=======
+uint32_t snk_state::screen_update_tdfever(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+>>>>>>> upstream/master
 {
 	m_bg_tilemap->set_scrollx(0, m_bg_scrollx);
 	m_bg_tilemap->set_scrolly(0, m_bg_scrolly);

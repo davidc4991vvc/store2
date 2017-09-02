@@ -9,6 +9,7 @@
 
 ***************************************************************************/
 
+<<<<<<< HEAD
 #pragma once
 
 #ifndef __MIPS3_H__
@@ -16,12 +17,22 @@
 
 
 #include "cpu/vtlb.h"
+=======
+#ifndef MAME_CPU_MIPS_MIPS3_H
+#define MAME_CPU_MIPS_MIPS3_H
+
+#pragma once
+
+
+#include "divtlb.h"
+>>>>>>> upstream/master
 #include "cpu/drcfe.h"
 #include "cpu/drcuml.h"
 #include "cpu/drcumlsh.h"
 
 
 // NEC VR4300 series is MIPS III with 32-bit address bus and slightly custom COP0/TLB
+<<<<<<< HEAD
 extern const device_type VR4300BE;
 extern const device_type VR4300LE;
 // VR4310 = VR4300 with different speed bin
@@ -39,6 +50,29 @@ extern const device_type QED5271BE;
 extern const device_type QED5271LE;
 extern const device_type RM7000BE;
 extern const device_type RM7000LE;
+=======
+DECLARE_DEVICE_TYPE(VR4300BE,  vr4300be_device)
+DECLARE_DEVICE_TYPE(VR4300LE,  vr4300le_device)
+// VR4310 = VR4300 with different speed bin
+DECLARE_DEVICE_TYPE(VR4310BE,  vr4310be_device)
+DECLARE_DEVICE_TYPE(VR4310LE,  vr4310le_device)
+DECLARE_DEVICE_TYPE(R4600BE,   r4600be_device)
+DECLARE_DEVICE_TYPE(R4600LE,   r4600le_device)
+DECLARE_DEVICE_TYPE(R4650BE,   r4650be_device)
+DECLARE_DEVICE_TYPE(R4650LE,   r4650le_device)
+DECLARE_DEVICE_TYPE(R4700BE,   r4700be_device)
+DECLARE_DEVICE_TYPE(R4700LE,   r4700le_device)
+DECLARE_DEVICE_TYPE(TX4925BE,  tx4925be_device)
+DECLARE_DEVICE_TYPE(TX4925LE,  tx4925le_device)
+DECLARE_DEVICE_TYPE(R5000BE,   r5000be_device)
+DECLARE_DEVICE_TYPE(R5000LE,   r5000le_device)
+DECLARE_DEVICE_TYPE(VR5500BE,  vr5500be_device)
+DECLARE_DEVICE_TYPE(VR5500LE,  vr5500le_device)
+DECLARE_DEVICE_TYPE(QED5271BE, qed5271be_device)
+DECLARE_DEVICE_TYPE(QED5271LE, qed5271le_device)
+DECLARE_DEVICE_TYPE(RM7000BE,  rm7000be_device)
+DECLARE_DEVICE_TYPE(RM7000LE,  rm7000le_device)
+>>>>>>> upstream/master
 
 
 /***************************************************************************
@@ -47,8 +81,13 @@ extern const device_type RM7000LE;
 
 enum
 {
+<<<<<<< HEAD
 	MIPS3_PC = 1,
 	MIPS3_R0,
+=======
+	MIPS3_PC = STATE_GENPC,
+	MIPS3_R0 = 1,
+>>>>>>> upstream/master
 	MIPS3_R1,
 	MIPS3_R2,
 	MIPS3_R3,
@@ -217,17 +256,29 @@ enum
 /* MIPS3 TLB entry */
 struct mips3_tlb_entry
 {
+<<<<<<< HEAD
 	UINT64          page_mask;
 	UINT64          entry_hi;
 	UINT64          entry_lo[2];
+=======
+	uint64_t          page_mask;
+	uint64_t          entry_hi;
+	uint64_t          entry_lo[2];
+>>>>>>> upstream/master
 };
 
 /* internal compiler state */
 struct compiler_state
 {
+<<<<<<< HEAD
 	UINT32              cycles;                     /* accumulated cycles */
 	UINT8               checkints;                  /* need to check interrupts before next instruction */
 	UINT8               checksoftints;              /* need to check software interrupts before next instruction */
+=======
+	uint32_t              cycles;                     /* accumulated cycles */
+	uint8_t               checkints;                  /* need to check interrupts before next instruction */
+	uint8_t               checksoftints;              /* need to check software interrupts before next instruction */
+>>>>>>> upstream/master
 	uml::code_label  labelnum;                   /* index for local labels */
 };
 
@@ -245,7 +296,11 @@ struct compiler_state
 
 class mips3_frontend;
 
+<<<<<<< HEAD
 class mips3_device : public cpu_device
+=======
+class mips3_device : public cpu_device, public device_vtlb_interface
+>>>>>>> upstream/master
 {
 	friend class mips3_frontend;
 
@@ -259,16 +314,25 @@ protected:
 		MIPS3_TYPE_R4600,
 		MIPS3_TYPE_R4650,
 		MIPS3_TYPE_R4700,
+<<<<<<< HEAD
+=======
+		MIPS3_TYPE_TX4925,
+>>>>>>> upstream/master
 
 		/* MIPS IV variants */
 		MIPS3_TYPE_MIPS_IV,
 		MIPS3_TYPE_R5000,
+<<<<<<< HEAD
+=======
+		MIPS3_TYPE_VR5500,
+>>>>>>> upstream/master
 		MIPS3_TYPE_QED5271,
 		MIPS3_TYPE_RM7000
 	};
 
 public:
 	// construction/destruction
+<<<<<<< HEAD
 	mips3_device(const machine_config &mconfig, device_type type, const char *name, const char *tag, device_t *owner, UINT32 clock, const char *shortname, mips3_flavor flavor, endianness_t endiannes);
 
 	static void set_icache_size(device_t &device, size_t icache_size) { downcast<mips3_device &>(device).c_icache_size = icache_size; }
@@ -309,12 +373,55 @@ protected:
 	virtual UINT32 disasm_min_opcode_bytes() const { return 4; }
 	virtual UINT32 disasm_max_opcode_bytes() const { return 4; }
 	virtual offs_t disasm_disassemble(char *buffer, offs_t pc, const UINT8 *oprom, const UINT8 *opram, UINT32 options);
+=======
+	mips3_device(const machine_config &mconfig, device_type type, const char *tag, device_t *owner, uint32_t clock, mips3_flavor flavor, endianness_t endiannes);
+
+	static void set_icache_size(device_t &device, size_t icache_size) { downcast<mips3_device &>(device).c_icache_size = icache_size; }
+	static void set_dcache_size(device_t &device, size_t dcache_size) { downcast<mips3_device &>(device).c_dcache_size = dcache_size; }
+	static void set_system_clock(device_t &device, uint32_t system_clock) { downcast<mips3_device &>(device).c_system_clock = system_clock; }
+
+	TIMER_CALLBACK_MEMBER(compare_int_callback);
+
+	void add_fastram(offs_t start, offs_t end, uint8_t readonly, void *base);
+	void clear_fastram(uint32_t select_start);
+	void mips3drc_set_options(uint32_t options);
+	void mips3drc_add_hotspot(offs_t pc, uint32_t opcode, uint32_t cycles);
+	void burn_cycles(int32_t cycles);
+
+protected:
+	// device-level overrides
+	virtual void device_start() override;
+	virtual void device_reset() override;
+	virtual void device_stop() override;
+
+	// device_execute_interface overrides
+	virtual uint32_t execute_min_cycles() const override { return 1; }
+	virtual uint32_t execute_max_cycles() const override { return 40; }
+	virtual uint32_t execute_input_lines() const override { return 6; }
+	virtual void execute_run() override;
+	virtual void execute_set_input(int inputnum, int state) override;
+	virtual void execute_burn(int32_t cycles) override { m_totalcycles += cycles; }
+
+	// device_memory_interface overrides
+	virtual space_config_vector memory_space_config() const override;
+	virtual bool memory_translate(int spacenum, int intention, offs_t &address) override;
+
+	// device_state_interface overrides
+	virtual void state_export(const device_state_entry &entry) override;
+	virtual void state_string_export(const device_state_entry &entry, std::string &str) const override;
+
+	// device_disasm_interface overrides
+	virtual uint32_t disasm_min_opcode_bytes() const override { return 4; }
+	virtual uint32_t disasm_max_opcode_bytes() const override { return 4; }
+	virtual offs_t disasm_disassemble(std::ostream &stream, offs_t pc, const uint8_t *oprom, const uint8_t *opram, uint32_t options) override;
+>>>>>>> upstream/master
 
 
 private:
 	struct internal_mips3_state
 	{
 		/* core registers */
+<<<<<<< HEAD
 		UINT32          pc;
 		int             icount;
 		UINT64          r[35];
@@ -335,6 +442,28 @@ private:
 		UINT64          count_zero_time;
 		UINT32          compare_armed;
 		UINT32          jmpdest;                    /* destination jump target */
+=======
+		uint32_t          pc;
+		int             icount;
+		uint64_t          r[35];
+
+		/* COP registers */
+		uint64_t          cpr[3][32];
+		uint64_t          ccr[3][32];
+		uint32_t          llbit;
+
+		uint32_t          mode;                       /* current global mode */
+
+		/* parameters for subroutines */
+		uint64_t          numcycles;                  /* return value from gettotalcycles */
+		const char *    format;                     /* format string for print_debug */
+		uint32_t          arg0;                       /* print_debug argument 1 */
+		uint32_t          arg1;                       /* print_debug argument 2 */
+
+		uint64_t          count_zero_time;
+		uint32_t          compare_armed;
+		uint32_t          jmpdest;                    /* destination jump target */
+>>>>>>> upstream/master
 
 	};
 
@@ -345,6 +474,7 @@ private:
 	internal_mips3_state *m_core;
 
 	/* internal stuff */
+<<<<<<< HEAD
 	UINT32      m_ppc;
 	UINT32      m_nextpc;
 	UINT32      m_pcbase;
@@ -359,6 +489,21 @@ private:
 
 	/* endian-dependent load/store */
 	typedef void (mips3_device::*loadstore_func)(UINT32 op);
+=======
+	uint32_t      m_ppc;
+	uint32_t      m_nextpc;
+	uint32_t      m_pcbase;
+	uint8_t       m_cf[4][8];
+	bool        m_delayslot;
+	int         m_op;
+	int         m_interrupt_cycles;
+	uint32_t      m_ll_value;
+	uint64_t      m_lld_value;
+	uint32_t      m_badcop_value;
+
+	/* endian-dependent load/store */
+	typedef void (mips3_device::*loadstore_func)(uint32_t op);
+>>>>>>> upstream/master
 	loadstore_func m_lwl;
 	loadstore_func m_lwr;
 	loadstore_func m_swl;
@@ -370,6 +515,7 @@ private:
 
 	address_space *m_program;
 	direct_read_data *m_direct;
+<<<<<<< HEAD
 	UINT32          c_system_clock;
 	UINT32          m_cpu_clock;
 	emu_timer *     m_compare_int_timer;
@@ -382,6 +528,20 @@ private:
 	bool            m_bigendian;
 	UINT32          m_byte_xor;
 	UINT32          m_word_xor;
+=======
+	uint32_t          c_system_clock;
+	uint32_t          m_cpu_clock;
+	emu_timer *     m_compare_int_timer;
+
+	/* derived info based on flavor */
+	uint32_t          m_pfnmask;
+	uint8_t           m_tlbentries;
+
+	/* memory accesses */
+	bool            m_bigendian;
+	uint32_t          m_byte_xor;
+	uint32_t          m_word_xor;
+>>>>>>> upstream/master
 	data_accessors  m_memory;
 
 	/* cache memory */
@@ -389,15 +549,23 @@ private:
 	size_t          c_dcache_size;
 
 	/* MMU */
+<<<<<<< HEAD
 	vtlb_state *    m_vtlb;
 	mips3_tlb_entry m_tlb[MIPS3_MAX_TLB_ENTRIES];
 
 	/* fast RAM */
 	UINT32              m_fastram_select;
+=======
+	mips3_tlb_entry m_tlb[MIPS3_MAX_TLB_ENTRIES];
+
+	/* fast RAM */
+	uint32_t              m_fastram_select;
+>>>>>>> upstream/master
 	struct
 	{
 		offs_t              start;                      /* start of the RAM block */
 		offs_t              end;                        /* end of the RAM block */
+<<<<<<< HEAD
 		UINT8               readonly;                   /* TRUE if read-only */
 		void *              base;                       /* base in memory where the RAM lives */
 		UINT8 *             offset_base8;               /* base in memory where the RAM lives, 8-bit pointer, with the start offset pre-applied */
@@ -418,6 +586,28 @@ private:
 
 	/* tables */
 	UINT8               m_fpmode[4];                  /* FPU mode table */
+=======
+		bool                readonly;                   /* true if read-only */
+		void *              base;                       /* base in memory where the RAM lives */
+		uint8_t *             offset_base8;               /* base in memory where the RAM lives, 8-bit pointer, with the start offset pre-applied */
+		uint16_t *            offset_base16;              /* base in memory where the RAM lives, 16-bit pointer, with the start offset pre-applied  */
+		uint32_t *            offset_base32;              /* base in memory where the RAM lives, 32-bit pointer, with the start offset pre-applied  */
+	}       m_fastram[MIPS3_MAX_FASTRAM];
+
+	uint32_t m_debugger_temp;
+
+	/* core state */
+	drc_cache           m_cache;                      /* pointer to the DRC code cache */
+	std::unique_ptr<drcuml_state>      m_drcuml;                     /* DRC UML generator state */
+	std::unique_ptr<mips3_frontend>    m_drcfe;                      /* pointer to the DRC front-end state */
+	uint32_t              m_drcoptions;                 /* configurable DRC options */
+
+	/* internal stuff */
+	uint8_t               m_cache_dirty;                /* true if we need to flush the cache */
+
+	/* tables */
+	uint8_t               m_fpmode[4];                  /* FPU mode table */
+>>>>>>> upstream/master
 
 	/* register mappings */
 	uml::parameter   m_regmap[34];                 /* parameter to register mappings for all 32 integer registers */
@@ -444,19 +634,32 @@ private:
 	uml::code_handle *   m_exception_norecover[18/*EXCEPTION_COUNT*/];   /* array of no-recover exception handlers */
 
 	/* hotspots */
+<<<<<<< HEAD
 	UINT32              m_hotspot_select;
 	struct
 	{
 		offs_t              pc;                         /* PC to consider */
 		UINT32              opcode;                     /* required opcode at that PC */
 		UINT32              cycles;                     /* number of cycles to eat when hit */
+=======
+	uint32_t              m_hotspot_select;
+	struct
+	{
+		offs_t              pc;                         /* PC to consider */
+		uint32_t              opcode;                     /* required opcode at that PC */
+		uint32_t              cycles;                     /* number of cycles to eat when hit */
+>>>>>>> upstream/master
 	}       m_hotspot[MIPS3_MAX_HOTSPOTS];
 	bool m_isdrc;
 
 
 	void generate_exception(int exception, int backup);
 	void generate_tlb_exception(int exception, offs_t address);
+<<<<<<< HEAD
 	void invalid_instruction(UINT32 op);
+=======
+	void invalid_instruction(uint32_t op);
+>>>>>>> upstream/master
 	void check_irqs();
 public:
 	void mips3com_update_cycle_counting();
@@ -466,12 +669,18 @@ public:
 	void mips3com_tlbwr();
 	void mips3com_tlbp();
 private:
+<<<<<<< HEAD
 	UINT32 compute_config_register();
 	UINT32 compute_prid_register();
+=======
+	uint32_t compute_config_register();
+	uint32_t compute_prid_register();
+>>>>>>> upstream/master
 
 	void tlb_map_entry(int tlbindex);
 	void tlb_write_common(int tlbindex);
 
+<<<<<<< HEAD
 	bool RBYTE(offs_t address, UINT32 *result);
 	bool RHALF(offs_t address, UINT32 *result);
 	bool RWORD(offs_t address, UINT32 *result);
@@ -531,6 +740,67 @@ private:
 	void save_fast_iregs(drcuml_block *block);
 	void code_flush_cache();
 	void code_compile_block(UINT8 mode, offs_t pc);
+=======
+	bool RBYTE(offs_t address, uint32_t *result);
+	bool RHALF(offs_t address, uint32_t *result);
+	bool RWORD(offs_t address, uint32_t *result);
+	bool RWORD_MASKED(offs_t address, uint32_t *result, uint32_t mem_mask);
+	bool RDOUBLE(offs_t address, uint64_t *result);
+	bool RDOUBLE_MASKED(offs_t address, uint64_t *result, uint64_t mem_mask);
+	void WBYTE(offs_t address, uint8_t data);
+	void WHALF(offs_t address, uint16_t data);
+	void WWORD(offs_t address, uint32_t data);
+	void WWORD_MASKED(offs_t address, uint32_t data, uint32_t mem_mask);
+	void WDOUBLE(offs_t address, uint64_t data);
+	void WDOUBLE_MASKED(offs_t address, uint64_t data, uint64_t mem_mask);
+
+	uint64_t get_cop0_reg(int idx);
+	void set_cop0_reg(int idx, uint64_t val);
+	uint64_t get_cop0_creg(int idx);
+	void set_cop0_creg(int idx, uint64_t val);
+	void handle_cop0(uint32_t op);
+
+	uint32_t get_cop1_reg32(int idx);
+	uint64_t get_cop1_reg64(int idx);
+	void set_cop1_reg32(int idx, uint32_t val);
+	void set_cop1_reg64(int idx, uint64_t val);
+	uint64_t get_cop1_creg(int idx);
+	void set_cop1_creg(int idx, uint64_t val);
+	void handle_cop1_fr0(uint32_t op);
+	void handle_cop1_fr1(uint32_t op);
+	void handle_cop1x_fr0(uint32_t op);
+	void handle_cop1x_fr1(uint32_t op);
+
+	uint64_t get_cop2_reg(int idx);
+	void set_cop2_reg(int idx, uint64_t val);
+	uint64_t get_cop2_creg(int idx);
+	void set_cop2_creg(int idx, uint64_t val);
+	void handle_cop2(uint32_t op);
+
+	void handle_special(uint32_t op);
+	void handle_regimm(uint32_t op);
+
+	void lwl_be(uint32_t op);
+	void lwr_be(uint32_t op);
+	void ldl_be(uint32_t op);
+	void ldr_be(uint32_t op);
+	void swl_be(uint32_t op);
+	void swr_be(uint32_t op);
+	void sdl_be(uint32_t op);
+	void sdr_be(uint32_t op);
+	void lwl_le(uint32_t op);
+	void lwr_le(uint32_t op);
+	void ldl_le(uint32_t op);
+	void ldr_le(uint32_t op);
+	void swl_le(uint32_t op);
+	void swr_le(uint32_t op);
+	void sdl_le(uint32_t op);
+	void sdr_le(uint32_t op);
+	void load_fast_iregs(drcuml_block *block);
+	void save_fast_iregs(drcuml_block *block);
+	void code_flush_cache();
+	void code_compile_block(uint8_t mode, offs_t pc);
+>>>>>>> upstream/master
 public:
 	void func_get_cycles();
 	void func_printf_exception();
@@ -542,6 +812,7 @@ private:
 	void static_generate_nocode_handler();
 	void static_generate_out_of_cycles();
 	void static_generate_tlb_mismatch();
+<<<<<<< HEAD
 	void static_generate_exception(UINT8 exception, int recover, const char *name);
 	void static_generate_memory_accessor(int mode, int size, int iswrite, int ismasked, const char *name, uml::code_handle **handleptr);
 
@@ -561,14 +832,41 @@ private:
 	int generate_cop0(drcuml_block *block, compiler_state *compiler, const opcode_desc *desc);
 	int generate_cop1(drcuml_block *block, compiler_state *compiler, const opcode_desc *desc);
 	int generate_cop1x(drcuml_block *block, compiler_state *compiler, const opcode_desc *desc);
+=======
+	void static_generate_exception(uint8_t exception, int recover, const char *name);
+	void static_generate_memory_accessor(int mode, int size, int iswrite, int ismasked, const char *name, uml::code_handle **handleptr);
+
+	void generate_update_mode(drcuml_block *block);
+	void generate_update_cycles(drcuml_block *block, compiler_state *compiler, uml::parameter param, bool allow_exception);
+	void generate_checksum_block(drcuml_block *block, compiler_state *compiler, const opcode_desc *seqhead, const opcode_desc *seqlast);
+	void generate_sequence_instruction(drcuml_block *block, compiler_state *compiler, const opcode_desc *desc);
+	void generate_delay_slot_and_branch(drcuml_block *block, compiler_state *compiler, const opcode_desc *desc, uint8_t linkreg);
+
+	bool generate_opcode(drcuml_block *block, compiler_state *compiler, const opcode_desc *desc);
+	bool generate_special(drcuml_block *block, compiler_state *compiler, const opcode_desc *desc);
+	bool generate_regimm(drcuml_block *block, compiler_state *compiler, const opcode_desc *desc);
+	bool generate_idt(drcuml_block *block, compiler_state *compiler, const opcode_desc *desc);
+
+	bool generate_set_cop0_reg(drcuml_block *block, compiler_state *compiler, const opcode_desc *desc, uint8_t reg);
+	bool generate_get_cop0_reg(drcuml_block *block, compiler_state *compiler, const opcode_desc *desc, uint8_t reg);
+	bool generate_cop0(drcuml_block *block, compiler_state *compiler, const opcode_desc *desc);
+	bool generate_cop1(drcuml_block *block, compiler_state *compiler, const opcode_desc *desc);
+	bool generate_cop1x(drcuml_block *block, compiler_state *compiler, const opcode_desc *desc);
+>>>>>>> upstream/master
 
 	void check_cop0_access(drcuml_block *block);
 	void check_cop1_access(drcuml_block *block);
 	void generate_badcop(drcuml_block *block, const int cop);
 
+<<<<<<< HEAD
 	void log_add_disasm_comment(drcuml_block *block, UINT32 pc, UINT32 op);
 	const char *log_desc_flags_to_string(UINT32 flags);
 	void log_register_list(drcuml_state *drcuml, const char *string, const UINT32 *reglist, const UINT32 *regnostarlist);
+=======
+	void log_add_disasm_comment(drcuml_block *block, uint32_t pc, uint32_t op);
+	const char *log_desc_flags_to_string(uint32_t flags);
+	void log_register_list(drcuml_state *drcuml, const char *string, const uint32_t *reglist, const uint32_t *regnostarlist);
+>>>>>>> upstream/master
 	void log_opcode_desc(drcuml_state *drcuml, const opcode_desc *desclist, int indent);
 
 };
@@ -578,8 +876,13 @@ class vr4300be_device : public mips3_device
 {
 public:
 	// construction/destruction
+<<<<<<< HEAD
 	vr4300be_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
 		: mips3_device(mconfig, VR4300BE, "VR4300 (big)", tag, owner, clock, "vr4300be", MIPS3_TYPE_VR4300, ENDIANNESS_BIG)
+=======
+	vr4300be_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+		: mips3_device(mconfig, VR4300BE, tag, owner, clock, MIPS3_TYPE_VR4300, ENDIANNESS_BIG)
+>>>>>>> upstream/master
 	{ }
 };
 
@@ -587,8 +890,13 @@ class vr4300le_device : public mips3_device
 {
 public:
 	// construction/destruction
+<<<<<<< HEAD
 	vr4300le_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
 		: mips3_device(mconfig, VR4300LE, "VR4300 (little)", tag, owner, clock, "vr4300le", MIPS3_TYPE_VR4300, ENDIANNESS_LITTLE)
+=======
+	vr4300le_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+		: mips3_device(mconfig, VR4300LE, tag, owner, clock, MIPS3_TYPE_VR4300, ENDIANNESS_LITTLE)
+>>>>>>> upstream/master
 	{ }
 };
 
@@ -596,8 +904,13 @@ class vr4310be_device : public mips3_device
 {
 public:
 	// construction/destruction
+<<<<<<< HEAD
 	vr4310be_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
 		: mips3_device(mconfig, VR4310BE, "VR4310 (big)", tag, owner, clock, "vr4310be", MIPS3_TYPE_VR4300, ENDIANNESS_BIG)
+=======
+	vr4310be_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+		: mips3_device(mconfig, VR4310BE, tag, owner, clock, MIPS3_TYPE_VR4300, ENDIANNESS_BIG)
+>>>>>>> upstream/master
 	{ }
 };
 
@@ -605,8 +918,13 @@ class vr4310le_device : public mips3_device
 {
 public:
 	// construction/destruction
+<<<<<<< HEAD
 	vr4310le_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
 		: mips3_device(mconfig, VR4310LE, "VR4310 (little)", tag, owner, clock, "vr4310le", MIPS3_TYPE_VR4300, ENDIANNESS_LITTLE)
+=======
+	vr4310le_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+		: mips3_device(mconfig, VR4310LE, tag, owner, clock, MIPS3_TYPE_VR4300, ENDIANNESS_LITTLE)
+>>>>>>> upstream/master
 	{ }
 };
 
@@ -614,8 +932,13 @@ class r4600be_device : public mips3_device
 {
 public:
 	// construction/destruction
+<<<<<<< HEAD
 	r4600be_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
 		: mips3_device(mconfig, R4600BE, "R4600 (big)", tag, owner, clock, "r4600be", MIPS3_TYPE_R4600, ENDIANNESS_BIG)
+=======
+	r4600be_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+		: mips3_device(mconfig, R4600BE, tag, owner, clock, MIPS3_TYPE_R4600, ENDIANNESS_BIG)
+>>>>>>> upstream/master
 	{ }
 };
 
@@ -623,8 +946,13 @@ class r4600le_device : public mips3_device
 {
 public:
 	// construction/destruction
+<<<<<<< HEAD
 	r4600le_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
 		: mips3_device(mconfig, R4600LE, "R4600 (little)", tag, owner, clock, "r4600le", MIPS3_TYPE_R4600, ENDIANNESS_LITTLE)
+=======
+	r4600le_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+		: mips3_device(mconfig, R4600LE, tag, owner, clock, MIPS3_TYPE_R4600, ENDIANNESS_LITTLE)
+>>>>>>> upstream/master
 	{ }
 };
 
@@ -632,8 +960,13 @@ class r4650be_device : public mips3_device
 {
 public:
 	// construction/destruction
+<<<<<<< HEAD
 	r4650be_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
 		: mips3_device(mconfig, R4650BE, "IDT R4650 (big)", tag, owner, clock, "r4650be", MIPS3_TYPE_R4650, ENDIANNESS_BIG)
+=======
+	r4650be_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+		: mips3_device(mconfig, R4650BE, tag, owner, clock, MIPS3_TYPE_R4650, ENDIANNESS_BIG)
+>>>>>>> upstream/master
 	{ }
 };
 
@@ -641,8 +974,13 @@ class r4650le_device : public mips3_device
 {
 public:
 	// construction/destruction
+<<<<<<< HEAD
 	r4650le_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
 		: mips3_device(mconfig, R4650LE, "IDT R4650 (little)", tag, owner, clock, "r4650le", MIPS3_TYPE_R4650, ENDIANNESS_LITTLE)
+=======
+	r4650le_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+		: mips3_device(mconfig, R4650LE, tag, owner, clock, MIPS3_TYPE_R4650, ENDIANNESS_LITTLE)
+>>>>>>> upstream/master
 	{ }
 };
 
@@ -650,8 +988,13 @@ class r4700be_device : public mips3_device
 {
 public:
 	// construction/destruction
+<<<<<<< HEAD
 	r4700be_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
 		: mips3_device(mconfig, R4700BE, "R4700 (big)", tag, owner, clock, "r4700be", MIPS3_TYPE_R4700, ENDIANNESS_BIG)
+=======
+	r4700be_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+		: mips3_device(mconfig, R4700BE, tag, owner, clock, MIPS3_TYPE_R4700, ENDIANNESS_BIG)
+>>>>>>> upstream/master
 	{ }
 };
 
@@ -659,8 +1002,31 @@ class r4700le_device : public mips3_device
 {
 public:
 	// construction/destruction
+<<<<<<< HEAD
 	r4700le_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
 		: mips3_device(mconfig, R4700LE, "R4700 (little)", tag, owner, clock, "r4700le", MIPS3_TYPE_R4700, ENDIANNESS_LITTLE)
+=======
+	r4700le_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+		: mips3_device(mconfig, R4700LE, tag, owner, clock, MIPS3_TYPE_R4700, ENDIANNESS_LITTLE)
+	{ }
+};
+
+class tx4925be_device : public mips3_device
+{
+public:
+	// construction/destruction
+	tx4925be_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+		: mips3_device(mconfig, TX4925BE, tag, owner, clock, MIPS3_TYPE_TX4925, ENDIANNESS_BIG)
+	{ }
+};
+
+class tx4925le_device : public mips3_device
+{
+public:
+	// construction/destruction
+	tx4925le_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+		: mips3_device(mconfig, TX4925LE, tag, owner, clock, MIPS3_TYPE_TX4925, ENDIANNESS_LITTLE)
+>>>>>>> upstream/master
 	{ }
 };
 
@@ -668,8 +1034,13 @@ class r5000be_device : public mips3_device
 {
 public:
 	// construction/destruction
+<<<<<<< HEAD
 	r5000be_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
 		: mips3_device(mconfig, R5000BE, "R5000 (big)", tag, owner, clock, "r5000be", MIPS3_TYPE_R5000, ENDIANNESS_BIG)
+=======
+	r5000be_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+		: mips3_device(mconfig, R5000BE, tag, owner, clock, MIPS3_TYPE_R5000, ENDIANNESS_BIG)
+>>>>>>> upstream/master
 	{ }
 };
 
@@ -677,8 +1048,31 @@ class r5000le_device : public mips3_device
 {
 public:
 	// construction/destruction
+<<<<<<< HEAD
 	r5000le_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
 		: mips3_device(mconfig, R5000LE, "R5000 (little)", tag, owner, clock, "r5000le", MIPS3_TYPE_R5000, ENDIANNESS_LITTLE)
+=======
+	r5000le_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+		: mips3_device(mconfig, R5000LE, tag, owner, clock, MIPS3_TYPE_R5000, ENDIANNESS_LITTLE)
+	{ }
+};
+
+class vr5500be_device : public mips3_device
+{
+public:
+	// construction/destruction
+	vr5500be_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+		: mips3_device(mconfig, VR5500BE, tag, owner, clock, MIPS3_TYPE_R5000, ENDIANNESS_BIG)
+	{ }
+};
+
+class vr5500le_device : public mips3_device
+{
+public:
+	// construction/destruction
+	vr5500le_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+		: mips3_device(mconfig, VR5500LE, tag, owner, clock, MIPS3_TYPE_R5000, ENDIANNESS_LITTLE)
+>>>>>>> upstream/master
 	{ }
 };
 
@@ -686,8 +1080,13 @@ class qed5271be_device : public mips3_device
 {
 public:
 	// construction/destruction
+<<<<<<< HEAD
 	qed5271be_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
 		: mips3_device(mconfig, QED5271BE, "QED5271 (big)", tag, owner, clock, "qed5271be", MIPS3_TYPE_QED5271, ENDIANNESS_BIG)
+=======
+	qed5271be_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+		: mips3_device(mconfig, QED5271BE, tag, owner, clock, MIPS3_TYPE_QED5271, ENDIANNESS_BIG)
+>>>>>>> upstream/master
 	{ }
 };
 
@@ -695,8 +1094,13 @@ class qed5271le_device : public mips3_device
 {
 public:
 	// construction/destruction
+<<<<<<< HEAD
 	qed5271le_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
 		: mips3_device(mconfig, QED5271LE, "QED5271 (little)", tag, owner, clock, "qed5271le", MIPS3_TYPE_QED5271, ENDIANNESS_LITTLE)
+=======
+	qed5271le_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+		: mips3_device(mconfig, QED5271LE, tag, owner, clock, MIPS3_TYPE_QED5271, ENDIANNESS_LITTLE)
+>>>>>>> upstream/master
 	{ }
 };
 
@@ -704,8 +1108,13 @@ class rm7000be_device : public mips3_device
 {
 public:
 	// construction/destruction
+<<<<<<< HEAD
 	rm7000be_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
 		: mips3_device(mconfig, RM7000BE, "RM7000 (big)", tag, owner, clock, "rm7000be", MIPS3_TYPE_RM7000, ENDIANNESS_BIG)
+=======
+	rm7000be_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+		: mips3_device(mconfig, RM7000BE, tag, owner, clock, MIPS3_TYPE_RM7000, ENDIANNESS_BIG)
+>>>>>>> upstream/master
 	{ }
 };
 
@@ -713,8 +1122,13 @@ class rm7000le_device : public mips3_device
 {
 public:
 	// construction/destruction
+<<<<<<< HEAD
 	rm7000le_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
 		: mips3_device(mconfig, RM7000LE, "RM7000 (little)", tag, owner, clock, "rm7000le", MIPS3_TYPE_RM7000, ENDIANNESS_LITTLE)
+=======
+	rm7000le_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+		: mips3_device(mconfig, RM7000LE, tag, owner, clock, MIPS3_TYPE_RM7000, ENDIANNESS_LITTLE)
+>>>>>>> upstream/master
 	{ }
 };
 
@@ -724,6 +1138,7 @@ class mips3_frontend : public drc_frontend
 {
 public:
 	// construction/destruction
+<<<<<<< HEAD
 	mips3_frontend(mips3_device *mips3, UINT32 window_start, UINT32 window_end, UINT32 max_sequence);
 
 protected:
@@ -739,6 +1154,23 @@ private:
 	bool describe_cop1(UINT32 op, opcode_desc &desc);
 	bool describe_cop1x(UINT32 op, opcode_desc &desc);
 	bool describe_cop2(UINT32 op, opcode_desc &desc);
+=======
+	mips3_frontend(mips3_device *mips3, uint32_t window_start, uint32_t window_end, uint32_t max_sequence);
+
+protected:
+	// required overrides
+	virtual bool describe(opcode_desc &desc, const opcode_desc *prev) override;
+
+private:
+	// internal helpers
+	bool describe_special(uint32_t op, opcode_desc &desc);
+	bool describe_regimm(uint32_t op, opcode_desc &desc);
+	bool describe_idt(uint32_t op, opcode_desc &desc);
+	bool describe_cop0(uint32_t op, opcode_desc &desc);
+	bool describe_cop1(uint32_t op, opcode_desc &desc);
+	bool describe_cop1x(uint32_t op, opcode_desc &desc);
+	bool describe_cop2(uint32_t op, opcode_desc &desc);
+>>>>>>> upstream/master
 
 	// internal state
 	mips3_device *m_mips3;
@@ -762,4 +1194,15 @@ private:
 #define MIPS3DRC_FASTEST_OPTIONS    (0)
 
 
+<<<<<<< HEAD
 #endif /* __MIPS3_H__ */
+=======
+/***************************************************************************
+    DISASSEMBLING
+***************************************************************************/
+
+unsigned dasmmips3(std::ostream &stream, unsigned pc, uint32_t op);
+
+
+#endif // MAME_CPU_MIPS_MIPS3_H
+>>>>>>> upstream/master

@@ -31,11 +31,23 @@ DIP locations verified for:
 ***************************************************************************/
 
 #include "emu.h"
+<<<<<<< HEAD
 #include "cpu/m6502/m6502.h"
 #include "cpu/z80/z80.h"
 #include "sound/dac.h"
 #include "sound/ay8910.h"
 #include "includes/lasso.h"
+=======
+#include "includes/lasso.h"
+
+#include "cpu/m6502/m6502.h"
+#include "cpu/z80/z80.h"
+#include "sound/ay8910.h"
+#include "sound/dac.h"
+#include "sound/volt_reg.h"
+#include "screen.h"
+#include "speaker.h"
+>>>>>>> upstream/master
 
 
 INPUT_CHANGED_MEMBER(lasso_state::coin_inserted)
@@ -48,7 +60,11 @@ INPUT_CHANGED_MEMBER(lasso_state::coin_inserted)
 /* Write to the sound latch and generate an IRQ on the sound CPU */
 WRITE8_MEMBER(lasso_state::sound_command_w)
 {
+<<<<<<< HEAD
 	soundlatch_byte_w(space, offset, data);
+=======
+	m_soundlatch->write(space, offset, data);
+>>>>>>> upstream/master
 	m_audiocpu->set_input_line(0, HOLD_LINE);
 }
 
@@ -60,7 +76,11 @@ READ8_MEMBER(lasso_state::sound_status_r)
 
 WRITE8_MEMBER(lasso_state::sound_select_w)
 {
+<<<<<<< HEAD
 	UINT8 to_write = BITSWAP8(*m_chip_data, 0, 1, 2, 3, 4, 5, 6, 7);
+=======
+	uint8_t to_write = BITSWAP8(*m_chip_data, 0, 1, 2, 3, 4, 5, 6, 7);
+>>>>>>> upstream/master
 
 	if (~data & 0x01)   /* chip #0 */
 		m_sn_1->write(space, 0, to_write);
@@ -93,7 +113,11 @@ static ADDRESS_MAP_START( lasso_audio_map, AS_PROGRAM, 8, lasso_state )
 	AM_RANGE(0xb000, 0xb000) AM_WRITEONLY AM_SHARE("chip_data")
 	AM_RANGE(0xb001, 0xb001) AM_WRITE(sound_select_w)
 	AM_RANGE(0xb004, 0xb004) AM_READ(sound_status_r)
+<<<<<<< HEAD
 	AM_RANGE(0xb005, 0xb005) AM_READ(soundlatch_byte_r)
+=======
+	AM_RANGE(0xb005, 0xb005) AM_DEVREAD("soundlatch", generic_latch_8_device, read)
+>>>>>>> upstream/master
 	AM_RANGE(0xf000, 0xffff) AM_ROM AM_REGION("audiocpu", 0x7000)
 ADDRESS_MAP_END
 
@@ -131,7 +155,11 @@ static ADDRESS_MAP_START( chameleo_audio_map, AS_PROGRAM, 8, lasso_state )
 	AM_RANGE(0xb000, 0xb000) AM_WRITEONLY AM_SHARE("chip_data")
 	AM_RANGE(0xb001, 0xb001) AM_WRITE(sound_select_w)
 	AM_RANGE(0xb004, 0xb004) AM_READ(sound_status_r)
+<<<<<<< HEAD
 	AM_RANGE(0xb005, 0xb005) AM_READ(soundlatch_byte_r)
+=======
+	AM_RANGE(0xb005, 0xb005) AM_DEVREAD("soundlatch", generic_latch_8_device, read)
+>>>>>>> upstream/master
 	AM_RANGE(0xf000, 0xffff) AM_ROM AM_REGION("audiocpu", 0x7000)
 ADDRESS_MAP_END
 
@@ -160,9 +188,15 @@ static ADDRESS_MAP_START( wwjgtin_audio_map, AS_PROGRAM, 8, lasso_state )
 	AM_RANGE(0x4000, 0x7fff) AM_MIRROR(0x8000) AM_ROM
 	AM_RANGE(0xb000, 0xb000) AM_WRITEONLY AM_SHARE("chip_data")
 	AM_RANGE(0xb001, 0xb001) AM_WRITE(sound_select_w)
+<<<<<<< HEAD
 	AM_RANGE(0xb003, 0xb003) AM_DEVWRITE("dac", dac_device, write_unsigned8)
 	AM_RANGE(0xb004, 0xb004) AM_READ(sound_status_r)
 	AM_RANGE(0xb005, 0xb005) AM_READ(soundlatch_byte_r)
+=======
+	AM_RANGE(0xb003, 0xb003) AM_DEVWRITE("dac", dac_byte_interface, write)
+	AM_RANGE(0xb004, 0xb004) AM_READ(sound_status_r)
+	AM_RANGE(0xb005, 0xb005) AM_DEVREAD("soundlatch", generic_latch_8_device, read)
+>>>>>>> upstream/master
 ADDRESS_MAP_END
 
 
@@ -196,7 +230,11 @@ static ADDRESS_MAP_START( pinbo_audio_io_map, AS_IO, 8, lasso_state )
 	AM_RANGE(0x02, 0x02) AM_DEVREAD("ay1", ay8910_device, data_r)
 	AM_RANGE(0x04, 0x05) AM_DEVWRITE("ay2", ay8910_device, address_data_w)
 	AM_RANGE(0x06, 0x06) AM_DEVREAD("ay2", ay8910_device, data_r)
+<<<<<<< HEAD
 	AM_RANGE(0x08, 0x08) AM_READ(soundlatch_byte_r) AM_WRITENOP /* ??? */
+=======
+	AM_RANGE(0x08, 0x08) AM_DEVREAD("soundlatch", generic_latch_8_device, read) AM_WRITENOP /* ??? */
+>>>>>>> upstream/master
 	AM_RANGE(0x14, 0x14) AM_WRITENOP    /* ??? */
 ADDRESS_MAP_END
 
@@ -477,7 +515,11 @@ MACHINE_RESET_MEMBER(lasso_state,wwjgtin)
 	m_track_enable = 0;
 }
 
+<<<<<<< HEAD
 static MACHINE_CONFIG_START( base, lasso_state )
+=======
+static MACHINE_CONFIG_START( base )
+>>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", M6502, 11289000/16) /* guess */
@@ -501,6 +543,7 @@ static MACHINE_CONFIG_START( base, lasso_state )
 	MCFG_GFXDECODE_ADD("gfxdecode", "palette", lasso)
 
 	/* sound hardware */
+<<<<<<< HEAD
 	MCFG_SPEAKER_STANDARD_MONO("mono")
 
 	MCFG_SOUND_ADD("sn76489.1", SN76489, 2000000)
@@ -508,6 +551,17 @@ static MACHINE_CONFIG_START( base, lasso_state )
 
 	MCFG_SOUND_ADD("sn76489.2", SN76489, 2000000)
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 1.0)
+=======
+	MCFG_SPEAKER_STANDARD_MONO("speaker")
+
+	MCFG_GENERIC_LATCH_8_ADD("soundlatch")
+
+	MCFG_SOUND_ADD("sn76489.1", SN76489, 2000000)
+	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "speaker", 1.0)
+
+	MCFG_SOUND_ADD("sn76489.2", SN76489, 2000000)
+	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "speaker", 1.0)
+>>>>>>> upstream/master
 MACHINE_CONFIG_END
 
 static MACHINE_CONFIG_DERIVED( lasso, base )
@@ -551,7 +605,11 @@ static MACHINE_CONFIG_DERIVED( wwjgtin, base )
 
 	/* video hardware */
 	MCFG_SCREEN_MODIFY("screen")
+<<<<<<< HEAD
 	MCFG_SCREEN_VISIBLE_AREA(1*8, 31*8-1, 2*8, 30*8-1)  // Smaller visible area?
+=======
+	MCFG_SCREEN_VISIBLE_AREA(0*8, 32*8-1, 2*8, 30*8-1)
+>>>>>>> upstream/master
 	MCFG_SCREEN_UPDATE_DRIVER(lasso_state, screen_update_wwjgtin)
 	MCFG_GFXDECODE_MODIFY("gfxdecode", wwjgtin) // Has 1 additional layer
 
@@ -561,8 +619,14 @@ static MACHINE_CONFIG_DERIVED( wwjgtin, base )
 	MCFG_VIDEO_START_OVERRIDE(lasso_state,wwjgtin)
 
 	/* sound hardware */
+<<<<<<< HEAD
 	MCFG_DAC_ADD("dac")
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 1.0)
+=======
+	MCFG_SOUND_ADD("dac", DAC_8BIT_R2R, 0) MCFG_SOUND_ROUTE(ALL_OUTPUTS, "speaker", 0.5) // unknown DAC
+	MCFG_DEVICE_ADD("vref", VOLTAGE_REGULATOR, 0) MCFG_VOLTAGE_REGULATOR_OUTPUT(5.0)
+	MCFG_SOUND_ROUTE_EX(0, "dac", 1.0, DAC_VREF_POS_INPUT) MCFG_SOUND_ROUTE_EX(0, "dac", -1.0, DAC_VREF_NEG_INPUT)
+>>>>>>> upstream/master
 MACHINE_CONFIG_END
 
 static MACHINE_CONFIG_DERIVED( pinbo, base )
@@ -579,7 +643,11 @@ static MACHINE_CONFIG_DERIVED( pinbo, base )
 	/* video hardware */
 	MCFG_GFXDECODE_MODIFY("gfxdecode", pinbo)
 
+<<<<<<< HEAD
 	MCFG_PALETTE_ADD_RRRRGGGGBBBB_PROMS("palette", 256)
+=======
+	MCFG_PALETTE_ADD_RRRRGGGGBBBB_PROMS("palette", "proms", 256)
+>>>>>>> upstream/master
 	MCFG_VIDEO_START_OVERRIDE(lasso_state,pinbo)
 	MCFG_SCREEN_MODIFY("screen")
 	MCFG_SCREEN_UPDATE_DRIVER(lasso_state, screen_update_chameleo)
@@ -589,10 +657,17 @@ static MACHINE_CONFIG_DERIVED( pinbo, base )
 	MCFG_DEVICE_REMOVE("sn76489.2")
 
 	MCFG_SOUND_ADD("ay1", AY8910, XTAL_18MHz/12)
+<<<<<<< HEAD
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 0.55)
 
 	MCFG_SOUND_ADD("ay2", AY8910, XTAL_18MHz/12)
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 0.55)
+=======
+	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "speaker", 0.55)
+
+	MCFG_SOUND_ADD("ay2", AY8910, XTAL_18MHz/12)
+	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "speaker", 0.55)
+>>>>>>> upstream/master
 MACHINE_CONFIG_END
 
 
@@ -863,6 +938,7 @@ ROM_END
 
 ***************************************************************************/
 
+<<<<<<< HEAD
 GAME( 1982, lasso,    0,       lasso,    lasso,    driver_device,  0, ROT90, "SNK",              "Lasso", MACHINE_SUPPORTS_SAVE )
 GAME( 1983, chameleo, 0,       chameleo, chameleo, driver_device,  0, ROT0,  "Jaleco",           "Chameleon", MACHINE_SUPPORTS_SAVE )
 GAME( 1984, wwjgtin,  0,       wwjgtin,  wwjgtin,  driver_device,  0, ROT0,  "Jaleco / Casio",   "Wai Wai Jockey Gate-In!", MACHINE_SUPPORTS_SAVE )
@@ -870,3 +946,12 @@ GAME( 1991, photof,   wwjgtin, wwjgtin,  wwjgtin,  driver_device,  0, ROT0,  "Ja
 GAME( 1984, pinbo,    0,       pinbo,    pinbo,    driver_device,  0, ROT90, "Jaleco",           "Pinbo (set 1)", MACHINE_SUPPORTS_SAVE )
 GAME( 1984, pinboa,   pinbo,   pinbo,    pinboa,   driver_device,  0, ROT90, "Jaleco",           "Pinbo (set 2)", MACHINE_SUPPORTS_SAVE )
 GAME( 1985, pinbos,   pinbo,   pinbo,    pinboa,   driver_device,  0, ROT90, "bootleg (Strike)", "Pinbo (bootleg)", MACHINE_SUPPORTS_SAVE )
+=======
+GAME( 1982, lasso,    0,       lasso,    lasso,    lasso_state,  0, ROT90, "SNK",              "Lasso",                   MACHINE_SUPPORTS_SAVE )
+GAME( 1983, chameleo, 0,       chameleo, chameleo, lasso_state,  0, ROT0,  "Jaleco",           "Chameleon",               MACHINE_SUPPORTS_SAVE )
+GAME( 1984, wwjgtin,  0,       wwjgtin,  wwjgtin,  lasso_state,  0, ROT0,  "Jaleco / Casio",   "Wai Wai Jockey Gate-In!", MACHINE_SUPPORTS_SAVE )
+GAME( 1991, photof,   wwjgtin, wwjgtin,  wwjgtin,  lasso_state,  0, ROT0,  "Jaleco / Casio",   "Photo Finish (bootleg?)", MACHINE_SUPPORTS_SAVE )
+GAME( 1984, pinbo,    0,       pinbo,    pinbo,    lasso_state,  0, ROT90, "Jaleco",           "Pinbo (set 1)",           MACHINE_SUPPORTS_SAVE )
+GAME( 1984, pinboa,   pinbo,   pinbo,    pinboa,   lasso_state,  0, ROT90, "Jaleco",           "Pinbo (set 2)",           MACHINE_SUPPORTS_SAVE )
+GAME( 1985, pinbos,   pinbo,   pinbo,    pinboa,   lasso_state,  0, ROT90, "bootleg (Strike)", "Pinbo (bootleg)",         MACHINE_SUPPORTS_SAVE )
+>>>>>>> upstream/master

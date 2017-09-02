@@ -2,6 +2,11 @@
 2010-03-12 : Igor Pavlov : Public domain
 This code is based on PPMd var.H (2001): Dmitry Shkarin : Public domain */
 
+<<<<<<< HEAD
+=======
+#include "Precomp.h"
+
+>>>>>>> upstream/master
 #include "Ppmd7.h"
 
 #define kTopValue (1 << 24)

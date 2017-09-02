@@ -155,12 +155,24 @@ JC-301-00  W11 9510K7059    23C16000        U85
 
 #include "emu.h"
 #include "cpu/m68000/m68000.h"
+<<<<<<< HEAD
 #include "machine/nvram.h"
 #include "sound/ymz280b.h"
 #include "video/sknsspr.h"
 #include "machine/eepromser.h"
 #include "video/kaneko_tmap.h"
 #include "machine/kaneko_toybox.h"
+=======
+#include "machine/eepromser.h"
+#include "machine/nvram.h"
+#include "machine/watchdog.h"
+#include "sound/ymz280b.h"
+#include "video/sknsspr.h"
+#include "video/kaneko_tmap.h"
+#include "machine/kaneko_toybox.h"
+#include "screen.h"
+#include "speaker.h"
+>>>>>>> upstream/master
 
 class jchan_state : public driver_device
 {
@@ -179,7 +191,11 @@ public:
 		m_sprregs_2(*this, "sprregs_2"),
 		m_mainsub_shared_ram(*this, "mainsub_shared"),
 		m_ctrl(*this, "ctrl")
+<<<<<<< HEAD
 		{ }
+=======
+	{ }
+>>>>>>> upstream/master
 
 	required_device<cpu_device> m_maincpu;
 	required_device<cpu_device> m_subcpu;
@@ -188,6 +204,7 @@ public:
 	required_device<sknsspr_device> m_spritegen2;
 	required_device<kaneko_view2_tilemap_device> m_view2_0;
 
+<<<<<<< HEAD
 	required_shared_ptr<UINT16> m_spriteram_1;
 	required_shared_ptr<UINT16> m_sprregs_1;
 	required_shared_ptr<UINT16> m_spriteram_2;
@@ -201,6 +218,21 @@ public:
 	UINT32* m_sprite_ram32_2;
 	UINT32* m_sprite_regs32_1;
 	UINT32* m_sprite_regs32_2;
+=======
+	required_shared_ptr<uint16_t> m_spriteram_1;
+	required_shared_ptr<uint16_t> m_sprregs_1;
+	required_shared_ptr<uint16_t> m_spriteram_2;
+	required_shared_ptr<uint16_t> m_sprregs_2;
+	required_shared_ptr<uint16_t> m_mainsub_shared_ram;
+	required_shared_ptr<uint16_t> m_ctrl;
+
+	std::unique_ptr<bitmap_ind16> m_sprite_bitmap_1;
+	std::unique_ptr<bitmap_ind16> m_sprite_bitmap_2;
+	std::unique_ptr<uint32_t[]> m_sprite_ram32_1;
+	std::unique_ptr<uint32_t[]> m_sprite_ram32_2;
+	std::unique_ptr<uint32_t[]> m_sprite_regs32_1;
+	std::unique_ptr<uint32_t[]> m_sprite_regs32_2;
+>>>>>>> upstream/master
 	int m_irq_sub_enable;
 
 	DECLARE_WRITE16_MEMBER(ctrl_w);
@@ -213,9 +245,15 @@ public:
 	DECLARE_WRITE16_MEMBER(sknsspr_sprite32regs_2_w);
 
 	DECLARE_DRIVER_INIT(jchan);
+<<<<<<< HEAD
 	virtual void video_start();
 
 	UINT32 screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
+=======
+	virtual void video_start() override;
+
+	uint32_t screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
+>>>>>>> upstream/master
 
 	TIMER_DEVICE_CALLBACK_MEMBER(vblank);
 };
@@ -265,6 +303,7 @@ TIMER_DEVICE_CALLBACK_MEMBER(jchan_state::vblank)
 void jchan_state::video_start()
 {
 	/* so we can use sknsspr.c */
+<<<<<<< HEAD
 	m_sprite_ram32_1 = auto_alloc_array(machine(), UINT32, 0x4000/4);
 	m_sprite_ram32_2 = auto_alloc_array(machine(), UINT32, 0x4000/4);
 
@@ -273,15 +312,32 @@ void jchan_state::video_start()
 
 	m_sprite_bitmap_1 = auto_bitmap_ind16_alloc(machine(),1024,1024);
 	m_sprite_bitmap_2 = auto_bitmap_ind16_alloc(machine(),1024,1024);
+=======
+	m_sprite_ram32_1 = std::make_unique<uint32_t[]>(0x4000/4);
+	m_sprite_ram32_2 = std::make_unique<uint32_t[]>(0x4000/4);
+
+	m_sprite_regs32_1 = std::make_unique<uint32_t[]>(0x40/4);
+	m_sprite_regs32_2 = std::make_unique<uint32_t[]>(0x40/4);
+
+	m_sprite_bitmap_1 = std::make_unique<bitmap_ind16>(1024,1024);
+	m_sprite_bitmap_2 = std::make_unique<bitmap_ind16>(1024,1024);
+>>>>>>> upstream/master
 
 	m_spritegen1->skns_sprite_kludge(0,0);
 	m_spritegen2->skns_sprite_kludge(0,0);
 
 	save_item(NAME(m_irq_sub_enable));
+<<<<<<< HEAD
 	save_pointer(NAME(m_sprite_ram32_1), 0x4000/4);
 	save_pointer(NAME(m_sprite_ram32_2), 0x4000/4);
 	save_pointer(NAME(m_sprite_regs32_1), 0x40/4);
 	save_pointer(NAME(m_sprite_regs32_2), 0x40/4);
+=======
+	save_pointer(NAME(m_sprite_ram32_1.get()), 0x4000/4);
+	save_pointer(NAME(m_sprite_ram32_2.get()), 0x4000/4);
+	save_pointer(NAME(m_sprite_regs32_1.get()), 0x40/4);
+	save_pointer(NAME(m_sprite_regs32_2.get()), 0x40/4);
+>>>>>>> upstream/master
 }
 
 
@@ -290,6 +346,7 @@ void jchan_state::video_start()
 
 
 
+<<<<<<< HEAD
 UINT32 jchan_state::screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
 {
 	int x,y;
@@ -298,6 +355,16 @@ UINT32 jchan_state::screen_update(screen_device &screen, bitmap_ind16 &bitmap, c
 	UINT16* dst;
 	UINT16 pixdata1;
 	UINT16 pixdata2;
+=======
+uint32_t jchan_state::screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+{
+	int x,y;
+	uint16_t* src1;
+	uint16_t* src2;
+	uint16_t* dst;
+	uint16_t pixdata1;
+	uint16_t pixdata2;
+>>>>>>> upstream/master
 
 	bitmap.fill(m_palette->black_pen(), cliprect);
 
@@ -313,8 +380,13 @@ UINT32 jchan_state::screen_update(screen_device &screen, bitmap_ind16 &bitmap, c
 	m_sprite_bitmap_1->fill(0x0000, cliprect);
 	m_sprite_bitmap_2->fill(0x0000, cliprect);
 
+<<<<<<< HEAD
 	m_spritegen1->skns_draw_sprites(*m_sprite_bitmap_1, cliprect, m_sprite_ram32_1, 0x4000, memregion("gfx1")->base(), memregion ("gfx1")->bytes(), m_sprite_regs32_1 );
 	m_spritegen2->skns_draw_sprites(*m_sprite_bitmap_2, cliprect, m_sprite_ram32_2, 0x4000, memregion("gfx2")->base(), memregion ("gfx2")->bytes(), m_sprite_regs32_2 );
+=======
+	m_spritegen1->skns_draw_sprites(*m_sprite_bitmap_1, cliprect, m_sprite_ram32_1.get(), 0x4000, memregion("gfx1")->base(), memregion ("gfx1")->bytes(), m_sprite_regs32_1.get() );
+	m_spritegen2->skns_draw_sprites(*m_sprite_bitmap_2, cliprect, m_sprite_ram32_2.get(), 0x4000, memregion("gfx2")->base(), memregion ("gfx2")->bytes(), m_sprite_regs32_2.get() );
+>>>>>>> upstream/master
 
 	// ignoring priority bits for now - might use alpha too, check 0x8000 of palette writes
 	for (y=0;y<240;y++)
@@ -444,7 +516,11 @@ static ADDRESS_MAP_START( jchan_main, AS_PROGRAM, 16, jchan_state )
 
 	AM_RANGE(0xf00000, 0xf00007) AM_READWRITE(ctrl_r, ctrl_w) AM_SHARE("ctrl")
 
+<<<<<<< HEAD
 	AM_RANGE(0xf80000, 0xf80001) AM_READWRITE(watchdog_reset16_r, watchdog_reset16_w)   // watchdog
+=======
+	AM_RANGE(0xf80000, 0xf80001) AM_DEVREADWRITE("watchdog", watchdog_timer_device, reset16_r, reset16_w)
+>>>>>>> upstream/master
 ADDRESS_MAP_END
 
 
@@ -464,7 +540,11 @@ static ADDRESS_MAP_START( jchan_sub, AS_PROGRAM, 16, jchan_state )
 
 	AM_RANGE(0x800000, 0x800003) AM_DEVWRITE8("ymz", ymz280b_device, write, 0x00ff) // sound
 
+<<<<<<< HEAD
 	AM_RANGE(0xa00000, 0xa00001) AM_READWRITE(watchdog_reset16_r, watchdog_reset16_w)   // watchdog
+=======
+	AM_RANGE(0xa00000, 0xa00001) AM_DEVREADWRITE("watchdog", watchdog_timer_device, reset16_r, reset16_w)
+>>>>>>> upstream/master
 ADDRESS_MAP_END
 
 
@@ -573,7 +653,11 @@ INPUT_PORTS_END
 
 /* machine driver */
 
+<<<<<<< HEAD
 static MACHINE_CONFIG_START( jchan, jchan_state )
+=======
+static MACHINE_CONFIG_START( jchan )
+>>>>>>> upstream/master
 
 	MCFG_CPU_ADD("maincpu", M68000, 16000000)
 	MCFG_CPU_PROGRAM_MAP(jchan_main)
@@ -582,6 +666,11 @@ static MACHINE_CONFIG_START( jchan, jchan_state )
 	MCFG_CPU_ADD("sub", M68000, 16000000)
 	MCFG_CPU_PROGRAM_MAP(jchan_sub)
 
+<<<<<<< HEAD
+=======
+	MCFG_WATCHDOG_ADD("watchdog")
+
+>>>>>>> upstream/master
 	MCFG_GFXDECODE_ADD("gfxdecode", "palette", jchan)
 
 
@@ -708,5 +797,10 @@ DRIVER_INIT_MEMBER( jchan_state, jchan )
 
 
 /* game drivers */
+<<<<<<< HEAD
 GAME( 1995, jchan,     0,        jchan,    jchan, jchan_state,    jchan,    ROT0, "Kaneko", "Jackie Chan - The Kung-Fu Master", MACHINE_IMPERFECT_GRAPHICS | MACHINE_NO_COCKTAIL | MACHINE_SUPPORTS_SAVE )
 GAME( 1995, jchan2,    0,        jchan,    jchan2, jchan_state,   jchan,    ROT0, "Kaneko", "Jackie Chan in Fists of Fire", MACHINE_IMPERFECT_GRAPHICS | MACHINE_NO_COCKTAIL | MACHINE_SUPPORTS_SAVE )
+=======
+GAME( 1995, jchan,     0,        jchan,    jchan,  jchan_state,   jchan,    ROT0, "Kaneko", "Jackie Chan - The Kung-Fu Master", MACHINE_IMPERFECT_GRAPHICS | MACHINE_NO_COCKTAIL | MACHINE_SUPPORTS_SAVE )
+GAME( 1995, jchan2,    0,        jchan,    jchan2, jchan_state,   jchan,    ROT0, "Kaneko", "Jackie Chan in Fists of Fire",     MACHINE_IMPERFECT_GRAPHICS | MACHINE_NO_COCKTAIL | MACHINE_SUPPORTS_SAVE )
+>>>>>>> upstream/master

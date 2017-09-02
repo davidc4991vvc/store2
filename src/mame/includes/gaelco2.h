@@ -2,6 +2,10 @@
 // copyright-holders:Manuel Abadia
 #include "cpu/m68000/m68000.h"
 #include "video/bufsprite.h"
+<<<<<<< HEAD
+=======
+#include "machine/74259.h"
+>>>>>>> upstream/master
 #include "machine/eepromser.h"
 
 class gaelco2_state : public driver_device
@@ -14,6 +18,7 @@ public:
 		m_vregs(*this, "vregs"),
 		m_snowboar_protection(*this, "snowboar_prot"),
 		m_eeprom(*this, "eeprom"),
+<<<<<<< HEAD
 		m_gfxdecode(*this, "gfxdecode"),
 		m_palette(*this, "palette"),
 		m_generic_paletteram_16(*this, "paletteram") { }
@@ -37,6 +42,27 @@ public:
 	DECLARE_WRITE16_MEMBER(touchgo_coin_w);
 	DECLARE_READ16_MEMBER(snowboar_protection_r);
 	DECLARE_WRITE16_MEMBER(snowboar_protection_w);
+=======
+		m_mainlatch(*this, "mainlatch"),
+		m_gfxdecode(*this, "gfxdecode"),
+		m_palette(*this, "palette"),
+		m_generic_paletteram_16(*this, "paletteram"),
+		m_shareram(*this, "shareram")
+	{ }
+
+	DECLARE_WRITE8_MEMBER(shareram_w);
+	DECLARE_READ8_MEMBER(shareram_r);
+	DECLARE_WRITE16_MEMBER(wrally2_latch_w);
+	DECLARE_WRITE16_MEMBER(alighunt_coin_w);
+	DECLARE_WRITE_LINE_MEMBER(coin1_counter_w);
+	DECLARE_WRITE_LINE_MEMBER(coin2_counter_w);
+	DECLARE_WRITE_LINE_MEMBER(coin3_counter_w);
+	DECLARE_WRITE_LINE_MEMBER(coin4_counter_w);
+	DECLARE_READ16_MEMBER(snowboar_protection_r);
+	DECLARE_WRITE16_MEMBER(snowboar_protection_w);
+	DECLARE_READ16_MEMBER(play2000_shareram_68k_r);
+	DECLARE_WRITE16_MEMBER(play2000_shareram_68k_w);
+>>>>>>> upstream/master
 	DECLARE_WRITE16_MEMBER(gaelco2_vram_w);
 	DECLARE_WRITE16_MEMBER(gaelco2_palette_w);
 	DECLARE_DRIVER_INIT(touchgo);
@@ -48,6 +74,7 @@ public:
 	TILE_GET_INFO_MEMBER(get_tile_info_gaelco2_screen1_dual);
 	DECLARE_VIDEO_START(gaelco2);
 	DECLARE_VIDEO_START(gaelco2_dual);
+<<<<<<< HEAD
 	UINT32 screen_update_gaelco2(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
 	UINT32 screen_update_gaelco2_left(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
 	UINT32 screen_update_gaelco2_right(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
@@ -57,6 +84,34 @@ public:
 	void draw_sprites(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect, int mask, int xoffs);
 	UINT32 dual_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect, int index);
 	void gaelco2_ROM16_split_gfx(const char *src_reg, const char *dst_reg, int start, int length, int dest1, int dest2);
+=======
+	uint32_t screen_update_gaelco2(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
+	uint32_t screen_update_gaelco2_left(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
+	uint32_t screen_update_gaelco2_right(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
+	void draw_sprites(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect, int mask, int xoffs);
+	uint32_t dual_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect, int index);
+	void gaelco2_ROM16_split_gfx(const char *src_reg, const char *dst_reg, int start, int length, int dest1, int dest2);
+
+protected:
+	required_device<m68000_device> m_maincpu;
+
+private:
+	uint32_t snowboard_latch;
+
+	uint16_t *m_videoram;
+	tilemap_t *m_pant[2];
+	int m_dual_monitor;
+
+	required_device<buffered_spriteram16_device> m_spriteram;
+	required_shared_ptr<uint16_t> m_vregs;
+	optional_shared_ptr<uint16_t> m_snowboar_protection;
+	optional_device<eeprom_serial_93cxx_device> m_eeprom;
+	optional_device<ls259_device> m_mainlatch;
+	required_device<gfxdecode_device> m_gfxdecode;
+	required_device<palette_device> m_palette;
+	required_shared_ptr<uint16_t> m_generic_paletteram_16;
+	optional_shared_ptr<uint16_t> m_shareram;
+>>>>>>> upstream/master
 };
 
 
@@ -100,10 +155,17 @@ public:
 	required_ioport m_analog0;
 	required_ioport m_analog1;
 
+<<<<<<< HEAD
 	UINT8 m_analog_ports[2];
 
 	DECLARE_WRITE16_MEMBER(wrally2_coin_w);
 	DECLARE_WRITE16_MEMBER(wrally2_adc_clk);
 	DECLARE_WRITE16_MEMBER(wrally2_adc_cs);
+=======
+	uint8_t m_analog_ports[2];
+
+	DECLARE_WRITE_LINE_MEMBER(wrally2_adc_clk);
+	DECLARE_WRITE_LINE_MEMBER(wrally2_adc_cs);
+>>>>>>> upstream/master
 	DECLARE_CUSTOM_INPUT_MEMBER(wrally2_analog_bit_r);
 };

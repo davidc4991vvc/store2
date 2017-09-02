@@ -1,17 +1,30 @@
 // license:BSD-3-Clause
 // copyright-holders:Bryan McPhail
+<<<<<<< HEAD
+=======
+#include "machine/gen_latch.h"
+>>>>>>> upstream/master
 #include "sound/msm5205.h"
 #include "video/bufsprite.h"
 #include "video/decbac06.h"
 #include "video/deckarn.h"
 #include "video/decmxc06.h"
+<<<<<<< HEAD
+=======
+#include "video/decrmc3.h"
+>>>>>>> upstream/master
 
 class dec8_state : public driver_device
 {
 public:
 	enum
 	{
+<<<<<<< HEAD
 		TIMER_DEC8_I8751
+=======
+		TIMER_DEC8_I8751,
+		TIMER_DEC8_M6502
+>>>>>>> upstream/master
 	};
 
 	dec8_state(const machine_config &mconfig, device_type type, const char *tag)
@@ -26,10 +39,19 @@ public:
 		m_tilegen2(*this, "tilegen2"),
 		m_spritegen_krn(*this, "spritegen_krn"),
 		m_spritegen_mxc(*this, "spritegen_mxc"),
+<<<<<<< HEAD
 		m_videoram(*this, "videoram"),
 		m_bg_data(*this, "bg_data"),
 		m_gfxdecode(*this, "gfxdecode"),
 		m_palette(*this, "palette") { }
+=======
+		m_gfxdecode(*this, "gfxdecode"),
+		m_palette(*this, "palette"),
+		m_soundlatch(*this, "soundlatch"),
+		m_videoram(*this, "videoram"),
+		m_bg_data(*this, "bg_data"),
+		m_coin_port(*this, "I8751") { }
+>>>>>>> upstream/master
 
 	/* devices */
 	required_device<cpu_device> m_maincpu;
@@ -42,6 +64,7 @@ public:
 	optional_device<deco_bac06_device> m_tilegen2;
 	optional_device<deco_karnovsprites_device> m_spritegen_krn;
 	optional_device<deco_mxc06_device> m_spritegen_mxc;
+<<<<<<< HEAD
 
 	/* memory pointers */
 	required_shared_ptr<UINT8> m_videoram;
@@ -53,6 +76,19 @@ public:
 	UINT8 *  m_pf1_data;
 	UINT8 *  m_row;
 	UINT16   m_buffered_spriteram16[0x800/2]; // for the mxc06 sprite chip emulation (oscar, cobra)
+=======
+	required_device<gfxdecode_device> m_gfxdecode;
+	required_device<deco_rmc3_device> m_palette;
+	required_device<generic_latch_8_device> m_soundlatch;
+
+	/* memory pointers */
+	required_shared_ptr<uint8_t> m_videoram;
+	optional_shared_ptr<uint8_t> m_bg_data;
+
+	uint8_t *  m_pf1_data;
+	uint8_t *  m_row;
+	uint16_t   m_buffered_spriteram16[0x800/2]; // for the mxc06 sprite chip emulation (oscar, cobra)
+>>>>>>> upstream/master
 
 	/* video-related */
 	tilemap_t  *m_bg_tilemap;
@@ -83,6 +119,12 @@ public:
 	int      m_msm5205next;
 	int      m_toggle;
 
+<<<<<<< HEAD
+=======
+	emu_timer *m_i8751_timer;
+	emu_timer *m_m6502_timer;
+
+>>>>>>> upstream/master
 	DECLARE_WRITE8_MEMBER(dec8_mxc06_karn_buffer_spriteram_w);
 	DECLARE_READ8_MEMBER(i8751_h_r);
 	DECLARE_READ8_MEMBER(i8751_l_r);
@@ -93,7 +135,10 @@ public:
 	DECLARE_WRITE8_MEMBER(lastmisn_i8751_w);
 	DECLARE_WRITE8_MEMBER(shackled_i8751_w);
 	DECLARE_WRITE8_MEMBER(csilver_i8751_w);
+<<<<<<< HEAD
 	DECLARE_WRITE8_MEMBER(srdarwin_i8751_w);
+=======
+>>>>>>> upstream/master
 	DECLARE_WRITE8_MEMBER(dec8_bank_w);
 	DECLARE_WRITE8_MEMBER(ghostb_bank_w);
 	DECLARE_WRITE8_MEMBER(csilver_control_w);
@@ -105,6 +150,11 @@ public:
 	DECLARE_WRITE8_MEMBER(flip_screen_w);
 	DECLARE_READ8_MEMBER(dec8_mcu_from_main_r);
 	DECLARE_WRITE8_MEMBER(dec8_mcu_to_main_w);
+<<<<<<< HEAD
+=======
+	DECLARE_READ8_MEMBER(srdarwin_mcu_from_main_r);
+	DECLARE_WRITE8_MEMBER(srdarwin_mcu_to_main_w);
+>>>>>>> upstream/master
 	DECLARE_WRITE8_MEMBER(dec8_bg_data_w);
 	DECLARE_READ8_MEMBER(dec8_bg_data_r);
 	DECLARE_WRITE8_MEMBER(dec8_videoram_w);
@@ -139,13 +189,19 @@ public:
 	TILE_GET_INFO_MEMBER(get_srdarwin_tile_info);
 	TILE_GET_INFO_MEMBER(get_gondo_fix_tile_info);
 	TILE_GET_INFO_MEMBER(get_gondo_tile_info);
+<<<<<<< HEAD
 	virtual void machine_start();
 	virtual void machine_reset();
+=======
+	virtual void machine_start() override;
+	virtual void machine_reset() override;
+>>>>>>> upstream/master
 	DECLARE_VIDEO_START(lastmisn);
 	DECLARE_VIDEO_START(shackled);
 	DECLARE_VIDEO_START(gondo);
 	DECLARE_VIDEO_START(garyoret);
 	DECLARE_VIDEO_START(ghostb);
+<<<<<<< HEAD
 	DECLARE_PALETTE_INIT(ghostb);
 	DECLARE_VIDEO_START(oscar);
 	DECLARE_VIDEO_START(srdarwin);
@@ -159,11 +215,33 @@ public:
 	UINT32 screen_update_srdarwin(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
 	UINT32 screen_update_cobracom(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
 	void screen_eof_dec8(screen_device &screen, bool state);
+=======
+	DECLARE_VIDEO_START(oscar);
+	DECLARE_VIDEO_START(srdarwin);
+	DECLARE_VIDEO_START(cobracom);
+	uint32_t screen_update_lastmisn(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
+	uint32_t screen_update_shackled(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
+	uint32_t screen_update_gondo(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
+	uint32_t screen_update_garyoret(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
+	uint32_t screen_update_ghostb(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
+	uint32_t screen_update_oscar(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
+	uint32_t screen_update_srdarwin(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
+	uint32_t screen_update_cobracom(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
+	DECLARE_WRITE_LINE_MEMBER(screen_vblank_dec8);
+>>>>>>> upstream/master
 	INTERRUPT_GEN_MEMBER(gondo_interrupt);
 	INTERRUPT_GEN_MEMBER(oscar_interrupt);
 	void srdarwin_draw_sprites(  bitmap_ind16 &bitmap, const rectangle &cliprect, int pri );
 	DECLARE_WRITE_LINE_MEMBER(csilver_adpcm_int);
 
 protected:
+<<<<<<< HEAD
 	virtual void device_timer(emu_timer &timer, device_timer_id id, int param, void *ptr);
+=======
+	virtual void device_timer(emu_timer &timer, device_timer_id id, int param, void *ptr) override;
+
+private:
+	/* ports */
+	optional_ioport m_coin_port;
+>>>>>>> upstream/master
 };

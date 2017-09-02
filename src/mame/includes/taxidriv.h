@@ -22,6 +22,7 @@ public:
 	required_device<gfxdecode_device> m_gfxdecode;
 	required_device<palette_device> m_palette;
 
+<<<<<<< HEAD
 	required_shared_ptr<UINT8> m_vram0;
 	required_shared_ptr<UINT8> m_vram1;
 	required_shared_ptr<UINT8> m_vram2;
@@ -31,6 +32,17 @@ public:
 	required_shared_ptr<UINT8> m_vram6;
 	required_shared_ptr<UINT8> m_vram7;
 	required_shared_ptr<UINT8> m_scroll;
+=======
+	required_shared_ptr<uint8_t> m_vram0;
+	required_shared_ptr<uint8_t> m_vram1;
+	required_shared_ptr<uint8_t> m_vram2;
+	required_shared_ptr<uint8_t> m_vram3;
+	required_shared_ptr<uint8_t> m_vram4;
+	required_shared_ptr<uint8_t> m_vram5;
+	required_shared_ptr<uint8_t> m_vram6;
+	required_shared_ptr<uint8_t> m_vram7;
+	required_shared_ptr<uint8_t> m_scroll;
+>>>>>>> upstream/master
 
 	int m_s1;
 	int m_s2;
@@ -63,8 +75,15 @@ public:
 	DECLARE_WRITE8_MEMBER(p8910_0b_w);
 	DECLARE_WRITE8_MEMBER(spritectrl_w);
 
+<<<<<<< HEAD
 	virtual void machine_start();
 	DECLARE_PALETTE_INIT(taxidriv);
 
 	UINT32 screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
+=======
+	virtual void machine_start() override;
+	DECLARE_PALETTE_INIT(taxidriv);
+
+	uint32_t screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
+>>>>>>> upstream/master
 };

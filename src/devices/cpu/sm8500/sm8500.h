@@ -1,5 +1,6 @@
 // license:BSD-3-Clause
 // copyright-holders:Wilbert Pol
+<<<<<<< HEAD
 #pragma once
 
 #ifndef __SM8500_H__
@@ -10,6 +11,18 @@
 
 #define MCFG_SM8500_TIMER_CB(_devcb) \
 	sm8500_cpu_device::set_timer_cb(*device, DEVCB_##_devcb);
+=======
+#ifndef MAME_CPU_SM8500_SM8500_H
+#define MAME_CPU_SM8500_SM8500_H
+
+#pragma once
+
+#define MCFG_SM8500_DMA_CB(_devcb) \
+	devcb = &sm8500_cpu_device::set_dma_cb(*device, DEVCB_##_devcb);
+
+#define MCFG_SM8500_TIMER_CB(_devcb) \
+	devcb = &sm8500_cpu_device::set_timer_cb(*device, DEVCB_##_devcb);
+>>>>>>> upstream/master
 
 enum
 {
@@ -26,6 +39,7 @@ class sm8500_cpu_device : public cpu_device
 {
 public:
 	// construction/destruction
+<<<<<<< HEAD
 	sm8500_cpu_device(const machine_config &mconfig, const char *_tag, device_t *_owner, UINT32 _clock);
 
 	// static configuration helpers
@@ -84,6 +98,66 @@ protected:
 	inline UINT16 mem_readword(UINT32 address) { return (mem_readbyte(address ) << 8) | (mem_readbyte(address+1)); }
 	inline void mem_writeword(UINT32 address, UINT16 value) { mem_writebyte(address, value >> 8); mem_writebyte(address+1, value); }
 	inline void take_interrupt(UINT16 vector);
+=======
+	sm8500_cpu_device(const machine_config &mconfig, const char *_tag, device_t *_owner, uint32_t _clock);
+
+	// static configuration helpers
+	template <class Object> static devcb_base &set_dma_cb(device_t &device, Object &&cb) { return downcast<sm8500_cpu_device &>(device).m_dma_func.set_callback(std::forward<Object>(cb)); }
+	template <class Object> static devcb_base &set_timer_cb(device_t &device, Object &&cb) { return downcast<sm8500_cpu_device &>(device).m_timer_func.set_callback(std::forward<Object>(cb)); }
+
+	/* interrupts */
+	static constexpr int ILL_INT  = 0;
+	static constexpr int DMA_INT  = 1;
+	static constexpr int TIM0_INT = 2;
+	static constexpr int EXT_INT  = 3;
+	static constexpr int UART_INT = 4;
+	static constexpr int LCDC_INT = 5;
+	static constexpr int TIM1_INT = 6;
+	static constexpr int CK_INT   = 7;
+	static constexpr int PIO_INT  = 8;
+	static constexpr int WDT_INT  = 9;
+	static constexpr int NMI_INT  = 10;
+
+protected:
+	// Flags
+	static constexpr uint8_t FLAG_C = 0x80;
+	static constexpr uint8_t FLAG_Z = 0x40;
+	static constexpr uint8_t FLAG_S = 0x20;
+	static constexpr uint8_t FLAG_V = 0x10;
+	static constexpr uint8_t FLAG_D = 0x08;
+	static constexpr uint8_t FLAG_H = 0x04;
+	static constexpr uint8_t FLAG_B = 0x02;
+	static constexpr uint8_t FLAG_I = 0x01;
+
+	// device-level overrides
+	virtual void device_start() override;
+	virtual void device_reset() override;
+
+	// device_execute_interface overrides
+	virtual uint32_t execute_min_cycles() const override { return 1; }
+	virtual uint32_t execute_max_cycles() const override { return 16; }
+	virtual uint32_t execute_input_lines() const override { return 11; }
+	virtual void execute_run() override;
+	virtual void execute_set_input(int inputnum, int state) override;
+
+	// device_memory_interface overrides
+	virtual space_config_vector memory_space_config() const override;
+
+	// device_state_interface overrides
+	virtual void state_string_export(const device_state_entry &entry, std::string &str) const override;
+
+	// device_disasm_interface overrides
+	virtual uint32_t disasm_min_opcode_bytes() const override { return 1; }
+	virtual uint32_t disasm_max_opcode_bytes() const override { return 5; }
+	virtual offs_t disasm_disassemble(std::ostream &stream, offs_t pc, const uint8_t *oprom, const uint8_t *opram, uint32_t options) override;
+
+	inline void get_sp();
+	uint8_t mem_readbyte(uint32_t offset) const;
+	void mem_writebyte(uint32_t offset, uint8_t data);
+	inline uint16_t mem_readword(uint32_t address) const { return (mem_readbyte(address ) << 8) | (mem_readbyte(address+1)); }
+	inline void mem_writeword(uint32_t address, uint16_t value) { mem_writebyte(address, value >> 8); mem_writebyte(address+1, value); }
+	inline void take_interrupt(uint16_t vector);
+>>>>>>> upstream/master
 	void process_interrupts();
 
 	address_space_config m_program_config;
@@ -91,6 +165,7 @@ protected:
 	devcb_write8 m_dma_func;
 	devcb_write8 m_timer_func;
 
+<<<<<<< HEAD
 	UINT16 m_PC;
 	UINT8 m_IE0;
 	UINT8 m_IE1;
@@ -116,3 +191,29 @@ extern const device_type SM8500;
 
 
 #endif /* __SM8500_H__ */
+=======
+	uint16_t m_PC;
+	uint8_t m_IE0;
+	uint8_t m_IE1;
+	uint8_t m_IR0;
+	uint8_t m_IR1;
+	uint8_t m_SYS;
+	uint8_t m_CKC;
+	uint8_t m_clock_changed;
+	uint16_t m_SP;
+	uint8_t m_PS0;
+	uint8_t m_PS1;
+	uint16_t m_IFLAGS;
+	uint8_t m_CheckInterrupts;
+	int m_halted;
+	int m_icount;
+	address_space *m_program;
+	uint16_t m_oldpc;
+	uint8_t m_register_ram[0x108];
+};
+
+
+DECLARE_DEVICE_TYPE(SM8500, sm8500_cpu_device)
+
+#endif // MAME_CPU_SM8500_SM8500_H
+>>>>>>> upstream/master

@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 // license:LGPL-2.1+
+=======
+// license:BSD-3-Clause
+>>>>>>> upstream/master
 // copyright-holders:Tomasz Slanina
 /***************************************************************************
 
@@ -12,6 +16,7 @@
 #include "includes/mustache.h"
 
 
+<<<<<<< HEAD
 PALETTE_INIT_MEMBER(mustache_state, mustache)
 {
 	const UINT8 *color_prom = memregion("proms")->base();
@@ -46,6 +51,8 @@ PALETTE_INIT_MEMBER(mustache_state, mustache)
 	}
 }
 
+=======
+>>>>>>> upstream/master
 WRITE8_MEMBER(mustache_state::videoram_w)
 {
 	m_videoram[offset] = data;
@@ -54,6 +61,7 @@ WRITE8_MEMBER(mustache_state::videoram_w)
 
 WRITE8_MEMBER(mustache_state::video_control_w)
 {
+<<<<<<< HEAD
 	if (flip_screen() != (data & 0x01))
 	{
 		flip_screen_set(data & 0x01);
@@ -62,6 +70,14 @@ WRITE8_MEMBER(mustache_state::video_control_w)
 
 	/* tile bank */
 
+=======
+	/* It is assumed that screen flipping is controlled by both
+	   hardware (via a DIP switch, labeled "Hard SW" on the
+	   operator's sheet) and software, as in some Irem games */
+	flip_screen_set((data & 0x01) ^ BIT(~m_dswb->read(), 7));
+
+	/* tile bank */
+>>>>>>> upstream/master
 	if ((m_control_byte ^ data) & 0x08)
 	{
 		m_control_byte = data;
@@ -90,7 +106,11 @@ TILE_GET_INFO_MEMBER(mustache_state::get_bg_tile_info)
 
 void mustache_state::video_start()
 {
+<<<<<<< HEAD
 	m_bg_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(mustache_state::get_bg_tile_info),this), TILEMAP_SCAN_ROWS_FLIP_X,
+=======
+	m_bg_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(mustache_state::get_bg_tile_info),this), TILEMAP_SCAN_ROWS_FLIP_X,
+>>>>>>> upstream/master
 			8, 8, 64, 32);
 
 	m_bg_tilemap->set_scroll_rows(4);
@@ -128,7 +148,11 @@ void mustache_state::draw_sprites(bitmap_ind16 &bitmap, const rectangle &cliprec
 		if (flip_screen())
 		{
 			sx = 240 - sx;
+<<<<<<< HEAD
 			sy = 240 - sy;
+=======
+			sy = 232 - sy;
+>>>>>>> upstream/master
 		}
 
 		gfx->transpen(bitmap,clip,
@@ -139,7 +163,11 @@ void mustache_state::draw_sprites(bitmap_ind16 &bitmap, const rectangle &cliprec
 	}
 }
 
+<<<<<<< HEAD
 UINT32 mustache_state::screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+=======
+uint32_t mustache_state::screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+>>>>>>> upstream/master
 {
 	m_bg_tilemap->draw(screen, bitmap, cliprect, 0, 0);
 	draw_sprites(bitmap, cliprect);

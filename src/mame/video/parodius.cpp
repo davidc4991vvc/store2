@@ -44,6 +44,7 @@ K05324X_CB_MEMBER(parodius_state::sprite_callback)
 
 ***************************************************************************/
 
+<<<<<<< HEAD
 UINT32 parodius_state::screen_update_parodius(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
 {
 	int layer[3], bg_colorbase;
@@ -53,15 +54,34 @@ UINT32 parodius_state::screen_update_parodius(screen_device &screen, bitmap_ind1
 	m_layer_colorbase[0] = m_k053251->get_palette_index(K053251_CI2);
 	m_layer_colorbase[1] = m_k053251->get_palette_index(K053251_CI4);
 	m_layer_colorbase[2] = m_k053251->get_palette_index(K053251_CI3);
+=======
+uint32_t parodius_state::screen_update_parodius(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+{
+	int layer[3], bg_colorbase;
+
+	bg_colorbase = m_k053251->get_palette_index(k053251_device::CI0);
+	m_sprite_colorbase   = m_k053251->get_palette_index(k053251_device::CI1);
+	m_layer_colorbase[0] = m_k053251->get_palette_index(k053251_device::CI2);
+	m_layer_colorbase[1] = m_k053251->get_palette_index(k053251_device::CI4);
+	m_layer_colorbase[2] = m_k053251->get_palette_index(k053251_device::CI3);
+>>>>>>> upstream/master
 
 	m_k052109->tilemap_update();
 
 	layer[0] = 0;
+<<<<<<< HEAD
 	m_layerpri[0] = m_k053251->get_priority(K053251_CI2);
 	layer[1] = 1;
 	m_layerpri[1] = m_k053251->get_priority(K053251_CI4);
 	layer[2] = 2;
 	m_layerpri[2] = m_k053251->get_priority(K053251_CI3);
+=======
+	m_layerpri[0] = m_k053251->get_priority(k053251_device::CI2);
+	layer[1] = 1;
+	m_layerpri[1] = m_k053251->get_priority(k053251_device::CI4);
+	layer[2] = 2;
+	m_layerpri[2] = m_k053251->get_priority(k053251_device::CI3);
+>>>>>>> upstream/master
 
 	konami_sortlayers3(layer, m_layerpri);
 

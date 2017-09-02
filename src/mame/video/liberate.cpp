@@ -42,7 +42,11 @@ TILEMAP_MAPPER_MEMBER(liberate_state::fix_scan)
 
 TILE_GET_INFO_MEMBER(liberate_state::get_back_tile_info)
 {
+<<<<<<< HEAD
 	const UINT8 *RAM = memregion("user1")->base();
+=======
+	const uint8_t *RAM = memregion("user1")->base();
+>>>>>>> upstream/master
 	int tile, bank;
 
 	/* Convert tile index of 512x512 to paged format */
@@ -71,8 +75,13 @@ TILE_GET_INFO_MEMBER(liberate_state::get_back_tile_info)
 
 TILE_GET_INFO_MEMBER(liberate_state::get_fix_tile_info)
 {
+<<<<<<< HEAD
 	UINT8 *videoram = m_videoram;
 	UINT8 *colorram = m_colorram;
+=======
+	uint8_t *videoram = m_videoram;
+	uint8_t *colorram = m_colorram;
+>>>>>>> upstream/master
 	int tile, color;
 
 	tile = videoram[tile_index] + (colorram[tile_index] << 8);
@@ -126,7 +135,11 @@ WRITE8_MEMBER(liberate_state::deco16_io_w)
 			m_maincpu->set_input_line(DECO16_IRQ_LINE, CLEAR_LINE);
 			break;
 		case 9: /* Sound */
+<<<<<<< HEAD
 			soundlatch_byte_w(space, 0, data);
+=======
+			m_soundlatch->write(space, 0, data);
+>>>>>>> upstream/master
 			m_audiocpu->set_input_line(M6502_IRQ_LINE, HOLD_LINE);
 			break;
 	}
@@ -154,7 +167,11 @@ WRITE8_MEMBER(liberate_state::prosoccr_io_w)
 			m_maincpu->set_input_line(DECO16_IRQ_LINE, CLEAR_LINE);
 			break;
 		case 9: /* Sound */
+<<<<<<< HEAD
 			soundlatch_byte_w(space, 0, data);
+=======
+			m_soundlatch->write(space, 0, data);
+>>>>>>> upstream/master
 			m_audiocpu->set_input_line(M6502_IRQ_LINE, HOLD_LINE);
 			break;
 	}
@@ -173,7 +190,11 @@ WRITE8_MEMBER(liberate_state::prosport_io_w)
 			m_back_tilemap->mark_all_dirty();
 			break;
 		case 2: /* Sound */
+<<<<<<< HEAD
 			soundlatch_byte_w(space, 0, data);
+=======
+			m_soundlatch->write(space, 0, data);
+>>>>>>> upstream/master
 			m_audiocpu->set_input_line(M6502_IRQ_LINE, HOLD_LINE);
 			break;
 		case 4: /* Irq ack */
@@ -204,22 +225,38 @@ WRITE8_MEMBER(liberate_state::prosport_bg_vram_w)
 
 VIDEO_START_MEMBER(liberate_state,prosoccr)
 {
+<<<<<<< HEAD
 	m_back_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(liberate_state::get_back_tile_info),this), tilemap_mapper_delegate(FUNC(liberate_state::back_scan),this), 16, 16, 32, 32);
 	m_fix_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(liberate_state::get_fix_tile_info),this), tilemap_mapper_delegate(FUNC(liberate_state::fix_scan),this), 8, 8, 32, 32);
+=======
+	m_back_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(liberate_state::get_back_tile_info),this), tilemap_mapper_delegate(FUNC(liberate_state::back_scan),this), 16, 16, 32, 32);
+	m_fix_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(liberate_state::get_fix_tile_info),this), tilemap_mapper_delegate(FUNC(liberate_state::fix_scan),this), 8, 8, 32, 32);
+>>>>>>> upstream/master
 
 	m_fix_tilemap->set_transparent_pen(0);
 
 	m_fg_gfx = memregion("fg_gfx")->base();
+<<<<<<< HEAD
 	m_charram = auto_alloc_array(machine(), UINT8, 0x1800 * 2);
 
 	save_pointer(NAME(m_charram), 0x1800 * 2);
+=======
+	m_charram = std::make_unique<uint8_t[]>(0x1800 * 2);
+
+	save_pointer(NAME(m_charram.get()), 0x1800 * 2);
+>>>>>>> upstream/master
 	save_pointer(NAME(m_fg_gfx), 0x6000);
 }
 
 VIDEO_START_MEMBER(liberate_state,boomrang)
 {
+<<<<<<< HEAD
 	m_back_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(liberate_state::get_back_tile_info),this), tilemap_mapper_delegate(FUNC(liberate_state::back_scan),this), 16, 16, 32, 32);
 	m_fix_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(liberate_state::get_fix_tile_info),this), tilemap_mapper_delegate(FUNC(liberate_state::fix_scan),this), 8, 8, 32, 32);
+=======
+	m_back_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(liberate_state::get_back_tile_info),this), tilemap_mapper_delegate(FUNC(liberate_state::back_scan),this), 16, 16, 32, 32);
+	m_fix_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(liberate_state::get_fix_tile_info),this), tilemap_mapper_delegate(FUNC(liberate_state::fix_scan),this), 8, 8, 32, 32);
+>>>>>>> upstream/master
 
 	m_back_tilemap->set_transmask(0, 0x0001, 0x007e); /* Bottom 1 pen/Top 7 pens */
 	m_fix_tilemap->set_transparent_pen(0);
@@ -227,16 +264,26 @@ VIDEO_START_MEMBER(liberate_state,boomrang)
 
 VIDEO_START_MEMBER(liberate_state,liberate)
 {
+<<<<<<< HEAD
 	m_back_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(liberate_state::get_back_tile_info),this), tilemap_mapper_delegate(FUNC(liberate_state::back_scan),this), 16, 16, 32, 32);
 	m_fix_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(liberate_state::get_fix_tile_info),this), tilemap_mapper_delegate(FUNC(liberate_state::fix_scan),this), 8, 8, 32, 32);
+=======
+	m_back_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(liberate_state::get_back_tile_info),this), tilemap_mapper_delegate(FUNC(liberate_state::back_scan),this), 16, 16, 32, 32);
+	m_fix_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(liberate_state::get_fix_tile_info),this), tilemap_mapper_delegate(FUNC(liberate_state::fix_scan),this), 8, 8, 32, 32);
+>>>>>>> upstream/master
 
 	m_fix_tilemap->set_transparent_pen(0);
 }
 
 VIDEO_START_MEMBER(liberate_state,prosport)
 {
+<<<<<<< HEAD
 	m_back_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(liberate_state::prosport_get_back_tile_info),this), tilemap_mapper_delegate(FUNC(liberate_state::back_scan),this), 16, 16, 32, 32);
 	m_fix_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(liberate_state::get_fix_tile_info),this), tilemap_mapper_delegate(FUNC(liberate_state::fix_scan),this), 8, 8, 32, 32);
+=======
+	m_back_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(liberate_state::prosport_get_back_tile_info),this), tilemap_mapper_delegate(FUNC(liberate_state::back_scan),this), 16, 16, 32, 32);
+	m_fix_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(liberate_state::get_fix_tile_info),this), tilemap_mapper_delegate(FUNC(liberate_state::fix_scan),this), 8, 8, 32, 32);
+>>>>>>> upstream/master
 
 	m_fix_tilemap->set_transparent_pen(0);
 }
@@ -245,7 +292,11 @@ VIDEO_START_MEMBER(liberate_state,prosport)
 
 PALETTE_INIT_MEMBER(liberate_state,liberate)
 {
+<<<<<<< HEAD
 	const UINT8 *color_prom = memregion("proms")->base();
+=======
+	const uint8_t *color_prom = memregion("proms")->base();
+>>>>>>> upstream/master
 	int i, bit0, bit1, bit2, g, r, b;
 
 	for (i = 0;i < 32;i++)
@@ -278,7 +329,11 @@ PALETTE_INIT_MEMBER(liberate_state,liberate)
 
 void liberate_state::liberate_draw_sprites( bitmap_ind16 &bitmap, const rectangle &cliprect )
 {
+<<<<<<< HEAD
 	UINT8 *spriteram = m_spriteram;
+=======
+	uint8_t *spriteram = m_spriteram;
+>>>>>>> upstream/master
 	int offs;
 
 	/* Sprites */
@@ -347,7 +402,11 @@ void liberate_state::liberate_draw_sprites( bitmap_ind16 &bitmap, const rectangl
 void liberate_state::prosport_draw_sprites( bitmap_ind16 &bitmap, const rectangle &cliprect )
 {
 	int offs, multi, fx, fy, sx, sy, sy2, code, code2, color, gfx_region;
+<<<<<<< HEAD
 	UINT8 *spriteram = m_spriteram;
+=======
+	uint8_t *spriteram = m_spriteram;
+>>>>>>> upstream/master
 
 	for (offs = 0x000; offs < 0x800; offs += 4)
 	{
@@ -410,7 +469,11 @@ void liberate_state::prosport_draw_sprites( bitmap_ind16 &bitmap, const rectangl
 
 void liberate_state::boomrang_draw_sprites( bitmap_ind16 &bitmap, const rectangle &cliprect, int pri )
 {
+<<<<<<< HEAD
 	UINT8 *spriteram = m_spriteram;
+=======
+	uint8_t *spriteram = m_spriteram;
+>>>>>>> upstream/master
 	int offs, multi, fx, fy, sx, sy, sy2, code, code2, color;
 
 	for (offs = 0x000; offs < 0x800; offs += 4)
@@ -470,7 +533,11 @@ void liberate_state::boomrang_draw_sprites( bitmap_ind16 &bitmap, const rectangl
 
 void liberate_state::prosoccr_draw_sprites( bitmap_ind16 &bitmap, const rectangle &cliprect )
 {
+<<<<<<< HEAD
 	UINT8 *spriteram = m_spriteram;
+=======
+	uint8_t *spriteram = m_spriteram;
+>>>>>>> upstream/master
 	int offs, code, fx, fy, sx, sy;
 
 	for (offs = 0x000; offs < 0x400; offs += 4)
@@ -494,7 +561,11 @@ void liberate_state::prosoccr_draw_sprites( bitmap_ind16 &bitmap, const rectangl
 
 /***************************************************************************/
 
+<<<<<<< HEAD
 UINT32 liberate_state::screen_update_prosoccr(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+=======
+uint32_t liberate_state::screen_update_prosoccr(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+>>>>>>> upstream/master
 {
 	m_back_tilemap->set_scrolly(0,  m_io_ram[1]);
 	m_back_tilemap->set_scrollx(0, -m_io_ram[0]);
@@ -510,10 +581,17 @@ UINT32 liberate_state::screen_update_prosoccr(screen_device &screen, bitmap_ind1
 	return 0;
 }
 
+<<<<<<< HEAD
 UINT32 liberate_state::screen_update_prosport(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
 {
 	UINT8 *videoram = m_videoram;
 	UINT8 *colorram = m_colorram;
+=======
+uint32_t liberate_state::screen_update_prosport(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+{
+	uint8_t *videoram = m_videoram;
+	uint8_t *colorram = m_colorram;
+>>>>>>> upstream/master
 	int mx, my, tile, offs, gfx_region;
 	int scrollx, scrolly;
 
@@ -553,7 +631,11 @@ UINT32 liberate_state::screen_update_prosport(screen_device &screen, bitmap_ind1
 	return 0;
 }
 
+<<<<<<< HEAD
 UINT32 liberate_state::screen_update_boomrang(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+=======
+uint32_t liberate_state::screen_update_boomrang(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+>>>>>>> upstream/master
 {
 	m_back_tilemap->set_scrolly(0,  m_io_ram[1]);
 	m_back_tilemap->set_scrollx(0, -m_io_ram[0]);
@@ -572,7 +654,11 @@ UINT32 liberate_state::screen_update_boomrang(screen_device &screen, bitmap_ind1
 	return 0;
 }
 
+<<<<<<< HEAD
 UINT32 liberate_state::screen_update_liberate(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+=======
+uint32_t liberate_state::screen_update_liberate(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+>>>>>>> upstream/master
 {
 	m_back_tilemap->set_scrolly(0,  m_io_ram[1]);
 	m_back_tilemap->set_scrollx(0, -m_io_ram[0]);

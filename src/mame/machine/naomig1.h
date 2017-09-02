@@ -1,7 +1,14 @@
 // license:BSD-3-Clause
 // copyright-holders:Olivier Galibert
+<<<<<<< HEAD
 #ifndef _NAOMIG1_H_
 #define _NAOMIG1_H_
+=======
+#ifndef MAME_MACHINE_NAOMIG1_H
+#define MAME_MACHINE_NAOMIG1_H
+
+#pragma once
+>>>>>>> upstream/master
 
 #include "cpu/sh4/sh4.h"
 
@@ -16,11 +23,18 @@ public:
 		DMA_GDROM_IRQ
 	};
 
+<<<<<<< HEAD
 	typedef delegate<void (UINT32 main_adr, void *dma_ptr, UINT32 length, UINT32 size, bool to_mainram)> dma_cb;
 
 	naomi_g1_device(const machine_config &mconfig, device_type type, const char *name, const char *tag, device_t *owner, UINT32 clock, const char *shortname, const char *source);
 	template<class _cb> void set_irq_cb(_cb cb) { irq_cb.set_callback(cb); }
 	void set_dma_cb(dma_cb _cb) { _dma_cb = _cb; }
+=======
+	typedef delegate<void (uint32_t main_adr, void *dma_ptr, uint32_t length, uint32_t size, bool to_mainram)> dma_cb;
+
+	template <class Object> void set_irq_cb(Object &&cb) { irq_cb.set_callback(std::forward<Object>(cb)); }
+	void set_dma_cb(dma_cb cb) { _dma_cb = cb; }
+>>>>>>> upstream/master
 
 	DECLARE_ADDRESS_MAP(amap, 32);
 
@@ -53,6 +67,7 @@ public:
 protected:
 	enum { G1_TIMER_ID = 0x42 };
 
+<<<<<<< HEAD
 	virtual void device_start();
 	virtual void device_reset();
 	virtual void device_timer(emu_timer &timer, device_timer_id id, int param, void *ptr);
@@ -62,12 +77,32 @@ protected:
 
 private:
 	UINT32 gdstar, gdlen, gddir, gden, gdst;
+=======
+	naomi_g1_device(const machine_config &mconfig, device_type type, const char *tag, device_t *owner, uint32_t clock);
+
+	virtual void device_start() override;
+	virtual void device_reset() override;
+	virtual void device_timer(emu_timer &timer, device_timer_id id, int param, void *ptr) override;
+
+	virtual void dma_get_position(uint8_t *&base, uint32_t &limit, bool to_maincpu) = 0;
+	virtual void dma_advance(uint32_t size) = 0;
+
+private:
+	uint32_t gdstar, gdlen, gddir, gden, gdst;
+>>>>>>> upstream/master
 
 	emu_timer *timer;
 	devcb_write8 irq_cb;
 	dma_cb _dma_cb;
 
+<<<<<<< HEAD
 	void dma(void *dma_ptr, UINT32 main_adr, UINT32 size, bool to_mainram);
 };
 
 #endif
+=======
+	void dma(void *dma_ptr, uint32_t main_adr, uint32_t size, bool to_mainram);
+};
+
+#endif // MAME_MACHINE_NAOMIG1_H
+>>>>>>> upstream/master

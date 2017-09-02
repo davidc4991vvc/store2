@@ -147,6 +147,21 @@
 	end
 
 
+<<<<<<< HEAD
+=======
+	function suite.PBXFileReference_ListsBundleTarget()
+		kind "Bundle"
+		prepare()
+		xcode.PBXFileReference(tr)
+		test.capture [[
+/* Begin PBXFileReference section */
+		[MyProject.bundle:product] /* MyProject.bundle */ = {isa = PBXFileReference; explicitFileType = "wrapper.cfbundle"; includeInIndex = 0; name = "MyProject.bundle"; path = "MyProject.bundle"; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+		]]
+	end
+
+
+>>>>>>> upstream/master
 	function suite.PBXFileReference_ListsSourceFiles()
 		files { "source.c" }
 		prepare()
@@ -611,6 +626,37 @@
 	end
 
 
+<<<<<<< HEAD
+=======
+	function suite.PBXNativeTarget_OnBundle()
+		kind "Bundle"
+		prepare()
+		xcode.PBXNativeTarget(tr) --TODO adapt
+		test.capture [[
+/* Begin PBXNativeTarget section */
+		MyProject.bundle:target] /* MyProject */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = [MyProject.bundle:cfg] /* Build configuration list for PBXNativeTarget "MyProject" */;
+			buildPhases = (
+				[MyProject.bundle:rez] /* Resources */,
+				[MyProject.bundle:src] /* Sources */,
+				[MyProject.bundle:fxs] /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "MyProject";
+			productName = "MyProject";
+			productReference = [MyProject.bundle:product] /* MyProject.bundle */;
+			productType = "com.apple.product-type.bundle";
+		};
+/* End PBXNativeTarget section */
+		]]
+	end
+
+
+>>>>>>> upstream/master
 	function suite.PBXNativeTarget_OnBuildCommands()
 		prebuildcommands { "prebuildcmd" }
 		prelinkcommands { "prelinkcmd" }
@@ -938,6 +984,32 @@
 	end
 
 
+<<<<<<< HEAD
+=======
+	function suite.XCBuildConfigurationTarget_OnBundle()
+		kind "Bundle"
+		prepare()
+		xcode.XCBuildConfiguration_Target(tr, tr.products.children[1], tr.configs[1])
+		test.capture [[
+		[libMyProject.dylib:Debug] /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				EXECUTABLE_PREFIX = lib;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_MODEL_TUNING = G5;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Bundles";
+				PRODUCT_NAME = "MyProject";
+				PRODUCT_BUNDLE_IDENTIFIER = genie.MyProject;
+			};
+			name = "Debug";
+		};
+		]]
+	end
+
+
+>>>>>>> upstream/master
 	function suite.XCBuildConfigurationTarget_OnTargetPrefix()
 		kind "SharedLib"
 		targetprefix "xyz"

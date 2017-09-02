@@ -1,4 +1,8 @@
 #include <metal_stdlib>
+<<<<<<< HEAD
+=======
+#pragma clang diagnostic ignored "-Wparentheses-equality"
+>>>>>>> upstream/master
 using namespace metal;
 struct xlatMtlShaderInput {
   float4 _glesVertex [[attribute(0)]];
@@ -16,6 +20,7 @@ struct xlatMtlShaderUniform {
 vertex xlatMtlShaderOutput xlatMtlMain (xlatMtlShaderInput _mtl_i [[stage_in]], constant xlatMtlShaderUniform& _mtl_u [[buffer(0)]])
 {
   xlatMtlShaderOutput _mtl_o;
+<<<<<<< HEAD
   float3 tmpvar_1;
   tmpvar_1 = _mtl_i._glesVertex.xyz;
   int j_2;
@@ -25,16 +30,32 @@ vertex xlatMtlShaderOutput xlatMtlMain (xlatMtlShaderInput _mtl_i [[stage_in]], 
   half3 eyeNormal_6;
   half4 color_7;
   half4 tmpvar_8;
+=======
+  float3 tmpvar_1 = 0;
+  tmpvar_1 = _mtl_i._glesVertex.xyz;
+  int j_2 = 0;
+  int j_3 = 0;
+  int il_4 = 0;
+  half3 lcolor_5 = 0;
+  half3 eyeNormal_6 = 0;
+  half4 color_7 = 0;
+  half4 tmpvar_8 = 0;
+>>>>>>> upstream/master
   color_7 = half4(float4(0.0, 0.0, 0.0, 1.1));
   eyeNormal_6 = half3(_mtl_i._glesNormal);
   lcolor_5 = half3(float3(0.0, 0.0, 0.0));
   il_4 = 0;
   while (true) {
+<<<<<<< HEAD
     float tmpvar_9;
+=======
+    float tmpvar_9 = 0;
+>>>>>>> upstream/master
     tmpvar_9 = min (8.0, float(_mtl_u.unity_VertexLightParams.x));
     if ((float(il_4) >= tmpvar_9)) {
       break;
     };
+<<<<<<< HEAD
     float3 tmpvar_10;
     tmpvar_10 = _mtl_u.unity_LightPosition[il_4].xyz;
     half3 dirToLight_11;
@@ -42,12 +63,25 @@ vertex xlatMtlShaderOutput xlatMtlMain (xlatMtlShaderInput _mtl_i [[stage_in]], 
     lcolor_5 = (lcolor_5 + min ((
       (max (dot (eyeNormal_6, dirToLight_11), (half)0.0) * _mtl_u.unity_LightColor[il_4].xyz)
      * (half)0.5), (half3)float3(1.0, 1.0, 1.0)));
+=======
+    float3 tmpvar_10 = 0;
+    tmpvar_10 = _mtl_u.unity_LightPosition[il_4].xyz;
+    half3 dirToLight_11 = 0;
+    dirToLight_11 = half3(tmpvar_10);
+    lcolor_5 = (lcolor_5 + min ((
+      (max (dot (eyeNormal_6, dirToLight_11), (half)0.0) * _mtl_u.unity_LightColor[il_4].xyz)
+     * (half)(0.5)), (half3)float3(1.0, 1.0, 1.0)));
+>>>>>>> upstream/master
     il_4++;
   };
   color_7.xyz = lcolor_5;
   j_3 = 0;
   while (true) {
+<<<<<<< HEAD
     float tmpvar_12;
+=======
+    float tmpvar_12 = 0;
+>>>>>>> upstream/master
     tmpvar_12 = min (float(_mtl_u.unity_VertexLightParams.y), 4.0);
     if ((j_3 >= int(tmpvar_12))) {
       break;
@@ -57,7 +91,11 @@ vertex xlatMtlShaderOutput xlatMtlMain (xlatMtlShaderInput _mtl_i [[stage_in]], 
   };
   j_2 = 0;
   while (true) {
+<<<<<<< HEAD
     int tmpvar_13;
+=======
+    int tmpvar_13 = 0;
+>>>>>>> upstream/master
     tmpvar_13 = min (_mtl_u.unity_VertexLightParams.y, 4);
     if ((j_2 >= tmpvar_13)) {
       break;
@@ -66,7 +104,11 @@ vertex xlatMtlShaderOutput xlatMtlMain (xlatMtlShaderInput _mtl_i [[stage_in]], 
     j_2++;
   };
   tmpvar_8 = color_7;
+<<<<<<< HEAD
   float4 tmpvar_14;
+=======
+  float4 tmpvar_14 = 0;
+>>>>>>> upstream/master
   tmpvar_14.w = 1.0;
   tmpvar_14.xyz = tmpvar_1;
   _mtl_o.xlv_COLOR0 = tmpvar_8;

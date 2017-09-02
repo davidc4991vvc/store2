@@ -14,6 +14,7 @@
 /*****************************************************************************/
 
 
+<<<<<<< HEAD
 const device_type KONPPC = &device_creator<konppc_device>;
 
 konppc_device::konppc_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
@@ -21,6 +22,15 @@ konppc_device::konppc_device(const machine_config &mconfig, const char *tag, dev
 	cgboard_type(0),
 	num_cgboards(0)/*,
     cgboard_id(MAX_CG_BOARDS)*/
+=======
+DEFINE_DEVICE_TYPE(KONPPC, konppc_device, "konppc", "Konami PowerPC Common Functions")
+
+konppc_device::konppc_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: device_t(mconfig, KONPPC, tag, owner, clock),
+	cgboard_type(0),
+	num_cgboards(0)/*,
+	cgboard_id(MAX_CG_BOARDS)*/
+>>>>>>> upstream/master
 {
 }
 
@@ -33,29 +43,51 @@ void konppc_device::device_start()
 	for (i=0; i < num_cgboards; i++)
 	{
 		dsp_comm_ppc[i][0] = 0x00;
+<<<<<<< HEAD
 		dsp_shared_ram[i] = auto_alloc_array(machine(), UINT32, DSP_BANK_SIZE * 2/4);
 		dsp_shared_ram_bank[i] = 0;
 
 		dsp_state[i] = 0x80;
 		texture_bank[i] = NULL;
+=======
+		dsp_shared_ram[i] = std::make_unique<uint32_t[]>(DSP_BANK_SIZE * 2/4);
+		dsp_shared_ram_bank[i] = 0;
+
+		dsp_state[i] = 0x80;
+		texture_bank[i] = nullptr;
+>>>>>>> upstream/master
 
 		nwk_device_sel[i] = 0;
 		nwk_fifo_read_ptr[i] = 0;
 		nwk_fifo_write_ptr[i] = 0;
 
+<<<<<<< HEAD
 		nwk_fifo[i] = auto_alloc_array(machine(), UINT32, 0x800);
 		nwk_ram[i] = auto_alloc_array(machine(), UINT32, 0x2000);
+=======
+		nwk_fifo[i] = std::make_unique<uint32_t[]>(0x800);
+		nwk_ram[i] = std::make_unique<uint32_t[]>(0x2000);
+>>>>>>> upstream/master
 
 		save_item(NAME(dsp_comm_ppc[i]), i);
 		save_item(NAME(dsp_comm_sharc[i]), i);
 		save_item(NAME(dsp_shared_ram_bank[i]), i);
+<<<<<<< HEAD
 		save_pointer(NAME(dsp_shared_ram[i]), DSP_BANK_SIZE * 2 / sizeof(dsp_shared_ram[i][0]), i);
+=======
+		save_pointer(NAME(dsp_shared_ram[i].get()), DSP_BANK_SIZE * 2 / sizeof(dsp_shared_ram[i][0]), i);
+>>>>>>> upstream/master
 		save_item(NAME(dsp_state[i]), i);
 		save_item(NAME(nwk_device_sel[i]), i);
 		save_item(NAME(nwk_fifo_read_ptr[i]), i);
 		save_item(NAME(nwk_fifo_write_ptr[i]), i);
+<<<<<<< HEAD
 		save_pointer(NAME(nwk_fifo[i]), 0x800, i);
 		save_pointer(NAME(nwk_ram[i]), 0x2000, i);
+=======
+		save_pointer(NAME(nwk_fifo[i].get()), 0x800, i);
+		save_pointer(NAME(nwk_ram[i].get()), 0x2000, i);
+>>>>>>> upstream/master
 	}
 	save_item(NAME(cgboard_id));
 
@@ -99,7 +131,11 @@ int konppc_device::get_cgboard_id(void)
 	}
 }
 
+<<<<<<< HEAD
 void konppc_device::set_cgboard_texture_bank(int board, const char *bank, UINT8 *rom)
+=======
+void konppc_device::set_cgboard_texture_bank(int board, const char *bank, uint8_t *rom)
+>>>>>>> upstream/master
 {
 	texture_bank[board] = bank;
 
@@ -143,7 +179,11 @@ WRITE32_MEMBER( konppc_device::cgboard_dsp_comm_w_ppc )
 				if (data & 0x80000000)
 					dsp_state[cgboard_id] |= 0x10;
 
+<<<<<<< HEAD
 				if (k033906 != NULL)    /* zr107.c has no PCI and some games only have one PCI Bridge */
+=======
+				if (k033906 != nullptr)    /* zr107.c has no PCI and some games only have one PCI Bridge */
+>>>>>>> upstream/master
 					k033906->set_reg((data & 0x20000000) ? 1 : 0);
 
 				if (data & 0x10000000)
@@ -185,7 +225,11 @@ WRITE32_MEMBER( konppc_device::cgboard_dsp_shared_w_ppc )
 	if (cgboard_id < MAX_CG_BOARDS)
 	{
 		space.machine().scheduler().trigger(10000);     // Remove the timeout (a part of the GTI Club FIFO test workaround)
+<<<<<<< HEAD
 		COMBINE_DATA(dsp_shared_ram[cgboard_id] + (offset + (dsp_shared_ram_bank[cgboard_id] * DSP_BANK_SIZE_WORD)));
+=======
+		COMBINE_DATA(dsp_shared_ram[cgboard_id].get() + (offset + (dsp_shared_ram_bank[cgboard_id] * DSP_BANK_SIZE_WORD)));
+>>>>>>> upstream/master
 	}
 }
 
@@ -193,12 +237,20 @@ WRITE32_MEMBER( konppc_device::cgboard_dsp_shared_w_ppc )
 
 /* CG Board DSP interface for SHARC */
 
+<<<<<<< HEAD
 UINT32 konppc_device::dsp_comm_sharc_r(int board, int offset)
+=======
+uint32_t konppc_device::dsp_comm_sharc_r(int board, int offset)
+>>>>>>> upstream/master
 {
 	return dsp_comm_ppc[board][offset];
 }
 
+<<<<<<< HEAD
 void konppc_device::dsp_comm_sharc_w(address_space &space, int board, int offset, UINT32 data)
+=======
+void konppc_device::dsp_comm_sharc_w(address_space &space, int board, int offset, uint32_t data)
+>>>>>>> upstream/master
 {
 	if (offset >= 2)
 	{
@@ -236,7 +288,11 @@ void konppc_device::dsp_comm_sharc_w(address_space &space, int board, int offset
 					device->set_flag_input(1, ASSERT_LINE);
 				}
 
+<<<<<<< HEAD
 				if (texture_bank[board] != NULL)
+=======
+				if (texture_bank[board] != nullptr)
+>>>>>>> upstream/master
 				{
 					int offset = (data & 0x08) ? 1 : 0;
 
@@ -250,7 +306,11 @@ void konppc_device::dsp_comm_sharc_w(address_space &space, int board, int offset
 		{
 			if (offset == 1)
 			{
+<<<<<<< HEAD
 				if (texture_bank[board] != NULL)
+=======
+				if (texture_bank[board] != nullptr)
+>>>>>>> upstream/master
 				{
 					int offset = (data & 0x08) ? 1 : 0;
 
@@ -266,9 +326,15 @@ void konppc_device::dsp_comm_sharc_w(address_space &space, int board, int offset
 	dsp_comm_sharc[board][offset] = data;
 }
 
+<<<<<<< HEAD
 UINT32 konppc_device::dsp_shared_ram_r_sharc(int board, int offset)
 {
 //  printf("dsp_shared_r: (board %d) %08X, (%08X, %08X)\n", cgboard_id, offset, (UINT32)dsp_shared_ram[(offset >> 1)], (UINT32)dsp_shared_ram[offset]);
+=======
+uint32_t konppc_device::dsp_shared_ram_r_sharc(int board, int offset)
+{
+//  printf("dsp_shared_r: (board %d) %08X, (%08X, %08X)\n", cgboard_id, offset, (uint32_t)dsp_shared_ram[(offset >> 1)], (uint32_t)dsp_shared_ram[offset]);
+>>>>>>> upstream/master
 
 	if (offset & 0x1)
 	{
@@ -280,7 +346,11 @@ UINT32 konppc_device::dsp_shared_ram_r_sharc(int board, int offset)
 	}
 }
 
+<<<<<<< HEAD
 void konppc_device::dsp_shared_ram_w_sharc(int board, int offset, UINT32 data)
+=======
+void konppc_device::dsp_shared_ram_w_sharc(int board, int offset, uint32_t data)
+>>>>>>> upstream/master
 {
 //  printf("dsp_shared_w: (board %d) %08X, %08X\n", cgboard_id, offset, data);
 	if (offset & 0x1)
@@ -337,11 +407,19 @@ WRITE32_MEMBER( konppc_device::cgboard_1_shared_sharc_w )
 
 /*****************************************************************************/
 
+<<<<<<< HEAD
 UINT32 konppc_device::nwk_fifo_r(address_space &space, int board)
 {
 	const char *dsptag = (board == 0) ? "dsp" : "dsp2";
 	adsp21062_device *device = space.machine().device<adsp21062_device>(dsptag);
 	UINT32 data;
+=======
+uint32_t konppc_device::nwk_fifo_r(address_space &space, int board)
+{
+	const char *dsptag = (board == 0) ? "dsp" : "dsp2";
+	adsp21062_device *device = space.machine().device<adsp21062_device>(dsptag);
+	uint32_t data;
+>>>>>>> upstream/master
 
 	if (nwk_fifo_read_ptr[board] < nwk_fifo_half_full_r)
 	{
@@ -368,7 +446,11 @@ UINT32 konppc_device::nwk_fifo_r(address_space &space, int board)
 	return data;
 }
 
+<<<<<<< HEAD
 void konppc_device::nwk_fifo_w(int board, UINT32 data)
+=======
+void konppc_device::nwk_fifo_w(int board, uint32_t data)
+>>>>>>> upstream/master
 {
 	const char *dsptag = (board == 0) ? "dsp" : "dsp2";
 	adsp21062_device *device = machine().device<adsp21062_device>(dsptag);
@@ -527,7 +609,11 @@ WRITE32_MEMBER( konppc_device::nwk_voodoo_1_w)
 
 #define LED_ON      0xff00ff00
 
+<<<<<<< HEAD
 void draw_7segment_led(bitmap_rgb32 &bitmap, int x, int y, UINT8 value)
+=======
+void draw_7segment_led(bitmap_rgb32 &bitmap, int x, int y, uint8_t value)
+>>>>>>> upstream/master
 {
 	if ((value & 0x7f) == 0x7f)
 	{

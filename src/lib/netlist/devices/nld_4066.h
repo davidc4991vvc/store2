@@ -15,7 +15,11 @@
  *      VSS |7            8| INOUTC
  *          +--------------+
  *
+<<<<<<< HEAD
  *  FIXME: These devices are slow (~125 ns). THis is currently not reflected
+=======
+ *  FIXME: These devices are slow (~125 ns). This is currently not reflected
+>>>>>>> upstream/master
  *
  *  Naming conventions follow National semiconductor datasheet
  *
@@ -24,6 +28,7 @@
 #ifndef NLD_4066_H_
 #define NLD_4066_H_
 
+<<<<<<< HEAD
 #include "nl_base.h"
 #include "nld_cmos.h"
 
@@ -44,5 +49,11 @@ public:
 );
 
 NETLIB_NAMESPACE_DEVICES_END()
+=======
+#include "../nl_setup.h"
+
+#define CD4066_GATE(name)                                                       \
+		NET_REGISTER_DEV(CD4066_GATE, name)
+>>>>>>> upstream/master
 
 #endif /* NLD_4066_H_ */

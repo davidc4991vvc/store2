@@ -1,7 +1,11 @@
 #ifndef PA_ALLOCATION_H
 #define PA_ALLOCATION_H
 /*
+<<<<<<< HEAD
  * $Id: pa_allocation.h 1339 2008-02-15 07:50:33Z rossb $
+=======
+ * $Id$
+>>>>>>> upstream/master
  * Portable Audio I/O Library allocation context header
  * memory allocation context for tracking allocation groups
  *

@@ -6,15 +6,29 @@
 
 **********************************************************************/
 
+<<<<<<< HEAD
 #include "smsexp.h"
 
+=======
+#include "emu.h"
+#include "smsexp.h"
+
+// slot devices
+#include "gender.h"
+
+
+>>>>>>> upstream/master
 
 
 //**************************************************************************
 //  GLOBAL VARIABLES
 //**************************************************************************
 
+<<<<<<< HEAD
 const device_type SMS_EXPANSION_SLOT = &device_creator<sms_expansion_slot_device>;
+=======
+DEFINE_DEVICE_TYPE(SMS_EXPANSION_SLOT, sms_expansion_slot_device, "sms_expansion_slot", "Sega SMS expansion slot")
+>>>>>>> upstream/master
 
 
 
@@ -50,9 +64,16 @@ device_sms_expansion_slot_interface::~device_sms_expansion_slot_interface()
 //  sms_expansion_slot_device - constructor
 //-------------------------------------------------
 
+<<<<<<< HEAD
 sms_expansion_slot_device::sms_expansion_slot_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock) :
 						device_t(mconfig, SMS_EXPANSION_SLOT, "Sega SMS expansion slot", tag, owner, clock, "sms_expansion_slot", __FILE__),
 						device_slot_interface(mconfig, *this), m_device(nullptr)
+=======
+sms_expansion_slot_device::sms_expansion_slot_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock) :
+	device_t(mconfig, SMS_EXPANSION_SLOT, tag, owner, clock),
+	device_slot_interface(mconfig, *this),
+	m_device(nullptr)
+>>>>>>> upstream/master
 {
 }
 
@@ -77,6 +98,7 @@ void sms_expansion_slot_device::device_start()
 
 
 //-------------------------------------------------
+<<<<<<< HEAD
 // read
 //-------------------------------------------------
 
@@ -129,6 +151,8 @@ WRITE8_MEMBER(sms_expansion_slot_device::write_ram)
 
 
 //-------------------------------------------------
+=======
+>>>>>>> upstream/master
 //  SLOT_INTERFACE( sms_expansion_devices )
 //-------------------------------------------------
 

@@ -39,11 +39,26 @@ Stephh's notes (based on the games M6809 code and some tests) :
 ***************************************************************************/
 
 #include "emu.h"
+<<<<<<< HEAD
 #include "cpu/z80/z80.h"
 #include "cpu/m6809/m6809.h"
 #include "sound/sn76496.h"
 #include "includes/konamipt.h"
 #include "includes/mikie.h"
+=======
+#include "includes/mikie.h"
+#include "includes/konamipt.h"
+
+#include "cpu/z80/z80.h"
+#include "cpu/m6809/m6809.h"
+#include "machine/74259.h"
+#include "machine/gen_latch.h"
+#include "machine/watchdog.h"
+#include "sound/sn76496.h"
+
+#include "screen.h"
+#include "speaker.h"
+>>>>>>> upstream/master
 
 
 #define MIKIE_TIMER_RATE 512
@@ -66,13 +81,20 @@ READ8_MEMBER(mikie_state::mikie_sh_timer_r)
 	return clock;
 }
 
+<<<<<<< HEAD
 WRITE8_MEMBER(mikie_state::mikie_sh_irqtrigger_w)
 {
 	if (m_last_irq == 0 && data == 1)
+=======
+WRITE_LINE_MEMBER(mikie_state::sh_irqtrigger_w)
+{
+	if (state)
+>>>>>>> upstream/master
 	{
 		// setting bit 0 low then high triggers IRQ on the sound CPU
 		m_audiocpu->set_input_line_and_vector(0, HOLD_LINE, 0xff);
 	}
+<<<<<<< HEAD
 
 	m_last_irq = data;
 }
@@ -85,6 +107,25 @@ WRITE8_MEMBER(mikie_state::mikie_coin_counter_w)
 WRITE8_MEMBER(mikie_state::irq_mask_w)
 {
 	m_irq_mask = data & 1;
+=======
+}
+
+WRITE_LINE_MEMBER(mikie_state::coin_counter_1_w)
+{
+	machine().bookkeeping().coin_counter_w(0, state);
+}
+
+WRITE_LINE_MEMBER(mikie_state::coin_counter_2_w)
+{
+	machine().bookkeeping().coin_counter_w(1, state);
+}
+
+WRITE_LINE_MEMBER(mikie_state::irq_mask_w)
+{
+	m_irq_mask = state;
+	if (!m_irq_mask)
+		m_maincpu->set_input_line(M6809_IRQ_LINE, CLEAR_LINE);
+>>>>>>> upstream/master
 }
 
 /*************************************
@@ -95,6 +136,7 @@ WRITE8_MEMBER(mikie_state::irq_mask_w)
 
 static ADDRESS_MAP_START( mikie_map, AS_PROGRAM, 8, mikie_state )
 	AM_RANGE(0x0000, 0x00ff) AM_RAM
+<<<<<<< HEAD
 	AM_RANGE(0x2000, 0x2001) AM_WRITE(mikie_coin_counter_w)
 	AM_RANGE(0x2002, 0x2002) AM_WRITE(mikie_sh_irqtrigger_w)
 	AM_RANGE(0x2006, 0x2006) AM_WRITE(mikie_flipscreen_w)
@@ -103,6 +145,13 @@ static ADDRESS_MAP_START( mikie_map, AS_PROGRAM, 8, mikie_state )
 	AM_RANGE(0x2200, 0x2200) AM_WRITE(mikie_palettebank_w)
 	AM_RANGE(0x2300, 0x2300) AM_WRITENOP    // ???
 	AM_RANGE(0x2400, 0x2400) AM_READ_PORT("SYSTEM") AM_WRITE(soundlatch_byte_w)
+=======
+	AM_RANGE(0x2000, 0x2007) AM_DEVWRITE("mainlatch", ls259_device, write_d0)
+	AM_RANGE(0x2100, 0x2100) AM_DEVWRITE("watchdog", watchdog_timer_device, reset_w)
+	AM_RANGE(0x2200, 0x2200) AM_WRITE(mikie_palettebank_w)
+	AM_RANGE(0x2300, 0x2300) AM_WRITENOP    // ???
+	AM_RANGE(0x2400, 0x2400) AM_READ_PORT("SYSTEM") AM_DEVWRITE("soundlatch", generic_latch_8_device, write)
+>>>>>>> upstream/master
 	AM_RANGE(0x2401, 0x2401) AM_READ_PORT("P1")
 	AM_RANGE(0x2402, 0x2402) AM_READ_PORT("P2")
 	AM_RANGE(0x2403, 0x2403) AM_READ_PORT("DSW3")
@@ -122,7 +171,11 @@ static ADDRESS_MAP_START( sound_map, AS_PROGRAM, 8, mikie_state )
 	AM_RANGE(0x8000, 0x8000) AM_WRITENOP    // sound command latch
 	AM_RANGE(0x8001, 0x8001) AM_WRITENOP    // ???
 	AM_RANGE(0x8002, 0x8002) AM_DEVWRITE("sn1", sn76489a_device, write) // trigger read of latch
+<<<<<<< HEAD
 	AM_RANGE(0x8003, 0x8003) AM_READ(soundlatch_byte_r)
+=======
+	AM_RANGE(0x8003, 0x8003) AM_DEVREAD("soundlatch", generic_latch_8_device, read)
+>>>>>>> upstream/master
 	AM_RANGE(0x8004, 0x8004) AM_DEVWRITE("sn2", sn76489a_device, write) // trigger read of latch
 	AM_RANGE(0x8005, 0x8005) AM_READ(mikie_sh_timer_r)
 	AM_RANGE(0x8079, 0x8079) AM_WRITENOP    // ???
@@ -233,17 +286,25 @@ GFXDECODE_END
 void mikie_state::machine_start()
 {
 	save_item(NAME(m_palettebank));
+<<<<<<< HEAD
 	save_item(NAME(m_last_irq));
+=======
+	save_item(NAME(m_irq_mask));
+>>>>>>> upstream/master
 }
 
 void mikie_state::machine_reset()
 {
 	m_palettebank = 0;
+<<<<<<< HEAD
 	m_last_irq = 0;
+=======
+>>>>>>> upstream/master
 }
 
 INTERRUPT_GEN_MEMBER(mikie_state::vblank_irq)
 {
+<<<<<<< HEAD
 	if(m_irq_mask)
 		device.execute().set_input_line(0, HOLD_LINE);
 }
@@ -258,6 +319,31 @@ static MACHINE_CONFIG_START( mikie, mikie_state )
 	MCFG_CPU_ADD("audiocpu", Z80, CLK)
 	MCFG_CPU_PROGRAM_MAP(sound_map)
 
+=======
+	if (m_irq_mask)
+		device.execute().set_input_line(M6809_IRQ_LINE, ASSERT_LINE);
+}
+
+static MACHINE_CONFIG_START( mikie )
+
+	/* basic machine hardware */
+	MCFG_CPU_ADD("maincpu", M6809, OSC/12) // 9A (surface scratched)
+	MCFG_CPU_PROGRAM_MAP(mikie_map)
+	MCFG_CPU_VBLANK_INT_DRIVER("screen", mikie_state,  vblank_irq)
+
+	MCFG_CPU_ADD("audiocpu", Z80, CLK) // 4E (surface scratched)
+	MCFG_CPU_PROGRAM_MAP(sound_map)
+
+	MCFG_DEVICE_ADD("mainlatch", LS259, 0) // 6I
+	MCFG_ADDRESSABLE_LATCH_Q0_OUT_CB(WRITELINE(mikie_state, coin_counter_1_w)) // COIN1
+	MCFG_ADDRESSABLE_LATCH_Q1_OUT_CB(WRITELINE(mikie_state, coin_counter_2_w)) // COIN2
+	MCFG_ADDRESSABLE_LATCH_Q2_OUT_CB(WRITELINE(mikie_state, sh_irqtrigger_w)) // SOUNDON
+	MCFG_ADDRESSABLE_LATCH_Q3_OUT_CB(NOOP) // END (not used?)
+	MCFG_ADDRESSABLE_LATCH_Q6_OUT_CB(WRITELINE(mikie_state, flipscreen_w)) // FLIP
+	MCFG_ADDRESSABLE_LATCH_Q7_OUT_CB(WRITELINE(mikie_state, irq_mask_w)) // INT
+
+	MCFG_WATCHDOG_ADD("watchdog")
+>>>>>>> upstream/master
 
 	/* video hardware */
 	MCFG_SCREEN_ADD("screen", RASTER)
@@ -276,6 +362,11 @@ static MACHINE_CONFIG_START( mikie, mikie_state )
 	/* sound hardware */
 	MCFG_SPEAKER_STANDARD_MONO("mono")
 
+<<<<<<< HEAD
+=======
+	MCFG_GENERIC_LATCH_8_ADD("soundlatch")
+
+>>>>>>> upstream/master
 	MCFG_SOUND_ADD("sn1", SN76489A, XTAL/8)
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 0.60)
 
@@ -373,6 +464,12 @@ ROM_END
  *
  *************************************/
 
+<<<<<<< HEAD
 GAME( 1984, mikie,   0,     mikie, mikie, driver_device, 0, ROT270, "Konami", "Mikie", MACHINE_SUPPORTS_SAVE )
 GAME( 1984, mikiej,  mikie, mikie, mikie, driver_device, 0, ROT270, "Konami", "Shinnyuushain Tooru-kun", MACHINE_SUPPORTS_SAVE )
 GAME( 1984, mikiehs, mikie, mikie, mikie, driver_device, 0, ROT270, "Konami", "Mikie (High School Graffiti)", MACHINE_SUPPORTS_SAVE )
+=======
+GAME( 1984, mikie,   0,     mikie, mikie, mikie_state, 0, ROT270, "Konami", "Mikie",                        MACHINE_SUPPORTS_SAVE )
+GAME( 1984, mikiej,  mikie, mikie, mikie, mikie_state, 0, ROT270, "Konami", "Shinnyuushain Tooru-kun",      MACHINE_SUPPORTS_SAVE )
+GAME( 1984, mikiehs, mikie, mikie, mikie, mikie_state, 0, ROT270, "Konami", "Mikie (High School Graffiti)", MACHINE_SUPPORTS_SAVE )
+>>>>>>> upstream/master

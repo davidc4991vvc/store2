@@ -7,6 +7,10 @@
 ***************************************************************************/
 
 #include "sound/samples.h"
+<<<<<<< HEAD
+=======
+#include "screen.h"
+>>>>>>> upstream/master
 
 
 #define STARFIRE_MASTER_CLOCK   (XTAL_20MHz)
@@ -29,6 +33,7 @@ public:
 		m_starfire_colorram(*this, "colorram"),
 		m_starfire_videoram(*this, "videoram"),
 		m_samples(*this, "samples"),
+<<<<<<< HEAD
 		m_maincpu(*this, "maincpu"),
 		m_screen(*this, "screen") { }
 
@@ -43,6 +48,24 @@ public:
 	UINT8 m_starfire_vidctrl1;
 	UINT8 m_starfire_color;
 	UINT16 m_starfire_colors[STARFIRE_NUM_PENS];
+=======
+		m_nmi(*this, "NMI"),
+		m_maincpu(*this, "maincpu"),
+		m_screen(*this, "screen") { }
+
+	required_shared_ptr<uint8_t> m_starfire_colorram;
+	required_shared_ptr<uint8_t> m_starfire_videoram;
+	optional_device<samples_device> m_samples;
+	optional_ioport m_nmi;
+
+	uint8_t m_prev_sound;
+	uint8_t m_fireone_select;
+
+	uint8_t m_starfire_vidctrl;
+	uint8_t m_starfire_vidctrl1;
+	uint8_t m_starfire_color;
+	uint16_t m_starfire_colors[STARFIRE_NUM_PENS];
+>>>>>>> upstream/master
 
 	read8_delegate m_input_read;
 	write8_delegate m_io2_write;
@@ -61,8 +84,13 @@ public:
 	DECLARE_READ8_MEMBER(starfire_videoram_r);
 	DECLARE_DRIVER_INIT(starfire);
 	DECLARE_DRIVER_INIT(fireone);
+<<<<<<< HEAD
 	virtual void video_start();
 	UINT32 screen_update_starfire(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect);
+=======
+	virtual void video_start() override;
+	uint32_t screen_update_starfire(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect);
+>>>>>>> upstream/master
 	TIMER_CALLBACK_MEMBER(starfire_scanline_callback);
 	INTERRUPT_GEN_MEMBER(vblank_int);
 	void get_pens(pen_t *pens);

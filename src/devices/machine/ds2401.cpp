@@ -27,10 +27,19 @@ inline void ds2401_device::verboselog(int n_level, const char *s_fmt, ...)
 }
 
 // device type definition
+<<<<<<< HEAD
 const device_type DS2401 = &device_creator<ds2401_device>;
 
 ds2401_device::ds2401_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
 	: device_t(mconfig, DS2401, "DS2401", tag, owner, clock, "ds2401", __FILE__), m_state(0), m_bit(0), m_shift(0), m_byte(0), m_rx(false), m_tx(false), m_timer_main(nullptr), m_timer_reset(nullptr)
+=======
+DEFINE_DEVICE_TYPE(DS2401, ds2401_device, "ds2401", "DS2401 Silicon Serial Number")
+
+ds2401_device::ds2401_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: device_t(mconfig, DS2401, tag, owner, clock)
+	, m_state(0), m_bit(0), m_shift(0), m_byte(0), m_rx(false), m_tx(false)
+	, m_timer_main(nullptr), m_timer_reset(nullptr)
+>>>>>>> upstream/master
 {
 }
 
@@ -65,6 +74,7 @@ void ds2401_device::device_reset()
 	m_rx = true;
 	m_tx = true;
 
+<<<<<<< HEAD
 	if(m_region)
 	{
 		if(m_region->bytes() == SIZE_DATA)
@@ -74,6 +84,18 @@ void ds2401_device::device_reset()
 		}
 
 		logerror("ds2401 %s: Wrong region length for id data, expected 0x%x, got 0x%x\n", tag(), SIZE_DATA, m_region->bytes());
+=======
+	memory_region *region = memregion(DEVICE_SELF);
+	if (region != nullptr)
+	{
+		if (region->bytes() == SIZE_DATA)
+		{
+			memcpy(m_data, region->base(), SIZE_DATA);
+			return;
+		}
+
+		logerror("ds2401 %s: Wrong region length for id data, expected 0x%x, got 0x%x\n", tag(), SIZE_DATA, region->bytes());
+>>>>>>> upstream/master
 	}
 	else
 	{
@@ -126,6 +148,10 @@ void ds2401_device::device_timer(emu_timer &timer, device_timer_id id, int param
 				switch(m_shift)
 				{
 				case COMMAND_READROM:
+<<<<<<< HEAD
+=======
+				case COMMAND_READROM_COMPAT:
+>>>>>>> upstream/master
 					verboselog(1, "timer_main readrom\n");
 					m_bit = 0;
 					m_byte = 0;
@@ -226,7 +252,11 @@ READ_LINE_MEMBER( ds2401_device::read )
 	return m_tx && m_rx;
 }
 
+<<<<<<< HEAD
 UINT8 ds2401_device::direct_read(int index)
+=======
+uint8_t ds2401_device::direct_read(int index)
+>>>>>>> upstream/master
 {
 	return m_data[index];
 }

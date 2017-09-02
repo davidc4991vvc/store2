@@ -8,6 +8,10 @@
 
 ***************************************************************************/
 
+<<<<<<< HEAD
+=======
+#include "emu.h"
+>>>>>>> upstream/master
 #include "a2232.h"
 
 
@@ -23,11 +27,18 @@
 //  DEVICE DEFINITIONS
 //**************************************************************************
 
+<<<<<<< HEAD
 const device_type A2232 = &device_creator<a2232_device>;
 
 //-------------------------------------------------
 //  machine_config_additions - device-specific
 //  machine configurations
+=======
+DEFINE_DEVICE_TYPE(A2232, a2232_device, "a2232", "CBM A2232 Serial Card")
+
+//-------------------------------------------------
+//  device_add_mconfig - add device configuration
+>>>>>>> upstream/master
 //-------------------------------------------------
 
 static ADDRESS_MAP_START( iocpu_map, AS_PROGRAM, 8, a2232_device)
@@ -45,7 +56,11 @@ static ADDRESS_MAP_START( iocpu_map, AS_PROGRAM, 8, a2232_device)
 	AM_RANGE(0xc000, 0xffff) AM_RAM AM_SHARE("shared")
 ADDRESS_MAP_END
 
+<<<<<<< HEAD
 static MACHINE_CONFIG_FRAGMENT( a2232 )
+=======
+MACHINE_CONFIG_MEMBER( a2232_device::device_add_mconfig )
+>>>>>>> upstream/master
 	// main cpu
 	MCFG_CPU_ADD("iocpu", M65CE02, XTAL_28_37516MHz / 8) // should run at Amiga clock 7M / 2
 	MCFG_CPU_PROGRAM_MAP(iocpu_map)
@@ -94,54 +109,85 @@ static MACHINE_CONFIG_FRAGMENT( a2232 )
 	MCFG_MOS6526_PB_OUTPUT_CALLBACK(WRITE8(a2232_device, cia_port_b_w))
 
 	// rs232 ports
+<<<<<<< HEAD
 	MCFG_RS232_PORT_ADD("rs232_1", default_rs232_devices, NULL)
+=======
+	MCFG_RS232_PORT_ADD("rs232_1", default_rs232_devices, nullptr)
+>>>>>>> upstream/master
 	MCFG_RS232_RXD_HANDLER(WRITELINE(a2232_device, rs232_1_rxd_w))
 	MCFG_RS232_DCD_HANDLER(WRITELINE(a2232_device, rs232_1_dcd_w))
 	MCFG_RS232_DSR_HANDLER(DEVWRITELINE("acia_0", mos6551_device, write_dsr))
 	MCFG_RS232_CTS_HANDLER(WRITELINE(a2232_device, rs232_1_cts_w))
 
+<<<<<<< HEAD
 	MCFG_RS232_PORT_ADD("rs232_2", default_rs232_devices, NULL)
+=======
+	MCFG_RS232_PORT_ADD("rs232_2", default_rs232_devices, nullptr)
+>>>>>>> upstream/master
 	MCFG_RS232_RXD_HANDLER(DEVWRITELINE("acia_1", mos6551_device, write_rxd))
 	MCFG_RS232_DCD_HANDLER(WRITELINE(a2232_device, rs232_2_dcd_w))
 	MCFG_RS232_DSR_HANDLER(DEVWRITELINE("acia_1", mos6551_device, write_dsr))
 	MCFG_RS232_CTS_HANDLER(WRITELINE(a2232_device, rs232_2_cts_w))
 
+<<<<<<< HEAD
 	MCFG_RS232_PORT_ADD("rs232_3", default_rs232_devices, NULL)
+=======
+	MCFG_RS232_PORT_ADD("rs232_3", default_rs232_devices, nullptr)
+>>>>>>> upstream/master
 	MCFG_RS232_RXD_HANDLER(DEVWRITELINE("acia_2", mos6551_device, write_rxd))
 	MCFG_RS232_DCD_HANDLER(WRITELINE(a2232_device, rs232_3_dcd_w))
 	MCFG_RS232_DSR_HANDLER(DEVWRITELINE("acia_2", mos6551_device, write_dsr))
 	MCFG_RS232_CTS_HANDLER(WRITELINE(a2232_device, rs232_3_cts_w))
 
+<<<<<<< HEAD
 	MCFG_RS232_PORT_ADD("rs232_4", default_rs232_devices, NULL)
+=======
+	MCFG_RS232_PORT_ADD("rs232_4", default_rs232_devices, nullptr)
+>>>>>>> upstream/master
 	MCFG_RS232_RXD_HANDLER(DEVWRITELINE("acia_3", mos6551_device, write_rxd))
 	MCFG_RS232_DCD_HANDLER(WRITELINE(a2232_device, rs232_4_dcd_w))
 	MCFG_RS232_DSR_HANDLER(DEVWRITELINE("acia_3", mos6551_device, write_dsr))
 	MCFG_RS232_CTS_HANDLER(WRITELINE(a2232_device, rs232_4_cts_w))
 
+<<<<<<< HEAD
 	MCFG_RS232_PORT_ADD("rs232_5", default_rs232_devices, NULL)
+=======
+	MCFG_RS232_PORT_ADD("rs232_5", default_rs232_devices, nullptr)
+>>>>>>> upstream/master
 	MCFG_RS232_RXD_HANDLER(DEVWRITELINE("acia_4", mos6551_device, write_rxd))
 	MCFG_RS232_DCD_HANDLER(WRITELINE(a2232_device, rs232_5_dcd_w))
 	MCFG_RS232_DSR_HANDLER(DEVWRITELINE("acia_4", mos6551_device, write_dsr))
 	MCFG_RS232_CTS_HANDLER(WRITELINE(a2232_device, rs232_5_cts_w))
 
+<<<<<<< HEAD
 	MCFG_RS232_PORT_ADD("rs232_6", default_rs232_devices, NULL)
+=======
+	MCFG_RS232_PORT_ADD("rs232_6", default_rs232_devices, nullptr)
+>>>>>>> upstream/master
 	MCFG_RS232_RXD_HANDLER(DEVWRITELINE("acia_5", mos6551_device, write_rxd))
 	MCFG_RS232_DCD_HANDLER(WRITELINE(a2232_device, rs232_6_dcd_w))
 	MCFG_RS232_DSR_HANDLER(DEVWRITELINE("acia_5", mos6551_device, write_dsr))
 	MCFG_RS232_CTS_HANDLER(WRITELINE(a2232_device, rs232_6_cts_w))
 
+<<<<<<< HEAD
 	MCFG_RS232_PORT_ADD("rs232_7", default_rs232_devices, NULL)
+=======
+	MCFG_RS232_PORT_ADD("rs232_7", default_rs232_devices, nullptr)
+>>>>>>> upstream/master
 	MCFG_RS232_RXD_HANDLER(DEVWRITELINE("acia_6", mos6551_device, write_rxd))
 	MCFG_RS232_DCD_HANDLER(WRITELINE(a2232_device, rs232_7_dcd_w))
 	MCFG_RS232_DSR_HANDLER(DEVWRITELINE("acia_6", mos6551_device, write_dsr))
 	MCFG_RS232_CTS_HANDLER(WRITELINE(a2232_device, rs232_7_cts_w))
 MACHINE_CONFIG_END
 
+<<<<<<< HEAD
 machine_config_constructor a2232_device::device_mconfig_additions() const
 {
 	return MACHINE_CONFIG_NAME( a2232 );
 }
 
+=======
+>>>>>>> upstream/master
 
 //**************************************************************************
 //  LIVE DEVICE
@@ -151,8 +197,13 @@ machine_config_constructor a2232_device::device_mconfig_additions() const
 //  a2232_device - constructor
 //-------------------------------------------------
 
+<<<<<<< HEAD
 a2232_device::a2232_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock) :
 	device_t(mconfig, A2232, "CBM A2232 Serial Card", tag, owner, clock, "a2232", __FILE__),
+=======
+a2232_device::a2232_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock) :
+	device_t(mconfig, A2232, tag, owner, clock),
+>>>>>>> upstream/master
 	device_zorro2_card_interface(mconfig, *this),
 	m_iocpu(*this, "iocpu"),
 	m_acia_0(*this, "acia_0"),
@@ -206,9 +257,15 @@ void a2232_device::device_reset_after_children()
 void a2232_device::update_irqs()
 {
 	// look for any active irq
+<<<<<<< HEAD
 	for (int i = 0; i < IRQ_SOURCE_COUNT; i++)
 	{
 		if (m_irqs[i])
+=======
+	for (auto & elem : m_irqs)
+	{
+		if (elem)
+>>>>>>> upstream/master
 		{
 			m_iocpu->set_input_line(INPUT_LINE_IRQ0, ASSERT_LINE);
 			return;
@@ -311,7 +368,11 @@ WRITE_LINE_MEMBER( a2232_device::cfgin_w )
 
 READ16_MEMBER( a2232_device::shared_ram_r )
 {
+<<<<<<< HEAD
 	UINT16 data = 0;
+=======
+	uint16_t data = 0;
+>>>>>>> upstream/master
 
 	if (ACCESSING_BITS_0_7)
 		data |= m_shared_ram[(offset << 1) + 1];
@@ -381,7 +442,11 @@ WRITE16_MEMBER( a2232_device::irq_w )
 
 READ16_MEMBER( a2232_device::reset_high_r )
 {
+<<<<<<< HEAD
 	UINT16 data = 0xffff;
+=======
+	uint16_t data = 0xffff;
+>>>>>>> upstream/master
 
 	if (VERBOSE)
 		logerror("%s('%s'): reset_high_r %04x [mask = %04x]\n", shortname(), basetag(), data, mem_mask);

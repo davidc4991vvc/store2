@@ -1,6 +1,11 @@
 /*
+<<<<<<< HEAD
  * Copyright 2011-2015 Branimir Karadzic. All rights reserved.
  * License: http://www.opensource.org/licenses/BSD-2-Clause
+=======
+ * Copyright 2011-2017 Branimir Karadzic. All rights reserved.
+ * License: https://github.com/bkaradzic/bgfx#license-bsd-2-clause
+>>>>>>> upstream/master
  */
 
 #ifndef BGFX_RENDERER_D3D9_H_HEADER_GUARD
@@ -107,6 +112,10 @@ namespace bgfx { namespace d3d9
 			Null,
 			Resz,
 			Rawz,
+<<<<<<< HEAD
+=======
+			Atoc,
+>>>>>>> upstream/master
 
 			Count,
 		};
@@ -143,7 +152,11 @@ namespace bgfx { namespace d3d9
 				, _discard || (m_dynamic && 0 == _offset && m_size == _size) ? D3DLOCK_DISCARD : 0
 				) );
 
+<<<<<<< HEAD
 			memcpy(buffer, _data, _size);
+=======
+			bx::memCopy(buffer, _data, _size);
+>>>>>>> upstream/master
 
 			DX_CHECK(m_ptr->Unlock() );
 		}
@@ -184,7 +197,11 @@ namespace bgfx { namespace d3d9
 				, _discard || (m_dynamic && 0 == _offset && m_size == _size) ? D3DLOCK_DISCARD : 0
 				) );
 
+<<<<<<< HEAD
 			memcpy(buffer, _data, _size);
+=======
+			bx::memCopy(buffer, _data, _size);
+>>>>>>> upstream/master
 
 			DX_CHECK(m_ptr->Unlock() );
 		}
@@ -236,7 +253,10 @@ namespace bgfx { namespace d3d9
 		}
 
 		void create(const Memory* _mem);
+<<<<<<< HEAD
 		DWORD* getShaderCode(uint8_t _fragmentBit, const Memory* _mem);
+=======
+>>>>>>> upstream/master
 
 		void destroy()
 		{
@@ -276,8 +296,13 @@ namespace bgfx { namespace d3d9
 			BX_CHECK(NULL != _fsh.m_pixelShader, "Fragment shader doesn't exist.");
 			m_fsh = &_fsh;
 
+<<<<<<< HEAD
 			memcpy(&m_predefined[0], _vsh.m_predefined, _vsh.m_numPredefined*sizeof(PredefinedUniform) );
 			memcpy(&m_predefined[_vsh.m_numPredefined], _fsh.m_predefined, _fsh.m_numPredefined*sizeof(PredefinedUniform) );
+=======
+			bx::memCopy(&m_predefined[0], _vsh.m_predefined, _vsh.m_numPredefined*sizeof(PredefinedUniform) );
+			bx::memCopy(&m_predefined[_vsh.m_numPredefined], _fsh.m_predefined, _fsh.m_numPredefined*sizeof(PredefinedUniform) );
+>>>>>>> upstream/master
 			m_numPredefined = _vsh.m_numPredefined + _fsh.m_numPredefined;
 		}
 
@@ -323,14 +348,43 @@ namespace bgfx { namespace d3d9
 
 		void create(const Memory* _mem, uint32_t _flags, uint8_t _skip);
 
+<<<<<<< HEAD
 		void destroy()
 		{
 			DX_RELEASE(m_ptr, 0);
+=======
+		void destroy(bool _resize = false)
+		{
+			if (0 == (m_flags & BGFX_TEXTURE_INTERNAL_SHARED) )
+			{
+				if (_resize)
+				{
+					// BK - at the time of resize there might be one reference held by frame buffer
+					//      surface. This frame buffer will be recreated later, and release reference
+					//      to existing surface. That's why here we don't care about ref count.
+					m_ptr->Release();
+				}
+				else
+				{
+					DX_RELEASE(m_ptr, 0);
+				}
+			}
+>>>>>>> upstream/master
 			DX_RELEASE(m_surface, 0);
 			DX_RELEASE(m_staging, 0);
 			m_textureFormat = TextureFormat::Unknown;
 		}
 
+<<<<<<< HEAD
+=======
+		void overrideInternal(uintptr_t _ptr)
+		{
+			destroy();
+			m_flags |= BGFX_TEXTURE_INTERNAL_SHARED;
+			m_ptr = (IDirect3DBaseTexture9*)_ptr;
+		}
+
+>>>>>>> upstream/master
 		void updateBegin(uint8_t _side, uint8_t _mip);
 		void update(uint8_t _side, uint8_t _mip, const Rect& _rect, uint16_t _z, uint16_t _depth, uint16_t _pitch, const Memory* _mem);
 		void updateEnd();
@@ -357,6 +411,10 @@ namespace bgfx { namespace d3d9
 			IDirect3DVolumeTexture9* m_staging3d;
 			IDirect3DCubeTexture9*   m_stagingCube;
 		};
+<<<<<<< HEAD
+=======
+
+>>>>>>> upstream/master
 		uint32_t m_flags;
 		uint32_t m_width;
 		uint32_t m_height;
@@ -373,12 +431,23 @@ namespace bgfx { namespace d3d9
 			: m_hwnd(NULL)
 			, m_denseIdx(UINT16_MAX)
 			, m_num(0)
+<<<<<<< HEAD
 			, m_needResolve(0)
 		{
 			m_depthHandle.idx = invalidHandle;
 		}
 
 		void create(uint8_t _num, const TextureHandle* _handles);
+=======
+			, m_numTh(0)
+			, m_dsIdx(UINT8_MAX)
+			, m_needResolve(false)
+			, m_needPresent(false)
+		{
+		}
+
+		void create(uint8_t _num, const Attachment* _attachment);
+>>>>>>> upstream/master
 		void create(uint16_t _denseIdx, void* _nwh, uint32_t _width, uint32_t _height, TextureFormat::Enum _depthFormat);
 		uint16_t destroy();
 		HRESULT present();
@@ -386,19 +455,35 @@ namespace bgfx { namespace d3d9
 		void preReset();
 		void postReset();
 		void createNullColorRT();
+<<<<<<< HEAD
 
 		IDirect3DSurface9* m_color[BGFX_CONFIG_MAX_FRAME_BUFFER_ATTACHMENTS-1];
 		IDirect3DSurface9* m_depthStencil;
+=======
+		void set();
+
+		IDirect3DSurface9* m_surface[BGFX_CONFIG_MAX_FRAME_BUFFER_ATTACHMENTS-1];
+>>>>>>> upstream/master
 		IDirect3DSwapChain9* m_swapChain;
 		HWND m_hwnd;
 		uint32_t m_width;
 		uint32_t m_height;
 
+<<<<<<< HEAD
 		TextureHandle m_colorHandle[BGFX_CONFIG_MAX_FRAME_BUFFER_ATTACHMENTS-1];
 		TextureHandle m_depthHandle;
 		uint16_t m_denseIdx;
 		uint8_t m_num;
 		bool m_needResolve;
+=======
+		Attachment m_attachment[BGFX_CONFIG_MAX_FRAME_BUFFER_ATTACHMENTS];
+		uint16_t m_denseIdx;
+		uint8_t m_num;
+		uint8_t m_numTh;
+		uint8_t m_dsIdx;
+		bool m_needResolve;
+		bool m_needPresent;
+>>>>>>> upstream/master
 	};
 
 	struct TimerQueryD3D9
@@ -417,11 +502,20 @@ namespace bgfx { namespace d3d9
 		struct Frame
 		{
 			IDirect3DQuery9* m_disjoint;
+<<<<<<< HEAD
 			IDirect3DQuery9* m_start;
+=======
+			IDirect3DQuery9* m_begin;
+>>>>>>> upstream/master
 			IDirect3DQuery9* m_end;
 			IDirect3DQuery9* m_freq;
 		};
 
+<<<<<<< HEAD
+=======
+		uint64_t m_begin;
+		uint64_t m_end;
+>>>>>>> upstream/master
 		uint64_t m_elapsed;
 		uint64_t m_frequency;
 
@@ -429,6 +523,33 @@ namespace bgfx { namespace d3d9
 		bx::RingBufferControl m_control;
 	};
 
+<<<<<<< HEAD
+=======
+	struct OcclusionQueryD3D9
+	{
+		OcclusionQueryD3D9()
+			: m_control(BX_COUNTOF(m_query) )
+		{
+		}
+
+		void postReset();
+		void preReset();
+		void begin(Frame* _render, OcclusionQueryHandle _handle);
+		void end();
+		void resolve(Frame* _render, bool _wait = false);
+		void invalidate(OcclusionQueryHandle _handle);
+
+		struct Query
+		{
+			IDirect3DQuery9* m_ptr;
+			OcclusionQueryHandle m_handle;
+		};
+
+		Query m_query[BGFX_CONFIG_MAX_OCCLUSION_QUERIES];
+		bx::RingBufferControl m_control;
+	};
+
+>>>>>>> upstream/master
 } /* namespace d3d9 */ } // namespace bgfx
 
 #endif // BGFX_RENDERER_D3D9_H_HEADER_GUARD

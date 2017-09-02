@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 // license:???
+=======
+// license:BSD-3-Clause
+>>>>>>> upstream/master
 // copyright-holders:Martin Buchholz
 /***************************************************************************
 
@@ -12,6 +16,7 @@
 ***************************************************************************/
 
 #include "emu.h"
+<<<<<<< HEAD
 #include "sound/samples.h"
 #include "includes/polyplay.h"
 
@@ -68,5 +73,24 @@ void polyplay_state::play_channel2(int data)
 	else {
 		m_samples->stop(0);
 		m_samples->stop(1);
+=======
+#include "includes/polyplay.h"
+
+WRITE_LINE_MEMBER(polyplay_state::ctc_zc0_w)
+{
+	if (state)
+	{
+		m_flipflop1 = ~m_flipflop1;
+		m_speaker1->level_w(m_flipflop1);
+	}
+}
+
+WRITE_LINE_MEMBER(polyplay_state::ctc_zc1_w)
+{
+	if (state)
+	{
+		m_flipflop2 = ~m_flipflop2;
+		m_speaker2->level_w(m_flipflop2);
+>>>>>>> upstream/master
 	}
 }

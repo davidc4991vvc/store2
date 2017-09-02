@@ -1,5 +1,9 @@
 // license:BSD-3-Clause
+<<<<<<< HEAD
 // copyright-holders:Aaron Giles
+=======
+// copyright-holders:Aaron Giles, Bryan McPhail
+>>>>>>> upstream/master
 /***************************************************************************
 
     Midway MCR-68k system
@@ -7,9 +11,14 @@
     driver by Bryan McPhail, Aaron Giles
 
     Games supported:
+<<<<<<< HEAD
         * Zwackery (Chip Squeak Deluxe)
         * Xenopohobe (Sounds Good)
         * Spy Hunter II (Sounds Good/Turbo Chip Squeak)
+=======
+        * Xenopohobe (Sounds Good)
+        * Spy Hunter II (Sounds Good/Turbo Cheap Squeak)
+>>>>>>> upstream/master
         * Blasted (Sounds Good)
         * Arch Rivals
         * Tri-Sports
@@ -56,6 +65,7 @@
 ***************************************************************************/
 
 #include "emu.h"
+<<<<<<< HEAD
 #include "cpu/m68000/m68000.h"
 #include "machine/nvram.h"
 #include "includes/mcr.h"
@@ -91,6 +101,14 @@ READ16_MEMBER(mcr68_state::zwackery_6840_r)
 	space.device().execute().adjust_icount(-14);
 	return mcr68_6840_upper_r(space,offset,0xffff);
 }
+=======
+#include "includes/mcr68.h"
+
+#include "cpu/m68000/m68000.h"
+#include "machine/nvram.h"
+
+#include "speaker.h"
+>>>>>>> upstream/master
 
 
 
@@ -144,7 +162,11 @@ READ16_MEMBER(mcr68_state::spyhunt2_port_0_r)
 READ16_MEMBER(mcr68_state::spyhunt2_port_1_r)
 {
 	int result = ioport("IN1")->read();
+<<<<<<< HEAD
 	return result | ((m_turbo_chip_squeak->read(space, 0) & 1) << 7);
+=======
+	return result | ((m_turbo_cheap_squeak->read(space, 0) & 1) << 7);
+>>>>>>> upstream/master
 }
 
 
@@ -152,8 +174,13 @@ WRITE16_MEMBER(mcr68_state::spyhunt2_control_w)
 {
 	COMBINE_DATA(&m_control_word);
 
+<<<<<<< HEAD
 /*  m_turbo_chip_squeak->reset_write(~m_control_word & 0x0080);*/
 	m_turbo_chip_squeak->write(space, offset, (m_control_word >> 8) & 0x001f);
+=======
+/*  m_turbo_cheap_squeak->reset_write(~m_control_word & 0x0080);*/
+	m_turbo_cheap_squeak->write(space, offset, (m_control_word >> 8) & 0x001f);
+>>>>>>> upstream/master
 
 	m_sounds_good->reset_write(~m_control_word & 0x2000);
 	m_sounds_good->write(space, offset, (m_control_word >> 8) & 0x001f);
@@ -192,7 +219,11 @@ WRITE16_MEMBER(mcr68_state::spyhunt2_control_w)
  *      1111 = right/down full
  */
 
+<<<<<<< HEAD
 static const UINT8 translate49[7] = { 0x7, 0x3, 0x1, 0x0, 0xc, 0xe, 0xf };
+=======
+static const uint8_t translate49[7] = { 0x7, 0x3, 0x1, 0x0, 0xc, 0xe, 0xf };
+>>>>>>> upstream/master
 
 READ16_MEMBER(mcr68_state::archrivl_port_1_r)
 {
@@ -282,8 +313,13 @@ READ16_MEMBER(mcr68_state::pigskin_port_2_r)
 
 READ16_MEMBER(mcr68_state::trisport_port_1_r)
 {
+<<<<<<< HEAD
 	int xaxis = (INT8)ioport("AN1")->read();
 	int yaxis = (INT8)ioport("AN2")->read();
+=======
+	int xaxis = (int8_t)ioport("AN1")->read();
+	int yaxis = (int8_t)ioport("AN2")->read();
+>>>>>>> upstream/master
 	int result = ioport("IN1")->read();
 
 	result |= (xaxis & 0x3c) << 6;
@@ -309,8 +345,13 @@ static ADDRESS_MAP_START( mcr68_map, AS_PROGRAM, 16, mcr68_state )
 	AM_RANGE(0x071000, 0x071fff) AM_RAM
 	AM_RANGE(0x080000, 0x080fff) AM_RAM AM_SHARE("spriteram")
 	AM_RANGE(0x090000, 0x09007f) AM_DEVWRITE("palette", palette_device, write) AM_SHARE("palette")
+<<<<<<< HEAD
 	AM_RANGE(0x0a0000, 0x0a000f) AM_READWRITE(mcr68_6840_upper_r, mcr68_6840_upper_w)
 	AM_RANGE(0x0b0000, 0x0bffff) AM_WRITE(watchdog_reset16_w)
+=======
+	AM_RANGE(0x0a0000, 0x0a000f) AM_DEVREADWRITE8("ptm", ptm6840_device, read, write, 0xff00)
+	AM_RANGE(0x0b0000, 0x0bffff) AM_DEVWRITE("watchdog", watchdog_timer_device, reset16_w)
+>>>>>>> upstream/master
 	AM_RANGE(0x0d0000, 0x0dffff) AM_READ_PORT("IN0")
 	AM_RANGE(0x0e0000, 0x0effff) AM_READ_PORT("IN1")
 	AM_RANGE(0x0f0000, 0x0fffff) AM_READ_PORT("DSW")
@@ -320,6 +361,7 @@ ADDRESS_MAP_END
 
 /*************************************
  *
+<<<<<<< HEAD
  *  Zwackery main CPU memory handlers
  *
  *************************************/
@@ -342,6 +384,8 @@ ADDRESS_MAP_END
 
 /*************************************
  *
+=======
+>>>>>>> upstream/master
  *  Pigskin CPU memory handlers
  *
  *************************************/
@@ -353,12 +397,20 @@ static ADDRESS_MAP_START( pigskin_map, AS_PROGRAM, 16, mcr68_state )
 	AM_RANGE(0x080000, 0x08ffff) AM_READ(pigskin_port_1_r)
 	AM_RANGE(0x0a0000, 0x0affff) AM_READ(pigskin_port_2_r)
 	AM_RANGE(0x0c0000, 0x0c007f) AM_DEVWRITE("palette", palette_device, write) AM_SHARE("palette")
+<<<<<<< HEAD
 	AM_RANGE(0x0e0000, 0x0effff) AM_WRITE(watchdog_reset16_w)
+=======
+	AM_RANGE(0x0e0000, 0x0effff) AM_DEVWRITE("watchdog", watchdog_timer_device, reset16_w)
+>>>>>>> upstream/master
 	AM_RANGE(0x100000, 0x100fff) AM_RAM_WRITE(mcr68_videoram_w) AM_SHARE("videoram")
 	AM_RANGE(0x120000, 0x120001) AM_READWRITE(pigskin_protection_r, pigskin_protection_w)
 	AM_RANGE(0x140000, 0x143fff) AM_RAM
 	AM_RANGE(0x160000, 0x1607ff) AM_RAM AM_SHARE("spriteram")
+<<<<<<< HEAD
 	AM_RANGE(0x180000, 0x18000f) AM_READWRITE(mcr68_6840_upper_r, mcr68_6840_upper_w)
+=======
+	AM_RANGE(0x180000, 0x18000f) AM_DEVREADWRITE8("ptm", ptm6840_device, read, write, 0xff00)
+>>>>>>> upstream/master
 	AM_RANGE(0x1a0000, 0x1affff) AM_WRITE(archrivl_control_w)
 	AM_RANGE(0x1e0000, 0x1effff) AM_READ_PORT("IN0")
 ADDRESS_MAP_END
@@ -381,9 +433,15 @@ static ADDRESS_MAP_START( trisport_map, AS_PROGRAM, 16, mcr68_state )
 	AM_RANGE(0x120000, 0x12007f) AM_DEVWRITE("palette", palette_device, write) AM_SHARE("palette")
 	AM_RANGE(0x140000, 0x1407ff) AM_RAM AM_SHARE("spriteram")
 	AM_RANGE(0x160000, 0x160fff) AM_RAM_WRITE(mcr68_videoram_w) AM_SHARE("videoram")
+<<<<<<< HEAD
 	AM_RANGE(0x180000, 0x18000f) AM_READWRITE(mcr68_6840_upper_r, mcr68_6840_upper_w)
 	AM_RANGE(0x1a0000, 0x1affff) AM_WRITE(archrivl_control_w)
 	AM_RANGE(0x1c0000, 0x1cffff) AM_WRITE(watchdog_reset16_w)
+=======
+	AM_RANGE(0x180000, 0x18000f) AM_DEVREADWRITE8("ptm", ptm6840_device, read, write, 0xff00)
+	AM_RANGE(0x1a0000, 0x1affff) AM_WRITE(archrivl_control_w)
+	AM_RANGE(0x1c0000, 0x1cffff) AM_DEVWRITE("watchdog", watchdog_timer_device, reset16_w)
+>>>>>>> upstream/master
 	AM_RANGE(0x1e0000, 0x1effff) AM_READ_PORT("IN0")
 ADDRESS_MAP_END
 
@@ -395,6 +453,7 @@ ADDRESS_MAP_END
  *
  *************************************/
 
+<<<<<<< HEAD
 static INPUT_PORTS_START( zwackery )
 	PORT_START("IN0")
 	PORT_BIT( 0x01, IP_ACTIVE_LOW, IPT_START1 )
@@ -451,6 +510,8 @@ static INPUT_PORTS_START( zwackery )
 	PORT_BIT( 0xff, 0x00, IPT_DIAL ) PORT_SENSITIVITY(50) PORT_KEYDELTA(10) PORT_CODE_DEC(KEYCODE_Z) PORT_CODE_INC(KEYCODE_X) PORT_REVERSE
 INPUT_PORTS_END
 
+=======
+>>>>>>> upstream/master
 
 static INPUT_PORTS_START( xenophob )
 	PORT_START("IN0")
@@ -551,7 +612,11 @@ static INPUT_PORTS_START( spyhunt2 )
 	PORT_DIPNAME( 0x0004, 0x0004, DEF_STR( Free_Play ) )    PORT_DIPLOCATION("SW1:3")
 	PORT_DIPSETTING(      0x0004, DEF_STR( Off ) )
 	PORT_DIPSETTING(      0x0000, DEF_STR( On ) )
+<<<<<<< HEAD
 	PORT_DIPNAME( 0x0018, 0x0008, "Point Threshholds" ) PORT_DIPLOCATION("SW1:4,5")
+=======
+	PORT_DIPNAME( 0x0018, 0x0008, "Point Thresholds" ) PORT_DIPLOCATION("SW1:4,5")
+>>>>>>> upstream/master
 	PORT_DIPSETTING(      0x0008, DEF_STR( Easy ) )
 	PORT_DIPSETTING(      0x0018, DEF_STR( Medium ) )
 	PORT_DIPSETTING(      0x0010, DEF_STR( Hard ) )
@@ -957,6 +1022,7 @@ static const gfx_layout mcr68_sprite_layout =
 	32*32
 };
 
+<<<<<<< HEAD
 static const gfx_layout zwackery_layout =
 {
 	16,16,
@@ -969,17 +1035,22 @@ static const gfx_layout zwackery_layout =
 	128
 };
 
+=======
+>>>>>>> upstream/master
 static GFXDECODE_START( mcr68 )
 	GFXDECODE_SCALE( "gfx1", 0, mcr68_bg_layout,     0, 4, 2, 2 )
 	GFXDECODE_ENTRY( "gfx2", 0, mcr68_sprite_layout, 0, 4 )
 GFXDECODE_END
 
+<<<<<<< HEAD
 static GFXDECODE_START( zwackery )
 	GFXDECODE_ENTRY( "gfx1", 0, zwackery_layout,       0, 16 )
 	GFXDECODE_ENTRY( "gfx2", 0, mcr68_sprite_layout, 0x800, 32 )
 	GFXDECODE_ENTRY( "gfx1", 0, zwackery_layout,       0, 16 )  /* yes, an extra copy */
 GFXDECODE_END
 
+=======
+>>>>>>> upstream/master
 
 
 /*************************************
@@ -1003,7 +1074,10 @@ GFXDECODE_END
 
     Ideal CPU timings, based on counter usage:
 
+<<<<<<< HEAD
         Zwackery:     7652400
+=======
+>>>>>>> upstream/master
         Xenophobe:    7723800
         Spy Hunter II:7723800
         Blasted:      7798800
@@ -1016,6 +1090,7 @@ GFXDECODE_END
 
 =================================================================*/
 
+<<<<<<< HEAD
 static MACHINE_CONFIG_START( zwackery, mcr68_state )
 
 	/* basic machine hardware */
@@ -1066,16 +1141,31 @@ MACHINE_CONFIG_END
 
 
 static MACHINE_CONFIG_START( mcr68, mcr68_state )
+=======
+static MACHINE_CONFIG_START( mcr68 )
+>>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", M68000, 7723800)
 	MCFG_CPU_PROGRAM_MAP(mcr68_map)
+<<<<<<< HEAD
 	MCFG_CPU_VBLANK_INT_DRIVER("screen", mcr68_state,  mcr68_interrupt)
 
 	MCFG_WATCHDOG_VBLANK_INIT(8)
 	MCFG_MACHINE_START_OVERRIDE(mcr68_state,mcr68)
 	MCFG_MACHINE_RESET_OVERRIDE(mcr68_state,mcr68)
 
+=======
+
+	MCFG_WATCHDOG_ADD("watchdog")
+	MCFG_WATCHDOG_VBLANK_INIT("screen", 8)
+	MCFG_MACHINE_START_OVERRIDE(mcr68_state,mcr68)
+	MCFG_MACHINE_RESET_OVERRIDE(mcr68_state,mcr68)
+
+	MCFG_DEVICE_ADD("ptm", PTM6840, 7723800 / 10)
+	MCFG_PTM6840_IRQ_CB(INPUTLINE("maincpu", 2))
+
+>>>>>>> upstream/master
 	/* video hardware */
 	MCFG_SCREEN_ADD("screen", RASTER)
 	MCFG_SCREEN_REFRESH_RATE(30)
@@ -1085,6 +1175,11 @@ static MACHINE_CONFIG_START( mcr68, mcr68_state )
 	MCFG_SCREEN_UPDATE_DRIVER(mcr68_state, screen_update_mcr68)
 	MCFG_SCREEN_PALETTE("palette")
 
+<<<<<<< HEAD
+=======
+	MCFG_TIMER_DRIVER_ADD_SCANLINE("scantimer", mcr68_state, scanline_cb, "screen", 0, 1)
+
+>>>>>>> upstream/master
 	MCFG_GFXDECODE_ADD("gfxdecode", "palette", mcr68)
 	MCFG_PALETTE_ADD("palette", 64)
 	MCFG_PALETTE_FORMAT(xxxxxxxRRRBBBGGG)
@@ -1092,50 +1187,84 @@ static MACHINE_CONFIG_START( mcr68, mcr68_state )
 	MCFG_VIDEO_START_OVERRIDE(mcr68_state,mcr68)
 
 	/* sound hardware -- determined by specific machine */
+<<<<<<< HEAD
 	MCFG_SPEAKER_STANDARD_MONO("mono")
+=======
+	MCFG_SPEAKER_STANDARD_MONO("speaker")
+>>>>>>> upstream/master
 MACHINE_CONFIG_END
 
 
 static MACHINE_CONFIG_DERIVED( xenophob, mcr68 )
 
 	/* basic machine hardware */
+<<<<<<< HEAD
 	MCFG_MIDWAY_SOUNDS_GOOD_ADD("sg")
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 1.0)
+=======
+	MCFG_SOUND_ADD("sg", MIDWAY_SOUNDS_GOOD, 0)
+	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "speaker", 1.0)
+>>>>>>> upstream/master
 MACHINE_CONFIG_END
 
 static MACHINE_CONFIG_DERIVED( intlaser, mcr68 )
 
 	/* basic machine hardware */
+<<<<<<< HEAD
 	MCFG_MIDWAY_SOUNDS_GOOD_ADD("sg")
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 1.0)
 
 	MCFG_WATCHDOG_VBLANK_INIT(800)
+=======
+	MCFG_SOUND_ADD("sg", MIDWAY_SOUNDS_GOOD, 0)
+	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "speaker", 1.0)
+
+	MCFG_WATCHDOG_MODIFY("watchdog")
+	MCFG_WATCHDOG_VBLANK_INIT("screen", 800)
+>>>>>>> upstream/master
 MACHINE_CONFIG_END
 
 
 static MACHINE_CONFIG_DERIVED( spyhunt2, mcr68 )
 
 	/* basic machine hardware */
+<<<<<<< HEAD
 	MCFG_MIDWAY_SOUNDS_GOOD_ADD("sg")
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 1.0)
 	MCFG_MIDWAY_TURBO_CHIP_SQUEAK_ADD("tcs")
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 1.0)
+=======
+	MCFG_SOUND_ADD("sg", MIDWAY_SOUNDS_GOOD, 0)
+	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "speaker", 1.0)
+	MCFG_SOUND_ADD("tcs", MIDWAY_TURBO_CHEAP_SQUEAK, 0)
+	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "speaker", 1.0)
+>>>>>>> upstream/master
 MACHINE_CONFIG_END
 
 
 static MACHINE_CONFIG_DERIVED( archrivl, mcr68 )
 
 	/* basic machine hardware */
+<<<<<<< HEAD
 	MCFG_WILLIAMS_CVSD_SOUND_ADD("cvsd")
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 1.0)
+=======
+	MCFG_SOUND_ADD("cvsd", WILLIAMS_CVSD_SOUND, 0)
+	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "speaker", 1.0)
+>>>>>>> upstream/master
 MACHINE_CONFIG_END
 
 
 static MACHINE_CONFIG_DERIVED( pigskin, mcr68 )
 
 	/* basic machine hardware */
+<<<<<<< HEAD
 	MCFG_WILLIAMS_CVSD_SOUND_ADD("cvsd")
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 1.0)
+=======
+	MCFG_SOUND_ADD("cvsd", WILLIAMS_CVSD_SOUND, 0)
+	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "speaker", 1.0)
+>>>>>>> upstream/master
 
 	MCFG_CPU_MODIFY("maincpu")
 	MCFG_CPU_PROGRAM_MAP(pigskin_map)
@@ -1145,8 +1274,13 @@ MACHINE_CONFIG_END
 static MACHINE_CONFIG_DERIVED( trisport, mcr68 )
 
 	/* basic machine hardware */
+<<<<<<< HEAD
 	MCFG_WILLIAMS_CVSD_SOUND_ADD("cvsd")
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 1.0)
+=======
+	MCFG_SOUND_ADD("cvsd", WILLIAMS_CVSD_SOUND, 0)
+	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "speaker", 1.0)
+>>>>>>> upstream/master
 
 	MCFG_CPU_MODIFY("maincpu")
 	MCFG_CPU_PROGRAM_MAP(trisport_map)
@@ -1162,6 +1296,7 @@ MACHINE_CONFIG_END
  *
  *************************************/
 
+<<<<<<< HEAD
 ROM_START( zwackery )
 	ROM_REGION( 0x40000, "maincpu", 0 )
 	ROM_LOAD16_BYTE( "pro0.bin",   0x00000, 0x4000, CRC(6fb9731c) SHA1(ee5b297ef2b4cf20df5e776f1c585b51f174bfa7) )
@@ -1223,6 +1358,8 @@ ROM_START( zwackery )
 	ROM_LOAD( "pal20.u15", 0x000c, 0x00001, NO_DUMP ) /* marked CSD002R0 in manual, pal type not specified */
 ROM_END
 
+=======
+>>>>>>> upstream/master
 /*
     Xenophobe
 
@@ -1698,6 +1835,7 @@ void mcr68_state::mcr68_common_init(int clip, int xoffset)
 }
 
 
+<<<<<<< HEAD
 DRIVER_INIT_MEMBER(mcr68_state,zwackery)
 {
 	mcr68_common_init(0, 0);
@@ -1707,6 +1845,8 @@ DRIVER_INIT_MEMBER(mcr68_state,zwackery)
 }
 
 
+=======
+>>>>>>> upstream/master
 DRIVER_INIT_MEMBER(mcr68_state,xenophob)
 {
 	mcr68_common_init(0, -4);
@@ -1746,7 +1886,11 @@ DRIVER_INIT_MEMBER(mcr68_state,blasted)
 	m_maincpu->space(AS_PROGRAM).install_write_handler(0x0c0000, 0x0cffff, write16_delegate(FUNC(mcr68_state::blasted_control_w),this));
 
 	/* 6840 is mapped to the lower 8 bits */
+<<<<<<< HEAD
 	m_maincpu->space(AS_PROGRAM).install_readwrite_handler(0x0a0000, 0x0a000f, read16_delegate(FUNC(mcr68_state::mcr68_6840_lower_r),this), write16_delegate(FUNC(mcr68_state::mcr68_6840_lower_w),this));
+=======
+	m_maincpu->space(AS_PROGRAM).install_readwrite_handler(0x0a0000, 0x0a000f, read8_delegate(FUNC(ptm6840_device::read), &(*m_ptm)), write8_delegate(FUNC(ptm6840_device::write), &(*m_ptm)), 0x00ff);
+>>>>>>> upstream/master
 }
 
 DRIVER_INIT_MEMBER(mcr68_state,intlaser)
@@ -1777,7 +1921,11 @@ DRIVER_INIT_MEMBER(mcr68_state,archrivl)
 	m_maincpu->space(AS_PROGRAM).install_read_handler(0x0e0000, 0x0effff, read16_delegate(FUNC(mcr68_state::archrivl_port_1_r),this));
 
 	/* 6840 is mapped to the lower 8 bits */
+<<<<<<< HEAD
 	m_maincpu->space(AS_PROGRAM).install_readwrite_handler(0x0a0000, 0x0a000f, read16_delegate(FUNC(mcr68_state::mcr68_6840_lower_r),this), write16_delegate(FUNC(mcr68_state::mcr68_6840_lower_w),this));
+=======
+	m_maincpu->space(AS_PROGRAM).install_readwrite_handler(0x0a0000, 0x0a000f, read8_delegate(FUNC(ptm6840_device::read), &(*m_ptm)), write8_delegate(FUNC(ptm6840_device::write), &(*m_ptm)), 0x00ff);
+>>>>>>> upstream/master
 }
 
 READ16_MEMBER(mcr68_state::archrivlb_port_1_r)
@@ -1799,7 +1947,11 @@ DRIVER_INIT_MEMBER(mcr68_state,archrivlb)
 	m_maincpu->space(AS_PROGRAM).install_read_handler(0x0e0000, 0x0effff, read16_delegate(FUNC(mcr68_state::archrivlb_port_1_r),this));
 
 	/* 6840 is mapped to the lower 8 bits */
+<<<<<<< HEAD
 	m_maincpu->space(AS_PROGRAM).install_readwrite_handler(0x0a0000, 0x0a000f, read16_delegate(FUNC(mcr68_state::mcr68_6840_lower_r),this), write16_delegate(FUNC(mcr68_state::mcr68_6840_lower_w),this));
+=======
+	m_maincpu->space(AS_PROGRAM).install_readwrite_handler(0x0a0000, 0x0a000f, read8_delegate(FUNC(ptm6840_device::read), &(*m_ptm)), write8_delegate(FUNC(ptm6840_device::write), &(*m_ptm)), 0x00ff);
+>>>>>>> upstream/master
 }
 
 
@@ -1833,8 +1985,11 @@ DRIVER_INIT_MEMBER(mcr68_state,trisport)
  *
  *************************************/
 
+<<<<<<< HEAD
 GAME( 1984, zwackery, 0,        zwackery, zwackery, mcr68_state, zwackery, ROT0,   "Bally Midway", "Zwackery", MACHINE_SUPPORTS_SAVE )
 
+=======
+>>>>>>> upstream/master
 GAME( 1987, xenophob, 0,        xenophob, xenophob, mcr68_state, xenophob, ROT0,   "Bally Midway", "Xenophobe", MACHINE_SUPPORTS_SAVE )
 
 GAME( 1987, spyhunt2, 0,        spyhunt2, spyhunt2, mcr68_state, spyhunt2, ROT0,   "Bally Midway", "Spy Hunter II (rev 2)", MACHINE_SUPPORTS_SAVE )

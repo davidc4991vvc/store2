@@ -1,5 +1,6 @@
 // license:BSD-3-Clause
 // copyright-holders:Olivier Galibert
+<<<<<<< HEAD
 #ifndef NSCSI_CB_H
 #define NSCSI_CB_H
 
@@ -23,6 +24,33 @@
 
 #define MCFG_NSCSICB_IO_HANDLER(_line) \
 	downcast<nscsi_callback_device *>(device)->set_io_callback(DEVCB_##_line);
+=======
+#ifndef MAME_MACHINE_NSCSI_CB_H
+#define MAME_MACHINE_NSCSI_CB_H
+
+#pragma once
+
+#include "machine/nscsi_bus.h"
+
+
+#define MCFG_NSCSICB_RST_HANDLER(_line) \
+	devcb = &downcast<nscsi_callback_device *>(device)->set_rst_callback(DEVCB_##_line);
+
+#define MCFG_NSCSICB_ATN_HANDLER(_line) \
+	devcb = &downcast<nscsi_callback_device *>(device)->set_atn_callback(DEVCB_##_line);
+
+#define MCFG_NSCSICB_ACK_HANDLER(_line) \
+	devcb = &downcast<nscsi_callback_device *>(device)->set_ack_callback(DEVCB_##_line);
+
+#define MCFG_NSCSICB_REQ_HANDLER(_line) \
+	devcb = &downcast<nscsi_callback_device *>(device)->set_req_callback(DEVCB_##_line);
+
+#define MCFG_NSCSICB_MSG_HANDLER(_line) \
+	devcb = &downcast<nscsi_callback_device *>(device)->set_msg_callback(DEVCB_##_line);
+
+#define MCFG_NSCSICB_IO_HANDLER(_line) \
+	devcb = &downcast<nscsi_callback_device *>(device)->set_io_callback(DEVCB_##_line);
+>>>>>>> upstream/master
 
 #define MCFG_NSCSICB_CD_HANDLER(_line) \
 	downcast<nscsi_callback_device *>(device)->set_cd_callback(DEVCB_##_line);
@@ -33,6 +61,7 @@
 #define MCFG_NSCSICB_BSY_HANDLER(_line) \
 	downcast<nscsi_callback_device *>(device)->set_bsy_callback(DEVCB_##_line);
 
+<<<<<<< HEAD
 class nscsi_callback_device : public nscsi_device
 {
 public:
@@ -53,6 +82,29 @@ public:
 	UINT8 read() { return scsi_bus->data_r(); }
 	DECLARE_READ8_MEMBER( read ) { return read(); }
 	void write(UINT8 data) { scsi_bus->data_w(scsi_refid, data); }
+=======
+
+class nscsi_callback_device : public nscsi_device
+{
+public:
+	nscsi_callback_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
+
+	template <class Line> devcb_base &set_rst_callback(Line &&cb) { return m_write_rst.set_callback(std::forward<Line>(cb)); }
+	template <class Line> devcb_base &set_atn_callback(Line &&cb) { return m_write_atn.set_callback(std::forward<Line>(cb)); }
+	template <class Line> devcb_base &set_ack_callback(Line &&cb) { return m_write_ack.set_callback(std::forward<Line>(cb)); }
+	template <class Line> devcb_base &set_req_callback(Line &&cb) { return m_write_req.set_callback(std::forward<Line>(cb)); }
+	template <class Line> devcb_base &set_msg_callback(Line &&cb) { return m_write_msg.set_callback(std::forward<Line>(cb)); }
+	template <class Line> devcb_base &set_io_callback(Line &&cb)  { return m_write_io.set_callback(std::forward<Line>(cb)); }
+	template <class Line> devcb_base &set_cd_callback(Line &&cb)  { return m_write_cd.set_callback(std::forward<Line>(cb)); }
+	template <class Line> devcb_base &set_sel_callback(Line &&cb) { return m_write_sel.set_callback(std::forward<Line>(cb)); }
+	template <class Line> devcb_base &set_bsy_callback(Line &&cb) { return m_write_bsy.set_callback(std::forward<Line>(cb)); }
+
+	virtual void scsi_ctrl_changed() override;
+
+	uint8_t read() { return scsi_bus->data_r(); }
+	DECLARE_READ8_MEMBER( read ) { return read(); }
+	void write(uint8_t data) { scsi_bus->data_w(scsi_refid, data); }
+>>>>>>> upstream/master
 	DECLARE_WRITE8_MEMBER( write ) { write(data); }
 
 	DECLARE_READ_LINE_MEMBER( rst_r ) { return (m_ctrl & S_RST) ? 1 : 0; }
@@ -76,8 +128,13 @@ public:
 	DECLARE_WRITE_LINE_MEMBER( bsy_w ) { scsi_bus->ctrl_w(scsi_refid, state ? S_BSY : 0, S_BSY); }
 
 protected:
+<<<<<<< HEAD
 	virtual void device_start();
 	virtual void device_reset();
+=======
+	virtual void device_start() override;
+	virtual void device_reset() override;
+>>>>>>> upstream/master
 
 	devcb_write_line m_write_rst;
 	devcb_write_line m_write_atn;
@@ -89,9 +146,18 @@ protected:
 	devcb_write_line m_write_sel;
 	devcb_write_line m_write_bsy;
 
+<<<<<<< HEAD
 	UINT32 m_ctrl;
 };
 
 extern const device_type NSCSI_CB;
 
 #endif
+=======
+	uint32_t m_ctrl;
+};
+
+DECLARE_DEVICE_TYPE(NSCSI_CB, nscsi_callback_device)
+
+#endif // MAME_MACHINE_NSCSI_CB_H
+>>>>>>> upstream/master

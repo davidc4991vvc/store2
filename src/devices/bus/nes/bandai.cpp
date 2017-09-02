@@ -17,7 +17,11 @@
 
  * Bandai Datach Joint ROM System [mapper 157] is emulated in a separate source file
    to implement also the subslot, but the PCB is basically a Bandai LZ93D50 + 24C02 EEPROM
+<<<<<<< HEAD
    pcb with added barcode reader and subslot
+=======
+   PCB with added barcode reader and subslot
+>>>>>>> upstream/master
 
  * Bandai Karaoke Studio [mapper 188] is emulated in a separate source file
    to implement also the subslot and the mic inputs
@@ -50,6 +54,7 @@
 //  constructor
 //-------------------------------------------------
 
+<<<<<<< HEAD
 const device_type NES_OEKAKIDS = &device_creator<nes_oekakids_device>;
 const device_type NES_FCG = &device_creator<nes_fcg_device>;
 const device_type NES_LZ93D50 = &device_creator<nes_lz93d50_device>;
@@ -102,6 +107,58 @@ nes_lz93d50_24c02_device::nes_lz93d50_24c02_device(const machine_config &mconfig
 
 nes_fjump2_device::nes_fjump2_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
 					: nes_lz93d50_device(mconfig, NES_FJUMP2, "NES Cart Bandai Famicom Jump II PCB", tag, owner, clock, "nes_fjump2", __FILE__)
+=======
+DEFINE_DEVICE_TYPE(NES_OEKAKIDS,      nes_oekakids_device,      "nes_oeka",        "NES Cart Bandai Oeka Kids PCB")
+DEFINE_DEVICE_TYPE(NES_FCG,           nes_fcg_device,           "nes_fcg",         "NES Cart Bandai FCG PCB")
+DEFINE_DEVICE_TYPE(NES_LZ93D50,       nes_lz93d50_device,       "nes_lz93d50",     "NES Cart Bandai LZ93D50 PCB")
+DEFINE_DEVICE_TYPE(NES_LZ93D50_24C01, nes_lz93d50_24c01_device, "nes_lz93d50_ep1", "NES Cart Bandai LZ93D50 + 24C01 PCB")
+DEFINE_DEVICE_TYPE(NES_LZ93D50_24C02, nes_lz93d50_24c02_device, "nes_lz93d50_ep2", "NES Cart Bandai LZ93D50 + 24C02 PCB")
+DEFINE_DEVICE_TYPE(NES_FJUMP2,        nes_fjump2_device,        "nes_fjump2",      "NES Cart Bandai Famicom Jump II PCB")
+
+
+nes_oekakids_device::nes_oekakids_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: nes_nrom_device(mconfig, NES_OEKAKIDS, tag, owner, clock), m_reg(0), m_latch(0)
+{
+}
+
+nes_fcg_device::nes_fcg_device(const machine_config &mconfig, device_type type, const char *tag, device_t *owner, uint32_t clock)
+	: nes_nrom_device(mconfig, type, tag, owner, clock), m_irq_count(0), m_irq_enable(0), irq_timer(nullptr)
+{
+}
+
+nes_fcg_device::nes_fcg_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: nes_fcg_device(mconfig, NES_FCG, tag, owner, clock)
+{
+}
+
+nes_lz93d50_device::nes_lz93d50_device(const machine_config &mconfig, device_type type, const char *tag, device_t *owner, uint32_t clock)
+	: nes_fcg_device(mconfig, type, tag, owner, clock)
+{
+}
+
+nes_lz93d50_device::nes_lz93d50_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: nes_lz93d50_device(mconfig, NES_LZ93D50, tag, owner, clock)
+{
+}
+
+nes_lz93d50_24c01_device::nes_lz93d50_24c01_device(const machine_config &mconfig, device_type type, const char *tag, device_t *owner, uint32_t clock)
+	: nes_lz93d50_device(mconfig, type, tag, owner, clock), m_i2cmem(*this, "i2cmem"), m_i2c_dir(0)
+{
+}
+
+nes_lz93d50_24c01_device::nes_lz93d50_24c01_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: nes_lz93d50_24c01_device(mconfig, NES_LZ93D50_24C01, tag, owner, clock)
+{
+}
+
+nes_lz93d50_24c02_device::nes_lz93d50_24c02_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: nes_lz93d50_24c01_device(mconfig, NES_LZ93D50_24C02, tag, owner, clock)
+{
+}
+
+nes_fjump2_device::nes_fjump2_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: nes_lz93d50_device(mconfig, NES_FJUMP2, tag, owner, clock)
+>>>>>>> upstream/master
 {
 }
 
@@ -395,6 +452,7 @@ READ8_MEMBER(nes_lz93d50_24c01_device::read_m)
 //  SERIAL I2C DEVICE
 //-------------------------------------------------
 
+<<<<<<< HEAD
 MACHINE_CONFIG_FRAGMENT( bandai_i2c_24c01 )
 	MCFG_24C01_ADD("i2cmem")
 MACHINE_CONFIG_END
@@ -414,6 +472,16 @@ machine_config_constructor nes_lz93d50_24c02_device::device_mconfig_additions() 
 	return MACHINE_CONFIG_NAME( bandai_i2c_24c02 );
 }
 
+=======
+MACHINE_CONFIG_MEMBER( nes_lz93d50_24c01_device::device_add_mconfig )
+	MCFG_24C01_ADD("i2cmem")
+MACHINE_CONFIG_END
+
+MACHINE_CONFIG_MEMBER( nes_lz93d50_24c02_device::device_add_mconfig )
+	MCFG_24C02_ADD("i2cmem")
+MACHINE_CONFIG_END
+
+>>>>>>> upstream/master
 
 /*-------------------------------------------------
 
@@ -434,7 +502,11 @@ machine_config_constructor nes_lz93d50_24c02_device::device_mconfig_additions() 
 
 void nes_fjump2_device::set_prg()
 {
+<<<<<<< HEAD
 	UINT8 prg_base = 0;
+=======
+	uint8_t prg_base = 0;
+>>>>>>> upstream/master
 
 	for (int i = 0; i < 4; i++)
 		prg_base |= (m_reg[i] << 4);

@@ -18,6 +18,7 @@ paHtmlDocDirectory = os.path.join( paRootDirectory, "doc", "html" )
 ## This can be used as a first-level check to make sure the documentation is in order.
 ##
 ## The idea is to get a list of which files are missing doxygen documentation.
+<<<<<<< HEAD
 
 
 # recurse from top and return a list of all with the given
@@ -26,6 +27,25 @@ def recursiveFindFiles( top, extensions, includePaths ):
     result = []
     for (dirpath, dirnames, filenames) in os.walk(top):
         if not '.svn' in dirpath:
+=======
+##
+## How to run:
+##  $ cd doc/utils
+##  $ python checkfiledocs.py
+
+def oneOf_a_in_b(a, b):
+    for x in a:
+        if x in b:
+            return True
+    return False
+
+# recurse from top and return a list of all with the given
+# extensions. ignore .svn directories. return absolute paths
+def recursiveFindFiles( top, extensions, dirBlacklist, includePaths ):
+    result = []
+    for (dirpath, dirnames, filenames) in os.walk(top):
+        if not oneOf_a_in_b(dirBlacklist, dirpath):
+>>>>>>> upstream/master
             for f in filenames:
                 if os.path.splitext(f)[1] in extensions:
                     if includePaths:
@@ -41,8 +61,14 @@ def doxygenHtmlDocFileName( sourceFile ):
     return sourceFile.replace( '_', '__' ).replace( '.', '_8' ) + '.html'
 
 
+<<<<<<< HEAD
 sourceFiles = recursiveFindFiles( paRootDirectory, [ '.c', '.h', '.cpp' ], True );
 docFiles = recursiveFindFiles( paHtmlDocDirectory, [ '.html' ], False );
+=======
+sourceFiles = recursiveFindFiles( os.path.join(paRootDirectory,'src'), [ '.c', '.h', '.cpp' ], ['.svn', 'mingw-include'], True );
+sourceFiles += recursiveFindFiles( os.path.join(paRootDirectory,'include'), [ '.c', '.h', '.cpp' ], ['.svn'], True );
+docFiles = recursiveFindFiles( paHtmlDocDirectory, [ '.html' ], ['.svn'], False );
+>>>>>>> upstream/master
 
 
 

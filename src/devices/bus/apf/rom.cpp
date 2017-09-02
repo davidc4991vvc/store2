@@ -17,6 +17,7 @@
 //  apf_rom_device - constructor
 //-------------------------------------------------
 
+<<<<<<< HEAD
 const device_type APF_ROM_STD = &device_creator<apf_rom_device>;
 const device_type APF_ROM_BASIC = &device_creator<apf_basic_device>;
 const device_type APF_ROM_SPACEDST = &device_creator<apf_spacedst_device>;
@@ -41,6 +42,30 @@ apf_basic_device::apf_basic_device(const machine_config &mconfig, const char *ta
 
 apf_spacedst_device::apf_spacedst_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
 					: apf_rom_device(mconfig, APF_ROM_SPACEDST, "APF Space Destroyer Cart", tag, owner, clock, "apf_spacedst", __FILE__)
+=======
+DEFINE_DEVICE_TYPE(APF_ROM_STD,      apf_rom_device,      "apf_rom",      "APF Standard Carts")
+DEFINE_DEVICE_TYPE(APF_ROM_BASIC,    apf_basic_device,    "apf_basic",    "APF BASIC Carts")
+DEFINE_DEVICE_TYPE(APF_ROM_SPACEDST, apf_spacedst_device, "apf_spacedst", "APF Space Destroyer Cart")
+
+
+apf_rom_device::apf_rom_device(const machine_config &mconfig, device_type type, const char *tag, device_t *owner, uint32_t clock)
+	: device_t(mconfig, type, tag, owner, clock), device_apf_cart_interface(mconfig, *this)
+{
+}
+
+apf_rom_device::apf_rom_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: apf_rom_device(mconfig, APF_ROM_STD, tag, owner, clock)
+{
+}
+
+apf_basic_device::apf_basic_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: apf_rom_device(mconfig, APF_ROM_BASIC, tag, owner, clock)
+{
+}
+
+apf_spacedst_device::apf_spacedst_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: apf_rom_device(mconfig, APF_ROM_SPACEDST, tag, owner, clock)
+>>>>>>> upstream/master
 {
 }
 

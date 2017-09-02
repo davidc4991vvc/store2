@@ -7,7 +7,11 @@
 *******************************************************************************/
 
 
+<<<<<<< HEAD
 /**************************** Coinage Dip Swicthes ****************************/
+=======
+/**************************** Coinage Dip Switches ****************************/
+>>>>>>> upstream/master
 
 // [standard]
 //                  |  COIN SWITCH 1  |  COIN SWITCH 2
@@ -49,10 +53,17 @@
 // -----------------+-----------------+-----------------
 //  FREE PLAY       |  ON  ON  ON  ON &  ON  ON  ON  ON
 // -----------------+-----------------+-----------------
+<<<<<<< HEAD
 //  COIN SWITCH 1   |  ON  ON  ON  ON |  (anywhare OFF)
 //  1COIN  1CREDIT  |                 |
 // -----------------+-----------------+-----------------
 //  COIN SWITCH 2   |  (anywhare OFF) |  ON  ON  ON  ON
+=======
+//  COIN SWITCH 1   |  ON  ON  ON  ON |  (anywhere OFF)
+//  1COIN  1CREDIT  |                 |
+// -----------------+-----------------+-----------------
+//  COIN SWITCH 2   |  (anywhere OFF) |  ON  ON  ON  ON
+>>>>>>> upstream/master
 //  1COIN  1CREDIT  |                 |
 
 // [exception 1] not have free play
@@ -66,8 +77,13 @@
 //    example "Riddle of Pythagoras"
 // -----------------+-----------------+-----------------
 //  FREE PLAY       |  ON  ON  ON  ON |  ON  ON  ON  ON
+<<<<<<< HEAD
 //                  |  ON  ON  ON  ON |  (anywhare OFF)
 //                  |  (anywhare OFF) |  ON  ON  ON  ON
+=======
+//                  |  ON  ON  ON  ON |  (anywhere OFF)
+//                  |  (anywhere OFF) |  ON  ON  ON  ON
+>>>>>>> upstream/master
 
 #define SEGA_COINAGE_A_PART_H \
 	PORT_DIPSETTING(    0x07, DEF_STR( 4C_1C ) ) \
@@ -117,7 +133,11 @@
 	SEGA_COINAGE_B_PART_L \
 	PORT_DIPSETTING(    0x00, "Free Play (if Coin A too) or 1/1" )
 
+<<<<<<< HEAD
 // [exception 1] not have free play (allow duplicated settins, show 0x00)
+=======
+// [exception 1] not have free play (allow duplicated settings, show 0x00)
+>>>>>>> upstream/master
 #define SEGA_COINAGE_NO_FREE_LOC(DIPBANK) \
 	PORT_DIPNAME( 0x0f, 0x0f, DEF_STR( Coin_A ) ) PORT_DIPLOCATION(#DIPBANK":1,2,3,4") \
 	SEGA_COINAGE_A_PART_H \
@@ -128,7 +148,11 @@
 	PORT_DIPSETTING(    0x00, " 1 Coin/1 Credit" ) \
 	SEGA_COINAGE_B_PART_L
 
+<<<<<<< HEAD
 // [exception 1.1] not have free play (forbid duplicated settins, hide 0x00)
+=======
+// [exception 1.1] not have free play (forbid duplicated settings, hide 0x00)
+>>>>>>> upstream/master
 #define SEGA_COINAGE_NO_FREE_NO_DUP_LOC(DIPBANK) \
 	PORT_DIPNAME( 0x0f, 0x0f, DEF_STR( Coin_A ) ) PORT_DIPLOCATION(#DIPBANK":1,2,3,4") \
 	SEGA_COINAGE_A_PART_H \

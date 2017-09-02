@@ -81,8 +81,16 @@ Notes:
 
 #include "emu.h"
 #include "cpu/z80/z80.h"
+<<<<<<< HEAD
 #include "machine/segacrp2.h"
 #include "sound/ay8910.h"
+=======
+#include "machine/gen_latch.h"
+#include "machine/segacrp2_device.h"
+#include "sound/ay8910.h"
+#include "screen.h"
+#include "speaker.h"
+>>>>>>> upstream/master
 
 
 class calorie_state : public driver_device
@@ -95,21 +103,35 @@ public:
 		m_maincpu(*this, "maincpu"),
 		m_gfxdecode(*this, "gfxdecode"),
 		m_palette(*this, "palette"),
+<<<<<<< HEAD
 		m_decrypted_opcodes(*this, "decrypted_opcodes") { }
 
 	/* memory pointers */
 	required_shared_ptr<UINT8> m_fg_ram;
 	required_shared_ptr<UINT8> m_sprites;
+=======
+		m_soundlatch(*this, "soundlatch"),
+		m_decrypted_opcodes(*this, "decrypted_opcodes") { }
+
+	/* memory pointers */
+	required_shared_ptr<uint8_t> m_fg_ram;
+	required_shared_ptr<uint8_t> m_sprites;
+>>>>>>> upstream/master
 
 	/* video-related */
 	tilemap_t  *m_bg_tilemap;
 	tilemap_t  *m_fg_tilemap;
+<<<<<<< HEAD
 	UINT8    m_bg_bank;
+=======
+	uint8_t    m_bg_bank;
+>>>>>>> upstream/master
 	DECLARE_WRITE8_MEMBER(fg_ram_w);
 	DECLARE_WRITE8_MEMBER(bg_bank_w);
 	DECLARE_WRITE8_MEMBER(calorie_flipscreen_w);
 	DECLARE_READ8_MEMBER(calorie_soundlatch_r);
 	DECLARE_WRITE8_MEMBER(bogus_w);
+<<<<<<< HEAD
 	DECLARE_DRIVER_INIT(calorie);
 	DECLARE_DRIVER_INIT(calorieb);
 	TILE_GET_INFO_MEMBER(get_bg_tile_info);
@@ -122,6 +144,20 @@ public:
 	required_device<gfxdecode_device> m_gfxdecode;
 	required_device<palette_device> m_palette;
 	optional_shared_ptr<UINT8> m_decrypted_opcodes;
+=======
+	DECLARE_DRIVER_INIT(calorieb);
+	TILE_GET_INFO_MEMBER(get_bg_tile_info);
+	TILE_GET_INFO_MEMBER(get_fg_tile_info);
+	virtual void machine_start() override;
+	virtual void machine_reset() override;
+	virtual void video_start() override;
+	uint32_t screen_update_calorie(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
+	required_device<cpu_device> m_maincpu;
+	required_device<gfxdecode_device> m_gfxdecode;
+	required_device<palette_device> m_palette;
+	required_device<generic_latch_8_device> m_soundlatch;
+	optional_shared_ptr<uint8_t> m_decrypted_opcodes;
+>>>>>>> upstream/master
 };
 
 
@@ -133,7 +169,11 @@ public:
 
 TILE_GET_INFO_MEMBER(calorie_state::get_bg_tile_info)
 {
+<<<<<<< HEAD
 	UINT8 *src = memregion("user1")->base();
+=======
+	uint8_t *src = memregion("user1")->base();
+>>>>>>> upstream/master
 	int bg_base = (m_bg_bank & 0x0f) * 0x200;
 	int code  = src[bg_base + tile_index] | (((src[bg_base + tile_index + 0x100]) & 0x10) << 4);
 	int color = src[bg_base + tile_index + 0x100] & 0x0f;
@@ -153,13 +193,22 @@ TILE_GET_INFO_MEMBER(calorie_state::get_fg_tile_info)
 
 void calorie_state::video_start()
 {
+<<<<<<< HEAD
 	m_bg_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(calorie_state::get_bg_tile_info),this), TILEMAP_SCAN_ROWS, 16, 16, 16, 16);
 	m_fg_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(calorie_state::get_fg_tile_info),this), TILEMAP_SCAN_ROWS, 8, 8, 32, 32);
+=======
+	m_bg_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(calorie_state::get_bg_tile_info),this), TILEMAP_SCAN_ROWS, 16, 16, 16, 16);
+	m_fg_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(calorie_state::get_fg_tile_info),this), TILEMAP_SCAN_ROWS, 8, 8, 32, 32);
+>>>>>>> upstream/master
 
 	m_fg_tilemap->set_transparent_pen(0);
 }
 
+<<<<<<< HEAD
 UINT32 calorie_state::screen_update_calorie(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+=======
+uint32_t calorie_state::screen_update_calorie(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+>>>>>>> upstream/master
 {
 	int x;
 
@@ -238,8 +287,13 @@ WRITE8_MEMBER(calorie_state::calorie_flipscreen_w)
 
 READ8_MEMBER(calorie_state::calorie_soundlatch_r)
 {
+<<<<<<< HEAD
 	UINT8 latch = soundlatch_byte_r(space, 0);
 	soundlatch_clear_byte_w(space, 0, 0);
+=======
+	uint8_t latch = m_soundlatch->read(space, 0);
+	m_soundlatch->clear_w(space, 0, 0);
+>>>>>>> upstream/master
 	return latch;
 }
 
@@ -267,10 +321,17 @@ static ADDRESS_MAP_START( calorie_map, AS_PROGRAM, 8, calorie_state )
 	AM_RANGE(0xf002, 0xf002) AM_READ_PORT("SYSTEM")
 	AM_RANGE(0xf004, 0xf004) AM_READ_PORT("DSW1") AM_WRITE(calorie_flipscreen_w)
 	AM_RANGE(0xf005, 0xf005) AM_READ_PORT("DSW2")
+<<<<<<< HEAD
 	AM_RANGE(0xf800, 0xf800) AM_WRITE(soundlatch_byte_w)
 ADDRESS_MAP_END
 
 static ADDRESS_MAP_START( decrypted_opcodes_map, AS_DECRYPTED_OPCODES, 8, calorie_state )
+=======
+	AM_RANGE(0xf800, 0xf800) AM_DEVWRITE("soundlatch", generic_latch_8_device, write)
+ADDRESS_MAP_END
+
+static ADDRESS_MAP_START( decrypted_opcodes_map, AS_OPCODES, 8, calorie_state )
+>>>>>>> upstream/master
 	AM_RANGE(0x0000, 0x7fff) AM_ROM AM_SHARE("decrypted_opcodes")
 	AM_RANGE(0x8000, 0xbfff) AM_ROM
 	AM_RANGE(0xc000, 0xcfff) AM_RAM AM_SHARE("ram")
@@ -284,10 +345,17 @@ ADDRESS_MAP_END
 
 static ADDRESS_MAP_START( calorie_sound_io_map, AS_IO, 8, calorie_state )
 	ADDRESS_MAP_GLOBAL_MASK(0xff)
+<<<<<<< HEAD
 	AM_RANGE(0x00, 0x01) AM_DEVWRITE("ay1", ay8910_device, address_data_w)
 	AM_RANGE(0x01, 0x01) AM_DEVREAD("ay1", ay8910_device, data_r)
 	AM_RANGE(0x10, 0x11) AM_DEVWRITE("ay2", ay8910_device, address_data_w)
 	AM_RANGE(0x11, 0x11) AM_DEVREAD("ay2", ay8910_device, data_r)
+=======
+	AM_RANGE(0x00, 0x01) AM_DEVWRITE("ay1", ym2149_device, address_data_w)
+	AM_RANGE(0x01, 0x01) AM_DEVREAD("ay1", ym2149_device, data_r)
+	AM_RANGE(0x10, 0x11) AM_DEVWRITE("ay2", ym2149_device, address_data_w)
+	AM_RANGE(0x11, 0x11) AM_DEVREAD("ay2", ym2149_device, data_r)
+>>>>>>> upstream/master
 	// 3rd ?
 	AM_RANGE(0x00, 0xff) AM_WRITE(bogus_w)
 ADDRESS_MAP_END
@@ -448,7 +516,11 @@ void calorie_state::machine_reset()
 }
 
 
+<<<<<<< HEAD
 static MACHINE_CONFIG_START( calorie, calorie_state )
+=======
+static MACHINE_CONFIG_START( calorie )
+>>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", Z80,4000000)         /* 4 MHz */
@@ -478,6 +550,7 @@ static MACHINE_CONFIG_START( calorie, calorie_state )
 	/* sound hardware */
 	MCFG_SPEAKER_STANDARD_MONO("mono")
 
+<<<<<<< HEAD
 	MCFG_SOUND_ADD("ay1", AY8910, 1500000)
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 0.8)  /* YM2149 really */
 
@@ -488,6 +561,27 @@ static MACHINE_CONFIG_START( calorie, calorie_state )
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 0.8)  /* YM2149 really */
 MACHINE_CONFIG_END
 
+=======
+	MCFG_GENERIC_LATCH_8_ADD("soundlatch")
+
+	MCFG_SOUND_ADD("ay1", YM2149, 1500000)
+	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 0.8)
+
+	MCFG_SOUND_ADD("ay2", YM2149, 1500000)
+	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 0.8)
+
+	MCFG_SOUND_ADD("ay3", YM2149, 1500000)
+	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 0.8)
+MACHINE_CONFIG_END
+
+static MACHINE_CONFIG_DERIVED( caloriee, calorie )
+	MCFG_CPU_REPLACE("maincpu", SEGA_317_0004,4000000)         /* 4 MHz */
+	MCFG_CPU_PROGRAM_MAP(calorie_map)
+	MCFG_CPU_DECRYPTED_OPCODES_MAP(decrypted_opcodes_map)
+	MCFG_CPU_VBLANK_INT_DRIVER("screen", calorie_state,  irq0_line_hold)
+	MCFG_SEGAZ80_SET_DECRYPTED_TAG(":decrypted_opcodes")
+MACHINE_CONFIG_END
+>>>>>>> upstream/master
 
 /*************************************
  *
@@ -560,11 +654,15 @@ ROM_END
  *
  *************************************/
 
+<<<<<<< HEAD
 DRIVER_INIT_MEMBER(calorie_state,calorie)
 {
 	// 317-0004
 	sega_decode_317(memregion("maincpu")->base(), m_decrypted_opcodes, 0);
 }
+=======
+
+>>>>>>> upstream/master
 
 DRIVER_INIT_MEMBER(calorie_state,calorieb)
 {
@@ -579,5 +677,9 @@ DRIVER_INIT_MEMBER(calorie_state,calorieb)
  *************************************/
 
 /* Note: the bootleg is identical to the original once decrypted */
+<<<<<<< HEAD
 GAME( 1986, calorie,  0,       calorie, calorie, calorie_state, calorie,  ROT0, "Sega",    "Calorie Kun vs Moguranian", MACHINE_SUPPORTS_SAVE )
+=======
+GAME( 1986, calorie,  0,       caloriee,calorie, calorie_state, 0,        ROT0, "Sega",    "Calorie Kun vs Moguranian",           MACHINE_SUPPORTS_SAVE )
+>>>>>>> upstream/master
 GAME( 1986, calorieb, calorie, calorie, calorie, calorie_state, calorieb, ROT0, "bootleg", "Calorie Kun vs Moguranian (bootleg)", MACHINE_SUPPORTS_SAVE )

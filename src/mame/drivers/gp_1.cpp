@@ -19,12 +19,23 @@ ToDo:
 
 ********************************************************************************/
 
+<<<<<<< HEAD
 #include "machine/genpin.h"
+=======
+#include "emu.h"
+#include "machine/genpin.h"
+
+>>>>>>> upstream/master
 #include "cpu/z80/z80.h"
 #include "cpu/z80/z80daisy.h"
 #include "machine/i8255.h"
 #include "machine/z80ctc.h"
 #include "sound/sn76477.h"
+<<<<<<< HEAD
+=======
+#include "speaker.h"
+
+>>>>>>> upstream/master
 #include "gp_1.lh"
 
 class gp_1_state : public genpin_class
@@ -53,10 +64,17 @@ public:
 	DECLARE_READ8_MEMBER(portb_r);
 	TIMER_DEVICE_CALLBACK_MEMBER(zero_timer);
 private:
+<<<<<<< HEAD
 	UINT8 m_u14;
 	UINT8 m_digit;
 	UINT8 m_segment[16];
 	virtual void machine_reset();
+=======
+	uint8_t m_u14;
+	uint8_t m_digit;
+	uint8_t m_segment[16];
+	virtual void machine_reset() override;
+>>>>>>> upstream/master
 	required_device<cpu_device> m_maincpu;
 	required_device<z80ctc_device> m_ctc;
 	optional_device<sn76477_device> m_sn;
@@ -343,16 +361,27 @@ WRITE8_MEMBER( gp_1_state::porta_w )
 		}
 	}
 
+<<<<<<< HEAD
 	static const UINT8 patterns[16] = { 0x3f,0x06,0x5b,0x4f,0x66,0x6d,0x7c,0x07,0x7f,0x67,0x58,0x4c,0x62,0x69,0x78,0 }; // 7448
+=======
+	static const uint8_t patterns[16] = { 0x3f,0x06,0x5b,0x4f,0x66,0x6d,0x7c,0x07,0x7f,0x67,0x58,0x4c,0x62,0x69,0x78,0 }; // 7448
+>>>>>>> upstream/master
 	if (m_digit == 7)
 		m_segment[m_u14] = data & 15; // only 8,9,10,11 are needed
 	else
 	if (m_u14 == 8)
 	{
+<<<<<<< HEAD
 		output_set_digit_value(m_digit, patterns[m_segment[8]]);
 		output_set_digit_value(m_digit+8, patterns[m_segment[9]]);
 		output_set_digit_value(m_digit+16, patterns[m_segment[10]]);
 		output_set_digit_value(m_digit+24, patterns[m_segment[11]]);
+=======
+		output().set_digit_value(m_digit, patterns[m_segment[8]]);
+		output().set_digit_value(m_digit+8, patterns[m_segment[9]]);
+		output().set_digit_value(m_digit+16, patterns[m_segment[10]]);
+		output().set_digit_value(m_digit+24, patterns[m_segment[11]]);
+>>>>>>> upstream/master
 	}
 }
 
@@ -393,7 +422,11 @@ WRITE8_MEMBER( gp_1_state::portas_w )
 
 WRITE8_MEMBER( gp_1_state::portc_w )
 {
+<<<<<<< HEAD
 	output_set_value("led0", !BIT(data, 3));
+=======
+	output().set_value("led0", !BIT(data, 3));
+>>>>>>> upstream/master
 	m_digit = data & 7;
 }
 
@@ -413,15 +446,26 @@ TIMER_DEVICE_CALLBACK_MEMBER( gp_1_state::zero_timer )
 static const z80_daisy_config daisy_chain[] =
 {
 	{ "ctc" },
+<<<<<<< HEAD
 	{ NULL }
 };
 
 static MACHINE_CONFIG_START( gp_1, gp_1_state )
+=======
+	{ nullptr }
+};
+
+static MACHINE_CONFIG_START( gp_1 )
+>>>>>>> upstream/master
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", Z80, 2457600)
 	MCFG_CPU_PROGRAM_MAP(gp_1_map)
 	MCFG_CPU_IO_MAP(gp_1_io)
+<<<<<<< HEAD
 	MCFG_CPU_CONFIG(daisy_chain)
+=======
+	MCFG_Z80_DAISY_CHAIN(daisy_chain)
+>>>>>>> upstream/master
 
 	MCFG_NVRAM_ADD_0FILL("nvram")
 
@@ -528,6 +572,7 @@ ROM_START(vegasgp)
 	ROM_LOAD( "140b.13", 0x0800, 0x0800, CRC(cf26d67b) SHA1(05481e880e23a7bc1d1716b52ac1effc0db437f2))
 ROM_END
 
+<<<<<<< HEAD
 GAME(1978, gp_110,   0,        gp_1,     gp_1,     driver_device, 0,   ROT0, "Game Plan", "Model 110",    MACHINE_IS_BIOS_ROOT)
 GAME(1978, blvelvet, gp_110,   gp_1,     gp_1,     driver_device, 0,   ROT0, "Game Plan", "Black Velvet", MACHINE_MECHANICAL)
 GAME(1978, camlight, gp_110,   gp_1,     gp_1,     driver_device, 0,   ROT0, "Game Plan", "Camel Lights", MACHINE_MECHANICAL)
@@ -538,3 +583,15 @@ GAME(1978, chucklck, gp_110,   gp_1,     gp_1,     driver_device, 0,   ROT0, "Ga
 GAME(1979, famlyfun, 0,        gp_1s,    gp_1,     driver_device, 0,   ROT0, "Game Plan", "Family Fun!",  MACHINE_MECHANICAL)
 GAME(1979, startrip, 0,        gp_1s,    gp_1,     driver_device, 0,   ROT0, "Game Plan", "Star Trip",    MACHINE_MECHANICAL)
 GAME(1979, vegasgp,  0,        gp_1s,    gp_1,     driver_device, 0,   ROT0, "Game Plan", "Vegas (Game Plan)", MACHINE_MECHANICAL)
+=======
+GAME(1978, gp_110,   0,        gp_1,     gp_1,     gp_1_state, 0,   ROT0, "Game Plan", "Model 110",         MACHINE_IS_BIOS_ROOT | MACHINE_NOT_WORKING)
+GAME(1978, blvelvet, gp_110,   gp_1,     gp_1,     gp_1_state, 0,   ROT0, "Game Plan", "Black Velvet",      MACHINE_MECHANICAL | MACHINE_NOT_WORKING)
+GAME(1978, camlight, gp_110,   gp_1,     gp_1,     gp_1_state, 0,   ROT0, "Game Plan", "Camel Lights",      MACHINE_MECHANICAL | MACHINE_NOT_WORKING)
+GAME(1978, foxylady, gp_110,   gp_1,     gp_1,     gp_1_state, 0,   ROT0, "Game Plan", "Foxy Lady",         MACHINE_MECHANICAL | MACHINE_NOT_WORKING)
+GAME(1978, real,     gp_110,   gp_1,     gp_1,     gp_1_state, 0,   ROT0, "Game Plan", "Real",              MACHINE_MECHANICAL | MACHINE_NOT_WORKING)
+GAME(1978, rio,      gp_110,   gp_1,     gp_1,     gp_1_state, 0,   ROT0, "Game Plan", "Rio",               MACHINE_MECHANICAL | MACHINE_NOT_WORKING)
+GAME(1978, chucklck, gp_110,   gp_1,     gp_1,     gp_1_state, 0,   ROT0, "Game Plan", "Chuck-A-Luck",      MACHINE_MECHANICAL | MACHINE_NOT_WORKING)
+GAME(1979, famlyfun, 0,        gp_1s,    gp_1,     gp_1_state, 0,   ROT0, "Game Plan", "Family Fun!",       MACHINE_MECHANICAL | MACHINE_NOT_WORKING)
+GAME(1979, startrip, 0,        gp_1s,    gp_1,     gp_1_state, 0,   ROT0, "Game Plan", "Star Trip",         MACHINE_MECHANICAL | MACHINE_NOT_WORKING)
+GAME(1979, vegasgp,  0,        gp_1s,    gp_1,     gp_1_state, 0,   ROT0, "Game Plan", "Vegas (Game Plan)", MACHINE_MECHANICAL | MACHINE_NOT_WORKING)
+>>>>>>> upstream/master

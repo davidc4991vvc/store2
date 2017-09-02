@@ -8,12 +8,20 @@
 
 ***************************************************************************/
 
+<<<<<<< HEAD
 #pragma once
 
 #ifndef __I8244_H__
 #define __I8244_H__
 
 #include "emu.h"
+=======
+#ifndef MAME_VIDEO_I8244_H
+#define MAME_VIDEO_I8244_H
+
+#pragma once
+
+>>>>>>> upstream/master
 
 
 /***************************************************************************
@@ -39,6 +47,7 @@
     TYPE DEFINITIONS
 ***************************************************************************/
 
+<<<<<<< HEAD
 union vdc_t {
 	UINT8 reg[0x100];
 	struct {
@@ -71,6 +80,8 @@ union vdc_t {
 	} s;
 };
 
+=======
+>>>>>>> upstream/master
 
 // ======================> i8244_device
 
@@ -80,6 +91,7 @@ class i8244_device :  public device_t
 {
 public:
 	// construction/destruction
+<<<<<<< HEAD
 	i8244_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
 	i8244_device(const machine_config &mconfig, device_type type, const char *name, const char *tag, device_t *owner, UINT32 clock, int lines, const char *shortname, const char *source);
 
@@ -87,6 +99,14 @@ public:
 	static void set_screen_tag(device_t &device, const char *screen_tag) { downcast<i8244_device &>(device).m_screen_tag = screen_tag; }
 	template<class _Object> static devcb_base &set_irq_cb(device_t &device, _Object object) { return downcast<i8244_device &>(device).m_irq_func.set_callback(object); }
 	template<class _Object> static devcb_base &set_postprocess_cb(device_t &device, _Object object) { return downcast<i8244_device &>(device).m_postprocess_func.set_callback(object); }
+=======
+	i8244_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
+
+	// static configuration helpers
+	static void set_screen_tag(device_t &device, const char *screen_tag) { downcast<i8244_device &>(device).m_screen_tag = screen_tag; }
+	template <class Object> static devcb_base &set_irq_cb(device_t &device, Object &&cb) { return downcast<i8244_device &>(device).m_irq_func.set_callback(std::forward<Object>(cb)); }
+	template <class Object> static devcb_base &set_postprocess_cb(device_t &device, Object &&cb) { return downcast<i8244_device &>(device).m_postprocess_func.set_callback(std::forward<Object>(cb)); }
+>>>>>>> upstream/master
 
 	DECLARE_READ8_MEMBER(read);
 	DECLARE_WRITE8_MEMBER(write);
@@ -94,11 +114,16 @@ public:
 	DECLARE_READ_LINE_MEMBER(hblank);
 	DECLARE_PALETTE_INIT(i8244);
 
+<<<<<<< HEAD
 	UINT32 screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
+=======
+	uint32_t screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
+>>>>>>> upstream/master
 
 	inline bitmap_ind16 *get_bitmap() { return &m_tmp_bitmap; }
 
 	// Global constants
+<<<<<<< HEAD
 	static const int START_ACTIVE_SCAN = 42;
 	static const int BORDER_SIZE       = 10;
 	static const int END_ACTIVE_SCAN   = 42 + 10 + 320 + 10;
@@ -115,6 +140,58 @@ protected:
 
 	// device_sound_interface overrides
 	virtual void sound_stream_update(sound_stream &stream, stream_sample_t **inputs, stream_sample_t **outputs, int samples);
+=======
+	static constexpr int START_ACTIVE_SCAN = 42;
+	static constexpr int BORDER_SIZE       = 10;
+	static constexpr int END_ACTIVE_SCAN   = 42 + 10 + 320 + 10;
+	static constexpr int START_Y           = 1;
+	static constexpr int SCREEN_HEIGHT     = 243;
+	static constexpr int LINE_CLOCKS       = 455;
+	static constexpr int LINES             = 262;
+
+protected:
+	union vdc_t {
+		uint8_t reg[0x100];
+		struct {
+			struct {
+				uint8_t y,x,color,res;
+			} sprites[4];
+			struct {
+				uint8_t y,x,ptr,color;
+			} foreground[12];
+			struct {
+				struct {
+					uint8_t y,x,ptr,color;
+				} single[4];
+			} quad[4];
+			uint8_t shape[4][8];
+			uint8_t control;
+			uint8_t status;
+			uint8_t collision;
+			uint8_t color;
+			uint8_t y;
+			uint8_t x;
+			uint8_t res;
+			uint8_t shift1;
+			uint8_t shift2;
+			uint8_t shift3;
+			uint8_t sound;
+			uint8_t res2[5+0x10];
+			uint8_t hgrid[2][0x10];
+			uint8_t vgrid[0x10];
+		} s;
+	};
+
+	i8244_device(const machine_config &mconfig, device_type type, const char *tag, device_t *owner, uint32_t clock, int lines);
+
+	// device-level overrides
+	virtual void device_start() override;
+	virtual void device_reset() override;
+	virtual void device_timer(emu_timer &timer, device_timer_id id, int param, void *ptr) override;
+
+	// device_sound_interface overrides
+	virtual void sound_stream_update(sound_stream &stream, stream_sample_t **inputs, stream_sample_t **outputs, int samples) override;
+>>>>>>> upstream/master
 
 	void render_scanline(int vpos);
 	int get_y_beam();
@@ -122,11 +199,19 @@ protected:
 	offs_t fix_register_mirrors( offs_t offset );
 
 	// Local constants
+<<<<<<< HEAD
 	static const UINT8 VDC_CONTROL_REG_STROBE_XY = 0x02;
 
 	/* timers */
 	static const device_timer_id TIMER_LINE = 0;
 	static const device_timer_id TIMER_HBLANK = 1;
+=======
+	static constexpr uint8_t VDC_CONTROL_REG_STROBE_XY = 0x02;
+
+	/* timers */
+	static constexpr device_timer_id TIMER_LINE = 0;
+	static constexpr device_timer_id TIMER_HBLANK = 1;
+>>>>>>> upstream/master
 
 	// callbacks
 	devcb_write_line m_irq_func;
@@ -142,11 +227,19 @@ protected:
 	int m_screen_lines;
 
 	vdc_t m_vdc;
+<<<<<<< HEAD
 	UINT16 m_sh_count;
 	UINT8 m_x_beam_pos;
 	UINT8 m_y_beam_pos;
 	UINT8 m_control_status;
 	UINT8 m_collision_status;
+=======
+	uint16_t m_sh_count;
+	uint8_t m_x_beam_pos;
+	uint8_t m_y_beam_pos;
+	uint8_t m_control_status;
+	uint8_t m_collision_status;
+>>>>>>> upstream/master
 	int m_iff;
 };
 
@@ -155,15 +248,28 @@ class i8245_device :  public i8244_device
 {
 public:
 	// construction/destruction
+<<<<<<< HEAD
 	i8245_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
 
 	static const int LINES = 312;
+=======
+	i8245_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
+
+	static constexpr int LINES = 312;
+>>>>>>> upstream/master
 };
 
 
 // device type definition
+<<<<<<< HEAD
 extern const device_type I8244;
 extern const device_type I8245;
 
 
 #endif  /* __I8244_H__ */
+=======
+DECLARE_DEVICE_TYPE(I8244, i8244_device)
+DECLARE_DEVICE_TYPE(I8245, i8245_device)
+
+#endif // MAME_VIDEO_I8244_H
+>>>>>>> upstream/master

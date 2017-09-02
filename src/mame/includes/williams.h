@@ -1,5 +1,10 @@
+<<<<<<< HEAD
 // license:???
 // copyright-holders:Michael Soderstrom, Marc LaFontaine, Aaron Giles
+=======
+// license:BSD-3-Clause
+// copyright-holders:Aaron Giles
+>>>>>>> upstream/master
 /*************************************************************************
 
     Driver for early Williams games
@@ -7,9 +12,21 @@
 **************************************************************************/
 
 
+<<<<<<< HEAD
 #include "machine/6821pia.h"
 #include "machine/bankdev.h"
 #include "audio/williams.h"
+=======
+#include "cpu/m6809/m6809.h"
+#include "cpu/m6800/m6800.h"
+#include "sound/hc55516.h"
+#include "machine/ticket.h"
+#include "machine/watchdog.h"
+#include "machine/6821pia.h"
+#include "machine/bankdev.h"
+#include "audio/williams.h"
+#include "screen.h"
+>>>>>>> upstream/master
 
 class williams_state : public driver_device
 {
@@ -21,9 +38,19 @@ public:
 		m_maincpu(*this, "maincpu"),
 		m_soundcpu(*this, "soundcpu"),
 		m_bankc000(*this, "bankc000"),
+<<<<<<< HEAD
 		m_screen(*this, "screen"),
 		m_palette(*this, "palette"),
 		m_generic_paletteram_8(*this, "paletteram") { }
+=======
+		m_watchdog(*this, "watchdog"),
+		m_screen(*this, "screen"),
+		m_palette(*this, "palette"),
+		m_generic_paletteram_8(*this, "paletteram"),
+		m_pia_0(*this, "pia_0"),
+		m_pia_1(*this, "pia_1"),
+		m_pia_2(*this, "pia_2") { }
+>>>>>>> upstream/master
 
 	enum
 	{
@@ -38,6 +65,7 @@ public:
 		WMS_BLITTER_CONTROLBYTE_SRC_STRIDE_256 = 0x01
 	};
 
+<<<<<<< HEAD
 	required_shared_ptr<UINT8> m_nvram;
 	required_shared_ptr<UINT8> m_videoram;
 	UINT8 *m_mayday_protection;
@@ -52,6 +80,22 @@ public:
 	UINT8 m_blitter_remap_index;
 	const UINT8 *m_blitter_remap;
 	UINT8 *m_blitter_remap_lookup;
+=======
+	required_shared_ptr<uint8_t> m_nvram;
+	required_shared_ptr<uint8_t> m_videoram;
+	uint8_t *m_mayday_protection;
+	uint8_t m_blitter_config;
+	uint16_t m_blitter_clip_address;
+	uint8_t m_blitter_window_enable;
+	uint8_t m_cocktail;
+	uint8_t m_port_select;
+	std::unique_ptr<rgb_t[]> m_palette_lookup;
+	uint8_t m_blitterram[8];
+	uint8_t m_blitter_xor;
+	uint8_t m_blitter_remap_index;
+	const uint8_t *m_blitter_remap;
+	std::unique_ptr<uint8_t[]> m_blitter_remap_lookup;
+>>>>>>> upstream/master
 	DECLARE_WRITE8_MEMBER(williams_vram_select_w);
 	DECLARE_WRITE8_MEMBER(williams_cmos_w);
 	DECLARE_WRITE8_MEMBER(bubbles_cmos_w);
@@ -84,7 +128,11 @@ public:
 	DECLARE_MACHINE_RESET(williams);
 	DECLARE_MACHINE_START(williams_common);
 	DECLARE_MACHINE_RESET(williams_common);
+<<<<<<< HEAD
 	UINT32 screen_update_williams(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect);
+=======
+	uint32_t screen_update_williams(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect);
+>>>>>>> upstream/master
 	TIMER_CALLBACK_MEMBER(williams_count240_off_callback);
 	TIMER_CALLBACK_MEMBER(williams_deferred_snd_cmd_w);
 	TIMER_DEVICE_CALLBACK_MEMBER(williams_va11_callback);
@@ -98,7 +146,11 @@ public:
 
 	void state_save_register();
 	void create_palette_lookup();
+<<<<<<< HEAD
 	void blitter_init(int blitter_config, const UINT8 *remap_prom);
+=======
+	void blitter_init(int blitter_config, const uint8_t *remap_prom);
+>>>>>>> upstream/master
 	inline void blit_pixel(address_space &space, int dstaddr, int srcdata, int controlbyte);
 	int blitter_core(address_space &space, int sstart, int dstart, int w, int h, int data);
 
@@ -109,9 +161,19 @@ public:
 	required_device<cpu_device> m_maincpu;
 	required_device<cpu_device> m_soundcpu;
 	optional_device<address_map_bank_device> m_bankc000;
+<<<<<<< HEAD
 	required_device<screen_device> m_screen;
 	optional_device<palette_device> m_palette;
 	optional_shared_ptr<UINT8> m_generic_paletteram_8;
+=======
+	required_device<watchdog_timer_device> m_watchdog;
+	required_device<screen_device> m_screen;
+	optional_device<palette_device> m_palette;
+	optional_shared_ptr<uint8_t> m_generic_paletteram_8;
+	required_device<pia6821_device> m_pia_0;
+	required_device<pia6821_device> m_pia_1;
+	required_device<pia6821_device> m_pia_2;
+>>>>>>> upstream/master
 };
 
 
@@ -121,10 +183,15 @@ public:
 	blaster_state(const machine_config &mconfig, device_type type, const char *tag)
 		: williams_state(mconfig, type, tag),
 		m_soundcpu_b(*this, "soundcpu_b"),
+<<<<<<< HEAD
+=======
+		m_pia_2b(*this, "pia_2b"),
+>>>>>>> upstream/master
 		m_blaster_palette_0(*this, "blaster_pal0"),
 		m_blaster_scanline_control(*this, "blaster_scan") { }
 
 	optional_device<cpu_device> m_soundcpu_b;
+<<<<<<< HEAD
 	required_shared_ptr<UINT8> m_blaster_palette_0;
 	required_shared_ptr<UINT8> m_blaster_scanline_control;
 
@@ -132,6 +199,16 @@ public:
 	UINT8 m_blaster_video_control;
 	UINT8 m_vram_bank;
 	UINT8 m_rom_bank;
+=======
+	optional_device<pia6821_device> m_pia_2b;
+	required_shared_ptr<uint8_t> m_blaster_palette_0;
+	required_shared_ptr<uint8_t> m_blaster_scanline_control;
+
+	rgb_t m_blaster_color0;
+	uint8_t m_blaster_video_control;
+	uint8_t m_vram_bank;
+	uint8_t m_rom_bank;
+>>>>>>> upstream/master
 
 	DECLARE_WRITE8_MEMBER(blaster_vram_select_w);
 	DECLARE_WRITE8_MEMBER(blaster_bank_select_w);
@@ -145,7 +222,11 @@ public:
 	DECLARE_MACHINE_START(blaster);
 	DECLARE_MACHINE_RESET(blaster);
 	DECLARE_VIDEO_START(blaster);
+<<<<<<< HEAD
 	UINT32 screen_update_blaster(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect);
+=======
+	uint32_t screen_update_blaster(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect);
+>>>>>>> upstream/master
 
 	inline void update_blaster_banking();
 };
@@ -162,12 +243,21 @@ public:
 
 	required_device<address_map_bank_device> m_bank8000;
 	required_device<gfxdecode_device> m_gfxdecode;
+<<<<<<< HEAD
 	required_shared_ptr<UINT8> m_williams2_tileram;
 
 	tilemap_t *m_bg_tilemap;
 	UINT16 m_tilemap_xscroll;
 	UINT8 m_williams2_fg_color;
 	UINT8 m_williams2_tilemap_config;
+=======
+	required_shared_ptr<uint8_t> m_williams2_tileram;
+
+	tilemap_t *m_bg_tilemap;
+	uint16_t m_tilemap_xscroll;
+	uint8_t m_williams2_fg_color;
+	uint8_t m_williams2_tilemap_config;
+>>>>>>> upstream/master
 
 	TILE_GET_INFO_MEMBER(get_tile_info);
 	DECLARE_WRITE8_MEMBER(williams2_bank_select_w);
@@ -197,7 +287,11 @@ public:
 	DECLARE_MACHINE_START(williams2);
 	DECLARE_MACHINE_RESET(williams2);
 	DECLARE_VIDEO_START(williams2);
+<<<<<<< HEAD
 	UINT32 screen_update_williams2(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect);
+=======
+	uint32_t screen_update_williams2(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect);
+>>>>>>> upstream/master
 };
 
 
@@ -209,7 +303,11 @@ public:
 		m_cvsd_sound(*this, "cvsd") { }
 
 	required_device<williams_cvsd_sound_device> m_cvsd_sound;
+<<<<<<< HEAD
 	UINT16 m_joust2_current_sound_data;
+=======
+	uint16_t m_joust2_current_sound_data;
+>>>>>>> upstream/master
 
 	DECLARE_DRIVER_INIT(joust2);
 	DECLARE_MACHINE_START(joust2);
@@ -219,11 +317,19 @@ public:
 	DECLARE_WRITE_LINE_MEMBER(joust2_pia_3_cb1_w);
 };
 
+<<<<<<< HEAD
 /*----------- defined in video/williams.c -----------*/
 
 #define WILLIAMS_BLITTER_NONE       0       /* no blitter */
 #define WILLIAMS_BLITTER_SC01       1       /* SC-01 blitter */
 #define WILLIAMS_BLITTER_SC02       2       /* SC-02 "fixed" blitter */
+=======
+/*----------- defined in video/williams.cpp -----------*/
+
+#define WILLIAMS_BLITTER_NONE       0       /* no blitter */
+#define WILLIAMS_BLITTER_SC1        1       /* Special Chip 1 blitter */
+#define WILLIAMS_BLITTER_SC2        2       /* Special Chip 2 "bugfixed" blitter */
+>>>>>>> upstream/master
 
 #define WILLIAMS_TILEMAP_MYSTICM    0       /* IC79 is a 74LS85 comparator */
 #define WILLIAMS_TILEMAP_TSHOOT     1       /* IC79 is a 74LS157 selector jumpered to be enabled */

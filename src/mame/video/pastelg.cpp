@@ -17,7 +17,11 @@
 ******************************************************************************/
 PALETTE_INIT_MEMBER(pastelg_state, pastelg)
 {
+<<<<<<< HEAD
 	const UINT8 *color_prom = memregion("proms")->base();
+=======
+	const uint8_t *color_prom = memregion("proms")->base();
+>>>>>>> upstream/master
 	int i;
 	int bit0, bit1, bit2, bit3, r, g, b;
 
@@ -90,7 +94,11 @@ WRITE8_MEMBER(pastelg_state::threeds_output_w)
 
 READ8_MEMBER(pastelg_state::threeds_rom_readback_r)
 {
+<<<<<<< HEAD
 	UINT8 *GFX = memregion("gfx1")->base();
+=======
+	uint8_t *GFX = memregion("gfx1")->base();
+>>>>>>> upstream/master
 
 	return GFX[(m_blitter_src_addr | (m_gfxrom << 16)) & 0x3ffff];
 }
@@ -119,7 +127,11 @@ WRITE8_MEMBER(pastelg_state::pastelg_romsel_w)
 void pastelg_state::pastelg_vramflip()
 {
 	int x, y;
+<<<<<<< HEAD
 	UINT8 color1, color2;
+=======
+	uint8_t color1, color2;
+>>>>>>> upstream/master
 	int width = m_screen->width();
 	int height = m_screen->height();
 
@@ -147,14 +159,22 @@ void pastelg_state::device_timer(emu_timer &timer, device_timer_id id, int param
 		m_nb1413m3->m_busyflag = 1;
 		break;
 	default:
+<<<<<<< HEAD
 		assert_always(FALSE, "Unknown id in pastelg_state::device_timer");
+=======
+		assert_always(false, "Unknown id in pastelg_state::device_timer");
+>>>>>>> upstream/master
 	}
 }
 
 
 void pastelg_state::pastelg_gfxdraw()
 {
+<<<<<<< HEAD
 	UINT8 *GFX = memregion("gfx1")->base();
+=======
+	uint8_t *GFX = memregion("gfx1")->base();
+>>>>>>> upstream/master
 	int width = m_screen->width();
 
 	int x, y;
@@ -166,7 +186,11 @@ void pastelg_state::pastelg_gfxdraw()
 	int readflag;
 	int gfxaddr, gfxlen;
 	int count;
+<<<<<<< HEAD
 	UINT8 color;
+=======
+	uint8_t color;
+>>>>>>> upstream/master
 
 	m_nb1413m3->m_busyctr = 0;
 
@@ -272,7 +296,11 @@ void pastelg_state::pastelg_gfxdraw()
 	}
 
 	m_nb1413m3->m_busyflag = 0;
+<<<<<<< HEAD
 	timer_set(attotime::from_hz(400000) * m_nb1413m3->m_busyctr, TIMER_BLITTER);
+=======
+	m_blitter_timer->adjust(attotime::from_hz(400000) * m_nb1413m3->m_busyctr);
+>>>>>>> upstream/master
 }
 
 /******************************************************************************
@@ -284,7 +312,13 @@ void pastelg_state::video_start()
 	int width = m_screen->width();
 	int height = m_screen->height();
 
+<<<<<<< HEAD
 	m_videoram = auto_alloc_array_clear(machine(), UINT8, width * height);
+=======
+	m_videoram = make_unique_clear<uint8_t[]>(width * height);
+
+	m_blitter_timer = timer_alloc(TIMER_BLITTER);
+>>>>>>> upstream/master
 
 	save_item(NAME(m_blitter_desty));
 	save_item(NAME(m_blitter_sizex));
@@ -296,7 +330,11 @@ void pastelg_state::video_start()
 	save_item(NAME(m_blitter_direction_x));
 	save_item(NAME(m_blitter_direction_y));
 	save_item(NAME(m_palbank));
+<<<<<<< HEAD
 	save_pointer(NAME(m_videoram), width*height);
+=======
+	save_pointer(NAME(m_videoram.get()), width*height);
+>>>>>>> upstream/master
 	save_item(NAME(m_flipscreen_old));
 }
 
@@ -304,7 +342,11 @@ void pastelg_state::video_start()
 
 
 ******************************************************************************/
+<<<<<<< HEAD
 UINT32 pastelg_state::screen_update_pastelg(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+=======
+uint32_t pastelg_state::screen_update_pastelg(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+>>>>>>> upstream/master
 {
 	if (m_dispflag)
 	{

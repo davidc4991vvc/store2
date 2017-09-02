@@ -1,5 +1,9 @@
 ; 7zAsm.asm -- ASM macros
+<<<<<<< HEAD
 ; 2009-12-12 : Igor Pavlov : Public domain
+=======
+; 2012-12-30 : Igor Pavlov : Public domain
+>>>>>>> upstream/master
 
 MY_ASM_START macro
   ifdef x64
@@ -13,6 +17,7 @@ endm
 
 MY_PROC macro name:req, numParams:req
   align 16
+<<<<<<< HEAD
   proc_numParams equ numParams
   ifdef x64
     proc_name equ name
@@ -22,21 +27,48 @@ MY_PROC macro name:req, numParams:req
     public proc_fastcall_name
     proc_fastcall_name:
   endif
+=======
+  proc_numParams = numParams
+  ifdef x64
+    proc_name equ name
+  else
+    proc_name equ @CatStr(@,name,@, %numParams * 4)
+  endif
+  proc_name PROC
+>>>>>>> upstream/master
 endm
 
 MY_ENDP macro
   ifdef x64
     ret
+<<<<<<< HEAD
     proc_name ENDP
   else
     ret (proc_numParams - 2) * 4
   endif
+=======
+  else
+    if proc_numParams LT 3
+      ret
+    else
+      ret (proc_numParams - 2) * 4
+    endif
+  endif
+  proc_name ENDP
+>>>>>>> upstream/master
 endm
 
 ifdef x64
   REG_SIZE equ 8
+<<<<<<< HEAD
 else
   REG_SIZE equ 4
+=======
+  REG_LOGAR_SIZE equ 3
+else
+  REG_SIZE equ 4
+  REG_LOGAR_SIZE equ 2
+>>>>>>> upstream/master
 endif
 
   x0 equ EAX
@@ -67,6 +99,17 @@ ifdef x64
   r5 equ RBP
   r6 equ RSI
   r7 equ RDI
+<<<<<<< HEAD
+=======
+  x8 equ r8d
+  x9 equ r9d
+  x10 equ r10d
+  x11 equ r11d
+  x12 equ r12d
+  x13 equ r13d
+  x14 equ r14d
+  x15 equ r15d
+>>>>>>> upstream/master
 else
   r0 equ x0
   r1 equ x1

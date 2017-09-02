@@ -6,12 +6,19 @@
 
 **********************************************************************/
 
+<<<<<<< HEAD
 #pragma once
 
 #ifndef __UPD7227__
 #define __UPD7227__
 
 #include "emu.h"
+=======
+#ifndef MAME_VIDEO_UPD7227_H
+#define MAME_VIDEO_UPD7227_H
+
+#pragma once
+>>>>>>> upstream/master
 
 
 
@@ -36,7 +43,11 @@ class upd7227_device :  public device_t,
 {
 public:
 	// construction/destruction
+<<<<<<< HEAD
 	upd7227_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
+=======
+	upd7227_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
+>>>>>>> upstream/master
 
 	// inline configuration helpers
 	static void static_set_offsets(device_t &device, int sx, int sy);
@@ -47,6 +58,7 @@ public:
 	DECLARE_WRITE_LINE_MEMBER( si_w );
 	DECLARE_READ_LINE_MEMBER( so_r );
 
+<<<<<<< HEAD
 	UINT32 screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
 
 protected:
@@ -56,6 +68,17 @@ protected:
 
 	// device_memory_interface overrides
 	virtual const address_space_config *memory_space_config(address_spacenum spacenum = AS_0) const;
+=======
+	uint32_t screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
+
+protected:
+	// device-level overrides
+	virtual void device_start() override;
+	virtual void device_reset() override;
+
+	// device_memory_interface overrides
+	virtual space_config_vector memory_space_config() const override;
+>>>>>>> upstream/master
 
 	address_space_config        m_space_config;
 
@@ -88,8 +111,14 @@ private:
 
 
 // device type definition
+<<<<<<< HEAD
 extern const device_type UPD7227;
 
 
 
 #endif
+=======
+DECLARE_DEVICE_TYPE(UPD7227, upd7227_device)
+
+#endif // MAME_VIDEO_UPD7227_H
+>>>>>>> upstream/master

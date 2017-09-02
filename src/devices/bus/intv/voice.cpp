@@ -13,12 +13,17 @@
 
 #include "emu.h"
 #include "voice.h"
+<<<<<<< HEAD
+=======
+#include "speaker.h"
+>>>>>>> upstream/master
 
 
 //-------------------------------------------------
 //  intv_voice_device - constructor
 //-------------------------------------------------
 
+<<<<<<< HEAD
 const device_type INTV_ROM_VOICE = &device_creator<intv_voice_device>;
 
 intv_voice_device::intv_voice_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
@@ -27,6 +32,16 @@ intv_voice_device::intv_voice_device(const machine_config &mconfig, const char *
 				m_subslot(*this, "subslot"),
 				m_ramd0_enabled(false),
 				m_ram88_enabled(false)
+=======
+DEFINE_DEVICE_TYPE(INTV_ROM_VOICE, intv_voice_device, "intv_voice", "Intellivision Intellivoice Expansion")
+
+intv_voice_device::intv_voice_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: intv_rom_device(mconfig, INTV_ROM_VOICE, tag, owner, clock),
+	m_speech(*this, "sp0256_speech"),
+	m_subslot(*this, "subslot"),
+	m_ramd0_enabled(false),
+	m_ram88_enabled(false)
+>>>>>>> upstream/master
 {
 }
 
@@ -65,16 +80,24 @@ void intv_voice_device::late_subslot_setup()
 
 
 //-------------------------------------------------
+<<<<<<< HEAD
 //  MACHINE_CONFIG_FRAGMENT( intellivoice )
 //-------------------------------------------------
 
 static MACHINE_CONFIG_FRAGMENT( intellivoice )
+=======
+//  device_add_mconfig - add device configuration
+//-------------------------------------------------
+
+MACHINE_CONFIG_MEMBER( intv_voice_device::device_add_mconfig )
+>>>>>>> upstream/master
 	MCFG_SPEAKER_STANDARD_MONO("mono_voice")
 
 	MCFG_SOUND_ADD("sp0256_speech", SP0256, 3120000)
 	/* The Intellivoice uses a speaker with its own volume control so the relative volumes to use are subjective */
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono_voice", 1.00)
 
+<<<<<<< HEAD
 	MCFG_INTV_CARTRIDGE_ADD("subslot", intv_cart, NULL)
 MACHINE_CONFIG_END
 
@@ -90,13 +113,23 @@ machine_config_constructor intv_voice_device::device_mconfig_additions() const
 }
 
 
+=======
+	MCFG_INTV_CARTRIDGE_ADD("subslot", intv_cart, nullptr)
+MACHINE_CONFIG_END
+
+
+>>>>>>> upstream/master
 ROM_START( intellivoice )
 	ROM_REGION( 0x10000, "sp0256_speech", 0 )
 	/* SP0256-012 Speech chip w/2KiB mask rom */
 	ROM_LOAD( "sp0256-012.bin",   0x1000, 0x0800, CRC(0de7579d) SHA1(618563e512ff5665183664f52270fa9606c9d289) )
 ROM_END
 
+<<<<<<< HEAD
 const rom_entry *intv_voice_device::device_rom_region() const
+=======
+const tiny_rom_entry *intv_voice_device::device_rom_region() const
+>>>>>>> upstream/master
 {
 	return ROM_NAME( intellivoice );
 }
@@ -122,3 +155,23 @@ WRITE16_MEMBER(intv_voice_device::write_speech)
 	if (ACCESSING_BITS_0_7)
 		return m_speech->spb640_w(space, offset, data, mem_mask);
 }
+<<<<<<< HEAD
+=======
+
+
+READ16_MEMBER(intv_voice_device::read_rom80)
+{
+	if (m_ram88_enabled && offset >= 0x800)
+		return m_subslot->read_ram(space, offset & 0x7ff, mem_mask);
+	else
+		return m_subslot->read_rom80(space, offset, mem_mask);
+}
+
+READ16_MEMBER(intv_voice_device::read_romd0)
+{
+	if (m_ramd0_enabled && offset < 0x800)
+		return m_subslot->read_ram(space, offset, mem_mask);
+	else
+		return m_subslot->read_romd0(space, offset, mem_mask);
+}
+>>>>>>> upstream/master

@@ -135,7 +135,11 @@ namespace Forsyth
 
         float FindVertexScore(uint numActiveFaces, uint cachePosition, uint vertexCacheSize)
         {
+<<<<<<< HEAD
             assert(s_vertexScoresComputed);
+=======
+            assert(s_vertexScoresComputed); (void)s_vertexScoresComputed;
+>>>>>>> upstream/master
 
             if ( numActiveFaces == 0 )
             {
@@ -293,7 +297,11 @@ namespace Forsyth
 
                 assert(vertexData.activeFaceListSize > 0);
                 uint* begin = &activeFaceList[vertexData.activeFaceListStart];
+<<<<<<< HEAD
                 uint* end = &activeFaceList[vertexData.activeFaceListStart + vertexData.activeFaceListSize];
+=======
+                uint* end = &(activeFaceList[vertexData.activeFaceListStart + vertexData.activeFaceListSize - 1]) + 1;
+>>>>>>> upstream/master
                 uint* it = std::find(begin, end, bestFace);
                 assert(it != end);
                 std::swap(*it, *(end-1));

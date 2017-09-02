@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 // license:LGPL-2.1+
+=======
+// license:BSD-3-Clause
+>>>>>>> upstream/master
 // copyright-holders:Tomasz Slanina
 /***************************************************************
 
@@ -31,10 +35,21 @@ TODO:
 *****************************************************************/
 
 #include "emu.h"
+<<<<<<< HEAD
 #include "cpu/z80/z80.h"
 #include "cpu/m68000/m68000.h"
 #include "sound/2203intf.h"
 #include "includes/taito_o.h"
+=======
+#include "includes/taito_o.h"
+
+#include "cpu/m68000/m68000.h"
+#include "cpu/z80/z80.h"
+#include "sound/2203intf.h"
+#include "screen.h"
+#include "speaker.h"
+
+>>>>>>> upstream/master
 
 static const int clear_hack = 1;
 
@@ -42,7 +57,11 @@ WRITE16_MEMBER(taitoo_state::io_w)
 {
 	switch(offset)
 	{
+<<<<<<< HEAD
 		case 2: machine().watchdog_reset(); break;
+=======
+		case 2: m_watchdog->watchdog_reset(); break;
+>>>>>>> upstream/master
 
 		default: logerror("IO W %x %x %x\n", offset, data, mem_mask);
 	}
@@ -228,12 +247,20 @@ void taitoo_state::machine_start()
 {
 }
 
+<<<<<<< HEAD
 static MACHINE_CONFIG_START( parentj, taitoo_state )
+=======
+static MACHINE_CONFIG_START( parentj )
+>>>>>>> upstream/master
 
 	MCFG_CPU_ADD("maincpu", M68000,12000000 )       /*?? MHz */
 	MCFG_CPU_PROGRAM_MAP(parentj_map)
 	MCFG_TIMER_DRIVER_ADD_SCANLINE("scantimer", taitoo_state, parentj_interrupt, "screen", 0, 1)
 
+<<<<<<< HEAD
+=======
+	MCFG_WATCHDOG_ADD("watchdog")
+>>>>>>> upstream/master
 
 	MCFG_SCREEN_ADD("screen", RASTER)
 	MCFG_SCREEN_REFRESH_RATE(60)
@@ -253,7 +280,10 @@ static MACHINE_CONFIG_START( parentj, taitoo_state )
 	MCFG_TC0080VCO_OFFSETS(1, 1)
 	MCFG_TC0080VCO_BGFLIP_OFFS(-2)
 	MCFG_TC0080VCO_GFXDECODE("gfxdecode")
+<<<<<<< HEAD
 	MCFG_TC0080VCO_PALETTE("palette")
+=======
+>>>>>>> upstream/master
 
 	MCFG_SPEAKER_STANDARD_MONO("mono")
 
@@ -285,4 +315,8 @@ ROM_START( parentj )
 	ROM_LOAD( "ampal22v10a-0233.c42", 0x000, 0x2dd, CRC(0c030a81) SHA1(0f8198df2cb046683d2db9ac8e609cdff53083ed) )
 ROM_END
 
+<<<<<<< HEAD
 GAME( 1989, parentj,  0,        parentj,  parentj, driver_device,  0,        ROT0,    "Taito", "Parent Jack", MACHINE_NOT_WORKING | MACHINE_SUPPORTS_SAVE )
+=======
+GAME( 1989, parentj,  0,        parentj,  parentj, taitoo_state,  0,        ROT0,    "Taito", "Parent Jack", MACHINE_NOT_WORKING | MACHINE_SUPPORTS_SAVE )
+>>>>>>> upstream/master

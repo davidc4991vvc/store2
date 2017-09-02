@@ -6,6 +6,7 @@
 
 **********************************************************************/
 
+<<<<<<< HEAD
 #pragma once
 
 #ifndef __ISA_CARDS_H__
@@ -63,9 +64,20 @@
 
 // other
 #include "finalchs.h"
+=======
+#ifndef MAME_BUS_ISA_ISA_CARDS_H
+#define MAME_BUS_ISA_ISA_CARDS_H
+
+#pragma once
+
+>>>>>>> upstream/master
 
 // supported devices
 SLOT_INTERFACE_EXTERN( pc_isa8_cards );
 SLOT_INTERFACE_EXTERN( pc_isa16_cards );
 
+<<<<<<< HEAD
 #endif // __ISA_CARDS_H__
+=======
+#endif // MAME_BUS_ISA_ISA_CARDS_H
+>>>>>>> upstream/master

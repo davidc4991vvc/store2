@@ -6,7 +6,13 @@
 
 *************************************************************************/
 
+<<<<<<< HEAD
 #include "sound/flt_vol.h"
+=======
+#include "machine/watchdog.h"
+#include "sound/flt_vol.h"
+#include "screen.h"
+>>>>>>> upstream/master
 
 /* Calculated from CRT controller writes */
 #define PIXEL_CLOCK            (XTAL_21MHz / 3)
@@ -33,6 +39,10 @@ public:
 		m_audiocpu(*this, "audiocpu"),
 		m_ground(*this, "ground"),
 		m_object(*this, "object"),
+<<<<<<< HEAD
+=======
+		m_watchdog(*this, "watchdog"),
+>>>>>>> upstream/master
 		m_f2203_1l(*this, "f2203.1l"),
 		m_f2203_2l(*this, "f2203.2l"),
 		m_f2203_3l(*this, "f2203.3l"),
@@ -44,6 +54,7 @@ public:
 		m_palette(*this, "palette") { }
 
 	/* memory pointers */
+<<<<<<< HEAD
 	required_shared_ptr<UINT16> m_char_ram;
 	required_shared_ptr<UINT16> m_hud_ram;
 	required_shared_ptr<UINT16> m_scene_ram;
@@ -57,10 +68,26 @@ public:
 	UINT16          m_scroll_v;
 	bitmap_ind16    *m_front_buffer;
 	bitmap_ind16    *m_back_buffer;
+=======
+	required_shared_ptr<uint16_t> m_char_ram;
+	required_shared_ptr<uint16_t> m_hud_ram;
+	required_shared_ptr<uint16_t> m_scene_ram;
+	required_shared_ptr<uint16_t> m_ground_ram;
+	required_shared_ptr<uint16_t> m_object_ram;
+
+	/* video-related */
+	tilemap_t       *m_tilemap;
+	uint8_t           m_ground_ctrl;
+	uint16_t          m_scroll_h;
+	uint16_t          m_scroll_v;
+	std::unique_ptr<bitmap_ind16> m_front_buffer;
+	std::unique_ptr<bitmap_ind16> m_back_buffer;
+>>>>>>> upstream/master
 	emu_timer       *m_bufend_timer;
 	emu_timer       *m_cursor_timer;
 
 	/* Rotation Control */
+<<<<<<< HEAD
 	UINT16      m_xsal;
 	UINT16      m_x0ll;
 	UINT16      m_dx0ll;
@@ -79,12 +106,36 @@ public:
 	/* misc */
 	UINT8       m_ctrl_reg;
 	UINT32      m_main_inten;
+=======
+	uint16_t      m_xsal;
+	uint16_t      m_x0ll;
+	uint16_t      m_dx0ll;
+	uint16_t      m_dxll;
+	uint16_t      m_ysal;
+	uint16_t      m_y0ll;
+	uint16_t      m_dy0ll;
+	uint16_t      m_dyll;
+
+	/* Object palette RAM control */
+	uint32_t      m_iden;
+	std::unique_ptr<uint8_t[]>       m_obj_pal_ram;
+	uint32_t      m_obj_pal_latch;
+	uint32_t      m_obj_pal_addr;
+
+	/* misc */
+	uint8_t       m_ctrl_reg;
+	uint32_t      m_main_inten;
+>>>>>>> upstream/master
 
 	/* devices */
 	required_device<cpu_device> m_maincpu;
 	required_device<cpu_device> m_audiocpu;
 	required_device<cpu_device> m_ground;
 	required_device<cpu_device> m_object;
+<<<<<<< HEAD
+=======
+	required_device<watchdog_timer_device> m_watchdog;
+>>>>>>> upstream/master
 	required_device<filter_volume_device> m_f2203_1l;
 	required_device<filter_volume_device> m_f2203_2l;
 	required_device<filter_volume_device> m_f2203_3l;
@@ -120,12 +171,21 @@ public:
 	DECLARE_WRITE8_MEMBER(sound_vol);
 	DECLARE_WRITE8_MEMBER(ym2203_out_b);
 	TILE_GET_INFO_MEMBER(get_lockon_tile_info);
+<<<<<<< HEAD
 	virtual void machine_start();
 	virtual void machine_reset();
 	virtual void video_start();
 	DECLARE_PALETTE_INIT(lockon);
 	UINT32 screen_update_lockon(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
 	void screen_eof_lockon(screen_device &screen, bool state);
+=======
+	virtual void machine_start() override;
+	virtual void machine_reset() override;
+	virtual void video_start() override;
+	DECLARE_PALETTE_INIT(lockon);
+	uint32_t screen_update_lockon(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
+	DECLARE_WRITE_LINE_MEMBER(screen_vblank_lockon);
+>>>>>>> upstream/master
 	TIMER_CALLBACK_MEMBER(cursor_callback);
 	TIMER_CALLBACK_MEMBER(bufend_callback);
 	void scene_draw(  );

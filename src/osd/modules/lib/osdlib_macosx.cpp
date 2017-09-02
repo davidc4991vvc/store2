@@ -13,20 +13,35 @@
 #include <sys/mman.h>
 #include <sys/types.h>
 #include <signal.h>
+<<<<<<< HEAD
 
 #include <mach/mach.h>
 #include <mach/mach_time.h>
 #include <mach/mach_traps.h>
+=======
+#include <dlfcn.h>
+
+#include <cstdio>
+#include <iomanip>
+#include <memory>
+
+
+#include <mach/mach.h>
+#include <mach/mach_time.h>
+>>>>>>> upstream/master
 #include <Carbon/Carbon.h>
 
 // MAME headers
 #include "osdcore.h"
 #include "osdlib.h"
 
+<<<<<<< HEAD
 // FIXME: We shouldn't use SDL functions in here
 
 #include "sdlinc.h"
 
+=======
+>>>>>>> upstream/master
 //============================================================
 //  osd_getenv
 //============================================================
@@ -49,12 +64,17 @@ int osd_setenv(const char *name, const char *value, int overwrite)
 //  osd_process_kill
 //============================================================
 
+<<<<<<< HEAD
 void osd_process_kill(void)
+=======
+void osd_process_kill()
+>>>>>>> upstream/master
 {
 	kill(getpid(), SIGKILL);
 }
 
 //============================================================
+<<<<<<< HEAD
 //  osd_num_processors
 //============================================================
 
@@ -121,6 +141,8 @@ void osd_free(void *ptr)
 
 
 //============================================================
+=======
+>>>>>>> upstream/master
 //  osd_alloc_executable
 //
 //  allocates "size" bytes of executable memory.  this must take
@@ -168,6 +190,7 @@ void osd_break_into_debugger(const char *message)
 
 
 //============================================================
+<<<<<<< HEAD
 //  PROTOTYPES
 //============================================================
 
@@ -283,3 +306,148 @@ void osd_sleep(osd_ticks_t duration)
 		usleep(msec*1000);
 	}
 }
+=======
+//  osd_get_clipboard_text
+//============================================================
+
+char *osd_get_clipboard_text(void)
+{
+	OSStatus err;
+
+	PasteboardRef pasteboard_ref;
+	err = PasteboardCreate(kPasteboardClipboard, &pasteboard_ref);
+	if (err)
+		return nullptr;
+
+	PasteboardSynchronize(pasteboard_ref);
+
+	ItemCount item_count;
+	err = PasteboardGetItemCount(pasteboard_ref, &item_count);
+
+	char *result = nullptr; // core expects a malloced C string of uft8 data
+	for (UInt32 item_index = 1; (item_index <= item_count) && !result; item_index++)
+	{
+		PasteboardItemID item_id;
+		err = PasteboardGetItemIdentifier(pasteboard_ref, item_index, &item_id);
+		if (err)
+			continue;
+
+		CFArrayRef flavor_type_array;
+		err = PasteboardCopyItemFlavors(pasteboard_ref, item_id, &flavor_type_array);
+		if (err)
+			continue;
+
+		CFIndex const flavor_count = CFArrayGetCount(flavor_type_array);
+		for (CFIndex flavor_index = 0; (flavor_index < flavor_count) && !result; flavor_index++)
+		{
+			CFStringRef const flavor_type = (CFStringRef)CFArrayGetValueAtIndex(flavor_type_array, flavor_index);
+
+			CFStringEncoding encoding;
+			if (UTTypeConformsTo(flavor_type, kUTTypeUTF16PlainText))
+				encoding = kCFStringEncodingUTF16;
+			else if (UTTypeConformsTo (flavor_type, kUTTypeUTF8PlainText))
+				encoding = kCFStringEncodingUTF8;
+			else if (UTTypeConformsTo (flavor_type, kUTTypePlainText))
+				encoding = kCFStringEncodingMacRoman;
+			else
+				continue;
+
+			CFDataRef flavor_data;
+			err = PasteboardCopyItemFlavorData(pasteboard_ref, item_id, flavor_type, &flavor_data);
+
+			if (!err)
+			{
+				CFStringRef string_ref = CFStringCreateFromExternalRepresentation(kCFAllocatorDefault, flavor_data, encoding);
+				CFDataRef data_ref = CFStringCreateExternalRepresentation (kCFAllocatorDefault, string_ref, kCFStringEncodingUTF8, '?');
+				CFRelease(string_ref);
+				CFRelease(flavor_data);
+
+				CFIndex const length = CFDataGetLength(data_ref);
+				CFRange const range = CFRangeMake(0, length);
+
+				result = reinterpret_cast<char *>(malloc(length + 1));
+				if (result)
+				{
+					CFDataGetBytes(data_ref, range, reinterpret_cast<unsigned char *>(result));
+					result[length] = 0;
+				}
+
+				CFRelease(data_ref);
+			}
+		}
+
+		CFRelease(flavor_type_array);
+	}
+
+	CFRelease(pasteboard_ref);
+
+	return result;
+}
+
+//============================================================
+//  dynamic_module_posix_impl
+//============================================================
+
+namespace osd {
+class dynamic_module_posix_impl : public dynamic_module
+{
+public:
+	dynamic_module_posix_impl(std::vector<std::string> &libraries)
+		: m_module(nullptr)
+	{
+		m_libraries = libraries;
+	}
+
+	virtual ~dynamic_module_posix_impl() override
+	{
+		if (m_module != nullptr)
+			dlclose(m_module);
+	};
+
+protected:
+	virtual generic_fptr_t get_symbol_address(char const *symbol) override
+	{
+		/*
+		 * given a list of libraries, if a first symbol is successfully loaded from
+		 * one of them, all additional symbols will be loaded from the same library
+		 */
+		if (m_module)
+		{
+			return reinterpret_cast<generic_fptr_t>(dlsym(m_module, symbol));
+		}
+
+		for (auto const &library : m_libraries)
+		{
+			void *module = dlopen(library.c_str(), RTLD_LAZY);
+
+			if (module != nullptr)
+			{
+				generic_fptr_t function = reinterpret_cast<generic_fptr_t>(dlsym(module, symbol));
+
+				if (function != nullptr)
+				{
+					m_module = module;
+					return function;
+				}
+				else
+				{
+					dlclose(module);
+				}
+			}
+		}
+
+		return nullptr;
+	}
+
+private:
+	std::vector<std::string> m_libraries;
+	void *                   m_module;
+};
+
+dynamic_module::ptr dynamic_module::open(std::vector<std::string> &&names)
+{
+	return std::make_unique<dynamic_module_posix_impl>(names);
+}
+
+} // namespace osd
+>>>>>>> upstream/master

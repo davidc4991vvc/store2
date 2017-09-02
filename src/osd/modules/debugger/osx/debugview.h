@@ -8,7 +8,10 @@
 
 #import "debugosx.h"
 
+<<<<<<< HEAD
 #include "emu.h"
+=======
+>>>>>>> upstream/master
 #include "debug/debugvw.h"
 
 #import <Cocoa/Cocoa.h>
@@ -21,7 +24,11 @@
 	debug_view      *view;
 	BOOL            wholeLineScroll;
 
+<<<<<<< HEAD
 	INT32           totalWidth, totalHeight, originTop;
+=======
+	int32_t         totalWidth, totalHeight, originTop;
+>>>>>>> upstream/master
 
 	NSFont          *font;
 	CGFloat         fontWidth, fontHeight, fontAscent;
@@ -57,6 +64,12 @@
 
 - (void)addContextMenuItemsToMenu:(NSMenu *)menu;
 
+<<<<<<< HEAD
+=======
+- (void)saveConfigurationToNode:(util::xml::data_node *)node;
+- (void)restoreConfigurationFromNode:(util::xml::data_node const *)node;
+
+>>>>>>> upstream/master
 @end
 
 

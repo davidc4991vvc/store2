@@ -21,7 +21,11 @@
 #ifdef UNUSED_FUNCTION
 TILE_GET_INFO_MEMBER(mcr3_state::get_bg_tile_info)
 {
+<<<<<<< HEAD
 	UINT8 *videoram = m_videoram;
+=======
+	uint8_t *videoram = m_videoram;
+>>>>>>> upstream/master
 	int data = videoram[tile_index * 2] | (videoram[tile_index * 2 + 1] << 8);
 	int code = (data & 0x3ff) | ((data >> 4) & 0x400);
 	int color = (data >> 12) & 3;
@@ -32,7 +36,11 @@ TILE_GET_INFO_MEMBER(mcr3_state::get_bg_tile_info)
 
 TILE_GET_INFO_MEMBER(mcr3_state::mcrmono_get_bg_tile_info)
 {
+<<<<<<< HEAD
 	UINT8 *videoram = m_videoram;
+=======
+	uint8_t *videoram = m_videoram;
+>>>>>>> upstream/master
 	int data = videoram[tile_index * 2] | (videoram[tile_index * 2 + 1] << 8);
 	int code = (data & 0x3ff) | ((data >> 4) & 0x400);
 	int color = ((data >> 12) & 3) ^ 3;
@@ -49,7 +57,11 @@ TILEMAP_MAPPER_MEMBER(mcr3_state::spyhunt_bg_scan)
 
 TILE_GET_INFO_MEMBER(mcr3_state::spyhunt_get_bg_tile_info)
 {
+<<<<<<< HEAD
 	UINT8 *videoram = m_videoram;
+=======
+	uint8_t *videoram = m_videoram;
+>>>>>>> upstream/master
 	int data = videoram[tile_index];
 	int code = (data & 0x3f) | ((data >> 1) & 0x40);
 	SET_TILE_INFO_MEMBER(0, code, 0, (data & 0x40) ? TILE_FLIPY : 0);
@@ -75,7 +87,11 @@ PALETTE_INIT_MEMBER(mcr3_state,spyhunt)
 
 	for (i = 0; i < palette.entries(); i++)
 	{
+<<<<<<< HEAD
 		palette.set_pen_color(i,rgb_t::black); /* black */
+=======
+		palette.set_pen_color(i,rgb_t::black());
+>>>>>>> upstream/master
 	}
 
 	/* alpha colors are hard-coded */
@@ -96,26 +112,44 @@ PALETTE_INIT_MEMBER(mcr3_state,spyhunt)
 #ifdef UNUSED_FUNCTION
 VIDEO_START_MEMBER(mcr3_state,mcr3)
 {
+<<<<<<< HEAD
 	/* initialize the background tilemap */
 	m_bg_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(mcr3_state::get_bg_tile_info),this), TILEMAP_SCAN_ROWS,  16,16, 32,30);
+=======
+	// initialize the background tilemap
+	m_bg_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(mcr3_state::get_bg_tile_info),this), TILEMAP_SCAN_ROWS,  16,16, 32,30);
+>>>>>>> upstream/master
 }
 #endif
 
 
 VIDEO_START_MEMBER(mcr3_state,mcrmono)
 {
+<<<<<<< HEAD
 	/* initialize the background tilemap */
 	m_bg_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(mcr3_state::mcrmono_get_bg_tile_info),this), TILEMAP_SCAN_ROWS,  16,16, 32,30);
+=======
+	// initialize the background tilemap
+	m_bg_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(mcr3_state::mcrmono_get_bg_tile_info),this), TILEMAP_SCAN_ROWS,  16,16, 32,30);
+>>>>>>> upstream/master
 }
 
 
 VIDEO_START_MEMBER(mcr3_state,spyhunt)
 {
+<<<<<<< HEAD
 	/* initialize the background tilemap */
 	m_bg_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(mcr3_state::spyhunt_get_bg_tile_info),this), tilemap_mapper_delegate(FUNC(mcr3_state::spyhunt_bg_scan),this),  64,32, 64,32);
 
 	/* initialize the text tilemap */
 	m_alpha_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(mcr3_state::spyhunt_get_alpha_tile_info),this), TILEMAP_SCAN_COLS,  16,16, 32,32);
+=======
+	// initialize the background tilemap
+	m_bg_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(mcr3_state::spyhunt_get_bg_tile_info),this), tilemap_mapper_delegate(FUNC(mcr3_state::spyhunt_bg_scan),this),  64,32, 64,32);
+
+	// initialize the text tilemap
+	m_alpha_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(mcr3_state::spyhunt_get_alpha_tile_info),this), TILEMAP_SCAN_COLS,  16,16, 32,32);
+>>>>>>> upstream/master
 	m_alpha_tilemap->set_transparent_pen(0);
 	m_alpha_tilemap->set_scrollx(0, 16);
 
@@ -125,6 +159,7 @@ VIDEO_START_MEMBER(mcr3_state,spyhunt)
 	save_item(NAME(m_spyhunt_scroll_offset));
 }
 
+<<<<<<< HEAD
 VIDEO_START_MEMBER(mcr3_state,spyhuntpr)
 {
 	/* initialize the background tilemap */
@@ -159,6 +194,10 @@ WRITE8_MEMBER(mcr3_state::spyhuntpr_paletteram_w)
 
 	m_palette->set_pen_color(offset^0xf, rgb_t(r<<5,g<<5,b<<6));
 }
+=======
+
+
+>>>>>>> upstream/master
 
 
 /*************************************
@@ -169,7 +208,11 @@ WRITE8_MEMBER(mcr3_state::spyhuntpr_paletteram_w)
 
 WRITE8_MEMBER(mcr3_state::mcr3_videoram_w)
 {
+<<<<<<< HEAD
 	UINT8 *videoram = m_videoram;
+=======
+	uint8_t *videoram = m_videoram;
+>>>>>>> upstream/master
 	videoram[offset] = data;
 	m_bg_tilemap->mark_tile_dirty(offset / 2);
 }
@@ -177,7 +220,11 @@ WRITE8_MEMBER(mcr3_state::mcr3_videoram_w)
 
 WRITE8_MEMBER(mcr3_state::spyhunt_videoram_w)
 {
+<<<<<<< HEAD
 	UINT8 *videoram = m_videoram;
+=======
+	uint8_t *videoram = m_videoram;
+>>>>>>> upstream/master
 	videoram[offset] = data;
 	m_bg_tilemap->mark_tile_dirty(offset);
 }
@@ -222,7 +269,11 @@ WRITE8_MEMBER(mcr3_state::spyhunt_scroll_value_w)
 
 void mcr3_state::mcr3_update_sprites(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect, int color_mask, int code_xor, int dx, int dy, int interlaced)
 {
+<<<<<<< HEAD
 	UINT8 *spriteram = m_spriteram;
+=======
+	uint8_t *spriteram = m_spriteram;
+>>>>>>> upstream/master
 	int offs;
 
 	m_screen->priority().fill(1, cliprect);
@@ -296,7 +347,11 @@ void mcr3_state::mcr3_update_sprites(screen_device &screen, bitmap_ind16 &bitmap
  *
  *************************************/
 
+<<<<<<< HEAD
 UINT32 mcr3_state::screen_update_mcr3(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+=======
+uint32_t mcr3_state::screen_update_mcr3(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+>>>>>>> upstream/master
 {
 	/* update the flip state */
 	m_bg_tilemap->set_flip(mcr_cocktail_flip ? (TILEMAP_FLIPX | TILEMAP_FLIPY) : 0);
@@ -310,7 +365,11 @@ UINT32 mcr3_state::screen_update_mcr3(screen_device &screen, bitmap_ind16 &bitma
 }
 
 
+<<<<<<< HEAD
 UINT32 mcr3_state::screen_update_spyhunt(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+=======
+uint32_t mcr3_state::screen_update_spyhunt(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+>>>>>>> upstream/master
 {
 	/* for every character in the Video RAM, check if it has been modified */
 	/* since last time and update it accordingly. */
@@ -325,6 +384,7 @@ UINT32 mcr3_state::screen_update_spyhunt(screen_device &screen, bitmap_ind16 &bi
 	m_alpha_tilemap->draw(screen, bitmap, cliprect, 0, 0);
 	return 0;
 }
+<<<<<<< HEAD
 
 
 UINT32 mcr3_state::screen_update_spyhuntpr(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
@@ -342,3 +402,5 @@ UINT32 mcr3_state::screen_update_spyhuntpr(screen_device &screen, bitmap_ind16 &
 	m_alpha_tilemap->draw(screen, bitmap, cliprect, 0, 0);
 	return 0;
 }
+=======
+>>>>>>> upstream/master

@@ -1,6 +1,13 @@
+<<<<<<< HEAD
 // license:???
 // copyright-holders:Stefan Jokisch
 #include "machine/mb14241.h"
+=======
+// license:BSD-3-Clause
+// copyright-holders:Stefan Jokisch
+#include "machine/mb14241.h"
+#include "screen.h"
+>>>>>>> upstream/master
 
 class fgoal_state : public driver_device
 {
@@ -27,19 +34,33 @@ public:
 	required_device<palette_device> m_palette;
 
 	/* memory pointers */
+<<<<<<< HEAD
 	required_shared_ptr<UINT8> m_video_ram;
+=======
+	required_shared_ptr<uint8_t> m_video_ram;
+>>>>>>> upstream/master
 
 	/* video-related */
 	bitmap_ind16   m_bgbitmap;
 	bitmap_ind16   m_fgbitmap;
+<<<<<<< HEAD
 	UINT8      m_xpos;
 	UINT8      m_ypos;
+=======
+	uint8_t      m_xpos;
+	uint8_t      m_ypos;
+>>>>>>> upstream/master
 	int        m_current_color;
 
 	/* misc */
 	int        m_player;
+<<<<<<< HEAD
 	UINT8      m_row;
 	UINT8      m_col;
+=======
+	uint8_t      m_row;
+	uint8_t      m_col;
+>>>>>>> upstream/master
 	int        m_prev_coin;
 	emu_timer  *m_interrupt_timer;
 
@@ -63,15 +84,28 @@ public:
 
 	TIMER_CALLBACK_MEMBER(interrupt_callback);
 
+<<<<<<< HEAD
 	virtual void machine_start();
 	virtual void machine_reset();
 	virtual void video_start();
 	DECLARE_PALETTE_INIT(fgoal);
 
 	UINT32 screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
+=======
+	virtual void machine_start() override;
+	virtual void machine_reset() override;
+	virtual void video_start() override;
+	DECLARE_PALETTE_INIT(fgoal);
+
+	uint32_t screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
+>>>>>>> upstream/master
 	int intensity(int bits);
 	unsigned video_ram_address( );
 
 protected:
+<<<<<<< HEAD
 	virtual void device_timer(emu_timer &timer, device_timer_id id, int param, void *ptr);
+=======
+	virtual void device_timer(emu_timer &timer, device_timer_id id, int param, void *ptr) override;
+>>>>>>> upstream/master
 };

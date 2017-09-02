@@ -162,10 +162,21 @@ Notes:
 ***************************************************************************/
 
 #include "emu.h"
+<<<<<<< HEAD
 #include "cpu/v810/v810.h"
 #include "cpu/v60/v60.h"
 #include "machine/nvram.h"
 #include "includes/ssv.h"
+=======
+#include "includes/ssv.h"
+
+#include "cpu/v810/v810.h"
+#include "cpu/v60/v60.h"
+#include "machine/nvram.h"
+#include "machine/watchdog.h"
+#include "speaker.h"
+
+>>>>>>> upstream/master
 
 /***************************************************************************
 
@@ -188,7 +199,11 @@ IRQ_CALLBACK_MEMBER(ssv_state::irq_callback)
 	{
 		if (m_requested_int & (1 << i))
 		{
+<<<<<<< HEAD
 			UINT16 vector = m_irq_vectors[i * (16/2)] & 7;
+=======
+			uint16_t vector = m_irq_vectors[i * (16/2)] & 7;
+>>>>>>> upstream/master
 			return vector;
 		}
 	}
@@ -290,10 +305,17 @@ WRITE16_MEMBER(ssv_state::lockout_w)
 //  popmessage("%02X",data & 0xff);
 	if (ACCESSING_BITS_0_7)
 	{
+<<<<<<< HEAD
 		coin_lockout_w(machine(), 1,~data & 0x01);
 		coin_lockout_w(machine(), 0,~data & 0x02);
 		coin_counter_w(machine(), 1, data & 0x04);
 		coin_counter_w(machine(), 0, data & 0x08);
+=======
+		machine().bookkeeping().coin_lockout_w(1,~data & 0x01);
+		machine().bookkeeping().coin_lockout_w(0,~data & 0x02);
+		machine().bookkeeping().coin_counter_w(1, data & 0x04);
+		machine().bookkeeping().coin_counter_w(0, data & 0x08);
+>>>>>>> upstream/master
 //                        data & 0x40?
 		enable_video(data & 0x80);
 	}
@@ -305,10 +327,17 @@ WRITE16_MEMBER(ssv_state::lockout_inv_w)
 //  popmessage("%02X",data & 0xff);
 	if (ACCESSING_BITS_0_7)
 	{
+<<<<<<< HEAD
 		coin_lockout_w(machine(), 1, data & 0x01);
 		coin_lockout_w(machine(), 0, data & 0x02);
 		coin_counter_w(machine(), 1, data & 0x04);
 		coin_counter_w(machine(), 0, data & 0x08);
+=======
+		machine().bookkeeping().coin_lockout_w(1, data & 0x01);
+		machine().bookkeeping().coin_lockout_w(0, data & 0x02);
+		machine().bookkeeping().coin_counter_w(1, data & 0x04);
+		machine().bookkeeping().coin_counter_w(0, data & 0x08);
+>>>>>>> upstream/master
 //                        data & 0x40?
 		enable_video(data & 0x80);
 	}
@@ -348,8 +377,13 @@ WRITE16_MEMBER(ssv_state::dsp_dr_w)
 
 READ16_MEMBER(ssv_state::dsp_r)
 {
+<<<<<<< HEAD
 	UINT16 temp = m_dsp->dataram_r(offset/2);
 	UINT16 res;
+=======
+	uint16_t temp = m_dsp->dataram_r(offset/2);
+	uint16_t res;
+>>>>>>> upstream/master
 
 	if (offset & 1)
 	{
@@ -365,7 +399,11 @@ READ16_MEMBER(ssv_state::dsp_r)
 
 WRITE16_MEMBER(ssv_state::dsp_w)
 {
+<<<<<<< HEAD
 	UINT16 temp = m_dsp->dataram_r(offset/2);
+=======
+	uint16_t temp = m_dsp->dataram_r(offset/2);
+>>>>>>> upstream/master
 
 	if (offset & 1)
 	{
@@ -443,9 +481,13 @@ ADDRESS_MAP_END
 
 READ16_MEMBER(ssv_state::gdfs_eeprom_r)
 {
+<<<<<<< HEAD
 	ioport_port *gun[] = { m_io_gunx1, m_io_guny1, m_io_gunx2, m_io_guny2 };
 
 	return (((m_gdfs_lightgun_select & 1) ? 0 : 0xff) ^ gun[m_gdfs_lightgun_select]->read()) | (m_eeprom->do_read() << 8);
+=======
+	return (((m_gdfs_lightgun_select & 1) ? 0 : 0xff) ^ m_io_gun[m_gdfs_lightgun_select]->read()) | (m_eeprom->do_read() << 8);
+>>>>>>> upstream/master
 }
 
 WRITE16_MEMBER(ssv_state::gdfs_eeprom_w)
@@ -482,9 +524,15 @@ static ADDRESS_MAP_START( gdfs_map, AS_PROGRAM, 16, ssv_state )
 	AM_RANGE(0x500000, 0x500001) AM_WRITE(gdfs_eeprom_w)
 	AM_RANGE(0x540000, 0x540001) AM_READ(gdfs_eeprom_r)
 	AM_RANGE(0x600000, 0x600fff) AM_RAM
+<<<<<<< HEAD
 	AM_RANGE(0x800000, 0x87ffff) AM_DEVREADWRITE( "st0020_spr", st0020_device, st0020_sprram_r, st0020_sprram_w );
 	AM_RANGE(0x8c0000, 0x8c00ff) AM_DEVREADWRITE( "st0020_spr", st0020_device, st0020_blitram_r, st0020_blitram_w );
 	AM_RANGE(0x900000, 0x9fffff) AM_DEVREADWRITE( "st0020_spr", st0020_device, st0020_gfxram_r, st0020_gfxram_w );
+=======
+	AM_RANGE(0x800000, 0x87ffff) AM_DEVREADWRITE( "st0020_spr", st0020_device, sprram_r, sprram_w );
+	AM_RANGE(0x8c0000, 0x8c00ff) AM_DEVREADWRITE( "st0020_spr", st0020_device, regs_r,   regs_w   );
+	AM_RANGE(0x900000, 0x9fffff) AM_DEVREADWRITE( "st0020_spr", st0020_device, gfxram_r, gfxram_w );
+>>>>>>> upstream/master
 	SSV_MAP( 0xc00000 )
 ADDRESS_MAP_END
 
@@ -503,7 +551,11 @@ ADDRESS_MAP_END
 
 READ16_MEMBER(ssv_state::hypreact_input_r)
 {
+<<<<<<< HEAD
 	UINT16 input_sel = *m_input_sel;
+=======
+	uint16_t input_sel = *m_input_sel;
+>>>>>>> upstream/master
 
 	if (input_sel & 0x0001) return m_io_key0->read();
 	if (input_sel & 0x0002) return m_io_key1->read();
@@ -514,7 +566,11 @@ READ16_MEMBER(ssv_state::hypreact_input_r)
 }
 
 static ADDRESS_MAP_START( hypreact_map, AS_PROGRAM, 16, ssv_state )
+<<<<<<< HEAD
 	AM_RANGE(0x210000, 0x210001) AM_READ(watchdog_reset16_r)            // Watchdog
+=======
+	AM_RANGE(0x210000, 0x210001) AM_DEVREAD("watchdog", watchdog_timer_device, reset16_r)
+>>>>>>> upstream/master
 //  AM_RANGE(0x210002, 0x210003) AM_WRITENOP                      // ? 5 at the start
 	AM_RANGE(0x21000e, 0x21000f) AM_WRITE(lockout_inv_w)            // Inverted lockout lines
 //  AM_RANGE(0x280000, 0x280001) AM_READNOP                       // ? read at the start, value not used
@@ -530,7 +586,11 @@ ADDRESS_MAP_END
 ***************************************************************************/
 
 static ADDRESS_MAP_START( hypreac2_map, AS_PROGRAM, 16, ssv_state )
+<<<<<<< HEAD
 	AM_RANGE(0x210000, 0x210001) AM_READ(watchdog_reset16_r)                // Watchdog
+=======
+	AM_RANGE(0x210000, 0x210001) AM_DEVREAD("watchdog", watchdog_timer_device, reset16_r)
+>>>>>>> upstream/master
 //  AM_RANGE(0x210002, 0x210003) AM_WRITENOP                          // ? 5 at the start
 	AM_RANGE(0x21000e, 0x21000f) AM_WRITE(lockout_inv_w)                // Inverted lockout lines
 //  AM_RANGE(0x280000, 0x280001) AM_READNOP                           // ? read at the start, value not used
@@ -576,7 +636,11 @@ ADDRESS_MAP_END
 ***************************************************************************/
 
 static ADDRESS_MAP_START( meosism_map, AS_PROGRAM, 16, ssv_state )
+<<<<<<< HEAD
 	AM_RANGE(0x210000, 0x210001) AM_READ(watchdog_reset16_r )                           // Watchdog
+=======
+	AM_RANGE(0x210000, 0x210001) AM_DEVREAD("watchdog", watchdog_timer_device, reset16_r)
+>>>>>>> upstream/master
 //  AM_RANGE(0x210002, 0x210003) AM_WRITENOP                                      // ? 5 at the start
 //  AM_RANGE(0x280000, 0x280001) AM_READNOP                                       // ? read once, value not used
 //  AM_RANGE(0x500004, 0x500005) AM_WRITENOP                                      // ? 0,58,18
@@ -614,7 +678,11 @@ ADDRESS_MAP_END
 ***************************************************************************/
 
 static ADDRESS_MAP_START( ryorioh_map, AS_PROGRAM, 16, ssv_state )
+<<<<<<< HEAD
 	AM_RANGE(0x210000, 0x210001) AM_WRITE(watchdog_reset16_w)   // Watchdog
+=======
+	AM_RANGE(0x210000, 0x210001) AM_DEVWRITE("watchdog", watchdog_timer_device, reset16_w)
+>>>>>>> upstream/master
 //  AM_RANGE(0x210002, 0x210003) AM_WRITENOP              // ? 1 at the start
 	SSV_MAP( 0xc00000 )
 ADDRESS_MAP_END
@@ -626,7 +694,11 @@ ADDRESS_MAP_END
 
 READ16_MEMBER(ssv_state::srmp4_input_r)
 {
+<<<<<<< HEAD
 	UINT16 input_sel = *m_input_sel;
+=======
+	uint16_t input_sel = *m_input_sel;
+>>>>>>> upstream/master
 
 	if (input_sel & 0x0002) return m_io_key0->read();
 	if (input_sel & 0x0004) return m_io_key1->read();
@@ -637,7 +709,11 @@ READ16_MEMBER(ssv_state::srmp4_input_r)
 }
 
 static ADDRESS_MAP_START( srmp4_map, AS_PROGRAM, 16, ssv_state )
+<<<<<<< HEAD
 	AM_RANGE(0x210000, 0x210001) AM_READ(watchdog_reset16_r)                // Watchdog
+=======
+	AM_RANGE(0x210000, 0x210001) AM_DEVREAD("watchdog", watchdog_timer_device, reset16_r)
+>>>>>>> upstream/master
 //  AM_RANGE(0x210002, 0x210003) AM_WRITENOP                          // ? 1,5 at the start
 	AM_RANGE(0xc0000a, 0xc0000b) AM_READ(srmp4_input_r)                     // Inputs
 	AM_RANGE(0xc0000e, 0xc0000f) AM_WRITEONLY AM_SHARE("input_sel") // Inputs
@@ -663,7 +739,11 @@ WRITE16_MEMBER(ssv_state::srmp7_sound_bank_w)
 {
 	if (ACCESSING_BITS_0_7)
 	{
+<<<<<<< HEAD
 		int bank = 0x400000/2 * (data & 1); // UINT16 address
+=======
+		int bank = 0x400000/2 * (data & 1); // uint16_t address
+>>>>>>> upstream/master
 		int voice;
 		for (voice = 0; voice < 32; voice++)
 			m_ensoniq->voice_bank_w(voice, bank);
@@ -673,7 +753,11 @@ WRITE16_MEMBER(ssv_state::srmp7_sound_bank_w)
 
 READ16_MEMBER(ssv_state::srmp7_input_r)
 {
+<<<<<<< HEAD
 	UINT16 input_sel = *m_input_sel;
+=======
+	uint16_t input_sel = *m_input_sel;
+>>>>>>> upstream/master
 
 	if (input_sel & 0x0002) return m_io_key0->read();
 	if (input_sel & 0x0004) return m_io_key1->read();
@@ -685,7 +769,11 @@ READ16_MEMBER(ssv_state::srmp7_input_r)
 
 static ADDRESS_MAP_START( srmp7_map, AS_PROGRAM, 16, ssv_state )
 	AM_RANGE(0x010000, 0x050faf) AM_RAM                                     // More RAM
+<<<<<<< HEAD
 	AM_RANGE(0x210000, 0x210001) AM_READ(watchdog_reset16_r)                // Watchdog
+=======
+	AM_RANGE(0x210000, 0x210001) AM_DEVREAD("watchdog", watchdog_timer_device, reset16_r)
+>>>>>>> upstream/master
 //  AM_RANGE(0x210002, 0x210003) AM_WRITENOP                          // ? 0,4 at the start
 	AM_RANGE(0x21000e, 0x21000f) AM_WRITE(lockout_inv_w)                // Coin Counters / Lockouts
 	AM_RANGE(0x300076, 0x300077) AM_READ(srmp7_irqv_r)                      // Sound
@@ -702,7 +790,11 @@ ADDRESS_MAP_END
 ***************************************************************************/
 
 static ADDRESS_MAP_START( survarts_map, AS_PROGRAM, 16, ssv_state )
+<<<<<<< HEAD
 	AM_RANGE(0x210000, 0x210001) AM_READ(watchdog_reset16_r)    // Watchdog
+=======
+	AM_RANGE(0x210000, 0x210001) AM_DEVREAD("watchdog", watchdog_timer_device, reset16_r)
+>>>>>>> upstream/master
 //  AM_RANGE(0x210002, 0x210003) AM_WRITENOP              // ? 0,4 at the start
 //  AM_RANGE(0x290000, 0x290001) AM_READNOP               // ?
 //  AM_RANGE(0x2a0000, 0x2a0001) AM_READNOP               // ?
@@ -721,11 +813,15 @@ ADDRESS_MAP_END
 
 READ16_MEMBER(ssv_state::sxyreact_ballswitch_r)
 {
+<<<<<<< HEAD
 	if ( m_io_service )
 	{
 		return m_io_service->read();
 	}
 	return 0;
+=======
+	return m_io_service.read_safe(0);
+>>>>>>> upstream/master
 }
 
 READ16_MEMBER(ssv_state::sxyreact_dial_r)
@@ -739,7 +835,11 @@ WRITE16_MEMBER(ssv_state::sxyreact_dial_w)
 	if (ACCESSING_BITS_0_7)
 	{
 		if (data & 0x20)
+<<<<<<< HEAD
 			m_sxyreact_serial = ( m_io_paddle ? m_io_paddle->read() : 0 ) & 0xff;
+=======
+			m_sxyreact_serial = m_io_paddle.read_safe(0) & 0xff;
+>>>>>>> upstream/master
 
 		if ( (m_sxyreact_dial & 0x40) && !(data & 0x40) )   // $40 -> $00
 			m_sxyreact_serial <<= 1;                        // shift 1 bit
@@ -755,7 +855,11 @@ WRITE16_MEMBER(ssv_state::sxyreact_motor_w)
 
 static ADDRESS_MAP_START( sxyreact_map, AS_PROGRAM, 16, ssv_state )
 //  AM_RANGE(0x020000, 0x03ffff) AM_READWRITE(mainram_r, mainram_w)             // sxyreac2 reads / writes here, why?
+<<<<<<< HEAD
 	AM_RANGE(0x210000, 0x210001) AM_READ(watchdog_reset16_r)                            // Watchdog
+=======
+	AM_RANGE(0x210000, 0x210001) AM_DEVREAD("watchdog", watchdog_timer_device, reset16_r)
+>>>>>>> upstream/master
 //  AM_RANGE(0x210002, 0x210003) AM_WRITENOP                                      // ? 1 at the start
 	AM_RANGE(0x21000e, 0x21000f) AM_WRITE(lockout_inv_w)                            // Inverted lockout lines
 	AM_RANGE(0x500002, 0x500003) AM_READ(sxyreact_ballswitch_r)                         // ?
@@ -774,7 +878,11 @@ ADDRESS_MAP_END
 
 static ADDRESS_MAP_START( twineag2_map, AS_PROGRAM, 16, ssv_state )
 	AM_RANGE(0x010000, 0x03ffff) AM_RAM                         // More RAM
+<<<<<<< HEAD
 	AM_RANGE(0x210000, 0x210001) AM_READ(watchdog_reset16_r)    // Watchdog (also value is cmp.b with mem 8)
+=======
+	AM_RANGE(0x210000, 0x210001) AM_DEVREAD("watchdog", watchdog_timer_device, reset16_r) // Watchdog (also value is cmp.b with mem 8)
+>>>>>>> upstream/master
 	AM_RANGE(0x480000, 0x480001) AM_READWRITE(dsp_dr_r, dsp_dr_w)
 	AM_RANGE(0x482000, 0x482fff) AM_READWRITE(dsp_r, dsp_w)
 	SSV_MAP( 0xe00000 )
@@ -789,7 +897,11 @@ ADDRESS_MAP_END
 
 static ADDRESS_MAP_START( ultrax_map, AS_PROGRAM, 16, ssv_state )
 	AM_RANGE(0x010000, 0x03ffff) AM_RAM                         // More RAM
+<<<<<<< HEAD
 	AM_RANGE(0x210000, 0x210001) AM_READ(watchdog_reset16_r)    // Watchdog (also value is cmp.b with memory address 8)
+=======
+	AM_RANGE(0x210000, 0x210001) AM_DEVREAD("watchdog", watchdog_timer_device, reset16_r) // Watchdog (also value is cmp.b with memory address 8)
+>>>>>>> upstream/master
 //  AM_RANGE(0x210002, 0x210003) AM_WRITENOP              // ? 2,6 at the start
 	SSV_MAP( 0xe00000 )
 ADDRESS_MAP_END
@@ -832,7 +944,11 @@ WRITE16_MEMBER(ssv_state::latch16_w)
 
 static ADDRESS_MAP_START( jsk_map, AS_PROGRAM, 16, ssv_state )
 	AM_RANGE(0x050000, 0x05ffff) AM_READWRITE(mainram_r, mainram_w) // RAM Mirror?
+<<<<<<< HEAD
 	AM_RANGE(0x210000, 0x210001) AM_WRITE(watchdog_reset16_w)               // Watchdog
+=======
+	AM_RANGE(0x210000, 0x210001) AM_DEVWRITE("watchdog", watchdog_timer_device, reset16_w)
+>>>>>>> upstream/master
 	AM_RANGE(0x400000, 0x47ffff) AM_RAM                                     // RAM?
 	AM_RANGE(0x900000, 0x900007) AM_READWRITE(latch16_r, latch16_w)
 	SSV_MAP( 0xf00000 )
@@ -852,6 +968,7 @@ ADDRESS_MAP_END
   Eagle Shot Golf
 ***************************************************************************/
 
+<<<<<<< HEAD
 WRITE16_MEMBER(ssv_state::eaglshot_gfxrom_bank_w)
 {
 	if (ACCESSING_BITS_0_7)
@@ -879,6 +996,21 @@ WRITE16_MEMBER(ssv_state::eaglshot_trackball_w)
 	{
 		m_trackball_select = data;
 	}
+=======
+WRITE8_MEMBER(ssv_state::eaglshot_gfxrom_bank_w)
+{
+	membank("gfxrom")->set_entry(data < 6 ? data : 6);
+}
+
+WRITE8_MEMBER(ssv_state::eaglshot_trackball_w)
+{
+	// All these get toggled during trackball reads; the precise arrangement is uncertain
+	m_upd4701->cs_w(!BIT(data, 6));
+	m_upd4701->ul_w(BIT(data, 5));
+	m_upd4701->xy_w(BIT(data, 4));
+	m_upd4701->resetx_w(BIT(data, 3));
+	m_upd4701->resety_w(BIT(data, 2));
+>>>>>>> upstream/master
 }
 
 
@@ -899,6 +1031,7 @@ WRITE16_MEMBER(ssv_state::eaglshot_gfxram_w)
 
 static ADDRESS_MAP_START( eaglshot_map, AS_PROGRAM, 16, ssv_state )
 	AM_RANGE(0x180000, 0x1bffff) AM_READWRITE(eaglshot_gfxram_r, eaglshot_gfxram_w)
+<<<<<<< HEAD
 	AM_RANGE(0x210000, 0x210001) AM_READNOP /*AM_READ(watchdog_reset16_r)*/                 // Watchdog
 //  AM_RANGE(0x210002, 0x210003) AM_WRITENOP                                      // ? 0,4 at the start
 	AM_RANGE(0x21000e, 0x21000f) AM_WRITE(lockout_inv_w)                            // Inverted lockout lines
@@ -907,6 +1040,16 @@ static ADDRESS_MAP_START( eaglshot_map, AS_PROGRAM, 16, ssv_state )
 	AM_RANGE(0xa00000, 0xbfffff) AM_ROMBANK("gfxrom")
 	AM_RANGE(0xc00000, 0xc007ff) AM_RAM AM_SHARE("nvram")   // NVRAM
 	AM_RANGE(0xd00000, 0xd00001) AM_READ(eaglshot_trackball_r)
+=======
+	AM_RANGE(0x210000, 0x210001) AM_READNOP /*AM_DEVREAD("watchdog", watchdog_timer_device, reset16_r)*/                 // Watchdog
+//  AM_RANGE(0x210002, 0x210003) AM_WRITENOP                                      // ? 0,4 at the start
+	AM_RANGE(0x21000e, 0x21000f) AM_WRITE(lockout_inv_w)                            // Inverted lockout lines
+	AM_RANGE(0x800000, 0x800001) AM_WRITE8(eaglshot_gfxrom_bank_w, 0x00ff)
+	AM_RANGE(0x900000, 0x900001) AM_WRITE8(eaglshot_trackball_w, 0x00ff)
+	AM_RANGE(0xa00000, 0xbfffff) AM_ROMBANK("gfxrom")
+	AM_RANGE(0xc00000, 0xc007ff) AM_RAM AM_SHARE("nvram")   // NVRAM
+	AM_RANGE(0xd00000, 0xd00001) AM_DEVREAD8("upd4701", upd4701_device, d_r, 0x00ff)
+>>>>>>> upstream/master
 	SSV_MAP( 0xf00000 )
 ADDRESS_MAP_END
 
@@ -1483,12 +1626,21 @@ static INPUT_PORTS_START( hypreac2 )
 	PORT_DIPNAME( 0x0010, 0x0010, DEF_STR( Controls ) )         PORT_DIPLOCATION( "DSWB:5" )
 	PORT_DIPSETTING(      0x0010, "Keyboard" )
 	PORT_DIPSETTING(      0x0000, DEF_STR( Joystick ) )
+<<<<<<< HEAD
 	PORT_DIPNAME( 0x0020, 0x0020, "Communication 1" )           PORT_DIPLOCATION( "DSWB:6" )
 	PORT_DIPSETTING(      0x0020, DEF_STR( Off ) )
 	PORT_DIPSETTING(      0x0000, DEF_STR( On ) )
 	PORT_DIPNAME( 0x0040, 0x0040, "Communication 2" )           PORT_DIPLOCATION( "DSWB:7" )
 	PORT_DIPSETTING(      0x0040, DEF_STR( Off ) )
 	PORT_DIPSETTING(      0x0000, DEF_STR( On ) )
+=======
+	PORT_DIPNAME( 0x0020, 0x0020, "Communication" )           PORT_DIPLOCATION( "DSWB:6" )
+	PORT_DIPSETTING(      0x0020, DEF_STR( Off ) )
+	PORT_DIPSETTING(      0x0000, DEF_STR( On ) )
+	PORT_DIPNAME( 0x0040, 0x0040, "Communication Mode" )           PORT_DIPLOCATION( "DSWB:7" )
+	PORT_DIPSETTING(      0x0040, "SLAVE" )
+	PORT_DIPSETTING(      0x0000, "MASTER" )
+>>>>>>> upstream/master
 	PORT_SERVICE_DIPLOC( 0x0080, IP_ACTIVE_LOW, "DSWB:8" )
 
 	PORT_START("KEY0")  // IN5 - $500000(0)
@@ -2444,8 +2596,13 @@ static const gfx_layout layout_16x8x6_ram =
 };
 
 static GFXDECODE_START( eaglshot )
+<<<<<<< HEAD
 	GFXDECODE_ENTRY( NULL, 0, layout_16x8x8_ram, 0, 0x8000/64 ) // [0] Sprites (256 colors, decoded from ram)
 	GFXDECODE_ENTRY( NULL, 0, layout_16x8x6_ram, 0, 0x8000/64 ) // [1] Sprites (64 colors, decoded from ram)
+=======
+	GFXDECODE_ENTRY( nullptr, 0, layout_16x8x8_ram, 0, 0x8000/64 ) // [0] Sprites (256 colors, decoded from ram)
+	GFXDECODE_ENTRY( nullptr, 0, layout_16x8x6_ram, 0, 0x8000/64 ) // [1] Sprites (64 colors, decoded from ram)
+>>>>>>> upstream/master
 GFXDECODE_END
 
 static const gfx_layout layout_16x16x8 =
@@ -2516,9 +2673,15 @@ void ssv_state::init_eaglshot_banking()
 // massages the data from the BPMicro-compatible dump to runnable form
 void ssv_state::init_st010()
 {
+<<<<<<< HEAD
 	UINT8 *dspsrc = (UINT8 *)memregion("st010")->base();
 	UINT32 *dspprg = (UINT32 *)memregion("dspprg")->base();
 	UINT16 *dspdata = (UINT16 *)memregion("dspdata")->base();
+=======
+	uint8_t *dspsrc = (uint8_t *)memregion("st010")->base();
+	uint32_t *dspprg = (uint32_t *)memregion("dspprg")->base();
+	uint16_t *dspdata = (uint16_t *)memregion("dspdata")->base();
+>>>>>>> upstream/master
 
 	// copy DSP program
 	for (int i = 0; i < 0x10000; i+= 4)
@@ -2545,7 +2708,11 @@ DRIVER_INIT_MEMBER(ssv_state,meosism)       {   init(0); }
 DRIVER_INIT_MEMBER(ssv_state,mslider)       {   init(0); }
 DRIVER_INIT_MEMBER(ssv_state,ryorioh)       {   init(0); }
 DRIVER_INIT_MEMBER(ssv_state,srmp4)        {    init(0);
+<<<<<<< HEAD
 //  ((UINT16 *)memregion("maincpu")->base())[0x2b38/2] = 0x037a;   /* patch to see gal test mode */
+=======
+//  ((uint16_t *)memregion("maincpu")->base())[0x2b38/2] = 0x037a;   /* patch to see gal test mode */
+>>>>>>> upstream/master
 }
 DRIVER_INIT_MEMBER(ssv_state,srmp7)        {    init(0); }
 DRIVER_INIT_MEMBER(ssv_state,stmblade)     {    init(0); init_st010(); }
@@ -2569,7 +2736,11 @@ DRIVER_INIT_MEMBER(ssv_state,jsk)          {    init(0); save_item(NAME(m_latche
 #define SSV_VBEND 0
 #define SSV_VBSTART 0xf0
 
+<<<<<<< HEAD
 static MACHINE_CONFIG_START( ssv, ssv_state )
+=======
+static MACHINE_CONFIG_START( ssv )
+>>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", V60, SSV_MASTER_CLOCK) /* Based on STA-0001 & STA-0001B System boards */
@@ -2637,7 +2808,10 @@ static MACHINE_CONFIG_DERIVED( gdfs, ssv )
 	MCFG_SCREEN_UPDATE_DRIVER(ssv_state, screen_update_gdfs)
 
 	MCFG_DEVICE_ADD("st0020_spr", ST0020_SPRITES, 0)
+<<<<<<< HEAD
 	MCFG_ST0020_SPRITES_GFXDECODE("gfxdecode")
+=======
+>>>>>>> upstream/master
 	MCFG_ST0020_SPRITES_PALETTE("palette")
 
 	MCFG_GFXDECODE_MODIFY("gfxdecode", gdfs)
@@ -2651,6 +2825,11 @@ static MACHINE_CONFIG_DERIVED( hypreact, ssv )
 	MCFG_CPU_MODIFY("maincpu")
 	MCFG_CPU_PROGRAM_MAP(hypreact_map)
 
+<<<<<<< HEAD
+=======
+	MCFG_WATCHDOG_ADD("watchdog")
+
+>>>>>>> upstream/master
 	/* video hardware */
 	MCFG_SCREEN_MODIFY("screen")
 	MCFG_SCREEN_VISIBLE_AREA(0, (0xcb-0x22)*2-1, 0, (0xfe - 0x0e)-1)
@@ -2663,6 +2842,11 @@ static MACHINE_CONFIG_DERIVED( hypreac2, ssv )
 	MCFG_CPU_MODIFY("maincpu")
 	MCFG_CPU_PROGRAM_MAP(hypreac2_map)
 
+<<<<<<< HEAD
+=======
+	MCFG_WATCHDOG_ADD("watchdog")
+
+>>>>>>> upstream/master
 	/* video hardware */
 	MCFG_SCREEN_MODIFY("screen")
 	MCFG_SCREEN_VISIBLE_AREA(0, (0xcb-0x22)*2-1, 0, (0xfe - 0x0e)-1)
@@ -2701,6 +2885,11 @@ static MACHINE_CONFIG_DERIVED( meosism, ssv )
 
 	MCFG_NVRAM_ADD_0FILL("nvram")
 
+<<<<<<< HEAD
+=======
+	MCFG_WATCHDOG_ADD("watchdog")
+
+>>>>>>> upstream/master
 	/* video hardware */
 	MCFG_SCREEN_MODIFY("screen")
 	MCFG_SCREEN_VISIBLE_AREA(0, (0xd5-0x2c)*2-1, 0, (0xfe - 0x12)-1)
@@ -2725,6 +2914,11 @@ static MACHINE_CONFIG_DERIVED( ryorioh, ssv )
 	MCFG_CPU_MODIFY("maincpu")
 	MCFG_CPU_PROGRAM_MAP(ryorioh_map)
 
+<<<<<<< HEAD
+=======
+	MCFG_WATCHDOG_ADD("watchdog")
+
+>>>>>>> upstream/master
 	/* video hardware */
 	MCFG_SCREEN_MODIFY("screen")
 	MCFG_SCREEN_VISIBLE_AREA(0, (0xcb-0x23)*2-1, 0, (0xfe - 0x0e)-1)
@@ -2736,6 +2930,11 @@ static MACHINE_CONFIG_DERIVED( vasara, ssv )
 	MCFG_CPU_MODIFY("maincpu")
 	MCFG_CPU_PROGRAM_MAP(ryorioh_map)
 
+<<<<<<< HEAD
+=======
+	MCFG_WATCHDOG_ADD("watchdog")
+
+>>>>>>> upstream/master
 	/* video hardware */
 	MCFG_SCREEN_MODIFY("screen")
 	MCFG_SCREEN_VISIBLE_AREA(0, (0xcc-0x24)*2-1, 0,(0xfe - 0x0e)-1)
@@ -2747,6 +2946,11 @@ static MACHINE_CONFIG_DERIVED( srmp4, ssv )
 	MCFG_CPU_MODIFY("maincpu")
 	MCFG_CPU_PROGRAM_MAP(srmp4_map)
 
+<<<<<<< HEAD
+=======
+	MCFG_WATCHDOG_ADD("watchdog")
+
+>>>>>>> upstream/master
 	/* video hardware */
 	MCFG_SCREEN_MODIFY("screen")
 	MCFG_SCREEN_VISIBLE_AREA(0, (0xd4-0x2c)*2-1, 0, (0x102 - 0x12)-1)
@@ -2759,6 +2963,11 @@ static MACHINE_CONFIG_DERIVED( srmp7, ssv )
 	MCFG_CPU_MODIFY("maincpu")
 	MCFG_CPU_PROGRAM_MAP(srmp7_map)
 
+<<<<<<< HEAD
+=======
+	MCFG_WATCHDOG_ADD("watchdog")
+
+>>>>>>> upstream/master
 	/* video hardware */
 	MCFG_SCREEN_MODIFY("screen")
 	MCFG_SCREEN_VISIBLE_AREA(0, (0xd4-0x2c)*2-1, 0, (0xfd - 0x0e)-1)
@@ -2791,6 +3000,11 @@ static MACHINE_CONFIG_DERIVED( survarts, ssv )
 	MCFG_CPU_MODIFY("maincpu")
 	MCFG_CPU_PROGRAM_MAP(survarts_map)
 
+<<<<<<< HEAD
+=======
+	MCFG_WATCHDOG_ADD("watchdog")
+
+>>>>>>> upstream/master
 	/* video hardware */
 	MCFG_SCREEN_MODIFY("screen")
 	MCFG_SCREEN_VISIBLE_AREA(0, (0xd4-0x2c)*2-1, 0, (0x102 - 0x12)-1)
@@ -2814,6 +3028,15 @@ static MACHINE_CONFIG_DERIVED( eaglshot, ssv )
 
 	MCFG_NVRAM_ADD_0FILL("nvram")
 
+<<<<<<< HEAD
+=======
+	MCFG_DEVICE_ADD("upd4701", UPD4701A, 0)
+	MCFG_UPD4701_PORTX("TRACKX")
+	MCFG_UPD4701_PORTY("TRACKY")
+
+	MCFG_WATCHDOG_ADD("watchdog")
+
+>>>>>>> upstream/master
 	/* video hardware */
 	MCFG_SCREEN_MODIFY("screen")
 	MCFG_SCREEN_VISIBLE_AREA(0, (0xca - 0x2a)*2-1, 0, (0xf6 - 0x16)-1)
@@ -2832,6 +3055,11 @@ static MACHINE_CONFIG_DERIVED( sxyreact, ssv )
 
 	MCFG_NVRAM_ADD_0FILL("nvram")
 
+<<<<<<< HEAD
+=======
+	MCFG_WATCHDOG_ADD("watchdog")
+
+>>>>>>> upstream/master
 	/* video hardware */
 	MCFG_SCREEN_MODIFY("screen")
 	MCFG_SCREEN_VISIBLE_AREA(0, (0xcb - 0x22)*2-1, 0, (0xfe - 0x0e)-1)
@@ -2845,6 +3073,11 @@ static MACHINE_CONFIG_DERIVED( sxyreac2, ssv )
 
 	MCFG_NVRAM_ADD_0FILL("nvram")
 
+<<<<<<< HEAD
+=======
+	MCFG_WATCHDOG_ADD("watchdog")
+
+>>>>>>> upstream/master
 	/* video hardware */
 	MCFG_SCREEN_MODIFY("screen")
 	MCFG_SCREEN_VISIBLE_AREA(0, (0xcb - 0x23)*2-1, 0, (0xfe - 0x0e)-1)
@@ -2858,6 +3091,11 @@ static MACHINE_CONFIG_DERIVED( cairblad, ssv )
 
 	MCFG_NVRAM_ADD_0FILL("nvram")
 
+<<<<<<< HEAD
+=======
+	MCFG_WATCHDOG_ADD("watchdog")
+
+>>>>>>> upstream/master
 	/* video hardware */
 	MCFG_SCREEN_MODIFY("screen")
 	MCFG_SCREEN_VISIBLE_AREA(0, (0xcb - 0x22)*2-1, 0, (0xfe - 0x0e)-1)
@@ -2875,6 +3113,11 @@ static MACHINE_CONFIG_DERIVED( twineag2, ssv )
 
 	MCFG_QUANTUM_PERFECT_CPU("maincpu")
 
+<<<<<<< HEAD
+=======
+	MCFG_WATCHDOG_ADD("watchdog")
+
+>>>>>>> upstream/master
 	/* video hardware */
 	MCFG_SCREEN_MODIFY("screen")
 	MCFG_SCREEN_VISIBLE_AREA(0, (0xd4 - 0x2c)*2-1, 0, (0x102 - 0x12)-1)
@@ -2887,6 +3130,11 @@ static MACHINE_CONFIG_DERIVED( ultrax, ssv )
 	MCFG_CPU_MODIFY("maincpu")
 	MCFG_CPU_PROGRAM_MAP(ultrax_map)
 
+<<<<<<< HEAD
+=======
+	MCFG_WATCHDOG_ADD("watchdog")
+
+>>>>>>> upstream/master
 	/* video hardware */
 	MCFG_SCREEN_MODIFY("screen")
 	MCFG_SCREEN_VISIBLE_AREA(0, (0xd4 - 0x2c)*2-1, 0, (0x102 - 0x12)-1)
@@ -2901,6 +3149,11 @@ static MACHINE_CONFIG_DERIVED( jsk, ssv )
 	MCFG_CPU_ADD("sub", V810,25000000)
 	MCFG_CPU_PROGRAM_MAP(jsk_v810_mem)
 
+<<<<<<< HEAD
+=======
+	MCFG_WATCHDOG_ADD("watchdog")
+
+>>>>>>> upstream/master
 	/* video hardware */
 	MCFG_SCREEN_MODIFY("screen")
 	MCFG_SCREEN_VISIBLE_AREA(0, (0xca - 0x22)*2-1, 0, (0xfe - 0x0e)-1)
@@ -2964,7 +3217,11 @@ ROM_START( cairblad )
 	ROM_LOAD( "ac1805m0.u8",  0x1000000, 0x400000, CRC(19771f43) SHA1(d6a05392c58d3f60d666e08b3a82f06fa2c8e3a3) ) // AC1805M01.U8    32M Mask
 	ROM_LOAD( "ac1806m0.u11", 0x1400000, 0x400000, CRC(816b97dc) SHA1(3737cb37a4db720901661fa9b4e30c44181efb94) ) // AC1806M01.U11   32M Mask
 
+<<<<<<< HEAD
 	ROM_FILL(                 0x1800000, 0x800000, 0)
+=======
+	ROM_FILL(                 0x1800000, 0x800000, 0x000000)
+>>>>>>> upstream/master
 
 	ROM_REGION16_BE( 0x400000, "ensoniq.0", 0 ) /* Samples */
 	ROM_LOAD16_WORD_SWAP( "ac1410m0.u41", 0x000000, 0x400000, CRC(ecf1f255) SHA1(984b1529b8f0c7d94ea713c85d71df00f54eba79) ) // AC1807M01.U41   32M Mask
@@ -3231,7 +3488,11 @@ ROM_START( hypreact )
 	ROM_LOAD( "s14-1-11.u14", 0x0e00000, 0x200000, CRC(6d8e7bae) SHA1(93258663ceb6174917560bb66d72a42ba0f96c0e) )
 	ROM_LOAD( "s14-1-12.u11", 0x1000000, 0x200000, CRC(233a8e23) SHA1(0c813ec80ac63aa342c8ea57d9e38cada74456d9) )
 
+<<<<<<< HEAD
 	ROM_FILL(                 0x1200000, 0x600000, 0          )
+=======
+	ROM_FILL(                 0x1200000, 0x600000, 0x000000          )
+>>>>>>> upstream/master
 
 //  The chip seems to use REGION1 too, but produces no sound from there.
 
@@ -3271,7 +3532,11 @@ ROM_START( hypreac2 )
 	ROM_LOAD( "s16-1-12.u11", 0x1800000, 0x400000, CRC(87d9c748) SHA1(1332db901e50e2fd25d3323920f99e0ef0b0533d) )
 	ROM_LOAD( "s16-1-11.u14", 0x1c00000, 0x200000, CRC(70b3c0a0) SHA1(009e2f2f292ed6f10a9d54557861294156664e72) )
 
+<<<<<<< HEAD
 	ROM_FILL(                 0x1e00000,0x0a00000, 0)
+=======
+	ROM_FILL(                 0x1e00000,0x0a00000, 0x000000)
+>>>>>>> upstream/master
 
 	ROM_REGION16_BE( 0x400000, "ensoniq.0", 0 ) /* Samples */
 	ROM_LOAD16_WORD_SWAP( "s16-1-06.u41", 0x000000, 0x400000, CRC(626e8a81) SHA1(45ef5b630aed575acd160ede1413e0370f4f9761) )
@@ -3614,7 +3879,11 @@ ROM_START( mslider )
 	ROM_LOAD( "ms-c0.bin", 0x500000, 0x200000, CRC(f9d3e052) SHA1(4cdde756b24ee980f3c79a35a1fe071861fdeef9) )
 	ROM_LOAD( "ms-c1.bin", 0x700000, 0x080000, CRC(7f910c5a) SHA1(23ea13b6c07d3d31a25c21704d6a3e506578b199) )
 
+<<<<<<< HEAD
 	ROM_FILL(              0x780000, 0x280000, 0)
+=======
+	ROM_FILL(              0x780000, 0x280000, 0x000000)
+>>>>>>> upstream/master
 
 	ROM_REGION16_BE( 0x400000, "ensoniq.0", 0 ) /* Samples */
 	ROM_LOAD16_WORD_SWAP( "ms-snd0.bin", 0x000000, 0x200000, CRC(cda6e3a5) SHA1(28ad8f34bc4f907654582f3522b377b97234eba8) )
@@ -3709,7 +3978,11 @@ ROM_START( srmp4 )
 	ROM_LOAD( "sx001-06.c1", 0x0e00000, 0x200000, CRC(6fe7229e) SHA1(e1432aa500460f79b5b78ee4b249d8fc9f566ce1) )
 	ROM_LOAD( "sx001-09.c2", 0x1000000, 0x200000, CRC(91dd8218) SHA1(a500dca9eefbf93187b1dfde7ddff1d22b886d44) )
 
+<<<<<<< HEAD
 	ROM_FILL(                0x1200000, 0x600000, 0)
+=======
+	ROM_FILL(                0x1200000, 0x600000, 0x000000)
+>>>>>>> upstream/master
 
 	ROM_REGION16_BE( 0x400000, "ensoniq.0", 0 ) /* Samples */
 	ROM_LOAD16_WORD_SWAP( "sx001-10.sd0", 0x000000, 0x200000, CRC(45409ef1) SHA1(327d0a63deac6f0f8b9a408a321c03dd4e965569) )
@@ -3734,7 +4007,11 @@ ROM_START( srmp4o )
 	ROM_LOAD( "sx001-06.c1", 0x0e00000, 0x200000, CRC(6fe7229e) SHA1(e1432aa500460f79b5b78ee4b249d8fc9f566ce1) )
 	ROM_LOAD( "sx001-09.c2", 0x1000000, 0x200000, CRC(91dd8218) SHA1(a500dca9eefbf93187b1dfde7ddff1d22b886d44) )
 
+<<<<<<< HEAD
 	ROM_FILL(                0x1200000, 0x600000, 0)
+=======
+	ROM_FILL(                0x1200000, 0x600000, 0x000000)
+>>>>>>> upstream/master
 
 	ROM_REGION16_BE( 0x400000, "ensoniq.0", 0 ) /* Samples */
 	ROM_LOAD16_WORD_SWAP( "sx001-10.sd0", 0x000000, 0x200000, CRC(45409ef1) SHA1(327d0a63deac6f0f8b9a408a321c03dd4e965569) )
@@ -3917,7 +4194,11 @@ ROM_START( survarts )
 	ROM_LOAD( "si001-06.u16", 0x0e00000, 0x200000, CRC(9a62f532) SHA1(7e7ba1224e52b33a9bd14058230efc871178c4f8) ) /* C1 */
 	ROM_LOAD( "si001-09.u15", 0x1000000, 0x200000, CRC(0955e393) SHA1(0be9134190706eaee49177034b0536b05c4bc7ac) ) /* C2 */
 
+<<<<<<< HEAD
 	ROM_FILL(                0x1200000, 0x600000, 0)
+=======
+	ROM_FILL(                0x1200000, 0x600000, 0x000000)
+>>>>>>> upstream/master
 
 //  The chip seems to use REGION1 too, but produces no sound from there.
 
@@ -3949,7 +4230,11 @@ ROM_START( survartsu )
 	ROM_LOAD( "si001-06.u16", 0x0e00000, 0x200000, CRC(9a62f532) SHA1(7e7ba1224e52b33a9bd14058230efc871178c4f8) ) /* C1 */
 	ROM_LOAD( "si001-09.u15", 0x1000000, 0x200000, CRC(0955e393) SHA1(0be9134190706eaee49177034b0536b05c4bc7ac) ) /* C2 */
 
+<<<<<<< HEAD
 	ROM_FILL(                0x1200000, 0x600000, 0)
+=======
+	ROM_FILL(                0x1200000, 0x600000, 0x000000)
+>>>>>>> upstream/master
 
 //  The chip seems to use REGION1 too, but produces no sound from there.
 
@@ -3978,7 +4263,11 @@ ROM_START( survartsj )
 	ROM_LOAD( "si001-06.u16", 0x0e00000, 0x200000, CRC(9a62f532) SHA1(7e7ba1224e52b33a9bd14058230efc871178c4f8) ) /* C1 */
 	ROM_LOAD( "si001-09.u15", 0x1000000, 0x200000, CRC(0955e393) SHA1(0be9134190706eaee49177034b0536b05c4bc7ac) ) /* C2 */
 
+<<<<<<< HEAD
 	ROM_FILL(                0x1200000, 0x600000, 0)
+=======
+	ROM_FILL(                0x1200000, 0x600000, 0x000000)
+>>>>>>> upstream/master
 
 //  The chip seems to use REGION1 too, but produces no sound from there.
 
@@ -4048,7 +4337,11 @@ ROM_START( dynagear )
 	ROM_LOAD( "si002-03.u17", 0x0800000, 0x200000, CRC(4261a6b8) SHA1(df163faa84a86f126d5d405aef316ff9dd3c05eb) )
 	ROM_LOAD( "si002-06.u16", 0x0a00000, 0x200000, CRC(0e1f23f6) SHA1(ea35c75776b75131ef9133a16a36d95132dc6776) )
 
+<<<<<<< HEAD
 	ROM_FILL(                0xc00000, 0x400000, 0)
+=======
+	ROM_FILL(                0xc00000, 0x400000, 0x000000)
+>>>>>>> upstream/master
 
 //  The chip seems to use REGION1 too, but produces no sound from there.
 
@@ -4094,7 +4387,11 @@ ROM_START( sxyreact )
 	ROM_LOAD( "ac1408m0.u11", 0x1800000, 0x400000, CRC(c45bab47) SHA1(d00802005e091088eabeb672a6428417db43cb66) )
 	ROM_LOAD( "ac1409m0.u14", 0x1c00000, 0x200000, CRC(be1c66c2) SHA1(6d7b60d3b4286a768eac122c3d163e6e5287adc3) )
 
+<<<<<<< HEAD
 	ROM_FILL(                 0x1e00000, 0xa00000, 0)
+=======
+	ROM_FILL(                 0x1e00000, 0xa00000, 0x000000)
+>>>>>>> upstream/master
 
 	ROM_REGION16_BE( 0x400000, "ensoniq.0", 0 ) /* Samples */
 	ROM_LOAD16_WORD_SWAP( "ac1410m0.u41", 0x000000, 0x400000, CRC(2a880afc) SHA1(193235bccde28a7d693a1a1f0159260a3a63a7d5) )
@@ -4176,7 +4473,11 @@ ROM_START( sxyreac2 )
 	ROM_LOAD( "ac1705t00.u8",  0x1000000, 0x400000, CRC(2dff0652) SHA1(3c68ec3b233f248208ea80e4799a9504318b4e7c) )
 	ROM_LOAD( "ac1706t00.u11", 0x1400000, 0x400000, CRC(e7a168e0) SHA1(b4e19cc3a1fd0f18db7476ebe7cbb397c60e01b3) )
 
+<<<<<<< HEAD
 	ROM_FILL(                 0x1800000, 0x800000, 0)
+=======
+	ROM_FILL(                 0x1800000, 0x800000, 0x000000)
+>>>>>>> upstream/master
 
 	ROM_REGION16_BE( 0x400000, "ensoniq.0", 0 ) /* Samples */
 	ROM_LOAD16_WORD_SWAP( "ac1707t00.u41", 0x000000, 0x400000, CRC(28999bc4) SHA1(4cddaa4a155cc03d456e6edb20dd207f7ff3d9c4) )
@@ -4273,7 +4574,11 @@ ROM_START( stmblade )
 	ROM_LOAD( "sb-c0.u11", 0x0c00000, 0x200000, CRC(825dd8f1) SHA1(39d32f54c97e21f92598442f05fd91ae2403a0d2) )
 	ROM_LOAD( "sb-c1.u7",  0x0e00000, 0x200000, CRC(744afcd7) SHA1(db716a1a2ad5864ebdb4865430cb637fb94ed34f) )
 	ROM_LOAD( "sb-c2.u4",  0x1000000, 0x080000, CRC(fd1d2a92) SHA1(957a8a52b79e252c7f1a4b6383107ae609dce5ef) )
+<<<<<<< HEAD
 	ROM_FILL(              0x1200000, 0x600000, 0)
+=======
+	ROM_FILL(              0x1200000, 0x600000, 0x000000)
+>>>>>>> upstream/master
 
 	ROM_REGION16_BE( 0x400000, "ensoniq.0", ROMREGION_ERASE | 0 )   /* Samples */
 	ROM_LOAD16_BYTE( "sb-snd0.u22", 0x000000, 0x200000, CRC(4efd605b) SHA1(9c97be105c923c7db847d9b9aea37025edb685a0) )
@@ -4302,7 +4607,11 @@ ROM_START( stmbladej )
 	ROM_LOAD( "sb-c0.u11", 0x0c00000, 0x200000, CRC(825dd8f1) SHA1(39d32f54c97e21f92598442f05fd91ae2403a0d2) )
 	ROM_LOAD( "sb-c1.u7",  0x0e00000, 0x200000, CRC(744afcd7) SHA1(db716a1a2ad5864ebdb4865430cb637fb94ed34f) )
 	ROM_LOAD( "sb-c2.u4",  0x1000000, 0x080000, CRC(fd1d2a92) SHA1(957a8a52b79e252c7f1a4b6383107ae609dce5ef) )
+<<<<<<< HEAD
 	ROM_FILL(              0x1200000, 0x600000, 0)
+=======
+	ROM_FILL(              0x1200000, 0x600000, 0x000000)
+>>>>>>> upstream/master
 
 	ROM_REGION16_BE( 0x400000, "ensoniq.0", ROMREGION_ERASE | 0 )   /* Samples */
 	ROM_LOAD16_BYTE( "sb-snd0.u22", 0x000000, 0x200000, CRC(4efd605b) SHA1(9c97be105c923c7db847d9b9aea37025edb685a0) )
@@ -4368,7 +4677,11 @@ ROM_START( twineag2 )
 	ROM_LOAD( "sx002-08.u3",  0x0e00000, 0x200000, CRC(64edcefa) SHA1(55a71afe87da93e35c5ba291e970bdcd91b52a7a) ) /* C1 */
 	ROM_LOAD( "sx002-09.u2",  0x1000000, 0x200000, CRC(51527c56) SHA1(378155a585e5b847bd8ae1f17cb651138d844e33) ) /* C2, C3 is unpopulated */
 
+<<<<<<< HEAD
 	ROM_FILL(             0x1200000, 0x600000, 0          )
+=======
+	ROM_FILL(             0x1200000, 0x600000, 0x000000          )
+>>>>>>> upstream/master
 
 	ROM_REGION16_BE( 0x400000, "ensoniq.0", ROMREGION_ERASE | 0 ) /* Samples */
 	ROM_LOAD16_BYTE( "sx002-10.u14", 0x000000, 0x200000, CRC(b0669dfa) SHA1(ff805f59864ac4ccee3e249c06804d844d3df59c) )
@@ -4412,7 +4725,11 @@ ROM_START( ultrax )
 	ROM_LOAD( "71047-04.u77", 0x0500000, 0x100000, CRC(d9e710d1) SHA1(063459a247f9ff81cb558802e9943b3ea8a2ea3a) )
 	ROM_LOAD( "71047-05.u75", 0x0600000, 0x200000, CRC(10848193) SHA1(40b7ebb6011dc703bbf620cd22cd678c10ec67a4) )
 	ROM_LOAD( "71047-06.u88", 0x0800000, 0x100000, CRC(b8ac2942) SHA1(3e85e8f5669d469dd3114455248546d32a642315) )
+<<<<<<< HEAD
 	ROM_FILL(                 0x0900000, 0x300000, 0 )
+=======
+	ROM_FILL(                 0x0900000, 0x300000, 0x000000 )
+>>>>>>> upstream/master
 
 	ROM_REGION16_BE( 0x400000, "ensoniq.0", ROMREGION_ERASE | 0 ) /* Samples */
 	ROM_LOAD16_BYTE( "71047-07.u59", 0x000000, 0x200000, CRC(d9828b62) SHA1(f66a388d7a00b3a45d386671c061f5b840453451) )
@@ -4442,7 +4759,11 @@ ROM_START( ultraxg )
 	ROM_LOAD( "71047-04.u77", 0x0500000, 0x100000, CRC(d9e710d1) SHA1(063459a247f9ff81cb558802e9943b3ea8a2ea3a) )
 	ROM_LOAD( "71047-05.u75", 0x0600000, 0x200000, CRC(10848193) SHA1(40b7ebb6011dc703bbf620cd22cd678c10ec67a4) )
 	ROM_LOAD( "71047-06.u88", 0x0800000, 0x100000, CRC(b8ac2942) SHA1(3e85e8f5669d469dd3114455248546d32a642315) )
+<<<<<<< HEAD
 	ROM_FILL(                 0x0900000, 0x300000, 0 )
+=======
+	ROM_FILL(                 0x0900000, 0x300000, 0x000000 )
+>>>>>>> upstream/master
 
 	ROM_REGION16_BE( 0x400000, "ensoniq.0", ROMREGION_ERASE | 0 ) /* Samples */
 	ROM_LOAD16_BYTE( "71047-07.u59", 0x000000, 0x200000, CRC(d9828b62) SHA1(f66a388d7a00b3a45d386671c061f5b840453451) )
@@ -4675,7 +4996,11 @@ ROM_START( gdfs )
 	ROM_LOAD( "vg004-10.u45", 0x200000, 0x200000, CRC(b3c6b1cb) SHA1(c601213e35d8dfd1244921da5c093f82145706d2) )
 	ROM_LOAD( "vg004-11.u48", 0x400000, 0x200000, CRC(1491def1) SHA1(344043302c81b4118cac4f692375b8af7ea68570) )
 
+<<<<<<< HEAD
 	ROM_REGION( 0x1000000, "st0020", /*0*/0 )   // Zooming Sprites, read by a blitter
+=======
+	ROM_REGION( 0x1000000, "st0020_spr", /*0*/0 )   // Zooming Sprites, read by a blitter
+>>>>>>> upstream/master
 	ROM_LOAD( "vg004-01.u33", 0x0000000, 0x200000, CRC(aa9a81c2) SHA1(a7d005f9be199e317aa4c6aed8a2ab322fe82119) )
 	ROM_LOAD( "vg004-02.u34", 0x0200000, 0x200000, CRC(fa40ecb4) SHA1(0513f3b6879dc7d207646d949d6ddb7251f77bcc) )
 	ROM_LOAD( "vg004-03.u35", 0x0400000, 0x200000, CRC(90004023) SHA1(041edb77b34e6677ac5b85ce542d87a9bb1baf31) )

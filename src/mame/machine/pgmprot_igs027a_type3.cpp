@@ -45,6 +45,10 @@
 
 #include "emu.h"
 #include "includes/pgm.h"
+<<<<<<< HEAD
+=======
+#include "machine/pgmprot_igs027a_type3.h"
+>>>>>>> upstream/master
 
 WRITE32_MEMBER(pgm_arm_type3_state::svg_arm7_ram_sel_w )
 {
@@ -55,7 +59,11 @@ WRITE32_MEMBER(pgm_arm_type3_state::svg_arm7_ram_sel_w )
 
 READ32_MEMBER(pgm_arm_type3_state::svg_arm7_shareram_r )
 {
+<<<<<<< HEAD
 	UINT32 retdata = m_svg_shareram[m_svg_ram_sel & 1][offset];
+=======
+	uint32_t retdata = m_svg_shareram[m_svg_ram_sel & 1][offset];
+>>>>>>> upstream/master
 //  printf("(%08x) ARM7: shared read (bank %02x) offset - %08x retdata - %08x mask - %08x\n", space.device().safe_pc(), m_svg_ram_sel, offset*4, retdata, mem_mask );
 	return retdata;
 }
@@ -69,11 +77,16 @@ WRITE32_MEMBER(pgm_arm_type3_state::svg_arm7_shareram_w )
 READ16_MEMBER(pgm_arm_type3_state::svg_m68k_ram_r )
 {
 	int ram_sel = (m_svg_ram_sel & 1) ^ 1;
+<<<<<<< HEAD
 	UINT16 *share16 = (UINT16 *)(m_svg_shareram[ram_sel & 1]);
+=======
+	uint16_t *share16 = (uint16_t *)(m_svg_shareram[ram_sel & 1].get());
+>>>>>>> upstream/master
 
 	return share16[BYTE_XOR_LE(offset)];
 }
 
+<<<<<<< HEAD
 READ16_MEMBER(pgm_arm_type3_state::dmnfrnt_m68k_ram_r )
 {
 	int ram_sel = (m_svg_ram_sel & 1) ^ 1;
@@ -86,6 +99,12 @@ WRITE16_MEMBER(pgm_arm_type3_state::svg_m68k_ram_w )
 {
 	int ram_sel = (m_svg_ram_sel & 1) ^ 1;
 	UINT16 *share16 = (UINT16 *)(m_svg_shareram[ram_sel & 1]);
+=======
+WRITE16_MEMBER(pgm_arm_type3_state::svg_m68k_ram_w )
+{
+	int ram_sel = (m_svg_ram_sel & 1) ^ 1;
+	uint16_t *share16 = (uint16_t *)(m_svg_shareram[ram_sel & 1].get());
+>>>>>>> upstream/master
 
 	COMBINE_DATA(&share16[BYTE_XOR_LE(offset)]);
 }
@@ -145,6 +164,7 @@ static ADDRESS_MAP_START( svg_68k_mem, AS_PROGRAM, 16, pgm_arm_type3_state )
 ADDRESS_MAP_END
 
 
+<<<<<<< HEAD
 static ADDRESS_MAP_START( dmnfrnt_68k_mem, AS_PROGRAM, 16, pgm_arm_type3_state )
 	AM_IMPORT_FROM(pgm_mem)
 	AM_RANGE(0x100000, 0x1fffff) AM_ROMBANK("bank1")  /* Game ROM */
@@ -155,6 +175,8 @@ static ADDRESS_MAP_START( dmnfrnt_68k_mem, AS_PROGRAM, 16, pgm_arm_type3_state )
 ADDRESS_MAP_END
 
 
+=======
+>>>>>>> upstream/master
 static ADDRESS_MAP_START( 55857G_arm7_map, AS_PROGRAM, 32, pgm_arm_type3_state )
 	AM_RANGE(0x00000000, 0x00003fff) AM_ROM
 	AM_RANGE(0x08000000, 0x087fffff) AM_ROM AM_REGION("user1", 0)
@@ -172,13 +194,20 @@ ADDRESS_MAP_END
 MACHINE_RESET_MEMBER(pgm_arm_type3_state, pgm_arm_type3_reset)
 {
 	// internal roms aren't fully dumped
+<<<<<<< HEAD
 	UINT16 *temp16 = (UINT16 *)memregion("prot")->base();
+=======
+	uint16_t *temp16 = (uint16_t *)memregion("prot")->base();
+>>>>>>> upstream/master
 	int base = -1;
 
 	if (!strcmp(machine().system().name, "theglad")) base = 0x3316;
 	if (!strcmp(machine().system().name, "theglad100")) base = 0x3316;
 	if (!strcmp(machine().system().name, "theglad101")) base = 0x3316;
+<<<<<<< HEAD
 	if (!strcmp(machine().system().name, "thegladpcb")) base = 0x3316;
+=======
+>>>>>>> upstream/master
 	if (!strcmp(machine().system().name, "happy6")) base = 0x3586;
 	if (!strcmp(machine().system().name, "happy6101")) base = 0x3586;
 	if (!strcmp(machine().system().name, "svgpcb")) base = 0x3a8e;
@@ -206,7 +235,11 @@ MACHINE_START_MEMBER(pgm_arm_type3_state,pgm_arm_type3)
 
 /******* ARM 55857G *******/
 
+<<<<<<< HEAD
 MACHINE_CONFIG_START( pgm_arm_type3, pgm_arm_type3_state )
+=======
+MACHINE_CONFIG_START( pgm_arm_type3 )
+>>>>>>> upstream/master
 	MCFG_FRAGMENT_ADD(pgmbase)
 
 	MCFG_MACHINE_START_OVERRIDE(pgm_arm_type3_state, pgm_arm_type3 )
@@ -222,28 +255,44 @@ MACHINE_CONFIG_START( pgm_arm_type3, pgm_arm_type3_state )
 MACHINE_CONFIG_END
 
 
+<<<<<<< HEAD
 MACHINE_CONFIG_DERIVED( pgm_arm_type3_dmnfrnt, pgm_arm_type3 )
 	MCFG_CPU_MODIFY("maincpu")
 	MCFG_CPU_PROGRAM_MAP(dmnfrnt_68k_mem)
 MACHINE_CONFIG_END
 
 
+=======
+>>>>>>> upstream/master
 
 void pgm_arm_type3_state::svg_basic_init()
 {
 	pgm_basic_init();
+<<<<<<< HEAD
 	m_svg_shareram[0] = auto_alloc_array(machine(), UINT32, 0x20000 / 4);
 	m_svg_shareram[1] = auto_alloc_array(machine(), UINT32, 0x20000 / 4);
 	m_svg_ram_sel = 0;
 
 	save_pointer(NAME(m_svg_shareram[0]), 0x20000 / 4);
 	save_pointer(NAME(m_svg_shareram[1]), 0x20000 / 4);
+=======
+	m_svg_shareram[0] = std::make_unique<uint32_t[]>(0x20000 / 4);
+	m_svg_shareram[1] = std::make_unique<uint32_t[]>(0x20000 / 4);
+	m_svg_ram_sel = 0;
+
+	save_pointer(NAME(m_svg_shareram[0].get()), 0x20000 / 4);
+	save_pointer(NAME(m_svg_shareram[1].get()), 0x20000 / 4);
+>>>>>>> upstream/master
 	save_item(NAME(m_svg_ram_sel));
 }
 
 void pgm_arm_type3_state::pgm_create_dummy_internal_arm_region(int size)
 {
+<<<<<<< HEAD
 	UINT16 *temp16 = (UINT16 *)memregion("prot")->base();
+=======
+	uint16_t *temp16 = (uint16_t *)memregion("prot")->base();
+>>>>>>> upstream/master
 
 	// fill with RX 14
 	int i;
@@ -309,7 +358,11 @@ READ32_MEMBER(pgm_arm_type3_state::svgpcb_speedup_r )
 
 void pgm_arm_type3_state::pgm_create_dummy_internal_arm_region_theglad(int is_svg)
 {
+<<<<<<< HEAD
 	UINT16 *temp16 = (UINT16 *)memregion("prot")->base();
+=======
+	uint16_t *temp16 = (uint16_t *)memregion("prot")->base();
+>>>>>>> upstream/master
 	int i;
 	for (i=0;i<0x188/2;i+=2)
 	{
@@ -549,7 +602,11 @@ DRIVER_INIT_MEMBER(pgm_arm_type3_state,theglad)
 void pgm_arm_type3_state::pgm_patch_external_arm_rom_jumptable_theglada(int base)
 {
 	// we don't have the correct internal ROM for this version, so insead we use the one we have and patch the jump table in the external ROM
+<<<<<<< HEAD
 	UINT32 subroutine_addresses[] =
+=======
+	uint32_t subroutine_addresses[] =
+>>>>>>> upstream/master
 	{
 		0x00FC, 0x00E8, 0x0110, 0x0150, 0x0194, 0x06C8, 0x071C, 0x0728,
 		0x0734, 0x0740, 0x0784, 0x0794, 0x07FC, 0x0840, 0x086C, 0x0988,
@@ -569,7 +626,11 @@ void pgm_arm_type3_state::pgm_patch_external_arm_rom_jumptable_theglada(int base
 		0x3050, 0x30A4, 0x30F8, 0x3120, 0x249C, 0x24C0, 0x27BC, 0x2B40,
 		0x2BF4, 0x2CD8, 0x2E2C
 	};
+<<<<<<< HEAD
 	UINT16 *extprot = (UINT16 *)memregion("user1")->base();
+=======
+	uint16_t *extprot = (uint16_t *)memregion("user1")->base();
+>>>>>>> upstream/master
 	/*
 	0x00C8,0x00B4,0x00DC,0x011C,0x0160,0x02DC,0x0330,0x033C,
 	0x0348,0x0354,0x0398,0x03A8,0x0410,0x0454,0x0480,0x059C,
@@ -591,10 +652,17 @@ void pgm_arm_type3_state::pgm_patch_external_arm_rom_jumptable_theglada(int base
 	*/
 
 
+<<<<<<< HEAD
 	for (int i = 0; i < 131; i++)
 	{
 //      UINT32 addr = extprot[(base/2)] | (extprot[(base/2) + 1] << 16);
 		extprot[(base / 2)] = subroutine_addresses[i];
+=======
+	for (auto & subroutine_addresse : subroutine_addresses)
+	{
+//      uint32_t addr = extprot[(base/2)] | (extprot[(base/2) + 1] << 16);
+		extprot[(base / 2)] = subroutine_addresse;
+>>>>>>> upstream/master
 
 		base += 4;
 //      printf("%04x (%08x)\n", subroutine_addresses[i], addr );
@@ -616,7 +684,11 @@ INPUT_PORTS_START( theglad )
 	PORT_CONFNAME( 0x00ff, 0x00ff, DEF_STR( Region ) )
 	PORT_CONFSETTING(      0x0000, DEF_STR( China ) )
 	PORT_CONFSETTING(      0x0001, DEF_STR( Taiwan ) )
+<<<<<<< HEAD
 	PORT_CONFSETTING(      0x0002, DEF_STR( Japan ) ) // it doesn't appear that carts of the Japanese version were released, the PCB has an extra sample ROM used in Japanese mode for the music
+=======
+	//PORT_CONFSETTING(      0x0002, DEF_STR( Japan ) ) // it doesn't appear that carts of the Japanese version were released, the PCB has an extra sample ROM used in Japanese mode for the music
+>>>>>>> upstream/master
 	PORT_CONFSETTING(      0x0003, DEF_STR( Korea ) )
 	PORT_CONFSETTING(      0x0004, DEF_STR( Hong_Kong ) )
 	PORT_CONFSETTING(      0x0005, "Spanish Territories" )
@@ -660,7 +732,11 @@ DRIVER_INIT_MEMBER(pgm_arm_type3_state,svg)
 	pgm_svg_decrypt(machine());
 	svg_latch_init();
 	pgm_create_dummy_internal_arm_region_theglad(1);
+<<<<<<< HEAD
 	m_armrom = (UINT32 *)memregion("prot")->base();
+=======
+	m_armrom = (uint32_t *)memregion("prot")->base();
+>>>>>>> upstream/master
 	machine().device("prot")->memory().space(AS_PROGRAM).install_read_handler(0xB90, 0xB93, read32_delegate(FUNC(pgm_arm_type3_state::svg_speedup_r),this));
 
 
@@ -672,7 +748,11 @@ DRIVER_INIT_MEMBER(pgm_arm_type3_state,svgpcb)
 	pgm_svgpcb_decrypt(machine());
 	svg_latch_init();
 	pgm_create_dummy_internal_arm_region_theglad(0);
+<<<<<<< HEAD
 	m_armrom = (UINT32 *)memregion("prot")->base();
+=======
+	m_armrom = (uint32_t *)memregion("prot")->base();
+>>>>>>> upstream/master
 	machine().device("prot")->memory().space(AS_PROGRAM).install_read_handler(0x9e0, 0x9e3, read32_delegate(FUNC(pgm_arm_type3_state::svgpcb_speedup_r),this));
 
 }
@@ -694,7 +774,11 @@ DRIVER_INIT_MEMBER(pgm_arm_type3_state,killbldp)
 
 	machine().device("prot")->memory().space(AS_PROGRAM).install_read_handler(0x1000000c, 0x1000000f, read32_delegate(FUNC(pgm_arm_type3_state::killbldp_speedup_r),this));
 
+<<<<<<< HEAD
 //  UINT16 *temp16 = (UINT16 *)memregion("prot")->base();
+=======
+//  uint16_t *temp16 = (uint16_t *)memregion("prot")->base();
+>>>>>>> upstream/master
 //  int base = 0xfc; // startup table uploads
 //  temp16[(base) /2] = 0x0000; base += 2;
 //  temp16[(base) /2] = 0xE1A0; base += 2;
@@ -719,7 +803,11 @@ READ32_MEMBER(pgm_arm_type3_state::dmnfrnt_speedup_r )
 
 READ16_MEMBER(pgm_arm_type3_state::dmnfrnt_main_speedup_r )
 {
+<<<<<<< HEAD
 	UINT16 data = m_mainram[0xa03c/2];
+=======
+	uint16_t data = m_mainram[0xa03c/2];
+>>>>>>> upstream/master
 	int pc = space.device().safe_pc();
 	if (pc == 0x10193a) space.device().execute().spin_until_interrupt();
 	else if (pc == 0x1019a4) space.device().execute().spin_until_interrupt();
@@ -743,11 +831,19 @@ DRIVER_INIT_MEMBER(pgm_arm_type3_state,dmnfrnt)
 	// the internal rom probably also supplies the region here
 	// we have to copy it to both shared ram regions because it reads from a different one before the attract story?
 	// could be a timing error? or shared ram behavior isn't how we think it is?
+<<<<<<< HEAD
 	UINT16 *share16;
 	share16 = (UINT16 *)(m_svg_shareram[1]);
 //	share16[0x158/2] = 0x0005;
 	share16 = (UINT16 *)(m_svg_shareram[0]);
 //	share16[0x158/2] = 0x0005;
+=======
+	uint16_t *share16;
+	share16 = (uint16_t *)(m_svg_shareram[1].get());
+	share16[0x158/2] = 0x0005;
+	share16 = (uint16_t *)(m_svg_shareram[0].get());
+	share16[0x158/2] = 0x0005;
+>>>>>>> upstream/master
 }
 
 //
@@ -755,9 +851,15 @@ DRIVER_INIT_MEMBER(pgm_arm_type3_state,dmnfrnt)
 // buffer[i] = src[j]
 
 // todo, collapse these to an address swap
+<<<<<<< HEAD
 void pgm_arm_type3_state::pgm_descramble_happy6(UINT8* src)
 {
 	dynamic_buffer buffer(0x800000);
+=======
+void pgm_arm_type3_state::pgm_descramble_happy6(uint8_t* src)
+{
+	std::vector<uint8_t> buffer(0x800000);
+>>>>>>> upstream/master
 	int writeaddress = 0;
 
 	for (int j = 0; j < 0x800; j += 0x200)
@@ -773,9 +875,15 @@ void pgm_arm_type3_state::pgm_descramble_happy6(UINT8* src)
 
 
 
+<<<<<<< HEAD
 void pgm_arm_type3_state::pgm_descramble_happy6_2(UINT8* src)
 {
 	dynamic_buffer buffer(0x800000);
+=======
+void pgm_arm_type3_state::pgm_descramble_happy6_2(uint8_t* src)
+{
+	std::vector<uint8_t> buffer(0x800000);
+>>>>>>> upstream/master
 	int writeaddress = 0;
 	for (int k = 0; k < 0x800000; k += 0x100000)
 	{
@@ -806,6 +914,7 @@ INPUT_PORTS_END
 
 DRIVER_INIT_MEMBER(pgm_arm_type3_state,happy6)
 {
+<<<<<<< HEAD
 	UINT8 *src;
 
 	src = (UINT8 *)(machine().root_device().memregion("tiles")->base()) + 0x180000;
@@ -825,6 +934,27 @@ DRIVER_INIT_MEMBER(pgm_arm_type3_state,happy6)
 	pgm_descramble_happy6_2(src);
 
 	src = (UINT8 *)(machine().root_device().memregion("ics")->base()) + 0x400000;
+=======
+	uint8_t *src;
+
+	src = (uint8_t *)(machine().root_device().memregion("tiles")->base()) + 0x180000;
+	pgm_descramble_happy6(src);
+	pgm_descramble_happy6_2(src);
+
+	src = (uint8_t *)(machine().root_device().memregion("sprcol")->base()) + 0x000000;
+	pgm_descramble_happy6(src);
+	pgm_descramble_happy6_2(src);
+
+	src = (uint8_t *)(machine().root_device().memregion("sprcol")->base()) + 0x0800000;
+	pgm_descramble_happy6(src);
+	pgm_descramble_happy6_2(src);
+
+	src = (uint8_t *)(machine().root_device().memregion("sprmask")->base());
+	pgm_descramble_happy6(src);
+	pgm_descramble_happy6_2(src);
+
+	src = (uint8_t *)(machine().root_device().memregion("ics")->base()) + 0x400000;
+>>>>>>> upstream/master
 	pgm_descramble_happy6(src);
 	pgm_descramble_happy6_2(src);
 

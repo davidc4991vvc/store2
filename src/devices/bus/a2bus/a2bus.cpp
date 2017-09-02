@@ -71,7 +71,10 @@
 ***************************************************************************/
 
 #include "emu.h"
+<<<<<<< HEAD
 #include "emuopts.h"
+=======
+>>>>>>> upstream/master
 #include "a2bus.h"
 
 
@@ -79,7 +82,11 @@
 //  GLOBAL VARIABLES
 //**************************************************************************
 
+<<<<<<< HEAD
 const device_type A2BUS_SLOT = &device_creator<a2bus_slot_device>;
+=======
+DEFINE_DEVICE_TYPE(A2BUS_SLOT, a2bus_slot_device, "a2bus_slot", "Apple II Slot")
+>>>>>>> upstream/master
 
 //**************************************************************************
 //  LIVE DEVICE
@@ -88,6 +95,7 @@ const device_type A2BUS_SLOT = &device_creator<a2bus_slot_device>;
 //-------------------------------------------------
 //  a2bus_slot_device - constructor
 //-------------------------------------------------
+<<<<<<< HEAD
 a2bus_slot_device::a2bus_slot_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock) :
 		device_t(mconfig, A2BUS_SLOT, "Apple II Slot", tag, owner, clock, "a2bus_slot", __FILE__),
 		device_slot_interface(mconfig, *this), m_a2bus_tag(nullptr), m_a2bus_slottag(nullptr)
@@ -97,6 +105,18 @@ a2bus_slot_device::a2bus_slot_device(const machine_config &mconfig, const char *
 a2bus_slot_device::a2bus_slot_device(const machine_config &mconfig, device_type type, const char *name, const char *tag, device_t *owner, UINT32 clock, const char *shortname, const char *source) :
 		device_t(mconfig, type, name, tag, owner, clock, shortname, source),
 		device_slot_interface(mconfig, *this), m_a2bus_tag(nullptr), m_a2bus_slottag(nullptr)
+=======
+a2bus_slot_device::a2bus_slot_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: a2bus_slot_device(mconfig, A2BUS_SLOT, tag, owner, clock)
+{
+}
+
+a2bus_slot_device::a2bus_slot_device(const machine_config &mconfig, device_type type, const char *tag, device_t *owner, uint32_t clock)
+	: device_t(mconfig, type, tag, owner, clock)
+	, device_slot_interface(mconfig, *this)
+	, m_a2bus_tag(nullptr)
+	, m_a2bus_slottag(nullptr)
+>>>>>>> upstream/master
 {
 }
 
@@ -122,7 +142,11 @@ void a2bus_slot_device::device_start()
 //  GLOBAL VARIABLES
 //**************************************************************************
 
+<<<<<<< HEAD
 const device_type A2BUS = &device_creator<a2bus_device>;
+=======
+DEFINE_DEVICE_TYPE(A2BUS, a2bus_device, "a2bus", "Apple II Bus")
+>>>>>>> upstream/master
 
 void a2bus_device::static_set_cputag(device_t &device, const char *tag)
 {
@@ -138,6 +162,7 @@ void a2bus_device::static_set_cputag(device_t &device, const char *tag)
 //  a2bus_device - constructor
 //-------------------------------------------------
 
+<<<<<<< HEAD
 a2bus_device::a2bus_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock) :
 		device_t(mconfig, A2BUS, "Apple II Bus", tag, owner, clock, "a2bus", __FILE__), m_maincpu(nullptr), m_maincpu_space(nullptr),
 		m_out_irq_cb(*this),
@@ -151,6 +176,19 @@ a2bus_device::a2bus_device(const machine_config &mconfig, device_type type, cons
 		m_out_irq_cb(*this),
 		m_out_nmi_cb(*this),
 		m_out_inh_cb(*this), m_cputag(nullptr), m_slot_irq_mask(0), m_slot_nmi_mask(0)
+=======
+a2bus_device::a2bus_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: a2bus_device(mconfig, A2BUS, tag, owner, clock)
+{
+}
+
+a2bus_device::a2bus_device(const machine_config &mconfig, device_type type, const char *tag, device_t *owner, uint32_t clock)
+	: device_t(mconfig, type, tag, owner, clock)
+	, m_maincpu(nullptr) , m_maincpu_space(nullptr)
+	, m_out_irq_cb(*this) , m_out_nmi_cb(*this) , m_out_inh_cb(*this)
+	, m_cputag(nullptr)
+	, m_slot_irq_mask(0), m_slot_nmi_mask(0)
+>>>>>>> upstream/master
 {
 }
 //-------------------------------------------------
@@ -168,9 +206,15 @@ void a2bus_device::device_start()
 	m_out_inh_cb.resolve_safe();
 
 	// clear slots
+<<<<<<< HEAD
 	for (int i = 0; i < 8; i++)
 	{
 		m_device_list[i] = NULL;
+=======
+	for (auto & elem : m_device_list)
+	{
+		elem = nullptr;
+>>>>>>> upstream/master
 	}
 
 	m_slot_irq_mask = m_slot_nmi_mask = 0;
@@ -188,7 +232,11 @@ device_a2bus_card_interface *a2bus_device::get_a2bus_card(int slot)
 {
 	if (slot < 0)
 	{
+<<<<<<< HEAD
 		return NULL;
+=======
+		return nullptr;
+>>>>>>> upstream/master
 	}
 
 	if (m_device_list[slot])
@@ -196,7 +244,11 @@ device_a2bus_card_interface *a2bus_device::get_a2bus_card(int slot)
 		return m_device_list[slot];
 	}
 
+<<<<<<< HEAD
 	return NULL;
+=======
+	return nullptr;
+>>>>>>> upstream/master
 }
 
 void a2bus_device::add_a2bus_card(int slot, device_a2bus_card_interface *card)
@@ -204,12 +256,20 @@ void a2bus_device::add_a2bus_card(int slot, device_a2bus_card_interface *card)
 	m_device_list[slot] = card;
 }
 
+<<<<<<< HEAD
 UINT8 a2bus_device::get_a2bus_irq_mask()
+=======
+uint8_t a2bus_device::get_a2bus_irq_mask()
+>>>>>>> upstream/master
 {
 	return m_slot_irq_mask;
 }
 
+<<<<<<< HEAD
 UINT8 a2bus_device::get_a2bus_nmi_mask()
+=======
+uint8_t a2bus_device::get_a2bus_nmi_mask()
+>>>>>>> upstream/master
 {
 	return m_slot_nmi_mask;
 }
@@ -247,6 +307,7 @@ void a2bus_device::set_maincpu_halt(int state)
 	m_maincpu->set_input_line(INPUT_LINE_HALT, state);
 }
 
+<<<<<<< HEAD
 UINT8 a2bus_device::dma_r(address_space &space, UINT16 offset)
 {
 	m_maincpu_space->set_debugger_access(space.debugger_access());
@@ -262,11 +323,28 @@ void a2bus_device::dma_w(address_space &space, UINT16 offset, UINT8 data)
 }
 
 UINT8 a2bus_device::dma_nospace_r(UINT16 offset)
+=======
+uint8_t a2bus_device::dma_r(address_space &space, uint16_t offset)
 {
 	return m_maincpu_space->read_byte(offset);
 }
 
+void a2bus_device::dma_w(address_space &space, uint16_t offset, uint8_t data)
+{
+	m_maincpu_space->write_byte(offset, data);
+}
+
+uint8_t a2bus_device::dma_nospace_r(uint16_t offset)
+>>>>>>> upstream/master
+{
+	return m_maincpu_space->read_byte(offset);
+}
+
+<<<<<<< HEAD
 void a2bus_device::dma_nospace_w(UINT16 offset, UINT8 data)
+=======
+void a2bus_device::dma_nospace_w(uint16_t offset, uint8_t data)
+>>>>>>> upstream/master
 {
 	m_maincpu_space->write_byte(offset, data);
 }

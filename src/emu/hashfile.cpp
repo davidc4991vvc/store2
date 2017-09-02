@@ -8,6 +8,7 @@
 
 *********************************************************************/
 
+<<<<<<< HEAD
 #include "hashfile.h"
 #include "pool.h"
 #include "expat.h"
@@ -569,11 +570,75 @@ bool hashfile_extrainfo(device_image_interface &image, std::string &result)
 	image.crc();
 	extra_info = NULL;
 	int drv = driver_list::find(*image.device().mconfig().options().system());
+=======
+#include "emu.h"
+#include "hashfile.h"
+#include "pool.h"
+#include "emuopts.h"
+#include "hash.h"
+#include "drivenum.h"
+#define PUGIXML_HEADER_ONLY
+#include "pugixml/src/pugixml.hpp"
+
+/*-------------------------------------------------
+    hashfile_lookup
+-------------------------------------------------*/
+
+static bool read_hash_config(const char *hash_path, const util::hash_collection &hashes, const char *sysname, std::string &result)
+{
+	/* open a file */
+	emu_file file(hash_path, OPEN_FLAG_READ);
+	if (file.open(sysname, ".hsi") != osd_file::error::NONE)
+	{
+		return false;
+	}
+
+	pugi::xml_document doc;
+
+	pugi::xml_parse_result res = doc.load_file(file.fullpath());
+	if (res)
+	{
+		// Do search by CRC32 and SHA1
+		std::string query = "/hashfile/hash[";
+		auto crc = hashes.internal_string().substr(1,8);
+		auto sha1 = hashes.internal_string().substr(10, 40);
+		query += "@crc32='" + crc + "' and @sha1='" + sha1 + "']/extrainfo";
+		pugi::xpath_node_set tools = doc.select_nodes(query.c_str());
+		for (pugi::xpath_node_set::const_iterator it = tools.begin(); it != tools.end(); ++it)
+		{
+			result = it->node().first_child().value();
+			return true;
+		}
+
+		// Try search by CRC32 only
+		query = "/hashfile/hash[";
+		query += "@crc32='" + crc + "']/extrainfo";
+		tools = doc.select_nodes(query.c_str());
+		for (pugi::xpath_node_set::const_iterator it = tools.begin(); it != tools.end(); ++it)
+		{
+			result = it->node().first_child().value();
+			return true;
+		}
+
+	}
+	return false;
+}
+
+
+bool hashfile_extrainfo(const char *hash_path, const game_driver &driver, const util::hash_collection &hashes, std::string &result)
+{
+	/* now read the hash file */
+	int drv = driver_list::find(driver);
+>>>>>>> upstream/master
 	int compat, open = drv;
 	bool hashfound;
 	do
 	{
+<<<<<<< HEAD
 		hashfound = read_hash_config(image, driver_list::driver(open).name, result);
+=======
+		hashfound = read_hash_config(hash_path, hashes, driver_list::driver(open).name, result);
+>>>>>>> upstream/master
 		// first check if there are compatible systems
 		compat = driver_list::compatible_with(open);
 		// if so, try to open its hashfile
@@ -591,6 +656,7 @@ bool hashfile_extrainfo(device_image_interface &image, std::string &result)
 	return hashfound;
 }
 
+<<<<<<< HEAD
 /***************************************************************************
     EXPAT INTERFACES
 ***************************************************************************/
@@ -617,3 +683,17 @@ static void expat_free(void *ptr)
 {
 	global_free_array((UINT8 *)ptr);
 }
+=======
+
+
+bool hashfile_extrainfo(device_image_interface &image, std::string &result)
+{
+	return hashfile_extrainfo(
+		image.device().mconfig().options().hash_path(),
+		image.device().mconfig().gamedrv(),
+		image.hash(),
+		result);
+}
+
+
+>>>>>>> upstream/master

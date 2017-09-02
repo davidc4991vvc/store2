@@ -12,6 +12,7 @@
 #include "emu.h"
 #include "k054539.h"
 
+<<<<<<< HEAD
 const device_type K054539 = &device_creator<k054539_device>;
 
 #define VERBOSE 0
@@ -23,6 +24,29 @@ k054539_device::k054539_device(const machine_config &mconfig, const char *tag, d
 	cur_zone(nullptr), rom(nullptr), rom_size(0), rom_mask(0), stream(nullptr), m_timer(nullptr), m_timer_state(0),
 		m_timer_handler(*this),
 		m_rgnoverride(NULL)
+=======
+//#define VERBOSE 1
+#include "logmacro.h"
+
+
+DEFINE_DEVICE_TYPE(K054539, k054539_device, "k054539", "K054539 ADPCM")
+
+k054539_device::k054539_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: device_t(mconfig, K054539, tag, owner, clock),
+		device_sound_interface(mconfig, *this),
+		flags(0),
+		ram(nullptr),
+		reverb_pos(0),
+		cur_ptr(0),
+		cur_limit(0),
+		cur_zone(nullptr),
+		m_rom(*this, DEVICE_SELF),
+		rom_mask(0),
+		stream(nullptr),
+		m_timer(nullptr),
+		m_timer_state(0),
+		m_timer_handler(*this)
+>>>>>>> upstream/master
 {
 }
 
@@ -99,6 +123,7 @@ void k054539_device::sound_stream_update(sound_stream &stream, stream_sample_t *
 {
 #define VOL_CAP 1.80
 
+<<<<<<< HEAD
 	static const INT16 dpcm[16] = {
 		0<<8, 1<<8, 4<<8, 9<<8, 16<<8, 25<<8, 36<<8, 49<<8,
 		-64<<8, -49<<8, -36<<8, -25<<8, -16<<8, -9<<8, -4<<8, -1<<8
@@ -106,6 +131,15 @@ void k054539_device::sound_stream_update(sound_stream &stream, stream_sample_t *
 
 
 	INT16 *rbase = (INT16 *)ram;
+=======
+	static const int16_t dpcm[16] = {
+		0 * 0x100,     1 * 0x100,   4 * 0x100,   9 * 0x100,  16 * 0x100, 25 * 0x100, 36 * 0x100, 49 * 0x100,
+		-64 * 0x100, -49 * 0x100, -36 * 0x100, -25 * 0x100, -16 * 0x100, -9 * 0x100, -4 * 0x100, -1 * 0x100
+	};
+
+
+	int16_t *rbase = (int16_t *)ram.get();
+>>>>>>> upstream/master
 
 	if(!(regs[0x22f] & 1))
 		return;
@@ -190,12 +224,21 @@ void k054539_device::sound_stream_update(sound_stream &stream, stream_sample_t *
 						cur_pos += pdelta;
 
 						cur_pval = cur_val;
+<<<<<<< HEAD
 						cur_val = (INT16)(rom[cur_pos] << 8);
 						if(cur_val == (INT16)0x8000 && (base2[1] & 1)) {
 							cur_pos = (base1[0x08] | (base1[0x09] << 8) | (base1[0x0a] << 16)) & rom_mask;
 							cur_val = (INT16)(rom[cur_pos] << 8);
 						}
 						if(cur_val == (INT16)0x8000) {
+=======
+						cur_val = (int16_t)(m_rom[cur_pos] << 8);
+						if(cur_val == (int16_t)0x8000 && (base2[1] & 1)) {
+							cur_pos = (base1[0x08] | (base1[0x09] << 8) | (base1[0x0a] << 16)) & rom_mask;
+							cur_val = (int16_t)(m_rom[cur_pos] << 8);
+						}
+						if(cur_val == (int16_t)0x8000) {
+>>>>>>> upstream/master
 							keyoff(ch);
 							cur_val = 0;
 							break;
@@ -213,12 +256,21 @@ void k054539_device::sound_stream_update(sound_stream &stream, stream_sample_t *
 						cur_pos += pdelta;
 
 						cur_pval = cur_val;
+<<<<<<< HEAD
 						cur_val = (INT16)(rom[cur_pos] | rom[cur_pos+1]<<8);
 						if(cur_val == (INT16)0x8000 && (base2[1] & 1)) {
 							cur_pos = (base1[0x08] | (base1[0x09] << 8) | (base1[0x0a] << 16)) & rom_mask;
 							cur_val = (INT16)(rom[cur_pos] | rom[cur_pos+1]<<8);
 						}
 						if(cur_val == (INT16)0x8000) {
+=======
+						cur_val = (int16_t)(m_rom[cur_pos] | m_rom[cur_pos+1]<<8);
+						if(cur_val == (int16_t)0x8000 && (base2[1] & 1)) {
+							cur_pos = (base1[0x08] | (base1[0x09] << 8) | (base1[0x0a] << 16)) & rom_mask;
+							cur_val = (int16_t)(m_rom[cur_pos] | m_rom[cur_pos+1]<<8);
+						}
+						if(cur_val == (int16_t)0x8000) {
+>>>>>>> upstream/master
 							keyoff(ch);
 							cur_val = 0;
 							break;
@@ -241,10 +293,17 @@ void k054539_device::sound_stream_update(sound_stream &stream, stream_sample_t *
 						cur_pos += pdelta;
 
 						cur_pval = cur_val;
+<<<<<<< HEAD
 						cur_val = rom[cur_pos>>1];
 						if(cur_val == 0x88 && (base2[1] & 1)) {
 							cur_pos = ((base1[0x08] | (base1[0x09] << 8) | (base1[0x0a] << 16)) & rom_mask) << 1;
 							cur_val = rom[cur_pos>>1];
+=======
+						cur_val = m_rom[cur_pos>>1];
+						if(cur_val == 0x88 && (base2[1] & 1)) {
+							cur_pos = ((base1[0x08] | (base1[0x09] << 8) | (base1[0x0a] << 16)) & rom_mask) << 1;
+							cur_val = m_rom[cur_pos>>1];
+>>>>>>> upstream/master
 						}
 						if(cur_val == 0x88) {
 							keyoff(ch);
@@ -269,12 +328,20 @@ void k054539_device::sound_stream_update(sound_stream &stream, stream_sample_t *
 					break;
 				}
 				default:
+<<<<<<< HEAD
 					LOG(("Unknown sample type %x for channel %d\n", base2[0] & 0xc, ch));
+=======
+					LOG("Unknown sample type %x for channel %d\n", base2[0] & 0xc, ch);
+>>>>>>> upstream/master
 					break;
 				}
 				lval += cur_val * lvol;
 				rval += cur_val * rvol;
+<<<<<<< HEAD
 				rbase[(rdelta + reverb_pos) & 0x1fff] += INT16(cur_val*rbvol);
+=======
+				rbase[(rdelta + reverb_pos) & 0x1fff] += int16_t(cur_val*rbvol);
+>>>>>>> upstream/master
 
 				chan->pos = cur_pos;
 				chan->pfrac = cur_pfrac;
@@ -288,8 +355,13 @@ void k054539_device::sound_stream_update(sound_stream &stream, stream_sample_t *
 				}
 			}
 		reverb_pos = (reverb_pos + 1) & 0x1fff;
+<<<<<<< HEAD
 		outputs[0][sample] = INT16(lval);
 		outputs[1][sample] = INT16(rval);
+=======
+		outputs[0][sample] = int16_t(lval);
+		outputs[1][sample] = int16_t(rval);
+>>>>>>> upstream/master
 	}
 }
 
@@ -306,6 +378,7 @@ void k054539_device::init_chip()
 	memset(posreg_latch, 0, sizeof(posreg_latch)); //*
 	flags |= UPDATE_AT_KEYON; //* make it default until proven otherwise
 
+<<<<<<< HEAD
 	ram = auto_alloc_array(machine(), unsigned char, 0x4000);
 	reverb_pos = 0;
 	cur_ptr = 0;
@@ -317,15 +390,41 @@ void k054539_device::init_chip()
 	rom_mask = 0xffffffffU;
 	for(int i=0; i<32; i++)
 		if((1U<<i) >= rom_size) {
+=======
+	ram = std::make_unique<uint8_t[]>(0x4000);
+	reverb_pos = 0;
+	cur_ptr = 0;
+	memset(ram.get(), 0, 0x4000);
+
+	rom_mask = 0xffffffffU;
+	for(int i=0; i<32; i++)
+		if((1U<<i) >= m_rom.bytes()) {
+>>>>>>> upstream/master
 			rom_mask = (1U<<i) - 1;
 			break;
 		}
 
 	stream = stream_alloc(0, 2, clock() / 384);
 
+<<<<<<< HEAD
 	save_item(NAME(regs));
 	save_pointer(NAME(ram), 0x4000);
 	save_item(NAME(cur_ptr));
+=======
+	save_item(NAME(voltab));
+	save_item(NAME(pantab));
+	save_item(NAME(gain));
+	save_item(NAME(posreg_latch));
+	save_item(NAME(flags));
+
+	save_item(NAME(regs));
+	save_pointer(NAME(ram.get()), 0x4000);
+	save_item(NAME(reverb_pos));
+	save_item(NAME(cur_ptr));
+	save_item(NAME(cur_limit));
+
+	save_item(NAME(m_timer_state));
+>>>>>>> upstream/master
 }
 
 WRITE8_MEMBER(k054539_device::write)
@@ -381,8 +480,13 @@ WRITE8_MEMBER(k054539_device::write)
 				{
 					if(data & (1<<ch))
 					{
+<<<<<<< HEAD
 						UINT8 *posptr = &posreg_latch[ch][0];
 						UINT8 *regptr = regs + (ch<<5) + 0xc;
+=======
+						uint8_t *posptr = &posreg_latch[ch][0];
+						uint8_t *regptr = regs + (ch<<5) + 0xc;
+>>>>>>> upstream/master
 
 						// update the chip at key-on
 						regptr[0] = posptr[0];
@@ -428,8 +532,13 @@ WRITE8_MEMBER(k054539_device::write)
 
 		case 0x22e:
 			cur_zone =
+<<<<<<< HEAD
 				data == 0x80 ? ram :
 				rom + 0x20000*data;
+=======
+				data == 0x80 ? ram.get() :
+				&m_rom[0x20000*data];
+>>>>>>> upstream/master
 			cur_limit = data == 0x80 ? 0x4000 : 0x20000;
 			cur_ptr = 0;
 		break;
@@ -466,7 +575,11 @@ WRITE8_MEMBER(k054539_device::write)
 void k054539_device::device_post_load()
 {
 	int data = regs[0x22e];
+<<<<<<< HEAD
 	cur_zone = data == 0x80 ? ram : rom + 0x20000*data;
+=======
+	cur_zone = data == 0x80 ? ram.get() : &m_rom[0x20000*data];
+>>>>>>> upstream/master
 	cur_limit = data == 0x80 ? 0x4000 : 0x20000;
 }
 
@@ -475,7 +588,11 @@ READ8_MEMBER(k054539_device::read)
 	switch(offset) {
 	case 0x22d:
 		if(regs[0x22f] & 0x10) {
+<<<<<<< HEAD
 			UINT8 res = cur_zone[cur_ptr];
+=======
+			uint8_t res = cur_zone[cur_ptr];
+>>>>>>> upstream/master
 			cur_ptr++;
 			if(cur_ptr == cur_limit)
 				cur_ptr = 0;
@@ -485,7 +602,11 @@ READ8_MEMBER(k054539_device::read)
 	case 0x22c:
 		break;
 	default:
+<<<<<<< HEAD
 		LOG(("K054539 read %03x\n", offset));
+=======
+		LOG("K054539 read %03x\n", offset);
+>>>>>>> upstream/master
 		break;
 	}
 	return regs[offset];
@@ -499,8 +620,13 @@ void k054539_device::device_start()
 	m_timer_handler.resolve_safe();
 	m_apan_cb.bind_relative_to(*owner());
 
+<<<<<<< HEAD
 	for (int i = 0; i < 8; i++)
 		gain[i] = 1.0;
+=======
+	for (auto & elem : gain)
+		elem = 1.0;
+>>>>>>> upstream/master
 
 	flags = RESET_FLAGS;
 

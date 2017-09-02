@@ -57,7 +57,11 @@ void galaxold_state::machine_reset_common(int line)
 {
 	m_irq_line = line;
 
+<<<<<<< HEAD
 	/* initalize main CPU interrupt generator flip-flops */
+=======
+	/* initialize main CPU interrupt generator flip-flops */
+>>>>>>> upstream/master
 	m_7474_9m_2->preset_w(1);
 	m_7474_9m_2->clear_w (1);
 
@@ -87,29 +91,49 @@ MACHINE_RESET_MEMBER(galaxold_state,hunchbkg)
 
 WRITE8_MEMBER(galaxold_state::galaxold_coin_lockout_w)
 {
+<<<<<<< HEAD
 	coin_lockout_global_w(machine(), ~data & 1);
+=======
+	machine().bookkeeping().coin_lockout_global_w(~data & 1);
+>>>>>>> upstream/master
 }
 
 
 WRITE8_MEMBER(galaxold_state::galaxold_coin_counter_w)
 {
+<<<<<<< HEAD
 	coin_counter_w(machine(), offset, data & 0x01);
+=======
+	machine().bookkeeping().coin_counter_w(offset, data & 0x01);
+>>>>>>> upstream/master
 }
 
 WRITE8_MEMBER(galaxold_state::galaxold_coin_counter_1_w)
 {
+<<<<<<< HEAD
 	coin_counter_w(machine(), 1, data & 0x01);
+=======
+	machine().bookkeeping().coin_counter_w(1, data & 0x01);
+>>>>>>> upstream/master
 }
 
 WRITE8_MEMBER(galaxold_state::galaxold_coin_counter_2_w)
 {
+<<<<<<< HEAD
 	coin_counter_w(machine(), 2, data & 0x01);
+=======
+	machine().bookkeeping().coin_counter_w(2, data & 0x01);
+>>>>>>> upstream/master
 }
 
 
 WRITE8_MEMBER(galaxold_state::galaxold_leds_w)
 {
+<<<<<<< HEAD
 	set_led_status(machine(), offset,data & 1);
+=======
+	output().set_led_value(offset,data & 1);
+>>>>>>> upstream/master
 }
 
 READ8_MEMBER(galaxold_state::scramblb_protection_1_r)
@@ -146,7 +170,11 @@ WRITE8_MEMBER(galaxold_state::_4in1_bank_w)
 CUSTOM_INPUT_MEMBER(galaxold_state::_4in1_fake_port_r)
 {
 	static const char *const portnames[] = { "FAKE1", "FAKE2", "FAKE3", "FAKE4" };
+<<<<<<< HEAD
 	int bit_mask = (FPTR)param;
+=======
+	int bit_mask = (uintptr_t)param;
+>>>>>>> upstream/master
 
 	return (ioport(portnames[m__4in1_bank])->read() & bit_mask) ? 0x01 : 0x00;
 }
@@ -155,7 +183,11 @@ DRIVER_INIT_MEMBER(galaxold_state,4in1)
 {
 	address_space &space = m_maincpu->space(AS_PROGRAM);
 	offs_t i, len = memregion("maincpu")->bytes();
+<<<<<<< HEAD
 	UINT8 *RAM = memregion("maincpu")->base();
+=======
+	uint8_t *RAM = memregion("maincpu")->base();
+>>>>>>> upstream/master
 
 	/* Decrypt Program Roms */
 	for (i = 0; i < len; i++)
@@ -174,18 +206,25 @@ INTERRUPT_GEN_MEMBER(galaxold_state::hunchbks_vh_interrupt)
 	generic_pulse_irq_line_and_vector(device.execute(),0,0x03,1);
 }
 
+<<<<<<< HEAD
 DRIVER_INIT_MEMBER(galaxold_state,ladybugg)
 {
 	/* Doesn't actually use the bank, but it mustn't have a coin lock! */
 	m_maincpu->space(AS_PROGRAM).install_write_handler(0x6002, 0x6002, write8_delegate(FUNC(galaxold_state::galaxold_gfxbank_w),this));
 }
 
+=======
+>>>>>>> upstream/master
 DRIVER_INIT_MEMBER(galaxold_state,bullsdrtg)
 {
 	int i;
 
 	// patch char supposed to be space
+<<<<<<< HEAD
 	UINT8 *gfxrom = memregion("gfx1")->base();
+=======
+	uint8_t *gfxrom = memregion("gfx1")->base();
+>>>>>>> upstream/master
 	for (i = 0; i < 8; i++)
 	{
 		gfxrom[i] = 0;

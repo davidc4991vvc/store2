@@ -26,6 +26,7 @@
 		"base/api.lua",
 		"base/cmdline.lua",
 		"base/inspect.lua",
+<<<<<<< HEAD
 		"tools/dotnet.lua",
 		"tools/gcc.lua",
 		"tools/msc.lua",
@@ -46,6 +47,24 @@
 		"actions/codelite/codelite_project.lua",
 
 		-- CodeLite action
+=======
+		"base/profiler.lua",
+		"tools/dotnet.lua",
+		"tools/gcc.lua",
+		"tools/ghs.lua",
+		"tools/msc.lua",
+		"tools/ow.lua",
+		"tools/snc.lua",
+		"tools/valac.lua",
+		"tools/swift.lua",
+		"base/validate.lua",
+		"base/help.lua",
+		"base/premake.lua",
+		"base/iter.lua",
+		"base/set.lua",
+
+		-- CMake action
+>>>>>>> upstream/master
 		"actions/cmake/_cmake.lua",
 		"actions/cmake/cmake_workspace.lua",
 		"actions/cmake/cmake_project.lua",
@@ -55,6 +74,7 @@
 		"actions/make/make_solution.lua",
 		"actions/make/make_cpp.lua",
 		"actions/make/make_csharp.lua",
+<<<<<<< HEAD
 
 		-- Visual Studio actions
 		"actions/vstudio/_vstudio.lua",
@@ -68,6 +88,21 @@
 		"actions/vstudio/vs2012.lua",
 		"actions/vstudio/vs2013.lua",
 		"actions/vstudio/vs2015.lua",
+=======
+		"actions/make/make_vala.lua",
+		"actions/make/make_swift.lua",
+
+		-- Visual Studio actions
+		"actions/vstudio/_vstudio.lua",
+		"actions/vstudio/vstudio_solution.lua",
+		"actions/vstudio/vstudio_vcxproj.lua",
+		"actions/vstudio/vstudio_vcxproj_filters.lua",
+		"actions/vstudio/vs2010.lua",
+		"actions/vstudio/vs2012.lua",
+		"actions/vstudio/vs2013.lua",
+		"actions/vstudio/vs2015.lua",
+		"actions/vstudio/vs2017.lua",
+>>>>>>> upstream/master
 
 		-- Xcode action
 		"actions/xcode/_xcode.lua",
@@ -77,6 +112,31 @@
 		-- Xcode4 action
 		"actions/xcode/xcode4_workspace.lua",
 
+<<<<<<< HEAD
 		-- Clean action
 		"actions/clean/_clean.lua",
+=======
+		-- Xcode6 action
+		"actions/xcode/xcode6_project.lua",
+		"actions/xcode/xcode6_config.lua",
+
+		--FASTBuild action
+		"actions/fastbuild/_fastbuild.lua",
+		"actions/fastbuild/fastbuild_project.lua",
+		"actions/fastbuild/fastbuild_solution.lua",
+
+		-- ninja action
+		"actions/ninja/_ninja.lua",
+		"actions/ninja/ninja_base.lua",
+		"actions/ninja/ninja_solution.lua",
+		"actions/ninja/ninja_cpp.lua",
+		"actions/ninja/ninja_swift.lua",
+		"actions/ninja/ninja_swift_incremental.lua",
+
+		-- qbs action
+		"actions/qbs/_qbs.lua",
+		"actions/qbs/qbs_base.lua",
+		"actions/qbs/qbs_solution.lua",
+		"actions/qbs/qbs_cpp.lua",
+>>>>>>> upstream/master
 	}

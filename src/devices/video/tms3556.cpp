@@ -16,11 +16,42 @@
 #include "emu.h"
 #include "tms3556.h"
 
+<<<<<<< HEAD
+=======
+#include "screen.h"
+
+//#define VERBOSE 1
+#include "logmacro.h"
+
+
+
+>>>>>>> upstream/master
 //**************************************************************************
 //  MACROS / CONSTANTS
 //**************************************************************************
 
+<<<<<<< HEAD
 #define LOG 0
+=======
+#define VDP_POINTER m_control_regs[0]
+#define VDP_COL     m_control_regs[1]
+#define VDP_ROW     m_control_regs[2]
+#define VDP_STAT    m_control_regs[3]
+#define VDP_CM1     m_control_regs[4]
+#define VDP_CM2     m_control_regs[5]
+#define VDP_CM3     m_control_regs[6]
+#define VDP_CM4     m_control_regs[7]
+#define VDP_BAMT    m_address_regs[0]
+#define VDP_BAMP    m_address_regs[1]
+#define VDP_BAPA    m_address_regs[2]
+#define VDP_BAGC0   m_address_regs[3]
+#define VDP_BAGC1   m_address_regs[4]
+#define VDP_BAGC2   m_address_regs[5]
+#define VDP_BAGC3   m_address_regs[6]
+#define VDP_BAMTF   m_address_regs[7]
+
+ALLOW_SAVE_TYPE(tms3556_device::dma_mode_tt);
+>>>>>>> upstream/master
 
 
 
@@ -29,11 +60,19 @@
 //**************************************************************************
 
 // devices
+<<<<<<< HEAD
 const device_type TMS3556 = &device_creator<tms3556_device>;
 
 
 // default address map
 static ADDRESS_MAP_START( tms3556, AS_0, 8, tms3556_device )
+=======
+DEFINE_DEVICE_TYPE(TMS3556, tms3556_device, "tms3556", "Texas Instruments TMS3556 VDP")
+
+
+// default address map
+static ADDRESS_MAP_START( tms3556, 0, 8, tms3556_device )
+>>>>>>> upstream/master
 	AM_RANGE(0x0000, 0xffff) AM_RAM
 ADDRESS_MAP_END
 
@@ -42,9 +81,17 @@ ADDRESS_MAP_END
 //  any address spaces owned by this device
 //-------------------------------------------------
 
+<<<<<<< HEAD
 const address_space_config *tms3556_device::memory_space_config(address_spacenum spacenum) const
 {
 	return (spacenum == AS_0) ? &m_space_config : NULL;
+=======
+device_memory_interface::space_config_vector tms3556_device::memory_space_config() const
+{
+	return space_config_vector {
+		std::make_pair(0, &m_space_config)
+	};
+>>>>>>> upstream/master
 }
 
 
@@ -56,7 +103,11 @@ const address_space_config *tms3556_device::memory_space_config(address_spacenum
 //  readbyte - read a byte at the given address
 //-------------------------------------------------
 
+<<<<<<< HEAD
 inline UINT8 tms3556_device::readbyte(offs_t address)
+=======
+inline uint8_t tms3556_device::readbyte(offs_t address)
+>>>>>>> upstream/master
 {
 	return space().read_byte(address&0xFFFF);
 }
@@ -66,7 +117,11 @@ inline UINT8 tms3556_device::readbyte(offs_t address)
 //  writebyte - write a byte at the given address
 //-------------------------------------------------
 
+<<<<<<< HEAD
 inline void tms3556_device::writebyte(offs_t address, UINT8 data)
+=======
+inline void tms3556_device::writebyte(offs_t address, uint8_t data)
+>>>>>>> upstream/master
 {
 	space().write_byte(address&0xFFFF, data);
 }
@@ -80,10 +135,18 @@ inline void tms3556_device::writebyte(offs_t address, UINT8 data)
 //  tms3556_device - constructor
 //-------------------------------------------------
 
+<<<<<<< HEAD
 tms3556_device::tms3556_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
 	: device_t(mconfig, TMS3556, "Texas Instruments VDP TMS3556", tag, owner, clock, "tms3556", __FILE__),
 		device_memory_interface(mconfig, *this),
 		m_space_config("videoram", ENDIANNESS_LITTLE, 8, 17, 0, NULL, *ADDRESS_MAP_NAME(tms3556)),
+=======
+tms3556_device::tms3556_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: device_t(mconfig, TMS3556, tag, owner, clock),
+		device_memory_interface(mconfig, *this),
+		m_space_config("videoram", ENDIANNESS_LITTLE, 8, 17, 0, nullptr, *ADDRESS_MAP_NAME(tms3556)),
+		m_reg(0), m_reg2(0),
+>>>>>>> upstream/master
 		m_reg_access_phase(0),
 		m_row_col_written(0),
 		m_bamp_written(0),
@@ -114,11 +177,20 @@ void tms3556_device::device_start()
 	// register for state saving
 	save_item(NAME(m_control_regs));
 	save_item(NAME(m_address_regs));
+<<<<<<< HEAD
+=======
+	save_item(NAME(m_reg));
+	save_item(NAME(m_reg2));
+>>>>>>> upstream/master
 	save_item(NAME(m_reg_access_phase));
 	save_item(NAME(m_row_col_written));
 	save_item(NAME(m_bamp_written));
 	save_item(NAME(m_colrow));
+<<<<<<< HEAD
 //    save_item(NAME(m_vdp_acmpxy_mode)); // FIXME : mame cannot save enum
+=======
+	save_item(NAME(m_vdp_acmpxy_mode));
+>>>>>>> upstream/master
 	save_item(NAME(m_vdp_acmpxy));
 	save_item(NAME(m_vdp_acmp));
 	save_item(NAME(m_scanline));
@@ -137,7 +209,11 @@ void tms3556_device::device_start()
 /*static const char *const tms3556_mode_names[] = { "DISPLAY OFF", "TEXT", "GRAPHIC", "MIXED" };*/
 
 
+<<<<<<< HEAD
 UINT32 tms3556_device::screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+=======
+uint32_t tms3556_device::screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+>>>>>>> upstream/master
 {
 	copybitmap(bitmap, m_bitmap, 0, 0, 0, 0, cliprect);
 	return 0;
@@ -150,7 +226,11 @@ UINT32 tms3556_device::screen_update(screen_device &screen, bitmap_ind16 &bitmap
 
 READ8_MEMBER( tms3556_device::vram_r )
 {
+<<<<<<< HEAD
 	UINT8 ret;
+=======
+	uint8_t ret;
+>>>>>>> upstream/master
 	if (m_bamp_written) {
 		m_bamp_written=false;
 		m_vdp_acmpxy_mode=dma_write;
@@ -219,10 +299,17 @@ WRITE8_MEMBER( tms3556_device::vram_w )
 
 READ8_MEMBER( tms3556_device::reg_r )
 {
+<<<<<<< HEAD
 	if (LOG) logerror("TMS3556 Reg Read: %06x\n", offset);
 
 	int reply = 0; // FIXME : will send internal status (VBL, HBL...)
 	m_reg_access_phase=0;
+=======
+	LOG("TMS3556 Reg Read: %06x\n", offset);
+
+	int reply = 0; // FIXME : will send internal status (VBL, HBL...)
+	m_reg_access_phase = 0;
+>>>>>>> upstream/master
 	return reply;
 }
 
@@ -232,6 +319,7 @@ READ8_MEMBER( tms3556_device::reg_r )
 
 WRITE8_MEMBER( tms3556_device::reg_w )
 {
+<<<<<<< HEAD
 	static int reg2=0; // FIXME : this static makes that only one TMS3556 will be present in one system...
 	static int reg=0;
 
@@ -242,10 +330,20 @@ WRITE8_MEMBER( tms3556_device::reg_w )
 		reg=data&0x0F;
 		reg2=(data&0xF0)>>4;
 		if (reg!=0)
+=======
+	LOG("TMS3556 Reg Write: %06x = %02x\n", offset, data);
+
+	switch (m_reg_access_phase) {
+	case 0:
+		m_reg=data&0x0F;
+		m_reg2=(data&0xF0)>>4;
+		if (m_reg!=0)
+>>>>>>> upstream/master
 			m_reg_access_phase=1;
 		return;
 
 	case 1:
+<<<<<<< HEAD
 		if (reg<8) {
 					m_control_regs[reg]=data;
 					// leve un flag si le dernier registre ecrit est row ou col
@@ -300,6 +398,60 @@ WRITE8_MEMBER( tms3556_device::reg_w )
 		case 2:
 			m_reg_access_phase=0;
 			return;
+=======
+		if (m_reg<8) {
+			m_control_regs[m_reg]=data;
+			// leve un flag si le dernier registre ecrit est row ou col
+			if ((m_reg==2) || (m_reg==1)) {
+				m_colrow=(m_control_regs[2]<<8)|m_control_regs[1];
+				m_row_col_written=true;
+			}
+
+			if (m_reg2==0) {
+				m_reg_access_phase=0;
+				return;
+			} else {
+				m_reg_access_phase=1;
+				m_reg=m_reg2;
+				m_reg2=0;
+				return;
+			}
+		} else {
+			m_address_regs[m_reg-8]=(m_control_regs[2]<<8)|m_control_regs[1];
+			// cas speciaux de decalage pour les generateurs
+			if ((m_reg>=0xB) && (m_reg<=0xE)) {
+				m_address_regs[m_reg-8]+=2;
+				m_address_regs[m_reg-8]&=0xFFFF;
+			} else {
+				m_address_regs[m_reg-8]+=1;
+				m_address_regs[m_reg-8]&=0xFFFF;
+			}
+			if (m_reg==9) {
+				m_row_col_written=false;
+				m_bamp_written=true;
+				m_reg_access_phase=0;
+				return;
+			} else {
+				m_row_col_written=0;
+				m_bamp_written=false;
+				m_reg_access_phase=2;//???
+				return;
+			}
+			logerror("VDP16[%d] = x%x",m_reg,m_address_regs[m_reg-8]);
+			if (m_reg2==0) {
+				m_reg_access_phase=0;
+				return;
+			} else {
+				m_reg_access_phase=1;
+				m_reg=m_reg2;
+				m_reg2=0;
+				return;
+			}
+		}
+	case 2:
+		m_reg_access_phase=0;
+		return;
+>>>>>>> upstream/master
 	}
 }
 
@@ -324,11 +476,19 @@ READ8_MEMBER( tms3556_device::initptr_r )
 //  top and bottom borders, and screen off mode)
 //-------------------------------------------------
 
+<<<<<<< HEAD
 void tms3556_device::draw_line_empty(UINT16 *ln)
 {
 	int i;
 
 	for (i = 0; i < TMS3556_TOTAL_WIDTH; i++)
+=======
+void tms3556_device::draw_line_empty(uint16_t *ln)
+{
+	int i;
+
+	for (i = 0; i < TOTAL_WIDTH; i++)
+>>>>>>> upstream/master
 #if TMS3556_DOUBLE_WIDTH
 		*ln++ = m_bg_color;
 #endif
@@ -341,10 +501,17 @@ void tms3556_device::draw_line_empty(UINT16 *ln)
 //  (called by draw_line_text and draw_line_mixed)
 //-------------------------------------------------
 
+<<<<<<< HEAD
 void tms3556_device::draw_line_text_common(UINT16 *ln)
 {
 	int pattern, x, xx, i, name_offset;
 	UINT16 fg, bg;
+=======
+void tms3556_device::draw_line_text_common(uint16_t *ln)
+{
+	int pattern, x, xx, i, name_offset;
+	uint16_t fg, bg;
+>>>>>>> upstream/master
 	offs_t nametbl_base;
 	offs_t patterntbl_base[4];
 	int name_hi, name_lo;
@@ -355,7 +522,11 @@ void tms3556_device::draw_line_text_common(UINT16 *ln)
 	for (i = 0; i < 4; i++)
 		patterntbl_base[i] = m_address_regs[i + 3];
 
+<<<<<<< HEAD
 	for (xx = 0; xx < TMS3556_LEFT_BORDER; xx++)
+=======
+	for (xx = 0; xx < LEFT_BORDER; xx++)
+>>>>>>> upstream/master
 #if TMS3556_DOUBLE_WIDTH
 		*ln++ = m_bg_color;
 #endif
@@ -411,7 +582,11 @@ void tms3556_device::draw_line_text_common(UINT16 *ln)
 		{   /* single width */
 			for (xx = 0; xx < 8; xx++)
 			{
+<<<<<<< HEAD
 				UINT16 color = (pattern & 0x80) ? fg : bg;
+=======
+				uint16_t color = (pattern & 0x80) ? fg : bg;
+>>>>>>> upstream/master
 #if TMS3556_DOUBLE_WIDTH
 				*ln++ = color;
 #endif
@@ -427,7 +602,11 @@ void tms3556_device::draw_line_text_common(UINT16 *ln)
 				pattern <<= 4;
 			for (xx = 0; xx < 4; xx++)
 			{
+<<<<<<< HEAD
 				UINT16 color = (pattern & 0x80) ? fg : bg;
+=======
+				uint16_t color = (pattern & 0x80) ? fg : bg;
+>>>>>>> upstream/master
 #if TMS3556_DOUBLE_WIDTH
 				*ln++ = color; *ln++ = color;
 #endif
@@ -439,7 +618,11 @@ void tms3556_device::draw_line_text_common(UINT16 *ln)
 		name_offset += 2;
 	}
 
+<<<<<<< HEAD
 	for (xx = 0; xx < TMS3556_RIGHT_BORDER; xx++)
+=======
+	for (xx = 0; xx < RIGHT_BORDER; xx++)
+>>>>>>> upstream/master
 #if TMS3556_DOUBLE_WIDTH
 		*ln++ = m_bg_color;
 #endif
@@ -455,7 +638,11 @@ void tms3556_device::draw_line_text_common(UINT16 *ln)
 //  (called by draw_line_bitmap and draw_line_mixed)
 //-------------------------------------------------
 
+<<<<<<< HEAD
 void tms3556_device::draw_line_bitmap_common(UINT16 *ln)
+=======
+void tms3556_device::draw_line_bitmap_common(uint16_t *ln)
+>>>>>>> upstream/master
 {
 	int x, xx;
 	offs_t nametbl_base;
@@ -463,7 +650,11 @@ void tms3556_device::draw_line_bitmap_common(UINT16 *ln)
 
 	nametbl_base = m_address_regs[2];
 
+<<<<<<< HEAD
 	for (xx = 0; xx < TMS3556_LEFT_BORDER; xx++)
+=======
+	for (xx = 0; xx < LEFT_BORDER; xx++)
+>>>>>>> upstream/master
 #if TMS3556_DOUBLE_WIDTH
 		*ln++ = m_bg_color;
 #endif
@@ -476,7 +667,11 @@ void tms3556_device::draw_line_bitmap_common(UINT16 *ln)
 		name_r = readbyte(nametbl_base + m_name_offset + 2);
 		for (xx = 0; xx < 8; xx++)
 		{
+<<<<<<< HEAD
 			UINT16 color = ((name_b >> 5) & 0x4) | ((name_g >> 6) & 0x2) | ((name_r >> 7) & 0x1);
+=======
+			uint16_t color = ((name_b >> 5) & 0x4) | ((name_g >> 6) & 0x2) | ((name_r >> 7) & 0x1);
+>>>>>>> upstream/master
 #if TMS3556_DOUBLE_WIDTH
 			*ln++ = color;
 #endif
@@ -488,7 +683,11 @@ void tms3556_device::draw_line_bitmap_common(UINT16 *ln)
 		m_name_offset += 3;
 	}
 
+<<<<<<< HEAD
 	for (xx = 0; xx < TMS3556_RIGHT_BORDER; xx++)
+=======
+	for (xx = 0; xx < RIGHT_BORDER; xx++)
+>>>>>>> upstream/master
 #if TMS3556_DOUBLE_WIDTH
 		*ln++ = m_bg_color;
 #endif
@@ -500,7 +699,11 @@ void tms3556_device::draw_line_bitmap_common(UINT16 *ln)
 //  draw_line_text - draw a line in text mode
 //-------------------------------------------------
 
+<<<<<<< HEAD
 void tms3556_device::draw_line_text(UINT16 *ln)
+=======
+void tms3556_device::draw_line_text(uint16_t *ln)
+>>>>>>> upstream/master
 {
 	if (m_char_line_counter == 0)
 		m_char_line_counter = 10;
@@ -513,7 +716,11 @@ void tms3556_device::draw_line_text(UINT16 *ln)
 //  draw_line_bitmap - draw a line in bitmap mode
 //-------------------------------------------------
 
+<<<<<<< HEAD
 void tms3556_device::draw_line_bitmap(UINT16 *ln)
+=======
+void tms3556_device::draw_line_bitmap(uint16_t *ln)
+>>>>>>> upstream/master
 {
 	draw_line_bitmap_common(ln);
 	m_bg_color = (readbyte(m_address_regs[2] + m_name_offset) >> 5) & 0x7;
@@ -525,7 +732,11 @@ void tms3556_device::draw_line_bitmap(UINT16 *ln)
 //  draw_line_mixed - draw a line in mixed mode
 //-------------------------------------------------
 
+<<<<<<< HEAD
 void tms3556_device::draw_line_mixed(UINT16 *ln)
+=======
+void tms3556_device::draw_line_mixed(uint16_t *ln)
+>>>>>>> upstream/master
 {
 	if (m_cg_flag)
 	{   /* bitmap line */
@@ -557,8 +768,13 @@ void tms3556_device::draw_line_mixed(UINT16 *ln)
 
 void tms3556_device::draw_line(bitmap_ind16 &bmp, int line)
 {
+<<<<<<< HEAD
 	int double_lines = 0;
 	UINT16 *ln, *ln2 = NULL;
+=======
+	int double_lines;
+	uint16_t *ln, *ln2;
+>>>>>>> upstream/master
 
 //  if (m_control_regs[4] & 0x??)
 //  {   // interlaced mode
@@ -571,7 +787,11 @@ void tms3556_device::draw_line(bitmap_ind16 &bmp, int line)
 		double_lines = 1;
 	}
 
+<<<<<<< HEAD
 	if ((line < TMS3556_TOP_BORDER) || (line >= (TMS3556_TOP_BORDER + 250)))
+=======
+	if ((line < TOP_BORDER) || (line >= (TOP_BORDER + 250)))
+>>>>>>> upstream/master
 	{
 		/* draw top and bottom borders */
 		draw_line_empty(ln);
@@ -582,6 +802,7 @@ void tms3556_device::draw_line(bitmap_ind16 &bmp, int line)
 		/* draw useful area */
 		switch (m_control_regs[6] >> 6)
 		{
+<<<<<<< HEAD
 		case TMS3556_MODE_OFF:
 			draw_line_empty(ln);
 			break;
@@ -592,6 +813,18 @@ void tms3556_device::draw_line(bitmap_ind16 &bmp, int line)
 			draw_line_bitmap(ln);
 			break;
 		case TMS3556_MODE_MIXED:
+=======
+		case MODE_OFF:
+			draw_line_empty(ln);
+			break;
+		case MODE_TEXT:
+			draw_line_text(ln);
+			break;
+		case MODE_BITMAP:
+			draw_line_bitmap(ln);
+			break;
+		case MODE_MIXED:
+>>>>>>> upstream/master
 			draw_line_mixed(ln);
 			break;
 		}
@@ -600,8 +833,13 @@ void tms3556_device::draw_line(bitmap_ind16 &bmp, int line)
 	if (double_lines)
 	{
 		// TODO: this overlaps in exeltel - use memmove for now
+<<<<<<< HEAD
 		//memcpy(ln2, ln, TMS3556_TOTAL_WIDTH * (TMS3556_DOUBLE_WIDTH ? 2 : 1));
 		memmove(ln2, ln, TMS3556_TOTAL_WIDTH * (TMS3556_DOUBLE_WIDTH ? 2 : 1));
+=======
+		//memcpy(ln2, ln, TOTAL_WIDTH * (TMS3556_DOUBLE_WIDTH ? 2 : 1));
+		memmove(ln2, ln, TOTAL_WIDTH * (TMS3556_DOUBLE_WIDTH ? 2 : 1));
+>>>>>>> upstream/master
 	}
 }
 
@@ -647,7 +885,11 @@ void tms3556_device::interrupt(running_machine &machine)
 		interrupt_start_vblank();
 
 	/* render the current line */
+<<<<<<< HEAD
 	if ((m_scanline >= 0) && (m_scanline < TMS3556_TOTAL_HEIGHT))
+=======
+	if ((m_scanline >= 0) && (m_scanline < TOTAL_HEIGHT))
+>>>>>>> upstream/master
 	{
 		//if (!video_skip_this_frame())
 			draw_line(m_bitmap, m_scanline);

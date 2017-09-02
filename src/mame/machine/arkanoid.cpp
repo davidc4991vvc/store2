@@ -1,5 +1,9 @@
 // license:BSD-3-Clause
+<<<<<<< HEAD
 // copyright-holders:Brad Oliver
+=======
+// copyright-holders:Brad Oliver,Stephane Humbert
+>>>>>>> upstream/master
 /***************************************************************************
 
   machine.c
@@ -17,6 +21,7 @@
 #define ARKANOID_BOOTLEG_VERBOSE 1
 
 
+<<<<<<< HEAD
 READ8_MEMBER(arkanoid_state::arkanoid_Z80_mcu_r)
 {
 	/* return the last value the 68705 wrote, and mark that we've read it */
@@ -104,13 +109,25 @@ CUSTOM_INPUT_MEMBER(arkanoid_state::arkanoid_68705_input_r)
 		res |= 0x02;
 
 	return res;
+=======
+CUSTOM_INPUT_MEMBER(arkanoid_state::arkanoid_semaphore_input_r)
+{
+	// bit 0 is host semaphore flag, bit 1 is MCU semaphore flag (both active low)
+	return
+			((CLEAR_LINE != m_mcuintf->host_semaphore_r()) ? 0x00 : 0x01) |
+			((CLEAR_LINE != m_mcuintf->mcu_semaphore_r()) ? 0x00 : 0x02);
+>>>>>>> upstream/master
 }
 
 CUSTOM_INPUT_MEMBER(arkanoid_state::arkanoid_input_mux)
 {
+<<<<<<< HEAD
 	const char *tag1 = (const char *)param;
 	const char *tag2 = tag1 + strlen(tag1) + 1;
 	return ioport((m_paddle_select == 0) ? tag1 : tag2)->read();
+=======
+	return m_muxports[(0 == m_paddle_select) ? 0 : 1]->read();
+>>>>>>> upstream/master
 }
 
 /*
@@ -176,7 +193,11 @@ TO DO (2006.09.12) :
 /* Kludge for some bootlegs that read this address */
 READ8_MEMBER(arkanoid_state::arkanoid_bootleg_f000_r)
 {
+<<<<<<< HEAD
 	UINT8 arkanoid_bootleg_val = 0x00;
+=======
+	uint8_t arkanoid_bootleg_val = 0x00;
+>>>>>>> upstream/master
 
 	switch (m_bootleg_id)
 	{
@@ -218,7 +239,11 @@ READ8_MEMBER(arkanoid_state::arkanoid_bootleg_f000_r)
 /* Kludge for some bootlegs that read this address */
 READ8_MEMBER(arkanoid_state::arkanoid_bootleg_f002_r)
 {
+<<<<<<< HEAD
 	UINT8 arkanoid_bootleg_val = 0x00;
+=======
+	uint8_t arkanoid_bootleg_val = 0x00;
+>>>>>>> upstream/master
 
 	switch (m_bootleg_id)
 	{
@@ -567,9 +592,15 @@ READ8_MEMBER(arkanoid_state::block2_bootleg_f000_r)
 /* Kludge for some bootlegs that read this address */
 READ8_MEMBER(arkanoid_state::arkanoid_bootleg_d008_r)
 {
+<<<<<<< HEAD
 	UINT8 arkanoid_bootleg_d008_bit[8];
 	UINT8 arkanoid_bootleg_d008_val;
 	UINT8 arkanoid_paddle_value = ioport("MUX")->read();
+=======
+	uint8_t arkanoid_bootleg_d008_bit[8];
+	uint8_t arkanoid_bootleg_d008_val;
+	uint8_t arkanoid_paddle_value = ioport("MUX")->read();
+>>>>>>> upstream/master
 	int b;
 
 	arkanoid_bootleg_d008_bit[4] = arkanoid_bootleg_d008_bit[6] = arkanoid_bootleg_d008_bit[7] = 0;  /* untested bits */

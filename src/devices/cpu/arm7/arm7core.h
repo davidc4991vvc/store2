@@ -140,6 +140,7 @@ enum
 
 #define COPRO_FCSE_PID                      m_fcsePID
 
+<<<<<<< HEAD
 enum
 {
 	eARM_ARCHFLAGS_T    = 1,        // Thumb present
@@ -152,6 +153,8 @@ enum
 };
 
 
+=======
+>>>>>>> upstream/master
 //#define ARM7_USE_DRC
 
 /* forward declaration of implementation-specific state */
@@ -164,6 +167,7 @@ struct arm7imp_state;
 /* CPU state struct */
 struct arm_state
 {
+<<<<<<< HEAD
 	UINT32 m_r[NUM_REGS];
 	UINT32 m_pendingIrq;
 	UINT32 m_pendingFiq;
@@ -171,12 +175,23 @@ struct arm_state
 	UINT32 m_pendingAbtP;
 	UINT32 m_pendingUnd;
 	UINT32 m_pendingSwi;
+=======
+	uint32_t m_r[NUM_REGS];
+	bool m_pendingIrq;
+	bool m_pendingFiq;
+	bool m_pendingAbtD;
+	bool m_pendingAbtP;
+	bool m_pendingUnd;
+	bool m_pendingSwi;
+	bool m_pending_interrupt;
+>>>>>>> upstream/master
 	int m_icount;
 	endianness_t m_endian;
 	address_space *m_program;
 	direct_read_data *m_direct;
 
 	/* Coprocessor Registers */
+<<<<<<< HEAD
 	UINT32 m_control;
 	UINT32 m_tlbBase;
 	UINT32 m_faultStatus[2];
@@ -189,6 +204,22 @@ struct arm_state
 
 #if ARM7_MMU_ENABLE_HACK
 	UINT32 mmu_enable_addr; // workaround for "MMU is enabled when PA != VA" problem
+=======
+	uint32_t m_control;
+	uint32_t m_tlbBase;
+	uint32_t m_tlb_base_mask;
+	uint32_t m_faultStatus[2];
+	uint32_t m_faultAddress;
+	uint32_t m_fcsePID;
+	uint32_t m_domainAccessControl;
+	uint32_t m_decoded_access_control[16];
+
+	uint8_t m_archRev;          // ARM architecture revision (3, 4, and 5 are valid)
+	uint8_t m_archFlags;        // architecture flags
+
+#if ARM7_MMU_ENABLE_HACK
+	uint32_t mmu_enable_addr; // workaround for "MMU is enabled when PA != VA" problem
+>>>>>>> upstream/master
 #endif
 	arm7imp_state m_impstate;
 };
@@ -293,6 +324,7 @@ static const int sRegisterTable[ARM7_NUM_MODES][18] =
 #define F_BIT   6
 #define T_BIT   5   // Thumb mode
 
+<<<<<<< HEAD
 #define N_MASK  ((UINT32)(1 << N_BIT)) /* Negative flag */
 #define Z_MASK  ((UINT32)(1 << Z_BIT)) /* Zero flag */
 #define C_MASK  ((UINT32)(1 << C_BIT)) /* Carry flag */
@@ -301,6 +333,16 @@ static const int sRegisterTable[ARM7_NUM_MODES][18] =
 #define I_MASK  ((UINT32)(1 << I_BIT)) /* Interrupt request disable */
 #define F_MASK  ((UINT32)(1 << F_BIT)) /* Fast interrupt request disable */
 #define T_MASK  ((UINT32)(1 << T_BIT)) /* Thumb Mode flag */
+=======
+#define N_MASK  ((uint32_t)(1 << N_BIT)) /* Negative flag */
+#define Z_MASK  ((uint32_t)(1 << Z_BIT)) /* Zero flag */
+#define C_MASK  ((uint32_t)(1 << C_BIT)) /* Carry flag */
+#define V_MASK  ((uint32_t)(1 << V_BIT)) /* oVerflow flag */
+#define Q_MASK  ((uint32_t)(1 << Q_BIT)) /* signed overflow for QADD, MAC */
+#define I_MASK  ((uint32_t)(1 << I_BIT)) /* Interrupt request disable */
+#define F_MASK  ((uint32_t)(1 << F_BIT)) /* Fast interrupt request disable */
+#define T_MASK  ((uint32_t)(1 << T_BIT)) /* Thumb Mode flag */
+>>>>>>> upstream/master
 
 #define N_IS_SET(pc)    ((pc) & N_MASK)
 #define Z_IS_SET(pc)    ((pc) & Z_MASK)
@@ -322,6 +364,7 @@ static const int sRegisterTable[ARM7_NUM_MODES][18] =
 
 /* Deconstructing an instruction */
 // todo: use these in all places (including dasm file)
+<<<<<<< HEAD
 #define INSN_COND           ((UINT32)0xf0000000u)
 #define INSN_SDT_L          ((UINT32)0x00100000u)
 #define INSN_SDT_W          ((UINT32)0x00200000u)
@@ -354,6 +397,40 @@ static const int sRegisterTable[ARM7_NUM_MODES][18] =
 #define INSN_OP2_RM         ((UINT32)0x0000000fu)
 #define INSN_OP2_ROTATE     ((UINT32)0x00000f00u)
 #define INSN_OP2_IMM        ((UINT32)0x000000ffu)
+=======
+#define INSN_COND           ((uint32_t)0xf0000000u)
+#define INSN_SDT_L          ((uint32_t)0x00100000u)
+#define INSN_SDT_W          ((uint32_t)0x00200000u)
+#define INSN_SDT_B          ((uint32_t)0x00400000u)
+#define INSN_SDT_U          ((uint32_t)0x00800000u)
+#define INSN_SDT_P          ((uint32_t)0x01000000u)
+#define INSN_BDT_L          ((uint32_t)0x00100000u)
+#define INSN_BDT_W          ((uint32_t)0x00200000u)
+#define INSN_BDT_S          ((uint32_t)0x00400000u)
+#define INSN_BDT_U          ((uint32_t)0x00800000u)
+#define INSN_BDT_P          ((uint32_t)0x01000000u)
+#define INSN_BDT_REGS       ((uint32_t)0x0000ffffu)
+#define INSN_SDT_IMM        ((uint32_t)0x00000fffu)
+#define INSN_MUL_A          ((uint32_t)0x00200000u)
+#define INSN_MUL_RM         ((uint32_t)0x0000000fu)
+#define INSN_MUL_RS         ((uint32_t)0x00000f00u)
+#define INSN_MUL_RN         ((uint32_t)0x0000f000u)
+#define INSN_MUL_RD         ((uint32_t)0x000f0000u)
+#define INSN_I              ((uint32_t)0x02000000u)
+#define INSN_OPCODE         ((uint32_t)0x01e00000u)
+#define INSN_S              ((uint32_t)0x00100000u)
+#define INSN_BL             ((uint32_t)0x01000000u)
+#define INSN_BRANCH         ((uint32_t)0x00ffffffu)
+#define INSN_SWI            ((uint32_t)0x00ffffffu)
+#define INSN_RN             ((uint32_t)0x000f0000u)
+#define INSN_RD             ((uint32_t)0x0000f000u)
+#define INSN_OP2            ((uint32_t)0x00000fffu)
+#define INSN_OP2_SHIFT      ((uint32_t)0x00000f80u)
+#define INSN_OP2_SHIFT_TYPE ((uint32_t)0x00000070u)
+#define INSN_OP2_RM         ((uint32_t)0x0000000fu)
+#define INSN_OP2_ROTATE     ((uint32_t)0x00000f00u)
+#define INSN_OP2_IMM        ((uint32_t)0x000000ffu)
+>>>>>>> upstream/master
 #define INSN_OP2_SHIFT_TYPE_SHIFT   4
 #define INSN_OP2_SHIFT_SHIFT        7
 #define INSN_OP2_ROTATE_SHIFT       8
@@ -365,18 +442,28 @@ static const int sRegisterTable[ARM7_NUM_MODES][18] =
 #define INSN_RD_SHIFT               12
 #define INSN_COND_SHIFT             28
 
+<<<<<<< HEAD
 #define INSN_COPRO_N        ((UINT32) 0x00100000u)
 #define INSN_COPRO_CREG     ((UINT32) 0x000f0000u)
 #define INSN_COPRO_AREG     ((UINT32) 0x0000f000u)
 #define INSN_COPRO_CPNUM    ((UINT32) 0x00000f00u)
 #define INSN_COPRO_OP2      ((UINT32) 0x000000e0u)
 #define INSN_COPRO_OP3      ((UINT32) 0x0000000fu)
+=======
+#define INSN_COPRO_N        ((uint32_t) 0x00100000u)
+#define INSN_COPRO_CREG     ((uint32_t) 0x000f0000u)
+#define INSN_COPRO_AREG     ((uint32_t) 0x0000f000u)
+#define INSN_COPRO_CPNUM    ((uint32_t) 0x00000f00u)
+#define INSN_COPRO_OP2      ((uint32_t) 0x000000e0u)
+#define INSN_COPRO_OP3      ((uint32_t) 0x0000000fu)
+>>>>>>> upstream/master
 #define INSN_COPRO_N_SHIFT          20
 #define INSN_COPRO_CREG_SHIFT       16
 #define INSN_COPRO_AREG_SHIFT       12
 #define INSN_COPRO_CPNUM_SHIFT      8
 #define INSN_COPRO_OP2_SHIFT        5
 
+<<<<<<< HEAD
 #define THUMB_INSN_TYPE     ((UINT16)0xf000)
 #define THUMB_COND_TYPE     ((UINT16)0x0f00)
 #define THUMB_GROUP4_TYPE   ((UINT16)0x0c00)
@@ -415,6 +502,46 @@ static const int sRegisterTable[ARM7_NUM_MODES][18] =
 #define THUMB_MULTLS_BASE   ((UINT16)0x0700)
 #define THUMB_RELADDR_SP    ((UINT16)0x0800)
 #define THUMB_RELADDR_RD    ((UINT16)0x0700)
+=======
+#define THUMB_INSN_TYPE     ((uint16_t)0xf000)
+#define THUMB_COND_TYPE     ((uint16_t)0x0f00)
+#define THUMB_GROUP4_TYPE   ((uint16_t)0x0c00)
+#define THUMB_GROUP5_TYPE   ((uint16_t)0x0e00)
+#define THUMB_GROUP5_RM     ((uint16_t)0x01c0)
+#define THUMB_GROUP5_RN     ((uint16_t)0x0038)
+#define THUMB_GROUP5_RD     ((uint16_t)0x0007)
+#define THUMB_ADDSUB_RNIMM  ((uint16_t)0x01c0)
+#define THUMB_ADDSUB_RS     ((uint16_t)0x0038)
+#define THUMB_ADDSUB_RD     ((uint16_t)0x0007)
+#define THUMB_INSN_CMP      ((uint16_t)0x0800)
+#define THUMB_INSN_SUB      ((uint16_t)0x0800)
+#define THUMB_INSN_IMM_RD   ((uint16_t)0x0700)
+#define THUMB_INSN_IMM_S    ((uint16_t)0x0080)
+#define THUMB_INSN_IMM      ((uint16_t)0x00ff)
+#define THUMB_INSN_ADDSUB   ((uint16_t)0x0800)
+#define THUMB_ADDSUB_TYPE   ((uint16_t)0x0600)
+#define THUMB_HIREG_OP      ((uint16_t)0x0300)
+#define THUMB_HIREG_H       ((uint16_t)0x00c0)
+#define THUMB_HIREG_RS      ((uint16_t)0x0038)
+#define THUMB_HIREG_RD      ((uint16_t)0x0007)
+#define THUMB_STACKOP_TYPE  ((uint16_t)0x0f00)
+#define THUMB_STACKOP_L     ((uint16_t)0x0800)
+#define THUMB_STACKOP_RD    ((uint16_t)0x0700)
+#define THUMB_ALUOP_TYPE    ((uint16_t)0x03c0)
+#define THUMB_BLOP_LO       ((uint16_t)0x0800)
+#define THUMB_BLOP_OFFS     ((uint16_t)0x07ff)
+#define THUMB_SHIFT_R       ((uint16_t)0x0800)
+#define THUMB_SHIFT_AMT     ((uint16_t)0x07c0)
+#define THUMB_HALFOP_L      ((uint16_t)0x0800)
+#define THUMB_HALFOP_OFFS   ((uint16_t)0x07c0)
+#define THUMB_BRANCH_OFFS   ((uint16_t)0x07ff)
+#define THUMB_LSOP_L        ((uint16_t)0x0800)
+#define THUMB_LSOP_OFFS     ((uint16_t)0x07c0)
+#define THUMB_MULTLS        ((uint16_t)0x0800)
+#define THUMB_MULTLS_BASE   ((uint16_t)0x0700)
+#define THUMB_RELADDR_SP    ((uint16_t)0x0800)
+#define THUMB_RELADDR_RD    ((uint16_t)0x0700)
+>>>>>>> upstream/master
 #define THUMB_INSN_TYPE_SHIFT       12
 #define THUMB_COND_TYPE_SHIFT       8
 #define THUMB_GROUP4_TYPE_SHIFT     10
@@ -488,6 +615,7 @@ enum
 #define R15                     m_r[eR15]
 #define SPSR                    17                     // SPSR is always the 18th register in our 0 based array sRegisterTable[][18]
 #define GET_CPSR                m_r[eCPSR]
+<<<<<<< HEAD
 #define SET_CPSR(v)             set_cpsr(v)
 #define MODE_FLAG               0xF                    // Mode bits are 4:0 of CPSR, but we ignore bit 4.
 #define GET_MODE                (GET_CPSR & MODE_FLAG)
@@ -495,6 +623,14 @@ enum
 #define SIGN_BITS_DIFFER(a, b)  (((a) ^ (b)) >> 31)
 /* I really don't know why these were set to 16-bit, the thumb registers are still 32-bit ... */
 #define THUMB_SIGN_BIT               ((UINT32)(1 << 31))
+=======
+#define MODE_FLAG               0xF                    // Mode bits are 4:0 of CPSR, but we ignore bit 4.
+#define GET_MODE                (GET_CPSR & MODE_FLAG)
+#define SIGN_BIT                ((uint32_t)(1 << 31))
+#define SIGN_BITS_DIFFER(a, b)  (((a) ^ (b)) >> 31)
+/* I really don't know why these were set to 16-bit, the thumb registers are still 32-bit ... */
+#define THUMB_SIGN_BIT               ((uint32_t)(1 << 31))
+>>>>>>> upstream/master
 #define THUMB_SIGN_BITS_DIFFER(a, b) (((a)^(b)) >> 31)
 
 #define SR_MODE32               0x10
@@ -508,6 +644,7 @@ enum
 #define ARM7_TLB_READ    (1 << 2)
 #define ARM7_TLB_WRITE   (1 << 3)
 
+<<<<<<< HEAD
 /* At one point I thought these needed to be cpu implementation specific, but they don't.. */
 #define GET_REGISTER(reg)       GetRegister(reg)
 #define SET_REGISTER(reg, val)  SetRegister(reg, val)
@@ -516,6 +653,8 @@ enum
 #define ARM7_CHECKIRQ           arm7_check_irq_state()
 
 
+=======
+>>>>>>> upstream/master
 /* ARM flavors */
 enum arm_flavor
 {
@@ -528,7 +667,12 @@ enum arm_flavor
 
 	/* ARM9 variants */
 	ARM_TYPE_ARM9,
+<<<<<<< HEAD
 	ARM_TYPE_ARM920T
+=======
+	ARM_TYPE_ARM920T,
+	ARM_TYPE_ARM946ES
+>>>>>>> upstream/master
 };
 
 #endif /* __ARM7CORE_H__ */

@@ -18,9 +18,18 @@
 
 #include "emu.h"
 #include "cpu/z80/z80.h"
+<<<<<<< HEAD
 #include "sound/ay8910.h"
 #include "machine/i8255.h"
 #include "video/mc6845.h"
+=======
+#include "machine/i8255.h"
+#include "sound/ay8910.h"
+#include "video/mc6845.h"
+#include "screen.h"
+#include "speaker.h"
+
+>>>>>>> upstream/master
 
 #define MASTER_CLOCK            (XTAL_10MHz)
 #define CPU_CLOCK               (MASTER_CLOCK / 4)
@@ -44,6 +53,7 @@ public:
 		m_screen(*this, "screen") { }
 
 	pen_t m_pens[NUM_PENS];
+<<<<<<< HEAD
 	required_shared_ptr<UINT8> m_backup_ram;
 	required_shared_ptr<UINT8> m_ram_attr;
 	required_shared_ptr<UINT8> m_ram_video;
@@ -55,6 +65,18 @@ public:
 	MC6845_BEGIN_UPDATE(crtc_begin_update);
 	MC6845_UPDATE_ROW(crtc_update_row);
 	virtual void machine_start();
+=======
+	required_shared_ptr<uint8_t> m_backup_ram;
+	required_shared_ptr<uint8_t> m_ram_attr;
+	required_shared_ptr<uint8_t> m_ram_video;
+	std::unique_ptr<uint8_t[]> m_ram_palette;
+	DECLARE_READ8_MEMBER(palette_r);
+	DECLARE_WRITE8_MEMBER(palette_w);
+	DECLARE_WRITE_LINE_MEMBER(hsync_changed);
+	MC6845_BEGIN_UPDATE(crtc_begin_update);
+	MC6845_UPDATE_ROW(crtc_update_row);
+	virtual void machine_start() override;
+>>>>>>> upstream/master
 	required_device<cpu_device> m_maincpu;
 	required_device<screen_device> m_screen;
 };
@@ -111,8 +133,13 @@ MC6845_UPDATE_ROW( slotcarn_state::crtc_update_row )
 	int extra_video_bank_bit = 0; // not used?
 	int lscnblk = 0; // not used?
 
+<<<<<<< HEAD
 	UINT8 *gfx[2];
 	UINT16 x = 0;
+=======
+	uint8_t *gfx[2];
+	uint16_t x = 0;
+>>>>>>> upstream/master
 	int rlen;
 
 	gfx[0] = memregion("gfx1")->base();
@@ -120,14 +147,22 @@ MC6845_UPDATE_ROW( slotcarn_state::crtc_update_row )
 	rlen = memregion("gfx2")->bytes();
 
 	//ma = ma ^ 0x7ff;
+<<<<<<< HEAD
 	for (UINT8 cx = 0; cx < x_count; cx++)
+=======
+	for (uint8_t cx = 0; cx < x_count; cx++)
+>>>>>>> upstream/master
 	{
 		int i;
 		int attr = m_ram_attr[ma & 0x7ff];
 		int region = (attr & 0x40) >> 6;
 		int addr = ((m_ram_video[ma & 0x7ff] | ((attr & 0x80) << 1) | (extra_video_bank_bit)) << 4) | (ra & 0x0f);
 		int colour = (attr & 0x7f) << 3;
+<<<<<<< HEAD
 		UINT8   *data;
+=======
+		uint8_t   *data;
+>>>>>>> upstream/master
 
 		addr &= (rlen-1);
 		data = gfx[region];
@@ -162,10 +197,13 @@ WRITE_LINE_MEMBER(slotcarn_state::hsync_changed)
 	m_screen->update_partial(m_screen->vpos());
 }
 
+<<<<<<< HEAD
 WRITE_LINE_MEMBER(slotcarn_state::vsync_changed)
 {
 	m_maincpu->set_input_line(0, state ? ASSERT_LINE : CLEAR_LINE);
 }
+=======
+>>>>>>> upstream/master
 
 /*******************************
 *          Memory Map          *
@@ -529,15 +567,24 @@ GFXDECODE_END
 
 void slotcarn_state::machine_start()
 {
+<<<<<<< HEAD
 	m_ram_palette = auto_alloc_array(machine(), UINT8, RAM_PALETTE_SIZE);
 	save_pointer(NAME(m_ram_palette), RAM_PALETTE_SIZE);
+=======
+	m_ram_palette = std::make_unique<uint8_t[]>(RAM_PALETTE_SIZE);
+	save_pointer(NAME(m_ram_palette.get()), RAM_PALETTE_SIZE);
+>>>>>>> upstream/master
 }
 
 /***********************************
 *          Machine Driver          *
 ***********************************/
 
+<<<<<<< HEAD
 static MACHINE_CONFIG_START( slotcarn, slotcarn_state )
+=======
+static MACHINE_CONFIG_START( slotcarn )
+>>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", Z80, CPU_CLOCK) // 2.5 Mhz?
@@ -567,7 +614,11 @@ static MACHINE_CONFIG_START( slotcarn, slotcarn_state )
 	MCFG_MC6845_BEGIN_UPDATE_CB(slotcarn_state, crtc_begin_update)
 	MCFG_MC6845_UPDATE_ROW_CB(slotcarn_state, crtc_update_row)
 	MCFG_MC6845_OUT_HSYNC_CB(WRITELINE(slotcarn_state, hsync_changed))
+<<<<<<< HEAD
 	MCFG_MC6845_OUT_VSYNC_CB(WRITELINE(slotcarn_state, vsync_changed))
+=======
+	MCFG_MC6845_OUT_VSYNC_CB(INPUTLINE("maincpu", 0))
+>>>>>>> upstream/master
 
 	MCFG_GFXDECODE_ADD("gfxdecode", "palette", slotcarn)
 	MCFG_PALETTE_ADD("palette", 0x400)
@@ -701,8 +752,16 @@ ROM_END
 
 /*********************************************
 *                Game Drivers                *
+<<<<<<< HEAD
 **********************************************
 
       YEAR  NAME      PARENT   MACHINE   INPUT     INIT   ROT    COMPANY           FULLNAME               FLAGS  */
 GAME( 1985, slotcarn, 0,       slotcarn, slotcarn, driver_device, 0,     ROT0, "Wing Co., Ltd.", "Slot Carnival",        MACHINE_NOT_WORKING )
 GAME( 1985, spielbud, 0,       slotcarn, spielbud, driver_device, 0,     ROT0, "ADP",            "Spiel Bude (German)",  MACHINE_NOT_WORKING )
+=======
+**********************************************/
+
+//    YEAR  NAME      PARENT   MACHINE   INPUT     STATE           INIT   ROT   COMPANY           FULLNAME                FLAGS
+GAME( 1985, slotcarn, 0,       slotcarn, slotcarn, slotcarn_state, 0,     ROT0, "Wing Co., Ltd.", "Slot Carnival",        MACHINE_NOT_WORKING )
+GAME( 1985, spielbud, 0,       slotcarn, spielbud, slotcarn_state, 0,     ROT0, "ADP",            "Spiel Bude (German)",  MACHINE_NOT_WORKING )
+>>>>>>> upstream/master

@@ -5,6 +5,10 @@
  *   Xerox AltoII disk word task
  *
  *****************************************************************************/
+<<<<<<< HEAD
+=======
+#include "emu.h"
+>>>>>>> upstream/master
 #include "alto2cpu.h"
 
 //! f1_kwd_block early: block the disk word task
@@ -17,6 +21,7 @@ void alto2_cpu_device::f1_early_kwd_block()
 //! disk word task slot initialization
 void alto2_cpu_device::init_kwd(int task)
 {
+<<<<<<< HEAD
 	set_bs(task, bs_kwd_read_kstat,     &alto2_cpu_device::bs_early_read_kstat, 0);
 	set_bs(task, bs_kwd_read_kdata,     &alto2_cpu_device::bs_early_read_kdata, 0);
 
@@ -39,6 +44,8 @@ void alto2_cpu_device::init_kwd(int task)
 	set_f2(task, f2_kwd_nfer,           0, &alto2_cpu_device::f2_late_nfer);
 	set_f2(task, f2_kwd_strobon,        0, &alto2_cpu_device::f2_late_strobon);
 	set_f2(task, f2_task_17,            0, 0);
+=======
+>>>>>>> upstream/master
 }
 
 void alto2_cpu_device::exit_kwd()

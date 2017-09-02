@@ -1,5 +1,11 @@
+<<<<<<< HEAD
 // license:???
 // copyright-holders:Enrique Sanchez
+=======
+// license:BSD-3-Clause
+// copyright-holders:Phil Stroffolino
+// thanks-to:Enrique Sanchez
+>>>>>>> upstream/master
 #include "sound/sn76496.h"
 #include "sound/vlm5030.h"
 
@@ -18,9 +24,15 @@ public:
 		m_palette(*this, "palette") { }
 
 	/* memory pointers */
+<<<<<<< HEAD
 	required_shared_ptr<UINT8> m_spriteram;
 	required_shared_ptr<UINT8> m_spriteram2;
 	required_shared_ptr<UINT8> m_videoram;
+=======
+	required_shared_ptr<uint8_t> m_spriteram;
+	required_shared_ptr<uint8_t> m_spriteram2;
+	required_shared_ptr<uint8_t> m_videoram;
+>>>>>>> upstream/master
 
 	/* devices */
 	required_device<cpu_device> m_maincpu;
@@ -32,13 +44,19 @@ public:
 	/* video-related */
 	tilemap_t  *m_bg_tilemap;
 
+<<<<<<< HEAD
 	UINT8      m_yiear_nmi_enable;
 	UINT8      m_yiear_irq_enable;
+=======
+	uint8_t      m_yiear_nmi_enable;
+	uint8_t      m_yiear_irq_enable;
+>>>>>>> upstream/master
 	DECLARE_WRITE8_MEMBER(yiear_videoram_w);
 	DECLARE_WRITE8_MEMBER(yiear_control_w);
 	DECLARE_READ8_MEMBER(yiear_speech_r);
 	DECLARE_WRITE8_MEMBER(yiear_VLM5030_control_w);
 
+<<<<<<< HEAD
 	UINT8 m_SN76496_latch;
 	DECLARE_WRITE8_MEMBER( konami_SN76496_latch_w ) { m_SN76496_latch = data; };
 	DECLARE_WRITE8_MEMBER( konami_SN76496_w ) { m_sn->write(space, offset, m_SN76496_latch); };
@@ -48,6 +66,17 @@ public:
 	virtual void video_start();
 	DECLARE_PALETTE_INIT(yiear);
 	UINT32 screen_update_yiear(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
+=======
+	uint8_t m_SN76496_latch;
+	DECLARE_WRITE8_MEMBER( konami_SN76496_latch_w ) { m_SN76496_latch = data; };
+	DECLARE_WRITE8_MEMBER( konami_SN76496_w ) { m_sn->write(space, offset, m_SN76496_latch); };
+	TILE_GET_INFO_MEMBER(get_bg_tile_info);
+	virtual void machine_start() override;
+	virtual void machine_reset() override;
+	virtual void video_start() override;
+	DECLARE_PALETTE_INIT(yiear);
+	uint32_t screen_update_yiear(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
+>>>>>>> upstream/master
 	INTERRUPT_GEN_MEMBER(yiear_vblank_interrupt);
 	INTERRUPT_GEN_MEMBER(yiear_nmi_interrupt);
 	void draw_sprites( bitmap_ind16 &bitmap, const rectangle &cliprect );

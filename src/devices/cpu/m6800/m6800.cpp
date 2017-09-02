@@ -14,9 +14,15 @@
         6809 Microcomputer Programming & Interfacing with Experiments"
             by Andrew C. Staugaard, Jr.; Howard W. Sams & Co., Inc.
 
+<<<<<<< HEAD
     System dependencies:    UINT16 must be 16 bit unsigned int
                             UINT8 must be 8 bit unsigned int
                             UINT32 must be more than 16 bits
+=======
+    System dependencies:    uint16_t must be 16 bit unsigned int
+                            uint8_t must be 8 bit unsigned int
+                            uint32_t must be more than 16 bits
+>>>>>>> upstream/master
                             arrays up to 65536 bytes must be supported
                             machine must be twos complement
 
@@ -57,6 +63,7 @@ TODO:
 
     Chip                RAM     NVRAM   ROM     SCI     r15-f   ports
     -----------------------------------------------------------------
+<<<<<<< HEAD
     MC6800              -       -       -       no      no      4
     MC6802              128     32      -       no      no      4
     MC6802NS            128     -       -       no      no      4
@@ -65,10 +72,27 @@ TODO:
     MC6801              128     64      2K      yes     no      4
     MC68701             128     64      -       yes     no      4
     MC6803              128     64      -       yes     no      4
+=======
+    MC6800              -       -       -       no      no      -
+    MC6802              128     32      -       no      no      -
+    MC6802NS            128     -       -       no      no      -
+    MC6808              -       -       -       no      no      -
+
+    MC6801              128     64      2K      yes     no      4
+    MC68701             128     64      2K      yes     no      4
+    MC6803              128     64      -       yes     no      4
+    MC6803NR            -       -       -       yes     no      4
+>>>>>>> upstream/master
 
     MC6801U4            192     32      4K      yes     yes     4
     MC6803U4            192     32      -       yes     yes     4
 
+<<<<<<< HEAD
+=======
+    MC68120             128(DP) -       2K      yes     IPC     3
+    MC68121             128(DP) -       -       yes     IPC     3
+
+>>>>>>> upstream/master
     HD6801              128     64      2K      yes     no      4
     HD6301V             128     -       4K      yes     no      4
     HD63701V            192     -       4K      yes     no      4
@@ -92,6 +116,7 @@ TODO:
 
 #define LOG(x)  do { if (VERBOSE) logerror x; } while (0)
 
+<<<<<<< HEAD
 #if 0
 /* CPU subtypes, needed for extra insn after TAP/CLI/SEI */
 enum
@@ -111,6 +136,8 @@ enum
 #if 0
 static void hd63701_trap_pc();
 #endif
+=======
+>>>>>>> upstream/master
 
 #define pPPC    m_ppc
 #define pPC     m_pc
@@ -128,6 +155,7 @@ static void hd63701_trap_pc();
 #define B       m_d.b.l
 #define CC      m_cc
 
+<<<<<<< HEAD
 #define CT      m_counter.w.l
 #define CTH     m_counter.w.h
 #define CTD     m_counter.d
@@ -143,6 +171,11 @@ static void hd63701_trap_pc();
 /* point of next timer event */
 static UINT32 timer_next;
 
+=======
+#define EAD     m_ea.d
+#define EA      m_ea.w.l
+
+>>>>>>> upstream/master
 /* memory interface */
 
 /****************************************************************************/
@@ -178,6 +211,7 @@ static UINT32 timer_next;
 #define PULLBYTE(b) S++; b = RM(SD)
 #define PULLWORD(w) S++; w.d = RM(SD)<<8; S++; w.d |= RM(SD)
 
+<<<<<<< HEAD
 #define MODIFIED_tcsr { \
 	m_irq2 = (m_tcsr&(m_tcsr<<3))&(TCSR_ICF|TCSR_OCF|TCSR_TOF); \
 }
@@ -285,6 +319,11 @@ enum
 /* operate one instruction for */
 #define ONE_MORE_INSN() {       \
 	UINT8 ireg;                             \
+=======
+/* operate one instruction for */
+#define ONE_MORE_INSN() {       \
+	uint8_t ireg;                             \
+>>>>>>> upstream/master
 	pPPC = pPC;                             \
 	debugger_instruction_hook(this, PCD);                       \
 	ireg=M_RDOP(PCD);                       \
@@ -300,14 +339,22 @@ enum
 #define CLR_HNZC    CC&=0xd2
 #define CLR_NZVC    CC&=0xf0
 #define CLR_Z       CC&=0xfb
+<<<<<<< HEAD
 #define CLR_NZC     CC&=0xf2
+=======
+>>>>>>> upstream/master
 #define CLR_ZC      CC&=0xfa
 #define CLR_C       CC&=0xfe
 
 /* macros for CC -- CC bits affected should be reset before calling */
 #define SET_Z(a)        if(!(a))SEZ
+<<<<<<< HEAD
 #define SET_Z8(a)       SET_Z((UINT8)(a))
 #define SET_Z16(a)      SET_Z((UINT16)(a))
+=======
+#define SET_Z8(a)       SET_Z((uint8_t)(a))
+#define SET_Z16(a)      SET_Z((uint16_t)(a))
+>>>>>>> upstream/master
 #define SET_N8(a)       CC|=(((a)&0x80)>>4)
 #define SET_N16(a)      CC|=(((a)&0x8000)>>12)
 #define SET_H(a,b,r)    CC|=((((a)^(b)^(r))&0x10)<<1)
@@ -316,7 +363,11 @@ enum
 #define SET_V8(a,b,r)   CC|=((((a)^(b)^(r)^((r)>>1))&0x80)>>6)
 #define SET_V16(a,b,r)  CC|=((((a)^(b)^(r)^((r)>>1))&0x8000)>>14)
 
+<<<<<<< HEAD
 const UINT8 m6800_cpu_device::flags8i[256]=     /* increment */
+=======
+const uint8_t m6800_cpu_device::flags8i[256]=     /* increment */
+>>>>>>> upstream/master
 {
 0x04,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,
 0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,
@@ -337,7 +388,11 @@ const UINT8 m6800_cpu_device::flags8i[256]=     /* increment */
 };
 
 
+<<<<<<< HEAD
 const UINT8 m6800_cpu_device::flags8d[256]= /* decrement */
+=======
+const uint8_t m6800_cpu_device::flags8d[256]= /* decrement */
+>>>>>>> upstream/master
 {
 0x04,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,
 0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,
@@ -366,15 +421,24 @@ const UINT8 m6800_cpu_device::flags8d[256]= /* decrement */
 #define SET_FLAGS8(a,b,r)   {SET_N8(r);SET_Z8(r);SET_V8(a,b,r);SET_C8(r);}
 #define SET_FLAGS16(a,b,r)  {SET_N16(r);SET_Z16(r);SET_V16(a,b,r);SET_C16(r);}
 
+<<<<<<< HEAD
 /* for treating an UINT8 as a signed INT16 */
 #define SIGNED(b) ((INT16)(b&0x80?b|0xff00:b))
+=======
+/* for treating an uint8_t as a signed int16_t */
+#define SIGNED(b) ((int16_t)(b&0x80?b|0xff00:b))
+>>>>>>> upstream/master
 
 /* Macros for addressing modes */
 #define DIRECT IMMBYTE(EAD)
 #define IMM8 EA=PC++
 #define IMM16 {EA=PC;PC+=2;}
 #define EXTENDED IMMWORD(m_ea)
+<<<<<<< HEAD
 #define INDEXED {EA=X+(UINT8)M_RDOP_ARG(PCD);PC++;}
+=======
+#define INDEXED {EA=X+(uint8_t)M_RDOP_ARG(PCD);PC++;}
+>>>>>>> upstream/master
 
 /* macros to set status flags */
 #if defined(SEC)
@@ -393,6 +457,7 @@ const UINT8 m6800_cpu_device::flags8d[256]= /* decrement */
 #define SEI CC|=0x10
 #define CLI CC&=~0x10
 
+<<<<<<< HEAD
 /* mnemonicos for the Timer Control and Status Register bits */
 #define TCSR_OLVL 0x01
 #define TCSR_IEDG 0x02
@@ -403,6 +468,8 @@ const UINT8 m6800_cpu_device::flags8d[256]= /* decrement */
 #define TCSR_OCF  0x40
 #define TCSR_ICF  0x80
 
+=======
+>>>>>>> upstream/master
 /* macros for convenience */
 #define DIRBYTE(b) {DIRECT;b=RM(EAD);}
 #define DIRWORD(w) {DIRECT;w.d=RM16(EAD);}
@@ -415,14 +482,22 @@ const UINT8 m6800_cpu_device::flags8d[256]= /* decrement */
 /* Macros for branch instructions */
 #define BRANCH(f) {IMMBYTE(t);if(f){PC+=SIGNED(t);}}
 #define NXORV  ((CC&0x08)^((CC&0x02)<<2))
+<<<<<<< HEAD
 
 #define M6800_WAI       8           /* set when WAI is waiting for an interrupt */
 #define M6800_SLP       0x10        /* HD63701 only */
+=======
+#define NXORC  ((CC&0x08)^((CC&0x01)<<3))
+>>>>>>> upstream/master
 
 /* Note: don't use 0 cycles here for invalid opcodes so that we don't */
 /* hang in an infinite loop if we hit one */
 #define XX 5 // invalid opcode unknown cc
+<<<<<<< HEAD
 const UINT8 m6800_cpu_device::cycles_6800[256] =
+=======
+const uint8_t m6800_cpu_device::cycles_6800[256] =
+>>>>>>> upstream/master
 {
 		/* 0  1  2  3  4  5  6  7  8  9  A  B  C  D  E  F */
 	/*0*/ XX, 2,XX,XX,XX,XX, 2, 2, 4, 4, 2, 2, 2, 2, 2, 2,
@@ -443,6 +518,7 @@ const UINT8 m6800_cpu_device::cycles_6800[256] =
 	/*F*/  4, 4, 4,XX, 4, 4, 4, 5, 4, 4, 4, 4,XX,XX, 5, 6
 };
 
+<<<<<<< HEAD
 const UINT8 m6800_cpu_device::cycles_6803[256] =
 {
 		/* 0  1  2  3  4  5  6  7  8  9  A  B  C  D  E  F */
@@ -489,6 +565,12 @@ const UINT8 m6800_cpu_device::cycles_nsc8105[256] =
 {
 		/* 0  1  2  3  4  5  6  7  8  9  A  B  C  D  E  F */
 	/*0*/ XX,XX, 2,XX,XX, 2,XX, 2, 4, 2, 4, 2, 2, 2, 2, 2,
+=======
+const uint8_t m6800_cpu_device::cycles_nsc8105[256] =
+{
+		/* 0  1  2  3  4  5  6  7  8  9  A  B  C  D  E  F */
+	/*0*/  5,XX, 2,XX,XX, 2,XX, 2, 4, 2, 4, 2, 2, 2, 2, 2,
+>>>>>>> upstream/master
 	/*1*/  2,XX, 2,XX,XX, 2,XX, 2,XX,XX, 2, 2,XX,XX,XX,XX,
 	/*2*/  4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4,
 	/*3*/  4, 4, 4, 4, 4, 4, 4, 4,XX,XX, 5,10,XX, 9,XX,12,
@@ -499,7 +581,11 @@ const UINT8 m6800_cpu_device::cycles_nsc8105[256] =
 	/*8*/  2,XX,XX, 2, 2, 2,XX, 2, 2, 2, 2,XX, 2,XX, 2, 2,
 	/*9*/  2,XX,XX, 2, 2, 2,XX, 2, 2, 2, 2,XX, 2,XX, 2, 2,
 	/*A*/  7,XX,XX, 7, 7, 7,XX, 7, 7, 7, 7,XX, 7, 4, 7, 7,
+<<<<<<< HEAD
 	/*B*/  6,XX,XX, 6, 6, 6,XX, 6, 6, 6, 6,XX, 6, 3, 6, 6,
+=======
+	/*B*/  6,XX,XX, 6, 6, 6,XX, 6, 6, 6, 6, 5, 6, 3, 6, 6,
+>>>>>>> upstream/master
 	/*C*/  2, 2, 2,XX, 2, 2, 2, 3, 2, 2, 2, 2,XX, 3,XX, 4,
 	/*D*/  3, 3, 3,XX, 3, 3, 3, 4, 3, 3, 3, 3,XX, 4,XX, 5,
 	/*E*/  5, 5, 5,XX, 5, 5, 5, 6, 5, 5, 5, 5, 5, 6,XX, 7,
@@ -507,6 +593,7 @@ const UINT8 m6800_cpu_device::cycles_nsc8105[256] =
 };
 #undef XX // /invalid opcode unknown cc
 
+<<<<<<< HEAD
 #define EAT_CYCLES                                                  \
 {                                                                   \
 	int cycles_to_eat;                                              \
@@ -646,13 +733,80 @@ UINT32 m6800_cpu_device::RM16(UINT32 Addr )
 }
 
 void m6800_cpu_device::WM16(UINT32 Addr, PAIR *p )
+=======
+
+DEFINE_DEVICE_TYPE(M6800, m6800_cpu_device, "m6800", "M6800")
+DEFINE_DEVICE_TYPE(M6802, m6802_cpu_device, "m6802", "M6802")
+DEFINE_DEVICE_TYPE(M6808, m6808_cpu_device, "m6808", "M6808")
+DEFINE_DEVICE_TYPE(NSC8105, nsc8105_cpu_device, "nsc8105", "NSC8105")
+
+
+m6800_cpu_device::m6800_cpu_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: m6800_cpu_device(mconfig, M6800, tag, owner, clock, m6800_insn, cycles_6800, nullptr)
+{
+}
+
+m6800_cpu_device::m6800_cpu_device(const machine_config &mconfig, device_type type, const char *tag, device_t *owner, uint32_t clock, const op_func *insn, const uint8_t *cycles, address_map_constructor internal)
+	: cpu_device(mconfig, type, tag, owner, clock)
+	, m_program_config("program", ENDIANNESS_BIG, 8, 16, 0, internal)
+	, m_decrypted_opcodes_config("program", ENDIANNESS_BIG, 8, 16, 0)
+	, m_insn(insn)
+	, m_cycles(cycles)
+{
+}
+
+m6802_cpu_device::m6802_cpu_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: m6802_cpu_device(mconfig, M6802, tag, owner, clock, m6800_insn, cycles_6800)
+{
+}
+
+m6802_cpu_device::m6802_cpu_device(const machine_config &mconfig, device_type type, const char *tag, device_t *owner, uint32_t clock, const op_func *insn, const uint8_t *cycles)
+	: m6800_cpu_device(mconfig, type, tag, owner, clock, insn, cycles, nullptr)
+{
+}
+
+m6808_cpu_device::m6808_cpu_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: m6802_cpu_device(mconfig, M6808, tag, owner, clock, m6800_insn, cycles_6800)
+{
+}
+
+nsc8105_cpu_device::nsc8105_cpu_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: m6802_cpu_device(mconfig, NSC8105, tag, owner, clock, nsc8105_insn, cycles_nsc8105)
+{
+}
+
+device_memory_interface::space_config_vector m6800_cpu_device::memory_space_config() const
+{
+	if(has_configured_map(AS_OPCODES))
+		return space_config_vector {
+			std::make_pair(AS_PROGRAM, &m_program_config),
+			std::make_pair(AS_OPCODES, &m_decrypted_opcodes_config)
+		};
+	else
+		return space_config_vector {
+			std::make_pair(AS_PROGRAM, &m_program_config)
+		};
+}
+
+uint32_t m6800_cpu_device::RM16(uint32_t Addr )
+{
+	uint32_t result = RM(Addr) << 8;
+	return result | RM((Addr+1)&0xffff);
+}
+
+void m6800_cpu_device::WM16(uint32_t Addr, PAIR *p )
+>>>>>>> upstream/master
 {
 	WM( Addr, p->b.h );
 	WM( (Addr+1)&0xffff, p->b.l );
 }
 
 /* IRQ enter */
+<<<<<<< HEAD
 void m6800_cpu_device::enter_interrupt(const char *message,UINT16 irq_vector)
+=======
+void m6800_cpu_device::enter_interrupt(const char *message,uint16_t irq_vector)
+>>>>>>> upstream/master
 {
 	LOG((message, tag()));
 	if( m_wai_state & (M6800_WAI|M6800_SLP) )
@@ -676,6 +830,7 @@ void m6800_cpu_device::enter_interrupt(const char *message,UINT16 irq_vector)
 
 
 
+<<<<<<< HEAD
 void m6800_cpu_device::m6800_check_irq2()
 {
 	if ((m_tcsr & (TCSR_EICI|TCSR_ICF)) == (TCSR_EICI|TCSR_ICF))
@@ -701,6 +856,8 @@ void m6800_cpu_device::m6800_check_irq2()
 }
 
 
+=======
+>>>>>>> upstream/master
 /* check the IRQ lines for pending interrupts */
 void m6800_cpu_device::CHECK_IRQ_LINES()
 {
@@ -711,7 +868,11 @@ void m6800_cpu_device::CHECK_IRQ_LINES()
 		if(m_wai_state & M6800_SLP)
 			m_wai_state &= ~M6800_SLP;
 
+<<<<<<< HEAD
 		m_nmi_pending = FALSE;
+=======
+		m_nmi_pending = false;
+>>>>>>> upstream/master
 		enter_interrupt("M6800 '%s' take NMI\n",0xfffc);
 	}
 	else
@@ -733,6 +894,7 @@ void m6800_cpu_device::CHECK_IRQ_LINES()
 	}
 }
 
+<<<<<<< HEAD
 /* check OCI or TOI */
 void m6800_cpu_device::check_timer_event()
 {
@@ -1046,12 +1208,30 @@ TIMER_CALLBACK_MEMBER( m6800_cpu_device::sci_tick )
 	serial_transmit();
 	serial_receive();
 }
+=======
+void m6800_cpu_device::increment_counter(int amount)
+{
+	m_icount -= amount;
+}
+
+void m6800_cpu_device::EAT_CYCLES()
+{
+	increment_counter(m_icount);
+}
+
+/* include the opcode prototypes and function pointer tables */
+#include "6800tbl.hxx"
+
+/* include the opcode functions */
+#include "6800ops.hxx"
+>>>>>>> upstream/master
 
 
 void m6800_cpu_device::device_start()
 {
 	m_program = &space(AS_PROGRAM);
 	m_direct = &m_program->direct();
+<<<<<<< HEAD
 	m_decrypted_opcodes = has_space(AS_DECRYPTED_OPCODES) ? &space(AS_DECRYPTED_OPCODES) : m_program;
 	m_decrypted_opcodes_direct = &m_decrypted_opcodes->direct();
 	if ( m_has_io )
@@ -1068,6 +1248,10 @@ void m6800_cpu_device::device_start()
 	m_tdr = 0;
 	m_rmcr = 0;
 	m_ram_ctrl = 0;
+=======
+	m_decrypted_opcodes = has_space(AS_OPCODES) ? &space(AS_OPCODES) : m_program;
+	m_decrypted_opcodes_direct = &m_decrypted_opcodes->direct();
+>>>>>>> upstream/master
 
 	m_pc.d = 0;
 	m_s.d = 0;
@@ -1087,6 +1271,7 @@ void m6800_cpu_device::device_start()
 	save_item(NAME(m_nmi_state));
 	save_item(NAME(m_nmi_pending));
 	save_item(NAME(m_irq_state));
+<<<<<<< HEAD
 	save_item(NAME(m_ic_eddge));
 
 	save_item(NAME(m_port1_ddr));
@@ -1125,6 +1310,8 @@ void m6800_cpu_device::device_start()
 	save_item(NAME(m_trcsr_read_orfe));
 	save_item(NAME(m_trcsr_read_rdrf));
 	save_item(NAME(m_tx));
+=======
+>>>>>>> upstream/master
 
 	state_add( M6800_A,         "A", m_d.b.h).formatstr("%02X");
 	state_add( M6800_B,         "B", m_d.b.l).formatstr("%02X");
@@ -1135,17 +1322,29 @@ void m6800_cpu_device::device_start()
 	state_add( M6800_WAI_STATE, "WAI", m_wai_state).formatstr("%01X");
 
 	state_add( STATE_GENPC, "GENPC", m_pc.w.l).noshow();
+<<<<<<< HEAD
+=======
+	state_add( STATE_GENPCBASE, "CURPC", m_pc.w.l).noshow();
+>>>>>>> upstream/master
 	state_add( STATE_GENFLAGS, "GENFLAGS", m_cc).formatstr("%8s").noshow();
 
 	m_icountptr = &m_icount;
 }
 
+<<<<<<< HEAD
 void m6800_cpu_device::state_string_export(const device_state_entry &entry, std::string &str)
+=======
+void m6800_cpu_device::state_string_export(const device_state_entry &entry, std::string &str) const
+>>>>>>> upstream/master
 {
 	switch (entry.index())
 	{
 		case STATE_GENFLAGS:
+<<<<<<< HEAD
 			strprintf(str, "%c%c%c%c%c%c%c%c",
+=======
+			str = string_format("%c%c%c%c%c%c%c%c",
+>>>>>>> upstream/master
 				m_cc & 0x80 ? '?':'.',
 				m_cc & 0x40 ? '?':'.',
 				m_cc & 0x20 ? 'H':'.',
@@ -1167,6 +1366,7 @@ void m6800_cpu_device::device_reset()
 	m_wai_state = 0;
 	m_nmi_state = 0;
 	m_nmi_pending = 0;
+<<<<<<< HEAD
 	m_sc1_state = 0;
 	m_irq_state[M6800_IRQ_LINE] = 0;
 	m_irq_state[M6801_TIN_LINE] = 0;
@@ -1202,6 +1402,9 @@ void m6800_cpu_device::device_reset()
 	m_use_ext_serclock = false;
 
 	set_rmcr(0);
+=======
+	m_irq_state[M6800_IRQ_LINE] = 0;
+>>>>>>> upstream/master
 }
 
 
@@ -1211,6 +1414,7 @@ void m6800_cpu_device::execute_set_input(int irqline, int state)
 	{
 	case INPUT_LINE_NMI:
 		if (!m_nmi_state && state != CLEAR_LINE)
+<<<<<<< HEAD
 			m_nmi_pending = TRUE;
 		m_nmi_state = state;
 		break;
@@ -1247,6 +1451,16 @@ void m6800_cpu_device::execute_set_input(int irqline, int state)
 			m_input_capture = CT;
 			MODIFIED_tcsr;
 		}
+=======
+			m_nmi_pending = true;
+		m_nmi_state = state;
+		break;
+
+	default:
+		LOG(("M6800 '%s' set_irq_line %d,%d\n", tag(), irqline, state));
+		m_irq_state[irqline] = state;
+		break;
+>>>>>>> upstream/master
 	}
 }
 
@@ -1255,7 +1469,11 @@ void m6800_cpu_device::execute_set_input(int irqline, int state)
  ****************************************************************************/
 void m6800_cpu_device::execute_run()
 {
+<<<<<<< HEAD
 	UINT8 ireg;
+=======
+	uint8_t ireg;
+>>>>>>> upstream/master
 
 	CHECK_IRQ_LINES(); /* HJB 990417 */
 
@@ -1265,7 +1483,11 @@ void m6800_cpu_device::execute_run()
 	{
 		if( m_wai_state & (M6800_WAI|M6800_SLP) )
 		{
+<<<<<<< HEAD
 			EAT_CYCLES;
+=======
+			EAT_CYCLES();
+>>>>>>> upstream/master
 		}
 		else
 		{
@@ -1280,6 +1502,7 @@ void m6800_cpu_device::execute_run()
 }
 
 
+<<<<<<< HEAD
 /*
     if change_pc() direccted these areas ,Call hd63701_trap_pc().
     'mode' is selected by the sense of p2.0,p2.1,and p2.3 at reset timming.
@@ -1814,4 +2037,31 @@ WRITE_LINE_MEMBER( m6800_cpu_device::irq_line )
 WRITE_LINE_MEMBER( m6800_cpu_device::nmi_line )
 {
 	set_input_line( INPUT_LINE_NMI, state );
+=======
+offs_t m6800_cpu_device::disasm_disassemble(std::ostream &stream, offs_t pc, const uint8_t *oprom, const uint8_t *opram, uint32_t options)
+{
+	extern CPU_DISASSEMBLE( m6800 );
+	return CPU_DISASSEMBLE_NAME(m6800)(this, stream, pc, oprom, opram, options);
+}
+
+
+offs_t m6802_cpu_device::disasm_disassemble(std::ostream &stream, offs_t pc, const uint8_t *oprom, const uint8_t *opram, uint32_t options)
+{
+	extern CPU_DISASSEMBLE( m6802 );
+	return CPU_DISASSEMBLE_NAME(m6802)(this, stream, pc, oprom, opram, options);
+}
+
+
+offs_t m6808_cpu_device::disasm_disassemble(std::ostream &stream, offs_t pc, const uint8_t *oprom, const uint8_t *opram, uint32_t options)
+{
+	extern CPU_DISASSEMBLE( m6808 );
+	return CPU_DISASSEMBLE_NAME(m6808)(this, stream, pc, oprom, opram, options);
+}
+
+
+offs_t nsc8105_cpu_device::disasm_disassemble(std::ostream &stream, offs_t pc, const uint8_t *oprom, const uint8_t *opram, uint32_t options)
+{
+	extern CPU_DISASSEMBLE( nsc8105 );
+	return CPU_DISASSEMBLE_NAME(nsc8105)(this, stream, pc, oprom, opram, options);
+>>>>>>> upstream/master
 }

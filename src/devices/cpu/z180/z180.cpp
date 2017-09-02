@@ -51,12 +51,20 @@ Hitachi HD647180 series:
  *****************************************************************************/
 
 #include "emu.h"
+<<<<<<< HEAD
 #include "debugger.h"
 #include "z180.h"
 
 #define VERBOSE 0
 
 #define LOG(x)  do { if (VERBOSE) logerror x; } while (0)
+=======
+#include "z180.h"
+#include "debugger.h"
+
+//#define VERBOSE 1
+#include "logmacro.h"
+>>>>>>> upstream/master
 
 /* interrupt priorities */
 #define Z180_INT_TRAP   0           /* Undefined opcode */
@@ -78,11 +86,20 @@ Hitachi HD647180 series:
 /* register is calculated as follows: refresh=(Regs.R&127)|(Regs.R2&128)    */
 /****************************************************************************/
 
+<<<<<<< HEAD
 const device_type Z180 = &device_creator<z180_device>;
 
 
 z180_device::z180_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
 	: cpu_device(mconfig, Z180, "Z180", tag, owner, clock, "z180", __FILE__)
+=======
+DEFINE_DEVICE_TYPE(Z180, z180_device, "z180", "Z180")
+
+
+z180_device::z180_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: cpu_device(mconfig, Z180, tag, owner, clock)
+	, z80_daisy_chain_interface(mconfig, *this)
+>>>>>>> upstream/master
 	, m_program_config("program", ENDIANNESS_LITTLE, 8, 20, 0)
 	, m_io_config("io", ENDIANNESS_LITTLE, 8, 16, 0)
 	, m_decrypted_opcodes_config("program", ENDIANNESS_LITTLE, 8, 20, 0)
@@ -90,10 +107,17 @@ z180_device::z180_device(const machine_config &mconfig, const char *tag, device_
 }
 
 
+<<<<<<< HEAD
 offs_t z180_device::disasm_disassemble(char *buffer, offs_t pc, const UINT8 *oprom, const UINT8 *opram, UINT32 options)
 {
 	extern CPU_DISASSEMBLE( z180 );
 	return CPU_DISASSEMBLE_NAME(z180)(this, buffer, pc, oprom, opram, options);
+=======
+offs_t z180_device::disasm_disassemble(std::ostream &stream, offs_t pc, const uint8_t *oprom, const uint8_t *opram, uint32_t options)
+{
+	extern CPU_DISASSEMBLE( z180 );
+	return CPU_DISASSEMBLE_NAME(z180)(this, stream, pc, oprom, opram, options);
+>>>>>>> upstream/master
 }
 
 
@@ -127,6 +151,19 @@ offs_t z180_device::disasm_disassemble(char *buffer, offs_t pc, const UINT8 *opr
 #define Z180_TXA1     0x00200000  /*   O asynchronous transmit data 1 (active high) */
 #define Z180_TXS      0x00400000  /*   O clocked serial transmit data (active high) */
 
+<<<<<<< HEAD
+=======
+bool z180_device::get_tend0()
+{
+	return !!(m_iol & Z180_TEND0);
+}
+
+bool z180_device::get_tend1()
+{
+	return !!(m_iol & Z180_TEND1);
+}
+
+>>>>>>> upstream/master
 /*
  * Prevent warnings on NetBSD.  All identifiers beginning with an underscore
  * followed by an uppercase letter are reserved by the C standard (ISO/IEC
@@ -626,9 +663,15 @@ offs_t z180_device::disasm_disassemble(char *buffer, offs_t pc, const UINT8 *opr
 #define Z180_DSTAT_WMASK        0xcc
 
 /* 31 DMA mode register */
+<<<<<<< HEAD
 #define Z180_DMODE_DM           0x30
 #define Z180_DMODE_SM           0x0c
 #define Z180_DMODE_MMOD         0x04
+=======
+#define Z180_DMODE_DM           0x30    /* DMA ch 0 destination addressing mode */
+#define Z180_DMODE_SM           0x0c    /* DMA ch 0 source addressing mode */
+#define Z180_DMODE_MMOD         0x02    /* DMA cycle steal/burst mode select */
+>>>>>>> upstream/master
 
 #define Z180_DMODE_RESET        0x00
 #define Z180_DMODE_RMASK        0x3e
@@ -749,6 +792,7 @@ offs_t z180_device::disasm_disassemble(char *buffer, offs_t pc, const UINT8 *opr
 
 
 
+<<<<<<< HEAD
 static UINT8 SZ[256];       /* zero and sign flags */
 static UINT8 SZ_BIT[256];   /* zero, sign and parity/overflow (=zero) flags for BIT opcode */
 static UINT8 SZP[256];      /* zero, sign and parity flags */
@@ -757,10 +801,21 @@ static UINT8 SZHV_dec[256]; /* zero, sign, half carry and overflow flags DEC r8 
 
 static UINT8 *SZHVC_add;
 static UINT8 *SZHVC_sub;
+=======
+static uint8_t SZ[256];       /* zero and sign flags */
+static uint8_t SZ_BIT[256];   /* zero, sign and parity/overflow (=zero) flags for BIT opcode */
+static uint8_t SZP[256];      /* zero, sign and parity flags */
+static uint8_t SZHV_inc[256]; /* zero, sign, half carry and overflow flags INC r8 */
+static uint8_t SZHV_dec[256]; /* zero, sign, half carry and overflow flags DEC r8 */
+
+static std::unique_ptr<uint8_t[]> SZHVC_add;
+static std::unique_ptr<uint8_t[]> SZHVC_sub;
+>>>>>>> upstream/master
 
 #include "z180ops.h"
 #include "z180tbl.h"
 
+<<<<<<< HEAD
 #include "z180cb.inc"
 #include "z180xy.inc"
 #include "z180dd.inc"
@@ -784,6 +839,35 @@ UINT8 z180_device::z180_readcontrol(offs_t port)
 {
 	/* normal external readport */
 	UINT8 data = m_iospace->read_byte(port);
+=======
+#include "z180cb.hxx"
+#include "z180xy.hxx"
+#include "z180dd.hxx"
+#include "z180fd.hxx"
+#include "z180ed.hxx"
+#include "z180op.hxx"
+
+
+device_memory_interface::space_config_vector z180_device::memory_space_config() const
+{
+	if(has_configured_map(AS_OPCODES))
+		return space_config_vector {
+			std::make_pair(AS_PROGRAM, &m_program_config),
+			std::make_pair(AS_OPCODES, &m_decrypted_opcodes_config),
+			std::make_pair(AS_IO,      &m_io_config)
+		};
+	else
+		return space_config_vector {
+			std::make_pair(AS_PROGRAM, &m_program_config),
+			std::make_pair(AS_IO,      &m_io_config)
+		};
+}
+
+uint8_t z180_device::z180_readcontrol(offs_t port)
+{
+	/* normal external readport */
+	uint8_t data = m_iospace->read_byte(port);
+>>>>>>> upstream/master
 
 	/* remap internal I/O registers */
 	if((port & (IO_IOCR & 0xc0)) == (IO_IOCR & 0xc0))
@@ -794,69 +878,122 @@ UINT8 z180_device::z180_readcontrol(offs_t port)
 	{
 	case Z180_CNTLA0:
 		data = IO_CNTLA0 & Z180_CNTLA0_RMASK;
+<<<<<<< HEAD
 		LOG(("Z180 '%s' CNTLA0 rd $%02x ($%02x)\n", tag(), data, m_io[port & 0x3f]));
+=======
+		LOG("Z180 CNTLA0 rd $%02x ($%02x)\n", data, m_io[port & 0x3f]);
+>>>>>>> upstream/master
 		break;
 
 	case Z180_CNTLA1:
 		data = IO_CNTLA1 & Z180_CNTLA1_RMASK;
+<<<<<<< HEAD
 		LOG(("Z180 '%s' CNTLA1 rd $%02x ($%02x)\n", tag(), data, m_io[port & 0x3f]));
+=======
+		LOG("Z180 CNTLA1 rd $%02x ($%02x)\n", data, m_io[port & 0x3f]);
+>>>>>>> upstream/master
 		break;
 
 	case Z180_CNTLB0:
 		data = IO_CNTLB0 & Z180_CNTLB0_RMASK;
+<<<<<<< HEAD
 		LOG(("Z180 '%s' CNTLB0 rd $%02x ($%02x)\n", tag(), data, m_io[port & 0x3f]));
+=======
+		LOG("Z180 CNTLB0 rd $%02x ($%02x)\n", data, m_io[port & 0x3f]);
+>>>>>>> upstream/master
 		break;
 
 	case Z180_CNTLB1:
 		data = IO_CNTLB1 & Z180_CNTLB1_RMASK;
+<<<<<<< HEAD
 		LOG(("Z180 '%s' CNTLB1 rd $%02x ($%02x)\n", tag(), data, m_io[port & 0x3f]));
+=======
+		LOG("Z180 CNTLB1 rd $%02x ($%02x)\n", data, m_io[port & 0x3f]);
+>>>>>>> upstream/master
 		break;
 
 	case Z180_STAT0:
 		data = IO_STAT0 & Z180_STAT0_RMASK;
+<<<<<<< HEAD
 data |= 0x02; // kludge for 20pacgal
 		LOG(("Z180 '%s' STAT0  rd $%02x ($%02x)\n", tag(), data, m_io[port & 0x3f]));
+=======
+		data |= 0x02; // kludge for 20pacgal
+		LOG("Z180 STAT0  rd $%02x ($%02x)\n", data, m_io[port & 0x3f]);
+>>>>>>> upstream/master
 		break;
 
 	case Z180_STAT1:
 		data = IO_STAT1 & Z180_STAT1_RMASK;
+<<<<<<< HEAD
 		LOG(("Z180 '%s' STAT1  rd $%02x ($%02x)\n", tag(), data, m_io[port & 0x3f]));
+=======
+		LOG("Z180 STAT1  rd $%02x ($%02x)\n", data, m_io[port & 0x3f]);
+>>>>>>> upstream/master
 		break;
 
 	case Z180_TDR0:
 		data = IO_TDR0 & Z180_TDR0_RMASK;
+<<<<<<< HEAD
 		LOG(("Z180 '%s' TDR0   rd $%02x ($%02x)\n", tag(), data, m_io[port & 0x3f]));
+=======
+		LOG("Z180 TDR0   rd $%02x ($%02x)\n", data, m_io[port & 0x3f]);
+>>>>>>> upstream/master
 		break;
 
 	case Z180_TDR1:
 		data = IO_TDR1 & Z180_TDR1_RMASK;
+<<<<<<< HEAD
 		LOG(("Z180 '%s' TDR1   rd $%02x ($%02x)\n", tag(), data, m_io[port & 0x3f]));
+=======
+		LOG("Z180 TDR1   rd $%02x ($%02x)\n", data, m_io[port & 0x3f]);
+>>>>>>> upstream/master
 		break;
 
 	case Z180_RDR0:
 		data = IO_RDR0 & Z180_RDR0_RMASK;
+<<<<<<< HEAD
 		LOG(("Z180 '%s' RDR0   rd $%02x ($%02x)\n", tag(), data, m_io[port & 0x3f]));
+=======
+		LOG("Z180 RDR0   rd $%02x ($%02x)\n", data, m_io[port & 0x3f]);
+>>>>>>> upstream/master
 		break;
 
 	case Z180_RDR1:
 		data = IO_RDR1 & Z180_RDR1_RMASK;
+<<<<<<< HEAD
 		LOG(("Z180 '%s' RDR1   rd $%02x ($%02x)\n", tag(), data, m_io[port & 0x3f]));
+=======
+		LOG("Z180 RDR1   rd $%02x ($%02x)\n", data, m_io[port & 0x3f]);
+>>>>>>> upstream/master
 		break;
 
 	case Z180_CNTR:
 		data = IO_CNTR & Z180_CNTR_RMASK;
 		data &= ~0x10; // Super Famicom Box sets the TE bit then wants it to be toggled after 8 bits transmitted
+<<<<<<< HEAD
 		LOG(("Z180 '%s' CNTR   rd $%02x ($%02x)\n", tag(), data, m_io[port & 0x3f]));
+=======
+		LOG("Z180 CNTR   rd $%02x ($%02x)\n", data, m_io[port & 0x3f]);
+>>>>>>> upstream/master
 		break;
 
 	case Z180_TRDR:
 		data = IO_TRDR & Z180_TRDR_RMASK;
+<<<<<<< HEAD
 		logerror("Z180 '%s' TRDR   rd $%02x ($%02x)\n", tag(), data, m_io[port & 0x3f]);
+=======
+		logerror("Z180 TRDR   rd $%02x ($%02x)\n", data, m_io[port & 0x3f]);
+>>>>>>> upstream/master
 		break;
 
 	case Z180_TMDR0L:
 		data = m_tmdr_value[0] & Z180_TMDR0L_RMASK;
+<<<<<<< HEAD
 		LOG(("Z180 '%s' TMDR0L rd $%02x ($%02x)\n", tag(), data, m_io[port & 0x3f]));
+=======
+		LOG("Z180 TMDR0L rd $%02x ($%02x)\n", data, m_io[port & 0x3f]);
+>>>>>>> upstream/master
 		/* if timer is counting, latch the MSB and set the latch flag */
 		if ((IO_TCR & Z180_TCR_TDE0) == 0)
 		{
@@ -896,17 +1033,29 @@ data |= 0x02; // kludge for 20pacgal
 		{
 			m_read_tcr_tmdr[0] = 1;
 		}
+<<<<<<< HEAD
 		LOG(("Z180 '%s' TMDR0H rd $%02x ($%02x)\n", tag(), data, m_io[port & 0x3f]));
+=======
+		LOG("Z180 TMDR0H rd $%02x ($%02x)\n", data, m_io[port & 0x3f]);
+>>>>>>> upstream/master
 		break;
 
 	case Z180_RLDR0L:
 		data = IO_RLDR0L & Z180_RLDR0L_RMASK;
+<<<<<<< HEAD
 		LOG(("Z180 '%s' RLDR0L rd $%02x ($%02x)\n", tag(), data, m_io[port & 0x3f]));
+=======
+		LOG("Z180 RLDR0L rd $%02x ($%02x)\n", data, m_io[port & 0x3f]);
+>>>>>>> upstream/master
 		break;
 
 	case Z180_RLDR0H:
 		data = IO_RLDR0H & Z180_RLDR0H_RMASK;
+<<<<<<< HEAD
 		LOG(("Z180 '%s' RLDR0H rd $%02x ($%02x)\n", tag(), data, m_io[port & 0x3f]));
+=======
+		LOG("Z180 RLDR0H rd $%02x ($%02x)\n", data, m_io[port & 0x3f]);
+>>>>>>> upstream/master
 		break;
 
 	case Z180_TCR:
@@ -932,27 +1081,47 @@ data |= 0x02; // kludge for 20pacgal
 			m_read_tcr_tmdr[1] = 1;
 		}
 
+<<<<<<< HEAD
 		LOG(("Z180 '%s' TCR    rd $%02x ($%02x)\n", tag(), data, m_io[port & 0x3f]));
+=======
+		LOG("Z180 TCR    rd $%02x ($%02x)\n", data, m_io[port & 0x3f]);
+>>>>>>> upstream/master
 		break;
 
 	case Z180_IO11:
 		data = IO_IO11 & Z180_IO11_RMASK;
+<<<<<<< HEAD
 		LOG(("Z180 '%s' IO11   rd $%02x ($%02x)\n", tag(), data, m_io[port & 0x3f]));
+=======
+		LOG("Z180 IO11   rd $%02x ($%02x)\n", data, m_io[port & 0x3f]);
+>>>>>>> upstream/master
 		break;
 
 	case Z180_ASEXT0:
 		data = IO_ASEXT0 & Z180_ASEXT0_RMASK;
+<<<<<<< HEAD
 		LOG(("Z180 '%s' ASEXT0 rd $%02x ($%02x)\n", tag(), data, m_io[port & 0x3f]));
+=======
+		LOG("Z180 ASEXT0 rd $%02x ($%02x)\n", data, m_io[port & 0x3f]);
+>>>>>>> upstream/master
 		break;
 
 	case Z180_ASEXT1:
 		data = IO_ASEXT1 & Z180_ASEXT1_RMASK;
+<<<<<<< HEAD
 		LOG(("Z180 '%s' ASEXT1 rd $%02x ($%02x)\n", tag(), data, m_io[port & 0x3f]));
+=======
+		LOG("Z180 ASEXT1 rd $%02x ($%02x)\n", data, m_io[port & 0x3f]);
+>>>>>>> upstream/master
 		break;
 
 	case Z180_TMDR1L:
 		data = m_tmdr_value[1] & Z180_TMDR1L_RMASK;
+<<<<<<< HEAD
 		LOG(("Z180 '%s' TMDR1L rd $%02x ($%02x)\n", tag(), data, m_io[port & 0x3f]));
+=======
+		LOG("Z180 TMDR1L rd $%02x ($%02x)\n", data, m_io[port & 0x3f]);
+>>>>>>> upstream/master
 		/* if timer is counting, latch the MSB and set the latch flag */
 		if ((IO_TCR & Z180_TCR_TDE1) == 0)
 		{
@@ -992,224 +1161,400 @@ data |= 0x02; // kludge for 20pacgal
 		{
 			m_read_tcr_tmdr[1] = 1;
 		}
+<<<<<<< HEAD
 		LOG(("Z180 '%s' TMDR1H rd $%02x ($%02x)\n", tag(), data, m_io[port & 0x3f]));
+=======
+		LOG("Z180 TMDR1H rd $%02x ($%02x)\n", data, m_io[port & 0x3f]);
+>>>>>>> upstream/master
 		break;
 
 	case Z180_RLDR1L:
 		data = IO_RLDR1L & Z180_RLDR1L_RMASK;
+<<<<<<< HEAD
 		LOG(("Z180 '%s' RLDR1L rd $%02x ($%02x)\n", tag(), data, m_io[port & 0x3f]));
+=======
+		LOG("Z180 RLDR1L rd $%02x ($%02x)\n", data, m_io[port & 0x3f]);
+>>>>>>> upstream/master
 		break;
 
 	case Z180_RLDR1H:
 		data = IO_RLDR1H & Z180_RLDR1H_RMASK;
+<<<<<<< HEAD
 		LOG(("Z180 '%s' RLDR1H rd $%02x ($%02x)\n", tag(), data, m_io[port & 0x3f]));
+=======
+		LOG("Z180 RLDR1H rd $%02x ($%02x)\n", data, m_io[port & 0x3f]);
+>>>>>>> upstream/master
 		break;
 
 	case Z180_FRC:
 		data = IO_FRC & Z180_FRC_RMASK;
+<<<<<<< HEAD
 		LOG(("Z180 '%s' FRC    rd $%02x ($%02x)\n", tag(), data, m_io[port & 0x3f]));
+=======
+		LOG("Z180 FRC    rd $%02x ($%02x)\n", data, m_io[port & 0x3f]);
+>>>>>>> upstream/master
 		break;
 
 	case Z180_IO19:
 		data = IO_IO19 & Z180_IO19_RMASK;
+<<<<<<< HEAD
 		LOG(("Z180 '%s' IO19   rd $%02x ($%02x)\n", tag(), data, m_io[port & 0x3f]));
+=======
+		LOG("Z180 IO19   rd $%02x ($%02x)\n", data, m_io[port & 0x3f]);
+>>>>>>> upstream/master
 		break;
 
 	case Z180_ASTC0L:
 		data = IO_ASTC0L & Z180_ASTC0L_RMASK;
+<<<<<<< HEAD
 		LOG(("Z180 '%s' ASTC0L rd $%02x ($%02x)\n", tag(), data, m_io[port & 0x3f]));
+=======
+		LOG("Z180 ASTC0L rd $%02x ($%02x)\n", data, m_io[port & 0x3f]);
+>>>>>>> upstream/master
 		break;
 
 	case Z180_ASTC0H:
 		data = IO_ASTC0H & Z180_ASTC0H_RMASK;
+<<<<<<< HEAD
 		LOG(("Z180 '%s' ASTC0H rd $%02x ($%02x)\n", tag(), data, m_io[port & 0x3f]));
+=======
+		LOG("Z180 ASTC0H rd $%02x ($%02x)\n", data, m_io[port & 0x3f]);
+>>>>>>> upstream/master
 		break;
 
 	case Z180_ASTC1L:
 		data = IO_ASTC1L & Z180_ASTC1L_RMASK;
+<<<<<<< HEAD
 		LOG(("Z180 '%s' ASTC1L rd $%02x ($%02x)\n", tag(), data, m_io[port & 0x3f]));
+=======
+		LOG("Z180 ASTC1L rd $%02x ($%02x)\n", data, m_io[port & 0x3f]);
+>>>>>>> upstream/master
 		break;
 
 	case Z180_ASTC1H:
 		data = IO_ASTC1H & Z180_ASTC1H_RMASK;
+<<<<<<< HEAD
 		LOG(("Z180 '%s' ASTC1H rd $%02x ($%02x)\n", tag(), data, m_io[port & 0x3f]));
+=======
+		LOG("Z180 ASTC1H rd $%02x ($%02x)\n", data, m_io[port & 0x3f]);
+>>>>>>> upstream/master
 		break;
 
 	case Z180_CMR:
 		data = IO_CMR & Z180_CMR_RMASK;
+<<<<<<< HEAD
 		LOG(("Z180 '%s' CMR    rd $%02x ($%02x)\n", tag(), data, m_io[port & 0x3f]));
+=======
+		LOG("Z180 CMR    rd $%02x ($%02x)\n", data, m_io[port & 0x3f]);
+>>>>>>> upstream/master
 		break;
 
 	case Z180_CCR:
 		data = IO_CCR & Z180_CCR_RMASK;
+<<<<<<< HEAD
 		LOG(("Z180 '%s' CCR    rd $%02x ($%02x)\n", tag(), data, m_io[port & 0x3f]));
+=======
+		LOG("Z180 CCR    rd $%02x ($%02x)\n", data, m_io[port & 0x3f]);
+>>>>>>> upstream/master
 		break;
 
 	case Z180_SAR0L:
 		data = IO_SAR0L & Z180_SAR0L_RMASK;
+<<<<<<< HEAD
 		LOG(("Z180 '%s' SAR0L  rd $%02x ($%02x)\n", tag(), data, m_io[port & 0x3f]));
+=======
+		LOG("Z180 SAR0L  rd $%02x ($%02x)\n", data, m_io[port & 0x3f]);
+>>>>>>> upstream/master
 		break;
 
 	case Z180_SAR0H:
 		data = IO_SAR0H & Z180_SAR0H_RMASK;
+<<<<<<< HEAD
 		LOG(("Z180 '%s' SAR0H  rd $%02x ($%02x)\n", tag(), data, m_io[port & 0x3f]));
+=======
+		LOG("Z180 SAR0H  rd $%02x ($%02x)\n", data, m_io[port & 0x3f]);
+>>>>>>> upstream/master
 		break;
 
 	case Z180_SAR0B:
 		data = IO_SAR0B & Z180_SAR0B_RMASK;
+<<<<<<< HEAD
 		LOG(("Z180 '%s' SAR0B  rd $%02x ($%02x)\n", tag(), data, m_io[port & 0x3f]));
+=======
+		LOG("Z180 SAR0B  rd $%02x ($%02x)\n", data, m_io[port & 0x3f]);
+>>>>>>> upstream/master
 		break;
 
 	case Z180_DAR0L:
 		data = IO_DAR0L & Z180_DAR0L_RMASK;
+<<<<<<< HEAD
 		LOG(("Z180 '%s' DAR0L  rd $%02x ($%02x)\n", tag(), data, m_io[port & 0x3f]));
+=======
+		LOG("Z180 DAR0L  rd $%02x ($%02x)\n", data, m_io[port & 0x3f]);
+>>>>>>> upstream/master
 		break;
 
 	case Z180_DAR0H:
 		data = IO_DAR0H & Z180_DAR0H_RMASK;
+<<<<<<< HEAD
 		LOG(("Z180 '%s' DAR0H  rd $%02x ($%02x)\n", tag(), data, m_io[port & 0x3f]));
+=======
+		LOG("Z180 DAR0H  rd $%02x ($%02x)\n", data, m_io[port & 0x3f]);
+>>>>>>> upstream/master
 		break;
 
 	case Z180_DAR0B:
 		data = IO_DAR0B & Z180_DAR0B_RMASK;
+<<<<<<< HEAD
 		LOG(("Z180 '%s' DAR0B  rd $%02x ($%02x)\n", tag(), data, m_io[port & 0x3f]));
+=======
+		LOG("Z180 DAR0B  rd $%02x ($%02x)\n", data, m_io[port & 0x3f]);
+>>>>>>> upstream/master
 		break;
 
 	case Z180_BCR0L:
 		data = IO_BCR0L & Z180_BCR0L_RMASK;
+<<<<<<< HEAD
 		LOG(("Z180 '%s' BCR0L  rd $%02x ($%02x)\n", tag(), data, m_io[port & 0x3f]));
+=======
+		LOG("Z180 BCR0L  rd $%02x ($%02x)\n", data, m_io[port & 0x3f]);
+>>>>>>> upstream/master
 		break;
 
 	case Z180_BCR0H:
 		data = IO_BCR0H & Z180_BCR0H_RMASK;
+<<<<<<< HEAD
 		LOG(("Z180 '%s' BCR0H  rd $%02x ($%02x)\n", tag(), data, m_io[port & 0x3f]));
+=======
+		LOG("Z180 BCR0H  rd $%02x ($%02x)\n", data, m_io[port & 0x3f]);
+>>>>>>> upstream/master
 		break;
 
 	case Z180_MAR1L:
 		data = IO_MAR1L & Z180_MAR1L_RMASK;
+<<<<<<< HEAD
 		LOG(("Z180 '%s' MAR1L  rd $%02x ($%02x)\n", tag(), data, m_io[port & 0x3f]));
+=======
+		LOG("Z180 MAR1L  rd $%02x ($%02x)\n", data, m_io[port & 0x3f]);
+>>>>>>> upstream/master
 		break;
 
 	case Z180_MAR1H:
 		data = IO_MAR1H & Z180_MAR1H_RMASK;
+<<<<<<< HEAD
 		LOG(("Z180 '%s' MAR1H  rd $%02x ($%02x)\n", tag(), data, m_io[port & 0x3f]));
+=======
+		LOG("Z180 MAR1H  rd $%02x ($%02x)\n", data, m_io[port & 0x3f]);
+>>>>>>> upstream/master
 		break;
 
 	case Z180_MAR1B:
 		data = IO_MAR1B & Z180_MAR1B_RMASK;
+<<<<<<< HEAD
 		LOG(("Z180 '%s' MAR1B  rd $%02x ($%02x)\n", tag(), data, m_io[port & 0x3f]));
+=======
+		LOG("Z180 MAR1B  rd $%02x ($%02x)\n", data, m_io[port & 0x3f]);
+>>>>>>> upstream/master
 		break;
 
 	case Z180_IAR1L:
 		data = IO_IAR1L & Z180_IAR1L_RMASK;
+<<<<<<< HEAD
 		LOG(("Z180 '%s' IAR1L  rd $%02x ($%02x)\n", tag(), data, m_io[port & 0x3f]));
+=======
+		LOG("Z180 IAR1L  rd $%02x ($%02x)\n", data, m_io[port & 0x3f]);
+>>>>>>> upstream/master
 		break;
 
 	case Z180_IAR1H:
 		data = IO_IAR1H & Z180_IAR1H_RMASK;
+<<<<<<< HEAD
 		LOG(("Z180 '%s' IAR1H  rd $%02x ($%02x)\n", tag(), data, m_io[port & 0x3f]));
+=======
+		LOG("Z180 IAR1H  rd $%02x ($%02x)\n", data, m_io[port & 0x3f]);
+>>>>>>> upstream/master
 		break;
 
 	case Z180_IAR1B:
 		data = IO_IAR1B & Z180_IAR1B_RMASK;
+<<<<<<< HEAD
 		LOG(("Z180 '%s' IAR1B  rd $%02x ($%02x)\n", tag(), data, m_io[port & 0x3f]));
+=======
+		LOG("Z180 IAR1B  rd $%02x ($%02x)\n", data, m_io[port & 0x3f]);
+>>>>>>> upstream/master
 		break;
 
 	case Z180_BCR1L:
 		data = IO_BCR1L & Z180_BCR1L_RMASK;
+<<<<<<< HEAD
 		LOG(("Z180 '%s' BCR1L  rd $%02x ($%02x)\n", tag(), data, m_io[port & 0x3f]));
+=======
+		LOG("Z180 BCR1L  rd $%02x ($%02x)\n", data, m_io[port & 0x3f]);
+>>>>>>> upstream/master
 		break;
 
 	case Z180_BCR1H:
 		data = IO_BCR1H & Z180_BCR1H_RMASK;
+<<<<<<< HEAD
 		LOG(("Z180 '%s' BCR1H  rd $%02x ($%02x)\n", tag(), data, m_io[port & 0x3f]));
+=======
+		LOG("Z180 BCR1H  rd $%02x ($%02x)\n", data, m_io[port & 0x3f]);
+>>>>>>> upstream/master
 		break;
 
 	case Z180_DSTAT:
 		data = IO_DSTAT & Z180_DSTAT_RMASK;
+<<<<<<< HEAD
 		LOG(("Z180 '%s' DSTAT  rd $%02x ($%02x)\n", tag(), data, m_io[port & 0x3f]));
+=======
+		LOG("Z180 DSTAT  rd $%02x ($%02x)\n", data, m_io[port & 0x3f]);
+>>>>>>> upstream/master
 		break;
 
 	case Z180_DMODE:
 		data = IO_DMODE & Z180_DMODE_RMASK;
+<<<<<<< HEAD
 		LOG(("Z180 '%s' DMODE  rd $%02x ($%02x)\n", tag(), data, m_io[port & 0x3f]));
+=======
+		LOG("Z180 DMODE  rd $%02x ($%02x)\n", data, m_io[port & 0x3f]);
+>>>>>>> upstream/master
 		break;
 
 	case Z180_DCNTL:
 		data = IO_DCNTL & Z180_DCNTL_RMASK;
+<<<<<<< HEAD
 		LOG(("Z180 '%s' DCNTL  rd $%02x ($%02x)\n", tag(), data, m_io[port & 0x3f]));
+=======
+		LOG("Z180 DCNTL  rd $%02x ($%02x)\n", data, m_io[port & 0x3f]);
+>>>>>>> upstream/master
 		break;
 
 	case Z180_IL:
 		data = IO_IL & Z180_IL_RMASK;
+<<<<<<< HEAD
 		LOG(("Z180 '%s' IL     rd $%02x ($%02x)\n", tag(), data, m_io[port & 0x3f]));
+=======
+		LOG("Z180 IL     rd $%02x ($%02x)\n", data, m_io[port & 0x3f]);
+>>>>>>> upstream/master
 		break;
 
 	case Z180_ITC:
 		data = IO_ITC & Z180_ITC_RMASK;
+<<<<<<< HEAD
 		LOG(("Z180 '%s' ITC    rd $%02x ($%02x)\n", tag(), data, m_io[port & 0x3f]));
+=======
+		LOG("Z180 ITC    rd $%02x ($%02x)\n", data, m_io[port & 0x3f]);
+>>>>>>> upstream/master
 		break;
 
 	case Z180_IO35:
 		data = IO_IO35 & Z180_IO35_RMASK;
+<<<<<<< HEAD
 		LOG(("Z180 '%s' IO35   rd $%02x ($%02x)\n", tag(), data, m_io[port & 0x3f]));
+=======
+		LOG("Z180 IO35   rd $%02x ($%02x)\n", data, m_io[port & 0x3f]);
+>>>>>>> upstream/master
 		break;
 
 	case Z180_RCR:
 		data = IO_RCR & Z180_RCR_RMASK;
+<<<<<<< HEAD
 		LOG(("Z180 '%s' RCR    rd $%02x ($%02x)\n", tag(), data, m_io[port & 0x3f]));
+=======
+		LOG("Z180 RCR    rd $%02x ($%02x)\n", data, m_io[port & 0x3f]);
+>>>>>>> upstream/master
 		break;
 
 	case Z180_IO37:
 		data = IO_IO37 & Z180_IO37_RMASK;
+<<<<<<< HEAD
 		LOG(("Z180 '%s' IO37   rd $%02x ($%02x)\n", tag(), data, m_io[port & 0x3f]));
+=======
+		LOG("Z180 IO37   rd $%02x ($%02x)\n", data, m_io[port & 0x3f]);
+>>>>>>> upstream/master
 		break;
 
 	case Z180_CBR:
 		data = IO_CBR & Z180_CBR_RMASK;
+<<<<<<< HEAD
 		LOG(("Z180 '%s' CBR    rd $%02x ($%02x)\n", tag(), data, m_io[port & 0x3f]));
+=======
+		LOG("Z180 CBR    rd $%02x ($%02x)\n", data, m_io[port & 0x3f]);
+>>>>>>> upstream/master
 		break;
 
 	case Z180_BBR:
 		data = IO_BBR & Z180_BBR_RMASK;
+<<<<<<< HEAD
 		LOG(("Z180 '%s' BBR    rd $%02x ($%02x)\n", tag(), data, m_io[port & 0x3f]));
+=======
+		LOG("Z180 BBR    rd $%02x ($%02x)\n", data, m_io[port & 0x3f]);
+>>>>>>> upstream/master
 		break;
 
 	case Z180_CBAR:
 		data = IO_CBAR & Z180_CBAR_RMASK;
+<<<<<<< HEAD
 		LOG(("Z180 '%s' CBAR   rd $%02x ($%02x)\n", tag(), data, m_io[port & 0x3f]));
+=======
+		LOG("Z180 CBAR   rd $%02x ($%02x)\n", data, m_io[port & 0x3f]);
+>>>>>>> upstream/master
 		break;
 
 	case Z180_IO3B:
 		data = IO_IO3B & Z180_IO3B_RMASK;
+<<<<<<< HEAD
 		LOG(("Z180 '%s' IO3B   rd $%02x ($%02x)\n", tag(), data, m_io[port & 0x3f]));
+=======
+		LOG("Z180 IO3B   rd $%02x ($%02x)\n", data, m_io[port & 0x3f]);
+>>>>>>> upstream/master
 		break;
 
 	case Z180_IO3C:
 		data = IO_IO3C & Z180_IO3C_RMASK;
+<<<<<<< HEAD
 		LOG(("Z180 '%s' IO3C   rd $%02x ($%02x)\n", tag(), data, m_io[port & 0x3f]));
+=======
+		LOG("Z180 IO3C   rd $%02x ($%02x)\n", data, m_io[port & 0x3f]);
+>>>>>>> upstream/master
 		break;
 
 	case Z180_IO3D:
 		data = IO_IO3D & Z180_IO3D_RMASK;
+<<<<<<< HEAD
 		LOG(("Z180 '%s' IO3D   rd $%02x ($%02x)\n", tag(), data, m_io[port & 0x3f]));
+=======
+		LOG("Z180 IO3D   rd $%02x ($%02x)\n", data, m_io[port & 0x3f]);
+>>>>>>> upstream/master
 		break;
 
 	case Z180_OMCR:
 		data = IO_OMCR & Z180_OMCR_RMASK;
+<<<<<<< HEAD
 		LOG(("Z180 '%s' OMCR   rd $%02x ($%02x)\n", tag(), data, m_io[port & 0x3f]));
+=======
+		LOG("Z180 OMCR   rd $%02x ($%02x)\n", data, m_io[port & 0x3f]);
+>>>>>>> upstream/master
 		break;
 
 	case Z180_IOCR:
 		data = IO_IOCR & Z180_IOCR_RMASK;
+<<<<<<< HEAD
 		LOG(("Z180 '%s' IOCR   rd $%02x ($%02x)\n", tag(), data, m_io[port & 0x3f]));
+=======
+		LOG("Z180 IOCR   rd $%02x ($%02x)\n", data, m_io[port & 0x3f]);
+>>>>>>> upstream/master
 		break;
 	}
 
 	return data;
 }
 
+<<<<<<< HEAD
 void z180_device::z180_writecontrol(offs_t port, UINT8 data)
+=======
+void z180_device::z180_writecontrol(offs_t port, uint8_t data)
+>>>>>>> upstream/master
 {
 	/* normal external write port */
 	m_iospace->write_byte(port, data);
@@ -1222,91 +1567,161 @@ void z180_device::z180_writecontrol(offs_t port, UINT8 data)
 	switch (port + Z180_CNTLA0)
 	{
 	case Z180_CNTLA0:
+<<<<<<< HEAD
 		LOG(("Z180 '%s' CNTLA0 wr $%02x ($%02x)\n", tag(), data,  data & Z180_CNTLA0_WMASK));
+=======
+		LOG("Z180 CNTLA0 wr $%02x ($%02x)\n", data,  data & Z180_CNTLA0_WMASK);
+>>>>>>> upstream/master
 		IO_CNTLA0 = (IO_CNTLA0 & ~Z180_CNTLA0_WMASK) | (data & Z180_CNTLA0_WMASK);
 		break;
 
 	case Z180_CNTLA1:
+<<<<<<< HEAD
 		LOG(("Z180 '%s' CNTLA1 wr $%02x ($%02x)\n", tag(), data,  data & Z180_CNTLA1_WMASK));
+=======
+		LOG("Z180 CNTLA1 wr $%02x ($%02x)\n", data,  data & Z180_CNTLA1_WMASK);
+>>>>>>> upstream/master
 		IO_CNTLA1 = (IO_CNTLA1 & ~Z180_CNTLA1_WMASK) | (data & Z180_CNTLA1_WMASK);
 		break;
 
 	case Z180_CNTLB0:
+<<<<<<< HEAD
 		LOG(("Z180 '%s' CNTLB0 wr $%02x ($%02x)\n", tag(), data,  data & Z180_CNTLB0_WMASK));
+=======
+		LOG("Z180 CNTLB0 wr $%02x ($%02x)\n", data,  data & Z180_CNTLB0_WMASK);
+>>>>>>> upstream/master
 		IO_CNTLB0 = (IO_CNTLB0 & ~Z180_CNTLB0_WMASK) | (data & Z180_CNTLB0_WMASK);
 		break;
 
 	case Z180_CNTLB1:
+<<<<<<< HEAD
 		LOG(("Z180 '%s' CNTLB1 wr $%02x ($%02x)\n", tag(), data,  data & Z180_CNTLB1_WMASK));
+=======
+		LOG("Z180 CNTLB1 wr $%02x ($%02x)\n", data,  data & Z180_CNTLB1_WMASK);
+>>>>>>> upstream/master
 		IO_CNTLB1 = (IO_CNTLB1 & ~Z180_CNTLB1_WMASK) | (data & Z180_CNTLB1_WMASK);
 		break;
 
 	case Z180_STAT0:
+<<<<<<< HEAD
 		LOG(("Z180 '%s' STAT0  wr $%02x ($%02x)\n", tag(), data,  data & Z180_STAT0_WMASK));
+=======
+		LOG("Z180 STAT0  wr $%02x ($%02x)\n", data,  data & Z180_STAT0_WMASK);
+>>>>>>> upstream/master
 		IO_STAT0 = (IO_STAT0 & ~Z180_STAT0_WMASK) | (data & Z180_STAT0_WMASK);
 		break;
 
 	case Z180_STAT1:
+<<<<<<< HEAD
 		LOG(("Z180 '%s' STAT1  wr $%02x ($%02x)\n", tag(), data,  data & Z180_STAT1_WMASK));
+=======
+		LOG("Z180 STAT1  wr $%02x ($%02x)\n", data,  data & Z180_STAT1_WMASK);
+>>>>>>> upstream/master
 		IO_STAT1 = (IO_STAT1 & ~Z180_STAT1_WMASK) | (data & Z180_STAT1_WMASK);
 		break;
 
 	case Z180_TDR0:
+<<<<<<< HEAD
 		LOG(("Z180 '%s' TDR0   wr $%02x ($%02x)\n", tag(), data,  data & Z180_TDR0_WMASK));
+=======
+		LOG("Z180 TDR0   wr $%02x ($%02x)\n", data,  data & Z180_TDR0_WMASK);
+>>>>>>> upstream/master
 		IO_TDR0 = (IO_TDR0 & ~Z180_TDR0_WMASK) | (data & Z180_TDR0_WMASK);
 		break;
 
 	case Z180_TDR1:
+<<<<<<< HEAD
 		LOG(("Z180 '%s' TDR1   wr $%02x ($%02x)\n", tag(), data,  data & Z180_TDR1_WMASK));
+=======
+		LOG("Z180 TDR1   wr $%02x ($%02x)\n", data,  data & Z180_TDR1_WMASK);
+>>>>>>> upstream/master
 		IO_TDR1 = (IO_TDR1 & ~Z180_TDR1_WMASK) | (data & Z180_TDR1_WMASK);
 		break;
 
 	case Z180_RDR0:
+<<<<<<< HEAD
 		LOG(("Z180 '%s' RDR0   wr $%02x ($%02x)\n", tag(), data,  data & Z180_RDR0_WMASK));
+=======
+		LOG("Z180 RDR0   wr $%02x ($%02x)\n", data,  data & Z180_RDR0_WMASK);
+>>>>>>> upstream/master
 		IO_RDR0 = (IO_RDR0 & ~Z180_RDR0_WMASK) | (data & Z180_RDR0_WMASK);
 		break;
 
 	case Z180_RDR1:
+<<<<<<< HEAD
 		LOG(("Z180 '%s' RDR1   wr $%02x ($%02x)\n", tag(), data,  data & Z180_RDR1_WMASK));
+=======
+		LOG("Z180 RDR1   wr $%02x ($%02x)\n", data,  data & Z180_RDR1_WMASK);
+>>>>>>> upstream/master
 		IO_RDR1 = (IO_RDR1 & ~Z180_RDR1_WMASK) | (data & Z180_RDR1_WMASK);
 		break;
 
 	case Z180_CNTR:
+<<<<<<< HEAD
 		LOG(("Z180 '%s' CNTR   wr $%02x ($%02x)\n", tag(), data,  data & Z180_CNTR_WMASK));
+=======
+		LOG("Z180 CNTR   wr $%02x ($%02x)\n", data,  data & Z180_CNTR_WMASK);
+>>>>>>> upstream/master
 		IO_CNTR = (IO_CNTR & ~Z180_CNTR_WMASK) | (data & Z180_CNTR_WMASK);
 		break;
 
 	case Z180_TRDR:
+<<<<<<< HEAD
 		LOG(("Z180 '%s' TRDR   wr $%02x ($%02x)\n", tag(), data,  data & Z180_TRDR_WMASK));
+=======
+		LOG("Z180 TRDR   wr $%02x ($%02x)\n", data,  data & Z180_TRDR_WMASK);
+>>>>>>> upstream/master
 		IO_TRDR = (IO_TRDR & ~Z180_TRDR_WMASK) | (data & Z180_TRDR_WMASK);
 		break;
 
 	case Z180_TMDR0L:
+<<<<<<< HEAD
 		LOG(("Z180 '%s' TMDR0L wr $%02x ($%02x)\n", tag(), data,  data & Z180_TMDR0L_WMASK));
+=======
+		LOG("Z180 TMDR0L wr $%02x ($%02x)\n", data,  data & Z180_TMDR0L_WMASK);
+>>>>>>> upstream/master
 		IO_TMDR0L = data & Z180_TMDR0L_WMASK;
 		m_tmdr_value[0] = (m_tmdr_value[0] & 0xff00) | IO_TMDR0L;
 		break;
 
 	case Z180_TMDR0H:
+<<<<<<< HEAD
 		LOG(("Z180 '%s' TMDR0H wr $%02x ($%02x)\n", tag(), data,  data & Z180_TMDR0H_WMASK));
+=======
+		LOG("Z180 TMDR0H wr $%02x ($%02x)\n", data,  data & Z180_TMDR0H_WMASK);
+>>>>>>> upstream/master
 		IO_TMDR0H = data & Z180_TMDR0H_WMASK;
 		m_tmdr_value[0] = (m_tmdr_value[0] & 0x00ff) | (IO_TMDR0H << 8);
 		break;
 
 	case Z180_RLDR0L:
+<<<<<<< HEAD
 		LOG(("Z180 '%s' RLDR0L wr $%02x ($%02x)\n", tag(), data,  data & Z180_RLDR0L_WMASK));
+=======
+		LOG("Z180 RLDR0L wr $%02x ($%02x)\n", data,  data & Z180_RLDR0L_WMASK);
+>>>>>>> upstream/master
 		IO_RLDR0L = (IO_RLDR0L & ~Z180_RLDR0L_WMASK) | (data & Z180_RLDR0L_WMASK);
 		break;
 
 	case Z180_RLDR0H:
+<<<<<<< HEAD
 		LOG(("Z180 '%s' RLDR0H wr $%02x ($%02x)\n", tag(), data,  data & Z180_RLDR0H_WMASK));
+=======
+		LOG("Z180 RLDR0H wr $%02x ($%02x)\n", data,  data & Z180_RLDR0H_WMASK);
+>>>>>>> upstream/master
 		IO_RLDR0H = (IO_RLDR0H & ~Z180_RLDR0H_WMASK) | (data & Z180_RLDR0H_WMASK);
 		break;
 
 	case Z180_TCR:
+<<<<<<< HEAD
 		LOG(("Z180 '%s' TCR    wr $%02x ($%02x)\n", tag(), data,  data & Z180_TCR_WMASK));
 		{
 			UINT16 old = IO_TCR;
+=======
+		LOG("Z180 TCR    wr $%02x ($%02x)\n", data,  data & Z180_TCR_WMASK);
+		{
+			uint16_t old = IO_TCR;
+>>>>>>> upstream/master
 			/* Force reload on state change */
 			IO_TCR = (IO_TCR & ~Z180_TCR_WMASK) | (data & Z180_TCR_WMASK);
 			if (!(old & Z180_TCR_TDE0) && (IO_TCR & Z180_TCR_TDE0))
@@ -1318,163 +1733,288 @@ void z180_device::z180_writecontrol(offs_t port, UINT8 data)
 		break;
 
 	case Z180_IO11:
+<<<<<<< HEAD
 		LOG(("Z180 '%s' IO11   wr $%02x ($%02x)\n", tag(), data,  data & Z180_IO11_WMASK));
+=======
+		LOG("Z180 IO11   wr $%02x ($%02x)\n", data,  data & Z180_IO11_WMASK);
+>>>>>>> upstream/master
 		IO_IO11 = (IO_IO11 & ~Z180_IO11_WMASK) | (data & Z180_IO11_WMASK);
 		break;
 
 	case Z180_ASEXT0:
+<<<<<<< HEAD
 		LOG(("Z180 '%s' ASEXT0 wr $%02x ($%02x)\n", tag(), data,  data & Z180_ASEXT0_WMASK));
+=======
+		LOG("Z180 ASEXT0 wr $%02x ($%02x)\n", data,  data & Z180_ASEXT0_WMASK);
+>>>>>>> upstream/master
 		IO_ASEXT0 = (IO_ASEXT0 & ~Z180_ASEXT0_WMASK) | (data & Z180_ASEXT0_WMASK);
 		break;
 
 	case Z180_ASEXT1:
+<<<<<<< HEAD
 		LOG(("Z180 '%s' ASEXT1 wr $%02x ($%02x)\n", tag(), data,  data & Z180_ASEXT1_WMASK));
+=======
+		LOG("Z180 ASEXT1 wr $%02x ($%02x)\n", data,  data & Z180_ASEXT1_WMASK);
+>>>>>>> upstream/master
 		IO_ASEXT1 = (IO_ASEXT1 & ~Z180_ASEXT1_WMASK) | (data & Z180_ASEXT1_WMASK);
 		break;
 
 	case Z180_TMDR1L:
+<<<<<<< HEAD
 		LOG(("Z180 '%s' TMDR1L wr $%02x ($%02x)\n", tag(), data,  data & Z180_TMDR1L_WMASK));
+=======
+		LOG("Z180 TMDR1L wr $%02x ($%02x)\n", data,  data & Z180_TMDR1L_WMASK);
+>>>>>>> upstream/master
 		IO_TMDR1L = data & Z180_TMDR1L_WMASK;
 		m_tmdr_value[1] = (m_tmdr_value[1] & 0xff00) | IO_TMDR1L;
 		break;
 
 	case Z180_TMDR1H:
+<<<<<<< HEAD
 		LOG(("Z180 '%s' TMDR1H wr $%02x ($%02x)\n", tag(), data,  data & Z180_TMDR1H_WMASK));
+=======
+		LOG("Z180 TMDR1H wr $%02x ($%02x)\n", data,  data & Z180_TMDR1H_WMASK);
+>>>>>>> upstream/master
 		IO_TMDR1H = data & Z180_TMDR1H_WMASK;
 		m_tmdr_value[1] = (m_tmdr_value[1] & 0x00ff) | IO_TMDR1H;
 		break;
 
 	case Z180_RLDR1L:
+<<<<<<< HEAD
 		LOG(("Z180 '%s' RLDR1L wr $%02x ($%02x)\n", tag(), data,  data & Z180_RLDR1L_WMASK));
+=======
+		LOG("Z180 RLDR1L wr $%02x ($%02x)\n", data,  data & Z180_RLDR1L_WMASK);
+>>>>>>> upstream/master
 		IO_RLDR1L = (IO_RLDR1L & ~Z180_RLDR1L_WMASK) | (data & Z180_RLDR1L_WMASK);
 		break;
 
 	case Z180_RLDR1H:
+<<<<<<< HEAD
 		LOG(("Z180 '%s' RLDR1H wr $%02x ($%02x)\n", tag(), data,  data & Z180_RLDR1H_WMASK));
+=======
+		LOG("Z180 RLDR1H wr $%02x ($%02x)\n", data,  data & Z180_RLDR1H_WMASK);
+>>>>>>> upstream/master
 		IO_RLDR1H = (IO_RLDR1H & ~Z180_RLDR1H_WMASK) | (data & Z180_RLDR1H_WMASK);
 		break;
 
 	case Z180_FRC:
+<<<<<<< HEAD
 		LOG(("Z180 '%s' FRC    wr $%02x ($%02x)\n", tag(), data,  data & Z180_FRC_WMASK));
+=======
+		LOG("Z180 FRC    wr $%02x ($%02x)\n", data,  data & Z180_FRC_WMASK);
+>>>>>>> upstream/master
 		IO_FRC = (IO_FRC & ~Z180_FRC_WMASK) | (data & Z180_FRC_WMASK);
 		break;
 
 	case Z180_IO19:
+<<<<<<< HEAD
 		LOG(("Z180 '%s' IO19   wr $%02x ($%02x)\n", tag(), data,  data & Z180_IO19_WMASK));
+=======
+		LOG("Z180 IO19   wr $%02x ($%02x)\n", data,  data & Z180_IO19_WMASK);
+>>>>>>> upstream/master
 		IO_IO19 = (IO_IO19 & ~Z180_IO19_WMASK) | (data & Z180_IO19_WMASK);
 		break;
 
 	case Z180_ASTC0L:
+<<<<<<< HEAD
 		LOG(("Z180 '%s' ASTC0L wr $%02x ($%02x)\n", tag(), data,  data & Z180_ASTC0L_WMASK));
+=======
+		LOG("Z180 ASTC0L wr $%02x ($%02x)\n", data,  data & Z180_ASTC0L_WMASK);
+>>>>>>> upstream/master
 		IO_ASTC0L = (IO_ASTC0L & ~Z180_ASTC0L_WMASK) | (data & Z180_ASTC0L_WMASK);
 		break;
 
 	case Z180_ASTC0H:
+<<<<<<< HEAD
 		LOG(("Z180 '%s' ASTC0H wr $%02x ($%02x)\n", tag(), data,  data & Z180_ASTC0H_WMASK));
+=======
+		LOG("Z180 ASTC0H wr $%02x ($%02x)\n", data,  data & Z180_ASTC0H_WMASK);
+>>>>>>> upstream/master
 		IO_ASTC0H = (IO_ASTC0H & ~Z180_ASTC0H_WMASK) | (data & Z180_ASTC0H_WMASK);
 		break;
 
 	case Z180_ASTC1L:
+<<<<<<< HEAD
 		LOG(("Z180 '%s' ASTC1L wr $%02x ($%02x)\n", tag(), data,  data & Z180_ASTC1L_WMASK));
+=======
+		LOG("Z180 ASTC1L wr $%02x ($%02x)\n", data,  data & Z180_ASTC1L_WMASK);
+>>>>>>> upstream/master
 		IO_ASTC1L = (IO_ASTC1L & ~Z180_ASTC1L_WMASK) | (data & Z180_ASTC1L_WMASK);
 		break;
 
 	case Z180_ASTC1H:
+<<<<<<< HEAD
 		LOG(("Z180 '%s' ASTC1H wr $%02x ($%02x)\n", tag(), data,  data & Z180_ASTC1H_WMASK));
+=======
+		LOG("Z180 ASTC1H wr $%02x ($%02x)\n", data,  data & Z180_ASTC1H_WMASK);
+>>>>>>> upstream/master
 		IO_ASTC1H = (IO_ASTC1H & ~Z180_ASTC1H_WMASK) | (data & Z180_ASTC1H_WMASK);
 		break;
 
 	case Z180_CMR:
+<<<<<<< HEAD
 		LOG(("Z180 '%s' CMR    wr $%02x ($%02x)\n", tag(), data,  data & Z180_CMR_WMASK));
+=======
+		LOG("Z180 CMR    wr $%02x ($%02x)\n", data,  data & Z180_CMR_WMASK);
+>>>>>>> upstream/master
 		IO_CMR = (IO_CMR & ~Z180_CMR_WMASK) | (data & Z180_CMR_WMASK);
 		break;
 
 	case Z180_CCR:
+<<<<<<< HEAD
 		LOG(("Z180 '%s' CCR    wr $%02x ($%02x)\n", tag(), data,  data & Z180_CCR_WMASK));
+=======
+		LOG("Z180 CCR    wr $%02x ($%02x)\n", data,  data & Z180_CCR_WMASK);
+>>>>>>> upstream/master
 		IO_CCR = (IO_CCR & ~Z180_CCR_WMASK) | (data & Z180_CCR_WMASK);
 		break;
 
 	case Z180_SAR0L:
+<<<<<<< HEAD
 		LOG(("Z180 '%s' SAR0L  wr $%02x ($%02x)\n", tag(), data,  data & Z180_SAR0L_WMASK));
+=======
+		LOG("Z180 SAR0L  wr $%02x ($%02x)\n", data,  data & Z180_SAR0L_WMASK);
+>>>>>>> upstream/master
 		IO_SAR0L = (IO_SAR0L & ~Z180_SAR0L_WMASK) | (data & Z180_SAR0L_WMASK);
 		break;
 
 	case Z180_SAR0H:
+<<<<<<< HEAD
 		LOG(("Z180 '%s' SAR0H  wr $%02x ($%02x)\n", tag(), data,  data & Z180_SAR0H_WMASK));
+=======
+		LOG("Z180 SAR0H  wr $%02x ($%02x)\n", data,  data & Z180_SAR0H_WMASK);
+>>>>>>> upstream/master
 		IO_SAR0H = (IO_SAR0H & ~Z180_SAR0H_WMASK) | (data & Z180_SAR0H_WMASK);
 		break;
 
 	case Z180_SAR0B:
+<<<<<<< HEAD
 		LOG(("Z180 '%s' SAR0B  wr $%02x ($%02x)\n", tag(), data,  data & Z180_SAR0B_WMASK));
+=======
+		LOG("Z180 SAR0B  wr $%02x ($%02x)\n", data,  data & Z180_SAR0B_WMASK);
+>>>>>>> upstream/master
 		IO_SAR0B = (IO_SAR0B & ~Z180_SAR0B_WMASK) | (data & Z180_SAR0B_WMASK);
 		break;
 
 	case Z180_DAR0L:
+<<<<<<< HEAD
 		LOG(("Z180 '%s' DAR0L  wr $%02x ($%02x)\n", tag(), data,  data & Z180_DAR0L_WMASK));
+=======
+		LOG("Z180 DAR0L  wr $%02x ($%02x)\n", data,  data & Z180_DAR0L_WMASK);
+>>>>>>> upstream/master
 		IO_DAR0L = (IO_DAR0L & ~Z180_DAR0L_WMASK) | (data & Z180_DAR0L_WMASK);
 		break;
 
 	case Z180_DAR0H:
+<<<<<<< HEAD
 		LOG(("Z180 '%s' DAR0H  wr $%02x ($%02x)\n", tag(), data,  data & Z180_DAR0H_WMASK));
+=======
+		LOG("Z180 DAR0H  wr $%02x ($%02x)\n", data,  data & Z180_DAR0H_WMASK);
+>>>>>>> upstream/master
 		IO_DAR0H = (IO_DAR0H & ~Z180_DAR0H_WMASK) | (data & Z180_DAR0H_WMASK);
 		break;
 
 	case Z180_DAR0B:
+<<<<<<< HEAD
 		LOG(("Z180 '%s' DAR0B  wr $%02x ($%02x)\n", tag(), data,  data & Z180_DAR0B_WMASK));
+=======
+		LOG("Z180 DAR0B  wr $%02x ($%02x)\n", data,  data & Z180_DAR0B_WMASK);
+>>>>>>> upstream/master
 		IO_DAR0B = (IO_DAR0B & ~Z180_DAR0B_WMASK) | (data & Z180_DAR0B_WMASK);
 		break;
 
 	case Z180_BCR0L:
+<<<<<<< HEAD
 		LOG(("Z180 '%s' BCR0L  wr $%02x ($%02x)\n", tag(), data,  data & Z180_BCR0L_WMASK));
+=======
+		LOG("Z180 BCR0L  wr $%02x ($%02x)\n", data,  data & Z180_BCR0L_WMASK);
+>>>>>>> upstream/master
 		IO_BCR0L = (IO_BCR0L & ~Z180_BCR0L_WMASK) | (data & Z180_BCR0L_WMASK);
 		break;
 
 	case Z180_BCR0H:
+<<<<<<< HEAD
 		LOG(("Z180 '%s' BCR0H  wr $%02x ($%02x)\n", tag(), data,  data & Z180_BCR0H_WMASK));
+=======
+		LOG("Z180 BCR0H  wr $%02x ($%02x)\n", data,  data & Z180_BCR0H_WMASK);
+>>>>>>> upstream/master
 		IO_BCR0H = (IO_BCR0H & ~Z180_BCR0H_WMASK) | (data & Z180_BCR0H_WMASK);
 		break;
 
 	case Z180_MAR1L:
+<<<<<<< HEAD
 		LOG(("Z180 '%s' MAR1L  wr $%02x ($%02x)\n", tag(), data,  data & Z180_MAR1L_WMASK));
+=======
+		LOG("Z180 MAR1L  wr $%02x ($%02x)\n", data,  data & Z180_MAR1L_WMASK);
+>>>>>>> upstream/master
 		IO_MAR1L = (IO_MAR1L & ~Z180_MAR1L_WMASK) | (data & Z180_MAR1L_WMASK);
 		break;
 
 	case Z180_MAR1H:
+<<<<<<< HEAD
 		LOG(("Z180 '%s' MAR1H  wr $%02x ($%02x)\n", tag(), data,  data & Z180_MAR1H_WMASK));
+=======
+		LOG("Z180 MAR1H  wr $%02x ($%02x)\n", data,  data & Z180_MAR1H_WMASK);
+>>>>>>> upstream/master
 		IO_MAR1H = (IO_MAR1H & ~Z180_MAR1H_WMASK) | (data & Z180_MAR1H_WMASK);
 		break;
 
 	case Z180_MAR1B:
+<<<<<<< HEAD
 		LOG(("Z180 '%s' MAR1B  wr $%02x ($%02x)\n", tag(), data,  data & Z180_MAR1B_WMASK));
+=======
+		LOG("Z180 MAR1B  wr $%02x ($%02x)\n", data,  data & Z180_MAR1B_WMASK);
+>>>>>>> upstream/master
 		IO_MAR1B = (IO_MAR1B & ~Z180_MAR1B_WMASK) | (data & Z180_MAR1B_WMASK);
 		break;
 
 	case Z180_IAR1L:
+<<<<<<< HEAD
 		LOG(("Z180 '%s' IAR1L  wr $%02x ($%02x)\n", tag(), data,  data & Z180_IAR1L_WMASK));
+=======
+		LOG("Z180 IAR1L  wr $%02x ($%02x)\n", data,  data & Z180_IAR1L_WMASK);
+>>>>>>> upstream/master
 		IO_IAR1L = (IO_IAR1L & ~Z180_IAR1L_WMASK) | (data & Z180_IAR1L_WMASK);
 		break;
 
 	case Z180_IAR1H:
+<<<<<<< HEAD
 		LOG(("Z180 '%s' IAR1H  wr $%02x ($%02x)\n", tag(), data,  data & Z180_IAR1H_WMASK));
+=======
+		LOG("Z180 IAR1H  wr $%02x ($%02x)\n", data,  data & Z180_IAR1H_WMASK);
+>>>>>>> upstream/master
 		IO_IAR1H = (IO_IAR1H & ~Z180_IAR1H_WMASK) | (data & Z180_IAR1H_WMASK);
 		break;
 
 	case Z180_IAR1B:
+<<<<<<< HEAD
 		LOG(("Z180 '%s' IAR1B  wr $%02x ($%02x)\n", tag(), data,  data & Z180_IAR1B_WMASK));
+=======
+		LOG("Z180 IAR1B  wr $%02x ($%02x)\n", data,  data & Z180_IAR1B_WMASK);
+>>>>>>> upstream/master
 		IO_IAR1B = (IO_IAR1B & ~Z180_IAR1B_WMASK) | (data & Z180_IAR1B_WMASK);
 		break;
 
 	case Z180_BCR1L:
+<<<<<<< HEAD
 		LOG(("Z180 '%s' BCR1L  wr $%02x ($%02x)\n", tag(), data,  data & Z180_BCR1L_WMASK));
+=======
+		LOG("Z180 BCR1L  wr $%02x ($%02x)\n", data,  data & Z180_BCR1L_WMASK);
+>>>>>>> upstream/master
 		IO_BCR1L = (IO_BCR1L & ~Z180_BCR1L_WMASK) | (data & Z180_BCR1L_WMASK);
 		break;
 
 	case Z180_BCR1H:
+<<<<<<< HEAD
 		LOG(("Z180 '%s' BCR1H  wr $%02x ($%02x)\n", tag(), data,  data & Z180_BCR1H_WMASK));
+=======
+		LOG("Z180 BCR1H  wr $%02x ($%02x)\n", data,  data & Z180_BCR1H_WMASK);
+>>>>>>> upstream/master
 		IO_BCR1H = (IO_BCR1H & ~Z180_BCR1H_WMASK) | (data & Z180_BCR1H_WMASK);
 		break;
 
 	case Z180_DSTAT:
+<<<<<<< HEAD
 		LOG(("Z180 '%s' DSTAT  wr $%02x ($%02x)\n", tag(), data,  data & Z180_DSTAT_WMASK));
 		IO_DSTAT = (IO_DSTAT & ~Z180_DSTAT_WMASK) | (data & Z180_DSTAT_WMASK);
 		if ((data & (Z180_DSTAT_DE1 | Z180_DSTAT_DWE1)) == Z180_DSTAT_DE1)
@@ -1485,79 +2025,151 @@ void z180_device::z180_writecontrol(offs_t port, UINT8 data)
 
 	case Z180_DMODE:
 		LOG(("Z180 '%s' DMODE  wr $%02x ($%02x)\n", tag(), data,  data & Z180_DMODE_WMASK));
+=======
+		LOG("Z180 DSTAT  wr $%02x ($%02x)\n", data,  data & Z180_DSTAT_WMASK);
+		IO_DSTAT = (IO_DSTAT & ~Z180_DSTAT_WMASK) | (data & Z180_DSTAT_WMASK);
+		if ((data & (Z180_DSTAT_DE1 | Z180_DSTAT_DWE1)) == Z180_DSTAT_DE1)
+		{
+			IO_DSTAT |= Z180_DSTAT_DME;  /* DMA enable */
+		}
+		if ((data & (Z180_DSTAT_DE0 | Z180_DSTAT_DWE0)) == Z180_DSTAT_DE0)
+		{
+			IO_DSTAT |= Z180_DSTAT_DME;  /* DMA enable */
+		}
+		break;
+
+	case Z180_DMODE:
+		LOG("Z180 DMODE  wr $%02x ($%02x)\n", data,  data & Z180_DMODE_WMASK);
+>>>>>>> upstream/master
 		IO_DMODE = (IO_DMODE & ~Z180_DMODE_WMASK) | (data & Z180_DMODE_WMASK);
 		break;
 
 	case Z180_DCNTL:
+<<<<<<< HEAD
 		LOG(("Z180 '%s' DCNTL  wr $%02x ($%02x)\n", tag(), data,  data & Z180_DCNTL_WMASK));
+=======
+		LOG("Z180 DCNTL  wr $%02x ($%02x)\n", data,  data & Z180_DCNTL_WMASK);
+>>>>>>> upstream/master
 		IO_DCNTL = (IO_DCNTL & ~Z180_DCNTL_WMASK) | (data & Z180_DCNTL_WMASK);
 		break;
 
 	case Z180_IL:
+<<<<<<< HEAD
 		LOG(("Z180 '%s' IL     wr $%02x ($%02x)\n", tag(), data,  data & Z180_IL_WMASK));
+=======
+		LOG("Z180 IL     wr $%02x ($%02x)\n", data,  data & Z180_IL_WMASK);
+>>>>>>> upstream/master
 		IO_IL = (IO_IL & ~Z180_IL_WMASK) | (data & Z180_IL_WMASK);
 		break;
 
 	case Z180_ITC:
+<<<<<<< HEAD
 		LOG(("Z180 '%s' ITC    wr $%02x ($%02x)\n", tag(), data,  data & Z180_ITC_WMASK));
+=======
+		LOG("Z180 ITC    wr $%02x ($%02x)\n", data,  data & Z180_ITC_WMASK);
+>>>>>>> upstream/master
 		IO_ITC = (IO_ITC & ~Z180_ITC_WMASK) | (data & Z180_ITC_WMASK);
 		break;
 
 	case Z180_IO35:
+<<<<<<< HEAD
 		LOG(("Z180 '%s' IO35   wr $%02x ($%02x)\n", tag(), data,  data & Z180_IO35_WMASK));
+=======
+		LOG("Z180 IO35   wr $%02x ($%02x)\n", data,  data & Z180_IO35_WMASK);
+>>>>>>> upstream/master
 		IO_IO35 = (IO_IO35 & ~Z180_IO35_WMASK) | (data & Z180_IO35_WMASK);
 		break;
 
 	case Z180_RCR:
+<<<<<<< HEAD
 		LOG(("Z180 '%s' RCR    wr $%02x ($%02x)\n", tag(), data,  data & Z180_RCR_WMASK));
+=======
+		LOG("Z180 RCR    wr $%02x ($%02x)\n", data,  data & Z180_RCR_WMASK);
+>>>>>>> upstream/master
 		IO_RCR = (IO_RCR & ~Z180_RCR_WMASK) | (data & Z180_RCR_WMASK);
 		break;
 
 	case Z180_IO37:
+<<<<<<< HEAD
 		LOG(("Z180 '%s' IO37   wr $%02x ($%02x)\n", tag(), data,  data & Z180_IO37_WMASK));
+=======
+		LOG("Z180 IO37   wr $%02x ($%02x)\n", data,  data & Z180_IO37_WMASK);
+>>>>>>> upstream/master
 		IO_IO37 = (IO_IO37 & ~Z180_IO37_WMASK) | (data & Z180_IO37_WMASK);
 		break;
 
 	case Z180_CBR:
+<<<<<<< HEAD
 		LOG(("Z180 '%s' CBR    wr $%02x ($%02x)\n", tag(), data,  data & Z180_CBR_WMASK));
+=======
+		LOG("Z180 CBR    wr $%02x ($%02x)\n", data,  data & Z180_CBR_WMASK);
+>>>>>>> upstream/master
 		IO_CBR = (IO_CBR & ~Z180_CBR_WMASK) | (data & Z180_CBR_WMASK);
 		z180_mmu();
 		break;
 
 	case Z180_BBR:
+<<<<<<< HEAD
 		LOG(("Z180 '%s' BBR    wr $%02x ($%02x)\n", tag(), data,  data & Z180_BBR_WMASK));
+=======
+		LOG("Z180 BBR    wr $%02x ($%02x)\n", data,  data & Z180_BBR_WMASK);
+>>>>>>> upstream/master
 		IO_BBR = (IO_BBR & ~Z180_BBR_WMASK) | (data & Z180_BBR_WMASK);
 		z180_mmu();
 		break;
 
 	case Z180_CBAR:
+<<<<<<< HEAD
 		LOG(("Z180 '%s' CBAR   wr $%02x ($%02x)\n", tag(), data,  data & Z180_CBAR_WMASK));
+=======
+		LOG("Z180 CBAR   wr $%02x ($%02x)\n", data,  data & Z180_CBAR_WMASK);
+>>>>>>> upstream/master
 		IO_CBAR = (IO_CBAR & ~Z180_CBAR_WMASK) | (data & Z180_CBAR_WMASK);
 		z180_mmu();
 		break;
 
 	case Z180_IO3B:
+<<<<<<< HEAD
 		LOG(("Z180 '%s' IO3B   wr $%02x ($%02x)\n", tag(), data,  data & Z180_IO3B_WMASK));
+=======
+		LOG("Z180 IO3B   wr $%02x ($%02x)\n", data,  data & Z180_IO3B_WMASK);
+>>>>>>> upstream/master
 		IO_IO3B = (IO_IO3B & ~Z180_IO3B_WMASK) | (data & Z180_IO3B_WMASK);
 		break;
 
 	case Z180_IO3C:
+<<<<<<< HEAD
 		LOG(("Z180 '%s' IO3C   wr $%02x ($%02x)\n", tag(), data,  data & Z180_IO3C_WMASK));
+=======
+		LOG("Z180 IO3C   wr $%02x ($%02x)\n", data,  data & Z180_IO3C_WMASK);
+>>>>>>> upstream/master
 		IO_IO3C = (IO_IO3C & ~Z180_IO3C_WMASK) | (data & Z180_IO3C_WMASK);
 		break;
 
 	case Z180_IO3D:
+<<<<<<< HEAD
 		LOG(("Z180 '%s' IO3D   wr $%02x ($%02x)\n", tag(), data,  data & Z180_IO3D_WMASK));
+=======
+		LOG("Z180 IO3D   wr $%02x ($%02x)\n", data,  data & Z180_IO3D_WMASK);
+>>>>>>> upstream/master
 		IO_IO3D = (IO_IO3D & ~Z180_IO3D_WMASK) | (data & Z180_IO3D_WMASK);
 		break;
 
 	case Z180_OMCR:
+<<<<<<< HEAD
 		LOG(("Z180 '%s' OMCR   wr $%02x ($%02x)\n", tag(), data,  data & Z180_OMCR_WMASK));
+=======
+		LOG("Z180 OMCR   wr $%02x ($%02x)\n", data,  data & Z180_OMCR_WMASK);
+>>>>>>> upstream/master
 		IO_OMCR = (IO_OMCR & ~Z180_OMCR_WMASK) | (data & Z180_OMCR_WMASK);
 		break;
 
 	case Z180_IOCR:
+<<<<<<< HEAD
 		LOG(("Z180 '%s' IOCR   wr $%02x ($%02x)\n", tag(), data,  data & Z180_IOCR_WMASK));
+=======
+		LOG("Z180 IOCR   wr $%02x ($%02x)\n", data,  data & Z180_IOCR_WMASK);
+>>>>>>> upstream/master
 		IO_IOCR = (IO_IOCR & ~Z180_IOCR_WMASK) | (data & Z180_IOCR_WMASK);
 		break;
 	}
@@ -1568,6 +2180,7 @@ int z180_device::z180_dma0(int max_cycles)
 	offs_t sar0 = 65536 * IO_SAR0B + 256 * IO_SAR0H + IO_SAR0L;
 	offs_t dar0 = 65536 * IO_DAR0B + 256 * IO_DAR0H + IO_DAR0L;
 	int bcr0 = 256 * IO_BCR0H + IO_BCR0L;
+<<<<<<< HEAD
 	int count = (IO_DMODE & Z180_DMODE_MMOD) ? bcr0 : 1;
 	int cycles = 0;
 
@@ -1578,6 +2191,23 @@ int z180_device::z180_dma0(int max_cycles)
 	}
 
 	while (count-- > 0)
+=======
+
+	if (bcr0 == 0)
+	{
+		bcr0 = 0x10000;
+	}
+
+	int count = (IO_DMODE & Z180_DMODE_MMOD) ? bcr0 : 1;
+	int cycles = 0;
+
+	if (!(IO_DSTAT & Z180_DSTAT_DE0))
+	{
+		return 0;
+	}
+
+	while (count > 0)
+>>>>>>> upstream/master
 	{
 		/* last transfer happening now? */
 		if (bcr0 == 1)
@@ -1588,19 +2218,37 @@ int z180_device::z180_dma0(int max_cycles)
 		{
 		case 0x00:  /* memory SAR0+1 to memory DAR0+1 */
 			m_program->write_byte(dar0++, m_program->read_byte(sar0++));
+<<<<<<< HEAD
 			break;
 		case 0x04:  /* memory SAR0-1 to memory DAR0+1 */
 			m_program->write_byte(dar0++, m_program->read_byte(sar0--));
 			break;
 		case 0x08:  /* memory SAR0 fixed to memory DAR0+1 */
 			m_program->write_byte(dar0++, m_program->read_byte(sar0));
+=======
+			bcr0--;
+			break;
+		case 0x04:  /* memory SAR0-1 to memory DAR0+1 */
+			m_program->write_byte(dar0++, m_program->read_byte(sar0--));
+			bcr0--;
+			break;
+		case 0x08:  /* memory SAR0 fixed to memory DAR0+1 */
+			m_program->write_byte(dar0++, m_program->read_byte(sar0));
+			bcr0--;
+>>>>>>> upstream/master
 			break;
 		case 0x0c:  /* I/O SAR0 fixed to memory DAR0+1 */
 			if (m_iol & Z180_DREQ0)
 			{
 				m_program->write_byte(dar0++, IN(sar0));
+<<<<<<< HEAD
 				/* edge sensitive DREQ0 ? */
 				if (IO_DCNTL & Z180_DCNTL_DIM0)
+=======
+				bcr0--;
+				/* edge sensitive DREQ0 ? */
+				if (IO_DCNTL & Z180_DCNTL_DMS0)
+>>>>>>> upstream/master
 				{
 					m_iol &= ~Z180_DREQ0;
 					count = 0;
@@ -1609,19 +2257,37 @@ int z180_device::z180_dma0(int max_cycles)
 			break;
 		case 0x10:  /* memory SAR0+1 to memory DAR0-1 */
 			m_program->write_byte(dar0--, m_program->read_byte(sar0++));
+<<<<<<< HEAD
 			break;
 		case 0x14:  /* memory SAR0-1 to memory DAR0-1 */
 			m_program->write_byte(dar0--, m_program->read_byte(sar0--));
 			break;
 		case 0x18:  /* memory SAR0 fixed to memory DAR0-1 */
 			m_program->write_byte(dar0--, m_program->read_byte(sar0));
+=======
+			bcr0--;
+			break;
+		case 0x14:  /* memory SAR0-1 to memory DAR0-1 */
+			m_program->write_byte(dar0--, m_program->read_byte(sar0--));
+			bcr0--;
+			break;
+		case 0x18:  /* memory SAR0 fixed to memory DAR0-1 */
+			m_program->write_byte(dar0--, m_program->read_byte(sar0));
+			bcr0--;
+>>>>>>> upstream/master
 			break;
 		case 0x1c:  /* I/O SAR0 fixed to memory DAR0-1 */
 			if (m_iol & Z180_DREQ0)
 			{
 				m_program->write_byte(dar0--, IN(sar0));
+<<<<<<< HEAD
 				/* edge sensitive DREQ0 ? */
 				if (IO_DCNTL & Z180_DCNTL_DIM0)
+=======
+				bcr0--;
+				/* edge sensitive DREQ0 ? */
+				if (IO_DCNTL & Z180_DCNTL_DMS0)
+>>>>>>> upstream/master
 				{
 					m_iol &= ~Z180_DREQ0;
 					count = 0;
@@ -1630,9 +2296,17 @@ int z180_device::z180_dma0(int max_cycles)
 			break;
 		case 0x20:  /* memory SAR0+1 to memory DAR0 fixed */
 			m_program->write_byte(dar0, m_program->read_byte(sar0++));
+<<<<<<< HEAD
 			break;
 		case 0x24:  /* memory SAR0-1 to memory DAR0 fixed */
 			m_program->write_byte(dar0, m_program->read_byte(sar0--));
+=======
+			bcr0--;
+			break;
+		case 0x24:  /* memory SAR0-1 to memory DAR0 fixed */
+			m_program->write_byte(dar0, m_program->read_byte(sar0--));
+			bcr0--;
+>>>>>>> upstream/master
 			break;
 		case 0x28:  /* reserved */
 			break;
@@ -1642,8 +2316,14 @@ int z180_device::z180_dma0(int max_cycles)
 			if (m_iol & Z180_DREQ0)
 			{
 				OUT(dar0, m_program->read_byte(sar0++));
+<<<<<<< HEAD
 				/* edge sensitive DREQ0 ? */
 				if (IO_DCNTL & Z180_DCNTL_DIM0)
+=======
+				bcr0--;
+				/* edge sensitive DREQ0 ? */
+				if (IO_DCNTL & Z180_DCNTL_DMS0)
+>>>>>>> upstream/master
 				{
 					m_iol &= ~Z180_DREQ0;
 					count = 0;
@@ -1654,8 +2334,14 @@ int z180_device::z180_dma0(int max_cycles)
 			if (m_iol & Z180_DREQ0)
 			{
 				OUT(dar0, m_program->read_byte(sar0--));
+<<<<<<< HEAD
 				/* edge sensitive DREQ0 ? */
 				if (IO_DCNTL & Z180_DCNTL_DIM0)
+=======
+				bcr0--;
+				/* edge sensitive DREQ0 ? */
+				if (IO_DCNTL & Z180_DCNTL_DMS0)
+>>>>>>> upstream/master
 				{
 					m_iol &= ~Z180_DREQ0;
 					count = 0;
@@ -1667,7 +2353,10 @@ int z180_device::z180_dma0(int max_cycles)
 		case 0x3c:  /* reserved */
 			break;
 		}
+<<<<<<< HEAD
 		bcr0--;
+=======
+>>>>>>> upstream/master
 		count--;
 		cycles += 6;
 		if (cycles > max_cycles)
@@ -1700,15 +2389,29 @@ int z180_device::z180_dma1()
 	offs_t mar1 = 65536 * IO_MAR1B + 256 * IO_MAR1H + IO_MAR1L;
 	offs_t iar1 = 256 * IO_IAR1H + IO_IAR1L;
 	int bcr1 = 256 * IO_BCR1H + IO_BCR1L;
+<<<<<<< HEAD
+=======
+
+	if (bcr1 == 0)
+	{
+		bcr1 = 0x10000;
+	}
+
+>>>>>>> upstream/master
 	int cycles = 0;
 
 	if ((m_iol & Z180_DREQ1) == 0)
 		return 0;
 
+<<<<<<< HEAD
 	/* counter is zero? */
 	if (bcr1 == 0)
 	{
 		IO_DSTAT &= ~Z180_DSTAT_DE1;
+=======
+	if (!(IO_DSTAT & Z180_DSTAT_DE1))
+	{
+>>>>>>> upstream/master
 		return 0;
 	}
 
@@ -1757,127 +2460,205 @@ int z180_device::z180_dma1()
 	return 6 + cycles;
 }
 
+<<<<<<< HEAD
 void z180_device::z180_write_iolines(UINT32 data)
 {
 	UINT32 changes = m_iol ^ data;
+=======
+void z180_device::z180_write_iolines(uint32_t data)
+{
+	uint32_t changes = m_iol ^ data;
+>>>>>>> upstream/master
 
 	/* I/O asynchronous clock 0 (active high) or DREQ0 (mux) */
 	if (changes & Z180_CKA0)
 	{
+<<<<<<< HEAD
 		LOG(("Z180 '%s' CKA0   %d\n", tag(), data & Z180_CKA0 ? 1 : 0));
+=======
+		LOG("Z180 CKA0   %d\n", data & Z180_CKA0 ? 1 : 0);
+>>>>>>> upstream/master
 		m_iol = (m_iol & ~Z180_CKA0) | (data & Z180_CKA0);
 	}
 
 	/* I/O asynchronous clock 1 (active high) or TEND1 (mux) */
 	if (changes & Z180_CKA1)
 	{
+<<<<<<< HEAD
 		LOG(("Z180 '%s' CKA1   %d\n", tag(), data & Z180_CKA1 ? 1 : 0));
+=======
+		LOG("Z180 CKA1   %d\n", data & Z180_CKA1 ? 1 : 0);
+>>>>>>> upstream/master
 		m_iol = (m_iol & ~Z180_CKA1) | (data & Z180_CKA1);
 	}
 
 	/* I/O serial clock (active high) */
 	if (changes & Z180_CKS)
 	{
+<<<<<<< HEAD
 		LOG(("Z180 '%s' CKS    %d\n", tag(), data & Z180_CKS ? 1 : 0));
+=======
+		LOG("Z180 CKS    %d\n", data & Z180_CKS ? 1 : 0);
+>>>>>>> upstream/master
 		m_iol = (m_iol & ~Z180_CKS) | (data & Z180_CKS);
 	}
 
 	/* I   clear to send 0 (active low) */
 	if (changes & Z180_CTS0)
 	{
+<<<<<<< HEAD
 		LOG(("Z180 '%s' CTS0   %d\n", tag(), data & Z180_CTS0 ? 1 : 0));
+=======
+		LOG("Z180 CTS0   %d\n", data & Z180_CTS0 ? 1 : 0);
+>>>>>>> upstream/master
 		m_iol = (m_iol & ~Z180_CTS0) | (data & Z180_CTS0);
 	}
 
 	/* I   clear to send 1 (active low) or RXS (mux) */
 	if (changes & Z180_CTS1)
 	{
+<<<<<<< HEAD
 		LOG(("Z180 '%s' CTS1   %d\n", tag(), data & Z180_CTS1 ? 1 : 0));
+=======
+		LOG("Z180 CTS1   %d\n", data & Z180_CTS1 ? 1 : 0);
+>>>>>>> upstream/master
 		m_iol = (m_iol & ~Z180_CTS1) | (data & Z180_CTS1);
 	}
 
 	/* I   data carrier detect (active low) */
 	if (changes & Z180_DCD0)
 	{
+<<<<<<< HEAD
 		LOG(("Z180 '%s' DCD0   %d\n", tag(), data & Z180_DCD0 ? 1 : 0));
+=======
+		LOG("Z180 DCD0   %d\n", data & Z180_DCD0 ? 1 : 0);
+>>>>>>> upstream/master
 		m_iol = (m_iol & ~Z180_DCD0) | (data & Z180_DCD0);
 	}
 
 	/* I   data request DMA ch 0 (active low) or CKA0 (mux) */
 	if (changes & Z180_DREQ0)
 	{
+<<<<<<< HEAD
 		LOG(("Z180 '%s' DREQ0  %d\n", tag(), data & Z180_DREQ0 ? 1 : 0));
+=======
+		LOG("Z180 DREQ0  %d\n", data & Z180_DREQ0 ? 1 : 0);
+>>>>>>> upstream/master
 		m_iol = (m_iol & ~Z180_DREQ0) | (data & Z180_DREQ0);
 	}
 
 	/* I   data request DMA ch 1 (active low) */
 	if (changes & Z180_DREQ1)
 	{
+<<<<<<< HEAD
 		LOG(("Z180 '%s' DREQ1  %d\n", tag(), data & Z180_DREQ1 ? 1 : 0));
+=======
+		LOG("Z180 DREQ1  %d\n", data & Z180_DREQ1 ? 1 : 0);
+>>>>>>> upstream/master
 		m_iol = (m_iol & ~Z180_DREQ1) | (data & Z180_DREQ1);
 	}
 
 	/* I   asynchronous receive data 0 (active high) */
 	if (changes & Z180_RXA0)
 	{
+<<<<<<< HEAD
 		LOG(("Z180 '%s' RXA0   %d\n", tag(), data & Z180_RXA0 ? 1 : 0));
+=======
+		LOG("Z180 RXA0   %d\n", data & Z180_RXA0 ? 1 : 0);
+>>>>>>> upstream/master
 		m_iol = (m_iol & ~Z180_RXA0) | (data & Z180_RXA0);
 	}
 
 	/* I   asynchronous receive data 1 (active high) */
 	if (changes & Z180_RXA1)
 	{
+<<<<<<< HEAD
 		LOG(("Z180 '%s' RXA1   %d\n", tag(), data & Z180_RXA1 ? 1 : 0));
+=======
+		LOG("Z180 RXA1   %d\n", data & Z180_RXA1 ? 1 : 0);
+>>>>>>> upstream/master
 		m_iol = (m_iol & ~Z180_RXA1) | (data & Z180_RXA1);
 	}
 
 	/* I   clocked serial receive data (active high) or CTS1 (mux) */
 	if (changes & Z180_RXS)
 	{
+<<<<<<< HEAD
 		LOG(("Z180 '%s' RXS    %d\n", tag(), data & Z180_RXS ? 1 : 0));
+=======
+		LOG("Z180 RXS    %d\n", data & Z180_RXS ? 1 : 0);
+>>>>>>> upstream/master
 		m_iol = (m_iol & ~Z180_RXS) | (data & Z180_RXS);
 	}
 
 	/*   O request to send (active low) */
 	if (changes & Z180_RTS0)
 	{
+<<<<<<< HEAD
 		LOG(("Z180 '%s' RTS0   won't change output\n", tag()));
+=======
+		LOG("Z180 RTS0   won't change output\n");
+>>>>>>> upstream/master
 	}
 
 	/*   O transfer end 0 (active low) or CKA1 (mux) */
 	if (changes & Z180_TEND0)
 	{
+<<<<<<< HEAD
 		LOG(("Z180 '%s' TEND0  won't change output\n", tag()));
+=======
+		LOG("Z180 TEND0  won't change output\n");
+>>>>>>> upstream/master
 	}
 
 	/*   O transfer end 1 (active low) */
 	if (changes & Z180_TEND1)
 	{
+<<<<<<< HEAD
 		LOG(("Z180 '%s' TEND1  won't change output\n", tag()));
+=======
+		LOG("Z180 TEND1  won't change output\n");
+>>>>>>> upstream/master
 	}
 
 	/*   O transfer out (PRT channel, active low) or A18 (mux) */
 	if (changes & Z180_A18_TOUT)
 	{
+<<<<<<< HEAD
 		LOG(("Z180 '%s' TOUT   won't change output\n", tag()));
+=======
+		LOG("Z180 TOUT   won't change output\n");
+>>>>>>> upstream/master
 	}
 
 	/*   O asynchronous transmit data 0 (active high) */
 	if (changes & Z180_TXA0)
 	{
+<<<<<<< HEAD
 		LOG(("Z180 '%s' TXA0   won't change output\n", tag()));
+=======
+		LOG("Z180 TXA0   won't change output\n");
+>>>>>>> upstream/master
 	}
 
 	/*   O asynchronous transmit data 1 (active high) */
 	if (changes & Z180_TXA1)
 	{
+<<<<<<< HEAD
 		LOG(("Z180 '%s' TXA1   won't change output\n", tag()));
+=======
+		LOG("Z180 TXA1   won't change output\n");
+>>>>>>> upstream/master
 	}
 
 	/*   O clocked serial transmit data (active high) */
 	if (changes & Z180_TXS)
 	{
+<<<<<<< HEAD
 		LOG(("Z180 '%s' TXS    won't change output\n", tag()));
+=======
+		LOG("Z180 TXS    won't change output\n");
+>>>>>>> upstream/master
 	}
 }
 
@@ -1886,6 +2667,7 @@ void z180_device::device_start()
 {
 	int i, p;
 	int oldval, newval, val;
+<<<<<<< HEAD
 	UINT8 *padd, *padc, *psub, *psbc;
 
 	if (static_config() != NULL)
@@ -1896,6 +2678,13 @@ void z180_device::device_start()
 	/* allocate big flag arrays once */
 	SZHVC_add = auto_alloc_array(machine(), UINT8, 2*256*256);
 	SZHVC_sub = auto_alloc_array(machine(), UINT8, 2*256*256);
+=======
+	uint8_t *padd, *padc, *psub, *psbc;
+
+	/* allocate big flag arrays once */
+	SZHVC_add = std::make_unique<uint8_t[]>(2*256*256);
+	SZHVC_sub = std::make_unique<uint8_t[]>(2*256*256);
+>>>>>>> upstream/master
 
 	padd = &SZHVC_add[  0*256];
 	padc = &SZHVC_add[256*256];
@@ -1969,7 +2758,11 @@ void z180_device::device_start()
 
 	m_program = &space(AS_PROGRAM);
 	m_direct = &m_program->direct();
+<<<<<<< HEAD
 	m_oprogram = has_space(AS_DECRYPTED_OPCODES) ? &space(AS_DECRYPTED_OPCODES) : m_program;
+=======
+	m_oprogram = has_space(AS_OPCODES) ? &space(AS_OPCODES) : m_program;
+>>>>>>> upstream/master
 	m_odirect = &m_oprogram->direct();
 	m_iospace = &space(AS_IO);
 
@@ -1977,7 +2770,11 @@ void z180_device::device_start()
 	{
 		state_add(Z180_PC,         "PC",        m_PC.w.l);
 		state_add(STATE_GENPC,     "GENPC",     _PCD).noshow();
+<<<<<<< HEAD
 		state_add(STATE_GENPCBASE, "GENPCBASE", m_PREPC.w.l).noshow();
+=======
+		state_add(STATE_GENPCBASE, "CURPC",     m_PREPC.w.l).noshow();
+>>>>>>> upstream/master
 		state_add(Z180_SP,         "SP",        _SPD);
 		state_add(STATE_GENSP,     "GENSP",     m_SP.w.l).noshow();
 		state_add(STATE_GENFLAGS,  "GENFLAGS",  m_AF.b.l).noshow().formatstr("%8s");
@@ -2162,7 +2959,11 @@ void z180_device::device_reset()
 	m_after_EI = 0;
 	m_ea = 0;
 
+<<<<<<< HEAD
 	memcpy(m_cc, (UINT8 *)cc_default, sizeof(m_cc));
+=======
+	memcpy(m_cc, (uint8_t *)cc_default, sizeof(m_cc));
+>>>>>>> upstream/master
 	_IX = _IY = 0xffff; /* IX and IY are FFFF after a reset! */
 	_F = ZF;          /* Zero flag is set */
 
@@ -2241,7 +3042,10 @@ void z180_device::device_reset()
 	IO_OMCR    = Z180_OMCR_RESET;
 	IO_IOCR    = Z180_IOCR_RESET;
 
+<<<<<<< HEAD
 	m_daisy.reset();
+=======
+>>>>>>> upstream/master
 	z180_mmu();
 }
 
@@ -2350,8 +3154,12 @@ void z180_device::execute_run()
 	/* to just check here */
 	if (m_nmi_pending)
 	{
+<<<<<<< HEAD
 		LOG(("Z180 '%s' take NMI\n", tag()));
 		_PPC = -1;            /* there isn't a valid previous program counter */
+=======
+		LOG("Z180 take NMI\n");
+>>>>>>> upstream/master
 		LEAVE_HALT();       /* Check if processor was halted */
 
 		/* disable DMA transfers!! */
@@ -2407,6 +3215,14 @@ again:
 
 				handle_io_timers(curcycles);
 
+<<<<<<< HEAD
+=======
+				/* if channel 0 was started in burst mode, go recheck the mode */
+				if ((IO_DSTAT & Z180_DSTAT_DE0) == Z180_DSTAT_DE0 &&
+					(IO_DMODE & Z180_DMODE_MMOD) == Z180_DMODE_MMOD)
+					goto again;
+
+>>>>>>> upstream/master
 				/* FIXME:
 				 * For simultaneous DREQ0 and DREQ1 requests, channel 0 has priority
 				 * over channel 1. When channel 0 is performing a memory to/from memory
@@ -2434,6 +3250,13 @@ again:
 	{
 		do
 		{
+<<<<<<< HEAD
+=======
+			/* If DMA is started go to check the mode */
+			if ((IO_DSTAT & Z180_DSTAT_DME) == Z180_DSTAT_DME)
+				goto again;
+
+>>>>>>> upstream/master
 			curcycles = check_interrupts();
 			m_icount -= curcycles;
 			handle_io_timers(curcycles);
@@ -2454,10 +3277,13 @@ again:
 
 			m_icount -= curcycles;
 			handle_io_timers(curcycles);
+<<<<<<< HEAD
 
 			/* If DMA is started go to check the mode */
 			if ((IO_DSTAT & Z180_DSTAT_DME) == Z180_DSTAT_DME)
 				goto again;
+=======
+>>>>>>> upstream/master
 		} while( m_icount > 0 );
 	}
 }
@@ -2465,7 +3291,11 @@ again:
 /****************************************************************************
  * Burn 'cycles' T-states. Adjust R register for the lost time
  ****************************************************************************/
+<<<<<<< HEAD
 void z180_device::execute_burn(INT32 cycles)
+=======
+void z180_device::execute_burn(int32_t cycles)
+>>>>>>> upstream/master
 {
 	/* FIXME: This is not appropriate for dma */
 	while ( (cycles > 0) )
@@ -2492,6 +3322,7 @@ void z180_device::execute_set_input(int irqline, int state)
 	}
 	else
 	{
+<<<<<<< HEAD
 		LOG(("Z180 '%s' set_irq_line %d = %d\n",tag() , irqline,state));
 
 		/* update the IRQ state */
@@ -2500,11 +3331,37 @@ void z180_device::execute_set_input(int irqline, int state)
 			m_irq_state[0] = m_daisy.update_irq_state();
 
 		/* the main execute loop will take the interrupt */
+=======
+		LOG("Z180 set_irq_line %d = %d\n", irqline,state);
+
+		if(irqline == Z180_INPUT_LINE_IRQ0 || irqline == Z180_INPUT_LINE_IRQ1 || irqline == Z180_INPUT_LINE_IRQ2) {
+			/* update the IRQ state */
+			m_irq_state[irqline] = state;
+			if(daisy_chain_present())
+				m_irq_state[0] = daisy_update_irq_state();
+
+			/* the main execute loop will take the interrupt */
+		} else if(irqline == Z180_INPUT_LINE_DREQ0) {
+			auto iol = m_iol & ~Z180_DREQ0;
+			if(state == ASSERT_LINE)
+				iol |= Z180_DREQ0;
+			z180_write_iolines(iol);
+		} else if(irqline == Z180_INPUT_LINE_DREQ1) {
+			auto iol = m_iol & ~Z180_DREQ1;
+			if(state == ASSERT_LINE)
+				iol |= Z180_DREQ1;
+			z180_write_iolines(iol);
+		}
+>>>>>>> upstream/master
 	}
 }
 
 /* logical to physical address translation */
+<<<<<<< HEAD
 bool z180_device::memory_translate(address_spacenum spacenum, int intention, offs_t &address)
+=======
+bool z180_device::memory_translate(int spacenum, int intention, offs_t &address)
+>>>>>>> upstream/master
 {
 	if (spacenum == AS_PROGRAM)
 	{
@@ -2560,12 +3417,20 @@ void z180_device::state_export(const device_state_entry &entry)
 	}
 }
 
+<<<<<<< HEAD
 void z180_device::state_string_export(const device_state_entry &entry, std::string &str)
+=======
+void z180_device::state_string_export(const device_state_entry &entry, std::string &str) const
+>>>>>>> upstream/master
 {
 	switch (entry.index())
 	{
 		case STATE_GENFLAGS:
+<<<<<<< HEAD
 			strprintf(str, "%c%c%c%c%c%c%c%c",
+=======
+			str = string_format("%c%c%c%c%c%c%c%c",
+>>>>>>> upstream/master
 				m_AF.b.l & 0x80 ? 'S':'.',
 				m_AF.b.l & 0x40 ? 'Z':'.',
 				m_AF.b.l & 0x20 ? '5':'.',

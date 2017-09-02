@@ -8,11 +8,19 @@
 
 #include "emu.h"
 #include "includes/hcastle.h"
+<<<<<<< HEAD
+=======
+#include "screen.h"
+>>>>>>> upstream/master
 
 
 PALETTE_INIT_MEMBER(hcastle_state, hcastle)
 {
+<<<<<<< HEAD
 	const UINT8 *color_prom = memregion("proms")->base();
+=======
+	const uint8_t *color_prom = memregion("proms")->base();
+>>>>>>> upstream/master
 	int chip;
 
 	for (chip = 0; chip < 2; chip++)
@@ -26,7 +34,11 @@ PALETTE_INIT_MEMBER(hcastle_state, hcastle)
 
 			for (i = 0; i < 0x100; i++)
 			{
+<<<<<<< HEAD
 				UINT8 ctabentry;
+=======
+				uint8_t ctabentry;
+>>>>>>> upstream/master
 
 				if (((pal & 0x01) == 0) && (color_prom[(clut << 8) | i] == 0))
 					ctabentry = 0;
@@ -55,8 +67,13 @@ TILEMAP_MAPPER_MEMBER(hcastle_state::tilemap_scan)
 
 TILE_GET_INFO_MEMBER(hcastle_state::get_fg_tile_info)
 {
+<<<<<<< HEAD
 	UINT8 ctrl_5 = m_k007121_1->ctrlram_r(generic_space(), 5);
 	UINT8 ctrl_6 = m_k007121_1->ctrlram_r(generic_space(), 6);
+=======
+	uint8_t ctrl_5 = m_k007121_1->ctrlram_r(generic_space(), 5);
+	uint8_t ctrl_6 = m_k007121_1->ctrlram_r(generic_space(), 6);
+>>>>>>> upstream/master
 	int bit0 = (ctrl_5 >> 0) & 0x03;
 	int bit1 = (ctrl_5 >> 2) & 0x03;
 	int bit2 = (ctrl_5 >> 4) & 0x03;
@@ -78,8 +95,13 @@ TILE_GET_INFO_MEMBER(hcastle_state::get_fg_tile_info)
 
 TILE_GET_INFO_MEMBER(hcastle_state::get_bg_tile_info)
 {
+<<<<<<< HEAD
 	UINT8 ctrl_5 = m_k007121_2->ctrlram_r(generic_space(), 5);
 	UINT8 ctrl_6 = m_k007121_2->ctrlram_r(generic_space(), 6);
+=======
+	uint8_t ctrl_5 = m_k007121_2->ctrlram_r(generic_space(), 5);
+	uint8_t ctrl_6 = m_k007121_2->ctrlram_r(generic_space(), 6);
+>>>>>>> upstream/master
 	int bit0 = (ctrl_5 >> 0) & 0x03;
 	int bit1 = (ctrl_5 >> 2) & 0x03;
 	int bit2 = (ctrl_5 >> 4) & 0x03;
@@ -109,8 +131,13 @@ TILE_GET_INFO_MEMBER(hcastle_state::get_bg_tile_info)
 
 void hcastle_state::video_start()
 {
+<<<<<<< HEAD
 	m_fg_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(hcastle_state::get_fg_tile_info),this), tilemap_mapper_delegate(FUNC(hcastle_state::tilemap_scan),this), 8, 8, 64, 32);
 	m_bg_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(hcastle_state::get_bg_tile_info),this), tilemap_mapper_delegate(FUNC(hcastle_state::tilemap_scan),this), 8, 8, 64, 32);
+=======
+	m_fg_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(hcastle_state::get_fg_tile_info),this), tilemap_mapper_delegate(FUNC(hcastle_state::tilemap_scan),this), 8, 8, 64, 32);
+	m_bg_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(hcastle_state::get_bg_tile_info),this), tilemap_mapper_delegate(FUNC(hcastle_state::tilemap_scan),this), 8, 8, 64, 32);
+>>>>>>> upstream/master
 
 	m_fg_tilemap->set_transparent_pen(0);
 }
@@ -179,6 +206,7 @@ WRITE8_MEMBER(hcastle_state::hcastle_pf2_control_w)
 
 /*****************************************************************************/
 
+<<<<<<< HEAD
 void hcastle_state::draw_sprites(bitmap_ind16 &bitmap, const rectangle &cliprect, bitmap_ind8 &priority_bitmap, UINT8 *sbank, int bank )
 {
 	k007121_device *k007121 = bank ? m_k007121_2 : m_k007121_1;
@@ -187,10 +215,21 @@ void hcastle_state::draw_sprites(bitmap_ind16 &bitmap, const rectangle &cliprect
 	int bank_base = (bank == 0) ? 0x4000 * (m_gfx_bank & 1) : 0;
 
 	k007121->sprites_draw(bitmap, cliprect, m_gfxdecode->gfx(bank), m_palette, sbank, base_color, 0, bank_base, priority_bitmap, (UINT32)-1);
+=======
+void hcastle_state::draw_sprites(bitmap_ind16 &bitmap, const rectangle &cliprect, bitmap_ind8 &priority_bitmap, uint8_t *sbank, int bank )
+{
+	k007121_device *k007121 = bank ? m_k007121_2 : m_k007121_1;
+	address_space &space = machine().dummy_space();
+	int base_color = (k007121->ctrlram_r(space, 6) & 0x30) * 2;
+	int bank_base = (bank == 0) ? 0x4000 * (m_gfx_bank & 1) : 0;
+
+	k007121->sprites_draw(bitmap, cliprect, m_gfxdecode->gfx(bank), *m_palette, sbank, base_color, 0, bank_base, priority_bitmap, (uint32_t)-1);
+>>>>>>> upstream/master
 }
 
 /*****************************************************************************/
 
+<<<<<<< HEAD
 UINT32 hcastle_state::screen_update_hcastle(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
 {
 	address_space &space = machine().driver_data()->generic_space();
@@ -203,6 +242,20 @@ UINT32 hcastle_state::screen_update_hcastle(screen_device &screen, bitmap_ind16 
 	UINT8 ctrl_2_1 = m_k007121_2->ctrlram_r(space, 1);
 	UINT8 ctrl_2_2 = m_k007121_2->ctrlram_r(space, 2);
 	UINT8 ctrl_2_3 = m_k007121_2->ctrlram_r(space, 3);
+=======
+uint32_t hcastle_state::screen_update_hcastle(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+{
+	address_space &space = machine().dummy_space();
+
+	uint8_t ctrl_1_0 = m_k007121_1->ctrlram_r(space, 0);
+	uint8_t ctrl_1_1 = m_k007121_1->ctrlram_r(space, 1);
+	uint8_t ctrl_1_2 = m_k007121_1->ctrlram_r(space, 2);
+	uint8_t ctrl_1_3 = m_k007121_1->ctrlram_r(space, 3);
+	uint8_t ctrl_2_0 = m_k007121_2->ctrlram_r(space, 0);
+	uint8_t ctrl_2_1 = m_k007121_2->ctrlram_r(space, 1);
+	uint8_t ctrl_2_2 = m_k007121_2->ctrlram_r(space, 2);
+	uint8_t ctrl_2_3 = m_k007121_2->ctrlram_r(space, 3);
+>>>>>>> upstream/master
 
 	m_pf1_bankbase = 0x0000;
 	m_pf2_bankbase = 0x4000 * ((m_gfx_bank & 2) >> 1);

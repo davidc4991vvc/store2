@@ -191,10 +191,20 @@ Notes:
 ***************************************************************************/
 
 #include "emu.h"
+<<<<<<< HEAD
 #include "cpu/m6809/m6809.h"
 #include "cpu/m6800/m6800.h"
 #include "includes/pacland.h"
 
+=======
+#include "includes/pacland.h"
+
+#include "cpu/m6809/m6809.h"
+#include "cpu/m6800/m6801.h"
+#include "machine/watchdog.h"
+#include "speaker.h"
+
+>>>>>>> upstream/master
 
 void pacland_state::machine_start()
 {
@@ -228,15 +238,26 @@ READ8_MEMBER(pacland_state::input_r)
 
 WRITE8_MEMBER(pacland_state::coin_w)
 {
+<<<<<<< HEAD
 	coin_lockout_global_w(machine(), data & 1);
 	coin_counter_w(machine(), 0, ~data & 2);
 	coin_counter_w(machine(), 1, ~data & 4);
+=======
+	machine().bookkeeping().coin_lockout_global_w(data & 1);
+	machine().bookkeeping().coin_counter_w(0, ~data & 2);
+	machine().bookkeeping().coin_counter_w(1, ~data & 4);
+>>>>>>> upstream/master
 }
 
 WRITE8_MEMBER(pacland_state::led_w)
 {
+<<<<<<< HEAD
 	set_led_status(machine(), 0, data & 0x08);
 	set_led_status(machine(), 1, data & 0x10);
+=======
+	output().set_led_value(0, data & 0x08);
+	output().set_led_value(1, data & 0x10);
+>>>>>>> upstream/master
 }
 
 WRITE8_MEMBER(pacland_state::irq_1_ctrl_w)
@@ -267,7 +288,11 @@ static ADDRESS_MAP_START( main_map, AS_PROGRAM, 8, pacland_state )
 	AM_RANGE(0x4000, 0x5fff) AM_ROMBANK("bank1")
 	AM_RANGE(0x6800, 0x6bff) AM_DEVREADWRITE("namco", namco_cus30_device, namcos1_cus30_r, namcos1_cus30_w)      /* PSG device, shared RAM */
 	AM_RANGE(0x7000, 0x7fff) AM_WRITE(irq_1_ctrl_w)
+<<<<<<< HEAD
 	AM_RANGE(0x7800, 0x7fff) AM_READ(watchdog_reset_r)
+=======
+	AM_RANGE(0x7800, 0x7fff) AM_DEVREAD("watchdog", watchdog_timer_device, reset_r)
+>>>>>>> upstream/master
 	AM_RANGE(0x8000, 0xffff) AM_ROM
 	AM_RANGE(0x8000, 0x8fff) AM_WRITE(subreset_w)
 	AM_RANGE(0x9000, 0x9fff) AM_WRITE(flipscreen_w)
@@ -277,7 +302,11 @@ static ADDRESS_MAP_START( mcu_map, AS_PROGRAM, 8, pacland_state )
 	AM_RANGE(0x0000, 0x001f) AM_DEVREADWRITE("mcu", hd63701_cpu_device, m6801_io_r, m6801_io_w)
 	AM_RANGE(0x0080, 0x00ff) AM_RAM
 	AM_RANGE(0x1000, 0x13ff) AM_DEVREADWRITE("namco", namco_cus30_device, namcos1_cus30_r, namcos1_cus30_w)      /* PSG device, shared RAM */
+<<<<<<< HEAD
 	AM_RANGE(0x2000, 0x3fff) AM_WRITE(watchdog_reset_w)     /* watchdog? */
+=======
+	AM_RANGE(0x2000, 0x3fff) AM_DEVWRITE("watchdog", watchdog_timer_device, reset_w)     /* watchdog? */
+>>>>>>> upstream/master
 	AM_RANGE(0x4000, 0x7fff) AM_WRITE(irq_2_ctrl_w)
 	AM_RANGE(0x8000, 0xbfff) AM_ROM
 	AM_RANGE(0xc000, 0xc7ff) AM_RAM
@@ -423,7 +452,11 @@ INTERRUPT_GEN_MEMBER(pacland_state::mcu_vblank_irq)
 		m_mcu->set_input_line(0, ASSERT_LINE);
 }
 
+<<<<<<< HEAD
 static MACHINE_CONFIG_START( pacland, pacland_state )
+=======
+static MACHINE_CONFIG_START( pacland )
+>>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", M6809, XTAL_49_152MHz/32) /* 1.536 MHz */
@@ -437,6 +470,11 @@ static MACHINE_CONFIG_START( pacland, pacland_state )
 
 	MCFG_QUANTUM_TIME(attotime::from_hz(6000))  /* we need heavy synching between the MCU and the CPU */
 
+<<<<<<< HEAD
+=======
+	MCFG_WATCHDOG_ADD("watchdog")
+
+>>>>>>> upstream/master
 	/* video hardware */
 	MCFG_SCREEN_ADD("screen", RASTER)
 	MCFG_SCREEN_RAW_PARAMS(XTAL_49_152MHz/8, 384, 3*8, 39*8, 264, 2*8, 30*8)
@@ -635,8 +673,16 @@ ROM_END
 
 
 
+<<<<<<< HEAD
 GAME( 1984, pacland,   0,       pacland, pacland, driver_device, 0, ROT0, "Namco", "Pac-Land (World)", MACHINE_SUPPORTS_SAVE )
 GAME( 1984, paclandj,  pacland, pacland, pacland, driver_device, 0, ROT0, "Namco", "Pac-Land (Japan new)", MACHINE_SUPPORTS_SAVE )
 GAME( 1984, paclandjo, pacland, pacland, pacland, driver_device, 0, ROT0, "Namco", "Pac-Land (Japan old)", MACHINE_SUPPORTS_SAVE )
 GAME( 1984, paclandjo2,pacland, pacland, pacland, driver_device, 0, ROT0, "Namco", "Pac-Land (Japan older)", MACHINE_SUPPORTS_SAVE )
 GAME( 1984, paclandm,  pacland, pacland, pacland, driver_device, 0, ROT0, "Namco (Bally Midway license)", "Pac-Land (Midway)", MACHINE_SUPPORTS_SAVE )
+=======
+GAME( 1984, pacland,   0,       pacland, pacland, pacland_state, 0, ROT0, "Namco", "Pac-Land (World)", MACHINE_SUPPORTS_SAVE )
+GAME( 1984, paclandj,  pacland, pacland, pacland, pacland_state, 0, ROT0, "Namco", "Pac-Land (Japan new)", MACHINE_SUPPORTS_SAVE )
+GAME( 1984, paclandjo, pacland, pacland, pacland, pacland_state, 0, ROT0, "Namco", "Pac-Land (Japan old)", MACHINE_SUPPORTS_SAVE )
+GAME( 1984, paclandjo2,pacland, pacland, pacland, pacland_state, 0, ROT0, "Namco", "Pac-Land (Japan older)", MACHINE_SUPPORTS_SAVE )
+GAME( 1984, paclandm,  pacland, pacland, pacland, pacland_state, 0, ROT0, "Namco (Bally Midway license)", "Pac-Land (Midway)", MACHINE_SUPPORTS_SAVE )
+>>>>>>> upstream/master

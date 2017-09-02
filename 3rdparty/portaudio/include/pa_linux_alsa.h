@@ -2,7 +2,11 @@
 #define PA_LINUX_ALSA_H
 
 /*
+<<<<<<< HEAD
  * $Id: pa_linux_alsa.h 1597 2011-02-11 00:15:51Z dmitrykos $
+=======
+ * $Id$
+>>>>>>> upstream/master
  * PortAudio Portable Real-Time Audio Library
  * ALSA-specific extensions
  *

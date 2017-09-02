@@ -1,6 +1,10 @@
+<<<<<<< HEAD
 Copyright 2010-2015 Branimir Karadzic. All rights reserved.
 	
 https://github.com/bkaradzic/bx
+=======
+Copyright 2010-2017 Branimir Karadzic. All rights reserved.
+>>>>>>> upstream/master
 
 Redistribution and use in source and binary forms, with or without modification,
 are permitted provided that the following conditions are met:
@@ -22,5 +26,8 @@ PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY
 WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
 OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
 OF THE POSSIBILITY OF SUCH DAMAGE.
+<<<<<<< HEAD
 
 https://github.com/bkaradzic/bx/blob/master/LICENSE
+=======
+>>>>>>> upstream/master

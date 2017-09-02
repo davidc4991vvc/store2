@@ -62,7 +62,11 @@
 
 
 // device type definition
+<<<<<<< HEAD
 const device_type K053260 = &device_creator<k053260_device>;
+=======
+DEFINE_DEVICE_TYPE(K053260, k053260_device, "k053260", "K053260 KDSC")
+>>>>>>> upstream/master
 
 
 //**************************************************************************
@@ -73,6 +77,7 @@ const device_type K053260 = &device_creator<k053260_device>;
 //  k053260_device - constructor
 //-------------------------------------------------
 
+<<<<<<< HEAD
 k053260_device::k053260_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
 	: device_t(mconfig, K053260, "K053260 KDSC", tag, owner, clock, "k053260", __FILE__),
 		device_sound_interface(mconfig, *this),
@@ -82,6 +87,16 @@ k053260_device::k053260_device(const machine_config &mconfig, const char *tag, d
 		m_rom_size(0),
 		m_keyon(0),
 		m_mode(0)
+=======
+k053260_device::k053260_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: device_t(mconfig, K053260, tag, owner, clock)
+	, device_sound_interface(mconfig, *this)
+	, device_rom_interface(mconfig, *this, 21)
+	, m_stream(nullptr)
+	, m_keyon(0)
+	, m_mode(0)
+	, m_voice{ { *this }, { *this }, { *this }, { *this } }
+>>>>>>> upstream/master
 {
 	memset(m_portdata, 0, sizeof(m_portdata));
 }
@@ -93,10 +108,13 @@ k053260_device::k053260_device(const machine_config &mconfig, const char *tag, d
 
 void k053260_device::device_start()
 {
+<<<<<<< HEAD
 	memory_region *ROM = (m_rgnoverride) ? owner()->memregion(m_rgnoverride) : region();
 	m_rom = ROM->base();
 	m_rom_size = ROM->bytes();
 
+=======
+>>>>>>> upstream/master
 	m_stream = stream_alloc( 0, 2, clock() / CLOCKS_PER_SAMPLE );
 
 	/* register with the save state system */
@@ -105,7 +123,11 @@ void k053260_device::device_start()
 	save_item(NAME(m_mode));
 
 	for (int i = 0; i < 4; i++)
+<<<<<<< HEAD
 		m_voice[i].voice_start(*this, i);
+=======
+		m_voice[i].voice_start(i);
+>>>>>>> upstream/master
 }
 
 
@@ -115,8 +137,23 @@ void k053260_device::device_start()
 
 void k053260_device::device_reset()
 {
+<<<<<<< HEAD
 	for (int i = 0; i < 4; i++)
 		m_voice[i].voice_reset();
+=======
+	for (auto & elem : m_voice)
+		elem.voice_reset();
+}
+
+
+//-------------------------------------------------
+//  rom_bank_updated - the rom bank has changed
+//-------------------------------------------------
+
+void k053260_device::rom_bank_updated()
+{
+	m_stream->update();
+>>>>>>> upstream/master
 }
 
 
@@ -137,7 +174,11 @@ WRITE8_MEMBER( k053260_device::main_write )
 READ8_MEMBER( k053260_device::read )
 {
 	offset &= 0x3f;
+<<<<<<< HEAD
 	UINT8 ret = 0;
+=======
+	uint8_t ret = 0;
+>>>>>>> upstream/master
 
 	switch (offset)
 	{
@@ -192,7 +233,11 @@ WRITE8_MEMBER( k053260_device::write )
 
 		case 0x28: // key on/off
 		{
+<<<<<<< HEAD
 			UINT8 rising_edge = data & ~m_keyon;
+=======
+			uint8_t rising_edge = data & ~m_keyon;
+>>>>>>> upstream/master
 
 			for (int i = 0; i < 4; i++)
 			{
@@ -208,9 +253,15 @@ WRITE8_MEMBER( k053260_device::write )
 		// 0x29 is a read register
 
 		case 0x2a: // loop and pcm/adpcm select
+<<<<<<< HEAD
 			for (int i = 0; i < 4; i++)
 			{
 				m_voice[i].set_loop_kadpcm(data);
+=======
+			for (auto & elem : m_voice)
+			{
+				elem.set_loop_kadpcm(data);
+>>>>>>> upstream/master
 				data >>= 1;
 			}
 			break;
@@ -247,7 +298,11 @@ WRITE8_MEMBER( k053260_device::write )
 }
 
 
+<<<<<<< HEAD
 INLINE int limit( int val, int max, int min )
+=======
+static inline int limit( int val, int max, int min )
+>>>>>>> upstream/master
 {
 	if ( val > max )
 		val = max;
@@ -272,9 +327,14 @@ void k053260_device::sound_stream_update(sound_stream &stream, stream_sample_t *
 		{
 			stream_sample_t buffer[2] = {0, 0};
 
+<<<<<<< HEAD
 			for (int i = 0; i < 4; i++)
 			{
 				KDSC_Voice &voice = m_voice[i];
+=======
+			for (auto & voice : m_voice)
+			{
+>>>>>>> upstream/master
 				if (voice.playing())
 					voice.play(buffer);
 			}
@@ -285,8 +345,13 @@ void k053260_device::sound_stream_update(sound_stream &stream, stream_sample_t *
 	}
 	else
 	{
+<<<<<<< HEAD
 		memset( outputs[0], 0, samples * sizeof(*outputs[0]));
 		memset( outputs[1], 0, samples * sizeof(*outputs[1]));
+=======
+		memset(outputs[0], 0, samples * sizeof(*outputs[0]));
+		memset(outputs[1], 0, samples * sizeof(*outputs[1]));
+>>>>>>> upstream/master
 	}
 }
 
@@ -295,6 +360,7 @@ void k053260_device::sound_stream_update(sound_stream &stream, stream_sample_t *
 //  KDSC_Voice - one of the four voices
 //**************************************************************************
 
+<<<<<<< HEAD
 void k053260_device::KDSC_Voice::voice_start(k053260_device &device, int index)
 {
 	m_device = &device;
@@ -313,6 +379,24 @@ void k053260_device::KDSC_Voice::voice_start(k053260_device &device, int index)
 	device.save_item(NAME(m_pan), index);
 	device.save_item(NAME(m_loop), index);
 	device.save_item(NAME(m_kadpcm), index);
+=======
+void k053260_device::KDSC_Voice::voice_start(int index)
+{
+	voice_reset();
+
+	m_device.save_item(NAME(m_position), index);
+	m_device.save_item(NAME(m_pan_volume), index);
+	m_device.save_item(NAME(m_counter), index);
+	m_device.save_item(NAME(m_output), index);
+	m_device.save_item(NAME(m_playing), index);
+	m_device.save_item(NAME(m_start), index);
+	m_device.save_item(NAME(m_length), index);
+	m_device.save_item(NAME(m_pitch), index);
+	m_device.save_item(NAME(m_volume), index);
+	m_device.save_item(NAME(m_pan), index);
+	m_device.save_item(NAME(m_loop), index);
+	m_device.save_item(NAME(m_kadpcm), index);
+>>>>>>> upstream/master
 }
 
 void k053260_device::KDSC_Voice::voice_reset()
@@ -331,7 +415,11 @@ void k053260_device::KDSC_Voice::voice_reset()
 	update_pan_volume();
 }
 
+<<<<<<< HEAD
 void k053260_device::KDSC_Voice::set_register(offs_t offset, UINT8 data)
+=======
+void k053260_device::KDSC_Voice::set_register(offs_t offset, uint8_t data)
+>>>>>>> upstream/master
 {
 	switch (offset & 0x7)
 	{
@@ -362,13 +450,21 @@ void k053260_device::KDSC_Voice::set_register(offs_t offset, UINT8 data)
 	}
 }
 
+<<<<<<< HEAD
 void k053260_device::KDSC_Voice::set_loop_kadpcm(UINT8 data)
+=======
+void k053260_device::KDSC_Voice::set_loop_kadpcm(uint8_t data)
+>>>>>>> upstream/master
 {
 	m_loop = BIT(data, 0);
 	m_kadpcm = BIT(data, 4);
 }
 
+<<<<<<< HEAD
 void k053260_device::KDSC_Voice::set_pan(UINT8 data)
+=======
+void k053260_device::KDSC_Voice::set_pan(uint8_t data)
+>>>>>>> upstream/master
 {
 	m_pan = data & 0x7;
 	update_pan_volume();
@@ -382,6 +478,7 @@ void k053260_device::KDSC_Voice::update_pan_volume()
 
 void k053260_device::KDSC_Voice::key_on()
 {
+<<<<<<< HEAD
 	if (m_start >= m_device->m_rom_size)
 		m_device->logerror("K053260: Attempting to start playing past the end of the ROM ( start = %06x, length = %06x )\n", m_start, m_length);
 
@@ -398,6 +495,14 @@ void k053260_device::KDSC_Voice::key_on()
 		if (LOG) m_device->logerror("K053260: start = %06x, length = %06x, pitch = %04x, vol = %02x, loop = %s, %s\n",
 						m_start, m_length, m_pitch, m_volume, m_loop ? "yes" : "no", m_kadpcm ? "KADPCM" : "PCM" );
 	}
+=======
+	m_position = m_kadpcm ? 1 : 0; // for kadpcm low bit is nybble offset, so must start at 1 due to preincrement
+	m_counter = 0x1000 - CLOCKS_PER_SAMPLE; // force update on next sound_stream_update
+	m_output = 0;
+	m_playing = true;
+	if (LOG) m_device.logerror("K053260: start = %06x, length = %06x, pitch = %04x, vol = %02x, loop = %s, %s\n",
+					m_start, m_length, m_pitch, m_volume, m_loop ? "yes" : "no", m_kadpcm ? "KADPCM" : "PCM" );
+>>>>>>> upstream/master
 }
 
 void k053260_device::KDSC_Voice::key_off()
@@ -415,7 +520,11 @@ void k053260_device::KDSC_Voice::play(stream_sample_t *outputs)
 	{
 		m_counter = m_counter - 0x1000 + m_pitch;
 
+<<<<<<< HEAD
 		UINT32 bytepos = ++m_position >> ( m_kadpcm ? 1 : 0 );
+=======
+		uint32_t bytepos = ++m_position >> ( m_kadpcm ? 1 : 0 );
+>>>>>>> upstream/master
 		/*
 		Yes, _pre_increment. Playback must start 1 byte position after the
 		start address written to the register, or else ADPCM sounds will
@@ -439,12 +548,20 @@ void k053260_device::KDSC_Voice::play(stream_sample_t *outputs)
 			}
 		}
 
+<<<<<<< HEAD
 		UINT8 romdata = m_device->m_rom[m_start + bytepos];
+=======
+		uint8_t romdata = m_device.read_byte(m_start + bytepos);
+>>>>>>> upstream/master
 
 		if (m_kadpcm)
 		{
 			if (m_position & 1) romdata >>= 4; // decode low nybble, then high nybble
+<<<<<<< HEAD
 			static const INT8 kadpcm_table[] = {0,1,2,4,8,16,32,64,-128,-64,-32,-16,-8,-4,-2,-1};
+=======
+			static const int8_t kadpcm_table[] = {0,1,2,4,8,16,32,64,-128,-64,-32,-16,-8,-4,-2,-1};
+>>>>>>> upstream/master
 			m_output += kadpcm_table[romdata & 0xf];
 		}
 		else
@@ -457,6 +574,7 @@ void k053260_device::KDSC_Voice::play(stream_sample_t *outputs)
 	outputs[1] += m_output * m_pan_volume[1];
 }
 
+<<<<<<< HEAD
 UINT8 k053260_device::KDSC_Voice::read_rom()
 {
 	UINT32 offs = m_start + m_position;
@@ -471,4 +589,13 @@ UINT8 k053260_device::KDSC_Voice::read_rom()
 	}
 
 	return m_device->m_rom[offs];
+=======
+uint8_t k053260_device::KDSC_Voice::read_rom()
+{
+	uint32_t offs = m_start + m_position;
+
+	m_position = (m_position + 1) & 0xffff;
+
+	return m_device.read_byte(offs);
+>>>>>>> upstream/master
 }

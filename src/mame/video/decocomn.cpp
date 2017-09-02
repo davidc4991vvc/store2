@@ -10,6 +10,7 @@
 #include "video/decocomn.h"
 
 
+<<<<<<< HEAD
 const device_type DECOCOMN = &device_creator<decocomn_device>;
 
 decocomn_device::decocomn_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
@@ -18,6 +19,16 @@ decocomn_device::decocomn_device(const machine_config &mconfig, const char *tag,
 	m_dirty_palette(NULL),
 	m_priority(0),
 	m_palette(*this),
+=======
+DEFINE_DEVICE_TYPE(DECOCOMN, decocomn_device, "decocomn", "DECO Common Video Functions")
+
+decocomn_device::decocomn_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: device_t(mconfig, DECOCOMN, tag, owner, clock),
+	device_video_interface(mconfig, *this),
+	m_dirty_palette(nullptr),
+	m_priority(0),
+	m_palette(*this, finder_base::DUMMY_TAG),
+>>>>>>> upstream/master
 	m_generic_paletteram_16(*this, "^paletteram")
 {
 }
@@ -33,6 +44,7 @@ void decocomn_device::static_set_palette_tag(device_t &device, const char *tag)
 }
 
 //-------------------------------------------------
+<<<<<<< HEAD
 //  device_config_complete - perform any
 //  operations now that the configuration is
 //  complete
@@ -43,6 +55,8 @@ void decocomn_device::device_config_complete()
 }
 
 //-------------------------------------------------
+=======
+>>>>>>> upstream/master
 //  device_start - device-specific startup
 //-------------------------------------------------
 
@@ -53,10 +67,17 @@ void decocomn_device::device_start()
 //  width = m_screen->width();
 //  height = m_screen->height();
 
+<<<<<<< HEAD
 	m_dirty_palette = auto_alloc_array_clear(machine(), UINT8, 4096);
 
 	save_item(NAME(m_priority));
 	save_pointer(NAME(m_dirty_palette), 4096);
+=======
+	m_dirty_palette = make_unique_clear<uint8_t[]>(4096);
+
+	save_item(NAME(m_priority));
+	save_pointer(NAME(m_dirty_palette.get()), 4096);
+>>>>>>> upstream/master
 }
 
 //-------------------------------------------------

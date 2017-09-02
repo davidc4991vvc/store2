@@ -1,3 +1,7 @@
+<<<<<<< HEAD
+=======
+<?xml version="1.0"?>
+>>>>>>> upstream/master
 <mamelayout version="2">
 	<element name="lamp" defstate="0">
 		<disk state="1">
@@ -96,4 +100,8 @@
 					<bounds x="141" y="366" width="7" height="7" />
 		</backdrop>
 	</view>
+<<<<<<< HEAD
 </mamelayout>
+=======
+</mamelayout>
+>>>>>>> upstream/master

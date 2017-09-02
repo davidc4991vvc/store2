@@ -39,24 +39,42 @@
 
 */
 
+<<<<<<< HEAD
 #include "am9517a.h"
 
+=======
+#include "emu.h"
+#include "am9517a.h"
+
+//#define VERBOSE 1
+#include "logmacro.h"
+
+>>>>>>> upstream/master
 
 
 //**************************************************************************
 //  DEVICE DEFINITIONS
 //**************************************************************************
 
+<<<<<<< HEAD
 const device_type AM9517A = &device_creator<am9517a_device>;
 const device_type V53_DMAU = &device_creator<upd71071_v53_device>;
+=======
+DEFINE_DEVICE_TYPE(AM9517A,      am9517a_device,      "am9517a",  "AM9517A")
+DEFINE_DEVICE_TYPE(V53_DMAU,     upd71071_v53_device, "v53_dmau", "V53 DMAU")
+DEFINE_DEVICE_TYPE(PCXPORT_DMAC, pcxport_dmac_device, "pcx_dmac", "PC Transporter DMAC")
+>>>>>>> upstream/master
 
 
 //**************************************************************************
 //  MACROS / CONSTANTS
 //**************************************************************************
 
+<<<<<<< HEAD
 #define LOG 0
 
+=======
+>>>>>>> upstream/master
 
 enum
 {
@@ -131,7 +149,11 @@ enum
 
 inline void am9517a_device::dma_request(int channel, int state)
 {
+<<<<<<< HEAD
 	if (LOG) logerror("AM9517A '%s' Channel %u DMA Request: %u\n", tag(), channel, state);
+=======
+	LOG("AM9517A Channel %u DMA Request: %u\n", channel, state);
+>>>>>>> upstream/master
 
 	if (state ^ COMMAND_DREQ_ACTIVE_LOW)
 	{
@@ -188,6 +210,7 @@ inline void am9517a_device::set_dack()
 {
 	for (int channel = 0; channel < 4; channel++)
 	{
+<<<<<<< HEAD
 		if (channel == 0)
 		{
 			if ((channel == m_current_channel) && !COMMAND_MEM_TO_MEM)
@@ -232,6 +255,12 @@ inline void am9517a_device::set_dack()
 				m_out_dack_3_cb(!COMMAND_DACK_ACTIVE_HIGH);
 			}
 		}
+=======
+		if ((channel == m_current_channel) && !COMMAND_MEM_TO_MEM)
+			m_out_dack_cb[channel](COMMAND_DACK_ACTIVE_HIGH);
+		else
+			m_out_dack_cb[channel](!COMMAND_DACK_ACTIVE_HIGH);
+>>>>>>> upstream/master
 	}
 }
 
@@ -280,6 +309,7 @@ inline void am9517a_device::dma_read()
 	{
 	case MODE_TRANSFER_VERIFY:
 	case MODE_TRANSFER_WRITE:
+<<<<<<< HEAD
 		switch(m_current_channel)
 		{
 			case 0:
@@ -295,6 +325,9 @@ inline void am9517a_device::dma_read()
 				m_temp = m_in_ior_3_cb(offset);
 				break;
 		}
+=======
+		m_temp = m_in_ior_cb[m_current_channel](offset);
+>>>>>>> upstream/master
 		break;
 
 	case MODE_TRANSFER_READ:
@@ -314,18 +347,29 @@ inline void am9517a_device::dma_write()
 
 	switch (MODE_TRANSFER_MASK)
 	{
+<<<<<<< HEAD
 	case MODE_TRANSFER_VERIFY: {
 		UINT8 v1 = m_in_memr_cb(offset);
 		if(0 && m_temp != v1)
 			logerror("%s: verify error %02x vs. %02x\n", tag(), m_temp, v1);
 		break;
 	}
+=======
+	case MODE_TRANSFER_VERIFY:
+		{
+			uint8_t v1 = m_in_memr_cb(offset);
+			if(0 && m_temp != v1)
+				logerror("verify error %02x vs. %02x\n", m_temp, v1);
+		}
+		break;
+>>>>>>> upstream/master
 
 	case MODE_TRANSFER_WRITE:
 		m_out_memw_cb(offset, m_temp);
 		break;
 
 	case MODE_TRANSFER_READ:
+<<<<<<< HEAD
 		switch(m_current_channel)
 		{
 			case 0:
@@ -341,6 +385,9 @@ inline void am9517a_device::dma_write()
 				m_out_iow_3_cb(offset, m_temp);
 				break;
 		}
+=======
+		m_out_iow_cb[m_current_channel](offset, m_temp);
+>>>>>>> upstream/master
 		break;
 	}
 }
@@ -422,7 +469,11 @@ inline void am9517a_device::dma_advance()
 //  end_of_process -
 //-------------------------------------------------
 
+<<<<<<< HEAD
 inline void am9517a_device::end_of_process()
+=======
+void am9517a_device::end_of_process()
+>>>>>>> upstream/master
 {
 	// terminal count
 	if (COMMAND_MEM_TO_MEM)
@@ -471,8 +522,13 @@ inline void am9517a_device::end_of_process()
 //-------------------------------------------------
 
 
+<<<<<<< HEAD
 am9517a_device::am9517a_device(const machine_config &mconfig, device_type type, const char *name, const char *tag, device_t *owner, UINT32 clock, const char *shortname)
 	: device_t(mconfig, type, name, tag, owner, clock, shortname, __FILE__),
+=======
+am9517a_device::am9517a_device(const machine_config &mconfig, device_type type, const char *tag, device_t *owner, uint32_t clock)
+	: device_t(mconfig, type, tag, owner, clock),
+>>>>>>> upstream/master
 		device_execute_interface(mconfig, *this),
 		m_icount(0),
 		m_hack(0),
@@ -482,6 +538,7 @@ am9517a_device::am9517a_device(const machine_config &mconfig, device_type type, 
 		m_out_eop_cb(*this),
 		m_in_memr_cb(*this),
 		m_out_memw_cb(*this),
+<<<<<<< HEAD
 		m_in_ior_0_cb(*this),
 		m_in_ior_1_cb(*this),
 		m_in_ior_2_cb(*this),
@@ -494,10 +551,16 @@ am9517a_device::am9517a_device(const machine_config &mconfig, device_type type, 
 		m_out_dack_1_cb(*this),
 		m_out_dack_2_cb(*this),
 		m_out_dack_3_cb(*this)
+=======
+		m_in_ior_cb{ { *this }, { *this }, { *this }, { *this } },
+		m_out_iow_cb{ { *this }, { *this }, { *this }, { *this } },
+		m_out_dack_cb{ { *this }, { *this }, { *this }, { *this } }
+>>>>>>> upstream/master
 {
 }
 
 
+<<<<<<< HEAD
 am9517a_device::am9517a_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
 	: device_t(mconfig, AM9517A, "AM9517A", tag, owner, clock, "am9517a", __FILE__),
 		device_execute_interface(mconfig, *this),
@@ -527,6 +590,20 @@ am9517a_device::am9517a_device(const machine_config &mconfig, const char *tag, d
 
 upd71071_v53_device::upd71071_v53_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
 	: am9517a_device(mconfig, V53_DMAU, "V53 DMAU", tag, owner, clock, "v53_dmau")
+=======
+am9517a_device::am9517a_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: am9517a_device(mconfig, AM9517A, tag, owner, clock)
+{
+}
+
+upd71071_v53_device::upd71071_v53_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: am9517a_device(mconfig, V53_DMAU, tag, owner, clock)
+{
+}
+
+pcxport_dmac_device::pcxport_dmac_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: am9517a_device(mconfig, PCXPORT_DMAC, tag, owner, clock)
+>>>>>>> upstream/master
 {
 }
 
@@ -544,6 +621,7 @@ void am9517a_device::device_start()
 	m_out_eop_cb.resolve_safe();
 	m_in_memr_cb.resolve_safe(0);
 	m_out_memw_cb.resolve_safe();
+<<<<<<< HEAD
 	m_in_ior_0_cb.resolve_safe(0);
 	m_in_ior_1_cb.resolve_safe(0);
 	m_in_ior_2_cb.resolve_safe(0);
@@ -564,6 +642,22 @@ void am9517a_device::device_start()
 		m_channel[i].m_base_address = 0;
 		m_channel[i].m_base_count = 0;
 		m_channel[i].m_mode = 0;
+=======
+	for(auto &cb : m_in_ior_cb)
+		cb.resolve_safe(0);
+	for(auto &cb : m_out_iow_cb)
+		cb.resolve_safe();
+	for(auto &cb : m_out_dack_cb)
+		cb.resolve_safe();
+
+	for(auto &elem : m_channel)
+	{
+		elem.m_address = 0;
+		elem.m_count = 0;
+		elem.m_base_address = 0;
+		elem.m_base_count = 0;
+		elem.m_mode = 0;
+>>>>>>> upstream/master
 	}
 
 	// state saving
@@ -805,7 +899,11 @@ void am9517a_device::execute_run()
 
 READ8_MEMBER( am9517a_device::read )
 {
+<<<<<<< HEAD
 	UINT8 data = 0;
+=======
+	uint8_t data = 0;
+>>>>>>> upstream/master
 
 	if (!BIT(offset, 3))
 	{
@@ -887,7 +985,11 @@ WRITE8_MEMBER( am9517a_device::write )
 				m_channel[channel].m_address = (m_channel[channel].m_address & 0xff00) | data;
 			}
 
+<<<<<<< HEAD
 			if (LOG) logerror("AM9517A '%s' Channel %u Base Address: %04x\n", tag(), channel, m_channel[channel].m_base_address);
+=======
+			LOG("AM9517A Channel %u Base Address: %04x\n", channel, m_channel[channel].m_base_address);
+>>>>>>> upstream/master
 			break;
 
 		case REGISTER_WORD_COUNT:
@@ -902,7 +1004,11 @@ WRITE8_MEMBER( am9517a_device::write )
 				m_channel[channel].m_count = (m_channel[channel].m_count & 0xff00) | data;
 			}
 
+<<<<<<< HEAD
 			if (LOG) logerror("AM9517A '%s' Channel %u Base Word Count: %04x\n", tag(), channel, m_channel[channel].m_base_count);
+=======
+			LOG("AM9517A Channel %u Base Word Count: %04x\n", channel, m_channel[channel].m_base_count);
+>>>>>>> upstream/master
 			break;
 		}
 
@@ -915,7 +1021,11 @@ WRITE8_MEMBER( am9517a_device::write )
 		case REGISTER_COMMAND:
 			m_command = data;
 
+<<<<<<< HEAD
 			if (LOG) logerror("AM9517A '%s' Command Register: %02x\n", tag(), m_command);
+=======
+			LOG("AM9517A Command Register: %02x\n", m_command);
+>>>>>>> upstream/master
 			break;
 
 		case REGISTER_REQUEST:
@@ -935,7 +1045,11 @@ WRITE8_MEMBER( am9517a_device::write )
 					m_request &= ~(1 << (channel + 4));
 				}
 
+<<<<<<< HEAD
 				if (LOG) logerror("AM9517A '%s' Request Register: %01x\n", tag(), m_request);
+=======
+				LOG("AM9517A Request Register: %01x\n", m_request);
+>>>>>>> upstream/master
 			}
 			break;
 
@@ -952,7 +1066,11 @@ WRITE8_MEMBER( am9517a_device::write )
 					m_mask &= ~(1 << channel);
 				}
 
+<<<<<<< HEAD
 				if (LOG) logerror("AM9517A '%s' Mask Register: %01x\n", tag(), m_mask);
+=======
+				LOG("AM9517A Mask Register: %01x\n", m_mask);
+>>>>>>> upstream/master
 			}
 			break;
 
@@ -965,24 +1083,40 @@ WRITE8_MEMBER( am9517a_device::write )
 				// clear terminal count
 				m_status &= ~(1 << channel);
 
+<<<<<<< HEAD
 				if (LOG) logerror("AM9517A '%s' Channel %u Mode: %02x\n", tag(), channel, data & 0xfc);
+=======
+				LOG("AM9517A Channel %u Mode: %02x\n", channel, data & 0xfc);
+>>>>>>> upstream/master
 			}
 			break;
 
 		case REGISTER_BYTE_POINTER:
+<<<<<<< HEAD
 			if (LOG) logerror("AM9517A '%s' Clear Byte Pointer Flip-Flop\n", tag());
+=======
+			LOG("AM9517A Clear Byte Pointer Flip-Flop\n");
+>>>>>>> upstream/master
 
 			m_msb = 0;
 			break;
 
 		case REGISTER_MASTER_CLEAR:
+<<<<<<< HEAD
 			if (LOG) logerror("AM9517A '%s' Master Clear\n", tag());
+=======
+			LOG("AM9517A Master Clear\n");
+>>>>>>> upstream/master
 
 			device_reset();
 			break;
 
 		case REGISTER_CLEAR_MASK:
+<<<<<<< HEAD
 			if (LOG) logerror("AM9517A '%s' Clear Mask Register\n", tag());
+=======
+			LOG("AM9517A Clear Mask Register\n");
+>>>>>>> upstream/master
 
 			m_mask = 0;
 			break;
@@ -990,7 +1124,11 @@ WRITE8_MEMBER( am9517a_device::write )
 		case REGISTER_MASK:
 			m_mask = data & 0x0f;
 
+<<<<<<< HEAD
 			if (LOG) logerror("AM9517A '%s' Mask Register: %01x\n", tag(), m_mask);
+=======
+			LOG("AM9517A Mask Register: %01x\n", m_mask);
+>>>>>>> upstream/master
 			break;
 		}
 	}
@@ -1004,7 +1142,11 @@ WRITE8_MEMBER( am9517a_device::write )
 
 WRITE_LINE_MEMBER( am9517a_device::hack_w )
 {
+<<<<<<< HEAD
 	if (LOG) logerror("AM9517A '%s' Hold Acknowledge: %u\n", tag(), state);
+=======
+	LOG("AM9517A Hold Acknowledge: %u\n", state);
+>>>>>>> upstream/master
 
 	m_hack = state;
 	trigger(1);
@@ -1017,7 +1159,11 @@ WRITE_LINE_MEMBER( am9517a_device::hack_w )
 
 WRITE_LINE_MEMBER( am9517a_device::ready_w )
 {
+<<<<<<< HEAD
 	if (LOG) logerror("AM9517A '%s' Ready: %u\n", tag(), state);
+=======
+	LOG("AM9517A Ready: %u\n", state);
+>>>>>>> upstream/master
 
 	m_ready = state;
 }
@@ -1029,7 +1175,11 @@ WRITE_LINE_MEMBER( am9517a_device::ready_w )
 
 WRITE_LINE_MEMBER( am9517a_device::eop_w )
 {
+<<<<<<< HEAD
 	if (LOG) logerror("AM9517A '%s' End of Process: %u\n", tag(), state);
+=======
+	LOG("AM9517A End of Process: %u\n", state);
+>>>>>>> upstream/master
 }
 
 
@@ -1099,10 +1249,17 @@ void upd71071_v53_device::device_reset()
 
 READ8_MEMBER(upd71071_v53_device::read)
 {
+<<<<<<< HEAD
 	UINT8 ret = 0;
 	int channel = m_selected_channel;
 
 	if (LOG) logerror("DMA: read from register %02x\n",offset);
+=======
+	uint8_t ret = 0;
+	int channel = m_selected_channel;
+
+	LOG("DMA: read from register %02x\n",offset);
+>>>>>>> upstream/master
 
 	switch (offset)
 	{
@@ -1277,3 +1434,60 @@ WRITE8_MEMBER(upd71071_v53_device::write)
 	trigger(1);
 
 }
+<<<<<<< HEAD
+=======
+
+void pcxport_dmac_device::device_reset()
+{
+	m_state = STATE_SI;
+	m_command = 0;
+	m_status = 0;
+	m_request = 0;
+	m_mask = 0;
+	m_temp = 0;
+	m_msb = 0;
+	m_current_channel = -1;
+	m_last_channel = 3;
+	m_hreq = -1;
+	m_eop = 0;
+
+	set_hreq(0);
+	set_eop(ASSERT_LINE);
+
+	set_dack();
+}
+
+void pcxport_dmac_device::end_of_process()
+{
+	// terminal count
+	if (COMMAND_MEM_TO_MEM)
+	{
+		m_status |= 1 << 0;
+		m_status |= 1 << 1;
+		m_request &= ~(1 << 0);
+		m_request &= ~(1 << 1);
+	}
+	else
+	{
+		m_status |= 1 << m_current_channel;
+		m_request &= ~(1 << m_current_channel);
+	}
+
+	if (MODE_AUTOINITIALIZE)
+	{
+		// autoinitialize
+		m_channel[m_current_channel].m_address = m_channel[m_current_channel].m_base_address;
+		m_channel[m_current_channel].m_count = m_channel[m_current_channel].m_base_count;
+	}
+	// don't mask out channel if not autoinitialize
+
+	// signal end of process
+	set_eop(ASSERT_LINE);
+	set_hreq(0);
+
+	m_current_channel = -1;
+	set_dack();
+
+	m_state = STATE_SI;
+}
+>>>>>>> upstream/master

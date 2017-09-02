@@ -11,7 +11,11 @@
 
 
 // device type definition
+<<<<<<< HEAD
 const device_type CPS3 = &device_creator<cps3_sound_device>;
+=======
+DEFINE_DEVICE_TYPE(CPS3, cps3_sound_device, "cps3_custom", "CPS3 Audio Custom")
+>>>>>>> upstream/master
 
 
 //**************************************************************************
@@ -22,12 +26,21 @@ const device_type CPS3 = &device_creator<cps3_sound_device>;
 //  cps3_sound_device - constructor
 //-------------------------------------------------
 
+<<<<<<< HEAD
 cps3_sound_device::cps3_sound_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
 	: device_t(mconfig, CPS3, "CPS3 Audio Custom", tag, owner, clock, "cps3_custom", __FILE__),
 		device_sound_interface(mconfig, *this),
 		m_stream(NULL),
 		m_key(0),
 		m_base(NULL)
+=======
+cps3_sound_device::cps3_sound_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: device_t(mconfig, CPS3, tag, owner, clock)
+	, device_sound_interface(mconfig, *this)
+	, m_stream(nullptr)
+	, m_key(0)
+	, m_base(nullptr)
+>>>>>>> upstream/master
 {
 }
 
@@ -77,6 +90,7 @@ void cps3_sound_device::sound_stream_update(sound_stream &stream, stream_sample_
 			*/
 			cps3_voice *vptr = &m_voice[i];
 
+<<<<<<< HEAD
 			UINT32 start = (vptr->regs[1] >> 16 & 0x0000ffff) | (vptr->regs[1] << 16 & 0xffff0000);
 			UINT32 end   = (vptr->regs[5] >> 16 & 0x0000ffff) | (vptr->regs[5] << 16 & 0xffff0000);
 			UINT32 loop  = (vptr->regs[3] & 0x0000ffff) | (vptr->regs[4] << 16 & 0xffff0000);
@@ -88,6 +102,19 @@ void cps3_sound_device::sound_stream_update(sound_stream &stream, stream_sample_
 
 			UINT32 pos = vptr->pos;
 			UINT32 frac = vptr->frac;
+=======
+			uint32_t start = (vptr->regs[1] >> 16 & 0x0000ffff) | (vptr->regs[1] << 16 & 0xffff0000);
+			uint32_t end   = (vptr->regs[5] >> 16 & 0x0000ffff) | (vptr->regs[5] << 16 & 0xffff0000);
+			uint32_t loop  = (vptr->regs[3] & 0x0000ffff) | (vptr->regs[4] << 16 & 0xffff0000);
+			bool loop_enable = (vptr->regs[2] & 1) ? true : false;
+			uint32_t step  = vptr->regs[3] >> 16 & 0xffff;
+
+			int16_t vol_l = (vptr->regs[7] & 0xffff);
+			int16_t vol_r = (vptr->regs[7] >> 16 & 0xffff);
+
+			uint32_t pos = vptr->pos;
+			uint32_t frac = vptr->frac;
+>>>>>>> upstream/master
 
 			/* TODO */
 			start -= 0x400000;
@@ -97,7 +124,11 @@ void cps3_sound_device::sound_stream_update(sound_stream &stream, stream_sample_
 			/* Go through the buffer and add voice contributions */
 			for (int j = 0; j < samples; j++)
 			{
+<<<<<<< HEAD
 				INT32 sample;
+=======
+				int32_t sample;
+>>>>>>> upstream/master
 
 				pos += (frac >> 12);
 				frac &= 0xfff;
@@ -142,7 +173,11 @@ WRITE32_MEMBER( cps3_sound_device::cps3_sound_w )
 	{
 		assert((mem_mask & 0xffff0000) == 0xffff0000); // doesn't happen
 
+<<<<<<< HEAD
 		UINT16 key = data >> 16;
+=======
+		uint16_t key = data >> 16;
+>>>>>>> upstream/master
 
 		for (int i = 0; i < 16; i++)
 		{

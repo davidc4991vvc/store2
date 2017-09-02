@@ -6,6 +6,10 @@
 
 **********************************************************************/
 
+<<<<<<< HEAD
+=======
+#include "emu.h"
+>>>>>>> upstream/master
 #include "abcbus.h"
 
 
@@ -14,7 +18,11 @@
 //  GLOBAL VARIABLES
 //**************************************************************************
 
+<<<<<<< HEAD
 const device_type ABCBUS_SLOT = &device_creator<abcbus_slot_t>;
+=======
+DEFINE_DEVICE_TYPE(ABCBUS_SLOT, abcbus_slot_device, "abcbus_slot", "ABCBUS slot")
+>>>>>>> upstream/master
 
 
 
@@ -29,16 +37,28 @@ const device_type ABCBUS_SLOT = &device_creator<abcbus_slot_t>;
 device_abcbus_card_interface::device_abcbus_card_interface(const machine_config &mconfig, device_t &device)
 	: device_slot_card_interface(mconfig, device)
 {
+<<<<<<< HEAD
 	m_slot = dynamic_cast<abcbus_slot_t *>(device.owner());
+=======
+	m_slot = dynamic_cast<abcbus_slot_device *>(device.owner());
+>>>>>>> upstream/master
 }
 
 
 //-------------------------------------------------
+<<<<<<< HEAD
 //  abcbus_slot_t - constructor
 //-------------------------------------------------
 
 abcbus_slot_t::abcbus_slot_t(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock) :
 	device_t(mconfig, ABCBUS_SLOT, "ABCBUS slot", tag, owner, clock, "abcbus_slot", __FILE__),
+=======
+//  abcbus_slot_device - constructor
+//-------------------------------------------------
+
+abcbus_slot_device::abcbus_slot_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock) :
+	device_t(mconfig, ABCBUS_SLOT, tag, owner, clock),
+>>>>>>> upstream/master
 	device_slot_interface(mconfig, *this),
 	m_write_irq(*this),
 	m_write_nmi(*this),
@@ -59,7 +79,11 @@ abcbus_slot_t::abcbus_slot_t(const machine_config &mconfig, const char *tag, dev
 //  device_start - device-specific startup
 //-------------------------------------------------
 
+<<<<<<< HEAD
 void abcbus_slot_t::device_start()
+=======
+void abcbus_slot_device::device_start()
+>>>>>>> upstream/master
 {
 	m_card = dynamic_cast<device_abcbus_card_interface *>(get_card_device());
 

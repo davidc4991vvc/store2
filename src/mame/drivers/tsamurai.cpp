@@ -6,6 +6,11 @@
 
     TODO:
     - colors for this HW are a complete mystery and probably needs HW tests.
+<<<<<<< HEAD
+=======
+    - vsgongf sets 0 as player color in work RAM 0xc502 and it's never ever
+      set up properly. Assume protection related issue.
+>>>>>>> upstream/master
 
     driver by Phil Stroffolino
 
@@ -37,10 +42,22 @@ the "America" release.
 ****************************************************************************/
 
 #include "emu.h"
+<<<<<<< HEAD
 #include "cpu/z80/z80.h"
 #include "sound/ay8910.h"
 #include "sound/dac.h"
 #include "includes/tsamurai.h"
+=======
+#include "includes/tsamurai.h"
+
+#include "cpu/z80/z80.h"
+#include "machine/74259.h"
+#include "sound/ay8910.h"
+#include "sound/dac.h"
+#include "sound/volt_reg.h"
+#include "screen.h"
+#include "speaker.h"
+>>>>>>> upstream/master
 
 
 void tsamurai_state::machine_start()
@@ -67,9 +84,15 @@ MACHINE_START_MEMBER(tsamurai_state, vsgongf)
 	machine_start();
 }
 
+<<<<<<< HEAD
 WRITE8_MEMBER(tsamurai_state::nmi_enable_w)
 {
 	m_nmi_enabled = data;
+=======
+WRITE_LINE_MEMBER(tsamurai_state::nmi_enable_w)
+{
+	m_nmi_enabled = state;
+>>>>>>> upstream/master
 }
 
 INTERRUPT_GEN_MEMBER(tsamurai_state::interrupt)
@@ -120,6 +143,7 @@ WRITE8_MEMBER(tsamurai_state::m660_sound_command3_w)
 	m_audio3->set_input_line(0, HOLD_LINE );
 }
 
+<<<<<<< HEAD
 WRITE8_MEMBER(tsamurai_state::flip_screen_w)
 {
 	flip_screen_set(data);
@@ -128,6 +152,21 @@ WRITE8_MEMBER(tsamurai_state::flip_screen_w)
 WRITE8_MEMBER(tsamurai_state::coincounter_w)
 {
 	coin_counter_w(machine(), offset,data);
+=======
+WRITE_LINE_MEMBER(tsamurai_state::flip_screen_w)
+{
+	flip_screen_set(state);
+}
+
+WRITE_LINE_MEMBER(tsamurai_state::coin1_counter_w)
+{
+	machine().bookkeeping().coin_counter_w(0, state);
+}
+
+WRITE_LINE_MEMBER(tsamurai_state::coin2_counter_w)
+{
+	machine().bookkeeping().coin_counter_w(1, state);
+>>>>>>> upstream/master
 }
 
 
@@ -158,10 +197,14 @@ static ADDRESS_MAP_START( main_map, AS_PROGRAM, 8, tsamurai_state )
 	AM_RANGE(0xf804, 0xf804) AM_READ_PORT("DSW1")
 	AM_RANGE(0xf805, 0xf805) AM_READ_PORT("DSW2")
 
+<<<<<<< HEAD
 	AM_RANGE(0xfc00, 0xfc00) AM_WRITE(flip_screen_w)
 	AM_RANGE(0xfc01, 0xfc01) AM_WRITE(nmi_enable_w)
 	AM_RANGE(0xfc02, 0xfc02) AM_WRITE(textbank1_w)
 	AM_RANGE(0xfc03, 0xfc04) AM_WRITE(coincounter_w)
+=======
+	AM_RANGE(0xfc00, 0xfc07) AM_DEVWRITE("mainlatch", ls259_device, write_d0)
+>>>>>>> upstream/master
 ADDRESS_MAP_END
 
 static ADDRESS_MAP_START( m660_map, AS_PROGRAM, 8, tsamurai_state )
@@ -192,11 +235,15 @@ static ADDRESS_MAP_START( m660_map, AS_PROGRAM, 8, tsamurai_state )
 	AM_RANGE(0xf804, 0xf804) AM_READ_PORT("DSW1")
 	AM_RANGE(0xf805, 0xf805) AM_READ_PORT("DSW2")
 
+<<<<<<< HEAD
 	AM_RANGE(0xfc00, 0xfc00) AM_WRITE(flip_screen_w)
 	AM_RANGE(0xfc01, 0xfc01) AM_WRITE(nmi_enable_w)
 	AM_RANGE(0xfc02, 0xfc02) AM_WRITE(textbank1_w)
 	AM_RANGE(0xfc03, 0xfc04) AM_WRITE(coincounter_w)
 	AM_RANGE(0xfc07, 0xfc07) AM_WRITE(m660_textbank2_w)/* Mission 660 uses a bit here */
+=======
+	AM_RANGE(0xfc00, 0xfc07) AM_DEVWRITE("mainlatch", ls259_device, write_d0)
+>>>>>>> upstream/master
 ADDRESS_MAP_END
 
 static ADDRESS_MAP_START( z80_io_map, AS_IO, 8, tsamurai_state )
@@ -236,7 +283,11 @@ static ADDRESS_MAP_START( sound1_map, AS_PROGRAM, 8, tsamurai_state )
 	AM_RANGE(0x0000, 0x3fff) AM_ROM
 	AM_RANGE(0x6000, 0x6000) AM_READ(sound_command1_r)
 	AM_RANGE(0x6001, 0x6001) AM_WRITENOP /* ? - probably clear IRQ */
+<<<<<<< HEAD
 	AM_RANGE(0x6002, 0x6002) AM_DEVWRITE("dac1", dac_device, write_unsigned8)
+=======
+	AM_RANGE(0x6002, 0x6002) AM_DEVWRITE("dac1", dac_byte_interface, write)
+>>>>>>> upstream/master
 	AM_RANGE(0x7f00, 0x7fff) AM_RAM
 ADDRESS_MAP_END
 
@@ -246,7 +297,11 @@ static ADDRESS_MAP_START( sound2_map, AS_PROGRAM, 8, tsamurai_state )
 	AM_RANGE(0x0000, 0x3fff) AM_ROM
 	AM_RANGE(0x6000, 0x6000) AM_READ(sound_command2_r)
 	AM_RANGE(0x6001, 0x6001) AM_WRITENOP /* ? - probably clear IRQ */
+<<<<<<< HEAD
 	AM_RANGE(0x6002, 0x6002) AM_DEVWRITE("dac2", dac_device, write_unsigned8)
+=======
+	AM_RANGE(0x6002, 0x6002) AM_DEVWRITE("dac2", dac_byte_interface, write)
+>>>>>>> upstream/master
 	AM_RANGE(0x7f00, 0x7fff) AM_RAM
 ADDRESS_MAP_END
 
@@ -256,7 +311,11 @@ static ADDRESS_MAP_START( sound1_m660_map, AS_PROGRAM, 8, tsamurai_state )
 	AM_RANGE(0x0000, 0x3fff) AM_ROM
 	AM_RANGE(0xc000, 0xc000) AM_READ(sound_command1_r)
 	AM_RANGE(0xc001, 0xc001) AM_WRITENOP /* ? - probably clear IRQ */
+<<<<<<< HEAD
 	AM_RANGE(0xc002, 0xc002) AM_DEVWRITE("dac1", dac_device, write_unsigned8)
+=======
+	AM_RANGE(0xc002, 0xc002) AM_DEVWRITE("dac1", dac_byte_interface, write)
+>>>>>>> upstream/master
 	AM_RANGE(0x8000, 0x87ff) AM_RAM
 ADDRESS_MAP_END
 
@@ -266,7 +325,11 @@ static ADDRESS_MAP_START( sound2_m660_map, AS_PROGRAM, 8, tsamurai_state )
 	AM_RANGE(0x0000, 0x3fff) AM_ROM
 	AM_RANGE(0xc000, 0xc000) AM_READ(sound_command2_r)
 	AM_RANGE(0xc001, 0xc001) AM_WRITENOP /* ? - probably clear IRQ */
+<<<<<<< HEAD
 	AM_RANGE(0xc002, 0xc002) AM_DEVWRITE("dac2", dac_device, write_unsigned8)
+=======
+	AM_RANGE(0xc002, 0xc002) AM_DEVWRITE("dac2", dac_byte_interface, write)
+>>>>>>> upstream/master
 	AM_RANGE(0x8000, 0x87ff) AM_RAM
 ADDRESS_MAP_END
 
@@ -323,7 +386,11 @@ READ8_MEMBER(tsamurai_state::vsgongf_a100_r)
 
 WRITE8_MEMBER(tsamurai_state::vsgongf_sound_command_w)
 {
+<<<<<<< HEAD
 	soundlatch_byte_w(space, offset, data);
+=======
+	m_soundlatch->write(space, offset, data);
+>>>>>>> upstream/master
 	m_audiocpu->set_input_line(INPUT_LINE_NMI, PULSE_LINE);
 }
 
@@ -348,17 +415,26 @@ static ADDRESS_MAP_START( vsgongf_map, AS_PROGRAM, 8, tsamurai_state )
 	AM_RANGE(0xf800, 0xf800) AM_WRITENOP
 	AM_RANGE(0xf801, 0xf801) AM_WRITENOP /* vreg? always 0 */
 	AM_RANGE(0xf803, 0xf803) AM_WRITENOP /* vreg? always 0 */
+<<<<<<< HEAD
 	AM_RANGE(0xfc00, 0xfc00) AM_RAM /* vreg? always 0 */
 	AM_RANGE(0xfc01, 0xfc01) AM_WRITE(nmi_enable_w)
 	AM_RANGE(0xfc02, 0xfc03) AM_WRITE(coincounter_w)
 	AM_RANGE(0xfc04, 0xfc04) AM_WRITE(textbank1_w)
+=======
+	AM_RANGE(0xfc00, 0xfc07) AM_DEVWRITE("mainlatch", ls259_device, write_d0)
+>>>>>>> upstream/master
 ADDRESS_MAP_END
 
 static ADDRESS_MAP_START( sound_vsgongf_map, AS_PROGRAM, 8, tsamurai_state )
 	AM_RANGE(0x0000, 0x3fff) AM_ROM
 	AM_RANGE(0x6000, 0x63ff) AM_RAM /* work RAM */
+<<<<<<< HEAD
 	AM_RANGE(0x8000, 0x8000) AM_READ(soundlatch_byte_r) AM_WRITE(vsgongf_sound_nmi_enable_w) /* NMI enable */
 	AM_RANGE(0xa000, 0xa000) AM_DEVWRITE("dac", dac_device, write_unsigned8)
+=======
+	AM_RANGE(0x8000, 0x8000) AM_DEVREAD("soundlatch", generic_latch_8_device, read) AM_WRITE(vsgongf_sound_nmi_enable_w) /* NMI enable */
+	AM_RANGE(0xa000, 0xa000) AM_DEVWRITE("dac", dac_byte_interface, write)
+>>>>>>> upstream/master
 ADDRESS_MAP_END
 
 /*******************************************************************************/
@@ -700,7 +776,11 @@ GFXDECODE_END
 
 /*******************************************************************************/
 
+<<<<<<< HEAD
 static MACHINE_CONFIG_START( tsamurai, tsamurai_state )
+=======
+static MACHINE_CONFIG_START( tsamurai )
+>>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", Z80, XTAL_24MHz/8)
@@ -716,16 +796,31 @@ static MACHINE_CONFIG_START( tsamurai, tsamurai_state )
 
 	MCFG_MACHINE_START_OVERRIDE(tsamurai_state,tsamurai)
 
+<<<<<<< HEAD
+=======
+	MCFG_DEVICE_ADD("mainlatch", LS259, 0)
+	MCFG_ADDRESSABLE_LATCH_Q0_OUT_CB(WRITELINE(tsamurai_state, flip_screen_w))
+	MCFG_ADDRESSABLE_LATCH_Q1_OUT_CB(WRITELINE(tsamurai_state, nmi_enable_w))
+	MCFG_ADDRESSABLE_LATCH_Q2_OUT_CB(WRITELINE(tsamurai_state, textbank1_w))
+	MCFG_ADDRESSABLE_LATCH_Q3_OUT_CB(WRITELINE(tsamurai_state, coin1_counter_w))
+	MCFG_ADDRESSABLE_LATCH_Q4_OUT_CB(WRITELINE(tsamurai_state, coin2_counter_w))
+
+>>>>>>> upstream/master
 	/* video hardware */
 	MCFG_SCREEN_ADD("screen", RASTER)
 	MCFG_SCREEN_REFRESH_RATE(60)
 	MCFG_SCREEN_VBLANK_TIME(ATTOSECONDS_IN_USEC(2500) /* not accurate */)
 	MCFG_SCREEN_SIZE(32*8, 32*8)
+<<<<<<< HEAD
 	MCFG_SCREEN_VISIBLE_AREA(0, 255, 8, 255-8)
+=======
+	MCFG_SCREEN_VISIBLE_AREA(0, 255, 16, 255-16)
+>>>>>>> upstream/master
 	MCFG_SCREEN_UPDATE_DRIVER(tsamurai_state, screen_update)
 	MCFG_SCREEN_PALETTE("palette")
 
 	MCFG_GFXDECODE_ADD("gfxdecode", "palette", tsamurai)
+<<<<<<< HEAD
 	MCFG_PALETTE_ADD_RRRRGGGGBBBB_PROMS("palette", 256)
 	MCFG_VIDEO_START_OVERRIDE(tsamurai_state,tsamurai)
 
@@ -744,6 +839,26 @@ MACHINE_CONFIG_END
 
 
 static MACHINE_CONFIG_START( vsgongf, tsamurai_state )
+=======
+	MCFG_PALETTE_ADD_RRRRGGGGBBBB_PROMS("palette", "proms", 256)
+	MCFG_VIDEO_START_OVERRIDE(tsamurai_state,tsamurai)
+
+	/* sound hardware */
+	MCFG_SPEAKER_STANDARD_MONO("speaker")
+
+	MCFG_SOUND_ADD("aysnd", AY8910, XTAL_24MHz/8)
+	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "speaker", 0.1)
+
+	MCFG_SOUND_ADD("dac1", DAC_8BIT_R2R, 0) MCFG_SOUND_ROUTE(ALL_OUTPUTS, "speaker", 0.1) // unknown DAC
+	MCFG_SOUND_ADD("dac2", DAC_8BIT_R2R, 0) MCFG_SOUND_ROUTE(ALL_OUTPUTS, "speaker", 0.1) // unknown DAC
+	MCFG_DEVICE_ADD("vref", VOLTAGE_REGULATOR, 0) MCFG_VOLTAGE_REGULATOR_OUTPUT(5.0)
+	MCFG_SOUND_ROUTE_EX(0, "dac1", 1.0, DAC_VREF_POS_INPUT) MCFG_SOUND_ROUTE_EX(0, "dac1", -1.0, DAC_VREF_NEG_INPUT)
+	MCFG_SOUND_ROUTE_EX(0, "dac2", 1.0, DAC_VREF_POS_INPUT) MCFG_SOUND_ROUTE_EX(0, "dac2", -1.0, DAC_VREF_NEG_INPUT)
+MACHINE_CONFIG_END
+
+
+static MACHINE_CONFIG_START( vsgongf )
+>>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", Z80, XTAL_24MHz/8)
@@ -757,16 +872,31 @@ static MACHINE_CONFIG_START( vsgongf, tsamurai_state )
 
 	MCFG_MACHINE_START_OVERRIDE(tsamurai_state,vsgongf)
 
+<<<<<<< HEAD
+=======
+	MCFG_DEVICE_ADD("mainlatch", LS259, 0) // 4L
+	MCFG_ADDRESSABLE_LATCH_Q0_OUT_CB(NOOP) // vreg? always 0
+	MCFG_ADDRESSABLE_LATCH_Q1_OUT_CB(WRITELINE(tsamurai_state, nmi_enable_w))
+	MCFG_ADDRESSABLE_LATCH_Q2_OUT_CB(WRITELINE(tsamurai_state, coin1_counter_w))
+	MCFG_ADDRESSABLE_LATCH_Q3_OUT_CB(WRITELINE(tsamurai_state, coin2_counter_w))
+	MCFG_ADDRESSABLE_LATCH_Q4_OUT_CB(WRITELINE(tsamurai_state, textbank1_w))
+
+>>>>>>> upstream/master
 	/* video hardware */
 	MCFG_SCREEN_ADD("screen", RASTER)
 	MCFG_SCREEN_REFRESH_RATE(60)
 	MCFG_SCREEN_VBLANK_TIME(ATTOSECONDS_IN_USEC(2500) /* not accurate */)
 	MCFG_SCREEN_SIZE(32*8, 32*8)
+<<<<<<< HEAD
 	MCFG_SCREEN_VISIBLE_AREA(0, 255, 8, 255-8)
+=======
+	MCFG_SCREEN_VISIBLE_AREA(0, 255, 16, 255-16)
+>>>>>>> upstream/master
 	MCFG_SCREEN_UPDATE_DRIVER(tsamurai_state, screen_update_vsgongf)
 	MCFG_SCREEN_PALETTE("palette")
 
 	MCFG_GFXDECODE_ADD("gfxdecode", "palette", tsamurai)
+<<<<<<< HEAD
 	MCFG_PALETTE_ADD_RRRRGGGGBBBB_PROMS("palette", 256)
 	MCFG_VIDEO_START_OVERRIDE(tsamurai_state,vsgongf)
 
@@ -782,6 +912,26 @@ MACHINE_CONFIG_END
 
 
 static MACHINE_CONFIG_START( m660, tsamurai_state )
+=======
+	MCFG_PALETTE_ADD_RRRRGGGGBBBB_PROMS("palette", "proms", 256)
+	MCFG_VIDEO_START_OVERRIDE(tsamurai_state,vsgongf)
+
+	/* sound hardware */
+	MCFG_SPEAKER_STANDARD_MONO("speaker")
+
+	MCFG_GENERIC_LATCH_8_ADD("soundlatch")
+
+	MCFG_SOUND_ADD("aysnd", AY8910, XTAL_24MHz/8)
+	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "speaker", 0.1)
+
+	MCFG_SOUND_ADD("dac", DAC_8BIT_R2R, 0) MCFG_SOUND_ROUTE(ALL_OUTPUTS, "speaker", 0.1) // unknown DAC
+	MCFG_DEVICE_ADD("vref", VOLTAGE_REGULATOR, 0) MCFG_VOLTAGE_REGULATOR_OUTPUT(5.0)
+	MCFG_SOUND_ROUTE_EX(0, "dac", 1.0, DAC_VREF_POS_INPUT) MCFG_SOUND_ROUTE_EX(0, "dac", -1.0, DAC_VREF_NEG_INPUT)
+MACHINE_CONFIG_END
+
+
+static MACHINE_CONFIG_START( m660 )
+>>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", Z80, XTAL_24MHz/8)
@@ -802,16 +952,32 @@ static MACHINE_CONFIG_START( m660, tsamurai_state )
 
 	MCFG_MACHINE_START_OVERRIDE(tsamurai_state,m660)
 
+<<<<<<< HEAD
+=======
+	MCFG_DEVICE_ADD("mainlatch", LS259, 0)
+	MCFG_ADDRESSABLE_LATCH_Q0_OUT_CB(WRITELINE(tsamurai_state, flip_screen_w))
+	MCFG_ADDRESSABLE_LATCH_Q1_OUT_CB(WRITELINE(tsamurai_state, nmi_enable_w))
+	MCFG_ADDRESSABLE_LATCH_Q2_OUT_CB(WRITELINE(tsamurai_state, textbank1_w))
+	MCFG_ADDRESSABLE_LATCH_Q3_OUT_CB(WRITELINE(tsamurai_state, coin1_counter_w))
+	MCFG_ADDRESSABLE_LATCH_Q4_OUT_CB(WRITELINE(tsamurai_state, coin2_counter_w))
+	MCFG_ADDRESSABLE_LATCH_Q7_OUT_CB(WRITELINE(tsamurai_state, textbank2_w))
+
+>>>>>>> upstream/master
 	/* video hardware */
 	MCFG_SCREEN_ADD("screen", RASTER)
 	MCFG_SCREEN_REFRESH_RATE(60)
 	MCFG_SCREEN_VBLANK_TIME(ATTOSECONDS_IN_USEC(2500) /* not accurate */)
 	MCFG_SCREEN_SIZE(32*8, 32*8)
+<<<<<<< HEAD
 	MCFG_SCREEN_VISIBLE_AREA(0, 255, 8, 255-8)
+=======
+	MCFG_SCREEN_VISIBLE_AREA(0, 255, 16, 255-16)
+>>>>>>> upstream/master
 	MCFG_SCREEN_UPDATE_DRIVER(tsamurai_state, screen_update)
 	MCFG_SCREEN_PALETTE("palette")
 
 	MCFG_GFXDECODE_ADD("gfxdecode", "palette", tsamurai)
+<<<<<<< HEAD
 	MCFG_PALETTE_ADD_RRRRGGGGBBBB_PROMS("palette", 256)
 	MCFG_VIDEO_START_OVERRIDE(tsamurai_state,m660)
 
@@ -826,6 +992,22 @@ static MACHINE_CONFIG_START( m660, tsamurai_state )
 
 	MCFG_DAC_ADD("dac2")
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 0.20)
+=======
+	MCFG_PALETTE_ADD_RRRRGGGGBBBB_PROMS("palette", "proms", 256)
+	MCFG_VIDEO_START_OVERRIDE(tsamurai_state,m660)
+
+	/* sound hardware */
+	MCFG_SPEAKER_STANDARD_MONO("speaker")
+
+	MCFG_SOUND_ADD("aysnd", AY8910, XTAL_24MHz/8)
+	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "speaker", 0.1)
+
+	MCFG_SOUND_ADD("dac1", DAC_8BIT_R2R, 0) MCFG_SOUND_ROUTE(ALL_OUTPUTS, "speaker", 0.1) // unknown DAC
+	MCFG_SOUND_ADD("dac2", DAC_8BIT_R2R, 0) MCFG_SOUND_ROUTE(ALL_OUTPUTS, "speaker", 0.1) // unknown DAC
+	MCFG_DEVICE_ADD("vref", VOLTAGE_REGULATOR, 0) MCFG_VOLTAGE_REGULATOR_OUTPUT(5.0)
+	MCFG_SOUND_ROUTE_EX(0, "dac1", 1.0, DAC_VREF_POS_INPUT) MCFG_SOUND_ROUTE_EX(0, "dac1", -1.0, DAC_VREF_NEG_INPUT)
+	MCFG_SOUND_ROUTE_EX(0, "dac2", 1.0, DAC_VREF_POS_INPUT) MCFG_SOUND_ROUTE_EX(0, "dac2", -1.0, DAC_VREF_NEG_INPUT)
+>>>>>>> upstream/master
 MACHINE_CONFIG_END
 
 /*******************************************************************************/
@@ -1264,6 +1446,7 @@ ROM_START( ringfgt2 )
 	ROM_LOAD( "clr.6p",  0x200, 0x0100, CRC(0e4fd17a) SHA1(d4e32bd9dd903177af61f77976a25c5db1467bba) )
 ROM_END
 
+<<<<<<< HEAD
 GAME( 1984, vsgongf,  0,        vsgongf,  vsgongf, driver_device,  0, ROT90, "Kaneko", "VS Gong Fight", MACHINE_IMPERFECT_COLORS | MACHINE_SUPPORTS_SAVE )
 GAME( 1984, ringfgt,  vsgongf,  vsgongf,  vsgongf, driver_device,  0, ROT90, "Kaneko (Taito license)", "Ring Fighter (set 1)", MACHINE_IMPERFECT_COLORS | MACHINE_SUPPORTS_SAVE )
 GAME( 1984, ringfgt2, vsgongf,  vsgongf,  vsgongf, driver_device,  0, ROT90, "Kaneko (Taito license)", "Ring Fighter (set 2)", MACHINE_IMPERFECT_COLORS | MACHINE_SUPPORTS_SAVE )
@@ -1281,3 +1464,22 @@ GAME( 1986, m660,     0,        m660,     m660, driver_device,     0, ROT90, "Wo
 GAME( 1986, m660j,    m660,     m660,     m660, driver_device,     0, ROT90, "Wood Place Inc. (Taito Corporation license)", "Mission 660 (Japan)", MACHINE_SUPPORTS_SAVE )
 GAME( 1986, m660b,    m660,     m660,     m660, driver_device,     0, ROT90, "bootleg", "Mission 660 (bootleg)", MACHINE_SUPPORTS_SAVE )
 GAME( 1986, alphaxz,  m660,     m660,     m660, driver_device,     0, ROT90, "Ed Co. Ltd. (Wood Place Inc. license)", "The Alphax Z (Japan)", MACHINE_SUPPORTS_SAVE )
+=======
+GAME( 1984, vsgongf,   0,        vsgongf,  vsgongf,  tsamurai_state, 0, ROT90, "Kaneko", "VS Gong Fight", MACHINE_IMPERFECT_COLORS | MACHINE_SUPPORTS_SAVE | MACHINE_UNEMULATED_PROTECTION )
+GAME( 1984, ringfgt,   vsgongf,  vsgongf,  vsgongf,  tsamurai_state, 0, ROT90, "Kaneko (Taito license)", "Ring Fighter (set 1)", MACHINE_IMPERFECT_COLORS | MACHINE_SUPPORTS_SAVE )
+GAME( 1984, ringfgt2,  vsgongf,  vsgongf,  vsgongf,  tsamurai_state, 0, ROT90, "Kaneko (Taito license)", "Ring Fighter (set 2)", MACHINE_IMPERFECT_COLORS | MACHINE_SUPPORTS_SAVE )
+
+GAME( 1985, tsamurai,  0,        tsamurai, tsamurai, tsamurai_state, 0, ROT90, "Kaneko / Taito", "Samurai Nihon-Ichi (set 1)", MACHINE_SUPPORTS_SAVE )
+GAME( 1985, tsamurai2, tsamurai, tsamurai, tsamurai, tsamurai_state, 0, ROT90, "Kaneko / Taito", "Samurai Nihon-Ichi (set 2)", MACHINE_SUPPORTS_SAVE )
+GAME( 1985, tsamuraih, tsamurai, tsamurai, tsamurai, tsamurai_state, 0, ROT90, "bootleg", "Samurai Nihon-Ichi (bootleg, harder)", MACHINE_SUPPORTS_SAVE )
+
+GAME( 1985, ladymstr,  0,        tsamurai, ladymstr, tsamurai_state, 0, ROT90, "Kaneko / Taito", "Lady Master of Kung Fu", MACHINE_SUPPORTS_SAVE )
+GAME( 1985, nunchaku,  ladymstr, tsamurai, nunchaku, tsamurai_state, 0, ROT90, "Kaneko / Taito", "Nunchackun", MACHINE_IMPERFECT_COLORS | MACHINE_SUPPORTS_SAVE )
+
+GAME( 1985, yamagchi,  0,        tsamurai, yamagchi, tsamurai_state, 0, ROT90, "Kaneko / Taito", "Go Go Mr. Yamaguchi / Yuke Yuke Yamaguchi-kun", MACHINE_IMPERFECT_COLORS | MACHINE_SUPPORTS_SAVE )
+
+GAME( 1986, m660,      0,        m660,     m660,     tsamurai_state, 0, ROT90, "Wood Place Inc. (Taito America Corporation license)", "Mission 660 (US)", MACHINE_SUPPORTS_SAVE )
+GAME( 1986, m660j,     m660,     m660,     m660,     tsamurai_state, 0, ROT90, "Wood Place Inc. (Taito Corporation license)", "Mission 660 (Japan)", MACHINE_SUPPORTS_SAVE )
+GAME( 1986, m660b,     m660,     m660,     m660,     tsamurai_state, 0, ROT90, "bootleg", "Mission 660 (bootleg)", MACHINE_SUPPORTS_SAVE )
+GAME( 1986, alphaxz,   m660,     m660,     m660,     tsamurai_state, 0, ROT90, "Ed Co. Ltd. (Wood Place Inc. license)", "The Alphax Z (Japan)", MACHINE_SUPPORTS_SAVE )
+>>>>>>> upstream/master

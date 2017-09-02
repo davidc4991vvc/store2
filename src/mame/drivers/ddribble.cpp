@@ -12,10 +12,21 @@
 ***************************************************************************/
 
 #include "emu.h"
+<<<<<<< HEAD
 #include "cpu/m6809/m6809.h"
 #include "sound/2203intf.h"
 #include "includes/konamipt.h"
 #include "includes/ddribble.h"
+=======
+#include "includes/ddribble.h"
+#include "includes/konamipt.h"
+
+#include "cpu/m6809/m6809.h"
+#include "machine/watchdog.h"
+#include "sound/2203intf.h"
+#include "screen.h"
+#include "speaker.h"
+>>>>>>> upstream/master
 
 
 INTERRUPT_GEN_MEMBER(ddribble_state::ddribble_interrupt_0)
@@ -63,8 +74,13 @@ WRITE8_MEMBER(ddribble_state::ddribble_coin_counter_w)
 	/* b2-b3: unknown */
 	/* b1: coin counter 2 */
 	/* b0: coin counter 1 */
+<<<<<<< HEAD
 	coin_counter_w(machine(), 0,(data) & 0x01);
 	coin_counter_w(machine(), 1,(data >> 1) & 0x01);
+=======
+	machine().bookkeeping().coin_counter_w(0,(data) & 0x01);
+	machine().bookkeeping().coin_counter_w(1,(data >> 1) & 0x01);
+>>>>>>> upstream/master
 }
 
 READ8_MEMBER(ddribble_state::ddribble_vlm5030_busy_r)
@@ -79,8 +95,11 @@ READ8_MEMBER(ddribble_state::ddribble_vlm5030_busy_r)
 
 WRITE8_MEMBER(ddribble_state::ddribble_vlm5030_ctrl_w)
 {
+<<<<<<< HEAD
 	UINT8 *SPEECH_ROM = memregion("vlm")->base();
 
+=======
+>>>>>>> upstream/master
 	/* b7 : vlm data bus OE   */
 
 	/* b6 : VLM5030-RST       */
@@ -93,6 +112,7 @@ WRITE8_MEMBER(ddribble_state::ddribble_vlm5030_ctrl_w)
 	m_vlm->vcu(data & 0x10 ? 1 : 0);
 
 	/* b3 : ROM bank select   */
+<<<<<<< HEAD
 	m_vlm->set_rom(&SPEECH_ROM[data & 0x08 ? 0x10000 : 0]);
 
 	/* b2 : SSG-C rc filter enable */
@@ -103,6 +123,18 @@ WRITE8_MEMBER(ddribble_state::ddribble_vlm5030_ctrl_w)
 
 	/* b0 : SSG-A rc filter enable */
 	m_filter1->filter_rc_set_RC(FLT_RC_LOWPASS, 1000, 2200, 1000, data & 0x01 ? CAP_N(150) : 0); /* YM2203-SSG-A */
+=======
+	membank("vlmbank")->set_entry(data & 0x08 ? 1 : 0);
+
+	/* b2 : SSG-C rc filter enable */
+	m_filter3->filter_rc_set_RC(filter_rc_device::LOWPASS, 1000, 2200, 1000, data & 0x04 ? CAP_N(150) : 0); /* YM2203-SSG-C */
+
+	/* b1 : SSG-B rc filter enable */
+	m_filter2->filter_rc_set_RC(filter_rc_device::LOWPASS, 1000, 2200, 1000, data & 0x02 ? CAP_N(150) : 0); /* YM2203-SSG-B */
+
+	/* b0 : SSG-A rc filter enable */
+	m_filter1->filter_rc_set_RC(filter_rc_device::LOWPASS, 1000, 2200, 1000, data & 0x01 ? CAP_N(150) : 0); /* YM2203-SSG-A */
+>>>>>>> upstream/master
 }
 
 
@@ -130,7 +162,11 @@ static ADDRESS_MAP_START( cpu1_map, AS_PROGRAM, 8, ddribble_state )
 	AM_RANGE(0x2c00, 0x2c00) AM_READ_PORT("DSW2")
 	AM_RANGE(0x3000, 0x3000) AM_READ_PORT("DSW3")
 	AM_RANGE(0x3400, 0x3400) AM_WRITE(ddribble_coin_counter_w)                              /* coin counters */
+<<<<<<< HEAD
 	AM_RANGE(0x3c00, 0x3c00) AM_WRITE(watchdog_reset_w)                                     /* watchdog reset */
+=======
+	AM_RANGE(0x3c00, 0x3c00) AM_DEVWRITE("watchdog", watchdog_timer_device, reset_w)        /* watchdog reset */
+>>>>>>> upstream/master
 	AM_RANGE(0x8000, 0xffff) AM_ROM                                                         /* ROM */
 ADDRESS_MAP_END
 
@@ -141,6 +177,13 @@ static ADDRESS_MAP_START( cpu2_map, AS_PROGRAM, 8, ddribble_state )
 	AM_RANGE(0x8000, 0xffff) AM_ROM                                     /* ROM */
 ADDRESS_MAP_END
 
+<<<<<<< HEAD
+=======
+static ADDRESS_MAP_START( vlm_map, 0, 8, ddribble_state )
+	AM_RANGE(0x0000, 0xffff) AM_ROMBANK("vlmbank")
+ADDRESS_MAP_END
+
+>>>>>>> upstream/master
 static INPUT_PORTS_START( ddribble )
 	PORT_START("P1")
 	KONAMI8_B132(1)
@@ -225,6 +268,10 @@ GFXDECODE_END
 void ddribble_state::machine_start()
 {
 	membank("bank1")->configure_entries(0, 8, memregion("maincpu")->base(), 0x2000);
+<<<<<<< HEAD
+=======
+	membank("vlmbank")->configure_entries(0, 2, memregion("vlm")->base(), 0x10000);
+>>>>>>> upstream/master
 
 	save_item(NAME(m_int_enable_0));
 	save_item(NAME(m_int_enable_1));
@@ -249,7 +296,11 @@ void ddribble_state::machine_reset()
 	m_charbank[1] = 0;
 }
 
+<<<<<<< HEAD
 static MACHINE_CONFIG_START( ddribble, ddribble_state )
+=======
+static MACHINE_CONFIG_START( ddribble )
+>>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", M6809,  XTAL_18_432MHz/12)  /* verified on pcb */
@@ -265,6 +316,10 @@ static MACHINE_CONFIG_START( ddribble, ddribble_state )
 
 	MCFG_QUANTUM_TIME(attotime::from_hz(6000))  /* we need heavy synch */
 
+<<<<<<< HEAD
+=======
+	MCFG_WATCHDOG_ADD("watchdog")
+>>>>>>> upstream/master
 
 	/* video hardware */
 	MCFG_SCREEN_ADD("screen", RASTER)
@@ -296,6 +351,10 @@ static MACHINE_CONFIG_START( ddribble, ddribble_state )
 
 	MCFG_SOUND_ADD("vlm", VLM5030, XTAL_3_579545MHz) /* verified on pcb */
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 1.0)
+<<<<<<< HEAD
+=======
+	MCFG_DEVICE_ADDRESS_MAP(0, vlm_map)
+>>>>>>> upstream/master
 
 	MCFG_FILTER_RC_ADD("filter1", 0)
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 1.0)
@@ -370,5 +429,10 @@ ROM_START( ddribblep )
 	ROM_LOAD( "voice_10.d7", 0x10000, 0x10000, CRC(b4c97494) SHA1(93f7c3c93f6f790c3f480e183da0105b5ac3593b) )
 ROM_END
 
+<<<<<<< HEAD
 GAME( 1986, ddribble,  0,        ddribble, ddribble, driver_device, 0, ROT0, "Konami", "Double Dribble", MACHINE_SUPPORTS_SAVE )
 GAME( 1986, ddribblep, ddribble, ddribble, ddribble, driver_device, 0, ROT0, "Konami", "Double Dribble (prototype?)", MACHINE_SUPPORTS_SAVE )
+=======
+GAME( 1986, ddribble,  0,        ddribble, ddribble, ddribble_state, 0, ROT0, "Konami", "Double Dribble", MACHINE_SUPPORTS_SAVE )
+GAME( 1986, ddribblep, ddribble, ddribble, ddribble, ddribble_state, 0, ROT0, "Konami", "Double Dribble (prototype?)", MACHINE_SUPPORTS_SAVE )
+>>>>>>> upstream/master

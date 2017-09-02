@@ -123,7 +123,11 @@ inline int rlecount_to_code(int rlecount)
 //  encode_one - encode data
 //-------------------------------------------------
 
+<<<<<<< HEAD
 inline void avhuff_encoder::deltarle_encoder::encode_one(bitstream_out &bitbuf, UINT16 *&rleptr)
+=======
+inline void avhuff_encoder::deltarle_encoder::encode_one(bitstream_out &bitbuf, uint16_t *&rleptr)
+>>>>>>> upstream/master
 {
 	// return RLE data if we still have some
 	if (m_rlecount != 0)
@@ -133,7 +137,11 @@ inline void avhuff_encoder::deltarle_encoder::encode_one(bitstream_out &bitbuf, 
 	}
 
 	// fetch the data and process
+<<<<<<< HEAD
 	UINT16 data = *rleptr++;
+=======
+	uint16_t data = *rleptr++;
+>>>>>>> upstream/master
 	m_encoder.encode_one(bitbuf, data);
 	if (data >= 0x100)
 		m_rlecount = code_to_rlecount(data) - 1;
@@ -143,7 +151,11 @@ inline void avhuff_encoder::deltarle_encoder::encode_one(bitstream_out &bitbuf, 
 //-------------------------------------------------
 //  decode_one - decode data
 //-------------------------------------------------
+<<<<<<< HEAD
 inline UINT32 avhuff_decoder::deltarle_decoder::decode_one(bitstream_in &bitbuf)
+=======
+inline uint32_t avhuff_decoder::deltarle_decoder::decode_one(bitstream_in &bitbuf)
+>>>>>>> upstream/master
 {
 	// return RLE data if we still have some
 	if (m_rlecount != 0)
@@ -156,7 +168,11 @@ inline UINT32 avhuff_decoder::deltarle_decoder::decode_one(bitstream_in &bitbuf)
 	int data = m_decoder.decode_one(bitbuf);
 	if (data < 0x100)
 	{
+<<<<<<< HEAD
 		m_prevdata += UINT8(data);
+=======
+		m_prevdata += uint8_t(data);
+>>>>>>> upstream/master
 		return m_prevdata;
 	}
 	else
@@ -173,9 +189,19 @@ inline UINT32 avhuff_decoder::deltarle_decoder::decode_one(bitstream_in &bitbuf)
 //  AVHUFF ENCODER
 //**************************************************************************
 
+<<<<<<< HEAD
 //-------------------------------------------------
 //  avhuff_encoder - constructor
 //-------------------------------------------------
+=======
+/**
+ * @fn  avhuff_encoder::avhuff_encoder()
+ *
+ * @brief   -------------------------------------------------
+ *            avhuff_encoder - constructor
+ *          -------------------------------------------------.
+ */
+>>>>>>> upstream/master
 
 avhuff_encoder::avhuff_encoder()
 {
@@ -184,6 +210,7 @@ m_flac_encoder.set_num_channels(1);
 m_flac_encoder.set_strip_metadata(true);
 }
 
+<<<<<<< HEAD
 
 //-------------------------------------------------
 //  encode_data - encode a block of data into a
@@ -191,17 +218,42 @@ m_flac_encoder.set_strip_metadata(true);
 //-------------------------------------------------
 
 avhuff_error avhuff_encoder::encode_data(const UINT8 *source, UINT8 *dest, UINT32 &complength)
+=======
+/**
+ * @fn  avhuff_error avhuff_encoder::encode_data(const uint8_t *source, uint8_t *dest, uint32_t &complength)
+ *
+ * @brief   -------------------------------------------------
+ *            encode_data - encode a block of data into a compressed data stream
+ *          -------------------------------------------------.
+ *
+ * @param   source              Source for the.
+ * @param [in,out]  dest        If non-null, destination for the.
+ * @param [in,out]  complength  The complength.
+ *
+ * @return  An avhuff_error.
+ */
+
+avhuff_error avhuff_encoder::encode_data(const uint8_t *source, uint8_t *dest, uint32_t &complength)
+>>>>>>> upstream/master
 {
 	// validate the header
 	if (source[0] != 'c' || source[1] != 'h' || source[2] != 'a' || source[3] != 'v')
 		return AVHERR_INVALID_DATA;
 
 	// extract info from the header
+<<<<<<< HEAD
 	UINT32 metasize = source[4];
 	UINT32 channels = source[5];
 	UINT32 samples = (source[6] << 8) + source[7];
 	UINT32 width = (source[8] << 8) + source[9];
 	UINT32 height = (source[10] << 8) + source[11];
+=======
+	uint32_t metasize = source[4];
+	uint32_t channels = source[5];
+	uint32_t samples = (source[6] << 8) + source[7];
+	uint32_t width = (source[8] << 8) + source[9];
+	uint32_t height = (source[10] << 8) + source[11];
+>>>>>>> upstream/master
 	source += 12;
 
 	// write the basics to the new header
@@ -215,7 +267,11 @@ avhuff_error avhuff_encoder::encode_data(const UINT8 *source, UINT8 *dest, UINT3
 	dest[7] = height;
 
 	// starting offsets
+<<<<<<< HEAD
 	UINT32 dstoffs = 10 + 2 * channels;
+=======
+	uint32_t dstoffs = 10 + 2 * channels;
+>>>>>>> upstream/master
 
 	// copy the metadata first
 	if (metasize > 0)
@@ -235,7 +291,11 @@ avhuff_error avhuff_encoder::encode_data(const UINT8 *source, UINT8 *dest, UINT3
 			return err;
 
 		// advance the pointers past the data
+<<<<<<< HEAD
 		UINT16 treesize = (dest[8] << 8) + dest[9];
+=======
+		uint16_t treesize = (dest[8] << 8) + dest[9];
+>>>>>>> upstream/master
 		if (treesize != 0xffff)
 			dstoffs += treesize;
 		for (int chnum = 0; chnum < channels; chnum++)
@@ -251,7 +311,11 @@ avhuff_error avhuff_encoder::encode_data(const UINT8 *source, UINT8 *dest, UINT3
 	if (width > 0 && height > 0)
 	{
 		// encode the video
+<<<<<<< HEAD
 		UINT32 vidlength = 0;
+=======
+		uint32_t vidlength = 0;
+>>>>>>> upstream/master
 		avhuff_error err = encode_video(source, width, height, dest + dstoffs, vidlength);
 		if (err != AVHERR_NONE)
 			return err;
@@ -265,6 +329,7 @@ avhuff_error avhuff_encoder::encode_data(const UINT8 *source, UINT8 *dest, UINT3
 	return AVHERR_NONE;
 }
 
+<<<<<<< HEAD
 
 //-------------------------------------------------
 //  raw_data_size - return the raw data size of
@@ -272,6 +337,21 @@ avhuff_error avhuff_encoder::encode_data(const UINT8 *source, UINT8 *dest, UINT3
 //-------------------------------------------------
 
 UINT32 avhuff_encoder::raw_data_size(const UINT8 *data)
+=======
+/**
+ * @fn  uint32_t avhuff_encoder::raw_data_size(const uint8_t *data)
+ *
+ * @brief   -------------------------------------------------
+ *            raw_data_size - return the raw data size of a raw stream based on the header
+ *          -------------------------------------------------.
+ *
+ * @param   data    The data.
+ *
+ * @return  An uint32_t.
+ */
+
+uint32_t avhuff_encoder::raw_data_size(const uint8_t *data)
+>>>>>>> upstream/master
 {
 	// make sure we have a correct header
 	int size = 0;
@@ -289,6 +369,7 @@ UINT32 avhuff_encoder::raw_data_size(const UINT8 *data)
 	return size;
 }
 
+<<<<<<< HEAD
 
 //-------------------------------------------------
 //  assemble_data - assemble a datastream from raw
@@ -296,6 +377,27 @@ UINT32 avhuff_encoder::raw_data_size(const UINT8 *data)
 //-------------------------------------------------
 
 avhuff_error avhuff_encoder::assemble_data(dynamic_buffer &buffer, bitmap_yuy16 &bitmap, UINT8 channels, UINT32 numsamples, INT16 **samples, UINT8 *metadata, UINT32 metadatasize)
+=======
+/**
+ * @fn  avhuff_error avhuff_encoder::assemble_data(std::vector<uint8_t> &buffer, bitmap_yuy16 &bitmap, uint8_t channels, uint32_t numsamples, int16_t **samples, uint8_t *metadata, uint32_t metadatasize)
+ *
+ * @brief   -------------------------------------------------
+ *            assemble_data - assemble a datastream from raw bits
+ *          -------------------------------------------------.
+ *
+ * @param [in,out]  buffer      The buffer.
+ * @param [in,out]  bitmap      The bitmap.
+ * @param   channels            The channels.
+ * @param   numsamples          The numsamples.
+ * @param [in,out]  samples     If non-null, the samples.
+ * @param [in,out]  metadata    If non-null, the metadata.
+ * @param   metadatasize        The metadatasize.
+ *
+ * @return  An avhuff_error.
+ */
+
+avhuff_error avhuff_encoder::assemble_data(std::vector<uint8_t> &buffer, bitmap_yuy16 &bitmap, uint8_t channels, uint32_t numsamples, int16_t **samples, uint8_t *metadata, uint32_t metadatasize)
+>>>>>>> upstream/master
 {
 	// sanity check the inputs
 	if (metadatasize > 255)
@@ -307,7 +409,11 @@ avhuff_error avhuff_encoder::assemble_data(dynamic_buffer &buffer, bitmap_yuy16 
 
 	// fill in the header
 	buffer.resize(12 + metadatasize + numsamples * channels * 2 + bitmap.width() * bitmap.height() * 2);
+<<<<<<< HEAD
 	UINT8 *dest = &buffer[0];
+=======
+	uint8_t *dest = &buffer[0];
+>>>>>>> upstream/master
 	*dest++ = 'c';
 	*dest++ = 'h';
 	*dest++ = 'a';
@@ -327,18 +433,30 @@ avhuff_error avhuff_encoder::assemble_data(dynamic_buffer &buffer, bitmap_yuy16 
 	dest += metadatasize;
 
 	// copy the audio streams
+<<<<<<< HEAD
 	for (UINT8 curchan = 0; curchan < channels; curchan++)
 		for (UINT32 cursamp = 0; cursamp < numsamples; cursamp++)
+=======
+	for (uint8_t curchan = 0; curchan < channels; curchan++)
+		for (uint32_t cursamp = 0; cursamp < numsamples; cursamp++)
+>>>>>>> upstream/master
 		{
 			*dest++ = samples[curchan][cursamp] >> 8;
 			*dest++ = samples[curchan][cursamp] & 0xff;
 		}
 
 	// copy the video data
+<<<<<<< HEAD
 	for (INT32 y = 0; y < bitmap.height(); y++)
 	{
 		UINT16 *src = &bitmap.pix(y);
 		for (INT32 x = 0; x < bitmap.width(); x++)
+=======
+	for (int32_t y = 0; y < bitmap.height(); y++)
+	{
+		uint16_t *src = &bitmap.pix(y);
+		for (int32_t x = 0; x < bitmap.width(); x++)
+>>>>>>> upstream/master
 		{
 			*dest++ = src[x] >> 8;
 			*dest++ = src[x] & 0xff;
@@ -347,6 +465,7 @@ avhuff_error avhuff_encoder::assemble_data(dynamic_buffer &buffer, bitmap_yuy16 
 	return AVHERR_NONE;
 }
 
+<<<<<<< HEAD
 
 //-------------------------------------------------
 //  encode_audio - encode raw audio data to the
@@ -354,12 +473,36 @@ avhuff_error avhuff_encoder::assemble_data(dynamic_buffer &buffer, bitmap_yuy16 
 //-------------------------------------------------
 
 avhuff_error avhuff_encoder::encode_audio(const UINT8 *source, int channels, int samples, UINT8 *dest, UINT8 *sizes)
+=======
+/**
+ * @fn  avhuff_error avhuff_encoder::encode_audio(const uint8_t *source, int channels, int samples, uint8_t *dest, uint8_t *sizes)
+ *
+ * @brief   -------------------------------------------------
+ *            encode_audio - encode raw audio data to the destination
+ *          -------------------------------------------------.
+ *
+ * @param   source          Source for the.
+ * @param   channels        The channels.
+ * @param   samples         The samples.
+ * @param [in,out]  dest    If non-null, destination for the.
+ * @param [in,out]  sizes   If non-null, the sizes.
+ *
+ * @return  An avhuff_error.
+ */
+
+avhuff_error avhuff_encoder::encode_audio(const uint8_t *source, int channels, int samples, uint8_t *dest, uint8_t *sizes)
+>>>>>>> upstream/master
 {
 #if AVHUFF_USE_FLAC
 
 	// input data is big-endian; determine our platform endianness
+<<<<<<< HEAD
 	UINT16 be_test = 0;
 	*(UINT8 *)&be_test = 1;
+=======
+	uint16_t be_test = 0;
+	*(uint8_t *)&be_test = 1;
+>>>>>>> upstream/master
 	bool swap_endian = (be_test == 1);
 
 	// set huffman tree size to 0xffff to indicate FLAC
@@ -372,11 +515,19 @@ avhuff_error avhuff_encoder::encode_audio(const UINT8 *source, int channels, int
 	{
 		// encode the data
 		m_flac_encoder.reset(dest, samples * 2);
+<<<<<<< HEAD
 		if (!m_flac_encoder.encode_interleaved(reinterpret_cast<const INT16 *>(source) + chnum * samples, samples, swap_endian))
 			return AVHERR_COMPRESSION_ERROR;
 
 		// set the size for this channel
 		UINT32 cursize = m_flac_encoder.finish();
+=======
+		if (!m_flac_encoder.encode_interleaved(reinterpret_cast<const int16_t *>(source) + chnum * samples, samples, swap_endian))
+			return AVHERR_COMPRESSION_ERROR;
+
+		// set the size for this channel
+		uint32_t cursize = m_flac_encoder.finish();
+>>>>>>> upstream/master
 		sizes[chnum * 2 + 2] = cursize >> 8;
 		sizes[chnum * 2 + 3] = cursize;
 		dest += cursize;
@@ -386,7 +537,11 @@ avhuff_error avhuff_encoder::encode_audio(const UINT8 *source, int channels, int
 
 	// expand the delta buffer if needed
 	m_audiobuffer.resize(channels * samples * 2);
+<<<<<<< HEAD
 	UINT8 *deltabuf = m_audiobuffer;
+=======
+	uint8_t *deltabuf = m_audiobuffer;
+>>>>>>> upstream/master
 
 	// iterate over channels to compute deltas
 	m_audiohi_encoder.histo_reset();
@@ -394,6 +549,7 @@ avhuff_error avhuff_encoder::encode_audio(const UINT8 *source, int channels, int
 	for (int chnum = 0; chnum < channels; chnum++)
 	{
 		// extract audio data into hi and lo deltas stored in big-endian order
+<<<<<<< HEAD
 		INT16 prevsample = 0;
 		for (int sampnum = 0; sampnum < samples; sampnum++)
 		{
@@ -401,6 +557,15 @@ avhuff_error avhuff_encoder::encode_audio(const UINT8 *source, int channels, int
 			source += 2;
 
 			INT16 delta = newsample - prevsample;
+=======
+		int16_t prevsample = 0;
+		for (int sampnum = 0; sampnum < samples; sampnum++)
+		{
+			int16_t newsample = (source[0] << 8) | source[1];
+			source += 2;
+
+			int16_t delta = newsample - prevsample;
+>>>>>>> upstream/master
 			prevsample = newsample;
 			m_audiohi_encoder.histo_one(*deltabuf++ = delta >> 8);
 			m_audiolo_encoder.histo_one(*deltabuf++ = delta);
@@ -426,17 +591,29 @@ avhuff_error avhuff_encoder::encode_audio(const UINT8 *source, int channels, int
 		return AVHERR_COMPRESSION_ERROR;
 
 	// note the size of the two trees
+<<<<<<< HEAD
 	UINT32 huffsize = bitbuf.flush();
+=======
+	uint32_t huffsize = bitbuf.flush();
+>>>>>>> upstream/master
 	sizes[0] = huffsize >> 8;
 	sizes[1] = huffsize;
 
 	// iterate over channels
+<<<<<<< HEAD
 	UINT32 totalsize = huffsize;
+=======
+	uint32_t totalsize = huffsize;
+>>>>>>> upstream/master
 	int chnum;
 	for (chnum = 0; chnum < channels; chnum++)
 	{
 		// encode the data
+<<<<<<< HEAD
 		const UINT8 *input = m_audiobuffer + chnum * samples * 2;
+=======
+		const uint8_t *input = m_audiobuffer + chnum * samples * 2;
+>>>>>>> upstream/master
 		for (int sampnum = 0; sampnum < samples; sampnum++)
 		{
 			m_audiohi_encoder.encode_one(bitbuf, *input++);
@@ -444,7 +621,11 @@ avhuff_error avhuff_encoder::encode_audio(const UINT8 *source, int channels, int
 		}
 
 		// store the size of this stream
+<<<<<<< HEAD
 		UINT32 cursize = bitbuf.flush() - totalsize;
+=======
+		uint32_t cursize = bitbuf.flush() - totalsize;
+>>>>>>> upstream/master
 		totalsize += cursize;
 		if (totalsize >= channels * samples * 2)
 			break;
@@ -456,7 +637,11 @@ avhuff_error avhuff_encoder::encode_audio(const UINT8 *source, int channels, int
 	if (chnum < channels)
 	{
 		memcpy(dest, m_audiobuffer, channels * samples * 2);
+<<<<<<< HEAD
 		UINT32 size = samples * 2;
+=======
+		uint32_t size = samples * 2;
+>>>>>>> upstream/master
 		sizes[0] = sizes[1] = 0;
 		for (chnum = 0; chnum < channels; chnum++)
 		{
@@ -470,6 +655,7 @@ avhuff_error avhuff_encoder::encode_audio(const UINT8 *source, int channels, int
 	return AVHERR_NONE;
 }
 
+<<<<<<< HEAD
 
 //-------------------------------------------------
 //  encode_video - encode raw video data to the
@@ -477,11 +663,31 @@ avhuff_error avhuff_encoder::encode_audio(const UINT8 *source, int channels, int
 //-------------------------------------------------
 
 avhuff_error avhuff_encoder::encode_video(const UINT8 *source, int width, int height, UINT8 *dest, UINT32 &complength)
+=======
+/**
+ * @fn  avhuff_error avhuff_encoder::encode_video(const uint8_t *source, int width, int height, uint8_t *dest, uint32_t &complength)
+ *
+ * @brief   -------------------------------------------------
+ *            encode_video - encode raw video data to the destination
+ *          -------------------------------------------------.
+ *
+ * @param   source              Source for the.
+ * @param   width               The width.
+ * @param   height              The height.
+ * @param [in,out]  dest        If non-null, destination for the.
+ * @param [in,out]  complength  The complength.
+ *
+ * @return  An avhuff_error.
+ */
+
+avhuff_error avhuff_encoder::encode_video(const uint8_t *source, int width, int height, uint8_t *dest, uint32_t &complength)
+>>>>>>> upstream/master
 {
 	// only lossless supported at this time
 	return encode_video_lossless(source, width, height, dest, complength);
 }
 
+<<<<<<< HEAD
 
 //-------------------------------------------------
 //  encode_video_lossless - do a lossless video
@@ -489,15 +695,41 @@ avhuff_error avhuff_encoder::encode_video(const UINT8 *source, int width, int he
 //-------------------------------------------------
 
 avhuff_error avhuff_encoder::encode_video_lossless(const UINT8 *source, int width, int height, UINT8 *dest, UINT32 &complength)
+=======
+/**
+ * @fn  avhuff_error avhuff_encoder::encode_video_lossless(const uint8_t *source, int width, int height, uint8_t *dest, uint32_t &complength)
+ *
+ * @brief   -------------------------------------------------
+ *            encode_video_lossless - do a lossless video encoding using deltas and huffman
+ *            encoding
+ *          -------------------------------------------------.
+ *
+ * @param   source              Source for the.
+ * @param   width               The width.
+ * @param   height              The height.
+ * @param [in,out]  dest        If non-null, destination for the.
+ * @param [in,out]  complength  The complength.
+ *
+ * @return  An avhuff_error.
+ */
+
+avhuff_error avhuff_encoder::encode_video_lossless(const uint8_t *source, int width, int height, uint8_t *dest, uint32_t &complength)
+>>>>>>> upstream/master
 {
 	// set up the output; first byte is 0x80 to indicate lossless encoding
 	bitstream_out bitbuf(dest, width * height * 2);
 	bitbuf.write(0x80, 8);
 
 	// compute the histograms for the data
+<<<<<<< HEAD
 	UINT16 *yrle = m_ycontext.rle_and_histo_bitmap(source + 0, width, 2, height);
 	UINT16 *cbrle = m_cbcontext.rle_and_histo_bitmap(source + 1, width / 2, 4, height);
 	UINT16 *crrle = m_crcontext.rle_and_histo_bitmap(source + 3, width / 2, 4, height);
+=======
+	uint16_t *yrle = m_ycontext.rle_and_histo_bitmap(source + 0, width, 2, height);
+	uint16_t *cbrle = m_cbcontext.rle_and_histo_bitmap(source + 1, width / 2, 4, height);
+	uint16_t *crrle = m_crcontext.rle_and_histo_bitmap(source + 3, width / 2, 4, height);
+>>>>>>> upstream/master
 
 	// export the trees to the data stream
 	huffman_error hufferr = m_ycontext.export_tree_rle(bitbuf);
@@ -514,12 +746,20 @@ avhuff_error avhuff_encoder::encode_video_lossless(const UINT8 *source, int widt
 	bitbuf.flush();
 
 	// encode the data using the trees
+<<<<<<< HEAD
 	for (UINT32 sy = 0; sy < height; sy++)
+=======
+	for (uint32_t sy = 0; sy < height; sy++)
+>>>>>>> upstream/master
 	{
 		m_ycontext.flush_rle();
 		m_cbcontext.flush_rle();
 		m_crcontext.flush_rle();
+<<<<<<< HEAD
 		for (UINT32 sx = 0; sx < width / 2; sx++)
+=======
+		for (uint32_t sx = 0; sx < width / 2; sx++)
+>>>>>>> upstream/master
 		{
 			m_ycontext.encode_one(bitbuf, yrle);
 			m_cbcontext.encode_one(bitbuf, cbrle);
@@ -539,6 +779,7 @@ avhuff_error avhuff_encoder::encode_video_lossless(const UINT8 *source, int widt
 //  DELTA-RLE ENCODER
 //**************************************************************************
 
+<<<<<<< HEAD
 //-------------------------------------------------
 //  rle_and_histo_bitmap - RLE compress and
 //  histogram a bitmap's worth of data
@@ -560,6 +801,39 @@ UINT16 *avhuff_encoder::deltarle_encoder::rle_and_histo_bitmap(const UINT8 *sour
 		{
 			// fetch current data
 			UINT8 curdelta = *source - prevdata;
+=======
+/**
+ * @fn  uint16_t *avhuff_encoder::deltarle_encoder::rle_and_histo_bitmap(const uint8_t *source, uint32_t items_per_row, uint32_t item_advance, uint32_t row_count)
+ *
+ * @brief   -------------------------------------------------
+ *            rle_and_histo_bitmap - RLE compress and histogram a bitmap's worth of data
+ *          -------------------------------------------------.
+ *
+ * @param   source          Source for the.
+ * @param   items_per_row   The items per row.
+ * @param   item_advance    The item advance.
+ * @param   row_count       Number of rows.
+ *
+ * @return  null if it fails, else an uint16_t*.
+ */
+
+uint16_t *avhuff_encoder::deltarle_encoder::rle_and_histo_bitmap(const uint8_t *source, uint32_t items_per_row, uint32_t item_advance, uint32_t row_count)
+{
+	// resize our RLE buffer
+	m_rlebuffer.resize(items_per_row * row_count);
+	uint16_t *dest = &m_rlebuffer[0];
+
+	// iterate over rows
+	m_encoder.histo_reset();
+	uint8_t prevdata = 0;
+	for (uint32_t row = 0; row < row_count; row++)
+	{
+		const uint8_t *end = source + items_per_row * item_advance;
+		for ( ; source < end; source += item_advance)
+		{
+			// fetch current data
+			uint8_t curdelta = *source - prevdata;
+>>>>>>> upstream/master
 			prevdata = *source;
 
 			// 0 deltas scan forward for a count
@@ -568,7 +842,11 @@ UINT16 *avhuff_encoder::deltarle_encoder::rle_and_histo_bitmap(const UINT8 *sour
 				int zerocount = 1;
 
 				// count the number of consecutive values
+<<<<<<< HEAD
 				const UINT8 *scandata;
+=======
+				const uint8_t *scandata;
+>>>>>>> upstream/master
 				for (scandata = source + item_advance; scandata < end; scandata += item_advance)
 					if (*scandata == prevdata)
 						zerocount++;
@@ -607,18 +885,40 @@ UINT16 *avhuff_encoder::deltarle_encoder::rle_and_histo_bitmap(const UINT8 *sour
 //  AVHUFF DECODER
 //**************************************************************************
 
+<<<<<<< HEAD
 //-------------------------------------------------
 //  avhuff_decoder - constructor
 //-------------------------------------------------
+=======
+/**
+ * @fn  avhuff_decoder::avhuff_decoder()
+ *
+ * @brief   -------------------------------------------------
+ *            avhuff_decoder - constructor
+ *          -------------------------------------------------.
+ */
+>>>>>>> upstream/master
 
 avhuff_decoder::avhuff_decoder()
 {
 }
 
+<<<<<<< HEAD
 
 //-------------------------------------------------
 //  configure - configure decompression parameters
 //-------------------------------------------------
+=======
+/**
+ * @fn  void avhuff_decoder::configure(const avhuff_decompress_config &config)
+ *
+ * @brief   -------------------------------------------------
+ *            configure - configure decompression parameters
+ *          -------------------------------------------------.
+ *
+ * @param   config  The configuration.
+ */
+>>>>>>> upstream/master
 
 void avhuff_decoder::configure(const avhuff_decompress_config &config)
 {
@@ -631,6 +931,7 @@ void avhuff_decoder::configure(const avhuff_decompress_config &config)
 	m_config.metadata = config.metadata;
 }
 
+<<<<<<< HEAD
 
 //-------------------------------------------------
 //  decode_data - decode both audio and video from
@@ -638,21 +939,51 @@ void avhuff_decoder::configure(const avhuff_decompress_config &config)
 //-------------------------------------------------
 
 avhuff_error avhuff_decoder::decode_data(const UINT8 *source, UINT32 complength, UINT8 *dest)
+=======
+/**
+ * @fn  avhuff_error avhuff_decoder::decode_data(const uint8_t *source, uint32_t complength, uint8_t *dest)
+ *
+ * @brief   -------------------------------------------------
+ *            decode_data - decode both audio and video from a raw data stream
+ *          -------------------------------------------------.
+ *
+ * @param   source          Source for the.
+ * @param   complength      The complength.
+ * @param [in,out]  dest    If non-null, destination for the.
+ *
+ * @return  An avhuff_error.
+ */
+
+avhuff_error avhuff_decoder::decode_data(const uint8_t *source, uint32_t complength, uint8_t *dest)
+>>>>>>> upstream/master
 {
 	// extract info from the header
 	if (complength < 8)
 		return AVHERR_INVALID_DATA;
+<<<<<<< HEAD
 	UINT32 metasize = source[0];
 	UINT32 channels = source[1];
 	UINT32 samples = (source[2] << 8) + source[3];
 	UINT32 width = (source[4] << 8) + source[5];
 	UINT32 height = (source[6] << 8) + source[7];
+=======
+	uint32_t metasize = source[0];
+	uint32_t channels = source[1];
+	uint32_t samples = (source[2] << 8) + source[3];
+	uint32_t width = (source[4] << 8) + source[5];
+	uint32_t height = (source[6] << 8) + source[7];
+>>>>>>> upstream/master
 
 	// validate that the sizes make sense
 	if (complength < 10 + 2 * channels)
 		return AVHERR_INVALID_DATA;
+<<<<<<< HEAD
 	UINT32 totalsize = 10 + 2 * channels;
 	UINT32 treesize = (source[8] << 8) | source[9];
+=======
+	uint32_t totalsize = 10 + 2 * channels;
+	uint32_t treesize = (source[8] << 8) | source[9];
+>>>>>>> upstream/master
 	if (treesize != 0xffff)
 		totalsize += treesize;
 	for (int chnum = 0; chnum < channels; chnum++)
@@ -661,12 +992,21 @@ avhuff_error avhuff_decoder::decode_data(const UINT8 *source, UINT32 complength,
 		return AVHERR_INVALID_DATA;
 
 	// starting offsets
+<<<<<<< HEAD
 	UINT32 srcoffs = 10 + 2 * channels;
 
 	// if we are decoding raw, set up the output parameters
 	UINT8 *metastart, *videostart, *audiostart[16];
 	UINT32 audioxor, videoxor, videostride;
 	if (dest != NULL)
+=======
+	uint32_t srcoffs = 10 + 2 * channels;
+
+	// if we are decoding raw, set up the output parameters
+	uint8_t *metastart, *videostart, *audiostart[16];
+	uint32_t audioxor, videoxor, videostride;
+	if (dest != nullptr)
+>>>>>>> upstream/master
 	{
 		// create a header
 		dest[0] = 'c';
@@ -704,6 +1044,7 @@ avhuff_error avhuff_decoder::decode_data(const UINT8 *source, UINT32 complength,
 		// determine the start of each piece of data
 		metastart = m_config.metadata;
 		for (int chnum = 0; chnum < channels; chnum++)
+<<<<<<< HEAD
 			audiostart[chnum] = (UINT8 *)m_config.audio[chnum];
 		videostart = (m_config.video.valid()) ? reinterpret_cast<UINT8 *>(&m_config.video.pix(0)) : NULL;
 		videostride = (m_config.video.valid()) ? m_config.video.rowpixels() * 2 : 0;
@@ -711,12 +1052,22 @@ avhuff_error avhuff_decoder::decode_data(const UINT8 *source, UINT32 complength,
 		// data is assumed to be native-endian
 		UINT16 betest = 0;
 		*(UINT8 *)&betest = 1;
+=======
+			audiostart[chnum] = (uint8_t *)m_config.audio[chnum];
+		videostart = (m_config.video.valid()) ? reinterpret_cast<uint8_t *>(&m_config.video.pix(0)) : nullptr;
+		videostride = (m_config.video.valid()) ? m_config.video.rowpixels() * 2 : 0;
+
+		// data is assumed to be native-endian
+		uint16_t betest = 0;
+		*(uint8_t *)&betest = 1;
+>>>>>>> upstream/master
 		audioxor = videoxor = (betest == 1) ? 1 : 0;
 
 		// verify against sizes
 		if (m_config.video.valid() && (m_config.video.width() < width || m_config.video.height() < height))
 			return AVHERR_VIDEO_TOO_LARGE;
 		for (int chnum = 0; chnum < channels; chnum++)
+<<<<<<< HEAD
 			if (m_config.audio[chnum] != NULL && m_config.maxsamples < samples)
 				return AVHERR_AUDIO_TOO_LARGE;
 		if (m_config.metadata != NULL && m_config.maxmetalength < metasize)
@@ -726,13 +1077,28 @@ avhuff_error avhuff_decoder::decode_data(const UINT8 *source, UINT32 complength,
 		if (m_config.actsamples != NULL)
 			*m_config.actsamples = samples;
 		if (m_config.actmetalength != NULL)
+=======
+			if (m_config.audio[chnum] != nullptr && m_config.maxsamples < samples)
+				return AVHERR_AUDIO_TOO_LARGE;
+		if (m_config.metadata != nullptr && m_config.maxmetalength < metasize)
+			return AVHERR_METADATA_TOO_LARGE;
+
+		// set the output values
+		if (m_config.actsamples != nullptr)
+			*m_config.actsamples = samples;
+		if (m_config.actmetalength != nullptr)
+>>>>>>> upstream/master
 			*m_config.actmetalength = metasize;
 	}
 
 	// copy the metadata first
 	if (metasize > 0)
 	{
+<<<<<<< HEAD
 		if (metastart != NULL)
+=======
+		if (metastart != nullptr)
+>>>>>>> upstream/master
 			memcpy(metastart, source + srcoffs, metasize);
 		srcoffs += metasize;
 	}
@@ -754,7 +1120,11 @@ avhuff_error avhuff_decoder::decode_data(const UINT8 *source, UINT32 complength,
 	}
 
 	// decode the video data
+<<<<<<< HEAD
 	if (width > 0 && height > 0 && videostart != NULL)
+=======
+	if (width > 0 && height > 0 && videostart != nullptr)
+>>>>>>> upstream/master
 	{
 		// decode the video
 		avhuff_error err = decode_video(width, height, source + srcoffs, complength - srcoffs, videostart, videostride, videoxor);
@@ -764,6 +1134,7 @@ avhuff_error avhuff_decoder::decode_data(const UINT8 *source, UINT32 complength,
 	return AVHERR_NONE;
 }
 
+<<<<<<< HEAD
 
 //-------------------------------------------------
 //  decode_audio - decode audio from a compressed
@@ -774,6 +1145,32 @@ avhuff_error avhuff_decoder::decode_audio(int channels, int samples, const UINT8
 {
 	// extract the huffman trees
 	UINT16 treesize = (sizes[0] << 8) | sizes[1];
+=======
+/**
+ * @fn  avhuff_error avhuff_decoder::decode_audio(int channels, int samples, const uint8_t *source, uint8_t **dest, uint32_t dxor, const uint8_t *sizes)
+ *
+ * @brief   -------------------------------------------------
+ *            decode_audio - decode audio from a compressed data stream
+ *          -------------------------------------------------.
+ *
+ * @exception   CHDERR_DECOMPRESSION_ERROR  Thrown when a chderr decompression error error
+ *                                          condition occurs.
+ *
+ * @param   channels        The channels.
+ * @param   samples         The samples.
+ * @param   source          Source for the.
+ * @param [in,out]  dest    If non-null, destination for the.
+ * @param   dxor            The dxor.
+ * @param   sizes           The sizes.
+ *
+ * @return  An avhuff_error.
+ */
+
+avhuff_error avhuff_decoder::decode_audio(int channels, int samples, const uint8_t *source, uint8_t **dest, uint32_t dxor, const uint8_t *sizes)
+{
+	// extract the huffman trees
+	uint16_t treesize = (sizes[0] << 8) | sizes[1];
+>>>>>>> upstream/master
 
 #if AVHUFF_USE_FLAC
 
@@ -781,8 +1178,13 @@ avhuff_error avhuff_decoder::decode_audio(int channels, int samples, const UINT8
 	if (treesize == 0xffff)
 	{
 		// output data is big-endian; determine our platform endianness
+<<<<<<< HEAD
 		UINT16 be_test = 0;
 		*(UINT8 *)&be_test = 1;
+=======
+		uint16_t be_test = 0;
+		*(uint8_t *)&be_test = 1;
+>>>>>>> upstream/master
 		bool swap_endian = (be_test == 1);
 		if (dxor != 0)
 			swap_endian = !swap_endian;
@@ -791,16 +1193,28 @@ avhuff_error avhuff_decoder::decode_audio(int channels, int samples, const UINT8
 		for (int chnum = 0; chnum < channels; chnum++)
 		{
 			// extract the size of this channel
+<<<<<<< HEAD
 			UINT16 size = (sizes[chnum * 2 + 2] << 8) | sizes[chnum * 2 + 3];
 
 			// only process if the data is requested
 			UINT8 *curdest = dest[chnum];
 			if (curdest != NULL)
+=======
+			uint16_t size = (sizes[chnum * 2 + 2] << 8) | sizes[chnum * 2 + 3];
+
+			// only process if the data is requested
+			uint8_t *curdest = dest[chnum];
+			if (curdest != nullptr)
+>>>>>>> upstream/master
 			{
 				// reset and decode
 				if (!m_flac_decoder.reset(48000, 1, samples, source, size))
 					throw CHDERR_DECOMPRESSION_ERROR;
+<<<<<<< HEAD
 				if (!m_flac_decoder.decode_interleaved(reinterpret_cast<INT16 *>(curdest), samples, swap_endian))
+=======
+				if (!m_flac_decoder.decode_interleaved(reinterpret_cast<int16_t *>(curdest), samples, swap_endian))
+>>>>>>> upstream/master
 					throw CHDERR_DECOMPRESSION_ERROR;
 
 				// finish up
@@ -835,6 +1249,7 @@ avhuff_error avhuff_decoder::decode_audio(int channels, int samples, const UINT8
 	for (int chnum = 0; chnum < channels; chnum++)
 	{
 		// extract the size of this channel
+<<<<<<< HEAD
 		UINT16 size = (sizes[chnum * 2 + 2] << 8) | sizes[chnum * 2 + 3];
 
 		// only process if the data is requested
@@ -842,10 +1257,20 @@ avhuff_error avhuff_decoder::decode_audio(int channels, int samples, const UINT8
 		if (curdest != NULL)
 		{
 			INT16 prevsample = 0;
+=======
+		uint16_t size = (sizes[chnum * 2 + 2] << 8) | sizes[chnum * 2 + 3];
+
+		// only process if the data is requested
+		uint8_t *curdest = dest[chnum];
+		if (curdest != nullptr)
+		{
+			int16_t prevsample = 0;
+>>>>>>> upstream/master
 
 			// if no huffman length, just copy the data
 			if (treesize == 0)
 			{
+<<<<<<< HEAD
 				const UINT8 *cursource = source;
 				for (int sampnum = 0; sampnum < samples; sampnum++)
 				{
@@ -853,6 +1278,15 @@ avhuff_error avhuff_decoder::decode_audio(int channels, int samples, const UINT8
 					cursource += 2;
 
 					INT16 newsample = prevsample + delta;
+=======
+				const uint8_t *cursource = source;
+				for (int sampnum = 0; sampnum < samples; sampnum++)
+				{
+					int16_t delta = (cursource[0] << 8) | cursource[1];
+					cursource += 2;
+
+					int16_t newsample = prevsample + delta;
+>>>>>>> upstream/master
 					prevsample = newsample;
 
 					curdest[0 ^ dxor] = newsample >> 8;
@@ -867,10 +1301,17 @@ avhuff_error avhuff_decoder::decode_audio(int channels, int samples, const UINT8
 				bitstream_in bitbuf(source, size);
 				for (int sampnum = 0; sampnum < samples; sampnum++)
 				{
+<<<<<<< HEAD
 					INT16 delta = m_audiohi_decoder.decode_one(bitbuf) << 8;
 					delta |= m_audiolo_decoder.decode_one(bitbuf);
 
 					INT16 newsample = prevsample + delta;
+=======
+					int16_t delta = m_audiohi_decoder.decode_one(bitbuf) << 8;
+					delta |= m_audiolo_decoder.decode_one(bitbuf);
+
+					int16_t newsample = prevsample + delta;
+>>>>>>> upstream/master
 					prevsample = newsample;
 
 					curdest[0 ^ dxor] = newsample >> 8;
@@ -888,6 +1329,7 @@ avhuff_error avhuff_decoder::decode_audio(int channels, int samples, const UINT8
 	return AVHERR_NONE;
 }
 
+<<<<<<< HEAD
 
 //-------------------------------------------------
 //  decode_video - decode video from a compressed
@@ -895,6 +1337,27 @@ avhuff_error avhuff_decoder::decode_audio(int channels, int samples, const UINT8
 //-------------------------------------------------
 
 avhuff_error avhuff_decoder::decode_video(int width, int height, const UINT8 *source, UINT32 complength, UINT8 *dest, UINT32 dstride, UINT32 dxor)
+=======
+/**
+ * @fn  avhuff_error avhuff_decoder::decode_video(int width, int height, const uint8_t *source, uint32_t complength, uint8_t *dest, uint32_t dstride, uint32_t dxor)
+ *
+ * @brief   -------------------------------------------------
+ *            decode_video - decode video from a compressed data stream
+ *          -------------------------------------------------.
+ *
+ * @param   width           The width.
+ * @param   height          The height.
+ * @param   source          Source for the.
+ * @param   complength      The complength.
+ * @param [in,out]  dest    If non-null, destination for the.
+ * @param   dstride         The dstride.
+ * @param   dxor            The dxor.
+ *
+ * @return  An avhuff_error.
+ */
+
+avhuff_error avhuff_decoder::decode_video(int width, int height, const uint8_t *source, uint32_t complength, uint8_t *dest, uint32_t dstride, uint32_t dxor)
+>>>>>>> upstream/master
 {
 	// if the high bit of the first byte is set, we decode losslessly
 	if (source[0] & 0x80)
@@ -903,6 +1366,7 @@ avhuff_error avhuff_decoder::decode_video(int width, int height, const UINT8 *so
 		return AVHERR_INVALID_DATA;
 }
 
+<<<<<<< HEAD
 
 //-------------------------------------------------
 //  decode_video_lossless - do a lossless video
@@ -910,6 +1374,28 @@ avhuff_error avhuff_decoder::decode_video(int width, int height, const UINT8 *so
 //-------------------------------------------------
 
 avhuff_error avhuff_decoder::decode_video_lossless(int width, int height, const UINT8 *source, UINT32 complength, UINT8 *dest, UINT32 dstride, UINT32 dxor)
+=======
+/**
+ * @fn  avhuff_error avhuff_decoder::decode_video_lossless(int width, int height, const uint8_t *source, uint32_t complength, uint8_t *dest, uint32_t dstride, uint32_t dxor)
+ *
+ * @brief   -------------------------------------------------
+ *            decode_video_lossless - do a lossless video decoding using deltas and huffman
+ *            encoding
+ *          -------------------------------------------------.
+ *
+ * @param   width           The width.
+ * @param   height          The height.
+ * @param   source          Source for the.
+ * @param   complength      The complength.
+ * @param [in,out]  dest    If non-null, destination for the.
+ * @param   dstride         The dstride.
+ * @param   dxor            The dxor.
+ *
+ * @return  An avhuff_error.
+ */
+
+avhuff_error avhuff_decoder::decode_video_lossless(int width, int height, const uint8_t *source, uint32_t complength, uint8_t *dest, uint32_t dstride, uint32_t dxor)
+>>>>>>> upstream/master
 {
 	// skip the first byte
 	bitstream_in bitbuf(source, complength);
@@ -933,10 +1419,17 @@ avhuff_error avhuff_decoder::decode_video_lossless(int width, int height, const 
 	m_ycontext.reset();
 	m_cbcontext.reset();
 	m_crcontext.reset();
+<<<<<<< HEAD
 	for (UINT32 dy = 0; dy < height; dy++)
 	{
 		UINT8 *row = dest + dy * dstride;
 		for (UINT32 dx = 0; dx < width / 2; dx++)
+=======
+	for (uint32_t dy = 0; dy < height; dy++)
+	{
+		uint8_t *row = dest + dy * dstride;
+		for (uint32_t dx = 0; dx < width / 2; dx++)
+>>>>>>> upstream/master
 		{
 			row[0 ^ dxor] = m_ycontext.decode_one(bitbuf);
 			row[1 ^ dxor] = m_cbcontext.decode_one(bitbuf);

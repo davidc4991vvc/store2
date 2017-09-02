@@ -1,11 +1,21 @@
 // license:BSD-3-Clause
 // copyright-holders:Nicola Salmoria
+<<<<<<< HEAD
+=======
+
+>>>>>>> upstream/master
 /***************************************************************************
 
     Blockout
 
 ***************************************************************************/
 
+<<<<<<< HEAD
+=======
+#include "machine/gen_latch.h"
+#include "screen.h"
+
+>>>>>>> upstream/master
 class blockout_state : public driver_device
 {
 public:
@@ -17,6 +27,7 @@ public:
 		m_maincpu(*this, "maincpu"),
 		m_audiocpu(*this, "audiocpu"),
 		m_screen(*this, "screen"),
+<<<<<<< HEAD
 		m_palette(*this, "palette") { }
 
 	/* memory pointers */
@@ -27,24 +38,50 @@ public:
 	/* video-related */
 	bitmap_ind16 m_tmpbitmap;
 	UINT16   m_color;
+=======
+		m_palette(*this, "palette"),
+		m_soundlatch(*this, "soundlatch") { }
+
+	/* memory pointers */
+	required_shared_ptr<uint16_t> m_videoram;
+	required_shared_ptr<uint16_t> m_frontvideoram;
+	required_shared_ptr<uint16_t> m_paletteram;
+
+	/* video-related */
+	bitmap_ind16 m_tmpbitmap;
+	uint16_t   m_color;
+>>>>>>> upstream/master
 
 	/* devices */
 	required_device<cpu_device> m_maincpu;
 	required_device<cpu_device> m_audiocpu;
 	required_device<screen_device> m_screen;
 	required_device<palette_device> m_palette;
+<<<<<<< HEAD
 
 	DECLARE_WRITE_LINE_MEMBER(irq_handler);
 	DECLARE_WRITE16_MEMBER(blockout_sound_command_w);
+=======
+	required_device<generic_latch_8_device> m_soundlatch;
+
+	DECLARE_WRITE_LINE_MEMBER(irq_handler);
+>>>>>>> upstream/master
 	DECLARE_WRITE16_MEMBER(blockout_irq6_ack_w);
 	DECLARE_WRITE16_MEMBER(blockout_irq5_ack_w);
 	DECLARE_WRITE16_MEMBER(blockout_paletteram_w);
 	DECLARE_WRITE16_MEMBER(blockout_frontcolor_w);
 	DECLARE_WRITE16_MEMBER(blockout_videoram_w);
+<<<<<<< HEAD
 	virtual void machine_start();
 	virtual void machine_reset();
 	virtual void video_start();
 	UINT32 screen_update_blockout(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
+=======
+	virtual void machine_start() override;
+	virtual void machine_reset() override;
+	virtual void video_start() override;
+	uint32_t screen_update_blockout(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
+>>>>>>> upstream/master
 	TIMER_DEVICE_CALLBACK_MEMBER(blockout_scanline);
 	void setcolor( int color, int rgb );
 	void update_pixels( int x, int y );

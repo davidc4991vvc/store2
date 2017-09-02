@@ -14,17 +14,23 @@
 ***************************************************************************/
 
 #include "emu.h"
+<<<<<<< HEAD
 #include "cpu/i386/i386.h"
 #include "machine/pcshare.h"
 #include "machine/pckeybrd.h"
 #include "machine/mc146818.h"
 #include "machine/idectrl.h"
 
+=======
+#include "machine/pcshare.h"
+#include "cpu/i86/i286.h"
+>>>>>>> upstream/master
 
 /******************
 DMA8237 Controller
 ******************/
 
+<<<<<<< HEAD
 READ8_MEMBER(pcat_base_state::at_dma8237_2_r)
 {
 	return m_dma8237_2->read(space, offset / 2);
@@ -35,6 +41,8 @@ WRITE8_MEMBER(pcat_base_state::at_dma8237_2_w)
 	m_dma8237_2->write(space, offset / 2, data);
 }
 
+=======
+>>>>>>> upstream/master
 WRITE_LINE_MEMBER( pcat_base_state::pc_dma_hrq_changed )
 {
 	m_maincpu->set_input_line(INPUT_LINE_HALT, state ? ASSERT_LINE : CLEAR_LINE);
@@ -66,7 +74,11 @@ WRITE8_MEMBER(pcat_base_state::pc_dma_write_byte)
 
 READ8_MEMBER(pcat_base_state::dma_page_select_r)
 {
+<<<<<<< HEAD
 	UINT8 data = m_at_pages[offset % 0x10];
+=======
+	uint8_t data = m_at_pages[offset % 0x10];
+>>>>>>> upstream/master
 
 	switch(offset % 8)
 	{
@@ -138,7 +150,11 @@ WRITE_LINE_MEMBER( pcat_base_state::at_pit8254_out2_changed )
 }
 
 
+<<<<<<< HEAD
 	ADDRESS_MAP_START( pcat32_io_common, AS_IO, 32, pcat_base_state )
+=======
+ADDRESS_MAP_START( pcat32_io_common, AS_IO, 32, pcat_base_state )
+>>>>>>> upstream/master
 	AM_RANGE(0x0000, 0x001f) AM_DEVREADWRITE8("dma8237_1", am9517a_device, read, write, 0xffffffff)
 	AM_RANGE(0x0020, 0x003f) AM_DEVREADWRITE8("pic8259_1", pic8259_device, read, write, 0xffffffff)
 	AM_RANGE(0x0040, 0x005f) AM_DEVREADWRITE8("pit8254", pit8254_device, read, write, 0xffffffff)
@@ -146,12 +162,21 @@ WRITE_LINE_MEMBER( pcat_base_state::at_pit8254_out2_changed )
 	AM_RANGE(0x0070, 0x007f) AM_DEVREADWRITE8("rtc", mc146818_device, read, write, 0xffffffff)
 	AM_RANGE(0x0080, 0x009f) AM_READWRITE8(dma_page_select_r,dma_page_select_w, 0xffffffff)//TODO
 	AM_RANGE(0x00a0, 0x00bf) AM_DEVREADWRITE8("pic8259_2", pic8259_device, read, write, 0xffffffff)
+<<<<<<< HEAD
 	AM_RANGE(0x00c0, 0x00df) AM_READWRITE8(at_dma8237_2_r, at_dma8237_2_w, 0xffffffff)
 ADDRESS_MAP_END
 
 MACHINE_CONFIG_FRAGMENT(pcat_common)
 	MCFG_PIC8259_ADD( "pic8259_1", INPUTLINE("maincpu", 0), VCC, READ8(pcat_base_state, get_slave_ack) )
 	MCFG_PIC8259_ADD( "pic8259_2", DEVWRITELINE("pic8259_1", pic8259_device, ir2_w), GND, NULL )
+=======
+	AM_RANGE(0x00c0, 0x00df) AM_DEVREADWRITE8("dma8237_2", am9517a_device, read, write, 0x00ff00ff)
+ADDRESS_MAP_END
+
+MACHINE_CONFIG_START(pcat_common)
+	MCFG_PIC8259_ADD( "pic8259_1", INPUTLINE("maincpu", 0), VCC, READ8(pcat_base_state, get_slave_ack) )
+	MCFG_PIC8259_ADD( "pic8259_2", DEVWRITELINE("pic8259_1", pic8259_device, ir2_w), GND, NOOP)
+>>>>>>> upstream/master
 	MCFG_DEVICE_ADD( "dma8237_1", AM9517A, XTAL_14_31818MHz/3 )
 	MCFG_I8237_OUT_HREQ_CB(WRITELINE(pcat_base_state, pc_dma_hrq_changed))
 	MCFG_I8237_IN_MEMR_CB(READ8(pcat_base_state, pc_dma_read_byte))

@@ -9,6 +9,10 @@
 
 ***************************************************************************/
 
+<<<<<<< HEAD
+=======
+#include "emu.h"
+>>>>>>> upstream/master
 #include "cr511b.h"
 
 
@@ -16,6 +20,7 @@
 //  DEVICE DEFINITIONS
 //**************************************************************************
 
+<<<<<<< HEAD
 const device_type CR511B = &device_creator<cr511b_device>;
 
 //-------------------------------------------------
@@ -24,6 +29,15 @@ const device_type CR511B = &device_creator<cr511b_device>;
 //-------------------------------------------------
 
 static MACHINE_CONFIG_FRAGMENT( cr511b )
+=======
+DEFINE_DEVICE_TYPE(CR511B, cr511b_device, "cr511b", "CR-511-B CD-ROM drive")
+
+//-------------------------------------------------
+//  device_add_mconfig - add device configuration
+//-------------------------------------------------
+
+MACHINE_CONFIG_MEMBER( cr511b_device::device_add_mconfig )
+>>>>>>> upstream/master
 	MCFG_CDROM_ADD("cdrom")
 	MCFG_CDROM_INTERFACE("cdrom")
 	MCFG_SOUND_ADD("cdda", CDDA, 0)
@@ -31,11 +45,14 @@ static MACHINE_CONFIG_FRAGMENT( cr511b )
 	MCFG_SOUND_ROUTE(1, ":rspeaker", 1.0)
 MACHINE_CONFIG_END
 
+<<<<<<< HEAD
 machine_config_constructor cr511b_device::device_mconfig_additions() const
 {
 	return MACHINE_CONFIG_NAME( cr511b );
 }
 
+=======
+>>>>>>> upstream/master
 
 //**************************************************************************
 //  LIVE DEVICE
@@ -45,8 +62,13 @@ machine_config_constructor cr511b_device::device_mconfig_additions() const
 //  cr511b_device - constructor
 //-------------------------------------------------
 
+<<<<<<< HEAD
 cr511b_device::cr511b_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock) :
 	device_t(mconfig, CR511B, "CR-511-B CD-ROM drive", tag, owner, clock, "cr511b", __FILE__),
+=======
+cr511b_device::cr511b_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock) :
+	device_t(mconfig, CR511B, tag, owner, clock),
+>>>>>>> upstream/master
 	m_cdrom(*this, "cdrom"),
 	m_cdda(*this, "cdda"),
 	m_stch_handler(*this),
@@ -55,7 +77,11 @@ cr511b_device::cr511b_device(const machine_config &mconfig, const char *tag, dev
 	m_dten_handler(*this),
 	m_scor_handler(*this),
 	m_xaen_handler(*this),
+<<<<<<< HEAD
 	m_frame_timer(NULL),
+=======
+	m_frame_timer(nullptr),
+>>>>>>> upstream/master
 	//m_motor(false),
 	m_enabled(-1),
 	m_cmd(-1)
@@ -76,7 +102,11 @@ void cr511b_device::device_start()
 	m_scor_handler.resolve_safe();
 	m_xaen_handler.resolve_safe();
 
+<<<<<<< HEAD
 	m_frame_timer = timer_alloc(0, NULL);
+=======
+	m_frame_timer = timer_alloc(0, nullptr);
+>>>>>>> upstream/master
 	m_frame_timer->adjust(attotime::never);
 }
 

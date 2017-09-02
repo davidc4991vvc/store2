@@ -31,6 +31,7 @@
     - 1-21 Vectored exception requests on the Host Interface!
 ***************************************************************************/
 
+<<<<<<< HEAD
 #include "opcode.h"
 
 #include "emu.h"
@@ -41,6 +42,17 @@
 
 using namespace DSP56K;
 
+=======
+#include "emu.h"
+#include "dsp56k.h"
+
+#include "opcode.h"
+
+#include "debugger.h"
+
+#include "dsp56def.h"
+
+>>>>>>> upstream/master
 /***************************************************************************
     COMPONENT FUNCTIONALITY
 ***************************************************************************/
@@ -60,6 +72,14 @@ using namespace DSP56K;
 #include "dsp56mem.h"
 
 
+<<<<<<< HEAD
+=======
+DEFINE_DEVICE_TYPE_NS(DSP56156, DSP56K, dsp56k_device, "dsp56156", "DSP56156")
+
+
+namespace DSP56K {
+
+>>>>>>> upstream/master
 enum
 {
 	// PCU
@@ -101,9 +121,12 @@ enum
 };
 
 
+<<<<<<< HEAD
 const device_type DSP56156 = &device_creator<dsp56k_device>;
 
 
+=======
+>>>>>>> upstream/master
 /****************************************************************************
  *  Internal Memory Maps
  ****************************************************************************/
@@ -118,14 +141,30 @@ static ADDRESS_MAP_START( dsp56156_x_data_map, AS_DATA, 16, dsp56k_device )
 ADDRESS_MAP_END
 
 
+<<<<<<< HEAD
 dsp56k_device::dsp56k_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
 	: cpu_device(mconfig, DSP56156, "DSP56156", tag, owner, clock, "dsp56156", __FILE__)
+=======
+dsp56k_device::dsp56k_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: cpu_device(mconfig, DSP56156, tag, owner, clock)
+>>>>>>> upstream/master
 	, m_program_config("program", ENDIANNESS_LITTLE, 16, 16, -1, ADDRESS_MAP_NAME(dsp56156_program_map))
 	, m_data_config("data", ENDIANNESS_LITTLE, 16, 16, -1, ADDRESS_MAP_NAME(dsp56156_x_data_map))
 	, m_program_ram(*this, "dsk56k_program_ram")
 {
 }
 
+<<<<<<< HEAD
+=======
+device_memory_interface::space_config_vector dsp56k_device::memory_space_config() const
+{
+	return space_config_vector {
+		std::make_pair(AS_PROGRAM, &m_program_config),
+		std::make_pair(AS_DATA,    &m_data_config)
+	};
+}
+
+>>>>>>> upstream/master
 /***************************************************************************
     MEMORY ACCESSORS
 ***************************************************************************/
@@ -147,11 +186,19 @@ void dsp56k_device::execute_set_input(int irqline, int state)
 				logerror("DSP56k IRQA is set to fire on the \"Negative Edge\".\n");
 
 			if (state != CLEAR_LINE)
+<<<<<<< HEAD
 				m_dsp56k_core.modA_state = TRUE;
 			else
 				m_dsp56k_core.modA_state = FALSE;
 
 			if (m_dsp56k_core.reset_state != TRUE)
+=======
+				m_dsp56k_core.modA_state = true;
+			else
+				m_dsp56k_core.modA_state = false;
+
+			if (m_dsp56k_core.reset_state != true)
+>>>>>>> upstream/master
 				dsp56k_add_pending_interrupt(&m_dsp56k_core, "IRQA");
 			break;
 
@@ -161,25 +208,40 @@ void dsp56k_device::execute_set_input(int irqline, int state)
 				logerror("DSP56k IRQB is set to fire on the \"Negative Edge\".\n");
 
 			if (state != CLEAR_LINE)
+<<<<<<< HEAD
 				m_dsp56k_core.modB_state = TRUE;
 			else
 				m_dsp56k_core.modB_state = FALSE;
 
 			if (m_dsp56k_core.reset_state != TRUE)
+=======
+				m_dsp56k_core.modB_state = true;
+			else
+				m_dsp56k_core.modB_state = false;
+
+			if (m_dsp56k_core.reset_state != true)
+>>>>>>> upstream/master
 				dsp56k_add_pending_interrupt(&m_dsp56k_core, "IRQB");
 			break;
 
 		case DSP56K_IRQ_MODC:
 			if (state != CLEAR_LINE)
+<<<<<<< HEAD
 				m_dsp56k_core.modC_state = TRUE;
 			else
 				m_dsp56k_core.modC_state = FALSE;
+=======
+				m_dsp56k_core.modC_state = true;
+			else
+				m_dsp56k_core.modC_state = false;
+>>>>>>> upstream/master
 
 			// TODO : Set bus mode or whatever
 			break;
 
 		case DSP56K_IRQ_RESET:
 			if (state != CLEAR_LINE)
+<<<<<<< HEAD
 				m_dsp56k_core.reset_state = TRUE;
 			else
 			{
@@ -188,6 +250,16 @@ void dsp56k_device::execute_set_input(int irqline, int state)
 					device_reset();
 
 				m_dsp56k_core.reset_state = FALSE;
+=======
+				m_dsp56k_core.reset_state = true;
+			else
+			{
+				/* If it changes state from asserted to cleared.  Call the reset function. */
+				if (m_dsp56k_core.reset_state == true)
+					device_reset();
+
+				m_dsp56k_core.reset_state = false;
+>>>>>>> upstream/master
 			}
 
 			// dsp56k_add_pending_interrupt("Hardware RESET");
@@ -200,7 +272,11 @@ void dsp56k_device::execute_set_input(int irqline, int state)
 
 	/* If the reset line isn't asserted, service interrupts */
 	// TODO: Is it right to immediately service interrupts?
+<<<<<<< HEAD
 	//if (cpustate->reset_state != TRUE)
+=======
+	//if (cpustate->reset_state != true)
+>>>>>>> upstream/master
 	//  pcu_service_interrupts();
 }
 
@@ -251,10 +327,17 @@ void dsp56k_device::device_start()
 	m_dsp56k_core.bootstrap_mode = BOOTSTRAP_OFF;
 
 	/* Clear the irq states */
+<<<<<<< HEAD
 	m_dsp56k_core.modA_state = FALSE;
 	m_dsp56k_core.modB_state = FALSE;
 	m_dsp56k_core.modC_state = FALSE;
 	m_dsp56k_core.reset_state = FALSE;
+=======
+	m_dsp56k_core.modA_state = false;
+	m_dsp56k_core.modB_state = false;
+	m_dsp56k_core.modC_state = false;
+	m_dsp56k_core.reset_state = false;
+>>>>>>> upstream/master
 
 	/* save states - dsp56k_core members */
 	save_item(NAME(m_dsp56k_core.modA_state));
@@ -293,8 +376,13 @@ void dsp56k_device::device_start()
 	state_add(DSP56K_X,      "X", m_dsp56k_core.ALU.x.d).mask(0xffffffff).formatstr("%9s");
 	state_add(DSP56K_Y,      "Y", m_dsp56k_core.ALU.y.d).mask(0xffffffff).formatstr("%9s");
 
+<<<<<<< HEAD
 	state_add(DSP56K_A,      "A", m_dsp56k_core.ALU.a.q).mask((UINT64)U64(0xffffffffffffffff)).formatstr("%12s"); /* could benefit from a better mask? */
 	state_add(DSP56K_B,      "B", m_dsp56k_core.ALU.b.q).mask((UINT64)U64(0xffffffffffffffff)).formatstr("%12s"); /* could benefit from a better mask? */
+=======
+	state_add(DSP56K_A,      "A", m_dsp56k_core.ALU.a.q).mask(u64(0xffffffffffffffffU)).formatstr("%12s"); /* could benefit from a better mask? */
+	state_add(DSP56K_B,      "B", m_dsp56k_core.ALU.b.q).mask(u64(0xffffffffffffffffU)).formatstr("%12s"); /* could benefit from a better mask? */
+>>>>>>> upstream/master
 
 	state_add(DSP56K_R0,     "R0", m_dsp56k_core.AGU.r0).formatstr("%04X");
 	state_add(DSP56K_R1,     "R1", m_dsp56k_core.AGU.r1).formatstr("%04X");
@@ -332,22 +420,37 @@ void dsp56k_device::device_start()
 	state_add(DSP56K_ST15,   "ST15", m_dsp56k_core.PCU.ss[15].d).formatstr("%08X");
 
 	state_add(STATE_GENPC, "GENPC", m_dsp56k_core.PCU.pc).noshow();
+<<<<<<< HEAD
 	state_add(STATE_GENSP, "GENSP", m_dsp56k_core.PCU.sp).noshow();
 	state_add(STATE_GENPCBASE, "GENPCBASE", m_dsp56k_core.ppc).noshow();
+=======
+	state_add(STATE_GENPCBASE, "CURPC", m_dsp56k_core.ppc).noshow();
+	state_add(STATE_GENSP, "GENSP", m_dsp56k_core.PCU.sp).noshow();
+>>>>>>> upstream/master
 	state_add(STATE_GENFLAGS, "GENFLAGS", m_dsp56k_core.PCU.sr).formatstr("%14s").noshow();
 
 	m_icountptr = &m_dsp56k_core.icount;
 }
 
 
+<<<<<<< HEAD
 void dsp56k_device::state_string_export(const device_state_entry &entry, std::string &str)
 {
 	dsp56k_core *cpustate = &m_dsp56k_core;
+=======
+void dsp56k_device::state_string_export(const device_state_entry &entry, std::string &str) const
+{
+	const dsp56k_core *cpustate = &m_dsp56k_core;
+>>>>>>> upstream/master
 
 	switch (entry.index())
 	{
 		case STATE_GENFLAGS:
+<<<<<<< HEAD
 			strprintf(str, "%s%s %s%s%s%s%s%s%s%s %s%s",
+=======
+			str = string_format("%s%s %s%s%s%s%s%s%s%s %s%s",
+>>>>>>> upstream/master
 				/* Status Register */
 				LF_bit(cpustate) ? "L" : ".",
 				FV_bit(cpustate) ? "F" : ".",
@@ -367,6 +470,7 @@ void dsp56k_device::state_string_export(const device_state_entry &entry, std::st
 			break;
 
 		case DSP56K_X:
+<<<<<<< HEAD
 			strprintf(str, "%04x %04x", X1, X0);
 			break;
 
@@ -380,6 +484,21 @@ void dsp56k_device::state_string_export(const device_state_entry &entry, std::st
 
 		case DSP56K_B:
 			strprintf(str, "%02x %04x %04x", B2, B1, B0);
+=======
+			str = string_format("%04x %04x", X1, X0);
+			break;
+
+		case DSP56K_Y:
+			str = string_format("%04x %04x", Y1, Y0);
+			break;
+
+		case DSP56K_A:
+			str = string_format("%02x %04x %04x", A2, A1, A0);
+			break;
+
+		case DSP56K_B:
+			str = string_format("%02x %04x %04x", B2, B1, B0);
+>>>>>>> upstream/master
 			break;
 	}
 }
@@ -421,7 +540,10 @@ void dsp56k_device::device_reset()
 	logerror("Dsp56k reset\n");
 
 	m_dsp56k_core.interrupt_cycles = 0;
+<<<<<<< HEAD
 	m_dsp56k_core.ppc = 0x0000;
+=======
+>>>>>>> upstream/master
 
 	m_dsp56k_core.repFlag = 0;
 	m_dsp56k_core.repAddr = 0x0000;
@@ -431,6 +553,11 @@ void dsp56k_device::device_reset()
 	agu_reset(&m_dsp56k_core);
 	alu_reset(&m_dsp56k_core);
 
+<<<<<<< HEAD
+=======
+	m_dsp56k_core.ppc = m_dsp56k_core.PCU.pc;
+
+>>>>>>> upstream/master
 	/* HACK - Put a jump to 0x0000 at 0x0000 - this keeps the CPU locked to the instruction at address 0x0000 */
 	m_dsp56k_core.program->write_word(0x0000, 0x0124);
 }
@@ -440,7 +567,11 @@ void dsp56k_device::device_reset()
 /***************************************************************************
     CORE INCLUDE
 ***************************************************************************/
+<<<<<<< HEAD
 #include "dsp56ops.inc"
+=======
+#include "dsp56ops.hxx"
+>>>>>>> upstream/master
 
 
 /***************************************************************************
@@ -450,11 +581,20 @@ void dsp56k_device::device_reset()
 static size_t execute_one_new(dsp56k_core* cpustate)
 {
 	// For MAME
+<<<<<<< HEAD
 	cpustate->op = ROPCODE(ADDRESS(PC));
 	debugger_instruction_hook(cpustate->device, PC);
 
 	UINT16 w0 = ROPCODE(ADDRESS(PC));
 	UINT16 w1 = ROPCODE(ADDRESS(PC) + ADDRESS(1));
+=======
+	cpustate->ppc = PC;
+	debugger_instruction_hook(cpustate->device, PC);
+
+	cpustate->op = ROPCODE(ADDRESS(PC));
+	uint16_t w0 = ROPCODE(ADDRESS(PC));
+	uint16_t w1 = ROPCODE(ADDRESS(PC) + ADDRESS(1));
+>>>>>>> upstream/master
 
 	Opcode op(w0, w1);
 	op.evaluate(cpustate);
@@ -492,8 +632,17 @@ void dsp56k_device::execute_run()
 }
 
 
+<<<<<<< HEAD
 offs_t dsp56k_device::disasm_disassemble(char *buffer, offs_t pc, const UINT8 *oprom, const UINT8 *opram, UINT32 options)
 {
 	extern CPU_DISASSEMBLE( dsp56k );
 	return CPU_DISASSEMBLE_NAME(dsp56k)(this, buffer, pc, oprom, opram, options);
 }
+=======
+offs_t dsp56k_device::disasm_disassemble(std::ostream &stream, offs_t pc, const uint8_t *oprom, const uint8_t *opram, uint32_t options)
+{
+	return CPU_DISASSEMBLE_NAME(dsp56k)(this, stream, pc, oprom, opram, options);
+}
+
+} // namespace DSP56K
+>>>>>>> upstream/master

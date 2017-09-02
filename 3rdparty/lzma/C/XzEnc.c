@@ -1,5 +1,11 @@
 /* XzEnc.c -- Xz Encode
+<<<<<<< HEAD
 2011-02-07 : Igor Pavlov : Public domain */
+=======
+2015-09-16 : Igor Pavlov : Public domain */
+
+#include "Precomp.h"
+>>>>>>> upstream/master
 
 #include <stdlib.h>
 #include <string.h>
@@ -8,6 +14,10 @@
 #include "Alloc.h"
 #include "Bra.h"
 #include "CpuArch.h"
+<<<<<<< HEAD
+=======
+
+>>>>>>> upstream/master
 #ifdef USE_SUBBLOCK
 #include "Bcj3Enc.c"
 #include "SbFind.c"
@@ -16,6 +26,7 @@
 
 #include "XzEnc.h"
 
+<<<<<<< HEAD
 static void *SzBigAlloc(void *p, size_t size) { p = p; return BigAlloc(size); }
 static void SzBigFree(void *p, void *address) { p = p; BigFree(address); }
 static ISzAlloc g_BigAlloc = { SzBigAlloc, SzBigFree };
@@ -24,6 +35,8 @@ static void *SzAlloc(void *p, size_t size) { p = p; return MyAlloc(size); }
 static void SzFree(void *p, void *address) { p = p; MyFree(address); }
 static ISzAlloc g_Alloc = { SzAlloc, SzFree };
 
+=======
+>>>>>>> upstream/master
 #define XzBlock_ClearFlags(p)       (p)->flags = 0;
 #define XzBlock_SetNumFilters(p, n) (p)->flags |= ((n) - 1);
 #define XzBlock_SetHasPackSize(p)   (p)->flags |= XZ_BF_PACK_SIZE;
@@ -40,7 +53,11 @@ static SRes WriteBytesAndCrc(ISeqOutStream *s, const void *buf, UInt32 size, UIn
   return WriteBytes(s, buf, size);
 }
 
+<<<<<<< HEAD
 SRes Xz_WriteHeader(CXzStreamFlags f, ISeqOutStream *s)
+=======
+static SRes Xz_WriteHeader(CXzStreamFlags f, ISeqOutStream *s)
+>>>>>>> upstream/master
 {
   UInt32 crc;
   Byte header[XZ_STREAM_HEADER_SIZE];
@@ -52,17 +69,30 @@ SRes Xz_WriteHeader(CXzStreamFlags f, ISeqOutStream *s)
   return WriteBytes(s, header, XZ_STREAM_HEADER_SIZE);
 }
 
+<<<<<<< HEAD
 SRes XzBlock_WriteHeader(const CXzBlock *p, ISeqOutStream *s)
+=======
+
+static SRes XzBlock_WriteHeader(const CXzBlock *p, ISeqOutStream *s)
+>>>>>>> upstream/master
 {
   Byte header[XZ_BLOCK_HEADER_SIZE_MAX];
 
   unsigned pos = 1;
+<<<<<<< HEAD
   int numFilters, i;
+=======
+  unsigned numFilters, i;
+>>>>>>> upstream/master
   header[pos++] = p->flags;
 
   if (XzBlock_HasPackSize(p)) pos += Xz_WriteVarInt(header + pos, p->packSize);
   if (XzBlock_HasUnpackSize(p)) pos += Xz_WriteVarInt(header + pos, p->unpackSize);
   numFilters = XzBlock_GetNumFilters(p);
+<<<<<<< HEAD
+=======
+  
+>>>>>>> upstream/master
   for (i = 0; i < numFilters; i++)
   {
     const CXzFilter *f = &p->filters[i];
@@ -71,14 +101,26 @@ SRes XzBlock_WriteHeader(const CXzBlock *p, ISeqOutStream *s)
     memcpy(header + pos, f->props, f->propsSize);
     pos += f->propsSize;
   }
+<<<<<<< HEAD
   while((pos & 3) != 0)
     header[pos++] = 0;
+=======
+
+  while ((pos & 3) != 0)
+    header[pos++] = 0;
+
+>>>>>>> upstream/master
   header[0] = (Byte)(pos >> 2);
   SetUi32(header + pos, CrcCalc(header, pos));
   return WriteBytes(s, header, pos + 4);
 }
 
+<<<<<<< HEAD
 SRes Xz_WriteFooter(CXzStream *p, ISeqOutStream *s)
+=======
+
+static SRes Xz_WriteFooter(CXzStream *p, ISeqOutStream *s)
+>>>>>>> upstream/master
 {
   Byte buf[32];
   UInt64 globalPos;
@@ -90,6 +132,10 @@ SRes Xz_WriteFooter(CXzStream *p, ISeqOutStream *s)
     globalPos = pos;
     buf[0] = 0;
     RINOK(WriteBytesAndCrc(s, buf, pos, &crc));
+<<<<<<< HEAD
+=======
+
+>>>>>>> upstream/master
     for (i = 0; i < p->numBlocks; i++)
     {
       const CXzBlockSizes *block = &p->blocks[i];
@@ -98,7 +144,13 @@ SRes Xz_WriteFooter(CXzStream *p, ISeqOutStream *s)
       globalPos += pos;
       RINOK(WriteBytesAndCrc(s, buf, pos, &crc));
     }
+<<<<<<< HEAD
     pos = ((unsigned)globalPos & 3);
+=======
+    
+    pos = ((unsigned)globalPos & 3);
+    
+>>>>>>> upstream/master
     if (pos != 0)
     {
       buf[0] = buf[1] = buf[2] = 0;
@@ -123,34 +175,61 @@ SRes Xz_WriteFooter(CXzStream *p, ISeqOutStream *s)
   }
 }
 
+<<<<<<< HEAD
 SRes Xz_AddIndexRecord(CXzStream *p, UInt64 unpackSize, UInt64 totalSize, ISzAlloc *alloc)
 {
   if (p->blocks == 0 || p->numBlocksAllocated == p->numBlocks)
   {
     size_t num = (p->numBlocks + 1) * 2;
+=======
+
+static SRes Xz_AddIndexRecord(CXzStream *p, UInt64 unpackSize, UInt64 totalSize, ISzAlloc *alloc)
+{
+  if (!p->blocks || p->numBlocksAllocated == p->numBlocks)
+  {
+    size_t num = p->numBlocks * 2 + 1;
+>>>>>>> upstream/master
     size_t newSize = sizeof(CXzBlockSizes) * num;
     CXzBlockSizes *blocks;
     if (newSize / sizeof(CXzBlockSizes) != num)
       return SZ_ERROR_MEM;
+<<<<<<< HEAD
     blocks = alloc->Alloc(alloc, newSize);
     if (blocks == 0)
+=======
+    blocks = (CXzBlockSizes *)alloc->Alloc(alloc, newSize);
+    if (!blocks)
+>>>>>>> upstream/master
       return SZ_ERROR_MEM;
     if (p->numBlocks != 0)
     {
       memcpy(blocks, p->blocks, p->numBlocks * sizeof(CXzBlockSizes));
+<<<<<<< HEAD
       Xz_Free(p, alloc);
+=======
+      alloc->Free(alloc, p->blocks);
+>>>>>>> upstream/master
     }
     p->blocks = blocks;
     p->numBlocksAllocated = num;
   }
   {
     CXzBlockSizes *block = &p->blocks[p->numBlocks++];
+<<<<<<< HEAD
     block->totalSize = totalSize;
     block->unpackSize = unpackSize;
+=======
+    block->unpackSize = unpackSize;
+    block->totalSize = totalSize;
+>>>>>>> upstream/master
   }
   return SZ_OK;
 }
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> upstream/master
 /* ---------- CSeqCheckInStream ---------- */
 
 typedef struct
@@ -161,13 +240,21 @@ typedef struct
   CXzCheck check;
 } CSeqCheckInStream;
 
+<<<<<<< HEAD
 void SeqCheckInStream_Init(CSeqCheckInStream *p, int mode)
+=======
+static void SeqCheckInStream_Init(CSeqCheckInStream *p, unsigned mode)
+>>>>>>> upstream/master
 {
   p->processed = 0;
   XzCheck_Init(&p->check, mode);
 }
 
+<<<<<<< HEAD
 void SeqCheckInStream_GetDigest(CSeqCheckInStream *p, Byte *digest)
+=======
+static void SeqCheckInStream_GetDigest(CSeqCheckInStream *p, Byte *digest)
+>>>>>>> upstream/master
 {
   XzCheck_Final(&p->check, digest);
 }
@@ -181,6 +268,10 @@ static SRes SeqCheckInStream_Read(void *pp, void *data, size_t *size)
   return res;
 }
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> upstream/master
 /* ---------- CSeqSizeOutStream ---------- */
 
 typedef struct
@@ -198,6 +289,10 @@ static size_t MyWrite(void *pp, const void *data, size_t size)
   return size;
 }
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> upstream/master
 /* ---------- CSeqInFilter ---------- */
 
 #define FILTER_BUF_SIZE (1 << 20)
@@ -218,8 +313,14 @@ static SRes SeqInFilter_Read(void *pp, void *data, size_t *size)
   CSeqInFilter *p = (CSeqInFilter *)pp;
   size_t sizeOriginal = *size;
   if (sizeOriginal == 0)
+<<<<<<< HEAD
     return S_OK;
   *size = 0;
+=======
+    return SZ_OK;
+  *size = 0;
+  
+>>>>>>> upstream/master
   for (;;)
   {
     if (!p->srcWasFinished && p->curPos == p->endPos)
@@ -274,9 +375,16 @@ static SRes SeqInFilter_Init(CSeqInFilter *p, const CXzFilter *props)
   RINOK(BraState_SetFromMethod(&p->StateCoder, props->id, 1, &g_Alloc));
   RINOK(p->StateCoder.SetProps(p->StateCoder.p, props->props, props->propsSize, &g_Alloc));
   p->StateCoder.Init(p->StateCoder.p);
+<<<<<<< HEAD
   return S_OK;
 }
 
+=======
+  return SZ_OK;
+}
+
+
+>>>>>>> upstream/master
 /* ---------- CSbEncInStream ---------- */
 
 #ifdef USE_SUBBLOCK
@@ -294,6 +402,10 @@ static SRes SbEncInStream_Read(void *pp, void *data, size_t *size)
   size_t sizeOriginal = *size;
   if (sizeOriginal == 0)
     return S_OK;
+<<<<<<< HEAD
+=======
+  
+>>>>>>> upstream/master
   for (;;)
   {
     if (p->enc.needRead && !p->enc.readWasFinished)
@@ -308,6 +420,10 @@ static SRes SbEncInStream_Read(void *pp, void *data, size_t *size)
       }
       p->enc.needRead = False;
     }
+<<<<<<< HEAD
+=======
+  
+>>>>>>> upstream/master
     *size = sizeOriginal;
     RINOK(SbEnc_Read(&p->enc, data, size));
     if (*size != 0 || !p->enc.needRead)
@@ -360,7 +476,11 @@ static void Lzma2WithFilters_Construct(CLzma2WithFilters *p, ISzAlloc *alloc, IS
 static SRes Lzma2WithFilters_Create(CLzma2WithFilters *p)
 {
   p->lzma2 = Lzma2Enc_Create(p->alloc, p->bigAlloc);
+<<<<<<< HEAD
   if (p->lzma2 == 0)
+=======
+  if (!p->lzma2)
+>>>>>>> upstream/master
     return SZ_ERROR_MEM;
   return SZ_OK;
 }
@@ -378,10 +498,18 @@ static void Lzma2WithFilters_Free(CLzma2WithFilters *p)
   }
 }
 
+<<<<<<< HEAD
 void XzProps_Init(CXzProps *p)
 {
   p->lzma2Props = 0;
   p->filterProps = 0;
+=======
+
+void XzProps_Init(CXzProps *p)
+{
+  p->lzma2Props = NULL;
+  p->filterProps = NULL;
+>>>>>>> upstream/master
   p->checkId = XZ_CHECK_CRC32;
 }
 
@@ -389,10 +517,18 @@ void XzFilterProps_Init(CXzFilterProps *p)
 {
   p->id = 0;
   p->delta = 0;
+<<<<<<< HEAD
   p->ip= 0;
   p->ipDefined = False;
 }
 
+=======
+  p->ip = 0;
+  p->ipDefined = False;
+}
+
+
+>>>>>>> upstream/master
 static SRes Xz_Compress(CXzStream *xz, CLzma2WithFilters *lzmaf,
     ISeqOutStream *outStream, ISeqInStream *inStream,
     const CXzProps *props, ICompressProgress *progress)
@@ -406,7 +542,11 @@ static SRes Xz_Compress(CXzStream *xz, CLzma2WithFilters *lzmaf,
     CSeqCheckInStream checkInStream;
     CSeqSizeOutStream seqSizeOutStream;
     CXzBlock block;
+<<<<<<< HEAD
     int filterIndex = 0;
+=======
+    unsigned filterIndex = 0;
+>>>>>>> upstream/master
     CXzFilter *filter = NULL;
     const CXzFilterProps *fp = props->filterProps;
     
@@ -418,6 +558,10 @@ static SRes Xz_Compress(CXzStream *xz, CLzma2WithFilters *lzmaf,
       filter = &block.filters[filterIndex++];
       filter->id = fp->id;
       filter->propsSize = 0;
+<<<<<<< HEAD
+=======
+      
+>>>>>>> upstream/master
       if (fp->id == XZ_ID_Delta)
       {
         filter->props[0] = (Byte)(fp->delta - 1);
@@ -465,6 +609,7 @@ static SRes Xz_Compress(CXzStream *xz, CLzma2WithFilters *lzmaf,
 
     {
       UInt64 packPos = seqSizeOutStream.processed;
+<<<<<<< HEAD
       SRes res = Lzma2Enc_Encode(lzmaf->lzma2, &seqSizeOutStream.p,
         fp ?
         #ifdef USE_SUBBLOCK
@@ -473,6 +618,18 @@ static SRes Xz_Compress(CXzStream *xz, CLzma2WithFilters *lzmaf,
         &lzmaf->filter.p:
         &checkInStream.p,
         progress);
+=======
+      
+      SRes res = Lzma2Enc_Encode(lzmaf->lzma2, &seqSizeOutStream.p,
+          fp ?
+            #ifdef USE_SUBBLOCK
+            (fp->id == XZ_ID_Subblock) ? &lzmaf->sb.p:
+            #endif
+            &lzmaf->filter.p:
+            &checkInStream.p,
+          progress);
+      
+>>>>>>> upstream/master
       RINOK(res);
       block.unpackSize = checkInStream.processed;
       block.packSize = seqSizeOutStream.processed - packPos;
@@ -481,7 +638,11 @@ static SRes Xz_Compress(CXzStream *xz, CLzma2WithFilters *lzmaf,
     {
       unsigned padSize = 0;
       Byte buf[128];
+<<<<<<< HEAD
       while((((unsigned)block.packSize + padSize) & 3) != 0)
+=======
+      while ((((unsigned)block.packSize + padSize) & 3) != 0)
+>>>>>>> upstream/master
         buf[padSize++] = 0;
       SeqCheckInStream_GetDigest(&checkInStream, buf + padSize);
       RINOK(WriteBytes(&seqSizeOutStream.p, buf, padSize + XzFlags_GetCheckSize(xz->flags)));
@@ -491,6 +652,10 @@ static SRes Xz_Compress(CXzStream *xz, CLzma2WithFilters *lzmaf,
   return Xz_WriteFooter(xz, outStream);
 }
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> upstream/master
 SRes Xz_Encode(ISeqOutStream *outStream, ISeqInStream *inStream,
     const CXzProps *props, ICompressProgress *progress)
 {
@@ -507,6 +672,10 @@ SRes Xz_Encode(ISeqOutStream *outStream, ISeqInStream *inStream,
   return res;
 }
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> upstream/master
 SRes Xz_EncodeEmpty(ISeqOutStream *outStream)
 {
   SRes res;

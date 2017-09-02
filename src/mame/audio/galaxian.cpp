@@ -24,6 +24,10 @@ TODO:
 
 #include "emu.h"
 #include "audio/galaxian.h"
+<<<<<<< HEAD
+=======
+#include "includes/galaxian.h"
+>>>>>>> upstream/master
 
 /*************************************
  *
@@ -31,10 +35,15 @@ TODO:
  *
  *************************************/
 
+<<<<<<< HEAD
 #define XTAL                    18432000
 
 #define SOUND_CLOCK             (XTAL/6/2)          /* 1.536 MHz */
 #define RNG_RATE                (XTAL/3*2)          /* RNG clock is XTAL/3*2 see Aaron's note in video/galaxian.c */
+=======
+#define SOUND_CLOCK             (GALAXIAN_MASTER_CLOCK/6/2)          /* 1.536 MHz */
+#define RNG_RATE                (GALAXIAN_MASTER_CLOCK/3*2)          /* RNG clock is XTAL/3*2 see Aaron's note in video/galaxian.c */
+>>>>>>> upstream/master
 
 /* 74LS259 */
 #define GAL_INP_BG_DAC          NODE_10     /* at 9M Q4 to Q7 in schematics */
@@ -387,6 +396,7 @@ static DISCRETE_SOUND_START(mooncrst)
 	DISCRETE_MIXER7(NODE_280, 1, NODE_133_00, NODE_133_02, NODE_133_02,NODE_133_03, NODE_120, NODE_157, NODE_182, &mooncrst_mixer_desc)
 DISCRETE_SOUND_END
 
+<<<<<<< HEAD
 const device_type GALAXIAN = &device_creator<galaxian_sound_device>;
 
 galaxian_sound_device::galaxian_sound_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
@@ -403,6 +413,14 @@ galaxian_sound_device::galaxian_sound_device(const machine_config &mconfig, cons
 //-------------------------------------------------
 
 void galaxian_sound_device::device_config_complete()
+=======
+DEFINE_DEVICE_TYPE(GALAXIAN, galaxian_sound_device, "galaxian_sound", "Galaxian Audio Custom")
+
+galaxian_sound_device::galaxian_sound_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: device_t(mconfig, GALAXIAN, tag, owner, clock)
+	, device_sound_interface(mconfig, *this)
+	, m_lfo_val(0)
+>>>>>>> upstream/master
 {
 }
 
@@ -433,7 +451,11 @@ WRITE8_MEMBER( galaxian_sound_device::pitch_w )
 
 WRITE8_MEMBER( galaxian_sound_device::lfo_freq_w )
 {
+<<<<<<< HEAD
 	UINT8 lfo_val_new = (m_lfo_val & ~(1<<offset)) | ((data & 0x01) << offset);
+=======
+	uint8_t lfo_val_new = (m_lfo_val & ~(1<<offset)) | ((data & 0x01) << offset);
+>>>>>>> upstream/master
 
 	if (m_lfo_val != lfo_val_new)
 	{
@@ -506,6 +528,7 @@ void galaxian_sound_device::sound_stream_update(sound_stream &stream, stream_sam
  *
  *************************************/
 
+<<<<<<< HEAD
 MACHINE_CONFIG_FRAGMENT( galaxian_audio )
 
 	MCFG_SOUND_ADD("cust", GALAXIAN, 0)
@@ -520,9 +543,29 @@ MACHINE_CONFIG_FRAGMENT( mooncrst_audio )
 
 	MCFG_SOUND_ADD("cust", GALAXIAN, 0)
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 0.4)
+=======
+MACHINE_CONFIG_START( galaxian_audio )
+
+	MCFG_SOUND_ADD("cust", GALAXIAN, 0)
+	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "speaker", 0.4)
+
+	MCFG_SOUND_ADD(GAL_AUDIO, DISCRETE, 0)
+	MCFG_DISCRETE_INTF(galaxian)
+	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "speaker", 1.0)
+MACHINE_CONFIG_END
+
+MACHINE_CONFIG_START( mooncrst_audio )
+
+	MCFG_SOUND_ADD("cust", GALAXIAN, 0)
+	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "speaker", 0.4)
+>>>>>>> upstream/master
 
 	MCFG_SOUND_ADD(GAL_AUDIO, DISCRETE, 0)
 	MCFG_DISCRETE_INTF(mooncrst)
 
+<<<<<<< HEAD
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 1.0)
+=======
+	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "speaker", 1.0)
+>>>>>>> upstream/master
 MACHINE_CONFIG_END

@@ -10,6 +10,12 @@
 #include "sound/ay8910.h"
 #include "sound/discrete.h"
 #include "sound/samples.h"
+<<<<<<< HEAD
+=======
+#include "screen.h"
+#include "audio/vicdual-97271p.h"
+#include "video/vicdual-97269pb.h"
+>>>>>>> upstream/master
 
 class vicdual_state : public driver_device
 {
@@ -32,7 +38,11 @@ public:
 		m_in2(*this, "IN2"),
 		m_coinage(*this, "COINAGE"),
 		m_color_bw(*this, "COLOR_BW"),
+<<<<<<< HEAD
 		m_fake_lives(*this, "FAKE_LIVES")
+=======
+		m_fake_lives(*this, "FAKE_LIVES.%u", 0)
+>>>>>>> upstream/master
 	{ }
 
 	required_device<cpu_device> m_maincpu;
@@ -45,8 +55,13 @@ public:
 	required_device<screen_device> m_screen;
 	optional_memory_region m_proms;
 
+<<<<<<< HEAD
 	required_shared_ptr<UINT8> m_videoram;
 	required_shared_ptr<UINT8> m_characterram;
+=======
+	required_shared_ptr<uint8_t> m_videoram;
+	required_shared_ptr<uint8_t> m_characterram;
+>>>>>>> upstream/master
 
 	required_ioport m_in0;
 	required_ioport m_in1;
@@ -55,6 +70,7 @@ public:
 	optional_ioport m_color_bw;
 	optional_ioport_array<2> m_fake_lives;
 
+<<<<<<< HEAD
 	UINT8 m_coin_status;
 	UINT8 m_palette_bank;
 	UINT8 m_samurai_protection_data;
@@ -63,6 +79,15 @@ public:
 	int m_port1State;
 	int m_port2State;
 	int m_psgData;
+=======
+	uint8_t m_coin_status;
+	uint8_t m_palette_bank;
+	uint8_t m_samurai_protection_data;
+	int m_port1State;
+	int m_port2State;
+	int m_psgData;
+	int m_psgBus;
+>>>>>>> upstream/master
 	emu_timer *m_frogs_croak_timer;
 
 	void coin_in();
@@ -99,8 +124,11 @@ public:
 	DECLARE_WRITE8_MEMBER(alphaho_io_w);
 	DECLARE_WRITE8_MEMBER(samurai_protection_w);
 	DECLARE_WRITE8_MEMBER(samurai_io_w);
+<<<<<<< HEAD
 	DECLARE_READ8_MEMBER(nsub_io_r);
 	DECLARE_WRITE8_MEMBER(nsub_io_w);
+=======
+>>>>>>> upstream/master
 	DECLARE_READ8_MEMBER(invinco_io_r);
 	DECLARE_WRITE8_MEMBER(invinco_io_w);
 
@@ -110,6 +138,7 @@ public:
 	DECLARE_WRITE8_MEMBER( invho2_audio_w );
 	TIMER_CALLBACK_MEMBER( frogs_croak_callback );
 
+<<<<<<< HEAD
 
 	/*----------- defined in audio/carnival.c -----------*/
 	DECLARE_WRITE8_MEMBER( carnival_audio_1_w );
@@ -117,6 +146,15 @@ public:
 	DECLARE_READ8_MEMBER( carnival_music_port_t1_r );
 	DECLARE_WRITE8_MEMBER( carnival_music_port_1_w );
 	DECLARE_WRITE8_MEMBER( carnival_music_port_2_w );
+=======
+	/*----------- defined in audio/carnival.c -----------*/
+	DECLARE_WRITE8_MEMBER( carnival_audio_1_w );
+	DECLARE_WRITE8_MEMBER( carnival_audio_2_w );
+	DECLARE_READ_LINE_MEMBER( carnival_music_port_t1_r );
+	DECLARE_WRITE8_MEMBER( carnival_music_port_1_w );
+	DECLARE_WRITE8_MEMBER( carnival_music_port_2_w );
+	void carnival_psg_latch(address_space &space);
+>>>>>>> upstream/master
 
 	/*----------- defined in audio/depthch.c -----------*/
 	DECLARE_WRITE8_MEMBER( depthch_audio_w );
@@ -136,6 +174,7 @@ public:
 	DECLARE_CUSTOM_INPUT_MEMBER(fake_lives_r);
 	DECLARE_CUSTOM_INPUT_MEMBER(samurai_protection_r);
 	DECLARE_INPUT_CHANGED_MEMBER(coin_changed);
+<<<<<<< HEAD
 	DECLARE_INPUT_CHANGED_MEMBER(nsub_coin_in);
 
 	TIMER_DEVICE_CALLBACK_MEMBER(clear_coin_status);
@@ -161,3 +200,48 @@ MACHINE_CONFIG_EXTERN( frogs_audio );
 MACHINE_CONFIG_EXTERN( headon_audio );
 MACHINE_CONFIG_EXTERN( invinco_audio );
 MACHINE_CONFIG_EXTERN( pulsar_audio );
+=======
+
+	TIMER_DEVICE_CALLBACK_MEMBER(clear_coin_status);
+
+	DECLARE_MACHINE_START(samurai);
+	DECLARE_MACHINE_START(frogs_audio);
+
+	virtual void machine_start() override;
+
+	uint32_t screen_update_bw(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect);
+	uint32_t screen_update_bw_or_color(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect);
+	uint32_t screen_update_color(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect);
+	int get_vcounter();
+	int is_cabinet_color();
+	virtual pen_t choose_pen(uint8_t x, uint8_t y, pen_t back_pen);
+};
+
+class nsub_state : public vicdual_state
+{
+public:
+	nsub_state(const machine_config &mconfig, device_type type, const char *tag)
+		: vicdual_state(mconfig, type, tag),
+		m_s97269pb(*this,"s97269pb"),
+		m_s97271p(*this,"s97271p")
+	{ }
+
+	required_device<s97269pb_device> m_s97269pb;
+	required_device<s97271p_device> m_s97271p;
+
+	int m_nsub_coin_counter;
+	int m_nsub_play_counter;
+
+	DECLARE_READ8_MEMBER(nsub_io_r);
+	DECLARE_WRITE8_MEMBER(nsub_io_w);
+
+	DECLARE_INPUT_CHANGED_MEMBER(nsub_coin_in);
+
+	TIMER_DEVICE_CALLBACK_MEMBER(nsub_coin_pulse);
+
+	DECLARE_MACHINE_START(nsub);
+	DECLARE_MACHINE_RESET(nsub);
+
+	virtual pen_t choose_pen(uint8_t x, uint8_t y, pen_t back_pen) override;
+};
+>>>>>>> upstream/master

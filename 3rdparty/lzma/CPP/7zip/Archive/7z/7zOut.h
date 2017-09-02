@@ -9,6 +9,10 @@
 #include "7zItem.h"
 
 #include "../../Common/OutBuffer.h"
+<<<<<<< HEAD
+=======
+#include "../../Common/StreamUtils.h"
+>>>>>>> upstream/master
 
 namespace NArchive {
 namespace N7z {
@@ -28,6 +32,11 @@ public:
   }
   void WriteBytes(const void *data, size_t size)
   {
+<<<<<<< HEAD
+=======
+    if (size == 0)
+      return;
+>>>>>>> upstream/master
     if (size > _size - _pos)
       throw 1;
     memcpy(_data + _pos, data, size);
@@ -45,6 +54,7 @@ public:
 struct CHeaderOptions
 {
   bool CompressMainHeader;
+<<<<<<< HEAD
   bool WriteCTime;
   bool WriteATime;
   bool WriteMTime;
@@ -57,15 +67,201 @@ struct CHeaderOptions
       {}
 };
 
+=======
+  /*
+  bool WriteCTime;
+  bool WriteATime;
+  bool WriteMTime;
+  */
+
+  CHeaderOptions():
+      CompressMainHeader(true)
+      /*
+      , WriteCTime(false)
+      , WriteATime(false)
+      , WriteMTime(true)
+      */
+      {}
+};
+
+
+struct CFileItem2
+{
+  UInt64 CTime;
+  UInt64 ATime;
+  UInt64 MTime;
+  UInt64 StartPos;
+  bool CTimeDefined;
+  bool ATimeDefined;
+  bool MTimeDefined;
+  bool StartPosDefined;
+  bool IsAnti;
+  // bool IsAux;
+
+  void Init()
+  {
+    CTimeDefined = false;
+    ATimeDefined = false;
+    MTimeDefined = false;
+    StartPosDefined = false;
+    IsAnti = false;
+    // IsAux = false;
+  }
+};
+
+struct COutFolders
+{
+  CUInt32DefVector FolderUnpackCRCs; // Now we use it for headers only.
+
+  CRecordVector<CNum> NumUnpackStreamsVector;
+  CRecordVector<UInt64> CoderUnpackSizes; // including unpack sizes of bond coders
+
+  void OutFoldersClear()
+  {
+    FolderUnpackCRCs.Clear();
+    NumUnpackStreamsVector.Clear();
+    CoderUnpackSizes.Clear();
+  }
+
+  void OutFoldersReserveDown()
+  {
+    FolderUnpackCRCs.ReserveDown();
+    NumUnpackStreamsVector.ReserveDown();
+    CoderUnpackSizes.ReserveDown();
+  }
+};
+
+struct CArchiveDatabaseOut: public COutFolders
+{
+  CRecordVector<UInt64> PackSizes;
+  CUInt32DefVector PackCRCs;
+  CObjectVector<CFolder> Folders;
+
+  CRecordVector<CFileItem> Files;
+  UStringVector Names;
+  CUInt64DefVector CTime;
+  CUInt64DefVector ATime;
+  CUInt64DefVector MTime;
+  CUInt64DefVector StartPos;
+  CRecordVector<bool> IsAnti;
+
+  /*
+  CRecordVector<bool> IsAux;
+
+  CByteBuffer SecureBuf;
+  CRecordVector<UInt32> SecureSizes;
+  CRecordVector<UInt32> SecureIDs;
+
+  void ClearSecure()
+  {
+    SecureBuf.Free();
+    SecureSizes.Clear();
+    SecureIDs.Clear();
+  }
+  */
+
+  void Clear()
+  {
+    OutFoldersClear();
+
+    PackSizes.Clear();
+    PackCRCs.Clear();
+    Folders.Clear();
+  
+    Files.Clear();
+    Names.Clear();
+    CTime.Clear();
+    ATime.Clear();
+    MTime.Clear();
+    StartPos.Clear();
+    IsAnti.Clear();
+
+    /*
+    IsAux.Clear();
+    ClearSecure();
+    */
+  }
+
+  void ReserveDown()
+  {
+    OutFoldersReserveDown();
+
+    PackSizes.ReserveDown();
+    PackCRCs.ReserveDown();
+    Folders.ReserveDown();
+    
+    Files.ReserveDown();
+    Names.ReserveDown();
+    CTime.ReserveDown();
+    ATime.ReserveDown();
+    MTime.ReserveDown();
+    StartPos.ReserveDown();
+    IsAnti.ReserveDown();
+
+    /*
+    IsAux.ReserveDown();
+    */
+  }
+
+  bool IsEmpty() const
+  {
+    return (
+      PackSizes.IsEmpty() &&
+      NumUnpackStreamsVector.IsEmpty() &&
+      Folders.IsEmpty() &&
+      Files.IsEmpty());
+  }
+
+  bool CheckNumFiles() const
+  {
+    unsigned size = Files.Size();
+    return (
+      CTime.CheckSize(size) &&
+      ATime.CheckSize(size) &&
+      MTime.CheckSize(size) &&
+      StartPos.CheckSize(size) &&
+      (size == IsAnti.Size() || IsAnti.Size() == 0));
+  }
+
+  bool IsItemAnti(unsigned index) const { return (index < IsAnti.Size() && IsAnti[index]); }
+  // bool IsItemAux(unsigned index) const { return (index < IsAux.Size() && IsAux[index]); }
+
+  void SetItem_Anti(unsigned index, bool isAnti)
+  {
+    while (index >= IsAnti.Size())
+      IsAnti.Add(false);
+    IsAnti[index] = isAnti;
+  }
+  /*
+  void SetItem_Aux(unsigned index, bool isAux)
+  {
+    while (index >= IsAux.Size())
+      IsAux.Add(false);
+    IsAux[index] = isAux;
+  }
+  */
+
+  void AddFile(const CFileItem &file, const CFileItem2 &file2, const UString &name);
+};
+
+>>>>>>> upstream/master
 class COutArchive
 {
   UInt64 _prefixHeaderPos;
 
+<<<<<<< HEAD
   HRESULT WriteDirect(const void *data, UInt32 size);
   
   UInt64 GetPos() const;
   void WriteBytes(const void *data, size_t size);
   void WriteBytes(const CByteBuffer &data) { WriteBytes(data, data.GetCapacity()); }
+=======
+  HRESULT WriteDirect(const void *data, UInt32 size) { return WriteStream(SeqStream, data, size); }
+  
+  UInt64 GetPos() const;
+  void WriteBytes(const void *data, size_t size);
+  void WriteBytes(const CByteBuffer &data) { WriteBytes(data, data.Size()); }
+>>>>>>> upstream/master
   void WriteByte(Byte b);
   void WriteUInt32(UInt32 value);
   void WriteUInt64(UInt64 value);
@@ -75,13 +271,20 @@ class COutArchive
   void WriteFolder(const CFolder &folder);
   HRESULT WriteFileHeader(const CFileItem &itemInfo);
   void WriteBoolVector(const CBoolVector &boolVector);
+<<<<<<< HEAD
   void WriteHashDigests(
       const CRecordVector<bool> &digestsDefined,
       const CRecordVector<UInt32> &hashDigests);
+=======
+  void WritePropBoolVector(Byte id, const CBoolVector &boolVector);
+
+  void WriteHashDigests(const CUInt32DefVector &digests);
+>>>>>>> upstream/master
 
   void WritePackInfo(
       UInt64 dataOffset,
       const CRecordVector<UInt64> &packSizes,
+<<<<<<< HEAD
       const CRecordVector<bool> &packCRCsDefined,
       const CRecordVector<UInt32> &packCRCs);
 
@@ -96,15 +299,38 @@ class COutArchive
 
   void SkipAlign(unsigned pos, unsigned alignSize);
   void WriteAlignedBoolHeader(const CBoolVector &v, int numDefined, Byte type, unsigned itemSize);
+=======
+      const CUInt32DefVector &packCRCs);
+
+  void WriteUnpackInfo(
+      const CObjectVector<CFolder> &folders,
+      const COutFolders &outFolders);
+
+  void WriteSubStreamsInfo(
+      const CObjectVector<CFolder> &folders,
+      const COutFolders &outFolders,
+      const CRecordVector<UInt64> &unpackSizes,
+      const CUInt32DefVector &digests);
+
+  void SkipAlign(unsigned pos, unsigned alignSize);
+  void WriteAlignedBoolHeader(const CBoolVector &v, unsigned numDefined, Byte type, unsigned itemSize);
+>>>>>>> upstream/master
   void WriteUInt64DefVector(const CUInt64DefVector &v, Byte type);
 
   HRESULT EncodeStream(
       DECL_EXTERNAL_CODECS_LOC_VARS
       CEncoder &encoder, const CByteBuffer &data,
+<<<<<<< HEAD
       CRecordVector<UInt64> &packSizes, CObjectVector<CFolder> &folders);
   void WriteHeader(
       const CArchiveDatabase &db,
       const CHeaderOptions &headerOptions,
+=======
+      CRecordVector<UInt64> &packSizes, CObjectVector<CFolder> &folders, COutFolders &outFolders);
+  void WriteHeader(
+      const CArchiveDatabaseOut &db,
+      // const CHeaderOptions &headerOptions,
+>>>>>>> upstream/master
       UInt64 &headerOffset);
   
   bool _countMode;
@@ -118,6 +344,11 @@ class COutArchive
   bool _endMarker;
   #endif
 
+<<<<<<< HEAD
+=======
+  bool _useAlign;
+
+>>>>>>> upstream/master
   HRESULT WriteSignature();
   #ifdef _7Z_VOL
   HRESULT WriteFinishSignature();
@@ -136,7 +367,11 @@ public:
   HRESULT SkipPrefixArchiveHeader();
   HRESULT WriteDatabase(
       DECL_EXTERNAL_CODECS_LOC_VARS
+<<<<<<< HEAD
       const CArchiveDatabase &db,
+=======
+      const CArchiveDatabaseOut &db,
+>>>>>>> upstream/master
       const CCompressionMethodMode *options,
       const CHeaderOptions &headerOptions);
 

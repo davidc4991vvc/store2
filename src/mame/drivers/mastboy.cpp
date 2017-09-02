@@ -11,6 +11,11 @@
     Notes:
 
     Why does RAM-M fail on first boot, Charles mentioned it can (randomly?) fail on real HW too, is it buggy code?
+<<<<<<< HEAD
+=======
+    The EAROM (28C16 parallel EEPROM) takes a long time to write out if RAM-M fails internal testing.
+
+>>>>>>> upstream/master
     Are the correct/incorrect samples when you answer a question meant to loop as they do?
     Video timing should be hooked up with MAME's new video timing system
 
@@ -18,8 +23,11 @@
     having a different internal program, or is it just a (bad) hack?
 
     This Can be converted to tilemaps very easily, but probably not worth it
+<<<<<<< HEAD
 
     Backup RAM enable / disable needs figuring out properly
+=======
+>>>>>>> upstream/master
 */
 
 /*
@@ -37,6 +45,10 @@
     1x OKI5205 (sound)
     1x crystal resonator POE400B (close to sound)
     1x oscillator 24.000000MHz (close to main)
+<<<<<<< HEAD
+=======
+    1x Exel XLS28C16AP (backup memory)
+>>>>>>> upstream/master
     ROMs
     1x M27C2001 (1)
     4x AM27C010 (2,5,6,7)
@@ -439,7 +451,14 @@
 #include "cpu/z180/z180.h"
 #include "sound/saa1099.h"
 #include "sound/msm5205.h"
+<<<<<<< HEAD
 #include "machine/nvram.h"
+=======
+#include "machine/74259.h"
+#include "machine/eeprompar.h"
+#include "screen.h"
+#include "speaker.h"
+>>>>>>> upstream/master
 
 
 class mastboy_state : public driver_device
@@ -449,15 +468,23 @@ public:
 		: driver_device(mconfig, type, tag),
 		m_maincpu(*this, "maincpu"),
 		m_msm(*this, "msm"),
+<<<<<<< HEAD
 		m_gfxdecode(*this, "gfxdecode"),
 		m_palette(*this, "palette"),
 		m_nvram(*this, "nvram") ,
+=======
+		m_outlatch(*this, "outlatch"),
+		m_gfxdecode(*this, "gfxdecode"),
+		m_palette(*this, "palette"),
+		m_earom(*this, "earom") ,
+>>>>>>> upstream/master
 		m_workram(*this, "workram"),
 		m_tileram(*this, "tileram"),
 		m_colram(*this, "colram") { }
 
 	required_device<cpu_device> m_maincpu;
 	required_device<msm5205_device> m_msm;
+<<<<<<< HEAD
 	required_device<gfxdecode_device> m_gfxdecode;
 	required_device<palette_device> m_palette;
 
@@ -474,10 +501,27 @@ public:
 	int m_m5205_part;
 	int m_m5205_sambit0;
 	int m_m5205_sambit1;
+=======
+	required_device<ls259_device> m_outlatch;
+	required_device<gfxdecode_device> m_gfxdecode;
+	required_device<palette_device> m_palette;
+	required_device<eeprom_parallel_28xx_device> m_earom;
+
+	required_shared_ptr<uint8_t> m_workram;
+	required_shared_ptr<uint8_t> m_tileram;
+	required_shared_ptr<uint8_t> m_colram;
+
+	uint8_t* m_vram;
+	uint8_t m_bank;
+	int m_irq0_ack;
+	int m_m5205_next;
+	int m_m5205_part;
+>>>>>>> upstream/master
 
 	DECLARE_READ8_MEMBER(banked_ram_r);
 	DECLARE_WRITE8_MEMBER(banked_ram_w);
 	DECLARE_WRITE8_MEMBER(bank_w);
+<<<<<<< HEAD
 	DECLARE_READ8_MEMBER(backupram_r);
 	DECLARE_WRITE8_MEMBER(backupram_w);
 	DECLARE_WRITE8_MEMBER(backupram_enable_w);
@@ -495,6 +539,19 @@ public:
 	virtual void video_start();
 
 	UINT32 screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
+=======
+	DECLARE_WRITE8_MEMBER(msm5205_data_w);
+	DECLARE_WRITE_LINE_MEMBER(irq0_ack_w);
+	DECLARE_READ8_MEMBER(port_38_read);
+	DECLARE_READ8_MEMBER(nmi_read);
+	DECLARE_WRITE_LINE_MEMBER(adpcm_int);
+
+	virtual void machine_start() override;
+	virtual void machine_reset() override;
+	virtual void video_start() override;
+
+	uint32_t screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
+>>>>>>> upstream/master
 
 	INTERRUPT_GEN_MEMBER(interrupt);
 };
@@ -509,7 +566,11 @@ void mastboy_state::video_start()
 	save_pointer(NAME(m_vram), 0x10000);
 }
 
+<<<<<<< HEAD
 UINT32 mastboy_state::screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+=======
+uint32_t mastboy_state::screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+>>>>>>> upstream/master
 {
 	int y,x,i;
 	int count = 0x000;
@@ -565,7 +626,11 @@ READ8_MEMBER(mastboy_state::banked_ram_r)
 
 		if (bank>0x3) // ROM access
 		{
+<<<<<<< HEAD
 			UINT8 *src    = memregion( "gfx1" )->base();
+=======
+			uint8_t *src    = memregion( "gfx1" )->base();
+>>>>>>> upstream/master
 			bank &=0x3;
 			return src[offset+(bank*0x4000)];
 		}
@@ -578,7 +643,11 @@ READ8_MEMBER(mastboy_state::banked_ram_r)
 	}
 	else
 	{
+<<<<<<< HEAD
 		UINT8 *src;
+=======
+		uint8_t *src;
+>>>>>>> upstream/master
 		int bank;
 		bank = m_bank & 0x7f;
 		src = memregion       ( "user1" )->base() + bank * 0x4000;
@@ -625,6 +694,7 @@ WRITE8_MEMBER(mastboy_state::bank_w)
 	m_bank = data;
 }
 
+<<<<<<< HEAD
 /* Backup RAM access */
 
 READ8_MEMBER(mastboy_state::backupram_r)
@@ -678,6 +748,13 @@ WRITE8_MEMBER(mastboy_state::msm5205_reset_w)
 
 WRITE8_MEMBER(mastboy_state::msm5205_data_w)
 {
+=======
+/* MSM5205 Related */
+
+WRITE8_MEMBER(mastboy_state::msm5205_data_w)
+{
+	m_m5205_part = 0;
+>>>>>>> upstream/master
 	m_m5205_next = data;
 }
 
@@ -694,16 +771,26 @@ WRITE_LINE_MEMBER(mastboy_state::adpcm_int)
 
 /* Interrupt Handling */
 
+<<<<<<< HEAD
 WRITE8_MEMBER(mastboy_state::irq0_ack_w)
 {
 	m_irq0_ack = data;
 	if ((data & 1) == 1)
+=======
+WRITE_LINE_MEMBER(mastboy_state::irq0_ack_w)
+{
+	if (state)
+>>>>>>> upstream/master
 		m_maincpu->set_input_line(0, CLEAR_LINE);
 }
 
 INTERRUPT_GEN_MEMBER(mastboy_state::interrupt)
 {
+<<<<<<< HEAD
 	if ((m_irq0_ack & 1) == 1)
+=======
+	if (m_outlatch->q0_r() == 1)
+>>>>>>> upstream/master
 	{
 		device.execute().set_input_line(0, ASSERT_LINE);
 	}
@@ -721,7 +808,11 @@ static ADDRESS_MAP_START( mastboy_map, AS_PROGRAM, 8, mastboy_state )
 
 	AM_RANGE(0xc000, 0xffff) AM_READWRITE(banked_ram_r,banked_ram_w) // mastboy bank area read / write
 
+<<<<<<< HEAD
 	AM_RANGE(0xff000, 0xff7ff) AM_READWRITE(backupram_r,backupram_w) AM_SHARE("nvram")
+=======
+	AM_RANGE(0xff000, 0xff7ff) AM_DEVREADWRITE("earom", eeprom_parallel_28xx_device, read, write)
+>>>>>>> upstream/master
 
 	AM_RANGE(0xff800, 0xff807) AM_READ_PORT("P1")
 	AM_RANGE(0xff808, 0xff80f) AM_READ_PORT("P2")
@@ -729,6 +820,7 @@ static ADDRESS_MAP_START( mastboy_map, AS_PROGRAM, 8, mastboy_state )
 	AM_RANGE(0xff818, 0xff81f) AM_READ_PORT("DSW2")
 
 	AM_RANGE(0xff820, 0xff827) AM_WRITE(bank_w)
+<<<<<<< HEAD
 	AM_RANGE(0xff828, 0xff828) AM_DEVWRITE("saa", saa1099_device, data_w)
 	AM_RANGE(0xff829, 0xff829) AM_DEVWRITE("saa", saa1099_device, control_w)
 	AM_RANGE(0xff830, 0xff830) AM_WRITE(msm5205_data_w)
@@ -737,6 +829,11 @@ static ADDRESS_MAP_START( mastboy_map, AS_PROGRAM, 8, mastboy_state )
 	AM_RANGE(0xff83a, 0xff83a) AM_WRITE(msm5205_sambit1_w)
 	AM_RANGE(0xff83b, 0xff83b) AM_WRITE(msm5205_reset_w)
 	AM_RANGE(0xff83c, 0xff83c) AM_WRITE(backupram_enable_w)
+=======
+	AM_RANGE(0xff828, 0xff829) AM_DEVWRITE("saa", saa1099_device, write)
+	AM_RANGE(0xff830, 0xff830) AM_WRITE(msm5205_data_w)
+	AM_RANGE(0xff838, 0xff83f) AM_DEVWRITE("outlatch", ls259_device, write_d0)
+>>>>>>> upstream/master
 
 	AM_RANGE(0xffc00, 0xfffff) AM_RAM // Internal RAM
 ADDRESS_MAP_END
@@ -882,11 +979,16 @@ void mastboy_state::machine_start()
 
 	save_item(NAME(m_bank));
 	save_item(NAME(m_irq0_ack));
+<<<<<<< HEAD
 	save_item(NAME(m_backupram_enabled));
 	save_item(NAME(m_m5205_next));
 	save_item(NAME(m_m5205_part));
 	save_item(NAME(m_m5205_sambit0));
 	save_item(NAME(m_m5205_sambit1));
+=======
+	save_item(NAME(m_m5205_next));
+	save_item(NAME(m_m5205_part));
+>>>>>>> upstream/master
 }
 
 void mastboy_state::machine_reset()
@@ -896,22 +998,40 @@ void mastboy_state::machine_reset()
 	memset( m_tileram,   0x00, 0x01000);
 	memset( m_colram,    0x00, 0x00200);
 	memset( m_vram, 0x00, 0x10000);
+<<<<<<< HEAD
 
 	m_m5205_part = 0;
 	m_msm->reset_w(1);
 	m_irq0_ack = 0;
+=======
+>>>>>>> upstream/master
 }
 
 
 
+<<<<<<< HEAD
 static MACHINE_CONFIG_START( mastboy, mastboy_state )
+=======
+static MACHINE_CONFIG_START( mastboy )
+>>>>>>> upstream/master
 	MCFG_CPU_ADD("maincpu", Z180, 12000000/2)   /* HD647180X0CP6-1M1R */
 	MCFG_CPU_PROGRAM_MAP(mastboy_map)
 	MCFG_CPU_IO_MAP(mastboy_io_map)
 	MCFG_CPU_VBLANK_INT_DRIVER("screen", mastboy_state,  interrupt)
 
+<<<<<<< HEAD
 	MCFG_NVRAM_ADD_1FILL("nvram")
 
+=======
+	MCFG_EEPROM_2816_ADD("earom")
+
+	MCFG_DEVICE_ADD("outlatch", LS259, 0) // IC17
+	MCFG_ADDRESSABLE_LATCH_Q0_OUT_CB(WRITELINE(mastboy_state, irq0_ack_w))
+	MCFG_ADDRESSABLE_LATCH_Q1_OUT_CB(DEVWRITELINE("msm", msm5205_device, s2_w))
+	MCFG_ADDRESSABLE_LATCH_Q2_OUT_CB(DEVWRITELINE("msm", msm5205_device, s1_w))
+	MCFG_ADDRESSABLE_LATCH_Q3_OUT_CB(DEVWRITELINE("msm", msm5205_device, reset_w))
+	MCFG_ADDRESSABLE_LATCH_Q4_OUT_CB(DEVWRITELINE("earom", eeprom_parallel_28xx_device, oe_w))
+>>>>>>> upstream/master
 
 	/* video hardware */
 	MCFG_SCREEN_ADD("screen", RASTER)
@@ -933,7 +1053,11 @@ static MACHINE_CONFIG_START( mastboy, mastboy_state )
 
 	MCFG_SOUND_ADD("msm", MSM5205, 384000)
 	MCFG_MSM5205_VCLK_CB(WRITELINE(mastboy_state, adpcm_int))  /* interrupt function */
+<<<<<<< HEAD
 	MCFG_MSM5205_PRESCALER_SELECTOR(MSM5205_SEX_4B)      /* 4KHz 4-bit */
+=======
+	MCFG_MSM5205_PRESCALER_SELECTOR(SEX_4B)      /* 4KHz 4-bit */
+>>>>>>> upstream/master
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 0.50)
 MACHINE_CONFIG_END
 
@@ -1054,6 +1178,12 @@ ROM_START( mastboyia )
 	/*                  0x1c0000 to 0x1fffff EMPTY */
 ROM_END
 
+<<<<<<< HEAD
 GAME( 1991, mastboy,  0,          mastboy, mastboy, driver_device, 0, ROT0, "Gaelco", "Master Boy (Spanish, PCB Rev A)", MACHINE_SUPPORTS_SAVE )
 GAME( 1991, mastboyi, mastboy,    mastboy, mastboy, driver_device, 0, ROT0, "Gaelco", "Master Boy (Italian, PCB Rev A, set 1)", MACHINE_SUPPORTS_SAVE )
 GAME( 1991, mastboyia,mastboy,    mastboy, mastboy, driver_device, 0, ROT0, "Gaelco", "Master Boy (Italian, PCB Rev A, set 2)", MACHINE_SUPPORTS_SAVE )
+=======
+GAME( 1991, mastboy,  0,          mastboy, mastboy, mastboy_state, 0, ROT0, "Gaelco", "Master Boy (Spanish, PCB Rev A)", MACHINE_SUPPORTS_SAVE )
+GAME( 1991, mastboyi, mastboy,    mastboy, mastboy, mastboy_state, 0, ROT0, "Gaelco", "Master Boy (Italian, PCB Rev A, set 1)", MACHINE_SUPPORTS_SAVE )
+GAME( 1991, mastboyia,mastboy,    mastboy, mastboy, mastboy_state, 0, ROT0, "Gaelco", "Master Boy (Italian, PCB Rev A, set 2)", MACHINE_SUPPORTS_SAVE )
+>>>>>>> upstream/master

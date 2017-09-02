@@ -11,6 +11,10 @@
 
 ***************************************************************************/
 
+<<<<<<< HEAD
+=======
+#include "emu.h"
+>>>>>>> upstream/master
 #include "floppy.h"
 #include "formats/cgenie_dsk.h"
 #include "bus/generic/carts.h"
@@ -27,6 +31,7 @@
 //  DEVICE DEFINITIONS
 //**************************************************************************
 
+<<<<<<< HEAD
 const device_type CGENIE_FDC = &device_creator<cgenie_fdc_device>;
 
 DEVICE_ADDRESS_MAP_START( mmio, 8, cgenie_fdc_device )
@@ -35,6 +40,16 @@ DEVICE_ADDRESS_MAP_START( mmio, 8, cgenie_fdc_device )
 	AM_RANGE(0xed, 0xed) AM_MIRROR(0x10) AM_DEVREADWRITE("fd1793", fd1793_t, track_r, track_w)
 	AM_RANGE(0xee, 0xee) AM_MIRROR(0x10) AM_DEVREADWRITE("fd1793", fd1793_t, sector_r, sector_w)
 	AM_RANGE(0xef, 0xef) AM_MIRROR(0x10) AM_DEVREADWRITE("fd1793", fd1793_t, data_r, data_w)
+=======
+DEFINE_DEVICE_TYPE(CGENIE_FDC, cgenie_fdc_device, "cgenie_fdc", "Colour Genie FDC")
+
+DEVICE_ADDRESS_MAP_START( mmio, 8, cgenie_fdc_device )
+	AM_RANGE(0xe0, 0xe3) AM_MIRROR(0x10) AM_READWRITE(irq_r, select_w)
+	AM_RANGE(0xec, 0xec) AM_MIRROR(0x10) AM_DEVREAD("fd1793", fd1793_device, status_r) AM_WRITE(command_w)
+	AM_RANGE(0xed, 0xed) AM_MIRROR(0x10) AM_DEVREADWRITE("fd1793", fd1793_device, track_r, track_w)
+	AM_RANGE(0xee, 0xee) AM_MIRROR(0x10) AM_DEVREADWRITE("fd1793", fd1793_device, sector_r, sector_w)
+	AM_RANGE(0xef, 0xef) AM_MIRROR(0x10) AM_DEVREADWRITE("fd1793", fd1793_device, data_r, data_w)
+>>>>>>> upstream/master
 ADDRESS_MAP_END
 
 FLOPPY_FORMATS_MEMBER( cgenie_fdc_device::floppy_formats )
@@ -59,17 +74,28 @@ ROM_START( cgenie_fdc )
 	ROM_LOAD("cgdos.rom", 0x0000, 0x2000, CRC(2a96cf74) SHA1(6dcac110f87897e1ee7521aefbb3d77a14815893))
 ROM_END
 
+<<<<<<< HEAD
 const rom_entry *cgenie_fdc_device::device_rom_region() const
+=======
+const tiny_rom_entry *cgenie_fdc_device::device_rom_region() const
+>>>>>>> upstream/master
 {
 	return ROM_NAME( cgenie_fdc );
 }
 
 //-------------------------------------------------
+<<<<<<< HEAD
 //  machine_config_additions - device-specific
 //  machine configurations
 //-------------------------------------------------
 
 static MACHINE_CONFIG_FRAGMENT( cgenie_fdc )
+=======
+//  device_add_mconfig - add device configuration
+//-------------------------------------------------
+
+MACHINE_CONFIG_MEMBER( cgenie_fdc_device::device_add_mconfig )
+>>>>>>> upstream/master
 	MCFG_TIMER_DRIVER_ADD_PERIODIC("timer", cgenie_fdc_device, timer_callback, attotime::from_msec(25))
 
 	MCFG_FD1793_ADD("fd1793", XTAL_1MHz)
@@ -77,6 +103,7 @@ static MACHINE_CONFIG_FRAGMENT( cgenie_fdc )
 
 	MCFG_FLOPPY_DRIVE_ADD("fd1793:0", cgenie_floppies, "ssdd", cgenie_fdc_device::floppy_formats)
 	MCFG_FLOPPY_DRIVE_ADD("fd1793:1", cgenie_floppies, "ssdd", cgenie_fdc_device::floppy_formats)
+<<<<<<< HEAD
 	MCFG_FLOPPY_DRIVE_ADD("fd1793:2", cgenie_floppies, NULL,   cgenie_fdc_device::floppy_formats)
 	MCFG_FLOPPY_DRIVE_ADD("fd1793:3", cgenie_floppies, NULL,   cgenie_fdc_device::floppy_formats)
 
@@ -94,6 +121,20 @@ machine_config_constructor cgenie_fdc_device::device_mconfig_additions() const
 	return MACHINE_CONFIG_NAME( cgenie_fdc );
 }
 
+=======
+	MCFG_FLOPPY_DRIVE_ADD("fd1793:2", cgenie_floppies, nullptr,   cgenie_fdc_device::floppy_formats)
+	MCFG_FLOPPY_DRIVE_ADD("fd1793:3", cgenie_floppies, nullptr,   cgenie_fdc_device::floppy_formats)
+
+//  MCFG_SOFTWARE_LIST_ADD("floppy_list", "cgenie_flop")
+
+	MCFG_GENERIC_SOCKET_ADD("socket", generic_plain_slot, "cgenie_flop_rom")
+	MCFG_GENERIC_EXTENSIONS("bin,rom")
+	MCFG_GENERIC_LOAD(cgenie_fdc_device, socket_load)
+
+	MCFG_SOFTWARE_LIST_ADD("rom_list", "cgenie_flop_rom")
+MACHINE_CONFIG_END
+
+>>>>>>> upstream/master
 
 //**************************************************************************
 //  LIVE DEVICE
@@ -103,16 +144,26 @@ machine_config_constructor cgenie_fdc_device::device_mconfig_additions() const
 //  cgenie_fdc_device - constructor
 //-------------------------------------------------
 
+<<<<<<< HEAD
 cgenie_fdc_device::cgenie_fdc_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock) :
 	device_t(mconfig, CGENIE_FDC, "Floppy Disc Controller", tag, owner, clock, "cgenie_fdc", __FILE__),
 	device_expansion_interface(mconfig, *this),
+=======
+cgenie_fdc_device::cgenie_fdc_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock) :
+	device_t(mconfig, CGENIE_FDC, tag, owner, clock),
+	device_cg_exp_interface(mconfig, *this),
+>>>>>>> upstream/master
 	m_fdc(*this, "fd1793"),
 	m_floppy0(*this, "fd1793:0"),
 	m_floppy1(*this, "fd1793:1"),
 	m_floppy2(*this, "fd1793:2"),
 	m_floppy3(*this, "fd1793:3"),
 	m_socket(*this, "socket"),
+<<<<<<< HEAD
 	m_floppy(NULL),
+=======
+	m_floppy(nullptr),
+>>>>>>> upstream/master
 	m_irq_status(0)
 {
 }
@@ -151,7 +202,11 @@ void cgenie_fdc_device::device_reset()
 
 READ8_MEMBER( cgenie_fdc_device::irq_r )
 {
+<<<<<<< HEAD
 	UINT8 data = m_irq_status;
+=======
+	uint8_t data = m_irq_status;
+>>>>>>> upstream/master
 
 	m_irq_status &= ~IRQ_TIMER;
 	m_slot->int_w(m_irq_status ? ASSERT_LINE : CLEAR_LINE);
@@ -167,18 +222,30 @@ TIMER_DEVICE_CALLBACK_MEMBER( cgenie_fdc_device::timer_callback )
 
 DEVICE_IMAGE_LOAD_MEMBER( cgenie_fdc_device, socket_load )
 {
+<<<<<<< HEAD
 	UINT32 size = m_socket->common_get_size("rom");
+=======
+	uint32_t size = m_socket->common_get_size("rom");
+>>>>>>> upstream/master
 
 	if (size > 0x1000)
 	{
 		image.seterror(IMAGE_ERROR_UNSPECIFIED, "Unsupported ROM size");
+<<<<<<< HEAD
 		return IMAGE_INIT_FAIL;
+=======
+		return image_init_result::FAIL;
+>>>>>>> upstream/master
 	}
 
 	m_socket->rom_alloc(0x1000, GENERIC_ROM8_WIDTH, ENDIANNESS_LITTLE);
 	m_socket->common_load_rom(m_socket->get_rom_base(), size, "rom");
 
+<<<<<<< HEAD
 	return IMAGE_INIT_PASS;
+=======
+	return image_init_result::PASS;
+>>>>>>> upstream/master
 }
 
 WRITE_LINE_MEMBER( cgenie_fdc_device::intrq_w )
@@ -199,7 +266,11 @@ WRITE8_MEMBER( cgenie_fdc_device::select_w )
 	if (VERBOSE)
 		logerror("cgenie_fdc_device::motor_w: 0x%02x\n", data);
 
+<<<<<<< HEAD
 	m_floppy = NULL;
+=======
+	m_floppy = nullptr;
+>>>>>>> upstream/master
 
 	if (BIT(data, 0)) m_floppy = m_floppy0->get_device();
 	if (BIT(data, 1)) m_floppy = m_floppy1->get_device();

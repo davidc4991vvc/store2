@@ -6,6 +6,7 @@
  *  Created on: 2/08/2014
  */
 
+<<<<<<< HEAD
 #ifndef SYMBFAC2_H_
 #define SYMBFAC2_H_
 
@@ -14,17 +15,32 @@
 #include "machine/ds128x.h"
 #include "machine/nvram.h"
 #include "cpcexp.h"
+=======
+#ifndef MAME_BUS_CPC_SYMBFAC2_H
+#define MAME_BUS_CPC_SYMBFAC2_H
+
+#pragma once
+
+#include "cpcexp.h"
+#include "machine/ataintf.h"
+#include "machine/ds128x.h"
+#include "machine/nvram.h"
+>>>>>>> upstream/master
 
 class cpc_symbiface2_device  : public device_t,
 								public device_cpc_expansion_card_interface
 {
 public:
 	// construction/destruction
+<<<<<<< HEAD
 	cpc_symbiface2_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
 
 	// optional information overrides
 	virtual machine_config_constructor device_mconfig_additions() const;
 	virtual ioport_constructor device_input_ports() const;
+=======
+	cpc_symbiface2_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
+>>>>>>> upstream/master
 
 	DECLARE_READ8_MEMBER(ide_cs0_r);
 	DECLARE_WRITE8_MEMBER(ide_cs0_w);
@@ -47,10 +63,22 @@ public:
 		PS2_MOUSE_BUTTONS,
 		PS2_MOUSE_SCROLL
 	};
+<<<<<<< HEAD
 protected:
 	// device-level overrides
 	virtual void device_start();
 	virtual void device_reset();
+=======
+
+protected:
+	// device-level overrides
+	virtual void device_start() override;
+	virtual void device_reset() override;
+
+// optional information overrides
+	virtual void device_add_mconfig(machine_config &config) override;
+	virtual ioport_constructor device_input_ports() const override;
+>>>>>>> upstream/master
 
 private:
 	cpc_expansion_slot_device *m_slot;
@@ -62,6 +90,7 @@ private:
 	required_ioport m_mouse_y;
 	required_ioport m_mouse_buttons;
 
+<<<<<<< HEAD
 	dynamic_buffer m_rom_space;
 
 	bool m_iohigh;
@@ -83,3 +112,26 @@ extern const device_type CPC_SYMBIFACE2;
 
 
 #endif /* SYMBFAC2_H_ */
+=======
+	std::vector<uint8_t> m_rom_space;
+
+	bool m_iohigh;
+	uint16_t m_ide_data;
+
+	uint8_t m_mouse_state;
+	uint8_t m_input_x;
+	uint8_t m_input_y;
+
+	// stores backup pointers so that mapping can be restored
+	uint8_t* m_4xxx_ptr_r;
+	uint8_t* m_4xxx_ptr_w;
+	uint8_t* m_6xxx_ptr_r;
+	uint8_t* m_6xxx_ptr_w;
+};
+
+// device type definition
+DECLARE_DEVICE_TYPE(CPC_SYMBIFACE2, cpc_symbiface2_device)
+
+
+#endif // MAME_BUS_CPC_SYMBFAC2_H
+>>>>>>> upstream/master

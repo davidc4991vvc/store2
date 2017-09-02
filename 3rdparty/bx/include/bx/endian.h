@@ -1,6 +1,11 @@
 /*
+<<<<<<< HEAD
  * Copyright 2010-2015 Branimir Karadzic. All rights reserved.
  * License: http://www.opensource.org/licenses/BSD-2-Clause
+=======
+ * Copyright 2010-2017 Branimir Karadzic. All rights reserved.
+ * License: https://github.com/bkaradzic/bx#license-bsd-2-clause
+>>>>>>> upstream/master
  */
 
 #ifndef BX_ENDIAN_H_HEADER_GUARD
@@ -10,6 +15,7 @@
 
 namespace bx
 {
+<<<<<<< HEAD
 	inline uint16_t endianSwap(uint16_t _in)
 	{
 		return (_in>>8) | (_in<<8);
@@ -45,10 +51,30 @@ namespace bx
 	{
 		return (int64_t)endianSwap( (uint64_t)_in);
 	}
+=======
+	///
+	int16_t endianSwap(int16_t _in);
+
+	///
+	uint16_t endianSwap(uint16_t _in);
+
+	///
+	int32_t endianSwap(int32_t _in);
+
+	///
+	uint32_t endianSwap(uint32_t _in);
+
+	///
+	int64_t endianSwap(int64_t _in);
+
+	///
+	uint64_t endianSwap(uint64_t _in);
+>>>>>>> upstream/master
 
 	/// Input argument is encoded as little endian, convert it if neccessary
 	/// depending on host CPU endianess.
 	template <typename Ty>
+<<<<<<< HEAD
 	inline Ty toLittleEndian(const Ty _in)
 	{
 #if BX_CPU_ENDIAN_BIG
@@ -57,10 +83,14 @@ namespace bx
 		return _in;
 #endif // BX_CPU_ENDIAN_BIG
 	}
+=======
+	Ty toLittleEndian(const Ty _in);
+>>>>>>> upstream/master
 
 	/// Input argument is encoded as big endian, convert it if neccessary
 	/// depending on host CPU endianess.
 	template <typename Ty>
+<<<<<<< HEAD
 	inline Ty toBigEndian(const Ty _in)
 	{
 #if BX_CPU_ENDIAN_LITTLE
@@ -69,10 +99,14 @@ namespace bx
 		return _in;
 #endif // BX_CPU_ENDIAN_LITTLE
 	}
+=======
+	Ty toBigEndian(const Ty _in);
+>>>>>>> upstream/master
 
 	/// If _littleEndian is true, converts input argument to from little endian
 	/// to host CPU endiness.
 	template <typename Ty>
+<<<<<<< HEAD
 	inline Ty toHostEndian(const Ty _in, bool _fromLittleEndian)
 	{
 #if BX_CPU_ENDIAN_LITTLE
@@ -84,4 +118,12 @@ namespace bx
 
 } // namespace bx
 
+=======
+	Ty toHostEndian(const Ty _in, bool _fromLittleEndian);
+
+} // namespace bx
+
+#include "inline/endian.inl"
+
+>>>>>>> upstream/master
 #endif // BX_ENDIAN_H_HEADER_GUARD

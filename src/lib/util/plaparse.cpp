@@ -33,11 +33,19 @@
 
 struct parse_info
 {
+<<<<<<< HEAD
 	UINT32  inputs;     /* number of input columns */
 	UINT32  outputs;    /* number of output columns */
 	UINT32  terms;      /* number of terms */
 	UINT32  xorval[JED_MAX_FUSES/64];   /* output polarity */
 	UINT32  xorptr;
+=======
+	uint32_t  inputs;     /* number of input columns */
+	uint32_t  outputs;    /* number of output columns */
+	uint32_t  terms;      /* number of terms */
+	uint32_t  xorval[JED_MAX_FUSES/64];   /* output polarity */
+	uint32_t  xorptr;
+>>>>>>> upstream/master
 };
 
 
@@ -61,9 +69,15 @@ static bool iscrlf(char c)
     character stream
 -------------------------------------------------*/
 
+<<<<<<< HEAD
 static UINT32 suck_number(const UINT8 **src, const UINT8 *srcend)
 {
 	UINT32 value = 0;
+=======
+static uint32_t suck_number(const uint8_t **src, const uint8_t *srcend)
+{
+	uint32_t value = 0;
+>>>>>>> upstream/master
 
 	// find first digit
 	while (*src < srcend && !iscrlf(**src) && !isdigit(**src))
@@ -89,10 +103,17 @@ static UINT32 suck_number(const UINT8 **src, const UINT8 *srcend)
     process_terms - process input/output matrix
 -------------------------------------------------*/
 
+<<<<<<< HEAD
 static bool process_terms(jed_data *data, const UINT8 **src, const UINT8 *srcend, parse_info *pinfo)
 {
 	UINT32 curinput = 0;
 	UINT32 curoutput = 0;
+=======
+static bool process_terms(jed_data *data, const uint8_t **src, const uint8_t *srcend, parse_info *pinfo)
+{
+	uint32_t curinput = 0;
+	uint32_t curoutput = 0;
+>>>>>>> upstream/master
 	bool outputs = false;
 
 	// symbols for 0, 1, dont_care, no_meaning
@@ -195,7 +216,11 @@ static bool process_terms(jed_data *data, const UINT8 **src, const UINT8 *srcend
     process_field - process a single field
 -------------------------------------------------*/
 
+<<<<<<< HEAD
 static bool process_field(jed_data *data, const UINT8 **src, const UINT8 *srcend, parse_info *pinfo)
+=======
+static bool process_field(jed_data *data, const uint8_t **src, const uint8_t *srcend, parse_info *pinfo)
+>>>>>>> upstream/master
 {
 	// valid keywords
 	static const char *const keywords[] = { "i", "o", "p", "phase", "e", "\0" };
@@ -213,7 +238,11 @@ static bool process_field(jed_data *data, const UINT8 **src, const UINT8 *srcend
 	// find keyword
 	char dest[0x10];
 	memset(dest, 0, ARRAY_LENGTH(dest));
+<<<<<<< HEAD
 	const UINT8 *seek = *src;
+=======
+	const uint8_t *seek = *src;
+>>>>>>> upstream/master
 	int destptr = 0;
 
 	while (seek < srcend && isalpha(*seek) && destptr < ARRAY_LENGTH(dest) - 1)
@@ -223,7 +252,11 @@ static bool process_field(jed_data *data, const UINT8 **src, const UINT8 *srcend
 		destptr++;
 	}
 
+<<<<<<< HEAD
 	UINT8 find = 0;
+=======
+	uint8_t find = 0;
+>>>>>>> upstream/master
 	while (strlen(keywords[find]) && strcmp(dest, keywords[find]))
 		find++;
 
@@ -294,10 +327,29 @@ static bool process_field(jed_data *data, const UINT8 **src, const UINT8 *srcend
     that has been loaded raw into memory
 -------------------------------------------------*/
 
+<<<<<<< HEAD
 int pla_parse(const void *data, size_t length, jed_data *result)
 {
 	const UINT8 *src = (const UINT8 *)data;
 	const UINT8 *srcend = src + length;
+=======
+/**
+ * @fn  int pla_parse(const void *data, size_t length, jed_data *result)
+ *
+ * @brief   Pla parse.
+ *
+ * @param   data        The data.
+ * @param   length      The length.
+ * @param [out] result  If non-null, the result.
+ *
+ * @return  An int.
+ */
+
+int pla_parse(const void *data, size_t length, jed_data *result)
+{
+	const uint8_t *src = (const uint8_t *)data;
+	const uint8_t *srcend = src + length;
+>>>>>>> upstream/master
 
 	parse_info pinfo;
 	memset(&pinfo, 0, sizeof(pinfo));

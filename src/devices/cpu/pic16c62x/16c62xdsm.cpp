@@ -29,8 +29,13 @@
 #include "emu.h"
 #include <ctype.h>
 
+<<<<<<< HEAD
 static const UINT8 *rombase;
 static const UINT8 *rambase;
+=======
+static const uint8_t *rombase;
+static const uint8_t *rambase;
+>>>>>>> upstream/master
 static offs_t pcbase;
 #define READOP16(A)  (rombase[(A) - pcbase] | (rombase[(A) + 1 - pcbase] << 8))
 #define READARG16(A) (rambase[(A) - pcbase] | (rambase[(A) + 1 - pcbase] << 8))
@@ -93,7 +98,11 @@ static const char *const PIC16C62xFormats[] = {
 	FMT("111010kkkkkkkk", "xorlw  %K"),
 	FMT("11110xkkkkkkkk", "sublw  %K"),
 	FMT("11111xkkkkkkkk", "addlw  %K"),
+<<<<<<< HEAD
 	NULL
+=======
+	nullptr
+>>>>>>> upstream/master
 };
 
 #define MAX_OPS ((ARRAY_LENGTH(PIC16C62xFormats) - 1) / PTRS_PER_FORMAT)
@@ -146,7 +155,11 @@ static void InitDasm16C5x(void)
 			fatalerror("not enough bits in encoding '%s %s' %d\n",
 				ops[0],ops[1],bit);
 		}
+<<<<<<< HEAD
 		while (isspace((UINT8)*p)) p++;
+=======
+		while (isspace((uint8_t)*p)) p++;
+>>>>>>> upstream/master
 		if (*p) Op[i].extcode = *p;
 		Op[i].bits = bits;
 		Op[i].mask = mask;
@@ -160,7 +173,11 @@ static void InitDasm16C5x(void)
 	OpInizialized = 1;
 }
 
+<<<<<<< HEAD
 CPU_DISASSEMBLE( pic16c62x )
+=======
+CPU_DISASSEMBLE(pic16c62x)
+>>>>>>> upstream/master
 {
 	int a, b, d, f, k;  /* these can all be filled in by parsing an instruction */
 	int i;
@@ -170,7 +187,11 @@ CPU_DISASSEMBLE( pic16c62x )
 	int bit;
 	//char *buffertmp;
 	const char *cp;             /* character pointer in OpFormats */
+<<<<<<< HEAD
 	UINT32 flags = 0;
+=======
+	uint32_t flags = 0;
+>>>>>>> upstream/master
 
 	rombase = oprom;
 	rambase = opram;
@@ -194,7 +215,11 @@ CPU_DISASSEMBLE( pic16c62x )
 	}
 	if (op == -1)
 	{
+<<<<<<< HEAD
 		sprintf(buffer,"???? dw %04Xh",code);
+=======
+		util::stream_format(stream, "???? dw %04Xh", code);
+>>>>>>> upstream/master
 		return cnt;
 	}
 	//buffertmp = buffer;
@@ -242,6 +267,7 @@ CPU_DISASSEMBLE( pic16c62x )
 	{
 		if (*cp == '%')
 		{
+<<<<<<< HEAD
 			char num[30], *q;
 			cp++;
 			switch (*cp++)
@@ -261,6 +287,23 @@ CPU_DISASSEMBLE( pic16c62x )
 		{
 			*buffer++ = *cp++;
 			*buffer = '\0';
+=======
+			cp++;
+			switch (*cp++)
+			{
+				case 'A': util::stream_format(stream, "$%03X", a); break;
+				case 'B': util::stream_format(stream, "%d", b); break;
+				case 'D': util::stream_format(stream, "%s", dest[d]); break;
+				case 'F': if (f < 0x20) util::stream_format(stream, "%s",regfile[f]); else util::stream_format(stream, "Reg$%02X",f); break;
+				case 'K': util::stream_format(stream, "%02Xh", k); break;
+				default:
+					fatalerror("illegal escape character in format '%s'\n",Op[op].fmt);
+			}
+		}
+		else
+		{
+			stream << *cp++;
+>>>>>>> upstream/master
 		}
 	}
 	return cnt | flags | DASMFLAG_SUPPORTED;

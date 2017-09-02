@@ -61,10 +61,20 @@ this seems to be the only zoom feature actually used in the games.
 */
 
 #include "emu.h"
+<<<<<<< HEAD
 #include "drawgfxm.h"
 #include "tc0080vco.h"
 #include "video/taito_helper.h"
 
+=======
+#include "tc0080vco.h"
+#include "video/taito_helper.h"
+
+#include "drawgfxm.h"
+#include "screen.h"
+
+
+>>>>>>> upstream/master
 #define TC0080VCO_RAM_SIZE 0x21000
 #define TC0080VCO_CHAR_RAM_SIZE 0x2000
 #define TC0080VCO_TOTAL_CHARS 256
@@ -75,6 +85,7 @@ this seems to be the only zoom feature actually used in the games.
 *****************************************************************************/
 
 
+<<<<<<< HEAD
 const device_type TC0080VCO = &device_creator<tc0080vco_device>;
 
 tc0080vco_device::tc0080vco_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
@@ -92,6 +103,25 @@ tc0080vco_device::tc0080vco_device(const machine_config &mconfig, const char *ta
 	m_chain_ram_1(NULL),
 	m_spriteram(NULL),
 	m_scroll_ram(NULL),
+=======
+DEFINE_DEVICE_TYPE(TC0080VCO, tc0080vco_device, "tc0080vco", "Taito TC0080VCO")
+
+tc0080vco_device::tc0080vco_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: device_t(mconfig, TC0080VCO, tag, owner, clock),
+	m_ram(nullptr),
+	m_bg0_ram_0(nullptr),
+	m_bg0_ram_1(nullptr),
+	m_bg1_ram_0(nullptr),
+	m_bg1_ram_1(nullptr),
+	m_tx_ram_0(nullptr),
+	m_tx_ram_1(nullptr),
+	m_char_ram(nullptr),
+	m_bgscroll_ram(nullptr),
+	m_chain_ram_0(nullptr),
+	m_chain_ram_1(nullptr),
+	m_spriteram(nullptr),
+	m_scroll_ram(nullptr),
+>>>>>>> upstream/master
 	m_bg0_scrollx(0),
 	m_bg0_scrolly(0),
 	m_bg1_scrollx(0),
@@ -103,8 +133,12 @@ tc0080vco_device::tc0080vco_device(const machine_config &mconfig, const char *ta
 	m_bg_yoffs(0),
 	m_bg_flip_yoffs(0),
 	m_has_fg0(1),
+<<<<<<< HEAD
 	m_gfxdecode(*this),
 	m_palette(*this)
+=======
+	m_gfxdecode(*this, finder_base::DUMMY_TAG)
+>>>>>>> upstream/master
 {
 }
 
@@ -119,6 +153,7 @@ void tc0080vco_device::static_set_gfxdecode_tag(device_t &device, const char *ta
 }
 
 //-------------------------------------------------
+<<<<<<< HEAD
 //  static_set_palette_tag: Set the tag of the
 //  palette device
 //-------------------------------------------------
@@ -129,6 +164,8 @@ void tc0080vco_device::static_set_palette_tag(device_t &device, const char *tag)
 }
 
 //-------------------------------------------------
+=======
+>>>>>>> upstream/master
 //  device_start - device-specific startup
 //-------------------------------------------------
 
@@ -152,8 +189,13 @@ void tc0080vco_device::device_start()
 	if(!m_gfxdecode->started())
 		throw device_missing_dependencies();
 
+<<<<<<< HEAD
 	m_tilemap[0] = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(tc0080vco_device::get_bg0_tile_info),this), TILEMAP_SCAN_ROWS, 16, 16, 64, 64);
 	m_tilemap[1] = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(tc0080vco_device::get_bg1_tile_info),this), TILEMAP_SCAN_ROWS, 16, 16, 64, 64);
+=======
+	m_tilemap[0] = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(tc0080vco_device::get_bg0_tile_info),this), TILEMAP_SCAN_ROWS, 16, 16, 64, 64);
+	m_tilemap[1] = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(tc0080vco_device::get_bg1_tile_info),this), TILEMAP_SCAN_ROWS, 16, 16, 64, 64);
+>>>>>>> upstream/master
 
 	m_tilemap[0]->set_transparent_pen(0);
 	m_tilemap[1]->set_transparent_pen(0);
@@ -167,13 +209,18 @@ void tc0080vco_device::device_start()
 	m_tilemap[0]->set_scroll_rows(512);
 
 	/* Perform extra initialisations for text layer */
+<<<<<<< HEAD
 	m_tilemap[2] = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(tc0080vco_device::get_tx_tile_info),this), TILEMAP_SCAN_ROWS, 8, 8, 64, 64);
+=======
+	m_tilemap[2] = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(tc0080vco_device::get_tx_tile_info),this), TILEMAP_SCAN_ROWS, 8, 8, 64, 64);
+>>>>>>> upstream/master
 
 	m_tilemap[2]->set_scrolldx(0, 0);
 	m_tilemap[2]->set_scrolldy(48, -448);
 
 	m_tilemap[2]->set_transparent_pen(0);
 
+<<<<<<< HEAD
 	m_ram = auto_alloc_array_clear(machine(), UINT16, TC0080VCO_RAM_SIZE / 2);
 
 	m_char_ram      = m_ram + 0x00000 / 2;    /* continues at +0x10000 */
@@ -196,6 +243,30 @@ void tc0080vco_device::device_start()
 	m_gfxdecode->set_gfx(m_txnum, global_alloc(gfx_element(m_palette, charlayout, (UINT8 *)m_char_ram, 0, 1, 512)));
 
 	save_pointer(NAME(m_ram), TC0080VCO_RAM_SIZE / 2);
+=======
+	m_ram = make_unique_clear<uint16_t[]>(TC0080VCO_RAM_SIZE / 2);
+
+	m_char_ram      = m_ram.get() + 0x00000 / 2;    /* continues at +0x10000 */
+	m_tx_ram_0      = m_ram.get() + 0x01000 / 2;
+	m_chain_ram_0   = m_ram.get() + 0x00000 / 2;    /* only used from +0x2000 */
+
+	m_bg0_ram_0     = m_ram.get() + 0x0c000 / 2;
+	m_bg1_ram_0     = m_ram.get() + 0x0e000 / 2;
+
+	m_tx_ram_1      = m_ram.get() + 0x11000 / 2;
+	m_chain_ram_1   = m_ram.get() + 0x10000 / 2;    /* only used from +0x12000 */
+
+	m_bg0_ram_1     = m_ram.get() + 0x1c000 / 2;
+	m_bg1_ram_1     = m_ram.get() + 0x1e000 / 2;
+	m_bgscroll_ram  = m_ram.get() + 0x20000 / 2;
+	m_spriteram     = m_ram.get() + 0x20400 / 2;
+	m_scroll_ram    = m_ram.get() + 0x20800 / 2;
+
+	/* create the char set (gfx will then be updated dynamically from RAM) */
+	m_gfxdecode->set_gfx(m_txnum, std::make_unique<gfx_element>(&m_gfxdecode->palette(), charlayout, (uint8_t *)m_char_ram, 0, 1, 512));
+
+	save_pointer(NAME(m_ram.get()), TC0080VCO_RAM_SIZE / 2);
+>>>>>>> upstream/master
 	machine().save().register_postload(save_prepost_delegate(FUNC(tc0080vco_device::postload), this));
 }
 
@@ -419,9 +490,15 @@ void tc0080vco_device::tilemap_update( )
 
 /* NB: orientation_flipx code in following routine has not been tested */
 
+<<<<<<< HEAD
 void tc0080vco_device::bg0_tilemap_draw( screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect, int flags, UINT32 priority )
 {
 	UINT16 zoom = m_scroll_ram[6];
+=======
+void tc0080vco_device::bg0_tilemap_draw( screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect, int flags, uint32_t priority )
+{
+	uint16_t zoom = m_scroll_ram[6];
+>>>>>>> upstream/master
 	int zx, zy;
 
 	zx = (zoom & 0xff00) >> 8;
@@ -433,9 +510,15 @@ void tc0080vco_device::bg0_tilemap_draw( screen_device &screen, bitmap_ind16 &bi
 	}
 	else        /* zoom + rowscroll = custom draw routine */
 	{
+<<<<<<< HEAD
 		UINT16 *dst16, *src16;
 		UINT8 *tsrc;
 		UINT16 scanline[512];
+=======
+		uint16_t *dst16, *src16;
+		uint8_t *tsrc;
+		uint16_t scanline[512];
+>>>>>>> upstream/master
 		bitmap_ind16 &srcbitmap = m_tilemap[0]->pixmap();
 		bitmap_ind8 &flagsbitmap = m_tilemap[0]->flagsmap();
 
@@ -550,7 +633,11 @@ void tc0080vco_device::bg0_tilemap_draw( screen_device &screen, bitmap_ind16 &bi
 #define PIXEL_OP_COPY_TRANS0_SET_PRIORITY(DEST, PRIORITY, SOURCE)                   \
 do                                                                                  \
 {                                                                                   \
+<<<<<<< HEAD
 	UINT32 srcdata = (SOURCE);                                                      \
+=======
+	uint32_t srcdata = (SOURCE);                                                      \
+>>>>>>> upstream/master
 	if (srcdata != 0)                                                               \
 	{                                                                               \
 		(DEST) = SOURCE;                                                            \
@@ -558,10 +645,17 @@ do                                                                              
 	}                                                                               \
 }                                                                                   \
 while (0)
+<<<<<<< HEAD
 void tc0080vco_device::bg1_tilemap_draw( screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect, int flags, UINT32 priority )
 {
 	UINT8 layer = 1;
 	UINT16 zoom = m_scroll_ram[6 + layer];
+=======
+void tc0080vco_device::bg1_tilemap_draw( screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect, int flags, uint32_t priority )
+{
+	uint8_t layer = 1;
+	uint16_t zoom = m_scroll_ram[6 + layer];
+>>>>>>> upstream/master
 	int min_x = cliprect.min_x;
 	int max_x = cliprect.max_x;
 	int min_y = cliprect.min_y;
@@ -624,6 +718,7 @@ void tc0080vco_device::bg1_tilemap_draw( screen_device &screen, bitmap_ind16 &bi
 		{
 			bitmap_ind16 &dest = bitmap;
 			bitmap_ind16 &src = srcbitmap;
+<<<<<<< HEAD
 			INT32 startx = sx;
 			INT32 starty = sy;
 			INT32 incxx = zx;
@@ -638,12 +733,32 @@ void tc0080vco_device::bg1_tilemap_draw( screen_device &screen, bitmap_ind16 &bi
 				COPYROZBITMAP_CORE(UINT16, PIXEL_OP_COPY_TRANS0_SET_PRIORITY, UINT8);
 			else
 				COPYROZBITMAP_CORE(UINT32, PIXEL_OP_COPY_TRANS0_SET_PRIORITY, UINT8);
+=======
+			int32_t startx = sx;
+			int32_t starty = sy;
+			int32_t incxx = zx;
+			int32_t incxy = 0;
+			int32_t incyx = 0;
+			int32_t incyy = zy;
+			int wraparound = 0;
+			uint32_t privalue = priority;
+			bitmap_ind8 &priority = screen.priority();
+
+			if (dest.bpp() == 16)
+				COPYROZBITMAP_CORE(uint16_t, PIXEL_OP_COPY_TRANS0_SET_PRIORITY, uint8_t);
+			else
+				COPYROZBITMAP_CORE(uint32_t, PIXEL_OP_COPY_TRANS0_SET_PRIORITY, uint8_t);
+>>>>>>> upstream/master
 		}
 	}
 }
 
 
+<<<<<<< HEAD
 void tc0080vco_device::tilemap_draw( screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect, int layer, int flags, UINT32 priority )
+=======
+void tc0080vco_device::tilemap_draw( screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect, int layer, int flags, uint32_t priority )
+>>>>>>> upstream/master
 {
 	int disable = 0x00; /* possibly layer disable bits do exist ?? */
 

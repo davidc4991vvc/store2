@@ -2,8 +2,14 @@
 // copyright-holders:Angelo Salese, Roberto Fresca, David Haywood
 /*********************************************************************************
 
+<<<<<<< HEAD
   Merit Industries Match Games (1981)
   -----------------------------------
+=======
+  Match Games.
+  CRT 100 + CRT 810 boards system.
+  Merit Industries, 1981.
+>>>>>>> upstream/master
 
   Driver by Angelo Salese, David Haywood & Roberto Fresca.
 
@@ -80,7 +86,11 @@
   ---------------
 
   1x OSC = 18.000 MHz.
+<<<<<<< HEAD
   1x CPU = Zilog Z80 (Z0840006PSC / 9512 / 2K).
+=======
+  1x CPU = Zilog Z80 (Z0840006PSC).
+>>>>>>> upstream/master
   4x 74LS253N (multiplexers).
   4x MM2114N-3 (4096-Bit Static RAM).
   2x SCM5101E (256x4 Static RAM).
@@ -88,7 +98,11 @@
   The PCB has a socket for two standard AA batteries
 
 
+<<<<<<< HEAD
   MAIN BOARD:
+=======
+  MAIN BOARD CRT 100:
+>>>>>>> upstream/master
   .------------------------. .-------------------. .---------------------------.
   |                        | ||||||||||||||||||||| |           .------------.  |
   |                        '-'        J2         '-'          -|4.7 Ohm 10% |- |
@@ -139,7 +153,10 @@
   |    '-----'  '-----'        '-----'                                 '-----' |
   '----------------------------------------------------------------------------'
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> upstream/master
   U13 = MLTI 0    U68 = CGM 0
   U14 = MLTI 1    U67 = CGM 1
   U15 = MLTI 2    U66 = CGM 2
@@ -151,6 +168,7 @@
   J1 = Jumpers bank? (see multiplexed port)
 
 
+<<<<<<< HEAD
   VIDEO I/O BOARD CRT810:
                           .-------------------.
                           |||||||||||||||||||||
@@ -170,15 +188,40 @@
                    ||||||||||||||||||||||||||||||||||
                    '--------------------------------'
                            To J4 on Main Board
+=======
+  VIDEO I/O BOARD CRT 810:
+                          .-------------------.
+  .-----------------------|||||||||||||||||||||----------------------.
+  |                                                                  |
+  |                                                          LM380N  |
+  |                                       DISCRETE                   |
+  |                                       CIRCUITRY          MC1455P |
+  |                                                                  |
+  |                                                                  |
+  |                                                           ML7805 |
+  | SW 7407-N    SW 7407-N    SW 7407-N    SW 7407-N           +5V.  |
+  |                                                                  |
+  | 74LS259N     74LS259N     74LS259N                        MC7812 |
+  |                                                            +12V. |
+  |                                                                  |
+  '----------------||||||||||||||||||||||||||||||||||----------------'
+                   '--------------------------------'
+                          To J4 on Main Board
+>>>>>>> upstream/master
 
   LM380N = 2.5W Audio Power Amplifier.
   MC1455P = Direct Replacement for NE555 Timers.
 
+<<<<<<< HEAD
   (Audio seems to be discrete).
+=======
+  (Audio IS discrete).
+>>>>>>> upstream/master
 
   4x 7407N (Buffer Gates Non-Inverting).
   4x 74LS259N (8-Bit Addressable Latches).
 
+<<<<<<< HEAD
   4x 7301 (HDSP?)(RED Seven Segment Displays).
 
   +---------+  Pin | Description
@@ -194,6 +237,8 @@
                 09 | Cathode B.
                 10 | Cathode A.
 
+=======
+>>>>>>> upstream/master
 
 **********************************************************************************
 
@@ -224,6 +269,10 @@
 
   - Color system (no bipolar PROMs in the system), needs a reference
 
+<<<<<<< HEAD
+=======
+  - Discrete sound.
+>>>>>>> upstream/master
 
 **********************************************************************************/
 
@@ -231,8 +280,14 @@
 
 #include "emu.h"
 #include "cpu/z80/z80.h"
+<<<<<<< HEAD
 //#include "sound/dac.h"
 #include "machine/nvram.h"
+=======
+#include "machine/nvram.h"
+#include "screen.h"
+
+>>>>>>> upstream/master
 #include "mgames.lh"
 
 
@@ -246,11 +301,18 @@ public:
 		m_gfxdecode(*this, "gfxdecode"),
 		m_palette(*this, "palette") { }
 
+<<<<<<< HEAD
 	UINT8 m_output[8];
 	required_shared_ptr<UINT8> m_video;
 	int m_mixdata;
 	DECLARE_READ8_MEMBER(mixport_r);
 	DECLARE_WRITE8_MEMBER(muxed_w);
+=======
+	uint8_t m_output[8];
+	required_shared_ptr<uint8_t> m_video;
+	int m_mixdata;
+	DECLARE_READ8_MEMBER(mixport_r);
+>>>>>>> upstream/master
 	DECLARE_WRITE8_MEMBER(outport0_w);
 	DECLARE_WRITE8_MEMBER(outport1_w);
 	DECLARE_WRITE8_MEMBER(outport2_w);
@@ -259,10 +321,16 @@ public:
 	DECLARE_WRITE8_MEMBER(outport5_w);
 	DECLARE_WRITE8_MEMBER(outport6_w);
 	DECLARE_WRITE8_MEMBER(outport7_w);
+<<<<<<< HEAD
 	DECLARE_WRITE8_MEMBER(sound_w);
 	virtual void video_start();
 	DECLARE_PALETTE_INIT(mgames);
 	UINT32 screen_update_mgames(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
+=======
+	virtual void video_start() override;
+	DECLARE_PALETTE_INIT(mgames);
+	uint32_t screen_update_mgames(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
+>>>>>>> upstream/master
 	required_device<cpu_device> m_maincpu;
 	required_device<gfxdecode_device> m_gfxdecode;
 	required_device<palette_device> m_palette;
@@ -273,13 +341,18 @@ void mgames_state::video_start()
 {
 }
 
+<<<<<<< HEAD
 UINT32 mgames_state::screen_update_mgames(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+=======
+uint32_t mgames_state::screen_update_mgames(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+>>>>>>> upstream/master
 {
 	int y,x;
 	int count;
 	gfx_element *gfx = m_gfxdecode->gfx(0);
 
 	count = 0;
+<<<<<<< HEAD
 	for (y=0;y<32;y++)
 	{
 		for (x=0;x<32;x++)
@@ -287,6 +360,15 @@ UINT32 mgames_state::screen_update_mgames(screen_device &screen, bitmap_ind16 &b
 			UINT16 dat = m_video[count];
 			UINT16 col = m_video[count+0x400] & 0x7f;
 			gfx->opaque(bitmap,cliprect,dat,col,0,0,x*16,y*16);
+=======
+	for (y = 0; y < 32; y++)
+	{
+		for (x = 0; x < 32; x++)
+		{
+			uint16_t dat = m_video[count];
+			uint16_t col = m_video[count + 0x400] & 0x7f;
+			gfx->opaque(bitmap, cliprect, dat, col, 0, 0, x * 16, y * 16);
+>>>>>>> upstream/master
 			count++;
 		}
 
@@ -303,9 +385,15 @@ PALETTE_INIT_MEMBER(mgames_state, mgames)
 		rgb_t color;
 
 		if (i & 0x01)
+<<<<<<< HEAD
 			color = rgb_t(pal2bit((i & 0x6) >> 1),pal2bit((i & 0x18) >> 3),pal2bit((i & 0x60) >> 5));
 		else
 			color = rgb_t::black;
+=======
+			color = rgb_t(pal2bit((i & 0x6) >> 1), pal2bit((i & 0x18) >> 3), pal2bit((i & 0x60) >> 5));
+		else
+			color = rgb_t::black();
+>>>>>>> upstream/master
 
 		palette.set_pen_color(i, color);
 	}
@@ -363,8 +451,13 @@ READ8_MEMBER(mgames_state::mixport_r)
 
 WRITE8_MEMBER(mgames_state::outport0_w)
 {
+<<<<<<< HEAD
 	output_set_lamp_value(1, (data & 1));           /* Lamp 1 - BET */
 	output_set_lamp_value(5, (data >> 1) & 1);      /* Lamp 5 - HOLD 1 */
+=======
+	output().set_lamp_value(1, (data & 1));           /* Lamp 1 - BET */
+	output().set_lamp_value(5, (data >> 1) & 1);      /* Lamp 5 - HOLD 1 */
+>>>>>>> upstream/master
 
 	m_output[0] = data;
 	popmessage("outport0 : %02X %02X %02X %02X %02X %02X %02X %02X", m_output[0], m_output[1], m_output[2], m_output[3], m_output[4], m_output[5], m_output[6], m_output[7]);
@@ -384,8 +477,13 @@ WRITE8_MEMBER(mgames_state::outport0_w)
 
 WRITE8_MEMBER(mgames_state::outport1_w)
 {
+<<<<<<< HEAD
 	output_set_lamp_value(2, (data & 1));           /* Lamp 2 - DEAL */
 	output_set_lamp_value(6, (data >> 1) & 1);      /* Lamp 6 - HOLD 2 */
+=======
+	output().set_lamp_value(2, (data & 1));           /* Lamp 2 - DEAL */
+	output().set_lamp_value(6, (data >> 1) & 1);      /* Lamp 6 - HOLD 2 */
+>>>>>>> upstream/master
 
 	m_output[1] = data;
 	popmessage("outport1 : %02X %02X %02X %02X %02X %02X %02X %02X", m_output[0], m_output[1], m_output[2], m_output[3], m_output[4], m_output[5], m_output[6], m_output[7]);
@@ -405,8 +503,13 @@ WRITE8_MEMBER(mgames_state::outport1_w)
 
 WRITE8_MEMBER(mgames_state::outport2_w)
 {
+<<<<<<< HEAD
 	output_set_lamp_value(3, (data & 1));           /* Lamp 3 - CANCEL */
 	output_set_lamp_value(7, (data >> 1) & 1);      /* Lamp 7 - HOLD 3 */
+=======
+	output().set_lamp_value(3, (data & 1));           /* Lamp 3 - CANCEL */
+	output().set_lamp_value(7, (data >> 1) & 1);      /* Lamp 7 - HOLD 3 */
+>>>>>>> upstream/master
 
 	m_output[2] = data;
 	popmessage("outport2 : %02X %02X %02X %02X %02X %02X %02X %02X", m_output[0], m_output[1], m_output[2], m_output[3], m_output[4], m_output[5], m_output[6], m_output[7]);
@@ -426,8 +529,13 @@ WRITE8_MEMBER(mgames_state::outport2_w)
 
 WRITE8_MEMBER(mgames_state::outport3_w)
 {
+<<<<<<< HEAD
 	output_set_lamp_value(4, (data & 1));           /* Lamp 4 - STAND */
 	output_set_lamp_value(8, (data >> 1) & 1);      /* Lamp 8 - HOLD 4 */
+=======
+	output().set_lamp_value(4, (data & 1));           /* Lamp 4 - STAND */
+	output().set_lamp_value(8, (data >> 1) & 1);      /* Lamp 8 - HOLD 4 */
+>>>>>>> upstream/master
 
 	m_output[3] = data;
 	popmessage("outport3 : %02X %02X %02X %02X %02X %02X %02X %02X", m_output[0], m_output[1], m_output[2], m_output[3], m_output[4], m_output[5], m_output[6], m_output[7]);
@@ -447,7 +555,11 @@ WRITE8_MEMBER(mgames_state::outport3_w)
 
 WRITE8_MEMBER(mgames_state::outport4_w)
 {
+<<<<<<< HEAD
 	output_set_lamp_value(9, (data >> 1) & 1);      /* Lamp 9 - HOLD 5 */
+=======
+	output().set_lamp_value(9, (data >> 1) & 1);      /* Lamp 9 - HOLD 5 */
+>>>>>>> upstream/master
 
 	m_output[4] = data;
 	popmessage("outport4 : %02X %02X %02X %02X %02X %02X %02X %02X", m_output[0], m_output[1], m_output[2], m_output[3], m_output[4], m_output[5], m_output[6], m_output[7]);
@@ -485,7 +597,11 @@ WRITE8_MEMBER(mgames_state::outport5_w)
 
 WRITE8_MEMBER(mgames_state::outport6_w)
 {
+<<<<<<< HEAD
 	coin_counter_w(machine(), 1, data & 0x02);  /* Payout pulse */
+=======
+	machine().bookkeeping().coin_counter_w(1, data & 0x02);  /* Payout pulse */
+>>>>>>> upstream/master
 
 	m_output[6] = data;
 	popmessage("outport6 : %02X %02X %02X %02X %02X %02X %02X %02X", m_output[0], m_output[1], m_output[2], m_output[3], m_output[4], m_output[5], m_output[6], m_output[7]);
@@ -505,7 +621,11 @@ WRITE8_MEMBER(mgames_state::outport6_w)
 
 WRITE8_MEMBER(mgames_state::outport7_w)
 {
+<<<<<<< HEAD
 	coin_counter_w(machine(), 0, data & 0x02);  /* Coin pulse */
+=======
+	machine().bookkeeping().coin_counter_w(0, data & 0x02);  /* Coin pulse */
+>>>>>>> upstream/master
 
 	m_output[7] = data;
 	popmessage("outport7 : %02X %02X %02X %02X %02X %02X %02X %02X", m_output[0], m_output[1], m_output[2], m_output[3], m_output[4], m_output[5], m_output[6], m_output[7]);
@@ -534,10 +654,15 @@ WRITE8_MEMBER(mgames_state::outport7_w)
    05   | ---- | ---- | ---- | bit2
 
 
+<<<<<<< HEAD
 WRITE8_MEMBER(mgames_state::sound_w)
 //{
 //  m_dac->write_unsigned8(data);
 //}
+=======
+  We're tracing the discrete circuitry...
+
+>>>>>>> upstream/master
 */
 
 static ADDRESS_MAP_START( main_map, AS_PROGRAM, 8, mgames_state )
@@ -590,8 +715,13 @@ static INPUT_PORTS_START( mgames )
 	PORT_DIPSETTING(    0x04, DEF_STR( 4C_1C ) )
 	PORT_DIPSETTING(    0x05, "5 Coins/2 Credits" )
 	PORT_DIPSETTING(    0x06, DEF_STR( 2C_1C ) )
+<<<<<<< HEAD
 //  PORT_DIPSETTING(    0x07, DEF_STR( 1C_1C ) ) --> damn check... you can't set 2 different bits pointing to the same coinage.
 	PORT_DIPSETTING(    0x0f, DEF_STR( 1C_1C ) )
+=======
+	PORT_DIPSETTING(    0x07, DEF_STR( 1C_1C ) )
+	PORT_DIPSETTING(    0x0f, DEF_STR( 1C_1C ) ) // Yes, again...
+>>>>>>> upstream/master
 	PORT_DIPSETTING(    0x0e, DEF_STR( 1C_2C ) )
 	PORT_DIPSETTING(    0x0d, DEF_STR( 2C_5C ) )
 	PORT_DIPSETTING(    0x0c, DEF_STR( 1C_4C ) )
@@ -639,9 +769,15 @@ static const gfx_layout tiles16x16_layout =
 	RGN_FRAC(1,1),
 	1,
 	{ 0 },
+<<<<<<< HEAD
 	{ 0, 1, 2, 3, 4, 5, 6, 7,8,9,10,11,12,13,14,15 },
 	{ 0*16, 1*16, 2*16, 3*16, 4*16, 5*16, 6*16, 7*16,
 		8*16, 9*16,10*16,11*16,12*16,13*16,14*16,15*16},
+=======
+	{ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15 },
+	{ 0*16, 1*16, 2*16, 3*16, 4*16, 5*16, 6*16, 7*16,
+		8*16, 9*16, 10*16, 11*16, 12*16, 13*16, 14*16, 15*16},
+>>>>>>> upstream/master
 	16*16
 };
 
@@ -650,11 +786,19 @@ static GFXDECODE_START( mgames )
 GFXDECODE_END
 
 
+<<<<<<< HEAD
 static MACHINE_CONFIG_START( mgames, mgames_state )
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", Z80,MASTER_CLOCK/6)      /* 3 MHz? */
 	MCFG_CPU_PROGRAM_MAP(main_map)
 	MCFG_CPU_VBLANK_INT_DRIVER("screen", mgames_state,  irq0_line_hold)
+=======
+static MACHINE_CONFIG_START( mgames )
+	/* basic machine hardware */
+	MCFG_CPU_ADD("maincpu", Z80,MASTER_CLOCK/6)      /* 3 MHz? */
+	MCFG_CPU_PROGRAM_MAP(main_map)
+	MCFG_CPU_VBLANK_INT_DRIVER("screen", mgames_state, irq0_line_hold)
+>>>>>>> upstream/master
 
 	MCFG_NVRAM_ADD_0FILL("nvram")
 
@@ -672,9 +816,14 @@ static MACHINE_CONFIG_START( mgames, mgames_state )
 	MCFG_PALETTE_INIT_OWNER(mgames_state, mgames)
 
 	/* sound hardware */
+<<<<<<< HEAD
 //  MCFG_SPEAKER_STANDARD_MONO("mono")
 //  MCFG_DAC_ADD("dac")
 //  MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 0.50)
+=======
+	//  to do...
+
+>>>>>>> upstream/master
 MACHINE_CONFIG_END
 
 
@@ -699,5 +848,10 @@ ROM_END
 *      Game Drivers      *
 *************************/
 
+<<<<<<< HEAD
 /*     YEAR  NAME      PARENT  MACHINE   INPUT   STATE          INIT   ROT    COMPANY  FULLNAME      FLAGS...                           LAYOUT  */
 GAMEL( 1981, mgames,   0,      mgames,   mgames, driver_device, 0,     ROT0, "Merit", "Match Games", MACHINE_WRONG_COLORS | MACHINE_NO_SOUND, layout_mgames )
+=======
+/*     YEAR  NAME      PARENT  MACHINE   INPUT   STATE         INIT   ROT    COMPANY  FULLNAME      FLAGS...                                 LAYOUT  */
+GAMEL( 1981, mgames,   0,      mgames,   mgames, mgames_state, 0,     ROT0, "Merit", "Match Games", MACHINE_WRONG_COLORS | MACHINE_NO_SOUND, layout_mgames )
+>>>>>>> upstream/master

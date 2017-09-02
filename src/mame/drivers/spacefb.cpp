@@ -10,12 +10,22 @@
     Schematics scanned and provided by James Twine
     Thanks to Gary Walton for lending me his REAL Space Firebird
 
+<<<<<<< HEAD
+=======
+    There is an undumped bootleg of this named 'Fire Condor', see
+    http://solarfox.triluminary.net/arc_spacefirebird.php for info
+
+>>>>>>> upstream/master
     Known issues/to-do's:
         * Bullet colors are incorrect.  The schematics cannot be right, so
           I am using pure red for now
 
           "MAME has the bullets and missiles as red, the real pcb shows them as
+<<<<<<< HEAD
            yellow with red tinges, they are overal yellow/orange in appearance."
+=======
+           yellow with red tinges, they are overall yellow/orange in appearance."
+>>>>>>> upstream/master
            (Andrew Welburn 24/12/10)
 
         * Analog sounds
@@ -23,7 +33,11 @@
 
     0000-3FFF ROM       Code
     8000-83FF RAM       Sprite RAM
+<<<<<<< HEAD
     C000-C7FF RAM       Game ram
+=======
+    C000-C7FF RAM       Game RAM
+>>>>>>> upstream/master
 
     IO Ports
 
@@ -34,7 +48,11 @@
        bit 1 = Player 1 Left
        bit 2 = unused
        bit 3 = unused
+<<<<<<< HEAD
        bit 4 = Player 1 Escape
+=======
+       bit 4 = Player 1 Warp / Escape
+>>>>>>> upstream/master
        bit 5 = unused
        bit 6 = unused
        bit 7 = Player 1 Fire
@@ -45,7 +63,11 @@
        bit 1 = Player 2 Left
        bit 2 = unused
        bit 3 = unused
+<<<<<<< HEAD
        bit 4 = Player 2 Escape
+=======
+       bit 4 = Player 2 Warp / Escape
+>>>>>>> upstream/master
        bit 5 = unused
        bit 6 = unused
        bit 7 = Player 2 Fire
@@ -134,7 +156,11 @@ void spacefb_state::device_timer(emu_timer &timer, device_timer_id id, int param
 		interrupt_callback(ptr, param);
 		break;
 	default:
+<<<<<<< HEAD
 			assert_always(FALSE, "Unknown id in spacefb_state::device_timer");
+=======
+			assert_always(false, "Unknown id in spacefb_state::device_timer");
+>>>>>>> upstream/master
 	}
 }
 
@@ -144,7 +170,11 @@ TIMER_CALLBACK_MEMBER(spacefb_state::interrupt_callback)
 
 	/* compute vector and set the interrupt line */
 	int vpos = m_screen->vpos();
+<<<<<<< HEAD
 	UINT8 vector = 0xc7 | ((vpos & 0x40) >> 2) | ((~vpos & 0x40) >> 3);
+=======
+	uint8_t vector = 0xc7 | ((vpos & 0x40) >> 2) | ((~vpos & 0x40) >> 3);
+>>>>>>> upstream/master
 	m_maincpu->set_input_line_and_vector(0, HOLD_LINE, vector);
 
 	/* set up for next interrupt */
@@ -240,6 +270,7 @@ static ADDRESS_MAP_START( spacefb_main_io_map, AS_IO, 8, spacefb_state )
 ADDRESS_MAP_END
 
 
+<<<<<<< HEAD
 static ADDRESS_MAP_START( spacefb_audio_io_map, AS_IO, 8, spacefb_state )
 	AM_RANGE(MCS48_PORT_P1, MCS48_PORT_P1) AM_DEVWRITE("dac", dac_device, write_unsigned8)
 	AM_RANGE(MCS48_PORT_P2, MCS48_PORT_P2) AM_READ(audio_p2_r)
@@ -248,6 +279,8 @@ static ADDRESS_MAP_START( spacefb_audio_io_map, AS_IO, 8, spacefb_state )
 ADDRESS_MAP_END
 
 
+=======
+>>>>>>> upstream/master
 
 /*************************************
  *
@@ -333,7 +366,11 @@ INPUT_PORTS_END
  *
  *************************************/
 
+<<<<<<< HEAD
 static MACHINE_CONFIG_START( spacefb, spacefb_state )
+=======
+static MACHINE_CONFIG_START( spacefb )
+>>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", Z80, SPACEFB_MAIN_CPU_CLOCK)
@@ -342,7 +379,14 @@ static MACHINE_CONFIG_START( spacefb, spacefb_state )
 
 	MCFG_CPU_ADD("audiocpu", I8035, SPACEFB_AUDIO_CPU_CLOCK)
 	MCFG_CPU_PROGRAM_MAP(spacefb_audio_map)
+<<<<<<< HEAD
 	MCFG_CPU_IO_MAP(spacefb_audio_io_map)
+=======
+	MCFG_MCS48_PORT_P1_OUT_CB(DEVWRITE8("dac", dac_byte_interface, write))
+	MCFG_MCS48_PORT_P2_IN_CB(READ8(spacefb_state, audio_p2_r))
+	MCFG_MCS48_PORT_T0_IN_CB(READLINE(spacefb_state, audio_t0_r))
+	MCFG_MCS48_PORT_T1_IN_CB(READLINE(spacefb_state, audio_t1_r))
+>>>>>>> upstream/master
 
 	MCFG_QUANTUM_TIME(attotime::from_hz(180))
 
@@ -604,6 +648,7 @@ ROM_END
  *
  *************************************/
 
+<<<<<<< HEAD
 GAME( 1980, spacefb,  0,       spacefb, spacefb, driver_device,  0, ROT270, "Nintendo", "Space Firebird (rev. 04-u)", MACHINE_IMPERFECT_COLORS | MACHINE_IMPERFECT_SOUND | MACHINE_SUPPORTS_SAVE )
 GAME( 1980, spacefbe, spacefb, spacefb, spacefb, driver_device,  0, ROT270, "Nintendo", "Space Firebird (rev. 03-e set 1)", MACHINE_IMPERFECT_COLORS | MACHINE_IMPERFECT_SOUND | MACHINE_SUPPORTS_SAVE )
 GAME( 1980, spacefbe2,spacefb, spacefb, spacefb, driver_device,  0, ROT270, "Nintendo", "Space Firebird (rev. 03-e set 2)", MACHINE_IMPERFECT_COLORS | MACHINE_IMPERFECT_SOUND | MACHINE_SUPPORTS_SAVE )
@@ -613,3 +658,14 @@ GAME( 1980, spacebrd, spacefb, spacefb, spacefb, driver_device,  0, ROT270, "boo
 GAME( 1980, spacefbb, spacefb, spacefb, spacefb, driver_device,  0, ROT270, "bootleg", "Space Firebird (bootleg)", MACHINE_IMPERFECT_COLORS | MACHINE_IMPERFECT_SOUND | MACHINE_SUPPORTS_SAVE )
 GAME( 1980, spacedem, spacefb, spacefb, spacedem, driver_device, 0, ROT270, "Nintendo (Fortrek license)", "Space Demon", MACHINE_IMPERFECT_COLORS | MACHINE_IMPERFECT_SOUND | MACHINE_SUPPORTS_SAVE )
 GAME( 1980, starwarr, spacefb, spacefb, spacefb, driver_device,  0, ROT270, "bootleg? (Potomac Mortgage)", "Star Warrior", MACHINE_IMPERFECT_COLORS | MACHINE_IMPERFECT_SOUND | MACHINE_SUPPORTS_SAVE )
+=======
+GAME( 1980, spacefb,  0,       spacefb, spacefb,  spacefb_state, 0, ROT270, "Nintendo", "Space Firebird (rev. 04-u)", MACHINE_IMPERFECT_COLORS | MACHINE_IMPERFECT_SOUND | MACHINE_SUPPORTS_SAVE )
+GAME( 1980, spacefbe, spacefb, spacefb, spacefb,  spacefb_state, 0, ROT270, "Nintendo", "Space Firebird (rev. 03-e set 1)", MACHINE_IMPERFECT_COLORS | MACHINE_IMPERFECT_SOUND | MACHINE_SUPPORTS_SAVE )
+GAME( 1980, spacefbe2,spacefb, spacefb, spacefb,  spacefb_state, 0, ROT270, "Nintendo", "Space Firebird (rev. 03-e set 2)", MACHINE_IMPERFECT_COLORS | MACHINE_IMPERFECT_SOUND | MACHINE_SUPPORTS_SAVE )
+GAME( 1980, spacefba, spacefb, spacefb, spacefb,  spacefb_state, 0, ROT270, "Nintendo", "Space Firebird (rev. 02-a)", MACHINE_IMPERFECT_COLORS | MACHINE_IMPERFECT_SOUND | MACHINE_SUPPORTS_SAVE )
+GAME( 1980, spacefbg, spacefb, spacefb, spacefb,  spacefb_state, 0, ROT270, "Nintendo (Gremlin license)", "Space Firebird (Gremlin)", MACHINE_IMPERFECT_COLORS | MACHINE_IMPERFECT_SOUND | MACHINE_SUPPORTS_SAVE )
+GAME( 1980, spacebrd, spacefb, spacefb, spacefb,  spacefb_state, 0, ROT270, "bootleg (Karateco)", "Space Bird (bootleg)", MACHINE_IMPERFECT_COLORS | MACHINE_IMPERFECT_SOUND | MACHINE_SUPPORTS_SAVE )
+GAME( 1980, spacefbb, spacefb, spacefb, spacefb,  spacefb_state, 0, ROT270, "bootleg", "Space Firebird (bootleg)", MACHINE_IMPERFECT_COLORS | MACHINE_IMPERFECT_SOUND | MACHINE_SUPPORTS_SAVE )
+GAME( 1980, spacedem, spacefb, spacefb, spacedem, spacefb_state, 0, ROT270, "Nintendo (Fortrek license)", "Space Demon", MACHINE_IMPERFECT_COLORS | MACHINE_IMPERFECT_SOUND | MACHINE_SUPPORTS_SAVE )
+GAME( 1980, starwarr, spacefb, spacefb, spacefb,  spacefb_state, 0, ROT270, "bootleg (Potomac Mortgage)", "Star Warrior", MACHINE_IMPERFECT_COLORS | MACHINE_IMPERFECT_SOUND | MACHINE_SUPPORTS_SAVE )
+>>>>>>> upstream/master

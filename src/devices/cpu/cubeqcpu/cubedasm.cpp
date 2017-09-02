@@ -58,7 +58,11 @@ static const char *const dst[] =
     SOUND DISASSEMBLY HOOK
 ***************************************************************************/
 
+<<<<<<< HEAD
 CPU_DISASSEMBLE( cquestsnd )
+=======
+CPU_DISASSEMBLE(cquestsnd)
+>>>>>>> upstream/master
 {
 	static const char *const jmps[] =
 	{
@@ -81,9 +85,15 @@ CPU_DISASSEMBLE( cquestsnd )
 		"       ",
 	};
 
+<<<<<<< HEAD
 	UINT64 inst = BIG_ENDIANIZE_INT64(*(UINT64 *)oprom);
 	UINT32 inslow = inst & 0xffffffff;
 	UINT32 inshig = inst >> 32;
+=======
+	uint64_t inst = big_endianize_int64(*(uint64_t *)oprom);
+	uint32_t inslow = inst & 0xffffffff;
+	uint32_t inshig = inst >> 32;
+>>>>>>> upstream/master
 
 	int t       = (inshig >> 24) & 0xff;
 	int b       = (inshig >> 20) & 0xf;
@@ -103,7 +113,11 @@ CPU_DISASSEMBLE( cquestsnd )
 	int _rin    = (inslow >> 26) & 1;
 
 
+<<<<<<< HEAD
 	sprintf(buffer, "%s %s %s %x,%x,%c %.2x %s %s %.2x %s %s %s %c %c %c",
+=======
+	util::stream_format(stream, "%s %s %s %x,%x,%c %02x %s %s %02x %s %s %s %c %c %c",
+>>>>>>> upstream/master
 			ins[i5_3],
 			src[i2_0],
 			dst[i8_6],
@@ -129,7 +143,11 @@ CPU_DISASSEMBLE( cquestsnd )
     ROTATE DISASSEMBLY HOOK
 ***************************************************************************/
 
+<<<<<<< HEAD
 CPU_DISASSEMBLE( cquestrot )
+=======
+CPU_DISASSEMBLE(cquestrot)
+>>>>>>> upstream/master
 {
 	static const char *const jmps[] =
 	{
@@ -185,9 +203,15 @@ CPU_DISASSEMBLE( cquestrot )
 		"???   "
 	};
 
+<<<<<<< HEAD
 	UINT64 inst = BIG_ENDIANIZE_INT64(*(UINT64 *)oprom);
 	UINT32 inslow = inst & 0xffffffff;
 	UINT32 inshig = inst >> 32;
+=======
+	uint64_t inst = big_endianize_int64(*(uint64_t *)oprom);
+	uint32_t inslow = inst & 0xffffffff;
+	uint32_t inshig = inst >> 32;
+>>>>>>> upstream/master
 
 	int t       = (inshig >> 20) & 0xfff;
 	int jmp     = (inshig >> 16) & 0xf;
@@ -204,7 +228,11 @@ CPU_DISASSEMBLE( cquestrot )
 //  int _sex    = (inslow >> 19) & 0x1;
 	int i2_0    = (inslow >> 16) & 0x7;
 
+<<<<<<< HEAD
 	sprintf(buffer, "%s %s,%s %x,%x,%c %d %s %s %s %.2x",
+=======
+	util::stream_format(stream, "%s %s,%s %x,%x,%c %d %s %s %s %02x",
+>>>>>>> upstream/master
 			ins[i5_3],
 			src[i2_0],
 			dst[i8_6],
@@ -220,11 +248,19 @@ CPU_DISASSEMBLE( cquestrot )
 	return 1 | DASMFLAG_SUPPORTED;
 }
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> upstream/master
 /***************************************************************************
     LINE DRAWER DISASSEMBLY HOOK
 ***************************************************************************/
 
+<<<<<<< HEAD
 CPU_DISASSEMBLE( cquestlin )
+=======
+CPU_DISASSEMBLE(cquestlin)
+>>>>>>> upstream/master
 {
 	static const char *const jmps[] =
 	{
@@ -271,9 +307,15 @@ CPU_DISASSEMBLE( cquestlin )
 		"BRES  ",
 	};
 
+<<<<<<< HEAD
 	UINT64 inst = BIG_ENDIANIZE_INT64(*(UINT64 *)oprom);
 	UINT32 inslow = inst & 0xffffffff;
 	UINT32 inshig = inst >> 32;
+=======
+	uint64_t inst = big_endianize_int64(*(uint64_t *)oprom);
+	uint32_t inslow = inst & 0xffffffff;
+	uint32_t inshig = inst >> 32;
+>>>>>>> upstream/master
 
 	int t       = (inshig >> 24) & 0xff;
 	int jmp     = (inshig >> 20) & 0xf;
@@ -288,7 +330,11 @@ CPU_DISASSEMBLE( cquestlin )
 	int _pbcs   = (inslow >> 27) & 0x1;
 	int i2_0    = (inslow >> 24) & 0x7;
 
+<<<<<<< HEAD
 	sprintf(buffer, "%s %s,%s %x,%x %c %s %.2x %s %s %s %s",
+=======
+	util::stream_format(stream, "%s %s,%s %x,%x %c %s %02x %s %s %s %s",
+>>>>>>> upstream/master
 			ins[i5_3],
 			src[i2_0],
 			dst[i8_6],

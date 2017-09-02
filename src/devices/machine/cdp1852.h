@@ -21,12 +21,20 @@
 
 **********************************************************************/
 
+<<<<<<< HEAD
 #pragma once
 
 #ifndef __CDP1852__
 #define __CDP1852__
 
 #include "emu.h"
+=======
+#ifndef MAME_MACHINE_CDP1852_H
+#define MAME_MACHINE_CDP1852_H
+
+#pragma once
+
+>>>>>>> upstream/master
 
 
 
@@ -54,6 +62,7 @@
 
 // ======================> cdp1852_device
 
+<<<<<<< HEAD
 class cdp1852_device :  public device_t
 {
 public:
@@ -64,15 +73,33 @@ public:
 	template<class _Object> static devcb_base &set_sr_wr_callback(device_t &device, _Object object) { return downcast<cdp1852_device &>(device).m_write_sr.set_callback(object); }
 	template<class _Object> static devcb_base &set_data_rd_callback(device_t &device, _Object object) { return downcast<cdp1852_device &>(device).m_read_data.set_callback(object); }
 	template<class _Object> static devcb_base &set_data_wr_callback(device_t &device, _Object object) { return downcast<cdp1852_device &>(device).m_write_data.set_callback(object); }
+=======
+class cdp1852_device : public device_t
+{
+public:
+	// construction/destruction
+	cdp1852_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
+
+	template <class Object> static devcb_base &set_mode_rd_callback(device_t &device, Object &&cb) { return downcast<cdp1852_device &>(device).m_read_mode.set_callback(std::forward<Object>(cb)); }
+	template <class Object> static devcb_base &set_sr_wr_callback(device_t &device, Object &&cb) { return downcast<cdp1852_device &>(device).m_write_sr.set_callback(std::forward<Object>(cb)); }
+	template <class Object> static devcb_base &set_data_rd_callback(device_t &device, Object &&cb) { return downcast<cdp1852_device &>(device).m_read_data.set_callback(std::forward<Object>(cb)); }
+	template <class Object> static devcb_base &set_data_wr_callback(device_t &device, Object &&cb) { return downcast<cdp1852_device &>(device).m_write_data.set_callback(std::forward<Object>(cb)); }
+>>>>>>> upstream/master
 
 	DECLARE_READ8_MEMBER( read );
 	DECLARE_WRITE8_MEMBER( write );
 
 protected:
 	// device-level overrides
+<<<<<<< HEAD
 	virtual void device_start();
 	virtual void device_reset();
 	virtual void device_timer(emu_timer &timer, device_timer_id id, int param, void *ptr);
+=======
+	virtual void device_start() override;
+	virtual void device_reset() override;
+	virtual void device_timer(emu_timer &timer, device_timer_id id, int param, void *ptr) override;
+>>>>>>> upstream/master
 
 private:
 	void set_sr_line(int state);
@@ -83,8 +110,13 @@ private:
 	devcb_write8       m_write_data;
 
 	int m_new_data;             // new data written
+<<<<<<< HEAD
 	UINT8 m_data;               // data latch
 	UINT8 m_next_data;          // next data
+=======
+	uint8_t m_data;               // data latch
+	uint8_t m_next_data;          // next data
+>>>>>>> upstream/master
 
 	int m_sr;                   // service request flag
 	int m_next_sr;              // next value of service request flag
@@ -95,8 +127,14 @@ private:
 
 
 // device type definition
+<<<<<<< HEAD
 extern const device_type CDP1852;
 
 
 
 #endif
+=======
+DECLARE_DEVICE_TYPE(CDP1852, cdp1852_device)
+
+#endif // MAME_MACHINE_CDP1852_H
+>>>>>>> upstream/master

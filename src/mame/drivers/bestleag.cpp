@@ -23,6 +23,11 @@ Dip Locations added according to Service Mode
 #include "emu.h"
 #include "cpu/m68000/m68000.h"
 #include "sound/okim6295.h"
+<<<<<<< HEAD
+=======
+#include "screen.h"
+#include "speaker.h"
+>>>>>>> upstream/master
 
 
 class bestleag_state : public driver_device
@@ -45,11 +50,19 @@ public:
 	required_device<gfxdecode_device> m_gfxdecode;
 	required_device<palette_device> m_palette;
 
+<<<<<<< HEAD
 	required_shared_ptr<UINT16> m_bgram;
 	required_shared_ptr<UINT16> m_fgram;
 	required_shared_ptr<UINT16> m_txram;
 	required_shared_ptr<UINT16> m_vregs;
 	required_shared_ptr<UINT16> m_spriteram;
+=======
+	required_shared_ptr<uint16_t> m_bgram;
+	required_shared_ptr<uint16_t> m_fgram;
+	required_shared_ptr<uint16_t> m_txram;
+	required_shared_ptr<uint16_t> m_vregs;
+	required_shared_ptr<uint16_t> m_spriteram;
+>>>>>>> upstream/master
 
 	tilemap_t *m_tx_tilemap;
 	tilemap_t *m_bg_tilemap;
@@ -65,10 +78,17 @@ public:
 	TILE_GET_INFO_MEMBER(get_fg_tile_info);
 	TILEMAP_MAPPER_MEMBER(bsb_bg_scan);
 
+<<<<<<< HEAD
 	virtual void video_start();
 
 	UINT32 screen_update_bestleag(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
 	UINT32 screen_update_bestleaw(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
+=======
+	virtual void video_start() override;
+
+	uint32_t screen_update_bestleag(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
+	uint32_t screen_update_bestleaw(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
+>>>>>>> upstream/master
 	void draw_sprites(bitmap_ind16 &bitmap, const rectangle &cliprect);
 };
 
@@ -119,9 +139,15 @@ TILEMAP_MAPPER_MEMBER(bestleag_state::bsb_bg_scan)
 
 void bestleag_state::video_start()
 {
+<<<<<<< HEAD
 	m_tx_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(bestleag_state::get_tx_tile_info),this),TILEMAP_SCAN_COLS,8,8,256, 32);
 	m_bg_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(bestleag_state::get_bg_tile_info),this),tilemap_mapper_delegate(FUNC(bestleag_state::bsb_bg_scan),this),16,16,128, 64);
 	m_fg_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(bestleag_state::get_fg_tile_info),this),tilemap_mapper_delegate(FUNC(bestleag_state::bsb_bg_scan),this),16,16,128, 64);
+=======
+	m_tx_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(bestleag_state::get_tx_tile_info),this),TILEMAP_SCAN_COLS,8,8,256, 32);
+	m_bg_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(bestleag_state::get_bg_tile_info),this),tilemap_mapper_delegate(FUNC(bestleag_state::bsb_bg_scan),this),16,16,128, 64);
+	m_fg_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(bestleag_state::get_fg_tile_info),this),tilemap_mapper_delegate(FUNC(bestleag_state::bsb_bg_scan),this),16,16,128, 64);
+>>>>>>> upstream/master
 
 	m_tx_tilemap->set_transparent_pen(15);
 	m_fg_tilemap->set_transparent_pen(15);
@@ -134,7 +160,11 @@ Note: sprite chip is different than the other Big Striker sets and they
 */
 void bestleag_state::draw_sprites(bitmap_ind16 &bitmap, const rectangle &cliprect)
 {
+<<<<<<< HEAD
 	UINT16 *spriteram16 = m_spriteram;
+=======
+	uint16_t *spriteram16 = m_spriteram;
+>>>>>>> upstream/master
 
 	/*
 
@@ -187,7 +217,11 @@ void bestleag_state::draw_sprites(bitmap_ind16 &bitmap, const rectangle &cliprec
 	}
 }
 
+<<<<<<< HEAD
 UINT32 bestleag_state::screen_update_bestleag(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+=======
+uint32_t bestleag_state::screen_update_bestleag(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+>>>>>>> upstream/master
 {
 	m_bg_tilemap->set_scrollx(0,(m_vregs[0x00/2] & 0xfff) + (m_vregs[0x08/2] & 0x7) - 3);
 	m_bg_tilemap->set_scrolly(0,m_vregs[0x02/2]);
@@ -203,7 +237,11 @@ UINT32 bestleag_state::screen_update_bestleag(screen_device &screen, bitmap_ind1
 	return 0;
 }
 
+<<<<<<< HEAD
 UINT32 bestleag_state::screen_update_bestleaw(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+=======
+uint32_t bestleag_state::screen_update_bestleaw(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+>>>>>>> upstream/master
 {
 	m_bg_tilemap->set_scrollx(0,m_vregs[0x08/2]);
 	m_bg_tilemap->set_scrolly(0,m_vregs[0x0a/2]);
@@ -239,7 +277,11 @@ WRITE16_MEMBER(bestleag_state::fgram_w)
 
 WRITE16_MEMBER(bestleag_state::oki_bank_w)
 {
+<<<<<<< HEAD
 	m_oki->set_bank_base(0x40000 * ((data & 3) - 1));
+=======
+	m_oki->set_rom_bank((data - 1) & 3);
+>>>>>>> upstream/master
 }
 
 
@@ -373,7 +415,11 @@ static GFXDECODE_START( bestleag )
 	GFXDECODE_ENTRY( "gfx2", 0, bestleag_char16layout,   0x300, 16 )
 GFXDECODE_END
 
+<<<<<<< HEAD
 static MACHINE_CONFIG_START( bestleag, bestleag_state )
+=======
+static MACHINE_CONFIG_START( bestleag )
+>>>>>>> upstream/master
 	MCFG_CPU_ADD("maincpu", M68000, 12000000)
 	MCFG_CPU_PROGRAM_MAP(bestleag_map)
 	MCFG_CPU_VBLANK_INT_DRIVER("screen", bestleag_state,  irq6_line_hold)
@@ -392,7 +438,11 @@ static MACHINE_CONFIG_START( bestleag, bestleag_state )
 
 	MCFG_SPEAKER_STANDARD_STEREO("lspeaker", "rspeaker")
 
+<<<<<<< HEAD
 	MCFG_OKIM6295_ADD("oki", 1000000, OKIM6295_PIN7_HIGH) /* Hand-tuned */
+=======
+	MCFG_OKIM6295_ADD("oki", 1000000, PIN7_HIGH) /* Hand-tuned */
+>>>>>>> upstream/master
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "lspeaker", 1.00)
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "rspeaker", 1.00)
 MACHINE_CONFIG_END
@@ -472,5 +522,10 @@ ROM_END
 
 /* GAME drivers */
 
+<<<<<<< HEAD
 GAME( 1993, bestleag, bigstrik, bestleag, bestleag, driver_device, 0, ROT0, "bootleg", "Best League (bootleg of Big Striker, Italian Serie A)", MACHINE_NO_COCKTAIL | MACHINE_SUPPORTS_SAVE )
 GAME( 1993, bestleaw, bigstrik, bestleaw, bestleag, driver_device, 0, ROT0, "bootleg", "Best League (bootleg of Big Striker, World Cup)", MACHINE_NO_COCKTAIL | MACHINE_SUPPORTS_SAVE )
+=======
+GAME( 1993, bestleag, bigstrik, bestleag, bestleag, bestleag_state, 0, ROT0, "bootleg", "Best League (bootleg of Big Striker, Italian Serie A)", MACHINE_NO_COCKTAIL | MACHINE_SUPPORTS_SAVE )
+GAME( 1993, bestleaw, bigstrik, bestleaw, bestleag, bestleag_state, 0, ROT0, "bootleg", "Best League (bootleg of Big Striker, World Cup)", MACHINE_NO_COCKTAIL | MACHINE_SUPPORTS_SAVE )
+>>>>>>> upstream/master

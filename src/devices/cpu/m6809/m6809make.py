@@ -1,4 +1,9 @@
 #!/usr/bin/python
+<<<<<<< HEAD
+=======
+# license:BSD-3-Clause
+# copyright-holders:Olivier Galibert
+>>>>>>> upstream/master
 
 import sys
 import re

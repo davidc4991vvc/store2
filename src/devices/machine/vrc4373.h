@@ -2,8 +2,15 @@
 // copyright-holders:Ted Green
 // NEC VRC 4373 System Controller
 
+<<<<<<< HEAD
 #ifndef VRC4373_H
 #define VRC4373_H
+=======
+#ifndef MAME_MACHINE_VRC4373_H
+#define MAME_MACHINE_VRC4373_H
+
+#pragma once
+>>>>>>> upstream/master
 
 #include "pci.h"
 #include "cpu/mips/mips3.h"
@@ -12,6 +19,7 @@
 	MCFG_PCI_HOST_ADD(_tag, VRC4373, 0x005B1033, 0x00, 0x00000000) \
 	downcast<vrc4373_device *>(device)->set_cpu_tag(_cpu_tag);
 
+<<<<<<< HEAD
 #define VRC4373_PAGESHIFT 12
 
 /* NILE 3 registers 0x000-0x0ff */
@@ -57,10 +65,18 @@
 #define DMA_MIO                 0x02000000
 #define DMA_RST                 0x01000000
 #define DMA_BLK_SIZE        0x000fffff
+=======
+#define MCFG_VRC4373_SET_RAM(_size) \
+	downcast<vrc4373_device *>(device)->set_ram_size(_size);
+
+#define MCFG_VRC4373_SET_SIMM0(_size) \
+	downcast<vrc4373_device *>(device)->set_simm0_size(_size);
+>>>>>>> upstream/master
 
 
 class vrc4373_device : public pci_host_device {
 public:
+<<<<<<< HEAD
 	vrc4373_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
 
 	virtual void reset_all_mappings();
@@ -70,6 +86,20 @@ public:
 	void set_cpu_tag(const char *tag);
 
 	virtual DECLARE_ADDRESS_MAP(config_map, 32);
+=======
+	vrc4373_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
+
+	virtual void reset_all_mappings() override;
+	virtual void map_extra(uint64_t memory_window_start, uint64_t memory_window_end, uint64_t memory_offset, address_space *memory_space,
+							uint64_t io_window_start, uint64_t io_window_end, uint64_t io_offset, address_space *io_space) override;
+	void postload(void);
+
+	void set_cpu_tag(const char *tag);
+	void set_ram_size(const int size) { m_ram_size = size; };
+	void set_simm0_size(const int size) { m_simm0_size = size; };
+
+	virtual DECLARE_ADDRESS_MAP(config_map, 32) override;
+>>>>>>> upstream/master
 
 	DECLARE_READ32_MEMBER(  pcictrl_r);
 	DECLARE_WRITE32_MEMBER( pcictrl_w);
@@ -95,6 +125,7 @@ public:
 	DECLARE_WRITE32_MEMBER(target2_w);
 
 protected:
+<<<<<<< HEAD
 	address_space *m_cpu_space;
 	virtual const address_space_config *memory_space_config(address_spacenum spacenum) const;
 	virtual void device_start();
@@ -130,3 +161,51 @@ private:
 extern const device_type VRC4373;
 
 #endif
+=======
+	virtual void device_start() override;
+	virtual void device_reset() override;
+
+	virtual space_config_vector memory_space_config() const override;
+
+	TIMER_CALLBACK_MEMBER(dma_transfer);
+
+	address_space *m_cpu_space;
+
+private:
+	enum
+	{
+		AS_PCI_MEM = 1,
+		AS_PCI_IO = 2
+	};
+
+	DECLARE_ADDRESS_MAP(cpu_map, 32);
+
+	void map_cpu_space();
+
+	mips3_device *m_cpu;
+	const char *cpu_tag;
+	int m_irq_num;
+	int m_ram_size;
+	int m_simm0_size;
+
+	address_space_config m_mem_config, m_io_config;
+
+	std::vector<uint32_t> m_ram;
+
+	std::vector<uint32_t> m_simm[4];
+
+	uint32_t m_cpu_regs[0x7c];
+
+	uint32_t m_pci1_laddr, m_pci2_laddr, m_pci_io_laddr;
+	uint32_t m_target1_laddr, m_target2_laddr;
+
+	required_memory_region m_romRegion;
+
+	emu_timer* m_dma_timer;
+};
+
+
+DECLARE_DEVICE_TYPE(VRC4373, vrc4373_device)
+
+#endif // MAME_MACHINE_VRC4373_H
+>>>>>>> upstream/master

@@ -8,6 +8,7 @@ Base class for HLE'd SCSI devices.
 
 */
 
+<<<<<<< HEAD
 #include "scsihle.h"
 
 scsihle_device::scsihle_device(const machine_config &mconfig, device_type type, const char *name, const char *tag, device_t *owner, UINT32 clock, const char *shortname, const char *source) :
@@ -17,6 +18,18 @@ scsihle_device::scsihle_device(const machine_config &mconfig, device_type type, 
 	req_timer(NULL),
 	sel_timer(NULL),
 	dataout_timer(NULL),
+=======
+#include "emu.h"
+#include "scsihle.h"
+
+scsihle_device::scsihle_device(const machine_config &mconfig, device_type type, const char *tag, device_t *owner, uint32_t clock) :
+	device_t(mconfig, type, tag, owner, clock),
+	scsi_port_interface(mconfig, *this),
+	m_scsi_id(*this, "SCSI_ID"),
+	req_timer(nullptr),
+	sel_timer(nullptr),
+	dataout_timer(nullptr),
+>>>>>>> upstream/master
 	cmd_idx(0),
 	is_linked(0),
 	data_idx(0),
@@ -131,7 +144,11 @@ static const char *const phasenames[] =
 
 #define LOG(level, ...)     if(LOGLEVEL>=level) logerror(__VA_ARGS__)
 
+<<<<<<< HEAD
 void scsihle_device::data_out(UINT8 data)
+=======
+void scsihle_device::data_out(uint8_t data)
+>>>>>>> upstream/master
 {
 //  printf( "%s data out %02x\n", tag(), data );
 	output_data0(BIT(data, 0));
@@ -144,12 +161,20 @@ void scsihle_device::data_out(UINT8 data)
 	output_data7(BIT(data, 7));
 }
 
+<<<<<<< HEAD
 void scsihle_device::scsi_out_req_delay(UINT8 state)
+=======
+void scsihle_device::scsi_out_req_delay(uint8_t state)
+>>>>>>> upstream/master
 {
 	req_timer->adjust(attotime::from_nsec(REQ_DELAY_NS),state);
 }
 
+<<<<<<< HEAD
 void scsihle_device::dump_bytes(UINT8 *buff, int count)
+=======
+void scsihle_device::dump_bytes(uint8_t *buff, int count)
+>>>>>>> upstream/master
 {
 	int byteno;
 
@@ -219,7 +244,11 @@ void scsihle_device::device_timer(emu_timer &timer, device_timer_id tid, int par
 
 	case 2:
 		// Some drives, notably the ST225N and ST125N, accept fromat unit commands
+<<<<<<< HEAD
 		// with flags set indicating that bad block data should be transfered but
+=======
+		// with flags set indicating that bad block data should be transferred but
+>>>>>>> upstream/master
 		// don't then implemnt a data in phase, this timeout it to catch these !
 		if (IS_COMMAND(SCSI_CMD_FORMAT_UNIT) && (data_idx==0))
 		{
@@ -317,7 +346,11 @@ void scsihle_device::scsibus_exec_command()
 		scsibus_read_data();
 }
 
+<<<<<<< HEAD
 UINT8 scsihle_device::scsibus_driveno(UINT8 drivesel)
+=======
+uint8_t scsihle_device::scsibus_driveno(uint8_t drivesel)
+>>>>>>> upstream/master
 {
 	switch (drivesel)
 	{
@@ -333,7 +366,11 @@ UINT8 scsihle_device::scsibus_driveno(UINT8 drivesel)
 	}
 }
 
+<<<<<<< HEAD
 void scsihle_device::scsi_change_phase(UINT8 newphase)
+=======
+void scsihle_device::scsi_change_phase(uint8_t newphase)
+>>>>>>> upstream/master
 {
 	LOG(1,"scsi_change_phase() from=%s, to=%s\n",phasenames[m_phase],phasenames[newphase]);
 
@@ -417,11 +454,19 @@ WRITE_LINE_MEMBER( scsihle_device::input_sel )
 		// only one line active.
 		if (scsibus_driveno(m_input_data) == scsiID)
 		{
+<<<<<<< HEAD
 			void *hdfile = NULL;
 			// Check to see if device had image file mounted, if not, do not set busy,
 			// and stay busfree.
 			GetDevice(&hdfile);
 			if (hdfile != NULL)
+=======
+			void *hdfile = nullptr;
+			// Check to see if device had image file mounted, if not, do not set busy,
+			// and stay busfree.
+			GetDevice(&hdfile);
+			if (hdfile != nullptr)
+>>>>>>> upstream/master
 			{
 				if (!state)
 				{

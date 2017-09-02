@@ -1,5 +1,6 @@
 // license:LGPL-2.1+
 // copyright-holders:David Haywood, Angelo Salese, Olivier Galibert, Mariusz Wojcieszek, R. Belmont
+<<<<<<< HEAD
 /*----------- defined in drivers/stv.c -----------*/
 #include "cdrom.h"
 #include "machine/eepromser.h"
@@ -696,16 +697,29 @@ public:
 	DECLARE_WRITE8_MEMBER( stv_SMPC_w );
 
 };
+=======
+
+#include "includes/saturn.h"
+#include "audio/rax.h"
+#include "machine/ticket.h"
+>>>>>>> upstream/master
 
 class stv_state : public saturn_state
 {
 public:
 	stv_state(const machine_config &mconfig, device_type type, const char *tag)
 		: saturn_state(mconfig, type, tag),
+<<<<<<< HEAD
 		m_adsp(*this, "adsp"),
 		m_adsp_pram(*this, "adsp_pram"),
 		m_cryptdevice(*this, "315_5881"),
 		m_5838crypt(*this, "315_5838")
+=======
+		m_rax(*this, "rax"),
+		m_cryptdevice(*this, "315_5881"),
+		m_5838crypt(*this, "315_5838"),
+		m_hopper(*this, "hopper")
+>>>>>>> upstream/master
 	{
 	}
 
@@ -754,6 +768,10 @@ public:
 	DECLARE_DRIVER_INIT(znpwfv);
 	DECLARE_DRIVER_INIT(othellos);
 	DECLARE_DRIVER_INIT(mausuke);
+<<<<<<< HEAD
+=======
+	DECLARE_DRIVER_INIT(hopper);
+>>>>>>> upstream/master
 
 	DECLARE_READ8_MEMBER(stv_ioga_r);
 	DECLARE_WRITE8_MEMBER(stv_ioga_w);
@@ -771,8 +789,15 @@ public:
 	DECLARE_WRITE32_MEMBER(magzun_ioga_w32);
 	DECLARE_READ32_MEMBER(magzun_hef_hack_r);
 	DECLARE_READ32_MEMBER(magzun_rx_hack_r);
+<<<<<<< HEAD
 
 	int load_cart(device_image_interface &image, generic_slot_device *slot);
+=======
+	DECLARE_WRITE8_MEMBER(hop_ioga_w);
+	DECLARE_WRITE32_MEMBER(hop_ioga_w32);
+
+	image_init_result load_cart(device_image_interface &image, generic_slot_device *slot);
+>>>>>>> upstream/master
 	DECLARE_DEVICE_IMAGE_LOAD_MEMBER( stv_cart1 ) { return load_cart(image, m_cart1); }
 	DECLARE_DEVICE_IMAGE_LOAD_MEMBER( stv_cart2 ) { return load_cart(image, m_cart2); }
 	DECLARE_DEVICE_IMAGE_LOAD_MEMBER( stv_cart3 ) { return load_cart(image, m_cart3); }
@@ -783,6 +808,7 @@ public:
 	DECLARE_MACHINE_START(stv);
 	DECLARE_MACHINE_RESET(stv);
 
+<<<<<<< HEAD
 	/* Batman Forever specifics */
 	optional_device<adsp2181_device>    m_adsp;
 	optional_shared_ptr<UINT32> m_adsp_pram;
@@ -805,6 +831,17 @@ public:
 	UINT32 m_abus_protkey;
 
 	UINT32 m_a_bus[4];
+=======
+	DECLARE_MACHINE_RESET(batmanfr);
+	DECLARE_WRITE32_MEMBER(batmanfr_sound_comms_w);
+	optional_device<acclaim_rax_device> m_rax;
+
+	// protection specific variables and functions (see machine/stvprot.c)
+	uint32_t m_abus_protenable;
+	uint32_t m_abus_protkey;
+
+	uint32_t m_a_bus[4];
+>>>>>>> upstream/master
 
 	DECLARE_READ32_MEMBER( common_prot_r );
 	DECLARE_WRITE32_MEMBER( common_prot_w );
@@ -812,6 +849,7 @@ public:
 	void install_common_protection();
 	void stv_register_protection_savestates();
 
+<<<<<<< HEAD
 
 
 	optional_device<sega_315_5881_crypt_device> m_cryptdevice;
@@ -819,6 +857,14 @@ public:
 	UINT16 crypt_read_callback(UINT32 addr);
 	UINT16 crypt_read_callback_ch1(UINT32 addr);
 	UINT16 crypt_read_callback_ch2(UINT32 addr);
+=======
+	optional_device<sega_315_5881_crypt_device> m_cryptdevice;
+	optional_device<sega_315_5838_comp_device> m_5838crypt;
+	optional_device<ticket_dispenser_device> m_hopper;
+	uint16_t crypt_read_callback(uint32_t addr);
+	uint16_t crypt_read_callback_ch1(uint32_t addr);
+	uint16_t crypt_read_callback_ch2(uint32_t addr);
+>>>>>>> upstream/master
 };
 
 

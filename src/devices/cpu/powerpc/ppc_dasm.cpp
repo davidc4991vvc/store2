@@ -107,8 +107,13 @@ enum
 struct IDESCR
 {
 	char    mnem[32];   // mnemonic
+<<<<<<< HEAD
 	UINT32  match;      // bit pattern of instruction after it has been masked
 	UINT32  mask;       // mask of variable fields (AND with ~mask to compare w/
+=======
+	uint32_t  match;      // bit pattern of instruction after it has been masked
+	uint32_t  mask;       // mask of variable fields (AND with ~mask to compare w/
+>>>>>>> upstream/master
 						// bit pattern to determine a match)
 	int format;         // operand format
 	int flags;          // flags
@@ -529,6 +534,7 @@ static void DCR(char *dest, int dcr_field)
  * unsigned 16-bit integer.
  */
 
+<<<<<<< HEAD
 static void DecodeSigned16(char *outbuf, UINT32 op, int do_unsigned)
 {
 	INT16 s;
@@ -536,6 +542,15 @@ static void DecodeSigned16(char *outbuf, UINT32 op, int do_unsigned)
 	s = G_SIMM(op);
 	if (do_unsigned)    // sign extend to unsigned 32-bits
 		sprintf(outbuf, "0x%04X", (UINT32) s);
+=======
+static void DecodeSigned16(char *outbuf, uint32_t op, int do_unsigned)
+{
+	int16_t s;
+
+	s = G_SIMM(op);
+	if (do_unsigned)    // sign extend to unsigned 32-bits
+		sprintf(outbuf, "0x%04X", (uint32_t) s);
+>>>>>>> upstream/master
 	else                // print as signed 16 bits
 	{
 		if (s < 0)
@@ -554,9 +569,15 @@ static void DecodeSigned16(char *outbuf, UINT32 op, int do_unsigned)
  * Generate a mask from bit MB through ME (PPC-style backwards bit numbering.)
  */
 
+<<<<<<< HEAD
 static UINT32 Mask(int mb, int me)
 {
 	UINT32  i, mask;
+=======
+static uint32_t Mask(int mb, int me)
+{
+	uint32_t  i, mask;
+>>>>>>> upstream/master
 
 	mb &= 31;
 	me &= 31;
@@ -582,7 +603,11 @@ static UINT32 Mask(int mb, int me)
  */
 
 #if 0
+<<<<<<< HEAD
 static int Check(UINT32 op, int flags)
+=======
+static int Check(uint32_t op, int flags)
+>>>>>>> upstream/master
 {
 	int nb, rt, ra;
 
@@ -644,9 +669,15 @@ static int Check(UINT32 op, int flags)
  * otherwise 0 to indicate disassembly should carry on as normal.
  */
 
+<<<<<<< HEAD
 static int Simplified(UINT32 op, UINT32 vpc, char *signed16, char *mnem, char *oprs)
 {
 	UINT32  value, disp;
+=======
+static int Simplified(uint32_t op, uint32_t vpc, char *signed16, char *mnem, char *oprs)
+{
+	uint32_t  value, disp;
+>>>>>>> upstream/master
 
 	value = G_SIMM(op); // value is fully sign-extended SIMM field
 	if (value & 0x8000)
@@ -835,10 +866,17 @@ static int Simplified(UINT32 op, UINT32 vpc, char *signed16, char *mnem, char *o
 	return 1;
 }
 
+<<<<<<< HEAD
 offs_t ppc_dasm_one(char *buffer, UINT32 pc, UINT32 op)
 {
 	char signed16[12];
 	UINT32 disp;
+=======
+offs_t ppc_dasm_one(std::ostream &stream, uint32_t pc, uint32_t op)
+{
+	char signed16[12];
+	uint32_t disp;
+>>>>>>> upstream/master
 	int i,j;
 	char mnem[200];
 	char oprs[200];
@@ -858,11 +896,19 @@ offs_t ppc_dasm_one(char *buffer, UINT32 pc, UINT32 op)
 	 */
 
 	if( Simplified(op, pc, signed16, mnem, oprs) ) {
+<<<<<<< HEAD
 		buffer += sprintf(buffer, "%s", mnem);
 		for( j = strlen(mnem); j < 10; j++ ) {
 			buffer += sprintf(buffer, " ");
 		}
 		buffer += sprintf(buffer, "%s", oprs);
+=======
+		util::stream_format(stream, "%s", mnem);
+		for( j = strlen(mnem); j < 10; j++ ) {
+			util::stream_format(stream, " ");
+		}
+		util::stream_format(stream, "%s", oprs);
+>>>>>>> upstream/master
 		return 4 | flags;
 	}
 
@@ -1022,7 +1068,11 @@ offs_t ppc_dasm_one(char *buffer, UINT32 pc, UINT32 op)
 				if (G_RA(op))
 					sprintf(oprs, "r%d,%s(r%d)", G_RT(op), signed16, G_RA(op));
 				else
+<<<<<<< HEAD
 					sprintf(oprs, "r%d,0x%08X", G_RT(op), (UINT32) ((INT16) G_D(op)));
+=======
+					sprintf(oprs, "r%d,0x%08X", G_RT(op), (uint32_t) ((int16_t) G_D(op)));
+>>>>>>> upstream/master
 				break;
 
 			case F_RT_D_RA:
@@ -1033,7 +1083,11 @@ offs_t ppc_dasm_one(char *buffer, UINT32 pc, UINT32 op)
 				if (G_RA(op))
 					sprintf(oprs, "f%d,%s(r%d)", G_RT(op), signed16, G_RA(op));
 				else
+<<<<<<< HEAD
 					sprintf(oprs, "f%d,0x%08X", G_RT(op), (UINT32) ((INT16) G_D(op)));
+=======
+					sprintf(oprs, "f%d,0x%08X", G_RT(op), (uint32_t) ((int16_t) G_D(op)));
+>>>>>>> upstream/master
 				break;
 
 			case F_FRT_D_RA:
@@ -1156,15 +1210,24 @@ offs_t ppc_dasm_one(char *buffer, UINT32 pc, UINT32 op)
 			else if (itab[i].flags & FL_SO)
 				flags |= DASMFLAG_STEP_OUT;
 
+<<<<<<< HEAD
 			buffer += sprintf(buffer, "%s", mnem);
 			for( j = strlen(mnem); j < 10; j++ ) {
 				buffer += sprintf(buffer, " ");
 			}
 			buffer += sprintf(buffer, "%s", oprs);
+=======
+			util::stream_format(stream, "%s", mnem);
+			for( j = strlen(mnem); j < 10; j++ ) {
+				util::stream_format(stream, " ");
+			}
+			util::stream_format(stream, "%s", oprs);
+>>>>>>> upstream/master
 			return 4 | flags;
 		}
 	}
 
+<<<<<<< HEAD
 	sprintf(buffer, "?");
 	return 4 | flags;
 }
@@ -1174,4 +1237,16 @@ CPU_DISASSEMBLE( powerpc )
 	UINT32 op = *(UINT32 *)oprom;
 	op = BIG_ENDIANIZE_INT32(op);
 	return ppc_dasm_one(buffer, pc, op);
+=======
+	util::stream_format(stream, "?");
+	return 4 | flags;
+}
+
+
+CPU_DISASSEMBLE( powerpc )
+{
+	uint32_t op = *(uint32_t *)oprom;
+	op = big_endianize_int32(op);
+	return ppc_dasm_one(stream, pc, op);
+>>>>>>> upstream/master
 }

@@ -14,6 +14,10 @@
 
 */
 
+<<<<<<< HEAD
+=======
+#include "emu.h"
+>>>>>>> upstream/master
 #include "mos8726.h"
 
 
@@ -28,7 +32,11 @@
 //  DEVICE TYPE DEFINITIONS
 //**************************************************************************
 
+<<<<<<< HEAD
 const device_type MOS8726 = &device_creator<mos8726_device>;
+=======
+DEFINE_DEVICE_TYPE(MOS8726, mos8726_device, "mos8726", "MOS 8726 DMA Controller")
+>>>>>>> upstream/master
 
 
 
@@ -40,12 +48,22 @@ const device_type MOS8726 = &device_creator<mos8726_device>;
 //  mos8726_device - constructor
 //-------------------------------------------------
 
+<<<<<<< HEAD
 mos8726_device::mos8726_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
 	: device_t(mconfig, MOS8726, "MOS8726", tag, owner, clock, "mos8726", __FILE__),
 		device_execute_interface(mconfig, *this),
 		m_icount(0),
 		m_bs(1)
 { }
+=======
+mos8726_device::mos8726_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: device_t(mconfig, MOS8726, tag, owner, clock)
+	, device_execute_interface(mconfig, *this)
+	, m_icount(0)
+	, m_bs(1)
+{
+}
+>>>>>>> upstream/master
 
 
 //-------------------------------------------------
@@ -90,7 +108,11 @@ void mos8726_device::execute_run()
 
 READ8_MEMBER( mos8726_device::read )
 {
+<<<<<<< HEAD
 	UINT8 data = 0;
+=======
+	uint8_t data = 0;
+>>>>>>> upstream/master
 
 	return data;
 }

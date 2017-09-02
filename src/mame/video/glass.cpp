@@ -33,7 +33,11 @@
       1  | xxxxxxxx -------- | not used
 */
 
+<<<<<<< HEAD
 TILE_GET_INFO_MEMBER(glass_state::get_tile_info_glass_screen0)
+=======
+TILE_GET_INFO_MEMBER(glass_state::get_tile_info_screen0)
+>>>>>>> upstream/master
 {
 	int data = m_videoram[tile_index << 1];
 	int data2 = m_videoram[(tile_index << 1) + 1];
@@ -43,7 +47,11 @@ TILE_GET_INFO_MEMBER(glass_state::get_tile_info_glass_screen0)
 }
 
 
+<<<<<<< HEAD
 TILE_GET_INFO_MEMBER(glass_state::get_tile_info_glass_screen1)
+=======
+TILE_GET_INFO_MEMBER(glass_state::get_tile_info_screen1)
+>>>>>>> upstream/master
 {
 	int data = m_videoram[(0x1000 / 2) + (tile_index << 1)];
 	int data2 = m_videoram[(0x1000 / 2) + (tile_index << 1) + 1];
@@ -67,7 +75,11 @@ TILE_GET_INFO_MEMBER(glass_state::get_tile_info_glass_screen1)
     B2B1B0 selects the picture (there are 8 pictures in each half of the ROM)
 */
 
+<<<<<<< HEAD
 WRITE16_MEMBER(glass_state::glass_blitter_w)
+=======
+WRITE16_MEMBER(glass_state::blitter_w)
+>>>>>>> upstream/master
 {
 	m_blitter_serial_buffer[m_current_bit] = data & 0x01;
 	m_current_bit++;
@@ -84,7 +96,11 @@ WRITE16_MEMBER(glass_state::glass_blitter_w)
 		/* fill the screen bitmap with the current picture */
 		{
 			int i, j;
+<<<<<<< HEAD
 			UINT8 *gfx = (UINT8 *)memregion("gfx3")->base();
+=======
+			uint8_t *gfx = (uint8_t *)memregion("gfx3")->base();
+>>>>>>> upstream/master
 
 			gfx = gfx + (m_current_command & 0x07) * 0x10000 + (m_current_command & 0x08) * 0x10000 + 0x140;
 
@@ -112,7 +128,11 @@ WRITE16_MEMBER(glass_state::glass_blitter_w)
 
 ***************************************************************************/
 
+<<<<<<< HEAD
 WRITE16_MEMBER(glass_state::glass_vram_w)
+=======
+WRITE16_MEMBER(glass_state::vram_w)
+>>>>>>> upstream/master
 {
 	COMBINE_DATA(&m_videoram[offset]);
 	m_pant[offset >> 11]->mark_tile_dirty(((offset << 1) & 0x0fff) >> 2);
@@ -127,9 +147,15 @@ WRITE16_MEMBER(glass_state::glass_vram_w)
 
 void glass_state::video_start()
 {
+<<<<<<< HEAD
 	m_pant[0] = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(glass_state::get_tile_info_glass_screen0),this), TILEMAP_SCAN_ROWS, 16, 16, 32, 32);
 	m_pant[1] = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(glass_state::get_tile_info_glass_screen1),this), TILEMAP_SCAN_ROWS, 16, 16, 32, 32);
 	m_screen_bitmap = auto_bitmap_ind16_alloc (machine(), 320, 200);
+=======
+	m_pant[0] = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(glass_state::get_tile_info_screen0),this), TILEMAP_SCAN_ROWS, 16, 16, 32, 32);
+	m_pant[1] = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(glass_state::get_tile_info_screen1),this), TILEMAP_SCAN_ROWS, 16, 16, 32, 32);
+	m_screen_bitmap = std::make_unique<bitmap_ind16>(320, 200);
+>>>>>>> upstream/master
 
 	save_item(NAME(*m_screen_bitmap));
 
@@ -191,7 +217,11 @@ void glass_state::draw_sprites( bitmap_ind16 &bitmap, const rectangle &cliprect 
 
 ****************************************************************************/
 
+<<<<<<< HEAD
 UINT32 glass_state::screen_update_glass(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+=======
+uint32_t glass_state::screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+>>>>>>> upstream/master
 {
 	/* set scroll registers */
 	m_pant[0]->set_scrolly(0, m_vregs[0]);

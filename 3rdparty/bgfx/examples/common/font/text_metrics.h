@@ -1,6 +1,10 @@
 /*
 * Copyright 2013 Jeremie Roy. All rights reserved.
+<<<<<<< HEAD
 * License: http://www.opensource.org/licenses/BSD-2-Clause
+=======
+* License: https://github.com/bkaradzic/bgfx#license-bsd-2-clause
+>>>>>>> upstream/master
 */
 
 #ifndef TEXT_METRICS_H_HEADER_GUARD
@@ -25,6 +29,12 @@ public:
 	/// Return the height of the measured text.
 	float getHeight() const { return m_height; }
 
+<<<<<<< HEAD
+=======
+	/// Clear the width and height of the measured text.
+	void clearText();
+
+>>>>>>> upstream/master
 private:
 	FontManager* m_fontManager;
 	float m_width;

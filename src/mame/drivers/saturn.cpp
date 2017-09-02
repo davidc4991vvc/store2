@@ -423,6 +423,7 @@ test1f diagnostic hacks:
 ****************************************************************************************************/
 
 #include "emu.h"
+<<<<<<< HEAD
 #include "cpu/m68000/m68000.h"
 #include "machine/eepromser.h"
 #include "cpu/sh2/sh2.h"
@@ -440,11 +441,41 @@ test1f diagnostic hacks:
 #include "bus/saturn/dram.h"
 #include "bus/saturn/bram.h"
 #include "softlist.h"
+=======
+#include "includes/saturn.h"
+
+#include "cpu/m68000/m68000.h"
+#include "cpu/scudsp/scudsp.h"
+#include "cpu/sh2/sh2.h"
+#include "imagedev/chd_cd.h"
+#include "machine/eepromser.h"
+#include "machine/nvram.h"
+#include "machine/smpc.h"
+#include "machine/stvcd.h"
+#include "machine/saturn_cdb.h"
+#include "sound/cdda.h"
+#include "sound/scsp.h"
+#include "video/stvvdp1.h"
+#include "video/stvvdp2.h"
+
+#include "bus/saturn/bram.h"
+#include "bus/saturn/dram.h"
+#include "bus/saturn/rom.h"
+#include "bus/saturn/sat_slot.h"
+
+#include "screen.h"
+#include "softlist.h"
+#include "speaker.h"
+
+#include "coreutil.h"
+
+>>>>>>> upstream/master
 
 class sat_console_state : public saturn_state
 {
 public:
 	sat_console_state(const machine_config &mconfig, device_type type, const char *tag)
+<<<<<<< HEAD
 				: saturn_state(mconfig, type, tag)
 				, m_exp(*this, "exp")
 				, m_nvram(*this, "nvram")
@@ -452,6 +483,14 @@ public:
 	{ }
 
 	DECLARE_INPUT_CHANGED_MEMBER(key_stroke);
+=======
+		: saturn_state(mconfig, type, tag)
+		, m_exp(*this, "exp")
+		, m_nvram(*this, "nvram")
+		, m_smpc_nv(*this, "smpc_nv")
+	{ }
+
+>>>>>>> upstream/master
 	DECLARE_INPUT_CHANGED_MEMBER(nmi_reset);
 	DECLARE_INPUT_CHANGED_MEMBER(tray_open);
 	DECLARE_INPUT_CHANGED_MEMBER(tray_close);
@@ -460,7 +499,11 @@ public:
 	DECLARE_MACHINE_RESET(saturn);
 
 	DECLARE_READ8_MEMBER(saturn_cart_type_r);
+<<<<<<< HEAD
 	DECLARE_READ32_MEMBER( abus_dummy_r );
+=======
+	DECLARE_READ32_MEMBER(abus_dummy_r);
+>>>>>>> upstream/master
 
 	DECLARE_READ32_MEMBER(saturn_null_ram_r);
 	DECLARE_WRITE32_MEMBER(saturn_null_ram_w);
@@ -539,6 +582,7 @@ static ADDRESS_MAP_START( scudsp_data, AS_DATA, 32, sat_console_state )
 ADDRESS_MAP_END
 
 
+<<<<<<< HEAD
 /* keyboard code */
 /* TODO: needs a proper keycode table */
 INPUT_CHANGED_MEMBER(sat_console_state::key_stroke)
@@ -620,6 +664,8 @@ INPUT_CHANGED_MEMBER(sat_console_state::key_stroke)
 	PORT_BIT( 0x000f, IP_ACTIVE_LOW, IPT_UNUSED ) PORT_CONDITION("INPUT_TYPE", _mask_, EQUALS, _val_) //read '1' when direct mode is polled
 
 #define SATURN_KEYBOARD PORT_CONDITION("INPUT_TYPE", 0x0f, EQUALS, 0x05)
+=======
+>>>>>>> upstream/master
 
 INPUT_CHANGED_MEMBER(sat_console_state::nmi_reset)
 {
@@ -650,6 +696,7 @@ static INPUT_PORTS_START( saturn )
 	PORT_BIT( 0x02, IP_ACTIVE_HIGH, IPT_OTHER ) PORT_CHANGED_MEMBER(DEVICE_SELF, sat_console_state, tray_open,0) PORT_NAME("Tray Open Button")
 	PORT_BIT( 0x04, IP_ACTIVE_HIGH, IPT_OTHER ) PORT_CHANGED_MEMBER(DEVICE_SELF, sat_console_state, tray_close,0) PORT_NAME("Tray Close")
 
+<<<<<<< HEAD
 	PORT_START("JOY1")
 	SATURN_PAD_P1(0x0f, 0)
 
@@ -925,6 +972,8 @@ static INPUT_PORTS_START( saturn )
 	PORT_CONFSETTING(0x80,"Saturn Mouse")
 	PORT_CONFSETTING(0x90,"<unconnected>")
 
+=======
+>>>>>>> upstream/master
 	PORT_START("fake")
 	PORT_CONFNAME(0x01,0x00,"Master-Slave Comms")
 	PORT_CONFSETTING(0x00,"Normal (400 cycles)")
@@ -935,7 +984,11 @@ INPUT_PORTS_END
 /* TODO: if you change the driver configuration then NVRAM contents gets screwed, needs mods in MAME framework */
 void sat_console_state::nvram_init(nvram_device &nvram, void *data, size_t size)
 {
+<<<<<<< HEAD
 	static const UINT8 init[64] = {
+=======
+	static const uint8_t init[64] = {
+>>>>>>> upstream/master
 	'B', 'a', 'c', 'k', 'U', 'p', 'R', 'a', 'm', ' ', 'F', 'o', 'r', 'm', 'a', 't',
 	'B', 'a', 'c', 'k', 'U', 'p', 'R', 'a', 'm', ' ', 'F', 'o', 'r', 'm', 'a', 't',
 	'B', 'a', 'c', 'k', 'U', 'p', 'R', 'a', 'm', ' ', 'F', 'o', 'r', 'm', 'a', 't',
@@ -945,12 +998,72 @@ void sat_console_state::nvram_init(nvram_device &nvram, void *data, size_t size)
 	memcpy(data, init, sizeof(init));
 }
 
+<<<<<<< HEAD
+=======
+void saturn_state::debug_scuirq_command(int ref, const std::vector<std::string> &params)
+{
+	debugger_console con = machine().debugger().console();
+	const char *const irqnames[16] = {
+		"VBlank-in", "VBlank-out", "HBlank-in", "Timer 0", "Timer 1", "SCU DSP end", "Sound request", "SMPC", "Pad", "DMA lv 2", "DMA lv 1", "DMA lv 0", "DMA illegal", "VDP1 end", "A-Bus" };
+
+
+	for(int irq_lv = 0;irq_lv<16;irq_lv++)
+		con.printf("%s irq enabled: %s\n",irqnames[irq_lv],(m_scu.ism & (1 << irq_lv)) == 0 ? "1" : "0");
+}
+
+void saturn_state::debug_scudma_command(int ref, const std::vector<std::string> &params)
+{
+	debugger_console con = machine().debugger().console();
+
+	for(int ch=0;ch<3;ch++)
+	{
+		con.printf("DMA LV%02d: src = %08x dst = %08x size = %08x\n",ch,m_scu.src[ch],m_scu.dst[ch],m_scu.size[ch]);
+		con.printf("    adds: src = %08x dst = %08x\n",m_scu.src_add[ch],m_scu.dst_add[ch]);
+		con.printf("indirect: index = %08x\n",m_scu.index[ch]);
+		con.printf("  enable: mask = %08x start factor = %08x\n",m_scu.enable_mask[ch],m_scu.start_factor[ch]);
+	}
+}
+
+void saturn_state::debug_help_command(int ref, const std::vector<std::string> &params)
+{
+	debugger_console con = machine().debugger().console();
+
+	con.printf("Available Saturn commands:\n");
+	con.printf("   saturn scudma -- pretty prints current state of SCU DMA registers\n");
+	con.printf("   saturn scuirq -- pretty prints current state of SCU IRQ registers\n");
+	con.printf("   saturn help -- this list\n");
+}
+
+
+void saturn_state::debug_commands(int ref, const std::vector<std::string> &params)
+{
+	if (params.size() < 1)
+		return;
+
+	if (params[0] == "scudma")
+		debug_scudma_command(ref, params);
+	else if (params[0] == "scuirq")
+		debug_scuirq_command(ref, params);
+	else if (params[0] == "help")
+		debug_help_command(ref, params);
+}
+
+>>>>>>> upstream/master
 
 MACHINE_START_MEMBER(sat_console_state, saturn)
 {
 	system_time systime;
 	machine().base_datetime(systime);
 
+<<<<<<< HEAD
+=======
+	if (machine().debug_flags & DEBUG_FLAG_ENABLED)
+	{
+		using namespace std::placeholders;
+		machine().debugger().console().register_command("saturn", CMDFLAG_NONE, 0, 1, 4, std::bind(&saturn_state::debug_commands, this, _1, _2));
+	}
+
+>>>>>>> upstream/master
 	machine().device<scsp_device>("scsp")->set_ram_base(m_sound_ram);
 
 	m_maincpu->space(AS_PROGRAM).install_readwrite_handler(0x02400000, 0x027fffff, read32_delegate(FUNC(sat_console_state::saturn_null_ram_r),this), write32_delegate(FUNC(sat_console_state::saturn_null_ram_w),this));
@@ -959,7 +1072,11 @@ MACHINE_START_MEMBER(sat_console_state, saturn)
 	m_maincpu->space(AS_PROGRAM).nop_readwrite(0x04000000, 0x047fffff);
 	m_slave->space(AS_PROGRAM).nop_readwrite(0x04000000, 0x047fffff);
 
+<<<<<<< HEAD
 	m_nvram->set_base(m_backupram, 0x8000);
+=======
+	m_nvram->set_base(m_backupram.get(), 0x8000);
+>>>>>>> upstream/master
 	m_smpc_nv->set_base(&m_smpc.SMEM, 4);
 
 	if (m_exp)
@@ -1008,8 +1125,13 @@ MACHINE_START_MEMBER(sat_console_state, saturn)
 	}
 
 	// save states
+<<<<<<< HEAD
 	save_pointer(NAME(m_scu_regs), 0x100/4);
 	save_pointer(NAME(m_scsp_regs), 0x1000/2);
+=======
+	save_pointer(NAME(m_scu_regs.get()), 0x100/4);
+	save_pointer(NAME(m_scsp_regs.get()), 0x1000/2);
+>>>>>>> upstream/master
 	save_item(NAME(m_NMI_reset));
 	save_item(NAME(m_en_68k));
 	save_item(NAME(m_smpc.IOSEL1));
@@ -1026,7 +1148,11 @@ MACHINE_START_MEMBER(sat_console_state, saturn)
 	save_item(NAME(m_smpc.SR));
 	save_item(NAME(m_smpc.SMEM));
 
+<<<<<<< HEAD
 	machine().add_notifier(MACHINE_NOTIFY_EXIT, machine_notify_delegate(FUNC(sat_console_state::stvcd_exit), this));
+=======
+	machine().add_notifier(MACHINE_NOTIFY_EXIT, machine_notify_delegate(&sat_console_state::stvcd_exit, this));
+>>>>>>> upstream/master
 
 	m_smpc.rtc_data[0] = DectoBCD(systime.local_time.year /100);
 	m_smpc.rtc_data[1] = DectoBCD(systime.local_time.year %100);
@@ -1083,7 +1209,11 @@ MACHINE_RESET_MEMBER(sat_console_state,saturn)
 }
 
 
+<<<<<<< HEAD
 static MACHINE_CONFIG_START( saturn, sat_console_state )
+=======
+static MACHINE_CONFIG_START( saturn )
+>>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", SH2, MASTER_CLOCK_352/2) // 28.6364 MHz
@@ -1140,6 +1270,12 @@ static MACHINE_CONFIG_START( saturn, sat_console_state )
 	MCFG_SOUND_ADD("cdda", CDDA, 0)
 	MCFG_SOUND_ROUTE(0, "lspeaker", 1.0)
 	MCFG_SOUND_ROUTE(1, "rspeaker", 1.0)
+<<<<<<< HEAD
+=======
+
+	MCFG_SATURN_CONTROL_PORT_ADD("ctrl1", saturn_controls, "joypad")
+	MCFG_SATURN_CONTROL_PORT_ADD("ctrl2", saturn_controls, "joypad")
+>>>>>>> upstream/master
 MACHINE_CONFIG_END
 
 static SLOT_INTERFACE_START(saturn_cart)
@@ -1156,10 +1292,19 @@ SLOT_INTERFACE_END
 MACHINE_CONFIG_DERIVED( saturnus, saturn )
 	MCFG_CDROM_ADD( "cdrom" )
 	MCFG_CDROM_INTERFACE("sat_cdrom")
+<<<<<<< HEAD
 	MCFG_SOFTWARE_LIST_ADD("cd_list","saturn")
 	MCFG_SOFTWARE_LIST_FILTER("cd_list","NTSC-U")
 
 	MCFG_SATURN_CARTRIDGE_ADD("exp", saturn_cart, NULL)
+=======
+	MCFG_DEVICE_ADD("saturn_cdb", SATURN_CDB, 16000000)
+
+	MCFG_SOFTWARE_LIST_ADD("cd_list","saturn")
+	MCFG_SOFTWARE_LIST_FILTER("cd_list","NTSC-U")
+
+	MCFG_SATURN_CARTRIDGE_ADD("exp", saturn_cart, nullptr)
+>>>>>>> upstream/master
 	MCFG_SOFTWARE_LIST_ADD("cart_list","sat_cart")
 
 MACHINE_CONFIG_END
@@ -1167,10 +1312,19 @@ MACHINE_CONFIG_END
 MACHINE_CONFIG_DERIVED( saturneu, saturn )
 	MCFG_CDROM_ADD( "cdrom" )
 	MCFG_CDROM_INTERFACE("sat_cdrom")
+<<<<<<< HEAD
 	MCFG_SOFTWARE_LIST_ADD("cd_list","saturn")
 	MCFG_SOFTWARE_LIST_FILTER("cd_list","PAL")
 
 	MCFG_SATURN_CARTRIDGE_ADD("exp", saturn_cart, NULL)
+=======
+	MCFG_DEVICE_ADD("saturn_cdb", SATURN_CDB, 16000000)
+
+	MCFG_SOFTWARE_LIST_ADD("cd_list","saturn")
+	MCFG_SOFTWARE_LIST_FILTER("cd_list","PAL")
+
+	MCFG_SATURN_CARTRIDGE_ADD("exp", saturn_cart, nullptr)
+>>>>>>> upstream/master
 	MCFG_SOFTWARE_LIST_ADD("cart_list","sat_cart")
 
 MACHINE_CONFIG_END
@@ -1178,10 +1332,19 @@ MACHINE_CONFIG_END
 MACHINE_CONFIG_DERIVED( saturnjp, saturn )
 	MCFG_CDROM_ADD( "cdrom" )
 	MCFG_CDROM_INTERFACE("sat_cdrom")
+<<<<<<< HEAD
 	MCFG_SOFTWARE_LIST_ADD("cd_list","saturn")
 	MCFG_SOFTWARE_LIST_FILTER("cd_list","NTSC-J")
 
 	MCFG_SATURN_CARTRIDGE_ADD("exp", saturn_cart, NULL)
+=======
+	MCFG_DEVICE_ADD("saturn_cdb", SATURN_CDB, 16000000)
+
+	MCFG_SOFTWARE_LIST_ADD("cd_list","saturn")
+	MCFG_SOFTWARE_LIST_FILTER("cd_list","NTSC-J")
+
+	MCFG_SATURN_CARTRIDGE_ADD("exp", saturn_cart, nullptr)
+>>>>>>> upstream/master
 	MCFG_SOFTWARE_LIST_ADD("cart_list","sat_cart")
 
 MACHINE_CONFIG_END
@@ -1209,9 +1372,15 @@ void sat_console_state::saturn_init_driver(int rgn)
 	m_minit_boost_timeslice = attotime::zero;
 	m_sinit_boost_timeslice = attotime::zero;
 
+<<<<<<< HEAD
 	m_scu_regs = auto_alloc_array_clear(machine(), UINT32, 0x100/4);
 	m_scsp_regs = auto_alloc_array_clear(machine(), UINT16, 0x1000/2);
 	m_backupram = auto_alloc_array_clear(machine(), UINT8, 0x8000);
+=======
+	m_scu_regs = make_unique_clear<uint32_t[]>(0x100/4);
+	m_scsp_regs = make_unique_clear<uint16_t[]>(0x1000/2);
+	m_backupram = make_unique_clear<uint8_t[]>(0x8000);
+>>>>>>> upstream/master
 }
 
 DRIVER_INIT_MEMBER(sat_console_state,saturnus)
@@ -1240,7 +1409,11 @@ ROM_START(saturnjp)
 	ROM_SYSTEM_BIOS(2, "100", "Japan v1.00 (940921)")
 	ROMX_LOAD("sega_100.bin", 0x00000000, 0x00080000, CRC(2aba43c2) SHA1(2b8cb4f87580683eb4d760e4ed210813d667f0a2), ROM_BIOS(3))
 	ROM_REGION( 0x080000, "slave", 0 ) /* SH2 code */
+<<<<<<< HEAD
 	ROM_COPY( "maincpu",0,0,0x080000)
+=======
+	ROM_COPY( "maincpu",0x000000,0,0x080000)
+>>>>>>> upstream/master
 ROM_END
 
 /* Overseas Saturn */
@@ -1252,7 +1425,11 @@ ROM_START(saturn)
 	ROM_SYSTEM_BIOS(1, "100a", "Overseas v1.00a (941115)")
 	ROMX_LOAD("sega_100a.bin", 0x00000000, 0x00080000, CRC(f90f0089) SHA1(3bb41feb82838ab9a35601ac666de5aacfd17a58), ROM_BIOS(2))
 	ROM_REGION( 0x080000, "slave", 0 ) /* SH2 code */
+<<<<<<< HEAD
 	ROM_COPY( "maincpu",0,0,0x080000)
+=======
+	ROM_COPY( "maincpu",0x000000,0,0x080000)
+>>>>>>> upstream/master
 ROM_END
 
 ROM_START(saturneu)
@@ -1263,14 +1440,22 @@ ROM_START(saturneu)
 	ROM_SYSTEM_BIOS(1, "100a", "Overseas v1.00a (941115)")
 	ROMX_LOAD("sega_100a.bin", 0x00000000, 0x00080000, CRC(f90f0089) SHA1(3bb41feb82838ab9a35601ac666de5aacfd17a58), ROM_BIOS(2))
 	ROM_REGION( 0x080000, "slave", 0 ) /* SH2 code */
+<<<<<<< HEAD
 	ROM_COPY( "maincpu",0,0,0x080000)
+=======
+	ROM_COPY( "maincpu",0x000000,0,0x080000)
+>>>>>>> upstream/master
 ROM_END
 
 ROM_START(vsaturn)
 	ROM_REGION( 0x480000, "maincpu", ROMREGION_ERASEFF ) /* SH2 code */
 	ROM_LOAD("vsaturn.bin", 0x00000000, 0x00080000, CRC(e4d61811) SHA1(4154e11959f3d5639b11d7902b3a393a99fb5776))
 	ROM_REGION( 0x080000, "slave", 0 ) /* SH2 code */
+<<<<<<< HEAD
 	ROM_COPY( "maincpu",0,0,0x080000)
+=======
+	ROM_COPY( "maincpu",0x000000,0,0x080000)
+>>>>>>> upstream/master
 ROM_END
 
 ROM_START(hisaturn)
@@ -1280,10 +1465,17 @@ ROM_START(hisaturn)
 	ROM_SYSTEM_BIOS(1, "101", "v1.01 (950130)")
 	ROMX_LOAD("hisaturn.bin", 0x00000000, 0x00080000, CRC(721e1b60) SHA1(49d8493008fa715ca0c94d99817a5439d6f2c796), ROM_BIOS(2))
 	ROM_REGION( 0x080000, "slave", 0 ) /* SH2 code */
+<<<<<<< HEAD
 	ROM_COPY( "maincpu",0,0,0x080000)
 ROM_END
 
 /*    YEAR  NAME        PARENT  COMPAT  MACHINE INPUT   INIT        COMPANY     FULLNAME            FLAGS */
+=======
+	ROM_COPY( "maincpu",0x000000,0,0x080000)
+ROM_END
+
+/*    YEAR  NAME        PARENT  COMPAT  MACHINE   INPUT   STATE              INIT        COMPANY     FULLNAME            FLAGS */
+>>>>>>> upstream/master
 CONS( 1994, saturn,     0,      0,      saturnus, saturn, sat_console_state, saturnus,   "Sega",     "Saturn (USA)",     MACHINE_NOT_WORKING )
 CONS( 1994, saturnjp,   saturn, 0,      saturnjp, saturn, sat_console_state, saturnjp,   "Sega",     "Saturn (Japan)",   MACHINE_NOT_WORKING )
 CONS( 1994, saturneu,   saturn, 0,      saturneu, saturn, sat_console_state, saturneu,   "Sega",     "Saturn (PAL)",     MACHINE_NOT_WORKING )

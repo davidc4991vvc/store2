@@ -24,12 +24,20 @@
 
 PALETTE_INIT_MEMBER(appoooh_state,appoooh)
 {
+<<<<<<< HEAD
 	const UINT8 *color_prom = memregion("proms")->base();
+=======
+	const uint8_t *color_prom = memregion("proms")->base();
+>>>>>>> upstream/master
 	int i;
 
 	for (i = 0; i < palette.entries(); i++)
 	{
+<<<<<<< HEAD
 		UINT8 pen;
+=======
+		uint8_t pen;
+>>>>>>> upstream/master
 		int bit0, bit1, bit2, r, g, b;
 
 		if (i < 0x100)
@@ -63,14 +71,22 @@ PALETTE_INIT_MEMBER(appoooh_state,appoooh)
 
 PALETTE_INIT_MEMBER(appoooh_state,robowres)
 {
+<<<<<<< HEAD
 	const UINT8 *color_prom = memregion("proms")->base();
+=======
+	const uint8_t *color_prom = memregion("proms")->base();
+>>>>>>> upstream/master
 	int i;
 
 	for (i = 0; i < palette.entries(); i++)
 	{
 		int bit0, bit1, bit2, r, g, b;
 
+<<<<<<< HEAD
 		UINT8 pen = color_prom[0x020 + i] & 0x0f;
+=======
+		uint8_t pen = color_prom[0x020 + i] & 0x0f;
+>>>>>>> upstream/master
 
 		/* red component */
 		bit0 = (color_prom[pen] >> 0) & 0x01;
@@ -132,8 +148,13 @@ TILE_GET_INFO_MEMBER(appoooh_state::get_bg_tile_info)
 
 VIDEO_START_MEMBER(appoooh_state,appoooh)
 {
+<<<<<<< HEAD
 	m_fg_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(appoooh_state::get_fg_tile_info),this), TILEMAP_SCAN_ROWS, 8, 8, 32, 32);
 	m_bg_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(appoooh_state::get_bg_tile_info),this), TILEMAP_SCAN_ROWS, 8, 8, 32, 32);
+=======
+	m_fg_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(appoooh_state::get_fg_tile_info),this), TILEMAP_SCAN_ROWS, 8, 8, 32, 32);
+	m_bg_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(appoooh_state::get_bg_tile_info),this), TILEMAP_SCAN_ROWS, 8, 8, 32, 32);
+>>>>>>> upstream/master
 
 	m_fg_tilemap->set_transparent_pen(0);
 	m_fg_tilemap->set_scrolldy(8, 8);
@@ -197,7 +218,11 @@ WRITE8_MEMBER(appoooh_state::out_w)
 	/* bit 7 unknown (used) */
 }
 
+<<<<<<< HEAD
 void appoooh_state::appoooh_draw_sprites( bitmap_ind16 &dest_bmp, const rectangle &cliprect, gfx_element *gfx, UINT8 *sprite )
+=======
+void appoooh_state::appoooh_draw_sprites( bitmap_ind16 &dest_bmp, const rectangle &cliprect, gfx_element *gfx, uint8_t *sprite )
+>>>>>>> upstream/master
 {
 	int offs;
 	int flipy = flip_screen();
@@ -228,7 +253,11 @@ void appoooh_state::appoooh_draw_sprites( bitmap_ind16 &dest_bmp, const rectangl
 	}
 }
 
+<<<<<<< HEAD
 void appoooh_state::robowres_draw_sprites( bitmap_ind16 &dest_bmp, const rectangle &cliprect, gfx_element *gfx, UINT8 *sprite )
+=======
+void appoooh_state::robowres_draw_sprites( bitmap_ind16 &dest_bmp, const rectangle &cliprect, gfx_element *gfx, uint8_t *sprite )
+>>>>>>> upstream/master
 {
 	int offs;
 	int flipy = flip_screen();
@@ -260,7 +289,11 @@ void appoooh_state::robowres_draw_sprites( bitmap_ind16 &dest_bmp, const rectang
 }
 
 
+<<<<<<< HEAD
 UINT32 appoooh_state::screen_update_appoooh(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+=======
+uint32_t appoooh_state::screen_update_appoooh(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+>>>>>>> upstream/master
 {
 	m_bg_tilemap->draw(screen, bitmap, cliprect, 0, 0);
 
@@ -289,7 +322,11 @@ UINT32 appoooh_state::screen_update_appoooh(screen_device &screen, bitmap_ind16 
 	return 0;
 }
 
+<<<<<<< HEAD
 UINT32 appoooh_state::screen_update_robowres(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+=======
+uint32_t appoooh_state::screen_update_robowres(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+>>>>>>> upstream/master
 {
 	m_bg_tilemap->draw(screen, bitmap, cliprect, 0, 0);
 

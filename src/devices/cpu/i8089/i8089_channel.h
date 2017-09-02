@@ -8,6 +8,7 @@
 
 ***************************************************************************/
 
+<<<<<<< HEAD
 #pragma once
 
 #ifndef __I8089_CHANNEL_H__
@@ -15,6 +16,12 @@
 
 #include "emu.h"
 #include "i8089.h"
+=======
+#ifndef MAME_CPU_I8080_I8089_CHANNEL_H
+#define MAME_CPU_I8080_I8089_CHANNEL_H
+
+#pragma once
+>>>>>>> upstream/master
 
 
 //**************************************************************************
@@ -25,7 +32,11 @@
 	MCFG_DEVICE_ADD(_tag, I8089_CHANNEL, 0)
 
 #define MCFG_I8089_CHANNEL_SINTR(_sintr) \
+<<<<<<< HEAD
 	downcast<i8089_channel *>(device)->set_sintr_callback(DEVCB_##_sintr);
+=======
+	downcast<i8089_channel_device *>(device)->set_sintr_callback(DEVCB_##_sintr);
+>>>>>>> upstream/master
 
 
 //**************************************************************************
@@ -35,6 +46,7 @@
 // forward declaration
 class i8089_device;
 
+<<<<<<< HEAD
 class i8089_channel : public device_t
 {
 public:
@@ -45,6 +57,18 @@ public:
 
 	// set register
 	void set_reg(int reg, UINT32 value, int tag = -1);
+=======
+class i8089_channel_device : public device_t
+{
+public:
+	// construction/destruction
+	i8089_channel_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
+
+	template <class Object> void set_sintr_callback(Object &&sintr) { m_write_sintr.set_callback(std::forward<Object>(sintr)); }
+
+	// set register
+	void set_reg(int reg, uint32_t value, int tag = -1);
+>>>>>>> upstream/master
 
 	int execute_run();
 	void attention();
@@ -83,15 +107,24 @@ public:
 
 	struct
 	{
+<<<<<<< HEAD
 		UINT32 w; // 20-bit address
+=======
+		uint32_t w; // 20-bit address
+>>>>>>> upstream/master
 		bool t; // tag-bit
 	}
 	m_r[11];
 
 protected:
 	// device-level overrides
+<<<<<<< HEAD
 	virtual void device_start();
 	virtual void device_reset();
+=======
+	virtual void device_start() override;
+	virtual void device_reset() override;
+>>>>>>> upstream/master
 
 private:
 
@@ -100,19 +133,34 @@ private:
 	void add_mr(int m, int r, int o);
 	void addb_rm(int r, int m, int o);
 	void addb_mr(int m, int r, int o);
+<<<<<<< HEAD
 	void addbi_ri(int r, INT8 i);
 	void addbi_mi(int m, INT8 i, int o);
 	void addi_ri(int r, INT16 i);
 	void addi_mi(int m, INT16 i, int o);
+=======
+	void addbi_ri(int r, int8_t i);
+	void addbi_mi(int m, int8_t i, int o);
+	void addi_ri(int r, int16_t i);
+	void addi_mi(int m, int16_t i, int o);
+>>>>>>> upstream/master
 	void and_rm(int r, int m, int o);
 	void and_mr(int m, int r, int o);
 	void andb_rm(int r, int m, int o);
 	void andb_mr(int m, int r, int o);
+<<<<<<< HEAD
 	void andbi_ri(int r, INT8 i);
 	void andbi_mi(int m, INT8 i, int o);
 	void andi_ri(int r, INT16 i);
 	void andi_mi(int m, INT16 i, int o);
 	void call(int m, INT16 d, int o);
+=======
+	void andbi_ri(int r, int8_t i);
+	void andbi_mi(int m, int8_t i, int o);
+	void andi_ri(int r, int16_t i);
+	void andi_mi(int m, int16_t i, int o);
+	void call(int m, int16_t d, int o);
+>>>>>>> upstream/master
 	void clr(int m, int b, int o);
 	void dec_r(int r);
 	void dec_m(int m, int o);
@@ -121,6 +169,7 @@ private:
 	void inc_r(int r);
 	void inc_m(int m, int o);
 	void incb(int m, int o);
+<<<<<<< HEAD
 	void jbt(int m, int b, INT16 d, int o);
 	void jmce(int m, INT16 d, int o);
 	void jmcne(int m, INT16 d, int o);
@@ -131,6 +180,18 @@ private:
 	void jz_r(int r, INT16 d);
 	void jz_m(int m, INT16 d, int o);
 	void jzb(int m, INT16 d, int o);
+=======
+	void jbt(int m, int b, int16_t d, int o);
+	void jmce(int m, int16_t d, int o);
+	void jmcne(int m, int16_t d, int o);
+	void jnbt(int m, int b, int16_t d, int o);
+	void jnz_r(int r, int16_t d);
+	void jnz_m(int m, int16_t d, int o);
+	void jnzb(int m, int16_t d, int o);
+	void jz_r(int r, int16_t d);
+	void jz_m(int m, int16_t d, int o);
+	void jzb(int m, int16_t d, int o);
+>>>>>>> upstream/master
 	void lpd(int p, int m, int o);
 	void lpdi(int p, int s, int o);
 	void mov_mr(int m, int r, int o);
@@ -139,10 +200,17 @@ private:
 	void movb_mr(int m, int r, int o);
 	void movb_rm(int r, int m, int o);
 	void movb_mm(int m1, int m2, int o1, int o2);
+<<<<<<< HEAD
 	void movbi_ri(int r, INT8 i);
 	void movbi_mi(int m, INT8 i, int o);
 	void movi_ri(int r, INT16 i);
 	void movi_mi(int m, INT16 i, int o);
+=======
+	void movbi_ri(int r, int8_t i);
+	void movbi_mi(int m, int8_t i, int o);
+	void movi_ri(int r, int16_t i);
+	void movi_mi(int m, int16_t i, int o);
+>>>>>>> upstream/master
 	void movp_mp(int m, int p, int o);
 	void movp_pm(int p, int m, int o);
 	void nop();
@@ -155,6 +223,7 @@ private:
 	void or_mr(int m, int r, int o);
 	void orb_rm(int r, int m, int o);
 	void orb_mr(int m, int r, int o);
+<<<<<<< HEAD
 	void orbi_ri(int r, INT8 i);
 	void orbi_mi(int m, INT8 i, int o);
 	void ori_ri(int r, INT16 i);
@@ -162,17 +231,35 @@ private:
 	void setb(int m, int b, int o);
 	void sintr();
 	void tsl(int m, INT8 i, INT8 d, int o);
+=======
+	void orbi_ri(int r, int8_t i);
+	void orbi_mi(int m, int8_t i, int o);
+	void ori_ri(int r, int16_t i);
+	void ori_mi(int m, int16_t i, int o);
+	void setb(int m, int b, int o);
+	void sintr();
+	void tsl(int m, int8_t i, int8_t d, int o);
+>>>>>>> upstream/master
 	void wid(int s, int d);
 	void xfer();
 	void invalid(int opc);
 
 	// instruction fetch
+<<<<<<< HEAD
 	INT16 displacement(int wb);
 	UINT32 offset(int aa, int mm, int w);
 	INT8 imm8();
 	INT16 imm16();
 
 	void examine_ccw(UINT8 ccw);
+=======
+	int16_t displacement(int wb);
+	uint32_t offset(int aa, int mm, int w);
+	int8_t imm8();
+	int16_t imm16();
+
+	void examine_ccw(uint8_t ccw);
+>>>>>>> upstream/master
 
 	devcb_write_line m_write_sintr;
 
@@ -184,7 +271,11 @@ private:
 	void terminate_dma(int offset);
 
 	bool m_xfer_pending;
+<<<<<<< HEAD
 	UINT16 m_dma_value;
+=======
+	uint16_t m_dma_value;
+>>>>>>> upstream/master
 	int m_dma_state;
 	bool m_drq;
 
@@ -218,7 +309,13 @@ private:
 
 
 // device type definition
+<<<<<<< HEAD
 extern const device_type I8089_CHANNEL;
 
 
 #endif  /* __I8089_CHANNEL_H__ */
+=======
+DECLARE_DEVICE_TYPE(I8089_CHANNEL, i8089_channel_device)
+
+#endif // MAME_CPU_I8080_I8089_CHANNEL_H
+>>>>>>> upstream/master

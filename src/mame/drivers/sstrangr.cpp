@@ -9,6 +9,10 @@
 
 #include "emu.h"
 #include "cpu/i8085/i8085.h"
+<<<<<<< HEAD
+=======
+#include "screen.h"
+>>>>>>> upstream/master
 
 #include "sstrangr.lh"
 
@@ -24,6 +28,7 @@ public:
 
 	required_device<cpu_device> m_maincpu;
 	optional_device<palette_device> m_palette;
+<<<<<<< HEAD
 	required_shared_ptr<UINT8> m_ram;
 
 	UINT8 m_flip_screen;
@@ -34,6 +39,18 @@ public:
 
 	UINT32 screen_update_sstrangr(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect);
 	UINT32 screen_update_sstrngr2(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect);
+=======
+	required_shared_ptr<uint8_t> m_ram;
+
+	uint8_t m_flip_screen;
+
+	DECLARE_WRITE8_MEMBER(port_w);
+
+	virtual void video_start() override;
+
+	uint32_t screen_update_sstrangr(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect);
+	uint32_t screen_update_sstrngr2(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect);
+>>>>>>> upstream/master
 };
 
 
@@ -49,7 +66,11 @@ void sstrangr_state::video_start()
 	save_item(NAME(m_flip_screen));
 }
 
+<<<<<<< HEAD
 UINT32 sstrangr_state::screen_update_sstrangr(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect)
+=======
+uint32_t sstrangr_state::screen_update_sstrangr(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect)
+>>>>>>> upstream/master
 {
 	offs_t offs;
 
@@ -57,9 +78,15 @@ UINT32 sstrangr_state::screen_update_sstrangr(screen_device &screen, bitmap_rgb3
 	{
 		int i;
 
+<<<<<<< HEAD
 		UINT8 x = offs << 3;
 		int y = offs >> 5;
 		UINT8 data = m_ram[offs];
+=======
+		uint8_t x = offs << 3;
+		int y = offs >> 5;
+		uint8_t data = m_ram[offs];
+>>>>>>> upstream/master
 
 		for (i = 0; i < 8; i++)
 		{
@@ -67,12 +94,20 @@ UINT32 sstrangr_state::screen_update_sstrangr(screen_device &screen, bitmap_rgb3
 
 			if (m_flip_screen)
 			{
+<<<<<<< HEAD
 				pen = (data & 0x80) ? rgb_t::white : rgb_t::black;
+=======
+				pen = (data & 0x80) ? rgb_t::white() : rgb_t::black();
+>>>>>>> upstream/master
 				data = data << 1;
 			}
 			else
 			{
+<<<<<<< HEAD
 				pen = (data & 0x01) ? rgb_t::white : rgb_t::black;
+=======
+				pen = (data & 0x01) ? rgb_t::white() : rgb_t::black();
+>>>>>>> upstream/master
 				data = data >> 1;
 			}
 
@@ -85,6 +120,7 @@ UINT32 sstrangr_state::screen_update_sstrangr(screen_device &screen, bitmap_rgb3
 	return 0;
 }
 
+<<<<<<< HEAD
 UINT32 sstrangr_state::screen_update_sstrngr2(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect)
 {
 	UINT8 *color_map_base = &memregion("proms")->base()[m_flip_screen ? 0x0000 : 0x0200];
@@ -102,6 +138,25 @@ UINT32 sstrangr_state::screen_update_sstrngr2(screen_device &screen, bitmap_rgb3
 		for (int i = 0; i < 8; i++)
 		{
 			UINT8 color;
+=======
+uint32_t sstrangr_state::screen_update_sstrngr2(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect)
+{
+	uint8_t *color_map_base = &memregion("proms")->base()[m_flip_screen ? 0x0000 : 0x0200];
+
+	for (offs_t offs = 0; offs < 0x2000; offs++)
+	{
+		uint8_t y = offs >> 5;
+		uint8_t x = offs << 3;
+
+		offs_t color_address = (offs >> 9 << 5) | (offs & 0x1f);
+
+		uint8_t data = m_ram[offs];
+		uint8_t fore_color = color_map_base[color_address] & 0x07;
+
+		for (int i = 0; i < 8; i++)
+		{
+			uint8_t color;
+>>>>>>> upstream/master
 
 			if (m_flip_screen)
 			{
@@ -183,7 +238,11 @@ static INPUT_PORTS_START( sstrangr )
 INPUT_PORTS_END
 
 
+<<<<<<< HEAD
 static MACHINE_CONFIG_START( sstrangr, sstrangr_state )
+=======
+static MACHINE_CONFIG_START( sstrangr )
+>>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu",I8080,1996800)   /* clock is a guess, taken from mw8080bw */
@@ -288,5 +347,10 @@ ROM_START( sstrangr2 )
 ROM_END
 
 
+<<<<<<< HEAD
 GAMEL( 1978, sstrangr, 0,        sstrangr, sstrangr, driver_device, 0, ROT270, "Yachiyo Electronics, Ltd.", "Space Stranger", MACHINE_NO_SOUND | MACHINE_SUPPORTS_SAVE, layout_sstrangr )
 GAME( 1979, sstrangr2,sstrangr, sstrngr2, sstrngr2, driver_device, 0, ROT270, "Yachiyo Electronics, Ltd.", "Space Stranger 2", MACHINE_NO_SOUND | MACHINE_SUPPORTS_SAVE )
+=======
+GAMEL( 1978, sstrangr,  0,        sstrangr, sstrangr, sstrangr_state, 0, ROT270, "Yachiyo Electronics, Ltd.", "Space Stranger",   MACHINE_NO_SOUND | MACHINE_SUPPORTS_SAVE, layout_sstrangr )
+GAME(  1979, sstrangr2, sstrangr, sstrngr2, sstrngr2, sstrangr_state, 0, ROT270, "Yachiyo Electronics, Ltd.", "Space Stranger 2", MACHINE_NO_SOUND | MACHINE_SUPPORTS_SAVE )
+>>>>>>> upstream/master

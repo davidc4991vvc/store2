@@ -16,6 +16,7 @@ public:
 			m_nvram(*this, "nvram"),
 			m_midway_serial_pic(*this, "serial_pic") { }
 
+<<<<<<< HEAD
 	required_shared_ptr<UINT16> m_nvram;
 	required_device<midway_serial_pic_device> m_midway_serial_pic;
 	UINT8 m_cmos_write_enable;
@@ -24,6 +25,16 @@ public:
 	UINT8 m_analog_port;
 	UINT8 m_uart[8];
 	UINT8 m_security_bits;
+=======
+	required_shared_ptr<uint16_t> m_nvram;
+	required_device<midway_serial_pic_device> m_midway_serial_pic;
+	uint8_t m_cmos_write_enable;
+	uint16_t m_iodata[8];
+	uint8_t m_ioshuffle[16];
+	uint8_t m_analog_port;
+	uint8_t m_uart[8];
+	uint8_t m_security_bits;
+>>>>>>> upstream/master
 	DECLARE_READ16_MEMBER(midxunit_cmos_r);
 	DECLARE_WRITE16_MEMBER(midxunit_cmos_w);
 	DECLARE_WRITE16_MEMBER(midxunit_io_w);

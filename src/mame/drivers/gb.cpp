@@ -18,6 +18,7 @@
   - Emulate OAM corruption bug on 16bit inc/dec in $fe** region
 
 
+<<<<<<< HEAD
 Timers
 ======
 
@@ -146,6 +147,8 @@ STAT 222222222222222222223333333333333333333333333333333333333333333000000000000
      etc
 
 
+=======
+>>>>>>> upstream/master
 Mappers used in the Game Boy
 ===========================
 
@@ -153,6 +156,7 @@ MBC1 Mapper
 ===========
 
 The MBC1 mapper has two modes: 2MB ROM/8KB RAM or 512KB ROM/32KB RAM.
+<<<<<<< HEAD
 This mode is selected by writing into the 6000-7FFF memory area:
 0bXXXXXXXB - B=0 - 2MB ROM/8KB RAM mode
              B=1 - 512KB ROM/32KB RAM mode
@@ -182,12 +186,35 @@ Some unanswered cases:
    - Set mode 0
    - What ram area is now at A000-BFFF, ram bank 00 or ram bank 01?
 
+=======
+Initially, the mapper operates in 2MB ROM/8KB RAM mode.
+
+0000-1FFF - Writing to this area enables (value 0x0A) or disables (not 0x0A) the
+            SRAM.
+2000-3FFF - Writing a value 0bXXXBBBBB into the 2000-3FFF memory area selects the
+            lower 5 bits of the ROM bank to select for the 4000-7FFF memory area.
+            If a value of 0bXXX00000 is written then this will autmatically be
+            changed to 0bXXX00001 by the mbc chip. Initial value 00.
+4000-5FFF - Writing a value 0bXXXXXXBB into the 4000-5FFF memory area either selects
+            the RAM bank to use or bits 6 and 7 for the ROM bank to use for the 4000-7FFF
+            memory area. This behaviour depends on the memory moddel chosen.
+            These address lines are fixed in mode 1 and switch depending on A14 in mode 0.
+            In mode 0 these will drive 0 when RB 00 is accessed (A14 low) or the value set
+            in 4000-5FFF when RB <> 00 is accessed (A14 high).
+            Switching between modes does not clear this register. Initial value 00.
+6000-7FFF - Writing a value 0bXXXXXXXB into the 6000-7FFF memory area switches the mode.
+            B=0 - 2MB ROM/8KB RAM mode
+            B=1 - 512KB ROM/32KB RAM mode
+
+Regular ROM aliasing rules apply.
+>>>>>>> upstream/master
 
 MBC2 Mapper
 ===========
 
 The MBC2 mapper includes 512x4bits of builtin RAM.
 
+<<<<<<< HEAD
 0000-1FFF - Writing to this area enables (value 0bXXXX1010) or disables (any
             other value than 0bXXXX1010) the RAM. In order to perform this
             function bit 12 of the address must be reset, so usable areas are
@@ -204,14 +231,34 @@ Some unanswered cases:
 #1 - Set rom bank to 8 for a 4 bank rom image.
    - What rom bank appears at 4000-7FFF, bank #0 or bank #1 ?
 
+=======
+0000-3FFF - Writing to this area enables (value 0bXXXX1010) or disables (any
+            other value than 0bXXXX1010) the RAM. In order to perform this
+            function bit 8 of the address must be reset, so usable areas are
+            0000-00FF, 0200-02FF, 0400-04FF, 0600-06FF, ..., 3E00-3EFF,
+0000-3FFF - Writing to this area selects the rom bank to appear at 4000-7FFF.
+            Only bits 3-0 are used to select the bank number. If a value of
+            0bXXXX0000 is written then this is automatically changed into
+            0bXXXX0001 by the mapper.
+            In order to perform the rom banking bit 8 of the address must be
+            set, so usable areas are 0100-01FF, 0300-03FF, 0500-05FF, 0700-
+            07FF,..., 3F00-3FFF,
+
+Regular ROM aliasing rules apply.
+>>>>>>> upstream/master
 
 MBC3 Mapper
 ===========
 
 The MBC3 mapper cartridges can include a RTC chip.
 
+<<<<<<< HEAD
 0000-1FFF - Writing to this area enables (value 0x0A) or disables (0x00) the
             RAM and RTC registers.
+=======
+0000-1FFF - Writing to this area enables (value 0x0A) or disables (not 0x0A) the
+            SRAM and RTC registers.
+>>>>>>> upstream/master
 2000-3FFF - Writing to this area selects the rom bank to appear at 4000-7FFF.
             Bits 6-0 are used  to select the bank number. If a value of
             0bX0000000 is written then this is autmatically changed into
@@ -230,6 +277,7 @@ The MBC3 mapper cartridges can include a RTC chip.
 6000-7FFF - Writing 0x00 followed by 0x01 latches the RTC data. This latching
             method is used for reading the RTC registers.
 
+<<<<<<< HEAD
 Some unanswered cases:
 #1 - Set rom bank to 8(/16/32/64) for a 4(/8/16/32) bank image.
    - What rom bank appears at 4000-7FFF, bank #0 or bank #1 ?
@@ -240,11 +288,18 @@ MBC4 Mapper
 
 Stauts: not supported yet.
 
+=======
+Regular ROM aliasing rules apply.
+>>>>>>> upstream/master
 
 MBC5 Mapper
 ===========
 
+<<<<<<< HEAD
 0000-1FFF - Writing to this area enables (0x0A) or disables (0x00) the RAM area.
+=======
+0000-1FFF - Writing to this area enables (0x0A) or disables (not 0x0A) the SRAM area.
+>>>>>>> upstream/master
 2000-2FFF - Writing to this area updates bits 7-0 of the rom bank number to
             appear at 4000-7FFF.
 3000-3FFF - Writing to this area updates bit 8 of the rom bank number to appear
@@ -427,7 +482,18 @@ space. This mapper uses 32KB sized banks.
 #include "includes/gb.h"
 #include "bus/gameboy/rom.h"
 #include "bus/gameboy/mbc.h"
+<<<<<<< HEAD
 #include "softlist.h"
+=======
+#include "screen.h"
+#include "softlist.h"
+#include "speaker.h"
+
+
+#define DMG_FRAMES_PER_SECOND   59.732155
+#define SGB_FRAMES_PER_SECOND   61.17
+
+>>>>>>> upstream/master
 
 READ8_MEMBER(gb_state::gb_cart_r)
 {
@@ -437,7 +503,11 @@ READ8_MEMBER(gb_state::gb_cart_r)
 	{
 		if (offset < 0x100)
 		{
+<<<<<<< HEAD
 			UINT8 *ROM = m_region_maincpu->base();
+=======
+			uint8_t *ROM = m_region_maincpu->base();
+>>>>>>> upstream/master
 			if (m_bios_hack->read())
 			{
 				// patch out logo and checksum checks
@@ -467,7 +537,11 @@ READ8_MEMBER(gb_state::gbc_cart_r)
 	{
 		if (offset < 0x100)
 		{
+<<<<<<< HEAD
 			UINT8 *ROM = m_region_maincpu->base();
+=======
+			uint8_t *ROM = m_region_maincpu->base();
+>>>>>>> upstream/master
 			if (m_bios_hack->read())
 			{
 				// patch out logo and checksum checks
@@ -482,7 +556,11 @@ READ8_MEMBER(gb_state::gbc_cart_r)
 		}
 		else if (offset >= 0x200 && offset < 0x900)
 		{
+<<<<<<< HEAD
 			UINT8 *ROM = m_region_maincpu->base();
+=======
+			uint8_t *ROM = m_region_maincpu->base();
+>>>>>>> upstream/master
 			return ROM[offset - 0x100];
 		}
 		else if (m_cartslot)
@@ -545,6 +623,7 @@ WRITE8_MEMBER(megaduck_state::bank2_w)
 }
 
 
+<<<<<<< HEAD
 static ADDRESS_MAP_START(gameboy_map, AS_PROGRAM, 8, gb_state )
 	ADDRESS_MAP_UNMAP_HIGH
 	AM_RANGE(0x0000, 0x7fff) AM_READWRITE(gb_cart_r, gb_bank_w)
@@ -614,6 +693,77 @@ static ADDRESS_MAP_START(megaduck_map, AS_PROGRAM, 8, megaduck_state )
 	AM_RANGE(0xff47, 0xff7f) AM_NOP                         /* unused */
 	AM_RANGE(0xff80, 0xfffe) AM_RAM                         /* high RAM */
 	AM_RANGE(0xffff, 0xffff) AM_READWRITE(gb_ie_r, gb_ie_w)            /* interrupt enable register */
+=======
+static ADDRESS_MAP_START(gameboy_map, AS_PROGRAM, 8, gb_state)
+	ADDRESS_MAP_UNMAP_HIGH
+	AM_RANGE(0x0000, 0x7fff) AM_READWRITE(gb_cart_r, gb_bank_w)
+	AM_RANGE(0x8000, 0x9fff) AM_DEVREADWRITE("ppu", dmg_ppu_device, vram_r, vram_w)          /* 8k VRAM */
+	AM_RANGE(0xa000, 0xbfff) AM_READWRITE(gb_ram_r, gb_ram_w)                                /* 8k switched RAM bank (cartridge) */
+	AM_RANGE(0xc000, 0xdfff) AM_RAM                                                          /* 8k low RAM */
+	AM_RANGE(0xe000, 0xfdff) AM_READWRITE(gb_echo_r, gb_echo_w)
+	AM_RANGE(0xfe00, 0xfeff) AM_DEVREADWRITE("ppu", dmg_ppu_device, oam_r, oam_w)            /* OAM RAM */
+	AM_RANGE(0xff00, 0xff0f) AM_READWRITE(gb_io_r, gb_io_w)                                  /* I/O */
+	AM_RANGE(0xff10, 0xff26) AM_DEVREADWRITE("apu", gameboy_sound_device, sound_r, sound_w)  /* sound registers */
+	AM_RANGE(0xff27, 0xff2f) AM_NOP                                                          /* unused */
+	AM_RANGE(0xff30, 0xff3f) AM_DEVREADWRITE("apu", gameboy_sound_device, wave_r, wave_w)    /* Wave ram */
+	AM_RANGE(0xff40, 0xff7f) AM_DEVREAD("ppu", dmg_ppu_device, video_r) AM_WRITE(gb_io2_w)   /* Video controller & BIOS flip-flop */
+	AM_RANGE(0xff80, 0xfffe) AM_RAM                                                          /* High RAM */
+	AM_RANGE(0xffff, 0xffff) AM_READWRITE(gb_ie_r, gb_ie_w)                                  /* Interrupt enable register */
+ADDRESS_MAP_END
+
+static ADDRESS_MAP_START(sgb_map, AS_PROGRAM, 8, gb_state)
+	ADDRESS_MAP_UNMAP_HIGH
+	AM_RANGE(0x0000, 0x7fff) AM_READWRITE(gb_cart_r, gb_bank_w)
+	AM_RANGE(0x8000, 0x9fff) AM_DEVREADWRITE("ppu", sgb_ppu_device, vram_r, vram_w)          /* 8k VRAM */
+	AM_RANGE(0xa000, 0xbfff) AM_READWRITE(gb_ram_r, gb_ram_w)                                /* 8k switched RAM bank (cartridge) */
+	AM_RANGE(0xc000, 0xdfff) AM_RAM                                                          /* 8k low RAM */
+	AM_RANGE(0xe000, 0xfdff) AM_READWRITE(gb_echo_r, gb_echo_w)
+	AM_RANGE(0xfe00, 0xfeff) AM_DEVREADWRITE("ppu", sgb_ppu_device, oam_r, oam_w)            /* OAM RAM */
+	AM_RANGE(0xff00, 0xff0f) AM_READWRITE(gb_io_r, sgb_io_w)                                 /* I/O */
+	AM_RANGE(0xff10, 0xff26) AM_DEVREADWRITE("apu", gameboy_sound_device, sound_r, sound_w)  /* sound registers */
+	AM_RANGE(0xff27, 0xff2f) AM_NOP                                                          /* unused */
+	AM_RANGE(0xff30, 0xff3f) AM_DEVREADWRITE("apu", gameboy_sound_device, wave_r, wave_w)    /* Wave RAM */
+	AM_RANGE(0xff40, 0xff7f) AM_DEVREAD("ppu", sgb_ppu_device, video_r) AM_WRITE(gb_io2_w)   /* Video controller & BIOS flip-flop */
+	AM_RANGE(0xff80, 0xfffe) AM_RAM                                                          /* High RAM */
+	AM_RANGE(0xffff, 0xffff) AM_READWRITE(gb_ie_r, gb_ie_w)                                  /* Interrupt enable register */
+ADDRESS_MAP_END
+
+static ADDRESS_MAP_START(gbc_map, AS_PROGRAM, 8, gb_state)
+	ADDRESS_MAP_UNMAP_HIGH
+	AM_RANGE(0x0000, 0x7fff) AM_READWRITE(gbc_cart_r, gb_bank_w)
+	AM_RANGE(0x8000, 0x9fff) AM_DEVREADWRITE("ppu", cgb_ppu_device, vram_r, vram_w)          /* 8k banked VRAM */
+	AM_RANGE(0xa000, 0xbfff) AM_READWRITE(gb_ram_r, gb_ram_w)                                /* 8k switched RAM bank (cartridge) */
+	AM_RANGE(0xc000, 0xcfff) AM_RAM                                                          /* 4k fixed RAM bank */
+	AM_RANGE(0xd000, 0xdfff) AM_RAMBANK("cgb_ram")                                           /* 4k switched RAM bank */
+	AM_RANGE(0xe000, 0xfdff) AM_READWRITE(gb_echo_r, gb_echo_w)
+	AM_RANGE(0xfe00, 0xfeff) AM_DEVREADWRITE("ppu", cgb_ppu_device, oam_r, oam_w)            /* OAM RAM */
+	AM_RANGE(0xff00, 0xff0f) AM_READWRITE(gb_io_r, gbc_io_w)                                 /* I/O */
+	AM_RANGE(0xff10, 0xff26) AM_DEVREADWRITE("apu", gameboy_sound_device, sound_r, sound_w)  /* sound controller */
+	AM_RANGE(0xff27, 0xff2f) AM_NOP                                                          /* unused */
+	AM_RANGE(0xff30, 0xff3f) AM_DEVREADWRITE("apu", gameboy_sound_device, wave_r, wave_w)    /* Wave RAM */
+	AM_RANGE(0xff40, 0xff7f) AM_READWRITE(gbc_io2_r, gbc_io2_w)                              /* Other I/O and video controller */
+	AM_RANGE(0xff80, 0xfffe) AM_RAM                                                          /* high RAM */
+	AM_RANGE(0xffff, 0xffff) AM_READWRITE(gb_ie_r, gb_ie_w)                                  /* Interrupt enable register */
+ADDRESS_MAP_END
+
+static ADDRESS_MAP_START(megaduck_map, AS_PROGRAM, 8, megaduck_state)
+	ADDRESS_MAP_UNMAP_HIGH
+	AM_RANGE(0x0000, 0x7fff) AM_READWRITE(cart_r, bank1_w)
+	AM_RANGE(0x8000, 0x9fff) AM_DEVREADWRITE("ppu", dmg_ppu_device, vram_r, vram_w)          /* 8k VRAM */
+	AM_RANGE(0xa000, 0xafff) AM_NOP                                                          /* unused? */
+	AM_RANGE(0xb000, 0xb000) AM_WRITE(bank2_w)
+	AM_RANGE(0xb001, 0xbfff) AM_NOP                                                          /* unused? */
+	AM_RANGE(0xc000, 0xfe9f) AM_RAM                                                          /* 8k/16k? RAM */
+	AM_RANGE(0xfe00, 0xfeff) AM_DEVREADWRITE("ppu", dmg_ppu_device, oam_r, oam_w)            /* OAM RAM */
+	AM_RANGE(0xff00, 0xff0f) AM_READWRITE(gb_io_r, gb_io_w)                                  /* I/O */
+	AM_RANGE(0xff10, 0xff1f) AM_READWRITE(megaduck_video_r, megaduck_video_w)                /* video controller */
+	AM_RANGE(0xff20, 0xff2f) AM_READWRITE(megaduck_sound_r1, megaduck_sound_w1)              /* sound controller pt1 */
+	AM_RANGE(0xff30, 0xff3f) AM_DEVREADWRITE("apu", gameboy_sound_device, wave_r, wave_w)    /* wave ram */
+	AM_RANGE(0xff40, 0xff46) AM_READWRITE(megaduck_sound_r2, megaduck_sound_w2)              /* sound controller pt2 */
+	AM_RANGE(0xff47, 0xff7f) AM_NOP                                                          /* unused */
+	AM_RANGE(0xff80, 0xfffe) AM_RAM                                                          /* high RAM */
+	AM_RANGE(0xffff, 0xffff) AM_READWRITE(gb_ie_r, gb_ie_w)                                  /* interrupt enable register */
+>>>>>>> upstream/master
 ADDRESS_MAP_END
 
 static GFXDECODE_START( gb )
@@ -650,7 +800,11 @@ static SLOT_INTERFACE_START(gb_cart)
 	SLOT_INTERFACE_INTERNAL("rom_mbc7",    GB_ROM_MBC7)
 	SLOT_INTERFACE_INTERNAL("rom_tama5",   GB_ROM_TAMA5)
 	SLOT_INTERFACE_INTERNAL("rom_mmm01",   GB_ROM_MMM01)
+<<<<<<< HEAD
 	SLOT_INTERFACE_INTERNAL("rom_m161_m12",GB_ROM_M161_M12)
+=======
+	SLOT_INTERFACE_INTERNAL("rom_m161",    GB_ROM_M161)
+>>>>>>> upstream/master
 	SLOT_INTERFACE_INTERNAL("rom_sachen1", GB_ROM_SACHEN1)
 	SLOT_INTERFACE_INTERNAL("rom_sachen2", GB_ROM_SACHEN2)
 	SLOT_INTERFACE_INTERNAL("rom_wisdom",  GB_ROM_WISDOM)
@@ -746,7 +900,11 @@ PALETTE_INIT_MEMBER(megaduck_state, megaduck)
 }
 
 
+<<<<<<< HEAD
 static MACHINE_CONFIG_START( gameboy, gb_state )
+=======
+static MACHINE_CONFIG_START( gameboy )
+>>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", LR35902, XTAL_4_194304Mhz)
@@ -758,7 +916,11 @@ static MACHINE_CONFIG_START( gameboy, gb_state )
 	MCFG_SCREEN_ADD("screen", LCD)
 	MCFG_SCREEN_REFRESH_RATE(DMG_FRAMES_PER_SECOND)
 	MCFG_SCREEN_VBLANK_TIME(0)
+<<<<<<< HEAD
 	MCFG_SCREEN_UPDATE_DEVICE("lcd", gb_lcd_device, screen_update)
+=======
+	MCFG_SCREEN_UPDATE_DEVICE("ppu", dmg_ppu_device, screen_update)
+>>>>>>> upstream/master
 	MCFG_SCREEN_PALETTE("palette")
 
 	MCFG_DEFAULT_LAYOUT(layout_lcd)
@@ -770,21 +932,34 @@ static MACHINE_CONFIG_START( gameboy, gb_state )
 	MCFG_PALETTE_ADD("palette", 4)
 	MCFG_PALETTE_INIT_OWNER(gb_state,gb)
 
+<<<<<<< HEAD
 	MCFG_GB_LCD_DMG_ADD("lcd")
 
 	/* sound hardware */
 	MCFG_SPEAKER_STANDARD_STEREO("lspeaker", "rspeaker")
 	MCFG_SOUND_ADD("custom", GAMEBOY, 0)
+=======
+	MCFG_DMG_PPU_ADD("ppu", "maincpu")
+
+	/* sound hardware */
+	MCFG_SPEAKER_STANDARD_STEREO("lspeaker", "rspeaker")
+	MCFG_SOUND_ADD("apu", DMG_APU, XTAL_4_194304Mhz)
+>>>>>>> upstream/master
 	MCFG_SOUND_ROUTE(0, "lspeaker", 0.50)
 	MCFG_SOUND_ROUTE(1, "rspeaker", 0.50)
 
 	/* cartslot */
+<<<<<<< HEAD
 	MCFG_GB_CARTRIDGE_ADD("gbslot", gb_cart, NULL)
+=======
+	MCFG_GB_CARTRIDGE_ADD("gbslot", gb_cart, nullptr)
+>>>>>>> upstream/master
 
 	MCFG_SOFTWARE_LIST_ADD("cart_list","gameboy")
 	MCFG_SOFTWARE_LIST_COMPATIBLE_ADD("gbc_list","gbcolor")
 MACHINE_CONFIG_END
 
+<<<<<<< HEAD
 static MACHINE_CONFIG_DERIVED( supergb, gameboy )
 
 	/* basic machine hardware */
@@ -792,6 +967,13 @@ static MACHINE_CONFIG_DERIVED( supergb, gameboy )
 	MCFG_CPU_PROGRAM_MAP(sgb_map)
 
 	MCFG_CPU_MODIFY("maincpu")
+=======
+
+static MACHINE_CONFIG_START( supergb )
+	/* basic machine hardware */
+	MCFG_CPU_ADD("maincpu", LR35902, 4295454) /* 4.295454 MHz, derived from SNES xtal */
+	MCFG_CPU_PROGRAM_MAP(sgb_map)
+>>>>>>> upstream/master
 	MCFG_LR35902_TIMER_CB( WRITE8(gb_state, gb_timer_callback ) )
 	MCFG_LR35902_HALT_BUG
 
@@ -799,6 +981,7 @@ static MACHINE_CONFIG_DERIVED( supergb, gameboy )
 	MCFG_MACHINE_RESET_OVERRIDE(gb_state, sgb)
 
 	/* video hardware */
+<<<<<<< HEAD
 	MCFG_DEFAULT_LAYOUT(layout_horizont) /* runs on a TV, not an LCD */
 
 	MCFG_SCREEN_MODIFY("screen")
@@ -813,15 +996,50 @@ static MACHINE_CONFIG_DERIVED( supergb, gameboy )
 	MCFG_GB_LCD_SGB_ADD("lcd")
 MACHINE_CONFIG_END
 
+=======
+	MCFG_SCREEN_ADD("screen", LCD)
+	MCFG_SCREEN_REFRESH_RATE(SGB_FRAMES_PER_SECOND)
+	MCFG_SCREEN_VBLANK_TIME(0)
+	MCFG_SCREEN_UPDATE_DEVICE("ppu", dmg_ppu_device, screen_update)
+	MCFG_SCREEN_PALETTE("palette")
+
+	MCFG_DEFAULT_LAYOUT(layout_horizont) /* runs on a TV, not an LCD */
+	MCFG_SCREEN_SIZE(32*8, 28*8)
+	MCFG_SCREEN_VISIBLE_AREA(0*8, 32*8-1, 0*8, 28*8-1)
+
+	MCFG_GFXDECODE_ADD("gfxdecode", "palette", gb)
+	MCFG_PALETTE_ADD("palette", 32768)
+	MCFG_PALETTE_INIT_OWNER(gb_state,sgb)
+
+	MCFG_SGB_PPU_ADD("ppu", "maincpu")
+
+	/* sound hardware */
+	MCFG_SPEAKER_STANDARD_STEREO("lspeaker", "rspeaker")
+	MCFG_SOUND_ADD("apu", DMG_APU, 4295454)
+	MCFG_SOUND_ROUTE(0, "lspeaker", 0.50)
+	MCFG_SOUND_ROUTE(1, "rspeaker", 0.50)
+
+	/* cartslot */
+	MCFG_GB_CARTRIDGE_ADD("gbslot", gb_cart, nullptr)
+
+	MCFG_SOFTWARE_LIST_ADD("cart_list","gameboy")
+	MCFG_SOFTWARE_LIST_COMPATIBLE_ADD("gbc_list","gbcolor")
+MACHINE_CONFIG_END
+
+
+>>>>>>> upstream/master
 static MACHINE_CONFIG_DERIVED( supergb2, gameboy )
 	/* basic machine hardware */
 	MCFG_CPU_MODIFY("maincpu")
 	MCFG_CPU_PROGRAM_MAP(sgb_map)
 
+<<<<<<< HEAD
 	MCFG_CPU_MODIFY("maincpu")
 	MCFG_LR35902_TIMER_CB( WRITE8(gb_state, gb_timer_callback ) )
 	MCFG_LR35902_HALT_BUG
 
+=======
+>>>>>>> upstream/master
 	MCFG_MACHINE_START_OVERRIDE(gb_state, sgb)
 	MCFG_MACHINE_RESET_OVERRIDE(gb_state, sgb)
 
@@ -836,21 +1054,37 @@ static MACHINE_CONFIG_DERIVED( supergb2, gameboy )
 	MCFG_PALETTE_ENTRIES(32768)
 	MCFG_PALETTE_INIT_OWNER(gb_state,sgb)
 
+<<<<<<< HEAD
 	MCFG_DEVICE_REMOVE("lcd")
 	MCFG_GB_LCD_SGB_ADD("lcd")
 MACHINE_CONFIG_END
 
+=======
+	MCFG_DEVICE_REMOVE("ppu")
+	MCFG_SGB_PPU_ADD("ppu", "maincpu")
+MACHINE_CONFIG_END
+
+
+>>>>>>> upstream/master
 static MACHINE_CONFIG_DERIVED( gbpocket, gameboy )
 
 	/* video hardware */
 	MCFG_PALETTE_MODIFY("palette")
 	MCFG_PALETTE_INIT_OWNER(gb_state,gbp)
 
+<<<<<<< HEAD
 	MCFG_DEVICE_REMOVE("lcd")
 	MCFG_GB_LCD_MGB_ADD("lcd")
 MACHINE_CONFIG_END
 
 static MACHINE_CONFIG_START( gbcolor, gb_state )
+=======
+	MCFG_DEVICE_REMOVE("ppu")
+	MCFG_MGB_PPU_ADD("ppu", "maincpu")
+MACHINE_CONFIG_END
+
+static MACHINE_CONFIG_START( gbcolor )
+>>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", LR35902, XTAL_4_194304Mhz) // todo XTAL_8_388MHz
@@ -864,7 +1098,11 @@ static MACHINE_CONFIG_START( gbcolor, gb_state )
 	MCFG_SCREEN_ADD("screen", LCD)
 	MCFG_SCREEN_REFRESH_RATE(DMG_FRAMES_PER_SECOND)
 	MCFG_SCREEN_VBLANK_TIME(0)
+<<<<<<< HEAD
 	MCFG_SCREEN_UPDATE_DEVICE("lcd", gb_lcd_device, screen_update)
+=======
+	MCFG_SCREEN_UPDATE_DEVICE("ppu", dmg_ppu_device, screen_update)
+>>>>>>> upstream/master
 	MCFG_SCREEN_PALETTE("palette")
 
 	MCFG_DEFAULT_LAYOUT(layout_lcd)
@@ -877,11 +1115,19 @@ static MACHINE_CONFIG_START( gbcolor, gb_state )
 	MCFG_PALETTE_ADD("palette", 32768)
 	MCFG_PALETTE_INIT_OWNER(gb_state,gbc)
 
+<<<<<<< HEAD
 	MCFG_GB_LCD_CGB_ADD("lcd")
 
 	/* sound hardware */
 	MCFG_SPEAKER_STANDARD_STEREO("lspeaker", "rspeaker")
 	MCFG_SOUND_ADD("custom", GAMEBOY, 0)
+=======
+	MCFG_CGB_PPU_ADD("ppu", "maincpu")
+
+	/* sound hardware */
+	MCFG_SPEAKER_STANDARD_STEREO("lspeaker", "rspeaker")
+	MCFG_SOUND_ADD("apu", CGB04_APU, XTAL_4_194304Mhz)
+>>>>>>> upstream/master
 	MCFG_SOUND_ROUTE(0, "lspeaker", 0.50)
 	MCFG_SOUND_ROUTE(1, "rspeaker", 0.50)
 
@@ -890,16 +1136,27 @@ static MACHINE_CONFIG_START( gbcolor, gb_state )
 	MCFG_RAM_DEFAULT_SIZE("48K") /* 2 pages of 8KB VRAM, 8 pages of 4KB RAM */
 
 	/* cartslot */
+<<<<<<< HEAD
 	MCFG_GB_CARTRIDGE_ADD("gbslot", gb_cart, NULL)
+=======
+	MCFG_GB_CARTRIDGE_ADD("gbslot", gb_cart, nullptr)
+>>>>>>> upstream/master
 
 	MCFG_SOFTWARE_LIST_ADD("cart_list","gbcolor")
 	MCFG_SOFTWARE_LIST_COMPATIBLE_ADD("gb_list","gameboy")
 MACHINE_CONFIG_END
 
+<<<<<<< HEAD
 static MACHINE_CONFIG_START( megaduck, megaduck_state )
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", LR35902, 4194304) /* 4.194304 MHz */
+=======
+static MACHINE_CONFIG_START( megaduck )
+
+	/* basic machine hardware */
+	MCFG_CPU_ADD("maincpu", LR35902, XTAL_4_194304Mhz) /* 4.194304 MHz */
+>>>>>>> upstream/master
 	MCFG_CPU_PROGRAM_MAP(megaduck_map)
 	MCFG_LR35902_TIMER_CB( WRITE8(gb_state, gb_timer_callback ) )
 	MCFG_LR35902_HALT_BUG
@@ -913,7 +1170,11 @@ static MACHINE_CONFIG_START( megaduck, megaduck_state )
 	MCFG_MACHINE_START_OVERRIDE(megaduck_state, megaduck)
 	MCFG_MACHINE_RESET_OVERRIDE(megaduck_state, megaduck)
 
+<<<<<<< HEAD
 	MCFG_SCREEN_UPDATE_DEVICE("lcd", gb_lcd_device, screen_update)
+=======
+	MCFG_SCREEN_UPDATE_DEVICE("ppu", dmg_ppu_device, screen_update)
+>>>>>>> upstream/master
 	MCFG_SCREEN_SIZE(20*8, 18*8)
 	MCFG_SCREEN_VISIBLE_AREA(0*8, 20*8-1, 0*8, 18*8-1)
 
@@ -923,16 +1184,28 @@ static MACHINE_CONFIG_START( megaduck, megaduck_state )
 	MCFG_PALETTE_ADD("palette", 4)
 	MCFG_PALETTE_INIT_OWNER(megaduck_state,megaduck)
 
+<<<<<<< HEAD
 	MCFG_GB_LCD_DMG_ADD("lcd")
 
 	/* sound hardware */
 	MCFG_SPEAKER_STANDARD_STEREO("lspeaker", "rspeaker")
 	MCFG_SOUND_ADD("custom", GAMEBOY, 0)
+=======
+	MCFG_DMG_PPU_ADD("ppu", "maincpu")
+
+	/* sound hardware */
+	MCFG_SPEAKER_STANDARD_STEREO("lspeaker", "rspeaker")
+	MCFG_SOUND_ADD("apu", DMG_APU, XTAL_4_194304Mhz)
+>>>>>>> upstream/master
 	MCFG_SOUND_ROUTE(0, "lspeaker", 0.50)
 	MCFG_SOUND_ROUTE(1, "rspeaker", 0.50)
 
 	/* cartslot */
+<<<<<<< HEAD
 	MCFG_MEGADUCK_CARTRIDGE_ADD("duckslot", megaduck_cart, NULL)
+=======
+	MCFG_MEGADUCK_CARTRIDGE_ADD("duckslot", megaduck_cart, nullptr)
+>>>>>>> upstream/master
 	MCFG_SOFTWARE_LIST_ADD("cart_list", "megaduck")
 MACHINE_CONFIG_END
 
@@ -942,6 +1215,7 @@ MACHINE_CONFIG_END
 
 ***************************************************************************/
 
+<<<<<<< HEAD
 ROM_START( gameboy )
 	ROM_REGION( 0x0100, "maincpu", 0 )
 	ROM_LOAD( "dmg_boot.bin", 0x0000, 0x0100, CRC(59c8598e) SHA1(4ed31ec6b0b175bb109c0eb5fd3d193da823339f) )
@@ -982,3 +1256,48 @@ CONS( 1998, gbcolor,  0,       0,       gbcolor,  gameboy, driver_device, 0,    
 
 // Sound is not 100% yet, it generates some sounds which could be ok. Since we're lacking a real system there's no way to verify.
 CONS( 1993, megaduck, 0,       0,       megaduck, gameboy, driver_device, 0,    "Welback Holdings (Timlex International) / Creatronic / Videojet / Cougar USA", "Mega Duck / Cougar Boy", MACHINE_IMPERFECT_SOUND | MACHINE_SUPPORTS_SAVE )
+=======
+ROM_START(gameboy)
+	ROM_REGION(0x0100, "maincpu", 0)
+	ROM_SYSTEM_BIOS(0, "dmg", "DMG vX")
+	ROMX_LOAD("dmg_boot.bin", 0x0000, 0x0100, CRC(59c8598e) SHA1(4ed31ec6b0b175bb109c0eb5fd3d193da823339f), ROM_BIOS(1))
+	ROM_SYSTEM_BIOS(1, "dmg_v0", "DMG v0")
+	ROMX_LOAD("dmg_v0.rom", 0x0000, 0x0100, CRC(c2f5cc97) SHA1(8bd501e31921e9601788316dbd3ce9833a97bcbc), ROM_BIOS(2))
+ROM_END
+
+ROM_START(supergb)
+	ROM_REGION(0x0100, "maincpu", 0)
+	ROM_LOAD("sgb_boot.bin", 0x0000, 0x0100, CRC(ec8a83b9) SHA1(aa2f50a77dfb4823da96ba99309085a3c6278515))
+ROM_END
+
+ROM_START(supergb2 )
+	ROM_REGION(0x0100, "maincpu", 0)
+	ROM_LOAD("sgb2_boot.bin", 0x0000, 0x0100, CRC(53d0dd63) SHA1(93407ea10d2f30ab96a314d8eca44fe160aea734))
+ROM_END
+
+ROM_START(gbpocket )
+	ROM_REGION(0x0100, "maincpu", 0)
+	ROM_LOAD("mgb_boot.bin", 0x0000, 0x0100, CRC(e6920754) SHA1(4e68f9da03c310e84c523654b9026e51f26ce7f0))
+ROM_END
+
+ROM_START(gbcolor)
+	ROM_REGION(0x800, "maincpu", 0)
+	ROM_LOAD("gbc_boot.1", 0x0000, 0x0100, CRC(779ea374) SHA1(e4b40c9fd593a97a1618cfb2696f290cf9596a62)) /* Bootstrap code part 1 */
+	ROM_LOAD("gbc_boot.2", 0x0100, 0x0700, CRC(f741807d) SHA1(f943b1e0b640cf1d371e1d8f0ada69af03ebb396)) /* Bootstrap code part 2 */
+ROM_END
+
+
+ROM_START(megaduck)
+	ROM_REGION(0x10000, "maincpu", ROMREGION_ERASEFF)
+ROM_END
+
+/*   YEAR  NAME       PARENT   COMPAT   MACHINE   INPUT    STATE           INIT  COMPANY     FULLNAME */
+CONS(1990, gameboy,   0,       0,       gameboy,  gameboy, gb_state,       0,    "Nintendo", "Game Boy", MACHINE_IMPERFECT_SOUND | MACHINE_SUPPORTS_SAVE)
+CONS(1994, supergb,   gameboy, 0,       supergb,  gameboy, gb_state,       0,    "Nintendo", "Super Game Boy", MACHINE_IMPERFECT_SOUND | MACHINE_SUPPORTS_SAVE)
+CONS(1998, supergb2,  gameboy, 0,       supergb2, gameboy, gb_state,       0,    "Nintendo", "Super Game Boy 2", MACHINE_IMPERFECT_SOUND | MACHINE_SUPPORTS_SAVE)
+CONS(1996, gbpocket,  gameboy, 0,       gbpocket, gameboy, gb_state,       0,    "Nintendo", "Game Boy Pocket", MACHINE_IMPERFECT_SOUND | MACHINE_SUPPORTS_SAVE)
+CONS(1998, gbcolor,   0,       0,       gbcolor,  gameboy, gb_state,       0,    "Nintendo", "Game Boy Color", MACHINE_IMPERFECT_SOUND | MACHINE_IMPERFECT_GRAPHICS | MACHINE_SUPPORTS_SAVE)
+
+// Sound is not 100% yet, it generates some sounds which could be ok. Since we're lacking a real system there's no way to verify.
+CONS( 1993, megaduck, 0,       0,       megaduck, gameboy, megaduck_state, 0,    "Welback Holdings (Timlex International) / Creatronic / Videojet / Cougar USA", "Mega Duck / Cougar Boy", MACHINE_IMPERFECT_SOUND | MACHINE_SUPPORTS_SAVE )
+>>>>>>> upstream/master

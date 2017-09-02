@@ -1,13 +1,22 @@
 /*
+<<<<<<< HEAD
  * Copyright 2011-2015 Branimir Karadzic. All rights reserved.
  * License: http://www.opensource.org/licenses/BSD-2-Clause
+=======
+ * Copyright 2011-2017 Branimir Karadzic. All rights reserved.
+ * License: https://github.com/bkaradzic/bx#license-bsd-2-clause
+>>>>>>> upstream/master
  */
 
 #include <string>
 #include <vector>
 
 #include <bx/commandline.h>
+<<<<<<< HEAD
 #include <bx/readerwriter.h>
+=======
+#include <bx/crtimpl.h>
+>>>>>>> upstream/master
 #include <bx/string.h>
 
 class Bin2cWriter : public bx::WriterI
@@ -23,7 +32,11 @@ public:
 	{
 	}
 
+<<<<<<< HEAD
 	virtual int32_t write(const void* _data, int32_t _size) BX_OVERRIDE
+=======
+	virtual int32_t write(const void* _data, int32_t _size, bx::Error* /*_err*/ = NULL) BX_OVERRIDE
+>>>>>>> upstream/master
 	{
 		const char* data = (const char*)_data;
 		m_buffer.insert(m_buffer.end(), data, data+_size);
@@ -95,8 +108,13 @@ void help(const char* _error = NULL)
 
 	fprintf(stderr
 		, "bin2c, binary to C\n"
+<<<<<<< HEAD
 		  "Copyright 2011-2015 Branimir Karadzic. All rights reserved.\n"
 		  "License: http://www.opensource.org/licenses/BSD-2-Clause\n\n"
+=======
+		  "Copyright 2011-2017 Branimir Karadzic. All rights reserved.\n"
+		  "License: https://github.com/bkaradzic/bx#license-bsd-2-clause\n\n"
+>>>>>>> upstream/master
 		);
 
 	fprintf(stderr
@@ -145,17 +163,30 @@ int main(int _argc, const char* _argv[])
 	}
 
 	void* data = NULL;
+<<<<<<< HEAD
 	size_t size = 0;
 
 	bx::CrtFileReader fr;
 	if (0 == bx::open(&fr, filePath) )
 	{
 		size = (size_t)bx::getSize(&fr);
+=======
+	uint32_t size = 0;
+
+	bx::CrtFileReader fr;
+	if (bx::open(&fr, filePath) )
+	{
+		size = uint32_t(bx::getSize(&fr) );
+>>>>>>> upstream/master
 		data = malloc(size);
 		bx::read(&fr, data, size);
 
 		bx::CrtFileWriter fw;
+<<<<<<< HEAD
 		if (0 == bx::open(&fw, outFilePath) )
+=======
+		if (bx::open(&fw, outFilePath) )
+>>>>>>> upstream/master
 		{
 			Bin2cWriter writer(&fw, name);
 			bx::write(&writer, data, size);

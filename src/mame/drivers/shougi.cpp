@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 // license:???
+=======
+// license:GPL-2.0+
+>>>>>>> upstream/master
 // copyright-holders:Jarek Burczynski, Tomasz Slanina
 /***************************************************************************
 
@@ -78,10 +82,21 @@ PROM  : Type MB7051
 **************************************************************************/
 
 #include "emu.h"
+<<<<<<< HEAD
 #include "machine/alpha8201.h"
 #include "cpu/z80/z80.h"
 #include "sound/ay8910.h"
 #include "video/resnet.h"
+=======
+#include "machine/74259.h"
+#include "machine/alpha8201.h"
+#include "machine/watchdog.h"
+#include "cpu/z80/z80.h"
+#include "sound/ay8910.h"
+#include "video/resnet.h"
+#include "screen.h"
+#include "speaker.h"
+>>>>>>> upstream/master
 
 
 class shougi_state : public driver_device
@@ -100,6 +115,7 @@ public:
 	required_device<cpu_device> m_subcpu;
 	required_device<alpha_8201_device> m_alpha_8201;
 
+<<<<<<< HEAD
 	required_shared_ptr<UINT8> m_videoram;
 
 	UINT8 m_control[8];
@@ -107,31 +123,53 @@ public:
 	int m_r;
 
 	DECLARE_WRITE8_MEMBER(control_w);
+=======
+	required_shared_ptr<uint8_t> m_videoram;
+
+	uint8_t m_nmi_enabled;
+	int m_r;
+
+	DECLARE_WRITE_LINE_MEMBER(nmi_enable_w);
+>>>>>>> upstream/master
 	DECLARE_READ8_MEMBER(semaphore_r);
 
 	DECLARE_PALETTE_INIT(shougi);
 
+<<<<<<< HEAD
 	UINT32 screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
 	INTERRUPT_GEN_MEMBER(vblank_nmi);
 
 	virtual void machine_start();
 	virtual void machine_reset();
+=======
+	uint32_t screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
+	INTERRUPT_GEN_MEMBER(vblank_nmi);
+
+	virtual void machine_start() override;
+>>>>>>> upstream/master
 };
 
 
 void shougi_state::machine_start()
 {
 	// zerofill
+<<<<<<< HEAD
 	memset(m_control, 0, sizeof(m_control));
+=======
+>>>>>>> upstream/master
 	m_nmi_enabled = 0;
 	m_r = 0;
 
 	// register for savestates
+<<<<<<< HEAD
 	save_item(NAME(m_control));
+=======
+>>>>>>> upstream/master
 	save_item(NAME(m_nmi_enabled));
 	save_item(NAME(m_r));
 }
 
+<<<<<<< HEAD
 void shougi_state::machine_reset()
 {
 	// 74LS259 is auto CLR on reset
@@ -139,6 +177,8 @@ void shougi_state::machine_reset()
 		control_w(m_maincpu->space(), i, 0);
 }
 
+=======
+>>>>>>> upstream/master
 
 
 /***************************************************************************
@@ -164,7 +204,11 @@ void shougi_state::machine_reset()
 
 PALETTE_INIT_MEMBER(shougi_state, shougi)
 {
+<<<<<<< HEAD
 	const UINT8 *color_prom = memregion("proms")->base();
+=======
+	const uint8_t *color_prom = memregion("proms")->base();
+>>>>>>> upstream/master
 	static const int resistances_b[2]  = { 470, 220 };
 	static const int resistances_rg[3] = { 1000, 470, 220 };
 	double weights_r[3], weights_g[3], weights_b[2];
@@ -200,7 +244,11 @@ PALETTE_INIT_MEMBER(shougi_state, shougi)
 }
 
 
+<<<<<<< HEAD
 UINT32 shougi_state::screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+=======
+uint32_t shougi_state::screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+>>>>>>> upstream/master
 {
 	for (int offs = 0; offs < 0x4000; offs++)
 	{
@@ -234,6 +282,7 @@ UINT32 shougi_state::screen_update(screen_device &screen, bitmap_ind16 &bitmap, 
 
 // maincpu side
 
+<<<<<<< HEAD
 WRITE8_MEMBER(shougi_state::control_w)
 {
 	// 4800-480f connected to the 74LS259, A3 is data line
@@ -272,16 +321,35 @@ WRITE8_MEMBER(shougi_state::control_w)
 	}
 
 	m_control[offset] = data;
+=======
+WRITE_LINE_MEMBER(shougi_state::nmi_enable_w)
+{
+	m_nmi_enabled = state;
+
+	// NMI lines are tied together on both CPUs and connected to the LS74 /Q output
+	if (!m_nmi_enabled)
+	{
+		m_maincpu->set_input_line(INPUT_LINE_NMI, CLEAR_LINE);
+		m_subcpu->set_input_line(INPUT_LINE_NMI, CLEAR_LINE);
+	}
+>>>>>>> upstream/master
 }
 
 
 static ADDRESS_MAP_START( main_map, AS_PROGRAM, 8, shougi_state )
 	AM_RANGE(0x0000, 0x3fff) AM_ROM
 	AM_RANGE(0x4000, 0x43ff) AM_RAM /* 2114 x 2 (0x400 x 4bit each) */
+<<<<<<< HEAD
 	AM_RANGE(0x4800, 0x480f) AM_WRITE(control_w)
 	AM_RANGE(0x4800, 0x4800) AM_READ_PORT("DSW")
 	AM_RANGE(0x5000, 0x5000) AM_READ_PORT("P1")
 	AM_RANGE(0x5800, 0x5800) AM_READ_PORT("P2") AM_WRITE(watchdog_reset_w) /* game won't boot if watchdog doesn't work */
+=======
+	AM_RANGE(0x4800, 0x480f) AM_DEVWRITE("mainlatch", ls259_device, write_a3)
+	AM_RANGE(0x4800, 0x4800) AM_READ_PORT("DSW")
+	AM_RANGE(0x5000, 0x5000) AM_READ_PORT("P1")
+	AM_RANGE(0x5800, 0x5800) AM_READ_PORT("P2") AM_DEVWRITE("watchdog", watchdog_timer_device, reset_w) /* game won't boot if watchdog doesn't work */
+>>>>>>> upstream/master
 	AM_RANGE(0x6000, 0x6000) AM_DEVWRITE("aysnd", ay8910_device, address_w)
 	AM_RANGE(0x6800, 0x6800) AM_DEVWRITE("aysnd", ay8910_device, data_w)
 	AM_RANGE(0x7000, 0x73ff) AM_DEVREADWRITE("alpha_8201", alpha_8201_device, ext_ram_r, ext_ram_w)
@@ -395,7 +463,11 @@ INTERRUPT_GEN_MEMBER(shougi_state::vblank_nmi)
 }
 
 
+<<<<<<< HEAD
 static MACHINE_CONFIG_START( shougi, shougi_state )
+=======
+static MACHINE_CONFIG_START( shougi )
+>>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", Z80, XTAL_10MHz/4)
@@ -408,8 +480,23 @@ static MACHINE_CONFIG_START( shougi, shougi_state )
 
 	MCFG_DEVICE_ADD("alpha_8201", ALPHA_8201, XTAL_10MHz/4/8)
 
+<<<<<<< HEAD
 	MCFG_QUANTUM_PERFECT_CPU("maincpu")
 	MCFG_WATCHDOG_VBLANK_INIT(0x10) // assuming it's the same as champbas
+=======
+	MCFG_DEVICE_ADD("mainlatch", LS259, 0)
+	MCFG_ADDRESSABLE_LATCH_Q0_OUT_CB(NOOP) // 0: sharedram = sub, 1: sharedram = main (TODO!)
+	MCFG_ADDRESSABLE_LATCH_Q1_OUT_CB(WRITELINE(shougi_state, nmi_enable_w))
+	MCFG_ADDRESSABLE_LATCH_Q2_OUT_CB(NOOP) // ?
+	MCFG_ADDRESSABLE_LATCH_Q3_OUT_CB(DEVWRITELINE("alpha_8201", alpha_8201_device, mcu_start_w)) // start/halt ALPHA-8201
+	MCFG_ADDRESSABLE_LATCH_Q4_OUT_CB(DEVWRITELINE("alpha_8201", alpha_8201_device, bus_dir_w)) MCFG_DEVCB_INVERT // ALPHA-8201 shared RAM bus direction: 0: mcu, 1: maincpu
+	MCFG_ADDRESSABLE_LATCH_Q7_OUT_CB(NOOP) // nothing? connected to +5v via resistor
+
+	MCFG_QUANTUM_PERFECT_CPU("maincpu")
+
+	MCFG_WATCHDOG_ADD("watchdog")
+	MCFG_WATCHDOG_VBLANK_INIT("screen", 0x10) // assuming it's the same as champbas
+>>>>>>> upstream/master
 
 	/* video hardware */
 	MCFG_SCREEN_ADD("screen", RASTER)
@@ -484,6 +571,12 @@ ROM_START( shougi2 )
 ROM_END
 
 
+<<<<<<< HEAD
 /*    YEAR  NAME     PARENT  MACHINE  INPUT    INIT              MONITOR, COMPANY, FULLNAME, FLAGS */
 GAME( 1982, shougi,  0,      shougi,  shougi,  driver_device, 0, ROT0, "Alpha Denshi Co. (Tehkan license)", "Shougi", MACHINE_SUPPORTS_SAVE )
 GAME( 1982, shougi2, 0,      shougi,  shougi2, driver_device, 0, ROT0, "Alpha Denshi Co. (Tehkan license)", "Shougi Part II", MACHINE_SUPPORTS_SAVE )
+=======
+/*    YEAR  NAME     PARENT  MACHINE  INPUT    STATE         INIT  MONITOR  COMPANY                              FULLNAME          FLAGS */
+GAME( 1982, shougi,  0,      shougi,  shougi,  shougi_state, 0,    ROT0,    "Alpha Denshi Co. (Tehkan license)", "Shougi",         MACHINE_SUPPORTS_SAVE )
+GAME( 1982, shougi2, 0,      shougi,  shougi2, shougi_state, 0,    ROT0,    "Alpha Denshi Co. (Tehkan license)", "Shougi Part II", MACHINE_SUPPORTS_SAVE )
+>>>>>>> upstream/master

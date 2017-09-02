@@ -13,11 +13,46 @@
 -- expat library objects
 --------------------------------------------------
 
+<<<<<<< HEAD
 if _OPTIONS["with-bundled-expat"] then
+=======
+if not _OPTIONS["with-system-expat"] then
+>>>>>>> upstream/master
 project "expat"
 	uuid "f4cd40b1-c37c-452d-9785-640f26f0bf54"
 	kind "StaticLib"
 
+<<<<<<< HEAD
+=======
+	-- fake out the enough of expat_config.h to get by
+	defines {
+		"HAVE_MEMMOVE",
+		"HAVE_STDINT_H",
+		"HAVE_STDLIB_H",
+		"HAVE_STRING_H",
+		"PACKAGE_BUGREPORT=\"expat-bugs@libexpat.org\"",
+		"PACKAGE_NAME=\"expat\"",
+		"PACKAGE_STRING=\"expat 2.1.1\"",
+		"PACKAGE_TARNAME=\"expat\"",
+		"PACKAGE_URL=\"\"",
+		"PACKAGE_VERSION=\"2.1.1\"",
+		"STDC_HEADERS",
+		"XML_CONTEXT_BYTES=1024",
+		"XML_DTD",
+		"XML_NS",
+	}
+if _OPTIONS["BIGENDIAN"]=="1" then
+	defines {
+		"BYTEORDER=4321",
+		"WORDS_BIGENDIAN",
+	}
+else
+	defines {
+		"BYTEORDER=1234",
+	}
+end
+
+>>>>>>> upstream/master
 	configuration { "vs*" }
 		buildoptions {
 			"/wd4100", -- warning C4100: 'xxx' : unreferenced formal parameter
@@ -26,6 +61,7 @@ project "expat"
 		}
 if _OPTIONS["vs"]=="intel-15" then
 		buildoptions {
+<<<<<<< HEAD
 			"/Qwd111",  			-- remark #111: statement is unreachable
 			"/Qwd1879", 			-- warning #1879: unimplemented pragma ignored
 			"/Qwd2557", 			-- remark #2557: comparison between signed and unsigned operands
@@ -33,11 +69,24 @@ if _OPTIONS["vs"]=="intel-15" then
 		}
 end
 	configuration { "vs2015" }
+=======
+			"/Qwd111",              -- remark #111: statement is unreachable
+			"/Qwd1879",             -- warning #1879: unimplemented pragma ignored
+			"/Qwd2557",             -- remark #2557: comparison between signed and unsigned operands
+			"/Qwd869",              -- remark #869: parameter "xxx" was never referenced
+		}
+end
+	configuration { "vs201*" }
+>>>>>>> upstream/master
 		buildoptions {
 			"/wd4456", -- warning C4456: declaration of 'xxx' hides previous local declaration
 		}
 	configuration { }
+<<<<<<< HEAD
 		
+=======
+
+>>>>>>> upstream/master
 	files {
 		MAME_DIR .. "3rdparty/expat/lib/xmlparse.c",
 		MAME_DIR .. "3rdparty/expat/lib/xmlrole.c",
@@ -45,7 +94,11 @@ end
 	}
 else
 links {
+<<<<<<< HEAD
 	"expat",
+=======
+	ext_lib("expat"),
+>>>>>>> upstream/master
 }
 end
 
@@ -53,11 +106,28 @@ end
 -- zlib library objects
 --------------------------------------------------
 
+<<<<<<< HEAD
 if _OPTIONS["with-bundled-zlib"] then
+=======
+if not _OPTIONS["with-system-zlib"] then
+>>>>>>> upstream/master
 project "zlib"
 	uuid "3d78bd2a-2bd0-4449-8087-42ddfaef7ec9"
 	kind "StaticLib"
 
+<<<<<<< HEAD
+=======
+	local version = str_to_version(_OPTIONS["gcc_version"])
+	if _OPTIONS["gcc"]~=nil and ((string.find(_OPTIONS["gcc"], "clang") or string.find(_OPTIONS["gcc"], "asmjs") or string.find(_OPTIONS["gcc"], "android"))) then
+		configuration { "gmake or ninja" }
+		if (version >= 30700) then
+			buildoptions {
+				"-Wno-shift-negative-value",
+			}
+		end
+	end
+
+>>>>>>> upstream/master
 	configuration { "vs*" }
 		buildoptions {
 			"/wd4131", -- warning C4131: 'xxx' : uses old-style declarator
@@ -66,8 +136,13 @@ project "zlib"
 		}
 if _OPTIONS["vs"]=="intel-15" then
 		buildoptions {
+<<<<<<< HEAD
 			"/Qwd111",  			-- remark #111: statement is unreachable
 			"/Qwd280",  			-- remark #280: selector expression is constant
+=======
+			"/Qwd111",              -- remark #111: statement is unreachable
+			"/Qwd280",              -- remark #280: selector expression is constant
+>>>>>>> upstream/master
 		}
 end
 	configuration "Debug"
@@ -75,7 +150,11 @@ end
 			"verbose=-1",
 		}
 
+<<<<<<< HEAD
 	configuration { "gmake" }
+=======
+	configuration { "gmake or ninja" }
+>>>>>>> upstream/master
 		buildoptions_c {
 			"-Wno-strict-prototypes",
 		}
@@ -100,14 +179,22 @@ end
 	}
 else
 links {
+<<<<<<< HEAD
 	"z",
+=======
+	ext_lib("zlib"),
+>>>>>>> upstream/master
 }
 end
 
 --------------------------------------------------
 -- SoftFloat library objects
 --------------------------------------------------
+<<<<<<< HEAD
 	
+=======
+
+>>>>>>> upstream/master
 project "softfloat"
 	uuid "04fbf89e-4761-4cf2-8a12-64500cf0c5c5"
 	kind "StaticLib"
@@ -119,11 +206,27 @@ project "softfloat"
 	includedirs {
 		MAME_DIR .. "src/osd",
 	}
+<<<<<<< HEAD
 if _OPTIONS["vs"]=="intel-15" then
 		buildoptions {
 			"/Qwd2557", 			-- remark #2557: comparison between signed and unsigned operands
 		}
 end	
+=======
+	configuration { "vs*" }
+		buildoptions {
+			"/wd4244", -- warning C4244: 'argument' : conversion from 'xxx' to 'xxx', possible loss of data
+			"/wd4146", -- warning C4146: unary minus operator applied to unsigned type, result still unsigned
+			"/wd4018", -- warning C4018: 'x' : signed/unsigned mismatch
+		}
+if _OPTIONS["vs"]=="intel-15" then
+		buildoptions {
+			"/Qwd2557",             -- remark #2557: comparison between signed and unsigned operands
+		}
+end
+	configuration { }
+
+>>>>>>> upstream/master
 	files {
 		MAME_DIR .. "3rdparty/softfloat/softfloat.c",
 		MAME_DIR .. "3rdparty/softfloat/fsincos.c",
@@ -134,22 +237,41 @@ end
 -- libJPEG library objects
 --------------------------------------------------
 
+<<<<<<< HEAD
 if _OPTIONS["with-bundled-jpeg"] then
+=======
+if not _OPTIONS["with-system-jpeg"] then
+>>>>>>> upstream/master
 project "jpeg"
 	uuid "447c6800-dcfd-4c48-b72a-a8223bb409ca"
 	kind "StaticLib"
 
 	configuration { "vs*" }
 		buildoptions {
+<<<<<<< HEAD
 			"/wd4100", -- warning C4100: 'xxx' : unreferenced formal parameter	
+=======
+			"/wd4100", -- warning C4100: 'xxx' : unreferenced formal parameter
+>>>>>>> upstream/master
 			"/wd4127", -- warning C4127: conditional expression is constant
 			"/wd4244", -- warning C4244: 'argument' : conversion from 'xxx' to 'xxx', possible loss of data
 		}
 if _OPTIONS["vs"]=="intel-15" then
 		buildoptions {
+<<<<<<< HEAD
 			"/Qwd869",  			-- remark #869: parameter "xxx" was never referenced
 		}
 end	
+=======
+			"/Qwd869",              -- remark #869: parameter "xxx" was never referenced
+		}
+end
+
+	configuration { "winstore*" }
+		defines {
+			"NO_GETENV"
+		}
+>>>>>>> upstream/master
 
 	configuration { }
 
@@ -203,7 +325,11 @@ end
 	}
 else
 links {
+<<<<<<< HEAD
 	"jpeg",
+=======
+	ext_lib("jpeg"),
+>>>>>>> upstream/master
 }
 end
 
@@ -211,7 +337,11 @@ end
 -- libflac library objects
 --------------------------------------------------
 
+<<<<<<< HEAD
 if _OPTIONS["with-bundled-flac"] then
+=======
+if not _OPTIONS["with-system-flac"] then
+>>>>>>> upstream/master
 project "flac"
 	uuid "b6fc19e8-073a-4541-bb7b-d24b548d424a"
 	kind "StaticLib"
@@ -220,11 +350,16 @@ project "flac"
 		buildoptions {
 			"/wd4127", -- warning C4127: conditional expression is constant
 			"/wd4244", -- warning C4244: 'argument' : conversion from 'xxx' to 'xxx', possible loss of data
+<<<<<<< HEAD
 			"/wd4100", -- warning C4100: 'xxx' : unreferenced formal parameter	
+=======
+			"/wd4100", -- warning C4100: 'xxx' : unreferenced formal parameter
+>>>>>>> upstream/master
 			"/wd4702", -- warning C4702: unreachable code
 		}
 if _OPTIONS["vs"]=="intel-15" then
 		buildoptions {
+<<<<<<< HEAD
 			"/Qwd111",  			-- remark #111: statement is unreachable
 			"/Qwd177",  			-- remark #177: function "xxx" was declared but never referenced
 			"/Qwd181",  			-- remark #181: argument of type "UINT32={unsigned int}" is incompatible with format "%d", expecting argument of type "int"
@@ -234,6 +369,22 @@ if _OPTIONS["vs"]=="intel-15" then
 end	
 
 	configuration { "vs2015" }
+=======
+			"/Qwd111",              -- remark #111: statement is unreachable
+			"/Qwd177",              -- remark #177: function "xxx" was declared but never referenced
+			"/Qwd181",              -- remark #181: argument of type "UINT32={unsigned int}" is incompatible with format "%d", expecting argument of type "int"
+			"/Qwd188",              -- error #188: enumerated type mixed with another type
+			"/Qwd869",              -- remark #869: parameter "xxx" was never referenced
+		}
+end
+
+	configuration { "mingw-clang" }
+		buildoptions {
+			"-include stdint.h"
+		}
+
+	configuration { "vs201*" }
+>>>>>>> upstream/master
 		buildoptions {
 			"/wd4456", -- warning C4456: declaration of 'xxx' hides previous local declaration
 		}
@@ -248,15 +399,31 @@ end
 			"HAVE_CONFIG_H=1",
 		}
 
+<<<<<<< HEAD
 	configuration { "gmake"}
+=======
+	configuration { "gmake or ninja" }
+>>>>>>> upstream/master
 		buildoptions_c {
 			"-Wno-unused-function",
 			"-O0",
 		}
+<<<<<<< HEAD
 	if _OPTIONS["gcc"]~=nil and string.find(_OPTIONS["gcc"], "clang") then
 		buildoptions {
 			"-Wno-enum-conversion",
 		}
+=======
+	if _OPTIONS["gcc"]~=nil and (string.find(_OPTIONS["gcc"], "clang") or string.find(_OPTIONS["gcc"], "android")) then
+		buildoptions {
+			"-Wno-enum-conversion",
+		}
+		if _OPTIONS["targetos"]=="macosx" then
+			buildoptions_c {
+				"-Wno-unknown-attributes",
+			}
+		end
+>>>>>>> upstream/master
 	end
 	configuration { }
 
@@ -284,7 +451,11 @@ end
 	}
 else
 links {
+<<<<<<< HEAD
 	"FLAC",
+=======
+	ext_lib("flac"),
+>>>>>>> upstream/master
 }
 end
 
@@ -296,21 +467,50 @@ project "7z"
 	uuid "ad573d62-e76a-4b11-ae34-5110a6789a42"
 	kind "StaticLib"
 
+<<<<<<< HEAD
+=======
+	configuration { "gmake or ninja" }
+		buildoptions_c {
+			"-Wno-undef",
+			"-Wno-strict-prototypes",
+		}
+
+	configuration { "mingw*" }
+		buildoptions_c {
+			"-Wno-strict-prototypes",
+		}
+
+>>>>>>> upstream/master
 	configuration { "vs*" }
 		buildoptions {
 			"/wd4100", -- warning C4100: 'xxx' : unreferenced formal parameter
 		}
 if _OPTIONS["vs"]=="intel-15" then
 		buildoptions {
+<<<<<<< HEAD
 			"/Qwd869",  			-- remark #869: parameter "xxx" was never referenced
 		}
 end
 	configuration { "vs2015" }
+=======
+			"/Qwd869",              -- remark #869: parameter "xxx" was never referenced
+		}
+end
+	configuration { "vs201*" }
+>>>>>>> upstream/master
 		buildoptions {
 			"/wd4456", -- warning C4456: declaration of 'xxx' hides previous local declaration
 			"/wd4457", -- warning C4457: declaration of 'xxx' hides function parameter
 		}
+<<<<<<< HEAD
 		
+=======
+	configuration { "winstore*" }
+		forcedincludes {
+			MAME_DIR .. "src/osd/uwp/uwpcompat.h"
+		}
+
+>>>>>>> upstream/master
 	configuration { }
 		defines {
 			"_7ZIP_PPMD_SUPPPORT",
@@ -318,11 +518,17 @@ end
 		}
 
 	files {
+<<<<<<< HEAD
+=======
+			MAME_DIR .. "3rdparty/lzma/C/7zAlloc.c",
+			MAME_DIR .. "3rdparty/lzma/C/7zArcIn.c",
+>>>>>>> upstream/master
 			MAME_DIR .. "3rdparty/lzma/C/7zBuf.c",
 			MAME_DIR .. "3rdparty/lzma/C/7zBuf2.c",
 			MAME_DIR .. "3rdparty/lzma/C/7zCrc.c",
 			MAME_DIR .. "3rdparty/lzma/C/7zCrcOpt.c",
 			MAME_DIR .. "3rdparty/lzma/C/7zDec.c",
+<<<<<<< HEAD
 			MAME_DIR .. "3rdparty/lzma/C/7zIn.c",
 			MAME_DIR .. "3rdparty/lzma/C/CpuArch.c",
 			MAME_DIR .. "3rdparty/lzma/C/LzmaDec.c",
@@ -336,18 +542,62 @@ end
 			MAME_DIR .. "3rdparty/lzma/C/Ppmd7.c",
 			MAME_DIR .. "3rdparty/lzma/C/Ppmd7Dec.c",
 			MAME_DIR .. "3rdparty/lzma/C/7zStream.c",
+=======
+			MAME_DIR .. "3rdparty/lzma/C/7zFile.c",
+			MAME_DIR .. "3rdparty/lzma/C/7zStream.c",
+			MAME_DIR .. "3rdparty/lzma/C/Aes.c",
+			MAME_DIR .. "3rdparty/lzma/C/AesOpt.c",
+			MAME_DIR .. "3rdparty/lzma/C/Alloc.c",
+			MAME_DIR .. "3rdparty/lzma/C/Bcj2.c",
+			-- MAME_DIR .. "3rdparty/lzma/C/Bcj2Enc.c",
+			MAME_DIR .. "3rdparty/lzma/C/Bra.c",
+			MAME_DIR .. "3rdparty/lzma/C/Bra86.c",
+			MAME_DIR .. "3rdparty/lzma/C/BraIA64.c",
+			MAME_DIR .. "3rdparty/lzma/C/CpuArch.c",
+			MAME_DIR .. "3rdparty/lzma/C/Delta.c",
+			-- MAME_DIR .. "3rdparty/lzma/C/DllSecur.c",
+			MAME_DIR .. "3rdparty/lzma/C/LzFind.c",
+			-- MAME_DIR .. "3rdparty/lzma/C/LzFindMt.c",
+			MAME_DIR .. "3rdparty/lzma/C/Lzma2Dec.c",
+			MAME_DIR .. "3rdparty/lzma/C/Lzma2Enc.c",
+			MAME_DIR .. "3rdparty/lzma/C/Lzma86Dec.c",
+			MAME_DIR .. "3rdparty/lzma/C/Lzma86Enc.c",
+			MAME_DIR .. "3rdparty/lzma/C/LzmaDec.c",
+			MAME_DIR .. "3rdparty/lzma/C/LzmaEnc.c",
+			-- MAME_DIR .. "3rdparty/lzma/C/LzmaLib.c",
+			-- MAME_DIR .. "3rdparty/lzma/C/MtCoder.c",
+			MAME_DIR .. "3rdparty/lzma/C/Ppmd7.c",
+			MAME_DIR .. "3rdparty/lzma/C/Ppmd7Dec.c",
+			MAME_DIR .. "3rdparty/lzma/C/Ppmd7Enc.c",
+			MAME_DIR .. "3rdparty/lzma/C/Sha256.c",
+			MAME_DIR .. "3rdparty/lzma/C/Sort.c",
+			-- MAME_DIR .. "3rdparty/lzma/C/Threads.c",
+			-- MAME_DIR .. "3rdparty/lzma/C/Xz.c",
+			-- MAME_DIR .. "3rdparty/lzma/C/XzCrc64.c",
+			-- MAME_DIR .. "3rdparty/lzma/C/XzCrc64Opt.c",
+			-- MAME_DIR .. "3rdparty/lzma/C/XzDec.c",
+			-- MAME_DIR .. "3rdparty/lzma/C/XzEnc.c",
+			-- MAME_DIR .. "3rdparty/lzma/C/XzIn.c",
+>>>>>>> upstream/master
 		}
 
 --------------------------------------------------
 -- LUA library objects
 --------------------------------------------------
+<<<<<<< HEAD
 
 if _OPTIONS["with-bundled-lua"] then
+=======
+if (STANDALONE~=true) then
+
+if not _OPTIONS["with-system-lua"] then
+>>>>>>> upstream/master
 project "lua"
 	uuid "d9e2eed1-f1ab-4737-a6ac-863700b1a5a9"
 	kind "StaticLib"
 
 	-- uncomment the options below to
+<<<<<<< HEAD
 	-- compile using c++. Do the same 
 	-- in lsqlite3.
 	-- In addition comment out the "extern "C""
@@ -356,6 +606,21 @@ project "lua"
 	--	"ForceCPP",
 	--}
 
+=======
+	-- compile using c++. Do the same
+	-- in lualibs.
+	-- In addition comment out the "extern "C""
+	-- in lua.hpp and do the same in luaengine.c line 47
+	--options {
+	--  "ForceCPP",
+	--}
+
+	configuration { "gmake or ninja" }
+		buildoptions_c {
+			"-Wno-bad-function-cast"
+		}
+
+>>>>>>> upstream/master
 	configuration { "vs*" }
 		buildoptions {
 			"/wd4244", -- warning C4244: 'argument' : conversion from 'xxx' to 'xxx', possible loss of data
@@ -367,11 +632,27 @@ if _OPTIONS["vs"]=="intel-15" then
 			"/Qwd592", -- error #592: variable "xxx" is used before its value is set
 		}
 end
+<<<<<<< HEAD
 	configuration { }
 		defines {
 			"LUA_COMPAT_ALL",
 		}
 	if not (_OPTIONS["targetos"]=="windows") and not (_OPTIONS["targetos"]=="asmjs") then
+=======
+
+	configuration { "winstore*" }
+		forcedincludes {
+			MAME_DIR .. "src/osd/uwp/uwpcompat.h",
+		}
+
+	configuration { }
+		defines {
+			"LUA_COMPAT_ALL",
+			"LUA_COMPAT_5_1",
+			"LUA_COMPAT_5_2",
+		}
+	if not (_OPTIONS["targetos"]=="windows") and not (_OPTIONS["targetos"]=="asmjs") and not (_OPTIONS["targetos"]=="pnacl") then
+>>>>>>> upstream/master
 		defines {
 			"LUA_USE_POSIX",
 		}
@@ -381,7 +662,11 @@ end
 			"LUA_32BITS",
 		}
 	end
+<<<<<<< HEAD
 	
+=======
+
+>>>>>>> upstream/master
 	configuration { }
 
 	includedirs {
@@ -425,11 +710,16 @@ end
 	}
 else
 links {
+<<<<<<< HEAD
 	"lua",
+=======
+	ext_lib("lua"),
+>>>>>>> upstream/master
 }
 end
 
 --------------------------------------------------
+<<<<<<< HEAD
 -- sqlite3 lua library objects
 --------------------------------------------------
 	
@@ -444,6 +734,26 @@ project "lsqlite3"
 	configuration { "vs*" }
 		buildoptions {
 			"/wd4244", -- warning C4244: 'argument' : conversion from 'xxx' to 'xxx', possible loss of data
+=======
+-- small lua library objects
+--------------------------------------------------
+
+project "lualibs"
+	uuid "1d84edab-94cf-48fb-83ee-b75bc697660e"
+	kind "StaticLib"
+
+	configuration { "vs*" }
+		buildoptions {
+			"/wd4244", -- warning C4244: 'argument' : conversion from 'xxx' to 'xxx', possible loss of data
+			"/wd4055", -- warning C4055: 'type cast': from data pointer 'void *' to function pointer 'xxx'
+			"/wd4152", -- warning C4152: nonstandard extension, function/data pointer conversion in expression
+			"/wd4130", -- warning C4130: '==': logical operation on address of string constant
+		}
+
+	configuration { "pnacl"}
+		buildoptions {
+			"-Wno-char-subscripts",
+>>>>>>> upstream/master
 		}
 
 	configuration { }
@@ -454,6 +764,7 @@ project "lsqlite3"
 	includedirs {
 		MAME_DIR .. "3rdparty",
 	}
+<<<<<<< HEAD
 	if _OPTIONS["with-bundled-lua"] then
 		includedirs {
 			MAME_DIR .. "3rdparty/lua/src",
@@ -489,11 +800,46 @@ project "jsoncpp"
 		MAME_DIR .. "3rdparty/jsoncpp/src/lib_json/json_writer.cpp",
 		
 	}
+=======
+if (_OPTIONS["osd"] ~= "uwp") then
+	includedirs {
+		MAME_DIR .. "3rdparty/linenoise",
+	}
+end
+	includedirs {
+		ext_includedir("lua"),
+		ext_includedir("zlib"),
+		ext_includedir("sqlite3"),
+	}
+
+	configuration { "winstore*" }
+		forcedincludes {
+			MAME_DIR .. "src/osd/uwp/uwpcompat.h"
+		}
+
+	configuration {}
+
+	files {
+		MAME_DIR .. "3rdparty/lsqlite3/lsqlite3.c",
+		MAME_DIR .. "3rdparty/lua-zlib/lua_zlib.c",
+		MAME_DIR .. "3rdparty/luafilesystem/src/lfs.c",
+	}
+if (_OPTIONS["osd"] == "uwp") then
+	files {
+		MAME_DIR .. "3rdparty/lua-linenoise/linenoise_none.c",
+	}
+else
+	files {
+		MAME_DIR .. "3rdparty/lua-linenoise/linenoise.c",
+	}
+end
+>>>>>>> upstream/master
 
 --------------------------------------------------
 -- SQLite3 library objects
 --------------------------------------------------
 
+<<<<<<< HEAD
 if _OPTIONS["with-bundled-sqlite3"] then
 project "sqllite3"
 	uuid "5cb3d495-57ed-461c-81e5-80dc0857517d"
@@ -534,6 +880,29 @@ end
 			}
 		end
 	end
+=======
+if not _OPTIONS["with-system-sqlite3"] then
+project "sqlite3"
+	uuid "5cb3d495-57ed-461c-81e5-80dc0857517d"
+	kind "StaticLib"
+
+	configuration { "gmake" }
+		buildoptions_c {
+			"-Wno-discarded-qualifiers",
+			"-Wno-unused-but-set-variable",
+			"-Wno-bad-function-cast",
+			"-Wno-undef",
+		}
+if _OPTIONS["gcc"]~=nil and ((string.find(_OPTIONS["gcc"], "clang") or string.find(_OPTIONS["gcc"], "asmjs") or string.find(_OPTIONS["gcc"], "android"))) then
+		buildoptions_c {
+			"-Wno-incompatible-pointer-types-discards-qualifiers",
+		}
+end
+	configuration { "winstore*" }
+		defines {
+			"SQLITE_OS_WINRT",
+		}
+>>>>>>> upstream/master
 
 	configuration { }
 
@@ -542,15 +911,27 @@ end
 	}
 else
 links {
+<<<<<<< HEAD
 	"sqlite3",
 }
 end
 
+=======
+	ext_lib("sqlite3"),
+}
+end
+
+end
+>>>>>>> upstream/master
 --------------------------------------------------
 -- portmidi library objects
 --------------------------------------------------
 if _OPTIONS["NO_USE_MIDI"]~="1" then
+<<<<<<< HEAD
 if _OPTIONS["with-bundled-portmidi"] then
+=======
+if not _OPTIONS["with-system-portmidi"] then
+>>>>>>> upstream/master
 project "portmidi"
 	uuid "587f2da6-3274-4a65-86a2-f13ea315bb98"
 	kind "StaticLib"
@@ -559,7 +940,11 @@ project "portmidi"
 		MAME_DIR .. "3rdparty/portmidi/pm_common",
 		MAME_DIR .. "3rdparty/portmidi/porttime",
 	}
+<<<<<<< HEAD
 		
+=======
+
+>>>>>>> upstream/master
 	configuration { "vs*" }
 		buildoptions {
 			"/wd4100", -- warning C4100: 'xxx' : unreferenced formal parameter
@@ -569,6 +954,7 @@ project "portmidi"
 		}
 if _OPTIONS["vs"]=="intel-15" then
 		buildoptions {
+<<<<<<< HEAD
 			"/Qwd188",  			-- error #188: enumerated type mixed with another type
 			"/Qwd344",  			-- remark #344: typedef name has already been declared (with same type)
 			"/Qwd869",  			-- remark #869: parameter "xxx" was never referenced
@@ -581,6 +967,20 @@ end
 			"/wd4456", -- warning C4456: declaration of 'xxx' hides previous local declaration
 		}
 	
+=======
+			"/Qwd188",              -- error #188: enumerated type mixed with another type
+			"/Qwd344",              -- remark #344: typedef name has already been declared (with same type)
+			"/Qwd869",              -- remark #869: parameter "xxx" was never referenced
+			"/Qwd2557",             -- remark #2557: comparison between signed and unsigned operands
+		}
+end
+
+	configuration { "vs201*" }
+		buildoptions {
+			"/wd4456", -- warning C4456: declaration of 'xxx' hides previous local declaration
+		}
+
+>>>>>>> upstream/master
 	configuration { "linux*" }
 		defines {
 			"PMALSA=1",
@@ -629,6 +1029,7 @@ end
 	end
 else
 links {
+<<<<<<< HEAD
 	"portmidi",
 }
 end
@@ -638,32 +1039,24 @@ end
 --------------------------------------------------
 	
 if (USE_BGFX == 1) then
-project "bgfx"
-	uuid "d3e7e119-35cf-4f4f-aba0-d3bdcd1b879a"
+=======
+	ext_lib("portmidi"),
+}
+end
+end
+
+--------------------------------------------------
+-- BX library objects
+--------------------------------------------------
+
+project "bx"
+	uuid "238318fe-49f5-4eb4-88be-0618900f5eac"
 	kind "StaticLib"
 
-	configuration { "vs*" }
-		buildoptions {
-			"/wd4324", -- warning C4324: 'xxx' : structure was padded due to __declspec(align())
-			"/wd4244", -- warning C4244: 'argument' : conversion from 'xxx' to 'xxx', possible loss of data
-			"/wd4611", -- warning C4611: interaction between '_setjmp' and C++ object destruction is non-portable
-			"/wd4310", -- warning C4310: cast truncates constant value			
-		}
-if _OPTIONS["vs"]=="intel-15" then
-		buildoptions {
-			"/Qwd906",  			-- message #906: effect of this "#pragma pack" directive is local to function "xxx"
-			"/Qwd1879", 			-- warning #1879: unimplemented pragma ignored
-			"/Qwd82",   			-- remark #82: storage class is not first
-		}
-end
-	configuration { }
-
-	includedirs {		
-		MAME_DIR .. "3rdparty/bgfx/include",
-		MAME_DIR .. "3rdparty/bgfx/3rdparty",
-		MAME_DIR .. "3rdparty/bx/include",
-		MAME_DIR .. "3rdparty/bgfx/3rdparty/khronos",
-		MAME_DIR .. "3rdparty/bgfx/3rdparty/dxsdk/include",
+	defines {
+		"__STDC_LIMIT_MACROS",
+		"__STDC_FORMAT_MACROS",
+		"__STDC_CONSTANT_MACROS",
 	}
 
 	configuration { "vs*" }
@@ -674,6 +1067,126 @@ end
 		includedirs {
 			MAME_DIR .. "3rdparty/bx/include/compat/mingw",
 		}
+
+	configuration { "osx* or xcode4" }
+		includedirs {
+			MAME_DIR .. "3rdparty/bx/include/compat/osx",
+		}
+
+	configuration { "freebsd" }
+		includedirs {
+			MAME_DIR .. "3rdparty/bx/include/compat/freebsd",
+		}
+
+	configuration { "netbsd" }
+		includedirs {
+			MAME_DIR .. "3rdparty/bx/include/compat/freebsd",
+		}
+
+	configuration { }
+
+	local version = str_to_version(_OPTIONS["gcc_version"])
+	if _OPTIONS["gcc"]~=nil and string.find(_OPTIONS["gcc"], "gcc") then
+		if version < 60000 then
+			buildoptions {
+				"-Wno-strict-overflow",
+			}
+		end
+	end
+
+	includedirs {
+		MAME_DIR .. "3rdparty/bx/include",
+	}
+
+	files {
+		MAME_DIR .. "3rdparty/bx/src/bx.cpp",
+		MAME_DIR .. "3rdparty/bx/src/commandline.cpp",
+		MAME_DIR .. "3rdparty/bx/src/crtnone.cpp",
+		MAME_DIR .. "3rdparty/bx/src/crtimpl.cpp",
+		MAME_DIR .. "3rdparty/bx/src/debug.cpp",
+		MAME_DIR .. "3rdparty/bx/src/dtoa.cpp",
+		MAME_DIR .. "3rdparty/bx/src/fpumath.cpp",
+		MAME_DIR .. "3rdparty/bx/src/mutex.cpp",
+		MAME_DIR .. "3rdparty/bx/src/os.cpp",
+		MAME_DIR .. "3rdparty/bx/src/semaphore.cpp",
+		MAME_DIR .. "3rdparty/bx/src/sort.cpp",
+		MAME_DIR .. "3rdparty/bx/src/string.cpp",
+		MAME_DIR .. "3rdparty/bx/src/timer.cpp",
+		MAME_DIR .. "3rdparty/bx/src/thread.cpp",
+	}
+
+--------------------------------------------------
+-- BGFX library objects
+--------------------------------------------------
+
+>>>>>>> upstream/master
+project "bgfx"
+	uuid "d3e7e119-35cf-4f4f-aba0-d3bdcd1b879a"
+	kind "StaticLib"
+
+	configuration { "vs*" }
+		buildoptions {
+			"/wd4324", -- warning C4324: 'xxx' : structure was padded due to __declspec(align())
+			"/wd4244", -- warning C4244: 'argument' : conversion from 'xxx' to 'xxx', possible loss of data
+			"/wd4611", -- warning C4611: interaction between '_setjmp' and C++ object destruction is non-portable
+<<<<<<< HEAD
+			"/wd4310", -- warning C4310: cast truncates constant value			
+		}
+if _OPTIONS["vs"]=="intel-15" then
+		buildoptions {
+			"/Qwd906",  			-- message #906: effect of this "#pragma pack" directive is local to function "xxx"
+			"/Qwd1879", 			-- warning #1879: unimplemented pragma ignored
+			"/Qwd82",   			-- remark #82: storage class is not first
+=======
+			"/wd4310", -- warning C4310: cast truncates constant value
+		}
+if _OPTIONS["vs"]=="intel-15" then
+		buildoptions {
+			"/Qwd906",              -- message #906: effect of this "#pragma pack" directive is local to function "xxx"
+			"/Qwd1879",             -- warning #1879: unimplemented pragma ignored
+			"/Qwd82",               -- remark #82: storage class is not first
+>>>>>>> upstream/master
+		}
+end
+	configuration { }
+
+<<<<<<< HEAD
+	includedirs {		
+		MAME_DIR .. "3rdparty/bgfx/include",
+		MAME_DIR .. "3rdparty/bgfx/3rdparty",
+		MAME_DIR .. "3rdparty/bx/include",
+		MAME_DIR .. "3rdparty/bgfx/3rdparty/khronos",
+		MAME_DIR .. "3rdparty/bgfx/3rdparty/dxsdk/include",
+	}
+
+=======
+	includedirs {
+		MAME_DIR .. "3rdparty/bgfx/include",
+		MAME_DIR .. "3rdparty/bgfx/3rdparty",
+		MAME_DIR .. "3rdparty/bx/include",
+		MAME_DIR .. "3rdparty/bgfx/3rdparty/dxsdk/include",
+	}
+
+	configuration { "not steamlink"}
+		includedirs {
+			MAME_DIR .. "3rdparty/bgfx/3rdparty/khronos",
+		}
+
+	configuration { "android-*"}
+		buildoptions {
+			"-Wno-macro-redefined",
+		}
+
+>>>>>>> upstream/master
+	configuration { "vs*" }
+		includedirs {
+			MAME_DIR .. "3rdparty/bx/include/compat/msvc",
+		}
+	configuration { "mingw*" }
+		includedirs {
+			MAME_DIR .. "3rdparty/bx/include/compat/mingw",
+		}
+<<<<<<< HEAD
 if _OPTIONS["CPP11"]~="1" then		
 		defines {
 			"nullptr=NULL" -- not used but needed for C++11 code
@@ -685,6 +1198,14 @@ end
 			MAME_DIR .. "3rdparty/bx/include/compat/osx",
 		}
 		
+=======
+
+	configuration { "osx* or xcode4" }
+		includedirs {
+			MAME_DIR .. "3rdparty/bx/include/compat/osx",
+		}
+
+>>>>>>> upstream/master
 	configuration { "freebsd" }
 		includedirs {
 			MAME_DIR .. "3rdparty/bx/include/compat/freebsd",
@@ -695,6 +1216,7 @@ end
 			MAME_DIR .. "3rdparty/bx/include/compat/freebsd",
 		}
 
+<<<<<<< HEAD
 	configuration { "gmake" }
 		buildoptions {		
 			"-Wno-uninitialized",
@@ -705,18 +1227,72 @@ end
 
 	if _OPTIONS["targetos"]=="windows" then
 		local version = str_to_version(_OPTIONS["gcc_version"])
+=======
+	configuration { "gmake or ninja" }
+		buildoptions {
+			"-Wno-uninitialized",
+			"-Wno-unused-function",
+			"-Wno-unused-variable",
+			"-Wno-unused-but-set-variable",
+			"-Wno-format-extra-args", -- temp for mingw 6.1 till update bgfx code
+		}
+	configuration { "rpi" }
+		buildoptions {
+			"-Wno-unused-but-set-variable",
+			"-Wno-unused-variable",
+		}
+		defines {
+			"__STDC_VERSION__=199901L",
+		}
+
+	configuration { }
+
+	local version = str_to_version(_OPTIONS["gcc_version"])
+	if _OPTIONS["gcc"]~=nil and string.find(_OPTIONS["gcc"], "gcc") then
+		if version >= 60000 then
+			buildoptions_cpp {
+				"-Wno-misleading-indentation",
+			}
+		end
+	end
+
+	if _OPTIONS["targetos"]=="windows" then
+>>>>>>> upstream/master
 		if _OPTIONS["gcc"]~=nil and string.find(_OPTIONS["gcc"], "clang") then
 			buildoptions {
 				"-Wno-unknown-attributes",
 				"-Wno-missing-braces",
+<<<<<<< HEAD
 			}
 		end
 	end
 	
+=======
+				"-Wno-int-to-pointer-cast",
+			}
+		end
+	end
+
+	if _OPTIONS["targetos"]=="macosx" or  _OPTIONS["targetos"]=="linux" then
+		if _OPTIONS["gcc"]~=nil and string.find(_OPTIONS["gcc"], "clang") then
+			buildoptions {
+				"-Wno-switch",
+			}
+			buildoptions_cpp {
+				"-Wno-unknown-pragmas",
+			}
+		end
+	end
+
+>>>>>>> upstream/master
 	defines {
 		"__STDC_LIMIT_MACROS",
 		"__STDC_FORMAT_MACROS",
 		"__STDC_CONSTANT_MACROS",
+<<<<<<< HEAD
+=======
+		"BGFX_CONFIG_MAX_FRAME_BUFFERS=128",
+>>>>>>> upstream/master
 	}
 	files {
 		MAME_DIR .. "3rdparty/bgfx/src/bgfx.cpp",
@@ -725,11 +1301,18 @@ end
 		MAME_DIR .. "3rdparty/bgfx/src/glcontext_ppapi.cpp",
 		MAME_DIR .. "3rdparty/bgfx/src/glcontext_wgl.cpp",
 		MAME_DIR .. "3rdparty/bgfx/src/image.cpp",
+<<<<<<< HEAD
 		MAME_DIR .. "3rdparty/bgfx/src/ovr.cpp",
+=======
+		MAME_DIR .. "3rdparty/bgfx/src/hmd.cpp",
+		MAME_DIR .. "3rdparty/bgfx/src/hmd_ovr.cpp",
+		MAME_DIR .. "3rdparty/bgfx/src/hmd_openvr.cpp",
+>>>>>>> upstream/master
 		MAME_DIR .. "3rdparty/bgfx/src/renderer_d3d12.cpp",
 		MAME_DIR .. "3rdparty/bgfx/src/renderer_d3d11.cpp",
 		MAME_DIR .. "3rdparty/bgfx/src/renderer_d3d9.cpp",
 		MAME_DIR .. "3rdparty/bgfx/src/renderer_gl.cpp",
+<<<<<<< HEAD
 		MAME_DIR .. "3rdparty/bgfx/src/renderer_null.cpp",
 		MAME_DIR .. "3rdparty/bgfx/src/renderer_vk.cpp",
 		MAME_DIR .. "3rdparty/bgfx/src/renderdoc.cpp",
@@ -748,6 +1331,24 @@ end
 		--MAME_DIR .. "3rdparty/bgfx/examples/common/imgui/imgui.cpp",
 		MAME_DIR .. "3rdparty/bgfx/examples/common/nanovg/nanovg.cpp",
 		MAME_DIR .. "3rdparty/bgfx/examples/common/nanovg/nanovg_bgfx.cpp",
+=======
+		MAME_DIR .. "3rdparty/bgfx/src/renderer_gnm.cpp",
+		MAME_DIR .. "3rdparty/bgfx/src/renderer_noop.cpp",
+		MAME_DIR .. "3rdparty/bgfx/src/renderer_vk.cpp",
+		MAME_DIR .. "3rdparty/bgfx/src/debug_renderdoc.cpp",
+		MAME_DIR .. "3rdparty/bgfx/src/shader.cpp",
+		MAME_DIR .. "3rdparty/bgfx/src/shader_dxbc.cpp",
+		MAME_DIR .. "3rdparty/bgfx/src/shader_dx9bc.cpp",
+		MAME_DIR .. "3rdparty/bgfx/src/shader_spirv.cpp",
+		MAME_DIR .. "3rdparty/bgfx/src/topology.cpp",
+		MAME_DIR .. "3rdparty/bgfx/src/vertexdecl.cpp",
+		MAME_DIR .. "3rdparty/bgfx/examples/common/imgui/imgui.cpp",
+		MAME_DIR .. "3rdparty/bgfx/examples/common/imgui/ocornut_imgui.cpp",
+		MAME_DIR .. "3rdparty/bgfx/examples/common/nanovg/nanovg.cpp",
+		MAME_DIR .. "3rdparty/bgfx/examples/common/nanovg/nanovg_bgfx.cpp",
+		MAME_DIR .. "3rdparty/bgfx/3rdparty/ocornut-imgui/imgui.cpp",
+		MAME_DIR .. "3rdparty/bgfx/3rdparty/ocornut-imgui/imgui_draw.cpp",
+>>>>>>> upstream/master
 	}
 	if _OPTIONS["targetos"]=="macosx" then
 		files {
@@ -756,26 +1357,39 @@ end
 			MAME_DIR .. "3rdparty/bgfx/src/renderer_mtl.mm",
 		}
 	end
+<<<<<<< HEAD
 end
+=======
+>>>>>>> upstream/master
 
 --------------------------------------------------
 -- PortAudio library objects
 --------------------------------------------------
+<<<<<<< HEAD
 
 if _OPTIONS["with-bundled-portaudio"] then
+=======
+if _OPTIONS["NO_USE_PORTAUDIO"]~="1" then
+if not _OPTIONS["with-system-portaudio"] then
+>>>>>>> upstream/master
 project "portaudio"
 	uuid "0755c5f5-eccf-47f3-98a9-df67018a94d4"
 	kind "StaticLib"
 
 	configuration { "vs*" }
 		buildoptions {
+<<<<<<< HEAD
 			"/wd4245", -- warning C4245: 'conversion' : conversion from 'type1' to 'type2', signed/unsigned mismatch			
+=======
+			"/wd4245", -- warning C4245: 'conversion' : conversion from 'type1' to 'type2', signed/unsigned mismatch
+>>>>>>> upstream/master
 			"/wd4244", -- warning C4244: 'argument' : conversion from 'xxx' to 'xxx', possible loss of data
 			"/wd4100", -- warning C4100: 'xxx' : unreferenced formal parameter
 			"/wd4389", -- warning C4389: 'operator' : signed/unsigned mismatch
 			"/wd4189", -- warning C4189: 'xxx' : local variable is initialized but not referenced
 			"/wd4127", -- warning C4127: conditional expression is constant
 		}
+<<<<<<< HEAD
 if _OPTIONS["vs"]=="intel-15" then
 		buildoptions {
 			"/Qwd869",  			-- remark #869: parameter "xxx" was never referenced
@@ -785,11 +1399,26 @@ if _OPTIONS["vs"]=="intel-15" then
 		}
 end
 	configuration { "vs2015" }
+=======
+	if _OPTIONS["vs"]=="intel-15" then
+		buildoptions {
+			"/Qwd869",              -- remark #869: parameter "xxx" was never referenced
+			"/Qwd1478",             -- warning #1478: function "xxx" (declared at line yyy of "zzz") was declared deprecated
+			"/Qwd2544",             -- message #2544: empty dependent statement in if-statement
+			"/Qwd1879",             -- warning #1879: unimplemented pragma ignored
+		}
+	end
+	configuration { "vs2015*" }
+>>>>>>> upstream/master
 		buildoptions {
 			"/wd4456", -- warning C4456: declaration of 'xxx' hides previous local declaration
 		}
 
+<<<<<<< HEAD
 	configuration { "gmake" }
+=======
+	configuration { "gmake or ninja" }
+>>>>>>> upstream/master
 		buildoptions_c {
 			"-Wno-strict-prototypes",
 			"-Wno-bad-function-cast",
@@ -801,9 +1430,15 @@ end
 			"-Wno-unknown-pragmas",
 		}
 
+<<<<<<< HEAD
 	local version = str_to_version(_OPTIONS["gcc_version"])	
 	if (_OPTIONS["gcc"]~=nil) then
 		if string.find(_OPTIONS["gcc"], "clang") then
+=======
+	local version = str_to_version(_OPTIONS["gcc_version"])
+	if (_OPTIONS["gcc"]~=nil) then
+		if string.find(_OPTIONS["gcc"], "clang") or string.find(_OPTIONS["gcc"], "android") then
+>>>>>>> upstream/master
 			buildoptions_c {
 				"-Wno-unknown-warning-option",
 				"-Wno-absolute-value",
@@ -817,6 +1452,11 @@ end
 					"-Wno-unused-but-set-variable",
 					"-Wno-maybe-uninitialized",
 					"-Wno-sometimes-uninitialized",
+<<<<<<< HEAD
+=======
+					"-w",
+					"-Wno-incompatible-pointer-types-discards-qualifiers",
+>>>>>>> upstream/master
 				}
 			end
 		end
@@ -825,8 +1465,14 @@ end
 		buildoptions {
 			"/wd4204", -- warning C4204: nonstandard extension used : non-constant aggregate initializer
 			"/wd4701", -- warning C4701: potentially uninitialized local variable 'xxx' used
+<<<<<<< HEAD
 		}
 		
+=======
+			"/wd4057", -- warning C4057: 'function': 'xxx' differs in indirection to slightly different base types from 'xxx'
+		}
+
+>>>>>>> upstream/master
 	configuration { }
 
 	includedirs {
@@ -850,13 +1496,21 @@ end
 	if _OPTIONS["targetos"]=="windows" then
 		defines {
 			"PA_USE_DS=1",
+<<<<<<< HEAD
 			"PA_USE_WDMKS=1",
 			"PA_USE_WMME=1",
 		}	
+=======
+			"PA_USE_WASAPI=1",
+			"PA_USE_WDMKS=1",
+			"PA_USE_WMME=1",
+		}
+>>>>>>> upstream/master
 		includedirs {
 			MAME_DIR .. "3rdparty/portaudio/src/os/win",
 		}
 
+<<<<<<< HEAD
 		configuration { }			
 		files {	
 			MAME_DIR .. "3rdparty/portaudio/src/os/win/pa_win_util.c",
@@ -871,37 +1525,80 @@ end
 			MAME_DIR .. "3rdparty/portaudio/src/hostapi/wmme/pa_win_wmme.c",
 		}
 		
+=======
+		configuration { "mingw*" }
+		includedirs {
+			MAME_DIR .. "3rdparty/portaudio/src/hostapi/wasapi/mingw-include",
+		}
+
+		configuration { }
+		files {
+			MAME_DIR .. "3rdparty/portaudio/src/os/win/pa_win_util.c",
+			MAME_DIR .. "3rdparty/portaudio/src/os/win/pa_win_waveformat.c",
+			MAME_DIR .. "3rdparty/portaudio/src/os/win/pa_win_hostapis.c",
+			MAME_DIR .. "3rdparty/portaudio/src/os/win/pa_win_coinitialize.c",
+			MAME_DIR .. "3rdparty/portaudio/src/hostapi/dsound/pa_win_ds.c",
+			MAME_DIR .. "3rdparty/portaudio/src/hostapi/dsound/pa_win_ds_dynlink.c",
+			MAME_DIR .. "3rdparty/portaudio/src/os/win/pa_win_hostapis.c",
+			MAME_DIR .. "3rdparty/portaudio/src/hostapi/wasapi/pa_win_wasapi.c",
+			MAME_DIR .. "3rdparty/portaudio/src/hostapi/wdmks/pa_win_wdmks.c",
+			MAME_DIR .. "3rdparty/portaudio/src/hostapi/wmme/pa_win_wmme.c",
+			MAME_DIR .. "3rdparty/portaudio/src/common/pa_ringbuffer.c",
+		}
+
+>>>>>>> upstream/master
 	end
 	if _OPTIONS["targetos"]=="linux" then
 		defines {
 			"PA_USE_ALSA=1",
 			"PA_USE_OSS=1",
 			"HAVE_LINUX_SOUNDCARD_H",
+<<<<<<< HEAD
 		}	
 		includedirs {
 			MAME_DIR .. "3rdparty/portaudio/src/os/unix",
 		}
 		files {	
+=======
+		}
+		includedirs {
+			MAME_DIR .. "3rdparty/portaudio/src/os/unix",
+		}
+		files {
+>>>>>>> upstream/master
 			MAME_DIR .. "3rdparty/portaudio/src/os/unix/pa_unix_hostapis.c",
 			MAME_DIR .. "3rdparty/portaudio/src/os/unix/pa_unix_util.c",
 			MAME_DIR .. "3rdparty/portaudio/src/hostapi/alsa/pa_linux_alsa.c",
 			MAME_DIR .. "3rdparty/portaudio/src/hostapi/oss/pa_unix_oss.c",
+<<<<<<< HEAD
 		}		
+=======
+		}
+>>>>>>> upstream/master
 	end
 	if _OPTIONS["targetos"]=="macosx" then
 		defines {
 			"PA_USE_COREAUDIO=1",
+<<<<<<< HEAD
 		}	
 		includedirs {
 			MAME_DIR .. "3rdparty/portaudio/src/os/unix",
 		}
 		files {	
+=======
+		}
+		includedirs {
+			MAME_DIR .. "3rdparty/portaudio/src/os/unix",
+		}
+		files {
+>>>>>>> upstream/master
 			MAME_DIR .. "3rdparty/portaudio/src/os/unix/pa_unix_hostapis.c",
 			MAME_DIR .. "3rdparty/portaudio/src/os/unix/pa_unix_util.c",
 			MAME_DIR .. "3rdparty/portaudio/src/hostapi/coreaudio/pa_mac_core.c",
 			MAME_DIR .. "3rdparty/portaudio/src/hostapi/coreaudio/pa_mac_core_utilities.c",
 			MAME_DIR .. "3rdparty/portaudio/src/hostapi/coreaudio/pa_mac_core_blocking.c",
 			MAME_DIR .. "3rdparty/portaudio/src/common/pa_ringbuffer.c",
+<<<<<<< HEAD
 		}		
 	end
 	
@@ -941,3 +1638,590 @@ end
 	files {		
 		MAME_DIR .. "3rdparty/googletest/googletest/src/gtest-all.cc",
 	}
+=======
+		}
+	end
+
+else
+links {
+	ext_lib("portaudio"),
+}
+end
+end
+
+--------------------------------------------------
+-- SDL2 library
+--------------------------------------------------
+if _OPTIONS["with-bundled-sdl2"] then
+project "SDL2"
+	uuid "caab3327-574f-4abf-b25b-74d5238ae59b"
+if _OPTIONS["targetos"]=="android" then
+	kind "SharedLib"
+	targetextension ".so"
+	targetprefix "lib"
+	links {
+		"GLESv1_CM",
+		"GLESv2",
+		"log",
+		"OpenSLES",
+		"c++_static"
+	}
+	linkoptions {
+		"-Wl,-soname,libSDL2.so",
+	}
+
+	if _OPTIONS["SEPARATE_BIN"]~="1" then
+		if _OPTIONS["PLATFORM"]=="arm" then
+			targetdir(MAME_DIR .. "android-project/app/src/main/libs/armeabi-v7a")
+		end
+		if _OPTIONS["PLATFORM"]=="arm64" then
+			targetdir(MAME_DIR .. "android-project/app/src/main/libs/arm64-v8a")
+		end
+		if _OPTIONS["PLATFORM"]=="mips" then
+			targetdir(MAME_DIR .. "android-project/app/src/main/libs/mips")
+		end
+		if _OPTIONS["PLATFORM"]=="mips64" then
+			targetdir(MAME_DIR .. "android-project/app/src/main/libs/mips64")
+		end
+		if _OPTIONS["PLATFORM"]=="x86" then
+			targetdir(MAME_DIR .. "android-project/app/src/main/libs/x86")
+		end
+		if _OPTIONS["PLATFORM"]=="x64" then
+			targetdir(MAME_DIR .. "android-project/app/src/main/libs/x86_64")
+		end
+	end
+
+	strip()
+else
+	kind "StaticLib"
+end
+
+	files {
+		MAME_DIR .. "3rdparty/SDL2/include/begin_code.h",
+		MAME_DIR .. "3rdparty/SDL2/include/close_code.h",
+		MAME_DIR .. "3rdparty/SDL2/include/SDL.h",
+		MAME_DIR .. "3rdparty/SDL2/include/SDL_assert.h",
+		MAME_DIR .. "3rdparty/SDL2/include/SDL_atomic.h",
+		MAME_DIR .. "3rdparty/SDL2/include/SDL_audio.h",
+		MAME_DIR .. "3rdparty/SDL2/include/SDL_bits.h",
+		MAME_DIR .. "3rdparty/SDL2/include/SDL_blendmode.h",
+		MAME_DIR .. "3rdparty/SDL2/include/SDL_clipboard.h",
+		MAME_DIR .. "3rdparty/SDL2/include/SDL_config.h",
+		MAME_DIR .. "3rdparty/SDL2/include/SDL_config_windows.h",
+		MAME_DIR .. "3rdparty/SDL2/include/SDL_copying.h",
+		MAME_DIR .. "3rdparty/SDL2/include/SDL_cpuinfo.h",
+		MAME_DIR .. "3rdparty/SDL2/include/SDL_egl.h",
+		MAME_DIR .. "3rdparty/SDL2/include/SDL_endian.h",
+		MAME_DIR .. "3rdparty/SDL2/include/SDL_error.h",
+		MAME_DIR .. "3rdparty/SDL2/include/SDL_events.h",
+		MAME_DIR .. "3rdparty/SDL2/include/SDL_filesystem.h",
+		MAME_DIR .. "3rdparty/SDL2/include/SDL_gamecontroller.h",
+		MAME_DIR .. "3rdparty/SDL2/include/SDL_gesture.h",
+		MAME_DIR .. "3rdparty/SDL2/include/SDL_haptic.h",
+		MAME_DIR .. "3rdparty/SDL2/include/SDL_hints.h",
+		MAME_DIR .. "3rdparty/SDL2/include/SDL_joystick.h",
+		MAME_DIR .. "3rdparty/SDL2/include/SDL_keyboard.h",
+		MAME_DIR .. "3rdparty/SDL2/include/SDL_keycode.h",
+		MAME_DIR .. "3rdparty/SDL2/include/SDL_loadso.h",
+		MAME_DIR .. "3rdparty/SDL2/include/SDL_log.h",
+		MAME_DIR .. "3rdparty/SDL2/include/SDL_main.h",
+		MAME_DIR .. "3rdparty/SDL2/include/SDL_messagebox.h",
+		MAME_DIR .. "3rdparty/SDL2/include/SDL_mouse.h",
+		MAME_DIR .. "3rdparty/SDL2/include/SDL_mutex.h",
+		MAME_DIR .. "3rdparty/SDL2/include/SDL_name.h",
+		MAME_DIR .. "3rdparty/SDL2/include/SDL_opengl.h",
+		MAME_DIR .. "3rdparty/SDL2/include/SDL_opengl_glext.h",
+		MAME_DIR .. "3rdparty/SDL2/include/SDL_opengles.h",
+		MAME_DIR .. "3rdparty/SDL2/include/SDL_opengles2.h",
+		MAME_DIR .. "3rdparty/SDL2/include/SDL_opengles2_gl2.h",
+		MAME_DIR .. "3rdparty/SDL2/include/SDL_opengles2_gl2ext.h",
+		MAME_DIR .. "3rdparty/SDL2/include/SDL_opengles2_gl2platform.h",
+		MAME_DIR .. "3rdparty/SDL2/include/SDL_opengles2_khrplatform.h",
+		MAME_DIR .. "3rdparty/SDL2/include/SDL_pixels.h",
+		MAME_DIR .. "3rdparty/SDL2/include/SDL_platform.h",
+		MAME_DIR .. "3rdparty/SDL2/include/SDL_power.h",
+		MAME_DIR .. "3rdparty/SDL2/include/SDL_quit.h",
+		MAME_DIR .. "3rdparty/SDL2/include/SDL_rect.h",
+		MAME_DIR .. "3rdparty/SDL2/include/SDL_render.h",
+		MAME_DIR .. "3rdparty/SDL2/include/SDL_revision.h",
+		MAME_DIR .. "3rdparty/SDL2/include/SDL_rwops.h",
+		MAME_DIR .. "3rdparty/SDL2/include/SDL_scancode.h",
+		MAME_DIR .. "3rdparty/SDL2/include/SDL_shape.h",
+		MAME_DIR .. "3rdparty/SDL2/include/SDL_stdinc.h",
+		MAME_DIR .. "3rdparty/SDL2/include/SDL_surface.h",
+		MAME_DIR .. "3rdparty/SDL2/include/SDL_system.h",
+		MAME_DIR .. "3rdparty/SDL2/include/SDL_syswm.h",
+		MAME_DIR .. "3rdparty/SDL2/include/SDL_test.h",
+		MAME_DIR .. "3rdparty/SDL2/include/SDL_test_assert.h",
+		MAME_DIR .. "3rdparty/SDL2/include/SDL_test_common.h",
+		MAME_DIR .. "3rdparty/SDL2/include/SDL_test_compare.h",
+		MAME_DIR .. "3rdparty/SDL2/include/SDL_test_crc32.h",
+		MAME_DIR .. "3rdparty/SDL2/include/SDL_test_font.h",
+		MAME_DIR .. "3rdparty/SDL2/include/SDL_test_fuzzer.h",
+		MAME_DIR .. "3rdparty/SDL2/include/SDL_test_harness.h",
+		MAME_DIR .. "3rdparty/SDL2/include/SDL_test_images.h",
+		MAME_DIR .. "3rdparty/SDL2/include/SDL_test_log.h",
+		MAME_DIR .. "3rdparty/SDL2/include/SDL_test_md5.h",
+		MAME_DIR .. "3rdparty/SDL2/include/SDL_test_random.h",
+		MAME_DIR .. "3rdparty/SDL2/include/SDL_thread.h",
+		MAME_DIR .. "3rdparty/SDL2/include/SDL_timer.h",
+		MAME_DIR .. "3rdparty/SDL2/include/SDL_touch.h",
+		MAME_DIR .. "3rdparty/SDL2/include/SDL_types.h",
+		MAME_DIR .. "3rdparty/SDL2/include/SDL_version.h",
+		MAME_DIR .. "3rdparty/SDL2/include/SDL_video.h",
+
+
+		MAME_DIR .. "3rdparty/SDL2/src/atomic/SDL_atomic.c",
+		MAME_DIR .. "3rdparty/SDL2/src/atomic/SDL_spinlock.c",
+		MAME_DIR .. "3rdparty/SDL2/src/audio/disk/SDL_diskaudio.c",
+		MAME_DIR .. "3rdparty/SDL2/src/audio/disk/SDL_diskaudio.h",
+		MAME_DIR .. "3rdparty/SDL2/src/audio/dummy/SDL_dummyaudio.c",
+		MAME_DIR .. "3rdparty/SDL2/src/audio/dummy/SDL_dummyaudio.h",
+		MAME_DIR .. "3rdparty/SDL2/src/audio/SDL_audio.c",
+		MAME_DIR .. "3rdparty/SDL2/src/audio/SDL_audio_c.h",
+		MAME_DIR .. "3rdparty/SDL2/src/audio/SDL_audiocvt.c",
+		MAME_DIR .. "3rdparty/SDL2/src/audio/SDL_audiodev.c",
+		MAME_DIR .. "3rdparty/SDL2/src/audio/SDL_audiodev_c.h",
+		MAME_DIR .. "3rdparty/SDL2/src/audio/SDL_audiotypecvt.c",
+		MAME_DIR .. "3rdparty/SDL2/src/audio/SDL_mixer.c",
+		MAME_DIR .. "3rdparty/SDL2/src/audio/SDL_sysaudio.h",
+		MAME_DIR .. "3rdparty/SDL2/src/audio/SDL_wave.c",
+		MAME_DIR .. "3rdparty/SDL2/src/audio/SDL_wave.h",
+		MAME_DIR .. "3rdparty/SDL2/src/cpuinfo/SDL_cpuinfo.c",
+		MAME_DIR .. "3rdparty/SDL2/src/dynapi/SDL_dynapi.c",
+		MAME_DIR .. "3rdparty/SDL2/src/dynapi/SDL_dynapi.h",
+		MAME_DIR .. "3rdparty/SDL2/src/dynapi/SDL_dynapi_overrides.h",
+		MAME_DIR .. "3rdparty/SDL2/src/dynapi/SDL_dynapi_procs.h",
+		MAME_DIR .. "3rdparty/SDL2/src/events/blank_cursor.h",
+		MAME_DIR .. "3rdparty/SDL2/src/events/default_cursor.h",
+		MAME_DIR .. "3rdparty/SDL2/src/events/SDL_clipboardevents.c",
+		MAME_DIR .. "3rdparty/SDL2/src/events/SDL_clipboardevents_c.h",
+		MAME_DIR .. "3rdparty/SDL2/src/events/SDL_dropevents.c",
+		MAME_DIR .. "3rdparty/SDL2/src/events/SDL_dropevents_c.h",
+		MAME_DIR .. "3rdparty/SDL2/src/events/SDL_events.c",
+		MAME_DIR .. "3rdparty/SDL2/src/events/SDL_events_c.h",
+		MAME_DIR .. "3rdparty/SDL2/src/events/SDL_gesture.c",
+		MAME_DIR .. "3rdparty/SDL2/src/events/SDL_gesture_c.h",
+		MAME_DIR .. "3rdparty/SDL2/src/events/SDL_keyboard.c",
+		MAME_DIR .. "3rdparty/SDL2/src/events/SDL_keyboard_c.h",
+		MAME_DIR .. "3rdparty/SDL2/src/events/SDL_mouse.c",
+		MAME_DIR .. "3rdparty/SDL2/src/events/SDL_mouse_c.h",
+		MAME_DIR .. "3rdparty/SDL2/src/events/SDL_quit.c",
+		MAME_DIR .. "3rdparty/SDL2/src/events/SDL_sysevents.h",
+		MAME_DIR .. "3rdparty/SDL2/src/events/SDL_touch.c",
+		MAME_DIR .. "3rdparty/SDL2/src/events/SDL_touch_c.h",
+		MAME_DIR .. "3rdparty/SDL2/src/events/SDL_windowevents.c",
+		MAME_DIR .. "3rdparty/SDL2/src/events/SDL_windowevents_c.h",
+		MAME_DIR .. "3rdparty/SDL2/src/file/SDL_rwops.c",
+		MAME_DIR .. "3rdparty/SDL2/src/haptic/SDL_haptic.c",
+		MAME_DIR .. "3rdparty/SDL2/src/haptic/SDL_syshaptic.h",
+		MAME_DIR .. "3rdparty/SDL2/src/joystick/SDL_gamecontroller.c",
+		MAME_DIR .. "3rdparty/SDL2/src/joystick/SDL_joystick.c",
+		MAME_DIR .. "3rdparty/SDL2/src/joystick/SDL_joystick_c.h",
+		MAME_DIR .. "3rdparty/SDL2/src/joystick/SDL_sysjoystick.h",
+		MAME_DIR .. "3rdparty/SDL2/src/loadso/windows/SDL_sysloadso.c",
+		MAME_DIR .. "3rdparty/SDL2/src/power/SDL_power.c",
+		MAME_DIR .. "3rdparty/SDL2/src/power/windows/SDL_syspower.c",
+		MAME_DIR .. "3rdparty/SDL2/src/render/direct3d/SDL_render_d3d.c",
+		MAME_DIR .. "3rdparty/SDL2/src/render/direct3d11/SDL_render_d3d11.c",
+		MAME_DIR .. "3rdparty/SDL2/src/render/mmx.h",
+		MAME_DIR .. "3rdparty/SDL2/src/render/opengl/SDL_render_gl.c",
+		MAME_DIR .. "3rdparty/SDL2/src/render/opengl/SDL_shaders_gl.c",
+		MAME_DIR .. "3rdparty/SDL2/src/render/opengl/SDL_shaders_gl.h",
+		MAME_DIR .. "3rdparty/SDL2/src/render/opengles2/SDL_render_gles2.c",
+		MAME_DIR .. "3rdparty/SDL2/src/render/opengles2/SDL_shaders_gles2.c",
+		MAME_DIR .. "3rdparty/SDL2/src/render/SDL_d3dmath.c",
+		MAME_DIR .. "3rdparty/SDL2/src/render/SDL_d3dmath.h",
+		MAME_DIR .. "3rdparty/SDL2/src/render/SDL_render.c",
+		MAME_DIR .. "3rdparty/SDL2/src/render/SDL_sysrender.h",
+		MAME_DIR .. "3rdparty/SDL2/src/render/SDL_yuv_mmx.c",
+		MAME_DIR .. "3rdparty/SDL2/src/render/SDL_yuv_sw.c",
+		MAME_DIR .. "3rdparty/SDL2/src/render/SDL_yuv_sw_c.h",
+		MAME_DIR .. "3rdparty/SDL2/src/render/software/SDL_blendfillrect.c",
+		MAME_DIR .. "3rdparty/SDL2/src/render/software/SDL_blendfillrect.h",
+		MAME_DIR .. "3rdparty/SDL2/src/render/software/SDL_blendline.c",
+		MAME_DIR .. "3rdparty/SDL2/src/render/software/SDL_blendline.h",
+		MAME_DIR .. "3rdparty/SDL2/src/render/software/SDL_blendpoint.c",
+		MAME_DIR .. "3rdparty/SDL2/src/render/software/SDL_blendpoint.h",
+		MAME_DIR .. "3rdparty/SDL2/src/render/software/SDL_draw.h",
+		MAME_DIR .. "3rdparty/SDL2/src/render/software/SDL_drawline.c",
+		MAME_DIR .. "3rdparty/SDL2/src/render/software/SDL_drawline.h",
+		MAME_DIR .. "3rdparty/SDL2/src/render/software/SDL_drawpoint.c",
+		MAME_DIR .. "3rdparty/SDL2/src/render/software/SDL_drawpoint.h",
+		MAME_DIR .. "3rdparty/SDL2/src/render/software/SDL_render_sw.c",
+		MAME_DIR .. "3rdparty/SDL2/src/render/software/SDL_render_sw_c.h",
+		MAME_DIR .. "3rdparty/SDL2/src/render/software/SDL_rotate.c",
+		MAME_DIR .. "3rdparty/SDL2/src/render/software/SDL_rotate.h",
+		MAME_DIR .. "3rdparty/SDL2/src/SDL.c",
+		MAME_DIR .. "3rdparty/SDL2/src/SDL_assert.c",
+		MAME_DIR .. "3rdparty/SDL2/src/SDL_error.c",
+		MAME_DIR .. "3rdparty/SDL2/src/SDL_error_c.h",
+		MAME_DIR .. "3rdparty/SDL2/src/SDL_hints.c",
+		MAME_DIR .. "3rdparty/SDL2/src/SDL_hints_c.h",
+		MAME_DIR .. "3rdparty/SDL2/src/SDL_log.c",
+		MAME_DIR .. "3rdparty/SDL2/src/stdlib/SDL_getenv.c",
+		MAME_DIR .. "3rdparty/SDL2/src/stdlib/SDL_iconv.c",
+		MAME_DIR .. "3rdparty/SDL2/src/stdlib/SDL_malloc.c",
+		MAME_DIR .. "3rdparty/SDL2/src/stdlib/SDL_qsort.c",
+		MAME_DIR .. "3rdparty/SDL2/src/stdlib/SDL_stdlib.c",
+		MAME_DIR .. "3rdparty/SDL2/src/stdlib/SDL_string.c",
+		MAME_DIR .. "3rdparty/SDL2/src/thread/SDL_systhread.h",
+		MAME_DIR .. "3rdparty/SDL2/src/thread/SDL_thread.c",
+		MAME_DIR .. "3rdparty/SDL2/src/thread/SDL_thread_c.h",
+		MAME_DIR .. "3rdparty/SDL2/src/timer/SDL_systimer.h",
+		MAME_DIR .. "3rdparty/SDL2/src/timer/SDL_timer.c",
+		MAME_DIR .. "3rdparty/SDL2/src/timer/SDL_timer_c.h",
+		MAME_DIR .. "3rdparty/SDL2/src/video/dummy/SDL_nullevents.c",
+		MAME_DIR .. "3rdparty/SDL2/src/video/dummy/SDL_nullevents_c.h",
+		MAME_DIR .. "3rdparty/SDL2/src/video/dummy/SDL_nullframebuffer.c",
+		MAME_DIR .. "3rdparty/SDL2/src/video/dummy/SDL_nullframebuffer_c.h",
+		MAME_DIR .. "3rdparty/SDL2/src/video/dummy/SDL_nullvideo.c",
+		MAME_DIR .. "3rdparty/SDL2/src/video/dummy/SDL_nullvideo.h",
+		MAME_DIR .. "3rdparty/SDL2/src/video/SDL_blit.c",
+		MAME_DIR .. "3rdparty/SDL2/src/video/SDL_blit.h",
+		MAME_DIR .. "3rdparty/SDL2/src/video/SDL_blit_0.c",
+		MAME_DIR .. "3rdparty/SDL2/src/video/SDL_blit_1.c",
+		MAME_DIR .. "3rdparty/SDL2/src/video/SDL_blit_A.c",
+		MAME_DIR .. "3rdparty/SDL2/src/video/SDL_blit_auto.c",
+		MAME_DIR .. "3rdparty/SDL2/src/video/SDL_blit_auto.h",
+		MAME_DIR .. "3rdparty/SDL2/src/video/SDL_blit_copy.c",
+		MAME_DIR .. "3rdparty/SDL2/src/video/SDL_blit_copy.h",
+		MAME_DIR .. "3rdparty/SDL2/src/video/SDL_blit_N.c",
+		MAME_DIR .. "3rdparty/SDL2/src/video/SDL_blit_slow.c",
+		MAME_DIR .. "3rdparty/SDL2/src/video/SDL_blit_slow.h",
+		MAME_DIR .. "3rdparty/SDL2/src/video/SDL_bmp.c",
+		MAME_DIR .. "3rdparty/SDL2/src/video/SDL_clipboard.c",
+		MAME_DIR .. "3rdparty/SDL2/src/video/SDL_egl.c",
+		MAME_DIR .. "3rdparty/SDL2/src/video/SDL_fillrect.c",
+		MAME_DIR .. "3rdparty/SDL2/src/video/SDL_glesfuncs.h",
+		MAME_DIR .. "3rdparty/SDL2/src/video/SDL_glfuncs.h",
+		MAME_DIR .. "3rdparty/SDL2/src/video/SDL_pixels.c",
+		MAME_DIR .. "3rdparty/SDL2/src/video/SDL_pixels_c.h",
+		MAME_DIR .. "3rdparty/SDL2/src/video/SDL_rect.c",
+		MAME_DIR .. "3rdparty/SDL2/src/video/SDL_rect_c.h",
+		MAME_DIR .. "3rdparty/SDL2/src/video/SDL_RLEaccel.c",
+		MAME_DIR .. "3rdparty/SDL2/src/video/SDL_RLEaccel_c.h",
+		MAME_DIR .. "3rdparty/SDL2/src/video/SDL_shape.c",
+		MAME_DIR .. "3rdparty/SDL2/src/video/SDL_shape_internals.h",
+		MAME_DIR .. "3rdparty/SDL2/src/video/SDL_stretch.c",
+		MAME_DIR .. "3rdparty/SDL2/src/video/SDL_surface.c",
+		MAME_DIR .. "3rdparty/SDL2/src/video/SDL_sysvideo.h",
+		MAME_DIR .. "3rdparty/SDL2/src/video/SDL_video.c",
+
+	}
+	if _OPTIONS["targetos"]=="macosx" or _OPTIONS["targetos"]=="windows" then
+		files {
+			MAME_DIR .. "3rdparty/SDL2/src/libm/e_atan2.c",
+			MAME_DIR .. "3rdparty/SDL2/src/libm/e_log.c",
+			MAME_DIR .. "3rdparty/SDL2/src/libm/e_pow.c",
+			MAME_DIR .. "3rdparty/SDL2/src/libm/e_rem_pio2.c",
+			MAME_DIR .. "3rdparty/SDL2/src/libm/e_sqrt.c",
+			MAME_DIR .. "3rdparty/SDL2/src/libm/k_cos.c",
+			MAME_DIR .. "3rdparty/SDL2/src/libm/k_rem_pio2.c",
+			MAME_DIR .. "3rdparty/SDL2/src/libm/k_sin.c",
+			MAME_DIR .. "3rdparty/SDL2/src/libm/k_tan.c",
+			MAME_DIR .. "3rdparty/SDL2/src/libm/math.h",
+			MAME_DIR .. "3rdparty/SDL2/src/libm/math_private.h",
+			MAME_DIR .. "3rdparty/SDL2/src/libm/s_atan.c",
+			MAME_DIR .. "3rdparty/SDL2/src/libm/s_copysign.c",
+			MAME_DIR .. "3rdparty/SDL2/src/libm/s_cos.c",
+			MAME_DIR .. "3rdparty/SDL2/src/libm/s_fabs.c",
+			MAME_DIR .. "3rdparty/SDL2/src/libm/s_floor.c",
+			MAME_DIR .. "3rdparty/SDL2/src/libm/s_scalbn.c",
+			MAME_DIR .. "3rdparty/SDL2/src/libm/s_sin.c",
+			MAME_DIR .. "3rdparty/SDL2/src/libm/s_tan.c",
+		}
+	end
+	if _OPTIONS["targetos"]~="windows" then
+		files {
+			MAME_DIR .. "3rdparty/SDL2/src/render/opengles/SDL_render_gles.c",
+			MAME_DIR .. "3rdparty/SDL2/src/render/opengles/SDL_glesfuncs.h",
+		}
+	end
+
+	if _OPTIONS["targetos"]=="android" then
+		files {
+			MAME_DIR .. "3rdparty/SDL2/src/audio/android/opensl_io.h",
+			MAME_DIR .. "3rdparty/SDL2/src/audio/android/opensl_io.c",
+			MAME_DIR .. "3rdparty/SDL2/src/audio/android/SDL_androidaudio.h",
+			MAME_DIR .. "3rdparty/SDL2/src/audio/android/SDL_androidaudio.c",
+			MAME_DIR .. "3rdparty/SDL2/src/core/android/SDL_android.c",
+			MAME_DIR .. "3rdparty/SDL2/src/core/android/SDL_android.h",
+			MAME_DIR .. "3rdparty/SDL2/src/filesystem/android/SDL_sysfilesystem.c",
+			MAME_DIR .. "3rdparty/SDL2/src/haptic/dummy/SDL_syshaptic.c",
+			MAME_DIR .. "3rdparty/SDL2/src/joystick/android/SDL_sysjoystick.c",
+			MAME_DIR .. "3rdparty/SDL2/src/loadso/dlopen/SDL_sysloadso.c",
+			MAME_DIR .. "3rdparty/SDL2/src/power/android/SDL_syspower.c",
+			MAME_DIR .. "3rdparty/SDL2/src/thread/pthread/SDL_syscond.c",
+			MAME_DIR .. "3rdparty/SDL2/src/thread/pthread/SDL_sysmutex.c",
+			MAME_DIR .. "3rdparty/SDL2/src/thread/pthread/SDL_sysmutex_c.h",
+			MAME_DIR .. "3rdparty/SDL2/src/thread/pthread/SDL_syssem.c",
+			MAME_DIR .. "3rdparty/SDL2/src/thread/pthread/SDL_systhread.c",
+			MAME_DIR .. "3rdparty/SDL2/src/thread/pthread/SDL_systhread_c.h",
+			MAME_DIR .. "3rdparty/SDL2/src/thread/pthread/SDL_systls.c",
+			MAME_DIR .. "3rdparty/SDL2/src/timer/unix/SDL_systimer.c",
+			MAME_DIR .. "3rdparty/SDL2/src/timer/unix/SDL_systimer_c.h",
+			MAME_DIR .. "3rdparty/SDL2/src/video/android/SDL_androidclipboard.c",
+			MAME_DIR .. "3rdparty/SDL2/src/video/android/SDL_androidclipboard.h",
+			MAME_DIR .. "3rdparty/SDL2/src/video/android/SDL_androidevents.c",
+			MAME_DIR .. "3rdparty/SDL2/src/video/android/SDL_androidevents.h",
+			MAME_DIR .. "3rdparty/SDL2/src/video/android/SDL_androidgl.c",
+			MAME_DIR .. "3rdparty/SDL2/src/video/android/SDL_androidkeyboard.c",
+			MAME_DIR .. "3rdparty/SDL2/src/video/android/SDL_androidkeyboard.h",
+			MAME_DIR .. "3rdparty/SDL2/src/video/android/SDL_androidmessagebox.c",
+			MAME_DIR .. "3rdparty/SDL2/src/video/android/SDL_androidmessagebox.h",
+			MAME_DIR .. "3rdparty/SDL2/src/video/android/SDL_androidmouse.c",
+			MAME_DIR .. "3rdparty/SDL2/src/video/android/SDL_androidmouse.h",
+			MAME_DIR .. "3rdparty/SDL2/src/video/android/SDL_androidtouch.c",
+			MAME_DIR .. "3rdparty/SDL2/src/video/android/SDL_androidtouch.h",
+			MAME_DIR .. "3rdparty/SDL2/src/video/android/SDL_androidvideo.c",
+			MAME_DIR .. "3rdparty/SDL2/src/video/android/SDL_androidvideo.h",
+			MAME_DIR .. "3rdparty/SDL2/src/video/android/SDL_androidwindow.c",
+			MAME_DIR .. "3rdparty/SDL2/src/video/android/SDL_androidwindow.h",
+		}
+	end
+
+	if _OPTIONS["targetos"]=="macosx" then
+		files {
+			MAME_DIR .. "3rdparty/SDL2/src/audio/coreaudio/SDL_coreaudio.m",
+			MAME_DIR .. "3rdparty/SDL2/src/audio/coreaudio/SDL_coreaudio.h",
+			MAME_DIR .. "3rdparty/SDL2/src/file/cocoa/SDL_rwopsbundlesupport.m",
+			MAME_DIR .. "3rdparty/SDL2/src/file/cocoa/SDL_rwopsbundlesupport.h",
+			MAME_DIR .. "3rdparty/SDL2/src/filesystem/cocoa/SDL_sysfilesystem.m",
+			MAME_DIR .. "3rdparty/SDL2/src/haptic/darwin/SDL_syshaptic.c",
+			MAME_DIR .. "3rdparty/SDL2/src/haptic/darwin/SDL_syshaptic_c.h",
+			MAME_DIR .. "3rdparty/SDL2/src/joystick/darwin/SDL_sysjoystick.c",
+			MAME_DIR .. "3rdparty/SDL2/src/joystick/darwin/SDL_sysjoystick_c.h",
+			MAME_DIR .. "3rdparty/SDL2/src/loadso/dlopen/SDL_sysloadso.c",
+			MAME_DIR .. "3rdparty/SDL2/src/power/macosx/SDL_syspower.c",
+			MAME_DIR .. "3rdparty/SDL2/src/thread/pthread/SDL_syscond.c",
+			MAME_DIR .. "3rdparty/SDL2/src/thread/pthread/SDL_sysmutex.c",
+			MAME_DIR .. "3rdparty/SDL2/src/thread/pthread/SDL_sysmutex_c.h",
+			MAME_DIR .. "3rdparty/SDL2/src/thread/pthread/SDL_syssem.c",
+			MAME_DIR .. "3rdparty/SDL2/src/thread/pthread/SDL_systhread.c",
+			MAME_DIR .. "3rdparty/SDL2/src/thread/pthread/SDL_systhread_c.h",
+			MAME_DIR .. "3rdparty/SDL2/src/thread/pthread/SDL_systls.c",
+			MAME_DIR .. "3rdparty/SDL2/src/timer/unix/SDL_systimer.c",
+			MAME_DIR .. "3rdparty/SDL2/src/video/cocoa/SDL_cocoaclipboard.m",
+			MAME_DIR .. "3rdparty/SDL2/src/video/cocoa/SDL_cocoaclipboard.h",
+			MAME_DIR .. "3rdparty/SDL2/src/video/cocoa/SDL_cocoaevents.m",
+			MAME_DIR .. "3rdparty/SDL2/src/video/cocoa/SDL_cocoaevents.h",
+			MAME_DIR .. "3rdparty/SDL2/src/video/cocoa/SDL_cocoakeyboard.m",
+			MAME_DIR .. "3rdparty/SDL2/src/video/cocoa/SDL_cocoakeyboard.h",
+			MAME_DIR .. "3rdparty/SDL2/src/video/cocoa/SDL_cocoamessagebox.m",
+			MAME_DIR .. "3rdparty/SDL2/src/video/cocoa/SDL_cocoamessagebox.h",
+			MAME_DIR .. "3rdparty/SDL2/src/video/cocoa/SDL_cocoamodes.m",
+			MAME_DIR .. "3rdparty/SDL2/src/video/cocoa/SDL_cocoamodes.h",
+			MAME_DIR .. "3rdparty/SDL2/src/video/cocoa/SDL_cocoamouse.m",
+			MAME_DIR .. "3rdparty/SDL2/src/video/cocoa/SDL_cocoamouse.h",
+			MAME_DIR .. "3rdparty/SDL2/src/video/cocoa/SDL_cocoamousetap.m",
+			MAME_DIR .. "3rdparty/SDL2/src/video/cocoa/SDL_cocoamousetap.h",
+			MAME_DIR .. "3rdparty/SDL2/src/video/cocoa/SDL_cocoaopengl.m",
+			MAME_DIR .. "3rdparty/SDL2/src/video/cocoa/SDL_cocoaopengl.h",
+			MAME_DIR .. "3rdparty/SDL2/src/video/cocoa/SDL_cocoashape.m",
+			MAME_DIR .. "3rdparty/SDL2/src/video/cocoa/SDL_cocoashape.h",
+			MAME_DIR .. "3rdparty/SDL2/src/video/cocoa/SDL_cocoavideo.m",
+			MAME_DIR .. "3rdparty/SDL2/src/video/cocoa/SDL_cocoavideo.h",
+			MAME_DIR .. "3rdparty/SDL2/src/video/cocoa/SDL_cocoawindow.m",
+			MAME_DIR .. "3rdparty/SDL2/src/video/cocoa/SDL_cocoawindow.h",
+
+		}
+	end
+
+	if _OPTIONS["targetos"]=="windows" then
+		files {
+			MAME_DIR .. "3rdparty/SDL2/src/thread/generic/SDL_syscond.c",
+			MAME_DIR .. "3rdparty/SDL2/src/audio/directsound/SDL_directsound.c",
+			MAME_DIR .. "3rdparty/SDL2/src/audio/directsound/SDL_directsound.h",
+			MAME_DIR .. "3rdparty/SDL2/src/audio/winmm/SDL_winmm.c",
+			MAME_DIR .. "3rdparty/SDL2/src/audio/winmm/SDL_winmm.h",
+			MAME_DIR .. "3rdparty/SDL2/src/core/windows/SDL_directx.h",
+			MAME_DIR .. "3rdparty/SDL2/src/core/windows/SDL_windows.c",
+			MAME_DIR .. "3rdparty/SDL2/src/core/windows/SDL_windows.h",
+			MAME_DIR .. "3rdparty/SDL2/src/core/windows/SDL_xinput.c",
+			MAME_DIR .. "3rdparty/SDL2/src/core/windows/SDL_xinput.h",
+			MAME_DIR .. "3rdparty/SDL2/src/filesystem/windows/SDL_sysfilesystem.c",
+			MAME_DIR .. "3rdparty/SDL2/src/haptic/windows/SDL_dinputhaptic.c",
+			MAME_DIR .. "3rdparty/SDL2/src/haptic/windows/SDL_dinputhaptic_c.h",
+			MAME_DIR .. "3rdparty/SDL2/src/haptic/windows/SDL_windowshaptic.c",
+			MAME_DIR .. "3rdparty/SDL2/src/haptic/windows/SDL_windowshaptic_c.h",
+			MAME_DIR .. "3rdparty/SDL2/src/haptic/windows/SDL_xinputhaptic.c",
+			MAME_DIR .. "3rdparty/SDL2/src/haptic/windows/SDL_xinputhaptic_c.h",
+			MAME_DIR .. "3rdparty/SDL2/src/joystick/windows/SDL_dinputjoystick.c",
+			MAME_DIR .. "3rdparty/SDL2/src/joystick/windows/SDL_dinputjoystick_c.h",
+			MAME_DIR .. "3rdparty/SDL2/src/joystick/windows/SDL_mmjoystick.c",
+			MAME_DIR .. "3rdparty/SDL2/src/joystick/windows/SDL_windowsjoystick.c",
+			MAME_DIR .. "3rdparty/SDL2/src/joystick/windows/SDL_windowsjoystick_c.h",
+			MAME_DIR .. "3rdparty/SDL2/src/joystick/windows/SDL_xinputjoystick.c",
+			MAME_DIR .. "3rdparty/SDL2/src/joystick/windows/SDL_xinputjoystick_c.h",
+			MAME_DIR .. "3rdparty/SDL2/src/thread/windows/SDL_sysmutex.c",
+			MAME_DIR .. "3rdparty/SDL2/src/thread/windows/SDL_syssem.c",
+			MAME_DIR .. "3rdparty/SDL2/src/thread/windows/SDL_systhread.c",
+			MAME_DIR .. "3rdparty/SDL2/src/thread/windows/SDL_systhread_c.h",
+			MAME_DIR .. "3rdparty/SDL2/src/thread/windows/SDL_systls.c",
+			MAME_DIR .. "3rdparty/SDL2/src/timer/windows/SDL_systimer.c",
+			MAME_DIR .. "3rdparty/SDL2/src/video/windows/SDL_vkeys.h",
+			MAME_DIR .. "3rdparty/SDL2/src/video/windows/SDL_windowsclipboard.c",
+			MAME_DIR .. "3rdparty/SDL2/src/video/windows/SDL_windowsclipboard.h",
+			MAME_DIR .. "3rdparty/SDL2/src/video/windows/SDL_windowsevents.c",
+			MAME_DIR .. "3rdparty/SDL2/src/video/windows/SDL_windowsevents.h",
+			MAME_DIR .. "3rdparty/SDL2/src/video/windows/SDL_windowsframebuffer.c",
+			MAME_DIR .. "3rdparty/SDL2/src/video/windows/SDL_windowsframebuffer.h",
+			MAME_DIR .. "3rdparty/SDL2/src/video/windows/SDL_windowskeyboard.c",
+			MAME_DIR .. "3rdparty/SDL2/src/video/windows/SDL_windowskeyboard.h",
+			MAME_DIR .. "3rdparty/SDL2/src/video/windows/SDL_windowsmessagebox.c",
+			MAME_DIR .. "3rdparty/SDL2/src/video/windows/SDL_windowsmessagebox.h",
+			MAME_DIR .. "3rdparty/SDL2/src/video/windows/SDL_windowsmodes.c",
+			MAME_DIR .. "3rdparty/SDL2/src/video/windows/SDL_windowsmodes.h",
+			MAME_DIR .. "3rdparty/SDL2/src/video/windows/SDL_windowsmouse.c",
+			MAME_DIR .. "3rdparty/SDL2/src/video/windows/SDL_windowsmouse.h",
+			MAME_DIR .. "3rdparty/SDL2/src/video/windows/SDL_windowsopengl.c",
+			MAME_DIR .. "3rdparty/SDL2/src/video/windows/SDL_windowsopengl.h",
+			MAME_DIR .. "3rdparty/SDL2/src/video/windows/SDL_windowsopengles.c",
+			MAME_DIR .. "3rdparty/SDL2/src/video/windows/SDL_windowsshape.c",
+			MAME_DIR .. "3rdparty/SDL2/src/video/windows/SDL_windowsshape.h",
+			MAME_DIR .. "3rdparty/SDL2/src/video/windows/SDL_windowsvideo.c",
+			MAME_DIR .. "3rdparty/SDL2/src/video/windows/SDL_windowsvideo.h",
+			MAME_DIR .. "3rdparty/SDL2/src/video/windows/SDL_windowswindow.c",
+			MAME_DIR .. "3rdparty/SDL2/src/video/windows/SDL_windowswindow.h",
+			MAME_DIR .. "3rdparty/SDL2/src/video/windows/wmmsg.h",
+			MAME_DIR .. "3rdparty/SDL2/src/main/windows/version.rc",
+		}
+	end
+
+	configuration { "vs*" }
+		files {
+			MAME_DIR .. "3rdparty/SDL2/src/audio/xaudio2/SDL_xaudio2.c",
+		}
+
+		buildoptions {
+			"/wd4200", -- warning C4200: nonstandard extension used: zero-sized array in struct/union
+			"/wd4055", -- warning C4055: 'type cast': from data pointer 'void *' to function pointer 'xxx'
+			"/wd4152", -- warning C4152: nonstandard extension, function/data pointer conversion in expression
+			"/wd4057", -- warning C4057: 'function': 'xxx' differs in indirection to slightly different base types from 'xxx'
+			"/wd4701", -- warning C4701: potentially uninitialized local variable 'xxx' used
+			"/wd4204", -- warning C4204: nonstandard extension used: non-constant aggregate initializer
+			"/wd4054", -- warning C4054: 'type cast': from function pointer 'xxx' to data pointer 'xxx'
+		}
+		defines {
+			"HAVE_LIBC",
+		}
+
+	configuration { "mingw*"}
+		includedirs {
+			MAME_DIR .. "3rdparty/SDL2-override/mingw",
+			MAME_DIR .. "3rdparty/bgfx/3rdparty/khronos",
+		}
+		buildoptions_c {
+			"-Wno-undef",
+			"-Wno-format",
+			"-Wno-format-security",
+			"-Wno-strict-prototypes",
+			"-Wno-bad-function-cast",
+			"-Wno-pointer-to-int-cast",
+			"-Wno-discarded-qualifiers",
+			"-Wno-unused-but-set-variable",
+		}
+
+	configuration { "mingw-clang"}
+		buildoptions_c {
+			"-Wno-incompatible-pointer-types-discards-qualifiers"
+		}
+
+	configuration { "osx*"}
+		buildoptions {
+			"-Wno-undef",
+		}
+		buildoptions_objc {
+			"-x objective-c",
+			"-std=c99",
+		}
+
+		buildoptions_c {
+			"-Wno-bad-function-cast",
+		}
+
+	configuration { "android-*"}
+		defines {
+			"GL_GLEXT_PROTOTYPES",
+		}
+		buildoptions_c {
+			"-Wno-bad-function-cast",
+			"-Wno-incompatible-pointer-types-discards-qualifiers",
+			"-Wno-unneeded-internal-declaration",
+			"-Wno-unused-const-variable",
+		}
+
+	configuration { }
+		includedirs {
+			MAME_DIR .. "3rdparty/SDL2/include",
+		}
+
+end
+
+--------------------------------------------------
+-- linenoise library
+--------------------------------------------------
+if (_OPTIONS["osd"] ~= "uwp") then
+project "linenoise"
+	uuid "7320ffc8-2748-4add-8864-ae29b72a8511"
+	kind (LIBTYPE)
+
+	addprojectflags()
+
+	configuration { "vs*" }
+		buildoptions {
+			"/wd4701", -- warning C4701: potentially uninitialized local variable 'xxx' used
+		}
+
+	configuration { }
+
+	includedirs {
+		MAME_DIR .. "3rdparty/linenoise",
+	}
+
+	files {
+		MAME_DIR .. "3rdparty/linenoise/utf8.c",
+		MAME_DIR .. "3rdparty/linenoise/linenoise.c",
+	}
+end
+
+
+--------------------------------------------------
+-- utf8proc library objects
+--------------------------------------------------
+
+if not _OPTIONS["with-system-utf8proc"] then
+project "utf8proc"
+	uuid "1f881f09-0395-4483-ac37-2935fb092187"
+	kind "StaticLib"
+
+  defines {
+	"UTF8PROC_DLLEXPORT="
+  }
+
+	configuration "Debug"
+		defines {
+			"verbose=-1",
+		}
+
+	configuration { "gmake or ninja" }
+		buildoptions_c {
+			"-Wno-strict-prototypes",
+		}
+
+	configuration { }
+		defines {
+			"ZLIB_CONST",
+		}
+
+	files {
+		MAME_DIR .. "3rdparty/utf8proc/utf8proc.c"
+	}
+else
+links {
+	ext_lib("utf8proc"),
+}
+end
+
+>>>>>>> upstream/master

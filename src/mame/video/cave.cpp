@@ -75,7 +75,11 @@ PALETTE_INIT_MEMBER(cave_state,cave)
 	for (int chip = 0; chip < 4; chip++)
 	{
 		/* create a 1:1 palette map covering everything */
+<<<<<<< HEAD
 		m_palette_map[chip] = auto_alloc_array(machine(), UINT16, palette.entries());
+=======
+		m_palette_map[chip] = std::make_unique<uint16_t[]>(palette.entries());
+>>>>>>> upstream/master
 
 		int maxpens = m_paletteram[chip].bytes() / 2;
 		if (!maxpens)
@@ -186,7 +190,11 @@ void cave_state::set_pens(int chip)
 
 	for (pen = 0; pen < m_palette->entries(); pen++)
 	{
+<<<<<<< HEAD
 		UINT16 data = m_paletteram[chip][m_palette_map[chip][pen]];
+=======
+		uint16_t data = m_paletteram[chip][m_palette_map[chip][pen]];
+>>>>>>> upstream/master
 
 		rgb_t color = rgb_t(pal5bit(data >> 5), pal5bit(data >> 10), pal5bit(data >> 0));
 
@@ -220,9 +228,15 @@ void cave_state::set_pens(int chip)
 
 inline void cave_state::get_tile_info( tile_data &tileinfo, int tile_index, int GFX )
 {
+<<<<<<< HEAD
 	UINT16 *VRAM = m_vram[GFX];
 	int TDIM = m_tiledim[GFX];
 	UINT32 code, color, pri, tile;
+=======
+	uint16_t *VRAM = m_vram[GFX];
+	int TDIM = m_tiledim[GFX];
+	uint32_t code, color, pri, tile;
+>>>>>>> upstream/master
 
 	if (TDIM)
 	{
@@ -263,11 +277,19 @@ void cave_state::sailormn_tilebank_w(int bank)
 
 TILE_GET_INFO_MEMBER(cave_state::sailormn_get_tile_info_2)
 {
+<<<<<<< HEAD
 	UINT32 code, color, pri;
 
 	if (m_tiledim[2])
 	{
 		UINT32 tile;
+=======
+	uint32_t code, color, pri;
+
+	if (m_tiledim[2])
+	{
+		uint32_t tile;
+>>>>>>> upstream/master
 		tile  = (tile_index % (512 / 8)) / 2 + ((tile_index / (512 / 8)) / 2) * (512 / 16);
 		code  = (m_vram[2][tile * 2 + 0x0000 / 2] << 16) + m_vram[2][tile * 2 + 0x0002 / 2];
 
@@ -294,9 +316,15 @@ TILE_GET_INFO_MEMBER(cave_state::sailormn_get_tile_info_2)
 }
 
 
+<<<<<<< HEAD
 inline void cave_state::vram_w( address_space &space, ATTR_UNUSED offs_t offset, ATTR_UNUSED UINT16 data, ATTR_UNUSED UINT16 mem_mask, int GFX )
 {
 	UINT16 *VRAM = m_vram[GFX];
+=======
+inline void cave_state::vram_w( address_space &space, ATTR_UNUSED offs_t offset, ATTR_UNUSED uint16_t data, ATTR_UNUSED uint16_t mem_mask, int GFX )
+{
+	uint16_t *VRAM = m_vram[GFX];
+>>>>>>> upstream/master
 	tilemap_t *TILEMAP = m_tilemap[GFX];
 
 	if ((VRAM[offset] & mem_mask) == (data & mem_mask))
@@ -321,9 +349,15 @@ inline void cave_state::vram_w( address_space &space, ATTR_UNUSED offs_t offset,
     and 408000-407fff both go to the 8x8 tilemap ram. Use this function
     in this cases. Note that the get_tile_info function looks in the
     4000-7fff range for tiles, so we have to write the data there. */
+<<<<<<< HEAD
 inline void cave_state::vram_8x8_w( address_space &space, ATTR_UNUSED offs_t offset, ATTR_UNUSED UINT16 data, ATTR_UNUSED UINT16 mem_mask, int GFX )
 {
 	UINT16 *VRAM = m_vram[GFX];
+=======
+inline void cave_state::vram_8x8_w( address_space &space, ATTR_UNUSED offs_t offset, ATTR_UNUSED uint16_t data, ATTR_UNUSED uint16_t mem_mask, int GFX )
+{
+	uint16_t *VRAM = m_vram[GFX];
+>>>>>>> upstream/master
 	tilemap_t *TILEMAP = m_tilemap[GFX];
 
 	offset %= 0x4000 / 2;
@@ -363,12 +397,21 @@ WRITE16_MEMBER(cave_state::cave_vram_3_8x8_w){ vram_8x8_w(space, offset, data, m
 
 void cave_state::cave_vh_start( int num )
 {
+<<<<<<< HEAD
 	assert(m_palette_map != NULL);
 
 	m_tilemap[0] = 0;
 	m_tilemap[1] = 0;
 	m_tilemap[2] = 0;
 	m_tilemap[3] = 0;
+=======
+	assert(m_palette_map != nullptr);
+
+	m_tilemap[0] = nullptr;
+	m_tilemap[1] = nullptr;
+	m_tilemap[2] = nullptr;
+	m_tilemap[3] = nullptr;
+>>>>>>> upstream/master
 
 	m_tiledim[0] = 0;
 	m_tiledim[1] = 0;
@@ -385,7 +428,11 @@ void cave_state::cave_vh_start( int num )
 	switch (num)
 	{
 		case 4:
+<<<<<<< HEAD
 			m_tilemap[3] = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(cave_state::get_tile_info_3),this), TILEMAP_SCAN_ROWS, 8, 8, 512 / 8, 512 / 8);
+=======
+			m_tilemap[3] = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(cave_state::get_tile_info_3),this), TILEMAP_SCAN_ROWS, 8, 8, 512 / 8, 512 / 8);
+>>>>>>> upstream/master
 			m_tilemap[3]->set_transparent_pen(0);
 			m_tilemap[3]->set_scroll_rows(1);
 			m_tilemap[3]->set_scroll_cols(1);
@@ -393,7 +440,11 @@ void cave_state::cave_vh_start( int num )
 			save_item(NAME(m_old_tiledim[3]));
 
 		case 3:
+<<<<<<< HEAD
 			m_tilemap[2] = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(cave_state::get_tile_info_2),this), TILEMAP_SCAN_ROWS, 8, 8, 512 / 8, 512 / 8);
+=======
+			m_tilemap[2] = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(cave_state::get_tile_info_2),this), TILEMAP_SCAN_ROWS, 8, 8, 512 / 8, 512 / 8);
+>>>>>>> upstream/master
 			m_tilemap[2]->set_transparent_pen(0);
 			m_tilemap[2]->set_scroll_rows(1);
 			m_tilemap[2]->set_scroll_cols(1);
@@ -401,7 +452,11 @@ void cave_state::cave_vh_start( int num )
 			save_item(NAME(m_old_tiledim[2]));
 
 		case 2:
+<<<<<<< HEAD
 			m_tilemap[1] = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(cave_state::get_tile_info_1),this), TILEMAP_SCAN_ROWS, 8, 8, 512 / 8, 512 / 8);
+=======
+			m_tilemap[1] = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(cave_state::get_tile_info_1),this), TILEMAP_SCAN_ROWS, 8, 8, 512 / 8, 512 / 8);
+>>>>>>> upstream/master
 			m_tilemap[1]->set_transparent_pen(0);
 			m_tilemap[1]->set_scroll_rows(1);
 			m_tilemap[1]->set_scroll_cols(1);
@@ -409,7 +464,11 @@ void cave_state::cave_vh_start( int num )
 			save_item(NAME(m_old_tiledim[1]));
 
 		case 1:
+<<<<<<< HEAD
 			m_tilemap[0] = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(cave_state::get_tile_info_0),this), TILEMAP_SCAN_ROWS, 8, 8, 512 / 8, 512 / 8);
+=======
+			m_tilemap[0] = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(cave_state::get_tile_info_0),this), TILEMAP_SCAN_ROWS, 8, 8, 512 / 8, 512 / 8);
+>>>>>>> upstream/master
 			m_tilemap[0]->set_transparent_pen(0);
 			m_tilemap[0]->set_scroll_rows(1);
 			m_tilemap[0]->set_scroll_cols(1);
@@ -458,7 +517,11 @@ VIDEO_START_MEMBER(cave_state,sailormn_3_layers)
 	cave_vh_start(2);
 
 	/* Layer 2 (8x8) needs to be handled differently */
+<<<<<<< HEAD
 	m_tilemap[2] = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(cave_state::sailormn_get_tile_info_2),this), TILEMAP_SCAN_ROWS, 8, 8, 512 / 8, 512 / 8 );
+=======
+	m_tilemap[2] = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(cave_state::sailormn_get_tile_info_2),this), TILEMAP_SCAN_ROWS, 8, 8, 512 / 8, 512 / 8 );
+>>>>>>> upstream/master
 
 	m_tilemap[2]->set_transparent_pen(0);
 	m_tilemap[2]->set_scroll_rows(1);
@@ -501,11 +564,19 @@ void cave_state::get_sprite_info_cave(int chip)
 {
 	pen_t base_pal = 0;
 	const char *region[4] = { "sprites0", "sprites1", "sprites2", "sprites3" };
+<<<<<<< HEAD
 	const UINT8 *base_gfx = memregion(region[chip])->base();
 	int code_max = memregion(region[chip])->bytes() / (16*16);
 
 	UINT16 *source;
 	UINT16 *finish;
+=======
+	const uint8_t *base_gfx = memregion(region[chip])->base();
+	int code_max = memregion(region[chip])->bytes() / (16*16);
+
+	uint16_t *source;
+	uint16_t *finish;
+>>>>>>> upstream/master
 	struct sprite_cave *sprite = m_sprite[chip];
 
 	int glob_flipx = m_videoregs[chip][0] & 0x8000;
@@ -630,11 +701,19 @@ void cave_state::get_sprite_info_donpachi(int chip)
 {
 	pen_t base_pal = 0;
 	const char *region[4] = { "sprites0", "sprites1", "sprites2", "sprites3" };
+<<<<<<< HEAD
 	const UINT8 *base_gfx = memregion(region[chip])->base();
 	int code_max = memregion(region[chip])->bytes() / (16*16);
 
 	UINT16 *source;
 	UINT16 *finish;
+=======
+	const uint8_t *base_gfx = memregion(region[chip])->base();
+	int code_max = memregion(region[chip])->bytes() / (16*16);
+
+	uint16_t *source;
+	uint16_t *finish;
+>>>>>>> upstream/master
 
 	struct sprite_cave *sprite = m_sprite[chip];
 
@@ -793,10 +872,17 @@ void cave_state::cave_sprite_check(int chip, screen_device &screen, const rectan
 			sprite++;
 		}
 
+<<<<<<< HEAD
 		m_sprite_table[chip][0][i[0]] = 0;
 		m_sprite_table[chip][1][i[1]] = 0;
 		m_sprite_table[chip][2][i[2]] = 0;
 		m_sprite_table[chip][3][i[3]] = 0;
+=======
+		m_sprite_table[chip][0][i[0]] = nullptr;
+		m_sprite_table[chip][1][i[1]] = nullptr;
+		m_sprite_table[chip][2][i[2]] = nullptr;
+		m_sprite_table[chip][3][i[3]] = nullptr;
+>>>>>>> upstream/master
 
 		switch (spritetype)
 		{
@@ -922,18 +1008,31 @@ void cave_state::do_blit_zoom32_cave( int chip, const struct sprite_cave *sprite
 	}
 
 	{
+<<<<<<< HEAD
 		const UINT8 *pen_data = sprite->pen_data -1 -sprite->line_offset;
 		pen_t base_pen = sprite->base_pen;
 		int x, y;
 		UINT8 pen;
 		int pitch = m_blit.line_offset * dy / 4;
 		UINT32 *dest = (UINT32 *)(m_blit.baseaddr + m_blit.line_offset * y1);
+=======
+		const uint8_t *pen_data = sprite->pen_data -1 -sprite->line_offset;
+		pen_t base_pen = sprite->base_pen;
+		int x, y;
+		uint8_t pen;
+		int pitch = m_blit.line_offset * dy / 4;
+		uint32_t *dest = (uint32_t *)(m_blit.baseaddr + m_blit.line_offset * y1);
+>>>>>>> upstream/master
 		int ycount = ycount0;
 
 		for (y = y1; y != y2; y += dy)
 		{
 			int xcount;
+<<<<<<< HEAD
 			const UINT8 *source;
+=======
+			const uint8_t *source;
+>>>>>>> upstream/master
 
 			if (ycount & 0xffff0000)
 			{
@@ -1051,6 +1150,7 @@ void cave_state::do_blit_zoom32_cave_zb( int chip, const struct sprite_cave *spr
 	}
 
 	{
+<<<<<<< HEAD
 		const UINT8 *pen_data = sprite->pen_data - 1 - sprite->line_offset;
 		pen_t base_pen = sprite->base_pen;
 		int x, y;
@@ -1060,12 +1160,27 @@ void cave_state::do_blit_zoom32_cave_zb( int chip, const struct sprite_cave *spr
 		int pitchz = m_blit.line_offset_zbuf * dy / 2;
 		UINT16 *zbf = (UINT16 *)(m_blit.baseaddr_zbuf + m_blit.line_offset_zbuf * y1);
 		UINT16 pri_sp = (UINT16)(sprite - m_sprite[chip]) + m_sprite_zbuf_baseval;
+=======
+		const uint8_t *pen_data = sprite->pen_data - 1 - sprite->line_offset;
+		pen_t base_pen = sprite->base_pen;
+		int x, y;
+		uint8_t pen;
+		int pitch = m_blit.line_offset * dy / 4;
+		uint32_t *dest = (uint32_t *)(m_blit.baseaddr + m_blit.line_offset * y1);
+		int pitchz = m_blit.line_offset_zbuf * dy / 2;
+		uint16_t *zbf = (uint16_t *)(m_blit.baseaddr_zbuf + m_blit.line_offset_zbuf * y1);
+		uint16_t pri_sp = (uint16_t)(sprite - m_sprite[chip]) + m_sprite_zbuf_baseval;
+>>>>>>> upstream/master
 		int ycount = ycount0;
 
 		for (y = y1; y != y2; y += dy)
 		{
 			int xcount;
+<<<<<<< HEAD
 			const UINT8 *source;
+=======
+			const uint8_t *source;
+>>>>>>> upstream/master
 
 			if (ycount & 0xffff0000)
 			{
@@ -1165,17 +1280,30 @@ void cave_state::do_blit_32_cave( int chip, const struct sprite_cave *sprite )
 	}
 
 	{
+<<<<<<< HEAD
 		const UINT8 *pen_data = sprite->pen_data;
 		pen_t base_pen = sprite->base_pen;
 		int x, y;
 		UINT8 pen;
 		int pitch = m_blit.line_offset * dy / 4;
 		UINT32 *dest = (UINT32 *)(m_blit.baseaddr + m_blit.line_offset * y1);
+=======
+		const uint8_t *pen_data = sprite->pen_data;
+		pen_t base_pen = sprite->base_pen;
+		int x, y;
+		uint8_t pen;
+		int pitch = m_blit.line_offset * dy / 4;
+		uint32_t *dest = (uint32_t *)(m_blit.baseaddr + m_blit.line_offset * y1);
+>>>>>>> upstream/master
 
 		pen_data += sprite->line_offset * ycount0 + xcount0;
 		for (y = y1; y != y2; y += dy)
 		{
+<<<<<<< HEAD
 			const UINT8 *source;
+=======
+			const uint8_t *source;
+>>>>>>> upstream/master
 			source = pen_data;
 			for (x = x1; x != x2; x += dx)
 			{
@@ -1261,6 +1389,7 @@ void cave_state::do_blit_32_cave_zb( int chip, const struct sprite_cave *sprite 
 	}
 
 	{
+<<<<<<< HEAD
 		const UINT8 *pen_data = sprite->pen_data;
 		pen_t base_pen = sprite->base_pen;
 		int x, y;
@@ -1270,11 +1399,26 @@ void cave_state::do_blit_32_cave_zb( int chip, const struct sprite_cave *sprite 
 		int pitchz = m_blit.line_offset_zbuf * dy / 2;
 		UINT16 *zbf = (UINT16 *)(m_blit.baseaddr_zbuf + m_blit.line_offset_zbuf * y1);
 		UINT16 pri_sp = (UINT16)(sprite - m_sprite[chip]) + m_sprite_zbuf_baseval;
+=======
+		const uint8_t *pen_data = sprite->pen_data;
+		pen_t base_pen = sprite->base_pen;
+		int x, y;
+		uint8_t pen;
+		int pitch = m_blit.line_offset * dy / 4;
+		uint32_t *dest = (uint32_t *)(m_blit.baseaddr + m_blit.line_offset * y1);
+		int pitchz = m_blit.line_offset_zbuf * dy / 2;
+		uint16_t *zbf = (uint16_t *)(m_blit.baseaddr_zbuf + m_blit.line_offset_zbuf * y1);
+		uint16_t pri_sp = (uint16_t)(sprite - m_sprite[chip]) + m_sprite_zbuf_baseval;
+>>>>>>> upstream/master
 
 		pen_data += sprite->line_offset * ycount0 + xcount0;
 		for (y = y1; y != y2; y += dy)
 		{
+<<<<<<< HEAD
 			const UINT8 *source;
+=======
+			const uint8_t *source;
+>>>>>>> upstream/master
 			source = pen_data;
 			for (x = x1; x != x2; x += dx)
 			{
@@ -1393,11 +1537,19 @@ void cave_state::sprite_draw_donpachi_zbuf( int chip, int priority )
 
 inline void cave_state::tilemap_draw( int chip,
 	screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect,
+<<<<<<< HEAD
 	UINT32 flags, UINT32 priority, UINT32 priority2, int GFX )
 {
 	tilemap_t *TILEMAP = m_tilemap[GFX];
 	UINT16 *VRAM = m_vram[GFX];
 	UINT16 *VCTRL = m_vctrl[GFX];
+=======
+	uint32_t flags, uint32_t priority, uint32_t priority2, int GFX )
+{
+	tilemap_t *TILEMAP = m_tilemap[GFX];
+	uint16_t *VRAM = m_vram[GFX];
+	uint16_t *VCTRL = m_vctrl[GFX];
+>>>>>>> upstream/master
 	int sx, sy, flipx, flipy, offs_x, offs_y, offs_row;
 
 	/* Bail out if ... */
@@ -1513,16 +1665,26 @@ inline void cave_state::tilemap_draw( int chip,
 }
 
 
+<<<<<<< HEAD
 UINT32 cave_state::screen_update_cave(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect)
+=======
+uint32_t cave_state::screen_update_cave(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect)
+>>>>>>> upstream/master
 {
 	int pri, pri2, GFX;
 	int layers_ctrl = -1;
 
 	set_pens(0);
 
+<<<<<<< HEAD
 	m_blit.baseaddr = reinterpret_cast<UINT8 *>(bitmap.raw_pixptr(0));
 	m_blit.line_offset = bitmap.rowbytes();
 	m_blit.baseaddr_zbuf = reinterpret_cast<UINT8 *>(m_sprite_zbuf.raw_pixptr(0));
+=======
+	m_blit.baseaddr = reinterpret_cast<uint8_t *>(bitmap.raw_pixptr(0));
+	m_blit.line_offset = bitmap.rowbytes();
+	m_blit.baseaddr_zbuf = reinterpret_cast<uint8_t *>(m_sprite_zbuf.raw_pixptr(0));
+>>>>>>> upstream/master
 	m_blit.line_offset_zbuf = m_sprite_zbuf.rowbytes();
 
 	/* Choose the tilemap to display (8x8 tiles or 16x16 tiles) */
@@ -1630,7 +1792,11 @@ UINT32 cave_state::screen_update_cave(screen_device &screen, bitmap_rgb32 &bitma
 
 void cave_state::cave_get_sprite_info(int chip)
 {
+<<<<<<< HEAD
 	if (m_videoregs[chip] == NULL)
+=======
+	if (m_videoregs[chip] == nullptr)
+>>>>>>> upstream/master
 		return;
 
 	if (m_kludge == 3)   /* mazinger metmqstr */
@@ -1680,6 +1846,7 @@ PALETTE_INIT_MEMBER(cave_state,ppsatan)
 	}
 }
 
+<<<<<<< HEAD
 UINT32 cave_state::screen_update_ppsatan_core(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect, int chip)
 {
 	set_pens(chip);
@@ -1687,6 +1854,15 @@ UINT32 cave_state::screen_update_ppsatan_core(screen_device &screen, bitmap_rgb3
 	m_blit.baseaddr = reinterpret_cast<UINT8 *>(bitmap.raw_pixptr(0));
 	m_blit.line_offset = bitmap.rowbytes();
 	m_blit.baseaddr_zbuf = reinterpret_cast<UINT8 *>(m_sprite_zbuf.raw_pixptr(0));
+=======
+uint32_t cave_state::screen_update_ppsatan_core(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect, int chip)
+{
+	set_pens(chip);
+
+	m_blit.baseaddr = reinterpret_cast<uint8_t *>(bitmap.raw_pixptr(0));
+	m_blit.line_offset = bitmap.rowbytes();
+	m_blit.baseaddr_zbuf = reinterpret_cast<uint8_t *>(m_sprite_zbuf.raw_pixptr(0));
+>>>>>>> upstream/master
 	m_blit.line_offset_zbuf = m_sprite_zbuf.rowbytes();
 
 	m_tiledim[chip] = m_vctrl[chip][1] & 0x2000;
@@ -1709,6 +1885,7 @@ UINT32 cave_state::screen_update_ppsatan_core(screen_device &screen, bitmap_rgb3
 	return 0;
 }
 
+<<<<<<< HEAD
 UINT32 cave_state::screen_update_ppsatan_top(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect)
 {
 	return screen_update_ppsatan_core(screen, bitmap, cliprect, 0);
@@ -1721,5 +1898,19 @@ UINT32 cave_state::screen_update_ppsatan_left(screen_device &screen, bitmap_rgb3
 UINT32 cave_state::screen_update_ppsatan_right(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect)
 {
 	crosshair_set_screen(machine(), 0, &screen);
+=======
+uint32_t cave_state::screen_update_ppsatan_top(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect)
+{
+	return screen_update_ppsatan_core(screen, bitmap, cliprect, 0);
+}
+uint32_t cave_state::screen_update_ppsatan_left(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect)
+{
+	machine().crosshair().get_crosshair(1).set_screen(&screen);
+	return screen_update_ppsatan_core(screen, bitmap, cliprect, 1);
+}
+uint32_t cave_state::screen_update_ppsatan_right(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect)
+{
+	machine().crosshair().get_crosshair(0).set_screen(&screen);
+>>>>>>> upstream/master
 	return screen_update_ppsatan_core(screen, bitmap, cliprect, 2);
 }

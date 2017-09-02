@@ -1,5 +1,9 @@
 /*
+<<<<<<< HEAD
 ** $Id: lstate.h,v 2.119 2014/10/30 18:53:28 roberto Exp $
+=======
+** $Id: lstate.h,v 2.133 2016/12/22 13:08:50 roberto Exp $
+>>>>>>> upstream/master
 ** Global State
 ** See Copyright Notice in lua.h
 */
@@ -23,7 +27,11 @@
 **
 ** 'allgc': all objects not marked for finalization;
 ** 'finobj': all objects marked for finalization;
+<<<<<<< HEAD
 ** 'tobefnz': all objects ready to be finalized; 
+=======
+** 'tobefnz': all objects ready to be finalized;
+>>>>>>> upstream/master
 ** 'fixedgc': all objects that are not to be collected (currently
 ** only small strings, such as reserved words).
 
@@ -33,6 +41,18 @@
 struct lua_longjmp;  /* defined in ldo.c */
 
 
+<<<<<<< HEAD
+=======
+/*
+** Atomic type (relative to signals) to better ensure that 'lua_sethook'
+** is thread safe
+*/
+#if !defined(l_signalT)
+#include <signal.h>
+#define l_signalT	sig_atomic_t
+#endif
+
+>>>>>>> upstream/master
 
 /* extra stack space to handle TM calls and some other extras */
 #define EXTRA_STACK   5
@@ -57,7 +77,11 @@ typedef struct stringtable {
 ** Information about a call.
 ** When a thread yields, 'func' is adjusted to pretend that the
 ** top function has only the yielded values in its stack; in that
+<<<<<<< HEAD
 ** case, the actual 'func' value is saved in field 'extra'. 
+=======
+** case, the actual 'func' value is saved in field 'extra'.
+>>>>>>> upstream/master
 ** When a function calls another with a continuation, 'extra' keeps
 ** the function index so that, in case of errors, the continuation
 ** function can be called with the correct top.
@@ -79,7 +103,11 @@ typedef struct CallInfo {
   } u;
   ptrdiff_t extra;
   short nresults;  /* expected number of results from this function */
+<<<<<<< HEAD
   lu_byte callstatus;
+=======
+  unsigned short callstatus;
+>>>>>>> upstream/master
 } CallInfo;
 
 
@@ -89,11 +117,21 @@ typedef struct CallInfo {
 #define CIST_OAH	(1<<0)	/* original value of 'allowhook' */
 #define CIST_LUA	(1<<1)	/* call is running a Lua function */
 #define CIST_HOOKED	(1<<2)	/* call is running a debug hook */
+<<<<<<< HEAD
 #define CIST_REENTRY	(1<<3)	/* call is running on same invocation of
                                    luaV_execute of previous call */
 #define CIST_YPCALL	(1<<4)	/* call is a yieldable protected call */
 #define CIST_TAIL	(1<<5)	/* call was tail called */
 #define CIST_HOOKYIELD	(1<<6)	/* last hook called yielded */
+=======
+#define CIST_FRESH	(1<<3)	/* call is running on a fresh invocation
+                                   of luaV_execute */
+#define CIST_YPCALL	(1<<4)	/* call is a yieldable protected call */
+#define CIST_TAIL	(1<<5)	/* call was tail called */
+#define CIST_HOOKYIELD	(1<<6)	/* last hook called yielded */
+#define CIST_LEQ	(1<<7)  /* using __lt for __le */
+#define CIST_FIN	(1<<8)  /* call is running a finalizer */
+>>>>>>> upstream/master
 
 #define isLua(ci)	((ci)->callstatus & CIST_LUA)
 
@@ -108,7 +146,11 @@ typedef struct CallInfo {
 typedef struct global_State {
   lua_Alloc frealloc;  /* function to reallocate memory */
   void *ud;         /* auxiliary data to 'frealloc' */
+<<<<<<< HEAD
   lu_mem totalbytes;  /* number of bytes currently allocated - GCdebt */
+=======
+  l_mem totalbytes;  /* number of bytes currently allocated - GCdebt */
+>>>>>>> upstream/master
   l_mem GCdebt;  /* bytes allocated not yet compensated by the collector */
   lu_mem GCmemtrav;  /* memory traversed by the GC */
   lu_mem GCestimate;  /* an estimate of the non-garbage memory in use */
@@ -130,7 +172,10 @@ typedef struct global_State {
   GCObject *tobefnz;  /* list of userdata to be GC */
   GCObject *fixedgc;  /* list of objects not to be collected */
   struct lua_State *twups;  /* list of threads with open upvalues */
+<<<<<<< HEAD
   Mbuffer buff;  /* temporary buffer for string concatenation */
+=======
+>>>>>>> upstream/master
   unsigned int gcfinnum;  /* number of finalizers to call in each GC step */
   int gcpause;  /* size of pause between successive GCs */
   int gcstepmul;  /* GC 'granularity' */
@@ -140,6 +185,10 @@ typedef struct global_State {
   TString *memerrmsg;  /* memory-error message */
   TString *tmname[TM_N];  /* array with tag-method names */
   struct Table *mt[LUA_NUMTAGS];  /* metatables for basic types */
+<<<<<<< HEAD
+=======
+  TString *strcache[STRCACHE_N][STRCACHE_M];  /* cache for strings in API */
+>>>>>>> upstream/master
 } global_State;
 
 
@@ -148,6 +197,10 @@ typedef struct global_State {
 */
 struct lua_State {
   CommonHeader;
+<<<<<<< HEAD
+=======
+  unsigned short nci;  /* number of items in 'ci' list */
+>>>>>>> upstream/master
   lu_byte status;
   StkId top;  /* first free slot in the stack */
   global_State *l_G;
@@ -160,14 +213,22 @@ struct lua_State {
   struct lua_State *twups;  /* list of threads with open upvalues */
   struct lua_longjmp *errorJmp;  /* current error recover point */
   CallInfo base_ci;  /* CallInfo for first level (C calling Lua) */
+<<<<<<< HEAD
   lua_Hook hook;
+=======
+  volatile lua_Hook hook;
+>>>>>>> upstream/master
   ptrdiff_t errfunc;  /* current error handling function (stack index) */
   int stacksize;
   int basehookcount;
   int hookcount;
   unsigned short nny;  /* number of non-yieldable calls in stack */
   unsigned short nCcalls;  /* number of nested C calls */
+<<<<<<< HEAD
   lu_byte hookmask;
+=======
+  l_signalT hookmask;
+>>>>>>> upstream/master
   lu_byte allowhook;
 };
 
@@ -210,7 +271,11 @@ union GCUnion {
 
 
 /* actual number of total bytes allocated */
+<<<<<<< HEAD
 #define gettotalbytes(g)	((g)->totalbytes + (g)->GCdebt)
+=======
+#define gettotalbytes(g)	cast(lu_mem, (g)->totalbytes + (g)->GCdebt)
+>>>>>>> upstream/master
 
 LUAI_FUNC void luaE_setdebt (global_State *g, l_mem debt);
 LUAI_FUNC void luaE_freethread (lua_State *L, lua_State *L1);

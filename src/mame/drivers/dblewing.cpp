@@ -61,13 +61,19 @@ Notes:
 
 
 
+<<<<<<< HEAD
  - sound CPU seems to miss commands sometimes
  - flipscreen is wrong
+=======
+ - Main program writes two commands to soundlatch without pause in some places. Should the 104 custom
+   chip be handling this through an internal FIFO?
+>>>>>>> upstream/master
  - should sprites be buffered, is the Deco '77' a '71' or similar?
 
 */
 
 #include "emu.h"
+<<<<<<< HEAD
 #include "cpu/z80/z80.h"
 #include "cpu/m68000/m68000.h"
 #include "includes/decocrpt.h"
@@ -76,12 +82,28 @@ Notes:
 #include "video/deco16ic.h"
 #include "video/decospr.h"
 #include "machine/deco104.h"
+=======
+#include "cpu/m68000/m68000.h"
+#include "cpu/z80/z80.h"
+#include "machine/deco102.h"
+#include "machine/deco104.h"
+#include "machine/decocrpt.h"
+#include "machine/gen_latch.h"
+#include "machine/input_merger.h"
+#include "sound/okim6295.h"
+#include "sound/ym2151.h"
+#include "video/deco16ic.h"
+#include "video/decospr.h"
+#include "screen.h"
+#include "speaker.h"
+>>>>>>> upstream/master
 
 class dblewing_state : public driver_device
 {
 public:
 	dblewing_state(const machine_config &mconfig, device_type type, const char *tag)
 		: driver_device(mconfig, type, tag),
+<<<<<<< HEAD
 		m_deco104(*this, "ioprot104"),
 		m_pf1_rowscroll(*this, "pf1_rowscroll"),
 		m_pf2_rowscroll(*this, "pf2_rowscroll"),
@@ -102,11 +124,31 @@ public:
 
 	/* misc */
 	UINT8 m_sound_irq;
+=======
+		m_pf1_rowscroll(*this, "pf1_rowscroll"),
+		m_pf2_rowscroll(*this, "pf2_rowscroll"),
+		m_spriteram(*this, "spriteram"),
+		m_decrypted_opcodes(*this, "decrypted_opcodes"),
+		m_maincpu(*this, "maincpu"),
+		m_audiocpu(*this, "audiocpu"),
+		m_deco_tilegen1(*this, "tilegen1"),
+		m_deco104(*this, "ioprot104"),
+		m_sprgen(*this, "spritegen"),
+		m_soundlatch(*this, "soundlatch")
+	{ }
+
+	/* memory pointers */
+	required_shared_ptr<uint16_t> m_pf1_rowscroll;
+	required_shared_ptr<uint16_t> m_pf2_rowscroll;
+	required_shared_ptr<uint16_t> m_spriteram;
+	required_shared_ptr<uint16_t> m_decrypted_opcodes;
+>>>>>>> upstream/master
 
 	/* devices */
 	required_device<cpu_device> m_maincpu;
 	required_device<cpu_device> m_audiocpu;
 	required_device<deco16ic_device> m_deco_tilegen1;
+<<<<<<< HEAD
 	required_shared_ptr<UINT16> m_decrypted_opcodes;
 	DECLARE_WRITE_LINE_MEMBER(sound_irq);
 	DECLARE_READ16_MEMBER(dblewing_prot_r);
@@ -120,16 +162,38 @@ public:
 	DECO16IC_BANK_CB_MEMBER(bank_callback);
 	DECOSPR_PRIORITY_CB_MEMBER(pri_callback);
 	void dblewing_sound_cb( address_space &space, UINT16 data, UINT16 mem_mask );
+=======
+	required_device<deco104_device> m_deco104;
+	required_device<decospr_device> m_sprgen;
+	required_device<generic_latch_8_device> m_soundlatch;
+
+	DECLARE_READ8_MEMBER(irq_latch_r);
+	DECLARE_DRIVER_INIT(dblewing);
+	virtual void machine_start() override;
+	virtual void machine_reset() override;
+	uint32_t screen_update_dblewing(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
+
+	DECO16IC_BANK_CB_MEMBER(bank_callback);
+	DECOSPR_PRIORITY_CB_MEMBER(pri_callback);
+	void dblewing_sound_cb( address_space &space, uint16_t data, uint16_t mem_mask );
+>>>>>>> upstream/master
 
 	READ16_MEMBER( wf_protection_region_0_104_r );
 	WRITE16_MEMBER( wf_protection_region_0_104_w );
 };
 
 
+<<<<<<< HEAD
 UINT32 dblewing_state::screen_update_dblewing(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
 {
 	address_space &space = generic_space();
 	UINT16 flip = m_deco_tilegen1->pf_control_r(space, 0, 0xffff);
+=======
+uint32_t dblewing_state::screen_update_dblewing(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+{
+	address_space &space = generic_space();
+	uint16_t flip = m_deco_tilegen1->pf_control_r(space, 0, 0xffff);
+>>>>>>> upstream/master
 
 	flip_screen_set(BIT(flip, 7));
 	m_deco_tilegen1->pf_update(m_pf1_rowscroll, m_pf2_rowscroll);
@@ -147,8 +211,13 @@ READ16_MEMBER( dblewing_state::wf_protection_region_0_104_r )
 {
 	int real_address = 0 + (offset *2);
 	int deco146_addr = BITSWAP32(real_address, /* NC */31,30,29,28,27,26,25,24,23,22,21,20,19,18, 13,12,11,/**/      17,16,15,14,    10,9,8, 7,6,5,4, 3,2,1,0) & 0x7fff;
+<<<<<<< HEAD
 	UINT8 cs = 0;
 	UINT16 data = m_deco104->read_data( deco146_addr, mem_mask, cs );
+=======
+	uint8_t cs = 0;
+	uint16_t data = m_deco104->read_data( deco146_addr, mem_mask, cs );
+>>>>>>> upstream/master
 	return data;
 }
 
@@ -156,7 +225,11 @@ WRITE16_MEMBER( dblewing_state::wf_protection_region_0_104_w )
 {
 	int real_address = 0 + (offset *2);
 	int deco146_addr = BITSWAP32(real_address, /* NC */31,30,29,28,27,26,25,24,23,22,21,20,19,18, 13,12,11,/**/      17,16,15,14,    10,9,8, 7,6,5,4, 3,2,1,0) & 0x7fff;
+<<<<<<< HEAD
 	UINT8 cs = 0;
+=======
+	uint8_t cs = 0;
+>>>>>>> upstream/master
 	m_deco104->write_data( space, deco146_addr, data, mem_mask, cs );
 }
 
@@ -181,16 +254,24 @@ static ADDRESS_MAP_START( dblewing_map, AS_PROGRAM, 16, dblewing_state )
 	AM_RANGE(0xff0000, 0xff3fff) AM_MIRROR(0xc000) AM_RAM
 ADDRESS_MAP_END
 
+<<<<<<< HEAD
 static ADDRESS_MAP_START( decrypted_opcodes_map, AS_DECRYPTED_OPCODES, 16, dblewing_state )
+=======
+static ADDRESS_MAP_START( decrypted_opcodes_map, AS_OPCODES, 16, dblewing_state )
+>>>>>>> upstream/master
 	AM_RANGE(0x000000, 0x07ffff) AM_ROM AM_SHARE("decrypted_opcodes")
 ADDRESS_MAP_END
 
 READ8_MEMBER(dblewing_state::irq_latch_r)
 {
+<<<<<<< HEAD
 	/* bit 1 of dblewing_sound_irq specifies IRQ command writes */
 	m_sound_irq &= ~0x02;
 	m_audiocpu->set_input_line(0, (m_sound_irq != 0) ? ASSERT_LINE : CLEAR_LINE);
 	return m_sound_irq;
+=======
+	return m_soundlatch->pending_r() ? 0 : 1;
+>>>>>>> upstream/master
 }
 
 static ADDRESS_MAP_START( sound_map, AS_PROGRAM, 8, dblewing_state )
@@ -198,7 +279,11 @@ static ADDRESS_MAP_START( sound_map, AS_PROGRAM, 8, dblewing_state )
 	AM_RANGE(0x8000, 0x87ff) AM_RAM
 	AM_RANGE(0xa000, 0xa001) AM_DEVREADWRITE("ymsnd", ym2151_device, status_r, write)
 	AM_RANGE(0xb000, 0xb000) AM_DEVREADWRITE("oki", okim6295_device, read, write)
+<<<<<<< HEAD
 	AM_RANGE(0xc000, 0xc000) AM_READ(soundlatch_byte_r)
+=======
+	AM_RANGE(0xc000, 0xc000) AM_DEVREAD("soundlatch", generic_latch_8_device, read)
+>>>>>>> upstream/master
 	AM_RANGE(0xd000, 0xd000) AM_READ(irq_latch_r) //timing? sound latch?
 	AM_RANGE(0xf000, 0xf000) AM_DEVREADWRITE("oki", okim6295_device, read, write)
 ADDRESS_MAP_END
@@ -325,6 +410,7 @@ static INPUT_PORTS_START( dblewing )
 	PORT_DIPSETTING(      0x0000, DEF_STR( On ) )
 INPUT_PORTS_END
 
+<<<<<<< HEAD
 WRITE_LINE_MEMBER(dblewing_state::sound_irq)
 {
 	/* bit 0 of dblewing_sound_irq specifies IRQ from sound chip */
@@ -335,6 +421,8 @@ WRITE_LINE_MEMBER(dblewing_state::sound_irq)
 	m_audiocpu->set_input_line(0, (m_sound_irq != 0) ? ASSERT_LINE : CLEAR_LINE);
 }
 
+=======
+>>>>>>> upstream/master
 DECO16IC_BANK_CB_MEMBER(dblewing_state::bank_callback)
 {
 	return ((bank >> 4) & 0x7) * 0x1000;
@@ -348,11 +436,15 @@ DECOSPR_PRIORITY_CB_MEMBER(dblewing_state::pri_callback)
 
 void dblewing_state::machine_start()
 {
+<<<<<<< HEAD
 	save_item(NAME(m_sound_irq));
+=======
+>>>>>>> upstream/master
 }
 
 void dblewing_state::machine_reset()
 {
+<<<<<<< HEAD
 	m_sound_irq = 0;
 }
 
@@ -364,6 +456,16 @@ void dblewing_state::dblewing_sound_cb( address_space &space, UINT16 data, UINT1
 }
 
 static MACHINE_CONFIG_START( dblewing, dblewing_state )
+=======
+}
+
+void dblewing_state::dblewing_sound_cb( address_space &space, uint16_t data, uint16_t mem_mask )
+{
+	m_soundlatch->write(space, 0, data & 0xff);
+}
+
+static MACHINE_CONFIG_START( dblewing )
+>>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", M68000, XTAL_28MHz/2)   /* DE102 */
@@ -375,6 +477,12 @@ static MACHINE_CONFIG_START( dblewing, dblewing_state )
 	MCFG_CPU_PROGRAM_MAP(sound_map)
 	MCFG_CPU_IO_MAP(sound_io)
 
+<<<<<<< HEAD
+=======
+	MCFG_INPUT_MERGER_ANY_HIGH("soundirq")
+	MCFG_INPUT_MERGER_OUTPUT_HANDLER(INPUTLINE("audiocpu", 0))
+
+>>>>>>> upstream/master
 	MCFG_QUANTUM_TIME(attotime::from_hz(6000))
 
 
@@ -405,15 +513,26 @@ static MACHINE_CONFIG_START( dblewing, dblewing_state )
 	MCFG_DECO16IC_PF12_8X8_BANK(0)
 	MCFG_DECO16IC_PF12_16X16_BANK(1)
 	MCFG_DECO16IC_GFXDECODE("gfxdecode")
+<<<<<<< HEAD
 	MCFG_DECO16IC_PALETTE("palette")
+=======
+>>>>>>> upstream/master
 
 	MCFG_DEVICE_ADD("spritegen", DECO_SPRITE, 0)
 	MCFG_DECO_SPRITE_GFX_REGION(2)
 	MCFG_DECO_SPRITE_PRIORITY_CB(dblewing_state, pri_callback)
 	MCFG_DECO_SPRITE_GFXDECODE("gfxdecode")
+<<<<<<< HEAD
 	MCFG_DECO_SPRITE_PALETTE("palette")
 
 	MCFG_DECO104_ADD("ioprot104")
+=======
+
+	MCFG_DECO104_ADD("ioprot104")
+	MCFG_DECO146_IN_PORTA_CB(IOPORT("INPUTS"))
+	MCFG_DECO146_IN_PORTB_CB(IOPORT("SYSTEM"))
+	MCFG_DECO146_IN_PORTC_CB(IOPORT("DSW"))
+>>>>>>> upstream/master
 	MCFG_DECO146_SET_INTERFACE_SCRAMBLE_INTERLEAVE
 	MCFG_DECO146_SET_USE_MAGIC_ADDRESS_XOR
 	MCFG_DECO146_SET_SOUNDLATCH_CALLBACK(dblewing_state, dblewing_sound_cb)
@@ -421,11 +540,22 @@ static MACHINE_CONFIG_START( dblewing, dblewing_state )
 	/* sound hardware */
 	MCFG_SPEAKER_STANDARD_MONO("mono")
 
+<<<<<<< HEAD
 	MCFG_YM2151_ADD("ymsnd", XTAL_32_22MHz/9)
 	MCFG_YM2151_IRQ_HANDLER(WRITELINE(dblewing_state, sound_irq))
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 1.00)
 
 	MCFG_OKIM6295_ADD("oki", XTAL_28MHz/28, OKIM6295_PIN7_HIGH)
+=======
+	MCFG_GENERIC_LATCH_8_ADD("soundlatch")
+	MCFG_GENERIC_LATCH_DATA_PENDING_CB(DEVWRITELINE("soundirq", input_merger_device, in_w<1>))
+
+	MCFG_YM2151_ADD("ymsnd", XTAL_32_22MHz/9)
+	MCFG_YM2151_IRQ_HANDLER(DEVWRITELINE("soundirq", input_merger_device, in_w<0>))
+	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 1.00)
+
+	MCFG_OKIM6295_ADD("oki", XTAL_28MHz/28, PIN7_HIGH)
+>>>>>>> upstream/master
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 1.00)
 MACHINE_CONFIG_END
 
@@ -457,7 +587,11 @@ ROM_END
 DRIVER_INIT_MEMBER(dblewing_state,dblewing)
 {
 	deco56_decrypt_gfx(machine(), "gfx1");
+<<<<<<< HEAD
 	deco102_decrypt_cpu((UINT16 *)memregion("maincpu")->base(), m_decrypted_opcodes, 0x80000, 0x399d, 0x25, 0x3d);
+=======
+	deco102_decrypt_cpu((uint16_t *)memregion("maincpu")->base(), m_decrypted_opcodes, 0x80000, 0x399d, 0x25, 0x3d);
+>>>>>>> upstream/master
 }
 
 

@@ -12,8 +12,12 @@
 #include "debugvw.h"
 #include "dvtext.h"
 #include "debugcon.h"
+<<<<<<< HEAD
 
 
+=======
+#include "debugger.h"
+>>>>>>> upstream/master
 
 //**************************************************************************
 //  DEBUG VIEW TEXTBUF
@@ -42,6 +46,23 @@ debug_view_textbuf::~debug_view_textbuf()
 
 
 //-------------------------------------------------
+<<<<<<< HEAD
+=======
+//  clear - clear the contents
+//-------------------------------------------------
+
+void debug_view_textbuf::clear()
+{
+	begin_update();
+	text_buffer_clear(&m_textbuf);
+	m_at_bottom = true;
+	m_topseq = 0;
+	end_update();
+}
+
+
+//-------------------------------------------------
+>>>>>>> upstream/master
 //  view_update - update a text buffer-based view
 //-------------------------------------------------
 
@@ -54,7 +75,11 @@ void debug_view_textbuf::view_update()
 		m_total.x = 80;
 
 	// determine the starting sequence number
+<<<<<<< HEAD
 	UINT32 curseq = 0;
+=======
+	u32 curseq = 0;
+>>>>>>> upstream/master
 	if (!m_at_bottom)
 	{
 		curseq = m_topseq;
@@ -73,6 +98,7 @@ void debug_view_textbuf::view_update()
 
 	// loop over visible rows
 	debug_view_char *dest = &m_viewdata[0];
+<<<<<<< HEAD
 	for (UINT32 row = 0; row < m_visible.y; row++)
 	{
 		const char *line = text_buffer_get_seqnum_line(&m_textbuf, curseq++);
@@ -83,6 +109,18 @@ void debug_view_textbuf::view_update()
 		{
 			size_t len = strlen(line);
 			UINT32 effcol = m_topleft.x;
+=======
+	for (u32 row = 0; row < m_visible.y; row++)
+	{
+		const char *line = text_buffer_get_seqnum_line(&m_textbuf, curseq++);
+		u32 col = 0;
+
+		// if this visible row is valid, add it to the buffer
+		if (line != nullptr)
+		{
+			size_t len = strlen(line);
+			u32 effcol = m_topleft.x;
+>>>>>>> upstream/master
 
 			// copy data
 			while (col < m_visible.x && effcol < len)
@@ -135,7 +173,11 @@ void debug_view_textbuf::view_notify(debug_view_notification type)
 //-------------------------------------------------
 
 debug_view_console::debug_view_console(running_machine &machine, debug_view_osd_update_func osdupdate, void *osdprivate)
+<<<<<<< HEAD
 	: debug_view_textbuf(machine, DVT_CONSOLE, osdupdate, osdprivate, *debug_console_get_textbuf())
+=======
+	: debug_view_textbuf(machine, DVT_CONSOLE, osdupdate, osdprivate, *machine.debugger().console().get_console_textbuf())
+>>>>>>> upstream/master
 {
 }
 
@@ -150,6 +192,10 @@ debug_view_console::debug_view_console(running_machine &machine, debug_view_osd_
 //-------------------------------------------------
 
 debug_view_log::debug_view_log(running_machine &machine, debug_view_osd_update_func osdupdate, void *osdprivate)
+<<<<<<< HEAD
 	: debug_view_textbuf(machine, DVT_LOG, osdupdate, osdprivate, *debug_errorlog_get_textbuf())
+=======
+	: debug_view_textbuf(machine, DVT_LOG, osdupdate, osdprivate, *machine.debugger().console().get_errorlog_textbuf())
+>>>>>>> upstream/master
 {
 }

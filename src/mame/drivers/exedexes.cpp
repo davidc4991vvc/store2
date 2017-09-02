@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 // license:???
+=======
+// license:BSD-3-Clause
+>>>>>>> upstream/master
 // copyright-holders:Richard Davies
 /***************************************************************************
 
@@ -12,10 +16,21 @@
 ***************************************************************************/
 
 #include "emu.h"
+<<<<<<< HEAD
 #include "cpu/z80/z80.h"
 #include "sound/ay8910.h"
 #include "sound/sn76496.h"
 #include "includes/exedexes.h"
+=======
+#include "includes/exedexes.h"
+
+#include "cpu/z80/z80.h"
+#include "machine/gen_latch.h"
+#include "sound/ay8910.h"
+#include "sound/sn76496.h"
+#include "screen.h"
+#include "speaker.h"
+>>>>>>> upstream/master
 
 
 TIMER_DEVICE_CALLBACK_MEMBER(exedexes_state::exedexes_scanline)
@@ -37,7 +52,11 @@ static ADDRESS_MAP_START( exedexes_map, AS_PROGRAM, 8, exedexes_state )
 	AM_RANGE(0xc002, 0xc002) AM_READ_PORT("P2")
 	AM_RANGE(0xc003, 0xc003) AM_READ_PORT("DSW0")
 	AM_RANGE(0xc004, 0xc004) AM_READ_PORT("DSW1")
+<<<<<<< HEAD
 	AM_RANGE(0xc800, 0xc800) AM_WRITE(soundlatch_byte_w)
+=======
+	AM_RANGE(0xc800, 0xc800) AM_DEVWRITE("soundlatch", generic_latch_8_device, write)
+>>>>>>> upstream/master
 	AM_RANGE(0xc804, 0xc804) AM_WRITE(exedexes_c804_w)                              /* coin counters + text layer enable */
 	AM_RANGE(0xc806, 0xc806) AM_WRITENOP                                            /* Watchdog ?? */
 	AM_RANGE(0xd000, 0xd3ff) AM_RAM_WRITE(exedexes_videoram_w) AM_SHARE("videoram") /* Video RAM */
@@ -55,7 +74,11 @@ ADDRESS_MAP_END
 static ADDRESS_MAP_START( sound_map, AS_PROGRAM, 8, exedexes_state )
 	AM_RANGE(0x0000, 0x3fff) AM_ROM
 	AM_RANGE(0x4000, 0x47ff) AM_RAM
+<<<<<<< HEAD
 	AM_RANGE(0x6000, 0x6000) AM_READ(soundlatch_byte_r)
+=======
+	AM_RANGE(0x6000, 0x6000) AM_DEVREAD("soundlatch", generic_latch_8_device, read)
+>>>>>>> upstream/master
 	AM_RANGE(0x8000, 0x8001) AM_DEVWRITE("aysnd", ay8910_device, address_data_w)
 	AM_RANGE(0x8002, 0x8002) AM_DEVWRITE("sn1", sn76489_device, write)
 	AM_RANGE(0x8003, 0x8003) AM_DEVWRITE("sn2", sn76489_device, write)
@@ -213,7 +236,11 @@ void exedexes_state::machine_reset()
 	m_sc2on = 0;
 }
 
+<<<<<<< HEAD
 static MACHINE_CONFIG_START( exedexes, exedexes_state )
+=======
+static MACHINE_CONFIG_START( exedexes )
+>>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", Z80, 4000000)   /* 4 MHz (?) */
@@ -234,7 +261,11 @@ static MACHINE_CONFIG_START( exedexes, exedexes_state )
 	MCFG_SCREEN_SIZE(32*8, 32*8)
 	MCFG_SCREEN_VISIBLE_AREA(0*8, 32*8-1, 2*8, 30*8-1)
 	MCFG_SCREEN_UPDATE_DRIVER(exedexes_state, screen_update_exedexes)
+<<<<<<< HEAD
 	MCFG_SCREEN_VBLANK_DEVICE("spriteram", buffered_spriteram8_device, vblank_copy_rising)
+=======
+	MCFG_SCREEN_VBLANK_CALLBACK(DEVWRITELINE("spriteram", buffered_spriteram8_device, vblank_copy_rising))
+>>>>>>> upstream/master
 	MCFG_SCREEN_PALETTE("palette")
 
 	MCFG_GFXDECODE_ADD("gfxdecode", "palette", exedexes)
@@ -246,6 +277,11 @@ static MACHINE_CONFIG_START( exedexes, exedexes_state )
 	/* sound hardware */
 	MCFG_SPEAKER_STANDARD_MONO("mono")
 
+<<<<<<< HEAD
+=======
+	MCFG_GENERIC_LATCH_8_ADD("soundlatch")
+
+>>>>>>> upstream/master
 	MCFG_SOUND_ADD("aysnd", AY8910, 1500000)
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 0.10)
 
@@ -344,5 +380,10 @@ ROM_END
 
 
 
+<<<<<<< HEAD
 GAME( 1985, exedexes, 0,        exedexes, exedexes, driver_device, 0, ROT270, "Capcom", "Exed Exes", MACHINE_SUPPORTS_SAVE )
 GAME( 1985, savgbees, exedexes, exedexes, exedexes, driver_device, 0, ROT270, "Capcom (Memetron license)", "Savage Bees", MACHINE_SUPPORTS_SAVE )
+=======
+GAME( 1985, exedexes, 0,        exedexes, exedexes, exedexes_state, 0, ROT270, "Capcom", "Exed Exes", MACHINE_SUPPORTS_SAVE )
+GAME( 1985, savgbees, exedexes, exedexes, exedexes, exedexes_state, 0, ROT270, "Capcom (Memetron license)", "Savage Bees", MACHINE_SUPPORTS_SAVE )
+>>>>>>> upstream/master

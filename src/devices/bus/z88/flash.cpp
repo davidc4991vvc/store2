@@ -22,6 +22,7 @@
 //  DEVICE DEFINITIONS
 //**************************************************************************
 
+<<<<<<< HEAD
 const device_type Z88_1024K_FLASH =  &device_creator<z88_1024k_flash_device>;
 
 //-------------------------------------------------
@@ -31,6 +32,9 @@ const device_type Z88_1024K_FLASH =  &device_creator<z88_1024k_flash_device>;
 static MACHINE_CONFIG_FRAGMENT(z88_flash)
 	MCFG_INTEL_E28F008SA_ADD(FLASH_TAG)
 MACHINE_CONFIG_END
+=======
+DEFINE_DEVICE_TYPE(Z88_1024K_FLASH, z88_1024k_flash_device, "z88_1024k_flash", "Z88 1024KB Flash")
+>>>>>>> upstream/master
 
 
 //**************************************************************************
@@ -41,10 +45,17 @@ MACHINE_CONFIG_END
 //  z88_1024k_flash_device - constructor
 //-------------------------------------------------
 
+<<<<<<< HEAD
 z88_1024k_flash_device::z88_1024k_flash_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
 		: device_t(mconfig, Z88_1024K_FLASH, "Z88 1024KB Flash", tag, owner, clock, "z88_1024k_flash", __FILE__),
 		device_z88cart_interface( mconfig, *this ),
 		m_flash(*this, FLASH_TAG)
+=======
+z88_1024k_flash_device::z88_1024k_flash_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: device_t(mconfig, Z88_1024K_FLASH, tag, owner, clock)
+	, device_z88cart_interface(mconfig, *this)
+	, m_flash(*this, FLASH_TAG)
+>>>>>>> upstream/master
 {
 }
 
@@ -58,6 +69,7 @@ void z88_1024k_flash_device::device_start()
 
 
 //-------------------------------------------------
+<<<<<<< HEAD
 //  device_mconfig_additions
 //-------------------------------------------------
 
@@ -65,14 +77,28 @@ machine_config_constructor z88_1024k_flash_device::device_mconfig_additions() co
 {
 	return MACHINE_CONFIG_NAME( z88_flash );
 }
+=======
+//  device_add_mconfig
+//-------------------------------------------------
+
+MACHINE_CONFIG_MEMBER(z88_1024k_flash_device::device_add_mconfig)
+	MCFG_INTEL_E28F008SA_ADD(FLASH_TAG)
+MACHINE_CONFIG_END
+>>>>>>> upstream/master
 
 /*-------------------------------------------------
     get_cart_base
 -------------------------------------------------*/
 
+<<<<<<< HEAD
 UINT8* z88_1024k_flash_device::get_cart_base()
 {
 	return (UINT8*)m_flash->space().get_read_ptr(0);
+=======
+uint8_t* z88_1024k_flash_device::get_cart_base()
+{
+	return m_flash->base();
+>>>>>>> upstream/master
 }
 
 /*-------------------------------------------------

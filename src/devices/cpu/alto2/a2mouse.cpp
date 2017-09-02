@@ -5,11 +5,18 @@
  *   Xerox AltoII mouse interface
  *
  *****************************************************************************/
+<<<<<<< HEAD
 #include "alto2cpu.h"
 #include "a2roms.h"
 
 #define MOUSE_DIRTY_HACK    0
 
+=======
+#include "emu.h"
+#include "alto2cpu.h"
+#include "a2roms.h"
+
+>>>>>>> upstream/master
 enum {
 	MX1     = (1<<0),       //!< MX1 signal is bit 0 (latch bit 1)
 	LMX1    = (1<<1),
@@ -108,15 +115,22 @@ enum {
  *
  * @return lookup value from madr_a32
  */
+<<<<<<< HEAD
 UINT16 alto2_cpu_device::mouse_read()
 {
 	UINT16 data;
+=======
+uint16_t alto2_cpu_device::mouse_read()
+{
+	uint16_t data;
+>>>>>>> upstream/master
 
 	m_mouse.latch = (m_mouse.latch << 1) & MLATCH;
 	data = m_madr_a32[m_mouse.latch];
 
 	switch (m_mouse.phase) {
 	case 0:
+<<<<<<< HEAD
 		m_mouse.latch |= MOVEX(m_mouse.dx - m_mouse.x);
 		m_mouse.latch |= MOVEY(m_mouse.dy - m_mouse.y);
 		break;
@@ -124,15 +138,31 @@ UINT16 alto2_cpu_device::mouse_read()
 		m_mouse.latch |= MACTIVE;
 		m_mouse.x -= SIGN(m_mouse.x - m_mouse.dx);
 		m_mouse.y -= SIGN(m_mouse.y - m_mouse.dy);
+=======
+		m_mouse.latch ^= MOVEX(m_mouse.dx - m_mouse.x);
+		m_mouse.latch ^= MOVEY(m_mouse.dy - m_mouse.y);
+		break;
+	case 1:
+		m_mouse.latch |= MACTIVE;
+		m_mouse.x += SIGN(m_mouse.dx - m_mouse.x);
+		m_mouse.y += SIGN(m_mouse.dy - m_mouse.y);
+>>>>>>> upstream/master
 		break;
 	case 2:
 		m_mouse.latch ^= MOVEX(m_mouse.dx - m_mouse.x);
 		m_mouse.latch ^= MOVEY(m_mouse.dy - m_mouse.y);
 		break;
+<<<<<<< HEAD
 	default:
 		m_mouse.latch &= ~MACTIVE;
 		m_mouse.x -= SIGN(m_mouse.x - m_mouse.dx);
 		m_mouse.y -= SIGN(m_mouse.y - m_mouse.dy);
+=======
+	case 3:
+		m_mouse.latch |= MACTIVE;
+		m_mouse.x += SIGN(m_mouse.dx - m_mouse.x);
+		m_mouse.y += SIGN(m_mouse.dy - m_mouse.y);
+>>>>>>> upstream/master
 	}
 	m_mouse.phase = (m_mouse.phase + 1) % 4;
 	return data;
@@ -147,6 +177,7 @@ UINT16 alto2_cpu_device::mouse_read()
  */
 INPUT_CHANGED_MEMBER( alto2_cpu_device::mouse_motion_x )
 {
+<<<<<<< HEAD
 	// set new destination (absolute) mouse x coordinate
 	INT32 x = m_mouse.dx + newval - oldval;
 	x = x < 0 ? 0 : x > 605 ? 605 : x;
@@ -159,6 +190,11 @@ INPUT_CHANGED_MEMBER( alto2_cpu_device::mouse_motion_x )
 	m_mem.ram[0424/2] = (m_mouse.dx << 16) | m_mouse.dy;
 #endif
 #endif
+=======
+	int16_t ox = static_cast<int16_t>(oldval);
+	int16_t nx = static_cast<int16_t>(newval);
+	m_mouse.dx = std::min(std::max(0, m_mouse.dx + (nx - ox)), 639);
+>>>>>>> upstream/master
 }
 
 /**
@@ -170,6 +206,7 @@ INPUT_CHANGED_MEMBER( alto2_cpu_device::mouse_motion_x )
  */
 INPUT_CHANGED_MEMBER( alto2_cpu_device::mouse_motion_y )
 {
+<<<<<<< HEAD
 	// set new destination (absolute) mouse y coordinate
 	INT32 y = m_mouse.dy + newval - oldval;
 	y = y < 0 ? 0 : y > 807 ? 807 : y;
@@ -182,6 +219,11 @@ INPUT_CHANGED_MEMBER( alto2_cpu_device::mouse_motion_y )
 	m_mem.ram[0424/2] = (m_mouse.dx << 16) | m_mouse.dy;
 #endif
 #endif
+=======
+	int16_t oy = static_cast<int16_t>(oldval);
+	int16_t ny = static_cast<int16_t>(newval);
+	m_mouse.dy = std::min(std::max(0, m_mouse.dy + (ny - oy)), 824);
+>>>>>>> upstream/master
 }
 
 /**
@@ -212,7 +254,11 @@ INPUT_CHANGED_MEMBER( alto2_cpu_device::mouse_button_2 )
 static const prom_load_t pl_madr_a32 =
 {
 	"madr.a32",
+<<<<<<< HEAD
 	0,
+=======
+	nullptr,
+>>>>>>> upstream/master
 	"a0e3b4a7",
 	"24e50afdeb637a6a8588f8d3a3493c9188b8da2c",
 	/* size */  0400,
@@ -223,7 +269,11 @@ static const prom_load_t pl_madr_a32 =
 	/* shift */ 0,
 	/* dmap */  DMAP_REVERSE_0_3,           // reverse D0-D3 to D3-D0
 	/* dand */  ZERO,
+<<<<<<< HEAD
 	/* type */  sizeof(UINT8)
+=======
+	/* type */  sizeof(uint8_t)
+>>>>>>> upstream/master
 };
 
 /**

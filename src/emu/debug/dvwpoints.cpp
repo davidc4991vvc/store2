@@ -11,6 +11,11 @@
 #include "emu.h"
 #include "dvwpoints.h"
 
+<<<<<<< HEAD
+=======
+#include <iomanip>
+
+>>>>>>> upstream/master
 
 
 static int cIndexAscending(const void* a, const void* b)
@@ -101,7 +106,11 @@ static int cActionAscending(const void* a, const void* b)
 {
 	const device_debug::watchpoint* left = *(device_debug::watchpoint**)a;
 	const device_debug::watchpoint* right = *(device_debug::watchpoint**)b;
+<<<<<<< HEAD
 	return strcmp(left->action(), right->action());
+=======
+	return left->action().compare(right->action());
+>>>>>>> upstream/master
 }
 
 static int cActionDescending(const void* a, const void* b)
@@ -151,12 +160,20 @@ void debug_view_watchpoints::enumerate_sources()
 	m_source_list.reset();
 
 	// iterate over devices with disassembly interfaces
+<<<<<<< HEAD
 	disasm_interface_iterator iter(machine().root_device());
 	for (device_disasm_interface *dasm = iter.first(); dasm != NULL; dasm = iter.next())
 	{
 		std::string name;
 		strprintf(name, "%s '%s'", dasm->device().name(), dasm->device().tag());
 		m_source_list.append(*global_alloc(debug_view_source(name.c_str(), &dasm->device())));
+=======
+	for (device_disasm_interface &dasm : disasm_interface_iterator(machine().root_device()))
+	{
+		std::string name;
+		name = string_format("%s '%s'", dasm.device().name(), dasm.device().tag());
+		m_source_list.append(*global_alloc(debug_view_source(name.c_str(), &dasm.device())));
+>>>>>>> upstream/master
 	}
 
 	// reset the source to a known good entry
@@ -211,6 +228,7 @@ void debug_view_watchpoints::view_click(const int button, const debug_view_xy& p
 }
 
 
+<<<<<<< HEAD
 void debug_view_watchpoints::pad_astring_to_length(std::string& str, int len)
 {
 	int diff = len - str.length();
@@ -221,12 +239,20 @@ void debug_view_watchpoints::pad_astring_to_length(std::string& str, int len)
 			buffer.append(" ");
 		strcatprintf(str, "%s", buffer.c_str());
 	}
+=======
+void debug_view_watchpoints::pad_ostream_to_length(std::ostream& str, int len)
+{
+	auto const current = str.tellp();
+	if (current < decltype(current)(len))
+		str << std::setw(decltype(current)(len) - current) << "";
+>>>>>>> upstream/master
 }
 
 
 void debug_view_watchpoints::gather_watchpoints()
 {
 	m_buffer.resize(0);
+<<<<<<< HEAD
 	for (const debug_view_source *source = m_source_list.first(); source != NULL; source = source->next())
 	{
 		// Collect
@@ -234,6 +260,15 @@ void debug_view_watchpoints::gather_watchpoints()
 		for (address_spacenum spacenum = AS_0; spacenum < ADDRESS_SPACES; ++spacenum)
 		{
 			for (device_debug::watchpoint *wp = debugInterface.watchpoint_first(spacenum); wp != NULL; wp = wp->next())
+=======
+	for (const debug_view_source &source : m_source_list)
+	{
+		// Collect
+		device_debug &debugInterface = *source.device()->debug();
+		for (int spacenum = 0; spacenum < debugInterface.watchpoint_space_count(); ++spacenum)
+		{
+			for (device_debug::watchpoint *wp = debugInterface.watchpoint_first(spacenum); wp != nullptr; wp = wp->next())
+>>>>>>> upstream/master
 				m_buffer.push_back(wp);
 		}
 	}
@@ -261,13 +296,20 @@ void debug_view_watchpoints::view_update()
 		m_total.y = 10;
 
 	// Draw
+<<<<<<< HEAD
 	debug_view_char *dest = &m_viewdata[0];
 	std::string         linebuf;
+=======
+	debug_view_char     *dest = &m_viewdata[0];
+	util::ovectorstream linebuf;
+	linebuf.reserve(ARRAY_LENGTH(tableBreaks) - 1);
+>>>>>>> upstream/master
 
 	// Header
 	if (m_visible.y > 0)
 	{
 		linebuf.clear();
+<<<<<<< HEAD
 		linebuf.append("ID");
 		if (m_sortType == &cIndexAscending) linebuf.push_back('\\');
 		else if (m_sortType == &cIndexDescending) linebuf.push_back('/');
@@ -304,6 +346,46 @@ void debug_view_watchpoints::view_update()
 		for (UINT32 i = m_topleft.x; i < (m_topleft.x + m_visible.x); i++, dest++)
 		{
 			dest->byte = (i < linebuf.length()) ? linebuf[i] : ' ';
+=======
+		linebuf.rdbuf()->clear();
+		linebuf << "ID";
+		if (m_sortType == &cIndexAscending) linebuf.put('\\');
+		else if (m_sortType == &cIndexDescending) linebuf.put('/');
+		pad_ostream_to_length(linebuf, tableBreaks[0]);
+		linebuf << "En";
+		if (m_sortType == &cEnabledAscending) linebuf.put('\\');
+		else if (m_sortType == &cEnabledDescending) linebuf.put('/');
+		pad_ostream_to_length(linebuf, tableBreaks[1]);
+		linebuf << "CPU";
+		if (m_sortType == &cCpuAscending) linebuf.put('\\');
+		else if (m_sortType == &cCpuDescending) linebuf.put('/');
+		pad_ostream_to_length(linebuf, tableBreaks[2]);
+		linebuf << "Space";
+		if (m_sortType == &cSpaceAscending) linebuf.put('\\');
+		else if (m_sortType == &cSpaceDescending) linebuf.put('/');
+		pad_ostream_to_length(linebuf, tableBreaks[3]);
+		linebuf << "Addresses";
+		if (m_sortType == &cAddressAscending) linebuf.put('\\');
+		else if (m_sortType == &cAddressDescending) linebuf.put('/');
+		pad_ostream_to_length(linebuf, tableBreaks[4]);
+		linebuf << "Type";
+		if (m_sortType == &cTypeAscending) linebuf.put('\\');
+		else if (m_sortType == &cTypeDescending) linebuf.put('/');
+		pad_ostream_to_length(linebuf, tableBreaks[5]);
+		linebuf << "Condition";
+		if (m_sortType == &cConditionAscending) linebuf.put('\\');
+		else if (m_sortType == &cConditionDescending) linebuf.put('/');
+		pad_ostream_to_length(linebuf, tableBreaks[6]);
+		linebuf << "Action";
+		if (m_sortType == &cActionAscending) linebuf.put('\\');
+		else if (m_sortType == &cActionDescending) linebuf.put('/');
+		pad_ostream_to_length(linebuf, tableBreaks[7]);
+
+		auto const &text(linebuf.vec());
+		for (u32 i = m_topleft.x; i < (m_topleft.x + m_visible.x); i++, dest++)
+		{
+			dest->byte = (i < text.size()) ? text[i] : ' ';
+>>>>>>> upstream/master
 			dest->attrib = DCA_ANCILLARY;
 		}
 	}
@@ -318,6 +400,7 @@ void debug_view_watchpoints::view_update()
 			device_debug::watchpoint *const wp = m_buffer[wpi];
 
 			linebuf.clear();
+<<<<<<< HEAD
 			strcatprintf(linebuf, "%2X", wp->index());
 			pad_astring_to_length(linebuf, tableBreaks[0]);
 			linebuf.push_back(wp->enabled() ? 'X' : 'O');
@@ -341,6 +424,33 @@ void debug_view_watchpoints::view_update()
 			for (UINT32 i = m_topleft.x; i < (m_topleft.x + m_visible.x); i++, dest++)
 			{
 				dest->byte = (i < linebuf.length()) ? linebuf[i] : ' ';
+=======
+			linebuf.rdbuf()->clear();
+			util::stream_format(linebuf, "%2X", wp->index());
+			pad_ostream_to_length(linebuf, tableBreaks[0]);
+			linebuf.put(wp->enabled() ? 'X' : 'O');
+			pad_ostream_to_length(linebuf, tableBreaks[1]);
+			linebuf << wp->debugInterface()->device().tag();
+			pad_ostream_to_length(linebuf, tableBreaks[2]);
+			linebuf << wp->space().name();
+			pad_ostream_to_length(linebuf, tableBreaks[3]);
+			util::stream_format(linebuf, "%0*X", wp->space().addrchars(), wp->space().byte_to_address(wp->address()));
+			linebuf.put('-');
+			util::stream_format(linebuf, "%0*X", wp->space().addrchars(), wp->space().byte_to_address_end(wp->address() + wp->length()) - 1);
+			pad_ostream_to_length(linebuf, tableBreaks[4]);
+			linebuf << types[wp->type() & 3];
+			pad_ostream_to_length(linebuf, tableBreaks[5]);
+			if (strcmp(wp->condition(), "1"))
+				linebuf << wp->condition();
+			pad_ostream_to_length(linebuf, tableBreaks[6]);
+			linebuf << wp->action();
+			pad_ostream_to_length(linebuf, tableBreaks[7]);
+
+			auto const &text(linebuf.vec());
+			for (u32 i = m_topleft.x; i < (m_topleft.x + m_visible.x); i++, dest++)
+			{
+				dest->byte = (i < text.size()) ? text[i] : ' ';
+>>>>>>> upstream/master
 				dest->attrib = DCA_NORMAL;
 
 				// Color disabled watchpoints red

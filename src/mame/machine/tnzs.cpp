@@ -1,5 +1,9 @@
 // license:BSD-3-Clause
+<<<<<<< HEAD
 // copyright-holders:Luca Elia, Mirko Buffoni, Takahiro Nogi
+=======
+// copyright-holders:Luca Elia, Mirko Buffoni, Takahiro Nogi,Stephane Humbert
+>>>>>>> upstream/master
 /***************************************************************************
 
   machine.c
@@ -18,6 +22,7 @@
 #include "cpu/mcs48/mcs48.h"
 #include "includes/tnzs.h"
 
+<<<<<<< HEAD
 
 
 READ8_MEMBER(tnzs_state::mcu_tnzs_r)
@@ -25,6 +30,11 @@ READ8_MEMBER(tnzs_state::mcu_tnzs_r)
 	UINT8 data;
 
 	data = m_mcu->upi41_master_r(space, offset & 1);
+=======
+READ8_MEMBER(tnzs_mcu_state::mcu_r)
+{
+	uint8_t data = m_mcu->upi41_master_r(space, offset & 1);
+>>>>>>> upstream/master
 	space.device().execute().yield();
 
 //  logerror("PC %04x: read %02x from mcu $c00%01x\n", space.device().safe_pcbase(), data, offset);
@@ -32,19 +42,31 @@ READ8_MEMBER(tnzs_state::mcu_tnzs_r)
 	return data;
 }
 
+<<<<<<< HEAD
 WRITE8_MEMBER(tnzs_state::mcu_tnzs_w)
+=======
+WRITE8_MEMBER(tnzs_mcu_state::mcu_w)
+>>>>>>> upstream/master
 {
 //  logerror("PC %04x: write %02x to mcu $c00%01x\n", space.device().safe_pcbase(), data, offset);
 
 	m_mcu->upi41_master_w(space, offset & 1, data);
 }
 
+<<<<<<< HEAD
 
 READ8_MEMBER(tnzs_state::tnzs_port1_r)
 {
 	int data = 0;
 
 	switch (m_input_select & 0x0f)
+=======
+READ8_MEMBER(tnzs_mcu_state::mcu_port1_r)
+{
+	int data = 0;
+
+	switch (m_input_select)
+>>>>>>> upstream/master
 	{
 		case 0x0a:  data = m_in2->read(); break;
 		case 0x0c:  data = m_in0->read(); break;
@@ -57,6 +79,7 @@ READ8_MEMBER(tnzs_state::tnzs_port1_r)
 	return data;
 }
 
+<<<<<<< HEAD
 READ8_MEMBER(tnzs_state::tnzs_port2_r)
 {
 	int data = m_in2->read();
@@ -95,6 +118,32 @@ READ8_MEMBER(tnzs_state::arknoid2_sh_f000_r)
 
 
 void tnzs_state::mcu_reset(  )
+=======
+READ8_MEMBER(tnzs_mcu_state::mcu_port2_r)
+{
+	return m_in2->read();
+}
+
+WRITE8_MEMBER(tnzs_mcu_state::mcu_port2_w)
+{
+	machine().bookkeeping().coin_lockout_w(0, (data & 0x40) != 0 ? m_lockout_level : !m_lockout_level);
+	machine().bookkeeping().coin_lockout_w(1, (data & 0x80) != 0 ? m_lockout_level : !m_lockout_level);
+	machine().bookkeeping().coin_counter_w(0, (~data & 0x10));
+	machine().bookkeeping().coin_counter_w(1, (~data & 0x20));
+
+	m_input_select = data & 0xf;
+}
+
+READ8_MEMBER(tnzs_mcu_state::analog_r)
+{
+	if (m_upd4701.found())
+		return m_upd4701->read_xy(space, offset);
+
+	return 0;
+}
+
+void arknoid2_state::mcu_reset()
+>>>>>>> upstream/master
 {
 	m_mcu_initializing = 3;
 	m_mcu_coinage_init = 0;
@@ -109,7 +158,11 @@ void tnzs_state::mcu_reset(  )
 	m_mcu_command = 0;
 }
 
+<<<<<<< HEAD
 void tnzs_state::mcu_handle_coins( int coin )
+=======
+void arknoid2_state::mcu_handle_coins( int coin )
+>>>>>>> upstream/master
 {
 	/* The coin inputs and coin counters are managed by the i8742 mcu. */
 	/* Here we simulate it. */
@@ -123,7 +176,11 @@ void tnzs_state::mcu_handle_coins( int coin )
 		if (coin & 0x01)    /* coin A */
 		{
 //          logerror("Coin dropped into slot A\n");
+<<<<<<< HEAD
 			coin_counter_w(machine(),0,1); coin_counter_w(machine(),0,0); /* Count slot A */
+=======
+			machine().bookkeeping().coin_counter_w(0,1); machine().bookkeeping().coin_counter_w(0,0); /* Count slot A */
+>>>>>>> upstream/master
 			m_mcu_coins_a++;
 			if (m_mcu_coins_a >= m_mcu_coinage[0])
 			{
@@ -132,11 +189,19 @@ void tnzs_state::mcu_handle_coins( int coin )
 				if (m_mcu_credits >= 9)
 				{
 					m_mcu_credits = 9;
+<<<<<<< HEAD
 					coin_lockout_global_w(machine(), 1); /* Lock all coin slots */
 				}
 				else
 				{
 					coin_lockout_global_w(machine(), 0); /* Unlock all coin slots */
+=======
+					machine().bookkeeping().coin_lockout_global_w(1); /* Lock all coin slots */
+				}
+				else
+				{
+					machine().bookkeeping().coin_lockout_global_w(0); /* Unlock all coin slots */
+>>>>>>> upstream/master
 				}
 			}
 		}
@@ -144,7 +209,11 @@ void tnzs_state::mcu_handle_coins( int coin )
 		if (coin & 0x02)    /* coin B */
 		{
 //          logerror("Coin dropped into slot B\n");
+<<<<<<< HEAD
 			coin_counter_w(machine(),1,1); coin_counter_w(machine(),1,0); /* Count slot B */
+=======
+			machine().bookkeeping().coin_counter_w(1,1); machine().bookkeeping().coin_counter_w(1,0); /* Count slot B */
+>>>>>>> upstream/master
 			m_mcu_coins_b++;
 			if (m_mcu_coins_b >= m_mcu_coinage[2])
 			{
@@ -153,11 +222,19 @@ void tnzs_state::mcu_handle_coins( int coin )
 				if (m_mcu_credits >= 9)
 				{
 					m_mcu_credits = 9;
+<<<<<<< HEAD
 					coin_lockout_global_w(machine(), 1); /* Lock all coin slots */
 				}
 				else
 				{
 					coin_lockout_global_w(machine(), 0); /* Unlock all coin slots */
+=======
+					machine().bookkeeping().coin_lockout_global_w(1); /* Lock all coin slots */
+				}
+				else
+				{
+					machine().bookkeeping().coin_lockout_global_w(0); /* Unlock all coin slots */
+>>>>>>> upstream/master
 				}
 			}
 		}
@@ -173,19 +250,88 @@ void tnzs_state::mcu_handle_coins( int coin )
 	else
 	{
 		if (m_mcu_credits < 9)
+<<<<<<< HEAD
 			coin_lockout_global_w(machine(), 0); /* Unlock all coin slots */
+=======
+			machine().bookkeeping().coin_lockout_global_w(0); /* Unlock all coin slots */
+>>>>>>> upstream/master
 
 		m_mcu_reportcoin = 0;
 	}
 	m_insertcoin = coin;
 }
 
+<<<<<<< HEAD
 
 READ8_MEMBER(tnzs_state::mcu_arknoid2_r)
 {
 	static const char mcu_startup[] = "\x55\xaa\x5a";
 
 //  logerror("PC %04x: read mcu %04x\n", space.device().safe_pc(), 0xc000 + offset);
+=======
+/*********************************
+
+TNZS sync bug kludge
+
+In all TNZS versions there is code like this:
+
+0C5E: ld   ($EF10),a
+0C61: ld   a,($EF10)
+0C64: inc  a
+0C65: ret  nz
+0C66: jr   $0C61
+
+which is sometimes executed by the main cpu when it writes to shared RAM a
+command for the second CPU. The intended purpose of the code is to wait an
+acknowledge from the sub CPU: the sub CPU writes FF to the same location
+after reading the command.
+
+However the above code is wrong. The "ret nz" instruction means that the
+loop will be exited only when the contents of $EF10 are *NOT* $FF!!
+On the real board, this casues little harm: the main CPU will just write
+the command, read it back and, since it's not $FF, return immediately. There
+is a chance that the command might go lost, but this will cause no major
+harm, the worse that can happen is that the background tune will not change.
+
+In MAME, however, since CPU interleaving is not perfect, it can happen that
+the main CPU ends its timeslice after writing to EF10 but before reading it
+back. In the meantime, the sub CPU will run, read the command and write FF
+there - therefore causing the main CPU to enter an endless loop.
+
+Unlike the usual sync problems in MAME, which can be fixed by increasing the
+interleave factor, in this case increasing it will actually INCREASE the
+chance of entering the endless loop - because it will increase the chances of
+the main CPU ending its timeslice at the wrong moment.
+
+So what we do here is catch writes by the main CPU to the RAM location, and
+process them using a timer, in order to
+a) force a resync of the two CPUs
+b) make sure the main CPU will be the first one to run after the location is
+   changed
+
+Since the answer from the sub CPU is ignored, we don't even need to boost
+interleave.
+
+*********************************/
+
+/*
+TIMER_CALLBACK_MEMBER(tnzs_base_state::kludge_callback)
+{
+    tnzs_sharedram[0x0f10] = param;
+}
+
+WRITE8_MEMBER(tnzs_base_state::tnzs_sync_kludge_w)
+{
+    machine().scheduler().synchronize(timer_expired_delegate(FUNC(tnzs_base_state::kludge_callback),this), data);
+}
+*/
+
+READ8_MEMBER(arknoid2_state::mcu_r)
+{
+	static const char mcu_startup[] = "\x55\xaa\x5a";
+
+	//logerror("PC %04x: read mcu %04x\n", space.device().safe_pc(), 0xc000 + offset);
+>>>>>>> upstream/master
 
 	if (offset == 0)
 	{
@@ -242,11 +388,19 @@ READ8_MEMBER(tnzs_state::mcu_arknoid2_r)
 	}
 }
 
+<<<<<<< HEAD
 WRITE8_MEMBER(tnzs_state::mcu_arknoid2_w)
 {
 	if (offset == 0)
 	{
 //      logerror("PC %04x: write %02x to mcu %04x\n", space.device().safe_pc(), data, 0xc000 + offset);
+=======
+WRITE8_MEMBER(arknoid2_state::mcu_w)
+{
+	if (offset == 0)
+	{
+		//logerror("PC %04x: write %02x to mcu %04x\n", space.device().safe_pc(), data, 0xc000 + offset);
+>>>>>>> upstream/master
 		if (m_mcu_command == 0x41)
 		{
 			m_mcu_credits = (m_mcu_credits + data) & 0xff;
@@ -263,7 +417,11 @@ WRITE8_MEMBER(tnzs_state::mcu_arknoid2_w)
 		0x80: release coin lockout (issued only in test mode)
 		during initialization, a sequence of 4 bytes sets coin/credit settings
 		*/
+<<<<<<< HEAD
 //      logerror("PC %04x: write %02x to mcu %04x\n", space.device().safe_pc(), data, 0xc000 + offset);
+=======
+		//logerror("PC %04x: write %02x to mcu %04x\n", space.device().safe_pc(), data, 0xc000 + offset);
+>>>>>>> upstream/master
 
 		if (m_mcu_initializing)
 		{
@@ -286,6 +444,7 @@ WRITE8_MEMBER(tnzs_state::mcu_arknoid2_w)
 	}
 }
 
+<<<<<<< HEAD
 
 READ8_MEMBER(tnzs_state::mcu_extrmatn_r)
 {
@@ -734,4 +893,183 @@ WRITE8_MEMBER(tnzs_state::tnzs_bankswitch1_w)
 	/* bits 0-1 select ROM bank */
 	m_bank2 = data & 0x03;
 	m_subbank->set_entry(m_bank2);
+=======
+INTERRUPT_GEN_MEMBER(arknoid2_state::mcu_interrupt)
+{
+	int coin = ((m_coin1->read() & 1) << 0);
+	coin |= ((m_coin2->read() & 1) << 1);
+	coin |= ((m_in2->read() & 3) << 2);
+	coin ^= 0x0c;
+	mcu_handle_coins(coin);
+
+	device.execute().set_input_line(0, HOLD_LINE);
+}
+
+void arknoid2_state::machine_reset()
+{
+	/* initialize the mcu simulation */
+	mcu_reset();
+
+	m_mcu_readcredits = 0;
+	m_insertcoin = 0;
+}
+
+void kageki_state::machine_reset()
+{
+	tnzs_base_state::machine_reset();
+	m_csport_sel = 0;
+}
+
+void tnzs_base_state::machine_start()
+{
+	uint8_t *sub = memregion("sub")->base();
+
+	m_bank2 = 0;
+	m_mainbank->set_bank(2);
+
+	m_subbank->configure_entries(0, 4, &sub[0x08000], 0x2000);
+	m_subbank->set_entry(m_bank2);
+
+	save_item(NAME(m_bank2));
+}
+
+void arknoid2_state::machine_start()
+{
+	tnzs_base_state::machine_start();
+	save_item(NAME(m_mcu_readcredits));
+	save_item(NAME(m_insertcoin));
+	save_item(NAME(m_mcu_initializing));
+	save_item(NAME(m_mcu_coinage_init));
+	save_item(NAME(m_mcu_coinage));
+	save_item(NAME(m_mcu_coins_a));
+	save_item(NAME(m_mcu_coins_b));
+	save_item(NAME(m_mcu_credits));
+	save_item(NAME(m_mcu_reportcoin));
+	save_item(NAME(m_mcu_command));
+
+	// kludge to make device work with active-high coin inputs
+	m_upd4701->left_w(0);
+	m_upd4701->middle_w(0);
+}
+
+void kageki_state::machine_start()
+{
+	tnzs_base_state::machine_start();
+	save_item(NAME(m_csport_sel));
+}
+
+void kabukiz_state::machine_start()
+{
+	tnzs_base_state::machine_start();
+	uint8_t *sound = memregion("audiocpu")->base();
+	m_audiobank->configure_entries(0, 8, &sound[0x00000], 0x4000);
+}
+
+WRITE8_MEMBER(tnzs_base_state::ramrom_bankswitch_w)
+{
+//  logerror("PC %04x: writing %02x to bankswitch\n", space.device().safe_pc(),data);
+
+	/* bit 4 resets the second CPU */
+	if (data & 0x10)
+		m_subcpu->set_input_line(INPUT_LINE_RESET, CLEAR_LINE);
+	else
+		m_subcpu->set_input_line(INPUT_LINE_RESET, ASSERT_LINE);
+
+	/* bits 0-2 select RAM/ROM bank */
+	m_mainbank->set_bank(data & 0x07);
+}
+
+WRITE8_MEMBER(arknoid2_state::bankswitch1_w)
+{
+	tnzs_base_state::bankswitch1_w(space, offset, data, mem_mask);
+	if (data & 0x04)
+		mcu_reset();
+
+	// never actually written by arknoid2 (though code exists to do it)
+	m_upd4701->resetx_w(BIT(data, 5));
+	m_upd4701->resety_w(BIT(data, 5));
+}
+
+WRITE8_MEMBER(insectx_state::bankswitch1_w)
+{
+	tnzs_base_state::bankswitch1_w(space, offset, data, mem_mask);
+	machine().bookkeeping().coin_lockout_w(0, (~data & 0x04));
+	machine().bookkeeping().coin_lockout_w(1, (~data & 0x08));
+	machine().bookkeeping().coin_counter_w(0, (data & 0x10));
+	machine().bookkeeping().coin_counter_w(1, (data & 0x20));
+}
+
+WRITE8_MEMBER(tnzsb_state::bankswitch1_w) // kabukiz_state
+{
+	tnzs_base_state::bankswitch1_w(space, offset, data, mem_mask);
+	machine().bookkeeping().coin_lockout_w(0, (~data & 0x10));
+	machine().bookkeeping().coin_lockout_w(1, (~data & 0x20));
+	machine().bookkeeping().coin_counter_w(0, (data & 0x04));
+	machine().bookkeeping().coin_counter_w(1, (data & 0x08));
+}
+
+WRITE8_MEMBER(kageki_state::bankswitch1_w)
+{
+	tnzs_base_state::bankswitch1_w(space, offset, data, mem_mask);
+	machine().bookkeeping().coin_lockout_global_w((~data & 0x20));
+	machine().bookkeeping().coin_counter_w(0, (data & 0x04));
+	machine().bookkeeping().coin_counter_w(1, (data & 0x08));
+}
+
+WRITE8_MEMBER(tnzs_mcu_state::bankswitch1_w)
+{
+	tnzs_base_state::bankswitch1_w(space, offset, data, mem_mask);
+	if ((data & 0x04) != 0 && m_mcu != nullptr)
+		m_mcu->set_input_line(INPUT_LINE_RESET, PULSE_LINE);
+
+	// written only at startup by plumppop?
+	if (m_upd4701.found())
+	{
+		m_upd4701->resetx_w(BIT(data, 5));
+		m_upd4701->resety_w(BIT(data, 5));
+	}
+}
+
+WRITE8_MEMBER(tnzs_base_state::bankswitch1_w)
+{
+//  logerror("PC %04x: writing %02x to bankswitch 1\n", space.device().safe_pc(),data);
+
+	/* bits 0-1 select ROM bank */
+	m_bank2 = data & 0x03;
+	m_subbank->set_entry(m_bank2);
+}
+
+void jpopnics_state::machine_reset()
+{
+	tnzs_base_state::machine_reset();
+}
+
+WRITE8_MEMBER(jpopnics_state::subbankswitch_w)
+{
+	// bits 0-1 select ROM bank
+	m_subbank->set_entry(data & 0x03);
+
+	// written once at startup
+	m_upd4701->resetx_w(BIT(data, 5));
+	m_upd4701->resety_w(BIT(data, 5));
+}
+
+WRITE8_MEMBER(tnzsb_state::sound_command_w)
+{
+	m_soundlatch->write(space, offset, data);
+	m_audiocpu->set_input_line_and_vector(0, HOLD_LINE, 0xff);
+}
+
+/* handler called by the 2203 emulator when the internal timers cause an IRQ */
+WRITE_LINE_MEMBER(tnzsb_state::ym2203_irqhandler)
+{
+	m_audiocpu->set_input_line(INPUT_LINE_NMI, state ? ASSERT_LINE : CLEAR_LINE);
+}
+
+WRITE8_MEMBER(kabukiz_state::sound_bank_w)
+{
+	// to avoid the write when the sound chip is initialized
+	if (data != 0xff)
+		m_audiobank->set_entry(data & 0x07);
+>>>>>>> upstream/master
 }

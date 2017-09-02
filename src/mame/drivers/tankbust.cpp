@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 // license:???
+=======
+// license:GPL-2.0+
+>>>>>>> upstream/master
 // copyright-holders:Jarek Burczynski
 /***************************************************************************
 
@@ -19,9 +23,18 @@ To do:
 ***************************************************************************/
 
 #include "emu.h"
+<<<<<<< HEAD
 #include "cpu/z80/z80.h"
 #include "sound/ay8910.h"
 #include "includes/tankbust.h"
+=======
+#include "includes/tankbust.h"
+
+#include "cpu/z80/z80.h"
+#include "sound/ay8910.h"
+#include "screen.h"
+#include "speaker.h"
+>>>>>>> upstream/master
 
 
 void tankbust_state::machine_start()
@@ -96,7 +109,11 @@ WRITE8_MEMBER(tankbust_state::e0xx_w)
 		break;
 
 	case 2: /* 0xe002 coin counter */
+<<<<<<< HEAD
 		coin_counter_w(machine(), 0, data&1);
+=======
+		machine().bookkeeping().coin_counter_w(0, data&1);
+>>>>>>> upstream/master
 		break;
 
 	case 6: /* 0xe006 screen disable ?? or disable screen update */
@@ -127,7 +144,11 @@ READ8_MEMBER(tankbust_state::debug_output_area_r)
 
 PALETTE_INIT_MEMBER(tankbust_state, tankbust)
 {
+<<<<<<< HEAD
 	const UINT8 *color_prom = memregion("proms")->base();
+=======
+	const uint8_t *color_prom = memregion("proms")->base();
+>>>>>>> upstream/master
 	int i;
 
 	for (i = 0; i < 128; i++)
@@ -327,7 +348,11 @@ INTERRUPT_GEN_MEMBER(tankbust_state::vblank_irq)
 		device.execute().set_input_line(0, HOLD_LINE);
 }
 
+<<<<<<< HEAD
 static MACHINE_CONFIG_START( tankbust, tankbust_state )
+=======
+static MACHINE_CONFIG_START( tankbust )
+>>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", Z80, XTAL_14_31818MHz/2)    /* Verified on PCB */
@@ -417,4 +442,8 @@ ROM_START( tankbust )
 ROM_END
 
 
+<<<<<<< HEAD
 GAME( 1985, tankbust,    0,       tankbust, tankbust, driver_device,  0, ROT90, "Valadon Automation", "Tank Busters", MACHINE_SUPPORTS_SAVE )
+=======
+GAME( 1985, tankbust,    0,       tankbust, tankbust, tankbust_state,  0, ROT90, "Valadon Automation", "Tank Busters", MACHINE_SUPPORTS_SAVE )
+>>>>>>> upstream/master

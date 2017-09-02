@@ -6,7 +6,12 @@
 
 
 #define VERBOSE 0
+<<<<<<< HEAD
 #define LOG(x) do { if (VERBOSE) logerror x; } while (0)
+=======
+#include "logmacro.h"
+
+>>>>>>> upstream/master
 
 /***************************************************************************/
 /*                                                                         */
@@ -52,6 +57,7 @@ Memory map:
 /*                                                                         */
 /***************************************************************************/
 
+<<<<<<< HEAD
 const device_type K054000 = &device_creator<k054000_device>;
 
 k054000_device::k054000_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
@@ -66,6 +72,12 @@ k054000_device::k054000_device(const machine_config &mconfig, const char *tag, d
 //-------------------------------------------------
 
 void k054000_device::device_config_complete()
+=======
+DEFINE_DEVICE_TYPE(K054000, k054000_device, "k054000", "K054000 Protection")
+
+k054000_device::k054000_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: device_t(mconfig, K054000, tag, owner, clock)
+>>>>>>> upstream/master
 {
 }
 

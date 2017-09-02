@@ -1,5 +1,9 @@
 // license:BSD-3-Clause
 // copyright-holders:Bryan McPhail
+<<<<<<< HEAD
+=======
+// thanks-to:Richard Bush
+>>>>>>> upstream/master
 /***************************************************************************
 
   Data East 16 bit games - Bryan McPhail, mish@tendril.co.uk
@@ -41,19 +45,88 @@ Original Service Manuals and Service Mode (when available).
 
 
 ToDo:
+<<<<<<< HEAD
 - Fix protection simulation in Birdie Try (that part needs a complete rewrite);
 - graphics are completely broken in Automat and Secret Agent (bootleg);
+=======
+- Fix protection simulation in Birdie Try (that part needs at least comparison with a real board);
+- Fix remaining graphical problems in Automat (bootleg);
+- Fix remaining sound problems in Secret Agent (bootleg);
+- graphics are completely broken in Secret Agent (bootleg);
+>>>>>>> upstream/master
 - Fighting Fantasy (bootleg) doesn't boot at all;
 - Hook up the 68705 in Midnight Resistance (bootleg) (it might not be used, leftover from the Fighting Fantasy bootleg on the same PCB?)
 - Get rid of ROM patches in Sly Spy and Hippodrome;
 - background pen in Birdie Try is presumably wrong.
 - Pixel clock frequency isn't verified;
+<<<<<<< HEAD
 - Finally, get a proper decap of the MCUs used by Bad Dudes and Birdie Try;
 
+=======
+- Finally, get a proper decap of the MCUs used by Dragonninja and Birdie Try;
+
+
+Bad Dudes MCU dump came from an MCU that had been damaged during a misguided
+attempt at decapping.  Data didn't read consistently, and the final dump was
+built up from multiple dumps by taking the most common value for each location.
+It appears there may be one bit error in the dump.  The MCU implements a
+command to calculate a program ROM checksum and compare the low byte of the
+result to a value supplied by the host CPU, but with the dump as-is, it doesn't
+work.  Here's the code in question:
+
+0AB0: 51 50    acall   $0A50
+0AB2: C3       clr     c
+0AB3: 48       orl     a,r0
+0AB4: 70 02    jnz     $0AB8
+0AB6: 80 89    sjmp    $0A41
+0AB8: 21 F0    ajmp    $09F0
+
+The function at $0A50 reads the expected value from the host, $0A41 is the
+normal command response, and $09F0 is the error response.  The orl instruction
+doesn't make sense here.  However, changing it from 48 to 60 makes it an xrl
+instruction which would work as expected.
+
+Unfortunately the game doesn't issue this command during the attract loop or
+first level, so I haven't been able to test it.  I can't even use the checksum
+function to verify that the program is good because the expected value mod 256
+has to be supplied by the host.
+
+The current Dragonninja MCU program was made by hacking the expected startup
+synchronisation command in the Bad Dudes MCU program (location $09A4 changed
+from $0B to $03).  There may be other differences in a real Dragonninja MCU.
+The table of expected values for command 7 is the same for Dragonninja (from
+debugging main CPU program).
+
+Bad Dudes only seems to use commands $0B (sync), $01 (reset if parameter is not
+$3B), $07 (return table index if parameter matches table otherwise reset) and
+$09 (set table index to zero).  Dragonninja only seems to use commands $03 (on
+startup), $07 (same function as Bad Dudes) and $09 (same function as Bad
+Dudes).  Most of the MCU program isn't utilised.
+
+
+Guru-Readme for Data East 16 bit games (Updated 7-Feb-2017)
+
+Heavy Barrel
+Bad Dudes vs. Dragonninja
+Dragonninja
+Birdie Try
+Robocop
+Hippodrome
+Fighting Fantasy
+Secret Agent
+Sly Spy
+Midnight Resistance
+Boulderdash
+
+Heavy Barrel, Bad Dudes, Robocop, Birdie Try & Hippodrome/Fighting Fantasy use the 'MEC-M1'
+motherboard and another plug-in game board containing all the ROMs.
+Sly Spy, Midnight Resistance and Boulderdash use the same graphics chips but are single pcbs.
+>>>>>>> upstream/master
 
 PCB Layouts
 -----------
 
+<<<<<<< HEAD
 Bad Dudes vs Dragonninja
 Data East, 1988
 
@@ -80,6 +153,35 @@ MEC-M1
 |    DSW1                                 |---------|  |---------| |
 |                              RP65C02    |L7B0073  |  |L7B0072  | |
 |UPC3403      TC5565                      |DATAEAST |  |DATAEAST | |
+=======
+Main Board:
+
+This board is used with Heavy Barrel, Bad Dudes, Robocop, Birdie Try & Hippodrome/Fighting Fantasy
+
+PCB number: MEC-M1 DE-0297-3 (uses QFP custom chips)
+or
+MEC-M1 DE-0295-1 (uses PGA custom chips)
+or
+DE-0289-2 (uses PGA custom chips and MEC-M1 not written on PCB)
+|------------------------------------------------------------------|
+|               TMM2018                                    12MHz   |
+|               TMM2018                                            |
+|               TMM2018          MB7122                            |
+|                                                       TC5565     |
+|                                                       TC5565     |
+|                                                MB7116 TMM2018    |
+|          20MHz                                        TMM2018    |
+|J  RCDM-I1                                                        |
+|A  RCDM-I1                                            |---------| |
+|M  RCDM-I1                             TMM2018        |L7B0072  | |
+|M  RCDM-I1                             TMM2018        |DATAEAST | |
+|A  RCDM-I1                             TMM2018        |BAC 06   | |
+|   RCDM-I1    |-------------|          TMM2018        |---------| |
+|    DSW2      |   68000P10  |                                     |
+|    DSW1      |-------------|            |---------|  |---------| |
+|                                         |L7B0073  |  |L7B0072  | |
+|UPC3403      TC5565          RP65C02     |DATAEAST |  |DATAEAST | |
+>>>>>>> upstream/master
 |CN4   YM3014 TC5565        TMM2018       |MXC 06   |  |BAC 06   | |
 |VOL   YM3014 YM3812                      |---------|  |---------| |
 |MB3730      YM2203             CN2                CN1             |
@@ -91,8 +193,13 @@ Notes:
       YM3812  - Clock input 3.000MHz [12/4]
       TMM2018 - 2k x8 SRAM
       TC5565  - 8k x8 SRAM
+<<<<<<< HEAD
       MB7122  - 1k x4 bipolar PROM
       MB7116  - 512b x4 bipolar PROM
+=======
+      MB7122  - 1k x4 bipolar PROM with label "A-2" at location E17
+      MB7116  - 512b x4 bipolar PROM with label "A-1" at location C12
+>>>>>>> upstream/master
       RCDM-I1 - Custom resistor array
       DSW1/2  - 8-position DIP switches
       L7B007x - DECO custom graphics chips (QFP160 or PGA type)
@@ -103,6 +210,7 @@ Notes:
       ------------
       VSync - 57.4162Hz
       HSync - 15.6172kHz
+<<<<<<< HEAD
       OSC1  - 20.00006MHz
       XTAL1 - 11.9938MHz
 
@@ -123,6 +231,28 @@ MEC-M1
 |       4.3C 5.4C 6.6C       13.12C 14.14C 15.16C 16.17C|
 |                                                       |
 |8.2C                                                   |
+=======
+      OSC1  - 20.00006MHz (20MHz)
+      XTAL1 - 11.9938MHz (12MHz)
+
+
+ROM Board Type 1:
+
+This board is used with Heavy Barrel, Bad Dudes & Birdie Try
+All ROMs are in sockets. Boards that do not use some positions
+do not have the socket populated (i.e. Bad Dudes)
+
+DE-0299-2 (earlier version DE-0293-2 or DE-0293-1 uses PGA custom chips)
+|-------------------------------------------------------|
+|C4558          CN2  7.8A              CN1              |
+|       1.3A 2.4A 3.6A        9.12A 10.14A 11.16A 12.17A|
+| M6295               I8751_31.9A                       |
+|CN9                    8MHz                            |
+|                                                       |
+|       4.3C 5.4C 6.6C       13.12C 14.14C 15.16C 16.17C|
+|  8.2C                                                 |
+|                                                       |
+>>>>>>> upstream/master
 |                 |---------|                           |
 |                 |L7B0072  | TMM2018                   |
 |CN5              |DATAEAST |17.12D 18.14D 19.16D 20.17D|
@@ -131,6 +261,7 @@ MEC-M1
 |CN6                                                    |
 |                            21.12F 22.14F 23.16F 24.17F|
 |                   27.7F 28.9F                         |
+<<<<<<< HEAD
 |CN7                                                    |
 |                                                       |
 |                                                       |
@@ -156,19 +287,169 @@ Notes:
                   All ROMs have a number location on the board next to the chip. The chips
                   can also be referenced via the numbers & letters on the side of the board.
                   For example, both of these are the same chip.... EI30.30 or EI30.9J
+=======
+|CN7        D4701                                       |
+|   LA6339                                              |
+|   LA6339  D4701                                       |
+|CN8                29.7J 30.9J      25.15J 26.16J      |
+|-------------------------------------------------------|
+Notes:
+      i8751     - Intel 8751 microcontroller, clock input 8.000MHz
+      M6295     - Clock 1.000MHz [20/2/10], pin 7 HIGH
+      L7B0072   - DECO custom graphics chip (QFP160 or PGA type). Populated on ALL PCBs even if not used.
+                  If ROMs 27/28/29 & 30 are not populated this chip is not used
+      TMM2018   - 2k x8 SRAM
+      C4558     - NEC C4558 Dual Op Amp
+      LA6339    - Sanyo LA6339 High Performance Quad Comparator
+      D4701     - NEC uPD4701 X,Y 2-axis Incremental Encoder Counter
+      CN1/2     - 96-pin connectors joining to Main Board
+      CN5/6     - Connectors for other inputs/buttons. Not populated on Bad Dudes.
+                  Used for the rotary joysticks on Heavy Barrel
+      CN7/8     - Connectors for trackball inputs for player 1 and player 2. Not populated on Bad Dudes or Heavy Barrel.
+                  Used for trackballs on Birdie Try
+      CN9       - 6-pin cable joining to Main Board
+      ROMs      - All ROM locations shown but not all are populated.
+                  All DECO games use a game code on the label....
+                   - Bad Dudes    = EI    \
+                   - Birdie Try   = EK     |
+                   - Dragon Ninja = EG     | These also change for different country/regions
+                   - Heavy Barrel = EC    /  Some Heavy Barrel boards only have numbers on the stickers
+                  All ROMs are 27512/27256 EPROM/maskROM
+                  All ROMs have a number location on the board next to the chip and that same number is used
+                  as part of the ROM label. The chips can also be referenced via the numbers & letters on the
+                  side of the board. For example EI30.30 or EI30.9J. Both of these are the same chip and the
+                  game code identifies the game, which in this case is Bad Dudes.
+
+ROM usage per game
+------------------
+     Location  3A    4A    6A    3C    4C    6C    8A    2C    12A   14A   16A   17A   12C   14C   16C   17C   12D   14D   16D   17D   12F   14F   16F   17F   15J   16J   7F    9F    7J    9J    9A
+Game           1     2     3     4     5     6     7     8     9     10    11    12    13    14    15    16    17    18    19    20    21    22    23    24    25    26    27    28    29    30    31
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+Birdie Try     EK01  EK02  EK03  EK04  EK05  EK06  EK07  EK08  EK09  EK10  EK11  EK12  EK13  EK14  EK15  EK16  EK17  EK18  EK19  EK20  EK21  EK22  EK23  EK24  EK25  EK26  -     -     -     -     EK31-1
+Bad Dudes      EI01  -     EI03  EI04  -     EI06  EI07  EI08  EI09  EI10  EI11  EI12  EI13  EI14  EI15  EI16  -     EI18  -     EI20  -     EI22  -     EI24  EI25  EI26  -     EI28  -     EI30  EI31
+Dragon Ninja   EG01  -     EG03  EG04  -     EG06  EG07  EG08  EG09  EG10  EG11  EG12  EG13  EG14  EG15  EG16  -     EG18  -     EG20  -     EG22  -     EG24  EG25  EG26  -     EG28  -     EG30  EG31
+Heavy Barrel   EC01  EC02  EC03  EC04  EC05  EC06  EC07  EC08  EC09  EC10  EC11  EC12  EC13  EC14  EC15  EC16  EC17  EC18  EC19  EC20  EC21  EC22  EC23  EC24  EC25  EC26  EC27  EC28  EC29  EC30  EC31
+
+Note the games can be converted by swapping all of the ROMs and MCU. For example on a Birdie Try PCB, when the
+ROMs are swapped for the 'hbarrel' set from MAME, the board will run Heavy Barrel. I can confirm the MCU dump
+from the 'hbarrel' MAME ROM set (HB31.9A) and 'baddudes' MAME ROM set (EI31.9A) works fine on the real PCB.
+
+
+ROM Board Type 2:
+
+This board is used with Hippodrome & Fighting Fantasy
+
+DE-0318-4
+|-------------------------------------------------------|
+|               CN2                    CN1              |
+|                                                       |
+|       EX00.B1    EX04.C1                              |
+|CN4                                                    |
+|       EX01-3.B3  PZ-1.C3            EX13.F3   EX18.G3 |
+|                                                       |
+|       EX02-3.B4  EX05.C4            EX14.F4   EX19.G4 |
+|                                                       |
+|       EX03.B5    EX06.C5  EX10.D5   EX15.F5   EX20.G5 |
+|                                                       |
+|       M6295      EX07.C6  EX11.D6   EX16.F6   EX21.G6 |
+|     4558                  EX12.D8   EX17.F8   EX22.G8 |
+||--|                                 TMM2018           |
+||  |       |---------|               TMM2018   EX23.G10|
+||49|       |   47    |            |---------|          |
+||  |       |---------|            |L7B0072  |  EX24.G11|
+||  |           TMM2063            |DATAEAST |          |
+||--| 21.4772MHz                   |BAC 06   |  EX25.G13|
+|           |---|  EX08.C15        |---------|          |
+|    C1060  | 45|                                       |
+|-----------|---|---------------------------------------|
+Notes:
+      49        - Unknown DIP40 ASIC (no clock input so not an MCU)
+      47        - Unknown SDIP52 ASIC (no clock input so not an MCU)
+      45        - HuC6280 sound CPU in disguise as Data East custom chip #45. Clock input 21.4772MHz on pin 10
+      M6295     - Clock 1.000MHz [20/2/10], pin 7 HIGH
+      4558      - NEC C4558 Dual Op Amp
+      C1060     - NEC uPC1060C 2.5V High Precision Reference Voltage Circuit
+      L7B0072   - DECO custom graphics chip (QFP160)
+      TMM2018   - 2k x8 SRAM
+      TMM2063   - 8k x8 SRAM
+      PZ-1.C3   - MMI PAL16L8 marked "PZ-1"
+      CN1/2     - 96-pin connectors joining to Main Board
+      CN4       - 6-pin cable joining to Main Board
+      ROMs      - All ROMs are 27512/27256 EPROM/maskROM
+                  All ROMs have a number location under the chip and that same number is used
+                  as part of the ROM label. The chips can also be referenced via the numbers
+                  & letters on the side of the board. For example EX25.G13 or EX25.25 are the
+                  same chip. Game code on the ROM labels for Hippodrome/Fighting Fantasy is
+                  EV, EW or EX.
+
+
+ROM Board Type 3:
+
+This board is used only with Robocop
+
+DE-0316-4
+|-------------------------------------------------------|
+|               CN2                    CN1              |
+|4558 PZ-1.B15                                          |
+|                EP03-3.C14 EP06.E14  EP10.F14          |
+|CN4                                                    |
+|     EP00-3.B13            EP07.E13  EP11.F13  EP18.H13|
+|M6295                                                  |
+|     EP01-4.B12 EP04-3.C12 EP08.E12  EP12.F12  EP19.H12|
+|                                                       |
+|     EP02.B11   EP05-4.C11 EP09.E11  EP13.F11  EP20.H11|
+|                           TMM2063                     |
+|  PZ-0.A9                  TMM2063             EP21.H10|
+|                                                       |
+| 21.4772MHz              |---------| EP14.F7   EP22.H7 |
+| |------|                |L7B0072  |           EP23.H6 |
+| |DEC-01|                |DATAEAST | EP15.F4           |
+| |      |                |BAC 06   |                   |
+| |------|  |---------|   |---------| EP16.F3           |
+|  2018     | DEM-01  |                                 |
+|           |---------|               EP17.F2           |
+|  PZ-2.A2                                              |
+|-------------------------------------------------------|
+Notes:
+      DEM-01    - Unknown SDIP52 ASIC (no clock input so not an MCU, decapping it found only ASIC, no ROM)
+      DEC-01    - HuC6280 sound CPU in disguise as Data East custom chip DEC-01. Clock input 21.4772MHz on pin 10
+      M6295     - Clock 1.000MHz [20/2/10], pin 7 HIGH
+      4558      - NEC C4558 Dual Op Amp
+      L7B0072   - DECO custom graphics chip (QFP160)
+      TMM2018   - 2k x8 SRAM
+      TMM2063   - 8k x8 SRAM
+      PZ-*      - MMI PAL16L8 PALs
+      CN1/2     - 96-pin connectors joining to Main Board
+      CN4       - 6-pin cable joining to Main Board
+      ROMs      - All ROMs are 27512/27256 EPROM/maskROM
+>>>>>>> upstream/master
 
 ***************************************************************************/
 
 #include "emu.h"
+<<<<<<< HEAD
+=======
+#include "includes/dec0.h"
+
+>>>>>>> upstream/master
 #include "cpu/m68000/m68000.h"
 #include "cpu/m6502/m6502.h"
 #include "cpu/h6280/h6280.h"
 #include "cpu/z80/z80.h"
 #include "cpu/mcs51/mcs51.h"
+<<<<<<< HEAD
 #include "includes/dec0.h"
 #include "sound/2203intf.h"
 #include "sound/3812intf.h"
 #include "sound/okim6295.h"
+=======
+#include "cpu/m6805/m68705.h"
+#include "sound/2203intf.h"
+#include "sound/3812intf.h"
+#include "sound/okim6295.h"
+#include "screen.h"
+#include "speaker.h"
+>>>>>>> upstream/master
 
 
 /******************************************************************************/
@@ -187,10 +468,14 @@ WRITE16_MEMBER(dec0_state::dec0_control_w)
 
 		case 4: /* 6502 sound cpu */
 			if (ACCESSING_BITS_0_7)
+<<<<<<< HEAD
 			{
 				soundlatch_byte_w(space, 0, data & 0xff);
 				m_audiocpu->set_input_line(INPUT_LINE_NMI, PULSE_LINE);
 			}
+=======
+				m_soundlatch->write(space, 0, data & 0xff);
+>>>>>>> upstream/master
 			break;
 
 		case 6: /* Intel 8751 microcontroller - Bad Dudes, Heavy Barrel, Birdy Try only */
@@ -226,10 +511,14 @@ WRITE16_MEMBER(dec0_automat_state::automat_control_w)
 	{
 		case 0xe: /* z80 sound cpu */
 			if (ACCESSING_BITS_0_7)
+<<<<<<< HEAD
 			{
 				soundlatch_byte_w(space, 0, data & 0xff);
 				m_audiocpu->set_input_line(0, HOLD_LINE);
 			}
+=======
+				m_soundlatch->write(space, 0, data & 0xff);
+>>>>>>> upstream/master
 			break;
 
 		case 12: /* DMA flag */
@@ -253,6 +542,7 @@ WRITE16_MEMBER(dec0_automat_state::automat_control_w)
 	}
 }
 
+<<<<<<< HEAD
 WRITE16_MEMBER(dec0_state::slyspy_control_w)
 {
 	switch (offset << 1)
@@ -277,6 +567,12 @@ WRITE16_MEMBER(dec0_state::midres_sound_w)
 		soundlatch_byte_w(space, 0, data & 0xff);
 		m_audiocpu->set_input_line(INPUT_LINE_NMI, PULSE_LINE);
 	}
+=======
+WRITE16_MEMBER(dec0_state::midres_sound_w)
+{
+	if (ACCESSING_BITS_0_7)
+		m_soundlatch->write(space, 0, data & 0xff);
+>>>>>>> upstream/master
 }
 
 /******************************************************************************/
@@ -455,7 +751,12 @@ static ADDRESS_MAP_START( slyspy_map, AS_PROGRAM, 16, dec0_state )
 	AM_RANGE(0x304000, 0x307fff) AM_RAM AM_SHARE("ram") /* Sly spy main ram */
 	AM_RANGE(0x308000, 0x3087ff) AM_RAM AM_SHARE("spriteram")   /* Sprites */
 	AM_RANGE(0x310000, 0x3107ff) AM_RAM_DEVWRITE("palette", palette_device, write) AM_SHARE("palette")
+<<<<<<< HEAD
 	AM_RANGE(0x314000, 0x314003) AM_WRITE(slyspy_control_w)
+=======
+	AM_RANGE(0x314000, 0x314001) AM_DEVWRITE8("soundlatch", generic_latch_8_device, write, 0x00ff)
+	AM_RANGE(0x314002, 0x314003) AM_WRITE(dec0_priority_w)
+>>>>>>> upstream/master
 	AM_RANGE(0x314008, 0x31400f) AM_READ(slyspy_controls_r)
 	AM_RANGE(0x31c000, 0x31c00f) AM_READ(slyspy_protection_r) AM_WRITENOP
 ADDRESS_MAP_END
@@ -469,7 +770,11 @@ static ADDRESS_MAP_START( midres_map, AS_PROGRAM, 16, dec0_state )
 	AM_RANGE(0x160000, 0x160001) AM_WRITE(dec0_priority_w)
 	AM_RANGE(0x180000, 0x18000f) AM_READ(midres_controls_r)
 	AM_RANGE(0x180008, 0x18000f) AM_WRITENOP /* ?? watchdog ?? */
+<<<<<<< HEAD
 	AM_RANGE(0x1a0000, 0x1a0001) AM_WRITE(midres_sound_w)
+=======
+	AM_RANGE(0x1a0000, 0x1a0001) AM_DEVWRITE8("soundlatch", generic_latch_8_device, write, 0x00ff)
+>>>>>>> upstream/master
 
 	AM_RANGE(0x200000, 0x200007) AM_DEVWRITE("tilegen2", deco_bac06_device, pf_control_0_w)
 	AM_RANGE(0x200010, 0x200017) AM_DEVWRITE("tilegen2", deco_bac06_device, pf_control_1_w)
@@ -499,7 +804,11 @@ static ADDRESS_MAP_START( dec0_s_map, AS_PROGRAM, 8, dec0_state )
 	AM_RANGE(0x0000, 0x05ff) AM_RAM
 	AM_RANGE(0x0800, 0x0801) AM_DEVWRITE("ym1", ym2203_device, write)
 	AM_RANGE(0x1000, 0x1001) AM_DEVWRITE("ym2", ym3812_device, write)
+<<<<<<< HEAD
 	AM_RANGE(0x3000, 0x3000) AM_READ(soundlatch_byte_r)
+=======
+	AM_RANGE(0x3000, 0x3000) AM_DEVREAD("soundlatch", generic_latch_8_device, read)
+>>>>>>> upstream/master
 	AM_RANGE(0x3800, 0x3800) AM_DEVREADWRITE("oki", okim6295_device, read, write)
 	AM_RANGE(0x8000, 0xffff) AM_ROM
 ADDRESS_MAP_END
@@ -511,7 +820,11 @@ static ADDRESS_MAP_START( slyspy_s_map, AS_PROGRAM, 8, dec0_state )
 	AM_RANGE(0x0a0000, 0x0a0001) AM_READNOP /* Protection counter */
 	AM_RANGE(0x0b0000, 0x0b0001) AM_DEVWRITE("ym1", ym2203_device, write)
 	AM_RANGE(0x0e0000, 0x0e0001) AM_DEVREADWRITE("oki", okim6295_device, read, write)
+<<<<<<< HEAD
 	AM_RANGE(0x0f0000, 0x0f0001) AM_READ(soundlatch_byte_r)
+=======
+	AM_RANGE(0x0f0000, 0x0f0001) AM_DEVREAD("soundlatch", generic_latch_8_device, read)
+>>>>>>> upstream/master
 	AM_RANGE(0x1f0000, 0x1f1fff) AM_RAMBANK("bank8")
 	AM_RANGE(0x1ff400, 0x1ff403) AM_DEVWRITE("audiocpu", h6280_device, irq_status_w)
 ADDRESS_MAP_END
@@ -521,7 +834,11 @@ static ADDRESS_MAP_START( midres_s_map, AS_PROGRAM, 8, dec0_state )
 	AM_RANGE(0x108000, 0x108001) AM_DEVWRITE("ym2", ym3812_device, write)
 	AM_RANGE(0x118000, 0x118001) AM_DEVWRITE("ym1", ym2203_device, write)
 	AM_RANGE(0x130000, 0x130001) AM_DEVREADWRITE("oki", okim6295_device, read, write)
+<<<<<<< HEAD
 	AM_RANGE(0x138000, 0x138001) AM_READ(soundlatch_byte_r)
+=======
+	AM_RANGE(0x138000, 0x138001) AM_DEVREAD("soundlatch", generic_latch_8_device, read)
+>>>>>>> upstream/master
 	AM_RANGE(0x1f0000, 0x1f1fff) AM_RAMBANK("bank8")
 	AM_RANGE(0x1ff400, 0x1ff403) AM_DEVWRITE("audiocpu", h6280_device, irq_status_w)
 ADDRESS_MAP_END
@@ -530,9 +847,20 @@ ADDRESS_MAP_END
 
 void dec0_automat_state::machine_start()
 {
+<<<<<<< HEAD
 	save_item(NAME(m_automat_adpcm_byte));
 	save_item(NAME(m_automat_msm5205_vclk_toggle));
 	save_item(NAME(m_automat_scroll_regs));
+=======
+	m_adpcm_toggle1 = false;
+	m_adpcm_toggle2 = false;
+	save_item(NAME(m_adpcm_toggle1));
+	save_item(NAME(m_adpcm_toggle2));
+	save_item(NAME(m_automat_scroll_regs));
+
+	m_soundbank->configure_entries(0, 8, memregion("audiocpu")->base(), 0x4000);
+	m_soundbank->set_entry(0);
+>>>>>>> upstream/master
 }
 
 
@@ -583,6 +911,11 @@ static ADDRESS_MAP_START( automat_map, AS_PROGRAM, 16, dec0_automat_state )
 	AM_RANGE(0x400000, 0x400007) AM_WRITE(automat_scroll_w)
 	AM_RANGE(0x400008, 0x400009) AM_WRITE(dec0_priority_w)
 
+<<<<<<< HEAD
+=======
+	AM_RANGE(0x500000, 0x500001) AM_WRITENOP // ???
+
+>>>>>>> upstream/master
 	AM_RANGE(0xff8000, 0xffbfff) AM_RAM AM_SHARE("ram")             /* Main ram */
 	AM_RANGE(0xffc000, 0xffcfff) AM_RAM AM_SHARE("spriteram")           /* Sprites */
 ADDRESS_MAP_END
@@ -602,7 +935,11 @@ static ADDRESS_MAP_START( secretab_map, AS_PROGRAM, 16, dec0_automat_state )
 //  AM_RANGE(0x340400, 0x3407ff) AM_DEVREADWRITE("tilegen1", deco_bac06_device, pf_rowscroll_r, pf_rowscroll_w)
 
 	AM_RANGE(0x314008, 0x31400f) AM_READ(slyspy_controls_r)
+<<<<<<< HEAD
 //  AM_RANGE(0x314000, 0x314003) AM_WRITE(slyspy_control_w)
+=======
+	AM_RANGE(0x314000, 0x314001) AM_DEVWRITE8("soundlatch", generic_latch_8_device, write, 0x00ff)
+>>>>>>> upstream/master
 
 	AM_RANGE(0x300000, 0x300007) AM_RAM
 	AM_RANGE(0x300010, 0x300017) AM_RAM
@@ -615,6 +952,7 @@ static ADDRESS_MAP_START( secretab_map, AS_PROGRAM, 16, dec0_automat_state )
 ADDRESS_MAP_END
 
 
+<<<<<<< HEAD
 WRITE8_MEMBER(dec0_automat_state::automat_adpcm_w)
 {
 	m_automat_adpcm_byte = data;
@@ -628,6 +966,30 @@ static ADDRESS_MAP_START( automat_s_map, AS_PROGRAM, 8, dec0_automat_state )
 	AM_RANGE(0xd000, 0xd001) AM_DEVWRITE("2203b", ym2203_device, write)
 	AM_RANGE(0xf000, 0xf000) AM_WRITE(automat_adpcm_w)
 	AM_RANGE(0x0000, 0xffff) AM_ROM
+=======
+static ADDRESS_MAP_START( automat_s_map, AS_PROGRAM, 8, dec0_automat_state )
+	AM_RANGE(0x0000, 0x7fff) AM_ROM
+	AM_RANGE(0x8000, 0xbfff) AM_ROMBANK("soundbank")
+	AM_RANGE(0xc000, 0xc7ff) AM_RAM
+	AM_RANGE(0xc800, 0xc801) AM_DEVREADWRITE("2203a", ym2203_device, read, write)
+	AM_RANGE(0xd000, 0xd001) AM_DEVREADWRITE("2203b", ym2203_device, read, write)
+	AM_RANGE(0xd800, 0xd800) AM_DEVREAD("soundlatch", generic_latch_8_device, read)
+	AM_RANGE(0xe000, 0xe000) AM_DEVWRITE("adpcm_select2", ls157_device, ba_w)
+	AM_RANGE(0xe800, 0xe800) AM_WRITE(sound_bankswitch_w)
+	AM_RANGE(0xf000, 0xf000) AM_DEVWRITE("adpcm_select1", ls157_device, ba_w)
+ADDRESS_MAP_END
+
+static ADDRESS_MAP_START( secretab_s_map, AS_PROGRAM, 8, dec0_automat_state )
+	AM_RANGE(0x0000, 0x7fff) AM_ROM
+	AM_RANGE(0x8000, 0xbfff) AM_ROMBANK("soundbank")
+	AM_RANGE(0xc000, 0xc7ff) AM_RAM
+	AM_RANGE(0xc800, 0xc801) AM_DEVREADWRITE("2203a", ym2203_device, read, write)
+	AM_RANGE(0xd000, 0xd001) AM_DEVREADWRITE("ym3812", ym3812_device, read, write)
+	AM_RANGE(0xd800, 0xd800) AM_DEVREAD("soundlatch", generic_latch_8_device, read)
+	AM_RANGE(0xe000, 0xe000) AM_DEVWRITE("adpcm_select2", ls157_device, ba_w)
+	AM_RANGE(0xe800, 0xe800) AM_WRITE(sound_bankswitch_w)
+	AM_RANGE(0xf000, 0xf000) AM_DEVWRITE("adpcm_select1", ls157_device, ba_w)
+>>>>>>> upstream/master
 ADDRESS_MAP_END
 
 static ADDRESS_MAP_START( mcu_io_map, AS_IO, 8, dec0_state )
@@ -784,8 +1146,13 @@ static INPUT_PORTS_START( birdtry )
 	PORT_DIPSETTING(      0x0400, DEF_STR( Hard ) )
 	PORT_DIPSETTING(      0x0000, DEF_STR( Hardest ) )
 	PORT_DIPNAME( 0x1000, 0x1000, DEF_STR( Allow_Continue ) ) PORT_DIPLOCATION("SW2:5")
+<<<<<<< HEAD
 	PORT_DIPSETTING(      0x1000, DEF_STR( Off ) )
 	PORT_DIPSETTING(      0x0000, DEF_STR( On ) )
+=======
+	PORT_DIPSETTING(      0x0000, DEF_STR( Off ) )
+	PORT_DIPSETTING(      0x1000, DEF_STR( On ) )
+>>>>>>> upstream/master
 	PORT_DIPNAME( 0x2000, 0x2000, "Timer" ) PORT_DIPLOCATION("SW2:6")
 	PORT_DIPSETTING(      0x2000, DEF_STR( Normal ) )
 	PORT_DIPSETTING(      0x0000, "Fast" )
@@ -1250,6 +1617,7 @@ GFXDECODE_END
 
 /******************************************************************************/
 
+<<<<<<< HEAD
 WRITE_LINE_MEMBER(dec0_state::sound_irq)
 {
 	m_audiocpu->set_input_line(0, state); /* IRQ */
@@ -1261,6 +1629,8 @@ WRITE_LINE_MEMBER(dec0_state::sound_irq2)
 }
 
 /******************************************************************************/
+=======
+>>>>>>> upstream/master
 
 
 /* This is guesswork, in order to get ~57,41 Hz.
@@ -1274,7 +1644,11 @@ WRITE_LINE_MEMBER(dec0_state::sound_irq2)
 #define DEC0_VBSTART 256-8
 
 
+<<<<<<< HEAD
 static MACHINE_CONFIG_START( dec0_base, dec0_state )
+=======
+static MACHINE_CONFIG_START( dec0_base )
+>>>>>>> upstream/master
 
 	/* video hardware */
 	MCFG_SCREEN_ADD("screen", RASTER)
@@ -1290,6 +1664,7 @@ static MACHINE_CONFIG_START( dec0_base, dec0_state )
 	MCFG_PALETTE_ADD("palette", 1024)
 
 	MCFG_DEVICE_ADD("tilegen1", DECO_BAC06, 0)
+<<<<<<< HEAD
 	deco_bac06_device::set_gfx_region_wide(*device,0,0,0);
 	MCFG_DECO_BAC06_GFXDECODE("gfxdecode")
 	MCFG_DEVICE_ADD("tilegen2", DECO_BAC06, 0)
@@ -1303,6 +1678,23 @@ static MACHINE_CONFIG_START( dec0_base, dec0_state )
 	deco_mxc06_device::set_gfx_region(*device, 3);
 	MCFG_DECO_MXC06_GFXDECODE("gfxdecode")
 	MCFG_DECO_MXC06_PALETTE("palette")
+=======
+	MCFG_DECO_BAC06_GFX_REGION_WIDE(0, 0, 0)
+	MCFG_DECO_BAC06_GFXDECODE("gfxdecode")
+	MCFG_DEVICE_ADD("tilegen2", DECO_BAC06, 0)
+	MCFG_DECO_BAC06_GFX_REGION_WIDE(0, 1, 0)
+	MCFG_DECO_BAC06_GFXDECODE("gfxdecode")
+	MCFG_DEVICE_ADD("tilegen3", DECO_BAC06, 0)
+	MCFG_DECO_BAC06_GFX_REGION_WIDE(0, 2, 0)
+	MCFG_DECO_BAC06_GFXDECODE("gfxdecode")
+
+	MCFG_DEVICE_ADD("spritegen", DECO_MXC06, 0)
+	MCFG_DECO_MXC06_GFX_REGION(3)
+	MCFG_DECO_MXC06_GFXDECODE("gfxdecode")
+
+	MCFG_GENERIC_LATCH_8_ADD("soundlatch")
+	MCFG_GENERIC_LATCH_DATA_PENDING_CB(INPUTLINE("audiocpu", INPUT_LINE_NMI))
+>>>>>>> upstream/master
 MACHINE_CONFIG_END
 
 static MACHINE_CONFIG_DERIVED( dec0, dec0_base )
@@ -1331,10 +1723,17 @@ static MACHINE_CONFIG_DERIVED( dec0, dec0_base )
 	MCFG_SOUND_ROUTE(3, "mono", 0.35)
 
 	MCFG_SOUND_ADD("ym2", YM3812, XTAL_12MHz / 4)
+<<<<<<< HEAD
 	MCFG_YM3812_IRQ_HANDLER(WRITELINE(dec0_state, sound_irq))
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 0.80)
 
 	MCFG_OKIM6295_ADD("oki", XTAL_20MHz / 2 / 10, OKIM6295_PIN7_HIGH)
+=======
+	MCFG_YM3812_IRQ_HANDLER(INPUTLINE("audiocpu", 0))
+	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 0.80)
+
+	MCFG_OKIM6295_ADD("oki", XTAL_20MHz / 2 / 10, PIN7_HIGH)
+>>>>>>> upstream/master
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 0.80)
 MACHINE_CONFIG_END
 
@@ -1359,14 +1758,22 @@ static MACHINE_CONFIG_DERIVED( dec1, dec0_base )
 	MCFG_SOUND_ROUTE(3, "mono", 0.35)
 
 	MCFG_SOUND_ADD("ym2", YM3812, XTAL_12MHz/4) /* verified on pcb */
+<<<<<<< HEAD
 	MCFG_YM3812_IRQ_HANDLER(WRITELINE(dec0_state, sound_irq2))
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 0.80)
 
 	MCFG_OKIM6295_ADD("oki", XTAL_12MHz/12, OKIM6295_PIN7_HIGH) /* verified on pcb */
+=======
+	MCFG_YM3812_IRQ_HANDLER(INPUTLINE("audiocpu", 1))
+	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 0.80)
+
+	MCFG_OKIM6295_ADD("oki", XTAL_12MHz/12, PIN7_HIGH) /* verified on pcb */
+>>>>>>> upstream/master
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 0.80)
 MACHINE_CONFIG_END
 
 
+<<<<<<< HEAD
 WRITE_LINE_MEMBER(dec0_automat_state::automat_vclk_cb)
 {
 	if (m_automat_msm5205_vclk_toggle == 0)
@@ -1384,6 +1791,37 @@ WRITE_LINE_MEMBER(dec0_automat_state::automat_vclk_cb)
 
 
 static MACHINE_CONFIG_START( automat, dec0_automat_state )
+=======
+WRITE8_MEMBER(dec0_automat_state::sound_bankswitch_w)
+{
+	m_msm1->reset_w(BIT(data, 3));
+	m_msm2->reset_w(BIT(data, 4));
+
+	m_soundbank->set_entry(data & 7);
+}
+
+WRITE_LINE_MEMBER(dec0_automat_state::msm1_vclk_cb)
+{
+	if (!state)
+		return;
+
+	m_adpcm_toggle1 = !m_adpcm_toggle1;
+	m_adpcm_select1->select_w(m_adpcm_toggle1);
+	m_audiocpu->set_input_line(INPUT_LINE_NMI, m_adpcm_toggle1);
+}
+
+WRITE_LINE_MEMBER(dec0_automat_state::msm2_vclk_cb)
+{
+	if (!state)
+		return;
+
+	m_adpcm_toggle2 = !m_adpcm_toggle2;
+	m_adpcm_select2->select_w(m_adpcm_toggle2);
+}
+
+
+static MACHINE_CONFIG_START( automat )
+>>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", M68000, 10000000)
@@ -1404,6 +1842,7 @@ static MACHINE_CONFIG_START( automat, dec0_automat_state )
 	MCFG_SCREEN_PALETTE("palette")
 
 	MCFG_DEVICE_ADD("tilegen1", DECO_BAC06, 0)
+<<<<<<< HEAD
 	deco_bac06_device::set_gfx_region_wide(*device,0,0,0);
 	MCFG_DECO_BAC06_GFXDECODE("gfxdecode")
 	MCFG_DEVICE_ADD("tilegen2", DECO_BAC06, 0)
@@ -1417,6 +1856,20 @@ static MACHINE_CONFIG_START( automat, dec0_automat_state )
 	deco_mxc06_device::set_gfx_region(*device, 3);
 	MCFG_DECO_MXC06_GFXDECODE("gfxdecode")
 	MCFG_DECO_MXC06_PALETTE("palette")
+=======
+	MCFG_DECO_BAC06_GFX_REGION_WIDE(0, 0, 0)
+	MCFG_DECO_BAC06_GFXDECODE("gfxdecode")
+	MCFG_DEVICE_ADD("tilegen2", DECO_BAC06, 0)
+	MCFG_DECO_BAC06_GFX_REGION_WIDE(0, 1, 0)
+	MCFG_DECO_BAC06_GFXDECODE("gfxdecode")
+	MCFG_DEVICE_ADD("tilegen3", DECO_BAC06, 0)
+	MCFG_DECO_BAC06_GFX_REGION_WIDE(0, 2, 0)
+	MCFG_DECO_BAC06_GFXDECODE("gfxdecode")
+
+	MCFG_DEVICE_ADD("spritegen", DECO_MXC06, 0)
+	MCFG_DECO_MXC06_GFX_REGION(3)
+	MCFG_DECO_MXC06_GFXDECODE("gfxdecode")
+>>>>>>> upstream/master
 
 	MCFG_PALETTE_ADD("palette", 1024)
 	MCFG_PALETTE_FORMAT(xxxxBBBBGGGGRRRR)
@@ -1426,26 +1879,58 @@ static MACHINE_CONFIG_START( automat, dec0_automat_state )
 	/* sound hardware */
 	MCFG_SPEAKER_STANDARD_MONO("mono")
 
+<<<<<<< HEAD
 	MCFG_SOUND_ADD("2203a", YM2203, 1500000)
+=======
+	MCFG_GENERIC_LATCH_8_ADD("soundlatch")
+	MCFG_GENERIC_LATCH_DATA_PENDING_CB(INPUTLINE("audiocpu", 0))
+
+	MCFG_SOUND_ADD("2203a", YM2203, 1250000)
+>>>>>>> upstream/master
 	MCFG_SOUND_ROUTE(0, "mono", 0.90)
 	MCFG_SOUND_ROUTE(1, "mono", 0.90)
 	MCFG_SOUND_ROUTE(2, "mono", 0.90)
 	MCFG_SOUND_ROUTE(3, "mono", 0.35)
 
+<<<<<<< HEAD
 	MCFG_SOUND_ADD("2203b", YM2203, 1500000)
+=======
+	MCFG_SOUND_ADD("2203b", YM2203, 1250000)
+>>>>>>> upstream/master
 	MCFG_SOUND_ROUTE(0, "mono", 0.90)
 	MCFG_SOUND_ROUTE(1, "mono", 0.90)
 	MCFG_SOUND_ROUTE(2, "mono", 0.90)
 	MCFG_SOUND_ROUTE(3, "mono", 0.35)
 
+<<<<<<< HEAD
 	MCFG_SOUND_ADD("msm", MSM5205, 384000/2)
 	MCFG_MSM5205_VCLK_CB(WRITELINE(dec0_automat_state, automat_vclk_cb))
 	MCFG_MSM5205_PRESCALER_SELECTOR(MSM5205_S48_4B)
+=======
+	MCFG_DEVICE_ADD("adpcm_select1", LS157, 0)
+	MCFG_74157_OUT_CB(DEVWRITE8("msm1", msm5205_device, data_w))
+
+	MCFG_DEVICE_ADD("adpcm_select2", LS157, 0)
+	MCFG_74157_OUT_CB(DEVWRITE8("msm2", msm5205_device, data_w))
+
+	MCFG_SOUND_ADD("msm1", MSM5205, 384000)
+	MCFG_MSM5205_VCLK_CB(WRITELINE(dec0_automat_state, msm1_vclk_cb))
+	MCFG_MSM5205_PRESCALER_SELECTOR(S96_4B)
+	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 1.0)
+
+	MCFG_SOUND_ADD("msm2", MSM5205, 384000)
+	MCFG_MSM5205_VCLK_CB(WRITELINE(dec0_automat_state, msm2_vclk_cb))
+	MCFG_MSM5205_PRESCALER_SELECTOR(S96_4B)
+>>>>>>> upstream/master
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 1.0)
 MACHINE_CONFIG_END
 
 // this seems very similar to the automat bootleg
+<<<<<<< HEAD
 static MACHINE_CONFIG_START( secretab, dec0_automat_state )
+=======
+static MACHINE_CONFIG_START( secretab )
+>>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", M68000, XTAL_20MHz/2) /* verified on pcb (20MHZ OSC) 68000P12 running at 10Mhz */
@@ -1453,7 +1938,11 @@ static MACHINE_CONFIG_START( secretab, dec0_automat_state )
 	MCFG_CPU_VBLANK_INT_DRIVER("screen", dec0_state,  irq6_line_hold)/* VBL */
 
 	MCFG_CPU_ADD("audiocpu", Z80, 3000000)// ?
+<<<<<<< HEAD
 	MCFG_CPU_PROGRAM_MAP(automat_s_map)
+=======
+	MCFG_CPU_PROGRAM_MAP(secretab_s_map)
+>>>>>>> upstream/master
 
 	/* video hardware */
 	MCFG_VIDEO_START_OVERRIDE(dec0_state,dec0_nodma)
@@ -1466,6 +1955,7 @@ static MACHINE_CONFIG_START( secretab, dec0_automat_state )
 	MCFG_SCREEN_PALETTE("palette")
 
 	MCFG_DEVICE_ADD("tilegen1", DECO_BAC06, 0)
+<<<<<<< HEAD
 	deco_bac06_device::set_gfx_region_wide(*device,0,0,0);
 	MCFG_DECO_BAC06_GFXDECODE("gfxdecode")
 	MCFG_DEVICE_ADD("tilegen2", DECO_BAC06, 0)
@@ -1479,6 +1969,20 @@ static MACHINE_CONFIG_START( secretab, dec0_automat_state )
 	deco_mxc06_device::set_gfx_region(*device, 3);
 	MCFG_DECO_MXC06_GFXDECODE("gfxdecode")
 	MCFG_DECO_MXC06_PALETTE("palette")
+=======
+	MCFG_DECO_BAC06_GFX_REGION_WIDE(0, 0, 0)
+	MCFG_DECO_BAC06_GFXDECODE("gfxdecode")
+	MCFG_DEVICE_ADD("tilegen2", DECO_BAC06, 0)
+	MCFG_DECO_BAC06_GFX_REGION_WIDE(0, 1, 0)
+	MCFG_DECO_BAC06_GFXDECODE("gfxdecode")
+	MCFG_DEVICE_ADD("tilegen3", DECO_BAC06, 0)
+	MCFG_DECO_BAC06_GFX_REGION_WIDE(0, 2, 0)
+	MCFG_DECO_BAC06_GFXDECODE("gfxdecode")
+
+	MCFG_DEVICE_ADD("spritegen", DECO_MXC06, 0)
+	MCFG_DECO_MXC06_GFX_REGION(3)
+	MCFG_DECO_MXC06_GFXDECODE("gfxdecode")
+>>>>>>> upstream/master
 
 	MCFG_PALETTE_ADD("palette", 1024)
 	MCFG_PALETTE_FORMAT(xxxxBBBBGGGGRRRR)
@@ -1488,6 +1992,7 @@ static MACHINE_CONFIG_START( secretab, dec0_automat_state )
 	/* sound hardware */
 	MCFG_SPEAKER_STANDARD_MONO("mono")
 
+<<<<<<< HEAD
 	MCFG_SOUND_ADD("2203a", YM2203, 1500000)
 	MCFG_SOUND_ROUTE(0, "mono", 0.90)
 	MCFG_SOUND_ROUTE(1, "mono", 0.90)
@@ -1495,16 +2000,43 @@ static MACHINE_CONFIG_START( secretab, dec0_automat_state )
 	MCFG_SOUND_ROUTE(3, "mono", 0.35)
 
 	MCFG_SOUND_ADD("2203b", YM2203, 1500000)
+=======
+	MCFG_GENERIC_LATCH_8_ADD("soundlatch")
+	MCFG_GENERIC_LATCH_DATA_PENDING_CB(INPUTLINE("audiocpu", 0))
+
+	MCFG_SOUND_ADD("2203a", YM2203, 1250000)
+>>>>>>> upstream/master
 	MCFG_SOUND_ROUTE(0, "mono", 0.90)
 	MCFG_SOUND_ROUTE(1, "mono", 0.90)
 	MCFG_SOUND_ROUTE(2, "mono", 0.90)
 	MCFG_SOUND_ROUTE(3, "mono", 0.35)
 
+<<<<<<< HEAD
 	MCFG_SOUND_ADD("msm", MSM5205, 384000/2)
 	MCFG_MSM5205_VCLK_CB(WRITELINE(dec0_automat_state, automat_vclk_cb))
 	MCFG_MSM5205_PRESCALER_SELECTOR(MSM5205_S48_4B)
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 1.0)
 
+=======
+	MCFG_SOUND_ADD("ym3812", YM3812, 2500000)
+	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 0.80)
+
+	MCFG_DEVICE_ADD("adpcm_select1", LS157, 0)
+	MCFG_74157_OUT_CB(DEVWRITE8("msm1", msm5205_device, data_w))
+
+	MCFG_DEVICE_ADD("adpcm_select2", LS157, 0)
+	MCFG_74157_OUT_CB(DEVWRITE8("msm2", msm5205_device, data_w))
+
+	MCFG_SOUND_ADD("msm1", MSM5205, 384000)
+	MCFG_MSM5205_VCLK_CB(WRITELINE(dec0_automat_state, msm1_vclk_cb))
+	MCFG_MSM5205_PRESCALER_SELECTOR(S96_4B)
+	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 1.0)
+
+	MCFG_SOUND_ADD("msm2", MSM5205, 384000)
+	MCFG_MSM5205_VCLK_CB(WRITELINE(dec0_automat_state, msm2_vclk_cb))
+	MCFG_MSM5205_PRESCALER_SELECTOR(S96_4B)
+	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 1.0)
+>>>>>>> upstream/master
 MACHINE_CONFIG_END
 
 
@@ -1520,6 +2052,19 @@ MACHINE_CONFIG_END
 
 static MACHINE_CONFIG_DERIVED( baddudes, dec0 )
 
+<<<<<<< HEAD
+=======
+	MCFG_CPU_ADD("mcu", I8751, XTAL_8MHz)
+	MCFG_CPU_IO_MAP(mcu_io_map)
+
+	/* video hardware */
+	MCFG_SCREEN_MODIFY("screen")
+	MCFG_SCREEN_UPDATE_DRIVER(dec0_state, screen_update_baddudes)
+MACHINE_CONFIG_END
+
+static MACHINE_CONFIG_DERIVED( drgninjab, dec0 )
+
+>>>>>>> upstream/master
 	/* video hardware */
 	MCFG_SCREEN_MODIFY("screen")
 	MCFG_SCREEN_UPDATE_DRIVER(dec0_state, screen_update_baddudes)
@@ -1628,8 +2173,15 @@ static MACHINE_CONFIG_DERIVED( midresb, midres )
 	MCFG_CPU_REPLACE("audiocpu", M6502, 1500000 )
 	MCFG_CPU_PROGRAM_MAP(dec0_s_map)
 
+<<<<<<< HEAD
 	MCFG_SOUND_MODIFY("ym2")
 	MCFG_YM3812_IRQ_HANDLER(WRITELINE(dec0_state, sound_irq))
+=======
+	MCFG_CPU_ADD("mcu", M68705R3, XTAL_3_579545MHz)
+
+	MCFG_SOUND_MODIFY("ym2")
+	MCFG_YM3812_IRQ_HANDLER(INPUTLINE("audiocpu", 0))
+>>>>>>> upstream/master
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 0.80)
 
 	// bootleg doesn't seem to support row/col scroll (or enable is different)
@@ -1645,6 +2197,13 @@ static MACHINE_CONFIG_DERIVED( midresb, midres )
 
 MACHINE_CONFIG_END
 
+<<<<<<< HEAD
+=======
+static MACHINE_CONFIG_DERIVED( midresbj, midresb )
+	MCFG_DEVICE_REMOVE("mcu")
+MACHINE_CONFIG_END
+
+>>>>>>> upstream/master
 /******************************************************************************/
 
 ROM_START( hbarrel )
@@ -1755,8 +2314,13 @@ ROM_START( baddudes )
 	ROM_REGION( 0x10000, "audiocpu", 0 )    /* Sound CPU */
 	ROM_LOAD( "ei07.8a",   0x8000, 0x8000, CRC(9fb1ef4b) SHA1(f4dd0773be93c2ad8b0faacd12939c531b5aa130) )
 
+<<<<<<< HEAD
 	ROM_REGION( 0x1000, "mcu", 0 )  /* i8751 microcontroller */
 	ROM_LOAD( "ei31.9a",   0x0000, 0x1000, NO_DUMP )
+=======
+	ROM_REGION( 0x1000, "mcu", 0 )  /* i8751 microcontroller - see notes */
+	ROM_LOAD( "ei31.9a",   0x0000, 0x1000, CRC(2a8745d2) SHA1(f15ab17b1e7836d603135f5c66ca2e3d72f6e4a2) BAD_DUMP )
+>>>>>>> upstream/master
 
 	ROM_REGION( 0x10000, "gfx1", 0 ) /* chars */
 	ROM_LOAD( "ei25.15j",  0x00000, 0x08000, CRC(bcf59a69) SHA1(486727e19c12ea55b47e2ef773d0d0471cf50083) )
@@ -1798,8 +2362,13 @@ ROM_START( drgninja )
 	ROM_REGION( 0x10000, "audiocpu", 0 )    /* Sound CPU */
 	ROM_LOAD( "eg07.8a",   0x8000, 0x8000, CRC(001d2f51) SHA1(f186671f0450ccf9201577a5caf0efc490c6645e) )
 
+<<<<<<< HEAD
 	ROM_REGION( 0x1000, "mcu", 0 )  /* i8751 microcontroller */
 	ROM_LOAD( "i8751",     0x0000, 0x1000, NO_DUMP )
+=======
+	ROM_REGION( 0x1000, "mcu", 0 )  /* i8751 microcontroller - using hacked baddudes program */
+	ROM_LOAD( "i8751",     0x0000, 0x1000, CRC(c3f6bc70) SHA1(3c80197dc70c6cb283df5d11d29a9d9baabcd99b) BAD_DUMP )
+>>>>>>> upstream/master
 
 	/* various graphic and sound roms also differ when compared to baddudes */
 
@@ -1886,6 +2455,106 @@ ROM_START( drgninjab )
 	ROM_LOAD( "eg08.2c",   0x0000, 0x10000, CRC(92f2c916) SHA1(38b4ed81edcc2069b096591bdc5baab8b9edfa9a) ) // different to baddudes
 ROM_END
 
+<<<<<<< HEAD
+=======
+
+
+/*
+
+ CPUs
+QTY     Type    clock   position    function
+1x  SCN68000CAN64       main PCB 9h     16/32-bit Microprocessor - main
+1x  UM6502      main PCB 7d     8-bit Microprocessor - sound
+1x  MC3403      main PCB 14e    Quad Operational Amplifier - sound
+1x  GL358       main PCB 13b    Dual Operational Amplifier - sound
+1x  YM2203C         main PCB 12a    FM Operator Type-M (OPM) - sound
+2x  YM3014B         main PCB 13d, 13e   D/A Converter (DAC) - sound
+1x  YM3812      main PCB 9b     FM Operator Type-L II (OPL II) - sound
+1x  MC68705R3P      ROMs PCB 1l     8-bit EPROM Microcomputer Unit - main (not dumped)
+1x  M5205       ROMs PCB 12c    ADPCM Speech Syntesis IC - sound
+1x  oscillator  24.000MHz   main PCB 2a
+1x  oscillator  16.0000     main PCB 12n
+1x  blu resonator   CSB-400P    ROMs PCB 12b
+ROMs
+QTY     Type    position    status
+4x  27256   main PCB 1-4    dumped
+4x  27512   main PCB 5-8    dumped
+7x  27256   ROMs PCB 15,20-23,28,29     dumped
+9x  27512   ROMs PCB 9-14,27-30     dumped
+2x  N82S129AN   main PCB 2q,3p  not dumped yet
+1x  N82S131N    main PCB 5q     not dumped yet
+1x  N82S137N    main PCB 8u     not dumped yet
+1x  N82S129AN   ROMs PCB 12c    not dumped yet
+RAMs
+QTY     Type    position
+2x  HY6264  main PCB 12c,12d
+14x     TMM2018     main PCB 1e,2e,5k,5l,5m,5n,5o,5p,7m,7n,8b,11s,11t,11u
+2x  TMM2064     ROMs PCB 8n,8o
+4x  TMM2018     ROMs PCB 8f,8g,8j,8k
+PLDs
+QTY     Type    position    status
+Others
+
+1x 28x2 edge connector
+3x 50 pins flat cable connector from main board to roms board
+1x trimmer (volume)
+1x 8x2 switches DIP
+
+*/
+
+ROM_START( drgninjab2 )
+	ROM_REGION( 0x60000, "maincpu", 0 )
+	ROM_LOAD16_BYTE( "a14.3e",  0x00000, 0x10000, CRC(c4b9f4e7) SHA1(4a8176cce8c7909aace8ece4f97b1a199617938e) ) // 99.978638%
+	ROM_LOAD16_BYTE( "a11.3b",  0x00001, 0x10000, CRC(e4cc7c60) SHA1(63aeab4e20420f28a947438f2d7079c92a43d2df) ) // 99.978638%
+	ROM_LOAD16_BYTE( "a12.2e",  0x40000, 0x10000, CRC(2b81faf7) SHA1(6d10c29f5ee06856843d83e77ba24c2b6e00a9cb) )
+	ROM_LOAD16_BYTE( "a9.2b",   0x40001, 0x10000, CRC(c52c2e9d) SHA1(399f2b7df9d558c8f33bf1a7c8048c62e0f54cec) )
+
+	ROM_REGION( 0x10000, "audiocpu", 0 )    /* Sound CPU */
+	ROM_LOAD( "a15.7b",   0x8000, 0x8000, CRC(82007af2) SHA1(f0db1b1dab199df402a7590e56d4d5ab4baca803) ) // 99.612427%
+
+	ROM_REGION( 0x1000, "mcu", 0 )  /* 68705 microcontroller */
+	ROM_LOAD( "mc68705r3p",     0x0000, 0x1000, NO_DUMP )
+
+	ROM_REGION( 0x10000, "gfx1", 0 ) /* chars */
+	ROM_LOAD( "a22.9m",  0x00000, 0x08000, CRC(6791bc20) SHA1(7240b2688cda04ee9ea331472a84fbffc85b8e90) ) // 99.996948%
+	ROM_LOAD( "a23.9n",  0x08000, 0x08000, CRC(5d75fc8f) SHA1(92947dd78bfe8067fb5f645fa1ef212e48b69c70) )
+
+	ROM_REGION( 0x40000, "gfx2", 0 ) /* tiles */ // identical but split into 4 roms
+	ROM_LOAD( "a25.10f",  0x00000, 0x10000, CRC(05cfc3e5) SHA1(a0163921c77dc9706463a402c3dd45ec4341cd21) )
+	ROM_LOAD( "a27.10h",  0x10000, 0x10000, CRC(e11e988f) SHA1(0c59f0d8d1abe414c7e1ebd49d454179fed2cd00) )
+	ROM_LOAD( "a24.10e",  0x20000, 0x10000, CRC(b893d880) SHA1(99e228174677f2e3e96154f77bfa9bf0f1c0a6a5) )
+	ROM_LOAD( "a26.10g",  0x30000, 0x10000, CRC(6f226dda) SHA1(65ebb16a292c57d49c135fce7ed7537146226eb5) )
+
+	ROM_REGION( 0x20000, "gfx3", 0 ) /* tiles */
+	ROM_LOAD( "a29.10k",   0x00000, 0x08000, CRC(4bf80966) SHA1(de4d83bac16f161a43678c2b2ae71f8fcac7212d) )
+	ROM_LOAD( "a21.9k",    0x08000, 0x08000, CRC(b2e989fc) SHA1(492c1f3b18a4059c87254e0cba01ad9848e8b553) )
+	ROM_LOAD( "a28.10j",   0x10000, 0x08000, CRC(2d38032d) SHA1(833ebff370825e5c8b8fc59fbe663b8998884353) )
+	ROM_LOAD( "a20.9j",    0x18000, 0x08000, CRC(e71c0793) SHA1(e42a8192c772da1d6c93f9f9e89c553d712e18f7) )
+
+	ROM_REGION( 0x80000, "gfx4", 0 ) /* sprites */
+	ROM_LOAD( "a6.4g",  0x00000, 0x10000, CRC(5617d67f) SHA1(8f684de27ae79c4d35720706cdd2733af0e0a9cc) )
+	ROM_LOAD( "a2.4c",  0x10000, 0x08000, CRC(17e42633) SHA1(405f5296a741901677cca978a1b287d894eb1e54) )
+	ROM_LOAD( "a8.5g",  0x20000, 0x10000, CRC(ba83e8d8) SHA1(63092a5d0da0c9228a72a83b43a67a47b1388724) )
+	ROM_LOAD( "a4.5c",  0x30000, 0x08000, CRC(fea2a134) SHA1(525dd5f48993db1fe1e3c095442884178f75e8e0) )
+	ROM_LOAD( "a5.3g",  0x40000, 0x10000, CRC(fd91e08e) SHA1(8998f020791c8830e963096dc7b8fcb430d041d4) )
+	ROM_LOAD( "a1.3c",  0x50000, 0x08000, CRC(e83c760a) SHA1(d08db381658b8b3288c5eaa9048a906126e0f712) )
+	ROM_LOAD( "a7.4-5g",  0x60000, 0x10000, CRC(601b7b23) SHA1(c1c665614f1377bc47720382b25c965266a2593f) )
+	ROM_LOAD( "a3.4-5c",  0x70000, 0x08000, CRC(eeee8a1a) SHA1(2bf8378ff38f6a7c7cbd4cbd489de25cb1f0fe71) )
+
+	ROM_REGION( 0x40000, "oki", 0 ) /* ADPCM samples */
+	ROM_LOAD( "a30.10b",   0x0000, 0x10000, CRC(f6806826) SHA1(e2c6a0682f34d30c63dab8715729151cc3657387) ) //  99.218750%
+
+	ROM_REGION( 0x40000, "proms", 0 ) /* proms */
+	ROM_LOAD( "n82s129an.12c",   0x0000, 0x100, CRC(78994fdb) SHA1(cd52bff11b81f19eeb2683ed94b236f1464a5ea9) )
+	ROM_LOAD( "n82s129an.2q",    0x0000, 0x100, CRC(af46d1ee) SHA1(281bcc61d9d67b007c1399e228ec6baf6ab5d4ff) )
+	ROM_LOAD( "n82s129an.3p",    0x0000, 0x100, CRC(9f6aa3e5) SHA1(518247d4581eee3a078269fcf0c86d182cf622cd) )
+	ROM_LOAD( "n82s131n.5q",   0x0000, 0x200, CRC(86e775f8) SHA1(e8dee3d56fb5ca0fd7f9ce05a84674abb139d008) )
+	ROM_LOAD( "n82s137n.8u",   0x0000, 0x400, CRC(a5cda23e) SHA1(d6c8534ae3c95b47a0701047fef67f15dd71f3fe) )
+ROM_END
+
+
+
+>>>>>>> upstream/master
 ROM_START( birdtry )
 	ROM_REGION( 0x60000, "maincpu", 0 ) /* 6*64k for 68000 code */
 	ROM_LOAD16_BYTE( "ek-04.bin",     0x00000, 0x10000, CRC(5f0f4686) SHA1(5eea74f5626339ebd50e623029f21f1cd0f93135) )
@@ -2228,7 +2897,11 @@ the music and circuit design from an earlier
 capcom game, i can't work out whcih one, but
 what an odd thing to do!
 
+<<<<<<< HEAD
 you can see a youtube video of it runnign here:
+=======
+you can see a youtube video of it running here:
+>>>>>>> upstream/master
 http://uk.youtube.com/watch?v=Y-KvbKtqzaQ
 
 Rom 21 is full of 0's... i cleaned and re-dumped
@@ -2242,6 +2915,7 @@ enjoy..
 
 ROM_START( automat )
 	ROM_REGION( 0x60000, "maincpu", 0 ) /* 68000 code */
+<<<<<<< HEAD
 	ROM_LOAD16_BYTE( "5.bin", 0x00000, 0x10000, CRC(fb6faa74) SHA1(0af03c06193b5ba1422571b9504a7f655c608d94) )
 	ROM_LOAD16_BYTE( "2.bin", 0x00001, 0x10000, CRC(7ecf8309) SHA1(59dd50bcb528ece42a67154bcc4f432770420986) )
 	ROM_LOAD16_BYTE( "4.bin", 0x20000, 0x10000, CRC(9d7b79e0) SHA1(e0d901b9b3cd62f7c947da04f7447ebfa88bf44a) )
@@ -2249,6 +2923,16 @@ ROM_START( automat )
 
 	ROM_REGION( 0x10000, "audiocpu", 0 )    /* Z80 Sound */
 	ROM_LOAD( "1.bin", 0x00000, 0x10000, CRC(72ea6024) SHA1(debd30219879ec01f43cc116a6cfa17209940ecc) )
+=======
+	ROM_LOAD16_BYTE( "5.ic50", 0x00000, 0x10000, CRC(fb6faa74) SHA1(0af03c06193b5ba1422571b9504a7f655c608d94) )
+	ROM_LOAD16_BYTE( "2.ic54", 0x00001, 0x10000, CRC(7ecf8309) SHA1(59dd50bcb528ece42a67154bcc4f432770420986) )
+	ROM_LOAD16_BYTE( "4.ic51", 0x20000, 0x10000, CRC(9d7b79e0) SHA1(e0d901b9b3cd62f7c947da04f7447ebfa88bf44a) )
+	ROM_LOAD16_BYTE( "3.ic53", 0x20001, 0x10000, CRC(e655f9c3) SHA1(d5e99d542303d009277ccfc245f877e4e28603c9) )
+
+	ROM_REGION( 0x20000, "audiocpu", 0 )    /* Z80 Sound */
+	ROM_LOAD( "1.ic26", 0x00000, 0x10000, CRC(72ea6024) SHA1(debd30219879ec01f43cc116a6cfa17209940ecc) )
+	ROM_RELOAD(        0x10000, 0x10000 ) // IC25 socket unpopulated
+>>>>>>> upstream/master
 
 	ROM_REGION( 0x40000, "gfxload1", 0 ) /* chars */
 	ROM_LOAD( "8.bin",  0x00000, 0x10000, CRC(dcfffc7a) SHA1(e250626473917d397381210ef536efbc93c46474) ) // y?
@@ -2361,7 +3045,11 @@ ROM_START( hippodrm )
 	ROM_LOAD( "ew03",         0x0000, 0x10000, CRC(b606924d) SHA1(b759fcec10b333465cf5cd1b30987bf2d62186b2) )
 ROM_END
 
+<<<<<<< HEAD
 ROM_START( ffantasy )
+=======
+ROM_START( ffantasyj )
+>>>>>>> upstream/master
 	ROM_REGION( 0x60000, "maincpu", 0 ) /* 4*64k for 68000 code */
 	ROM_LOAD16_BYTE( "ff-02-2.bin",  0x00000, 0x10000, CRC(29fc22a7) SHA1(73cbd47c34bee22c16a69cfc6037a60dc30effe8) )
 	ROM_LOAD16_BYTE( "ff-01-2.bin",  0x00001, 0x10000, CRC(9f617cb4) SHA1(447ea4e57dd6b23aaf48e5e14c7893277730c7d9) )
@@ -2404,6 +3092,55 @@ ROM_START( ffantasy )
 	ROM_LOAD( "ew03",         0x0000, 0x10000, CRC(b606924d) SHA1(b759fcec10b333465cf5cd1b30987bf2d62186b2) )
 ROM_END
 
+<<<<<<< HEAD
+=======
+// I believe 'EX' is the world (export) release, but it still shows a 'ONLY FOR USE IN JAPAN' screen
+// 'EV' is original Japanese release.
+// 'EW' is US release.
+ROM_START( ffantasy )
+	ROM_REGION( 0x60000, "maincpu", 0 ) /* 4*64k for 68000 code */
+	ROM_LOAD16_BYTE( "ex02-3.4b",  0x00000, 0x10000, CRC(df0d7dc6) SHA1(a60197ad6f19f730e05cf6a3be9181f28d425344) )
+	ROM_LOAD16_BYTE( "ex01-3.3b",  0x00001, 0x10000, CRC(c0fb4fe5) SHA1(f6ed0904ec19491c4ed5f5e5da16df02476ab1f3) )
+	ROM_LOAD16_BYTE( "ex05-.4c",   0x20000, 0x10000, CRC(c76d65ec) SHA1(620990acaf2fd7f3fbfe7135a17ac0195feb8330) )
+	ROM_LOAD16_BYTE( "ex00-.1b",   0x20001, 0x10000, CRC(e9b427a6) SHA1(b334992846771739d31756724138b82f897dfad5) )
+
+	ROM_REGION( 0x10000, "audiocpu", 0 )    /* 6502 sound */
+	ROM_LOAD( "ex04-.1c",         0x8000, 0x8000, CRC(9871b98d) SHA1(2b6c46bc2b10a28946d6ad8251e1a156a0b99947) )
+
+	ROM_REGION( 0x10000, "sub", 0 ) /* HuC6280 CPU */
+	ROM_LOAD( "ew08",         0x00000, 0x10000, CRC(53010534) SHA1(8b996e48414bacd009e05ff49848884ecf15d967) )
+
+	ROM_REGION( 0x20000, "gfx1", 0 ) /* chars */
+	ROM_LOAD( "ev14",         0x00000, 0x10000, CRC(686f72c1) SHA1(41d4fc1208d779f3428990a96586f6a555c28562) )
+	ROM_LOAD( "ev13",         0x10000, 0x10000, CRC(b787dcc9) SHA1(7fce9d2040bcb2483419ea1cafed538bb8aba4f9) )
+
+	ROM_REGION( 0x20000, "gfx2", 0 ) /* tiles */
+	ROM_LOAD( "ew19",         0x00000, 0x08000, CRC(6b80d7a3) SHA1(323162e7e0ce16f6244d8d98fdb2396ffef87e82) )
+	ROM_LOAD( "ew18",         0x08000, 0x08000, CRC(78d3d764) SHA1(e8f77a23bd4f4d268bec7c0153fb957acd07cdee) )
+	ROM_LOAD( "ew20",         0x10000, 0x08000, CRC(ce9f5de3) SHA1(b8af33f52ca3579a45b41395751697a58931f9d6) )
+	ROM_LOAD( "ew21",         0x18000, 0x08000, CRC(487a7ba2) SHA1(7d52cc1517def8426355e8281440ec5e617d1121) )
+
+	ROM_REGION( 0x20000, "gfx3", 0 ) /* tiles */
+	ROM_LOAD( "ew24",         0x00000, 0x08000, CRC(4e1bc2a4) SHA1(d7d4c42fd932722436f1847929088e46d03184bd) )
+	ROM_LOAD( "ew25",         0x08000, 0x08000, CRC(9eb47dfb) SHA1(bb1e8a3a47f447f3a983ea51943d3081d56ad9a4) )
+	ROM_LOAD( "ew23",         0x10000, 0x08000, CRC(9ecf479e) SHA1(a8d4c1490f12e1b15d53a2a97147920dcb638378) )
+	ROM_LOAD( "ew22",         0x18000, 0x08000, CRC(e55669aa) SHA1(2a9b0e85bb81ff87a108e08b28e19b7b469463e4) )
+
+	ROM_REGION( 0x80000, "gfx4", 0 ) /* sprites */
+	ROM_LOAD( "ev15",         0x00000, 0x10000, CRC(1d80f797) SHA1(1b6878155367350ff826593ea73bda5b893c1823) )
+	ROM_LOAD( "ew16",         0x10000, 0x10000, CRC(96233177) SHA1(929a1b7fb65ab33277719b84517ff57da563f875) )
+	ROM_LOAD( "ev10",         0x20000, 0x10000, CRC(c4e7116b) SHA1(1e665ba150e08ceb1c0d5f7b7e777f3d60997811) )
+	ROM_LOAD( "ew11",         0x30000, 0x10000, CRC(f2e007fc) SHA1(da30ad3725b9bc4a07dbb1afa05f145c3574c84c) )
+	ROM_LOAD( "ev06",         0x40000, 0x10000, CRC(6c794f1a) SHA1(ab7996917bea99850aef5a0890485dd27778cd99) )
+	ROM_LOAD( "ew07",         0x50000, 0x10000, CRC(470b6989) SHA1(16b292d8a3a54048bf29f0b4f41bb6ca049b347c) )
+	ROM_LOAD( "ev17",         0x60000, 0x10000, CRC(045509d4) SHA1(ebbd71de8e8492ff6321e3ede0d98d9ed462de01) )
+	ROM_LOAD( "ew12",         0x70000, 0x10000, CRC(a2d244bc) SHA1(ff2391efc480f36a302650691f8a7a620b86d99a) )
+
+	ROM_REGION( 0x40000, "oki", 0 ) /* ADPCM samples */
+	ROM_LOAD( "ew03",         0x0000, 0x10000, CRC(b606924d) SHA1(b759fcec10b333465cf5cd1b30987bf2d62186b2) )
+ROM_END
+
+>>>>>>> upstream/master
 ROM_START( ffantasya )
 	ROM_REGION( 0x60000, "maincpu", 0 ) /* 4*64k for 68000 code */
 	ROM_LOAD16_BYTE( "ev02",         0x00000, 0x10000, CRC(797a7860) SHA1(aaab24c99e96b393d2bda435f18b0dc4003cdf09) )
@@ -2447,6 +3184,52 @@ ROM_START( ffantasya )
 	ROM_LOAD( "ew03",         0x0000, 0x10000, CRC(b606924d) SHA1(b759fcec10b333465cf5cd1b30987bf2d62186b2) )
 ROM_END
 
+<<<<<<< HEAD
+=======
+ROM_START( ffantasyb )  // DE-0297-3 PCB. All EX labels.
+	ROM_REGION( 0x60000, "maincpu", 0 ) /* 4*64k for 68000 code */
+	ROM_LOAD16_BYTE( "ex02-2",       0x00000, 0x10000, CRC(4c26cda6) SHA1(475eb30da7020bf2b1546e3878973231aa52d522) )
+	ROM_LOAD16_BYTE( "ex01",         0x00001, 0x10000, CRC(d2c4ab91) SHA1(3134e5aa9815e9ca46601c46268a91414f907fce) )
+	ROM_LOAD16_BYTE( "ex05",         0x20000, 0x10000, CRC(c76d65ec) SHA1(620990acaf2fd7f3fbfe7135a17ac0195feb8330) )
+	ROM_LOAD16_BYTE( "ex00",         0x20001, 0x10000, CRC(e9b427a6) SHA1(b334992846771739d31756724138b82f897dfad5) )
+
+	ROM_REGION( 0x10000, "audiocpu", 0 )    /* 6502 sound */
+	ROM_LOAD( "ex04",         0x8000, 0x8000, CRC(9871b98d) SHA1(2b6c46bc2b10a28946d6ad8251e1a156a0b99947) )
+
+	ROM_REGION( 0x10000, "sub", 0 ) /* HuC6280 CPU */
+	ROM_LOAD( "ex08",         0x00000, 0x10000, CRC(53010534) SHA1(8b996e48414bacd009e05ff49848884ecf15d967) )
+
+	ROM_REGION( 0x20000, "gfx1", 0 ) /* chars */
+	ROM_LOAD( "ex14",         0x00000, 0x10000, CRC(686f72c1) SHA1(41d4fc1208d779f3428990a96586f6a555c28562) )
+	ROM_LOAD( "ex13",         0x10000, 0x10000, CRC(b787dcc9) SHA1(7fce9d2040bcb2483419ea1cafed538bb8aba4f9) )
+
+	ROM_REGION( 0x20000, "gfx2", 0 ) /* tiles */
+	ROM_LOAD( "ex19",         0x00000, 0x08000, CRC(6b80d7a3) SHA1(323162e7e0ce16f6244d8d98fdb2396ffef87e82) )
+	ROM_LOAD( "ex18",         0x08000, 0x08000, CRC(78d3d764) SHA1(e8f77a23bd4f4d268bec7c0153fb957acd07cdee) )
+	ROM_LOAD( "ex20",         0x10000, 0x08000, CRC(ce9f5de3) SHA1(b8af33f52ca3579a45b41395751697a58931f9d6) )
+	ROM_LOAD( "ex21",         0x18000, 0x08000, CRC(487a7ba2) SHA1(7d52cc1517def8426355e8281440ec5e617d1121) )
+
+	ROM_REGION( 0x20000, "gfx3", 0 ) /* tiles */
+	ROM_LOAD( "ex24",         0x00000, 0x08000, CRC(4e1bc2a4) SHA1(d7d4c42fd932722436f1847929088e46d03184bd) )
+	ROM_LOAD( "ex25",         0x08000, 0x08000, CRC(9eb47dfb) SHA1(bb1e8a3a47f447f3a983ea51943d3081d56ad9a4) )
+	ROM_LOAD( "ex23",         0x10000, 0x08000, CRC(9ecf479e) SHA1(a8d4c1490f12e1b15d53a2a97147920dcb638378) )
+	ROM_LOAD( "ex22",         0x18000, 0x08000, CRC(e55669aa) SHA1(2a9b0e85bb81ff87a108e08b28e19b7b469463e4) )
+
+	ROM_REGION( 0x80000, "gfx4", 0 ) /* sprites */
+	ROM_LOAD( "ex15",         0x00000, 0x10000, CRC(95423914) SHA1(e9e7a6bdf5aa717dc04a751709632f31762886fb) )
+	ROM_LOAD( "ex16",         0x10000, 0x10000, CRC(96233177) SHA1(929a1b7fb65ab33277719b84517ff57da563f875) )
+	ROM_LOAD( "ex10",         0x20000, 0x10000, CRC(4c25dfe8) SHA1(e4334de96698cd0112a8926dea131e748b6a84fc) )
+	ROM_LOAD( "ex11",         0x30000, 0x10000, CRC(f2e007fc) SHA1(da30ad3725b9bc4a07dbb1afa05f145c3574c84c) )
+	ROM_LOAD( "ex06",         0x40000, 0x10000, CRC(e4bb8199) SHA1(49b5b45c7cd9c44f53d83ee2a156d9e9f8a53960) )
+	ROM_LOAD( "ex07",         0x50000, 0x10000, CRC(470b6989) SHA1(16b292d8a3a54048bf29f0b4f41bb6ca049b347c) )
+	ROM_LOAD( "ex17",         0x60000, 0x10000, CRC(8c97c757) SHA1(36fd807da9e144dfb29c8252e9450cc37ca2604f) )
+	ROM_LOAD( "ex12",         0x70000, 0x10000, CRC(a2d244bc) SHA1(ff2391efc480f36a302650691f8a7a620b86d99a) )
+
+	ROM_REGION( 0x40000, "oki", 0 ) /* ADPCM samples */
+	ROM_LOAD( "ex03",         0x0000, 0x10000, CRC(b606924d) SHA1(b759fcec10b333465cf5cd1b30987bf2d62186b2) )
+ROM_END
+
+>>>>>>> upstream/master
 /* this is probably a bootleg of an undumped original revision */
 ROM_START( ffantasybl )
 	ROM_REGION( 0x80000, "maincpu", 0 ) /* 4*64k for 68000 code */
@@ -2458,7 +3241,11 @@ ROM_START( ffantasybl )
 	ROM_REGION( 0x10000, "audiocpu", 0 )    /* 6502 sound */
 	ROM_LOAD( "15.bin",         0x8000, 0x8000, CRC(9871b98d) SHA1(2b6c46bc2b10a28946d6ad8251e1a156a0b99947) )
 
+<<<<<<< HEAD
 	ROM_REGION( 0x10000, "cpu2", 0 )    /* 68705 MCU */ // (labeled on PCB as Z80, but it isn't!)
+=======
+	ROM_REGION( 0x1000, "mcu", 0 )    /* 68705 MCU */ // (labeled on PCB as Z80, but it isn't!)
+>>>>>>> upstream/master
 	ROM_LOAD( "68705u3.bin",              0x00000, 0x1000, NO_DUMP ) // nor dumped, maybe it's the same as the midresb one?
 
 	ROM_REGION( 0x20000, "gfx1", 0 ) /* chars */
@@ -2583,6 +3370,52 @@ ROM_END
 
 ROM_START( slyspy )
 	ROM_REGION( 0x60000, "maincpu", 0 ) /* 68000 code */
+<<<<<<< HEAD
+=======
+	ROM_LOAD16_BYTE( "fa14-4.17l", 0x00000, 0x10000, CRC(60f16e31) SHA1(b2359fe8ecbed63b7d56c9962fab16b354a14305) )
+	ROM_LOAD16_BYTE( "fa12-4.9l",  0x00001, 0x10000, CRC(b9b9fdcf) SHA1(fdd91b9bc8f0228078bb50323531808076180fe7) )
+	ROM_LOAD16_BYTE( "fa15.19l",   0x20000, 0x10000, CRC(04a79266) SHA1(69d256ffb1c89721f8b1e929c581f187e047b977) )
+	ROM_LOAD16_BYTE( "fa13.11l",   0x20001, 0x10000, CRC(641cc4b3) SHA1(ce0ccd14d201f411cfc02ec988b2ad4fcb0d8f5d) )
+
+	ROM_REGION( 0x10000, "audiocpu", 0 )    /* Sound CPU */
+	ROM_LOAD( "fa10.5h", 0x00000, 0x10000, CRC(dfd2ff25) SHA1(3dcd6d50b92b49daae4b51581abe9c95f764e848) ) // == FB counterpart from World set
+
+	ROM_REGION( 0x10000, "gfx1", 0 ) /* chars */
+	ROM_LOAD( "fa05.11a", 0x04000, 0x04000, CRC(09802924) SHA1(d9bc5fe7f053afa15cd39400aae993866d1b0226) ) // == FB counterpart from World set
+	ROM_CONTINUE(         0x00000, 0x04000 )    /* the two halves are swapped */
+	ROM_LOAD( "fa04.9a",  0x0c000, 0x04000, CRC(ec25b895) SHA1(8c1d2b9a2487fd7114d37fe9dc271183c4cc1613) ) // == FB counterpart from World set
+	ROM_CONTINUE(         0x08000, 0x04000 )
+
+	ROM_REGION( 0x20000, "gfx2", 0 ) /* tiles */
+	ROM_LOAD( "fa07.17a", 0x00000, 0x10000, CRC(e932268b) SHA1(ee8ed29affa951e725cf19a5f56d3beac24420c9) ) // == FB counterpart from World set
+	ROM_LOAD( "fa06.15a", 0x10000, 0x10000, CRC(c4dd38c0) SHA1(267dbbdd5df6b13662cd307c5c95fdf643d64f45) ) // == FB counterpart from World set
+
+	ROM_REGION( 0x40000, "gfx3", 0 ) /* tiles */
+	ROM_LOAD( "fa09.22a", 0x00000, 0x20000, CRC(1395e9be) SHA1(60693ac6236ffe1e0933d81771cfad32e14514c3) ) // == FB counterpart from World set
+	ROM_LOAD( "fa08.21a", 0x20000, 0x20000, CRC(4d7464db) SHA1(82e2a3c3d78447985968220d52c7c1f1ff625d83) )
+
+	ROM_REGION( 0x80000, "gfx4", 0 ) /* sprites */
+	ROM_LOAD( "fa01.4a", 0x00000, 0x20000, CRC(99b0cd92) SHA1(2729e874730391b5fa93e9a28142c02c00eb5068) ) // == FB counterpart from World set
+	ROM_LOAD( "fa03.7a", 0x20000, 0x20000, CRC(0e7ea74d) SHA1(22078a2856933af2d31750a4a506b993fe309e9a) ) // == FB counterpart from World set
+	ROM_LOAD( "fa00.2a", 0x40000, 0x20000, CRC(f7df3fd7) SHA1(ed9e4649e0b1fcca61cf4d159b3f8a35f06102ce) ) // == FB counterpart from World set
+	ROM_LOAD( "fa02.5a", 0x60000, 0x20000, CRC(84e8da9d) SHA1(41da6042f80ea3562aa350f4f466b16db29e2aca) ) // == FB counterpart from World set
+
+	ROM_REGION( 0x40000, "oki", 0 ) /* ADPCM samples */
+	ROM_LOAD( "fa11.11k", 0x00000, 0x20000, CRC(4e547bad) SHA1(655eda4d00f8846957ed40dcbf750fba3ce19f4e) ) // == FB counterpart from World set
+
+	ROM_REGION( 0x0100, "proms", 0 )
+	ROM_LOAD( "mb7114h.21k", 0x0000, 0x0100, CRC(ad26e8d4) SHA1(827337aeb8904429a1c050279240ae38aa6ce064) )    /* Priority (not used) */
+
+	ROM_REGION( 0x0800, "plds", 0 )
+	ROM_LOAD( "pal16l8b-ta-1.15k", 0x0000, 0x0104, CRC(79a87527) SHA1(3c6ad20d5a7c41c020e671d462c0b1e4a5dda7f8) )
+	ROM_LOAD( "pal16r4a-ta-2.16k", 0x0200, 0x0104, CRC(eca31311) SHA1(a87b2721e13767f7448236d0bbb3355583fe88bb) )
+	ROM_LOAD( "pal16l8a-ta-3.17k", 0x0400, 0x0104, CRC(6c324919) SHA1(83bba4634d7ab7c4ad3083c063804fd1e7c9c10b) )
+	ROM_LOAD( "pal16l8a-ta-4.11m", 0x0600, 0x0104, CRC(116177fa) SHA1(f63802578b6f743e2d3a64e4805488d44361dcb2) )
+ROM_END
+
+ROM_START( slyspy3 )
+	ROM_REGION( 0x60000, "maincpu", 0 ) /* 68000 code */
+>>>>>>> upstream/master
 	ROM_LOAD16_BYTE( "fa14-3.17l", 0x00000, 0x10000, CRC(54353a84) SHA1(899559f17705a8222fd56e9304e9b802eac8f6db) )
 	ROM_LOAD16_BYTE( "fa12-2.9l",  0x00001, 0x10000, CRC(1b534294) SHA1(cf7badea6604c47d9f3ff8a0ef326e09de1974a0) )
 	ROM_LOAD16_BYTE( "fa15.19l",   0x20000, 0x10000, CRC(04a79266) SHA1(69d256ffb1c89721f8b1e929c581f187e047b977) )
@@ -2691,6 +3524,7 @@ from sa_15 to sa_22
 
 ROM_START( secretab )
 	ROM_REGION( 0x60000, "maincpu", 0 ) /* 68000 code */
+<<<<<<< HEAD
 	ROM_LOAD16_BYTE( "sa_05.bin",    0x00000, 0x10000, CRC(54869474) SHA1(88c1894d1b6d8dd3d37e97d566aafef9c9409d6e) )
 	ROM_LOAD16_BYTE( "sa_03.bin",    0x00001, 0x10000, CRC(36ab1874) SHA1(baa47c466ab13ac792761531f77ee8e639d19203) )
 	ROM_LOAD16_BYTE( "sa_06.bin",    0x20000, 0x10000, CRC(8e691f23) SHA1(eb08c9539b699af124fcf87be07a33d2d5a71ada) )
@@ -2704,6 +3538,22 @@ ROM_START( secretab )
 	ROM_LOAD( "sa_12.bin", 0x10000, 0x10000,CRC(f9e2cd5f) SHA1(f2c3f6e763c6f80307e9daee533d316b05cd02c5) )
 	ROM_LOAD( "sa_10.bin", 0x20000, 0x10000,CRC(843c4679) SHA1(871f3e77aa7e628e924a40d06ddec700487e23fb) )
 	ROM_LOAD( "sa_14.bin", 0x30000, 0x10000,CRC(3dac9128) SHA1(f3a2068e90973c1f04f1bbaa209111e3f9669ee0) )
+=======
+	ROM_LOAD16_BYTE( "sa_05.ic94",   0x00000, 0x10000, CRC(54869474) SHA1(88c1894d1b6d8dd3d37e97d566aafef9c9409d6e) ) // misnumbered; should be IC84
+	ROM_LOAD16_BYTE( "sa_03.ic67",   0x00001, 0x10000, CRC(36ab1874) SHA1(baa47c466ab13ac792761531f77ee8e639d19203) )
+	ROM_LOAD16_BYTE( "sa_06.ic83",   0x20000, 0x10000, CRC(8e691f23) SHA1(eb08c9539b699af124fcf87be07a33d2d5a71ada) )
+	ROM_LOAD16_BYTE( "sa_04.ic66",   0x20001, 0x10000, CRC(c838b205) SHA1(8c7a453ec7a00d4f5bbf9fadba6d551909647ed8) )
+
+	ROM_REGION( 0x20000, "audiocpu", 0 )    /* Sound CPU */
+	ROM_LOAD( "sa_01.ic41",     0x00000, 0x10000, CRC(9fdc503b) SHA1(7b258e0734ca88a7d3f574d75116f0fe3b628898) )
+	ROM_LOAD( "sa_02.ic40",     0x10000, 0x10000, CRC(439eb5a9) SHA1(8d6baad8a1e89279ef0a378941d3d9b49a606864) ) // both halves identical
+
+	ROM_REGION( 0x40000, "charset", 0 )
+	ROM_LOAD( "sa_08.ic105", 0x00000, 0x10000,CRC(4806b951) SHA1(a2fa5b8587132747067d7d64ccfd14129a34ef58) )
+	ROM_LOAD( "sa_12.ic156", 0x10000, 0x10000,CRC(f9e2cd5f) SHA1(f2c3f6e763c6f80307e9daee533d316b05cd02c5) )
+	ROM_LOAD( "sa_10.ic138", 0x20000, 0x10000,CRC(843c4679) SHA1(871f3e77aa7e628e924a40d06ddec700487e23fb) )
+	ROM_LOAD( "sa_14.ic188", 0x30000, 0x10000,CRC(3dac9128) SHA1(f3a2068e90973c1f04f1bbaa209111e3f9669ee0) )
+>>>>>>> upstream/master
 
 	ROM_REGION( 0x20000, "gfx1", ROMREGION_INVERT ) /* chars */
 	ROM_COPY( "charset", 0x00000, 0x00000, 0x8000 )
@@ -2718,6 +3568,7 @@ ROM_START( secretab )
 	ROM_COPY( "charset", 0x38000, 0x18000, 0x8000 )
 
 	ROM_REGION( 0x40000, "gfx3", ROMREGION_INVERT ) /* tiles */
+<<<<<<< HEAD
 	ROM_LOAD( "sa_09.bin",      0x00000, 0x10000,CRC(9e412267) SHA1(482cd6e772fa21f15db66c27acf85e8f97f7c5a5) )
 	ROM_LOAD( "sa_11.bin",      0x10000, 0x10000,CRC(e87650db) SHA1(381352428b12fd4a8cd13270009ff7602aa41a0b) )
 	ROM_LOAD( "sa_07.bin",      0x20000, 0x10000,CRC(6ad2e575) SHA1(b6b159cb36e222fe62fc10271602226f027440e4) )
@@ -2735,6 +3586,22 @@ ROM_START( secretab )
 
 	ROM_REGION( 0x40000, "oki", 0 ) /* ADPCM samples */
 	ROM_LOAD( "sa_02.bin",      0x00000, 0x10000,CRC(439eb5a9) SHA1(8d6baad8a1e89279ef0a378941d3d9b49a606864) ) // both halves identical
+=======
+	ROM_LOAD( "sa_09.ic139",     0x00000, 0x10000,CRC(9e412267) SHA1(482cd6e772fa21f15db66c27acf85e8f97f7c5a5) )
+	ROM_LOAD( "sa_11.ic157",     0x10000, 0x10000,CRC(e87650db) SHA1(381352428b12fd4a8cd13270009ff7602aa41a0b) )
+	ROM_LOAD( "sa_07.ic106",     0x20000, 0x10000,CRC(6ad2e575) SHA1(b6b159cb36e222fe62fc10271602226f027440e4) )
+	ROM_LOAD( "sa_13.ic189",     0x30000, 0x10000,CRC(e8601057) SHA1(fd73a36fb84049154248d250ffea68b1ee39a43f) )
+
+	ROM_REGION( 0x80000, "gfx4", 0 ) /* sprites */
+	ROM_LOAD( "sa_20.ic176",     0x00000, 0x10000,CRC(447e4f0b) SHA1(97db103e505a6e11eb9bdb3622e4aa3b796a9714) )
+	ROM_LOAD( "sa_19.ic177",     0x10000, 0x10000,CRC(d29bc22e) SHA1(ce0935d09f7e94fa32247c86e14a74b73514b29e) )
+	ROM_LOAD( "sa_16.ic180",     0x20000, 0x10000,CRC(ff72b838) SHA1(fdc48ecdd2225fc69472313f34973f6add8fb558) )
+	ROM_LOAD( "sa_15.ic181",     0x30000, 0x10000,CRC(54fcbc39) SHA1(293a6799193b01424c3eac86cf90cc023aa771db) )
+	ROM_LOAD( "sa_22.ic174",     0x40000, 0x10000,CRC(d234cae5) SHA1(0cd07bf087a4da19a5da29785385de9eee52d0fb) )
+	ROM_LOAD( "sa_21.ic175",     0x50000, 0x10000,CRC(dc6a38df) SHA1(9043df911389d3f085299f2f2202cab356473a32) )
+	ROM_LOAD( "sa_18.ic178",     0x60000, 0x10000,CRC(4f989f00) SHA1(ae7ae6e62e6a516ae3c8ebbeb5e39887c1961add) )
+	ROM_LOAD( "sa_17.ic179",     0x70000, 0x10000,CRC(f61972c8) SHA1(fa9ddca3473091b4879171d8f3b302e8f2b45149) )
+>>>>>>> upstream/master
 ROM_END
 
 
@@ -2913,7 +3780,11 @@ ROM_START( midresb )
 	ROM_REGION( 0x10000, "audiocpu", 0 )    /* 6502 sound */ // same as hippodrome / fighting fantasy...
 	ROM_LOAD( "15.bin",         0x8000, 0x8000, CRC(9871b98d) SHA1(2b6c46bc2b10a28946d6ad8251e1a156a0b99947) )
 
+<<<<<<< HEAD
 	ROM_REGION( 0x10000, "cpu2", 0 )    /* 68705 MCU */
+=======
+	ROM_REGION( 0x1000, "mcu", 0 )    /* 68705 MCU */
+>>>>>>> upstream/master
 	ROM_LOAD( "68705r3.bin",              0x00000, 0x1000, CRC(ad5b1c13) SHA1(3616dc5969323a54e3e171d169f76250ae4e711a) )
 
 	ROM_REGION( 0x20000, "gfx1", 0 ) /* chars */
@@ -2965,7 +3836,11 @@ ROM_START( midresbj )
 	ROM_REGION( 0x10000, "audiocpu", 0 )    /* 6502 sound */
 	ROM_LOAD( "15",         0x0000, 0x10000, CRC(99d47166) SHA1(a9a1adfe47be8dd3e4d6f8c783447e09be1747b2) )
 
+<<<<<<< HEAD
 	ROM_REGION( 0x10000, "cpu2", ROMREGION_ERASE00 )    /* 68705 MCU */
+=======
+	ROM_REGION( 0x1000, "mcu", ROMREGION_ERASE00 )    /* 68705 MCU */
+>>>>>>> upstream/master
 	//ROM_LOAD( "68705r3.bin",              0x00000, 0x1000, CRC(ad5b1c13) SHA1(3616dc5969323a54e3e171d169f76250ae4e711a) ) // unpopulated socket
 
 	ROM_REGION( 0x20000, "gfx1", 0 ) /* chars */
@@ -3113,15 +3988,22 @@ DRIVER_INIT_MEMBER(dec0_state,ffantasybl)
 //    YEAR, NAME,       PARENT,   MACHINE,  INPUT,    STATE/DEVICE,   INIT, MONITOR,COMPANY,                 FULLNAME,            FLAGS
 GAME( 1987, hbarrel,    0,        hbarrel,  hbarrel,  dec0_state,  hbarrel, ROT270, "Data East USA",         "Heavy Barrel (US)", MACHINE_SUPPORTS_SAVE )
 GAME( 1987, hbarrelw,   hbarrel,  hbarrel,  hbarrel,  dec0_state,  hbarrel, ROT270, "Data East Corporation", "Heavy Barrel (World)", MACHINE_SUPPORTS_SAVE )
+<<<<<<< HEAD
 GAME( 1988, baddudes,   0,        baddudes, baddudes, dec0_state, baddudes, ROT0,   "Data East USA",         "Bad Dudes vs. Dragonninja (US)", MACHINE_SUPPORTS_SAVE )
 GAME( 1988, drgninja,   baddudes, baddudes, drgninja, dec0_state, baddudes, ROT0,   "Data East Corporation", "Dragonninja (Japan)", MACHINE_SUPPORTS_SAVE )
 GAME( 1988, birdtry,    0,        birdtry,  birdtry,  dec0_state,  birdtry, ROT270, "Data East Corporation", "Birdie Try (Japan)", MACHINE_UNEMULATED_PROTECTION | MACHINE_SUPPORTS_SAVE )
+=======
+GAME( 1988, baddudes,   0,        baddudes, baddudes, dec0_state,  hbarrel, ROT0,   "Data East USA",         "Bad Dudes vs. Dragonninja (US)", MACHINE_SUPPORTS_SAVE )
+GAME( 1988, drgninja,   baddudes, baddudes, drgninja, dec0_state,  hbarrel, ROT0,   "Data East Corporation", "Dragonninja (Japan)", MACHINE_SUPPORTS_SAVE )
+GAME( 1988, birdtry,    0,        birdtry,  birdtry,  dec0_state,  birdtry, ROT270, "Data East Corporation", "Birdie Try (Japan)", MACHINE_UNEMULATED_PROTECTION | MACHINE_NOT_WORKING | MACHINE_SUPPORTS_SAVE ) // protection controls game related data, impossible to emulate without a working PCB
+>>>>>>> upstream/master
 GAME( 1988, robocop,    0,        robocop,  robocop,  dec0_state,  robocop, ROT0,   "Data East Corporation", "Robocop (World revision 4)", MACHINE_SUPPORTS_SAVE )
 GAME( 1988, robocopw,   robocop,  robocop,  robocop,  dec0_state,  robocop, ROT0,   "Data East Corporation", "Robocop (World revision 3)", MACHINE_SUPPORTS_SAVE )
 GAME( 1988, robocopj,   robocop,  robocop,  robocop,  dec0_state,  robocop, ROT0,   "Data East Corporation", "Robocop (Japan)", MACHINE_SUPPORTS_SAVE )
 GAME( 1988, robocopu,   robocop,  robocop,  robocop,  dec0_state,  robocop, ROT0,   "Data East USA",         "Robocop (US revision 1)", MACHINE_SUPPORTS_SAVE )
 GAME( 1988, robocopu0,  robocop,  robocop,  robocop,  dec0_state,  robocop, ROT0,   "Data East USA",         "Robocop (US revision 0)", MACHINE_SUPPORTS_SAVE )
 GAME( 1989, hippodrm,   0,        hippodrm, hippodrm, dec0_state, hippodrm, ROT0,   "Data East USA",         "Hippodrome (US)", MACHINE_SUPPORTS_SAVE )
+<<<<<<< HEAD
 GAME( 1989, ffantasy,   hippodrm, hippodrm, ffantasy, dec0_state, hippodrm, ROT0,   "Data East Corporation", "Fighting Fantasy (Japan revision 2)", MACHINE_SUPPORTS_SAVE )
 GAME( 1989, ffantasya,  hippodrm, hippodrm, ffantasy, dec0_state, hippodrm, ROT0,   "Data East Corporation", "Fighting Fantasy (Japan)", MACHINE_SUPPORTS_SAVE )
 GAME( 1989, secretag,   0,        slyspy,   slyspy,   dec0_state,   slyspy, ROT0,   "Data East Corporation", "Secret Agent (World revision 3)", MACHINE_SUPPORTS_SAVE )
@@ -3131,12 +4013,27 @@ GAME( 1989, slyspy2,    secretag, slyspy,   slyspy,   dec0_state,   slyspy, ROT0
 GAME( 1989, midres,     0,        midres,   midres,   driver_device,     0, ROT0,   "Data East Corporation", "Midnight Resistance (World)", MACHINE_SUPPORTS_SAVE )
 GAME( 1989, midresu,    midres,   midres,   midresu,  driver_device,     0, ROT0,   "Data East USA",         "Midnight Resistance (US)", MACHINE_SUPPORTS_SAVE )
 GAME( 1989, midresj,    midres,   midres,   midresu,  driver_device,     0, ROT0,   "Data East Corporation", "Midnight Resistance (Japan)", MACHINE_SUPPORTS_SAVE )
+=======
+GAME( 1989, ffantasy,   hippodrm, hippodrm, ffantasy, dec0_state, hippodrm, ROT0,   "Data East Corporation", "Fighting Fantasy (Japan revision 3)", MACHINE_SUPPORTS_SAVE )
+GAME( 1989, ffantasyj,  hippodrm, hippodrm, ffantasy, dec0_state, hippodrm, ROT0,   "Data East Corporation", "Fighting Fantasy (Japan revision 2)", MACHINE_SUPPORTS_SAVE )
+GAME( 1989, ffantasya,  hippodrm, hippodrm, ffantasy, dec0_state, hippodrm, ROT0,   "Data East Corporation", "Fighting Fantasy (Japan)", MACHINE_SUPPORTS_SAVE ) // presumably rev 1
+GAME( 1989, ffantasyb,  hippodrm, hippodrm, ffantasy, dec0_state, hippodrm, ROT0,   "Data East Corporation", "Fighting Fantasy (Japan revision ?)", MACHINE_SUPPORTS_SAVE )
+GAME( 1989, secretag,   0,        slyspy,   slyspy,   dec0_state,   slyspy, ROT0,   "Data East Corporation", "Secret Agent (World revision 3)", MACHINE_SUPPORTS_SAVE )
+GAME( 1989, secretagj,  secretag, slyspy,   slyspy,   dec0_state,   slyspy, ROT0,   "Data East Corporation", "Secret Agent (Japan revision 2)", MACHINE_SUPPORTS_SAVE )
+GAME( 1989, slyspy,     secretag, slyspy,   slyspy,   dec0_state,   slyspy, ROT0,   "Data East USA",         "Sly Spy (US revision 4)", MACHINE_SUPPORTS_SAVE )
+GAME( 1989, slyspy3,    secretag, slyspy,   slyspy,   dec0_state,   slyspy, ROT0,   "Data East USA",         "Sly Spy (US revision 3)", MACHINE_SUPPORTS_SAVE )
+GAME( 1989, slyspy2,    secretag, slyspy,   slyspy,   dec0_state,   slyspy, ROT0,   "Data East USA",         "Sly Spy (US revision 2)", MACHINE_SUPPORTS_SAVE )
+GAME( 1989, midres,     0,        midres,   midres,   dec0_state,        0, ROT0,   "Data East Corporation", "Midnight Resistance (World)", MACHINE_SUPPORTS_SAVE )
+GAME( 1989, midresu,    midres,   midres,   midresu,  dec0_state,        0, ROT0,   "Data East USA",         "Midnight Resistance (US)", MACHINE_SUPPORTS_SAVE )
+GAME( 1989, midresj,    midres,   midres,   midresu,  dec0_state,        0, ROT0,   "Data East Corporation", "Midnight Resistance (Japan)", MACHINE_SUPPORTS_SAVE )
+>>>>>>> upstream/master
 GAME( 1990, bouldash,   0,        slyspy,   bouldash, dec0_state,   slyspy, ROT0,   "Data East Corporation (licensed from First Star)", "Boulder Dash / Boulder Dash Part 2 (World)", MACHINE_SUPPORTS_SAVE )
 GAME( 1990, bouldashj,  bouldash, slyspy,   bouldash, dec0_state,   slyspy, ROT0,   "Data East Corporation (licensed from First Star)", "Boulder Dash / Boulder Dash Part 2 (Japan)", MACHINE_SUPPORTS_SAVE )
 
 // bootlegs
 
 // more or less just an unprotected versions of the game, everything intact
+<<<<<<< HEAD
 GAME( 1988, robocopb,   robocop,  robocopb, robocop, dec0_state,  robocop,  ROT0,   "bootleg", "Robocop (World bootleg)", MACHINE_SUPPORTS_SAVE )
 GAME( 1988, drgninjab,  baddudes, baddudes, drgninja, dec0_state, baddudes, ROT0,   "bootleg", "Dragonninja (bootleg)", MACHINE_SUPPORTS_SAVE )
 
@@ -3149,3 +4046,18 @@ GAME( 1989, ffantasybl, hippodrm, ffantasybl, ffantasybl, dec0_state, ffantasybl
 // these are different to the above but quite similar to each other
 GAME( 1988, automat,    robocop,  automat,  robocop, dec0_state,  robocop,  ROT0,   "bootleg", "Automat (bootleg of Robocop)", MACHINE_NOT_WORKING | MACHINE_SUPPORTS_SAVE ) // sound rom / music from section z with mods for ADPCM?
 GAME( 1989, secretab,   secretag, secretab, slyspy, dec0_state,   slyspy,   ROT0,   "bootleg", "Secret Agent (bootleg)", MACHINE_NOT_WORKING | MACHINE_SUPPORTS_SAVE )
+=======
+GAME( 1988, robocopb,   robocop,  robocopb,   robocop,    dec0_state, robocop,    ROT0, "bootleg", "Robocop (World bootleg)", MACHINE_SUPPORTS_SAVE )
+GAME( 1988, drgninjab,  baddudes, drgninjab,  drgninja,   dec0_state, drgninja,   ROT0, "bootleg", "Dragonninja (bootleg)", MACHINE_SUPPORTS_SAVE )
+
+
+// this is a common bootleg board
+GAME( 1989, midresb,    midres,   midresb,    midresb,    dec0_state, midresb,    ROT0, "bootleg", "Midnight Resistance (bootleg with 68705)", MACHINE_SUPPORTS_SAVE ) // need to hook up 68705? (probably unused)
+GAME( 1989, midresbj,   midres,   midresbj,   midresb,    dec0_state, midresb,    ROT0, "bootleg", "Midnight Resistance (Joystick bootleg)", MACHINE_SUPPORTS_SAVE )
+GAME( 1989, ffantasybl, hippodrm, ffantasybl, ffantasybl, dec0_state, ffantasybl, ROT0, "bootleg", "Fighting Fantasy (bootleg with 68705)", MACHINE_IMPERFECT_GRAPHICS | MACHINE_SUPPORTS_SAVE ) // 68705 not dumped, might be the same as midresb
+GAME( 1988, drgninjab2, baddudes, drgninjab,  drgninja,   dec0_state, drgninja,   ROT0, "bootleg", "Dragonninja (bootleg with 68705)", MACHINE_SUPPORTS_SAVE ) // is this the same board as above? (region warning hacked to World, but still shows Japanese text)
+
+// these are different to the above but quite similar to each other
+GAME( 1988, automat,    robocop,  automat,  robocop,  dec0_automat_state,  robocop, ROT0,   "bootleg", "Automat (bootleg of Robocop)", MACHINE_NOT_WORKING | MACHINE_IMPERFECT_GRAPHICS | MACHINE_SUPPORTS_SAVE ) // sound rom / music from section z with mods for ADPCM?
+GAME( 1989, secretab,   secretag, secretab, slyspy,   dec0_automat_state,        0, ROT0,   "bootleg", "Secret Agent (bootleg)", MACHINE_NOT_WORKING | MACHINE_IMPERFECT_GRAPHICS | MACHINE_IMPERFECT_SOUND | MACHINE_SUPPORTS_SAVE )
+>>>>>>> upstream/master

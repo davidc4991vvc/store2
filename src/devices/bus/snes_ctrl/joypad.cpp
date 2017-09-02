@@ -6,13 +6,21 @@
 
 **********************************************************************/
 
+<<<<<<< HEAD
+=======
+#include "emu.h"
+>>>>>>> upstream/master
 #include "joypad.h"
 
 //**************************************************************************
 //  DEVICE DEFINITIONS
 //**************************************************************************
 
+<<<<<<< HEAD
 const device_type SNES_JOYPAD = &device_creator<snes_joypad_device>;
+=======
+DEFINE_DEVICE_TYPE(SNES_JOYPAD, snes_joypad_device, "snes_joypad", "Nintendo SNES / SFC Control Pad")
+>>>>>>> upstream/master
 
 
 static INPUT_PORTS_START( snes_joypad )
@@ -52,10 +60,18 @@ ioport_constructor snes_joypad_device::device_input_ports() const
 //  snes_joypad_device - constructor
 //-------------------------------------------------
 
+<<<<<<< HEAD
 snes_joypad_device::snes_joypad_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock) :
 					device_t(mconfig, SNES_JOYPAD, "Nintendo SNES / SFC Control Pad", tag, owner, clock, "snes_joypad", __FILE__),
 					device_snes_control_port_interface(mconfig, *this),
 					m_joypad(*this, "JOYPAD"), m_strobe(0), m_latch(0)
+=======
+snes_joypad_device::snes_joypad_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock) :
+	device_t(mconfig, SNES_JOYPAD, tag, owner, clock),
+	device_snes_control_port_interface(mconfig, *this),
+	m_joypad(*this, "JOYPAD"),
+	m_strobe(0), m_latch(0)
+>>>>>>> upstream/master
 {
 }
 
@@ -88,7 +104,11 @@ void snes_joypad_device::device_reset()
 
 void snes_joypad_device::port_poll()
 {
+<<<<<<< HEAD
 	UINT16 temp = m_joypad->read();
+=======
+	uint16_t temp = m_joypad->read();
+>>>>>>> upstream/master
 	// avoid sending signals that could crash games
 	// if left, no right
 	if (temp & 0x40)
@@ -104,9 +124,15 @@ void snes_joypad_device::port_poll()
 //  read
 //-------------------------------------------------
 
+<<<<<<< HEAD
 UINT8 snes_joypad_device::read_pin4()
 {
 	UINT8 ret = m_latch & 1;
+=======
+uint8_t snes_joypad_device::read_pin4()
+{
+	uint8_t ret = m_latch & 1;
+>>>>>>> upstream/master
 	m_latch >>= 1;
 	return ret;
 }
@@ -115,7 +141,11 @@ UINT8 snes_joypad_device::read_pin4()
 //  write
 //-------------------------------------------------
 
+<<<<<<< HEAD
 void snes_joypad_device::write_strobe(UINT8 data)
+=======
+void snes_joypad_device::write_strobe(uint8_t data)
+>>>>>>> upstream/master
 {
 	int old = m_strobe;
 	m_strobe = data & 0x01;

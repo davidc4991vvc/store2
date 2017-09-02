@@ -9,12 +9,20 @@
 
 **********************************************************************/
 
+<<<<<<< HEAD
 #pragma once
 
 #ifndef __VCS_CONTROL_PORT__
 #define __VCS_CONTROL_PORT__
 
 #include "emu.h"
+=======
+#ifndef MAME_BUS_CVS_CTRL_CTRL_H
+#define MAME_BUS_CVS_CTRL_CTRL_H
+
+#pragma once
+
+>>>>>>> upstream/master
 
 
 
@@ -48,10 +56,17 @@ public:
 	device_vcs_control_port_interface(const machine_config &mconfig, device_t &device);
 	virtual ~device_vcs_control_port_interface() { }
 
+<<<<<<< HEAD
 	virtual UINT8 vcs_joy_r() { return 0xff; };
 	virtual UINT8 vcs_pot_x_r() { return 0xff; };
 	virtual UINT8 vcs_pot_y_r() { return 0xff; };
 	virtual void vcs_joy_w(UINT8 data) { };
+=======
+	virtual uint8_t vcs_joy_r() { return 0xff; };
+	virtual uint8_t vcs_pot_x_r() { return 0xff; };
+	virtual uint8_t vcs_pot_y_r() { return 0xff; };
+	virtual void vcs_joy_w(uint8_t data) { };
+>>>>>>> upstream/master
 
 	virtual bool has_pot_x() { return false; }
 	virtual bool has_pot_y() { return false; }
@@ -68,11 +83,18 @@ class vcs_control_port_device : public device_t,
 {
 public:
 	// construction/destruction
+<<<<<<< HEAD
 	vcs_control_port_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
 	virtual ~vcs_control_port_device() { }
 
 	// static configuration helpers
 	template<class _Object> static devcb_base &set_trigger_wr_callback(device_t &device, _Object object) { return downcast<vcs_control_port_device &>(device).m_write_trigger.set_callback(object); }
+=======
+	vcs_control_port_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
+
+	// static configuration helpers
+	template <class Object> static devcb_base &set_trigger_wr_callback(device_t &device, Object &&cb) { return downcast<vcs_control_port_device &>(device).m_write_trigger.set_callback(std::forward<Object>(cb)); }
+>>>>>>> upstream/master
 
 	// computer interface
 
@@ -87,6 +109,7 @@ public:
 	//         pin 8 - GND
 	// bit 6 - pin 9 -
 	//
+<<<<<<< HEAD
 	UINT8 joy_r() { UINT8 data = 0xff; if (exists()) data = m_device->vcs_joy_r(); return data; }
 	DECLARE_READ8_MEMBER( joy_r ) { return joy_r(); }
 	UINT8 pot_x_r() { UINT8 data = 0xff; if (exists()) data = m_device->vcs_pot_x_r(); return data; }
@@ -98,6 +121,18 @@ public:
 	DECLARE_WRITE8_MEMBER( joy_w );
 
 	bool exists() { return m_device != NULL; }
+=======
+	uint8_t joy_r() { uint8_t data = 0xff; if (exists()) data = m_device->vcs_joy_r(); return data; }
+	DECLARE_READ8_MEMBER( joy_r ) { return joy_r(); }
+	uint8_t pot_x_r() { uint8_t data = 0xff; if (exists()) data = m_device->vcs_pot_x_r(); return data; }
+	DECLARE_READ8_MEMBER( pot_x_r ) { return pot_x_r(); }
+	uint8_t pot_y_r() { uint8_t data = 0xff; if (exists()) data = m_device->vcs_pot_y_r(); return data; }
+	DECLARE_READ8_MEMBER( pot_y_r ) { return pot_y_r(); }
+
+	void joy_w( uint8_t data ) { if ( exists() ) m_device->vcs_joy_w( data ); }
+
+	bool exists() { return m_device != nullptr; }
+>>>>>>> upstream/master
 	bool has_pot_x() { return exists() && m_device->has_pot_x(); }
 	bool has_pot_y() { return exists() && m_device->has_pot_y(); }
 
@@ -105,7 +140,11 @@ public:
 
 protected:
 	// device-level overrides
+<<<<<<< HEAD
 	virtual void device_start();
+=======
+	virtual void device_start() override;
+>>>>>>> upstream/master
 
 	device_vcs_control_port_interface *m_device;
 
@@ -115,6 +154,7 @@ private:
 
 
 // device type definition
+<<<<<<< HEAD
 extern const device_type VCS_CONTROL_PORT;
 
 SLOT_INTERFACE_EXTERN( vcs_control_port_devices );
@@ -122,3 +162,10 @@ SLOT_INTERFACE_EXTERN( vcs_control_port_devices );
 
 
 #endif
+=======
+DECLARE_DEVICE_TYPE(VCS_CONTROL_PORT, vcs_control_port_device)
+
+SLOT_INTERFACE_EXTERN( vcs_control_port_devices );
+
+#endif // MAME_BUS_CVS_CTRL_CTRL_H
+>>>>>>> upstream/master

@@ -20,9 +20,17 @@ Verified Dip locations and recommended settings with manual
 ***************************************************************************/
 
 #include "emu.h"
+<<<<<<< HEAD
 #include "cpu/z80/z80.h"
 #include "sound/2203intf.h"
 #include "includes/skyfox.h"
+=======
+#include "includes/skyfox.h"
+
+#include "cpu/z80/z80.h"
+#include "sound/2203intf.h"
+#include "speaker.h"
+>>>>>>> upstream/master
 
 
 /***************************************************************************
@@ -40,7 +48,11 @@ WRITE8_MEMBER(skyfox_state::skyfox_vregs_w)
 			break;
 
 		case 1:
+<<<<<<< HEAD
 			soundlatch_byte_w(space, 0, data);
+=======
+			m_soundlatch->write(space, 0, data);
+>>>>>>> upstream/master
 			break;
 
 		default:
@@ -74,7 +86,11 @@ static ADDRESS_MAP_START( skyfox_sound_map, AS_PROGRAM, 8, skyfox_state )
 	AM_RANGE(0xa000, 0xa001) AM_DEVREADWRITE("ym1", ym2203_device, read, write)
 //  AM_RANGE(0xb000, 0xb001) AM_WRITENOP // ??
 	AM_RANGE(0xc000, 0xc001) AM_DEVREADWRITE("ym2", ym2203_device, read, write)
+<<<<<<< HEAD
 	AM_RANGE(0xb000, 0xb000) AM_READ(soundlatch_byte_r)
+=======
+	AM_RANGE(0xb000, 0xb000) AM_DEVREAD("soundlatch", generic_latch_8_device, read)
+>>>>>>> upstream/master
 ADDRESS_MAP_END
 
 
@@ -218,7 +234,11 @@ void skyfox_state::machine_reset()
 	m_bg_ctrl = 0;
 }
 
+<<<<<<< HEAD
 static MACHINE_CONFIG_START( skyfox, skyfox_state )
+=======
+static MACHINE_CONFIG_START( skyfox )
+>>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", Z80, XTAL_8MHz/2) /* Verified at 4MHz */
@@ -244,6 +264,11 @@ static MACHINE_CONFIG_START( skyfox, skyfox_state )
 	/* sound hardware */
 	MCFG_SPEAKER_STANDARD_MONO("mono")
 
+<<<<<<< HEAD
+=======
+	MCFG_GENERIC_LATCH_8_ADD("soundlatch")
+
+>>>>>>> upstream/master
 	MCFG_SOUND_ADD("ym1", YM2203, XTAL_14_31818MHz/8) /* Verified at 1.789772MHz */
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 0.80)
 
@@ -397,9 +422,15 @@ ROM_END
 /* Untangle the graphics: cut each 32x32x8 tile in 16 8x8x8 tiles */
 DRIVER_INIT_MEMBER(skyfox_state,skyfox)
 {
+<<<<<<< HEAD
 	UINT8 *rom = memregion("gfx1")->base();
 	UINT8 *end = rom + memregion("gfx1")->bytes();
 	UINT8 buf[32 * 32];
+=======
+	uint8_t *rom = memregion("gfx1")->base();
+	uint8_t *end = rom + memregion("gfx1")->bytes();
+	uint8_t buf[32 * 32];
+>>>>>>> upstream/master
 
 	while (rom < end)
 	{

@@ -273,11 +273,20 @@ Notes:
 
 #include "emu.h"
 #include "includes/segaorun.h"
+<<<<<<< HEAD
 #include "machine/fd1089.h"
 #include "machine/segaic16.h"
 #include "sound/2151intf.h"
 #include "sound/segapcm.h"
 #include "includes/segaipt.h"
+=======
+#include "includes/segaipt.h"
+
+#include "machine/fd1089.h"
+#include "sound/ym2151.h"
+#include "sound/segapcm.h"
+#include "speaker.h"
+>>>>>>> upstream/master
 
 #include "outrun.lh"
 
@@ -286,9 +295,15 @@ Notes:
 //  CONSTANTS
 //**************************************************************************
 
+<<<<<<< HEAD
 const UINT32 MASTER_CLOCK = XTAL_40MHz;
 const UINT32 SOUND_CLOCK = XTAL_16MHz;
 const UINT32 MASTER_CLOCK_25MHz = XTAL_25_1748MHz;
+=======
+const uint32_t MASTER_CLOCK = XTAL_40MHz;
+const uint32_t SOUND_CLOCK = XTAL_16MHz;
+const uint32_t MASTER_CLOCK_25MHz = XTAL_25_1748MHz;
+>>>>>>> upstream/master
 
 //**************************************************************************
 //  PPI READ/WRITE CALLBACKS
@@ -362,14 +377,22 @@ WRITE8_MEMBER( segaorun_state::video_control_w )
 
 READ8_MEMBER( segaorun_state::bankmotor_limit_r )
 {
+<<<<<<< HEAD
 	UINT8 ret = 0xff;
+=======
+	uint8_t ret = 0xff;
+>>>>>>> upstream/master
 
 	// PPI Input port A:
 	//  D5: left limit
 	//  D4: center
 	//  D3: right limit
 	//  other bits: ?
+<<<<<<< HEAD
 	UINT8 pos = m_bankmotor_pos >> 8 & 0xff;
+=======
+	uint8_t pos = m_bankmotor_pos >> 8 & 0xff;
+>>>>>>> upstream/master
 
 	// these values may need to be tweaked when hooking up real motors to MAME
 	const int left_limit = 0x20;
@@ -407,20 +430,35 @@ WRITE8_MEMBER( segaorun_state::bankmotor_control_w )
 	if (data < 8)
 	{
 		// left
+<<<<<<< HEAD
 		output_set_value("Bank_Motor_Direction", 1);
 		output_set_value("Bank_Motor_Speed", 8 - data);
+=======
+		output().set_value("Bank_Motor_Direction", 1);
+		output().set_value("Bank_Motor_Speed", 8 - data);
+>>>>>>> upstream/master
 	}
 	else if (data == 8)
 	{
 		// no movement
+<<<<<<< HEAD
 		output_set_value("Bank_Motor_Direction", 0);
 		output_set_value("Bank_Motor_Speed", 0);
+=======
+		output().set_value("Bank_Motor_Direction", 0);
+		output().set_value("Bank_Motor_Speed", 0);
+>>>>>>> upstream/master
 	}
 	else
 	{
 		// right
+<<<<<<< HEAD
 		output_set_value("Bank_Motor_Direction", 2);
 		output_set_value("Bank_Motor_Speed", data - 8);
+=======
+		output().set_value("Bank_Motor_Direction", 2);
+		output().set_value("Bank_Motor_Speed", data - 8);
+>>>>>>> upstream/master
 	}
 }
 
@@ -435,7 +473,11 @@ WRITE8_MEMBER( segaorun_state::bankmotor_control_w )
 //  mapping for a given index
 //-------------------------------------------------
 
+<<<<<<< HEAD
 void segaorun_state::memory_mapper(sega_315_5195_mapper_device &mapper, UINT8 index)
+=======
+void segaorun_state::memory_mapper(sega_315_5195_mapper_device &mapper, uint8_t index)
+>>>>>>> upstream/master
 {
 	switch (index)
 	{
@@ -476,7 +518,11 @@ void segaorun_state::memory_mapper(sega_315_5195_mapper_device &mapper, UINT8 in
 //  port on the memory mapper is read
 //-------------------------------------------------
 
+<<<<<<< HEAD
 UINT8 segaorun_state::mapper_sound_r()
+=======
+uint8_t segaorun_state::mapper_sound_r()
+>>>>>>> upstream/master
 {
 	return 0;
 }
@@ -487,7 +533,11 @@ UINT8 segaorun_state::mapper_sound_r()
 //  port on the memory mapper is written
 //-------------------------------------------------
 
+<<<<<<< HEAD
 void segaorun_state::mapper_sound_w(UINT8 data)
+=======
+void segaorun_state::mapper_sound_w(uint8_t data)
+>>>>>>> upstream/master
 {
 	synchronize(TID_SOUND_WRITE, data);
 }
@@ -550,7 +600,11 @@ WRITE16_MEMBER( segaorun_state::nop_w )
 READ8_MEMBER( segaorun_state::sound_data_r )
 {
 	m_soundcpu->set_input_line(INPUT_LINE_NMI, CLEAR_LINE);
+<<<<<<< HEAD
 	return soundlatch_read();
+=======
+	return m_soundlatch->read(space, 0);
+>>>>>>> upstream/master
 }
 
 
@@ -566,7 +620,11 @@ READ8_MEMBER( segaorun_state::sound_data_r )
 void segaorun_state::machine_reset()
 {
 	// reset misc components
+<<<<<<< HEAD
 	if (m_custom_map != NULL)
+=======
+	if (m_custom_map != nullptr)
+>>>>>>> upstream/master
 		m_mapper->configure_explicit(m_custom_map);
 	m_segaic16vid->tilemap_reset(*m_screen);
 
@@ -587,7 +645,11 @@ void segaorun_state::device_timer(emu_timer &timer, device_timer_id id, int para
 	switch (id)
 	{
 		case TID_SOUND_WRITE:
+<<<<<<< HEAD
 			soundlatch_write(param);
+=======
+			m_soundlatch->write(m_soundcpu->space(AS_PROGRAM), 0, param);
+>>>>>>> upstream/master
 			m_soundcpu->set_input_line(INPUT_LINE_NMI, ASSERT_LINE);
 			break;
 
@@ -609,7 +671,11 @@ void segaorun_state::device_timer(emu_timer &timer, device_timer_id id, int para
 				case 65:
 				case 129:
 				case 193:
+<<<<<<< HEAD
 					timer_set(m_screen->time_until_pos(scanline, m_screen->visible_area().max_x + 1), TID_IRQ2_GEN);
+=======
+					m_irq2_gen_timer->adjust(m_screen->time_until_pos(scanline, m_screen->visible_area().max_x + 1));
+>>>>>>> upstream/master
 					next_scanline = scanline + 1;
 					break;
 
@@ -648,7 +714,11 @@ void segaorun_state::device_timer(emu_timer &timer, device_timer_id id, int para
 		}
 
 		default:
+<<<<<<< HEAD
 			assert_always(FALSE, "Unknown id in segaorun_state::device_timer");
+=======
+			assert_always(false, "Unknown id in segaorun_state::device_timer");
+>>>>>>> upstream/master
 	}
 }
 
@@ -679,8 +749,11 @@ TIMER_DEVICE_CALLBACK_MEMBER(segaorun_state::bankmotor_update)
 //  for Out Run
 //-------------------------------------------------
 
+<<<<<<< HEAD
 IOPORT_ARRAY_MEMBER( segaorun_state::digital_ports ) { "SERVICE", "UNKNOWN", "COINAGE", "DSW" };
 
+=======
+>>>>>>> upstream/master
 READ16_MEMBER( segaorun_state::outrun_custom_io_r )
 {
 	offset &= 0x7f/2;
@@ -696,11 +769,19 @@ READ16_MEMBER( segaorun_state::outrun_custom_io_r )
 
 		case 0x30/2:
 		{
+<<<<<<< HEAD
 			return read_safe(m_adc_ports[m_adc_select], 0x0010);
 		}
 
 		case 0x60/2:
 			return watchdog_reset_r(space, 0);
+=======
+			return m_adc_ports[m_adc_select].read_safe(0x0010);
+		}
+
+		case 0x60/2:
+			return m_watchdog->reset_r(space, 0);
+>>>>>>> upstream/master
 
 		default:
 			break;
@@ -736,9 +817,15 @@ WRITE16_MEMBER( segaorun_state::outrun_custom_io_w )
 				//  D1: Brake lamp
 				//  other bits: ?
 				machine().sound().system_enable(data & 0x80);
+<<<<<<< HEAD
 				output_set_value("Vibration_motor", data >> 5 & 1);
 				output_set_value("Start_lamp", data >> 2 & 1);
 				output_set_value("Brake_lamp", data >> 1 & 1);
+=======
+				output().set_value("Vibration_motor", data >> 5 & 1);
+				output().set_value("Start_lamp", data >> 2 & 1);
+				output().set_value("Brake_lamp", data >> 1 & 1);
+>>>>>>> upstream/master
 			}
 			return;
 
@@ -747,7 +834,11 @@ WRITE16_MEMBER( segaorun_state::outrun_custom_io_w )
 			return;
 
 		case 0x60/2:
+<<<<<<< HEAD
 			machine().watchdog_reset();
+=======
+			m_watchdog->watchdog_reset();
+>>>>>>> upstream/master
 			return;
 
 		case 0x70/2:
@@ -782,7 +873,11 @@ READ16_MEMBER( segaorun_state::shangon_custom_io_r )
 
 		case 0x3020/2:
 		{
+<<<<<<< HEAD
 			return read_safe(m_adc_ports[m_adc_select], 0x0010);
+=======
+			return m_adc_ports[m_adc_select].read_safe(0x0010);
+>>>>>>> upstream/master
 		}
 
 		default:
@@ -815,8 +910,13 @@ WRITE16_MEMBER( segaorun_state::shangon_custom_io_w )
 				//  other bits: ?
 				m_adc_select = data >> 6 & 3;
 				m_segaic16vid->set_display_enable(data >> 5 & 1);
+<<<<<<< HEAD
 				output_set_value("Vibration_motor", data >> 3 & 1);
 				output_set_value("Start_lamp", data >> 2 & 1);
+=======
+				output().set_value("Vibration_motor", data >> 3 & 1);
+				output().set_value("Start_lamp", data >> 2 & 1);
+>>>>>>> upstream/master
 			}
 			return;
 
@@ -830,7 +930,11 @@ WRITE16_MEMBER( segaorun_state::shangon_custom_io_w )
 			return;
 
 		case 0x3000/2:
+<<<<<<< HEAD
 			machine().watchdog_reset();
+=======
+			m_watchdog->watchdog_reset();
+>>>>>>> upstream/master
 			return;
 
 		case 0x3020/2:
@@ -897,7 +1001,11 @@ static ADDRESS_MAP_START( outrun_map, AS_PROGRAM, 16, segaorun_state )
 	AM_RANGE(0x500000, 0x507fff) AM_RAM AM_SHARE("workram")
 ADDRESS_MAP_END
 
+<<<<<<< HEAD
 static ADDRESS_MAP_START( decrypted_opcodes_map, AS_DECRYPTED_OPCODES, 16, segaorun_state )
+=======
+static ADDRESS_MAP_START( decrypted_opcodes_map, AS_OPCODES, 16, segaorun_state )
+>>>>>>> upstream/master
 	AM_RANGE(0x00000, 0xfffff) AM_ROMBANK("fd1094_decrypted_opcodes")
 ADDRESS_MAP_END
 
@@ -991,7 +1099,11 @@ static INPUT_PORTS_START( outrun_generic )
 	PORT_BIT( 0xff, 0x00, IPT_PEDAL2 ) PORT_SENSITIVITY(100) PORT_KEYDELTA(40)
 
 	PORT_START("ADC.3")
+<<<<<<< HEAD
 	PORT_BIT( 0xff, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, segaorun_state, bankmotor_pos_r, NULL)
+=======
+	PORT_BIT( 0xff, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, segaorun_state, bankmotor_pos_r, nullptr)
+>>>>>>> upstream/master
 INPUT_PORTS_END
 
 
@@ -1011,6 +1123,23 @@ static INPUT_PORTS_START( outrun )
 	PORT_DIPSETTING(    0x00, DEF_STR( Unused ) )
 INPUT_PORTS_END
 
+<<<<<<< HEAD
+=======
+static INPUT_PORTS_START( outruneh )
+	PORT_INCLUDE( outrun_generic )
+
+	PORT_MODIFY("DSW")
+	PORT_DIPNAME( 0x03, 0x01, DEF_STR( Cabinet ) ) PORT_DIPLOCATION("SWB:1,2")
+	PORT_DIPSETTING(    0x03, "Moving" )
+	PORT_DIPSETTING(    0x02, "Up Cockpit" )
+	PORT_DIPSETTING(    0x01, "Mini Up" )
+	PORT_DIPSETTING(    0x00, DEF_STR( Unused ) )
+	PORT_DIPNAME( 0x08, 0x08, "Speed Indicator" )  PORT_DIPLOCATION("SWB:4")
+	PORT_DIPSETTING(    0x08, "km/h" )
+	PORT_DIPSETTING(    0x00, "MPH" )
+INPUT_PORTS_END
+
+>>>>>>> upstream/master
 
 static INPUT_PORTS_START( outrundx )
 	PORT_INCLUDE( outrun_generic )
@@ -1025,6 +1154,25 @@ static INPUT_PORTS_START( outrundx )
 	PORT_DIPUNUSED_DIPLOC( 0x04, IP_ACTIVE_LOW, "SWB:3" )
 INPUT_PORTS_END
 
+<<<<<<< HEAD
+=======
+static INPUT_PORTS_START( outrundxeh )
+	PORT_INCLUDE( outrun_generic )
+
+	PORT_MODIFY("DSW")
+	PORT_DIPNAME( 0x01, 0x01, DEF_STR( Cabinet ) ) PORT_DIPLOCATION("SWB:1")
+	PORT_DIPSETTING(    0x00, "Not Moving" )
+	PORT_DIPSETTING(    0x01, "Moving" )
+	PORT_DIPNAME( 0x02, 0x00, DEF_STR( Demo_Sounds ) ) PORT_DIPLOCATION("SWB:2")
+	PORT_DIPSETTING(    0x02, DEF_STR( Off ) )
+	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
+	PORT_DIPUNUSED_DIPLOC( 0x04, IP_ACTIVE_LOW, "SWB:3" )
+	PORT_DIPNAME( 0x08, 0x08, "Speed Indicator" )  PORT_DIPLOCATION("SWB:4")
+	PORT_DIPSETTING(    0x08, "km/h" )
+	PORT_DIPSETTING(    0x00, "MPH" )
+INPUT_PORTS_END
+
+>>>>>>> upstream/master
 
 // This is used by the Outrun to Turbo Outrun conversion kit
 // In service mode, all four settings for DSW-B 1&2 are valid
@@ -1154,7 +1302,11 @@ GFXDECODE_END
 //  GENERIC MACHINE DRIVERS
 //**************************************************************************
 
+<<<<<<< HEAD
 static MACHINE_CONFIG_START( outrun_base, segaorun_state )
+=======
+static MACHINE_CONFIG_START( outrun_base )
+>>>>>>> upstream/master
 
 	// basic machine hardware
 	MCFG_CPU_ADD("maincpu", M68000, MASTER_CLOCK/4)
@@ -1169,6 +1321,11 @@ static MACHINE_CONFIG_START( outrun_base, segaorun_state )
 
 	MCFG_QUANTUM_TIME(attotime::from_hz(6000))
 
+<<<<<<< HEAD
+=======
+	MCFG_WATCHDOG_ADD("watchdog")
+
+>>>>>>> upstream/master
 	MCFG_DEVICE_ADD("i8255", I8255, 0)
 	MCFG_I8255_IN_PORTA_CB(READ8(segaorun_state, bankmotor_limit_r))
 	MCFG_I8255_OUT_PORTA_CB(WRITE8(segaorun_state, unknown_porta_w))
@@ -1195,6 +1352,11 @@ static MACHINE_CONFIG_START( outrun_base, segaorun_state )
 	// sound hardware
 	MCFG_SPEAKER_STANDARD_STEREO("lspeaker", "rspeaker")
 
+<<<<<<< HEAD
+=======
+	MCFG_GENERIC_LATCH_8_ADD("soundlatch")
+
+>>>>>>> upstream/master
 	MCFG_YM2151_ADD("ymsnd", SOUND_CLOCK/4)
 	MCFG_SOUND_ROUTE(0, "lspeaker", 0.43)
 	MCFG_SOUND_ROUTE(1, "rspeaker", 0.43)
@@ -1258,7 +1420,11 @@ static MACHINE_CONFIG_DERIVED( shangon, outrun_base )
 
 	// video hardware
 	MCFG_SCREEN_MODIFY("screen")
+<<<<<<< HEAD
 	MCFG_SCREEN_RAW_PARAMS(MASTER_CLOCK_25MHz/4, 400, 0, 321, 262, 0, 224)
+=======
+	MCFG_SCREEN_RAW_PARAMS(MASTER_CLOCK_25MHz/4, 400, 0, 320, 262, 0, 224)
+>>>>>>> upstream/master
 	MCFG_SCREEN_UPDATE_DRIVER(segaorun_state, screen_update_shangon)
 
 	MCFG_SEGA_SYS16B_SPRITES_ADD("sprites")
@@ -1634,7 +1800,11 @@ ROM_END
 
 //*************************************************************************************************************************
 //  Outrun Deluxe (Japan)
+<<<<<<< HEAD
 //  CPU: FD1089A
+=======
+//  CPU: FD1089A (317-0019)
+>>>>>>> upstream/master
 //   GAME BD  834-6065-01
 //   CPU BD   837-6063-01
 //   VIDEO BD 837-6064-02
@@ -1649,11 +1819,18 @@ ROM_START( outrundxj )
 	ROM_LOAD16_BYTE( "epr-10334.ic117", 0x020001, 0x10000, CRC(ff22ad0b) SHA1(41f7c075e0c84a16c0ac46e35bff5e9484920664) )
 
 	ROM_REGION( 0x60000, "subcpu", 0 ) // second 68000 CPU
+<<<<<<< HEAD
 	// note, this fails the ROM test because the checksums present in the ROMs have not been changed from the unencrypted version!
 	ROM_LOAD16_BYTE( "epr-10327a.76", 0x00000, 0x10000, CRC(e28a5baf) SHA1(f715bde96c73ed47035acf5a41630fdeb41bb2f9) )
 	ROM_LOAD16_BYTE( "epr-10329a.58", 0x00001, 0x10000, CRC(da131c81) SHA1(57d5219bd0e2fd886217e37e8773fd76be9b40eb) )
 	ROM_LOAD16_BYTE( "epr-10328a.75", 0x20000, 0x10000, CRC(d5ec5e5d) SHA1(a4e3cfca4d803e72bc4fcf91ab00e21bf3f8959f) )
 	ROM_LOAD16_BYTE( "epr-10330a.57", 0x20001, 0x10000, CRC(ba9ec82a) SHA1(2136c9572e26b7ae6de402c0cd53174407cc6018) )
+=======
+	ROM_LOAD16_BYTE( "epr-10327.76", 0x00000, 0x10000, CRC(da99d855) SHA1(77d18092e3c10a400e62eeba562f161398fe37a7) )
+	ROM_LOAD16_BYTE( "epr-10329.58", 0x00001, 0x10000, CRC(fe0fa5e2) SHA1(e63fe5f7950af35131539836f18fa056767c2c80) )
+	ROM_LOAD16_BYTE( "epr-10328.75", 0x20000, 0x10000, CRC(3c0e9a7f) SHA1(0e182fdac70423a85dc2b996c70bcb3954e75e10) )
+	ROM_LOAD16_BYTE( "epr-10330.57", 0x20001, 0x10000, CRC(59786e99) SHA1(834bf361ca67cee3793c324bb26cf0ec82a72068) )
+>>>>>>> upstream/master
 
 	ROM_REGION( 0x30000, "gfx1", 0 ) // tiles
 	ROM_LOAD( "opr-10268.99",  0x00000, 0x08000, CRC(95344b04) SHA1(b3480714b11fc49b449660431f85d4ba92f799ba) )
@@ -1880,6 +2057,7 @@ ROM_START( outrunb )
 	ROM_CONTINUE(        0x50000, 0x08000 )
 ROM_END
 
+<<<<<<< HEAD
 ROM_START( outrunen )
 	ROM_REGION( 0x60000, "maincpu", 0 ) // 68000 code
 	ROM_LOAD16_BYTE( "epr-10380b.133", 0x000000, 0x10000, CRC(90e6ecec) )
@@ -1933,6 +2111,8 @@ ROM_START( outrunen )
 	ROM_LOAD( "opr-10188.71", 0x50000, 0x08000, CRC(37598616) )
 	ROM_RELOAD(               0x58000, 0x08000 )
 ROM_END
+=======
+>>>>>>> upstream/master
 
 //*************************************************************************************************************************
 //*************************************************************************************************************************
@@ -2946,12 +3126,23 @@ DRIVER_INIT_MEMBER(segaorun_state,generic)
 	// allocate a scanline timer
 	m_scanline_timer = timer_alloc(TID_SCANLINE);
 
+<<<<<<< HEAD
 	// configure the NVRAM to point to our workram
 	if (m_nvram != NULL)
 		m_nvram->set_base(m_workram, m_workram.bytes());
 
 	// point globals to allocated memory regions
 	m_segaic16road->segaic16_roadram_0 = reinterpret_cast<UINT16 *>(memshare("roadram")->ptr());
+=======
+	m_irq2_gen_timer = timer_alloc(TID_IRQ2_GEN);
+
+	// configure the NVRAM to point to our workram
+	if (m_nvram != nullptr)
+		m_nvram->set_base(m_workram, m_workram.bytes());
+
+	// point globals to allocated memory regions
+	m_segaic16road->segaic16_roadram_0 = reinterpret_cast<uint16_t *>(memshare("roadram")->ptr());
+>>>>>>> upstream/master
 
 	// save state
 	save_item(NAME(m_adc_select));
@@ -2976,6 +3167,7 @@ DRIVER_INIT_MEMBER(segaorun_state,outrunb)
 	DRIVER_INIT_CALL(outrun);
 
 	// hard code a memory map
+<<<<<<< HEAD
 	static const UINT8 memory_map[] = { 0x02,0x00,0x0d,0x10,0x00,0x12,0x0c,0x13,0x08,0x14,0x0f,0x20,0x00,0x00,0x00,0x00 };
 	m_custom_map = memory_map;
 
@@ -2989,14 +3181,35 @@ DRIVER_INIT_MEMBER(segaorun_state,outrunb)
 	word = (UINT16 *)memregion("subcpu")->base();
 	length = memregion("subcpu")->bytes() / 2;
 	for (UINT32 i = 0; i < length; i++)
+=======
+	static const uint8_t memory_map[] = { 0x02,0x00,0x0d,0x10,0x00,0x12,0x0c,0x13,0x08,0x14,0x0f,0x20,0x00,0x00,0x00,0x00 };
+	m_custom_map = memory_map;
+
+	// main CPU: swap bits 11,12 and 6,7
+	uint16_t *word = (uint16_t *)memregion("maincpu")->base();
+	uint32_t length = memregion("maincpu")->bytes() / 2;
+	for (uint32_t i = 0; i < length; i++)
+		word[i] = BITSWAP16(word[i], 15,14,11,12,13,10,9,8,6,7,5,4,3,2,1,0);
+
+	// sub CPU: swap bits 14,15 and 2,3
+	word = (uint16_t *)memregion("subcpu")->base();
+	length = memregion("subcpu")->bytes() / 2;
+	for (uint32_t i = 0; i < length; i++)
+>>>>>>> upstream/master
 		word[i] = BITSWAP16(word[i], 14,15,13,12,11,10,9,8,7,6,5,4,2,3,1,0);
 
 	// road gfx
 	// rom a-2.bin: swap bits 6,7
 	// rom a-3.bin: swap bits 5,6
+<<<<<<< HEAD
 	UINT8 *byte = memregion("gfx3")->base();
 	length = memregion("gfx3")->bytes() / 2;
 	for (UINT32 i = 0; i < length; i++)
+=======
+	uint8_t *byte = memregion("gfx3")->base();
+	length = memregion("gfx3")->bytes() / 2;
+	for (uint32_t i = 0; i < length; i++)
+>>>>>>> upstream/master
 	{
 		byte[i]        = BITSWAP8(byte[i],        6,7,5,4,3,2,1,0);
 		byte[i+length] = BITSWAP8(byte[i+length], 7,5,6,4,3,2,1,0);
@@ -3005,7 +3218,11 @@ DRIVER_INIT_MEMBER(segaorun_state,outrunb)
 	// Z80 code: swap bits 5,6
 	byte = memregion("soundcpu")->base();
 	length = memregion("soundcpu")->bytes();
+<<<<<<< HEAD
 	for (UINT32 i = 0; i < length; i++)
+=======
+	for (uint32_t i = 0; i < length; i++)
+>>>>>>> upstream/master
 		byte[i] = BITSWAP8(byte[i], 7,5,6,4,3,2,1,0);
 }
 
@@ -3027,10 +3244,16 @@ DRIVER_INIT_MEMBER(segaorun_state,shangon)
 GAMEL(1986, outrun,    0,       outrun,          outrun,   segaorun_state,outrun,  ROT0,   "Sega",    "Out Run (sitdown/upright, Rev B)", 0,                        layout_outrun ) // Upright/Sitdown determined by dipswitch settings
 GAMEL(1986, outrunra,  outrun,  outrun,          outrun,   segaorun_state,outrun,  ROT0,   "Sega",    "Out Run (sitdown/upright, Rev A)", 0,                        layout_outrun ) // Upright/Sitdown determined by dipswitch settings
 GAMEL(1986, outrundx,  outrun,  outrun,          outrundx, segaorun_state,outrun,  ROT0,   "Sega",    "Out Run (deluxe sitdown)", 0,                                layout_outrun )
+<<<<<<< HEAD
 GAMEL(1986, outrundxj, outrun,  outrun_fd1089a,  outrundx, segaorun_state,outrun,  ROT0,   "Sega",    "Out Run (Japan, deluxe sitdown) (FD1089A 317-0019)", 0,       layout_outrun ) // No Japanese text, different course order
 GAMEL(1986, outrundxa, outrun,  outrundx,        outrundx, segaorun_state,outrun,  ROT0,   "Sega",    "Out Run (deluxe sitdown earlier version)", 0,                layout_outrun )
 GAMEL(1986, outrunb,   outrun,  outrun,          outrun,   segaorun_state,outrunb, ROT0,   "bootleg", "Out Run (bootleg)", 0,                                       layout_outrun )
 GAMEL(2012, outrunen,  outrun,  outrun,          outrun,   segaorun_state,outrun,  ROT0,   "hack",    "Out Run Enhanced Edition (Ver 1.0.3)", 0,                    layout_outrun ) // Upright/Sitdown determined by dipswitch settings
+=======
+GAMEL(1986, outrundxj, outrun,  outrun_fd1089a,  outrundx, segaorun_state,outrun,  ROT0,   "Sega",    "Out Run (Japan, deluxe sitdown) (FD1089A 317-0019)", 0,      layout_outrun ) // No Japanese text, different course order
+GAMEL(1986, outrundxa, outrun,  outrundx,        outrundx, segaorun_state,outrun,  ROT0,   "Sega",    "Out Run (deluxe sitdown earlier version)", 0,                layout_outrun )
+GAMEL(1986, outrunb,   outrun,  outrun,          outrun,   segaorun_state,outrunb, ROT0,   "bootleg", "Out Run (bootleg)", 0,                                       layout_outrun )
+>>>>>>> upstream/master
 
 GAME( 1987, shangon,   0,       shangon,         shangon,  segaorun_state,shangon, ROT0,   "Sega",    "Super Hang-On (sitdown/upright) (unprotected)", 0 )
 GAME( 1987, shangon3,  shangon, shangon_fd1089b, shangon,  segaorun_state,shangon, ROT0,   "Sega",    "Super Hang-On (sitdown/upright) (FD1089B 317-0034)", 0 )
@@ -3057,5 +3280,10 @@ GAME( 1987, shangon3d, shangon, shangon,  shangon,  segaorun_state,shangon, ROT0
 
 // aftermarket modifications, these fix various issues in the game, including making the attract mode work correctly when set to Free Play.
 // see http://reassembler.blogspot.co.uk/2011/08/outrun-enhanced-edition.html
+<<<<<<< HEAD
 GAMEL(2013, outrundxeh,  outrun,  outrun,          outrundx, segaorun_state,outrun,  ROT0,   "hack (Chris White)",    "Out Run (deluxe sitdown) (Enhanced Edition v1.0.3)", 0,                                layout_outrun ) // Jan 2013
 GAMEL(2014, outruneh,    outrun,  outrun,          outrun,   segaorun_state,outrun,  ROT0,   "hack (Chris White)",    "Out Run (sitdown/upright, Rev B) (Enhanced Edition v1.1.0)", 0,                        layout_outrun ) // Upright/Sitdown determined by dipswitch settings - July 2014
+=======
+GAMEL(2013, outrundxeh,  outrun,  outrun,        outrundxeh, segaorun_state,outrun,  ROT0,   "hack (Chris White)",    "Out Run (deluxe sitdown) (Enhanced Edition v1.0.3)", 0,                                layout_outrun ) // Jan 2013
+GAMEL(2014, outruneh,    outrun,  outrun,        outruneh,   segaorun_state,outrun,  ROT0,   "hack (Chris White)",    "Out Run (sitdown/upright, Rev B) (Enhanced Edition v1.1.0)", 0,                        layout_outrun ) // Upright/Sitdown determined by dipswitch settings - July 2014
+>>>>>>> upstream/master

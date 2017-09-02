@@ -22,6 +22,10 @@
 
 */
 
+<<<<<<< HEAD
+=======
+#include "emu.h"
+>>>>>>> upstream/master
 #include "mos6526.h"
 
 
@@ -111,10 +115,17 @@ enum
 //  DEVICE TYPE DEFINITIONS
 //**************************************************************************
 
+<<<<<<< HEAD
 const device_type MOS6526 = &device_creator<mos6526_device>;
 const device_type MOS6526A = &device_creator<mos6526a_device>;
 const device_type MOS8520 = &device_creator<mos8520_device>;
 const device_type MOS5710 = &device_creator<mos5710_device>;
+=======
+DEFINE_DEVICE_TYPE(MOS6526,  mos6526_device,  "mos6526",  "MOS 6526 CIA")
+DEFINE_DEVICE_TYPE(MOS6526A, mos6526a_device, "mos6526a", "MOS 6526A CIA")
+DEFINE_DEVICE_TYPE(MOS8520,  mos8520_device,  "mos8520",  "MOS 8520 CIA")
+DEFINE_DEVICE_TYPE(MOS5710,  mos5710_device,  "mos5710",  "MOS 5710 CIA")
+>>>>>>> upstream/master
 
 
 
@@ -128,7 +139,11 @@ const device_type MOS5710 = &device_creator<mos5710_device>;
 
 inline void mos6526_device::update_pa()
 {
+<<<<<<< HEAD
 	UINT8 pa = m_pra | (m_pa_in & ~m_ddra);
+=======
+	uint8_t pa = m_pra | (m_pa_in & ~m_ddra);
+>>>>>>> upstream/master
 
 	if (m_pa != pa)
 	{
@@ -144,7 +159,11 @@ inline void mos6526_device::update_pa()
 
 inline void mos6526_device::update_pb()
 {
+<<<<<<< HEAD
 	UINT8 pb = m_prb | (m_pb_in & ~m_ddrb);
+=======
+	uint8_t pb = m_prb | (m_pb_in & ~m_ddrb);
+>>>>>>> upstream/master
 
 	if (CRA_PBON)
 	{
@@ -174,7 +193,11 @@ inline void mos6526_device::update_pb()
 //  set_cra - control register A write
 //-------------------------------------------------
 
+<<<<<<< HEAD
 inline void mos6526_device::set_cra(UINT8 data)
+=======
+inline void mos6526_device::set_cra(uint8_t data)
+>>>>>>> upstream/master
 {
 	if (!CRA_STARTED && (data & CRA_START))
 	{
@@ -204,7 +227,11 @@ inline void mos6526_device::set_cra(UINT8 data)
 //  set_crb - control register B write
 //-------------------------------------------------
 
+<<<<<<< HEAD
 inline void mos6526_device::set_crb(UINT8 data)
+=======
+inline void mos6526_device::set_crb(uint8_t data)
+>>>>>>> upstream/master
 {
 	if (!CRB_STARTED && (data & CRB_START))
 	{
@@ -220,7 +247,11 @@ inline void mos6526_device::set_crb(UINT8 data)
 //  bcd_increment -
 //-------------------------------------------------
 
+<<<<<<< HEAD
 inline UINT8 mos6526_device::bcd_increment(UINT8 value)
+=======
+inline uint8_t mos6526_device::bcd_increment(uint8_t value)
+>>>>>>> upstream/master
 {
 	value++;
 
@@ -237,10 +268,17 @@ inline UINT8 mos6526_device::bcd_increment(UINT8 value)
 
 inline void mos6526_device::clock_tod()
 {
+<<<<<<< HEAD
 	UINT8 subsecond = (UINT8) (m_tod >>  0);
 	UINT8 second    = (UINT8) (m_tod >>  8);
 	UINT8 minute    = (UINT8) (m_tod >> 16);
 	UINT8 hour      = (UINT8) (m_tod >> 24);
+=======
+	uint8_t subsecond = (uint8_t) (m_tod >>  0);
+	uint8_t second    = (uint8_t) (m_tod >>  8);
+	uint8_t minute    = (uint8_t) (m_tod >> 16);
+	uint8_t hour      = (uint8_t) (m_tod >> 24);
+>>>>>>> upstream/master
 
 	m_tod_count++;
 
@@ -278,10 +316,17 @@ inline void mos6526_device::clock_tod()
 		}
 	}
 
+<<<<<<< HEAD
 	m_tod = (((UINT32) subsecond)   <<  0)
 			| (((UINT32) second)        <<  8)
 			| (((UINT32) minute)        << 16)
 			| (((UINT32) hour)      << 24);
+=======
+	m_tod = (((uint32_t) subsecond)   <<  0)
+			| (((uint32_t) second)        <<  8)
+			| (((uint32_t) minute)        << 16)
+			| (((uint32_t) hour)      << 24);
+>>>>>>> upstream/master
 }
 
 
@@ -300,7 +345,11 @@ inline void mos8520_device::clock_tod()
 //  read_tod - time-of-day read
 //-------------------------------------------------
 
+<<<<<<< HEAD
 inline UINT8 mos6526_device::read_tod(int offset)
+=======
+inline uint8_t mos6526_device::read_tod(int offset)
+>>>>>>> upstream/master
 {
 	int shift = 8 * offset;
 
@@ -319,7 +368,11 @@ inline UINT8 mos6526_device::read_tod(int offset)
 //  write_tod - time-of-day write
 //-------------------------------------------------
 
+<<<<<<< HEAD
 inline void mos6526_device::write_tod(int offset, UINT8 data)
+=======
+inline void mos6526_device::write_tod(int offset, uint8_t data)
+>>>>>>> upstream/master
 {
 	int shift = 8 * offset;
 
@@ -586,8 +639,13 @@ inline void mos6526_device::synchronize()
 //  mos6526_device - constructor
 //-------------------------------------------------
 
+<<<<<<< HEAD
 mos6526_device::mos6526_device(const machine_config &mconfig, device_type type, const char *name, const char *tag, device_t *owner, UINT32 clock, UINT32 variant, const char *shortname, const char *source)
 	: device_t(mconfig, type, name, tag, owner, clock, shortname, source),
+=======
+mos6526_device::mos6526_device(const machine_config &mconfig, device_type type, const char *tag, device_t *owner, uint32_t clock, uint32_t variant)
+	: device_t(mconfig, type, tag, owner, clock),
+>>>>>>> upstream/master
 		device_execute_interface(mconfig, *this),
 		m_icount(0),
 		m_variant(variant),
@@ -603,6 +661,7 @@ mos6526_device::mos6526_device(const machine_config &mconfig, device_type type, 
 {
 }
 
+<<<<<<< HEAD
 mos6526_device::mos6526_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
 	: device_t(mconfig, MOS6526, "MOS6526", tag, owner, clock, "mos6526", __FILE__),
 		device_execute_interface(mconfig, *this),
@@ -627,6 +686,20 @@ mos8520_device::mos8520_device(const machine_config &mconfig, const char *tag, d
 
 mos5710_device::mos5710_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
 	: mos6526_device(mconfig, MOS5710, "MOS5710", tag, owner, clock, TYPE_5710, "mos5710", __FILE__) { }
+=======
+mos6526_device::mos6526_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: mos6526_device(mconfig, MOS6526, tag, owner, clock, TYPE_6526)
+{ }
+
+mos6526a_device::mos6526a_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: mos6526_device(mconfig, MOS6526A, tag, owner, clock, TYPE_6526A) { }
+
+mos8520_device::mos8520_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: mos6526_device(mconfig, MOS8520, tag, owner, clock, TYPE_8520) { }
+
+mos5710_device::mos5710_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: mos6526_device(mconfig, MOS5710, tag, owner, clock, TYPE_5710) { }
+>>>>>>> upstream/master
 
 
 //-------------------------------------------------
@@ -801,14 +874,24 @@ void mos6526_device::execute_run()
 
 READ8_MEMBER( mos6526_device::read )
 {
+<<<<<<< HEAD
 	if (space.debugger_access())
 		return 0xff;
 
 	UINT8 data = 0;
+=======
+	uint8_t data = 0;
+>>>>>>> upstream/master
 
 	switch (offset & 0x0f)
 	{
 	case PRA:
+<<<<<<< HEAD
+=======
+		if (machine().side_effect_disabled())
+			return 0xff;
+
+>>>>>>> upstream/master
 		if (m_ddra != 0xff)
 			data = (m_read_pa(0) & ~m_ddra) | (m_pra & m_ddra);
 		else
@@ -817,6 +900,12 @@ READ8_MEMBER( mos6526_device::read )
 		break;
 
 	case PRB:
+<<<<<<< HEAD
+=======
+		if (machine().side_effect_disabled())
+			return 0xff;
+
+>>>>>>> upstream/master
 		if (m_ddrb != 0xff)
 			data = (m_read_pb(0) & ~m_ddrb) | (m_prb & m_ddrb);
 		else
@@ -868,20 +957,44 @@ READ8_MEMBER( mos6526_device::read )
 		break;
 
 	case TOD_10THS:
+<<<<<<< HEAD
+=======
+		if (machine().side_effect_disabled())
+			return 0xff;
+
+>>>>>>> upstream/master
 		data = read_tod(0);
 
 		m_tod_latched = false;
 		break;
 
 	case TOD_SEC:
+<<<<<<< HEAD
+=======
+		if (machine().side_effect_disabled())
+			return 0xff;
+
+>>>>>>> upstream/master
 		data = read_tod(1);
 		break;
 
 	case TOD_MIN:
+<<<<<<< HEAD
+=======
+		if (machine().side_effect_disabled())
+			return 0xff;
+
+>>>>>>> upstream/master
 		data = read_tod(2);
 		break;
 
 	case TOD_HR:
+<<<<<<< HEAD
+=======
+		if (machine().side_effect_disabled())
+			return 0xff;
+
+>>>>>>> upstream/master
 		if (!m_tod_latched)
 		{
 			m_tod_latched = true;
@@ -898,6 +1011,12 @@ READ8_MEMBER( mos6526_device::read )
 	case ICR:
 		data = (m_ir1 << 7) | m_icr;
 
+<<<<<<< HEAD
+=======
+		if (machine().side_effect_disabled())
+			return data;
+
+>>>>>>> upstream/master
 		m_icr_read = true;
 
 		m_ir0 = 0;
@@ -921,7 +1040,11 @@ READ8_MEMBER( mos6526_device::read )
 
 READ8_MEMBER( mos8520_device::read )
 {
+<<<<<<< HEAD
 	UINT8 data = 0;
+=======
+	uint8_t data;
+>>>>>>> upstream/master
 
 	switch (offset & 0x0f)
 	{

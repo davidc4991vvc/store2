@@ -8,8 +8,13 @@
 
 ***************************************************************************/
 
+<<<<<<< HEAD
 #ifndef __M6510T_H__
 #define __M6510T_H__
+=======
+#ifndef MAME_CPU_M6502_M6510T_H
+#define MAME_CPU_M6502_M6510T_H
+>>>>>>> upstream/master
 
 #include "m6510.h"
 
@@ -21,7 +26,11 @@
 
 class m6510t_device : public m6510_device {
 public:
+<<<<<<< HEAD
 	m6510t_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
+=======
+	m6510t_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
+>>>>>>> upstream/master
 };
 
 enum {
@@ -29,6 +38,12 @@ enum {
 	M6510T_SET_OVERFLOW = m6502_device::V_LINE
 };
 
+<<<<<<< HEAD
 extern const device_type M6510T;
 
 #endif
+=======
+DECLARE_DEVICE_TYPE(M6510T, m6510t_device)
+
+#endif // MAME_CPU_M6502_M6510T_H
+>>>>>>> upstream/master

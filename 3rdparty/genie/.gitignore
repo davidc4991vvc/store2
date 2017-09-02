@@ -1,2 +1,6 @@
 bin
 build/*/obj
+<<<<<<< HEAD
+=======
+src/host/scripts.c
+>>>>>>> upstream/master

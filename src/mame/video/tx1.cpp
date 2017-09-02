@@ -115,7 +115,11 @@ enum
 
 PALETTE_INIT_MEMBER(tx1_state,tx1)
 {
+<<<<<<< HEAD
 	const UINT8 *const color_prom = &m_proms[0];
+=======
+	const uint8_t *const color_prom = &m_proms[0];
+>>>>>>> upstream/master
 	int i;
 
 	static const res_net_info tx1_net_info =
@@ -230,6 +234,7 @@ WRITE16_MEMBER(tx1_state::tx1_flgcs_w)
  *
  *************************************/
 
+<<<<<<< HEAD
 void tx1_state::tx1_draw_char(UINT8 *bitmap)
 {
 	UINT16 *tx1_vram = m_vram;
@@ -239,17 +244,36 @@ void tx1_state::tx1_draw_char(UINT8 *bitmap)
 	/* 2bpp characters */
 	const UINT8 *const chars = &m_char_tiles[0];
 	const UINT8 *const gfx2 = &m_char_tiles[0x4000];
+=======
+void tx1_state::tx1_draw_char(uint8_t *bitmap)
+{
+	uint16_t *tx1_vram = m_vram;
+	int32_t x, y;
+	uint32_t scroll_x;
+
+	/* 2bpp characters */
+	const uint8_t *const chars = &m_char_tiles[0];
+	const uint8_t *const gfx2 = &m_char_tiles[0x4000];
+>>>>>>> upstream/master
 
 	/* X scroll value is the last word in char RAM */
 	scroll_x = tx1_vram[0xfff] & 0x3ff;
 
 	for (y = 0; y < 240; ++y)
 	{
+<<<<<<< HEAD
 		UINT32 d0 = 0, d1 = 0;
 		UINT32 colour = 0;
 		UINT32 y_offs;
 		UINT32 x_offs;
 		UINT32 y_gran;
+=======
+		uint32_t d0 = 0, d1 = 0;
+		uint32_t colour = 0;
+		uint32_t y_offs;
+		uint32_t x_offs;
+		uint32_t y_gran;
+>>>>>>> upstream/master
 
 		/* No y-scrolling? */
 		y_offs = y;
@@ -263,8 +287,13 @@ void tx1_state::tx1_draw_char(UINT8 *bitmap)
 
 		if (x_offs & 7)
 		{
+<<<<<<< HEAD
 			UINT32 tilenum;
 			UINT16 ram_val = tx1_vram[((y_offs << 4) & 0xf80) + ((x_offs >> 3) & 0x7f)];
+=======
+			uint32_t tilenum;
+			uint16_t ram_val = tx1_vram[((y_offs << 4) & 0xf80) + ((x_offs >> 3) & 0x7f)];
+>>>>>>> upstream/master
 
 			tilenum = (ram_val & 0x03ff) | ((ram_val & 0x8000) >> 5);
 			colour = (ram_val & 0xfc00) >> 8;
@@ -274,12 +303,21 @@ void tx1_state::tx1_draw_char(UINT8 *bitmap)
 
 		for (x = 0; x < 256 * 3; ++x)
 		{
+<<<<<<< HEAD
 			UINT32 x_gran = x_offs & 7;
 
 			if (!x_gran)
 			{
 				UINT32 tilenum;
 				UINT16 ram_val = tx1_vram[((y_offs << 4) & 0xf80) + ((x_offs >> 3) & 0x7f)];
+=======
+			uint32_t x_gran = x_offs & 7;
+
+			if (!x_gran)
+			{
+				uint32_t tilenum;
+				uint16_t ram_val = tx1_vram[((y_offs << 4) & 0xf80) + ((x_offs >> 3) & 0x7f)];
+>>>>>>> upstream/master
 
 				tilenum = (ram_val & 0x03ff) | ((ram_val & 0x8000) >> 5);
 				colour = (ram_val & 0xfc00) >> 8;
@@ -305,8 +343,13 @@ void tx1_state::tx1_draw_char(UINT8 *bitmap)
 
 #define TX1_GET_ROADPIX(NUM) \
 { \
+<<<<<<< HEAD
 	UINT32 addr = (rva6_0 << 5) | (road##NUM##_hcnt & 0x1f); \
 	UINT8 promaddr1, promaddr2, promaddr3; \
+=======
+	uint32_t addr = (rva6_0 << 5) | (road##NUM##_hcnt & 0x1f); \
+	uint8_t promaddr1, promaddr2, promaddr3; \
+>>>>>>> upstream/master
 	promaddr1 = rom_a[addr]; \
 	promaddr2 = rom_b[addr]; \
 	promaddr3 = rom_c[addr]; \
@@ -316,6 +359,7 @@ void tx1_state::tx1_draw_char(UINT8 *bitmap)
 	pix[NUM][3][0] = prom_a[0];         pix[NUM][3][1] = prom_b[0];         pix[NUM][3][2] = prom_c[0]; \
 }
 
+<<<<<<< HEAD
 void tx1_state::tx1_draw_road_pixel(int screen, UINT8 *bmpaddr,
 									UINT8 apix[3], UINT8 bpix[3], UINT32 pixnuma, UINT32 pixnumb,
 									UINT8 stl, UINT8 sld, UINT8 selb,
@@ -341,6 +385,33 @@ void tx1_state::tx1_draw_road_pixel(int screen, UINT8 *bmpaddr,
 	UINT8 c3 = BIT(sld, 2);
 
 	UINT32 addr_offset = screen * 256;
+=======
+void tx1_state::tx1_draw_road_pixel(int screen, uint8_t *bmpaddr,
+									uint8_t apix[3], uint8_t bpix[3], uint32_t pixnuma, uint32_t pixnumb,
+									uint8_t stl, uint8_t sld, uint8_t selb,
+									uint8_t bnk, uint8_t rorev, uint8_t eb, uint8_t r, uint8_t delr)
+{
+	vregs_t &tx1_vregs = m_vregs;
+	uint8_t a0 = BIT(apix[0], pixnuma);
+	uint8_t a1 = BIT(apix[1], pixnuma);
+	uint8_t a2 = BIT(apix[2], pixnuma);
+
+	uint8_t b0 = BIT(bpix[0], pixnumb);
+	uint8_t b1 = BIT(bpix[1], pixnumb);
+	uint8_t b2 = BIT(bpix[2], pixnumb);
+
+	uint8_t d3;
+	uint8_t d2;
+	uint8_t d1;
+	uint8_t d0;
+	uint8_t sel;
+	uint8_t c6 = BIT(sld, 6);
+	uint8_t c5 = BIT(sld, 5);
+	uint8_t c4 = BIT(sld, 4);
+	uint8_t c3 = BIT(sld, 2);
+
+	uint32_t addr_offset = screen * 256;
+>>>>>>> upstream/master
 
 	sel = !bnk && ( (a2 && !b0) || (!a0 && b2) || !a1 || !a2 || !b1 || !b2 );
 
@@ -395,6 +466,7 @@ void tx1_state::tx1_draw_road_pixel(int screen, UINT8 *bmpaddr,
 }
 
 /* This could do with a tidy up and more comments... */
+<<<<<<< HEAD
 void tx1_state::tx1_draw_road(UINT8 *bitmap)
 {
 	UINT16 *tx1_rcram = m_rcram;
@@ -424,6 +496,37 @@ void tx1_state::tx1_draw_road(UINT8 *bitmap)
 	const UINT8 *const prom_b = &m_proms[0x1300];
 	const UINT8 *const prom_c = &m_proms[0x1500];
 	const UINT8 *const vprom  = &m_proms[0x1700];
+=======
+void tx1_state::tx1_draw_road(uint8_t *bitmap)
+{
+	uint16_t *tx1_rcram = m_rcram;
+	vregs_t &tx1_vregs = m_vregs;
+	int32_t   y;
+	uint32_t  rva9_8;
+	uint32_t  rva7;
+	uint32_t  tnlf;
+	uint32_t  stlf;
+	uint32_t  scchgf;
+
+	uint32_t  vc = 0;
+
+	uint16_t  road0_hcnt;
+	uint8_t   road0_pcnt;
+	uint16_t  road1_hcnt;
+	uint8_t   road1_pcnt;
+	uint8_t   pix[2][4][3];
+
+	/* Road slice map ROMs */
+	const uint8_t *const rom_a = &m_road_rom[0];
+	const uint8_t *const rom_b = &m_road_rom[0x2000];
+	const uint8_t *const rom_c = &m_road_rom[0x4000];
+
+	/* Pixel data */
+	const uint8_t *const prom_a = &m_proms[0x1100];
+	const uint8_t *const prom_b = &m_proms[0x1300];
+	const uint8_t *const prom_c = &m_proms[0x1500];
+	const uint8_t *const vprom  = &m_proms[0x1700];
+>>>>>>> upstream/master
 
 	rva9_8  = (tx1_vregs.flags & 3) << 8;
 	rva7    = !BIT(tx1_vregs.flags, TX1_RDFLAG_RVA7) << 7;
@@ -433,6 +536,7 @@ void tx1_state::tx1_draw_road(UINT8 *bitmap)
 
 	for (y = 0; y < 240; ++y)
 	{
+<<<<<<< HEAD
 		UINT32  x;
 		UINT8   sld;
 		UINT8   rva6_0;
@@ -476,6 +580,51 @@ void tx1_state::tx1_draw_road(UINT8 *bitmap)
 		UINT8 rorevls = 0;
 		UINT8 rorevcs = 0;
 		UINT8 rorevrs = 0;
+=======
+		uint32_t  x;
+		uint8_t   sld;
+		uint8_t   rva6_0;
+		uint16_t  rcrdb15_0;
+		uint16_t  rva_addr;
+		uint32_t  bank_cnt;
+
+		uint16_t  vat;
+		uint16_t  vp0;
+		uint16_t  vp1;
+		uint16_t  vp2;
+		uint16_t  vp3;
+		uint16_t  vp4;
+
+		uint32_t  va8, va9, va10, va11, va12, va13, va14, va15;
+		uint32_t  v0, v1, v2;
+
+		uint8_t   hc1_u, hc1_l;
+		uint8_t   hc0_u, hc0_l;
+
+		uint32_t  bnkls, bnkcs, bnkrs;
+		uint32_t  rl, rc, rr;
+
+		uint32_t  stl;
+		uint32_t  selb;
+		uint32_t  ebls, ebcs, ebrs;
+
+		uint8_t *bmpaddr = bitmap + (y * 768);
+
+		uint32_t rltmp, rctmp, rrtmp;
+		uint32_t eltmp, ectmp, ertmp;
+
+		uint32_t tmpm;
+		uint32_t tmpn;
+		uint32_t tmpc;
+		uint32_t tmpd;
+
+		uint8_t scrcnt0;
+		uint8_t scrcnt1;
+
+		uint8_t rorevls = 0;
+		uint8_t rorevcs = 0;
+		uint8_t rorevrs = 0;
+>>>>>>> upstream/master
 
 		int febl[2] = { 0, 0 };
 		int febr[2] = { 0, 0 };
@@ -521,10 +670,17 @@ void tx1_state::tx1_draw_road(UINT8 *bitmap)
 
 		if (road1_pcnt & 7)
 		{
+<<<<<<< HEAD
 			UINT32 y4 = (road1_hcnt >> 4) & 1;
 			UINT32 temp = (road1_hcnt >> 5) & 0xf;
 			UINT32 x, u;
 			UINT32 fl11 = BIT(road1_hcnt, 15);
+=======
+			uint32_t y4 = (road1_hcnt >> 4) & 1;
+			uint32_t temp = (road1_hcnt >> 5) & 0xf;
+			uint32_t x, u;
+			uint32_t fl11 = BIT(road1_hcnt, 15);
+>>>>>>> upstream/master
 
 			TX1_GET_ROADPIX(1);
 
@@ -642,11 +798,19 @@ void tx1_state::tx1_draw_road(UINT8 *bitmap)
 
 		for (x = 0; x < 256; x++)
 		{
+<<<<<<< HEAD
 			UINT32 pixnum0 = (road0_pcnt & 7) ^ 7;
 			UINT32 pixnum1 = (road1_pcnt & 7) ^ 7;
 
 			UINT32 cyu, cyl;
 			UINT32 delrl, delrc, delrr;
+=======
+			uint32_t pixnum0 = (road0_pcnt & 7) ^ 7;
+			uint32_t pixnum1 = (road1_pcnt & 7) ^ 7;
+
+			uint32_t cyu, cyl;
+			uint32_t delrl, delrc, delrr;
+>>>>>>> upstream/master
 
 			/* */
 			scrcnt0 = (road0_hcnt >> 5) & 0xf;
@@ -665,10 +829,17 @@ void tx1_state::tx1_draw_road(UINT8 *bitmap)
 
 			if (!(road1_pcnt & 7))
 			{
+<<<<<<< HEAD
 				UINT32 y4 = (road1_hcnt >> 4) & 1;
 				UINT32 temp = (road1_hcnt >> 5) & 0xf;
 				UINT32 x, u;
 				UINT32 fl11 = BIT(road1_hcnt, 15);
+=======
+				uint32_t y4 = (road1_hcnt >> 4) & 1;
+				uint32_t temp = (road1_hcnt >> 5) & 0xf;
+				uint32_t x, u;
+				uint32_t fl11 = BIT(road1_hcnt, 15);
+>>>>>>> upstream/master
 
 				TX1_GET_ROADPIX(1);
 
@@ -847,6 +1018,7 @@ void tx1_state::tx1_draw_road(UINT8 *bitmap)
  *
  *************************************/
 
+<<<<<<< HEAD
 void tx1_state::tx1_draw_objects(UINT8 *bitmap)
 {
 	UINT16 *tx1_objram = m_objram;
@@ -879,6 +1051,40 @@ void tx1_state::tx1_draw_objects(UINT8 *bitmap)
 
 		UINT8   pctmp0_7;
 		UINT8   code;
+=======
+void tx1_state::tx1_draw_objects(uint8_t *bitmap)
+{
+	uint16_t *tx1_objram = m_objram;
+
+	uint32_t offs;
+
+	/* The many lookup table ROMs */
+	const uint8_t *const ic48 = &m_obj_luts[0];
+	const uint8_t *const ic281 = &m_obj_luts[0x2000];
+
+	const uint8_t *const ic190 = &m_proms[0xc00];
+	const uint8_t *const ic162 = &m_proms[0xe00];
+	const uint8_t *const ic25  = &m_proms[0x1000];
+
+	const uint8_t *const ic106 = &m_obj_map[0];
+	const uint8_t *const ic73  = &m_obj_map[0x4000];
+
+	const uint8_t *const pixdata_rgn = &m_obj_tiles[0];
+
+	for (offs = 0x0; offs <= 0x300; offs += 8)
+	{
+		uint32_t  x;
+		uint32_t  y;
+		uint32_t  gxflip;
+
+		uint32_t  x_scale;
+		uint32_t  x_step;
+		uint16_t  y_scale;
+		uint16_t  y_step;
+
+		uint8_t   pctmp0_7;
+		uint8_t   code;
+>>>>>>> upstream/master
 
 		/* Check for end of object list */
 		if ((tx1_objram[offs] & 0xff00) == 0xff00)
@@ -909,9 +1115,15 @@ void tx1_state::tx1_draw_objects(UINT8 *bitmap)
 
 		for (; y < 240; ++y)
 		{
+<<<<<<< HEAD
 			UINT32  rom_addr2   = 0;
 			UINT8   ic106_data  = 0;
 			UINT8   ic73_data;
+=======
+			uint32_t  rom_addr2   = 0;
+			uint8_t   ic106_data  = 0;
+			uint8_t   ic73_data;
+>>>>>>> upstream/master
 
 			/* Are we drawing on this line? */
 
@@ -920,6 +1132,7 @@ void tx1_state::tx1_draw_objects(UINT8 *bitmap)
 				break;
 
 			{
+<<<<<<< HEAD
 				UINT32  psa0_11;
 				UINT32  ic48_addr;
 				UINT32  ic48_data;
@@ -932,6 +1145,20 @@ void tx1_state::tx1_draw_objects(UINT8 *bitmap)
 				UINT32  xflip = 0;
 				UINT32  opcd0_7 = 0;
 				UINT32  lasttile = 0;
+=======
+				uint32_t  psa0_11;
+				uint32_t  ic48_addr;
+				uint32_t  ic48_data;
+				uint32_t  rom_addr;
+				uint32_t  x_acc;
+				uint32_t  newtile = 1;
+				uint32_t  dataend = 0;
+				uint8_t   data1 = 0;
+				uint8_t   data2 = 0;
+				uint32_t  xflip = 0;
+				uint32_t  opcd0_7 = 0;
+				uint32_t  lasttile = 0;
+>>>>>>> upstream/master
 
 				/* Use the object code to lookup the tile sequence data in ROM */
 				ic48_addr = code << 4;
@@ -960,6 +1187,7 @@ void tx1_state::tx1_draw_objects(UINT8 *bitmap)
 				{
 					if (newtile)
 					{
+<<<<<<< HEAD
 						UINT32  psbb0_12;
 						UINT32  pscb0_14;
 						UINT32  pscb11;
@@ -972,6 +1200,20 @@ void tx1_state::tx1_draw_objects(UINT8 *bitmap)
 						if (gxflip)
 						{
 							UINT32 xor_mask;
+=======
+						uint32_t  psbb0_12;
+						uint32_t  pscb0_14;
+						uint32_t  pscb11;
+						uint8_t   *romptr;
+						uint32_t  ic281_addr;
+						uint32_t  grom_addr;
+						uint32_t  lut_data;
+						uint32_t  low_addr = ((x_acc >> (OBJ_FRAC + 3)) & TX1_MASK);
+
+						if (gxflip)
+						{
+							uint32_t xor_mask;
+>>>>>>> upstream/master
 
 							if (BIT(psa0_11, 11) && BIT(psa0_11, 10))
 								xor_mask = 0xf;
@@ -1019,7 +1261,11 @@ void tx1_state::tx1_draw_objects(UINT8 *bitmap)
 						pscb11 = BIT(pscb0_14, 11);
 
 						/* TODO: Remove this - it's constant. */
+<<<<<<< HEAD
 						romptr = (UINT8*)(pixdata_rgn + pscb11 * (0x4000 * 2));
+=======
+						romptr = (uint8_t*)(pixdata_rgn + pscb11 * (0x4000 * 2));
+>>>>>>> upstream/master
 
 						grom_addr = ((pscb0_14 << 3) | ((y_scale >> 8) & 7)) & 0x3fff;
 
@@ -1042,8 +1288,13 @@ void tx1_state::tx1_draw_objects(UINT8 *bitmap)
 					/* Draw a pixel? */
 					if (x < 768)
 					{
+<<<<<<< HEAD
 						UINT8   pix;
 						UINT8   bit;
+=======
+						uint8_t   pix;
+						uint8_t   bit;
+>>>>>>> upstream/master
 
 						bit = (x_acc >> OBJ_FRAC) & 7;
 
@@ -1055,8 +1306,13 @@ void tx1_state::tx1_draw_objects(UINT8 *bitmap)
 						/* Draw pixel, if not transparent */
 						if ( !(!(opcd0_7 & 0x80) && !pix) )
 						{
+<<<<<<< HEAD
 							UINT8 color;
 							UINT32 prom_addr;
+=======
+							uint8_t color;
+							uint32_t prom_addr;
+>>>>>>> upstream/master
 
 							prom_addr = ((opcd0_7 << 2) | pix) & 0x1ff;
 
@@ -1099,12 +1355,21 @@ void tx1_state::tx1_draw_objects(UINT8 *bitmap)
 VIDEO_START_MEMBER(tx1_state,tx1)
 {
 	/* Allocate a large bitmap that covers the three screens */
+<<<<<<< HEAD
 	m_bitmap = auto_bitmap_ind16_alloc(machine(), 768, 256);
 
 	/* Allocate some bitmaps */
 	m_chr_bmp = auto_alloc_array(machine(), UINT8, 256 * 3 * 240);
 	m_obj_bmp = auto_alloc_array(machine(), UINT8, 256 * 3 * 240);
 	m_rod_bmp = auto_alloc_array(machine(), UINT8, 256 * 3 * 240);
+=======
+	m_bitmap = std::make_unique<bitmap_ind16>(768, 256);
+
+	/* Allocate some bitmaps */
+	m_chr_bmp = std::make_unique<uint8_t[]>(256 * 3 * 240);
+	m_obj_bmp = std::make_unique<uint8_t[]>(256 * 3 * 240);
+	m_rod_bmp = std::make_unique<uint8_t[]>(256 * 3 * 240);
+>>>>>>> upstream/master
 
 	/* Set a timer to run the interrupts */
 	m_interrupt_timer = machine().scheduler().timer_alloc(timer_expired_delegate(FUNC(tx1_state::interrupt_callback),this));
@@ -1113,7 +1378,11 @@ VIDEO_START_MEMBER(tx1_state,tx1)
 	m_interrupt_timer->adjust(m_screen->time_until_pos(CURSOR_YPOS, CURSOR_XPOS));
 }
 
+<<<<<<< HEAD
 void tx1_state::screen_eof_tx1(screen_device &screen, bool state)
+=======
+WRITE_LINE_MEMBER(tx1_state::screen_vblank_tx1)
+>>>>>>> upstream/master
 {
 	// rising edge
 	if (state)
@@ -1128,12 +1397,17 @@ void tx1_state::screen_eof_tx1(screen_device &screen, bool state)
 void tx1_state::tx1_combine_layers(bitmap_ind16 &bitmap, int screen)
 {
 	int x, y;
+<<<<<<< HEAD
 	UINT8 *chr_pal = &m_proms[0x900];
+=======
+	uint8_t *chr_pal = &m_proms[0x900];
+>>>>>>> upstream/master
 
 	int x_offset = screen * 256;
 
 	for (y = 0; y < 240; ++y)
 	{
+<<<<<<< HEAD
 		UINT16 *bmp_addr = &bitmap.pix16(y);
 
 		UINT32 bmp_offset = y * 768 + x_offset;
@@ -1165,6 +1439,39 @@ void tx1_state::tx1_combine_layers(bitmap_ind16 &bitmap, int screen)
 			UINT32 sel =  p12 | (p6 << 1);
 
 			UINT32 psel =  (!(p6 && p12) << 1) | p6;
+=======
+		uint16_t *bmp_addr = &bitmap.pix16(y);
+
+		uint32_t bmp_offset = y * 768 + x_offset;
+
+		uint8_t *chr_addr = m_chr_bmp.get() + bmp_offset;
+		uint8_t *rod_addr = m_rod_bmp.get() + bmp_offset;
+		uint8_t *obj_addr = m_obj_bmp.get() + bmp_offset;
+
+		for (x = 0; x < 256; ++x)
+		{
+			uint8_t out_val;
+			uint32_t char_val = chr_addr[x];
+			uint32_t c7 = BIT(char_val, 7);
+			uint32_t c1 = BIT(char_val, 1);
+			uint32_t c0 = BIT(char_val, 0);
+
+			uint32_t road_val = rod_addr[x];
+			uint32_t r6 = BIT(road_val, 6);
+			uint32_t r5 = BIT(road_val, 5);
+
+			uint32_t obj_val = obj_addr[x];
+			uint32_t obj6 = BIT(obj_val, 6);
+
+			uint32_t term1 = !(c7 && c1);
+			uint32_t term2 = !(c7 && c0);
+			uint32_t term3 = r5 || !r6;
+			uint32_t p12 = !(term1 && term2 && term3);
+			uint32_t p6 = !(obj6 && term1 && term2);
+			uint32_t sel =  p12 | (p6 << 1);
+
+			uint32_t psel =  (!(p6 && p12) << 1) | p6;
+>>>>>>> upstream/master
 
 			if      (sel == 3)  out_val = ((char_val & 0xc0) >> 2) | (chr_pal[char_val] & 0xf);
 			else if (sel == 2)  out_val = road_val & 0x3f;
@@ -1178,16 +1485,28 @@ void tx1_state::tx1_combine_layers(bitmap_ind16 &bitmap, int screen)
 
 void tx1_state::tx1_update_layers()
 {
+<<<<<<< HEAD
 	memset(m_obj_bmp, 0, 768*240);
 
 	tx1_draw_char(m_chr_bmp);
 	tx1_draw_road(m_rod_bmp);
 	tx1_draw_objects(m_obj_bmp);
+=======
+	memset(m_obj_bmp.get(), 0, 768*240);
+
+	tx1_draw_char(m_chr_bmp.get());
+	tx1_draw_road(m_rod_bmp.get());
+	tx1_draw_objects(m_obj_bmp.get());
+>>>>>>> upstream/master
 
 	m_needs_update = false;
 }
 
+<<<<<<< HEAD
 UINT32 tx1_state::screen_update_tx1_left(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+=======
+uint32_t tx1_state::screen_update_tx1_left(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+>>>>>>> upstream/master
 {
 	if (m_needs_update)
 		tx1_update_layers();
@@ -1196,7 +1515,11 @@ UINT32 tx1_state::screen_update_tx1_left(screen_device &screen, bitmap_ind16 &bi
 	return 0;
 }
 
+<<<<<<< HEAD
 UINT32 tx1_state::screen_update_tx1_middle(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+=======
+uint32_t tx1_state::screen_update_tx1_middle(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+>>>>>>> upstream/master
 {
 	if (m_needs_update)
 		tx1_update_layers();
@@ -1205,7 +1528,11 @@ UINT32 tx1_state::screen_update_tx1_middle(screen_device &screen, bitmap_ind16 &
 	return 0;
 }
 
+<<<<<<< HEAD
 UINT32 tx1_state::screen_update_tx1_right(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+=======
+uint32_t tx1_state::screen_update_tx1_right(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+>>>>>>> upstream/master
 {
 	if (m_needs_update)
 		tx1_update_layers();
@@ -1254,7 +1581,11 @@ UINT32 tx1_state::screen_update_tx1_right(screen_device &screen, bitmap_ind16 &b
 
 PALETTE_INIT_MEMBER(tx1_state,buggyboy)
 {
+<<<<<<< HEAD
 	const UINT8 *const color_prom = &m_proms[0];
+=======
+	const uint8_t *const color_prom = &m_proms[0];
+>>>>>>> upstream/master
 	int i;
 
 	for (i = 0; i < 0x100; i++)
@@ -1294,6 +1625,7 @@ PALETTE_INIT_MEMBER(tx1_state,buggyboy)
  *
  *************************************/
 
+<<<<<<< HEAD
 void tx1_state::buggyboy_draw_char(UINT8 *bitmap, bool wide)
 {
 	UINT16 *buggyboy_vram = m_vram;
@@ -1305,6 +1637,19 @@ void tx1_state::buggyboy_draw_char(UINT8 *bitmap, bool wide)
 	/* 2bpp characters */
 	const UINT8 *const chars = &m_char_tiles[0];
 	const UINT8 *const gfx2 = &m_char_tiles[0x4000];
+=======
+void tx1_state::buggyboy_draw_char(uint8_t *bitmap, bool wide)
+{
+	uint16_t *buggyboy_vram = m_vram;
+	int32_t x, y;
+	uint32_t scroll_x, scroll_y;
+	uint32_t total_width;
+	uint32_t x_mask;
+
+	/* 2bpp characters */
+	const uint8_t *const chars = &m_char_tiles[0];
+	const uint8_t *const gfx2 = &m_char_tiles[0x4000];
+>>>>>>> upstream/master
 
 	/* X/Y scroll values are the last word in char RAM */
 	if (wide)
@@ -1324,11 +1669,19 @@ void tx1_state::buggyboy_draw_char(UINT8 *bitmap, bool wide)
 
 	for (y = 0; y < 240; ++y)
 	{
+<<<<<<< HEAD
 		UINT32 d0 = 0, d1 = 0;
 		UINT32 colour = 0;
 		UINT32 y_offs;
 		UINT32 x_offs;
 		UINT32 y_gran;
+=======
+		uint32_t d0 = 0, d1 = 0;
+		uint32_t colour = 0;
+		uint32_t y_offs;
+		uint32_t x_offs;
+		uint32_t y_gran;
+>>>>>>> upstream/master
 
 		/* There's no y-scrolling between scanlines 0 and 63 */
 		if (y < 64)
@@ -1352,8 +1705,13 @@ void tx1_state::buggyboy_draw_char(UINT8 *bitmap, bool wide)
 
 		if (x_offs & 7)
 		{
+<<<<<<< HEAD
 			UINT32 tilenum;
 			UINT16 ram_val;
+=======
+			uint32_t tilenum;
+			uint16_t ram_val;
+>>>>>>> upstream/master
 
 			if (wide)
 				ram_val = buggyboy_vram[((y_offs << 4) & 0xf80) + ((x_offs >> 3) & 0x7f)];
@@ -1368,12 +1726,21 @@ void tx1_state::buggyboy_draw_char(UINT8 *bitmap, bool wide)
 
 		for (x = 0; x < total_width; ++x)
 		{
+<<<<<<< HEAD
 			UINT32 x_gran = x_offs & 7;
 
 			if (!x_gran)
 			{
 				UINT32 tilenum;
 				UINT16 ram_val;
+=======
+			uint32_t x_gran = x_offs & 7;
+
+			if (!x_gran)
+			{
+				uint32_t tilenum;
+				uint16_t ram_val;
+>>>>>>> upstream/master
 
 				if (wide)
 					ram_val = buggyboy_vram[((y_offs << 4) & 0xf80) + ((x_offs >> 3) & 0x7f)];
@@ -1434,6 +1801,7 @@ void tx1_state::buggyboy_draw_char(UINT8 *bitmap, bool wide)
 
 ***************************************************************************/
 
+<<<<<<< HEAD
 void tx1_state::buggyboy_get_roadpix(int screen, int ls161, UINT8 rva0_6, UINT8 sld, UINT32 *_rorev,
 									UINT8 *rc0, UINT8 *rc1, UINT8 *rc2, UINT8 *rc3)
 {
@@ -1450,6 +1818,24 @@ void tx1_state::buggyboy_get_roadpix(int screen, int ls161, UINT8 rva0_6, UINT8 
 	const UINT8 *const prom0 = &m_road_rom[0x4000];
 	const UINT8 *const prom1 = &m_road_rom[0x4200];
 	const UINT8 *const prom2 = &m_road_rom[0x4400];
+=======
+void tx1_state::buggyboy_get_roadpix(int screen, int ls161, uint8_t rva0_6, uint8_t sld, uint32_t *_rorev,
+									uint8_t *rc0, uint8_t *rc1, uint8_t *rc2, uint8_t *rc3)
+{
+	/* Counter Q10-7 are added to 384 */
+	uint16_t ls283_159 = (ls161 & 0x780) + 128 + (256 * screen);
+	uint32_t ls283_159_co = ls283_159 & 0x800;
+	uint32_t rom_flip = ls283_159 & 0x200 ? 0 : 1;
+	uint32_t rom_en = !(ls283_159 & 0x400) && !(ls283_159_co ^ (ls161 & 0x800));
+	uint8_t d0 = 0;
+	uint8_t d1 = 0;
+
+	/* ROM/PROM lookup tables */
+	const uint8_t *const rom   = &m_road_rom[0];
+	const uint8_t *const prom0 = &m_road_rom[0x4000];
+	const uint8_t *const prom1 = &m_road_rom[0x4200];
+	const uint8_t *const prom2 = &m_road_rom[0x4400];
+>>>>>>> upstream/master
 
 	/* Latch road reverse bit */
 	*_rorev = !( (rom_en && rom_flip) || (!rom_en && (ls161 & 0x4000)) );
@@ -1457,11 +1843,19 @@ void tx1_state::buggyboy_get_roadpix(int screen, int ls161, UINT8 rva0_6, UINT8 
 	/* TODO: ROM data is 0xff if not enabled. */
 	if (rom_en)
 	{
+<<<<<<< HEAD
 		UINT8  rom_data;
 		UINT16 prom_addr;
 
 		/* 6 bit road horizontal address */
 		UINT16 rha = (ls283_159 & 0x180) | (ls161 & 0x78);
+=======
+		uint8_t  rom_data;
+		uint16_t prom_addr;
+
+		/* 6 bit road horizontal address */
+		uint16_t rha = (ls283_159 & 0x180) | (ls161 & 0x78);
+>>>>>>> upstream/master
 
 		if (rom_flip)
 			rha ^= 0x1f8;
@@ -1522,6 +1916,7 @@ void tx1_state::buggyboy_get_roadpix(int screen, int ls161, UINT8 rva0_6, UINT8 
 		else                            \
 			hp##NUM = hp##NUM + 1;      \
 	}
+<<<<<<< HEAD
 void tx1_state::buggyboy_draw_road(UINT8 *bitmap)
 {
 	UINT16 *buggyboy_rcram = m_rcram;
@@ -1542,6 +1937,28 @@ void tx1_state::buggyboy_draw_road(UINT8 *bitmap)
 	/* ROM/PROM lookup tables */
 	const UINT8 *const rcols = &m_proms[0x1500];
 	const UINT8 *const vprom = &m_road_rom[0x4600];
+=======
+void tx1_state::buggyboy_draw_road(uint8_t *bitmap)
+{
+	uint16_t *buggyboy_rcram = m_rcram;
+	vregs_t &vregs = m_vregs;
+	int32_t x;
+	uint32_t y;
+	uint16_t rva_offs;
+	uint32_t tnlmd0;
+	uint32_t tnlmd1;
+	uint32_t linf;
+	uint32_t tnlf;
+	uint32_t wangl;
+	uint32_t tcmd;
+	uint32_t wave0;
+	uint32_t wave1;
+	uint32_t rva20_6;
+
+	/* ROM/PROM lookup tables */
+	const uint8_t *const rcols = &m_proms[0x1500];
+	const uint8_t *const vprom = &m_road_rom[0x4600];
+>>>>>>> upstream/master
 
 	/* Extract constant values */
 	tcmd     = ((vregs.scol & 0xc000) >> 12) | ((vregs.scol & 0x00c0) >> 6);
@@ -1556,6 +1973,7 @@ void tx1_state::buggyboy_draw_road(UINT8 *bitmap)
 
 	for (y = 0; y < 240; ++y)
 	{
+<<<<<<< HEAD
 		UINT8   rva0_6;
 		UINT8   ram_addr;
 		UINT16  rcrdb0_15;
@@ -1606,6 +2024,58 @@ void tx1_state::buggyboy_draw_road(UINT8 *bitmap)
 		UINT32  ic97_o12;
 		UINT32  ic97_o13;
 		UINT32  ic79_p19;
+=======
+		uint8_t   rva0_6;
+		uint8_t   ram_addr;
+		uint16_t  rcrdb0_15;
+		uint16_t  rcrs10;
+		uint16_t  ls161_156_a;
+		uint16_t  ls161;
+		uint8_t   sld;
+		uint32_t  rva8;
+		uint32_t  rm0, rm1;
+		uint32_t  rcmd;
+		uint32_t  bnkls = 1;
+		uint32_t  bnkcs = 1;
+		uint32_t  bnkrs = 1;
+
+//      uint32_t  x_offs;
+		uint8_t sf;
+
+		/* Vertical positions shift register */
+		uint32_t  ram_val;
+		uint32_t  hp;
+		uint32_t  vp1, vp2, vp3, vp4, vp5, vp6, vp7;
+
+		/* Horizontal positions */
+		uint32_t  hp0, hp1, hp2, hp3;
+		uint8_t   hps00, hps01, hps02;
+		uint8_t   hps10, hps11, hps12;
+		uint8_t   hps20, hps21, hps22;
+		uint8_t   hps30, hps31, hps32;
+
+		/* Road pixel data planes */
+		uint8_t   rc0[3] = {0, 0, 0};
+		uint8_t   rc1[3] = {0, 0, 0};
+		uint8_t   rc2[3] = {0, 0, 0};
+		uint8_t   rc3[3] = {0, 0, 0};
+
+		/* Horizontal position counter carry out */
+		uint8_t   hp0_cy = 0, hp1_cy = 0, hp2_cy = 0, hp3_cy = 0;
+
+		uint8_t   *bmpaddr = bitmap + (y * 256 * 3);
+
+		uint32_t  bank_cnt;
+		uint32_t  _rorevls = 0;
+		uint32_t  _rorevcs = 0;
+		uint32_t  _rorevrs = 0;
+
+		uint32_t  ic96_o17;
+		uint32_t  ic96_term1;
+		uint32_t  ic97_o12;
+		uint32_t  ic97_o13;
+		uint32_t  ic79_p19;
+>>>>>>> upstream/master
 
 		rva8 = (vregs.h_val & 0x8000) || !(vregs.shift & 0x80);
 
@@ -1681,6 +2151,7 @@ void tx1_state::buggyboy_draw_road(UINT8 *bitmap)
 
 		for (x = 0; x < 256; ++x)
 		{
+<<<<<<< HEAD
 			UINT32  pix;
 			UINT32  hp0_en, hp1_en, hp2_en, hp3_en;
 
@@ -1726,6 +2197,53 @@ void tx1_state::buggyboy_draw_road(UINT8 *bitmap)
 
 			UINT32 lfsr = vregs.wave_lfsr;
 			UINT32 wave =
+=======
+			uint32_t  pix;
+			uint32_t  hp0_en, hp1_en, hp2_en, hp3_en;
+
+			uint32_t  ic97_o17;
+			uint32_t  ic97_o18;
+			uint32_t  ic97_o19;
+
+			uint32_t  ic96_o14;
+			uint32_t  ic96_o15;
+			uint32_t  ic96_o16;
+
+			uint32_t  ic79_o15;
+			uint32_t  ic79_o16;
+			uint32_t  ic79_o17;
+
+			uint32_t  ic82_o17;
+			uint32_t  ic82_o16;
+			uint32_t  ic82_o15;
+			uint32_t  ic82_o14;
+
+			uint32_t  ic80_o17;
+			uint32_t  ic80_o16;
+			uint32_t  ic80_o15;
+			uint32_t  ic80_o14;
+
+			uint32_t  ic78_o17;
+			uint32_t  ic78_o16;
+			uint32_t  ic78_o15;
+			uint32_t  ic78_o14;
+
+			uint32_t  ic48_o12, ic50_o12, ic52_o12;
+			uint32_t  ic48_o16, ic50_o16, ic52_o16;
+			uint32_t  ic48_o17, ic50_o17, ic52_o17;
+			uint32_t  ic48_o18, ic50_o18, ic52_o18;
+			uint32_t  ic48_o19, ic50_o19, ic52_o19;
+
+			uint32_t  tmp;
+
+			uint8_t   px0[3];
+			uint8_t   px1[3];
+			uint8_t   px2[3];
+			uint8_t   px3[3];
+
+			uint32_t lfsr = vregs.wave_lfsr;
+			uint32_t wave =
+>>>>>>> upstream/master
 						(wave0 ^ BIT(lfsr, 0))
 						&& (wave1 ^ BIT(lfsr, 3))
 						&& BIT(lfsr, 5)
@@ -1850,7 +2368,11 @@ void tx1_state::buggyboy_draw_road(UINT8 *bitmap)
 
 			/* Left */
 			{
+<<<<<<< HEAD
 			UINT32 P4, P6, P7, P18, P19;
+=======
+			uint32_t P4, P6, P7, P18, P19;
+>>>>>>> upstream/master
 
 			P4 = !(ic96_o16 && ic96_o17 && ic97_o19);
 			P6 = BIT(sld, 3);
@@ -1866,7 +2388,11 @@ void tx1_state::buggyboy_draw_road(UINT8 *bitmap)
 
 			/* Centre */
 			{
+<<<<<<< HEAD
 			UINT32 P4, P6, P7, P18, P19;
+=======
+			uint32_t P4, P6, P7, P18, P19;
+>>>>>>> upstream/master
 
 			P4 = !(ic96_o15 && ic96_o17 && ic97_o18);
 			P6 = BIT(sld, 3);
@@ -1882,7 +2408,11 @@ void tx1_state::buggyboy_draw_road(UINT8 *bitmap)
 
 			/* Right */
 			{
+<<<<<<< HEAD
 			UINT32 P4, P6, P7, P18, P19;
+=======
+			uint32_t P4, P6, P7, P18, P19;
+>>>>>>> upstream/master
 
 			P4 = !(ic96_o14 && ic96_o17 && ic97_o17);
 			P6 = BIT(sld, 3);
@@ -1904,9 +2434,15 @@ void tx1_state::buggyboy_draw_road(UINT8 *bitmap)
 
 			/* Left */
 			{
+<<<<<<< HEAD
 			UINT32 P5,P7, P8;
 			UINT32 rcsd0_3;
 			UINT32 cprom_addr;
+=======
+			uint32_t P5,P7, P8;
+			uint32_t rcsd0_3;
+			uint32_t cprom_addr;
+>>>>>>> upstream/master
 
 			P5 = BIT(tcmd, 3) ? ((!vp5 && !vp6) || vp7 || !linf) : ic78_o16;
 			P7 = BIT(sld, 5);
@@ -1964,9 +2500,15 @@ void tx1_state::buggyboy_draw_road(UINT8 *bitmap)
 
 			/* Centre */
 			{
+<<<<<<< HEAD
 			UINT32 rcsd0_3;
 			UINT32 cprom_addr;
 			UINT32 P5, P7, P8;
+=======
+			uint32_t rcsd0_3;
+			uint32_t cprom_addr;
+			uint32_t P5, P7, P8;
+>>>>>>> upstream/master
 
 			P5 = BIT(tcmd, 3) ? ((!vp5 && !vp6) || vp7 || !linf) : ic80_o16;
 			P7 = BIT(sld, 5);
@@ -2025,9 +2567,15 @@ void tx1_state::buggyboy_draw_road(UINT8 *bitmap)
 
 			/* Right */
 			{
+<<<<<<< HEAD
 			UINT32 rcsd0_3;
 			UINT32 cprom_addr;
 			UINT32 P5, P7, P8;
+=======
+			uint32_t rcsd0_3;
+			uint32_t cprom_addr;
+			uint32_t P5, P7, P8;
+>>>>>>> upstream/master
 
 			P5 = BIT(tcmd, 3) ? ((!vp5 && !vp6) || vp7 || !linf) : ic82_o16;
 			P7 = BIT(sld, 5);
@@ -2149,6 +2697,7 @@ void tx1_state::buggyboy_draw_road(UINT8 *bitmap)
 	}
 }
 
+<<<<<<< HEAD
 void tx1_state::buggybjr_draw_road(UINT8 *bitmap)
 {
 	UINT16 *buggyboy_rcram = m_rcram;
@@ -2169,6 +2718,28 @@ void tx1_state::buggybjr_draw_road(UINT8 *bitmap)
 	/* ROM/PROM lookup tables */
 	const UINT8 *const rcols = &m_proms[0x1500];
 	const UINT8 *const vprom = &m_road_rom[0x4600];
+=======
+void tx1_state::buggybjr_draw_road(uint8_t *bitmap)
+{
+	uint16_t *buggyboy_rcram = m_rcram;
+	vregs_t &vregs = m_vregs;
+	int32_t x;
+	uint32_t y;
+	uint16_t rva_offs;
+	uint32_t tnlmd0;
+	uint32_t tnlmd1;
+	uint32_t linf;
+	uint32_t tnlf;
+	uint32_t wangl;
+	uint32_t tcmd;
+	uint32_t wave0;
+	uint32_t wave1;
+	uint32_t rva20_6;
+
+	/* ROM/PROM lookup tables */
+	const uint8_t *const rcols = &m_proms[0x1500];
+	const uint8_t *const vprom = &m_road_rom[0x4600];
+>>>>>>> upstream/master
 
 	/* Extract constant values */
 	tcmd     = ((vregs.scol & 0xc000) >> 12) | ((vregs.scol & 0x00c0) >> 6);
@@ -2183,6 +2754,7 @@ void tx1_state::buggybjr_draw_road(UINT8 *bitmap)
 
 	for (y = 0; y < 240; ++y)
 	{
+<<<<<<< HEAD
 		UINT8   rva0_6;
 		UINT8   ram_addr;
 		UINT16  rcrdb0_15;
@@ -2226,6 +2798,51 @@ void tx1_state::buggybjr_draw_road(UINT8 *bitmap)
 
 		UINT32  bank_cnt;
 		UINT32  _rorevcs = 0;
+=======
+		uint8_t   rva0_6;
+		uint8_t   ram_addr;
+		uint16_t  rcrdb0_15;
+		uint16_t  rcrs10;
+		uint16_t  ls161_156_a;
+		uint16_t  ls161;
+		uint8_t   sld;
+		uint32_t  rva8;
+		uint32_t  rm0, rm1;
+		uint32_t  rcmd;
+		uint32_t  bnkcs = 1;
+
+//      uint32_t  x_offs;
+		uint8_t   sf;
+
+		/* Vertical positions shift register */
+		uint32_t  ram_val;
+		uint32_t  hp;
+		uint32_t  vp1, vp2, vp3, vp4, vp5, vp6, vp7;
+
+		/* PAL outputs */
+		uint32_t  ic4_o12;
+		uint32_t  ic4_o13;
+		uint32_t  ic149_o15;
+		uint32_t  ic151_o14;
+
+		/* Horizontal positions */
+		uint32_t  hp0, hp1, hp2, hp3;
+		uint8_t   hps00, hps01, hps02;
+		uint8_t   hps10, hps11, hps12;
+		uint8_t   hps20, hps21, hps22;
+		uint8_t   hps30, hps31, hps32;
+
+		/* Road pixel data planes */
+		uint8_t   rc0 = 0, rc1 = 0, rc2 = 0, rc3 = 0;
+
+		/* Horizontal position counter carry out */
+		uint8_t   hp0_cy = 0, hp1_cy = 0, hp2_cy = 0, hp3_cy = 0;
+
+		uint8_t   *bmpaddr = bitmap + (y * 256);
+
+		uint32_t  bank_cnt;
+		uint32_t  _rorevcs = 0;
+>>>>>>> upstream/master
 
 		rva8 = (vregs.h_val & 0x8000) || !(vregs.shift & 0x80);
 
@@ -2294,6 +2911,7 @@ void tx1_state::buggybjr_draw_road(UINT8 *bitmap)
 
 		for (x = 0; x < 256; ++x)
 		{
+<<<<<<< HEAD
 			UINT32  pix;
 			UINT32  hp0_en, hp1_en, hp2_en, hp3_en;
 			UINT32  ic149_o16;
@@ -2313,6 +2931,27 @@ void tx1_state::buggybjr_draw_road(UINT8 *bitmap)
 			UINT32  mux;
 			UINT32  cprom_addr;
 			UINT8   px0, px1, px2, px3;
+=======
+			uint32_t  pix;
+			uint32_t  hp0_en, hp1_en, hp2_en, hp3_en;
+			uint32_t  ic149_o16;
+			uint32_t  ic4_o18;
+			uint32_t  ic3_o15;
+			uint32_t  ic150_o12 = 0;
+			uint32_t  ic150_o16;
+			uint32_t  ic150_o17;
+			uint32_t  ic150_o18;
+			uint32_t  ic150_o19;
+			uint32_t  ic151_o15;
+			uint32_t  ic151_o16;
+			uint32_t  ic151_o17;
+			uint32_t  rcsd0_3 = 0;
+			uint32_t  sld5 = BIT(sld, 5);
+			uint32_t  sld4 = BIT(sld, 4);
+			uint32_t  mux;
+			uint32_t  cprom_addr;
+			uint8_t   px0, px1, px2, px3;
+>>>>>>> upstream/master
 
 			/* Strip pixel number */
 			pix = (ls161 & 7) ^ 7;
@@ -2412,7 +3051,11 @@ void tx1_state::buggybjr_draw_road(UINT8 *bitmap)
 							!ic151_o15;
 
 				{
+<<<<<<< HEAD
 					UINT32 a = mux && ic151_o15;
+=======
+					uint32_t a = mux && ic151_o15;
+>>>>>>> upstream/master
 
 					ic150_o17 = (a && !rm0 && px0)  ||
 								(a && !px1)         ||
@@ -2439,7 +3082,11 @@ void tx1_state::buggybjr_draw_road(UINT8 *bitmap)
 
 				if (vp6 || ic151_o16)
 				{
+<<<<<<< HEAD
 					UINT32 ic150_i5 = BIT(tcmd, 3) ? ic149_o15 : ic151_o16;
+=======
+					uint32_t ic150_i5 = BIT(tcmd, 3) ? ic149_o15 : ic151_o16;
+>>>>>>> upstream/master
 
 					if (!(ic151_o15 && ic150_i5))
 						cprom_addr = (tcmd & 0x7) | (ic151_o16 ? 0x08 : 0);
@@ -2461,8 +3108,13 @@ void tx1_state::buggybjr_draw_road(UINT8 *bitmap)
 				rcsd0_3 = rcols[cprom_addr] & 0xf;
 
 				{
+<<<<<<< HEAD
 					UINT32 lfsr = vregs.wave_lfsr;
 					UINT32 wave =
+=======
+					uint32_t lfsr = vregs.wave_lfsr;
+					uint32_t wave =
+>>>>>>> upstream/master
 								(wave0 ^ BIT(lfsr, 0))  &&
 								(wave1 ^ BIT(lfsr, 3))  &&
 								BIT(lfsr, 5)            &&
@@ -2564,6 +3216,7 @@ void tx1_state::buggybjr_draw_road(UINT8 *bitmap)
 
 **************************************************************************/
 
+<<<<<<< HEAD
 void tx1_state::buggyboy_draw_objs(UINT8 *bitmap, bool wide)
 {
 	UINT16 *buggyboy_objram = m_objram;
@@ -2585,6 +3238,29 @@ void tx1_state::buggyboy_draw_objs(UINT8 *bitmap, bool wide)
 	const UINT8 *const bb9e = &m_proms[0xd00];
 
 	const UINT8 *const pixdata_rgn = &m_obj_tiles[0];
+=======
+void tx1_state::buggyboy_draw_objs(uint8_t *bitmap, bool wide)
+{
+	uint16_t *buggyboy_objram = m_objram;
+
+	uint32_t offs;
+
+	uint32_t x_mask;
+	uint32_t x_stride;
+
+	/* The many lookup table ROMs */
+	const uint8_t *const bug13  = &m_obj_luts[0];
+	const uint8_t *const bug18s = &m_obj_luts[0x2000];
+	const uint8_t *const bb8    = &m_proms[0x1600];
+
+	const uint8_t *const bug16s = &m_obj_map[0];
+	const uint8_t *const bug17s = &m_obj_map[0x8000];
+
+	const uint8_t *const bb9o = &m_proms[0x500];
+	const uint8_t *const bb9e = &m_proms[0xd00];
+
+	const uint8_t *const pixdata_rgn = &m_obj_tiles[0];
+>>>>>>> upstream/master
 
 	if (wide)
 	{
@@ -2599,6 +3275,7 @@ void tx1_state::buggyboy_draw_objs(UINT8 *bitmap, bool wide)
 
 	for (offs = 0; offs <= 0x300; offs += 8)
 	{
+<<<<<<< HEAD
 		UINT32  x;
 		UINT32  y;
 		UINT32  gxflip;
@@ -2610,6 +3287,19 @@ void tx1_state::buggyboy_draw_objs(UINT8 *bitmap, bool wide)
 
 		UINT8   pctmp0_7;
 		UINT8   code;
+=======
+		uint32_t  x;
+		uint32_t  y;
+		uint32_t  gxflip;
+
+		uint32_t  x_scale;
+		uint32_t  x_step;
+		uint16_t  y_scale;
+		uint16_t  y_step;
+
+		uint8_t   pctmp0_7;
+		uint8_t   code;
+>>>>>>> upstream/master
 
 		/* Check for end of object list */
 		if ((buggyboy_objram[offs] & 0xff00) == 0xff00)
@@ -2640,9 +3330,15 @@ void tx1_state::buggyboy_draw_objs(UINT8 *bitmap, bool wide)
 
 		for (; y < 240; ++y)
 		{
+<<<<<<< HEAD
 			UINT32  rom_addr2   = 0;
 			UINT8   bug17s_data = 0;
 			UINT8   bug16s_data;
+=======
+			uint32_t  rom_addr2   = 0;
+			uint8_t   bug17s_data = 0;
+			uint8_t   bug16s_data;
+>>>>>>> upstream/master
 
 			/* Are we drawing on this line? */
 
@@ -2651,6 +3347,7 @@ void tx1_state::buggyboy_draw_objs(UINT8 *bitmap, bool wide)
 				break;
 
 			{
+<<<<<<< HEAD
 				UINT32  psa0_12;
 				UINT32  bug13_addr;
 				UINT32  bug13_data;
@@ -2665,6 +3362,22 @@ void tx1_state::buggyboy_draw_objs(UINT8 *bitmap, bool wide)
 				UINT32  opcd8_9;
 				UINT32  opcd0_11 = 0;
 				UINT32  lasttile = 0;
+=======
+				uint32_t  psa0_12;
+				uint32_t  bug13_addr;
+				uint32_t  bug13_data;
+				uint32_t  rom_addr;
+				uint32_t  x_acc;
+				uint32_t  newtile = 1;
+				uint32_t  dataend = 0;
+				uint8_t   data1 = 0;
+				uint8_t   data2 = 0;
+				uint32_t  xflip = 0;
+				uint32_t  opcd10_11;
+				uint32_t  opcd8_9;
+				uint32_t  opcd0_11 = 0;
+				uint32_t  lasttile = 0;
+>>>>>>> upstream/master
 
 				/* Use the object code to lookup the tile sequence data */
 				bug13_addr = code << 4;
@@ -2693,6 +3406,7 @@ void tx1_state::buggyboy_draw_objs(UINT8 *bitmap, bool wide)
 					/* Get data and attributes for an 8x8 tile */
 					if (newtile)
 					{
+<<<<<<< HEAD
 						UINT32  pscb0_11;
 						UINT32  psbb0_15;
 						UINT32  psbb6_7;
@@ -2700,6 +3414,15 @@ void tx1_state::buggyboy_draw_objs(UINT8 *bitmap, bool wide)
 						UINT8   *romptr;
 						UINT32  bug18s_data;
 						UINT32  low_addr = ((x_acc >> (OBJ_FRAC + 3)) & x_mask);
+=======
+						uint32_t  pscb0_11;
+						uint32_t  psbb0_15;
+						uint32_t  psbb6_7;
+						uint32_t  rombank;
+						uint8_t   *romptr;
+						uint32_t  bug18s_data;
+						uint32_t  low_addr = ((x_acc >> (OBJ_FRAC + 3)) & x_mask);
+>>>>>>> upstream/master
 
 						/*
 						    Objects are grouped by width (either 16, 8 or 4 tiles) in
@@ -2709,7 +3432,11 @@ void tx1_state::buggyboy_draw_objs(UINT8 *bitmap, bool wide)
 						*/
 						if (gxflip)
 						{
+<<<<<<< HEAD
 							UINT32  xor_mask;
+=======
+							uint32_t  xor_mask;
+>>>>>>> upstream/master
 
 							if (BIT(psa0_12, 11) || !BIT(psa0_12, 12))
 								xor_mask = 0xf;
@@ -2741,7 +3468,11 @@ void tx1_state::buggyboy_draw_objs(UINT8 *bitmap, bool wide)
 						/* Choose from one of three banks */
 						rombank = ((BIT(pctmp0_7, 4) << 1) | BIT(psbb0_15, 13)) & 3;
 
+<<<<<<< HEAD
 						romptr = (UINT8*)(pixdata_rgn + rombank * (0x8000 * 2));
+=======
+						romptr = (uint8_t*)(pixdata_rgn + rombank * (0x8000 * 2));
+>>>>>>> upstream/master
 
 						/* Get raw 8x8 pixel row data */
 						data1 = *(pscb0_11 + romptr);
@@ -2766,8 +3497,13 @@ void tx1_state::buggyboy_draw_objs(UINT8 *bitmap, bool wide)
 					/* Draw a pixel? */
 					if (x < x_stride)
 					{
+<<<<<<< HEAD
 						UINT8   pix;
 						UINT8   bit;
+=======
+						uint8_t   pix;
+						uint8_t   bit;
+>>>>>>> upstream/master
 
 						bit = (x_acc >> OBJ_FRAC) & 7;
 
@@ -2779,8 +3515,13 @@ void tx1_state::buggyboy_draw_objs(UINT8 *bitmap, bool wide)
 						/* Write the pixel if not transparent */
 						if (!(!(opcd0_11 & 0x80) && !pix))
 						{
+<<<<<<< HEAD
 							UINT8 color;
 							UINT32 bb9_addr;
+=======
+							uint8_t color;
+							uint32_t bb9_addr;
+>>>>>>> upstream/master
 
 							bb9_addr = ((opcd0_11 << 1) & 0x600) | ((opcd0_11 & 0x7f) << 2) | pix;
 							color = ((opcd0_11 >> 6) & 0x30);
@@ -2924,10 +3665,17 @@ WRITE16_MEMBER(tx1_state::buggyboy_scolst_w)
 
 void tx1_state::bb_combine_layers(bitmap_ind16 &bitmap, int screen)
 {
+<<<<<<< HEAD
 	UINT8 *chr_pal = &m_proms[0x400];
 	UINT32 bmp_stride;
 	UINT32 x_offset;
 	UINT32 y;
+=======
+	uint8_t *chr_pal = &m_proms[0x400];
+	uint32_t bmp_stride;
+	uint32_t x_offset;
+	uint32_t y;
+>>>>>>> upstream/master
 
 	if (screen < 0)
 	{
@@ -2942,6 +3690,7 @@ void tx1_state::bb_combine_layers(bitmap_ind16 &bitmap, int screen)
 
 	for (y = 0; y < 240; ++y)
 	{
+<<<<<<< HEAD
 		UINT32 x;
 
 		UINT32 bmp_offset = y * bmp_stride + x_offset;
@@ -2971,6 +3720,37 @@ void tx1_state::bb_combine_layers(bitmap_ind16 &bitmap, int screen)
 			UINT32 chr = !(BIT(char_val, 7) && (char_val & 3) );
 
 			UINT32 sel =
+=======
+		uint32_t x;
+
+		uint32_t bmp_offset = y * bmp_stride + x_offset;
+
+		uint8_t *chr_addr = m_chr_bmp.get() + bmp_offset;
+		uint8_t *rod_addr = m_rod_bmp.get() + bmp_offset;
+		uint8_t *obj_addr = m_obj_bmp.get() + bmp_offset;
+
+		uint32_t sky_en = BIT(m_vregs.sky, 7);
+		uint32_t sky_val = (((m_vregs.sky & 0x7f) + y) >> 2) & 0x3f;
+
+		uint16_t *bmp_addr = &bitmap.pix16(y);
+
+		for (x = 0; x < 256; ++x)
+		{
+			uint32_t out_val;
+
+			uint32_t char_val = *chr_addr++;
+			uint32_t char_6_7 = (char_val & 0xc0) >> 2;
+
+			uint32_t obj_val = *obj_addr++;
+			uint32_t obj6 = BIT(obj_val, 6);
+
+			uint32_t rod_val = *rod_addr++;
+			uint32_t rod6 = BIT(rod_val, 6);
+
+			uint32_t chr = !(BIT(char_val, 7) && (char_val & 3) );
+
+			uint32_t sel =
+>>>>>>> upstream/master
 			(
 				( BIT(obj_val, 6) && chr) ||
 				( sky_en && !(char_val & 3) && (!obj6 && !rod6) )
@@ -2992,9 +3772,15 @@ void tx1_state::bb_combine_layers(bitmap_ind16 &bitmap, int screen)
 VIDEO_START_MEMBER(tx1_state,buggyboy)
 {
 	/* Allocate some bitmaps */
+<<<<<<< HEAD
 	m_chr_bmp = auto_alloc_array(machine(), UINT8, 3 * 256 * 240);
 	m_obj_bmp = auto_alloc_array(machine(), UINT8, 3 * 256 * 240);
 	m_rod_bmp = auto_alloc_array(machine(), UINT8, 3 * 256 * 240);
+=======
+	m_chr_bmp = std::make_unique<uint8_t[]>(3 * 256 * 240);
+	m_obj_bmp = std::make_unique<uint8_t[]>(3 * 256 * 240);
+	m_rod_bmp = std::make_unique<uint8_t[]>(3 * 256 * 240);
+>>>>>>> upstream/master
 
 	/* Set a timer to run the interrupts */
 	m_interrupt_timer = machine().scheduler().timer_alloc(timer_expired_delegate(FUNC(tx1_state::interrupt_callback),this));
@@ -3006,9 +3792,15 @@ VIDEO_START_MEMBER(tx1_state,buggyboy)
 VIDEO_START_MEMBER(tx1_state,buggybjr)
 {
 	/* Allocate some bitmaps */
+<<<<<<< HEAD
 	m_chr_bmp = auto_alloc_array(machine(), UINT8, 256 * 240);
 	m_obj_bmp = auto_alloc_array(machine(), UINT8, 256 * 240);
 	m_rod_bmp = auto_alloc_array(machine(), UINT8, 256 * 240);
+=======
+	m_chr_bmp = std::make_unique<uint8_t[]>(256 * 240);
+	m_obj_bmp = std::make_unique<uint8_t[]>(256 * 240);
+	m_rod_bmp = std::make_unique<uint8_t[]>(256 * 240);
+>>>>>>> upstream/master
 
 	/* Set a timer to run the interrupts */
 	m_interrupt_timer = machine().scheduler().timer_alloc(timer_expired_delegate(FUNC(tx1_state::interrupt_callback),this));
@@ -3017,7 +3809,11 @@ VIDEO_START_MEMBER(tx1_state,buggybjr)
 	m_interrupt_timer->adjust(m_screen->time_until_pos(CURSOR_YPOS, CURSOR_XPOS));
 }
 
+<<<<<<< HEAD
 void tx1_state::screen_eof_buggyboy(screen_device &screen, bool state)
+=======
+WRITE_LINE_MEMBER(tx1_state::screen_vblank_buggyboy)
+>>>>>>> upstream/master
 {
 	// rising edge
 	if (state)
@@ -3035,17 +3831,30 @@ void tx1_state::screen_eof_buggyboy(screen_device &screen, bool state)
 
 void tx1_state::bb_update_layers()
 {
+<<<<<<< HEAD
 	memset(m_obj_bmp, 0, 768*240);
 	memset(m_rod_bmp, 0, 768*240);
 
 	buggyboy_draw_char(m_chr_bmp, 1);
 	buggyboy_draw_road(m_rod_bmp);
 	buggyboy_draw_objs(m_obj_bmp, 1);
+=======
+	memset(m_obj_bmp.get(), 0, 768*240);
+	memset(m_rod_bmp.get(), 0, 768*240);
+
+	buggyboy_draw_char(m_chr_bmp.get(), 1);
+	buggyboy_draw_road(m_rod_bmp.get());
+	buggyboy_draw_objs(m_obj_bmp.get(), 1);
+>>>>>>> upstream/master
 
 	m_needs_update = false;
 }
 
+<<<<<<< HEAD
 UINT32 tx1_state::screen_update_buggyboy_left(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+=======
+uint32_t tx1_state::screen_update_buggyboy_left(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+>>>>>>> upstream/master
 {
 	if (m_needs_update)
 		bb_update_layers();
@@ -3054,7 +3863,11 @@ UINT32 tx1_state::screen_update_buggyboy_left(screen_device &screen, bitmap_ind1
 	return 0;
 }
 
+<<<<<<< HEAD
 UINT32 tx1_state::screen_update_buggyboy_middle(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+=======
+uint32_t tx1_state::screen_update_buggyboy_middle(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+>>>>>>> upstream/master
 {
 	if (m_needs_update)
 		bb_update_layers();
@@ -3063,7 +3876,11 @@ UINT32 tx1_state::screen_update_buggyboy_middle(screen_device &screen, bitmap_in
 	return 0;
 }
 
+<<<<<<< HEAD
 UINT32 tx1_state::screen_update_buggyboy_right(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+=======
+uint32_t tx1_state::screen_update_buggyboy_right(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+>>>>>>> upstream/master
 {
 	if (m_needs_update)
 		bb_update_layers();
@@ -3072,6 +3889,7 @@ UINT32 tx1_state::screen_update_buggyboy_right(screen_device &screen, bitmap_ind
 	return 0;
 }
 
+<<<<<<< HEAD
 UINT32 tx1_state::screen_update_buggybjr(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
 {
 	memset(m_obj_bmp, 0, 256*240);
@@ -3079,6 +3897,15 @@ UINT32 tx1_state::screen_update_buggybjr(screen_device &screen, bitmap_ind16 &bi
 	buggyboy_draw_char(m_chr_bmp, 0);
 	buggybjr_draw_road(m_rod_bmp);
 	buggyboy_draw_objs(m_obj_bmp, 0);
+=======
+uint32_t tx1_state::screen_update_buggybjr(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+{
+	memset(m_obj_bmp.get(), 0, 256*240);
+
+	buggyboy_draw_char(m_chr_bmp.get(), 0);
+	buggybjr_draw_road(m_rod_bmp.get());
+	buggyboy_draw_objs(m_obj_bmp.get(), 0);
+>>>>>>> upstream/master
 
 	bb_combine_layers(bitmap, -1);
 	return 0;

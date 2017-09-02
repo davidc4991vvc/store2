@@ -19,11 +19,19 @@ TODO:
 #include "cpu/z80/z80.h"
 
 
+<<<<<<< HEAD
 const device_type MSX_CART_BM_012 = &device_creator<msx_cart_bm_012>;
 
 
 msx_cart_bm_012::msx_cart_bm_012(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
 	: device_t(mconfig, MSX_CART_BM_012, "MSX Cartridge - BM-012", tag, owner, clock, "msx_cart_bm_012", __FILE__)
+=======
+DEFINE_DEVICE_TYPE(MSX_CART_BM_012, msx_cart_bm_012_device, "msx_cart_bm_012", "MSX Cartridge - BM-012")
+
+
+msx_cart_bm_012_device::msx_cart_bm_012_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: device_t(mconfig, MSX_CART_BM_012, tag, owner, clock)
+>>>>>>> upstream/master
 	, msx_cart_interface(mconfig, *this)
 	, m_tmpz84c015af(*this, "tmpz84c015af")
 	, m_bm012_pio(*this, "bm012_pio")
@@ -32,13 +40,21 @@ msx_cart_bm_012::msx_cart_bm_012(const machine_config &mconfig, const char *tag,
 }
 
 
+<<<<<<< HEAD
 static ADDRESS_MAP_START( bm_012_memory_map, AS_PROGRAM, 8, msx_cart_bm_012 )
+=======
+static ADDRESS_MAP_START( bm_012_memory_map, AS_PROGRAM, 8, msx_cart_bm_012_device )
+>>>>>>> upstream/master
 	AM_RANGE(0x0000, 0x7fff) AM_ROM
 	AM_RANGE(0xe000, 0xffff) AM_RAM
 ADDRESS_MAP_END
 
 
+<<<<<<< HEAD
 static MACHINE_CONFIG_FRAGMENT( msx_cart_bm_012 )
+=======
+MACHINE_CONFIG_MEMBER( msx_cart_bm_012_device::device_add_mconfig )
+>>>>>>> upstream/master
 	// 12MHz XTAL @ X1
 	// Toshiba TMPZ84C015AF-6 (@U5) components:
 	// - Z80
@@ -69,7 +85,11 @@ static MACHINE_CONFIG_FRAGMENT( msx_cart_bm_012 )
 
 	// MIDI ports
 	MCFG_MIDI_PORT_ADD("mdin", midiin_slot, "midiin")
+<<<<<<< HEAD
 	MCFG_MIDI_RX_HANDLER(WRITELINE(msx_cart_bm_012, midi_in))
+=======
+	MCFG_MIDI_RX_HANDLER(WRITELINE(msx_cart_bm_012_device, midi_in))
+>>>>>>> upstream/master
 
 	MCFG_MIDI_PORT_ADD("mdthru", midiout_slot, "midiout")
 
@@ -77,12 +97,15 @@ static MACHINE_CONFIG_FRAGMENT( msx_cart_bm_012 )
 MACHINE_CONFIG_END
 
 
+<<<<<<< HEAD
 machine_config_constructor msx_cart_bm_012::device_mconfig_additions() const
 {
 	return MACHINE_CONFIG_NAME( msx_cart_bm_012 );
 }
 
 
+=======
+>>>>>>> upstream/master
 ROM_START( msx_cart_bm_012 )
 	ROM_REGION(0x8000, "tmpz84c015af", 0)
 	// The rom chip at U4 is a 27256, but it contains the same 8KB duplicated 4 times
@@ -90,13 +113,21 @@ ROM_START( msx_cart_bm_012 )
 ROM_END
 
 
+<<<<<<< HEAD
 const rom_entry *msx_cart_bm_012::device_rom_region() const
+=======
+const tiny_rom_entry *msx_cart_bm_012_device::device_rom_region() const
+>>>>>>> upstream/master
 {
 	return ROM_NAME( msx_cart_bm_012 );
 }
 
 
+<<<<<<< HEAD
 void msx_cart_bm_012::device_start()
+=======
+void msx_cart_bm_012_device::device_start()
+>>>>>>> upstream/master
 {
 	// Install IO read/write handlers
 	address_space &space = machine().device<cpu_device>("maincpu")->space(AS_IO);
@@ -105,7 +136,11 @@ void msx_cart_bm_012::device_start()
 }
 
 
+<<<<<<< HEAD
 WRITE_LINE_MEMBER(msx_cart_bm_012::midi_in)
+=======
+WRITE_LINE_MEMBER(msx_cart_bm_012_device::midi_in)
+>>>>>>> upstream/master
 {
 	m_mdthru->write_txd(state);
 	m_tmpz84c015af->rxb_w(state);

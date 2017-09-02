@@ -87,12 +87,20 @@
 
 ***************************************************************************/
 
+<<<<<<< HEAD
 #pragma once
 
 #ifndef __NASBUS_H__
 #define __NASBUS_H__
 
 #include "emu.h"
+=======
+#ifndef MAME_BUS_NASBUS_NASBUS_H
+#define MAME_BUS_NASBUS_NASBUS_H
+
+#pragma once
+
+>>>>>>> upstream/master
 
 
 //**************************************************************************
@@ -131,6 +139,7 @@ class nasbus_slot_device : public device_t, public device_slot_interface
 {
 public:
 	// construction/destruction
+<<<<<<< HEAD
 	nasbus_slot_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
 	nasbus_slot_device(const machine_config &mconfig, device_type type, const char *name,
 		const char *tag, device_t *owner, UINT32 clock, const char *shortname, const char *source);
@@ -138,21 +147,37 @@ public:
 	// device-level overrides
 	virtual void device_start();
 
+=======
+	nasbus_slot_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
+>>>>>>> upstream/master
 	// inline configuration
 	static void set_nasbus_slot(device_t &device, device_t *owner, const char *nasbus_tag);
 
 protected:
+<<<<<<< HEAD
+=======
+	nasbus_slot_device(const machine_config &mconfig, device_type type, const char *tag, device_t *owner, uint32_t clock);
+
+	// device-level overrides
+	virtual void device_start() override;
+
+>>>>>>> upstream/master
 	// configuration
 	const char *m_nasbus_tag;
 };
 
 // device type definition
+<<<<<<< HEAD
 extern const device_type NASBUS_SLOT;
+=======
+DECLARE_DEVICE_TYPE(NASBUS_SLOT, nasbus_slot_device)
+>>>>>>> upstream/master
 
 // ======================> nasbus_device
 
 class nasbus_device : public device_t
 {
+<<<<<<< HEAD
 public:
 	// construction/destruction
 	nasbus_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
@@ -160,6 +185,16 @@ public:
 
 	template<class _Object> static devcb_base &set_ram_disable_handler(device_t &device, _Object object)
 		{ return downcast<nasbus_device &>(device).m_ram_disable_handler.set_callback(object); }
+=======
+	friend class device_nasbus_card_interface;
+public:
+	// construction/destruction
+	nasbus_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
+	virtual ~nasbus_device();
+
+	template <class Object> static devcb_base &set_ram_disable_handler(device_t &device, Object &&cb)
+	{ return downcast<nasbus_device &>(device).m_ram_disable_handler.set_callback(std::forward<Object>(cb)); }
+>>>>>>> upstream/master
 
 	void add_card(device_nasbus_card_interface *card);
 
@@ -169,6 +204,7 @@ public:
 	// from cards
 	DECLARE_WRITE_LINE_MEMBER( ram_disable_w );
 
+<<<<<<< HEAD
 	address_space *m_program;
 	address_space *m_io;
 
@@ -178,33 +214,72 @@ protected:
 	virtual void device_reset();
 
 private:
+=======
+protected:
+	// device-level overrides
+	virtual void device_start() override;
+	virtual void device_reset() override;
+
+private:
+	address_space *m_program;
+	address_space *m_io;
+
+>>>>>>> upstream/master
 	simple_list<device_nasbus_card_interface> m_dev;
 
 	devcb_write_line m_ram_disable_handler;
 };
 
 // device type definition
+<<<<<<< HEAD
 extern const device_type NASBUS;
+=======
+DECLARE_DEVICE_TYPE(NASBUS, nasbus_device)
+>>>>>>> upstream/master
 
 // ======================> device_nasbus_interface
 
 class device_nasbus_card_interface : public device_slot_card_interface
 {
+<<<<<<< HEAD
 public:
 	// construction/destruction
 	device_nasbus_card_interface(const machine_config &mconfig, device_t &device);
+=======
+	template <class ElementType> friend class simple_list;
+public:
+	// construction/destruction
+>>>>>>> upstream/master
 	virtual ~device_nasbus_card_interface();
 
 	void set_nasbus_device(nasbus_device *nasbus);
 
 	device_nasbus_card_interface *next() const { return m_next; }
+<<<<<<< HEAD
 	device_nasbus_card_interface *m_next;
 
 protected:
 	nasbus_device *m_nasbus;
+=======
+
+protected:
+	device_nasbus_card_interface(const machine_config &mconfig, device_t &device);
+
+	address_space &program_space() { return *m_nasbus->m_program; }
+	address_space &io_space() { return *m_nasbus->m_io; }
+
+	nasbus_device *m_nasbus;
+
+private:
+	device_nasbus_card_interface *m_next;
+>>>>>>> upstream/master
 };
 
 // include here so drivers don't need to
 #include "cards.h"
 
+<<<<<<< HEAD
 #endif // __NASBUS_H__
+=======
+#endif // MAME_BUS_NASBUS_NASBUS_H
+>>>>>>> upstream/master

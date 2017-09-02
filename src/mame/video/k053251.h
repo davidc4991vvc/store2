@@ -1,4 +1,5 @@
 // license:BSD-3-Clause
+<<<<<<< HEAD
 // copyright-holders:Fabio Priuli,Acho A. Tang, R. Belmont
 #ifndef __K053251_H__
 #define __K053251_H__
@@ -17,6 +18,25 @@ class k053251_device : public device_t
 public:
 	k053251_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
 	~k053251_device() {}
+=======
+// copyright-holders:Fabio Priuli, Acho A. Tang, R. Belmont
+#ifndef MAME_VIDEO_K053251_H
+#define MAME_VIDEO_K053251_H
+
+class k053251_device : public device_t
+{
+public:
+	enum
+	{
+		CI0 = 0,
+		CI1,
+		CI2,
+		CI3,
+		CI4
+	};
+
+	k053251_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
+>>>>>>> upstream/master
 
 	/*
 	Note: k053251_w() automatically does a ALL_TILEMAPS->mark_all_dirty()
@@ -37,14 +57,24 @@ public:
 
 protected:
 	// device-level overrides
+<<<<<<< HEAD
 	virtual void device_config_complete();
 	virtual void device_start();
 	virtual void device_reset();
+=======
+	virtual void device_start() override;
+	virtual void device_reset() override;
+
+>>>>>>> upstream/master
 private:
 	// internal state
 	int      m_dirty_tmap[5];
 
+<<<<<<< HEAD
 	UINT8    m_ram[16];
+=======
+	uint8_t    m_ram[16];
+>>>>>>> upstream/master
 	int      m_tilemaps_set;
 	int      m_palette_index[5];
 
@@ -52,8 +82,16 @@ private:
 };
 
 extern const device_type K053251;
+<<<<<<< HEAD
+=======
+DECLARE_DEVICE_TYPE(K053251, k053251_device)
+>>>>>>> upstream/master
 
 #define MCFG_K053251_ADD(_tag) \
 	MCFG_DEVICE_ADD(_tag, K053251, 0)
 
+<<<<<<< HEAD
 #endif
+=======
+#endif // MAME_VIDEO_K053251_H
+>>>>>>> upstream/master

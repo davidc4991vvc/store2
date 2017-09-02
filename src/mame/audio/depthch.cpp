@@ -26,6 +26,7 @@ static const char *const depthch_sample_names[] =
 	"shortex",
 	"spray",
 	"sonar",
+<<<<<<< HEAD
 	0
 };
 
@@ -39,6 +40,12 @@ MACHINE_CONFIG_FRAGMENT( depthch_audio )
 MACHINE_CONFIG_END
 
 
+=======
+	nullptr
+};
+
+
+>>>>>>> upstream/master
 /* sample IDs - must match sample file name table above */
 enum
 {
@@ -51,17 +58,28 @@ enum
 
 WRITE8_MEMBER( vicdual_state::depthch_audio_w )
 {
+<<<<<<< HEAD
 	static int port1State = 0;
+=======
+>>>>>>> upstream/master
 	int bitsChanged;
 	int bitsGoneHigh;
 	int bitsGoneLow;
 
+<<<<<<< HEAD
 
 	bitsChanged  = port1State ^ data;
 	bitsGoneHigh = bitsChanged & data;
 	bitsGoneLow  = bitsChanged & ~data;
 
 	port1State = data;
+=======
+	bitsChanged  = m_port1State ^ data;
+	bitsGoneHigh = bitsChanged & data;
+	bitsGoneLow  = bitsChanged & ~data;
+
+	m_port1State = data;
+>>>>>>> upstream/master
 
 	if ( bitsGoneHigh & OUT_PORT_1_LONGEXPL )
 	{
@@ -87,3 +105,16 @@ WRITE8_MEMBER( vicdual_state::depthch_audio_w )
 		STOP( m_samples, SND_SONAR );
 	}
 }
+<<<<<<< HEAD
+=======
+
+
+MACHINE_CONFIG_START( depthch_audio )
+
+	/* samples */
+	MCFG_SOUND_ADD("samples", SAMPLES, 0)
+	MCFG_SAMPLES_CHANNELS(4)
+	MCFG_SAMPLES_NAMES(depthch_sample_names)
+	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 0.5)
+MACHINE_CONFIG_END
+>>>>>>> upstream/master

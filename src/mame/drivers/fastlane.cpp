@@ -12,9 +12,20 @@
 ***************************************************************************/
 
 #include "emu.h"
+<<<<<<< HEAD
 #include "cpu/m6809/hd6309.h"
 #include "includes/konamipt.h"
 #include "includes/fastlane.h"
+=======
+#include "includes/fastlane.h"
+#include "includes/konamipt.h"
+
+#include "cpu/m6809/hd6309.h"
+#include "machine/watchdog.h"
+
+#include "speaker.h"
+
+>>>>>>> upstream/master
 
 TIMER_DEVICE_CALLBACK_MEMBER(fastlane_state::fastlane_scanline)
 {
@@ -39,8 +50,13 @@ WRITE8_MEMBER(fastlane_state::k007121_registers_w)
 WRITE8_MEMBER(fastlane_state::fastlane_bankswitch_w)
 {
 	/* bits 0 & 1 coin counters */
+<<<<<<< HEAD
 	coin_counter_w(machine(), 0,data & 0x01);
 	coin_counter_w(machine(), 1,data & 0x02);
+=======
+	machine().bookkeeping().coin_counter_w(0,data & 0x01);
+	machine().bookkeeping().coin_counter_w(1,data & 0x02);
+>>>>>>> upstream/master
 
 	/* bits 2 & 3 = bank number */
 	membank("bank1")->set_entry((data & 0x0c) >> 2);
@@ -81,7 +97,11 @@ static ADDRESS_MAP_START( fastlane_map, AS_PROGRAM, 8, fastlane_state )
 	AM_RANGE(0x0803, 0x0803) AM_READ_PORT("SYSTEM")
 	AM_RANGE(0x0900, 0x0900) AM_READ_PORT("DSW1")
 	AM_RANGE(0x0901, 0x0901) AM_READ_PORT("DSW2")
+<<<<<<< HEAD
 	AM_RANGE(0x0b00, 0x0b00) AM_WRITE(watchdog_reset_w)                                         /* watchdog reset */
+=======
+	AM_RANGE(0x0b00, 0x0b00) AM_DEVWRITE("watchdog", watchdog_timer_device, reset_w)
+>>>>>>> upstream/master
 	AM_RANGE(0x0c00, 0x0c00) AM_WRITE(fastlane_bankswitch_w)                                    /* bankswitch control */
 	AM_RANGE(0x0d00, 0x0d0d) AM_READWRITE(fastlane_k1_k007232_r, fastlane_k1_k007232_w) /* 007232 registers (chip 1) */
 	AM_RANGE(0x0e00, 0x0e0d) AM_READWRITE(fastlane_k2_k007232_r, fastlane_k2_k007232_w) /* 007232 registers (chip 2) */
@@ -189,18 +209,31 @@ WRITE8_MEMBER(fastlane_state::volume_callback1)
 
 void fastlane_state::machine_start()
 {
+<<<<<<< HEAD
 	UINT8 *ROM = memregion("maincpu")->base();
+=======
+	uint8_t *ROM = memregion("maincpu")->base();
+>>>>>>> upstream/master
 
 	membank("bank1")->configure_entries(0, 4, &ROM[0x10000], 0x4000);
 }
 
+<<<<<<< HEAD
 static MACHINE_CONFIG_START( fastlane, fastlane_state )
+=======
+static MACHINE_CONFIG_START( fastlane )
+>>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", HD6309, XTAL_24MHz/2) // 3MHz(XTAL_24MHz/8) internally
 	MCFG_CPU_PROGRAM_MAP(fastlane_map)
 	MCFG_TIMER_DRIVER_ADD_SCANLINE("scantimer", fastlane_state, fastlane_scanline, "screen", 0, 1)
 
+<<<<<<< HEAD
+=======
+	MCFG_WATCHDOG_ADD("watchdog")
+
+>>>>>>> upstream/master
 	/* video hardware */
 	MCFG_SCREEN_ADD("screen", RASTER)
 	MCFG_SCREEN_REFRESH_RATE(59.17) // measured
@@ -260,4 +293,8 @@ ROM_START( fastlane )
 ROM_END
 
 
+<<<<<<< HEAD
 GAME( 1987, fastlane, 0, fastlane, fastlane, driver_device, 0, ROT90, "Konami", "Fast Lane", MACHINE_NO_COCKTAIL | MACHINE_IMPERFECT_COLORS | MACHINE_SUPPORTS_SAVE )
+=======
+GAME( 1987, fastlane, 0, fastlane, fastlane, fastlane_state, 0, ROT90, "Konami", "Fast Lane", MACHINE_NO_COCKTAIL | MACHINE_SUPPORTS_SAVE )
+>>>>>>> upstream/master

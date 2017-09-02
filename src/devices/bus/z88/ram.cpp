@@ -19,10 +19,17 @@
 //  GLOBAL VARIABLES
 //**************************************************************************
 
+<<<<<<< HEAD
 const device_type Z88_32K_RAM =  &device_creator<z88_32k_ram_device>;
 const device_type Z88_128K_RAM = &device_creator<z88_128k_ram_device>;
 const device_type Z88_512K_RAM = &device_creator<z88_512k_ram_device>;
 const device_type Z88_1024K_RAM = &device_creator<z88_1024k_ram_device>;
+=======
+DEFINE_DEVICE_TYPE(Z88_32K_RAM,   z88_32k_ram_device,   "z88_32k_ram",   "Z88 32KB RAM")
+DEFINE_DEVICE_TYPE(Z88_128K_RAM,  z88_128k_ram_device,  "z88_128k_ram",  "Z88 128KB RAM")
+DEFINE_DEVICE_TYPE(Z88_512K_RAM,  z88_512k_ram_device,  "z88_512k_ram",  "Z88 512KB RAM")
+DEFINE_DEVICE_TYPE(Z88_1024K_RAM, z88_1024k_ram_device, "z88_1024k_ram", "Z88 1024KB RAM")
+>>>>>>> upstream/master
 
 //**************************************************************************
 //  LIVE DEVICE
@@ -32,6 +39,7 @@ const device_type Z88_1024K_RAM = &device_creator<z88_1024k_ram_device>;
 //  z88_32k_ram_device - constructor
 //-------------------------------------------------
 
+<<<<<<< HEAD
 z88_32k_ram_device::z88_32k_ram_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
 		: device_t(mconfig, Z88_32K_RAM, "Z88 32KB RAM", tag, owner, clock, "z88_32k_ram", __FILE__),
 		device_z88cart_interface( mconfig, *this ), m_ram(nullptr)
@@ -42,14 +50,29 @@ z88_32k_ram_device::z88_32k_ram_device(const machine_config &mconfig, device_typ
 		: device_t(mconfig, type, name, tag, owner, clock, shortname, source),
 		device_z88cart_interface( mconfig, *this ), m_ram(nullptr)
 	{
+=======
+z88_32k_ram_device::z88_32k_ram_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: z88_32k_ram_device(mconfig, Z88_32K_RAM, tag, owner, clock)
+{
+}
+
+z88_32k_ram_device::z88_32k_ram_device(const machine_config &mconfig, device_type type, const char *tag, device_t *owner, uint32_t clock)
+	: device_t(mconfig, type, tag, owner, clock), device_z88cart_interface(mconfig, *this), m_ram(nullptr)
+{
+>>>>>>> upstream/master
 }
 
 //-------------------------------------------------
 //  z88_128k_ram_device - constructor
 //-------------------------------------------------
 
+<<<<<<< HEAD
 z88_128k_ram_device::z88_128k_ram_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
 		: z88_32k_ram_device(mconfig, Z88_128K_RAM, "Z88 128KB RAM", tag, owner, clock, "z88_128k_ram", __FILE__)
+=======
+z88_128k_ram_device::z88_128k_ram_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: z88_32k_ram_device(mconfig, Z88_128K_RAM, tag, owner, clock)
+>>>>>>> upstream/master
 {
 }
 
@@ -57,8 +80,13 @@ z88_128k_ram_device::z88_128k_ram_device(const machine_config &mconfig, const ch
 //  z88_512k_ram_device - constructor
 //-------------------------------------------------
 
+<<<<<<< HEAD
 z88_512k_ram_device::z88_512k_ram_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
 		: z88_32k_ram_device(mconfig, Z88_512K_RAM, "Z88 512KB RAM", tag, owner, clock, "z88_512k_ram", __FILE__)
+=======
+z88_512k_ram_device::z88_512k_ram_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: z88_32k_ram_device(mconfig, Z88_512K_RAM, tag, owner, clock)
+>>>>>>> upstream/master
 {
 }
 
@@ -66,8 +94,13 @@ z88_512k_ram_device::z88_512k_ram_device(const machine_config &mconfig, const ch
 //  z88_1024k_ram_device - constructor
 //-------------------------------------------------
 
+<<<<<<< HEAD
 z88_1024k_ram_device::z88_1024k_ram_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
 		: z88_32k_ram_device(mconfig, Z88_1024K_RAM, "Z88 1024KB RAM", tag, owner, clock, "z88_1024k_ram", __FILE__)
+=======
+z88_1024k_ram_device::z88_1024k_ram_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: z88_32k_ram_device(mconfig, Z88_1024K_RAM, tag, owner, clock)
+>>>>>>> upstream/master
 {
 }
 
@@ -86,7 +119,11 @@ void z88_32k_ram_device::device_start()
     get_cart_base
 -------------------------------------------------*/
 
+<<<<<<< HEAD
 UINT8* z88_32k_ram_device::get_cart_base()
+=======
+uint8_t* z88_32k_ram_device::get_cart_base()
+>>>>>>> upstream/master
 {
 	return m_ram;
 }

@@ -32,7 +32,11 @@ static int cas_size;
 static int samplerate;
 static int new_format;
 
+<<<<<<< HEAD
 static int x1_fill_wave(INT16* buffer, UINT8 data, int sample_pos)
+=======
+static int x1_fill_wave(int16_t* buffer, uint8_t data, int sample_pos)
+>>>>>>> upstream/master
 {
 	int x;
 	int sample_count = 0;
@@ -48,7 +52,11 @@ static int x1_fill_wave(INT16* buffer, UINT8 data, int sample_pos)
 	return sample_count;
 }
 
+<<<<<<< HEAD
 static int x1_handle_tap(INT16* buffer, const UINT8* casdata)
+=======
+static int x1_handle_tap(int16_t* buffer, const uint8_t* casdata)
+>>>>>>> upstream/master
 {
 	int sample_count = 0;
 	int data_pos = new_format ? 0x28 : 0x04;
@@ -71,9 +79,15 @@ static int x1_handle_tap(INT16* buffer, const UINT8* casdata)
 /*******************************************************************
    Calculate the number of samples needed for this tape image
 ********************************************************************/
+<<<<<<< HEAD
 static int x1_cas_to_wav_size (const UINT8 *casdata, int caslen)
 {
 	UINT32 ret;
+=======
+static int x1_cas_to_wav_size (const uint8_t *casdata, int caslen)
+{
+	uint32_t ret;
+>>>>>>> upstream/master
 
 	if (!memcmp(casdata, "TAPE", 4))  // new TAP format
 	{
@@ -98,7 +112,11 @@ static int x1_cas_to_wav_size (const UINT8 *casdata, int caslen)
 /*******************************************************************
    Generate samples for the tape image
 ********************************************************************/
+<<<<<<< HEAD
 static int x1_cas_fill_wave(INT16 *buffer, int sample_count, UINT8 *bytes)
+=======
+static int x1_cas_fill_wave(int16_t *buffer, int sample_count, uint8_t *bytes)
+>>>>>>> upstream/master
 {
 	return x1_handle_tap(buffer,bytes);
 }
@@ -114,14 +132,22 @@ static const struct CassetteLegacyWaveFiller x1_legacy_fill_wave =
 	0                                       /* trailer_samples */
 };
 
+<<<<<<< HEAD
 static casserr_t x1_cas_identify(cassette_image *cassette, struct CassetteOptions *opts)
+=======
+static cassette_image::error x1_cas_identify(cassette_image *cassette, struct CassetteOptions *opts)
+>>>>>>> upstream/master
 {
 	return cassette_legacy_identify(cassette, opts, &x1_legacy_fill_wave);
 }
 
 
 
+<<<<<<< HEAD
 static casserr_t x1_cas_load(cassette_image *cassette)
+=======
+static cassette_image::error x1_cas_load(cassette_image *cassette)
+>>>>>>> upstream/master
 {
 	return cassette_legacy_construct(cassette, &x1_legacy_fill_wave);
 }
@@ -131,7 +157,11 @@ static const struct CassetteFormat x1_cassette_format = {
 	"tap",
 	x1_cas_identify,
 	x1_cas_load,
+<<<<<<< HEAD
 	NULL
+=======
+	nullptr
+>>>>>>> upstream/master
 };
 
 CASSETTE_FORMATLIST_START(x1_cassette_formats)

@@ -7,12 +7,20 @@
 
 ***************************************************************************/
 
+<<<<<<< HEAD
 #pragma once
 
 #ifndef __TMPZ84C011__
 #define __TMPZ84C011__
 
 #include "emu.h"
+=======
+#ifndef MAME_CPU_Z80_TMPZ84C011_H
+#define MAME_CPU_Z80_TMPZ84C011_H
+
+#pragma once
+
+>>>>>>> upstream/master
 #include "z80.h"
 #include "machine/z80ctc.h"
 
@@ -75,7 +83,11 @@
 class tmpz84c011_device : public z80_device
 {
 public:
+<<<<<<< HEAD
 	tmpz84c011_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32);
+=======
+	tmpz84c011_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t);
+>>>>>>> upstream/master
 
 	// static configuration helpers
 	template<class _Object> static devcb_base &set_zc0_callback(device_t &device, _Object object) { return downcast<tmpz84c011_device &>(device).m_zc0_cb.set_callback(object); }
@@ -124,6 +136,7 @@ public:
 	DECLARE_WRITE8_MEMBER( tmpz84c011_dir_pd_w ) { m_pio_dir[3] = data; }
 	DECLARE_WRITE8_MEMBER( tmpz84c011_dir_pe_w ) { m_pio_dir[4] = data; }
 
+<<<<<<< HEAD
 	DECLARE_WRITE_LINE_MEMBER( zc0_cb_trampoline_w ) { m_zc0_cb(state); }
 	DECLARE_WRITE_LINE_MEMBER( zc1_cb_trampoline_w ) { m_zc1_cb(state); }
 	DECLARE_WRITE_LINE_MEMBER( zc2_cb_trampoline_w ) { m_zc2_cb(state); }
@@ -144,14 +157,30 @@ protected:
 			default: return z80_device::memory_space_config(spacenum);
 		}
 	}
+=======
+protected:
+	// device-level overrides
+	virtual void device_add_mconfig(machine_config &config) override;
+	virtual void device_start() override;
+	virtual void device_reset() override;
+
+	const address_space_config m_io_space_config;
+
+	virtual space_config_vector memory_space_config() const override;
+>>>>>>> upstream/master
 
 private:
 	// devices/pointers
 	required_device<z80ctc_device> m_ctc;
 
 	// internal state
+<<<<<<< HEAD
 	UINT8 m_pio_dir[5];
 	UINT8 m_pio_latch[5];
+=======
+	uint8_t m_pio_dir[5];
+	uint8_t m_pio_latch[5];
+>>>>>>> upstream/master
 
 	// callbacks
 	devcb_write8 m_outportsa;
@@ -169,11 +198,25 @@ private:
 	devcb_write_line m_zc0_cb;
 	devcb_write_line m_zc1_cb;
 	devcb_write_line m_zc2_cb;
+<<<<<<< HEAD
+=======
+
+	DECLARE_WRITE_LINE_MEMBER( zc0_cb_trampoline_w ) { m_zc0_cb(state); }
+	DECLARE_WRITE_LINE_MEMBER( zc1_cb_trampoline_w ) { m_zc1_cb(state); }
+	DECLARE_WRITE_LINE_MEMBER( zc2_cb_trampoline_w ) { m_zc2_cb(state); }
+>>>>>>> upstream/master
 };
 
 
 // device type definition
+<<<<<<< HEAD
 extern const device_type TMPZ84C011;
 
 
 #endif /// __TMPZ84C011__
+=======
+DECLARE_DEVICE_TYPE(TMPZ84C011, tmpz84c011_device)
+
+
+#endif // MAME_CPU_Z80_TMPZ84C011_H
+>>>>>>> upstream/master

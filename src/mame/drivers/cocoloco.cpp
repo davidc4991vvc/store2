@@ -157,6 +157,25 @@
 
 ***************************************************************************************
 
+<<<<<<< HEAD
+=======
+  Game notes...
+
+  The third set is resetting after drawing the maze, and when start a game.
+
+  Attract reset:
+
+  bp d28e (this is after all the jsr tables that draw the maze)
+  $d296: jsr $e0cd...
+  $e189 (jsr $6337) ; $6337 ---> Goes nowhere. Hit the 00's (BRK) and reset.
+
+  Start reset:
+
+  $e0e9: 4c ee 60  ; jmp $60ee <--- nothing here.
+
+***************************************************************************************
+
+>>>>>>> upstream/master
   DRIVER UPDATES:
 
   2014-05-11
@@ -172,6 +191,7 @@
 
 **************************************************************************************/
 
+<<<<<<< HEAD
 
 #define MASTER_CLOCK    XTAL_20MHz           /* confirmed */
 #define CPU_CLOCK       MASTER_CLOCK / 16    /* confirmed */
@@ -184,6 +204,24 @@
 #include "netlist/devices/net_lib.h"
 
 
+=======
+#include "emu.h"
+
+#include "cpu/m6502/m6502.h"
+#include "machine/netlist.h"
+#include "sound/ay8910.h"
+#include "screen.h"
+#include "speaker.h"
+
+#include "netlist/devices/net_lib.h"
+
+
+#define MASTER_CLOCK    XTAL_20MHz           /* confirmed */
+#define CPU_CLOCK       MASTER_CLOCK / 16    /* confirmed */
+#define SND_CLOCK       MASTER_CLOCK / 8     /* confirmed */
+
+
+>>>>>>> upstream/master
 class cocoloco_state : public driver_device
 {
 public:
@@ -195,8 +233,13 @@ public:
 	required_device<cpu_device> m_maincpu;
 	required_device<palette_device> m_palette;
 
+<<<<<<< HEAD
 	UINT8 *m_videoram;
 	UINT8 m_videobank;
+=======
+	std::unique_ptr<uint8_t[]> m_videoram;
+	uint8_t m_videobank;
+>>>>>>> upstream/master
 
 	DECLARE_READ8_MEMBER(vram_r);
 	DECLARE_WRITE8_MEMBER(vram_w);
@@ -206,10 +249,19 @@ public:
 
 	DECLARE_INPUT_CHANGED_MEMBER(coin_inserted);
 
+<<<<<<< HEAD
 	virtual void video_start();
 	DECLARE_PALETTE_INIT(cocoloco);
 
 	UINT32 screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
+=======
+	DECLARE_DRIVER_INIT(cocob);
+
+	virtual void video_start() override;
+	DECLARE_PALETTE_INIT(cocoloco);
+
+	uint32_t screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
+>>>>>>> upstream/master
 };
 
 /***********************************
@@ -290,6 +342,7 @@ PALETTE_INIT_MEMBER(cocoloco_state, cocoloco)
 
 void cocoloco_state::video_start()
 {
+<<<<<<< HEAD
 	m_videoram = auto_alloc_array(machine(), UINT8, 0x2000 * 8);
 
 	save_pointer(NAME(m_videoram), 0x2000 * 8);
@@ -297,6 +350,15 @@ void cocoloco_state::video_start()
 }
 
 UINT32 cocoloco_state::screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+=======
+	m_videoram = std::make_unique<uint8_t[]>(0x2000 * 8);
+
+	save_pointer(NAME(m_videoram.get()), 0x2000 * 8);
+	save_item(NAME(m_videobank));
+}
+
+uint32_t cocoloco_state::screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+>>>>>>> upstream/master
 {
 	int x, y, count, xi;
 
@@ -367,7 +429,11 @@ WRITE8_MEMBER( cocoloco_state::coincounter_w )
     They explain in a sheet that the coin in for 50 pesetas
     behaves like 2x 25 pesetas (1 duro) coins, so has sense.
 */
+<<<<<<< HEAD
 	coin_counter_w(machine(), 0, data & 0x08);
+=======
+	machine().bookkeeping().coin_counter_w(0, data & 0x08);
+>>>>>>> upstream/master
 }
 
 
@@ -394,6 +460,30 @@ ADDRESS_MAP_END
   All 3 instances of A005 reads (d07e, d355 and dca8),
   discard the read in a non-sense way....
 
+<<<<<<< HEAD
+=======
+  IE (from set 2):
+
+  D7B6: A9 00     ; lda #$00
+  D7B8: 85 EE     ; sta $EE
+  D7BA: AD 05 A0  ; lda $A005 <--- Load A with $A005 contents...
+  D7BD: AD 00 A0  ; lda $A000 <--- Load A again with $A000 contents, overwritting the previous loaded value!
+  D7C0: 10 FB     ; bpl $D7BD
+  D7C2: AD 00 A0  ; lda $A000
+  D7C5: 30 FB     ; bmi $D7C2
+  D7C7: 60        ; rts
+
+  IE (from set 3):
+
+  D082: AD 05 A0  ; lda $A005 <--- Here, loading A...
+  D085: E8        ; inx
+  D086: C6 76     ; dec $76
+  D088: D0 F5     ; bne $Do7F
+  D08A: A9 04     ; lda #$04  <--- And here again, overwritting the previous loaded value!
+  D08C: 8D 03 80  ; sta $8003
+  ...
+
+>>>>>>> upstream/master
   There is another register (8005h), that is written by the code
   (bit3 on/off) after coin-in, and checking the inputs too...
   Seems coin counter, but the input check is suspicious.
@@ -462,11 +552,28 @@ static INPUT_PORTS_START( cocoloco )
 INPUT_PORTS_END
 
 
+<<<<<<< HEAD
+=======
+static INPUT_PORTS_START( cocolocoa )
+	PORT_INCLUDE( cocoloco )
+
+	PORT_MODIFY("DSW2")
+	PORT_DIPUNKNOWN_DIPLOC( 0x01, 0x01, "DSW2:1" )
+	PORT_DIPUNKNOWN_DIPLOC( 0x02, 0x02, "DSW2:2" )
+INPUT_PORTS_END
+
+
+
+>>>>>>> upstream/master
 /***********************************
 *         Machine Drivers          *
 ***********************************/
 
+<<<<<<< HEAD
 static MACHINE_CONFIG_START( cocoloco, cocoloco_state )
+=======
+static MACHINE_CONFIG_START( cocoloco )
+>>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", M6502, CPU_CLOCK)   /* confirmed */
@@ -521,13 +628,76 @@ ROM_START( cocoloco )
 	ROM_LOAD( "coco1-h.e1", 0xf800, 0x0800, CRC(b6d0ebea) SHA1(a8f09558f71dfe0d300a6bb946dcb3bf6393c02b) )
 
 	ROM_REGION( 0x0100, "proms", 0 )
+<<<<<<< HEAD
 	ROM_LOAD( "prom.c10",   0x0000, 0x0100, CRC(fea8a821) SHA1(c744cac6af7621524fc3a2b0a9a135a32b33c81b) )
 ROM_END
 
+=======
+	ROM_LOAD( "prom.c10",   0x0000, 0x0100, CRC(fea8a821) SHA1(c744cac6af7621524fc3a2b0a9a135a32b33c81b) )  // blank. verified
+ROM_END
+
+ROM_START( cocolocoa )
+	ROM_REGION( 0x10000, "maincpu", 0 )
+	ROM_LOAD( "coco1-c1.b1",  0xd000, 0x0800, CRC(bac1df7f) SHA1(e65e528df16186224390803df2d83cc23221af22) )
+	ROM_LOAD( "coco1-d1.bc1", 0xd800, 0x0800, CRC(f5a3754e) SHA1(0de9800dbf414e4f6fc316aeef8882ec42ab64e3) )
+	ROM_LOAD( "coco1-e1.c1",  0xe000, 0x0800, CRC(0dd5abbf) SHA1(1161b27c29401e38b6d97310aa088fb3b0fccf18) )
+	ROM_LOAD( "coco1-f1.d1",  0xe800, 0x0800, CRC(5afb8f77) SHA1(6d9f47287445938581c0879a21338e568c8cb1f9) )
+	ROM_LOAD( "coco1-g1.de1", 0xf000, 0x0800, CRC(481616ce) SHA1(5e2c7ba4a098094da0adbfaeaba095cd54ae0268) )
+	ROM_LOAD( "coco1-h1.e1",  0xf800, 0x0800, CRC(16613f90) SHA1(f16032ba36970686d1534658d54e5bc55735d0b8) )
+
+	ROM_REGION( 0x0100, "proms", 0 )
+	ROM_LOAD( "tbp28l22.bin", 0x0000, 0x0100, CRC(3bf3ccb0) SHA1(d61d19d38045f42a9adecf295e479fee239bed48) )  // same decode prom from abattle (astrof.cpp)
+ROM_END
+
+/* This Petaco's 2-player game
+   seems to soffer of some bitrot.
+
+   The code executes subroutines located out of the ROM space.
+   Finally jumps to nowhere.
+*/
+ROM_START( cocolocob )
+	ROM_REGION( 0x10000, "maincpu", 0 )
+	ROM_LOAD( "b1.bin",   0xd000, 0x0800, CRC(5ead42c4) SHA1(f2b8bf48f80c99c8c109ec67cdd6e1105f7f9702) )
+	ROM_LOAD( "b-c1.bin", 0xd800, 0x0800, CRC(104db6b3) SHA1(d0a9ce1b920124078f442bdcb226e8da9f96d60a) )
+	ROM_LOAD( "c1.bin",   0xe000, 0x0800, BAD_DUMP CRC(8774b1bc) SHA1(b7c09883c136dedfffd0724b49cc5ff987831850) )
+	ROM_LOAD( "d1.bin",   0xe800, 0x0800, CRC(41b22627) SHA1(241659448074e5101ca7da3feb4a0a38580b12e9) )
+	ROM_LOAD( "d-e1.bin", 0xf000, 0x0800, CRC(db93f941) SHA1(b827341e408b5dc50acdfd3586f829f7bb2bb915) )
+	ROM_LOAD( "e1.bin",   0xf800, 0x0800, CRC(4e5705f0) SHA1(271d6c8eff331327dc1a75f7a4b0c64d3e363e3d) )
+
+	ROM_REGION( 0x0100, "proms", 0 )
+	ROM_LOAD( "tbp28l22.bin", 0x0000, 0x0100, CRC(3bf3ccb0) SHA1(d61d19d38045f42a9adecf295e479fee239bed48) )  // from the other set.
+ROM_END
+
+
+/***********************************
+*           Driver Init            *
+***********************************/
+
+DRIVER_INIT_MEMBER(cocoloco_state, cocob)
+{
+//  Just for testing...
+
+	uint8_t *rom = memregion("maincpu")->base();
+
+	rom[0xe18b] = rom[0xe18b] ^ 0x80; // with jsr $e337, the character doesn't turn and eat straight (maze included)
+
+	rom[0xe049] = 0xea;
+	rom[0xe04a] = 0xea;
+	rom[0xe04b] = 0xea;
+}
+
+>>>>>>> upstream/master
 
 /***********************************
 *           Game Drivers           *
 ***********************************/
 
+<<<<<<< HEAD
 /*    YEAR  NAME       PARENT   MACHINE   INPUT     STATE          INIT   ROT     COMPANY         FULLNAME      FLAGS  */
 GAME( 198?, cocoloco,  0,       cocoloco, cocoloco, driver_device, 0,     ROT90, "Petaco S.A.",  "Coco Loco", MACHINE_SUPPORTS_SAVE )
+=======
+//    YEAR  NAME       PARENT    MACHINE   INPUT      STATE           INIT   ROT    COMPANY         FULLNAME             FLAGS
+GAME( 198?, cocoloco,  0,        cocoloco, cocoloco,  cocoloco_state, 0,     ROT90, "Petaco S.A.",  "Coco Loco (set 1)", MACHINE_SUPPORTS_SAVE )
+GAME( 198?, cocolocoa, cocoloco, cocoloco, cocolocoa, cocoloco_state, 0,     ROT90, "Recel S.A.",   "Coco Loco (set 2)", MACHINE_SUPPORTS_SAVE )
+GAME( 198?, cocolocob, cocoloco, cocoloco, cocoloco,  cocoloco_state, cocob, ROT90, "Petaco S.A.",  "Coco Loco (set 3)", MACHINE_NOT_WORKING | MACHINE_SUPPORTS_SAVE )
+>>>>>>> upstream/master

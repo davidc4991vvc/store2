@@ -84,9 +84,19 @@
 ***************************************************************************/
 
 #include "emu.h"
+<<<<<<< HEAD
 #include "cpu/z80/z80.h"
 #include "includes/suprridr.h"
 #include "sound/ay8910.h"
+=======
+#include "includes/suprridr.h"
+
+#include "cpu/z80/z80.h"
+#include "machine/watchdog.h"
+#include "sound/ay8910.h"
+#include "screen.h"
+#include "speaker.h"
+>>>>>>> upstream/master
 
 
 void suprridr_state::machine_start()
@@ -156,7 +166,11 @@ WRITE8_MEMBER(suprridr_state::sound_irq_ack_w)
 WRITE8_MEMBER(suprridr_state::coin_lock_w)
 {
 	/* cleared when 9 credits are hit, but never reset! */
+<<<<<<< HEAD
 /*  coin_lockout_global_w(machine(), ~data & 1); */
+=======
+/*  machine().bookkeeping().coin_lockout_global_w(~data & 1); */
+>>>>>>> upstream/master
 }
 
 
@@ -191,7 +205,11 @@ ADDRESS_MAP_END
 
 static ADDRESS_MAP_START( main_portmap, AS_IO, 8, suprridr_state )
 	ADDRESS_MAP_GLOBAL_MASK(0xff)
+<<<<<<< HEAD
 	AM_RANGE(0x00, 0x00) AM_READ(watchdog_reset_r)
+=======
+	AM_RANGE(0x00, 0x00) AM_DEVREAD("watchdog", watchdog_timer_device, reset_r)
+>>>>>>> upstream/master
 ADDRESS_MAP_END
 
 
@@ -231,7 +249,11 @@ ADDRESS_MAP_END
 
 CUSTOM_INPUT_MEMBER(suprridr_state::control_r)
 {
+<<<<<<< HEAD
 	UINT32 ret;
+=======
+	uint32_t ret;
+>>>>>>> upstream/master
 
 	/* screen flip multiplexes controls */
 	if (is_screen_flipped())
@@ -245,7 +267,11 @@ CUSTOM_INPUT_MEMBER(suprridr_state::control_r)
 
 static INPUT_PORTS_START( suprridr )
 	PORT_START("INPUTS")
+<<<<<<< HEAD
 	PORT_BIT( 0xff, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, suprridr_state, control_r, NULL)
+=======
+	PORT_BIT( 0xff, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, suprridr_state, control_r, nullptr)
+>>>>>>> upstream/master
 
 	PORT_START("SYSTEM")
 	PORT_BIT( 0x01, IP_ACTIVE_HIGH, IPT_COIN1 )
@@ -341,7 +367,11 @@ GFXDECODE_END
  *
  *************************************/
 
+<<<<<<< HEAD
 static MACHINE_CONFIG_START( suprridr, suprridr_state )
+=======
+static MACHINE_CONFIG_START( suprridr )
+>>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", Z80, XTAL_49_152MHz/16)     /* 3 MHz */
@@ -353,6 +383,11 @@ static MACHINE_CONFIG_START( suprridr, suprridr_state )
 	MCFG_CPU_PROGRAM_MAP(sound_map)
 	MCFG_CPU_IO_MAP(sound_portmap)
 
+<<<<<<< HEAD
+=======
+	MCFG_WATCHDOG_ADD("watchdog")
+
+>>>>>>> upstream/master
 	/* video hardware */
 	MCFG_SCREEN_ADD("screen", RASTER)
 	MCFG_SCREEN_REFRESH_RATE(60)
@@ -429,4 +464,8 @@ ROM_END
  *
  *************************************/
 
+<<<<<<< HEAD
 GAME( 1983, suprridr, 0, suprridr, suprridr, driver_device, 0, ROT90, "Taito Corporation (Venture Line license)", "Super Rider", MACHINE_IMPERFECT_SOUND | MACHINE_SUPPORTS_SAVE )
+=======
+GAME( 1983, suprridr, 0, suprridr, suprridr, suprridr_state, 0, ROT90, "Taito Corporation (Venture Line license)", "Super Rider", MACHINE_IMPERFECT_SOUND | MACHINE_SUPPORTS_SAVE )
+>>>>>>> upstream/master

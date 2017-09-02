@@ -1,9 +1,17 @@
 // license:BSD-3-Clause
 // copyright-holders:Sergey Svishchev
 #include "emu.h"
+<<<<<<< HEAD
 #include "debugger.h"
 #include "ie15.h"
 
+=======
+#include "ie15.h"
+
+#include "debugger.h"
+
+
+>>>>>>> upstream/master
 //**************************************************************************
 //  MACROS
 //**************************************************************************
@@ -19,13 +27,18 @@
 //**************************************************************************
 
 // device type definition
+<<<<<<< HEAD
 const device_type IE15 = &device_creator<ie15_device>;
+=======
+DEFINE_DEVICE_TYPE(IE15_CPU, ie15_cpu_device, "ie15_cpu", "ie15 CPU")
+>>>>>>> upstream/master
 
 //**************************************************************************
 //  DEVICE INTERFACE
 //**************************************************************************
 
 //-------------------------------------------------
+<<<<<<< HEAD
 //  ie15_device - constructor
 //-------------------------------------------------
 ie15_device::ie15_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
@@ -34,6 +47,15 @@ ie15_device::ie15_device(const machine_config &mconfig, const char *tag, device_
 		m_io_config("io", ENDIANNESS_LITTLE, 8, 8), m_A(0), m_CF(0), m_ZF(0), m_RF(0), m_flags(0),
 		m_program(0), m_io(nullptr),
 		m_direct(0)
+=======
+//  ie15_cpu_device - constructor
+//-------------------------------------------------
+ie15_cpu_device::ie15_cpu_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: cpu_device(mconfig, IE15_CPU, tag, owner, clock)
+	, m_program_config("program", ENDIANNESS_LITTLE, 8, 14)
+	, m_io_config("io", ENDIANNESS_LITTLE, 8, 8), m_A(0), m_CF(0), m_ZF(0), m_RF(0), m_flags(0)
+	, m_program(nullptr), m_io(nullptr), m_direct(nullptr)
+>>>>>>> upstream/master
 {
 	// set our instruction counter
 	m_icountptr = &m_icount;
@@ -43,7 +65,11 @@ ie15_device::ie15_device(const machine_config &mconfig, const char *tag, device_
 //  device_start - start up the device
 //-------------------------------------------------
 
+<<<<<<< HEAD
 void ie15_device::device_start()
+=======
+void ie15_cpu_device::device_start()
+>>>>>>> upstream/master
 {
 	// find address spaces
 	m_program = &space(AS_PROGRAM);
@@ -61,19 +87,32 @@ void ie15_device::device_start()
 	// register our state for the debugger
 	state_add(IE15_PC,       "PC",       m_PC.w.l).mask(0x0fff);
 	state_add(STATE_GENPC,   "GENPC",    m_PC.w.l).mask(0x0fff).noshow();
+<<<<<<< HEAD
 	state_add(STATE_GENFLAGS,"GENFLAGS", m_flags).mask(0x0f).callimport().callexport().noshow().formatstr("%4s");
 	state_add(IE15_A,        "A",        m_A);
 
 	std::string tempstring;
 	for (int ireg = 0; ireg < 32; ireg++)
 		state_add(IE15_R0 + ireg, strformat(tempstring, "R%d", ireg).c_str(), m_REGS[ireg]);
+=======
+	state_add(STATE_GENPCBASE, "CURPC",  m_PC.w.l).mask(0x0fff).noshow();
+	state_add(STATE_GENFLAGS,"GENFLAGS", m_flags).mask(0x0f).callimport().callexport().noshow().formatstr("%4s");
+	state_add(IE15_A,        "A",        m_A);
+
+	for (int ireg = 0; ireg < 32; ireg++)
+		state_add(IE15_R0 + ireg, string_format("R%d", ireg).c_str(), m_REGS[ireg]);
+>>>>>>> upstream/master
 }
 
 //-------------------------------------------------
 //  device_reset - reset the device
 //-------------------------------------------------
 
+<<<<<<< HEAD
 void ie15_device::device_reset()
+=======
+void ie15_cpu_device::device_reset()
+>>>>>>> upstream/master
 {
 	m_CF = m_ZF = m_RF = 0;
 	m_A = 0;
@@ -83,6 +122,7 @@ void ie15_device::device_reset()
 
 //-------------------------------------------------
 //  memory_space_config - return the configuration
+<<<<<<< HEAD
 //  of the specified address space, or NULL if
 //  the space doesn't exist
 //-------------------------------------------------
@@ -92,6 +132,18 @@ const address_space_config *ie15_device::memory_space_config(address_spacenum sp
 	return  (spacenum == AS_PROGRAM) ? &m_program_config :
 			(spacenum == AS_IO) ? &m_io_config :
 			NULL;
+=======
+//  of the specified address space, or nullptr if
+//  the space doesn't exist
+//-------------------------------------------------
+
+device_memory_interface::space_config_vector ie15_cpu_device::memory_space_config() const
+{
+	return space_config_vector {
+		std::make_pair(AS_PROGRAM, &m_program_config),
+		std::make_pair(AS_IO,      &m_io_config)
+	};
+>>>>>>> upstream/master
 }
 
 //-------------------------------------------------
@@ -99,7 +151,11 @@ const address_space_config *ie15_device::memory_space_config(address_spacenum sp
 //  after it has been set
 //-------------------------------------------------
 
+<<<<<<< HEAD
 void ie15_device::state_import(const device_state_entry &entry)
+=======
+void ie15_cpu_device::state_import(const device_state_entry &entry)
+>>>>>>> upstream/master
 {
 	switch (entry.index())
 	{
@@ -116,7 +172,11 @@ void ie15_device::state_import(const device_state_entry &entry)
 //  to a known location where it can be read
 //-------------------------------------------------
 
+<<<<<<< HEAD
 void ie15_device::state_export(const device_state_entry &entry)
+=======
+void ie15_cpu_device::state_export(const device_state_entry &entry)
+>>>>>>> upstream/master
 {
 	switch (entry.index())
 	{
@@ -133,12 +193,20 @@ void ie15_device::state_export(const device_state_entry &entry)
 //  for the debugger
 //-------------------------------------------------
 
+<<<<<<< HEAD
 void ie15_device::state_string_export(const device_state_entry &entry, std::string &str)
+=======
+void ie15_cpu_device::state_string_export(const device_state_entry &entry, std::string &str) const
+>>>>>>> upstream/master
 {
 	switch (entry.index())
 	{
 		case STATE_GENFLAGS:
+<<<<<<< HEAD
 			strprintf(str, "%c%c%c",
+=======
+			str = string_format("%c%c%c",
+>>>>>>> upstream/master
 				m_CF ? 'C':'.',
 				m_ZF ? 'Z':'.',
 				m_RF ? 'R':'.');
@@ -151,7 +219,11 @@ void ie15_device::state_string_export(const device_state_entry &entry, std::stri
 //  of the shortest instruction, in bytes
 //-------------------------------------------------
 
+<<<<<<< HEAD
 UINT32 ie15_device::disasm_min_opcode_bytes() const
+=======
+uint32_t ie15_cpu_device::disasm_min_opcode_bytes() const
+>>>>>>> upstream/master
 {
 	return 1;
 }
@@ -161,7 +233,11 @@ UINT32 ie15_device::disasm_min_opcode_bytes() const
 //  of the longest instruction, in bytes
 //-------------------------------------------------
 
+<<<<<<< HEAD
 UINT32 ie15_device::disasm_max_opcode_bytes() const
+=======
+uint32_t ie15_cpu_device::disasm_max_opcode_bytes() const
+>>>>>>> upstream/master
 {
 	return 2;
 }
@@ -171,10 +247,17 @@ UINT32 ie15_device::disasm_max_opcode_bytes() const
 //  helper function
 //-------------------------------------------------
 
+<<<<<<< HEAD
 offs_t ie15_device::disasm_disassemble(char *buffer, offs_t pc, const UINT8 *oprom, const UINT8 *opram, UINT32 options)
 {
 	extern CPU_DISASSEMBLE( ie15 );
 	return CPU_DISASSEMBLE_NAME(ie15)(NULL, buffer, pc, oprom, opram, 0);
+=======
+offs_t ie15_cpu_device::disasm_disassemble(std::ostream &stream, offs_t pc, const uint8_t *oprom, const uint8_t *opram, uint32_t options)
+{
+	extern CPU_DISASSEMBLE( ie15 );
+	return CPU_DISASSEMBLE_NAME(ie15)(nullptr, stream, pc, oprom, opram, 0);
+>>>>>>> upstream/master
 }
 
 //**************************************************************************
@@ -186,7 +269,11 @@ offs_t ie15_device::disasm_disassemble(char *buffer, offs_t pc, const UINT8 *opr
 //  cycles it takes for one instruction to execute
 //-------------------------------------------------
 
+<<<<<<< HEAD
 UINT32 ie15_device::execute_min_cycles() const
+=======
+uint32_t ie15_cpu_device::execute_min_cycles() const
+>>>>>>> upstream/master
 {
 	return 1;
 }
@@ -196,7 +283,11 @@ UINT32 ie15_device::execute_min_cycles() const
 //  cycles it takes for one instruction to execute
 //-------------------------------------------------
 
+<<<<<<< HEAD
 UINT32 ie15_device::execute_max_cycles() const
+=======
+uint32_t ie15_cpu_device::execute_max_cycles() const
+>>>>>>> upstream/master
 {
 	return 1;
 }
@@ -205,6 +296,7 @@ UINT32 ie15_device::execute_max_cycles() const
 //  execute_run - execute until our icount expires
 //-------------------------------------------------
 
+<<<<<<< HEAD
 void ie15_device::execute_run()
 {
 	do
@@ -215,6 +307,29 @@ void ie15_device::execute_run()
 }
 
 inline void ie15_device::illegal(UINT8 opcode)
+=======
+void ie15_cpu_device::execute_run()
+{
+	// Removing the hook entirely is considerably faster than calling it for every instruction if the debugger is disabled entirely
+	if (machine().debug_flags & DEBUG_FLAG_ENABLED)
+	{
+		do
+		{
+			debugger_instruction_hook(this, m_PC.d);
+			execute_one(rop());
+		} while (m_icount > 0);
+	}
+	else
+	{
+		do
+		{
+			execute_one(rop());
+		} while (m_icount > 0);
+	}
+}
+
+inline void ie15_cpu_device::illegal(uint8_t opcode)
+>>>>>>> upstream/master
 {
 	if ((machine().debug_flags & DEBUG_FLAG_ENABLED) != 0)
 	{
@@ -225,9 +340,15 @@ inline void ie15_device::illegal(UINT8 opcode)
 // XXX verify that m_ZF and m_CF are set and handled right
 // XXX 'ota' apparently writes the ALU buffer register, not accumulator
 // XXX what if ldc was at 0x_ff?
+<<<<<<< HEAD
 inline void ie15_device::execute_one(int opcode)
 {
 	UINT16 tmp;
+=======
+inline void ie15_cpu_device::execute_one(int opcode)
+{
+	uint16_t tmp;
+>>>>>>> upstream/master
 
 	m_icount -= 1;
 
@@ -412,13 +533,20 @@ inline void ie15_device::execute_one(int opcode)
     INLINE FUNCTIONS
 ***************************************************************************/
 
+<<<<<<< HEAD
 inline UINT8 ie15_device::rop()
 {
 	UINT8 retVal = m_direct->read_byte(m_PC.w.l);
+=======
+inline uint8_t ie15_cpu_device::rop()
+{
+	uint8_t retVal = m_direct->read_byte(m_PC.w.l);
+>>>>>>> upstream/master
 	m_PC.w.l = (m_PC.w.l + 1) & 0x0fff;
 	return retVal;
 }
 
+<<<<<<< HEAD
 inline UINT8 ie15_device::arg()
 {
 	UINT8 retVal = m_direct->read_byte(m_PC.w.l);
@@ -432,25 +560,55 @@ inline UINT8 ie15_device::get_reg_lo(UINT8 reg)
 }
 
 inline UINT16 ie15_device::get_reg(UINT8 reg)
+=======
+inline uint8_t ie15_cpu_device::arg()
+{
+	uint8_t retVal = m_direct->read_byte(m_PC.w.l);
+	return retVal;
+}
+
+inline uint8_t ie15_cpu_device::get_reg_lo(uint8_t reg)
+{
+	uint16_t tmp = m_RF ? m_REGS[16 + reg] : m_REGS[reg];
+	return tmp & 255;
+}
+
+inline uint16_t ie15_cpu_device::get_reg(uint8_t reg)
+>>>>>>> upstream/master
 {
 	return m_RF ? m_REGS[16 + reg] : m_REGS[reg];
 }
 
+<<<<<<< HEAD
 inline void ie15_device::set_reg(UINT8 reg, UINT16 val)
+=======
+inline void ie15_cpu_device::set_reg(uint8_t reg, uint16_t val)
+>>>>>>> upstream/master
 {
 	(m_RF ? m_REGS[16 + reg] : m_REGS[reg]) = val;
 
 }
 
+<<<<<<< HEAD
 inline void ie15_device::update_flags(UINT8 val)
+=======
+inline void ie15_cpu_device::update_flags(uint8_t val)
+>>>>>>> upstream/master
 {
 	m_ZF = (val == 0xff) ? 1 : 0;
 }
 
+<<<<<<< HEAD
 inline UINT8 ie15_device::do_condition(UINT8 val)
 {
 	UINT8 v = (val >> 5) & 1;
 	UINT8 cond = 0;
+=======
+inline uint8_t ie15_cpu_device::do_condition(uint8_t val)
+{
+	uint8_t v = (val >> 5) & 1;
+	uint8_t cond = 0;
+>>>>>>> upstream/master
 	switch((val>> 3) & 0x03) {
 		case 0 :
 				if (m_CF==v) cond = 1;
@@ -462,8 +620,14 @@ inline UINT8 ie15_device::do_condition(UINT8 val)
 	return cond;
 }
 
+<<<<<<< HEAD
 inline UINT16 ie15_device::get_addr(UINT8 val)
 {
 	UINT8 lo = arg();
+=======
+inline uint16_t ie15_cpu_device::get_addr(uint8_t val)
+{
+	uint8_t lo = arg();
+>>>>>>> upstream/master
 	return ((val & 0x0f) << 8) + lo + 1;
 }

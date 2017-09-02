@@ -22,7 +22,11 @@
   ---------------
 
   This board is used in each bet station of Coinmaster's Roulette and Keno games.
+<<<<<<< HEAD
   Both systems have a phisical electromechanical unit with their own controller
+=======
+  Both systems have a physical electromechanical unit with their own controller
+>>>>>>> upstream/master
   plus sound. The central units (wheel controller) are routed to the bet stations
   (10 for default) through 2 different kind of networks, depending the wheel system.
 
@@ -47,7 +51,11 @@
 
 
   Colorama is a standalone roulette system, driven by one VGA board. It has a big lamps
+<<<<<<< HEAD
   loom, and a vertical positioned roulette painted on the marquee with one phisical arm
+=======
+  loom, and a vertical positioned roulette painted on the marquee with one physical arm
+>>>>>>> upstream/master
   pointing to the numbers.
 
 
@@ -216,17 +224,31 @@
 
 *******************************************************************************/
 
+<<<<<<< HEAD
 
 #define CPU_CLOCK   XTAL_14_7456MHz
 #define MACH_CLOCK  XTAL_50MHz      // 50.35
 #define COM_CLOCK   XTAL_20MHz
 #define SND_CLOCK   XTAL_16_9344MHz
 
+=======
+>>>>>>> upstream/master
 #include "emu.h"
 #include "cpu/h8/h83006.h"
 #include "sound/ymz280b.h"
 #include "machine/nvram.h"
 #include "video/ramdac.h"
+<<<<<<< HEAD
+=======
+#include "screen.h"
+#include "speaker.h"
+
+
+#define CPU_CLOCK   XTAL_14_7456MHz
+#define MACH_CLOCK  XTAL_50MHz      // 50.35
+#define COM_CLOCK   XTAL_20MHz
+#define SND_CLOCK   XTAL_16_9344MHz
+>>>>>>> upstream/master
 
 
 class coinmvga_state : public driver_device
@@ -240,6 +262,7 @@ public:
 		m_palette(*this, "palette"),
 		m_palette2(*this, "palette2") { }
 
+<<<<<<< HEAD
 	required_shared_ptr<UINT16> m_vram;
 	DECLARE_WRITE8_MEMBER(debug_w);
 	DECLARE_READ16_MEMBER(test_r);
@@ -247,6 +270,13 @@ public:
 	DECLARE_DRIVER_INIT(cmrltv75);
 	virtual void video_start();
 	UINT32 screen_update_coinmvga(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
+=======
+	required_shared_ptr<uint16_t> m_vram;
+	DECLARE_DRIVER_INIT(colorama);
+	DECLARE_DRIVER_INIT(cmrltv75);
+	virtual void video_start() override;
+	uint32_t screen_update_coinmvga(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
+>>>>>>> upstream/master
 	INTERRUPT_GEN_MEMBER(vblank_irq);
 	required_device<cpu_device> m_maincpu;
 	required_device<gfxdecode_device> m_gfxdecode;
@@ -266,7 +296,11 @@ void coinmvga_state::video_start()
 }
 
 
+<<<<<<< HEAD
 UINT32 coinmvga_state::screen_update_coinmvga(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+=======
+uint32_t coinmvga_state::screen_update_coinmvga(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+>>>>>>> upstream/master
 {
 	gfx_element *gfx = m_gfxdecode->gfx(0);
 	int count = 0x04000/2;
@@ -617,16 +651,28 @@ INTERRUPT_GEN_MEMBER(coinmvga_state::vblank_irq)
 *    Machine Drivers     *
 *************************/
 
+<<<<<<< HEAD
 static ADDRESS_MAP_START( ramdac_map, AS_0, 8, coinmvga_state )
 	AM_RANGE(0x000, 0x3ff) AM_DEVREADWRITE("ramdac",ramdac_device,ramdac_pal_r,ramdac_rgb666_w)
 ADDRESS_MAP_END
 
 static ADDRESS_MAP_START( ramdac2_map, AS_0, 8, coinmvga_state )
+=======
+static ADDRESS_MAP_START( ramdac_map, 0, 8, coinmvga_state )
+	AM_RANGE(0x000, 0x3ff) AM_DEVREADWRITE("ramdac",ramdac_device,ramdac_pal_r,ramdac_rgb666_w)
+ADDRESS_MAP_END
+
+static ADDRESS_MAP_START( ramdac2_map, 0, 8, coinmvga_state )
+>>>>>>> upstream/master
 	AM_RANGE(0x000, 0x3ff) AM_DEVREADWRITE("ramdac2",ramdac_device,ramdac_pal_r,ramdac_rgb666_w)
 ADDRESS_MAP_END
 
 
+<<<<<<< HEAD
 static MACHINE_CONFIG_START( coinmvga, coinmvga_state )
+=======
+static MACHINE_CONFIG_START( coinmvga )
+>>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", H83007, CPU_CLOCK)  /* xtal */
@@ -671,7 +717,11 @@ MACHINE_CONFIG_END
    Colorama.
    p521 (unknown version), English.
 
+<<<<<<< HEAD
    Standalone. Phisical arm on marquee + bet station.
+=======
+   Standalone. Physical arm on marquee + bet station.
+>>>>>>> upstream/master
 */
 
 ROM_START( colorama )
@@ -704,7 +754,11 @@ ROM_START( coloramas )
    Colorama.
    p521 v13, Spanish.
 
+<<<<<<< HEAD
    Standalone. Phisical arm on marquee + bet station.
+=======
+   Standalone. Physical arm on marquee + bet station.
+>>>>>>> upstream/master
 */
 
 	ROM_REGION( 0x100000, "maincpu", 0 )
@@ -733,7 +787,11 @@ ROM_END
 
 /*
    Coinmaster Roulette V75 (y2k, spanish)
+<<<<<<< HEAD
    Phisical Unit + 10-15 bet stations.
+=======
+   Physical Unit + 10-15 bet stations.
+>>>>>>> upstream/master
 */
 
 ROM_START( cmrltv75 )
@@ -779,7 +837,11 @@ ROM_END
 
 /*
    Coinmaster Keno (y2k, spanish, 2000-12-14)
+<<<<<<< HEAD
    Phisical Unit + 10 bet stations.
+=======
+   Physical Unit + 10 bet stations.
+>>>>>>> upstream/master
 */
 
 ROM_START( cmkenosp )
@@ -823,7 +885,11 @@ ROM_END
 
 /*
    Coinmaster Keno (y2k, spanish, 2000-12-02)
+<<<<<<< HEAD
    Phisical Unit + 10 bet stations.
+=======
+   Physical Unit + 10 bet stations.
+>>>>>>> upstream/master
 */
 
 ROM_START( cmkenospa )
@@ -882,9 +948,18 @@ DRIVER_INIT_MEMBER(coinmvga_state,cmrltv75)
 *      Game Drivers      *
 *************************/
 
+<<<<<<< HEAD
 /*    YEAR  NAME       PARENT    MACHINE   INPUT     STATE           INIT      ROT     COMPANY                    FULLNAME                                      FLAGS */
 GAME( 2000, colorama,  0,        coinmvga, coinmvga, coinmvga_state, colorama, ROT0,  "Coinmaster-Gaming, Ltd.", "Colorama (P521, English)",                          MACHINE_IMPERFECT_GRAPHICS | MACHINE_NO_SOUND | MACHINE_NOT_WORKING )
 GAME( 2000, coloramas, colorama, coinmvga, coinmvga, coinmvga_state, colorama, ROT0,  "Coinmaster-Gaming, Ltd.", "Colorama (P521 V13, Spanish)",                MACHINE_IMPERFECT_GRAPHICS | MACHINE_NO_SOUND | MACHINE_NOT_WORKING )
 GAME( 2001, cmrltv75,  0,        coinmvga, coinmvga, coinmvga_state, cmrltv75, ROT90, "Coinmaster-Gaming, Ltd.", "Coinmaster Roulette P497 V75 (Y2K, Spanish)", MACHINE_IMPERFECT_GRAPHICS | MACHINE_NO_SOUND | MACHINE_NOT_WORKING )
 GAME( 2000, cmkenosp,  0,        coinmvga, coinmvga, driver_device,  0,        ROT90, "Coinmaster-Gaming, Ltd.", "Coinmaster Keno (Y2K, Spanish, 2000-12-14)",  MACHINE_IMPERFECT_GRAPHICS | MACHINE_NO_SOUND | MACHINE_NOT_WORKING )
 GAME( 2000, cmkenospa, cmkenosp, coinmvga, coinmvga, driver_device,  0,        ROT90, "Coinmaster-Gaming, Ltd.", "Coinmaster Keno (Y2K, Spanish, 2000-12-02)",  MACHINE_IMPERFECT_GRAPHICS | MACHINE_NO_SOUND | MACHINE_NOT_WORKING )
+=======
+//    YEAR  NAME       PARENT    MACHINE   INPUT     STATE           INIT      ROT    COMPANY                    FULLNAME                                       FLAGS
+GAME( 2000, colorama,  0,        coinmvga, coinmvga, coinmvga_state, colorama, ROT0,  "Coinmaster-Gaming, Ltd.", "Colorama (P521, English)",                    MACHINE_IMPERFECT_GRAPHICS | MACHINE_NO_SOUND | MACHINE_NOT_WORKING )
+GAME( 2000, coloramas, colorama, coinmvga, coinmvga, coinmvga_state, colorama, ROT0,  "Coinmaster-Gaming, Ltd.", "Colorama (P521 V13, Spanish)",                MACHINE_IMPERFECT_GRAPHICS | MACHINE_NO_SOUND | MACHINE_NOT_WORKING )
+GAME( 2001, cmrltv75,  0,        coinmvga, coinmvga, coinmvga_state, cmrltv75, ROT90, "Coinmaster-Gaming, Ltd.", "Coinmaster Roulette P497 V75 (Y2K, Spanish)", MACHINE_IMPERFECT_GRAPHICS | MACHINE_NO_SOUND | MACHINE_NOT_WORKING )
+GAME( 2000, cmkenosp,  0,        coinmvga, coinmvga, coinmvga_state, 0,        ROT90, "Coinmaster-Gaming, Ltd.", "Coinmaster Keno (Y2K, Spanish, 2000-12-14)",  MACHINE_IMPERFECT_GRAPHICS | MACHINE_NO_SOUND | MACHINE_NOT_WORKING )
+GAME( 2000, cmkenospa, cmkenosp, coinmvga, coinmvga, coinmvga_state, 0,        ROT90, "Coinmaster-Gaming, Ltd.", "Coinmaster Keno (Y2K, Spanish, 2000-12-02)",  MACHINE_IMPERFECT_GRAPHICS | MACHINE_NO_SOUND | MACHINE_NOT_WORKING )
+>>>>>>> upstream/master

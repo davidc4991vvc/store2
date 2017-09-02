@@ -8,7 +8,11 @@
 
 // actual port handling is more complex than this
 // which should be considered a temporary solution
+<<<<<<< HEAD
 // just used some arbitrary  port nubmers
+=======
+// just used some arbitrary  port numbers
+>>>>>>> upstream/master
 #define SH3_PORT_A (0x10*8)
 #define SH3_PORT_B (0x11*8)
 #define SH3_PORT_C (0x12*8)

@@ -228,7 +228,11 @@ WRITE8_MEMBER(nbmj8688_state::seiha_romsel_w)
 void nbmj8688_state::vramflip()
 {
 	int x, y;
+<<<<<<< HEAD
 	UINT16 color1, color2;
+=======
+	uint16_t color1, color2;
+>>>>>>> upstream/master
 
 	if (m_flipscreen == m_flipscreen_old) return;
 
@@ -276,13 +280,21 @@ void nbmj8688_state::device_timer(emu_timer &timer, device_timer_id id, int para
 		m_nb1413m3->m_busyflag = 1;
 		break;
 	default:
+<<<<<<< HEAD
 		assert_always(FALSE, "Unknown id in nbmj8688_state::device_timer");
+=======
+		assert_always(false, "Unknown id in nbmj8688_state::device_timer");
+>>>>>>> upstream/master
 	}
 }
 
 void nbmj8688_state::gfxdraw(int gfxtype)
 {
+<<<<<<< HEAD
 	UINT8 *GFX = memregion("gfx1")->base();
+=======
+	uint8_t *GFX = memregion("gfx1")->base();
+>>>>>>> upstream/master
 
 	int x, y;
 	int dx1, dx2, dy;
@@ -291,7 +303,11 @@ void nbmj8688_state::gfxdraw(int gfxtype)
 	int skipx, skipy;
 	int ctrx, ctry;
 	int gfxaddr, gfxlen;
+<<<<<<< HEAD
 	UINT16 color, color1, color2;
+=======
+	uint16_t color, color1, color2;
+>>>>>>> upstream/master
 
 	if (gfxtype == GFXTYPE_PURE_12BIT)
 	{
@@ -550,15 +566,26 @@ void nbmj8688_state::common_video_start()
 {
 	m_blitter_timer = timer_alloc(TIMER_BLITTER);
 
+<<<<<<< HEAD
 	m_tmpbitmap = auto_bitmap_ind16_alloc(machine(), 512, 256);
 	m_videoram = auto_alloc_array_clear(machine(), UINT16, 512 * 256);
 	m_clut = auto_alloc_array(machine(), UINT8, 0x20);
+=======
+	m_tmpbitmap = std::make_unique<bitmap_ind16>(512, 256);
+	m_videoram = make_unique_clear<uint16_t[]>(512 * 256);
+	m_clut = std::make_unique<uint8_t[]>(0x20);
+>>>>>>> upstream/master
 
 	m_scrolly = 0;  // reset because crystalg/crystal2 don't write to this register
 	m_screen_refresh = 1;
 
+<<<<<<< HEAD
 	save_pointer(NAME(m_videoram), 512 * 256);
 	save_pointer(NAME(m_clut), 0x20);
+=======
+	save_pointer(NAME(m_videoram.get()), 512 * 256);
+	save_pointer(NAME(m_clut.get()), 0x20);
+>>>>>>> upstream/master
 	save_item(NAME(m_scrolly));
 	save_item(NAME(m_blitter_destx));
 	save_item(NAME(m_blitter_desty));
@@ -638,7 +665,11 @@ WRITE8_MEMBER(nbmj8688_state::HD61830B_both_data_w)
 ******************************************************************************/
 
 
+<<<<<<< HEAD
 UINT32 nbmj8688_state::screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+=======
+uint32_t nbmj8688_state::screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+>>>>>>> upstream/master
 {
 	int x, y;
 

@@ -17,12 +17,20 @@
 
 **********************************************************************/
 
+<<<<<<< HEAD
 #pragma once
 
 #ifndef __CDP1863__
 #define __CDP1863__
 
 #include "emu.h"
+=======
+#ifndef MAME_SOUND_CDP1863_H
+#define MAME_SOUND_CDP1863_H
+
+#pragma once
+
+>>>>>>> upstream/master
 
 
 
@@ -47,13 +55,21 @@ class cdp1863_device :  public device_t,
 {
 public:
 	// construction/destruction
+<<<<<<< HEAD
 	cdp1863_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
+=======
+	cdp1863_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
+>>>>>>> upstream/master
 
 	// inline configuration helpers
 	static void static_set_clock2(device_t &device, int clock2);
 
 	DECLARE_WRITE8_MEMBER( str_w );
+<<<<<<< HEAD
 	void str_w(UINT8 data);
+=======
+	void str_w(uint8_t data);
+>>>>>>> upstream/master
 
 	DECLARE_WRITE_LINE_MEMBER( oe_w );
 
@@ -62,10 +78,17 @@ public:
 
 protected:
 	// device-level overrides
+<<<<<<< HEAD
 	virtual void device_start();
 
 	// internal callbacks
 	virtual void sound_stream_update(sound_stream &stream, stream_sample_t **inputs, stream_sample_t **outputs, int samples);
+=======
+	virtual void device_start() override;
+
+	// internal callbacks
+	virtual void sound_stream_update(sound_stream &stream, stream_sample_t **inputs, stream_sample_t **outputs, int samples) override;
+>>>>>>> upstream/master
 
 private:
 	sound_stream *m_stream;
@@ -76,14 +99,24 @@ private:
 	// sound state
 	int m_oe;                       // output enable
 	int m_latch;                    // sound latch
+<<<<<<< HEAD
 	INT16 m_signal;                 // current signal
+=======
+	int16_t m_signal;                 // current signal
+>>>>>>> upstream/master
 	int m_incr;                     // initial wave state
 };
 
 
 // device type definition
+<<<<<<< HEAD
 extern const device_type CDP1863;
 
 
 
 #endif
+=======
+DECLARE_DEVICE_TYPE(CDP1863, cdp1863_device)
+
+#endif // MAME_SOUND_CDP1863_H
+>>>>>>> upstream/master

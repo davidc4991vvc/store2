@@ -12,7 +12,11 @@
 #define __PLAPARSE_H__
 
 #include "osdcore.h"
+<<<<<<< HEAD
 
+=======
+#include "jedparse.h"
+>>>>>>> upstream/master
 
 
 /***************************************************************************

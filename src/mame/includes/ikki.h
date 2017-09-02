@@ -5,6 +5,10 @@
     Ikki
 
 *************************************************************************/
+<<<<<<< HEAD
+=======
+#include "screen.h"
+>>>>>>> upstream/master
 
 class ikki_state : public driver_device
 {
@@ -23,9 +27,15 @@ public:
 	required_device<cpu_device> m_maincpu;
 	required_device<cpu_device> m_subcpu;
 	/* memory pointers */
+<<<<<<< HEAD
 	required_shared_ptr<UINT8> m_videoram;
 	required_shared_ptr<UINT8> m_scroll;
 	required_shared_ptr<UINT8> m_spriteram;
+=======
+	required_shared_ptr<uint8_t> m_videoram;
+	required_shared_ptr<uint8_t> m_scroll;
+	required_shared_ptr<uint8_t> m_spriteram;
+>>>>>>> upstream/master
 
 	required_device<gfxdecode_device> m_gfxdecode;
 	required_device<screen_device> m_screen;
@@ -33,18 +43,32 @@ public:
 
 	/* video-related */
 	bitmap_ind16 m_sprite_bitmap;
+<<<<<<< HEAD
 	UINT8      m_flipscreen;
 	int        m_punch_through_pen;
 	UINT8      m_irq_source;
+=======
+	uint8_t      m_flipscreen;
+	int        m_punch_through_pen;
+	uint8_t      m_irq_source;
+>>>>>>> upstream/master
 
 	DECLARE_READ8_MEMBER(ikki_e000_r);
 	DECLARE_WRITE8_MEMBER(ikki_coin_counters);
 	DECLARE_WRITE8_MEMBER(ikki_scrn_ctrl_w);
+<<<<<<< HEAD
 	virtual void machine_start();
 	virtual void machine_reset();
 	virtual void video_start();
 	DECLARE_PALETTE_INIT(ikki);
 	UINT32 screen_update_ikki(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
+=======
+	virtual void machine_start() override;
+	virtual void machine_reset() override;
+	virtual void video_start() override;
+	DECLARE_PALETTE_INIT(ikki);
+	uint32_t screen_update_ikki(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
+>>>>>>> upstream/master
 	TIMER_DEVICE_CALLBACK_MEMBER(ikki_irq);
 	void draw_sprites( bitmap_ind16 &bitmap, const rectangle &cliprect );
 };

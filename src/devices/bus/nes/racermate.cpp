@@ -32,6 +32,7 @@
 //  constructor
 //-------------------------------------------------
 
+<<<<<<< HEAD
 const device_type NES_RACERMATE = &device_creator<nes_racermate_device>;
 
 
@@ -39,6 +40,15 @@ nes_racermate_device::nes_racermate_device(const machine_config &mconfig, const 
 					: nes_nrom_device(mconfig, NES_RACERMATE, "NES Cart Racermate PCB", tag, owner, clock, "nes_racermate", __FILE__),
 	m_latch(0)
 				{
+=======
+DEFINE_DEVICE_TYPE(NES_RACERMATE, nes_racermate_device, "nes_racermate", "NES Cart Racermate PCB")
+
+
+nes_racermate_device::nes_racermate_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: nes_nrom_device(mconfig, NES_RACERMATE, tag, owner, clock)
+	, m_latch(0)
+{
+>>>>>>> upstream/master
 }
 
 

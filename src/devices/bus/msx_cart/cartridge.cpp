@@ -75,6 +75,7 @@ msx_cart_interface::msx_cart_interface(const machine_config &mconfig, device_t &
 {
 }
 
+<<<<<<< HEAD
 void msx_cart_interface::rom_alloc(UINT32 size)
 {
 	m_rom.resize(size);
@@ -97,6 +98,30 @@ void msx_cart_interface::sram_alloc(UINT32 size)
 {
 	m_sram.resize(size);
 	memset(&m_sram[0], 0x00, size);
+=======
+void msx_cart_interface::rom_alloc(uint32_t size)
+{
+	m_rom.resize(size);
+	std::fill_n(m_rom.begin(), size, 0xff);
+}
+
+void msx_cart_interface::rom_vlm5030_alloc(uint32_t size)
+{
+	m_rom_vlm5030.resize(size);
+	std::fill_n(m_rom_vlm5030.begin(), size, 0xff);
+}
+
+void msx_cart_interface::ram_alloc(uint32_t size)
+{
+	m_ram.resize(size);
+	std::fill_n(m_ram.begin(), size, 0x00);
+}
+
+void msx_cart_interface::sram_alloc(uint32_t size)
+{
+	m_sram.resize(size);
+	std::fill_n(m_sram.begin(), size, 0x00);
+>>>>>>> upstream/master
 }
 
 

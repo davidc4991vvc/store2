@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 // license:???
+=======
+// license:BSD-3-Clause
+>>>>>>> upstream/master
 // copyright-holders:Richard Davies
 /***************************************************************************
 
@@ -35,7 +39,11 @@
 
 PALETTE_INIT_MEMBER(exedexes_state, exedexes)
 {
+<<<<<<< HEAD
 	const UINT8 *color_prom = memregion("proms")->base();
+=======
+	const uint8_t *color_prom = memregion("proms")->base();
+>>>>>>> upstream/master
 	int i;
 
 	/* create a lookup table for the palette */
@@ -54,28 +62,44 @@ PALETTE_INIT_MEMBER(exedexes_state, exedexes)
 	/* characters use colors 0xc0-0xcf */
 	for (i = 0; i < 0x100; i++)
 	{
+<<<<<<< HEAD
 		UINT8 ctabentry = color_prom[i] | 0xc0;
+=======
+		uint8_t ctabentry = color_prom[i] | 0xc0;
+>>>>>>> upstream/master
 		palette.set_pen_indirect(i, ctabentry);
 	}
 
 	/* 32x32 tiles use colors 0-0x0f */
 	for (i = 0x100; i < 0x200; i++)
 	{
+<<<<<<< HEAD
 		UINT8 ctabentry = color_prom[i];
+=======
+		uint8_t ctabentry = color_prom[i];
+>>>>>>> upstream/master
 		palette.set_pen_indirect(i, ctabentry);
 	}
 
 	/* 16x16 tiles use colors 0x40-0x4f */
 	for (i = 0x200; i < 0x300; i++)
 	{
+<<<<<<< HEAD
 		UINT8 ctabentry = color_prom[i] | 0x40;
+=======
+		uint8_t ctabentry = color_prom[i] | 0x40;
+>>>>>>> upstream/master
 		palette.set_pen_indirect(i, ctabentry);
 	}
 
 	/* sprites use colors 0x80-0xbf in four banks */
 	for (i = 0x300; i < 0x400; i++)
 	{
+<<<<<<< HEAD
 		UINT8 ctabentry = color_prom[i] | (color_prom[i + 0x100] << 4) | 0x80;
+=======
+		uint8_t ctabentry = color_prom[i] | (color_prom[i + 0x100] << 4) | 0x80;
+>>>>>>> upstream/master
 		palette.set_pen_indirect(i, ctabentry);
 	}
 }
@@ -95,11 +119,19 @@ WRITE8_MEMBER(exedexes_state::exedexes_colorram_w)
 WRITE8_MEMBER(exedexes_state::exedexes_c804_w)
 {
 	/* bits 0 and 1 are coin counters */
+<<<<<<< HEAD
 	coin_counter_w(machine(), 0, data & 0x01);
 	coin_counter_w(machine(), 1, data & 0x02);
 
 	coin_lockout_w(machine(), 0, data & 0x04);
 	coin_lockout_w(machine(), 1, data & 0x08);
+=======
+	machine().bookkeeping().coin_counter_w(0, data & 0x01);
+	machine().bookkeeping().coin_counter_w(1, data & 0x02);
+
+	machine().bookkeeping().coin_lockout_w(0, data & 0x04);
+	machine().bookkeeping().coin_lockout_w(1, data & 0x08);
+>>>>>>> upstream/master
 
 	/* bit 7 is text enable */
 	m_chon = data & 0x80;
@@ -124,7 +156,11 @@ WRITE8_MEMBER(exedexes_state::exedexes_gfxctrl_w)
 
 TILE_GET_INFO_MEMBER(exedexes_state::get_bg_tile_info)
 {
+<<<<<<< HEAD
 	UINT8 *tilerom = memregion("gfx5")->base();
+=======
+	uint8_t *tilerom = memregion("gfx5")->base();
+>>>>>>> upstream/master
 
 	int attr = tilerom[tile_index];
 	int code = attr & 0x3f;
@@ -165,9 +201,15 @@ TILEMAP_MAPPER_MEMBER(exedexes_state::exedexes_fg_tilemap_scan)
 
 void exedexes_state::video_start()
 {
+<<<<<<< HEAD
 	m_bg_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(exedexes_state::get_bg_tile_info),this), tilemap_mapper_delegate(FUNC(exedexes_state::exedexes_bg_tilemap_scan),this), 32, 32, 64, 64);
 	m_fg_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(exedexes_state::get_fg_tile_info),this), tilemap_mapper_delegate(FUNC(exedexes_state::exedexes_fg_tilemap_scan),this), 16, 16, 128, 128);
 	m_tx_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(exedexes_state::get_tx_tile_info),this), TILEMAP_SCAN_ROWS, 8, 8, 32, 32);
+=======
+	m_bg_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(exedexes_state::get_bg_tile_info),this), tilemap_mapper_delegate(FUNC(exedexes_state::exedexes_bg_tilemap_scan),this), 32, 32, 64, 64);
+	m_fg_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(exedexes_state::get_fg_tile_info),this), tilemap_mapper_delegate(FUNC(exedexes_state::exedexes_fg_tilemap_scan),this), 16, 16, 128, 128);
+	m_tx_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(exedexes_state::get_tx_tile_info),this), TILEMAP_SCAN_ROWS, 8, 8, 32, 32);
+>>>>>>> upstream/master
 
 	m_fg_tilemap->set_transparent_pen(0);
 	m_tx_tilemap->configure_groups(*m_gfxdecode->gfx(0), 0xcf);
@@ -175,7 +217,11 @@ void exedexes_state::video_start()
 
 void exedexes_state::draw_sprites( bitmap_ind16 &bitmap, const rectangle &cliprect, int priority )
 {
+<<<<<<< HEAD
 	UINT8 *buffered_spriteram = m_spriteram->buffer();
+=======
+	uint8_t *buffered_spriteram = m_spriteram->buffer();
+>>>>>>> upstream/master
 	int offs;
 
 	if (!m_objon)
@@ -205,7 +251,11 @@ void exedexes_state::draw_sprites( bitmap_ind16 &bitmap, const rectangle &clipre
 	}
 }
 
+<<<<<<< HEAD
 UINT32 exedexes_state::screen_update_exedexes(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+=======
+uint32_t exedexes_state::screen_update_exedexes(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+>>>>>>> upstream/master
 {
 	if (m_sc2on)
 	{

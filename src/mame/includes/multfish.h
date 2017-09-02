@@ -3,10 +3,19 @@
 /* Multifish */
 
 
+<<<<<<< HEAD
 #include "emu.h"
 #include "sound/ay8910.h"
 #include "cpu/z80/z80.h"
 #include "machine/timekpr.h"
+=======
+#include "sound/ay8910.h"
+#include "cpu/z80/z80.h"
+#include "machine/timekpr.h"
+#include "machine/watchdog.h"
+#include "machine/ticket.h"
+#include "screen.h"
+>>>>>>> upstream/master
 
 #define igrosoft_gamble_ROM_SIZE 0x80000
 #define igrosoft_gamble_VIDRAM_SIZE (0x2000*0x04)
@@ -20,7 +29,12 @@ public:
 		m_m48t35(*this, "m48t35" ),
 		m_gfxdecode(*this, "gfxdecode"),
 		m_screen(*this, "screen"),
+<<<<<<< HEAD
 		m_palette(*this, "palette")
+=======
+		m_palette(*this, "palette"),
+		m_hopper(*this, "hopper")
+>>>>>>> upstream/master
 	{
 	}
 
@@ -35,12 +49,18 @@ public:
 
 	/* Misc related */
 
+<<<<<<< HEAD
 	UINT8 m_rambk;
 
 	UINT8 m_hopper_motor;
 	UINT8 m_hopper;
 
 	UINT8 m_vid[igrosoft_gamble_VIDRAM_SIZE];
+=======
+	uint8_t m_rambk;
+
+	uint8_t m_vid[igrosoft_gamble_VIDRAM_SIZE];
+>>>>>>> upstream/master
 	DECLARE_WRITE8_MEMBER(igrosoft_gamble_vid_w);
 	DECLARE_WRITE8_MEMBER(igrosoft_gamble_bank_w);
 	DECLARE_READ8_MEMBER(bankedram_r);
@@ -55,7 +75,10 @@ public:
 	DECLARE_WRITE8_MEMBER(igrosoft_gamble_counters_w);
 	DECLARE_WRITE8_MEMBER(igrosoft_gamble_f3_w);
 	DECLARE_WRITE8_MEMBER(igrosoft_gamble_dispenable_w);
+<<<<<<< HEAD
 	DECLARE_CUSTOM_INPUT_MEMBER(igrosoft_gamble_hopper_r);
+=======
+>>>>>>> upstream/master
 	DECLARE_READ8_MEMBER(igrosoft_gamble_timekeeper_r);
 	DECLARE_WRITE8_MEMBER(igrosoft_gamble_timekeeper_w);
 	DECLARE_DRIVER_INIT(customl);
@@ -82,15 +105,23 @@ public:
 	DECLARE_DRIVER_INIT(crzmon2ent);
 	TILE_GET_INFO_MEMBER(get_igrosoft_gamble_tile_info);
 	TILE_GET_INFO_MEMBER(get_igrosoft_gamble_reel_tile_info);
+<<<<<<< HEAD
 	virtual void machine_start();
 	virtual void machine_reset();
 	virtual void video_start();
 	UINT32 screen_update_igrosoft_gamble(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
+=======
+	virtual void machine_start() override;
+	virtual void machine_reset() override;
+	virtual void video_start() override;
+	uint32_t screen_update_igrosoft_gamble(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
+>>>>>>> upstream/master
 	required_device<cpu_device> m_maincpu;
 	required_device<timekeeper_device> m_m48t35;
 	required_device<gfxdecode_device> m_gfxdecode;
 	required_device<screen_device> m_screen;
 	required_device<palette_device> m_palette;
+<<<<<<< HEAD
 };
 
 #define mfish_parent mfish_13
@@ -111,6 +142,11 @@ public:
 #define sweetl2_parent sweetl2
 #define fcockt2_parent fcockt2
 #define crzmon2_parent crzmon2
+=======
+	required_device<ticket_dispenser_device> m_hopper;
+};
+
+>>>>>>> upstream/master
 
 MACHINE_CONFIG_EXTERN( igrosoft_gamble );
 MACHINE_CONFIG_EXTERN( rollfr );

@@ -1,7 +1,12 @@
 // license:BSD-3-Clause
 // copyright-holders:R. Belmont, Karl Stenerud, hap
+<<<<<<< HEAD
 #ifndef __M37710_H__
 #define __M37710_H__
+=======
+#ifndef MAME_CPU_M37710_M37710_H
+#define MAME_CPU_M37710_M37710_H
+>>>>>>> upstream/master
 
 /* ======================================================================== */
 /* =============================== COPYRIGHT ============================== */
@@ -24,7 +29,15 @@ M37710 CPU Emulator v0.1
 enum
 {
 	// these interrupts are maskable
+<<<<<<< HEAD
 	M37710_LINE_ADC = 0,
+=======
+	M37710_LINE_DMA3 = 0,
+	M37710_LINE_DMA2,
+	M37710_LINE_DMA1,
+	M37710_LINE_DMA0,
+	M37710_LINE_ADC,
+>>>>>>> upstream/master
 	M37710_LINE_UART1XMIT,
 	M37710_LINE_UART1RECV,
 	M37710_LINE_UART0XMIT,
@@ -93,6 +106,7 @@ enum
 class m37710_cpu_device : public cpu_device
 {
 public:
+<<<<<<< HEAD
 	// construction/destruction
 	m37710_cpu_device(const machine_config &mconfig, device_type type, const char *name, const char *tag, device_t *owner, UINT32 clock, const char *shortname, const char *source, address_map_delegate map_delegate);
 
@@ -123,11 +137,44 @@ protected:
 	virtual UINT32 disasm_min_opcode_bytes() const { return 1; }
 	virtual UINT32 disasm_max_opcode_bytes() const { return 6; }
 	virtual offs_t disasm_disassemble(char *buffer, offs_t pc, const UINT8 *oprom, const UINT8 *opram, UINT32 options);
+=======
+	DECLARE_READ8_MEMBER( m37710_internal_r );
+	DECLARE_WRITE8_MEMBER( m37710_internal_w );
+
+protected:
+	// construction/destruction
+	m37710_cpu_device(const machine_config &mconfig, device_type type, const char *tag, device_t *owner, uint32_t clock, address_map_delegate map_delegate);
+
+	// device-level overrides
+	virtual void device_start() override;
+	virtual void device_reset() override;
+
+	// device_execute_interface overrides
+	virtual uint32_t execute_min_cycles() const override { return 1; }
+	virtual uint32_t execute_max_cycles() const override { return 20; /* rough guess */ }
+	virtual uint32_t execute_input_lines() const override { return M37710_LINE_MAX; }
+	virtual void execute_run() override;
+	virtual void execute_set_input(int inputnum, int state) override;
+
+	// device_memory_interface overrides
+	virtual std::vector<std::pair<int, const address_space_config *>> memory_space_config() const override;
+
+	// device_state_interface overrides
+	virtual void state_import(const device_state_entry &entry) override;
+	virtual void state_export(const device_state_entry &entry) override;
+	virtual void state_string_export(const device_state_entry &entry, std::string &str) const override;
+
+	// device_disasm_interface overrides
+	virtual uint32_t disasm_min_opcode_bytes() const override { return 1; }
+	virtual uint32_t disasm_max_opcode_bytes() const override { return 6; }
+	virtual offs_t disasm_disassemble(std::ostream &stream, offs_t pc, const uint8_t *oprom, const uint8_t *opram, uint32_t options) override;
+>>>>>>> upstream/master
 
 private:
 	address_space_config m_program_config;
 	address_space_config m_io_config;
 
+<<<<<<< HEAD
 	UINT32 m_a;         /* Accumulator */
 	UINT32 m_b;         /* holds high byte of accumulator */
 	UINT32 m_ba;        /* Secondary Accumulator */
@@ -185,6 +232,69 @@ private:
 	typedef void (m37710_cpu_device::*opcode_func)();
 	typedef UINT32 (m37710_cpu_device::*get_reg_func)(int regnum);
 	typedef void (m37710_cpu_device::*set_reg_func)(int regnum, UINT32 val);
+=======
+	uint32_t m_a;         /* Accumulator */
+	uint32_t m_b;         /* holds high byte of accumulator */
+	uint32_t m_ba;        /* Secondary Accumulator */
+	uint32_t m_bb;        /* holds high byte of secondary accumulator */
+	uint32_t m_x;         /* Index Register X */
+	uint32_t m_y;         /* Index Register Y */
+	uint32_t m_xh;        /* holds high byte of x */
+	uint32_t m_yh;        /* holds high byte of y */
+	uint32_t m_s;         /* Stack Pointer */
+	uint32_t m_pc;        /* Program Counter */
+	uint32_t m_ppc;       /* Previous Program Counter */
+	uint32_t m_pb;        /* Program Bank (shifted left 16) */
+	uint32_t m_db;        /* Data Bank (shifted left 16) */
+	uint32_t m_d;         /* Direct Register */
+	uint32_t m_flag_e;        /* Emulation Mode Flag */
+	uint32_t m_flag_m;        /* Memory/Accumulator Select Flag */
+	uint32_t m_flag_x;        /* Index Select Flag */
+	uint32_t m_flag_n;        /* Negative Flag */
+	uint32_t m_flag_v;        /* Overflow Flag */
+	uint32_t m_flag_d;        /* Decimal Mode Flag */
+	uint32_t m_flag_i;        /* Interrupt Mask Flag */
+	uint32_t m_flag_z;        /* Zero Flag (inverted) */
+	uint32_t m_flag_c;        /* Carry Flag */
+	uint32_t m_line_irq;      /* Bitmask of pending IRQs */
+	uint32_t m_ipl;       /* Interrupt priority level (top of PSW) */
+	uint32_t m_ir;        /* Instruction Register */
+	uint32_t m_im;        /* Immediate load value */
+	uint32_t m_im2;       /* Immediate load target */
+	uint32_t m_im3;       /* Immediate load target */
+	uint32_t m_im4;       /* Immediate load target */
+	uint32_t m_irq_delay;     /* delay 1 instruction before checking irq */
+	uint32_t m_irq_level;     /* irq level */
+	int m_ICount;     /* cycle count */
+	uint32_t m_source;        /* temp register */
+	uint32_t m_destination;   /* temp register */
+	address_space *m_program;
+	direct_read_data *m_direct;
+	address_space *m_io;
+	uint32_t m_stopped;       /* Sets how the CPU is stopped */
+
+	// on-board peripheral stuff
+	uint8_t m_m37710_regs[128];
+	attotime m_reload[8];
+	emu_timer *m_timers[8];
+	uint32_t m_dma0_src, m_dma0_dst, m_dma0_cnt, m_dma0_mode;
+	uint32_t m_dma1_src, m_dma1_dst, m_dma1_cnt, m_dma1_mode;
+	uint32_t m_dma2_src, m_dma2_dst, m_dma2_cnt, m_dma2_mode;
+	uint32_t m_dma3_src, m_dma3_dst, m_dma3_cnt, m_dma3_mode;
+
+	// for debugger
+	uint32_t m_debugger_pc;
+	uint32_t m_debugger_pb;
+	uint32_t m_debugger_db;
+	uint32_t m_debugger_p;
+	uint32_t m_debugger_a;
+	uint32_t m_debugger_b;
+
+	// Statics
+	typedef void (m37710_cpu_device::*opcode_func)();
+	typedef uint32_t (m37710_cpu_device::*get_reg_func)(int regnum);
+	typedef void (m37710_cpu_device::*set_reg_func)(int regnum, uint32_t val);
+>>>>>>> upstream/master
 	typedef void (m37710_cpu_device::*set_line_func)(int line, int state);
 	typedef int  (m37710_cpu_device::*execute_func)(int cycles);
 
@@ -221,6 +331,7 @@ private:
 	execute_func m_execute;
 
 	// Implementation
+<<<<<<< HEAD
 	void m37710i_set_execution_mode(UINT32 mode);
 	TIMER_CALLBACK_MEMBER( m37710_timer_cb );
 	void m37710_external_tick(int timer, int state);
@@ -235,6 +346,22 @@ private:
 	void m37710i_set_reg_M0X1(int regnum, UINT32 val);
 	void m37710i_set_reg_M1X0(int regnum, UINT32 val);
 	void m37710i_set_reg_M1X1(int regnum, UINT32 val);
+=======
+	void m37710i_set_execution_mode(uint32_t mode);
+	TIMER_CALLBACK_MEMBER( m37710_timer_cb );
+	void m37710_external_tick(int timer, int state);
+	void m37710_recalc_timer(int timer);
+	uint8_t m37710_internal_r(int offset);
+	void m37710_internal_w(int offset, uint8_t data);
+	uint32_t m37710i_get_reg_M0X0(int regnum);
+	uint32_t m37710i_get_reg_M0X1(int regnum);
+	uint32_t m37710i_get_reg_M1X0(int regnum);
+	uint32_t m37710i_get_reg_M1X1(int regnum);
+	void m37710i_set_reg_M0X0(int regnum, uint32_t val);
+	void m37710i_set_reg_M0X1(int regnum, uint32_t val);
+	void m37710i_set_reg_M1X0(int regnum, uint32_t val);
+	void m37710i_set_reg_M1X1(int regnum, uint32_t val);
+>>>>>>> upstream/master
 	void m37710i_set_line_M0X0(int line, int state);
 	void m37710i_set_line_M0X1(int line, int state);
 	void m37710i_set_line_M1X0(int line, int state);
@@ -251,6 +378,7 @@ private:
 	void m37710_set_reg(int regnum, unsigned value);
 	void m37710_set_irq_line(int line, int state);
 	void m37710_restore_state();
+<<<<<<< HEAD
 	UINT32 m37710i_read_8_normal(UINT32 address);
 	UINT32 m37710i_read_8_immediate(UINT32 address);
 	UINT32 m37710i_read_8_direct(UINT32 address);
@@ -306,6 +434,63 @@ private:
 	UINT32 EA_AXI();
 	UINT32 EA_S();
 	UINT32 EA_SIY();
+=======
+	uint32_t m37710i_read_8_normal(uint32_t address);
+	uint32_t m37710i_read_8_immediate(uint32_t address);
+	uint32_t m37710i_read_8_direct(uint32_t address);
+	void m37710i_write_8_normal(uint32_t address, uint32_t value);
+	void m37710i_write_8_direct(uint32_t address, uint32_t value);
+	uint32_t m37710i_read_16_normal(uint32_t address);
+	uint32_t m37710i_read_16_immediate(uint32_t address);
+	uint32_t m37710i_read_16_direct(uint32_t address);
+	void m37710i_write_16_normal(uint32_t address, uint32_t value);
+	void m37710i_write_16_direct(uint32_t address, uint32_t value);
+	uint32_t m37710i_read_24_normal(uint32_t address);
+	uint32_t m37710i_read_24_immediate(uint32_t address);
+	uint32_t m37710i_read_24_direct(uint32_t address);
+	void m37710i_push_8(uint32_t value);
+	uint32_t m37710i_pull_8();
+	void m37710i_push_16(uint32_t value);
+	uint32_t m37710i_pull_16();
+	void m37710i_push_24(uint32_t value);
+	uint32_t m37710i_pull_24();
+	void m37710i_jump_16(uint32_t address);
+	void m37710i_jump_24(uint32_t address);
+	void m37710i_branch_8(uint32_t offset);
+	void m37710i_branch_16(uint32_t offset);
+	uint32_t m37710i_get_reg_p();
+	void m37710i_set_reg_ipl(uint32_t value);
+	void m37710i_interrupt_software(uint32_t vector);
+	void m37710i_set_flag_m0x0(uint32_t value);
+	void m37710i_set_flag_m0x1(uint32_t value);
+	void m37710i_set_flag_m1x0(uint32_t value);
+	void m37710i_set_flag_m1x1(uint32_t value);
+	void m37710i_set_reg_p_m0x0(uint32_t value);
+	void m37710i_set_reg_p_m0x1(uint32_t value);
+	void m37710i_set_reg_p_m1x0(uint32_t value);
+	void m37710i_set_reg_p_m1x1(uint32_t value);
+	uint32_t EA_IMM8();
+	uint32_t EA_IMM16();
+	uint32_t EA_IMM24();
+	uint32_t EA_D();
+	uint32_t EA_A();
+	uint32_t EA_AL();
+	uint32_t EA_DX();
+	uint32_t EA_DY();
+	uint32_t EA_AX();
+	uint32_t EA_ALX();
+	uint32_t EA_AY();
+	uint32_t EA_DI();
+	uint32_t EA_DLI();
+	uint32_t EA_AI();
+	uint32_t EA_ALI();
+	uint32_t EA_DXI();
+	uint32_t EA_DIY();
+	uint32_t EA_DLIY();
+	uint32_t EA_AXI();
+	uint32_t EA_S();
+	uint32_t EA_SIY();
+>>>>>>> upstream/master
 	void m37710i_00_M0X0();
 	void m37710i_01_M0X0();
 	void m37710i_02_M0X0();
@@ -2014,7 +2199,11 @@ class m37702s1_device : public m37710_cpu_device
 {
 public:
 	// construction/destruction
+<<<<<<< HEAD
 	m37702s1_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
+=======
+	m37702s1_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
+>>>>>>> upstream/master
 protected:
 	DECLARE_ADDRESS_MAP(map, 16);
 };
@@ -2023,9 +2212,15 @@ class m37702m2_device : public m37710_cpu_device
 {
 public:
 	// construction/destruction
+<<<<<<< HEAD
 	m37702m2_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
 	m37702m2_device(const machine_config &mconfig, device_type type, const char *name, const char *tag, device_t *owner, UINT32 clock, const char *shortname, const char *source);
 protected:
+=======
+	m37702m2_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
+protected:
+	m37702m2_device(const machine_config &mconfig, device_type type, const char *tag, device_t *owner, uint32_t clock);
+>>>>>>> upstream/master
 	DECLARE_ADDRESS_MAP(map, 16);
 };
 
@@ -2033,19 +2228,43 @@ class m37710s4_device : public m37710_cpu_device
 {
 public:
 	// construction/destruction
+<<<<<<< HEAD
 	m37710s4_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
+=======
+	m37710s4_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
+>>>>>>> upstream/master
 protected:
 	DECLARE_ADDRESS_MAP(map, 16);
 };
 
+<<<<<<< HEAD
 
 extern const device_type M37702M2;
 extern const device_type M37702S1;
 extern const device_type M37710S4;
+=======
+class m37720s1_device : public m37710_cpu_device
+{
+public:
+	// construction/destruction
+	m37720s1_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
+protected:
+	DECLARE_ADDRESS_MAP(map, 16);
+};
+
+DECLARE_DEVICE_TYPE(M37702M2, m37702m2_device)
+DECLARE_DEVICE_TYPE(M37702S1, m37702s1_device)
+DECLARE_DEVICE_TYPE(M37710S4, m37710s4_device)
+DECLARE_DEVICE_TYPE(M37720S1, m37720s1_device)
+>>>>>>> upstream/master
 
 
 /* ======================================================================== */
 /* ============================== END OF FILE ============================= */
 /* ======================================================================== */
 
+<<<<<<< HEAD
 #endif /* __M37710_H__ */
+=======
+#endif // MAME_CPU_M37710_M37710_H
+>>>>>>> upstream/master

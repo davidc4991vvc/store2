@@ -7,12 +7,20 @@
  *
  */
 
+<<<<<<< HEAD
 #pragma once
 
 #ifndef __PSXIRQ_H__
 #define __PSXIRQ_H__
 
 #include "emu.h"
+=======
+#ifndef MAME_CPU_PSX_IRQ_H
+#define MAME_CPU_PSX_IRQ_H
+
+#pragma once
+
+>>>>>>> upstream/master
 
 extern const device_type PSX_IRQ;
 
@@ -22,10 +30,17 @@ extern const device_type PSX_IRQ;
 class psxirq_device : public device_t
 {
 public:
+<<<<<<< HEAD
 	psxirq_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
 
 	// static configuration helpers
 	template<class _Object> static devcb_base &set_irq_handler(device_t &device, _Object object) { return downcast<psxirq_device &>(device).m_irq_handler.set_callback(object); }
+=======
+	psxirq_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
+
+	// static configuration helpers
+	template <class Object> static devcb_base &set_irq_handler(device_t &device, Object &&cb) { return downcast<psxirq_device &>(device).m_irq_handler.set_callback(std::forward<Object>(cb)); }
+>>>>>>> upstream/master
 
 	DECLARE_READ32_MEMBER( read );
 	DECLARE_WRITE32_MEMBER( write );
@@ -43,6 +58,7 @@ public:
 	DECLARE_WRITE_LINE_MEMBER( intin10 );
 
 protected:
+<<<<<<< HEAD
 	virtual void device_start();
 	virtual void device_reset();
 	virtual void device_post_load();
@@ -53,8 +69,24 @@ private:
 
 	UINT32 n_irqdata;
 	UINT32 n_irqmask;
+=======
+	virtual void device_start() override;
+	virtual void device_reset() override;
+	virtual void device_post_load() override;
+
+private:
+	void psx_irq_update( void );
+	void set( uint32_t bitmask );
+
+	uint32_t n_irqdata;
+	uint32_t n_irqmask;
+>>>>>>> upstream/master
 
 	devcb_write_line m_irq_handler;
 };
 
+<<<<<<< HEAD
 #endif
+=======
+#endif // MAME_CPU_PSX_IRQ_H
+>>>>>>> upstream/master

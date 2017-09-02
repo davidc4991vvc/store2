@@ -10,15 +10,20 @@
 #ifndef NLD_OPAMPS_H_
 #define NLD_OPAMPS_H_
 
+<<<<<<< HEAD
 #include "nl_base.h"
 #include "nl_setup.h"
 #include "nld_twoterm.h"
 #include "nld_fourterm.h"
+=======
+#include "../nl_setup.h"
+>>>>>>> upstream/master
 
 // ----------------------------------------------------------------------------------------
 // Macros
 // ----------------------------------------------------------------------------------------
 
+<<<<<<< HEAD
 #define OPAMP(_name, _model)                                                   \
 		NET_REGISTER_DEV(OPAMP, _name)                                         \
 		NETDEV_PARAMI(_name, MODEL, _model)
@@ -55,5 +60,11 @@ NETLIB_DEVICE_WITH_PARAMS(OPAMP,
 );
 
 NETLIB_NAMESPACE_DEVICES_END()
+=======
+#define OPAMP(name, model)                                                     \
+		NET_REGISTER_DEV(OPAMP, name)                                          \
+		NETDEV_PARAMI(name, MODEL, model)
+
+>>>>>>> upstream/master
 
 #endif /* NLD_OPAMPS_H_ */

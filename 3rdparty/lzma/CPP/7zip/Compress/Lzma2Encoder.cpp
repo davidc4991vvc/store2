@@ -19,6 +19,7 @@ HRESULT SetLzmaProp(PROPID propID, const PROPVARIANT &prop, CLzmaEncProps &ep);
 
 namespace NLzma2 {
 
+<<<<<<< HEAD
 static void *SzBigAlloc(void *, size_t size) { return BigAlloc(size); }
 static void SzBigFree(void *, void *address) { BigFree(address); }
 static ISzAlloc g_BigAlloc = { SzBigAlloc, SzBigFree };
@@ -27,6 +28,8 @@ static void *SzAlloc(void *, size_t size) { return MyAlloc(size); }
 static void SzFree(void *, void *address) { MyFree(address); }
 static ISzAlloc g_Alloc = { SzAlloc, SzFree };
 
+=======
+>>>>>>> upstream/master
 CEncoder::CEncoder()
 {
   _encoder = 0;
@@ -46,7 +49,24 @@ HRESULT SetLzma2Prop(PROPID propID, const PROPVARIANT &prop, CLzma2EncProps &lzm
   switch (propID)
   {
     case NCoderPropID::kBlockSize:
+<<<<<<< HEAD
       if (prop.vt != VT_UI4) return E_INVALIDARG; lzma2Props.blockSize = prop.ulVal; break;
+=======
+    {
+      if (prop.vt == VT_UI4)
+        lzma2Props.blockSize = prop.ulVal;
+      else if (prop.vt == VT_UI8)
+      {
+        size_t v = (size_t)prop.uhVal.QuadPart;
+        if (v != prop.uhVal.QuadPart)
+          return E_INVALIDARG;
+        lzma2Props.blockSize = v;
+      }
+      else
+        return E_INVALIDARG;
+      break;
+    }
+>>>>>>> upstream/master
     case NCoderPropID::kNumThreads:
       if (prop.vt != VT_UI4) return E_INVALIDARG; lzma2Props.numTotalThreads = (int)(prop.ulVal); break;
     default:

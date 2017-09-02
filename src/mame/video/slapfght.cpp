@@ -53,15 +53,24 @@ TILE_GET_INFO_MEMBER(slapfght_state::get_fix_tile_info)
 
 VIDEO_START_MEMBER(slapfght_state, perfrman)
 {
+<<<<<<< HEAD
 	m_pf1_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(slapfght_state::get_pf_tile_info), this), TILEMAP_SCAN_ROWS, 8, 8, 64, 32);
+=======
+	m_pf1_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(slapfght_state::get_pf_tile_info), this), TILEMAP_SCAN_ROWS, 8, 8, 64, 32);
+>>>>>>> upstream/master
 
 	m_pf1_tilemap->set_transparent_pen(0);
 }
 
 VIDEO_START_MEMBER(slapfght_state, slapfight)
 {
+<<<<<<< HEAD
 	m_pf1_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(slapfght_state::get_pf1_tile_info), this), TILEMAP_SCAN_ROWS, 8, 8, 64, 32);
 	m_fix_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(slapfght_state::get_fix_tile_info), this), TILEMAP_SCAN_ROWS, 8, 8, 64, 32);
+=======
+	m_pf1_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(slapfght_state::get_pf1_tile_info), this), TILEMAP_SCAN_ROWS, 8, 8, 64, 32);
+	m_fix_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(slapfght_state::get_fix_tile_info), this), TILEMAP_SCAN_ROWS, 8, 8, 64, 32);
+>>>>>>> upstream/master
 
 	m_fix_tilemap->set_scrolldy(0, 15);
 	m_pf1_tilemap->set_scrolldy(0, 14);
@@ -116,6 +125,7 @@ WRITE8_MEMBER(slapfght_state::scrolly_w)
 	m_scrolly = data;
 }
 
+<<<<<<< HEAD
 WRITE8_MEMBER(slapfght_state::flipscreen_w)
 {
 	flip_screen_set(offset ? 0 : 1);
@@ -124,6 +134,16 @@ WRITE8_MEMBER(slapfght_state::flipscreen_w)
 WRITE8_MEMBER(slapfght_state::palette_bank_w)
 {
 	m_palette_bank = offset;
+=======
+WRITE_LINE_MEMBER(slapfght_state::flipscreen_w)
+{
+	flip_screen_set(state ? 0 : 1);
+}
+
+WRITE_LINE_MEMBER(slapfght_state::palette_bank_w)
+{
+	m_palette_bank = state;
+>>>>>>> upstream/master
 }
 
 
@@ -136,7 +156,11 @@ WRITE8_MEMBER(slapfght_state::palette_bank_w)
 
 void slapfght_state::draw_perfrman_sprites(bitmap_ind16 &bitmap, const rectangle &cliprect, int layer)
 {
+<<<<<<< HEAD
 	UINT8 *src = m_spriteram->buffer();
+=======
+	uint8_t *src = m_spriteram->buffer();
+>>>>>>> upstream/master
 
 	for (int offs = 0; offs < m_spriteram->bytes(); offs += 4)
 	{
@@ -170,7 +194,11 @@ void slapfght_state::draw_perfrman_sprites(bitmap_ind16 &bitmap, const rectangle
 	}
 }
 
+<<<<<<< HEAD
 UINT32 slapfght_state::screen_update_perfrman(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+=======
+uint32_t slapfght_state::screen_update_perfrman(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+>>>>>>> upstream/master
 {
 	m_pf1_tilemap->draw(screen, bitmap, cliprect, TILEMAP_DRAW_OPAQUE);
 	draw_perfrman_sprites(bitmap, cliprect, 0);
@@ -186,7 +214,11 @@ UINT32 slapfght_state::screen_update_perfrman(screen_device &screen, bitmap_ind1
 
 void slapfght_state::draw_slapfight_sprites(bitmap_ind16 &bitmap, const rectangle &cliprect)
 {
+<<<<<<< HEAD
 	UINT8 *src = m_spriteram->buffer();
+=======
+	uint8_t *src = m_spriteram->buffer();
+>>>>>>> upstream/master
 
 	for (int offs = 0; offs < m_spriteram->bytes(); offs += 4)
 	{
@@ -217,7 +249,11 @@ void slapfght_state::draw_slapfight_sprites(bitmap_ind16 &bitmap, const rectangl
 	}
 }
 
+<<<<<<< HEAD
 UINT32 slapfght_state::screen_update_slapfight(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+=======
+uint32_t slapfght_state::screen_update_slapfight(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+>>>>>>> upstream/master
 {
 	m_pf1_tilemap->set_scrollx(m_scrollx_hi << 8 | m_scrollx_lo);
 	m_pf1_tilemap->set_scrolly(m_scrolly);

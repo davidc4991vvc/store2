@@ -3,12 +3,21 @@
 #include "emu.h"
 #include "h83006.h"
 
+<<<<<<< HEAD
 const device_type H83006 = &device_creator<h83006_device>;
 const device_type H83007 = &device_creator<h83007_device>;
 
 
 h83006_device::h83006_device(const machine_config &mconfig, device_type type, const char *name, const char *tag, device_t *owner, UINT32 clock, const char *shortname, const char *source) :
 	h8h_device(mconfig, type, name, tag, owner, clock, shortname, source, address_map_delegate(FUNC(h83006_device::map), this)),
+=======
+DEFINE_DEVICE_TYPE(H83006, h83006_device, "h83006", "H8/3006")
+DEFINE_DEVICE_TYPE(H83007, h83007_device, "h83007", "H8/3007")
+
+
+h83006_device::h83006_device(const machine_config &mconfig, device_type type, const char *tag, device_t *owner, uint32_t clock, uint32_t start) :
+	h8h_device(mconfig, type, tag, owner, clock, address_map_delegate(FUNC(h83006_device::map), this)),
+>>>>>>> upstream/master
 	intc(*this, "intc"),
 	adc(*this, "adc"),
 	port4(*this, "port4"),
@@ -28,6 +37,7 @@ h83006_device::h83006_device(const machine_config &mconfig, device_type type, co
 	timer16_2(*this, "timer16:2"),
 	sci0(*this, "sci0"),
 	sci1(*this, "sci1"),
+<<<<<<< HEAD
 	sci2(*this, "sci2"), syscr(0), ram_start(0)
 {
 }
@@ -88,6 +98,26 @@ static MACHINE_CONFIG_FRAGMENT(h83006)
 	MCFG_H8_SCI_ADD("sci2", "intc", 60, 61, 62, 63)
 MACHINE_CONFIG_END
 
+=======
+	sci2(*this, "sci2"),
+	watchdog(*this, "watchdog"),
+	syscr(0),
+	ram_start(start)
+{
+}
+
+h83006_device::h83006_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock) :
+	h83006_device(mconfig, H83006, tag, owner, clock, 0xfff720)
+{
+}
+
+
+h83007_device::h83007_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock) :
+	h83006_device(mconfig, H83007, tag, owner, clock, 0xffef20)
+{
+}
+
+>>>>>>> upstream/master
 DEVICE_ADDRESS_MAP_START(map, 16, h83006_device)
 	AM_RANGE(0xfee002, 0xfee003) AM_DEVWRITE8(    "port4",     h8_port_device,                     ddr_w,   0x00ff)
 	AM_RANGE(0xfee004, 0xfee005) AM_DEVWRITE8(    "port6",     h8_port_device,                     ddr_w,   0x00ff)
@@ -132,6 +162,11 @@ DEVICE_ADDRESS_MAP_START(map, 16, h83006_device)
 	AM_RANGE(0xffff84, 0xffff87) AM_DEVREADWRITE8("timer8_1",  h8_timer8_channel_device,  tcor_r,  tcor_w,  0x00ff)
 	AM_RANGE(0xffff88, 0xffff89) AM_DEVREADWRITE8("timer8_0",  h8_timer8_channel_device,  tcnt_r,  tcnt_w,  0xff00)
 	AM_RANGE(0xffff88, 0xffff89) AM_DEVREADWRITE8("timer8_1",  h8_timer8_channel_device,  tcnt_r,  tcnt_w,  0x00ff)
+<<<<<<< HEAD
+=======
+	AM_RANGE(0xffff8c, 0xffff8d) AM_DEVREADWRITE( "watchdog",  h8_watchdog_device,        wd_r,    wd_w           )
+	AM_RANGE(0xffff8e, 0xffff8f) AM_DEVREADWRITE( "watchdog",  h8_watchdog_device,        rst_r,   rst_w          )
+>>>>>>> upstream/master
 	AM_RANGE(0xffff90, 0xffff91) AM_DEVREADWRITE8("timer8_2",  h8_timer8_channel_device,  tcr_r,   tcr_w,   0xff00)
 	AM_RANGE(0xffff90, 0xffff91) AM_DEVREADWRITE8("timer8_3",  h8_timer8_channel_device,  tcr_r,   tcr_w,   0x00ff)
 	AM_RANGE(0xffff92, 0xffff93) AM_DEVREADWRITE8("timer8_2",  h8_timer8_channel_device,  tcsr_r,  tcsr_w,  0xff00)
@@ -175,10 +210,36 @@ DEVICE_ADDRESS_MAP_START(map, 16, h83006_device)
 	AM_RANGE(0xffffe8, 0xffffe9) AM_DEVREADWRITE8("adc",       h8_adc_device,             adcr_r,  adcr_w,  0x00ff)
 ADDRESS_MAP_END
 
+<<<<<<< HEAD
 machine_config_constructor h83006_device::device_mconfig_additions() const
 {
 	return MACHINE_CONFIG_NAME(h83006);
 }
+=======
+MACHINE_CONFIG_MEMBER(h83006_device::device_add_mconfig)
+	MCFG_H8H_INTC_ADD("intc")
+	MCFG_H8_ADC_3006_ADD("adc", "intc", 23)
+	MCFG_H8_PORT_ADD("port4", h8_device::PORT_4, 0x00, 0x00)
+	MCFG_H8_PORT_ADD("port6", h8_device::PORT_6, 0x80, 0x80)
+	MCFG_H8_PORT_ADD("port7", h8_device::PORT_7, 0x00, 0x00)
+	MCFG_H8_PORT_ADD("port8", h8_device::PORT_8, 0xf0, 0xe0)
+	MCFG_H8_PORT_ADD("port9", h8_device::PORT_9, 0xc0, 0xc0)
+	MCFG_H8_PORT_ADD("porta", h8_device::PORT_A, 0x80, 0x00)
+	MCFG_H8_PORT_ADD("portb", h8_device::PORT_B, 0x00, 0x00)
+	MCFG_H8H_TIMER8_CHANNEL_ADD("timer8_0", "intc", 36, 38, 39, "timer8_1", h8_timer8_channel_device::CHAIN_OVERFLOW, true,  false)
+	MCFG_H8H_TIMER8_CHANNEL_ADD("timer8_1", "intc", 37, 38, 39, "timer8_0", h8_timer8_channel_device::CHAIN_A,        false, false)
+	MCFG_H8H_TIMER8_CHANNEL_ADD("timer8_2", "intc", 40, 42, 43, "timer8_3", h8_timer8_channel_device::CHAIN_OVERFLOW, false, true)
+	MCFG_H8H_TIMER8_CHANNEL_ADD("timer8_3", "intc", 41, 42, 43, "timer8_2", h8_timer8_channel_device::CHAIN_A,        false, true)
+	MCFG_H8_TIMER16_ADD("timer16", 3, 0xf8)
+	MCFG_H8H_TIMER16_CHANNEL_ADD("timer16:0", 2, 2, "intc", 24)
+	MCFG_H8H_TIMER16_CHANNEL_ADD("timer16:1", 2, 2, "intc", 28)
+	MCFG_H8H_TIMER16_CHANNEL_ADD("timer16:2", 2, 2, "intc", 32)
+	MCFG_H8_SCI_ADD("sci0", "intc", 52, 53, 54, 55)
+	MCFG_H8_SCI_ADD("sci1", "intc", 56, 57, 58, 59)
+	MCFG_H8_SCI_ADD("sci2", "intc", 60, 61, 62, 63)
+	MCFG_H8_WATCHDOG_ADD("watchdog", "intc", 20, h8_watchdog_device::H)
+MACHINE_CONFIG_END
+>>>>>>> upstream/master
 
 void h83006_device::execute_set_input(int inputnum, int state)
 {
@@ -227,9 +288,15 @@ void h83006_device::interrupt_taken()
 	standard_irq_callback(intc->interrupt_taken(taken_irq_vector));
 }
 
+<<<<<<< HEAD
 void h83006_device::internal_update(UINT64 current_time)
 {
 	UINT64 event_time = 0;
+=======
+void h83006_device::internal_update(uint64_t current_time)
+{
+	uint64_t event_time = 0;
+>>>>>>> upstream/master
 
 	add_event(event_time, adc->internal_update(current_time));
 	add_event(event_time, sci0->internal_update(current_time));
@@ -242,6 +309,10 @@ void h83006_device::internal_update(UINT64 current_time)
 	add_event(event_time, timer16_0->internal_update(current_time));
 	add_event(event_time, timer16_1->internal_update(current_time));
 	add_event(event_time, timer16_2->internal_update(current_time));
+<<<<<<< HEAD
+=======
+	add_event(event_time, watchdog->internal_update(current_time));
+>>>>>>> upstream/master
 
 	recompute_bcount(event_time);
 }
@@ -267,5 +338,9 @@ WRITE8_MEMBER(h83006_device::syscr_w)
 {
 	syscr = data;
 	update_irq_filter();
+<<<<<<< HEAD
 	logerror("%s: syscr = %02x\n", tag(), data);
+=======
+	logerror("syscr = %02x\n", data);
+>>>>>>> upstream/master
 }

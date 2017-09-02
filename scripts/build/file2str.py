@@ -60,4 +60,8 @@ try:
     dst.close()
 except IOError:
     sys.stderr.write("Unable to open output file '%s'\n" % dstfile)
+<<<<<<< HEAD
     sys.exit(-1)
+=======
+    sys.exit(-1)
+>>>>>>> upstream/master

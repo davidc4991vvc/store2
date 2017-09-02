@@ -15,16 +15,27 @@
 //**************************************************************************
 
 // device type definition
+<<<<<<< HEAD
 const device_type K056230 = &device_creator<k056230_device>;
+=======
+DEFINE_DEVICE_TYPE(K056230, k056230_device, "k056230", "K056230 LANC")
+>>>>>>> upstream/master
 
 //-------------------------------------------------
 //  k056230_device - constructor
 //-------------------------------------------------
 
+<<<<<<< HEAD
 k056230_device::k056230_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
 	: device_t(mconfig, K056230, "K056230 LANC", tag, owner, clock, "k056230", __FILE__),
 		m_is_thunderh(0),
 		m_cpu(*this)
+=======
+k056230_device::k056230_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: device_t(mconfig, K056230, tag, owner, clock)
+	, m_is_thunderh(0)
+	, m_cpu(*this, finder_base::DUMMY_TAG)
+>>>>>>> upstream/master
 {
 }
 
@@ -54,12 +65,16 @@ READ8_MEMBER(k056230_device::read)
 	return 0;
 }
 
+<<<<<<< HEAD
 TIMER_CALLBACK( k056230_device::network_irq_clear_callback )
 {
 	reinterpret_cast<k056230_device*>(ptr)->network_irq_clear();
 }
 
 void k056230_device::network_irq_clear()
+=======
+TIMER_CALLBACK_MEMBER(k056230_device::network_irq_clear)
+>>>>>>> upstream/master
 {
 	if (m_cpu)
 		m_cpu->set_input_line(INPUT_LINE_IRQ2, CLEAR_LINE);
@@ -84,7 +99,11 @@ WRITE8_MEMBER(k056230_device::write)
 					if (m_cpu)
 						m_cpu->set_input_line(INPUT_LINE_IRQ2, ASSERT_LINE);
 
+<<<<<<< HEAD
 					machine().scheduler().timer_set(attotime::from_usec(10), FUNC(network_irq_clear_callback), 0, (void*)this);
+=======
+					machine().scheduler().timer_set(attotime::from_usec(10), timer_expired_delegate(FUNC(k056230_device::network_irq_clear), this));
+>>>>>>> upstream/master
 				}
 			}
 //          else

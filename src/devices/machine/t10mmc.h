@@ -6,8 +6,15 @@ t10mmc.h
 
 ***************************************************************************/
 
+<<<<<<< HEAD
 #ifndef _T10MMC_H_
 #define _T10MMC_H_
+=======
+#ifndef MAME_MACHINE_T10MMC_H
+#define MAME_MACHINE_T10MMC_H
+
+#pragma once
+>>>>>>> upstream/master
 
 #include "t10spc.h"
 #include "imagedev/chd_cd.h"
@@ -16,6 +23,7 @@ t10mmc.h
 class t10mmc : public virtual t10spc
 {
 public:
+<<<<<<< HEAD
 	virtual void SetDevice( void *device );
 	virtual void GetDevice( void **device );
 	virtual void ExecCommand();
@@ -25,12 +33,32 @@ public:
 protected:
 	virtual void t10_start(device_t &device);
 	virtual void t10_reset();
+=======
+	t10mmc()
+		: t10spc(), m_image(nullptr), m_cdda(nullptr), m_cdrom(nullptr), m_lba(0), m_blocks(0), m_last_lba(0), m_num_subblocks(0), m_cur_subblock(0), m_audio_sense(0), m_device(nullptr)
+	{
+	}
+
+	virtual void SetDevice( void *device ) override;
+	virtual void GetDevice( void **device ) override;
+	virtual void ExecCommand() override;
+	virtual void WriteData( uint8_t *data, int dataLength ) override;
+	virtual void ReadData( uint8_t *data, int dataLength ) override;
+
+protected:
+	virtual void t10_start(device_t &device) override;
+	virtual void t10_reset() override;
+>>>>>>> upstream/master
 
 	enum
 	{
 		T10MMC_CMD_READ_SUB_CHANNEL = 0x42,
 		T10MMC_CMD_READ_TOC_PMA_ATIP = 0x43,
 		T10MMC_CMD_PLAY_AUDIO_10 = 0x45,
+<<<<<<< HEAD
+=======
+		T10MMC_CMD_PLAY_AUDIO_MSF = 0x47,
+>>>>>>> upstream/master
 		T10MMC_CMD_PLAY_AUDIO_TRACK_INDEX = 0x48,
 		T10MMC_CMD_PAUSE_RESUME = 0x4b,
 		T10MMC_CMD_STOP_PLAY_SCAN = 0x4e,
@@ -52,14 +80,28 @@ protected:
 	cdda_device *m_cdda;
 	cdrom_file *m_cdrom;
 
+<<<<<<< HEAD
 	UINT32 m_lba;
 	UINT32 m_blocks;
 	UINT32 m_last_lba;
 	UINT32 m_num_subblocks;
 	UINT32 m_cur_subblock;
 	int m_audio_sense;
+=======
+	uint32_t m_lba;
+	uint32_t m_blocks;
+	uint32_t m_last_lba;
+	uint32_t m_num_subblocks;
+	uint32_t m_cur_subblock;
+	int m_audio_sense;
+	bool m_sotc;
+>>>>>>> upstream/master
 
 	device_t *m_device;
 };
 
+<<<<<<< HEAD
 #endif
+=======
+#endif // MAME_MACHINE_T10MMC_H
+>>>>>>> upstream/master

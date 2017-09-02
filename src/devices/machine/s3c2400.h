@@ -6,8 +6,17 @@
 
 *******************************************************************************/
 
+<<<<<<< HEAD
 #ifndef __S3C2400_H__
 #define __S3C2400_H__
+=======
+#ifndef MAME_MACHINE_S3C2400_H
+#define MAME_MACHINE_S3C2400_H
+
+#pragma once
+
+#include "s3c24xx.h"
+>>>>>>> upstream/master
 
 
 /*******************************************************************************
@@ -16,6 +25,7 @@
 
 #define S3C2400_TAG "s3c2400"
 
+<<<<<<< HEAD
 #define MCFG_S3C2400_PALETTE(_palette_tag) \
 	s3c2400_device::static_set_palette_tag(*device, "^" _palette_tag);
 
@@ -48,6 +58,40 @@
 
 #define MCFG_S3C2400_LCD_FLAGS(_flags) \
 	s3c2400_device::set_lcd_flags(*device, _flags);
+=======
+#define MCFG_S3C2400_PALETTE(palette_tag) \
+		s3c2400_device::static_set_palette_tag(*device, ("^" palette_tag));
+
+#define MCFG_S3C2400_CORE_PIN_R_CB(cb) \
+		devcb = &s3c2400_device::set_core_pin_r_callback(*device, DEVCB_##cb);
+
+#define MCFG_S3C2400_CORE_PIN_W_CB(cb) \
+		devcb = &s3c2400_device::set_core_pin_w_callback(*device, DEVCB_##cb);
+
+#define MCFG_S3C2400_GPIO_PORT_R_CB(cb) \
+		devcb = &s3c2400_device::set_gpio_port_r_callback(*device, DEVCB_##cb);
+
+#define MCFG_S3C2400_GPIO_PORT_W_CB(cb) \
+		devcb = &s3c2400_device::set_gpio_port_w_callback(*device, DEVCB_##cb);
+
+#define MCFG_S3C2400_I2C_SCL_W_CB(cb) \
+		devcb = &s3c2400_device::set_i2c_scl_w_callback(*device, DEVCB_##cb);
+
+#define MCFG_S3C2400_I2C_SDA_R_CB(cb) \
+		devcb = &s3c2400_device::set_i2c_sda_r_callback(*device, DEVCB_##cb);
+
+#define MCFG_S3C2400_I2C_SDA_W_CB(cb) \
+		devcb = &s3c2400_device::set_i2c_sda_w_callback(*device, DEVCB_##cb);
+
+#define MCFG_S3C2400_ADC_DATA_R_CB(cb) \
+		devcb = &s3c2400_device::set_adc_data_r_callback(*device, DEVCB_##cb);
+
+#define MCFG_S3C2400_I2S_DATA_W_CB(cb) \
+		devcb = &s3c2400_device::set_i2s_data_w_callback(*device, DEVCB_##cb);
+
+#define MCFG_S3C2400_LCD_FLAGS(flags) \
+		s3c2400_device::set_lcd_flags(*device, (flags));
+>>>>>>> upstream/master
 
 enum
 {
@@ -81,6 +125,7 @@ enum
 
 #define S3C24XX_BASE_INT 0x14400000
 
+<<<<<<< HEAD
 #define S3C24XX_SRCPND    (0x00 / 4) // Interrupt Request Status
 #define S3C24XX_INTMOD    (0x04 / 4) // Interrupt Mode Control
 #define S3C24XX_INTMSK    (0x08 / 4) // Interrupt Mask Control
@@ -88,6 +133,8 @@ enum
 #define S3C24XX_INTPND    (0x10 / 4) // Interrupt Request Status
 #define S3C24XX_INTOFFSET (0x14 / 4) // Interrupt Request Source Offset
 
+=======
+>>>>>>> upstream/master
 /* DMA */
 
 #define S3C24XX_BASE_DMA_0 0x14600000
@@ -95,6 +142,7 @@ enum
 #define S3C24XX_BASE_DMA_2 0x14600040
 #define S3C24XX_BASE_DMA_3 0x14600060
 
+<<<<<<< HEAD
 #define S3C24XX_DISRC     (0x00 / 4) // DMA Initial Source
 #define S3C24XX_DIDST     (0x04 / 4) // DMA Initial Destination
 #define S3C24XX_DCON      (0x08 / 4) // DMA Control
@@ -103,10 +151,13 @@ enum
 #define S3C24XX_DCDST     (0x14 / 4) // DMA Current Destination Address
 #define S3C24XX_DMASKTRIG (0x18 / 4) // DMA Mask Trigger
 
+=======
+>>>>>>> upstream/master
 /* Clock & Power Management */
 
 #define S3C24XX_BASE_CLKPOW 0x14800000
 
+<<<<<<< HEAD
 #define S3C24XX_LOCKTIME (0x00 / 4) // PLL Lock Time Counter
 #define S3C24XX_MPLLCON  (0x04 / 4) // MPLL Control
 #define S3C24XX_UPLLCON  (0x08 / 4) // UPLL Control
@@ -114,11 +165,14 @@ enum
 #define S3C24XX_CLKSLOW  (0x10 / 4) // Slow Clock Control
 #define S3C24XX_CLKDIVN  (0x14 / 4) // Clock Divider Control
 
+=======
+>>>>>>> upstream/master
 /* LCD Controller */
 
 #define S3C24XX_BASE_LCD    0x14a00000
 #define S3C24XX_BASE_LCDPAL 0x14a00400
 
+<<<<<<< HEAD
 #define S3C24XX_LCDCON1   (0x00 / 4) // LCD Control 1
 #define S3C24XX_LCDCON2   (0x04 / 4) // LCD Control 2
 #define S3C24XX_LCDCON3   (0x08 / 4) // LCD Control 3
@@ -133,11 +187,14 @@ enum
 #define S3C24XX_DITHMODE  (0x4C / 4) // STN: Dithering Mode
 #define S3C24XX_TPAL      (0x50 / 4) // TFT: Temporary Palette
 
+=======
+>>>>>>> upstream/master
 /* UART */
 
 #define S3C24XX_BASE_UART_0 0x15000000
 #define S3C24XX_BASE_UART_1 0x15004000
 
+<<<<<<< HEAD
 #define S3C24XX_ULCON   (0x00 / 4) // UART Line Control
 #define S3C24XX_UCON    (0x04 / 4) // UART Control
 #define S3C24XX_UFCON   (0x08 / 4) // UART FIFO Control
@@ -150,10 +207,13 @@ enum
 #define S3C24XX_URXH    (0x24 / 4) // UART Receive Buffer
 #define S3C24XX_UBRDIV  (0x28 / 4) // UART Baud Rate Divisor
 
+=======
+>>>>>>> upstream/master
 /* PWM Timer */
 
 #define S3C24XX_BASE_PWM 0x15100000
 
+<<<<<<< HEAD
 #define S3C24XX_TCFG0  (0x00 / 4) // Timer Configuration
 #define S3C24XX_TCFG1  (0x04 / 4) // Timer Configuration
 #define S3C24XX_TCON   (0x08 / 4) // Timer Control
@@ -172,6 +232,8 @@ enum
 #define S3C24XX_TCNTB4 (0x3C / 4) // Timer Count Buffer 4
 #define S3C24XX_TCNTO4 (0x40 / 4) // Timer Count Observation 4
 
+=======
+>>>>>>> upstream/master
 /* USB Device */
 
 #define S3C24XX_BASE_USBDEV 0x15200140
@@ -180,33 +242,43 @@ enum
 
 #define S3C24XX_BASE_WDT 0x15300000
 
+<<<<<<< HEAD
 #define S3C24XX_WTCON (0x00 / 4) // Watchdog Timer Mode
 #define S3C24XX_WTDAT (0x04 / 4) // Watchdog Timer Data
 #define S3C24XX_WTCNT (0x08 / 4) // Watchdog Timer Count
 
+=======
+>>>>>>> upstream/master
 /* IIC */
 
 #define S3C24XX_BASE_IIC 0x15400000
 
+<<<<<<< HEAD
 #define S3C24XX_IICCON  (0x00 / 4) // IIC Control
 #define S3C24XX_IICSTAT (0x04 / 4) // IIC Status
 #define S3C24XX_IICADD  (0x08 / 4) // IIC Address
 #define S3C24XX_IICDS   (0x0C / 4) // IIC Data Shift
 
+=======
+>>>>>>> upstream/master
 /* IIS */
 
 #define S3C24XX_BASE_IIS 0x15508000
 
+<<<<<<< HEAD
 #define S3C24XX_IISCON  (0x00 / 4) // IIS Control
 #define S3C24XX_IISMOD  (0x04 / 4) // IIS Mode
 #define S3C24XX_IISPSR  (0x08 / 4) // IIS Prescaler
 #define S3C24XX_IISFCON (0x0C / 4) // IIS FIFO Control
 #define S3C24XX_IISFIFO (0x10 / 4) // IIS FIFO Entry
 
+=======
+>>>>>>> upstream/master
 /* I/O Port */
 
 #define S3C24XX_BASE_GPIO 0x15600000
 
+<<<<<<< HEAD
 #define S3C24XX_GPACON (0x00 / 4) // Port A Control
 #define S3C24XX_GPADAT (0x04 / 4) // Port A Data
 #define S3C24XX_GPBCON (0x08 / 4) // Port B Control
@@ -239,10 +311,13 @@ enum
 #define S3C24XX_GPFDAT_MASK 0x0000007F
 #define S3C24XX_GPGDAT_MASK 0x000003FF
 
+=======
+>>>>>>> upstream/master
 /* RTC */
 
 #define S3C24XX_BASE_RTC 0x15700040
 
+<<<<<<< HEAD
 #define S3C24XX_RTCCON  (0x00 / 4) // RTC Control
 #define S3C24XX_TICNT   (0x04 / 4) // Tick Time count
 #define S3C24XX_RTCALM  (0x10 / 4) // RTC Alarm Control
@@ -261,6 +336,8 @@ enum
 #define S3C24XX_BCDMON  (0x44 / 4) // BCD Month
 #define S3C24XX_BCDYEAR (0x48 / 4) // BCD Year
 
+=======
+>>>>>>> upstream/master
 /* A/D Converter */
 
 #define S3C24XX_BASE_ADC 0x15800000
@@ -272,6 +349,7 @@ enum
 
 #define S3C24XX_BASE_SPI_0 0x15900000
 
+<<<<<<< HEAD
 #define S3C24XX_SPCON  (0x00 / 4) // SPI Control
 #define S3C24XX_SPSTA  (0x04 / 4) // SPI Status
 #define S3C24XX_SPPIN  (0x08 / 4) // SPI Pin Control
@@ -279,12 +357,15 @@ enum
 #define S3C24XX_SPTDAT (0x10 / 4) // SPI Tx Data
 #define S3C24XX_SPRDAT (0x14 / 4) // SPI Rx Data
 
+=======
+>>>>>>> upstream/master
 /* MMC Interface */
 
 #define S3C24XX_BASE_MMC 0x15a00000
 
 /* ... */
 
+<<<<<<< HEAD
 #define S3C24XX_INT_ADC       31
 #define S3C24XX_INT_RTC       30
 #define S3C24XX_INT_UTXD1     29
@@ -353,10 +434,17 @@ class s3c2400_device : public device_t
 {
 public:
 	s3c2400_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
+=======
+class s3c2400_device : public device_t, protected s3c24xx_peripheral_types
+{
+public:
+	s3c2400_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
+>>>>>>> upstream/master
 	~s3c2400_device();
 
 	// static configuration
 	static void static_set_palette_tag(device_t &device, const char *tag);
+<<<<<<< HEAD
 	template<class _Object> static devcb_base &set_core_pin_r_callback(device_t &device, _Object object) { return downcast<s3c2400_device &>(device).m_pin_r_cb.set_callback(object); }
 	template<class _Object> static devcb_base &set_core_pin_w_callback(device_t &device, _Object object) { return downcast<s3c2400_device &>(device).m_pin_w_cb.set_callback(object); }
 	template<class _Object> static devcb_base &set_gpio_port_r_callback(device_t &device, _Object object) { return downcast<s3c2400_device &>(device).m_port_r_cb.set_callback(object); }
@@ -376,10 +464,32 @@ private:
 	required_device<palette_device> m_palette;
 public:
 	UINT32 screen_update(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect);
+=======
+	template <class Object> static devcb_base &set_core_pin_r_callback(device_t &device, Object &&cb) { return downcast<s3c2400_device &>(device).m_pin_r_cb.set_callback(std::forward<Object>(cb)); }
+	template <class Object> static devcb_base &set_core_pin_w_callback(device_t &device, Object &&cb) { return downcast<s3c2400_device &>(device).m_pin_w_cb.set_callback(std::forward<Object>(cb)); }
+	template <class Object> static devcb_base &set_gpio_port_r_callback(device_t &device, Object &&cb) { return downcast<s3c2400_device &>(device).m_port_r_cb.set_callback(std::forward<Object>(cb)); }
+	template <class Object> static devcb_base &set_gpio_port_w_callback(device_t &device, Object &&cb) { return downcast<s3c2400_device &>(device).m_port_w_cb.set_callback(std::forward<Object>(cb)); }
+	template <class Object> static devcb_base &set_i2c_scl_w_callback(device_t &device, Object &&cb) { return downcast<s3c2400_device &>(device).m_scl_w_cb.set_callback(std::forward<Object>(cb)); }
+	template <class Object> static devcb_base &set_i2c_sda_r_callback(device_t &device, Object &&cb) { return downcast<s3c2400_device &>(device).m_sda_r_cb.set_callback(std::forward<Object>(cb)); }
+	template <class Object> static devcb_base &set_i2c_sda_w_callback(device_t &device, Object &&cb) { return downcast<s3c2400_device &>(device).m_sda_w_cb.set_callback(std::forward<Object>(cb)); }
+	template <class Object> static devcb_base &set_adc_data_r_callback(device_t &device, Object &&cb) { return downcast<s3c2400_device &>(device).m_data_r_cb.set_callback(std::forward<Object>(cb)); }
+	template <class Object> static devcb_base &set_i2s_data_w_callback(device_t &device, Object &&cb) { return downcast<s3c2400_device &>(device).m_data_w_cb.set_callback(std::forward<Object>(cb)); }
+	static void set_lcd_flags(device_t &device, int flags) { downcast<s3c2400_device &>(device).m_flags = flags; }
+
+protected:
+	// device-level overrides
+	virtual void device_start() override;
+	virtual void device_reset() override;
+
+	// FIXME: a bunch of this stuff needs to be public, or used from an internal memory map, but since nothing uses it yet, it's impossible to know what
+	// However, the previous situation where all internal state was public is clearly undesirable
+	uint32_t screen_update(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect);
+>>>>>>> upstream/master
 
 	void s3c24xx_reset();
 	inline int iface_core_pin_r(int pin);
 	void s3c24xx_lcd_reset();
+<<<<<<< HEAD
 	rgb_t s3c24xx_get_color_tft_16(UINT16 data);
 	rgb_t s3c24xx_get_color_stn_12(UINT16 data);
 	rgb_t s3c24xx_get_color_stn_08( UINT8 data);
@@ -391,6 +501,19 @@ public:
 	void s3c24xx_lcd_dma_init();
 	UINT32 s3c24xx_lcd_dma_read();
 	UINT32 s3c24xx_lcd_dma_read_bits(int count);
+=======
+	rgb_t s3c24xx_get_color_tft_16(uint16_t data);
+	rgb_t s3c24xx_get_color_stn_12(uint16_t data);
+	rgb_t s3c24xx_get_color_stn_08( uint8_t data);
+	rgb_t s3c24xx_get_color_stn_01(uint8_t data);
+	rgb_t s3c24xx_get_color_stn_02(uint8_t data);
+	rgb_t s3c24xx_get_color_stn_04(uint8_t data);
+	rgb_t s3c24xx_get_color_tpal();
+	void s3c24xx_lcd_dma_reload();
+	void s3c24xx_lcd_dma_init();
+	uint32_t s3c24xx_lcd_dma_read();
+	uint32_t s3c24xx_lcd_dma_read_bits(int count);
+>>>>>>> upstream/master
 	void s3c24xx_lcd_render_tpal();
 	void s3c24xx_lcd_render_stn_01();
 	void s3c24xx_lcd_render_stn_02();
@@ -406,7 +529,11 @@ public:
 	TIMER_CALLBACK_MEMBER( s3c24xx_lcd_timer_exp );
 	void s3c24xx_video_start();
 	void bitmap_blend( bitmap_rgb32 &bitmap_dst, bitmap_rgb32 &bitmap_src_1, bitmap_rgb32 &bitmap_src_2);
+<<<<<<< HEAD
 	UINT32 s3c24xx_video_update(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect);
+=======
+	uint32_t s3c24xx_video_update(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect);
+>>>>>>> upstream/master
 	READ32_MEMBER( s3c24xx_lcd_r );
 	int s3c24xx_lcd_configure_tft();
 	int s3c24xx_lcd_configure_stn();
@@ -418,18 +545,30 @@ public:
 	READ32_MEMBER( s3c24xx_lcd_palette_r );
 	WRITE32_MEMBER( s3c24xx_lcd_palette_w );
 	void s3c24xx_clkpow_reset();
+<<<<<<< HEAD
 	UINT32 s3c24xx_get_fclk();
 	UINT32 s3c24xx_get_hclk();
 	UINT32 s3c24xx_get_pclk();
+=======
+	uint32_t s3c24xx_get_fclk();
+	uint32_t s3c24xx_get_hclk();
+	uint32_t s3c24xx_get_pclk();
+>>>>>>> upstream/master
 	READ32_MEMBER( s3c24xx_clkpow_r );
 	WRITE32_MEMBER( s3c24xx_clkpow_w );
 	void s3c24xx_irq_reset();
 	void s3c24xx_check_pending_irq();
+<<<<<<< HEAD
 	void s3c24xx_request_irq(UINT32 int_type);
 	READ32_MEMBER( s3c24xx_irq_r );
 	WRITE32_MEMBER( s3c24xx_irq_w );
 	void s3c24xx_pwm_reset();
 	UINT16 s3c24xx_pwm_calc_observation(int ch);
+=======
+	void s3c24xx_request_irq(uint32_t int_type);
+	READ32_MEMBER( s3c24xx_irq_r );
+	WRITE32_MEMBER( s3c24xx_irq_w );
+>>>>>>> upstream/master
 	READ32_MEMBER( s3c24xx_pwm_r );
 	void s3c24xx_pwm_start(int timer);
 	void s3c24xx_pwm_stop(int timer);
@@ -444,8 +583,13 @@ public:
 	void s3c24xx_dma_start(int ch);
 	void s3c24xx_dma_stop(int ch);
 	void s3c24xx_dma_recalc(int ch);
+<<<<<<< HEAD
 	UINT32 s3c24xx_dma_r(UINT32 ch, UINT32 offset);
 	void s3c24xx_dma_w(UINT32 ch, UINT32 offset, UINT32 data, UINT32 mem_mask);
+=======
+	uint32_t s3c24xx_dma_r(uint32_t ch, uint32_t offset);
+	void s3c24xx_dma_w(uint32_t ch, uint32_t offset, uint32_t data, uint32_t mem_mask);
+>>>>>>> upstream/master
 	READ32_MEMBER( s3c24xx_dma_0_r );
 	READ32_MEMBER( s3c24xx_dma_1_r );
 	READ32_MEMBER( s3c24xx_dma_2_r );
@@ -456,6 +600,7 @@ public:
 	WRITE32_MEMBER( s3c24xx_dma_3_w );
 	TIMER_CALLBACK_MEMBER( s3c24xx_dma_timer_exp );
 	void s3c24xx_gpio_reset();
+<<<<<<< HEAD
 	inline UINT32 iface_gpio_port_r(int port, UINT32 mask);
 	inline void iface_gpio_port_w(int port, UINT32 mask, UINT32 data);
 	UINT16 s3c24xx_gpio_get_mask( UINT32 con, int val);
@@ -470,16 +615,36 @@ public:
 	void s3c24xx_uart_reset();
 	UINT32 s3c24xx_uart_r(UINT32 ch, UINT32 offset);
 	void s3c24xx_uart_w(UINT32 ch, UINT32 offset, UINT32 data, UINT32 mem_mask);
+=======
+	inline uint32_t iface_gpio_port_r(int port, uint32_t mask);
+	inline void iface_gpio_port_w(int port, uint32_t mask, uint32_t data);
+	uint16_t s3c24xx_gpio_get_mask( uint32_t con, int val);
+	READ32_MEMBER( s3c24xx_gpio_r );
+	WRITE32_MEMBER( s3c24xx_gpio_w );
+	READ32_MEMBER( s3c24xx_memcon_r );
+	WRITE32_MEMBER( s3c24xx_memcon_w );
+	READ32_MEMBER( s3c24xx_usb_host_r );
+	WRITE32_MEMBER( s3c24xx_usb_host_w );
+	uint32_t s3c24xx_uart_r(uint32_t ch, uint32_t offset);
+	void s3c24xx_uart_w(uint32_t ch, uint32_t offset, uint32_t data, uint32_t mem_mask);
+>>>>>>> upstream/master
 	READ32_MEMBER( s3c24xx_uart_0_r );
 	READ32_MEMBER( s3c24xx_uart_1_r );
 	WRITE32_MEMBER( s3c24xx_uart_0_w );
 	WRITE32_MEMBER( s3c24xx_uart_1_w );
+<<<<<<< HEAD
 	void s3c24xx_uart_fifo_w(int uart, UINT8 data);
 	void s3c24xx_usb_device_reset();
 	READ32_MEMBER( s3c24xx_usb_device_r );
 	WRITE32_MEMBER( s3c24xx_usb_device_w );
 	void s3c24xx_wdt_reset();
 	UINT16 s3c24xx_wdt_calc_current_count();
+=======
+	void s3c24xx_uart_fifo_w(int uart, uint8_t data);
+	void s3c24xx_usb_device_reset();
+	READ32_MEMBER( s3c24xx_usb_device_r );
+	WRITE32_MEMBER( s3c24xx_usb_device_w );
+>>>>>>> upstream/master
 	READ32_MEMBER( s3c24xx_wdt_r );
 	void s3c24xx_wdt_start();
 	void s3c24xx_wdt_stop();
@@ -492,53 +657,87 @@ public:
 	inline int iface_i2c_sda_r();
 	void i2c_send_start();
 	void i2c_send_stop();
+<<<<<<< HEAD
 	UINT8 i2c_receive_byte(int ack);
 	int i2c_send_byte(UINT8 data);
+=======
+	uint8_t i2c_receive_byte(int ack);
+	int i2c_send_byte(uint8_t data);
+>>>>>>> upstream/master
 	void iic_start();
 	void iic_stop();
 	void iic_resume();
 	READ32_MEMBER( s3c24xx_iic_r );
 	WRITE32_MEMBER( s3c24xx_iic_w );
 	TIMER_CALLBACK_MEMBER( s3c24xx_iic_timer_exp );
+<<<<<<< HEAD
 	void s3c24xx_iis_reset();
 	inline void iface_i2s_data_w(int ch, UINT16 data);
+=======
+	inline void iface_i2s_data_w(int ch, uint16_t data);
+>>>>>>> upstream/master
 	void s3c24xx_iis_start();
 	void s3c24xx_iis_stop();
 	void s3c24xx_iis_recalc();
 	READ32_MEMBER( s3c24xx_iis_r );
 	WRITE32_MEMBER( s3c24xx_iis_w );
 	TIMER_CALLBACK_MEMBER( s3c24xx_iis_timer_exp );
+<<<<<<< HEAD
 	void s3c24xx_rtc_reset();
 	READ32_MEMBER( s3c24xx_rtc_r );
 	void s3c24xx_rtc_recalc();
+=======
+	READ32_MEMBER( s3c24xx_rtc_r );
+>>>>>>> upstream/master
 	WRITE32_MEMBER( s3c24xx_rtc_w );
 	TIMER_CALLBACK_MEMBER( s3c24xx_rtc_timer_tick_count_exp );
 	void s3c24xx_rtc_update();
 	void s3c24xx_rtc_check_alarm();
 	TIMER_CALLBACK_MEMBER( s3c24xx_rtc_timer_update_exp );
 	void s3c24xx_adc_reset();
+<<<<<<< HEAD
 	UINT32 iface_adc_data_r(int ch);
+=======
+	uint32_t iface_adc_data_r(int ch);
+>>>>>>> upstream/master
 	READ32_MEMBER( s3c24xx_adc_r );
 	void s3c24xx_adc_start();
 	WRITE32_MEMBER( s3c24xx_adc_w );
 	void s3c24xx_spi_reset();
+<<<<<<< HEAD
 	UINT32 s3c24xx_spi_r(UINT32 ch, UINT32 offset);
 	void s3c24xx_spi_w(UINT32 ch, UINT32 offset, UINT32 data, UINT32 mem_mask);
 	READ32_MEMBER( s3c24xx_spi_0_r );
 	WRITE32_MEMBER( s3c24xx_spi_0_w );
 	void s3c24xx_mmc_reset();
+=======
+	uint32_t s3c24xx_spi_r(uint32_t ch, uint32_t offset);
+	void s3c24xx_spi_w(uint32_t ch, uint32_t offset, uint32_t data, uint32_t mem_mask);
+	READ32_MEMBER( s3c24xx_spi_0_r );
+	WRITE32_MEMBER( s3c24xx_spi_0_w );
+>>>>>>> upstream/master
 	READ32_MEMBER( s3c24xx_mmc_r );
 	WRITE32_MEMBER( s3c24xx_mmc_w );
 	void s3c24xx_device_reset();
 	void s3c24xx_device_start();
 
+<<<<<<< HEAD
 
 	void s3c2400_uart_fifo_w(int uart, UINT8 data);
+=======
+	void s3c2400_uart_fifo_w(int uart, uint8_t data);
+
+private:
+	static constexpr unsigned UART_COUNT  = 2;
+	static constexpr unsigned DMA_COUNT   = 4;
+	static constexpr unsigned SPI_COUNT   = 1;
+>>>>>>> upstream/master
 
 	/*******************************************************************************
 	    TYPE DEFINITIONS
 	*******************************************************************************/
 
+<<<<<<< HEAD
 	struct s3c24xx_memcon_regs_t
 	{
 		UINT32 data[0x34/4];
@@ -817,10 +1016,152 @@ public:
 	struct s3c24xx_iic_t
 	{
 		s3c24xx_iic_regs_t regs;
+=======
+	struct irq_regs_t
+	{
+		uint32_t srcpnd;
+		uint32_t intmod;
+		uint32_t intmsk;
+		uint32_t priority;
+		uint32_t intpnd;
+		uint32_t intoffset;
+	};
+
+	struct dma_regs_t
+	{
+		uint32_t disrc;
+		uint32_t didst;
+		uint32_t dcon;
+		uint32_t dstat;
+		uint32_t dcsrc;
+		uint32_t dcdst;
+		uint32_t dmasktrig;
+	};
+
+	struct clkpow_regs_t
+	{
+		uint32_t locktime;
+		uint32_t mpllcon;
+		uint32_t upllcon;
+		uint32_t clkcon;
+		uint32_t clkslow;
+		uint32_t clkdivn;
+	};
+
+	struct lcd_regs_t
+	{
+		uint32_t lcdcon1;
+		uint32_t lcdcon2;
+		uint32_t lcdcon3;
+		uint32_t lcdcon4;
+		uint32_t lcdcon5;
+		uint32_t lcdsaddr1;
+		uint32_t lcdsaddr2;
+		uint32_t lcdsaddr3;
+		uint32_t redlut;
+		uint32_t greenlut;
+		uint32_t bluelut;
+		uint32_t reserved[8];
+		uint32_t dithmode;
+		uint32_t tpal;
+	};
+
+	struct usbdev_regs_t
+	{
+		uint32_t data[0xBC/4];
+	};
+
+	struct iic_regs_t
+	{
+		uint32_t iiccon;
+		uint32_t iicstat;
+		uint32_t iicadd;
+		uint32_t iicds;
+	};
+
+	struct gpio_regs_t
+	{
+		uint32_t gpacon;
+		uint32_t gpadat;
+		uint32_t gpbcon;
+		uint32_t gpbdat;
+		uint32_t gpbup;
+		uint32_t gpccon;
+		uint32_t gpcdat;
+		uint32_t gpcup;
+		uint32_t gpdcon;
+		uint32_t gpddat;
+		uint32_t gpdup;
+		uint32_t gpecon;
+		uint32_t gpedat;
+		uint32_t gpeup;
+		uint32_t gpfcon;
+		uint32_t gpfdat;
+		uint32_t gpfup;
+		uint32_t gpgcon;
+		uint32_t gpgdat;
+		uint32_t gpgup;
+		uint32_t opencr;
+		uint32_t misccr;
+		uint32_t extint;
+	};
+
+	struct adc_regs_t
+	{
+		uint32_t adccon;
+		uint32_t adcdat;
+	};
+
+	struct irq_t
+	{
+		irq_regs_t regs;
+		int line_irq, line_fiq;
+	};
+
+	struct dma_t
+	{
+		dma_regs_t regs;
+		emu_timer *timer;
+	};
+
+	struct clkpow_t
+	{
+		clkpow_regs_t regs;
+	};
+
+	struct lcd_t
+	{
+		lcd_regs_t regs;
+		emu_timer *timer;
+		std::unique_ptr<bitmap_rgb32> bitmap[2];
+		uint32_t vramaddr_cur;
+		uint32_t vramaddr_max;
+		uint32_t offsize;
+		uint32_t pagewidth_cur;
+		uint32_t pagewidth_max;
+		uint32_t bppmode;
+		uint32_t bswp, hwswp;
+		int vpos, hpos;
+		double framerate;
+		uint32_t tpal;
+		uint32_t hpos_min, hpos_max, vpos_min, vpos_max;
+		uint32_t dma_data, dma_bits;
+	};
+
+	struct usbdev_t
+	{
+		usbdev_regs_t regs;
+	};
+
+	struct iic_t
+	{
+		iic_regs_t regs;
+>>>>>>> upstream/master
 		emu_timer *timer;
 		int count;
 	};
 
+<<<<<<< HEAD
 	struct s3c24xx_iis_t
 	{
 		s3c24xx_iis_regs_t regs;
@@ -875,6 +1216,39 @@ public:
 	s3c24xx_adc_t m_adc;
 	s3c24xx_spi_t m_spi[S3C24XX_SPI_COUNT];
 	s3c24xx_mmc_t m_mmc;
+=======
+	struct gpio_t
+	{
+		gpio_regs_t regs;
+	};
+
+	struct adc_t
+	{
+		adc_regs_t regs;
+	};
+
+	// internal state
+	required_device<palette_device> m_palette;
+
+	memcon_t m_memcon;
+	usbhost_t m_usbhost;
+	irq_t m_irq;
+	dma_t m_dma[DMA_COUNT];
+	clkpow_t m_clkpow;
+	lcd_t m_lcd;
+	lcdpal_t m_lcdpal;
+	uart_t m_uart[UART_COUNT];
+	pwm_t m_pwm;
+	usbdev_t m_usbdev;
+	wdt_t m_wdt;
+	iic_t m_iic;
+	iis_t m_iis;
+	gpio_t m_gpio;
+	rtc_t m_rtc;
+	adc_t m_adc;
+	spi_t m_spi[SPI_COUNT];
+	mmc_t m_mmc;
+>>>>>>> upstream/master
 	required_device<device_t> m_cpu;
 	devcb_read32 m_pin_r_cb;
 	devcb_write32 m_pin_w_cb;
@@ -888,7 +1262,13 @@ public:
 	int m_flags;
 };
 
+<<<<<<< HEAD
 extern const device_type S3C2400;
 
 
 #endif
+=======
+DECLARE_DEVICE_TYPE(S3C2400, s3c2400_device)
+
+#endif // MAME_MACHINE_S3C2400_H
+>>>>>>> upstream/master

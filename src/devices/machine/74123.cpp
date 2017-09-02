@@ -12,9 +12,14 @@
 #include "machine/74123.h"
 #include "machine/rescap.h"
 
+<<<<<<< HEAD
 
 #define LOG     (0)
 
+=======
+//#define VERBOSE 1
+#include "logmacro.h"
+>>>>>>> upstream/master
 
 
 //**************************************************************************
@@ -22,14 +27,24 @@
 //**************************************************************************
 
 // device type definition
+<<<<<<< HEAD
 const device_type TTL74123 = &device_creator<ttl74123_device>;
+=======
+DEFINE_DEVICE_TYPE(TTL74123, ttl74123_device, "ttl74123", "74123 TTL")
+>>>>>>> upstream/master
 
 //-------------------------------------------------
 //  ttl74123_device - constructor
 //-------------------------------------------------
 
+<<<<<<< HEAD
 ttl74123_device::ttl74123_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
 	: device_t(mconfig, TTL74123, "74123 TTL", tag, owner, clock, "ttl74123", __FILE__), m_timer(nullptr),
+=======
+ttl74123_device::ttl74123_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: device_t(mconfig, TTL74123, tag, owner, clock),
+		m_timer(nullptr),
+>>>>>>> upstream/master
 		m_connection_type(TTL74123_NOT_GROUNDED_NO_DIODE),
 		m_res(1.0),
 		m_cap(1.0),
@@ -116,7 +131,11 @@ int ttl74123_device::timer_running()
 
 
 /*-------------------------------------------------
+<<<<<<< HEAD
     TIMER_CALLBACK( output_callback )
+=======
+    TIMER_CALLBACK_MEMBER( output_callback )
+>>>>>>> upstream/master
 -------------------------------------------------*/
 
 TIMER_CALLBACK_MEMBER( ttl74123_device::output_callback )
@@ -135,12 +154,20 @@ void ttl74123_device::set_output()
 
 	machine().scheduler().timer_set( attotime::zero, timer_expired_delegate(FUNC(ttl74123_device::output_callback ),this), output);
 
+<<<<<<< HEAD
 	if (LOG) logerror("74123 %s:  Output: %d\n", tag(), output);
+=======
+	LOG("74123:  Output: %d\n", output);
+>>>>>>> upstream/master
 }
 
 
 /*-------------------------------------------------
+<<<<<<< HEAD
     TIMER_CALLBACK( clear_callback )
+=======
+    TIMER_CALLBACK_MEMBER( clear_callback )
+>>>>>>> upstream/master
 -------------------------------------------------*/
 
 TIMER_CALLBACK_MEMBER( ttl74123_device::clear_callback )
@@ -167,11 +194,19 @@ void ttl74123_device::start_pulse()
 		{
 			m_timer->adjust(duration);
 
+<<<<<<< HEAD
 			if (LOG) logerror("74123 %s:  Retriggering pulse.  Duration: %f\n", tag(), duration.as_double());
 		}
 		else
 		{
 			if (LOG) logerror("74123 %s:  Retriggering failed.\n", tag());
+=======
+			LOG("74123:  Retriggering pulse.  Duration: %f\n", duration.as_double());
+		}
+		else
+		{
+			LOG("74123:  Retriggering failed.\n");
+>>>>>>> upstream/master
 		}
 	}
 	else
@@ -181,7 +216,11 @@ void ttl74123_device::start_pulse()
 
 		set_output();
 
+<<<<<<< HEAD
 		if (LOG) logerror("74123 %s:  Starting pulse.  Duration: %f\n", tag(), duration.as_double());
+=======
+		LOG("74123:  Starting pulse.  Duration: %f\n", duration.as_double());
+>>>>>>> upstream/master
 	}
 }
 
@@ -233,7 +272,11 @@ WRITE8_MEMBER( ttl74123_device::clear_w)
 	{
 		m_timer->adjust(attotime::zero);
 
+<<<<<<< HEAD
 		if (LOG) logerror("74123 #%s:  Cleared\n", tag() );
+=======
+		LOG("74123:  Cleared\n");
+>>>>>>> upstream/master
 	}
 	m_clear = data;
 }

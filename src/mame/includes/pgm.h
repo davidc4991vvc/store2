@@ -1,5 +1,6 @@
 // license:BSD-3-Clause
 // copyright-holders:David Haywood, ElSemi
+<<<<<<< HEAD
 
 #include "machine/v3021.h"
 #include "cpu/z80/z80.h"
@@ -9,10 +10,27 @@
 #include "cpu/arm7/arm7core.h"
 #include "machine/nvram.h"
 #include "machine/pgmcrypt.h"
+=======
+#ifndef MAME_INCLUDES_PGM_H
+#define MAME_INCLUDES_PGM_H
+>>>>>>> upstream/master
 
 #include "machine/igs025.h"
 #include "machine/igs022.h"
 #include "machine/igs028.h"
+<<<<<<< HEAD
+=======
+#include "machine/pgmcrypt.h"
+
+#include "cpu/arm7/arm7.h"
+#include "cpu/arm7/arm7core.h"
+#include "cpu/m68000/m68000.h"
+#include "cpu/z80/z80.h"
+#include "machine/gen_latch.h"
+#include "machine/nvram.h"
+#include "machine/v3021.h"
+#include "sound/ics2115.h"
+>>>>>>> upstream/master
 
 #define PGMARM7LOGERROR 0
 
@@ -28,12 +46,19 @@ public:
 			m_maincpu(*this, "maincpu"),
 			m_soundcpu(*this, "soundcpu"),
 			m_gfxdecode(*this, "gfxdecode"),
+<<<<<<< HEAD
 			m_palette(*this, "palette")
+=======
+			m_palette(*this, "palette"),
+			m_soundlatch(*this, "soundlatch"),
+			m_soundlatch3(*this, "soundlatch3")
+>>>>>>> upstream/master
 		{
 			m_irq4_disabled = 0;
 		}
 
 	/* memory pointers */
+<<<<<<< HEAD
 	required_shared_ptr<UINT16> m_videoregs;
 	required_shared_ptr<UINT16> m_videoram;
 	required_shared_ptr<UINT8> m_z80_mainram;
@@ -44,11 +69,27 @@ public:
 	UINT8  *      m_sprite_a_region;
 	size_t        m_sprite_a_region_size;
 	UINT16 *      m_spritebufferram; // buffered spriteram
+=======
+	required_shared_ptr<uint16_t> m_videoregs;
+	required_shared_ptr<uint16_t> m_videoram;
+	required_shared_ptr<uint8_t> m_z80_mainram;
+	required_shared_ptr<uint16_t> m_mainram;
+	uint16_t *      m_bg_videoram;
+	uint16_t *      m_tx_videoram;
+	uint16_t *      m_rowscrollram;
+	std::unique_ptr<uint8_t[]>      m_sprite_a_region;
+	size_t        m_sprite_a_region_size;
+	std::unique_ptr<uint16_t[]>     m_spritebufferram; // buffered spriteram
+>>>>>>> upstream/master
 
 	/* video-related */
 	tilemap_t       *m_bg_tilemap;
 	tilemap_t     *m_tx_tilemap;
+<<<<<<< HEAD
 	UINT16        *m_sprite_temp_render;
+=======
+	uint16_t        *m_sprite_temp_render;
+>>>>>>> upstream/master
 	bitmap_rgb32      m_tmppgmbitmap;
 
 	/* devices */
@@ -56,10 +97,19 @@ public:
 	required_device<cpu_device> m_soundcpu;
 	required_device<gfxdecode_device> m_gfxdecode;
 	required_device<palette_device> m_palette;
+<<<<<<< HEAD
 	device_t *m_ics;
 
 	/* used by rendering */
 	UINT8 *m_bdata;
+=======
+	required_device<generic_latch_8_device> m_soundlatch;
+	required_device<generic_latch_8_device> m_soundlatch3;
+	device_t *m_ics;
+
+	/* used by rendering */
+	uint8_t *m_bdata;
+>>>>>>> upstream/master
 	size_t  m_bdatasize;
 	int m_aoffset;
 	int m_boffset;
@@ -68,10 +118,17 @@ public:
 	int m_irq4_disabled;
 
 	/* calendar */
+<<<<<<< HEAD
 	UINT8        m_cal_val;
 	UINT8        m_cal_mask;
 	UINT8        m_cal_com;
 	UINT8        m_cal_cnt;
+=======
+	uint8_t        m_cal_val;
+	uint8_t        m_cal_mask;
+	uint8_t        m_cal_com;
+	uint8_t        m_cal_cnt;
+>>>>>>> upstream/master
 	system_time  m_systime;
 
 	DECLARE_READ16_MEMBER(pgm_videoram_r);
@@ -85,7 +142,10 @@ public:
 	DECLARE_WRITE8_MEMBER(z80_l3_w);
 	DECLARE_WRITE16_MEMBER(pgm_tx_videoram_w);
 	DECLARE_WRITE16_MEMBER(pgm_bg_videoram_w);
+<<<<<<< HEAD
 	DECLARE_WRITE_LINE_MEMBER(pgm_sound_irq);
+=======
+>>>>>>> upstream/master
 
 	DECLARE_DRIVER_INIT(pgm);
 
@@ -94,6 +154,7 @@ public:
 	DECLARE_VIDEO_START(pgm);
 	DECLARE_MACHINE_START(pgm);
 	DECLARE_MACHINE_RESET(pgm);
+<<<<<<< HEAD
 	UINT32 screen_update_pgm(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
 	void screen_eof_pgm(screen_device &screen, bool state);
 	TIMER_DEVICE_CALLBACK_MEMBER(pgm_interrupt);
@@ -106,11 +167,26 @@ public:
 	void draw_sprite_line_basic( int wide, UINT16* dest, UINT8* destpri, int flip, int xpos, int pri, int realxsize, int palt, int draw );
 	void draw_sprite_new_basic( int wide, int high, int xpos, int ypos, int palt, int flip, bitmap_ind16 &bitmap, bitmap_ind8 &priority_bitmap, int pri );
 	void draw_sprites( bitmap_ind16& spritebitmap, UINT16 *sprite_source, bitmap_ind8& priority_bitmap );
+=======
+	uint32_t screen_update_pgm(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
+	DECLARE_WRITE_LINE_MEMBER(screen_vblank_pgm);
+	TIMER_DEVICE_CALLBACK_MEMBER(pgm_interrupt);
+
+	inline void pgm_draw_pix( int xdrawpos, int pri, uint16_t* dest, uint8_t* destpri, uint16_t srcdat);
+	inline void pgm_draw_pix_nopri( int xdrawpos, uint16_t* dest, uint8_t* destpri, uint16_t srcdat);
+	inline void pgm_draw_pix_pri( int xdrawpos, uint16_t* dest, uint8_t* destpri, uint16_t srcdat);
+	void draw_sprite_line( int wide, uint16_t* dest, uint8_t* destpri, int xzoom, int xgrow, int flip, int xpos, int pri, int realxsize, int palt, int draw );
+	void draw_sprite_new_zoomed( int wide, int high, int xpos, int ypos, int palt, int flip, bitmap_ind16 &bitmap, bitmap_ind8 &priority_bitmap, uint32_t xzoom, int xgrow, uint32_t yzoom, int ygrow, int pri );
+	void draw_sprite_line_basic( int wide, uint16_t* dest, uint8_t* destpri, int flip, int xpos, int pri, int realxsize, int palt, int draw );
+	void draw_sprite_new_basic( int wide, int high, int xpos, int ypos, int palt, int flip, bitmap_ind16 &bitmap, bitmap_ind8 &priority_bitmap, int pri );
+	void draw_sprites( bitmap_ind16& spritebitmap, uint16_t *sprite_source, bitmap_ind8& priority_bitmap );
+>>>>>>> upstream/master
 	void expand_colourdata();
 	void pgm_basic_init( bool set_bank = true);
 };
 
 
+<<<<<<< HEAD
 /* for machine/pgmprot_orlegend.c type games */
 class pgm_asic3_state : public pgm_state
 {
@@ -461,6 +537,8 @@ public:
 
 
 
+=======
+>>>>>>> upstream/master
 
 /*----------- defined in drivers/pgm.c -----------*/
 
@@ -473,12 +551,16 @@ MACHINE_CONFIG_EXTERN( pgmbase );
 
 ADDRESS_MAP_EXTERN( pgm_z80_mem, 8 );
 ADDRESS_MAP_EXTERN( pgm_z80_io, 8 );
+<<<<<<< HEAD
 void pgm_sound_irq( device_t *device, int level );
+=======
+>>>>>>> upstream/master
 
 ADDRESS_MAP_EXTERN( pgm_mem, 16 );
 ADDRESS_MAP_EXTERN( pgm_basic_mem, 16 );
 ADDRESS_MAP_EXTERN( pgm_base_mem, 16 );
 
+<<<<<<< HEAD
 
 
 
@@ -549,3 +631,6 @@ MACHINE_CONFIG_EXTERN( pgm_012_025_drgw2 );
 
 MACHINE_CONFIG_EXTERN( pgm_028_025_ol );
 INPUT_PORTS_EXTERN( olds );
+=======
+#endif // MAME_INCLUDES_PGM_H
+>>>>>>> upstream/master

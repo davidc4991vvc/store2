@@ -36,10 +36,19 @@
 
 #include "emu.h"
 #include "cpu/powerpc/ppc.h"
+<<<<<<< HEAD
 #include "sound/ymz280b.h"
 #include "video/k057714.h"
 #include "machine/nvram.h"
 #include "machine/eepromser.h"
+=======
+#include "machine/eepromser.h"
+#include "machine/nvram.h"
+#include "sound/ymz280b.h"
+#include "video/k057714.h"
+#include "screen.h"
+#include "speaker.h"
+>>>>>>> upstream/master
 
 class konendev_state : public driver_device
 {
@@ -75,19 +84,32 @@ public:
 	DECLARE_WRITE_LINE_MEMBER(gcu_interrupt);
 	INTERRUPT_GEN_MEMBER(vbl_interrupt);
 
+<<<<<<< HEAD
 	UINT8 rtc_dev_r(UINT32 reg);
 
 	UINT32 screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
 };
 
 UINT32 konendev_state::screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+=======
+	uint8_t rtc_dev_r(uint32_t reg);
+
+	uint32_t screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
+};
+
+uint32_t konendev_state::screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+>>>>>>> upstream/master
 {
 	return m_gcu->draw(screen, bitmap, cliprect);
 }
 
 READ32_MEMBER(konendev_state::mcu2_r)
 {
+<<<<<<< HEAD
 	UINT32 r = 0;
+=======
+	uint32_t r = 0;
+>>>>>>> upstream/master
 
 	if (ACCESSING_BITS_24_31)
 	{
@@ -118,7 +140,11 @@ READ32_MEMBER(konendev_state::mcu2_r)
 
 READ32_MEMBER(konendev_state::ifu2_r)
 {
+<<<<<<< HEAD
 	UINT32 r = 0;
+=======
+	uint32_t r = 0;
+>>>>>>> upstream/master
 
 	if (ACCESSING_BITS_0_7)
 	{
@@ -129,7 +155,11 @@ READ32_MEMBER(konendev_state::ifu2_r)
 }
 
 // This seems to be Epson RTC-72423
+<<<<<<< HEAD
 UINT8 konendev_state::rtc_dev_r(UINT32 reg)
+=======
+uint8_t konendev_state::rtc_dev_r(uint32_t reg)
+>>>>>>> upstream/master
 {
 	switch (reg)
 	{
@@ -153,6 +183,7 @@ UINT8 konendev_state::rtc_dev_r(UINT32 reg)
 
 READ32_MEMBER(konendev_state::rtc_r)
 {
+<<<<<<< HEAD
 	UINT32 r = 0;
 
 	if (ACCESSING_BITS_24_31)
@@ -163,6 +194,18 @@ READ32_MEMBER(konendev_state::rtc_r)
 		r |= (UINT32)(rtc_dev_r((offset * 4)+2)) << 8;
 	if (ACCESSING_BITS_0_7)
 		r |= (UINT32)(rtc_dev_r((offset * 4)+3));
+=======
+	uint32_t r = 0;
+
+	if (ACCESSING_BITS_24_31)
+		r |= (uint32_t)(rtc_dev_r(offset * 4)) << 24;
+	if (ACCESSING_BITS_16_23)
+		r |= (uint32_t)(rtc_dev_r((offset * 4)+1)) << 16;
+	if (ACCESSING_BITS_8_15)
+		r |= (uint32_t)(rtc_dev_r((offset * 4)+2)) << 8;
+	if (ACCESSING_BITS_0_7)
+		r |= (uint32_t)(rtc_dev_r((offset * 4)+3));
+>>>>>>> upstream/master
 
 	return r;
 }
@@ -173,7 +216,11 @@ WRITE32_MEMBER(konendev_state::rtc_w)
 
 READ32_MEMBER(konendev_state::ctrl0_r)
 {
+<<<<<<< HEAD
 	return ((UINT32)(ioport("IN1")->read() & 0xffff) << 16) | 0xffff;
+=======
+	return ((uint32_t)(ioport("IN1")->read() & 0xffff) << 16) | 0xffff;
+>>>>>>> upstream/master
 }
 
 READ32_MEMBER(konendev_state::ctrl1_r)
@@ -186,7 +233,11 @@ READ32_MEMBER(konendev_state::ctrl1_r)
 
 READ32_MEMBER(konendev_state::ctrl2_r)
 {
+<<<<<<< HEAD
 	return ((UINT32)(ioport("IN0")->read() & 0xffff) << 16) | 0xffff;
+=======
+	return ((uint32_t)(ioport("IN0")->read() & 0xffff) << 16) | 0xffff;
+>>>>>>> upstream/master
 }
 
 WRITE32_MEMBER(konendev_state::eeprom_w)
@@ -297,7 +348,11 @@ INTERRUPT_GEN_MEMBER(konendev_state::vbl_interrupt)
 	device.execute().set_input_line(INPUT_LINE_IRQ3, ASSERT_LINE);
 }
 
+<<<<<<< HEAD
 static MACHINE_CONFIG_START( konendev, konendev_state )
+=======
+static MACHINE_CONFIG_START( konendev )
+>>>>>>> upstream/master
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", PPC403GCX, 32000000) // Clock unknown
 	MCFG_CPU_PROGRAM_MAP(konendev_map)
@@ -341,7 +396,11 @@ ROM_START( enchlamp )
 	ROM_REGION32_BE( 0x1800000, "flash", ROMREGION_ERASE00 )
 	ROM_LOAD( "enl5r211.fmu.bin", 0x0000, 0x1800000, CRC(592c3c7f) SHA1(119b3c6223d656981c399c399d7edccfdbb50dc7) )
 
+<<<<<<< HEAD
 	ROM_REGION32_BE( 0x100, "eeprom", 0 )
+=======
+	ROM_REGION16_BE( 0x100, "eeprom", 0 )
+>>>>>>> upstream/master
 	ROM_LOAD( "93c56.u98", 0x00, 0x100, CRC(b2521a6a) SHA1(f44711545bee7e9c772a3dc23b79f0ea8059ec50) )          // empty eeprom with Konami header
 ROM_END
 
@@ -471,7 +530,11 @@ ROM_START( konzero )
 
 	ROM_REGION32_BE( 0x1800000, "flash", ROMREGION_ERASE00 )
 
+<<<<<<< HEAD
 	ROM_REGION32_BE( 0x100, "eeprom", 0 )
+=======
+	ROM_REGION16_BE( 0x100, "eeprom", 0 )
+>>>>>>> upstream/master
 	ROM_LOAD( "93c56.u98", 0x00, 0x100, CRC(b2521a6a) SHA1(f44711545bee7e9c772a3dc23b79f0ea8059ec50) )          // empty eeprom with Konami header
 ROM_END
 
@@ -481,7 +544,11 @@ DRIVER_INIT_MEMBER(konendev_state,konendev)
 
 DRIVER_INIT_MEMBER(konendev_state,enchlamp)
 {
+<<<<<<< HEAD
 	UINT32 *rom = (UINT32*)memregion("program")->base();
+=======
+	uint32_t *rom = (uint32_t*)memregion("program")->base();
+>>>>>>> upstream/master
 	rom[0x24/4] = 0x00002743;       // patch flash checksum for now
 
 	// patch sound data checksums

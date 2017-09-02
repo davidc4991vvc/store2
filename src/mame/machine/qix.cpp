@@ -1,9 +1,16 @@
+<<<<<<< HEAD
 // license:???
 // copyright-holders:John Butler, Ed Mueller, Aaron Giles
+=======
+// license:BSD-3-Clause
+// copyright-holders:Aaron Giles, Zsolt Vasvari
+// thanks-to: John Butler, Ed Mueller
+>>>>>>> upstream/master
 /***************************************************************************
 
     Taito Qix hardware
 
+<<<<<<< HEAD
     driver by John Butler, Ed Mueller, Aaron Giles
 
 ***************************************************************************/
@@ -14,6 +21,15 @@
 #include "cpu/m6809/m6809.h"
 #include "includes/qix.h"
 
+=======
+***************************************************************************/
+
+#include "emu.h"
+#include "includes/qix.h"
+
+#include "cpu/m6800/m6800.h"
+
+>>>>>>> upstream/master
 
 /*************************************
  *
@@ -31,7 +47,11 @@ void qix_state::machine_reset()
 MACHINE_START_MEMBER(qix_state,qixmcu)
 {
 	/* set up save states */
+<<<<<<< HEAD
 	save_item(NAME(m_68705_port_in));
+=======
+	save_item(NAME(m_68705_portA_out));
+>>>>>>> upstream/master
 	save_item(NAME(m_coinctrl));
 }
 
@@ -139,8 +159,13 @@ READ8_MEMBER(qix_state::qix_video_firq_ack_r)
 
 READ8_MEMBER(qix_state::qixmcu_coin_r)
 {
+<<<<<<< HEAD
 	logerror("6809:qixmcu_coin_r = %02X\n", m_68705_port_out[0]);
 	return m_68705_port_out[0];
+=======
+	logerror("6809:qixmcu_coin_r = %02X\n", m_68705_portA_out);
+	return m_68705_portA_out;
+>>>>>>> upstream/master
 }
 
 
@@ -149,14 +174,22 @@ WRITE8_MEMBER(qix_state::qixmcu_coin_w)
 	logerror("6809:qixmcu_coin_w = %02X\n", data);
 	/* this is a callback called by pia6821_device::write(), so I don't need to synchronize */
 	/* the CPUs - they have already been synchronized by qix_pia_w() */
+<<<<<<< HEAD
 	m_68705_port_in[0] = data;
+=======
+	m_mcu->pa_w(space, 0, data, mem_mask);
+>>>>>>> upstream/master
 }
 
 
 WRITE8_MEMBER(qix_state::qixmcu_coinctrl_w)
 {
+<<<<<<< HEAD
 	/* if (!(data & 0x04)) */
 	if (data & 0x04)
+=======
+	if (BIT(data, 2))
+>>>>>>> upstream/master
 	{
 		m_mcu->set_input_line(M68705_IRQ_LINE, ASSERT_LINE);
 		/* temporarily boost the interleave to sync things up */
@@ -164,7 +197,13 @@ WRITE8_MEMBER(qix_state::qixmcu_coinctrl_w)
 		machine().scheduler().boost_interleave(attotime::zero, attotime::from_usec(50));
 	}
 	else
+<<<<<<< HEAD
 		m_mcu->set_input_line(M68705_IRQ_LINE, CLEAR_LINE);
+=======
+	{
+		m_mcu->set_input_line(M68705_IRQ_LINE, CLEAR_LINE);
+	}
+>>>>>>> upstream/master
 
 	/* this is a callback called by pia6821_device::write(), so I don't need to synchronize */
 	/* the CPUs - they have already been synchronized by qix_pia_w() */
@@ -180,6 +219,7 @@ WRITE8_MEMBER(qix_state::qixmcu_coinctrl_w)
  *
  *************************************/
 
+<<<<<<< HEAD
 READ8_MEMBER(qix_state::qix_68705_portA_r)
 {
 	UINT8 ddr = m_68705_ddr[0];
@@ -196,15 +236,24 @@ READ8_MEMBER(qix_state::qix_68705_portB_r)
 	UINT8 out = m_68705_port_out[1];
 	UINT8 in = (ioport("COIN")->read() & 0x0f) | ((ioport("COIN")->read() & 0x80) >> 3);
 	return (out & ddr) | (in & ~ddr);
+=======
+READ8_MEMBER(qix_state::qix_68705_portB_r)
+{
+	return (ioport("COIN")->read() & 0x0f) | ((ioport("COIN")->read() & 0x80) >> 3);
+>>>>>>> upstream/master
 }
 
 
 READ8_MEMBER(qix_state::qix_68705_portC_r)
 {
+<<<<<<< HEAD
 	UINT8 ddr = m_68705_ddr[2];
 	UINT8 out = m_68705_port_out[2];
 	UINT8 in = (m_coinctrl & 0x08) | ((ioport("COIN")->read() & 0x70) >> 4);
 	return (out & ddr) | (in & ~ddr);
+=======
+	return (m_coinctrl & 0x08) | ((ioport("COIN")->read() & 0x70) >> 4);
+>>>>>>> upstream/master
 }
 
 
@@ -218,12 +267,17 @@ READ8_MEMBER(qix_state::qix_68705_portC_r)
 WRITE8_MEMBER(qix_state::qix_68705_portA_w)
 {
 	logerror("68705:portA_w = %02X\n", data);
+<<<<<<< HEAD
 	m_68705_port_out[0] = data;
+=======
+	m_68705_portA_out = data;
+>>>>>>> upstream/master
 }
 
 
 WRITE8_MEMBER(qix_state::qix_68705_portB_w)
 {
+<<<<<<< HEAD
 	m_68705_port_out[1] = data;
 	coin_lockout_w(machine(), 0, (~data >> 6) & 1);
 	coin_counter_w(machine(), 0, (data >> 7) & 1);
@@ -233,6 +287,10 @@ WRITE8_MEMBER(qix_state::qix_68705_portB_w)
 WRITE8_MEMBER(qix_state::qix_68705_portC_w)
 {
 	m_68705_port_out[2] = data;
+=======
+	machine().bookkeeping().coin_lockout_w(0, (~data >> 6) & 1);
+	machine().bookkeeping().coin_counter_w(0, (data >> 7) & 1);
+>>>>>>> upstream/master
 }
 
 
@@ -266,8 +324,13 @@ WRITE8_MEMBER(qix_state::qix_pia_w)
 
 WRITE8_MEMBER(qix_state::qix_coinctl_w)
 {
+<<<<<<< HEAD
 	coin_lockout_w(machine(), 0, (~data >> 2) & 1);
 	coin_counter_w(machine(), 0, (data >> 1) & 1);
+=======
+	machine().bookkeeping().coin_lockout_w(0, (~data >> 2) & 1);
+	machine().bookkeeping().coin_counter_w(0, (data >> 1) & 1);
+>>>>>>> upstream/master
 }
 
 

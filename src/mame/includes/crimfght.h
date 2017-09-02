@@ -5,7 +5,13 @@
     Crime Fighters
 
 *************************************************************************/
+<<<<<<< HEAD
 #include "machine/bankdev.h"
+=======
+
+#include "machine/bankdev.h"
+#include "machine/gen_latch.h"
+>>>>>>> upstream/master
 #include "sound/k007232.h"
 #include "video/k052109.h"
 #include "video/k051960.h"
@@ -22,6 +28,10 @@ public:
 		m_k052109(*this, "k052109"),
 		m_k051960(*this, "k051960"),
 		m_palette(*this, "palette"),
+<<<<<<< HEAD
+=======
+		m_soundlatch(*this, "soundlatch"),
+>>>>>>> upstream/master
 		m_rombank(*this, "rombank") { }
 
 	/* devices */
@@ -32,6 +42,10 @@ public:
 	required_device<k052109_device> m_k052109;
 	required_device<k051960_device> m_k051960;
 	required_device<palette_device> m_palette;
+<<<<<<< HEAD
+=======
+	required_device<generic_latch_8_device> m_soundlatch;
+>>>>>>> upstream/master
 	required_memory_bank m_rombank;
 
 	DECLARE_WRITE8_MEMBER(crimfght_coin_w);
@@ -40,8 +54,13 @@ public:
 	DECLARE_WRITE8_MEMBER(k052109_051960_w);
 	IRQ_CALLBACK_MEMBER(audiocpu_irq_ack);
 	DECLARE_WRITE8_MEMBER(ym2151_ct_w);
+<<<<<<< HEAD
 	virtual void machine_start();
 	UINT32 screen_update_crimfght(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
+=======
+	virtual void machine_start() override;
+	uint32_t screen_update_crimfght(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
+>>>>>>> upstream/master
 	DECLARE_WRITE8_MEMBER(volume_callback);
 	K052109_CB_MEMBER(tile_callback);
 	K051960_CB_MEMBER(sprite_callback);

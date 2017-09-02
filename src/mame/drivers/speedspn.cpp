@@ -22,10 +22,20 @@ TODO:
 ******************************************************************************/
 
 #include "emu.h"
+<<<<<<< HEAD
 #include "cpu/z80/z80.h"
 #include "sound/okim6295.h"
 #include "includes/speedspn.h"
 
+=======
+#include "includes/speedspn.h"
+
+#include "cpu/z80/z80.h"
+#include "screen.h"
+#include "speaker.h"
+
+
+>>>>>>> upstream/master
 /*** README INFO **************************************************************
 
 ROMSET: speedspn
@@ -77,7 +87,11 @@ WRITE8_MEMBER(speedspn_state::rombank_w)
 
 WRITE8_MEMBER(speedspn_state::sound_w)
 {
+<<<<<<< HEAD
 	soundlatch_byte_w(space, 1, data);
+=======
+	m_soundlatch->write(space, 1, data);
+>>>>>>> upstream/master
 	m_audiocpu->set_input_line(0, HOLD_LINE);
 }
 
@@ -120,10 +134,17 @@ static ADDRESS_MAP_START( sound_map, AS_PROGRAM, 8, speedspn_state )
 	AM_RANGE(0x8000, 0x87ff) AM_RAM
 	AM_RANGE(0x9000, 0x9000) AM_WRITE(okibank_w)
 	AM_RANGE(0x9800, 0x9800) AM_DEVREADWRITE("oki", okim6295_device, read, write)
+<<<<<<< HEAD
 	AM_RANGE(0xa000, 0xa000) AM_READ(soundlatch_byte_r)
 ADDRESS_MAP_END
 
 static ADDRESS_MAP_START( oki_map, AS_0, 8, speedspn_state )
+=======
+	AM_RANGE(0xa000, 0xa000) AM_DEVREAD("soundlatch", generic_latch_8_device, read)
+ADDRESS_MAP_END
+
+static ADDRESS_MAP_START( oki_map, 0, 8, speedspn_state )
+>>>>>>> upstream/master
 	AM_RANGE(0x00000, 0x1ffff) AM_ROM
 	AM_RANGE(0x20000, 0x3ffff) AM_ROMBANK("okibank")
 ADDRESS_MAP_END
@@ -257,7 +278,11 @@ GFXDECODE_END
 void speedspn_state::machine_start()
 {
 	/* is this weird banking some form of protection? */
+<<<<<<< HEAD
 	UINT8 *rom = memregion("maincpu")->base();
+=======
+	uint8_t *rom = memregion("maincpu")->base();
+>>>>>>> upstream/master
 	m_prgbank->configure_entry(0, &rom[0x28000]);
 	m_prgbank->configure_entry(1, &rom[0x14000]);
 	m_prgbank->configure_entry(2, &rom[0x1c000]);
@@ -274,7 +299,11 @@ void speedspn_state::machine_start()
 }
 
 
+<<<<<<< HEAD
 static MACHINE_CONFIG_START( speedspn, speedspn_state )
+=======
+static MACHINE_CONFIG_START( speedspn )
+>>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu",Z80,6000000)      /* 6 MHz */
@@ -301,9 +330,17 @@ static MACHINE_CONFIG_START( speedspn, speedspn_state )
 	/* sound hardware */
 	MCFG_SPEAKER_STANDARD_MONO("mono")
 
+<<<<<<< HEAD
 	MCFG_OKIM6295_ADD("oki", 1122000, OKIM6295_PIN7_HIGH) // clock frequency & pin 7 not verified
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 1.0)
 	MCFG_DEVICE_ADDRESS_MAP(AS_0, oki_map)
+=======
+	MCFG_GENERIC_LATCH_8_ADD("soundlatch")
+
+	MCFG_OKIM6295_ADD("oki", 1122000, PIN7_HIGH) // clock frequency & pin 7 not verified
+	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 1.0)
+	MCFG_DEVICE_ADDRESS_MAP(0, oki_map)
+>>>>>>> upstream/master
 MACHINE_CONFIG_END
 
 /*** ROM LOADING *************************************************************/
@@ -334,4 +371,8 @@ ROM_END
 
 /*** GAME DRIVERS ************************************************************/
 
+<<<<<<< HEAD
 GAME( 1994, speedspn, 0, speedspn, speedspn, driver_device, 0, ROT180, "TCH", "Speed Spin", MACHINE_SUPPORTS_SAVE )
+=======
+GAME( 1994, speedspn, 0, speedspn, speedspn, speedspn_state, 0, ROT180, "TCH", "Speed Spin", MACHINE_SUPPORTS_SAVE )
+>>>>>>> upstream/master

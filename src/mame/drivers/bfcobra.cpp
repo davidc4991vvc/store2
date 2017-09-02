@@ -75,6 +75,7 @@
 ******************************************************************************/
 
 #include "emu.h"
+<<<<<<< HEAD
 #include "machine/clock.h"
 #include "machine/6850acia.h"
 #include "machine/meters.h"
@@ -83,6 +84,19 @@
 #include "sound/upd7759.h"
 #include "sound/ay8910.h"
 #include "machine/nvram.h"
+=======
+#include "cpu/m6809/m6809.h"
+#include "cpu/z80/z80.h"
+#include "machine/6850acia.h"
+#include "machine/clock.h"
+#include "machine/meters.h"
+#include "machine/nvram.h"
+#include "sound/ay8910.h"
+#include "sound/upd7759.h"
+#include "video/ramdac.h"
+#include "screen.h"
+#include "speaker.h"
+>>>>>>> upstream/master
 
 
 /*
@@ -102,6 +116,7 @@
 union ADDR_REG
 {
 #ifdef LSB_FIRST
+<<<<<<< HEAD
 	struct { UINT16 loword, hiword ; } as16bit;
 	struct { UINT8 addr0, addr1, addr2; } as8bit;
 #else
@@ -109,6 +124,15 @@ union ADDR_REG
 	struct { UINT8 addr2, addr1, addr0; } as8bit;
 #endif
 	UINT32 addr;
+=======
+	struct { uint16_t loword, hiword ; } as16bit;
+	struct { uint8_t addr0, addr1, addr2; } as8bit;
+#else
+	struct { uint16_t hiword, loword ; } as16bit;
+	struct { uint8_t addr2, addr1, addr0; } as8bit;
+#endif
+	uint32_t addr;
+>>>>>>> upstream/master
 };
 
 /* Blitter register flag bits */
@@ -151,6 +175,7 @@ struct bf_blitter_t
 {
 	ADDR_REG    program;
 
+<<<<<<< HEAD
 	UINT8       control;
 	UINT8       status;
 
@@ -164,10 +189,26 @@ struct bf_blitter_t
 	UINT8       innercnt;
 	UINT8       step;
 	UINT8       pattern;
+=======
+	uint8_t       control;
+	uint8_t       status;
+
+	uint8_t       command;
+	ADDR_REG    source;
+	ADDR_REG    dest;
+	uint8_t       modectl;
+	uint8_t       compfunc;
+	uint8_t       outercnt;
+
+	uint8_t       innercnt;
+	uint8_t       step;
+	uint8_t       pattern;
+>>>>>>> upstream/master
 };
 
 #define LOOPTYPE ( ( blitter.command&0x60 ) >> 5 )
 
+<<<<<<< HEAD
 /*
     MUSIC Semiconductor TR9C1710 RAMDAC or equivalent
 */
@@ -191,6 +232,11 @@ struct ramdac_t
 struct fdc_t
 {
 	UINT8   MSR;
+=======
+struct fdc_t
+{
+	uint8_t   MSR;
+>>>>>>> upstream/master
 
 	int     side;
 	int     track;
@@ -208,8 +254,13 @@ struct fdc_t
 	int     cmd_cnt;
 	int     res_len;
 	int     res_cnt;
+<<<<<<< HEAD
 	UINT8   cmd[10];
 	UINT8   results[8];
+=======
+	uint8_t   cmd[10];
+	uint8_t   results[8];
+>>>>>>> upstream/master
 };
 
 
@@ -245,6 +296,7 @@ public:
 		m_acia6850_1(*this, "acia6850_1"),
 		m_acia6850_2(*this, "acia6850_2"),
 		m_upd7759(*this, "upd"),
+<<<<<<< HEAD
 		m_palette(*this, "palette")
 	{
 	}
@@ -259,10 +311,28 @@ public:
 	UINT8 m_videomode;
 	UINT8 m_data_r;
 	UINT8 m_data_t;
+=======
+		m_palette(*this, "palette"),
+		m_meters(*this, "meters")
+	{
+	}
+
+	uint8_t m_bank_data[4];
+	std::unique_ptr<uint8_t[]> m_work_ram;
+	std::unique_ptr<uint8_t[]> m_video_ram;
+	uint8_t m_h_scroll;
+	uint8_t m_v_scroll;
+	uint8_t m_flip_8;
+	uint8_t m_flip_22;
+	uint8_t m_videomode;
+	uint8_t m_data_r;
+	uint8_t m_data_t;
+>>>>>>> upstream/master
 	int m_irq_state;
 	int m_acia_irq;
 	int m_vblank_irq;
 	int m_blitter_irq;
+<<<<<<< HEAD
 	UINT8 m_z80_int;
 	UINT8 m_z80_inten;
 	UINT32 m_meter_latch;
@@ -278,6 +348,20 @@ public:
 	struct fdc_t m_fdc;
 	DECLARE_READ8_MEMBER(ramdac_r);
 	DECLARE_WRITE8_MEMBER(ramdac_w);
+=======
+	uint8_t m_z80_int;
+	uint8_t m_z80_inten;
+	uint32_t m_meter_latch;
+	uint32_t m_mux_input;
+	uint32_t m_mux_outputlatch;
+	uint8_t m_col4bit[16];
+	uint8_t m_col3bit[16];
+	uint8_t m_col8bit[256];
+	uint8_t m_col7bit[256];
+	uint8_t m_col6bit[256];
+	struct bf_blitter_t m_blitter;
+	struct fdc_t m_fdc;
+>>>>>>> upstream/master
 	DECLARE_READ8_MEMBER(chipset_r);
 	DECLARE_WRITE8_MEMBER(chipset_w);
 	DECLARE_WRITE8_MEMBER(rombank_w);
@@ -289,8 +373,11 @@ public:
 	DECLARE_WRITE8_MEMBER(meter_w);
 	DECLARE_READ8_MEMBER(latch_r);
 	DECLARE_WRITE8_MEMBER(latch_w);
+<<<<<<< HEAD
 	DECLARE_WRITE8_MEMBER(fd_op_w);
 	DECLARE_WRITE8_MEMBER(fd_ctrl_w);
+=======
+>>>>>>> upstream/master
 	DECLARE_READ8_MEMBER(upd_r);
 	DECLARE_WRITE8_MEMBER(upd_w);
 	DECLARE_WRITE_LINE_MEMBER(z80_acia_irq);
@@ -298,14 +385,21 @@ public:
 	DECLARE_WRITE_LINE_MEMBER(data_acia_tx_w);
 	DECLARE_WRITE_LINE_MEMBER(write_acia_clock);
 	DECLARE_DRIVER_INIT(bfcobra);
+<<<<<<< HEAD
 	virtual void machine_reset();
 	virtual void video_start();
 	UINT32 screen_update_bfcobra(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect);
+=======
+	virtual void machine_reset() override;
+	virtual void video_start() override;
+	uint32_t screen_update_bfcobra(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect);
+>>>>>>> upstream/master
 	INTERRUPT_GEN_MEMBER(timer_irq);
 	INTERRUPT_GEN_MEMBER(vblank_gen);
 	void RunBlit(address_space &space);
 	void update_irqs();
 	void reset_fdc();
+<<<<<<< HEAD
 	void exec_w_phase(UINT8 data);
 	void init_ram();
 	void command_phase(struct fdc_t &fdc, UINT8 data);
@@ -313,6 +407,13 @@ public:
 	inline void z80_bank(int num, int data);
 	UINT8 exec_r_phase(void);
 	UINT8 results_phase(void);
+=======
+	void exec_w_phase(uint8_t data);
+	void init_ram();
+	void command_phase(struct fdc_t &fdc, uint8_t data);
+	inline uint8_t* blitter_get_addr(uint32_t addr);
+	inline void z80_bank(int num, int data);
+>>>>>>> upstream/master
 	required_device<cpu_device> m_maincpu;
 	required_device<cpu_device> m_audiocpu;
 	required_device<acia6850_device> m_acia6850_0;
@@ -320,10 +421,18 @@ public:
 	required_device<acia6850_device> m_acia6850_2;
 	required_device<upd7759_device> m_upd7759;
 	required_device<palette_device> m_palette;
+<<<<<<< HEAD
 };
 
 
 static const UINT8 col4bit_default[16]=
+=======
+	required_device<meters_device> m_meters;
+};
+
+
+static const uint8_t col4bit_default[16]=
+>>>>>>> upstream/master
 {
 	BLUE_0 | GREEN_0 | RED_0,
 	BLUE_1,
@@ -343,7 +452,11 @@ static const UINT8 col4bit_default[16]=
 	RED_7 | GREEN_7 | BLUE_3
 };
 
+<<<<<<< HEAD
 static const UINT8 col3bit_default[16]=
+=======
+static const uint8_t col3bit_default[16]=
+>>>>>>> upstream/master
 {
 	0,
 	BLUE_3,
@@ -363,7 +476,11 @@ static const UINT8 col3bit_default[16]=
 	RED_7 | GREEN_7 | BLUE_3
 };
 
+<<<<<<< HEAD
 static const UINT8 col76index[] = {0, 2, 4, 7};
+=======
+static const uint8_t col76index[] = {0, 2, 4, 7};
+>>>>>>> upstream/master
 
 
 void bfcobra_state::video_start()
@@ -374,7 +491,11 @@ void bfcobra_state::video_start()
 	memcpy(m_col3bit, col3bit_default, sizeof(m_col3bit));
 	for (i = 0; i < 256; ++i)
 	{
+<<<<<<< HEAD
 		UINT8 col;
+=======
+		uint8_t col;
+>>>>>>> upstream/master
 
 		m_col8bit[i] = i;
 		col = i & 0x7f;
@@ -387,6 +508,7 @@ void bfcobra_state::video_start()
 	}
 }
 
+<<<<<<< HEAD
 UINT32 bfcobra_state::screen_update_bfcobra(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect)
 {
 	int x, y;
@@ -395,6 +517,16 @@ UINT32 bfcobra_state::screen_update_bfcobra(screen_device &screen, bitmap_rgb32 
 	UINT32 offset;
 	UINT8 *hirescol;
 	UINT8 *lorescol;
+=======
+uint32_t bfcobra_state::screen_update_bfcobra(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect)
+{
+	int x, y;
+	uint8_t  *src;
+	uint32_t *dest;
+	uint32_t offset;
+	uint8_t *hirescol;
+	uint8_t *lorescol;
+>>>>>>> upstream/master
 
 	/* Select screen has to be programmed into two registers */
 	/* No idea what happens if the registers are different */
@@ -421,14 +553,23 @@ UINT32 bfcobra_state::screen_update_bfcobra(screen_device &screen, bitmap_rgb32 
 
 	for (y = cliprect.min_y; y <= cliprect.max_y; ++y)
 	{
+<<<<<<< HEAD
 		UINT16 y_offset = (y + m_v_scroll) * 256;
+=======
+		uint16_t y_offset = (y + m_v_scroll) * 256;
+>>>>>>> upstream/master
 		src = &m_video_ram[offset + y_offset];
 		dest = &bitmap.pix32(y);
 
 		for (x = cliprect.min_x; x <= cliprect.max_x / 2; ++x)
 		{
+<<<<<<< HEAD
 			UINT8 x_offset = x + m_h_scroll;
 			UINT8 pen = *(src + x_offset);
+=======
+			uint8_t x_offset = x + m_h_scroll;
+			uint8_t pen = *(src + x_offset);
+>>>>>>> upstream/master
 
 			if ( ( m_videomode & 0x81 ) == 1 || (m_videomode & 0x80 && pen & 0x80) )
 			{
@@ -446,18 +587,27 @@ UINT32 bfcobra_state::screen_update_bfcobra(screen_device &screen, bitmap_rgb32 
 	return 0;
 }
 
+<<<<<<< HEAD
 UINT8* bfcobra_state::blitter_get_addr(UINT32 addr)
+=======
+uint8_t* bfcobra_state::blitter_get_addr(uint32_t addr)
+>>>>>>> upstream/master
 {
 	if (addr < 0x10000)
 	{
 		/* Is this region fixed? */
+<<<<<<< HEAD
 		return (UINT8*)(memregion("user1")->base() + addr);
+=======
+		return (uint8_t*)(memregion("user1")->base() + addr);
+>>>>>>> upstream/master
 	}
 	else if(addr < 0x20000)
 	{
 		addr &= 0xffff;
 		addr += (m_bank_data[0] & 1) ? 0x10000 : 0;
 
+<<<<<<< HEAD
 		return (UINT8*)(memregion("user1")->base() + addr + ((m_bank_data[0] >> 1) * 0x20000));
 	}
 	else if (addr >= 0x20000 && addr < 0x40000)
@@ -467,6 +617,17 @@ UINT8* bfcobra_state::blitter_get_addr(UINT32 addr)
 	else
 	{
 		return (UINT8*)&m_work_ram[addr - 0x40000];
+=======
+		return (uint8_t*)(memregion("user1")->base() + addr + ((m_bank_data[0] >> 1) * 0x20000));
+	}
+	else if (addr >= 0x20000 && addr < 0x40000)
+	{
+		return (uint8_t*)&m_video_ram[addr - 0x20000];
+	}
+	else
+	{
+		return (uint8_t*)&m_work_ram[addr - 0x40000];
+>>>>>>> upstream/master
 	}
 }
 
@@ -486,8 +647,13 @@ void bfcobra_state::RunBlit(address_space &space)
 
 	do
 	{
+<<<<<<< HEAD
 		UINT8 srcdata = 0;
 		UINT8 dstdata = 0;
+=======
+		uint8_t srcdata = 0;
+		uint8_t dstdata = 0;
+>>>>>>> upstream/master
 
 		/* Read the blitter command */
 		BLITPRG_READ(source.as8bit.addr0);
@@ -542,7 +708,11 @@ void bfcobra_state::RunBlit(address_space &space)
 		/* Begin outer loop */
 		for (;;)
 		{
+<<<<<<< HEAD
 			UINT8 innercnt = blitter.innercnt;
+=======
+			uint8_t innercnt = blitter.innercnt;
+>>>>>>> upstream/master
 			dstdata = blitter.pattern;
 
 			if (blitter.command & CMD_LINEDRAW)
@@ -595,10 +765,17 @@ void bfcobra_state::RunBlit(address_space &space)
 			}
 			else do
 			{
+<<<<<<< HEAD
 				UINT8   inhibit = 0;
 
 				/* TODO: Set this correctly */
 				UINT8   result = blitter.pattern;
+=======
+				uint8_t   inhibit = 0;
+
+				/* TODO: Set this correctly */
+				uint8_t   result = blitter.pattern;
+>>>>>>> upstream/master
 
 				if (LOOPTYPE == 3 && innercnt == blitter.innercnt)
 				{
@@ -696,15 +873,24 @@ void bfcobra_state::RunBlit(address_space &space)
 						    The existing destination pixel is used as a lookup
 						    into the table and the colours is replaced.
 						*/
+<<<<<<< HEAD
 						UINT8 dest = *blitter_get_addr( blitter.dest.addr);
 						UINT8 newcol = *(blitter_get_addr( (blitter.source.addr + dest) & 0xfffff));
+=======
+						uint8_t dest = *blitter_get_addr( blitter.dest.addr);
+						uint8_t newcol = *(blitter_get_addr( (blitter.source.addr + dest) & 0xfffff));
+>>>>>>> upstream/master
 
 						*blitter_get_addr( blitter.dest.addr) = newcol;
 						cycles_used += 3;
 					}
 					else
 					{
+<<<<<<< HEAD
 						UINT8 final_result = 0;
+=======
+						uint8_t final_result = 0;
+>>>>>>> upstream/master
 
 						if (blitter.compfunc & CMPFUNC_LOG3)
 							final_result |= result & dstdata;
@@ -761,6 +947,7 @@ void bfcobra_state::RunBlit(address_space &space)
 	space.device().execute().spin_until_time(attotime::from_nsec( (1000000000 / Z80_XTAL)*cycles_used * 2 ) );
 }
 
+<<<<<<< HEAD
 
 READ8_MEMBER(bfcobra_state::ramdac_r)
 {
@@ -840,6 +1027,8 @@ WRITE8_MEMBER(bfcobra_state::ramdac_w)
 	}
 }
 
+=======
+>>>>>>> upstream/master
 /***************************************************************************
 
     Flare One Register Map
@@ -902,7 +1091,11 @@ void bfcobra_state::update_irqs()
 
 READ8_MEMBER(bfcobra_state::chipset_r)
 {
+<<<<<<< HEAD
 	UINT8 val = 0xff;
+=======
+	uint8_t val = 0xff;
+>>>>>>> upstream/master
 
 	switch(offset)
 	{
@@ -1048,7 +1241,11 @@ void bfcobra_state::z80_bank(int num, int data)
 
 	if (data < 0x08)
 	{
+<<<<<<< HEAD
 		UINT32 offset = ((m_bank_data[0] >> 1) * 0x20000) + ((0x4000 * data) ^ ((m_bank_data[0] & 1) ? 0 : 0x10000));
+=======
+		uint32_t offset = ((m_bank_data[0] >> 1) * 0x20000) + ((0x4000 * data) ^ ((m_bank_data[0] & 1) ? 0 : 0x10000));
+>>>>>>> upstream/master
 
 		membank(bank_names[num - 1])->set_base(memregion("user1")->base() + offset);
 	}
@@ -1123,7 +1320,11 @@ void bfcobra_state::reset_fdc()
 
 READ8_MEMBER(bfcobra_state::fdctrl_r)
 {
+<<<<<<< HEAD
 	UINT8 val = 0;
+=======
+	uint8_t val = 0;
+>>>>>>> upstream/master
 
 	val = m_fdc.MSR;
 
@@ -1137,7 +1338,11 @@ READ8_MEMBER(bfcobra_state::fddata_r)
 	#define SPT     10
 	#define BPT     1024*10
 
+<<<<<<< HEAD
 	UINT8 val = 0;
+=======
+	uint8_t val = 0;
+>>>>>>> upstream/master
 
 	if (fdc.phase == EXECUTION_R)
 	{
@@ -1225,7 +1430,11 @@ WRITE8_MEMBER(bfcobra_state::fdctrl_w)
 	}
 }
 
+<<<<<<< HEAD
 void bfcobra_state::command_phase(struct fdc_t &fdc, UINT8 data)
+=======
+void bfcobra_state::command_phase(struct fdc_t &fdc, uint8_t data)
+>>>>>>> upstream/master
 {
 	if (fdc.cmd_cnt == 0)
 	{
@@ -1307,18 +1516,30 @@ void bfcobra_state::command_phase(struct fdc_t &fdc, UINT8 data)
 }
 
 #ifdef UNUSED_FUNCTION
+<<<<<<< HEAD
 UINT8 bfcobra_state::exec_r_phase(void)
+=======
+uint8_t bfcobra_state::exec_r_phase(void)
+>>>>>>> upstream/master
 {
 	return 0;
 }
 #endif
 
+<<<<<<< HEAD
 void bfcobra_state::exec_w_phase(UINT8 data)
+=======
+void bfcobra_state::exec_w_phase(uint8_t data)
+>>>>>>> upstream/master
 {
 }
 
 #ifdef UNUSED_FUNCTION
+<<<<<<< HEAD
 UINT8 bfcobra_state::results_phase(void)
+=======
+uint8_t bfcobra_state::results_phase(void)
+>>>>>>> upstream/master
 {
 	return 0;
 }
@@ -1342,7 +1563,10 @@ void bfcobra_state::machine_reset()
 	}
 
 	m_bank_data[0] = 1;
+<<<<<<< HEAD
 	memset(&m_ramdac, 0, sizeof(m_ramdac));
+=======
+>>>>>>> upstream/master
 	reset_fdc();
 
 	m_irq_state = m_blitter_irq = m_vblank_irq = m_acia_irq = 0;
@@ -1371,7 +1595,19 @@ ADDRESS_MAP_GLOBAL_MASK(0xff)
 	AM_RANGE(0x30, 0x30) AM_READ(fdctrl_r)
 	AM_RANGE(0x31, 0x31) AM_READWRITE(fddata_r, fdctrl_w)
 	AM_RANGE(0x40, 0x40) AM_WRITE(rombank_w)
+<<<<<<< HEAD
 	AM_RANGE(0x50, 0x53) AM_READWRITE(ramdac_r, ramdac_w)
+=======
+	AM_RANGE(0x50, 0x50) AM_DEVWRITE("ramdac", ramdac_device, index_w)
+	AM_RANGE(0x51, 0x51) AM_DEVREADWRITE("ramdac", ramdac_device, pal_r, pal_w)
+	AM_RANGE(0x52, 0x52) AM_DEVWRITE("ramdac", ramdac_device, mask_w)
+	AM_RANGE(0x53, 0x53) AM_DEVWRITE("ramdac", ramdac_device, index_r_w)
+ADDRESS_MAP_END
+
+
+static ADDRESS_MAP_START( ramdac_map, 0, 8, bfcobra_state )
+	AM_RANGE(0x000, 0x3ff) AM_DEVREADWRITE("ramdac", ramdac_device, ramdac_pal_r, ramdac_rgb666_w)
+>>>>>>> upstream/master
 ADDRESS_MAP_END
 
 
@@ -1424,7 +1660,11 @@ WRITE8_MEMBER(bfcobra_state::meter_w)
 	{
 		if (changed & (1 << i))
 		{
+<<<<<<< HEAD
 			MechMtr_update(i, data & (1 << i) );
+=======
+			m_meters->update(i, data & (1 << i) );
+>>>>>>> upstream/master
 			space.device().execute().set_input_line(M6809_FIRQ_LINE, HOLD_LINE);
 		}
 	}
@@ -1615,10 +1855,17 @@ INPUT_PORTS_END
 void bfcobra_state::init_ram()
 {
 	/* 768kB work RAM */
+<<<<<<< HEAD
 	m_work_ram = auto_alloc_array_clear(machine(), UINT8, 0xC0000);
 
 	/* 128kB video RAM */
 	m_video_ram = auto_alloc_array_clear(machine(), UINT8, 0x20000);
+=======
+	m_work_ram = make_unique_clear<uint8_t[]>(0xC0000);
+
+	/* 128kB video RAM */
+	m_video_ram = make_unique_clear<uint8_t[]>(0x20000);
+>>>>>>> upstream/master
 }
 
 
@@ -1659,6 +1906,7 @@ DRIVER_INIT_MEMBER(bfcobra_state,bfcobra)
 	    6809 ROM address and data lines are scrambled.
 	    This is the same scrambling as Scorpion 2.
 	*/
+<<<<<<< HEAD
 	static const UINT8 datalookup[] = { 1, 3, 5, 6, 4, 2, 0, 7 };
 	static const UINT8 addrlookup[] = { 11, 12, 0, 2, 3, 5, 7, 9, 8, 6, 1, 4, 10, 13, 14 };
 
@@ -1666,15 +1914,31 @@ DRIVER_INIT_MEMBER(bfcobra_state,bfcobra)
 	UINT8 *rom;
 
 	dynamic_buffer tmp(0x8000);
+=======
+	static const uint8_t datalookup[] = { 1, 3, 5, 6, 4, 2, 0, 7 };
+	static const uint8_t addrlookup[] = { 11, 12, 0, 2, 3, 5, 7, 9, 8, 6, 1, 4, 10, 13, 14 };
+
+	uint32_t i;
+	uint8_t *rom;
+
+	std::vector<uint8_t> tmp(0x8000);
+>>>>>>> upstream/master
 	rom = memregion("audiocpu")->base() + 0x8000;
 	memcpy(&tmp[0], rom, 0x8000);
 
 	for (i = 0; i < 0x8000; i++)
 	{
+<<<<<<< HEAD
 		UINT16 addr = 0;
 		UINT8 x;
 		UINT8 data = 0;
 		UINT8 val = tmp[i];
+=======
+		uint16_t addr = 0;
+		uint8_t x;
+		uint8_t data = 0;
+		uint8_t val = tmp[i];
+>>>>>>> upstream/master
 
 		for (x = 0; x < 8; x ++)
 			data |= ((val >> x) & 1) << datalookup[x];
@@ -1708,8 +1972,13 @@ DRIVER_INIT_MEMBER(bfcobra_state,bfcobra)
 	save_item(NAME(m_z80_int));
 	save_item(NAME(m_z80_inten));
 	save_item(NAME(m_bank_data));
+<<<<<<< HEAD
 	save_pointer(NAME(m_work_ram), 0xc0000);
 	save_pointer(NAME(m_video_ram), 0x20000);
+=======
+	save_pointer(NAME(m_work_ram.get()), 0xc0000);
+	save_pointer(NAME(m_video_ram.get()), 0x20000);
+>>>>>>> upstream/master
 }
 
 /* TODO */
@@ -1725,7 +1994,11 @@ INTERRUPT_GEN_MEMBER(bfcobra_state::vblank_gen)
 	update_irqs();
 }
 
+<<<<<<< HEAD
 static MACHINE_CONFIG_START( bfcobra, bfcobra_state )
+=======
+static MACHINE_CONFIG_START( bfcobra )
+>>>>>>> upstream/master
 	MCFG_CPU_ADD("maincpu", Z80, Z80_XTAL)
 	MCFG_CPU_PROGRAM_MAP(z80_prog_map)
 	MCFG_CPU_IO_MAP(z80_io_map)
@@ -1748,6 +2021,12 @@ static MACHINE_CONFIG_START( bfcobra, bfcobra_state )
 
 	MCFG_PALETTE_ADD("palette", 256)
 
+<<<<<<< HEAD
+=======
+	MCFG_RAMDAC_ADD("ramdac", ramdac_map, "palette") // MUSIC Semiconductor TR9C1710 RAMDAC or equivalent
+	MCFG_RAMDAC_SPLIT_READ(1)
+
+>>>>>>> upstream/master
 	MCFG_SPEAKER_STANDARD_MONO("mono")
 
 	MCFG_SOUND_ADD("aysnd", AY8910, M6809_XTAL)
@@ -1770,6 +2049,12 @@ static MACHINE_CONFIG_START( bfcobra, bfcobra_state )
 
 	MCFG_DEVICE_ADD("acia_clock", CLOCK, 31250*16) // What are the correct ACIA clocks ?
 	MCFG_CLOCK_SIGNAL_HANDLER(WRITELINE(bfcobra_state, write_acia_clock))
+<<<<<<< HEAD
+=======
+
+	MCFG_DEVICE_ADD("meters", METERS, 0)
+	MCFG_METERS_NUMBER(8)
+>>>>>>> upstream/master
 MACHINE_CONFIG_END
 
 /***************************************************************************

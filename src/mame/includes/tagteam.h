@@ -1,5 +1,11 @@
 // license:BSD-3-Clause
 // copyright-holders:Steve Ellenoff, Brad Oliver
+<<<<<<< HEAD
+=======
+
+#include "machine/gen_latch.h"
+
+>>>>>>> upstream/master
 class tagteam_state : public driver_device
 {
 public:
@@ -9,6 +15,10 @@ public:
 		m_audiocpu(*this, "audiocpu"),
 		m_gfxdecode(*this, "gfxdecode"),
 		m_palette(*this, "palette"),
+<<<<<<< HEAD
+=======
+		m_soundlatch(*this, "soundlatch"),
+>>>>>>> upstream/master
 		m_videoram(*this, "videoram"),
 		m_colorram(*this, "colorram") { }
 
@@ -16,6 +26,7 @@ public:
 	required_device<cpu_device> m_audiocpu;
 	required_device<gfxdecode_device> m_gfxdecode;
 	required_device<palette_device> m_palette;
+<<<<<<< HEAD
 
 	required_shared_ptr<UINT8> m_videoram;
 	required_shared_ptr<UINT8> m_colorram;
@@ -25,6 +36,17 @@ public:
 	UINT8 m_sound_nmi_mask;
 
 	DECLARE_WRITE8_MEMBER(sound_command_w);
+=======
+	required_device<generic_latch_8_device> m_soundlatch;
+
+	required_shared_ptr<uint8_t> m_videoram;
+	required_shared_ptr<uint8_t> m_colorram;
+
+	int m_palettebank;
+	tilemap_t *m_bg_tilemap;
+	uint8_t m_sound_nmi_mask;
+
+>>>>>>> upstream/master
 	DECLARE_WRITE8_MEMBER(irq_clear_w);
 	DECLARE_WRITE8_MEMBER(sound_nmi_mask_w);
 	DECLARE_WRITE8_MEMBER(videoram_w);
@@ -41,10 +63,18 @@ public:
 
 	TILE_GET_INFO_MEMBER(get_bg_tile_info);
 
+<<<<<<< HEAD
 	virtual void machine_start();
 	virtual void video_start();
 	DECLARE_PALETTE_INIT(tagteam);
 
 	UINT32 screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
+=======
+	virtual void machine_start() override;
+	virtual void video_start() override;
+	DECLARE_PALETTE_INIT(tagteam);
+
+	uint32_t screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
+>>>>>>> upstream/master
 	void draw_sprites(bitmap_ind16 &bitmap, const rectangle &cliprect);
 };

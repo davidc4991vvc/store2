@@ -95,18 +95,30 @@ static const int SQW_freq_table[16] =
 */
 
 /*
+<<<<<<< HEAD
     Increment a binary-encoded UINT8
 */
 static UINT8 increment_binary(UINT8 data)
+=======
+    Increment a binary-encoded uint8_t
+*/
+static uint8_t increment_binary(uint8_t data)
+>>>>>>> upstream/master
 {
 	return data+1;
 }
 
 
 /*
+<<<<<<< HEAD
     Increment a BCD-encoded UINT8
 */
 static UINT8 increment_BCD(UINT8 data)
+=======
+    Increment a BCD-encoded uint8_t
+*/
+static uint8_t increment_BCD(uint8_t data)
+>>>>>>> upstream/master
 {
 	if ((data & 0x0f) < 0x09)
 	{
@@ -127,9 +139,15 @@ static UINT8 increment_BCD(UINT8 data)
 
 
 /*
+<<<<<<< HEAD
     Convert a binary-encoded UINT8 to BCD
 */
 static UINT8 binary_to_BCD(UINT8 data)
+=======
+    Convert a binary-encoded uint8_t to BCD
+*/
+static uint8_t binary_to_BCD(uint8_t data)
+>>>>>>> upstream/master
 {
 	data %= 100;
 
@@ -138,9 +156,15 @@ static UINT8 binary_to_BCD(UINT8 data)
 
 
 /*
+<<<<<<< HEAD
     Convert a BCD-encoded UINT8 to binary
 */
 static UINT8 BCD_to_binary(UINT8 data)
+=======
+    Convert a BCD-encoded uint8_t to binary
+*/
+static uint8_t BCD_to_binary(uint8_t data)
+>>>>>>> upstream/master
 {
 	if ((data & 0x0f) >= 0x0a)
 		data = data - 0x0a + 0x10;
@@ -175,7 +199,11 @@ void rtc65271_device::nvram_default()
 
 void rtc65271_device::nvram_read(emu_file &file)
 {
+<<<<<<< HEAD
 	UINT8 buf;
+=======
+	uint8_t buf;
+>>>>>>> upstream/master
 
 	/* version flag */
 	if (file.read(&buf, 1) != 1)
@@ -208,7 +236,11 @@ void rtc65271_device::nvram_read(emu_file &file)
 		return;
 
 	m_regs[reg_D] |= reg_D_VRT; /* the data was backed up successfully */
+<<<<<<< HEAD
 	/*m_dirty = FALSE;*/
+=======
+	/*m_dirty = false;*/
+>>>>>>> upstream/master
 
 	{
 		system_time systime;
@@ -261,7 +293,11 @@ void rtc65271_device::nvram_read(emu_file &file)
 
 void rtc65271_device::nvram_write(emu_file &file)
 {
+<<<<<<< HEAD
 	UINT8 buf;
+=======
+	uint8_t buf;
+>>>>>>> upstream/master
 
 
 	/* version flag */
@@ -300,7 +336,11 @@ void rtc65271_device::nvram_write(emu_file &file)
     xramsel: select RTC register if 0, XRAM if 1
     offset: address (A0-A5 pins)
 */
+<<<<<<< HEAD
 UINT8 rtc65271_device::read(int xramsel, offs_t offset)
+=======
+uint8_t rtc65271_device::read(int xramsel, offs_t offset)
+>>>>>>> upstream/master
 {
 	int reply;
 
@@ -362,7 +402,11 @@ READ8_MEMBER( rtc65271_device::xram_r )
     xramsel: select RTC register if 0, XRAM if 1
     offset: address (A0-A5 pins)
 */
+<<<<<<< HEAD
 void rtc65271_device::write(int xramsel, offs_t offset, UINT8 data)
+=======
+void rtc65271_device::write(int xramsel, offs_t offset, uint8_t data)
+>>>>>>> upstream/master
 {
 	if (xramsel)
 	{
@@ -464,6 +508,7 @@ void rtc65271_device::field_interrupts()
 
 
 /*
+<<<<<<< HEAD
     Timer handlers
 */
 TIMER_CALLBACK( rtc65271_device::rtc_SQW_callback )
@@ -488,6 +533,12 @@ TIMER_CALLBACK( rtc65271_device::rtc_end_update_callback )
     period.
 */
 void rtc65271_device::rtc_SQW_cb()
+=======
+    Update SQW output state each half-period and assert periodic interrupt each
+    period.
+*/
+TIMER_CALLBACK_MEMBER(rtc65271_device::rtc_SQW_cb)
+>>>>>>> upstream/master
 {
 	attotime half_period;
 
@@ -506,14 +557,22 @@ void rtc65271_device::rtc_SQW_cb()
 /*
     Begin update cycle (called every second)
 */
+<<<<<<< HEAD
 void rtc65271_device::rtc_begin_update_cb()
+=======
+TIMER_CALLBACK_MEMBER(rtc65271_device::rtc_begin_update_cb)
+>>>>>>> upstream/master
 {
 	if (((m_regs[reg_A] & reg_A_DV) == 0x20) && ! (m_regs[reg_B] & reg_B_SET))
 	{
 		m_regs[reg_A] |= reg_A_UIP;
 
 		/* schedule end of update cycle */
+<<<<<<< HEAD
 		machine().scheduler().timer_set(UPDATE_CYCLE_TIME, FUNC(rtc_end_update_callback), 0, (void *)this);
+=======
+		machine().scheduler().timer_set(UPDATE_CYCLE_TIME, timer_expired_delegate(FUNC(rtc65271_device::rtc_end_update_cb), this));
+>>>>>>> upstream/master
 	}
 }
 
@@ -521,14 +580,22 @@ void rtc65271_device::rtc_begin_update_cb()
     End update cycle (called UPDATE_CYCLE_TIME = 1948us after start of update
     cycle)
 */
+<<<<<<< HEAD
 void rtc65271_device::rtc_end_update_cb()
+=======
+TIMER_CALLBACK_MEMBER(rtc65271_device::rtc_end_update_cb)
+>>>>>>> upstream/master
 {
 	static const int days_in_month_table[12] =
 	{
 		31,28,31, 30,31,30,
 		31,31,30, 31,30,31
 	};
+<<<<<<< HEAD
 	UINT8 (*increment)(UINT8 data);
+=======
+	uint8_t (*increment)(uint8_t data);
+>>>>>>> upstream/master
 	int c59, c23, c12, c11, c29;
 
 	if (! (m_regs[reg_A] & reg_A_UIP))
@@ -666,16 +733,27 @@ void rtc65271_device::rtc_end_update_cb()
 }
 
 // device type definition
+<<<<<<< HEAD
 const device_type RTC65271 = &device_creator<rtc65271_device>;
+=======
+DEFINE_DEVICE_TYPE(RTC65271, rtc65271_device, "rtc65271", "Epson RTC-65271 RTC")
+>>>>>>> upstream/master
 
 //-------------------------------------------------
 //  rtc65271_device - constructor
 //-------------------------------------------------
 
+<<<<<<< HEAD
 rtc65271_device::rtc65271_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
 	: device_t(mconfig, RTC65271, "RTC-65271", tag, owner, clock, "rtc65271", __FILE__),
 		device_nvram_interface(mconfig, *this),
 		m_interrupt_cb(*this)
+=======
+rtc65271_device::rtc65271_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: device_t(mconfig, RTC65271, tag, owner, clock)
+	, device_nvram_interface(mconfig, *this)
+	, m_interrupt_cb(*this)
+>>>>>>> upstream/master
 {
 }
 
@@ -684,9 +762,15 @@ rtc65271_device::rtc65271_device(const machine_config &mconfig, const char *tag,
 //-------------------------------------------------
 void rtc65271_device::device_start()
 {
+<<<<<<< HEAD
 	m_update_timer = machine().scheduler().timer_alloc(FUNC(rtc_begin_update_callback), (void *)this);
 	m_update_timer->adjust(attotime::from_seconds(1), 0, attotime::from_seconds(1));
 	m_SQW_timer = machine().scheduler().timer_alloc(FUNC(rtc_SQW_callback), (void *)this);
+=======
+	m_update_timer = machine().scheduler().timer_alloc(timer_expired_delegate(FUNC(rtc65271_device::rtc_begin_update_cb), this));
+	m_update_timer->adjust(attotime::from_seconds(1), 0, attotime::from_seconds(1));
+	m_SQW_timer = machine().scheduler().timer_alloc(timer_expired_delegate(FUNC(rtc65271_device::rtc_SQW_cb), this));
+>>>>>>> upstream/master
 	m_interrupt_cb.resolve();
 
 	save_item(NAME(m_regs));

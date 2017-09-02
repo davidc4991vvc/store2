@@ -6,12 +6,20 @@
 
 **********************************************************************/
 
+<<<<<<< HEAD
 #pragma once
 
 #ifndef __VP590__
 #define __VP590__
 
 #include "emu.h"
+=======
+#ifndef MAME_BUS_VIP_VP590_H
+#define MAME_BUS_VIP_VP590_H
+
+#pragma once
+
+>>>>>>> upstream/master
 #include "machine/rescap.h"
 #include "exp.h"
 #include "video/cdp1862.h"
@@ -29,6 +37,7 @@ class vp590_device : public device_t,
 {
 public:
 	// construction/destruction
+<<<<<<< HEAD
 	vp590_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
 
 	// optional information overrides
@@ -55,17 +64,53 @@ protected:
 private:
 	required_device<cdp1862_device> m_cgc;
 	optional_shared_ptr<UINT8> m_color_ram;
+=======
+	vp590_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
+
+protected:
+	// device-level overrides
+	virtual void device_start() override;
+	virtual void device_add_mconfig(machine_config &config) override;
+	virtual ioport_constructor device_input_ports() const override;
+
+	// device_vip_expansion_card_interface overrides
+	virtual void vip_program_w(address_space &space, offs_t offset, uint8_t data, int cdef, int *minh) override;
+	virtual void vip_io_w(address_space &space, offs_t offset, uint8_t data) override;
+	virtual void vip_dma_w(address_space &space, offs_t offset, uint8_t data) override;
+	virtual uint32_t vip_screen_update(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect) override;
+	virtual int vip_ef3_r() override;
+	virtual int vip_ef4_r() override;
+
+private:
+	DECLARE_READ_LINE_MEMBER( rd_r );
+	DECLARE_READ_LINE_MEMBER( bd_r );
+	DECLARE_READ_LINE_MEMBER( gd_r );
+
+	required_device<cdp1862_device> m_cgc;
+	optional_shared_ptr<uint8_t> m_color_ram;
+>>>>>>> upstream/master
 	required_ioport m_j1;
 	required_ioport m_j2;
 
 	int m_a12;
+<<<<<<< HEAD
 	UINT8 m_color;
 	UINT8 m_keylatch;
+=======
+	uint8_t m_color;
+	uint8_t m_keylatch;
+>>>>>>> upstream/master
 };
 
 
 // device type definition
+<<<<<<< HEAD
 extern const device_type VP590;
 
 
 #endif
+=======
+DECLARE_DEVICE_TYPE(VP590, vp590_device)
+
+#endif // MAME_BUS_VIP_VP590_H
+>>>>>>> upstream/master

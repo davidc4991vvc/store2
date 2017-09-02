@@ -16,6 +16,7 @@
 #if 0
 struct ace_tape_t
 {
+<<<<<<< HEAD
 	UINT8 hdr_type;
 	UINT8 hdr_name[10];
 	UINT16 hdr_len;
@@ -24,6 +25,16 @@ struct ace_tape_t
 	UINT8 hdr_3c4c;
 	UINT8 hdr_3c4d;
 	UINT16 dat_len;
+=======
+	uint8_t hdr_type;
+	uint8_t hdr_name[10];
+	uint16_t hdr_len;
+	uint16_t hdr_addr;
+	uint8_t hdr_vars[8];
+	uint8_t hdr_3c4c;
+	uint8_t hdr_3c4d;
+	uint16_t dat_len;
+>>>>>>> upstream/master
 };
 #endif
 

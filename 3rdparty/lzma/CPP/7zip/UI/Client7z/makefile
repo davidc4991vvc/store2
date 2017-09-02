@@ -1,8 +1,15 @@
+<<<<<<< HEAD
 PROG = 7z.exe
 MY_CONSOLE = 1
 CFLAGS = $(CFLAGS) -I ../../../
 
 CONSOLE_OBJS = \
+=======
+PROG = 7zcl.exe
+MY_CONSOLE = 1
+
+CURRENT_OBJS = \
+>>>>>>> upstream/master
   $O\Client7z.obj \
 
 COMMON_OBJS = \
@@ -21,11 +28,16 @@ WIN_OBJS = \
   $O\FileIO.obj \
   $O\FileName.obj \
   $O\PropVariant.obj \
+<<<<<<< HEAD
   $O\PropVariantConversions.obj \
+=======
+  $O\PropVariantConv.obj \
+>>>>>>> upstream/master
 
 7ZIP_COMMON_OBJS = \
   $O\FileStreams.obj \
 
+<<<<<<< HEAD
 OBJS = \
   $O\StdAfx.obj \
   $(CONSOLE_OBJS) \
@@ -43,3 +55,6 @@ $(WIN_OBJS): ../../../Windows/$(*B).cpp
 	$(COMPL)
 $(7ZIP_COMMON_OBJS): ../../Common/$(*B).cpp
 	$(COMPL)
+=======
+!include "../../7zip.mak"
+>>>>>>> upstream/master

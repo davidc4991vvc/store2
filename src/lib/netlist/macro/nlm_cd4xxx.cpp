@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 
 #include "nlm_cd4xxx.h"
 
@@ -5,6 +6,16 @@
 #include "devices/nld_system.h"
 #include "devices/nld_4020.h"
 #include "devices/nld_4066.h"
+=======
+// license:GPL-2.0+
+// copyright-holders:Couriersud
+#include "nlm_cd4xxx.h"
+
+#include "../devices/nld_system.h"
+#include "../devices/nld_4020.h"
+#include "../devices/nld_4066.h"
+#include "../devices/nld_4316.h"
+>>>>>>> upstream/master
 
 /*
  *   CD4001BC: Quad 2-Input NOR Buffered B Series Gate
@@ -21,7 +32,11 @@
  *
  */
 
+<<<<<<< HEAD
 NETLIST_START(CD4001_DIP)
+=======
+static NETLIST_START(CD4001_DIP)
+>>>>>>> upstream/master
 	CD4001_NOR(s1)
 	CD4001_NOR(s2)
 	CD4001_NOR(s3)
@@ -30,6 +45,7 @@ NETLIST_START(CD4001_DIP)
 	DUMMY_INPUT(VSS)
 	DUMMY_INPUT(VDD)
 
+<<<<<<< HEAD
 	DIPPINS(   /*       +--------------+      */
 		s1.A,  /*    A1 |1     ++    14| VCC  */ VSS.I,
 		s1.B,  /*    B1 |2           13| A6   */ s4.B,
@@ -38,6 +54,16 @@ NETLIST_START(CD4001_DIP)
 		s2.A,  /*    A3 |5           10| Y5   */ s3.Q,
 		s2.B,  /*    Y3 |6            9| A4   */ s3.B,
 		VDD.I, /*   GND |7            8| Y4   */ s3.A
+=======
+	DIPPINS(    /*       +--------------+      */
+		s1.A,   /*    A1 |1     ++    14| VCC  */ VDD.I,
+		s1.B,   /*    B1 |2           13| A6   */ s4.B,
+		s1.Q,   /*    A2 |3           12| Y6   */ s4.A,
+		s2.Q,   /*    Y2 |4    4001   11| A5   */ s4.Q,
+		s2.A,   /*    A3 |5           10| Y5   */ s3.Q,
+		s2.B,   /*    Y3 |6            9| A4   */ s3.B,
+		VSS.I,  /*   GND |7            8| Y4   */ s3.A
+>>>>>>> upstream/master
 				/*       +--------------+      */
 	)
 
@@ -62,7 +88,11 @@ NETLIST_END()
  *         This needs a cmos d-a/a-d proxy implementation.
  */
 
+<<<<<<< HEAD
 NETLIST_START(CD4020_DIP)
+=======
+static NETLIST_START(CD4020_DIP)
+>>>>>>> upstream/master
 
 	CD4020(s1)
 	DIPPINS(     /*       +--------------+       */
@@ -100,7 +130,11 @@ NETLIST_END()
  *
  */
 
+<<<<<<< HEAD
 NETLIST_START(CD4066_DIP)
+=======
+static NETLIST_START(CD4066_DIP)
+>>>>>>> upstream/master
 	CD4066_GATE(A)
 	CD4066_GATE(B)
 	CD4066_GATE(C)
@@ -114,6 +148,7 @@ NETLIST_START(CD4066_DIP)
 	PARAM(C.BASER, 270.0)
 	PARAM(D.BASER, 270.0)
 
+<<<<<<< HEAD
 	DIPPINS(      /*          +--------------+          */
 		A.R.1,    /*   INOUTA |1     ++    14| VDD      */ A.PS.VDD,
 		A.R.2,    /*   OUTINA |2           13| CONTROLA */ A.CTL,
@@ -122,11 +157,25 @@ NETLIST_START(CD4066_DIP)
 		B.CTL,    /* CONTROLB |5           10| OUTIND   */ D.R.2,
 		C.CTL,    /* CONTROLC |6            9| OUTINC   */ C.R.1,
 		A.PS.VSS, /*      VSS |7            8| INOUTC   */ C.R.2
+=======
+	DIPPINS(        /*          +--------------+          */
+		A.R.1,      /*   INOUTA |1     ++    14| VDD      */ A.PS.VDD,
+		A.R.2,      /*   OUTINA |2           13| CONTROLA */ A.CTL,
+		B.R.1,      /*   OUTINB |3           12| CONTROLD */ D.CTL,
+		B.R.2,      /*   INOUTB |4    4066   11| INOUTD   */ D.R.1,
+		B.CTL,      /* CONTROLB |5           10| OUTIND   */ D.R.2,
+		C.CTL,      /* CONTROLC |6            9| OUTINC   */ C.R.1,
+		A.PS.VSS,   /*      VSS |7            8| INOUTC   */ C.R.2
+>>>>>>> upstream/master
 					/*          +--------------+          */
 	)
 NETLIST_END()
 
+<<<<<<< HEAD
 NETLIST_START(CD4016_DIP)
+=======
+static NETLIST_START(CD4016_DIP)
+>>>>>>> upstream/master
 	CD4066_GATE(A)
 	CD4066_GATE(B)
 	CD4066_GATE(C)
@@ -140,6 +189,7 @@ NETLIST_START(CD4016_DIP)
 	PARAM(C.BASER, 1000.0)
 	PARAM(D.BASER, 1000.0)
 
+<<<<<<< HEAD
 	DIPPINS(      /*          +--------------+          */
 		A.R.1,    /*   INOUTA |1     ++    14| VDD      */ A.PS.VDD,
 		A.R.2,    /*   OUTINA |2           13| CONTROLA */ A.CTL,
@@ -150,11 +200,56 @@ NETLIST_START(CD4016_DIP)
 		A.PS.VSS, /*      VSS |7            8| INOUTC   */ C.R.2
 					/*          +--------------+          */
 	)
+=======
+	DIPPINS(        /*          +--------------+          */
+		A.R.1,      /*   INOUTA |1     ++    14| VDD      */ A.PS.VDD,
+		A.R.2,      /*   OUTINA |2           13| CONTROLA */ A.CTL,
+		B.R.1,      /*   OUTINB |3           12| CONTROLD */ D.CTL,
+		B.R.2,      /*   INOUTB |4    4016   11| INOUTD   */ D.R.1,
+		B.CTL,      /* CONTROLB |5           10| OUTIND   */ D.R.2,
+		C.CTL,      /* CONTROLC |6            9| OUTINC   */ C.R.1,
+		A.PS.VSS,   /*      VSS |7            8| INOUTC   */ C.R.2
+					/*          +--------------+          */
+	)
+NETLIST_END()
+
+static NETLIST_START(CD4316_DIP)
+	CD4316_GATE(A)
+	CD4316_GATE(B)
+	CD4316_GATE(C)
+	CD4316_GATE(D)
+
+	NET_C(A.E, B.E, C.E, D.E)
+	NET_C(A.PS.VDD, B.PS.VDD, C.PS.VDD, D.PS.VDD)
+	NET_C(A.PS.VSS, B.PS.VSS, C.PS.VSS, D.PS.VSS)
+
+	PARAM(A.BASER, 45.0)
+	PARAM(B.BASER, 45.0)
+	PARAM(C.BASER, 45.0)
+	PARAM(D.BASER, 45.0)
+
+	DIPPINS(        /*          +--------------+          */
+		A.R.2,      /*       1Z |1     ++    16| VCC      */ A.PS.VDD,
+		A.R.1,      /*       1Y |2           15| 1S       */ A.S,
+		B.R.1,      /*       2Y |3           14| 4S       */ D.S,
+		B.R.2,      /*       2Z |4    4316   13| 4Z       */ D.R.2,
+		B.S,        /*       2S |5           12| 4Y       */ D.R.1,
+		C.S,        /*       3S |6           11| 3Y       */ C.R.1,
+		A.E,        /*       /E |7           10| 3Z       */ C.R.2,
+		A.PS.VSS,   /*      GND |8            9| VEE      */ VEE
+					/*          +--------------+          */
+	)
+
+>>>>>>> upstream/master
 NETLIST_END()
 
 NETLIST_START(CD4XXX_lib)
 
+<<<<<<< HEAD
 	TRUTHTABLE_START(CD4001_NOR, 2, 1, 0, "")
+=======
+	TRUTHTABLE_START(CD4001_NOR, 2, 1, "")
+>>>>>>> upstream/master
 		TT_HEAD("A , B | Q ")
 		TT_LINE("0,0|1|85")
 		TT_LINE("X,1|0|120")
@@ -168,5 +263,9 @@ NETLIST_START(CD4XXX_lib)
 	LOCAL_LIB_ENTRY(CD4020_DIP)
 	LOCAL_LIB_ENTRY(CD4016_DIP)
 	LOCAL_LIB_ENTRY(CD4066_DIP)
+<<<<<<< HEAD
+=======
+	LOCAL_LIB_ENTRY(CD4316_DIP)
+>>>>>>> upstream/master
 
 NETLIST_END()

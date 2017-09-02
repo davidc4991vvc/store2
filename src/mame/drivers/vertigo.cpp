@@ -12,11 +12,20 @@
 ***************************************************************************/
 
 #include "emu.h"
+<<<<<<< HEAD
+=======
+#include "includes/vertigo.h"
+
+>>>>>>> upstream/master
 #include "cpu/m6805/m6805.h"
 #include "cpu/m68000/m68000.h"
 #include "machine/pit8253.h"
 #include "machine/nvram.h"
+<<<<<<< HEAD
 #include "includes/vertigo.h"
+=======
+#include "screen.h"
+>>>>>>> upstream/master
 
 
 
@@ -111,7 +120,11 @@ INPUT_PORTS_END
  *
  *************************************/
 
+<<<<<<< HEAD
 static MACHINE_CONFIG_START( vertigo, vertigo_state )
+=======
+static MACHINE_CONFIG_START( vertigo )
+>>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", M68000, 8000000)
@@ -159,7 +172,11 @@ ROM_START( topgunnr )
 	ROM_LOAD16_BYTE( "tgl-2.9p",  0x000000, 0x002000, CRC(1d10b31e) SHA1(c66f11d2bee81a51baccf96f8e8335fc86dc20e4) )
 	ROM_LOAD16_BYTE( "tgl-2.10p", 0x000001, 0x002000, CRC(9c80b387) SHA1(aa7b770ddfaf65fd26959e7f9a3f15ba60979e50) )
 
+<<<<<<< HEAD
 	ROM_COPY( "maincpu", 0x000000, 0x800000,0x004000)
+=======
+	ROM_COPY( "maincpu", 0x00000, 0x800000,0x004000)
+>>>>>>> upstream/master
 	ROM_LOAD16_BYTE( "tgl-2.9r",  0x804000, 0x002000, CRC(74454ac9) SHA1(4cf1e5373d5940ed81fe7d07324abb10667df097) )
 	ROM_LOAD16_BYTE( "tgl-2.10r", 0x804001, 0x002000, CRC(f5c28223) SHA1(16bf122f289129b50545e463f685f517cb9baca7) )
 	ROM_LOAD16_BYTE( "tgl-2.9t",  0x808000, 0x002000, CRC(d415d189) SHA1(3b726815292365a9206b83d1f2f5e314fcb24e73) )
@@ -221,4 +238,8 @@ ROM_END
  *
  *************************************/
 
+<<<<<<< HEAD
 GAME( 1986, topgunnr, 0, vertigo, vertigo, driver_device, 0, ROT0, "Exidy", "Top Gunner (Exidy)", MACHINE_SUPPORTS_SAVE )
+=======
+GAME( 1986, topgunnr, 0, vertigo, vertigo, vertigo_state, 0, ROT0, "Exidy", "Top Gunner (Exidy)", MACHINE_SUPPORTS_SAVE )
+>>>>>>> upstream/master

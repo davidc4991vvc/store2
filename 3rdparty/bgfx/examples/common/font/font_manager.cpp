@@ -1,6 +1,10 @@
 /*
  * Copyright 2013 Jeremie Roy. All rights reserved.
+<<<<<<< HEAD
  * License: http://www.opensource.org/licenses/BSD-2-Clause
+=======
+ * License: https://github.com/bkaradzic/bgfx#license-bsd-2-clause
+>>>>>>> upstream/master
  */
 
 #define USE_EDTAA3 0
@@ -13,6 +17,10 @@
 
 BX_PRAGMA_DIAGNOSTIC_PUSH();
 BX_PRAGMA_DIAGNOSTIC_IGNORED_MSVC(4245) // error C4245: '=' : conversion from 'int' to 'FT_UInt', signed/unsigned mismatch
+<<<<<<< HEAD
+=======
+BX_PRAGMA_DIAGNOSTIC_IGNORED_MSVC(4611) // warning C4611 : interaction between '_setjmp' and C++ object destruction is non - portable
+>>>>>>> upstream/master
 #if BX_COMPILER_MSVC || BX_COMPILER_GCC >= 40300
 #pragma push_macro("interface")
 #endif
@@ -26,7 +34,10 @@ BX_PRAGMA_DIAGNOSTIC_POP();
 #include "../common.h"
 
 #include <bgfx/bgfx.h>
+<<<<<<< HEAD
 #include <math.h>
+=======
+>>>>>>> upstream/master
 
 #if USE_EDTAA3
 #	include <edtaa3/edtaa3func.cpp>
@@ -197,7 +208,11 @@ static void glyphInfoInit(GlyphInfo& _glyphInfo, FT_BitmapGlyph _bitmap, FT_Glyp
 
 	for (int32_t ii = 0; ii < hh; ++ii)
 	{
+<<<<<<< HEAD
 		memcpy(_dst, src, dstPitch);
+=======
+		bx::memCopy(_dst, src, dstPitch);
+>>>>>>> upstream/master
 
 		_dst += dstPitch;
 		src += srcPitch;
@@ -319,8 +334,13 @@ static void makeDistanceMap(const uint8_t* _img, uint8_t* _outImg, uint32_t _wid
 	}
 
 	// Compute inside = edtaa3(1-bitmap); % Transform foreground (1's)
+<<<<<<< HEAD
 	memset(gx, 0, sizeof(double) * _width * _height);
 	memset(gy, 0, sizeof(double) * _width * _height);
+=======
+	bx::memSet(gx, 0, sizeof(double) * _width * _height);
+	bx::memSet(gy, 0, sizeof(double) * _width * _height);
+>>>>>>> upstream/master
 	for (ii = 0; ii < _width * _height; ++ii)
 	{
 		data[ii] = 1.0 - data[ii];
@@ -418,12 +438,20 @@ bool TrueTypeFont::bakeGlyphDistance(CodePoint _codePoint, GlyphInfo& _glyphInfo
 		uint32_t buffSize = nw * nh * sizeof(uint8_t);
 
 		uint8_t* alphaImg = (uint8_t*)malloc(buffSize);
+<<<<<<< HEAD
 		memset(alphaImg, 0, nw * nh * sizeof(uint8_t) );
+=======
+		bx::memSet(alphaImg, 0, nw * nh * sizeof(uint8_t) );
+>>>>>>> upstream/master
 
 		//copy the original buffer to the temp one
 		for (uint32_t ii = dh; ii < nh - dh; ++ii)
 		{
+<<<<<<< HEAD
 			memcpy(alphaImg + ii * nw + dw, _outBuffer + (ii - dh) * ww, ww);
+=======
+			bx::memCopy(alphaImg + ii * nw + dw, _outBuffer + (ii - dh) * ww, ww);
+>>>>>>> upstream/master
 		}
 
 		makeDistanceMap(alphaImg, _outBuffer, nw, nh);
@@ -466,7 +494,11 @@ FontManager::FontManager(Atlas* _atlas)
 	init();
 }
 
+<<<<<<< HEAD
 FontManager::FontManager(uint32_t _textureSideWidth) 
+=======
+FontManager::FontManager(uint16_t _textureSideWidth)
+>>>>>>> upstream/master
 	: m_ownAtlas(true)
 	, m_atlas(new Atlas(_textureSideWidth) )
 {
@@ -482,7 +514,11 @@ void FontManager::init()
 	const uint32_t W = 3;
 	// Create filler rectangle
 	uint8_t buffer[W * W * 4];
+<<<<<<< HEAD
 	memset(buffer, 255, W * W * 4);
+=======
+	bx::memSet(buffer, 255, W * W * 4);
+>>>>>>> upstream/master
 
 	m_blackGlyph.width = W;
 	m_blackGlyph.height = W;
@@ -513,7 +549,11 @@ TrueTypeHandle FontManager::createTtf(const uint8_t* _buffer, uint32_t _size)
 	BX_CHECK(id != bx::HandleAlloc::invalid, "Invalid handle used");
 	m_cachedFiles[id].buffer = new uint8_t[_size];
 	m_cachedFiles[id].bufferSize = _size;
+<<<<<<< HEAD
 	memcpy(m_cachedFiles[id].buffer, _buffer, _size);
+=======
+	bx::memCopy(m_cachedFiles[id].buffer, _buffer, _size);
+>>>>>>> upstream/master
 
 	TrueTypeHandle ret = { id };
 	return ret;
@@ -546,8 +586,13 @@ FontHandle FontManager::createFontByPixelSize(TrueTypeHandle _ttfHandle, uint32_
 	CachedFont& font = m_cachedFonts[fontIdx];
 	font.trueTypeFont = ttf;
 	font.fontInfo = ttf->getFontInfo();
+<<<<<<< HEAD
 	font.fontInfo.fontType = _fontType;
 	font.fontInfo.pixelSize = _pixelSize;
+=======
+	font.fontInfo.fontType  = int16_t(_fontType);
+	font.fontInfo.pixelSize = uint16_t(_pixelSize);
+>>>>>>> upstream/master
 	font.cachedGlyphs.clear();
 	font.masterFontHandle.idx = bx::HandleAlloc::invalid;
 
@@ -561,6 +606,7 @@ FontHandle FontManager::createScaledFontToPixelSize(FontHandle _baseFontHandle, 
 	CachedFont& baseFont = m_cachedFonts[_baseFontHandle.idx];
 	FontInfo& fontInfo = baseFont.fontInfo;
 
+<<<<<<< HEAD
 	FontInfo newFontInfo = fontInfo;
 	newFontInfo.pixelSize = _pixelSize;
 	newFontInfo.scale = (float)_pixelSize / (float) fontInfo.pixelSize;
@@ -570,6 +616,17 @@ FontHandle FontManager::createScaledFontToPixelSize(FontHandle _baseFontHandle, 
 	newFontInfo.maxAdvanceWidth = (newFontInfo.maxAdvanceWidth * newFontInfo.scale);
 	newFontInfo.underlineThickness = (newFontInfo.underlineThickness * newFontInfo.scale);
 	newFontInfo.underlinePosition = (newFontInfo.underlinePosition * newFontInfo.scale);
+=======
+	FontInfo newFontInfo  = fontInfo;
+	newFontInfo.pixelSize = uint16_t(_pixelSize);
+	newFontInfo.scale     = (float)_pixelSize / (float) fontInfo.pixelSize;
+	newFontInfo.ascender  = (newFontInfo.ascender * newFontInfo.scale);
+	newFontInfo.descender = (newFontInfo.descender * newFontInfo.scale);
+	newFontInfo.lineGap   = (newFontInfo.lineGap * newFontInfo.scale);
+	newFontInfo.maxAdvanceWidth    = (newFontInfo.maxAdvanceWidth * newFontInfo.scale);
+	newFontInfo.underlineThickness = (newFontInfo.underlineThickness * newFontInfo.scale);
+	newFontInfo.underlinePosition  = (newFontInfo.underlinePosition * newFontInfo.scale);
+>>>>>>> upstream/master
 
 	uint16_t fontIdx = m_fontHandles.alloc();
 	BX_CHECK(fontIdx != bx::HandleAlloc::invalid, "Invalid handle used");

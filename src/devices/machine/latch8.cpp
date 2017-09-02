@@ -11,14 +11,21 @@
 #include "emu.h"
 #include "latch8.h"
 
+<<<<<<< HEAD
 void latch8_device::update(UINT8 new_val, UINT8 mask)
 {
 	UINT8 old_val = m_value;
+=======
+void latch8_device::update(uint8_t new_val, uint8_t mask)
+{
+	uint8_t old_val = m_value;
+>>>>>>> upstream/master
 
 	m_value = (m_value & ~mask) | (new_val & mask);
 
 	if (m_has_write)
 	{
+<<<<<<< HEAD
 		int i;
 		UINT8 changed = old_val ^ m_value;
 		for (i=0; i<8; i++)
@@ -32,13 +39,24 @@ void latch8_device::update(UINT8 new_val, UINT8 mask)
 				if (i==6 && !m_write_6.isnull()) m_write_6(machine().driver_data()->generic_space(), m_offset[i] , (m_value >> i) & 1);
 				if (i==7 && !m_write_7.isnull()) m_write_7(machine().driver_data()->generic_space(), m_offset[i] , (m_value >> i) & 1);
 			}
+=======
+		uint8_t changed = old_val ^ m_value;
+		for (int i = 0; i < 8; i++)
+			if (BIT(changed, i) && !m_write_cb[i].isnull())
+				m_write_cb[i](BIT(m_value, i));
+>>>>>>> upstream/master
 	}
 }
 
 TIMER_CALLBACK_MEMBER( latch8_device::timerproc )
 {
+<<<<<<< HEAD
 	UINT8 new_val = param & 0xFF;
 	UINT8 mask = param >> 8;
+=======
+	uint8_t new_val = param & 0xFF;
+	uint8_t mask = param >> 8;
+>>>>>>> upstream/master
 
 	update( new_val, mask);
 }
@@ -47,13 +65,18 @@ TIMER_CALLBACK_MEMBER( latch8_device::timerproc )
 
 READ8_MEMBER( latch8_device::read )
 {
+<<<<<<< HEAD
 	UINT8 res;
+=======
+	uint8_t res;
+>>>>>>> upstream/master
 
 	assert(offset == 0);
 
 	res = m_value;
 	if (m_has_read)
 	{
+<<<<<<< HEAD
 		int i;
 		for (i=0; i<8; i++)
 		{
@@ -65,6 +88,12 @@ READ8_MEMBER( latch8_device::read )
 			if (i==5 && !m_read_5.isnull()) { res &= ~( 1 << i); res |= ((m_read_5(space, 0, 0xff) >> m_offset[i]) & 0x01) << i; }
 			if (i==6 && !m_read_6.isnull()) { res &= ~( 1 << i); res |= ((m_read_6(space, 0, 0xff) >> m_offset[i]) & 0x01) << i; }
 			if (i==7 && !m_read_7.isnull()) { res &= ~( 1 << i); res |= ((m_read_7(space, 0, 0xff) >> m_offset[i]) & 0x01) << i;}
+=======
+		for (int i = 0; i < 8; i++)
+		{
+			if (!m_read_cb[i].isnull())
+				res = (res & ~(1 << i)) | (m_read_cb[i]() << i);
+>>>>>>> upstream/master
 		}
 	}
 	return (res & ~m_maskout) ^ m_xorvalue;
@@ -89,6 +118,7 @@ WRITE8_MEMBER( latch8_device::reset_w )
 	m_value = 0;
 }
 
+<<<<<<< HEAD
 /* read bit x                 */
 /* return (latch >> x) & 0x01 */
 
@@ -124,6 +154,15 @@ void latch8_device::bitx_w(int bit, offs_t offset, UINT8 data)
 {
 	UINT8 mask = (1<<offset);
 	UINT8 masked_data = (((data >> bit) & 0x01) << offset);
+=======
+/* write bit x from data into bit determined by offset */
+/* latch = (latch & ~(1<<offset)) | (((data >> x) & 0x01) << offset) */
+
+void latch8_device::bitx_w(int bit, offs_t offset, uint8_t data)
+{
+	uint8_t mask = (1<<offset);
+	uint8_t masked_data = (((data >> bit) & 0x01) << offset);
+>>>>>>> upstream/master
 
 	assert( offset < 8);
 
@@ -143,6 +182,7 @@ WRITE8_MEMBER( latch8_device::bit5_w ) { bitx_w(5, offset, data); }
 WRITE8_MEMBER( latch8_device::bit6_w ) { bitx_w(6, offset, data); }
 WRITE8_MEMBER( latch8_device::bit7_w ) { bitx_w(7, offset, data); }
 
+<<<<<<< HEAD
 const device_type LATCH8 = &device_creator<latch8_device>;
 
 latch8_device::latch8_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
@@ -171,6 +211,21 @@ latch8_device::latch8_device(const machine_config &mconfig, const char *tag, dev
 		m_read_7(*this)
 {
 	memset(m_offset, 0, sizeof(m_offset));
+=======
+DEFINE_DEVICE_TYPE(LATCH8, latch8_device, "latch8", "8-bit latch")
+
+latch8_device::latch8_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: device_t(mconfig, LATCH8, tag, owner, clock)
+	, m_value(0)
+	, m_has_write(0)
+	, m_has_read(0)
+	, m_maskout(0)
+	, m_xorvalue(0)
+	, m_nosync(0)
+	, m_write_cb{{*this}, {*this}, {*this}, {*this}, {*this}, {*this}, {*this}, {*this}}
+	, m_read_cb{{*this}, {*this}, {*this}, {*this}, {*this}, {*this}, {*this}, {*this}}
+{
+>>>>>>> upstream/master
 }
 
 
@@ -181,6 +236,7 @@ latch8_device::latch8_device(const machine_config &mconfig, const char *tag, dev
 
 void latch8_device::device_validity_check(validity_checker &valid) const
 {
+<<<<<<< HEAD
 	if (!m_read_0.isnull() && !m_write_0.isnull()) osd_printf_error("Device %s: Bit 0 already has a handler.\n", tag());
 	if (!m_read_1.isnull() && !m_write_1.isnull()) osd_printf_error("Device %s: Bit 1 already has a handler.\n", tag());
 	if (!m_read_2.isnull() && !m_write_2.isnull()) osd_printf_error("Device %s: Bit 2 already has a handler.\n", tag());
@@ -190,12 +246,20 @@ void latch8_device::device_validity_check(validity_checker &valid) const
 	if (!m_read_6.isnull() && !m_write_6.isnull()) osd_printf_error("Device %s: Bit 6 already has a handler.\n", tag());
 	if (!m_read_7.isnull() && !m_write_7.isnull()) osd_printf_error("Device %s: Bit 7 already has a handler.\n", tag());
 }
+=======
+	for (int i = 0; i < 8; i++)
+		if (!m_read_cb[i].isnull() && !m_write_cb[i].isnull())
+			osd_printf_error("Device %s: Bit %d already has a handler.\n", tag(), i);
+}
+
+>>>>>>> upstream/master
 //-------------------------------------------------
 //  device_start - device-specific startup
 //-------------------------------------------------
 
 void latch8_device::device_start()
 {
+<<<<<<< HEAD
 	m_write_0.resolve();
 	m_write_1.resolve();
 	m_write_2.resolve();
@@ -233,6 +297,21 @@ void latch8_device::device_start()
 	if (!m_read_5.isnull()) m_has_read = 1;
 	if (!m_read_6.isnull()) m_has_read = 1;
 	if (!m_read_7.isnull()) m_has_read = 1;
+=======
+	/* setup nodemap */
+	for (auto &cb : m_write_cb)
+	{
+		if (!cb.isnull()) m_has_write = 1;
+		cb.resolve();
+	}
+
+	/* setup device read handlers */
+	for (auto &cb : m_read_cb)
+	{
+		if (!cb.isnull()) m_has_read = 1;
+		cb.resolve();
+	}
+>>>>>>> upstream/master
 
 	save_item(NAME(m_value));
 }

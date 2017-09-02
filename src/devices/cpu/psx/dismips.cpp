@@ -11,6 +11,7 @@
 #include "psx.h"
 
 extern CPU_DISASSEMBLE( r3000le );
+<<<<<<< HEAD
 extern unsigned dasmmips3(char *,unsigned, UINT32);
 
 static struct
@@ -34,6 +35,30 @@ static struct
 	UINT32 SavedRA;
 	UINT32 SavedS0;
 	UINT8 dummy[ 0x800 - 76 ];
+=======
+
+static struct
+{
+	uint8_t id[ 8 ];
+	uint32_t text;    /* SCE only */
+	uint32_t data;    /* SCE only */
+	uint32_t pc0;
+	uint32_t gp0;     /* SCE only */
+	uint32_t t_addr;
+	uint32_t t_size;
+	uint32_t d_addr;  /* SCE only */
+	uint32_t d_size;  /* SCE only */
+	uint32_t b_addr;  /* SCE only */
+	uint32_t b_size;  /* SCE only */
+	uint32_t s_addr;
+	uint32_t s_size;
+	uint32_t SavedSP;
+	uint32_t SavedFP;
+	uint32_t SavedGP;
+	uint32_t SavedRA;
+	uint32_t SavedS0;
+	uint8_t dummy[ 0x800 - 76 ];
+>>>>>>> upstream/master
 } m_psxexe_header;
 
 #define FORMAT_BIN ( 0 )
@@ -43,9 +68,15 @@ static struct
 #define CPU_R3000 ( 1 )
 #define CPU_R4000 ( 2 )
 
+<<<<<<< HEAD
 static UINT8 *filebuf;
 static UINT32 offset;
 static UINT8 order[] = { 0, 1, 2, 3 };
+=======
+static uint8_t *filebuf;
+static uint32_t offset;
+static uint8_t order[] = { 0, 1, 2, 3 };
+>>>>>>> upstream/master
 
 static const char *const Options[]=
 {
@@ -70,6 +101,7 @@ static void usage (void)
 int main( int argc, char *argv[] )
 {
 	FILE *f;
+<<<<<<< HEAD
 	UINT8 i;
 	UINT8 j;
 	UINT8 n;
@@ -85,6 +117,23 @@ int main( int argc, char *argv[] )
 	UINT32 cpu;
 
 	filename = NULL;
+=======
+	uint8_t i;
+	uint8_t j;
+	uint8_t n;
+	uint8_t p;
+	uint32_t begin;
+	uint32_t end;
+	uint32_t filelen;
+	uint32_t len;
+	uint32_t pc;
+	char buffer[ 80 ];
+	char *filename;
+	uint32_t format;
+	uint32_t cpu;
+
+	filename = nullptr;
+>>>>>>> upstream/master
 	begin = 0;
 	end = 0xffffffff;
 	format = FORMAT_BIN;
@@ -255,7 +304,11 @@ int main( int argc, char *argv[] )
 
 	fseek (f,begin,SEEK_SET);
 	len=(filelen>end)? (end-begin+1):(filelen-begin);
+<<<<<<< HEAD
 	filebuf=(UINT8 *)malloc(len+16);
+=======
+	filebuf=(uint8_t *)malloc(len+16);
+>>>>>>> upstream/master
 	if (!filebuf)
 	{
 		printf ("Memory allocation error\n");
@@ -275,10 +328,17 @@ int main( int argc, char *argv[] )
 	pc = 0;
 	while( pc < len )
 	{
+<<<<<<< HEAD
 		UINT8 op0 = filebuf[ pc + order[ 0 ] ];
 		UINT8 op1 = filebuf[ pc + order[ 1 ] ];
 		UINT8 op2 = filebuf[ pc + order[ 2 ] ];
 		UINT8 op3 = filebuf[ pc + order[ 3 ] ];
+=======
+		uint8_t op0 = filebuf[ pc + order[ 0 ] ];
+		uint8_t op1 = filebuf[ pc + order[ 1 ] ];
+		uint8_t op2 = filebuf[ pc + order[ 2 ] ];
+		uint8_t op3 = filebuf[ pc + order[ 3 ] ];
+>>>>>>> upstream/master
 		filebuf[ pc + 0 ] = op0;
 		filebuf[ pc + 1 ] = op1;
 		filebuf[ pc + 2 ] = op2;
@@ -293,6 +353,7 @@ int main( int argc, char *argv[] )
 		switch( cpu )
 		{
 		case CPU_PSX:
+<<<<<<< HEAD
 			i = DasmPSXCPU( NULL, buffer, pc + offset, filebuf + pc );
 			break;
 		case CPU_R3000:
@@ -301,13 +362,28 @@ int main( int argc, char *argv[] )
 				int options = 0;
 				UINT8 *opram = filebuf + pc;
 				UINT8 *oprom = opram;
+=======
+			i = DasmPSXCPU( nullptr, buffer, pc + offset, filebuf + pc );
+			break;
+		case CPU_R3000:
+			{
+				cpu_device *device = nullptr;
+				int options = 0;
+				uint8_t *opram = filebuf + pc;
+				uint8_t *oprom = opram;
+>>>>>>> upstream/master
 				i = CPU_DISASSEMBLE_CALL( r3000le );
 			}
 			break;
 		case CPU_R4000:
 			{
+<<<<<<< HEAD
 				UINT8 *opram = filebuf + pc;
 				UINT32 op = ( opram[ 3 ] << 24 ) | ( opram[ 2 ] << 16 ) | ( opram[ 1 ] << 8 ) | ( opram[ 0 ] << 0 );
+=======
+				uint8_t *opram = filebuf + pc;
+				uint32_t op = ( opram[ 3 ] << 24 ) | ( opram[ 2 ] << 16 ) | ( opram[ 1 ] << 8 ) | ( opram[ 0 ] << 0 );
+>>>>>>> upstream/master
 				i = dasmmips3( buffer, pc + offset, op );
 			}
 			break;
@@ -331,6 +407,7 @@ int main( int argc, char *argv[] )
 	free (filebuf);
 	return 0;
 }
+<<<<<<< HEAD
 
 void *osd_malloc_array(size_t size)
 {
@@ -359,3 +436,5 @@ void *osd_malloc( size_t size )
 #undef malloc
 	return malloc( size );
 }
+=======
+>>>>>>> upstream/master

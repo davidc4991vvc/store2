@@ -86,15 +86,28 @@ DM81LS95 = TriState buffer
 **************************************************************************/
 
 #include "emu.h"
+<<<<<<< HEAD
 #include "cpu/z80/z80.h"
 #include "cpu/mcs48/mcs48.h"
 #include "machine/nvram.h"
 #include "includes/portrait.h"
+=======
+#include "includes/portrait.h"
+
+#include "cpu/z80/z80.h"
+#include "cpu/mcs48/mcs48.h"
+#include "machine/gen_latch.h"
+#include "machine/nvram.h"
+#include "screen.h"
+#include "speaker.h"
+
+>>>>>>> upstream/master
 
 WRITE8_MEMBER(portrait_state::ctrl_w)
 {
 	/* bits 4 and 5 are unknown */
 
+<<<<<<< HEAD
 	coin_counter_w(machine(), 0, data & 0x01);
 	coin_counter_w(machine(), 1, data & 0x02);
 	coin_counter_w(machine(), 2, data & 0x04);
@@ -105,6 +118,18 @@ WRITE8_MEMBER(portrait_state::ctrl_w)
 
 	/* shows the black and white photo from the camera */
 	output_set_value("photo", (data >> 7) & 1);
+=======
+	machine().bookkeeping().coin_counter_w(0, data & 0x01);
+	machine().bookkeeping().coin_counter_w(1, data & 0x02);
+	machine().bookkeeping().coin_counter_w(2, data & 0x04);
+
+	/* the 2 lamps near the camera */
+	output().set_led_value(0, data & 0x08);
+	output().set_led_value(1, data & 0x40);
+
+	/* shows the black and white photo from the camera */
+	output().set_value("photo", (data >> 7) & 1);
+>>>>>>> upstream/master
 }
 
 WRITE8_MEMBER(portrait_state::positive_scroll_w)
@@ -123,7 +148,11 @@ static ADDRESS_MAP_START( portrait_map, AS_PROGRAM, 8, portrait_state )
 	AM_RANGE(0x8800, 0x8fff) AM_RAM_WRITE(fgvideo_write) AM_SHARE("fgvideoram")
 	AM_RANGE(0x9000, 0x91ff) AM_RAM AM_SHARE("spriteram")
 	AM_RANGE(0x9200, 0x97ff) AM_RAM
+<<<<<<< HEAD
 	AM_RANGE(0xa000, 0xa000) AM_WRITE(soundlatch_byte_w)
+=======
+	AM_RANGE(0xa000, 0xa000) AM_DEVWRITE("soundlatch", generic_latch_8_device, write)
+>>>>>>> upstream/master
 	AM_RANGE(0xa010, 0xa010) AM_WRITENOP // ?
 	AM_RANGE(0xa000, 0xa000) AM_READ_PORT("DSW1")
 	AM_RANGE(0xa004, 0xa004) AM_READ_PORT("DSW2")
@@ -242,7 +271,11 @@ static GFXDECODE_START( portrait )
 GFXDECODE_END
 
 
+<<<<<<< HEAD
 static MACHINE_CONFIG_START( portrait, portrait_state )
+=======
+static MACHINE_CONFIG_START( portrait )
+>>>>>>> upstream/master
 	MCFG_CPU_ADD("maincpu", Z80, 4000000)     /* 4 MHz ? */
 	MCFG_CPU_PROGRAM_MAP(portrait_map)
 	MCFG_CPU_VBLANK_INT_DRIVER("screen", portrait_state,  irq0_line_hold)
@@ -268,6 +301,12 @@ static MACHINE_CONFIG_START( portrait, portrait_state )
 
 	/* sound hardware */
 	MCFG_SPEAKER_STANDARD_MONO("mono")
+<<<<<<< HEAD
+=======
+
+	MCFG_GENERIC_LATCH_8_ADD("soundlatch")
+
+>>>>>>> upstream/master
 	MCFG_SOUND_ADD("tms", TMS5200, 640000)
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 1.0)
 MACHINE_CONFIG_END
@@ -325,7 +364,11 @@ ROM_START( portraita )
 	ROM_LOAD( "port_w.bin",  0x0000, 0x0800, CRC(d3a4e950) SHA1(0a399d43c7690d568874f3b1d55135f803fc223f) )
 	ROM_LOAD( "port_ma.bin", 0x0800, 0x0800, CRC(ee242e4f) SHA1(fb67e0d136927e04f4fa819f684c97b0d52ee48c) )
 
+<<<<<<< HEAD
 	ROM_REGION( 0x20000, "gfx1", ROMREGION_INVERT )
+=======
+	ROM_REGION( 0x20000, "gfx1", 0 )
+>>>>>>> upstream/master
 	ROM_LOAD( "port_00.a1", 0x00000, 0x2000, CRC(eb3e1c12) SHA1(2d38b66f52546b40553244c8a5c961279559f5b6) ) /*bit plane 1*/
 	ROM_LOAD( "port_10.b1", 0x02000, 0x2000, CRC(0f44e377) SHA1(1955f9f4deab2166f637f43c1f326bd65fc90f6a) ) /*bit plane 1*/
 	ROM_LOAD( "port_02.d1", 0x04000, 0x2000, CRC(bd93a3f9) SHA1(9cb479b8840cafd6043ff0cb9d5ca031dcd332ba) ) /*bit plane 2*/
@@ -382,5 +425,10 @@ ROM_END
 
 
 
+<<<<<<< HEAD
 GAME( 1983, portrait, 0,        portrait, portrait, driver_device,  0, ROT270, "Olympia", "Portraits (set 1)", MACHINE_NO_SOUND | MACHINE_IMPERFECT_GRAPHICS | MACHINE_WRONG_COLORS | MACHINE_SUPPORTS_SAVE )
 GAME( 1983, portraita,portrait, portrait, portrait, driver_device,  0, ROT270, "Olympia", "Portraits (set 2)", MACHINE_NO_SOUND | MACHINE_IMPERFECT_GRAPHICS | MACHINE_WRONG_COLORS | MACHINE_SUPPORTS_SAVE )
+=======
+GAME( 1983, portrait, 0,        portrait, portrait, portrait_state, 0, ROT270, "Olympia", "Portraits (set 1)", MACHINE_NO_SOUND | MACHINE_IMPERFECT_GRAPHICS | MACHINE_WRONG_COLORS | MACHINE_SUPPORTS_SAVE )
+GAME( 1983, portraita,portrait, portrait, portrait, portrait_state, 0, ROT270, "Olympia", "Portraits (set 2)", MACHINE_NO_SOUND | MACHINE_IMPERFECT_GRAPHICS | MACHINE_WRONG_COLORS | MACHINE_SUPPORTS_SAVE )
+>>>>>>> upstream/master

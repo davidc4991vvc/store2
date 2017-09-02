@@ -23,9 +23,15 @@ void (*namcos2_kickstart)(running_machine &machine, int internal);
 
 READ16_MEMBER( namcos2_state::namcos2_finallap_prot_r )
 {
+<<<<<<< HEAD
 	static const UINT16 table0[8] = { 0x0000,0x0040,0x0440,0x2440,0x2480,0xa080,0x8081,0x8041 };
 	static const UINT16 table1[8] = { 0x0040,0x0060,0x0060,0x0860,0x0864,0x08e4,0x08e5,0x08a5 };
 	UINT16 data;
+=======
+	static const uint16_t table0[8] = { 0x0000,0x0040,0x0440,0x2440,0x2480,0xa080,0x8081,0x8041 };
+	static const uint16_t table1[8] = { 0x0040,0x0060,0x0060,0x0860,0x0864,0x08e4,0x08e5,0x08a5 };
+	uint16_t data;
+>>>>>>> upstream/master
 
 	switch( offset )
 	{
@@ -71,6 +77,47 @@ READ16_MEMBER( namcos2_state::namcos2_finallap_prot_r )
 
 #define m_eeprom_size 0x2000
 
+<<<<<<< HEAD
+=======
+WRITE8_MEMBER(namcos2_shared_state::sound_reset_w)
+{
+	address_space &masterspace = m_maincpu->space(AS_PROGRAM);
+
+	if (data & 0x01)
+	{
+		/* Resume execution */
+		m_audiocpu->set_input_line(INPUT_LINE_RESET, CLEAR_LINE);
+		masterspace.device().execute().yield();
+	}
+	else
+	{
+		/* Suspend execution */
+		m_audiocpu->set_input_line(INPUT_LINE_RESET, ASSERT_LINE);
+	}
+
+	if (namcos2_kickstart != nullptr)
+	{
+		//printf( "dspkick=0x%x\n", data );
+		if (data & 0x04)
+		{
+			(*namcos2_kickstart)(space.machine(), 1);
+		}
+	}
+}
+
+// TODO:
+WRITE8_MEMBER(namcos2_shared_state::system_reset_w)
+{
+	reset_all_subcpus(data & 1 ? CLEAR_LINE : ASSERT_LINE);
+
+	if (data & 0x01)
+	{
+		address_space &masterspace = m_maincpu->space(AS_PROGRAM);
+		masterspace.device().execute().yield();
+	}
+}
+
+>>>>>>> upstream/master
 void namcos2_shared_state::reset_all_subcpus(int state)
 {
 	m_slave->set_input_line(INPUT_LINE_RESET, state);
@@ -101,10 +148,16 @@ void namcos2_shared_state::reset_all_subcpus(int state)
 
 MACHINE_START_MEMBER(namcos2_shared_state,namcos2)
 {
+<<<<<<< HEAD
 	namcos2_kickstart = NULL;
 	m_eeprom = auto_alloc_array(machine(), UINT8, m_eeprom_size);
 	machine().device<nvram_device>("nvram")->set_base(m_eeprom, m_eeprom_size);
 	m_posirq_timer = machine().scheduler().timer_alloc(timer_expired_delegate(FUNC(namcos2_shared_state::namcos2_posirq_tick),this));
+=======
+	namcos2_kickstart = nullptr;
+	m_eeprom = std::make_unique<uint8_t[]>(m_eeprom_size);
+	machine().device<nvram_device>("nvram")->set_base(m_eeprom.get(), m_eeprom_size);
+>>>>>>> upstream/master
 }
 
 MACHINE_RESET_MEMBER(namcos2_shared_state, namcos2)
@@ -124,12 +177,15 @@ MACHINE_RESET_MEMBER(namcos2_shared_state, namcos2)
 	/* Place CPU2 & CPU3 into the reset condition */
 	reset_all_subcpus(ASSERT_LINE);
 
+<<<<<<< HEAD
 	/* Initialise interrupt handlers */
 	init_c148();
 
 	/* reset POSIRQ timer */
 	m_posirq_timer->adjust(attotime::never);
 
+=======
+>>>>>>> upstream/master
 	m_player_mux = 0;
 }
 
@@ -147,6 +203,7 @@ READ8_MEMBER( namcos2_shared_state::namcos2_68k_eeprom_r )
 	return m_eeprom[offset];
 }
 
+<<<<<<< HEAD
 
 
 /**************************************************************/
@@ -181,6 +238,8 @@ WRITE16_MEMBER( namcos2_state::serial_comms_ctrl_w )
 	COMBINE_DATA( &m_serial_comms_ctrl[offset] );
 }
 
+=======
+>>>>>>> upstream/master
 /*************************************************************/
 /* 68000 Shared protection/random key generator              */
 /*************************************************************
@@ -435,6 +494,7 @@ bool namcos2_shared_state::is_system21()
 	}
 }
 
+<<<<<<< HEAD
 void namcos2_shared_state::init_c148()
 {
 	for(int loop = 0; loop < 0x20; loop++)
@@ -681,6 +741,8 @@ INTERRUPT_GEN_MEMBER(namcos2_shared_state::namcos2_68k_gpu_vblank)
 	adjust_posirq_timer(scanline);
 	device.execute().set_input_line(m_68k_gpu_C148[NAMCOS2_C148_VBLANKIRQ], HOLD_LINE);
 }
+=======
+>>>>>>> upstream/master
 
 /**************************************************************/
 /*  Sound sub-system                                          */
@@ -688,8 +750,13 @@ INTERRUPT_GEN_MEMBER(namcos2_shared_state::namcos2_68k_gpu_vblank)
 
 WRITE8_MEMBER( namcos2_shared_state::namcos2_sound_bankselect_w )
 {
+<<<<<<< HEAD
 	UINT8 *RAM= memregion("audiocpu")->base();
 	UINT32 max = (memregion("audiocpu")->bytes() - 0x10000) / 0x4000;
+=======
+	uint8_t *RAM= memregion("audiocpu")->base();
+	uint32_t max = (memregion("audiocpu")->bytes() - 0x10000) / 0x4000;
+>>>>>>> upstream/master
 	int bank = ( data >> 4 ) % max; /* 991104.CAB */
 	membank(BANKED_SOUND_ROM)->set_base(&RAM[ 0x10000 + ( 0x4000 * bank ) ] );
 }
@@ -739,7 +806,11 @@ WRITE8_MEMBER( namcos2_shared_state::namcos2_mcu_analog_ctrl_w )
 			m_mcu_analog_data=ioport("AN7")->read();
 			break;
 		default:
+<<<<<<< HEAD
 			output_set_value("anunk",data);
+=======
+			output().set_value("anunk",data);
+>>>>>>> upstream/master
 		}
 #if 0
 		/* Perform the offset handling on the input port */
@@ -753,7 +824,11 @@ WRITE8_MEMBER( namcos2_shared_state::namcos2_mcu_analog_ctrl_w )
 		/* If the interrupt enable bit is set trigger an A/D IRQ */
 		if(data & 0x20)
 		{
+<<<<<<< HEAD
 			generic_pulse_irq_line(m_mcu, HD63705_INT_ADCONV, 1);
+=======
+			generic_pulse_irq_line(*m_mcu, HD63705_INT_ADCONV, 1);
+>>>>>>> upstream/master
 		}
 	}
 }

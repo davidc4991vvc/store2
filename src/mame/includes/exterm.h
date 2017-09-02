@@ -5,8 +5,13 @@
     Gottlieb Exterminator hardware
 
 *************************************************************************/
+<<<<<<< HEAD
 #include "sound/dac.h"
 #include "cpu/tms32010/tms32010.h"
+=======
+#include "cpu/tms32010/tms32010.h"
+#include "cpu/tms34010/tms34010.h"
+>>>>>>> upstream/master
 
 class exterm_state : public driver_device
 {
@@ -17,7 +22,10 @@ public:
 		m_audiocpu(*this, "audiocpu"),
 		m_audioslave(*this, "audioslave"),
 		m_slave(*this, "slave"),
+<<<<<<< HEAD
 		m_dac(*this, "dac"),
+=======
+>>>>>>> upstream/master
 		m_master_videoram(*this, "master_videoram"),
 		m_slave_videoram(*this, "slave_videoram") { }
 
@@ -25,6 +33,7 @@ public:
 	required_device<cpu_device> m_audiocpu;
 	required_device<cpu_device> m_audioslave;
 	required_device<tms34010_device> m_slave;
+<<<<<<< HEAD
 	required_device<dac_device> m_dac;
 
 	required_shared_ptr<UINT16> m_master_videoram;
@@ -37,6 +46,18 @@ public:
 	UINT8 m_sound_control;
 	UINT8 m_dac_value[2];
 	UINT16 m_last;
+=======
+
+	required_shared_ptr<uint16_t> m_master_videoram;
+	required_shared_ptr<uint16_t> m_slave_videoram;
+
+	uint8_t m_aimpos[2];
+	uint8_t m_trackball_old[2];
+	uint8_t m_master_sound_latch;
+	uint8_t m_slave_sound_latch;
+	uint8_t m_sound_control;
+	uint16_t m_last;
+>>>>>>> upstream/master
 
 	DECLARE_WRITE16_MEMBER(exterm_host_data_w);
 	DECLARE_READ16_MEMBER(exterm_host_data_r);
@@ -50,7 +71,10 @@ public:
 	DECLARE_READ8_MEMBER(sound_nmi_to_slave_r);
 	DECLARE_WRITE8_MEMBER(sound_control_w);
 	DECLARE_WRITE8_MEMBER(ym2151_data_latch_w);
+<<<<<<< HEAD
 	DECLARE_WRITE8_MEMBER(sound_slave_dac_w);
+=======
+>>>>>>> upstream/master
 	DECLARE_PALETTE_INIT(exterm);
 	TIMER_CALLBACK_MEMBER(sound_delayed_w);
 	TIMER_DEVICE_CALLBACK_MEMBER(master_sound_nmi_callback);
@@ -59,5 +83,9 @@ public:
 	TMS340X0_FROM_SHIFTREG_CB_MEMBER(from_shiftreg_master);
 	TMS340X0_TO_SHIFTREG_CB_MEMBER(to_shiftreg_slave);
 	TMS340X0_FROM_SHIFTREG_CB_MEMBER(from_shiftreg_slave);
+<<<<<<< HEAD
 	UINT16 exterm_trackball_port_r(int which, UINT16 mem_mask);
+=======
+	uint16_t exterm_trackball_port_r(int which, uint16_t mem_mask);
+>>>>>>> upstream/master
 };

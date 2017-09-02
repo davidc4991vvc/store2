@@ -64,6 +64,7 @@ WRITE32_MEMBER(deco32_state::ace_ram_w)
 void deco32_state::updateAceRam()
 {
 	int r,g,b,i;
+<<<<<<< HEAD
 	UINT8 fadeptr=m_ace_ram[0x20];
 	UINT8 fadeptg=m_ace_ram[0x21];
 	UINT8 fadeptb=m_ace_ram[0x22];
@@ -71,6 +72,15 @@ void deco32_state::updateAceRam()
 	UINT8 fadepsg=m_ace_ram[0x24];
 	UINT8 fadepsb=m_ace_ram[0x25];
 //  UINT8 mode=m_ace_ram[0x26];
+=======
+	uint8_t fadeptr=m_ace_ram[0x20];
+	uint8_t fadeptg=m_ace_ram[0x21];
+	uint8_t fadeptb=m_ace_ram[0x22];
+	uint8_t fadepsr=m_ace_ram[0x23];
+	uint8_t fadepsg=m_ace_ram[0x24];
+	uint8_t fadepsb=m_ace_ram[0x25];
+//  uint8_t mode=m_ace_ram[0x26];
+>>>>>>> upstream/master
 
 	m_ace_ram_dirty=0;
 
@@ -84,9 +94,15 @@ void deco32_state::updateAceRam()
 		if (i>255) /* Screenshots seem to suggest ACE fades do not affect playfield 1 palette (0-255) */
 		{
 			/* Yeah, this should really be fixed point, I know */
+<<<<<<< HEAD
 			b = (UINT8)((float)b + (((float)fadeptb - (float)b) * (float)fadepsb/255.0f));
 			g = (UINT8)((float)g + (((float)fadeptg - (float)g) * (float)fadepsg/255.0f));
 			r = (UINT8)((float)r + (((float)fadeptr - (float)r) * (float)fadepsr/255.0f));
+=======
+			b = (uint8_t)((float)b + (((float)fadeptb - (float)b) * (float)fadepsb/255.0f));
+			g = (uint8_t)((float)g + (((float)fadeptg - (float)g) * (float)fadepsg/255.0f));
+			r = (uint8_t)((float)r + (((float)fadeptr - (float)r) * (float)fadepsr/255.0f));
+>>>>>>> upstream/master
 		}
 
 		m_palette->set_pen_color(i,rgb_t(r,g,b));
@@ -165,17 +181,26 @@ VIDEO_START_MEMBER(deco32_state,captaven)
 
 VIDEO_START_MEMBER(deco32_state,fghthist)
 {
+<<<<<<< HEAD
 	m_dirty_palette = auto_alloc_array(machine(), UINT8, 4096);
 	m_sprgen->alloc_sprite_bitmap();
 	m_has_ace_ram=0;
 
 	save_pointer(NAME(m_dirty_palette), 4096);
+=======
+	m_dirty_palette = std::make_unique<uint8_t[]>(4096);
+	m_sprgen->alloc_sprite_bitmap();
+	m_has_ace_ram=0;
+
+	save_pointer(NAME(m_dirty_palette.get()), 4096);
+>>>>>>> upstream/master
 	deco32_state::video_start();
 }
 
 VIDEO_START_MEMBER(deco32_state,nslasher)
 {
 	int width, height;
+<<<<<<< HEAD
 	m_dirty_palette = auto_alloc_array(machine(), UINT8, 4096);
 	width = m_screen->width();
 	height = m_screen->height();
@@ -186,6 +211,18 @@ VIDEO_START_MEMBER(deco32_state,nslasher)
 	m_has_ace_ram=1;
 
 	save_pointer(NAME(m_dirty_palette), 4096);
+=======
+	m_dirty_palette = std::make_unique<uint8_t[]>(4096);
+	width = m_screen->width();
+	height = m_screen->height();
+	m_tilemap_alpha_bitmap=std::make_unique<bitmap_ind16>(width, height );
+	m_sprgen1->alloc_sprite_bitmap();
+	m_sprgen2->alloc_sprite_bitmap();
+	memset(m_dirty_palette.get(),0,4096);
+	m_has_ace_ram=1;
+
+	save_pointer(NAME(m_dirty_palette.get()), 4096);
+>>>>>>> upstream/master
 	save_item(NAME(m_ace_ram_dirty));
 	save_item(NAME(m_spriteram16_2));
 	save_item(NAME(m_spriteram16_2_buffered));
@@ -203,38 +240,67 @@ void dragngun_state::video_start()
 
 VIDEO_START_MEMBER(dragngun_state,dragngun)
 {
+<<<<<<< HEAD
 	m_dirty_palette = auto_alloc_array(machine(), UINT8, 4096);
 	m_screen->register_screen_bitmap(m_temp_render_bitmap);
 
 	memset(m_dirty_palette,0,4096);
+=======
+	m_dirty_palette = std::make_unique<uint8_t[]>(4096);
+	m_screen->register_screen_bitmap(m_temp_render_bitmap);
+
+	memset(m_dirty_palette.get(),0,4096);
+>>>>>>> upstream/master
 
 	m_has_ace_ram=0;
 
 	save_item(NAME(m_sprite_ctrl));
+<<<<<<< HEAD
 	save_pointer(NAME(m_dirty_palette), 4096);
+=======
+	save_pointer(NAME(m_dirty_palette.get()), 4096);
+>>>>>>> upstream/master
 }
 
 VIDEO_START_MEMBER(dragngun_state,lockload)
 {
+<<<<<<< HEAD
 	m_dirty_palette = auto_alloc_array(machine(), UINT8, 4096);
 	m_screen->register_screen_bitmap(m_temp_render_bitmap);
 
 	memset(m_dirty_palette,0,4096);
+=======
+	m_dirty_palette = std::make_unique<uint8_t[]>(4096);
+	m_screen->register_screen_bitmap(m_temp_render_bitmap);
+
+	memset(m_dirty_palette.get(),0,4096);
+>>>>>>> upstream/master
 
 	m_has_ace_ram=0;
 
 	save_item(NAME(m_sprite_ctrl));
+<<<<<<< HEAD
 	save_pointer(NAME(m_dirty_palette), 4096);
+=======
+	save_pointer(NAME(m_dirty_palette.get()), 4096);
+>>>>>>> upstream/master
 }
 /******************************************************************************/
 
 
 /******************************************************************************/
 
+<<<<<<< HEAD
 UINT32 deco32_state::screen_update_captaven(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
 {
 	address_space &space = machine().driver_data()->generic_space();
 	UINT16 flip = m_deco_tilegen1->pf_control_r(space, 0, 0xffff);
+=======
+uint32_t deco32_state::screen_update_captaven(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+{
+	address_space &space = machine().dummy_space();
+	uint16_t flip = m_deco_tilegen1->pf_control_r(space, 0, 0xffff);
+>>>>>>> upstream/master
 	flip_screen_set(BIT(flip, 7));
 
 	screen.priority().fill(0, cliprect);
@@ -266,7 +332,11 @@ UINT32 deco32_state::screen_update_captaven(screen_device &screen, bitmap_ind16 
 	return 0;
 }
 
+<<<<<<< HEAD
 UINT32 dragngun_state::screen_update_dragngun(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect)
+=======
+uint32_t dragngun_state::screen_update_dragngun(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect)
+>>>>>>> upstream/master
 {
 	screen.priority().fill(0, cliprect);
 	bitmap.fill(m_palette->black_pen(), cliprect);
@@ -300,7 +370,11 @@ UINT32 dragngun_state::screen_update_dragngun(screen_device &screen, bitmap_rgb3
 }
 
 
+<<<<<<< HEAD
 UINT32 deco32_state::screen_update_fghthist(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect)
+=======
+uint32_t deco32_state::screen_update_fghthist(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect)
+>>>>>>> upstream/master
 {
 	screen.priority().fill(0, cliprect);
 	bitmap.fill(m_palette->pen(0x300), cliprect); // Palette index not confirmed
@@ -353,6 +427,7 @@ void deco32_state::mixDualAlphaSprites(screen_device &screen, bitmap_rgb32 &bitm
 
 	/* Mix sprites into main bitmap, based on priority & alpha */
 	for (y=8; y<248; y++) {
+<<<<<<< HEAD
 		UINT8* tilemapPri=&screen.priority().pix8(y);
 		UINT16* sprite0=&sprite0_mix_bitmap.pix16(y);
 		UINT16* sprite1=&sprite1_mix_bitmap.pix16(y);
@@ -367,6 +442,22 @@ void deco32_state::mixDualAlphaSprites(screen_device &screen, bitmap_rgb32 &bitm
 			UINT16 col0=((priColAlphaPal0&0x1f00)>>8) % gfx0->colors();
 			UINT16 col1=((priColAlphaPal1&0x0f00)>>8) % gfx1->colors();
 			UINT16 alpha1=priColAlphaPal1&0x8000;
+=======
+		uint8_t* tilemapPri=&screen.priority().pix8(y);
+		uint16_t* sprite0=&sprite0_mix_bitmap.pix16(y);
+		uint16_t* sprite1=&sprite1_mix_bitmap.pix16(y);
+		uint32_t* destLine=&bitmap.pix32(y);
+		uint16_t* alphaTilemap=&m_tilemap_alpha_bitmap->pix16(y);
+
+		for (x=0; x<320; x++) {
+			uint16_t priColAlphaPal0=sprite0[x];
+			uint16_t priColAlphaPal1=sprite1[x];
+			uint16_t pri0=(priColAlphaPal0&0x6000)>>13;
+			uint16_t pri1=(priColAlphaPal1&0x6000)>>13;
+			uint16_t col0=((priColAlphaPal0&0x1f00)>>8) % gfx0->colors();
+			uint16_t col1=((priColAlphaPal1&0x0f00)>>8) % gfx1->colors();
+			uint16_t alpha1=priColAlphaPal1&0x8000;
+>>>>>>> upstream/master
 
 			// Apply sprite bitmap 0 according to priority rules
 			if ((priColAlphaPal0&0xff)!=0)
@@ -451,7 +542,11 @@ void deco32_state::mixDualAlphaSprites(screen_device &screen, bitmap_rgb32 &bitm
 			/* Optionally mix in alpha tilemap */
 			if (mixAlphaTilemap)
 			{
+<<<<<<< HEAD
 				UINT16 p=alphaTilemap[x];
+=======
+				uint16_t p=alphaTilemap[x];
+>>>>>>> upstream/master
 				if (p&0xf)
 				{
 					/* Alpha tilemap under top two sprite 0 priorities */
@@ -471,7 +566,11 @@ void deco32_state::mixDualAlphaSprites(screen_device &screen, bitmap_rgb32 &bitm
 	}
 }
 
+<<<<<<< HEAD
 UINT32 deco32_state::screen_update_nslasher(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect)
+=======
+uint32_t deco32_state::screen_update_nslasher(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect)
+>>>>>>> upstream/master
 {
 	int alphaTilemap=0;
 	m_deco_tilegen1->pf_update(m_pf1_rowscroll, m_pf2_rowscroll);

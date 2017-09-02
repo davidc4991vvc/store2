@@ -29,12 +29,19 @@
 
 **********************************************************************/
 
+<<<<<<< HEAD
 #pragma once
 
 #ifndef __UPD3301__
 #define __UPD3301__
 
 #include "emu.h"
+=======
+#ifndef MAME_VIDEO_UPD3301_H
+#define MAME_VIDEO_UPD3301_H
+
+#pragma once
+>>>>>>> upstream/master
 
 
 
@@ -42,14 +49,22 @@
 //  INTERFACE CONFIGURATION MACROS
 //**************************************************************************
 
+<<<<<<< HEAD
 #define UPD3301_DRAW_CHARACTER_MEMBER(_name) void _name(bitmap_rgb32 &bitmap, int y, int sx, UINT8 cc, UINT8 lc, int hlgt, int rvv, int vsp, int sl0, int sl12, int csr, int gpa)
+=======
+#define UPD3301_DRAW_CHARACTER_MEMBER(_name) void _name(bitmap_rgb32 &bitmap, int y, int sx, uint8_t cc, uint8_t lc, int hlgt, int rvv, int vsp, int sl0, int sl12, int csr, int gpa)
+>>>>>>> upstream/master
 
 
 #define MCFG_UPD3301_CHARACTER_WIDTH(_value) \
 	upd3301_device::static_set_character_width(*device, _value);
 
 #define MCFG_UPD3301_DRAW_CHARACTER_CALLBACK_OWNER(_class, _method) \
+<<<<<<< HEAD
 	upd3301_device::static_set_display_callback(*device, upd3301_draw_character_delegate(&_class::_method, #_class "::" #_method, downcast<_class *>(owner)));
+=======
+	upd3301_device::static_set_display_callback(*device, upd3301_device::draw_character_delegate(&_class::_method, #_class "::" #_method, downcast<_class *>(owner)));
+>>>>>>> upstream/master
 
 #define MCFG_UPD3301_DRQ_CALLBACK(_write) \
 	devcb = &upd3301_device::set_drq_wr_callback(*device, DEVCB_##_write);
@@ -69,8 +84,11 @@
 //  TYPE DEFINITIONS
 //**************************************************************************
 
+<<<<<<< HEAD
 typedef device_delegate<void (bitmap_rgb32 &bitmap, int y, int sx, UINT8 cc, UINT8 lc, int hlgt, int rvv, int vsp, int sl0, int sl12, int csr, int gpa)> upd3301_draw_character_delegate;
 
+=======
+>>>>>>> upstream/master
 
 // ======================> upd3301_device
 
@@ -78,6 +96,7 @@ class upd3301_device :  public device_t,
 						public device_video_interface
 {
 public:
+<<<<<<< HEAD
 	// construction/destruction
 	upd3301_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
 
@@ -88,6 +107,20 @@ public:
 	template<class _Object> static devcb_base &set_int_wr_callback(device_t &device, _Object object) { return downcast<upd3301_device &>(device).m_write_int.set_callback(object); }
 	template<class _Object> static devcb_base &set_hrtc_wr_callback(device_t &device, _Object object) { return downcast<upd3301_device &>(device).m_write_hrtc.set_callback(object); }
 	template<class _Object> static devcb_base &set_vrtc_wr_callback(device_t &device, _Object object) { return downcast<upd3301_device &>(device).m_write_vrtc.set_callback(object); }
+=======
+	typedef device_delegate<void (bitmap_rgb32 &bitmap, int y, int sx, uint8_t cc, uint8_t lc, int hlgt, int rvv, int vsp, int sl0, int sl12, int csr, int gpa)> draw_character_delegate;
+
+	// construction/destruction
+	upd3301_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
+
+	static void static_set_character_width(device_t &device, int value) { downcast<upd3301_device &>(device).m_width = value; }
+	static void static_set_display_callback(device_t &device, draw_character_delegate &&cb) { downcast<upd3301_device &>(device).m_display_cb = std::move(cb); }
+
+	template <class Object> static devcb_base &set_drq_wr_callback(device_t &device, Object &&cb) { return downcast<upd3301_device &>(device).m_write_drq.set_callback(std::forward<Object>(cb)); }
+	template <class Object> static devcb_base &set_int_wr_callback(device_t &device, Object &&cb) { return downcast<upd3301_device &>(device).m_write_int.set_callback(std::forward<Object>(cb)); }
+	template <class Object> static devcb_base &set_hrtc_wr_callback(device_t &device, Object &&cb) { return downcast<upd3301_device &>(device).m_write_hrtc.set_callback(std::forward<Object>(cb)); }
+	template <class Object> static devcb_base &set_vrtc_wr_callback(device_t &device, Object &&cb) { return downcast<upd3301_device &>(device).m_write_vrtc.set_callback(std::forward<Object>(cb)); }
+>>>>>>> upstream/master
 
 	DECLARE_READ8_MEMBER( read );
 	DECLARE_WRITE8_MEMBER( write );
@@ -96,6 +129,7 @@ public:
 	DECLARE_READ_LINE_MEMBER( hrtc_r );
 	DECLARE_READ_LINE_MEMBER( vrtc_r );
 
+<<<<<<< HEAD
 	UINT32 screen_update(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect);
 
 protected:
@@ -104,6 +138,16 @@ protected:
 	virtual void device_reset();
 	virtual void device_clock_changed();
 	virtual void device_timer(emu_timer &timer, device_timer_id id, int param, void *ptr);
+=======
+	uint32_t screen_update(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect);
+
+protected:
+	// device-level overrides
+	virtual void device_start() override;
+	virtual void device_reset() override;
+	virtual void device_clock_changed() override;
+	virtual void device_timer(emu_timer &timer, device_timer_id id, int param, void *ptr) override;
+>>>>>>> upstream/master
 
 private:
 	enum
@@ -128,7 +172,11 @@ private:
 	devcb_write_line   m_write_hrtc;
 	devcb_write_line   m_write_vrtc;
 
+<<<<<<< HEAD
 	upd3301_draw_character_delegate m_display_cb;
+=======
+	draw_character_delegate m_display_cb;
+>>>>>>> upstream/master
 	int m_width;
 
 	// screen drawing
@@ -139,12 +187,21 @@ private:
 
 	// live state
 	int m_mode;                     // command mode
+<<<<<<< HEAD
 	UINT8 m_status;                 // status register
 	int m_param_count;              // parameter count
 
 	// FIFOs
 	UINT8 m_data_fifo[80][2];       // row data FIFO
 	UINT8 m_attr_fifo[40][2];       // attribute FIFO
+=======
+	uint8_t m_status;                 // status register
+	int m_param_count;              // parameter count
+
+	// FIFOs
+	uint8_t m_data_fifo[80][2];       // row data FIFO
+	uint8_t m_attr_fifo[40][2];       // attribute FIFO
+>>>>>>> upstream/master
 	int m_data_fifo_pos;            // row data FIFO position
 	int m_attr_fifo_pos;            // attribute FIFO position
 	int m_input_fifo;               // which FIFO is in input mode
@@ -187,8 +244,14 @@ private:
 
 
 // device type definition
+<<<<<<< HEAD
 extern const device_type UPD3301;
 
 
 
 #endif
+=======
+DECLARE_DEVICE_TYPE(UPD3301, upd3301_device)
+
+#endif // MAME_VIDEO_UPD3301_H
+>>>>>>> upstream/master

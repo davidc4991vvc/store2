@@ -35,11 +35,24 @@ Stephh's notes (based on the game M6502 code and some tests) :
 ***************************************************************************/
 
 #include "emu.h"
+<<<<<<< HEAD
 #include "cpu/z80/z80.h"
 #include "cpu/m6809/m6809.h"
 #include "sound/2203intf.h"
 #include "includes/konamipt.h"
 #include "includes/scotrsht.h"
+=======
+#include "includes/scotrsht.h"
+#include "includes/konamipt.h"
+
+#include "cpu/z80/z80.h"
+#include "cpu/m6809/m6809.h"
+#include "machine/watchdog.h"
+#include "sound/2203intf.h"
+#include "screen.h"
+#include "speaker.h"
+
+>>>>>>> upstream/master
 
 WRITE8_MEMBER(scotrsht_state::ctrl_w)
 {
@@ -55,7 +68,11 @@ INTERRUPT_GEN_MEMBER(scotrsht_state::interrupt)
 
 WRITE8_MEMBER(scotrsht_state::soundlatch_w)
 {
+<<<<<<< HEAD
 	soundlatch_byte_w(space, 0, data);
+=======
+	m_soundlatch->write(space, 0, data);
+>>>>>>> upstream/master
 	m_audiocpu->set_input_line(0, HOLD_LINE);
 }
 
@@ -79,14 +96,22 @@ static ADDRESS_MAP_START( scotrsht_map, AS_PROGRAM, 8, scotrsht_state )
 	AM_RANGE(0x3301, 0x3301) AM_READ_PORT("P1")
 	AM_RANGE(0x3302, 0x3302) AM_READ_PORT("P2")
 	AM_RANGE(0x3303, 0x3303) AM_READ_PORT("DSW1")
+<<<<<<< HEAD
 	AM_RANGE(0x3300, 0x3300) AM_WRITE(watchdog_reset_w) /* watchdog */
+=======
+	AM_RANGE(0x3300, 0x3300) AM_DEVWRITE("watchdog", watchdog_timer_device, reset_w)
+>>>>>>> upstream/master
 	AM_RANGE(0x4000, 0xffff) AM_ROM
 ADDRESS_MAP_END
 
 static ADDRESS_MAP_START( scotrsht_sound_map, AS_PROGRAM, 8, scotrsht_state )
 	AM_RANGE(0x0000, 0x3fff) AM_ROM
 	AM_RANGE(0x4000, 0x43ff) AM_RAM
+<<<<<<< HEAD
 	AM_RANGE(0x8000, 0x8000) AM_READ(soundlatch_byte_r)
+=======
+	AM_RANGE(0x8000, 0x8000) AM_DEVREAD("soundlatch", generic_latch_8_device, read)
+>>>>>>> upstream/master
 ADDRESS_MAP_END
 
 static ADDRESS_MAP_START( scotrsht_sound_port, AS_IO, 8, scotrsht_state )
@@ -179,7 +204,11 @@ static GFXDECODE_START( scotrsht )
 	GFXDECODE_ENTRY( "gfx2", 0, spritelayout, 16*16*8, 16*8 ) /* sprites */
 GFXDECODE_END
 
+<<<<<<< HEAD
 static MACHINE_CONFIG_START( scotrsht, scotrsht_state )
+=======
+static MACHINE_CONFIG_START( scotrsht )
+>>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", M6809, 18432000/6)        /* 3.072 MHz */
@@ -190,6 +219,11 @@ static MACHINE_CONFIG_START( scotrsht, scotrsht_state )
 	MCFG_CPU_PROGRAM_MAP(scotrsht_sound_map)
 	MCFG_CPU_IO_MAP(scotrsht_sound_port)
 
+<<<<<<< HEAD
+=======
+	MCFG_WATCHDOG_ADD("watchdog")
+
+>>>>>>> upstream/master
 	/* video hardware */
 	MCFG_SCREEN_ADD("screen", RASTER)
 	MCFG_SCREEN_REFRESH_RATE(60)
@@ -207,6 +241,11 @@ static MACHINE_CONFIG_START( scotrsht, scotrsht_state )
 	/* sound hardware */
 	MCFG_SPEAKER_STANDARD_MONO("mono")
 
+<<<<<<< HEAD
+=======
+	MCFG_GENERIC_LATCH_8_ADD("soundlatch")
+
+>>>>>>> upstream/master
 	MCFG_SOUND_ADD("ymsnd", YM2203, 18432000/6)
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 0.40)
 MACHINE_CONFIG_END
@@ -242,4 +281,8 @@ ROM_START( scotrsht )
 	ROM_LOAD( "gx545_6301_8f.bin", 0x0400, 0x0100, CRC(c1c7cf58) SHA1(08452228bf13e43ce4a05806f79e9cd1542416f1) ) /* sprites lookup */
 ROM_END
 
+<<<<<<< HEAD
 GAME( 1985, scotrsht, 0, scotrsht, scotrsht, driver_device, 0, ROT90,"Konami", "Scooter Shooter", MACHINE_SUPPORTS_SAVE )
+=======
+GAME( 1985, scotrsht, 0, scotrsht, scotrsht, scotrsht_state, 0, ROT90,"Konami", "Scooter Shooter", MACHINE_SUPPORTS_SAVE )
+>>>>>>> upstream/master

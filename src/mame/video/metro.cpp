@@ -138,10 +138,17 @@ TILEMAP_MAPPER_MEMBER(metro_state::tilemap_scan_gstrik2)
 /* This looks up a single pixel in a tile, given the tile code.
    The Metro hardware has an indirection table, which is used here.
    Returns if to draw the pixel or not, pixel colour is placed in pix */
+<<<<<<< HEAD
 inline UINT8 metro_state::get_tile_pix( UINT16 code, UINT8 x, UINT8 y, int big, UINT16 *pix )
 {
 	int table_index;
 	UINT32 tile;
+=======
+inline uint8_t metro_state::get_tile_pix( uint16_t code, uint8_t x, uint8_t y, int big, uint16_t *pix )
+{
+	int table_index;
+	uint32_t tile;
+>>>>>>> upstream/master
 
 	// Use code as an index into the tiles set table
 	table_index = ((code & 0x1ff0) >> 4) * 2;
@@ -159,10 +166,17 @@ inline UINT8 metro_state::get_tile_pix( UINT16 code, UINT8 x, UINT8 y, int big, 
 	else if (((tile & 0x00f00000) == 0x00f00000)    && (m_support_8bpp)) /* draw tile as 8bpp (e.g. balcube bg) */
 	{
 		gfx_element *gfx1 = m_gfxdecode->gfx(big?3:1);
+<<<<<<< HEAD
 		UINT32 tile2 = big ? ((tile & 0xfffff) + 8*(code & 0xf)) :
 								((tile & 0xfffff) + 2*(code & 0xf));
 		const UINT8* data;
 		UINT8 flipxy = (code & 0x6000) >> 13;
+=======
+		uint32_t tile2 = big ? ((tile & 0xfffff) + 8*(code & 0xf)) :
+								((tile & 0xfffff) + 2*(code & 0xf));
+		const uint8_t* data;
+		uint8_t flipxy = (code & 0x6000) >> 13;
+>>>>>>> upstream/master
 
 		if (tile2 < gfx1->elements())
 			data = gfx1->get_data(tile2);
@@ -191,10 +205,17 @@ inline UINT8 metro_state::get_tile_pix( UINT16 code, UINT8 x, UINT8 y, int big, 
 	else
 	{
 		gfx_element *gfx1 = m_gfxdecode->gfx(big?2:0);
+<<<<<<< HEAD
 		UINT32 tile2 = big ? ((tile & 0xfffff) + 4*(code & 0xf)) :
 								((tile & 0xfffff) +   (code & 0xf));
 		const UINT8* data;
 		UINT8 flipxy = (code & 0x6000) >> 13;
+=======
+		uint32_t tile2 = big ? ((tile & 0xfffff) + 4*(code & 0xf)) :
+								((tile & 0xfffff) +   (code & 0xf));
+		const uint8_t* data;
+		uint8_t flipxy = (code & 0x6000) >> 13;
+>>>>>>> upstream/master
 
 		if (tile2 < gfx1->elements())
 			data = gfx1->get_data(tile2);
@@ -223,7 +244,11 @@ inline UINT8 metro_state::get_tile_pix( UINT16 code, UINT8 x, UINT8 y, int big, 
 }
 
 
+<<<<<<< HEAD
 inline void metro_state::metro_vram_w( offs_t offset, UINT16 data, UINT16 mem_mask, int layer, UINT16 *vram )
+=======
+inline void metro_state::metro_vram_w( offs_t offset, uint16_t data, uint16_t mem_mask, int layer, uint16_t *vram )
+>>>>>>> upstream/master
 {
 	COMBINE_DATA(&vram[offset]);
 }
@@ -255,6 +280,7 @@ WRITE16_MEMBER(metro_state::metro_window_w)
 
 void metro_state::expand_gfx1()
 {
+<<<<<<< HEAD
 	UINT8 *base_gfx =   memregion("gfx1")->base();
 	UINT32 length   =   memregion("gfx1")->bytes() * 2;
 
@@ -263,6 +289,16 @@ void metro_state::expand_gfx1()
 	for (int i = 0; i < length; i += 2)
 	{
 		UINT8 src = base_gfx[i / 2];
+=======
+	uint8_t *base_gfx =   memregion("gfx1")->base();
+	uint32_t length   =   memregion("gfx1")->bytes() * 2;
+
+	m_expanded_gfx1 = std::make_unique<uint8_t[]>(length);
+
+	for (int i = 0; i < length; i += 2)
+	{
+		uint8_t src = base_gfx[i / 2];
+>>>>>>> upstream/master
 
 		m_expanded_gfx1[i + 0] = src & 0xf;
 		m_expanded_gfx1[i + 1] = src >> 4;
@@ -319,7 +355,11 @@ VIDEO_START_MEMBER(metro_state,blzntrnd)
 
 	m_has_zoom = 1;
 
+<<<<<<< HEAD
 	m_k053936_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(metro_state::metro_k053936_get_tile_info),this), TILEMAP_SCAN_ROWS, 8, 8, 256, 512);
+=======
+	m_k053936_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(metro_state::metro_k053936_get_tile_info),this), TILEMAP_SCAN_ROWS, 8, 8, 256, 512);
+>>>>>>> upstream/master
 
 	m_tilemap_scrolldx[0] = 8;
 	m_tilemap_scrolldx[1] = 8;
@@ -332,7 +372,11 @@ VIDEO_START_MEMBER(metro_state,gstrik2)
 
 	m_has_zoom = 1;
 
+<<<<<<< HEAD
 	m_k053936_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(metro_state::metro_k053936_gstrik2_get_tile_info),this), tilemap_mapper_delegate(FUNC(metro_state::tilemap_scan_gstrik2),this), 16, 16, 128, 256);
+=======
+	m_k053936_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(metro_state::metro_k053936_gstrik2_get_tile_info),this), tilemap_mapper_delegate(FUNC(metro_state::tilemap_scan_gstrik2),this), 16, 16, 128, 256);
+>>>>>>> upstream/master
 
 	m_tilemap_scrolldx[0] = 8;
 	m_tilemap_scrolldx[1] = 0;
@@ -401,9 +445,15 @@ VIDEO_START_MEMBER(metro_state,gstrik2)
 
 void metro_state::metro_draw_sprites( screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect )
 {
+<<<<<<< HEAD
 	UINT8 *base_gfx4 = m_expanded_gfx1;
 	UINT8 *base_gfx8 = memregion("gfx1")->base();
 	UINT32 gfx_size = memregion("gfx1")->bytes();
+=======
+	uint8_t *base_gfx4 = m_expanded_gfx1.get();
+	uint8_t *base_gfx8 = memregion("gfx1")->base();
+	uint32_t gfx_size = memregion("gfx1")->bytes();
+>>>>>>> upstream/master
 
 	int max_x = m_screen->width();
 	int max_y = m_screen->height();
@@ -416,7 +466,11 @@ void metro_state::metro_draw_sprites( screen_device &screen, bitmap_ind16 &bitma
 	int i, j, pri;
 	static const int primask[4] = { 0x0000, 0xff00, 0xff00 | 0xf0f0, 0xff00 | 0xf0f0 | 0xcccc };
 
+<<<<<<< HEAD
 	UINT16 *src;
+=======
+	uint16_t *src;
+>>>>>>> upstream/master
 	int inc;
 
 	if (sprites == 0)
@@ -481,7 +535,11 @@ void metro_state::metro_draw_sprites( screen_device &screen, bitmap_ind16 &bitma
 			width  = (((attr >> 11) & 0x7) + 1) * 8;
 			height = (((attr >>  8) & 0x7) + 1) * 8;
 
+<<<<<<< HEAD
 			UINT32 gfxstart = (8 * 8 * 4 / 8) * (((attr & 0x000f) << 16) + code);
+=======
+			uint32_t gfxstart = (8 * 8 * 4 / 8) * (((attr & 0x000f) << 16) + code);
+>>>>>>> upstream/master
 
 			if (m_flip_screen)
 			{
@@ -545,8 +603,13 @@ void metro_state::metro_draw_sprites( screen_device &screen, bitmap_ind16 &bitma
 
 // Copy a 'window' from the large 2048x2048 (or 4096x4096 for 16x16 tiles) tilemap
 
+<<<<<<< HEAD
 void metro_state::draw_tilemap( screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect, UINT32 flags, UINT32 pcode,
 							int sx, int sy, int wx, int wy, int big, UINT16 *tilemapram, int layer )
+=======
+void metro_state::draw_tilemap( screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect, uint32_t flags, uint32_t pcode,
+							int sx, int sy, int wx, int wy, int big, uint16_t *tilemapram, int layer )
+>>>>>>> upstream/master
 {
 	int y;
 
@@ -567,8 +630,13 @@ void metro_state::draw_tilemap( screen_device &screen, bitmap_ind16 &bitmap, con
 	{
 		int scrolly = (sy+y-wy)&(windowheight-1);
 		int x;
+<<<<<<< HEAD
 		UINT16 *dst;
 		UINT8 *priority_baseaddr;
+=======
+		uint16_t *dst;
+		uint8_t *priority_baseaddr;
+>>>>>>> upstream/master
 		int srcline = (wy+scrolly)&(height-1);
 		int srctilerow = srcline >> (big ? 4 : 3);
 
@@ -584,10 +652,17 @@ void metro_state::draw_tilemap( screen_device &screen, bitmap_ind16 &bitmap, con
 				int srctilecol = srccol >> (big ? 4 : 3);
 				int tileoffs = srctilecol + srctilerow * BIG_NX;
 
+<<<<<<< HEAD
 				UINT16 dat = 0;
 
 				UINT16 tile = tilemapram[tileoffs];
 				UINT8 draw = get_tile_pix(tile, big ? (srccol&0xf) : (srccol&0x7), big ? (srcline&0xf) : (srcline&0x7), big, &dat);
+=======
+				uint16_t dat = 0;
+
+				uint16_t tile = tilemapram[tileoffs];
+				uint8_t draw = get_tile_pix(tile, big ? (srccol&0xf) : (srccol&0x7), big ? (srcline&0xf) : (srcline&0x7), big, &dat);
+>>>>>>> upstream/master
 
 				if (draw)
 				{
@@ -608,10 +683,17 @@ void metro_state::draw_tilemap( screen_device &screen, bitmap_ind16 &bitmap, con
 				int srctilecol = srccol >> (big ? 4 : 3);
 				int tileoffs = srctilecol + srctilerow * BIG_NX;
 
+<<<<<<< HEAD
 				UINT16 dat = 0;
 
 				UINT16 tile = tilemapram[tileoffs];
 				UINT8 draw = get_tile_pix(tile, big ? (srccol&0xf) : (srccol&0x7), big ? (srcline&0xf) : (srcline&0x7), big, &dat);
+=======
+				uint16_t dat = 0;
+
+				uint16_t tile = tilemapram[tileoffs];
+				uint8_t draw = get_tile_pix(tile, big ? (srccol&0xf) : (srccol&0x7), big ? (srcline&0xf) : (srcline&0x7), big, &dat);
+>>>>>>> upstream/master
 
 				if (draw)
 				{
@@ -627,7 +709,11 @@ void metro_state::draw_tilemap( screen_device &screen, bitmap_ind16 &bitmap, con
 
 void metro_state::draw_layers( screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect, int pri, int layers_ctrl )
 {
+<<<<<<< HEAD
 	UINT16 layers_pri = m_videoregs[0x10 / 2];
+=======
+	uint16_t layers_pri = m_videoregs[0x10 / 2];
+>>>>>>> upstream/master
 	int layer;
 
 	// Draw all the layers with priority == pri
@@ -636,12 +722,21 @@ void metro_state::draw_layers( screen_device &screen, bitmap_ind16 &bitmap, cons
 		if (pri == ((layers_pri >> (layer * 2)) & 3))
 		{
 			// Scroll and Window values
+<<<<<<< HEAD
 			UINT16 sy = m_scroll[layer * 2 + 0]; UINT16 sx = m_scroll[layer * 2 + 1];
 			UINT16 wy = m_window[layer * 2 + 0]; UINT16 wx = m_window[layer * 2 + 1];
 
 			if (BIT(layers_ctrl, layer))    // for debug
 			{
 				UINT16 *tilemapram = 0;
+=======
+			uint16_t sy = m_scroll[layer * 2 + 0]; uint16_t sx = m_scroll[layer * 2 + 1];
+			uint16_t wy = m_window[layer * 2 + 0]; uint16_t wx = m_window[layer * 2 + 1];
+
+			if (BIT(layers_ctrl, layer))    // for debug
+			{
+				uint16_t *tilemapram = nullptr;
+>>>>>>> upstream/master
 
 				switch (layer)
 				{
@@ -659,10 +754,17 @@ void metro_state::draw_layers( screen_device &screen, bitmap_ind16 &bitmap, cons
 }
 
 
+<<<<<<< HEAD
 UINT32 metro_state::screen_update_metro(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
 {
 	int pri, layers_ctrl = -1;
 	UINT16 screenctrl = *m_screenctrl;
+=======
+uint32_t metro_state::screen_update_metro(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+{
+	int pri, layers_ctrl = -1;
+	uint16_t screenctrl = *m_screenctrl;
+>>>>>>> upstream/master
 
 	m_sprite_xoffs = m_videoregs[0x06 / 2] - screen.width()  / 2 + m_sprite_xoffs_dx;
 	m_sprite_yoffs = m_videoregs[0x04 / 2] - screen.height() / 2;

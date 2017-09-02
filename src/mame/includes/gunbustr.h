@@ -36,30 +36,54 @@ public:
 
 	required_device<cpu_device> m_maincpu;
 	required_device<tc0480scp_device> m_tc0480scp;
+<<<<<<< HEAD
 	required_shared_ptr<UINT32> m_ram;
 	required_shared_ptr<UINT32> m_spriteram;
+=======
+	required_shared_ptr<uint32_t> m_ram;
+	required_shared_ptr<uint32_t> m_spriteram;
+>>>>>>> upstream/master
 	required_device<eeprom_serial_93cxx_device> m_eeprom;
 	required_device<gfxdecode_device> m_gfxdecode;
 	required_device<palette_device> m_palette;
 
 	bool m_coin_lockout;
+<<<<<<< HEAD
 	UINT16 m_coin_word;
 	struct gb_tempsprite *m_spritelist;
 	UINT32 m_mem[2];
 
 	DECLARE_WRITE32_MEMBER(gunbustr_input_w);
+=======
+	std::unique_ptr<gb_tempsprite[]> m_spritelist;
+	uint32_t m_mem[2];
+	emu_timer *m_interrupt5_timer;
+
+>>>>>>> upstream/master
 	DECLARE_WRITE32_MEMBER(motor_control_w);
 	DECLARE_READ32_MEMBER(gunbustr_gun_r);
 	DECLARE_WRITE32_MEMBER(gunbustr_gun_w);
 	DECLARE_READ32_MEMBER(main_cycle_r);
+<<<<<<< HEAD
 	DECLARE_CUSTOM_INPUT_MEMBER(coin_word_r);
 	DECLARE_DRIVER_INIT(gunbustrj);
 	DECLARE_DRIVER_INIT(gunbustr);
 	virtual void video_start();
 	UINT32 screen_update_gunbustr(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
+=======
+	DECLARE_WRITE8_MEMBER(coin_word_w);
+	DECLARE_DRIVER_INIT(gunbustrj);
+	DECLARE_DRIVER_INIT(gunbustr);
+	virtual void video_start() override;
+	uint32_t screen_update_gunbustr(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
+>>>>>>> upstream/master
 	INTERRUPT_GEN_MEMBER(gunbustr_interrupt);
 	void draw_sprites(screen_device &screen, bitmap_ind16 &bitmap,const rectangle &cliprect,const int *primasks,int x_offs,int y_offs);
 
 protected:
+<<<<<<< HEAD
 	virtual void device_timer(emu_timer &timer, device_timer_id id, int param, void *ptr);
+=======
+	virtual void device_timer(emu_timer &timer, device_timer_id id, int param, void *ptr) override;
+>>>>>>> upstream/master
 };

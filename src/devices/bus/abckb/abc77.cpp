@@ -41,7 +41,13 @@ Notes:
 
 */
 
+<<<<<<< HEAD
 #include "abc77.h"
+=======
+#include "emu.h"
+#include "abc77.h"
+#include "speaker.h"
+>>>>>>> upstream/master
 
 
 
@@ -58,8 +64,13 @@ Notes:
 //  DEVICE DEFINITIONS
 //**************************************************************************
 
+<<<<<<< HEAD
 const device_type ABC77 = &device_creator<abc77_device>;
 const device_type ABC55 = &device_creator<abc55_device>;
+=======
+DEFINE_DEVICE_TYPE(ABC77, abc77_device, "abc77", "Luxor ABC 77")
+DEFINE_DEVICE_TYPE(ABC55, abc55_device, "abc55", "Luxor ABC 55")
+>>>>>>> upstream/master
 
 
 //-------------------------------------------------
@@ -77,7 +88,11 @@ ROM_END
 //  rom_region - device-specific ROM region
 //-------------------------------------------------
 
+<<<<<<< HEAD
 const rom_entry *abc77_device::device_rom_region() const
+=======
+const tiny_rom_entry *abc77_device::device_rom_region() const
+>>>>>>> upstream/master
 {
 	return ROM_NAME( abc77 );
 }
@@ -99,10 +114,13 @@ ADDRESS_MAP_END
 static ADDRESS_MAP_START( abc77_io, AS_IO, 8, abc77_device )
 	AM_RANGE(0x00, 0x00) AM_MIRROR(0xff) AM_WRITE(j3_w)
 	AM_RANGE(0x00, 0x00) AM_MIRROR(0xff) AM_READ_PORT("DSW")
+<<<<<<< HEAD
 	AM_RANGE(MCS48_PORT_P1, MCS48_PORT_P1) AM_READ(p1_r)
 	AM_RANGE(MCS48_PORT_P2, MCS48_PORT_P2) AM_WRITE(p2_w)
 	AM_RANGE(MCS48_PORT_T1, MCS48_PORT_T1) AM_READ(t1_r)
 	AM_RANGE(MCS48_PORT_PROG, MCS48_PORT_PROG) AM_WRITE(prog_w)
+=======
+>>>>>>> upstream/master
 ADDRESS_MAP_END
 
 
@@ -126,16 +144,33 @@ DISCRETE_SOUND_END
 
 
 //-------------------------------------------------
+<<<<<<< HEAD
 //  MACHINE_DRIVER( abc77 )
 //-------------------------------------------------
 
 static MACHINE_CONFIG_FRAGMENT( abc77 )
+=======
+//  device_add_mconfig - add device configuration
+//-------------------------------------------------
+
+MACHINE_CONFIG_MEMBER( abc77_device::device_add_mconfig )
+>>>>>>> upstream/master
 	// keyboard cpu
 	MCFG_CPU_ADD(I8035_TAG, I8035, XTAL_4_608MHz)
 	MCFG_CPU_PROGRAM_MAP(abc77_map)
 	MCFG_CPU_IO_MAP(abc77_io)
+<<<<<<< HEAD
 
 	// watchdog
+=======
+	MCFG_MCS48_PORT_P1_IN_CB(READ8(abc77_device, p1_r))
+	MCFG_MCS48_PORT_P2_OUT_CB(WRITE8(abc77_device, p2_w))
+	MCFG_MCS48_PORT_T1_IN_CB(READLINE(abc77_device, t1_r))
+	MCFG_MCS48_PORT_PROG_OUT_CB(WRITELINE(abc77_device, prog_w))
+
+	// watchdog
+	MCFG_WATCHDOG_ADD("watchdog")
+>>>>>>> upstream/master
 	MCFG_WATCHDOG_TIME_INIT(attotime::from_hz(XTAL_4_608MHz/3/5/4096))
 
 	// discrete sound
@@ -147,6 +182,7 @@ MACHINE_CONFIG_END
 
 
 //-------------------------------------------------
+<<<<<<< HEAD
 //  machine_config_additions - device-specific
 //  machine configurations
 //-------------------------------------------------
@@ -158,6 +194,8 @@ machine_config_constructor abc77_device::device_mconfig_additions() const
 
 
 //-------------------------------------------------
+=======
+>>>>>>> upstream/master
 //  INPUT_CHANGED_MEMBER( keyboard_reset )
 //-------------------------------------------------
 
@@ -313,7 +351,11 @@ INPUT_PORTS_START( abc55 )
 	PORT_BIT( 0xe0, IP_ACTIVE_LOW, IPT_UNUSED)
 
 	PORT_START("SW1")
+<<<<<<< HEAD
 	PORT_BIT( 0x01, IP_ACTIVE_LOW, IPT_SPECIAL ) PORT_NAME("Keyboard Reset") PORT_CHANGED_MEMBER(DEVICE_SELF, abc77_device, keyboard_reset, 0)
+=======
+	PORT_BIT( 0x01, IP_ACTIVE_LOW, IPT_SPECIAL ) PORT_NAME("Keyboard Reset") PORT_CHANGED_MEMBER(DEVICE_SELF, abc77_device, keyboard_reset, nullptr)
+>>>>>>> upstream/master
 INPUT_PORTS_END
 
 
@@ -421,6 +463,7 @@ inline void abc77_device::key_down(int state)
 //  abc77_device - constructor
 //-------------------------------------------------
 
+<<<<<<< HEAD
 abc77_device::abc77_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock) :
 	device_t(mconfig, ABC77, "Luxor ABC 77", tag, owner, clock, "abc77", __FILE__),
 	abc_keyboard_interface(mconfig, *this),
@@ -438,6 +481,15 @@ abc77_device::abc77_device(const machine_config &mconfig, const char *tag, devic
 	m_x9(*this, "X9"),
 	m_x10(*this, "X10"),
 	m_x11(*this, "X11"),
+=======
+abc77_device::abc77_device(const machine_config &mconfig, device_type type, const char *tag, device_t *owner, uint32_t clock) :
+	device_t(mconfig, type, tag, owner, clock),
+	abc_keyboard_interface(mconfig, *this),
+	m_maincpu(*this, I8035_TAG),
+	m_watchdog(*this, "watchdog"),
+	m_discrete(*this, DISCRETE_TAG),
+	m_x(*this, "X%u", 0),
+>>>>>>> upstream/master
 	m_dsw(*this, "DSW"),
 	m_txd(1), m_keylatch(0),
 	m_keydown(1),
@@ -446,6 +498,7 @@ abc77_device::abc77_device(const machine_config &mconfig, const char *tag, devic
 {
 }
 
+<<<<<<< HEAD
 abc77_device::abc77_device(const machine_config &mconfig, device_type type, const char *name, const char *tag, device_t *owner, UINT32 clock, const char *shortname, const char *source) :
 	device_t(mconfig, type, name, tag, owner, clock, shortname, source),
 	abc_keyboard_interface(mconfig, *this),
@@ -473,6 +526,13 @@ abc77_device::abc77_device(const machine_config &mconfig, device_type type, cons
 
 abc55_device::abc55_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock) :
 	abc77_device(mconfig, ABC55, "Luxor ABC 55", tag, owner, clock, "abc55", __FILE__) { }
+=======
+abc55_device::abc55_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock) :
+	abc77_device(mconfig, ABC55, tag, owner, clock) { }
+
+abc77_device::abc77_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock) :
+	abc77_device(mconfig, ABC77, tag, owner, clock) { }
+>>>>>>> upstream/master
 
 
 //-------------------------------------------------
@@ -558,6 +618,7 @@ READ8_MEMBER( abc77_device::p1_r )
 
 	*/
 
+<<<<<<< HEAD
 	UINT8 data = 0xff;
 
 	if (m_stb)
@@ -576,6 +637,15 @@ READ8_MEMBER( abc77_device::p1_r )
 		case 9: data = m_x9->read(); break;
 		case 10: data = m_x10->read(); break;
 		case 11: data = m_x11->read(); break;
+=======
+	uint8_t data = 0xff;
+
+	if (m_stb)
+	{
+		if (m_keylatch < 12)
+		{
+			data = m_x[m_keylatch]->read();
+>>>>>>> upstream/master
 		}
 	}
 
@@ -610,7 +680,11 @@ WRITE8_MEMBER( abc77_device::p2_w )
 
 		if (m_keylatch == 1)
 		{
+<<<<<<< HEAD
 			machine().watchdog_reset();
+=======
+			m_watchdog->watchdog_reset();
+>>>>>>> upstream/master
 		}
 	}
 
@@ -632,7 +706,11 @@ WRITE8_MEMBER( abc77_device::p2_w )
 //  t1_r -
 //-------------------------------------------------
 
+<<<<<<< HEAD
 READ8_MEMBER( abc77_device::t1_r )
+=======
+READ_LINE_MEMBER( abc77_device::t1_r )
+>>>>>>> upstream/master
 {
 	return m_clock;
 }
@@ -642,9 +720,15 @@ READ8_MEMBER( abc77_device::t1_r )
 //  prog_w -
 //-------------------------------------------------
 
+<<<<<<< HEAD
 WRITE8_MEMBER( abc77_device::prog_w )
 {
 	m_stb = BIT(data, 0);
+=======
+WRITE_LINE_MEMBER( abc77_device::prog_w )
+{
+	m_stb = state;
+>>>>>>> upstream/master
 }
 
 

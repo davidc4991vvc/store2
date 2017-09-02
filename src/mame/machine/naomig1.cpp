@@ -25,9 +25,15 @@ DEVICE_ADDRESS_MAP_START(amap, 32, naomi_g1_device)
 	AM_RANGE(0xf8, 0xfb) AM_READ(sb_gdlend_r)
 ADDRESS_MAP_END
 
+<<<<<<< HEAD
 naomi_g1_device::naomi_g1_device(const machine_config &mconfig, device_type type, const char *name, const char *tag, device_t *owner, UINT32 clock, const char *shortname, const char *source)
 	: device_t(mconfig, type, name, tag, owner, clock, shortname, source),
 		irq_cb(*this)
+=======
+naomi_g1_device::naomi_g1_device(const machine_config &mconfig, device_type type, const char *tag, device_t *owner, uint32_t clock)
+	: device_t(mconfig, type, tag, owner, clock)
+	, irq_cb(*this)
+>>>>>>> upstream/master
 {
 }
 
@@ -114,15 +120,24 @@ READ32_MEMBER(naomi_g1_device::sb_gdst_r)
 
 WRITE32_MEMBER(naomi_g1_device::sb_gdst_w)
 {
+<<<<<<< HEAD
 	UINT32 old = gdst;
+=======
+	uint32_t old = gdst;
+>>>>>>> upstream/master
 	COMBINE_DATA(&gdst);
 	gdst &= 1;
 	logerror("G1: gdst_w %08x @ %08x\n", data, mem_mask);
 	if(!old && gdst && gden) {
 		// DMA starts
 
+<<<<<<< HEAD
 		UINT32 adr = gdstar;
 		UINT32 len = gdlen;
+=======
+		uint32_t adr = gdstar;
+		uint32_t len = gdlen;
+>>>>>>> upstream/master
 
 		// Deunan says round up to 32, doc says complete with zeroes.
 		// Virtua Tennis requires one of the two to boot
@@ -133,13 +148,22 @@ WRITE32_MEMBER(naomi_g1_device::sb_gdst_w)
 
 		bool to_mainram = true;
 		while(len) {
+<<<<<<< HEAD
 			UINT8 *base;
 			UINT32 limit = len;
+=======
+			uint8_t *base;
+			uint32_t limit = len;
+>>>>>>> upstream/master
 			dma_get_position(base, limit, to_mainram);
 
 			if(!limit)
 				break;
+<<<<<<< HEAD
 			UINT32 tlen = limit > len ? len : limit;
+=======
+			uint32_t tlen = limit > len ? len : limit;
+>>>>>>> upstream/master
 			dma(base, adr, tlen, to_mainram);
 			adr += tlen;
 			len -= tlen;
@@ -149,7 +173,11 @@ WRITE32_MEMBER(naomi_g1_device::sb_gdst_w)
 		while(len && to_mainram) {
 			unsigned char zero[32];
 			memset(zero, 0, sizeof(zero));
+<<<<<<< HEAD
 			UINT32 tlen = len > 32 ? 32 : len;
+=======
+			uint32_t tlen = len > 32 ? 32 : len;
+>>>>>>> upstream/master
 			dma(zero, adr, tlen, to_mainram);
 			adr += tlen;
 			len -= tlen;
@@ -229,7 +257,11 @@ READ32_MEMBER(naomi_g1_device::sb_gdlend_r)
 	return 0;
 }
 
+<<<<<<< HEAD
 void naomi_g1_device::dma(void *dma_ptr, UINT32 main_adr, UINT32 size, bool to_mainram)
+=======
+void naomi_g1_device::dma(void *dma_ptr, uint32_t main_adr, uint32_t size, bool to_mainram)
+>>>>>>> upstream/master
 {
 	if(!_dma_cb.isnull())
 		_dma_cb(main_adr, dma_ptr, size >> 5, 32, to_mainram);

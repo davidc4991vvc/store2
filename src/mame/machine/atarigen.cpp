@@ -10,11 +10,14 @@
 
 #include "emu.h"
 #include "cpu/m6502/m6502.h"
+<<<<<<< HEAD
 #include "sound/2151intf.h"
 #include "sound/2413intf.h"
 #include "sound/tms5220.h"
 #include "sound/okim6295.h"
 #include "sound/pokey.h"
+=======
+>>>>>>> upstream/master
 #include "video/atarimo.h"
 #include "atarigen.h"
 
@@ -44,7 +47,11 @@ inline const atarigen_screen_timer *get_screen_timer(screen_device &screen)
 			return &state->m_screen_timer[i];
 
 	fatalerror("Unexpected: no atarivc_eof_update_timer for screen '%s'\n", screen.tag());
+<<<<<<< HEAD
 	return NULL;
+=======
+	return nullptr;
+>>>>>>> upstream/master
 }
 
 
@@ -54,17 +61,29 @@ inline const atarigen_screen_timer *get_screen_timer(screen_device &screen)
 //**************************************************************************
 
 // device type definition
+<<<<<<< HEAD
 const device_type ATARI_SOUND_COMM = &device_creator<atari_sound_comm_device>;
+=======
+DEFINE_DEVICE_TYPE(ATARI_SOUND_COMM, atari_sound_comm_device, "atarscom", "Atari Sound Communications")
+>>>>>>> upstream/master
 
 //-------------------------------------------------
 //  atari_sound_comm_device - constructor
 //-------------------------------------------------
 
+<<<<<<< HEAD
 atari_sound_comm_device::atari_sound_comm_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
 	: device_t(mconfig, ATARI_SOUND_COMM, "Atari Sound Communications", tag, owner, clock, "atarscom", __FILE__),
 		m_sound_cpu_tag(NULL),
 		m_main_int_cb(*this),
 		m_sound_cpu(NULL),
+=======
+atari_sound_comm_device::atari_sound_comm_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: device_t(mconfig, ATARI_SOUND_COMM, tag, owner, clock),
+		m_sound_cpu_tag(nullptr),
+		m_main_int_cb(*this),
+		m_sound_cpu(nullptr),
+>>>>>>> upstream/master
 		m_main_to_sound_ready(false),
 		m_sound_to_main_ready(false),
 		m_main_to_sound_data(0),
@@ -93,10 +112,17 @@ void atari_sound_comm_device::static_set_sound_cpu(device_t &device, const char 
 void atari_sound_comm_device::device_start()
 {
 	// find the sound CPU
+<<<<<<< HEAD
 	if (m_sound_cpu_tag == NULL)
 		throw emu_fatalerror("No sound CPU specified!");
 	m_sound_cpu = siblingdevice<m6502_device>(m_sound_cpu_tag);
 	if (m_sound_cpu == NULL)
+=======
+	if (m_sound_cpu_tag == nullptr)
+		throw emu_fatalerror("No sound CPU specified!");
+	m_sound_cpu = siblingdevice<m6502_device>(m_sound_cpu_tag);
+	if (m_sound_cpu == nullptr)
+>>>>>>> upstream/master
 		throw emu_fatalerror("Sound CPU '%s' not found!", m_sound_cpu_tag);
 
 	// resolve callbacks
@@ -347,14 +373,23 @@ void atari_sound_comm_device::delayed_6502_write(int data)
 //**************************************************************************
 
 // device type definition
+<<<<<<< HEAD
 const device_type ATARI_VAD = &device_creator<atari_vad_device>;
+=======
+DEFINE_DEVICE_TYPE(ATARI_VAD, atari_vad_device, "atarivad", "Atari VAD")
+>>>>>>> upstream/master
 
 //-------------------------------------------------
 //  atari_vad_device - constructor
 //-------------------------------------------------
 
+<<<<<<< HEAD
 atari_vad_device::atari_vad_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
 	: device_t(mconfig, ATARI_VAD, "Atari VAD", tag, owner, clock, "atarivad", __FILE__),
+=======
+atari_vad_device::atari_vad_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: device_t(mconfig, ATARI_VAD, tag, owner, clock),
+>>>>>>> upstream/master
 		device_video_interface(mconfig, *this),
 		m_scanline_int_cb(*this),
 		m_alpha_tilemap(*this, "alpha"),
@@ -362,9 +397,15 @@ atari_vad_device::atari_vad_device(const machine_config &mconfig, const char *ta
 		m_playfield2_tilemap(*this, "playfield2"),
 		m_mob(*this, "mob"),
 		m_eof_data(*this, "eof"),
+<<<<<<< HEAD
 		m_scanline_int_timer(NULL),
 		m_tilerow_update_timer(NULL),
 		m_eof_timer(NULL),
+=======
+		m_scanline_int_timer(nullptr),
+		m_tilerow_update_timer(nullptr),
+		m_eof_timer(nullptr),
+>>>>>>> upstream/master
 		m_palette_bank(0),
 		m_pf0_xscroll_raw(0),
 		m_pf0_yscroll(0),
@@ -383,7 +424,11 @@ atari_vad_device::atari_vad_device(const machine_config &mconfig, const char *ta
 
 WRITE16_MEMBER(atari_vad_device::control_write)
 {
+<<<<<<< HEAD
 	UINT16 newword = m_control[offset];
+=======
+	uint16_t newword = m_control[offset];
+>>>>>>> upstream/master
 	COMBINE_DATA(&newword);
 	internal_control_write(offset, newword);
 }
@@ -431,7 +476,11 @@ WRITE16_MEMBER(atari_vad_device::alpha_w)
 WRITE16_MEMBER(atari_vad_device::playfield_upper_w)
 {
 	m_playfield_tilemap->write_ext(space, offset, data, mem_mask);
+<<<<<<< HEAD
 	if (m_playfield2_tilemap != NULL)
+=======
+	if (m_playfield2_tilemap != nullptr)
+>>>>>>> upstream/master
 		m_playfield2_tilemap->write_ext(space, offset, data, mem_mask);
 }
 
@@ -446,7 +495,11 @@ WRITE16_MEMBER(atari_vad_device::playfield_latched_lsb_w)
 {
 	m_playfield_tilemap->write(space, offset, data, mem_mask);
 	if ((m_control[0x0a] & 0x80) != 0)
+<<<<<<< HEAD
 		m_playfield_tilemap->write_ext(space, offset, m_control[0x1d], UINT16(0x00ff));
+=======
+		m_playfield_tilemap->write_ext(space, offset, m_control[0x1d], uint16_t(0x00ff));
+>>>>>>> upstream/master
 }
 
 
@@ -460,7 +513,11 @@ WRITE16_MEMBER(atari_vad_device::playfield_latched_msb_w)
 {
 	m_playfield_tilemap->write(space, offset, data, mem_mask);
 	if ((m_control[0x0a] & 0x80) != 0)
+<<<<<<< HEAD
 		m_playfield_tilemap->write_ext(space, offset, m_control[0x1c], UINT16(0xff00));
+=======
+		m_playfield_tilemap->write_ext(space, offset, m_control[0x1c], uint16_t(0xff00));
+>>>>>>> upstream/master
 }
 
 
@@ -474,7 +531,11 @@ WRITE16_MEMBER(atari_vad_device::playfield2_latched_msb_w)
 {
 	m_playfield2_tilemap->write(space, offset, data, mem_mask);
 	if ((m_control[0x0a] & 0x80) != 0)
+<<<<<<< HEAD
 		m_playfield2_tilemap->write_ext(space, offset, m_control[0x1c], UINT16(0xff00));
+=======
+		m_playfield2_tilemap->write_ext(space, offset, m_control[0x1c], uint16_t(0xff00));
+>>>>>>> upstream/master
 }
 
 
@@ -485,9 +546,15 @@ WRITE16_MEMBER(atari_vad_device::playfield2_latched_msb_w)
 void atari_vad_device::device_start()
 {
 	// verify configuration
+<<<<<<< HEAD
 	if (m_playfield_tilemap == NULL)
 		throw emu_fatalerror("Playfield tilemap not found!");
 	if (m_eof_data == NULL)
+=======
+	if (m_playfield_tilemap == nullptr)
+		throw emu_fatalerror("Playfield tilemap not found!");
+	if (m_eof_data == nullptr)
+>>>>>>> upstream/master
 		throw emu_fatalerror("EOF data not found!");
 
 	// resolve callbacks
@@ -517,7 +584,11 @@ void atari_vad_device::device_start()
 void atari_vad_device::device_reset()
 {
 	// share extended memory between the two tilemaps
+<<<<<<< HEAD
 	if (m_playfield2_tilemap != NULL)
+=======
+	if (m_playfield2_tilemap != nullptr)
+>>>>>>> upstream/master
 		m_playfield2_tilemap->extmem().set(m_playfield_tilemap->extmem());
 
 	// reset the state
@@ -562,10 +633,17 @@ void atari_vad_device::device_timer(emu_timer &timer, device_timer_id id, int pa
 //  control registers and EOF updates
 //-------------------------------------------------
 
+<<<<<<< HEAD
 void atari_vad_device::internal_control_write(offs_t offset, UINT16 newword)
 {
 	// switch off the offset
 	UINT16 oldword = m_control[offset];
+=======
+void atari_vad_device::internal_control_write(offs_t offset, uint16_t newword)
+{
+	// switch off the offset
+	uint16_t oldword = m_control[offset];
+>>>>>>> upstream/master
 	m_control[offset] = newword;
 	switch (offset)
 	{
@@ -691,7 +769,11 @@ void atari_vad_device::internal_control_write(offs_t offset, UINT16 newword)
 inline void atari_vad_device::update_pf_xscrolls()
 {
 	m_playfield_tilemap->set_scrollx(0, m_pf0_xscroll_raw + ((m_pf1_xscroll_raw) & 7));
+<<<<<<< HEAD
 	if (m_playfield2_tilemap != NULL)
+=======
+	if (m_playfield2_tilemap != nullptr)
+>>>>>>> upstream/master
 		m_playfield2_tilemap->set_scrollx(0, m_pf1_xscroll_raw + 4);
 }
 
@@ -702,13 +784,21 @@ inline void atari_vad_device::update_pf_xscrolls()
 //  direct control writes.
 //-------------------------------------------------
 
+<<<<<<< HEAD
 void atari_vad_device::update_parameter(UINT16 newword)
+=======
+void atari_vad_device::update_parameter(uint16_t newword)
+>>>>>>> upstream/master
 {
 	switch (newword & 15)
 	{
 		case 9:
 			m_mo_xscroll = (newword >> 7) & 0x1ff;
+<<<<<<< HEAD
 			if (m_mob != NULL)
+=======
+			if (m_mob != nullptr)
+>>>>>>> upstream/master
 				m_mob->set_xscroll(m_mo_xscroll);
 			break;
 
@@ -724,13 +814,21 @@ void atari_vad_device::update_parameter(UINT16 newword)
 
 		case 13:
 			m_mo_yscroll = (newword >> 7) & 0x1ff;
+<<<<<<< HEAD
 			if (m_mob != NULL)
+=======
+			if (m_mob != nullptr)
+>>>>>>> upstream/master
 				m_mob->set_yscroll(m_mo_yscroll);
 			break;
 
 		case 14:
 			m_pf1_yscroll = (newword >> 7) & 0x1ff;
+<<<<<<< HEAD
 			if (m_playfield2_tilemap != NULL)
+=======
+			if (m_playfield2_tilemap != nullptr)
+>>>>>>> upstream/master
 				m_playfield2_tilemap->set_scrolly(0, m_pf1_yscroll);
 			break;
 
@@ -751,7 +849,11 @@ void atari_vad_device::update_parameter(UINT16 newword)
 void atari_vad_device::update_tilerow(emu_timer &timer, int scanline)
 {
 	// skip if out of bounds, or not enabled
+<<<<<<< HEAD
 	if (scanline <= m_screen->visible_area().max_y && (m_control[0x0a] & 0x2000) != 0 && m_alpha_tilemap != NULL)
+=======
+	if (scanline <= m_screen->visible_area().max_y && (m_control[0x0a] & 0x2000) != 0 && m_alpha_tilemap != nullptr)
+>>>>>>> upstream/master
 	{
 		// iterate over non-visible alpha tiles in this row
 		int offset = scanline / 8 * 64 + 48 + 2 * (scanline % 8);
@@ -797,7 +899,11 @@ void atari_vad_device::eof_update(emu_timer &timer)
     update_pf_xscrolls();
 
     m_playfield_tilemap->set_scrolly(0, m_pf0_yscroll);
+<<<<<<< HEAD
     if (m_playfield2_tilemap != NULL)
+=======
+    if (m_playfield2_tilemap != nullptr)
+>>>>>>> upstream/master
         m_playfield2_tilemap->set_scrolly(0, m_pf1_yscroll);*/
 	timer.adjust(m_screen->time_until_pos(0));
 
@@ -819,6 +925,7 @@ void atari_vad_device::eof_update(emu_timer &timer)
 
 
 
+<<<<<<< HEAD
 //**************************************************************************
 //  EEPROM INTERFACE DEVICE
 //**************************************************************************
@@ -945,22 +1052,31 @@ machine_config_constructor atari_eeprom_2816_device::device_mconfig_additions() 
 
 
 
+=======
+>>>>>>> upstream/master
 /***************************************************************************
     OVERALL INIT
 ***************************************************************************/
 
 atarigen_state::atarigen_state(const machine_config &mconfig, device_type type, const char *tag)
 	: driver_device(mconfig, type, tag),
+<<<<<<< HEAD
 		m_earom(*this, "earom"),
 		m_earom_data(0),
 		m_earom_control(0),
+=======
+>>>>>>> upstream/master
 		m_scanline_int_state(0),
 		m_sound_int_state(0),
 		m_video_int_state(0),
 		m_xscroll(*this, "xscroll"),
 		m_yscroll(*this, "yscroll"),
 		m_slapstic_num(0),
+<<<<<<< HEAD
 		m_slapstic(NULL),
+=======
+		m_slapstic(nullptr),
+>>>>>>> upstream/master
 		m_slapstic_bank(0),
 		m_slapstic_last_pc(0),
 		m_slapstic_last_address(0),
@@ -968,9 +1084,12 @@ atarigen_state::atarigen_state(const machine_config &mconfig, device_type type, 
 		m_slapstic_mirror(0),
 		m_scanlines_per_callback(0),
 		m_maincpu(*this, "maincpu"),
+<<<<<<< HEAD
 		m_audiocpu(*this, "audiocpu"),
 		m_oki(*this, "oki"),
 		m_soundcomm(*this, "soundcomm"),
+=======
+>>>>>>> upstream/master
 		m_gfxdecode(*this, "gfxdecode"),
 		m_screen(*this, "screen"),
 		m_palette(*this, "palette"),
@@ -981,6 +1100,7 @@ atarigen_state::atarigen_state(const machine_config &mconfig, device_type type, 
 
 void atarigen_state::machine_start()
 {
+<<<<<<< HEAD
 	screen_device *screen;
 	int i;
 
@@ -992,6 +1112,17 @@ void atarigen_state::machine_start()
 		m_screen_timer[i].screen = screen;
 		m_screen_timer[i].scanline_interrupt_timer = timer_alloc(TID_SCANLINE_INTERRUPT, (void *)screen);
 		m_screen_timer[i].scanline_timer = timer_alloc(TID_SCANLINE_TIMER, (void *)screen);
+=======
+	// allocate timers for all screens
+	int i = 0;
+	for (screen_device &screen : screen_device_iterator(*this))
+	{
+		assert(i <= ARRAY_LENGTH(m_screen_timer));
+		m_screen_timer[i].screen = &screen;
+		m_screen_timer[i].scanline_interrupt_timer = timer_alloc(TID_SCANLINE_INTERRUPT, (void *)&screen);
+		m_screen_timer[i].scanline_timer = timer_alloc(TID_SCANLINE_TIMER, (void *)&screen);
+		i++;
+>>>>>>> upstream/master
 	}
 
 	save_item(NAME(m_scanline_int_state));
@@ -1004,9 +1135,12 @@ void atarigen_state::machine_start()
 	save_item(NAME(m_slapstic_last_address));
 
 	save_item(NAME(m_scanlines_per_callback));
+<<<<<<< HEAD
 
 	save_item(NAME(m_earom_data));
 	save_item(NAME(m_earom_control));
+=======
+>>>>>>> upstream/master
 }
 
 
@@ -1015,6 +1149,7 @@ void atarigen_state::machine_reset()
 	// reset the interrupt states
 	m_video_int_state = m_sound_int_state = m_scanline_int_state = 0;
 
+<<<<<<< HEAD
 	// reset the control latch on the EAROM, if present
 	if (m_earom != NULL)
 		m_earom->set_control(0, 1, 1, 0, 0);
@@ -1023,6 +1158,12 @@ void atarigen_state::machine_reset()
 	if (m_slapstic_num != 0)
 	{
 		if (!m_slapstic_device)
+=======
+	// reset the slapstic
+	if (m_slapstic_num != 0)
+	{
+		if (!m_slapstic_device.found())
+>>>>>>> upstream/master
 			fatalerror("Slapstic device is missing?\n");
 
 		m_slapstic_device->slapstic_reset();
@@ -1197,14 +1338,20 @@ void atarigen_state::device_post_load()
 {
 	if (m_slapstic_num != 0)
 	{
+<<<<<<< HEAD
 		if (!m_slapstic_device)
 		fatalerror("Slapstic device is missing?\n");
+=======
+		if (!m_slapstic_device.found())
+			fatalerror("Slapstic device is missing?\n");
+>>>>>>> upstream/master
 
 		slapstic_update_bank(m_slapstic_device->slapstic_bank());
 	}
 }
 
 
+<<<<<<< HEAD
 DIRECT_UPDATE_MEMBER(atarigen_state::slapstic_setdirect)
 {
 	// if we jump to an address in the slapstic region, tweak the slapstic
@@ -1227,11 +1374,14 @@ DIRECT_UPDATE_MEMBER(atarigen_state::slapstic_setdirect)
 
 
 
+=======
+>>>>>>> upstream/master
 //-------------------------------------------------
 //  slapstic_configure: Installs memory handlers for the
 //  slapstic and sets the chip number.
 //-------------------------------------------------
 
+<<<<<<< HEAD
 void atarigen_state::slapstic_configure(cpu_device &device, offs_t base, offs_t mirror, int chipnum)
 {
 	// reset in case we have no state
@@ -1263,6 +1413,32 @@ void atarigen_state::slapstic_configure(cpu_device &device, offs_t base, offs_t 
 		m_slapstic_base = base;
 		m_slapstic_mirror = mirror;
 	}
+=======
+void atarigen_state::slapstic_configure(cpu_device &device, offs_t base, offs_t mirror, uint8_t *mem)
+{
+	if (!m_slapstic_device.found())
+		fatalerror("Slapstic device is missing\n");
+
+	// initialize the slapstic
+	m_slapstic_num = m_slapstic_device->m_chipnum;
+	m_slapstic_device->slapstic_init();
+
+	// install the memory handlers
+	address_space &program = device.space(AS_PROGRAM);
+	program.install_readwrite_handler(base, base + 0x7fff, 0, mirror, 0, read16_delegate(FUNC(atarigen_state::slapstic_r), this), write16_delegate(FUNC(atarigen_state::slapstic_w), this));
+	m_slapstic = (uint16_t *)mem;
+
+	// allocate memory for a copy of bank 0
+	m_slapstic_bank0.resize(0x2000);
+	memcpy(&m_slapstic_bank0[0], m_slapstic, 0x2000);
+
+	// ensure we recopy memory for the bank
+	m_slapstic_bank = 0xff;
+
+	// install an opcode base handler if we are a 68000 or variant
+	m_slapstic_base = base;
+	m_slapstic_mirror = mirror;
+>>>>>>> upstream/master
 }
 
 
@@ -1274,7 +1450,11 @@ void atarigen_state::slapstic_configure(cpu_device &device, offs_t base, offs_t 
 
 WRITE16_MEMBER(atarigen_state::slapstic_w)
 {
+<<<<<<< HEAD
 	if (!m_slapstic_device)
+=======
+	if (!m_slapstic_device.found())
+>>>>>>> upstream/master
 		fatalerror("Slapstic device is missing?\n");
 
 	slapstic_update_bank(m_slapstic_device->slapstic_tweak(space, offset));
@@ -1288,7 +1468,11 @@ WRITE16_MEMBER(atarigen_state::slapstic_w)
 
 READ16_MEMBER(atarigen_state::slapstic_r)
 {
+<<<<<<< HEAD
 	if (!m_slapstic_device)
+=======
+	if (!m_slapstic_device.found())
+>>>>>>> upstream/master
 		fatalerror("Slapstic device is missing?\n");
 
 	// fetch the result from the current bank first
@@ -1302,6 +1486,7 @@ READ16_MEMBER(atarigen_state::slapstic_r)
 
 
 /***************************************************************************
+<<<<<<< HEAD
     SOUND HELPERS
 ***************************************************************************/
 
@@ -1353,6 +1538,8 @@ void atarigen_state::set_oki6295_volume(int volume)
 
 
 /***************************************************************************
+=======
+>>>>>>> upstream/master
     SCANLINE TIMING
 ***************************************************************************/
 
@@ -1431,24 +1618,42 @@ void atarigen_state::blend_gfx(int gfx0, int gfx1, int mask0, int mask1)
 {
 	gfx_element *gx0 = m_gfxdecode->gfx(gfx0);
 	gfx_element *gx1 = m_gfxdecode->gfx(gfx1);
+<<<<<<< HEAD
 	UINT8 *srcdata, *dest;
 	int c, x, y;
 
 	// allocate memory for the assembled data
 	srcdata = auto_alloc_array(machine(), UINT8, gx0->elements() * gx0->width() * gx0->height());
+=======
+	uint8_t *srcdata, *dest;
+	int c, x, y;
+
+	// allocate memory for the assembled data
+	srcdata = auto_alloc_array(machine(), uint8_t, gx0->elements() * gx0->width() * gx0->height());
+>>>>>>> upstream/master
 
 	// loop over elements
 	dest = srcdata;
 	for (c = 0; c < gx0->elements(); c++)
 	{
+<<<<<<< HEAD
 		const UINT8 *c0base = gx0->get_data(c);
 		const UINT8 *c1base = gx1->get_data(c);
+=======
+		const uint8_t *c0base = gx0->get_data(c);
+		const uint8_t *c1base = gx1->get_data(c);
+>>>>>>> upstream/master
 
 		// loop over height
 		for (y = 0; y < gx0->height(); y++)
 		{
+<<<<<<< HEAD
 			const UINT8 *c0 = c0base;
 			const UINT8 *c1 = c1base;
+=======
+			const uint8_t *c0 = c0base;
+			const uint8_t *c1 = c1base;
+>>>>>>> upstream/master
 
 			for (x = 0; x < gx0->width(); x++)
 				*dest++ = (*c0++ & mask0) | (*c1++ & mask1);
@@ -1463,6 +1668,7 @@ void atarigen_state::blend_gfx(int gfx0, int gfx1, int mask0, int mask1)
 	gx0->set_granularity(granularity);
 
 	// free the second graphics element
+<<<<<<< HEAD
 	m_gfxdecode->set_gfx(gfx1, NULL);
 }
 
@@ -1504,4 +1710,7 @@ WRITE8_MEMBER( atarigen_state::earom_control_w )
 
 	// set the control lines; /CS2 is always held low
 	m_earom->set_control(data & 8, 1, ~data & 4, data & 2, data & 1);
+=======
+	m_gfxdecode->set_gfx(gfx1, nullptr);
+>>>>>>> upstream/master
 }

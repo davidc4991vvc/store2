@@ -24,12 +24,17 @@ TODO:
 #include "mpeg_audio.h"
 
 // device type definition
+<<<<<<< HEAD
 const device_type YMZ770 = &device_creator<ymz770_device>;
+=======
+DEFINE_DEVICE_TYPE(YMZ770, ymz770_device, "ymz770", "Yamaha YMZ770 AMMS-A")
+>>>>>>> upstream/master
 
 //-------------------------------------------------
 //  ymz770_device - constructor
 //-------------------------------------------------
 
+<<<<<<< HEAD
 ymz770_device::ymz770_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
 	: device_t(mconfig, YMZ770, "Yamaha YMZ770", tag, owner, clock, "ymz770", __FILE__),
 		device_sound_interface(mconfig, *this), m_stream(nullptr),
@@ -39,6 +44,19 @@ ymz770_device::ymz770_device(const machine_config &mconfig, const char *tag, dev
 		m_vlma(0),
 		m_bsl(0),
 		m_cpl(0), m_rom_base(nullptr), m_rom_limit(0)
+=======
+ymz770_device::ymz770_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: device_t(mconfig, YMZ770, tag, owner, clock)
+	, device_sound_interface(mconfig, *this)
+	, m_stream(nullptr)
+	, m_cur_reg(0)
+	, m_mute(0)
+	, m_doen(0)
+	, m_vlma(0)
+	, m_bsl(0)
+	, m_cpl(0)
+	, m_rom(*this, DEVICE_SELF)
+>>>>>>> upstream/master
 {
 }
 
@@ -51,6 +69,7 @@ void ymz770_device::device_start()
 {
 	// create the stream
 	m_stream = machine().sound().stream_alloc(*this, 0, 2, 16000);
+<<<<<<< HEAD
 	m_rom_base = region()->base();
 	m_rom_limit = region()->bytes() * 8;
 
@@ -59,6 +78,14 @@ void ymz770_device::device_start()
 		m_channels[i].is_playing = false;
 		m_channels[i].is_seq_playing = false;
 		m_channels[i].decoder = new mpeg_audio(m_rom_base, mpeg_audio::AMM, false, 0);
+=======
+
+	for (auto & elem : m_channels)
+	{
+		elem.is_playing = false;
+		elem.is_seq_playing = false;
+		elem.decoder = new mpeg_audio(&m_rom[0], mpeg_audio::AMM, false, 0);
+>>>>>>> upstream/master
 	}
 
 	// register for save states
@@ -96,6 +123,7 @@ void ymz770_device::device_start()
 
 void ymz770_device::device_reset()
 {
+<<<<<<< HEAD
 	for (int ch = 0; ch < 8; ch++)
 	{
 		m_channels[ch].phrase = 0;
@@ -109,6 +137,21 @@ void ymz770_device::device_reset()
 		m_channels[ch].is_seq_playing = false;
 		m_channels[ch].output_remaining = 0;
 		m_channels[ch].decoder->clear();
+=======
+	for (auto & elem : m_channels)
+	{
+		elem.phrase = 0;
+		elem.pan = 8;
+		elem.volume = 0;
+		elem.control = 0;
+		elem.sequence = 0;
+		elem.seqcontrol = 0;
+		elem.seqdelay = 0;
+		elem.is_playing = false;
+		elem.is_seq_playing = false;
+		elem.output_remaining = 0;
+		elem.decoder->clear();
+>>>>>>> upstream/master
 	}
 }
 
@@ -128,6 +171,7 @@ void ymz770_device::sound_stream_update(sound_stream &stream, stream_sample_t **
 	for (int i = 0; i < samples; i++)
 	{
 		// run sequencers (should probably be in separate timer callbacks)
+<<<<<<< HEAD
 		for (int ch = 0; ch < 8; ch++)
 		{
 			if (m_channels[ch].is_seq_playing)
@@ -157,6 +201,37 @@ void ymz770_device::sound_stream_update(sound_stream &stream, stream_sample_t **
 							break;
 						case 0x0e:
 							m_channels[ch].seqdelay = 32 - 1;
+=======
+		for (auto & elem : m_channels)
+		{
+			if (elem.is_seq_playing)
+			{
+				if (elem.seqdelay > 0)
+				{
+					elem.seqdelay--;
+				}
+				else
+				{
+					int reg = *elem.seqdata++;
+					uint8_t data = *elem.seqdata++;
+					switch (reg)
+					{
+						case 0x0f:
+							if (elem.seqcontrol & 1)
+							{
+								// loop sequence
+								uint8_t sqn = elem.sequence;
+								uint32_t pptr = m_rom[(4*sqn)+1+0x400]<<16 | m_rom[(4*sqn)+2+0x400]<<8 | m_rom[(4*sqn)+3+0x400];
+								elem.seqdata = &m_rom[pptr];
+							}
+							else
+							{
+								elem.is_seq_playing = false;
+							}
+							break;
+						case 0x0e:
+							elem.seqdelay = 32 - 1;
+>>>>>>> upstream/master
 							break;
 						default:
 							internal_reg_write(reg, data);
@@ -167,6 +242,7 @@ void ymz770_device::sound_stream_update(sound_stream &stream, stream_sample_t **
 		}
 
 		// process channels
+<<<<<<< HEAD
 		INT32 mix = 0;
 
 		for (int ch = 0; ch < 8; ch++)
@@ -218,6 +294,59 @@ retry:
 					m_channels[ch].output_ptr = 1;
 
 					mix += (m_channels[ch].output_data[0]*m_channels[ch].volume);
+=======
+		int32_t mix = 0;
+
+		for (auto & elem : m_channels)
+		{
+			if (elem.output_remaining > 0)
+			{
+				// force finish current block
+				mix += (elem.output_data[elem.output_ptr++]*elem.volume);
+				elem.output_remaining--;
+
+				if (elem.output_remaining == 0 && !elem.is_playing)
+					elem.decoder->clear();
+			}
+
+			else if (elem.is_playing)
+			{
+retry:
+				if (elem.last_block)
+				{
+					if (elem.control & 1)
+					{
+						// loop sample
+						uint8_t phrase = elem.phrase;
+						elem.atbl = m_rom[(4*phrase)+0] >> 4 & 7;
+						elem.pptr = 8*(m_rom[(4*phrase)+1]<<16 | m_rom[(4*phrase)+2]<<8 | m_rom[(4*phrase)+3]);
+					}
+					else
+					{
+						elem.is_playing = false;
+						elem.output_remaining = 0;
+						elem.decoder->clear();
+					}
+				}
+
+				if (elem.is_playing)
+				{
+					// next block
+					int sample_rate, channel_count;
+					if (!elem.decoder->decode_buffer(elem.pptr, m_rom.bytes()*8, elem.output_data, elem.output_remaining, sample_rate, channel_count) || elem.output_remaining == 0)
+					{
+						elem.is_playing = !elem.last_block; // detect infinite retry loop
+						elem.last_block = true;
+						elem.output_remaining = 0;
+						goto retry;
+					}
+
+					elem.last_block = elem.output_remaining < 1152;
+					elem.output_remaining--;
+					elem.output_ptr = 1;
+
+					mix += (elem.output_data[0]*elem.volume);
+>>>>>>> upstream/master
 				}
 			}
 		}
@@ -245,7 +374,11 @@ WRITE8_MEMBER( ymz770_device::write )
 }
 
 
+<<<<<<< HEAD
 void ymz770_device::internal_reg_write(UINT8 reg, UINT8 data)
+=======
+void ymz770_device::internal_reg_write(uint8_t reg, uint8_t data)
+>>>>>>> upstream/master
 {
 	// global registers
 	if (reg < 0x40)
@@ -294,9 +427,15 @@ void ymz770_device::internal_reg_write(UINT8 reg, UINT8 data)
 			case 3:
 				if (data & 6)
 				{
+<<<<<<< HEAD
 					UINT8 phrase = m_channels[ch].phrase;
 					m_channels[ch].atbl = m_rom_base[(4*phrase)+0] >> 4 & 7;
 					m_channels[ch].pptr = 8*(m_rom_base[(4*phrase)+1]<<16 | m_rom_base[(4*phrase)+2]<<8 | m_rom_base[(4*phrase)+3]);
+=======
+					uint8_t phrase = m_channels[ch].phrase;
+					m_channels[ch].atbl = m_rom[(4*phrase)+0] >> 4 & 7;
+					m_channels[ch].pptr = 8*(m_rom[(4*phrase)+1]<<16 | m_rom[(4*phrase)+2]<<8 | m_rom[(4*phrase)+3]);
+>>>>>>> upstream/master
 					m_channels[ch].last_block = false;
 
 					m_channels[ch].is_playing = true;
@@ -324,9 +463,15 @@ void ymz770_device::internal_reg_write(UINT8 reg, UINT8 data)
 			case 1:
 				if (data & 6)
 				{
+<<<<<<< HEAD
 					UINT8 sqn = m_channels[ch].sequence;
 					UINT32 pptr = m_rom_base[(4*sqn)+1+0x400]<<16 | m_rom_base[(4*sqn)+2+0x400]<<8 | m_rom_base[(4*sqn)+3+0x400];
 					m_channels[ch].seqdata = &m_rom_base[pptr];
+=======
+					uint8_t sqn = m_channels[ch].sequence;
+					uint32_t pptr = m_rom[(4*sqn)+1+0x400]<<16 | m_rom[(4*sqn)+2+0x400]<<8 | m_rom[(4*sqn)+3+0x400];
+					m_channels[ch].seqdata = &m_rom[pptr];
+>>>>>>> upstream/master
 					m_channels[ch].seqdelay = 0;
 					m_channels[ch].is_seq_playing = true;
 				}

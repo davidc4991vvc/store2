@@ -15,9 +15,17 @@ TODO:
 *****************************************************************************/
 
 #include "emu.h"
+<<<<<<< HEAD
 #include "cpu/z80/z80.h"
 #include "sound/sn76496.h"
 #include "includes/ikki.h"
+=======
+#include "includes/ikki.h"
+
+#include "cpu/z80/z80.h"
+#include "sound/sn76496.h"
+#include "speaker.h"
+>>>>>>> upstream/master
 
 
 /*************************************
@@ -35,8 +43,13 @@ READ8_MEMBER(ikki_state::ikki_e000_r)
 
 WRITE8_MEMBER(ikki_state::ikki_coin_counters)
 {
+<<<<<<< HEAD
 	coin_counter_w(machine(), 0, data & 0x01);
 	coin_counter_w(machine(), 1, data & 0x02);
+=======
+	machine().bookkeeping().coin_counter_w(0, data & 0x01);
+	machine().bookkeeping().coin_counter_w(1, data & 0x02);
+>>>>>>> upstream/master
 }
 
 /*************************************
@@ -236,7 +249,11 @@ TIMER_DEVICE_CALLBACK_MEMBER(ikki_state::ikki_irq)
 
 
 
+<<<<<<< HEAD
 static MACHINE_CONFIG_START( ikki, ikki_state )
+=======
+static MACHINE_CONFIG_START( ikki )
+>>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", Z80,8000000/2) /* 4.000MHz */
@@ -354,5 +371,10 @@ ROM_END
  *
  *************************************/
 
+<<<<<<< HEAD
 GAME( 1985, ikki,   0,    ikki, ikki, driver_device, 0, ROT0, "Sun Electronics", "Ikki (Japan)", MACHINE_SUPPORTS_SAVE )
 GAME( 1985, farmer, ikki, ikki, ikki, driver_device, 0, ROT0, "Sun Electronics", "Farmers Rebellion", MACHINE_SUPPORTS_SAVE )
+=======
+GAME( 1985, ikki,   0,    ikki, ikki, ikki_state, 0, ROT0, "Sun Electronics", "Ikki (Japan)",      MACHINE_SUPPORTS_SAVE )
+GAME( 1985, farmer, ikki, ikki, ikki, ikki_state, 0, ROT0, "Sun Electronics", "Farmers Rebellion", MACHINE_SUPPORTS_SAVE )
+>>>>>>> upstream/master

@@ -31,6 +31,10 @@ Notes:
 
 */
 
+<<<<<<< HEAD
+=======
+#include "emu.h"
+>>>>>>> upstream/master
 #include "uni800.h"
 
 
@@ -39,7 +43,11 @@ Notes:
 //  DEVICE DEFINITIONS
 //**************************************************************************
 
+<<<<<<< HEAD
 const device_type ABC_UNI800 = &device_creator<abc_uni800_device>;
+=======
+DEFINE_DEVICE_TYPE(ABC_UNI800, abc_uni800_device, "uni800", "UNI-800")
+>>>>>>> upstream/master
 
 
 //-------------------------------------------------
@@ -56,7 +64,11 @@ ROM_END
 //  rom_region - device-specific ROM region
 //-------------------------------------------------
 
+<<<<<<< HEAD
 const rom_entry *abc_uni800_device::device_rom_region() const
+=======
+const tiny_rom_entry *abc_uni800_device::device_rom_region() const
+>>>>>>> upstream/master
 {
 	return ROM_NAME( abc_uni800 );
 }
@@ -71,8 +83,13 @@ const rom_entry *abc_uni800_device::device_rom_region() const
 //  abc_uni800_device - constructor
 //-------------------------------------------------
 
+<<<<<<< HEAD
 abc_uni800_device::abc_uni800_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
 	: device_t(mconfig, ABC_UNI800, "UNI-800", tag, owner, clock, "uni800", __FILE__),
+=======
+abc_uni800_device::abc_uni800_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: device_t(mconfig, ABC_UNI800, tag, owner, clock),
+>>>>>>> upstream/master
 		device_abcbus_card_interface(mconfig, *this)
 {
 }
@@ -105,6 +122,10 @@ void abc_uni800_device::device_reset()
 //  abcbus_cs -
 //-------------------------------------------------
 
+<<<<<<< HEAD
 void abc_uni800_device::abcbus_cs(UINT8 data)
+=======
+void abc_uni800_device::abcbus_cs(uint8_t data)
+>>>>>>> upstream/master
 {
 }

@@ -21,6 +21,7 @@
 
 **********************************************************************/
 
+<<<<<<< HEAD
 #pragma once
 
 #ifndef __I8212__
@@ -39,6 +40,13 @@ enum
 	I8212_MODE_INPUT = 0,
 	I8212_MODE_OUTPUT
 };
+=======
+#ifndef MAME_MACHINE_I8212_H
+#define MAME_MACHINE_I8212_H
+
+#pragma once
+
+>>>>>>> upstream/master
 
 
 
@@ -63,6 +71,7 @@ enum
 
 // ======================> i8212_device
 
+<<<<<<< HEAD
 class i8212_device :    public device_t
 {
 public:
@@ -72,6 +81,17 @@ public:
 	template<class _Object> static devcb_base &set_irq_wr_callback(device_t &device, _Object object) { return downcast<i8212_device &>(device).m_write_irq.set_callback(object); }
 	template<class _Object> static devcb_base &set_di_rd_callback(device_t &device, _Object object) { return downcast<i8212_device &>(device).m_read_di.set_callback(object); }
 	template<class _Object> static devcb_base &set_do_wr_callback(device_t &device, _Object object) { return downcast<i8212_device &>(device).m_write_do.set_callback(object); }
+=======
+class i8212_device : public device_t
+{
+public:
+	// construction/destruction
+	i8212_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
+
+	template <class Object> static devcb_base &set_irq_wr_callback(device_t &device, Object &&cb) { return downcast<i8212_device &>(device).m_write_irq.set_callback(std::forward<Object>(cb)); }
+	template <class Object> static devcb_base &set_di_rd_callback(device_t &device, Object &&cb) { return downcast<i8212_device &>(device).m_read_di.set_callback(std::forward<Object>(cb)); }
+	template <class Object> static devcb_base &set_do_wr_callback(device_t &device, Object &&cb) { return downcast<i8212_device &>(device).m_write_do.set_callback(std::forward<Object>(cb)); }
+>>>>>>> upstream/master
 
 	DECLARE_READ8_MEMBER( read );
 	DECLARE_WRITE8_MEMBER( write );
@@ -81,23 +101,46 @@ public:
 
 protected:
 	// device-level overrides
+<<<<<<< HEAD
 	virtual void device_start();
 	virtual void device_reset();
 
 private:
+=======
+	virtual void device_start() override;
+	virtual void device_reset() override;
+
+private:
+	enum
+	{
+		MODE_INPUT = 0,
+		MODE_OUTPUT
+	};
+
+>>>>>>> upstream/master
 	devcb_write_line   m_write_irq;
 	devcb_read8        m_read_di;
 	devcb_write8       m_write_do;
 
 	int m_md;                   // mode
 	int m_stb;                  // strobe
+<<<<<<< HEAD
 	UINT8 m_data;               // data latch
+=======
+	uint8_t m_data;               // data latch
+>>>>>>> upstream/master
 };
 
 
 // device type definition
+<<<<<<< HEAD
 extern const device_type I8212;
 
 
 
 #endif
+=======
+DECLARE_DEVICE_TYPE(I8212, i8212_device)
+
+#endif // MAME_MACHINE_I8212_H
+>>>>>>> upstream/master

@@ -11,6 +11,7 @@
 #include "emu.h"
 #include <stdarg.h>
 
+<<<<<<< HEAD
 static char *output;
 
 static void ATTR_PRINTF(1,2) print(const char *fmt, ...)
@@ -22,6 +23,8 @@ static void ATTR_PRINTF(1,2) print(const char *fmt, ...)
 	va_end(vl);
 }
 
+=======
+>>>>>>> upstream/master
 /*****************************************************************************/
 
 static const char *reg[] =
@@ -57,6 +60,7 @@ static const char *alu[] =
 
 #define UNSP_DASM_OK ((OP2X ? 2 : 1) | DASMFLAG_SUPPORTED)
 
+<<<<<<< HEAD
 CPU_DISASSEMBLE( unsp )
 {
 	UINT16 op = *(UINT16 *)oprom;
@@ -71,6 +75,18 @@ CPU_DISASSEMBLE( unsp )
 	if(OP0 < 0xf && OPA == 0x7 && OP1 < 2)
 	{
 		print("%s %04x", jmp[OP0], OP1 ? (pc - OPIMM + 1) : (pc + OPIMM + 1));
+=======
+CPU_DISASSEMBLE(unsp)
+{
+	uint16_t op = *(uint16_t *)oprom;
+	uint16_t imm16 = *(uint16_t *)(oprom + 2);
+	op = big_endianize_int16(op);
+	imm16 = big_endianize_int16(imm16);
+
+	if(OP0 < 0xf && OPA == 0x7 && OP1 < 2)
+	{
+		util::stream_format(stream, "%s %04x", jmp[OP0], OP1 ? (pc - OPIMM + 1) : (pc + OPIMM + 1));
+>>>>>>> upstream/master
 		return UNSP_DASM_OK;
 	}
 
@@ -78,29 +94,49 @@ CPU_DISASSEMBLE( unsp )
 	{
 		// ALU, Indexed
 		case 0x00: case 0x01: case 0x02: case 0x03: case 0x04: case 0x06: case 0x08: case 0x09: case 0x0a: case 0x0b: case 0x0c: case 0x0d:
+<<<<<<< HEAD
 			print("%s %s, [bp+%02x]", alu[OP0], reg[OPA], OPIMM);
+=======
+			util::stream_format(stream, "%s %s, [bp+%02x]", alu[OP0], reg[OPA], OPIMM);
+>>>>>>> upstream/master
 			return UNSP_DASM_OK;
 
 		// ALU, Immediate
 		case 0x10: case 0x11: case 0x12: case 0x13: case 0x14: case 0x16: case 0x18: case 0x19: case 0x1a: case 0x1b: case 0x1c:
+<<<<<<< HEAD
 			print("%s %s, %02x", alu[OP0], reg[OPA], OPIMM);
+=======
+			util::stream_format(stream, "%s %s, %02x", alu[OP0], reg[OPA], OPIMM);
+>>>>>>> upstream/master
 			return UNSP_DASM_OK;
 
 		// Pop / Interrupt return
 		case 0x29:
 			if(op == 0x9a90)
 			{
+<<<<<<< HEAD
 				print("retf");
+=======
+				util::stream_format(stream, "retf");
+>>>>>>> upstream/master
 				return UNSP_DASM_OK;
 			}
 			else if(op == 0x9a98)
 			{
+<<<<<<< HEAD
 				print("reti");
+=======
+				util::stream_format(stream, "reti");
+>>>>>>> upstream/master
 				return UNSP_DASM_OK;
 			}
 			else if((OPA + 1) < 8 && ((OPA + OPN) < 8))
 			{
+<<<<<<< HEAD
 				print("pop %s, %s [%s]", reg[OPA+1], reg[OPA+OPN], reg[OPB]);
+=======
+				util::stream_format(stream, "pop %s, %s [%s]", reg[OPA+1], reg[OPA+OPN], reg[OPB]);
+>>>>>>> upstream/master
 				return UNSP_DASM_OK;
 			}
 			break;
@@ -109,7 +145,11 @@ CPU_DISASSEMBLE( unsp )
 		case 0x2d:
 			if((OPA + 1) >= OPN && OPA < (OPN + 7))
 			{
+<<<<<<< HEAD
 				print("push %s, %s [%s]", reg[(OPA+1)-OPN], reg[OPA], reg[OPB]);
+=======
+				util::stream_format(stream, "push %s, %s [%s]", reg[(OPA+1)-OPN], reg[OPA], reg[OPB]);
+>>>>>>> upstream/master
 				return UNSP_DASM_OK;
 			}
 			break;
@@ -119,6 +159,7 @@ CPU_DISASSEMBLE( unsp )
 			switch(OPN & 3)
 			{
 				case 0:
+<<<<<<< HEAD
 					print("%s %s, [%s%s]", alu[OP0], reg[OPA], (OPN & 4) ? "ds:" : "", reg[OPB]);
 					return UNSP_DASM_OK;
 				case 1:
@@ -129,6 +170,18 @@ CPU_DISASSEMBLE( unsp )
 					return UNSP_DASM_OK;
 				case 3:
 					print("%s %s, [%s++%s]", alu[OP0], reg[OPA], (OPN & 4) ? "ds:" : "", reg[OPB]);
+=======
+					util::stream_format(stream, "%s %s, [%s%s]", alu[OP0], reg[OPA], (OPN & 4) ? "ds:" : "", reg[OPB]);
+					return UNSP_DASM_OK;
+				case 1:
+					util::stream_format(stream, "%s %s, [%s%s--]", alu[OP0], reg[OPA], (OPN & 4) ? "ds:" : "", reg[OPB]);
+					return UNSP_DASM_OK;
+				case 2:
+					util::stream_format(stream, "%s %s, [%s%s++]", alu[OP0], reg[OPA], (OPN & 4) ? "ds:" : "", reg[OPB]);
+					return UNSP_DASM_OK;
+				case 3:
+					util::stream_format(stream, "%s %s, [%s++%s]", alu[OP0], reg[OPA], (OPN & 4) ? "ds:" : "", reg[OPB]);
+>>>>>>> upstream/master
 					return UNSP_DASM_OK;
 			}
 			return UNSP_DASM_OK;
@@ -139,7 +192,11 @@ CPU_DISASSEMBLE( unsp )
 			{
 				// ALU, Register
 				case 0:
+<<<<<<< HEAD
 					print("%s %s, %s", alu[OP0], reg[OPA], reg[OPB]);
+=======
+					util::stream_format(stream, "%s %s, %s", alu[OP0], reg[OPA], reg[OPB]);
+>>>>>>> upstream/master
 					return UNSP_DASM_OK;
 
 				// ALU, 16-bit Immediate
@@ -148,12 +205,20 @@ CPU_DISASSEMBLE( unsp )
 					{
 						if(OP0 != 4 && OP0 != 12)
 						{
+<<<<<<< HEAD
 							print("%s %s, %s, %04x", alu[OP0], reg[OPA], reg[OPB], imm16);
+=======
+							util::stream_format(stream, "%s %s, %s, %04x", alu[OP0], reg[OPA], reg[OPB], imm16);
+>>>>>>> upstream/master
 							return UNSP_DASM_OK;
 						}
 						else
 						{
+<<<<<<< HEAD
 							print("%s %s, %04x", alu[OP0], reg[OPB], imm16);
+=======
+							util::stream_format(stream, "%s %s, %04x", alu[OP0], reg[OPB], imm16);
+>>>>>>> upstream/master
 							return UNSP_DASM_OK;
 						}
 					}
@@ -161,16 +226,25 @@ CPU_DISASSEMBLE( unsp )
 
 				// ALU, Direct 16
 				case 2:
+<<<<<<< HEAD
 					print("%s %s, [%04x]", alu[OP0], reg[OPA], imm16);
+=======
+					util::stream_format(stream, "%s %s, [%04x]", alu[OP0], reg[OPA], imm16);
+>>>>>>> upstream/master
 					return UNSP_DASM_OK;
 
 				// ALU, Direct 16
 				case 3:
+<<<<<<< HEAD
 					print("%s [%04x], %s, %s", alu[OP0], imm16, reg[OPA], reg[OPB]);
+=======
+					util::stream_format(stream, "%s [%04x], %s, %s", alu[OP0], imm16, reg[OPA], reg[OPB]);
+>>>>>>> upstream/master
 					return UNSP_DASM_OK;
 
 				// ALU, Shifted
 				default:
+<<<<<<< HEAD
 					print("%s %s, %s asr %d", alu[OP0], reg[OPA], reg[OPB], (OPN & 3) + 1);
 					return UNSP_DASM_OK;
 			}
@@ -182,53 +256,99 @@ CPU_DISASSEMBLE( unsp )
 					print("store [%04x], %s", imm16, reg[OPB]);
 				}
 			}
+=======
+					util::stream_format(stream, "%s %s, %s asr %d", alu[OP0], reg[OPA], reg[OPB], (OPN & 3) + 1);
+					return UNSP_DASM_OK;
+			}
+		case 0x4d:
+			if((OPN == 3) && (OPA == OPB))
+				util::stream_format(stream, "store [%04x], %s", imm16, reg[OPB]);
+			else
+				util::stream_format(stream, "<inv>");
+>>>>>>> upstream/master
 			return UNSP_DASM_OK;
 
 		// ALU, Shifted
 		case 0x50: case 0x51: case 0x52: case 0x53: case 0x54: case 0x56: case 0x58: case 0x59: case 0x5a: case 0x5b: case 0x5c:
+<<<<<<< HEAD
 			print("%s %s, %s %s %d", alu[OP0], reg[OPA], reg[OPB], (OPN & 4) ? ">>" : "<<", (OPN & 3) + 1);
+=======
+			util::stream_format(stream, "%s %s, %s %s %d", alu[OP0], reg[OPA], reg[OPB], (OPN & 4) ? ">>" : "<<", (OPN & 3) + 1);
+>>>>>>> upstream/master
 			return UNSP_DASM_OK;
 
 		// ALU, Rotated
 		case 0x60: case 0x61: case 0x62: case 0x63: case 0x64: case 0x66: case 0x68: case 0x69: case 0x6a: case 0x6b: case 0x6c:
+<<<<<<< HEAD
 			print("%s %s, %s %s %d", alu[OP0], reg[OPA], reg[OPB], (OPN & 4) ? "ror" : "rol", (OPN & 3) + 1);
+=======
+			util::stream_format(stream, "%s %s, %s %s %d", alu[OP0], reg[OPA], reg[OPB], (OPN & 4) ? "ror" : "rol", (OPN & 3) + 1);
+>>>>>>> upstream/master
 			return UNSP_DASM_OK;
 
 		// ALU, Direct 8
 		case 0x70: case 0x71: case 0x72: case 0x73: case 0x74: case 0x76: case 0x78: case 0x79: case 0x7a: case 0x7b: case 0x7c:
+<<<<<<< HEAD
 			print("%s %s, [%02x]", alu[OP0], reg[OPA], OPIMM);
+=======
+			util::stream_format(stream, "%s %s, [%02x]", alu[OP0], reg[OPA], OPIMM);
+>>>>>>> upstream/master
 			return UNSP_DASM_OK;
 
 		// Call
 		case 0x1f:
 			if(OPA == 0)
+<<<<<<< HEAD
 			{
 				print("call %06x", ((OPIMM << 16) | imm16) << 1);
 			}
+=======
+				util::stream_format(stream, "call %06x", ((OPIMM << 16) | imm16) << 1);
+			else
+				util::stream_format(stream, "<inv>");
+>>>>>>> upstream/master
 			return UNSP_DASM_OK;
 
 		// Far Jump
 		case 0x2f: case 0x3f: case 0x6f: case 0x7f:
 			if (OPA == 7 && OP1 == 2)
+<<<<<<< HEAD
 			{
 				print("goto %06x", ((OPIMM << 16) | imm16) << 1);
 			}
+=======
+				util::stream_format(stream, "goto %06x", ((OPIMM << 16) | imm16) << 1);
+			else
+				util::stream_format(stream, "<inv>");
+>>>>>>> upstream/master
 			return UNSP_DASM_OK;
 
 		// Multiply, Unsigned * Signed
 		case 0x0f:
 			if(OPN == 1 && OPA != 7)
+<<<<<<< HEAD
 			{
 				print("mulus %s, %s", reg[OPA], reg[OPB]);
 			}
+=======
+				util::stream_format(stream, "mulus %s, %s", reg[OPA], reg[OPB]);
+			else
+				util::stream_format(stream, "<inv>");
+>>>>>>> upstream/master
 			return UNSP_DASM_OK;
 
 		// Multiply, Signed * Signed
 		case 0x4f:
 			if(OPN == 1 && OPA != 7)
+<<<<<<< HEAD
 			{
 				print("mulss %s, %s", reg[OPA], reg[OPB]);
 			}
+=======
+				util::stream_format(stream, "mulss %s, %s", reg[OPA], reg[OPB]);
+			else
+				util::stream_format(stream, "<inv>");
+>>>>>>> upstream/master
 			return UNSP_DASM_OK;
 
 		// Interrupt flags
@@ -238,6 +358,7 @@ CPU_DISASSEMBLE( unsp )
 				switch(OPIMM)
 				{
 					case 0:
+<<<<<<< HEAD
 						print("int off");
 						break;
 					case 1:
@@ -268,5 +389,43 @@ CPU_DISASSEMBLE( unsp )
 			}
 			return UNSP_DASM_OK;
 	}
+=======
+						util::stream_format(stream, "int off");
+						break;
+					case 1:
+						util::stream_format(stream, "int irq");
+						break;
+					case 2:
+						util::stream_format(stream, "int fiq");
+						break;
+					case 3:
+						util::stream_format(stream, "int irq,fiq");
+						break;
+					case 8:
+						util::stream_format(stream, "irq off");
+						break;
+					case 9:
+						util::stream_format(stream, "irq on");
+						break;
+					case 12:
+						util::stream_format(stream, "fiq off");
+						break;
+					case 14:
+						util::stream_format(stream, "fiq on");
+						break;
+					case 37:
+						util::stream_format(stream, "nop");
+						break;
+					default:
+						util::stream_format(stream, "<inv>");
+						break;
+				}
+			}
+			else
+				util::stream_format(stream, "<inv>");
+			return UNSP_DASM_OK;
+	}
+	util::stream_format(stream, "<inv>");
+>>>>>>> upstream/master
 	return UNSP_DASM_OK;
 }

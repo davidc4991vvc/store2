@@ -94,7 +94,11 @@ const lc8670_cpu_device::dasm_entry lc8670_cpu_device::s_dasm_table[] =
 	{ "SET1",   OP_D9B3,   OP_NULL, 0 },
 };
 
+<<<<<<< HEAD
 void lc8670_cpu_device::dasm_arg(UINT8 op, char *buffer, offs_t pc, int arg, const UINT8 *oprom, int &pos)
+=======
+void lc8670_cpu_device::dasm_arg(uint8_t op, char *buffer, offs_t pc, int arg, const uint8_t *oprom, int &pos)
+>>>>>>> upstream/master
 {
 	switch( arg )
 	{
@@ -151,21 +155,34 @@ void lc8670_cpu_device::dasm_arg(UINT8 op, char *buffer, offs_t pc, int arg, con
 //  helper function
 //-------------------------------------------------
 
+<<<<<<< HEAD
 offs_t lc8670_cpu_device::disasm_disassemble(char *buffer, offs_t pc, const UINT8 *oprom, const UINT8 *opram, UINT32 options)
+=======
+offs_t lc8670_cpu_device::disasm_disassemble(std::ostream &stream, offs_t pc, const uint8_t *oprom, const uint8_t *opram, uint32_t options)
+>>>>>>> upstream/master
 {
 	int pos = 0;
 	char arg1[16], arg2[16];
 
+<<<<<<< HEAD
 	UINT8 op = oprom[pos++];
+=======
+	uint8_t op = oprom[pos++];
+>>>>>>> upstream/master
 
 	int op_idx = decode_op(op);
 	const dasm_entry *inst = &s_dasm_table[op_idx];
 
+<<<<<<< HEAD
 	buffer += sprintf(buffer,"%-8s", inst->str);
+=======
+	util::stream_format(stream, "%-8s", inst->str);
+>>>>>>> upstream/master
 
 	dasm_arg(op, inst->inv ? arg2 : arg1, pc+0, inst->arg1, oprom, pos);
 	dasm_arg(op, inst->inv ? arg1 : arg2, pc+1, inst->arg2, oprom, pos);
 
+<<<<<<< HEAD
 	strcat(buffer, arg1);
 
 	if (inst->arg2 != OP_NULL)
@@ -173,6 +190,12 @@ offs_t lc8670_cpu_device::disasm_disassemble(char *buffer, offs_t pc, const UINT
 		strcat(buffer, ",");
 		strcat(buffer, arg2);
 	}
+=======
+	stream << arg1;
+
+	if (inst->arg2 != OP_NULL)
+		stream << "," << arg2;
+>>>>>>> upstream/master
 
 	return pos;
 }

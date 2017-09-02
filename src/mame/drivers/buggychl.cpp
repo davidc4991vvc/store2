@@ -75,6 +75,7 @@ dcxx = /SPOSI (S36)
 2008-07
 Dip locations and factory settings verified from dip listing
 
+<<<<<<< HEAD
 ***************************************************************************/
 
 #include "emu.h"
@@ -82,6 +83,28 @@ Dip locations and factory settings verified from dip listing
 #include "cpu/m6805/m6805.h"
 #include "sound/ay8910.h"
 #include "includes/buggychl.h"
+=======
+Clock information:
+Xtal = 48mhz
+QA output = "24M" = 24mhz
+QB output = "1/2CLK" = 12mhz
+QC output = "CLK" = 6mhz
+"1/2phi" = 24M / 3 = 8mhz
+
+The z80B main cpu is clocked by (depending on a jumper) either "1/2CLK"/2 OR "1/2PHI"/2, so either 6mhz or 4mhz.
+Schematics show the jumper set to the 6mhz setting.
+
+***************************************************************************/
+
+#include "emu.h"
+#include "includes/buggychl.h"
+
+#include "cpu/z80/z80.h"
+#include "cpu/m6805/m6805.h"
+#include "machine/watchdog.h"
+#include "sound/ay8910.h"
+#include "speaker.h"
+>>>>>>> upstream/master
 
 #include "buggychl.lh"
 
@@ -91,6 +114,7 @@ WRITE8_MEMBER(buggychl_state::bankswitch_w)
 	membank("bank1")->set_entry(data & 0x07);   // shall we check if data&7 < # banks?
 }
 
+<<<<<<< HEAD
 TIMER_CALLBACK_MEMBER(buggychl_state::nmi_callback)
 {
 	if (m_sound_nmi_enable)
@@ -127,6 +151,94 @@ WRITE8_MEMBER(buggychl_state::sound_enable_w)
 
 
 
+=======
+WRITE8_MEMBER(buggychl_state::sound_enable_w)
+{
+	machine().sound().system_enable(data & 1);
+}
+
+READ8_MEMBER(buggychl_state::mcu_status_r)
+{
+	// bit 0 = when 1, MCU is ready to receive data from main CPU
+	// bit 1 = when 1, MCU has sent data to the main CPU
+	return
+		((CLEAR_LINE == m_bmcu->host_semaphore_r()) ? 0x01 : 0x00) |
+		((CLEAR_LINE != m_bmcu->mcu_semaphore_r()) ? 0x02 : 0x00);
+}
+
+// the schematics show that the two sound semaphore latch bits are actually flipped backwards when read by the sound cpu
+//   vs when read by the main cpu.
+//   Given the other schematic errors, and the fact that the sound board schematic is for the wrong pcb, is this even correct?
+//   It isn't even obvious if the maincpu or sound cpu read the semaphores at all, ever.
+// a cpu write to soundlatch sets ic12.2 so /Q is low, so cpu bit 1 and sound bit 0 read as clear
+// a sound write to soundlatch2 clears ic12.1 so /Q is high, so cpu bit 0 and sound bit 1 read as set
+// a cpu read of soundlatch2 sets ic12.1 so /Q is low, so cpu bit 0 and sound bit 1 read as clear
+// a sound read of soundlatch clears ic12.2 so /Q is high, so cpu bit 1 and sound bit 0 read as set
+// ic12.1 is set and ic12.2 is cleared by /SRESET
+READ8_MEMBER(buggychl_state::sound_status_main_r)
+{
+	return (m_soundlatch2->pending_r() ? 1 : 0) | (m_soundlatch->pending_r() ? 0 : 2);
+}
+
+READ8_MEMBER(buggychl_state::sound_status_sound_r)
+{
+	return (m_soundlatch2->pending_r() ? 2 : 0) | (m_soundlatch->pending_r() ? 0 : 1);
+}
+
+/* Main cpu address map ( * = used within this section; x = don't care )
+           |           |           |
+15 14 13 12 11 10  9  8  7  6  5  4  3  2  1  0
+ *  *                                             R  74LS139 @ ic53
+ 0  0  *  *  *  *  *  *  *  *  *  *  *  *  *  *   R  ROM (ic23)
+ 0  1  *  *  *  *  *  *  *  *  *  *  *  *  *  *   R  ROM (ic22)
+ 1  *  *  *                                       RW 74LS138 @ ic66
+ 1  0  0  0  0  *  *  *  *  *  *  *  *  *  *  *   RW SRAM (ic36)
+ 1  0  0  0  1  *  *  *  *  *  *  *  *  *  *  *   RW SRAM (ic35)
+ 1  0  0  1  *  *  *  *  *  *  *  *  *  *  *  *   RW  /STYLRQ
+ (TODO: finish above, its quite complicated)
+ 1  0  1  *  *  *  *  *  *  *  *  *  *  *  *  *   R  /EXROMRD and /CDRRQW, banked ROM reads (generates a waitstate)
+ 1  1  0  0  ?  ?  ?  ?  ?  ?  ?  ?  ?  ?  ?  ?   ?  (unknown, cut off on schematic)
+ 1  1  0  1  0  0  0  0  ?  ?  ?  ?  ?  ?  ?  ?   W  HORIZON
+ 1  1  0  1  0  0  0  1  x  x  x  x  x  x  x  x   W  ANY OUT (lamp d7, lockout d6, unused d5, ojmode d4, skyoff d3, sn31/4off d2, hinv d1, vinv d0)
+ 1  1  0  1  0  0  1  0  x  x  x  x  x  x  x  x   W  BANKSWITCH (banking, rom selected on d2, d1, upper/lower half of rom on d0)
+ 1  1  0  1  0  0  1  1  x  x  x  x  x  *  *  *   W  74LS138 @ ic39
+ 1  1  0  1  0  0  1  1  x  x  x  x  x  0  0  0   W  /TRESET (watchdog reset)
+ 1  1  0  1  0  0  1  1  x  x  x  x  x  0  0  1   W  FLPD1,E1,F1,D2,E2,F2 on d0-d5 respectively
+ 1  1  0  1  0  0  1  1  x  x  x  x  x  0  1  0   W  /SRESET (value of d0 latched; this is the mcu reset and resets the mcu semaphores as well)
+ 1  1  0  1  0  0  1  1  x  x  x  x  x  0  1  1   W  STYLBANK (d4 controls latch at v-ic25.1)
+ 1  1  0  1  0  0  1  1  x  x  x  x  x  1  0  0   W  SCCON1
+ 1  1  0  1  0  0  1  1  x  x  x  x  x  1  0  1   W  SCCON2
+ 1  1  0  1  0  0  1  1  x  x  x  x  x  1  1  0   W  SCCON3
+ 1  1  0  1  0  0  1  1  x  x  x  x  x  1  1  1   W  SCCON4
+ (the four ports above are probably for connecting to a bezel score display, almost identical to that of Grand Champion; see https://ia800501.us.archive.org/16/items/ArcadeGameManualGrandchampion/grandchampion.pdf pdf pages 54 and 55)
+ 1  1  0  1  0  1  0  0  x  x  x  x  x  x  *  *   RW  SEQRQ 74ls155 @ ic42
+ 1  1  0  1  0  1  0  0  x  x  x  x  x  x  0  0   W  Write to MCU in latch and set ic43.1  semaphore
+ 1  1  0  1  0  1  0  0  x  x  x  x  x  x  0  0   R  Read from MCU out latch and clear ic43.2 semaphore
+ 1  1  0  1  0  1  0  0  x  x  x  x  x  x  0  1   R  Read semaphores : /ic43.0 in d0 and ic43.1 in d1
+ 1  1  0  1  0  1  0  0  x  x  x  x  x  x  1  x   OPEN BUS
+ 1  1  0  1  0  1  0  1  *  *  *  *  *  *  *  *   RW  OBJRQ (read/write obj SRAM vb-ic34)
+ 1  1  0  1  0  1  1  0  x  x  x  *  *            W  74LS139 @ ic52
+ 1  1  0  1  0  1  1  0  x  x  x  0  0  x  *  *   R  INPUTA
+ (16 inputs read here in the 4 bytes)
+ 1  1  0  1  0  1  1  0  x  x  x  0  1  x  *  *   R  INPUTB
+ (16 inputs read here in the 4 bytes)
+ 1  1  0  1  0  1  1  0  x  x  x  1  0  x  *  *   *  SOUNDCS 74ls155 @ s-ic40
+ 1  1  0  1  0  1  1  0  x  x  x  1  0  x  0  0   R  Read from Sound out latch, set s-ic12.1
+ 1  1  0  1  0  1  1  0  x  x  x  1  0  x  0  1   R  Read sound semaphores: /s-ic12.1 in d0 and /s-ic12.2 in d1
+ 1  1  0  1  0  1  1  0  x  x  x  1  0  x  1  x   R  OPEN BUS
+ 1  1  0  1  0  1  1  0  x  x  x  1  0  x  0  0   W  Write to Sound in latch, set s-ic12.2
+ 1  1  0  1  0  1  1  0  x  x  x  1  0  x  0  1   W  OPEN BUS
+ 1  1  0  1  0  1  1  0  x  x  x  1  0  x  1  0   W  OPEN BUS
+ 1  1  0  1  0  1  1  0  x  x  x  1  0  x  1  1   W  SNDRESET (value of d0 latched; if high, this sets s-ic12.1, clears s-ic12.2, clears soundnmi enable, clears sound control latch, resets sound z80(s), zeroes all dac input latches, resets ay-3-8910 chips, and resets the waitstate request)
+ 1  1  0  1  0  1  1  0  x  x  x  1  1  x  x  x   W  ACCELCL
+ 1  1  0  1  0  1  1  1  x  x  *  *  *  *  *  *   RW /VCRRQ
+ (TODO: palette sram)
+ 1  1  0  1  1  0  ?  ?  ?  ?  ?  ?  ?  ?  ?  ?   ?  /SCROLRQ
+ 1  1  0  1  1  1  ?  ?  ?  ?  ?  ?  ?  ?  ?  ?   ?  /S_POSI
+ 1  1  1  0  ?  ?  ?  ?  ?  ?  ?  ?  ?  ?  ?  ?   ?  (unknown, cut off on schematic)
+ 1  1  1  1  ?  ?  ?  ?  ?  ?  ?  ?  ?  ?  ?  ?   ?  (unknown, cut off on schematic)
+*/
+>>>>>>> upstream/master
 static ADDRESS_MAP_START( buggychl_map, AS_PROGRAM, 8, buggychl_state )
 	AM_RANGE(0x0000, 0x3fff) AM_ROM /* A22-04 (23) */
 	AM_RANGE(0x4000, 0x7fff) AM_ROM /* A22-05 (22) */
@@ -135,6 +247,7 @@ static ADDRESS_MAP_START( buggychl_map, AS_PROGRAM, 8, buggychl_state )
 	AM_RANGE(0x9000, 0x9fff) AM_WRITE(buggychl_sprite_lookup_w)
 	AM_RANGE(0xa000, 0xbfff) AM_ROMBANK("bank1") AM_WRITE(buggychl_chargen_w) AM_SHARE("charram")
 	AM_RANGE(0xc800, 0xcfff) AM_RAM AM_SHARE("videoram")
+<<<<<<< HEAD
 	AM_RANGE(0xd100, 0xd100) AM_WRITE(buggychl_ctrl_w)
 	AM_RANGE(0xd200, 0xd200) AM_WRITE(bankswitch_w)
 	AM_RANGE(0xd300, 0xd300) AM_WRITE(watchdog_reset_w)
@@ -152,6 +265,30 @@ static ADDRESS_MAP_START( buggychl_map, AS_PROGRAM, 8, buggychl_state )
 //  AM_RANGE(0xd60b, 0xd60b) // other inputs, not used?
 	AM_RANGE(0xd610, 0xd610) AM_WRITE(sound_command_w)
 	AM_RANGE(0xd618, 0xd618) AM_WRITENOP    /* accelerator clear */
+=======
+	AM_RANGE(0xd100, 0xd100) AM_MIRROR(0x00ff) AM_WRITE(buggychl_ctrl_w)
+	AM_RANGE(0xd200, 0xd200) AM_MIRROR(0x00ff) AM_WRITE(bankswitch_w)
+	AM_RANGE(0xd300, 0xd300) AM_MIRROR(0x00f8) AM_DEVWRITE("watchdog", watchdog_timer_device, reset_w)
+	// d301 = flp stuff, unused?
+	// d302 = mcu reset latched d0
+	AM_RANGE(0xd303, 0xd303) AM_MIRROR(0x00f8) AM_WRITE(buggychl_sprite_lookup_bank_w)
+	// d304-d307 is SCCON, which seems to be for a bezel mounted 7seg score/time display like Grand Champion has
+	AM_RANGE(0xd400, 0xd400) AM_MIRROR(0x00fc) AM_DEVREADWRITE("bmcu", taito68705_mcu_device, data_r, data_w)
+	AM_RANGE(0xd401, 0xd401) AM_MIRROR(0x00fc) AM_READ(mcu_status_r)
+	AM_RANGE(0xd500, 0xd57f) AM_WRITEONLY AM_SHARE("spriteram")
+	AM_RANGE(0xd600, 0xd600) AM_MIRROR(0x00e4) AM_READ_PORT("DSW1")
+	AM_RANGE(0xd601, 0xd601) AM_MIRROR(0x00e4) AM_READ_PORT("DSW2")
+	AM_RANGE(0xd602, 0xd602) AM_MIRROR(0x00e4) AM_READ_PORT("DSW3")
+	AM_RANGE(0xd603, 0xd603) AM_MIRROR(0x00e4) AM_READ_PORT("IN0")    /* player inputs */
+	AM_RANGE(0xd608, 0xd608) AM_MIRROR(0x00e4) AM_READ_PORT("WHEEL")
+	AM_RANGE(0xd609, 0xd609) AM_MIRROR(0x00e4) AM_READ_PORT("IN1")    /* coin + accelerator */
+//	AM_RANGE(0xd60a, 0xd60a) AM_MIRROR(0x00e4) // other inputs, not used?
+//	AM_RANGE(0xd60b, 0xd60b) AM_MIRROR(0x00e4) // other inputs, not used?
+	AM_RANGE(0xd610, 0xd610) AM_MIRROR(0x00e4) AM_DEVREAD("soundlatch2", generic_latch_8_device, read) AM_DEVWRITE("soundlatch", generic_latch_8_device, write)
+	AM_RANGE(0xd611, 0xd611) AM_MIRROR(0x00e4) AM_READ(sound_status_main_r)
+//	AM_RANGE(0xd613, 0xd613) AM_MIRROR(0x00e4) AM_WRITE(sound_reset_w)
+	AM_RANGE(0xd618, 0xd618) AM_MIRROR(0x00e7) AM_WRITENOP    /* accelerator clear; TODO: should we emulate the proper quadrature counter here? */
+>>>>>>> upstream/master
 	AM_RANGE(0xd700, 0xd7ff) AM_DEVWRITE("palette", palette_device, write) AM_SHARE("palette")
 	AM_RANGE(0xd840, 0xd85f) AM_WRITEONLY AM_SHARE("scrollv")
 	AM_RANGE(0xdb00, 0xdbff) AM_WRITEONLY AM_SHARE("scrollh")
@@ -159,6 +296,13 @@ static ADDRESS_MAP_START( buggychl_map, AS_PROGRAM, 8, buggychl_state )
 	AM_RANGE(0xdc06, 0xdc06) AM_WRITE(buggychl_bg_scrollx_w)
 ADDRESS_MAP_END
 
+<<<<<<< HEAD
+=======
+/* The schematics for buggy challenge has the wrong sound board schematic attached to it.
+  (The schematic is for an unknown taito game, possibly never released.)
+   The final buggy challenge sound board is more similar to Fairyland Story sound
+   hardware, except it has two YM2149 chips instead of one, and much less ROM space. */
+>>>>>>> upstream/master
 static ADDRESS_MAP_START( sound_map, AS_PROGRAM, 8, buggychl_state )
 	AM_RANGE(0x0000, 0x3fff) AM_ROM
 	AM_RANGE(0x4000, 0x47ff) AM_RAM
@@ -166,12 +310,20 @@ static ADDRESS_MAP_START( sound_map, AS_PROGRAM, 8, buggychl_state )
 	AM_RANGE(0x4802, 0x4803) AM_DEVWRITE("ay2", ay8910_device, address_data_w)
 	AM_RANGE(0x4810, 0x481d) AM_DEVWRITE("msm", msm5232_device, write)
 	AM_RANGE(0x4820, 0x4820) AM_RAM /* VOL/BAL   for the 7630 on the MSM5232 output */
+<<<<<<< HEAD
 	AM_RANGE(0x4830, 0x4830) AM_RAM /* TRBL/BASS for the 7630 on the MSM5232 output  */
 	AM_RANGE(0x5000, 0x5000) AM_READ(soundlatch_byte_r)
 //  AM_RANGE(0x5001, 0x5001) AM_READNOP /* is command pending? */
 	AM_RANGE(0x5001, 0x5001) AM_WRITE(nmi_enable_w)
 	AM_RANGE(0x5002, 0x5002) AM_WRITE(nmi_disable_w)
 	AM_RANGE(0x5003, 0x5003) AM_WRITE(sound_enable_w)
+=======
+	AM_RANGE(0x4830, 0x4830) AM_RAM /* TRBL/BASS for the 7630 on the MSM5232 output */
+	AM_RANGE(0x5000, 0x5000) AM_DEVREAD("soundlatch", generic_latch_8_device, read) AM_DEVWRITE("soundlatch2", generic_latch_8_device, write)
+	AM_RANGE(0x5001, 0x5001) AM_READ(sound_status_sound_r) AM_DEVWRITE("soundnmi", input_merger_device, in_set<1>)
+	AM_RANGE(0x5002, 0x5002) AM_DEVWRITE("soundnmi", input_merger_device, in_clear<1>)
+	AM_RANGE(0x5003, 0x5003) AM_WRITE(sound_enable_w) // unclear what this actually controls
+>>>>>>> upstream/master
 	AM_RANGE(0xe000, 0xefff) AM_ROM /* space for diagnostics ROM */
 ADDRESS_MAP_END
 
@@ -303,7 +455,11 @@ static const gfx_layout spritelayout =
 };
 
 static GFXDECODE_START( buggychl )
+<<<<<<< HEAD
 	GFXDECODE_ENTRY( NULL,           0, charlayout,   0, 8 ) /* decoded at runtime */
+=======
+	GFXDECODE_ENTRY( nullptr,           0, charlayout,   0, 8 ) /* decoded at runtime */
+>>>>>>> upstream/master
 	/* sprites are drawn pixel by pixel by draw_sprites() */
 	GFXDECODE_ENTRY( "gfx1", 0, spritelayout, 0, 8 )
 GFXDECODE_END
@@ -329,13 +485,20 @@ WRITE8_MEMBER(buggychl_state::port_b_1_w)
 
 void buggychl_state::machine_start()
 {
+<<<<<<< HEAD
 	UINT8 *ROM = memregion("maincpu")->base();
+=======
+	uint8_t *ROM = memregion("maincpu")->base();
+>>>>>>> upstream/master
 
 	membank("bank1")->configure_entries(0, 6, &ROM[0x10000], 0x2000);
 
 
+<<<<<<< HEAD
 	save_item(NAME(m_sound_nmi_enable));
 	save_item(NAME(m_pending_nmi));
+=======
+>>>>>>> upstream/master
 	save_item(NAME(m_sprite_lookup));
 	save_item(NAME(m_sl_bank));
 	save_item(NAME(m_bg_on));
@@ -346,10 +509,13 @@ void buggychl_state::machine_start()
 
 void buggychl_state::machine_reset()
 {
+<<<<<<< HEAD
 	m_mcu->set_input_line(0, CLEAR_LINE);
 
 	m_sound_nmi_enable = 0;
 	m_pending_nmi = 0;
+=======
+>>>>>>> upstream/master
 	m_sl_bank = 0;
 	m_bg_on = 0;
 	m_sky_on = 0;
@@ -357,6 +523,7 @@ void buggychl_state::machine_reset()
 	m_bg_scrollx = 0;
 }
 
+<<<<<<< HEAD
 static MACHINE_CONFIG_START( buggychl, buggychl_state )
 
 	/* basic machine hardware */
@@ -373,6 +540,27 @@ static MACHINE_CONFIG_START( buggychl, buggychl_state )
 	MCFG_CPU_PROGRAM_MAP(buggychl_mcu_map)
 	MCFG_DEVICE_ADD("bmcu", BUGGYCHL_MCU, 0)
 
+=======
+static MACHINE_CONFIG_START( buggychl )
+
+	/* basic machine hardware */
+	MCFG_CPU_ADD("maincpu", Z80, XTAL_48MHz/8) /* 6 MHz according to schematics, though it can be jumpered for 4MHz as well */
+	MCFG_CPU_PROGRAM_MAP(buggychl_map)
+	MCFG_CPU_VBLANK_INT_DRIVER("screen", buggychl_state,  irq0_line_hold)
+
+	MCFG_CPU_ADD("audiocpu", Z80, XTAL_8MHz/2) /* 4 MHz according to schematics */
+	MCFG_CPU_PROGRAM_MAP(sound_map)
+	MCFG_CPU_PERIODIC_INT_DRIVER(buggychl_state, irq0_line_hold, 60*60) /* irq is timed, tied to the cpu clock and not to vblank */
+	/* audiocpu nmi is caused by (main->sound semaphore)&&(sound_nmi_enabled), identical to bubble bobble. */
+
+	// schematics show a secondary sound z80 cpu as well, running at the same speed as the audiocpu; unclear if actually populated, or if it only existed on a certain hardware release (cocktail deluxe version?)
+
+	MCFG_DEVICE_ADD("bmcu", TAITO68705_MCU,8000000/2)  /* 4 MHz */
+
+
+	MCFG_WATCHDOG_ADD("watchdog")
+	MCFG_WATCHDOG_VBLANK_INIT("screen", 128); // typical Taito 74ls392
+>>>>>>> upstream/master
 
 	/* video hardware */
 	MCFG_SCREEN_ADD("screen", RASTER)
@@ -392,12 +580,28 @@ static MACHINE_CONFIG_START( buggychl, buggychl_state )
 	/* sound hardware */
 	MCFG_SPEAKER_STANDARD_MONO("mono")
 
+<<<<<<< HEAD
 	MCFG_SOUND_ADD("ay1", AY8910, 8000000/4)
+=======
+	MCFG_GENERIC_LATCH_8_ADD("soundlatch")
+	MCFG_GENERIC_LATCH_DATA_PENDING_CB(DEVWRITELINE("soundnmi", input_merger_device, in_w<0>))
+
+	MCFG_INPUT_MERGER_ALL_HIGH("soundnmi")
+	MCFG_INPUT_MERGER_OUTPUT_HANDLER(INPUTLINE("audiocpu", INPUT_LINE_NMI))
+
+	MCFG_GENERIC_LATCH_8_ADD("soundlatch2")
+
+	MCFG_SOUND_ADD("ay1", YM2149, 8000000/4)
+>>>>>>> upstream/master
 	MCFG_AY8910_PORT_A_WRITE_CB(WRITE8(buggychl_state, port_a_0_w))
 	MCFG_AY8910_PORT_B_WRITE_CB(WRITE8(buggychl_state, port_b_0_w))
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 0.50)
 
+<<<<<<< HEAD
 	MCFG_SOUND_ADD("ay2", AY8910, 8000000/4)
+=======
+	MCFG_SOUND_ADD("ay2", YM2149, 8000000/4)
+>>>>>>> upstream/master
 	MCFG_AY8910_PORT_A_WRITE_CB(WRITE8(buggychl_state, port_a_1_w))
 	MCFG_AY8910_PORT_B_WRITE_CB(WRITE8(buggychl_state, port_b_1_w))
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 0.50)
@@ -434,7 +638,11 @@ ROM_START( buggychl )
 	ROM_REGION( 0x10000, "audiocpu", 0 )  /* sound Z80 */
 	ROM_LOAD( "a22-24.28",   0x00000, 0x4000, CRC(1e7f841f) SHA1(2dc0787b08d32acb78291b689c02dbb83d04d08c) )
 
+<<<<<<< HEAD
 	ROM_REGION( 0x0800, "mcu", 0 )  /* 8k for the microcontroller */
+=======
+	ROM_REGION( 0x0800, "bmcu:mcu", 0 )  /* 8k for the microcontroller */
+>>>>>>> upstream/master
 	ROM_LOAD( "a22-19.31",   0x00000, 0x0800, CRC(06a71df0) SHA1(28183e6769e1471e7f28dc2a9f5b54e14b7ef339) )
 
 	ROM_REGION( 0x20000, "gfx1", 0 )    /* sprites */
@@ -464,7 +672,11 @@ ROM_START( buggychlt )
 	ROM_REGION( 0x10000, "audiocpu", 0 )  /* sound Z80 */
 	ROM_LOAD( "a22-24.28",   0x00000, 0x4000, CRC(1e7f841f) SHA1(2dc0787b08d32acb78291b689c02dbb83d04d08c) )
 
+<<<<<<< HEAD
 	ROM_REGION( 0x0800, "mcu", 0 )  /* 8k for the microcontroller */
+=======
+	ROM_REGION( 0x0800, "bmcu:mcu", 0 )  /* 8k for the microcontroller */
+>>>>>>> upstream/master
 	ROM_LOAD( "a22-19.31",   0x00000, 0x0800, CRC(06a71df0) SHA1(28183e6769e1471e7f28dc2a9f5b54e14b7ef339) )
 
 	ROM_REGION( 0x20000, "gfx1", 0 )    /* sprites */
@@ -484,5 +696,10 @@ ROM_START( buggychlt )
 ROM_END
 
 
+<<<<<<< HEAD
 GAMEL( 1984, buggychl, 0,        buggychl, buggychl, driver_device, 0, ROT270, "Taito Corporation", "Buggy Challenge", MACHINE_IMPERFECT_SOUND | MACHINE_IMPERFECT_GRAPHICS | MACHINE_SUPPORTS_SAVE, layout_buggychl )
 GAMEL( 1984, buggychlt,buggychl, buggychl, buggychl, driver_device, 0, ROT270, "Taito Corporation (Tecfri license)", "Buggy Challenge (Tecfri)", MACHINE_IMPERFECT_SOUND | MACHINE_IMPERFECT_GRAPHICS| MACHINE_SUPPORTS_SAVE, layout_buggychl )
+=======
+GAMEL( 1984, buggychl, 0,        buggychl, buggychl, buggychl_state, 0, ROT270, "Taito Corporation",                  "Buggy Challenge",          MACHINE_IMPERFECT_SOUND | MACHINE_IMPERFECT_GRAPHICS | MACHINE_SUPPORTS_SAVE, layout_buggychl )
+GAMEL( 1984, buggychlt,buggychl, buggychl, buggychl, buggychl_state, 0, ROT270, "Taito Corporation (Tecfri license)", "Buggy Challenge (Tecfri)", MACHINE_IMPERFECT_SOUND | MACHINE_IMPERFECT_GRAPHICS | MACHINE_SUPPORTS_SAVE, layout_buggychl )
+>>>>>>> upstream/master

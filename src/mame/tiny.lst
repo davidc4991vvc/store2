@@ -37,6 +37,7 @@ looping         // (c) 1982 Video Games GMBH
 supertnk        // (c) 1981 VIDEO GAMES GmbH, W.-GERMANY
 
 wrally          // (c) 1993 - Ref 930705
+<<<<<<< HEAD
 
 // Cave games
 // Cave was formed in 1994 from the ruins of Toaplan, like Raizing was.
@@ -153,3 +154,5 @@ hotgmcki        // (c) 2001
 loderndf        // (c) 2000
 loderndfa       // (c) 2000
 hotdebut        // (c) 2000
+=======
+>>>>>>> upstream/master

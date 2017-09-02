@@ -11,6 +11,21 @@
         - 8-voice mono (custom 15XX: Mappy, Dig Dug 2, etc)
         - 8-voice stereo (System 1)
 
+<<<<<<< HEAD
+=======
+    The 15XX custom does not have a DAC of its own; instead, it streams
+    the 4-bit PROM data directly into the 99XX custom DAC. Most pre-99XX
+    (and pre-15XX) Namco games use a LS273 latch (cleared when sound is
+    disabled), a 4.7K/2.2K/1K/470 resistor-weighted DAC, and a 4066 and
+    second group of resistors (10K/22K/47K/100K) for volume control.
+    Pole Position does more complicated sound mixing: a 4051 multiplexes
+    wavetable sound with four signals derived from the 52XX and 54XX, the
+    selected signal is distributed to four volume control sections, and
+    finally the engine noise is mixed into all four channels. The later
+    CUS30 also uses the 99XX DAC, or two 99XX in the optional 16-channel
+    stereo configuration, but it uses no PROM and delivers its own samples.
+
+>>>>>>> upstream/master
 ***************************************************************************/
 
 #include "emu.h"
@@ -31,6 +46,7 @@
 /* a position of waveform sample */
 #define WAVEFORM_POSITION(n)    (((n) >> m_f_fracbits) & 0x1f)
 
+<<<<<<< HEAD
 const device_type NAMCO = &device_creator<namco_device>;
 const device_type NAMCO_15XX = &device_creator<namco_15xx_device>;
 const device_type NAMCO_CUS30 = &device_creator<namco_cus30_device>;
@@ -64,6 +80,42 @@ namco_15xx_device::namco_15xx_device(const machine_config &mconfig, const char *
 
 namco_cus30_device::namco_cus30_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
 	: namco_audio_device(mconfig, NAMCO_CUS30, "Namco CUS30", tag, owner, clock, "namco_cus30", __FILE__)
+=======
+DEFINE_DEVICE_TYPE(NAMCO,       namco_device,       "namco",       "Namco")
+DEFINE_DEVICE_TYPE(NAMCO_15XX,  namco_15xx_device,  "namco_15xx",  "Namco 15xx")
+DEFINE_DEVICE_TYPE(NAMCO_CUS30, namco_cus30_device, "namco_cus30", "Namco CUS30")
+
+namco_audio_device::namco_audio_device(const machine_config &mconfig, device_type type, const char *tag, device_t *owner, uint32_t clock)
+	: device_t(mconfig, type, tag, owner, clock)
+	, device_sound_interface(mconfig, *this)
+	, m_wave_ptr(*this, DEVICE_SELF)
+	, m_last_channel(nullptr)
+	, m_soundregs(nullptr)
+	, m_wavedata(nullptr)
+	, m_wave_size(0)
+	, m_sound_enable(0)
+	, m_stream(nullptr)
+	, m_namco_clock(0)
+	, m_sample_rate(0)
+	, m_f_fracbits(0)
+	, m_voices(0)
+	, m_stereo(0)
+{
+}
+
+namco_device::namco_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: namco_audio_device(mconfig, NAMCO, tag, owner, clock)
+{
+}
+
+namco_15xx_device::namco_15xx_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	:namco_audio_device(mconfig, NAMCO_15XX, tag, owner, clock)
+{
+}
+
+namco_cus30_device::namco_cus30_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: namco_audio_device(mconfig, NAMCO_CUS30, tag, owner, clock)
+>>>>>>> upstream/master
 {
 }
 
@@ -75,11 +127,15 @@ namco_cus30_device::namco_cus30_device(const machine_config &mconfig, const char
 void namco_audio_device::device_start()
 {
 	sound_channel *voice;
+<<<<<<< HEAD
 	int clock_multiple;
+=======
+>>>>>>> upstream/master
 
 	/* extract globals from the interface */
 	m_last_channel = m_channel_list + m_voices;
 
+<<<<<<< HEAD
 	m_soundregs = auto_alloc_array_clear(machine(), UINT8, 0x400);
 
 	/* adjust internal clock */
@@ -102,6 +158,18 @@ void namco_audio_device::device_start()
 		m_stream = machine().sound().stream_alloc(*this, 0, 2, m_sample_rate);
 	else
 		m_stream = machine().sound().stream_alloc(*this, 0, 1, m_sample_rate);
+=======
+	m_soundregs = auto_alloc_array_clear(machine(), uint8_t, 0x400);
+
+	/* build the waveform table */
+	build_decoded_waveform(m_wave_ptr);
+
+	/* get stream channels */
+	if (m_stereo)
+		m_stream = machine().sound().stream_alloc(*this, 0, 2, 192000);
+	else
+		m_stream = machine().sound().stream_alloc(*this, 0, 1, 192000);
+>>>>>>> upstream/master
 
 	/* start with sound enabled, many games don't have a sound enable register */
 	m_sound_enable = 1;
@@ -109,7 +177,11 @@ void namco_audio_device::device_start()
 	/* register with the save state system */
 	save_pointer(NAME(m_soundregs), 0x400);
 
+<<<<<<< HEAD
 	if (region() == NULL)
+=======
+	if (m_wave_ptr == nullptr)
+>>>>>>> upstream/master
 		save_pointer(NAME(m_wavedata), 0x400);
 
 	save_item(NAME(m_voices));
@@ -145,6 +217,7 @@ void namco_audio_device::device_start()
 }
 
 
+<<<<<<< HEAD
 
 /* update the decoded waveform data */
 void namco_audio_device::update_namco_waveform(int offset, UINT8 data)
@@ -152,6 +225,34 @@ void namco_audio_device::update_namco_waveform(int offset, UINT8 data)
 	if (m_wave_size == 1)
 	{
 		INT16 wdata;
+=======
+void namco_audio_device::device_clock_changed()
+{
+	int clock_multiple;
+
+	/* adjust internal clock */
+	m_namco_clock = clock();
+	for (clock_multiple = 0; m_namco_clock < INTERNAL_RATE; clock_multiple++)
+		m_namco_clock *= 2;
+
+	m_f_fracbits = clock_multiple + 15;
+
+	/* adjust output clock */
+	m_sample_rate = m_namco_clock;
+
+	logerror("Namco: freq fractional bits = %d: internal freq = %d, output freq = %d\n", m_f_fracbits, m_namco_clock, m_sample_rate);
+
+	m_stream->set_sample_rate(m_sample_rate);
+}
+
+
+/* update the decoded waveform data */
+void namco_audio_device::update_namco_waveform(int offset, uint8_t data)
+{
+	if (m_wave_size == 1)
+	{
+		int16_t wdata;
+>>>>>>> upstream/master
 		int v;
 
 		/* use full byte, first 4 high bits, then low 4 bits */
@@ -175,17 +276,30 @@ void namco_audio_device::update_namco_waveform(int offset, UINT8 data)
 
 
 /* build the decoded waveform table */
+<<<<<<< HEAD
 void namco_audio_device::build_decoded_waveform(UINT8 *rgnbase)
 {
 	INT16 *p;
+=======
+void namco_audio_device::build_decoded_waveform(uint8_t *rgnbase)
+{
+	int16_t *p;
+>>>>>>> upstream/master
 	int size;
 	int offset;
 	int v;
 
+<<<<<<< HEAD
 	m_wavedata = (rgnbase != NULL) ? rgnbase : auto_alloc_array_clear(machine(), UINT8, 0x400);
 
 	/* 20pacgal has waves in RAM but old sound system */
 	if (rgnbase == NULL && m_voices != 3)
+=======
+	m_wavedata = (rgnbase != nullptr) ? rgnbase : auto_alloc_array_clear(machine(), uint8_t, 0x400);
+
+	/* 20pacgal has waves in RAM but old sound system */
+	if (rgnbase == nullptr && m_voices != 3)
+>>>>>>> upstream/master
 	{
 		m_wave_size = 1;
 		size = 32 * 16;     /* 32 samples, 16 waveforms */
@@ -196,7 +310,11 @@ void namco_audio_device::build_decoded_waveform(UINT8 *rgnbase)
 		size = 32 * 8;      /* 32 samples, 8 waveforms */
 	}
 
+<<<<<<< HEAD
 	p = auto_alloc_array(machine(), INT16, size * MAX_VOLUME);
+=======
+	p = auto_alloc_array(machine(), int16_t, size * MAX_VOLUME);
+>>>>>>> upstream/master
 
 	for (v = 0; v < MAX_VOLUME; v++)
 	{
@@ -214,7 +332,11 @@ void namco_audio_device::build_decoded_waveform(UINT8 *rgnbase)
 
 
 /* generate sound by oversampling */
+<<<<<<< HEAD
 UINT32 namco_audio_device::namco_update_one(stream_sample_t *buffer, int length, const INT16 *wave, UINT32 counter, UINT32 freq)
+=======
+uint32_t namco_audio_device::namco_update_one(stream_sample_t *buffer, int length, const int16_t *wave, uint32_t counter, uint32_t freq)
+>>>>>>> upstream/master
 {
 	while (length-- > 0)
 	{
@@ -244,9 +366,15 @@ UINT32 namco_audio_device::namco_update_one(stream_sample_t *buffer, int length,
     0x1f:       ch 2    volume
 */
 
+<<<<<<< HEAD
 WRITE8_MEMBER( namco_device::pacman_sound_enable_w )
 {
 	m_sound_enable = data;
+=======
+WRITE_LINE_MEMBER(namco_device::pacman_sound_enable_w)
+{
+	m_sound_enable = state;
+>>>>>>> upstream/master
 }
 
 WRITE8_MEMBER( namco_device::pacman_sound_w )
@@ -472,9 +600,15 @@ WRITE8_MEMBER( namco_device::polepos_sound_w )
     0x3e        ch 7    waveform select & frequency
 */
 
+<<<<<<< HEAD
 void namco_15xx_device::mappy_sound_enable(int enable)
 {
 	m_sound_enable = enable;
+=======
+WRITE_LINE_MEMBER(namco_15xx_device::mappy_sound_enable)
+{
+	m_sound_enable = state;
+>>>>>>> upstream/master
 }
 
 WRITE8_MEMBER(namco_15xx_device::namco_15xx_w)
@@ -676,10 +810,17 @@ void namco_audio_device::sound_stream_update(sound_stream &stream, stream_sample
 				{
 					int hold_time = 1 << (m_f_fracbits - 16);
 					int hold = voice->noise_hold;
+<<<<<<< HEAD
 					UINT32 delta = f << 4;
 					UINT32 c = voice->noise_counter;
 					INT16 l_noise_data = OUTPUT_LEVEL(0x07 * (lv >> 1));
 					INT16 r_noise_data = OUTPUT_LEVEL(0x07 * (rv >> 1));
+=======
+					uint32_t delta = f << 4;
+					uint32_t c = voice->noise_counter;
+					int16_t l_noise_data = OUTPUT_LEVEL(0x07 * (lv >> 1));
+					int16_t r_noise_data = OUTPUT_LEVEL(0x07 * (rv >> 1));
+>>>>>>> upstream/master
 					int i;
 
 					/* add our contribution */
@@ -728,12 +869,20 @@ void namco_audio_device::sound_stream_update(sound_stream &stream, stream_sample
 				if (voice->frequency)
 				{
 					/* save the counter for this voice */
+<<<<<<< HEAD
 					UINT32 c = voice->counter;
+=======
+					uint32_t c = voice->counter;
+>>>>>>> upstream/master
 
 					/* only update if we have non-zero left volume */
 					if (lv)
 					{
+<<<<<<< HEAD
 						const INT16 *lw = &m_waveform[lv][voice->waveform_select * 32];
+=======
+						const int16_t *lw = &m_waveform[lv][voice->waveform_select * 32];
+>>>>>>> upstream/master
 
 						/* generate sound into the buffer */
 						c = namco_update_one(lmix, samples, lw, voice->counter, voice->frequency);
@@ -742,7 +891,11 @@ void namco_audio_device::sound_stream_update(sound_stream &stream, stream_sample
 					/* only update if we have non-zero right volume */
 					if (rv)
 					{
+<<<<<<< HEAD
 						const INT16 *rw = &m_waveform[rv][voice->waveform_select * 32];
+=======
+						const int16_t *rw = &m_waveform[rv][voice->waveform_select * 32];
+>>>>>>> upstream/master
 
 						/* generate sound into the buffer */
 						c = namco_update_one(rmix, samples, rw, voice->counter, voice->frequency);
@@ -780,9 +933,15 @@ void namco_audio_device::sound_stream_update(sound_stream &stream, stream_sample
 				{
 						int hold_time = 1 << (m_f_fracbits - 16);
 						int hold = voice->noise_hold;
+<<<<<<< HEAD
 						UINT32 delta = f << 4;
 						UINT32 c = voice->noise_counter;
 						INT16 noise_data = OUTPUT_LEVEL(0x07 * (v >> 1));
+=======
+						uint32_t delta = f << 4;
+						uint32_t c = voice->noise_counter;
+						int16_t noise_data = OUTPUT_LEVEL(0x07 * (v >> 1));
+>>>>>>> upstream/master
 						int i;
 
 						/* add our contribution */
@@ -824,7 +983,11 @@ void namco_audio_device::sound_stream_update(sound_stream &stream, stream_sample
 				/* only update if we have non-zero volume and frequency */
 				if (v && voice->frequency)
 				{
+<<<<<<< HEAD
 					const INT16 *w = &m_waveform[v][voice->waveform_select * 32];
+=======
+					const int16_t *w = &m_waveform[v][voice->waveform_select * 32];
+>>>>>>> upstream/master
 
 					/* generate sound into buffer and update the counter for this voice */
 					voice->counter = namco_update_one(mix, samples, w, voice->counter, voice->frequency);

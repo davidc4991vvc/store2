@@ -1,6 +1,11 @@
 -- license:BSD-3-Clause
 -- copyright-holders:MAMEdev Team
 
+<<<<<<< HEAD
+=======
+dofile('modules.lua')
+
+>>>>>>> upstream/master
 forcedincludes {
 	MAME_DIR .. "src/osd/sdl/sdlprefix.h"
 }
@@ -52,6 +57,7 @@ end
 
 if _OPTIONS["NO_USE_MIDI"]~="1" and _OPTIONS["targetos"]=="linux" then
 	buildoptions {
+<<<<<<< HEAD
 		backtick("pkg-config --cflags alsa"),
 	}
 end
@@ -68,12 +74,27 @@ if _OPTIONS["SDL_LIBVER"]=="sdl2" then
 else
 	defines {
 		"SDLMAME_SDL2=0",
+=======
+		backtick(pkgconfigcmd() .. " --cflags alsa"),
+	}
+end
+
+defines {
+	"SDLMAME_SDL2=1",
+}
+if _OPTIONS["SDL2_MULTIAPI"]=="1" then
+	defines {
+		"SDL2_MULTIAPI",
+>>>>>>> upstream/master
 	}
 end
 
 defines {
 	"OSD_SDL",
+<<<<<<< HEAD
 	"SYNC_IMPLEMENTATION=" .. SYNC_IMPLEMENTATION,
+=======
+>>>>>>> upstream/master
 }
 
 if BASE_TARGETOS=="unix" then
@@ -81,6 +102,7 @@ if BASE_TARGETOS=="unix" then
 		"SDLMAME_UNIX",
 	}
 	if _OPTIONS["targetos"]=="macosx" then
+<<<<<<< HEAD
 		if _OPTIONS["MACOSX_USE_LIBSDL"]~="1" then
 			buildoptions {
 				"-F" .. _OPTIONS["SDL_FRAMEWORK_PATH"],
@@ -93,24 +115,49 @@ if BASE_TARGETOS=="unix" then
 				backtick(sdlconfigcmd() .. " --cflags | sed 's:/SDL::'"),
 			}
 		end
+=======
+		if _OPTIONS["with-bundled-sdl2"]==nil then
+			if _OPTIONS["USE_LIBSDL"]~="1" then
+				buildoptions {
+					"-F" .. _OPTIONS["SDL_FRAMEWORK_PATH"],
+				}
+			else
+				defines {
+					"MACOSX_USE_LIBSDL",
+				}
+				buildoptions {
+					backtick(sdlconfigcmd() .. " --cflags | sed 's:/SDL2::'"),
+				}
+			end
+			end
+>>>>>>> upstream/master
 	else
 		buildoptions {
 			backtick(sdlconfigcmd() .. " --cflags"),
 		}
 		if _OPTIONS["targetos"]~="asmjs" then
 			buildoptions {
+<<<<<<< HEAD
 				backtick("pkg-config --cflags fontconfig"),
+=======
+				backtick(pkgconfigcmd() .. " --cflags fontconfig"),
+>>>>>>> upstream/master
 			}
 		end
 	end
 end
 
 if _OPTIONS["targetos"]=="windows" then
+<<<<<<< HEAD
 	configuration { "mingw*-gcc or vs*" }
+=======
+	configuration { "mingw* or vs*" }
+>>>>>>> upstream/master
 		defines {
 			"UNICODE",
 			"_UNICODE",
 			"main=utf8_main",
+<<<<<<< HEAD
 		}
 
 	configuration { "Debug" }
@@ -121,6 +168,13 @@ if _OPTIONS["targetos"]=="windows" then
 		includedirs {
 			path.join(_OPTIONS["SDL_INSTALL_ROOT"],"include")
 		}
+=======
+			"_WIN32_WINNT=0x0501",
+			"WIN32_LEAN_AND_MEAN",
+			"NOMINMAX",
+		}
+
+>>>>>>> upstream/master
 	configuration { }
 
 elseif _OPTIONS["targetos"]=="linux" then
@@ -130,7 +184,11 @@ elseif _OPTIONS["targetos"]=="linux" then
 		}
 	else
 		buildoptions {
+<<<<<<< HEAD
 			backtick("pkg-config --cflags QtGui"),
+=======
+			backtick(pkgconfigcmd() .. " --cflags Qt5Widgets"),
+>>>>>>> upstream/master
 		}
 	end
 elseif _OPTIONS["targetos"]=="macosx" then
@@ -143,6 +201,7 @@ elseif _OPTIONS["targetos"]=="freebsd" then
 		-- /usr/local/include is not considered a system include director on FreeBSD.  GL.h resides there and throws warnings
 		"-isystem /usr/local/include",
 	}
+<<<<<<< HEAD
 elseif _OPTIONS["targetos"]=="os2" then
 	defines {
 		"SDLMAME_OS2",
@@ -151,3 +210,24 @@ elseif _OPTIONS["targetos"]=="os2" then
 		backtick(sdlconfigcmd() .. " --cflags"),
 	}
 end
+=======
+end
+
+configuration { "osx*" }
+	includedirs {
+		MAME_DIR .. "3rdparty/bx/include/compat/osx",
+	}
+
+configuration { "freebsd" }
+	includedirs {
+		MAME_DIR .. "3rdparty/bx/include/compat/freebsd",
+	}
+
+configuration { "netbsd" }
+	includedirs {
+		MAME_DIR .. "3rdparty/bx/include/compat/freebsd",
+	}
+
+configuration { }
+
+>>>>>>> upstream/master

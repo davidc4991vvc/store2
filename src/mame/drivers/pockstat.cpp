@@ -41,17 +41,29 @@ If you do nothing for about 20 secs, it turns itself off (screen goes white).
 ****************************************************************************/
 
 #include "emu.h"
+<<<<<<< HEAD
 #include "cpu/arm7/arm7.h"
 #include "cpu/arm7/arm7core.h"
 #include "sound/dac.h"
 
 #include "bus/generic/slot.h"
 #include "bus/generic/carts.h"
+=======
+#include "bus/generic/carts.h"
+#include "bus/generic/slot.h"
+#include "cpu/arm7/arm7.h"
+#include "cpu/arm7/arm7core.h"
+#include "sound/dac.h"
+#include "sound/volt_reg.h"
+#include "screen.h"
+#include "speaker.h"
+>>>>>>> upstream/master
 
 #define MAX_PS_TIMERS   3
 
 struct ps_ftlb_regs_t
 {
+<<<<<<< HEAD
 	UINT32 control;
 	UINT32 stat;
 	UINT32 valid;
@@ -59,21 +71,43 @@ struct ps_ftlb_regs_t
 	UINT32 wait2;
 	UINT32 entry[16];
 	UINT32 serial;
+=======
+	uint32_t control;
+	uint32_t stat;
+	uint32_t valid;
+	uint32_t wait1;
+	uint32_t wait2;
+	uint32_t entry[16];
+	uint32_t serial;
+>>>>>>> upstream/master
 };
 
 struct ps_intc_regs_t
 {
+<<<<<<< HEAD
 	UINT32 hold;
 	UINT32 status;
 	UINT32 enable;
 	UINT32 mask;
+=======
+	uint32_t hold;
+	uint32_t status;
+	uint32_t enable;
+	uint32_t mask;
+>>>>>>> upstream/master
 };
 
 struct ps_timer_t
 {
+<<<<<<< HEAD
 	UINT32 period;
 	UINT32 count;
 	UINT32 control;
+=======
+	uint32_t period;
+	uint32_t count;
+	uint32_t control;
+>>>>>>> upstream/master
 	emu_timer *timer;
 };
 
@@ -84,18 +118,30 @@ struct ps_timer_regs_t
 
 struct ps_clock_regs_t
 {
+<<<<<<< HEAD
 	UINT32 mode;
 	UINT32 control;
+=======
+	uint32_t mode;
+	uint32_t control;
+>>>>>>> upstream/master
 };
 
 #define PS_CLOCK_STEADY     0x10
 
 struct ps_rtc_regs_t
 {
+<<<<<<< HEAD
 	UINT32 mode;
 	UINT32 control;
 	UINT32 time;
 	UINT32 date;
+=======
+	uint32_t mode;
+	uint32_t control;
+	uint32_t time;
+	uint32_t date;
+>>>>>>> upstream/master
 	emu_timer *timer;
 };
 
@@ -108,6 +154,7 @@ public:
 		: driver_device(mconfig, type, tag),
 		m_lcd_buffer(*this, "lcd_buffer"),
 		m_maincpu(*this, "maincpu"),
+<<<<<<< HEAD
 		m_dac(*this, "dac"),
 		m_cart(*this, "cartslot")
 	{ }
@@ -115,6 +162,13 @@ public:
 	required_shared_ptr<UINT32> m_lcd_buffer;
 	required_device<cpu_device> m_maincpu;
 	required_device<dac_device> m_dac;
+=======
+		m_cart(*this, "cartslot")
+	{ }
+
+	required_shared_ptr<uint32_t> m_lcd_buffer;
+	required_device<cpu_device> m_maincpu;
+>>>>>>> upstream/master
 	required_device<generic_slot_device> m_cart;
 	memory_region *m_cart_rom;
 
@@ -123,9 +177,15 @@ public:
 	ps_timer_regs_t m_timer_regs;
 	ps_clock_regs_t m_clock_regs;
 	ps_rtc_regs_t m_rtc_regs;
+<<<<<<< HEAD
 	UINT32 m_lcd_control;
 	INT32 m_ps_flash_write_enable_count;
 	INT32 m_ps_flash_write_count;
+=======
+	uint32_t m_lcd_control;
+	int32_t m_ps_flash_write_enable_count;
+	int32_t m_ps_flash_write_count;
+>>>>>>> upstream/master
 	DECLARE_READ32_MEMBER(ps_ftlb_r);
 	DECLARE_WRITE32_MEMBER(ps_ftlb_w);
 	DECLARE_READ32_MEMBER(ps_intc_r);
@@ -143,17 +203,28 @@ public:
 	DECLARE_WRITE32_MEMBER(ps_flash_w);
 	DECLARE_READ32_MEMBER(ps_audio_r);
 	DECLARE_WRITE32_MEMBER(ps_audio_w);
+<<<<<<< HEAD
 	DECLARE_WRITE32_MEMBER(ps_dac_w);
 	virtual void machine_start();
 	virtual void machine_reset();
 	UINT32 screen_update_pockstat(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect);
+=======
+	virtual void machine_start() override;
+	virtual void machine_reset() override;
+	uint32_t screen_update_pockstat(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect);
+>>>>>>> upstream/master
 	DECLARE_INPUT_CHANGED_MEMBER(input_update);
 	TIMER_CALLBACK_MEMBER(timer_tick);
 	TIMER_CALLBACK_MEMBER(rtc_tick);
 	DECLARE_DEVICE_IMAGE_LOAD_MEMBER( pockstat_flash );
 	inline void ATTR_PRINTF(3,4) verboselog( int n_level, const char *s_fmt, ... );
+<<<<<<< HEAD
 	UINT32 ps_intc_get_interrupt_line(UINT32 line);
 	void ps_intc_set_interrupt_line(UINT32 line, int state);
+=======
+	uint32_t ps_intc_get_interrupt_line(uint32_t line);
+	void ps_intc_set_interrupt_line(uint32_t line, int state);
+>>>>>>> upstream/master
 	void ps_timer_start(int index);
 };
 
@@ -317,12 +388,20 @@ WRITE32_MEMBER(pockstat_state::ps_ftlb_w)
 	}
 }
 
+<<<<<<< HEAD
 UINT32 pockstat_state::ps_intc_get_interrupt_line(UINT32 line)
+=======
+uint32_t pockstat_state::ps_intc_get_interrupt_line(uint32_t line)
+>>>>>>> upstream/master
 {
 	return m_intc_regs.status & line;
 }
 
+<<<<<<< HEAD
 void pockstat_state::ps_intc_set_interrupt_line(UINT32 line, int state)
+=======
+void pockstat_state::ps_intc_set_interrupt_line(uint32_t line, int state)
+>>>>>>> upstream/master
 {
 	//printf( "%08x %d %08x %08x %08x\n", line, state, drvm_intc_regs.hold, drvm_intc_regs.status, drvm_intc_regs.enable );
 	if(line)
@@ -771,7 +850,11 @@ WRITE32_MEMBER(pockstat_state::ps_lcd_w)
 
 INPUT_CHANGED_MEMBER(pockstat_state::input_update)
 {
+<<<<<<< HEAD
 	UINT32 buttons = ioport("BUTTONS")->read();
+=======
+	uint32_t buttons = ioport("BUTTONS")->read();
+>>>>>>> upstream/master
 
 	ps_intc_set_interrupt_line(PS_INT_BTN_ACTION, (buttons &  1) ? 1 : 0);
 	ps_intc_set_interrupt_line(PS_INT_BTN_RIGHT, (buttons &  2) ? 1 : 0);
@@ -782,7 +865,11 @@ INPUT_CHANGED_MEMBER(pockstat_state::input_update)
 
 READ32_MEMBER(pockstat_state::ps_rombank_r)
 {
+<<<<<<< HEAD
 	INT32 bank = (offset >> 11) & 0x0f;
+=======
+	int32_t bank = (offset >> 11) & 0x0f;
+>>>>>>> upstream/master
 	for (int index = 0; index < 32; index++)
 	{
 		if (m_ftlb_regs.valid & (1 << index))
@@ -820,7 +907,11 @@ WRITE32_MEMBER(pockstat_state::ps_flash_w)
 	if(m_ps_flash_write_count)
 	{
 		m_ps_flash_write_count--;
+<<<<<<< HEAD
 		COMBINE_DATA(&((UINT32*)(m_cart_rom->base()))[offset]);
+=======
+		COMBINE_DATA(&((uint32_t*)(m_cart_rom->base()))[offset]);
+>>>>>>> upstream/master
 	}
 }
 
@@ -840,11 +931,14 @@ WRITE32_MEMBER(pockstat_state::ps_audio_w)
 	verboselog(0, "ps_audio_w: Unknown Write: %08x = %08x & %08x\n", 0xd800000 + (offset << 2), data, mem_mask);
 }
 
+<<<<<<< HEAD
 WRITE32_MEMBER(pockstat_state::ps_dac_w)
 {
 	m_dac->write_unsigned16((UINT16)((data + 0x8000) & 0x0000ffff));
 }
 
+=======
+>>>>>>> upstream/master
 static ADDRESS_MAP_START(pockstat_mem, AS_PROGRAM, 32, pockstat_state )
 	AM_RANGE(0x00000000, 0x000007ff) AM_RAM
 	AM_RANGE(0x02000000, 0x02ffffff) AM_READ(ps_rombank_r)
@@ -858,7 +952,11 @@ static ADDRESS_MAP_START(pockstat_mem, AS_PROGRAM, 32, pockstat_state )
 	AM_RANGE(0x0d000000, 0x0d000003) AM_READWRITE(ps_lcd_r, ps_lcd_w)
 	AM_RANGE(0x0d000100, 0x0d00017f) AM_RAM AM_SHARE("lcd_buffer")
 	AM_RANGE(0x0d80000c, 0x0d80000f) AM_READWRITE(ps_audio_r, ps_audio_w)
+<<<<<<< HEAD
 	AM_RANGE(0x0d800014, 0x0d800017) AM_WRITE(ps_dac_w)
+=======
+	AM_RANGE(0x0d800014, 0x0d800017) AM_DEVWRITE16("dac", dac_word_interface, write, 0x0000ffff)
+>>>>>>> upstream/master
 ADDRESS_MAP_END
 
 /* Input ports */
@@ -934,11 +1032,19 @@ void pockstat_state::machine_reset()
 	m_ps_flash_write_count = 0;
 }
 
+<<<<<<< HEAD
 UINT32 pockstat_state::screen_update_pockstat(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect)
 {
 	for (int y = 0; y < 32; y++)
 	{
 		UINT32 *scanline = &bitmap.pix32(y);
+=======
+uint32_t pockstat_state::screen_update_pockstat(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect)
+{
+	for (int y = 0; y < 32; y++)
+	{
+		uint32_t *scanline = &bitmap.pix32(y);
+>>>>>>> upstream/master
 		for (int x = 0; x < 32; x++)
 		{
 			if (m_lcd_control != 0) // Hack
@@ -959,26 +1065,44 @@ DEVICE_IMAGE_LOAD_MEMBER( pockstat_state, pockstat_flash )
 {
 	static const char *gme_id = "123-456-STD";
 	char cart_id[0xf40];
+<<<<<<< HEAD
 	UINT32 size = image.length();
 
 	if (size != 0x20f40)
 		return IMAGE_INIT_FAIL;
+=======
+	uint32_t size = image.length();
+
+	if (size != 0x20f40)
+		return image_init_result::FAIL;
+>>>>>>> upstream/master
 
 	image.fread(cart_id, 0xf40);
 
 	for (int i = 0; i < strlen(gme_id); i++)
 	{
 		if (cart_id[i] != gme_id[i])
+<<<<<<< HEAD
 			return IMAGE_INIT_FAIL;
+=======
+			return image_init_result::FAIL;
+>>>>>>> upstream/master
 	}
 
 	m_cart->rom_alloc(0x20000, GENERIC_ROM32_WIDTH, ENDIANNESS_LITTLE);
 	image.fread(m_cart->get_rom_base(), 0x20000);
 
+<<<<<<< HEAD
 	return IMAGE_INIT_PASS;
 }
 
 static MACHINE_CONFIG_START( pockstat, pockstat_state )
+=======
+	return image_init_result::PASS;
+}
+
+static MACHINE_CONFIG_START( pockstat )
+>>>>>>> upstream/master
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", ARM7, DEFAULT_CLOCK)
 	MCFG_CPU_PROGRAM_MAP(pockstat_mem)
@@ -991,11 +1115,20 @@ static MACHINE_CONFIG_START( pockstat, pockstat_state )
 	MCFG_SCREEN_VISIBLE_AREA(0, 32-1, 0, 32-1)
 	MCFG_SCREEN_UPDATE_DRIVER(pockstat_state, screen_update_pockstat)
 
+<<<<<<< HEAD
 	MCFG_PALETTE_ADD_BLACK_AND_WHITE("palette")
 
 	MCFG_SPEAKER_STANDARD_MONO("mono")
 	MCFG_SOUND_ADD("dac", DAC, 0)
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 1.0)
+=======
+	MCFG_PALETTE_ADD_MONOCHROME("palette")
+
+	MCFG_SPEAKER_STANDARD_MONO("speaker")
+	MCFG_SOUND_ADD("dac", DAC_16BIT_R2R_TWOS_COMPLEMENT, 0) MCFG_SOUND_ROUTE(ALL_OUTPUTS, "speaker", 0.5) // unknown DAC
+	MCFG_DEVICE_ADD("vref", VOLTAGE_REGULATOR, 0) MCFG_VOLTAGE_REGULATOR_OUTPUT(5.0)
+	MCFG_SOUND_ROUTE_EX(0, "dac", 1.0, DAC_VREF_POS_INPUT) MCFG_SOUND_ROUTE_EX(0, "dac", -1.0, DAC_VREF_NEG_INPUT)
+>>>>>>> upstream/master
 
 	/* cartridge */
 	MCFG_GENERIC_CARTSLOT_ADD("cartslot", generic_plain_slot, "pockstat_cart")
@@ -1013,5 +1146,10 @@ ROM_END
 
 /* Driver */
 
+<<<<<<< HEAD
 /*    YEAR  NAME      PARENT  COMPAT  MACHINE    INPUT     INIT  COMPANY                             FULLNAME       FLAGS */
 CONS( 1999, pockstat, 0,      0,      pockstat,  pockstat, driver_device, 0,    "Sony Computer Entertainment Inc", "Sony PocketStation", MACHINE_SUPPORTS_SAVE )
+=======
+//    YEAR  NAME      PARENT  COMPAT  MACHINE    INPUT     STATE           INIT  COMPANY                            FULLNAME              FLAGS
+CONS( 1999, pockstat, 0,      0,      pockstat,  pockstat, pockstat_state, 0,    "Sony Computer Entertainment Inc", "Sony PocketStation", MACHINE_SUPPORTS_SAVE )
+>>>>>>> upstream/master

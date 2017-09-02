@@ -6,6 +6,7 @@
 #include "emu.h"
 #include "machine/inder_sb.h"
 
+<<<<<<< HEAD
 
 
 extern const device_type INDER_AUDIO = &device_creator<inder_sb_device>;
@@ -20,6 +21,20 @@ inder_sb_device::inder_sb_device(const machine_config &mconfig, const char *tag,
 		m_dac1(*this, "dac1" ),
 		m_dac2(*this, "dac2" ),
 		m_dac3(*this, "dac3" )
+=======
+#include "sound/volt_reg.h"
+#include "speaker.h"
+
+
+DEFINE_DEVICE_TYPE(INDER_AUDIO, inder_sb_device, "indersb", "Inder 4xDAC Sound Board")
+
+
+inder_sb_device::inder_sb_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: device_t(mconfig, INDER_AUDIO, tag, owner, clock)
+	, device_mixer_interface(mconfig, *this, 2)
+	, m_audiocpu(*this, "audiocpu")
+	, m_ctc(*this, "ctc")
+>>>>>>> upstream/master
 {
 }
 
@@ -120,7 +135,11 @@ WRITE_LINE_MEMBER(inder_sb_device::z80ctc_ch3)
 static const z80_daisy_config daisy_chain[] =
 {
 	{ "ctc" },
+<<<<<<< HEAD
 	{ NULL }
+=======
+	{ nullptr }
+>>>>>>> upstream/master
 };
 
 
@@ -153,6 +172,7 @@ WRITE8_MEMBER(inder_sb_device::megaphx_sound_to_68k_w)
 	m_soundback = data;
 }
 
+<<<<<<< HEAD
 WRITE8_MEMBER(inder_sb_device::dac0_value_write)
 {
 //  printf("dac0_data_write %02x\n", data);
@@ -201,6 +221,8 @@ WRITE8_MEMBER(inder_sb_device::dac3_gain_write)
 	dac_gain[3] = data;
 }
 
+=======
+>>>>>>> upstream/master
 WRITE8_MEMBER(inder_sb_device::dac0_rombank_write)
 {
 	m_soundbank[0] = data;
@@ -231,6 +253,7 @@ WRITE8_MEMBER(inder_sb_device::dac3_rombank_write)
 
 static ADDRESS_MAP_START( sound_io, AS_IO, 8, inder_sb_device )
 	ADDRESS_MAP_GLOBAL_MASK(0xff)
+<<<<<<< HEAD
 	AM_RANGE(0x00, 0x00) AM_WRITE(dac0_value_write)
 	AM_RANGE(0x01, 0x01) AM_WRITE(dac0_gain_write)
 	AM_RANGE(0x02, 0x02) AM_WRITE(dac1_value_write)
@@ -239,6 +262,16 @@ static ADDRESS_MAP_START( sound_io, AS_IO, 8, inder_sb_device )
 	AM_RANGE(0x05, 0x05) AM_WRITE(dac2_gain_write)
 	AM_RANGE(0x06, 0x06) AM_WRITE(dac3_value_write)
 	AM_RANGE(0x07, 0x07) AM_WRITE(dac3_gain_write)
+=======
+	AM_RANGE(0x00, 0x00) AM_DEVWRITE("dac0", dac_byte_interface, write)
+	AM_RANGE(0x01, 0x01) AM_DEVWRITE("dac0vol", dac_byte_interface, write)
+	AM_RANGE(0x02, 0x02) AM_DEVWRITE("dac1", dac_byte_interface, write)
+	AM_RANGE(0x03, 0x03) AM_DEVWRITE("dac1vol", dac_byte_interface, write)
+	AM_RANGE(0x04, 0x04) AM_DEVWRITE("dac2", dac_byte_interface, write)
+	AM_RANGE(0x05, 0x05) AM_DEVWRITE("dac2vol", dac_byte_interface, write)
+	AM_RANGE(0x06, 0x06) AM_DEVWRITE("dac3", dac_byte_interface, write)
+	AM_RANGE(0x07, 0x07) AM_DEVWRITE("dac3vol", dac_byte_interface, write)
+>>>>>>> upstream/master
 
 	// not 100% sure how rom banking works.. but each channel can specify a different bank for the 0x8000 range.  Maybe the bank happens when the interrupt triggers so each channel reads the correct data? (so we'd need to put the actual functions in the CTC callbacks)
 	AM_RANGE(0x10, 0x10) AM_WRITE(dac0_rombank_write)
@@ -256,10 +289,16 @@ static ADDRESS_MAP_START( sound_io, AS_IO, 8, inder_sb_device )
 ADDRESS_MAP_END
 
 
+<<<<<<< HEAD
 
 static MACHINE_CONFIG_FRAGMENT( inder_sb )
 	MCFG_CPU_ADD("audiocpu", Z80, 8000000) // unk freq
 	MCFG_CPU_CONFIG(daisy_chain)
+=======
+MACHINE_CONFIG_MEMBER( inder_sb_device::device_add_mconfig )
+	MCFG_CPU_ADD("audiocpu", Z80, 8000000) // unk freq
+	MCFG_Z80_DAISY_CHAIN(daisy_chain)
+>>>>>>> upstream/master
 	MCFG_CPU_PROGRAM_MAP(sound_map)
 	MCFG_CPU_IO_MAP(sound_io)
 
@@ -271,6 +310,7 @@ static MACHINE_CONFIG_FRAGMENT( inder_sb )
 	MCFG_Z80CTC_ZC2_CB(WRITELINE(inder_sb_device, z80ctc_ch3))
 	// was this correct?!?
 
+<<<<<<< HEAD
 	MCFG_SPEAKER_STANDARD_MONO("mono")
 	MCFG_DAC_ADD("dac0")
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 0.25)
@@ -286,6 +326,24 @@ machine_config_constructor inder_sb_device::device_mconfig_additions() const
 {
 	return MACHINE_CONFIG_NAME( inder_sb );
 }
+=======
+	MCFG_SPEAKER_STANDARD_MONO("speaker")
+	MCFG_SOUND_ADD("dac0", DAC_8BIT_R2R_TWOS_COMPLEMENT, 0) MCFG_SOUND_ROUTE(ALL_OUTPUTS, "speaker", 0.5) // unknown DAC
+	MCFG_SOUND_ADD("dac1", DAC_8BIT_R2R_TWOS_COMPLEMENT, 0) MCFG_SOUND_ROUTE(ALL_OUTPUTS, "speaker", 0.5) // unknown DAC
+	MCFG_SOUND_ADD("dac2", DAC_8BIT_R2R_TWOS_COMPLEMENT, 0) MCFG_SOUND_ROUTE(ALL_OUTPUTS, "speaker", 0.5) // unknown DAC
+	MCFG_SOUND_ADD("dac3", DAC_8BIT_R2R_TWOS_COMPLEMENT, 0) MCFG_SOUND_ROUTE(ALL_OUTPUTS, "speaker", 0.5) // unknown DAC
+	MCFG_SOUND_ADD("dac0vol", DAC_8BIT_R2R, 0) MCFG_SOUND_ROUTE_EX(0, "dac0", 1.0, DAC_VREF_POS_INPUT) MCFG_SOUND_ROUTE_EX(0, "dac0", -1.0, DAC_VREF_NEG_INPUT) // unknown DAC
+	MCFG_SOUND_ADD("dac1vol", DAC_8BIT_R2R, 0) MCFG_SOUND_ROUTE_EX(0, "dac1", 1.0, DAC_VREF_POS_INPUT) MCFG_SOUND_ROUTE_EX(0, "dac1", -1.0, DAC_VREF_NEG_INPUT) // unknown DAC
+	MCFG_SOUND_ADD("dac2vol", DAC_8BIT_R2R, 0) MCFG_SOUND_ROUTE_EX(0, "dac2", 1.0, DAC_VREF_POS_INPUT) MCFG_SOUND_ROUTE_EX(0, "dac2", -1.0, DAC_VREF_NEG_INPUT) // unknown DAC
+	MCFG_SOUND_ADD("dac3vol", DAC_8BIT_R2R, 0) MCFG_SOUND_ROUTE_EX(0, "dac3", 1.0, DAC_VREF_POS_INPUT) MCFG_SOUND_ROUTE_EX(0, "dac3", -1.0, DAC_VREF_NEG_INPUT) // unknown DAC
+	MCFG_DEVICE_ADD("vref", VOLTAGE_REGULATOR, 0) MCFG_VOLTAGE_REGULATOR_OUTPUT(5.0)
+	MCFG_SOUND_ROUTE_EX(0, "dac0vol", 1.0, DAC_VREF_POS_INPUT)
+	MCFG_SOUND_ROUTE_EX(0, "dac1vol", 1.0, DAC_VREF_POS_INPUT)
+	MCFG_SOUND_ROUTE_EX(0, "dac2vol", 1.0, DAC_VREF_POS_INPUT)
+	MCFG_SOUND_ROUTE_EX(0, "dac3vol", 1.0, DAC_VREF_POS_INPUT)
+MACHINE_CONFIG_END
+
+>>>>>>> upstream/master
 
 void inder_sb_device::device_start()
 {

@@ -56,7 +56,11 @@ static const char *const CONDITION_CODE[16] =
 #define B0L     (B0 & 0x0f)
 #define OPH     (opcode >> 4)
 
+<<<<<<< HEAD
 #define ARG(_formatting, _value)    { if (argc) dst += sprintf(dst, ", "); dst += sprintf(dst, _formatting, _value); argc++; }
+=======
+#define ARG(_formatting, _value)    { if (argc) util::stream_format(stream, ", "); util::stream_format(stream, _formatting, _value); argc++; }
+>>>>>>> upstream/master
 
 #define arg_name(_value)            ARG("%s", REGISTER_NAME[_value])
 #define arg_cc                      ARG("%s", CONDITION_CODE[OPH])
@@ -68,12 +72,21 @@ static const char *const CONDITION_CODE[16] =
 #define arg_IR(_value)              if ((_value & 0xf0) == 0xe0) ARG(Ir, _value & 0x0f) else ARG(IR, _value)
 #define arg_IRR(_value)             if ((_value & 0xf0) == 0xe0) ARG(Irr, _value & 0x0f) else ARG(IRR, _value)
 #define arg_IM(_value)              ARG(IM, _value)
+<<<<<<< HEAD
 #define arg_RA                      ARG(RA, pc + (INT8)B0 + 2)
 #define arg_DA                      ARG(DA, B0 << 8 | B1)
 #define arg_X(_value1, _value2)     { if (argc) dst += sprintf(dst, ", "); dst += sprintf(dst, X, _value1, _value2); argc++; }
 
 #define illegal                     dst += sprintf(dst, "Illegal")
 #define mnemonic(_mnemonic)         dst += sprintf(dst, "%-5s", _mnemonic)
+=======
+#define arg_RA                      ARG(RA, pc + (int8_t)B0 + 2)
+#define arg_DA                      ARG(DA, B0 << 8 | B1)
+#define arg_X(_value1, _value2)     { if (argc) util::stream_format(stream, ", "); util::stream_format(stream, X, _value1, _value2); argc++; }
+
+#define illegal                     util::stream_format(stream, "Illegal")
+#define mnemonic(_mnemonic)         util::stream_format(stream, "%-5s", _mnemonic)
+>>>>>>> upstream/master
 #define bytes(_count)               oprom += (_count - 1)
 #define step_over                   flags = DASMFLAG_STEP_OVER
 #define step_out                    flags = DASMFLAG_STEP_OUT
@@ -82,12 +95,20 @@ static const char *const CONDITION_CODE[16] =
     DISASSEMBLER
 ***************************************************************************/
 
+<<<<<<< HEAD
 CPU_DISASSEMBLE( z8 )
 {
 	const UINT8 *startrom = oprom;
 	UINT32 flags = 0;
 	UINT8 opcode = *oprom++;
 	char *dst = buffer;
+=======
+CPU_DISASSEMBLE(z8)
+{
+	const uint8_t *startrom = oprom;
+	uint32_t flags = 0;
+	uint8_t opcode = *oprom++;
+>>>>>>> upstream/master
 	int argc = 0;
 
 	switch (pc)
@@ -98,7 +119,11 @@ CPU_DISASSEMBLE( z8 )
 	case 0x0006:
 	case 0x0008:
 	case 0x000a:
+<<<<<<< HEAD
 		sprintf(buffer, "IRQ%u Vector %04Xh", pc / 2, opcode << 8 | *oprom++); break;
+=======
+		util::stream_format(stream, "IRQ%u Vector %04Xh", pc / 2, opcode << 8 | *oprom++); break;
+>>>>>>> upstream/master
 	default:
 		switch (opcode)
 		{
@@ -154,7 +179,11 @@ CPU_DISASSEMBLE( z8 )
 			case 0x2f:      illegal;                                                break;
 
 			case 0x30:      mnemonic("JP"); arg_IRR(B0); bytes(2);                  break;
+<<<<<<< HEAD
 			case 0x31:      mnemonic("SRP"); arg_IM(*oprom++);                      break;
+=======
+			case 0x31:      mnemonic("SRP"); arg_IM(B0); bytes(2);                 break;
+>>>>>>> upstream/master
 			case 0x32:      mnemonic("SBC"); arg_r(B0H); arg_r(B0L); bytes(2);      break;
 			case 0x33:      mnemonic("SBC"); arg_r(B0H); arg_Ir(B0L); bytes(2);     break;
 			case 0x34:      mnemonic("SBC"); arg_R(B1); arg_R(B0); bytes(3);        break;
@@ -238,7 +267,11 @@ CPU_DISASSEMBLE( z8 )
 			case 0x7e:      mnemonic("INC"); arg_r(OPH);                            break;
 			case 0x7f:      illegal; /* mnemonic("HALT"); */                        break;
 
+<<<<<<< HEAD
 			case 0x80:      mnemonic("DECW"); arg_RR(*oprom++);                     break;
+=======
+			case 0x80:      mnemonic("DECW"); arg_RR(B0); bytes(2);                 break;
+>>>>>>> upstream/master
 			case 0x81:      mnemonic("DECW"); arg_IR(B0); bytes(2);                 break;
 			case 0x82:      mnemonic("LDE"); arg_r(B0H); arg_Irr(B0L); bytes(2);    break;
 			case 0x83:      mnemonic("LDEI"); arg_Ir(B0H); arg_Irr(B0L); bytes(2);  break;

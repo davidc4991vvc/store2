@@ -47,12 +47,24 @@ Stephh's notes (based on the games M68000 code and some tests) :
 ***************************************************************************/
 
 #include "emu.h"
+<<<<<<< HEAD
+=======
+#include "includes/sshangha.h"
+
+>>>>>>> upstream/master
 #include "cpu/z80/z80.h"
 #include "cpu/m68000/m68000.h"
 #include "sound/2203intf.h"
 #include "sound/okim6295.h"
+<<<<<<< HEAD
 #include "includes/sshangha.h"
 #include "machine/deco146.h"
+=======
+#include "machine/deco146.h"
+#include "screen.h"
+#include "speaker.h"
+
+>>>>>>> upstream/master
 
 #define SSHANGHA_HACK   0
 
@@ -92,7 +104,11 @@ void sshangha_state::machine_reset()
 
 /******************************************************************************/
 
+<<<<<<< HEAD
 inline void sshangha_state::sshangha_set_color_888(pen_t color, int rshift, int gshift, int bshift, UINT32 data)
+=======
+inline void sshangha_state::sshangha_set_color_888(pen_t color, int rshift, int gshift, int bshift, uint32_t data)
+>>>>>>> upstream/master
 {
 	m_palette->set_pen_color(color, (data >> rshift) & 0xff, (data >> gshift) & 0xff, (data >> bshift) & 0xff);
 }
@@ -133,8 +149,13 @@ READ16_MEMBER( sshangha_state::sshangha_protection_region_d_146_r )
 {
 	int real_address = 0x3f4000 + (offset *2);
 	int deco146_addr = BITSWAP32(real_address, /* NC */31,30,29,28,27,26,25,24,23,22,21,20,19,18, 13,12,11,/**/      17,16,15,14,    10,9,8, 7,6,5,4, 3,2,1,0) & 0x7fff;
+<<<<<<< HEAD
 	UINT8 cs = 0;
 	UINT16 data = m_deco146->read_data( deco146_addr, mem_mask, cs );
+=======
+	uint8_t cs = 0;
+	uint16_t data = m_deco146->read_data( deco146_addr, mem_mask, cs );
+>>>>>>> upstream/master
 	return data;
 }
 
@@ -142,7 +163,11 @@ WRITE16_MEMBER( sshangha_state::sshangha_protection_region_d_146_w )
 {
 	int real_address = 0x3f4000 + (offset *2);
 	int deco146_addr = BITSWAP32(real_address, /* NC */31,30,29,28,27,26,25,24,23,22,21,20,19,18, 13,12,11,/**/      17,16,15,14,    10,9,8, 7,6,5,4, 3,2,1,0) & 0x7fff;
+<<<<<<< HEAD
 	UINT8 cs = 0;
+=======
+	uint8_t cs = 0;
+>>>>>>> upstream/master
 	m_deco146->write_data( space, deco146_addr, data, mem_mask, cs );
 }
 
@@ -150,8 +175,13 @@ READ16_MEMBER( sshangha_state::sshangha_protection_region_8_146_r )
 {
 	int real_address = 0x3e0000 + (offset *2);
 	int deco146_addr = BITSWAP32(real_address, /* NC */31,30,29,28,27,26,25,24,23,22,21,20,19,18, 13,12,11,/**/      17,16,15,14,    10,9,8, 7,6,5,4, 3,2,1,0) & 0x7fff;
+<<<<<<< HEAD
 	UINT8 cs = 0;
 	UINT16 data = m_deco146->read_data( deco146_addr, mem_mask, cs );
+=======
+	uint8_t cs = 0;
+	uint16_t data = m_deco146->read_data( deco146_addr, mem_mask, cs );
+>>>>>>> upstream/master
 	return data;
 }
 
@@ -159,7 +189,11 @@ WRITE16_MEMBER( sshangha_state::sshangha_protection_region_8_146_w )
 {
 	int real_address = 0x3e0000 + (offset *2);
 	int deco146_addr = BITSWAP32(real_address, /* NC */31,30,29,28,27,26,25,24,23,22,21,20,19,18, 13,12,11,/**/      17,16,15,14,    10,9,8, 7,6,5,4, 3,2,1,0) & 0x7fff;
+<<<<<<< HEAD
 	UINT8 cs = 0;
+=======
+	uint8_t cs = 0;
+>>>>>>> upstream/master
 	m_deco146->write_data( space, deco146_addr, data, mem_mask, cs );
 }
 
@@ -369,17 +403,24 @@ GFXDECODE_END
 
 /******************************************************************************/
 
+<<<<<<< HEAD
 WRITE_LINE_MEMBER(sshangha_state::irqhandler)
 {
 	m_audiocpu->set_input_line(0, state);
 }
 
+=======
+>>>>>>> upstream/master
 DECO16IC_BANK_CB_MEMBER(sshangha_state::bank_callback)
 {
 	return (bank >> 4) * 0x1000;
 }
 
+<<<<<<< HEAD
 static MACHINE_CONFIG_START( sshangha, sshangha_state )
+=======
+static MACHINE_CONFIG_START( sshangha )
+>>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", M68000, 28000000/2)
@@ -416,29 +457,51 @@ static MACHINE_CONFIG_START( sshangha, sshangha_state )
 	MCFG_DECO16IC_PF12_8X8_BANK(0)
 	MCFG_DECO16IC_PF12_16X16_BANK(1)
 	MCFG_DECO16IC_GFXDECODE("gfxdecode")
+<<<<<<< HEAD
 	MCFG_DECO16IC_PALETTE("palette")
+=======
+>>>>>>> upstream/master
 
 	MCFG_DEVICE_ADD("spritegen1", DECO_SPRITE, 0)
 	MCFG_DECO_SPRITE_GFX_REGION(2)
 	MCFG_DECO_SPRITE_GFXDECODE("gfxdecode")
+<<<<<<< HEAD
 	MCFG_DECO_SPRITE_PALETTE("palette")
+=======
+>>>>>>> upstream/master
 
 	MCFG_DEVICE_ADD("spritegen2", DECO_SPRITE, 0)
 	MCFG_DECO_SPRITE_GFX_REGION(2)
 	MCFG_DECO_SPRITE_GFXDECODE("gfxdecode")
+<<<<<<< HEAD
 	MCFG_DECO_SPRITE_PALETTE("palette")
 
 	MCFG_DECO146_ADD("ioprot")
+=======
+
+	MCFG_DECO146_ADD("ioprot")
+	MCFG_DECO146_IN_PORTA_CB(IOPORT("INPUTS"))
+	MCFG_DECO146_IN_PORTB_CB(IOPORT("SYSTEM"))
+	MCFG_DECO146_IN_PORTC_CB(IOPORT("DSW"))
+>>>>>>> upstream/master
 
 	/* sound hardware */
 	MCFG_SPEAKER_STANDARD_STEREO("lspeaker", "rspeaker") /* sure it's stereo? */
 
 	MCFG_SOUND_ADD("ymsnd", YM2203, 16000000/4)
+<<<<<<< HEAD
 	MCFG_YM2203_IRQ_HANDLER(WRITELINE(sshangha_state, irqhandler))
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "lspeaker", 0.33)
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "rspeaker", 0.33)
 
 	MCFG_OKIM6295_ADD("oki", 1023924, OKIM6295_PIN7_HIGH) // clock frequency & pin 7 not verified
+=======
+	MCFG_YM2203_IRQ_HANDLER(INPUTLINE("audiocpu", 0))
+	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "lspeaker", 0.33)
+	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "rspeaker", 0.33)
+
+	MCFG_OKIM6295_ADD("oki", 1023924, PIN7_HIGH) // clock frequency & pin 7 not verified
+>>>>>>> upstream/master
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "lspeaker", 0.27)
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "rspeaker", 0.27)
 MACHINE_CONFIG_END
@@ -497,7 +560,11 @@ DRIVER_INIT_MEMBER(sshangha_state,sshangha)
 #if SSHANGHA_HACK
 	/* This is a hack to allow you to use the extra features
 	     of the first "Unused" Dip Switch (see notes above). */
+<<<<<<< HEAD
 	UINT16 *RAM = (UINT16 *)memregion("maincpu")->base();
+=======
+	uint16_t *RAM = (uint16_t *)memregion("maincpu")->base();
+>>>>>>> upstream/master
 	RAM[0x000384/2] = 0x4e71;
 	RAM[0x000386/2] = 0x4e71;
 	RAM[0x000388/2] = 0x4e71;

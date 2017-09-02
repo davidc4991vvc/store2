@@ -1,4 +1,5 @@
 /*
+<<<<<<< HEAD
  * Copyright 2011-2015 Branimir Karadzic. All rights reserved.
  * License: http://www.opensource.org/licenses/BSD-2-Clause
  */
@@ -9,13 +10,29 @@
 #include <bx/uint32_t.h>
 #include <bx/string.h>
 #include <bx/readerwriter.h>
+=======
+ * Copyright 2011-2017 Branimir Karadzic. All rights reserved.
+ * License: https://github.com/bkaradzic/bgfx#license-bsd-2-clause
+ */
+
+#include <bx/debug.h>
+#include <bx/hash.h>
+#include <bx/readerwriter.h>
+#include <bx/sort.h>
+#include <bx/string.h>
+#include <bx/uint32_t.h>
+>>>>>>> upstream/master
 
 #include "config.h"
 #include "vertexdecl.h"
 
 namespace bgfx
 {
+<<<<<<< HEAD
 	static const uint8_t s_attribTypeSizeDx9[AttribType::Count][4] =
+=======
+	static const uint8_t s_attribTypeSizeD3D9[AttribType::Count][4] =
+>>>>>>> upstream/master
 	{
 		{  4,  4,  4,  4 }, // Uint8
 		{  4,  4,  4,  4 }, // Uint10
@@ -24,7 +41,11 @@ namespace bgfx
 		{  4,  8, 12, 16 }, // Float
 	};
 
+<<<<<<< HEAD
 	static const uint8_t s_attribTypeSizeDx1x[AttribType::Count][4] =
+=======
+	static const uint8_t s_attribTypeSizeD3D1x[AttribType::Count][4] =
+>>>>>>> upstream/master
 	{
 		{  1,  2,  4,  4 }, // Uint8
 		{  4,  4,  4,  4 }, // Uint10
@@ -44,6 +65,7 @@ namespace bgfx
 
 	static const uint8_t (*s_attribTypeSize[])[AttribType::Count][4] =
 	{
+<<<<<<< HEAD
 		&s_attribTypeSizeDx9,  // Null
 		&s_attribTypeSizeDx9,  // Direct3D9
 		&s_attribTypeSizeDx1x, // Direct3D11
@@ -53,6 +75,18 @@ namespace bgfx
 		&s_attribTypeSizeGl,   // OpenGL
 		&s_attribTypeSizeGl,   // Vulkan
 		&s_attribTypeSizeDx9,  // Count
+=======
+		&s_attribTypeSizeD3D9,  // Noop
+		&s_attribTypeSizeD3D9,  // Direct3D9
+		&s_attribTypeSizeD3D1x, // Direct3D11
+		&s_attribTypeSizeD3D1x, // Direct3D12
+		&s_attribTypeSizeD3D1x, // Gnm
+		&s_attribTypeSizeGl,    // Metal
+		&s_attribTypeSizeGl,    // OpenGLES
+		&s_attribTypeSizeGl,    // OpenGL
+		&s_attribTypeSizeD3D1x, // Vulkan
+		&s_attribTypeSizeD3D9,  // Count
+>>>>>>> upstream/master
 	};
 	BX_STATIC_ASSERT(BX_COUNTOF(s_attribTypeSize) == RendererType::Count+1);
 
@@ -62,6 +96,7 @@ namespace bgfx
 		s_attribTypeSize[RendererType::Count] = s_attribTypeSize[_type];
 	}
 
+<<<<<<< HEAD
 	void dbgPrintfVargs(const char* _format, va_list _argList)
 	{
 		char temp[8192];
@@ -84,6 +119,8 @@ namespace bgfx
 		va_end(argList);
 	}
 
+=======
+>>>>>>> upstream/master
 	VertexDecl::VertexDecl()
 	{
 		// BK - struct need to have ctor to qualify as non-POD data.
@@ -94,8 +131,13 @@ namespace bgfx
 	{
 		m_hash = _renderer; // use hash to store renderer type while building VertexDecl.
 		m_stride = 0;
+<<<<<<< HEAD
 		memset(m_attributes, 0xff, sizeof(m_attributes) );
 		memset(m_offset, 0, sizeof(m_offset) );
+=======
+		bx::memSet(m_attributes, 0xff, sizeof(m_attributes) );
+		bx::memSet(m_offset, 0, sizeof(m_offset) );
+>>>>>>> upstream/master
 
 		return *this;
 	}
@@ -106,6 +148,10 @@ namespace bgfx
 		murmur.begin();
 		murmur.add(m_attributes, sizeof(m_attributes) );
 		murmur.add(m_offset, sizeof(m_offset) );
+<<<<<<< HEAD
+=======
+		murmur.add(m_stride);
+>>>>>>> upstream/master
 		m_hash = murmur.end();
 	}
 
@@ -169,7 +215,11 @@ namespace bgfx
 	{
 		if (BX_ENABLED(BGFX_CONFIG_DEBUG) )
 		{
+<<<<<<< HEAD
 			dbgPrintf("vertexdecl %08x (%08x), stride %d\n"
+=======
+			bx::debugPrintf("vertexdecl %08x (%08x), stride %d\n"
+>>>>>>> upstream/master
 				, _decl.m_hash
 				, bx::hashMurmur2A(_decl.m_attributes)
 				, _decl.m_stride
@@ -185,7 +235,11 @@ namespace bgfx
 					bool asInt;
 					_decl.decode(Attrib::Enum(attr), num, type, normalized, asInt);
 
+<<<<<<< HEAD
 					dbgPrintf("\tattr %d - %s, num %d, type %d, norm %d, asint %d, offset %d\n"
+=======
+					bx::debugPrintf("\tattr %d - %s, num %d, type %d, norm %d, asint %d, offset %d\n"
+>>>>>>> upstream/master
 						, attr
 						, getAttribName(Attrib::Enum(attr) )
 						, num
@@ -285,8 +339,15 @@ namespace bgfx
 		return s_attribTypeToId[_attr].id;
 	}
 
+<<<<<<< HEAD
 	int32_t write(bx::WriterI* _writer, const VertexDecl& _decl)
 	{
+=======
+	int32_t write(bx::WriterI* _writer, const VertexDecl& _decl, bx::Error* _err)
+	{
+		BX_ERROR_SCOPE(_err);
+
+>>>>>>> upstream/master
 		int32_t total = 0;
 		uint8_t numAttrs = 0;
 
@@ -295,8 +356,13 @@ namespace bgfx
 			numAttrs += UINT16_MAX == _decl.m_attributes[attr] ? 0 : 1;
 		}
 
+<<<<<<< HEAD
 		total += bx::write(_writer, numAttrs);
 		total += bx::write(_writer, _decl.m_stride);
+=======
+		total += bx::write(_writer, numAttrs, _err);
+		total += bx::write(_writer, _decl.m_stride, _err);
+>>>>>>> upstream/master
 
 		for (uint32_t attr = 0; attr < Attrib::Count; ++attr)
 		{
@@ -307,18 +373,28 @@ namespace bgfx
 				bool normalized;
 				bool asInt;
 				_decl.decode(Attrib::Enum(attr), num, type, normalized, asInt);
+<<<<<<< HEAD
 				total += bx::write(_writer, _decl.m_offset[attr]);
 				total += bx::write(_writer, s_attribToId[attr].id);
 				total += bx::write(_writer, num);
 				total += bx::write(_writer, s_attribTypeToId[type].id);
 				total += bx::write(_writer, normalized);
 				total += bx::write(_writer, asInt);
+=======
+				total += bx::write(_writer, _decl.m_offset[attr], _err);
+				total += bx::write(_writer, s_attribToId[attr].id, _err);
+				total += bx::write(_writer, num, _err);
+				total += bx::write(_writer, s_attribTypeToId[type].id, _err);
+				total += bx::write(_writer, normalized, _err);
+				total += bx::write(_writer, asInt, _err);
+>>>>>>> upstream/master
 			}
 		}
 
 		return total;
 	}
 
+<<<<<<< HEAD
 	int32_t read(bx::ReaderI* _reader, VertexDecl& _decl)
 	{
 		int32_t total = 0;
@@ -328,12 +404,31 @@ namespace bgfx
 
 		uint16_t stride;
 		total += bx::read(_reader, stride);
+=======
+	int32_t read(bx::ReaderI* _reader, VertexDecl& _decl, bx::Error* _err)
+	{
+		BX_ERROR_SCOPE(_err);
+
+		int32_t total = 0;
+
+		uint8_t numAttrs;
+		total += bx::read(_reader, numAttrs, _err);
+
+		uint16_t stride;
+		total += bx::read(_reader, stride, _err);
+
+		if (!_err->isOk() )
+		{
+			return total;
+		}
+>>>>>>> upstream/master
 
 		_decl.begin();
 
 		for (uint32_t ii = 0; ii < numAttrs; ++ii)
 		{
 			uint16_t offset;
+<<<<<<< HEAD
 			total += bx::read(_reader, offset);
 
 			uint16_t attribId = 0;
@@ -350,6 +445,29 @@ namespace bgfx
 
 			bool asInt;
 			total += bx::read(_reader, asInt);
+=======
+			total += bx::read(_reader, offset, _err);
+
+			uint16_t attribId = 0;
+			total += bx::read(_reader, attribId, _err);
+
+			uint8_t num;
+			total += bx::read(_reader, num, _err);
+
+			uint16_t attribTypeId;
+			total += bx::read(_reader, attribTypeId, _err);
+
+			bool normalized;
+			total += bx::read(_reader, normalized, _err);
+
+			bool asInt;
+			total += bx::read(_reader, asInt, _err);
+
+			if (!_err->isOk() )
+			{
+				return total;
+			}
+>>>>>>> upstream/master
 
 			Attrib::Enum     attr = idToAttrib(attribId);
 			AttribType::Enum type = idToAttribType(attribTypeId);
@@ -518,7 +636,11 @@ namespace bgfx
 			break;
 
 		case AttribType::Float:
+<<<<<<< HEAD
 			memcpy(data, _input, num*sizeof(float) );
+=======
+			bx::memCopy(data, _input, num*sizeof(float) );
+>>>>>>> upstream/master
 			break;
 		}
 	}
@@ -527,7 +649,11 @@ namespace bgfx
 	{
 		if (!_decl.has(_attr) )
 		{
+<<<<<<< HEAD
 			memset(_output, 0, 4*sizeof(float) );
+=======
+			bx::memSet(_output, 0, 4*sizeof(float) );
+>>>>>>> upstream/master
 			return;
 		}
 
@@ -635,7 +761,11 @@ namespace bgfx
 			break;
 
 		case AttribType::Float:
+<<<<<<< HEAD
 			memcpy(_output, data, num*sizeof(float) );
+=======
+			bx::memCopy(_output, data, num*sizeof(float) );
+>>>>>>> upstream/master
 			_output += num;
 			break;
 		}
@@ -653,7 +783,11 @@ namespace bgfx
 	{
 		if (_destDecl.m_hash == _srcDecl.m_hash)
 		{
+<<<<<<< HEAD
 			memcpy(_destData, _srcData, _srcDecl.getSize(_num) );
+=======
+			bx::memCopy(_destData, _srcData, _srcDecl.getSize(_num) );
+>>>>>>> upstream/master
 			return;
 		}
 
@@ -726,11 +860,19 @@ namespace bgfx
 					switch (cop.op)
 					{
 					case ConvertOp::Set:
+<<<<<<< HEAD
 						memset(dest + cop.dest, 0, cop.size);
 						break;
 
 					case ConvertOp::Copy:
 						memcpy(dest + cop.dest, src + cop.src, cop.size);
+=======
+						bx::memSet(dest + cop.dest, 0, cop.size);
+						break;
+
+					case ConvertOp::Copy:
+						bx::memCopy(dest + cop.dest, src + cop.src, cop.size);
+>>>>>>> upstream/master
 						break;
 
 					case ConvertOp::Convert:
@@ -760,7 +902,11 @@ namespace bgfx
 		const float epsilonSq = _epsilon*_epsilon;
 
 		uint32_t numVertices = 0;
+<<<<<<< HEAD
 		memset(_output, 0xff, _num*sizeof(uint16_t) );
+=======
+		bx::memSet(_output, 0xff, _num*sizeof(uint16_t) );
+>>>>>>> upstream/master
 
 		for (uint32_t ii = 0; ii < _num; ++ii)
 		{
@@ -805,7 +951,11 @@ namespace bgfx
 
 		const uint32_t size = sizeof(uint16_t)*(hashSize + _num);
 		uint16_t* hashTable = (uint16_t*)alloca(size);
+<<<<<<< HEAD
 		memset(hashTable, 0xff, size);
+=======
+		bx::memSet(hashTable, 0xff, size);
+>>>>>>> upstream/master
 
 		uint16_t* next = hashTable + hashSize;
 
@@ -839,4 +989,8 @@ namespace bgfx
 
 		return (uint16_t)numVertices;
 	}
+<<<<<<< HEAD
+=======
+
+>>>>>>> upstream/master
 } // namespace bgfx

@@ -1,7 +1,13 @@
 // license:BSD-3-Clause
 // copyright-holders:Aaron Giles,Nicola Salmoria
 #define NVRAM_UNLOCK_SEQ_LEN 10
+<<<<<<< HEAD
 #include "sound/dac.h"
+=======
+
+#include "cpu/tms34010/tms34010.h"
+#include "video/tlc34076.h"
+>>>>>>> upstream/master
 
 class coolpool_state : public driver_device
 {
@@ -10,13 +16,17 @@ public:
 		: driver_device(mconfig, type, tag),
 		m_maincpu(*this, "maincpu"),
 		m_dsp(*this, "dsp"),
+<<<<<<< HEAD
 		m_dac(*this, "dac"),
+=======
+>>>>>>> upstream/master
 		m_tlc34076(*this, "tlc34076"),
 		m_vram_base(*this, "vram_base"),
 		m_nvram(*this, "nvram") { }
 
 	required_device<cpu_device> m_maincpu;
 	required_device<cpu_device> m_dsp;
+<<<<<<< HEAD
 	required_device<dac_device> m_dac;
 	optional_device<tlc34076_device> m_tlc34076;
 
@@ -42,11 +52,41 @@ public:
 	UINT8 m_nvram_write_enable;
 	UINT8 m_old_cmd;
 	UINT8 m_same_cmd_count;
+=======
+	optional_device<tlc34076_device> m_tlc34076;
+
+	required_shared_ptr<uint16_t> m_vram_base;
+	required_shared_ptr<uint16_t> m_nvram;
+
+	uint8_t m_cmd_pending;
+	uint16_t m_iop_cmd;
+	uint16_t m_iop_answer;
+	int m_iop_romaddr;
+
+	uint8_t m_newx[3];
+	uint8_t m_newy[3];
+	uint8_t m_oldx[3];
+	uint8_t m_oldy[3];
+	int m_dx[3];
+	int m_dy[3];
+
+	uint16_t m_result;
+	uint16_t m_lastresult;
+
+	uint16_t m_nvram_write_seq[NVRAM_UNLOCK_SEQ_LEN];
+	uint8_t m_nvram_write_enable;
+	uint8_t m_old_cmd;
+	uint8_t m_same_cmd_count;
+>>>>>>> upstream/master
 	DECLARE_WRITE16_MEMBER(nvram_thrash_w);
 	DECLARE_WRITE16_MEMBER(nvram_data_w);
 	DECLARE_WRITE16_MEMBER(nvram_thrash_data_w);
 	DECLARE_WRITE16_MEMBER(amerdart_misc_w);
+<<<<<<< HEAD
 	DECLARE_READ16_MEMBER(amerdart_dsp_bio_line_r);
+=======
+	DECLARE_READ_LINE_MEMBER(amerdart_dsp_bio_line_r);
+>>>>>>> upstream/master
 	DECLARE_READ16_MEMBER(amerdart_iop_r);
 	DECLARE_WRITE16_MEMBER(amerdart_iop_w);
 	DECLARE_READ16_MEMBER(amerdart_dsp_cmd_r);
@@ -62,7 +102,10 @@ public:
 	DECLARE_READ16_MEMBER(dsp_rom_r);
 	DECLARE_WRITE16_MEMBER(dsp_romaddr_w);
 	DECLARE_READ16_MEMBER(coolpool_input_r);
+<<<<<<< HEAD
 	DECLARE_WRITE16_MEMBER(dsp_dac_w);
+=======
+>>>>>>> upstream/master
 	TMS340X0_TO_SHIFTREG_CB_MEMBER(to_shiftreg);
 	TMS340X0_FROM_SHIFTREG_CB_MEMBER(from_shiftreg);
 	TMS340X0_SCANLINE_RGB32_CB_MEMBER(amerdart_scanline);

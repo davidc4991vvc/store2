@@ -1,6 +1,10 @@
 // license:BSD-3-Clause
 // copyright-holders:Ramiro Polla
 
+<<<<<<< HEAD
+=======
+#include "emu.h"
+>>>>>>> upstream/master
 #include "nec_p72.h"
 
 
@@ -8,7 +12,11 @@
 //  DEVICE DEFINITIONS
 //**************************************************************************
 
+<<<<<<< HEAD
 const device_type NEC_P72 = &device_creator<nec_p72_t>;
+=======
+DEFINE_DEVICE_TYPE(NEC_P72, nec_p72_device, "p72", "NEC PinWriter P72")
+>>>>>>> upstream/master
 
 
 //-------------------------------------------------
@@ -25,7 +33,11 @@ ROM_END
 //  rom_region - device-specific ROM region
 //-------------------------------------------------
 
+<<<<<<< HEAD
 const rom_entry *nec_p72_t::device_rom_region() const
+=======
+const tiny_rom_entry *nec_p72_device::device_rom_region() const
+>>>>>>> upstream/master
 {
 	return ROM_NAME( p72 );
 }
@@ -35,23 +47,39 @@ const rom_entry *nec_p72_t::device_rom_region() const
 //  ADDRESS_MAP( p72_mem )
 //-------------------------------------------------
 
+<<<<<<< HEAD
 static ADDRESS_MAP_START( p72_mem, AS_PROGRAM, 8, nec_p72_t )
 	AM_RANGE(0x000000, 0x0fffff) AM_ROM /* 1Mbit firmware */
 	AM_RANGE(0x100000, 0x1fffff) AM_RAM /* 1Mbit external RAM */ /* TODO might be 2x1Mbit */
+=======
+static ADDRESS_MAP_START( p72_mem, AS_PROGRAM, 16, nec_p72_device )
+	AM_RANGE(0x000000, 0x0fffff) AM_ROM /* 1Mbyte firmware */
+	//AM_RANGE(0x100000, 0x1fffff) AM_RAM /* 1Mbyte external RAM */ /* TODO might be 2x1Mbit */
+	// [RH] 29 August 2016: Commented out because the NEC V33 only has 20 address lines, and
+	// the V40 has more, but we don't have an NEC V40 implemented yet.
+>>>>>>> upstream/master
 ADDRESS_MAP_END
 
 
 //-------------------------------------------------
+<<<<<<< HEAD
 //  MACHINE_DRIVER( nec_p72 )
 //-------------------------------------------------
 
 static MACHINE_CONFIG_FRAGMENT( nec_p72 )
+=======
+//  device_add_mconfig - add device configuration
+//-------------------------------------------------
+
+MACHINE_CONFIG_MEMBER( nec_p72_device::device_add_mconfig )
+>>>>>>> upstream/master
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", V33, XTAL_16MHz/2) /* TODO it's actually a V40 */
 	MCFG_CPU_PROGRAM_MAP(p72_mem)
 
 MACHINE_CONFIG_END
 
+<<<<<<< HEAD
 //-------------------------------------------------
 //  machine_config_additions - device-specific
 //  machine configurations
@@ -62,12 +90,18 @@ machine_config_constructor nec_p72_t::device_mconfig_additions() const
 	return MACHINE_CONFIG_NAME( nec_p72 );
 }
 
+=======
+>>>>>>> upstream/master
 
 //-------------------------------------------------
 //  device_start - device-specific startup
 //-------------------------------------------------
 
+<<<<<<< HEAD
 void nec_p72_t::device_start()
+=======
+void nec_p72_device::device_start()
+>>>>>>> upstream/master
 {
 }
 
@@ -76,6 +110,7 @@ void nec_p72_t::device_start()
 //**************************************************************************
 
 //-------------------------------------------------
+<<<<<<< HEAD
 //  nec_p72_t - constructor
 //-------------------------------------------------
 
@@ -88,6 +123,18 @@ nec_p72_t::nec_p72_t(const machine_config &mconfig, const char *tag, device_t *o
 
 nec_p72_t::nec_p72_t(const machine_config &mconfig, device_type type, const char *name, const char *tag, device_t *owner, UINT32 clock, const char *shortname, const char *source) :
 	device_t(mconfig, type, name, tag, owner, clock, shortname, __FILE__),
+=======
+//  nec_p72_device - constructor
+//-------------------------------------------------
+
+nec_p72_device::nec_p72_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock) :
+	nec_p72_device(mconfig, NEC_P72, tag, owner, clock)
+{
+}
+
+nec_p72_device::nec_p72_device(const machine_config &mconfig, device_type type, const char *tag, device_t *owner, uint32_t clock) :
+	device_t(mconfig, type, tag, owner, clock),
+>>>>>>> upstream/master
 	device_centronics_peripheral_interface(mconfig, *this),
 	m_maincpu(*this, "maincpu")
 {

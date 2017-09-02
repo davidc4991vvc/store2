@@ -39,7 +39,13 @@ extern const char* builtin_scripts[];
 
 /* Built-in functions */
 static const luaL_Reg path_functions[] = {
+<<<<<<< HEAD
 	{ "isabsolute",  path_isabsolute },
+=======
+	{ "isabsolute",  path_isabsolute  },
+	{ "getabsolute", path_getabsolute },
+	{ "getrelative", path_getrelative },
+>>>>>>> upstream/master
 	{ NULL, NULL }
 };
 

@@ -105,9 +105,16 @@ static const char *const ethernet_regname[64] =
     DEVICE INTERFACE
 ***************************************************************************/
 
+<<<<<<< HEAD
 smc91c9x_device::smc91c9x_device(const machine_config &mconfig, device_type type, const char *name, const char *tag, device_t *owner, UINT32 clock, const char *shortname, const char *source)
 	: device_t(mconfig, type, name, tag, owner, clock, shortname, source),
 	m_irq_handler(*this)
+=======
+smc91c9x_device::smc91c9x_device(const machine_config &mconfig, device_type type, const char *tag, device_t *owner, uint32_t clock)
+	: device_t(mconfig, type, tag, owner, clock)
+	, m_irq_handler(*this)
+	, m_link_unconnected(true)
+>>>>>>> upstream/master
 {
 }
 
@@ -118,6 +125,11 @@ smc91c9x_device::smc91c9x_device(const machine_config &mconfig, device_type type
 void smc91c9x_device::device_start()
 {
 	m_irq_handler.resolve_safe();
+<<<<<<< HEAD
+=======
+	// TX timer
+	m_tx_timer = machine().scheduler().timer_alloc(timer_expired_delegate(FUNC(smc91c9x_device::finish_enqueue), this));
+>>>>>>> upstream/master
 
 	/* register ide states */
 	save_item(NAME(m_reg));
@@ -178,6 +190,7 @@ void smc91c9x_device::device_reset()
 	m_reg[EREG_ERCV]         = 0x331f;   m_regmask[EREG_ERCV]         = 0x009f;
 
 	update_ethernet_irq();
+<<<<<<< HEAD
 }
 
 
@@ -185,14 +198,31 @@ const device_type SMC91C94 = &device_creator<smc91c94_device>;
 
 smc91c94_device::smc91c94_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
 	: smc91c9x_device(mconfig, SMC91C94, "SMC91C94 Ethernet Controller", tag, owner, clock, "smc91c94", __FILE__)
+=======
+	m_tx_timer->adjust(attotime::never);
+}
+
+
+DEFINE_DEVICE_TYPE(SMC91C94, smc91c94_device, "smc91c94", "SMC91C94 Ethernet Controller")
+
+smc91c94_device::smc91c94_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: smc91c9x_device(mconfig, SMC91C94, tag, owner, clock)
+>>>>>>> upstream/master
 {
 }
 
 
+<<<<<<< HEAD
 const device_type SMC91C96 = &device_creator<smc91c96_device>;
 
 smc91c96_device::smc91c96_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
 	: smc91c9x_device(mconfig, SMC91C96, "SMC91C96", tag, owner, clock, "smc91c96", __FILE__)
+=======
+DEFINE_DEVICE_TYPE(SMC91C96, smc91c96_device, "smc91c96", "SMC91C96 Ethernet Controller")
+
+smc91c96_device::smc91c96_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: smc91c9x_device(mconfig, SMC91C96, tag, owner, clock)
+>>>>>>> upstream/master
 {
 }
 
@@ -206,6 +236,7 @@ smc91c96_device::smc91c96_device(const machine_config &mconfig, const char *tag,
 
 void smc91c9x_device::update_ethernet_irq()
 {
+<<<<<<< HEAD
 	UINT8 mask = m_reg[EREG_INTERRUPT] >> 8;
 	UINT8 state = m_reg[EREG_INTERRUPT] & 0xff;
 
@@ -213,6 +244,16 @@ void smc91c9x_device::update_ethernet_irq()
 	m_irq_state = ((mask & state) != 0);
 	if (!m_irq_handler.isnull())
 		m_irq_handler(m_irq_state ? ASSERT_LINE : CLEAR_LINE);
+=======
+	uint8_t mask = m_reg[EREG_INTERRUPT] >> 8;
+	uint8_t state = m_reg[EREG_INTERRUPT] & 0xff;
+
+	/* update the IRQ state */
+	m_irq_state = ((mask & state) != 0);
+	if (!m_irq_handler.isnull()) {
+		m_irq_handler(m_irq_state ? ASSERT_LINE : CLEAR_LINE);
+	}
+>>>>>>> upstream/master
 }
 
 
@@ -231,7 +272,11 @@ void smc91c9x_device::update_stats()
     finish_enqueue - complete an enqueued packet
 -------------------------------------------------*/
 
+<<<<<<< HEAD
 void smc91c9x_device::finish_enqueue(int param)
+=======
+TIMER_CALLBACK_MEMBER(smc91c9x_device::finish_enqueue)
+>>>>>>> upstream/master
 {
 	int is_broadcast = (m_tx[4] == 0xff && m_tx[5] == 0xff && m_tx[6] == 0xff &&
 						m_tx[7] == 0xff && m_tx[8] == 0xff && m_tx[9] == 0xff);
@@ -251,11 +296,19 @@ void smc91c9x_device::finish_enqueue(int param)
 	update_stats();
 
 	/* loopback? */
+<<<<<<< HEAD
 	if (m_reg[EREG_TCR] & 0x2002)
 		if (m_fifo_count < ETHER_RX_BUFFERS)
 		{
 			int buffer_len = ((m_tx[3] << 8) | m_tx[2]) & 0x7ff;
 			UINT8 *packet = &m_rx[m_fifo_count++ * ETHER_BUFFER_SIZE];
+=======
+	if (m_reg[EREG_TCR] & 0x2002) {
+		if (m_fifo_count < ETHER_RX_BUFFERS)
+		{
+			int buffer_len = ((m_tx[3] << 8) | m_tx[2]) & 0x7ff;
+			uint8_t *packet = &m_rx[m_fifo_count++ * ETHER_BUFFER_SIZE];
+>>>>>>> upstream/master
 			int packet_len;
 
 			/* compute the packet length */
@@ -280,9 +333,15 @@ void smc91c9x_device::finish_enqueue(int param)
 			if (m_reg[EREG_TCR & 0x0080])
 				if (packet_len < 64)
 				{
+<<<<<<< HEAD
 					memset(&packet[buffer_len], 0, 64+6 - buffer_len);
 					packet[buffer_len - 1] = 0;
 					buffer_len = 64+6;
+=======
+					memset(&packet[buffer_len], 0, 64 + 6 - buffer_len);
+					packet[buffer_len - 1] = 0;
+					buffer_len = 64 + 6;
+>>>>>>> upstream/master
 					packet[2] = buffer_len;
 					packet[3] = buffer_len >> 8;
 				}
@@ -291,6 +350,28 @@ void smc91c9x_device::finish_enqueue(int param)
 			m_reg[EREG_INTERRUPT] |= EINT_RCV;
 			m_reg[EREG_FIFO_PORTS] &= ~0x8000;
 		}
+<<<<<<< HEAD
+=======
+	}
+	else if (m_link_unconnected) {
+		// Set lost carrier
+		if (m_reg[EREG_TCR] & 0x0400) {
+			m_reg[EREG_EPH_STATUS] |= 0x400;
+			// Clear Tx Enable on error
+			m_reg[EREG_TCR] &= ~0x1;
+		}
+		// Set signal quality error
+		if (m_reg[EREG_TCR] & 0x1000) {
+			m_reg[EREG_EPH_STATUS] |= 0x20;
+			// Clear Tx Enable on error
+			m_reg[EREG_TCR] &= ~0x1;
+		}
+		// signal a no transmit
+		m_reg[EREG_INTERRUPT] &= ~EINT_TX;
+		// Set a ethernet phy status interrupt
+		m_reg[EREG_INTERRUPT] |= EINT_EPH;
+	}
+>>>>>>> upstream/master
 	update_ethernet_irq();
 }
 
@@ -299,7 +380,11 @@ void smc91c9x_device::finish_enqueue(int param)
     process_command - handle MMU commands
 -------------------------------------------------*/
 
+<<<<<<< HEAD
 void smc91c9x_device::process_command(UINT16 data)
+=======
+void smc91c9x_device::process_command(uint16_t data)
+>>>>>>> upstream/master
 {
 	switch ((data >> 5) & 7)
 	{
@@ -354,7 +439,12 @@ void smc91c9x_device::process_command(UINT16 data)
 		case ECMD_ENQUEUE_PACKET:
 			if (LOG_ETHERNET)
 				logerror("   ENQUEUE TX PACKET\n");
+<<<<<<< HEAD
 			finish_enqueue(0);
+=======
+			// Set some delay before tranmit ends
+			m_tx_timer->adjust(attotime::from_usec(100));
+>>>>>>> upstream/master
 			break;
 
 		case ECMD_RESET_FIFOS:
@@ -362,7 +452,12 @@ void smc91c9x_device::process_command(UINT16 data)
 				logerror("   RESET TX FIFOS\n");
 			break;
 	}
+<<<<<<< HEAD
 	m_reg[EREG_MMU_COMMAND] &= ~0x0001;
+=======
+	// Set Busy (clear on next read)
+	m_reg[EREG_MMU_COMMAND] |= 0x0001;
+>>>>>>> upstream/master
 }
 
 
@@ -377,7 +472,11 @@ void smc91c9x_device::process_command(UINT16 data)
 
 READ16_MEMBER( smc91c9x_device::read )
 {
+<<<<<<< HEAD
 	UINT32 result = ~0;
+=======
+	uint32_t result;
+>>>>>>> upstream/master
 
 	/* determine the effective register */
 	offset %= 8;
@@ -387,6 +486,14 @@ READ16_MEMBER( smc91c9x_device::read )
 
 	switch (offset)
 	{
+<<<<<<< HEAD
+=======
+		case EREG_MMU_COMMAND:
+			// Clear busy
+			m_reg[EREG_MMU_COMMAND] &= ~0x0001;
+			break;
+
+>>>>>>> upstream/master
 		case EREG_PNR_ARR:
 			if (ACCESSING_BITS_8_15)
 			{
@@ -398,7 +505,11 @@ READ16_MEMBER( smc91c9x_device::read )
 		case EREG_DATA_0:   /* data register */
 		case EREG_DATA_1:   /* data register */
 		{
+<<<<<<< HEAD
 			UINT8 *buffer = (m_reg[EREG_POINTER] & 0x8000) ? m_rx : m_tx;
+=======
+			uint8_t *buffer = (m_reg[EREG_POINTER] & 0x8000) ? m_rx : m_tx;
+>>>>>>> upstream/master
 			int addr = m_reg[EREG_POINTER] & 0x7ff;
 			result = buffer[addr++];
 			if (ACCESSING_BITS_8_15)
@@ -421,7 +532,11 @@ READ16_MEMBER( smc91c9x_device::read )
 
 WRITE16_MEMBER( smc91c9x_device::write )
 {
+<<<<<<< HEAD
 	//  UINT16 olddata;
+=======
+	//  uint16_t olddata;
+>>>>>>> upstream/master
 
 	/* determine the effective register */
 	offset %= 8;
@@ -440,6 +555,15 @@ WRITE16_MEMBER( smc91c9x_device::write )
 	switch (offset)
 	{
 		case EREG_TCR:      /* transmit control register */
+<<<<<<< HEAD
+=======
+			// Setting Tx Enable clears some status and interrupts
+			if (data & 0x1) {
+				m_reg[EREG_EPH_STATUS] &= ~0x420;
+				m_reg[EREG_INTERRUPT] &= ~EINT_EPH;
+				update_ethernet_irq();
+			}
+>>>>>>> upstream/master
 			if (LOG_ETHERNET)
 			{
 				if (data & 0x2000) logerror("   EPH LOOP\n");
@@ -513,7 +637,11 @@ WRITE16_MEMBER( smc91c9x_device::write )
 		case EREG_DATA_0:   /* data register */
 		case EREG_DATA_1:   /* data register */
 		{
+<<<<<<< HEAD
 			UINT8 *buffer = (m_reg[EREG_POINTER] & 0x8000) ? m_rx : m_tx;
+=======
+			uint8_t *buffer = (m_reg[EREG_POINTER] & 0x8000) ? m_rx : m_tx;
+>>>>>>> upstream/master
 			int addr = m_reg[EREG_POINTER] & 0x7ff;
 			buffer[addr++] = data;
 			if (ACCESSING_BITS_8_15)
@@ -525,6 +653,12 @@ WRITE16_MEMBER( smc91c9x_device::write )
 
 		case EREG_INTERRUPT:
 			m_reg[EREG_INTERRUPT] &= ~(data & 0x56);
+<<<<<<< HEAD
+=======
+			// Need to clear tx int here for vegas cartfury
+			if (m_reg[EREG_FIFO_PORTS] & 0x0080)
+				m_reg[EREG_INTERRUPT] &= ~EINT_TX;
+>>>>>>> upstream/master
 			update_ethernet_irq();
 			break;
 	}

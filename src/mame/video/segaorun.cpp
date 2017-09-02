@@ -20,18 +20,32 @@ void segaorun_state::video_start()
 	if (m_shangon_video)
 	{
 		// initialize the tile/text layers
+<<<<<<< HEAD
 		m_segaic16vid->tilemap_init(0, SEGAIC16_TILEMAP_16B_ALT, 0x000, 0, 2);
 
 		// initialize the road
 		m_segaic16road->segaic16_road_init(machine(), 0, SEGAIC16_ROAD_OUTRUN, 0x7f6, 0x7c0, 0x7c0, 0);
+=======
+		m_segaic16vid->tilemap_init(0, segaic16_video_device::TILEMAP_16B_ALT, 0x000, 0, 2);
+
+		// initialize the road
+		m_segaic16road->segaic16_road_init(machine(), 0, segaic16_road_device::ROAD_OUTRUN, 0x7f6, 0x7c0, 0x7c0, 0);
+>>>>>>> upstream/master
 	}
 	else
 	{
 		// initialize the tile/text layers
+<<<<<<< HEAD
 		m_segaic16vid->tilemap_init(0, SEGAIC16_TILEMAP_16B, 0x000, 0, 2);
 
 		// initialize the road
 		m_segaic16road->segaic16_road_init(machine(), 0, SEGAIC16_ROAD_OUTRUN, 0x400, 0x420, 0x780, 0);
+=======
+		m_segaic16vid->tilemap_init(0, segaic16_video_device::TILEMAP_16B, 0x000, 0, 2);
+
+		// initialize the road
+		m_segaic16road->segaic16_road_init(machine(), 0, segaic16_road_device::ROAD_OUTRUN, 0x400, 0x420, 0x780, 0);
+>>>>>>> upstream/master
 	}
 }
 
@@ -41,7 +55,11 @@ void segaorun_state::video_start()
 //  VIDEO UPDATE
 //**************************************************************************
 
+<<<<<<< HEAD
 UINT32 segaorun_state::screen_update_shangon(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+=======
+uint32_t segaorun_state::screen_update_shangon(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+>>>>>>> upstream/master
 {
 	// start the sprites drawing
 	m_sprites->draw_async(cliprect);
@@ -50,6 +68,7 @@ UINT32 segaorun_state::screen_update_shangon(screen_device &screen, bitmap_ind16
 	screen.priority().fill(0, cliprect);
 
 	// draw the low priority road layer
+<<<<<<< HEAD
 	m_segaic16road->segaic16_road_draw(0, bitmap, cliprect, SEGAIC16_ROAD_BACKGROUND);
 
 	// draw background
@@ -62,10 +81,25 @@ UINT32 segaorun_state::screen_update_shangon(screen_device &screen, bitmap_ind16
 
 	// draw the high priority road
 	m_segaic16road->segaic16_road_draw(0, bitmap, cliprect, SEGAIC16_ROAD_FOREGROUND);
+=======
+	m_segaic16road->segaic16_road_draw(0, bitmap, cliprect, segaic16_road_device::ROAD_BACKGROUND);
+
+	// draw background
+	m_segaic16vid->tilemap_draw(screen, bitmap, cliprect, 0, segaic16_video_device::TILEMAP_BACKGROUND, 0, 0x01);
+	m_segaic16vid->tilemap_draw(screen, bitmap, cliprect, 0, segaic16_video_device::TILEMAP_BACKGROUND, 1, 0x02);
+
+	// draw foreground
+	m_segaic16vid->tilemap_draw(screen, bitmap, cliprect, 0, segaic16_video_device::TILEMAP_FOREGROUND, 0, 0x02);
+	m_segaic16vid->tilemap_draw(screen, bitmap, cliprect, 0, segaic16_video_device::TILEMAP_FOREGROUND, 1, 0x04);
+
+	// draw the high priority road
+	m_segaic16road->segaic16_road_draw(0, bitmap, cliprect, segaic16_road_device::ROAD_FOREGROUND);
+>>>>>>> upstream/master
 
 	// text layer
 	// note that we inflate the priority of the text layer to prevent sprites
 	// from drawing over the high scores
+<<<<<<< HEAD
 	m_segaic16vid->tilemap_draw(screen, bitmap, cliprect, 0, SEGAIC16_TILEMAP_TEXT, 0, 0x08);
 	m_segaic16vid->tilemap_draw(screen, bitmap, cliprect, 0, SEGAIC16_TILEMAP_TEXT, 1, 0x08);
 
@@ -81,6 +115,23 @@ UINT32 segaorun_state::screen_update_shangon(screen_device &screen, bitmap_ind16
 			{
 				// only process written pixels
 				UINT16 pix = src[x];
+=======
+	m_segaic16vid->tilemap_draw(screen, bitmap, cliprect, 0, segaic16_video_device::TILEMAP_TEXT, 0, 0x08);
+	m_segaic16vid->tilemap_draw(screen, bitmap, cliprect, 0, segaic16_video_device::TILEMAP_TEXT, 1, 0x08);
+
+	// mix in sprites
+	bitmap_ind16 &sprites = m_sprites->bitmap();
+	for (const sparse_dirty_rect *rect = m_sprites->first_dirty_rect(cliprect); rect != nullptr; rect = rect->next())
+		for (int y = rect->min_y; y <= rect->max_y; y++)
+		{
+			uint16_t *dest = &bitmap.pix(y);
+			uint16_t *src = &sprites.pix(y);
+			uint8_t *pri = &screen.priority().pix(y);
+			for (int x = rect->min_x; x <= rect->max_x; x++)
+			{
+				// only process written pixels
+				uint16_t pix = src[x];
+>>>>>>> upstream/master
 				if (pix != 0xffff)
 				{
 					// compare sprite priority against tilemap priority
@@ -103,7 +154,11 @@ UINT32 segaorun_state::screen_update_shangon(screen_device &screen, bitmap_ind16
 }
 
 
+<<<<<<< HEAD
 UINT32 segaorun_state::screen_update_outrun(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+=======
+uint32_t segaorun_state::screen_update_outrun(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+>>>>>>> upstream/master
 {
 	// if no drawing is happening, fill with black and get out
 	if (!m_segaic16vid->m_display_enable)
@@ -119,6 +174,7 @@ UINT32 segaorun_state::screen_update_outrun(screen_device &screen, bitmap_ind16 
 	screen.priority().fill(0, cliprect);
 
 	// draw the low priority road layer
+<<<<<<< HEAD
 	m_segaic16road->segaic16_road_draw(0, bitmap, cliprect, SEGAIC16_ROAD_BACKGROUND);
 
 	// draw background
@@ -148,6 +204,37 @@ UINT32 segaorun_state::screen_update_outrun(screen_device &screen, bitmap_ind16 
 			{
 				// only process written pixels
 				UINT16 pix = src[x];
+=======
+	m_segaic16road->segaic16_road_draw(0, bitmap, cliprect, segaic16_road_device::ROAD_BACKGROUND);
+
+	// draw background
+	m_segaic16vid->tilemap_draw(screen, bitmap, cliprect, 0, segaic16_video_device::TILEMAP_BACKGROUND, 0, 0x01);
+	m_segaic16vid->tilemap_draw(screen, bitmap, cliprect, 0, segaic16_video_device::TILEMAP_BACKGROUND, 1, 0x02);
+
+	// draw foreground
+	m_segaic16vid->tilemap_draw(screen, bitmap, cliprect, 0, segaic16_video_device::TILEMAP_FOREGROUND, 0, 0x02);
+	m_segaic16vid->tilemap_draw(screen, bitmap, cliprect, 0, segaic16_video_device::TILEMAP_FOREGROUND, 1, 0x04);
+
+	// draw the high priority road
+	m_segaic16road->segaic16_road_draw(0, bitmap, cliprect, segaic16_road_device::ROAD_FOREGROUND);
+
+	// text layer
+	m_segaic16vid->tilemap_draw(screen, bitmap, cliprect, 0, segaic16_video_device::TILEMAP_TEXT, 0, 0x04);
+	m_segaic16vid->tilemap_draw(screen, bitmap, cliprect, 0, segaic16_video_device::TILEMAP_TEXT, 1, 0x08);
+
+	// mix in sprites
+	bitmap_ind16 &sprites = m_sprites->bitmap();
+	for (const sparse_dirty_rect *rect = m_sprites->first_dirty_rect(cliprect); rect != nullptr; rect = rect->next())
+		for (int y = rect->min_y; y <= rect->max_y; y++)
+		{
+			uint16_t *dest = &bitmap.pix(y);
+			uint16_t *src = &sprites.pix(y);
+			uint8_t *pri = &screen.priority().pix(y);
+			for (int x = rect->min_x; x <= rect->max_x; x++)
+			{
+				// only process written pixels
+				uint16_t pix = src[x];
+>>>>>>> upstream/master
 				if (pix != 0xffff)
 				{
 					// compare sprite priority against tilemap priority

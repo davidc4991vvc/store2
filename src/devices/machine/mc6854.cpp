@@ -34,12 +34,22 @@
 #include "emu.h"
 #include "mc6854.h"
 
+<<<<<<< HEAD
 
 /******************* parameters ******************/
 
 
 
 #define VERBOSE 0
+=======
+//#define VERBOSE 1
+#include "logmacro.h"
+
+
+
+/******************* parameters ******************/
+
+>>>>>>> upstream/master
 
 
 #define FLAG 0x7e
@@ -47,12 +57,19 @@
 
 #define BIT_LENGTH attotime::from_hz( 500000 )
 
+<<<<<<< HEAD
 
 /******************* utility function and macros ********************/
 
 
 
 #define LOG(x)  do { if (VERBOSE) logerror x; } while (0)
+=======
+constexpr unsigned mc6854_device::MAX_FRAME_LENGTH;
+
+
+/******************* utility function and macros ********************/
+>>>>>>> upstream/master
 
 
 
@@ -165,10 +182,17 @@ static const int word_length[4] = { 5, 6, 7, 8 };
 
 
 
+<<<<<<< HEAD
 const device_type MC6854 = &device_creator<mc6854_device>;
 
 mc6854_device::mc6854_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
 	: device_t(mconfig, MC6854, "MC6854 ADLC", tag, owner, clock, "mc6854", __FILE__),
+=======
+DEFINE_DEVICE_TYPE(MC6854, mc6854_device, "mc6854", "Motorola MC6854 ADLC")
+
+mc6854_device::mc6854_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: device_t(mconfig, MC6854, tag, owner, clock),
+>>>>>>> upstream/master
 	m_out_irq_cb(*this),
 	m_out_txd_cb(*this),
 	m_out_rts_cb(*this),
@@ -183,7 +207,11 @@ mc6854_device::mc6854_device(const machine_config &mconfig, const char *tag, dev
 	m_dcd(0),
 	m_tstate(0),
 	m_tones(0),
+<<<<<<< HEAD
 	m_ttimer(NULL),
+=======
+	m_ttimer(nullptr),
+>>>>>>> upstream/master
 	m_rstate(0),
 	m_rreg(0),
 	m_rones(0),
@@ -191,15 +219,25 @@ mc6854_device::mc6854_device(const machine_config &mconfig, const char *tag, dev
 	m_flen(0),
 	m_fpos(0)
 {
+<<<<<<< HEAD
 	for (int i = 0; i < MC6854_FIFO_SIZE; i++)
+=======
+	for (int i = 0; i < FIFO_SIZE; i++)
+>>>>>>> upstream/master
 	{
 		m_tfifo[i] = 0;
 		m_rfifo[i] = 0;
 	}
 
+<<<<<<< HEAD
 	for (int i = 0; i < MAX_FRAME_LENGTH; i++)
 	{
 		m_frame[i] = 0;
+=======
+	for (auto & elem : m_frame)
+	{
+		elem = 0;
+>>>>>>> upstream/master
 	}
 }
 
@@ -244,7 +282,11 @@ void mc6854_device::device_start()
 
 void mc6854_device::device_reset()
 {
+<<<<<<< HEAD
 	LOG (( "mc6854 reset\n" ));
+=======
+	LOG( "mc6854 reset\n" );
+>>>>>>> upstream/master
 	m_cr1 = 0xc0; /* reset condition */
 	m_cr2 = 0;
 	m_cr3 = 0;
@@ -262,14 +304,22 @@ void mc6854_device::device_reset()
 
 
 /* MC6854 fills bit queue */
+<<<<<<< HEAD
 void mc6854_device::send_bits( UINT32 data, int len, int zi )
+=======
+void mc6854_device::send_bits( uint32_t data, int len, int zi )
+>>>>>>> upstream/master
 {
 	attotime expire;
 	int i;
 	if ( zi )
 	{
 		/* zero-insertion mode */
+<<<<<<< HEAD
 		UINT32 d = 0;
+=======
+		uint32_t d = 0;
+>>>>>>> upstream/master
 		int l = 0;
 		for ( i = 0; i < len; i++, data >>= 1, l++ )
 		{
@@ -309,8 +359,13 @@ void mc6854_device::send_bits( UINT32 data, int len, int zi )
 
 
 
+<<<<<<< HEAD
 /* CPU push -> tfifo[0] -> ... -> tfifo[MC6854_FIFO_SIZE-1] -> pop */
 void mc6854_device::tfifo_push( UINT8 data )
+=======
+/* CPU push -> tfifo[0] -> ... -> tfifo[FIFO_SIZE-1] -> pop */
+void mc6854_device::tfifo_push( uint8_t data )
+>>>>>>> upstream/master
 {
 	int i;
 
@@ -318,7 +373,11 @@ void mc6854_device::tfifo_push( UINT8 data )
 		return;
 
 	/* push towards the rightmost free entry */
+<<<<<<< HEAD
 	for ( i = MC6854_FIFO_SIZE - 1; i >= 0; i-- )
+=======
+	for ( i = FIFO_SIZE - 1; i >= 0; i-- )
+>>>>>>> upstream/master
 	{
 		if ( ! ( m_tfifo[ i ] & 0x100 ) )
 			break;
@@ -332,7 +391,11 @@ void mc6854_device::tfifo_push( UINT8 data )
 	/* start frame, if needed */
 	if ( ! m_tstate )
 	{
+<<<<<<< HEAD
 		LOG(( "%f mc6854_tfifo_push: start frame\n", machine().time().as_double() ));
+=======
+		LOG( "%f mc6854_tfifo_push: start frame\n", machine().time().as_double() );
+>>>>>>> upstream/master
 		m_tstate = 2;
 		send_bits( FLAG, 8, 0 );
 	}
@@ -345,7 +408,11 @@ void mc6854_device::tfifo_terminate( )
 {
 	/* mark most recently pushed byte as the last one of the frame */
 	int i;
+<<<<<<< HEAD
 	for ( i = 0; i < MC6854_FIFO_SIZE; i++ )
+=======
+	for ( i = 0; i < FIFO_SIZE; i++ )
+>>>>>>> upstream/master
 	{
 		if ( m_tfifo[ i ] & 0x100 )
 		{
@@ -360,13 +427,21 @@ void mc6854_device::tfifo_terminate( )
 /* call-back to refill the bit-stream from the FIFO */
 TIMER_CALLBACK_MEMBER(mc6854_device::tfifo_cb)
 {
+<<<<<<< HEAD
 	int i, data = m_tfifo[ MC6854_FIFO_SIZE - 1 ];
+=======
+	int i, data = m_tfifo[ FIFO_SIZE - 1 ];
+>>>>>>> upstream/master
 
 	if ( ! m_tstate )
 		return;
 
 	/* shift FIFO to the right */
+<<<<<<< HEAD
 	for ( i = MC6854_FIFO_SIZE - 1; i > 0; i-- )
+=======
+	for ( i = FIFO_SIZE - 1; i > 0; i-- )
+>>>>>>> upstream/master
 		m_tfifo[ i ] = m_tfifo[ i - 1 ];
 	m_tfifo[ 0 ] = 0;
 
@@ -381,7 +456,11 @@ TIMER_CALLBACK_MEMBER(mc6854_device::tfifo_cb)
 		case 2: /* 8-bit address field */
 			if ( ( data & 1 ) || ( ! AEX ) )
 				m_tstate = 3;
+<<<<<<< HEAD
 			LOG(( "%f mc6854_tfifo_cb: address field $%02X\n", machine().time().as_double(), data & 0xff ));
+=======
+			LOG( "%f mc6854_tfifo_cb: address field $%02X\n", machine().time().as_double(), data & 0xff );
+>>>>>>> upstream/master
 			break;
 
 		case 3: /* 8-bit control field */
@@ -391,7 +470,11 @@ TIMER_CALLBACK_MEMBER(mc6854_device::tfifo_cb)
 				m_tstate = 5;
 			else
 				m_tstate = 6;
+<<<<<<< HEAD
 			LOG(( "%f mc6854_tfifo_cb: control field $%02X\n", machine().time().as_double(), data & 0xff ));
+=======
+			LOG( "%f mc6854_tfifo_cb: control field $%02X\n", machine().time().as_double(), data & 0xff );
+>>>>>>> upstream/master
 			break;
 
 		case 4: /* 8-bit extended control field (optional) */
@@ -399,22 +482,38 @@ TIMER_CALLBACK_MEMBER(mc6854_device::tfifo_cb)
 				m_tstate = 5;
 			else
 				m_tstate = 6;
+<<<<<<< HEAD
 			LOG(( "%f mc6854_tfifo_cb: control field $%02X\n", machine().time().as_double(), data & 0xff ));
+=======
+			LOG( "%f mc6854_tfifo_cb: control field $%02X\n", machine().time().as_double(), data & 0xff );
+>>>>>>> upstream/master
 			break;
 
 		case 5: /* 8-bit logical control (optional) */
 			if ( ! ( data & 0x80 ) )
 				m_tstate = 6;
+<<<<<<< HEAD
 			LOG(( "%f mc6854_tfifo_cb: logical control field $%02X\n", machine().time().as_double(), data & 0xff ));
+=======
+			LOG( "%f mc6854_tfifo_cb: logical control field $%02X\n", machine().time().as_double(), data & 0xff );
+>>>>>>> upstream/master
 			break;
 
 		case 6: /* variable-length data */
 			blen = TWL;
+<<<<<<< HEAD
 			LOG(( "%f mc6854_tfifo_cb: data field $%02X, %i bits\n", machine().time().as_double(), data & 0xff, blen ));
 			break;
 
 		default:
 			LOG(( "%f mc6854_tfifo_cb: state=%i\n", machine().time().as_double(), m_tstate));
+=======
+			LOG( "%f mc6854_tfifo_cb: data field $%02X, %i bits\n", machine().time().as_double(), data & 0xff, blen );
+			break;
+
+		default:
+			LOG( "%f mc6854_tfifo_cb: state=%i\n", machine().time().as_double(), m_tstate);
+>>>>>>> upstream/master
 		}
 
 		if ( m_flen < MAX_FRAME_LENGTH )
@@ -439,6 +538,7 @@ TIMER_CALLBACK_MEMBER(mc6854_device::tfifo_cb)
 	{
 		int len = m_flen;
 
+<<<<<<< HEAD
 		LOG(( "%f mc6854_tfifo_cb: end frame\n", machine().time().as_double() ));
 		send_bits( 0xdeadbeef, 16, 1 );  /* send check-sum: TODO */
 		send_bits( FLAG, 8, 0 );         /* send closing flag */
@@ -447,6 +547,16 @@ TIMER_CALLBACK_MEMBER(mc6854_device::tfifo_cb)
 		{
 			/* re-open frame asap */
 			LOG(( "%f mc6854_tfifo_cb: start frame\n", machine().time().as_double() ));
+=======
+		LOG( "%f mc6854_tfifo_cb: end frame\n", machine().time().as_double() );
+		send_bits( 0xdeadbeef, 16, 1 );  /* send check-sum: TODO */
+		send_bits( FLAG, 8, 0 );         /* send closing flag */
+
+		if ( m_tfifo[ FIFO_SIZE - 1 ] & 0x100 )
+		{
+			/* re-open frame asap */
+			LOG( "%f mc6854_tfifo_cb: start frame\n", machine().time().as_double() );
+>>>>>>> upstream/master
 			if ( TWOINTER )
 				send_bits( FLAG, 8, 0 );
 		}
@@ -476,7 +586,11 @@ void mc6854_device::tfifo_clear( )
 
 
 /* MC6854 pushes a field in the FIFO */
+<<<<<<< HEAD
 void mc6854_device::rfifo_push( UINT8 d )
+=======
+void mc6854_device::rfifo_push( uint8_t d )
+>>>>>>> upstream/master
 {
 	int i, blen = 8;
 	unsigned data = d;
@@ -490,7 +604,11 @@ void mc6854_device::rfifo_push( UINT8 d )
 			m_rstate = 3;
 		else
 			m_rstate = 2;
+<<<<<<< HEAD
 		LOG(( "%f mc6854_rfifo_push: address field $%02X\n", machine().time().as_double(), data ));
+=======
+		LOG( "%f mc6854_rfifo_push: address field $%02X\n", machine().time().as_double(), data );
+>>>>>>> upstream/master
 		data |= 0x400; /* address marker */
 		break;
 
@@ -501,7 +619,11 @@ void mc6854_device::rfifo_push( UINT8 d )
 			m_rstate = 5;
 		else
 			m_rstate = 6;
+<<<<<<< HEAD
 		LOG(( "%f mc6854_rfifo_push: control field $%02X\n", machine().time().as_double(), data ));
+=======
+		LOG( "%f mc6854_rfifo_push: control field $%02X\n", machine().time().as_double(), data );
+>>>>>>> upstream/master
 		break;
 
 	case 4: /* 8-bit extended control field (optional) */
@@ -509,33 +631,53 @@ void mc6854_device::rfifo_push( UINT8 d )
 			m_rstate = 5;
 		else
 			m_rstate = 6;
+<<<<<<< HEAD
 		LOG(( "%f mc6854_rfifo_push: control field $%02X\n", machine().time().as_double(), data ));
+=======
+		LOG( "%f mc6854_rfifo_push: control field $%02X\n", machine().time().as_double(), data );
+>>>>>>> upstream/master
 		break;
 
 	case 5: /* 8-bit logical control (optional) */
 		if ( ! ( data & 0x80 ) )
 			m_rstate = 6;
+<<<<<<< HEAD
 		LOG(( "%f mc6854_rfifo_push: logical control field $%02X\n", machine().time().as_double(), data ));
+=======
+		LOG( "%f mc6854_rfifo_push: logical control field $%02X\n", machine().time().as_double(), data );
+>>>>>>> upstream/master
 		break;
 
 	case 6: /* variable-length data */
 		blen = RWL;
 		data >>= 8 - blen;
+<<<<<<< HEAD
 		LOG(( "%f mc6854_rfifo_push: data field $%02X, %i bits\n", machine().time().as_double(), data, blen ));
+=======
+		LOG( "%f mc6854_rfifo_push: data field $%02X, %i bits\n", machine().time().as_double(), data, blen );
+>>>>>>> upstream/master
 		break;
 	}
 
 	/* no further FIFO fill until FV is cleared! */
 	if ( m_sr2 & FV )
 	{
+<<<<<<< HEAD
 		LOG(( "%f mc6854_rfifo_push: field not pushed\n", machine().time().as_double() ));
+=======
+		LOG( "%f mc6854_rfifo_push: field not pushed\n", machine().time().as_double() );
+>>>>>>> upstream/master
 		return;
 	}
 
 	data |= 0x100; /* entry full marker */
 
 	/* push towards the rightmost free entry */
+<<<<<<< HEAD
 	for ( i = MC6854_FIFO_SIZE - 1; i >= 0; i-- )
+=======
+	for ( i = FIFO_SIZE - 1; i >= 0; i-- )
+>>>>>>> upstream/master
 	{
 		if ( ! ( m_rfifo[ i ] & 0x100 ) )
 			break;
@@ -560,7 +702,11 @@ void mc6854_device::rfifo_terminate( )
 {
 	/* mark most recently pushed byte as the last one of the frame */
 	int i;
+<<<<<<< HEAD
 	for ( i = 0; i < MC6854_FIFO_SIZE; i++ )
+=======
+	for ( i = 0; i < FIFO_SIZE; i++ )
+>>>>>>> upstream/master
 	{
 		if ( m_rfifo[ i ] & 0x100 )
 		{
@@ -577,6 +723,7 @@ void mc6854_device::rfifo_terminate( )
 
 
 /* CPU pops the FIFO */
+<<<<<<< HEAD
 UINT8 mc6854_device::rfifo_pop( )
 {
 	int i, data = m_rfifo[ MC6854_FIFO_SIZE - 1 ];
@@ -587,6 +734,18 @@ UINT8 mc6854_device::rfifo_pop( )
 	m_rfifo[ 0 ] = 0;
 
 	if ( m_rfifo[ MC6854_FIFO_SIZE - 1 ] & 0x200 )
+=======
+uint8_t mc6854_device::rfifo_pop( )
+{
+	int i, data = m_rfifo[ FIFO_SIZE - 1 ];
+
+	/* shift FIFO to the right */
+	for ( i = FIFO_SIZE - 1; i > 0; i -- )
+		m_rfifo[ i ] = m_rfifo[ i - 1 ];
+	m_rfifo[ 0 ] = 0;
+
+	if ( m_rfifo[ FIFO_SIZE - 1 ] & 0x200 )
+>>>>>>> upstream/master
 	{
 		/* last byte in frame */
 		m_sr2 |= FV; /* TODO: check CRC & set ERR instead of FV if error*/
@@ -625,7 +784,11 @@ WRITE_LINE_MEMBER( mc6854_device::set_rx )
 			{
 				/* only in-frame abort */
 				m_sr2 |= RABT;
+<<<<<<< HEAD
 				LOG(( "%f mc6854_receive_bit: abort\n", machine().time().as_double() ));
+=======
+				LOG( "%f mc6854_receive_bit: abort\n", machine().time().as_double() );
+>>>>>>> upstream/master
 			}
 		}
 		else
@@ -655,7 +818,11 @@ WRITE_LINE_MEMBER( mc6854_device::set_rx )
 			if ( m_rsize >= fieldlen + 24 ) /* last field */
 				rfifo_push( m_rreg );
 			rfifo_terminate( );
+<<<<<<< HEAD
 			LOG(( "%f mc6854_receive_bit: end of frame\n", machine().time().as_double() ));
+=======
+			LOG( "%f mc6854_receive_bit: end of frame\n", machine().time().as_double() );
+>>>>>>> upstream/master
 		}
 		m_rones = 0;
 		m_rstate = 1;
@@ -684,7 +851,11 @@ void mc6854_device::rfifo_clear( )
 
 
 
+<<<<<<< HEAD
 int mc6854_device::send_frame( UINT8* data, int len )
+=======
+int mc6854_device::send_frame( uint8_t* data, int len )
+>>>>>>> upstream/master
 {
 	if ( m_rstate > 1 || m_tstate > 1 || RTS )
 		return -1; /* busy */
@@ -751,6 +922,7 @@ void mc6854_device::update_sr2( )
 {
 	/* update RDA */
 	m_sr2 |= RDA2;
+<<<<<<< HEAD
 	if ( ! (m_rfifo[ MC6854_FIFO_SIZE - 1 ] & 0x100) )
 		m_sr2 &= ~RDA2;
 	else if ( TWOBYTES && ! (m_tfifo[ MC6854_FIFO_SIZE - 2 ] & 0x100) )
@@ -758,6 +930,15 @@ void mc6854_device::update_sr2( )
 
 	/* update AP */
 	if ( m_rfifo[ MC6854_FIFO_SIZE - 1 ] & 0x400 )
+=======
+	if ( ! (m_rfifo[ FIFO_SIZE - 1 ] & 0x100) )
+		m_sr2 &= ~RDA2;
+	else if ( TWOBYTES && ! (m_tfifo[ FIFO_SIZE - 2 ] & 0x100) )
+		m_sr2 &= ~RDA2;
+
+	/* update AP */
+	if ( m_rfifo[ FIFO_SIZE - 1 ] & 0x400 )
+>>>>>>> upstream/master
 		m_sr2 |= AP;
 	else
 		m_sr2 &= ~AP;
@@ -816,30 +997,52 @@ READ8_MEMBER( mc6854_device::read )
 	{
 	case 0: /* status register 1 */
 		update_sr1( );
+<<<<<<< HEAD
 		LOG(( "%f %s mc6854_r: get SR1=$%02X (rda=%i,s2rq=%i,fd=%i,cts=%i,tu=%i,tdra=%i,irq=%i)\n",
+=======
+		LOG( "%f %s mc6854_r: get SR1=$%02X (rda=%i,s2rq=%i,fd=%i,cts=%i,tu=%i,tdra=%i,irq=%i)\n",
+>>>>>>> upstream/master
 				space.machine().time().as_double(), machine().describe_context(), m_sr1,
 				( m_sr1 & RDA) ? 1 : 0, ( m_sr1 & S2RQ) ? 1 : 0,
 				( m_sr1 & FD ) ? 1 : 0, ( m_sr1 & CTS ) ? 1 : 0,
 				( m_sr1 & TU ) ? 1 : 0, ( m_sr1 & TDRA) ? 1 : 0,
+<<<<<<< HEAD
 				( m_sr1 & IRQ) ? 1 : 0 ));
+=======
+				( m_sr1 & IRQ) ? 1 : 0 );
+>>>>>>> upstream/master
 		return m_sr1;
 
 	case 1: /* status register 2 */
 		update_sr2( );
+<<<<<<< HEAD
 		LOG(( "%f %s mc6854_r: get SR2=$%02X (ap=%i,fv=%i,ridle=%i,rabt=%i,err=%i,dcd=%i,ovrn=%i,rda2=%i)\n",
+=======
+		LOG( "%f %s mc6854_r: get SR2=$%02X (ap=%i,fv=%i,ridle=%i,rabt=%i,err=%i,dcd=%i,ovrn=%i,rda2=%i)\n",
+>>>>>>> upstream/master
 				space.machine().time().as_double(), machine().describe_context(), m_sr2,
 				( m_sr2 & AP   ) ? 1 : 0, ( m_sr2 & FV  ) ? 1 : 0,
 				( m_sr2 & RIDLE) ? 1 : 0, ( m_sr2 & RABT) ? 1 : 0,
 				( m_sr2 & ERR  ) ? 1 : 0, ( m_sr2 & DCD ) ? 1 : 0,
+<<<<<<< HEAD
 				( m_sr2 & OVRN ) ? 1 : 0, ( m_sr2 & RDA2) ? 1 : 0 ));
+=======
+				( m_sr2 & OVRN ) ? 1 : 0, ( m_sr2 & RDA2) ? 1 : 0 );
+>>>>>>> upstream/master
 		return m_sr2;
 
 	case 2: /* receiver data register */
 	case 3:
 	{
+<<<<<<< HEAD
 		UINT8 data = rfifo_pop( );
 		LOG(( "%f %s mc6854_r: get data $%02X\n",
 				space.machine().time().as_double(), machine().describe_context(), data ));
+=======
+		uint8_t data = rfifo_pop( );
+		LOG( "%f %s mc6854_r: get data $%02X\n",
+				space.machine().time().as_double(), machine().describe_context(), data );
+>>>>>>> upstream/master
 		return data;
 	}
 
@@ -857,13 +1060,21 @@ WRITE8_MEMBER( mc6854_device::write )
 	{
 	case 0: /* control register 1 */
 		m_cr1 = data;
+<<<<<<< HEAD
 		LOG(( "%f %s mc6854_w: set CR1=$%02X (ac=%i,irq=%c%c,%sreset=%c%c)\n",
+=======
+		LOG( "%f %s mc6854_w: set CR1=$%02X (ac=%i,irq=%c%c,%sreset=%c%c)\n",
+>>>>>>> upstream/master
 				space.machine().time().as_double(), machine().describe_context(), m_cr1,
 				AC ? 1 : 0,
 				RIE ? 'r' : '-', TIE ? 't' : '-',
 				DISCONTINUE ? "discontinue," : "",
+<<<<<<< HEAD
 				RRESET ? 'r' : '-', TRESET ? 't' : '-'
 				));
+=======
+				RRESET ? 'r' : '-', TRESET ? 't' : '-' );
+>>>>>>> upstream/master
 		if ( m_cr1 & 0xc )
 			logerror( "%s mc6854 DMA not handled (CR1=$%02X)\n",
 					machine().describe_context(), m_cr1 );
@@ -894,12 +1105,20 @@ WRITE8_MEMBER( mc6854_device::write )
 		{
 			/* control register 3 */
 			m_cr3 = data;
+<<<<<<< HEAD
 			LOG(( "%f %s mc6854_w: set CR3=$%02X (lcf=%i,aex=%i,idl=%i,fdse=%i,loop=%i,tst=%i,dtr=%i)\n",
 					space.machine().time().as_double(), machine().describe_context(), m_cr3,
 					LCF ? (CEX ? 16 : 8) : 0,  AEX ? 1 : 0,
 					IDL0 ? 0 : 1, FDSE ? 1 : 0, LOOP ? 1 : 0,
 					TST ? 1 : 0, DTR ? 1 : 0
 					));
+=======
+			LOG( "%f %s mc6854_w: set CR3=$%02X (lcf=%i,aex=%i,idl=%i,fdse=%i,loop=%i,tst=%i,dtr=%i)\n",
+					space.machine().time().as_double(), machine().describe_context(), m_cr3,
+					LCF ? (CEX ? 16 : 8) : 0,  AEX ? 1 : 0,
+					IDL0 ? 0 : 1, FDSE ? 1 : 0, LOOP ? 1 : 0,
+					TST ? 1 : 0, DTR ? 1 : 0 );
+>>>>>>> upstream/master
 			if ( LOOP )
 				logerror( "%s mc6854 loop mode not handled (CR3=$%02X)\n", machine().describe_context(), m_cr3 );
 			if ( TST )
@@ -912,12 +1131,20 @@ WRITE8_MEMBER( mc6854_device::write )
 		{
 			/* control register 2 */
 			m_cr2 = data;
+<<<<<<< HEAD
 			LOG(( "%f %s mc6854_w: set CR2=$%02X (pse=%i,bytes=%i,fmidle=%i,%s,tlast=%i,clr=%c%c,rts=%i)\n",
+=======
+			LOG( "%f %s mc6854_w: set CR2=$%02X (pse=%i,bytes=%i,fmidle=%i,%s,tlast=%i,clr=%c%c,rts=%i)\n",
+>>>>>>> upstream/master
 					space.machine().time().as_double(), machine().describe_context(), m_cr2,
 					PSE ? 1 : 0,  TWOBYTES ? 2 : 1,  FMIDLE ? 1 : 0,
 					FCTDRA ? "fc" : "tdra", TLAST ? 1 : 0,
 					data & 0x20 ? 'r' : '-',  data & 0x40 ? 't' : '-',
+<<<<<<< HEAD
 					RTS ? 1 : 0 ));
+=======
+					RTS ? 1 : 0 );
+>>>>>>> upstream/master
 			if ( PSE )
 				logerror( "%s mc6854 status prioritization not handled (CR2=$%02X)\n", machine().describe_context(), m_cr2 );
 			if ( TLAST )
@@ -943,7 +1170,11 @@ WRITE8_MEMBER( mc6854_device::write )
 		break;
 
 	case 2: /* transmitter data: continue data */
+<<<<<<< HEAD
 		LOG(( "%f %smc6854_w: push data=$%02X\n", space.machine().time().as_double(), machine().describe_context(), data ));
+=======
+		LOG( "%f %smc6854_w: push data=$%02X\n", space.machine().time().as_double(), machine().describe_context(), data );
+>>>>>>> upstream/master
 		tfifo_push( data );
 		break;
 
@@ -952,11 +1183,19 @@ WRITE8_MEMBER( mc6854_device::write )
 		{
 			/* control register 4 */
 			m_cr4 = data;
+<<<<<<< HEAD
 			LOG(( "%f %s mc6854_w: set CR4=$%02X (interframe=%i,tlen=%i,rlen=%i,%s%s)\n", space.machine().time().as_double(), machine().describe_context(), m_cr4,
 					TWOINTER ? 2 : 1,
 					TWL, RWL,
 					ABT ? ( ABTEX ? "abort-ext," : "abort,") : "",
 					NRZ ? "nrz" : "nrzi" ));
+=======
+			LOG( "%f %s mc6854_w: set CR4=$%02X (interframe=%i,tlen=%i,rlen=%i,%s%s)\n", space.machine().time().as_double(), machine().describe_context(), m_cr4,
+					TWOINTER ? 2 : 1,
+					TWL, RWL,
+					ABT ? ( ABTEX ? "abort-ext," : "abort,") : "",
+					NRZ ? "nrz" : "nrzi" );
+>>>>>>> upstream/master
 			if ( ABT )
 			{
 				m_tstate = 0;
@@ -967,7 +1206,11 @@ WRITE8_MEMBER( mc6854_device::write )
 		else
 		{
 			/* transmitter data: last data */
+<<<<<<< HEAD
 			LOG(( "%f %s mc6854_w: push last-data=$%02X\n", space.machine().time().as_double(), machine().describe_context(), data ));
+=======
+			LOG( "%f %s mc6854_w: push last-data=$%02X\n", space.machine().time().as_double(), machine().describe_context(), data );
+>>>>>>> upstream/master
 			tfifo_push( data );
 			tfifo_terminate( );
 		}

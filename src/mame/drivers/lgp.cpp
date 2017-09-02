@@ -67,8 +67,14 @@ Dumping Notes:
 
 #include "emu.h"
 #include "cpu/z80/z80.h"
+<<<<<<< HEAD
 #include "render.h"
 #include "machine/ldv1000.h"
+=======
+#include "machine/ldv1000.h"
+#include "render.h"
+#include "speaker.h"
+>>>>>>> upstream/master
 
 
 class lgp_state : public driver_device
@@ -84,6 +90,7 @@ public:
 		m_palette(*this, "palette") { }
 
 	required_device<pioneer_ldv1000_device> m_laserdisc;
+<<<<<<< HEAD
 	required_shared_ptr<UINT8> m_tile_ram;
 	required_shared_ptr<UINT8> m_tile_control_ram;
 	emu_timer *m_irq_timer;
@@ -94,6 +101,18 @@ public:
 	UINT32 screen_update_lgp(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect);
 	INTERRUPT_GEN_MEMBER(vblank_callback_lgp);
 	TIMER_CALLBACK_MEMBER(irq_stop);
+=======
+	required_shared_ptr<uint8_t> m_tile_ram;
+	required_shared_ptr<uint8_t> m_tile_control_ram;
+	DECLARE_READ8_MEMBER(ldp_read);
+	DECLARE_WRITE8_MEMBER(ldp_write);
+	DECLARE_DRIVER_INIT(lgp);
+	virtual void machine_start() override;
+	uint32_t screen_update_lgp(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect);
+	INTERRUPT_GEN_MEMBER(vblank_callback_lgp);
+	DECLARE_WRITE_LINE_MEMBER(ld_command_strobe_cb);
+	DECLARE_PALETTE_INIT(lgp);
+>>>>>>> upstream/master
 	required_device<cpu_device> m_maincpu;
 	required_device<gfxdecode_device> m_gfxdecode;
 	required_device<palette_device> m_palette;
@@ -106,7 +125,11 @@ public:
 
 
 /* VIDEO GOODS */
+<<<<<<< HEAD
 UINT32 lgp_state::screen_update_lgp(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect)
+=======
+uint32_t lgp_state::screen_update_lgp(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect)
+>>>>>>> upstream/master
 {
 	int charx, chary;
 
@@ -160,7 +183,11 @@ static ADDRESS_MAP_START( main_program_map, AS_PROGRAM, 8, lgp_state )
 
 //  AM_RANGE(0xef00,0xef00) AM_READ_PORT("IN_TEST")
 	AM_RANGE(0xef80,0xef80) AM_READWRITE(ldp_read,ldp_write)
+<<<<<<< HEAD
 	AM_RANGE(0xefb8,0xefb8) AM_READ(ldp_read)       /* Likely not right, calms it down though */
+=======
+	AM_RANGE(0xefb8,0xefb8) AM_READNOP // watchdog
+>>>>>>> upstream/master
 	AM_RANGE(0xefc0,0xefc0) AM_READ_PORT("DSWA")    /* Not tested */
 	AM_RANGE(0xefc8,0xefc8) AM_READ_PORT("DSWB")
 	AM_RANGE(0xefd0,0xefd0) AM_READ_PORT("DSWC")
@@ -341,30 +368,84 @@ static GFXDECODE_START( lgp )
 	GFXDECODE_ENTRY("gfx4", 0, lgp_gfx_layout_16x32, 0x0, 0x100)
 GFXDECODE_END
 
+<<<<<<< HEAD
 TIMER_CALLBACK_MEMBER(lgp_state::irq_stop)
 {
 	m_maincpu->set_input_line(0, CLEAR_LINE);
 }
 
+=======
+>>>>>>> upstream/master
 INTERRUPT_GEN_MEMBER(lgp_state::vblank_callback_lgp)
 {
 	// NMI
 	//device.execute().set_input_line(INPUT_LINE_NMI, PULSE_LINE);
 
 	// IRQ
+<<<<<<< HEAD
 	device.execute().set_input_line(0, ASSERT_LINE);
 	m_irq_timer->adjust(attotime::from_usec(50));
+=======
+	device.execute().set_input_line(0, HOLD_LINE);
+>>>>>>> upstream/master
 }
 
 
 void lgp_state::machine_start()
 {
+<<<<<<< HEAD
 	m_irq_timer = machine().scheduler().timer_alloc(timer_expired_delegate(FUNC(lgp_state::irq_stop),this));
 }
 
 
 /* DRIVER */
 static MACHINE_CONFIG_START( lgp, lgp_state )
+=======
+}
+
+WRITE_LINE_MEMBER(lgp_state::ld_command_strobe_cb)
+{
+	//m_maincpu->set_input_line(INPUT_LINE_NMI, state ? ASSERT_LINE : CLEAR_LINE);
+}
+
+PALETTE_INIT_MEMBER(lgp_state, lgp)
+{
+	const uint8_t *color_prom = memregion("proms")->base();
+	int i;
+
+//  for (i = 0; i < palette.entries(); i++)
+	for (i = 0; i < 0x20; i++)
+	{
+		int r,g,b;
+		int bit0,bit1,bit2;
+
+		/* red component */
+		bit0 = 0; //(color_prom[i] >> 0) & 0x01;
+		bit1 = (color_prom[i] >> 0) & 0x01;
+		bit2 = (color_prom[i] >> 1) & 0x01;
+		r = 0x21 * bit0 + 0x47 * bit1 + 0x97 * bit2;
+
+		/* green component */
+		bit0 = 0; //(color_prom[i] >> 3) & 0x01;
+		bit1 = (color_prom[i] >> 2) & 0x01;
+		bit2 = (color_prom[i] >> 3) & 0x01;
+		g = 0x21 * bit0 + 0x47 * bit1 + 0x97 * bit2;
+
+		/* blue component */
+		bit0 = 0; //(color_prom[i] >> 5) & 0x01;
+		bit1 = (color_prom[i] >> 4) & 0x01;
+		bit2 = (color_prom[i] >> 5) & 0x01;
+		b = 0x21 * bit0 + 0x47 * bit1 + 0x97 * bit2;
+
+
+		palette.set_pen_color(i,rgb_t(r,g,b));
+	}
+
+}
+
+/* DRIVER */
+static MACHINE_CONFIG_START( lgp )
+>>>>>>> upstream/master
 	/* main cpu */
 	MCFG_CPU_ADD("maincpu", Z80, CPU_PCB_CLOCK)
 	MCFG_CPU_PROGRAM_MAP(main_program_map)
@@ -378,6 +459,10 @@ static MACHINE_CONFIG_START( lgp, lgp_state )
 
 
 	MCFG_LASERDISC_LDV1000_ADD("laserdisc")
+<<<<<<< HEAD
+=======
+	MCFG_LASERDISC_LDV1000_COMMAND_STROBE_CB(WRITELINE(lgp_state, ld_command_strobe_cb))
+>>>>>>> upstream/master
 	MCFG_LASERDISC_OVERLAY_DRIVER(256, 256, lgp_state, screen_update_lgp)
 	MCFG_LASERDISC_OVERLAY_PALETTE("palette")
 
@@ -385,7 +470,11 @@ static MACHINE_CONFIG_START( lgp, lgp_state )
 	MCFG_LASERDISC_SCREEN_ADD_NTSC("screen", "laserdisc")
 
 	MCFG_PALETTE_ADD("palette", 256)
+<<<<<<< HEAD
 	/* MCFG_PALETTE_INIT_OWNER(lgp_state,lgp) */
+=======
+	MCFG_PALETTE_INIT_OWNER(lgp_state,lgp)
+>>>>>>> upstream/master
 
 	MCFG_GFXDECODE_ADD("gfxdecode", "palette", lgp)
 
@@ -470,6 +559,7 @@ ROM_START( lgp )
 	ROM_LOAD( "a02_28.114", 0x24000, 0x4000, CRC(cd69ed20) SHA1(d60782637085491527814889856eb3553950ab55) )
 
 	/* Small ROM dumping ground - color? */
+<<<<<<< HEAD
 	ROM_REGION( 0x520, "user4", 0 )
 	ROM_LOAD( "a02_35.23",  0x00000, 0x100, CRC(7b9d44f1) SHA1(bbd7c35a03ca6de116a01f6dcfa2ecd13a7ddb53) )
 	ROM_LOAD( "a02_36.24",  0x00100, 0x100, CRC(169c4216) SHA1(23921e9ef61a68fdd8afceb3b95bbac48190cf1a) )
@@ -477,6 +567,18 @@ ROM_START( lgp )
 	ROM_LOAD( "a02_38.44",  0x00220, 0x100, CRC(6f37212a) SHA1(32b891dc9b97637620b2f1f9d9d76509c333cb2d) )
 	ROM_LOAD( "a02_39.109", 0x00320, 0x100, CRC(88363809) SHA1(b22a7bd8ce6b28bf7cfa64c3a08e4cf7f9b4cd20) )
 	ROM_LOAD( "a02_40.110", 0x00420, 0x100, CRC(fdfc7aac) SHA1(2413f7f9ad11c91d2adc0aab37bf70ff5c68ab6f) )
+=======
+	ROM_REGION( 0x20, "proms", 0 )
+	ROM_LOAD( "a02_37.43",  0x00000, 0x20,  CRC(925ba961) SHA1(6715d80f2346374a0e880cf44cadc36e4a5316ed) )
+
+	ROM_REGION( 0x500, "user4", 0 )
+	ROM_LOAD( "a02_35.23",  0x00000, 0x100, CRC(7b9d44f1) SHA1(bbd7c35a03ca6de116a01f6dcfa2ecd13a7ddb53) )
+	ROM_LOAD( "a02_36.24",  0x00100, 0x100, CRC(169c4216) SHA1(23921e9ef61a68fdd8afceb3b95bbac48190cf1a) )
+	ROM_LOAD( "a02_38.44",  0x00200, 0x100, CRC(6f37212a) SHA1(32b891dc9b97637620b2f1f9d9d76509c333cb2d) )
+	ROM_LOAD( "a02_39.109", 0x00300, 0x100, CRC(88363809) SHA1(b22a7bd8ce6b28bf7cfa64c3a08e4cf7f9b4cd20) )
+	ROM_LOAD( "a02_40.110", 0x00400, 0x100, CRC(fdfc7aac) SHA1(2413f7f9ad11c91d2adc0aab37bf70ff5c68ab6f) )
+
+>>>>>>> upstream/master
 
 	DISK_REGION( "laserdisc" )
 	DISK_IMAGE_READONLY( "lgp", 0, NO_DUMP )
@@ -554,6 +656,7 @@ ROM_START( lgpalt )
 	ROM_LOAD( "a02_28.114", 0x24000, 0x4000, CRC(cd69ed20) SHA1(d60782637085491527814889856eb3553950ab55) )
 
 	/* Small ROM dumping ground - color? */
+<<<<<<< HEAD
 	ROM_REGION( 0x520, "user4", 0 )
 	ROM_LOAD( "a02_35.23",  0x00000, 0x100, CRC(7b9d44f1) SHA1(bbd7c35a03ca6de116a01f6dcfa2ecd13a7ddb53) )
 	ROM_LOAD( "a02_36.24",  0x00100, 0x100, CRC(169c4216) SHA1(23921e9ef61a68fdd8afceb3b95bbac48190cf1a) )
@@ -561,6 +664,17 @@ ROM_START( lgpalt )
 	ROM_LOAD( "a02_38.44",  0x00220, 0x100, CRC(6f37212a) SHA1(32b891dc9b97637620b2f1f9d9d76509c333cb2d) )
 	ROM_LOAD( "a02_39.109", 0x00320, 0x100, CRC(88363809) SHA1(b22a7bd8ce6b28bf7cfa64c3a08e4cf7f9b4cd20) )
 	ROM_LOAD( "a02_40.110", 0x00420, 0x100, CRC(fdfc7aac) SHA1(2413f7f9ad11c91d2adc0aab37bf70ff5c68ab6f) )
+=======
+	ROM_REGION( 0x20, "proms", 0 )
+	ROM_LOAD( "a02_37.43",  0x00000, 0x20,  CRC(925ba961) SHA1(6715d80f2346374a0e880cf44cadc36e4a5316ed) )
+
+	ROM_REGION( 0x500, "user4", 0 )
+	ROM_LOAD( "a02_35.23",  0x00000, 0x100, CRC(7b9d44f1) SHA1(bbd7c35a03ca6de116a01f6dcfa2ecd13a7ddb53) )
+	ROM_LOAD( "a02_36.24",  0x00100, 0x100, CRC(169c4216) SHA1(23921e9ef61a68fdd8afceb3b95bbac48190cf1a) )
+	ROM_LOAD( "a02_38.44",  0x00200, 0x100, CRC(6f37212a) SHA1(32b891dc9b97637620b2f1f9d9d76509c333cb2d) )
+	ROM_LOAD( "a02_39.109", 0x00300, 0x100, CRC(88363809) SHA1(b22a7bd8ce6b28bf7cfa64c3a08e4cf7f9b4cd20) )
+	ROM_LOAD( "a02_40.110", 0x00400, 0x100, CRC(fdfc7aac) SHA1(2413f7f9ad11c91d2adc0aab37bf70ff5c68ab6f) )
+>>>>>>> upstream/master
 
 	DISK_REGION( "laserdisc" )
 	DISK_IMAGE_READONLY( "lgp", 0, NO_DUMP )
@@ -570,6 +684,12 @@ DRIVER_INIT_MEMBER(lgp_state,lgp)
 {
 }
 
+<<<<<<< HEAD
 /*    YEAR  NAME PARENT   MACHINE INPUT INIT MONITOR  COMPANY   FULLNAME             FLAGS) */
 GAME( 1983, lgp, 0,       lgp,    lgp, lgp_state,  lgp, ROT0,    "Taito",  "Laser Grand Prix",  MACHINE_NOT_WORKING|MACHINE_NO_SOUND)
 GAME( 1983, lgpalt, lgp,  lgp,    lgp, lgp_state,  lgp, ROT0,    "Taito",  "Laser Grand Prix (alternate)",  MACHINE_NOT_WORKING|MACHINE_NO_SOUND)
+=======
+/*    YEAR  NAME PARENT   MACHINE INPUT STATE       INIT MONITOR  COMPANY   FULLNAME                         FLAGS) */
+GAME( 1983, lgp, 0,       lgp,    lgp,  lgp_state,  lgp, ROT0,    "Taito",  "Laser Grand Prix",              MACHINE_NOT_WORKING|MACHINE_NO_SOUND)
+GAME( 1983, lgpalt, lgp,  lgp,    lgp,  lgp_state,  lgp, ROT0,    "Taito",  "Laser Grand Prix (alternate)",  MACHINE_NOT_WORKING|MACHINE_NO_SOUND)
+>>>>>>> upstream/master

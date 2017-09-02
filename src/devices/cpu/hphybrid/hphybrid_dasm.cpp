@@ -5,6 +5,7 @@
 // ********************************************************************************
 
 #include "emu.h"
+<<<<<<< HEAD
 #include "debugger.h"
 #include "hphybrid.h"
 
@@ -175,6 +176,251 @@ static void param_reg_id(char *buffer , offs_t pc , UINT16 opcode)
 		} else {
 				strcat(buffer , ",I");
 		}
+=======
+#include "hphybrid.h"
+#include "debugger.h"
+
+#include "hphybrid_defs.h"
+
+
+typedef void (*fn_dis_param)(std::ostream &stream , offs_t pc , uint16_t opcode , bool is_3001);
+
+typedef struct {
+		uint16_t m_op_mask;
+		uint16_t m_opcode;
+		const char *m_mnemonic;
+		fn_dis_param m_param_fn;
+		uint32_t m_dasm_flags;
+} dis_entry_t;
+
+static void addr_2_str(std::ostream &stream, uint16_t addr , bool indirect , bool is_3001)
+{
+	util::stream_format(stream, "$%04x" , addr);
+
+	if (is_3001) {
+		switch (addr) {
+		case HP_REG_AR1_ADDR:
+			stream << "(Ar1)";
+			break;
+
+		case HP_REG_AR1_ADDR + 1:
+			stream << "(Ar1_2)";
+			break;
+
+		case HP_REG_AR1_ADDR + 2:
+			stream << "(Ar1_3)";
+			break;
+
+		case HP_REG_AR1_ADDR + 3:
+			stream << "(Ar1_4)";
+			break;
+
+		case HP_REG_AR2_ADDR:
+			stream << "(Ar2)";
+			break;
+
+		case HP_REG_AR2_ADDR + 1:
+			stream << "(Ar2_2)";
+			break;
+
+		case HP_REG_AR2_ADDR + 2:
+			stream << "(Ar2_3)";
+			break;
+
+		case HP_REG_AR2_ADDR + 3:
+			stream << "(Ar2_4)";
+			break;
+
+		case HP_REG_SE_ADDR:
+			stream << "(SE)";
+			break;
+
+		case HP_REG_R25_ADDR:
+			stream << "(R25)";
+			break;
+
+		case HP_REG_R26_ADDR:
+			stream << "(R26)";
+			break;
+
+		case HP_REG_R27_ADDR:
+			stream << "(R27)";
+			break;
+
+		case HP_REG_R32_ADDR:
+			stream << "(R32)";
+			break;
+
+		case HP_REG_R33_ADDR:
+			stream << "(R33)";
+			break;
+
+		case HP_REG_R34_ADDR:
+			stream << "(R34)";
+			break;
+
+		case HP_REG_R35_ADDR:
+			stream << "(R35)";
+			break;
+
+		case HP_REG_R36_ADDR:
+			stream << "(R36)";
+			break;
+
+		case HP_REG_R37_ADDR:
+			stream << "(R37)";
+			break;
+		}
+	}
+
+	switch (addr) {
+	case HP_REG_A_ADDR:
+		stream << "(A)";
+		break;
+
+	case HP_REG_B_ADDR:
+		stream << "(B)";
+		break;
+
+	case HP_REG_P_ADDR:
+		stream << "(P)";
+		break;
+
+	case HP_REG_R_ADDR:
+		stream << "(R)";
+		break;
+
+	case HP_REG_R4_ADDR:
+		stream << "(R4)";
+		break;
+
+	case HP_REG_R5_ADDR:
+		stream << "(R5)";
+		break;
+
+	case HP_REG_R6_ADDR:
+		stream << "(R6)";
+		break;
+
+	case HP_REG_R7_ADDR:
+		stream << "(R7)";
+		break;
+
+	case HP_REG_IV_ADDR:
+		stream << "(IV)";
+		break;
+
+	case HP_REG_PA_ADDR:
+		stream << "(PA)";
+		break;
+
+	case HP_REG_DMAPA_ADDR:
+		stream << "(DMAPA)";
+		break;
+
+	case HP_REG_DMAMA_ADDR:
+		stream << "(DMAMA)";
+		break;
+
+	case HP_REG_DMAC_ADDR:
+		stream << "(DMAC)";
+		break;
+
+	case HP_REG_C_ADDR:
+		stream << "(C)";
+		break;
+
+	case HP_REG_D_ADDR:
+		stream << "(D)";
+		break;
+	}
+
+	if (indirect) {
+		stream << ",I";
+	}
+}
+
+static void param_none(std::ostream &stream, offs_t pc , uint16_t opcode , bool is_3001)
+{
+}
+
+static void param_loc(std::ostream &stream, offs_t pc , uint16_t opcode , bool is_3001)
+{
+	uint16_t base;
+	uint16_t off;
+
+	if (opcode & 0x0400) {
+		// Current page
+		base = pc;
+	} else {
+		// Base page
+		base = 0;
+	}
+
+	off = opcode & 0x3ff;
+	if (off & 0x200) {
+		off -= 0x400;
+	}
+
+	addr_2_str(stream, base + off , (opcode & 0x8000) != 0 , is_3001);
+}
+
+static void param_addr32(std::ostream &stream, offs_t pc , uint16_t opcode , bool is_3001)
+{
+	addr_2_str(stream, opcode & 0x1f , (opcode & 0x8000) != 0 , is_3001);
+}
+
+static void param_skip(std::ostream &stream, offs_t pc , uint16_t opcode , bool is_3001)
+{
+	uint16_t off = opcode & 0x3f;
+	if (off & 0x20) {
+		off -= 0x40;
+	}
+	addr_2_str(stream , pc + off , false , is_3001);
+}
+
+static void param_skip_sc(std::ostream &stream, offs_t pc , uint16_t opcode , bool is_3001)
+{
+	param_skip(stream, pc, opcode , is_3001);
+
+	if (opcode & 0x80) {
+		if (opcode & 0x40) {
+			stream << ",S";
+		} else {
+			stream << ",C";
+		}
+	}
+}
+
+static void param_ret(std::ostream &stream, offs_t pc , uint16_t opcode , bool is_3001)
+{
+	int off = opcode & 0x3f;
+
+	if (off & 0x20) {
+		off -= 0x40;
+	}
+
+	util::stream_format(stream , "%d" , off);
+	if (opcode & 0x40) {
+		stream << ",P";
+	}
+}
+
+static void param_n16(std::ostream &stream, offs_t pc , uint16_t opcode , bool is_3001)
+{
+	util::stream_format(stream , "%u" , (opcode & 0xf) + 1);
+}
+
+static void param_reg_id(std::ostream &stream, offs_t pc , uint16_t opcode , bool is_3001)
+{
+	addr_2_str(stream, opcode & 7, false , is_3001);
+
+	if (opcode & 0x80) {
+		stream << ",D";
+	} else {
+		stream << ",I";
+	}
+>>>>>>> upstream/master
 }
 
 static const dis_entry_t dis_table[] = {
@@ -257,6 +503,7 @@ static const dis_entry_t dis_table[] = {
 		{0xff78 , 0x7970 , "WBC" , param_reg_id , 0 },
 		{0xff78 , 0x7978 , "WBD" , param_reg_id , 0 },
 		// *** END ***
+<<<<<<< HEAD
 		{0 , 0 , NULL , NULL , 0 }
 };
 
@@ -278,4 +525,87 @@ CPU_DISASSEMBLE(hp_hybrid)
 		strcpy(buffer , "???");
 
 		return 1 | DASMFLAG_SUPPORTED;
+=======
+		{0 , 0 , nullptr , nullptr , 0 }
+};
+
+static const dis_entry_t dis_table_emc[] = {
+		// *** EMC Instructions ***
+		{0xffff , 0x7200 , "MWA" , param_none , 0 },
+		{0xffff , 0x7220 , "CMY" , param_none , 0 },
+		{0xffff , 0x7260 , "CMX" , param_none , 0 },
+		{0xffff , 0x7280 , "FXA" , param_none , 0 },
+		{0xfff0 , 0x7300 , "XFR" , param_n16 , 0 },
+		{0xffff , 0x7340 , "NRM" , param_none , 0 },
+		{0xfff0 , 0x7380 , "CLR" , param_n16 , 0 },
+		{0xffff , 0x73c0 , "CDC" , param_none , 0 },
+		{0xffc0 , 0x74c0 , "SDS" , param_skip , 0 },
+		{0xffc0 , 0x75c0 , "SDC" , param_skip , 0 },
+		{0xffff , 0x7a00 , "FMP" , param_none , 0 },
+		{0xffff , 0x7a21 , "FDV" , param_none , 0 },
+		{0xffff , 0x7b00 , "MRX" , param_none , 0 },
+		{0xffff , 0x7b21 , "DRS" , param_none , 0 },
+		{0xffff , 0x7b40 , "MRY" , param_none , 0 },
+		{0xffff , 0x7b61 , "MLY" , param_none , 0 },
+		{0xffff , 0x7b8f , "MPY" , param_none , 0 },
+				// *** Undocumented instructions of 5061-3001 ***
+				{0xffff , 0x7026 , "CIM" , param_none , 0 },
+				{0xffff , 0x7027 , "SIM" , param_none , 0 },
+		// *** END ***
+		{0 , 0 , nullptr , nullptr , 0 }
+};
+
+static offs_t disassemble_table(uint16_t opcode , offs_t pc , const dis_entry_t *table , bool is_3001 , std::ostream &stream)
+{
+	const dis_entry_t *p;
+
+	for (p = table; p->m_op_mask; p++) {
+		if ((opcode & p->m_op_mask) == p->m_opcode) {
+			stream << p->m_mnemonic << " ";
+			p->m_param_fn(stream , pc , opcode , is_3001);
+			return 1 | p->m_dasm_flags | DASMFLAG_SUPPORTED;
+		}
+	}
+
+	return 0;
+}
+
+CPU_DISASSEMBLE(hp_hybrid)
+{
+	uint16_t opcode = ((uint16_t)oprom[ 0 ] << 8) | oprom[ 1 ];
+	offs_t res;
+
+	res = disassemble_table(opcode, pc, dis_table, false, stream);
+
+	if (res == 0)
+	{
+		// Unknown opcode
+		stream << "???";
+		res = 1 | DASMFLAG_SUPPORTED;
+	}
+
+	return res;
+}
+
+CPU_DISASSEMBLE(hp_5061_3001)
+{
+	uint16_t opcode = ((uint16_t)oprom[ 0 ] << 8) | oprom[ 1 ];
+	offs_t res;
+
+	res = disassemble_table(opcode, pc, dis_table_emc, true, stream);
+
+	if (res == 0)
+	{
+		res = disassemble_table(opcode, pc, dis_table, true, stream);
+	}
+
+	if (res == 0)
+	{
+		// Unknown opcode
+		stream << "???";
+		res = 1 | DASMFLAG_SUPPORTED;
+	}
+
+	return res;
+>>>>>>> upstream/master
 }

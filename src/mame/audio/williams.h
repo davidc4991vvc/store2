@@ -8,6 +8,7 @@
 
 ****************************************************************************/
 
+<<<<<<< HEAD
 #include "emu.h"
 #include "machine/6821pia.h"
 #include "cpu/m6809/m6809.h"
@@ -15,6 +16,13 @@
 #include "sound/okim6295.h"
 #include "sound/hc55516.h"
 #include "sound/dac.h"
+=======
+#include "machine/6821pia.h"
+#include "cpu/m6809/m6809.h"
+#include "sound/ym2151.h"
+#include "sound/okim6295.h"
+#include "sound/hc55516.h"
+>>>>>>> upstream/master
 
 
 
@@ -22,13 +30,20 @@
 //  GLOBAL VARIABLES
 //**************************************************************************
 
+<<<<<<< HEAD
 extern const device_type WILLIAMS_NARC_SOUND;
 extern const device_type WILLIAMS_CVSD_SOUND;
 extern const device_type WILLIAMS_ADPCM_SOUND;
+=======
+DECLARE_DEVICE_TYPE(WILLIAMS_CVSD_SOUND, williams_cvsd_sound_device)
+DECLARE_DEVICE_TYPE(WILLIAMS_NARC_SOUND, williams_narc_sound_device)
+DECLARE_DEVICE_TYPE(WILLIAMS_ADPCM_SOUND, williams_adpcm_sound_device)
+>>>>>>> upstream/master
 
 
 
 //**************************************************************************
+<<<<<<< HEAD
 //  DEVICE CONFIGURATION MACROS
 //**************************************************************************
 
@@ -41,6 +56,8 @@ extern const device_type WILLIAMS_ADPCM_SOUND;
 
 
 //**************************************************************************
+=======
+>>>>>>> upstream/master
 //  TYPE DEFINITIONS
 //**************************************************************************
 
@@ -51,7 +68,11 @@ class williams_cvsd_sound_device :  public device_t,
 {
 public:
 	// construction/destruction
+<<<<<<< HEAD
 	williams_cvsd_sound_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
+=======
+	williams_cvsd_sound_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
+>>>>>>> upstream/master
 
 	// read/write
 	DECLARE_WRITE16_MEMBER(write);
@@ -59,6 +80,7 @@ public:
 
 	// internal communications
 	DECLARE_WRITE8_MEMBER(bank_select_w);
+<<<<<<< HEAD
 	DECLARE_WRITE8_MEMBER(talkback_w);
 	DECLARE_WRITE8_MEMBER(cvsd_digit_clock_clear_w);
 	DECLARE_WRITE8_MEMBER(cvsd_clock_set_w);
@@ -72,6 +94,17 @@ protected:
 	virtual void device_start();
 	virtual void device_reset();
 	virtual void device_timer(emu_timer &timer, device_timer_id id, int param, void *ptr);
+=======
+	DECLARE_WRITE8_MEMBER(cvsd_digit_clock_clear_w);
+	DECLARE_WRITE8_MEMBER(cvsd_clock_set_w);
+
+protected:
+	// device-level overrides
+	virtual void device_add_mconfig(machine_config &config) override;
+	virtual void device_start() override;
+	virtual void device_reset() override;
+	virtual void device_timer(emu_timer &timer, device_timer_id id, int param, void *ptr) override;
+>>>>>>> upstream/master
 
 private:
 	// devices
@@ -80,7 +113,13 @@ private:
 	required_device<hc55516_device> m_hc55516;
 
 	// internal state
+<<<<<<< HEAD
 	UINT8 m_talkback;
+=======
+	uint8_t m_talkback;
+
+	DECLARE_WRITE8_MEMBER(talkback_w);
+>>>>>>> upstream/master
 };
 
 
@@ -91,7 +130,11 @@ class williams_narc_sound_device :  public device_t,
 {
 public:
 	// construction/destruction
+<<<<<<< HEAD
 	williams_narc_sound_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
+=======
+	williams_narc_sound_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
+>>>>>>> upstream/master
 
 	// read/write
 	DECLARE_READ16_MEMBER(read);
@@ -110,6 +153,7 @@ public:
 	DECLARE_WRITE8_MEMBER(slave_sync_w);
 	DECLARE_WRITE8_MEMBER(cvsd_digit_clock_clear_w);
 	DECLARE_WRITE8_MEMBER(cvsd_clock_set_w);
+<<<<<<< HEAD
 	DECLARE_WRITE_LINE_MEMBER(ym2151_irq_w);
 
 protected:
@@ -118,6 +162,15 @@ protected:
 	virtual void device_start();
 	virtual void device_reset();
 	virtual void device_timer(emu_timer &timer, device_timer_id id, int param, void *ptr);
+=======
+
+protected:
+	// device-level overrides
+	virtual void device_add_mconfig(machine_config &config) override;
+	virtual void device_start() override;
+	virtual void device_reset() override;
+	virtual void device_timer(emu_timer &timer, device_timer_id id, int param, void *ptr) override;
+>>>>>>> upstream/master
 
 private:
 	// timer IDs
@@ -134,11 +187,19 @@ private:
 	required_device<hc55516_device> m_hc55516;
 
 	// internal state
+<<<<<<< HEAD
 	UINT8 m_latch;
 	UINT8 m_latch2;
 	UINT8 m_talkback;
 	UINT8 m_audio_sync;
 	UINT8 m_sound_int_state;
+=======
+	uint8_t m_latch;
+	uint8_t m_latch2;
+	uint8_t m_talkback;
+	uint8_t m_audio_sync;
+	uint8_t m_sound_int_state;
+>>>>>>> upstream/master
 };
 
 
@@ -149,7 +210,11 @@ class williams_adpcm_sound_device : public device_t,
 {
 public:
 	// construction/destruction
+<<<<<<< HEAD
 	williams_adpcm_sound_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
+=======
+	williams_adpcm_sound_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
+>>>>>>> upstream/master
 
 	// read/write
 	DECLARE_WRITE16_MEMBER(write);
@@ -161,7 +226,10 @@ public:
 	DECLARE_WRITE8_MEMBER(oki6295_bank_select_w);
 	DECLARE_READ8_MEMBER(command_r);
 	DECLARE_WRITE8_MEMBER(talkback_w);
+<<<<<<< HEAD
 	DECLARE_WRITE_LINE_MEMBER(ym2151_irq_w);
+=======
+>>>>>>> upstream/master
 
 protected:
 	// timer IDs
@@ -172,17 +240,30 @@ protected:
 	};
 
 	// device-level overrides
+<<<<<<< HEAD
 	virtual machine_config_constructor device_mconfig_additions() const;
 	virtual void device_start();
 	virtual void device_reset();
 	virtual void device_timer(emu_timer &timer, device_timer_id id, int param, void *ptr);
+=======
+	virtual void device_add_mconfig(machine_config &config) override;
+	virtual void device_start() override;
+	virtual void device_reset() override;
+	virtual void device_timer(emu_timer &timer, device_timer_id id, int param, void *ptr) override;
+>>>>>>> upstream/master
 
 private:
 	// devices
 	required_device<m6809e_device> m_cpu;
 
 	// internal state
+<<<<<<< HEAD
 	UINT8 m_latch;
 	UINT8 m_talkback;
 	UINT8 m_sound_int_state;
+=======
+	uint8_t m_latch;
+	uint8_t m_talkback;
+	uint8_t m_sound_int_state;
+>>>>>>> upstream/master
 };

@@ -41,7 +41,11 @@
 
 PALETTE_INIT_MEMBER(irobot_state, irobot)
 {
+<<<<<<< HEAD
 	const UINT8 *color_prom = memregion("proms")->base();
+=======
+	const uint8_t *color_prom = memregion("proms")->base();
+>>>>>>> upstream/master
 	int i;
 
 	/* convert the color prom for the text palette */
@@ -64,7 +68,11 @@ WRITE8_MEMBER(irobot_state::irobot_paletteram_w)
 {
 	int r,g,b;
 	int bits,intensity;
+<<<<<<< HEAD
 	UINT32 color;
+=======
+	uint32_t color;
+>>>>>>> upstream/master
 
 	color = ((data << 1) | (offset & 0x01)) ^ 0x1ff;
 	intensity = color & 0x07;
@@ -78,14 +86,22 @@ WRITE8_MEMBER(irobot_state::irobot_paletteram_w)
 }
 
 
+<<<<<<< HEAD
 void irobot_state::_irobot_poly_clear(UINT8 *bitmap_base)
+=======
+void irobot_state::_irobot_poly_clear(uint8_t *bitmap_base)
+>>>>>>> upstream/master
 {
 	memset(bitmap_base, 0, BITMAP_WIDTH * m_screen->height());
 }
 
 void irobot_state::irobot_poly_clear()
 {
+<<<<<<< HEAD
 	UINT8 *bitmap_base = m_bufsel ? m_polybitmap2 : m_polybitmap1;
+=======
+	uint8_t *bitmap_base = m_bufsel ? m_polybitmap2.get() : m_polybitmap1.get();
+>>>>>>> upstream/master
 	_irobot_poly_clear(bitmap_base);
 }
 
@@ -99,12 +115,21 @@ void irobot_state::video_start()
 {
 	/* Setup 2 bitmaps for the polygon generator */
 	int height = m_screen->height();
+<<<<<<< HEAD
 	m_polybitmap1 = auto_alloc_array(machine(), UINT8, BITMAP_WIDTH * height);
 	m_polybitmap2 = auto_alloc_array(machine(), UINT8, BITMAP_WIDTH * height);
 
 	/* clear the bitmaps so we start with valid palette look-up values for drawing */
 	_irobot_poly_clear(m_polybitmap1);
 	_irobot_poly_clear(m_polybitmap2);
+=======
+	m_polybitmap1 = std::make_unique<uint8_t[]>(BITMAP_WIDTH * height);
+	m_polybitmap2 = std::make_unique<uint8_t[]>(BITMAP_WIDTH * height);
+
+	/* clear the bitmaps so we start with valid palette look-up values for drawing */
+	_irobot_poly_clear(m_polybitmap1.get());
+	_irobot_poly_clear(m_polybitmap2.get());
+>>>>>>> upstream/master
 
 	/* Set clipping */
 	m_ir_xmin = m_ir_ymin = 0;
@@ -163,7 +188,11 @@ void irobot_state::video_start()
      modified from a routine written by Andrew Caldwell
  */
 
+<<<<<<< HEAD
 void irobot_state::draw_line(UINT8 *polybitmap, int x1, int y1, int x2, int y2, int col)
+=======
+void irobot_state::draw_line(uint8_t *polybitmap, int x1, int y1, int x2, int y2, int col)
+>>>>>>> upstream/master
 {
 	int dx,dy,sx,sy,cx,cy;
 
@@ -213,6 +242,7 @@ void irobot_state::draw_line(UINT8 *polybitmap, int x1, int y1, int x2, int y2, 
 
 void irobot_state::irobot_run_video()
 {
+<<<<<<< HEAD
 	UINT8 *polybitmap;
 	UINT16 *combase16 = (UINT16 *)m_combase;
 	int sx,sy,ex,ey,sx2,ey2;
@@ -221,13 +251,29 @@ void irobot_state::irobot_run_video()
 	int lpnt,spnt,spnt2;
 	int shp;
 	INT32 word1,word2;
+=======
+	uint8_t *polybitmap;
+	uint16_t *combase16 = (uint16_t *)m_combase;
+	int sx,sy,ex,ey,sx2,ey2;
+	int color;
+	uint32_t d1;
+	int lpnt,spnt,spnt2;
+	int shp;
+	int32_t word1,word2;
+>>>>>>> upstream/master
 
 	logerror("Starting Polygon Generator, Clear=%d\n",m_vg_clear);
 
 	if (m_bufsel)
+<<<<<<< HEAD
 		polybitmap = m_polybitmap2;
 	else
 		polybitmap = m_polybitmap1;
+=======
+		polybitmap = m_polybitmap2.get();
+	else
+		polybitmap = m_polybitmap1.get();
+>>>>>>> upstream/master
 
 	lpnt=0;
 	while (lpnt < 0x7ff)
@@ -266,7 +312,11 @@ void irobot_state::irobot_run_video()
 				color = sy & 0x3f;
 				sy = ROUND_TO_PIXEL(sy);
 				sx = combase16[spnt+3];
+<<<<<<< HEAD
 				word1 = (INT16)combase16[spnt+2];
+=======
+				word1 = (int16_t)combase16[spnt+2];
+>>>>>>> upstream/master
 				ex = sx + word1 * (ey - sy + 1);
 				draw_line(polybitmap, ROUND_TO_PIXEL(sx),sy,ROUND_TO_PIXEL(ex),ey,color);
 				spnt+=4;
@@ -285,7 +335,11 @@ void irobot_state::irobot_run_video()
 			sy = ROUND_TO_PIXEL(sy);
 			spnt+=4;
 
+<<<<<<< HEAD
 			word1 = (INT16)combase16[spnt];
+=======
+			word1 = (int16_t)combase16[spnt];
+>>>>>>> upstream/master
 			ey = combase16[spnt+1];
 			if (word1 != -1 || ey != 0xffff)
 			{
@@ -294,7 +348,11 @@ void irobot_state::irobot_run_video()
 
 			//  sx += word1;
 
+<<<<<<< HEAD
 				word2 = (INT16)combase16[spnt2];
+=======
+				word2 = (int16_t)combase16[spnt2];
+>>>>>>> upstream/master
 				ey2 = ROUND_TO_PIXEL(combase16[spnt2+1]);
 				spnt2+=2;
 
@@ -318,7 +376,11 @@ void irobot_state::irobot_run_video()
 
 					if (sy > ey)
 					{
+<<<<<<< HEAD
 						word1 = (INT16)combase16[spnt];
+=======
+						word1 = (int16_t)combase16[spnt];
+>>>>>>> upstream/master
 						ey = combase16[spnt+1];
 						if (word1 == -1 && ey == 0xffff)
 							break;
@@ -330,7 +392,11 @@ void irobot_state::irobot_run_video()
 
 					if (sy > ey2)
 					{
+<<<<<<< HEAD
 						word2 = (INT16)combase16[spnt2];
+=======
+						word2 = (int16_t)combase16[spnt2];
+>>>>>>> upstream/master
 						ey2 = ROUND_TO_PIXEL(combase16[spnt2+1]);
 						spnt2+=2;
 					}
@@ -345,15 +411,26 @@ void irobot_state::irobot_run_video()
 
 
 
+<<<<<<< HEAD
 UINT32 irobot_state::screen_update_irobot(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
 {
 	UINT8 *videoram = m_videoram;
 	UINT8 *bitmap_base = m_bufsel ? m_polybitmap1 : m_polybitmap2;
+=======
+uint32_t irobot_state::screen_update_irobot(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+{
+	uint8_t *videoram = m_videoram;
+	uint8_t *bitmap_base = m_bufsel ? m_polybitmap1.get() : m_polybitmap2.get();
+>>>>>>> upstream/master
 	int x, y, offs;
 
 	/* copy the polygon bitmap */
 	for (y = cliprect.min_y; y <= cliprect.max_y; y++)
+<<<<<<< HEAD
 		draw_scanline8(bitmap, 0, y, BITMAP_WIDTH, &bitmap_base[y * BITMAP_WIDTH], NULL);
+=======
+		draw_scanline8(bitmap, 0, y, BITMAP_WIDTH, &bitmap_base[y * BITMAP_WIDTH], nullptr);
+>>>>>>> upstream/master
 
 	/* redraw the non-zero characters in the alpha layer */
 	for (y = offs = 0; y < 32; y++)

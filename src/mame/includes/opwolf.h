@@ -1,14 +1,33 @@
+<<<<<<< HEAD
 // license:???
+=======
+// license:GPL-2.0+
+>>>>>>> upstream/master
 // copyright-holders:David Graves, Jarek Burczynski
 /*************************************************************************
 
     Operation Wolf
 
 *************************************************************************/
+<<<<<<< HEAD
+=======
+#ifndef MAME_INCLUDES_OPWOLF_H
+#define MAME_INCLUDES_OPWOLF_H
+
+#pragma once
+
+
+#include "machine/taitocchip.h"
+
+>>>>>>> upstream/master
 #include "sound/msm5205.h"
 #include "video/pc080sn.h"
 #include "video/pc090oj.h"
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> upstream/master
 class opwolf_state : public driver_device
 {
 public:
@@ -23,12 +42,17 @@ public:
 		m_cchip_ram(*this, "cchip_ram"),
 		m_maincpu(*this, "maincpu"),
 		m_audiocpu(*this, "audiocpu"),
+<<<<<<< HEAD
+=======
+		m_cchip(*this, "cchip"),
+>>>>>>> upstream/master
 		m_pc080sn(*this, "pc080sn"),
 		m_pc090oj(*this, "pc090oj"),
 		m_msm1(*this, "msm1"),
 		m_msm2(*this, "msm2") { }
 
 	/* memory pointers */
+<<<<<<< HEAD
 	optional_shared_ptr<UINT8> m_cchip_ram;
 
 	/* video-related */
@@ -40,16 +64,35 @@ public:
 	UINT8        m_adpcm_c[0x08];
 	UINT32       m_adpcm_pos[2];
 	UINT32       m_adpcm_end[2];
+=======
+	optional_shared_ptr<uint8_t> m_cchip_ram;
+
+	/* video-related */
+	uint16_t       m_sprite_ctrl;
+	uint16_t       m_sprites_flipscreen;
+
+	/* misc */
+	uint8_t        m_adpcm_b[0x08];
+	uint8_t        m_adpcm_c[0x08];
+	uint32_t       m_adpcm_pos[2];
+	uint32_t       m_adpcm_end[2];
+>>>>>>> upstream/master
 	int          m_adpcm_data[2];
 
 	int          m_opwolf_gun_xoffs;
 	int          m_opwolf_gun_yoffs;
 
+<<<<<<< HEAD
+=======
+	emu_timer   *m_opwolf_timer;
+
+>>>>>>> upstream/master
 	/* c-chip */
 	emu_timer   *m_cchip_timer;
 
 	int          m_opwolf_region;
 
+<<<<<<< HEAD
 	UINT8        m_current_bank;
 	UINT8        m_current_cmd;
 	UINT8        m_cchip_last_7a;
@@ -61,10 +104,38 @@ public:
 	UINT8        m_c588;
 	UINT8        m_c589;
 	UINT8        m_c58a; // These variables derived from the bootleg
+=======
+	uint8_t        m_current_bank;
+	uint8_t        m_current_cmd;
+	uint8_t        m_cchip_last_7a;
+	uint8_t        m_cchip_last_04;
+	uint8_t        m_cchip_last_05;
+	uint8_t        m_cchip_coins_for_credit[2];
+	uint8_t        m_cchip_credits_for_coin[2];
+	uint8_t        m_cchip_coins[2];
+	uint8_t        m_c588;
+	uint8_t        m_c589;
+	uint8_t        m_c58a; // These variables derived from the bootleg
+	uint8_t        m_triggeredLevel1b; // These variables derived from comparison to unprotection version
+	uint8_t        m_triggeredLevel2;
+	uint8_t        m_triggeredLevel2b;
+	uint8_t        m_triggeredLevel2c;
+	uint8_t        m_triggeredLevel3b;
+	uint8_t        m_triggeredLevel13b;
+	uint8_t        m_triggeredLevel4;
+	uint8_t        m_triggeredLevel5;
+	uint8_t        m_triggeredLevel7;
+	uint8_t        m_triggeredLevel8;
+	uint8_t        m_triggeredLevel9;
+>>>>>>> upstream/master
 
 	/* devices */
 	required_device<cpu_device> m_maincpu;
 	required_device<cpu_device> m_audiocpu;
+<<<<<<< HEAD
+=======
+	optional_device<taito_cchip_device> m_cchip;
+>>>>>>> upstream/master
 	required_device<pc080sn_device> m_pc080sn;
 	required_device<pc090oj_device> m_pc090oj;
 	required_device<msm5205_device> m_msm1;
@@ -89,9 +160,22 @@ public:
 	DECLARE_WRITE8_MEMBER(opwolf_adpcm_c_w);
 	DECLARE_DRIVER_INIT(opwolf);
 	DECLARE_DRIVER_INIT(opwolfb);
+<<<<<<< HEAD
 	virtual void machine_start();
 	DECLARE_MACHINE_RESET(opwolf);
 	UINT32 screen_update_opwolf(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
+=======
+	DECLARE_DRIVER_INIT(opwolfp);
+
+
+	DECLARE_CUSTOM_INPUT_MEMBER(opwolf_gun_x_r);
+	DECLARE_CUSTOM_INPUT_MEMBER(opwolf_gun_y_r);
+
+
+	virtual void machine_start() override;
+	DECLARE_MACHINE_RESET(opwolf);
+	uint32_t screen_update_opwolf(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
+>>>>>>> upstream/master
 	TIMER_CALLBACK_MEMBER(opwolf_timer_callback);
 	TIMER_CALLBACK_MEMBER(cchip_timer);
 	void updateDifficulty( int mode );
@@ -101,5 +185,13 @@ public:
 	DECLARE_WRITE_LINE_MEMBER(opwolf_msm5205_vck_2);
 
 protected:
+<<<<<<< HEAD
 	virtual void device_timer(emu_timer &timer, device_timer_id id, int param, void *ptr);
 };
+=======
+	virtual void device_timer(emu_timer &timer, device_timer_id id, int param, void *ptr) override;
+};
+
+
+#endif // MAME_INCLUDES_OPWOLF_H
+>>>>>>> upstream/master

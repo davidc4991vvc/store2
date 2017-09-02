@@ -6,6 +6,10 @@
 
 *************************************************************************/
 
+<<<<<<< HEAD
+=======
+#include "machine/gen_latch.h"
+>>>>>>> upstream/master
 #include "sound/vlm5030.h"
 #include "video/k007342.h"
 #include "video/k007420.h"
@@ -22,6 +26,10 @@ public:
 		m_vlm(*this, "vlm"),
 		m_gfxdecode(*this, "gfxdecode"),
 		m_palette(*this, "palette"),
+<<<<<<< HEAD
+=======
+		m_soundlatch(*this, "soundlatch"),
+>>>>>>> upstream/master
 		m_rombank(*this, "rombank") { }
 
 	/* devices */
@@ -32,6 +40,10 @@ public:
 	required_device<vlm5030_device> m_vlm;
 	required_device<gfxdecode_device> m_gfxdecode;
 	required_device<palette_device> m_palette;
+<<<<<<< HEAD
+=======
+	required_device<generic_latch_8_device> m_soundlatch;
+>>>>>>> upstream/master
 
 	/* memory pointers */
 	required_memory_bank m_rombank;
@@ -44,10 +56,17 @@ public:
 	DECLARE_WRITE8_MEMBER(rockrage_vreg_w);
 	DECLARE_READ8_MEMBER(rockrage_VLM5030_busy_r);
 	DECLARE_WRITE8_MEMBER(rockrage_speech_w);
+<<<<<<< HEAD
 	virtual void machine_start();
 	virtual void machine_reset();
 	DECLARE_PALETTE_INIT(rockrage);
 	UINT32 screen_update_rockrage(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
+=======
+	virtual void machine_start() override;
+	virtual void machine_reset() override;
+	DECLARE_PALETTE_INIT(rockrage);
+	uint32_t screen_update_rockrage(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
+>>>>>>> upstream/master
 	INTERRUPT_GEN_MEMBER(rockrage_interrupt);
 	K007342_CALLBACK_MEMBER(rockrage_tile_callback);
 	K007420_CALLBACK_MEMBER(rockrage_sprite_callback);

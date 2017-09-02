@@ -5,6 +5,10 @@
 
 #include "emu.h"
 #include "includes/pgm.h"
+<<<<<<< HEAD
+=======
+#include "screen.h"
+>>>>>>> upstream/master
 
 /******************************************************************************
  Sprites
@@ -18,7 +22,11 @@
 // bg pri is 2
 // sprite already here is 1 / 3
 
+<<<<<<< HEAD
 inline void pgm_state::pgm_draw_pix( int xdrawpos, int pri, UINT16* dest, UINT8* destpri, UINT16 srcdat)
+=======
+inline void pgm_state::pgm_draw_pix( int xdrawpos, int pri, uint16_t* dest, uint8_t* destpri, uint16_t srcdat)
+>>>>>>> upstream/master
 {
 	if ((xdrawpos >= 0) && (xdrawpos < 448))
 	{
@@ -41,7 +49,11 @@ inline void pgm_state::pgm_draw_pix( int xdrawpos, int pri, UINT16* dest, UINT8*
 	}
 }
 
+<<<<<<< HEAD
 inline void pgm_state::pgm_draw_pix_nopri( int xdrawpos, UINT16* dest, UINT8* destpri, UINT16 srcdat)
+=======
+inline void pgm_state::pgm_draw_pix_nopri( int xdrawpos, uint16_t* dest, uint8_t* destpri, uint16_t srcdat)
+>>>>>>> upstream/master
 {
 	if ((xdrawpos >= 0) && (xdrawpos < 448))
 	{
@@ -53,7 +65,11 @@ inline void pgm_state::pgm_draw_pix_nopri( int xdrawpos, UINT16* dest, UINT8* de
 	}
 }
 
+<<<<<<< HEAD
 inline void pgm_state::pgm_draw_pix_pri( int xdrawpos, UINT16* dest, UINT8* destpri, UINT16 srcdat)
+=======
+inline void pgm_state::pgm_draw_pix_pri( int xdrawpos, uint16_t* dest, uint8_t* destpri, uint16_t srcdat)
+>>>>>>> upstream/master
 {
 	if ((xdrawpos >= 0) && (xdrawpos < 448))
 	{
@@ -73,18 +89,30 @@ inline void pgm_state::pgm_draw_pix_pri( int xdrawpos, UINT16* dest, UINT8* dest
   for complex zoomed cases
 *************************************************************************/
 
+<<<<<<< HEAD
 void pgm_state::draw_sprite_line( int wide, UINT16* dest, UINT8* destpri, int xzoom, int xgrow, int flip, int xpos, int pri, int realxsize, int palt, int draw )
+=======
+void pgm_state::draw_sprite_line( int wide, uint16_t* dest, uint8_t* destpri, int xzoom, int xgrow, int flip, int xpos, int pri, int realxsize, int palt, int draw )
+>>>>>>> upstream/master
 {
 	int xcnt,xcntdraw;
 	int xzoombit;
 	int xoffset = 0;
 	int xdrawpos = 0;
 
+<<<<<<< HEAD
 	UINT8 *adata = m_sprite_a_region;
 	size_t  adatasize = m_sprite_a_region_size - 1;
 
 	UINT16 msk;
 	UINT16 srcdat;
+=======
+	uint8_t *adata = m_sprite_a_region.get();
+	size_t  adatasize = m_sprite_a_region_size - 1;
+
+	uint16_t msk;
+	uint16_t srcdat;
+>>>>>>> upstream/master
 
 	xcnt = 0;
 	xcntdraw = 0;
@@ -164,12 +192,21 @@ void pgm_state::draw_sprite_line( int wide, UINT16* dest, UINT8* destpri, int xz
 	}
 }
 
+<<<<<<< HEAD
 void pgm_state::draw_sprite_new_zoomed( int wide, int high, int xpos, int ypos, int palt, int flip, bitmap_ind16 &bitmap, bitmap_ind8 &priority_bitmap, UINT32 xzoom, int xgrow, UINT32 yzoom, int ygrow, int pri )
 {
 	int ycnt;
 	int ydrawpos;
 	UINT16 *dest;
 	UINT8* destpri;
+=======
+void pgm_state::draw_sprite_new_zoomed( int wide, int high, int xpos, int ypos, int palt, int flip, bitmap_ind16 &bitmap, bitmap_ind8 &priority_bitmap, uint32_t xzoom, int xgrow, uint32_t yzoom, int ygrow, int pri )
+{
+	int ycnt;
+	int ydrawpos;
+	uint16_t *dest;
+	uint8_t* destpri;
+>>>>>>> upstream/master
 	int ycntdraw;
 	int yzoombit;
 	int xzoombit;
@@ -241,7 +278,11 @@ void pgm_state::draw_sprite_new_zoomed( int wide, int high, int xpos, int ypos, 
 			}
 			else
 			{
+<<<<<<< HEAD
 				draw_sprite_line(wide, NULL, NULL, xzoom, xgrow, flip, xpos, pri, realxsize, palt, 0);
+=======
+				draw_sprite_line(wide, nullptr, nullptr, xzoom, xgrow, flip, xpos, pri, realxsize, palt, 0);
+>>>>>>> upstream/master
 			}
 
 			ycntdraw++;
@@ -263,7 +304,11 @@ void pgm_state::draw_sprite_new_zoomed( int wide, int high, int xpos, int ypos, 
 			}
 			else
 			{
+<<<<<<< HEAD
 				draw_sprite_line(wide, NULL, NULL, xzoom, xgrow, flip, xpos, pri, realxsize, palt, 0);
+=======
+				draw_sprite_line(wide, nullptr, nullptr, xzoom, xgrow, flip, xpos, pri, realxsize, palt, 0);
+>>>>>>> upstream/master
 
 				if (!(flip & 0x02))
 				{
@@ -283,7 +328,11 @@ void pgm_state::draw_sprite_new_zoomed( int wide, int high, int xpos, int ypos, 
 		else if (yzoombit == 1 && ygrow == 0)
 		{
 			/* skip this line */
+<<<<<<< HEAD
 			draw_sprite_line(wide, NULL, NULL, xzoom, xgrow, flip, xpos, pri, realxsize, palt, 0);
+=======
+			draw_sprite_line(wide, nullptr, nullptr, xzoom, xgrow, flip, xpos, pri, realxsize, palt, 0);
+>>>>>>> upstream/master
 		}
 		else /* normal line */
 		{
@@ -300,7 +349,11 @@ void pgm_state::draw_sprite_new_zoomed( int wide, int high, int xpos, int ypos, 
 			}
 			else
 			{
+<<<<<<< HEAD
 				draw_sprite_line(wide, NULL, NULL, xzoom, xgrow, flip, xpos, pri, realxsize, palt, 0);
+=======
+				draw_sprite_line(wide, nullptr, nullptr, xzoom, xgrow, flip, xpos, pri, realxsize, palt, 0);
+>>>>>>> upstream/master
 
 				if (!(flip & 0x02))
 				{
@@ -323,16 +376,28 @@ void pgm_state::draw_sprite_new_zoomed( int wide, int high, int xpos, int ypos, 
 }
 
 
+<<<<<<< HEAD
 void pgm_state::draw_sprite_line_basic( int wide, UINT16* dest, UINT8* destpri, int flip, int xpos, int pri, int realxsize, int palt, int draw )
+=======
+void pgm_state::draw_sprite_line_basic( int wide, uint16_t* dest, uint8_t* destpri, int flip, int xpos, int pri, int realxsize, int palt, int draw )
+>>>>>>> upstream/master
 {
 	int xcnt,xcntdraw;
 	int xoffset = 0;
 	int xdrawpos = 0;
+<<<<<<< HEAD
 	UINT8 *adata = m_sprite_a_region;
 	size_t  adatasize = m_sprite_a_region_size - 1;
 
 	UINT16 msk;
 	UINT16 srcdat;
+=======
+	uint8_t *adata = m_sprite_a_region.get();
+	size_t  adatasize = m_sprite_a_region_size - 1;
+
+	uint16_t msk;
+	uint16_t srcdat;
+>>>>>>> upstream/master
 
 	xcnt = 0;
 	xcntdraw = 0;
@@ -432,8 +497,13 @@ void pgm_state::draw_sprite_new_basic( int wide, int high, int xpos, int ypos, i
 {
 	int ycnt;
 	int ydrawpos;
+<<<<<<< HEAD
 	UINT16 *dest;
 	UINT8* destpri;
+=======
+	uint16_t *dest;
+	uint8_t* destpri;
+>>>>>>> upstream/master
 	int ycntdraw;
 
 	m_aoffset = (m_bdata[(m_boffset + 3) & m_bdatasize] << 24) | (m_bdata[(m_boffset + 2) & m_bdatasize] << 16) |
@@ -464,7 +534,11 @@ void pgm_state::draw_sprite_new_basic( int wide, int high, int xpos, int ypos, i
 		}
 		else
 		{
+<<<<<<< HEAD
 			draw_sprite_line_basic(wide, NULL, NULL, flip, xpos, pri, realxsize, palt, 0);
+=======
+			draw_sprite_line_basic(wide, nullptr, nullptr, flip, xpos, pri, realxsize, palt, 0);
+>>>>>>> upstream/master
 
 			if (!(flip & 0x02))
 			{
@@ -484,7 +558,11 @@ void pgm_state::draw_sprite_new_basic( int wide, int high, int xpos, int ypos, i
 }
 
 
+<<<<<<< HEAD
 void pgm_state::draw_sprites( bitmap_ind16& spritebitmap, UINT16 *sprite_source, bitmap_ind8& priority_bitmap )
+=======
+void pgm_state::draw_sprites( bitmap_ind16& spritebitmap, uint16_t *sprite_source, bitmap_ind8& priority_bitmap )
+>>>>>>> upstream/master
 {
 	/* ZZZZ Zxxx xxxx xxxx
 	   zzzz z-yy yyyy yyyy
@@ -493,9 +571,15 @@ void pgm_state::draw_sprites( bitmap_ind16& spritebitmap, UINT16 *sprite_source,
 	   wwww wwwh hhhh hhhh
 	*/
 
+<<<<<<< HEAD
 	const UINT16 *finish = m_spritebufferram + (0xa00 / 2);
 
 	UINT16* start = sprite_source;
+=======
+	const uint16_t *finish = m_spritebufferram.get() + (0xa00 / 2);
+
+	uint16_t* start = sprite_source;
+>>>>>>> upstream/master
 
 	while (sprite_source < finish)
 	{
@@ -519,9 +603,15 @@ void pgm_state::draw_sprites( bitmap_ind16& spritebitmap, UINT16 *sprite_source,
 		int high = sprite_source[4] & 0x01ff;
 		int pri = (sprite_source[2] & 0x0080) >>  7;
 
+<<<<<<< HEAD
 		UINT32 xzoom, yzoom;
 
 		UINT16* sprite_zoomtable = &m_videoregs[0x1000 / 2];
+=======
+		uint32_t xzoom, yzoom;
+
+		uint16_t* sprite_zoomtable = &m_videoregs[0x1000 / 2];
+>>>>>>> upstream/master
 
 		if (xgrow)
 		{
@@ -619,22 +709,38 @@ VIDEO_START_MEMBER(pgm_state,pgm)
 	m_aoffset = 0;
 	m_boffset = 0;
 
+<<<<<<< HEAD
 	m_tx_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(pgm_state::get_pgm_tx_tilemap_tile_info),this), TILEMAP_SCAN_ROWS, 8, 8, 64, 32);
 	m_tx_tilemap->set_transparent_pen(15);
 
 	m_bg_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(pgm_state::get_pgm_bg_tilemap_tile_info),this), TILEMAP_SCAN_ROWS, 32, 32, 64, 16);
+=======
+	m_tx_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(pgm_state::get_pgm_tx_tilemap_tile_info),this), TILEMAP_SCAN_ROWS, 8, 8, 64, 32);
+	m_tx_tilemap->set_transparent_pen(15);
+
+	m_bg_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(pgm_state::get_pgm_bg_tilemap_tile_info),this), TILEMAP_SCAN_ROWS, 32, 32, 64, 16);
+>>>>>>> upstream/master
 	m_bg_tilemap->set_transparent_pen(31);
 	m_bg_tilemap->set_scroll_rows(16 * 32);
 
 	for (i = 0; i < 0x1200 / 2; i++)
 		m_palette->set_pen_color(i, rgb_t(0, 0, 0));
 
+<<<<<<< HEAD
 	m_spritebufferram = auto_alloc_array_clear(machine(), UINT16, 0xa00/2);
 
 	save_pointer(NAME(m_spritebufferram), 0xa00/2);
 }
 
 UINT32 pgm_state::screen_update_pgm(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+=======
+	m_spritebufferram = make_unique_clear<uint16_t[]>(0xa00/2);
+
+	save_pointer(NAME(m_spritebufferram.get()), 0xa00/2);
+}
+
+uint32_t pgm_state::screen_update_pgm(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+>>>>>>> upstream/master
 {
 	int y;
 
@@ -650,7 +756,11 @@ UINT32 pgm_state::screen_update_pgm(screen_device &screen, bitmap_ind16 &bitmap,
 
 	m_bg_tilemap->draw(screen, bitmap, cliprect, 0, 2);
 
+<<<<<<< HEAD
 	draw_sprites(bitmap, m_spritebufferram, screen.priority());
+=======
+	draw_sprites(bitmap, m_spritebufferram.get(), screen.priority());
+>>>>>>> upstream/master
 
 	m_tx_tilemap->set_scrolly(0, m_videoregs[0x5000/2]);
 	m_tx_tilemap->set_scrollx(0, m_videoregs[0x6000/2]); // Check
@@ -663,12 +773,20 @@ UINT32 pgm_state::screen_update_pgm(screen_device &screen, bitmap_ind16 &bitmap,
 
 }
 
+<<<<<<< HEAD
 void pgm_state::screen_eof_pgm(screen_device &screen, bool state)
+=======
+WRITE_LINE_MEMBER(pgm_state::screen_vblank_pgm)
+>>>>>>> upstream/master
 {
 	// rising edge
 	if (state)
 	{
 		/* first 0xa00 of main ram = sprites, seems to be buffered, DMA? */
+<<<<<<< HEAD
 		memcpy(m_spritebufferram, m_mainram, 0xa00);
+=======
+		memcpy(m_spritebufferram.get(), m_mainram, 0xa00);
+>>>>>>> upstream/master
 	}
 }

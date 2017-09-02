@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 // license:LGPL-2.1+
+=======
+// license:BSD-3-Clause
+>>>>>>> upstream/master
 // copyright-holders:Tomasz Slanina
 /***************************************************************************
 
@@ -11,6 +15,11 @@
 
 #include "emu.h"
 #include "cpu/i86/i186.h"
+<<<<<<< HEAD
+=======
+#include "screen.h"
+#include "speaker.h"
+>>>>>>> upstream/master
 
 
 class neptunp2_state : public driver_device
@@ -23,7 +32,11 @@ public:
 
 	DECLARE_READ8_MEMBER(test_r);
 
+<<<<<<< HEAD
 	UINT32 screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
+=======
+	uint32_t screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
+>>>>>>> upstream/master
 
 protected:
 
@@ -31,7 +44,11 @@ protected:
 	required_device<cpu_device> m_maincpu;
 
 	// driver_device overrides
+<<<<<<< HEAD
 	virtual void video_start();
+=======
+	virtual void video_start() override;
+>>>>>>> upstream/master
 };
 
 
@@ -39,7 +56,11 @@ void neptunp2_state::video_start()
 {
 }
 
+<<<<<<< HEAD
 UINT32 neptunp2_state::screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+=======
+uint32_t neptunp2_state::screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+>>>>>>> upstream/master
 {
 	return 0;
 }
@@ -90,7 +111,11 @@ static GFXDECODE_START( neptunp2 )
 //  GFXDECODE_ENTRY( "gfx1", 0, charlayout,     0, 8 )
 GFXDECODE_END
 
+<<<<<<< HEAD
 static MACHINE_CONFIG_START( neptunp2, neptunp2_state )
+=======
+static MACHINE_CONFIG_START( neptunp2 )
+>>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu",I80188,20000000) // N80C188-20 AMD
@@ -137,4 +162,8 @@ ROM_START( neptunp2 )
 ROM_END
 
 
+<<<<<<< HEAD
 GAME( 199?, neptunp2,  0,   neptunp2, neptunp2, driver_device,  0, ROT0, "Unidesa?", "Neptune's Pearls 2", MACHINE_NOT_WORKING | MACHINE_NO_SOUND )
+=======
+GAME( 199?, neptunp2,  0,   neptunp2, neptunp2, neptunp2_state,  0, ROT0, "Unidesa?", "Neptune's Pearls 2", MACHINE_NOT_WORKING | MACHINE_NO_SOUND )
+>>>>>>> upstream/master

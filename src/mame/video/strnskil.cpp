@@ -16,7 +16,11 @@ Video hardware driver by Uki
 
 PALETTE_INIT_MEMBER(strnskil_state, strnskil)
 {
+<<<<<<< HEAD
 	const UINT8 *color_prom = memregion("proms")->base();
+=======
+	const uint8_t *color_prom = memregion("proms")->base();
+>>>>>>> upstream/master
 	int i;
 
 	/* create a lookup table for the palette */
@@ -35,7 +39,11 @@ PALETTE_INIT_MEMBER(strnskil_state, strnskil)
 	/* sprites lookup table */
 	for (i = 0; i < 0x400; i++)
 	{
+<<<<<<< HEAD
 		UINT8 ctabentry = color_prom[i];
+=======
+		uint8_t ctabentry = color_prom[i];
+>>>>>>> upstream/master
 		palette.set_pen_indirect(i, ctabentry);
 	}
 }
@@ -69,7 +77,11 @@ TILE_GET_INFO_MEMBER(strnskil_state::get_bg_tile_info)
 
 void strnskil_state::video_start()
 {
+<<<<<<< HEAD
 	m_bg_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(strnskil_state::get_bg_tile_info),this), TILEMAP_SCAN_COLS,
+=======
+	m_bg_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(strnskil_state::get_bg_tile_info),this), TILEMAP_SCAN_COLS,
+>>>>>>> upstream/master
 			8, 8, 32, 32);
 
 	m_bg_tilemap->set_scroll_rows(32);
@@ -107,7 +119,11 @@ void strnskil_state::draw_sprites(bitmap_ind16 &bitmap, const rectangle &cliprec
 			sx = sx - 256;
 
 
+<<<<<<< HEAD
 			m_gfxdecode->gfx(1)->transmask(bitmap,cliprect,
+=======
+		m_gfxdecode->gfx(1)->transmask(bitmap,cliprect,
+>>>>>>> upstream/master
 			code, color,
 			flipx, flipy,
 			px, py,
@@ -115,9 +131,15 @@ void strnskil_state::draw_sprites(bitmap_ind16 &bitmap, const rectangle &cliprec
 	}
 }
 
+<<<<<<< HEAD
 UINT32 strnskil_state::screen_update_strnskil(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
 {
 	const UINT8 *usr1 = memregion("user1")->base();
+=======
+uint32_t strnskil_state::screen_update_strnskil(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+{
+	const uint8_t *usr1 = memregion("user1")->base();
+>>>>>>> upstream/master
 
 	for (int row = 0; row < 32; row++)
 	{

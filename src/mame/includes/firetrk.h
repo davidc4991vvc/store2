@@ -6,7 +6,13 @@ Atari Fire Truck + Super Bug + Monte Carlo driver
 
 *************************************************************************/
 
+<<<<<<< HEAD
 #include "sound/discrete.h"
+=======
+#include "machine/watchdog.h"
+#include "sound/discrete.h"
+#include "screen.h"
+>>>>>>> upstream/master
 
 #define FIRETRUCK_MOTOR_DATA    NODE_01
 #define FIRETRUCK_HORN_EN       NODE_02
@@ -38,6 +44,10 @@ public:
 	firetrk_state(const machine_config &mconfig, device_type type, const char *tag)
 		: driver_device(mconfig, type, tag),
 		m_maincpu(*this, "maincpu"),
+<<<<<<< HEAD
+=======
+		m_watchdog(*this, "watchdog"),
+>>>>>>> upstream/master
 		m_discrete(*this, "discrete"),
 		m_alpha_num_ram(*this, "alpha_num_ram"),
 		m_playfield_ram(*this, "playfield_ram"),
@@ -50,6 +60,7 @@ public:
 		m_drone_rot(*this, "drone_rot"),
 		m_gfxdecode(*this, "gfxdecode"),
 		m_screen(*this, "screen"),
+<<<<<<< HEAD
 		m_palette(*this, "palette")
 	{ }
 
@@ -64,10 +75,33 @@ public:
 	optional_shared_ptr<UINT8> m_drone_x;
 	optional_shared_ptr<UINT8> m_drone_y;
 	optional_shared_ptr<UINT8> m_drone_rot;
+=======
+		m_palette(*this, "palette"),
+		m_bit_0(*this, "BIT_0"),
+		m_bit_6(*this, "BIT_6"),
+		m_bit_7(*this, "BIT_7"),
+		m_dips(*this, {"DIP_0", "DIP_1"}),
+		m_steer(*this, {"STEER_1", "STEER_2"})
+	{ }
+
+	required_device<cpu_device> m_maincpu;
+	required_device<watchdog_timer_device> m_watchdog;
+	required_device<discrete_device> m_discrete;
+	required_shared_ptr<uint8_t> m_alpha_num_ram;
+	required_shared_ptr<uint8_t> m_playfield_ram;
+	required_shared_ptr<uint8_t> m_scroll_y;
+	required_shared_ptr<uint8_t> m_scroll_x;
+	required_shared_ptr<uint8_t> m_car_rot;
+	optional_shared_ptr<uint8_t> m_blink;
+	optional_shared_ptr<uint8_t> m_drone_x;
+	optional_shared_ptr<uint8_t> m_drone_y;
+	optional_shared_ptr<uint8_t> m_drone_rot;
+>>>>>>> upstream/master
 	required_device<gfxdecode_device> m_gfxdecode;
 	required_device<screen_device> m_screen;
 	required_device<palette_device> m_palette;
 
+<<<<<<< HEAD
 	UINT8 m_in_service_mode;
 	UINT32 m_dial[2];
 	UINT8 m_steer_dir[2];
@@ -81,6 +115,27 @@ public:
 	bitmap_ind16 m_helper2;
 	UINT32 m_color1_mask;
 	UINT32 m_color2_mask;
+=======
+	optional_ioport m_bit_0;
+	optional_ioport m_bit_6;
+	optional_ioport m_bit_7;
+	required_ioport_array<2> m_dips;
+	optional_ioport_array<2> m_steer;
+
+	uint8_t m_in_service_mode;
+	uint32_t m_dial[2];
+	uint8_t m_steer_dir[2];
+	uint8_t m_steer_flag[2];
+	uint8_t m_gear;
+
+	uint8_t m_flash;
+	uint8_t m_crash[2];
+	uint8_t m_skid[2];
+	bitmap_ind16 m_helper1;
+	bitmap_ind16 m_helper2;
+	uint32_t m_color1_mask;
+	uint32_t m_color2_mask;
+>>>>>>> upstream/master
 	tilemap_t *m_tilemap1;
 	tilemap_t *m_tilemap2;
 
@@ -111,15 +166,26 @@ public:
 	TILE_GET_INFO_MEMBER(firetrk_get_tile_info2);
 	TILE_GET_INFO_MEMBER(superbug_get_tile_info2);
 	TILE_GET_INFO_MEMBER(montecar_get_tile_info2);
+<<<<<<< HEAD
 	virtual void machine_reset();
 	virtual void video_start();
+=======
+	virtual void machine_reset() override;
+	virtual void video_start() override;
+>>>>>>> upstream/master
 	DECLARE_PALETTE_INIT(firetrk);
 	DECLARE_VIDEO_START(superbug);
 	DECLARE_VIDEO_START(montecar);
 	DECLARE_PALETTE_INIT(montecar);
+<<<<<<< HEAD
 	UINT32 screen_update_firetrk(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
 	UINT32 screen_update_superbug(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
 	UINT32 screen_update_montecar(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
+=======
+	uint32_t screen_update_firetrk(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
+	uint32_t screen_update_superbug(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
+	uint32_t screen_update_montecar(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
+>>>>>>> upstream/master
 	TIMER_DEVICE_CALLBACK_MEMBER(firetrk_scanline);
 	DECLARE_WRITE8_MEMBER(firetrk_skid_reset_w);
 	DECLARE_WRITE8_MEMBER(montecar_skid_reset_w);
@@ -128,13 +194,21 @@ public:
 	DECLARE_WRITE8_MEMBER(firetrk_motor_snd_w);
 	DECLARE_WRITE8_MEMBER(superbug_motor_snd_w);
 	DECLARE_WRITE8_MEMBER(firetrk_xtndply_w);
+<<<<<<< HEAD
 	void prom_to_palette(int number, UINT8 val);
+=======
+	void prom_to_palette(int number, uint8_t val);
+>>>>>>> upstream/master
 	void firetrk_draw_car(bitmap_ind16 &bitmap, const rectangle &cliprect, int which, int flash);
 	void superbug_draw_car(bitmap_ind16 &bitmap, const rectangle &cliprect, int flash);
 	void montecar_draw_car(bitmap_ind16 &bitmap, const rectangle &cliprect, int which, int is_collision_detection);
 	void check_collision(int which);
 	void set_service_mode(int enable);
+<<<<<<< HEAD
 	void draw_text(bitmap_ind16 &bitmap, const rectangle &cliprect, UINT8 *alpha_ram, int x, int count, int height);
+=======
+	void draw_text(bitmap_ind16 &bitmap, const rectangle &cliprect, uint8_t *alpha_ram, int x, int count, int height);
+>>>>>>> upstream/master
 };
 
 

@@ -62,12 +62,20 @@
 
 ***************************************************************************/
 
+<<<<<<< HEAD
 #pragma once
 
 #ifndef __ISA_H__
 #define __ISA_H__
 
 #include "emu.h"
+=======
+#ifndef MAME_BUS_ISA_ISA_H
+#define MAME_BUS_ISA_ISA_H
+
+#pragma once
+
+>>>>>>> upstream/master
 
 
 //**************************************************************************
@@ -93,7 +101,11 @@
 	isa16_slot_device::static_set_isa16_slot(*device, owner, _isatag);
 
 #define MCFG_ISA_BUS_IOCHCK(_iochck) \
+<<<<<<< HEAD
 	downcast<isa8_device *>(device)->set_iochck_callback(DEVCB_##_iochck);
+=======
+	devcb = &downcast<isa8_device *>(device)->set_iochck_callback(DEVCB_##_iochck);
+>>>>>>> upstream/master
 
 #define MCFG_ISA_OUT_IRQ2_CB(_devcb) \
 	devcb = &isa8_device::set_out_irq2_callback(*device, DEVCB_##_devcb);
@@ -162,6 +174,7 @@ class isa8_slot_device : public device_t,
 {
 public:
 	// construction/destruction
+<<<<<<< HEAD
 	isa8_slot_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
 	isa8_slot_device(const machine_config &mconfig, device_type type, const char *name, const char *tag, device_t *owner, UINT32 clock, const char *shortname, const char *source);
 
@@ -171,13 +184,30 @@ public:
 	// inline configuration
 	static void static_set_isa8_slot(device_t &device, device_t *owner, const char *isa_tag);
 protected:
+=======
+	isa8_slot_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
+
+	// device-level overrides
+	virtual void device_start() override;
+
+	// inline configuration
+	static void static_set_isa8_slot(device_t &device, device_t *owner, const char *isa_tag);
+
+protected:
+	isa8_slot_device(const machine_config &mconfig, device_type type, const char *tag, device_t *owner, uint32_t clock);
+
+>>>>>>> upstream/master
 	// configuration
 	device_t *m_owner;
 	const char *m_isa_tag;
 };
 
 // device type definition
+<<<<<<< HEAD
 extern const device_type ISA8_SLOT;
+=======
+DECLARE_DEVICE_TYPE(ISA8_SLOT, isa8_slot_device)
+>>>>>>> upstream/master
 
 class device_isa8_card_interface;
 // ======================> isa8_device
@@ -185,6 +215,7 @@ class isa8_device : public device_t,
 					public device_memory_interface
 {
 public:
+<<<<<<< HEAD
 	// construction/destruction
 	isa8_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
 	isa8_device(const machine_config &mconfig, device_type type, const char *name, const char *tag, device_t *owner, UINT32 clock, const char *shortname, const char *source);
@@ -226,6 +257,51 @@ public:
 
 	void unmap_bank(offs_t start, offs_t end, offs_t mask, offs_t mirror);
 	void unmap_rom(offs_t start, offs_t end, offs_t mask, offs_t mirror);
+=======
+	enum
+	{
+		AS_ISA_MEM    = 0,
+		AS_ISA_IO     = 1,
+		AS_ISA_MEMALT = 2,
+		AS_ISA_IOALT  = 3
+	};
+
+	// construction/destruction
+	isa8_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
+	// inline configuration
+	static void static_set_cputag(device_t &device, const char *tag);
+	static void static_set_custom_spaces(device_t &device);
+	template <class Object> devcb_base &set_iochck_callback(Object &&cb) { return m_write_iochck.set_callback(std::forward<Object>(cb)); }
+	template <class Object> static devcb_base &set_out_irq2_callback(device_t &device, Object &&cb) { return downcast<isa8_device &>(device).m_out_irq2_cb.set_callback(std::forward<Object>(cb)); }
+	template <class Object> static devcb_base &set_out_irq3_callback(device_t &device, Object &&cb) { return downcast<isa8_device &>(device).m_out_irq3_cb.set_callback(std::forward<Object>(cb)); }
+	template <class Object> static devcb_base &set_out_irq4_callback(device_t &device, Object &&cb) { return downcast<isa8_device &>(device).m_out_irq4_cb.set_callback(std::forward<Object>(cb)); }
+	template <class Object> static devcb_base &set_out_irq5_callback(device_t &device, Object &&cb) { return downcast<isa8_device &>(device).m_out_irq5_cb.set_callback(std::forward<Object>(cb)); }
+	template <class Object> static devcb_base &set_out_irq6_callback(device_t &device, Object &&cb) { return downcast<isa8_device &>(device).m_out_irq6_cb.set_callback(std::forward<Object>(cb)); }
+	template <class Object> static devcb_base &set_out_irq7_callback(device_t &device, Object &&cb) { return downcast<isa8_device &>(device).m_out_irq7_cb.set_callback(std::forward<Object>(cb)); }
+	template <class Object> static devcb_base &set_out_drq1_callback(device_t &device, Object &&cb) { return downcast<isa8_device &>(device).m_out_drq1_cb.set_callback(std::forward<Object>(cb)); }
+	template <class Object> static devcb_base &set_out_drq2_callback(device_t &device, Object &&cb) { return downcast<isa8_device &>(device).m_out_drq2_cb.set_callback(std::forward<Object>(cb)); }
+	template <class Object> static devcb_base &set_out_drq3_callback(device_t &device, Object &&cb) { return downcast<isa8_device &>(device).m_out_drq3_cb.set_callback(std::forward<Object>(cb)); }
+
+	// for ISA8, put the 8-bit configs in the primary slots and the 16-bit configs in the secondary
+	virtual space_config_vector memory_space_config() const override;
+
+	void install_device(offs_t start, offs_t end, read8_delegate rhandler, write8_delegate whandler);
+	template<typename T> void install_device(offs_t addrstart, offs_t addrend, T &device, void (T::*map)(class address_map &map), int bits = 8)
+	{
+		m_iospace->install_device(addrstart, addrend, device, map, bits, 0xffffffffffffffffU >> (64 - m_iospace->data_width()));
+	}
+	template<typename T> void install_device(offs_t addrstart, offs_t addrend, T &device, void (T::*map)(class address_map &map), int bits, uint64_t unitmask)
+	{
+		m_iospace->install_device(addrstart, addrend, device, map, bits, unitmask);
+	}
+	void install_bank(offs_t start, offs_t end, const char *tag, uint8_t *data);
+	void install_rom(device_t *dev, offs_t start, offs_t end, const char *tag, const char *region);
+	void install_memory(offs_t start, offs_t end, read8_delegate rhandler, write8_delegate whandler);
+
+	void unmap_device(offs_t start, offs_t end) const { m_iospace->unmap_readwrite(start, end); }
+	void unmap_bank(offs_t start, offs_t end);
+	void unmap_rom(offs_t start, offs_t end);
+>>>>>>> upstream/master
 	bool is_option_rom_space_available(offs_t start, int size);
 
 	DECLARE_WRITE_LINE_MEMBER( irq2_w );
@@ -240,6 +316,7 @@ public:
 	DECLARE_WRITE_LINE_MEMBER( drq3_w );
 
 	// 8 bit accessors for ISA-defined address spaces
+<<<<<<< HEAD
 	DECLARE_READ8_MEMBER(prog_r);
 	DECLARE_WRITE8_MEMBER(prog_w);
 	DECLARE_READ8_MEMBER(io_r);
@@ -247,11 +324,21 @@ public:
 
 	UINT8 dack_r(int line);
 	void dack_w(int line,UINT8 data);
+=======
+	DECLARE_READ8_MEMBER(mem_r);
+	DECLARE_WRITE8_MEMBER(mem_w);
+	DECLARE_READ8_MEMBER(io_r);
+	DECLARE_WRITE8_MEMBER(io_w);
+
+	uint8_t dack_r(int line);
+	void dack_w(int line,uint8_t data);
+>>>>>>> upstream/master
 	void eop_w(int channels, int state);
 
 	void nmi();
 	void set_nmi_state(bool enabled) { m_nmi_enabled = enabled; }
 
+<<<<<<< HEAD
 	virtual void set_dma_channel(UINT8 channel, device_isa8_card_interface *dev, bool do_eop);
 
 	const address_space_config m_program_config, m_io_config, m_program16_config, m_io16_config;
@@ -263,13 +350,32 @@ protected:
 	virtual void device_start();
 	virtual void device_reset();
 	virtual void device_config_complete();
+=======
+	virtual void set_dma_channel(uint8_t channel, device_isa8_card_interface *dev, bool do_eop);
+
+	const address_space_config m_mem_config, m_io_config, m_mem16_config, m_io16_config;
+
+protected:
+	isa8_device(const machine_config &mconfig, device_type type, const char *tag, device_t *owner, uint32_t clock);
+
+	void install_space(int spacenum, offs_t start, offs_t end, read8_delegate rhandler, write8_delegate whandler);
+
+	// device-level overrides
+	virtual void device_start() override;
+	virtual void device_reset() override;
+>>>>>>> upstream/master
 
 	// internal state
 	cpu_device   *m_maincpu;
 
 	// address spaces
+<<<<<<< HEAD
 	address_space *m_iospace, *m_prgspace;
 	int m_iowidth, m_prgwidth;
+=======
+	address_space *m_iospace, *m_memspace;
+	int m_iowidth, m_memwidth;
+>>>>>>> upstream/master
 	bool m_allocspaces;
 
 	devcb_write_line    m_out_irq2_cb;
@@ -293,7 +399,11 @@ private:
 
 
 // device type definition
+<<<<<<< HEAD
 extern const device_type ISA8;
+=======
+DECLARE_DEVICE_TYPE(ISA8, isa8_device)
+>>>>>>> upstream/master
 
 // ======================> device_isa8_card_interface
 
@@ -301,24 +411,46 @@ extern const device_type ISA8;
 class device_isa8_card_interface : public device_slot_card_interface
 {
 	friend class isa8_device;
+<<<<<<< HEAD
 public:
 	// construction/destruction
 	device_isa8_card_interface(const machine_config &mconfig, device_t &device);
+=======
+	template <class ElementType> friend class simple_list;
+public:
+	// construction/destruction
+>>>>>>> upstream/master
 	virtual ~device_isa8_card_interface();
 
 	device_isa8_card_interface *next() const { return m_next; }
 
 	void set_isa_device();
 	// configuration access
+<<<<<<< HEAD
 	virtual UINT8 dack_r(int line);
 	virtual void dack_w(int line,UINT8 data);
+=======
+	virtual uint8_t dack_r(int line);
+	virtual void dack_w(int line,uint8_t data);
+>>>>>>> upstream/master
 	virtual void eop_w(int state);
 
 	// inline configuration
 	static void static_set_isabus(device_t &device, device_t *isa_device);
+<<<<<<< HEAD
 public:
 	isa8_device  *m_isa;
 	device_t     *m_isa_dev;
+=======
+
+public:
+	device_isa8_card_interface(const machine_config &mconfig, device_t &device);
+
+	isa8_device  *m_isa;
+	device_t     *m_isa_dev;
+
+private:
+>>>>>>> upstream/master
 	device_isa8_card_interface *m_next;
 };
 
@@ -328,9 +460,15 @@ class isa16_slot_device : public isa8_slot_device
 {
 public:
 	// construction/destruction
+<<<<<<< HEAD
 	isa16_slot_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
 		// device-level overrides
 	virtual void device_start();
+=======
+	isa16_slot_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
+		// device-level overrides
+	virtual void device_start() override;
+>>>>>>> upstream/master
 
 	// inline configuration
 	static void static_set_isa16_slot(device_t &device, device_t *owner, const char *isa_tag);
@@ -338,13 +476,18 @@ public:
 
 
 // device type definition
+<<<<<<< HEAD
 extern const device_type ISA16_SLOT;
+=======
+DECLARE_DEVICE_TYPE(ISA16_SLOT, isa16_slot_device)
+>>>>>>> upstream/master
 
 // ======================> isa16_device
 class isa16_device : public isa8_device
 {
 public:
 	// construction/destruction
+<<<<<<< HEAD
 	isa16_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
 
 	template<class _Object> static devcb_base &set_out_irq10_callback(device_t &device, _Object object) { return downcast<isa16_device &>(device).m_out_irq10_cb.set_callback(object); }
@@ -371,6 +514,24 @@ public:
 			default:         fatalerror("isa: invalid memory space!\n");
 		}
 	}
+=======
+	isa16_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
+
+	template <class Object> static devcb_base &set_out_irq10_callback(device_t &device, Object &&cb) { return downcast<isa16_device &>(device).m_out_irq10_cb.set_callback(std::forward<Object>(cb)); }
+	template <class Object> static devcb_base &set_out_irq11_callback(device_t &device, Object &&cb) { return downcast<isa16_device &>(device).m_out_irq11_cb.set_callback(std::forward<Object>(cb)); }
+	template <class Object> static devcb_base &set_out_irq12_callback(device_t &device, Object &&cb) { return downcast<isa16_device &>(device).m_out_irq12_cb.set_callback(std::forward<Object>(cb)); }
+	template <class Object> static devcb_base &set_out_irq14_callback(device_t &device, Object &&cb) { return downcast<isa16_device &>(device).m_out_irq14_cb.set_callback(std::forward<Object>(cb)); }
+	template <class Object> static devcb_base &set_out_irq15_callback(device_t &device, Object &&cb) { return downcast<isa16_device &>(device).m_out_irq15_cb.set_callback(std::forward<Object>(cb)); }
+	template <class Object> static devcb_base &set_out_drq0_callback(device_t &device, Object &&cb) { return downcast<isa16_device &>(device).m_out_drq0_cb.set_callback(std::forward<Object>(cb)); }
+	template <class Object> static devcb_base &set_out_drq5_callback(device_t &device, Object &&cb) { return downcast<isa16_device &>(device).m_out_drq5_cb.set_callback(std::forward<Object>(cb)); }
+	template <class Object> static devcb_base &set_out_drq6_callback(device_t &device, Object &&cb) { return downcast<isa16_device &>(device).m_out_drq6_cb.set_callback(std::forward<Object>(cb)); }
+	template <class Object> static devcb_base &set_out_drq7_callback(device_t &device, Object &&cb) { return downcast<isa16_device &>(device).m_out_drq7_cb.set_callback(std::forward<Object>(cb)); }
+
+	void install16_device(offs_t start, offs_t end, read16_delegate rhandler, write16_delegate whandler);
+
+	// for ISA16, put the 16-bit configs in the primary slots and the 8-bit configs in the secondary
+	virtual space_config_vector memory_space_config() const override;
+>>>>>>> upstream/master
 
 	DECLARE_WRITE_LINE_MEMBER( irq10_w );
 	DECLARE_WRITE_LINE_MEMBER( irq11_w );
@@ -383,6 +544,7 @@ public:
 	DECLARE_WRITE_LINE_MEMBER( drq6_w );
 	DECLARE_WRITE_LINE_MEMBER( drq7_w );
 
+<<<<<<< HEAD
 	UINT16 dack16_r(int line);
 	void dack16_w(int line,UINT16 data);
 
@@ -394,13 +556,30 @@ public:
 	// byte-swapped versions of 16-bit accessors
 	DECLARE_READ16_MEMBER(prog16_swap_r);
 	DECLARE_WRITE16_MEMBER(prog16_swap_w);
+=======
+	uint16_t dack16_r(int line);
+	void dack16_w(int line,uint16_t data);
+
+	// 16 bit accessors for ISA-defined address spaces
+	DECLARE_READ16_MEMBER(mem16_r);
+	DECLARE_WRITE16_MEMBER(mem16_w);
+	DECLARE_READ16_MEMBER(io16_r);
+	DECLARE_WRITE16_MEMBER(io16_w);
+	// byte-swapped versions of 16-bit accessors
+	DECLARE_READ16_MEMBER(mem16_swap_r);
+	DECLARE_WRITE16_MEMBER(mem16_swap_w);
+>>>>>>> upstream/master
 	DECLARE_READ16_MEMBER(io16_swap_r);
 	DECLARE_WRITE16_MEMBER(io16_swap_w);
 
 protected:
 	// device-level overrides
+<<<<<<< HEAD
 	virtual void device_start();
 	virtual void device_config_complete();
+=======
+	virtual void device_start() override;
+>>>>>>> upstream/master
 
 private:
 	// internal state
@@ -417,7 +596,11 @@ private:
 
 
 // device type definition
+<<<<<<< HEAD
 extern const device_type ISA16;
+=======
+DECLARE_DEVICE_TYPE(ISA16, isa16_device)
+>>>>>>> upstream/master
 
 // ======================> device_isa16_card_interface
 
@@ -427,6 +610,7 @@ class device_isa16_card_interface : public device_isa8_card_interface
 	friend class isa16_device;
 public:
 	// construction/destruction
+<<<<<<< HEAD
 	device_isa16_card_interface(const machine_config &mconfig, device_t &device);
 	virtual ~device_isa16_card_interface();
 	virtual UINT16 dack16_r(int line);
@@ -437,3 +621,18 @@ public:
 };
 
 #endif  /* __ISA_H__ */
+=======
+	virtual ~device_isa16_card_interface();
+	virtual uint16_t dack16_r(int line);
+	virtual void dack16_w(int line,uint16_t data);
+
+	void set_isa_device();
+
+protected:
+	device_isa16_card_interface(const machine_config &mconfig, device_t &device);
+
+	isa16_device  *m_isa;
+};
+
+#endif // MAME_BUS_ISA_ISA_H
+>>>>>>> upstream/master

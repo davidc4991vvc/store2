@@ -9,7 +9,10 @@
 *********************************************************************/
 
 #include "emu.h"
+<<<<<<< HEAD
 #include "includes/apple2.h"
+=======
+>>>>>>> upstream/master
 #include "a2swyft.h"
 
 
@@ -21,7 +24,11 @@
 //  GLOBAL VARIABLES
 //**************************************************************************
 
+<<<<<<< HEAD
 const device_type A2BUS_SWYFT = &device_creator<a2bus_swyft_device>;
+=======
+DEFINE_DEVICE_TYPE(A2BUS_SWYFT, a2bus_swyft_device, "a2swyft", "IAI SwyftCard")
+>>>>>>> upstream/master
 
 #define SWYFT_ROM_REGION  "swyft_rom"
 
@@ -36,7 +43,11 @@ ROM_END
 //  rom_region - device-specific ROM region
 //-------------------------------------------------
 
+<<<<<<< HEAD
 const rom_entry *a2bus_swyft_device::device_rom_region() const
+=======
+const tiny_rom_entry *a2bus_swyft_device::device_rom_region() const
+>>>>>>> upstream/master
 {
 	return ROM_NAME( swyft );
 }
@@ -45,6 +56,7 @@ const rom_entry *a2bus_swyft_device::device_rom_region() const
 //  LIVE DEVICE
 //**************************************************************************
 
+<<<<<<< HEAD
 a2bus_swyft_device::a2bus_swyft_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock) :
 		device_t(mconfig, A2BUS_SWYFT, "IAI SwyftCard", tag, owner, clock, "a2swyft", __FILE__),
 		device_a2bus_card_interface(mconfig, *this), m_rom(nullptr), m_rombank(0), m_inh_state(0)
@@ -53,6 +65,15 @@ a2bus_swyft_device::a2bus_swyft_device(const machine_config &mconfig, const char
 
 a2bus_swyft_device::a2bus_swyft_device(const machine_config &mconfig, device_type type, const char *name, const char *tag, device_t *owner, UINT32 clock, const char *shortname, const char *source) :
 		device_t(mconfig, type, name, tag, owner, clock, shortname, source),
+=======
+a2bus_swyft_device::a2bus_swyft_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock) :
+		a2bus_swyft_device(mconfig, A2BUS_SWYFT, tag, owner, clock)
+{
+}
+
+a2bus_swyft_device::a2bus_swyft_device(const machine_config &mconfig, device_type type, const char *tag, device_t *owner, uint32_t clock) :
+		device_t(mconfig, type, tag, owner, clock),
+>>>>>>> upstream/master
 		device_a2bus_card_interface(mconfig, *this), m_rom(nullptr), m_rombank(0), m_inh_state(0)
 {
 }
@@ -79,7 +100,11 @@ void a2bus_swyft_device::device_reset()
 	recalc_slot_inh();
 }
 
+<<<<<<< HEAD
 UINT8 a2bus_swyft_device::read_c0nx(address_space &space, UINT8 offset)
+=======
+uint8_t a2bus_swyft_device::read_c0nx(address_space &space, uint8_t offset)
+>>>>>>> upstream/master
 {
 	switch (offset)
 	{
@@ -105,7 +130,11 @@ UINT8 a2bus_swyft_device::read_c0nx(address_space &space, UINT8 offset)
 	return 0xff;
 }
 
+<<<<<<< HEAD
 void a2bus_swyft_device::write_c0nx(address_space &space, UINT8 offset, UINT8 data)
+=======
+void a2bus_swyft_device::write_c0nx(address_space &space, uint8_t offset, uint8_t data)
+>>>>>>> upstream/master
 {
 	switch (offset)
 	{
@@ -129,7 +158,11 @@ void a2bus_swyft_device::write_c0nx(address_space &space, UINT8 offset, UINT8 da
 	}
 }
 
+<<<<<<< HEAD
 UINT8 a2bus_swyft_device::read_inh_rom(address_space &space, UINT16 offset)
+=======
+uint8_t a2bus_swyft_device::read_inh_rom(address_space &space, uint16_t offset)
+>>>>>>> upstream/master
 {
 	offset -= 0xd000;
 

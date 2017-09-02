@@ -8,15 +8,27 @@
 
 ***************************************************************************/
 
+<<<<<<< HEAD
 #ifndef LPCI_H
 #define LPCI_H
+=======
+#ifndef MAME_MACHINE_LPCI_H
+#define MAME_MACHINE_LPCI_H
+
+#pragma once
+>>>>>>> upstream/master
 
 //**************************************************************************
 //  TYPE DEFINITIONS
 //**************************************************************************
 
+<<<<<<< HEAD
 typedef UINT32 (*pci_read_func)(device_t *pcibus, device_t *device, int function, int reg, UINT32 mem_mask);
 typedef void (*pci_write_func)(device_t *pcibus, device_t *device, int function, int reg, UINT32 data, UINT32 mem_mask);
+=======
+typedef uint32_t (*pci_read_func)(device_t *pcibus, device_t *device, int function, int reg, uint32_t mem_mask);
+typedef void (*pci_write_func)(device_t *pcibus, device_t *device, int function, int reg, uint32_t data, uint32_t mem_mask);
+>>>>>>> upstream/master
 
 // ======================> pci_bus_legacy_device
 
@@ -24,7 +36,11 @@ class pci_bus_legacy_device :  public device_t
 {
 public:
 	// construction/destruction
+<<<<<<< HEAD
 	pci_bus_legacy_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
+=======
+	pci_bus_legacy_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
+>>>>>>> upstream/master
 
 	DECLARE_READ32_MEMBER( read );
 	DECLARE_WRITE32_MEMBER( write );
@@ -42,29 +58,51 @@ public:
 
 protected:
 	// device-level overrides
+<<<<<<< HEAD
 	virtual void device_start();
 	virtual void device_reset();
 	virtual void device_post_load();
 
 private:
 	UINT8               m_busnum;
+=======
+	virtual void device_start() override;
+	virtual void device_reset() override;
+	virtual void device_post_load() override;
+
+private:
+	uint8_t               m_busnum;
+>>>>>>> upstream/master
 	const char *        m_devtag[32];
 	pci_read_func       m_read_callback[32];
 	pci_write_func      m_write_callback[32];
 	const char *        m_father;
 	device_t *          m_device[32];
 	pci_bus_legacy_device * m_siblings[8];
+<<<<<<< HEAD
 	UINT8               m_siblings_busnum[8];
 	int                 m_siblings_count;
 
 	offs_t              m_address;
 	INT8                m_devicenum; // device number we are addressing
 	INT8                m_busnumber; // pci bus number we are addressing
+=======
+	uint8_t               m_siblings_busnum[8];
+	int                 m_siblings_count;
+
+	offs_t              m_address;
+	int8_t                m_devicenum; // device number we are addressing
+	int8_t                m_busnumber; // pci bus number we are addressing
+>>>>>>> upstream/master
 	pci_bus_legacy_device * m_busnumaddr; // pci bus we are addressing
 };
 
 // device type definition
+<<<<<<< HEAD
 extern const device_type PCI_BUS_LEGACY;
+=======
+DECLARE_DEVICE_TYPE(PCI_BUS_LEGACY, pci_bus_legacy_device)
+>>>>>>> upstream/master
 
 
 /***************************************************************************
@@ -80,4 +118,8 @@ extern const device_type PCI_BUS_LEGACY;
 	downcast<pci_bus_legacy_device *>(device)->set_father(_father_tag);
 
 
+<<<<<<< HEAD
 #endif /* PCI_H */
+=======
+#endif // MAME_MACHINE_LPCI_H
+>>>>>>> upstream/master

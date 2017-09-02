@@ -1,11 +1,18 @@
 /* Ppmd.h -- PPMD codec common code
+<<<<<<< HEAD
 2011-01-27 : Igor Pavlov : Public domain
+=======
+2016-05-16 : Igor Pavlov : Public domain
+>>>>>>> upstream/master
 This code is based on PPMd var.H (2001): Dmitry Shkarin : Public domain */
 
 #ifndef __PPMD_H
 #define __PPMD_H
 
+<<<<<<< HEAD
 #include "Types.h"
+=======
+>>>>>>> upstream/master
 #include "CpuArch.h"
 
 EXTERN_C_BEGIN
@@ -78,8 +85,13 @@ typedef
   CPpmd_Byte_Ref;
 
 #define PPMD_SetAllBitsIn256Bytes(p) \
+<<<<<<< HEAD
   { unsigned i; for (i = 0; i < 256 / sizeof(p[0]); i += 8) { \
   p[i+7] = p[i+6] = p[i+5] = p[i+4] = p[i+3] = p[i+2] = p[i+1] = p[i+0] = ~(size_t)0; }}
+=======
+  { unsigned z; for (z = 0; z < 256 / sizeof(p[0]); z += 8) { \
+  p[z+7] = p[z+6] = p[z+5] = p[z+4] = p[z+3] = p[z+2] = p[z+1] = p[z+0] = ~(size_t)0; }}
+>>>>>>> upstream/master
 
 EXTERN_C_END
  

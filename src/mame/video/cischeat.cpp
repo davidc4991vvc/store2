@@ -29,6 +29,7 @@ Note:   if MAME_DEBUG is defined, pressing Z or X with:
 
 [ 3 Scrolling Layers ]
 
+<<<<<<< HEAD
     see Megasys1.c
 
         Tile Format:            Cisco Heat              F1 GP Star
@@ -37,12 +38,19 @@ Note:   if MAME_DEBUG is defined, pressing Z or X with:
                 Code        ---- -a98 7654 3210     ---- ba98 7654 3210
 
         Layer Size:         May be different from Megasys1?
+=======
+    see ms1_tmap.cpp
+>>>>>>> upstream/master
 
 [ 2 Road Layers ]
 
     Each of the 256 (not all visible) lines of the screen
     can display any of the lines of gfx in ROM, which are
+<<<<<<< HEAD
     larger than the sceen and can therefore be scrolled
+=======
+    larger than the screen and can therefore be scrolled
+>>>>>>> upstream/master
 
                                     Cisco Heat              F1 GP Star
                 Line Width          1024                    1024
@@ -87,6 +95,7 @@ Note:   if MAME_DEBUG is defined, pressing Z or X with:
 
 #endif
 
+<<<<<<< HEAD
 #define CISCHEAT_VREG_SCROLL(_n_, _dir_)    m_scroll##_dir_[_n_] = new_data
 
 
@@ -99,6 +108,11 @@ Note:   if MAME_DEBUG is defined, pressing Z or X with:
 
 #define cischeat_tmap_DRAW(_n_) \
 	if ( (m_tmap[_n_]) && (m_active_layers & (1 << _n_) ) ) \
+=======
+
+#define cischeat_tmap_DRAW(_n_) \
+	if ( (m_tmap[_n_]).found() && (active_layers1 & (1 << _n_) ) ) \
+>>>>>>> upstream/master
 	{ \
 		m_tmap[_n_]->draw(screen, bitmap, cliprect, flag, 0 ); \
 		flag = 0; \
@@ -123,6 +137,7 @@ void cischeat_state::prepare_shadows()
 	m_drawmode_table[15] = DRAWMODE_NONE;
 }
 
+<<<<<<< HEAD
 /**************************************************************************
                                 Cisco Heat
 **************************************************************************/
@@ -266,6 +281,18 @@ VIDEO_START_MEMBER(cischeat_state,f1gpstar)
 VIDEO_START_MEMBER(cischeat_state,bigrun)
 {
 	VIDEO_START_CALL_MEMBER(f1gpstar);
+=======
+void cischeat_state::video_start()
+{
+	m_spriteram = &m_ram[0x8000/2];
+
+	m_active_layers = 0;
+
+	prepare_shadows();
+
+	m_motor_value = 0;
+	m_io_value = 0;
+>>>>>>> upstream/master
 }
 
 
@@ -290,6 +317,7 @@ VIDEO_START_MEMBER(cischeat_state,bigrun)
                                 Big Run
 **************************************************************************/
 
+<<<<<<< HEAD
 READ16_MEMBER(cischeat_state::bigrun_vregs_r)
 {
 	switch (offset)
@@ -379,6 +407,80 @@ WRITE16_MEMBER(cischeat_state::bigrun_vregs_w)
 
 		default: SHOW_WRITE_ERROR("vreg %04X <- %04X",offset*2,data);
 	}
+=======
+READ16_MEMBER(cischeat_state::bigrun_ip_select_r)
+{
+	switch (m_ip_select & 0x3)
+	{
+		case 0 : return ioport("IN6")->read();      // Driving Wheel
+		case 1 : return 0xffff;                 // Cockpit: Up / Down Position
+		case 2 : return 0xffff;                 // Cockpit: Left / Right Position?
+		case 3 : return ioport("PEDAL")->read();    // Accelerator (Pedal)
+		default: return 0xffff;
+	}
+}
+
+
+WRITE16_MEMBER(cischeat_state::leds_out_w)
+{
+	// leds
+	if (ACCESSING_BITS_0_7)
+	{
+		machine().bookkeeping().coin_counter_w(0, data & 0x01);
+		machine().bookkeeping().coin_counter_w(1, data & 0x02);
+		output().set_led_value(0, data & 0x10);   // start button
+		output().set_led_value(1, data & 0x20);   // ?
+	}
+}
+
+
+WRITE16_MEMBER(cischeat_state::unknown_out_w)
+{
+	// ?? 91/1/91/1 ...
+}
+
+
+WRITE16_MEMBER(cischeat_state::motor_out_w)
+{
+	// motor (seat?)
+	if (ACCESSING_BITS_0_7)
+		output().set_led_value(2, (data & 0xff) != m_motor_value ? 1 : 0);
+	m_motor_value = data & 0xff;
+}
+
+
+WRITE16_MEMBER(cischeat_state::wheel_out_w)
+{
+	// motor (wheel?)
+}
+
+
+WRITE16_MEMBER(cischeat_state::ip_select_w)
+{
+	m_ip_select = data;
+}
+
+
+WRITE16_MEMBER(cischeat_state::ip_select_plus1_w)
+{
+	// value above + 1
+	m_ip_select = data + 1;
+}
+
+
+WRITE16_MEMBER(cischeat_state::bigrun_comms_w)
+{
+	/* Not sure about this one.. */
+	m_cpu2->set_input_line(INPUT_LINE_RESET, (data & 2) ? ASSERT_LINE : CLEAR_LINE);
+	m_cpu3->set_input_line(INPUT_LINE_RESET, (data & 2) ? ASSERT_LINE : CLEAR_LINE);
+	m_soundcpu->set_input_line(INPUT_LINE_RESET, (data & 1) ? ASSERT_LINE : CLEAR_LINE);
+}
+
+
+WRITE16_MEMBER(cischeat_state::active_layers_w)
+{
+	COMBINE_DATA(&m_active_layers);
+>>>>>>> upstream/master
 }
 
 
@@ -386,6 +488,7 @@ WRITE16_MEMBER(cischeat_state::bigrun_vregs_w)
                                 Cisco Heat
 **************************************************************************/
 
+<<<<<<< HEAD
 READ16_MEMBER(cischeat_state::cischeat_vregs_r)
 {
 	switch (offset)
@@ -471,6 +574,34 @@ WRITE16_MEMBER(cischeat_state::cischeat_vregs_w)
 
 		default: SHOW_WRITE_ERROR("vreg %04X <- %04X",offset*2,data);
 	}
+=======
+READ16_MEMBER(cischeat_state::cischeat_ip_select_r)
+{
+	switch (m_ip_select & 0x3)
+	{
+		case 0 : return ioport("IN6")->read();  // Driving Wheel
+		case 1 : return ~0;                 // Cockpit: Up / Down Position?
+		case 2 : return ~0;                 // Cockpit: Left / Right Position?
+		default: return ~0;
+	}
+}
+
+
+WRITE16_MEMBER(cischeat_state::cischeat_soundlatch_w)
+{
+	/* Sound CPU: reads latch during int 4, and stores command */
+	m_soundlatch->write(space, 0, data, mem_mask);
+	m_soundcpu->set_input_line(4, HOLD_LINE);
+}
+
+
+WRITE16_MEMBER(cischeat_state::cischeat_comms_w)
+{
+	/* Not sure about this one.. */
+	m_cpu2->set_input_line(INPUT_LINE_RESET, (data & 2) ? ASSERT_LINE : CLEAR_LINE);
+	m_cpu3->set_input_line(INPUT_LINE_RESET, (data & 2) ? ASSERT_LINE : CLEAR_LINE);
+	m_soundcpu->set_input_line(INPUT_LINE_RESET, (data & 1) ? ASSERT_LINE : CLEAR_LINE);
+>>>>>>> upstream/master
 }
 
 
@@ -479,6 +610,7 @@ WRITE16_MEMBER(cischeat_state::cischeat_vregs_w)
                             F1 GrandPrix Star
 **************************************************************************/
 
+<<<<<<< HEAD
 READ16_MEMBER(cischeat_state::f1gpstar_vregs_r)
 {
 	switch (offset)
@@ -518,10 +650,25 @@ READ16_MEMBER(cischeat_state::f1gpstr2_vregs_r)
 	}
 }
 
+=======
+READ16_MEMBER(cischeat_state::f1gpstar_wheel_r)
+{
+	return (ioport("PEDAL")->read() & 0xff) + ((ioport("IN5")->read() & 0xff)<<8);
+}
+
+
+READ16_MEMBER(cischeat_state::f1gpstr2_ioready_r)
+{
+	return (m_f1gpstr2_ioready[0]&1) ? 0xff : 0xf0;
+}
+
+
+>>>>>>> upstream/master
 /**************************************************************************
                             Wild Pilot
 **************************************************************************/
 
+<<<<<<< HEAD
 READ16_MEMBER(cischeat_state::wildplt_vregs_r)
 {
 	if ((offset >= 0x1000/2) && (offset < 0x2000/2))
@@ -543,10 +690,25 @@ READ16_MEMBER(cischeat_state::wildplt_vregs_r)
 
 		default: SHOW_READ_ERROR("vreg %04X read!",offset*2);
 			return m_vregs[offset];
+=======
+
+WRITE16_MEMBER(cischeat_state::f1gpstar_motor_w)
+{
+	// "shudder" motors, leds
+	if (ACCESSING_BITS_0_7)
+	{
+		machine().bookkeeping().coin_counter_w(0, data & 0x01);
+		machine().bookkeeping().coin_counter_w(1, data & 0x02);
+		output().set_led_value(0, data & 0x04);   // start button
+		output().set_led_value(1, data & 0x20);   // ?
+		// wheel | seat motor
+		output().set_led_value(2, ((data >> 3) | (data >> 4)) & 1 );
+>>>>>>> upstream/master
 	}
 }
 
 
+<<<<<<< HEAD
 WRITE16_MEMBER(cischeat_state::f1gpstar_vregs_w)
 {
 //  UINT16 old_data = m_vregs[offset];
@@ -658,6 +820,33 @@ WRITE16_MEMBER(cischeat_state::scudhamm_vregs_w)
 		case 0x208/2   : watchdog_reset_w(space,0,0);   break;
 
 		default: SHOW_WRITE_ERROR("vreg %04X <- %04X",offset*2,data);
+=======
+WRITE16_MEMBER(cischeat_state::f1gpstar_soundint_w)
+{
+	/* $80008 and $80018 usually written in sequence, but not always */
+	m_soundcpu->set_input_line(4, HOLD_LINE);
+}
+
+
+WRITE16_MEMBER(cischeat_state::f1gpstar_comms_w)
+{
+	/* Not sure about this one. Values: $10 then 0, $7 then 0 */
+	m_cpu2->set_input_line(INPUT_LINE_RESET, (data & 1) ? ASSERT_LINE : CLEAR_LINE);
+	m_cpu3->set_input_line(INPUT_LINE_RESET, (data & 2) ? ASSERT_LINE : CLEAR_LINE);
+	m_soundcpu->set_input_line(INPUT_LINE_RESET, (data & 4) ? ASSERT_LINE : CLEAR_LINE);
+}
+
+
+WRITE16_MEMBER(cischeat_state::f1gpstr2_io_w)
+{
+	if (ACCESSING_BITS_0_7)
+	{
+		if ((m_io_value & 4) && ((data & 4) == 0))
+			m_cpu5->set_input_line(4, HOLD_LINE);
+		if ((m_io_value & 2) && ((data & 2) == 0))
+			m_cpu5->set_input_line(2, HOLD_LINE);
+		m_io_value = data & 0xff;
+>>>>>>> upstream/master
 	}
 }
 
@@ -706,9 +895,15 @@ void cischeat_state::cischeat_draw_road(bitmap_ind16 &bitmap, const rectangle &c
 	int min_priority, max_priority;
 
 	rectangle rect      =   cliprect;
+<<<<<<< HEAD
 	gfx_element *gfx        =   m_gfxdecode->gfx((road_num & 1)?5:4);
 
 	UINT16 *roadram         =   m_roadram[road_num & 1];
+=======
+	gfx_element *gfx        =   m_gfxdecode->gfx((road_num & 1) ? 2 : 1);
+
+	uint16_t *roadram         =   m_roadram[road_num & 1];
+>>>>>>> upstream/master
 
 	int min_y = rect.min_y;
 	int max_y = rect.max_y;
@@ -796,9 +991,15 @@ void cischeat_state::f1gpstar_draw_road(bitmap_ind16 &bitmap, const rectangle &c
 	int min_priority, max_priority;
 
 	rectangle rect      =   cliprect;
+<<<<<<< HEAD
 	gfx_element *gfx        =   m_gfxdecode->gfx((road_num & 1)?5:4);
 
 	UINT16 *roadram         =   m_roadram[road_num & 1];
+=======
+	gfx_element *gfx        =   m_gfxdecode->gfx((road_num & 1) ? 2 : 1);
+
+	uint16_t *roadram         =   m_roadram[road_num & 1];
+>>>>>>> upstream/master
 
 	int min_y = rect.min_y;
 	int max_y = rect.max_y;
@@ -912,8 +1113,13 @@ void cischeat_state::cischeat_draw_sprites(bitmap_ind16 &bitmap , const rectangl
 
 	int min_priority, max_priority, high_sprites;
 
+<<<<<<< HEAD
 	UINT16      *source =   m_spriteram;
 	const UINT16    *finish =   source + 0x1000/2;
+=======
+	uint16_t      *source =   m_spriteram;
+	const uint16_t    *finish =   source + 0x1000/2;
+>>>>>>> upstream/master
 
 
 	/* Move the priority values in place */
@@ -1005,7 +1211,11 @@ if ( (m_debugsprites) && ( ((attr & 0x0300)>>8) != (m_debugsprites-1) ) ) { cont
 		{
 			for (x = xstart; x != xend; x += xinc)
 			{
+<<<<<<< HEAD
 				m_gfxdecode->gfx(3)->zoom_transtable(bitmap,cliprect,code++,color,flipx,flipy,
+=======
+				m_gfxdecode->gfx(0)->zoom_transtable(bitmap,cliprect,code++,color,flipx,flipy,
+>>>>>>> upstream/master
 							(sx + x * xdim) / 0x10000, (sy + y * ydim) / 0x10000,
 							xscale, yscale, m_drawmode_table);
 			}
@@ -1064,8 +1274,13 @@ void cischeat_state::bigrun_draw_sprites(bitmap_ind16 &bitmap , const rectangle 
 
 	int min_priority, max_priority, high_sprites;
 
+<<<<<<< HEAD
 	UINT16      *source =   m_spriteram;
 	const UINT16    *finish =   source + 0x1000/2;
+=======
+	uint16_t      *source =   m_spriteram;
+	const uint16_t    *finish =   source + 0x1000/2;
+>>>>>>> upstream/master
 
 	/* Move the priority values in place */
 	high_sprites = (priority1 >= 16) | (priority2 >= 16);
@@ -1156,7 +1371,11 @@ if ( (m_debugsprites) && ( ((attr & 0x0300)>>8) != (m_debugsprites-1) ) ) { cont
 		{
 			for (x = xstart; x != xend; x += xinc)
 			{
+<<<<<<< HEAD
 				m_gfxdecode->gfx(3)->zoom_transtable(bitmap,cliprect,code++,color,flipx,flipy,
+=======
+				m_gfxdecode->gfx(0)->zoom_transtable(bitmap,cliprect,code++,color,flipx,flipy,
+>>>>>>> upstream/master
 							(sx + x * xdim) / 0x10000, (sy + y * ydim) / 0x10000,
 							xscale, yscale, m_drawmode_table);
 			}
@@ -1198,15 +1417,22 @@ if ( machine().input().code_pressed(KEYCODE_Z) || machine().input().code_pressed
 	if (machine().input().code_pressed(KEYCODE_R))  { msk |= 0x10;} \
 	if (machine().input().code_pressed(KEYCODE_T))  { msk |= 0x20;} \
 	\
+<<<<<<< HEAD
 	if (msk != 0) m_active_layers &= msk; \
+=======
+	if (msk != 0) active_layers1 &= msk; \
+>>>>>>> upstream/master
 } \
 \
 { \
 	if ( machine().input().code_pressed(KEYCODE_Z) && machine().input().code_pressed_once(KEYCODE_U) ) \
 		m_show_unknown ^= 1; \
+<<<<<<< HEAD
 	if (m_show_unknown) \
 		popmessage("0:%04X 2:%04X 4:%04X 6:%04X c:%04X", \
 			m_vregs[0],m_vregs[1],m_vregs[2],m_vregs[3],m_vregs[0xc/2] ); \
+=======
+>>>>>>> upstream/master
 }
 #else
 #define CISCHEAT_LAYERSCTL
@@ -1216,13 +1442,18 @@ if ( machine().input().code_pressed(KEYCODE_Z) || machine().input().code_pressed
                                 Big Run
 **************************************************************************/
 
+<<<<<<< HEAD
 UINT32 cischeat_state::screen_update_bigrun(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+=======
+uint32_t cischeat_state::screen_update_bigrun(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+>>>>>>> upstream/master
 {
 	int i;
 	int active_layers1, flag;
 
 #ifdef MAME_DEBUG
 	/* FAKE Videoreg */
+<<<<<<< HEAD
 	m_active_layers = m_vregs[0x2400/2];
 	if (m_active_layers == 0)   m_active_layers = 0x3f;
 #else
@@ -1231,20 +1462,36 @@ UINT32 cischeat_state::screen_update_bigrun(screen_device &screen, bitmap_ind16 
 
 	active_layers1 = m_active_layers;
 
+=======
+	active_layers1 = m_active_layers;
+	if (active_layers1 == 0)   active_layers1 = 0x3f;
+#else
+	active_layers1 = 0x3f;
+#endif
+
+>>>>>>> upstream/master
 #ifdef MAME_DEBUG
 	CISCHEAT_LAYERSCTRL
 #endif
 
+<<<<<<< HEAD
 	cischeat_tmap_SET_SCROLL(0)
 	cischeat_tmap_SET_SCROLL(1)
 	cischeat_tmap_SET_SCROLL(2)
 
+=======
+>>>>>>> upstream/master
 	bitmap.fill(0, cliprect);
 
 	for (i = 7; i >= 4; i--)
 	{                                           /* bitmap, road, min_priority, max_priority, transparency */
+<<<<<<< HEAD
 		if (m_active_layers & 0x10) cischeat_draw_road(bitmap,cliprect,0,i,i,FALSE);
 		if (m_active_layers & 0x20) cischeat_draw_road(bitmap,cliprect,1,i,i,TRUE);
+=======
+		if (active_layers1 & 0x10) cischeat_draw_road(bitmap,cliprect,0,i,i,false);
+		if (active_layers1 & 0x20) cischeat_draw_road(bitmap,cliprect,1,i,i,true);
+>>>>>>> upstream/master
 	}
 
 	flag = 0;
@@ -1253,6 +1500,7 @@ UINT32 cischeat_state::screen_update_bigrun(screen_device &screen, bitmap_ind16 
 
 	for (i = 3; i >= 0; i--)
 	{                                           /* bitmap, road, min_priority, max_priority, transparency */
+<<<<<<< HEAD
 		if (m_active_layers & 0x10) cischeat_draw_road(bitmap,cliprect,0,i,i,TRUE);
 		if (m_active_layers & 0x20) cischeat_draw_road(bitmap,cliprect,1,i,i,TRUE);
 	}
@@ -1262,6 +1510,16 @@ UINT32 cischeat_state::screen_update_bigrun(screen_device &screen, bitmap_ind16 
 	cischeat_tmap_DRAW(2)
 
 	m_active_layers = active_layers1;
+=======
+		if (active_layers1 & 0x10) cischeat_draw_road(bitmap,cliprect,0,i,i,true);
+		if (active_layers1 & 0x20) cischeat_draw_road(bitmap,cliprect,1,i,i,true);
+	}
+
+	if (active_layers1 & 0x08) bigrun_draw_sprites(bitmap,cliprect,15,0);
+
+	cischeat_tmap_DRAW(2)
+
+>>>>>>> upstream/master
 	return 0;
 }
 
@@ -1270,12 +1528,17 @@ UINT32 cischeat_state::screen_update_bigrun(screen_device &screen, bitmap_ind16 
                                 Cisco Heat
 **************************************************************************/
 
+<<<<<<< HEAD
 UINT32 cischeat_state::screen_update_cischeat(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+=======
+uint32_t cischeat_state::screen_update_cischeat(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+>>>>>>> upstream/master
 {
 	int active_layers1, flag;
 
 #ifdef MAME_DEBUG
 	/* FAKE Videoreg */
+<<<<<<< HEAD
 	m_active_layers = m_vregs[0x2400/2];
 	if (m_active_layers == 0)   m_active_layers = 0x3f;
 #else
@@ -1284,10 +1547,19 @@ UINT32 cischeat_state::screen_update_cischeat(screen_device &screen, bitmap_ind1
 
 	active_layers1 = m_active_layers;
 
+=======
+	active_layers1 = m_active_layers;
+	if (active_layers1 == 0)   active_layers1 = 0x3f;
+#else
+	active_layers1 = 0x3f;
+#endif
+
+>>>>>>> upstream/master
 #ifdef MAME_DEBUG
 	CISCHEAT_LAYERSCTRL
 #endif
 
+<<<<<<< HEAD
 	cischeat_tmap_SET_SCROLL(0)
 	cischeat_tmap_SET_SCROLL(1)
 	cischeat_tmap_SET_SCROLL(2)
@@ -1297,12 +1569,20 @@ UINT32 cischeat_state::screen_update_cischeat(screen_device &screen, bitmap_ind1
 										/* bitmap, road, priority, transparency */
 	if (m_active_layers & 0x10) cischeat_draw_road(bitmap,cliprect,0,7,5,FALSE);
 	if (m_active_layers & 0x20) cischeat_draw_road(bitmap,cliprect,1,7,5,TRUE);
+=======
+	bitmap.fill(0, cliprect);
+
+										/* bitmap, road, priority, transparency */
+	if (active_layers1 & 0x10) cischeat_draw_road(bitmap,cliprect,0,7,5,false);
+	if (active_layers1 & 0x20) cischeat_draw_road(bitmap,cliprect,1,7,5,true);
+>>>>>>> upstream/master
 
 	flag = 0;
 	cischeat_tmap_DRAW(0)
 //  else bitmap.fill(0, cliprect);
 	cischeat_tmap_DRAW(1)
 
+<<<<<<< HEAD
 	if (m_active_layers & 0x08) cischeat_draw_sprites(bitmap,cliprect,15,3);
 	if (m_active_layers & 0x10) cischeat_draw_road(bitmap,cliprect,0,4,1,TRUE);
 	if (m_active_layers & 0x20) cischeat_draw_road(bitmap,cliprect,1,4,1,TRUE);
@@ -1317,6 +1597,20 @@ UINT32 cischeat_state::screen_update_cischeat(screen_device &screen, bitmap_ind1
 
 
 	m_active_layers = active_layers1;
+=======
+	if (active_layers1 & 0x08) cischeat_draw_sprites(bitmap,cliprect,15,3);
+	if (active_layers1 & 0x10) cischeat_draw_road(bitmap,cliprect,0,4,1,true);
+	if (active_layers1 & 0x20) cischeat_draw_road(bitmap,cliprect,1,4,1,true);
+	if (active_layers1 & 0x08) cischeat_draw_sprites(bitmap,cliprect,2,2);
+	if (active_layers1 & 0x10) cischeat_draw_road(bitmap,cliprect,0,0,0,true);
+	if (active_layers1 & 0x20) cischeat_draw_road(bitmap,cliprect,1,0,0,true);
+	if (active_layers1 & 0x08) cischeat_draw_sprites(bitmap,cliprect,1,0);
+	cischeat_tmap_DRAW(2)
+
+	/* for the map screen */
+	if (active_layers1 & 0x08) cischeat_draw_sprites(bitmap,cliprect,0+16,0+16);
+
+>>>>>>> upstream/master
 	return 0;
 }
 
@@ -1326,12 +1620,17 @@ UINT32 cischeat_state::screen_update_cischeat(screen_device &screen, bitmap_ind1
                             F1 GrandPrix Star
 **************************************************************************/
 
+<<<<<<< HEAD
 UINT32 cischeat_state::screen_update_f1gpstar(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+=======
+uint32_t cischeat_state::screen_update_f1gpstar(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+>>>>>>> upstream/master
 {
 	int active_layers1, flag;
 
 #ifdef MAME_DEBUG
 	/* FAKE Videoreg */
+<<<<<<< HEAD
 	m_active_layers = m_vregs[0x2400/2];
 	if (m_active_layers == 0)   m_active_layers = 0x3f;
 #else
@@ -1340,21 +1639,37 @@ UINT32 cischeat_state::screen_update_f1gpstar(screen_device &screen, bitmap_ind1
 
 	active_layers1 = m_active_layers;
 
+=======
+	active_layers1 = m_active_layers;
+	if (active_layers1 == 0)   active_layers1 = 0x3f;
+#else
+	active_layers1 = 0x3f;
+#endif
+
+>>>>>>> upstream/master
 #ifdef MAME_DEBUG
 	CISCHEAT_LAYERSCTRL
 #endif
 
+<<<<<<< HEAD
 	cischeat_tmap_SET_SCROLL(0);
 	cischeat_tmap_SET_SCROLL(1);
 	cischeat_tmap_SET_SCROLL(2);
 
+=======
+>>>>>>> upstream/master
 	bitmap.fill(0, cliprect);
 
 /*  1: clouds 5, grad 7, road 0     2: clouds 5, grad 7, road 0, tunnel roof 0 */
 
 	/* road 1!! 0!! */                  /* bitmap, road, min_priority, max_priority, transparency */
+<<<<<<< HEAD
 	if (m_active_layers & 0x20) f1gpstar_draw_road(bitmap,cliprect,1,6,7,TRUE);
 	if (m_active_layers & 0x10) f1gpstar_draw_road(bitmap,cliprect,0,6,7,TRUE);
+=======
+	if (active_layers1 & 0x20) f1gpstar_draw_road(bitmap,cliprect,1,6,7,true);
+	if (active_layers1 & 0x10) f1gpstar_draw_road(bitmap,cliprect,0,6,7,true);
+>>>>>>> upstream/master
 
 	flag = 0;
 	cischeat_tmap_DRAW(0)
@@ -1362,6 +1677,7 @@ UINT32 cischeat_state::screen_update_f1gpstar(screen_device &screen, bitmap_ind1
 	cischeat_tmap_DRAW(1)
 
 	/* road 1!! 0!! */                  /* bitmap, road, min_priority, max_priority, transparency */
+<<<<<<< HEAD
 	if (m_active_layers & 0x20) f1gpstar_draw_road(bitmap,cliprect,1,1,5,TRUE);
 	if (m_active_layers & 0x10) f1gpstar_draw_road(bitmap,cliprect,0,1,5,TRUE);
 
@@ -1377,6 +1693,21 @@ UINT32 cischeat_state::screen_update_f1gpstar(screen_device &screen, bitmap_ind1
 
 
 	m_active_layers = active_layers1;
+=======
+	if (active_layers1 & 0x20) f1gpstar_draw_road(bitmap,cliprect,1,1,5,true);
+	if (active_layers1 & 0x10) f1gpstar_draw_road(bitmap,cliprect,0,1,5,true);
+
+	if (active_layers1 & 0x08) cischeat_draw_sprites(bitmap,cliprect,15,2);
+
+	/* road 1!! 0!! */                  /* bitmap, road, min_priority, max_priority, transparency */
+	if (active_layers1 & 0x20) f1gpstar_draw_road(bitmap,cliprect,1,0,0,true);
+	if (active_layers1 & 0x10) f1gpstar_draw_road(bitmap,cliprect,0,0,0,true);
+
+	if (active_layers1 & 0x08) cischeat_draw_sprites(bitmap,cliprect,1,1);
+	cischeat_tmap_DRAW(2)
+	if (active_layers1 & 0x08) cischeat_draw_sprites(bitmap,cliprect,0,0);
+
+>>>>>>> upstream/master
 	return 0;
 }
 
@@ -1386,16 +1717,23 @@ UINT32 cischeat_state::screen_update_f1gpstar(screen_device &screen, bitmap_ind1
                                 Scud Hammer
 **************************************************************************/
 
+<<<<<<< HEAD
 UINT32 cischeat_state::screen_update_scudhamm(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
 {
 	int active_layers1, flag;
 	active_layers1 = m_active_layers;
 	m_active_layers = 0x0d;
+=======
+uint32_t cischeat_state::screen_update_scudhamm(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+{
+	int active_layers1 = 0x0d;
+>>>>>>> upstream/master
 
 #ifdef MAME_DEBUG
 m_debugsprites = 0;
 if ( machine().input().code_pressed(KEYCODE_Z) || machine().input().code_pressed(KEYCODE_X) )
 {
+<<<<<<< HEAD
 	int msk = 0;
 	if (machine().input().code_pressed(KEYCODE_Q))  { msk |= 0x1;}
 	if (machine().input().code_pressed(KEYCODE_W))  { msk |= 0x2;}
@@ -1406,6 +1744,8 @@ if ( machine().input().code_pressed(KEYCODE_Z) || machine().input().code_pressed
 	if (machine().input().code_pressed(KEYCODE_F))  { msk |= 0x8; m_debugsprites = 4;}
 
 	if (msk != 0) m_active_layers &= msk;
+=======
+>>>>>>> upstream/master
 #if 1
 	{
 		address_space &space = m_maincpu->space(AS_PROGRAM);
@@ -1415,6 +1755,7 @@ if ( machine().input().code_pressed(KEYCODE_Z) || machine().input().code_pressed
 							scudhamm_motor_pos_r(space,0,0xffff),
 							scudhamm_motor_status_r(space,0,0xffff),
 							scudhamm_analog_r(space,0,0xffff) );
+<<<<<<< HEAD
 	}
 #endif
 
@@ -1433,5 +1774,29 @@ if ( machine().input().code_pressed(KEYCODE_Z) || machine().input().code_pressed
 	cischeat_tmap_DRAW(2)
 
 	m_active_layers = active_layers1;
+=======
+
+#if 0
+	// captflag
+	{
+		popmessage( "[%04x] [%04x]\nLEDS %04x", m_captflag_motor_command[LEFT], m_captflag_motor_command[RIGHT], m_captflag_leds );
+		m_captflag_motor_command[LEFT] = m_captflag_motor_command[RIGHT] = 0;
+	}
+#endif
+
+	}
+#endif
+
+}
+#endif
+
+	bitmap.fill(0, cliprect);
+
+	if (active_layers1 & 0x01) m_tmap[0]->draw(screen, bitmap, cliprect, 0, 0);
+	// no layer 1
+	if (active_layers1 & 0x08) cischeat_draw_sprites(bitmap,cliprect,0,15);
+	if (active_layers1 & 0x04) m_tmap[2]->draw(screen, bitmap, cliprect, 0, 0);
+
+>>>>>>> upstream/master
 	return 0;
 }

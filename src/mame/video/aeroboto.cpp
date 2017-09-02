@@ -25,7 +25,11 @@
 
 TILE_GET_INFO_MEMBER(aeroboto_state::get_tile_info)
 {
+<<<<<<< HEAD
 	UINT8 code = m_videoram[tile_index];
+=======
+	uint8_t code = m_videoram[tile_index];
+>>>>>>> upstream/master
 	SET_TILE_INFO_MEMBER(0,
 			code + (m_charbank << 8),
 			m_tilecolor[code],
@@ -42,7 +46,11 @@ TILE_GET_INFO_MEMBER(aeroboto_state::get_tile_info)
 
 void aeroboto_state::video_start()
 {
+<<<<<<< HEAD
 	m_bg_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(aeroboto_state::get_tile_info),this), TILEMAP_SCAN_ROWS, 8, 8, 32, 64);
+=======
+	m_bg_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(aeroboto_state::get_tile_info),this), TILEMAP_SCAN_ROWS, 8, 8, 32, 64);
+>>>>>>> upstream/master
 	m_bg_tilemap->set_transparent_pen(0);
 	m_bg_tilemap->set_scroll_rows(64);
 
@@ -57,7 +65,11 @@ void aeroboto_state::video_start()
 	{
 		int i;
 
+<<<<<<< HEAD
 		dynamic_buffer temp(m_stars_length);
+=======
+		std::vector<uint8_t> temp(m_stars_length);
+>>>>>>> upstream/master
 		memcpy(&temp[0], m_stars_rom, m_stars_length);
 
 		for (i = 0; i < m_stars_length; i++)
@@ -142,11 +154,19 @@ void aeroboto_state::draw_sprites( bitmap_ind16 &bitmap, const rectangle &clipre
 }
 
 
+<<<<<<< HEAD
 UINT32 aeroboto_state::screen_update_aeroboto(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
 {
 	const rectangle splitrect1(0, 255, 0, 39);
 	const rectangle splitrect2(0, 255, 40, 255);
 	UINT8 *src_base, *src_colptr, *src_rowptr;
+=======
+uint32_t aeroboto_state::screen_update_aeroboto(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+{
+	const rectangle splitrect1(0, 255, 0, 39);
+	const rectangle splitrect2(0, 255, 40, 255);
+	uint8_t *src_base, *src_colptr, *src_rowptr;
+>>>>>>> upstream/master
 	int src_offsx, src_colmask, sky_color, star_color, x, y, i, j, pen;
 
 	sky_color = star_color = *m_bgcolor << 2;

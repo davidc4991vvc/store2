@@ -1,8 +1,15 @@
 // license:BSD-3-Clause
 // copyright-holders:Olivier Galibert
+<<<<<<< HEAD
 #include "pci-smbus.h"
 
 const device_type SMBUS = &device_creator<smbus_device>;
+=======
+#include "emu.h"
+#include "pci-smbus.h"
+
+DEFINE_DEVICE_TYPE(SMBUS, smbus_device, "smbus", "SMBus interface")
+>>>>>>> upstream/master
 
 DEVICE_ADDRESS_MAP_START(map, 32, smbus_device)
 	AM_RANGE(0x00, 0x03) AM_READWRITE8 (hst_sts_r,        hst_sts_w,        0x000000ff)
@@ -26,8 +33,13 @@ DEVICE_ADDRESS_MAP_START(map, 32, smbus_device)
 	AM_RANGE(0x14, 0x17) AM_READ8      (notify_dhigh_r,                     0xff000000)
 ADDRESS_MAP_END
 
+<<<<<<< HEAD
 smbus_device::smbus_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
 	: pci_device(mconfig, SMBUS, "SMBUS interface", tag, owner, clock, "smbus", __FILE__)
+=======
+smbus_device::smbus_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: pci_device(mconfig, SMBUS, tag, owner, clock)
+>>>>>>> upstream/master
 {
 }
 
@@ -86,7 +98,11 @@ WRITE8_MEMBER (smbus_device::hst_cnt_w)
 	if(xmit_slva != 0xa1)
 		hst_sts = 4;
 	else {
+<<<<<<< HEAD
 		const UINT8 eeprom[256] = {
+=======
+		const uint8_t eeprom[256] = {
+>>>>>>> upstream/master
 			0x80, 0x08, 0x07, 0x0D, 0x0A, 0x02, 0x40, 0x00, 0x04, 0x50, 0x60, 0x00, 0x82, 0x08, 0x00, 0x01,
 			0x0E, 0x04, 0x08, 0x01, 0x02, 0x20, 0x00, 0x00, 0x00, 0x00, 0x00, 0x3C, 0x28, 0x3C, 0x28, 0x40,
 			0x60, 0x60, 0x40, 0x40, 0x00, 0x00, 0x00, 0x00, 0x00, 0x37, 0x46, 0x28, 0x28, 0x55, 0x00, 0x00,

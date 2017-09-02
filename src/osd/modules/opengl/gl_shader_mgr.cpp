@@ -122,7 +122,11 @@ glsl_shader_info *glsl_shader_init(osd_gl_context *gl_ctx)
 	int i,j, err;
 
 	err = gl_shader_loadExtention(gl_ctx);
+<<<<<<< HEAD
 	if(err) return NULL;
+=======
+	if(err) return nullptr;
+>>>>>>> upstream/master
 
 	for (i=0; !err && i<GLSL_VERTEX_SHADER_INT_NUMBER; i++)
 	{
@@ -137,7 +141,11 @@ glsl_shader_info *glsl_shader_init(osd_gl_context *gl_ctx)
 	#endif
 	}
 
+<<<<<<< HEAD
 	if(err) return NULL;
+=======
+	if(err) return nullptr;
+>>>>>>> upstream/master
 
 	for (j=0; !err && j<GLSL_SHADER_FEAT_INT_NUMBER; j++)
 	{
@@ -146,16 +154,27 @@ glsl_shader_info *glsl_shader_init(osd_gl_context *gl_ctx)
 			err = gl_compile_shader_files  (&glsl_mamebm_programs[j],
 							&glsl_mamebm_vsh_shader[glsl_mamebm_fsh2vsh[j]],
 							&glsl_mamebmfsh_shader[j],
+<<<<<<< HEAD
 							NULL /*precompiled*/, glsl_mamebm_fsh_files[j], 0);
+=======
+							nullptr /*precompiled*/, glsl_mamebm_fsh_files[j], 0);
+>>>>>>> upstream/master
 	#else
 		if(glsl_mamebm_fsh_sources[j])
 			err = gl_compile_shader_sources(&glsl_mamebm_programs[j],
 							&glsl_mamebm_vsh_shader[glsl_mamebm_fsh2vsh[j]],
 							&glsl_mamebm_fsh_shader[j],
+<<<<<<< HEAD
 							NULL /*precompiled*/, glsl_mamebm_fsh_sources[j]);
 	#endif
 	}
 	if (err) return NULL;
+=======
+							nullptr /*precompiled*/, glsl_mamebm_fsh_sources[j]);
+	#endif
+	}
+	if (err) return nullptr;
+>>>>>>> upstream/master
 	return (glsl_shader_info *) malloc(sizeof(glsl_shader_info *));
 }
 
@@ -169,29 +188,49 @@ int glsl_shader_free(glsl_shader_info *shinfo)
 	for (i=0; i<GLSL_VERTEX_SHADER_MAX_NUMBER+9; i++)
 	{
 		if ( glsl_mamebm_vsh_shader[i] )
+<<<<<<< HEAD
 			(void) gl_delete_shader( NULL,  &glsl_mamebm_vsh_shader[i], NULL);
+=======
+			(void) gl_delete_shader(nullptr,  &glsl_mamebm_vsh_shader[i], nullptr);
+>>>>>>> upstream/master
 	}
 
 	for (j=0; j<GLSL_SHADER_FEAT_MAX_NUMBER+9; j++)
 	{
 		if ( glsl_mamebm_fsh_shader[j] )
+<<<<<<< HEAD
 			(void) gl_delete_shader( NULL, NULL, &glsl_mamebm_fsh_shader[j]);
+=======
+			(void) gl_delete_shader(nullptr, nullptr, &glsl_mamebm_fsh_shader[j]);
+>>>>>>> upstream/master
 	}
 
 	for (j=0; j<GLSL_SHADER_FEAT_MAX_NUMBER+9; j++)
 	{
 		if ( glsl_mamebm_programs[j] )
+<<<<<<< HEAD
 			(void) gl_delete_shader( &glsl_mamebm_programs[j], NULL, NULL);
+=======
+			(void) gl_delete_shader( &glsl_mamebm_programs[j], nullptr, nullptr);
+>>>>>>> upstream/master
 	}
 
 	for (i=0; i<10; i++)
 	{
 		if ( glsl_scrn_vsh_shader[i] )
+<<<<<<< HEAD
 			(void) gl_delete_shader( NULL,  &glsl_scrn_vsh_shader[i], NULL);
 		if ( glsl_scrn_fsh_shader[i] )
 			(void) gl_delete_shader( NULL, NULL, &glsl_scrn_fsh_shader[i]);
 		if ( glsl_scrn_programs[i] )
 			(void) gl_delete_shader( &glsl_scrn_programs[i], NULL, NULL);
+=======
+			(void) gl_delete_shader(nullptr,  &glsl_scrn_vsh_shader[i], nullptr);
+		if ( glsl_scrn_fsh_shader[i] )
+			(void) gl_delete_shader(nullptr, nullptr, &glsl_scrn_fsh_shader[i]);
+		if ( glsl_scrn_programs[i] )
+			(void) gl_delete_shader( &glsl_scrn_programs[i], nullptr, nullptr);
+>>>>>>> upstream/master
 	}
 
 	free(shinfo);
@@ -213,7 +252,11 @@ int glsl_shader_add_mamebm(glsl_shader_info *shinfo, const char * custShaderPref
 	err = gl_compile_shader_files  (&glsl_mamebm_programs[GLSL_SHADER_FEAT_CUSTOM+idx],
 					&glsl_mamebm_vsh_shader[GLSL_VERTEX_SHADER_CUSTOM+idx],
 					&glsl_mamebm_fsh_shader[GLSL_SHADER_FEAT_CUSTOM+idx],
+<<<<<<< HEAD
 					NULL /*precompiled*/, fname, 0);
+=======
+					nullptr /*precompiled*/, fname, 0);
+>>>>>>> upstream/master
 
 	return err;
 }
@@ -233,6 +276,10 @@ int glsl_shader_add_scrn(glsl_shader_info *shinfo, const char * custShaderPrefix
 	err = gl_compile_shader_files  (&glsl_scrn_programs[idx],
 					&glsl_scrn_vsh_shader[idx],
 					&glsl_scrn_fsh_shader[idx],
+<<<<<<< HEAD
 					NULL /*precompiled*/, fname, 0);
+=======
+					nullptr /*precompiled*/, fname, 0);
+>>>>>>> upstream/master
 	return err;
 }

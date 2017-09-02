@@ -7,7 +7,11 @@
  Chase (aka Chase1) (1976)
  Deluxe Soccer (1973)
  Fire Power (1975)                EG-1020-2
+<<<<<<< HEAD
  Fütsball (1975)
+=======
+ Fötsball (1975)
+>>>>>>> upstream/master
  Galaxy Raider (1974)
  Hesitation (1974)                AL-6500?
  Hockey, Soccer, Tennis (1974)
@@ -30,6 +34,10 @@
 #include "machine/netlist.h"
 #include "netlist/devices/net_lib.h"
 #include "video/fixfreq.h"
+<<<<<<< HEAD
+=======
+#include "screen.h"
+>>>>>>> upstream/master
 
 // copied by Pong, not accurate for this driver!
 // start
@@ -57,16 +65,27 @@ public:
 	}
 
 	// devices
+<<<<<<< HEAD
 	required_device<netlist_mame_device_t> m_maincpu;
+=======
+	required_device<netlist_mame_device> m_maincpu;
+>>>>>>> upstream/master
 	required_device<fixedfreq_device> m_video;
 
 protected:
 
 	// driver_device overrides
+<<<<<<< HEAD
 	virtual void machine_start();
 	virtual void machine_reset();
 
 	virtual void video_start();
+=======
+	virtual void machine_start() override;
+	virtual void machine_reset() override;
+
+	virtual void video_start() override;
+>>>>>>> upstream/master
 
 private:
 
@@ -100,7 +119,11 @@ void sburners_state::video_start()
 {
 }
 
+<<<<<<< HEAD
 static MACHINE_CONFIG_START( sburners, sburners_state )
+=======
+static MACHINE_CONFIG_START( sburners )
+>>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_DEVICE_ADD("maincpu", NETLIST_CPU, NETLIST_CLOCK)
@@ -131,4 +154,8 @@ ROM_START( sburners )
 ROM_END
 
 
+<<<<<<< HEAD
 GAME( 1975, sburners,  0, sburners, 0, driver_device,  0, ROT0, "Allied Leisure", "Street Burners [TTL]", MACHINE_IS_SKELETON )
+=======
+GAME( 1975, sburners,  0, sburners, 0, sburners_state, 0, ROT0, "Allied Leisure", "Street Burners [TTL]", MACHINE_IS_SKELETON )
+>>>>>>> upstream/master

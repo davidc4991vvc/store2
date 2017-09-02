@@ -2,6 +2,10 @@
  * wrjpgcom.c
  *
  * Copyright (C) 1994-1997, Thomas G. Lane.
+<<<<<<< HEAD
+=======
+ * Modified 2015 by Guido Vollbeding.
+>>>>>>> upstream/master
  * This file is part of the Independent JPEG Group's software.
  * For conditions of distribution and use, see the accompanying README file.
  *
@@ -453,6 +457,14 @@ main (int argc, char **argv)
 	comment_arg = (char *) malloc((size_t) MAX_COM_LENGTH);
 	if (comment_arg == NULL)
 	  ERREXIT("Insufficient memory");
+<<<<<<< HEAD
+=======
+	if (strlen(argv[argn]+1) >= (size_t) MAX_COM_LENGTH) {
+	  fprintf(stderr, "Comment text may not exceed %u bytes\n",
+		  (unsigned int) MAX_COM_LENGTH);
+	  exit(EXIT_FAILURE);
+	}
+>>>>>>> upstream/master
 	strcpy(comment_arg, argv[argn]+1);
 	for (;;) {
 	  comment_length = (unsigned int) strlen(comment_arg);
@@ -462,9 +474,25 @@ main (int argc, char **argv)
 	  }
 	  if (++argn >= argc)
 	    ERREXIT("Missing ending quote mark");
+<<<<<<< HEAD
 	  strcat(comment_arg, " ");
 	  strcat(comment_arg, argv[argn]);
 	}
+=======
+	  if (strlen(comment_arg) + 1 + strlen(argv[argn]) >=
+	      (size_t) MAX_COM_LENGTH) {
+	    fprintf(stderr, "Comment text may not exceed %u bytes\n",
+		    (unsigned int) MAX_COM_LENGTH);
+	    exit(EXIT_FAILURE);
+	  }
+	  strcat(comment_arg, " ");
+	  strcat(comment_arg, argv[argn]);
+	}
+      } else if (strlen(comment_arg) >= (size_t) MAX_COM_LENGTH) {
+	fprintf(stderr, "Comment text may not exceed %u bytes\n",
+		(unsigned int) MAX_COM_LENGTH);
+	exit(EXIT_FAILURE);
+>>>>>>> upstream/master
       }
       comment_length = (unsigned int) strlen(comment_arg);
     } else

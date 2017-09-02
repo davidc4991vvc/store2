@@ -1,5 +1,9 @@
 /*
+<<<<<<< HEAD
 ** $Id: lmathlib.c,v 1.114 2014/12/27 20:32:26 roberto Exp $
+=======
+** $Id: lmathlib.c,v 1.119 2016/12/22 13:08:50 roberto Exp $
+>>>>>>> upstream/master
 ** Standard mathematical library
 ** See Copyright Notice in lua.h
 */
@@ -39,7 +43,11 @@
 static int math_abs (lua_State *L) {
   if (lua_isinteger(L, 1)) {
     lua_Integer n = lua_tointeger(L, 1);
+<<<<<<< HEAD
     if (n < 0) n = (lua_Integer)(0u - n);
+=======
+    if (n < 0) n = (lua_Integer)(0u - (lua_Unsigned)n);
+>>>>>>> upstream/master
     lua_pushinteger(L, n);
   }
   else
@@ -183,8 +191,19 @@ static int math_log (lua_State *L) {
     res = l_mathop(log)(x);
   else {
     lua_Number base = luaL_checknumber(L, 2);
+<<<<<<< HEAD
     if (base == 10.0) res = l_mathop(log10)(x);
     else res = l_mathop(log)(x)/l_mathop(log)(base);
+=======
+#if !defined(LUA_USE_C89)
+    if (base == l_mathop(2.0))
+      res = l_mathop(log2)(x); else
+#endif
+    if (base == l_mathop(10.0))
+      res = l_mathop(log10)(x);
+    else
+      res = l_mathop(log)(x)/l_mathop(log)(base);
+>>>>>>> upstream/master
   }
   lua_pushnumber(L, res);
   return 1;
@@ -240,7 +259,11 @@ static int math_max (lua_State *L) {
 */
 static int math_random (lua_State *L) {
   lua_Integer low, up;
+<<<<<<< HEAD
   double r = (double)(1.0 * l_rand()) * (1.0 / ((double)L_RANDMAX + 1.0));
+=======
+  double r = (double)l_rand() * (1.0 / ((double)L_RANDMAX + 1.0));
+>>>>>>> upstream/master
   switch (lua_gettop(L)) {  /* check number of arguments */
     case 0: {  /* no arguments */
       lua_pushnumber(L, (lua_Number)r);  /* Number between 0 and 1 */
@@ -259,7 +282,11 @@ static int math_random (lua_State *L) {
     default: return luaL_error(L, "wrong number of arguments");
   }
   /* random integer in the interval [low, up] */
+<<<<<<< HEAD
   luaL_argcheck(L, low <= up, 1, "interval is empty"); 
+=======
+  luaL_argcheck(L, low <= up, 1, "interval is empty");
+>>>>>>> upstream/master
   luaL_argcheck(L, low >= 0 || up <= LUA_MAXINTEGER + low, 1,
                    "interval too large");
   r *= (double)(up - low) + 1.0;
@@ -269,9 +296,14 @@ static int math_random (lua_State *L) {
 
 
 static int math_randomseed (lua_State *L) {
+<<<<<<< HEAD
   lua_Number seed = (lua_Number)luaL_checknumber(L, 1);
   l_srand((unsigned int)seed);
   (void)rand(); /* discard first value to avoid undesirable correlations */
+=======
+  l_srand((unsigned int)(lua_Integer)luaL_checknumber(L, 1));
+  (void)l_rand(); /* discard first value to avoid undesirable correlations */
+>>>>>>> upstream/master
   return 0;
 }
 
@@ -279,9 +311,15 @@ static int math_randomseed (lua_State *L) {
 static int math_type (lua_State *L) {
   if (lua_type(L, 1) == LUA_TNUMBER) {
       if (lua_isinteger(L, 1))
+<<<<<<< HEAD
         lua_pushliteral(L, "integer"); 
       else
         lua_pushliteral(L, "float"); 
+=======
+        lua_pushliteral(L, "integer");
+      else
+        lua_pushliteral(L, "float");
+>>>>>>> upstream/master
   }
   else {
     luaL_checkany(L, 1);

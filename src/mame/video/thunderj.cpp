@@ -20,7 +20,11 @@
 
 TILE_GET_INFO_MEMBER(thunderj_state::get_alpha_tile_info)
 {
+<<<<<<< HEAD
 	UINT16 data = tilemap.basemem_read(tile_index);
+=======
+	uint16_t data = m_vad->alpha().basemem_read(tile_index);
+>>>>>>> upstream/master
 	int code = ((data & 0x200) ? (m_alpha_tile_bank * 0x200) : 0) + (data & 0x1ff);
 	int color = ((data >> 10) & 0x0f) | ((data >> 9) & 0x20);
 	int opaque = data & 0x8000;
@@ -30,8 +34,13 @@ TILE_GET_INFO_MEMBER(thunderj_state::get_alpha_tile_info)
 
 TILE_GET_INFO_MEMBER(thunderj_state::get_playfield_tile_info)
 {
+<<<<<<< HEAD
 	UINT16 data1 = tilemap.basemem_read(tile_index);
 	UINT16 data2 = tilemap.extmem_read(tile_index) & 0xff;
+=======
+	uint16_t data1 = m_vad->playfield().basemem_read(tile_index);
+	uint16_t data2 = m_vad->playfield().extmem_read(tile_index) & 0xff;
+>>>>>>> upstream/master
 	int code = data1 & 0x7fff;
 	int color = 0x10 + (data2 & 0x0f);
 	SET_TILE_INFO_MEMBER(0, code, color, (data1 >> 15) & 1);
@@ -41,8 +50,13 @@ TILE_GET_INFO_MEMBER(thunderj_state::get_playfield_tile_info)
 
 TILE_GET_INFO_MEMBER(thunderj_state::get_playfield2_tile_info)
 {
+<<<<<<< HEAD
 	UINT16 data1 = tilemap.basemem_read(tile_index);
 	UINT16 data2 = tilemap.extmem_read(tile_index) >> 8;
+=======
+	uint16_t data1 = m_vad->playfield2().basemem_read(tile_index);
+	uint16_t data2 = m_vad->playfield2().extmem_read(tile_index) >> 8;
+>>>>>>> upstream/master
 	int code = data1 & 0x7fff;
 	int color = data2 & 0x0f;
 	SET_TILE_INFO_MEMBER(0, code, color, (data1 >> 15) & 1);
@@ -103,14 +117,22 @@ VIDEO_START_MEMBER(thunderj_state,thunderj)
  *
  *************************************/
 
+<<<<<<< HEAD
 UINT32 thunderj_state::screen_update_thunderj(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
 {
 	// start drawing
 	m_vad->mob()->draw_async(cliprect);
+=======
+uint32_t thunderj_state::screen_update_thunderj(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+{
+	// start drawing
+	m_vad->mob().draw_async(cliprect);
+>>>>>>> upstream/master
 
 	/* draw the playfield */
 	bitmap_ind8 &priority_bitmap = screen.priority();
 	priority_bitmap.fill(0, cliprect);
+<<<<<<< HEAD
 	m_vad->playfield()->draw(screen, bitmap, cliprect, 0, 0x00);
 	m_vad->playfield()->draw(screen, bitmap, cliprect, 1, 0x01);
 	m_vad->playfield()->draw(screen, bitmap, cliprect, 2, 0x02);
@@ -128,6 +150,25 @@ UINT32 thunderj_state::screen_update_thunderj(screen_device &screen, bitmap_ind1
 			UINT16 *mo = &mobitmap.pix16(y);
 			UINT16 *pf = &bitmap.pix16(y);
 			UINT8 *pri = &priority_bitmap.pix8(y);
+=======
+	m_vad->playfield().draw(screen, bitmap, cliprect, 0, 0x00);
+	m_vad->playfield().draw(screen, bitmap, cliprect, 1, 0x01);
+	m_vad->playfield().draw(screen, bitmap, cliprect, 2, 0x02);
+	m_vad->playfield().draw(screen, bitmap, cliprect, 3, 0x03);
+	m_vad->playfield2().draw(screen, bitmap, cliprect, 0, 0x80);
+	m_vad->playfield2().draw(screen, bitmap, cliprect, 1, 0x84);
+	m_vad->playfield2().draw(screen, bitmap, cliprect, 2, 0x88);
+	m_vad->playfield2().draw(screen, bitmap, cliprect, 3, 0x8c);
+
+	// draw and merge the MO
+	bitmap_ind16 &mobitmap = m_vad->mob().bitmap();
+	for (const sparse_dirty_rect *rect = m_vad->mob().first_dirty_rect(cliprect); rect != nullptr; rect = rect->next())
+		for (int y = rect->min_y; y <= rect->max_y; y++)
+		{
+			uint16_t *mo = &mobitmap.pix16(y);
+			uint16_t *pf = &bitmap.pix16(y);
+			uint8_t *pri = &priority_bitmap.pix8(y);
+>>>>>>> upstream/master
 			for (int x = rect->min_x; x <= rect->max_x; x++)
 				if (mo[x] != 0xffff)
 				{
@@ -217,6 +258,7 @@ UINT32 thunderj_state::screen_update_thunderj(screen_device &screen, bitmap_ind1
 		}
 
 	/* add the alpha on top */
+<<<<<<< HEAD
 	m_vad->alpha()->draw(screen, bitmap, cliprect, 0, 0);
 
 	/* now go back and process the upper bit of MO priority */
@@ -225,6 +267,16 @@ UINT32 thunderj_state::screen_update_thunderj(screen_device &screen, bitmap_ind1
 		{
 			UINT16 *mo = &mobitmap.pix16(y);
 			UINT16 *pf = &bitmap.pix16(y);
+=======
+	m_vad->alpha().draw(screen, bitmap, cliprect, 0, 0);
+
+	/* now go back and process the upper bit of MO priority */
+	for (const sparse_dirty_rect *rect = m_vad->mob().first_dirty_rect(cliprect); rect != nullptr; rect = rect->next())
+		for (int y = rect->min_y; y <= rect->max_y; y++)
+		{
+			uint16_t *mo = &mobitmap.pix16(y);
+			uint16_t *pf = &bitmap.pix16(y);
+>>>>>>> upstream/master
 			for (int x = rect->min_x; x <= rect->max_x; x++)
 				if (mo[x] != 0xffff)
 				{
@@ -235,7 +287,11 @@ UINT32 thunderj_state::screen_update_thunderj(screen_device &screen, bitmap_ind1
 					{
 						/* if bit 2 is set, start setting high palette bits */
 						if (mo[x] & 2)
+<<<<<<< HEAD
 							m_vad->mob()->apply_stain(bitmap, pf, mo, x, y);
+=======
+							m_vad->mob().apply_stain(bitmap, pf, mo, x, y);
+>>>>>>> upstream/master
 					}
 				}
 		}

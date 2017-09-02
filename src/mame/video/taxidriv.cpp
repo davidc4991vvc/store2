@@ -11,7 +11,11 @@ WRITE8_MEMBER(taxidriv_state::spritectrl_w)
 
 
 
+<<<<<<< HEAD
 UINT32 taxidriv_state::screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+=======
+uint32_t taxidriv_state::screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+>>>>>>> upstream/master
 {
 	int offs;
 	int sx,sy;

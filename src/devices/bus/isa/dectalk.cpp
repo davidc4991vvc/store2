@@ -1,11 +1,25 @@
 // license:BSD-3-Clause
 // copyright-holders:Carl
+<<<<<<< HEAD
 #include "dectalk.h"
 
 const device_type ISA8_DECTALK = &device_creator<dectalk_isa_device>;
 
 dectalk_isa_device::dectalk_isa_device(const machine_config& mconfig, const char* tag, device_t* owner, UINT32 clock) :
 	device_t(mconfig, ISA8_DECTALK, "DECTalk-PC", tag, owner, clock, "dectalk_isa", __FILE__),
+=======
+#include "emu.h"
+#include "dectalk.h"
+
+#include "sound/volt_reg.h"
+#include "speaker.h"
+
+
+DEFINE_DEVICE_TYPE(ISA8_DECTALK, dectalk_isa_device, "dectalk_isa", "DECTalk-PC")
+
+dectalk_isa_device::dectalk_isa_device(const machine_config& mconfig, const char* tag, device_t* owner, uint32_t clock) :
+	device_t(mconfig, ISA8_DECTALK, tag, owner, clock),
+>>>>>>> upstream/master
 	device_isa8_card_interface(mconfig, *this),
 	m_cmd(0),
 	m_stat(0),
@@ -61,7 +75,11 @@ WRITE8_MEMBER(dectalk_isa_device::dma_w)
 
 WRITE16_MEMBER(dectalk_isa_device::dac_w)
 {
+<<<<<<< HEAD
 	m_dac->write(data & 0xfff0);
+=======
+	m_dac->write(data >> 4);
+>>>>>>> upstream/master
 }
 
 WRITE16_MEMBER(dectalk_isa_device::output_ctl_w)
@@ -93,7 +111,11 @@ WRITE16_MEMBER(dectalk_isa_device::dsp_dma_w)
 	m_dsp_dma = data;
 }
 
+<<<<<<< HEAD
 READ16_MEMBER(dectalk_isa_device::bio_line_r)
+=======
+READ_LINE_MEMBER(dectalk_isa_device::bio_line_r)
+>>>>>>> upstream/master
 {
 	// TODO: reading the bio line doesn't cause any direct external effects so this is wrong
 	if(m_bio == ASSERT_LINE)
@@ -129,13 +151,17 @@ ADDRESS_MAP_END
 static ADDRESS_MAP_START(dectalk_dsp_io, AS_IO, 16, dectalk_isa_device)
 	AM_RANGE(0x0, 0x0) AM_READ(dsp_dma_r)
 	AM_RANGE(0x1, 0x1) AM_READWRITE(dsp_dma_r, dac_w)
+<<<<<<< HEAD
 	AM_RANGE(TMS32010_BIO, TMS32010_BIO) AM_READ(bio_line_r)
+=======
+>>>>>>> upstream/master
 ADDRESS_MAP_END
 
 static ADDRESS_MAP_START(dectalk_dsp_map, AS_PROGRAM, 16, dectalk_isa_device)
 	AM_RANGE(0x0000, 0x0FFF) AM_ROM AM_REGION("dectalk_dsp", 0)
 ADDRESS_MAP_END
 
+<<<<<<< HEAD
 static MACHINE_CONFIG_FRAGMENT( dectalk_isa )
 	MCFG_CPU_ADD("dectalk_cpu", I80186, XTAL_20MHz)
 	MCFG_CPU_IO_MAP(dectalk_cpu_io)
@@ -151,6 +177,8 @@ static MACHINE_CONFIG_FRAGMENT( dectalk_isa )
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "speaker", 1.00)
 MACHINE_CONFIG_END
 
+=======
+>>>>>>> upstream/master
 ROM_START( dectalk_isa )
 	ROM_REGION( 0x4000, "dectalk_cpu", 0 )
 	ROM_LOAD16_BYTE("pc_boot_hxl.am27c64.d6.e26", 0x0000, 0x2000, CRC(7492f1e3) SHA1(fe6946a227f01c94f2b99220320a616445c96ee0)) // Some cards have a different label on the chip which lists the sum16: 31AC (matches contents)
@@ -159,15 +187,38 @@ ROM_START( dectalk_isa )
 	ROM_LOAD("spc_034c__2-1-92.tms320p15nl.d3.bin", 0x0000, 0x2000, CRC(d8b1201e) SHA1(4b873a5e882205fcac79a27562054b5c4d1a117c))
 ROM_END
 
+<<<<<<< HEAD
 const rom_entry* dectalk_isa_device::device_rom_region() const
+=======
+const tiny_rom_entry* dectalk_isa_device::device_rom_region() const
+>>>>>>> upstream/master
 {
 	return ROM_NAME( dectalk_isa );
 }
 
+<<<<<<< HEAD
 machine_config_constructor dectalk_isa_device::device_mconfig_additions() const
 {
 	return MACHINE_CONFIG_NAME( dectalk_isa );
 }
+=======
+MACHINE_CONFIG_MEMBER( dectalk_isa_device::device_add_mconfig )
+	MCFG_CPU_ADD("dectalk_cpu", I80186, XTAL_20MHz)
+	MCFG_CPU_IO_MAP(dectalk_cpu_io)
+	MCFG_CPU_PROGRAM_MAP(dectalk_cpu_map)
+	MCFG_80186_TMROUT0_HANDLER(WRITELINE(dectalk_isa_device, clock_w));
+
+	MCFG_CPU_ADD("dectalk_dsp", TMS32015, XTAL_20MHz)
+	MCFG_CPU_IO_MAP(dectalk_dsp_io)
+	MCFG_TMS32010_BIO_IN_CB(READLINE(dectalk_isa_device, bio_line_r))
+	MCFG_CPU_PROGRAM_MAP(dectalk_dsp_map)
+
+	MCFG_SPEAKER_STANDARD_MONO("speaker")
+	MCFG_SOUND_ADD("dac", DAC_12BIT_R2R, 0) MCFG_SOUND_ROUTE(0, "speaker", 1.0) // unknown DAC
+	MCFG_DEVICE_ADD("vref", VOLTAGE_REGULATOR, 0) MCFG_VOLTAGE_REGULATOR_OUTPUT(5.0)
+	MCFG_SOUND_ROUTE_EX(0, "dac", 1.0, DAC_VREF_POS_INPUT) MCFG_SOUND_ROUTE_EX(0, "dac", -1.0, DAC_VREF_NEG_INPUT)
+MACHINE_CONFIG_END
+>>>>>>> upstream/master
 
 WRITE8_MEMBER(dectalk_isa_device::write)
 {
@@ -217,7 +268,11 @@ READ8_MEMBER(dectalk_isa_device::read)
 void dectalk_isa_device::device_start()
 {
 	set_isa_device();
+<<<<<<< HEAD
 	m_isa->install_device(0x0250, 0x0257, 0, 0, read8_delegate(FUNC(dectalk_isa_device::read), this), write8_delegate(FUNC(dectalk_isa_device::write), this));
+=======
+	m_isa->install_device(0x0250, 0x0257, read8_delegate(FUNC(dectalk_isa_device::read), this), write8_delegate(FUNC(dectalk_isa_device::write), this));
+>>>>>>> upstream/master
 }
 
 void dectalk_isa_device::device_reset()

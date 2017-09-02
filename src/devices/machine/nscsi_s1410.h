@@ -1,7 +1,14 @@
 // license:BSD-3-Clause
 // copyright-holders:Olivier Galibert
+<<<<<<< HEAD
 #ifndef __NSCSI_S1410_H__
 #define __NSCSI_S1410_H__
+=======
+#ifndef MAME_MACHINE_NSCSI_S1410_H
+#define MAME_MACHINE_NSCSI_S1410_H
+
+#pragma once
+>>>>>>> upstream/master
 
 #include "machine/nscsi_bus.h"
 #include "machine/nscsi_hd.h"
@@ -9,7 +16,11 @@
 class nscsi_s1410_device : public nscsi_harddisk_device
 {
 public:
+<<<<<<< HEAD
 	nscsi_s1410_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
+=======
+	nscsi_s1410_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
+>>>>>>> upstream/master
 
 protected:
 	// SCSI status returns
@@ -62,6 +73,7 @@ protected:
 		SC_WRITE_LONG           = 0xe6
 	};
 
+<<<<<<< HEAD
 	virtual void device_reset();
 
 	virtual void scsi_command();
@@ -74,3 +86,17 @@ protected:
 extern const device_type NSCSI_S1410;
 
 #endif
+=======
+	virtual void device_reset() override;
+
+	virtual void scsi_command() override;
+	virtual uint8_t scsi_get_data(int id, int pos) override;
+	virtual void scsi_put_data(int buf, int offset, uint8_t data) override;
+
+	uint8_t params[8];
+};
+
+DECLARE_DEVICE_TYPE(NSCSI_S1410, nscsi_s1410_device)
+
+#endif // MAME_MACHINE_NSCSI_S1410_H
+>>>>>>> upstream/master

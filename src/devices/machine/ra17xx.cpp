@@ -11,6 +11,10 @@
     There are two basic I/O instructions:
     SES = Select Enable Status and SOS = Select Output Status
     The lower 4 bits of the I/O address select one of 16 I/O lines.
+<<<<<<< HEAD
+=======
+    Actually the lowest 6 bits are used, but bits 4 and 5 must be 0.
+>>>>>>> upstream/master
 
     There are at most two A17XX per system, one for the lower
     ROM and RAM portion and one for the higher.
@@ -39,12 +43,18 @@
 #include "emu.h"
 #include "machine/ra17xx.h"
 
+<<<<<<< HEAD
 #define VERBOSE 1
 #if VERBOSE
 #define LOG(x) logerror x
 #else
 #define LOG(x)
 #endif
+=======
+//#define VERBOSE 1
+#include "logmacro.h"
+
+>>>>>>> upstream/master
 
 /*************************************
  *
@@ -52,6 +62,7 @@
  *
  *************************************/
 
+<<<<<<< HEAD
 const device_type RA17XX = &device_creator<ra17xx_device>;
 
 ra17xx_device::ra17xx_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
@@ -59,6 +70,16 @@ ra17xx_device::ra17xx_device(const machine_config &mconfig, const char *tag, dev
 		m_enable(false),
 		m_iord(*this),
 		m_iowr(*this)
+=======
+DEFINE_DEVICE_TYPE(RA17XX, ra17xx_device, "ra17xx", "Rockwell A17xx")
+
+ra17xx_device::ra17xx_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: device_t(mconfig, RA17XX, tag, owner, clock)
+	, m_enable(false)
+	, m_iord(*this)
+	, m_iowr(*this)
+	, m_cpu(*this, finder_base::DUMMY_TAG)
+>>>>>>> upstream/master
 {
 }
 
@@ -97,6 +118,7 @@ void ra17xx_device::device_reset()
 WRITE8_MEMBER( ra17xx_device::io_w )
 {
 	assert(offset < 16);
+<<<<<<< HEAD
 	m_bl = (data >> 4) & 15;    // BL on the data bus most significant bits
 	if (offset & 1) {
 		// SOS command
@@ -105,18 +127,53 @@ WRITE8_MEMBER( ra17xx_device::io_w )
 //          if (m_enable)
 				m_iowr(m_bl, 1, 1);
 		} else {
+=======
+
+	m_bl = m_cpu->address_bus_r(space, 0) & 63;
+
+	if (offset & 1)
+	{
+		// SOS command
+		if (m_bl >= 16)
+		{
+			logerror("Attempt to write to nonexistent output %d\n");
+		}
+		else if (data & (1 << 3))
+		{
+			m_line[m_bl] = 1;   // enable output
+//          if (m_enable)
+				m_iowr(m_bl, 1, 1);
+		}
+		else
+		{
+>>>>>>> upstream/master
 			m_line[m_bl] = 0;   // disable output
 //          if (m_enable)
 				m_iowr(m_bl, 0, 1);
 		}
+<<<<<<< HEAD
 	} else {
 		// SES command
 		if (data & (1 << 3)) {
+=======
+	}
+	else
+	{
+		// SES command
+		if (data & (1 << 3))
+		{
+>>>>>>> upstream/master
 			// enable all outputs
 			m_enable = true;
 			for (int i = 0; i < 16; i++)
 				m_iowr(i, m_line[i], 1);
+<<<<<<< HEAD
 		} else {
+=======
+		}
+		else
+		{
+>>>>>>> upstream/master
 			// disable all outputs
 			m_enable = false;
 		}
@@ -127,5 +184,9 @@ WRITE8_MEMBER( ra17xx_device::io_w )
 READ8_MEMBER( ra17xx_device::io_r )
 {
 	assert(offset < 16);
+<<<<<<< HEAD
 	return (m_iord(m_bl) & 1) ? 0x0f : 0x07;
+=======
+	return (m_bl >= 16 || (m_iord(m_bl) & 1)) ? 0x0f : 0x07;
+>>>>>>> upstream/master
 }

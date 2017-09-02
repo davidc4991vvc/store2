@@ -3,6 +3,10 @@
 /**********************************************************
  *   DIABLO31 and DIABLO44 hard drive support
  **********************************************************/
+<<<<<<< HEAD
+=======
+#include "emu.h"
+>>>>>>> upstream/master
 #include "diablo_hd.h"
 
 /**
@@ -57,11 +61,24 @@
  * </PRE>
  */
 
+<<<<<<< HEAD
 diablo_hd_device::diablo_hd_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock) :
 	device_t(mconfig, DIABLO_HD, "Diablo Disk", tag, owner, clock, "diablo_hd", __FILE__),
 #if DIABLO_DEBUG
 	m_log_level(8),
 #endif
+=======
+#ifndef DIABLO_DEBUG
+#define DIABLO_DEBUG    1                           //!< set to 1 to enable debug log output
+#endif
+
+#define LOG_DRIVE(...) do { if (DIABLO_DEBUG) logprintf(__VA_ARGS__); } while (0)
+
+
+diablo_hd_device::diablo_hd_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock) :
+	device_t(mconfig, DIABLO_HD, tag, owner, clock),
+	m_log_level(8),
+>>>>>>> upstream/master
 	m_diablo31(true),
 	m_unit(0),
 	m_packs(1),
@@ -87,18 +104,31 @@ diablo_hd_device::diablo_hd_device(const machine_config &mconfig, const char *ta
 	m_head(-1),
 	m_sector(-1),
 	m_page(-1),
+<<<<<<< HEAD
 	m_cache(0),
 	m_bits(0),
+=======
+	m_bits(nullptr),
+>>>>>>> upstream/master
 	m_rdfirst(-1),
 	m_rdlast(-1),
 	m_wrfirst(-1),
 	m_wrlast(-1),
+<<<<<<< HEAD
 	m_sector_callback_cookie(0),
 	m_sector_callback(0),
 	m_timer(0),
 	m_image(0),
 	m_handle(0),
 	m_disk(0)
+=======
+	m_sector_callback_cookie(nullptr),
+	m_sector_callback(nullptr),
+	m_timer(nullptr),
+	m_image(nullptr),
+	m_handle(nullptr),
+	m_disk(nullptr)
+>>>>>>> upstream/master
 {
 	memset(m_description, 0x00, sizeof(m_description));
 }
@@ -111,6 +141,7 @@ diablo_hd_device::~diablo_hd_device()
 {
 }
 
+<<<<<<< HEAD
 #if DIABLO_DEBUG
 void diablo_hd_device::logprintf(int level, const char* format, ...)
 {
@@ -122,12 +153,24 @@ void diablo_hd_device::logprintf(int level, const char* format, ...)
 	va_end(ap);
 }
 #endif
+=======
+template <typename Format, typename... Params>
+void diablo_hd_device::logprintf(int level, Format &&fmt, Params &&... args)
+{
+	if (level <= m_log_level)
+		logerror(std::forward<Format>(fmt), std::forward<Params>(args)...);
+}
+>>>>>>> upstream/master
 
 void diablo_hd_device::set_sector_callback(void *cookie, void (*callback)(void *, int))
 {
 	if (m_sector_callback_cookie == cookie && m_sector_callback == callback)
 		return;
+<<<<<<< HEAD
 	LOG_DRIVE((0,"[DHD%u] cookie=%p callback=%p\n", m_unit, cookie, callback));
+=======
+	LOG_DRIVE(0,"[DHD%u] cookie=%p callback=%p\n", m_unit, cookie, (void *)callback);
+>>>>>>> upstream/master
 	m_sector_callback_cookie = cookie;
 	m_sector_callback = callback;
 }
@@ -234,6 +277,7 @@ void diablo_hd_device::set_sector_callback(void *cookie, void (*callback)(void *
  * 256 words data
  */
 typedef struct {
+<<<<<<< HEAD
 	UINT8 pageno[2*DIABLO_PAGENO_WORDS];    //!< sector page number
 	UINT8 header[2*DIABLO_HEADER_WORDS];    //!< sector header words
 	UINT8 label[2*DIABLO_LABEL_WORDS];      //!< sector label words
@@ -242,12 +286,26 @@ typedef struct {
 
 /**
  * @brief write a bit into an array of UINT32
+=======
+	uint8_t pageno[2*DIABLO_PAGENO_WORDS];    //!< sector page number
+	uint8_t header[2*DIABLO_HEADER_WORDS];    //!< sector header words
+	uint8_t label[2*DIABLO_LABEL_WORDS];      //!< sector label words
+	uint8_t data[2*DIABLO_DATA_WORDS];        //!< sector data words
+}   diablo_sector_t;
+
+/**
+ * @brief write a bit into an array of uint32_t
+>>>>>>> upstream/master
  * @param bits pointer to array of bits
  * @param dst destination index
  * @param bit bit value
  * @return next destination index
  */
+<<<<<<< HEAD
 static inline size_t WRBIT(UINT32* bits, size_t dst, int bit)
+=======
+static inline size_t WRBIT(uint32_t* bits, size_t dst, int bit)
+>>>>>>> upstream/master
 {
 	if (bit) {
 		bits[(dst)/32] |= 1 << ((dst) % 32);
@@ -258,13 +316,21 @@ static inline size_t WRBIT(UINT32* bits, size_t dst, int bit)
 }
 
 /**
+<<<<<<< HEAD
  * @brief read a bit from an array of UINT32
+=======
+ * @brief read a bit from an array of uint32_t
+>>>>>>> upstream/master
  * @param bits pointer to array of bits
  * @param src source index
  * @param bit reference to the bit to set
  * @return next source index
  */
+<<<<<<< HEAD
 static inline size_t RDBIT(UINT32* bits, size_t src, int& bit)
+=======
+static inline size_t RDBIT(uint32_t* bits, size_t src, int& bit)
+>>>>>>> upstream/master
 {
 	bit = (bits[src/32] >> (src % 32)) & 1;
 	return ++src;
@@ -280,22 +346,38 @@ void diablo_hd_device::read_sector()
 {
 	/* If there's no drive, just reset the page number */
 	if (!m_image) {
+<<<<<<< HEAD
 		LOG_DRIVE((0,"[DHD%u]   CHS:%03d/%d/%02d => no image\n", m_unit, m_cylinder, m_head, m_sector));
+=======
+		LOG_DRIVE(0,"[DHD%u]   CHS:%03d/%d/%02d => no image\n", m_unit, m_cylinder, m_head, m_sector);
+>>>>>>> upstream/master
 		m_page = -1;
 		return;
 	}
 	if (m_cylinder < 0 || m_cylinder >= m_cylinders) {
+<<<<<<< HEAD
 		LOG_DRIVE((0,"[DHD%u]   CHS:%03d/%d/%02d => invalid cylinder\n", m_unit, m_cylinder, m_head, m_sector));
+=======
+		LOG_DRIVE(0,"[DHD%u]   CHS:%03d/%d/%02d => invalid cylinder\n", m_unit, m_cylinder, m_head, m_sector);
+>>>>>>> upstream/master
 		m_page = -1;
 		return;
 	}
 	if (m_head < 0 || m_head >= DIABLO_HEADS) {
+<<<<<<< HEAD
 		LOG_DRIVE((0,"[DHD%u]   CHS:%03d/%d/%02d => invalid head\n", m_unit, m_cylinder, m_head, m_sector));
+=======
+		LOG_DRIVE(0,"[DHD%u]   CHS:%03d/%d/%02d => invalid head\n", m_unit, m_cylinder, m_head, m_sector);
+>>>>>>> upstream/master
 		m_page = -1;
 		return;
 	}
 	if (m_sector < 0 || m_sector >= DIABLO_SPT) {
+<<<<<<< HEAD
 		LOG_DRIVE((0,"[DHD%u]   CHS:%03d/%d/%02d => invalid sector\n", m_unit, m_cylinder, m_head, m_sector));
+=======
+		LOG_DRIVE(0,"[DHD%u]   CHS:%03d/%d/%02d => invalid sector\n", m_unit, m_cylinder, m_head, m_sector);
+>>>>>>> upstream/master
 		m_page = -1;
 		return;
 	}
@@ -304,12 +386,17 @@ void diablo_hd_device::read_sector()
 
 	// already have the sector image?
 	if (m_cache[m_page]) {
+<<<<<<< HEAD
 		LOG_DRIVE((9,"[DHD%u]   CHS:%03d/%d/%02d => page:%d is cached\n", m_unit, m_cylinder, m_head, m_sector, m_page));
+=======
+		LOG_DRIVE(9,"[DHD%u]   CHS:%03d/%d/%02d => page:%d is cached\n", m_unit, m_cylinder, m_head, m_sector, m_page);
+>>>>>>> upstream/master
 		return;
 	}
 
 	if (m_disk) {
 		// allocate a buffer for this page
+<<<<<<< HEAD
 		m_cache[m_page] = auto_alloc_array(machine(), UINT8, sizeof(diablo_sector_t));
 		// and read the page from the hard_disk image
 		if (hard_disk_read(m_disk, m_page, m_cache[m_page])) {
@@ -321,6 +408,18 @@ void diablo_hd_device::read_sector()
 		}
 	} else {
 		LOG_DRIVE((2,"[DHD%u]   no disk\n", m_unit));
+=======
+		m_cache[m_page] = std::make_unique<uint8_t[]>(sizeof(diablo_sector_t));
+		// and read the page from the hard_disk image
+		if (hard_disk_read(m_disk, m_page, m_cache[m_page].get())) {
+			LOG_DRIVE(2,"[DHD%u]   CHS:%03d/%d/%02d => page:%d loaded\n", m_unit, m_cylinder, m_head, m_sector, m_page);
+		} else {
+			LOG_DRIVE(0,"[DHD%u]   CHS:%03d/%d/%02d => page:%d read failed\n", m_unit, m_cylinder, m_head, m_sector, m_page);
+			m_cache[m_page] = nullptr;
+		}
+	} else {
+		LOG_DRIVE(2,"[DHD%u]   no disk\n", m_unit);
+>>>>>>> upstream/master
 	}
 }
 
@@ -332,7 +431,11 @@ void diablo_hd_device::read_sector()
  * @param start start value for the checksum
  * @return returns the checksum of the record
  */
+<<<<<<< HEAD
 int diablo_hd_device::cksum(UINT8 *src, size_t size, int start)
+=======
+int diablo_hd_device::cksum(uint8_t *src, size_t size, int start)
+>>>>>>> upstream/master
 {
 	int sum = start;
 	/* compute XOR of all words */
@@ -351,7 +454,11 @@ int diablo_hd_device::cksum(UINT8 *src, size_t size, int start)
  * @param size number of words to write
  * @return offset to next destination bit
  */
+<<<<<<< HEAD
 size_t diablo_hd_device::expand_zeroes(UINT32 *bits, size_t dst, size_t size)
+=======
+size_t diablo_hd_device::expand_zeroes(uint32_t *bits, size_t dst, size_t size)
+>>>>>>> upstream/master
 {
 	for (size_t offs = 0; offs < 32 * size; offs += 2) {
 		dst = WRBIT(bits, dst, 1);      // write the clock bit
@@ -368,7 +475,11 @@ size_t diablo_hd_device::expand_zeroes(UINT32 *bits, size_t dst, size_t size)
  * @param size number of words to write
  * @return offset to next destination bit
  */
+<<<<<<< HEAD
 size_t diablo_hd_device::expand_sync(UINT32 *bits, size_t dst, size_t size)
+=======
+size_t diablo_hd_device::expand_sync(uint32_t *bits, size_t dst, size_t size)
+>>>>>>> upstream/master
 {
 	for (size_t offs = 0; offs < 32 * size - 2; offs += 2) {
 		dst = WRBIT(bits, dst, 1);      // write the clock bit
@@ -388,7 +499,11 @@ size_t diablo_hd_device::expand_sync(UINT32 *bits, size_t dst, size_t size)
  * @param size size of the record in bytes
  * @return offset to next destination bit
  */
+<<<<<<< HEAD
 size_t diablo_hd_device::expand_record(UINT32 *bits, size_t dst, UINT8 *field, size_t size)
+=======
+size_t diablo_hd_device::expand_record(uint32_t *bits, size_t dst, uint8_t *field, size_t size)
+>>>>>>> upstream/master
 {
 	for (size_t offs = 0; offs < size; offs += 2) {
 		int word = field[size - 2 - offs] + 256 * field[size - 2 - offs + 1];
@@ -410,7 +525,11 @@ size_t diablo_hd_device::expand_record(UINT32 *bits, size_t dst, UINT8 *field, s
  * @param size size of the record in bytes
  * @return offset to next destination bit
  */
+<<<<<<< HEAD
 size_t diablo_hd_device::expand_cksum(UINT32 *bits, size_t dst, UINT8 *field, size_t size)
+=======
+size_t diablo_hd_device::expand_cksum(uint32_t *bits, size_t dst, uint8_t *field, size_t size)
+>>>>>>> upstream/master
 {
 	int word = cksum(field, size, 0521);
 	for (size_t bit = 0; bit < 32; bit += 2) {
@@ -427,18 +546,27 @@ size_t diablo_hd_device::expand_cksum(UINT32 *bits, size_t dst, UINT8 *field, si
  * @param page page number (0 to DRIVE_PAGES-1)
  * @return pointer to the newly allocated array of bits
  */
+<<<<<<< HEAD
 UINT32* diablo_hd_device::expand_sector()
+=======
+uint32_t* diablo_hd_device::expand_sector()
+>>>>>>> upstream/master
 {
 	size_t dst;
 
 	if (!m_bits)
+<<<<<<< HEAD
 		return NULL;
+=======
+		return nullptr;
+>>>>>>> upstream/master
 	/* already expanded this sector? */
 	if (m_bits[m_page])
 		return m_bits[m_page];
 
 	/* allocate a sector buffer */
 	if (!m_cache[m_page]) {
+<<<<<<< HEAD
 		LOG_DRIVE((0,"[DHD%u]   no image for page #%d\n", m_unit, m_page));
 		return NULL;
 	}
@@ -446,6 +574,15 @@ UINT32* diablo_hd_device::expand_sector()
 
 	/* allocate a bits image */
 	UINT32 *bits = auto_alloc_array_clear(machine(), UINT32, 400);
+=======
+		LOG_DRIVE(0,"[DHD%u]   no image for page #%d\n", m_unit, m_page);
+		return nullptr;
+	}
+	diablo_sector_t *s = reinterpret_cast<diablo_sector_t *>(m_cache[m_page].get());
+
+	/* allocate a bits image */
+	uint32_t *bits = auto_alloc_array_clear(machine(), uint32_t, 400);
+>>>>>>> upstream/master
 
 	if (m_diablo31) {
 		/* write sync bit after (MFROBL-MRPAL) words - 1 bit */
@@ -486,6 +623,7 @@ UINT32* diablo_hd_device::expand_sector()
 	}
 	m_bits[m_page] = bits;
 
+<<<<<<< HEAD
 	LOG_DRIVE((0,"[DHD%u]   CHS:%03d/%d/%02d #%5d bits\n", m_unit, m_cylinder, m_head, m_sector, dst));
 #if DIABLO_DEBUG
 	dump_record(s->pageno, 0, sizeof(s->pageno), "pageno", 0);
@@ -506,6 +644,28 @@ void diablo_hd_device::dump_ascii(UINT8 *src, size_t size)
 		LOG_DRIVE((0, "%c", ch < 32 || ch > 126 ? '.' : ch));
 	}
 	LOG_DRIVE((0,"]\n"));
+=======
+	LOG_DRIVE(0,"[DHD%u]   CHS:%03d/%d/%02d #%5d bits\n", m_unit, m_cylinder, m_head, m_sector, dst);
+	if (DIABLO_DEBUG)
+	{
+		dump_record(s->pageno, 0, sizeof(s->pageno), "pageno", 0);
+		dump_record(s->header, 0, sizeof(s->header), "header", 0);
+		dump_record(s->label, 0, sizeof(s->label), "label", 0);
+		dump_record(s->data, 0, sizeof(s->data), "data", 1);
+	}
+	return bits;
+}
+
+void diablo_hd_device::dump_ascii(uint8_t *src, size_t size)
+{
+	size_t offs;
+	LOG_DRIVE(0," [");
+	for (offs = 0; offs < size; offs++) {
+		char ch = char(src[offs ^ 1]);
+		LOG_DRIVE(0, "%c", ch < 32 || ch > 126 ? '.' : ch);
+	}
+	LOG_DRIVE(0,"]\n");
+>>>>>>> upstream/master
 }
 
 
@@ -516,6 +676,7 @@ void diablo_hd_device::dump_ascii(UINT8 *src, size_t size)
  * @param size size of the record in bytes
  * @param name name to print before the dump
  */
+<<<<<<< HEAD
 size_t diablo_hd_device::dump_record(UINT8 *src, size_t addr, size_t size, const char *name, int cr)
 {
 	size_t offs;
@@ -528,6 +689,20 @@ size_t diablo_hd_device::dump_record(UINT8 *src, size_t addr, size_t size, const
 			if (offs > 0)
 				dump_ascii(&src[offs-16], 16);
 			LOG_DRIVE((0,"\t%05o: %06o", (addr + offs) / 2, word));
+=======
+size_t diablo_hd_device::dump_record(uint8_t *src, size_t addr, size_t size, const char *name, int cr)
+{
+	size_t offs;
+	LOG_DRIVE(0,"%s:", name);
+	for (offs = 0; offs < size; offs += 2) {
+		int word = src[offs] + 256 * src[offs + 1];
+		if (offs % 16) {
+			LOG_DRIVE(0," %06o", word);
+		} else {
+			if (offs > 0)
+				dump_ascii(&src[offs-16], 16);
+			LOG_DRIVE(0,"\t%05o: %06o", (addr + offs) / 2, word);
+>>>>>>> upstream/master
 		}
 	}
 	if (offs % 16) {
@@ -536,11 +711,18 @@ size_t diablo_hd_device::dump_record(UINT8 *src, size_t addr, size_t size, const
 		dump_ascii(&src[offs-16], 16);
 	}
 	if (cr) {
+<<<<<<< HEAD
 		LOG_DRIVE((0,"\n"));
 	}
 	return size;
 }
 #endif
+=======
+		LOG_DRIVE(0,"\n");
+	}
+	return size;
+}
+>>>>>>> upstream/master
 
 /**
  * @brief find a sync bit in an array of clock and data bits
@@ -550,9 +732,15 @@ size_t diablo_hd_device::dump_record(UINT8 *src, size_t addr, size_t size, const
  * @param size number of words to scan for a sync word
  * @return next source index for reading
  */
+<<<<<<< HEAD
 size_t diablo_hd_device::squeeze_sync(UINT32 *bits, size_t src, size_t size)
 {
 	UINT32 accu = 0;
+=======
+size_t diablo_hd_device::squeeze_sync(uint32_t *bits, size_t src, size_t size)
+{
+	uint32_t accu = 0;
+>>>>>>> upstream/master
 	/* hunt for the first 0x0001 word */
 	for (size_t bitcount = 0, offs = 0; offs < size; /* */) {
 		/*
@@ -574,7 +762,11 @@ size_t diablo_hd_device::squeeze_sync(UINT32 *bits, size_t src, size_t size)
 		}
 	}
 	/* return if no sync found within size*32 clock and data bits */
+<<<<<<< HEAD
 	LOG_DRIVE((0,"[DHD%u]   no sync within %d words\n", m_unit, size));
+=======
+	LOG_DRIVE(0,"[DHD%u]   no sync within %d words\n", m_unit, size);
+>>>>>>> upstream/master
 	return src;
 }
 
@@ -586,9 +778,15 @@ size_t diablo_hd_device::squeeze_sync(UINT32 *bits, size_t src, size_t size)
  * @param size number of words to scan for a sync word
  * @return next source index for reading
  */
+<<<<<<< HEAD
 size_t diablo_hd_device::squeeze_unsync(UINT32 *bits, size_t src, size_t size)
 {
 	UINT32 accu = 0;
+=======
+size_t diablo_hd_device::squeeze_unsync(uint32_t *bits, size_t src, size_t size)
+{
+	uint32_t accu = 0;
+>>>>>>> upstream/master
 	/* hunt for the first 0 word (16 x 0 bits) */
 	for (size_t bitcount = 0, offs = 0; offs < size; /* */) {
 		/*
@@ -609,7 +807,11 @@ size_t diablo_hd_device::squeeze_unsync(UINT32 *bits, size_t src, size_t size)
 		}
 	}
 	/* return if no sync found within size*32 clock and data bits */
+<<<<<<< HEAD
 	LOG_DRIVE((0,"[DHD%u]   no unsync within %d words\n", m_unit, size));
+=======
+	LOG_DRIVE(0,"[DHD%u]   no unsync within %d words\n", m_unit, size);
+>>>>>>> upstream/master
 	return src;
 }
 
@@ -622,9 +824,15 @@ size_t diablo_hd_device::squeeze_unsync(UINT32 *bits, size_t src, size_t size)
  * @param size size of the record in bytes
  * @return next source index for reading
  */
+<<<<<<< HEAD
 size_t diablo_hd_device::squeeze_record(UINT32 *bits, size_t src, UINT8 *field, size_t size)
 {
 	UINT32 accu = 0;
+=======
+size_t diablo_hd_device::squeeze_record(uint32_t *bits, size_t src, uint8_t *field, size_t size)
+{
+	uint32_t accu = 0;
+>>>>>>> upstream/master
 	for (size_t bitcount = 0, offs = 0; offs < size; /* */) {
 		int bit;
 		src = RDBIT(bits,src,bit);      // skip clock
@@ -651,9 +859,15 @@ size_t diablo_hd_device::squeeze_record(UINT32 *bits, size_t src, UINT8 *field, 
  * @param cksum pointer to an int to receive the checksum word
  * @return next source index for reading
  */
+<<<<<<< HEAD
 size_t diablo_hd_device::squeeze_cksum(UINT32 *bits, size_t src, int *cksum)
 {
 	UINT32 accu = 0;
+=======
+size_t diablo_hd_device::squeeze_cksum(uint32_t *bits, size_t src, int *cksum)
+{
+	uint32_t accu = 0;
+>>>>>>> upstream/master
 
 	for (size_t bitcount = 0; bitcount < 32; bitcount += 2) {
 		int bit;
@@ -682,8 +896,13 @@ void diablo_hd_device::squeeze_sector()
 	int cksum_header, cksum_label, cksum_data;
 
 	if (m_rdfirst >= 0) {
+<<<<<<< HEAD
 		LOG_DRIVE((0, "[DHD%u]  READ CHS:%03d/%d/%02d bit#%d ... bit#%d\n",
 					m_unit, m_cylinder, m_head, m_sector, m_rdfirst, m_rdlast));
+=======
+		LOG_DRIVE(0, "[DHD%u]  READ CHS:%03d/%d/%02d bit#%d ... bit#%d\n",
+					m_unit, m_cylinder, m_head, m_sector, m_rdfirst, m_rdlast);
+>>>>>>> upstream/master
 	}
 	m_rdfirst = -1;
 	m_rdlast = -1;
@@ -703,24 +922,38 @@ void diablo_hd_device::squeeze_sector()
 	}
 
 	if (m_wrfirst >= 0) {
+<<<<<<< HEAD
 		LOG_DRIVE((0, "[DHD%u]  WRITE CHS:%03d/%d/%02d bit#%d ... bit#%d\n",
 					m_unit, m_cylinder, m_head, m_sector, m_wrfirst, m_wrlast));
+=======
+		LOG_DRIVE(0, "[DHD%u]  WRITE CHS:%03d/%d/%02d bit#%d ... bit#%d\n",
+					m_unit, m_cylinder, m_head, m_sector, m_wrfirst, m_wrlast);
+>>>>>>> upstream/master
 	}
 	m_wrfirst = -1;
 	m_wrlast = -1;
 
 	if (m_page < 0 || m_page >= m_pages) {
+<<<<<<< HEAD
 		LOG_DRIVE((0,"[DHD%u]   page not set\n", m_unit));
+=======
+		LOG_DRIVE(0,"[DHD%u]   page not set\n", m_unit);
+>>>>>>> upstream/master
 		return;
 	}
 
 	if (!m_cache[m_page]) {
+<<<<<<< HEAD
 		LOG_DRIVE((0,"[DHD%u]   no image\n", m_unit));
+=======
+		LOG_DRIVE(0,"[DHD%u]   no image\n", m_unit);
+>>>>>>> upstream/master
 		return;
 	}
 
 	/* no bits to write? */
 	if (!m_bits[m_page]) {
+<<<<<<< HEAD
 		LOG_DRIVE((0,"[DHD%u]   no bits\n", m_unit));
 		return;
 	}
@@ -728,6 +961,15 @@ void diablo_hd_device::squeeze_sector()
 
 	// pointer to sector buffer
 	s = reinterpret_cast<diablo_sector_t *>(m_cache[m_page]);
+=======
+		LOG_DRIVE(0,"[DHD%u]   no bits\n", m_unit);
+		return;
+	}
+	uint32_t *bits = m_bits[m_page];
+
+	// pointer to sector buffer
+	s = reinterpret_cast<diablo_sector_t *>(m_cache[m_page].get());
+>>>>>>> upstream/master
 
 	// zap the sector first
 	memset(s, 0, sizeof(*s));
@@ -735,6 +977,7 @@ void diablo_hd_device::squeeze_sector()
 	src = MFRRDL * 32;
 	src = squeeze_unsync(bits, src, 40);        // skip first words and garbage until 0 bits are coming in
 	src = squeeze_sync(bits, src, 40);          // sync on header preamble
+<<<<<<< HEAD
 	LOG_DRIVE((0,"[DHD%u]   header sync bit #%5d\n", m_unit, src));
 	src = squeeze_record(bits, src, s->header, sizeof(s->header));
 	LOG_DRIVE((0,"[DHD%u]   header CRC bit #%5d\n", m_unit, src));
@@ -763,6 +1006,33 @@ void diablo_hd_device::squeeze_sector()
 	dump_record(s->data, 0, sizeof(s->data), "data", 1);
 #endif
 	LOG_DRIVE((0,"[DHD%u]   postamble bit #%5d\n", m_unit, src));
+=======
+	LOG_DRIVE(0,"[DHD%u]   header sync bit #%5d\n", m_unit, src);
+	src = squeeze_record(bits, src, s->header, sizeof(s->header));
+	LOG_DRIVE(0,"[DHD%u]   header CRC bit #%5d\n", m_unit, src);
+	src = squeeze_cksum(bits, src, &cksum_header);
+	if (DIABLO_DEBUG)
+		dump_record(s->header, 0, sizeof(s->header), "header", 0);
+
+	src = squeeze_unsync(bits, src, 40);        // skip garbage until 0 bits are coming in
+	src = squeeze_sync(bits, src, 40);          // sync on label preamble
+	LOG_DRIVE(0,"[DHD%u]   label sync bit #%5d\n", m_unit, src);
+	src = squeeze_record(bits, src, s->label, sizeof(s->label));
+	LOG_DRIVE(0,"[DHD%u]   label CRC bit #%5d\n", m_unit, src);
+	src = squeeze_cksum(bits, src, &cksum_label);
+	if (DIABLO_DEBUG)
+		dump_record(s->label, 0, sizeof(s->label), "label", 0);
+
+	src = squeeze_unsync(bits, src, 40);        // skip garbage until 0 bits are coming in
+	src = squeeze_sync(bits, src, 40);          // sync on data preamble
+	LOG_DRIVE(0,"[DHD%u]   data sync bit #%5d\n", m_unit, src);
+	src = squeeze_record(bits, src, s->data, sizeof(s->data));
+	LOG_DRIVE(0,"[DHD%u]   data CRC bit #%5d\n", m_unit, src);
+	src = squeeze_cksum(bits, src, &cksum_data);
+	if (DIABLO_DEBUG)
+		dump_record(s->data, 0, sizeof(s->data), "data", 1);
+	LOG_DRIVE(0,"[DHD%u]   postamble bit #%5d\n", m_unit, src);
+>>>>>>> upstream/master
 
 	/* The checksum start value always seems to be 0521 */
 	cksum_header ^= cksum(s->header, sizeof(s->header), 0521);
@@ -770,6 +1040,7 @@ void diablo_hd_device::squeeze_sector()
 	cksum_data ^= cksum(s->data, sizeof(s->data), 0521);
 
 	if (cksum_header || cksum_label || cksum_data) {
+<<<<<<< HEAD
 #if DIABLO_DEBUG
 		LOG_DRIVE((0,"[DHD%u]   cksum check - header:%06o label:%06o data:%06o\n", m_unit, cksum_header, cksum_label, cksum_data));
 #endif
@@ -783,6 +1054,19 @@ void diablo_hd_device::squeeze_sector()
 		}
 	} else {
 		LOG_DRIVE((2,"[DHD%u]   no disk\n", m_unit));
+=======
+		LOG_DRIVE(0,"[DHD%u]   cksum check - header:%06o label:%06o data:%06o\n", m_unit, cksum_header, cksum_label, cksum_data);
+	}
+	auto_free(machine(), m_bits[m_page]);
+	m_bits[m_page] = nullptr;
+
+	if (m_disk) {
+		if (!hard_disk_write(m_disk, m_page, m_cache[m_page].get())) {
+			LOG_DRIVE(0,"[DHD%u]   write failed for page #%d\n", m_unit, m_page);
+		}
+	} else {
+		LOG_DRIVE(2,"[DHD%u]   no disk\n", m_unit);
+>>>>>>> upstream/master
 	}
 }
 
@@ -988,14 +1272,22 @@ void diablo_hd_device::select(int unit)
 		m_s_r_w_0 = 0;                  // and can take seek/read/write commands
 		m_addx_acknowledge_0 = 0;       // assert address acknowledge (?)
 		m_log_addx_interlock_0 = 1;     // deassert log address interlock (?)
+<<<<<<< HEAD
 		LOG_DRIVE((1,"[DHD%u]   select unit:%d ready\n", m_unit, unit));
+=======
+		LOG_DRIVE(1,"[DHD%u]   select unit:%d ready\n", m_unit, unit);
+>>>>>>> upstream/master
 		read_sector();
 	} else {
 		m_ready_0 = 1;                  // it is not ready (?)
 		m_s_r_w_0 = 1;                  // can't take seek/read/write commands (?)
 		m_addx_acknowledge_0 = 0;       // assert address acknowledge (?)
 		m_log_addx_interlock_0 = 1;     // deassert log address interlock (?)
+<<<<<<< HEAD
 		LOG_DRIVE((1,"[DHD%u]   select unit:%d not ready (no image)\n", m_unit, unit));
+=======
+		LOG_DRIVE(1,"[DHD%u]   select unit:%d not ready (no image)\n", m_unit, unit);
+>>>>>>> upstream/master
 	}
 }
 
@@ -1007,7 +1299,11 @@ void diablo_hd_device::set_head(int head)
 {
 	if ((head & DIABLO_HEAD_MASK) != m_head) {
 		m_head = head & DIABLO_HEAD_MASK;
+<<<<<<< HEAD
 		LOG_DRIVE((0,"[DHD%u]   select head:%d\n", m_unit, m_head));
+=======
+		LOG_DRIVE(0,"[DHD%u]   select head:%d\n", m_unit, m_head);
+>>>>>>> upstream/master
 	}
 }
 
@@ -1023,7 +1319,11 @@ void diablo_hd_device::set_cylinder(int cylinder)
 {
 	if ((cylinder & DIABLO_CYLINDER_MASK) != m_seekto) {
 		m_seekto = cylinder & DIABLO_CYLINDER_MASK;
+<<<<<<< HEAD
 		LOG_DRIVE((0,"[DHD%u]   seek to cylinder:%d\n", m_unit, m_seekto));
+=======
+		LOG_DRIVE(0,"[DHD%u]   seek to cylinder:%d\n", m_unit, m_seekto);
+>>>>>>> upstream/master
 	}
 }
 
@@ -1040,7 +1340,11 @@ void diablo_hd_device::set_restore(int restore)
 {
 	if ((restore & 1) != m_restore) {
 		m_restore = restore & 1;
+<<<<<<< HEAD
 		LOG_DRIVE((0,"[DHD%u]   restore:%d\n", m_unit, m_restore));
+=======
+		LOG_DRIVE(0,"[DHD%u]   restore:%d\n", m_unit, m_restore);
+>>>>>>> upstream/master
 	}
 }
 
@@ -1056,7 +1360,11 @@ void diablo_hd_device::set_strobe(int strobe)
 {
 	int seekto = m_restore ? 0 : m_seekto;
 	if (strobe) {
+<<<<<<< HEAD
 		LOG_DRIVE((1,"[DHD%u]   STROBE end of interlock\n", m_unit));
+=======
+		LOG_DRIVE(1,"[DHD%u]   STROBE end of interlock\n", m_unit);
+>>>>>>> upstream/master
 		// deassert the log address interlock
 		m_log_addx_interlock_0 = 1;
 		return;
@@ -1066,7 +1374,11 @@ void diablo_hd_device::set_strobe(int strobe)
 	m_log_addx_interlock_0 = 0;
 
 	if (seekto == m_cylinder) {
+<<<<<<< HEAD
 		LOG_DRIVE((1,"[DHD%u]   STROBE to cylinder %d acknowledge\n", m_unit, seekto));
+=======
+		LOG_DRIVE(1,"[DHD%u]   STROBE to cylinder %d acknowledge\n", m_unit, seekto);
+>>>>>>> upstream/master
 		m_addx_acknowledge_0 = 0;   // address acknowledge, if cylinder is reached
 		m_seek_incomplete_0 = 1;    // reset seek incomplete
 		return;
@@ -1091,7 +1403,11 @@ void diablo_hd_device::set_strobe(int strobe)
 		}
 	}
 	if (complete) {
+<<<<<<< HEAD
 		LOG_DRIVE((1,"[DHD%u]   STROBE to cylinder %d (now %d) - interlock\n", m_unit, seekto, m_cylinder));
+=======
+		LOG_DRIVE(1,"[DHD%u]   STROBE to cylinder %d (now %d) - interlock\n", m_unit, seekto, m_cylinder);
+>>>>>>> upstream/master
 		m_addx_acknowledge_0 = 1;   // deassert address acknowledge signal
 		m_seek_incomplete_0 = 1;    // deassert seek incomplete signal
 		read_sector();
@@ -1099,7 +1415,11 @@ void diablo_hd_device::set_strobe(int strobe)
 		m_log_addx_interlock_0 = 0; // deassert the log address interlock signal
 		m_seek_incomplete_0 = 1;    // deassert seek incomplete signal
 		m_addx_acknowledge_0 = 0;   // assert address acknowledge signal
+<<<<<<< HEAD
 		LOG_DRIVE((1,"[DHD%u]   STROBE to cylinder %d incomplete\n", m_unit, seekto));
+=======
+		LOG_DRIVE(1,"[DHD%u]   STROBE to cylinder %d incomplete\n", m_unit, seekto);
+>>>>>>> upstream/master
 	}
 }
 
@@ -1150,16 +1470,25 @@ void diablo_hd_device::set_rdgate(int gate)
 void diablo_hd_device::wr_data(int index, int wrdata)
 {
 	if (m_wrgate_0) {
+<<<<<<< HEAD
 		LOG_DRIVE((0,"[DHD%u]   index=%d wrgate not asserted\n", m_unit, index));
+=======
+		LOG_DRIVE(0,"[DHD%u]   index=%d wrgate not asserted\n", m_unit, index);
+>>>>>>> upstream/master
 		return; // write gate is not asserted (active 0)
 	}
 
 	if (index < 0 || index >= bits_per_sector()) {
+<<<<<<< HEAD
 		LOG_DRIVE((0,"[DHD%u]   index=%d out of range\n", m_unit, index));
+=======
+		LOG_DRIVE(0,"[DHD%u]   index=%d out of range\n", m_unit, index);
+>>>>>>> upstream/master
 		return; // don't write before or beyond the sector
 	}
 
 	if (-1 == m_page) {
+<<<<<<< HEAD
 		LOG_DRIVE((0,"[DHD%u]   invalid page\n", m_unit));
 		return; // invalid page
 	}
@@ -1167,13 +1496,26 @@ void diablo_hd_device::wr_data(int index, int wrdata)
 	UINT32 *bits = expand_sector();
 	if (!bits) {
 		LOG_DRIVE((0,"[DHD%u]   no bits\n", m_unit));
+=======
+		LOG_DRIVE(0,"[DHD%u]   invalid page\n", m_unit);
+		return; // invalid page
+	}
+
+	uint32_t *bits = expand_sector();
+	if (!bits) {
+		LOG_DRIVE(0,"[DHD%u]   no bits\n", m_unit);
+>>>>>>> upstream/master
 		return; // invalid unit
 	}
 
 	if (-1 == m_wrfirst)
 		m_wrfirst = index;
 
+<<<<<<< HEAD
 	LOG_DRIVE((9,"[DHD%u]   CHS:%03d/%d/%02d index #%d bit:%d\n", m_unit, m_cylinder, m_head, m_sector, index, wrdata));
+=======
+	LOG_DRIVE(9,"[DHD%u]   CHS:%03d/%d/%02d index #%d bit:%d\n", m_unit, m_cylinder, m_head, m_sector, index, wrdata);
+>>>>>>> upstream/master
 
 	if (index < GUARD_ZONE_BITS) {
 		/* don't write in the guard zone (?) */
@@ -1197,21 +1539,34 @@ int diablo_hd_device::rd_data(int index)
 	int bit = 0;
 
 	if (m_rdgate_0) {
+<<<<<<< HEAD
 		LOG_DRIVE((1,"[DHD%u]   index=%d rdgate not asserted\n", m_unit, index));
+=======
+		LOG_DRIVE(1,"[DHD%u]   index=%d rdgate not asserted\n", m_unit, index);
+>>>>>>> upstream/master
 		return 0;   // read gate is not asserted (active 0)
 	}
 
 	if (index < 0 || index >= bits_per_sector()) {
+<<<<<<< HEAD
 		LOG_DRIVE((0,"[DHD%u]   index=%d out of range\n", m_unit, index));
+=======
+		LOG_DRIVE(0,"[DHD%u]   index=%d out of range\n", m_unit, index);
+>>>>>>> upstream/master
 		return 1;   // don't read before or beyond the sector
 	}
 
 	if (0 == m_sector_mark_0) {
+<<<<<<< HEAD
 		LOG_DRIVE((0,"[DHD%u]   read while sector mark is asserted\n", m_unit));
+=======
+		LOG_DRIVE(0,"[DHD%u]   read while sector mark is asserted\n", m_unit);
+>>>>>>> upstream/master
 		return 1;   // no data while sector mark is asserted
 	}
 
 	if (-1 == m_page) {
+<<<<<<< HEAD
 		LOG_DRIVE((0,"[DHD%u]   invalid page\n", m_unit));
 		return 1;   // invalid unit
 	}
@@ -1219,6 +1574,15 @@ int diablo_hd_device::rd_data(int index)
 	UINT32 *bits = expand_sector();
 	if (!bits) {
 		LOG_DRIVE((0,"[DHD%u]   no bits\n", m_unit));
+=======
+		LOG_DRIVE(0,"[DHD%u]   invalid page\n", m_unit);
+		return 1;   // invalid unit
+	}
+
+	uint32_t *bits = expand_sector();
+	if (!bits) {
+		LOG_DRIVE(0,"[DHD%u]   no bits\n", m_unit);
+>>>>>>> upstream/master
 		return 1;   // invalid page
 	}
 
@@ -1226,7 +1590,11 @@ int diablo_hd_device::rd_data(int index)
 		m_rdfirst = index;
 
 	RDBIT(bits,index,bit);
+<<<<<<< HEAD
 	LOG_DRIVE((9,"[DHD%u]   CHS:%03d/%d/%02d index #%d bit:%d\n", m_unit, m_cylinder, m_head, m_sector, index, bit));
+=======
+	LOG_DRIVE(9,"[DHD%u]   CHS:%03d/%d/%02d index #%d bit:%d\n", m_unit, m_cylinder, m_head, m_sector, index, bit);
+>>>>>>> upstream/master
 	m_rdlast = index;
 	return bit;
 }
@@ -1245,16 +1613,25 @@ int diablo_hd_device::rd_clock(int index)
 	int clk = 0;
 
 	if (index < 0 || index >= bits_per_sector()) {
+<<<<<<< HEAD
 		LOG_DRIVE((0,"[DHD%u]   index out of range (%d)\n", m_unit, index));
+=======
+		LOG_DRIVE(0,"[DHD%u]   index out of range (%d)\n", m_unit, index);
+>>>>>>> upstream/master
 		return 1;   // don't read before or beyond the sector
 	}
 
 	if (0 == m_sector_mark_0) {
+<<<<<<< HEAD
 		LOG_DRIVE((0,"[DHD%u]   read while sector mark is asserted\n", m_unit));
+=======
+		LOG_DRIVE(0,"[DHD%u]   read while sector mark is asserted\n", m_unit);
+>>>>>>> upstream/master
 		return 1;   // no clock while sector mark is low (?)
 	}
 
 	if (-1 == m_page) {
+<<<<<<< HEAD
 		LOG_DRIVE((0,"[DHD%u]   invalid page\n", m_unit));
 		return 1;   // invalid page
 	}
@@ -1262,6 +1639,15 @@ int diablo_hd_device::rd_clock(int index)
 	UINT32 *bits = expand_sector();
 	if (!bits) {
 		LOG_DRIVE((0,"[DHD%u]   no bits\n", m_unit));
+=======
+		LOG_DRIVE(0,"[DHD%u]   invalid page\n", m_unit);
+		return 1;   // invalid page
+	}
+
+	uint32_t *bits = expand_sector();
+	if (!bits) {
+		LOG_DRIVE(0,"[DHD%u]   no bits\n", m_unit);
+>>>>>>> upstream/master
 		return 1;   // invalid unit
 	}
 
@@ -1276,7 +1662,11 @@ int diablo_hd_device::rd_clock(int index)
 	} else {
 		clk = 0;
 	}
+<<<<<<< HEAD
 	LOG_DRIVE((9,"[DHD%u]   CHS:%03d/%d/%02d index #%d clk:%d\n", m_unit, m_cylinder, m_head, m_sector, index, clk));
+=======
+	LOG_DRIVE(9,"[DHD%u]   CHS:%03d/%d/%02d index #%d clk:%d\n", m_unit, m_cylinder, m_head, m_sector, index, clk);
+>>>>>>> upstream/master
 	m_rdlast = index;
 	return clk ^ 1;
 }
@@ -1287,7 +1677,11 @@ int diablo_hd_device::rd_clock(int index)
  */
 void diablo_hd_device::sector_mark_1()
 {
+<<<<<<< HEAD
 	LOG_DRIVE((9,"[DHD%u]   CHS:%03d/%d/%02d sector_mark_0=1\n", m_unit, m_cylinder, m_head, m_sector));
+=======
+	LOG_DRIVE(9,"[DHD%u]   CHS:%03d/%d/%02d sector_mark_0=1\n", m_unit, m_cylinder, m_head, m_sector);
+>>>>>>> upstream/master
 	m_sector_mark_0 = 1;    // deassert sector mark (set to 1)
 }
 
@@ -1301,7 +1695,11 @@ void diablo_hd_device::sector_mark_1()
  */
 void diablo_hd_device::sector_mark_0()
 {
+<<<<<<< HEAD
 	LOG_DRIVE((9,"[DHD%u]   CHS:%03d/%d/%02d sector_mark_0=0\n", m_unit, m_cylinder, m_head, m_sector));
+=======
+	LOG_DRIVE(9,"[DHD%u]   CHS:%03d/%d/%02d sector_mark_0=0\n", m_unit, m_cylinder, m_head, m_sector);
+>>>>>>> upstream/master
 
 	// HACK: deassert wrgate
 	//  m_wrgate_0 = 1;
@@ -1325,7 +1723,11 @@ void diablo_hd_device::device_start()
 
 	m_packs = 1;        // FIXME: get from configuration?
 	m_unit = strstr(m_image->tag(), "diablo0") ? 0 : 1;
+<<<<<<< HEAD
 	m_timer = timer_alloc(1, 0);
+=======
+	m_timer = timer_alloc(1, nullptr);
+>>>>>>> upstream/master
 }
 
 void diablo_hd_device::device_reset()
@@ -1334,9 +1736,13 @@ void diablo_hd_device::device_reset()
 	if (m_cache) {
 		for (int page = 0; page < m_pages; page++)
 			if (m_cache[page])
+<<<<<<< HEAD
 				auto_free(machine(), m_cache[page]);
 		auto_free(machine(), m_cache);
 		m_cache = 0;
+=======
+				m_cache[page] = nullptr;
+>>>>>>> upstream/master
 	}
 	// free previous bits cache
 	if (m_bits) {
@@ -1344,7 +1750,11 @@ void diablo_hd_device::device_reset()
 			if (m_bits[page])
 				auto_free(machine(), m_bits[page]);
 		auto_free(machine(), m_bits);
+<<<<<<< HEAD
 		m_bits = 0;
+=======
+		m_bits = nullptr;
+>>>>>>> upstream/master
 	}
 	m_handle = m_image->get_chd_file();
 	m_diablo31 = true;  // FIXME: get from m_handle meta data?
@@ -1368,6 +1778,7 @@ void diablo_hd_device::device_reset()
 		m_cylinders = 2 * DIABLO_CYLINDERS;
 		m_pages = 2 * DIABLO_PAGES;
 	}
+<<<<<<< HEAD
 	LOG_DRIVE((0,"[DHD%u]   m_handle            : %p\n", m_unit, m_handle));
 	LOG_DRIVE((0,"[DHD%u]   m_disk              : %p\n", m_unit, m_disk));
 	LOG_DRIVE((0,"[DHD%u]   rotation time       : %.0fns\n", m_unit, m_rotation_time.as_double() * ATTOSECONDS_PER_NANOSECOND));
@@ -1375,6 +1786,15 @@ void diablo_hd_device::device_reset()
 	LOG_DRIVE((0,"[DHD%u]   sector mark 0 time  : %.0fns\n", m_unit, m_sector_mark_0_time.as_double() * ATTOSECONDS_PER_NANOSECOND));
 	LOG_DRIVE((0,"[DHD%u]   sector mark 1 time  : %.0fns\n", m_unit, m_sector_mark_1_time.as_double() * ATTOSECONDS_PER_NANOSECOND));
 	LOG_DRIVE((0,"[DHD%u]   bit time            : %.0fns\n", m_unit, m_bit_time.as_double() * ATTOSECONDS_PER_NANOSECOND));
+=======
+	LOG_DRIVE(0,"[DHD%u]   m_handle            : %p\n", m_unit, m_handle);
+	LOG_DRIVE(0,"[DHD%u]   m_disk              : %p\n", m_unit, m_disk);
+	LOG_DRIVE(0,"[DHD%u]   rotation time       : %.0fns\n", m_unit, m_rotation_time.as_double() * ATTOSECONDS_PER_NANOSECOND);
+	LOG_DRIVE(0,"[DHD%u]   sector time         : %.0fns\n", m_unit, m_sector_time.as_double() * ATTOSECONDS_PER_NANOSECOND);
+	LOG_DRIVE(0,"[DHD%u]   sector mark 0 time  : %.0fns\n", m_unit, m_sector_mark_0_time.as_double() * ATTOSECONDS_PER_NANOSECOND);
+	LOG_DRIVE(0,"[DHD%u]   sector mark 1 time  : %.0fns\n", m_unit, m_sector_mark_1_time.as_double() * ATTOSECONDS_PER_NANOSECOND);
+	LOG_DRIVE(0,"[DHD%u]   bit time            : %.0fns\n", m_unit, m_bit_time.as_double() * ATTOSECONDS_PER_NANOSECOND);
+>>>>>>> upstream/master
 
 	m_s_r_w_0 = 1;                  // deassert seek/read/write ready
 	m_ready_0 = 1;                  // deassert drive ready
@@ -1406,8 +1826,12 @@ void diablo_hd_device::device_reset()
 	if (!m_handle)
 		return;
 	// for units with a CHD assigned to them start the timer
+<<<<<<< HEAD
 	m_cache = auto_alloc_array_clear(machine(), UINT8*, m_pages);
 	m_bits = auto_alloc_array_clear(machine(), UINT32*, m_pages);
+=======
+	m_bits = auto_alloc_array_clear(machine(), uint32_t*, m_pages);
+>>>>>>> upstream/master
 	timer_set(m_sector_time - m_sector_mark_0_time, 1, 0);
 	read_sector();
 }
@@ -1425,7 +1849,11 @@ void diablo_hd_device::device_reset()
  */
 void diablo_hd_device::device_timer(emu_timer &timer, device_timer_id id, int param, void *ptr)
 {
+<<<<<<< HEAD
 	LOG_DRIVE((9,"[DHD%u]   TIMER id=%d param=%d ptr=%p @%.0fns\n", m_unit, id, param, ptr, timer.elapsed().as_double() * ATTOSECONDS_PER_NANOSECOND));
+=======
+	LOG_DRIVE(9,"[DHD%u]   TIMER id=%d param=%d ptr=%p @%.0fns\n", m_unit, id, param, ptr, timer.elapsed().as_double() * ATTOSECONDS_PER_NANOSECOND);
+>>>>>>> upstream/master
 	if (!m_disk)
 		return;
 
@@ -1452,6 +1880,7 @@ void diablo_hd_device::device_timer(emu_timer &timer, device_timer_id id, int pa
 	}
 }
 
+<<<<<<< HEAD
 MACHINE_CONFIG_FRAGMENT( diablo_drive )
 	MCFG_DIABLO_ADD("drive")
 MACHINE_CONFIG_END
@@ -1462,3 +1891,11 @@ machine_config_constructor diablo_hd_device::device_mconfig_additions() const
 }
 
 const device_type DIABLO_HD = &device_creator<diablo_hd_device>;
+=======
+MACHINE_CONFIG_MEMBER( diablo_hd_device::device_add_mconfig )
+	MCFG_DIABLO_ADD("drive")
+MACHINE_CONFIG_END
+
+
+DEFINE_DEVICE_TYPE(DIABLO_HD, diablo_hd_device, "diablo_hd", "Diablo Disk")
+>>>>>>> upstream/master

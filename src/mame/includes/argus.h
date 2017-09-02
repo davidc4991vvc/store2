@@ -1,6 +1,10 @@
 // license:BSD-3-Clause
 // copyright-holders:Yochizo
 #include "video/jalblend.h"
+<<<<<<< HEAD
+=======
+#include "screen.h"
+>>>>>>> upstream/master
 
 class argus_state : public driver_device
 {
@@ -30,6 +34,7 @@ public:
 	required_device<palette_device> m_palette;
 	required_device<jaleco_blend_device> m_blend;
 
+<<<<<<< HEAD
 	optional_shared_ptr<UINT8> m_bg0_scrollx;
 	optional_shared_ptr<UINT8> m_bg0_scrolly;
 	required_shared_ptr<UINT8> m_bg1_scrollx;
@@ -47,10 +52,30 @@ public:
 
 	// argus specific
 	UINT8 *m_dummy_bg0ram;
+=======
+	optional_shared_ptr<uint8_t> m_bg0_scrollx;
+	optional_shared_ptr<uint8_t> m_bg0_scrolly;
+	required_shared_ptr<uint8_t> m_bg1_scrollx;
+	required_shared_ptr<uint8_t> m_bg1_scrolly;
+	required_shared_ptr<uint8_t> m_paletteram;
+	optional_shared_ptr<uint8_t> m_txram;
+	optional_shared_ptr<uint8_t> m_bg1ram;
+	required_shared_ptr<uint8_t> m_spriteram;
+	optional_shared_ptr<uint8_t> m_butasan_bg1ram;
+
+	// common
+	uint8_t m_bg_status;
+	uint8_t m_flipscreen;
+	uint16_t m_palette_intensity;
+
+	// argus specific
+	std::unique_ptr<uint8_t[]> m_dummy_bg0ram;
+>>>>>>> upstream/master
 	int m_lowbitscroll;
 	int m_prvscrollx;
 
 	// butasan specific
+<<<<<<< HEAD
 	UINT8 *m_butasan_txram;
 	UINT8 *m_butasan_bg0ram;
 	UINT8 *m_butasan_bg0backram;
@@ -64,6 +89,21 @@ public:
 	UINT8 m_valtric_mosaic;
 	bitmap_rgb32 m_mosaicbitmap;
 	UINT8 m_valtric_unknown;
+=======
+	uint8_t *m_butasan_txram;
+	uint8_t *m_butasan_bg0ram;
+	uint8_t *m_butasan_bg0backram;
+	uint8_t *m_butasan_txbackram;
+	std::unique_ptr<uint8_t[]> m_butasan_pagedram[2];
+	uint8_t m_butasan_page_latch;
+	uint8_t m_butasan_bg1_status;
+	uint8_t m_butasan_unknown;
+
+	// valtric specific
+	uint8_t m_valtric_mosaic;
+	bitmap_rgb32 m_mosaicbitmap;
+	uint8_t m_valtric_unknown;
+>>>>>>> upstream/master
 	int m_mosaic;
 
 	tilemap_t *m_tx_tilemap;
@@ -85,7 +125,10 @@ public:
 	DECLARE_WRITE8_MEMBER(butasan_bg0_status_w);
 	DECLARE_WRITE8_MEMBER(butasan_bg1_status_w);
 	DECLARE_WRITE8_MEMBER(butasan_paletteram_w);
+<<<<<<< HEAD
 	DECLARE_READ8_MEMBER(butasan_bg1ram_r);
+=======
+>>>>>>> upstream/master
 	DECLARE_WRITE8_MEMBER(butasan_bg1ram_w);
 	DECLARE_WRITE8_MEMBER(butasan_pageselect_w);
 	DECLARE_READ8_MEMBER(butasan_pagedram_r);
@@ -106,7 +149,11 @@ public:
 	TILE_GET_INFO_MEMBER(butasan_get_bg0_tile_info);
 	TILE_GET_INFO_MEMBER(butasan_get_bg1_tile_info);
 
+<<<<<<< HEAD
 	virtual void machine_start();
+=======
+	virtual void machine_start() override;
+>>>>>>> upstream/master
 	DECLARE_VIDEO_START(argus);
 	DECLARE_VIDEO_RESET(argus);
 	DECLARE_VIDEO_START(valtric);
@@ -114,9 +161,15 @@ public:
 	DECLARE_VIDEO_START(butasan);
 	DECLARE_VIDEO_RESET(butasan);
 
+<<<<<<< HEAD
 	UINT32 screen_update_argus(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect);
 	UINT32 screen_update_valtric(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect);
 	UINT32 screen_update_butasan(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect);
+=======
+	uint32_t screen_update_argus(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect);
+	uint32_t screen_update_valtric(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect);
+	uint32_t screen_update_butasan(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect);
+>>>>>>> upstream/master
 
 	TIMER_DEVICE_CALLBACK_MEMBER(scanline);
 	TIMER_DEVICE_CALLBACK_MEMBER(butasan_scanline);

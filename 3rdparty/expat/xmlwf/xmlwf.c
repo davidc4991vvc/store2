@@ -634,8 +634,12 @@ static void
 usage(const XML_Char *prog, int rc)
 {
   ftprintf(stderr,
+<<<<<<< HEAD
            T("usage: %s [-n] [-p] [-r] [-s] [-w] [-x] [-d output-dir] "
              "[-e encoding] file ...\n"), prog);
+=======
+           T("usage: %s [-s] [-n] [-p] [-x] [-e encoding] [-w] [-d output-dir] [-c] [-m] [-r] [-t] [file ...]\n"), prog);
+>>>>>>> upstream/master
   exit(rc);
 }
 

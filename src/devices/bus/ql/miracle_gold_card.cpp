@@ -6,6 +6,10 @@
 
 **********************************************************************/
 
+<<<<<<< HEAD
+=======
+#include "emu.h"
+>>>>>>> upstream/master
 #include "miracle_gold_card.h"
 
 
@@ -14,7 +18,11 @@
 //  DEVICE DEFINITIONS
 //**************************************************************************
 
+<<<<<<< HEAD
 const device_type MIRACLE_GOLD_CARD = &device_creator<miracle_gold_card_t>;
+=======
+DEFINE_DEVICE_TYPE(MIRACLE_GOLD_CARD, miracle_gold_card_device, "ql_gold", "Miracle Gold Card")
+>>>>>>> upstream/master
 
 
 //-------------------------------------------------
@@ -35,7 +43,11 @@ ROM_END
 //  rom_region - device-specific ROM region
 //-------------------------------------------------
 
+<<<<<<< HEAD
 const rom_entry *miracle_gold_card_t::device_rom_region() const
+=======
+const tiny_rom_entry *miracle_gold_card_device::device_rom_region() const
+>>>>>>> upstream/master
 {
 	return ROM_NAME( miracle_gold_card );
 }
@@ -47,11 +59,19 @@ const rom_entry *miracle_gold_card_t::device_rom_region() const
 //**************************************************************************
 
 //-------------------------------------------------
+<<<<<<< HEAD
 //  miracle_gold_card_t - constructor
 //-------------------------------------------------
 
 miracle_gold_card_t::miracle_gold_card_t(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock) :
 	device_t(mconfig, MIRACLE_GOLD_CARD, "Miracle Gold Card", tag, owner, clock, "ql_gold", __FILE__),
+=======
+//  miracle_gold_card_device - constructor
+//-------------------------------------------------
+
+miracle_gold_card_device::miracle_gold_card_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock) :
+	device_t(mconfig, MIRACLE_GOLD_CARD, tag, owner, clock),
+>>>>>>> upstream/master
 	device_ql_expansion_card_interface(mconfig, *this)
 {
 }
@@ -61,7 +81,11 @@ miracle_gold_card_t::miracle_gold_card_t(const machine_config &mconfig, const ch
 //  device_start - device-specific startup
 //-------------------------------------------------
 
+<<<<<<< HEAD
 void miracle_gold_card_t::device_start()
+=======
+void miracle_gold_card_device::device_start()
+>>>>>>> upstream/master
 {
 }
 
@@ -70,7 +94,11 @@ void miracle_gold_card_t::device_start()
 //  read -
 //-------------------------------------------------
 
+<<<<<<< HEAD
 UINT8 miracle_gold_card_t::read(address_space &space, offs_t offset, UINT8 data)
+=======
+uint8_t miracle_gold_card_device::read(address_space &space, offs_t offset, uint8_t data)
+>>>>>>> upstream/master
 {
 	return data;
 }
@@ -80,6 +108,10 @@ UINT8 miracle_gold_card_t::read(address_space &space, offs_t offset, UINT8 data)
 //  write -
 //-------------------------------------------------
 
+<<<<<<< HEAD
 void miracle_gold_card_t::write(address_space &space, offs_t offset, UINT8 data)
+=======
+void miracle_gold_card_device::write(address_space &space, offs_t offset, uint8_t data)
+>>>>>>> upstream/master
 {
 }

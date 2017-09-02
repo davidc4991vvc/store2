@@ -12,12 +12,17 @@
 
 #include "emu.h"
 #include "nubus_vikbw.h"
+<<<<<<< HEAD
+=======
+#include "screen.h"
+>>>>>>> upstream/master
 
 #define VIKBW_SCREEN_NAME   "vikbw_screen"
 #define VIKBW_ROM_REGION    "vikbw_rom"
 
 #define VRAM_SIZE   (0x18000)  // 1024x768 @ 1bpp is 98,304 bytes (0x18000)
 
+<<<<<<< HEAD
 MACHINE_CONFIG_FRAGMENT( vikbw )
 	MCFG_SCREEN_ADD( VIKBW_SCREEN_NAME, RASTER)
 	MCFG_SCREEN_UPDATE_DEVICE(DEVICE_SELF, nubus_vikbw_device, screen_update)
@@ -25,6 +30,8 @@ MACHINE_CONFIG_FRAGMENT( vikbw )
 	MCFG_SCREEN_VISIBLE_AREA(0, 1024-1, 0, 768-1)
 	MCFG_SCREEN_REFRESH_RATE(70)
 MACHINE_CONFIG_END
+=======
+>>>>>>> upstream/master
 
 ROM_START( vikbw )
 	ROM_REGION(0x2000, VIKBW_ROM_REGION, 0)
@@ -35,6 +42,7 @@ ROM_END
 //  GLOBAL VARIABLES
 //**************************************************************************
 
+<<<<<<< HEAD
 const device_type NUBUS_VIKBW = &device_creator<nubus_vikbw_device>;
 
 
@@ -47,12 +55,32 @@ machine_config_constructor nubus_vikbw_device::device_mconfig_additions() const
 {
 	return MACHINE_CONFIG_NAME( vikbw );
 }
+=======
+DEFINE_DEVICE_TYPE(NUBUS_VIKBW, nubus_vikbw_device, "nb_vikbw", "Moniterm Viking video card")
+
+
+//-------------------------------------------------
+//  device_add_mconfig - add device configuration
+//-------------------------------------------------
+
+MACHINE_CONFIG_MEMBER( nubus_vikbw_device::device_add_mconfig )
+	MCFG_SCREEN_ADD( VIKBW_SCREEN_NAME, RASTER)
+	MCFG_SCREEN_UPDATE_DEVICE(DEVICE_SELF, nubus_vikbw_device, screen_update)
+	MCFG_SCREEN_SIZE(1024,768)
+	MCFG_SCREEN_VISIBLE_AREA(0, 1024-1, 0, 768-1)
+	MCFG_SCREEN_REFRESH_RATE(70)
+MACHINE_CONFIG_END
+>>>>>>> upstream/master
 
 //-------------------------------------------------
 //  rom_region - device-specific ROM region
 //-------------------------------------------------
 
+<<<<<<< HEAD
 const rom_entry *nubus_vikbw_device::device_rom_region() const
+=======
+const tiny_rom_entry *nubus_vikbw_device::device_rom_region() const
+>>>>>>> upstream/master
 {
 	return ROM_NAME( vikbw );
 }
@@ -65,6 +93,7 @@ const rom_entry *nubus_vikbw_device::device_rom_region() const
 //  nubus_vikbw_device - constructor
 //-------------------------------------------------
 
+<<<<<<< HEAD
 nubus_vikbw_device::nubus_vikbw_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock) :
 		device_t(mconfig, NUBUS_VIKBW, "Moniterm Viking video card", tag, owner, clock, "nb_vikbw", __FILE__),
 		device_nubus_card_interface(mconfig, *this), m_vbl_disable(0)
@@ -74,6 +103,17 @@ nubus_vikbw_device::nubus_vikbw_device(const machine_config &mconfig, const char
 nubus_vikbw_device::nubus_vikbw_device(const machine_config &mconfig, device_type type, const char *name, const char *tag, device_t *owner, UINT32 clock, const char *shortname, const char *source) :
 		device_t(mconfig, type, name, tag, owner, clock, shortname, source),
 		device_nubus_card_interface(mconfig, *this), m_vbl_disable(0)
+=======
+nubus_vikbw_device::nubus_vikbw_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock) :
+	nubus_vikbw_device(mconfig, NUBUS_VIKBW, tag, owner, clock)
+{
+}
+
+nubus_vikbw_device::nubus_vikbw_device(const machine_config &mconfig, device_type type, const char *tag, device_t *owner, uint32_t clock) :
+	device_t(mconfig, type, tag, owner, clock),
+	device_nubus_card_interface(mconfig, *this),
+	m_vbl_disable(0)
+>>>>>>> upstream/master
 {
 }
 
@@ -83,7 +123,11 @@ nubus_vikbw_device::nubus_vikbw_device(const machine_config &mconfig, device_typ
 
 void nubus_vikbw_device::device_start()
 {
+<<<<<<< HEAD
 	UINT32 slotspace;
+=======
+	uint32_t slotspace;
+>>>>>>> upstream/master
 
 	// set_nubus_device makes m_slot valid
 	set_nubus_device();
@@ -94,8 +138,13 @@ void nubus_vikbw_device::device_start()
 //  printf("[vikbw %p] slotspace = %x\n", this, slotspace);
 
 	m_vram.resize(VRAM_SIZE);
+<<<<<<< HEAD
 	install_bank(slotspace+0x40000, slotspace+0x40000+VRAM_SIZE-1, 0, 0, "bank_vikbw", &m_vram[0]);
 	install_bank(slotspace+0x940000, slotspace+0x940000+VRAM_SIZE-1, 0, 0, "bank_vikbw2", &m_vram[0]);
+=======
+	install_bank(slotspace+0x40000, slotspace+0x40000+VRAM_SIZE-1, "bank_vikbw", &m_vram[0]);
+	install_bank(slotspace+0x940000, slotspace+0x940000+VRAM_SIZE-1, "bank_vikbw2", &m_vram[0]);
+>>>>>>> upstream/master
 
 	m_nubus->install_device(slotspace, slotspace+3, read32_delegate(FUNC(nubus_vikbw_device::viking_enable_r), this), write32_delegate(FUNC(nubus_vikbw_device::viking_disable_w), this));
 	m_nubus->install_device(slotspace+0x80000, slotspace+0x80000+3, read32_delegate(FUNC(nubus_vikbw_device::viking_ack_r), this), write32_delegate(FUNC(nubus_vikbw_device::viking_ack_w), this));
@@ -120,11 +169,19 @@ void nubus_vikbw_device::device_reset()
 
 ***************************************************************************/
 
+<<<<<<< HEAD
 UINT32 nubus_vikbw_device::screen_update(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect)
 {
 	UINT32 *scanline;
 	int x, y;
 	UINT8 pixels;
+=======
+uint32_t nubus_vikbw_device::screen_update(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect)
+{
+	uint32_t *scanline;
+	int x, y;
+	uint8_t pixels;
+>>>>>>> upstream/master
 
 	if (!m_vbl_disable)
 	{

@@ -157,10 +157,17 @@
 
 #if SNES_LAYER_DEBUG
 /*                                    red   green  blue    purple  yellow cyan    grey    white */
+<<<<<<< HEAD
 static const UINT16 dbg_mode_colours[8] = { 0x1f, 0x3e0, 0x7c00, 0x7c1f, 0x3ff, 0x7fe0, 0x4210, 0x7fff };
 #endif /* SNES_LAYER_DEBUG */
 
 static const UINT16 table_obj_offset[8][8] =
+=======
+static const uint16_t dbg_mode_colours[8] = { 0x1f, 0x3e0, 0x7c00, 0x7c1f, 0x3ff, 0x7fe0, 0x4210, 0x7fff };
+#endif /* SNES_LAYER_DEBUG */
+
+static const uint16_t table_obj_offset[8][8] =
+>>>>>>> upstream/master
 {
 	{ (0*32),   (0*32)+32,   (0*32)+64,   (0*32)+96,   (0*32)+128,   (0*32)+160,   (0*32)+192,   (0*32)+224 },
 	{ (16*32),  (16*32)+32,  (16*32)+64,  (16*32)+96,  (16*32)+128,  (16*32)+160,  (16*32)+192,  (16*32)+224 },
@@ -189,7 +196,11 @@ enum
 //  DEVICE DEFINITIONS
 //**************************************************************************
 
+<<<<<<< HEAD
 const device_type SNES_PPU = &device_creator<snes_ppu_device>;
+=======
+DEFINE_DEVICE_TYPE(SNES_PPU, snes_ppu_device, "snes_ppu", "SNES PPU")
+>>>>>>> upstream/master
 
 
 //**************************************************************************
@@ -200,10 +211,22 @@ const device_type SNES_PPU = &device_creator<snes_ppu_device>;
 //  snes_ppu_device - constructor
 //-------------------------------------------------
 
+<<<<<<< HEAD
 snes_ppu_device::snes_ppu_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
 				: device_t(mconfig, SNES_PPU, "SNES PPU", tag, owner, clock, "snes_ppu", __FILE__),
 					device_video_interface(mconfig, *this),
 					m_openbus_cb(*this)
+=======
+snes_ppu_device::snes_ppu_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: device_t(mconfig, SNES_PPU, tag, owner, clock)
+	, device_video_interface(mconfig, *this)
+	, m_openbus_cb(*this)
+	, m_options(*this, ":OPTIONS")
+	, m_debug1(*this, ":DEBUG1")
+	, m_debug2(*this, ":DEBUG2")
+	, m_debug3(*this, ":DEBUG3")
+	, m_debug4(*this, ":DEBUG4")
+>>>>>>> upstream/master
 {
 }
 
@@ -216,9 +239,15 @@ void snes_ppu_device::device_start()
 {
 	m_openbus_cb.resolve_safe(0);
 
+<<<<<<< HEAD
 	m_vram = auto_alloc_array(machine(), UINT8, SNES_VRAM_SIZE);
 	m_cgram = auto_alloc_array(machine(), UINT16, SNES_CGRAM_SIZE/2);
 	m_oam_ram = auto_alloc_array(machine(), UINT16, SNES_OAM_SIZE/2);
+=======
+	m_vram = std::make_unique<uint8_t[]>(SNES_VRAM_SIZE);
+	m_cgram = std::make_unique<uint16_t[]>(SNES_CGRAM_SIZE/2);
+	m_oam_ram = std::make_unique<uint16_t[]>(SNES_OAM_SIZE/2);
+>>>>>>> upstream/master
 
 	for (int i = 0; i < 2; i++)
 	{
@@ -355,9 +384,15 @@ void snes_ppu_device::device_start()
 
 	save_item(NAME(m_regs));
 
+<<<<<<< HEAD
 	save_pointer(NAME(m_vram), SNES_VRAM_SIZE);
 	save_pointer(NAME(m_cgram), SNES_CGRAM_SIZE/2);
 	save_pointer(NAME(m_oam_ram), SNES_OAM_SIZE/2);
+=======
+	save_pointer(NAME(m_vram.get()), SNES_VRAM_SIZE);
+	save_pointer(NAME(m_cgram.get()), SNES_CGRAM_SIZE/2);
+	save_pointer(NAME(m_oam_ram.get()), SNES_OAM_SIZE/2);
+>>>>>>> upstream/master
 }
 
 void snes_ppu_device::device_reset()
@@ -371,7 +406,14 @@ void snes_ppu_device::device_reset()
 	m_beam.latch_vert = 0;
 	m_beam.latch_horz = 0;
 	m_beam.current_vert = 0;
+<<<<<<< HEAD
 	m_beam.last_visible_line = 225; /* TODO: PAL setting */
+=======
+
+	/* Set STAT78 to NTSC or PAL */
+	m_stat78 = (ATTOSECONDS_TO_HZ(m_screen->frame_period().attoseconds()) >= 59.0) ? SNES_NTSC : SNES_PAL;
+	m_beam.last_visible_line = m_stat78 & SNES_PAL ? 240 : 225;
+>>>>>>> upstream/master
 	m_mode = 0;
 	m_ppu1_version = 1;  // 5C77 chip version number, read by STAT77, only '1' is known
 	m_ppu2_version = 3;  // 5C78 chip version number, read by STAT78, only '2' & '3' encountered so far.
@@ -393,6 +435,7 @@ void snes_ppu_device::device_reset()
 	}
 
 	/* Init VRAM */
+<<<<<<< HEAD
 	memset(m_vram, 0, SNES_VRAM_SIZE);
 
 	/* Init Palette RAM */
@@ -402,6 +445,15 @@ void snes_ppu_device::device_reset()
 	memset((UINT8 *)m_oam_ram, 0xff, SNES_OAM_SIZE);
 
 	m_stat78 = 0;
+=======
+	memset(m_vram.get(), 0, SNES_VRAM_SIZE);
+
+	/* Init Palette RAM */
+	memset((uint8_t *)m_cgram.get(), 0, SNES_CGRAM_SIZE);
+
+	/* Init oam RAM */
+	memset((uint8_t *)m_oam_ram.get(), 0xff, SNES_OAM_SIZE);
+>>>>>>> upstream/master
 
 	// other initializations to 0
 	memset(m_regs, 0, sizeof(m_regs));
@@ -409,6 +461,7 @@ void snes_ppu_device::device_reset()
 	memset(&m_oam, 0, sizeof(m_oam));
 	memset(&m_mode7, 0, sizeof(m_mode7));
 
+<<<<<<< HEAD
 	for (int i = 0; i < 2; i++)
 	{
 		m_scanlines[i].enable = 0;
@@ -417,6 +470,16 @@ void snes_ppu_device::device_reset()
 		memset(m_scanlines[i].priority, 0, SNES_SCR_WIDTH);
 		memset(m_scanlines[i].layer, 0, SNES_SCR_WIDTH);
 		memset(m_scanlines[i].blend_exception, 0, SNES_SCR_WIDTH);
+=======
+	for (auto & elem : m_scanlines)
+	{
+		elem.enable = 0;
+		elem.clip = 0;
+		memset(elem.buffer, 0, SNES_SCR_WIDTH * sizeof(uint16_t));
+		memset(elem.priority, 0, SNES_SCR_WIDTH);
+		memset(elem.layer, 0, SNES_SCR_WIDTH);
+		memset(elem.blend_exception, 0, SNES_SCR_WIDTH);
+>>>>>>> upstream/master
 	}
 
 	for (int i = 0; i < 6; i++)
@@ -442,6 +505,7 @@ void snes_ppu_device::device_reset()
 		memset(m_clipmasks[i], 0, SNES_SCR_WIDTH);
 	}
 
+<<<<<<< HEAD
 	for (int i = 0; i < ARRAY_LENGTH(m_oam_spritelist); i++)
 	{
 		m_oam_spritelist[i].tile = 0;
@@ -463,6 +527,29 @@ void snes_ppu_device::device_reset()
 		m_oam_tilelist[i].pal = 0;
 		m_oam_tilelist[i].tileaddr = 0;
 		m_oam_tilelist[i].hflip = 0;
+=======
+	for (auto & elem : m_oam_spritelist)
+	{
+		elem.tile = 0;
+		elem.x = 0;
+		elem.y = 0;
+		elem.size = 0;
+		elem.vflip = 0;
+		elem.hflip = 0;
+		elem.priority_bits = 0;
+		elem.pal = 0;
+		elem.height = 0;
+		elem.width = 0;
+	}
+
+	for (auto & elem : m_oam_tilelist)
+	{
+		elem.x = 0;
+		elem.priority = 0;
+		elem.pal = 0;
+		elem.tileaddr = 0;
+		elem.hflip = 0;
+>>>>>>> upstream/master
 	}
 }
 
@@ -472,9 +559,15 @@ void snes_ppu_device::device_reset()
  * Get the proper color (direct or from cgram)
  *****************************************/
 
+<<<<<<< HEAD
 inline UINT16 snes_ppu_device::get_bgcolor( UINT8 direct_colors, UINT16 palette, UINT8 color )
 {
 	UINT16 c = 0;
+=======
+inline uint16_t snes_ppu_device::get_bgcolor( uint8_t direct_colors, uint16_t palette, uint8_t color )
+{
+	uint16_t c;
+>>>>>>> upstream/master
 
 	if (direct_colors)
 	{
@@ -496,7 +589,11 @@ inline UINT16 snes_ppu_device::get_bgcolor( UINT8 direct_colors, UINT16 palette,
  * proper scanline
  *****************************************/
 
+<<<<<<< HEAD
 inline void snes_ppu_device::set_scanline_pixel( int screen, INT16 x, UINT16 color, UINT8 priority, UINT8 layer, int blend )
+=======
+inline void snes_ppu_device::set_scanline_pixel( int screen, int16_t x, uint16_t color, uint8_t priority, uint8_t layer, int blend )
+>>>>>>> upstream/master
 {
 	m_scanlines[screen].buffer[x] = color;
 	m_scanlines[screen].priority[x] = priority;
@@ -527,10 +624,17 @@ inline void snes_ppu_device::set_scanline_pixel( int screen, INT16 x, UINT16 col
  * or lores)
  *****************************************/
 
+<<<<<<< HEAD
 inline void snes_ppu_device::draw_bgtile_lores( UINT8 layer, INT16 ii, UINT8 colour, UINT16 pal, UINT8 direct_colors, UINT8 priority )
 {
 	int screen;
 	UINT16 c;
+=======
+inline void snes_ppu_device::draw_bgtile_lores( uint8_t layer, int16_t ii, uint8_t colour, uint16_t pal, uint8_t direct_colors, uint8_t priority )
+{
+	int screen;
+	uint16_t c;
+>>>>>>> upstream/master
 
 	for (screen = SNES_MAINSCREEN; screen <= SNES_SUBSCREEN; screen++)
 	{
@@ -538,8 +642,13 @@ inline void snes_ppu_device::draw_bgtile_lores( UINT8 layer, INT16 ii, UINT8 col
 		{
 			if (m_scanlines[screen].priority[ii] <= priority)
 			{
+<<<<<<< HEAD
 				UINT8 clr = colour;
 				UINT8 clipmask = m_clipmasks[layer][ii];
+=======
+				uint8_t clr = colour;
+				uint8_t clipmask = m_clipmasks[layer][ii];
+>>>>>>> upstream/master
 
 #if SNES_LAYER_DEBUG
 				if (m_debug_options.windows_disabled)
@@ -561,10 +670,17 @@ inline void snes_ppu_device::draw_bgtile_lores( UINT8 layer, INT16 ii, UINT8 col
 	}
 }
 
+<<<<<<< HEAD
 inline void snes_ppu_device::draw_bgtile_hires( UINT8 layer, INT16 ii, UINT8 colour, UINT16 pal, UINT8 direct_colors, UINT8 priority )
 {
 	int screen;
 	UINT16 c;
+=======
+inline void snes_ppu_device::draw_bgtile_hires( uint8_t layer, int16_t ii, uint8_t colour, uint16_t pal, uint8_t direct_colors, uint8_t priority )
+{
+	int screen;
+	uint16_t c;
+>>>>>>> upstream/master
 
 	for (screen = SNES_MAINSCREEN; screen <= SNES_SUBSCREEN; screen++)
 	{
@@ -573,8 +689,13 @@ inline void snes_ppu_device::draw_bgtile_hires( UINT8 layer, INT16 ii, UINT8 col
 		{
 			if (m_scanlines[screen].priority[ii >> 1] <= priority)
 			{
+<<<<<<< HEAD
 				UINT8 clr = colour;
 				UINT8 clipmask = m_clipmasks[layer][ii >> 1];
+=======
+				uint8_t clr = colour;
+				uint8_t clipmask = m_clipmasks[layer][ii >> 1];
+>>>>>>> upstream/master
 
 #if SNES_LAYER_DEBUG
 				if (m_debug_options.windows_disabled)
@@ -596,19 +717,33 @@ inline void snes_ppu_device::draw_bgtile_hires( UINT8 layer, INT16 ii, UINT8 col
 	}
 }
 
+<<<<<<< HEAD
 inline void snes_ppu_device::draw_oamtile( INT16 ii, UINT8 colour, UINT16 pal, UINT8 priority )
 {
 	int screen;
 	int blend;
 	UINT16 c;
 	INT16 pos = ii & 0x1ff;
+=======
+inline void snes_ppu_device::draw_oamtile( int16_t ii, uint8_t colour, uint16_t pal, uint8_t priority )
+{
+	int screen;
+	int blend;
+	uint16_t c;
+	int16_t pos = ii & 0x1ff;
+>>>>>>> upstream/master
 
 	for (screen = SNES_MAINSCREEN; screen <= SNES_SUBSCREEN; screen++)
 	{
 		if (pos >= 0 && pos < SNES_SCR_WIDTH && m_scanlines[screen].enable)
 		{
+<<<<<<< HEAD
 			UINT8 clr = colour;
 			UINT8 clipmask = m_clipmasks[SNES_OAM][pos];
+=======
+			uint8_t clr = colour;
+			uint8_t clipmask = m_clipmasks[SNES_OAM][pos];
+>>>>>>> upstream/master
 
 #if SNES_LAYER_DEBUG
 			if (m_debug_options.windows_disabled)
@@ -639,10 +774,17 @@ inline void snes_ppu_device::draw_oamtile( INT16 ii, UINT8 colour, UINT16 pal, U
  * (depending on layer and resolution)
  *****************************************/
 
+<<<<<<< HEAD
 inline void snes_ppu_device::draw_tile( UINT8 planes, UINT8 layer, UINT32 tileaddr, INT16 x, UINT8 priority, UINT8 flip, UINT8 direct_colors, UINT16 pal, UINT8 hires )
 {
 	UINT8 plane[8];
 	INT16 ii, jj;
+=======
+inline void snes_ppu_device::draw_tile( uint8_t planes, uint8_t layer, uint32_t tileaddr, int16_t x, uint8_t priority, uint8_t flip, uint8_t direct_colors, uint16_t pal, uint8_t hires )
+{
+	uint8_t plane[8];
+	int16_t ii, jj;
+>>>>>>> upstream/master
 	int x_mos;
 
 	for (ii = 0; ii < planes / 2; ii++)
@@ -653,8 +795,13 @@ inline void snes_ppu_device::draw_tile( UINT8 planes, UINT8 layer, UINT32 tilead
 
 	for (ii = x; ii < (x + 8); ii++)
 	{
+<<<<<<< HEAD
 		UINT8 colour = 0;
 		UINT8 mosaic = m_layer[layer].mosaic_enabled;
+=======
+		uint8_t colour = 0;
+		uint8_t mosaic = m_layer[layer].mosaic_enabled;
+>>>>>>> upstream/master
 
 #if SNES_LAYER_DEBUG
 		if (m_debug_options.mosaic_disabled)
@@ -722,9 +869,15 @@ inline void snes_ppu_device::draw_tile( UINT8 planes, UINT8 layer, UINT32 tilead
  * Find the address in VRAM of the tile (x,y)
  *********************************************/
 
+<<<<<<< HEAD
 inline UINT32 snes_ppu_device::get_tmap_addr( UINT8 layer, UINT8 tile_size, UINT32 base, UINT32 x, UINT32 y )
 {
 	UINT32 res = base;
+=======
+inline uint32_t snes_ppu_device::get_tmap_addr( uint8_t layer, uint8_t tile_size, uint32_t base, uint32_t x, uint32_t y )
+{
+	uint32_t res = base;
+>>>>>>> upstream/master
 	x  >>= (3 + tile_size);
 	y  >>= (3 + tile_size);
 
@@ -745,6 +898,7 @@ inline UINT32 snes_ppu_device::get_tmap_addr( UINT8 layer, UINT8 tile_size, UINT
  * Update an entire line of tiles.
  *********************************************/
 
+<<<<<<< HEAD
 inline void snes_ppu_device::update_line( UINT16 curline, UINT8 layer, UINT8 priority_b, UINT8 priority_a, UINT8 color_depth, UINT8 hires, UINT8 offset_per_tile, UINT8 direct_colors )
 {
 	UINT32 tmap, tile, xoff, yoff, charaddr, addr;
@@ -758,6 +912,21 @@ inline void snes_ppu_device::update_line( UINT16 curline, UINT8 layer, UINT8 pri
 	UINT8 color_planes = 2 << color_depth;
 	/* below we cheat to simplify the code: 8BPP should have 0 pal offset, not 0x100 (but we take care of this by later using pal % FIXED_COLOUR) */
 	UINT8 color_shift = 2 << color_depth;
+=======
+inline void snes_ppu_device::update_line( uint16_t curline, uint8_t layer, uint8_t priority_b, uint8_t priority_a, uint8_t color_depth, uint8_t hires, uint8_t offset_per_tile, uint8_t direct_colors )
+{
+	uint32_t tmap, tile, xoff, yoff, charaddr, addr;
+	uint16_t ii = 0, vflip, hflip, pal, pal_direct, tilemap;
+	uint8_t xscroll, priority;
+	int8_t yscroll;
+	int tile_incr = 0;
+	uint16_t opt_bit = (layer == SNES_BG1) ? 13 : (layer == SNES_BG2) ? 14 : 0;
+	uint8_t tile_size;
+	/* variables depending on color_depth */
+	uint8_t color_planes = 2 << color_depth;
+	/* below we cheat to simplify the code: 8BPP should have 0 pal offset, not 0x100 (but we take care of this by later using pal % FIXED_COLOUR) */
+	uint8_t color_shift = 2 << color_depth;
+>>>>>>> upstream/master
 
 #if SNES_LAYER_DEBUG
 	if (m_debug_options.bg_disabled[layer])
@@ -795,14 +964,24 @@ inline void snes_ppu_device::update_line( UINT16 curline, UINT8 layer, UINT8 pri
 	while (ii < 256 + (8 << tile_size))
 	{
 		// determine the horizontal position (Bishojo Janshi Suchi Pai & Desert Figther have tile_size & hires == 1)
+<<<<<<< HEAD
 		UINT32 xpos = xoff + (ii << (tile_size * hires));
 		UINT32 ypos = yoff + curline;
+=======
+		uint32_t xpos = xoff + (ii << (tile_size * hires));
+		uint32_t ypos = yoff + curline;
+>>>>>>> upstream/master
 
 		if (offset_per_tile != SNES_OPT_NONE)
 		{
 			int opt_x = ii + (xoff & 7);
+<<<<<<< HEAD
 			UINT32 haddr = 0, vaddr = 0;
 			UINT16 hval = 0, vval = 0;
+=======
+			uint32_t haddr, vaddr;
+			uint16_t hval, vval;
+>>>>>>> upstream/master
 
 			if (opt_x >= 8)
 			{
@@ -930,6 +1109,7 @@ inline void snes_ppu_device::update_line( UINT16 curline, UINT8 layer, UINT8 pri
 
 #define MODE7_CLIP(x) (((x) & 0x2000) ? ((x) | ~0x03ff) : ((x) & 0x03ff))
 
+<<<<<<< HEAD
 void snes_ppu_device::update_line_mode7( UINT16 curline, UINT8 layer, UINT8 priority_b, UINT8 priority_a )
 {
 	UINT32 tiled;
@@ -939,6 +1119,17 @@ void snes_ppu_device::update_line_mode7( UINT16 curline, UINT8 layer, UINT8 prio
 	UINT8 colour = 0;
 	UINT16 *mosaic_x, *mosaic_y;
 	UINT16 c;
+=======
+void snes_ppu_device::update_line_mode7( uint16_t curline, uint8_t layer, uint8_t priority_b, uint8_t priority_a )
+{
+	uint32_t tiled;
+	int16_t ma, mb, mc, md;
+	int32_t xc, yc, tx, ty, sx, sy, hs, vs, xpos, xdir, x0, y0;
+	uint8_t priority = priority_b;
+	uint8_t colour = 0;
+	uint16_t *mosaic_x, *mosaic_y;
+	uint16_t c;
+>>>>>>> upstream/master
 	int screen;
 
 #if SNES_LAYER_DEBUG
@@ -1067,8 +1258,13 @@ void snes_ppu_device::update_line_mode7( UINT16 curline, UINT8 layer, UINT8 prio
 		{
 			if (m_scanlines[screen].enable)
 			{
+<<<<<<< HEAD
 				UINT8 clr = colour;
 				UINT8 clipmask = m_clipmasks[layer][xpos];
+=======
+				uint8_t clr = colour;
+				uint8_t clipmask = m_clipmasks[layer][xpos];
+>>>>>>> upstream/master
 
 #if SNES_LAYER_DEBUG
 				if (m_debug_options.windows_disabled)
@@ -1156,10 +1352,17 @@ void snes_ppu_device::update_obsel( void )
 
 void snes_ppu_device::oam_list_build( void )
 {
+<<<<<<< HEAD
 	UINT8 *oamram = (UINT8 *)m_oam_ram;
 	INT16 oam = 0x1ff;
 	UINT16 oam_extra = oam + 0x20;
 	UINT16 extra = 0;
+=======
+	uint8_t *oamram = (uint8_t *)m_oam_ram.get();
+	int16_t oam = 0x1ff;
+	uint16_t oam_extra = oam + 0x20;
+	uint16_t extra = 0;
+>>>>>>> upstream/master
 	int ii;
 
 	m_update_oam_list = 0;       // eventually, we can optimize the code by only calling this function when there is a change in size
@@ -1241,7 +1444,11 @@ void snes_ppu_device::oam_list_build( void )
  * scanline
  *********************************************/
 
+<<<<<<< HEAD
 int snes_ppu_device::is_sprite_on_scanline( UINT16 curline, UINT8 sprite )
+=======
+int snes_ppu_device::is_sprite_on_scanline( uint16_t curline, uint8_t sprite )
+>>>>>>> upstream/master
 {
 	//if sprite is entirely offscreen and doesn't wrap around to the left side of the screen,
 	//then it is not counted. this *should* be 256, and not 255, even though dot 256 is offscreen.
@@ -1266,6 +1473,7 @@ int snes_ppu_device::is_sprite_on_scanline( UINT16 curline, UINT8 sprite )
  * scanline.
  *********************************************/
 
+<<<<<<< HEAD
 void snes_ppu_device::update_objects_rto( UINT16 curline )
 {
 	int ii, jj, active_sprite;
@@ -1276,6 +1484,18 @@ void snes_ppu_device::update_objects_rto( UINT16 curline )
 	UINT16 tile;
 	INT16 x, y;
 	UINT32 name_sel = 0;
+=======
+void snes_ppu_device::update_objects_rto( uint16_t curline )
+{
+	int ii, jj, active_sprite;
+	uint8_t range_over, time_over;
+	int8_t xs, ys;
+	uint8_t line;
+	uint8_t height, width, vflip, hflip, priority, pal;
+	uint16_t tile;
+	int16_t x, y;
+	uint32_t name_sel;
+>>>>>>> upstream/master
 
 	oam_list_build();
 
@@ -1347,7 +1567,11 @@ void snes_ppu_device::update_objects_rto( UINT16 curline )
 
 			for (jj = 0; jj < width; jj++)
 			{
+<<<<<<< HEAD
 				INT16 xx = (x + (jj << 3)) & 0x1ff;
+=======
+				int16_t xx = (x + (jj << 3)) & 0x1ff;
+>>>>>>> upstream/master
 
 				if (x != 256 && xx >= 256 && (xx + 7) < 512)
 					continue;
@@ -1380,10 +1604,17 @@ void snes_ppu_device::update_objects_rto( UINT16 curline )
  * Update an entire line of sprites.
  *********************************************/
 
+<<<<<<< HEAD
 void snes_ppu_device::update_objects( UINT8 priority_oam0, UINT8 priority_oam1, UINT8 priority_oam2, UINT8 priority_oam3 )
 {
 	UINT8 pri, priority[4];
 	UINT32 charaddr;
+=======
+void snes_ppu_device::update_objects( uint8_t priority_oam0, uint8_t priority_oam1, uint8_t priority_oam2, uint8_t priority_oam3 )
+{
+	uint8_t pri, priority[4];
+	uint32_t charaddr;
+>>>>>>> upstream/master
 	int ii;
 
 #if SNES_LAYER_DEBUG
@@ -1441,7 +1672,11 @@ void snes_ppu_device::update_objects( UINT8 priority_oam0, UINT8 priority_oam1, 
  * Update Mode X line.
  *********************************************/
 
+<<<<<<< HEAD
 void snes_ppu_device::update_mode_0( UINT16 curline )
+=======
+void snes_ppu_device::update_mode_0( uint16_t curline )
+>>>>>>> upstream/master
 {
 #if SNES_LAYER_DEBUG
 	if (m_debug_options.mode_disabled[0])
@@ -1455,7 +1690,11 @@ void snes_ppu_device::update_mode_0( UINT16 curline )
 	update_line(curline, SNES_BG4, 1, 4,  SNES_COLOR_DEPTH_2BPP, 0, SNES_OPT_NONE, 0);
 }
 
+<<<<<<< HEAD
 void snes_ppu_device::update_mode_1( UINT16 curline )
+=======
+void snes_ppu_device::update_mode_1( uint16_t curline )
+>>>>>>> upstream/master
 {
 #if SNES_LAYER_DEBUG
 	if (m_debug_options.mode_disabled[1])
@@ -1478,7 +1717,11 @@ void snes_ppu_device::update_mode_1( UINT16 curline )
 	}
 }
 
+<<<<<<< HEAD
 void snes_ppu_device::update_mode_2( UINT16 curline )
+=======
+void snes_ppu_device::update_mode_2( uint16_t curline )
+>>>>>>> upstream/master
 {
 #if SNES_LAYER_DEBUG
 	if (m_debug_options.mode_disabled[2])
@@ -1490,7 +1733,11 @@ void snes_ppu_device::update_mode_2( UINT16 curline )
 	update_line(curline, SNES_BG2, 1, 5, SNES_COLOR_DEPTH_4BPP, 0, SNES_OPT_MODE2, 0);
 }
 
+<<<<<<< HEAD
 void snes_ppu_device::update_mode_3( UINT16 curline )
+=======
+void snes_ppu_device::update_mode_3( uint16_t curline )
+>>>>>>> upstream/master
 {
 #if SNES_LAYER_DEBUG
 	if (m_debug_options.mode_disabled[3])
@@ -1502,7 +1749,11 @@ void snes_ppu_device::update_mode_3( UINT16 curline )
 	update_line(curline, SNES_BG2, 1, 5, SNES_COLOR_DEPTH_4BPP, 0, SNES_OPT_NONE, 0);
 }
 
+<<<<<<< HEAD
 void snes_ppu_device::update_mode_4( UINT16 curline )
+=======
+void snes_ppu_device::update_mode_4( uint16_t curline )
+>>>>>>> upstream/master
 {
 #if SNES_LAYER_DEBUG
 	if (m_debug_options.mode_disabled[4])
@@ -1514,7 +1765,11 @@ void snes_ppu_device::update_mode_4( UINT16 curline )
 	update_line(curline, SNES_BG2, 1, 5, SNES_COLOR_DEPTH_2BPP, 0, SNES_OPT_MODE4, 0);
 }
 
+<<<<<<< HEAD
 void snes_ppu_device::update_mode_5( UINT16 curline )
+=======
+void snes_ppu_device::update_mode_5( uint16_t curline )
+>>>>>>> upstream/master
 {
 #if SNES_LAYER_DEBUG
 	if (m_debug_options.mode_disabled[5])
@@ -1526,7 +1781,11 @@ void snes_ppu_device::update_mode_5( UINT16 curline )
 	update_line(curline, SNES_BG2, 1, 5, SNES_COLOR_DEPTH_2BPP, 1, SNES_OPT_NONE, 0);
 }
 
+<<<<<<< HEAD
 void snes_ppu_device::update_mode_6( UINT16 curline )
+=======
+void snes_ppu_device::update_mode_6( uint16_t curline )
+>>>>>>> upstream/master
 {
 #if SNES_LAYER_DEBUG
 	if (m_debug_options.mode_disabled[6])
@@ -1537,7 +1796,11 @@ void snes_ppu_device::update_mode_6( UINT16 curline )
 	update_line(curline, SNES_BG1, 2, 5, SNES_COLOR_DEPTH_4BPP, 1, SNES_OPT_MODE6, 0);
 }
 
+<<<<<<< HEAD
 void snes_ppu_device::update_mode_7( UINT16 curline )
+=======
+void snes_ppu_device::update_mode_7( uint16_t curline )
+>>>>>>> upstream/master
 {
 #if SNES_LAYER_DEBUG
 	if (m_debug_options.mode_disabled[7])
@@ -1563,7 +1826,11 @@ void snes_ppu_device::update_mode_7( UINT16 curline )
  * Draw the whole screen (Mode 0 -> 7).
  *********************************************/
 
+<<<<<<< HEAD
 void snes_ppu_device::draw_screens( UINT16 curline )
+=======
+void snes_ppu_device::draw_screens( uint16_t curline )
+>>>>>>> upstream/master
 {
 	switch (m_mode)
 	{
@@ -1593,8 +1860,13 @@ void snes_ppu_device::draw_screens( UINT16 curline )
 
 void snes_ppu_device::update_windowmasks( void )
 {
+<<<<<<< HEAD
 	UINT16 ii, jj;
 	INT8 w1, w2;
+=======
+	uint16_t ii, jj;
+	int8_t w1, w2;
+>>>>>>> upstream/master
 
 	m_update_windows = 0;        /* reset the flag */
 
@@ -1682,7 +1954,11 @@ void snes_ppu_device::update_offsets( void )
  * color math.
  *****************************************/
 
+<<<<<<< HEAD
 inline void snes_ppu_device::draw_blend( UINT16 offset, UINT16 *colour, UINT8 prevent_color_math, UINT8 black_pen_clip, int switch_screens )
+=======
+inline void snes_ppu_device::draw_blend( uint16_t offset, uint16_t *colour, uint8_t prevent_color_math, uint8_t black_pen_clip, int switch_screens )
+>>>>>>> upstream/master
 {
 #if SNES_LAYER_DEBUG
 	if (m_debug_options.colormath_disabled)
@@ -1706,7 +1982,11 @@ inline void snes_ppu_device::draw_blend( UINT16 offset, UINT16 *colour, UINT8 pr
 		(prevent_color_math == SNES_CLIP_IN  && !m_clipmasks[SNES_COLOR][offset]) ||
 		(prevent_color_math == SNES_CLIP_OUT && m_clipmasks[SNES_COLOR][offset]))
 	{
+<<<<<<< HEAD
 		UINT16 r, g, b;
+=======
+		uint16_t r, g, b;
+>>>>>>> upstream/master
 		struct SNES_SCANLINE *subscreen;
 		int clip_max = 0;   // if add then clip to 0x1f, if sub then clip to 0
 
@@ -1810,6 +2090,7 @@ inline void snes_ppu_device::draw_blend( UINT16 offset, UINT16 *colour, UINT8 pr
  * the optimized averaging algorithm.
  *********************************************/
 
+<<<<<<< HEAD
 void snes_ppu_device::refresh_scanline( bitmap_rgb32 &bitmap, UINT16 curline )
 {
 	UINT16 ii;
@@ -1819,12 +2100,27 @@ void snes_ppu_device::refresh_scanline( bitmap_rgb32 &bitmap, UINT16 curline )
 	UINT16 c;
 	UINT16 prev_colour = 0;
 	int blurring = read_safe(machine().root_device().ioport("OPTIONS"), 0) & 0x01;
+=======
+void snes_ppu_device::refresh_scanline( bitmap_rgb32 &bitmap, uint16_t curline )
+{
+	uint16_t ii;
+	int x;
+	int fade;
+	struct SNES_SCANLINE *scanline1, *scanline2;
+	uint16_t c;
+	uint16_t prev_colour = 0;
+	int blurring = m_options.read_safe(0) & 0x01;
+>>>>>>> upstream/master
 
 	g_profiler.start(PROFILER_VIDEO);
 
 	if (m_screen_disabled) /* screen is forced blank */
 		for (x = 0; x < SNES_SCR_WIDTH * 2; x++)
+<<<<<<< HEAD
 			bitmap.pix32(curline, x) = rgb_t::black;
+=======
+			bitmap.pix32(curline, x) = rgb_t::black();
+>>>>>>> upstream/master
 	else
 	{
 		/* Update clip window masks if necessary */
@@ -1892,7 +2188,11 @@ void snes_ppu_device::refresh_scanline( bitmap_rgb32 &bitmap, UINT16 curline )
 		for (x = 0; x < SNES_SCR_WIDTH; x++)
 		{
 			int r, g, b, hires;
+<<<<<<< HEAD
 			UINT16 tmp_col[2];
+=======
+			uint16_t tmp_col[2];
+>>>>>>> upstream/master
 			hires = (m_mode != 5 && m_mode != 6 && !m_pseudo_hires) ? 0 : 1;
 
 			/* in hires, the first pixel (of 512) is subscreen pixel, then the first mainscreen pixel follows, and so on... */
@@ -1973,12 +2273,21 @@ void snes_ppu_device::refresh_scanline( bitmap_rgb32 &bitmap, UINT16 curline )
 /* CPU <-> PPU comms */
 
 // full graphic variables
+<<<<<<< HEAD
 static const UINT16 vram_fgr_inctab[4] = { 1, 32, 128, 128 };
 static const UINT16 vram_fgr_inccnts[4] = { 0, 32, 64, 128 };
 static const UINT16 vram_fgr_shiftab[4] = { 0, 5, 6, 7 };
 
 // utility function - latches the H/V counters.  Used by IRQ, writes to WRIO, etc.
 void snes_ppu_device::set_latch_hv(INT16 x, INT16 y)
+=======
+static const uint16_t vram_fgr_inctab[4] = { 1, 32, 128, 128 };
+static const uint16_t vram_fgr_inccnts[4] = { 0, 32, 64, 128 };
+static const uint16_t vram_fgr_shiftab[4] = { 0, 5, 6, 7 };
+
+// utility function - latches the H/V counters.  Used by IRQ, writes to WRIO, etc.
+void snes_ppu_device::set_latch_hv(int16_t x, int16_t y)
+>>>>>>> upstream/master
 {
 	m_beam.latch_vert = y;
 	m_beam.latch_horz = x;
@@ -2031,6 +2340,7 @@ void snes_ppu_device::dynamic_res_change()
  when interlace is active.
 *************************************************/
 
+<<<<<<< HEAD
 inline UINT32 snes_ppu_device::get_vram_address()
 {
 	UINT32 addr = m_vmadd;
@@ -2039,6 +2349,16 @@ inline UINT32 snes_ppu_device::get_vram_address()
 	{
 		UINT32 rem = addr & m_vram_fgr_mask;
 		UINT32 faddr = (addr & ~m_vram_fgr_mask) + (rem >> m_vram_fgr_shift) + ((rem & (m_vram_fgr_count - 1)) << 3);
+=======
+inline uint32_t snes_ppu_device::get_vram_address()
+{
+	uint32_t addr = m_vmadd;
+
+	if (m_vram_fgr_count)
+	{
+		uint32_t rem = addr & m_vram_fgr_mask;
+		uint32_t faddr = (addr & ~m_vram_fgr_mask) + (rem >> m_vram_fgr_shift) + ((rem & (m_vram_fgr_count - 1)) << 3);
+>>>>>>> upstream/master
 		return faddr << 1;
 	}
 
@@ -2047,16 +2367,26 @@ inline UINT32 snes_ppu_device::get_vram_address()
 
 READ8_MEMBER( snes_ppu_device::vram_read )
 {
+<<<<<<< HEAD
 	UINT8 res = 0;
+=======
+	uint8_t res;
+>>>>>>> upstream/master
 	offset &= 0xffff; // only 64KB are present on SNES
 
 	if (m_screen_disabled)
 		res = m_vram[offset];
 	else
 	{
+<<<<<<< HEAD
 		UINT16 v = m_screen->vpos();
 		UINT16 h = m_screen->hpos();
 		UINT16 ls = (((m_stat78 & 0x10) == SNES_NTSC ? 525 : 625) >> 1) - 1;
+=======
+		uint16_t v = m_screen->vpos();
+		uint16_t h = m_screen->hpos();
+		uint16_t ls = (((m_stat78 & 0x10) == SNES_NTSC ? 525 : 625) >> 1) - 1;
+>>>>>>> upstream/master
 
 		if (m_interlace == 2)
 			ls++;
@@ -2089,8 +2419,13 @@ WRITE8_MEMBER( snes_ppu_device::vram_write )
 		m_vram[offset] = data;
 	else
 	{
+<<<<<<< HEAD
 		UINT16 v = m_screen->vpos();
 		UINT16 h = m_screen->hpos();
+=======
+		uint16_t v = m_screen->vpos();
+		uint16_t h = m_screen->hpos();
+>>>>>>> upstream/master
 		if (v == 0)
 		{
 			if (h <= 4)
@@ -2155,7 +2490,11 @@ READ8_MEMBER( snes_ppu_device::oam_read )
 
 	if (!m_screen_disabled)
 	{
+<<<<<<< HEAD
 		UINT16 v = m_screen->vpos();
+=======
+		uint16_t v = m_screen->vpos();
+>>>>>>> upstream/master
 
 		if (v < m_beam.last_visible_line)
 			offset = 0x010c;
@@ -2173,7 +2512,11 @@ WRITE8_MEMBER( snes_ppu_device::oam_write )
 
 	if (!m_screen_disabled)
 	{
+<<<<<<< HEAD
 		UINT16 v = m_screen->vpos();
+=======
+		uint16_t v = m_screen->vpos();
+>>>>>>> upstream/master
 
 		if (v < m_beam.last_visible_line)
 			offset = 0x010c;
@@ -2208,21 +2551,34 @@ WRITE8_MEMBER( snes_ppu_device::oam_write )
 
 READ8_MEMBER( snes_ppu_device::cgram_read )
 {
+<<<<<<< HEAD
 	UINT8 res = 0;
+=======
+	uint8_t res;
+>>>>>>> upstream/master
 	offset &= 0x1ff;
 
 #if 0
 	if (!m_screen_disabled)
 	{
+<<<<<<< HEAD
 		UINT16 v = m_screen->vpos();
 		UINT16 h = m_screen->hpos();
+=======
+		uint16_t v = m_screen->vpos();
+		uint16_t h = m_screen->hpos();
+>>>>>>> upstream/master
 
 		if (v < m_beam.last_visible_line && h >= 128 && h < 1096)
 			offset = 0x1ff;
 	}
 #endif
 
+<<<<<<< HEAD
 	res = ((UINT8 *)m_cgram)[offset];
+=======
+	res = ((uint8_t *)m_cgram.get())[offset];
+>>>>>>> upstream/master
 
 	// CGRAM palette data format is 15-bits (0,bbbbb,ggggg,rrrrr).
 	// Highest bit is simply ignored.
@@ -2242,8 +2598,13 @@ WRITE8_MEMBER( snes_ppu_device::cgram_write )
 	// writes to the cgram address
 	if (!m_screen_disabled)
 	{
+<<<<<<< HEAD
 		UINT16 v = m_screen->vpos();
 		UINT16 h = m_screen->hpos();
+=======
+		uint16_t v = m_screen->vpos();
+		uint16_t h = m_screen->hpos();
+>>>>>>> upstream/master
 
 		if (v < m_beam.last_visible_line && h >= 128 && h < 1096)
 			offset = 0x1ff;
@@ -2255,12 +2616,21 @@ WRITE8_MEMBER( snes_ppu_device::cgram_write )
 	if (offset & 0x01)
 		data &= 0x7f;
 
+<<<<<<< HEAD
 	((UINT8 *)m_cgram)[offset] = data;
 }
 
 UINT8 snes_ppu_device::read(address_space &space, UINT32 offset, UINT8 wrio_bit7)
 {
 	UINT8 value;
+=======
+	((uint8_t *)m_cgram.get())[offset] = data;
+}
+
+uint8_t snes_ppu_device::read(address_space &space, uint32_t offset, uint8_t wrio_bit7)
+{
+	uint8_t value;
+>>>>>>> upstream/master
 
 	switch (offset)
 	{
@@ -2287,21 +2657,33 @@ UINT8 snes_ppu_device::read(address_space &space, UINT32 offset, UINT8 wrio_bit7
 		case MPYL:      /* Multiplication result (low) */
 			{
 				/* Perform 16bit * 8bit multiply */
+<<<<<<< HEAD
 				UINT32 c = (INT16)m_mode7.matrix_a * (INT8)(m_mode7.matrix_b >> 8);
+=======
+				uint32_t c = (int16_t)m_mode7.matrix_a * (int8_t)(m_mode7.matrix_b >> 8);
+>>>>>>> upstream/master
 				m_ppu1_open_bus = c & 0xff;
 				return m_ppu1_open_bus;
 			}
 		case MPYM:      /* Multiplication result (mid) */
 			{
 				/* Perform 16bit * 8bit multiply */
+<<<<<<< HEAD
 				UINT32 c = (INT16)m_mode7.matrix_a * (INT8)(m_mode7.matrix_b >> 8);
+=======
+				uint32_t c = (int16_t)m_mode7.matrix_a * (int8_t)(m_mode7.matrix_b >> 8);
+>>>>>>> upstream/master
 				m_ppu1_open_bus = (c >> 8) & 0xff;
 				return m_ppu1_open_bus;
 			}
 		case MPYH:      /* Multiplication result (high) */
 			{
 				/* Perform 16bit * 8bit multiply */
+<<<<<<< HEAD
 				UINT32 c = (INT16)m_mode7.matrix_a * (INT8)(m_mode7.matrix_b >> 8);
+=======
+				uint32_t c = (int16_t)m_mode7.matrix_a * (int8_t)(m_mode7.matrix_b >> 8);
+>>>>>>> upstream/master
 				m_ppu1_open_bus = (c >> 16) & 0xff;
 				return m_ppu1_open_bus;
 			}
@@ -2321,7 +2703,11 @@ UINT8 snes_ppu_device::read(address_space &space, UINT32 offset, UINT8 wrio_bit7
 			return m_ppu1_open_bus;
 		case RVMDATAL:  /* Read data from VRAM (low) */
 			{
+<<<<<<< HEAD
 				UINT32 addr = get_vram_address();
+=======
+				uint32_t addr = get_vram_address();
+>>>>>>> upstream/master
 				m_ppu1_open_bus = m_vram_read_buffer & 0xff;
 
 				if (!m_vram_fgr_high)
@@ -2336,7 +2722,11 @@ UINT8 snes_ppu_device::read(address_space &space, UINT32 offset, UINT8 wrio_bit7
 			}
 		case RVMDATAH:  /* Read data from VRAM (high) */
 			{
+<<<<<<< HEAD
 				UINT32 addr = get_vram_address();
+=======
+				uint32_t addr = get_vram_address();
+>>>>>>> upstream/master
 				m_ppu1_open_bus = (m_vram_read_buffer >> 8) & 0xff;
 
 				if (m_vram_fgr_high)
@@ -2407,7 +2797,11 @@ UINT8 snes_ppu_device::read(address_space &space, UINT32 offset, UINT8 wrio_bit7
 }
 
 
+<<<<<<< HEAD
 void snes_ppu_device::write(address_space &space, UINT32 offset, UINT8 data)
+=======
+void snes_ppu_device::write(address_space &space, uint32_t offset, uint8_t data)
+>>>>>>> upstream/master
 {
 	switch (offset)
 	{
@@ -2567,7 +2961,11 @@ void snes_ppu_device::write(address_space &space, UINT32 offset, UINT8 data)
 			break;
 		case VMADDL:    /* Address for VRAM read/write (low) */
 			{
+<<<<<<< HEAD
 				UINT32 addr;
+=======
+				uint32_t addr;
+>>>>>>> upstream/master
 				m_vmadd = (m_vmadd & 0xff00) | (data << 0);
 				addr = get_vram_address();
 				m_vram_read_buffer = vram_read(space, addr);
@@ -2576,7 +2974,11 @@ void snes_ppu_device::write(address_space &space, UINT32 offset, UINT8 data)
 			break;
 		case VMADDH:    /* Address for VRAM read/write (high) */
 			{
+<<<<<<< HEAD
 				UINT32 addr;
+=======
+				uint32_t addr;
+>>>>>>> upstream/master
 				m_vmadd = (m_vmadd & 0x00ff) | (data << 8);
 				addr = get_vram_address();
 				m_vram_read_buffer = vram_read(space, addr);
@@ -2585,7 +2987,11 @@ void snes_ppu_device::write(address_space &space, UINT32 offset, UINT8 data)
 			break;
 		case VMDATAL:   /* 2118: Data for VRAM write (low) */
 			{
+<<<<<<< HEAD
 				UINT32 addr = get_vram_address();
+=======
+				uint32_t addr = get_vram_address();
+>>>>>>> upstream/master
 				vram_write(space, addr, data);
 
 				if (!m_vram_fgr_high)
@@ -2594,7 +3000,11 @@ void snes_ppu_device::write(address_space &space, UINT32 offset, UINT8 data)
 			return;
 		case VMDATAH:   /* 2119: Data for VRAM write (high) */
 			{
+<<<<<<< HEAD
 				UINT32 addr = get_vram_address();
+=======
+				uint32_t addr = get_vram_address();
+>>>>>>> upstream/master
 				vram_write(space, addr + 1, data);
 
 				if (m_vram_fgr_high)
@@ -2777,7 +3187,11 @@ void snes_ppu_device::write(address_space &space, UINT32 offset, UINT8 data)
 		case COLDATA:   /* Fixed colour data for fixed colour addition/subtraction */
 			{
 				/* Store it in the extra space we made in the CGRAM. It doesn't really go there, but it's as good a place as any. */
+<<<<<<< HEAD
 				UINT8 r, g, b;
+=======
+				uint8_t r, g, b;
+>>>>>>> upstream/master
 
 				/* Get existing value. */
 				r = m_cgram[FIXED_COLOUR] & 0x1f;
@@ -2795,6 +3209,11 @@ void snes_ppu_device::write(address_space &space, UINT32 offset, UINT8 data)
 		case SETINI:    /* Screen mode/video select */
 			m_interlace = (data & 0x01) ? 2 : 1;
 			m_obj_interlace = (data & 0x02) ? 2 : 1;
+<<<<<<< HEAD
+=======
+			// TODO: this should actually be always 240, then fill black remaining lines if bit is 0.
+			//m_beam.last_visible_line = (m_stat78 & SNES_PAL) ? 240 : (data & 0x04) ? 240 : 225;
+>>>>>>> upstream/master
 			m_beam.last_visible_line = (data & 0x04) ? 240 : 225;
 			m_pseudo_hires = BIT(data, 3);
 			m_mode7.extbg = BIT(data, 6);
@@ -2825,16 +3244,27 @@ void snes_ppu_device::write(address_space &space, UINT32 offset, UINT8 data)
 		popmessage MSG2;                          \
 	}
 
+<<<<<<< HEAD
 UINT8 snes_ppu_device::dbg_video( UINT16 curline )
 {
 	int i;
 	UINT8 toggles = read_safe(machine().root_device().ioport("DEBUG1"), 0);
+=======
+uint8_t snes_ppu_device::dbg_video( uint16_t curline )
+{
+	int i;
+	uint8_t toggles = m_debug1.read_safe(0);
+>>>>>>> upstream/master
 	m_debug_options.select_pri[SNES_BG1] = (toggles & 0x03);
 	m_debug_options.select_pri[SNES_BG2] = (toggles & 0x0c) >> 2;
 	m_debug_options.select_pri[SNES_BG3] = (toggles & 0x30) >> 4;
 	m_debug_options.select_pri[SNES_BG4] = (toggles & 0xc0) >> 6;
 
+<<<<<<< HEAD
 	toggles = read_safe(machine().root_device().ioport("DEBUG2"), 0);
+=======
+	toggles = m_debug2.read_safe(0);
+>>>>>>> upstream/master
 	for (i = 0; i < 4; i++)
 		DEBUG_TOGGLE(i, m_debug_options.bg_disabled[i], ("Debug: Disabled BG%d.\n", i + 1), ("Debug: Enabled BG%d.\n", i + 1))
 	DEBUG_TOGGLE(4, m_debug_options.bg_disabled[SNES_OAM], ("Debug: Disabled OAM.\n"), ("Debug: Enabled OAM.\n"))
@@ -2842,11 +3272,19 @@ UINT8 snes_ppu_device::dbg_video( UINT16 curline )
 	DEBUG_TOGGLE(6, m_debug_options.colormath_disabled, ("Debug: Disabled Color Math.\n"), ("Debug: Enabled Color Math.\n"))
 	DEBUG_TOGGLE(7, m_debug_options.windows_disabled, ("Debug: Disabled Window Masks.\n"), ("Debug: Enabled Window Masks.\n"))
 
+<<<<<<< HEAD
 	toggles = read_safe(machine().root_device().ioport("DEBUG4"), 0);
 	for (i = 0; i < 8; i++)
 		DEBUG_TOGGLE(i, m_debug_options.mode_disabled[i], ("Debug: Disabled Mode %d drawing.\n", i), ("Debug: Enabled Mode %d drawing.\n", i))
 
 	toggles = read_safe(machine().root_device().ioport("DEBUG3"), 0);
+=======
+	toggles = m_debug4.read_safe(0);
+	for (i = 0; i < 8; i++)
+		DEBUG_TOGGLE(i, m_debug_options.mode_disabled[i], ("Debug: Disabled Mode %d drawing.\n", i), ("Debug: Enabled Mode %d drawing.\n", i))
+
+	toggles = m_debug3.read_safe(0);
+>>>>>>> upstream/master
 	DEBUG_TOGGLE(2, m_debug_options.mosaic_disabled, ("Debug: Disabled Mosaic.\n"), ("Debug: Enabled Mosaic.\n"))
 	m_debug_options.sprite_reversed = BIT(toggles, 7);
 	m_debug_options.select_pri[SNES_OAM] = (toggles & 0x70) >> 4;

@@ -1,6 +1,11 @@
 /*
+<<<<<<< HEAD
  * Copyright 2011-2015 Branimir Karadzic. All rights reserved.
  * License: http://www.opensource.org/licenses/BSD-2-Clause
+=======
+ * Copyright 2011-2017 Branimir Karadzic. All rights reserved.
+ * License: https://github.com/bkaradzic/bgfx#license-bsd-2-clause
+>>>>>>> upstream/master
  */
 
 #ifndef ENTRY_PRIVATE_H_HEADER_GUARD
@@ -11,10 +16,20 @@
 #include <bx/spscqueue.h>
 
 #include "entry.h"
+<<<<<<< HEAD
 #include <string.h> // memcpy
 
 #ifndef ENTRY_CONFIG_USE_SDL
 #	define ENTRY_CONFIG_USE_SDL 0
+=======
+
+#ifndef ENTRY_CONFIG_USE_NOOP
+#	define ENTRY_CONFIG_USE_NOOP (BX_PLATFORM_QNX)
+#endif // ENTRY_CONFIG_USE_NOOP
+
+#ifndef ENTRY_CONFIG_USE_SDL
+#	define ENTRY_CONFIG_USE_SDL BX_PLATFORM_STEAMLINK
+>>>>>>> upstream/master
 #endif // ENTRY_CONFIG_USE_SDL
 
 #ifndef ENTRY_CONFIG_USE_GLFW
@@ -22,6 +37,10 @@
 #endif // ENTRY_CONFIG_USE_GLFW
 
 #if !defined(ENTRY_CONFIG_USE_NATIVE) \
+<<<<<<< HEAD
+=======
+	&& !ENTRY_CONFIG_USE_NOOP \
+>>>>>>> upstream/master
 	&& !ENTRY_CONFIG_USE_SDL \
 	&& !ENTRY_CONFIG_USE_GLFW
 #	define ENTRY_CONFIG_USE_NATIVE 1
@@ -48,6 +67,13 @@
 #	define ENTRY_CONFIG_IMPLEMENT_DEFAULT_ALLOCATOR 1
 #endif // ENTRY_CONFIG_IMPLEMENT_DEFAULT_ALLOCATOR
 
+<<<<<<< HEAD
+=======
+#ifndef ENTRY_CONFIG_PROFILER
+#	define ENTRY_CONFIG_PROFILER 0
+#endif // ENTRY_CONFIG_PROFILER
+
+>>>>>>> upstream/master
 #define ENTRY_IMPLEMENT_EVENT(_class, _type) \
 			_class(WindowHandle _handle) : Event(_type, _handle) {}
 
@@ -190,7 +216,11 @@ namespace entry
 		{
 			CharEvent* ev = new CharEvent(_handle);
 			ev->m_len = _len;
+<<<<<<< HEAD
 			memcpy(ev->m_char, _char, 4);
+=======
+			bx::memCopy(ev->m_char, _char, 4);
+>>>>>>> upstream/master
 			m_queue.push(ev);
 		}
 
@@ -289,7 +319,11 @@ namespace entry
 		}
 
 	private:
+<<<<<<< HEAD
 		bx::SpScUnboundedQueue<Event> m_queue;
+=======
+		bx::SpScUnboundedQueueT<Event> m_queue;
+>>>>>>> upstream/master
 	};
 
 } // namespace entry

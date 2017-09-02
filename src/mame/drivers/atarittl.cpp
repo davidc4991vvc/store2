@@ -1,5 +1,9 @@
 // license:BSD-3-Clause
+<<<<<<< HEAD
 // copyright-holders:Fabio Priuli, Scott Stone
+=======
+// copyright-holders:Fabio Priuli, Scott Stone, Couriersud
+>>>>>>> upstream/master
 /***************************************************************************
 
  Atari / Kee Games Driver - Discrete Games made in the 1970's
@@ -16,6 +20,7 @@
  Suspected "same games" are grouped together.  These are usually the exact same game but different cabinet/name.
 
 
+<<<<<<< HEAD
  Technical Manual #s  Game Name(s)                                               Atari Part #'s                     Data      PROM/ROM Chip Numbers
  -------------------+----------------------------------------------------------+----------------------------------+---------+---------------------------------------
  TM-025               Anti-Aircraft (1975)                                       A000951                            YES       003127
@@ -53,6 +58,60 @@
  TM-018               Dodgeball/Dodgem (Not Produced/Released) (1975)
  TM-024               Qwakers (Not Produced/Released) (1974?) (Kee Games clone of Qwak!?)
 
+=======
+ Technical Manual #s      Game Name(s)                                                    Atari Part #'s                     Data      PROM/ROM Chip Numbers
+ -----------------------+---------------------------------------------------------------+----------------------------------+---------+---------------------------------------
+ TM-025                   Anti-Aircraft (1975)                                            A000951                            YES       003127
+ TM-048                   Crash 'N Score/Stock Car (1975)                                 A004256                            YES       003186(x2), 003187(x2), 004248, 004247
+ TM-030                   Crossfire (1975)                                                A003022                            NO?
+ TM-022                   Elimination! (1973)                                             A000845                            NO
+ TM-035                   Goal IV (1975)                                                  A000823                            NO
+ TM-016,029               Gotcha/Color Gotcha (1973)                                      A000816                            NO
+ TM-003,005,011,020,029   Gran Trak 10/Trak 10/Formula K (1974)                           A000872,A000872 K3RT               YES       74186 Racetrack Prom (K5)
+ TM-004,021               Gran Trak 20/Trak 20/Twin Racer (1974)                          A001791(RT20),A001793(A20-K4DRTA)  YES       74186 Racetrack prom (K5)
+ TM-028                   Hi-Way/Highway (1975)                                           A003211                            NO
+ TM-055                   Indy 4 (1976)                                                   A003000,A006268,A006270            YES       003186, 003187, 005502-01, 05503-01
+ TM-026                   Indy 800 (1975)                                                 A003000,A003170,A003182            YES       003186-003189 (4)
+                                                                                          A003184,A003191,A003198,A003199
+ TM-027,052               Jet Fighter/Jet Fighter Cocktail/Launch Aircraft (1975)         A004254,A004255                    YES       004250-004252, 004253-01 to 03 (3)
+ TM-077                   Le Mans (1976)                                                  A005844,A005845                    YES       005837-01, 005838-01, 005839-01
+ TM-040                   Outlaw (1976)                                                   A003213                            YES       003323 - ROM (8205 @ J4)
+ TM-007                   Pin Pong (1974)                                                 A001660                            NO
+ TM-019                   Pursuit (1975)                                                  K8P-B 90128                        NO
+ TM-012,029,034           Quadrapong (1974)                                               A000845                            NO
+ TM-009                   Qwak!/Quack (1974)                                              A000937,A000953                    YES       72074/37-2530N (K9)
+ TM-001,023,029,032       Rebound/Spike/Volleyball (1974)                                 A000517,A000846,SPIKE-(A or B)     NO
+ TM-047                   Shark JAWS (1975)                                               A003806                            YES       004182, 004183
+ TM-008,029               Space Race (1973)                                               A000803                            NO
+ TM-046                   Steeplechase/Astroturf (1975)                                   A003750                            YES       003774 ROM Bugle (C8), 003773-01 "A" Horse (C4), 003773-02 "B" Horse (D4)
+ TM-057                   Stunt Cycle (1976)                                              A004128                            YES       004275 ROM Motorcycle/Bus (1F), 004811 ROM Score Translator (D7)
+ TM-010,036               Tank/Tank Cocktail (1974)                                       A003111 (K5T-F 90124)              YES       90-2006 004800SD Tank Rom (K10)
+ TM-049                   Tank II (1975)                                                  K5T-F 90124                        YES       90-2006
+ TM-002                   Touch-Me (1974)                                                 ???????                            NO
+ TM-006,017,029           World Cup/World Cup Football/Coupe du Monde/Coup Franc (1974)   A000823                            NO
+
+ - Not Known to be released or produced, but at least announced.
+
+ TM-0??                   Arcade Driver/Driver 1st Person (Not Produced/Released) (1974-75?)
+ TM-018                   Dodgeball/Dodgem (Not Produced/Released) (1975)
+ TM-024                   Qwakers (Not Produced/Released) (1974?) (Kee Games clone of Qwak!?)
+
+ - Information (current as of 21 Dec. 2016) on what logic chips (and some analog parts) are still needed to be emulated in the
+   netlist system per-game:
+
+ TM-057 (Stunt Cycle)
+    566    Voltage-Controlled Oscillator
+    1N751A Zener Diode
+    1N752A Zener Diode
+
+ TM-055 (Indy 4)
+    7406  Hex Inverter Buffers/Drivers with O.C. H.V. Outputs (note: Might not be needed, could just clone from 7404)
+    7414  Hex Schmitt-Trigger Inverters
+    7417  Hex Buffers/Drivers
+    74164 8-bit Serial-In, Parallel-Out Shift Register
+    9301  1-of-10 Decoder
+    LM339 Quad Comparator
+>>>>>>> upstream/master
 
 ***************************************************************************/
 
@@ -60,8 +119,15 @@
 #include "emu.h"
 
 #include "machine/netlist.h"
+<<<<<<< HEAD
 #include "netlist/devices/net_lib.h"
 #include "video/fixfreq.h"
+=======
+#include "machine/nl_stuntcyc.h"
+#include "netlist/devices/net_lib.h"
+#include "video/fixfreq.h"
+#include "screen.h"
+>>>>>>> upstream/master
 
 
 // copied by Pong, not accurate for this driver!
@@ -71,42 +137,136 @@
 #define H_TOTAL         (0x1C6+1)       // 454
 
 #define HBSTART                 (H_TOTAL)
+<<<<<<< HEAD
 #define HBEND                   (80)
+=======
+#define HBEND                   (32)
+>>>>>>> upstream/master
 #define VBSTART                 (V_TOTAL)
 #define VBEND                   (16)
 
 #define HRES_MULT                   (1)
 // end
 
+<<<<<<< HEAD
 
+=======
+#define SC_VIDCLOCK     (14318181/2)
+#define SC_HTOTAL       (0x1C8+1)       // 456
+#define SC_VTOTAL       (0x103+1)       // 259
+#define SC_HBSTART      (SC_HTOTAL)
+#define SC_HBEND        (32)
+#define SC_VBSTART      (SC_VTOTAL)
+#define SC_VBEND        (8)
+>>>>>>> upstream/master
 
 class atarikee_state : public driver_device
 {
 public:
 	atarikee_state(const machine_config &mconfig, device_type type, const char *tag)
+<<<<<<< HEAD
 	: driver_device(mconfig, type, tag),
 		m_maincpu(*this, "maincpu"),
 		m_video(*this, "fixfreq")
+=======
+		: driver_device(mconfig, type, tag)
+		, m_maincpu(*this, "maincpu")
+		, m_video(*this, "fixfreq")
+>>>>>>> upstream/master
 	{
 	}
 
 	// devices
+<<<<<<< HEAD
 	required_device<netlist_mame_device_t> m_maincpu;
+=======
+	required_device<netlist_mame_device> m_maincpu;
+>>>>>>> upstream/master
 	required_device<fixedfreq_device> m_video;
 
 protected:
 
 	// driver_device overrides
+<<<<<<< HEAD
 	virtual void machine_start();
 	virtual void machine_reset();
 
 	virtual void video_start();
+=======
+	virtual void machine_start() override;
+	virtual void machine_reset() override;
+
+	virtual void video_start() override;
+>>>>>>> upstream/master
 
 private:
 
 };
 
+<<<<<<< HEAD
 
+=======
+class stuntcyc_state : public driver_device
+{
+public:
+	stuntcyc_state(const machine_config &mconfig, device_type type, const char *tag)
+		: driver_device(mconfig, type, tag)
+		, m_maincpu(*this, "maincpu")
+		//, m_video(*this, "fixfreq")
+		, m_probe_screen(*this, "screen")
+		, m_probe_bit0(0.0)
+		, m_probe_bit1(0.0)
+		, m_probe_bit2(0.0)
+		, m_probe_bit3(0.0)
+		, m_probe_bit4(0.0)
+		, m_probe_bit5(0.0)
+		, m_probe_bit6(0.0)
+		, m_probe_data(nullptr)
+		, m_last_beam(0.0)
+		, m_last_hpos(0)
+		, m_last_vpos(0)
+		, m_last_fraction(0.0)
+	{
+	}
+
+	NETDEV_LOGIC_CALLBACK_MEMBER(probe_bit0_cb);
+	NETDEV_LOGIC_CALLBACK_MEMBER(probe_bit1_cb);
+	NETDEV_LOGIC_CALLBACK_MEMBER(probe_bit2_cb);
+	NETDEV_LOGIC_CALLBACK_MEMBER(probe_bit3_cb);
+	NETDEV_LOGIC_CALLBACK_MEMBER(probe_bit4_cb);
+	NETDEV_LOGIC_CALLBACK_MEMBER(probe_bit5_cb);
+	NETDEV_LOGIC_CALLBACK_MEMBER(probe_bit6_cb);
+	NETDEV_LOGIC_CALLBACK_MEMBER(probe_clock_cb);
+
+	uint32_t screen_update_stuntcyc(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect);
+
+protected:
+
+	// driver_device overrides
+	virtual void machine_start() override;
+	virtual void machine_reset() override;
+
+private:
+	required_device<netlist_mame_device> m_maincpu;
+	//required_device<fixedfreq_device> m_video;
+	required_device<screen_device> m_probe_screen;
+
+	int m_probe_bit0;
+	int m_probe_bit1;
+	int m_probe_bit2;
+	int m_probe_bit3;
+	int m_probe_bit4;
+	int m_probe_bit5;
+	int m_probe_bit6;
+
+	std::unique_ptr<int[]> m_probe_data;
+
+	int m_last_beam;
+	int m_last_hpos;
+	int m_last_vpos;
+	double m_last_fraction;
+};
+>>>>>>> upstream/master
 
 static NETLIST_START(atarikee)
 	SOLVER(Solver, 48000)
@@ -133,10 +293,105 @@ void atarikee_state::video_start()
 {
 }
 
+<<<<<<< HEAD
 
 
 static MACHINE_CONFIG_START( atarikee, atarikee_state )
 
+=======
+void stuntcyc_state::machine_start()
+{
+	save_item(NAME(m_probe_bit0));
+	save_item(NAME(m_probe_bit1));
+	save_item(NAME(m_probe_bit2));
+	save_item(NAME(m_probe_bit3));
+	save_item(NAME(m_probe_bit4));
+	save_item(NAME(m_probe_bit5));
+	save_item(NAME(m_probe_bit6));
+	save_item(NAME(m_last_beam));
+	save_item(NAME(m_last_hpos));
+	save_item(NAME(m_last_vpos));
+	save_item(NAME(m_last_fraction));
+
+	m_probe_bit0 = 0;
+	m_probe_bit1 = 0;
+	m_probe_bit2 = 0;
+	m_probe_bit3 = 0;
+	m_probe_bit4 = 0;
+	m_probe_bit5 = 0;
+	m_probe_bit6 = 0;
+
+	m_probe_data = std::make_unique<int[]>(SC_HTOTAL * SC_VTOTAL);
+}
+
+void stuntcyc_state::machine_reset()
+{
+	m_probe_bit0 = 0;
+	m_probe_bit1 = 0;
+	m_probe_bit2 = 0;
+	m_probe_bit3 = 0;
+	m_probe_bit4 = 0;
+	m_probe_bit5 = 0;
+	m_probe_bit6 = 0;
+}
+
+NETDEV_LOGIC_CALLBACK_MEMBER(stuntcyc_state::probe_bit0_cb) { m_probe_bit0 = data; }
+NETDEV_LOGIC_CALLBACK_MEMBER(stuntcyc_state::probe_bit1_cb) { m_probe_bit1 = data; }
+NETDEV_LOGIC_CALLBACK_MEMBER(stuntcyc_state::probe_bit2_cb) { m_probe_bit2 = data; }
+NETDEV_LOGIC_CALLBACK_MEMBER(stuntcyc_state::probe_bit3_cb) { m_probe_bit3 = data; }
+NETDEV_LOGIC_CALLBACK_MEMBER(stuntcyc_state::probe_bit4_cb) { m_probe_bit4 = data; }
+NETDEV_LOGIC_CALLBACK_MEMBER(stuntcyc_state::probe_bit5_cb) { m_probe_bit5 = data; }
+NETDEV_LOGIC_CALLBACK_MEMBER(stuntcyc_state::probe_bit6_cb) { m_probe_bit6 = data; }
+NETDEV_LOGIC_CALLBACK_MEMBER(stuntcyc_state::probe_clock_cb)
+{
+	synchronize();
+	attotime second_fraction(0, time.attoseconds());
+	attotime frame_fraction(0, (second_fraction * 60).attoseconds());
+	attotime pixel_time = frame_fraction * (SC_HTOTAL * SC_VTOTAL);
+	int32_t pixel_index = (frame_fraction * (SC_HTOTAL * SC_VTOTAL)).seconds();
+	double pixel_fraction = ATTOSECONDS_TO_DOUBLE(pixel_time.attoseconds());
+
+	const int hpos = pixel_index % SC_HTOTAL;//m_screen->hpos();
+	const int vpos = pixel_index / SC_HTOTAL;//m_screen->vpos();
+	const int curr_index = vpos * SC_HTOTAL + hpos;
+
+	int last_index = m_last_vpos * SC_HTOTAL + m_last_hpos;
+	if (last_index != curr_index)
+	{
+		m_probe_data[last_index] = int(double(m_probe_data[last_index]) * m_last_fraction);
+		m_probe_data[last_index] += int(double(m_last_beam) * (1.0 - m_last_fraction));
+		last_index++;
+		while (last_index <= curr_index)
+			m_probe_data[last_index++] = m_last_beam;
+	}
+
+	//m_last_beam = float(data);
+	m_last_beam = m_probe_bit0 + m_probe_bit1 * 2 + m_probe_bit2 * 4 + m_probe_bit3 * 8 + m_probe_bit4 * 16 + m_probe_bit5 * 32 + m_probe_bit6 * 64;
+	m_last_hpos = hpos;
+	m_last_vpos = vpos;
+	m_last_fraction = pixel_fraction;
+}
+
+uint32_t stuntcyc_state::screen_update_stuntcyc(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect)
+{
+	m_last_hpos = 0;
+	m_last_vpos = 0;
+
+	uint32_t pixindex = 0;
+	for (int y = 0; y < SC_VTOTAL; y++)
+	{
+		uint32_t *scanline = &bitmap.pix32(y);
+		pixindex = y * SC_HTOTAL;
+		for (int x = 0; x < SC_HTOTAL; x++)
+			*scanline++ = 0xff000000 | (m_probe_data[pixindex++] * 0x010101);
+			//*scanline++ = 0xff000000 | (uint8_t(m_screen_buf[pixindex++] * 63.0) * 0x010101);
+	}
+
+	return 0;
+}
+
+static MACHINE_CONFIG_START( atarikee )
+>>>>>>> upstream/master
 	/* basic machine hardware */
 	MCFG_DEVICE_ADD("maincpu", NETLIST_CPU, NETLIST_CLOCK)
 	MCFG_NETLIST_SETUP(atarikee)
@@ -150,6 +405,39 @@ static MACHINE_CONFIG_START( atarikee, atarikee_state )
 	MCFG_FIXFREQ_SYNC_THRESHOLD(0.30)
 MACHINE_CONFIG_END
 
+<<<<<<< HEAD
+=======
+//#define STUNTCYC_NL_CLOCK (14318181*69)
+#define STUNTCYC_NL_CLOCK (SC_HTOTAL*SC_VTOTAL*60*140)
+
+static MACHINE_CONFIG_START( stuntcyc )
+	/* basic machine hardware */
+	MCFG_DEVICE_ADD("maincpu", NETLIST_CPU, STUNTCYC_NL_CLOCK)
+	MCFG_NETLIST_SETUP(stuntcyc)
+
+	//MCFG_NETLIST_ANALOG_OUTPUT("maincpu", "vid0", "VIDEO_OUT", fixedfreq_device, update_vid, "fixfreq")
+	MCFG_NETLIST_LOGIC_OUTPUT("maincpu", "probe_bit0",  "probe_bit0",  stuntcyc_state, probe_bit0_cb, "")
+	MCFG_NETLIST_LOGIC_OUTPUT("maincpu", "probe_bit1",  "probe_bit1",  stuntcyc_state, probe_bit1_cb, "")
+	MCFG_NETLIST_LOGIC_OUTPUT("maincpu", "probe_bit2",  "probe_bit2",  stuntcyc_state, probe_bit2_cb, "")
+	MCFG_NETLIST_LOGIC_OUTPUT("maincpu", "probe_bit3",  "probe_bit3",  stuntcyc_state, probe_bit3_cb, "")
+	MCFG_NETLIST_LOGIC_OUTPUT("maincpu", "probe_bit4",  "probe_bit4",  stuntcyc_state, probe_bit4_cb, "")
+	MCFG_NETLIST_LOGIC_OUTPUT("maincpu", "probe_bit5",  "probe_bit5",  stuntcyc_state, probe_bit5_cb, "")
+	MCFG_NETLIST_LOGIC_OUTPUT("maincpu", "probe_bit6",  "probe_bit6",  stuntcyc_state, probe_bit6_cb, "")
+	MCFG_NETLIST_LOGIC_OUTPUT("maincpu", "probe_clock", "probe_clock", stuntcyc_state, probe_clock_cb, "")
+
+/* video hardware */
+	MCFG_SCREEN_ADD("screen", RASTER)
+	MCFG_SCREEN_UPDATE_DRIVER(stuntcyc_state, screen_update_stuntcyc)
+	MCFG_SCREEN_RAW_PARAMS(SC_HTOTAL*SC_VTOTAL*60, SC_HTOTAL, 0, SC_HTOTAL, SC_VTOTAL, 0, SC_VTOTAL)
+	//MCFG_FIXFREQ_ADD("fixfreq", "screen")
+	//MCFG_FIXFREQ_MONITOR_CLOCK(SC_VIDCLOCK)
+	//MCFG_FIXFREQ_HORZ_PARAMS(SC_HTOTAL-67,SC_HTOTAL-40,SC_HTOTAL-8, SC_HTOTAL)
+	//MCFG_FIXFREQ_VERT_PARAMS(SC_VTOTAL-22,SC_VTOTAL-19,SC_VTOTAL-12,SC_VTOTAL)
+	//MCFG_FIXFREQ_FIELDCOUNT(1)
+	//MCFG_FIXFREQ_SYNC_THRESHOLD(0.30)
+MACHINE_CONFIG_END
+
+>>>>>>> upstream/master
 
 /***************************************************************************
 
@@ -279,19 +567,33 @@ ROM_END
 ROM_START( steeplec )
 	ROM_REGION( 0x10000, "maincpu", ROMREGION_ERASE00 )
 
+<<<<<<< HEAD
 	ROM_REGION( 0x0200, "gfx", ROMREGION_ERASE00 )
 	ROM_LOAD( "003773-a.4c",  0x0000, 0x0100, CRC(5ddc49b6) SHA1(58eba996703cbb7b3f66ff97357e191c9a3ab340) ) // Bugle
 	ROM_LOAD( "003773-b.4d",  0x0100, 0x0100, CRC(e6994cde) SHA1(504f92dba0c8640d55c7412697868582043f3817) ) // Graphics
+=======
+	ROM_REGION( 0x0220, "gfx", ROMREGION_ERASE00 )
+	ROM_LOAD( "003773-a.4c",  0x0000, 0x0100, CRC(5ddc49b6) SHA1(58eba996703cbb7b3f66ff97357e191c9a3ab340) ) // Horse Graphics
+	ROM_LOAD( "003773-b.4d",  0x0100, 0x0100, CRC(e6994cde) SHA1(504f92dba0c8640d55c7412697868582043f3817) ) // Horse Graphics
+	ROM_LOAD( "003774.8c",  0x0200, 0x0020, CRC(f3785f4a) SHA1(98f4015049279de5ba109e6dd87bb94071df5860) ) // Bugle
+>>>>>>> upstream/master
 ROM_END
 
 
 ROM_START( stuntcyc )
 	ROM_REGION( 0x10000, "maincpu", ROMREGION_ERASE00 )
 
+<<<<<<< HEAD
 	ROM_REGION( 0x0200, "gfx", ROMREGION_ERASE00 )
 	ROM_LOAD( "004275.f1",  0x0000, 0x0200, CRC(4ed5a99d) SHA1(1e5f439bce72e78dfff76fd8f61187c6ef484a64) ) // Motorcycle & Bus
 
 	ROM_REGION( 0x0020, "score", ROMREGION_ERASE00 )
+=======
+	ROM_REGION( 0x0200, "maincpu:004275.f1", ROMREGION_ERASE00 )
+	ROM_LOAD( "004275.f1",  0x0000, 0x0200, CRC(4ed5a99d) SHA1(1e5f439bce72e78dfff76fd8f61187c6ef484a64) ) // Motorcycle & Bus
+
+	ROM_REGION( 0x0020, "maincpu:004811.d7", ROMREGION_ERASE00 )
+>>>>>>> upstream/master
 	ROM_LOAD( "004811.d7",  0x0000, 0x0020, CRC(31a09efb) SHA1(fd5d538c9ec1234acf7c74ca0704113d220abbf6) ) // Score Translator
 ROM_END
 
@@ -326,14 +628,22 @@ ROM_START( gtrak10 )  // Unknown size, assumed 2K Bytes
     ROM_REGION( 0x10000, "maincpu", ROMREGION_ERASE00 )
 
     ROM_REGION( 0x0800, "racetrack", ROMREGION_ERASE00 )
+<<<<<<< HEAD
     ROM_LOAD( "74168.k5",     0x0000, 0x0800, NO_DUMP) // Racetrack
+=======
+    ROM_LOAD( "74186.k5",     0x0000, 0x0800, NO_DUMP) // Racetrack, not actually a SN74186 but an Electronic Arrays, Inc. EA4800 16K (2048 x 8) ROM. TI TMS4800 clone (EA4800). Intentionally mislabeled by Atari.
+>>>>>>> upstream/master
 ROM_END
 
 ROM_START( gtrak20 )  // Unknown size, assumed 2K Bytes
     ROM_REGION( 0x10000, "maincpu", ROMREGION_ERASE00 )
 
     ROM_REGION( 0x0800, "racetrack", ROMREGION_ERASE00 )
+<<<<<<< HEAD
     ROM_LOAD( "74168.k5",     0x0000, 0x0800, NO_DUMP) // Racetrack
+=======
+    ROM_LOAD( "74186.k5",     0x0000, 0x0800, NO_DUMP) // Racetrack, not actually a SN74186 but an Electronic Arrays, Inc. EA4800 16K (2048 x 8) ROM. TI TMS4800 clone (EA4800). Intentionally mislabeled by Atari.
+>>>>>>> upstream/master
 ROM_END
 
 ROM_START( lemans )
@@ -419,6 +729,7 @@ ROM_START( worldcup )
     ROM_REGION( 0x10000, "maincpu", ROMREGION_ERASE00 )
 ROM_END
 
+<<<<<<< HEAD
 */
 
 
@@ -457,3 +768,51 @@ GAME(1975,  tankii,    0,         atarikee,   0,  driver_device, 0,  ROT0,  "Ata
 //GAME(1973,  spacrace,  0,         atarikee,   0,  driver_device, 0,  ROT0,  "Atari",      "Space Race [TTL]",       MACHINE_IS_SKELETON)
 //GAME(1974,  touchme,   0,         atarikee,   0,  driver_device, 0,  ROT0,  "Atari",      "Touch-Me [TTL]",         MACHINE_IS_SKELETON) //?
 //GAME(1974,  worldcup,  0,         atarikee,   0,  driver_device, 0,  ROT0,  "Atari",      "World Cup/World Cup Football/Coupe du Monde [TTL]",   MACHINE_IS_SKELETON)
+=======
+ROM_START( coupdmnd ) // dummy to satisfy game entry
+    ROM_REGION( 0x10000, "maincpu", ROMREGION_ERASE00 )
+ROM_END
+
+ROM_START( coupfran ) // dummy to satisfy game entry
+    ROM_REGION( 0x10000, "maincpu", ROMREGION_ERASE00 )
+ROM_END
+
+*/
+
+GAME(1975,  antiairc,  0,         atarikee,   0,  atarikee_state, 0,  ROT0,  "Atari",        "Anti-Aircraft [TTL]",    MACHINE_IS_SKELETON)
+GAME(1975,  crashnsc,  0,         atarikee,   0,  atarikee_state, 0,  ROT0,  "Atari",        "Crash 'n Score/Stock Car [TTL]",   MACHINE_IS_SKELETON)
+GAME(1976,  indy4,     0,         atarikee,   0,  atarikee_state, 0,  ROT0,  "Atari/Kee",    "Indy 4 [TTL]",           MACHINE_IS_SKELETON)
+GAME(1975,  indy800,   0,         atarikee,   0,  atarikee_state, 0,  ROT90, "Atari/Kee",    "Indy 800 [TTL]",         MACHINE_IS_SKELETON)
+GAME(1975,  jetfight,  0,         atarikee,   0,  atarikee_state, 0,  ROT0,  "Atari",        "Jet Fighter/Jet Fighter Cocktail/Launch Aircraft (set 1) [TTL]",      MACHINE_IS_SKELETON)
+GAME(1975,  jetfighta, jetfight,  atarikee,   0,  atarikee_state, 0,  ROT0,  "Atari",        "Jet Fighter/Jet Fighter Cocktail/Launch Aircraft (set 2) [TTL]",      MACHINE_IS_SKELETON)
+GAME(1976,  outlaw,    0,         atarikee,   0,  atarikee_state, 0,  ROT0,  "Atari",        "Outlaw [TTL]",           MACHINE_IS_SKELETON)
+GAME(1975,  sharkjaw,  0,         atarikee,   0,  atarikee_state, 0,  ROT0,  "Atari/Horror Games",    "Shark JAWS [TTL]",     MACHINE_IS_SKELETON)
+GAME(1975,  steeplec,  0,         atarikee,   0,  atarikee_state, 0,  ROT0,  "Atari",        "Steeplechase [TTL]",     MACHINE_IS_SKELETON)
+GAME(1976,  stuntcyc,  0,         stuntcyc,   0,  stuntcyc_state, 0,  ROT0,  "Atari",        "Stunt Cycle [TTL]",      MACHINE_IS_SKELETON)
+GAME(1974,  tank,      0,         atarikee,   0,  atarikee_state, 0,  ROT0,  "Atari/Kee",    "Tank/Tank Cocktail [TTL]",     MACHINE_IS_SKELETON)
+GAME(1975,  tankii,    0,         atarikee,   0,  atarikee_state, 0,  ROT0,  "Atari/Kee",    "Tank II [TTL]",          MACHINE_IS_SKELETON)
+
+// MISSING ROM DUMPS
+//GAME(1975,  astrotrf,  steeplec,  atarikee,   0,  atarikee_state, 0,  ROT0,  "Atari",        "Astroturf [TTL]",        MACHINE_IS_SKELETON)
+//GAME(1974,  gtrak10,   0,         atarikee,   0,  atarikee_state, 0,  ROT0,  "Atari/Kee",    "Gran Trak 10/Trak 10/Formula K [TTL]",     MACHINE_IS_SKELETON) //?
+//GAME(1974,  gtrak20,   0,         atarikee,   0,  atarikee_state, 0,  ROT0,  "Atari/Kee",    "Gran Trak 20/Trak 20/Twin Racer [TTL]",    MACHINE_IS_SKELETON) //?
+//GAME(1976,  lemans,    0,         atarikee,   0,  atarikee_state, 0,  ROT0,  "Atari",        "Le Mans [TTL]",          MACHINE_IS_SKELETON)
+//GAME(1974,  qwak,      0,         atarikee,   0,  atarikee_state, 0,  ROT0,  "Atari",        "Qwak!/Quack [TTL]",      MACHINE_IS_SKELETON)
+
+// 100% TTL
+//GAME(1974,  coupfran,  worldcup,  atarikee,   0,  atarikee_state, 0,  ROT0,  "Atari Europe", "Coup Franc [TTL]",       MACHINE_IS_SKELETON)
+//GAME(1974,  coupdmnd,  worldcup,  atarikee,   0,  atarikee_state, 0,  ROT0,  "Atari France", "Coup du Monde [TTL]",    MACHINE_IS_SKELETON)
+//GAME(1975,  crossfir,  0,         atarikee,   0,  atarikee_state, 0,  ROT0,  "Atari/Kee",    "Crossfire [TTL]",        MACHINE_IS_SKELETON)
+//GAME(1973,  eliminat,  0,         atarikee,   0,  atarikee_state, 0,  ROT0,  "Atari/Kee",    "Elimination! [TTL]",     MACHINE_IS_SKELETON)
+//GAME(1975,  goaliv,    0,         atarikee,   0,  atarikee_state, 0,  ROT0,  "Atari",        "Goal IV [TTL]",          MACHINE_IS_SKELETON)
+//GAME(1973,  gotchaat,  0,         atarikee,   0,  atarikee_state, 0,  ROT0,  "Atari",        "Gotcha [TTL]",           MACHINE_IS_SKELETON) //?
+//GAME(1973,  gotchaatc, 0,         atarikee,   0,  atarikee_state, 0,  ROT0,  "Atari",        "Gotcha Color [TTL]",     MACHINE_IS_SKELETON) //?
+//GAME(1975,  hiway,     0,         atarikee,   0,  atarikee_state, 0,  ROT0,  "Atari",        "Hi-Way/Highway [TTL]",   MACHINE_IS_SKELETON)
+//GAME(1974,  pinpong,   0,         atarikee,   0,  atarikee_state, 0,  ROT0,  "Atari",        "Pin Pong [TTL]",         MACHINE_IS_SKELETON)
+//GAME(1975,  pursuit,   0,         atarikee,   0,  atarikee_state, 0,  ROT0,  "Atari",        "Pursuit [TTL]",          MACHINE_IS_SKELETON)
+//GAME(1974,  quadpong,  eliminat,  atarikee,   0,  atarikee_state, 0,  ROT0,  "Atari",        "Quadrapong [TTL]",       MACHINE_IS_SKELETON)
+//GAME(1974,  rebound,   0,         atarikee,   0,  atarikee_state, 0,  ROT0,  "Atari/Kee",    "Rebound/Spike/Volleyball [TTL]",   MACHINE_IS_SKELETON)
+//GAME(1973,  spacrace,  0,         atarikee,   0,  atarikee_state, 0,  ROT0,  "Atari",        "Space Race [TTL]",       MACHINE_IS_SKELETON)
+//GAME(1974,  touchme,   0,         atarikee,   0,  atarikee_state, 0,  ROT0,  "Atari",        "Touch-Me [TTL]",         MACHINE_IS_SKELETON) //?
+//GAME(1974,  worldcup,  0,         atarikee,   0,  atarikee_state, 0,  ROT0,  "Atari",        "World Cup/World Cup Football [TTL]",   MACHINE_IS_SKELETON)
+>>>>>>> upstream/master

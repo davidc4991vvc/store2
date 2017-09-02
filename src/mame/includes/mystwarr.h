@@ -1,10 +1,21 @@
 // license:BSD-3-Clause
 // copyright-holders:R. Belmont, Phil Stroffolino, Acho A. Tang, Nicola Salmoria
+<<<<<<< HEAD
+=======
+
+#include "includes/konamigx.h"
+#include "video/k053246_k053247_k055673.h"
+
+>>>>>>> upstream/master
 #include "sound/k054539.h"
 #include "machine/k053252.h"
 #include "video/k055555.h"
 #include "video/k054000.h"
+<<<<<<< HEAD
 #include "video/k053246_k053247_k055673.h"
+=======
+#include "machine/k054321.h"
+>>>>>>> upstream/master
 
 class mystwarr_state : public konamigx_state
 {
@@ -15,6 +26,10 @@ public:
 		m_k053252(*this, "k053252"),
 		m_k056832(*this, "k056832"),
 		m_k055673(*this, "k055673"),
+<<<<<<< HEAD
+=======
+		m_k054321(*this, "k054321"),
+>>>>>>> upstream/master
 		m_gx_workram(*this,"gx_workram"),
 		m_spriteram(*this,"spriteram")
 		{ }
@@ -23,10 +38,19 @@ public:
 	required_device<k053252_device> m_k053252;
 	required_device<k056832_device> m_k056832;
 	required_device<k055673_device> m_k055673;
+<<<<<<< HEAD
 	required_shared_ptr<UINT16> m_gx_workram;
 	optional_shared_ptr<UINT16> m_spriteram;
 
 	UINT8 m_mw_irq_control;
+=======
+	required_device<k054321_device> m_k054321;
+	required_shared_ptr<uint16_t> m_gx_workram;
+	optional_shared_ptr<uint16_t> m_spriteram;
+	std::unique_ptr<uint8_t[]> m_decoded;
+
+	uint8_t m_mw_irq_control;
+>>>>>>> upstream/master
 	int m_cur_sound_region;
 	int m_layer_colorbase[6];
 	int m_oinprion;
@@ -38,15 +62,23 @@ public:
 	int m_roz_enable;
 	int m_roz_rombank;
 	tilemap_t *m_ult_936_tilemap;
+<<<<<<< HEAD
 	UINT16 m_clip;
 
 	UINT8 m_sound_ctrl;
 	UINT8 m_sound_nmi_clk;
+=======
+	uint16_t m_clip;
+
+	uint8_t m_sound_ctrl;
+	uint8_t m_sound_nmi_clk;
+>>>>>>> upstream/master
 
 	DECLARE_READ16_MEMBER(eeprom_r);
 	DECLARE_WRITE16_MEMBER(mweeprom_w);
 	DECLARE_READ16_MEMBER(dddeeprom_r);
 	DECLARE_WRITE16_MEMBER(mmeeprom_w);
+<<<<<<< HEAD
 	DECLARE_WRITE16_MEMBER(sound_cmd1_w);
 	DECLARE_WRITE16_MEMBER(sound_cmd1_msb_w);
 	DECLARE_WRITE16_MEMBER(sound_cmd2_w);
@@ -54,6 +86,9 @@ public:
 	DECLARE_WRITE16_MEMBER(sound_irq_w);
 	DECLARE_READ16_MEMBER(sound_status_r);
 	DECLARE_READ16_MEMBER(sound_status_msb_r);
+=======
+	DECLARE_WRITE16_MEMBER(sound_irq_w);
+>>>>>>> upstream/master
 	DECLARE_WRITE16_MEMBER(irq_ack_w);
 	DECLARE_READ16_MEMBER(k053247_scattered_word_r);
 	DECLARE_WRITE16_MEMBER(k053247_scattered_word_w);
@@ -85,10 +120,17 @@ public:
 	DECLARE_VIDEO_START(gaiapols);
 	DECLARE_MACHINE_RESET(martchmp);
 	DECLARE_VIDEO_START(martchmp);
+<<<<<<< HEAD
 	UINT32 screen_update_mystwarr(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect);
 	UINT32 screen_update_metamrph(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect);
 	UINT32 screen_update_dadandrn(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect);
 	UINT32 screen_update_martchmp(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect);
+=======
+	uint32_t screen_update_mystwarr(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect);
+	uint32_t screen_update_metamrph(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect);
+	uint32_t screen_update_dadandrn(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect);
+	uint32_t screen_update_martchmp(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect);
+>>>>>>> upstream/master
 	INTERRUPT_GEN_MEMBER(ddd_interrupt);
 	DECLARE_WRITE_LINE_MEMBER(k054539_nmi_gen);
 	TIMER_DEVICE_CALLBACK_MEMBER(mystwarr_interrupt);

@@ -35,10 +35,17 @@
 
  *****************************************************************************/
 
+<<<<<<< HEAD
 #pragma once
 
 #ifndef __SN76477_H__
 #define __SN76477_H__
+=======
+#ifndef MAME_SOUND_SN76477_H
+#define MAME_SOUND_SN76477_H
+
+#pragma once
+>>>>>>> upstream/master
 
 #include "machine/rescap.h"
 
@@ -63,7 +70,11 @@
 	sn76477_device::set_amp_res(*device, _amp_res);
 
 #define MCFG_SN76477_FEEDBACK_RES(_feedback_res) \
+<<<<<<< HEAD
 	sn76477_device::set_feedack_res(*device, _feedback_res);
+=======
+	sn76477_device::set_feedback_res(*device, _feedback_res);
+>>>>>>> upstream/master
 
 #define MCFG_SN76477_VCO_PARAMS(_volt, _cap, _res) \
 	sn76477_device::set_vco_params(*device, _volt, _cap, _res);
@@ -93,8 +104,12 @@ class sn76477_device : public device_t,
 						public device_sound_interface
 {
 public:
+<<<<<<< HEAD
 	sn76477_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
 	~sn76477_device() {}
+=======
+	sn76477_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
+>>>>>>> upstream/master
 
 	static void set_noise_params(device_t &device, double clock_res, double filter_res, double filter_cap)
 	{
@@ -111,7 +126,11 @@ public:
 		dev.m_attack_res = res;
 	}
 	static void set_amp_res(device_t &device, double amp_res) { downcast<sn76477_device &>(device).m_amplitude_res = amp_res; }
+<<<<<<< HEAD
 	static void set_feedack_res(device_t &device, double feedback_res) { downcast<sn76477_device &>(device).m_feedback_res = feedback_res; }
+=======
+	static void set_feedback_res(device_t &device, double feedback_res) { downcast<sn76477_device &>(device).m_feedback_res = feedback_res; }
+>>>>>>> upstream/master
 	static void set_vco_params(device_t &device, double volt, double cap, double res)
 	{
 		sn76477_device &dev = downcast<sn76477_device &>(device);
@@ -132,21 +151,34 @@ public:
 		dev.m_one_shot_cap = cap;
 		dev.m_one_shot_res = res;
 	}
+<<<<<<< HEAD
 	static void set_vco_mode(device_t &device, UINT32 mode) { downcast<sn76477_device &>(device).m_vco_mode = mode; }
 	static void set_mixer_params(device_t &device, UINT32 a, UINT32 b, UINT32 c)
+=======
+	static void set_vco_mode(device_t &device, uint32_t mode) { downcast<sn76477_device &>(device).m_vco_mode = mode; }
+	static void set_mixer_params(device_t &device, uint32_t a, uint32_t b, uint32_t c)
+>>>>>>> upstream/master
 	{
 		sn76477_device &dev = downcast<sn76477_device &>(device);
 		dev.m_mixer_a = a;
 		dev.m_mixer_b = b;
 		dev.m_mixer_c = c;
 	}
+<<<<<<< HEAD
 	static void set_envelope_params(device_t &device, UINT32 env1, UINT32 env2)
+=======
+	static void set_envelope_params(device_t &device, uint32_t env1, uint32_t env2)
+>>>>>>> upstream/master
 	{
 		sn76477_device &dev = downcast<sn76477_device &>(device);
 		dev.m_envelope_1 = env1;
 		dev.m_envelope_2 = env2;
 	}
+<<<<<<< HEAD
 	static void set_enable(device_t &device, UINT32 enable) { downcast<sn76477_device &>(device).m_enable = enable; }
+=======
+	static void set_enable(device_t &device, uint32_t enable) { downcast<sn76477_device &>(device).m_enable = enable; }
+>>>>>>> upstream/master
 
 
 	/* these functions take 0 or 1 as a logic input */
@@ -171,9 +203,15 @@ public:
 	void feedback_res_w(double data);
 
 	/* these functions take a capacitor value in Farads or the voltage on it in Volts */
+<<<<<<< HEAD
 	#define SN76477_EXTERNAL_VOLTAGE_DISCONNECT   (-1.0)    /* indicates that the voltage is internally computed,
                                                                can be used in all the functions that take a
                                                                voltage on a capacitor */
+=======
+	static constexpr double EXTERNAL_VOLTAGE_DISCONNECT = -1.0;  /* indicates that the voltage is internally computed,
+	                                                           can be used in all the functions that take a
+	                                                           voltage on a capacitor */
+>>>>>>> upstream/master
 	void one_shot_cap_w(double data);
 	void one_shot_cap_voltage_w(double data);
 	void slf_cap_w(double data);
@@ -191,6 +229,7 @@ public:
 
 protected:
 	// device-level overrides
+<<<<<<< HEAD
 	virtual void device_start();
 	virtual void device_stop();
 
@@ -211,10 +250,33 @@ private:
 	double m_slf_res;
 	double m_slf_cap;
 	UINT32 m_slf_cap_voltage_ext;
+=======
+	virtual void device_start() override;
+	virtual void device_stop() override;
+
+	// sound stream update overrides
+	virtual void sound_stream_update(sound_stream &stream, stream_sample_t **inputs, stream_sample_t **outputs, int samples) override;
+
+private:
+	/* chip's external interface */
+	uint32_t m_enable;
+	uint32_t m_envelope_mode;
+	uint32_t m_vco_mode;
+	uint32_t m_mixer_mode;
+
+	double m_one_shot_res;
+	double m_one_shot_cap;
+	uint32_t m_one_shot_cap_voltage_ext;
+
+	double m_slf_res;
+	double m_slf_cap;
+	uint32_t m_slf_cap_voltage_ext;
+>>>>>>> upstream/master
 
 	double m_vco_voltage;
 	double m_vco_res;
 	double m_vco_cap;
+<<<<<<< HEAD
 	UINT32 m_vco_cap_voltage_ext;
 
 	double m_noise_clock_res;
@@ -223,11 +285,25 @@ private:
 	double m_noise_filter_res;
 	double m_noise_filter_cap;
 	UINT32 m_noise_filter_cap_voltage_ext;
+=======
+	uint32_t m_vco_cap_voltage_ext;
+
+	double m_noise_clock_res;
+	uint32_t m_noise_clock_ext;
+	uint32_t m_noise_clock;
+	double m_noise_filter_res;
+	double m_noise_filter_cap;
+	uint32_t m_noise_filter_cap_voltage_ext;
+>>>>>>> upstream/master
 
 	double m_attack_res;
 	double m_decay_res;
 	double m_attack_decay_cap;
+<<<<<<< HEAD
 	UINT32 m_attack_decay_cap_voltage_ext;
+=======
+	uint32_t m_attack_decay_cap_voltage_ext;
+>>>>>>> upstream/master
 
 	double m_amplitude_res;
 	double m_feedback_res;
@@ -235,6 +311,7 @@ private:
 
 	// internal state
 	double m_one_shot_cap_voltage;        /* voltage on the one-shot cap */
+<<<<<<< HEAD
 	UINT32 m_one_shot_running_ff;         /* 1 = one-shot running, 0 = stopped */
 
 	double m_slf_cap_voltage;             /* voltage on the SLF cap */
@@ -259,6 +336,32 @@ private:
 	UINT32 m_mixer_c;
 	UINT32 m_envelope_1;
 	UINT32 m_envelope_2;
+=======
+	uint32_t m_one_shot_running_ff;         /* 1 = one-shot running, 0 = stopped */
+
+	double m_slf_cap_voltage;             /* voltage on the SLF cap */
+	uint32_t m_slf_out_ff;                  /* output of the SLF */
+
+	double m_vco_cap_voltage;             /* voltage on the VCO cap */
+	uint32_t m_vco_out_ff;                  /* output of the VCO */
+	uint32_t m_vco_alt_pos_edge_ff;         /* keeps track of the # of positive edges for VCO Alt envelope */
+
+	double m_noise_filter_cap_voltage;    /* voltage on the noise filter cap */
+	uint32_t m_real_noise_bit_ff;           /* the current noise bit before filtering */
+	uint32_t m_filtered_noise_bit_ff;       /* the noise bit after filtering */
+	uint32_t m_noise_gen_count;             /* noise freq emulation */
+
+	double m_attack_decay_cap_voltage;    /* voltage on the attack/decay cap */
+
+	uint32_t m_rng;                         /* current value of the random number generator */
+
+	// configured by the drivers and used to setup m_mixer_mode & m_envelope_mode at start
+	uint32_t m_mixer_a;
+	uint32_t m_mixer_b;
+	uint32_t m_mixer_c;
+	uint32_t m_envelope_1;
+	uint32_t m_envelope_2;
+>>>>>>> upstream/master
 
 	/* others */
 	sound_stream *m_channel;              /* returned by stream_create() */
@@ -272,7 +375,11 @@ private:
 	double compute_slf_cap_discharging_rate();
 	double compute_vco_cap_charging_discharging_rate();
 	double compute_vco_duty_cycle();
+<<<<<<< HEAD
 	UINT32 compute_noise_gen_freq();
+=======
+	uint32_t compute_noise_gen_freq();
+>>>>>>> upstream/master
 	double compute_noise_filter_cap_charging_rate();
 	double compute_noise_filter_cap_discharging_rate();
 	double compute_attack_decay_cap_charging_rate();
@@ -298,6 +405,7 @@ private:
 
 	void open_wav_file();
 	void close_wav_file();
+<<<<<<< HEAD
 	void add_wav_data(INT16 data_l, INT16 data_r);
 
 	void intialize_noise();
@@ -335,3 +443,16 @@ extern const device_type SN76477;
 
 
 #endif/* __SN76477_H__ */
+=======
+	void add_wav_data(int16_t data_l, int16_t data_r);
+
+	void intialize_noise();
+	inline uint32_t generate_next_real_noise_bit();
+
+	void state_save_register();
+};
+
+DECLARE_DEVICE_TYPE(SN76477, sn76477_device)
+
+#endif // MAME_SOUND_SN76477_H
+>>>>>>> upstream/master

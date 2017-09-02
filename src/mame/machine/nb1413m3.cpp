@@ -13,18 +13,32 @@ Memo:
 ******************************************************************************/
 
 #include "emu.h"
+<<<<<<< HEAD
 #include "cpu/z80/z80.h"
 #include "includes/nb1413m3.h"
 
+=======
+#include "includes/nb1413m3.h"
+
+#include "cpu/z80/z80.h"
+
+>>>>>>> upstream/master
 
 #define NB1413M3_DEBUG  0
 
 #define NB1413M3_TIMER_BASE 20000000
 
+<<<<<<< HEAD
 const device_type NB1413M3 = &device_creator<nb1413m3_device>;
 
 nb1413m3_device::nb1413m3_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
 	: device_t(mconfig, NB1413M3, "NB1413M3 Mahjong Custom", tag, owner, clock, "nb1413m3", __FILE__),
+=======
+DEFINE_DEVICE_TYPE(NB1413M3, nb1413m3_device, "nb1413m3", "NB1413 Mahjong Custom")
+
+nb1413m3_device::nb1413m3_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: device_t(mconfig, NB1413M3, tag, owner, clock),
+>>>>>>> upstream/master
 	m_sndromrgntag("voice"),
 	m_sndrombank1(0),
 	m_sndrombank2(0),
@@ -107,7 +121,11 @@ void nb1413m3_device::device_timer(emu_timer &timer, device_timer_id id, int par
 			timer_callback(ptr, param);
 			break;
 		default:
+<<<<<<< HEAD
 			assert_always(FALSE, "Unknown id in nb1413m3_device::device_timer");
+=======
+			assert_always(false, "Unknown id in nb1413m3_device::device_timer");
+>>>>>>> upstream/master
 	}
 }
 
@@ -312,7 +330,11 @@ WRITE8_MEMBER( nb1413m3_device::sndrombank2_w )
 
 READ8_MEMBER( nb1413m3_device::gfxrom_r )
 {
+<<<<<<< HEAD
 	UINT8 *GFXROM = space.machine().root_device().memregion("gfx1")->base();
+=======
+	uint8_t *GFXROM = space.machine().root_device().memregion("gfx1")->base();
+>>>>>>> upstream/master
 
 	return GFXROM[(0x20000 * (m_gfxrombank | ((m_sndrombank1 & 0x02) << 3))) + ((0x0200 * m_gfxradr_h) + (0x0002 * m_gfxradr_l)) + (offset & 0x01)];
 }
@@ -597,7 +619,11 @@ WRITE8_MEMBER( nb1413m3_device::outcoin_w )
 			break;
 	}
 
+<<<<<<< HEAD
 	set_led_status(space.machine(), 2, m_outcoin_flag);      // out coin
+=======
+	space.machine().output().set_led_value(2, m_outcoin_flag);      // out coin
+>>>>>>> upstream/master
 }
 
 WRITE8_MEMBER( nb1413m3_device::vcrctrl_w )
@@ -605,11 +631,19 @@ WRITE8_MEMBER( nb1413m3_device::vcrctrl_w )
 	if (data & 0x08)
 	{
 		popmessage(" ** VCR CONTROL ** ");
+<<<<<<< HEAD
 		set_led_status(space.machine(), 2, 1);
 	}
 	else
 	{
 		set_led_status(space.machine(), 2, 0);
+=======
+		space.machine().output().set_led_value(2, 1);
+	}
+	else
+	{
+		space.machine().output().set_led_value(2, 0);
+>>>>>>> upstream/master
 	}
 }
 

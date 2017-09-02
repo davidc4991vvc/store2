@@ -22,10 +22,22 @@
 
 
 #include "emu.h"
+<<<<<<< HEAD
 #include "sound/2151intf.h"
 #include "rendlay.h"
 #include "includes/cyberbal.h"
 
+=======
+#include "includes/cyberbal.h"
+
+#include "machine/eeprompar.h"
+#include "machine/watchdog.h"
+#include "sound/volt_reg.h"
+#include "speaker.h"
+
+#include "rendlay.h"
+
+>>>>>>> upstream/master
 
 /*************************************
  *
@@ -35,7 +47,11 @@
 
 void cyberbal_state::update_interrupts()
 {
+<<<<<<< HEAD
 	if (m_extracpu != NULL)
+=======
+	if (m_extracpu != nullptr)
+>>>>>>> upstream/master
 	{
 		m_maincpu->set_input_line(1, m_sound_int_state ? ASSERT_LINE : CLEAR_LINE);
 		m_extracpu->set_input_line(1, m_video_int_state ? ASSERT_LINE : CLEAR_LINE);
@@ -48,7 +64,11 @@ void cyberbal_state::update_interrupts()
 }
 
 
+<<<<<<< HEAD
 MACHINE_START_MEMBER(cyberbal_state,cyberbal)
+=======
+MACHINE_START_MEMBER(cyberbal_state,cyberbal2p)
+>>>>>>> upstream/master
 {
 	atarigen_state::machine_start();
 
@@ -60,6 +80,16 @@ MACHINE_START_MEMBER(cyberbal_state,cyberbal)
 	save_item(NAME(m_sound_data_from_6502_ready));
 }
 
+<<<<<<< HEAD
+=======
+MACHINE_START_MEMBER(cyberbal_state,cyberbal)
+{
+	MACHINE_START_CALL_MEMBER(cyberbal2p);
+
+	membank("soundbank")->configure_entries(0, 4, memregion("audiocpu")->base(), 0x1000);
+}
+
+>>>>>>> upstream/master
 
 MACHINE_RESET_MEMBER(cyberbal_state,cyberbal)
 {
@@ -117,11 +147,19 @@ WRITE16_MEMBER(cyberbal_state::p2_reset_w)
 
 static ADDRESS_MAP_START( main_map, AS_PROGRAM, 16, cyberbal_state )
 	AM_RANGE(0x000000, 0x03ffff) AM_ROM
+<<<<<<< HEAD
 	AM_RANGE(0xfc0000, 0xfc0fff) AM_DEVREADWRITE8("eeprom", atari_eeprom_device, read, write, 0x00ff)
 	AM_RANGE(0xfc8000, 0xfcffff) AM_DEVREAD8("soundcomm", atari_sound_comm_device, main_response_r, 0xff00)
 	AM_RANGE(0xfd0000, 0xfd1fff) AM_DEVWRITE("eeprom", atari_eeprom_device, unlock_write)
 	AM_RANGE(0xfd2000, 0xfd3fff) AM_DEVWRITE("soundcomm", atari_sound_comm_device, sound_reset_w)
 	AM_RANGE(0xfd4000, 0xfd5fff) AM_WRITE(watchdog_reset16_w)
+=======
+	AM_RANGE(0xfc0000, 0xfc0fff) AM_DEVREADWRITE8("eeprom", eeprom_parallel_28xx_device, read, write, 0x00ff)
+	AM_RANGE(0xfc8000, 0xfcffff) AM_DEVREAD8("soundcomm", atari_sound_comm_device, main_response_r, 0xff00)
+	AM_RANGE(0xfd0000, 0xfd1fff) AM_DEVWRITE("eeprom", eeprom_parallel_28xx_device, unlock_write)
+	AM_RANGE(0xfd2000, 0xfd3fff) AM_DEVWRITE("soundcomm", atari_sound_comm_device, sound_reset_w)
+	AM_RANGE(0xfd4000, 0xfd5fff) AM_DEVWRITE("watchdog", watchdog_timer_device, reset16_w)
+>>>>>>> upstream/master
 	AM_RANGE(0xfd6000, 0xfd7fff) AM_WRITE(p2_reset_w)
 	AM_RANGE(0xfd8000, 0xfd9fff) AM_DEVWRITE8("soundcomm", atari_sound_comm_device, main_command_w, 0xff00)
 	AM_RANGE(0xfe0000, 0xfe0fff) AM_READ_PORT("IN0")
@@ -221,11 +259,19 @@ static ADDRESS_MAP_START( cyberbal2p_map, AS_PROGRAM, 16, cyberbal_state )
 	AM_RANGE(0xfc2000, 0xfc2003) AM_READ_PORT("IN1")
 	AM_RANGE(0xfc4000, 0xfc4003) AM_READ_PORT("IN2")
 	AM_RANGE(0xfc6000, 0xfc6003) AM_DEVREAD8("jsa", atari_jsa_ii_device, main_response_r, 0xff00)
+<<<<<<< HEAD
 	AM_RANGE(0xfc8000, 0xfc8fff) AM_DEVREADWRITE8("eeprom", atari_eeprom_device, read, write, 0x00ff)
 	AM_RANGE(0xfca000, 0xfcafff) AM_RAM_DEVWRITE("palette", palette_device, write) AM_SHARE("palette")
 	AM_RANGE(0xfd0000, 0xfd0003) AM_DEVWRITE("eeprom", atari_eeprom_device, unlock_write)
 	AM_RANGE(0xfd2000, 0xfd2003) AM_DEVWRITE("jsa", atari_jsa_ii_device, sound_reset_w)
 	AM_RANGE(0xfd4000, 0xfd4003) AM_WRITE(watchdog_reset16_w)
+=======
+	AM_RANGE(0xfc8000, 0xfc8fff) AM_DEVREADWRITE8("eeprom", eeprom_parallel_28xx_device, read, write, 0x00ff)
+	AM_RANGE(0xfca000, 0xfcafff) AM_RAM_DEVWRITE("palette", palette_device, write) AM_SHARE("palette")
+	AM_RANGE(0xfd0000, 0xfd0003) AM_DEVWRITE("eeprom", eeprom_parallel_28xx_device, unlock_write)
+	AM_RANGE(0xfd2000, 0xfd2003) AM_DEVWRITE("jsa", atari_jsa_ii_device, sound_reset_w)
+	AM_RANGE(0xfd4000, 0xfd4003) AM_DEVWRITE("watchdog", watchdog_timer_device, reset16_w)
+>>>>>>> upstream/master
 	AM_RANGE(0xfd6000, 0xfd6003) AM_WRITE(video_int_ack_w)
 	AM_RANGE(0xfd8000, 0xfd8003) AM_DEVWRITE8("jsa", atari_jsa_ii_device, main_command_w, 0xff00)
 	AM_RANGE(0xfe0000, 0xfe0003) AM_READ(sound_state_r)
@@ -383,14 +429,21 @@ GFXDECODE_END
  *
  *************************************/
 
+<<<<<<< HEAD
 static MACHINE_CONFIG_START( cyberbal, cyberbal_state )
+=======
+static MACHINE_CONFIG_START( cyberbal )
+>>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", M68000, ATARI_CLOCK_14MHz/2)
 	MCFG_CPU_PROGRAM_MAP(main_map)
 
+<<<<<<< HEAD
 	MCFG_SLAPSTIC_ADD("slapstic")
 
+=======
+>>>>>>> upstream/master
 	MCFG_CPU_ADD("audiocpu", M6502, ATARI_CLOCK_14MHz/8)
 	MCFG_CPU_PROGRAM_MAP(sound_map)
 	MCFG_DEVICE_PERIODIC_INT_DEVICE("soundcomm", atari_sound_comm_device, sound_irq_gen, (double)ATARI_CLOCK_14MHz/4/4/16/16/14)
@@ -408,7 +461,14 @@ static MACHINE_CONFIG_START( cyberbal, cyberbal_state )
 	MCFG_MACHINE_START_OVERRIDE(cyberbal_state,cyberbal)
 	MCFG_MACHINE_RESET_OVERRIDE(cyberbal_state,cyberbal)
 
+<<<<<<< HEAD
 	MCFG_ATARI_EEPROM_2804_ADD("eeprom")
+=======
+	MCFG_EEPROM_2804_ADD("eeprom")
+	MCFG_EEPROM_28XX_LOCK_AFTER_WRITE(true)
+
+	MCFG_WATCHDOG_ADD("watchdog")
+>>>>>>> upstream/master
 
 	/* video hardware */
 	MCFG_GFXDECODE_ADD("gfxdecode", "lpalette", interleaved)
@@ -423,8 +483,13 @@ static MACHINE_CONFIG_START( cyberbal, cyberbal_state )
 	MCFG_ATARI_MOTION_OBJECTS_ADD("mob", "lscreen", cyberbal_state::s_mob_config)
 	MCFG_ATARI_MOTION_OBJECTS_GFXDECODE("gfxdecode")
 
+<<<<<<< HEAD
 	MCFG_TILEMAP_ADD_STANDARD("playfield2", "gfxdecode", 2, cyberbal_state, get_playfield_tile_info, 16,8, SCAN_ROWS, 64,64)
 	MCFG_TILEMAP_ADD_STANDARD_TRANSPEN("alpha2", "gfxdecode", 2, cyberbal_state, get_alpha_tile_info, 16,8, SCAN_ROWS, 64,32, 0)
+=======
+	MCFG_TILEMAP_ADD_STANDARD("playfield2", "gfxdecode", 2, cyberbal_state, get_playfield2_tile_info, 16,8, SCAN_ROWS, 64,64)
+	MCFG_TILEMAP_ADD_STANDARD_TRANSPEN("alpha2", "gfxdecode", 2, cyberbal_state, get_alpha2_tile_info, 16,8, SCAN_ROWS, 64,32, 0)
+>>>>>>> upstream/master
 	MCFG_ATARI_MOTION_OBJECTS_ADD("mob2", "rscreen", cyberbal_state::s_mob_config)
 	MCFG_ATARI_MOTION_OBJECTS_GFXDECODE("gfxdecode")
 
@@ -455,31 +520,60 @@ static MACHINE_CONFIG_START( cyberbal, cyberbal_state )
 	MCFG_SOUND_ROUTE(0, "lspeaker", 0.60)
 	MCFG_SOUND_ROUTE(1, "rspeaker", 0.60)
 
+<<<<<<< HEAD
 	MCFG_DAC_ADD("dac1")
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "rspeaker", 1.0)
 
 	MCFG_DAC_ADD("dac2")
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "lspeaker", 1.0)
+=======
+	MCFG_SOUND_ADD("rdac", AM6012, 0) MCFG_SOUND_ROUTE(ALL_OUTPUTS, "rspeaker", 0.5) // AM6012.6j
+	MCFG_SOUND_ADD("ldac", AM6012, 0) MCFG_SOUND_ROUTE(ALL_OUTPUTS, "lspeaker", 0.5) // AM6012.6j
+	MCFG_DEVICE_ADD("vref", VOLTAGE_REGULATOR, 0) MCFG_VOLTAGE_REGULATOR_OUTPUT(5.0)
+	MCFG_SOUND_ROUTE_EX(0, "rdac", 1.0, DAC_VREF_POS_INPUT) MCFG_SOUND_ROUTE_EX(0, "rdac", -1.0, DAC_VREF_NEG_INPUT)
+	MCFG_SOUND_ROUTE_EX(0, "ldac", 1.0, DAC_VREF_POS_INPUT) MCFG_SOUND_ROUTE_EX(0, "ldac", -1.0, DAC_VREF_NEG_INPUT)
+>>>>>>> upstream/master
 MACHINE_CONFIG_END
 
 
 static MACHINE_CONFIG_DERIVED( cyberbalt, cyberbal )
 	MCFG_DEVICE_REMOVE("eeprom")
+<<<<<<< HEAD
 	MCFG_ATARI_EEPROM_2816_ADD("eeprom")
 MACHINE_CONFIG_END
 
 
 static MACHINE_CONFIG_START( cyberbal2p, cyberbal_state )
+=======
+	MCFG_EEPROM_2816_ADD("eeprom")
+	MCFG_EEPROM_28XX_LOCK_AFTER_WRITE(true)
+
+	MCFG_SLAPSTIC_ADD("slapstic", 116)
+MACHINE_CONFIG_END
+
+
+static MACHINE_CONFIG_START( cyberbal2p )
+>>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", M68000, ATARI_CLOCK_14MHz/2)
 	MCFG_CPU_PROGRAM_MAP(cyberbal2p_map)
 	MCFG_DEVICE_VBLANK_INT_DRIVER("screen", atarigen_state, video_int_gen)
 
+<<<<<<< HEAD
 	MCFG_MACHINE_START_OVERRIDE(cyberbal_state,cyberbal)
 	MCFG_MACHINE_RESET_OVERRIDE(cyberbal_state,cyberbal2p)
 
 	MCFG_ATARI_EEPROM_2816_ADD("eeprom")
+=======
+	MCFG_MACHINE_START_OVERRIDE(cyberbal_state,cyberbal2p)
+	MCFG_MACHINE_RESET_OVERRIDE(cyberbal_state,cyberbal2p)
+
+	MCFG_EEPROM_2816_ADD("eeprom")
+	MCFG_EEPROM_28XX_LOCK_AFTER_WRITE(true)
+
+	MCFG_WATCHDOG_ADD("watchdog")
+>>>>>>> upstream/master
 
 	/* video hardware */
 	MCFG_GFXDECODE_ADD("gfxdecode", "palette", cyberbal)
@@ -522,9 +616,14 @@ ROM_START( cyberbal )
 	ROM_LOAD16_BYTE( "136064-4123.1m",  0x000000, 0x010000, CRC(fb872740) SHA1(15e6721d466fe56d7c97c6801e214b32803a0a0d) )
 	ROM_LOAD16_BYTE( "136064-4124.1kl", 0x000001, 0x010000, CRC(87babad9) SHA1(acdc6b5976445e203de19eb03697e307fe6da77d) )
 
+<<<<<<< HEAD
 	ROM_REGION( 0x14000, "audiocpu", 0 )    /* 64k for 6502 code */
 	ROM_LOAD( "136064-2131.2f",  0x010000, 0x004000, CRC(bd7e3d84) SHA1(f87878042fc79fa3883136b31ac15ddc22c6023c) )
 	ROM_CONTINUE(             0x004000, 0x00c000 )
+=======
+	ROM_REGION( 0x10000, "audiocpu", 0 )    /* 64k for 6502 code */
+	ROM_LOAD( "136064-2131.2f",  0x000000, 0x010000, CRC(bd7e3d84) SHA1(f87878042fc79fa3883136b31ac15ddc22c6023c) )
+>>>>>>> upstream/master
 
 	ROM_REGION( 0x40000, "extra", 0 )   /* 4*64k for 68000 code */
 	ROM_LOAD16_BYTE( "136064-2127.3cd", 0x000000, 0x010000, CRC(3e5feb1f) SHA1(9f92f496adbdf74e394e0d710d6471b9666ba5e5) )
@@ -573,7 +672,11 @@ ROM_START( cyberbal )
 	ROM_LOAD( "gal16v8-136064-1029.d58", 0x0600, 0x0117, CRC(fd39d238) SHA1(55c1b9a56c9b2bfa434eed54f7baea436ea141b8) )
 	ROM_LOAD( "gal16v8-136064-1030.d91", 0x0800, 0x0117, CRC(84102588) SHA1(b6bffb47e5975c96b056d07357eb020caf3f0a0a) )
 
+<<<<<<< HEAD
 	ROM_REGION( 0x200, "eeprom:eeprom", 0 )
+=======
+	ROM_REGION( 0x200, "eeprom", 0 )
+>>>>>>> upstream/master
 	ROM_LOAD( "cyberbal-eeprom.bin", 0x0000, 0x200, CRC(c6f256b2) SHA1(e0c62adcd9fd38e9d3ac60e6b08d468e04a350c6) )
 ROM_END
 
@@ -583,9 +686,14 @@ ROM_START( cyberbal2 )
 	ROM_LOAD16_BYTE( "136064-2123.1m",  0x000000, 0x010000, CRC(502676e8) SHA1(c0f1f1ce50d3df21cb81244268faef6c303cdfab) )
 	ROM_LOAD16_BYTE( "136064-2124.1kl", 0x000001, 0x010000, CRC(30f55915) SHA1(ab93ec46f282ab9a0cd47c989537a7e036975e3f) )
 
+<<<<<<< HEAD
 	ROM_REGION( 0x14000, "audiocpu", 0 )    /* 64k for 6502 code */
 	ROM_LOAD( "136064-2131.2f",  0x010000, 0x004000, CRC(bd7e3d84) SHA1(f87878042fc79fa3883136b31ac15ddc22c6023c) )
 	ROM_CONTINUE(             0x004000, 0x00c000 )
+=======
+	ROM_REGION( 0x10000, "audiocpu", 0 )    /* 64k for 6502 code */
+	ROM_LOAD( "136064-2131.2f",  0x000000, 0x010000, CRC(bd7e3d84) SHA1(f87878042fc79fa3883136b31ac15ddc22c6023c) )
+>>>>>>> upstream/master
 
 	ROM_REGION( 0x40000, "extra", 0 )   /* 4*64k for 68000 code */
 	ROM_LOAD16_BYTE( "136064-2127.3cd", 0x000000, 0x010000, CRC(3e5feb1f) SHA1(9f92f496adbdf74e394e0d710d6471b9666ba5e5) )
@@ -627,7 +735,11 @@ ROM_START( cyberbal2 )
 	ROM_LOAD( "136064-1121.15n", 0x000000, 0x010000, CRC(0ca1e3b3) SHA1(d934bc9a1def4404fb86175878404cbb18127a11) )
 	ROM_LOAD( "136064-1122.16n", 0x010000, 0x010000, CRC(882f4e1c) SHA1(f7517ff03502ff029fb375260a35e45414567433) )
 
+<<<<<<< HEAD
 	ROM_REGION( 0x200, "eeprom:eeprom", 0 )
+=======
+	ROM_REGION( 0x200, "eeprom", 0 )
+>>>>>>> upstream/master
 	ROM_LOAD( "cyberbal-eeprom.bin", 0x0000, 0x200, CRC(c6f256b2) SHA1(e0c62adcd9fd38e9d3ac60e6b08d468e04a350c6) )
 ROM_END
 
@@ -637,9 +749,14 @@ ROM_START( cyberbalp )
 	ROM_LOAD16_BYTE( "136064-0123.1m",  0x000000, 0x010000, CRC(59bac810) SHA1(d4742b2b554c2ad62a2ea7152db3f06a06cddd67) )
 	ROM_LOAD16_BYTE( "136064-0124.1kl", 0x000001, 0x010000, CRC(e48e6dd3) SHA1(4d45bc66c0a3eb1174db7f19c5dee54dabad68f3) )
 
+<<<<<<< HEAD
 	ROM_REGION( 0x14000, "audiocpu", 0 )    /* 64k for 6502 code */
 	ROM_LOAD( "136064-0131.2f",  0x010000, 0x004000, CRC(c72b71ce) SHA1(6d3d8f437cf55ccaaa4490daa69f402902944686) )
 	ROM_CONTINUE(                0x004000, 0x00c000 )
+=======
+	ROM_REGION( 0x10000, "audiocpu", 0 )    /* 64k for 6502 code */
+	ROM_LOAD( "136064-0131.2f",  0x000000, 0x010000, CRC(c72b71ce) SHA1(6d3d8f437cf55ccaaa4490daa69f402902944686) )
+>>>>>>> upstream/master
 
 	ROM_REGION( 0x40000, "extra", 0 )   /* 4*64k for 68000 code */
 	ROM_LOAD16_BYTE( "136064-0127.3cd", 0x000000, 0x010000, CRC(37ad3420) SHA1(e9c1ea59f5f9a133822a49027b4abf02af855ca2) )
@@ -681,7 +798,11 @@ ROM_START( cyberbalp )
 	ROM_LOAD( "136064-1121.15n", 0x000000, 0x010000, CRC(0ca1e3b3) SHA1(d934bc9a1def4404fb86175878404cbb18127a11) )
 	ROM_LOAD( "136064-1122.16n", 0x010000, 0x010000, CRC(882f4e1c) SHA1(f7517ff03502ff029fb375260a35e45414567433) )
 
+<<<<<<< HEAD
 	ROM_REGION( 0x200, "eeprom:eeprom", 0 )
+=======
+	ROM_REGION( 0x200, "eeprom", 0 )
+>>>>>>> upstream/master
 	ROM_LOAD( "cyberbal-eeprom.bin", 0x0000, 0x200, CRC(c6f256b2) SHA1(e0c62adcd9fd38e9d3ac60e6b08d468e04a350c6) )
 ROM_END
 
@@ -697,9 +818,14 @@ ROM_START( cyberbal2p )
 	ROM_LOAD16_BYTE( "136071-1025.27c", 0x060000, 0x010000, CRC(95ff68c6) SHA1(43f716a4c44fe1a38fcc6e2600bac948bb603504) )
 	ROM_LOAD16_BYTE( "136071-1026.27d", 0x060001, 0x010000, CRC(f61c4898) SHA1(9e4a14eac6d197f63c3392af3d804e81c034cb09) )
 
+<<<<<<< HEAD
 	ROM_REGION( 0x14000, "jsa:cpu", 0 ) /* 64k for 6502 code */
 	ROM_LOAD( "136071-1042.1b",  0x010000, 0x004000, CRC(e63cf125) SHA1(449880f561660ba67ac2d7f8ce6333768e0ae0be) )
 	ROM_CONTINUE(                0x004000, 0x00c000 )
+=======
+	ROM_REGION( 0x10000, "jsa:cpu", 0 ) /* 64k for 6502 code */
+	ROM_LOAD( "136071-1042.1b",  0x00000, 0x10000, CRC(e63cf125) SHA1(449880f561660ba67ac2d7f8ce6333768e0ae0be) )
+>>>>>>> upstream/master
 
 	ROM_REGION( 0x140000, "gfx1", 0 )
 	ROM_LOAD( "136071-1001.55l", 0x000000, 0x020000, CRC(586ba107) SHA1(f15d4489f5834ea5fe695f43cb9d1c2401179870) )
@@ -731,7 +857,11 @@ ROM_START( cyberbal2p )
 	ROM_LOAD( "136071-1045.7e",  0x020000, 0x010000, CRC(f82558b9) SHA1(afbecccc6203db9bdcf60638e0f4e95040d7aaf2) )
 	ROM_LOAD( "136071-1046.7d",  0x030000, 0x010000, CRC(d96437ad) SHA1(b0b5cd75de4048e54b9d7d09a75381eb73c22ee1) )
 
+<<<<<<< HEAD
 	ROM_REGION( 0x800, "eeprom:eeprom", 0 )
+=======
+	ROM_REGION( 0x800, "eeprom", 0 )
+>>>>>>> upstream/master
 	ROM_LOAD( "cyberbal2p-eeprom.bin", 0x0000, 0x800, CRC(3753f0e2) SHA1(26feab263a4d2d1dfcdf62e1225e0596cc036e1d) )
 ROM_END
 
@@ -747,9 +877,14 @@ ROM_START( cyberbal2p3 )
 	ROM_LOAD16_BYTE( "136071-1025.27c", 0x060000, 0x010000, CRC(95ff68c6) SHA1(43f716a4c44fe1a38fcc6e2600bac948bb603504) )
 	ROM_LOAD16_BYTE( "136071-1026.27d", 0x060001, 0x010000, CRC(f61c4898) SHA1(9e4a14eac6d197f63c3392af3d804e81c034cb09) )
 
+<<<<<<< HEAD
 	ROM_REGION( 0x14000, "jsa:cpu", 0 ) /* 64k for 6502 code */
 	ROM_LOAD( "136071-1042.1b",  0x010000, 0x004000, CRC(e63cf125) SHA1(449880f561660ba67ac2d7f8ce6333768e0ae0be) )
 	ROM_CONTINUE(                0x004000, 0x00c000 )
+=======
+	ROM_REGION( 0x10000, "jsa:cpu", 0 ) /* 64k for 6502 code */
+	ROM_LOAD( "136071-1042.1b",  0x00000, 0x10000, CRC(e63cf125) SHA1(449880f561660ba67ac2d7f8ce6333768e0ae0be) )
+>>>>>>> upstream/master
 
 	ROM_REGION( 0x140000, "gfx1", 0 )
 	ROM_LOAD( "136071-1001.55l", 0x000000, 0x020000, CRC(586ba107) SHA1(f15d4489f5834ea5fe695f43cb9d1c2401179870) )
@@ -781,7 +916,11 @@ ROM_START( cyberbal2p3 )
 	ROM_LOAD( "136071-1045.7e",  0x020000, 0x010000, CRC(f82558b9) SHA1(afbecccc6203db9bdcf60638e0f4e95040d7aaf2) )
 	ROM_LOAD( "136071-1046.7d",  0x030000, 0x010000, CRC(d96437ad) SHA1(b0b5cd75de4048e54b9d7d09a75381eb73c22ee1) )
 
+<<<<<<< HEAD
 	ROM_REGION( 0x800, "eeprom:eeprom", 0 )
+=======
+	ROM_REGION( 0x800, "eeprom", 0 )
+>>>>>>> upstream/master
 	ROM_LOAD( "cyberbal2p-eeprom.bin", 0x0000, 0x800, CRC(3753f0e2) SHA1(26feab263a4d2d1dfcdf62e1225e0596cc036e1d) )
 ROM_END
 
@@ -797,9 +936,14 @@ ROM_START( cyberbal2p2 )
 	ROM_LOAD16_BYTE( "136071-1025.27c", 0x060000, 0x010000, CRC(95ff68c6) SHA1(43f716a4c44fe1a38fcc6e2600bac948bb603504) )
 	ROM_LOAD16_BYTE( "136071-1026.27d", 0x060001, 0x010000, CRC(f61c4898) SHA1(9e4a14eac6d197f63c3392af3d804e81c034cb09) )
 
+<<<<<<< HEAD
 	ROM_REGION( 0x14000, "jsa:cpu", 0 ) /* 64k for 6502 code */
 	ROM_LOAD( "136071-1042.1b",  0x010000, 0x004000, CRC(e63cf125) SHA1(449880f561660ba67ac2d7f8ce6333768e0ae0be) )
 	ROM_CONTINUE(             0x004000, 0x00c000 )
+=======
+	ROM_REGION( 0x10000, "jsa:cpu", 0 ) /* 64k for 6502 code */
+	ROM_LOAD( "136071-1042.1b",  0x00000, 0x10000, CRC(e63cf125) SHA1(449880f561660ba67ac2d7f8ce6333768e0ae0be) )
+>>>>>>> upstream/master
 
 	ROM_REGION( 0x140000, "gfx1", 0 )
 	ROM_LOAD( "136071-1001.55l", 0x000000, 0x020000, CRC(586ba107) SHA1(f15d4489f5834ea5fe695f43cb9d1c2401179870) )
@@ -831,7 +975,11 @@ ROM_START( cyberbal2p2 )
 	ROM_LOAD( "136071-1045.7e",  0x020000, 0x010000, CRC(f82558b9) SHA1(afbecccc6203db9bdcf60638e0f4e95040d7aaf2) )
 	ROM_LOAD( "136071-1046.7d",  0x030000, 0x010000, CRC(d96437ad) SHA1(b0b5cd75de4048e54b9d7d09a75381eb73c22ee1) )
 
+<<<<<<< HEAD
 	ROM_REGION( 0x800, "eeprom:eeprom", 0 )
+=======
+	ROM_REGION( 0x800, "eeprom", 0 )
+>>>>>>> upstream/master
 	ROM_LOAD( "cyberbal2p-eeprom.bin", 0x0000, 0x800, CRC(3753f0e2) SHA1(26feab263a4d2d1dfcdf62e1225e0596cc036e1d) )
 ROM_END
 
@@ -847,9 +995,14 @@ ROM_START( cyberbal2p1 )
 	ROM_LOAD16_BYTE( "136071-1025.27c", 0x060000, 0x010000, CRC(95ff68c6) SHA1(43f716a4c44fe1a38fcc6e2600bac948bb603504) )
 	ROM_LOAD16_BYTE( "136071-1026.27d", 0x060001, 0x010000, CRC(f61c4898) SHA1(9e4a14eac6d197f63c3392af3d804e81c034cb09) )
 
+<<<<<<< HEAD
 	ROM_REGION( 0x14000, "jsa:cpu", 0 ) /* 64k for 6502 code */
 	ROM_LOAD( "136071-1042.1b",  0x010000, 0x004000, CRC(e63cf125) SHA1(449880f561660ba67ac2d7f8ce6333768e0ae0be) )
 	ROM_CONTINUE(                0x004000, 0x00c000 )
+=======
+	ROM_REGION( 0x10000, "jsa:cpu", 0 ) /* 64k for 6502 code */
+	ROM_LOAD( "136071-1042.1b",  0x00000, 0x10000, CRC(e63cf125) SHA1(449880f561660ba67ac2d7f8ce6333768e0ae0be) )
+>>>>>>> upstream/master
 
 	ROM_REGION( 0x140000, "gfx1", 0 )
 	ROM_LOAD( "136071-1001.55l", 0x000000, 0x020000, CRC(586ba107) SHA1(f15d4489f5834ea5fe695f43cb9d1c2401179870) )
@@ -881,7 +1034,11 @@ ROM_START( cyberbal2p1 )
 	ROM_LOAD( "136071-1045.7e",  0x020000, 0x010000, CRC(f82558b9) SHA1(afbecccc6203db9bdcf60638e0f4e95040d7aaf2) )
 	ROM_LOAD( "136071-1046.7d",  0x030000, 0x010000, CRC(d96437ad) SHA1(b0b5cd75de4048e54b9d7d09a75381eb73c22ee1) )
 
+<<<<<<< HEAD
 	ROM_REGION( 0x800, "eeprom:eeprom", 0 )
+=======
+	ROM_REGION( 0x800, "eeprom", 0 )
+>>>>>>> upstream/master
 	ROM_LOAD( "cyberbal2p-eeprom.bin", 0x0000, 0x800, CRC(3753f0e2) SHA1(26feab263a4d2d1dfcdf62e1225e0596cc036e1d) )
 ROM_END
 
@@ -893,9 +1050,14 @@ ROM_START( cyberbalt )
 	ROM_LOAD16_BYTE( "136073-2009.3m",  0x020000, 0x010000, CRC(88bfc6dd) SHA1(ac2a67c8b4dbae62497236d624d333992195c218) )
 	ROM_LOAD16_BYTE( "136073-2010.3kl", 0x020001, 0x010000, CRC(3a121f29) SHA1(ebd088187abb863f2a632812811479dca7e31802) )
 
+<<<<<<< HEAD
 	ROM_REGION( 0x14000, "audiocpu", 0 )    /* 64k for 6502 code */
 	ROM_LOAD( "136073-1029.2f",  0x010000, 0x004000, CRC(afee87e1) SHA1(da5e91167c68eecd2cb4436ac64cda14e5f6eae7) )
 	ROM_CONTINUE(                0x004000, 0x00c000 )
+=======
+	ROM_REGION( 0x10000, "audiocpu", 0 )    /* 64k for 6502 code */
+	ROM_LOAD( "136073-1029.2f",  0x000000, 0x010000, CRC(afee87e1) SHA1(da5e91167c68eecd2cb4436ac64cda14e5f6eae7) )
+>>>>>>> upstream/master
 
 	ROM_REGION( 0x40000, "extra", 0 )
 	ROM_LOAD16_BYTE( "136073-2011.3cd", 0x000000, 0x010000, CRC(bb5c5926) SHA1(6f7424418559841053d0c874ac8bb72c793d0d62) )
@@ -933,7 +1095,11 @@ ROM_START( cyberbalt )
 	ROM_LOAD( "136073-1005.15n", 0x000000, 0x010000, CRC(833b4768) SHA1(754f00089d439fb0aa1f650c1fef73cf7e5f33a1) )
 	ROM_LOAD( "136073-1006.16n", 0x010000, 0x010000, CRC(4976cffd) SHA1(4cac8d9bd30743da6e6e4f013e6101ebc27060b6) )
 
+<<<<<<< HEAD
 	ROM_REGION( 0x800, "eeprom:eeprom", 0 )
+=======
+	ROM_REGION( 0x800, "eeprom", 0 )
+>>>>>>> upstream/master
 	ROM_LOAD( "cyberbalt-eeprom.bin", 0x0000, 0x800, CRC(0743c0a6) SHA1(0b7421484f640b528e96aed103775e81bbb60f62) )
 ROM_END
 
@@ -945,9 +1111,14 @@ ROM_START( cyberbalt1 )
 	ROM_LOAD16_BYTE( "136073-1009.3m",  0x020000, 0x010000, CRC(3933e089) SHA1(4bd453bddabeafd07d193a1bc8ac0792e7aa99c3) )
 	ROM_LOAD16_BYTE( "136073-1010.3kl", 0x020001, 0x010000, CRC(e7a7cae8) SHA1(91e0c6a1b0c138a0e6a599011518fe10df44e76e) )
 
+<<<<<<< HEAD
 	ROM_REGION( 0x14000, "audiocpu", 0 )    /* 64k for 6502 code */
 	ROM_LOAD( "136073-1029.2f",  0x010000, 0x004000, CRC(afee87e1) SHA1(da5e91167c68eecd2cb4436ac64cda14e5f6eae7) )
 	ROM_CONTINUE(                0x004000, 0x00c000 )
+=======
+	ROM_REGION( 0x10000, "audiocpu", 0 )    /* 64k for 6502 code */
+	ROM_LOAD( "136073-1029.2f",  0x000000, 0x010000, CRC(afee87e1) SHA1(da5e91167c68eecd2cb4436ac64cda14e5f6eae7) )
+>>>>>>> upstream/master
 
 	ROM_REGION( 0x40000, "extra", 0 )
 	ROM_LOAD16_BYTE( "136073-1011.3cd", 0x000000, 0x010000, CRC(22d3e09c) SHA1(18298951659badef39f839341c4d66958fcc86aa) )
@@ -985,7 +1156,11 @@ ROM_START( cyberbalt1 )
 	ROM_LOAD( "136073-1005.15n", 0x000000, 0x010000, CRC(833b4768) SHA1(754f00089d439fb0aa1f650c1fef73cf7e5f33a1) )
 	ROM_LOAD( "136073-1006.16n", 0x010000, 0x010000, CRC(4976cffd) SHA1(4cac8d9bd30743da6e6e4f013e6101ebc27060b6) )
 
+<<<<<<< HEAD
 	ROM_REGION( 0x800, "eeprom:eeprom", 0 )
+=======
+	ROM_REGION( 0x800, "eeprom", 0 )
+>>>>>>> upstream/master
 	ROM_LOAD( "cyberbalt-eeprom.bin", 0x0000, 0x800, CRC(0743c0a6) SHA1(0b7421484f640b528e96aed103775e81bbb60f62) )
 ROM_END
 
@@ -997,6 +1172,7 @@ ROM_END
  *
  *************************************/
 
+<<<<<<< HEAD
 DRIVER_INIT_MEMBER(cyberbal_state,cyberbal)
 {
 	slapstic_configure(*m_maincpu, 0x018000, 0, 0);
@@ -1011,6 +1187,11 @@ DRIVER_INIT_MEMBER(cyberbal_state,cyberbalt)
 
 DRIVER_INIT_MEMBER(cyberbal_state,cyberbal2p)
 {
+=======
+DRIVER_INIT_MEMBER(cyberbal_state,cyberbalt)
+{
+	slapstic_configure(*m_maincpu, 0x018000, 0, memregion("maincpu")->base() + 0x18000);
+>>>>>>> upstream/master
 }
 
 
@@ -1021,6 +1202,7 @@ DRIVER_INIT_MEMBER(cyberbal_state,cyberbal2p)
  *
  *************************************/
 
+<<<<<<< HEAD
 GAMEL(1988, cyberbal,    0,        cyberbal,   cyberbal, cyberbal_state, cyberbal, ROT0, "Atari Games", "Cyberball (rev 4)", 0, layout_dualhsxs )
 GAMEL(1988, cyberbal2,   cyberbal, cyberbal,   cyberbal, cyberbal_state, cyberbal, ROT0, "Atari Games", "Cyberball (rev 2)", 0, layout_dualhsxs )
 GAMEL(1988, cyberbalp,   cyberbal, cyberbal,   cyberbal, cyberbal_state, cyberbal, ROT0, "Atari Games", "Cyberball (prototype)", 0, layout_dualhsxs )
@@ -1032,3 +1214,16 @@ GAME( 1989, cyberbal2p1, cyberbal, cyberbal2p, cyberbal2p, cyberbal_state, cyber
 
 GAMEL(1989, cyberbalt,   cyberbal, cyberbalt,  cyberbal, cyberbal_state, cyberbalt,  ROT0, "Atari Games", "Tournament Cyberball 2072 (rev 2)", 0, layout_dualhsxs )
 GAMEL(1989, cyberbalt1,  cyberbal, cyberbalt,  cyberbal, cyberbal_state, cyberbalt,  ROT0, "Atari Games", "Tournament Cyberball 2072 (rev 1)", 0, layout_dualhsxs )
+=======
+GAMEL(1988, cyberbal,    0,        cyberbal,   cyberbal,   cyberbal_state, 0, ROT0, "Atari Games", "Cyberball (rev 4)", 0, layout_dualhsxs )
+GAMEL(1988, cyberbal2,   cyberbal, cyberbal,   cyberbal,   cyberbal_state, 0, ROT0, "Atari Games", "Cyberball (rev 2)", 0, layout_dualhsxs )
+GAMEL(1988, cyberbalp,   cyberbal, cyberbal,   cyberbal,   cyberbal_state, 0, ROT0, "Atari Games", "Cyberball (prototype)", 0, layout_dualhsxs )
+
+GAME( 1989, cyberbal2p,  cyberbal, cyberbal2p, cyberbal2p, cyberbal_state, 0, ROT0, "Atari Games", "Cyberball 2072 (2 player, rev 4)", 0 )
+GAME( 1989, cyberbal2p3, cyberbal, cyberbal2p, cyberbal2p, cyberbal_state, 0, ROT0, "Atari Games", "Cyberball 2072 (2 player, rev 3)", 0 )
+GAME( 1989, cyberbal2p2, cyberbal, cyberbal2p, cyberbal2p, cyberbal_state, 0, ROT0, "Atari Games", "Cyberball 2072 (2 player, rev 2)", 0 )
+GAME( 1989, cyberbal2p1, cyberbal, cyberbal2p, cyberbal2p, cyberbal_state, 0, ROT0, "Atari Games", "Cyberball 2072 (2 player, rev 1)", 0 )
+
+GAMEL(1989, cyberbalt,   cyberbal, cyberbalt,  cyberbal,   cyberbal_state, cyberbalt,  ROT0, "Atari Games", "Tournament Cyberball 2072 (rev 2)", 0, layout_dualhsxs )
+GAMEL(1989, cyberbalt1,  cyberbal, cyberbalt,  cyberbal,   cyberbal_state, cyberbalt,  ROT0, "Atari Games", "Tournament Cyberball 2072 (rev 1)", 0, layout_dualhsxs )
+>>>>>>> upstream/master

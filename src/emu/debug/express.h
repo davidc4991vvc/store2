@@ -8,12 +8,25 @@
 
 ***************************************************************************/
 
+<<<<<<< HEAD
 #pragma once
 
 #ifndef __EXPRESS_H__
 #define __EXPRESS_H__
 
 #include "emu.h"
+=======
+#ifndef MAME_EMU_DEBUG_EXPRESS_H
+#define MAME_EMU_DEBUG_EXPRESS_H
+
+#pragma once
+
+#include "emucore.h"
+
+#include <functional>
+#include <unordered_map>
+
+>>>>>>> upstream/master
 
 
 //**************************************************************************
@@ -43,10 +56,13 @@ enum expression_space
 //  TYPE DEFINITIONS
 //**************************************************************************
 
+<<<<<<< HEAD
 // forward references
 class symbol_table;
 
 
+=======
+>>>>>>> upstream/master
 // ======================> expression_error
 
 // an expression_error holds an error code and a string offset
@@ -114,6 +130,7 @@ protected:
 	};
 
 	// construction/destruction
+<<<<<<< HEAD
 	symbol_entry(symbol_table &table, symbol_type type, const char *name, void *ref);
 	virtual ~symbol_entry();
 
@@ -121,14 +138,29 @@ public:
 	// getters
 	symbol_entry *next() const { return m_next; }
 	const char *name() const { return m_name.c_str(); }
+=======
+	symbol_entry(symbol_table &table, symbol_type type, const char *name, const std::string &format, void *ref);
+public:
+	virtual ~symbol_entry();
+
+	// getters
+	symbol_entry *next() const { return m_next; }
+	const char *name() const { return m_name.c_str(); }
+	const std::string &format() const { return m_format; }
+>>>>>>> upstream/master
 
 	// type checking
 	bool is_function() const { return (m_type == SMT_FUNCTION); }
 
 	// symbol access
 	virtual bool is_lval() const = 0;
+<<<<<<< HEAD
 	virtual UINT64 value() const = 0;
 	virtual void set_value(UINT64 newvalue) = 0;
+=======
+	virtual u64 value() const = 0;
+	virtual void set_value(u64 newvalue) = 0;
+>>>>>>> upstream/master
 
 protected:
 	// internal state
@@ -136,6 +168,10 @@ protected:
 	symbol_table &  m_table;                    // pointer back to the owning table
 	symbol_type     m_type;                     // type of symbol
 	std::string     m_name;                     // name of the symbol
+<<<<<<< HEAD
+=======
+	std::string     m_format;                   // format of symbol (or empty if unspecified)
+>>>>>>> upstream/master
 	void *          m_ref;                      // internal reference
 };
 
@@ -148,6 +184,7 @@ class symbol_table
 {
 public:
 	// callback functions for getting/setting a symbol value
+<<<<<<< HEAD
 	typedef UINT64 (*getter_func)(symbol_table &table, void *symref);
 	typedef void (*setter_func)(symbol_table &table, void *symref, UINT64 value);
 
@@ -158,6 +195,18 @@ public:
 	typedef expression_error::error_code (*valid_func)(void *cbparam, const char *name, expression_space space);
 	typedef UINT64 (*read_func)(void *cbparam, const char *name, expression_space space, UINT32 offset, int size);
 	typedef void (*write_func)(void *cbparam, const char *name, expression_space space, UINT32 offset, int size, UINT64 value);
+=======
+	typedef std::function<u64(symbol_table &table, void *symref)> getter_func;
+	typedef std::function<void(symbol_table &table, void *symref, u64 value)> setter_func;
+
+	// callback functions for function execution
+	typedef std::function<u64(symbol_table &table, void *symref, int numparams, const u64 *paramlist)> execute_func;
+
+	// callback functions for memory reads/writes
+	typedef std::function<expression_error::error_code(void *cbparam, const char *name, expression_space space)> valid_func;
+	typedef std::function<u64(void *cbparam, const char *name, expression_space space, u32 offset, int size, bool disable_se)> read_func;
+	typedef std::function<void(void *cbparam, const char *name, expression_space space, u32 offset, int size, u64 value, bool disable_se)> write_func;
+>>>>>>> upstream/master
 
 	enum read_write
 	{
@@ -166,10 +215,17 @@ public:
 	};
 
 	// construction/destruction
+<<<<<<< HEAD
 	symbol_table(void *globalref, symbol_table *parent = NULL);
 
 	// getters
 	symbol_entry *first() const { return m_symlist.first(); }
+=======
+	symbol_table(void *globalref, symbol_table *parent = nullptr);
+
+	// getters
+	const std::unordered_map<std::string, std::unique_ptr<symbol_entry>> &entries() const { return m_symlist; }
+>>>>>>> upstream/master
 	symbol_table *parent() const { return m_parent; }
 	void *globalref() const { return m_globalref; }
 
@@ -177,6 +233,7 @@ public:
 	void configure_memory(void *param, valid_func valid, read_func read, write_func write);
 
 	// symbol access
+<<<<<<< HEAD
 	void add(const char *name, read_write rw, UINT64 *ptr = NULL);
 	void add(const char *name, UINT64 constvalue);
 	void add(const char *name, void *ref, getter_func getter, setter_func setter = NULL);
@@ -192,12 +249,33 @@ public:
 	expression_error::error_code memory_valid(const char *name, expression_space space);
 	UINT64 memory_value(const char *name, expression_space space, UINT32 offset, int size);
 	void set_memory_value(const char *name, expression_space space, UINT32 offset, int size, UINT64 value);
+=======
+	void add(const char *name, read_write rw, u64 *ptr = nullptr);
+	void add(const char *name, u64 constvalue);
+	void add(const char *name, void *ref, getter_func getter, setter_func setter = nullptr, const std::string &format_string = "");
+	void add(const char *name, void *ref, int minparams, int maxparams, execute_func execute);
+	symbol_entry *find(const char *name) const { if (name) { auto search = m_symlist.find(name); if (search != m_symlist.end()) return search->second.get(); else return nullptr; } else return nullptr; }
+	symbol_entry *find_deep(const char *name);
+
+	// value getter/setter
+	u64 value(const char *symbol);
+	void set_value(const char *symbol, u64 value);
+
+	// memory accessors
+	expression_error::error_code memory_valid(const char *name, expression_space space);
+	u64 memory_value(const char *name, expression_space space, u32 offset, int size, bool disable_se);
+	void set_memory_value(const char *name, expression_space space, u32 offset, int size, u64 value, bool disable_se);
+>>>>>>> upstream/master
 
 private:
 	// internal state
 	symbol_table *          m_parent;           // pointer to the parent symbol table
 	void *                  m_globalref;        // global reference parameter
+<<<<<<< HEAD
 	tagged_list<symbol_entry> m_symlist;        // list of symbols
+=======
+	std::unordered_map<std::string,std::unique_ptr<symbol_entry>> m_symlist;        // list of symbols
+>>>>>>> upstream/master
 	void *                  m_memory_param;     // callback parameter for memory
 	valid_func              m_memory_valid;     // validation callback
 	read_func               m_memory_read;      // read callback
@@ -214,7 +292,11 @@ class parsed_expression
 public:
 	// construction/destruction
 	parsed_expression(const parsed_expression &src) { copy(src); }
+<<<<<<< HEAD
 	parsed_expression(symbol_table *symtable = NULL, const char *expression = NULL, UINT64 *result = NULL);
+=======
+	parsed_expression(symbol_table *symtable = nullptr, const char *expression = nullptr, u64 *result = nullptr);
+>>>>>>> upstream/master
 
 	// operators
 	parsed_expression &operator=(const parsed_expression &src) { copy(src); return *this; }
@@ -229,7 +311,11 @@ public:
 
 	// execution
 	void parse(const char *string);
+<<<<<<< HEAD
 	UINT64 execute() { return execute_tokens(); }
+=======
+	u64 execute() { return execute_tokens(); }
+>>>>>>> upstream/master
 
 private:
 	// a single token
@@ -250,8 +336,15 @@ private:
 			TIN_MEMORY_SIZE_MASK    = 3 << TIN_MEMORY_SIZE_SHIFT,
 			TIN_MEMORY_SPACE_SHIFT  = 20,       // 4 bits (20-23)
 			TIN_MEMORY_SPACE_MASK   = 0xf << TIN_MEMORY_SPACE_SHIFT,
+<<<<<<< HEAD
 			TIN_PRECEDENCE_SHIFT    = 24,       // 8 bits (24-31)
 			TIN_PRECEDENCE_MASK     = 0xff << TIN_PRECEDENCE_SHIFT
+=======
+			TIN_PRECEDENCE_SHIFT    = 24,       // 5 bits (24-28)
+			TIN_PRECEDENCE_MASK     = 0x1f << TIN_PRECEDENCE_SHIFT,
+			TIN_SIDE_EFFECT_SHIFT   = 29,       // 1 bit  (29)
+			TIN_SIDE_EFFECT_MASK    = 1 << TIN_SIDE_EFFECT_SHIFT
+>>>>>>> upstream/master
 		};
 
 		// types of tokens
@@ -277,6 +370,7 @@ private:
 		bool is_memory() const { return (m_type == MEMORY); }
 		bool is_symbol() const { return (m_type == SYMBOL); }
 		bool is_operator() const { return (m_type == OPERATOR); }
+<<<<<<< HEAD
 		bool is_operator(UINT8 type) const { return (m_type == OPERATOR && optype() == type); }
 		bool is_lval() const { return ((m_type == SYMBOL && m_symbol->is_lval()) || m_type == MEMORY); }
 
@@ -286,39 +380,77 @@ private:
 
 		UINT8 optype() const { assert(m_type == OPERATOR); return (m_flags & TIN_OPTYPE_MASK) >> TIN_OPTYPE_SHIFT; }
 		UINT8 precedence() const { assert(m_type == OPERATOR); return (m_flags & TIN_PRECEDENCE_MASK) >> TIN_PRECEDENCE_SHIFT; }
+=======
+		bool is_operator(u8 type) const { return (m_type == OPERATOR && optype() == type); }
+		bool is_lval() const { return ((m_type == SYMBOL && m_symbol->is_lval()) || m_type == MEMORY); }
+
+		u64 value() const { assert(m_type == NUMBER); return m_value; }
+		u32 address() const { assert(m_type == MEMORY); return m_value; }
+		symbol_entry *symbol() const { assert(m_type == SYMBOL); return m_symbol; }
+
+		u8 optype() const { assert(m_type == OPERATOR); return (m_flags & TIN_OPTYPE_MASK) >> TIN_OPTYPE_SHIFT; }
+		u8 precedence() const { assert(m_type == OPERATOR); return (m_flags & TIN_PRECEDENCE_MASK) >> TIN_PRECEDENCE_SHIFT; }
+>>>>>>> upstream/master
 		bool is_function_separator() const { assert(m_type == OPERATOR); return ((m_flags & TIN_FUNCTION_MASK) != 0); }
 		bool right_to_left() const { assert(m_type == OPERATOR); return ((m_flags & TIN_RIGHT_TO_LEFT_MASK) != 0); }
 		expression_space memory_space() const { assert(m_type == OPERATOR || m_type == MEMORY); return expression_space((m_flags & TIN_MEMORY_SPACE_MASK) >> TIN_MEMORY_SPACE_SHIFT); }
 		int memory_size() const { assert(m_type == OPERATOR || m_type == MEMORY); return (m_flags & TIN_MEMORY_SIZE_MASK) >> TIN_MEMORY_SIZE_SHIFT; }
+<<<<<<< HEAD
+=======
+		bool memory_side_effect() const { assert(m_type == OPERATOR || m_type == MEMORY); return (m_flags & TIN_SIDE_EFFECT_MASK) >> TIN_SIDE_EFFECT_SHIFT; }
+>>>>>>> upstream/master
 
 		// setters
 		parse_token &set_offset(int offset) { m_offset = offset; return *this; }
 		parse_token &set_offset(const parse_token &src) { m_offset = src.m_offset; return *this; }
+<<<<<<< HEAD
 		parse_token &set_offset(const parse_token &src1, const parse_token &src2) { m_offset = MIN(src1.m_offset, src2.m_offset); return *this; }
 		parse_token &configure_number(UINT64 value) { m_type = NUMBER; m_value = value; return *this; }
 		parse_token &configure_string(const char *string) { m_type = STRING; m_string = string; return *this; }
 		parse_token &configure_memory(UINT32 address, parse_token &memoryat) { m_type = MEMORY; m_value = address; m_flags = memoryat.m_flags; m_string = memoryat.m_string; return *this; }
 		parse_token &configure_symbol(symbol_entry &symbol) { m_type = SYMBOL; m_symbol = &symbol; return *this; }
 		parse_token &configure_operator(UINT8 optype, UINT8 precedence)
+=======
+		parse_token &set_offset(const parse_token &src1, const parse_token &src2) { m_offset = std::min(src1.m_offset, src2.m_offset); return *this; }
+		parse_token &configure_number(u64 value) { m_type = NUMBER; m_value = value; return *this; }
+		parse_token &configure_string(const char *string) { m_type = STRING; m_string = string; return *this; }
+		parse_token &configure_memory(u32 address, parse_token &memoryat) { m_type = MEMORY; m_value = address; m_flags = memoryat.m_flags; m_string = memoryat.m_string; return *this; }
+		parse_token &configure_symbol(symbol_entry &symbol) { m_type = SYMBOL; m_symbol = &symbol; return *this; }
+		parse_token &configure_operator(u8 optype, u8 precedence)
+>>>>>>> upstream/master
 			{ m_type = OPERATOR; m_flags = ((optype << TIN_OPTYPE_SHIFT) & TIN_OPTYPE_MASK) | ((precedence << TIN_PRECEDENCE_SHIFT) & TIN_PRECEDENCE_MASK); return *this; }
 
 		parse_token &set_function_separator() { assert(m_type == OPERATOR); m_flags |= TIN_FUNCTION_MASK; return *this; }
 		parse_token &set_right_to_left() { assert(m_type == OPERATOR); m_flags |= TIN_RIGHT_TO_LEFT_MASK; return *this; }
 		parse_token &set_memory_space(expression_space space) { assert(m_type == OPERATOR || m_type == MEMORY); m_flags = (m_flags & ~TIN_MEMORY_SPACE_MASK) | ((space << TIN_MEMORY_SPACE_SHIFT) & TIN_MEMORY_SPACE_MASK); return *this; }
 		parse_token &set_memory_size(int log2ofbits) { assert(m_type == OPERATOR || m_type == MEMORY); m_flags = (m_flags & ~TIN_MEMORY_SIZE_MASK) | ((log2ofbits << TIN_MEMORY_SIZE_SHIFT) & TIN_MEMORY_SIZE_MASK); return *this; }
+<<<<<<< HEAD
 		parse_token &set_memory_source(const char *string) { assert(m_type == OPERATOR || m_type == MEMORY); m_string = string; return *this; }
 
 		// access
 		UINT64 get_lval_value(symbol_table *symtable);
 		void set_lval_value(symbol_table *symtable, UINT64 value);
+=======
+		parse_token &set_memory_side_effect(bool disable_se) { assert(m_type == OPERATOR || m_type == MEMORY); m_flags = disable_se ? m_flags | TIN_SIDE_EFFECT_MASK : m_flags & ~TIN_SIDE_EFFECT_MASK; return *this; }
+		parse_token &set_memory_source(const char *string) { assert(m_type == OPERATOR || m_type == MEMORY); m_string = string; return *this; }
+
+		// access
+		u64 get_lval_value(symbol_table *symtable);
+		void set_lval_value(symbol_table *symtable, u64 value);
+>>>>>>> upstream/master
 
 	private:
 		// internal state
 		parse_token *           m_next;             // next token in list
 		token_type              m_type;             // type of token
 		int                     m_offset;           // offset within the string
+<<<<<<< HEAD
 		UINT64                  m_value;            // integral value
 		UINT32                  m_flags;            // additional flags/info
+=======
+		u64                     m_value;            // integral value
+		u32                     m_flags;            // additional flags/info
+>>>>>>> upstream/master
 		const char *            m_string;           // associated string
 		symbol_entry *          m_symbol;           // symbol pointer
 	};
@@ -331,7 +463,11 @@ private:
 	public:
 		// construction/destruction
 		expression_string(const char *string, int length = 0)
+<<<<<<< HEAD
 			: m_next(NULL),
+=======
+			: m_next(nullptr),
+>>>>>>> upstream/master
 				m_string(string, (length == 0) ? strlen(string) : length) { }
 
 		// operators
@@ -354,7 +490,11 @@ private:
 	void parse_number(parse_token &token, const char *string, int base, expression_error::error_code errcode);
 	void parse_quoted_char(parse_token &token, const char *&string);
 	void parse_quoted_string(parse_token &token, const char *&string);
+<<<<<<< HEAD
 	void parse_memory_operator(parse_token &token, const char *string);
+=======
+	void parse_memory_operator(parse_token &token, const char *string, bool disable_se);
+>>>>>>> upstream/master
 	void normalize_operator(parse_token *prevtoken, parse_token &thistoken);
 	void infix_to_postfix();
 
@@ -364,7 +504,11 @@ private:
 	parse_token *peek_token(int count);
 	void pop_token_lval(parse_token &token);
 	void pop_token_rval(parse_token &token);
+<<<<<<< HEAD
 	UINT64 execute_tokens();
+=======
+	u64 execute_tokens();
+>>>>>>> upstream/master
 	void execute_function(parse_token &token);
 
 	// constants
@@ -380,5 +524,9 @@ private:
 	parse_token         m_token_stack[MAX_STACK_DEPTH]; // token stack (used during execution)
 };
 
+<<<<<<< HEAD
 
 #endif
+=======
+#endif // MAME_EMU_DEBUG_EXPRESS_H
+>>>>>>> upstream/master

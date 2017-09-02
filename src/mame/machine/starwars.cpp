@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 // license:???
+=======
+// license:BSD-3-Clause
+>>>>>>> upstream/master
 // copyright-holders:Steve Baines, Frank Palazzolo
 /***************************************************************************
 
@@ -42,7 +46,10 @@ TIMER_CALLBACK_MEMBER(starwars_state::math_run_clear)
 	m_math_run = 0;
 }
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> upstream/master
 /*************************************
  *
  *  X2212 nvram store
@@ -56,6 +63,7 @@ WRITE8_MEMBER(starwars_state::starwars_nstore_w)
 	machine().device<x2212_device>("x2212")->store(0);
 }
 
+<<<<<<< HEAD
 /*************************************
  *
  *  Output latch
@@ -98,6 +106,42 @@ WRITE8_MEMBER(starwars_state::starwars_out_w)
 			machine().device<x2212_device>("x2212")->recall(~data & 0x80);
 			break;
 	}
+=======
+WRITE_LINE_MEMBER(starwars_state::recall_w)
+{
+	machine().device<x2212_device>("x2212")->recall(!state);
+}
+
+/*************************************
+ *
+ *  Coin counters and LEDs
+ *
+ *************************************/
+
+WRITE_LINE_MEMBER(starwars_state::coin1_counter_w)
+{
+	machine().bookkeeping().coin_counter_w(0, state);
+}
+
+WRITE_LINE_MEMBER(starwars_state::coin2_counter_w)
+{
+	machine().bookkeeping().coin_counter_w(1, state);
+}
+
+WRITE_LINE_MEMBER(starwars_state::led1_w)
+{
+	output().set_led_value(0, !state);
+}
+
+WRITE_LINE_MEMBER(starwars_state::led2_w)
+{
+	output().set_led_value(1, !state);
+}
+
+WRITE_LINE_MEMBER(starwars_state::led3_w)
+{
+	output().set_led_value(2, !state);
+>>>>>>> upstream/master
 }
 
 
@@ -153,12 +197,21 @@ WRITE8_MEMBER(starwars_state::starwars_adc_select_w)
 
 void starwars_state::starwars_mproc_init()
 {
+<<<<<<< HEAD
 	UINT8 *src = memregion("user2")->base();
 	int cnt, val;
 
 	m_PROM_STR = auto_alloc_array(machine(), UINT8, 1024);
 	m_PROM_MAS = auto_alloc_array(machine(), UINT8, 1024);
 	m_PROM_AM = auto_alloc_array(machine(), UINT8, 1024);
+=======
+	uint8_t *src = memregion("user2")->base();
+	int cnt, val;
+
+	m_PROM_STR = std::make_unique<uint8_t[]>(1024);
+	m_PROM_MAS = std::make_unique<uint8_t[]>(1024);
+	m_PROM_AM = std::make_unique<uint8_t[]>(1024);
+>>>>>>> upstream/master
 
 	for (cnt = 0; cnt < 1024; cnt++)
 	{
@@ -318,7 +371,11 @@ void starwars_state::run_mproc()
 			 * takes 33 clock pulses to do a full rotation.
 			 */
 
+<<<<<<< HEAD
 			m_ACC += (((INT32)(m_A - m_B) << 1) * m_C) << 1;
+=======
+			m_ACC += (((int32_t)(m_A - m_B) << 1) * m_C) << 1;
+>>>>>>> upstream/master
 
 			/* A and B are sign extended (requred by the ls384). After
 			 * multiplication they just contain the sign.
@@ -381,6 +438,13 @@ READ8_MEMBER(starwars_state::starwars_prng_r)
 	return machine().rand();
 }
 
+<<<<<<< HEAD
+=======
+WRITE_LINE_MEMBER(starwars_state::prng_reset_w)
+{
+}
+
+>>>>>>> upstream/master
 
 
 /*************************************
@@ -445,7 +509,11 @@ WRITE8_MEMBER(starwars_state::starwars_math_w)
 			for (i = 1; i < 16; i++)
 			{
 				m_quotient_shift <<= 1;
+<<<<<<< HEAD
 				if (((INT32)m_dvd_shift + (m_divisor ^ 0xffff) + 1) & 0x10000)
+=======
+				if (((int32_t)m_dvd_shift + (m_divisor ^ 0xffff) + 1) & 0x10000)
+>>>>>>> upstream/master
 				{
 					m_quotient_shift |= 1;
 					m_dvd_shift = (m_dvd_shift + (m_divisor ^ 0xffff) + 1) << 1;

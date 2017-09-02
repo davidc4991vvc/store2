@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 // license:???
+=======
+// license:BSD-3-Clause
+>>>>>>> upstream/master
 // copyright-holders:Stefan Jokisch
 /***************************************************************************
 
@@ -14,6 +18,12 @@ TODO:
 
 #include "emu.h"
 #include "cpu/m6800/m6800.h"
+<<<<<<< HEAD
+=======
+#include "machine/74259.h"
+#include "machine/watchdog.h"
+#include "screen.h"
+>>>>>>> upstream/master
 
 #include "destroyr.lh"
 
@@ -30,6 +40,10 @@ public:
 	destroyr_state(const machine_config &mconfig, device_type type, const char *tag)
 		: driver_device(mconfig, type, tag),
 		m_maincpu(*this, "maincpu"),
+<<<<<<< HEAD
+=======
+		m_watchdog(*this, "watchdog"),
+>>>>>>> upstream/master
 		m_gfxdecode(*this, "gfxdecode"),
 		m_screen(*this, "screen"),
 		m_palette(*this, "palette"),
@@ -39,14 +53,24 @@ public:
 
 	/* devices */
 	required_device<cpu_device> m_maincpu;
+<<<<<<< HEAD
+=======
+	required_device<watchdog_timer_device> m_watchdog;
+>>>>>>> upstream/master
 	required_device<gfxdecode_device> m_gfxdecode;
 	required_device<screen_device> m_screen;
 	required_device<palette_device> m_palette;
 
 	/* memory pointers */
+<<<<<<< HEAD
 	required_shared_ptr<UINT8> m_alpha_num_ram;
 	required_shared_ptr<UINT8> m_major_obj_ram;
 	required_shared_ptr<UINT8> m_minor_obj_ram;
+=======
+	required_shared_ptr<uint8_t> m_alpha_num_ram;
+	required_shared_ptr<uint8_t> m_major_obj_ram;
+	required_shared_ptr<uint8_t> m_minor_obj_ram;
+>>>>>>> upstream/master
 
 	/* video-related */
 	int            m_cursor;
@@ -64,6 +88,7 @@ public:
 	DECLARE_WRITE8_MEMBER(misc_w);
 	DECLARE_WRITE8_MEMBER(cursor_load_w);
 	DECLARE_WRITE8_MEMBER(interrupt_ack_w);
+<<<<<<< HEAD
 	DECLARE_WRITE8_MEMBER(output_w);
 	DECLARE_READ8_MEMBER(input_r);
 	DECLARE_READ8_MEMBER(scanline_r);
@@ -73,16 +98,36 @@ public:
 	DECLARE_PALETTE_INIT(destroyr);
 
 	UINT32 screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
+=======
+	DECLARE_WRITE_LINE_MEMBER(led0_w);
+	DECLARE_WRITE_LINE_MEMBER(led1_w);
+	DECLARE_READ8_MEMBER(input_r);
+	DECLARE_READ8_MEMBER(scanline_r);
+
+	virtual void machine_start() override;
+	virtual void machine_reset() override;
+	DECLARE_PALETTE_INIT(destroyr);
+
+	uint32_t screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
+>>>>>>> upstream/master
 
 	TIMER_CALLBACK_MEMBER(dial_callback);
 	TIMER_CALLBACK_MEMBER(frame_callback);
 
 protected:
+<<<<<<< HEAD
 	virtual void device_timer(emu_timer &timer, device_timer_id id, int param, void *ptr);
 };
 
 
 UINT32 destroyr_state::screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+=======
+	virtual void device_timer(emu_timer &timer, device_timer_id id, int param, void *ptr) override;
+};
+
+
+uint32_t destroyr_state::screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+>>>>>>> upstream/master
 {
 	int i, j;
 
@@ -160,7 +205,11 @@ void destroyr_state::device_timer(emu_timer &timer, device_timer_id id, int para
 		frame_callback(ptr, param);
 		break;
 	default:
+<<<<<<< HEAD
 		assert_always(FALSE, "Unknown id in destroyr_state::device_timer");
+=======
+		assert_always(false, "Unknown id in destroyr_state::device_timer");
+>>>>>>> upstream/master
 	}
 }
 
@@ -198,7 +247,11 @@ TIMER_CALLBACK_MEMBER(destroyr_state::frame_callback)
 
 void destroyr_state::machine_reset()
 {
+<<<<<<< HEAD
 	timer_set(m_screen->time_until_pos(0), TIMER_DESTROYR_FRAME);
+=======
+	m_frame_timer->adjust(m_screen->time_until_pos(0));
+>>>>>>> upstream/master
 
 	m_cursor = 0;
 	m_wavemod = 0;
@@ -222,15 +275,24 @@ WRITE8_MEMBER(destroyr_state::misc_w)
 	m_wavemod = data & 0x10;
 	m_potmask[1] = data & 0x20;
 
+<<<<<<< HEAD
 	coin_lockout_w(machine(), 0, !m_attract);
 	coin_lockout_w(machine(), 1, !m_attract);
+=======
+	machine().bookkeeping().coin_lockout_w(0, !m_attract);
+	machine().bookkeeping().coin_lockout_w(1, !m_attract);
+>>>>>>> upstream/master
 }
 
 
 WRITE8_MEMBER(destroyr_state::cursor_load_w)
 {
 	m_cursor = data;
+<<<<<<< HEAD
 	watchdog_reset_w(space, offset, data);
+=======
+	m_watchdog->reset_w(space, offset, data);
+>>>>>>> upstream/master
 }
 
 
@@ -240,6 +302,7 @@ WRITE8_MEMBER(destroyr_state::interrupt_ack_w)
 }
 
 
+<<<<<<< HEAD
 WRITE8_MEMBER(destroyr_state::output_w)
 {
 	if (offset & 8) misc_w(space, 8, data);
@@ -271,6 +334,17 @@ WRITE8_MEMBER(destroyr_state::output_w)
 		/* bit 0 => low explosion */
 		break;
 	}
+=======
+WRITE_LINE_MEMBER(destroyr_state::led0_w)
+{
+	output().set_led_value(0, state);
+}
+
+
+WRITE_LINE_MEMBER(destroyr_state::led1_w)
+{
+	output().set_led_value(1, state); /* no second LED present on cab */
+>>>>>>> upstream/master
 }
 
 
@@ -283,7 +357,11 @@ READ8_MEMBER(destroyr_state::input_r)
 
 	else
 	{
+<<<<<<< HEAD
 		UINT8 ret = ioport("IN0")->read();
+=======
+		uint8_t ret = ioport("IN0")->read();
+>>>>>>> upstream/master
 
 		if (m_potsense[0] && m_potmask[0])
 			ret |= 4;
@@ -304,14 +382,25 @@ READ8_MEMBER(destroyr_state::scanline_r)
 static ADDRESS_MAP_START( destroyr_map, AS_PROGRAM, 8, destroyr_state )
 	ADDRESS_MAP_GLOBAL_MASK(0x7fff)
 	AM_RANGE(0x0000, 0x00ff) AM_MIRROR(0xf00) AM_RAM
+<<<<<<< HEAD
 	AM_RANGE(0x1000, 0x1fff) AM_READWRITE(input_r, output_w)
 	AM_RANGE(0x2000, 0x2fff) AM_READ_PORT("IN2")
+=======
+	AM_RANGE(0x1000, 0x1001) AM_MIRROR(0xffe) AM_READ(input_r)
+	AM_RANGE(0x1000, 0x1007) AM_MIRROR(0xff0) AM_DEVWRITE("outlatch", f9334_device, write_d0)
+	AM_RANGE(0x1008, 0x1008) AM_MIRROR(0xff7) AM_WRITE(misc_w)
+	AM_RANGE(0x2000, 0x2000) AM_MIRROR(0xfff) AM_READ_PORT("IN2")
+>>>>>>> upstream/master
 	AM_RANGE(0x3000, 0x30ff) AM_MIRROR(0xf00) AM_WRITEONLY AM_SHARE("alpha_nuram")
 	AM_RANGE(0x4000, 0x401f) AM_MIRROR(0xfe0) AM_WRITEONLY AM_SHARE("major_obj_ram")
 	AM_RANGE(0x5000, 0x5000) AM_MIRROR(0xff8) AM_WRITE(cursor_load_w)
 	AM_RANGE(0x5001, 0x5001) AM_MIRROR(0xff8) AM_WRITE(interrupt_ack_w)
 	AM_RANGE(0x5002, 0x5007) AM_MIRROR(0xff8) AM_WRITEONLY AM_SHARE("minor_obj_ram")
+<<<<<<< HEAD
 	AM_RANGE(0x6000, 0x6fff) AM_READ(scanline_r)
+=======
+	AM_RANGE(0x6000, 0x6000) AM_MIRROR(0xfff) AM_READ(scanline_r)
+>>>>>>> upstream/master
 	AM_RANGE(0x7000, 0x7fff) AM_ROM
 ADDRESS_MAP_END
 
@@ -397,7 +486,11 @@ static const gfx_layout destroyr_minor_object_layout =
 	0x200     /* increment */
 };
 
+<<<<<<< HEAD
 static const UINT32 destroyr_major_object_layout_xoffset[64] =
+=======
+static const uint32_t destroyr_major_object_layout_xoffset[64] =
+>>>>>>> upstream/master
 {
 	0x00, 0x02, 0x04, 0x06, 0x08, 0x0A, 0x0C, 0x0E,
 	0x10, 0x12, 0x14, 0x16, 0x18, 0x1A, 0x1C, 0x1E,
@@ -422,10 +515,17 @@ static const gfx_layout destroyr_major_object_layout =
 	},
 	0x0800,   /* increment */
 	destroyr_major_object_layout_xoffset,
+<<<<<<< HEAD
 	NULL
 };
 
 static const UINT32 destroyr_waves_layout_xoffset[64] =
+=======
+	nullptr
+};
+
+static const uint32_t destroyr_waves_layout_xoffset[64] =
+>>>>>>> upstream/master
 {
 	0x00, 0x01, 0x02, 0x03, 0x08, 0x09, 0x0A, 0x0B,
 	0x10, 0x11, 0x12, 0x13, 0x18, 0x19, 0x1A, 0x1B,
@@ -447,7 +547,11 @@ static const gfx_layout destroyr_waves_layout =
 	{ 0x00, 0x80 },
 	0x04,     /* increment */
 	destroyr_waves_layout_xoffset,
+<<<<<<< HEAD
 	NULL
+=======
+	nullptr
+>>>>>>> upstream/master
 };
 
 
@@ -486,13 +590,31 @@ void destroyr_state::machine_start()
 	save_item(NAME(m_potsense));
 }
 
+<<<<<<< HEAD
 static MACHINE_CONFIG_START( destroyr, destroyr_state )
+=======
+static MACHINE_CONFIG_START( destroyr )
+>>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", M6800, XTAL_12_096MHz / 16)
 	MCFG_CPU_PROGRAM_MAP(destroyr_map)
 	MCFG_CPU_PERIODIC_INT_DRIVER(destroyr_state, irq0_line_assert,  4*60)
 
+<<<<<<< HEAD
+=======
+	MCFG_DEVICE_ADD("outlatch", F9334, 0) // F8
+	MCFG_ADDRESSABLE_LATCH_Q0_OUT_CB(WRITELINE(destroyr_state, led0_w))
+	MCFG_ADDRESSABLE_LATCH_Q1_OUT_CB(WRITELINE(destroyr_state, led1_w))
+	// Q2 => songate
+	// Q3 => launch
+	// Q4 => explosion
+	// Q5 => sonar
+	// Q6 => high explosion
+	// Q7 => low explosion
+
+	MCFG_WATCHDOG_ADD("watchdog")
+>>>>>>> upstream/master
 
 	/* video hardware */
 	MCFG_SCREEN_ADD("screen", RASTER)
@@ -560,5 +682,10 @@ ROM_START( destroyr1 )
 ROM_END
 
 
+<<<<<<< HEAD
 GAMEL( 1977, destroyr,  0,        destroyr, destroyr, driver_device, 0, ORIENTATION_FLIP_X, "Atari", "Destroyer (version O2)", MACHINE_NO_SOUND | MACHINE_SUPPORTS_SAVE, layout_destroyr )
 GAMEL( 1977, destroyr1, destroyr, destroyr, destroyr, driver_device, 0, ORIENTATION_FLIP_X, "Atari", "Destroyer (version O1)", MACHINE_NO_SOUND | MACHINE_SUPPORTS_SAVE, layout_destroyr )
+=======
+GAMEL( 1977, destroyr,  0,        destroyr, destroyr, destroyr_state, 0, ORIENTATION_FLIP_X, "Atari", "Destroyer (version O2)", MACHINE_NO_SOUND | MACHINE_SUPPORTS_SAVE, layout_destroyr )
+GAMEL( 1977, destroyr1, destroyr, destroyr, destroyr, destroyr_state, 0, ORIENTATION_FLIP_X, "Atari", "Destroyer (version O1)", MACHINE_NO_SOUND | MACHINE_SUPPORTS_SAVE, layout_destroyr )
+>>>>>>> upstream/master

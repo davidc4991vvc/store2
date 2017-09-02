@@ -57,15 +57,29 @@
 
 ************************************************************************/
 
+<<<<<<< HEAD
 
 #define MASTER_CLOCK    XTAL_12MHz
 #define CPU_CLOCK       MASTER_CLOCK/4  /* guess */
 #define SND_CLOCK       MASTER_CLOCK/8  /* guess */
 
+=======
+>>>>>>> upstream/master
 #include "emu.h"
 #include "cpu/z80/z80.h"
 #include "sound/ay8910.h"
 #include "machine/nvram.h"
+<<<<<<< HEAD
+=======
+#include "machine/watchdog.h"
+#include "screen.h"
+#include "speaker.h"
+
+
+#define MASTER_CLOCK    XTAL_12MHz
+#define CPU_CLOCK       MASTER_CLOCK/4  /* guess */
+#define SND_CLOCK       MASTER_CLOCK/8  /* guess */
+>>>>>>> upstream/master
 
 class supdrapo_state : public driver_device
 {
@@ -73,6 +87,10 @@ public:
 	supdrapo_state(const machine_config &mconfig, device_type type, const char *tag)
 		: driver_device(mconfig, type, tag),
 		m_maincpu(*this, "maincpu"),
+<<<<<<< HEAD
+=======
+		m_watchdog(*this, "watchdog"),
+>>>>>>> upstream/master
 		m_gfxdecode(*this, "gfxdecode"),
 		m_palette(*this, "palette"),
 		m_col_line(*this, "col_line"),
@@ -80,6 +98,7 @@ public:
 		m_char_bank(*this, "char_bank") { }
 
 	required_device<cpu_device> m_maincpu;
+<<<<<<< HEAD
 	required_device<gfxdecode_device> m_gfxdecode;
 	required_device<palette_device> m_palette;
 
@@ -88,6 +107,17 @@ public:
 	required_shared_ptr<UINT8> m_char_bank;
 
 	UINT8 m_wdog;
+=======
+	required_device<watchdog_timer_device> m_watchdog;
+	required_device<gfxdecode_device> m_gfxdecode;
+	required_device<palette_device> m_palette;
+
+	required_shared_ptr<uint8_t> m_col_line;
+	required_shared_ptr<uint8_t> m_videoram;
+	required_shared_ptr<uint8_t> m_char_bank;
+
+	uint8_t m_wdog;
+>>>>>>> upstream/master
 
 	DECLARE_READ8_MEMBER(rng_r);
 	DECLARE_WRITE8_MEMBER(wdog8000_w);
@@ -98,12 +128,21 @@ public:
 	DECLARE_WRITE8_MEMBER(ay8910_outputa_w);
 	DECLARE_WRITE8_MEMBER(ay8910_outputb_w);
 
+<<<<<<< HEAD
 	virtual void machine_start();
 	virtual void machine_reset();
 	virtual void video_start();
 	DECLARE_PALETTE_INIT(supdrapo);
 
 	UINT32 screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
+=======
+	virtual void machine_start() override;
+	virtual void machine_reset() override;
+	virtual void video_start() override;
+	DECLARE_PALETTE_INIT(supdrapo);
+
+	uint32_t screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
+>>>>>>> upstream/master
 };
 
 
@@ -116,7 +155,11 @@ void supdrapo_state::video_start()
 }
 
 
+<<<<<<< HEAD
 UINT32 supdrapo_state::screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+=======
+uint32_t supdrapo_state::screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+>>>>>>> upstream/master
 {
 	int x, y;
 	int count;
@@ -145,7 +188,11 @@ UINT32 supdrapo_state::screen_update(screen_device &screen, bitmap_ind16 &bitmap
 /*Maybe bit 2 & 3 of the second color prom are intensity bits? */
 PALETTE_INIT_MEMBER(supdrapo_state, supdrapo)
 {
+<<<<<<< HEAD
 	const UINT8 *color_prom = memregion("proms")->base();
+=======
+	const uint8_t *color_prom = memregion("proms")->base();
+>>>>>>> upstream/master
 	int bit0, bit1, bit2 , r, g, b;
 	int i;
 
@@ -212,7 +259,11 @@ WRITE8_MEMBER(supdrapo_state::wdog8000_w)
 
 	if (m_wdog == data)
 	{
+<<<<<<< HEAD
 		watchdog_reset_w(space, 0, 0);  /* Reset */
+=======
+		m_watchdog->reset_w(space, 0, 0);  /* Reset */
+>>>>>>> upstream/master
 	}
 
 	m_wdog = data;
@@ -241,12 +292,20 @@ WRITE8_MEMBER(supdrapo_state::debug7c00_w)
 
 WRITE8_MEMBER(supdrapo_state::coinin_w)
 {
+<<<<<<< HEAD
 	coin_counter_w(machine(), 0, data & 0x01);  /* Coin In */
+=======
+	machine().bookkeeping().coin_counter_w(0, data & 0x01);  /* Coin In */
+>>>>>>> upstream/master
 }
 
 WRITE8_MEMBER(supdrapo_state::payout_w)
 {
+<<<<<<< HEAD
 	coin_counter_w(machine(), 1, data & 0x01);  /* Payout */
+=======
+	machine().bookkeeping().coin_counter_w(1, data & 0x01);  /* Payout */
+>>>>>>> upstream/master
 }
 
 
@@ -444,12 +503,20 @@ WRITE8_MEMBER(supdrapo_state::ay8910_outputb_w)
                            Machine Driver
 **********************************************************************/
 
+<<<<<<< HEAD
 static MACHINE_CONFIG_START( supdrapo, supdrapo_state )
+=======
+static MACHINE_CONFIG_START( supdrapo )
+>>>>>>> upstream/master
 
 	MCFG_CPU_ADD("maincpu", Z80, CPU_CLOCK) /* guess */
 	MCFG_CPU_PROGRAM_MAP(sdpoker_mem)
 	MCFG_CPU_VBLANK_INT_DRIVER("screen", supdrapo_state,  irq0_line_hold)
 
+<<<<<<< HEAD
+=======
+	MCFG_WATCHDOG_ADD("watchdog")
+>>>>>>> upstream/master
 
 	MCFG_NVRAM_ADD_0FILL("nvram")
 
@@ -604,7 +671,14 @@ ROM_END
                            Games Drivers
 **********************************************************************/
 
+<<<<<<< HEAD
 /*    YEAR  NAME       PARENT    MACHINE   INPUT     STATE          INIT  ROT     COMPANY                                           FULLNAME                     FLAGS... */
 GAME( 1983, supdrapo,  0,        supdrapo, supdrapo, driver_device, 0,    ROT90, "Valadon Automation (Stern Electronics license)", "Super Draw Poker (set 1)",   MACHINE_SUPPORTS_SAVE )
 GAME( 1983, supdrapoa, supdrapo, supdrapo, supdrapo, driver_device, 0,    ROT90, "Valadon Automation / Jeutel",                    "Super Draw Poker (set 2)",   MACHINE_SUPPORTS_SAVE )
 GAME( 1983, supdrapob, supdrapo, supdrapo, supdrapo, driver_device, 0,    ROT90, "bootleg",                                        "Super Draw Poker (bootleg)", MACHINE_SUPPORTS_SAVE )
+=======
+//    YEAR  NAME       PARENT    MACHINE   INPUT     STATE           INIT  ROT    COMPANY                                           FULLNAME                      FLAGS
+GAME( 1983, supdrapo,  0,        supdrapo, supdrapo, supdrapo_state, 0,    ROT90, "Valadon Automation (Stern Electronics license)", "Super Draw Poker (set 1)",   MACHINE_SUPPORTS_SAVE )
+GAME( 1983, supdrapoa, supdrapo, supdrapo, supdrapo, supdrapo_state, 0,    ROT90, "Valadon Automation / Jeutel",                    "Super Draw Poker (set 2)",   MACHINE_SUPPORTS_SAVE )
+GAME( 1983, supdrapob, supdrapo, supdrapo, supdrapo, supdrapo_state, 0,    ROT90, "bootleg",                                        "Super Draw Poker (bootleg)", MACHINE_SUPPORTS_SAVE )
+>>>>>>> upstream/master

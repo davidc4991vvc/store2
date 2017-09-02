@@ -46,6 +46,7 @@ Known Issues:
 */
 
 #include "emu.h"
+<<<<<<< HEAD
 #include "cpu/m68000/m68000.h"
 #include "cpu/z80/z80.h"
 #include "sound/2151intf.h"
@@ -53,6 +54,18 @@ Known Issues:
 #include "includes/twin16.h"
 #include "includes/konamipt.h"
 
+=======
+#include "includes/twin16.h"
+#include "includes/konamipt.h"
+
+#include "cpu/m68000/m68000.h"
+#include "cpu/z80/z80.h"
+#include "machine/gen_latch.h"
+#include "machine/nvram.h"
+#include "machine/watchdog.h"
+#include "sound/ym2151.h"
+#include "speaker.h"
+>>>>>>> upstream/master
 
 
 #define CPUA_IRQ_ENABLE (m_CPUA_register & 0x20)
@@ -97,9 +110,15 @@ WRITE16_MEMBER(twin16_state::CPUA_register_w)
 		if (rising_edge & 0x10)
 			m_subcpu->set_input_line(M68K_IRQ_6, HOLD_LINE);
 
+<<<<<<< HEAD
 		coin_counter_w(machine(), 0, m_CPUA_register & 0x01);
 		coin_counter_w(machine(), 1, m_CPUA_register & 0x02);
 		coin_counter_w(machine(), 2, m_CPUA_register & 0x04);
+=======
+		machine().bookkeeping().coin_counter_w(0, m_CPUA_register & 0x01);
+		machine().bookkeeping().coin_counter_w(1, m_CPUA_register & 0x02);
+		machine().bookkeeping().coin_counter_w(2, m_CPUA_register & 0x04);
+>>>>>>> upstream/master
 	}
 }
 
@@ -132,15 +151,24 @@ WRITE16_MEMBER(fround_state::fround_CPU_register_w)
 	                X               0->1 trigger IRQ on sound CPU
 	                        x   x   coin counters
 	*/
+<<<<<<< HEAD
 	UINT16 old = m_CPUA_register;
+=======
+	uint16_t old = m_CPUA_register;
+>>>>>>> upstream/master
 	COMBINE_DATA(&m_CPUA_register);
 	if (m_CPUA_register != old)
 	{
 		if ((old & 0x08) == 0 && (m_CPUA_register & 0x08))
 			m_audiocpu->set_input_line_and_vector(0, HOLD_LINE, 0xff);
 
+<<<<<<< HEAD
 		coin_counter_w(machine(), 0, m_CPUA_register & 0x01);
 		coin_counter_w(machine(), 1, m_CPUA_register & 0x02);
+=======
+		machine().bookkeeping().coin_counter_w(0, m_CPUA_register & 0x01);
+		machine().bookkeeping().coin_counter_w(1, m_CPUA_register & 0x02);
+>>>>>>> upstream/master
 	}
 }
 
@@ -165,7 +193,11 @@ static ADDRESS_MAP_START( sound_map, AS_PROGRAM, 8, twin16_state )
 	AM_RANGE(0x0000, 0x7fff) AM_ROM
 	AM_RANGE(0x8000, 0x87ff) AM_RAM
 	AM_RANGE(0x9000, 0x9000) AM_WRITE(upd_reset_w)
+<<<<<<< HEAD
 	AM_RANGE(0xa000, 0xa000) AM_READ(soundlatch_byte_r)
+=======
+	AM_RANGE(0xa000, 0xa000) AM_DEVREAD("soundlatch", generic_latch_8_device, read)
+>>>>>>> upstream/master
 	AM_RANGE(0xb000, 0xb00d) AM_DEVREADWRITE("k007232", k007232_device, read, write)
 	AM_RANGE(0xc000, 0xc001) AM_DEVREADWRITE("ymsnd", ym2151_device, read, write)
 	AM_RANGE(0xd000, 0xd000) AM_DEVWRITE("upd", upd7759_device, port_w)
@@ -184,8 +216,13 @@ static ADDRESS_MAP_START( main_map, AS_PROGRAM, 16, twin16_state )
 	AM_RANGE(0x0a0002, 0x0a0003) AM_READ_PORT("P1")
 	AM_RANGE(0x0a0004, 0x0a0005) AM_READ_PORT("P2")
 	AM_RANGE(0x0a0006, 0x0a0007) AM_READ_PORT("P3")
+<<<<<<< HEAD
 	AM_RANGE(0x0a0008, 0x0a0009) AM_WRITE8(soundlatch_byte_w, 0x00ff)
 	AM_RANGE(0x0a0010, 0x0a0011) AM_READ_PORT("DSW2") AM_WRITE(watchdog_reset16_w)
+=======
+	AM_RANGE(0x0a0008, 0x0a0009) AM_DEVWRITE8("soundlatch", generic_latch_8_device, write, 0x00ff)
+	AM_RANGE(0x0a0010, 0x0a0011) AM_READ_PORT("DSW2") AM_DEVWRITE("watchdog", watchdog_timer_device, reset16_w)
+>>>>>>> upstream/master
 	AM_RANGE(0x0a0012, 0x0a0013) AM_READ_PORT("DSW1")
 	AM_RANGE(0x0a0018, 0x0a0019) AM_READ_PORT("DSW3")
 	AM_RANGE(0x0c0000, 0x0c000f) AM_WRITE(video_register_w)
@@ -221,8 +258,13 @@ static ADDRESS_MAP_START( fround_map, AS_PROGRAM, 16, fround_state )
 	AM_RANGE(0x0a0000, 0x0a0001) AM_READ_PORT("SYSTEM") AM_WRITE(fround_CPU_register_w)
 	AM_RANGE(0x0a0002, 0x0a0003) AM_READ_PORT("P1")
 	AM_RANGE(0x0a0004, 0x0a0005) AM_READ_PORT("P2")
+<<<<<<< HEAD
 	AM_RANGE(0x0a0008, 0x0a0009) AM_WRITE8(soundlatch_byte_w, 0x00ff)
 	AM_RANGE(0x0a0010, 0x0a0011) AM_READ_PORT("DSW2") AM_WRITE(watchdog_reset16_w)
+=======
+	AM_RANGE(0x0a0008, 0x0a0009) AM_DEVWRITE8("soundlatch", generic_latch_8_device, write, 0x00ff)
+	AM_RANGE(0x0a0010, 0x0a0011) AM_READ_PORT("DSW2") AM_DEVWRITE("watchdog", watchdog_timer_device, reset16_w)
+>>>>>>> upstream/master
 	AM_RANGE(0x0a0012, 0x0a0013) AM_READ_PORT("DSW1")
 	AM_RANGE(0x0a0018, 0x0a0019) AM_READ_PORT("DSW3")
 	AM_RANGE(0x0c0000, 0x0c000f) AM_WRITE(video_register_w)
@@ -658,7 +700,11 @@ void twin16_state::machine_start()
 	save_item(NAME(m_CPUB_register));
 }
 
+<<<<<<< HEAD
 static MACHINE_CONFIG_START( twin16, twin16_state )
+=======
+static MACHINE_CONFIG_START( twin16 )
+>>>>>>> upstream/master
 	// basic machine hardware
 	MCFG_CPU_ADD("maincpu", M68000, XTAL_18_432MHz/2)
 	MCFG_CPU_PROGRAM_MAP(main_map)
@@ -673,13 +719,22 @@ static MACHINE_CONFIG_START( twin16, twin16_state )
 
 	MCFG_QUANTUM_TIME(attotime::from_hz(6000))
 
+<<<<<<< HEAD
+=======
+	MCFG_WATCHDOG_ADD("watchdog")
+
+>>>>>>> upstream/master
 	// video hardware
 	MCFG_BUFFERED_SPRITERAM16_ADD("spriteram")
 
 	MCFG_SCREEN_ADD("screen", RASTER)
 	MCFG_SCREEN_RAW_PARAMS(XTAL_18_432MHz/2, 576, 0, 40*8, 264, 2*8, 30*8)
 	MCFG_SCREEN_UPDATE_DRIVER(twin16_state, screen_update_twin16)
+<<<<<<< HEAD
 	MCFG_SCREEN_VBLANK_DRIVER(twin16_state, screen_eof_twin16)
+=======
+	MCFG_SCREEN_VBLANK_CALLBACK(WRITELINE(twin16_state, screen_vblank_twin16))
+>>>>>>> upstream/master
 	MCFG_SCREEN_PALETTE("palette")
 
 	MCFG_GFXDECODE_ADD("gfxdecode", "palette", twin16)
@@ -692,6 +747,11 @@ static MACHINE_CONFIG_START( twin16, twin16_state )
 	// sound hardware
 	MCFG_SPEAKER_STANDARD_STEREO("lspeaker", "rspeaker")
 
+<<<<<<< HEAD
+=======
+	MCFG_GENERIC_LATCH_8_ADD("soundlatch")
+
+>>>>>>> upstream/master
 	MCFG_YM2151_ADD("ymsnd", XTAL_3_579545MHz)
 	MCFG_SOUND_ROUTE(0, "lspeaker", 1.0)
 	MCFG_SOUND_ROUTE(1, "rspeaker", 1.0)
@@ -712,7 +772,11 @@ static MACHINE_CONFIG_DERIVED( devilw, twin16 )
 	MCFG_QUANTUM_TIME(attotime::from_hz(60000)) // watchdog reset otherwise
 MACHINE_CONFIG_END
 
+<<<<<<< HEAD
 static MACHINE_CONFIG_START( fround, fround_state )
+=======
+static MACHINE_CONFIG_START( fround )
+>>>>>>> upstream/master
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", M68000, XTAL_18_432MHz/2)
 	MCFG_CPU_PROGRAM_MAP(fround_map)
@@ -723,13 +787,22 @@ static MACHINE_CONFIG_START( fround, fround_state )
 
 	MCFG_QUANTUM_TIME(attotime::from_hz(6000))
 
+<<<<<<< HEAD
+=======
+	MCFG_WATCHDOG_ADD("watchdog")
+
+>>>>>>> upstream/master
 	/* video hardware */
 	MCFG_BUFFERED_SPRITERAM16_ADD("spriteram")
 
 	MCFG_SCREEN_ADD("screen", RASTER)
 	MCFG_SCREEN_RAW_PARAMS(XTAL_18_432MHz/2, 576, 0, 40*8, 264, 2*8, 30*8)
 	MCFG_SCREEN_UPDATE_DRIVER(twin16_state, screen_update_twin16)
+<<<<<<< HEAD
 	MCFG_SCREEN_VBLANK_DRIVER(twin16_state, screen_eof_twin16)
+=======
+	MCFG_SCREEN_VBLANK_CALLBACK(WRITELINE(twin16_state, screen_vblank_twin16))
+>>>>>>> upstream/master
 	MCFG_SCREEN_PALETTE("palette")
 
 	MCFG_GFXDECODE_ADD("gfxdecode", "palette", fround)
@@ -742,6 +815,11 @@ static MACHINE_CONFIG_START( fround, fround_state )
 	/* sound hardware */
 	MCFG_SPEAKER_STANDARD_STEREO("lspeaker", "rspeaker")
 
+<<<<<<< HEAD
+=======
+	MCFG_GENERIC_LATCH_8_ADD("soundlatch")
+
+>>>>>>> upstream/master
 	MCFG_YM2151_ADD("ymsnd", XTAL_3_579545MHz)
 	MCFG_SOUND_ROUTE(0, "lspeaker", 1.0)
 	MCFG_SOUND_ROUTE(1, "rspeaker", 1.0)
@@ -763,7 +841,11 @@ static MACHINE_CONFIG_DERIVED( miaj, twin16 )
 	MCFG_SCREEN_RAW_PARAMS(XTAL_18_432MHz/2, 576, 1*8, 39*8, 264, 2*8, 30*8)
 MACHINE_CONFIG_END
 
+<<<<<<< HEAD
 static MACHINE_CONFIG_DERIVED_CLASS( cuebrickj, twin16, cuebrickj_state )
+=======
+static MACHINE_CONFIG_DERIVED( cuebrickj, twin16 )
+>>>>>>> upstream/master
 	MCFG_SCREEN_MODIFY("screen")
 	MCFG_SCREEN_RAW_PARAMS(XTAL_18_432MHz/2, 576, 1*8, 39*8, 264, 2*8, 30*8)
 	MCFG_NVRAM_ADD_0FILL("nvram")
@@ -1268,6 +1350,7 @@ DRIVER_INIT_MEMBER(cuebrickj_state,cuebrickj)
 
 /* Game Drivers */
 
+<<<<<<< HEAD
 //    YEAR, NAME,      PARENT,   MACHINE,   INPUT,     INIT,      MONITOR,COMPANY,FULLNAME,FLAGS
 GAME( 1987, devilw,    0,        devilw,    devilw, twin16_state,    twin16,    ROT0,   "Konami", "Devil World", MACHINE_SUPPORTS_SAVE )
 GAME( 1987, majuu,     devilw,   devilw,    devilw, twin16_state,    twin16,    ROT0,   "Konami", "Majuu no Ohkoku", MACHINE_SUPPORTS_SAVE )
@@ -1284,3 +1367,21 @@ GAME( 1988, froundl,   fround,   fround,    fround, fround_state,    fround,    
 GAME( 1988, hpuncher,  fround,   twin16,    fround, twin16_state,    twin16,    ROT0,   "Konami", "Hard Puncher (Japan)", MACHINE_SUPPORTS_SAVE )
 GAME( 1989, miaj,      mia,      miaj,      miaj,   twin16_state,    twin16,    ROT0,   "Konami", "M.I.A. - Missing in Action (version R) (Japan)", MACHINE_SUPPORTS_SAVE )
 GAME( 1989, cuebrickj, cuebrick, cuebrickj, cuebrickj, cuebrickj_state, cuebrickj, ROT0, "Konami", "Cue Brick (Japan)", MACHINE_SUPPORTS_SAVE )
+=======
+//    YEAR, NAME,      PARENT,   MACHINE,   INPUT,     STATE,           INIT,      MONITOR,COMPANY,  FULLNAME,FLAGS
+GAME( 1987, devilw,    0,        devilw,    devilw,    twin16_state,    twin16,    ROT0,   "Konami", "Devil World", MACHINE_SUPPORTS_SAVE )
+GAME( 1987, majuu,     devilw,   devilw,    devilw,    twin16_state,    twin16,    ROT0,   "Konami", "Majuu no Ohkoku", MACHINE_SUPPORTS_SAVE )
+GAME( 1987, darkadv,   devilw,   devilw,    darkadv,   twin16_state,    twin16,    ROT0,   "Konami", "Dark Adventure", MACHINE_SUPPORTS_SAVE )
+GAME( 1988, vulcan,    0,        twin16,    vulcan,    twin16_state,    twin16,    ROT0,   "Konami", "Vulcan Venture (New)", MACHINE_SUPPORTS_SAVE )
+GAME( 1988, vulcana,   vulcan,   twin16,    vulcan,    twin16_state,    twin16,    ROT0,   "Konami", "Vulcan Venture (Old)", MACHINE_SUPPORTS_SAVE )
+GAME( 1988, vulcanb,   vulcan,   twin16,    vulcan,    twin16_state,    twin16,    ROT0,   "Konami", "Vulcan Venture (Oldest)", MACHINE_SUPPORTS_SAVE )
+GAME( 1988, gradius2,  vulcan,   twin16,    gradius2,  twin16_state,    twin16,    ROT0,   "Konami", "Gradius II - GOFER no Yabou (Japan New Ver.)", MACHINE_SUPPORTS_SAVE )
+GAME( 1988, gradius2a, vulcan,   twin16,    vulcan,    twin16_state,    twin16,    ROT0,   "Konami", "Gradius II - GOFER no Yabou (Japan Old Ver.)", MACHINE_SUPPORTS_SAVE )
+GAME( 1988, gradius2b, vulcan,   twin16,    vulcan,    twin16_state,    twin16,    ROT0,   "Konami", "Gradius II - GOFER no Yabou (Japan Older Ver.)", MACHINE_SUPPORTS_SAVE )
+
+GAME( 1988, fround,    0,        fround,    fround,    fround_state,    fround,    ROT0,   "Konami", "The Final Round (version M)", MACHINE_SUPPORTS_SAVE )
+GAME( 1988, froundl,   fround,   fround,    fround,    fround_state,    fround,    ROT0,   "Konami", "The Final Round (version L)", MACHINE_SUPPORTS_SAVE )
+GAME( 1988, hpuncher,  fround,   twin16,    fround,    twin16_state,    twin16,    ROT0,   "Konami", "Hard Puncher (Japan)", MACHINE_SUPPORTS_SAVE )
+GAME( 1989, miaj,      mia,      miaj,      miaj,      twin16_state,    twin16,    ROT0,   "Konami", "M.I.A. - Missing in Action (version R) (Japan)", MACHINE_SUPPORTS_SAVE )
+GAME( 1989, cuebrickj, cuebrick, cuebrickj, cuebrickj, cuebrickj_state, cuebrickj, ROT0,   "Konami", "Cue Brick (Japan)", MACHINE_SUPPORTS_SAVE )
+>>>>>>> upstream/master

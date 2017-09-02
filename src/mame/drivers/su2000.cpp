@@ -39,6 +39,10 @@
 #include "machine/idectrl.h"
 #include "video/pc_vga.h"
 #include "machine/pckeybrd.h"
+<<<<<<< HEAD
+=======
+#include "machine/ds128x.h"
+>>>>>>> upstream/master
 
 /*************************************
  *
@@ -51,8 +55,11 @@
 #define TMS320C1_CLOCK      XTAL_33_833MHz
 #define MC88110_CLOCK       XTAL_40MHz
 
+<<<<<<< HEAD
 #define PC_RAM_SIZE         (4096 * 1024)
 
+=======
+>>>>>>> upstream/master
 
 /*************************************
  *
@@ -66,9 +73,12 @@ public:
 	su2000_state(const machine_config &mconfig, device_type type, const char *tag)
 		: pcat_base_state(mconfig, type, tag){ }
 
+<<<<<<< HEAD
 	UINT32      *m_pc_ram;
 	virtual void machine_start();
 	virtual void machine_reset();
+=======
+>>>>>>> upstream/master
 };
 
 
@@ -79,10 +89,18 @@ public:
  *************************************/
 
 static ADDRESS_MAP_START( pcat_map, AS_PROGRAM, 32, su2000_state )
+<<<<<<< HEAD
 	AM_RANGE(0x00000000, 0x0009ffff) AM_RAMBANK("mem_bank")
 	AM_RANGE(0x000a0000, 0x000bffff) AM_DEVREADWRITE8("vga", vga_device, mem_r, mem_w, 0xffffffff)
 	AM_RANGE(0x000c0000, 0x000c7fff) AM_ROM
 	AM_RANGE(0x000f0000, 0x000fffff) AM_ROM
+=======
+	AM_RANGE(0x00000000, 0x0009ffff) AM_RAM
+	AM_RANGE(0x000a0000, 0x000bffff) AM_DEVREADWRITE8("vga", vga_device, mem_r, mem_w, 0xffffffff)
+	AM_RANGE(0x000c0000, 0x000c7fff) AM_ROM
+	AM_RANGE(0x000f0000, 0x000fffff) AM_ROM
+	AM_RANGE(0x00100000, 0x003fffff) AM_RAM
+>>>>>>> upstream/master
 	AM_RANGE(0xffff0000, 0xffffffff) AM_ROM AM_REGION("maincpu", 0x0f0000)
 ADDRESS_MAP_END
 
@@ -118,6 +136,7 @@ static void ide_interrupt(device_t *device, int state)
 
 /*************************************
  *
+<<<<<<< HEAD
  *  Initialization
  *
  *************************************/
@@ -146,11 +165,17 @@ void su2000_state::machine_reset()
 
 /*************************************
  *
+=======
+>>>>>>> upstream/master
  *  Machine Configuration
  *
  *************************************/
 
+<<<<<<< HEAD
 static MACHINE_CONFIG_START( su2000, su2000_state )
+=======
+static MACHINE_CONFIG_START( su2000 )
+>>>>>>> upstream/master
 	/* Basic machine hardware */
 	MCFG_CPU_ADD("maincpu", I486, I486_CLOCK)
 	MCFG_CPU_PROGRAM_MAP(pcat_map)
@@ -173,11 +198,21 @@ static MACHINE_CONFIG_START( su2000, su2000_state )
 
 	/* Video hardware */
 	MCFG_FRAGMENT_ADD(pcvideo_vga)
+<<<<<<< HEAD
 	MCFG_SCREEN_MODIFY("screen")
 	MCFG_SCREEN_REFRESH_RATE(60)
 	MCFG_SCREEN_VBLANK_TIME(ATTOSECONDS_IN_USEC(2500)) // TODO
 
 	MCFG_FRAGMENT_ADD(pcat_common)
+=======
+
+	MCFG_FRAGMENT_ADD(pcat_common)
+
+	MCFG_DEVICE_REMOVE("rtc")
+	MCFG_DS12885_ADD("rtc")
+	MCFG_MC146818_IRQ_HANDLER(DEVWRITELINE("pic8259_2", pic8259_device, ir0_w))
+	MCFG_MC146818_CENTURY_INDEX(0x32)
+>>>>>>> upstream/master
 MACHINE_CONFIG_END
 
 
@@ -295,4 +330,8 @@ ROM_START( su2000 )
  *
  *************************************/
 
+<<<<<<< HEAD
 GAME( 1993, su2000, 0, su2000, pc_keyboard, driver_device, 0, ROT0, "Virtuality", "SU2000", MACHINE_IS_BIOS_ROOT | MACHINE_NOT_WORKING | MACHINE_NO_SOUND )
+=======
+GAME( 1993, su2000, 0, su2000, pc_keyboard, su2000_state, 0, ROT0, "Virtuality", "SU2000", MACHINE_IS_BIOS_ROOT | MACHINE_NOT_WORKING | MACHINE_NO_SOUND )
+>>>>>>> upstream/master

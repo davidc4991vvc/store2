@@ -13,7 +13,11 @@ struct command
 };
 
 void reporterror(imgtoolerr_t err, const struct command *c, const char *format, const char *imagename,
+<<<<<<< HEAD
 	const char *filename, const char *newname, option_resolution *opts);
+=======
+	const char *filename, const char *newname, util::option_resolution *opts);
+>>>>>>> upstream/master
 
 #ifdef MAME_DEBUG
 int cmd_testsuite(struct command *c, int argc, char *argv[]);

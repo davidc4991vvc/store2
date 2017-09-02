@@ -1,6 +1,10 @@
 /*
  * Copyright 2013-2014 Dario Manesku. All rights reserved.
+<<<<<<< HEAD
  * License: http://www.opensource.org/licenses/BSD-2-Clause
+=======
+ * License: https://github.com/bkaradzic/bgfx#license-bsd-2-clause
+>>>>>>> upstream/master
  */
 
 #include <string>
@@ -9,11 +13,15 @@
 #include "common.h"
 #include "bgfx_utils.h"
 
+<<<<<<< HEAD
 #include <bgfx/bgfx.h>
 #include <bx/timer.h>
 #include <bx/readerwriter.h>
 #include <bx/fpumath.h>
 #include "entry/entry.h"
+=======
+#include <bx/crtimpl.h>
+>>>>>>> upstream/master
 #include "camera.h"
 #include "imgui/imgui.h"
 
@@ -277,7 +285,11 @@ struct Uniforms
 	void init()
 	{
 		m_params.m_ambientPass   = 1.0f;
+<<<<<<< HEAD
 		m_params.m_lightningPass = 1.0f;
+=======
+		m_params.m_lightingPass  = 1.0f;
+>>>>>>> upstream/master
 		m_params.m_lightCount    = 4.0f;
 		m_params.m_lightIndex    = 4.0f;
 
@@ -356,7 +368,11 @@ struct Uniforms
 	struct Params
 	{
 		float m_ambientPass;
+<<<<<<< HEAD
 		float m_lightningPass;
+=======
+		float m_lightingPass;
+>>>>>>> upstream/master
 		float m_lightCount;
 		float m_lightIndex;
 	};
@@ -382,7 +398,11 @@ struct Uniforms
 
 	/**
 	 * u_params.x - u_ambientPass
+<<<<<<< HEAD
 	 * u_params.y - u_lightningPass
+=======
+	 * u_params.y - u_lightingPass
+>>>>>>> upstream/master
 	 * u_params.z - u_lightCount
 	 * u_params.w - u_lightIndex
 	 */
@@ -650,13 +670,21 @@ struct Group
 
 namespace bgfx
 {
+<<<<<<< HEAD
 	int32_t read(bx::ReaderI* _reader, bgfx::VertexDecl& _decl);
+=======
+	int32_t read(bx::ReaderI* _reader, bgfx::VertexDecl& _decl, bx::Error* _err = NULL);
+>>>>>>> upstream/master
 }
 
 struct Mesh
 {
+<<<<<<< HEAD
 	void load(const void* _vertices, uint32_t _numVertices, const bgfx::VertexDecl _decl
 		, const uint16_t* _indices, uint32_t _numIndices)
+=======
+	void load(const void* _vertices, uint32_t _numVertices, const bgfx::VertexDecl _decl, const uint16_t* _indices, uint32_t _numIndices)
+>>>>>>> upstream/master
 	{
 		Group group;
 		const bgfx::Memory* mem;
@@ -670,12 +698,15 @@ struct Mesh
 		mem = bgfx::makeRef(_indices, size);
 		group.m_ibh = bgfx::createIndexBuffer(mem);
 
+<<<<<<< HEAD
 		//TODO:
 		// group.m_sphere = ...
 		// group.m_aabb = ...
 		// group.m_obb = ...
 		// group.m_prims = ...
 
+=======
+>>>>>>> upstream/master
 		m_groups.push_back(group);
 	}
 
@@ -685,18 +716,28 @@ struct Mesh
 #define BGFX_CHUNK_MAGIC_IB  BX_MAKEFOURCC('I', 'B', ' ', 0x0)
 #define BGFX_CHUNK_MAGIC_PRI BX_MAKEFOURCC('P', 'R', 'I', 0x0)
 
+<<<<<<< HEAD
 		bx::CrtFileReader reader;
 		reader.open(_filePath);
+=======
+		bx::FileReaderI* reader = entry::getFileReader();
+		bx::open(reader, _filePath);
+>>>>>>> upstream/master
 
 		Group group;
 
 		uint32_t chunk;
+<<<<<<< HEAD
 		while (4 == bx::read(&reader, chunk) )
+=======
+		while (4 == bx::read(reader, chunk) )
+>>>>>>> upstream/master
 		{
 			switch (chunk)
 			{
 			case BGFX_CHUNK_MAGIC_VB:
 				{
+<<<<<<< HEAD
 					bx::read(&reader, group.m_sphere);
 					bx::read(&reader, group.m_aabb);
 					bx::read(&reader, group.m_obb);
@@ -708,6 +749,19 @@ struct Mesh
 					bx::read(&reader, numVertices);
 					const bgfx::Memory* mem = bgfx::alloc(numVertices*stride);
 					bx::read(&reader, mem->data, mem->size);
+=======
+					bx::read(reader, group.m_sphere);
+					bx::read(reader, group.m_aabb);
+					bx::read(reader, group.m_obb);
+
+					bgfx::read(reader, m_decl);
+					uint16_t stride = m_decl.getStride();
+
+					uint16_t numVertices;
+					bx::read(reader, numVertices);
+					const bgfx::Memory* mem = bgfx::alloc(numVertices*stride);
+					bx::read(reader, mem->data, mem->size);
+>>>>>>> upstream/master
 
 					group.m_vbh = bgfx::createVertexBuffer(mem, m_decl);
 				}
@@ -716,9 +770,15 @@ struct Mesh
 			case BGFX_CHUNK_MAGIC_IB:
 				{
 					uint32_t numIndices;
+<<<<<<< HEAD
 					bx::read(&reader, numIndices);
 					const bgfx::Memory* mem = bgfx::alloc(numIndices*2);
 					bx::read(&reader, mem->data, mem->size);
+=======
+					bx::read(reader, numIndices);
+					const bgfx::Memory* mem = bgfx::alloc(numIndices*2);
+					bx::read(reader, mem->data, mem->size);
+>>>>>>> upstream/master
 					group.m_ibh = bgfx::createIndexBuffer(mem);
 				}
 				break;
@@ -726,6 +786,7 @@ struct Mesh
 			case BGFX_CHUNK_MAGIC_PRI:
 				{
 					uint16_t len;
+<<<<<<< HEAD
 					bx::read(&reader, len);
 
 					std::string material;
@@ -751,6 +812,33 @@ struct Mesh
 						bx::read(&reader, prim.m_sphere);
 						bx::read(&reader, prim.m_aabb);
 						bx::read(&reader, prim.m_obb);
+=======
+					bx::read(reader, len);
+
+					std::string material;
+					material.resize(len);
+					bx::read(reader, const_cast<char*>(material.c_str() ), len);
+
+					uint16_t num;
+					bx::read(reader, num);
+
+					for (uint32_t ii = 0; ii < num; ++ii)
+					{
+						bx::read(reader, len);
+
+						std::string name;
+						name.resize(len);
+						bx::read(reader, const_cast<char*>(name.c_str() ), len);
+
+						Primitive prim;
+						bx::read(reader, prim.m_startIndex);
+						bx::read(reader, prim.m_numIndices);
+						bx::read(reader, prim.m_startVertex);
+						bx::read(reader, prim.m_numVertices);
+						bx::read(reader, prim.m_sphere);
+						bx::read(reader, prim.m_aabb);
+						bx::read(reader, prim.m_obb);
+>>>>>>> upstream/master
 
 						group.m_prims.push_back(prim);
 					}
@@ -761,13 +849,21 @@ struct Mesh
 				break;
 
 			default:
+<<<<<<< HEAD
 				DBG("%08x at %d", chunk, reader.seek() );
+=======
+				DBG("%08x at %d", chunk, bx::seek(reader) );
+>>>>>>> upstream/master
 				abort();
 				break;
 			}
 		}
 
+<<<<<<< HEAD
 		reader.close();
+=======
+		bx::close(reader);
+>>>>>>> upstream/master
 	}
 
 	void unload()
@@ -867,11 +963,19 @@ int _main_(int _argc, char** _argv)
 
 	s_texColor = bgfx::createUniform("s_texColor", bgfx::UniformType::Int1);
 
+<<<<<<< HEAD
 	bgfx::ProgramHandle programTextureLightning = loadProgram("vs_stencil_texture_lightning", "fs_stencil_texture_lightning");
 	bgfx::ProgramHandle programColorLightning   = loadProgram("vs_stencil_color_lightning",   "fs_stencil_color_lightning"  );
 	bgfx::ProgramHandle programColorTexture     = loadProgram("vs_stencil_color_texture",     "fs_stencil_color_texture"    );
 	bgfx::ProgramHandle programColorBlack       = loadProgram("vs_stencil_color",             "fs_stencil_color_black"      );
 	bgfx::ProgramHandle programTexture          = loadProgram("vs_stencil_texture",           "fs_stencil_texture"          );
+=======
+	bgfx::ProgramHandle programTextureLighting = loadProgram("vs_stencil_texture_lighting", "fs_stencil_texture_lighting");
+	bgfx::ProgramHandle programColorLighting   = loadProgram("vs_stencil_color_lighting",   "fs_stencil_color_lighting"  );
+	bgfx::ProgramHandle programColorTexture    = loadProgram("vs_stencil_color_texture",    "fs_stencil_color_texture"   );
+	bgfx::ProgramHandle programColorBlack      = loadProgram("vs_stencil_color",            "fs_stencil_color_black"     );
+	bgfx::ProgramHandle programTexture         = loadProgram("vs_stencil_texture",          "fs_stencil_texture"         );
+>>>>>>> upstream/master
 
 	Mesh bunnyMesh;
 	Mesh columnMesh;
@@ -884,9 +988,15 @@ int _main_(int _argc, char** _argv)
 	hplaneMesh.load(s_hplaneVertices, BX_COUNTOF(s_hplaneVertices), PosNormalTexcoordVertex::ms_decl, s_planeIndices, BX_COUNTOF(s_planeIndices) );
 	vplaneMesh.load(s_vplaneVertices, BX_COUNTOF(s_vplaneVertices), PosNormalTexcoordVertex::ms_decl, s_planeIndices, BX_COUNTOF(s_planeIndices) );
 
+<<<<<<< HEAD
 	bgfx::TextureHandle figureTex     = loadTexture("figure-rgba.dds");
 	bgfx::TextureHandle flareTex      = loadTexture("flare.dds");
 	bgfx::TextureHandle fieldstoneTex = loadTexture("fieldstone-rgba.dds");
+=======
+	bgfx::TextureHandle figureTex     = loadTexture("textures/figure-rgba.dds");
+	bgfx::TextureHandle flareTex      = loadTexture("textures/flare.dds");
+	bgfx::TextureHandle fieldstoneTex = loadTexture("textures/fieldstone-rgba.dds");
+>>>>>>> upstream/master
 
 	// Setup lights.
 	const float rgbInnerR[][4] =
@@ -907,7 +1017,11 @@ int _main_(int _argc, char** _argv)
 		lightRgbInnerR[ii][2] = rgbInnerR[index][2];
 		lightRgbInnerR[ii][3] = rgbInnerR[index][3];
 	}
+<<<<<<< HEAD
 	memcpy(s_uniforms.m_lightRgbInnerR, lightRgbInnerR, MAX_NUM_LIGHTS * 4*sizeof(float) );
+=======
+	bx::memCopy(s_uniforms.m_lightRgbInnerR, lightRgbInnerR, MAX_NUM_LIGHTS * 4*sizeof(float) );
+>>>>>>> upstream/master
 
 	// Set view and projection matrices.
 	const float aspect = float(viewState.m_width)/float(viewState.m_height);
@@ -948,8 +1062,13 @@ int _main_(int _argc, char** _argv)
 			| (mouseState.m_buttons[entry::MouseButton::Right ] ? IMGUI_MBUT_RIGHT  : 0)
 			| (mouseState.m_buttons[entry::MouseButton::Middle] ? IMGUI_MBUT_MIDDLE : 0)
 			, mouseState.m_mz
+<<<<<<< HEAD
 			, viewState.m_width
 			, viewState.m_height
+=======
+			, uint16_t(viewState.m_width)
+			, uint16_t(viewState.m_height)
+>>>>>>> upstream/master
 			);
 
 		static int32_t scrollArea = 0;
@@ -990,7 +1109,11 @@ int _main_(int _argc, char** _argv)
 		// Update settings.
 		uint8_t numLights = (uint8_t)settings_numLights;
 		s_uniforms.m_params.m_ambientPass     = 1.0f;
+<<<<<<< HEAD
 		s_uniforms.m_params.m_lightningPass   = 1.0f;
+=======
+		s_uniforms.m_params.m_lightingPass    = 1.0f;
+>>>>>>> upstream/master
 		s_uniforms.m_params.m_lightCount      = settings_numLights;
 		s_uniforms.m_params.m_lightIndex      = 0.0f;
 		s_uniforms.m_color[3]                 = settings_reflectionValue;
@@ -1002,7 +1125,11 @@ int _main_(int _argc, char** _argv)
 		last = now;
 		const double freq = double(bx::getHPFrequency() );
 		const double toMs = 1000.0/freq;
+<<<<<<< HEAD
 		float time = (float)( (now - timeOffset)/double(bx::getHPFrequency() ) );
+=======
+		const float time = (float)( (now - timeOffset)/double(bx::getHPFrequency() ) );
+>>>>>>> upstream/master
 		const float deltaTime = float(frameTime/freq);
 		s_uniforms.m_time = time;
 
@@ -1032,12 +1159,21 @@ int _main_(int _argc, char** _argv)
 		const float radius = (scene == StencilReflectionScene) ? 15.0f : 25.0f;
 		for (uint8_t ii = 0; ii < numLights; ++ii)
 		{
+<<<<<<< HEAD
 			lightPosRadius[ii][0] = sinf( (lightTimeAccumulator*1.1f + ii*0.03f + ii*bx::piHalf*1.07f ) )*20.0f;
 			lightPosRadius[ii][1] = 8.0f + (1.0f - cosf( (lightTimeAccumulator*1.5f + ii*0.29f + bx::piHalf*1.49f ) ) )*4.0f;
 			lightPosRadius[ii][2] = cosf( (lightTimeAccumulator*1.3f + ii*0.13f + ii*bx::piHalf*1.79f ) )*20.0f;
 			lightPosRadius[ii][3] = radius;
 		}
 		memcpy(s_uniforms.m_lightPosRadius, lightPosRadius, numLights * 4*sizeof(float) );
+=======
+			lightPosRadius[ii][0] = bx::fsin( (lightTimeAccumulator*1.1f + ii*0.03f + ii*bx::piHalf*1.07f ) )*20.0f;
+			lightPosRadius[ii][1] = 8.0f + (1.0f - bx::fcos( (lightTimeAccumulator*1.5f + ii*0.29f + bx::piHalf*1.49f ) ) )*4.0f;
+			lightPosRadius[ii][2] = bx::fcos( (lightTimeAccumulator*1.3f + ii*0.13f + ii*bx::piHalf*1.79f ) )*20.0f;
+			lightPosRadius[ii][3] = radius;
+		}
+		bx::memCopy(s_uniforms.m_lightPosRadius, lightPosRadius, numLights * 4*sizeof(float) );
+>>>>>>> upstream/master
 
 		// Floor position.
 		float floorMtx[16];
@@ -1104,9 +1240,15 @@ int _main_(int _argc, char** _argv)
 				, 0.0f
 				, 0.0f
 				, 0.0f
+<<<<<<< HEAD
 				, sinf(ii * 2.0f + 13.0f - sceneTimeAccumulator) * 13.0f
 				, 4.0f
 				, cosf(ii * 2.0f + 13.0f - sceneTimeAccumulator) * 13.0f
+=======
+				, bx::fsin(ii * 2.0f + 13.0f - sceneTimeAccumulator) * 13.0f
+				, 4.0f
+				, bx::fcos(ii * 2.0f + 13.0f - sceneTimeAccumulator) * 13.0f
+>>>>>>> upstream/master
 				);
 		}
 
@@ -1128,7 +1270,11 @@ int _main_(int _argc, char** _argv)
 
 				// Setup params for this scene.
 				s_uniforms.m_params.m_ambientPass = 1.0f;
+<<<<<<< HEAD
 				s_uniforms.m_params.m_lightningPass = 1.0f;
+=======
+				s_uniforms.m_params.m_lightingPass = 1.0f;
+>>>>>>> upstream/master
 
 				// Floor.
 				hplaneMesh.submit(RENDER_VIEWID_RANGE1_PASS_0
@@ -1155,14 +1301,22 @@ int _main_(int _argc, char** _argv)
 					bx::vec3MulMtx(reflectedLights[ii], lightPosRadius[ii], reflectMtx);
 					reflectedLights[ii][3] = lightPosRadius[ii][3];
 				}
+<<<<<<< HEAD
 				memcpy(s_uniforms.m_lightPosRadius, reflectedLights, numLights * 4*sizeof(float) );
+=======
+				bx::memCopy(s_uniforms.m_lightPosRadius, reflectedLights, numLights * 4*sizeof(float) );
+>>>>>>> upstream/master
 
 				// Reflect and submit bunny.
 				float mtxReflectedBunny[16];
 				bx::mtxMul(mtxReflectedBunny, bunnyMtx, reflectMtx);
 				bunnyMesh.submit(RENDER_VIEWID_RANGE1_PASS_1
 					, mtxReflectedBunny
+<<<<<<< HEAD
 					, programColorLightning
+=======
+					, programColorLighting
+>>>>>>> upstream/master
 					, s_renderStates[RenderState::StencilReflection_DrawReflected]
 					);
 
@@ -1173,19 +1327,31 @@ int _main_(int _argc, char** _argv)
 					bx::mtxMul(mtxReflectedColumn, columnMtx[ii], reflectMtx);
 					columnMesh.submit(RENDER_VIEWID_RANGE1_PASS_1
 						, mtxReflectedColumn
+<<<<<<< HEAD
 						, programColorLightning
+=======
+						, programColorLighting
+>>>>>>> upstream/master
 						, s_renderStates[RenderState::StencilReflection_DrawReflected]
 						);
 				}
 
 				// Set lights back.
+<<<<<<< HEAD
 				memcpy(s_uniforms.m_lightPosRadius, lightPosRadius, numLights * 4*sizeof(float) );
+=======
+				bx::memCopy(s_uniforms.m_lightPosRadius, lightPosRadius, numLights * 4*sizeof(float) );
+>>>>>>> upstream/master
 				// Third pass - Blend plane.
 
 				// Floor.
 				hplaneMesh.submit(RENDER_VIEWID_RANGE1_PASS_2
 					, floorMtx
+<<<<<<< HEAD
 					, programTextureLightning
+=======
+					, programTextureLighting
+>>>>>>> upstream/master
 					, s_renderStates[RenderState::StencilReflection_BlendPlane]
 					, fieldstoneTex
 					);
@@ -1195,7 +1361,11 @@ int _main_(int _argc, char** _argv)
 				// Bunny.
 				bunnyMesh.submit(RENDER_VIEWID_RANGE1_PASS_3
 					, bunnyMtx
+<<<<<<< HEAD
 					, programColorLightning
+=======
+					, programColorLighting
+>>>>>>> upstream/master
 					, s_renderStates[RenderState::StencilReflection_DrawScene]
 					);
 
@@ -1204,7 +1374,11 @@ int _main_(int _argc, char** _argv)
 				{
 					columnMesh.submit(RENDER_VIEWID_RANGE1_PASS_3
 						, columnMtx[ii]
+<<<<<<< HEAD
 						, programColorLightning
+=======
+						, programColorLighting
+>>>>>>> upstream/master
 						, s_renderStates[RenderState::StencilReflection_DrawScene]
 						);
 				}
@@ -1216,19 +1390,31 @@ int _main_(int _argc, char** _argv)
 			{
 				// First pass - Draw entire scene. (ambient only).
 				s_uniforms.m_params.m_ambientPass = 1.0f;
+<<<<<<< HEAD
 				s_uniforms.m_params.m_lightningPass = 0.0f;
+=======
+				s_uniforms.m_params.m_lightingPass = 0.0f;
+>>>>>>> upstream/master
 
 				// Bunny.
 				bunnyMesh.submit(RENDER_VIEWID_RANGE1_PASS_0
 					, bunnyMtx
+<<<<<<< HEAD
 					, programColorLightning
+=======
+					, programColorLighting
+>>>>>>> upstream/master
 					, s_renderStates[RenderState::ProjectionShadows_DrawAmbient]
 				);
 
 				// Floor.
 				hplaneMesh.submit(RENDER_VIEWID_RANGE1_PASS_0
 					, floorMtx
+<<<<<<< HEAD
 					, programTextureLightning
+=======
+					, programTextureLighting
+>>>>>>> upstream/master
 					, s_renderStates[RenderState::ProjectionShadows_DrawAmbient]
 					, fieldstoneTex
 					);
@@ -1238,7 +1424,11 @@ int _main_(int _argc, char** _argv)
 				{
 					cubeMesh.submit(RENDER_VIEWID_RANGE1_PASS_0
 						, cubeMtx[ii]
+<<<<<<< HEAD
 						, programTextureLightning
+=======
+						, programTextureLighting
+>>>>>>> upstream/master
 						, s_renderStates[RenderState::ProjectionShadows_DrawAmbient]
 						, figureTex
 						);
@@ -1248,7 +1438,11 @@ int _main_(int _argc, char** _argv)
 				float ground[4];
 				float plane_pos[3] = { 0.0f, 0.0f, 0.0f };
 				float normal[3] = { 0.0f, 1.0f, 0.0f };
+<<<<<<< HEAD
 				memcpy(ground, normal, sizeof(float) * 3);
+=======
+				bx::memCopy(ground, normal, sizeof(float) * 3);
+>>>>>>> upstream/master
 				ground[3] = -bx::vec3Dot(plane_pos, normal) - 0.01f; // - 0.01 against z-fighting
 
 				for (uint8_t ii = 0, viewId = RENDER_VIEWID_RANGE5_PASS_6; ii < numLights; ++ii, ++viewId)
@@ -1261,7 +1455,11 @@ int _main_(int _argc, char** _argv)
 					// Get homogeneous light pos.
 					float* lightPos = lightPosRadius[ii];
 					float pos[4];
+<<<<<<< HEAD
 					memcpy(pos, lightPos, sizeof(float) * 3);
+=======
+					bx::memCopy(pos, lightPos, sizeof(float) * 3);
+>>>>>>> upstream/master
 					pos[3] = 1.0f;
 
 					// Calculate shadow mtx for current light.
@@ -1289,23 +1487,37 @@ int _main_(int _argc, char** _argv)
 						);
 					}
 
+<<<<<<< HEAD
 					// Draw entire scene. (lightning pass only. blending is on)
 					s_uniforms.m_params.m_ambientPass = 0.0f;
 					s_uniforms.m_params.m_lightningPass = 1.0f;
+=======
+					// Draw entire scene. (lighting pass only. blending is on)
+					s_uniforms.m_params.m_ambientPass = 0.0f;
+					s_uniforms.m_params.m_lightingPass = 1.0f;
+>>>>>>> upstream/master
 					s_uniforms.m_params.m_lightCount = 1.0f;
 					s_uniforms.m_params.m_lightIndex = float(ii);
 
 					// Bunny.
 					bunnyMesh.submit(viewId
 						, bunnyMtx
+<<<<<<< HEAD
 						, programColorLightning
+=======
+						, programColorLighting
+>>>>>>> upstream/master
 						, s_renderStates[RenderState::ProjectionShadows_DrawDiffuse]
 					);
 
 					// Floor.
 					hplaneMesh.submit(viewId
 						, floorMtx
+<<<<<<< HEAD
 						, programTextureLightning
+=======
+						, programTextureLighting
+>>>>>>> upstream/master
 						, s_renderStates[RenderState::ProjectionShadows_DrawDiffuse]
 						, fieldstoneTex
 						);
@@ -1315,7 +1527,11 @@ int _main_(int _argc, char** _argv)
 					{
 						cubeMesh.submit(viewId
 							, cubeMtx[jj]
+<<<<<<< HEAD
 							, programTextureLightning
+=======
+							, programTextureLighting
+>>>>>>> upstream/master
 							, s_renderStates[RenderState::ProjectionShadows_DrawDiffuse]
 							, figureTex
 							);
@@ -1324,7 +1540,11 @@ int _main_(int _argc, char** _argv)
 
 				// Reset these to default..
 				s_uniforms.m_params.m_ambientPass = 1.0f;
+<<<<<<< HEAD
 				s_uniforms.m_params.m_lightningPass = 1.0f;
+=======
+				s_uniforms.m_params.m_lightingPass = 1.0f;
+>>>>>>> upstream/master
 			}
 			break;
 		};
@@ -1369,7 +1589,11 @@ int _main_(int _argc, char** _argv)
 			);
 
 		// Setup view rect and transform for all used views.
+<<<<<<< HEAD
 		setViewRectMask(s_viewMask, 0, 0, viewState.m_width, viewState.m_height);
+=======
+		setViewRectMask(s_viewMask, 0, 0, uint16_t(viewState.m_width), uint16_t(viewState.m_height) );
+>>>>>>> upstream/master
 		setViewTransformMask(s_viewMask, viewState.m_view, viewState.m_proj);
 		s_viewMask = 0;
 
@@ -1393,8 +1617,13 @@ int _main_(int _argc, char** _argv)
 	bgfx::destroyTexture(fieldstoneTex);
 	bgfx::destroyTexture(flareTex);
 
+<<<<<<< HEAD
 	bgfx::destroyProgram(programTextureLightning);
 	bgfx::destroyProgram(programColorLightning);
+=======
+	bgfx::destroyProgram(programTextureLighting);
+	bgfx::destroyProgram(programColorLighting);
+>>>>>>> upstream/master
 	bgfx::destroyProgram(programColorTexture);
 	bgfx::destroyProgram(programColorBlack);
 	bgfx::destroyProgram(programTexture);

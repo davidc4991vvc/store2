@@ -26,6 +26,7 @@ Stephh's notes (based on the game M68000 code and some tests) :
 ***************************************************************************/
 
 #include "emu.h"
+<<<<<<< HEAD
 #include "cpu/z80/z80.h"
 #include "cpu/m68000/m68000.h"
 #include "sound/ay8910.h"
@@ -45,11 +46,28 @@ READ8_MEMBER(magmax_state::magmax_sound_irq_ack)
 {
 	m_audiocpu->set_input_line(0, CLEAR_LINE);
 	return 0;
+=======
+#include "includes/magmax.h"
+
+#include "cpu/m68000/m68000.h"
+#include "cpu/z80/z80.h"
+#include "sound/ay8910.h"
+#include "speaker.h"
+
+
+WRITE16_MEMBER(magmax_state::cpu_irq_ack_w)
+{
+	m_maincpu->set_input_line(M68K_IRQ_1, CLEAR_LINE);
+>>>>>>> upstream/master
 }
 
 READ8_MEMBER(magmax_state::magmax_sound_r)
 {
+<<<<<<< HEAD
 	return (m_sound_latch | m_LS74_q);
+=======
+	return (m_soundlatch->read(space, 0) << 1) | m_LS74_q;
+>>>>>>> upstream/master
 }
 
 WRITE8_MEMBER(magmax_state::ay8910_portB_0_w)
@@ -210,6 +228,7 @@ static ADDRESS_MAP_START( magmax_map, AS_PROGRAM, 16, magmax_state )
 	AM_RANGE(0x030010, 0x030011) AM_WRITE(magmax_vreg_w) AM_SHARE("vreg")
 	AM_RANGE(0x030012, 0x030013) AM_WRITEONLY AM_SHARE("scroll_x")
 	AM_RANGE(0x030014, 0x030015) AM_WRITEONLY AM_SHARE("scroll_y")
+<<<<<<< HEAD
 	AM_RANGE(0x03001c, 0x03001d) AM_WRITE(magmax_sound_w)
 	AM_RANGE(0x03001e, 0x03001f) AM_WRITENOP    /* IRQ ack */
 ADDRESS_MAP_END
@@ -218,6 +237,17 @@ static ADDRESS_MAP_START( magmax_sound_map, AS_PROGRAM, 8, magmax_state )
 	AM_RANGE(0x0000, 0x3fff) AM_ROM
 	AM_RANGE(0x4000, 0x4000) AM_READ(magmax_sound_irq_ack)
 	AM_RANGE(0x6000, 0x67ff) AM_RAM
+=======
+	AM_RANGE(0x03001c, 0x03001d) AM_DEVWRITE8("soundlatch", generic_latch_8_device, write, 0x00ff)
+	AM_RANGE(0x03001e, 0x03001f) AM_WRITE(cpu_irq_ack_w)
+ADDRESS_MAP_END
+
+static ADDRESS_MAP_START( magmax_sound_map, AS_PROGRAM, 8, magmax_state )
+	ADDRESS_MAP_GLOBAL_MASK(0x7fff) // A15 not connected
+	AM_RANGE(0x0000, 0x3fff) AM_ROM
+	AM_RANGE(0x4000, 0x4000) AM_MIRROR(0x1fff) AM_DEVREADWRITE("soundlatch", generic_latch_8_device, acknowledge_r, acknowledge_w)
+	AM_RANGE(0x6000, 0x67ff) AM_MIRROR(0x1800) AM_RAM
+>>>>>>> upstream/master
 ADDRESS_MAP_END
 
 static ADDRESS_MAP_START( magmax_sound_io_map, AS_IO, 8, magmax_state )
@@ -332,12 +362,20 @@ static GFXDECODE_START( magmax )
 GFXDECODE_END
 
 
+<<<<<<< HEAD
 static MACHINE_CONFIG_START( magmax, magmax_state )
+=======
+static MACHINE_CONFIG_START( magmax )
+>>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", M68000, XTAL_16MHz/2)   /* verified on pcb */
 	MCFG_CPU_PROGRAM_MAP(magmax_map)
+<<<<<<< HEAD
 	MCFG_CPU_VBLANK_INT_DRIVER("screen", magmax_state,  irq1_line_hold)
+=======
+	MCFG_CPU_VBLANK_INT_DRIVER("screen", magmax_state,  irq1_line_assert)
+>>>>>>> upstream/master
 
 	MCFG_CPU_ADD("audiocpu", Z80,XTAL_20MHz/8) /* verified on pcb */
 	MCFG_CPU_PROGRAM_MAP(magmax_sound_map)
@@ -372,6 +410,13 @@ static MACHINE_CONFIG_START( magmax, magmax_state )
 
 	MCFG_SOUND_ADD("ay3", AY8910, XTAL_20MHz/16) /* verified on pcb */
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 0.40)
+<<<<<<< HEAD
+=======
+
+	MCFG_GENERIC_LATCH_8_ADD("soundlatch")
+	MCFG_GENERIC_LATCH_DATA_PENDING_CB(INPUTLINE("audiocpu", 0))
+	MCFG_GENERIC_LATCH_SEPARATE_ACKNOWLEDGE(true)
+>>>>>>> upstream/master
 MACHINE_CONFIG_END
 
 
@@ -424,4 +469,8 @@ ROM_START( magmax )
 ROM_END
 
 
+<<<<<<< HEAD
 GAME( 1985, magmax, 0, magmax, magmax, driver_device, 0, ROT0, "Nichibutsu", "Mag Max", MACHINE_SUPPORTS_SAVE )
+=======
+GAME( 1985, magmax, 0, magmax, magmax, magmax_state, 0, ROT0, "Nichibutsu", "Mag Max", MACHINE_SUPPORTS_SAVE )
+>>>>>>> upstream/master

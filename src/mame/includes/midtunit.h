@@ -1,13 +1,27 @@
+<<<<<<< HEAD
 // license:???
 // copyright-holders:Alex Pasadyn, Zsolt Vasvari, Kurt Mahan, Ernesto Corvi, Aaron Giles
+=======
+// license:BSD-3-Clause
+// copyright-holders:Alex Pasadyn, Zsolt Vasvari, Ernesto Corvi, Aaron Giles
+// thanks-to:Kurt Mahan
+>>>>>>> upstream/master
 /*************************************************************************
 
     Driver for Midway T-unit games.
 
 **************************************************************************/
 
+<<<<<<< HEAD
 #include "audio/williams.h"
 #include "audio/dcs.h"
+=======
+#include "audio/dcs.h"
+#include "audio/williams.h"
+
+#include "cpu/tms34010/tms34010.h"
+
+>>>>>>> upstream/master
 
 class midtunit_state : public driver_device
 {
@@ -33,14 +47,21 @@ public:
 	optional_device<williams_cvsd_sound_device> m_cvsd_sound;
 	optional_device<williams_adpcm_sound_device> m_adpcm_sound;
 
+<<<<<<< HEAD
 	required_shared_ptr<UINT16> m_nvram;
+=======
+	required_shared_ptr<uint16_t> m_nvram;
+>>>>>>> upstream/master
 
 	required_memory_region m_gfxrom;
 
 	DECLARE_WRITE16_MEMBER(midtunit_cmos_enable_w);
 	DECLARE_WRITE16_MEMBER(midtunit_cmos_w);
 	DECLARE_READ16_MEMBER(midtunit_cmos_r);
+<<<<<<< HEAD
 	DECLARE_READ16_MEMBER(midtunit_input_r);
+=======
+>>>>>>> upstream/master
 	DECLARE_READ16_MEMBER(midtunit_sound_state_r);
 	DECLARE_READ16_MEMBER(midtunit_sound_r);
 	DECLARE_WRITE16_MEMBER(midtunit_sound_w);
@@ -55,7 +76,10 @@ public:
 	DECLARE_WRITE16_MEMBER(nbajam_prot_w);
 	DECLARE_WRITE16_MEMBER(jdredd_prot_w);
 	DECLARE_READ16_MEMBER(jdredd_prot_r);
+<<<<<<< HEAD
 	DECLARE_READ16_MEMBER(jdredd_hack_r);
+=======
+>>>>>>> upstream/master
 	DECLARE_READ16_MEMBER(midtunit_gfxrom_r);
 	DECLARE_READ16_MEMBER(midwunit_gfxrom_r);
 	DECLARE_WRITE16_MEMBER(midtunit_vram_w);
@@ -90,6 +114,7 @@ public:
 	void init_tunit_generic(int sound);
 	void init_nbajam_common(int te_protection);
 
+<<<<<<< HEAD
 	/* CMOS-related variables */
 	UINT8    m_cmos_write_enable;
 
@@ -113,4 +138,31 @@ public:
 
 protected:
 	virtual void device_timer(emu_timer &timer, device_timer_id id, int param, void *ptr);
+=======
+	emu_timer *m_dma_timer;
+
+	/* CMOS-related variables */
+	uint8_t    m_cmos_write_enable;
+
+	/* sound-related variables */
+	uint8_t    m_chip_type;
+	uint8_t    m_fake_sound_state;
+
+	/* protection */
+	uint8_t    m_mk_prot_index;
+	uint16_t   m_mk2_prot_data;
+
+	const uint32_t *m_nbajam_prot_table;
+	uint16_t   m_nbajam_prot_queue[5];
+	uint8_t    m_nbajam_prot_index;
+
+	const uint8_t *m_jdredd_prot_table;
+	uint8_t    m_jdredd_prot_index;
+	uint8_t    m_jdredd_prot_max;
+
+	uint8_t m_gfx_rom_large;
+
+protected:
+	virtual void device_timer(emu_timer &timer, device_timer_id id, int param, void *ptr) override;
+>>>>>>> upstream/master
 };

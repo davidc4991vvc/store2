@@ -56,7 +56,11 @@ const atari_motion_objects_config arcadecl_state::s_mob_config =
 
 VIDEO_START_MEMBER(arcadecl_state,arcadecl)
 {
+<<<<<<< HEAD
 	if (m_mob != NULL)
+=======
+	if (m_mob != nullptr)
+>>>>>>> upstream/master
 		m_mob->set_scroll(-12, 0x110);
 }
 
@@ -68,16 +72,24 @@ VIDEO_START_MEMBER(arcadecl_state,arcadecl)
  *
  *************************************/
 
+<<<<<<< HEAD
 UINT32 arcadecl_state::screen_update_arcadecl(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
 {
 	// start drawing
 	if (m_mob != NULL)
+=======
+uint32_t arcadecl_state::screen_update_arcadecl(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+{
+	// start drawing
+	if (m_mob != nullptr)
+>>>>>>> upstream/master
 		m_mob->draw_async(cliprect);
 
 	// draw the playfield
 	arcadecl_bitmap_render(bitmap, cliprect);
 
 	// draw and merge the MO
+<<<<<<< HEAD
 	if (m_mob != NULL)
 	{
 		bitmap_ind16 &mobitmap = m_mob->bitmap();
@@ -86,6 +98,16 @@ UINT32 arcadecl_state::screen_update_arcadecl(screen_device &screen, bitmap_ind1
 			{
 				UINT16 *mo = &mobitmap.pix16(y);
 				UINT16 *pf = &bitmap.pix16(y);
+=======
+	if (m_mob != nullptr)
+	{
+		bitmap_ind16 &mobitmap = m_mob->bitmap();
+		for (const sparse_dirty_rect *rect = m_mob->first_dirty_rect(cliprect); rect != nullptr; rect = rect->next())
+			for (int y = rect->min_y; y <= rect->max_y; y++)
+			{
+				uint16_t *mo = &mobitmap.pix16(y);
+				uint16_t *pf = &bitmap.pix16(y);
+>>>>>>> upstream/master
 				for (int x = rect->min_x; x <= rect->max_x; x++)
 					if (mo[x] != 0xffff)
 					{
@@ -112,8 +134,13 @@ void arcadecl_state::arcadecl_bitmap_render(bitmap_ind16 &bitmap, const rectangl
 	/* update any dirty scanlines */
 	for (y = cliprect.min_y; y <= cliprect.max_y; y++)
 	{
+<<<<<<< HEAD
 		const UINT16 *src = &m_bitmap[256 * y];
 		UINT16 *dst = &bitmap.pix16(y);
+=======
+		const uint16_t *src = &m_bitmap[256 * y];
+		uint16_t *dst = &bitmap.pix16(y);
+>>>>>>> upstream/master
 
 		/* regenerate the line */
 		for (x = cliprect.min_x & ~1; x <= cliprect.max_x; x += 2)

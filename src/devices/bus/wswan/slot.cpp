@@ -15,7 +15,11 @@
 //  GLOBAL VARIABLES
 //**************************************************************************
 
+<<<<<<< HEAD
 const device_type WS_CART_SLOT = &device_creator<ws_cart_slot_device>;
+=======
+DEFINE_DEVICE_TYPE(WS_CART_SLOT, ws_cart_slot_device, "ws_cart_slot", "Wonderswan Cartridge Slot")
+>>>>>>> upstream/master
 
 //**************************************************************************
 //    Wonderswan Cartridges Interface
@@ -27,7 +31,11 @@ const device_type WS_CART_SLOT = &device_creator<ws_cart_slot_device>;
 
 device_ws_cart_interface::device_ws_cart_interface(const machine_config &mconfig, device_t &device)
 	: device_slot_card_interface(mconfig, device),
+<<<<<<< HEAD
 		m_rom(NULL),
+=======
+		m_rom(nullptr),
+>>>>>>> upstream/master
 		m_rom_size(0),
 		m_bank_mask(0),
 		m_has_rtc(false),
@@ -48,9 +56,15 @@ device_ws_cart_interface::~device_ws_cart_interface()
 //  rom_alloc - alloc the space for the cart
 //-------------------------------------------------
 
+<<<<<<< HEAD
 void device_ws_cart_interface::rom_alloc(UINT32 size, const char *tag)
 {
 	if (m_rom == NULL)
+=======
+void device_ws_cart_interface::rom_alloc(uint32_t size, const char *tag)
+{
+	if (m_rom == nullptr)
+>>>>>>> upstream/master
 	{
 		m_rom = device().machine().memory().region_alloc(std::string(tag).append(WSSLOT_ROM_REGION_TAG).c_str(), size, 1, ENDIANNESS_LITTLE)->base();
 		m_rom_size = size;
@@ -63,7 +77,11 @@ void device_ws_cart_interface::rom_alloc(UINT32 size, const char *tag)
 //  nvram_alloc - alloc the space for the ram
 //-------------------------------------------------
 
+<<<<<<< HEAD
 void device_ws_cart_interface::nvram_alloc(UINT32 size)
+=======
+void device_ws_cart_interface::nvram_alloc(uint32_t size)
+>>>>>>> upstream/master
 {
 	m_nvram.resize(size);
 }
@@ -76,11 +94,20 @@ void device_ws_cart_interface::nvram_alloc(UINT32 size)
 //-------------------------------------------------
 //  ws_cart_slot_device - constructor
 //-------------------------------------------------
+<<<<<<< HEAD
 ws_cart_slot_device::ws_cart_slot_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock) :
 						device_t(mconfig, WS_CART_SLOT, "Wonderswan Cartridge Slot", tag, owner, clock, "ws_cart_slot", __FILE__),
 						device_image_interface(mconfig, *this),
 						device_slot_interface(mconfig, *this),
 						m_type(WS_STD), m_cart(nullptr)
+=======
+ws_cart_slot_device::ws_cart_slot_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock) :
+	device_t(mconfig, WS_CART_SLOT, tag, owner, clock),
+	device_image_interface(mconfig, *this),
+	device_slot_interface(mconfig, *this),
+	m_type(WS_STD),
+	m_cart(nullptr)
+>>>>>>> upstream/master
 {
 }
 
@@ -102,6 +129,7 @@ void ws_cart_slot_device::device_start()
 	m_cart = dynamic_cast<device_ws_cart_interface *>(get_card_device());
 }
 
+<<<<<<< HEAD
 //-------------------------------------------------
 //  device_config_complete - perform any
 //  operations now that the configuration is
@@ -114,6 +142,8 @@ void ws_cart_slot_device::device_config_complete()
 	update_names();
 }
 
+=======
+>>>>>>> upstream/master
 
 //-------------------------------------------------
 //  WSWAN PCB
@@ -135,10 +165,17 @@ static const ws_slot slot_list[] =
 
 static int ws_get_pcb_id(const char *slot)
 {
+<<<<<<< HEAD
 	for (int i = 0; i < ARRAY_LENGTH(slot_list); i++)
 	{
 		if (!core_stricmp(slot_list[i].slot_option, slot))
 			return slot_list[i].pcb_id;
+=======
+	for (auto & elem : slot_list)
+	{
+		if (!core_stricmp(elem.slot_option, slot))
+			return elem.pcb_id;
+>>>>>>> upstream/master
 	}
 
 	return 0;
@@ -146,10 +183,17 @@ static int ws_get_pcb_id(const char *slot)
 
 static const char *ws_get_slot(int type)
 {
+<<<<<<< HEAD
 	for (int i = 0; i < ARRAY_LENGTH(slot_list); i++)
 	{
 		if (slot_list[i].pcb_id == type)
 			return slot_list[i].slot_option;
+=======
+	for (auto & elem : slot_list)
+	{
+		if (elem.pcb_id == type)
+			return elem.slot_option;
+>>>>>>> upstream/master
 	}
 
 	return "std";
@@ -160,6 +204,7 @@ static const char *ws_get_slot(int type)
  call load
  -------------------------------------------------*/
 
+<<<<<<< HEAD
 bool ws_cart_slot_device::call_load()
 {
 	if (m_cart)
@@ -167,16 +212,33 @@ bool ws_cart_slot_device::call_load()
 		UINT8 *ROM;
 		UINT32 size = (software_entry() == NULL) ? length() : get_software_region_length("rom");
 		UINT32 nvram_size = 0;
+=======
+image_init_result ws_cart_slot_device::call_load()
+{
+	if (m_cart)
+	{
+		uint8_t *ROM;
+		uint32_t size = !loaded_through_softlist() ? length() : get_software_region_length("rom");
+		uint32_t nvram_size = 0;
+>>>>>>> upstream/master
 
 		m_cart->rom_alloc(size, tag());
 		ROM = m_cart->get_rom_base();
 
+<<<<<<< HEAD
 		if (software_entry() == NULL)
+=======
+		if (!loaded_through_softlist())
+>>>>>>> upstream/master
 			fread(ROM, size);
 		else
 			memcpy(ROM, get_software_region("rom"), size);
 
+<<<<<<< HEAD
 		if (software_entry() == NULL)
+=======
+		if (!loaded_through_softlist())
+>>>>>>> upstream/master
 		{
 			int chunks = size / 0x10000;
 			// get cart type and nvram length
@@ -223,7 +285,11 @@ bool ws_cart_slot_device::call_load()
 		internal_header_logging(ROM, ((size >> 16) - 1) << 16, size);
 	}
 
+<<<<<<< HEAD
 	return IMAGE_INIT_PASS;
+=======
+	return image_init_result::PASS;
+>>>>>>> upstream/master
 }
 
 /*-------------------------------------------------
@@ -238,6 +304,7 @@ void ws_cart_slot_device::call_unload()
 
 
 /*-------------------------------------------------
+<<<<<<< HEAD
  call softlist load
  -------------------------------------------------*/
 
@@ -253,6 +320,12 @@ bool ws_cart_slot_device::call_softlist_load(software_list_device &swlist, const
  -------------------------------------------------*/
 
 int ws_cart_slot_device::get_cart_type(UINT8 *ROM, UINT32 len, UINT32 &nvram_len)
+=======
+ get cart type from cart file
+ -------------------------------------------------*/
+
+int ws_cart_slot_device::get_cart_type(const uint8_t *ROM, uint32_t len, uint32_t &nvram_len) const
+>>>>>>> upstream/master
 {
 	int chunks = len / 0x10000;
 	int type = WS_STD;
@@ -306,6 +379,7 @@ int ws_cart_slot_device::get_cart_type(UINT8 *ROM, UINT32 len, UINT32 &nvram_len
  get default card software
  -------------------------------------------------*/
 
+<<<<<<< HEAD
 void ws_cart_slot_device::get_default_card_software(std::string &result)
 {
 	if (open_image_file(mconfig().options()))
@@ -317,12 +391,26 @@ void ws_cart_slot_device::get_default_card_software(std::string &result)
 		UINT32 nvram;
 
 		core_fread(m_file, &rom[0], size);
+=======
+std::string ws_cart_slot_device::get_default_card_software(get_default_card_software_hook &hook) const
+{
+	if (hook.image_file())
+	{
+		const char *slot_string;
+		uint32_t size = hook.image_file()->size();
+		std::vector<uint8_t> rom(size);
+		int type;
+		uint32_t nvram;
+
+		hook.image_file()->read(&rom[0], size);
+>>>>>>> upstream/master
 
 		// nvram size is not really used here, but we set it up nevertheless
 		type = get_cart_type(&rom[0], size, nvram);
 		slot_string = ws_get_slot(type);
 
 		//printf("type: %s\n", slot_string);
+<<<<<<< HEAD
 		clear();
 
 		result.assign(slot_string);
@@ -330,6 +418,13 @@ void ws_cart_slot_device::get_default_card_software(std::string &result)
 	}
 
 	software_get_default_slot(result, "ws_rom");
+=======
+
+		return std::string(slot_string);
+	}
+
+	return software_get_default_slot("ws_rom");
+>>>>>>> upstream/master
 }
 
 /*-------------------------------------------------
@@ -422,10 +517,17 @@ static const char *const sram_str[] = { "none", "64Kbit SRAM", "256Kbit SRAM", "
 static const char *const eeprom_str[] = { "none", "1Kbit EEPROM", "16Kbit EEPROM", "Unknown", "Unknown", "8Kbit EEPROM" };
 static const char *const romsize_str[] = { "Unknown", "Unknown", "4Mbit", "8Mbit", "16Mbit", "Unknown", "32Mbit", "Unknown", "64Mbit", "128Mbit" };
 
+<<<<<<< HEAD
 void ws_cart_slot_device::internal_header_logging(UINT8 *ROM, UINT32 offs, UINT32 len)
 {
 	int sum = 0, banks = len / 0x10000;
 	UINT8 romsize, ramtype, ramsize;
+=======
+void ws_cart_slot_device::internal_header_logging(uint8_t *ROM, uint32_t offs, uint32_t len)
+{
+	int sum = 0, banks = len / 0x10000;
+	uint8_t romsize, ramtype, ramsize;
+>>>>>>> upstream/master
 	romsize = ROM[offs + 0xfffa];
 	ramtype = (ROM[offs + 0xfffb] & 0xf0) ? 1 : 0;  // 1 = EEPROM, 0 = SRAM
 	ramsize = ramtype ? ((ROM[offs + 0xfffb] & 0xf0) >> 4) : (ROM[offs + 0xfffb] & 0x0f);

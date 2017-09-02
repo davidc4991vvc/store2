@@ -12,7 +12,11 @@ class CBinderInStream:
 {
   CStreamBinder *_binder;
 public:
+<<<<<<< HEAD
   MY_UNKNOWN_IMP
+=======
+  MY_UNKNOWN_IMP1(ISequentialInStream)
+>>>>>>> upstream/master
   STDMETHOD(Read)(void *data, UInt32 size, UInt32 *processedSize);
   ~CBinderInStream() { _binder->CloseRead(); }
   CBinderInStream(CStreamBinder *binder): _binder(binder) {}
@@ -27,7 +31,11 @@ class CBinderOutStream:
 {
   CStreamBinder *_binder;
 public:
+<<<<<<< HEAD
   MY_UNKNOWN_IMP
+=======
+  MY_UNKNOWN_IMP1(ISequentialOutStream)
+>>>>>>> upstream/master
   STDMETHOD(Write)(const void *data, UInt32 size, UInt32 *processedSize);
   ~CBinderOutStream() { _binder->CloseWrite(); }
   CBinderOutStream(CStreamBinder *binder): _binder(binder) {}
@@ -40,26 +48,55 @@ STDMETHODIMP CBinderOutStream::Write(const void *data, UInt32 size, UInt32 *proc
 
 WRes CStreamBinder::CreateEvents()
 {
+<<<<<<< HEAD
   RINOK(_canWrite_Event.Create(true));
+=======
+  RINOK(_canWrite_Event.Create());
+>>>>>>> upstream/master
   RINOK(_canRead_Event.Create());
   return _readingWasClosed_Event.Create();
 }
 
 void CStreamBinder::ReInit()
 {
+<<<<<<< HEAD
   _waitWrite = true;
   _canRead_Event.Reset();
   _readingWasClosed_Event.Reset();
   ProcessedSize = 0;
+=======
+  _canWrite_Event.Reset();
+  _canRead_Event.Reset();
+  _readingWasClosed_Event.Reset();
+
+  // _readingWasClosed = false;
+  _readingWasClosed2 = false;
+
+  _waitWrite = true;
+  _bufSize = 0;
+  _buf = NULL;
+  ProcessedSize = 0;
+  // WritingWasCut = false;
+>>>>>>> upstream/master
 }
 
 
 void CStreamBinder::CreateStreams(ISequentialInStream **inStream, ISequentialOutStream **outStream)
 {
+<<<<<<< HEAD
+=======
+  // _readingWasClosed = false;
+  _readingWasClosed2 = false;
+
+>>>>>>> upstream/master
   _waitWrite = true;
   _bufSize = 0;
   _buf = NULL;
   ProcessedSize = 0;
+<<<<<<< HEAD
+=======
+  // WritingWasCut = false;
+>>>>>>> upstream/master
 
   CBinderInStream *inStreamSpec = new CBinderInStream(this);
   CMyComPtr<ISequentialInStream> inStreamLoc(inStreamSpec);
@@ -108,6 +145,7 @@ HRESULT CStreamBinder::Write(const void *data, UInt32 size, UInt32 *processedSiz
 {
   if (processedSize)
     *processedSize = 0;
+<<<<<<< HEAD
   if (size != 0)
   {
     _buf = data;
@@ -123,4 +161,39 @@ HRESULT CStreamBinder::Write(const void *data, UInt32 size, UInt32 *processedSiz
       *processedSize = size;
   }
   return S_OK;
+=======
+  if (size == 0)
+    return S_OK;
+
+  if (!_readingWasClosed2)
+  {
+    _buf = data;
+    _bufSize = size;
+    _canRead_Event.Set();
+    
+    /*
+    _canWrite_Event.Lock();
+    if (_readingWasClosed)
+      _readingWasClosed2 = true;
+    */
+
+    HANDLE events[2] = { _canWrite_Event, _readingWasClosed_Event };
+    DWORD waitResult = ::WaitForMultipleObjects(2, events, FALSE, INFINITE);
+    if (waitResult >= WAIT_OBJECT_0 + 2)
+      return E_FAIL;
+
+    size -= _bufSize;
+    if (size != 0)
+    {
+      if (processedSize)
+        *processedSize = size;
+      return S_OK;
+    }
+    // if (waitResult == WAIT_OBJECT_0 + 1)
+      _readingWasClosed2 = true;
+  }
+
+  // WritingWasCut = true;
+  return k_My_HRESULT_WritingWasCut;
+>>>>>>> upstream/master
 }

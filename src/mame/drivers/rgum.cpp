@@ -14,11 +14,21 @@ The ppi at 3000-3003 seems to be a dual port communication thing with the z80.
 */
 
 #include "emu.h"
+<<<<<<< HEAD
 #include "cpu/z80/z80.h"
 #include "cpu/m6502/m65c02.h"
 #include "video/mc6845.h"
 #include "machine/i8255.h"
 #include "sound/ay8910.h"
+=======
+#include "cpu/m6502/m65c02.h"
+#include "cpu/z80/z80.h"
+#include "machine/i8255.h"
+#include "sound/ay8910.h"
+#include "video/mc6845.h"
+#include "screen.h"
+#include "speaker.h"
+>>>>>>> upstream/master
 
 
 class rgum_state : public driver_device
@@ -32,12 +42,21 @@ public:
 		m_gfxdecode(*this, "gfxdecode"),
 		m_palette(*this, "palette")  { }
 
+<<<<<<< HEAD
 	required_shared_ptr<UINT8> m_vram;
 	required_shared_ptr<UINT8> m_cram;
 	UINT8 m_hbeat;
 	DECLARE_CUSTOM_INPUT_MEMBER(rgum_heartbeat_r);
 	virtual void video_start();
 	UINT32 screen_update_royalgum(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
+=======
+	required_shared_ptr<uint8_t> m_vram;
+	required_shared_ptr<uint8_t> m_cram;
+	uint8_t m_hbeat;
+	DECLARE_CUSTOM_INPUT_MEMBER(rgum_heartbeat_r);
+	virtual void video_start() override;
+	uint32_t screen_update_royalgum(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
+>>>>>>> upstream/master
 	required_device<cpu_device> m_maincpu;
 	required_device<gfxdecode_device> m_gfxdecode;
 	required_device<palette_device> m_palette;
@@ -48,7 +67,11 @@ void rgum_state::video_start()
 {
 }
 
+<<<<<<< HEAD
 UINT32 rgum_state::screen_update_royalgum(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+=======
+uint32_t rgum_state::screen_update_royalgum(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+>>>>>>> upstream/master
 {
 	int x,y,count;
 	gfx_element *gfx = m_gfxdecode->gfx(0);
@@ -116,7 +139,11 @@ static INPUT_PORTS_START( rgum )
 	PORT_DIPNAME( 0x10, 0x10, DEF_STR( Unknown ) )
 	PORT_DIPSETTING(    0x10, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
+<<<<<<< HEAD
 	PORT_BIT( 0x20, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, rgum_state,rgum_heartbeat_r, NULL)
+=======
+	PORT_BIT( 0x20, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, rgum_state,rgum_heartbeat_r, nullptr)
+>>>>>>> upstream/master
 	PORT_DIPNAME( 0x40, 0x40, DEF_STR( Unknown ) )
 	PORT_DIPSETTING(    0x40, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
@@ -236,7 +263,11 @@ static GFXDECODE_START( rgum )
 GFXDECODE_END
 
 
+<<<<<<< HEAD
 static MACHINE_CONFIG_START( rgum, rgum_state )
+=======
+static MACHINE_CONFIG_START( rgum )
+>>>>>>> upstream/master
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", M65C02,24000000/16)      /* ? MHz */
 	MCFG_CPU_PROGRAM_MAP(rgum_map)
@@ -292,4 +323,8 @@ ROM_START( rgum )
 ROM_END
 
 
+<<<<<<< HEAD
 GAME( 199?, rgum, 0, rgum, rgum, driver_device, 0, ROT0, "<unknown>",         "Royal Gum (Italy)", MACHINE_NOT_WORKING | MACHINE_NO_SOUND )
+=======
+GAME( 199?, rgum, 0, rgum, rgum, rgum_state, 0, ROT0, "<unknown>",         "Royal Gum (Italy)", MACHINE_NOT_WORKING | MACHINE_NO_SOUND )
+>>>>>>> upstream/master

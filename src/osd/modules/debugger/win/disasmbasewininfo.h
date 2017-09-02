@@ -20,11 +20,19 @@ public:
 	disasmbasewin_info(debugger_windows_interface &debugger, bool is_main_console, LPCSTR title, WNDPROC handler);
 	virtual ~disasmbasewin_info();
 
+<<<<<<< HEAD
 	virtual bool handle_key(WPARAM wparam, LPARAM lparam);
 
 protected:
 	virtual void update_menu();
 	virtual bool handle_command(WPARAM wparam, LPARAM lparam);
+=======
+	virtual bool handle_key(WPARAM wparam, LPARAM lparam) override;
+
+protected:
+	virtual void update_menu() override;
+	virtual bool handle_command(WPARAM wparam, LPARAM lparam) override;
+>>>>>>> upstream/master
 };
 
 #endif

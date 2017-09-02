@@ -6,6 +6,10 @@
 
 **********************************************************************/
 
+<<<<<<< HEAD
+=======
+#include "emu.h"
+>>>>>>> upstream/master
 #include "exp.h"
 
 
@@ -22,7 +26,11 @@
 //  DEVICE DEFINITIONS
 //**************************************************************************
 
+<<<<<<< HEAD
 const device_type ADAM_EXPANSION_SLOT = &device_creator<adam_expansion_slot_device>;
+=======
+DEFINE_DEVICE_TYPE(ADAM_EXPANSION_SLOT, adam_expansion_slot_device, "adam_expansion_slot", "ADAM expansion slot")
+>>>>>>> upstream/master
 
 
 
@@ -51,8 +59,13 @@ device_adam_expansion_slot_card_interface::device_adam_expansion_slot_card_inter
 //  adam_expansion_slot_device - constructor
 //-------------------------------------------------
 
+<<<<<<< HEAD
 adam_expansion_slot_device::adam_expansion_slot_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock) :
 	device_t(mconfig, ADAM_EXPANSION_SLOT, "ADAM expansion slot", tag, owner, clock, "adam_expansion_slot", __FILE__),
+=======
+adam_expansion_slot_device::adam_expansion_slot_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock) :
+	device_t(mconfig, ADAM_EXPANSION_SLOT, tag, owner, clock),
+>>>>>>> upstream/master
 	device_slot_interface(mconfig, *this),
 	device_image_interface(mconfig, *this),
 	m_write_irq(*this), m_card(nullptr)
@@ -86,6 +99,7 @@ void adam_expansion_slot_device::device_reset()
 //  call_load -
 //-------------------------------------------------
 
+<<<<<<< HEAD
 bool adam_expansion_slot_device::call_load()
 {
 	if (m_card)
@@ -93,6 +107,15 @@ bool adam_expansion_slot_device::call_load()
 		size_t size = 0;
 
 		if (software_entry() == NULL)
+=======
+image_init_result adam_expansion_slot_device::call_load()
+{
+	if (m_card)
+	{
+		size_t size;
+
+		if (!loaded_through_softlist())
+>>>>>>> upstream/master
 		{
 			size = length();
 
@@ -104,6 +127,7 @@ bool adam_expansion_slot_device::call_load()
 		}
 	}
 
+<<<<<<< HEAD
 	return IMAGE_INIT_PASS;
 }
 
@@ -117,6 +141,9 @@ bool adam_expansion_slot_device::call_softlist_load(software_list_device &swlist
 	load_software_part_region(*this, swlist, swname, start_entry);
 
 	return true;
+=======
+	return image_init_result::PASS;
+>>>>>>> upstream/master
 }
 
 
@@ -124,9 +151,15 @@ bool adam_expansion_slot_device::call_softlist_load(software_list_device &swlist
 //  get_default_card_software -
 //-------------------------------------------------
 
+<<<<<<< HEAD
 void adam_expansion_slot_device::get_default_card_software(std::string &result)
 {
 	software_get_default_slot(result, "standard");
+=======
+std::string adam_expansion_slot_device::get_default_card_software(get_default_card_software_hook &hook) const
+{
+	return software_get_default_slot("standard");
+>>>>>>> upstream/master
 }
 
 
@@ -134,9 +167,15 @@ void adam_expansion_slot_device::get_default_card_software(std::string &result)
 //  bd_r - buffered data read
 //-------------------------------------------------
 
+<<<<<<< HEAD
 UINT8 adam_expansion_slot_device::bd_r(address_space &space, offs_t offset, UINT8 data, int bmreq, int biorq, int aux_rom_cs, int cas1, int cas2)
 {
 	if (m_card != NULL)
+=======
+uint8_t adam_expansion_slot_device::bd_r(address_space &space, offs_t offset, uint8_t data, int bmreq, int biorq, int aux_rom_cs, int cas1, int cas2)
+{
+	if (m_card != nullptr)
+>>>>>>> upstream/master
 	{
 		data = m_card->adam_bd_r(space, offset, data, bmreq, biorq, aux_rom_cs, cas1, cas2);
 	}
@@ -149,9 +188,15 @@ UINT8 adam_expansion_slot_device::bd_r(address_space &space, offs_t offset, UINT
 //  cd_w - cartridge data write
 //-------------------------------------------------
 
+<<<<<<< HEAD
 void adam_expansion_slot_device::bd_w(address_space &space, offs_t offset, UINT8 data, int bmreq, int biorq, int aux_rom_cs, int cas1, int cas2)
 {
 	if (m_card != NULL)
+=======
+void adam_expansion_slot_device::bd_w(address_space &space, offs_t offset, uint8_t data, int bmreq, int biorq, int aux_rom_cs, int cas1, int cas2)
+{
+	if (m_card != nullptr)
+>>>>>>> upstream/master
 	{
 		m_card->adam_bd_w(space, offset, data, bmreq, biorq, aux_rom_cs, cas1, cas2);
 	}

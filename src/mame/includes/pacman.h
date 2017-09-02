@@ -1,5 +1,9 @@
 // license:BSD-3-Clause
 // copyright-holders:Nicola Salmoria
+<<<<<<< HEAD
+=======
+#include "machine/watchdog.h"
+>>>>>>> upstream/master
 #include "sound/namco.h"
 
 /*************************************************************************
@@ -15,6 +19,10 @@ public:
 		: driver_device(mconfig, type, tag),
 		m_maincpu(*this, "maincpu"),
 		m_namco_sound(*this, "namco"),
+<<<<<<< HEAD
+=======
+		m_watchdog(*this, "watchdog"),
+>>>>>>> upstream/master
 		m_spriteram(*this, "spriteram"),
 		m_spriteram2(*this, "spriteram2"),
 		m_s2650_spriteram(*this, "s2650_spriteram"),
@@ -29,6 +37,7 @@ public:
 
 	required_device<cpu_device> m_maincpu;
 	optional_device<namco_device> m_namco_sound;
+<<<<<<< HEAD
 	optional_shared_ptr<UINT8> m_spriteram;
 	optional_shared_ptr<UINT8> m_spriteram2;
 	optional_shared_ptr<UINT8> m_s2650_spriteram;
@@ -55,13 +64,49 @@ public:
 	int m_xoffsethack;
 	UINT8 m_inv_spr;
 	UINT8 m_irq_mask;
+=======
+	required_device<watchdog_timer_device> m_watchdog;
+	optional_shared_ptr<uint8_t> m_spriteram;
+	optional_shared_ptr<uint8_t> m_spriteram2;
+	optional_shared_ptr<uint8_t> m_s2650_spriteram;
+	required_shared_ptr<uint8_t> m_videoram;
+	optional_shared_ptr<uint8_t> m_colorram;
+	optional_shared_ptr<uint8_t> m_s2650games_tileram;
+	optional_shared_ptr<uint8_t> m_rocktrv2_prot_data;
+	required_device<gfxdecode_device> m_gfxdecode;
+	required_device<palette_device> m_palette;
+	optional_shared_ptr<uint8_t> m_patched_opcodes;
+
+	uint8_t m_cannonb_bit_to_read;
+	int m_mystery;
+	uint8_t m_counter;
+	int m_bigbucks_bank;
+	uint8_t m_rocktrv2_question_bank;
+	tilemap_t *m_bg_tilemap;
+	uint8_t m_charbank;
+	uint8_t m_spritebank;
+	uint8_t m_palettebank;
+	uint8_t m_colortablebank;
+	uint8_t m_flipscreen;
+	uint8_t m_bgpriority;
+	int m_xoffsethack;
+	uint8_t m_inv_spr;
+	uint8_t m_irq_mask;
+>>>>>>> upstream/master
 
 	DECLARE_WRITE8_MEMBER(pacman_interrupt_vector_w);
 	DECLARE_WRITE8_MEMBER(piranha_interrupt_vector_w);
 	DECLARE_WRITE8_MEMBER(nmouse_interrupt_vector_w);
+<<<<<<< HEAD
 	DECLARE_WRITE8_MEMBER(pacman_leds_w);
 	DECLARE_WRITE8_MEMBER(pacman_coin_counter_w);
 	DECLARE_WRITE8_MEMBER(pacman_coin_lockout_global_w);
+=======
+	DECLARE_WRITE_LINE_MEMBER(led1_w);
+	DECLARE_WRITE_LINE_MEMBER(led2_w);
+	DECLARE_WRITE_LINE_MEMBER(coin_counter_w);
+	DECLARE_WRITE_LINE_MEMBER(coin_lockout_global_w);
+>>>>>>> upstream/master
 	DECLARE_WRITE8_MEMBER(alibaba_sound_w);
 	DECLARE_READ8_MEMBER(alibaba_mystery_1_r);
 	DECLARE_READ8_MEMBER(alibaba_mystery_2_r);
@@ -94,24 +139,42 @@ public:
 	DECLARE_WRITE8_MEMBER(mspacman_disable_decode_w);
 	DECLARE_READ8_MEMBER(mspacman_enable_decode_r_0x3ff8);
 	DECLARE_WRITE8_MEMBER(mspacman_enable_decode_w);
+<<<<<<< HEAD
 	DECLARE_WRITE8_MEMBER(irq_mask_w);
+=======
+	DECLARE_WRITE_LINE_MEMBER(irq_mask_w);
+>>>>>>> upstream/master
 	DECLARE_READ8_MEMBER(mspacii_protection_r);
 	DECLARE_READ8_MEMBER(cannonbp_protection_r);
 	DECLARE_WRITE8_MEMBER(pacman_videoram_w);
 	DECLARE_WRITE8_MEMBER(pacman_colorram_w);
+<<<<<<< HEAD
 	DECLARE_WRITE8_MEMBER(pacman_flipscreen_w);
 	DECLARE_WRITE8_MEMBER(pengo_palettebank_w);
 	DECLARE_WRITE8_MEMBER(pengo_colortablebank_w);
 	DECLARE_WRITE8_MEMBER(pengo_gfxbank_w);
+=======
+	DECLARE_WRITE_LINE_MEMBER(flipscreen_w);
+	DECLARE_WRITE_LINE_MEMBER(pengo_palettebank_w);
+	DECLARE_WRITE_LINE_MEMBER(pengo_colortablebank_w);
+	DECLARE_WRITE_LINE_MEMBER(pengo_gfxbank_w);
+>>>>>>> upstream/master
 	DECLARE_WRITE8_MEMBER(s2650games_videoram_w);
 	DECLARE_WRITE8_MEMBER(s2650games_colorram_w);
 	DECLARE_WRITE8_MEMBER(s2650games_scroll_w);
 	DECLARE_WRITE8_MEMBER(s2650games_tilesbank_w);
 	DECLARE_WRITE8_MEMBER(jrpacman_videoram_w);
+<<<<<<< HEAD
 	DECLARE_WRITE8_MEMBER(jrpacman_charbank_w);
 	DECLARE_WRITE8_MEMBER(jrpacman_spritebank_w);
 	DECLARE_WRITE8_MEMBER(jrpacman_scroll_w);
 	DECLARE_WRITE8_MEMBER(jrpacman_bgpriority_w);
+=======
+	DECLARE_WRITE_LINE_MEMBER(jrpacman_charbank_w);
+	DECLARE_WRITE_LINE_MEMBER(jrpacman_spritebank_w);
+	DECLARE_WRITE8_MEMBER(jrpacman_scroll_w);
+	DECLARE_WRITE_LINE_MEMBER(jrpacman_bgpriority_w);
+>>>>>>> upstream/master
 	DECLARE_WRITE8_MEMBER(superabc_bank_w);
 	DECLARE_DRIVER_INIT(maketrax);
 	DECLARE_DRIVER_INIT(drivfrcp);
@@ -143,8 +206,13 @@ public:
 	DECLARE_MACHINE_RESET(superabc);
 	DECLARE_VIDEO_START(pengo);
 	DECLARE_VIDEO_START(jrpacman);
+<<<<<<< HEAD
 	UINT32 screen_update_pacman(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
 	UINT32 screen_update_s2650games(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
+=======
+	uint32_t screen_update_pacman(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
+	uint32_t screen_update_s2650games(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
+>>>>>>> upstream/master
 	INTERRUPT_GEN_MEMBER(vblank_irq);
 	INTERRUPT_GEN_MEMBER(vblank_nmi);
 	INTERRUPT_GEN_MEMBER(s2650_interrupt);
@@ -152,6 +220,7 @@ public:
 	void jrpacman_mark_tile_dirty( int offset );
 	void maketrax_rom_decode();
 	void korosuke_rom_decode();
+<<<<<<< HEAD
 	void eyes_decode(UINT8 *data);
 	void mspacman_install_patches(UINT8 *ROM);
 
@@ -180,4 +249,25 @@ public:
 	DECLARE_READ8_MEMBER(acitya_decrypt_rom);
 	DECLARE_MACHINE_START(acitya);
 	DECLARE_MACHINE_RESET(acitya);
+=======
+	void eyes_decode(uint8_t *data);
+	void mspacman_install_patches(uint8_t *ROM);
+
+	// epos.c
+	DECLARE_READ8_MEMBER(epos_decryption_w);
+	DECLARE_MACHINE_START(theglobp);
+	DECLARE_MACHINE_RESET(theglobp);
+	DECLARE_MACHINE_START(eeekk);
+	DECLARE_MACHINE_RESET(eeekk);
+	DECLARE_MACHINE_START(acitya);
+	DECLARE_MACHINE_RESET(acitya);
+
+	// pacplus.c
+	uint8_t pacplus_decrypt(int addr, uint8_t e);
+	void pacplus_decode();
+
+	// jumpshot.c
+	uint8_t jumpshot_decrypt(int addr, uint8_t e);
+	void jumpshot_decode();
+>>>>>>> upstream/master
 };

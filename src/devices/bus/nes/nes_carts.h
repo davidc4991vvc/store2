@@ -6,6 +6,7 @@
 
 **********************************************************************/
 
+<<<<<<< HEAD
 #pragma once
 
 #ifndef __NES_CARTS_H__
@@ -64,10 +65,20 @@
 #include "multigame.h"
 #include "pirate.h"
 #include "mmc3_clones.h"
+=======
+#ifndef MAME_BUS_NES_NES_CARTS_H
+#define MAME_BUS_NES_NES_CARTS_H
+
+#pragma once
+>>>>>>> upstream/master
 
 
 // supported devices
 SLOT_INTERFACE_EXTERN(nes_cart);
 SLOT_INTERFACE_EXTERN(disksys_only);
 
+<<<<<<< HEAD
 #endif // __NES_CARTS_H__
+=======
+#endif // MAME_BUS_NES_NES_CARTS_H
+>>>>>>> upstream/master

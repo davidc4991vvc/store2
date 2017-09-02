@@ -23,8 +23,14 @@ Todo:
 
 #include "emu.h"
 #include "cpu/z80/z80.h"
+<<<<<<< HEAD
 #include "render.h"
 #include "machine/ldv1000.h"
+=======
+#include "machine/ldv1000.h"
+#include "render.h"
+#include "speaker.h"
+>>>>>>> upstream/master
 
 
 class istellar_state : public driver_device
@@ -42,12 +48,21 @@ public:
 		m_palette(*this, "palette")  { }
 
 	required_device<pioneer_ldv1000_device> m_laserdisc;
+<<<<<<< HEAD
 	required_shared_ptr<UINT8> m_tile_ram;
 	required_shared_ptr<UINT8> m_tile_control_ram;
 	required_shared_ptr<UINT8> m_sprite_ram;
 	UINT8 m_ldp_latch1;
 	UINT8 m_ldp_latch2;
 	UINT8 m_z80_2_nmi_enable;
+=======
+	required_shared_ptr<uint8_t> m_tile_ram;
+	required_shared_ptr<uint8_t> m_tile_control_ram;
+	required_shared_ptr<uint8_t> m_sprite_ram;
+	uint8_t m_ldp_latch1;
+	uint8_t m_ldp_latch2;
+	uint8_t m_z80_2_nmi_enable;
+>>>>>>> upstream/master
 	DECLARE_READ8_MEMBER(z80_0_latch1_read);
 	DECLARE_WRITE8_MEMBER(z80_0_latch2_write);
 	DECLARE_READ8_MEMBER(z80_2_ldp_read);
@@ -57,9 +72,14 @@ public:
 	DECLARE_WRITE8_MEMBER(z80_2_latch1_write);
 	DECLARE_WRITE8_MEMBER(z80_2_ldp_write);
 	DECLARE_DRIVER_INIT(istellar);
+<<<<<<< HEAD
 	virtual void machine_start();
 	DECLARE_PALETTE_INIT(istellar);
 	UINT32 screen_update_istellar(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect);
+=======
+	virtual void machine_start() override;
+	uint32_t screen_update_istellar(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect);
+>>>>>>> upstream/master
 	INTERRUPT_GEN_MEMBER(vblank_callback_istellar);
 	required_device<cpu_device> m_maincpu;
 	required_device<cpu_device> m_subcpu;
@@ -73,7 +93,11 @@ public:
 
 
 /* VIDEO GOODS */
+<<<<<<< HEAD
 UINT32 istellar_state::screen_update_istellar(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect)
+=======
+uint32_t istellar_state::screen_update_istellar(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect)
+>>>>>>> upstream/master
 {
 	int x, y;
 
@@ -134,7 +158,11 @@ WRITE8_MEMBER(istellar_state::z80_0_latch2_write)
 /* Z80 2 R/W */
 READ8_MEMBER(istellar_state::z80_2_ldp_read)
 {
+<<<<<<< HEAD
 	UINT8 readResult = m_laserdisc->status_r();
+=======
+	uint8_t readResult = m_laserdisc->status_r();
+>>>>>>> upstream/master
 	logerror("CPU2 : reading LDP : %x\n", readResult);
 	return readResult;
 }
@@ -275,6 +303,7 @@ static INPUT_PORTS_START( istellar )
 	/* SERVICE might be hanging out back here */
 INPUT_PORTS_END
 
+<<<<<<< HEAD
 PALETTE_INIT_MEMBER(istellar_state, istellar)
 {
 	const UINT8 *color_prom = memregion("proms")->base();
@@ -312,6 +341,8 @@ PALETTE_INIT_MEMBER(istellar_state, istellar)
 	}
 }
 
+=======
+>>>>>>> upstream/master
 static const gfx_layout istellar_gfx_layout =
 {
 	8,8,
@@ -338,7 +369,11 @@ INTERRUPT_GEN_MEMBER(istellar_state::vblank_callback_istellar)
 
 
 /* DRIVER */
+<<<<<<< HEAD
 static MACHINE_CONFIG_START( istellar, istellar_state )
+=======
+static MACHINE_CONFIG_START( istellar )
+>>>>>>> upstream/master
 	/* main cpu */
 	MCFG_CPU_ADD("maincpu", Z80, GUESSED_CLOCK)
 	MCFG_CPU_PROGRAM_MAP(z80_0_mem)
@@ -363,8 +398,13 @@ static MACHINE_CONFIG_START( istellar, istellar_state )
 	/* video hardware */
 	MCFG_LASERDISC_SCREEN_ADD_NTSC("screen", "laserdisc")
 
+<<<<<<< HEAD
 	MCFG_PALETTE_ADD("palette", 256)
 	MCFG_PALETTE_INIT_OWNER(istellar_state, istellar)
+=======
+	// Daphne says "TODO: get the real interstellar resistor values"
+	MCFG_PALETTE_ADD_RRRRGGGGBBBB_PROMS("palette", "proms", 256)
+>>>>>>> upstream/master
 
 	MCFG_GFXDECODE_ADD("gfxdecode", "palette", istellar)
 
@@ -418,7 +458,11 @@ DRIVER_INIT_MEMBER(istellar_state,istellar)
 
 	#if 0
 	{
+<<<<<<< HEAD
 		UINT8 *ROM = memregion("maincpu")->base();
+=======
+		uint8_t *ROM = memregion("maincpu")->base();
+>>>>>>> upstream/master
 
 		ROM[0x4465] = 0x00;
 		ROM[0x4466] = 0x00;
@@ -433,5 +477,10 @@ DRIVER_INIT_MEMBER(istellar_state,istellar)
 	#endif
 }
 
+<<<<<<< HEAD
 /*    YEAR  NAME    PARENT   MACHINE  INPUT    INIT    MONITOR  COMPANY          FULLNAME                       FLAGS) */
 GAME( 1983, istellar, 0,       istellar,  istellar, istellar_state,  istellar, ROT0,    "Funai/Gakken",  "Interstellar Laser Fantasy",  MACHINE_NOT_WORKING|MACHINE_NO_SOUND)
+=======
+//    YEAR  NAME      PARENT   MACHINE    INPUT     STATE            INIT      MONITOR  COMPANY          FULLNAME                       FLAGS)
+GAME( 1983, istellar, 0,       istellar,  istellar, istellar_state,  istellar, ROT0,    "Funai/Gakken",  "Interstellar Laser Fantasy",  MACHINE_NOT_WORKING | MACHINE_NO_SOUND)
+>>>>>>> upstream/master

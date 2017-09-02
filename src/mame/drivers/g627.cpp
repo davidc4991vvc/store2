@@ -39,10 +39,21 @@ ToDo:
 *******************************************************************************/
 
 
+<<<<<<< HEAD
 #include "machine/genpin.h"
 #include "cpu/z80/z80.h"
 #include "machine/i8155.h"
 #include "sound/astrocde.h"
+=======
+#include "emu.h"
+#include "cpu/z80/z80.h"
+#include "machine/genpin.h"
+#include "machine/i8155.h"
+#include "sound/astrocde.h"
+#include "screen.h"
+#include "speaker.h"
+
+>>>>>>> upstream/master
 #include "g627.lh"
 
 
@@ -52,8 +63,13 @@ public:
 	g627_state(const machine_config &mconfig, device_type type, const char *tag)
 		: genpin_class(mconfig, type, tag)
 		, m_maincpu(*this, "maincpu")
+<<<<<<< HEAD
 		, m_switch(*this, "SWITCH")
 		, m_testipt(*this, "TEST")
+=======
+		, m_switch(*this, "SWITCH.%u", 0)
+		, m_testipt(*this, "TEST.%u", 0)
+>>>>>>> upstream/master
 	{ }
 
 	DECLARE_DRIVER_INIT(v115);
@@ -64,9 +80,15 @@ public:
 	DECLARE_WRITE8_MEMBER(disp_w);
 	DECLARE_WRITE8_MEMBER(lamp_w);
 private:
+<<<<<<< HEAD
 	UINT8 m_seg[6];
 	UINT8 m_portc;
 	UINT8 m_motor;
+=======
+	uint8_t m_seg[6];
+	uint8_t m_portc;
+	uint8_t m_motor;
+>>>>>>> upstream/master
 	bool m_type;
 	required_device<cpu_device> m_maincpu;
 	required_ioport_array<7> m_switch;
@@ -205,29 +227,49 @@ WRITE8_MEMBER( g627_state::portc_w )
 	m_portc = data;
 	if ((m_type) && (data < 6))
 	{
+<<<<<<< HEAD
 		output_set_digit_value(data, m_seg[0]);
 		output_set_digit_value(10 + data, m_seg[1]);
 		output_set_digit_value(20 + data, m_seg[2]);
 		output_set_digit_value(30 + data, m_seg[3]);
 		output_set_digit_value(50 + data, m_seg[5]);
+=======
+		output().set_digit_value(data, m_seg[0]);
+		output().set_digit_value(10 + data, m_seg[1]);
+		output().set_digit_value(20 + data, m_seg[2]);
+		output().set_digit_value(30 + data, m_seg[3]);
+		output().set_digit_value(50 + data, m_seg[5]);
+>>>>>>> upstream/master
 	}
 	else
 	if ((!m_type) && (data))
 	{
 		data--;
 
+<<<<<<< HEAD
 		output_set_digit_value(data, m_seg[0]);
 		output_set_digit_value(10 + data, m_seg[1]);
 		output_set_digit_value(20 + data, m_seg[2]);
 		output_set_digit_value(30 + data, m_seg[3]);
 		output_set_digit_value(50 + data, m_seg[5]);
+=======
+		output().set_digit_value(data, m_seg[0]);
+		output().set_digit_value(10 + data, m_seg[1]);
+		output().set_digit_value(20 + data, m_seg[2]);
+		output().set_digit_value(30 + data, m_seg[3]);
+		output().set_digit_value(50 + data, m_seg[5]);
+>>>>>>> upstream/master
 	}
 }
 
 // save segments until we can write the digits
 WRITE8_MEMBER( g627_state::disp_w )
 {
+<<<<<<< HEAD
 	static const UINT8 patterns[16] = { 0x3f,0x06,0x5b,0x4f,0x66,0x6d,0x7c,0x07,0x7f,0x67,0x58,0x4c,0x62,0x69,0x78,0 }; // 7448
+=======
+	static const uint8_t patterns[16] = { 0x3f,0x06,0x5b,0x4f,0x66,0x6d,0x7c,0x07,0x7f,0x67,0x58,0x4c,0x62,0x69,0x78,0 }; // 7448
+>>>>>>> upstream/master
 	offset <<= 1;
 	m_seg[offset] = patterns[data>>4];
 	m_seg[++offset] = patterns[data&15];
@@ -254,7 +296,11 @@ WRITE8_MEMBER( g627_state::lamp_w )
 
  */
 
+<<<<<<< HEAD
 	UINT16 solenoid = (offset << 8) | data;
+=======
+	uint16_t solenoid = (offset << 8) | data;
+>>>>>>> upstream/master
 	switch (solenoid)
 	{
 		case 0x0101:
@@ -282,7 +328,11 @@ WRITE8_MEMBER( g627_state::lamp_w )
 	}
 }
 
+<<<<<<< HEAD
 static MACHINE_CONFIG_START( g627, g627_state )
+=======
+static MACHINE_CONFIG_START( g627 )
+>>>>>>> upstream/master
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", Z80, 14138000/8)
 	MCFG_CPU_PROGRAM_MAP(g627_map)
@@ -330,6 +380,12 @@ ROM_START(rota_101)
 	ROM_LOAD("v101-c.bin", 0x1000, 0x0800, CRC(c7e85638) SHA1(b59805d8b558ab8f5ea5b4b9261e862afca4b9d3))
 ROM_END
 
+<<<<<<< HEAD
 GAME(1978,  rotation,  0,         g627,  g627, g627_state, v117,  ROT0,  "Midway", "Rotation VIII (v. 1.17)", MACHINE_MECHANICAL )
 GAME(1978,  rota_115,  rotation,  g627,  g627, g627_state, v115,  ROT0,  "Midway", "Rotation VIII (v. 1.15)", MACHINE_MECHANICAL )
 GAME(1978,  rota_101,  rotation,  g627,  g627, g627_state, v115,  ROT0,  "Midway", "Rotation VIII (v. 1.01)", MACHINE_MECHANICAL )
+=======
+GAME(1978,  rotation,  0,         g627,  g627, g627_state, v117,  ROT0,  "Midway", "Rotation VIII (v. 1.17)", MACHINE_MECHANICAL | MACHINE_NOT_WORKING )
+GAME(1978,  rota_115,  rotation,  g627,  g627, g627_state, v115,  ROT0,  "Midway", "Rotation VIII (v. 1.15)", MACHINE_MECHANICAL | MACHINE_NOT_WORKING )
+GAME(1978,  rota_101,  rotation,  g627,  g627, g627_state, v115,  ROT0,  "Midway", "Rotation VIII (v. 1.01)", MACHINE_MECHANICAL | MACHINE_NOT_WORKING )
+>>>>>>> upstream/master

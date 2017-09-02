@@ -3,7 +3,14 @@
 
 /* Williams WPC Dot Matrix */
 
+<<<<<<< HEAD
 #include "includes/wpc_pin.h"
+=======
+#include "emu.h"
+#include "includes/wpc_dot.h"
+#include "screen.h"
+#include "speaker.h"
+>>>>>>> upstream/master
 
 
 static ADDRESS_MAP_START( wpc_dot_map, AS_PROGRAM, 8, wpc_dot_state )
@@ -160,8 +167,13 @@ void wpc_dot_state::machine_reset()
 
 DRIVER_INIT_MEMBER(wpc_dot_state,wpc_dot)
 {
+<<<<<<< HEAD
 	UINT8 *fixed = memregion("code")->base();
 	UINT32 codeoff = memregion("code")->bytes() - 0x8000;
+=======
+	uint8_t *fixed = memregion("code")->base();
+	uint32_t codeoff = memregion("code")->bytes() - 0x8000;
+>>>>>>> upstream/master
 	m_cpubank->configure_entries(0, 64, &fixed[0], 0x4000);
 	m_cpubank->set_entry(0);
 	m_fixedbank->configure_entries(0, 1, &fixed[codeoff],0x8000);
@@ -209,7 +221,11 @@ WRITE8_MEMBER(wpc_dot_state::wpc_rombank_w)
 
 WRITE8_MEMBER(wpc_dot_state::wpc_dmdbank_w)
 {
+<<<<<<< HEAD
 	UINT8 page = offset >> 4;
+=======
+	uint8_t page = offset >> 4;
+>>>>>>> upstream/master
 
 	switch(offset & 0x07)
 	{
@@ -273,11 +289,19 @@ WRITE8_MEMBER(wpc_dot_state::wpc_sound_data_w)
 	m_wpcsnd->data_w(data);
 }
 
+<<<<<<< HEAD
 UINT32 wpc_dot_state::screen_update(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect)
 {
 	UINT8 x,y,bit;
 	UINT32 offset = (m_wpc->get_visible_page() * 0x200);
 	UINT32 col;
+=======
+uint32_t wpc_dot_state::screen_update(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect)
+{
+	uint8_t x,y,bit;
+	uint32_t offset = (m_wpc->get_visible_page() * 0x200);
+	uint32_t col;
+>>>>>>> upstream/master
 
 	for(y=0;y<32;y++)  // scanline
 	{
@@ -298,7 +322,11 @@ UINT32 wpc_dot_state::screen_update(screen_device &screen, bitmap_rgb32 &bitmap,
 	return 0;
 }
 
+<<<<<<< HEAD
 static MACHINE_CONFIG_START( wpc_dot, wpc_dot_state )
+=======
+static MACHINE_CONFIG_START( wpc_dot )
+>>>>>>> upstream/master
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", M6809, 2000000)
 	MCFG_CPU_PROGRAM_MAP(wpc_dot_map)
@@ -311,8 +339,16 @@ static MACHINE_CONFIG_START( wpc_dot, wpc_dot_state )
 	MCFG_WPC_SOUND_DATA(READ8(wpc_dot_state,wpc_sound_data_r),WRITE8(wpc_dot_state,wpc_sound_data_w))
 	MCFG_WPC_DMDBANK(WRITE8(wpc_dot_state,wpc_dmdbank_w))
 
+<<<<<<< HEAD
 	MCFG_WMS_WPC_SOUND_ADD("wpcsnd",":sound1")
 	MCFG_WPC_SOUND_REPLY_CALLBACK(WRITELINE(wpc_dot_state,wpcsnd_reply_w))
+=======
+	MCFG_SPEAKER_STANDARD_MONO("speaker")
+	MCFG_SOUND_ADD("wpcsnd", WPCSND, 0)
+	MCFG_WPC_ROM_REGION(":sound1")
+	MCFG_WPC_SOUND_REPLY_CALLBACK(WRITELINE(wpc_dot_state,wpcsnd_reply_w))
+	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "speaker", 1.0)
+>>>>>>> upstream/master
 
 	MCFG_DEFAULT_LAYOUT(layout_lcd)
 

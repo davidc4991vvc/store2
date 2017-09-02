@@ -1,11 +1,20 @@
+<<<<<<< HEAD
 // license:???
 // copyright-holders:John Butler, Ed Mueller, Aaron Giles
+=======
+// license:BSD-3-Clause
+// copyright-holders:Aaron Giles, Zsolt Vasvari
+// thanks-to: John Butler, Ed Mueller
+>>>>>>> upstream/master
 /***************************************************************************
 
     Taito Qix hardware
 
+<<<<<<< HEAD
     driver by John Butler, Ed Mueller, Aaron Giles
 
+=======
+>>>>>>> upstream/master
     Games supported:
         * Qix (3 sets)
         * Qix II Tournament
@@ -231,10 +240,16 @@ Interrupts:
 ***************************************************************************/
 
 #include "emu.h"
+<<<<<<< HEAD
 #include "cpu/m6805/m6805.h"
 #include "rendlay.h"
 #include "includes/qix.h"
 #include "cpu/m6809/m6809.h"
+=======
+#include "includes/qix.h"
+
+#include "rendlay.h"
+>>>>>>> upstream/master
 #include "machine/nvram.h"
 
 #include "elecyoyo.lh"
@@ -293,6 +308,7 @@ ADDRESS_MAP_END
 
 /*************************************
  *
+<<<<<<< HEAD
  *  Coin CPU memory handlers
  *
  *************************************/
@@ -311,15 +327,24 @@ ADDRESS_MAP_END
 
 /*************************************
  *
+=======
+>>>>>>> upstream/master
  *  Input port definitions
  *
  *************************************/
 
 #define COIN_PORT \
+<<<<<<< HEAD
 	PORT_BIT(0x01, IP_ACTIVE_LOW, IPT_SERVICE ) PORT_NAME("Test Advance") PORT_CODE(KEYCODE_F1) \
 	PORT_BIT(0x02, IP_ACTIVE_LOW, IPT_SERVICE ) PORT_NAME("Test Next line") PORT_CODE(KEYCODE_F2) \
 	PORT_BIT(0x04, IP_ACTIVE_LOW, IPT_SERVICE ) PORT_NAME("Test Slew Up") PORT_CODE(KEYCODE_F5) \
 	PORT_BIT(0x08, IP_ACTIVE_LOW, IPT_SERVICE ) PORT_NAME("Test Slew Down") PORT_CODE(KEYCODE_F6) \
+=======
+	PORT_BIT(0x01, IP_ACTIVE_LOW, IPT_SERVICE1 ) PORT_NAME("Test Advance") \
+	PORT_BIT(0x02, IP_ACTIVE_LOW, IPT_SERVICE2 ) PORT_NAME("Test Next line") \
+	PORT_BIT(0x04, IP_ACTIVE_LOW, IPT_SERVICE3 ) PORT_NAME("Test Slew Up") \
+	PORT_BIT(0x08, IP_ACTIVE_LOW, IPT_SERVICE4 ) PORT_NAME("Test Slew Down") \
+>>>>>>> upstream/master
 	PORT_BIT( 0x10, IP_ACTIVE_LOW, IPT_COIN1 ) \
 	PORT_BIT( 0x20, IP_ACTIVE_LOW, IPT_COIN2 ) \
 	PORT_BIT( 0x40, IP_ACTIVE_LOW, IPT_COIN3 ) \
@@ -618,7 +643,11 @@ INPUT_PORTS_END
 
 ***************************************************************************/
 
+<<<<<<< HEAD
 static MACHINE_CONFIG_START( qix_base, qix_state )
+=======
+static MACHINE_CONFIG_START( qix_base )
+>>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", M6809, MAIN_CLOCK_OSC/4/4)  /* 1.25 MHz */
@@ -670,8 +699,16 @@ static MACHINE_CONFIG_DERIVED( mcu, qix )
 
 	/* basic machine hardware */
 
+<<<<<<< HEAD
 	MCFG_CPU_ADD("mcu", M68705, COIN_CLOCK_OSC) /* 1.00 MHz */
 	MCFG_CPU_PROGRAM_MAP(mcu_map)
+=======
+	MCFG_CPU_ADD("mcu", M68705P3, COIN_CLOCK_OSC) /* 1.00 MHz */
+	MCFG_M68705_PORTB_R_CB(READ8(qix_state, qix_68705_portB_r))
+	MCFG_M68705_PORTC_R_CB(READ8(qix_state, qix_68705_portC_r))
+	MCFG_M68705_PORTA_W_CB(WRITE8(qix_state, qix_68705_portA_w))
+	MCFG_M68705_PORTB_W_CB(WRITE8(qix_state, qix_68705_portB_w))
+>>>>>>> upstream/master
 
 	MCFG_MACHINE_START_OVERRIDE(qix_state,qixmcu)
 
@@ -714,12 +751,20 @@ static MACHINE_CONFIG_DERIVED( slither, qix_base )
 	MCFG_DEVICE_MODIFY("pia1")
 	MCFG_PIA_READPA_HANDLER(READ8(qix_state, slither_trak_lr_r))
 	MCFG_PIA_WRITEPB_HANDLER(WRITE8(qix_state, slither_76489_0_w))
+<<<<<<< HEAD
 	MCFG_PIA_READPB_HANDLER(NULL)
+=======
+	MCFG_PIA_READPB_HANDLER(NOOP)
+>>>>>>> upstream/master
 
 	MCFG_DEVICE_MODIFY("pia2")
 	MCFG_PIA_READPA_HANDLER(READ8(qix_state, slither_trak_ud_r))
 	MCFG_PIA_WRITEPB_HANDLER(WRITE8(qix_state, slither_76489_1_w))
+<<<<<<< HEAD
 	MCFG_PIA_READPB_HANDLER(NULL)
+=======
+	MCFG_PIA_READPB_HANDLER(NOOP)
+>>>>>>> upstream/master
 
 	/* video hardware */
 	MCFG_FRAGMENT_ADD(slither_video)
@@ -883,6 +928,27 @@ ROM_START( sdungeon )
 	ROM_LOAD( "sd101",    0x0000, 0x0800, CRC(e255af9a) SHA1(2410d3b7dec8e72a93d71c824c9403a6d96b9e8c) )
 ROM_END
 
+<<<<<<< HEAD
+=======
+// same as above but uses larger ROMs
+ROM_START( sdungeona )
+	ROM_REGION( 0x10000, "maincpu", 0 )
+	ROM_LOAD( "1514.1J", 0xa000, 0x2000, CRC(8fe3e3c6) SHA1(f60acf7d2096a17726e89fee532fc68218657269) )
+	ROM_LOAD( "1716.1K", 0xc000, 0x2000, CRC(9976fe14) SHA1(759e966abaa3dd458c3d3f9ce5ef6abfec196d28) )
+	ROM_LOAD( "1819.1L", 0xe000, 0x2000, CRC(d56a40b0) SHA1(5b98e99938b6a394abca336995959cd97a55ddf7) )
+
+	ROM_REGION( 0x10000, "videocpu", 0 )
+	ROM_LOAD("65.1H",    0xa000, 0x2000, CRC(4b567837) SHA1(985e75829779cac366e57996016e5f949e1202c7) )
+	ROM_LOAD("87.1F",    0xc000, 0x2000, CRC(9298778b) SHA1(26c4dfd932e55e2525e46be8f58f26c67970d2bd) )
+	ROM_LOAD("109.1E",   0xe000, 0x2000, CRC(7437a6f1) SHA1(232fefb28c55338e5f3fed213ee94f44816241a0) )
+
+	ROM_REGION( 0x10000, "audiocpu", 0 )
+	ROM_LOAD( "2627.2D", 0xf000, 0x1000, CRC(1f830dff) SHA1(05b99d941d8fa53a4a9f9eb82e31d493d21d0f6f) )
+
+	ROM_REGION( 0x0800, "mcu", 0 )
+	ROM_LOAD( "sd101",   0x0000, 0x0800, CRC(e255af9a) SHA1(2410d3b7dec8e72a93d71c824c9403a6d96b9e8c) )
+ROM_END
+>>>>>>> upstream/master
 
 ROM_START( elecyoyo )
 	ROM_REGION( 0x10000, "maincpu", 0 )
@@ -1168,7 +1234,11 @@ ROM_END
  *************************************/
 
 // 99 means the value is unknown
+<<<<<<< HEAD
 static const UINT8 xor1_table[] =
+=======
+static const uint8_t xor1_table[] =
+>>>>>>> upstream/master
 {
 	99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,
 	99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,
@@ -1236,7 +1306,11 @@ static const UINT8 xor1_table[] =
 	99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,
 };
 
+<<<<<<< HEAD
 static const UINT8 xor2_table[] =
+=======
+static const uint8_t xor2_table[] =
+>>>>>>> upstream/master
 {
 	99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,
 	99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,
@@ -1316,7 +1390,11 @@ int qix_state::kram3_permut1(int idx, int value)
 	}
 }
 
+<<<<<<< HEAD
 int qix_state::kram3_permut2(int tbl_index, int idx, const UINT8 *xor_table)
+=======
+int qix_state::kram3_permut2(int tbl_index, int idx, const uint8_t *xor_table)
+>>>>>>> upstream/master
 {
 	int xorval = 0;
 
@@ -1365,8 +1443,13 @@ int qix_state::kram3_decrypt(int address, int value)
 
 DRIVER_INIT_MEMBER(qix_state,kram3)
 {
+<<<<<<< HEAD
 	//const UINT8 *patch;
 	UINT8 *rom, *decrypted;
+=======
+	//const uint8_t *patch;
+	uint8_t *rom, *decrypted;
+>>>>>>> upstream/master
 	int i;
 
 	assert(m_bank0);
@@ -1389,7 +1472,11 @@ DRIVER_INIT_MEMBER(qix_state,kram3)
 	i = 0;
 	//patch = memregion("user1")->base();
 	rom = memregion("maincpu")->base();
+<<<<<<< HEAD
 	decrypted = auto_alloc_array(machine(), UINT8, 0x6000);
+=======
+	decrypted = auto_alloc_array(machine(), uint8_t, 0x6000);
+>>>>>>> upstream/master
 
 	memcpy(decrypted,&rom[0xa000],0x6000);
 	for (i = 0xa000; i < 0x10000; ++i)
@@ -1404,7 +1491,11 @@ DRIVER_INIT_MEMBER(qix_state,kram3)
 	i = 0;
 	//patch = memregion("user2")->base();
 	rom = memregion("videocpu")->base();
+<<<<<<< HEAD
 	decrypted = auto_alloc_array(machine(), UINT8, 0x6000);
+=======
+	decrypted = auto_alloc_array(machine(), uint8_t, 0x6000);
+>>>>>>> upstream/master
 
 	memcpy(decrypted,&rom[0xa000],0x6000);
 	for (i = 0xa000; i < 0x10000; ++i)
@@ -1449,6 +1540,7 @@ DRIVER_INIT_MEMBER(qix_state,slither)
  *
  *************************************/
 
+<<<<<<< HEAD
 GAME( 1981, qix,      0,        qix,      qix,      driver_device, 0,        ROT270, "Taito America Corporation", "Qix (Rev 2)", MACHINE_SUPPORTS_SAVE ) // newest set?  closest to 'qix2'
 GAME( 1981, qixa,     qix,      qix,      qix,      driver_device, 0,        ROT270, "Taito America Corporation", "Qix (set 2, smaller roms)", MACHINE_SUPPORTS_SAVE )
 GAME( 1981, qixb,     qix,      qix,      qix,      driver_device, 0,        ROT270, "Taito America Corporation", "Qix (set 2, larger roms)", MACHINE_SUPPORTS_SAVE )
@@ -1466,3 +1558,23 @@ GAME( 1982, zookeep3, zookeep,  zookeep,  zookeep,  qix_state,     zookeep,  ROT
 GAME( 1982, slither,  0,        slither,  slither,  qix_state,     slither,  ROT270, "Century II", "Slither (set 1)", MACHINE_SUPPORTS_SAVE )
 GAME( 1982, slithera, slither,  slither,  slither,  qix_state,     slither,  ROT270, "Century II", "Slither (set 2)", MACHINE_SUPPORTS_SAVE )
 GAME( 1984, complexx, 0,        qix,      complexx, driver_device, 0,        ROT270, "Taito America Corporation", "Complex X", MACHINE_SUPPORTS_SAVE )
+=======
+GAME( 1981, qix,      0,        qix,      qix,      qix_state, 0,        ROT270, "Taito America Corporation", "Qix (Rev 2)", MACHINE_SUPPORTS_SAVE ) // newest set?  closest to 'qix2'
+GAME( 1981, qixa,     qix,      qix,      qix,      qix_state, 0,        ROT270, "Taito America Corporation", "Qix (set 2, smaller roms)", MACHINE_SUPPORTS_SAVE )
+GAME( 1981, qixb,     qix,      qix,      qix,      qix_state, 0,        ROT270, "Taito America Corporation", "Qix (set 2, larger roms)", MACHINE_SUPPORTS_SAVE )
+GAME( 1981, qixo,     qix,      qix,      qix,      qix_state, 0,        ROT270, "Taito America Corporation", "Qix (set 3, earlier)", MACHINE_SUPPORTS_SAVE ) // oldest set / prototype? has incorrect spelling 'deutch' and doesn't allow language selection to be changed
+GAME( 1981, qix2,     qix,      qix,      qix,      qix_state, 0,        ROT270, "Taito America Corporation", "Qix II (Tournament)", MACHINE_SUPPORTS_SAVE )
+GAME( 1981, sdungeon, 0,        mcu,      sdungeon, qix_state, 0,        ROT270, "Taito America Corporation", "Space Dungeon", MACHINE_SUPPORTS_SAVE ) // actually released July 1982
+GAME( 1981, sdungeona, sdungeon,mcu,      sdungeon, qix_state, 0,        ROT270, "Taito America Corporation", "Space Dungeon (larger roms)", MACHINE_SUPPORTS_SAVE ) // same as above but uses larger ROMs
+GAMEL(1982, elecyoyo, 0,        mcu,      elecyoyo, qix_state, 0,        ROT270, "Taito America Corporation", "The Electric Yo-Yo (set 1)", MACHINE_SUPPORTS_SAVE, layout_elecyoyo )
+GAMEL(1982, elecyoyo2,elecyoyo, mcu,      elecyoyo, qix_state, 0,        ROT270, "Taito America Corporation", "The Electric Yo-Yo (set 2)", MACHINE_SUPPORTS_SAVE, layout_elecyoyo )
+GAME( 1982, kram,     0,        mcu,      kram,     qix_state, 0,        ROT0,   "Taito America Corporation", "Kram (set 1)", MACHINE_SUPPORTS_SAVE )
+GAME( 1982, kram2,    kram,     mcu,      kram,     qix_state, 0,        ROT0,   "Taito America Corporation", "Kram (set 2)", MACHINE_SUPPORTS_SAVE )
+GAME( 1982, kram3,    kram,     kram3,    kram,     qix_state, kram3,    ROT0,   "Taito America Corporation", "Kram (encrypted)", MACHINE_UNEMULATED_PROTECTION | MACHINE_SUPPORTS_SAVE )
+GAME( 1982, zookeep,  0,        zookeep,  zookeep,  qix_state, zookeep,  ROT0,   "Taito America Corporation", "Zoo Keeper (set 1)", MACHINE_SUPPORTS_SAVE )
+GAME( 1982, zookeep2, zookeep,  zookeep,  zookeep,  qix_state, zookeep,  ROT0,   "Taito America Corporation", "Zoo Keeper (set 2)", MACHINE_SUPPORTS_SAVE )
+GAME( 1982, zookeep3, zookeep,  zookeep,  zookeep,  qix_state, zookeep,  ROT0,   "Taito America Corporation", "Zoo Keeper (set 3)", MACHINE_SUPPORTS_SAVE )
+GAME( 1982, slither,  0,        slither,  slither,  qix_state, slither,  ROT270, "Century II", "Slither (set 1)", MACHINE_SUPPORTS_SAVE )
+GAME( 1982, slithera, slither,  slither,  slither,  qix_state, slither,  ROT270, "Century II", "Slither (set 2)", MACHINE_SUPPORTS_SAVE )
+GAME( 1984, complexx, 0,        qix,      complexx, qix_state, 0,        ROT270, "Taito America Corporation", "Complex X", MACHINE_SUPPORTS_SAVE )
+>>>>>>> upstream/master

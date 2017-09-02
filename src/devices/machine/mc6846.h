@@ -8,8 +8,15 @@
 
 **********************************************************************/
 
+<<<<<<< HEAD
 #ifndef MC6846_H
 #define MC6846_H
+=======
+#ifndef MAME_MACHINE_MC6846_H
+#define MAME_MACHINE_MC6846_H
+
+#pragma once
+>>>>>>> upstream/master
 
 
 #define MCFG_MC6846_OUT_PORT_CB(_devcb) \
@@ -34,6 +41,7 @@
 class mc6846_device : public device_t
 {
 public:
+<<<<<<< HEAD
 	mc6846_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
 	~mc6846_device() {}
 
@@ -43,6 +51,16 @@ public:
 	template<class _Object> static devcb_base &set_in_port_callback(device_t &device, _Object object) { return downcast<mc6846_device &>(device).m_in_port_cb.set_callback(object); }
 	template<class _Object> static devcb_base &set_out_cto_callback(device_t &device, _Object object) { return downcast<mc6846_device &>(device).m_out_cto_cb.set_callback(object); }
 	template<class _Object> static devcb_base &set_irq_callback(device_t &device, _Object object) { return downcast<mc6846_device &>(device).m_irq_cb.set_callback(object); }
+=======
+	mc6846_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
+
+	template <class Object> static devcb_base &set_out_port_callback(device_t &device, Object &&cb) { return downcast<mc6846_device &>(device).m_out_port_cb.set_callback(std::forward<Object>(cb)); }
+	template <class Object> static devcb_base &set_out_cp1_callback(device_t &device, Object &&cb) { return downcast<mc6846_device &>(device).m_out_cp1_cb.set_callback(std::forward<Object>(cb)); }
+	template <class Object> static devcb_base &set_out_cp2_callback(device_t &device, Object &&cb) { return downcast<mc6846_device &>(device).m_out_cp2_cb.set_callback(std::forward<Object>(cb)); }
+	template <class Object> static devcb_base &set_in_port_callback(device_t &device, Object &&cb) { return downcast<mc6846_device &>(device).m_in_port_cb.set_callback(std::forward<Object>(cb)); }
+	template <class Object> static devcb_base &set_out_cto_callback(device_t &device, Object &&cb) { return downcast<mc6846_device &>(device).m_out_cto_cb.set_callback(std::forward<Object>(cb)); }
+	template <class Object> static devcb_base &set_irq_callback(device_t &device, Object &&cb) { return downcast<mc6846_device &>(device).m_irq_cb.set_callback(std::forward<Object>(cb)); }
+>>>>>>> upstream/master
 
 	/* interface to CPU via address/data bus*/
 	DECLARE_READ8_MEMBER(read);
@@ -53,6 +71,7 @@ public:
 	void set_input_cp2(int data);
 
 	/* polling from outside world */
+<<<<<<< HEAD
 	UINT8  get_output_port();
 	UINT8  get_output_cto();
 	UINT8  get_output_cp2();
@@ -64,11 +83,25 @@ protected:
 	// device-level overrides
 	virtual void device_start();
 	virtual void device_reset();
+=======
+	uint8_t  get_output_port();
+	uint8_t  get_output_cto();
+	uint8_t  get_output_cp2();
+
+	/* partial access to internal state */
+	uint16_t get_preset(); /* timer interval - 1 in us */
+
+protected:
+	// device-level overrides
+	virtual void device_start() override;
+	virtual void device_reset() override;
+>>>>>>> upstream/master
 
 private:
 	// internal state
 
 	/* registers */
+<<<<<<< HEAD
 	UINT8    m_csr;      /* 0,4: combination status register */
 	UINT8    m_pcr;      /* 1:   peripheral control register */
 	UINT8    m_ddr;      /* 2:   data direction register */
@@ -89,6 +122,28 @@ private:
 	UINT16 m_latch;   /* timer latch */
 	UINT16 m_preset;  /* preset value */
 	UINT8  m_timer_started;
+=======
+	uint8_t    m_csr;      /* 0,4: combination status register */
+	uint8_t    m_pcr;      /* 1:   peripheral control register */
+	uint8_t    m_ddr;      /* 2:   data direction register */
+	uint8_t    m_pdr;      /* 3:   peripheral data register (last cpu write) */
+	uint8_t    m_tcr;      /* 5:   timer control register */
+
+	/* lines */
+	uint8_t m_cp1;         /* 1-bit input */
+	uint8_t m_cp2;         /* 1-bit input/output: last external write */
+	uint8_t m_cp2_cpu;     /* last cpu write */
+	uint8_t m_cto;         /* 1-bit timer output (unmasked) */
+
+	/* internal state */
+	uint8_t  m_time_MSB; /* MSB buffer register */
+	uint8_t  m_csr0_to_be_cleared;
+	uint8_t  m_csr1_to_be_cleared;
+	uint8_t  m_csr2_to_be_cleared;
+	uint16_t m_latch;   /* timer latch */
+	uint16_t m_preset;  /* preset value */
+	uint8_t  m_timer_started;
+>>>>>>> upstream/master
 
 	/* timers */
 	emu_timer *m_interval; /* interval programmable timer */
@@ -96,14 +151,23 @@ private:
 
 	/* CPU write to the outside through chip */
 	devcb_write8 m_out_port_cb;  /* 8-bit output */
+<<<<<<< HEAD
 	devcb_write8 m_out_cp1_cb;   /* 1-bit output */
 	devcb_write8 m_out_cp2_cb;   /* 1-bit output */
+=======
+	devcb_write_line m_out_cp1_cb;   /* 1-bit output */
+	devcb_write_line m_out_cp2_cb;   /* 1-bit output */
+>>>>>>> upstream/master
 
 	/* CPU read from the outside through chip */
 	devcb_read8 m_in_port_cb; /* 8-bit input */
 
 	/* asynchronous timer output to outside world */
+<<<<<<< HEAD
 	devcb_write8 m_out_cto_cb; /* 1-bit output */
+=======
+	devcb_write_line m_out_cto_cb; /* 1-bit output */
+>>>>>>> upstream/master
 
 	/* timer interrupt */
 	devcb_write_line m_irq_cb;
@@ -111,7 +175,11 @@ private:
 	int m_old_cif;
 	int m_old_cto;
 
+<<<<<<< HEAD
 	inline UINT16 counter();
+=======
+	inline uint16_t counter();
+>>>>>>> upstream/master
 	inline void update_irq();
 	inline void update_cto();
 	inline void timer_launch();
@@ -120,6 +188,12 @@ private:
 	TIMER_CALLBACK_MEMBER(timer_one_shot);
 };
 
+<<<<<<< HEAD
 extern const device_type MC6846;
 
 #endif
+=======
+DECLARE_DEVICE_TYPE(MC6846, mc6846_device)
+
+#endif // MAME_MACHINE_MC6846_H
+>>>>>>> upstream/master

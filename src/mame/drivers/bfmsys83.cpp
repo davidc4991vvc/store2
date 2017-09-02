@@ -6,6 +6,10 @@
 #include "cpu/m6800/m6800.h"
 #include "sound/ay8910.h"
 #include "machine/bfm_comn.h"
+<<<<<<< HEAD
+=======
+#include "speaker.h"
+>>>>>>> upstream/master
 
 
 class bfmsys83_state : public driver_device
@@ -15,7 +19,11 @@ public:
 		: driver_device(mconfig, type, tag),
 		m_maincpu(*this, "maincpu") { }
 
+<<<<<<< HEAD
 	UINT8 m_codec_data[256];
+=======
+	uint8_t m_codec_data[256];
+>>>>>>> upstream/master
 	required_device<cpu_device> m_maincpu;
 };
 
@@ -30,7 +38,11 @@ INPUT_PORTS_END
 
 
 
+<<<<<<< HEAD
 static MACHINE_CONFIG_START( bfmsys83, bfmsys83_state )
+=======
+static MACHINE_CONFIG_START( bfmsys83 )
+>>>>>>> upstream/master
 	MCFG_CPU_ADD("maincpu", M6802, 40000000/4)
 	MCFG_CPU_PROGRAM_MAP(memmap)
 
@@ -62,5 +74,10 @@ ROM_START( b83cops ) // was marked as sys85, but I think this is the sys83 set?
 	ROM_LOAD( "cops.p4", 0x8000, 0x2000, CRC(ce573b35) SHA1(f2ba22f0d55f882dd91b37e80e4bb14effd9113a) )
 ROM_END
 
+<<<<<<< HEAD
 GAME( 198?, b83catms    , 0         ,  bfmsys83     , bfmsys83  , driver_device, 0  , 0,         "BFM",      "Cat & Mouse (Bellfruit) (System 83)", MACHINE_IS_SKELETON_MECHANICAL)
 GAME( 198?, b83cops     , 0         ,  bfmsys83     , bfmsys83  , driver_device, 0  , 0,         "BFM",      "Cops & Robbers (Bellfruit) (System 83)", MACHINE_IS_SKELETON_MECHANICAL)
+=======
+GAME( 198?, b83catms    , 0         ,  bfmsys83     , bfmsys83  , bfmsys83_state, 0  , ROT0,  "BFM",      "Cat & Mouse (Bellfruit) (System 83)",    MACHINE_IS_SKELETON_MECHANICAL)
+GAME( 198?, b83cops     , 0         ,  bfmsys83     , bfmsys83  , bfmsys83_state, 0  , ROT0,  "BFM",      "Cops & Robbers (Bellfruit) (System 83)", MACHINE_IS_SKELETON_MECHANICAL)
+>>>>>>> upstream/master

@@ -6,8 +6,16 @@
 
 **********************************************************************/
 
+<<<<<<< HEAD
 #include "vp595.h"
 
+=======
+#include "emu.h"
+#include "vp595.h"
+
+#include "speaker.h"
+
+>>>>>>> upstream/master
 
 
 //**************************************************************************
@@ -23,6 +31,7 @@
 //  DEVICE DEFINITIONS
 //**************************************************************************
 
+<<<<<<< HEAD
 const device_type VP595 = &device_creator<vp595_device>;
 
 
@@ -31,6 +40,16 @@ const device_type VP595 = &device_creator<vp595_device>;
 //-------------------------------------------------
 
 static MACHINE_CONFIG_FRAGMENT( vp595 )
+=======
+DEFINE_DEVICE_TYPE(VP595, vp595_device, "vp595", "VP-595 Simple Sound")
+
+
+//-------------------------------------------------
+//  MACHINE_CONFIG_START( vp595 )
+//-------------------------------------------------
+
+MACHINE_CONFIG_MEMBER( vp595_device::device_add_mconfig )
+>>>>>>> upstream/master
 	MCFG_SPEAKER_STANDARD_MONO("mono")
 
 	MCFG_CDP1863_ADD(CDP1863_TAG, 0, CDP1863_XTAL)
@@ -38,6 +57,7 @@ static MACHINE_CONFIG_FRAGMENT( vp595 )
 MACHINE_CONFIG_END
 
 
+<<<<<<< HEAD
 //-------------------------------------------------
 //  machine_config_additions - device-specific
 //  machine configurations
@@ -49,6 +69,8 @@ machine_config_constructor vp595_device::device_mconfig_additions() const
 }
 
 
+=======
+>>>>>>> upstream/master
 
 //**************************************************************************
 //  LIVE DEVICE
@@ -58,8 +80,13 @@ machine_config_constructor vp595_device::device_mconfig_additions() const
 //  vp595_device - constructor
 //-------------------------------------------------
 
+<<<<<<< HEAD
 vp595_device::vp595_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock) :
 	device_t(mconfig, VP595, "VP595", tag, owner, clock, "vp595", __FILE__),
+=======
+vp595_device::vp595_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock) :
+	device_t(mconfig, VP595, tag, owner, clock),
+>>>>>>> upstream/master
 	device_vip_expansion_card_interface(mconfig, *this),
 	m_pfg(*this, CDP1863_TAG)
 {
@@ -79,7 +106,11 @@ void vp595_device::device_start()
 //  vip_io_w - I/O write
 //-------------------------------------------------
 
+<<<<<<< HEAD
 void vp595_device::vip_io_w(address_space &space, offs_t offset, UINT8 data)
+=======
+void vp595_device::vip_io_w(address_space &space, offs_t offset, uint8_t data)
+>>>>>>> upstream/master
 {
 	if (offset == 0x03)
 	{

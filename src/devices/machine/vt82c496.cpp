@@ -6,25 +6,42 @@
 
 */
 
+<<<<<<< HEAD
+=======
+#include "emu.h"
+>>>>>>> upstream/master
 #include "vt82c496.h"
 
 /***************************************************************************
     IMPLEMENTATION
 ***************************************************************************/
 
+<<<<<<< HEAD
 const device_type VT82C496 = &device_creator<vt82c496_device>;
 
 
 vt82c496_device::vt82c496_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
 		: device_t(mconfig, VT82C496, "VIA VT82C496G system chipset", tag, owner, clock, "vt82c496", __FILE__), m_cpu_tag(nullptr), m_region_tag(nullptr), m_space(nullptr), m_ram(nullptr), m_rom(nullptr), m_reg_select(0)
 	{
+=======
+DEFINE_DEVICE_TYPE(VT82C496, vt82c496_device, "vt82c496", "VIA VT82C496 system chipset")
+
+
+vt82c496_device::vt82c496_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: device_t(mconfig, VT82C496, tag, owner, clock), m_cpu_tag(nullptr), m_region_tag(nullptr), m_space(nullptr), m_ram(nullptr), m_rom(nullptr), m_reg_select(0)
+{
+>>>>>>> upstream/master
 }
 
 void vt82c496_device::device_start()
 {
 	/* get address space we are working on */
 	device_t *cpu = machine().device(m_cpu_tag);
+<<<<<<< HEAD
 	assert(cpu != NULL);
+=======
+	assert(cpu != nullptr);
+>>>>>>> upstream/master
 
 	m_space = &cpu->memory().space(AS_PROGRAM);
 
@@ -41,6 +58,7 @@ void vt82c496_device::device_reset()
 	memset(m_reg,0,0x100);
 
 	// set up default ROM banking
+<<<<<<< HEAD
 	m_space->install_read_bank(0xc0000,0xc3fff,0,0,"bios_c0_r");
 	m_space->install_read_bank(0xc4000,0xc7fff,0,0,"bios_c4_r");
 	m_space->install_read_bank(0xc8000,0xcbfff,0,0,"bios_c8_r");
@@ -52,6 +70,19 @@ void vt82c496_device::device_reset()
 	m_space->install_read_bank(0xe0000,0xeffff,0,0,"bios_e0_r");
 	m_space->install_read_bank(0xf0000,0xfffff,0,0,"bios_f0_r");
 	m_space->nop_write(0xc0000,0xfffff,0,0);
+=======
+	m_space->install_read_bank(0xc0000,0xc3fff,0,"bios_c0_r");
+	m_space->install_read_bank(0xc4000,0xc7fff,0,"bios_c4_r");
+	m_space->install_read_bank(0xc8000,0xcbfff,0,"bios_c8_r");
+	m_space->install_read_bank(0xcc000,0xcffff,0,"bios_cc_r");
+	m_space->install_read_bank(0xd0000,0xd3fff,0,"bios_d0_r");
+	m_space->install_read_bank(0xd4000,0xd7fff,0,"bios_d4_r");
+	m_space->install_read_bank(0xd8000,0xdbfff,0,"bios_d8_r");
+	m_space->install_read_bank(0xdc000,0xdffff,0,"bios_dc_r");
+	m_space->install_read_bank(0xe0000,0xeffff,0,"bios_e0_r");
+	m_space->install_read_bank(0xf0000,0xfffff,0,"bios_f0_r");
+	m_space->nop_write(0xc0000,0xfffff);
+>>>>>>> upstream/master
 	machine().root_device().membank("bios_c0_r")->set_base(m_rom);
 	machine().root_device().membank("bios_c4_r")->set_base(m_rom+0x4000);
 	machine().root_device().membank("bios_c8_r")->set_base(m_rom+0x8000);
@@ -93,7 +124,11 @@ WRITE8_MEMBER(vt82c496_device::write)
 	}
 }
 
+<<<<<<< HEAD
 void vt82c496_device::update_mem_c0(UINT8 data)
+=======
+void vt82c496_device::update_mem_c0(uint8_t data)
+>>>>>>> upstream/master
 {
 	if(data & 0x80)
 		machine().root_device().membank("bios_cc_r")->set_base(m_ram->pointer()+0xcc000);
@@ -101,11 +136,19 @@ void vt82c496_device::update_mem_c0(UINT8 data)
 		machine().root_device().membank("bios_cc_r")->set_base(m_rom+0xc000);
 	if(data & 0x40)
 	{
+<<<<<<< HEAD
 		m_space->install_write_bank(0xcc000,0xcffff,0,0,"bios_cc_w");
 		machine().root_device().membank("bios_cc_w")->set_base(m_ram->pointer()+0xcc000);
 	}
 	else
 		m_space->nop_write(0xcc000,0xcffff,0,0);
+=======
+		m_space->install_write_bank(0xcc000,0xcffff,0,"bios_cc_w");
+		machine().root_device().membank("bios_cc_w")->set_base(m_ram->pointer()+0xcc000);
+	}
+	else
+		m_space->nop_write(0xcc000,0xcffff);
+>>>>>>> upstream/master
 
 	if(data & 0x20)
 		machine().root_device().membank("bios_c8_r")->set_base(m_ram->pointer()+0xc8000);
@@ -113,11 +156,19 @@ void vt82c496_device::update_mem_c0(UINT8 data)
 		machine().root_device().membank("bios_c8_r")->set_base(m_rom+0x8000);
 	if(data & 0x10)
 	{
+<<<<<<< HEAD
 		m_space->install_write_bank(0xc8000,0xcbfff,0,0,"bios_c8_w");
 		machine().root_device().membank("bios_c8_w")->set_base(m_ram->pointer()+0xc8000);
 	}
 	else
 		m_space->nop_write(0xc8000,0xcbfff,0,0);
+=======
+		m_space->install_write_bank(0xc8000,0xcbfff,0,"bios_c8_w");
+		machine().root_device().membank("bios_c8_w")->set_base(m_ram->pointer()+0xc8000);
+	}
+	else
+		m_space->nop_write(0xc8000,0xcbfff);
+>>>>>>> upstream/master
 
 	if(data & 0x08)
 		machine().root_device().membank("bios_c4_r")->set_base(m_ram->pointer()+0xc4000);
@@ -125,11 +176,19 @@ void vt82c496_device::update_mem_c0(UINT8 data)
 		machine().root_device().membank("bios_c4_r")->set_base(m_rom+0x4000);
 	if(data & 0x04)
 	{
+<<<<<<< HEAD
 		m_space->install_write_bank(0xc4000,0xc7fff,0,0,"bios_c4_w");
 		machine().root_device().membank("bios_c4_w")->set_base(m_ram->pointer()+0xc4000);
 	}
 	else
 		m_space->nop_write(0xc4000,0xc7fff,0,0);
+=======
+		m_space->install_write_bank(0xc4000,0xc7fff,0,"bios_c4_w");
+		machine().root_device().membank("bios_c4_w")->set_base(m_ram->pointer()+0xc4000);
+	}
+	else
+		m_space->nop_write(0xc4000,0xc7fff);
+>>>>>>> upstream/master
 
 	if(data & 0x02)
 		machine().root_device().membank("bios_c0_r")->set_base(m_ram->pointer()+0xc0000);
@@ -137,6 +196,7 @@ void vt82c496_device::update_mem_c0(UINT8 data)
 		machine().root_device().membank("bios_c0_r")->set_base(m_rom+0);
 	if(data & 0x01)
 	{
+<<<<<<< HEAD
 		m_space->install_write_bank(0xc0000,0xc3fff,0,0,"bios_c0_w");
 		machine().root_device().membank("bios_c0_w")->set_base(m_ram->pointer()+0xc0000);
 	}
@@ -145,6 +205,16 @@ void vt82c496_device::update_mem_c0(UINT8 data)
 }
 
 void vt82c496_device::update_mem_d0(UINT8 data)
+=======
+		m_space->install_write_bank(0xc0000,0xc3fff,0,"bios_c0_w");
+		machine().root_device().membank("bios_c0_w")->set_base(m_ram->pointer()+0xc0000);
+	}
+	else
+		m_space->nop_write(0xc0000,0xc3fff);
+}
+
+void vt82c496_device::update_mem_d0(uint8_t data)
+>>>>>>> upstream/master
 {
 	if(data & 0x80)
 		machine().root_device().membank("bios_dc_r")->set_base(m_ram->pointer()+0xdc000);
@@ -152,11 +222,19 @@ void vt82c496_device::update_mem_d0(UINT8 data)
 		machine().root_device().membank("bios_dc_r")->set_base(m_rom+0x1c000);
 	if(data & 0x40)
 	{
+<<<<<<< HEAD
 		m_space->install_write_bank(0xdc000,0xdffff,0,0,"bios_dc_w");
 		machine().root_device().membank("bios_dc_w")->set_base(m_ram->pointer()+0xdc000);
 	}
 	else
 		m_space->nop_write(0xdc000,0xdffff,0,0);
+=======
+		m_space->install_write_bank(0xdc000,0xdffff,0,"bios_dc_w");
+		machine().root_device().membank("bios_dc_w")->set_base(m_ram->pointer()+0xdc000);
+	}
+	else
+		m_space->nop_write(0xdc000,0xdffff);
+>>>>>>> upstream/master
 
 	if(data & 0x20)
 		machine().root_device().membank("bios_d8_r")->set_base(m_ram->pointer()+0xd8000);
@@ -164,11 +242,19 @@ void vt82c496_device::update_mem_d0(UINT8 data)
 		machine().root_device().membank("bios_d8_r")->set_base(m_rom+0x18000);
 	if(data & 0x10)
 	{
+<<<<<<< HEAD
 		m_space->install_write_bank(0xd8000,0xdbfff,0,0,"bios_d8_w");
 		machine().root_device().membank("bios_d8_w")->set_base(m_ram->pointer()+0xd8000);
 	}
 	else
 		m_space->nop_write(0xd8000,0xdbfff,0,0);
+=======
+		m_space->install_write_bank(0xd8000,0xdbfff,0,"bios_d8_w");
+		machine().root_device().membank("bios_d8_w")->set_base(m_ram->pointer()+0xd8000);
+	}
+	else
+		m_space->nop_write(0xd8000,0xdbfff);
+>>>>>>> upstream/master
 
 	if(data & 0x08)
 		machine().root_device().membank("bios_d4_r")->set_base(m_ram->pointer()+0xd4000);
@@ -176,11 +262,19 @@ void vt82c496_device::update_mem_d0(UINT8 data)
 		machine().root_device().membank("bios_d4_r")->set_base(m_rom+0x14000);
 	if(data & 0x04)
 	{
+<<<<<<< HEAD
 		m_space->install_write_bank(0xd4000,0xd7fff,0,0,"bios_d4_w");
 		machine().root_device().membank("bios_d4_w")->set_base(m_ram->pointer()+0xd4000);
 	}
 	else
 		m_space->nop_write(0xd4000,0xd7fff,0,0);
+=======
+		m_space->install_write_bank(0xd4000,0xd7fff,0,"bios_d4_w");
+		machine().root_device().membank("bios_d4_w")->set_base(m_ram->pointer()+0xd4000);
+	}
+	else
+		m_space->nop_write(0xd4000,0xd7fff);
+>>>>>>> upstream/master
 
 	if(data & 0x02)
 		machine().root_device().membank("bios_d0_r")->set_base(m_ram->pointer()+0xd0000);
@@ -188,6 +282,7 @@ void vt82c496_device::update_mem_d0(UINT8 data)
 		machine().root_device().membank("bios_d0_r")->set_base(m_rom+0x10000);
 	if(data & 0x01)
 	{
+<<<<<<< HEAD
 		m_space->install_write_bank(0xd0000,0xd3fff,0,0,"bios_d0_w");
 		machine().root_device().membank("bios_d0_w")->set_base(m_ram->pointer()+0xd0000);
 	}
@@ -196,6 +291,16 @@ void vt82c496_device::update_mem_d0(UINT8 data)
 }
 
 void vt82c496_device::update_mem_e0(UINT8 data)
+=======
+		m_space->install_write_bank(0xd0000,0xd3fff,0,"bios_d0_w");
+		machine().root_device().membank("bios_d0_w")->set_base(m_ram->pointer()+0xd0000);
+	}
+	else
+		m_space->nop_write(0xd0000,0xd3fff);
+}
+
+void vt82c496_device::update_mem_e0(uint8_t data)
+>>>>>>> upstream/master
 {
 	if(data & 0x80)
 		machine().root_device().membank("bios_e0_r")->set_base(m_ram->pointer()+0xe0000);
@@ -204,11 +309,19 @@ void vt82c496_device::update_mem_e0(UINT8 data)
 
 	if(data & 0x40)
 	{
+<<<<<<< HEAD
 		m_space->install_write_bank(0xe0000,0xeffff,0,0,"bios_e0_w");
 		machine().root_device().membank("bios_e0_w")->set_base(m_ram->pointer()+0xe0000);
 	}
 	else
 		m_space->nop_write(0xe0000,0xeffff,0,0);
+=======
+		m_space->install_write_bank(0xe0000,0xeffff,0,"bios_e0_w");
+		machine().root_device().membank("bios_e0_w")->set_base(m_ram->pointer()+0xe0000);
+	}
+	else
+		m_space->nop_write(0xe0000,0xeffff);
+>>>>>>> upstream/master
 
 	if(data & 0x20)
 		machine().root_device().membank("bios_f0_r")->set_base(m_ram->pointer()+0xf0000);
@@ -217,9 +330,17 @@ void vt82c496_device::update_mem_e0(UINT8 data)
 
 	if(data & 0x10)
 	{
+<<<<<<< HEAD
 		m_space->install_write_bank(0xf0000,0xfffff,0,0,"bios_f0_w");
 		machine().root_device().membank("bios_f0_w")->set_base(m_ram->pointer()+0xf0000);
 	}
 	else
 		m_space->nop_write(0xf0000,0xfffff,0,0);
+=======
+		m_space->install_write_bank(0xf0000,0xfffff,0,"bios_f0_w");
+		machine().root_device().membank("bios_f0_w")->set_base(m_ram->pointer()+0xf0000);
+	}
+	else
+		m_space->nop_write(0xf0000,0xfffff);
+>>>>>>> upstream/master
 }

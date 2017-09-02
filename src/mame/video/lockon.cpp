@@ -14,7 +14,11 @@
 #define CURSOR_XPOS         168
 #define CURSOR_YPOS         239
 #define FRAMEBUFFER_MAX_X   431
+<<<<<<< HEAD
 #define FRAMEBUFFER_MAX_Y   (UINT32)((FRAMEBUFFER_CLOCK / (float)(FRAMEBUFFER_MAX_X-1)) / ((float)PIXEL_CLOCK/(HTOTAL*VTOTAL)))
+=======
+#define FRAMEBUFFER_MAX_Y   (uint32_t)((FRAMEBUFFER_CLOCK / (float)(FRAMEBUFFER_MAX_X-1)) / ((float)PIXEL_CLOCK/(HTOTAL*VTOTAL)))
+>>>>>>> upstream/master
 
 
 /*************************************
@@ -100,14 +104,24 @@ static const res_net_info lockon_pd_net_info =
 
 PALETTE_INIT_MEMBER(lockon_state, lockon)
 {
+<<<<<<< HEAD
 	const UINT8 *color_prom = memregion("proms")->base();
+=======
+	const uint8_t *color_prom = memregion("proms")->base();
+>>>>>>> upstream/master
 	int i;
 
 	for (i = 0; i < 1024; ++i)
 	{
+<<<<<<< HEAD
 		UINT8 r, g, b;
 		UINT8 p1 = color_prom[i];
 		UINT8 p2 = color_prom[i + 0x400];
+=======
+		uint8_t r, g, b;
+		uint8_t p1 = color_prom[i];
+		uint8_t p2 = color_prom[i + 0x400];
+>>>>>>> upstream/master
 
 		if (p2 & 0x80)
 		{
@@ -141,8 +155,13 @@ WRITE16_MEMBER(lockon_state::lockon_char_w)
 
 TILE_GET_INFO_MEMBER(lockon_state::get_lockon_tile_info)
 {
+<<<<<<< HEAD
 	UINT32 tileno = m_char_ram[tile_index] & 0x03ff;
 	UINT32 col = (m_char_ram[tile_index] >> 10) & 0x3f;
+=======
+	uint32_t tileno = m_char_ram[tile_index] & 0x03ff;
+	uint32_t col = (m_char_ram[tile_index] >> 10) & 0x3f;
+>>>>>>> upstream/master
 
 	col = (col & 0x1f) + (col & 0x20 ? 64 : 0);
 	SET_TILE_INFO_MEMBER(0, tileno, col, 0);
@@ -167,6 +186,7 @@ WRITE16_MEMBER(lockon_state::lockon_scene_v_scr_w)
 
 void lockon_state::scene_draw(  )
 {
+<<<<<<< HEAD
 	UINT32 y;
 
 	/* 3bpp characters */
@@ -185,6 +205,26 @@ void lockon_state::scene_draw(  )
 		UINT32 y_gran;
 		UINT16 *bmpaddr;
 		UINT32 ram_mask = 0x7ff;
+=======
+	uint32_t y;
+
+	/* 3bpp characters */
+	const uint8_t *const gfx1 = memregion("gfx2")->base();
+	const uint8_t *const gfx2 = gfx1 + 0x10000;
+	const uint8_t *const gfx3 = gfx1 + 0x20000;
+	const uint8_t *const clut = gfx1 + 0x30000;
+
+	for (y = 0; y < FRAMEBUFFER_MAX_Y; ++y)
+	{
+		uint32_t x;
+		uint32_t d0 = 0, d1 = 0, d2 = 0;
+		uint32_t colour = 0;
+		uint32_t y_offs;
+		uint32_t x_offs;
+		uint32_t y_gran;
+		uint16_t *bmpaddr;
+		uint32_t ram_mask = 0x7ff;
+>>>>>>> upstream/master
 
 		y_offs = (y + m_scroll_v) & 0x1ff;
 
@@ -197,9 +237,15 @@ void lockon_state::scene_draw(  )
 
 		if (x_offs & 7)
 		{
+<<<<<<< HEAD
 			UINT32 tileidx;
 			UINT16 addr = ((y_offs & ~7) << 3) + ((x_offs >> 3) & 0x3f);
 			UINT16 ram_val = m_scene_ram[addr & ram_mask];
+=======
+			uint32_t tileidx;
+			uint16_t addr = ((y_offs & ~7) << 3) + ((x_offs >> 3) & 0x3f);
+			uint16_t ram_val = m_scene_ram[addr & ram_mask];
+>>>>>>> upstream/master
 
 			colour = (clut[ram_val & 0x7fff] & 0x3f) << 3;
 			tileidx = ((ram_val & 0x0fff) << 3) + y_gran;
@@ -213,6 +259,7 @@ void lockon_state::scene_draw(  )
 
 		for (x = 0; x < FRAMEBUFFER_MAX_X; ++x)
 		{
+<<<<<<< HEAD
 			UINT32 x_gran = (x_offs & 7) ^ 7;
 			UINT32 col;
 
@@ -221,6 +268,16 @@ void lockon_state::scene_draw(  )
 				UINT32 tileidx;
 				UINT16 addr = ((y_offs & ~7) << 3) + ((x_offs >> 3) & 0x3f);
 				UINT16 ram_val = m_scene_ram[addr & ram_mask];
+=======
+			uint32_t x_gran = (x_offs & 7) ^ 7;
+			uint32_t col;
+
+			if (!(x_offs & 7))
+			{
+				uint32_t tileidx;
+				uint16_t addr = ((y_offs & ~7) << 3) + ((x_offs >> 3) & 0x3f);
+				uint16_t ram_val = m_scene_ram[addr & ram_mask];
+>>>>>>> upstream/master
 
 				colour = (clut[ram_val & 0x7fff] & 0x3f) << 3;
 				tileidx = ((ram_val & 0x0fff) << 3) + y_gran;
@@ -289,9 +346,15 @@ TIMER_CALLBACK_MEMBER(lockon_state::bufend_callback)
 /* Get data for a each 8x8x3 ground tile */
 #define GET_GROUND_DATA()                                                                \
 {                                                                                        \
+<<<<<<< HEAD
 	UINT32 gfx_a4_3  = (ls163 & 0xc) << 1;                                               \
 	UINT32 lut_addr  = lut_address + ((ls163 >> 4) & 0xf);                               \
 	UINT32 gfx_a14_7 = lut_rom[lut_addr] << 7;                                           \
+=======
+	uint32_t gfx_a4_3  = (ls163 & 0xc) << 1;                                               \
+	uint32_t lut_addr  = lut_address + ((ls163 >> 4) & 0xf);                               \
+	uint32_t gfx_a14_7 = lut_rom[lut_addr] << 7;                                           \
+>>>>>>> upstream/master
 	clut_addr = (lut_rom[lut_addr] << 4) | clut_a14_12 | clut_a4_3 | (ls163 & 0xc) >> 2; \
 	gfx_addr  = gfx_a15 | gfx_a14_7 | gfx_a6_5 | gfx_a4_3 | gfx_a2_0;                    \
 	pal = (clut_rom[clut_addr] << 3);                                                    \
@@ -303,6 +366,7 @@ TIMER_CALLBACK_MEMBER(lockon_state::bufend_callback)
 void lockon_state::ground_draw(  )
 {
 	/* ROM pointers */
+<<<<<<< HEAD
 	const UINT8 *const gfx_rom  = memregion("gfx4")->base();
 	const UINT8 *const lut_rom  = gfx_rom + 0x30000 + ((m_ground_ctrl >> 2) & 0x3 ? 0x10000 : 0);
 	const UINT8 *const clut_rom = gfx_rom + 0x50000;
@@ -312,10 +376,22 @@ void lockon_state::ground_draw(  )
 	UINT32 gfx_a15 = (m_ground_ctrl & 0x40) << 9;
 	UINT32 offs = 3;
 	UINT32 y;
+=======
+	const uint8_t *const gfx_rom  = memregion("gfx4")->base();
+	const uint8_t *const lut_rom  = gfx_rom + 0x30000 + ((m_ground_ctrl >> 2) & 0x3 ? 0x10000 : 0);
+	const uint8_t *const clut_rom = gfx_rom + 0x50000;
+
+	uint32_t lut_a15_14   = (m_ground_ctrl & 0x3) << 14;
+	uint32_t clut_a14_12 = (m_ground_ctrl & 0x70) << 8;
+	uint32_t gfx_a15 = (m_ground_ctrl & 0x40) << 9;
+	uint32_t offs = 3;
+	uint32_t y;
+>>>>>>> upstream/master
 
 	/* TODO: Clean up and emulate CS of GFX ROMs? */
 	for (y = 0; y < FRAMEBUFFER_MAX_Y; ++y)
 	{
+<<<<<<< HEAD
 		UINT16 *bmpaddr = &m_back_buffer->pix16(y);
 		UINT8 ls163;
 		UINT32 clut_addr;
@@ -325,10 +401,22 @@ void lockon_state::ground_draw(  )
 		UINT8 rom_data3 = 0;
 		UINT32 pal = 0;
 		UINT32 x;
+=======
+		uint16_t *bmpaddr = &m_back_buffer->pix16(y);
+		uint8_t ls163;
+		uint32_t clut_addr;
+		uint32_t gfx_addr;
+		uint8_t rom_data1 = 0;
+		uint8_t rom_data2 = 0;
+		uint8_t rom_data3 = 0;
+		uint32_t pal = 0;
+		uint32_t x;
+>>>>>>> upstream/master
 
 		/* Draw this line? */
 		if (!(m_ground_ram[offs] & 0x8000))
 		{
+<<<<<<< HEAD
 			UINT32 gfx_a2_0  =  m_ground_ram[offs] & 0x0007;
 			UINT32 gfx_a6_5  = (m_ground_ram[offs] & 0x0018) << 2;
 			UINT32 clut_a4_3 = (m_ground_ram[offs] & 0x0018) >> 1;
@@ -339,6 +427,18 @@ void lockon_state::ground_draw(  )
 			UINT32 cy = m_ground_ram[offs + 2] & 0x0100;
 			UINT32 color;
 			UINT32 gpbal2_0_prev;
+=======
+			uint32_t gfx_a2_0  =  m_ground_ram[offs] & 0x0007;
+			uint32_t gfx_a6_5  = (m_ground_ram[offs] & 0x0018) << 2;
+			uint32_t clut_a4_3 = (m_ground_ram[offs] & 0x0018) >> 1;
+			uint8_t   tz2213_x  = m_ground_ram[offs + 1] & 0xff;
+			uint8_t   tz2213_dx = m_ground_ram[offs + 2] & 0xff;
+
+			uint32_t lut_address = lut_a15_14 + ((m_ground_ram[offs] & 0x7fe0) >> 1);
+			uint32_t cy = m_ground_ram[offs + 2] & 0x0100;
+			uint32_t color;
+			uint32_t gpbal2_0_prev;
+>>>>>>> upstream/master
 
 			ls163 = m_ground_ram[offs + 1] >> 8;
 
@@ -349,8 +449,13 @@ void lockon_state::ground_draw(  )
 
 			for (x = 0; x < FRAMEBUFFER_MAX_X; x++)
 			{
+<<<<<<< HEAD
 				UINT32 tz2213_cy;
 				UINT32 gpbal2_0 = ((ls163 & 3) << 1) | BIT(tz2213_x, 7);
+=======
+				uint32_t tz2213_cy;
+				uint32_t gpbal2_0 = ((ls163 & 3) << 1) | BIT(tz2213_x, 7);
+>>>>>>> upstream/master
 
 				/* Stepped into a new tile? */
 				if (gpbal2_0 < gpbal2_0_prev)
@@ -366,7 +471,11 @@ void lockon_state::ground_draw(  )
 				*bmpaddr++ = 0x800 + color;
 
 				/* Update the counters */
+<<<<<<< HEAD
 				tz2213_cy = (UINT8)tz2213_dx > (UINT8)~(tz2213_x);
+=======
+				tz2213_cy = (uint8_t)tz2213_dx > (uint8_t)~(tz2213_x);
+>>>>>>> upstream/master
 				tz2213_x = (tz2213_x + tz2213_dx);
 
 				/* Carry? */
@@ -417,8 +526,13 @@ do {                                                     \
 	if (px < FRAMEBUFFER_MAX_X)                          \
 	if (COLOR != 0xf)                                    \
 	{                                                    \
+<<<<<<< HEAD
 		UINT8 clr = m_obj_pal_ram[(pal << 4) + COLOR];     \
 		UINT16 *pix = (line + px);                       \
+=======
+		uint8_t clr = m_obj_pal_ram[(pal << 4) + COLOR];     \
+		uint16_t *pix = (line + px);                       \
+>>>>>>> upstream/master
 		if (!(clr == 0xff && ((*pix & 0xe00) == 0xa00))) \
 			*pix = 0x400 + clr;          \
 	}                                                    \
@@ -427,6 +541,7 @@ do {                                                     \
 
 void lockon_state::objects_draw(  )
 {
+<<<<<<< HEAD
 	UINT32 offs;
 
 	const UINT8  *const romlut = memregion("user1")->base();
@@ -448,6 +563,29 @@ void lockon_state::objects_draw(  )
 		UINT32 lines;
 		UINT32 opsta;
 		UINT32 opsta15_8;
+=======
+	uint32_t offs;
+
+	const uint8_t  *const romlut = memregion("user1")->base();
+	const uint16_t *const chklut = (uint16_t*)memregion("user2")->base();
+	const uint8_t  *const gfxrom = memregion("gfx5")->base();
+	const uint8_t  *const sproms = memregion("proms")->base() + 0x800;
+
+	for (offs = 0; offs < m_object_ram.bytes(); offs += 4)
+	{
+		uint32_t y;
+		uint32_t xpos;
+		uint32_t ypos;
+		uint32_t xsize;
+		uint32_t ysize;
+		uint32_t xflip;
+		uint32_t yflip;
+		uint32_t scale;
+		uint32_t pal;
+		uint32_t lines;
+		uint32_t opsta;
+		uint32_t opsta15_8;
+>>>>>>> upstream/master
 
 		/* Retrieve the object attributes */
 		ypos    = m_object_ram[offs] & 0x03ff;
@@ -476,6 +614,7 @@ void lockon_state::objects_draw(  )
 
 		for (y = 0; y < FRAMEBUFFER_MAX_Y; y++)
 		{
+<<<<<<< HEAD
 			UINT32 cy = (y + ypos) & 0x3ff;
 			UINT32 optab;
 			UINT32 lutaddr;
@@ -484,6 +623,16 @@ void lockon_state::objects_draw(  )
 			UINT32 yidx;
 			UINT16 *line = &m_back_buffer->pix16(y);
 			UINT32 px = xpos;
+=======
+			uint32_t cy = (y + ypos) & 0x3ff;
+			uint32_t optab;
+			uint32_t lutaddr;
+			uint32_t tile;
+			uint8_t   cnt;
+			uint32_t yidx;
+			uint16_t *line = &m_back_buffer->pix16(y);
+			uint32_t px = xpos;
+>>>>>>> upstream/master
 
 			/* Outside the limits? */
 			if (cy & 0x300)
@@ -513,6 +662,7 @@ void lockon_state::objects_draw(  )
 			/* Draw! */
 			for (tile = 0; tile < (1 << xsize); ++tile)
 			{
+<<<<<<< HEAD
 				UINT16 sc;
 				UINT16 scl;
 				UINT32 x;
@@ -520,6 +670,15 @@ void lockon_state::objects_draw(  )
 				UINT16 td0, td1, td2, td3;
 				UINT32 j;
 				UINT32 bank;
+=======
+				uint16_t sc;
+				uint16_t scl;
+				uint32_t x;
+				uint32_t tileaddr;
+				uint16_t td0, td1, td2, td3;
+				uint32_t j;
+				uint32_t bank;
+>>>>>>> upstream/master
 
 				scl = scale & 0x7f;
 				tileaddr = (chklut[opsta15_8 + cnt] & 0x7fff);
@@ -535,7 +694,11 @@ void lockon_state::objects_draw(  )
 				for (j = 0; j < 2; ++j)
 				{
 					/* Get tile data */
+<<<<<<< HEAD
 					UINT32 tileadd = tileaddr + (0x20000 * (j ^ xflip));
+=======
+					uint32_t tileadd = tileaddr + (0x20000 * (j ^ xflip));
+>>>>>>> upstream/master
 
 					/* Retrieve scale values from PROMs */
 					sc = sproms[(scl << 4) + (tile * 2) + j];
@@ -550,8 +713,13 @@ void lockon_state::objects_draw(  )
 					{
 						for (x = 0; x < 8; ++x)
 						{
+<<<<<<< HEAD
 							UINT8 col;
 							UINT8 pix = x;
+=======
+							uint8_t col;
+							uint8_t pix = x;
+>>>>>>> upstream/master
 
 							if (!xflip)
 								pix ^= 0x7;
@@ -571,8 +739,13 @@ void lockon_state::objects_draw(  )
 					{
 						for (x = 0; x < 8; ++x)
 						{
+<<<<<<< HEAD
 							UINT8 col;
 							UINT8 pix = x;
+=======
+							uint8_t col;
+							uint8_t pix = x;
+>>>>>>> upstream/master
 
 							if (BIT(sc, x))
 							{
@@ -670,20 +843,29 @@ WRITE16_MEMBER(lockon_state::lockon_rotate_w)
 
 #define INCREMENT(ACC, CNT)              \
 do {                                     \
+<<<<<<< HEAD
 	carry = (UINT8)d##ACC > (UINT8)~ACC; \
+=======
+	carry = (uint8_t)d##ACC > (uint8_t)~ACC; \
+>>>>>>> upstream/master
 	ACC += d##ACC;                       \
 	if (carry) ++CNT;                    \
 } while(0)
 
 #define DECREMENT(ACC, CNT)              \
 do {                                     \
+<<<<<<< HEAD
 	carry = (UINT8)d##ACC > (UINT8)ACC;  \
+=======
+	carry = (uint8_t)d##ACC > (uint8_t)ACC;  \
+>>>>>>> upstream/master
 	ACC -= d##ACC;                       \
 	if (carry) --CNT;                    \
 } while(0)
 
 void lockon_state::rotate_draw( bitmap_ind16 &bitmap, const rectangle &cliprect )
 {
+<<<<<<< HEAD
 	UINT32 y;
 
 	/* Counters */
@@ -716,6 +898,40 @@ void lockon_state::rotate_draw( bitmap_ind16 &bitmap, const rectangle &cliprect 
 
 		UINT8 axx = axy;
 		UINT8 ayx = ayy;
+=======
+	uint32_t y;
+
+	/* Counters */
+	uint32_t cxy = m_xsal & 0xff;
+	uint32_t cyy = m_ysal & 0x1ff;
+
+	/* Accumulator values and deltas */
+	uint8_t axy  = m_x0ll & 0xff;
+	uint8_t daxy = m_dx0ll & 0xff;
+	uint8_t ayy  = m_y0ll & 0xff;
+	uint8_t dayy = m_dy0ll & 0xff;
+	uint8_t dayx = m_dyll & 0xff;
+	uint8_t daxx = m_dxll & 0xff;
+
+	uint32_t xy_up = BIT(m_xsal, 8);
+	uint32_t yx_up = BIT(m_dyll, 9);
+	uint32_t axx_en  = !BIT(m_dxll, 8);
+	uint32_t ayx_en  = !BIT(m_dyll, 8);
+	uint32_t axy_en  = !BIT(m_dx0ll, 8);
+	uint32_t ayy_en  = !BIT(m_dy0ll, 8);
+
+	for (y = 0; y <= cliprect.max_y; ++y)
+	{
+		uint32_t carry;
+		uint16_t *dst = &bitmap.pix16(y);
+		uint32_t x;
+
+		uint32_t cx = cxy;
+		uint32_t cy = cyy;
+
+		uint8_t axx = axy;
+		uint8_t ayx = ayy;
+>>>>>>> upstream/master
 
 		for (x = 0; x <= cliprect.max_x; ++x)
 		{
@@ -788,6 +1004,7 @@ void lockon_state::rotate_draw( bitmap_ind16 &bitmap, const rectangle &cliprect 
 
 void lockon_state::hud_draw( bitmap_ind16 &bitmap, const rectangle &cliprect )
 {
+<<<<<<< HEAD
 	UINT8   *tile_rom = memregion("gfx3")->base();
 	UINT32 offs;
 
@@ -802,6 +1019,22 @@ void lockon_state::hud_draw( bitmap_ind16 &bitmap, const rectangle &cliprect )
 		UINT16 colour;
 		UINT32 code;
 		UINT32 rom_a12_7;
+=======
+	uint8_t   *tile_rom = memregion("gfx3")->base();
+	uint32_t offs;
+
+	for (offs = 0x0; offs <= m_hud_ram.bytes(); offs += 2)
+	{
+		uint32_t y;
+		uint32_t y_pos;
+		uint32_t x_pos;
+		uint32_t y_size;
+		uint32_t x_size;
+		uint32_t layout;
+		uint16_t colour;
+		uint32_t code;
+		uint32_t rom_a12_7;
+>>>>>>> upstream/master
 
 		/* End of sprite list marker */
 		if (m_hud_ram[offs + 1] & 0x8000)
@@ -828,8 +1061,13 @@ void lockon_state::hud_draw( bitmap_ind16 &bitmap, const rectangle &cliprect )
 
 		for (y = cliprect.min_y; y <= cliprect.max_y; ++y)
 		{
+<<<<<<< HEAD
 			UINT32 xt;
 			UINT32 cy;
+=======
+			uint32_t xt;
+			uint32_t cy;
+>>>>>>> upstream/master
 
 			cy = y_pos + y;
 
@@ -841,9 +1079,15 @@ void lockon_state::hud_draw( bitmap_ind16 &bitmap, const rectangle &cliprect )
 
 			for (xt = 0; xt <= x_size; ++xt)
 			{
+<<<<<<< HEAD
 				UINT32 rom_a6_3;
 				UINT32 px;
 				UINT8   gfx_strip;
+=======
+				uint32_t rom_a6_3;
+				uint32_t px;
+				uint8_t   gfx_strip;
+>>>>>>> upstream/master
 
 				if (layout == 3)
 					rom_a6_3 = (BIT(cy, 4) << 3) | (BIT(cy, 3) << 2) | (BIT(xt, 1) << 1) | BIT(xt, 0);
@@ -863,11 +1107,19 @@ void lockon_state::hud_draw( bitmap_ind16 &bitmap, const rectangle &cliprect )
 				/* Draw */
 				for (px = 0; px < 8; ++px)
 				{
+<<<<<<< HEAD
 					UINT32 x = x_pos + (xt << 3) + px;
 
 					if (x <= cliprect.max_x)
 					{
 						UINT16 *dst = &bitmap.pix16(y, x);
+=======
+					uint32_t x = x_pos + (xt << 3) + px;
+
+					if (x <= cliprect.max_x)
+					{
+						uint16_t *dst = &bitmap.pix16(y, x);
+>>>>>>> upstream/master
 
 						if (BIT(gfx_strip, px ^ 7) && *dst > 255)
 							*dst = colour;
@@ -887,6 +1139,7 @@ void lockon_state::hud_draw( bitmap_ind16 &bitmap, const rectangle &cliprect )
 
 void lockon_state::video_start()
 {
+<<<<<<< HEAD
 	m_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(lockon_state::get_lockon_tile_info),this), TILEMAP_SCAN_ROWS, 8, 8, 64, 32);
 	m_tilemap->set_transparent_pen(0);
 
@@ -896,6 +1149,17 @@ void lockon_state::video_start()
 
 	/* 2kB of object ASIC palette RAM */
 	m_obj_pal_ram = auto_alloc_array(machine(), UINT8, 2048);
+=======
+	m_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(lockon_state::get_lockon_tile_info),this), TILEMAP_SCAN_ROWS, 8, 8, 64, 32);
+	m_tilemap->set_transparent_pen(0);
+
+	/* Allocate the two frame buffers for rotation */
+	m_back_buffer = std::make_unique<bitmap_ind16>(512, 512);
+	m_front_buffer = std::make_unique<bitmap_ind16>(512, 512);
+
+	/* 2kB of object ASIC palette RAM */
+	m_obj_pal_ram = std::make_unique<uint8_t[]>(2048);
+>>>>>>> upstream/master
 
 	/* Timer for ground display list callback */
 	m_bufend_timer = machine().scheduler().timer_alloc(timer_expired_delegate(FUNC(lockon_state::bufend_callback),this));
@@ -906,10 +1170,17 @@ void lockon_state::video_start()
 
 	save_item(NAME(*m_back_buffer));
 	save_item(NAME(*m_front_buffer));
+<<<<<<< HEAD
 	save_pointer(NAME(m_obj_pal_ram), 2048);
 }
 
 UINT32 lockon_state::screen_update_lockon(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+=======
+	save_pointer(NAME(m_obj_pal_ram.get()), 2048);
+}
+
+uint32_t lockon_state::screen_update_lockon(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+>>>>>>> upstream/master
 {
 	/* If screen output is disabled, fill with black */
 	if (!BIT(m_ctrl_reg, 7))
@@ -930,15 +1201,23 @@ UINT32 lockon_state::screen_update_lockon(screen_device &screen, bitmap_ind16 &b
 	return 0;
 }
 
+<<<<<<< HEAD
 void lockon_state::screen_eof_lockon(screen_device &screen, bool state)
+=======
+WRITE_LINE_MEMBER(lockon_state::screen_vblank_lockon)
+>>>>>>> upstream/master
 {
 	// on falling edge
 	if (!state)
 	{
 		/* Swap the frame buffers */
+<<<<<<< HEAD
 		bitmap_ind16 *tmp = m_front_buffer;
 		m_front_buffer = m_back_buffer;
 		m_back_buffer = tmp;
+=======
+		m_front_buffer.swap(m_back_buffer);
+>>>>>>> upstream/master
 
 		/* Draw the frame buffer layers */
 		scene_draw();

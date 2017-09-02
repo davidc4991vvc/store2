@@ -1,5 +1,11 @@
+<<<<<<< HEAD
 // license:???
 // copyright-holders:Lee Taylor,John Clegg,Tomasz Slanina
+=======
+// license:BSD-3-Clause
+// copyright-holders:Lee Taylor
+// thanks-to:John Clegg,Tomasz Slanina
+>>>>>>> upstream/master
 /***************************************************************************
 
   video.c
@@ -41,7 +47,11 @@ J Clegg
 
 PALETTE_INIT_MEMBER(travrusa_state, travrusa)
 {
+<<<<<<< HEAD
 	const UINT8 *color_prom = memregion("proms")->base();
+=======
+	const uint8_t *color_prom = memregion("proms")->base();
+>>>>>>> upstream/master
 	int i;
 
 	/* create a lookup table for the palette */
@@ -107,14 +117,22 @@ PALETTE_INIT_MEMBER(travrusa_state, travrusa)
 	/* sprites */
 	for (i = 0x80; i < 0x100; i++)
 	{
+<<<<<<< HEAD
 		UINT8 ctabentry = (color_prom[i - 0x80] & 0x0f) | 0x80;
+=======
+		uint8_t ctabentry = (color_prom[i - 0x80] & 0x0f) | 0x80;
+>>>>>>> upstream/master
 		palette.set_pen_indirect(i, ctabentry);
 	}
 }
 
 PALETTE_INIT_MEMBER(travrusa_state,shtrider)
 {
+<<<<<<< HEAD
 	const UINT8 *color_prom = memregion("proms")->base();
+=======
+	const uint8_t *color_prom = memregion("proms")->base();
+>>>>>>> upstream/master
 	int i;
 
 	/* create a lookup table for the palette */
@@ -180,7 +198,11 @@ PALETTE_INIT_MEMBER(travrusa_state,shtrider)
 	/* sprites */
 	for (i = 0x80; i < 0x100; i++)
 	{
+<<<<<<< HEAD
 		UINT8 ctabentry = (color_prom[i - 0x80] & 0x0f) | 0x80;
+=======
+		uint8_t ctabentry = (color_prom[i - 0x80] & 0x0f) | 0x80;
+>>>>>>> upstream/master
 		palette.set_pen_indirect(i, ctabentry);
 	}
 }
@@ -195,7 +217,11 @@ PALETTE_INIT_MEMBER(travrusa_state,shtrider)
 
 TILE_GET_INFO_MEMBER(travrusa_state::get_tile_info)
 {
+<<<<<<< HEAD
 	UINT8 attr = m_videoram[2 * tile_index + 1];
+=======
+	uint8_t attr = m_videoram[2 * tile_index + 1];
+>>>>>>> upstream/master
 	int flags = TILE_FLIPXY((attr & 0x30) >> 4);
 
 	tileinfo.group = ((attr & 0x0f) == 0x0f) ? 1 : 0;   /* tunnels */
@@ -218,7 +244,11 @@ void travrusa_state::video_start()
 {
 	save_item(NAME(m_scrollx));
 
+<<<<<<< HEAD
 	m_bg_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(travrusa_state::get_tile_info),this), TILEMAP_SCAN_ROWS, 8, 8, 64, 32);
+=======
+	m_bg_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(travrusa_state::get_tile_info),this), TILEMAP_SCAN_ROWS, 8, 8, 64, 32);
+>>>>>>> upstream/master
 
 	m_bg_tilemap->set_transmask(0, 0xff, 0x00); /* split type 0 is totally transparent in front half */
 	m_bg_tilemap->set_transmask(1, 0x3f, 0xc0); /* split type 1 has pens 6 and 7 opaque - tunnels */
@@ -271,8 +301,13 @@ WRITE8_MEMBER(travrusa_state::travrusa_flipscreen_w)
 
 	flip_screen_set(data & 1);
 
+<<<<<<< HEAD
 	coin_counter_w(machine(), 0, data & 0x02);
 	coin_counter_w(machine(), 1, data & 0x20);
+=======
+	machine().bookkeeping().coin_counter_w(0, data & 0x02);
+	machine().bookkeeping().coin_counter_w(1, data & 0x20);
+>>>>>>> upstream/master
 }
 
 
@@ -321,7 +356,11 @@ void travrusa_state::draw_sprites(bitmap_ind16 &bitmap,const rectangle &cliprect
 }
 
 
+<<<<<<< HEAD
 UINT32 travrusa_state::screen_update_travrusa(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+=======
+uint32_t travrusa_state::screen_update_travrusa(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+>>>>>>> upstream/master
 {
 	m_bg_tilemap->draw(screen, bitmap, cliprect, TILEMAP_DRAW_LAYER1, 0);
 	draw_sprites(bitmap,cliprect);

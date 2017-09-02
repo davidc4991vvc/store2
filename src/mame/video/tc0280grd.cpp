@@ -25,6 +25,7 @@ control registers:
 
 #define TC0280GRD_RAM_SIZE 0x2000
 
+<<<<<<< HEAD
 const device_type TC0280GRD = &device_creator<tc0280grd_device>;
 
 tc0280grd_device::tc0280grd_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
@@ -33,6 +34,16 @@ tc0280grd_device::tc0280grd_device(const machine_config &mconfig, const char *ta
 	//m_ctrl[8](0),
 	m_base_color(0),
 	m_gfxdecode(*this)
+=======
+DEFINE_DEVICE_TYPE(TC0280GRD, tc0280grd_device, "tc0280grd", "Taito TC0280GRD / TC0430GRW")
+
+tc0280grd_device::tc0280grd_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: device_t(mconfig, TC0280GRD, tag, owner, clock),
+	m_ram(nullptr),
+	//m_ctrl[8](0),
+	m_base_color(0),
+	m_gfxdecode(*this, finder_base::DUMMY_TAG)
+>>>>>>> upstream/master
 {
 }
 
@@ -56,12 +67,21 @@ void tc0280grd_device::device_start()
 	if(!m_gfxdecode->started())
 		throw device_missing_dependencies();
 
+<<<<<<< HEAD
 	m_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(tc0280grd_device::tc0280grd_get_tile_info),this), TILEMAP_SCAN_ROWS, 8, 8, 64, 64);
 	m_tilemap->set_transparent_pen(0);
 
 	m_ram = auto_alloc_array_clear(machine(), UINT16, TC0280GRD_RAM_SIZE / 2);
 
 	save_pointer(NAME(m_ram), TC0280GRD_RAM_SIZE / 2);
+=======
+	m_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(tc0280grd_device::tc0280grd_get_tile_info),this), TILEMAP_SCAN_ROWS, 8, 8, 64, 64);
+	m_tilemap->set_transparent_pen(0);
+
+	m_ram = make_unique_clear<uint16_t[]>(TC0280GRD_RAM_SIZE / 2);
+
+	save_pointer(NAME(m_ram.get()), TC0280GRD_RAM_SIZE / 2);
+>>>>>>> upstream/master
 	save_item(NAME(m_ctrl));
 }
 
@@ -135,9 +155,15 @@ void tc0280grd_device::tc0430grw_tilemap_update( int base_color )
 	tc0280grd_tilemap_update(base_color);
 }
 
+<<<<<<< HEAD
 void tc0280grd_device::zoom_draw( screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect, int xoffset, int yoffset, UINT32 priority, int xmultiply )
 {
 	UINT32 startx, starty;
+=======
+void tc0280grd_device::zoom_draw( screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect, int xoffset, int yoffset, uint32_t priority, int xmultiply )
+{
+	uint32_t startx, starty;
+>>>>>>> upstream/master
 	int incxx, incxy, incyx, incyy;
 
 	/* 24-bit signed */
@@ -146,9 +172,15 @@ void tc0280grd_device::zoom_draw( screen_device &screen, bitmap_ind16 &bitmap, c
 	if (startx & 0x800000)
 		startx -= 0x1000000;
 
+<<<<<<< HEAD
 	incxx = (INT16)m_ctrl[2];
 	incxx *= xmultiply;
 	incyx = (INT16)m_ctrl[3];
+=======
+	incxx = (int16_t)m_ctrl[2];
+	incxx *= xmultiply;
+	incyx = (int16_t)m_ctrl[3];
+>>>>>>> upstream/master
 
 	/* 24-bit signed */
 	starty = ((m_ctrl[4] & 0xff) << 16) + m_ctrl[5];
@@ -156,9 +188,15 @@ void tc0280grd_device::zoom_draw( screen_device &screen, bitmap_ind16 &bitmap, c
 	if (starty & 0x800000)
 		starty -= 0x1000000;
 
+<<<<<<< HEAD
 	incxy = (INT16)m_ctrl[6];
 	incxy *= xmultiply;
 	incyy = (INT16)m_ctrl[7];
+=======
+	incxy = (int16_t)m_ctrl[6];
+	incxy *= xmultiply;
+	incyy = (int16_t)m_ctrl[7];
+>>>>>>> upstream/master
 
 	startx -= xoffset * incxx + yoffset * incyx;
 	starty -= xoffset * incxy + yoffset * incyy;
@@ -169,12 +207,20 @@ void tc0280grd_device::zoom_draw( screen_device &screen, bitmap_ind16 &bitmap, c
 			0, priority);
 }
 
+<<<<<<< HEAD
 void tc0280grd_device::tc0280grd_zoom_draw( screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect, int xoffset, int yoffset, UINT32 priority )
+=======
+void tc0280grd_device::tc0280grd_zoom_draw( screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect, int xoffset, int yoffset, uint32_t priority )
+>>>>>>> upstream/master
 {
 	zoom_draw(screen, bitmap, cliprect, xoffset, yoffset, priority, 2);
 }
 
+<<<<<<< HEAD
 void tc0280grd_device::tc0430grw_zoom_draw( screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect, int xoffset, int yoffset, UINT32 priority )
+=======
+void tc0280grd_device::tc0430grw_zoom_draw( screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect, int xoffset, int yoffset, uint32_t priority )
+>>>>>>> upstream/master
 {
 	zoom_draw(screen, bitmap, cliprect, xoffset, yoffset, priority, 1);
 }

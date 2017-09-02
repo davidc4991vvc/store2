@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 // license:???
+=======
+// license:BSD-3-Clause
+>>>>>>> upstream/master
 // copyright-holders:Bernd Wiebelt
 /***************************************************************************
 
@@ -220,7 +224,15 @@
 #include "video/vector.h"
 #include "video/avgdvg.h"
 #include "sound/ay8910.h"
+<<<<<<< HEAD
 #include "machine/nvram.h"
+=======
+#include "machine/gen_latch.h"
+#include "machine/nvram.h"
+#include "machine/watchdog.h"
+#include "screen.h"
+#include "speaker.h"
+>>>>>>> upstream/master
 
 #include "omegrace.lh"
 
@@ -232,18 +244,31 @@ public:
 		: driver_device(mconfig, type, tag),
 		m_maincpu(*this, "maincpu"),
 		m_audiocpu(*this, "audiocpu"),
+<<<<<<< HEAD
 		m_dvg(*this, "dvg") { }
+=======
+		m_dvg(*this, "dvg"),
+		m_soundlatch(*this, "soundlatch") { }
+>>>>>>> upstream/master
 
 	required_device<cpu_device> m_maincpu;
 	required_device<cpu_device> m_audiocpu;
 	required_device<dvg_device> m_dvg;
+<<<<<<< HEAD
+=======
+	required_device<generic_latch_8_device> m_soundlatch;
+>>>>>>> upstream/master
 
 	DECLARE_READ8_MEMBER(omegrace_vg_go_r);
 	DECLARE_READ8_MEMBER(omegrace_spinner1_r);
 	DECLARE_WRITE8_MEMBER(omegrace_leds_w);
 	DECLARE_WRITE8_MEMBER(omegrace_soundlatch_w);
 	DECLARE_DRIVER_INIT(omegrace);
+<<<<<<< HEAD
 	virtual void machine_reset();
+=======
+	virtual void machine_reset() override;
+>>>>>>> upstream/master
 };
 
 
@@ -257,7 +282,11 @@ void omegrace_state::machine_reset()
 {
 	address_space &space = m_maincpu->space(AS_PROGRAM);
 	/* Omega Race expects the vector processor to be ready. */
+<<<<<<< HEAD
 m_dvg->reset_w(space, 0, 0);
+=======
+	m_dvg->reset_w(space, 0, 0);
+>>>>>>> upstream/master
 }
 
 
@@ -293,7 +322,11 @@ READ8_MEMBER(omegrace_state::omegrace_vg_go_r)
  * 5 4 3 2 1 0 for encoder 2 (not shifted..)
  */
 
+<<<<<<< HEAD
 static const UINT8 spinnerTable[64] =
+=======
+static const uint8_t spinnerTable[64] =
+>>>>>>> upstream/master
 {
 	0x00, 0x04, 0x14, 0x10, 0x18, 0x1c, 0x5c, 0x58,
 	0x50, 0x54, 0x44, 0x40, 0x48, 0x4c, 0x6c, 0x68,
@@ -322,6 +355,7 @@ READ8_MEMBER(omegrace_state::omegrace_spinner1_r)
 WRITE8_MEMBER(omegrace_state::omegrace_leds_w)
 {
 	/* bits 0 and 1 are coin counters */
+<<<<<<< HEAD
 	coin_counter_w(machine(), 0,data & 0x01);
 	coin_counter_w(machine(), 1,data & 0x02);
 
@@ -330,6 +364,16 @@ WRITE8_MEMBER(omegrace_state::omegrace_leds_w)
 	set_led_status(machine(), 1,~data & 0x08);
 	set_led_status(machine(), 2,~data & 0x10);
 	set_led_status(machine(), 3,~data & 0x20);
+=======
+	machine().bookkeeping().coin_counter_w(0,data & 0x01);
+	machine().bookkeeping().coin_counter_w(1,data & 0x02);
+
+	/* bits 2 to 5 are the start leds (4 and 5 cocktail only) */
+	output().set_led_value(0,~data & 0x04);
+	output().set_led_value(1,~data & 0x08);
+	output().set_led_value(2,~data & 0x10);
+	output().set_led_value(3,~data & 0x20);
+>>>>>>> upstream/master
 
 	/* bit 6 flips screen (not supported) */
 }
@@ -337,7 +381,11 @@ WRITE8_MEMBER(omegrace_state::omegrace_leds_w)
 
 WRITE8_MEMBER(omegrace_state::omegrace_soundlatch_w)
 {
+<<<<<<< HEAD
 	soundlatch_byte_w (space, offset, data);
+=======
+	m_soundlatch->write(space, offset, data);
+>>>>>>> upstream/master
 	m_audiocpu->set_input_line(0, HOLD_LINE);
 }
 
@@ -361,7 +409,11 @@ ADDRESS_MAP_END
 static ADDRESS_MAP_START( port_map, AS_IO, 8, omegrace_state )
 	ADDRESS_MAP_GLOBAL_MASK(0xff)
 	AM_RANGE(0x08, 0x08) AM_READ(omegrace_vg_go_r)
+<<<<<<< HEAD
 	AM_RANGE(0x09, 0x09) AM_READ(watchdog_reset_r)
+=======
+	AM_RANGE(0x09, 0x09) AM_DEVREAD("watchdog", watchdog_timer_device, reset_r)
+>>>>>>> upstream/master
 	AM_RANGE(0x0a, 0x0a) AM_DEVWRITE("dvg", dvg_device, reset_w)
 	AM_RANGE(0x0b, 0x0b) AM_READ_PORT("AVGDVG")             /* vg_halt */
 	AM_RANGE(0x10, 0x10) AM_READ_PORT("DSW1")               /* DIP SW C4 */
@@ -389,7 +441,11 @@ ADDRESS_MAP_END
 
 static ADDRESS_MAP_START( sound_port, AS_IO, 8, omegrace_state )
 	ADDRESS_MAP_GLOBAL_MASK(0xff)
+<<<<<<< HEAD
 	AM_RANGE(0x00, 0x00) AM_READ(soundlatch_byte_r) // the game reads from ay1 port b, but ay8912 only has port a
+=======
+	AM_RANGE(0x00, 0x00) AM_DEVREAD("soundlatch", generic_latch_8_device, read) // the game reads from ay1 port b, but ay8912 only has port a
+>>>>>>> upstream/master
 	AM_RANGE(0x00, 0x01) AM_DEVWRITE("ay1", ay8912_device, address_data_w)
 	AM_RANGE(0x02, 0x03) AM_DEVWRITE("ay2", ay8912_device, address_data_w)
 ADDRESS_MAP_END
@@ -479,7 +535,11 @@ static INPUT_PORTS_START( omegrace )
 	PORT_BIT( 0x3f, 0x00, IPT_DIAL ) PORT_SENSITIVITY(12) PORT_KEYDELTA(10) PORT_COCKTAIL
 
 	PORT_START("AVGDVG")    /* port 0x0b */
+<<<<<<< HEAD
 	PORT_BIT( 0x80, IP_ACTIVE_LOW, IPT_SPECIAL ) PORT_CUSTOM_MEMBER("dvg", dvg_device, done_r, NULL)
+=======
+	PORT_BIT( 0x80, IP_ACTIVE_LOW, IPT_SPECIAL ) PORT_CUSTOM_MEMBER("dvg", dvg_device, done_r, nullptr)
+>>>>>>> upstream/master
 INPUT_PORTS_END
 
 
@@ -490,7 +550,11 @@ INPUT_PORTS_END
  *
  *************************************/
 
+<<<<<<< HEAD
 static MACHINE_CONFIG_START( omegrace, omegrace_state )
+=======
+static MACHINE_CONFIG_START( omegrace )
+>>>>>>> upstream/master
 
 	/* basic machine hardware */
 
@@ -513,6 +577,11 @@ static MACHINE_CONFIG_START( omegrace, omegrace_state )
 
 	MCFG_NVRAM_ADD_0FILL("nvram")
 
+<<<<<<< HEAD
+=======
+	MCFG_WATCHDOG_ADD("watchdog")
+
+>>>>>>> upstream/master
 	/* video hardware */
 	MCFG_VECTOR_ADD("vector")
 	MCFG_SCREEN_ADD("screen", VECTOR)
@@ -527,6 +596,11 @@ static MACHINE_CONFIG_START( omegrace, omegrace_state )
 	/* sound hardware */
 	MCFG_SPEAKER_STANDARD_MONO("mono")
 
+<<<<<<< HEAD
+=======
+	MCFG_GENERIC_LATCH_8_ADD("soundlatch")
+
+>>>>>>> upstream/master
 	/* XTAL101 Crystal @ 12mhz */
 	/* through 74LS92, Pin 8 = divide by 12 */
 	MCFG_SOUND_ADD("ay1", AY8912, XTAL_12MHz/12)
@@ -595,14 +669,22 @@ ROM_END
 
 /*************************************
  *
+<<<<<<< HEAD
  *  Game specific initalization
+=======
+ *  Game specific initialization
+>>>>>>> upstream/master
  *
  *************************************/
 
 DRIVER_INIT_MEMBER(omegrace_state,omegrace)
 {
 	int i, len = memregion("user1")->bytes();
+<<<<<<< HEAD
 	UINT8 *prom = memregion("user1")->base();
+=======
+	uint8_t *prom = memregion("user1")->base();
+>>>>>>> upstream/master
 
 	/* Omega Race has two pairs of the state PROM output
 	 * lines swapped before going into the decoder.

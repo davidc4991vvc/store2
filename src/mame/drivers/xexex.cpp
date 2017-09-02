@@ -132,15 +132,29 @@ Unresolved Issues:
 ***************************************************************************/
 
 #include "emu.h"
+<<<<<<< HEAD
+=======
+#include "includes/xexex.h"
+#include "includes/konamipt.h"
+
+>>>>>>> upstream/master
 #include "cpu/m68000/m68000.h"
 #include "cpu/z80/z80.h"
 #include "machine/eepromser.h"
 #include "machine/k053252.h"
+<<<<<<< HEAD
 #include "sound/k054539.h"
 #include "sound/2151intf.h"
 #include "sound/flt_vol.h"
 #include "includes/xexex.h"
 #include "includes/konamipt.h"
+=======
+#include "sound/flt_vol.h"
+#include "sound/k054539.h"
+#include "sound/ym2151.h"
+#include "speaker.h"
+
+>>>>>>> upstream/master
 
 #define XE_DEBUG      0
 #define XE_SKIPIDLE   1
@@ -179,7 +193,11 @@ WRITE16_MEMBER(xexex_state::k053247_scattered_word_w)
 void xexex_state::xexex_objdma( int limiter )
 {
 	int counter, num_inactive;
+<<<<<<< HEAD
 	UINT16 *src, *dst;
+=======
+	uint16_t *src, *dst;
+>>>>>>> upstream/master
 
 	counter = m_frame;
 	m_frame = m_screen->frame_number();
@@ -259,6 +277,7 @@ WRITE16_MEMBER(xexex_state::control2_w)
 	parse_control2();
 }
 
+<<<<<<< HEAD
 
 WRITE16_MEMBER(xexex_state::sound_cmd1_w)
 {
@@ -279,16 +298,21 @@ WRITE16_MEMBER(xexex_state::sound_cmd2_w)
 		soundlatch2_byte_w(space, 0, data & 0xff);
 }
 
+=======
+>>>>>>> upstream/master
 WRITE16_MEMBER(xexex_state::sound_irq_w)
 {
 	m_audiocpu->set_input_line(0, HOLD_LINE);
 }
 
+<<<<<<< HEAD
 READ16_MEMBER(xexex_state::sound_status_r)
 {
 	return soundlatch3_byte_r(space, 0);
 }
 
+=======
+>>>>>>> upstream/master
 WRITE8_MEMBER(xexex_state::sound_bankswitch_w)
 {
 	membank("z80bank")->set_entry(data & 0x07);
@@ -375,10 +399,14 @@ static ADDRESS_MAP_START( main_map, AS_PROGRAM, 16, xexex_state )
 	AM_RANGE(0x0cc000, 0x0cc01f) AM_DEVWRITE("k053251", k053251_device, lsb_w)               // priority encoder
 //  AM_RANGE(0x0d0000, 0x0d001f) AM_DEVREADWRITE8("k053252", k053252_device, read, write, 0x00ff)                // CCU
 	AM_RANGE(0x0d4000, 0x0d4001) AM_WRITE(sound_irq_w)
+<<<<<<< HEAD
 	AM_RANGE(0x0d600c, 0x0d600d) AM_WRITE(sound_cmd1_w)
 	AM_RANGE(0x0d600e, 0x0d600f) AM_WRITE(sound_cmd2_w)
 	AM_RANGE(0x0d6014, 0x0d6015) AM_READ(sound_status_r)
 	AM_RANGE(0x0d6000, 0x0d601f) AM_RAM                                 // sound regs fall through
+=======
+	AM_RANGE(0x0d6000, 0x0d601f) AM_DEVICE8("k054321", k054321_device, main_map, 0x00ff)
+>>>>>>> upstream/master
 	AM_RANGE(0x0d8000, 0x0d8007) AM_DEVWRITE("k056832", k056832_device, b_word_w)                // VSCCS regs
 	AM_RANGE(0x0da000, 0x0da001) AM_READ_PORT("P1")
 	AM_RANGE(0x0da002, 0x0da003) AM_READ_PORT("P2")
@@ -409,9 +437,13 @@ static ADDRESS_MAP_START( sound_map, AS_PROGRAM, 8, xexex_state )
 	AM_RANGE(0xc000, 0xdfff) AM_RAM
 	AM_RANGE(0xe000, 0xe22f) AM_DEVREADWRITE("k054539", k054539_device, read, write)
 	AM_RANGE(0xec00, 0xec01) AM_DEVREADWRITE("ymsnd", ym2151_device, read, write)
+<<<<<<< HEAD
 	AM_RANGE(0xf000, 0xf000) AM_WRITE(soundlatch3_byte_w)
 	AM_RANGE(0xf002, 0xf002) AM_READ(soundlatch_byte_r)
 	AM_RANGE(0xf003, 0xf003) AM_READ(soundlatch2_byte_r)
+=======
+	AM_RANGE(0xf000, 0xf003) AM_DEVICE("k054321", k054321_device, sound_map)
+>>>>>>> upstream/master
 	AM_RANGE(0xf800, 0xf800) AM_WRITE(sound_bankswitch_w)
 ADDRESS_MAP_END
 
@@ -492,7 +524,11 @@ void xexex_state::machine_reset()
 	m_k054539->init_flags(k054539_device::REVERSE_STEREO);
 }
 
+<<<<<<< HEAD
 static MACHINE_CONFIG_START( xexex, xexex_state )
+=======
+static MACHINE_CONFIG_START( xexex )
+>>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", M68000, XTAL_32MHz/2) // 16MHz
@@ -521,18 +557,28 @@ static MACHINE_CONFIG_START( xexex, xexex_state )
 	MCFG_PALETTE_ENABLE_SHADOWS()
 	MCFG_PALETTE_ENABLE_HILIGHTS()
 
+<<<<<<< HEAD
 	MCFG_GFXDECODE_ADD("gfxdecode", "palette", empty)
 
 	MCFG_DEVICE_ADD("k056832", K056832, 0)
 	MCFG_K056832_CB(xexex_state, tile_callback)
 	MCFG_K056832_CONFIG("gfx1", 0, K056832_BPP_4, 1, 0, "none")
 	MCFG_K056832_GFXDECODE("gfxdecode")
+=======
+	MCFG_DEVICE_ADD("k056832", K056832, 0)
+	MCFG_K056832_CB(xexex_state, tile_callback)
+	MCFG_K056832_CONFIG("gfx1", K056832_BPP_4, 1, 0, "none")
+>>>>>>> upstream/master
 	MCFG_K056832_PALETTE("palette")
 
 	MCFG_DEVICE_ADD("k053246", K053246, 0)
 	MCFG_K053246_CB(xexex_state, sprite_callback)
+<<<<<<< HEAD
 	MCFG_K053246_CONFIG("gfx2", 1, NORMAL_PLANE_ORDER, -48, 32)
 	MCFG_K053246_GFXDECODE("gfxdecode")
+=======
+	MCFG_K053246_CONFIG("gfx2", NORMAL_PLANE_ORDER, -48, 32)
+>>>>>>> upstream/master
 	MCFG_K053246_PALETTE("palette")
 
 	MCFG_K053250_ADD("k053250", "palette", "screen", -5, -16)
@@ -546,6 +592,11 @@ static MACHINE_CONFIG_START( xexex, xexex_state )
 	/* sound hardware */
 	MCFG_SPEAKER_STANDARD_STEREO("lspeaker", "rspeaker")
 
+<<<<<<< HEAD
+=======
+	MCFG_K054321_ADD("k054321", ":lspeaker", ":rspeaker")
+
+>>>>>>> upstream/master
 	MCFG_YM2151_ADD("ymsnd", XTAL_32MHz/8) // 4MHz
 	MCFG_SOUND_ROUTE(0, "filter1l", 0.50)
 	MCFG_SOUND_ROUTE(0, "filter1r", 0.50)
@@ -601,6 +652,42 @@ ROM_START( xexex ) /* Europe, Version AA */
 	ROM_LOAD( "er5911.19b",  0x0000, 0x0080, CRC(155624cc) SHA1(457f921e3a5d053c53e4f1a44941eb0a1f22e1b2) )
 ROM_END
 
+<<<<<<< HEAD
+=======
+
+
+ROM_START( orius ) /* USA, Version AA */
+	ROM_REGION( 0x180000, "maincpu", 0 )
+	ROM_LOAD16_BYTE( "067uaa01.16d", 0x000000, 0x040000, CRC(f1263d3e) SHA1(c8a10b90e754ec7a72a23ac85b888f071ca40bb1) )
+	ROM_LOAD16_BYTE( "067uaa02.16f", 0x000001, 0x040000, CRC(77709f64) SHA1(c26f09c9723facb89ab8aae2a036be4e6892d4bf) )
+	ROM_LOAD16_BYTE( "067b03.13d",   0x100000, 0x040000, CRC(97833086) SHA1(a564f7b1b52c774d78a59f4418c7ecccaf94ad41) )
+	ROM_LOAD16_BYTE( "067b04.13f",   0x100001, 0x040000, CRC(26ec5dc8) SHA1(9da62683bfa8f16607cbea2d59a1446ec8588c5b) )
+
+	ROM_REGION( 0x020000, "audiocpu", 0 )
+	ROM_LOAD( "067uaa05.4e", 0x000000, 0x020000, CRC(0e33d6ec) SHA1(4dd68cb78c779e2d035e43fec35a7672ed1c259b) )
+
+	ROM_REGION( 0x200000, "gfx1", 0 )
+	ROM_LOAD32_WORD( "067b14.1n",   0x000000, 0x100000, CRC(02a44bfa) SHA1(ad95df4dbf8842820ef20f54407870afb6d0e4a3) )
+	ROM_LOAD32_WORD( "067b13.2n",   0x000002, 0x100000, CRC(633c8eb5) SHA1(a11f78003a1dffe2d8814d368155059719263082) )
+
+	ROM_REGION( 0x400000, "gfx2", 0 )
+	ROM_LOAD64_WORD( "067b12.17n",  0x000000, 0x100000, CRC(08d611b0) SHA1(9cac60131e0411f173acd8ef3f206e5e58a7e5d2) )
+	ROM_LOAD64_WORD( "067b11.19n",  0x000002, 0x100000, CRC(a26f7507) SHA1(6bf717cb9fcad59a2eafda967f14120b9ebbc8c5) )
+	ROM_LOAD64_WORD( "067b10.20n",  0x000004, 0x100000, CRC(ee31db8d) SHA1(c41874fb8b401ea9cdd327ee6239b5925418cf7b) )
+	ROM_LOAD64_WORD( "067b09.22n",  0x000006, 0x100000, CRC(88f072ef) SHA1(7ecc04dbcc29b715117e970cc96e11137a21b83a) )
+
+	ROM_REGION( 0x080000, "k053250", 0 )
+	ROM_LOAD( "067b08.22f",  0x000000, 0x080000, CRC(ca816b7b) SHA1(769ce3700e41200c34adec98598c0fe371fe1e6d) )
+
+	ROM_REGION( 0x300000, "k054539", 0 )
+	ROM_LOAD( "067b06.3e",   0x000000, 0x200000, CRC(3b12fce4) SHA1(c69172d9965b8da8a539812fac92d5f1a3c80d17) )
+	ROM_LOAD( "067b07.1e",   0x200000, 0x100000, CRC(ec87fe1b) SHA1(ec9823aea5a1fc5c47c8262e15e10b28be87231c) )
+
+	ROM_REGION( 0x80, "eeprom", 0 ) // default eeprom to prevent game booting upside down with error
+	ROM_LOAD( "er5911.19b",  0x0000, 0x0080, CRC(547ee4e4) SHA1(089601fcfa513f129d6e2587594b932d4a8fde18) ) //sldh
+ROM_END
+
+>>>>>>> upstream/master
 ROM_START( xexexa ) /* Asia, Version AA */
 	ROM_REGION( 0x180000, "maincpu", 0 )
 	ROM_LOAD16_BYTE( "067aaa01.16d", 0x000000, 0x040000, CRC(cf557144) SHA1(4ce587580d953b88864652dd66485d49ca719ec5) )
@@ -629,7 +716,11 @@ ROM_START( xexexa ) /* Asia, Version AA */
 	ROM_LOAD( "067b07.1e",   0x200000, 0x100000, CRC(ec87fe1b) SHA1(ec9823aea5a1fc5c47c8262e15e10b28be87231c) )
 
 	ROM_REGION( 0x80, "eeprom", 0 ) // default eeprom to prevent game booting upside down with error
+<<<<<<< HEAD
 	ROM_LOAD( "er5911.19b",  0x0000, 0x0080, CRC(051c14c6) SHA1(23addbaa2ce323c06551b343ca45dea4fd2b9eee) ) // sldh - No actual label so create a unique one for this set
+=======
+	ROM_LOAD( "er5911.19b",  0x0000, 0x0080, CRC(051c14c6) SHA1(23addbaa2ce323c06551b343ca45dea4fd2b9eee) ) // sldh
+>>>>>>> upstream/master
 ROM_END
 
 ROM_START( xexexj ) /* Japan, Version AA */
@@ -660,7 +751,11 @@ ROM_START( xexexj ) /* Japan, Version AA */
 	ROM_LOAD( "067b07.1e",   0x200000, 0x100000, CRC(ec87fe1b) SHA1(ec9823aea5a1fc5c47c8262e15e10b28be87231c) )
 
 	ROM_REGION( 0x80, "eeprom", 0 ) // default eeprom to prevent game booting upside down with error
+<<<<<<< HEAD
 	ROM_LOAD( "er5911.19b",  0x0000, 0x0080, CRC(79a79c7b) SHA1(02eb235226949af0147d6d0fd2bd3d7a68083ae6) ) // sldh - No actual label so create a unique one for this set
+=======
+	ROM_LOAD( "er5911.19b",  0x0000, 0x0080, CRC(79a79c7b) SHA1(02eb235226949af0147d6d0fd2bd3d7a68083ae6) ) // sldh
+>>>>>>> upstream/master
 ROM_END
 
 
@@ -671,12 +766,21 @@ DRIVER_INIT_MEMBER(xexex_state,xexex)
 	if (!strcmp(machine().system().name, "xexex"))
 	{
 		// Invulnerability
+<<<<<<< HEAD
 //      *(UINT16 *)(memregion("maincpu")->base() + 0x648d4) = 0x4a79;
 //      *(UINT16 *)(memregion("maincpu")->base() + 0x00008) = 0x5500;
+=======
+//      *(uint16_t *)(memregion("maincpu")->base() + 0x648d4) = 0x4a79;
+//      *(uint16_t *)(memregion("maincpu")->base() + 0x00008) = 0x5500;
+>>>>>>> upstream/master
 		m_strip_0x1a = 1;
 	}
 }
 
 GAME( 1991, xexex,  0,     xexex, xexex, xexex_state, xexex, ROT0, "Konami", "Xexex (ver EAA)", MACHINE_SUPPORTS_SAVE )
+<<<<<<< HEAD
+=======
+GAME( 1991, orius,  xexex, xexex, xexex, xexex_state, xexex, ROT0, "Konami", "Orius (ver UAA)", MACHINE_SUPPORTS_SAVE )
+>>>>>>> upstream/master
 GAME( 1991, xexexa, xexex, xexex, xexex, xexex_state, xexex, ROT0, "Konami", "Xexex (ver AAA)", MACHINE_SUPPORTS_SAVE )
 GAME( 1991, xexexj, xexex, xexex, xexex, xexex_state, xexex, ROT0, "Konami", "Xexex (ver JAA)", MACHINE_SUPPORTS_SAVE )

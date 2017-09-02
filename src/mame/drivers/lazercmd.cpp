@@ -235,6 +235,12 @@
 
 #include "emu.h"
 #include "includes/lazercmd.h"
+<<<<<<< HEAD
+=======
+#include "sound/volt_reg.h"
+#include "screen.h"
+#include "speaker.h"
+>>>>>>> upstream/master
 
 // color overlays, bbonk does not have an overlay
 #include "lazercmd.lh"
@@ -259,7 +265,11 @@ TIMER_DEVICE_CALLBACK_MEMBER(lazercmd_state::lazercmd_timer)
 	{
 		m_timer_count = 0;
 		m_sense_state ^= 1;
+<<<<<<< HEAD
 		m_maincpu->write_sense(m_sense_state ? ASSERT_LINE : CLEAR_LINE);
+=======
+		m_maincpu->set_input_line(S2650_SENSE_LINE, m_sense_state ? ASSERT_LINE : CLEAR_LINE);
+>>>>>>> upstream/master
 	}
 }
 
@@ -288,7 +298,11 @@ WRITE8_MEMBER(lazercmd_state::lazercmd_ctrl_port_w)
 /* triggered by REDC,r opcode */
 READ8_MEMBER(lazercmd_state::lazercmd_ctrl_port_r)
 {
+<<<<<<< HEAD
 	UINT8 data = 0;
+=======
+	uint8_t data = 0;
+>>>>>>> upstream/master
 	return data;
 }
 
@@ -300,7 +314,11 @@ WRITE8_MEMBER(lazercmd_state::lazercmd_data_port_w)
 /* triggered by REDD,r opcode */
 READ8_MEMBER(lazercmd_state::lazercmd_data_port_r)
 {
+<<<<<<< HEAD
 	UINT8 data = ioport("DSW")->read() & 0x0f;
+=======
+	uint8_t data = ioport("DSW")->read() & 0x0f;
+>>>>>>> upstream/master
 	return data;
 }
 
@@ -309,11 +327,18 @@ WRITE8_MEMBER(lazercmd_state::lazercmd_hardware_w)
 	switch (offset)
 	{
 		case 0: /* audio channels */
+<<<<<<< HEAD
 			m_dac_data = (data & 0x80) ^ ((data & 0x40) << 1) ^ ((data & 0x20) << 2) ^ ((data & 0x10) << 3);
 			if (m_dac_data)
 				m_dac->write_unsigned8(0xff);
 			else
 				m_dac->write_unsigned8(0);
+=======
+			m_dac0->write(BIT(data, 7));
+			m_dac1->write(BIT(data, 6));
+			m_dac2->write(BIT(data, 5));
+			m_dac3->write(BIT(data, 4));
+>>>>>>> upstream/master
 			break;
 		case 1: /* marker Y position */
 			m_marker_y = data;
@@ -335,11 +360,16 @@ WRITE8_MEMBER(lazercmd_state::medlanes_hardware_w)
 			/* bits 4 and 5 are used to control a sound board */
 			/* these could be used to control sound samples */
 			/* at the moment they are routed through the dac */
+<<<<<<< HEAD
 			m_dac_data = ((data & 0x20) << 2) ^ ((data & 0x10) << 3);
 			if (m_dac_data)
 				m_dac->write_unsigned8(0xff);
 			else
 				m_dac->write_unsigned8(0);
+=======
+			m_dac2->write(BIT(data, 5));
+			m_dac3->write(BIT(data, 4));
+>>>>>>> upstream/master
 			break;
 		case 1: /* marker Y position */
 			m_marker_y = data;
@@ -361,11 +391,16 @@ WRITE8_MEMBER(lazercmd_state::bbonk_hardware_w)
 			/* bits 4 and 5 are used to control a sound board */
 			/* these could be used to control sound samples */
 			/* at the moment they are routed through the dac */
+<<<<<<< HEAD
 			m_dac_data = ((data & 0x20) << 2) ^ ((data & 0x10) << 3);
 			if (m_dac_data)
 				m_dac->write_unsigned8(0xff);
 			else
 				m_dac->write_unsigned8(0);
+=======
+			m_dac2->write(BIT(data, 5));
+			m_dac3->write(BIT(data, 4));
+>>>>>>> upstream/master
 			break;
 		case 3: /* D5 inverts video?, D4 clears coin detected and D0 toggles on attract mode */
 			m_attract = data;
@@ -375,7 +410,11 @@ WRITE8_MEMBER(lazercmd_state::bbonk_hardware_w)
 
 READ8_MEMBER(lazercmd_state::lazercmd_hardware_r)
 {
+<<<<<<< HEAD
 	UINT8 data = 0;
+=======
+	uint8_t data = 0;
+>>>>>>> upstream/master
 
 	switch (offset)
 	{
@@ -442,7 +481,11 @@ static ADDRESS_MAP_START( bbonk_map, AS_PROGRAM, 8, lazercmd_state )
 ADDRESS_MAP_END
 
 
+<<<<<<< HEAD
 static ADDRESS_MAP_START( lazercmd_portmap, AS_IO, 8, lazercmd_state )
+=======
+static ADDRESS_MAP_START( lazercmd_portmap, AS_DATA, 8, lazercmd_state )
+>>>>>>> upstream/master
 	AM_RANGE(S2650_CTRL_PORT, S2650_CTRL_PORT) AM_READWRITE(lazercmd_ctrl_port_r, lazercmd_ctrl_port_w)
 	AM_RANGE(S2650_DATA_PORT, S2650_DATA_PORT) AM_READWRITE(lazercmd_data_port_r, lazercmd_data_port_w)
 ADDRESS_MAP_END
@@ -613,7 +656,10 @@ void lazercmd_state::machine_start()
 	save_item(NAME(m_marker_y));
 	save_item(NAME(m_timer_count));
 	save_item(NAME(m_sense_state));
+<<<<<<< HEAD
 	save_item(NAME(m_dac_data));
+=======
+>>>>>>> upstream/master
 	save_item(NAME(m_attract));
 }
 
@@ -623,12 +669,19 @@ void lazercmd_state::machine_reset()
 	m_marker_y = 0;
 	m_timer_count = 0;
 	m_sense_state = 0;
+<<<<<<< HEAD
 	m_dac_data = 0;
+=======
+>>>>>>> upstream/master
 	m_attract = 0;
 }
 
 
+<<<<<<< HEAD
 static MACHINE_CONFIG_START( lazercmd, lazercmd_state )
+=======
+static MACHINE_CONFIG_START( lazercmd )
+>>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", S2650, MASTER_CLOCK/12) /* 666 kHz? */
@@ -637,7 +690,11 @@ static MACHINE_CONFIG_START( lazercmd, lazercmd_state )
     within the line and frame blanking period
     thus requiring an extra loading of approx 3-5 */
 	MCFG_CPU_PROGRAM_MAP(lazercmd_map)
+<<<<<<< HEAD
 	MCFG_CPU_IO_MAP(lazercmd_portmap)
+=======
+	MCFG_CPU_DATA_MAP(lazercmd_portmap)
+>>>>>>> upstream/master
 	MCFG_TIMER_DRIVER_ADD_SCANLINE("scantimer", lazercmd_state, lazercmd_timer, "screen", 0, 1)
 
 	/* video hardware */
@@ -654,6 +711,7 @@ static MACHINE_CONFIG_START( lazercmd, lazercmd_state )
 	MCFG_PALETTE_INIT_OWNER(lazercmd_state, lazercmd)
 
 	/* sound hardware */
+<<<<<<< HEAD
 	MCFG_SPEAKER_STANDARD_MONO("mono")
 
 	MCFG_DAC_ADD("dac")
@@ -662,6 +720,22 @@ MACHINE_CONFIG_END
 
 
 static MACHINE_CONFIG_START( medlanes, lazercmd_state )
+=======
+	MCFG_SPEAKER_STANDARD_MONO("speaker")
+	MCFG_SOUND_ADD("dac0", DAC_1BIT, 0) MCFG_SOUND_ROUTE(ALL_OUTPUTS, "speaker", 0.99)
+	MCFG_SOUND_ADD("dac1", DAC_1BIT, 0) MCFG_SOUND_ROUTE(ALL_OUTPUTS, "speaker", 0.99)
+	MCFG_SOUND_ADD("dac2", DAC_1BIT, 0) MCFG_SOUND_ROUTE(ALL_OUTPUTS, "speaker", 0.99)
+	MCFG_SOUND_ADD("dac3", DAC_1BIT, 0) MCFG_SOUND_ROUTE(ALL_OUTPUTS, "speaker", 0.99)
+	MCFG_DEVICE_ADD("vref", VOLTAGE_REGULATOR, 0) MCFG_VOLTAGE_REGULATOR_OUTPUT(5.0)
+	MCFG_SOUND_ROUTE_EX(0, "dac0", 1.0, DAC_VREF_POS_INPUT)
+	MCFG_SOUND_ROUTE_EX(0, "dac1", 1.0, DAC_VREF_POS_INPUT)
+	MCFG_SOUND_ROUTE_EX(0, "dac2", 1.0, DAC_VREF_POS_INPUT)
+	MCFG_SOUND_ROUTE_EX(0, "dac3", 1.0, DAC_VREF_POS_INPUT)
+MACHINE_CONFIG_END
+
+
+static MACHINE_CONFIG_START( medlanes )
+>>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", S2650, MASTER_CLOCK/12) /* 666 kHz */
@@ -670,7 +744,11 @@ static MACHINE_CONFIG_START( medlanes, lazercmd_state )
     within the line and frame blanking period
     thus requiring an extra loading of approx 3-5 */
 	MCFG_CPU_PROGRAM_MAP(medlanes_map)
+<<<<<<< HEAD
 	MCFG_CPU_IO_MAP(lazercmd_portmap)
+=======
+	MCFG_CPU_DATA_MAP(lazercmd_portmap)
+>>>>>>> upstream/master
 	MCFG_TIMER_DRIVER_ADD_SCANLINE("scantimer", lazercmd_state, lazercmd_timer, "screen", 0, 1)
 
 	/* video hardware */
@@ -687,6 +765,7 @@ static MACHINE_CONFIG_START( medlanes, lazercmd_state )
 	MCFG_PALETTE_INIT_OWNER(lazercmd_state, lazercmd)
 
 	/* sound hardware */
+<<<<<<< HEAD
 	MCFG_SPEAKER_STANDARD_MONO("mono")
 
 	MCFG_DAC_ADD("dac")
@@ -695,6 +774,18 @@ MACHINE_CONFIG_END
 
 
 static MACHINE_CONFIG_START( bbonk, lazercmd_state )
+=======
+	MCFG_SPEAKER_STANDARD_MONO("speaker")
+	MCFG_SOUND_ADD("dac2", DAC_1BIT, 0) MCFG_SOUND_ROUTE(ALL_OUTPUTS, "speaker", 0.99)
+	MCFG_SOUND_ADD("dac3", DAC_1BIT, 0) MCFG_SOUND_ROUTE(ALL_OUTPUTS, "speaker", 0.99)
+	MCFG_DEVICE_ADD("vref", VOLTAGE_REGULATOR, 0) MCFG_VOLTAGE_REGULATOR_OUTPUT(5.0)
+	MCFG_SOUND_ROUTE_EX(0, "dac2", 1.0, DAC_VREF_POS_INPUT)
+	MCFG_SOUND_ROUTE_EX(0, "dac3", 1.0, DAC_VREF_POS_INPUT)
+MACHINE_CONFIG_END
+
+
+static MACHINE_CONFIG_START( bbonk )
+>>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", S2650, MASTER_CLOCK/12) /* 666 kHz */
@@ -703,7 +794,11 @@ static MACHINE_CONFIG_START( bbonk, lazercmd_state )
     within the line and frame blanking period
     thus requiring an extra loading of approx 3-5 */
 	MCFG_CPU_PROGRAM_MAP(bbonk_map)
+<<<<<<< HEAD
 	MCFG_CPU_IO_MAP(lazercmd_portmap)
+=======
+	MCFG_CPU_DATA_MAP(lazercmd_portmap)
+>>>>>>> upstream/master
 	MCFG_TIMER_DRIVER_ADD_SCANLINE("scantimer", lazercmd_state, bbonk_timer, "screen", 0, 1)
 
 	/* video hardware */
@@ -720,10 +815,19 @@ static MACHINE_CONFIG_START( bbonk, lazercmd_state )
 	MCFG_PALETTE_INIT_OWNER(lazercmd_state, lazercmd)
 
 	/* sound hardware */
+<<<<<<< HEAD
 	MCFG_SPEAKER_STANDARD_MONO("mono")
 
 	MCFG_DAC_ADD("dac")
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 1.0)
+=======
+	MCFG_SPEAKER_STANDARD_MONO("speaker")
+	MCFG_SOUND_ADD("dac2", DAC_1BIT, 0) MCFG_SOUND_ROUTE(ALL_OUTPUTS, "speaker", 0.99)
+	MCFG_SOUND_ADD("dac3", DAC_1BIT, 0) MCFG_SOUND_ROUTE(ALL_OUTPUTS, "speaker", 0.99)
+	MCFG_DEVICE_ADD("vref", VOLTAGE_REGULATOR, 0) MCFG_VOLTAGE_REGULATOR_OUTPUT(5.0)
+	MCFG_SOUND_ROUTE_EX(0, "dac2", 1.0, DAC_VREF_POS_INPUT)
+	MCFG_SOUND_ROUTE_EX(0, "dac3", 1.0, DAC_VREF_POS_INPUT)
+>>>>>>> upstream/master
 MACHINE_CONFIG_END
 
 /***************************************************************************
@@ -778,7 +882,11 @@ ROM_END
 DRIVER_INIT_MEMBER(lazercmd_state,lazercmd)
 {
 	int i, y;
+<<<<<<< HEAD
 	UINT8 *gfx = memregion("gfx1")->base();
+=======
+	uint8_t *gfx = memregion("gfx1")->base();
+>>>>>>> upstream/master
 
 /******************************************************************
  * To show the maze bit #6 and #7 of the video ram are used.
@@ -790,8 +898,13 @@ DRIVER_INIT_MEMBER(lazercmd_state,lazercmd)
  ******************************************************************/
 	for (i = 0; i < 0x40; i++)
 	{
+<<<<<<< HEAD
 		UINT8 *d = &gfx[0 * 64 * 10 + i * VERT_CHR];
 		UINT8 *s = &gfx[4 * 64 * 10 + i * VERT_FNT];
+=======
+		uint8_t *d = &gfx[0 * 64 * 10 + i * VERT_CHR];
+		uint8_t *s = &gfx[4 * 64 * 10 + i * VERT_FNT];
+>>>>>>> upstream/master
 
 		for (y = 0; y < VERT_CHR; y++)
 		{

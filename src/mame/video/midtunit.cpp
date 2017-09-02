@@ -1,5 +1,11 @@
+<<<<<<< HEAD
 // license:???
 // copyright-holders:Alex Pasadyn, Zsolt Vasvari, Kurt Mahan, Ernesto Corvi, Aaron Giles
+=======
+// license:BSD-3-Clause
+// copyright-holders:Alex Pasadyn, Zsolt Vasvari, Ernesto Corvi, Aaron Giles
+// thanks-to:Kurt Mahan
+>>>>>>> upstream/master
 /*************************************************************************
 
     Driver for Midway T-unit games.
@@ -43,6 +49,7 @@ enum
 
 
 /* graphics-related variables */
+<<<<<<< HEAD
 static UINT16   midtunit_control;
 
 /* videoram-related variables */
@@ -77,6 +84,42 @@ static struct
 	INT32       endskip;        /* pixels to skip at end */
 	UINT16      xstep;          /* 8.8 fixed number scale x factor */
 	UINT16      ystep;          /* 8.8 fixed number scale y factor */
+=======
+static uint16_t   midtunit_control;
+
+/* videoram-related variables */
+static uint32_t   gfxbank_offset[2];
+static std::unique_ptr<uint16_t[]>  local_videoram;
+static uint8_t    videobank_select;
+
+/* DMA-related variables */
+static uint16_t   dma_register[18];
+static struct
+{
+	uint8_t *     gfxrom;
+
+	uint32_t      offset;         /* source offset, in bits */
+	int32_t       rowbits;        /* source bits to skip each row */
+	int32_t       xpos;           /* x position, clipped */
+	int32_t       ypos;           /* y position, clipped */
+	int32_t       width;          /* horizontal pixel count */
+	int32_t       height;         /* vertical pixel count */
+	uint16_t      palette;        /* palette base */
+	uint16_t      color;          /* current foreground color with palette */
+
+	uint8_t       yflip;          /* yflip? */
+	uint8_t       bpp;            /* bits per pixel */
+	uint8_t       preskip;        /* preskip scale */
+	uint8_t       postskip;       /* postskip scale */
+	int32_t       topclip;        /* top clipping scanline */
+	int32_t       botclip;        /* bottom clipping scanline */
+	int32_t       leftclip;       /* left clipping column */
+	int32_t       rightclip;      /* right clipping column */
+	int32_t       startskip;      /* pixels to skip at start */
+	int32_t       endskip;        /* pixels to skip at end */
+	uint16_t      xstep;          /* 8.8 fixed number scale x factor */
+	uint16_t      ystep;          /* 8.8 fixed number scale y factor */
+>>>>>>> upstream/master
 } dma_state;
 
 
@@ -90,7 +133,13 @@ static struct
 VIDEO_START_MEMBER(midtunit_state,midtunit)
 {
 	/* allocate memory */
+<<<<<<< HEAD
 	local_videoram = auto_alloc_array(machine(), UINT16, 0x100000/2);
+=======
+	local_videoram = std::make_unique<uint16_t[]>(0x100000/2);
+
+	m_dma_timer = timer_alloc(TIMER_DMA);
+>>>>>>> upstream/master
 
 	/* reset all the globals */
 	gfxbank_offset[0] = 0x000000;
@@ -103,7 +152,11 @@ VIDEO_START_MEMBER(midtunit_state,midtunit)
 	/* register for state saving */
 	save_item(NAME(midtunit_control));
 	save_item(NAME(gfxbank_offset));
+<<<<<<< HEAD
 	save_pointer(NAME(local_videoram), 0x100000/sizeof(local_videoram[0]));
+=======
+	save_pointer(NAME(local_videoram.get()), 0x100000/sizeof(local_videoram[0]));
+>>>>>>> upstream/master
 	save_item(NAME(videobank_select));
 	save_item(NAME(dma_register));
 }
@@ -133,7 +186,11 @@ VIDEO_START_MEMBER(midxunit_state,midxunit)
 
 READ16_MEMBER(midtunit_state::midtunit_gfxrom_r)
 {
+<<<<<<< HEAD
 	UINT8 *base = m_gfxrom->base() + gfxbank_offset[(offset >> 21) & 1];
+=======
+	uint8_t *base = m_gfxrom->base() + gfxbank_offset[(offset >> 21) & 1];
+>>>>>>> upstream/master
 	offset = (offset & 0x01fffff) * 2;
 	return base[offset] | (base[offset + 1] << 8);
 }
@@ -141,7 +198,11 @@ READ16_MEMBER(midtunit_state::midtunit_gfxrom_r)
 
 READ16_MEMBER(midtunit_state::midwunit_gfxrom_r)
 {
+<<<<<<< HEAD
 	UINT8 *base = m_gfxrom->base() + gfxbank_offset[0];
+=======
+	uint8_t *base = m_gfxrom->base() + gfxbank_offset[0];
+>>>>>>> upstream/master
 	offset *= 2;
 	return base[offset] | (base[offset + 1] << 8);
 }
@@ -227,13 +288,21 @@ READ16_MEMBER(midtunit_state::midtunit_vram_color_r)
 
 TMS340X0_TO_SHIFTREG_CB_MEMBER(midtunit_state::to_shiftreg)
 {
+<<<<<<< HEAD
 	memcpy(shiftreg, &local_videoram[address >> 3], 2 * 512 * sizeof(UINT16));
+=======
+	memcpy(shiftreg, &local_videoram[address >> 3], 2 * 512 * sizeof(uint16_t));
+>>>>>>> upstream/master
 }
 
 
 TMS340X0_FROM_SHIFTREG_CB_MEMBER(midtunit_state::from_shiftreg)
 {
+<<<<<<< HEAD
 	memcpy(&local_videoram[address >> 3], shiftreg, 2 * 512 * sizeof(UINT16));
+=======
+	memcpy(&local_videoram[address >> 3], shiftreg, 2 * 512 * sizeof(uint16_t));
+>>>>>>> upstream/master
 }
 
 
@@ -339,7 +408,11 @@ typedef void (*dma_draw_func)(void);
 
 /*** fast pixel extractors ***/
 #if !defined(ALIGN_SHORTS) && defined(LSB_FIRST)
+<<<<<<< HEAD
 #define EXTRACTGEN(m)   ((*(UINT16 *)&base[o >> 3] >> (o & 7)) & (m))
+=======
+#define EXTRACTGEN(m)   ((*(uint16_t *)&base[o >> 3] >> (o & 7)) & (m))
+>>>>>>> upstream/master
 #elif defined(powerc)
 #define EXTRACTGEN(m)   ((__lhbrx(base, o >> 3) >> (o & 7)) & (m))
 #else
@@ -350,10 +423,17 @@ typedef void (*dma_draw_func)(void);
 #define DMA_DRAW_FUNC_BODY(name, bitsperpixel, extractor, xflip, skip, scale, zero, nonzero) \
 {                                                                               \
 	int height = dma_state.height << 8;                                         \
+<<<<<<< HEAD
 	UINT8 *base = dma_state.gfxrom;                                                 \
 	UINT32 offset = dma_state.offset;                                           \
 	UINT16 pal = dma_state.palette;                                             \
 	UINT16 color = pal | dma_state.color;                                       \
+=======
+	uint8_t *base = dma_state.gfxrom;                                                 \
+	uint32_t offset = dma_state.offset;                                           \
+	uint16_t pal = dma_state.palette;                                             \
+	uint16_t color = pal | dma_state.color;                                       \
+>>>>>>> upstream/master
 	int sy = dma_state.ypos, iy = 0, ty;                                        \
 	int bpp = bitsperpixel;                                                     \
 	int mask = (1 << bpp) - 1;                                                  \
@@ -366,14 +446,24 @@ typedef void (*dma_draw_func)(void);
 		int endskip = dma_state.endskip << 8;                                   \
 		int width = dma_state.width << 8;                                       \
 		int sx = dma_state.xpos, ix = 0, tx;                                    \
+<<<<<<< HEAD
 		UINT32 o = offset;                                                      \
 		int pre, post;                                                          \
 		UINT16 *d;                                                              \
+=======
+		uint32_t o = offset;                                                      \
+		int pre, post;                                                          \
+		uint16_t *d;                                                              \
+>>>>>>> upstream/master
 																				\
 		/* handle skipping */                                                   \
 		if (skip)                                                               \
 		{                                                                       \
+<<<<<<< HEAD
 			UINT8 value = EXTRACTGEN(0xff);                                     \
+=======
+			uint8_t value = EXTRACTGEN(0xff);                                     \
+>>>>>>> upstream/master
 			o += 8;                                                             \
 																				\
 			/* adjust for preskip */                                            \
@@ -504,7 +594,11 @@ typedef void (*dma_draw_func)(void);
 				if (width > 0) o += width * bpp;                                \
 				while (ty--)                                                    \
 				{                                                               \
+<<<<<<< HEAD
 					UINT8 value = EXTRACTGEN(0xff);                             \
+=======
+					uint8_t value = EXTRACTGEN(0xff);                             \
+>>>>>>> upstream/master
 					o += 8;                                                     \
 					pre = (value & 0x0f) << dma_state.preskip;                  \
 					post = ((value >> 4) & 0x0f) << dma_state.postskip;         \
@@ -588,7 +682,11 @@ void midtunit_state::device_timer(emu_timer &timer, device_timer_id id, int para
 		m_maincpu->set_input_line(0, ASSERT_LINE);
 		break;
 	default:
+<<<<<<< HEAD
 		assert_always(FALSE, "Unknown id in midtunit_state::device_timer");
+=======
+		assert_always(false, "Unknown id in midtunit_state::device_timer");
+>>>>>>> upstream/master
 	}
 }
 
@@ -659,14 +757,22 @@ READ16_MEMBER(midtunit_state::midtunit_dma_r)
 
 WRITE16_MEMBER(midtunit_state::midtunit_dma_w)
 {
+<<<<<<< HEAD
 	static const UINT8 register_map[2][16] =
+=======
+	static const uint8_t register_map[2][16] =
+>>>>>>> upstream/master
 	{
 		{ 0,1,2,3,4,5,6,7,8,9,10,11,16,17,14,15 },
 		{ 0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15 }
 	};
 	int regbank = (dma_register[DMA_CONFIG] >> 5) & 1;
 	int command, bpp, regnum;
+<<<<<<< HEAD
 	UINT32 gfxoffset;
+=======
+	uint32_t gfxoffset;
+>>>>>>> upstream/master
 	int pixels = 0;
 
 	/* blend with the current register contents */
@@ -789,7 +895,11 @@ if (LOG_DMA)
 
 	/* signal we're done */
 skipdma:
+<<<<<<< HEAD
 	timer_set(attotime::from_nsec(41 * pixels), TIMER_DMA);
+=======
+	m_dma_timer->adjust(attotime::from_nsec(41 * pixels));
+>>>>>>> upstream/master
 
 	g_profiler.stop();
 }
@@ -804,8 +914,13 @@ skipdma:
 
 TMS340X0_SCANLINE_IND16_CB_MEMBER(midtunit_state::scanline_update)
 {
+<<<<<<< HEAD
 	UINT16 *src = &local_videoram[(params->rowaddr << 9) & 0x3fe00];
 	UINT16 *dest = &bitmap.pix16(scanline);
+=======
+	uint16_t *src = &local_videoram[(params->rowaddr << 9) & 0x3fe00];
+	uint16_t *dest = &bitmap.pix16(scanline);
+>>>>>>> upstream/master
 	int coladdr = params->coladdr << 1;
 	int x;
 
@@ -816,9 +931,15 @@ TMS340X0_SCANLINE_IND16_CB_MEMBER(midtunit_state::scanline_update)
 
 TMS340X0_SCANLINE_IND16_CB_MEMBER(midxunit_state::scanline_update)
 {
+<<<<<<< HEAD
 	UINT32 fulladdr = ((params->rowaddr << 16) | params->coladdr) >> 3;
 	UINT16 *src = &local_videoram[fulladdr & 0x3fe00];
 	UINT16 *dest = &bitmap.pix16(scanline);
+=======
+	uint32_t fulladdr = ((params->rowaddr << 16) | params->coladdr) >> 3;
+	uint16_t *src = &local_videoram[fulladdr & 0x3fe00];
+	uint16_t *dest = &bitmap.pix16(scanline);
+>>>>>>> upstream/master
 	int x;
 
 	/* copy the non-blanked portions of this scanline */

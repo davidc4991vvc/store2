@@ -47,7 +47,11 @@
 ***************************************************************************/
 PALETTE_INIT_MEMBER(galaxold_state,galaxold)
 {
+<<<<<<< HEAD
 	const UINT8 *color_prom = memregion("proms")->base();
+=======
+	const uint8_t *color_prom = memregion("proms")->base();
+>>>>>>> upstream/master
 	int i, len;
 
 
@@ -123,7 +127,11 @@ PALETTE_INIT_MEMBER(galaxold_state,stratgyx)
 
 PALETTE_INIT_MEMBER(galaxold_state,rockclim)
 {
+<<<<<<< HEAD
 	const UINT8 *color_prom = memregion("proms")->base();
+=======
+	const uint8_t *color_prom = memregion("proms")->base();
+>>>>>>> upstream/master
 	int i, len;
 
 
@@ -172,7 +180,11 @@ PALETTE_INIT_MEMBER(galaxold_state,rockclim)
 ***************************************************************************/
 PALETTE_INIT_MEMBER(galaxold_state,darkplnt)
 {
+<<<<<<< HEAD
 	const UINT8 *color_prom = memregion("proms")->base();
+=======
+	const uint8_t *color_prom = memregion("proms")->base();
+>>>>>>> upstream/master
 	int i;
 
 
@@ -292,7 +304,11 @@ PALETTE_INIT_MEMBER(galaxold_state,mariner)
 /* swapped r/g/b hook-up */
 PALETTE_INIT_MEMBER(galaxold_state,dambustr)
 {
+<<<<<<< HEAD
 	const UINT8 *color_prom = memregion("proms")->base();
+=======
+	const uint8_t *color_prom = memregion("proms")->base();
+>>>>>>> upstream/master
 	int base = BACKGROUND_COLOR_BASE;
 	int i, len;
 
@@ -402,12 +418,21 @@ void galaxold_state::state_save_register()
 
 void galaxold_state::video_start_common()
 {
+<<<<<<< HEAD
 	m_modify_charcode = 0;
 	m_modify_spritecode = 0;
 	m_modify_color = 0;
 	m_modify_ypos = 0;
 
 	m_draw_bullets = 0;
+=======
+	m_modify_charcode = nullptr;
+	m_modify_spritecode = nullptr;
+	m_modify_color = nullptr;
+	m_modify_ypos = nullptr;
+
+	m_draw_bullets = nullptr;
+>>>>>>> upstream/master
 
 	m_draw_background = &galaxold_state::galaxold_draw_background;
 	m_background_enable = 0;
@@ -428,7 +453,11 @@ void galaxold_state::video_start_common()
 VIDEO_START_MEMBER(galaxold_state,galaxold_plain)
 {
 	video_start_common();
+<<<<<<< HEAD
 	m_bg_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(galaxold_state::get_tile_info),this),TILEMAP_SCAN_ROWS,8,8,32,32);
+=======
+	m_bg_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(galaxold_state::get_tile_info),this),TILEMAP_SCAN_ROWS,8,8,32,32);
+>>>>>>> upstream/master
 	m_bg_tilemap->set_transparent_pen(0);
 
 	m_bg_tilemap->set_scroll_cols(32);
@@ -540,6 +569,17 @@ VIDEO_START_MEMBER(galaxold_state,dkongjrm)
 	m_spriteram2_present= 1;
 }
 
+<<<<<<< HEAD
+=======
+VIDEO_START_MEMBER(galaxold_state,dkongjrmc)
+{
+	VIDEO_START_CALL_MEMBER(galaxold_plain);
+
+	m_modify_charcode   = &galaxold_state::pisces_modify_charcode;
+	m_modify_spritecode = &galaxold_state::dkongjrmc_modify_spritecode;
+}
+
+>>>>>>> upstream/master
 VIDEO_START_MEMBER(galaxold_state,scorpion)
 {
 	VIDEO_START_CALL_MEMBER(scrambold);
@@ -547,7 +587,11 @@ VIDEO_START_MEMBER(galaxold_state,scorpion)
 	m_modify_spritecode = &galaxold_state::batman2_modify_spritecode;
 }
 
+<<<<<<< HEAD
 void galaxold_state::pisces_modify_spritecode(UINT8 *spriteram, int *code, int *flipx, int *flipy, int offs)
+=======
+void galaxold_state::pisces_modify_spritecode(uint8_t *spriteram, int *code, int *flipx, int *flipy, int offs)
+>>>>>>> upstream/master
 {
 	*code |= (m_gfxbank[0] << 6);
 }
@@ -584,7 +628,11 @@ VIDEO_START_MEMBER(galaxold_state,theend)
 }
 #endif
 
+<<<<<<< HEAD
 void galaxold_state::mooncrst_modify_spritecode(UINT8 *spriteram, int *code, int *flipx, int *flipy, int offs)
+=======
+void galaxold_state::mooncrst_modify_spritecode(uint8_t *spriteram, int *code, int *flipx, int *flipy, int offs)
+>>>>>>> upstream/master
 {
 	if (m_gfxbank[2] && ((*code & 0x30) == 0x20))
 	{
@@ -600,6 +648,7 @@ VIDEO_START_MEMBER(galaxold_state,mooncrst)
 	m_modify_spritecode = &galaxold_state::mooncrst_modify_spritecode;
 }
 
+<<<<<<< HEAD
 void galaxold_state::batman2_modify_charcode(UINT16 *code, UINT8 x)
 {
 	if (*code & 0x80)
@@ -618,12 +667,18 @@ VIDEO_START_MEMBER(galaxold_state,batman2)
 
 
 
+=======
+>>>>>>> upstream/master
 void galaxold_state::rockclim_draw_background(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
 {
 	m_rockclim_tilemap->draw(screen, bitmap, cliprect, 0,0);
 }
 
+<<<<<<< HEAD
 void galaxold_state::rockclim_modify_spritecode(UINT8 *spriteram, int *code, int *flipx, int *flipy, int offs)
+=======
+void galaxold_state::rockclim_modify_spritecode(uint8_t *spriteram, int *code, int *flipx, int *flipy, int offs)
+>>>>>>> upstream/master
 {
 	if (m_gfxbank[2])    *code|=0x40;
 }
@@ -631,7 +686,11 @@ void galaxold_state::rockclim_modify_spritecode(UINT8 *spriteram, int *code, int
 VIDEO_START_MEMBER(galaxold_state,rockclim)
 {
 	VIDEO_START_CALL_MEMBER(galaxold);
+<<<<<<< HEAD
 	m_rockclim_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(galaxold_state::rockclim_get_tile_info),this),TILEMAP_SCAN_ROWS,8,8,64,32);
+=======
+	m_rockclim_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(galaxold_state::rockclim_get_tile_info),this),TILEMAP_SCAN_ROWS,8,8,64,32);
+>>>>>>> upstream/master
 
 	m_draw_background = &galaxold_state::rockclim_draw_background;
 	m_modify_charcode = &galaxold_state::mooncrst_modify_charcode;
@@ -645,9 +704,15 @@ VIDEO_START_MEMBER(galaxold_state,rockclim)
 TILE_GET_INFO_MEMBER(galaxold_state::drivfrcg_get_tile_info)
 {
 	int code = m_videoram[tile_index];
+<<<<<<< HEAD
 	UINT8 x = tile_index & 0x1f;
 	UINT8 color = m_attributesram[(x << 1) | 1] & 7;
 	UINT8 bank = m_attributesram[(x << 1) | 1] & 0x30;
+=======
+	uint8_t x = tile_index & 0x1f;
+	uint8_t color = m_attributesram[(x << 1) | 1] & 7;
+	uint8_t bank = m_attributesram[(x << 1) | 1] & 0x30;
+>>>>>>> upstream/master
 
 	code |= (bank << 4);
 	color |= ((m_attributesram[(x << 1) | 1] & 0x40) >> 3);
@@ -658,7 +723,11 @@ TILE_GET_INFO_MEMBER(galaxold_state::drivfrcg_get_tile_info)
 VIDEO_START_MEMBER(galaxold_state,drivfrcg)
 {
 	video_start_common();
+<<<<<<< HEAD
 	m_bg_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(galaxold_state::drivfrcg_get_tile_info),this),TILEMAP_SCAN_ROWS,8,8,32,32);
+=======
+	m_bg_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(galaxold_state::drivfrcg_get_tile_info),this),TILEMAP_SCAN_ROWS,8,8,32,32);
+>>>>>>> upstream/master
 
 	m_bg_tilemap->set_transparent_pen(0);
 	m_bg_tilemap->set_scroll_cols(32);
@@ -672,7 +741,11 @@ VIDEO_START_MEMBER(galaxold_state,drivfrcg)
 VIDEO_START_MEMBER(galaxold_state,ad2083)
 {
 	video_start_common();
+<<<<<<< HEAD
 	m_bg_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(galaxold_state::drivfrcg_get_tile_info),this),TILEMAP_SCAN_ROWS,8,8,32,32);
+=======
+	m_bg_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(galaxold_state::drivfrcg_get_tile_info),this),TILEMAP_SCAN_ROWS,8,8,32,32);
+>>>>>>> upstream/master
 
 	m_bg_tilemap->set_transparent_pen(0);
 	m_bg_tilemap->set_scroll_cols(32);
@@ -696,9 +769,15 @@ WRITE8_MEMBER(galaxold_state::racknrol_tiles_bank_w)
 TILE_GET_INFO_MEMBER(galaxold_state::racknrol_get_tile_info)
 {
 	int code = m_videoram[tile_index];
+<<<<<<< HEAD
 	UINT8 x = tile_index & 0x1f;
 	UINT8 color = m_attributesram[(x << 1) | 1] & 7;
 	UINT8 bank = m_racknrol_tiles_bank[x] & 7;
+=======
+	uint8_t x = tile_index & 0x1f;
+	uint8_t color = m_attributesram[(x << 1) | 1] & 7;
+	uint8_t bank = m_racknrol_tiles_bank[x] & 7;
+>>>>>>> upstream/master
 
 	code |= (bank << 8);
 
@@ -708,7 +787,11 @@ TILE_GET_INFO_MEMBER(galaxold_state::racknrol_get_tile_info)
 VIDEO_START_MEMBER(galaxold_state,racknrol)
 {
 	video_start_common();
+<<<<<<< HEAD
 	m_bg_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(galaxold_state::racknrol_get_tile_info),this),TILEMAP_SCAN_ROWS,8,8,32,32);
+=======
+	m_bg_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(galaxold_state::racknrol_get_tile_info),this),TILEMAP_SCAN_ROWS,8,8,32,32);
+>>>>>>> upstream/master
 
 	m_bg_tilemap->set_transparent_pen(0);
 	m_bg_tilemap->set_scroll_cols(32);
@@ -722,16 +805,26 @@ VIDEO_START_MEMBER(galaxold_state,racknrol)
 TILE_GET_INFO_MEMBER(galaxold_state::harem_get_tile_info)
 {
 	int code = m_videoram[tile_index];
+<<<<<<< HEAD
 	UINT8 x = tile_index & 0x1f;
 	UINT8 color = m_attributesram[(x << 1) | 1] & 7;
 	UINT8 bank = BIT(m_racknrol_tiles_bank[0], x/4);    // 1 bit every 4 columns
+=======
+	uint8_t x = tile_index & 0x1f;
+	uint8_t color = m_attributesram[(x << 1) | 1] & 7;
+	uint8_t bank = BIT(m_racknrol_tiles_bank[0], x/4);    // 1 bit every 4 columns
+>>>>>>> upstream/master
 
 	code  |= bank * 0x200;
 
 	SET_TILE_INFO_MEMBER(0, code, color, 0);
 }
 
+<<<<<<< HEAD
 void galaxold_state::harem_modify_spritecode(UINT8 *spriteram, int *code, int *flipx, int *flipy, int offs)
+=======
+void galaxold_state::harem_modify_spritecode(uint8_t *spriteram, int *code, int *flipx, int *flipy, int offs)
+>>>>>>> upstream/master
 {
 	*code |= (m_gfxbank[0] << 7) | 0x40;
 }
@@ -739,7 +832,11 @@ void galaxold_state::harem_modify_spritecode(UINT8 *spriteram, int *code, int *f
 VIDEO_START_MEMBER(galaxold_state,harem)
 {
 	video_start_common();
+<<<<<<< HEAD
 	m_bg_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(galaxold_state::harem_get_tile_info),this),TILEMAP_SCAN_ROWS,8,8,32,32);
+=======
+	m_bg_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(galaxold_state::harem_get_tile_info),this),TILEMAP_SCAN_ROWS,8,8,32,32);
+>>>>>>> upstream/master
 //  m_bg_tilemap->set_transparent_pen(0);   // opaque tilemap to get sky and sand colors
 
 	m_bg_tilemap->set_scroll_cols(32);
@@ -767,10 +864,17 @@ VIDEO_START_MEMBER(galaxold_state,bongo)
 
 TILE_GET_INFO_MEMBER(galaxold_state::dambustr_get_tile_info2)
 {
+<<<<<<< HEAD
 	UINT8 x = tile_index & 0x1f;
 
 	UINT16 code = m_dambustr_videoram2[tile_index];
 	UINT8 color = m_attributesram[(x << 1) | 1] & m_color_mask;
+=======
+	uint8_t x = tile_index & 0x1f;
+
+	uint16_t code = m_dambustr_videoram2[tile_index];
+	uint8_t color = m_attributesram[(x << 1) | 1] & m_color_mask;
+>>>>>>> upstream/master
 
 	if (m_modify_charcode)
 	{
@@ -803,11 +907,19 @@ VIDEO_START_MEMBER(galaxold_state,dambustr)
 	m_draw_bullets = &galaxold_state::dambustr_draw_bullets;
 
 	/* allocate the temporary bitmap for the background priority */
+<<<<<<< HEAD
 	m_dambustr_tmpbitmap = auto_bitmap_ind16_alloc(machine(), m_screen->width(), m_screen->height());
 
 	/* make a copy of the tilemap to emulate background priority */
 	m_dambustr_videoram2 = auto_alloc_array(machine(), UINT8, 0x0400);
 	m_dambustr_tilemap2 = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(galaxold_state::dambustr_get_tile_info2),this),TILEMAP_SCAN_ROWS,8,8,32,32);
+=======
+	m_dambustr_tmpbitmap = std::make_unique<bitmap_ind16>(m_screen->width(), m_screen->height());
+
+	/* make a copy of the tilemap to emulate background priority */
+	m_dambustr_videoram2 = std::make_unique<uint8_t[]>(0x0400);
+	m_dambustr_tilemap2 = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(galaxold_state::dambustr_get_tile_info2),this),TILEMAP_SCAN_ROWS,8,8,32,32);
+>>>>>>> upstream/master
 
 	m_dambustr_tilemap2->set_transparent_pen(0);
 }
@@ -986,7 +1098,11 @@ WRITE8_MEMBER(galaxold_state::dambustr_bg_color_w)
 
 /* character banking functions */
 
+<<<<<<< HEAD
 void galaxold_state::mooncrst_modify_charcode(UINT16 *code, UINT8 x)
+=======
+void galaxold_state::mooncrst_modify_charcode(uint16_t *code, uint8_t x)
+>>>>>>> upstream/master
 {
 	if (m_gfxbank[2] && ((*code & 0xc0) == 0x80))
 	{
@@ -994,19 +1110,33 @@ void galaxold_state::mooncrst_modify_charcode(UINT16 *code, UINT8 x)
 	}
 }
 
+<<<<<<< HEAD
 void galaxold_state::pisces_modify_charcode(UINT16 *code, UINT8 x)
+=======
+void galaxold_state::pisces_modify_charcode(uint16_t *code, uint8_t x)
+>>>>>>> upstream/master
 {
 	*code |= (m_gfxbank[0] << 8);
 }
 
+<<<<<<< HEAD
 void galaxold_state::mimonkey_modify_charcode(UINT16 *code, UINT8 x)
+=======
+void galaxold_state::mimonkey_modify_charcode(uint16_t *code, uint8_t x)
+>>>>>>> upstream/master
 {
 	*code |= (m_gfxbank[0] << 8) | (m_gfxbank[2] << 9);
 }
 
+<<<<<<< HEAD
 void galaxold_state::mariner_modify_charcode(UINT16 *code, UINT8 x)
 {
 	UINT8 *prom;
+=======
+void galaxold_state::mariner_modify_charcode(uint16_t *code, uint8_t x)
+{
+	uint8_t *prom;
+>>>>>>> upstream/master
 
 
 	/* bit 0 of the PROM controls character banking */
@@ -1016,7 +1146,11 @@ void galaxold_state::mariner_modify_charcode(UINT16 *code, UINT8 x)
 	*code |= ((prom[x] & 0x01) << 8);
 }
 
+<<<<<<< HEAD
 void galaxold_state::dambustr_modify_charcode(UINT16 *code, UINT8 x)
+=======
+void galaxold_state::dambustr_modify_charcode(uint16_t *code, uint8_t x)
+>>>>>>> upstream/master
 {
 	if (m_dambustr_char_bank == 0) { // text mode
 		*code |= 0x0300;
@@ -1033,38 +1167,67 @@ void galaxold_state::dambustr_modify_charcode(UINT16 *code, UINT8 x)
 
 /* sprite banking functions */
 
+<<<<<<< HEAD
 void galaxold_state::mshuttle_modify_spritecode(UINT8 *spriteram, int *code, int *flipx, int *flipy, int offs)
+=======
+void galaxold_state::mshuttle_modify_spritecode(uint8_t *spriteram, int *code, int *flipx, int *flipy, int offs)
+>>>>>>> upstream/master
 {
 	*code |= ((spriteram[offs + 2] & 0x30) << 2);
 }
 
 
+<<<<<<< HEAD
 void galaxold_state::mimonkey_modify_spritecode(UINT8 *spriteram, int *code, int *flipx, int *flipy, int offs)
+=======
+void galaxold_state::mimonkey_modify_spritecode(uint8_t *spriteram, int *code, int *flipx, int *flipy, int offs)
+>>>>>>> upstream/master
 {
 	*code |= (m_gfxbank[0] << 6) | (m_gfxbank[2] << 7);
 }
 
+<<<<<<< HEAD
 void galaxold_state::batman2_modify_spritecode(UINT8 *spriteram, int *code, int *flipx, int *flipy, int offs)
+=======
+void galaxold_state::batman2_modify_spritecode(uint8_t *spriteram, int *code, int *flipx, int *flipy, int offs)
+>>>>>>> upstream/master
 {
 	/* only the upper 64 sprites are used */
 	*code |= 0x40;
 }
 
+<<<<<<< HEAD
 void galaxold_state::dkongjrm_modify_spritecode(UINT8 *spriteram, int *code, int *flipx, int *flipy, int offs)
+=======
+void galaxold_state::dkongjrm_modify_spritecode(uint8_t *spriteram, int *code, int *flipx, int *flipy, int offs)
+>>>>>>> upstream/master
 {
 	/* No x flip */
 	*code = (spriteram[offs + 1] & 0x7f) | 0x80;
 	*flipx = 0;
 }
 
+<<<<<<< HEAD
 void galaxold_state::ad2083_modify_spritecode(UINT8 *spriteram, int *code, int *flipx, int *flipy, int offs)
+=======
+void galaxold_state::dkongjrmc_modify_spritecode(uint8_t *spriteram, int *code, int *flipx, int *flipy, int offs)
+{
+	*code = (spriteram[offs + 1] & 0x7f) | 0x80; // bit 6 is also X flip
+}
+
+void galaxold_state::ad2083_modify_spritecode(uint8_t *spriteram, int *code, int *flipx, int *flipy, int offs)
+>>>>>>> upstream/master
 {
 	/* No x flip */
 	*code = (spriteram[offs + 1] & 0x7f) | ((spriteram[offs + 2] & 0x30) << 2);
 	*flipx = 0;
 }
 
+<<<<<<< HEAD
 void galaxold_state::dambustr_modify_spritecode(UINT8 *spriteram, int *code, int *flipx, int *flipy, int offs)
+=======
+void galaxold_state::dambustr_modify_spritecode(uint8_t *spriteram, int *code, int *flipx, int *flipy, int offs)
+>>>>>>> upstream/master
 {
 	*code += 0x40;
 }
@@ -1072,11 +1235,19 @@ void galaxold_state::dambustr_modify_spritecode(UINT8 *spriteram, int *code, int
 
 /* color PROM mapping functions */
 
+<<<<<<< HEAD
 void galaxold_state::drivfrcg_modify_color(UINT8 *color)
+=======
+void galaxold_state::drivfrcg_modify_color(uint8_t *color)
+>>>>>>> upstream/master
 {
 	*color = ((*color & 0x40) >> 3) | (*color & 7);
 }
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> upstream/master
 /* y position mapping functions */
 
 
@@ -1178,8 +1349,13 @@ void galaxold_state::ad2083_draw_background(screen_device &screen, bitmap_ind16 
 
 void galaxold_state::stratgyx_draw_background(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
 {
+<<<<<<< HEAD
 	UINT8 x;
 	UINT8 *prom;
+=======
+	uint8_t x;
+	uint8_t *prom;
+>>>>>>> upstream/master
 	int base = BACKGROUND_COLOR_BASE;
 
 
@@ -1254,8 +1430,13 @@ void galaxold_state::rescue_draw_background(screen_device &screen, bitmap_ind16 
 void galaxold_state::mariner_draw_background(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
 {
 	int base = BACKGROUND_COLOR_BASE;
+<<<<<<< HEAD
 	UINT8 x;
 	UINT8 *prom;
+=======
+	uint8_t x;
+	uint8_t *prom;
+>>>>>>> upstream/master
 
 
 	/* the background PROM contains the color codes for each 8 pixel
@@ -1336,7 +1517,11 @@ void galaxold_state::galaxold_init_stars(int colors_offset)
 	struct star_gold *stars = m_stars;
 	int i;
 	int total_stars;
+<<<<<<< HEAD
 	UINT32 generator;
+=======
+	uint32_t generator;
+>>>>>>> upstream/master
 	int x,y;
 
 
@@ -1372,7 +1557,11 @@ void galaxold_state::galaxold_init_stars(int colors_offset)
 	{
 		for (x = 0;x < 512;x++)
 		{
+<<<<<<< HEAD
 			UINT32 bit0;
+=======
+			uint32_t bit0;
+>>>>>>> upstream/master
 
 
 			bit0 = ((~generator >> 16) & 0x01) ^ ((generator >> 4) & 0x01);
@@ -1543,7 +1732,11 @@ void galaxold_state::mariner_draw_stars(bitmap_ind16 &bitmap, const rectangle &c
 {
 	struct star_gold *stars = m_stars;
 	int offs;
+<<<<<<< HEAD
 	UINT8 *prom;
+=======
+	uint8_t *prom;
+>>>>>>> upstream/master
 
 
 	if (!m_timer_adjusted)
@@ -1607,10 +1800,17 @@ void galaxold_state::start_stars_scroll_timer()
 
 TILE_GET_INFO_MEMBER(galaxold_state::get_tile_info)
 {
+<<<<<<< HEAD
 	UINT8 x = tile_index & 0x1f;
 
 	UINT16 code = m_videoram[tile_index];
 	UINT8 color = m_attributesram[(x << 1) | 1] & m_color_mask;
+=======
+	uint8_t x = tile_index & 0x1f;
+
+	uint16_t code = m_videoram[tile_index];
+	uint8_t color = m_attributesram[(x << 1) | 1] & m_color_mask;
+>>>>>>> upstream/master
 
 	if (m_modify_charcode)
 	{
@@ -1627,7 +1827,11 @@ TILE_GET_INFO_MEMBER(galaxold_state::get_tile_info)
 
 TILE_GET_INFO_MEMBER(galaxold_state::rockclim_get_tile_info)
 {
+<<<<<<< HEAD
 	UINT16 code = m_rockclim_videoram[tile_index];
+=======
+	uint16_t code = m_rockclim_videoram[tile_index];
+>>>>>>> upstream/master
 	SET_TILE_INFO_MEMBER(2, code, 0, 0);
 }
 
@@ -1638,7 +1842,11 @@ void galaxold_state::draw_bullets_common(bitmap_ind16 &bitmap, const rectangle &
 
 	for (offs = 0;offs < m_bulletsram.bytes();offs += 4)
 	{
+<<<<<<< HEAD
 		UINT8 sx,sy;
+=======
+		uint8_t sx,sy;
+>>>>>>> upstream/master
 
 		sy = 255 - m_bulletsram[offs + 1];
 		sx = 255 - m_bulletsram[offs + 3];
@@ -1650,7 +1858,11 @@ void galaxold_state::draw_bullets_common(bitmap_ind16 &bitmap, const rectangle &
 }
 
 
+<<<<<<< HEAD
 void galaxold_state::draw_sprites(bitmap_ind16 &bitmap, UINT8 *spriteram, size_t spriteram_size)
+=======
+void galaxold_state::draw_sprites(bitmap_ind16 &bitmap, uint8_t *spriteram, size_t spriteram_size)
+>>>>>>> upstream/master
 {
 	const rectangle spritevisiblearea((0+m_leftclip)*8+1, 32*8-1, 2*8,   30*8-1);
 	const rectangle spritevisibleareaflipx(0*8, (32-m_leftclip)*8-2, 2*8, 30*8-1);
@@ -1660,7 +1872,11 @@ void galaxold_state::draw_sprites(bitmap_ind16 &bitmap, UINT8 *spriteram, size_t
 
 	for (offs = spriteram_size - 4;offs >= 0;offs -= 4)
 	{
+<<<<<<< HEAD
 		UINT8 sx,sy,color;
+=======
+		uint8_t sx,sy,color;
+>>>>>>> upstream/master
 		int flipx,flipy,code;
 
 
@@ -1718,7 +1934,11 @@ void galaxold_state::draw_sprites(bitmap_ind16 &bitmap, UINT8 *spriteram, size_t
 }
 
 
+<<<<<<< HEAD
 UINT32 galaxold_state::screen_update_galaxold(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+=======
+uint32_t galaxold_state::screen_update_galaxold(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+>>>>>>> upstream/master
 {
 	(this->*m_draw_background)(screen, bitmap, cliprect);
 
@@ -1746,10 +1966,17 @@ UINT32 galaxold_state::screen_update_galaxold(screen_device &screen, bitmap_ind1
 }
 
 
+<<<<<<< HEAD
 UINT32 galaxold_state::screen_update_dambustr(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
 {
 	int i, j;
 	UINT8 color;
+=======
+uint32_t galaxold_state::screen_update_dambustr(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+{
+	int i, j;
+	uint8_t color;
+>>>>>>> upstream/master
 
 	(this->*m_draw_background)(screen, bitmap, cliprect);
 
@@ -1776,7 +2003,11 @@ UINT32 galaxold_state::screen_update_dambustr(screen_device &screen, bitmap_ind1
 		dambustr_draw_upper_background(bitmap, cliprect);
 
 		/* only rows with color code > 3 are stronger than the background */
+<<<<<<< HEAD
 		memset(m_dambustr_videoram2, 0x20, 0x0400);
+=======
+		memset(m_dambustr_videoram2.get(), 0x20, 0x0400);
+>>>>>>> upstream/master
 		for (i=0; i<32; i++) {
 			color = m_attributesram[(i << 1) | 1] & m_color_mask;
 			if (color > 3) {
@@ -1791,12 +2022,20 @@ UINT32 galaxold_state::screen_update_dambustr(screen_device &screen, bitmap_ind1
 	return 0;
 }
 
+<<<<<<< HEAD
 void galaxold_state::bagmanmc_modify_charcode(UINT16 *code, UINT8 x)
+=======
+void galaxold_state::bagmanmc_modify_charcode(uint16_t *code, uint8_t x)
+>>>>>>> upstream/master
 {
 	*code |= (m_gfxbank[0] << 9);
 }
 
+<<<<<<< HEAD
 void galaxold_state::bagmanmc_modify_spritecode(UINT8 *spriteram, int *code, int *flipx, int *flipy, int offs)
+=======
+void galaxold_state::bagmanmc_modify_spritecode(uint8_t *spriteram, int *code, int *flipx, int *flipy, int offs)
+>>>>>>> upstream/master
 {
 	*code |= (m_gfxbank[0] << 7) | 0x40;
 }

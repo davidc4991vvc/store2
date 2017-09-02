@@ -16,6 +16,10 @@
 
 */
 
+<<<<<<< HEAD
+=======
+#include "emu.h"
+>>>>>>> upstream/master
 #include "pcxt83.h"
 
 
@@ -32,7 +36,11 @@
 //  DEVICE DEFINITIONS
 //**************************************************************************
 
+<<<<<<< HEAD
 const device_type PC_KBD_IBM_PC_XT_83 = &device_creator<ibm_pc_xt_83_keyboard_device>;
+=======
+DEFINE_DEVICE_TYPE(PC_KBD_IBM_PC_XT_83, ibm_pc_xt_83_keyboard_device, "kb_pcxt83", "IBM PC/XT Keyboard")
+>>>>>>> upstream/master
 
 
 //-------------------------------------------------
@@ -61,13 +69,18 @@ ROM_END
 //  rom_region - device-specific ROM region
 //-------------------------------------------------
 
+<<<<<<< HEAD
 const rom_entry *ibm_pc_xt_83_keyboard_device::device_rom_region() const
+=======
+const tiny_rom_entry *ibm_pc_xt_83_keyboard_device::device_rom_region() const
+>>>>>>> upstream/master
 {
 	return ROM_NAME( ibm_pc_xt_83_keyboard );
 }
 
 
 //-------------------------------------------------
+<<<<<<< HEAD
 //  ADDRESS_MAP( kb_io )
 //-------------------------------------------------
 
@@ -87,10 +100,24 @@ ADDRESS_MAP_END
 static MACHINE_CONFIG_FRAGMENT( ibm_pc_xt_83_keyboard )
 	MCFG_CPU_ADD(I8048_TAG, I8048, MCS48_LC_CLOCK(IND_U(47), CAP_P(20.7)))
 	MCFG_CPU_IO_MAP(ibm_pc_xt_83_keyboard_io)
+=======
+//  device_add_mconfig - add device configuration
+//-------------------------------------------------
+
+MACHINE_CONFIG_MEMBER( ibm_pc_xt_83_keyboard_device::device_add_mconfig )
+	MCFG_CPU_ADD(I8048_TAG, I8048, MCS48_LC_CLOCK(IND_U(47), CAP_P(20.7)))
+	MCFG_MCS48_PORT_BUS_IN_CB(READ8(ibm_pc_xt_83_keyboard_device, bus_r))
+	MCFG_MCS48_PORT_BUS_OUT_CB(WRITE8(ibm_pc_xt_83_keyboard_device, bus_w))
+	MCFG_MCS48_PORT_P1_OUT_CB(WRITE8(ibm_pc_xt_83_keyboard_device, p1_w))
+	MCFG_MCS48_PORT_P2_OUT_CB(WRITE8(ibm_pc_xt_83_keyboard_device, p2_w))
+	MCFG_MCS48_PORT_T0_IN_CB(READLINE(ibm_pc_xt_83_keyboard_device, t0_r))
+	MCFG_MCS48_PORT_T1_IN_CB(READLINE(ibm_pc_xt_83_keyboard_device, t1_r))
+>>>>>>> upstream/master
 MACHINE_CONFIG_END
 
 
 //-------------------------------------------------
+<<<<<<< HEAD
 //  machine_config_additions - device-specific
 //  machine configurations
 //-------------------------------------------------
@@ -102,6 +129,8 @@ machine_config_constructor ibm_pc_xt_83_keyboard_device::device_mconfig_addition
 
 
 //-------------------------------------------------
+=======
+>>>>>>> upstream/master
 //  INPUT_PORTS( ibm_pc_xt_83_keyboard )
 //-------------------------------------------------
 
@@ -247,6 +276,7 @@ ioport_constructor ibm_pc_xt_83_keyboard_device::device_input_ports() const
 //  ibm_pc_xt_83_keyboard_device - constructor
 //-------------------------------------------------
 
+<<<<<<< HEAD
 ibm_pc_xt_83_keyboard_device::ibm_pc_xt_83_keyboard_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
 	: device_t(mconfig, PC_KBD_IBM_PC_XT_83, "IBM PC/XT Keyboard", tag, owner, clock, "kb_pcxt83", __FILE__),
 		device_pc_kbd_interface(mconfig, *this),
@@ -263,6 +293,13 @@ ibm_pc_xt_83_keyboard_device::ibm_pc_xt_83_keyboard_device(const machine_config 
 		m_md09(*this, "MD09"),
 		m_md10(*this, "MD10"),
 		m_md11(*this, "MD11"),
+=======
+ibm_pc_xt_83_keyboard_device::ibm_pc_xt_83_keyboard_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: device_t(mconfig, PC_KBD_IBM_PC_XT_83, tag, owner, clock),
+		device_pc_kbd_interface(mconfig, *this),
+		m_maincpu(*this, I8048_TAG),
+		m_md(*this, "MD%02u", 0),
+>>>>>>> upstream/master
 		m_bus(0xff),
 		m_p1(0xff),
 		m_p2(0xff),
@@ -354,6 +391,7 @@ WRITE8_MEMBER( ibm_pc_xt_83_keyboard_device::bus_w )
 
 	if (!BIT(m_bus, 7) && BIT(data, 7))
 	{
+<<<<<<< HEAD
 		UINT8 data = 0xff;
 
 		if (BIT(m_p1, 0)) data &= m_md00->read();
@@ -368,6 +406,22 @@ WRITE8_MEMBER( ibm_pc_xt_83_keyboard_device::bus_w )
 		if (BIT(m_p2, 5)) data &= m_md09->read();
 		if (BIT(m_p2, 6)) data &= m_md10->read();
 		if (BIT(m_p2, 7)) data &= m_md11->read();
+=======
+		uint8_t data = 0xff;
+
+		if (BIT(m_p1, 0)) data &= m_md[0]->read();
+		if (BIT(m_p1, 1)) data &= m_md[1]->read();
+		if (BIT(m_p1, 2)) data &= m_md[2]->read();
+		if (BIT(m_p1, 3)) data &= m_md[3]->read();
+		if (BIT(m_p1, 4)) data &= m_md[4]->read();
+		if (BIT(m_p1, 5)) data &= m_md[5]->read();
+		if (BIT(m_p1, 6)) data &= m_md[6]->read();
+		if (BIT(m_p1, 7)) data &= m_md[7]->read();
+		if (BIT(m_p2, 4)) data &= m_md[8]->read();
+		if (BIT(m_p2, 5)) data &= m_md[9]->read();
+		if (BIT(m_p2, 6)) data &= m_md[10]->read();
+		if (BIT(m_p2, 7)) data &= m_md[11]->read();
+>>>>>>> upstream/master
 
 		m_q = BIT(data, m_sense);
 	}
@@ -435,7 +489,11 @@ WRITE8_MEMBER( ibm_pc_xt_83_keyboard_device::p2_w )
 //  t0_r -
 //-------------------------------------------------
 
+<<<<<<< HEAD
 READ8_MEMBER( ibm_pc_xt_83_keyboard_device::t0_r )
+=======
+READ_LINE_MEMBER( ibm_pc_xt_83_keyboard_device::t0_r )
+>>>>>>> upstream/master
 {
 	return clock_signal();
 }
@@ -445,7 +503,11 @@ READ8_MEMBER( ibm_pc_xt_83_keyboard_device::t0_r )
 //  t1_r -
 //-------------------------------------------------
 
+<<<<<<< HEAD
 READ8_MEMBER( ibm_pc_xt_83_keyboard_device::t1_r )
+=======
+READ_LINE_MEMBER( ibm_pc_xt_83_keyboard_device::t1_r )
+>>>>>>> upstream/master
 {
 	return BIT(m_p2, 3) && m_q;
 }

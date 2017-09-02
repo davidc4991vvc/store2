@@ -1,6 +1,11 @@
 /*
+<<<<<<< HEAD
  * Copyright 2011-2015 Branimir Karadzic. All rights reserved.
  * License: http://www.opensource.org/licenses/BSD-2-Clause
+=======
+ * Copyright 2011-2017 Branimir Karadzic. All rights reserved.
+ * License: https://github.com/bkaradzic/bgfx#license-bsd-2-clause
+>>>>>>> upstream/master
  */
 
 #include "common.h"
@@ -93,10 +98,17 @@ static const uint16_t s_m_cubeIndices[36] =
 	21, 22, 23,
 };
 
+<<<<<<< HEAD
 static void updateTextureCubeRectBgra8(bgfx::TextureHandle _handle, uint8_t _side, uint32_t _x, uint32_t _y, uint32_t _width, uint32_t _height, uint8_t _r, uint8_t _g, uint8_t _b, uint8_t _a = 0xff)
 {
 	bgfx::TextureInfo ti;
 	bgfx::calcTextureSize(ti, _width, _height, 1, 1, false, bgfx::TextureFormat::BGRA8);
+=======
+static void updateTextureCubeRectBgra8(bgfx::TextureHandle _handle, uint8_t _side, uint16_t _x, uint16_t _y, uint16_t _width, uint16_t _height, uint8_t _r, uint8_t _g, uint8_t _b, uint8_t _a = 0xff)
+{
+	bgfx::TextureInfo ti;
+	bgfx::calcTextureSize(ti, _width, _height, 1, false, false, 1, bgfx::TextureFormat::BGRA8);
+>>>>>>> upstream/master
 
 	const bgfx::Memory* mem = bgfx::alloc(ti.storageSize);
 	uint8_t* data = (uint8_t*)mem->data;
@@ -109,6 +121,7 @@ static void updateTextureCubeRectBgra8(bgfx::TextureHandle _handle, uint8_t _sid
 		data += 4;
 	}
 
+<<<<<<< HEAD
 	bgfx::updateTextureCube(_handle, _side, 0, _x, _y, _width, _height, mem);
 }
 
@@ -120,6 +133,19 @@ class Update : public entry::AppI
 public:
 	Update()
 		: m_cube(m_textureside)
+=======
+	bgfx::updateTextureCube(_handle, 0, _side, 0, _x, _y, _width, _height, mem);
+}
+
+static const uint16_t textureside   = 512;
+static const uint32_t texture2dSize = 256;
+
+class ExampleUpdate : public entry::AppI
+{
+public:
+	ExampleUpdate()
+		: m_cube(textureside)
+>>>>>>> upstream/master
 	{
 	}
 
@@ -149,6 +175,7 @@ public:
 		// Create vertex stream declaration.
 		PosTexcoordVertex::init();
 
+<<<<<<< HEAD
 		m_textures[0] = loadTexture("texture_compression_bc1.dds",  BGFX_TEXTURE_U_CLAMP|BGFX_TEXTURE_V_CLAMP);
 		m_textures[1] = loadTexture("texture_compression_bc2.dds",  BGFX_TEXTURE_U_CLAMP);
 		m_textures[2] = loadTexture("texture_compression_bc3.dds",  BGFX_TEXTURE_V_CLAMP);
@@ -158,11 +185,27 @@ public:
 		m_textures[6] = loadTexture("texture_compression_ptc14.pvr");
 		m_textures[7] = loadTexture("texture_compression_ptc22.pvr");
 		m_textures[8] = loadTexture("texture_compression_ptc24.pvr");
+=======
+		m_textures[0] = loadTexture("textures/texture_compression_bc1.ktx",  BGFX_TEXTURE_U_CLAMP|BGFX_TEXTURE_V_CLAMP);
+		m_textures[1] = loadTexture("textures/texture_compression_bc2.ktx",  BGFX_TEXTURE_U_CLAMP);
+		m_textures[2] = loadTexture("textures/texture_compression_bc3.ktx",  BGFX_TEXTURE_V_CLAMP);
+		m_textures[3] = loadTexture("textures/texture_compression_etc1.ktx", BGFX_TEXTURE_U_BORDER|BGFX_TEXTURE_V_BORDER|BGFX_TEXTURE_BORDER_COLOR(1) );
+		m_textures[4] = loadTexture("textures/texture_compression_etc2.ktx");
+		m_textures[5] = loadTexture("textures/texture_compression_ptc12.pvr");
+		m_textures[6] = loadTexture("textures/texture_compression_ptc14.pvr");
+		m_textures[7] = loadTexture("textures/texture_compression_ptc22.pvr");
+		m_textures[8] = loadTexture("textures/texture_compression_ptc24.pvr");
+>>>>>>> upstream/master
 
 		const bgfx::Caps* caps = bgfx::getCaps();
 		m_texture3DSupported = !!(caps->supported & BGFX_CAPS_TEXTURE_3D);
 		m_blitSupported      = !!(caps->supported & BGFX_CAPS_TEXTURE_BLIT);
+<<<<<<< HEAD
 		m_numm_textures3d      = 0;
+=======
+		m_computeSupported   = !!(caps->supported & BGFX_CAPS_COMPUTE);
+		m_numTextures3d      = 0;
+>>>>>>> upstream/master
 
 		if (m_texture3DSupported)
 		{
@@ -177,7 +220,11 @@ public:
 					{
 						const uint32_t offset = ( (zz*32+yy)*32+xx);
 						const uint32_t val = xx ^ yy ^ zz;
+<<<<<<< HEAD
 						mem8->data[offset] = val<<3;
+=======
+						mem8->data[offset] = uint8_t(val<<3);
+>>>>>>> upstream/master
 						*(uint16_t*)&mem16f->data[offset*2] = bx::halfFromFloat( (float)val/32.0f);
 						*(float*)&mem32f->data[offset*4] = (float)val/32.0f;
 					}
@@ -186,17 +233,29 @@ public:
 
 			if (0 != (BGFX_CAPS_FORMAT_TEXTURE_2D & caps->formats[bgfx::TextureFormat::R8]) )
 			{
+<<<<<<< HEAD
 				m_textures3d[m_numm_textures3d++] = bgfx::createTexture3D(32, 32, 32, 0, bgfx::TextureFormat::R8,   BGFX_TEXTURE_U_CLAMP|BGFX_TEXTURE_V_CLAMP|BGFX_TEXTURE_W_CLAMP, mem8);
+=======
+				m_textures3d[m_numTextures3d++] = bgfx::createTexture3D(32, 32, 32, false, bgfx::TextureFormat::R8,   BGFX_TEXTURE_U_CLAMP|BGFX_TEXTURE_V_CLAMP|BGFX_TEXTURE_W_CLAMP, mem8);
+>>>>>>> upstream/master
 			}
 
 			if (0 != (BGFX_CAPS_FORMAT_TEXTURE_2D & caps->formats[bgfx::TextureFormat::R16F]) )
 			{
+<<<<<<< HEAD
 				m_textures3d[m_numm_textures3d++] = bgfx::createTexture3D(32, 32, 32, 0, bgfx::TextureFormat::R16F, BGFX_TEXTURE_U_CLAMP|BGFX_TEXTURE_V_CLAMP|BGFX_TEXTURE_W_CLAMP, mem16f);
+=======
+				m_textures3d[m_numTextures3d++] = bgfx::createTexture3D(32, 32, 32, false, bgfx::TextureFormat::R16F, BGFX_TEXTURE_U_CLAMP|BGFX_TEXTURE_V_CLAMP|BGFX_TEXTURE_W_CLAMP, mem16f);
+>>>>>>> upstream/master
 			}
 
 			if (0 != (BGFX_CAPS_FORMAT_TEXTURE_2D & caps->formats[bgfx::TextureFormat::R32F]) )
 			{
+<<<<<<< HEAD
 				m_textures3d[m_numm_textures3d++] = bgfx::createTexture3D(32, 32, 32, 0, bgfx::TextureFormat::R32F, BGFX_TEXTURE_U_CLAMP|BGFX_TEXTURE_V_CLAMP|BGFX_TEXTURE_W_CLAMP, mem32f);
+=======
+				m_textures3d[m_numTextures3d++] = bgfx::createTexture3D(32, 32, 32, false, bgfx::TextureFormat::R32F, BGFX_TEXTURE_U_CLAMP|BGFX_TEXTURE_V_CLAMP|BGFX_TEXTURE_W_CLAMP, mem32f);
+>>>>>>> upstream/master
 			}
 		}
 
@@ -215,6 +274,15 @@ public:
 			m_program3d = loadProgram("vs_update", "fs_update_3d");
 		}
 
+<<<<<<< HEAD
+=======
+		m_programCompute.idx = bgfx::invalidHandle;
+		if (m_computeSupported)
+		{
+			m_programCompute = bgfx::createProgram( loadShader( "cs_update" ), true );
+		}
+
+>>>>>>> upstream/master
 		// Create texture sampler uniforms.
 		s_texCube  = bgfx::createUniform("s_texCube",  bgfx::UniformType::Int1);
 		s_texColor = bgfx::createUniform("s_texColor", bgfx::UniformType::Int1);
@@ -222,25 +290,67 @@ public:
 		// Create time uniform.
 		u_time = bgfx::createUniform("u_time", bgfx::UniformType::Vec4);
 
+<<<<<<< HEAD
 		m_textureCube[0] = bgfx::createTextureCube(m_textureside, 1
+=======
+		for(uint32_t ii = 0; ii<BX_COUNTOF( m_textureCube ); ++ii)
+		{
+			m_textureCube[ii].idx = bgfx::invalidHandle;
+		}
+
+		m_textureCube[0] = bgfx::createTextureCube(
+				  textureside
+				, false
+				, 1
+>>>>>>> upstream/master
 				, bgfx::TextureFormat::BGRA8
 				, BGFX_TEXTURE_MIN_POINT|BGFX_TEXTURE_MAG_POINT|BGFX_TEXTURE_MIP_POINT
 				);
 
 		if (m_blitSupported)
 		{
+<<<<<<< HEAD
 			m_textureCube[1] = bgfx::createTextureCube(m_textureside, 1
+=======
+			m_textureCube[1] = bgfx::createTextureCube(
+					  textureside
+					, false
+					, 1
+>>>>>>> upstream/master
 					, bgfx::TextureFormat::BGRA8
 					, BGFX_TEXTURE_MIN_POINT|BGFX_TEXTURE_MAG_POINT|BGFX_TEXTURE_MIP_POINT|BGFX_TEXTURE_BLIT_DST
 					);
 		}
 
+<<<<<<< HEAD
 		m_texture2d = bgfx::createTexture2D(m_texture2dSize, m_texture2dSize, 1
+=======
+		if (m_computeSupported)
+		{
+			m_textureCube[2] = bgfx::createTextureCube(
+				textureside
+				, false
+				, 1
+				, bgfx::TextureFormat::RGBA8
+				, BGFX_TEXTURE_COMPUTE_WRITE
+				);
+		}
+
+		m_texture2d = bgfx::createTexture2D(
+				  texture2dSize
+				, texture2dSize
+				, false
+				, 1
+>>>>>>> upstream/master
 				, bgfx::TextureFormat::BGRA8
 				, BGFX_TEXTURE_MIN_POINT|BGFX_TEXTURE_MAG_POINT|BGFX_TEXTURE_MIP_POINT
 				);
 
+<<<<<<< HEAD
 		m_m_texture2dData = (uint8_t*)malloc(m_texture2dSize*m_texture2dSize*4);
+=======
+		m_texture2dData = (uint8_t*)malloc(texture2dSize*texture2dSize*4);
+>>>>>>> upstream/master
 
 		m_rr = rand()%255;
 		m_gg = rand()%255;
@@ -255,30 +365,54 @@ public:
 
 	virtual int shutdown() BX_OVERRIDE
 	{
+<<<<<<< HEAD
 		// m_m_texture2dData is managed from main thread, and it's passed to renderer
+=======
+		// m_texture2dData is managed from main thread, and it's passed to renderer
+>>>>>>> upstream/master
 		// just as MemoryRef. At this point render might be using it. We must wait
 		// previous frame to finish before we can free it.
 		bgfx::frame();
 
 		// Cleanup.
+<<<<<<< HEAD
 		free(m_m_texture2dData);
+=======
+		free(m_texture2dData);
+>>>>>>> upstream/master
 
 		for (uint32_t ii = 0; ii < BX_COUNTOF(m_textures); ++ii)
 		{
 			bgfx::destroyTexture(m_textures[ii]);
 		}
 
+<<<<<<< HEAD
 		for (uint32_t ii = 0; ii < m_numm_textures3d; ++ii)
+=======
+		for (uint32_t ii = 0; ii < m_numTextures3d; ++ii)
+>>>>>>> upstream/master
 		{
 			bgfx::destroyTexture(m_textures3d[ii]);
 		}
 
 		bgfx::destroyTexture(m_texture2d);
+<<<<<<< HEAD
 		bgfx::destroyTexture(m_textureCube[0]);
 		if (m_blitSupported)
 		{
 			bgfx::destroyTexture(m_textureCube[1]);
 		}
+=======
+
+		for (uint32_t ii = 0; ii<BX_COUNTOF(m_textureCube); ++ii)
+		{
+			if (bgfx::isValid(m_textureCube[ii]))
+			{
+				bgfx::destroyTexture(m_textureCube[ii]);
+			}
+		}
+
+>>>>>>> upstream/master
 		bgfx::destroyIndexBuffer(m_ibh);
 		bgfx::destroyVertexBuffer(m_vbh);
 		if (bgfx::isValid(m_program3d) )
@@ -286,6 +420,13 @@ public:
 			bgfx::destroyProgram(m_program3d);
 		}
 		bgfx::destroyProgram(m_programCmp);
+<<<<<<< HEAD
+=======
+		if (bgfx::isValid(m_programCompute) )
+		{
+			bgfx::destroyProgram(m_programCompute);
+		}
+>>>>>>> upstream/master
 		bgfx::destroyProgram(m_program);
 		bgfx::destroyUniform(u_time);
 		bgfx::destroyUniform(s_texColor);
@@ -305,8 +446,13 @@ public:
 			bgfx::setPaletteColor(1, borderColor);
 
 			// Set view 0 and 1 viewport.
+<<<<<<< HEAD
 			bgfx::setViewRect(0, 0, 0, m_width, m_height);
 			bgfx::setViewRect(1, 0, 0, m_width, m_height);
+=======
+			bgfx::setViewRect(0, 0, 0, uint16_t(m_width), uint16_t(m_height) );
+			bgfx::setViewRect(1, 0, 0, uint16_t(m_width), uint16_t(m_height) );
+>>>>>>> upstream/master
 
 			// This dummy draw call is here to make sure that view 0 is cleared
 			// if no other draw calls are submitted to view 0.
@@ -331,8 +477,13 @@ public:
 			{
 				PackCube face;
 
+<<<<<<< HEAD
 				uint32_t bw = bx::uint16_max(1, rand()%(m_textureside/4) );
 				uint32_t bh = bx::uint16_max(1, rand()%(m_textureside/4) );
+=======
+				uint16_t bw = bx::uint16_max(1, rand()%(textureside/4) );
+				uint16_t bh = bx::uint16_max(1, rand()%(textureside/4) );
+>>>>>>> upstream/master
 
 				if (m_cube.find(bw, bh, face) )
 				{
@@ -373,6 +524,7 @@ public:
 
 				{
 					// Fill rect.
+<<<<<<< HEAD
 					const uint32_t pitch = m_texture2dSize*4;
 
 					const uint16_t tw = rand()%m_texture2dSize;
@@ -381,6 +533,16 @@ public:
 					const uint16_t ty = rand()%(m_texture2dSize-th);
 
 					uint8_t* dst = &m_m_texture2dData[(ty*m_texture2dSize+tx)*4];
+=======
+					const uint32_t pitch = texture2dSize*4;
+
+					const uint16_t tw = rand()% texture2dSize;
+					const uint16_t th = rand()% texture2dSize;
+					const uint16_t tx = rand()%(texture2dSize-tw);
+					const uint16_t ty = rand()%(texture2dSize-th);
+
+					uint8_t* dst = &m_texture2dData[(ty*texture2dSize+tx)*4];
+>>>>>>> upstream/master
 					uint8_t* next = dst + pitch;
 
 					// Using makeRef to pass texture memory without copying.
@@ -399,7 +561,11 @@ public:
 
 					// Pitch here makes possible to pass data from source to destination
 					// without need for m_textures and allocated memory to be the same size.
+<<<<<<< HEAD
 					bgfx::updateTexture2D(m_texture2d, 0, tx, ty, tw, th, mem, pitch);
+=======
+					bgfx::updateTexture2D(m_texture2d, 0, 0, tx, ty, tw, th, mem, pitch);
+>>>>>>> upstream/master
 				}
 			}
 
@@ -411,11 +577,16 @@ public:
 			float view[16];
 			float proj[16];
 			bx::mtxLookAt(view, eye, at);
+<<<<<<< HEAD
 			bx::mtxProj(proj, 60.0f, float(m_width)/float(m_height), 0.1f, 100.0f);
+=======
+			bx::mtxProj(proj, 60.0f, float(m_width)/float(m_height), 0.1f, 100.0f, bgfx::getCaps()->homogeneousDepth);
+>>>>>>> upstream/master
 
 			// Set view and projection matrix for view 0.
 			bgfx::setViewTransform(0, view, proj);
 
+<<<<<<< HEAD
 			for (uint32_t ii = 0; ii < 1 + uint32_t(m_blitSupported); ++ii)
 			{
 				float mtx[16];
@@ -436,6 +607,38 @@ public:
 
 				// Submit primitive for rendering to view 0.
 				bgfx::submit(0, m_program);
+=======
+			// Update texturecube using compute shader
+			if (bgfx::isValid(m_programCompute) )
+			{
+				bgfx::setImage(0, s_texCube, m_textureCube[2], 0, bgfx::Access::Write);
+				bgfx::dispatch(0, m_programCompute, textureside/16, textureside/16);
+			}
+
+			for (uint32_t ii = 0; ii < BX_COUNTOF(m_textureCube); ++ii)
+			{
+				if (bgfx::isValid(m_textureCube[ii]))
+				{
+					float mtx[16];
+					bx::mtxSRT( mtx, 0.7f, 0.7f, 0.7f, time, time*0.37f, 0.0f, -2.0f +ii*2.0f, 0.0f, 0.0f );
+
+					// Set model matrix for rendering.
+					bgfx::setTransform( mtx );
+
+					// Set vertex and index buffer.
+					bgfx::setVertexBuffer( m_vbh );
+					bgfx::setIndexBuffer( m_ibh );
+
+					// Bind texture.
+					bgfx::setTexture( 0, s_texCube, m_textureCube[ii] );
+
+					// Set render states.
+					bgfx::setState( BGFX_STATE_DEFAULT );
+
+					// Submit primitive for rendering to view 0.
+					bgfx::submit( 0, m_program );
+				}
+>>>>>>> upstream/master
 			}
 
 			// Set view and projection matrix for view 1.
@@ -486,7 +689,11 @@ public:
 				bgfx::submit(1, m_programCmp);
 			}
 
+<<<<<<< HEAD
 			for (uint32_t ii = 0; ii < m_numm_textures3d; ++ii)
+=======
+			for (uint32_t ii = 0; ii < m_numTextures3d; ++ii)
+>>>>>>> upstream/master
 			{
 				bx::mtxTranslate(mtx, xpos + ii*2.1f, -size+6.5f, 0.0f);
 
@@ -537,16 +744,27 @@ public:
 		return false;
 	}
 
+<<<<<<< HEAD
 	uint8_t* m_m_texture2dData;
+=======
+	uint8_t* m_texture2dData;
+>>>>>>> upstream/master
 
 	uint32_t m_width;
 	uint32_t m_height;
 	uint32_t m_debug;
 	uint32_t m_reset;
 
+<<<<<<< HEAD
 	uint32_t m_numm_textures3d;
 	bool m_texture3DSupported;
 	bool m_blitSupported;
+=======
+	uint32_t m_numTextures3d;
+	bool m_texture3DSupported;
+	bool m_blitSupported;
+	bool m_computeSupported;
+>>>>>>> upstream/master
 
 	std::list<PackCube> m_quads;
 	RectPackCubeT<256> m_cube;
@@ -563,11 +781,19 @@ public:
 	bgfx::TextureHandle m_textures[9];
 	bgfx::TextureHandle m_textures3d[3];
 	bgfx::TextureHandle m_texture2d;
+<<<<<<< HEAD
 	bgfx::TextureHandle m_textureCube[2];
+=======
+	bgfx::TextureHandle m_textureCube[3];
+>>>>>>> upstream/master
 	bgfx::IndexBufferHandle m_ibh;
 	bgfx::VertexBufferHandle m_vbh;
 	bgfx::ProgramHandle m_program3d;
 	bgfx::ProgramHandle m_programCmp;
+<<<<<<< HEAD
+=======
+	bgfx::ProgramHandle m_programCompute;
+>>>>>>> upstream/master
 	bgfx::ProgramHandle m_program;
 	bgfx::UniformHandle u_time;
 	bgfx::UniformHandle s_texColor;
@@ -575,4 +801,8 @@ public:
 
 };
 
+<<<<<<< HEAD
 ENTRY_IMPLEMENT_MAIN(Update);
+=======
+ENTRY_IMPLEMENT_MAIN(ExampleUpdate);
+>>>>>>> upstream/master

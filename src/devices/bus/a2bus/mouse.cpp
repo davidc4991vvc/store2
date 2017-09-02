@@ -63,6 +63,7 @@
 
 *********************************************************************/
 
+<<<<<<< HEAD
 #include "mouse.h"
 
 /***************************************************************************
@@ -79,11 +80,24 @@ const device_type A2BUS_MOUSE = &device_creator<a2bus_mouse_device>;
 #define MOUSE_PIA_TAG       "a2mse_pia"
 #define MOUSE_MCU_TAG       "a2mse_mcu"
 #define MOUSE_MCU_ROM       "a2mse_mcurom"
+=======
+#include "emu.h"
+#include "mouse.h"
+
+/***************************************************************************
+    CONSTANTS
+***************************************************************************/
+
+#define MOUSE_ROM_REGION    "a2mse_rom"
+#define MOUSE_PIA_TAG       "a2mse_pia"
+#define MOUSE_MCU_TAG       "a2mse_mcu"
+>>>>>>> upstream/master
 
 #define MOUSE_BUTTON_TAG    "a2mse_button"
 #define MOUSE_XAXIS_TAG     "a2mse_x"
 #define MOUSE_YAXIS_TAG     "a2mse_y"
 
+<<<<<<< HEAD
 #define TIMER_68705         0
 #define TIMER_QUADRATURE    1
 
@@ -112,12 +126,24 @@ MACHINE_CONFIG_FRAGMENT( mouse )
 	MCFG_PIA_IRQA_HANDLER(WRITELINE(a2bus_mouse_device, pia_irqa_w))
 	MCFG_PIA_IRQB_HANDLER(WRITELINE(a2bus_mouse_device, pia_irqb_w))
 MACHINE_CONFIG_END
+=======
+
+/***************************************************************************
+    GLOBAL VARIABLES
+***************************************************************************/
+
+DEFINE_DEVICE_TYPE(A2BUS_MOUSE, a2bus_mouse_device, "a2mouse", "Apple II Mouse Card")
+>>>>>>> upstream/master
 
 ROM_START( mouse )
 	ROM_REGION(0x800, MOUSE_ROM_REGION, 0)
 	ROM_LOAD( "341-0270-c.4b", 0x000000, 0x000800, CRC(0bcd1e8e) SHA1(3a9d881a8a8d30f55b9719aceebbcf717f829d6f) )
 
+<<<<<<< HEAD
 	ROM_REGION(0x800, MOUSE_MCU_ROM, 0)
+=======
+	ROM_REGION(0x800, MOUSE_MCU_TAG, 0)
+>>>>>>> upstream/master
 	ROM_LOAD( "341-0269.2b",  0x000000, 0x000800, CRC(94067f16) SHA1(3a2baa6648efe4456d3ec3721216e57c64f7acfc) )
 
 	ROM_REGION(0xc00, "pal", 0)
@@ -136,6 +162,7 @@ static INPUT_PORTS_START( mouse )
 	PORT_BIT( 0xff, 0x00, IPT_MOUSE_Y) PORT_SENSITIVITY(40) PORT_KEYDELTA(0) PORT_PLAYER(1)
 INPUT_PORTS_END
 
+<<<<<<< HEAD
 /***************************************************************************
     FUNCTION PROTOTYPES
 ***************************************************************************/
@@ -202,12 +229,84 @@ a2bus_mouse_device::a2bus_mouse_device(const machine_config &mconfig, const char
 //-------------------------------------------------
 //  device_start - device-specific startup
 //-------------------------------------------------
+=======
+
+/***************************************************************************
+    DEVICE CONFIGURATION
+***************************************************************************/
+
+/*-------------------------------------------------
+    input_ports - device-specific input ports
+-------------------------------------------------*/
+
+ioport_constructor a2bus_mouse_device::device_input_ports() const
+{
+	return INPUT_PORTS_NAME(mouse);
+}
+
+/*-------------------------------------------------
+    device_add_mconfig - device-specific
+    machine configurations
+-------------------------------------------------*/
+
+MACHINE_CONFIG_MEMBER(a2bus_mouse_device::device_add_mconfig)
+	MCFG_CPU_ADD(MOUSE_MCU_TAG, M68705P3, 2043600)
+	MCFG_M68705_PORTA_R_CB(READ8(a2bus_mouse_device, mcu_port_a_r))
+	MCFG_M68705_PORTB_R_CB(READ8(a2bus_mouse_device, mcu_port_b_r))
+	MCFG_M68705_PORTA_W_CB(WRITE8(a2bus_mouse_device, mcu_port_a_w))
+	MCFG_M68705_PORTB_W_CB(WRITE8(a2bus_mouse_device, mcu_port_b_w))
+	MCFG_M68705_PORTC_W_CB(WRITE8(a2bus_mouse_device, mcu_port_c_w))
+
+	MCFG_DEVICE_ADD(MOUSE_PIA_TAG, PIA6821, 1021800)
+	MCFG_PIA_WRITEPA_HANDLER(WRITE8(a2bus_mouse_device, pia_out_a))
+	MCFG_PIA_WRITEPB_HANDLER(WRITE8(a2bus_mouse_device, pia_out_b))
+	MCFG_PIA_IRQA_HANDLER(WRITELINE(a2bus_mouse_device, pia_irqa_w))
+	MCFG_PIA_IRQB_HANDLER(WRITELINE(a2bus_mouse_device, pia_irqb_w))
+MACHINE_CONFIG_END
+
+/*-------------------------------------------------
+    rom_region - device-specific ROM region
+-------------------------------------------------*/
+
+const tiny_rom_entry *a2bus_mouse_device::device_rom_region() const
+{
+	return ROM_NAME(mouse);
+}
+
+
+/***************************************************************************
+    LIVE DEVICE
+***************************************************************************/
+
+a2bus_mouse_device::a2bus_mouse_device(const machine_config &mconfig, device_type type, const char *tag, device_t *owner, uint32_t clock) :
+	device_t(mconfig, type, tag, owner, clock),
+	device_a2bus_card_interface(mconfig, *this),
+	m_pia(*this, MOUSE_PIA_TAG),
+	m_mcu(*this, MOUSE_MCU_TAG),
+	m_mouseb(*this, MOUSE_BUTTON_TAG), m_mousexy(*this, { MOUSE_XAXIS_TAG, MOUSE_YAXIS_TAG }),
+	m_rom(*this, MOUSE_ROM_REGION),
+	m_rom_bank(0),
+	m_port_a_in(0), m_port_b_in(0),
+	m_last{ 0, 0 }, m_count{ 0, 0 }
+{
+}
+
+a2bus_mouse_device::a2bus_mouse_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock) :
+	a2bus_mouse_device(mconfig, A2BUS_MOUSE, tag, owner, clock)
+{
+}
+
+/*-------------------------------------------------
+    device_start - device-specific startup
+-------------------------------------------------*/
+>>>>>>> upstream/master
 
 void a2bus_mouse_device::device_start()
 {
 	// set_a2bus_device makes m_slot valid
 	set_a2bus_device();
 
+<<<<<<< HEAD
 	m_rom = device().machine().root_device().memregion(this->subtag(MOUSE_ROM_REGION).c_str())->base();
 
 	// allocate two timers: one for the 68705, one for the quadrature magic
@@ -235,10 +334,20 @@ void a2bus_mouse_device::device_start()
 	save_item(NAME(last_my));
 	save_item(NAME(count_x));
 	save_item(NAME(count_y));
+=======
+	// register save state variables
+	save_item(NAME(m_port_a_in));
+	save_item(NAME(m_port_b_in));
+	save_item(NAME(m_last));
+	save_item(NAME(m_count));
+
+	m_port_b_in = 0x00;
+>>>>>>> upstream/master
 }
 
 void a2bus_mouse_device::device_reset()
 {
+<<<<<<< HEAD
 	m_started = true;
 	m_rom_bank = 0;
 	last_mx = last_my = count_x = count_y = 0;
@@ -255,23 +364,39 @@ void a2bus_mouse_device::device_reset()
 	}
 
 	m_read_timer->adjust(attotime::from_hz(600.0), TIMER_QUADRATURE, attotime::from_hz(600.0));
+=======
+	m_rom_bank = 0;
+	m_last[0] = m_last[1] = m_count[0] = m_count[1] = 0;
+	m_port_a_in = 0x00;
+>>>>>>> upstream/master
 }
 
 /*-------------------------------------------------
     read_c0nx - called for reads from this card's c0nx space
 -------------------------------------------------*/
 
+<<<<<<< HEAD
 UINT8 a2bus_mouse_device::read_c0nx(address_space &space, UINT8 offset)
+=======
+uint8_t a2bus_mouse_device::read_c0nx(address_space &space, uint8_t offset)
+>>>>>>> upstream/master
 {
 	return m_pia->read(space, offset & 3);
 }
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> upstream/master
 /*-------------------------------------------------
     write_c0nx - called for writes to this card's c0nx space
 -------------------------------------------------*/
 
+<<<<<<< HEAD
 void a2bus_mouse_device::write_c0nx(address_space &space, UINT8 offset, UINT8 data)
+=======
+void a2bus_mouse_device::write_c0nx(address_space &space, uint8_t offset, uint8_t data)
+>>>>>>> upstream/master
 {
 	m_pia->write(space, offset & 3, data);
 }
@@ -280,11 +405,16 @@ void a2bus_mouse_device::write_c0nx(address_space &space, UINT8 offset, UINT8 da
     read_cnxx - called for reads from this card's cnxx space
 -------------------------------------------------*/
 
+<<<<<<< HEAD
 UINT8 a2bus_mouse_device::read_cnxx(address_space &space, UINT8 offset)
+=======
+uint8_t a2bus_mouse_device::read_cnxx(address_space &space, uint8_t offset)
+>>>>>>> upstream/master
 {
 	return m_rom[offset+m_rom_bank];
 }
 
+<<<<<<< HEAD
 READ8_MEMBER(a2bus_mouse_device::pia_in_a)
 {
 	return m_port_a_out;
@@ -295,6 +425,8 @@ READ8_MEMBER(a2bus_mouse_device::pia_in_b)
 	return (m_port_c_out << 4);
 }
 
+=======
+>>>>>>> upstream/master
 WRITE8_MEMBER(a2bus_mouse_device::pia_out_a)
 {
 	m_port_a_in = data;
@@ -302,8 +434,12 @@ WRITE8_MEMBER(a2bus_mouse_device::pia_out_a)
 
 WRITE8_MEMBER(a2bus_mouse_device::pia_out_b)
 {
+<<<<<<< HEAD
 	m_port_c_in &= 0xf0;
 	m_port_c_in |= ((data >> 4) & 0xf);
+=======
+	m_mcu->pc_w(space, 0, 0xf0 | ((data >> 4) & 0x0f));
+>>>>>>> upstream/master
 
 	m_rom_bank = (data & 0xe) << 7;
 }
@@ -318,34 +454,71 @@ WRITE_LINE_MEMBER(a2bus_mouse_device::pia_irqb_w)
 
 READ8_MEMBER(a2bus_mouse_device::mcu_port_a_r)
 {
+<<<<<<< HEAD
 	return (m_port_a_out & m_ddr_a) | (m_port_a_in & ~m_ddr_a);
+=======
+	return m_port_a_in;
+>>>>>>> upstream/master
 }
 
 WRITE8_MEMBER(a2bus_mouse_device::mcu_port_a_w)
 {
+<<<<<<< HEAD
 	m_port_a_out = data;
 }
 
 WRITE8_MEMBER(a2bus_mouse_device::mcu_ddr_a_w)
 {
 	m_ddr_a = data;
+=======
+	m_pia->set_a_input(data, ~mem_mask);
+>>>>>>> upstream/master
 }
 
 READ8_MEMBER(a2bus_mouse_device::mcu_port_b_r)
 {
+<<<<<<< HEAD
 	UINT8 b_in = m_port_b_in;
 
 	// clear the gates, leave everything else alone between pulses
 	m_port_b_in &= 0x85;
 
 	return (m_port_b_out & m_ddr_b) | (b_in & ~m_ddr_b);
+=======
+	enum { XAXIS, YAXIS };
+	constexpr u8 BUTTON = 0x80;
+	constexpr u8 X0 = 0x02; // gate, must go 0/1 for each pixel moved
+	constexpr u8 X1 = 0x01; // direction, 0 = left, 1 = right
+	constexpr u8 Y0 = 0x04; // direction, 0 = up, 1 = down
+	constexpr u8 Y1 = 0x08; // gate, must go 0/1 for each pixel moved
+
+	// update button now
+	if (m_mouseb->read())
+	{
+		m_port_b_in &= ~BUTTON;
+	}
+	else
+	{
+		m_port_b_in |= BUTTON;
+	}
+
+	// update the axes
+	update_axis<XAXIS, X1, X0>();
+	update_axis<YAXIS, Y0, Y1>();
+
+	return m_port_b_in;
+>>>>>>> upstream/master
 }
 
 WRITE8_MEMBER(a2bus_mouse_device::mcu_port_b_w)
 {
+<<<<<<< HEAD
 	m_port_b_out = data;
 
 	if (!(data & 0x40))
+=======
+	if (!BIT(data, 6))
+>>>>>>> upstream/master
 	{
 		raise_slot_irq();
 	}
@@ -355,6 +528,7 @@ WRITE8_MEMBER(a2bus_mouse_device::mcu_port_b_w)
 	}
 }
 
+<<<<<<< HEAD
 WRITE8_MEMBER(a2bus_mouse_device::mcu_ddr_b_w)
 {
 	m_ddr_b = data;
@@ -527,6 +701,42 @@ void a2bus_mouse_device::device_timer(emu_timer &timer, device_timer_id id, int 
 				m_port_b_in |= 0x04;    // Y0
 			}
 			m_port_b_in |= 0x08;    // Y1
+=======
+WRITE8_MEMBER(a2bus_mouse_device::mcu_port_c_w)
+{
+	m_pia->portb_w(data << 4);
+}
+
+template <unsigned AXIS, u8 DIR, u8 CLK> void a2bus_mouse_device::update_axis()
+{
+	// read the axis
+	const int new_m = m_mousexy[AXIS]->read();
+
+	// did it change?
+	int diff = new_m - m_last[AXIS];
+
+	// check for wrap
+	if (diff > 0x80)
+		diff = 0x100 - diff;
+	if  (diff < -0x80)
+		diff = -0x100 - diff;
+
+	m_count[AXIS] += diff;
+	m_last[AXIS] = new_m;
+
+	if (m_count[AXIS])
+	{
+		m_port_b_in ^= CLK;
+		if (m_count[AXIS] < 0)
+		{
+			m_count[AXIS]++;
+			if (m_port_b_in & CLK) m_port_b_in &= ~DIR;
+		}
+		else
+		{
+			m_count[AXIS]--;
+			if (m_port_b_in & CLK) m_port_b_in |= DIR;
+>>>>>>> upstream/master
 		}
 	}
 }

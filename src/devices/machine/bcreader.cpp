@@ -53,14 +53,23 @@
 #include "bcreader.h"
 
 // device type definition
+<<<<<<< HEAD
 const device_type BARCODE_READER = &device_creator<barcode_reader_device>;
+=======
+DEFINE_DEVICE_TYPE(BARCODE_READER, barcode_reader_device, "bcreader", "Barcode Reader")
+>>>>>>> upstream/master
 
 //-------------------------------------------------
 //  barcode_reader_device - constructor
 //-------------------------------------------------
 
+<<<<<<< HEAD
 barcode_reader_device::barcode_reader_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
 	: device_t(mconfig, BARCODE_READER, "Barcode Reader", tag, owner, clock, "bcreader", __FILE__)
+=======
+barcode_reader_device::barcode_reader_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: device_t(mconfig, BARCODE_READER, tag, owner, clock)
+>>>>>>> upstream/master
 	, m_byte_length(0)
 	, m_pixel_length(0)
 	, m_byte_count(0)
@@ -93,7 +102,11 @@ void barcode_reader_device::device_start()
 //-------------------------------------------------
 
 // Left Odd
+<<<<<<< HEAD
 static const UINT8 bcread_data_LO[10][7] =
+=======
+static const uint8_t bcread_data_LO[10][7] =
+>>>>>>> upstream/master
 {
 	{1, 1, 1, 0, 0, 1, 0}, {1, 1, 0, 0, 1, 1, 0},
 	{1, 1, 0, 1, 1, 0, 0}, {1, 0, 0, 0, 0, 1, 0},
@@ -103,7 +116,11 @@ static const UINT8 bcread_data_LO[10][7] =
 };
 
 // Left Even
+<<<<<<< HEAD
 static const UINT8 bcread_data_LE[10][7] =
+=======
+static const uint8_t bcread_data_LE[10][7] =
+>>>>>>> upstream/master
 {
 	{1, 0, 1, 1, 0, 0, 0}, {1, 0, 0, 1, 1, 0, 0},
 	{1, 1, 0, 0, 1, 0, 0}, {1, 0, 1, 1, 1, 1, 0},
@@ -113,7 +130,11 @@ static const UINT8 bcread_data_LE[10][7] =
 };
 
 // Right Even
+<<<<<<< HEAD
 static const UINT8 bcread_data_RE[10][7] =
+=======
+static const uint8_t bcread_data_RE[10][7] =
+>>>>>>> upstream/master
 {
 	{0, 0, 0, 1, 1, 0, 1}, {0, 0, 1, 1, 0, 0, 1},
 	{0, 0, 1, 0, 0, 1, 1}, {0, 1, 1, 1, 1, 0, 1},
@@ -124,7 +145,11 @@ static const UINT8 bcread_data_RE[10][7] =
 
 // EAN-13 added an extra digit to determine
 // the parity type of the first digits block
+<<<<<<< HEAD
 static const UINT8 bcread_parity_type[10][6] =
+=======
+static const uint8_t bcread_parity_type[10][6] =
+>>>>>>> upstream/master
 {
 	{1, 1, 1, 1, 1, 1}, {1, 1, 0, 1, 0, 0},
 	{1, 1, 0, 0, 1, 0}, {1, 1, 0, 0, 0, 1},
@@ -208,7 +233,10 @@ void barcode_reader_device::decode(int len)
 			sum += (i & 1) ? (m_byte_data[i] * 1) : (m_byte_data[i] * 3);
 	}
 
+<<<<<<< HEAD
 	if (m_pixel_data)
+=======
+>>>>>>> upstream/master
 	{
 		sum = (10 - (sum % 10)) % 10;
 		if (sum != m_byte_data[len - 1])
@@ -265,13 +293,21 @@ void barcode_reader_device::write_code(const char *barcode, int len)
 //  the codes by bytes
 //-------------------------------------------------
 
+<<<<<<< HEAD
 UINT8 barcode_reader_device::read_code()
+=======
+uint8_t barcode_reader_device::read_code()
+>>>>>>> upstream/master
 {
 	if (m_new_code)
 	{
 		if (m_byte_count < m_byte_length)
 		{
+<<<<<<< HEAD
 			UINT8 val = m_byte_data[m_byte_count];
+=======
+			uint8_t val = m_byte_data[m_byte_count];
+>>>>>>> upstream/master
 			m_byte_count++;
 			return val;
 		}

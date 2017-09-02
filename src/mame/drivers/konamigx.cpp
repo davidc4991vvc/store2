@@ -97,6 +97,7 @@
  */
 
 #include "emu.h"
+<<<<<<< HEAD
 #include "cpu/m68000/m68000.h"
 #include "cpu/z80/z80.h"
 #include "cpu/tms57002/tms57002.h"
@@ -107,6 +108,23 @@
 #include "rendlay.h"
 
 
+=======
+#include "includes/konamigx.h"
+
+#include "cpu/m68000/m68000.h"
+#include "cpu/tms57002/tms57002.h"
+#include "cpu/z80/z80.h"
+#include "machine/eepromser.h"
+#include "sound/k054539.h"
+#include "sound/k056800.h"
+#include "rendlay.h"
+#include "speaker.h"
+
+
+// TODO: check on PCB
+#define MASTER_CLOCK XTAL_24MHz
+#define SUB_CLOCK XTAL_16MHz
+>>>>>>> upstream/master
 
 /**********************************************************************************/
 /*
@@ -166,18 +184,43 @@
 
 // Say hello to gokuparo at 0x2a285c
 
+<<<<<<< HEAD
 static struct sprite_entry {
 	int pri;
 	UINT32 adr;
 } sprites[0x100];
 
 static void generate_sprites(address_space &space, UINT32 src, UINT32 spr, int count)
+=======
+/*!
+@todo
+ - Daisu Kiss: sets up 0x00257e28 as set variable in a 2p game after beating specific stages, and causes a game breaking sticky sprite.
+   It actually also sets up something that looks like non-sprite sub-commands in the same area (example is for character select), I'm inclined to think upper bits are actually used for something else:
+   00010005
+   00000006
+   000e0002
+   002e0080
+ - Sexy Parodius: sets up p1 as 2 at start of stage 1, 4 during stage 3A (attract mode), p4 is autoincremented at each gameplay frame. Related to missing effects?
+ - Tokimeki Memorial: wrong horizontal flip for mode select arrows;
+ */
+
+static struct sprite_entry {
+	int pri;
+	uint32_t adr;
+} sprites[0x100];
+
+void konamigx_state::generate_sprites(address_space &space, uint32_t src, uint32_t spr, int count)
+>>>>>>> upstream/master
 {
 	int scount = 0;
 	int ecount = 0;
 
 	for(int i=0; i<count; i++) {
+<<<<<<< HEAD
 		UINT32 adr = src + 0x100*i;
+=======
+		uint32_t adr = src + 0x100*i;
+>>>>>>> upstream/master
 		int pri;
 		if(!space.read_word(adr+2))
 			continue;
@@ -192,6 +235,7 @@ static void generate_sprites(address_space &space, UINT32 src, UINT32 spr, int c
 	//qsort(sprites, ecount, sizeof(struct sprite_entry), pri_comp);
 
 	for(int i=0; i<ecount; i++) {
+<<<<<<< HEAD
 		UINT32 adr = sprites[i].adr;
 		if(adr) {
 			UINT32 set =(space.read_word(adr) << 16)|space.read_word(adr+2);
@@ -207,6 +251,23 @@ static void generate_sprites(address_space &space, UINT32 src, UINT32 spr, int c
 			UINT16 color_set    = 0x0000;
 			UINT16 color_rotate = 0x0000;
 			UINT16 v;
+=======
+		uint32_t adr = sprites[i].adr;
+		if(adr) {
+			uint32_t set =(space.read_word(adr) << 16)|space.read_word(adr+2);
+			uint16_t glob_x = space.read_word(adr+4);
+			uint16_t glob_y = space.read_word(adr+8);
+			uint16_t flip_x = space.read_word(adr+12) ? 0x1000 : 0x0000;
+			uint16_t flip_y = space.read_word(adr+14) ? 0x2000 : 0x0000;
+			uint16_t glob_f = flip_x | (flip_y ^ 0x2000);
+			uint16_t zoom_x = space.read_word(adr+20);
+			uint16_t zoom_y = space.read_word(adr+22);
+			uint16_t color_val    = 0x0000;
+			uint16_t color_mask   = 0xffff;
+			uint16_t color_set    = 0x0000;
+			uint16_t color_rotate = 0x0000;
+			uint16_t v;
+>>>>>>> upstream/master
 
 			v = space.read_word(adr+24);
 			if(v & 0x8000) {
@@ -239,12 +300,22 @@ static void generate_sprites(address_space &space, UINT32 src, UINT32 spr, int c
 
 			if(set >= 0x200000 && set < 0xd00000)
 			{
+<<<<<<< HEAD
 				UINT16 count2 = space.read_word(set);
 				set += 2;
 				while(count2) {
 					UINT16 idx  = space.read_word(set);
 					UINT16 flip = space.read_word(set+2);
 					UINT16 col  = space.read_word(set+4);
+=======
+				uint16_t count2 = space.read_word(set);
+
+				set += 2;
+				while(count2) {
+					uint16_t idx  = space.read_word(set);
+					uint16_t flip = space.read_word(set+2);
+					uint16_t col  = space.read_word(set+4);
+>>>>>>> upstream/master
 					short y = space.read_word(set+6);
 					short x = space.read_word(set+8);
 
@@ -306,21 +377,34 @@ static void generate_sprites(address_space &space, UINT32 src, UINT32 spr, int c
 	}
 }
 
+<<<<<<< HEAD
 void konamigx_state::tkmmpzdm_esc(address_space &space, UINT32 p1, UINT32 p2, UINT32 p3, UINT32 p4)
+=======
+void konamigx_state::tkmmpzdm_esc(address_space &space, uint32_t p1, uint32_t p2, uint32_t p3, uint32_t p4)
+>>>>>>> upstream/master
 {
 	konamigx_esc_alert(m_workram, 0x0142, 0x100, 0);
 }
 
+<<<<<<< HEAD
 void konamigx_state::dragoonj_esc(address_space &space, UINT32 p1, UINT32 p2, UINT32 p3, UINT32 p4)
+=======
+void konamigx_state::dragoonj_esc(address_space &space, uint32_t p1, uint32_t p2, uint32_t p3, uint32_t p4)
+>>>>>>> upstream/master
 {
 	konamigx_esc_alert(m_workram, 0x5c00, 0x100, 0);
 }
 
+<<<<<<< HEAD
 void konamigx_state::sal2_esc(address_space &space, UINT32 p1, UINT32 p2, UINT32 p3, UINT32 p4)
+=======
+void konamigx_state::sal2_esc(address_space &space, uint32_t p1, uint32_t p2, uint32_t p3, uint32_t p4)
+>>>>>>> upstream/master
 {
 	konamigx_esc_alert(m_workram, 0x1c8c, 0x172, 1);
 }
 
+<<<<<<< HEAD
 void konamigx_state::sexyparo_esc(address_space &space, UINT32 p1, UINT32 p2, UINT32 p3, UINT32 p4)
 {
 	// The d20000 should probably be p3
@@ -328,21 +412,48 @@ void konamigx_state::sexyparo_esc(address_space &space, UINT32 p1, UINT32 p2, UI
 }
 
 void konamigx_state::tbyahhoo_esc(address_space &space, UINT32 p1, UINT32 p2, UINT32 p3, UINT32 p4)
+=======
+void konamigx_state::sexyparo_esc(address_space &space, uint32_t p1, uint32_t p2, uint32_t p3, uint32_t p4)
+{
+	// The d20000 should probably be p3
+	// TODO: debugging bootcamp, remove once finished
+#ifdef UNUSED_FUNCTION
+	if (p1 != 0)
+	{
+		logerror("sexyparo_esc P1 param: %02x\n", p1);
+	}
+#endif
+	generate_sprites(space, 0xc00604, 0xd20000, 0xfc);
+}
+
+void konamigx_state::tbyahhoo_esc(address_space &space, uint32_t p1, uint32_t p2, uint32_t p3, uint32_t p4)
+>>>>>>> upstream/master
 {
 	generate_sprites(space, 0xc00000, 0xd20000, 0x100);
 }
 
+<<<<<<< HEAD
 void konamigx_state::daiskiss_esc(address_space &space, UINT32 p1, UINT32 p2, UINT32 p3, UINT32 p4)
+=======
+void konamigx_state::daiskiss_esc(address_space &space, uint32_t p1, uint32_t p2, uint32_t p3, uint32_t p4)
+>>>>>>> upstream/master
 {
 	generate_sprites(space, 0xc00000, 0xd20000, 0x100);
 }
 
 WRITE32_MEMBER(konamigx_state::esc_w)
 {
+<<<<<<< HEAD
 	UINT32 opcode;
 	UINT32 params;
 
 	/* ignore NULL writes to the ESC (these appear to be "keepalives" on the real hardware) */
+=======
+	uint32_t opcode;
+	uint32_t params;
+
+	/* ignore nullptr writes to the ESC (these appear to be "keepalives" on the real hardware) */
+>>>>>>> upstream/master
 	if (!data)
 	{
 		return;
@@ -386,10 +497,17 @@ WRITE32_MEMBER(konamigx_state::esc_w)
 			break;
 		case 1: // Run program
 			if(m_esc_cb) {
+<<<<<<< HEAD
 				UINT32 p1 = (space.read_word(params+0)<<16) | space.read_word(params+2);
 				UINT32 p2 = (space.read_word(params+4)<<16) | space.read_word(params+6);
 				UINT32 p3 = (space.read_word(params+8)<<16) | space.read_word(params+10);
 				UINT32 p4 = (space.read_word(params+12)<<16) | space.read_word(params+14);
+=======
+				uint32_t p1 = (space.read_word(params+0)<<16) | space.read_word(params+2);
+				uint32_t p2 = (space.read_word(params+4)<<16) | space.read_word(params+6);
+				uint32_t p3 = (space.read_word(params+8)<<16) | space.read_word(params+10);
+				uint32_t p4 = (space.read_word(params+12)<<16) | space.read_word(params+14);
+>>>>>>> upstream/master
 				(this->*m_esc_cb)(space, p1, p2, p3, p4);
 			}
 			break;
@@ -429,13 +547,21 @@ CUSTOM_INPUT_MEMBER(konamigx_state::gx_rdport1_3_r)
 
 WRITE32_MEMBER(konamigx_state::eeprom_w)
 {
+<<<<<<< HEAD
 	UINT32 odata;
+=======
+	uint32_t odata;
+>>>>>>> upstream/master
 
 	if (ACCESSING_BITS_24_31)
 	{
 		odata = data >> 24;
 		/*
+<<<<<<< HEAD
 		  bit 7: afr
+=======
+		  bit 7: afr, a watchdog timer bit
+>>>>>>> upstream/master
 		  bit 6: objscan
 		  bit 5: background color select: 0 = 338 solid color, 1 = 5^5 gradient
 		  bit 4: coin counter 2
@@ -447,6 +573,12 @@ WRITE32_MEMBER(konamigx_state::eeprom_w)
 
 		m_eepromout->write(odata, 0xff);
 
+<<<<<<< HEAD
+=======
+		machine().bookkeeping().coin_counter_w(0, odata & 0x08);
+		machine().bookkeeping().coin_counter_w(1, odata & 0x10);
+
+>>>>>>> upstream/master
 		m_gx_wrport1_0 = odata;
 	}
 
@@ -474,6 +606,11 @@ WRITE32_MEMBER(konamigx_state::eeprom_w)
 
 WRITE32_MEMBER(konamigx_state::control_w)
 {
+<<<<<<< HEAD
+=======
+	// TODO: derive from reported PCB XTALs
+	const uint32_t pixclock[4] = { XTAL_6MHz, XTAL_8MHz, XTAL_12MHz, XTAL_16MHz};
+>>>>>>> upstream/master
 	//logerror("write %x to control register (mask=%x)\n", data, mem_mask);
 
 	// known controls:
@@ -512,6 +649,15 @@ WRITE32_MEMBER(konamigx_state::control_w)
 		m_k055673->k053246_set_objcha_line((data&0x100000) ? ASSERT_LINE : CLEAR_LINE);
 
 		m_gx_wrport2 = (data>>16)&0xff;
+<<<<<<< HEAD
+=======
+
+		if(m_prev_pixel_clock != (m_gx_wrport2 & 3))
+		{
+			m_k053252->set_unscaled_clock(pixclock[m_gx_wrport2 & 3]);
+			m_prev_pixel_clock = m_gx_wrport2 & 3;
+		}
+>>>>>>> upstream/master
 	}
 }
 
@@ -519,6 +665,7 @@ WRITE32_MEMBER(konamigx_state::control_w)
 /**********************************************************************************/
 /* IRQ controllers */
 
+<<<<<<< HEAD
 READ32_MEMBER(konamigx_state::ccu_r)
 {
 	// the routine at 204abe in opengolf polls to see if we're in vblank (it wants values between 0x111 and 0x1df)
@@ -554,6 +701,8 @@ WRITE32_MEMBER(konamigx_state::ccu_w)
 	}
 }
 
+=======
+>>>>>>> upstream/master
 TIMER_CALLBACK_MEMBER(konamigx_state::boothack_callback)
 {
 	// Restore main CPU normal operating frequency
@@ -593,7 +742,14 @@ TIMER_CALLBACK_MEMBER(konamigx_state::dmaend_callback)
 
 void konamigx_state::dmastart_callback(int data)
 {
+<<<<<<< HEAD
 	// raise the DMA busy flag
+=======
+	int sprite_timing;
+
+	// raise the DMA busy flag
+	// TODO: is it supposed to raise even if DMA is disabled?
+>>>>>>> upstream/master
 	m_gx_rdport1_3 |= 2;
 
 	// begin transfer if DMAEN(bit4 of OBJSET1) is set (see p.48)
@@ -604,11 +760,24 @@ void konamigx_state::dmastart_callback(int data)
 	}
 
 	// simulate DMA delay
+<<<<<<< HEAD
 	m_dmadelay_timer->adjust(attotime::from_usec(120));
 }
 
 
 INTERRUPT_GEN_MEMBER(konamigx_state::konamigx_vbinterrupt)
+=======
+	// TODO: Rushing Heroes doesn't like reported sprite timings, probably due of sprite protection being issued istantly or requires the double buffering ...
+	if(m_gx_rushingheroes_hack == 1)
+		sprite_timing = 64;
+	else
+		sprite_timing = m_gx_wrport2 & 1 ? (256+32) : (342+42);
+	m_dmadelay_timer->adjust(attotime::from_usec(sprite_timing));
+}
+
+
+INTERRUPT_GEN_MEMBER(konamigx_state::konamigx_type2_vblank_irq)
+>>>>>>> upstream/master
 {
 	// lift idle suspension
 	if (m_resume_trigger && m_suspension_active)
@@ -625,6 +794,10 @@ INTERRUPT_GEN_MEMBER(konamigx_state::konamigx_vbinterrupt)
 		if ((m_gx_wrport1_1 & 0x81) == 0x81 || (m_gx_syncen & 1))
 		{
 			m_gx_syncen &= ~1;
+<<<<<<< HEAD
+=======
+			// TODO: enabling ASSERT_LINE breaks opengolf, annoying.
+>>>>>>> upstream/master
 			device.execute().set_input_line(1, HOLD_LINE);
 		}
 	}
@@ -632,7 +805,32 @@ INTERRUPT_GEN_MEMBER(konamigx_state::konamigx_vbinterrupt)
 	dmastart_callback(0);
 }
 
+<<<<<<< HEAD
 TIMER_DEVICE_CALLBACK_MEMBER(konamigx_state::konamigx_hbinterrupt)
+=======
+TIMER_DEVICE_CALLBACK_MEMBER(konamigx_state::konamigx_type2_scanline)
+{
+	int scanline = param;
+
+	if(scanline == 48)
+	{
+		if (m_gx_syncen & 0x40)
+		{
+			m_gx_syncen &= ~0x40;
+
+			if ((m_gx_wrport1_1 & 0x82) == 0x82 || (m_gx_syncen & 2))
+			{
+				popmessage("HBlank IRQ enabled, contact MAMEdev");
+				m_gx_syncen &= ~2;
+				m_maincpu->set_input_line(2, HOLD_LINE);
+			}
+		}
+
+	}
+}
+
+TIMER_DEVICE_CALLBACK_MEMBER(konamigx_state::konamigx_type4_scanline)
+>>>>>>> upstream/master
 {
 	int scanline = param;
 
@@ -728,14 +926,22 @@ READ32_MEMBER(konamigx_state::le2_gun_V_r)
 
 READ32_MEMBER(konamigx_state::type1_roz_r1)
 {
+<<<<<<< HEAD
 	UINT32 *ROM = (UINT32 *)memregion("gfx3")->base();
+=======
+	uint32_t *ROM = (uint32_t *)memregion("gfx3")->base();
+>>>>>>> upstream/master
 
 	return ROM[offset];
 }
 
 READ32_MEMBER(konamigx_state::type1_roz_r2)
 {
+<<<<<<< HEAD
 	UINT32 *ROM = (UINT32 *)memregion("gfx3")->base();
+=======
+	uint32_t *ROM = (uint32_t *)memregion("gfx3")->base();
+>>>>>>> upstream/master
 
 	ROM += (0x600000/2);
 
@@ -848,10 +1054,17 @@ WRITE32_MEMBER(konamigx_state::type4_prot_w)
 				    known commands:
 				    rng2   rushhero  vsnet  winspike   what
 				    ------------------------------------------------------------------------------
+<<<<<<< HEAD
 				        0a56   0d96  0d14   0d1c       memcpy from c01000 to c01400 for 0x400 bytes
 				    0b16                               generate sprite list at c01000 or c08400 (not sure entirely, see routine at 209922 in rungun2)
 				           0d97  0515              parse big DMA list at c10200
 				                 57a       copy 4 bytes from c00f10 to c10f00 and 4 bytes from c00f30 to c0fe00
+=======
+				    0a56   0d96      0d14   0d1c       memcpy from c01000 to c01400 for 0x400 bytes
+				    0b16                               generate sprite list at c01000 or c08400 (not sure entirely, see routine at 209922 in rungun2)
+				           0d97      0515              parse big DMA list at c10200
+				                            057a       copy 4 bytes from c00f10 to c10f00 and 4 bytes from c00f30 to c0fe00
+>>>>>>> upstream/master
 				*/
 				if ((m_last_prot_op == 0xa56) || (m_last_prot_op == 0xd96) || (m_last_prot_op == 0xd14) || (m_last_prot_op == 0xd1c))
 				{
@@ -927,7 +1140,11 @@ WRITE32_MEMBER(konamigx_state::type4_prot_w)
 				}
 				else
 				{
+<<<<<<< HEAD
 					printf("GXT4: unknown protection command %x (PC=%x)\n", m_last_prot_op, space.device().safe_pc());
+=======
+					//printf("GXT4: unknown protection command %x (PC=%x)\n", m_last_prot_op, space.device().safe_pc());
+>>>>>>> upstream/master
 				}
 
 				if (m_gx_wrport1_1 & 0x10)
@@ -947,7 +1164,11 @@ WRITE32_MEMBER(konamigx_state::type4_prot_w)
 // cabinet lamps for type 1 games
 WRITE32_MEMBER(konamigx_state::type1_cablamps_w)
 {
+<<<<<<< HEAD
 	set_led_status(machine(), 0, (data>>24)&1);
+=======
+	output().set_led_value(0, (data>>24)&1);
+>>>>>>> upstream/master
 }
 
 /**********************************************************************************/
@@ -961,14 +1182,24 @@ static ADDRESS_MAP_START( gx_base_memmap, AS_PROGRAM, 32, konamigx_state )
 	AM_RANGE(0xc00000, 0xc1ffff) AM_RAM AM_SHARE("workram")
 	AM_RANGE(0xd00000, 0xd01fff) AM_DEVREAD("k056832", k056832_device, k_5bpp_rom_long_r)
 	AM_RANGE(0xd20000, 0xd20fff) AM_DEVREADWRITE16("k055673", k055673_device, k053247_word_r, k053247_word_w, 0xffffffff)
+<<<<<<< HEAD
 	AM_RANGE(0xd21000, 0xd23fff) AM_RAM
+=======
+	AM_RANGE(0xd21000, 0xd21fff) AM_RAM // second bank of sprite RAM, accessed thru ESC
+	AM_RANGE(0xd22000, 0xd23fff) AM_RAM // extra bank checked at least by sexyparo, pending further investigation.
+>>>>>>> upstream/master
 	AM_RANGE(0xd40000, 0xd4003f) AM_DEVWRITE("k056832", k056832_device, long_w)
 	AM_RANGE(0xd44000, 0xd4400f) AM_WRITE(konamigx_tilebank_w)
 	AM_RANGE(0xd48000, 0xd48007) AM_DEVWRITE16("k055673", k055673_device, k053246_word_w, 0xffffffff)
 	AM_RANGE(0xd4a000, 0xd4a00f) AM_DEVREAD16("k055673", k055673_device, k055673_rom_word_r, 0xffffffff)
 	AM_RANGE(0xd4a010, 0xd4a01f) AM_DEVWRITE16("k055673", k055673_device, k055673_reg_word_w, 0xffffffff)
+<<<<<<< HEAD
 	AM_RANGE(0xd4c000, 0xd4c01f) AM_READWRITE(ccu_r, ccu_w)
 	AM_RANGE(0xd4e000, 0xd4e01f) AM_WRITENOP
+=======
+	AM_RANGE(0xd4c000, 0xd4c01f) AM_DEVREADWRITE8("k053252", k053252_device, read, write, 0xff00ff00)
+	AM_RANGE(0xd4e000, 0xd4e01f) AM_WRITENOP // left-over for "secondary" CCU, apparently (used by type 3/4 for slave screen?)
+>>>>>>> upstream/master
 	AM_RANGE(0xd50000, 0xd500ff) AM_DEVWRITE("k055555", k055555_device, K055555_long_w)
 	AM_RANGE(0xd52000, 0xd5201f) AM_DEVREADWRITE8("k056800", k056800_device, host_r, host_w, 0xff00ff00)
 	AM_RANGE(0xd56000, 0xd56003) AM_WRITE(eeprom_w)
@@ -1159,7 +1390,11 @@ static INPUT_PORTS_START( common )
 
 	// note: racin' force expects bit 1 of the eeprom port to toggle
 	PORT_BIT( 0x00000001, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_READ_LINE_DEVICE_MEMBER("eeprom", eeprom_serial_93cxx_device, do_read)
+<<<<<<< HEAD
 	PORT_BIT( 0x000000fe, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, konamigx_state, gx_rdport1_3_r, NULL)
+=======
+	PORT_BIT( 0x000000fe, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, konamigx_state, gx_rdport1_3_r, nullptr)
+>>>>>>> upstream/master
 	PORT_BIT( 0x00000100, IP_ACTIVE_LOW, IPT_COIN1 )
 	PORT_BIT( 0x00000200, IP_ACTIVE_LOW, IPT_COIN2 )
 	PORT_BIT( 0x00000400, IP_ACTIVE_LOW, IPT_UNKNOWN )
@@ -1277,6 +1512,10 @@ static INPUT_PORTS_START( le2 )
 	PORT_DIPNAME( 0x02000000, 0x02000000, "Coin Mechanism")
 	PORT_DIPSETTING(          0x02000000, "Common")
 	PORT_DIPSETTING(          0x00000000, "Independent")
+<<<<<<< HEAD
+=======
+	//  TODO: inverted for le2j
+>>>>>>> upstream/master
 	PORT_DIPNAME( 0x04000000, 0x04000000, "Stage Select" )
 	PORT_DIPSETTING(          0x04000000, DEF_STR( Off ) )
 	PORT_DIPSETTING(          0x00000000, DEF_STR( On ) )
@@ -1437,7 +1676,14 @@ static INPUT_PORTS_START( type3 )
 	PORT_INCLUDE( common )
 
 	PORT_MODIFY("SYSTEM_DSW")
+<<<<<<< HEAD
 	PORT_BIT( 0x00008000, IP_ACTIVE_HIGH, IPT_UNKNOWN )
+=======
+	PORT_BIT( 0x00000400, IP_ACTIVE_LOW, IPT_COIN3 )
+	PORT_BIT( 0x00000800, IP_ACTIVE_LOW, IPT_COIN4 )
+	PORT_BIT( 0x00004000, IP_ACTIVE_LOW, IPT_SERVICE3 )
+	PORT_BIT( 0x00008000, IP_ACTIVE_LOW, IPT_SERVICE4 )
+>>>>>>> upstream/master
 	PORT_DIPNAME( 0x01000000, 0x00000000, DEF_STR( Stereo ))
 	PORT_DIPSETTING(          0x00000000, DEF_STR( Stereo ))
 	PORT_DIPSETTING(          0x01000000, DEF_STR( Mono ))
@@ -1547,7 +1793,11 @@ static GFXDECODE_START( racinfrc )
 GFXDECODE_END
 
 /* type 3 & 4 games use a simple 8bpp decode for the 53936 */
+<<<<<<< HEAD
 static GFXDECODE_START( type34 )
+=======
+static GFXDECODE_START( type3 )
+>>>>>>> upstream/master
 	GFXDECODE_ENTRY( "gfx3", 0, bglayout_8bpp, 0x1000, 8 )
 GFXDECODE_END
 
@@ -1555,6 +1805,7 @@ static GFXDECODE_START( type4 )
 	GFXDECODE_ENTRY( "gfx3", 0, bglayout_8bpp, 0x1800, 8 )
 GFXDECODE_END
 
+<<<<<<< HEAD
 static MACHINE_CONFIG_START( konamigx, konamigx_state )
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", M68EC020, 24000000)
@@ -1567,6 +1818,38 @@ static MACHINE_CONFIG_START( konamigx, konamigx_state )
 	MCFG_CPU_ADD("dasp", TMS57002, 24000000/2)
 	MCFG_CPU_DATA_MAP(gxtmsmap)
 
+=======
+WRITE_LINE_MEMBER(konamigx_state::vblank_irq_ack_w)
+{
+	m_maincpu->set_input_line(1, CLEAR_LINE);
+	m_gx_syncen |= 0x20;
+}
+
+WRITE_LINE_MEMBER(konamigx_state::hblank_irq_ack_w)
+{
+	m_maincpu->set_input_line(2, CLEAR_LINE);
+	m_gx_syncen |= 0x40;
+}
+
+static MACHINE_CONFIG_START( konamigx )
+	/* basic machine hardware */
+	MCFG_CPU_ADD("maincpu", M68EC020, MASTER_CLOCK)
+	MCFG_CPU_PROGRAM_MAP(gx_type2_map)
+	MCFG_CPU_VBLANK_INT_DRIVER("screen", konamigx_state, konamigx_type2_vblank_irq)
+
+	MCFG_CPU_ADD("soundcpu", M68000, SUB_CLOCK/2)
+	MCFG_CPU_PROGRAM_MAP(gxsndmap)
+
+	MCFG_CPU_ADD("dasp", TMS57002, MASTER_CLOCK/2)
+	MCFG_CPU_DATA_MAP(gxtmsmap)
+
+	MCFG_DEVICE_ADD("k053252", K053252, MASTER_CLOCK/4)
+	MCFG_K053252_OFFSETS(24, 16)
+	MCFG_K053252_INT1_ACK_CB(WRITELINE(konamigx_state, vblank_irq_ack_w))
+	MCFG_K053252_INT2_ACK_CB(WRITELINE(konamigx_state, hblank_irq_ack_w))
+	MCFG_VIDEO_SET_SCREEN("screen")
+
+>>>>>>> upstream/master
 	MCFG_QUANTUM_TIME(attotime::from_hz(6000))
 
 	MCFG_MACHINE_START_OVERRIDE(konamigx_state,konamigx)
@@ -1577,12 +1860,22 @@ static MACHINE_CONFIG_START( konamigx, konamigx_state )
 	/* video hardware */
 	MCFG_SCREEN_ADD("screen", RASTER)
 	MCFG_SCREEN_VIDEO_ATTRIBUTES(VIDEO_UPDATE_AFTER_VBLANK)
+<<<<<<< HEAD
 	MCFG_SCREEN_RAW_PARAMS(6000000, 288+16+32+48, 0, 287, 224+16+8+16, 0, 223)
 	/* These parameters are actual value written to the CCU.
 	tbyahhoo attract mode desync is caused by another matter. */
 
 //  MCFG_SCREEN_VBLANK_TIME(ATTOSECONDS_IN_USEC(600))
 	MCFG_SCREEN_SIZE(64*8, 32*8)
+=======
+	MCFG_SCREEN_RAW_PARAMS(8000000, 384+24+64+40, 0, 383, 224+16+8+16, 0, 223)
+	/* These parameters are actual value written to the CCU.
+	tbyahhoo attract mode desync is caused by another matter. */
+
+	//MCFG_SCREEN_VBLANK_TIME(ATTOSECONDS_IN_USEC(600))
+	// TODO: WTF, without these most games crashes? Some legacy call in video code???
+	MCFG_SCREEN_SIZE(1024, 1024)
+>>>>>>> upstream/master
 	MCFG_SCREEN_VISIBLE_AREA(24, 24+288-1, 16, 16+224-1)
 	MCFG_SCREEN_UPDATE_DRIVER(konamigx_state, screen_update_konamigx)
 
@@ -1591,12 +1884,18 @@ static MACHINE_CONFIG_START( konamigx, konamigx_state )
 	MCFG_PALETTE_ENABLE_SHADOWS()
 	MCFG_PALETTE_ENABLE_HILIGHTS()
 
+<<<<<<< HEAD
 	MCFG_GFXDECODE_ADD("gfxdecode", "palette", empty)
 
 	MCFG_DEVICE_ADD("k056832", K056832, 0)
 	MCFG_K056832_CB(konamigx_state, type2_tile_callback)
 	MCFG_K056832_CONFIG("gfx1", 0, K056832_BPP_5, 0, 0, "none")
 	MCFG_K056832_GFXDECODE("gfxdecode")
+=======
+	MCFG_DEVICE_ADD("k056832", K056832, 0)
+	MCFG_K056832_CB(konamigx_state, type2_tile_callback)
+	MCFG_K056832_CONFIG("gfx1", K056832_BPP_5, 0, 0, "none")
+>>>>>>> upstream/master
 	MCFG_K056832_PALETTE("palette")
 
 	MCFG_K055555_ADD("k055555")
@@ -1608,9 +1907,14 @@ static MACHINE_CONFIG_START( konamigx, konamigx_state )
 
 	MCFG_DEVICE_ADD("k055673", K055673, 0)
 	MCFG_K055673_CB(konamigx_state, type2_sprite_callback)
+<<<<<<< HEAD
 	MCFG_K055673_CONFIG("gfx2", 0, K055673_LAYOUT_GX, -26, -23)
 	MCFG_K055673_SET_SCREEN("screen")
 	MCFG_K055673_GFXDECODE("gfxdecode")
+=======
+	MCFG_K055673_CONFIG("gfx2", K055673_LAYOUT_GX, -26, -23)
+	MCFG_K055673_SET_SCREEN("screen")
+>>>>>>> upstream/master
 	MCFG_K055673_PALETTE("palette")
 
 	MCFG_VIDEO_START_OVERRIDE(konamigx_state, konamigx_5bpp)
@@ -1641,9 +1945,20 @@ static MACHINE_CONFIG_START( konamigx, konamigx_state )
 	MCFG_SOUND_ROUTE(1, "rspeaker", 1.0)
 MACHINE_CONFIG_END
 
+<<<<<<< HEAD
 static MACHINE_CONFIG_DERIVED( gokuparo, konamigx )
 	MCFG_DEVICE_MODIFY("k055673")
 	MCFG_K055673_CONFIG("gfx2", 0, K055673_LAYOUT_GX, -46, -23)
+=======
+static MACHINE_CONFIG_DERIVED( konamigx_bios, konamigx )
+	MCFG_DEVICE_MODIFY("k056832")
+	MCFG_K056832_CONFIG("gfx1", K056832_BPP_4, 0, 0, "k055555")
+MACHINE_CONFIG_END
+
+static MACHINE_CONFIG_DERIVED( gokuparo, konamigx )
+	MCFG_DEVICE_MODIFY("k055673")
+	MCFG_K055673_CONFIG("gfx2", K055673_LAYOUT_GX, -46, -23)
+>>>>>>> upstream/master
 MACHINE_CONFIG_END
 
 static MACHINE_CONFIG_DERIVED( sexyparo, konamigx )
@@ -1651,16 +1966,25 @@ static MACHINE_CONFIG_DERIVED( sexyparo, konamigx )
 	MCFG_K056832_CB(konamigx_state, alpha_tile_callback)
 
 	MCFG_DEVICE_MODIFY("k055673")
+<<<<<<< HEAD
 	MCFG_K055673_CONFIG("gfx2", 0, K055673_LAYOUT_GX, -42, -23)
+=======
+	MCFG_K055673_CONFIG("gfx2", K055673_LAYOUT_GX, -42, -23)
+>>>>>>> upstream/master
 MACHINE_CONFIG_END
 
 static MACHINE_CONFIG_DERIVED( tbyahhoo, konamigx )
 	MCFG_DEVICE_MODIFY("k056832")
+<<<<<<< HEAD
 	MCFG_K056832_CONFIG("gfx1", 0, K056832_BPP_5, 0, 0, "k055555")
+=======
+	MCFG_K056832_CONFIG("gfx1", K056832_BPP_5, 0, 0, "k055555")
+>>>>>>> upstream/master
 MACHINE_CONFIG_END
 
 static MACHINE_CONFIG_DERIVED( dragoonj, konamigx )
 	MCFG_SCREEN_MODIFY("screen")
+<<<<<<< HEAD
 	MCFG_SCREEN_VISIBLE_AREA(40, 40+384-1, 16, 16+224-1)
 	MCFG_VIDEO_START_OVERRIDE(konamigx_state, dragoonj)
 
@@ -1670,10 +1994,24 @@ static MACHINE_CONFIG_DERIVED( dragoonj, konamigx )
 	MCFG_DEVICE_MODIFY("k055673")
 	MCFG_K055673_CB(konamigx_state, dragoonj_sprite_callback)
 	MCFG_K055673_CONFIG("gfx2", 0, K055673_LAYOUT_RNG, -53, -23)
+=======
+	MCFG_VIDEO_START_OVERRIDE(konamigx_state, dragoonj)
+
+	MCFG_DEVICE_MODIFY("k053252")
+	MCFG_K053252_OFFSETS(24+16, 16)
+
+	MCFG_DEVICE_MODIFY("k056832")
+	MCFG_K056832_CONFIG("gfx1", K056832_BPP_5, 1, 0, "none")
+
+	MCFG_DEVICE_MODIFY("k055673")
+	MCFG_K055673_CB(konamigx_state, dragoonj_sprite_callback)
+	MCFG_K055673_CONFIG("gfx2", K055673_LAYOUT_RNG, -53, -23)
+>>>>>>> upstream/master
 MACHINE_CONFIG_END
 
 static MACHINE_CONFIG_DERIVED( le2, konamigx )
 	MCFG_VIDEO_START_OVERRIDE(konamigx_state, le2)
+<<<<<<< HEAD
 
 	MCFG_DEVICE_MODIFY("k056832")
 	MCFG_K056832_CONFIG("gfx1", 0, K056832_BPP_8, 1, 0, "none")
@@ -1681,36 +2019,70 @@ static MACHINE_CONFIG_DERIVED( le2, konamigx )
 	MCFG_DEVICE_MODIFY("k055673")
 	MCFG_K055673_CB(konamigx_state, le2_sprite_callback)
 	MCFG_K055673_CONFIG("gfx2", 0, K055673_LAYOUT_LE2, -46, -23)
+=======
+	MCFG_TIMER_DRIVER_ADD_SCANLINE("scantimer", konamigx_state, konamigx_type2_scanline, "screen", 0, 1)
+
+	MCFG_DEVICE_MODIFY("k056832")
+	MCFG_K056832_CONFIG("gfx1", K056832_BPP_8, 1, 0, "none")
+
+	MCFG_DEVICE_MODIFY("k055673")
+	MCFG_K055673_CB(konamigx_state, le2_sprite_callback)
+	MCFG_K055673_CONFIG("gfx2", K055673_LAYOUT_LE2, -46, -23)
+>>>>>>> upstream/master
 MACHINE_CONFIG_END
 
 static MACHINE_CONFIG_DERIVED( konamigx_6bpp, konamigx )
 	MCFG_VIDEO_START_OVERRIDE(konamigx_state, konamigx_6bpp)
 
 	MCFG_DEVICE_MODIFY("k056832")
+<<<<<<< HEAD
 	MCFG_K056832_CONFIG("gfx1", 0, K056832_BPP_6, 0, 0, "none")
 
 	MCFG_DEVICE_MODIFY("k055673")
 	MCFG_K055673_CONFIG("gfx2", 0, K055673_LAYOUT_GX, -46, -23)
+=======
+	MCFG_K056832_CONFIG("gfx1", K056832_BPP_6, 0, 0, "none")
+
+	MCFG_DEVICE_MODIFY("k055673")
+	MCFG_K055673_CONFIG("gfx2", K055673_LAYOUT_GX, -46, -23)
+>>>>>>> upstream/master
 MACHINE_CONFIG_END
 
 static MACHINE_CONFIG_DERIVED( salmndr2, konamigx )
 	MCFG_DEVICE_MODIFY("k056832")
+<<<<<<< HEAD
 	MCFG_K056832_CONFIG("gfx1", 0, K056832_BPP_6, 1, 0, "none")
 
 	MCFG_DEVICE_MODIFY("k055673")
 	MCFG_K055673_CB(konamigx_state, salmndr2_sprite_callback)
 	MCFG_K055673_CONFIG("gfx2", 0, K055673_LAYOUT_GX6, -48, -23)
+=======
+	MCFG_K056832_CONFIG("gfx1", K056832_BPP_6, 1, 0, "none")
+
+	MCFG_DEVICE_MODIFY("k055673")
+	MCFG_K055673_CB(konamigx_state, salmndr2_sprite_callback)
+	MCFG_K055673_CONFIG("gfx2", K055673_LAYOUT_GX6, -48, -23)
+>>>>>>> upstream/master
 MACHINE_CONFIG_END
 
 static MACHINE_CONFIG_DERIVED( opengolf, konamigx )
 	MCFG_SCREEN_MODIFY("screen")
 	MCFG_SCREEN_RAW_PARAMS(8000000, 384+24+64+40, 0, 383, 224+16+8+16, 0, 223)
 	MCFG_SCREEN_VISIBLE_AREA(40, 40+384-1, 16, 16+224-1)
+<<<<<<< HEAD
 	MCFG_GFXDECODE_MODIFY("gfxdecode", opengolf)
 	MCFG_VIDEO_START_OVERRIDE(konamigx_state, opengolf)
 
 	MCFG_DEVICE_MODIFY("k055673")
 	MCFG_K055673_CONFIG("gfx2", 0, K055673_LAYOUT_GX6, -53, -23)
+=======
+
+	MCFG_GFXDECODE_ADD("gfxdecode", "palette", opengolf)
+	MCFG_VIDEO_START_OVERRIDE(konamigx_state, opengolf)
+
+	MCFG_DEVICE_MODIFY("k055673")
+	MCFG_K055673_CONFIG("gfx2", K055673_LAYOUT_GX6, -53, -23)
+>>>>>>> upstream/master
 
 	MCFG_CPU_MODIFY("maincpu")
 	MCFG_CPU_PROGRAM_MAP(gx_type1_map)
@@ -1721,6 +2093,7 @@ MACHINE_CONFIG_END
 
 static MACHINE_CONFIG_DERIVED( racinfrc, konamigx )
 	MCFG_SCREEN_MODIFY("screen")
+<<<<<<< HEAD
 	MCFG_SCREEN_RAW_PARAMS(8000000, 384+24+64+40, 0, 383, 224+16+8+16, 0, 223)
 	MCFG_SCREEN_VISIBLE_AREA(32, 32+384-1, 16, 16+224-1)
 	MCFG_GFXDECODE_MODIFY("gfxdecode", racinfrc)
@@ -1731,6 +2104,22 @@ static MACHINE_CONFIG_DERIVED( racinfrc, konamigx )
 
 	MCFG_DEVICE_MODIFY("k055673")
 	MCFG_K055673_CONFIG("gfx2", 0, K055673_LAYOUT_GX, -53, -23)
+=======
+	//MCFG_SCREEN_RAW_PARAMS(6000000, 384+24+64+40, 0, 383, 224+16+8+16, 0, 223)
+	//MCFG_SCREEN_VISIBLE_AREA(32, 32+384-1, 16, 16+224-1)
+
+	MCFG_GFXDECODE_ADD("gfxdecode", "palette", racinfrc)
+	MCFG_VIDEO_START_OVERRIDE(konamigx_state, racinfrc)
+
+	MCFG_DEVICE_MODIFY("k053252")
+	MCFG_K053252_OFFSETS(24-8+16, 0)
+
+	MCFG_DEVICE_MODIFY("k056832")
+	MCFG_K056832_CONFIG("gfx1", K056832_BPP_6, 0, 0, "none")
+
+	MCFG_DEVICE_MODIFY("k055673")
+	MCFG_K055673_CONFIG("gfx2", K055673_LAYOUT_GX, -53, -23)
+>>>>>>> upstream/master
 
 	MCFG_CPU_MODIFY("maincpu")
 	MCFG_CPU_PROGRAM_MAP(gx_type1_map)
@@ -1743,6 +2132,7 @@ static MACHINE_CONFIG_DERIVED( gxtype3, konamigx )
 
 	MCFG_DEVICE_MODIFY("maincpu")
 	MCFG_CPU_PROGRAM_MAP(gx_type3_map)
+<<<<<<< HEAD
 	MCFG_TIMER_DRIVER_ADD_SCANLINE("scantimer", konamigx_state, konamigx_hbinterrupt, "screen", 0, 1)
 
 	MCFG_DEFAULT_LAYOUT(layout_dualhsxs)
@@ -1754,6 +2144,24 @@ static MACHINE_CONFIG_DERIVED( gxtype3, konamigx )
 
 	MCFG_DEVICE_MODIFY("k055673")
 	MCFG_K055673_CONFIG("gfx2", 0, K055673_LAYOUT_GX6, -132, -23)
+=======
+	MCFG_TIMER_DRIVER_ADD_SCANLINE("scantimer", konamigx_state, konamigx_type4_scanline, "screen", 0, 1)
+
+	MCFG_DEFAULT_LAYOUT(layout_dualhsxs)
+
+	MCFG_GFXDECODE_ADD("gfxdecode", "palette", type3)
+	MCFG_VIDEO_START_OVERRIDE(konamigx_state, konamigx_type3)
+
+	MCFG_DEVICE_MODIFY("k053252")
+	MCFG_K053252_OFFSETS(0, 16)
+	MCFG_K053252_SET_SLAVE_SCREEN("screen2")
+
+	MCFG_DEVICE_MODIFY("k056832")
+	MCFG_K056832_CONFIG("gfx1", K056832_BPP_6, 0, 2, "none")
+
+	MCFG_DEVICE_MODIFY("k055673")
+	MCFG_K055673_CONFIG("gfx2", K055673_LAYOUT_GX6, -132, -23)
+>>>>>>> upstream/master
 
 	MCFG_DEVICE_REMOVE("palette")
 	MCFG_PALETTE_ADD("palette", 16384)
@@ -1762,38 +2170,61 @@ static MACHINE_CONFIG_DERIVED( gxtype3, konamigx )
 
 	MCFG_SCREEN_MODIFY("screen")
 	MCFG_SCREEN_VIDEO_ATTRIBUTES(VIDEO_UPDATE_AFTER_VBLANK | VIDEO_ALWAYS_UPDATE)
+<<<<<<< HEAD
 	MCFG_SCREEN_SIZE(576, 264)
+=======
+	MCFG_SCREEN_SIZE(1024, 1024)
+>>>>>>> upstream/master
 	MCFG_SCREEN_VISIBLE_AREA(0, 576-1, 16, 32*8-1-16)
 	MCFG_SCREEN_UPDATE_DRIVER(konamigx_state, screen_update_konamigx_left)
 
 	MCFG_SCREEN_ADD("screen2", RASTER)
 	MCFG_SCREEN_VIDEO_ATTRIBUTES(VIDEO_UPDATE_AFTER_VBLANK | VIDEO_ALWAYS_UPDATE)
 	MCFG_SCREEN_RAW_PARAMS(6000000, 288+16+32+48, 0, 287, 224+16+8+16, 0, 223)
+<<<<<<< HEAD
 	MCFG_SCREEN_SIZE(576, 264)
 	MCFG_SCREEN_VISIBLE_AREA(0, 576-1, 16, 32*8-1-16)
 	MCFG_SCREEN_UPDATE_DRIVER(konamigx_state, screen_update_konamigx_right)
 
 	MCFG_GFXDECODE_MODIFY("gfxdecode", type34)
+=======
+	MCFG_SCREEN_SIZE(1024, 1024)
+	MCFG_SCREEN_VISIBLE_AREA(0, 576-1, 16, 32*8-1-16)
+	MCFG_SCREEN_UPDATE_DRIVER(konamigx_state, screen_update_konamigx_right)
+>>>>>>> upstream/master
 MACHINE_CONFIG_END
 
 static MACHINE_CONFIG_DERIVED( gxtype4, konamigx )
 
 	MCFG_DEVICE_MODIFY("maincpu")
 	MCFG_CPU_PROGRAM_MAP(gx_type4_map)
+<<<<<<< HEAD
 	MCFG_TIMER_DRIVER_ADD_SCANLINE("scantimer", konamigx_state, konamigx_hbinterrupt, "screen", 0, 1)
+=======
+	MCFG_TIMER_DRIVER_ADD_SCANLINE("scantimer", konamigx_state, konamigx_type4_scanline, "screen", 0, 1)
+>>>>>>> upstream/master
 
 	MCFG_DEFAULT_LAYOUT(layout_dualhsxs)
 
 	MCFG_SCREEN_MODIFY("screen")
 	MCFG_SCREEN_VIDEO_ATTRIBUTES(VIDEO_UPDATE_AFTER_VBLANK | VIDEO_ALWAYS_UPDATE)
+<<<<<<< HEAD
 	MCFG_SCREEN_SIZE(128*8, 264)
 	MCFG_SCREEN_VISIBLE_AREA(0, 384-1, 16, 32*8-1-16)
+=======
+	//MCFG_SCREEN_SIZE(128*8, 264)
+	//MCFG_SCREEN_VISIBLE_AREA(0, 384-1, 16, 32*8-1-16)
+>>>>>>> upstream/master
 	MCFG_SCREEN_UPDATE_DRIVER(konamigx_state, screen_update_konamigx_left)
 
 	MCFG_SCREEN_ADD("screen2", RASTER)
 	MCFG_SCREEN_VIDEO_ATTRIBUTES(VIDEO_UPDATE_AFTER_VBLANK | VIDEO_ALWAYS_UPDATE)
 	MCFG_SCREEN_RAW_PARAMS(6000000, 288+16+32+48, 0, 287, 224+16+8+16, 0, 223)
+<<<<<<< HEAD
 	MCFG_SCREEN_SIZE(128*8, 264)
+=======
+	MCFG_SCREEN_SIZE(1024, 1024)
+>>>>>>> upstream/master
 	MCFG_SCREEN_VISIBLE_AREA(0, 384-1, 16, 32*8-1-16)
 	MCFG_SCREEN_UPDATE_DRIVER(konamigx_state, screen_update_konamigx_right)
 
@@ -1802,6 +2233,7 @@ static MACHINE_CONFIG_DERIVED( gxtype4, konamigx )
 	MCFG_PALETTE_ENABLE_SHADOWS()
 	MCFG_PALETTE_ENABLE_HILIGHTS()
 
+<<<<<<< HEAD
 	MCFG_GFXDECODE_MODIFY("gfxdecode", type4)
 	MCFG_VIDEO_START_OVERRIDE(konamigx_state, konamigx_type4)
 
@@ -1810,32 +2242,68 @@ static MACHINE_CONFIG_DERIVED( gxtype4, konamigx )
 
 	MCFG_DEVICE_MODIFY("k055673")
 	MCFG_K055673_CONFIG("gfx2", 0, K055673_LAYOUT_GX6, -79, -24) // -23 looks better in intro
+=======
+	MCFG_GFXDECODE_ADD("gfxdecode", "palette", type4)
+	MCFG_VIDEO_START_OVERRIDE(konamigx_state, konamigx_type4)
+
+	MCFG_DEVICE_MODIFY("k053252")
+	MCFG_K053252_OFFSETS(0, 16)
+	MCFG_K053252_SET_SLAVE_SCREEN("screen2")
+
+
+	MCFG_DEVICE_MODIFY("k056832")
+	MCFG_K056832_CONFIG("gfx1", K056832_BPP_8, 0, 0, "none")
+
+	MCFG_DEVICE_MODIFY("k055673")
+	MCFG_K055673_CONFIG("gfx2", K055673_LAYOUT_GX6, -79, -24) // -23 looks better in intro
+>>>>>>> upstream/master
 MACHINE_CONFIG_END
 
 static MACHINE_CONFIG_DERIVED( gxtype4_vsn, gxtype4 )
 	MCFG_DEFAULT_LAYOUT(layout_dualhsxs)
 
+<<<<<<< HEAD
 	MCFG_SCREEN_MODIFY("screen")
 	MCFG_SCREEN_SIZE(128*8, 32*8)
 	MCFG_SCREEN_VISIBLE_AREA(0, 576-1, 16, 32*8-1-16)
 
 	MCFG_SCREEN_MODIFY("screen2")
 	MCFG_SCREEN_SIZE(128*8, 32*8)
+=======
+	//MCFG_SCREEN_MODIFY("screen")
+	//MCFG_SCREEN_SIZE(128*8, 32*8)
+	//MCFG_SCREEN_VISIBLE_AREA(0, 576-1, 16, 32*8-1-16)
+
+	MCFG_DEVICE_MODIFY("k053252")
+	MCFG_K053252_OFFSETS(0, 16)
+
+
+	MCFG_SCREEN_MODIFY("screen2")
+	MCFG_SCREEN_SIZE(1024, 1024)
+>>>>>>> upstream/master
 	MCFG_SCREEN_VISIBLE_AREA(0, 576-1, 16, 32*8-1-16)
 
 	MCFG_VIDEO_START_OVERRIDE(konamigx_state, konamigx_type4_vsn)
 
 	MCFG_DEVICE_MODIFY("k056832")
+<<<<<<< HEAD
 	MCFG_K056832_CONFIG("gfx1", 0, K056832_BPP_8, 0, 2, "none")   // set djmain_hack to 2 to kill layer association or half the tilemaps vanish on screen 0
 
 	MCFG_DEVICE_MODIFY("k055673")
 	MCFG_K055673_CONFIG("gfx2", 0, K055673_LAYOUT_GX6, -132, -23)
+=======
+	MCFG_K056832_CONFIG("gfx1", K056832_BPP_8, 0, 2, "none")   // set djmain_hack to 2 to kill layer association or half the tilemaps vanish on screen 0
+
+	MCFG_DEVICE_MODIFY("k055673")
+	MCFG_K055673_CONFIG("gfx2", K055673_LAYOUT_GX6, -132, -23)
+>>>>>>> upstream/master
 MACHINE_CONFIG_END
 
 static MACHINE_CONFIG_DERIVED( gxtype4sd2, gxtype4 )
 	MCFG_VIDEO_START_OVERRIDE(konamigx_state, konamigx_type4_sd2)
 
 	MCFG_DEVICE_MODIFY("k055673")
+<<<<<<< HEAD
 	MCFG_K055673_CONFIG("gfx2", 0, K055673_LAYOUT_GX6, -81, -23)
 MACHINE_CONFIG_END
 
@@ -1849,6 +2317,24 @@ static MACHINE_CONFIG_DERIVED( winspike, konamigx )
 
 	MCFG_DEVICE_MODIFY("k055673")
 	MCFG_K055673_CONFIG("gfx2", 0, K055673_LAYOUT_LE2, -53, -23)
+=======
+	MCFG_K055673_CONFIG("gfx2", K055673_LAYOUT_GX6, -81, -23)
+MACHINE_CONFIG_END
+
+static MACHINE_CONFIG_DERIVED( winspike, konamigx )
+	//MCFG_SCREEN_MODIFY("screen")
+	//MCFG_SCREEN_VISIBLE_AREA(38, 38+384-1, 16, 16+224-1)
+
+	MCFG_DEVICE_MODIFY("k053252")
+	MCFG_K053252_OFFSETS(24+15, 16)
+
+	MCFG_DEVICE_MODIFY("k056832")
+	MCFG_K056832_CB(konamigx_state, alpha_tile_callback)
+	MCFG_K056832_CONFIG("gfx1", K056832_BPP_8, 0, 2, "none")
+
+	MCFG_DEVICE_MODIFY("k055673")
+	MCFG_K055673_CONFIG("gfx2", K055673_LAYOUT_LE2, -53, -23)
+>>>>>>> upstream/master
 MACHINE_CONFIG_END
 
 
@@ -1863,6 +2349,17 @@ ROM_START(konamigx)
 
 	/* sound program */
 	ROM_REGION( 0x40000, "soundcpu", ROMREGION_ERASE00 )
+<<<<<<< HEAD
+=======
+	// TODO: Bus Error, I guess?
+	//ROM_FILL( 4, 1, 0x00 )
+	//ROM_FILL( 5, 1, 0x00 )
+	ROM_FILL( 6, 1, 0x01 )
+	//ROM_FILL( 7, 1, 0x00 )
+	ROM_FILL( 0x100, 1, 0x60 )
+	ROM_FILL( 0x101, 1, 0xfe )
+
+>>>>>>> upstream/master
 	/* tiles */
 	ROM_REGION( 0x600000, "gfx1", ROMREGION_ERASEFF )
 	/* sprites */
@@ -1915,7 +2412,11 @@ ROM_START( gokuparo )
 	ROM_LOAD( "321b17.9g", 0x000000, 2*1024*1024, CRC(b3e8d5d8) SHA1(6644a414e7f0e69ded9aa1bf892566002cebae26) )
 	ROM_LOAD( "321b18.7g", 0x200000, 2*1024*1024, CRC(2c561ad0) SHA1(6265054072ba1c2837dd96e0259b20bc50457160) )
 
+<<<<<<< HEAD
 	ROM_REGION( 0x80, "eeprom", 0 ) // default eeprom to prevent game booting with error
+=======
+	ROM_REGION16_BE( 0x80, "eeprom", 0 ) // default eeprom to prevent game booting with error
+>>>>>>> upstream/master
 	ROM_LOAD( "gokuparo.nv", 0x0000, 0x080, CRC(15c0f2d9) SHA1(57c7462e3b1e15652ec5d682a1be3786926ddecd) )
 ROM_END
 
@@ -1948,7 +2449,11 @@ ROM_START( fantjour )
 	ROM_LOAD( "321b17.9g", 0x000000, 2*1024*1024, CRC(b3e8d5d8) SHA1(6644a414e7f0e69ded9aa1bf892566002cebae26) )
 	ROM_LOAD( "321b18.7g", 0x200000, 2*1024*1024, CRC(2c561ad0) SHA1(6265054072ba1c2837dd96e0259b20bc50457160) )
 
+<<<<<<< HEAD
 	ROM_REGION( 0x80, "eeprom", 0 ) // default eeprom to prevent game booting with error
+=======
+	ROM_REGION16_BE( 0x80, "eeprom", 0 ) // default eeprom to prevent game booting with error
+>>>>>>> upstream/master
 	ROM_LOAD( "fantjour.nv", 0x0000, 0x080, CRC(35b7d8e1) SHA1(5f0e3799ff9c63af3e55b040cc52b2a9e7a76168) )
 ROM_END
 
@@ -1981,7 +2486,11 @@ ROM_START( fantjoura )
 	ROM_LOAD( "321b17.9g", 0x000000, 2*1024*1024, CRC(b3e8d5d8) SHA1(6644a414e7f0e69ded9aa1bf892566002cebae26) )
 	ROM_LOAD( "321b18.7g", 0x200000, 2*1024*1024, CRC(2c561ad0) SHA1(6265054072ba1c2837dd96e0259b20bc50457160) )
 
+<<<<<<< HEAD
 	ROM_REGION( 0x80, "eeprom", 0 ) // default eeprom to prevent game booting with error
+=======
+	ROM_REGION16_BE( 0x80, "eeprom", 0 ) // default eeprom to prevent game booting with error
+>>>>>>> upstream/master
 	ROM_LOAD( "fantjoura.nv", 0x0000, 0x080, CRC(d13b1ec1) SHA1(0f4aedd0aa9682b0b68b9f7745946a3bc1e76714) )
 ROM_END
 
@@ -2015,7 +2524,11 @@ ROM_START( salmndr2 )
 	ROM_LOAD( "521-a12.9g", 0x000000, 2*1024*1024, CRC(66614d3b) SHA1(e1e5ebe546bced6ab74b0af500acf0f3308902a4) )
 	ROM_LOAD( "521-a13.7g", 0x200000, 1*1024*1024, CRC(c3322475) SHA1(1774524ff031e0c4a7f3432810e968d37f9c6331) )
 
+<<<<<<< HEAD
 	ROM_REGION( 0x80, "eeprom", 0 ) // default eeprom to prevent game booting with error
+=======
+	ROM_REGION16_BE( 0x80, "eeprom", 0 ) // default eeprom to prevent game booting with error
+>>>>>>> upstream/master
 	ROM_LOAD( "salmndr2.nv", 0x0000, 0x080, CRC(60cdea03) SHA1(6aa597d391b5d7db67e599ec54d98600983966fc) )
 ROM_END
 
@@ -2049,7 +2562,11 @@ ROM_START( salmndr2a )
 	ROM_LOAD( "521-a12.9g", 0x000000, 2*1024*1024, CRC(66614d3b) SHA1(e1e5ebe546bced6ab74b0af500acf0f3308902a4) )
 	ROM_LOAD( "521-a13.7g", 0x200000, 1*1024*1024, CRC(c3322475) SHA1(1774524ff031e0c4a7f3432810e968d37f9c6331) )
 
+<<<<<<< HEAD
 	ROM_REGION( 0x80, "eeprom", 0 ) // default eeprom to prevent game booting with error
+=======
+	ROM_REGION16_BE( 0x80, "eeprom", 0 ) // default eeprom to prevent game booting with error
+>>>>>>> upstream/master
 	ROM_LOAD( "salmndr2a.nv", 0x0000, 0x080, CRC(3a98a8f9) SHA1(08c2d164620a4d8ad902d502acea8ad621931198) )
 ROM_END
 
@@ -2082,7 +2599,11 @@ ROM_START( tbyahhoo )
 	ROM_LOAD( "424a17.9g", 0x000000, 2*1024*1024, CRC(e9dd9692) SHA1(c289019c8d1dd71b3cec26479c39b649de804707) )
 	ROM_LOAD( "424a18.7g", 0x200000, 2*1024*1024, CRC(0f0d9f3a) SHA1(57f6b113b80f06964b7e672ad517c1654c5569c5) )
 
+<<<<<<< HEAD
 	ROM_REGION( 0x80, "eeprom", 0 ) // default eeprom to prevent game booting with error
+=======
+	ROM_REGION16_BE( 0x80, "eeprom", 0 ) // default eeprom to prevent game booting with error
+>>>>>>> upstream/master
 	ROM_LOAD( "tbyahhoo.nv", 0x0000, 0x080, CRC(1e6fa2f8) SHA1(fceb6617a4e02babfc1678bae9f6a131c1d759f5) )
 ROM_END
 
@@ -2179,8 +2700,13 @@ ROM_START( rungun2 )
 	/* main program */
 	ROM_REGION( 0x800000, "maincpu", 0 )
 	GX_BIOS
+<<<<<<< HEAD
 	ROM_LOAD32_WORD_SWAP( "505uaa03.27b", 0x200000, 512*1024, CRC(ad7f9ded) SHA1(824448daeb6109b822667e54baa1c73484642ac9))
 	ROM_LOAD32_WORD_SWAP( "505uaa02.31b", 0x200002, 512*1024, CRC(cfca23f7) SHA1(dfea871f0aaf6b2db6d924ddfd4174e7a14333e8))
+=======
+	ROM_LOAD32_WORD_SWAP( "505uaa03.27b", 0x200000, 512*1024, CRC(ad7f9ded) SHA1(824448daeb6109b822667e54baa1c73484642ac9) )
+	ROM_LOAD32_WORD_SWAP( "505uaa02.31b", 0x200002, 512*1024, CRC(cfca23f7) SHA1(dfea871f0aaf6b2db6d924ddfd4174e7a14333e8) )
+>>>>>>> upstream/master
 
 	/* data roms */
 	ROM_LOAD32_WORD_SWAP( "505a05.29r", 0x400000, 1024*1024, CRC(5da5d695) SHA1(02bfbfa4ba0213a23819828a9be02923740dccd6) )
@@ -2278,6 +2804,7 @@ ROM_START( rushhero )
 	ROM_LOAD32_WORD_SWAP( "605uab02.31m", 0x200002, 512*1024, CRC(94c3d835) SHA1(f48d34987fa6575a2c41d3ca3359e9e2cbc817e0) )
 
 	/* data roms */
+<<<<<<< HEAD
 	ROM_LOAD32_WORD_SWAP( "605a05.29r", 0x400000, 1024*1024, CRC(9bca4297) SHA1(c20be1ffcee8bd56f69d4fcc19d0035b3f74b8f2))
 	ROM_LOAD32_WORD_SWAP( "605a04.31r", 0x400002, 1024*1024, CRC(f6788154) SHA1(093c145d5348b4f10193acc258f5539bd59138a1))
 
@@ -2290,6 +2817,20 @@ ROM_START( rushhero )
 	ROM_REGION( 0x600000, "gfx1", ROMREGION_ERASE00 )
 	ROM_LOAD16_BYTE( "605a21.11r", 0x000000, 1024*1024, CRC(0e5add29) SHA1(f80d81ff8110825ba19ebc3cf50480b8cf275571))
 	ROM_LOAD16_BYTE( "605a20.11m", 0x000001, 1024*1024, CRC(a8fb4288) SHA1(b0ee6c2add5a8063f771ac8bbdfd78c0382a5036))
+=======
+	ROM_LOAD32_WORD_SWAP( "605a05.29r", 0x400000, 1024*1024, CRC(9bca4297) SHA1(c20be1ffcee8bd56f69d4fcc19d0035b3f74b8f2) )
+	ROM_LOAD32_WORD_SWAP( "605a04.31r", 0x400002, 1024*1024, CRC(f6788154) SHA1(093c145d5348b4f10193acc258f5539bd59138a1) )
+
+	/* sound program */
+	ROM_REGION( 0x40000, "soundcpu", 0 )
+	ROM_LOAD16_BYTE("605a06.9m", 0x000000, 128*1024, CRC(9ca03dce) SHA1(008106e864d8390d7ae8645a2fe06d0eaaa746e0) )
+	ROM_LOAD16_BYTE("605a07.7m", 0x000001, 128*1024, CRC(3116a8b0) SHA1(f0899d7027464d9aad45ffa6a464288a51a80dc1) )
+
+	/* tiles */
+	ROM_REGION( 0x600000, "gfx1", ROMREGION_ERASE00 )
+	ROM_LOAD16_BYTE( "605a21.11r", 0x000000, 1024*1024, CRC(0e5add29) SHA1(f80d81ff8110825ba19ebc3cf50480b8cf275571) )
+	ROM_LOAD16_BYTE( "605a20.11m", 0x000001, 1024*1024, CRC(a8fb4288) SHA1(b0ee6c2add5a8063f771ac8bbdfd78c0382a5036) )
+>>>>>>> upstream/master
 
 	/* sprites */
 	ROM_REGION( 0x3000000, "gfx2", ROMREGION_ERASE00 )
@@ -2299,8 +2840,13 @@ ROM_START( rushhero )
 	_48_WORD_ROM_LOAD( "605a17.16r", 0x0c00000, 4*1024*1024, CRC(7a8f1cf9) SHA1(4c07f846915bded61c40876a10f5457e8895ad58) )
 	_48_WORD_ROM_LOAD( "605a13.21r", 0x0c00002, 4*1024*1024, CRC(9a6dff6d) SHA1(cbc200bde5933098e768db8d3021f77bdfe454b8) )
 	_48_WORD_ROM_LOAD( "605a09.25r", 0x0c00004, 4*1024*1024, CRC(624fd486) SHA1(edd81d5487f8239ffa89b931430cf41f06a17cf6) )
+<<<<<<< HEAD
 	_48_WORD_ROM_LOAD( "605a14.14m", 0x1800000, 4*1024*1024, CRC(4d4dbecb) SHA1(7c3cb2739d6b729d855d652b1991c7af6cd79d1c) )
 	_48_WORD_ROM_LOAD( "605a18.18m", 0x1800002, 4*1024*1024, CRC(b5115d76) SHA1(48c3119afb649c58d4df36806fe5530ddd379782) )
+=======
+	_48_WORD_ROM_LOAD( "605a18.14m", 0x1800000, 4*1024*1024, CRC(4d4dbecb) SHA1(7c3cb2739d6b729d855d652b1991c7af6cd79d1c) )
+	_48_WORD_ROM_LOAD( "605a14.18m", 0x1800002, 4*1024*1024, CRC(b5115d76) SHA1(48c3119afb649c58d4df36806fe5530ddd379782) )
+>>>>>>> upstream/master
 	_48_WORD_ROM_LOAD( "605a10.23m", 0x1800004, 4*1024*1024, CRC(4f47d434) SHA1(c4503993c738e1b8df6f045f5a82504363682db7) )
 	_48_WORD_ROM_LOAD( "605a16.16m", 0x2400000, 4*1024*1024, CRC(aab542ca) SHA1(9728b028f48768236f47a7a9bddb27944297b583) )
 	_48_WORD_ROM_LOAD( "605a12.21m", 0x2400002, 4*1024*1024, CRC(194ffad0) SHA1(1c56f4e89bfe72b435793b907e7ca3e62ecddf4b) )
@@ -2308,11 +2854,19 @@ ROM_START( rushhero )
 
 	/* PSAC2 tiles */
 	ROM_REGION( 0x200000, "gfx3", 0 )
+<<<<<<< HEAD
 	ROM_LOAD("605a24.22h", 0x000000, 2*1024*1024, CRC(73f06065) SHA1(8ca6747204a4c2cf59f19bcc9fce280e796e4a6e))
 
 	/* sound data */
 	ROM_REGION( 0x400000, "shared", 0 )
 	ROM_LOAD( "605a23.7r", 0x000000, 4*1024*1024, BAD_DUMP CRC(992c4751) SHA1(18ecfc21138f9dc62f0658750808bbef649510f7)) //speaker samples are distorted
+=======
+	ROM_LOAD("605a24.22h", 0x000000, 2*1024*1024, CRC(73f06065) SHA1(8ca6747204a4c2cf59f19bcc9fce280e796e4a6e) )
+
+	/* sound data */
+	ROM_REGION( 0x400000, "shared", 0 )
+	ROM_LOAD( "605a23.7r", 0x000000, 4*1024*1024, CRC(458ecee1) SHA1(4adcbbff312597716c6db1cd5df6cdf7022d4961) )
+>>>>>>> upstream/master
 ROM_END
 
 /* Taisen Tokkae-dama */
@@ -2347,7 +2901,11 @@ ROM_START( tokkae )
 	ROM_LOAD( "615a22.9g", 0x000000, 2*1024*1024, CRC(ea7e47dd) SHA1(5bf5bad9427b083757c400eaf58c63a6267c1caf) )
 	ROM_LOAD( "615a23.7g", 0x200000, 2*1024*1024, CRC(22d71f36) SHA1(3f24bb4cd8e1d693b42219e05960ad0c756b08cb) )
 
+<<<<<<< HEAD
 	ROM_REGION( 0x80, "eeprom", 0 ) // default eeprom to prevent game booting with error
+=======
+	ROM_REGION16_BE( 0x80, "eeprom", 0 ) // default eeprom to prevent game booting with error
+>>>>>>> upstream/master
 	ROM_LOAD( "tokkae.nv", 0x0000, 0x080, CRC(5a6f8da6) SHA1(f68c67c98e99669904e23d5eac7e13a9c57bc394) )
 ROM_END
 
@@ -2382,7 +2940,11 @@ ROM_START( tkmmpzdm )
 	ROM_LOAD( "515a13.9g", 0x000000, 2*1024*1024, CRC(4b066b00) SHA1(874dd49847b10e6d9c39decb81557534baa36d79) )
 	ROM_LOAD( "515a14.7g", 0x200000, 2*1024*1024, CRC(128cc944) SHA1(b0cd2ec1b9a2ac936d57b6d6c2a70f9c13dc97a5) )
 
+<<<<<<< HEAD
 	ROM_REGION( 0x80, "eeprom", 0 ) // default eeprom to prevent game booting with error
+=======
+	ROM_REGION16_BE( 0x80, "eeprom", 0 ) // default eeprom to prevent game booting with error
+>>>>>>> upstream/master
 	ROM_LOAD( "tkmmpzdm.nv", 0x0000, 0x080, CRC(850ab8c4) SHA1(fea5ceb3f2cea61fb19bdb1b8f1496d1c06bfff1) )
 ROM_END
 
@@ -2505,7 +3067,11 @@ ROM_START( crzcross )
 	ROM_LOAD( "315a17.9g", 0x000000, 2*1024*1024, CRC(ea763d61) SHA1(2a7dcb2a2a23c9fea62fb82ffc18949bf15b9f6f) )
 	ROM_LOAD( "315a18.7g", 0x200000, 2*1024*1024, CRC(6e416cee) SHA1(145a766ad2fa2b692692053dd36e0caf51d67a56) )
 
+<<<<<<< HEAD
 	ROM_REGION( 0x80, "eeprom", 0 ) // default eeprom to prevent game booting upside down with error
+=======
+	ROM_REGION16_BE( 0x80, "eeprom", 0 ) // default eeprom to prevent game booting upside down with error
+>>>>>>> upstream/master
 	ROM_LOAD( "crzcross.nv", 0x0000, 0x080, CRC(446f178c) SHA1(84b02192c26459c1b798f07b96768e1013b57666) )
 ROM_END
 
@@ -2538,7 +3104,11 @@ ROM_START( puzldama )
 	ROM_LOAD( "315a17.9g", 0x000000, 2*1024*1024, CRC(ea763d61) SHA1(2a7dcb2a2a23c9fea62fb82ffc18949bf15b9f6f) )
 	ROM_LOAD( "315a18.7g", 0x200000, 2*1024*1024, CRC(6e416cee) SHA1(145a766ad2fa2b692692053dd36e0caf51d67a56) )
 
+<<<<<<< HEAD
 	ROM_REGION( 0x80, "eeprom", 0 ) // default eeprom to prevent game booting upside down with error
+=======
+	ROM_REGION16_BE( 0x80, "eeprom", 0 ) // default eeprom to prevent game booting upside down with error
+>>>>>>> upstream/master
 	ROM_LOAD( "puzldama.nv", 0x0000, 0x080, CRC(bda98b84) SHA1(f4b03130bdc2a5bc6f0fc9ca21603109d82703b4) )
 ROM_END
 
@@ -2578,7 +3148,11 @@ ROM_START( dragoonj )
 	ROM_REGION( 0x200000, "shared", 0 )
 	ROM_LOAD( "417a17.9g", 0x000000, 2*1024*1024, CRC(88d47dfd) SHA1(b5d6dd7ee9ac0c427dc3e714a97945c954260913) )
 
+<<<<<<< HEAD
 	ROM_REGION( 0x80, "eeprom", 0 ) // default eeprom to prevent game booting with error
+=======
+	ROM_REGION16_BE( 0x80, "eeprom", 0 ) // default eeprom to prevent game booting with error
+>>>>>>> upstream/master
 	ROM_LOAD( "dragoonj.nv", 0x0000, 0x080, CRC(cbe16082) SHA1(da48893f3584ae2e034c73d4338b220107a884da) )
 ROM_END
 
@@ -2618,7 +3192,11 @@ ROM_START( dragoona )
 	ROM_REGION( 0x200000, "shared", 0 )
 	ROM_LOAD( "417a17.9g", 0x000000, 2*1024*1024, CRC(88d47dfd) SHA1(b5d6dd7ee9ac0c427dc3e714a97945c954260913) )
 
+<<<<<<< HEAD
 	ROM_REGION( 0x80, "eeprom", 0 ) // default eeprom to prevent game booting with error
+=======
+	ROM_REGION16_BE( 0x80, "eeprom", 0 ) // default eeprom to prevent game booting with error
+>>>>>>> upstream/master
 	ROM_LOAD( "dragoona.nv", 0x0000, 0x080, CRC(7980ad2b) SHA1(dccaab02d23edbd81ae13441fbac0dbd7112c258) )
 ROM_END
 
@@ -2677,7 +3255,11 @@ ROM_START( soccerss )
 	ROM_REGION( 0x400000, "shared", 0 )
 	ROM_LOAD( "427a16.9r", 0x000000, 2*1024*1024,  CRC(39547265) SHA1(c0efd68c0c1ea59141045150842f36d43e1f01d8) )
 
+<<<<<<< HEAD
 	ROM_REGION( 0x80, "eeprom", 0 ) // default eeprom to prevent game booting with error
+=======
+	ROM_REGION16_BE( 0x80, "eeprom", 0 ) // default eeprom to prevent game booting with error
+>>>>>>> upstream/master
 	ROM_LOAD( "soccerss.nv", 0x0000, 0x080, CRC(f222dae4) SHA1(fede48a4e1fe91cf2b17ff3f3996bca4816fc283) )
 ROM_END
 
@@ -2736,7 +3318,11 @@ ROM_START( soccerssu )
 	ROM_REGION( 0x400000, "shared", 0 )
 	ROM_LOAD( "427a16.9r", 0x000000, 2*1024*1024,  CRC(39547265) SHA1(c0efd68c0c1ea59141045150842f36d43e1f01d8) )
 
+<<<<<<< HEAD
 	ROM_REGION( 0x80, "eeprom", 0 ) // default eeprom to prevent game booting with error
+=======
+	ROM_REGION16_BE( 0x80, "eeprom", 0 ) // default eeprom to prevent game booting with error
+>>>>>>> upstream/master
 	ROM_LOAD( "soccerssu.nv", 0x0000, 0x080, CRC(812f6878) SHA1(fc4975211720a7eb413bceda8109231cb1c00834) )
 ROM_END
 
@@ -2783,7 +3369,11 @@ ROM_START( soccerssj )
 	ROM_REGION( 0x400000, "shared", 0 )
 	ROM_LOAD( "427a16.9r", 0x000000, 2*1024*1024,  CRC(39547265) SHA1(c0efd68c0c1ea59141045150842f36d43e1f01d8) )
 
+<<<<<<< HEAD
 	ROM_REGION( 0x80, "eeprom", 0 ) // default eeprom to prevent game booting with error
+=======
+	ROM_REGION16_BE( 0x80, "eeprom", 0 ) // default eeprom to prevent game booting with error
+>>>>>>> upstream/master
 	ROM_LOAD( "soccerssj.nv", 0x0000, 0x080, CRC(7440255e) SHA1(af379b5b1f765f9050f18fbd41c5031c5ad4918b) )
 ROM_END
 
@@ -2830,7 +3420,11 @@ ROM_START( soccerssja )
 	ROM_REGION( 0x400000, "shared", 0 )
 	ROM_LOAD( "427a16.9r", 0x000000, 2*1024*1024,  CRC(39547265) SHA1(c0efd68c0c1ea59141045150842f36d43e1f01d8) )
 
+<<<<<<< HEAD
 	ROM_REGION( 0x80, "eeprom", 0 ) // default eeprom to prevent game booting with error
+=======
+	ROM_REGION16_BE( 0x80, "eeprom", 0 ) // default eeprom to prevent game booting with error
+>>>>>>> upstream/master
 	ROM_LOAD( "soccerssja.nv", 0x0000, 0x080, CRC(60dba700) SHA1(087b086b29748727b41fdd4c154ff9b4bef42959) )
 ROM_END
 
@@ -2877,7 +3471,11 @@ ROM_START( soccerssa )
 	ROM_REGION( 0x400000, "shared", 0 )
 	ROM_LOAD( "427a16.9r", 0x000000, 2*1024*1024,  CRC(39547265) SHA1(c0efd68c0c1ea59141045150842f36d43e1f01d8) )
 
+<<<<<<< HEAD
 	ROM_REGION( 0x80, "eeprom", 0 ) // default eeprom to prevent game booting with error
+=======
+	ROM_REGION16_BE( 0x80, "eeprom", 0 ) // default eeprom to prevent game booting with error
+>>>>>>> upstream/master
 	ROM_LOAD( "soccerssa.nv", 0x0000, 0x080, CRC(e3a3f3d5) SHA1(374cf5bbcc459c56ebbba5068406f6d767bcb608) )
 ROM_END
 
@@ -3233,7 +3831,11 @@ ROM_START( le2 )
 	ROM_LOAD( "312a17.9g", 0x000000, 2*1024*1024, CRC(ed101448) SHA1(ef1342f37fbbb092eddee0c237b40989ad42cf26) )
 	ROM_LOAD( "312a18.7g", 0x200000, 1*1024*1024, CRC(5717abd7) SHA1(d304d733e7fca0363ea6b3872c2d3bbe4edf1179) )
 
+<<<<<<< HEAD
 	ROM_REGION( 0x80, "eeprom", 0 ) // default eeprom to prevent game booting upside down with invisible error
+=======
+	ROM_REGION16_BE( 0x80, "eeprom", 0 ) // default eeprom to prevent game booting upside down with invisible error
+>>>>>>> upstream/master
 	ROM_LOAD( "le2.nv", 0x0000, 0x080, CRC(fec3bc2e) SHA1(64040364d7db12f54e5c11f28a28e030bcf9a0f7) )
 ROM_END
 
@@ -3271,7 +3873,11 @@ ROM_START( le2u )
 	ROM_LOAD( "312a17.9g", 0x000000, 2*1024*1024, CRC(ed101448) SHA1(ef1342f37fbbb092eddee0c237b40989ad42cf26) )
 	ROM_LOAD( "312a18.7g", 0x200000, 1*1024*1024, CRC(5717abd7) SHA1(d304d733e7fca0363ea6b3872c2d3bbe4edf1179) )
 
+<<<<<<< HEAD
 	ROM_REGION( 0x80, "eeprom", 0 ) // default eeprom to prevent game booting upside down with invisible error
+=======
+	ROM_REGION16_BE( 0x80, "eeprom", 0 ) // default eeprom to prevent game booting upside down with invisible error
+>>>>>>> upstream/master
 	ROM_LOAD( "le2u.nv", 0x0000, 0x080, CRC(d46b3878) SHA1(81bf4331547ce977eaa185f7281625fb695f6deb) )
 ROM_END
 
@@ -3310,7 +3916,11 @@ ROM_START( le2j )
 	ROM_LOAD( "312a17.9g", 0x000000, 2*1024*1024, CRC(ed101448) SHA1(ef1342f37fbbb092eddee0c237b40989ad42cf26) )
 	ROM_LOAD( "312a18.7g", 0x200000, 1*1024*1024, CRC(5717abd7) SHA1(d304d733e7fca0363ea6b3872c2d3bbe4edf1179) )
 
+<<<<<<< HEAD
 	ROM_REGION( 0x80, "eeprom", 0 ) // default eeprom to prevent game booting upside down with invisible error
+=======
+	ROM_REGION16_BE( 0x80, "eeprom", 0 ) // default eeprom to prevent game booting upside down with invisible error
+>>>>>>> upstream/master
 	ROM_LOAD( "le2j.nv", 0x0000, 0x080, CRC(f6790425) SHA1(f233f3c09c4cdbd1c6e5204fc6554a4826b44c59) )
 ROM_END
 
@@ -3361,7 +3971,11 @@ ROM_START( racinfrc )
 	ROM_LOAD( "250a18.12y", 0x200000, 2*1024*1024, CRC(8014a2eb) SHA1(d82f0a7d559340ae05a78ecc8bb69bb35b9c0658) )
 
 	// note, it seems impossible to calibrate the controls (again!), this has nothing to do with the default eeprom!
+<<<<<<< HEAD
 	ROM_REGION( 0x80, "eeprom", 0 ) // default eeprom to prevent game booting with error
+=======
+	ROM_REGION16_BE( 0x80, "eeprom", 0 ) // default eeprom to prevent game booting with error
+>>>>>>> upstream/master
 	ROM_LOAD( "racinfrc.nv", 0x0000, 0x080, CRC(dc88c693) SHA1(a7967f390db043570803c79edf984a3e6bdbd172) )
 ROM_END
 
@@ -3413,7 +4027,11 @@ ROM_START( racinfrcu )
 	ROM_LOAD( "250a18.12y", 0x200000, 2*1024*1024, CRC(8014a2eb) SHA1(d82f0a7d559340ae05a78ecc8bb69bb35b9c0658) )
 
 	// note, it seems impossible to calibrate the controls (again!), this has nothing to do with the default eeprom!
+<<<<<<< HEAD
 	ROM_REGION( 0x80, "eeprom", 0 ) // default eeprom to prevent game booting with error
+=======
+	ROM_REGION16_BE( 0x80, "eeprom", 0 ) // default eeprom to prevent game booting with error
+>>>>>>> upstream/master
 	ROM_LOAD( "racinfrcu.nv", 0x0000, 0x080, CRC(369e1a84) SHA1(bfed0145d89550b1a1661f3ccc612505053063f8) )
 ROM_END
 
@@ -3499,7 +4117,11 @@ ROM_START( opengolf )
 	ROM_LOAD( "218a17.14y", 0x000000, 2*1024*1024, CRC(0b525127) SHA1(218b306c12e1094a676815b7dddaf13bf19be2d5) )
 	ROM_LOAD( "218a18.12y", 0x200000, 1*1024*1024, CRC(98ec4cfb) SHA1(638753f9d9269719a37133b9c39c242507fdd8ac) )
 
+<<<<<<< HEAD
 	ROM_REGION( 0x80, "eeprom", 0 ) // default eeprom to prevent game booting with error
+=======
+	ROM_REGION16_BE( 0x80, "eeprom", 0 ) // default eeprom to prevent game booting with error
+>>>>>>> upstream/master
 	ROM_LOAD( "opengolf.nv", 0x0000, 0x080, CRC(d49bf7c3) SHA1(294c772a2f562c01e7c4d15068ba4e80e9522f9f) )
 ROM_END
 
@@ -3554,7 +4176,11 @@ ROM_START( opengolf2 )
 	ROM_LOAD( "218a17.14y", 0x000000, 2*1024*1024, CRC(0b525127) SHA1(218b306c12e1094a676815b7dddaf13bf19be2d5) )
 	ROM_LOAD( "218a18.12y", 0x200000, 1*1024*1024, CRC(98ec4cfb) SHA1(638753f9d9269719a37133b9c39c242507fdd8ac) )
 
+<<<<<<< HEAD
 	ROM_REGION( 0x80, "eeprom", 0 ) // default eeprom to prevent game booting with error
+=======
+	ROM_REGION16_BE( 0x80, "eeprom", 0 ) // default eeprom to prevent game booting with error
+>>>>>>> upstream/master
 	ROM_LOAD( "opengolf2.nv", 0x0000, 0x080, CRC(c09fc0e6) SHA1(32807752344763613440bee46da24d605e62eace) )
 ROM_END
 
@@ -3608,7 +4234,11 @@ ROM_START( ggreats2 )
 	ROM_LOAD( "218a17.14y", 0x000000, 2*1024*1024, CRC(0b525127) SHA1(218b306c12e1094a676815b7dddaf13bf19be2d5) )
 	ROM_LOAD( "218a18.12y", 0x200000, 1*1024*1024, CRC(98ec4cfb) SHA1(638753f9d9269719a37133b9c39c242507fdd8ac) )
 
+<<<<<<< HEAD
 	ROM_REGION( 0x80, "eeprom", 0 ) // default eeprom to prevent game booting with error
+=======
+	ROM_REGION16_BE( 0x80, "eeprom", 0 ) // default eeprom to prevent game booting with error
+>>>>>>> upstream/master
 	ROM_LOAD( "ggreats2.nv", 0x0000, 0x080, CRC(4db10b5c) SHA1(29e3a59e4101349ace33d49b5fe59f0c785979b3) )
 ROM_END
 
@@ -3617,7 +4247,21 @@ ROM_END
 
 MACHINE_START_MEMBER(konamigx_state,konamigx)
 {
+<<<<<<< HEAD
 	save_item(NAME(m_gx_wrport1_1));
+=======
+	save_item(NAME(m_sound_ctrl));
+	save_item(NAME(m_sound_intck));
+
+	save_item(NAME(m_gx_wrport1_0));
+	save_item(NAME(m_gx_wrport1_1));
+	save_item(NAME(m_gx_wrport2));
+
+	save_item(NAME(m_gx_rdport1_3));
+	save_item(NAME(m_gx_syncen));
+	save_item(NAME(m_suspension_active));
+	save_item(NAME(m_prev_pixel_clock));
+>>>>>>> upstream/master
 }
 
 MACHINE_RESET_MEMBER(konamigx_state,konamigx)
@@ -3633,6 +4277,10 @@ MACHINE_RESET_MEMBER(konamigx_state,konamigx)
 	m_gx_rdport1_3 = 0xfc;
 	m_gx_syncen    = 0;
 	m_suspension_active = 0;
+<<<<<<< HEAD
+=======
+	m_prev_pixel_clock = 0xff;
+>>>>>>> upstream/master
 
 	// Hold sound CPUs in reset
 	m_soundcpu->set_input_line(INPUT_LINE_HALT, ASSERT_LINE);
@@ -3681,9 +4329,15 @@ MACHINE_RESET_MEMBER(konamigx_state,konamigx)
 struct GXGameInfoT
 {
 	const char *romname;
+<<<<<<< HEAD
 	UINT32 cfgport;
 	UINT32 special;
 	UINT32 readback;
+=======
+	uint32_t cfgport;
+	uint32_t special;
+	uint32_t readback;
+>>>>>>> upstream/master
 };
 
 #define BPP4  0
@@ -3730,7 +4384,11 @@ static const GXGameInfoT gameDefs[] =
 	{ "rungun2",   7, 0, BPP4 },
 	{ "slamdnk2",  7, 0, BPP4 },
 	{ "rushhero",  7, 0, BPP4 },
+<<<<<<< HEAD
 	{ "",         -1, -1, -1 },
+=======
+	{ "",        0xff,0xff,0xff },
+>>>>>>> upstream/master
 };
 
 READ32_MEMBER( konamigx_state::k_6bpp_rom_long_r )
@@ -3747,14 +4405,22 @@ DRIVER_INIT_MEMBER(konamigx_state,konamigx)
 	m_last_prot_op = -1;
 	m_last_prot_clk = 0;
 
+<<<<<<< HEAD
 	m_esc_cb = NULL;
+=======
+	m_esc_cb = nullptr;
+>>>>>>> upstream/master
 	m_resume_trigger = 0;
 
 	m_dmadelay_timer = machine().scheduler().timer_alloc(timer_expired_delegate(FUNC(konamigx_state::dmaend_callback),this));
 	m_boothack_timer = machine().scheduler().timer_alloc(timer_expired_delegate(FUNC(konamigx_state::boothack_callback),this));
 
 	i = match = 0;
+<<<<<<< HEAD
 	while ((gameDefs[i].cfgport != -1) && (!match))
+=======
+	while ((gameDefs[i].cfgport != 0xff) && (!match))
+>>>>>>> upstream/master
 	{
 		if (!strcmp(machine().system().name, gameDefs[i].romname))
 		{
@@ -3770,7 +4436,11 @@ DRIVER_INIT_MEMBER(konamigx_state,konamigx)
 					break;
 				case 2: // tkmmpzdm hack
 				{
+<<<<<<< HEAD
 					UINT32 *rom = (UINT32*)memregion("maincpu")->base();
+=======
+					uint32_t *rom = (uint32_t*)memregion("maincpu")->base();
+>>>>>>> upstream/master
 
 					// The display is initialized after POST but the copyright screen disabled
 					// planes B,C,D and didn't bother restoring them. I've spent a good
@@ -3837,7 +4507,11 @@ DRIVER_INIT_MEMBER(konamigx_state,posthack)
 /*     year  ROM       parent    machine   inp       init */
 
 /* dummy parent for the BIOS */
+<<<<<<< HEAD
 GAME( 1994, konamigx, 0, konamigx, konamigx, konamigx_state, konamigx, ROT0, "Konami", "System GX", MACHINE_IS_BIOS_ROOT )
+=======
+GAME( 1994, konamigx, 0,        konamigx_bios, konamigx, konamigx_state, konamigx, ROT0, "Konami", "System GX", MACHINE_IS_BIOS_ROOT )
+>>>>>>> upstream/master
 
 /* --------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
 /* Type 1: standard with an add-on 53936 on the ROM board, analog inputs, */

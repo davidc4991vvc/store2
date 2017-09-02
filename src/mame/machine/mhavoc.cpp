@@ -84,7 +84,11 @@ void mhavoc_state::machine_start()
 void mhavoc_state::machine_reset()
 {
 	address_space &space = m_alpha->space(AS_PROGRAM);
+<<<<<<< HEAD
 	m_has_gamma_cpu = (m_gamma != NULL);
+=======
+	m_has_gamma_cpu = (m_gamma != nullptr);
+>>>>>>> upstream/master
 
 	membank("bank1")->configure_entry(0, m_zram0);
 	membank("bank1")->configure_entry(1, m_zram1);
@@ -132,7 +136,11 @@ TIMER_CALLBACK_MEMBER(mhavoc_state::delayed_gamma_w)
 	m_gamma->set_input_line(INPUT_LINE_NMI, PULSE_LINE);
 
 	/* the sound CPU needs to reply in 250microseconds (according to Neil Bradley) */
+<<<<<<< HEAD
 	machine().scheduler().timer_set(attotime::from_usec(250), FUNC_NULL);
+=======
+	machine().scheduler().timer_set(attotime::from_usec(250), timer_expired_delegate());
+>>>>>>> upstream/master
 }
 
 
@@ -265,14 +273,23 @@ WRITE8_MEMBER(mhavoc_state::mhavoc_out_0_w)
 		m_gamma_xmtd = 0;
 	}
 
+<<<<<<< HEAD
 	/* Bit 0 = Roller light (Blinks on fatal errors) */
 	set_led_status(machine(), 0, data & 0x01);
+=======
+	/* Bit 2 = Beta reset */
+	/* this is the unpopulated processor in the corner of the pcb farthest from the quad pokey, not used on shipping boards */
+
+	/* Bit 0 = Roller light (Blinks on fatal errors) */
+	output().set_led_value(0, data & 0x01);
+>>>>>>> upstream/master
 }
 
 
 WRITE8_MEMBER(mhavoc_state::alphaone_out_0_w)
 {
 	/* Bit 5 = P2 lamp */
+<<<<<<< HEAD
 	set_led_status(machine(), 0, ~data & 0x20);
 
 	/* Bit 4 = P1 lamp */
@@ -283,6 +300,18 @@ WRITE8_MEMBER(mhavoc_state::alphaone_out_0_w)
 
 	/* Bit 0 = left coin counter */
 	coin_counter_w(machine(), 0, data & 0x01);
+=======
+	output().set_led_value(0, ~data & 0x20);
+
+	/* Bit 4 = P1 lamp */
+	output().set_led_value(1, ~data & 0x10);
+
+	/* Bit 1 = right coin counter */
+	machine().bookkeeping().coin_counter_w(1, data & 0x02);
+
+	/* Bit 0 = left coin counter */
+	machine().bookkeeping().coin_counter_w(0, data & 0x01);
+>>>>>>> upstream/master
 
 logerror("alphaone_out_0_w(%02X)\n", data);
 }
@@ -291,10 +320,17 @@ logerror("alphaone_out_0_w(%02X)\n", data);
 WRITE8_MEMBER(mhavoc_state::mhavoc_out_1_w)
 {
 	/* Bit 1 = left coin counter */
+<<<<<<< HEAD
 	coin_counter_w(machine(), 0, data & 0x02);
 
 	/* Bit 0 = right coin counter */
 	coin_counter_w(machine(), 1, data & 0x01);
+=======
+	machine().bookkeeping().coin_counter_w(0, data & 0x02);
+
+	/* Bit 0 = right coin counter */
+	machine().bookkeeping().coin_counter_w(1, data & 0x01);
+>>>>>>> upstream/master
 }
 
 /*************************************

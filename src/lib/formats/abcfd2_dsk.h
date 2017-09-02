@@ -17,9 +17,15 @@ class abc_fd2_format : public wd177x_format {
 public:
 	abc_fd2_format();
 
+<<<<<<< HEAD
 	virtual const char *name() const;
 	virtual const char *description() const;
 	virtual const char *extensions() const;
+=======
+	virtual const char *name() const override;
+	virtual const char *description() const override;
+	virtual const char *extensions() const override;
+>>>>>>> upstream/master
 
 private:
 	static const format formats[];

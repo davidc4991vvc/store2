@@ -30,6 +30,10 @@ Notes:
 
 */
 
+<<<<<<< HEAD
+=======
+#include "emu.h"
+>>>>>>> upstream/master
 #include "sio.h"
 
 
@@ -47,7 +51,11 @@ Notes:
 //  DEVICE DEFINITIONS
 //**************************************************************************
 
+<<<<<<< HEAD
 const device_type ABC_SIO = &device_creator<abc_sio_device>;
+=======
+DEFINE_DEVICE_TYPE(ABC_SIO, abc_sio_device, "abcsio", "ABC SIO")
+>>>>>>> upstream/master
 
 
 //-------------------------------------------------
@@ -65,22 +73,34 @@ ROM_END
 //  rom_region - device-specific ROM region
 //-------------------------------------------------
 
+<<<<<<< HEAD
 const rom_entry *abc_sio_device::device_rom_region() const
+=======
+const tiny_rom_entry *abc_sio_device::device_rom_region() const
+>>>>>>> upstream/master
 {
 	return ROM_NAME( abc_sio );
 }
 
 
 //-------------------------------------------------
+<<<<<<< HEAD
 //  MACHINE_DRIVER( abc_sio )
 //-------------------------------------------------
 
 static MACHINE_CONFIG_FRAGMENT( abc_sio )
+=======
+//  device_add_mconfig - add device configuration
+//-------------------------------------------------
+
+MACHINE_CONFIG_MEMBER( abc_sio_device::device_add_mconfig )
+>>>>>>> upstream/master
 	MCFG_DEVICE_ADD(Z80CTC_TAG, Z80CTC, XTAL_4_9152MHz)
 	MCFG_Z80DART_ADD(Z80SIO_TAG, 0, 0, 0, 0, 0)
 MACHINE_CONFIG_END
 
 
+<<<<<<< HEAD
 //-------------------------------------------------
 //  machine_config_additions - device-specific
 //  machine configurations
@@ -92,6 +112,8 @@ machine_config_constructor abc_sio_device::device_mconfig_additions() const
 }
 
 
+=======
+>>>>>>> upstream/master
 
 //**************************************************************************
 //  LIVE DEVICE
@@ -101,8 +123,13 @@ machine_config_constructor abc_sio_device::device_mconfig_additions() const
 //  abc_sio_device - constructor
 //-------------------------------------------------
 
+<<<<<<< HEAD
 abc_sio_device::abc_sio_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
 	: device_t(mconfig, ABC_SIO, "ABC SIO", tag, owner, clock, "abcsio", __FILE__),
+=======
+abc_sio_device::abc_sio_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: device_t(mconfig, ABC_SIO, tag, owner, clock),
+>>>>>>> upstream/master
 		device_abcbus_card_interface(mconfig, *this),
 		m_ctc(*this, Z80CTC_TAG),
 		m_sio(*this, Z80SIO_TAG),
@@ -138,7 +165,11 @@ void abc_sio_device::device_reset()
 //  abcbus_cs -
 //-------------------------------------------------
 
+<<<<<<< HEAD
 void abc_sio_device::abcbus_cs(UINT8 data)
+=======
+void abc_sio_device::abcbus_cs(uint8_t data)
+>>>>>>> upstream/master
 {
 }
 
@@ -147,9 +178,15 @@ void abc_sio_device::abcbus_cs(UINT8 data)
 //  abcbus_xmemfl -
 //-------------------------------------------------
 
+<<<<<<< HEAD
 UINT8 abc_sio_device::abcbus_xmemfl(offs_t offset)
 {
 	UINT8 data = 0xff;
+=======
+uint8_t abc_sio_device::abcbus_xmemfl(offs_t offset)
+{
+	uint8_t data = 0xff;
+>>>>>>> upstream/master
 
 	if (offset >= 0x4000 && offset < 0x5000) // TODO where is this mapped?
 	{

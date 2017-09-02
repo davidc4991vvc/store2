@@ -19,6 +19,7 @@ driver by Couriersud
 
  Suspected "same games" are grouped together.  These are usually the exact same game but different cabinet/name.
 
+<<<<<<< HEAD
  Technical Manual #s  Game Name(s)                                               Atari Part #'s                     Data
  -------------------+----------------------------------------------------------+----------------------------------+---------+
  TM-013               Pong (1972)                                                A001433                            NO
@@ -28,6 +29,17 @@ driver by Couriersud
  422                  Superpong (1974)                                           A000423                            NO
  TM-014               Pong Doubles/Coupe Davis (1973)                            A000785                            NO
  TM-058               Breakout/Breakout Cocktail/Consolette (1976)               A004533                            NO
+=======
+ Technical Manual #s      Game Name(s)                                                    Atari Part #'s                     Data
+ -----------------------+---------------------------------------------------------------+----------------------------------+---------+
+ TM-013,029               Pong (1972)                                                     A001433                            NO
+ TM-0??                   Pong In-A-Barrel (1973)                                         A001433?                           NO
+ TM-015                   Cocktail Pong (1974)                                            A001433?                           NO
+ TM-0??                   Dr. Pong/Puppy Pong/Snoopy Pong (1974)                          A001433?                           NO
+ 422,TM-029               Superpong (1974)                                                A000423                            NO
+ TM-014,029               Pong Doubles/Coupe Davis (1973)                                 A000785                            NO
+ TM-058                   Breakout/Breakout Cocktail/Consolette (1976)                    A004533                            NO
+>>>>>>> upstream/master
 
 Notes:
 
@@ -36,8 +48,13 @@ TODO: Breakout Cocktail and Consolette are believed to use the Breakout PCB with
       cabinet designs, this needs to be verified.
 TODO: Coupe Davis is believed to use the Pong Doubles PCB, just a different cabinet design,
       this needs to be verified.
+<<<<<<< HEAD
 TODO: Dr. Pong, Pong In-A-Barrel, Puppy Pong, Snoopy Pong, Cocktail Pong and Coup Franc are
       all believed to use the Pong (Rev E) PCB, but different cabinet designs; this needs to
+=======
+TODO: Dr. Pong, Pong In-A-Barrel, Puppy Pong, Snoopy Pong, and Cocktail Pong are all
+      believed to use the Pong (Rev E) PCB, but different cabinet designs; this needs to
+>>>>>>> upstream/master
       be verified.
 TODO: Superpong is believed to use the Pong (Rev E) PCB with some minor modifications, this
       needs to be verified.
@@ -47,12 +64,35 @@ TODO: Superpong is believed to use the Pong (Rev E) PCB with some minor modifica
 #include "emu.h"
 
 #include "machine/netlist.h"
+<<<<<<< HEAD
 #include "netlist/devices/net_lib.h"
 #include "sound/dac.h"
 #include "video/fixfreq.h"
 
 #include "breakout.lh"
 
+=======
+
+#include "sound/dac.h"
+#include "sound/volt_reg.h"
+
+#include "video/fixfreq.h"
+
+#include "netlist/devices/net_lib.h"
+
+#include "machine/nl_breakout.h"
+#include "machine/nl_pong.h"
+#include "machine/nl_pongd.h"
+
+#include "screen.h"
+#include "speaker.h"
+
+#include "breakout.lh"
+
+#include <cmath>
+
+
+>>>>>>> upstream/master
 /*
  * H count width to 512
  * Reset at 1C6 = 454
@@ -78,8 +118,13 @@ TODO: Superpong is believed to use the Pong (Rev E) PCB with some minor modifica
  */
 
 #define MASTER_CLOCK    7159000
+<<<<<<< HEAD
 #define V_TOTAL_PONG         (0x105+1)       // 262
 #define H_TOTAL_PONG         (0x1C6+1)       // 454
+=======
+#define V_TOTAL_PONG    (0x105+1)       // 262
+#define H_TOTAL_PONG    (0x1C6+1)       // 454
+>>>>>>> upstream/master
 
 /*
  * Breakout's H1 signal:
@@ -118,10 +163,13 @@ enum input_changed_enum
 	IC_VR2
 };
 
+<<<<<<< HEAD
 NETLIST_EXTERNAL(pongdoubles)
 NETLIST_EXTERNAL(pong_fast)
 NETLIST_EXTERNAL(breakout)
 
+=======
+>>>>>>> upstream/master
 class ttl_mono_state : public driver_device
 {
 public:
@@ -134,6 +182,7 @@ public:
 	}
 
 	// devices
+<<<<<<< HEAD
 	required_device<netlist_mame_device_t> m_maincpu;
 	required_device<fixedfreq_device> m_video;
 	required_device<dac_device> m_dac; /* just to have a sound device */
@@ -141,15 +190,31 @@ public:
 	NETDEV_ANALOG_CALLBACK_MEMBER(sound_cb)
 	{
 		m_dac->write_unsigned8(64*data);
+=======
+	required_device<netlist_mame_device> m_maincpu;
+	required_device<fixedfreq_device> m_video;
+	required_device<dac_word_interface> m_dac; /* just to have a sound device */
+
+	NETDEV_ANALOG_CALLBACK_MEMBER(sound_cb)
+	{
+		m_dac->write(std::round(16384 * data));
+>>>>>>> upstream/master
 	}
 
 protected:
 
 	// driver_device overrides
+<<<<<<< HEAD
 	virtual void machine_start() { };
 	virtual void machine_reset() { };
 
 	virtual void video_start() { };
+=======
+	virtual void machine_start() override { };
+	virtual void machine_reset() override { };
+
+	virtual void video_start() override { };
+>>>>>>> upstream/master
 
 private:
 
@@ -166,17 +231,28 @@ public:
 	}
 
 	// sub devices
+<<<<<<< HEAD
 	required_device<netlist_mame_logic_input_t> m_sw1a;
 	required_device<netlist_mame_logic_input_t> m_sw1b;
+=======
+	required_device<netlist_mame_logic_input_device> m_sw1a;
+	required_device<netlist_mame_logic_input_device> m_sw1b;
+>>>>>>> upstream/master
 
 	DECLARE_INPUT_CHANGED_MEMBER(input_changed);
 
 protected:
 
 	// driver_device overrides
+<<<<<<< HEAD
 	virtual void machine_start() { };
 	virtual void machine_reset() { };
 	virtual void video_start()  { };
+=======
+	virtual void machine_start() override { };
+	virtual void machine_reset() override { };
+	virtual void video_start() override  { };
+>>>>>>> upstream/master
 
 private:
 
@@ -197,6 +273,7 @@ public:
 		m_sw1_4(*this, "maincpu:sw1_4")
 	{
 	}
+<<<<<<< HEAD
 	required_device<netlist_mame_analog_output_t> m_led_serve;
 	required_device<netlist_mame_analog_output_t> m_lamp_credit1;
 	required_device<netlist_mame_analog_output_t> m_lamp_credit2;
@@ -210,21 +287,48 @@ public:
 	NETDEV_ANALOG_CALLBACK_MEMBER(serve_cb)
 	{
 		output_set_value("serve_led", (data < 3.5) ? 1 : 0);
+=======
+	required_device<netlist_mame_analog_output_device> m_led_serve;
+	required_device<netlist_mame_analog_output_device> m_lamp_credit1;
+	required_device<netlist_mame_analog_output_device> m_lamp_credit2;
+	required_device<netlist_mame_analog_output_device> m_coin_counter;
+
+	required_device<netlist_mame_logic_input_device> m_sw1_1;
+	required_device<netlist_mame_logic_input_device> m_sw1_2;
+	required_device<netlist_mame_logic_input_device> m_sw1_3;
+	required_device<netlist_mame_logic_input_device> m_sw1_4;
+
+	NETDEV_ANALOG_CALLBACK_MEMBER(serve_cb)
+	{
+		output().set_value("serve_led", (data < 3.5) ? 1 : 0);
+>>>>>>> upstream/master
 	}
 
 	NETDEV_ANALOG_CALLBACK_MEMBER(credit1_cb)
 	{
+<<<<<<< HEAD
 		output_set_value("lamp_credit1", (data < 2.0) ? 0 : 1);
+=======
+		output().set_value("lamp_credit1", (data < 2.0) ? 0 : 1);
+>>>>>>> upstream/master
 	}
 
 	NETDEV_ANALOG_CALLBACK_MEMBER(credit2_cb)
 	{
+<<<<<<< HEAD
 		output_set_value("lamp_credit2", (data < 2.0) ? 0 : 1);
+=======
+		output().set_value("lamp_credit2", (data < 2.0) ? 0 : 1);
+>>>>>>> upstream/master
 	}
 
 	NETDEV_ANALOG_CALLBACK_MEMBER(coin_counter_cb)
 	{
+<<<<<<< HEAD
 		coin_counter_w(machine(), 0, (data > 2.0) ? 0 : 1);
+=======
+		machine().bookkeeping().coin_counter_w(0, (data > 2.0) ? 0 : 1);
+>>>>>>> upstream/master
 	}
 
 	DECLARE_INPUT_CHANGED_MEMBER(cb_free_play)
@@ -238,9 +342,15 @@ public:
 protected:
 
 	// driver_device overrides
+<<<<<<< HEAD
 	virtual void machine_start() { };
 	virtual void machine_reset() { };
 	virtual void video_start()  { };
+=======
+	virtual void machine_start() override { };
+	virtual void machine_reset() override { };
+	virtual void video_start() override  { };
+>>>>>>> upstream/master
 
 private:
 
@@ -256,7 +366,11 @@ NETLIST_END()
 
 INPUT_CHANGED_MEMBER(pong_state::input_changed)
 {
+<<<<<<< HEAD
 	int numpad = (FPTR) (param);
+=======
+	int numpad = uintptr_t(param);
+>>>>>>> upstream/master
 
 	switch (numpad)
 	{
@@ -361,7 +475,11 @@ static INPUT_PORTS_START( breakout )
 
 INPUT_PORTS_END
 
+<<<<<<< HEAD
 static MACHINE_CONFIG_START( pong, pong_state )
+=======
+static MACHINE_CONFIG_START( pong )
+>>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_DEVICE_ADD("maincpu", NETLIST_CPU, NETLIST_CLOCK)
@@ -373,10 +491,17 @@ static MACHINE_CONFIG_START( pong, pong_state )
 	MCFG_NETLIST_ANALOG_MULT_OFFSET(1.0 / 100.0 * RES_K(50), RES_K(56) )
 	MCFG_NETLIST_ANALOG_INPUT("maincpu", "pot0", "ic_b9_POT.DIAL")
 	MCFG_NETLIST_ANALOG_INPUT("maincpu", "pot1", "ic_a9_POT.DIAL")
+<<<<<<< HEAD
 	MCFG_NETLIST_LOGIC_INPUT("maincpu", "sw1a", "sw1a.POS", 0, 0x01)
 	MCFG_NETLIST_LOGIC_INPUT("maincpu", "sw1b", "sw1b.POS", 0, 0x01)
 	MCFG_NETLIST_LOGIC_INPUT("maincpu", "coinsw", "coinsw.POS", 0, 0x01)
 	MCFG_NETLIST_LOGIC_INPUT("maincpu", "antenna", "antenna.IN", 0, 0x01)
+=======
+	MCFG_NETLIST_LOGIC_INPUT("maincpu", "sw1a", "sw1a.POS", 0)
+	MCFG_NETLIST_LOGIC_INPUT("maincpu", "sw1b", "sw1b.POS", 0)
+	MCFG_NETLIST_LOGIC_INPUT("maincpu", "coinsw", "coinsw.POS", 0)
+	MCFG_NETLIST_LOGIC_INPUT("maincpu", "antenna", "antenna.IN", 0)
+>>>>>>> upstream/master
 
 	MCFG_NETLIST_ANALOG_OUTPUT("maincpu", "snd0", "sound", pong_state, sound_cb, "")
 	MCFG_NETLIST_ANALOG_OUTPUT("maincpu", "vid0", "videomix", fixedfreq_device, update_vid, "fixfreq")
@@ -390,6 +515,7 @@ static MACHINE_CONFIG_START( pong, pong_state )
 	MCFG_FIXFREQ_SYNC_THRESHOLD(0.11)
 
 	/* sound hardware */
+<<<<<<< HEAD
 	MCFG_SPEAKER_STANDARD_MONO("mono")
 	MCFG_SOUND_ADD("dac", DAC, 48000)
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 1.0)
@@ -397,6 +523,15 @@ static MACHINE_CONFIG_START( pong, pong_state )
 MACHINE_CONFIG_END
 
 static MACHINE_CONFIG_START( breakout, breakout_state )
+=======
+	MCFG_SPEAKER_STANDARD_MONO("speaker")
+	MCFG_SOUND_ADD("dac", DAC_16BIT_R2R_TWOS_COMPLEMENT, 0) MCFG_SOUND_ROUTE(ALL_OUTPUTS, "speaker", 0.5) // unknown DAC
+	MCFG_DEVICE_ADD("vref", VOLTAGE_REGULATOR, 0) MCFG_VOLTAGE_REGULATOR_OUTPUT(5.0)
+	MCFG_SOUND_ROUTE_EX(0, "dac", 1.0, DAC_VREF_POS_INPUT) MCFG_SOUND_ROUTE_EX(0, "dac", -1.0, DAC_VREF_NEG_INPUT)
+MACHINE_CONFIG_END
+
+static MACHINE_CONFIG_START( breakout )
+>>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_DEVICE_ADD("maincpu", NETLIST_CPU, NETLIST_CLOCK)
@@ -404,6 +539,7 @@ static MACHINE_CONFIG_START( breakout, breakout_state )
 
 	MCFG_NETLIST_ANALOG_INPUT("maincpu", "pot1", "POTP1.DIAL")
 	MCFG_NETLIST_ANALOG_INPUT("maincpu", "pot2", "POTP2.DIAL")
+<<<<<<< HEAD
 	MCFG_NETLIST_LOGIC_INPUT("maincpu", "coinsw1", "COIN1.POS", 0, 0x01)
 	MCFG_NETLIST_LOGIC_INPUT("maincpu", "coinsw2", "COIN2.POS", 0, 0x01)
 	MCFG_NETLIST_LOGIC_INPUT("maincpu", "startsw1", "START1.POS", 0, 0x01)
@@ -419,6 +555,23 @@ static MACHINE_CONFIG_START( breakout, breakout_state )
 	MCFG_NETLIST_LOGIC_INPUT("maincpu", "sw1_4", "S1_4.POS", 0, 0x01)
 
 	MCFG_NETLIST_LOGIC_INPUT("maincpu", "antenna", "antenna.IN", 0, 0x01)
+=======
+	MCFG_NETLIST_LOGIC_INPUT("maincpu", "coinsw1", "COIN1.POS", 0)
+	MCFG_NETLIST_LOGIC_INPUT("maincpu", "coinsw2", "COIN2.POS", 0)
+	MCFG_NETLIST_LOGIC_INPUT("maincpu", "startsw1", "START1.POS", 0)
+	MCFG_NETLIST_LOGIC_INPUT("maincpu", "startsw2", "START2.POS", 0)
+	MCFG_NETLIST_LOGIC_INPUT("maincpu", "servesw", "SERVE.POS", 0)
+	MCFG_NETLIST_LOGIC_INPUT("maincpu", "sw4", "S4.POS", 0)
+	MCFG_NETLIST_LOGIC_INPUT("maincpu", "sw3", "S3.POS", 0)
+	MCFG_NETLIST_LOGIC_INPUT("maincpu", "sw2", "S2.POS", 0)
+
+	MCFG_NETLIST_LOGIC_INPUT("maincpu", "sw1_1", "S1_1.POS", 0)
+	MCFG_NETLIST_LOGIC_INPUT("maincpu", "sw1_2", "S1_2.POS", 0)
+	MCFG_NETLIST_LOGIC_INPUT("maincpu", "sw1_3", "S1_3.POS", 0)
+	MCFG_NETLIST_LOGIC_INPUT("maincpu", "sw1_4", "S1_4.POS", 0)
+
+	MCFG_NETLIST_LOGIC_INPUT("maincpu", "antenna", "antenna.IN", 0)
+>>>>>>> upstream/master
 
 	MCFG_NETLIST_ANALOG_OUTPUT("maincpu", "snd0", "sound", breakout_state, sound_cb, "")
 	MCFG_NETLIST_ANALOG_OUTPUT("maincpu", "vid0", "videomix", fixedfreq_device, update_vid, "fixfreq")
@@ -443,10 +596,17 @@ static MACHINE_CONFIG_START( breakout, breakout_state )
 	MCFG_FIXFREQ_GAIN(1.5)
 
 	/* sound hardware */
+<<<<<<< HEAD
 	MCFG_SPEAKER_STANDARD_MONO("mono")
 	MCFG_SOUND_ADD("dac", DAC, 48000)
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 1.0)
 
+=======
+	MCFG_SPEAKER_STANDARD_MONO("speaker")
+	MCFG_SOUND_ADD("dac", DAC_16BIT_R2R_TWOS_COMPLEMENT, 0) MCFG_SOUND_ROUTE(ALL_OUTPUTS, "speaker", 0.5) // unknown DAC
+	MCFG_DEVICE_ADD("vref", VOLTAGE_REGULATOR, 0) MCFG_VOLTAGE_REGULATOR_OUTPUT(5.0)
+	MCFG_SOUND_ROUTE_EX(0, "dac", 1.0, DAC_VREF_POS_INPUT) MCFG_SOUND_ROUTE_EX(0, "dac", -1.0, DAC_VREF_NEG_INPUT)
+>>>>>>> upstream/master
 MACHINE_CONFIG_END
 
 static MACHINE_CONFIG_DERIVED( pongf, pong )
@@ -457,26 +617,40 @@ static MACHINE_CONFIG_DERIVED( pongf, pong )
 
 MACHINE_CONFIG_END
 
+<<<<<<< HEAD
 static MACHINE_CONFIG_START( pongd, pong_state )
+=======
+static MACHINE_CONFIG_START( pongd )
+>>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_DEVICE_ADD("maincpu", NETLIST_CPU, NETLIST_CLOCK)
 	MCFG_NETLIST_SETUP(pongdoubles)
 
+<<<<<<< HEAD
 #if 0
 	MCFG_NETLIST_ANALOG_INPUT("maincpu", "vr0", "ic_b9_R.R")
 	MCFG_NETLIST_ANALOG_INPUT_MULT_OFFSET(1.0 / 100.0 * RES_K(50), RES_K(56) )
 	MCFG_NETLIST_ANALOG_INPUT("maincpu", "vr1", "ic_a9_R.R")
 	MCFG_NETLIST_ANALOG_INPUT_MULT_OFFSET(1.0 / 100.0 * RES_K(50), RES_K(56) )
 #endif
+=======
+>>>>>>> upstream/master
 	MCFG_NETLIST_ANALOG_INPUT("maincpu", "pot0", "A10_POT.DIAL")
 	MCFG_NETLIST_ANALOG_INPUT("maincpu", "pot1", "B10_POT.DIAL")
 	MCFG_NETLIST_ANALOG_INPUT("maincpu", "pot2", "B9B_POT.DIAL")
 	MCFG_NETLIST_ANALOG_INPUT("maincpu", "pot3", "B9A_POT.DIAL")
+<<<<<<< HEAD
 	MCFG_NETLIST_LOGIC_INPUT("maincpu", "sw1a", "DIPSW1.POS", 0, 0x01)
 	MCFG_NETLIST_LOGIC_INPUT("maincpu", "sw1b", "DIPSW2.POS", 0, 0x01)
 	MCFG_NETLIST_LOGIC_INPUT("maincpu", "coinsw", "COIN_SW.POS", 0, 0x01)
 	MCFG_NETLIST_LOGIC_INPUT("maincpu", "startsw", "START_SW.POS", 0, 0x01)
+=======
+	MCFG_NETLIST_LOGIC_INPUT("maincpu", "sw1a", "DIPSW1.POS", 0)
+	MCFG_NETLIST_LOGIC_INPUT("maincpu", "sw1b", "DIPSW2.POS", 0)
+	MCFG_NETLIST_LOGIC_INPUT("maincpu", "coinsw", "COIN_SW.POS", 0)
+	MCFG_NETLIST_LOGIC_INPUT("maincpu", "startsw", "START_SW.POS", 0)
+>>>>>>> upstream/master
 #if 0
 	MCFG_NETLIST_LOGIC_INPUT("maincpu", "antenna", "antenna.IN", 0, 0x01)
 #endif
@@ -493,10 +667,17 @@ static MACHINE_CONFIG_START( pongd, pong_state )
 	MCFG_FIXFREQ_SYNC_THRESHOLD(0.11)
 
 	/* sound hardware */
+<<<<<<< HEAD
 	MCFG_SPEAKER_STANDARD_MONO("mono")
 	MCFG_SOUND_ADD("dac", DAC, 48000)
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 1.0)
 
+=======
+	MCFG_SPEAKER_STANDARD_MONO("speaker")
+	MCFG_SOUND_ADD("dac", DAC_16BIT_R2R_TWOS_COMPLEMENT, 0) MCFG_SOUND_ROUTE(ALL_OUTPUTS, "speaker", 0.5) // unknown DAC
+	MCFG_DEVICE_ADD("vref", VOLTAGE_REGULATOR, 0) MCFG_VOLTAGE_REGULATOR_OUTPUT(5.0)
+	MCFG_SOUND_ROUTE_EX(0, "dac", 1.0, DAC_VREF_POS_INPUT) MCFG_SOUND_ROUTE_EX(0, "dac", -1.0, DAC_VREF_NEG_INPUT)
+>>>>>>> upstream/master
 MACHINE_CONFIG_END
 
 /***************************************************************************
@@ -532,10 +713,13 @@ ROM_START( coupedav ) // dummy to satisfy game entry
     ROM_REGION( 0x10000, "maincpu", ROMREGION_ERASE00 )
 ROM_END
 
+<<<<<<< HEAD
 ROM_START( coupfran ) // dummy to satisfy game entry
     ROM_REGION( 0x10000, "maincpu", ROMREGION_ERASE00 )
 ROM_END
 
+=======
+>>>>>>> upstream/master
 ROM_START( cktpong ) // dummy to satisfy game entry
     ROM_REGION( 0x10000, "maincpu", ROMREGION_ERASE00 )
 ROM_END
@@ -565,15 +749,25 @@ ROM_START( consolet ) // dummy to satisfy game entry
 ROM_END
 */
 
+<<<<<<< HEAD
 GAME( 1972, pong,      0, pong,     pong,      driver_device,  0, ROT0,  "Atari", "Pong (Rev E) external [TTL]", MACHINE_SUPPORTS_SAVE)
 GAME( 1972, pongf,     0, pongf,    pong,      driver_device,  0, ROT0,  "Atari", "Pong (Rev E) [TTL]", MACHINE_SUPPORTS_SAVE)
 GAME( 1973, pongd,     0, pongd,    pongd,     driver_device,  0, ROT0,  "Atari", "Pong Doubles [TTL]", MACHINE_SUPPORTS_SAVE)
 GAMEL( 1976, breakout,  0, breakout, breakout,  driver_device,  0, ROT90, "Atari", "Breakout [TTL]", MACHINE_SUPPORTS_SAVE, layout_breakout)
+=======
+GAME( 1972, pong,       0, pong,     pong,      pong_state,      0, ROT0,  "Atari", "Pong (Rev E) external [TTL]", MACHINE_SUPPORTS_SAVE)
+GAME( 1972, pongf,      0, pongf,    pong,      pong_state,      0, ROT0,  "Atari", "Pong (Rev E) [TTL]", MACHINE_SUPPORTS_SAVE)
+GAME( 1973, pongd,      0, pongd,    pongd,     pong_state,      0, ROT0,  "Atari", "Pong Doubles [TTL]", MACHINE_SUPPORTS_SAVE)
+GAMEL( 1976, breakout,  0, breakout, breakout,  breakout_state,  0, ROT90, "Atari", "Breakout [TTL]", MACHINE_SUPPORTS_SAVE, layout_breakout)
+>>>>>>> upstream/master
 
 // 100% TTL
 //GAME( 1973, coupedav,   pongd,    pongd,    pongd,     driver_device,  0, ROT0,  "Atari France", "Coupe Davis [TTL]", MACHINE_SUPPORTS_SAVE)
 //GAME( 1973, pongbarl,   pong,     pong,     pong,      driver_device,  0, ROT0,  "Atari", "Pong In-A-Barrel [TTL]", MACHINE_SUPPORTS_SAVE)
+<<<<<<< HEAD
 //GAME( 1974, coupfran,   pong,     pong,     pong,      driver_device,  0, ROT0,  "Atari Europe", "Coup Franc [TTL]", MACHINE_SUPPORTS_SAVE)
+=======
+>>>>>>> upstream/master
 //GAME( 1974, cktpong,    pong,     pong,     pong,      driver_device,  0, ROT0,  "Atari / National Entertainment Co.", "Cocktail Pong [TTL]", MACHINE_SUPPORTS_SAVE)
 //GAME( 1974, drpong,     pong,     pong,     pong,      driver_device,  0, ROT0,  "Atari", "Dr. Pong [TTL]", MACHINE_SUPPORTS_SAVE)
 //GAME( 1974, pupppong,   pong,     pong,     pong,      driver_device,  0, ROT0,  "Atari", "Puppy Pong [TTL]", MACHINE_SUPPORTS_SAVE)

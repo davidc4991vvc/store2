@@ -33,10 +33,22 @@
 
 #include "emu.h"
 #include "includes/jpmsys5.h"
+<<<<<<< HEAD
 #include "machine/clock.h"
 #include "sound/saa1099.h"
 #include "jpmsys5.lh"
 
+=======
+
+#include "machine/clock.h"
+#include "sound/saa1099.h"
+#include "screen.h"
+#include "speaker.h"
+
+#include "jpmsys5.lh"
+
+
+>>>>>>> upstream/master
 enum state { IDLE, START, DATA, STOP1, STOP2 };
 
 /*************************************
@@ -93,7 +105,11 @@ WRITE16_MEMBER(jpmsys5_state::sys5_tms34061_w)
 
 READ16_MEMBER(jpmsys5_state::sys5_tms34061_r)
 {
+<<<<<<< HEAD
 	UINT16 data = 0;
+=======
+	uint16_t data = 0;
+>>>>>>> upstream/master
 	int func = (offset >> 19) & 3;
 	int row = (offset >> 7) & 0x1ff;
 	int col;
@@ -142,7 +158,11 @@ WRITE16_MEMBER(jpmsys5_state::ramdac_w)
 	}
 }
 
+<<<<<<< HEAD
 UINT32 jpmsys5_state::screen_update_jpmsys5v(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect)
+=======
+uint32_t jpmsys5_state::screen_update_jpmsys5v(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect)
+>>>>>>> upstream/master
 {
 	int x, y;
 
@@ -156,12 +176,21 @@ UINT32 jpmsys5_state::screen_update_jpmsys5v(screen_device &screen, bitmap_rgb32
 
 	for (y = cliprect.min_y; y <= cliprect.max_y; ++y)
 	{
+<<<<<<< HEAD
 		UINT8 *src = &m_tms34061->m_display.vram[(m_tms34061->m_display.dispstart & 0xffff)*2 + 256 * y];
 		UINT32 *dest = &bitmap.pix32(y, cliprect.min_x);
 
 		for (x = cliprect.min_x; x <= cliprect.max_x; x +=2)
 		{
 			UINT8 pen = src[(x-cliprect.min_x)>>1];
+=======
+		uint8_t *src = &m_tms34061->m_display.vram[(m_tms34061->m_display.dispstart & 0xffff)*2 + 256 * y];
+		uint32_t *dest = &bitmap.pix32(y, cliprect.min_x);
+
+		for (x = cliprect.min_x; x <= cliprect.max_x; x +=2)
+		{
+			uint8_t pen = src[(x-cliprect.min_x)>>1];
+>>>>>>> upstream/master
 
 			/* Draw two 4-bit pixels */
 			*dest++ = m_palette->pen((pen >> 4) & 0xf);
@@ -177,9 +206,15 @@ void jpmsys5_state::sys5_draw_lamps()
 	int i;
 	for (i = 0; i <8; i++)
 	{
+<<<<<<< HEAD
 		output_set_lamp_value( (16*m_lamp_strobe)+i,  (m_muxram[(4*m_lamp_strobe)] & (1 << i)) !=0);
 		output_set_lamp_value((16*m_lamp_strobe)+i+8, (m_muxram[(4*m_lamp_strobe) +1 ] & (1 << i)) !=0);
 		output_set_indexed_value("sys5led",(8*m_lamp_strobe)+i,(m_muxram[(4*m_lamp_strobe) +2 ] & (1 << i)) !=0);
+=======
+		output().set_lamp_value( (16*m_lamp_strobe)+i,  (m_muxram[(4*m_lamp_strobe)] & (1 << i)) !=0);
+		output().set_lamp_value((16*m_lamp_strobe)+i+8, (m_muxram[(4*m_lamp_strobe) +1 ] & (1 << i)) !=0);
+		output().set_indexed_value("sys5led",(8*m_lamp_strobe)+i,(m_muxram[(4*m_lamp_strobe) +2 ] & (1 << i)) !=0);
+>>>>>>> upstream/master
 	}
 }
 
@@ -191,7 +226,11 @@ void jpmsys5_state::sys5_draw_lamps()
 
 WRITE16_MEMBER(jpmsys5_state::rombank_w)
 {
+<<<<<<< HEAD
 	UINT8 *rom = memregion("maincpu")->base();
+=======
+	uint8_t *rom = memregion("maincpu")->base();
+>>>>>>> upstream/master
 	data &= 0x1f;
 	membank("bank1")->set_base(&rom[0x20000 + 0x20000 * data]);
 }
@@ -297,8 +336,12 @@ ADDRESS_MAP_END
 
 static ADDRESS_MAP_START( 68000_awp_map_saa, AS_PROGRAM, 16, jpmsys5_state )
 	JPM_SYS5_COMMON_MAP
+<<<<<<< HEAD
 	AM_RANGE(0x0460a0, 0x0460a1) AM_DEVWRITE8("saa", saa1099_device, data_w, 0x00ff)
 	AM_RANGE(0x0460a2, 0x0460a3) AM_DEVWRITE8("saa", saa1099_device, control_w, 0x00ff)
+=======
+	AM_RANGE(0x0460a0, 0x0460a3) AM_DEVWRITE8("saa", saa1099_device, write, 0x00ff)
+>>>>>>> upstream/master
 	AM_RANGE(0x04c100, 0x04c105) AM_READWRITE(jpm_upd7759_r, jpm_upd7759_w) // do the SAA boards have the UPD?
 ADDRESS_MAP_END
 
@@ -451,7 +494,11 @@ static INPUT_PORTS_START( monopoly )
 	PORT_BIT( 0xc3, IP_ACTIVE_LOW, IPT_UNUSED )
 
 	PORT_START("TOUCH_PUSH")
+<<<<<<< HEAD
 	PORT_BIT( 0x01, IP_ACTIVE_LOW, IPT_BUTTON1 ) PORT_CHANGED_MEMBER(DEVICE_SELF, jpmsys5_state,touchscreen_press, NULL)
+=======
+	PORT_BIT( 0x01, IP_ACTIVE_LOW, IPT_BUTTON1 ) PORT_CHANGED_MEMBER(DEVICE_SELF, jpmsys5_state,touchscreen_press, nullptr)
+>>>>>>> upstream/master
 
 	PORT_START("TOUCH_X")
 	PORT_BIT( 0xff, 0x80, IPT_LIGHTGUN_X ) PORT_CROSSHAIR(X, 1.0, 0.0, 0) PORT_SENSITIVITY(45) PORT_KEYDELTA(15)
@@ -472,6 +519,7 @@ WRITE_LINE_MEMBER(jpmsys5_state::pia_irq)
 
 READ8_MEMBER(jpmsys5_state::u29_porta_r)
 {
+<<<<<<< HEAD
 	int combined_meter = MechMtr_GetActivity(0) | MechMtr_GetActivity(1) |
 							MechMtr_GetActivity(2) | MechMtr_GetActivity(3) |
 							MechMtr_GetActivity(4) | MechMtr_GetActivity(5) |
@@ -488,14 +536,48 @@ READ8_MEMBER(jpmsys5_state::u29_porta_r)
 	}
 
 	return m_direct_port->read() | meter_bit;
+=======
+	int meter_bit =0;
+
+	if (m_meters != nullptr)
+	{
+		int combined_meter = m_meters->GetActivity(0) | m_meters->GetActivity(1) |
+							m_meters->GetActivity(2) | m_meters->GetActivity(3) |
+							m_meters->GetActivity(4) | m_meters->GetActivity(5) |
+							m_meters->GetActivity(6) | m_meters->GetActivity(7);
+
+		if(combined_meter)
+		{
+			meter_bit =  0x80;
+		}
+		else
+		{
+			meter_bit =  0x00;
+		}
+
+		return m_direct_port->read() | meter_bit;
+	}
+
+	else
+		return m_direct_port->read() | meter_bit;
+>>>>>>> upstream/master
 }
 
 WRITE8_MEMBER(jpmsys5_state::u29_portb_w)
 {
+<<<<<<< HEAD
 	int meter =0;
 	for (meter = 0; meter < 8; meter ++)
 	{
 		MechMtr_update(meter, (data & (1 << meter)));
+=======
+	if (m_meters != nullptr)
+	{
+		for (int meter = 0; meter < 8; meter ++)
+		{
+			m_meters->update(meter, (data & (1 << meter)));
+		}
+>>>>>>> upstream/master
 	}
 }
 
@@ -522,11 +604,19 @@ WRITE_LINE_MEMBER(jpmsys5_state::ptm_irq)
 	m_maincpu->set_input_line(INT_6840PTM, state ? ASSERT_LINE : CLEAR_LINE);
 }
 
+<<<<<<< HEAD
 WRITE8_MEMBER(jpmsys5_state::u26_o1_callback)
 {
 	if (m_mpxclk !=data)
 	{
 		if (!data) //falling edge
+=======
+WRITE_LINE_MEMBER(jpmsys5_state::u26_o1_callback)
+{
+	if (m_mpxclk != state)
+	{
+		if (!state) //falling edge
+>>>>>>> upstream/master
 		{
 			m_lamp_strobe++;
 			if (m_lamp_strobe >15)
@@ -536,7 +626,11 @@ WRITE8_MEMBER(jpmsys5_state::u26_o1_callback)
 		}
 		sys5_draw_lamps();
 	}
+<<<<<<< HEAD
 	m_mpxclk = data;
+=======
+	m_mpxclk = state;
+>>>>>>> upstream/master
 }
 
 
@@ -605,7 +699,11 @@ MACHINE_RESET_MEMBER(jpmsys5_state,jpmsys5v)
  *
  *************************************/
 
+<<<<<<< HEAD
 static MACHINE_CONFIG_START( jpmsys5v, jpmsys5_state )
+=======
+static MACHINE_CONFIG_START( jpmsys5v )
+>>>>>>> upstream/master
 	MCFG_CPU_ADD("maincpu", M68000, XTAL_8MHz)
 	MCFG_CPU_PROGRAM_MAP(68000_map)
 
@@ -660,10 +758,16 @@ static MACHINE_CONFIG_START( jpmsys5v, jpmsys5_state )
 	MCFG_PIA_IRQB_HANDLER(WRITELINE(jpmsys5_state, pia_irq))
 
 	/* 6840 PTM */
+<<<<<<< HEAD
 	MCFG_DEVICE_ADD("6840ptm", PTM6840, 0)
 	MCFG_PTM6840_INTERNAL_CLOCK(1000000)
 	MCFG_PTM6840_EXTERNAL_CLOCKS(0, 0, 0)
 	MCFG_PTM6840_OUT0_CB(WRITE8(jpmsys5_state, u26_o1_callback))
+=======
+	MCFG_DEVICE_ADD("6840ptm", PTM6840, 1000000)
+	MCFG_PTM6840_EXTERNAL_CLOCKS(0, 0, 0)
+	MCFG_PTM6840_OUT0_CB(WRITELINE(jpmsys5_state, u26_o1_callback))
+>>>>>>> upstream/master
 	MCFG_PTM6840_IRQ_CB(WRITELINE(jpmsys5_state, ptm_irq))
 MACHINE_CONFIG_END
 
@@ -805,10 +909,13 @@ INPUT_PORTS_END
 MACHINE_START_MEMBER(jpmsys5_state,jpmsys5)
 {
 //  membank("bank1")->set_base(memregion("maincpu")->base()+0x20000);
+<<<<<<< HEAD
 
 	/* setup 8 mechanical meters */
 	MechMtr_config(machine(),8);
 
+=======
+>>>>>>> upstream/master
 }
 
 MACHINE_RESET_MEMBER(jpmsys5_state,jpmsys5)
@@ -826,7 +933,11 @@ MACHINE_RESET_MEMBER(jpmsys5_state,jpmsys5)
  *************************************/
 
 // later (incompatible with earlier revision) motherboards used a YM2413
+<<<<<<< HEAD
 MACHINE_CONFIG_START( jpmsys5_ym, jpmsys5_state )
+=======
+MACHINE_CONFIG_START( jpmsys5_ym )
+>>>>>>> upstream/master
 	MCFG_CPU_ADD("maincpu", M68000, XTAL_8MHz)
 
 	MCFG_CPU_PROGRAM_MAP(68000_awp_map)
@@ -869,6 +980,7 @@ MACHINE_CONFIG_START( jpmsys5_ym, jpmsys5_state )
 	MCFG_PIA_IRQB_HANDLER(WRITELINE(jpmsys5_state, pia_irq))
 
 	/* 6840 PTM */
+<<<<<<< HEAD
 	MCFG_DEVICE_ADD("6840ptm", PTM6840, 0)
 	MCFG_PTM6840_INTERNAL_CLOCK(1000000)
 	MCFG_PTM6840_EXTERNAL_CLOCKS(0, 0, 0)
@@ -879,6 +991,20 @@ MACHINE_CONFIG_END
 
 // the first rev PCB used an SAA1099
 MACHINE_CONFIG_START( jpmsys5, jpmsys5_state )
+=======
+	MCFG_DEVICE_ADD("6840ptm", PTM6840, 1000000)
+	MCFG_PTM6840_EXTERNAL_CLOCKS(0, 0, 0)
+	MCFG_PTM6840_OUT0_CB(WRITELINE(jpmsys5_state, u26_o1_callback))
+	MCFG_PTM6840_IRQ_CB(WRITELINE(jpmsys5_state, ptm_irq))
+	MCFG_DEFAULT_LAYOUT(layout_jpmsys5)
+
+	MCFG_DEVICE_ADD("meters", METERS, 0)
+	MCFG_METERS_NUMBER(8)
+MACHINE_CONFIG_END
+
+// the first rev PCB used an SAA1099
+MACHINE_CONFIG_START( jpmsys5 )
+>>>>>>> upstream/master
 	MCFG_CPU_ADD("maincpu", M68000, XTAL_8MHz)
 	MCFG_CPU_PROGRAM_MAP(68000_awp_map_saa)
 
@@ -919,12 +1045,23 @@ MACHINE_CONFIG_START( jpmsys5, jpmsys5_state )
 	MCFG_PIA_IRQB_HANDLER(WRITELINE(jpmsys5_state, pia_irq))
 
 	/* 6840 PTM */
+<<<<<<< HEAD
 	MCFG_DEVICE_ADD("6840ptm", PTM6840, 0)
 	MCFG_PTM6840_INTERNAL_CLOCK(1000000)
 	MCFG_PTM6840_EXTERNAL_CLOCKS(0, 0, 0)
 	MCFG_PTM6840_OUT0_CB(WRITE8(jpmsys5_state, u26_o1_callback))
 	MCFG_PTM6840_IRQ_CB(WRITELINE(jpmsys5_state, ptm_irq))
 	MCFG_DEFAULT_LAYOUT(layout_jpmsys5)
+=======
+	MCFG_DEVICE_ADD("6840ptm", PTM6840, 1000000)
+	MCFG_PTM6840_EXTERNAL_CLOCKS(0, 0, 0)
+	MCFG_PTM6840_OUT0_CB(WRITELINE(jpmsys5_state, u26_o1_callback))
+	MCFG_PTM6840_IRQ_CB(WRITELINE(jpmsys5_state, ptm_irq))
+	MCFG_DEFAULT_LAYOUT(layout_jpmsys5)
+
+	MCFG_DEVICE_ADD("meters", METERS, 0)
+	MCFG_METERS_NUMBER(8)
+>>>>>>> upstream/master
 MACHINE_CONFIG_END
 
 /*************************************
@@ -1026,8 +1163,16 @@ ROM_END
 
 
 /* Video based titles */
+<<<<<<< HEAD
 GAME( 1994, monopoly    , 0         , jpmsys5v, monopoly, driver_device, 0, ROT0, "JPM", "Monopoly (JPM) (SYSTEM5 VIDEO, set 1)",         0 )
 GAME( 1994, monopolya   , monopoly  , jpmsys5v, monopoly, driver_device, 0, ROT0, "JPM", "Monopoly (JPM) (SYSTEM5 VIDEO, set 2)",         0 )
 GAME( 1995, monoplcl    , monopoly  , jpmsys5v, monopoly, driver_device, 0, ROT0, "JPM", "Monopoly Classic (JPM) (SYSTEM5 VIDEO)", 0 )
 GAME( 1995, monopldx    , 0         , jpmsys5v, monopoly, driver_device, 0, ROT0, "JPM", "Monopoly Deluxe (JPM) (SYSTEM5 VIDEO)",  0 )
 GAME( 199?, cashcade    , 0         , jpmsys5v, monopoly, driver_device, 0, ROT0, "JPM", "Cashcade (JPM) (SYSTEM5 VIDEO)", MACHINE_NOT_WORKING|MACHINE_NO_SOUND ) // shows a loading error.. is the set incomplete?
+=======
+GAME( 1994, monopoly    , 0         , jpmsys5v, monopoly, jpmsys5_state, 0, ROT0, "JPM", "Monopoly (JPM) (SYSTEM5 VIDEO, set 1)",         0 )
+GAME( 1994, monopolya   , monopoly  , jpmsys5v, monopoly, jpmsys5_state, 0, ROT0, "JPM", "Monopoly (JPM) (SYSTEM5 VIDEO, set 2)",         0 )
+GAME( 1995, monoplcl    , monopoly  , jpmsys5v, monopoly, jpmsys5_state, 0, ROT0, "JPM", "Monopoly Classic (JPM) (SYSTEM5 VIDEO)", 0 )
+GAME( 1995, monopldx    , 0         , jpmsys5v, monopoly, jpmsys5_state, 0, ROT0, "JPM", "Monopoly Deluxe (JPM) (SYSTEM5 VIDEO)",  0 )
+GAME( 199?, cashcade    , 0         , jpmsys5v, monopoly, jpmsys5_state, 0, ROT0, "JPM", "Cashcade (JPM) (SYSTEM5 VIDEO)", MACHINE_NOT_WORKING|MACHINE_NO_SOUND ) // shows a loading error.. is the set incomplete?
+>>>>>>> upstream/master

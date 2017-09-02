@@ -32,7 +32,11 @@
 ***************************************************************************/
 PALETTE_INIT_MEMBER(suprloco_state, suprloco)
 {
+<<<<<<< HEAD
 	const UINT8 *color_prom = memregion("proms")->base();
+=======
+	const uint8_t *color_prom = memregion("proms")->base();
+>>>>>>> upstream/master
 	int i;
 
 
@@ -79,7 +83,11 @@ PALETTE_INIT_MEMBER(suprloco_state, suprloco)
 
 TILE_GET_INFO_MEMBER(suprloco_state::get_tile_info)
 {
+<<<<<<< HEAD
 	UINT8 attr = m_videoram[2*tile_index+1];
+=======
+	uint8_t attr = m_videoram[2*tile_index+1];
+>>>>>>> upstream/master
 	SET_TILE_INFO_MEMBER(0,
 			m_videoram[2*tile_index] | ((attr & 0x03) << 8),
 			(attr & 0x1c) >> 2,
@@ -97,7 +105,11 @@ TILE_GET_INFO_MEMBER(suprloco_state::get_tile_info)
 
 void suprloco_state::video_start()
 {
+<<<<<<< HEAD
 	m_bg_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(suprloco_state::get_tile_info),this),TILEMAP_SCAN_ROWS,8,8,32,32);
+=======
+	m_bg_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(suprloco_state::get_tile_info),this),TILEMAP_SCAN_ROWS,8,8,32,32);
+>>>>>>> upstream/master
 
 	m_bg_tilemap->set_scroll_rows(32);
 
@@ -143,8 +155,13 @@ WRITE8_MEMBER(suprloco_state::control_w)
 		/*logerror("Bit 4 = %d\n", (data >> 4) & 1); */
 	}
 
+<<<<<<< HEAD
 	coin_counter_w(machine(), 0, data & 0x01);
 	coin_counter_w(machine(), 1, data & 0x02);
+=======
+	machine().bookkeeping().coin_counter_w(0, data & 0x01);
+	machine().bookkeeping().coin_counter_w(1, data & 0x02);
+>>>>>>> upstream/master
 
 	flip_screen_set(data & 0x80);
 
@@ -152,12 +169,15 @@ WRITE8_MEMBER(suprloco_state::control_w)
 }
 
 
+<<<<<<< HEAD
 READ8_MEMBER(suprloco_state::control_r)
 {
 	return m_control;
 }
 
 
+=======
+>>>>>>> upstream/master
 
 inline void suprloco_state::draw_pixel(bitmap_ind16 &bitmap,const rectangle &cliprect,int x,int y,int color,int flip)
 {
@@ -176,8 +196,13 @@ void suprloco_state::draw_sprite(bitmap_ind16 &bitmap,const rectangle &cliprect,
 {
 	int flip = flip_screen();
 	int sx,sy,col,row,height,src,adjy,dy;
+<<<<<<< HEAD
 	UINT8 *spr_reg;
 	UINT8 *gfx2;
+=======
+	uint8_t *spr_reg;
+	uint8_t *gfx2;
+>>>>>>> upstream/master
 	pen_t pen_base;
 	short skip; /* bytes to skip before drawing each row (can be negative) */
 
@@ -207,8 +232,13 @@ void suprloco_state::draw_sprite(bitmap_ind16 &bitmap,const rectangle &cliprect,
 	for (row = 0;row < height;row++,adjy+=dy)
 	{
 		int color1,color2,flipx;
+<<<<<<< HEAD
 		UINT8 data;
 		UINT8 *gfx;
+=======
+		uint8_t data;
+		uint8_t *gfx;
+>>>>>>> upstream/master
 
 		src += skip;
 
@@ -249,7 +279,11 @@ void suprloco_state::draw_sprite(bitmap_ind16 &bitmap,const rectangle &cliprect,
 void suprloco_state::draw_sprites(bitmap_ind16 &bitmap, const rectangle &cliprect)
 {
 	int spr_number;
+<<<<<<< HEAD
 	UINT8 *spr_reg;
+=======
+	uint8_t *spr_reg;
+>>>>>>> upstream/master
 
 
 	for (spr_number = 0;spr_number < (m_spriteram.bytes() >> 4);spr_number++)
@@ -260,7 +294,11 @@ void suprloco_state::draw_sprites(bitmap_ind16 &bitmap, const rectangle &cliprec
 	}
 }
 
+<<<<<<< HEAD
 UINT32 suprloco_state::screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+=======
+uint32_t suprloco_state::screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+>>>>>>> upstream/master
 {
 	m_bg_tilemap->draw(screen, bitmap, cliprect, 0,0);
 	draw_sprites(bitmap,cliprect);

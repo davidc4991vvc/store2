@@ -32,7 +32,11 @@ static const char *const s_mnemonics[] =
 };
 
 // number of bits per opcode parameter, negative indicates complement
+<<<<<<< HEAD
 static const INT8 s_bits[] =
+=======
+static const s8 s_bits[] =
+>>>>>>> upstream/master
 {
 	0, 0, 4, 2, 2, 2, 2, 0, 0, 0,
 	-2, -2, -2, -2, 2, 2,
@@ -45,7 +49,11 @@ static const INT8 s_bits[] =
 #define _OVER DASMFLAG_STEP_OVER
 #define _OUT  DASMFLAG_STEP_OUT
 
+<<<<<<< HEAD
 static const UINT32 s_flags[] =
+=======
+static const u32 s_flags[] =
+>>>>>>> upstream/master
 {
 	0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 	0, 0, 0, 0, 0, 0,
@@ -56,7 +64,11 @@ static const UINT32 s_flags[] =
 };
 
 
+<<<<<<< HEAD
 static const UINT8 s2000_mnemonic[0x100] =
+=======
+static const u8 s2000_mnemonic[0x100] =
+>>>>>>> upstream/master
 {
 	/* 0x00 */
 	mNOP, mHALT, mRT, mRTS, mPSH, mPSL, mAND, mSOS,
@@ -100,6 +112,7 @@ static const UINT8 s2000_mnemonic[0x100] =
 
 
 
+<<<<<<< HEAD
 CPU_DISASSEMBLE( amis2000 )
 {
 	int pos = 0;
@@ -108,6 +121,15 @@ CPU_DISASSEMBLE( amis2000 )
 
 	char *dst = buffer;
 	dst += sprintf(dst, "%-5s ", s_mnemonics[instr]);
+=======
+CPU_DISASSEMBLE(amis2000)
+{
+	int pos = 0;
+	u8 op = oprom[pos++];
+	u8 instr = s2000_mnemonic[op];
+
+	util::stream_format(stream, "%-5s ", s_mnemonics[instr]);
+>>>>>>> upstream/master
 
 	// opcode parameter
 	int mask = s_bits[instr];
@@ -118,15 +140,25 @@ CPU_DISASSEMBLE( amis2000 )
 
 	if (mask != 0)
 	{
+<<<<<<< HEAD
 		UINT8 param = op;
+=======
+		u8 param = op;
+>>>>>>> upstream/master
 		if (complement)
 			param = ~param;
 		param &= mask;
 
 		if (mask < 0x10)
+<<<<<<< HEAD
 			dst += sprintf(dst, "%d", param);
 		else
 			dst += sprintf(dst, "$%02X", param);
+=======
+			util::stream_format(stream, "%d", param);
+		else
+			util::stream_format(stream, "$%02X", param);
+>>>>>>> upstream/master
 	}
 
 	return pos | s_flags[instr] | DASMFLAG_SUPPORTED;

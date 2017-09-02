@@ -278,10 +278,19 @@ Note: Roms for Tempest Analog Vector-Generator PCB Assembly A037383-03 or A03738
 #include "emu.h"
 #include "cpu/m6502/m6502.h"
 #include "machine/mathbox.h"
+<<<<<<< HEAD
+=======
+#include "machine/watchdog.h"
+>>>>>>> upstream/master
 #include "video/avgdvg.h"
 #include "video/vector.h"
 #include "machine/atari_vg.h"
 #include "sound/pokey.h"
+<<<<<<< HEAD
+=======
+#include "screen.h"
+#include "speaker.h"
+>>>>>>> upstream/master
 
 
 #define MASTER_CLOCK (XTAL_12_096MHz)
@@ -299,6 +308,10 @@ public:
 		: driver_device(mconfig, type, tag),
 		m_maincpu(*this, "maincpu"),
 		m_mathbox(*this, "mathbox"),
+<<<<<<< HEAD
+=======
+		m_watchdog(*this, "watchdog"),
+>>>>>>> upstream/master
 		m_avg(*this, "avg"),
 		m_rom(*this, "maincpu"),
 		m_knob_p1(*this, TEMPEST_KNOB_P1_TAG),
@@ -311,8 +324,14 @@ public:
 
 	required_device<cpu_device> m_maincpu;
 	required_device<mathbox_device> m_mathbox;
+<<<<<<< HEAD
 	required_device<avg_tempest_device> m_avg;
 	required_region_ptr<UINT8> m_rom;
+=======
+	required_device<watchdog_timer_device> m_watchdog;
+	required_device<avg_tempest_device> m_avg;
+	required_region_ptr<uint8_t> m_rom;
+>>>>>>> upstream/master
 
 	required_ioport m_knob_p1;
 	required_ioport m_knob_p2;
@@ -321,7 +340,11 @@ public:
 	required_ioport m_in1;
 	required_ioport m_in2;
 
+<<<<<<< HEAD
 	UINT8 m_player_select;
+=======
+	uint8_t m_player_select;
+>>>>>>> upstream/master
 	DECLARE_WRITE8_MEMBER(wdclr_w);
 	DECLARE_WRITE8_MEMBER(tempest_led_w);
 	DECLARE_WRITE8_MEMBER(tempest_coin_w);
@@ -333,7 +356,11 @@ public:
 
 	DECLARE_READ8_MEMBER(rom_ae1f_r);
 
+<<<<<<< HEAD
 	virtual void machine_start();
+=======
+	virtual void machine_start() override;
+>>>>>>> upstream/master
 };
 
 
@@ -351,7 +378,11 @@ void tempest_state::machine_start()
 WRITE8_MEMBER(tempest_state::wdclr_w)
 {
 	m_maincpu->set_input_line(0, CLEAR_LINE);
+<<<<<<< HEAD
 	machine().watchdog_reset();
+=======
+	m_watchdog->watchdog_reset();
+>>>>>>> upstream/master
 }
 
 /*************************************
@@ -399,8 +430,13 @@ READ8_MEMBER(tempest_state::input_port_2_bit_r)
 
 WRITE8_MEMBER(tempest_state::tempest_led_w)
 {
+<<<<<<< HEAD
 	set_led_status(machine(), 0, ~data & 0x02);
 	set_led_status(machine(), 1, ~data & 0x01);
+=======
+	output().set_led_value(0, ~data & 0x02);
+	output().set_led_value(1, ~data & 0x01);
+>>>>>>> upstream/master
 	/* FLIP is bit 0x04 */
 	m_player_select = data & 0x04;
 }
@@ -408,9 +444,15 @@ WRITE8_MEMBER(tempest_state::tempest_led_w)
 
 WRITE8_MEMBER(tempest_state::tempest_coin_w)
 {
+<<<<<<< HEAD
 	coin_counter_w(machine(), 0, (data & 0x01));
 	coin_counter_w(machine(), 1, (data & 0x02));
 	coin_counter_w(machine(), 2, (data & 0x04));
+=======
+	machine().bookkeeping().coin_counter_w(0, (data & 0x01));
+	machine().bookkeeping().coin_counter_w(1, (data & 0x02));
+	machine().bookkeeping().coin_counter_w(2, (data & 0x04));
+>>>>>>> upstream/master
 	m_avg->set_flip_x(data & 0x08);
 	m_avg->set_flip_y(data & 0x10);
 }
@@ -474,6 +516,7 @@ static INPUT_PORTS_START( tempest )
 	PORT_BIT( 0x04, IP_ACTIVE_LOW, IPT_COIN1 )
 	PORT_BIT( 0x08, IP_ACTIVE_LOW, IPT_TILT )
 	PORT_SERVICE( 0x10, IP_ACTIVE_LOW )
+<<<<<<< HEAD
 	PORT_BIT( 0x20, IP_ACTIVE_LOW, IPT_SERVICE ) PORT_NAME("Diagnostic Step") PORT_CODE(KEYCODE_F1)
 	/* bit 6 is the VG HALT bit. We set it to "low" */
 	/* per default (busy vector processor). */
@@ -483,6 +526,17 @@ static INPUT_PORTS_START( tempest )
 
 	PORT_START("IN1/DSW0")
 	PORT_BIT( 0x0f, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, tempest_state,tempest_knob_r, NULL)
+=======
+	PORT_BIT( 0x20, IP_ACTIVE_LOW, IPT_SERVICE1 ) PORT_NAME("Diagnostic Step")
+	/* bit 6 is the VG HALT bit. We set it to "low" */
+	/* per default (busy vector processor). */
+	PORT_BIT( 0x40, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER("avg", avg_tempest_device, done_r, nullptr)
+	/* bit 7 is tied to a 3kHz (?) clock */
+	PORT_BIT( 0x80, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, tempest_state,clock_r, nullptr)
+
+	PORT_START("IN1/DSW0")
+	PORT_BIT( 0x0f, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, tempest_state,tempest_knob_r, nullptr)
+>>>>>>> upstream/master
 	/* The next one is reponsible for cocktail mode.
 	 * According to the documentation, this is not a switch, although
 	 * it may have been planned to put it on the Math Box PCB, D/E2 )
@@ -503,7 +557,11 @@ static INPUT_PORTS_START( tempest )
 	PORT_DIPNAME(  0x04, 0x04, "Rating" ) PORT_DIPLOCATION("DE2:2")
 	PORT_DIPSETTING(     0x04, "1, 3, 5, 7, 9" )
 	PORT_DIPSETTING(     0x00, "tied to high score" )
+<<<<<<< HEAD
 	PORT_BIT(0x18, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, tempest_state,tempest_buttons_r, NULL)
+=======
+	PORT_BIT(0x18, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, tempest_state,tempest_buttons_r, nullptr)
+>>>>>>> upstream/master
 	PORT_BIT(0x20, IP_ACTIVE_LOW, IPT_START1 )
 	PORT_BIT(0x40, IP_ACTIVE_LOW, IPT_START2 )
 	PORT_BIT(0x80, IP_ACTIVE_LOW, IPT_UNKNOWN )
@@ -584,13 +642,23 @@ INPUT_PORTS_END
  *
  *************************************/
 
+<<<<<<< HEAD
 static MACHINE_CONFIG_START( tempest, tempest_state )
+=======
+static MACHINE_CONFIG_START( tempest )
+>>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", M6502, MASTER_CLOCK / 8)
 	MCFG_CPU_PROGRAM_MAP(main_map)
+<<<<<<< HEAD
 
 	MCFG_CPU_PERIODIC_INT_DRIVER(tempest_state, irq0_line_assert, CLOCK_3KHZ / 12)
+=======
+	MCFG_CPU_PERIODIC_INT_DRIVER(tempest_state, irq0_line_assert, CLOCK_3KHZ / 12)
+
+	MCFG_WATCHDOG_ADD("watchdog")
+>>>>>>> upstream/master
 	MCFG_WATCHDOG_TIME_INIT(attotime::from_hz(CLOCK_3KHZ / 256))
 
 	MCFG_ATARIVGEAROM_ADD("earom")
@@ -857,9 +925,18 @@ ROM_END
  *
  *************************************/
 
+<<<<<<< HEAD
 GAME( 1980, tempest,   0,       tempest, tempest, driver_device, 0, ROT270, "Atari", "Tempest (rev 3, Revised Hardware)", MACHINE_SUPPORTS_SAVE )
 GAME( 1980, tempest3,  tempest, tempest, tempest, driver_device, 0, ROT270, "Atari", "Tempest (rev 3)", MACHINE_SUPPORTS_SAVE )
 GAME( 1980, tempest2,  tempest, tempest, tempest, driver_device, 0, ROT270, "Atari", "Tempest (rev 2)", MACHINE_SUPPORTS_SAVE )
 GAME( 1980, tempest1,  tempest, tempest, tempest, driver_device, 0, ROT270, "Atari", "Tempest (rev 1)", MACHINE_SUPPORTS_SAVE )
 GAME( 1980, tempest1r, tempest, tempest, tempest, driver_device, 0, ROT270, "Atari", "Tempest (rev 1, Revised Hardware)", MACHINE_SUPPORTS_SAVE )
 GAME( 1980, temptube,  tempest, tempest, tempest, driver_device, 0, ROT270, "hack (Duncan Brown)", "Tempest Tubes", MACHINE_SUPPORTS_SAVE )
+=======
+GAME( 1980, tempest,   0,       tempest, tempest, tempest_state, 0, ROT270, "Atari", "Tempest (rev 3, Revised Hardware)", MACHINE_SUPPORTS_SAVE )
+GAME( 1980, tempest3,  tempest, tempest, tempest, tempest_state, 0, ROT270, "Atari", "Tempest (rev 3)", MACHINE_SUPPORTS_SAVE )
+GAME( 1980, tempest2,  tempest, tempest, tempest, tempest_state, 0, ROT270, "Atari", "Tempest (rev 2)", MACHINE_SUPPORTS_SAVE )
+GAME( 1980, tempest1,  tempest, tempest, tempest, tempest_state, 0, ROT270, "Atari", "Tempest (rev 1)", MACHINE_SUPPORTS_SAVE )
+GAME( 1980, tempest1r, tempest, tempest, tempest, tempest_state, 0, ROT270, "Atari", "Tempest (rev 1, Revised Hardware)", MACHINE_SUPPORTS_SAVE )
+GAME( 1980, temptube,  tempest, tempest, tempest, tempest_state, 0, ROT270, "hack (Duncan Brown)", "Tempest Tubes", MACHINE_SUPPORTS_SAVE )
+>>>>>>> upstream/master

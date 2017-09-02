@@ -5,6 +5,12 @@
 #include "sound/k005289.h"
 #include "sound/vlm5030.h"
 
+<<<<<<< HEAD
+=======
+#include "screen.h"
+
+
+>>>>>>> upstream/master
 class nemesis_state : public driver_device
 {
 public:
@@ -22,7 +28,10 @@ public:
 		m_spriteram(*this, "spriteram"),
 		m_paletteram(*this, "paletteram"),
 		m_gx400_shared_ram(*this, "gx400_shared"),
+<<<<<<< HEAD
 		m_voiceram(*this, "voiceram"),
+=======
+>>>>>>> upstream/master
 		m_maincpu(*this, "maincpu"),
 		m_audiocpu(*this, "audiocpu"),
 		m_filter1(*this, "filter1"),
@@ -37,6 +46,7 @@ public:
 		m_palette(*this, "palette") { }
 
 	/* memory pointers */
+<<<<<<< HEAD
 	required_shared_ptr<UINT16> m_charram;
 	required_shared_ptr<UINT16> m_xscroll1;
 	required_shared_ptr<UINT16> m_xscroll2;
@@ -50,6 +60,20 @@ public:
 	optional_shared_ptr<UINT16> m_paletteram;
 	optional_shared_ptr<UINT8> m_gx400_shared_ram;
 	optional_shared_ptr<UINT8> m_voiceram;
+=======
+	required_shared_ptr<uint16_t> m_charram;
+	required_shared_ptr<uint16_t> m_xscroll1;
+	required_shared_ptr<uint16_t> m_xscroll2;
+	required_shared_ptr<uint16_t> m_yscroll2;
+	required_shared_ptr<uint16_t> m_yscroll1;
+	required_shared_ptr<uint16_t> m_videoram1;
+	required_shared_ptr<uint16_t> m_videoram2;
+	required_shared_ptr<uint16_t> m_colorram1;
+	required_shared_ptr<uint16_t> m_colorram2;
+	required_shared_ptr<uint16_t> m_spriteram;
+	optional_shared_ptr<uint16_t> m_paletteram;
+	optional_shared_ptr<uint8_t> m_gx400_shared_ram;
+>>>>>>> upstream/master
 
 	/* video-related */
 	tilemap_t *m_background;
@@ -57,18 +81,30 @@ public:
 	int       m_spriteram_words;
 	int       m_tilemap_flip;
 	int       m_flipscreen;
+<<<<<<< HEAD
 	UINT8     m_irq_port_last;
 	UINT8     m_blank_tile[8*8];
 	UINT8     m_palette_lookup[32];
+=======
+	uint8_t     m_irq_port_last;
+	uint8_t     m_blank_tile[8*8];
+	uint8_t     m_palette_lookup[32];
+>>>>>>> upstream/master
 
 	/* misc */
 	int       m_irq_on;
 	int       m_irq1_on;
 	int       m_irq2_on;
 	int       m_irq4_on;
+<<<<<<< HEAD
 	UINT16    m_selected_ip; /* Copied from WEC Le Mans 24 driver, explicity needed for Hyper Crash */
 	int       m_gx400_irq1_cnt;
 	UINT8     m_frame_counter;
+=======
+	uint16_t    m_selected_ip; /* Copied from WEC Le Mans 24 driver, explicity needed for Hyper Crash */
+	int       m_gx400_irq1_cnt;
+	uint8_t     m_frame_counter;
+>>>>>>> upstream/master
 
 	/* devices */
 	required_device<cpu_device> m_maincpu;
@@ -84,20 +120,35 @@ public:
 	required_device<screen_device> m_screen;
 	required_device<palette_device> m_palette;
 
+<<<<<<< HEAD
 	DECLARE_WRITE16_MEMBER(gx400_irq1_enable_word_w);
 	DECLARE_WRITE16_MEMBER(gx400_irq2_enable_word_w);
 	DECLARE_WRITE16_MEMBER(gx400_irq4_enable_word_w);
 	DECLARE_WRITE16_MEMBER(nemesis_irq_enable_word_w);
 	DECLARE_WRITE16_MEMBER(konamigt_irq_enable_word_w);
 	DECLARE_WRITE16_MEMBER(konamigt_irq2_enable_word_w);
+=======
+	DECLARE_WRITE_LINE_MEMBER(irq_enable_w);
+	DECLARE_WRITE_LINE_MEMBER(irq1_enable_w);
+	DECLARE_WRITE_LINE_MEMBER(irq2_enable_w);
+	DECLARE_WRITE_LINE_MEMBER(irq4_enable_w);
+	DECLARE_WRITE_LINE_MEMBER(coin1_lockout_w);
+	DECLARE_WRITE_LINE_MEMBER(coin2_lockout_w);
+	DECLARE_WRITE_LINE_MEMBER(sound_irq_w);
+>>>>>>> upstream/master
 	DECLARE_READ16_MEMBER(gx400_sharedram_word_r);
 	DECLARE_WRITE16_MEMBER(gx400_sharedram_word_w);
 	DECLARE_READ16_MEMBER(konamigt_input_word_r);
 	DECLARE_WRITE16_MEMBER(selected_ip_word_w);
 	DECLARE_READ16_MEMBER(selected_ip_word_r);
 	DECLARE_READ8_MEMBER(wd_r);
+<<<<<<< HEAD
 	DECLARE_WRITE16_MEMBER(nemesis_gfx_flipx_word_w);
 	DECLARE_WRITE16_MEMBER(nemesis_gfx_flipy_word_w);
+=======
+	DECLARE_WRITE_LINE_MEMBER(gfx_flipx_w);
+	DECLARE_WRITE_LINE_MEMBER(gfx_flipy_w);
+>>>>>>> upstream/master
 	DECLARE_WRITE16_MEMBER(salamand_control_port_word_w);
 	DECLARE_WRITE16_MEMBER(nemesis_palette_word_w);
 	DECLARE_WRITE16_MEMBER(nemesis_videoram1_word_w);
@@ -112,10 +163,17 @@ public:
 	DECLARE_WRITE8_MEMBER(city_sound_bank_w);
 	TILE_GET_INFO_MEMBER(get_bg_tile_info);
 	TILE_GET_INFO_MEMBER(get_fg_tile_info);
+<<<<<<< HEAD
 	virtual void machine_start();
 	virtual void machine_reset();
 	virtual void video_start();
 	UINT32 screen_update_nemesis(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
+=======
+	virtual void machine_start() override;
+	virtual void machine_reset() override;
+	virtual void video_start() override;
+	uint32_t screen_update_nemesis(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
+>>>>>>> upstream/master
 	INTERRUPT_GEN_MEMBER(nemesis_interrupt);
 	INTERRUPT_GEN_MEMBER(blkpnthr_interrupt);
 	TIMER_DEVICE_CALLBACK_MEMBER(konamigt_interrupt);

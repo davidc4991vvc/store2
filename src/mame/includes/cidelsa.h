@@ -1,5 +1,6 @@
 // license:BSD-3-Clause
 // copyright-holders:Curt Coder
+<<<<<<< HEAD
 #pragma once
 
 #ifndef __CIDELSA__
@@ -7,6 +8,14 @@
 
 
 #include "emu.h"
+=======
+#ifndef MAME_INCLUDES_CIDELSA_H
+#define MAME_INCLUDES_CIDELSA_H
+
+#pragma once
+
+
+>>>>>>> upstream/master
 #include "cpu/cosmac/cosmac.h"
 #include "cpu/cop400/cop400.h"
 #include "sound/cdp1869.h"
@@ -14,6 +23,10 @@
 #include "machine/cdp1852.h"
 #include "machine/nvram.h"
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> upstream/master
 #define SCREEN_TAG  "screen"
 #define CDP1802_TAG "cdp1802"
 #define CDP1869_TAG "cdp1869"
@@ -23,9 +36,15 @@
 #define DESTRYER_CHR1   3579000.0 // unverified
 #define DESTRYER_CHR2   XTAL_5_7143MHz
 #define ALTAIR_CHR1     3579000.0 // unverified
+<<<<<<< HEAD
 #define ALTAIR_CHR2     CDP1869_DOT_CLK_PAL // unverified
 #define DRACO_CHR1      XTAL_4_43361MHz
 #define DRACO_CHR2      CDP1869_DOT_CLK_PAL // unverified
+=======
+#define ALTAIR_CHR2     cdp1869_device::DOT_CLK_PAL // unverified
+#define DRACO_CHR1      XTAL_4_43361MHz
+#define DRACO_CHR2      cdp1869_device::DOT_CLK_PAL // unverified
+>>>>>>> upstream/master
 #define DRACO_SND_CHR1  XTAL_2_01216MHz
 
 #define CIDELSA_PAGERAM_SIZE    0x400
@@ -36,6 +55,10 @@
 #define DRACO_PAGERAM_MASK      0x7ff
 #define CIDELSA_CHARRAM_MASK    0x7ff
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> upstream/master
 class cidelsa_state : public driver_device
 {
 public:
@@ -45,18 +68,31 @@ public:
 	};
 
 	cidelsa_state(const machine_config &mconfig, device_type type, const char *tag)
+<<<<<<< HEAD
 		: driver_device(mconfig, type, tag),
 			m_maincpu(*this, CDP1802_TAG),
 			m_vis(*this, CDP1869_TAG)
+=======
+		: driver_device(mconfig, type, tag)
+		, m_maincpu(*this, CDP1802_TAG)
+		, m_vis(*this, CDP1869_TAG)
+>>>>>>> upstream/master
 	{ }
 
 	required_device<cosmac_device> m_maincpu;
 	required_device<cdp1869_device> m_vis;
 
+<<<<<<< HEAD
 	virtual void machine_start();
 	virtual void machine_reset();
 
 	virtual void video_start();
+=======
+	virtual void machine_start() override;
+	virtual void machine_reset() override;
+
+	virtual void video_start() override;
+>>>>>>> upstream/master
 
 	DECLARE_WRITE8_MEMBER( cdp1869_w );
 	DECLARE_WRITE8_MEMBER( destryer_out1_w );
@@ -79,12 +115,21 @@ public:
 	int m_cdp1802_q;
 	int m_cdp1869_pcb;
 
+<<<<<<< HEAD
 	UINT8 *m_pageram;
 	UINT8 *m_pcbram;
 	UINT8 *m_charram;
 
 protected:
 	virtual void device_timer(emu_timer &timer, device_timer_id id, int param, void *ptr);
+=======
+	uint8_t *m_pageram;
+	std::unique_ptr<uint8_t[]> m_pcbram;
+	std::unique_ptr<uint8_t[]> m_charram;
+
+protected:
+	virtual void device_timer(emu_timer &timer, device_timer_id id, int param, void *ptr) override;
+>>>>>>> upstream/master
 };
 
 class draco_state : public cidelsa_state
@@ -97,7 +142,11 @@ public:
 
 	required_device<ay8910_device> m_psg;
 
+<<<<<<< HEAD
 	virtual void machine_start();
+=======
+	virtual void machine_start() override;
+>>>>>>> upstream/master
 
 	DECLARE_READ8_MEMBER( sound_in_r );
 	DECLARE_READ8_MEMBER( psg_r );
@@ -122,4 +171,8 @@ MACHINE_CONFIG_EXTERN( destryer_video );
 MACHINE_CONFIG_EXTERN( altair_video );
 MACHINE_CONFIG_EXTERN( draco_video );
 
+<<<<<<< HEAD
 #endif
+=======
+#endif // MAME_INCLUDES_CIDELSA_H
+>>>>>>> upstream/master

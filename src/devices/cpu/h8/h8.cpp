@@ -12,9 +12,17 @@
 #include "emu.h"
 #include "debugger.h"
 #include "h8.h"
+<<<<<<< HEAD
 
 h8_device::h8_device(const machine_config &mconfig, device_type type, const char *name, const char *tag, device_t *owner, UINT32 clock, const char *shortname, const char *source, bool mode_a16, address_map_delegate map_delegate) :
 	cpu_device(mconfig, type, name, tag, owner, clock, shortname, source),
+=======
+#include "h8_dma.h"
+#include "h8_dtc.h"
+
+h8_device::h8_device(const machine_config &mconfig, device_type type, const char *tag, device_t *owner, uint32_t clock, bool mode_a16, address_map_delegate map_delegate) :
+	cpu_device(mconfig, type, tag, owner, clock),
+>>>>>>> upstream/master
 	program_config("program", ENDIANNESS_BIG, 16, mode_a16 ? 16 : 24, 0, map_delegate),
 	io_config("io", ENDIANNESS_BIG, 16, 16, -1), program(nullptr), io(nullptr), direct(nullptr), PPC(0), NPC(0), PC(0), PIR(0), EXR(0), CCR(0), MAC(0), MACF(0),
 	TMP1(0), TMP2(0), TMPR(0), inst_state(0), inst_substate(0), icount(0), bcount(0), irq_vector(0), taken_irq_vector(0), irq_level(0), taken_irq_level(0), irq_required(false), irq_nmi(false)
@@ -33,7 +41,11 @@ void h8_device::device_start()
 	io      = &space(AS_IO);
 
 	state_add(STATE_GENPC,     "GENPC",     NPC).noshow();
+<<<<<<< HEAD
 	state_add(STATE_GENPCBASE, "GENPCBASE", PPC).noshow();
+=======
+	state_add(STATE_GENPCBASE, "CURPC",     PPC).noshow();
+>>>>>>> upstream/master
 	if(has_exr)
 		state_add(STATE_GENFLAGS,  "GENFLAGS",  CCR).formatstr("%11s").noshow();
 	else
@@ -69,6 +81,7 @@ void h8_device::device_start()
 		state_add(H8_E5,           "E5",        R[13]).noshow();
 		state_add(H8_E6,           "E6",        R[14]).noshow();
 		state_add(H8_E7,           "E7",        R[15]).noshow();
+<<<<<<< HEAD
 		state_add(H8_R0,           "ER0",       TMPR).callimport().formatstr("%9s");
 		state_add(H8_R1,           "ER1",       TMPR).callimport().formatstr("%9s");
 		state_add(H8_R2,           "ER2",       TMPR).callimport().formatstr("%9s");
@@ -77,6 +90,16 @@ void h8_device::device_start()
 		state_add(H8_R5,           "ER5",       TMPR).callimport().formatstr("%9s");
 		state_add(H8_R6,           "ER6",       TMPR).callimport().formatstr("%9s");
 		state_add(H8_R7,           "ER7",       TMPR).callimport().formatstr("%9s");
+=======
+		state_add(H8_R0,           "ER0",       TMPR).callimport().callexport().formatstr("%9s");
+		state_add(H8_R1,           "ER1",       TMPR).callimport().callexport().formatstr("%9s");
+		state_add(H8_R2,           "ER2",       TMPR).callimport().callexport().formatstr("%9s");
+		state_add(H8_R3,           "ER3",       TMPR).callimport().callexport().formatstr("%9s");
+		state_add(H8_R4,           "ER4",       TMPR).callimport().callexport().formatstr("%9s");
+		state_add(H8_R5,           "ER5",       TMPR).callimport().callexport().formatstr("%9s");
+		state_add(H8_R6,           "ER6",       TMPR).callimport().callexport().formatstr("%9s");
+		state_add(H8_R7,           "ER7",       TMPR).callimport().callexport().formatstr("%9s");
+>>>>>>> upstream/master
 	}
 
 	save_item(NAME(PPC));
@@ -110,37 +133,96 @@ void h8_device::device_start()
 	MACF = 0;
 	inst_state = STATE_RESET;
 	inst_substate = 0;
+<<<<<<< HEAD
+=======
+	count_before_instruction_step = 0;
+	requested_state = -1;
+	dma_device = nullptr;
+	dtc_device = nullptr;
+>>>>>>> upstream/master
 }
 
 void h8_device::device_reset()
 {
 	inst_state = STATE_RESET;
 	inst_substate = 0;
+<<<<<<< HEAD
+=======
+	count_before_instruction_step = 0;
+	requested_state = -1;
+>>>>>>> upstream/master
 
 	irq_vector = 0;
 	irq_level = -1;
 	irq_nmi = false;
 	taken_irq_vector = 0;
 	taken_irq_level = -1;
+<<<<<<< HEAD
 }
 
 
 UINT32 h8_device::execute_min_cycles() const
+=======
+	current_dma = nullptr;
+	current_dtc = nullptr;
+}
+
+bool h8_device::trigger_dma(int vector)
+{
+	return (dma_device && dma_device->trigger_dma(vector)) || (dtc_device && dtc_device->trigger_dtc(vector));
+}
+
+void h8_device::set_current_dma(h8_dma_state *state)
+{
+	current_dma = state;
+	if(!state)
+		logerror("DMA done\n");
+	else
+		logerror("New current dma s=%x d=%x is=%d id=%d count=%x m=%d autoreq=%d\n",
+					state->source, state->dest, state->incs, state->incd,
+					state->count, state->mode_16 ? 16 : 8, state->autoreq);
+
+}
+
+void h8_device::set_current_dtc(h8_dtc_state *state)
+{
+	current_dtc = state;
+}
+
+void h8_device::request_state(int state)
+{
+	requested_state = state;
+}
+
+uint32_t h8_device::execute_min_cycles() const
+>>>>>>> upstream/master
 {
 	return 1;
 }
 
+<<<<<<< HEAD
 UINT32 h8_device::execute_max_cycles() const
+=======
+uint32_t h8_device::execute_max_cycles() const
+>>>>>>> upstream/master
 {
 	return 1;
 }
 
+<<<<<<< HEAD
 UINT32 h8_device::execute_input_lines() const
+=======
+uint32_t h8_device::execute_input_lines() const
+>>>>>>> upstream/master
 {
 	return 0;
 }
 
+<<<<<<< HEAD
 void h8_device::recompute_bcount(UINT64 event_time)
+=======
+void h8_device::recompute_bcount(uint64_t event_time)
+>>>>>>> upstream/master
 {
 	if(!event_time || event_time >= total_cycles() + icount) {
 		bcount = 0;
@@ -153,7 +235,21 @@ void h8_device::execute_run()
 {
 	internal_update(total_cycles());
 
+<<<<<<< HEAD
 	if(inst_substate)
+=======
+	icount -= count_before_instruction_step;
+	if(icount < 0) {
+		count_before_instruction_step = -icount;
+		icount = 0;
+	} else
+		count_before_instruction_step = 0;
+
+	while(bcount && icount <= bcount)
+		internal_update(total_cycles() + icount - bcount);
+
+	if(icount > 0 && inst_substate)
+>>>>>>> upstream/master
 		do_exec_partial();
 
 	while(icount > 0) {
@@ -165,6 +261,7 @@ void h8_device::execute_run()
 			}
 			do_exec_full();
 		}
+<<<<<<< HEAD
 		while(bcount && icount && icount <= bcount)
 			internal_update(total_cycles() + icount - bcount);
 		if(inst_substate)
@@ -173,6 +270,21 @@ void h8_device::execute_run()
 }
 
 void h8_device::add_event(UINT64 &event_time, UINT64 new_event)
+=======
+		if(icount > 0)
+			while(bcount && icount <= bcount)
+				internal_update(total_cycles() + icount - bcount);
+		if(icount > 0 && inst_substate)
+			do_exec_partial();
+	}
+	if(icount < 0) {
+		count_before_instruction_step = -icount;
+		icount = 0;
+	}
+}
+
+void h8_device::add_event(uint64_t &event_time, uint64_t new_event)
+>>>>>>> upstream/master
 {
 	if(!new_event)
 		return;
@@ -185,11 +297,20 @@ void h8_device::internal_update()
 	internal_update(total_cycles());
 }
 
+<<<<<<< HEAD
 const address_space_config *h8_device::memory_space_config(address_spacenum spacenum) const
 {
 	return
 		spacenum == AS_PROGRAM ? &program_config :
 		spacenum == AS_IO ? &io_config : NULL;
+=======
+device_memory_interface::space_config_vector h8_device::memory_space_config() const
+{
+	return space_config_vector {
+		std::make_pair(AS_PROGRAM, &program_config),
+		std::make_pair(AS_IO,      &io_config)
+	};
+>>>>>>> upstream/master
 }
 
 
@@ -214,13 +335,34 @@ void h8_device::state_import(const device_state_entry &entry)
 
 void h8_device::state_export(const device_state_entry &entry)
 {
+<<<<<<< HEAD
 }
 
 void h8_device::state_string_export(const device_state_entry &entry, std::string &str)
+=======
+	switch(entry.index()) {
+	case H8_R0:
+	case H8_R1:
+	case H8_R2:
+	case H8_R3:
+	case H8_R4:
+	case H8_R5:
+	case H8_R6:
+	case H8_R7: {
+		int r = entry.index() - H8_R0;
+		TMPR = (R[r + 8] << 16) | R[r];
+		break;
+	}
+	}
+}
+
+void h8_device::state_string_export(const device_state_entry &entry, std::string &str) const
+>>>>>>> upstream/master
 {
 	switch(entry.index()) {
 	case STATE_GENFLAGS:
 		if(has_exr)
+<<<<<<< HEAD
 			strprintf(str, "%c%c %c%c%c%c%c%c%c%c",
 							(EXR & EXR_T) ? 'T' : '-',
 							'0' + (EXR & EXR_I),
@@ -242,6 +384,29 @@ void h8_device::state_string_export(const device_state_entry &entry, std::string
 							(CCR & F_Z)  ? 'Z' : '-',
 							(CCR & F_V)  ? 'V' : '-',
 							(CCR & F_C)  ? 'C' : '-');
+=======
+			str = string_format("%c%c %c%c%c%c%c%c%c%c",
+					(EXR & EXR_T) ? 'T' : '-',
+					'0' + (EXR & EXR_I),
+					(CCR & F_I)  ? 'I' : '-',
+					(CCR & F_UI) ? 'u' : '-',
+					(CCR & F_H)  ? 'H' : '-',
+					(CCR & F_U)  ? 'U' : '-',
+					(CCR & F_N)  ? 'N' : '-',
+					(CCR & F_Z)  ? 'Z' : '-',
+					(CCR & F_V)  ? 'V' : '-',
+					(CCR & F_C)  ? 'C' : '-');
+		else
+			str = string_format("%c%c%c%c%c%c%c%c",
+					(CCR & F_I)  ? 'I' : '-',
+					(CCR & F_UI) ? 'u' : '-',
+					(CCR & F_H)  ? 'H' : '-',
+					(CCR & F_U)  ? 'U' : '-',
+					(CCR & F_N)  ? 'N' : '-',
+					(CCR & F_Z)  ? 'Z' : '-',
+					(CCR & F_V)  ? 'V' : '-',
+					(CCR & F_C)  ? 'C' : '-');
+>>>>>>> upstream/master
 		break;
 	case H8_R0:
 	case H8_R1:
@@ -252,24 +417,40 @@ void h8_device::state_string_export(const device_state_entry &entry, std::string
 	case H8_R6:
 	case H8_R7: {
 		int r = entry.index() - H8_R0;
+<<<<<<< HEAD
 		strprintf(str, "%04x %04x", R[r + 8], R[r]);
+=======
+		str = string_format("%04x %04x", R[r + 8], R[r]);
+>>>>>>> upstream/master
 		break;
 	}
 	}
 }
 
 
+<<<<<<< HEAD
 UINT32 h8_device::disasm_min_opcode_bytes() const
+=======
+uint32_t h8_device::disasm_min_opcode_bytes() const
+>>>>>>> upstream/master
 {
 	return 2;
 }
 
+<<<<<<< HEAD
 UINT32 h8_device::disasm_max_opcode_bytes() const
+=======
+uint32_t h8_device::disasm_max_opcode_bytes() const
+>>>>>>> upstream/master
 {
 	return 10;
 }
 
+<<<<<<< HEAD
 void h8_device::disassemble_am(char *&buffer, int am, offs_t pc, const UINT8 *oprom, UINT32 opcode, int offset)
+=======
+void h8_device::disassemble_am(std::ostream &stream, int am, offs_t pc, const uint8_t *oprom, uint32_t opcode, int slot, int offset)
+>>>>>>> upstream/master
 {
 	static const char *const r8_names[16] = {
 		"r0h", "r1h",  "r2h", "r3h",  "r4h", "r5h",  "r6h", "r7h",
@@ -281,12 +462,17 @@ void h8_device::disassemble_am(char *&buffer, int am, offs_t pc, const UINT8 *op
 		"e0", "e1", "e2", "e3", "e4", "e5", "e6", "e7",
 	};
 
+<<<<<<< HEAD
 	static const char *const r32_names[88] = {
+=======
+	static const char *const r32_names[8] = {
+>>>>>>> upstream/master
 		"er0", "er1", "er2", "er3", "er4", "er5", "er6", "sp",
 	};
 
 	switch(am) {
 	case DASM_r8l:
+<<<<<<< HEAD
 		buffer += sprintf(buffer, "%s", r8_names[opcode & 15]);
 		break;
 
@@ -384,10 +570,110 @@ void h8_device::disassemble_am(char *&buffer, int am, offs_t pc, const UINT8 *op
 
 	case DASM_abs8:
 		buffer += sprintf(buffer, "@%08x", 0xffffff00 | oprom[1]);
+=======
+		util::stream_format(stream, "%s", r8_names[opcode & 15]);
+		break;
+
+	case DASM_r8h:
+		util::stream_format(stream, "%s", r8_names[(opcode >> 4) & 15]);
+		break;
+
+	case DASM_r8u:
+		util::stream_format(stream, "%s", r8_names[(opcode >> 8) & 15]);
+		break;
+
+	case DASM_r16l:
+		util::stream_format(stream, "%s", r16_names[opcode & 15]);
+		break;
+
+	case DASM_r16h:
+		util::stream_format(stream, "%s", r16_names[(opcode >> 4) & 15]);
+		break;
+
+	case DASM_r32l:
+		util::stream_format(stream, "%s", r32_names[opcode & 7]);
+		break;
+
+	case DASM_r32h:
+		util::stream_format(stream, "%s", r32_names[(opcode >> 4) & 7]);
+		break;
+
+	case DASM_r16ih:
+		util::stream_format(stream, "@%s", r16_names[(opcode >> 4) & 7]);
+		break;
+
+	case DASM_r16ihh:
+		util::stream_format(stream, "@%s", r16_names[(opcode >> 20) & 7]);
+		break;
+
+	case DASM_pr16h:
+		util::stream_format(stream, "@-%s", r16_names[(opcode >> 4) & 7]);
+		break;
+
+	case DASM_r16ph:
+		util::stream_format(stream, "@%s+", r16_names[(opcode >> 4) & 7]);
+		break;
+
+	case DASM_r16d16h:
+		util::stream_format(stream, "@(%x, %s)", (oprom[offset-2] << 8) | oprom[offset-1], r16_names[(opcode >> 4) & 7]);
+		break;
+
+	case DASM_r32ih:
+		util::stream_format(stream, "@%s", r32_names[(opcode >> 4) & 7]);
+		break;
+
+	case DASM_r32ihh:
+		util::stream_format(stream, "@%s", r32_names[(opcode >> 20) & 7]);
+		break;
+
+	case DASM_pr32h:
+		util::stream_format(stream, "@-%s", r32_names[(opcode >> 4) & 7]);
+		break;
+
+	case DASM_r32pl:
+		util::stream_format(stream, "@%s+", r32_names[opcode & 7]);
+		break;
+
+	case DASM_r32ph:
+		util::stream_format(stream, "@%s+", r32_names[(opcode >> 4) & 7]);
+		break;
+
+	case DASM_r32d16h:
+		util::stream_format(stream, "@(%x, %s)", (oprom[offset-2] << 8) | oprom[offset-1], r32_names[(opcode >> 4) & 7]);
+		break;
+
+	case DASM_r32d32hh:
+		util::stream_format(stream, "@(%x, %s)", (oprom[offset-4] << 24) | (oprom[offset-3] << 16) | (oprom[offset-2] << 8) | oprom[offset-1], r32_names[(opcode >> 20) & 7]);
+		break;
+
+	case DASM_psp:
+		util::stream_format(stream, "@-sp");
+		break;
+
+	case DASM_spp:
+		util::stream_format(stream, "@sp+");
+		break;
+
+	case DASM_r32n2l:
+		util::stream_format(stream, "%s-%s", r32_names[opcode & 6], r32_names[(opcode & 6) + 1]);
+		break;
+
+	case DASM_r32n3l:
+		util::stream_format(stream, "%s-%s", r32_names[opcode & 4], r32_names[(opcode & 4) + 2]);
+		break;
+
+	case DASM_r32n4l:
+		util::stream_format(stream, "%s-%s", r32_names[opcode & 4], r32_names[(opcode & 4) + 3]);
+		break;
+
+	case DASM_abs8:
+		util::stream_format(stream, "@%08x", 0xffffff00 | oprom[1]);
+>>>>>>> upstream/master
 		break;
 
 	case DASM_abs16:
 		if(offset >= 6)
+<<<<<<< HEAD
 			buffer += sprintf(buffer, "@%08x", INT16((oprom[offset-4] << 8) | oprom[offset-3]));
 		else
 			buffer += sprintf(buffer, "@%08x", INT16((oprom[offset-2] << 8) | oprom[offset-1]));
@@ -470,13 +756,103 @@ void h8_device::disassemble_am(char *&buffer, int am, offs_t pc, const UINT8 *op
 
 	default:
 		buffer += sprintf(buffer, "<%d>", am);
+=======
+			util::stream_format(stream, "@%08x", int16_t((oprom[offset-4] << 8) | oprom[offset-3]));
+		else
+			util::stream_format(stream, "@%08x", int16_t((oprom[offset-2] << 8) | oprom[offset-1]));
+		break;
+
+	case DASM_abs32:
+		if(slot == 3)
+			util::stream_format(stream, "@%08x", (oprom[offset-6] << 24) | (oprom[offset-5] << 16) | (oprom[offset-4] << 8) | oprom[offset-3]);
+		else
+			util::stream_format(stream, "@%08x", (oprom[offset-4] << 24) | (oprom[offset-3] << 16) | (oprom[offset-2] << 8) | oprom[offset-1]);
+		break;
+
+	case DASM_abs8i:
+		util::stream_format(stream, "@%02x", oprom[1]);
+		break;
+
+	case DASM_abs16e:
+		util::stream_format(stream, "%04x", (oprom[2] << 8) | oprom[3]);
+		break;
+
+	case DASM_abs24e:
+		util::stream_format(stream, "%08x", (oprom[1] << 16) | (oprom[2] << 8) | oprom[3]);
+		break;
+
+	case DASM_rel8:
+		util::stream_format(stream, "%08x", pc + 2 + int8_t(oprom[1]));
+		break;
+
+	case DASM_rel16:
+		util::stream_format(stream, "%08x", pc + 4 + int16_t((oprom[2] << 8) | oprom[3]));
+		break;
+
+	case DASM_one:
+		util::stream_format(stream, "#1");
+		break;
+
+	case DASM_two:
+		util::stream_format(stream, "#2");
+		break;
+
+	case DASM_four:
+		util::stream_format(stream, "#4");
+		break;
+
+	case DASM_imm2:
+		util::stream_format(stream, "#%x", (opcode >> 4) & 3);
+		break;
+
+	case DASM_imm3:
+		util::stream_format(stream, "#%x", (opcode >> 4) & 7);
+		break;
+
+	case DASM_imm8:
+		util::stream_format(stream, "#%02x", oprom[1]);
+		break;
+
+	case DASM_imm16:
+		util::stream_format(stream, "#%04x", (oprom[2] << 8) | oprom[3]);
+		break;
+
+	case DASM_imm32:
+		util::stream_format(stream, "#%08x", (oprom[2] << 16) | (oprom[3] << 16) | (oprom[4] << 8) | oprom[5]);
+		break;
+
+	case DASM_ccr:
+		util::stream_format(stream, "ccr");
+		break;
+
+	case DASM_exr:
+		util::stream_format(stream, "exr");
+		break;
+
+	case DASM_macl:
+		util::stream_format(stream, "macl");
+		break;
+
+	case DASM_mach:
+		util::stream_format(stream, "mach");
+		break;
+
+	default:
+		util::stream_format(stream, "<%d>", am);
+>>>>>>> upstream/master
 		break;
 	}
 }
 
+<<<<<<< HEAD
 offs_t h8_device::disassemble_generic(char *buffer, offs_t pc, const UINT8 *oprom, const UINT8 *opram, UINT32 options, const disasm_entry *table)
 {
 	UINT32 slot[5];
+=======
+offs_t h8_device::disassemble_generic(std::ostream &stream, offs_t pc, const uint8_t *oprom, const uint8_t *opram, uint32_t options, const disasm_entry *table)
+{
+	uint32_t slot[5];
+>>>>>>> upstream/master
 	slot[0] = (oprom[0] << 8) | oprom[1];
 	slot[1] = (oprom[0] << 24) | (oprom[1] << 16) | (oprom[2] << 8) | oprom[3];
 	slot[2] = (oprom[0] << 24) | (oprom[1] << 16) | (oprom[4] << 8) | oprom[5];
@@ -490,6 +866,7 @@ offs_t h8_device::disassemble_generic(char *buffer, offs_t pc, const UINT8 *opro
 			break;
 	}
 	const disasm_entry &e = table[inst];
+<<<<<<< HEAD
 	buffer += sprintf(buffer, "%s", e.opcode);
 
 	if(e.am1 != DASM_none) {
@@ -500,50 +877,94 @@ offs_t h8_device::disassemble_generic(char *buffer, offs_t pc, const UINT8 *opro
 		*buffer++ = ',';
 		*buffer++ = ' ';
 		disassemble_am(buffer, e.am2, pc, oprom, slot[e.slot], e.flags & DASMFLAG_LENGTHMASK);
+=======
+	stream << e.opcode;
+
+	if(e.am1 != DASM_none) {
+		stream << ' ';
+		disassemble_am(stream, e.am1, pc, oprom, slot[e.slot], e.slot, e.flags & DASMFLAG_LENGTHMASK);
+	}
+	if(e.am2 != DASM_none) {
+		stream << ", ";
+		disassemble_am(stream, e.am2, pc, oprom, slot[e.slot], e.slot, e.flags & DASMFLAG_LENGTHMASK);
+>>>>>>> upstream/master
 	}
 	return e.flags | DASMFLAG_SUPPORTED;
 }
 
+<<<<<<< HEAD
 offs_t h8_device::disasm_disassemble(char *buffer, offs_t pc, const UINT8 *oprom, const UINT8 *opram, UINT32 options)
 {
 	return disassemble_generic(buffer, pc, oprom, opram, options, disasm_entries);
 }
 
 UINT16 h8_device::read16i(UINT32 adr)
+=======
+offs_t h8_device::disasm_disassemble(std::ostream &stream, offs_t pc, const uint8_t *oprom, const uint8_t *opram, uint32_t options)
+{
+	return disassemble_generic(stream, pc, oprom, opram, options, disasm_entries);
+}
+
+uint16_t h8_device::read16i(uint32_t adr)
+>>>>>>> upstream/master
 {
 	icount--;
 	return direct->read_word(adr & ~1);
 }
 
+<<<<<<< HEAD
 UINT16 h8_device::fetch()
 {
 	UINT16 res = read16i(PC);
+=======
+uint16_t h8_device::fetch()
+{
+	uint16_t res = read16i(PC);
+>>>>>>> upstream/master
 	PC += 2;
 	return res;
 }
 
+<<<<<<< HEAD
 UINT8 h8_device::read8(UINT32 adr)
+=======
+uint8_t h8_device::read8(uint32_t adr)
+>>>>>>> upstream/master
 {
 	icount--;
 	return program->read_byte(adr);
 }
 
+<<<<<<< HEAD
 void h8_device::write8(UINT32 adr, UINT8 data)
 {
 	//  logerror("W %06x %02x\n", adr & 0xffffff, data);
+=======
+void h8_device::write8(uint32_t adr, uint8_t data)
+{
+>>>>>>> upstream/master
 	icount--;
 	program->write_byte(adr, data);
 }
 
+<<<<<<< HEAD
 UINT16 h8_device::read16(UINT32 adr)
+=======
+uint16_t h8_device::read16(uint32_t adr)
+>>>>>>> upstream/master
 {
 	icount--;
 	return program->read_word(adr & ~1);
 }
 
+<<<<<<< HEAD
 void h8_device::write16(UINT32 adr, UINT16 data)
 {
 	//  logerror("W %06x %04x\n", adr & 0xfffffe, data);
+=======
+void h8_device::write16(uint32_t adr, uint16_t data)
+{
+>>>>>>> upstream/master
 	icount--;
 	program->write_word(adr & ~1, data);
 }
@@ -555,7 +976,18 @@ bool h8_device::exr_in_stack() const
 
 void h8_device::prefetch_done()
 {
+<<<<<<< HEAD
 	if(irq_vector) {
+=======
+	if(requested_state != -1) {
+		inst_state = requested_state;
+		requested_state = -1;
+	} else if(current_dma && !current_dma->suspended)
+		inst_state = STATE_DMA;
+	else if(current_dtc)
+		inst_state = STATE_DTC;
+	else if(irq_vector) {
+>>>>>>> upstream/master
 		inst_state = STATE_IRQ;
 		taken_irq_vector = irq_vector;
 		taken_irq_level = irq_level;
@@ -592,7 +1024,12 @@ void h8_device::internal(int cycles)
 
 void h8_device::illegal()
 {
+<<<<<<< HEAD
 	throw emu_fatalerror("%s: Illegal instruction at address %x\n", tag(), PPC);
+=======
+	logerror("Illegal instruction at address %x\n", PPC);
+	icount = -10000000;
+>>>>>>> upstream/master
 }
 
 int h8_device::trace_setup()
@@ -605,6 +1042,7 @@ int h8_device::trapa_setup()
 	throw emu_fatalerror("%s: Trapa setup called but unimplemented.\n", tag());
 }
 
+<<<<<<< HEAD
 UINT8 h8_device::do_addx8(UINT8 v1, UINT8 v2)
 {
 	UINT16 res = v1 + v2 + (CCR & F_C ? 1 : 0);
@@ -614,6 +1052,17 @@ UINT8 h8_device::do_addx8(UINT8 v1, UINT8 v2)
 	if(!UINT8(res))
 		CCR |= F_Z;
 	else if(INT8(res) < 0)
+=======
+uint8_t h8_device::do_addx8(uint8_t v1, uint8_t v2)
+{
+	uint16_t res = v1 + v2 + (CCR & F_C ? 1 : 0);
+	CCR &= ~(F_N|F_V|F_Z|F_C|F_H);
+	if(((v1 & 0xf) + (v2 & 0xf) + (CCR & F_C ? 1 : 0)) & 0x10)
+		CCR |= F_H;
+	if(!uint8_t(res))
+		CCR |= F_Z;
+	else if(int8_t(res) < 0)
+>>>>>>> upstream/master
 		CCR |= F_N;
 	if(~(v1^v2) & (v1^res) & 0x80)
 		CCR |= F_V;
@@ -623,6 +1072,7 @@ UINT8 h8_device::do_addx8(UINT8 v1, UINT8 v2)
 
 }
 
+<<<<<<< HEAD
 UINT8 h8_device::do_subx8(UINT8 v1, UINT8 v2)
 {
 	UINT16 res = v1 - v2 - (CCR & F_C ? 1 : 0);
@@ -632,6 +1082,17 @@ UINT8 h8_device::do_subx8(UINT8 v1, UINT8 v2)
 	if(!UINT8(res))
 		CCR |= F_Z;
 	else if(INT8(res) < 0)
+=======
+uint8_t h8_device::do_subx8(uint8_t v1, uint8_t v2)
+{
+	uint16_t res = v1 - v2 - (CCR & F_C ? 1 : 0);
+	CCR &= ~(F_N|F_V|F_Z|F_C|F_H);
+	if(((v1 & 0xf) - (v2 & 0xf) - (CCR & F_C ? 1 : 0)) & 0x10)
+		CCR |= F_H;
+	if(!uint8_t(res))
+		CCR |= F_Z;
+	else if(int8_t(res) < 0)
+>>>>>>> upstream/master
 		CCR |= F_N;
 	if((v1^v2) & (v1^res) & 0x80)
 		CCR |= F_V;
@@ -641,6 +1102,7 @@ UINT8 h8_device::do_subx8(UINT8 v1, UINT8 v2)
 
 }
 
+<<<<<<< HEAD
 UINT8 h8_device::do_inc8(UINT8 v1, UINT8 v2)
 {
 	UINT8 res = v1 + v2;
@@ -648,12 +1110,22 @@ UINT8 h8_device::do_inc8(UINT8 v1, UINT8 v2)
 	if(!res)
 		CCR |= F_Z;
 	else if(INT8(res) < 0)
+=======
+uint8_t h8_device::do_inc8(uint8_t v1, uint8_t v2)
+{
+	uint8_t res = v1 + v2;
+	CCR &= ~(F_N|F_V|F_Z);
+	if(!res)
+		CCR |= F_Z;
+	else if(int8_t(res) < 0)
+>>>>>>> upstream/master
 		CCR |= F_N;
 	if((v1^v2) & (v1^res) & 0x80)
 		CCR |= F_V;
 	return res;
 }
 
+<<<<<<< HEAD
 UINT16 h8_device::do_inc16(UINT16 v1, UINT16 v2)
 {
 	UINT16 res = v1 + v2;
@@ -661,12 +1133,22 @@ UINT16 h8_device::do_inc16(UINT16 v1, UINT16 v2)
 	if(!res)
 		CCR |= F_Z;
 	else if(INT16(res) < 0)
+=======
+uint16_t h8_device::do_inc16(uint16_t v1, uint16_t v2)
+{
+	uint16_t res = v1 + v2;
+	CCR &= ~(F_N|F_V|F_Z);
+	if(!res)
+		CCR |= F_Z;
+	else if(int16_t(res) < 0)
+>>>>>>> upstream/master
 		CCR |= F_N;
 	if((v1^v2) & (v1^res) & 0x8000)
 		CCR |= F_V;
 	return res;
 }
 
+<<<<<<< HEAD
 UINT32 h8_device::do_inc32(UINT32 v1, UINT32 v2)
 {
 	UINT32 res = v1 + v2;
@@ -674,12 +1156,22 @@ UINT32 h8_device::do_inc32(UINT32 v1, UINT32 v2)
 	if(!res)
 		CCR |= F_Z;
 	else if(INT32(res) < 0)
+=======
+uint32_t h8_device::do_inc32(uint32_t v1, uint32_t v2)
+{
+	uint32_t res = v1 + v2;
+	CCR &= ~(F_N|F_V|F_Z);
+	if(!res)
+		CCR |= F_Z;
+	else if(int32_t(res) < 0)
+>>>>>>> upstream/master
 		CCR |= F_N;
 	if((v1^v2) & (v1^res) & 0x80000000)
 		CCR |= F_V;
 	return res;
 }
 
+<<<<<<< HEAD
 UINT8 h8_device::do_add8(UINT8 v1, UINT8 v2)
 {
 	UINT16 res = v1 + v2;
@@ -689,6 +1181,17 @@ UINT8 h8_device::do_add8(UINT8 v1, UINT8 v2)
 	if(!UINT8(res))
 		CCR |= F_Z;
 	else if(INT8(res) < 0)
+=======
+uint8_t h8_device::do_add8(uint8_t v1, uint8_t v2)
+{
+	uint16_t res = v1 + v2;
+	CCR &= ~(F_N|F_V|F_Z|F_C|F_H);
+	if(((v1 & 0xf) + (v2 & 0xf)) & 0x10)
+		CCR |= F_H;
+	if(!uint8_t(res))
+		CCR |= F_Z;
+	else if(int8_t(res) < 0)
+>>>>>>> upstream/master
 		CCR |= F_N;
 	if(~(v1^v2) & (v1^res) & 0x80)
 		CCR |= F_V;
@@ -698,6 +1201,7 @@ UINT8 h8_device::do_add8(UINT8 v1, UINT8 v2)
 
 }
 
+<<<<<<< HEAD
 UINT16 h8_device::do_add16(UINT16 v1, UINT16 v2)
 {
 	UINT32 res = v1 + v2;
@@ -707,6 +1211,17 @@ UINT16 h8_device::do_add16(UINT16 v1, UINT16 v2)
 	if(!UINT16(res))
 		CCR |= F_Z;
 	else if(INT16(res) < 0)
+=======
+uint16_t h8_device::do_add16(uint16_t v1, uint16_t v2)
+{
+	uint32_t res = v1 + v2;
+	CCR &= ~(F_N|F_V|F_Z|F_C|F_H);
+	if(((v1 & 0xfff) + (v2 & 0xffff)) & 0x1000)
+		CCR |= F_H;
+	if(!uint16_t(res))
+		CCR |= F_Z;
+	else if(int16_t(res) < 0)
+>>>>>>> upstream/master
 		CCR |= F_N;
 	if(~(v1^v2) & (v1^res) & 0x8000)
 		CCR |= F_V;
@@ -716,6 +1231,7 @@ UINT16 h8_device::do_add16(UINT16 v1, UINT16 v2)
 
 }
 
+<<<<<<< HEAD
 UINT32 h8_device::do_add32(UINT32 v1, UINT32 v2)
 {
 	UINT64 res = UINT64(v1) + UINT64(v2);
@@ -729,10 +1245,26 @@ UINT32 h8_device::do_add32(UINT32 v1, UINT32 v2)
 	if(~(v1^v2) & (v1^res) & 0x80000000)
 		CCR |= F_V;
 	if(res & U64(0x100000000))
+=======
+uint32_t h8_device::do_add32(uint32_t v1, uint32_t v2)
+{
+	uint64_t res = uint64_t(v1) + uint64_t(v2);
+	CCR &= ~(F_N|F_V|F_Z|F_C|F_H);
+	if(((v1 & 0xfffffff) + (v2 & 0xfffffff)) & 0x10000000)
+		CCR |= F_H;
+	if(!uint32_t(res))
+		CCR |= F_Z;
+	else if(int32_t(res) < 0)
+		CCR |= F_N;
+	if(~(v1^v2) & (v1^res) & 0x80000000)
+		CCR |= F_V;
+	if(res & 0x100000000U)
+>>>>>>> upstream/master
 		CCR |= F_C;
 	return res;
 }
 
+<<<<<<< HEAD
 UINT8 h8_device::do_dec8(UINT8 v1, UINT8 v2)
 {
 	UINT8 res = v1 - v2;
@@ -740,12 +1272,22 @@ UINT8 h8_device::do_dec8(UINT8 v1, UINT8 v2)
 	if(!res)
 		CCR |= F_Z;
 	else if(INT8(res) < 0)
+=======
+uint8_t h8_device::do_dec8(uint8_t v1, uint8_t v2)
+{
+	uint8_t res = v1 - v2;
+	CCR &= ~(F_N|F_V|F_Z);
+	if(!res)
+		CCR |= F_Z;
+	else if(int8_t(res) < 0)
+>>>>>>> upstream/master
 		CCR |= F_N;
 	if((v1^v2) & (v1^res) & 0x80)
 		CCR |= F_V;
 	return res;
 }
 
+<<<<<<< HEAD
 UINT16 h8_device::do_dec16(UINT16 v1, UINT16 v2)
 {
 	UINT16 res = v1 - v2;
@@ -753,12 +1295,22 @@ UINT16 h8_device::do_dec16(UINT16 v1, UINT16 v2)
 	if(!res)
 		CCR |= F_Z;
 	else if(INT16(res) < 0)
+=======
+uint16_t h8_device::do_dec16(uint16_t v1, uint16_t v2)
+{
+	uint16_t res = v1 - v2;
+	CCR &= ~(F_N|F_V|F_Z);
+	if(!res)
+		CCR |= F_Z;
+	else if(int16_t(res) < 0)
+>>>>>>> upstream/master
 		CCR |= F_N;
 	if((v1^v2) & (v1^res) & 0x8000)
 		CCR |= F_V;
 	return res;
 }
 
+<<<<<<< HEAD
 UINT32 h8_device::do_dec32(UINT32 v1, UINT32 v2)
 {
 	UINT32 res = v1 - v2;
@@ -766,12 +1318,22 @@ UINT32 h8_device::do_dec32(UINT32 v1, UINT32 v2)
 	if(!res)
 		CCR |= F_Z;
 	else if(INT32(res) < 0)
+=======
+uint32_t h8_device::do_dec32(uint32_t v1, uint32_t v2)
+{
+	uint32_t res = v1 - v2;
+	CCR &= ~(F_N|F_V|F_Z);
+	if(!res)
+		CCR |= F_Z;
+	else if(int32_t(res) < 0)
+>>>>>>> upstream/master
 		CCR |= F_N;
 	if((v1^v2) & (v1^res) & 0x80000000)
 		CCR |= F_V;
 	return res;
 }
 
+<<<<<<< HEAD
 UINT8 h8_device::do_sub8(UINT8 v1, UINT8 v2)
 {
 	UINT16 res = v1 - v2;
@@ -781,6 +1343,17 @@ UINT8 h8_device::do_sub8(UINT8 v1, UINT8 v2)
 	if(!UINT8(res))
 		CCR |= F_Z;
 	else if(INT8(res) < 0)
+=======
+uint8_t h8_device::do_sub8(uint8_t v1, uint8_t v2)
+{
+	uint16_t res = v1 - v2;
+	CCR &= ~(F_N|F_V|F_Z|F_C|F_H);
+	if(((v1 & 0xf) - (v2 & 0xf)) & 0x10)
+		CCR |= F_H;
+	if(!uint8_t(res))
+		CCR |= F_Z;
+	else if(int8_t(res) < 0)
+>>>>>>> upstream/master
 		CCR |= F_N;
 	if((v1^v2) & (v1^res) & 0x80)
 		CCR |= F_V;
@@ -790,6 +1363,7 @@ UINT8 h8_device::do_sub8(UINT8 v1, UINT8 v2)
 
 }
 
+<<<<<<< HEAD
 UINT16 h8_device::do_sub16(UINT16 v1, UINT16 v2)
 {
 	UINT32 res = v1 - v2;
@@ -799,6 +1373,17 @@ UINT16 h8_device::do_sub16(UINT16 v1, UINT16 v2)
 	if(!UINT16(res))
 		CCR |= F_Z;
 	else if(INT16(res) < 0)
+=======
+uint16_t h8_device::do_sub16(uint16_t v1, uint16_t v2)
+{
+	uint32_t res = v1 - v2;
+	CCR &= ~(F_N|F_V|F_Z|F_C|F_H);
+	if(((v1 & 0xfff) - (v2 & 0xffff)) & 0x1000)
+		CCR |= F_H;
+	if(!uint16_t(res))
+		CCR |= F_Z;
+	else if(int16_t(res) < 0)
+>>>>>>> upstream/master
 		CCR |= F_N;
 	if((v1^v2) & (v1^res) & 0x8000)
 		CCR |= F_V;
@@ -808,6 +1393,7 @@ UINT16 h8_device::do_sub16(UINT16 v1, UINT16 v2)
 
 }
 
+<<<<<<< HEAD
 UINT32 h8_device::do_sub32(UINT32 v1, UINT32 v2)
 {
 	UINT64 res = UINT64(v1) - UINT64(v2);
@@ -821,11 +1407,30 @@ UINT32 h8_device::do_sub32(UINT32 v1, UINT32 v2)
 	if((v1^v2) & (v1^res) & 0x80000000)
 		CCR |= F_V;
 	if(res & U64(0x100000000))
+=======
+uint32_t h8_device::do_sub32(uint32_t v1, uint32_t v2)
+{
+	uint64_t res = uint64_t(v1) - uint64_t(v2);
+	CCR &= ~(F_N|F_V|F_Z|F_C|F_H);
+	if(((v1 & 0xfffffff) - (v2 & 0xfffffff)) & 0x10000000)
+		CCR |= F_H;
+	if(!uint32_t(res))
+		CCR |= F_Z;
+	else if(int32_t(res) < 0)
+		CCR |= F_N;
+	if((v1^v2) & (v1^res) & 0x80000000)
+		CCR |= F_V;
+	if(res & 0x100000000U)
+>>>>>>> upstream/master
 		CCR |= F_C;
 	return res;
 }
 
+<<<<<<< HEAD
 UINT8 h8_device::do_shal8(UINT8 v)
+=======
+uint8_t h8_device::do_shal8(uint8_t v)
+>>>>>>> upstream/master
 {
 	CCR &= ~(F_N|F_V|F_Z|F_C);
 	if(v & 0x80)
@@ -835,12 +1440,20 @@ UINT8 h8_device::do_shal8(UINT8 v)
 	v <<= 1;
 	if(!v)
 		CCR |= F_Z;
+<<<<<<< HEAD
 	else if(INT8(v) < 0)
+=======
+	else if(int8_t(v) < 0)
+>>>>>>> upstream/master
 		CCR |= F_N;
 	return v;
 }
 
+<<<<<<< HEAD
 UINT16 h8_device::do_shal16(UINT16 v)
+=======
+uint16_t h8_device::do_shal16(uint16_t v)
+>>>>>>> upstream/master
 {
 	CCR &= ~(F_N|F_V|F_Z|F_C);
 	if(v & 0x8000)
@@ -850,12 +1463,20 @@ UINT16 h8_device::do_shal16(UINT16 v)
 	v <<= 1;
 	if(!v)
 		CCR |= F_Z;
+<<<<<<< HEAD
 	else if(INT16(v) < 0)
+=======
+	else if(int16_t(v) < 0)
+>>>>>>> upstream/master
 		CCR |= F_N;
 	return v;
 }
 
+<<<<<<< HEAD
 UINT32 h8_device::do_shal32(UINT32 v)
+=======
+uint32_t h8_device::do_shal32(uint32_t v)
+>>>>>>> upstream/master
 {
 	CCR &= ~(F_N|F_V|F_Z|F_C);
 	if(v & 0x80000000)
@@ -865,12 +1486,20 @@ UINT32 h8_device::do_shal32(UINT32 v)
 	v <<= 1;
 	if(!v)
 		CCR |= F_Z;
+<<<<<<< HEAD
 	else if(INT32(v) < 0)
+=======
+	else if(int32_t(v) < 0)
+>>>>>>> upstream/master
 		CCR |= F_N;
 	return v;
 }
 
+<<<<<<< HEAD
 UINT8 h8_device::do_shar8(UINT8 v)
+=======
+uint8_t h8_device::do_shar8(uint8_t v)
+>>>>>>> upstream/master
 {
 	CCR &= ~(F_N|F_V|F_Z|F_C);
 	if(v & 1)
@@ -885,7 +1514,11 @@ UINT8 h8_device::do_shar8(UINT8 v)
 	return v;
 }
 
+<<<<<<< HEAD
 UINT16 h8_device::do_shar16(UINT16 v)
+=======
+uint16_t h8_device::do_shar16(uint16_t v)
+>>>>>>> upstream/master
 {
 	CCR &= ~(F_N|F_V|F_Z|F_C);
 	if(v & 1)
@@ -900,7 +1533,11 @@ UINT16 h8_device::do_shar16(UINT16 v)
 	return v;
 }
 
+<<<<<<< HEAD
 UINT32 h8_device::do_shar32(UINT32 v)
+=======
+uint32_t h8_device::do_shar32(uint32_t v)
+>>>>>>> upstream/master
 {
 	CCR &= ~(F_N|F_V|F_Z|F_C);
 	if(v & 1)
@@ -915,7 +1552,11 @@ UINT32 h8_device::do_shar32(UINT32 v)
 	return v;
 }
 
+<<<<<<< HEAD
 UINT8 h8_device::do_shll8(UINT8 v)
+=======
+uint8_t h8_device::do_shll8(uint8_t v)
+>>>>>>> upstream/master
 {
 	CCR &= ~(F_N|F_V|F_Z|F_C);
 	if(v & 0x80)
@@ -923,12 +1564,20 @@ UINT8 h8_device::do_shll8(UINT8 v)
 	v <<= 1;
 	if(!v)
 		CCR |= F_Z;
+<<<<<<< HEAD
 	else if(INT8(v) < 0)
+=======
+	else if(int8_t(v) < 0)
+>>>>>>> upstream/master
 		CCR |= F_N;
 	return v;
 }
 
+<<<<<<< HEAD
 UINT16 h8_device::do_shll16(UINT16 v)
+=======
+uint16_t h8_device::do_shll16(uint16_t v)
+>>>>>>> upstream/master
 {
 	CCR &= ~(F_N|F_V|F_Z|F_C);
 	if(v & 0x8000)
@@ -936,12 +1585,20 @@ UINT16 h8_device::do_shll16(UINT16 v)
 	v <<= 1;
 	if(!v)
 		CCR |= F_Z;
+<<<<<<< HEAD
 	else if(INT16(v) < 0)
+=======
+	else if(int16_t(v) < 0)
+>>>>>>> upstream/master
 		CCR |= F_N;
 	return v;
 }
 
+<<<<<<< HEAD
 UINT32 h8_device::do_shll32(UINT32 v)
+=======
+uint32_t h8_device::do_shll32(uint32_t v)
+>>>>>>> upstream/master
 {
 	CCR &= ~(F_N|F_V|F_Z|F_C);
 	if(v & 0x80000000)
@@ -949,12 +1606,20 @@ UINT32 h8_device::do_shll32(UINT32 v)
 	v <<= 1;
 	if(!v)
 		CCR |= F_Z;
+<<<<<<< HEAD
 	else if(INT32(v) < 0)
+=======
+	else if(int32_t(v) < 0)
+>>>>>>> upstream/master
 		CCR |= F_N;
 	return v;
 }
 
+<<<<<<< HEAD
 UINT8 h8_device::do_shlr8(UINT8 v)
+=======
+uint8_t h8_device::do_shlr8(uint8_t v)
+>>>>>>> upstream/master
 {
 	CCR &= ~(F_N|F_V|F_Z|F_C);
 	if(v & 1)
@@ -965,7 +1630,11 @@ UINT8 h8_device::do_shlr8(UINT8 v)
 	return v;
 }
 
+<<<<<<< HEAD
 UINT16 h8_device::do_shlr16(UINT16 v)
+=======
+uint16_t h8_device::do_shlr16(uint16_t v)
+>>>>>>> upstream/master
 {
 	CCR &= ~(F_N|F_V|F_Z|F_C);
 	if(v & 1)
@@ -976,7 +1645,11 @@ UINT16 h8_device::do_shlr16(UINT16 v)
 	return v;
 }
 
+<<<<<<< HEAD
 UINT32 h8_device::do_shlr32(UINT32 v)
+=======
+uint32_t h8_device::do_shlr32(uint32_t v)
+>>>>>>> upstream/master
 {
 	CCR &= ~(F_N|F_V|F_Z|F_C);
 	if(v & 1)
@@ -987,7 +1660,11 @@ UINT32 h8_device::do_shlr32(UINT32 v)
 	return v;
 }
 
+<<<<<<< HEAD
 UINT8 h8_device::do_shal2_8(UINT8 v)
+=======
+uint8_t h8_device::do_shal2_8(uint8_t v)
+>>>>>>> upstream/master
 {
 	CCR &= ~(F_N|F_V|F_Z|F_C);
 	if(v & 0x40)
@@ -998,12 +1675,20 @@ UINT8 h8_device::do_shal2_8(UINT8 v)
 	v <<= 2;
 	if(!v)
 		CCR |= F_Z;
+<<<<<<< HEAD
 	else if(INT8(v) < 0)
+=======
+	else if(int8_t(v) < 0)
+>>>>>>> upstream/master
 		CCR |= F_N;
 	return v;
 }
 
+<<<<<<< HEAD
 UINT16 h8_device::do_shal2_16(UINT16 v)
+=======
+uint16_t h8_device::do_shal2_16(uint16_t v)
+>>>>>>> upstream/master
 {
 	CCR &= ~(F_N|F_V|F_Z|F_C);
 	if(v & 0x4000)
@@ -1014,12 +1699,20 @@ UINT16 h8_device::do_shal2_16(UINT16 v)
 	v <<= 2;
 	if(!v)
 		CCR |= F_Z;
+<<<<<<< HEAD
 	else if(INT16(v) < 0)
+=======
+	else if(int16_t(v) < 0)
+>>>>>>> upstream/master
 		CCR |= F_N;
 	return v;
 }
 
+<<<<<<< HEAD
 UINT32 h8_device::do_shal2_32(UINT32 v)
+=======
+uint32_t h8_device::do_shal2_32(uint32_t v)
+>>>>>>> upstream/master
 {
 	CCR &= ~(F_N|F_V|F_Z|F_C);
 	if(v & 0x40000000)
@@ -1030,12 +1723,20 @@ UINT32 h8_device::do_shal2_32(UINT32 v)
 	v <<= 2;
 	if(!v)
 		CCR |= F_Z;
+<<<<<<< HEAD
 	else if(INT32(v) < 0)
+=======
+	else if(int32_t(v) < 0)
+>>>>>>> upstream/master
 		CCR |= F_N;
 	return v;
 }
 
+<<<<<<< HEAD
 UINT8 h8_device::do_shar2_8(UINT8 v)
+=======
+uint8_t h8_device::do_shar2_8(uint8_t v)
+>>>>>>> upstream/master
 {
 	CCR &= ~(F_N|F_V|F_Z|F_C);
 	if(v & 2)
@@ -1050,7 +1751,11 @@ UINT8 h8_device::do_shar2_8(UINT8 v)
 	return v;
 }
 
+<<<<<<< HEAD
 UINT16 h8_device::do_shar2_16(UINT16 v)
+=======
+uint16_t h8_device::do_shar2_16(uint16_t v)
+>>>>>>> upstream/master
 {
 	CCR &= ~(F_N|F_V|F_Z|F_C);
 	if(v & 2)
@@ -1065,7 +1770,11 @@ UINT16 h8_device::do_shar2_16(UINT16 v)
 	return v;
 }
 
+<<<<<<< HEAD
 UINT32 h8_device::do_shar2_32(UINT32 v)
+=======
+uint32_t h8_device::do_shar2_32(uint32_t v)
+>>>>>>> upstream/master
 {
 	CCR &= ~(F_N|F_V|F_Z|F_C);
 	if(v & 2)
@@ -1080,7 +1789,11 @@ UINT32 h8_device::do_shar2_32(UINT32 v)
 	return v;
 }
 
+<<<<<<< HEAD
 UINT8 h8_device::do_shll2_8(UINT8 v)
+=======
+uint8_t h8_device::do_shll2_8(uint8_t v)
+>>>>>>> upstream/master
 {
 	CCR &= ~(F_N|F_V|F_Z|F_C);
 	if(v & 0x40)
@@ -1088,12 +1801,20 @@ UINT8 h8_device::do_shll2_8(UINT8 v)
 	v <<= 2;
 	if(!v)
 		CCR |= F_Z;
+<<<<<<< HEAD
 	else if(INT8(v) < 0)
+=======
+	else if(int8_t(v) < 0)
+>>>>>>> upstream/master
 		CCR |= F_N;
 	return v;
 }
 
+<<<<<<< HEAD
 UINT16 h8_device::do_shll2_16(UINT16 v)
+=======
+uint16_t h8_device::do_shll2_16(uint16_t v)
+>>>>>>> upstream/master
 {
 	CCR &= ~(F_N|F_V|F_Z|F_C);
 	if(v & 0x4000)
@@ -1101,12 +1822,20 @@ UINT16 h8_device::do_shll2_16(UINT16 v)
 	v <<= 2;
 	if(!v)
 		CCR |= F_Z;
+<<<<<<< HEAD
 	else if(INT16(v) < 0)
+=======
+	else if(int16_t(v) < 0)
+>>>>>>> upstream/master
 		CCR |= F_N;
 	return v;
 }
 
+<<<<<<< HEAD
 UINT32 h8_device::do_shll2_32(UINT32 v)
+=======
+uint32_t h8_device::do_shll2_32(uint32_t v)
+>>>>>>> upstream/master
 {
 	CCR &= ~(F_N|F_V|F_Z|F_C);
 	if(v & 0x40000000)
@@ -1114,12 +1843,20 @@ UINT32 h8_device::do_shll2_32(UINT32 v)
 	v <<= 2;
 	if(!v)
 		CCR |= F_Z;
+<<<<<<< HEAD
 	else if(INT32(v) < 0)
+=======
+	else if(int32_t(v) < 0)
+>>>>>>> upstream/master
 		CCR |= F_N;
 	return v;
 }
 
+<<<<<<< HEAD
 UINT8 h8_device::do_shlr2_8(UINT8 v)
+=======
+uint8_t h8_device::do_shlr2_8(uint8_t v)
+>>>>>>> upstream/master
 {
 	CCR &= ~(F_N|F_V|F_Z|F_C);
 	if(v & 2)
@@ -1130,7 +1867,11 @@ UINT8 h8_device::do_shlr2_8(UINT8 v)
 	return v;
 }
 
+<<<<<<< HEAD
 UINT16 h8_device::do_shlr2_16(UINT16 v)
+=======
+uint16_t h8_device::do_shlr2_16(uint16_t v)
+>>>>>>> upstream/master
 {
 	CCR &= ~(F_N|F_V|F_Z|F_C);
 	if(v & 2)
@@ -1141,7 +1882,11 @@ UINT16 h8_device::do_shlr2_16(UINT16 v)
 	return v;
 }
 
+<<<<<<< HEAD
 UINT32 h8_device::do_shlr2_32(UINT32 v)
+=======
+uint32_t h8_device::do_shlr2_32(uint32_t v)
+>>>>>>> upstream/master
 {
 	CCR &= ~(F_N|F_V|F_Z|F_C);
 	if(v & 2)
@@ -1152,7 +1897,11 @@ UINT32 h8_device::do_shlr2_32(UINT32 v)
 	return v;
 }
 
+<<<<<<< HEAD
 UINT8 h8_device::do_rotl8(UINT8 v)
+=======
+uint8_t h8_device::do_rotl8(uint8_t v)
+>>>>>>> upstream/master
 {
 	CCR &= ~(F_N|F_V|F_Z|F_C);
 	if(v & 0x80)
@@ -1160,12 +1909,20 @@ UINT8 h8_device::do_rotl8(UINT8 v)
 	v = (v << 1) | (v >> 7);
 	if(!v)
 		CCR |= F_Z;
+<<<<<<< HEAD
 	else if(INT8(v) < 0)
+=======
+	else if(int8_t(v) < 0)
+>>>>>>> upstream/master
 		CCR |= F_N;
 	return v;
 }
 
+<<<<<<< HEAD
 UINT16 h8_device::do_rotl16(UINT16 v)
+=======
+uint16_t h8_device::do_rotl16(uint16_t v)
+>>>>>>> upstream/master
 {
 	CCR &= ~(F_N|F_V|F_Z|F_C);
 	if(v & 0x8000)
@@ -1173,12 +1930,20 @@ UINT16 h8_device::do_rotl16(UINT16 v)
 	v = (v << 1) | (v >> 15);
 	if(!v)
 		CCR |= F_Z;
+<<<<<<< HEAD
 	else if(INT16(v) < 0)
+=======
+	else if(int16_t(v) < 0)
+>>>>>>> upstream/master
 		CCR |= F_N;
 	return v;
 }
 
+<<<<<<< HEAD
 UINT32 h8_device::do_rotl32(UINT32 v)
+=======
+uint32_t h8_device::do_rotl32(uint32_t v)
+>>>>>>> upstream/master
 {
 	CCR &= ~(F_N|F_V|F_Z|F_C);
 	if(v & 0x80000000)
@@ -1186,12 +1951,20 @@ UINT32 h8_device::do_rotl32(UINT32 v)
 	v = (v << 1) | (v >> 31);
 	if(!v)
 		CCR |= F_Z;
+<<<<<<< HEAD
 	else if(INT32(v) < 0)
+=======
+	else if(int32_t(v) < 0)
+>>>>>>> upstream/master
 		CCR |= F_N;
 	return v;
 }
 
+<<<<<<< HEAD
 UINT8 h8_device::do_rotr8(UINT8 v)
+=======
+uint8_t h8_device::do_rotr8(uint8_t v)
+>>>>>>> upstream/master
 {
 	CCR &= ~(F_N|F_V|F_Z|F_C);
 	if(v & 0x01)
@@ -1199,12 +1972,20 @@ UINT8 h8_device::do_rotr8(UINT8 v)
 	v = (v << 7) | (v >> 1);
 	if(!v)
 		CCR |= F_Z;
+<<<<<<< HEAD
 	else if(INT8(v) < 0)
+=======
+	else if(int8_t(v) < 0)
+>>>>>>> upstream/master
 		CCR |= F_N;
 	return v;
 }
 
+<<<<<<< HEAD
 UINT16 h8_device::do_rotr16(UINT16 v)
+=======
+uint16_t h8_device::do_rotr16(uint16_t v)
+>>>>>>> upstream/master
 {
 	CCR &= ~(F_N|F_V|F_Z|F_C);
 	if(v & 0x0001)
@@ -1212,12 +1993,20 @@ UINT16 h8_device::do_rotr16(UINT16 v)
 	v = (v << 15) | (v >> 1);
 	if(!v)
 		CCR |= F_Z;
+<<<<<<< HEAD
 	else if(INT16(v) < 0)
+=======
+	else if(int16_t(v) < 0)
+>>>>>>> upstream/master
 		CCR |= F_N;
 	return v;
 }
 
+<<<<<<< HEAD
 UINT32 h8_device::do_rotr32(UINT32 v)
+=======
+uint32_t h8_device::do_rotr32(uint32_t v)
+>>>>>>> upstream/master
 {
 	CCR &= ~(F_N|F_V|F_Z|F_C);
 	if(v & 0x00000001)
@@ -1225,96 +2014,164 @@ UINT32 h8_device::do_rotr32(UINT32 v)
 	v = (v << 31) | (v >> 1);
 	if(!v)
 		CCR |= F_Z;
+<<<<<<< HEAD
 	else if(INT32(v) < 0)
+=======
+	else if(int32_t(v) < 0)
+>>>>>>> upstream/master
 		CCR |= F_N;
 	return v;
 }
 
+<<<<<<< HEAD
 UINT8 h8_device::do_rotxl8(UINT8 v)
 {
 	UINT8 c = CCR & F_C ? 1 : 0;
+=======
+uint8_t h8_device::do_rotxl8(uint8_t v)
+{
+	uint8_t c = CCR & F_C ? 1 : 0;
+>>>>>>> upstream/master
 	CCR &= ~(F_N|F_V|F_Z|F_C);
 	if(v & 0x80)
 		CCR |= F_C;
 	v = (v << 1) | c;
 	if(!v)
 		CCR |= F_Z;
+<<<<<<< HEAD
 	else if(INT8(v) < 0)
+=======
+	else if(int8_t(v) < 0)
+>>>>>>> upstream/master
 		CCR |= F_N;
 	return v;
 }
 
+<<<<<<< HEAD
 UINT16 h8_device::do_rotxl16(UINT16 v)
 {
 	UINT16 c = CCR & F_C ? 1 : 0;
+=======
+uint16_t h8_device::do_rotxl16(uint16_t v)
+{
+	uint16_t c = CCR & F_C ? 1 : 0;
+>>>>>>> upstream/master
 	CCR &= ~(F_N|F_V|F_Z|F_C);
 	if(v & 0x8000)
 		CCR |= F_C;
 	v = (v << 1) | c;
 	if(!v)
 		CCR |= F_Z;
+<<<<<<< HEAD
 	else if(INT16(v) < 0)
+=======
+	else if(int16_t(v) < 0)
+>>>>>>> upstream/master
 		CCR |= F_N;
 	return v;
 }
 
+<<<<<<< HEAD
 UINT32 h8_device::do_rotxl32(UINT32 v)
 {
 	UINT32 c = CCR & F_C ? 1 : 0;
+=======
+uint32_t h8_device::do_rotxl32(uint32_t v)
+{
+	uint32_t c = CCR & F_C ? 1 : 0;
+>>>>>>> upstream/master
 	CCR &= ~(F_N|F_V|F_Z|F_C);
 	if(v & 0x80000000)
 		CCR |= F_C;
 	v = (v << 1) | c;
 	if(!v)
 		CCR |= F_Z;
+<<<<<<< HEAD
 	else if(INT32(v) < 0)
+=======
+	else if(int32_t(v) < 0)
+>>>>>>> upstream/master
 		CCR |= F_N;
 	return v;
 }
 
+<<<<<<< HEAD
 UINT8 h8_device::do_rotxr8(UINT8 v)
 {
 	UINT8 c = CCR & F_C ? 1 : 0;
+=======
+uint8_t h8_device::do_rotxr8(uint8_t v)
+{
+	uint8_t c = CCR & F_C ? 1 : 0;
+>>>>>>> upstream/master
 	CCR &= ~(F_N|F_V|F_Z|F_C);
 	if(v & 0x01)
 		CCR |= F_C;
 	v = (v >> 1) | (c << 7);
 	if(!v)
 		CCR |= F_Z;
+<<<<<<< HEAD
 	else if(INT8(v) < 0)
+=======
+	else if(int8_t(v) < 0)
+>>>>>>> upstream/master
 		CCR |= F_N;
 	return v;
 }
 
+<<<<<<< HEAD
 UINT16 h8_device::do_rotxr16(UINT16 v)
 {
 	UINT8 c = CCR & F_C ? 1 : 0;
+=======
+uint16_t h8_device::do_rotxr16(uint16_t v)
+{
+	uint8_t c = CCR & F_C ? 1 : 0;
+>>>>>>> upstream/master
 	CCR &= ~(F_N|F_V|F_Z|F_C);
 	if(v & 0x0001)
 		CCR |= F_C;
 	v = (v >> 1) | (c << 15);
 	if(!v)
 		CCR |= F_Z;
+<<<<<<< HEAD
 	else if(INT16(v) < 0)
+=======
+	else if(int16_t(v) < 0)
+>>>>>>> upstream/master
 		CCR |= F_N;
 	return v;
 }
 
+<<<<<<< HEAD
 UINT32 h8_device::do_rotxr32(UINT32 v)
 {
 	UINT8 c = CCR & F_C ? 1 : 0;
+=======
+uint32_t h8_device::do_rotxr32(uint32_t v)
+{
+	uint8_t c = CCR & F_C ? 1 : 0;
+>>>>>>> upstream/master
 	CCR &= ~(F_N|F_V|F_Z|F_C);
 	if(v & 0x00000001)
 		CCR |= F_C;
 	v = (v >> 1) | (c << 31);
 	if(!v)
 		CCR |= F_Z;
+<<<<<<< HEAD
 	else if(INT32(v) < 0)
+=======
+	else if(int32_t(v) < 0)
+>>>>>>> upstream/master
 		CCR |= F_N;
 	return v;
 }
 
+<<<<<<< HEAD
 UINT8 h8_device::do_rotl2_8(UINT8 v)
+=======
+uint8_t h8_device::do_rotl2_8(uint8_t v)
+>>>>>>> upstream/master
 {
 	CCR &= ~(F_N|F_V|F_Z|F_C);
 	if(v & 0x40)
@@ -1322,12 +2179,20 @@ UINT8 h8_device::do_rotl2_8(UINT8 v)
 	v = (v << 2) | (v >> 6);
 	if(!v)
 		CCR |= F_Z;
+<<<<<<< HEAD
 	else if(INT8(v) < 0)
+=======
+	else if(int8_t(v) < 0)
+>>>>>>> upstream/master
 		CCR |= F_N;
 	return v;
 }
 
+<<<<<<< HEAD
 UINT16 h8_device::do_rotl2_16(UINT16 v)
+=======
+uint16_t h8_device::do_rotl2_16(uint16_t v)
+>>>>>>> upstream/master
 {
 	CCR &= ~(F_N|F_V|F_Z|F_C);
 	if(v & 0x4000)
@@ -1335,12 +2200,20 @@ UINT16 h8_device::do_rotl2_16(UINT16 v)
 	v = (v << 2) | (v >> 14);
 	if(!v)
 		CCR |= F_Z;
+<<<<<<< HEAD
 	else if(INT16(v) < 0)
+=======
+	else if(int16_t(v) < 0)
+>>>>>>> upstream/master
 		CCR |= F_N;
 	return v;
 }
 
+<<<<<<< HEAD
 UINT32 h8_device::do_rotl2_32(UINT32 v)
+=======
+uint32_t h8_device::do_rotl2_32(uint32_t v)
+>>>>>>> upstream/master
 {
 	CCR &= ~(F_N|F_V|F_Z|F_C);
 	if(v & 0x40000000)
@@ -1348,12 +2221,20 @@ UINT32 h8_device::do_rotl2_32(UINT32 v)
 	v = (v << 2) | (v >> 30);
 	if(!v)
 		CCR |= F_Z;
+<<<<<<< HEAD
 	else if(INT32(v) < 0)
+=======
+	else if(int32_t(v) < 0)
+>>>>>>> upstream/master
 		CCR |= F_N;
 	return v;
 }
 
+<<<<<<< HEAD
 UINT8 h8_device::do_rotr2_8(UINT8 v)
+=======
+uint8_t h8_device::do_rotr2_8(uint8_t v)
+>>>>>>> upstream/master
 {
 	CCR &= ~(F_N|F_V|F_Z|F_C);
 	if(v & 0x02)
@@ -1361,12 +2242,20 @@ UINT8 h8_device::do_rotr2_8(UINT8 v)
 	v = (v << 6) | (v >> 2);
 	if(!v)
 		CCR |= F_Z;
+<<<<<<< HEAD
 	else if(INT8(v) < 0)
+=======
+	else if(int8_t(v) < 0)
+>>>>>>> upstream/master
 		CCR |= F_N;
 	return v;
 }
 
+<<<<<<< HEAD
 UINT16 h8_device::do_rotr2_16(UINT16 v)
+=======
+uint16_t h8_device::do_rotr2_16(uint16_t v)
+>>>>>>> upstream/master
 {
 	CCR &= ~(F_N|F_V|F_Z|F_C);
 	if(v & 0x0002)
@@ -1374,12 +2263,20 @@ UINT16 h8_device::do_rotr2_16(UINT16 v)
 	v = (v << 14) | (v >> 2);
 	if(!v)
 		CCR |= F_Z;
+<<<<<<< HEAD
 	else if(INT16(v) < 0)
+=======
+	else if(int16_t(v) < 0)
+>>>>>>> upstream/master
 		CCR |= F_N;
 	return v;
 }
 
+<<<<<<< HEAD
 UINT32 h8_device::do_rotr2_32(UINT32 v)
+=======
+uint32_t h8_device::do_rotr2_32(uint32_t v)
+>>>>>>> upstream/master
 {
 	CCR &= ~(F_N|F_V|F_Z|F_C);
 	if(v & 0x00000002)
@@ -1387,138 +2284,246 @@ UINT32 h8_device::do_rotr2_32(UINT32 v)
 	v = (v << 30) | (v >> 2);
 	if(!v)
 		CCR |= F_Z;
+<<<<<<< HEAD
 	else if(INT32(v) < 0)
+=======
+	else if(int32_t(v) < 0)
+>>>>>>> upstream/master
 		CCR |= F_N;
 	return v;
 }
 
+<<<<<<< HEAD
 UINT8 h8_device::do_rotxl2_8(UINT8 v)
 {
 	UINT8 c = CCR & F_C ? 1 : 0;
+=======
+uint8_t h8_device::do_rotxl2_8(uint8_t v)
+{
+	uint8_t c = CCR & F_C ? 1 : 0;
+>>>>>>> upstream/master
 	CCR &= ~(F_N|F_V|F_Z|F_C);
 	if(v & 0x40)
 		CCR |= F_C;
 	v = (v << 2) | (c << 1) | ((v >> 6) & 0x01);
 	if(!v)
 		CCR |= F_Z;
+<<<<<<< HEAD
 	else if(INT8(v) < 0)
+=======
+	else if(int8_t(v) < 0)
+>>>>>>> upstream/master
 		CCR |= F_N;
 	return v;
 }
 
+<<<<<<< HEAD
 UINT16 h8_device::do_rotxl2_16(UINT16 v)
 {
 	UINT16 c = CCR & F_C ? 1 : 0;
+=======
+uint16_t h8_device::do_rotxl2_16(uint16_t v)
+{
+	uint16_t c = CCR & F_C ? 1 : 0;
+>>>>>>> upstream/master
 	CCR &= ~(F_N|F_V|F_Z|F_C);
 	if(v & 0x4000)
 		CCR |= F_C;
 	v = (v << 2) | (c << 1) | ((v >> 14) & 0x0001);
 	if(!v)
 		CCR |= F_Z;
+<<<<<<< HEAD
 	else if(INT16(v) < 0)
+=======
+	else if(int16_t(v) < 0)
+>>>>>>> upstream/master
 		CCR |= F_N;
 	return v;
 }
 
+<<<<<<< HEAD
 UINT32 h8_device::do_rotxl2_32(UINT32 v)
 {
 	UINT32 c = CCR & F_C ? 1 : 0;
+=======
+uint32_t h8_device::do_rotxl2_32(uint32_t v)
+{
+	uint32_t c = CCR & F_C ? 1 : 0;
+>>>>>>> upstream/master
 	CCR &= ~(F_N|F_V|F_Z|F_C);
 	if(v & 0x40000000)
 		CCR |= F_C;
 	v = (v << 2) | (c << 1) | ((v >> 30) & 0x00000001);
 	if(!v)
 		CCR |= F_Z;
+<<<<<<< HEAD
 	else if(INT32(v) < 0)
+=======
+	else if(int32_t(v) < 0)
+>>>>>>> upstream/master
 		CCR |= F_N;
 	return v;
 }
 
+<<<<<<< HEAD
 UINT8 h8_device::do_rotxr2_8(UINT8 v)
 {
 	UINT8 c = CCR & F_C ? 1 : 0;
+=======
+uint8_t h8_device::do_rotxr2_8(uint8_t v)
+{
+	uint8_t c = CCR & F_C ? 1 : 0;
+>>>>>>> upstream/master
 	CCR &= ~(F_N|F_V|F_Z|F_C);
 	if(v & 0x02)
 		CCR |= F_C;
 	v = (v >> 2) | (c << 6) | (v << 7);
 	if(!v)
 		CCR |= F_Z;
+<<<<<<< HEAD
 	else if(INT8(v) < 0)
+=======
+	else if(int8_t(v) < 0)
+>>>>>>> upstream/master
 		CCR |= F_N;
 	return v;
 }
 
+<<<<<<< HEAD
 UINT16 h8_device::do_rotxr2_16(UINT16 v)
 {
 	UINT16 c = CCR & F_C ? 1 : 0;
+=======
+uint16_t h8_device::do_rotxr2_16(uint16_t v)
+{
+	uint16_t c = CCR & F_C ? 1 : 0;
+>>>>>>> upstream/master
 	CCR &= ~(F_N|F_V|F_Z|F_C);
 	if(v & 0x0002)
 		CCR |= F_C;
 	v = (v >> 2) | (c << 14) | (v << 15);
 	if(!v)
 		CCR |= F_Z;
+<<<<<<< HEAD
 	else if(INT16(v) < 0)
+=======
+	else if(int16_t(v) < 0)
+>>>>>>> upstream/master
 		CCR |= F_N;
 	return v;
 }
 
+<<<<<<< HEAD
 UINT32 h8_device::do_rotxr2_32(UINT32 v)
 {
 	UINT32 c = CCR & F_C ? 1 : 0;
+=======
+uint32_t h8_device::do_rotxr2_32(uint32_t v)
+{
+	uint32_t c = CCR & F_C ? 1 : 0;
+>>>>>>> upstream/master
 	CCR &= ~(F_N|F_V|F_Z|F_C);
 	if(v & 0x00000002)
 		CCR |= F_C;
 	v = (v >> 2) | (c << 30) | (v << 31);
 	if(!v)
 		CCR |= F_Z;
+<<<<<<< HEAD
 	else if(INT32(v) < 0)
+=======
+	else if(int32_t(v) < 0)
+>>>>>>> upstream/master
 		CCR |= F_N;
 	return v;
 }
 
+<<<<<<< HEAD
 void h8_device::set_nzv8(UINT8 v)
+=======
+void h8_device::set_nzv8(uint8_t v)
+>>>>>>> upstream/master
 {
 	CCR &= ~(F_N|F_V|F_Z);
 	if(!v)
 		CCR |= F_Z;
+<<<<<<< HEAD
 	else if(INT8(v) < 0)
 		CCR |= F_N;
 }
 
 void h8_device::set_nzv16(UINT16 v)
+=======
+	else if(int8_t(v) < 0)
+		CCR |= F_N;
+}
+
+void h8_device::set_nzv16(uint16_t v)
+>>>>>>> upstream/master
 {
 	CCR &= ~(F_N|F_V|F_Z);
 	if(!v)
 		CCR |= F_Z;
+<<<<<<< HEAD
 	else if(INT16(v) < 0)
 		CCR |= F_N;
 }
 
 void h8_device::set_nzv32(UINT32 v)
+=======
+	else if(int16_t(v) < 0)
+		CCR |= F_N;
+}
+
+void h8_device::set_nzv32(uint32_t v)
+>>>>>>> upstream/master
 {
 	CCR &= ~(F_N|F_V|F_Z);
 	if(!v)
 		CCR |= F_Z;
+<<<<<<< HEAD
 	else if(INT32(v) < 0)
 		CCR |= F_N;
 }
 
 void h8_device::set_nz16(UINT16 v)
+=======
+	else if(int32_t(v) < 0)
+		CCR |= F_N;
+}
+
+void h8_device::set_nz16(uint16_t v)
+>>>>>>> upstream/master
 {
 	CCR &= ~(F_N|F_Z);
 	if(!v)
 		CCR |= F_Z;
+<<<<<<< HEAD
 	else if(INT16(v) < 0)
 		CCR |= F_N;
 }
 
 void h8_device::set_nz32(UINT32 v)
+=======
+	else if(int16_t(v) < 0)
+		CCR |= F_N;
+}
+
+void h8_device::set_nz32(uint32_t v)
+>>>>>>> upstream/master
 {
 	CCR &= ~(F_N|F_Z);
 	if(!v)
 		CCR |= F_Z;
+<<<<<<< HEAD
 	else if(INT32(v) < 0)
 		CCR |= F_N;
 }
 
 #include "cpu/h8/h8.inc"
+=======
+	else if(int32_t(v) < 0)
+		CCR |= F_N;
+}
+
+#include "cpu/h8/h8.hxx"
+>>>>>>> upstream/master

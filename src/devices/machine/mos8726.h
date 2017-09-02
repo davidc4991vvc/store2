@@ -41,12 +41,20 @@
 
 **********************************************************************/
 
+<<<<<<< HEAD
 #pragma once
 
 #ifndef __MOS8726__
 #define __MOS8726__
 
 #include "emu.h"
+=======
+#ifndef MAME_MACHINE_MOS8726_H
+#define MAME_MACHINE_MOS8726_H
+
+#pragma once
+
+>>>>>>> upstream/master
 
 
 
@@ -54,8 +62,13 @@
 //  INTERFACE CONFIGURATION MACROS
 //**************************************************************************
 
+<<<<<<< HEAD
 #define MCFG_MOS8726_ADD(_tag) \
 	MCFG_DEVICE_ADD(_tag, MOS8726, 1000000) // dummy clock
+=======
+#define MCFG_MOS8726_ADD(tag) \
+		MCFG_DEVICE_ADD((tag), MOS8726, 1000000) // dummy clock
+>>>>>>> upstream/master
 
 
 
@@ -70,7 +83,11 @@ class mos8726_device :  public device_t,
 {
 public:
 	// construction/destruction
+<<<<<<< HEAD
 	mos8726_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
+=======
+	mos8726_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
+>>>>>>> upstream/master
 
 	DECLARE_READ8_MEMBER( read );
 	DECLARE_WRITE8_MEMBER( write );
@@ -81,9 +98,15 @@ public:
 
 protected:
 	// device-level overrides
+<<<<<<< HEAD
 	virtual void device_start();
 	virtual void device_reset();
 	virtual void execute_run();
+=======
+	virtual void device_start() override;
+	virtual void device_reset() override;
+	virtual void execute_run() override;
+>>>>>>> upstream/master
 
 	int m_icount;
 	int m_bs;
@@ -91,8 +114,14 @@ protected:
 
 
 // device type definition
+<<<<<<< HEAD
 extern const device_type MOS8726;
 
 
 
 #endif
+=======
+DECLARE_DEVICE_TYPE(MOS8726, mos8726_device)
+
+#endif // MAME_MACHINE_MOS8726_H
+>>>>>>> upstream/master

@@ -25,30 +25,57 @@ WRITE16_MEMBER(crospang_state::bestri_tilebank_w)
 }
 
 
+<<<<<<< HEAD
 WRITE16_MEMBER(crospang_state::bestri_bg_scrolly_w)
 {
 	/* Very Strange */
+=======
+// Bestri performs some unusual operations on the scroll values before writing them
+WRITE16_MEMBER(crospang_state::bestri_bg_scrolly_w)
+{
+	// addi.w #$1f8, D0
+	// eori.w #$154, D0
+>>>>>>> upstream/master
 	int scroll =  (data & 0x3ff) ^ 0x0155;
 	m_bg_layer->set_scrolly(0, -scroll + 7);
 }
 
 WRITE16_MEMBER(crospang_state::bestri_fg_scrolly_w)
 {
+<<<<<<< HEAD
 	/* Very Strange */
+=======
+	// addi.w #$1f8, D0
+	// eori.w #$aa, D0
+>>>>>>> upstream/master
 	int scroll = (data & 0x3ff) ^ 0x00ab;
 	m_fg_layer->set_scrolly(0, -scroll + 7);
 }
 
 WRITE16_MEMBER(crospang_state::bestri_fg_scrollx_w)
 {
+<<<<<<< HEAD
 	// printf("fg_layer x %04x\n",data);
 	m_fg_layer->set_scrollx(0, data + 32);
+=======
+	// addi.w #$400, D1
+	// eori.w #$1e0, D1
+	int scroll =  (data & 0x3ff) ^ 0x1e1;
+	m_fg_layer->set_scrollx(0, scroll - 1);
+>>>>>>> upstream/master
 }
 
 WRITE16_MEMBER(crospang_state::bestri_bg_scrollx_w)
 {
+<<<<<<< HEAD
 	// printf("bg_layer x %04x\n",data);
 	m_bg_layer->set_scrollx(0, data - 60);
+=======
+	// addi.w #$3fc, D1
+	// eori.w #$3c0, D1
+	int scroll =  (data & 0x3ff) ^ 0x3c1;
+	m_bg_layer->set_scrollx(0, scroll + 3);
+>>>>>>> upstream/master
 }
 
 
@@ -106,13 +133,22 @@ TILE_GET_INFO_MEMBER(crospang_state::get_fg_tile_info)
 
 void crospang_state::video_start()
 {
+<<<<<<< HEAD
 	m_bg_layer = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(crospang_state::get_bg_tile_info),this), TILEMAP_SCAN_ROWS, 16, 16, 32, 32);
 	m_fg_layer = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(crospang_state::get_fg_tile_info),this), TILEMAP_SCAN_ROWS, 16, 16, 32, 32);
+=======
+	m_bg_layer = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(crospang_state::get_bg_tile_info),this), TILEMAP_SCAN_ROWS, 16, 16, 32, 32);
+	m_fg_layer = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(crospang_state::get_fg_tile_info),this), TILEMAP_SCAN_ROWS, 16, 16, 32, 32);
+>>>>>>> upstream/master
 
 	m_fg_layer->set_transparent_pen(0);
 }
 
+<<<<<<< HEAD
 UINT32 crospang_state::screen_update_crospang(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+=======
+uint32_t crospang_state::screen_update_crospang(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+>>>>>>> upstream/master
 {
 	m_bg_layer->draw(screen, bitmap, cliprect, 0, 0);
 	m_fg_layer->draw(screen, bitmap, cliprect, 0, 0);

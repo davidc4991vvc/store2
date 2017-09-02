@@ -9,9 +9,16 @@
 ***************************************************************************/
 
 #include "emu.h"
+<<<<<<< HEAD
 #include "audio/williams.h"
 #include "includes/mcr.h"
 #include "audio/midway.h"
+=======
+#include "includes/mcr.h"
+#include "audio/midway.h"
+#include "audio/williams.h"
+#include "sound/volt_reg.h"
+>>>>>>> upstream/master
 
 
 
@@ -20,7 +27,10 @@
 //**************************************************************************
 
 #define SSIO_CLOCK          XTAL_16MHz
+<<<<<<< HEAD
 #define CSDELUXE_CLOCK      XTAL_16MHz
+=======
+>>>>>>> upstream/master
 #define SOUNDSGOOD_CLOCK    XTAL_16MHz
 #define TURBOCS_CLOCK       XTAL_8MHz
 #define SQUAWKTALK_CLOCK    XTAL_3_579545MHz
@@ -31,11 +41,18 @@
 //  GLOBAL VARIABLES
 //**************************************************************************
 
+<<<<<<< HEAD
 extern const device_type MIDWAY_SSIO = &device_creator<midway_ssio_device>;
 extern const device_type MIDWAY_CHIP_SQUEAK_DELUXE = &device_creator<midway_chip_squeak_deluxe_device>;
 extern const device_type MIDWAY_SOUNDS_GOOD = &device_creator<midway_sounds_good_device>;
 extern const device_type MIDWAY_TURBO_CHIP_SQUEAK = &device_creator<midway_turbo_chip_squeak_device>;
 extern const device_type MIDWAY_SQUAWK_N_TALK = &device_creator<midway_squawk_n_talk_device>;
+=======
+DEFINE_DEVICE_TYPE(MIDWAY_SSIO,               midway_ssio_device,               "midssio", "Midway SSIO Sound Board")
+DEFINE_DEVICE_TYPE(MIDWAY_SOUNDS_GOOD,        midway_sounds_good_device,        "midsg",   "Midway Sounds Good Sound Board")
+DEFINE_DEVICE_TYPE(MIDWAY_TURBO_CHEAP_SQUEAK, midway_turbo_cheap_squeak_device, "midtcs",  "Midway Turbo Cheap Squeak Sound Board")
+DEFINE_DEVICE_TYPE(MIDWAY_SQUAWK_N_TALK,      midway_squawk_n_talk_device,      "midsnt",  "Midway Squawk 'n' Talk Sound Board")
+>>>>>>> upstream/master
 
 
 
@@ -47,12 +64,21 @@ extern const device_type MIDWAY_SQUAWK_N_TALK = &device_creator<midway_squawk_n_
 //  midway_ssio_device - constructor
 //-------------------------------------------------
 
+<<<<<<< HEAD
 midway_ssio_device::midway_ssio_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
 	: device_t(mconfig, MIDWAY_SSIO, "Midway SSIO Sound Board", tag, owner, clock, "midssio", __FILE__),
+=======
+midway_ssio_device::midway_ssio_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: device_t(mconfig, MIDWAY_SSIO, tag, owner, clock),
+>>>>>>> upstream/master
 		device_mixer_interface(mconfig, *this, 2),
 		m_cpu(*this, "cpu"),
 		m_ay0(*this, "ay0"),
 		m_ay1(*this, "ay1"),
+<<<<<<< HEAD
+=======
+		m_ports(*this, {"IP0", "IP1", "IP2", "IP3", "IP4"}),
+>>>>>>> upstream/master
 		m_status(0),
 		m_14024_count(0),
 		m_mute(0)
@@ -113,8 +139,12 @@ WRITE_LINE_MEMBER(midway_ssio_device::reset_write)
 
 READ8_MEMBER(midway_ssio_device::ioport_read)
 {
+<<<<<<< HEAD
 	static const char *const port[] = { "IP0", "IP1", "IP2", "IP3", "IP4" };
 	UINT8 result = read_safe(ioport(port[offset]), 0xff);
+=======
+	uint8_t result = m_ports[offset].read_safe(0xff);
+>>>>>>> upstream/master
 	if (!m_custom_input[offset].isnull())
 		result = (result & ~m_custom_input_mask[offset]) |
 					(m_custom_input[offset](space, offset, 0xff) & m_custom_input_mask[offset]);
@@ -131,7 +161,11 @@ WRITE8_MEMBER(midway_ssio_device::ioport_write)
 {
 	int which = offset >> 2;
 	if (!m_custom_output[which].isnull())
+<<<<<<< HEAD
 		m_custom_output[which](space, offset, data & m_custom_output_mask[which], 0xff);
+=======
+		m_custom_output[which](space, offset & 4, data & m_custom_output_mask[which], 0xff);
+>>>>>>> upstream/master
 }
 
 
@@ -140,7 +174,11 @@ WRITE8_MEMBER(midway_ssio_device::ioport_write)
 //  reader
 //-------------------------------------------------
 
+<<<<<<< HEAD
 void midway_ssio_device::set_custom_input(int which, UINT8 mask, read8_delegate handler)
+=======
+void midway_ssio_device::set_custom_input(int which, uint8_t mask, read8_delegate handler)
+>>>>>>> upstream/master
 {
 	m_custom_input[which] = handler;
 	m_custom_input_mask[which] = mask;
@@ -152,7 +190,11 @@ void midway_ssio_device::set_custom_input(int which, UINT8 mask, read8_delegate 
 //  writer
 //-------------------------------------------------
 
+<<<<<<< HEAD
 void midway_ssio_device::set_custom_output(int which, UINT8 mask, write8_delegate handler)
+=======
+void midway_ssio_device::set_custom_output(int which, uint8_t mask, write8_delegate handler)
+>>>>>>> upstream/master
 {
 	m_custom_output[which/4] = handler;
 	m_custom_output_mask[which/4] = mask;
@@ -201,7 +243,11 @@ void midway_ssio_device::compute_ay8910_modulation()
 	//
 
 	// loop over all possible values of the duty cycle
+<<<<<<< HEAD
 	UINT8 *prom = memregion("proms")->base();
+=======
+	uint8_t *prom = memregion("proms")->base();
+>>>>>>> upstream/master
 	for (int volval = 0; volval < 16; volval++)
 	{
 		// loop over all the clocks until we run out; look up in the PROM
@@ -374,6 +420,7 @@ ADDRESS_MAP_END
 
 
 //-------------------------------------------------
+<<<<<<< HEAD
 //  machine configuration
 //-------------------------------------------------
 
@@ -399,6 +446,8 @@ MACHINE_CONFIG_END
 
 
 //-------------------------------------------------
+=======
+>>>>>>> upstream/master
 //  ROM definitions
 //-------------------------------------------------
 
@@ -413,13 +462,18 @@ ROM_END
 //  the device's ROM definitions
 //-------------------------------------------------
 
+<<<<<<< HEAD
 const rom_entry *midway_ssio_device::device_rom_region() const
+=======
+const tiny_rom_entry *midway_ssio_device::device_rom_region() const
+>>>>>>> upstream/master
 {
 	return ROM_NAME(midway_ssio);
 }
 
 
 //-------------------------------------------------
+<<<<<<< HEAD
 //  device_mconfig_additions - return a pointer to
 //  the device's machine fragment
 //-------------------------------------------------
@@ -428,6 +482,26 @@ machine_config_constructor midway_ssio_device::device_mconfig_additions() const
 {
 	return MACHINE_CONFIG_NAME( midway_ssio );
 }
+=======
+// device_add_mconfig - add device configuration
+//-------------------------------------------------
+
+MACHINE_CONFIG_MEMBER( midway_ssio_device::device_add_mconfig )
+	MCFG_CPU_ADD("cpu", Z80, SSIO_CLOCK/2/4)
+	MCFG_CPU_PROGRAM_MAP(ssio_map)
+	MCFG_DEVICE_PERIODIC_INT_DEVICE(DEVICE_SELF, midway_ssio_device, clock_14024, SSIO_CLOCK/2/16/10)
+
+	MCFG_SOUND_ADD("ay0", AY8910, SSIO_CLOCK/2/4)
+	MCFG_AY8910_PORT_A_WRITE_CB(WRITE8(midway_ssio_device, porta0_w))
+	MCFG_AY8910_PORT_B_WRITE_CB(WRITE8(midway_ssio_device, portb0_w))
+	MCFG_MIXER_ROUTE(ALL_OUTPUTS, DEVICE_SELF_OWNER, 0.33, 0)
+
+	MCFG_SOUND_ADD("ay1", AY8910, SSIO_CLOCK/2/4)
+	MCFG_AY8910_PORT_A_WRITE_CB(WRITE8(midway_ssio_device, porta1_w))
+	MCFG_AY8910_PORT_B_WRITE_CB(WRITE8(midway_ssio_device, portb1_w))
+	MCFG_MIXER_ROUTE(ALL_OUTPUTS, DEVICE_SELF_OWNER, 0.33, 1)
+MACHINE_CONFIG_END
+>>>>>>> upstream/master
 
 
 //-------------------------------------------------
@@ -437,7 +511,11 @@ machine_config_constructor midway_ssio_device::device_mconfig_additions() const
 
 ioport_constructor midway_ssio_device::device_input_ports() const
 {
+<<<<<<< HEAD
 	return NULL;
+=======
+	return nullptr;
+>>>>>>> upstream/master
 //  return INPUT_PORTS_NAME( midway_ssio );
 }
 
@@ -483,6 +561,7 @@ void midway_ssio_device::device_timer(emu_timer &timer, device_timer_id id, int 
 
 
 //**************************************************************************
+<<<<<<< HEAD
 //  CHIP SQUEAK DELUXE BOARD
 //**************************************************************************
 
@@ -681,6 +760,8 @@ void midway_chip_squeak_deluxe_device::device_timer(emu_timer &timer, device_tim
 
 
 //**************************************************************************
+=======
+>>>>>>> upstream/master
 //  SOUNDS GOOD BOARD
 //**************************************************************************
 
@@ -688,8 +769,13 @@ void midway_chip_squeak_deluxe_device::device_timer(emu_timer &timer, device_tim
 //  midway_sounds_good_device - constructor
 //-------------------------------------------------
 
+<<<<<<< HEAD
 midway_sounds_good_device::midway_sounds_good_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
 	: device_t(mconfig, MIDWAY_SOUNDS_GOOD, "Midway Sounds Good Sound Board", tag, owner, clock, "midsg", __FILE__),
+=======
+midway_sounds_good_device::midway_sounds_good_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: device_t(mconfig, MIDWAY_SOUNDS_GOOD, tag, owner, clock),
+>>>>>>> upstream/master
 		device_mixer_interface(mconfig, *this),
 		m_cpu(*this, "cpu"),
 		m_pia(*this, "pia"),
@@ -738,8 +824,13 @@ WRITE_LINE_MEMBER(midway_sounds_good_device::reset_write)
 
 WRITE8_MEMBER(midway_sounds_good_device::porta_w)
 {
+<<<<<<< HEAD
 	m_dacval = (m_dacval & ~0x3fc) | (data << 2);
 	m_dac->write_signed16(m_dacval << 6);
+=======
+	m_dacval = (data << 2) | (m_dacval & 3);
+	m_dac->write(m_dacval);
+>>>>>>> upstream/master
 }
 
 
@@ -749,10 +840,17 @@ WRITE8_MEMBER(midway_sounds_good_device::porta_w)
 
 WRITE8_MEMBER(midway_sounds_good_device::portb_w)
 {
+<<<<<<< HEAD
 	UINT8 z_mask = m_pia->port_b_z_mask();
 
 	m_dacval = (m_dacval & ~0x003) | (data >> 6);
 	m_dac->write_signed16(m_dacval << 6);
+=======
+	uint8_t z_mask = m_pia->port_b_z_mask();
+
+	m_dacval = (m_dacval & ~3) | (data >> 6);
+	m_dac->write(m_dacval);
+>>>>>>> upstream/master
 
 	if (~z_mask & 0x10)  m_status = (m_status & ~1) | ((data >> 4) & 1);
 	if (~z_mask & 0x20)  m_status = (m_status & ~2) | ((data >> 4) & 2);
@@ -785,10 +883,17 @@ ADDRESS_MAP_END
 
 
 //-------------------------------------------------
+<<<<<<< HEAD
 //  machine configuration
 //-------------------------------------------------
 
 static MACHINE_CONFIG_FRAGMENT(midway_sounds_good)
+=======
+// device_add_mconfig - add device configuration
+//-------------------------------------------------
+
+MACHINE_CONFIG_MEMBER(midway_sounds_good_device::device_add_mconfig)
+>>>>>>> upstream/master
 	MCFG_CPU_ADD("cpu", M68000, SOUNDSGOOD_CLOCK/2)
 	MCFG_CPU_PROGRAM_MAP(soundsgood_map)
 
@@ -798,12 +903,19 @@ static MACHINE_CONFIG_FRAGMENT(midway_sounds_good)
 	MCFG_PIA_IRQA_HANDLER(WRITELINE(midway_sounds_good_device, irq_w))
 	MCFG_PIA_IRQB_HANDLER(WRITELINE(midway_sounds_good_device, irq_w))
 
+<<<<<<< HEAD
 	MCFG_DAC_ADD("dac")
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, DEVICE_SELF_OWNER, 1.0)
+=======
+	MCFG_SOUND_ADD("dac", AD7533, 0) MCFG_SOUND_ROUTE(ALL_OUTPUTS, DEVICE_SELF_OWNER, 1.0) /// ad7533jn.u10
+	MCFG_DEVICE_ADD("vref", VOLTAGE_REGULATOR, 0) MCFG_VOLTAGE_REGULATOR_OUTPUT(5.0)
+	MCFG_SOUND_ROUTE_EX(0, "dac", 1.0, DAC_VREF_POS_INPUT) MCFG_SOUND_ROUTE_EX(0, "dac", -1.0, DAC_VREF_NEG_INPUT)
+>>>>>>> upstream/master
 MACHINE_CONFIG_END
 
 
 //-------------------------------------------------
+<<<<<<< HEAD
 //  device_mconfig_additions - return a pointer to
 //  the device's machine fragment
 //-------------------------------------------------
@@ -815,6 +927,8 @@ machine_config_constructor midway_sounds_good_device::device_mconfig_additions()
 
 
 //-------------------------------------------------
+=======
+>>>>>>> upstream/master
 //  device_start - device-specific startup
 //-------------------------------------------------
 
@@ -851,6 +965,7 @@ void midway_sounds_good_device::device_timer(emu_timer &timer, device_timer_id i
 
 
 //**************************************************************************
+<<<<<<< HEAD
 //  TURBO CHIP SQUEAK BOARD
 //**************************************************************************
 
@@ -860,6 +975,17 @@ void midway_sounds_good_device::device_timer(emu_timer &timer, device_timer_id i
 
 midway_turbo_chip_squeak_device::midway_turbo_chip_squeak_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
 	: device_t(mconfig, MIDWAY_TURBO_CHIP_SQUEAK, "Midway Turbo Chip Squeak Sound Board", tag, owner, clock, "midtcs", __FILE__),
+=======
+//  TURBO CHEAP SQUEAK BOARD
+//**************************************************************************
+
+//-------------------------------------------------
+//  midway_turbo_cheap_squeak_device - constructor
+//-------------------------------------------------
+
+midway_turbo_cheap_squeak_device::midway_turbo_cheap_squeak_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: device_t(mconfig, MIDWAY_TURBO_CHEAP_SQUEAK, tag, owner, clock),
+>>>>>>> upstream/master
 		device_mixer_interface(mconfig, *this),
 		m_cpu(*this, "cpu"),
 		m_pia(*this, "pia"),
@@ -874,7 +1000,11 @@ midway_turbo_chip_squeak_device::midway_turbo_chip_squeak_device(const machine_c
 //  read - return the status value
 //-------------------------------------------------
 
+<<<<<<< HEAD
 READ8_MEMBER(midway_turbo_chip_squeak_device::read)
+=======
+READ8_MEMBER(midway_turbo_cheap_squeak_device::read)
+>>>>>>> upstream/master
 {
 	return m_status;
 }
@@ -885,7 +1015,11 @@ READ8_MEMBER(midway_turbo_chip_squeak_device::read)
 //  latch
 //-------------------------------------------------
 
+<<<<<<< HEAD
 WRITE8_MEMBER(midway_turbo_chip_squeak_device::write)
+=======
+WRITE8_MEMBER(midway_turbo_cheap_squeak_device::write)
+>>>>>>> upstream/master
 {
 	synchronize(0, data);
 }
@@ -895,7 +1029,11 @@ WRITE8_MEMBER(midway_turbo_chip_squeak_device::write)
 //  reset_write - write to the reset line
 //-------------------------------------------------
 
+<<<<<<< HEAD
 WRITE_LINE_MEMBER(midway_turbo_chip_squeak_device::reset_write)
+=======
+WRITE_LINE_MEMBER(midway_turbo_cheap_squeak_device::reset_write)
+>>>>>>> upstream/master
 {
 	m_cpu->set_input_line(INPUT_LINE_RESET, state ? ASSERT_LINE : CLEAR_LINE);
 }
@@ -905,10 +1043,17 @@ WRITE_LINE_MEMBER(midway_turbo_chip_squeak_device::reset_write)
 //  porta_w - PIA port A writes
 //-------------------------------------------------
 
+<<<<<<< HEAD
 WRITE8_MEMBER(midway_turbo_chip_squeak_device::porta_w)
 {
 	m_dacval = (m_dacval & ~0x3fc) | (data << 2);
 	m_dac->write_signed16(m_dacval << 6);
+=======
+WRITE8_MEMBER(midway_turbo_cheap_squeak_device::porta_w)
+{
+	m_dacval = (data << 2) | (m_dacval & 3);
+	m_dac->write(m_dacval);
+>>>>>>> upstream/master
 }
 
 
@@ -916,10 +1061,17 @@ WRITE8_MEMBER(midway_turbo_chip_squeak_device::porta_w)
 //  portb_w - PIA port B writes
 //-------------------------------------------------
 
+<<<<<<< HEAD
 WRITE8_MEMBER(midway_turbo_chip_squeak_device::portb_w)
 {
 	m_dacval = (m_dacval & ~0x003) | (data >> 6);
 	m_dac->write_signed16(m_dacval << 6);
+=======
+WRITE8_MEMBER(midway_turbo_cheap_squeak_device::portb_w)
+{
+	m_dacval = (m_dacval & ~3) | (data >> 6);
+	m_dac->write(m_dacval);
+>>>>>>> upstream/master
 	m_status = (data >> 4) & 3;
 }
 
@@ -928,7 +1080,11 @@ WRITE8_MEMBER(midway_turbo_chip_squeak_device::portb_w)
 //  irq_w - IRQ line state changes
 //-------------------------------------------------
 
+<<<<<<< HEAD
 WRITE_LINE_MEMBER(midway_turbo_chip_squeak_device::irq_w)
+=======
+WRITE_LINE_MEMBER(midway_turbo_cheap_squeak_device::irq_w)
+>>>>>>> upstream/master
 {
 	int combined_state = m_pia->irq_a_state() | m_pia->irq_b_state();
 	m_cpu->set_input_line(M6809_IRQ_LINE, combined_state ? ASSERT_LINE : CLEAR_LINE);
@@ -940,7 +1096,11 @@ WRITE_LINE_MEMBER(midway_turbo_chip_squeak_device::irq_w)
 //-------------------------------------------------
 
 // address map verified from schematics
+<<<<<<< HEAD
 static ADDRESS_MAP_START( turbocs_map, AS_PROGRAM, 8, midway_turbo_chip_squeak_device )
+=======
+static ADDRESS_MAP_START( turbocs_map, AS_PROGRAM, 8, midway_turbo_cheap_squeak_device )
+>>>>>>> upstream/master
 	ADDRESS_MAP_UNMAP_HIGH
 	AM_RANGE(0x0000, 0x07ff) AM_MIRROR(0x3800) AM_RAM
 	AM_RANGE(0x4000, 0x4003) AM_MIRROR(0x3ffc) AM_DEVREADWRITE("pia", pia6821_device, read_alt, write_alt)
@@ -949,14 +1109,22 @@ ADDRESS_MAP_END
 
 
 //-------------------------------------------------
+<<<<<<< HEAD
 //  machine configuration
 //-------------------------------------------------
 
 static MACHINE_CONFIG_FRAGMENT(midway_turbo_chip_squeak)
+=======
+// device_add_mconfig - add device configuration
+//-------------------------------------------------
+
+MACHINE_CONFIG_MEMBER(midway_turbo_cheap_squeak_device::device_add_mconfig)
+>>>>>>> upstream/master
 	MCFG_CPU_ADD("cpu", M6809E, TURBOCS_CLOCK)
 	MCFG_CPU_PROGRAM_MAP(turbocs_map)
 
 	MCFG_DEVICE_ADD("pia", PIA6821, 0)
+<<<<<<< HEAD
 	MCFG_PIA_WRITEPA_HANDLER(WRITE8(midway_turbo_chip_squeak_device, porta_w))
 	MCFG_PIA_WRITEPB_HANDLER(WRITE8(midway_turbo_chip_squeak_device, portb_w))
 	MCFG_PIA_IRQA_HANDLER(WRITELINE(midway_turbo_chip_squeak_device, irq_w))
@@ -964,10 +1132,21 @@ static MACHINE_CONFIG_FRAGMENT(midway_turbo_chip_squeak)
 
 	MCFG_DAC_ADD("dac")
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, DEVICE_SELF_OWNER, 1.0)
+=======
+	MCFG_PIA_WRITEPA_HANDLER(WRITE8(midway_turbo_cheap_squeak_device, porta_w))
+	MCFG_PIA_WRITEPB_HANDLER(WRITE8(midway_turbo_cheap_squeak_device, portb_w))
+	MCFG_PIA_IRQA_HANDLER(WRITELINE(midway_turbo_cheap_squeak_device, irq_w))
+	MCFG_PIA_IRQB_HANDLER(WRITELINE(midway_turbo_cheap_squeak_device, irq_w))
+
+	MCFG_SOUND_ADD("dac", AD7533, 0) MCFG_SOUND_ROUTE(ALL_OUTPUTS, DEVICE_SELF_OWNER, 1.0)
+	MCFG_DEVICE_ADD("vref", VOLTAGE_REGULATOR, 0) MCFG_VOLTAGE_REGULATOR_OUTPUT(5.0)
+	MCFG_SOUND_ROUTE_EX(0, "dac", 1.0, DAC_VREF_POS_INPUT) MCFG_SOUND_ROUTE_EX(0, "dac", -1.0, DAC_VREF_NEG_INPUT)
+>>>>>>> upstream/master
 MACHINE_CONFIG_END
 
 
 //-------------------------------------------------
+<<<<<<< HEAD
 //  device_mconfig_additions - return a pointer to
 //  the device's machine fragment
 //-------------------------------------------------
@@ -983,6 +1162,12 @@ machine_config_constructor midway_turbo_chip_squeak_device::device_mconfig_addit
 //-------------------------------------------------
 
 void midway_turbo_chip_squeak_device::device_start()
+=======
+//  device_start - device-specific startup
+//-------------------------------------------------
+
+void midway_turbo_cheap_squeak_device::device_start()
+>>>>>>> upstream/master
 {
 	save_item(NAME(m_status));
 	save_item(NAME(m_dacval));
@@ -993,7 +1178,11 @@ void midway_turbo_chip_squeak_device::device_start()
 //  device_reset - device-specific reset
 //-------------------------------------------------
 
+<<<<<<< HEAD
 void midway_turbo_chip_squeak_device::device_reset()
+=======
+void midway_turbo_cheap_squeak_device::device_reset()
+>>>>>>> upstream/master
 {
 }
 
@@ -1002,7 +1191,11 @@ void midway_turbo_chip_squeak_device::device_reset()
 //  device_timer - timer callbacks
 //-------------------------------------------------
 
+<<<<<<< HEAD
 void midway_turbo_chip_squeak_device::device_timer(emu_timer &timer, device_timer_id id, int param, void *ptr)
+=======
+void midway_turbo_cheap_squeak_device::device_timer(emu_timer &timer, device_timer_id id, int param, void *ptr)
+>>>>>>> upstream/master
 {
 	m_pia->portb_w((param >> 1) & 0x0f);
 	m_pia->ca1_w(~param & 0x01);
@@ -1021,8 +1214,13 @@ void midway_turbo_chip_squeak_device::device_timer(emu_timer &timer, device_time
 //  midway_squawk_n_talk_device - constructor
 //-------------------------------------------------
 
+<<<<<<< HEAD
 midway_squawk_n_talk_device::midway_squawk_n_talk_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
 	: device_t(mconfig, MIDWAY_SQUAWK_N_TALK, "Midway Squawk 'n' Talk Sound Board", tag, owner, clock, "midsnt", __FILE__),
+=======
+midway_squawk_n_talk_device::midway_squawk_n_talk_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: device_t(mconfig, MIDWAY_SQUAWK_N_TALK, tag, owner, clock),
+>>>>>>> upstream/master
 		device_mixer_interface(mconfig, *this),
 		m_cpu(*this, "cpu"),
 		m_pia0(*this, "pia0"),
@@ -1126,7 +1324,11 @@ WRITE8_MEMBER(midway_squawk_n_talk_device::portb2_w)
 WRITE_LINE_MEMBER(midway_squawk_n_talk_device::irq_w)
 {
 	int combined_state = m_pia0->irq_a_state() | m_pia0->irq_b_state() | m_pia1->irq_a_state() | m_pia1->irq_b_state();
+<<<<<<< HEAD
 	m_cpu->set_input_line(M6800_IRQ_LINE, combined_state ? ASSERT_LINE : CLEAR_LINE);
+=======
+	m_cpu->set_input_line(M6802_IRQ_LINE, combined_state ? ASSERT_LINE : CLEAR_LINE);
+>>>>>>> upstream/master
 }
 
 
@@ -1161,10 +1363,17 @@ ADDRESS_MAP_END
 
 
 //-------------------------------------------------
+<<<<<<< HEAD
 //  machine configuration
 //-------------------------------------------------
 
 static MACHINE_CONFIG_FRAGMENT(midway_squawk_n_talk)
+=======
+// device_add_mconfig - add device configuration
+//-------------------------------------------------
+
+MACHINE_CONFIG_MEMBER(midway_squawk_n_talk_device::device_add_mconfig)
+>>>>>>> upstream/master
 	MCFG_CPU_ADD("cpu", M6802, SQUAWKTALK_CLOCK)
 	MCFG_CPU_PROGRAM_MAP(squawkntalk_map)
 
@@ -1189,6 +1398,7 @@ MACHINE_CONFIG_END
 
 
 //-------------------------------------------------
+<<<<<<< HEAD
 //  device_mconfig_additions - return a pointer to
 //  the device's machine fragment
 //-------------------------------------------------
@@ -1200,6 +1410,8 @@ machine_config_constructor midway_squawk_n_talk_device::device_mconfig_additions
 
 
 //-------------------------------------------------
+=======
+>>>>>>> upstream/master
 //  device_start - device-specific startup
 //-------------------------------------------------
 

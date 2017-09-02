@@ -44,6 +44,7 @@ SVT - The full explanation may be found on the Solace web site,
 #define SOL20_WAV_FREQUENCY   4800
 
 // image size
+<<<<<<< HEAD
 static UINT32 sol20_image_size;
 static bool level;
 static UINT8 sol20_cksm_byte;
@@ -51,6 +52,15 @@ static UINT32 sol20_byte_num;
 static UINT8 sol20_header[16];
 
 static int sol20_put_samples(INT16 *buffer, int sample_pos, int count)
+=======
+static uint32_t sol20_image_size;
+static bool level;
+static uint8_t sol20_cksm_byte;
+static uint32_t sol20_byte_num;
+static uint8_t sol20_header[16];
+
+static int sol20_put_samples(int16_t *buffer, int sample_pos, int count)
+>>>>>>> upstream/master
 {
 	if (buffer)
 	{
@@ -63,7 +73,11 @@ static int sol20_put_samples(INT16 *buffer, int sample_pos, int count)
 	return count;
 }
 
+<<<<<<< HEAD
 static int sol20_output_bit(INT16 *buffer, int sample_pos, bool bit)
+=======
+static int sol20_output_bit(int16_t *buffer, int sample_pos, bool bit)
+>>>>>>> upstream/master
 {
 	int samples = 0;
 
@@ -80,10 +94,17 @@ static int sol20_output_bit(INT16 *buffer, int sample_pos, bool bit)
 	return samples;
 }
 
+<<<<<<< HEAD
 static int sol20_output_byte(INT16 *buffer, int sample_pos, UINT8 byte)
 {
 	int samples = 0;
 	UINT8 i;
+=======
+static int sol20_output_byte(int16_t *buffer, int sample_pos, uint8_t byte)
+{
+	int samples = 0;
+	uint8_t i;
+>>>>>>> upstream/master
 
 	/* start */
 	samples += sol20_output_bit (buffer, sample_pos + samples, 0);
@@ -100,7 +121,11 @@ static int sol20_output_byte(INT16 *buffer, int sample_pos, UINT8 byte)
 }
 
 // Calculate checksum
+<<<<<<< HEAD
 static UINT8 sol20_calc_cksm(UINT8 cksm, UINT8 data)
+=======
+static uint8_t sol20_calc_cksm(uint8_t cksm, uint8_t data)
+>>>>>>> upstream/master
 {
 	data -= cksm;
 	cksm = data;
@@ -111,7 +136,11 @@ static UINT8 sol20_calc_cksm(UINT8 cksm, UINT8 data)
 }
 
 // Ignore remainder of line
+<<<<<<< HEAD
 static void sol20_scan_to_eol(const UINT8 *bytes)
+=======
+static void sol20_scan_to_eol(const uint8_t *bytes)
+>>>>>>> upstream/master
 {
 	bool t = 1;
 	while (t)
@@ -130,7 +159,11 @@ static void sol20_scan_to_eol(const UINT8 *bytes)
 }
 
 // skip spaces and symbols looking for a hex digit
+<<<<<<< HEAD
 static void sol20_scan_to_hex(const UINT8 *bytes)
+=======
+static void sol20_scan_to_hex(const uint8_t *bytes)
+>>>>>>> upstream/master
 {
 	bool t = 1;
 	while (t)
@@ -142,7 +175,11 @@ static void sol20_scan_to_hex(const UINT8 *bytes)
 		}
 		else
 		{
+<<<<<<< HEAD
 			UINT8 chr = bytes[sol20_byte_num];
+=======
+			uint8_t chr = bytes[sol20_byte_num];
+>>>>>>> upstream/master
 			if (chr == 0x0d)
 				t = 0;
 			else
@@ -155,10 +192,17 @@ static void sol20_scan_to_hex(const UINT8 *bytes)
 }
 
 // Turn n digits into hex
+<<<<<<< HEAD
 static int sol20_read_hex(const UINT8 *bytes, UINT8 numdigits)
 {
 	int data = 0;
 	UINT8 i,chr;
+=======
+static int sol20_read_hex(const uint8_t *bytes, uint8_t numdigits)
+{
+	int data = 0;
+	uint8_t i,chr;
+>>>>>>> upstream/master
 
 	for (i = 0; i < numdigits; i++)
 	{
@@ -181,7 +225,11 @@ static int sol20_read_hex(const UINT8 *bytes, UINT8 numdigits)
 }
 
 // Turn digits into decimal
+<<<<<<< HEAD
 static int sol20_read_dec(const UINT8 *bytes)
+=======
+static int sol20_read_dec(const uint8_t *bytes)
+>>>>>>> upstream/master
 {
 	int data = 0;
 
@@ -194,6 +242,7 @@ static int sol20_read_dec(const UINT8 *bytes)
 	return data;
 }
 
+<<<<<<< HEAD
 static int sol20_handle_cassette(INT16 *buffer, const UINT8 *bytes)
 {
 	UINT32 sample_count = 0;
@@ -202,6 +251,16 @@ static int sol20_handle_cassette(INT16 *buffer, const UINT8 *bytes)
 	sol20_byte_num = 1;
 	bool process_d = 0;
 	UINT16 length = 0;
+=======
+static int sol20_handle_cassette(int16_t *buffer, const uint8_t *bytes)
+{
+	uint32_t sample_count = 0;
+	uint32_t i = 0,t = 0;
+	uint16_t cc = 0;
+	sol20_byte_num = 1;
+	bool process_d = 0;
+	uint16_t length = 0;
+>>>>>>> upstream/master
 
 	// 1st line of file must say SVT
 	if ((bytes[0] == 'S') && (bytes[1] == 'V') && (bytes[2] == 'T'))
@@ -216,7 +275,11 @@ static int sol20_handle_cassette(INT16 *buffer, const UINT8 *bytes)
 	while (sol20_byte_num)
 	{
 		sol20_byte_num+=2; // bump to start of next line
+<<<<<<< HEAD
 		UINT8 chr = bytes[sol20_byte_num];  // Get command
+=======
+		uint8_t chr = bytes[sol20_byte_num];  // Get command
+>>>>>>> upstream/master
 		if (sol20_byte_num >= sol20_image_size)
 			sol20_byte_num = 0;
 		else
@@ -227,10 +290,17 @@ static int sol20_handle_cassette(INT16 *buffer, const UINT8 *bytes)
 					break;
 				case 'C': // carrier
 					{
+<<<<<<< HEAD
 						if (c) // if this is the next file, clean up after the previous one
 						{
 							sample_count += sol20_output_byte(buffer, sample_count, sol20_cksm_byte); // final checksum if needed
 							c = 0;
+=======
+						if (cc) // if this is the next file, clean up after the previous one
+						{
+							sample_count += sol20_output_byte(buffer, sample_count, sol20_cksm_byte); // final checksum if needed
+							cc = 0;
+>>>>>>> upstream/master
 						}
 
 						sol20_byte_num+=2; // bump to parameter
@@ -242,6 +312,7 @@ static int sol20_handle_cassette(INT16 *buffer, const UINT8 *bytes)
 					}
 				case 'H': // header
 					{
+<<<<<<< HEAD
 						if (c) // if this is the next file, clean up after the previous one
 						{
 							sample_count += sol20_output_byte(buffer, sample_count, sol20_cksm_byte); // final checksum if needed
@@ -254,6 +325,23 @@ static int sol20_handle_cassette(INT16 *buffer, const UINT8 *bytes)
 						sol20_header[2] = bytes[sol20_byte_num++];
 						sol20_header[3] = bytes[sol20_byte_num++];
 						sol20_header[4] = bytes[sol20_byte_num++];
+=======
+						if (cc) // if this is the next file, clean up after the previous one
+						{
+							sample_count += sol20_output_byte(buffer, sample_count, sol20_cksm_byte); // final checksum if needed
+							cc = 0;
+						}
+
+						sol20_byte_num+=2; // bump to file name
+						for (i = 0; i < 5; i++)
+							sol20_header[i] = 0x20;
+						for (i = 0; i < 5; i++)
+						{
+							sol20_header[i] = bytes[sol20_byte_num++];
+							if (sol20_header[i] == 0x20)
+								break;
+						}
+>>>>>>> upstream/master
 						sol20_header[5] = 0;
 						sol20_scan_to_hex(bytes); // bump to file type
 						sol20_header[6] = sol20_read_hex(bytes, 2);
@@ -298,6 +386,7 @@ static int sol20_handle_cassette(INT16 *buffer, const UINT8 *bytes)
 						{
 							t = sol20_read_hex(bytes, 2);
 							sample_count += sol20_output_byte(buffer, sample_count, t);
+<<<<<<< HEAD
 							sol20_cksm_byte = sol20_calc_cksm(sol20_cksm_byte, t);
 							c++;
 							length--;
@@ -308,6 +397,26 @@ static int sol20_handle_cassette(INT16 *buffer, const UINT8 *bytes)
 								sample_count += sol20_output_byte(buffer, sample_count, sol20_cksm_byte);
 								sol20_cksm_byte = 0;
 							}
+=======
+							cc++;
+							// if it's a data byte reduce remaining length and calculate checksum;
+							// tape supplies checksums except last one
+							if (cc < 257)
+							{
+								length--;
+								sol20_cksm_byte = sol20_calc_cksm(sol20_cksm_byte, t);
+							}
+							else
+							// didnt need it, throw away
+							{
+								cc = 0;
+								sol20_cksm_byte = 0;
+							}
+							// see if finished tape
+							if (!length)
+								process_d = 0;
+							// bump to next byte
+>>>>>>> upstream/master
 							sol20_scan_to_hex(bytes);
 						}
 					}
@@ -318,7 +427,11 @@ static int sol20_handle_cassette(INT16 *buffer, const UINT8 *bytes)
 		}
 	}
 
+<<<<<<< HEAD
 	if (c)  // reached the end of the svt file
+=======
+	if (cc)  // reached the end of the svt file
+>>>>>>> upstream/master
 		sample_count += sol20_output_byte(buffer, sample_count, sol20_cksm_byte); // final checksum if needed
 
 	return sample_count;
@@ -329,7 +442,11 @@ static int sol20_handle_cassette(INT16 *buffer, const UINT8 *bytes)
    Generate samples for the tape image
 ********************************************************************/
 
+<<<<<<< HEAD
 static int sol20_cassette_fill_wave(INT16 *buffer, int length, UINT8 *bytes)
+=======
+static int sol20_cassette_fill_wave(int16_t *buffer, int length, uint8_t *bytes)
+>>>>>>> upstream/master
 {
 	return sol20_handle_cassette(buffer, bytes);
 }
@@ -338,11 +455,19 @@ static int sol20_cassette_fill_wave(INT16 *buffer, int length, UINT8 *bytes)
    Calculate the number of samples needed for this tape image
 ********************************************************************/
 
+<<<<<<< HEAD
 static int sol20_cassette_calculate_size_in_samples(const UINT8 *bytes, int length)
 {
 	sol20_image_size = length;
 
 	return sol20_handle_cassette(NULL, bytes);
+=======
+static int sol20_cassette_calculate_size_in_samples(const uint8_t *bytes, int length)
+{
+	sol20_image_size = length;
+
+	return sol20_handle_cassette(nullptr, bytes);
+>>>>>>> upstream/master
 }
 
 static const struct CassetteLegacyWaveFiller sol20_legacy_fill_wave =
@@ -356,12 +481,20 @@ static const struct CassetteLegacyWaveFiller sol20_legacy_fill_wave =
 	0                                       /* trailer_samples */
 };
 
+<<<<<<< HEAD
 static casserr_t sol20_cassette_identify(cassette_image *cassette, struct CassetteOptions *opts)
+=======
+static cassette_image::error sol20_cassette_identify(cassette_image *cassette, struct CassetteOptions *opts)
+>>>>>>> upstream/master
 {
 	return cassette_legacy_identify(cassette, opts, &sol20_legacy_fill_wave);
 }
 
+<<<<<<< HEAD
 static casserr_t sol20_cassette_load(cassette_image *cassette)
+=======
+static cassette_image::error sol20_cassette_load(cassette_image *cassette)
+>>>>>>> upstream/master
 {
 	return cassette_legacy_construct(cassette, &sol20_legacy_fill_wave);
 }
@@ -371,7 +504,11 @@ static const struct CassetteFormat sol20_cassette_image_format =
 	"svt",
 	sol20_cassette_identify,
 	sol20_cassette_load,
+<<<<<<< HEAD
 	NULL
+=======
+	nullptr
+>>>>>>> upstream/master
 };
 
 CASSETTE_FORMATLIST_START(sol20_cassette_formats)

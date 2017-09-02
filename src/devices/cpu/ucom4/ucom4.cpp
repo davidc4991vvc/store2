@@ -20,10 +20,15 @@
 
 */
 
+<<<<<<< HEAD
+=======
+#include "emu.h"
+>>>>>>> upstream/master
 #include "ucom4.h"
 #include "debugger.h"
 
 
+<<<<<<< HEAD
 // uCOM-43 products: 2000x8 ROM, RAM size custom, supports full instruction set
 const device_type NEC_D553 = &device_creator<upd553_cpu_device>; // 42-pin PMOS, 35 pins for I/O, Open Drain output, 96x4 RAM
 const device_type NEC_D557L = &device_creator<upd557l_cpu_device>; // 28-pin PMOS, 21 pins for I/O, Open Drain output, 96x4 RAM
@@ -33,6 +38,18 @@ const device_type NEC_D650 = &device_creator<upd650_cpu_device>; // 42-pin CMOS,
 const device_type NEC_D552 = &device_creator<upd552_cpu_device>; // 42-pin PMOS, 35 pins for I/O, Open Drain output
 
 // uCOM-45 products: ROM size custom, 32x4 RAM
+=======
+// uCOM-43 products: 2000x8 ROM, 96x4 RAM, supports full instruction set
+DEFINE_DEVICE_TYPE(NEC_D546,  upd546_cpu_device,  "upd546",  "NEC uPD546") // 42-pin PMOS, 35 pins for I/O
+DEFINE_DEVICE_TYPE(NEC_D553,  upd553_cpu_device,  "upd553",  "NEC uPD553") // 42-pin PMOS, 35 pins for I/O, high voltage
+DEFINE_DEVICE_TYPE(NEC_D557L, upd557l_cpu_device, "upd557l", "NEC uPD557L") // 28-pin PMOS, 21 pins for I/O
+DEFINE_DEVICE_TYPE(NEC_D650,  upd650_cpu_device,  "upd650",  "NEC uPD650") // 42-pin CMOS, 35 pins for I/O
+
+// uCOM-44 products: 1000x8 ROM, 64x4 RAM, 1-level stack, does not support external interrupt
+DEFINE_DEVICE_TYPE(NEC_D552,  upd552_cpu_device,  "upd552",  "NEC uPD552") // 42-pin PMOS, 35 pins for I/O, high voltage
+
+// uCOM-45 products: 1000x8 or 640x8 ROM, 32x4 RAM, 1-level stack
+>>>>>>> upstream/master
 //..
 
 
@@ -58,6 +75,7 @@ ADDRESS_MAP_END
 
 
 // device definitions
+<<<<<<< HEAD
 upd553_cpu_device::upd553_cpu_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
 	: ucom4_cpu_device(mconfig, NEC_D553, "uPD553", tag, owner, clock, NEC_UCOM43, 3 /* stack levels */, 11 /* prg width */, ADDRESS_MAP_NAME(program_2k), 7 /* data width */, ADDRESS_MAP_NAME(data_96x4), "upd553", __FILE__)
 { }
@@ -77,12 +95,76 @@ upd552_cpu_device::upd552_cpu_device(const machine_config &mconfig, const char *
 
 // disasm
 void ucom4_cpu_device::state_string_export(const device_state_entry &entry, std::string &str)
+=======
+ucom4_cpu_device::ucom4_cpu_device(const machine_config &mconfig, device_type type, const char *tag, device_t *owner, u32 clock, int family, int stack_levels, int prgwidth, address_map_constructor program, int datawidth, address_map_constructor data)
+	: cpu_device(mconfig, type, tag, owner, clock)
+	, m_program_config("program", ENDIANNESS_BIG, 8, prgwidth, 0, program)
+	, m_data_config("data", ENDIANNESS_BIG, 8, datawidth, 0, data)
+	, m_prgwidth(prgwidth)
+	, m_datawidth(datawidth)
+	, m_family(family)
+	, m_stack_levels(stack_levels)
+	, m_read_a(*this)
+	, m_read_b(*this)
+	, m_read_c(*this)
+	, m_read_d(*this)
+	, m_write_c(*this)
+	, m_write_d(*this)
+	, m_write_e(*this)
+	, m_write_f(*this)
+	, m_write_g(*this)
+	, m_write_h(*this)
+	, m_write_i(*this)
+{
+}
+
+upd546_cpu_device::upd546_cpu_device(const machine_config &mconfig, const char *tag, device_t *owner, u32 clock)
+	: ucom4_cpu_device(mconfig, NEC_D546, tag, owner, clock, NEC_UCOM43, 3 /* stack levels */, 11 /* prg width */, ADDRESS_MAP_NAME(program_2k), 7 /* data width */, ADDRESS_MAP_NAME(data_96x4))
+{
+}
+
+upd553_cpu_device::upd553_cpu_device(const machine_config &mconfig, const char *tag, device_t *owner, u32 clock)
+	: ucom4_cpu_device(mconfig, NEC_D553, tag, owner, clock, NEC_UCOM43, 3, 11, ADDRESS_MAP_NAME(program_2k), 7, ADDRESS_MAP_NAME(data_96x4))
+{
+}
+
+upd557l_cpu_device::upd557l_cpu_device(const machine_config &mconfig, const char *tag, device_t *owner, u32 clock)
+	: ucom4_cpu_device(mconfig, NEC_D557L, tag, owner, clock, NEC_UCOM43, 3, 11, ADDRESS_MAP_NAME(program_2k), 7, ADDRESS_MAP_NAME(data_96x4))
+{
+}
+
+upd650_cpu_device::upd650_cpu_device(const machine_config &mconfig, const char *tag, device_t *owner, u32 clock)
+	: ucom4_cpu_device(mconfig, NEC_D650, tag, owner, clock, NEC_UCOM43, 3, 11, ADDRESS_MAP_NAME(program_2k), 7, ADDRESS_MAP_NAME(data_96x4))
+{
+}
+
+upd552_cpu_device::upd552_cpu_device(const machine_config &mconfig, const char *tag, device_t *owner, u32 clock)
+	: ucom4_cpu_device(mconfig, NEC_D552, tag, owner, clock, NEC_UCOM44, 1, 10, ADDRESS_MAP_NAME(program_1k), 6, ADDRESS_MAP_NAME(data_64x4))
+{
+}
+
+device_memory_interface::space_config_vector ucom4_cpu_device::memory_space_config() const
+{
+	return space_config_vector {
+		std::make_pair(AS_PROGRAM, &m_program_config),
+		std::make_pair(AS_DATA,    &m_data_config)
+	};
+}
+
+
+// disasm
+void ucom4_cpu_device::state_string_export(const device_state_entry &entry, std::string &str) const
+>>>>>>> upstream/master
 {
 	switch (entry.index())
 	{
 		// obviously not from a single flags register
 		case STATE_GENFLAGS:
+<<<<<<< HEAD
 			strprintf(str, "%c%c%c%c%c",
+=======
+			str = string_format("%c%c%c%c%c",
+>>>>>>> upstream/master
 				m_inte_f    ? 'E':'e',
 				m_int_f     ? 'I':'i',
 				m_timer_f   ? 'T':'t',
@@ -95,10 +177,17 @@ void ucom4_cpu_device::state_string_export(const device_state_entry &entry, std:
 	}
 }
 
+<<<<<<< HEAD
 offs_t ucom4_cpu_device::disasm_disassemble(char *buffer, offs_t pc, const UINT8 *oprom, const UINT8 *opram, UINT32 options)
 {
 	extern CPU_DISASSEMBLE(ucom4);
 	return CPU_DISASSEMBLE_NAME(ucom4)(this, buffer, pc, oprom, opram, options);
+=======
+offs_t ucom4_cpu_device::disasm_disassemble(std::ostream &stream, offs_t pc, const u8 *oprom, const u8 *opram, u32 options)
+{
+	extern CPU_DISASSEMBLE(ucom4);
+	return CPU_DISASSEMBLE_NAME(ucom4)(this, stream, pc, oprom, opram, options);
+>>>>>>> upstream/master
 }
 
 
@@ -180,7 +269,12 @@ void ucom4_cpu_device::device_start()
 	state_add(UCOM4_DPH, "DPH", m_dph).formatstr("%01X");
 	state_add(UCOM4_ACC, "ACC", m_acc).formatstr("%01X");
 
+<<<<<<< HEAD
 	state_add(STATE_GENPC, "curpc", m_pc).formatstr("%04X").noshow();
+=======
+	state_add(STATE_GENPC, "GENPC", m_pc).formatstr("%04X").noshow();
+	state_add(STATE_GENPCBASE, "CURPC", m_pc).formatstr("%04X").noshow();
+>>>>>>> upstream/master
 	state_add(STATE_GENFLAGS, "GENFLAGS", m_carry_f).formatstr("%5s").noshow(); // dummy
 
 	m_icountptr = &m_icount;
@@ -207,7 +301,11 @@ void ucom4_cpu_device::device_reset()
 
 	// clear i/o
 	for (int i = NEC_UCOM4_PORTC; i <= NEC_UCOM4_PORTI; i++)
+<<<<<<< HEAD
 		output_w(i, 0xf);
+=======
+		output_w(i, 0);
+>>>>>>> upstream/master
 }
 
 
@@ -219,10 +317,17 @@ void ucom4_cpu_device::device_reset()
 // default:
 // A,B are inputs, C,D are input/output, E,F,G,H,I are output
 
+<<<<<<< HEAD
 UINT8 ucom4_cpu_device::input_r(int index)
 {
 	index &= 0xf;
 	UINT8 inp = 0;
+=======
+u8 ucom4_cpu_device::input_r(int index)
+{
+	index &= 0xf;
+	u8 inp = 0;
+>>>>>>> upstream/master
 
 	switch (index)
 	{
@@ -239,7 +344,11 @@ UINT8 ucom4_cpu_device::input_r(int index)
 	return inp & 0xf;
 }
 
+<<<<<<< HEAD
 void ucom4_cpu_device::output_w(int index, UINT8 data)
+=======
+void ucom4_cpu_device::output_w(int index, u8 data)
+>>>>>>> upstream/master
 {
 	index &= 0xf;
 	data &= 0xf;
@@ -265,7 +374,11 @@ void ucom4_cpu_device::output_w(int index, UINT8 data)
 // uPD557L:
 // ports B,H,I are stripped, port G is reduced to 1 pin
 
+<<<<<<< HEAD
 UINT8 upd557l_cpu_device::input_r(int index)
+=======
+u8 upd557l_cpu_device::input_r(int index)
+>>>>>>> upstream/master
 {
 	index &= 0xf;
 
@@ -277,7 +390,11 @@ UINT8 upd557l_cpu_device::input_r(int index)
 	return 0;
 }
 
+<<<<<<< HEAD
 void upd557l_cpu_device::output_w(int index, UINT8 data)
+=======
+void upd557l_cpu_device::output_w(int index, u8 data)
+>>>>>>> upstream/master
 {
 	index &= 0xf;
 	data &= 0xf;

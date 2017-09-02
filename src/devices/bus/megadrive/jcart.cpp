@@ -35,6 +35,7 @@
 //  md_rom_device - constructor
 //-------------------------------------------------
 
+<<<<<<< HEAD
 const device_type MD_JCART = &device_creator<md_jcart_device>;
 const device_type MD_SEPROM_CODEMAST = &device_creator<md_seprom_codemast_device>;
 const device_type MD_SEPROM_MM96 = &device_creator<md_seprom_mm96_device>;
@@ -53,10 +54,28 @@ md_jcart_device::md_jcart_device(const machine_config &mconfig, const char *tag,
 					device_md_cart_interface( mconfig, *this ),
 					m_jcart3(*this, "JCART3"),
 					m_jcart4(*this, "JCART4")
+=======
+DEFINE_DEVICE_TYPE(MD_JCART,           md_jcart_device,           "md_jcart",           "MD J-Cart games")
+DEFINE_DEVICE_TYPE(MD_SEPROM_CODEMAST, md_seprom_codemast_device, "md_seprom_codemast", "MD J-Cart games + SEPROM")
+DEFINE_DEVICE_TYPE(MD_SEPROM_MM96,     md_seprom_mm96_device,     "md_seprom_mm96",     "MD Micro Machine 96")
+
+// Sampras, Super Skidmarks?
+md_jcart_device::md_jcart_device(const machine_config &mconfig, device_type type, const char *tag, device_t *owner, uint32_t clock)
+	: device_t(mconfig, type, tag, owner, clock)
+	, device_md_cart_interface(mconfig, *this)
+	, m_jcart3(*this, "JCART3")
+	, m_jcart4(*this, "JCART4")
+{
+}
+
+md_jcart_device::md_jcart_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: md_jcart_device(mconfig, MD_JCART, tag, owner, clock)
+>>>>>>> upstream/master
 {
 }
 
 // Micro Machines 2, Micro Machines Military
+<<<<<<< HEAD
 md_seprom_codemast_device::md_seprom_codemast_device(const machine_config &mconfig, device_type type, const char *name, const char *tag, device_t *owner, UINT32 clock, const char *shortname, const char *source)
 					: md_jcart_device(mconfig, type, name, tag, owner, clock, shortname, source),
 					m_i2cmem(*this, "i2cmem"), m_i2c_mem(0), m_i2c_clk(0)
@@ -72,6 +91,22 @@ md_seprom_codemast_device::md_seprom_codemast_device(const machine_config &mconf
 // Micro Machines 96
 md_seprom_mm96_device::md_seprom_mm96_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
 					: md_seprom_codemast_device(mconfig, MD_SEPROM_MM96, "MD Micro Machine 96", tag, owner, clock, "md_seprom_mm96", __FILE__)
+=======
+md_seprom_codemast_device::md_seprom_codemast_device(const machine_config &mconfig, device_type type, const char *tag, device_t *owner, uint32_t clock)
+	: md_jcart_device(mconfig, type, tag, owner, clock)
+	, m_i2cmem(*this, "i2cmem"), m_i2c_mem(0), m_i2c_clk(0)
+{
+}
+
+md_seprom_codemast_device::md_seprom_codemast_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: md_seprom_codemast_device(mconfig, MD_SEPROM_CODEMAST, tag, owner, clock)
+{
+}
+
+// Micro Machines 96
+md_seprom_mm96_device::md_seprom_mm96_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: md_seprom_codemast_device(mconfig, MD_SEPROM_MM96, tag, owner, clock)
+>>>>>>> upstream/master
 {
 }
 
@@ -81,17 +116,25 @@ md_seprom_mm96_device::md_seprom_mm96_device(const machine_config &mconfig, cons
 //-------------------------------------------------
 
 // MD_SEPROM_CODEMAST
+<<<<<<< HEAD
 MACHINE_CONFIG_FRAGMENT( md_i2c_24c08 )
 	MCFG_24C08_ADD("i2cmem")
 MACHINE_CONFIG_END
 
 // MD_SEPROM_MM96
 MACHINE_CONFIG_FRAGMENT( md_i2c_24c16a )
+=======
+
+
+// MD_SEPROM_MM96
+MACHINE_CONFIG_START( md_i2c_24c16a )
+>>>>>>> upstream/master
 	MCFG_24C16A_ADD("i2cmem")
 MACHINE_CONFIG_END
 
 
 //-------------------------------------------------
+<<<<<<< HEAD
 //  machine_config_additions - device-specific
 //  machine configurations
 //-------------------------------------------------
@@ -105,6 +148,18 @@ machine_config_constructor md_seprom_mm96_device::device_mconfig_additions() con
 {
 	return MACHINE_CONFIG_NAME( md_i2c_24c16a );
 }
+=======
+//  device_add_mconfig - add device configuration
+//-------------------------------------------------
+
+MACHINE_CONFIG_MEMBER( md_seprom_codemast_device::device_add_mconfig )
+	MCFG_24C08_ADD("i2cmem")
+MACHINE_CONFIG_END
+
+MACHINE_CONFIG_MEMBER( md_seprom_mm96_device::device_add_mconfig )
+	MCFG_24C16A_ADD("i2cmem")
+MACHINE_CONFIG_END
+>>>>>>> upstream/master
 
 
 static INPUT_PORTS_START( jcart_ipt )
@@ -176,18 +231,32 @@ READ16_MEMBER(md_jcart_device::read)
 {
 	if (offset == 0x38fffe/2)
 	{
+<<<<<<< HEAD
 		UINT8 joy[2];
 
 		if (m_jcart_io_data[0] & 0x40)
 		{
 			joy[0] = read_safe(m_jcart3, 0);
 			joy[1] = read_safe(m_jcart4, 0);
+=======
+		uint8_t joy[2];
+
+		if (m_jcart_io_data[0] & 0x40)
+		{
+			joy[0] = m_jcart3.read_safe(0);
+			joy[1] = m_jcart4.read_safe(0);
+>>>>>>> upstream/master
 			return (m_jcart_io_data[0] & 0x40) | joy[0] | (joy[1] << 8);
 		}
 		else
 		{
+<<<<<<< HEAD
 			joy[0] = ((read_safe(m_jcart3, 0) & 0xc0) >> 2) | (read_safe(m_jcart3, 0) & 0x03);
 			joy[1] = ((read_safe(m_jcart4, 0) & 0xc0) >> 2) | (read_safe(m_jcart4, 0) & 0x03);
+=======
+			joy[0] = ((m_jcart3.read_safe(0) & 0xc0) >> 2) | (m_jcart3.read_safe(0) & 0x03);
+			joy[1] = ((m_jcart4.read_safe(0) & 0xc0) >> 2) | (m_jcart4.read_safe(0) & 0x03);
+>>>>>>> upstream/master
 			return (m_jcart_io_data[0] & 0x40) | joy[0] | (joy[1] << 8);
 		}
 	}
@@ -219,18 +288,32 @@ READ16_MEMBER(md_seprom_codemast_device::read)
 	}
 	if (offset == 0x38fffe/2)
 	{
+<<<<<<< HEAD
 		UINT8 joy[2];
 
 		if (m_jcart_io_data[0] & 0x40)
 		{
 			joy[0] = read_safe(m_jcart3, 0);
 			joy[1] = read_safe(m_jcart4, 0);
+=======
+		uint8_t joy[2];
+
+		if (m_jcart_io_data[0] & 0x40)
+		{
+			joy[0] = m_jcart3.read_safe(0);
+			joy[1] = m_jcart4.read_safe(0);
+>>>>>>> upstream/master
 			return (m_jcart_io_data[0] & 0x40) | joy[0] | (joy[1] << 8);
 		}
 		else
 		{
+<<<<<<< HEAD
 			joy[0] = ((read_safe(m_jcart3, 0) & 0xc0) >> 2) | (read_safe(m_jcart3, 0) & 0x03);
 			joy[1] = ((read_safe(m_jcart4, 0) & 0xc0) >> 2) | (read_safe(m_jcart4, 0) & 0x03);
+=======
+			joy[0] = ((m_jcart3.read_safe(0) & 0xc0) >> 2) | (m_jcart3.read_safe(0) & 0x03);
+			joy[1] = ((m_jcart4.read_safe(0) & 0xc0) >> 2) | (m_jcart4.read_safe(0) & 0x03);
+>>>>>>> upstream/master
 			return (m_jcart_io_data[0] & 0x40) | joy[0] | (joy[1] << 8);
 		}
 	}

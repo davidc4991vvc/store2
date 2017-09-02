@@ -46,6 +46,11 @@
 
 #include "formats/applix_dsk.h"
 
+<<<<<<< HEAD
+=======
+#include "formats/hpi_dsk.h"
+
+>>>>>>> upstream/master
 static floppy_format_type floppy_formats[] = {
 	FLOPPY_MFI_FORMAT,
 	FLOPPY_DFI_FORMAT,
@@ -75,6 +80,11 @@ static floppy_format_type floppy_formats[] = {
 	FLOPPY_ORIC_DSK_FORMAT,
 
 	FLOPPY_APPLIX_FORMAT,
+<<<<<<< HEAD
+=======
+
+	FLOPPY_HPI_FORMAT
+>>>>>>> upstream/master
 };
 
 void CLIB_DECL ATTR_PRINTF(1,2) logerror(const char *format, ...)
@@ -100,13 +110,21 @@ static floppy_image_format_t *find_format_by_name(const char *name)
 	for(int i=0; i != FORMAT_COUNT; i++)
 		if(!core_stricmp(name, formats[i]->name()))
 			return formats[i];
+<<<<<<< HEAD
 	return 0;
+=======
+	return nullptr;
+>>>>>>> upstream/master
 }
 
 static floppy_image_format_t *find_format_by_identify(io_generic *image)
 {
 	int best = 0;
+<<<<<<< HEAD
 	floppy_image_format_t *best_fif = 0;
+=======
+	floppy_image_format_t *best_fif = nullptr;
+>>>>>>> upstream/master
 
 	for(int i = 0; i != FORMAT_COUNT; i++) {
 		floppy_image_format_t *fif = formats[i];

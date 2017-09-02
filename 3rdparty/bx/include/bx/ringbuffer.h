@@ -1,6 +1,11 @@
 /*
+<<<<<<< HEAD
  * Copyright 2010-2015 Branimir Karadzic. All rights reserved.
  * License: http://www.opensource.org/licenses/BSD-2-Clause
+=======
+ * Copyright 2010-2017 Branimir Karadzic. All rights reserved.
+ * License: https://github.com/bkaradzic/bx#license-bsd-2-clause
+>>>>>>> upstream/master
  */
 
 #ifndef BX_RINGBUFFER_H_HEADER_GUARD
@@ -12,6 +17,10 @@
 
 namespace bx
 {
+<<<<<<< HEAD
+=======
+	///
+>>>>>>> upstream/master
 	class RingBufferControl
 	{
 		BX_CLASS(RingBufferControl
@@ -20,6 +29,7 @@ namespace bx
 			);
 
 	public:
+<<<<<<< HEAD
 		RingBufferControl(uint32_t _size)
 			: m_size(_size)
 			, m_current(0)
@@ -89,6 +99,31 @@ namespace bx
 			m_write   = 0;
 			m_read    = 0;
 		}
+=======
+		///
+		RingBufferControl(uint32_t _size);
+
+		///
+		~RingBufferControl();
+
+		///
+		uint32_t available() const;
+
+		///
+		uint32_t consume(uint32_t _size); // consumer only
+
+		///
+		uint32_t reserve(uint32_t _size, bool _mustSucceed = false); // producer only
+
+		///
+		uint32_t commit(uint32_t _size); // producer only
+
+		///
+		uint32_t distance(uint32_t _from, uint32_t _to) const; // both
+
+		///
+		void reset();
+>>>>>>> upstream/master
 
 		const uint32_t m_size;
 		uint32_t m_current;
@@ -96,6 +131,10 @@ namespace bx
 		uint32_t m_read;
 	};
 
+<<<<<<< HEAD
+=======
+	///
+>>>>>>> upstream/master
 	class SpScRingBufferControl
 	{
 		BX_CLASS(SpScRingBufferControl
@@ -104,6 +143,7 @@ namespace bx
 			);
 
 	public:
+<<<<<<< HEAD
 		SpScRingBufferControl(uint32_t _size)
 			: m_size(_size)
 			, m_current(0)
@@ -177,6 +217,31 @@ namespace bx
 			m_write   = 0;
 			m_read    = 0;
 		}
+=======
+		///
+		SpScRingBufferControl(uint32_t _size);
+
+		///
+		~SpScRingBufferControl();
+
+		///
+		uint32_t available() const;
+
+		///
+		uint32_t consume(uint32_t _size); // consumer only
+
+		///
+		uint32_t reserve(uint32_t _size); // producer only
+
+		///
+		uint32_t commit(uint32_t _size); // producer only
+
+		///
+		uint32_t distance(uint32_t _from, uint32_t _to) const; // both
+
+		///
+		void reset();
+>>>>>>> upstream/master
 
 		const uint32_t m_size;
 		uint32_t m_current;
@@ -184,7 +249,12 @@ namespace bx
 		uint32_t m_read;
 	};
 
+<<<<<<< HEAD
 	template <typename Control>
+=======
+	///
+	template <typename ControlT>
+>>>>>>> upstream/master
 	class ReadRingBufferT
 	{
 		BX_CLASS(ReadRingBufferT
@@ -194,6 +264,7 @@ namespace bx
 			);
 
 	public:
+<<<<<<< HEAD
 		ReadRingBufferT(Control& _control, const char* _buffer, uint32_t _size)
 			: m_control(_control)
 			, m_read(_control.m_read)
@@ -237,22 +308,53 @@ namespace bx
 			m_read += _len;
 			m_read %= m_control.m_size;
 		}
+=======
+		///
+		ReadRingBufferT(ControlT& _control, const char* _buffer, uint32_t _size);
+
+		///
+		~ReadRingBufferT();
+
+		///
+		void end();
+
+		///
+		void read(char* _data, uint32_t _len);
+
+		///
+		void skip(uint32_t _len);
+>>>>>>> upstream/master
 
 	private:
 		template <typename Ty>
 		friend class WriteRingBufferT;
 
+<<<<<<< HEAD
 		Control& m_control;
+=======
+		ControlT& m_control;
+>>>>>>> upstream/master
 		uint32_t m_read;
 		uint32_t m_end;
 		const uint32_t m_size;
 		const char* m_buffer;
 	};
 
+<<<<<<< HEAD
 	typedef ReadRingBufferT<RingBufferControl> ReadRingBuffer;
 	typedef ReadRingBufferT<SpScRingBufferControl> SpScReadRingBuffer;
 
 	template <typename Control>
+=======
+	///
+	typedef ReadRingBufferT<RingBufferControl> ReadRingBuffer;
+
+	///
+	typedef ReadRingBufferT<SpScRingBufferControl> SpScReadRingBuffer;
+
+	///
+	template <typename ControlT>
+>>>>>>> upstream/master
 	class WriteRingBufferT
 	{
 		BX_CLASS(WriteRingBufferT
@@ -262,6 +364,7 @@ namespace bx
 			);
 
 	public:
+<<<<<<< HEAD
 		WriteRingBufferT(Control& _control, char* _buffer, uint32_t _size)
 			: m_control(_control)
 			, m_size(_size)
@@ -328,15 +431,49 @@ namespace bx
 
 	private:
 		Control& m_control;
+=======
+		///
+		WriteRingBufferT(ControlT& _control, char* _buffer, uint32_t _size);
+
+		///
+		~WriteRingBufferT();
+
+		///
+		void end();
+
+		///
+		void write(const char* _data, uint32_t _len);
+
+		///
+		void write(ReadRingBufferT<ControlT>& _read, uint32_t _len);
+
+		///
+		void skip(uint32_t _len);
+
+	private:
+		ControlT& m_control;
+>>>>>>> upstream/master
 		uint32_t m_write;
 		uint32_t m_end;
 		const uint32_t m_size;
 		char* m_buffer;
 	};
 
+<<<<<<< HEAD
 	typedef WriteRingBufferT<RingBufferControl> WriteRingBuffer;
+=======
+	///
+	typedef WriteRingBufferT<RingBufferControl> WriteRingBuffer;
+
+	///
+>>>>>>> upstream/master
 	typedef WriteRingBufferT<SpScRingBufferControl> SpScWriteRingBuffer;
 
 } // namespace bx
 
+<<<<<<< HEAD
+=======
+#include "inline/ringbuffer.inl"
+
+>>>>>>> upstream/master
 #endif // BX_RINGBUFFER_H_HEADER_GUARD

@@ -1,6 +1,11 @@
 /*
+<<<<<<< HEAD
  * Copyright 2010-2015 Branimir Karadzic. All rights reserved.
  * License: http://www.opensource.org/licenses/BSD-2-Clause
+=======
+ * Copyright 2010-2017 Branimir Karadzic. All rights reserved.
+ * License: https://github.com/bkaradzic/bx#license-bsd-2-clause
+>>>>>>> upstream/master
  */
 
 #ifndef BX_SPSCQUEUE_H_HEADER_GUARD
@@ -8,6 +13,7 @@
 
 #include "bx.h"
 #include "cpu.h"
+<<<<<<< HEAD
 #include "mutex.h"
 #include "uint32_t.h"
 
@@ -20,11 +26,22 @@ namespace bx
 	class SpScUnboundedQueueLf
 	{
 		BX_CLASS(SpScUnboundedQueueLf
+=======
+#include "semaphore.h"
+
+namespace bx
+{
+	///
+	class SpScUnboundedQueue
+	{
+		BX_CLASS(SpScUnboundedQueue
+>>>>>>> upstream/master
 			, NO_COPY
 			, NO_ASSIGNMENT
 			);
 
 	public:
+<<<<<<< HEAD
 		SpScUnboundedQueueLf()
 			: m_first(new Node(NULL) )
 			, m_divider(m_first)
@@ -76,15 +93,36 @@ namespace bx
 
 			return NULL;
 		}
+=======
+		///
+		SpScUnboundedQueue();
+
+		///
+		~SpScUnboundedQueue();
+
+		///
+		void push(void* _ptr);
+
+		///
+		void* peek();
+
+		///
+		void* pop();
+>>>>>>> upstream/master
 
 	private:
 		struct Node
 		{
+<<<<<<< HEAD
 			Node(void* _ptr)
 				: m_ptr(_ptr)
 				, m_next(NULL)
 			{
 			}
+=======
+			///
+			Node(void* _ptr);
+>>>>>>> upstream/master
 
 			void* m_ptr;
 			Node* m_next;
@@ -95,16 +133,25 @@ namespace bx
 		Node* m_last;
 	};
 
+<<<<<<< HEAD
 #if BX_CONFIG_SUPPORTS_THREADING
 	template<typename Ty>
 	class SpScUnboundedQueueMutex
 	{
 		BX_CLASS(SpScUnboundedQueueMutex
+=======
+	///
+	template<typename Ty>
+	class SpScUnboundedQueueT
+	{
+		BX_CLASS(SpScUnboundedQueueT
+>>>>>>> upstream/master
 			, NO_COPY
 			, NO_ASSIGNMENT
 			);
 
 	public:
+<<<<<<< HEAD
 		SpScUnboundedQueueMutex()
 		{
 		}
@@ -158,6 +205,30 @@ namespace bx
 
 #if BX_CONFIG_SUPPORTS_THREADING
 	template <typename Ty>
+=======
+		///
+		SpScUnboundedQueueT();
+
+		///
+		~SpScUnboundedQueueT();
+
+		///
+		void push(Ty* _ptr);
+
+		///
+		Ty* peek();
+
+		///
+		Ty* pop();
+
+	private:
+		SpScUnboundedQueue m_queue;
+	};
+
+
+#if BX_CONFIG_SUPPORTS_THREADING
+	///
+>>>>>>> upstream/master
 	class SpScBlockingUnboundedQueue
 	{
 		BX_CLASS(SpScBlockingUnboundedQueue
@@ -166,6 +237,7 @@ namespace bx
 			);
 
 	public:
+<<<<<<< HEAD
 		SpScBlockingUnboundedQueue()
 		{
 		}
@@ -198,9 +270,63 @@ namespace bx
 	private:
 		Semaphore m_count;
 		SpScUnboundedQueue<void> m_queue;
+=======
+		///
+		SpScBlockingUnboundedQueue();
+
+		///
+		~SpScBlockingUnboundedQueue();
+
+		///
+		void push(void* _ptr); // producer only
+
+		///
+		void* peek(); // consumer only
+
+		///
+		void* pop(int32_t _msecs = -1); // consumer only
+
+	private:
+		Semaphore m_count;
+		SpScUnboundedQueue m_queue;
+	};
+
+	///
+	template<typename Ty>
+	class SpScBlockingUnboundedQueueT
+	{
+		BX_CLASS(SpScBlockingUnboundedQueueT
+			, NO_COPY
+			, NO_ASSIGNMENT
+			);
+
+	public:
+		///
+		SpScBlockingUnboundedQueueT();
+
+		///
+		~SpScBlockingUnboundedQueueT();
+
+		///
+		void push(Ty* _ptr); // producer only
+
+		///
+		Ty* peek(); // consumer only
+
+		///
+		Ty* pop(int32_t _msecs = -1); // consumer only
+
+	private:
+		SpScBlockingUnboundedQueue m_queue;
+>>>>>>> upstream/master
 	};
 #endif // BX_CONFIG_SUPPORTS_THREADING
 
 } // namespace bx
 
+<<<<<<< HEAD
+=======
+#include "inline/spscqueue.inl"
+
+>>>>>>> upstream/master
 #endif // BX_SPSCQUEUE_H_HEADER_GUARD

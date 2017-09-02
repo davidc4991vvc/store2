@@ -12,6 +12,7 @@
 #include "includes/lvcards.h"
 
 
+<<<<<<< HEAD
 PALETTE_INIT_MEMBER(lvcards_state,ponttehk)
 {
 	const UINT8 *color_prom = memregion("proms")->base();
@@ -51,6 +52,11 @@ PALETTE_INIT_MEMBER(lvcards_state,ponttehk)
 PALETTE_INIT_MEMBER(lvcards_state, lvcards)//Ever so slightly different, but different enough.
 {
 	const UINT8 *color_prom = memregion("proms")->base();
+=======
+PALETTE_INIT_MEMBER(lvcards_state, lvcards)//Ever so slightly different, but different enough.
+{
+	const uint8_t *color_prom = memregion("proms")->base();
+>>>>>>> upstream/master
 	int i;
 
 	for ( i = 0; i < palette.entries(); i++ )
@@ -108,11 +114,19 @@ TILE_GET_INFO_MEMBER(lvcards_state::get_bg_tile_info)
 
 void lvcards_state::video_start()
 {
+<<<<<<< HEAD
 	m_bg_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(lvcards_state::get_bg_tile_info),this), TILEMAP_SCAN_ROWS,
 			8, 8, 32, 32);
 }
 
 UINT32 lvcards_state::screen_update_lvcards(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+=======
+	m_bg_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(lvcards_state::get_bg_tile_info),this), TILEMAP_SCAN_ROWS,
+			8, 8, 32, 32);
+}
+
+uint32_t lvcards_state::screen_update_lvcards(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+>>>>>>> upstream/master
 {
 	m_bg_tilemap->draw(screen, bitmap, cliprect, 0, 0);
 	return 0;

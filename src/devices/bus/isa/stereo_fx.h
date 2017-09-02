@@ -1,11 +1,20 @@
 // license:BSD-3-Clause
 // copyright-holders:Carl
+<<<<<<< HEAD
 #ifndef __STEREO_FX__
 #define __STEREO_FX__
 
 #include "emu.h"
 #include "isa.h"
 #include "sound/dac.h"
+=======
+#ifndef MAME_BUS_ISA_STEREO_FX_H
+#define MAME_BUS_ISA_STEREO_FX_H
+
+#pragma once
+
+#include "isa.h"
+>>>>>>> upstream/master
 #include "bus/pc_joy/pc_joy.h"
 #include "cpu/mcs51/mcs51.h"
 #include "sound/3812intf.h"
@@ -21,6 +30,7 @@ class stereo_fx_device : public device_t,
 {
 public:
 	// construction/destruction
+<<<<<<< HEAD
 	stereo_fx_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
 
 	// optional information overrides
@@ -31,6 +41,9 @@ public:
 	required_device<dac_device> m_dacr;
 	required_device<pc_joy_device> m_joy;
 	required_device<cpu_device> m_cpu;
+=======
+	stereo_fx_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
+>>>>>>> upstream/master
 
 	// mcu ports
 	DECLARE_READ8_MEMBER( dev_dsp_data_r );
@@ -54,6 +67,7 @@ public:
 
 protected:
 	// device-level overrides
+<<<<<<< HEAD
 	virtual void device_start();
 	virtual void device_reset();
 
@@ -72,10 +86,45 @@ private:
 	emu_timer *m_timer;
 	UINT8 m_t0;
 	UINT8 m_t1;
+=======
+	virtual void device_start() override;
+	virtual void device_reset() override;
+
+	virtual void device_timer(emu_timer &timer, device_timer_id id, int param, void *ptr) override;
+
+	// optional information overrides
+	virtual const tiny_rom_entry *device_rom_region() const override;
+	virtual void device_add_mconfig(machine_config &config) override;
+
+	uint8_t dack_r(int line) override;
+	void dack_w(int line, uint8_t data) override;
+
+	required_device<pc_joy_device> m_joy;
+	required_device<cpu_device> m_cpu;
+
+private:
+	// internal state
+	bool m_data_in;
+	uint8_t m_in_byte;
+	bool m_data_out;
+	uint8_t m_out_byte;
+
+	uint8_t m_port20;
+	uint8_t m_port00;
+	emu_timer *m_timer;
+	uint8_t m_t0;
+	uint8_t m_t1;
+>>>>>>> upstream/master
 };
 
 // device type definition
 
+<<<<<<< HEAD
 extern const device_type ISA8_STEREO_FX;
 
 #endif
+=======
+DECLARE_DEVICE_TYPE(ISA8_STEREO_FX, stereo_fx_device)
+
+#endif // MAME_BUS_ISA_STEREO_FX_H
+>>>>>>> upstream/master

@@ -14,8 +14,13 @@
 #error Dont include this file directly; include emu.h instead.
 #endif
 
+<<<<<<< HEAD
 #ifndef __DRIVER_H__
 #define __DRIVER_H__
+=======
+#ifndef MAME_EMU_DRIVER_H
+#define MAME_EMU_DRIVER_H
+>>>>>>> upstream/master
 
 
 //**************************************************************************
@@ -24,28 +29,49 @@
 
 // core machine callbacks
 #define MCFG_MACHINE_START_OVERRIDE(_class, _func) \
+<<<<<<< HEAD
 	driver_device::static_set_callback(config.root_device(), driver_device::CB_MACHINE_START, driver_callback_delegate(&_class::MACHINE_START_NAME(_func), #_class "::machine_start_" #_func, downcast<_class *>(owner)));
 
 #define MCFG_MACHINE_RESET_OVERRIDE(_class, _func) \
 	driver_device::static_set_callback(config.root_device(), driver_device::CB_MACHINE_RESET, driver_callback_delegate(&_class::MACHINE_RESET_NAME(_func), #_class "::machine_reset_" #_func, downcast<_class *>(owner)));
+=======
+	driver_device::static_set_callback(config.root_device(), driver_device::CB_MACHINE_START, driver_callback_delegate(&_class::MACHINE_START_NAME(_func), downcast<_class *>(owner)));
+
+#define MCFG_MACHINE_RESET_OVERRIDE(_class, _func) \
+	driver_device::static_set_callback(config.root_device(), driver_device::CB_MACHINE_RESET, driver_callback_delegate(&_class::MACHINE_RESET_NAME(_func), downcast<_class *>(owner)));
+>>>>>>> upstream/master
 
 #define MCFG_MACHINE_RESET_REMOVE() \
 	driver_device::static_set_callback(config.root_device(), driver_device::CB_MACHINE_RESET, driver_callback_delegate());
 
 // core sound callbacks
 #define MCFG_SOUND_START_OVERRIDE(_class, _func) \
+<<<<<<< HEAD
 	driver_device::static_set_callback(config.root_device(), driver_device::CB_SOUND_START, driver_callback_delegate(&_class::SOUND_START_NAME(_func), #_class "::sound_start_" #_func, downcast<_class *>(owner)));
 
 #define MCFG_SOUND_RESET_OVERRIDE(_class, _func) \
 	driver_device::static_set_callback(config.root_device(), driver_device::CB_SOUND_RESET, driver_callback_delegate(&_class::SOUND_RESET_NAME(_func), #_class "::sound_reset_" #_func, downcast<_class *>(owner)));
+=======
+	driver_device::static_set_callback(config.root_device(), driver_device::CB_SOUND_START, driver_callback_delegate(&_class::SOUND_START_NAME(_func), downcast<_class *>(owner)));
+
+#define MCFG_SOUND_RESET_OVERRIDE(_class, _func) \
+	driver_device::static_set_callback(config.root_device(), driver_device::CB_SOUND_RESET, driver_callback_delegate(&_class::SOUND_RESET_NAME(_func), downcast<_class *>(owner)));
+>>>>>>> upstream/master
 
 
 // core video callbacks
 #define MCFG_VIDEO_START_OVERRIDE(_class, _func) \
+<<<<<<< HEAD
 	driver_device::static_set_callback(config.root_device(), driver_device::CB_VIDEO_START, driver_callback_delegate(&_class::VIDEO_START_NAME(_func), #_class "::video_start_" #_func, downcast<_class *>(owner)));
 
 #define MCFG_VIDEO_RESET_OVERRIDE(_class, _func) \
 	driver_device::static_set_callback(config.root_device(), driver_device::CB_VIDEO_RESET, driver_callback_delegate(&_class::VIDEO_RESET_NAME(_func), #_class "::video_reset_" #_func, downcast<_class *>(owner)));
+=======
+	driver_device::static_set_callback(config.root_device(), driver_device::CB_VIDEO_START, driver_callback_delegate(&_class::VIDEO_START_NAME(_func), downcast<_class *>(owner)));
+
+#define MCFG_VIDEO_RESET_OVERRIDE(_class, _func) \
+	driver_device::static_set_callback(config.root_device(), driver_device::CB_VIDEO_RESET, driver_callback_delegate(&_class::VIDEO_RESET_NAME(_func), downcast<_class *>(owner)));
+>>>>>>> upstream/master
 
 
 
@@ -89,16 +115,23 @@
 //**************************************************************************
 
 // forward declarations
+<<<<<<< HEAD
 class gfxdecode_device;
 class palette_device;
+=======
+>>>>>>> upstream/master
 typedef delegate<void ()> driver_callback_delegate;
 
 
 // ======================> driver_device
 
 // base class for machine driver-specific devices
+<<<<<<< HEAD
 class driver_device :   public device_t,
 						public device_memory_interface
+=======
+class driver_device : public device_t
+>>>>>>> upstream/master
 {
 public:
 	// construction/destruction
@@ -106,7 +139,11 @@ public:
 	virtual ~driver_device();
 
 	// getters
+<<<<<<< HEAD
 	const game_driver &system() const { assert(m_system != NULL); return *m_system; }
+=======
+	const game_driver &system() const { assert(m_system != nullptr); return *m_system; }
+>>>>>>> upstream/master
 
 	// indexes into our generic callbacks
 	enum callback_type
@@ -121,6 +158,7 @@ public:
 	};
 
 	// inline configuration helpers
+<<<<<<< HEAD
 	static void static_set_game(device_t &device, const game_driver &game);
 	static void static_set_callback(device_t &device, callback_type type, driver_callback_delegate callback);
 
@@ -131,11 +169,23 @@ public:
 		(machine.driver_data<_DriverClass>()->*_Function)();
 	}
 
+=======
+	void set_game_driver(const game_driver &game);
+	static void static_set_callback(device_t &device, callback_type type, driver_callback_delegate callback);
+
+>>>>>>> upstream/master
 	// dummy driver_init callbacks
 	void init_0() { }
 
 	// memory helpers
+<<<<<<< HEAD
 	address_space &generic_space() const { return space(AS_PROGRAM); }
+=======
+	address_space &generic_space() const { return machine().dummy_space(); }
+
+	// output heler
+	output_manager &output() const { return machine().output(); }
+>>>>>>> upstream/master
 
 	// generic interrupt generators
 	void generic_pulse_irq_line(device_execute_interface &exec, int irqline, int cycles);
@@ -176,6 +226,7 @@ public:
 	INTERRUPT_GEN_MEMBER( irq7_line_pulse );
 	INTERRUPT_GEN_MEMBER( irq7_line_assert );
 
+<<<<<<< HEAD
 	// watchdog read/write handlers
 	DECLARE_WRITE8_MEMBER( watchdog_reset_w );
 	DECLARE_READ8_MEMBER( watchdog_reset_r );
@@ -225,14 +276,28 @@ public:
 	UINT32 flip_screen() const { return m_flip_screen_x; }
 	UINT32 flip_screen_x() const { return m_flip_screen_x; }
 	UINT32 flip_screen_y() const { return m_flip_screen_y; }
+=======
+
+	// generic video
+	void flip_screen_set(u32 on);
+	void flip_screen_set_no_update(u32 on);
+	void flip_screen_x_set(u32 on);
+	void flip_screen_y_set(u32 on);
+	u32 flip_screen() const { return m_flip_screen_x; }
+	u32 flip_screen_x() const { return m_flip_screen_x; }
+	u32 flip_screen_y() const { return m_flip_screen_y; }
+>>>>>>> upstream/master
 
 	// generic input port helpers
 	DECLARE_CUSTOM_INPUT_MEMBER( custom_port_read );
 
+<<<<<<< HEAD
 	// general fatal error handlers
 	DECLARE_READ8_MEMBER( fatal_generic_read );
 	DECLARE_WRITE8_MEMBER( fatal_generic_write );
 
+=======
+>>>>>>> upstream/master
 protected:
 	// helpers called at startup
 	virtual void driver_start();
@@ -247,6 +312,7 @@ protected:
 	virtual void video_reset();
 
 	// device-level overrides
+<<<<<<< HEAD
 	virtual const rom_entry *device_rom_region() const;
 	virtual ioport_constructor device_input_ports() const;
 	virtual void device_start();
@@ -289,3 +355,27 @@ device_t *driver_device_creator(const machine_config &mconfig, const char *tag, 
 
 
 #endif  /* __DRIVER_H__ */
+=======
+	virtual const tiny_rom_entry *device_rom_region() const override;
+	virtual void device_add_mconfig(machine_config &config) override;
+	virtual ioport_constructor device_input_ports() const override;
+	virtual void device_start() override;
+	virtual void device_reset_after_children() override;
+
+private:
+	// helpers
+	void irq_pulse_clear(void *ptr, s32 param);
+	void updateflip();
+
+	// internal state
+	const game_driver *         m_system;               // pointer to the game driver
+	driver_callback_delegate    m_callbacks[CB_COUNT];  // start/reset callbacks
+
+	// generic video
+	u8                          m_flip_screen_x;
+	u8                          m_flip_screen_y;
+};
+
+
+#endif  /* MAME_EMU_DRIVER_H */
+>>>>>>> upstream/master

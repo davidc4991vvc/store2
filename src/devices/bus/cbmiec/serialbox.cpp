@@ -6,6 +6,10 @@
 
 **********************************************************************/
 
+<<<<<<< HEAD
+=======
+#include "emu.h"
+>>>>>>> upstream/master
 #include "serialbox.h"
 
 
@@ -31,7 +35,11 @@ enum
 //  DEVICE DEFINITIONS
 //**************************************************************************
 
+<<<<<<< HEAD
 const device_type SERIAL_BOX = &device_creator<serial_box_device>;
+=======
+DEFINE_DEVICE_TYPE(SERIAL_BOX, serial_box_device, "serbox", "Serial Box")
+>>>>>>> upstream/master
 
 
 //-------------------------------------------------
@@ -48,7 +56,11 @@ ROM_END
 //  rom_region - device-specific ROM region
 //-------------------------------------------------
 
+<<<<<<< HEAD
 const rom_entry *serial_box_device::device_rom_region() const
+=======
+const tiny_rom_entry *serial_box_device::device_rom_region() const
+>>>>>>> upstream/master
 {
 	return ROM_NAME( serial_box );
 }
@@ -64,15 +76,23 @@ ADDRESS_MAP_END
 
 
 //-------------------------------------------------
+<<<<<<< HEAD
 //  MACHINE_DRIVER( serial_box )
 //-------------------------------------------------
 
 static MACHINE_CONFIG_FRAGMENT( serial_box )
+=======
+//  device_add_mconfig - add device configuration
+//-------------------------------------------------
+
+MACHINE_CONFIG_MEMBER( serial_box_device::device_add_mconfig )
+>>>>>>> upstream/master
 	MCFG_CPU_ADD(M6502_TAG, M65C02, XTAL_4MHz/4)
 	MCFG_CPU_PROGRAM_MAP(serial_box_mem)
 MACHINE_CONFIG_END
 
 
+<<<<<<< HEAD
 //-------------------------------------------------
 //  machine_config_additions - device-specific
 //  machine configurations
@@ -84,6 +104,8 @@ machine_config_constructor serial_box_device::device_mconfig_additions() const
 }
 
 
+=======
+>>>>>>> upstream/master
 
 //**************************************************************************
 //  LIVE DEVICE
@@ -93,8 +115,13 @@ machine_config_constructor serial_box_device::device_mconfig_additions() const
 //  serial_box_device - constructor
 //-------------------------------------------------
 
+<<<<<<< HEAD
 serial_box_device::serial_box_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
 	: device_t(mconfig, SERIAL_BOX, "Serial Box", tag, owner, clock, "serbox", __FILE__),
+=======
+serial_box_device::serial_box_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: device_t(mconfig, SERIAL_BOX, tag, owner, clock),
+>>>>>>> upstream/master
 		device_cbm_iec_interface(mconfig, *this),
 		m_maincpu(*this, M6502_TAG)
 {

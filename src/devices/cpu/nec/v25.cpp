@@ -37,6 +37,7 @@
 #include "emu.h"
 #include "debugger.h"
 
+<<<<<<< HEAD
 typedef UINT8 BOOLEAN;
 typedef UINT8 BYTE;
 typedef UINT16 WORD;
@@ -59,21 +60,73 @@ v25_common_device::v25_common_device(const machine_config &mconfig, device_type 
 	, m_prefetch_cycles(prefetch_cycles)
 	, m_chip_type(chip_type)
 	, m_v25v35_decryptiontable(NULL)
+=======
+typedef uint8_t BOOLEAN;
+typedef uint8_t BYTE;
+typedef uint16_t WORD;
+typedef uint32_t DWORD;
+
+#include "v25.h"
+#include "v25priv.h"
+#include "nec_common.h"
+
+DEFINE_DEVICE_TYPE(V25, v25_device, "v25", "V25")
+DEFINE_DEVICE_TYPE(V35, v35_device, "v35", "V35")
+
+
+v25_common_device::v25_common_device(const machine_config &mconfig, device_type type, const char *tag, device_t *owner, uint32_t clock, bool is_16bit, offs_t fetch_xor, uint8_t prefetch_size, uint8_t prefetch_cycles, uint32_t chip_type)
+	: cpu_device(mconfig, type, tag, owner, clock)
+	, m_program_config("program", ENDIANNESS_LITTLE, is_16bit ? 16 : 8, 20, 0)
+	, m_io_config("io", ENDIANNESS_LITTLE, is_16bit ? 16 : 8, 16, 0)
+	, m_fetch_xor(fetch_xor)
+	, m_PCK(8)
+	, m_pt_in(*this)
+	, m_p0_in(*this)
+	, m_p1_in(*this)
+	, m_p2_in(*this)
+	, m_p0_out(*this)
+	, m_p1_out(*this)
+	, m_p2_out(*this)
+	, m_prefetch_size(prefetch_size)
+	, m_prefetch_cycles(prefetch_cycles)
+	, m_chip_type(chip_type)
+	, m_v25v35_decryptiontable(nullptr)
+>>>>>>> upstream/master
 {
 }
 
 
+<<<<<<< HEAD
 v25_device::v25_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
 	: v25_common_device(mconfig, V25, "V25", tag, owner, clock, "v25", false, 0, 4, 4, V20_TYPE)
+=======
+v25_device::v25_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: v25_common_device(mconfig, V25, tag, owner, clock, false, 0, 4, 4, V20_TYPE)
+>>>>>>> upstream/master
 {
 }
 
 
+<<<<<<< HEAD
 v35_device::v35_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
 	: v25_common_device(mconfig, V35, "V35", tag, owner, clock, "v35", true, BYTE_XOR_LE(0), 6, 2, V30_TYPE)
 {
 }
 
+=======
+v35_device::v35_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: v25_common_device(mconfig, V35, tag, owner, clock, true, BYTE_XOR_LE(0), 6, 2, V30_TYPE)
+{
+}
+
+device_memory_interface::space_config_vector v25_common_device::memory_space_config() const
+{
+	return space_config_vector {
+		std::make_pair(AS_PROGRAM, &m_program_config),
+		std::make_pair(AS_IO,      &m_io_config)
+	};
+}
+>>>>>>> upstream/master
 
 TIMER_CALLBACK_MEMBER(v25_common_device::v25_timer_callback)
 {
@@ -119,15 +172,25 @@ void v25_common_device::do_prefetch(int previous_ICount)
 
 }
 
+<<<<<<< HEAD
 UINT8 v25_common_device::fetch()
+=======
+uint8_t v25_common_device::fetch()
+>>>>>>> upstream/master
 {
 	prefetch();
 	return m_direct->read_byte((Sreg(PS)<<4)+m_ip++, m_fetch_xor);
 }
 
+<<<<<<< HEAD
 UINT16 v25_common_device::fetchword()
 {
 	UINT16 r = FETCH();
+=======
+uint16_t v25_common_device::fetchword()
+{
+	uint16_t r = FETCH();
+>>>>>>> upstream/master
 	r |= (FETCH()<<8);
 	return r;
 }
@@ -139,11 +202,19 @@ UINT16 v25_common_device::fetchword()
 #include "necea.h"
 #include "necmodrm.h"
 
+<<<<<<< HEAD
 static UINT8 parity_table[256];
 
 UINT8 v25_common_device::fetchop()
 {
 	UINT8 ret;
+=======
+static uint8_t parity_table[256];
+
+uint8_t v25_common_device::fetchop()
+{
+	uint8_t ret;
+>>>>>>> upstream/master
 
 	prefetch();
 	ret = m_direct->read_byte(( Sreg(PS)<<4)+m_ip++, m_fetch_xor);
@@ -223,7 +294,11 @@ void v25_common_device::device_reset()
 
 void v25_common_device::nec_interrupt(unsigned int_num, int /*INTSOURCES*/ source)
 {
+<<<<<<< HEAD
 	UINT32 dest_seg, dest_off;
+=======
+	uint32_t dest_seg, dest_off;
+>>>>>>> upstream/master
 
 	i_pushf();
 	m_TF = m_IF = 0;
@@ -351,7 +426,11 @@ void v25_common_device::external_int()
 	{
 		/* the actual vector is retrieved after pushing flags */
 		/* and clearing the IF */
+<<<<<<< HEAD
 		nec_interrupt((UINT32)-1, INT_IRQ);
+=======
+		nec_interrupt((uint32_t)-1, INT_IRQ);
+>>>>>>> upstream/master
 		m_irq_state = CLEAR_LINE;
 		m_pending_irq &= ~INT_IRQ;
 	}
@@ -361,8 +440,13 @@ void v25_common_device::external_int()
 /*                             OPCODES                                      */
 /****************************************************************************/
 
+<<<<<<< HEAD
 #include "necinstr.inc"
 #include "v25instr.inc"
+=======
+#include "necinstr.hxx"
+#include "v25instr.hxx"
+>>>>>>> upstream/master
 
 /*****************************************************************************/
 
@@ -404,11 +488,17 @@ void v25_common_device::execute_set_input(int irqline, int state)
 	}
 }
 
+<<<<<<< HEAD
 offs_t v25_common_device::disasm_disassemble(char *buffer, offs_t pc, const UINT8 *oprom, const UINT8 *opram, UINT32 options)
 {
 	extern int necv_dasm_one(char *buffer, UINT32 eip, const UINT8 *oprom, const UINT8 *decryption_table);
 
 	return necv_dasm_one(buffer, pc, oprom, m_v25v35_decryptiontable);
+=======
+offs_t v25_common_device::disasm_disassemble(std::ostream &stream, offs_t pc, const uint8_t *oprom, const uint8_t *opram, uint32_t options)
+{
+	return necv_dasm_one(stream, pc, oprom, m_v25v35_decryptiontable);
+>>>>>>> upstream/master
 }
 
 void v25_common_device::device_start()
@@ -501,6 +591,18 @@ void v25_common_device::device_start()
 	m_direct = &m_program->direct();
 	m_io = &space(AS_IO);
 
+<<<<<<< HEAD
+=======
+	m_pt_in.resolve_safe(0xff);
+	m_p0_in.resolve_safe(0xff);
+	m_p1_in.resolve_safe(0xff);
+	m_p2_in.resolve_safe(0xff);
+
+	m_p0_out.resolve_safe();
+	m_p1_out.resolve_safe();
+	m_p2_out.resolve_safe();
+
+>>>>>>> upstream/master
 	state_add( V25_PC,    "PC", m_debugger_temp).callimport().callexport().formatstr("%05X");
 	state_add( V25_IP,    "IP", m_ip).formatstr("%04X");
 	state_add( V25_SP,    "SP", m_debugger_temp).callimport().callexport().formatstr("%04X");
@@ -517,7 +619,14 @@ void v25_common_device::device_start()
 	state_add( V25_SS,    "SS", m_debugger_temp).callimport().callexport().formatstr("%04X");
 	state_add( V25_DS,    "DS0", m_debugger_temp).callimport().callexport().formatstr("%04X");
 
+<<<<<<< HEAD
 	state_add( STATE_GENPC, "GENPC", m_debugger_temp).callimport().callexport().noshow();
+=======
+	state_add( V25_IDB,   "IDB", m_IDB).mask(0xffe00).callimport();
+
+	state_add( STATE_GENPC, "GENPC", m_debugger_temp).callexport().noshow();
+	state_add( STATE_GENPCBASE, "CURPC", m_debugger_temp).callexport().noshow();
+>>>>>>> upstream/master
 	state_add( STATE_GENSP, "GENSP", m_debugger_temp).callimport().callexport().noshow();
 	state_add( STATE_GENFLAGS, "GENFLAGS", m_debugger_temp).formatstr("%16s").noshow();
 
@@ -525,14 +634,24 @@ void v25_common_device::device_start()
 }
 
 
+<<<<<<< HEAD
 void v25_common_device::state_string_export(const device_state_entry &entry, std::string &str)
 {
 	UINT16 flags = CompressFlags();
+=======
+void v25_common_device::state_string_export(const device_state_entry &entry, std::string &str) const
+{
+	uint16_t flags = CompressFlags();
+>>>>>>> upstream/master
 
 	switch (entry.index())
 	{
 		case STATE_GENFLAGS:
+<<<<<<< HEAD
 			strprintf(str, "%c %d %c%c%c%c%c%c%c%c%c%c%c%c",
+=======
+			str = string_format("%c %d %c%c%c%c%c%c%c%c%c%c%c%c",
+>>>>>>> upstream/master
 				flags & 0x8000 ? 'N':'S',
 				(flags & 0x7000) >> 12,
 				flags & 0x0800 ? 'O':'.',
@@ -618,6 +737,13 @@ void v25_common_device::state_import(const device_state_entry &entry)
 		case V25_DS:
 			Sreg(DS0) = m_debugger_temp;
 			break;
+<<<<<<< HEAD
+=======
+
+		case V25_IDB:
+			m_IDB |= 0xe00;
+			break;
+>>>>>>> upstream/master
 	}
 }
 
@@ -627,6 +753,10 @@ void v25_common_device::state_export(const device_state_entry &entry)
 	switch (entry.index())
 	{
 		case STATE_GENPC:
+<<<<<<< HEAD
+=======
+		case STATE_GENPCBASE:
+>>>>>>> upstream/master
 		case V25_PC:
 			m_debugger_temp = (Sreg(PS)<<4) + m_ip;
 			break;

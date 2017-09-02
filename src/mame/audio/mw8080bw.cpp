@@ -1,5 +1,11 @@
+<<<<<<< HEAD
 // license:???
 // copyright-holders:Michael Strutts, Nicola Salmoria, Tormod Tjaberg, Mirko Buffoni,Lee Taylor, Valerio Verrando, Marco Cassili, Zsolt Vasvari,Derrick Renaud
+=======
+// license:BSD-3-Clause
+// copyright-holders:Nicola Salmoria, Tormod Tjaberg, Mirko Buffoni,Lee Taylor, Valerio Verrando, Zsolt Vasvari,Derrick Renaud
+// thanks-to:Michael Strutts, Marco Cassili
+>>>>>>> upstream/master
 /***************************************************************************
 
     Midway 8080-based black and white hardware
@@ -8,6 +14,10 @@
 
 #include "emu.h"
 #include "includes/mw8080bw.h"
+<<<<<<< HEAD
+=======
+#include "speaker.h"
+>>>>>>> upstream/master
 
 
 /*************************************
@@ -139,10 +149,17 @@ static const char *const seawolf_sample_names[] =
 	"dive",
 	"sonar",
 	"minehit",
+<<<<<<< HEAD
 	0
 };
 
 MACHINE_CONFIG_FRAGMENT( seawolf_audio )
+=======
+	nullptr
+};
+
+MACHINE_CONFIG_START( seawolf_audio )
+>>>>>>> upstream/master
 	MCFG_SOUND_START_OVERRIDE(mw8080bw_state, samples)
 
 	MCFG_SPEAKER_STANDARD_MONO("mono")
@@ -155,7 +172,11 @@ MACHINE_CONFIG_END
 
 WRITE8_MEMBER(mw8080bw_state::seawolf_audio_w)
 {
+<<<<<<< HEAD
 	UINT8 rising_bits = data & ~m_port_1_last;
+=======
+	uint8_t rising_bits = data & ~m_port_1_last;
+>>>>>>> upstream/master
 
 	/* if (data & 0x01)  enable SHIP HIT sound */
 	if (rising_bits & 0x01) m_samples->start(0, 0);
@@ -172,7 +193,11 @@ WRITE8_MEMBER(mw8080bw_state::seawolf_audio_w)
 	/* if (data & 0x10)  enable MINE HIT sound */
 	if (rising_bits & 0x10) m_samples->start(4, 4);
 
+<<<<<<< HEAD
 	coin_counter_w(machine(), 0, (data >> 5) & 0x01);
+=======
+	machine().bookkeeping().coin_counter_w(0, (data >> 5) & 0x01);
+>>>>>>> upstream/master
 
 	/* D6 and D7 are not connected */
 
@@ -192,11 +217,19 @@ static const char *const gunfight_sample_names[] =
 	"*gunfight",
 	"gunshot",
 	"killed",
+<<<<<<< HEAD
 	0
 };
 
 
 MACHINE_CONFIG_FRAGMENT( gunfight_audio )
+=======
+	nullptr
+};
+
+
+MACHINE_CONFIG_START( gunfight_audio )
+>>>>>>> upstream/master
 	MCFG_SOUND_START_OVERRIDE(mw8080bw_state, samples)
 
 	MCFG_SPEAKER_STANDARD_STEREO("lspeaker", "rspeaker")
@@ -217,7 +250,11 @@ WRITE8_MEMBER(mw8080bw_state::gunfight_audio_w)
 {
 	/* D0 and D1 are just tied to 1k resistors */
 
+<<<<<<< HEAD
 	coin_counter_w(machine(), 0, (data >> 2) & 0x01);
+=======
+	machine().bookkeeping().coin_counter_w(0, (data >> 2) & 0x01);
+>>>>>>> upstream/master
 
 	/* the 74175 latches and inverts the top 4 bits */
 	switch ((~data >> 4) & 0x0f)
@@ -305,7 +342,11 @@ static DISCRETE_SOUND_START(tornbase)
 DISCRETE_SOUND_END
 
 
+<<<<<<< HEAD
 MACHINE_CONFIG_FRAGMENT( tornbase_audio )
+=======
+MACHINE_CONFIG_START( tornbase_audio )
+>>>>>>> upstream/master
 	MCFG_SPEAKER_STANDARD_MONO("mono")
 	MCFG_SOUND_ADD("discrete", DISCRETE, 0)
 	MCFG_DISCRETE_INTF(tornbase)
@@ -338,7 +379,11 @@ WRITE8_MEMBER(mw8080bw_state::tornbase_audio_w)
 		/* if (data & 0x40)  enable WHISTLE sound */
 	}
 
+<<<<<<< HEAD
 	coin_counter_w(machine(), 0, (data >> 7) & 0x01);
+=======
+	machine().bookkeeping().coin_counter_w(0, (data >> 7) & 0x01);
+>>>>>>> upstream/master
 }
 
 
@@ -349,7 +394,11 @@ WRITE8_MEMBER(mw8080bw_state::tornbase_audio_w)
  *
  *************************************/
 
+<<<<<<< HEAD
 MACHINE_CONFIG_FRAGMENT( zzzap_audio )
+=======
+MACHINE_CONFIG_START( zzzap_audio )
+>>>>>>> upstream/master
 	MCFG_SPEAKER_STANDARD_MONO("mono")
 MACHINE_CONFIG_END
 
@@ -379,7 +428,11 @@ WRITE8_MEMBER(mw8080bw_state::zzzap_audio_2_w)
 	                                        before it appears again, not sure what
 	                                        it is supposed to sound like) */
 
+<<<<<<< HEAD
 	coin_counter_w(machine(), 0, (data >> 5) & 0x01);
+=======
+	machine().bookkeeping().coin_counter_w(0, (data >> 5) & 0x01);
+>>>>>>> upstream/master
 
 	/* D4, D6 and D7 are not connected */
 }
@@ -551,7 +604,11 @@ static DISCRETE_SOUND_START(maze)
 DISCRETE_SOUND_END
 
 
+<<<<<<< HEAD
 MACHINE_CONFIG_FRAGMENT( maze_audio )
+=======
+MACHINE_CONFIG_START( maze_audio )
+>>>>>>> upstream/master
 	MCFG_SPEAKER_STANDARD_MONO("mono")
 	MCFG_SOUND_ADD("discrete", DISCRETE, 0)
 	MCFG_DISCRETE_INTF(maze)
@@ -559,12 +616,20 @@ MACHINE_CONFIG_FRAGMENT( maze_audio )
 MACHINE_CONFIG_END
 
 
+<<<<<<< HEAD
 void mw8080bw_state::maze_write_discrete(UINT8 maze_tone_timing_state)
+=======
+void mw8080bw_state::maze_write_discrete(uint8_t maze_tone_timing_state)
+>>>>>>> upstream/master
 {
 	/* controls need to be active low */
 	int controls = ~ioport("IN0")->read() & 0xff;
 
+<<<<<<< HEAD
 	address_space &space = machine().driver_data()->generic_space();
+=======
+	address_space &space = machine().dummy_space();
+>>>>>>> upstream/master
 	m_discrete->write(space, MAZE_TONE_TIMING, maze_tone_timing_state);
 	m_discrete->write(space, MAZE_P1_DATA, controls & 0x0f);
 	m_discrete->write(space, MAZE_P2_DATA, (controls >> 4) & 0x0f);
@@ -798,7 +863,11 @@ static DISCRETE_SOUND_START(boothill)
 DISCRETE_SOUND_END
 
 
+<<<<<<< HEAD
 MACHINE_CONFIG_FRAGMENT( boothill_audio )
+=======
+MACHINE_CONFIG_START( boothill_audio )
+>>>>>>> upstream/master
 	MCFG_SPEAKER_STANDARD_STEREO("lspeaker", "rspeaker")
 	MCFG_SOUND_ADD("discrete", DISCRETE, 0)
 	MCFG_DISCRETE_INTF(boothill)
@@ -811,7 +880,11 @@ WRITE8_MEMBER(mw8080bw_state::boothill_audio_w)
 {
 	/* D0 and D1 are not connected */
 
+<<<<<<< HEAD
 	coin_counter_w(machine(), 0, (data >> 2) & 0x01);
+=======
+	machine().bookkeeping().coin_counter_w(0, (data >> 2) & 0x01);
+>>>>>>> upstream/master
 
 	m_discrete->write(space, BOOTHILL_GAME_ON_EN, (data >> 3) & 0x01);
 
@@ -1028,7 +1101,11 @@ static DISCRETE_SOUND_START(checkmat)
 DISCRETE_SOUND_END
 
 
+<<<<<<< HEAD
 MACHINE_CONFIG_FRAGMENT( checkmat_audio )
+=======
+MACHINE_CONFIG_START( checkmat_audio )
+>>>>>>> upstream/master
 	MCFG_SPEAKER_STANDARD_MONO("mono")
 	MCFG_SOUND_ADD("discrete", DISCRETE, 0)
 	MCFG_DISCRETE_INTF(checkmat)
@@ -1042,7 +1119,11 @@ WRITE8_MEMBER(mw8080bw_state::checkmat_audio_w)
 
 	m_discrete->write(space, CHECKMAT_BOOM_EN, (data >> 1) & 0x01);
 
+<<<<<<< HEAD
 	coin_counter_w(machine(), 0, (data >> 2) & 0x01);
+=======
+	machine().bookkeeping().coin_counter_w(0, (data >> 2) & 0x01);
+>>>>>>> upstream/master
 
 	machine().sound().system_enable((data >> 3) & 0x01);
 
@@ -1239,7 +1320,11 @@ static DISCRETE_SOUND_START(desertgu)
 DISCRETE_SOUND_END
 
 
+<<<<<<< HEAD
 MACHINE_CONFIG_FRAGMENT( desertgu_audio )
+=======
+MACHINE_CONFIG_START( desertgu_audio )
+>>>>>>> upstream/master
 	MCFG_SPEAKER_STANDARD_MONO("mono")
 	MCFG_SOUND_ADD("discrete", DISCRETE, 0)
 	MCFG_DISCRETE_INTF(desertgu)
@@ -1251,7 +1336,11 @@ WRITE8_MEMBER(mw8080bw_state::desertgu_audio_1_w)
 {
 	/* D0 and D1 are not connected */
 
+<<<<<<< HEAD
 	coin_counter_w(machine(), 0, (data >> 2) & 0x01);
+=======
+	machine().bookkeeping().coin_counter_w(0, (data >> 2) & 0x01);
+>>>>>>> upstream/master
 
 	m_discrete->write(space, DESERTGU_GAME_ON_EN, (data >> 3) & 0x01);
 
@@ -1271,7 +1360,11 @@ WRITE8_MEMBER(mw8080bw_state::desertgu_audio_2_w)
 
 	m_discrete->write(space, DESERTGU_TRIGGER_CLICK_EN, (data >> 1) & 0x01);
 
+<<<<<<< HEAD
 	output_set_value("Player1_Gun_Recoil", (data >> 2) & 0x01);
+=======
+	output().set_value("Player1_Gun_Recoil", (data >> 2) & 0x01);
+>>>>>>> upstream/master
 
 	m_desertgun_controller_select = (data >> 3) & 0x01;
 
@@ -1488,7 +1581,11 @@ static DISCRETE_SOUND_START(dplay)
 
 	/************************************************ * Cheer
 	************************************************/ /* Noise clock was
+<<<<<<< HEAD
     breadboarded and measured at 7700Hz */ DISCRETE_LFSR_NOISE(DPLAY_NOISE, 1,
+=======
+	breadboarded and measured at 7700Hz */ DISCRETE_LFSR_NOISE(DPLAY_NOISE, 1,
+>>>>>>> upstream/master
 	1, 7700, 12.0, 0, 12.0/2, &dplay_lfsr)
 
 	DISCRETE_INTEGRATE(NODE_50, DPLAY_CHEER_EN, 0, &dplay_cheer_integrate_info)
@@ -1504,7 +1601,11 @@ static DISCRETE_SOUND_START(dplay)
 DISCRETE_SOUND_END
 
 
+<<<<<<< HEAD
 MACHINE_CONFIG_FRAGMENT( dplay_audio )
+=======
+MACHINE_CONFIG_START( dplay_audio )
+>>>>>>> upstream/master
 	MCFG_SPEAKER_STANDARD_MONO("mono")
 	MCFG_SOUND_ADD("discrete", DISCRETE, 0)
 	MCFG_DISCRETE_INTF(dplay)
@@ -1524,7 +1625,11 @@ WRITE8_MEMBER(mw8080bw_state::dplay_audio_w)
 
 	m_discrete->write(space, DPLAY_GAME_ON_EN, (data >> 4) & 0x01);
 
+<<<<<<< HEAD
 	coin_counter_w(machine(), 0, (data >> 5) & 0x01);
+=======
+	machine().bookkeeping().coin_counter_w(0, (data >> 5) & 0x01);
+>>>>>>> upstream/master
 
 	/* D6 and D7 are not connected */
 }
@@ -1542,10 +1647,17 @@ static const char *const gmissile_sample_names[] =
 	"*gmissile",
 	"1",    /* missle */
 	"2",    /* explosion */
+<<<<<<< HEAD
 	0
 };
 
 MACHINE_CONFIG_FRAGMENT( gmissile_audio )
+=======
+	nullptr
+};
+
+MACHINE_CONFIG_START( gmissile_audio )
+>>>>>>> upstream/master
 	MCFG_SOUND_START_OVERRIDE(mw8080bw_state, samples)
 
 	MCFG_SPEAKER_STANDARD_STEREO("lspeaker", "rspeaker")
@@ -1568,11 +1680,19 @@ WRITE8_MEMBER(mw8080bw_state::gmissile_audio_1_w)
 	   reversed (D5=R, D7=L), but the software confirms that
 	   ours is right */
 
+<<<<<<< HEAD
 	UINT8 rising_bits = data & ~m_port_1_last;
 
 	/* D0 and D1 are not connected */
 
 	coin_counter_w(machine(), 0, (data >> 2) & 0x01);
+=======
+	uint8_t rising_bits = data & ~m_port_1_last;
+
+	/* D0 and D1 are not connected */
+
+	machine().bookkeeping().coin_counter_w(0, (data >> 2) & 0x01);
+>>>>>>> upstream/master
 
 	machine().sound().system_enable((data >> 3) & 0x01);
 
@@ -1580,14 +1700,22 @@ WRITE8_MEMBER(mw8080bw_state::gmissile_audio_1_w)
 	if (rising_bits & 0x10) m_samples2->start(0, 0);
 
 	/* if (data & 0x20)  enable LEFT EXPLOSION sound (goes to left speaker) */
+<<<<<<< HEAD
 	output_set_value("L_EXP_LIGHT", (data >> 5) & 0x01);
+=======
+	output().set_value("L_EXP_LIGHT", (data >> 5) & 0x01);
+>>>>>>> upstream/master
 	if (rising_bits & 0x20) m_samples1->start(0, 1);
 
 	/* if (data & 0x40)  enable LEFT MISSILE sound (goes to left speaker) */
 	if (rising_bits & 0x40) m_samples1->start(0, 0);
 
 	/* if (data & 0x80)  enable RIGHT EXPLOSION sound (goes to right speaker) */
+<<<<<<< HEAD
 	output_set_value("R_EXP_LIGHT", (data >> 7) & 0x01);
+=======
+	output().set_value("R_EXP_LIGHT", (data >> 7) & 0x01);
+>>>>>>> upstream/master
 	if (rising_bits & 0x80) m_samples2->start(0, 1);
 
 	m_port_1_last = data;
@@ -1634,11 +1762,19 @@ static const char *const m4_sample_names[] =
 	"*m4",
 	"1",    /* missle */
 	"2",    /* explosion */
+<<<<<<< HEAD
 	0
 };
 
 
 MACHINE_CONFIG_FRAGMENT( m4_audio )
+=======
+	nullptr
+};
+
+
+MACHINE_CONFIG_START( m4_audio )
+>>>>>>> upstream/master
 	MCFG_SOUND_START_OVERRIDE(mw8080bw_state, samples)
 
 	MCFG_SPEAKER_STANDARD_STEREO("lspeaker", "rspeaker")
@@ -1657,11 +1793,19 @@ MACHINE_CONFIG_END
 
 WRITE8_MEMBER(mw8080bw_state::m4_audio_1_w)
 {
+<<<<<<< HEAD
 	UINT8 rising_bits = data & ~m_port_1_last;
 
 	/* D0 and D1 are not connected */
 
 	coin_counter_w(machine(), 0, (data >> 2) & 0x01);
+=======
+	uint8_t rising_bits = data & ~m_port_1_last;
+
+	/* D0 and D1 are not connected */
+
+	machine().bookkeeping().coin_counter_w(0, (data >> 2) & 0x01);
+>>>>>>> upstream/master
 
 	machine().sound().system_enable((data >> 3) & 0x01);
 
@@ -1683,7 +1827,11 @@ WRITE8_MEMBER(mw8080bw_state::m4_audio_1_w)
 
 WRITE8_MEMBER(mw8080bw_state::m4_audio_2_w)
 {
+<<<<<<< HEAD
 	UINT8 rising_bits = data & ~m_port_2_last;
+=======
+	uint8_t rising_bits = data & ~m_port_2_last;
+>>>>>>> upstream/master
 
 	/* if (data & 0x01)  enable LEFT PLAYER EXPLOSION sound via 510K res (goes to left speaker) */
 	if (rising_bits & 0x01) m_samples1->start(1, 1);
@@ -1890,10 +2038,17 @@ static const char *const clowns_sample_names[] =
 {
 	"*clowns",
 	"miss",
+<<<<<<< HEAD
 	0
 };
 
 MACHINE_CONFIG_FRAGMENT( clowns_audio )
+=======
+	nullptr
+};
+
+MACHINE_CONFIG_START( clowns_audio )
+>>>>>>> upstream/master
 	MCFG_SOUND_START_OVERRIDE(mw8080bw_state, samples)
 
 	MCFG_SPEAKER_STANDARD_MONO("mono")
@@ -1911,7 +2066,11 @@ MACHINE_CONFIG_END
 
 WRITE8_MEMBER(mw8080bw_state::clowns_audio_1_w)
 {
+<<<<<<< HEAD
 	coin_counter_w(machine(), 0, (data >> 0) & 0x01);
+=======
+	machine().bookkeeping().coin_counter_w(0, (data >> 0) & 0x01);
+>>>>>>> upstream/master
 
 	m_clowns_controller_select = (data >> 1) & 0x01;
 
@@ -1921,7 +2080,11 @@ WRITE8_MEMBER(mw8080bw_state::clowns_audio_1_w)
 
 WRITE8_MEMBER(mw8080bw_state::clowns_audio_2_w)
 {
+<<<<<<< HEAD
 	UINT8 rising_bits = data & ~m_port_2_last;
+=======
+	uint8_t rising_bits = data & ~m_port_2_last;
+>>>>>>> upstream/master
 
 	m_discrete->write(space, CLOWNS_POP_BOTTOM_EN, (data >> 0) & 0x01);
 
@@ -2266,7 +2429,11 @@ DISCRETE_GAIN(NODE_RELATIVE(SPACWALK_SPRINGBOARD_HIT1_SND, _num - 1),           
 	DISCRETE_OUTPUT(NODE_90, 11000)
 DISCRETE_SOUND_END
 
+<<<<<<< HEAD
 MACHINE_CONFIG_FRAGMENT( spacwalk_audio )
+=======
+MACHINE_CONFIG_START( spacwalk_audio )
+>>>>>>> upstream/master
 	MCFG_SPEAKER_STANDARD_MONO("mono")
 
 	MCFG_SOUND_ADD("discrete", DISCRETE, 0)
@@ -2276,7 +2443,11 @@ MACHINE_CONFIG_END
 
 WRITE8_MEMBER(mw8080bw_state::spacwalk_audio_1_w)
 {
+<<<<<<< HEAD
 	coin_counter_w(machine(), 0, (data >> 0) & 0x01);
+=======
+	machine().bookkeeping().coin_counter_w(0, (data >> 0) & 0x01);
+>>>>>>> upstream/master
 
 	m_clowns_controller_select = (data >> 1) & 0x01;
 
@@ -2495,7 +2666,11 @@ static DISCRETE_SOUND_START(shuffle)
 DISCRETE_SOUND_END
 
 
+<<<<<<< HEAD
 MACHINE_CONFIG_FRAGMENT( shuffle_audio )
+=======
+MACHINE_CONFIG_START( shuffle_audio )
+>>>>>>> upstream/master
 	MCFG_SPEAKER_STANDARD_MONO("mono")
 
 	MCFG_SOUND_ADD("discrete", DISCRETE, 0)
@@ -2526,7 +2701,11 @@ WRITE8_MEMBER(mw8080bw_state::shuffle_audio_2_w)
 {
 	m_discrete->write(space, SHUFFLE_FOUL_EN, (data >> 0) & 0x01);
 
+<<<<<<< HEAD
 	coin_counter_w(machine(), 0, (data >> 1) & 0x01);
+=======
+	machine().bookkeeping().coin_counter_w(0, (data >> 1) & 0x01);
+>>>>>>> upstream/master
 
 	/* D2-D7 are not connected */
 }
@@ -2675,7 +2854,11 @@ static DISCRETE_SOUND_START(dogpatch)
 DISCRETE_SOUND_END
 
 
+<<<<<<< HEAD
 MACHINE_CONFIG_FRAGMENT( dogpatch_audio )
+=======
+MACHINE_CONFIG_START( dogpatch_audio )
+>>>>>>> upstream/master
 	MCFG_SPEAKER_STANDARD_STEREO("lspeaker", "rspeaker")
 	MCFG_SOUND_ADD("discrete", DISCRETE, 0)
 	MCFG_DISCRETE_INTF(dogpatch)
@@ -2688,7 +2871,11 @@ WRITE8_MEMBER(mw8080bw_state::dogpatch_audio_w)
 {
 	/* D0, D1 and D7 are not used */
 
+<<<<<<< HEAD
 	coin_counter_w(machine(), 0, (data >> 2) & 0x01);
+=======
+	machine().bookkeeping().coin_counter_w(0, (data >> 2) & 0x01);
+>>>>>>> upstream/master
 
 	machine().sound().system_enable((data >> 3) & 0x01);
 	m_discrete->write(space, DOGPATCH_GAME_ON_EN, (data >> 3) & 0x01);
@@ -3180,7 +3367,11 @@ static DISCRETE_SOUND_START(spcenctr)
 DISCRETE_SOUND_END
 
 
+<<<<<<< HEAD
 MACHINE_CONFIG_FRAGMENT( spcenctr_audio )
+=======
+MACHINE_CONFIG_START( spcenctr_audio )
+>>>>>>> upstream/master
 	MCFG_SPEAKER_STANDARD_MONO("mono")
 
 	MCFG_SOUND_ADD("snsnd", SN76477, 0)
@@ -3241,7 +3432,11 @@ WRITE8_MEMBER(mw8080bw_state::spcenctr_audio_3_w)
 
 	m_spcenctr_strobe_state = (data >> 2) & 0x01;
 
+<<<<<<< HEAD
 	output_set_value("LAMP", (data >> 3) & 0x01);
+=======
+	output().set_value("LAMP", (data >> 3) & 0x01);
+>>>>>>> upstream/master
 
 	m_discrete->write(space, SPCENCTR_BONUS_EN, (data >> 4) & 0x01);
 
@@ -3263,10 +3458,17 @@ static const char *const phantom2_sample_names[] =
 	"*phantom2",
 	"1",    /* shot */
 	"2",    /* explosion */
+<<<<<<< HEAD
 	0
 };
 
 MACHINE_CONFIG_FRAGMENT( phantom2_audio )
+=======
+	nullptr
+};
+
+MACHINE_CONFIG_START( phantom2_audio )
+>>>>>>> upstream/master
 	MCFG_SOUND_START_OVERRIDE(mw8080bw_state, samples)
 
 	MCFG_SPEAKER_STANDARD_MONO("mono")
@@ -3279,7 +3481,11 @@ MACHINE_CONFIG_END
 
 WRITE8_MEMBER(mw8080bw_state::phantom2_audio_1_w)
 {
+<<<<<<< HEAD
 	UINT8 rising_bits = data & ~m_port_1_last;
+=======
+	uint8_t rising_bits = data & ~m_port_1_last;
+>>>>>>> upstream/master
 
 	/* if (data & 0x01)  enable PLAYER SHOT sound */
 	if (rising_bits & 0x01) m_samples->start(0, 0);
@@ -3289,7 +3495,11 @@ WRITE8_MEMBER(mw8080bw_state::phantom2_audio_1_w)
 	machine().sound().system_mute(!(data & 0x20));
 	machine().sound().system_enable((data >> 2) & 0x01);
 
+<<<<<<< HEAD
 	coin_counter_w(machine(), 0, (data >> 3) & 0x01);
+=======
+	machine().bookkeeping().coin_counter_w(0, (data >> 3) & 0x01);
+>>>>>>> upstream/master
 
 	/* if (data & 0x10)  enable RADAR sound */
 
@@ -3301,14 +3511,22 @@ WRITE8_MEMBER(mw8080bw_state::phantom2_audio_1_w)
 
 WRITE8_MEMBER(mw8080bw_state::phantom2_audio_2_w)
 {
+<<<<<<< HEAD
 	UINT8 rising_bits = data & ~m_port_2_last;
+=======
+	uint8_t rising_bits = data & ~m_port_2_last;
+>>>>>>> upstream/master
 
 	/* D0-D2 are not connected */
 
 	/* if (data & 0x08)  enable EXPLOSION sound */
 	if (rising_bits & 0x08) m_samples->start(1, 1);
 
+<<<<<<< HEAD
 	output_set_value("EXPLAMP", (data >> 4) & 0x01);
+=======
+	output().set_value("EXPLAMP", (data >> 4) & 0x01);
+>>>>>>> upstream/master
 
 	/* set JET SOUND FREQ((data >> 5) & 0x07)  0, if no jet sound */
 
@@ -3396,7 +3614,11 @@ static DISCRETE_SOUND_START(bowler)
 DISCRETE_SOUND_END
 
 
+<<<<<<< HEAD
 MACHINE_CONFIG_FRAGMENT( bowler_audio )
+=======
+MACHINE_CONFIG_START( bowler_audio )
+>>>>>>> upstream/master
 	MCFG_SPEAKER_STANDARD_MONO("mono")
 
 	MCFG_SOUND_ADD("discrete", DISCRETE, 0)
@@ -3409,7 +3631,11 @@ WRITE8_MEMBER(mw8080bw_state::bowler_audio_1_w)
 {
 	/* D0 - selects controller on the cocktail PCB */
 
+<<<<<<< HEAD
 	coin_counter_w(machine(), 0, (data >> 1) & 0x01);
+=======
+	machine().bookkeeping().coin_counter_w(0, (data >> 1) & 0x01);
+>>>>>>> upstream/master
 
 	machine().sound().system_enable((data >> 2) & 0x01);
 
@@ -3506,12 +3732,20 @@ static const char *const invaders_sample_names[] =
 	"7",        /* fleet move 4 */
 	"8",        /* UFO/saucer hit */
 	"9",        /* bonus base */
+<<<<<<< HEAD
 	0
+=======
+	nullptr
+>>>>>>> upstream/master
 };
 
 
 /* left in for all games that hack into invaders samples for audio */
+<<<<<<< HEAD
 MACHINE_CONFIG_FRAGMENT( invaders_samples_audio )
+=======
+MACHINE_CONFIG_START( invaders_samples_audio )
+>>>>>>> upstream/master
 	MCFG_SOUND_START_OVERRIDE(mw8080bw_state, samples)
 
 	MCFG_SPEAKER_STANDARD_MONO("mono")
@@ -4093,7 +4327,11 @@ static DISCRETE_SOUND_START(invaders)
 DISCRETE_SOUND_END
 
 
+<<<<<<< HEAD
 MACHINE_CONFIG_FRAGMENT( invaders_audio )
+=======
+MACHINE_CONFIG_START( invaders_audio )
+>>>>>>> upstream/master
 	MCFG_SPEAKER_STANDARD_MONO("mono")
 
 	MCFG_SOUND_ADD("snsnd", SN76477, 0)
@@ -4511,7 +4749,11 @@ static DISCRETE_SOUND_START(blueshrk)
 DISCRETE_SOUND_END
 
 
+<<<<<<< HEAD
 MACHINE_CONFIG_FRAGMENT( blueshrk_audio )
+=======
+MACHINE_CONFIG_START( blueshrk_audio )
+>>>>>>> upstream/master
 	MCFG_SPEAKER_STANDARD_MONO("mono")
 	MCFG_SOUND_ADD("discrete", DISCRETE, 0)
 	MCFG_DISCRETE_INTF(blueshrk)
@@ -4673,7 +4915,11 @@ static DISCRETE_SOUND_START(invad2ct)
 DISCRETE_SOUND_END
 
 
+<<<<<<< HEAD
 MACHINE_CONFIG_FRAGMENT( invad2ct_audio )
+=======
+MACHINE_CONFIG_START( invad2ct_audio )
+>>>>>>> upstream/master
 	MCFG_SPEAKER_STANDARD_STEREO("spk1", "spk2")
 
 	MCFG_SOUND_ADD("discrete", DISCRETE, 0)

@@ -31,12 +31,20 @@
 
 **********************************************************************/
 
+<<<<<<< HEAD
 #pragma once
 
 #ifndef __ISBX_SLOT__
 #define __ISBX_SLOT__
 
 #include "emu.h"
+=======
+#ifndef MAME_BUS_ISBX_ISBX_SLOT_H
+#define MAME_BUS_ISBX_ISBX_SLOT_H
+
+#pragma once
+
+>>>>>>> upstream/master
 
 
 
@@ -74,6 +82,7 @@ class isbx_slot_device;
 class device_isbx_card_interface : public device_slot_card_interface
 {
 public:
+<<<<<<< HEAD
 	// construction/destruction
 	device_isbx_card_interface(const machine_config &mconfig, device_t &device);
 
@@ -83,6 +92,14 @@ public:
 	virtual void mcs1_w(address_space &space, offs_t offset, UINT8 data) { }
 	virtual UINT8 mdack_r(address_space &space, offs_t offset) { return 0xff; }
 	virtual void mdack_w(address_space &space, offs_t offset, UINT8 data) { }
+=======
+	virtual uint8_t mcs0_r(address_space &space, offs_t offset) { return 0xff; }
+	virtual void mcs0_w(address_space &space, offs_t offset, uint8_t data) { }
+	virtual uint8_t mcs1_r(address_space &space, offs_t offset) { return 0xff; }
+	virtual void mcs1_w(address_space &space, offs_t offset, uint8_t data) { }
+	virtual uint8_t mdack_r(address_space &space, offs_t offset) { return 0xff; }
+	virtual void mdack_w(address_space &space, offs_t offset, uint8_t data) { }
+>>>>>>> upstream/master
 	virtual int opt0_r() { return 1; }
 	virtual void opt0_w(int state) { }
 	virtual int opt1_r() { return 1; }
@@ -91,6 +108,12 @@ public:
 	virtual void mclk_w(int state) { }
 
 protected:
+<<<<<<< HEAD
+=======
+	// construction/destruction
+	device_isbx_card_interface(const machine_config &mconfig, device_t &device);
+
+>>>>>>> upstream/master
 	isbx_slot_device *m_slot;
 };
 
@@ -102,12 +125,21 @@ class isbx_slot_device : public device_t,
 {
 public:
 	// construction/destruction
+<<<<<<< HEAD
 	isbx_slot_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
 
 	template<class _mintr0> void set_mintr0_callback(_mintr0 mintr0) { m_write_mintr0.set_callback(mintr0); }
 	template<class _mintr1> void set_mintr1_callback(_mintr1 mintr1) { m_write_mintr1.set_callback(mintr1); }
 	template<class _mdrqt> void set_mdrqt_callback(_mdrqt mdrqt) { m_write_mdrqt.set_callback(mdrqt); }
 	template<class _mwait> void set_mwait_callback(_mwait mwait) { m_write_mwait.set_callback(mwait); }
+=======
+	isbx_slot_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
+
+	template <class Object> void set_mintr0_callback(Object &&cb) { m_write_mintr0.set_callback(std::forward<Object>(cb)); }
+	template <class Object> void set_mintr1_callback(Object &&cb) { m_write_mintr1.set_callback(std::forward<Object>(cb)); }
+	template <class Object> void set_mdrqt_callback(Object &&cb) { m_write_mdrqt.set_callback(std::forward<Object>(cb)); }
+	template <class Object> void set_mwait_callback(Object &&cb) { m_write_mwait.set_callback(std::forward<Object>(cb)); }
+>>>>>>> upstream/master
 
 	// computer interface
 	DECLARE_READ8_MEMBER( mcs0_r ) { return m_card ? m_card->mcs0_r(space, offset) : 0xff; }
@@ -116,7 +148,11 @@ public:
 	DECLARE_WRITE8_MEMBER( mcs1_w ) { if (m_card) m_card->mcs1_w(space, offset, data); }
 	DECLARE_READ8_MEMBER( mdack_r ) { return m_card ? m_card->mdack_r(space, offset) : 0xff; }
 	DECLARE_WRITE8_MEMBER( mdack_w ) { if (m_card) m_card->mdack_w(space, offset, data); }
+<<<<<<< HEAD
 	DECLARE_READ_LINE_MEMBER( mpst_r ) { return m_card == NULL; }
+=======
+	DECLARE_READ_LINE_MEMBER( mpst_r ) { return m_card == nullptr; }
+>>>>>>> upstream/master
 	DECLARE_READ_LINE_MEMBER( opt0_r ) { return m_card ? m_card->opt0_r() : 1; }
 	DECLARE_WRITE_LINE_MEMBER( opt0_w ) { if (m_card) m_card->opt0_w(state); }
 	DECLARE_READ_LINE_MEMBER( opt1_r ) { return m_card ? m_card->opt1_r() : 1; }
@@ -132,8 +168,13 @@ public:
 
 protected:
 	// device-level overrides
+<<<<<<< HEAD
 	virtual void device_start();
 	virtual void device_reset() { if (m_card) get_card_device()->reset(); }
+=======
+	virtual void device_start() override;
+	virtual void device_reset() override { if (m_card) get_card_device()->reset(); }
+>>>>>>> upstream/master
 
 	devcb_write_line   m_write_mintr0;
 	devcb_write_line   m_write_mintr1;
@@ -145,11 +186,19 @@ protected:
 
 
 // device type definition
+<<<<<<< HEAD
 extern const device_type ISBX_SLOT;
+=======
+DECLARE_DEVICE_TYPE(ISBX_SLOT, isbx_slot_device)
+>>>>>>> upstream/master
 
 
 SLOT_INTERFACE_EXTERN( isbx_cards );
 
 
+<<<<<<< HEAD
 
 #endif
+=======
+#endif // MAME_BUS_ISBX_ISBX_SLOT_H
+>>>>>>> upstream/master

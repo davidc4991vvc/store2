@@ -27,9 +27,17 @@
 ***************************************************************************/
 
 #include "emu.h"
+<<<<<<< HEAD
 
 #include "pgc.h"
 
+=======
+#include "pgc.h"
+
+#include "screen.h"
+
+
+>>>>>>> upstream/master
 #define VERBOSE_PGC     1
 
 #define DBG_LOG(N,M,A) \
@@ -136,7 +144,23 @@ static GFXDECODE_START( pgc )
 	GFXDECODE_REVERSEBITS("chargen", 0, pgc_charlayout, 0, 1)
 GFXDECODE_END
 
+<<<<<<< HEAD
 MACHINE_CONFIG_FRAGMENT( pcvideo_pgc )
+=======
+
+//**************************************************************************
+//  GLOBAL VARIABLES
+//**************************************************************************
+
+DEFINE_DEVICE_TYPE(ISA8_PGC, isa8_pgc_device, "isa_ibm_pgc", "IBM Professional Graphics Controller")
+
+
+//-------------------------------------------------
+//  device_add_mconfig - add device configuration
+//-------------------------------------------------
+
+MACHINE_CONFIG_MEMBER( isa8_pgc_device::device_add_mconfig )
+>>>>>>> upstream/master
 	MCFG_CPU_ADD("maincpu", I8088, XTAL_24MHz/3)
 	MCFG_CPU_PROGRAM_MAP(pgc_map)
 	MCFG_CPU_IO_MAP(pgc_io)
@@ -160,6 +184,7 @@ MACHINE_CONFIG_FRAGMENT( pcvideo_pgc )
 	MCFG_PALETTE_ADD( "palette", 256 )
 MACHINE_CONFIG_END
 
+<<<<<<< HEAD
 //**************************************************************************
 //  GLOBAL VARIABLES
 //**************************************************************************
@@ -177,11 +202,17 @@ machine_config_constructor isa8_pgc_device::device_mconfig_additions() const
 	return MACHINE_CONFIG_NAME( pcvideo_pgc );
 }
 
+=======
+>>>>>>> upstream/master
 //-------------------------------------------------
 //  rom_region - device-specific ROM region
 //-------------------------------------------------
 
+<<<<<<< HEAD
 const rom_entry *isa8_pgc_device::device_rom_region() const
+=======
+const tiny_rom_entry *isa8_pgc_device::device_rom_region() const
+>>>>>>> upstream/master
 {
 	return ROM_NAME( pgc );
 }
@@ -203,6 +234,7 @@ ioport_constructor isa8_pgc_device::device_input_ports() const
 //  isa8_pgc_device - constructor
 //-------------------------------------------------
 
+<<<<<<< HEAD
 isa8_pgc_device::isa8_pgc_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock) :
 	device_t(mconfig, ISA8_PGC, "IBM Professional Graphics Controller", tag, owner, clock, "isa_ibm_pgc", __FILE__),
 	device_isa8_card_interface(mconfig, *this),
@@ -218,6 +250,20 @@ isa8_pgc_device::isa8_pgc_device(const machine_config &mconfig, device_type type
 	m_cpu(*this, "maincpu"),
 	m_screen(*this, PGC_SCREEN_NAME),
 	m_palette(*this, "palette"), m_commarea(nullptr), m_vram(nullptr), m_eram(nullptr), m_bitmap(nullptr)
+=======
+isa8_pgc_device::isa8_pgc_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock) :
+	isa8_pgc_device(mconfig, ISA8_PGC, tag, owner, clock)
+{
+}
+
+isa8_pgc_device::isa8_pgc_device(const machine_config &mconfig, device_type type, const char *tag, device_t *owner, uint32_t clock) :
+	device_t(mconfig, type, tag, owner, clock),
+	device_isa8_card_interface(mconfig, *this),
+	m_cpu(*this, "maincpu"),
+	m_screen(*this, PGC_SCREEN_NAME),
+	m_palette(*this, "palette"),
+	m_commarea(nullptr), m_vram(nullptr), m_eram(nullptr), m_bitmap(nullptr)
+>>>>>>> upstream/master
 {
 }
 
@@ -227,7 +273,11 @@ void isa8_pgc_device::device_start()
 	int width = PGC_DISP_HORZ;
 	int height = PGC_DISP_VERT;
 
+<<<<<<< HEAD
 	if (m_palette != NULL && !m_palette->started())
+=======
+	if (m_palette != nullptr && !m_palette->started())
+>>>>>>> upstream/master
 		throw device_missing_dependencies();
 
 	set_isa_device();
@@ -237,6 +287,7 @@ void isa8_pgc_device::device_start()
 		m_palette->set_pen_color( i, 0, 0, 0 );
 	}
 
+<<<<<<< HEAD
 	m_bitmap = auto_bitmap_ind16_alloc(machine(), width, height);
 	m_bitmap->fill(0);
 
@@ -247,6 +298,18 @@ void isa8_pgc_device::device_start()
 	m_eram = auto_alloc_array(machine(), UINT8, 0x8000);
 
 	machine().add_notifier(MACHINE_NOTIFY_RESET, machine_notify_delegate(FUNC(isa8_pgc_device::reset_common), this));
+=======
+	m_bitmap = std::make_unique<bitmap_ind16>(width, height);
+	m_bitmap->fill(0);
+
+	m_vram = std::make_unique<uint8_t[]>(0x78000);
+	space.install_readwrite_bank(0x80000, 0xf7fff, "vram");
+	membank("vram")->set_base(m_vram.get());
+
+	m_eram = std::make_unique<uint8_t[]>(0x8000);
+
+	machine().add_notifier(MACHINE_NOTIFY_RESET, machine_notify_delegate(&isa8_pgc_device::reset_common, this));
+>>>>>>> upstream/master
 }
 
 void isa8_pgc_device::reset_common()
@@ -264,9 +327,15 @@ void isa8_pgc_device::device_reset()
 
 	m_commarea = memregion("commarea")->base();
 	if (BIT(ioport("DSW")->read(), 1))
+<<<<<<< HEAD
 		m_isa->install_bank(0xc6400, 0xc67ff, 0, 0, "commarea", m_commarea);
 	else
 		m_isa->install_bank(0xc6000, 0xc63ff, 0, 0, "commarea", m_commarea);
+=======
+		m_isa->install_bank(0xc6400, 0xc67ff, "commarea", m_commarea);
+	else
+		m_isa->install_bank(0xc6000, 0xc63ff, "commarea", m_commarea);
+>>>>>>> upstream/master
 }
 
 //
@@ -287,7 +356,11 @@ IRQ_CALLBACK_MEMBER(isa8_pgc_device::irq_callback)
 // memory handlers
 
 READ8_MEMBER( isa8_pgc_device::stateparam_r ) {
+<<<<<<< HEAD
 	UINT8 ret;
+=======
+	uint8_t ret;
+>>>>>>> upstream/master
 
 	ret = m_stateparam[offset >> 1];
 	if ((machine().debug_flags & DEBUG_FLAG_ENABLED) != 0)
@@ -306,7 +379,11 @@ WRITE8_MEMBER( isa8_pgc_device::stateparam_w ) {
 }
 
 WRITE8_MEMBER( isa8_pgc_device::lut_w ) {
+<<<<<<< HEAD
 	UINT8 o = (offset >> 1) * 3;
+=======
+	uint8_t o = (offset >> 1) * 3;
+>>>>>>> upstream/master
 
 	if (offset & 1) {
 		m_lut[o + 2] = (data & 15) << 4;
@@ -325,7 +402,11 @@ READ8_MEMBER( isa8_pgc_device::init_r ) {
 
 	DBG_LOG(1,"INIT",("mapping emulator RAM\n"));
 	space.install_readwrite_bank(0xf8000, 0xfffff, "eram");
+<<<<<<< HEAD
 	membank("eram")->set_base(m_eram);
+=======
+	membank("eram")->set_base(m_eram.get());
+>>>>>>> upstream/master
 
 	DBG_LOG(1,"INIT",("mapping LUT\n"));
 	space.install_write_handler(0xf8400, 0xf85ff,
@@ -336,9 +417,15 @@ READ8_MEMBER( isa8_pgc_device::init_r ) {
 
 TIMER_DEVICE_CALLBACK_MEMBER(isa8_pgc_device::scanline_callback)
 {
+<<<<<<< HEAD
 	UINT16 x, y = m_screen->vpos();
 	UINT16 *p;
 	UINT8 *v;
+=======
+	uint16_t x, y = m_screen->vpos();
+	uint16_t *p;
+	uint8_t *v;
+>>>>>>> upstream/master
 
 	// XXX hpos shifts every frame -- fix
 	if (y == 0) DBG_LOG(2,"scanline_cb",
@@ -358,7 +445,11 @@ TIMER_DEVICE_CALLBACK_MEMBER(isa8_pgc_device::scanline_callback)
 	}
 }
 
+<<<<<<< HEAD
 UINT32 isa8_pgc_device::screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+=======
+uint32_t isa8_pgc_device::screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+>>>>>>> upstream/master
 {
 	copybitmap(bitmap, *m_bitmap, 0, 0, PGC_HORZ_START, PGC_VERT_START, cliprect);
 	return 0;

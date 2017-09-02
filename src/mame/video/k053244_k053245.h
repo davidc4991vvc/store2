@@ -1,8 +1,15 @@
 // license:BSD-3-Clause
 // copyright-holders:David Haywood
+<<<<<<< HEAD
 #pragma once
 #ifndef __K053244_K053245_H__
 #define __K053244_K053245_H__
+=======
+#ifndef MAME_VIDEO_K053244_K053245_H
+#define MAME_VIDEO_K053244_K053245_H
+
+#pragma once
+>>>>>>> upstream/master
 
 
 typedef device_delegate<void (int *code, int *color, int *priority)> k05324x_cb_delegate;
@@ -19,8 +26,12 @@ typedef device_delegate<void (int *code, int *color, int *priority)> k05324x_cb_
 	k05324x_device::set_offsets(*device, _xoffs, _yoffs);
 
 
+<<<<<<< HEAD
 class k05324x_device : public device_t,
 							public device_gfx_interface
+=======
+class k05324x_device : public device_t, public device_gfx_interface
+>>>>>>> upstream/master
 {
 	static const gfx_layout spritelayout;
 	static const gfx_layout spritelayout_6bpp;
@@ -28,8 +39,12 @@ class k05324x_device : public device_t,
 	DECLARE_GFXDECODE_MEMBER(gfxinfo_6bpp);
 
 public:
+<<<<<<< HEAD
 	k05324x_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
 	~k05324x_device() {}
+=======
+	k05324x_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
+>>>>>>> upstream/master
 
 	// static configuration
 	static void set_bpp(device_t &device, int bpp);
@@ -59,6 +74,7 @@ public:
 
 protected:
 	// device-level overrides
+<<<<<<< HEAD
 	virtual void device_start();
 	virtual void device_reset();
 
@@ -68,18 +84,39 @@ private:
 	UINT16    *m_buffer;
 	UINT8     *m_sprite_rom;
 	UINT32    m_sprite_size;
+=======
+	virtual void device_start() override;
+	virtual void device_reset() override;
+
+private:
+	// internal state
+	std::unique_ptr<uint16_t[]>  m_ram;
+	std::unique_ptr<uint16_t[]>  m_buffer;
+	required_region_ptr<uint8_t> m_sprite_rom;
+>>>>>>> upstream/master
 
 	int m_dx, m_dy;
 	k05324x_cb_delegate m_k05324x_cb;
 
+<<<<<<< HEAD
 	UINT8    m_regs[0x10];    // 053244
+=======
+	uint8_t    m_regs[0x10];    // 053244
+>>>>>>> upstream/master
 	int      m_rombank;       // 053244
 	int      m_ramsize;
 	int      m_z_rejection;
 };
 
 
+<<<<<<< HEAD
 extern const device_type K053244;
 #define K053245 K053244
 
 #endif
+=======
+DECLARE_DEVICE_TYPE(K053244, k05324x_device)
+extern device_type const K053245;
+
+#endif // MAME_VIDEO_K053244_K053245_H
+>>>>>>> upstream/master

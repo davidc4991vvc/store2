@@ -6,6 +6,10 @@
 
 **********************************************************************/
 
+<<<<<<< HEAD
+=======
+#include "emu.h"
+>>>>>>> upstream/master
 #include "printer.h"
 #include "bus/centronics/printer.h"
 
@@ -23,7 +27,11 @@
 //  DEVICE DEFINITIONS
 //**************************************************************************
 
+<<<<<<< HEAD
 const device_type COMX_PRN = &device_creator<comx_prn_device>;
+=======
+DEFINE_DEVICE_TYPE(COMX_PRN, comx_prn_device, "comx_prn", "COMX-35 Printer Card")
+>>>>>>> upstream/master
 
 
 //-------------------------------------------------
@@ -44,17 +52,28 @@ ROM_END
 //  rom_region - device-specific ROM region
 //-------------------------------------------------
 
+<<<<<<< HEAD
 const rom_entry *comx_prn_device::device_rom_region() const
+=======
+const tiny_rom_entry *comx_prn_device::device_rom_region() const
+>>>>>>> upstream/master
 {
 	return ROM_NAME( comx_prn );
 }
 
 
 //-------------------------------------------------
+<<<<<<< HEAD
 //  MACHINE_CONFIG_FRAGMENT( comx_prn )
 //-------------------------------------------------
 
 static MACHINE_CONFIG_FRAGMENT( comx_prn )
+=======
+//  device_add_mconfig - add device configuration
+//-------------------------------------------------
+
+MACHINE_CONFIG_MEMBER( comx_prn_device::device_add_mconfig )
+>>>>>>> upstream/master
 	MCFG_CENTRONICS_ADD(CENTRONICS_TAG, centronics_devices, "printer")
 	MCFG_CENTRONICS_ACK_HANDLER(DEVWRITELINE("cent_status_in", input_buffer_device, write_bit0))
 	MCFG_CENTRONICS_BUSY_HANDLER(DEVWRITELINE("cent_status_in", input_buffer_device, write_bit1))
@@ -66,6 +85,7 @@ static MACHINE_CONFIG_FRAGMENT( comx_prn )
 MACHINE_CONFIG_END
 
 
+<<<<<<< HEAD
 //-------------------------------------------------
 //  machine_config_additions - device-specific
 //  machine configurations
@@ -77,6 +97,8 @@ machine_config_constructor comx_prn_device::device_mconfig_additions() const
 }
 
 
+=======
+>>>>>>> upstream/master
 
 //**************************************************************************
 //  LIVE DEVICE
@@ -86,8 +108,13 @@ machine_config_constructor comx_prn_device::device_mconfig_additions() const
 //  comx_prn_device - constructor
 //-------------------------------------------------
 
+<<<<<<< HEAD
 comx_prn_device::comx_prn_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock) :
 	device_t(mconfig, COMX_PRN, "COMX-35 Printer Card", tag, owner, clock, "comx_prn", __FILE__),
+=======
+comx_prn_device::comx_prn_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock) :
+	device_t(mconfig, COMX_PRN, tag, owner, clock),
+>>>>>>> upstream/master
 	device_comx_expansion_card_interface(mconfig, *this),
 	m_centronics(*this, CENTRONICS_TAG),
 	m_cent_data_out(*this, "cent_data_out"),
@@ -119,9 +146,15 @@ void comx_prn_device::device_reset()
 //  comx_mrd_r - memory read
 //-------------------------------------------------
 
+<<<<<<< HEAD
 UINT8 comx_prn_device::comx_mrd_r(address_space &space, offs_t offset, int *extrom)
 {
 	UINT8 data = 0;
+=======
+uint8_t comx_prn_device::comx_mrd_r(address_space &space, offs_t offset, int *extrom)
+{
+	uint8_t data = 0;
+>>>>>>> upstream/master
 
 	if (offset >= 0xc000 && offset < 0xe000)
 	{
@@ -136,7 +169,11 @@ UINT8 comx_prn_device::comx_mrd_r(address_space &space, offs_t offset, int *extr
 //  comx_io_r - I/O read
 //-------------------------------------------------
 
+<<<<<<< HEAD
 UINT8 comx_prn_device::comx_io_r(address_space &space, offs_t offset)
+=======
+uint8_t comx_prn_device::comx_io_r(address_space &space, offs_t offset)
+>>>>>>> upstream/master
 {
 	/*
 	    Parallel:
@@ -175,7 +212,11 @@ UINT8 comx_prn_device::comx_io_r(address_space &space, offs_t offset)
 //  comx_io_w - I/O write
 //-------------------------------------------------
 
+<<<<<<< HEAD
 void comx_prn_device::comx_io_w(address_space &space, offs_t offset, UINT8 data)
+=======
+void comx_prn_device::comx_io_w(address_space &space, offs_t offset, uint8_t data)
+>>>>>>> upstream/master
 {
 	/*
 	    Parallel:

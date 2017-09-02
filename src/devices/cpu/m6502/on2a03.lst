@@ -1,3 +1,8 @@
+<<<<<<< HEAD
+=======
+# license:BSD-3-Clause
+# copyright-holders:Olivier Galibert
+>>>>>>> upstream/master
 # n2a03 opcodes - same as 6502 but with d disabled
 adc_nd_aba
 	TMP = read_pc();
@@ -61,7 +66,11 @@ adc_nd_zpg
 adc_nd_zpx
 	TMP = read_pc();
 	read(TMP);
+<<<<<<< HEAD
 	TMP = read(UINT8(TMP+X));
+=======
+	TMP = read(uint8_t(TMP+X));
+>>>>>>> upstream/master
 	do_adc_nd(TMP);
 	prefetch();
 
@@ -142,7 +151,11 @@ rra_nd_zpg
 rra_nd_zpx
 	TMP = read_pc();
 	read(TMP);
+<<<<<<< HEAD
 	TMP = UINT8(TMP+X);
+=======
+	TMP = uint8_t(TMP+X);
+>>>>>>> upstream/master
 	TMP2 = read(TMP);
 	write(TMP, TMP2);
 	TMP2 = do_ror(TMP2);
@@ -212,7 +225,11 @@ sbc_nd_zpg
 sbc_nd_zpx
 	TMP = read_pc();
 	read(TMP);
+<<<<<<< HEAD
 	TMP = read(UINT8(TMP+X));
+=======
+	TMP = read(uint8_t(TMP+X));
+>>>>>>> upstream/master
 	do_sbc_nd(TMP);
 	prefetch();
 
@@ -288,7 +305,11 @@ isb_nd_zpg
 isb_nd_zpx
 	TMP = read_pc();
 	read(TMP);
+<<<<<<< HEAD
 	TMP = UINT8(TMP+X);
+=======
+	TMP = uint8_t(TMP+X);
+>>>>>>> upstream/master
 	TMP2 = read(TMP);
 	write(TMP, TMP2);
 	TMP2++;

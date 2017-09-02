@@ -8,6 +8,11 @@
 
 #import "registersview.h"
 
+<<<<<<< HEAD
+=======
+#include "emu.h"
+#include "debugger.h"
+>>>>>>> upstream/master
 #include "debug/debugcpu.h"
 #include "debug/debugvw.h"
 
@@ -27,12 +32,21 @@
 
 
 - (NSSize)maximumFrameSize {
+<<<<<<< HEAD
 	debug_view_xy			max;
 	device_t				*curcpu = debug_cpu_get_visible_cpu(*machine);
 	const debug_view_source	*source = view->source_for_device(curcpu);
 
 	max.x = max.y = 0;
 	for (const debug_view_source *source = view->source_list().first(); source != NULL; source = source->next())
+=======
+	debug_view_xy           max;
+	device_t                *curcpu = machine->debugger().cpu().get_visible_cpu();
+	const debug_view_source *source = view->source_for_device(curcpu);
+
+	max.x = max.y = 0;
+	for (const debug_view_source *source = view->source_list().first(); source != nullptr; source = source->next())
+>>>>>>> upstream/master
 	{
 		debug_view_xy   current;
 		view->set_source(*source);

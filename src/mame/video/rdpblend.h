@@ -16,7 +16,10 @@
 #ifndef _VIDEO_RDPBLEND_H_
 #define _VIDEO_RDPBLEND_H_
 
+<<<<<<< HEAD
 #include "emu.h"
+=======
+>>>>>>> upstream/master
 #include "video/n64.h"
 
 class n64_blender_t
@@ -33,17 +36,29 @@ class n64_blender_t
 		void                set_machine(running_machine& machine) { m_machine = &machine; }
 		void                set_processor(n64_rdp* rdp) { m_rdp = rdp; }
 
+<<<<<<< HEAD
 		running_machine &machine() const { assert(m_machine != NULL); return *m_machine; }
+=======
+		running_machine &machine() const { assert(m_machine != nullptr); return *m_machine; }
+>>>>>>> upstream/master
 
 	private:
 		running_machine*    m_machine;
 		n64_rdp*            m_rdp;
 
+<<<<<<< HEAD
 		INT32 min(const INT32 x, const INT32 min);
 		bool alpha_reject(rdp_span_aux* userdata, const rdp_poly_state& object);
 		bool test_for_reject(rdp_span_aux* userdata, const rdp_poly_state& object);
 		void blend_pipe(const int cycle, const int special, color_t& out, rdp_span_aux* userdata, const rdp_poly_state& object);
 		void blend_with_partial_reject(color_t& out, INT32 cycle, INT32 partialreject, INT32 select, rdp_span_aux* userdata, const rdp_poly_state& object);
+=======
+		int32_t min(const int32_t x, const int32_t min);
+		bool alpha_reject(rdp_span_aux* userdata, const rdp_poly_state& object);
+		bool test_for_reject(rdp_span_aux* userdata, const rdp_poly_state& object);
+		void blend_pipe(const int cycle, const int special, color_t& out, rdp_span_aux* userdata, const rdp_poly_state& object);
+		void blend_with_partial_reject(color_t& out, int32_t cycle, int32_t partialreject, int32_t select, rdp_span_aux* userdata, const rdp_poly_state& object);
+>>>>>>> upstream/master
 
 		bool cycle1_noblend_noacvg_nodither(color_t& blended_pixel, int dith, int adseed, int partialreject, int sel0, rdp_span_aux* userdata, const rdp_poly_state& object);
 		bool cycle1_noblend_noacvg_dither(color_t& blended_pixel, int dith, int adseed, int partialreject, int sel0, rdp_span_aux* userdata, const rdp_poly_state& object);
@@ -63,11 +78,19 @@ class n64_blender_t
 		bool cycle2_blend_acvg_nodither(color_t& blended_pixel, int dith, int adseed, int partialreject, int sel0, int sel1, rdp_span_aux* userdata, const rdp_poly_state& object);
 		bool cycle2_blend_acvg_dither(color_t& blended_pixel, int dith, int adseed, int partialreject, int sel0, int sel1, rdp_span_aux* userdata, const rdp_poly_state& object);
 
+<<<<<<< HEAD
 		INT32 dither_alpha(INT32 alpha, INT32 dither);
 		INT32 dither_color(INT32 color, INT32 dither);
 
 		UINT8               m_color_dither[256 * 8];
 		UINT8               m_alpha_dither[256 * 8];
+=======
+		int32_t dither_alpha(int32_t alpha, int32_t dither);
+		int32_t dither_color(int32_t color, int32_t dither);
+
+		uint8_t               m_color_dither[256 * 8];
+		uint8_t               m_alpha_dither[256 * 8];
+>>>>>>> upstream/master
 };
 
 #endif // _VIDEO_RDPBLEND_H_

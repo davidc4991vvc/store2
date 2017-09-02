@@ -27,6 +27,7 @@
 
 #include "emu.h"
 #include "seta001.h"
+<<<<<<< HEAD
 
 
 const device_type SETA001_SPRITE = &device_creator<seta001_device>;
@@ -35,6 +36,16 @@ seta001_device::seta001_device(const machine_config &mconfig, const char *tag, d
 	: device_t(mconfig, SETA001_SPRITE, "Seta SETA001 Sprite", tag, owner, clock, "seta001", __FILE__),
 		m_gfxdecode(*this),
 		m_palette(*this)
+=======
+#include "screen.h"
+
+
+DEFINE_DEVICE_TYPE(SETA001_SPRITE, seta001_device, "seta001", "Seta SETA001 Sprites")
+
+seta001_device::seta001_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: device_t(mconfig, SETA001_SPRITE, tag, owner, clock)
+	, m_gfxdecode(*this, finder_base::DUMMY_TAG)
+>>>>>>> upstream/master
 {
 }
 
@@ -48,6 +59,7 @@ void seta001_device::static_set_gfxdecode_tag(device_t &device, const char *tag)
 	downcast<seta001_device &>(device).m_gfxdecode.set_tag(tag);
 }
 
+<<<<<<< HEAD
 //-------------------------------------------------
 //  static_set_palette_tag: Set the tag of the
 //  palette device
@@ -58,6 +70,8 @@ void seta001_device::static_set_palette_tag(device_t &device, const char *tag)
 	downcast<seta001_device &>(device).m_palette.set_tag(tag);
 }
 
+=======
+>>>>>>> upstream/master
 void seta001_device::device_start()
 {
 	// chukatai draws a column on the left from uninitialized RAM which causes garbage in a debug build
@@ -169,7 +183,11 @@ WRITE8_MEMBER( seta001_device::spritecodehigh_w8 )
 
 READ16_MEMBER( seta001_device::spritecode_r16 )
 {
+<<<<<<< HEAD
 	UINT16 ret = m_spritecodelow[offset];
+=======
+	uint16_t ret = m_spritecodelow[offset];
+>>>>>>> upstream/master
 	ret |= m_spritecodehigh[offset] << 8;
 	return ret;
 }
@@ -229,12 +247,21 @@ void seta001_device::draw_background( bitmap_ind16 &bitmap, const rectangle &cli
 
 	int scrollx, scrolly;
 
+<<<<<<< HEAD
 	UINT32 upper;
 
 	UINT8* scrollram = m_spriteylow+0x200;
 
 	/* Sprites Banking and/or Sprites Buffering */
 	UINT16 bank = ( ((ctrl2 ^ (~ctrl2<<1)) & 0x40) ? bank_size : 0 );
+=======
+	uint32_t upper;
+
+	uint8_t* scrollram = m_spriteylow+0x200;
+
+	/* Sprites Banking and/or Sprites Buffering */
+	uint16_t bank = ( ((ctrl2 ^ (~ctrl2<<1)) & 0x40) ? bank_size : 0 );
+>>>>>>> upstream/master
 
 	int max_y   =   0xf0;
 
@@ -341,10 +368,17 @@ void seta001_device::draw_foreground( screen_device &screen, bitmap_ind16 &bitma
 
 	int total_color_codes   =   m_gfxdecode->gfx(0)->colors();
 
+<<<<<<< HEAD
 	UINT8 *char_pointer = m_spritecodelow + 0x0000;
 	UINT8 *x_pointer = m_spritecodelow + 0x0200;
 	UINT8 *ctrl_pointer = m_spritecodehigh + 0x0000;
 	UINT8 *color_pointer = m_spritecodehigh + 0x0200;
+=======
+	uint8_t *char_pointer = m_spritecodelow + 0x0000;
+	uint8_t *x_pointer = m_spritecodelow + 0x0200;
+	uint8_t *ctrl_pointer = m_spritecodehigh + 0x0000;
+	uint8_t *color_pointer = m_spritecodehigh + 0x0200;
+>>>>>>> upstream/master
 
 	xoffs   =   screenflip ? m_fg_flipxoffs : m_fg_noflipxoffs;
 	yoffs   =   screenflip ? m_fg_flipyoffs : m_fg_noflipyoffs;

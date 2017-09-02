@@ -1,9 +1,16 @@
 // license:BSD-3-Clause
 // copyright-holders:Ville Linde
+<<<<<<< HEAD
 #pragma once
 
 #ifndef __TMS32051_H__
 #define __TMS32051_H__
+=======
+#ifndef MAME_CPU_TMS32051_TMS32051_H
+#define MAME_CPU_TMS32051_TMS32051_H
+
+#pragma once
+>>>>>>> upstream/master
 
 
 enum
@@ -21,6 +28,7 @@ enum
 
 struct TMS32051_PMST
 {
+<<<<<<< HEAD
 	UINT16 iptr;
 	UINT16 avis;
 	UINT16 ovly;
@@ -29,19 +37,38 @@ struct TMS32051_PMST
 	UINT16 ndx;
 	UINT16 trm;
 	UINT16 braf;
+=======
+	uint16_t iptr;
+	uint16_t avis;
+	uint16_t ovly;
+	uint16_t ram;
+	uint16_t mpmc;
+	uint16_t ndx;
+	uint16_t trm;
+	uint16_t braf;
+>>>>>>> upstream/master
 };
 
 struct TMS32051_ST0
 {
+<<<<<<< HEAD
 	UINT16 dp;
 	UINT16 intm;
 	UINT16 ovm;
 	UINT16 ov;
 	UINT16 arp;
+=======
+	uint16_t dp;
+	uint16_t intm;
+	uint16_t ovm;
+	uint16_t ov;
+	uint16_t arp;
+>>>>>>> upstream/master
 };
 
 struct TMS32051_ST1
 {
+<<<<<<< HEAD
 	UINT16 arb;
 	UINT16 cnf;
 	UINT16 tc;
@@ -50,6 +77,16 @@ struct TMS32051_ST1
 	UINT16 hm;
 	UINT16 xf;
 	UINT16 pm;
+=======
+	uint16_t arb;
+	uint16_t cnf;
+	uint16_t tc;
+	uint16_t sxm;
+	uint16_t c;
+	uint16_t hm;
+	uint16_t xf;
+	uint16_t pm;
+>>>>>>> upstream/master
 };
 
 
@@ -57,12 +94,17 @@ class tms32051_device : public cpu_device
 {
 public:
 	// construction/destruction
+<<<<<<< HEAD
 	tms32051_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
+=======
+	tms32051_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
+>>>>>>> upstream/master
 
 	DECLARE_READ16_MEMBER( cpuregs_r );
 	DECLARE_WRITE16_MEMBER( cpuregs_w );
 
 protected:
+<<<<<<< HEAD
 	// device-level overrides
 	virtual void device_start();
 	virtual void device_reset();
@@ -86,12 +128,39 @@ protected:
 private:
 	address_space_config m_program_config;
 	address_space_config m_data_config;
+=======
+	tms32051_device(const machine_config &mconfig, device_type type, const char *tag, device_t *owner, uint32_t clock, address_map_constructor internal_pgm, address_map_constructor internal_data);
+
+	// device-level overrides
+	virtual void device_start() override;
+	virtual void device_reset() override;
+
+	// device_execute_interface overrides
+	virtual uint32_t execute_min_cycles() const override { return 1; }
+	virtual uint32_t execute_max_cycles() const override { return 5; }
+	virtual uint32_t execute_input_lines() const override { return 6; }
+	virtual void execute_run() override;
+	virtual void execute_set_input(int inputnum, int state) override;
+
+	// device_memory_interface overrides
+	virtual space_config_vector memory_space_config() const override;
+
+	// device_disasm_interface overrides
+	virtual uint32_t disasm_min_opcode_bytes() const override { return 2; }
+	virtual uint32_t disasm_max_opcode_bytes() const override { return 4; }
+	virtual offs_t disasm_disassemble(std::ostream &stream, offs_t pc, const uint8_t *oprom, const uint8_t *opram, uint32_t options) override;
+
+	address_space_config m_program_config;
+	address_space_config m_data_config;
+	address_space_config m_io_config;
+>>>>>>> upstream/master
 
 	typedef void ( tms32051_device::*opcode_func )();
 	static const opcode_func s_opcode_table[256];
 	static const opcode_func s_opcode_table_be[256];
 	static const opcode_func s_opcode_table_bf[256];
 
+<<<<<<< HEAD
 	UINT16 m_pc;
 	UINT16 m_op;
 	INT32 m_acc;
@@ -110,11 +179,32 @@ private:
 	UINT16 m_indx;
 	UINT16 m_dbmr;
 	UINT16 m_arcr;
+=======
+	uint16_t m_pc;
+	uint16_t m_op;
+	int32_t m_acc;
+	int32_t m_accb;
+	int32_t m_preg;
+	uint16_t m_treg0;
+	uint16_t m_treg1;
+	uint16_t m_treg2;
+	uint16_t m_ar[8];
+	int32_t m_rptc;
+
+	uint16_t m_bmar;
+	int32_t m_brcr;
+	uint16_t m_paer;
+	uint16_t m_pasr;
+	uint16_t m_indx;
+	uint16_t m_dbmr;
+	uint16_t m_arcr;
+>>>>>>> upstream/master
 
 	TMS32051_ST0 m_st0;
 	TMS32051_ST1 m_st1;
 	TMS32051_PMST m_pmst;
 
+<<<<<<< HEAD
 	UINT16 m_ifr;
 	UINT16 m_imr;
 
@@ -128,24 +218,51 @@ private:
 	UINT16 m_cber1;
 	UINT16 m_cbsr2;
 	UINT16 m_cber2;
+=======
+	uint16_t m_ifr;
+	uint16_t m_imr;
+
+	uint16_t m_pcstack[8];
+	int m_pcstack_ptr;
+
+	uint16_t m_rpt_start, m_rpt_end;
+
+	uint16_t m_cbcr;
+	uint16_t m_cbsr1;
+	uint16_t m_cber1;
+	uint16_t m_cbsr2;
+	uint16_t m_cber2;
+>>>>>>> upstream/master
 
 	struct
 	{
 		int tddr;
 		int psc;
+<<<<<<< HEAD
 		UINT16 tim;
 		UINT16 prd;
+=======
+		uint16_t tim;
+		uint16_t prd;
+>>>>>>> upstream/master
 	} m_timer;
 
 	struct
 	{
+<<<<<<< HEAD
 		UINT16 drr;
 		UINT16 dxr;
 		UINT16 spc;
+=======
+		uint16_t drr;
+		uint16_t dxr;
+		uint16_t spc;
+>>>>>>> upstream/master
 	} m_serial;
 
 	struct
 	{
+<<<<<<< HEAD
 		INT32 acc;
 		INT32 accb;
 		UINT16 arcr;
@@ -157,11 +274,25 @@ private:
 		INT32 treg0;
 		INT32 treg1;
 		INT32 treg2;
+=======
+		int32_t acc;
+		int32_t accb;
+		uint16_t arcr;
+		uint16_t indx;
+		TMS32051_PMST pmst;
+		int32_t preg;
+		TMS32051_ST0 st0;
+		TMS32051_ST1 st1;
+		int32_t treg0;
+		int32_t treg1;
+		int32_t treg2;
+>>>>>>> upstream/master
 	} m_shadow;
 
 	address_space *m_program;
 	direct_read_data *m_direct;
 	address_space *m_data;
+<<<<<<< HEAD
 	int m_icount;
 
 	inline void CHANGE_PC(UINT16 new_pc);
@@ -179,6 +310,28 @@ private:
 	inline int GET_ZLVC_CONDITION(int zlvc, int zlvc_mask);
 	inline int GET_TP_CONDITION(int tp);
 	inline INT32 PREG_PSCALER(INT32 preg);
+=======
+	address_space *m_io;
+	int m_icount;
+
+	bool m_idle;
+
+	inline void CHANGE_PC(uint16_t new_pc);
+	inline uint16_t PM_READ16(uint16_t address);
+	inline void PM_WRITE16(uint16_t address, uint16_t data);
+	inline uint16_t DM_READ16(uint16_t address);
+	inline void DM_WRITE16(uint16_t address, uint16_t data);
+	inline void PUSH_STACK(uint16_t pc);
+	inline uint16_t POP_STACK();
+	inline int32_t SUB(uint32_t a, uint32_t b, bool shift16);
+	inline int32_t ADD(uint32_t a, uint32_t b, bool shift16);
+	inline void UPDATE_AR(int ar, int step);
+	inline void UPDATE_ARP(int nar);
+	uint16_t GET_ADDRESS();
+	inline bool GET_ZLVC_CONDITION(int zlvc, int zlvc_mask);
+	inline bool GET_TP_CONDITION(int tp);
+	inline int32_t PREG_PSCALER(int32_t preg);
+>>>>>>> upstream/master
 	void op_invalid();
 	void op_abs();
 	void op_adcb();
@@ -358,14 +511,36 @@ private:
 	void op_sst_st1();
 	void op_group_be();
 	void op_group_bf();
+<<<<<<< HEAD
 	void delay_slot(UINT16 startpc);
+=======
+	void delay_slot(uint16_t startpc);
+>>>>>>> upstream/master
 	void check_interrupts();
 	void save_interrupt_context();
 	void restore_interrupt_context();
 };
 
 
+<<<<<<< HEAD
 extern const device_type TMS32051;
 
 
 #endif /* __TMS32051_H__ */
+=======
+class tms32053_device : public tms32051_device
+{
+public:
+	// construction/destruction
+	tms32053_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
+
+protected:
+	virtual void device_reset() override;
+};
+
+
+DECLARE_DEVICE_TYPE(TMS32051, tms32051_device)
+DECLARE_DEVICE_TYPE(TMS32053, tms32053_device)
+
+#endif // MAME_CPU_TMS32051_TMS32051_H
+>>>>>>> upstream/master

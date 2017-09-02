@@ -51,6 +51,7 @@
 
 #include "emu.h"
 #include "video/kan_pand.h"
+<<<<<<< HEAD
 
 const device_type KANEKO_PANDORA = &device_creator<kaneko_pandora_device>;
 
@@ -62,6 +63,19 @@ kaneko_pandora_device::kaneko_pandora_device(const machine_config &mconfig, cons
 		m_yoffset(0),
 		m_gfxdecode(*this),
 		m_palette(*this)
+=======
+#include "screen.h"
+
+DEFINE_DEVICE_TYPE(KANEKO_PANDORA, kaneko_pandora_device, "kaneko_pandora", "Kaneko PANDORA GFX")
+
+kaneko_pandora_device::kaneko_pandora_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: device_t(mconfig, KANEKO_PANDORA, tag, owner, clock)
+	, device_video_interface(mconfig, *this)
+	, m_gfx_region(0)
+	, m_xoffset(0)
+	, m_yoffset(0)
+	, m_gfxdecode(*this, finder_base::DUMMY_TAG)
+>>>>>>> upstream/master
 {
 }
 
@@ -76,6 +90,7 @@ void kaneko_pandora_device::static_set_gfxdecode_tag(device_t &device, const cha
 }
 
 //-------------------------------------------------
+<<<<<<< HEAD
 //  static_set_palette_tag: Set the tag of the
 //  palette device
 //-------------------------------------------------
@@ -86,12 +101,15 @@ void kaneko_pandora_device::static_set_palette_tag(device_t &device, const char 
 }
 
 //-------------------------------------------------
+=======
+>>>>>>> upstream/master
 //  device_start - device-specific startup
 //-------------------------------------------------
 
 void kaneko_pandora_device::device_start()
 {
 	m_bg_pen = 0;
+<<<<<<< HEAD
 
 	m_spriteram = auto_alloc_array(machine(), UINT8, 0x1000);
 
@@ -100,6 +118,18 @@ void kaneko_pandora_device::device_start()
 	save_item(NAME(m_clear_bitmap));
 	save_item(NAME(m_bg_pen));
 	save_pointer(NAME(m_spriteram), 0x1000);
+=======
+	m_flip_screen = false;
+
+	m_spriteram = std::make_unique<uint8_t[]>(0x1000);
+
+	m_sprites_bitmap = std::make_unique<bitmap_ind16>(m_screen->width(), m_screen->height());
+
+	save_item(NAME(m_clear_bitmap));
+	save_item(NAME(m_bg_pen));
+	save_item(NAME(m_flip_screen));
+	save_pointer(NAME(m_spriteram.get()), 0x1000);
+>>>>>>> upstream/master
 	save_item(NAME(*m_sprites_bitmap));
 }
 
@@ -109,7 +139,11 @@ void kaneko_pandora_device::device_start()
 
 void kaneko_pandora_device::device_reset()
 {
+<<<<<<< HEAD
 	memset(m_spriteram, 0x00, 0x1000);
+=======
+	memset(m_spriteram.get(), 0x00, 0x1000);
+>>>>>>> upstream/master
 
 	m_clear_bitmap = 1;
 }
@@ -191,7 +225,11 @@ void kaneko_pandora_device::draw( bitmap_ind16 &bitmap, const rectangle &cliprec
 			y = dy;
 		}
 
+<<<<<<< HEAD
 		if (machine().driver_data()->flip_screen())
+=======
+		if (m_flip_screen)
+>>>>>>> upstream/master
 		{
 			sx = 240 - x;
 			sy = 240 - y;
@@ -226,7 +264,11 @@ void kaneko_pandora_device::draw( bitmap_ind16 &bitmap, const rectangle &cliprec
 
 void kaneko_pandora_device::eof( )
 {
+<<<<<<< HEAD
 	assert(m_spriteram != NULL);
+=======
+	assert(m_spriteram != nullptr);
+>>>>>>> upstream/master
 
 	// the games can disable the clearing of the sprite bitmap, to leave sprite trails
 	if (m_clear_bitmap)

@@ -6,6 +6,10 @@
 
 **********************************************************************/
 
+<<<<<<< HEAD
+=======
+#include "emu.h"
+>>>>>>> upstream/master
 #include "djdma.h"
 
 
@@ -22,7 +26,11 @@
 //  DEVICE DEFINITIONS
 //**************************************************************************
 
+<<<<<<< HEAD
 const device_type S100_DJDMA = &device_creator<s100_djdma_device>;
+=======
+DEFINE_DEVICE_TYPE(S100_DJDMA, s100_djdma_device, "s100_djdma", "Morrow Disk Jockey/DMA")
+>>>>>>> upstream/master
 
 
 //-------------------------------------------------
@@ -48,7 +56,11 @@ ROM_END
 //  rom_region - device-specific ROM region
 //-------------------------------------------------
 
+<<<<<<< HEAD
 const rom_entry *s100_djdma_device::device_rom_region() const
+=======
+const tiny_rom_entry *s100_djdma_device::device_rom_region() const
+>>>>>>> upstream/master
 {
 	return ROM_NAME( djdma );
 }
@@ -72,16 +84,24 @@ ADDRESS_MAP_END
 
 
 //-------------------------------------------------
+<<<<<<< HEAD
 //  MACHINE_CONFIG_FRAGMENT( s100_djdma )
 //-------------------------------------------------
 
 static MACHINE_CONFIG_FRAGMENT( s100_djdma )
+=======
+//  device_add_mconfig - add device configuration
+//-------------------------------------------------
+
+MACHINE_CONFIG_MEMBER( s100_djdma_device::device_add_mconfig )
+>>>>>>> upstream/master
 	MCFG_CPU_ADD(Z80_TAG, Z80, XTAL_4MHz)
 	MCFG_CPU_PROGRAM_MAP(djdma_mem)
 	MCFG_CPU_IO_MAP(djdma_io)
 MACHINE_CONFIG_END
 
 
+<<<<<<< HEAD
 //-------------------------------------------------
 //  machine_config_additions - device-specific
 //  machine configurations
@@ -93,6 +113,8 @@ machine_config_constructor s100_djdma_device::device_mconfig_additions() const
 }
 
 
+=======
+>>>>>>> upstream/master
 
 //**************************************************************************
 //  LIVE DEVICE
@@ -102,8 +124,13 @@ machine_config_constructor s100_djdma_device::device_mconfig_additions() const
 //  s100_djdma_device - constructor
 //-------------------------------------------------
 
+<<<<<<< HEAD
 s100_djdma_device::s100_djdma_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock) :
 	device_t(mconfig, S100_DJDMA, "DJDMA", tag, owner, clock, "djdma", __FILE__),
+=======
+s100_djdma_device::s100_djdma_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock) :
+	device_t(mconfig, S100_DJDMA, tag, owner, clock),
+>>>>>>> upstream/master
 	device_s100_card_interface(mconfig, *this)
 {
 }

@@ -1,12 +1,23 @@
 // license:BSD-3-Clause
 // copyright-holders:Couriersud
 #include "emu.h"
+<<<<<<< HEAD
 #include "cpu/z80/z80.h"
 #include "cpu/mcs48/mcs48.h"
 #include "sound/ay8910.h"
 
 #include "includes/mario.h"
 
+=======
+#include "includes/mario.h"
+
+#include "cpu/mcs48/mcs48.h"
+#include "cpu/z80/z80.h"
+#include "sound/ay8910.h"
+#include "speaker.h"
+
+#include "audio/nl_mario.h"
+>>>>>>> upstream/master
 
 /****************************************************************
  *
@@ -14,9 +25,12 @@
  *
  ****************************************************************/
 
+<<<<<<< HEAD
 /* FIXME: Capacitor aging - only in for calibration now        */
 /* Adjustments are needed to bring this close to recordings    */
 
+=======
+>>>>>>> upstream/master
 #define RUN_VCO_VOLTAGE     (0.0)   /* 5 in schematics */
 
 #define USE_8039    (0)         /* set to 1 to try 8039 hack */
@@ -24,6 +38,7 @@
 #define ACTIVELOW_PORT_BIT(P,A,D)   ((P & (~(1 << A))) | ((D ^ 1) << A))
 #define ACTIVEHIGH_PORT_BIT(P,A,D)   ((P & (~(1 << A))) | (D << A))
 
+<<<<<<< HEAD
 #define I8035_T_R(M,N) ((soundlatch2_byte_r(M,0) >> (N)) & 1)
 #define I8035_T_W_AH(M,N,D) do { m_portT = ACTIVEHIGH_PORT_BIT(m_portT,N,D); soundlatch2_byte_w(M, 0, m_portT); } while (0)
 
@@ -35,6 +50,19 @@
 #define I8035_P2_W(M,D) do { soundlatch4_byte_w(M,0,D); } while (0)
 #else
 #define I8035_P2_W(M,D) do { set_ea(M, ((D) & 0x20) ? 0 : 1);  soundlatch4_byte_w(M,0,D); } while (0)
+=======
+#define I8035_T_R(M,N) ((m_soundlatch2->read(M,0) >> (N)) & 1)
+#define I8035_T_W_AH(M,N,D) do { m_portT = ACTIVEHIGH_PORT_BIT(m_portT,N,D); m_soundlatch2->write(M, 0, m_portT); } while (0)
+
+#define I8035_P1_R(M) (m_soundlatch3->read(M,0))
+#define I8035_P2_R(M) (m_soundlatch4->read(M,0))
+#define I8035_P1_W(M,D) m_soundlatch3->write(M,0,D)
+
+#if (USE_8039)
+#define I8035_P2_W(M,D) do { m_soundlatch4->write(M,0,D); } while (0)
+#else
+#define I8035_P2_W(M,D) do { set_ea(M, ((D) & 0x20) ? 0 : 1);  m_soundlatch4->write(M,0,D); } while (0)
+>>>>>>> upstream/master
 #endif
 
 #define I8035_P1_W_AH(M,B,D) I8035_P1_W(M,ACTIVEHIGH_PORT_BIT(I8035_P1_R(M),B,(D)))
@@ -43,6 +71,7 @@
 
 #if !OLD_SOUND
 
+<<<<<<< HEAD
 /* ---------------------------------------------------------------------- */
 /* mario sound                                                            */
 /* ---------------------------------------------------------------------- */
@@ -280,6 +309,8 @@ static NETLIST_START(nl_mario)
 
 	OPTIMIZE_FRONTIER(R40.1, RES_K(22), 50)
 NETLIST_END()
+=======
+>>>>>>> upstream/master
 
 #else
 /****************************************************************
@@ -645,7 +676,11 @@ static void set_ea(address_space &space, int ea)
 	mario_state *state = space.machine().driver_data<mario_state>();
 	//printf("ea: %d\n", ea);
 	//machine.device("audiocpu")->execute().set_input_line(MCS48_INPUT_EA, (ea) ? ASSERT_LINE : CLEAR_LINE);
+<<<<<<< HEAD
 	if (state->m_eabank != NULL)
+=======
+	if (state->m_eabank != nullptr)
+>>>>>>> upstream/master
 		state->membank(state->m_eabank)->set_entry(ea);
 }
 
@@ -659,16 +694,26 @@ void mario_state::sound_start()
 {
 	device_t *audiocpu = machine().device("audiocpu");
 
+<<<<<<< HEAD
 	if (!audiocpu) return;
 
 #if USE_8039
 	UINT8 *SND = memregion("audiocpu")->base();
+=======
+#if USE_8039
+	uint8_t *SND = memregion("audiocpu")->base();
+>>>>>>> upstream/master
 
 	SND[0x1001] = 0x01;
 #endif
 
+<<<<<<< HEAD
 	m_eabank = NULL;
 	if (audiocpu != NULL && audiocpu->type() != Z80)
+=======
+	m_eabank = nullptr;
+	if (audiocpu != nullptr && audiocpu->type() != Z80)
+>>>>>>> upstream/master
 	{
 		m_eabank = "bank1";
 		audiocpu->memory().space(AS_PROGRAM).install_read_bank(0x000, 0x7ff, "bank1");
@@ -682,6 +727,7 @@ void mario_state::sound_start()
 
 void mario_state::sound_reset()
 {
+<<<<<<< HEAD
 	if (!m_audiocpu) return;
 
 	address_space &space = machine().device("audiocpu")->memory().space(AS_PROGRAM);
@@ -697,6 +743,21 @@ void mario_state::sound_reset()
 	soundlatch4_clear_byte_w(space, 0, 0);
 	I8035_P1_W(space, 0x00); /* Input port */
 	I8035_P2_W(space, 0xff); /* Port is in high impedance state after reset */
+=======
+	address_space &space = machine().device("audiocpu")->memory().space(AS_PROGRAM);
+
+#if USE_8039
+	set_ea(space, 1);
+#endif
+
+	/* FIXME: convert to latch8 */
+	m_soundlatch->clear_w(space, 0, 0);
+	if (m_soundlatch2) m_soundlatch2->clear_w(space, 0, 0);
+	if (m_soundlatch3) m_soundlatch3->clear_w(space, 0, 0);
+	if (m_soundlatch4) m_soundlatch4->clear_w(space, 0, 0);
+	if (m_soundlatch3) I8035_P1_W(space, 0x00); /* Input port */
+	if (m_soundlatch4) I8035_P2_W(space, 0xff); /* Port is in high impedance state after reset */
+>>>>>>> upstream/master
 
 	m_last = 0;
 }
@@ -717,6 +778,7 @@ READ8_MEMBER(mario_state::mario_sh_p2_r)
 	return I8035_P2_R(space) & 0xEF; /* Bit 4 connected to GND! */
 }
 
+<<<<<<< HEAD
 READ8_MEMBER(mario_state::mario_sh_t0_r)
 {
 	return I8035_T_R(space, 0);
@@ -725,16 +787,35 @@ READ8_MEMBER(mario_state::mario_sh_t0_r)
 READ8_MEMBER(mario_state::mario_sh_t1_r)
 {
 	return I8035_T_R(space, 1);
+=======
+READ_LINE_MEMBER(mario_state::mario_sh_t0_r)
+{
+	return I8035_T_R(machine().dummy_space(), 0);
+}
+
+READ_LINE_MEMBER(mario_state::mario_sh_t1_r)
+{
+	return I8035_T_R(machine().dummy_space(), 1);
+>>>>>>> upstream/master
 }
 
 READ8_MEMBER(mario_state::mario_sh_tune_r)
 {
+<<<<<<< HEAD
 	UINT8 *SND = memregion("audiocpu")->base();
 	UINT16 mask = memregion("audiocpu")->bytes()-1;
 	UINT8 p2 = I8035_P2_R(space);
 
 	if ((p2 >> 7) & 1)
 		return soundlatch_byte_r(space, offset);
+=======
+	uint8_t *SND = memregion("audiocpu")->base();
+	uint16_t mask = memregion("audiocpu")->bytes()-1;
+	uint8_t p2 = I8035_P2_R(space);
+
+	if ((p2 >> 7) & 1)
+		return m_soundlatch->read(space, offset);
+>>>>>>> upstream/master
 	else
 		return (SND[(0x1000 + (p2 & 0x0f) * 256 + offset) & mask]);
 }
@@ -777,7 +858,11 @@ WRITE8_MEMBER(mario_state::masao_sh_irqtrigger_w)
 
 WRITE8_MEMBER(mario_state::mario_sh_tuneselect_w)
 {
+<<<<<<< HEAD
 	soundlatch_byte_w(space, offset, data);
+=======
+	m_soundlatch->write(space, offset, data);
+>>>>>>> upstream/master
 }
 
 /* Sound 0 and 1 are pulsed !*/
@@ -797,6 +882,11 @@ WRITE8_MEMBER(mario_state::mario_sh2_w)
 {
 #if OLD_SOUND
 	m_discrete->write(space, DS_SOUND1_INP, 0);
+<<<<<<< HEAD
+=======
+#else
+	m_audio_snd1->write(data);
+>>>>>>> upstream/master
 #endif
 }
 
@@ -852,10 +942,13 @@ ADDRESS_MAP_END
 
 static ADDRESS_MAP_START( mario_sound_io_map, AS_IO, 8, mario_state )
 	AM_RANGE(0x00, 0xff) AM_READ(mario_sh_tune_r) AM_WRITE(mario_sh_sound_w)
+<<<<<<< HEAD
 	AM_RANGE(MCS48_PORT_P1, MCS48_PORT_P1) AM_READWRITE(mario_sh_p1_r, mario_sh_p1_w)
 	AM_RANGE(MCS48_PORT_P2, MCS48_PORT_P2) AM_READWRITE(mario_sh_p2_r, mario_sh_p2_w)
 	AM_RANGE(MCS48_PORT_T0, MCS48_PORT_T0) AM_READ(mario_sh_t0_r)
 	AM_RANGE(MCS48_PORT_T1, MCS48_PORT_T1) AM_READ(mario_sh_t1_r)
+=======
+>>>>>>> upstream/master
 ADDRESS_MAP_END
 
 static ADDRESS_MAP_START( masao_sound_map, AS_PROGRAM, 8, mario_state )
@@ -872,7 +965,11 @@ ADDRESS_MAP_END
  *
  *************************************/
 
+<<<<<<< HEAD
 MACHINE_CONFIG_FRAGMENT( mario_audio )
+=======
+MACHINE_CONFIG_START( mario_audio )
+>>>>>>> upstream/master
 
 #if USE_8039
 	MCFG_CPU_ADD("audiocpu", I8039, I8035_CLOCK)         /* 730 kHz */
@@ -881,21 +978,48 @@ MACHINE_CONFIG_FRAGMENT( mario_audio )
 #endif
 	MCFG_CPU_PROGRAM_MAP(mario_sound_map)
 	MCFG_CPU_IO_MAP(mario_sound_io_map)
+<<<<<<< HEAD
 
 	MCFG_SPEAKER_STANDARD_MONO("mono")
 
+=======
+	MCFG_MCS48_PORT_P1_IN_CB(READ8(mario_state, mario_sh_p1_r))
+	MCFG_MCS48_PORT_P1_OUT_CB(WRITE8(mario_state, mario_sh_p1_w))
+	MCFG_MCS48_PORT_P2_IN_CB(READ8(mario_state, mario_sh_p2_r))
+	MCFG_MCS48_PORT_P2_OUT_CB(WRITE8(mario_state, mario_sh_p2_w))
+	MCFG_MCS48_PORT_T0_IN_CB(READLINE(mario_state, mario_sh_t0_r))
+	MCFG_MCS48_PORT_T1_IN_CB(READLINE(mario_state, mario_sh_t1_r))
+
+	MCFG_SPEAKER_STANDARD_MONO("mono")
+
+	MCFG_GENERIC_LATCH_8_ADD("soundlatch")
+	MCFG_GENERIC_LATCH_8_ADD("soundlatch2")
+	MCFG_GENERIC_LATCH_8_ADD("soundlatch3")
+	MCFG_GENERIC_LATCH_8_ADD("soundlatch4")
+
+>>>>>>> upstream/master
 #if OLD_SOUND
 	MCFG_SOUND_ADD("discrete", DISCRETE, 0)
 	MCFG_DISCRETE_INTF(mario)
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 1)
 #else
 	MCFG_SOUND_ADD("snd_nl", NETLIST_SOUND, 48000)
+<<<<<<< HEAD
 	MCFG_NETLIST_SETUP(nl_mario)
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 1.0)
 
 	MCFG_NETLIST_LOGIC_INPUT("snd_nl", "snd0", "SOUND0.IN", 0, 1)
 	MCFG_NETLIST_LOGIC_INPUT("snd_nl", "snd7", "SOUND7.IN", 0, 1)
 	MCFG_NETLIST_LOGIC_INPUT("snd_nl", "dac", "DAC.VAL", 0, 255)
+=======
+	MCFG_NETLIST_SETUP(mario)
+	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 1.0)
+
+	MCFG_NETLIST_LOGIC_INPUT("snd_nl", "snd0", "SOUND0.IN", 0)
+	MCFG_NETLIST_LOGIC_INPUT("snd_nl", "snd1", "SOUND1.IN", 0)
+	MCFG_NETLIST_LOGIC_INPUT("snd_nl", "snd7", "SOUND7.IN", 0)
+	MCFG_NETLIST_INT_INPUT("snd_nl", "dac", "DAC.VAL", 0, 255)
+>>>>>>> upstream/master
 
 	MCFG_NETLIST_STREAM_OUTPUT("snd_nl", 0, "ROUT.1")
 	MCFG_NETLIST_ANALOG_MULT_OFFSET(150000.0, 0.0)
@@ -903,15 +1027,26 @@ MACHINE_CONFIG_FRAGMENT( mario_audio )
 
 MACHINE_CONFIG_END
 
+<<<<<<< HEAD
 MACHINE_CONFIG_FRAGMENT( masao_audio )
+=======
+MACHINE_CONFIG_START( masao_audio )
+>>>>>>> upstream/master
 
 	MCFG_CPU_ADD("audiocpu", Z80, 24576000/16)  /* ???? */
 	MCFG_CPU_PROGRAM_MAP(masao_sound_map)
 
 	MCFG_SPEAKER_STANDARD_MONO("mono")
 
+<<<<<<< HEAD
 	MCFG_SOUND_ADD("aysnd", AY8910, 14318000/6)
 	MCFG_AY8910_PORT_A_READ_CB(READ8(driver_device, soundlatch_byte_r))
+=======
+	MCFG_GENERIC_LATCH_8_ADD("soundlatch")
+
+	MCFG_SOUND_ADD("aysnd", AY8910, 14318000/6)
+	MCFG_AY8910_PORT_A_READ_CB(DEVREAD8("soundlatch", generic_latch_8_device, read))
+>>>>>>> upstream/master
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 0.50)
 
 MACHINE_CONFIG_END

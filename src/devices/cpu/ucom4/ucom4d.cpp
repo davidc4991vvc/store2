@@ -38,7 +38,11 @@ static const char *const s_mnemonics[] =
 };
 
 // number of bits per opcode parameter, 2 digits means opcode is 2 bytes
+<<<<<<< HEAD
 static const UINT8 s_bits[] =
+=======
+static const u8 s_bits[] =
+>>>>>>> upstream/master
 {
 	4, 0, 2, 80, 4, 0, 0, 0,
 	0, 0, 0, 2, 2, 2, 0, 0, 0, 0, 0,
@@ -54,7 +58,11 @@ static const UINT8 s_bits[] =
 #define _OVER DASMFLAG_STEP_OVER
 #define _OUT  DASMFLAG_STEP_OUT
 
+<<<<<<< HEAD
 static const UINT32 s_flags[] =
+=======
+static const u32 s_flags[] =
+>>>>>>> upstream/master
 {
 	0, 0, 0, 0, 0, 0, 0, 0,
 	0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -68,7 +76,11 @@ static const UINT32 s_flags[] =
 };
 
 
+<<<<<<< HEAD
 static const UINT8 ucom4_mnemonic[0x100] =
+=======
+static const u8 ucom4_mnemonic[0x100] =
+>>>>>>> upstream/master
 {
 	/* 0x00 */
 	mNOP, mDI, mS, mTIT, mTC, mTTM, mDAA, mTAL,
@@ -116,20 +128,34 @@ static const UINT8 ucom4_mnemonic[0x100] =
 CPU_DISASSEMBLE(ucom4)
 {
 	int pos = 0;
+<<<<<<< HEAD
 	UINT8 op = oprom[pos++];
 	UINT8 instr = ucom4_mnemonic[op];
 
 	char *dst = buffer;
 	dst += sprintf(dst, "%-4s ", s_mnemonics[instr]);
+=======
+	u8 op = oprom[pos++];
+	u8 instr = ucom4_mnemonic[op];
+
+	util::stream_format(stream,"%-4s ", s_mnemonics[instr]);
+>>>>>>> upstream/master
 
 	// opcode parameter
 	int bits = s_bits[instr];
 	if (bits)
 	{
+<<<<<<< HEAD
 		UINT16 param = op & ((1 << (bits % 10)) - 1);
 		if (bits / 10)
 		{
 			UINT8 op2 = oprom[pos++];
+=======
+		u16 param = op & ((1 << (bits % 10)) - 1);
+		if (bits / 10)
+		{
+			u8 op2 = oprom[pos++];
+>>>>>>> upstream/master
 			param = (param << (bits / 10)) | (op2 & ((1 << (bits / 10)) - 1));
 			bits = (bits % 10) + (bits / 10);
 		}
@@ -142,11 +168,19 @@ CPU_DISASSEMBLE(ucom4)
 		}
 
 		if (bits <= 4)
+<<<<<<< HEAD
 			dst += sprintf(dst, "%d", param);
 		else if (bits <= 8)
 			dst += sprintf(dst, "$%02X", param);
 		else
 			dst += sprintf(dst, "$%03X", param);
+=======
+			util::stream_format(stream, "%d", param);
+		else if (bits <= 8)
+			util::stream_format(stream, "$%02X", param);
+		else
+			util::stream_format(stream, "$%03X", param);
+>>>>>>> upstream/master
 	}
 
 	return pos | s_flags[instr] | DASMFLAG_SUPPORTED;

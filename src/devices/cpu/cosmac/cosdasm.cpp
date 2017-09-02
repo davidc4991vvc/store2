@@ -18,27 +18,48 @@ enum
 };
 
 #define CDP1801_OPCODE(...) \
+<<<<<<< HEAD
 	sprintf(buffer, __VA_ARGS__)
 
 #define CDP1802_OPCODE(...) \
 	if (variant < TYPE_1802) sprintf(buffer, "illegal"); else sprintf(buffer, __VA_ARGS__)
 
 static offs_t implied(const UINT8 opcode)
+=======
+	util::stream_format(stream, __VA_ARGS__)
+
+#define CDP1802_OPCODE(...) \
+	if (variant < TYPE_1802) stream << "illegal"; else util::stream_format(stream, __VA_ARGS__)
+
+static offs_t implied(const uint8_t opcode)
+>>>>>>> upstream/master
 {
 	return opcode & 0x0f;
 }
 
+<<<<<<< HEAD
 static offs_t immediate(const UINT8 **opram)
+=======
+static offs_t immediate(const uint8_t **opram)
+>>>>>>> upstream/master
 {
 	return *(*opram)++;
 }
 
+<<<<<<< HEAD
 static offs_t short_branch(offs_t pc, const UINT8 **opram)
+=======
+static offs_t short_branch(offs_t pc, const uint8_t **opram)
+>>>>>>> upstream/master
 {
 	return (pc & 0xff00) | immediate(opram);
 }
 
+<<<<<<< HEAD
 static offs_t long_branch(const UINT8 **opram)
+=======
+static offs_t long_branch(const uint8_t **opram)
+>>>>>>> upstream/master
 {
 	return (immediate(opram) << 8) | immediate(opram);
 }
@@ -53,6 +74,7 @@ static offs_t long_skip(offs_t pc)
 	return pc + 3;
 }
 
+<<<<<<< HEAD
 static UINT32 disassemble(device_t *device, char *buffer, offs_t pc, const UINT8 *oprom, const UINT8 *opram, UINT32 variant)
 {
 	const UINT8 *startram = opram;
@@ -60,6 +82,15 @@ static UINT32 disassemble(device_t *device, char *buffer, offs_t pc, const UINT8
 
 	opram++;
 	UINT8 opcode = *oprom++;
+=======
+static uint32_t disassemble(device_t *device, std::ostream &stream, offs_t pc, const uint8_t *oprom, const uint8_t *opram, uint32_t variant)
+{
+	const uint8_t *startram = opram;
+	uint32_t flags = 0;
+
+	opram++;
+	uint8_t opcode = *oprom++;
+>>>>>>> upstream/master
 
 	switch (opcode)
 	{
@@ -187,11 +218,19 @@ static UINT32 disassemble(device_t *device, char *buffer, offs_t pc, const UINT8
 
 CPU_DISASSEMBLE( cdp1801 )
 {
+<<<<<<< HEAD
 	return disassemble(device, buffer, pc, oprom, opram, TYPE_1801);
+=======
+	return disassemble(device, stream, pc, oprom, opram, TYPE_1801);
+>>>>>>> upstream/master
 }
 
 
 CPU_DISASSEMBLE( cdp1802 )
 {
+<<<<<<< HEAD
 	return disassemble(device, buffer, pc, oprom, opram, TYPE_1802);
+=======
+	return disassemble(device, stream, pc, oprom, opram, TYPE_1802);
+>>>>>>> upstream/master
 }

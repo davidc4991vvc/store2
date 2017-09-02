@@ -27,22 +27,35 @@
 #define CMP_OVERFLOW32(r, s, d)     ((((d) ^ (s)) & ((d) ^ (r)) & 0x80000000) ? 1 : 0)
 #define CMP_OVERFLOW16(r, s, d)     ((((d) ^ (s)) & ((d) ^ (r)) & 0x8000) ? 1 : 0)
 #define CMP_OVERFLOW8(r, s, d)      ((((d) ^ (s)) & ((d) ^ (r)) & 0x80) ? 1 : 0)
+<<<<<<< HEAD
 #define CARRY32(x)                  (((x) & (((UINT64)1) << 32)) ? 1 : 0)
+=======
+#define CARRY32(x)                  (((x) & (((uint64_t)1) << 32)) ? 1 : 0)
+>>>>>>> upstream/master
 #define CARRY16(x)                  (((x) & 0x10000) ? 1 : 0)
 #define CARRY8(x)                   (((x) & 0x100) ? 1 : 0)
 #define SIGN32(x)                   (((x) & 0x80000000) ? 1 : 0)
 #define SIGN16(x)                   (((x) & 0x8000) ? 1 : 0)
 #define SIGN8(x)                    (((x) & 0x80) ? 1 : 0)
 
+<<<<<<< HEAD
 #define SIGN_EXTEND(x, r)           ((x) | (((x) & (0x80000000 >> r)) ? ((INT32)(0x80000000) >> r) : 0))
 
 
 
 bool tms32082_mp_device::test_condition(int condition, UINT32 value)
+=======
+#define SIGN_EXTEND(x, r)           ((x) | (((x) & (0x80000000 >> r)) ? ((int32_t)(0x80000000) >> r) : 0))
+
+
+
+bool tms32082_mp_device::test_condition(int condition, uint32_t value)
+>>>>>>> upstream/master
 {
 	switch (condition)
 	{
 		case 0x00:  return false;                   // never, byte
+<<<<<<< HEAD
 		case 0x01:  return (INT8)(value) > 0;       // greater than zero, byte
 		case 0x02:  return (INT8)(value) == 0;      // equals zero, byte
 		case 0x03:  return (INT8)(value) >= 0;      // greater than or equal to zero, byte
@@ -65,11 +78,36 @@ bool tms32082_mp_device::test_condition(int condition, UINT32 value)
 		case 0x14:  return (INT32)(value) < 0;      // less than zero, dword
 		case 0x15:  return (INT32)(value) != 0;     // not equal to zero, dword
 		case 0x16:  return (INT32)(value) <= 0;     // less than or equal to zero, dword
+=======
+		case 0x01:  return (int8_t)(value) > 0;       // greater than zero, byte
+		case 0x02:  return (int8_t)(value) == 0;      // equals zero, byte
+		case 0x03:  return (int8_t)(value) >= 0;      // greater than or equal to zero, byte
+		case 0x04:  return (int8_t)(value) < 0;       // less than zero, byte
+		case 0x05:  return (int8_t)(value) != 0;      // not equal to zero, byte
+		case 0x06:  return (int8_t)(value) <= 0;      // less than or equal to zero, byte
+		case 0x07:  return true;                    // always, byte
+		case 0x08:  return false;                   // never, word
+		case 0x09:  return (int16_t)(value) > 0;      // greater than zero, word
+		case 0x0a:  return (int16_t)(value) == 0;     // equals zero, word
+		case 0x0b:  return (int16_t)(value) >= 0;     // greater than or equal to zero, word
+		case 0x0c:  return (int16_t)(value) < 0;      // less than zero, word
+		case 0x0d:  return (int16_t)(value) != 0;     // not equal to zero, word
+		case 0x0e:  return (int16_t)(value) <= 0;     // less than or equal to zero, word
+		case 0x0f:  return true;                    // always, word
+		case 0x10:  return false;                   // never, dword
+		case 0x11:  return (int32_t)(value) > 0;      // greater than zero, dword
+		case 0x12:  return (int32_t)(value) == 0;     // equals zero, dword
+		case 0x13:  return (int32_t)(value) >= 0;     // greater than or equal to zero, dword
+		case 0x14:  return (int32_t)(value) < 0;      // less than zero, dword
+		case 0x15:  return (int32_t)(value) != 0;     // not equal to zero, dword
+		case 0x16:  return (int32_t)(value) <= 0;     // less than or equal to zero, dword
+>>>>>>> upstream/master
 		case 0x17:  return true;                    // always, dword
 		default:    return false;                   // reserved
 	}
 }
 
+<<<<<<< HEAD
 UINT32 tms32082_mp_device::calculate_cmp(UINT32 src1, UINT32 src2)
 {
 	UINT16 src1_16 = (UINT16)(src1);
@@ -78,24 +116,46 @@ UINT32 tms32082_mp_device::calculate_cmp(UINT32 src1, UINT32 src2)
 	UINT8 src2_8 = (UINT8)(src2);
 
 	UINT64 res32 = (UINT64)src1 - (UINT64)src2;
+=======
+uint32_t tms32082_mp_device::calculate_cmp(uint32_t src1, uint32_t src2)
+{
+	uint16_t src1_16 = (uint16_t)(src1);
+	uint8_t src1_8 = (uint8_t)(src1);
+	uint16_t src2_16 = (uint16_t)(src2);
+	uint8_t src2_8 = (uint8_t)(src2);
+
+	uint64_t res32 = (uint64_t)src1 - (uint64_t)src2;
+>>>>>>> upstream/master
 	int z32 = (res32 == 0) ? 1 : 0;
 	int n32 = SIGN32(res32);
 	int v32 = CMP_OVERFLOW32(res32, src2, src1);
 	int c32 = CARRY32(res32);
 
+<<<<<<< HEAD
 	UINT32 res16 = (UINT32)src1_16 - (UINT32)src2_16;
+=======
+	uint32_t res16 = (uint32_t)src1_16 - (uint32_t)src2_16;
+>>>>>>> upstream/master
 	int z16 = (res16 == 0) ? 1 : 0;
 	int n16 = SIGN16(res16);
 	int v16 = CMP_OVERFLOW16(res16, src2_16, src1_16);
 	int c16 = CARRY16(res16);
 
+<<<<<<< HEAD
 	UINT16 res8 = (UINT16)src1_8 - (UINT16)src2_8;
+=======
+	uint16_t res8 = (uint16_t)src1_8 - (uint16_t)src2_8;
+>>>>>>> upstream/master
 	int z8 = (res8 == 0) ? 1 : 0;
 	int n8 = SIGN8(res8);
 	int v8 = CMP_OVERFLOW8(res8, src2_8, src1_8);
 	int c8 = CARRY8(res8);
 
+<<<<<<< HEAD
 	UINT32 flags = 0;
+=======
+	uint32_t flags = 0;
+>>>>>>> upstream/master
 	// 32-bits (bits 20-29)
 	flags |= ((~c32) & 1) << 29;                                // higher than or same (C)
 	flags |= ((c32) & 1) << 28;                                 // lower than (~C)
@@ -148,7 +208,11 @@ void tms32082_mp_device::vector_loadstore()
 		}
 		case 0x03:          // vst.d
 		{
+<<<<<<< HEAD
 			UINT64 data = m_fpair[rd >> 1];
+=======
+			uint64_t data = m_fpair[rd >> 1];
+>>>>>>> upstream/master
 			m_program->write_qword(m_outp, data);
 			m_outp += 8;
 			break;
@@ -189,7 +253,11 @@ void tms32082_mp_device::execute_short_imm()
 	{
 		case 0x02:          // cmnd
 		{
+<<<<<<< HEAD
 			UINT32 data = OP_UIMM15();
+=======
+			uint32_t data = OP_UIMM15();
+>>>>>>> upstream/master
 
 			processor_command(data);
 			break;
@@ -198,9 +266,15 @@ void tms32082_mp_device::execute_short_imm()
 		case 0x04:          // rdcr
 		{
 			int rd = OP_RD();
+<<<<<<< HEAD
 			UINT32 imm = OP_UIMM15();
 
 			UINT32 r = read_creg(imm);
+=======
+			uint32_t imm = OP_UIMM15();
+
+			uint32_t r = read_creg(imm);
+>>>>>>> upstream/master
 
 			if (rd)
 				m_reg[rd] = r;
@@ -211,9 +285,15 @@ void tms32082_mp_device::execute_short_imm()
 		{
 			int rd = OP_RD();
 			int rs = OP_RS();
+<<<<<<< HEAD
 			UINT32 imm = OP_UIMM15();
 
 			UINT32 r = read_creg(imm);
+=======
+			uint32_t imm = OP_UIMM15();
+
+			uint32_t r = read_creg(imm);
+>>>>>>> upstream/master
 			if (rd)
 				m_reg[rd] = r;
 
@@ -231,7 +311,11 @@ void tms32082_mp_device::execute_short_imm()
 			}
 			else
 			{
+<<<<<<< HEAD
 				UINT32 data = read_creg(cr);
+=======
+				uint32_t data = read_creg(cr);
+>>>>>>> upstream/master
 
 				m_fetchpc = data & ~3;
 				m_ie = (m_ie & ~1) | (data & 1);        // global interrupt mask from creg
@@ -246,6 +330,7 @@ void tms32082_mp_device::execute_short_imm()
 			int inv = (m_ir & (1 << 11));
 			int rot = OP_ROTATE();
 			int end = OP_ENDMASK();
+<<<<<<< HEAD
 			UINT32 source = m_reg[OP_RS()];
 			int rd = OP_RD();
 
@@ -255,6 +340,17 @@ void tms32082_mp_device::execute_short_imm()
 			UINT32 compmask = endmask;          // shiftmask == 0xffffffff
 
 			UINT32 res = 0;
+=======
+			uint32_t source = m_reg[OP_RS()];
+			int rd = OP_RD();
+
+			uint32_t endmask = SHIFT_MASK[end ? end : 32];
+			if (inv) endmask = ~endmask;
+
+			uint32_t compmask = endmask;          // shiftmask == 0xffffffff
+
+			uint32_t res;
+>>>>>>> upstream/master
 			if (r)      // right
 			{
 				res = ROTATE_R(source, rot) & compmask;
@@ -275,6 +371,7 @@ void tms32082_mp_device::execute_short_imm()
 			int inv = (m_ir & (1 << 11));
 			int rot = OP_ROTATE();
 			int end = OP_ENDMASK();
+<<<<<<< HEAD
 			UINT32 source = m_reg[OP_RS()];
 			int rd = OP_RD();
 
@@ -284,6 +381,17 @@ void tms32082_mp_device::execute_short_imm()
 			UINT32 compmask = endmask;          // shiftmask == 0xffffffff
 
 			UINT32 res = 0;
+=======
+			uint32_t source = m_reg[OP_RS()];
+			int rd = OP_RD();
+
+			uint32_t endmask = SHIFT_MASK[end ? end : 32];
+			if (inv) endmask = ~endmask;
+
+			uint32_t compmask = endmask;          // shiftmask == 0xffffffff
+
+			uint32_t res;
+>>>>>>> upstream/master
 			if (r)      // right
 			{
 				res = ROTATE_R(source, rot) & compmask;
@@ -306,6 +414,7 @@ void tms32082_mp_device::execute_short_imm()
 			int inv = (m_ir & (1 << 11));
 			int rot = OP_ROTATE();
 			int end = OP_ENDMASK();
+<<<<<<< HEAD
 			UINT32 source = m_reg[OP_RS()];
 			int rd = OP_RD();
 
@@ -317,6 +426,19 @@ void tms32082_mp_device::execute_short_imm()
 			UINT32 compmask = endmask & shiftmask;
 
 			UINT32 res = 0;
+=======
+			uint32_t source = m_reg[OP_RS()];
+			int rd = OP_RD();
+
+			uint32_t endmask = SHIFT_MASK[end ? end : 32];
+			if (inv) endmask = ~endmask;
+
+			int shift = r ? 32-rot : rot;
+			uint32_t shiftmask = SHIFT_MASK[shift ? shift : 32];
+			uint32_t compmask = endmask & shiftmask;
+
+			uint32_t res;
+>>>>>>> upstream/master
 			if (r)      // right
 			{
 				res = ROTATE_R(source, rot) & compmask;
@@ -337,6 +459,7 @@ void tms32082_mp_device::execute_short_imm()
 			int inv = (m_ir & (1 << 11));
 			int rot = OP_ROTATE();
 			int end = OP_ENDMASK();
+<<<<<<< HEAD
 			UINT32 source = m_reg[OP_RS()];
 			int rd = OP_RD();
 
@@ -347,6 +470,18 @@ void tms32082_mp_device::execute_short_imm()
 			UINT32 compmask = endmask & shiftmask;
 
 			UINT32 res = 0;
+=======
+			uint32_t source = m_reg[OP_RS()];
+			int rd = OP_RD();
+
+			uint32_t endmask = SHIFT_MASK[end ? end : 32];
+			if (inv) endmask = ~endmask;
+
+			uint32_t shiftmask = SHIFT_MASK[r ? 32-rot : rot];
+			uint32_t compmask = endmask & shiftmask;
+
+			uint32_t res;
+>>>>>>> upstream/master
 			if (r)      // right
 			{
 				res = (ROTATE_R(source, rot) & compmask) | (m_reg[rd] & ~compmask);
@@ -367,6 +502,7 @@ void tms32082_mp_device::execute_short_imm()
 			int inv = (m_ir & (1 << 11));
 			int rot = OP_ROTATE();
 			int end = OP_ENDMASK();
+<<<<<<< HEAD
 			UINT32 source = m_reg[OP_RS()];
 			int rd = OP_RD();
 
@@ -378,6 +514,19 @@ void tms32082_mp_device::execute_short_imm()
 			UINT32 compmask = endmask & shiftmask;
 
 			UINT32 res = 0;
+=======
+			uint32_t source = m_reg[OP_RS()];
+			int rd = OP_RD();
+
+			uint32_t endmask = SHIFT_MASK[end ? end : 32];
+			if (inv) endmask = ~endmask;
+
+			int shift = r ? 32-rot : rot;
+			uint32_t shiftmask = SHIFT_MASK[shift ? shift : 32];
+			uint32_t compmask = endmask & shiftmask;
+
+			uint32_t res;
+>>>>>>> upstream/master
 			if (r)      // right
 			{
 				res = ROTATE_R(source, rot) & compmask;
@@ -400,6 +549,7 @@ void tms32082_mp_device::execute_short_imm()
 			int inv = (m_ir & (1 << 11));
 			int rot = OP_ROTATE();
 			int end = OP_ENDMASK();
+<<<<<<< HEAD
 			UINT32 source = m_reg[OP_RS()];
 			int rd = OP_RD();
 
@@ -410,6 +560,18 @@ void tms32082_mp_device::execute_short_imm()
 			UINT32 compmask = endmask & ~shiftmask;
 
 			UINT32 res = 0;
+=======
+			uint32_t source = m_reg[OP_RS()];
+			int rd = OP_RD();
+
+			uint32_t endmask = SHIFT_MASK[end ? end : 32];
+			if (inv) endmask = ~endmask;
+
+			uint32_t shiftmask = SHIFT_MASK[r ? 32-rot : rot];
+			uint32_t compmask = endmask & ~shiftmask;
+
+			uint32_t res;
+>>>>>>> upstream/master
 			if (r)      // right
 			{
 				res = ROTATE_R(source, rot) & compmask;
@@ -430,6 +592,7 @@ void tms32082_mp_device::execute_short_imm()
 			int inv = (m_ir & (1 << 11));
 			int rot = OP_ROTATE();
 			int end = OP_ENDMASK();
+<<<<<<< HEAD
 			UINT32 source = m_reg[OP_RS()];
 			int rd = OP_RD();
 
@@ -440,6 +603,18 @@ void tms32082_mp_device::execute_short_imm()
 			UINT32 compmask = endmask & ~shiftmask;
 
 			UINT32 res = 0;
+=======
+			uint32_t source = m_reg[OP_RS()];
+			int rd = OP_RD();
+
+			uint32_t endmask = SHIFT_MASK[end ? end : 32];
+			if (inv) endmask = ~endmask;
+
+			uint32_t shiftmask = SHIFT_MASK[r ? 32-rot : rot];
+			uint32_t compmask = endmask & ~shiftmask;
+
+			uint32_t res;
+>>>>>>> upstream/master
 			if (r)      // right
 			{
 				res = (ROTATE_R(source, rot) & compmask) | (m_reg[rd] & ~compmask);
@@ -458,7 +633,11 @@ void tms32082_mp_device::execute_short_imm()
 		{
 			int rd = OP_RD();
 			int rs = OP_RS();
+<<<<<<< HEAD
 			UINT32 imm = OP_UIMM15();
+=======
+			uint32_t imm = OP_UIMM15();
+>>>>>>> upstream/master
 
 			if (rd)
 				m_reg[rd] = m_reg[rs] & imm;
@@ -469,7 +648,11 @@ void tms32082_mp_device::execute_short_imm()
 		{
 			int rd = OP_RD();
 			int rs = OP_RS();
+<<<<<<< HEAD
 			UINT32 imm = OP_UIMM15();
+=======
+			uint32_t imm = OP_UIMM15();
+>>>>>>> upstream/master
 
 			if (rd)
 				m_reg[rd] = ~m_reg[rs] & imm;
@@ -480,7 +663,11 @@ void tms32082_mp_device::execute_short_imm()
 		{
 			int rd = OP_RD();
 			int rs = OP_RS();
+<<<<<<< HEAD
 			UINT32 imm = OP_UIMM15();
+=======
+			uint32_t imm = OP_UIMM15();
+>>>>>>> upstream/master
 
 			if (rd)
 				m_reg[rd] = m_reg[rs] & ~imm;
@@ -491,7 +678,11 @@ void tms32082_mp_device::execute_short_imm()
 		{
 			int rd = OP_RD();
 			int rs = OP_RS();
+<<<<<<< HEAD
 			UINT32 imm = OP_UIMM15();
+=======
+			uint32_t imm = OP_UIMM15();
+>>>>>>> upstream/master
 
 			if (rd)
 				m_reg[rd] = m_reg[rs] | imm;
@@ -502,7 +693,11 @@ void tms32082_mp_device::execute_short_imm()
 		{
 			int rd = OP_RD();
 			int rs = OP_RS();
+<<<<<<< HEAD
 			UINT32 imm = OP_UIMM15();
+=======
+			uint32_t imm = OP_UIMM15();
+>>>>>>> upstream/master
 
 			if (rd)
 				m_reg[rd] = m_reg[rs] | ~imm;
@@ -515,10 +710,17 @@ void tms32082_mp_device::execute_short_imm()
 			int rd = OP_RD();
 			int base = OP_BASE();
 			int m = m_ir & (1 << 17);
+<<<<<<< HEAD
 			INT32 offset = OP_SIMM15();
 
 			UINT32 address = m_reg[base] + offset;
 			UINT32 data = (UINT8)m_program->read_byte(address);
+=======
+			int32_t offset = OP_SIMM15();
+
+			uint32_t address = m_reg[base] + offset;
+			uint32_t data = (uint8_t)m_program->read_byte(address);
+>>>>>>> upstream/master
 			if (data & 0x80) data |= 0xffffff00;
 			if (rd)
 				m_reg[rd] = data;
@@ -534,10 +736,17 @@ void tms32082_mp_device::execute_short_imm()
 			int rd = OP_RD();
 			int base = OP_BASE();
 			int m = m_ir & (1 << 17);
+<<<<<<< HEAD
 			INT32 offset = OP_SIMM15();
 
 			UINT32 address = m_reg[base] + offset;
 			UINT32 data = (UINT16)m_program->read_word(address);
+=======
+			int32_t offset = OP_SIMM15();
+
+			uint32_t address = m_reg[base] + offset;
+			uint32_t data = (uint16_t)m_program->read_word(address);
+>>>>>>> upstream/master
 			if (data & 0x8000) data |= 0xffff0000;
 			if (rd)
 				m_reg[rd] = data;
@@ -553,10 +762,17 @@ void tms32082_mp_device::execute_short_imm()
 			int rd = OP_RD();
 			int base = OP_BASE();
 			int m = m_ir & (1 << 17);
+<<<<<<< HEAD
 			INT32 offset = OP_SIMM15();
 
 			UINT32 address = m_reg[base] + offset;
 			UINT32 data = m_program->read_dword(address);
+=======
+			int32_t offset = OP_SIMM15();
+
+			uint32_t address = m_reg[base] + offset;
+			uint32_t data = m_program->read_dword(address);
+>>>>>>> upstream/master
 			if (rd)
 				m_reg[rd] = data;
 
@@ -571,11 +787,19 @@ void tms32082_mp_device::execute_short_imm()
 			int rd = OP_RD();
 			int base = OP_BASE();
 			int m = m_ir & (1 << 17);
+<<<<<<< HEAD
 			INT32 offset = OP_SIMM15();
 
 			UINT32 address = m_reg[base] + offset;
 			UINT32 data1 = m_program->read_dword(address);
 			UINT32 data2 = m_program->read_dword(address+4);
+=======
+			int32_t offset = OP_SIMM15();
+
+			uint32_t address = m_reg[base] + offset;
+			uint32_t data1 = m_program->read_dword(address);
+			uint32_t data2 = m_program->read_dword(address+4);
+>>>>>>> upstream/master
 			if (rd)
 			{
 				m_reg[(rd & ~1)+1] = data1;
@@ -593,10 +817,17 @@ void tms32082_mp_device::execute_short_imm()
 			int rd = OP_RD();
 			int base = OP_BASE();
 			int m = m_ir & (1 << 17);
+<<<<<<< HEAD
 			INT32 offset = OP_SIMM15();
 
 			UINT32 address = m_reg[base] + offset;
 			UINT32 data = (UINT8)(m_program->read_byte(address));
+=======
+			int32_t offset = OP_SIMM15();
+
+			uint32_t address = m_reg[base] + offset;
+			uint32_t data = (uint8_t)(m_program->read_byte(address));
+>>>>>>> upstream/master
 			if (rd)
 				m_reg[rd] = data;
 
@@ -611,10 +842,17 @@ void tms32082_mp_device::execute_short_imm()
 			int rd = OP_RD();
 			int base = OP_BASE();
 			int m = m_ir & (1 << 17);
+<<<<<<< HEAD
 			INT32 offset = OP_SIMM15();
 
 			UINT32 address = m_reg[base] + offset;
 			UINT32 data = (UINT16)(m_program->read_word(address));
+=======
+			int32_t offset = OP_SIMM15();
+
+			uint32_t address = m_reg[base] + offset;
+			uint32_t data = (uint16_t)(m_program->read_word(address));
+>>>>>>> upstream/master
 			if (rd)
 				m_reg[rd] = data;
 
@@ -629,11 +867,19 @@ void tms32082_mp_device::execute_short_imm()
 			int rd = OP_RD();
 			int base = OP_BASE();
 			int m = m_ir & (1 << 17);
+<<<<<<< HEAD
 			INT32 offset = OP_SIMM15();
 
 			UINT32 address = m_reg[base] + offset;
 
 			m_program->write_byte(address, (UINT8)(m_reg[rd]));
+=======
+			int32_t offset = OP_SIMM15();
+
+			uint32_t address = m_reg[base] + offset;
+
+			m_program->write_byte(address, (uint8_t)(m_reg[rd]));
+>>>>>>> upstream/master
 
 			if (m && base)
 				m_reg[base] = address;
@@ -646,11 +892,19 @@ void tms32082_mp_device::execute_short_imm()
 			int rd = OP_RD();
 			int base = OP_BASE();
 			int m = m_ir & (1 << 17);
+<<<<<<< HEAD
 			INT32 offset = OP_SIMM15();
 
 			UINT32 address = m_reg[base] + offset;
 
 			m_program->write_word(address, (UINT16)(m_reg[rd]));
+=======
+			int32_t offset = OP_SIMM15();
+
+			uint32_t address = m_reg[base] + offset;
+
+			m_program->write_word(address, (uint16_t)(m_reg[rd]));
+>>>>>>> upstream/master
 
 			if (m && base)
 				m_reg[base] = address;
@@ -663,9 +917,15 @@ void tms32082_mp_device::execute_short_imm()
 			int rd = OP_RD();
 			int base = OP_BASE();
 			int m = m_ir & (1 << 17);
+<<<<<<< HEAD
 			INT32 offset = OP_SIMM15();
 
 			UINT32 address = m_reg[base] + offset;
+=======
+			int32_t offset = OP_SIMM15();
+
+			uint32_t address = m_reg[base] + offset;
+>>>>>>> upstream/master
 
 			m_program->write_dword(address, m_reg[rd]);
 
@@ -680,9 +940,15 @@ void tms32082_mp_device::execute_short_imm()
 			int rd = OP_RD();
 			int base = OP_BASE();
 			int m = m_ir & (1 << 17);
+<<<<<<< HEAD
 			INT32 offset = OP_SIMM15();
 
 			UINT32 address = m_reg[base] + offset;
+=======
+			int32_t offset = OP_SIMM15();
+
+			uint32_t address = m_reg[base] + offset;
+>>>>>>> upstream/master
 
 			m_program->write_dword(address+0, m_reg[(rd & ~1) + 1]);
 			m_program->write_dword(address+4, m_reg[rd & ~1]);
@@ -696,7 +962,11 @@ void tms32082_mp_device::execute_short_imm()
 		{
 			int link = OP_LINK();
 			int base = OP_BASE();
+<<<<<<< HEAD
 			INT32 offset = OP_SIMM15();
+=======
+			int32_t offset = OP_SIMM15();
+>>>>>>> upstream/master
 
 			if (link)
 				m_reg[link] = m_fetchpc;
@@ -708,12 +978,20 @@ void tms32082_mp_device::execute_short_imm()
 		case 0x48:          // bbz
 		{
 			int bitnum = OP_BITNUM() ^ 0x1f;
+<<<<<<< HEAD
 			INT32 offset = OP_SIMM15();
+=======
+			int32_t offset = OP_SIMM15();
+>>>>>>> upstream/master
 			int rs = OP_RS();
 
 			if ((m_reg[rs] & (1 << bitnum)) == 0)
 			{
+<<<<<<< HEAD
 				UINT32 address = m_pc + (offset * 4);
+=======
+				uint32_t address = m_pc + (offset * 4);
+>>>>>>> upstream/master
 
 				m_pc = m_fetchpc;
 				delay_slot();
@@ -726,7 +1004,11 @@ void tms32082_mp_device::execute_short_imm()
 		case 0x49:          // bbz.a
 		{
 			int bitnum = OP_BITNUM() ^ 0x1f;
+<<<<<<< HEAD
 			INT32 offset = OP_SIMM15();
+=======
+			int32_t offset = OP_SIMM15();
+>>>>>>> upstream/master
 			int rs = OP_RS();
 
 			if ((m_reg[rs] & (1 << bitnum)) == 0)
@@ -739,12 +1021,20 @@ void tms32082_mp_device::execute_short_imm()
 		case 0x4a:          // bbo
 		{
 			int bitnum = OP_BITNUM() ^ 0x1f;
+<<<<<<< HEAD
 			INT32 offset = OP_SIMM15();
+=======
+			int32_t offset = OP_SIMM15();
+>>>>>>> upstream/master
 			int rs = OP_RS();
 
 			if ((m_reg[rs] & (1 << bitnum)) != 0)
 			{
+<<<<<<< HEAD
 				UINT32 address = m_pc + (offset * 4);
+=======
+				uint32_t address = m_pc + (offset * 4);
+>>>>>>> upstream/master
 
 				m_pc = m_fetchpc;
 				delay_slot();
@@ -757,7 +1047,11 @@ void tms32082_mp_device::execute_short_imm()
 		case 0x4b:          // bbo.a
 		{
 			int bitnum = OP_BITNUM() ^ 0x1f;
+<<<<<<< HEAD
 			INT32 offset = OP_SIMM15();
+=======
+			int32_t offset = OP_SIMM15();
+>>>>>>> upstream/master
 			int rs = OP_RS();
 
 			if ((m_reg[rs] & (1 << bitnum)) != 0)
@@ -769,13 +1063,21 @@ void tms32082_mp_device::execute_short_imm()
 
 		case 0x4c:          // bcnd
 		{
+<<<<<<< HEAD
 			INT32 offset = OP_SIMM15();
+=======
+			int32_t offset = OP_SIMM15();
+>>>>>>> upstream/master
 			int code = OP_RD();
 			int rs = OP_RS();
 
 			if (test_condition(code, m_reg[rs]))
 			{
+<<<<<<< HEAD
 				UINT32 address = m_pc + (offset * 4);
+=======
+				uint32_t address = m_pc + (offset * 4);
+>>>>>>> upstream/master
 
 				m_pc = m_fetchpc;
 				delay_slot();
@@ -787,7 +1089,11 @@ void tms32082_mp_device::execute_short_imm()
 
 		case 0x4d:          // bcnd.a
 		{
+<<<<<<< HEAD
 			INT32 offset = OP_SIMM15();
+=======
+			int32_t offset = OP_SIMM15();
+>>>>>>> upstream/master
 			int code = OP_RD();
 			int rs = OP_RS();
 
@@ -800,8 +1106,13 @@ void tms32082_mp_device::execute_short_imm()
 
 		case 0x50:          // cmp
 		{
+<<<<<<< HEAD
 			UINT32 src1 = OP_SIMM15();
 			UINT32 src2 = m_reg[OP_RS()];
+=======
+			uint32_t src1 = OP_SIMM15();
+			uint32_t src2 = m_reg[OP_RS()];
+>>>>>>> upstream/master
 			int rd = OP_RD();
 
 			if (rd)
@@ -811,7 +1122,11 @@ void tms32082_mp_device::execute_short_imm()
 
 		case 0x58:          // add
 		{
+<<<<<<< HEAD
 			INT32 imm = OP_SIMM15();
+=======
+			int32_t imm = OP_SIMM15();
+>>>>>>> upstream/master
 			int rd = OP_RD();
 			int rs = OP_RS();
 
@@ -824,7 +1139,11 @@ void tms32082_mp_device::execute_short_imm()
 
 		case 0x59:          // addu
 		{
+<<<<<<< HEAD
 			INT32 imm = OP_SIMM15();
+=======
+			int32_t imm = OP_SIMM15();
+>>>>>>> upstream/master
 			int rd = OP_RD();
 			int rs = OP_RS();
 
@@ -835,7 +1154,11 @@ void tms32082_mp_device::execute_short_imm()
 
 		case 0x5a:          // sub
 		{
+<<<<<<< HEAD
 			INT32 imm = OP_SIMM15();
+=======
+			int32_t imm = OP_SIMM15();
+>>>>>>> upstream/master
 			int rd = OP_RD();
 			int rs = OP_RS();
 
@@ -848,7 +1171,11 @@ void tms32082_mp_device::execute_short_imm()
 
 		case 0x5b:          // subu
 		{
+<<<<<<< HEAD
 			INT32 imm = OP_SIMM15();
+=======
+			int32_t imm = OP_SIMM15();
+>>>>>>> upstream/master
 			int rd = OP_RD();
 			int rs = OP_RS();
 
@@ -864,7 +1191,11 @@ void tms32082_mp_device::execute_short_imm()
 
 void tms32082_mp_device::execute_reg_long_imm()
 {
+<<<<<<< HEAD
 	UINT32 imm32 = 0;
+=======
+	uint32_t imm32 = 0;
+>>>>>>> upstream/master
 
 	int has_imm = (m_ir & (1 << 12));
 
@@ -875,7 +1206,11 @@ void tms32082_mp_device::execute_reg_long_imm()
 	{
 		case 0x04:          // cmnd
 		{
+<<<<<<< HEAD
 			UINT32 data = has_imm ? imm32 : m_reg[OP_SRC1()];
+=======
+			uint32_t data = has_imm ? imm32 : m_reg[OP_SRC1()];
+>>>>>>> upstream/master
 
 			processor_command(data);
 			break;
@@ -887,6 +1222,7 @@ void tms32082_mp_device::execute_reg_long_imm()
 			int inv = (m_ir & (1 << 11));
 			int rot = m_reg[OP_ROTATE()];
 			int end = OP_ENDMASK();
+<<<<<<< HEAD
 			UINT32 source = m_reg[OP_RS()];
 			int rd = OP_RD();
 
@@ -898,6 +1234,19 @@ void tms32082_mp_device::execute_reg_long_imm()
 			UINT32 compmask = endmask & shiftmask;
 
 			UINT32 res = 0;
+=======
+			uint32_t source = m_reg[OP_RS()];
+			int rd = OP_RD();
+
+			uint32_t endmask = end ? SHIFT_MASK[end ? end : 32] : m_reg[OP_ROTATE()+1];
+			if (inv) endmask = ~endmask;
+
+			int shift = r ? 32-rot : rot;
+			uint32_t shiftmask = SHIFT_MASK[shift ? shift : 32];
+			uint32_t compmask = endmask & shiftmask;
+
+			uint32_t res;
+>>>>>>> upstream/master
 			if (r)      // right
 			{
 				res = ROTATE_R(source, rot) & compmask;
@@ -918,6 +1267,7 @@ void tms32082_mp_device::execute_reg_long_imm()
 			int inv = (m_ir & (1 << 11));
 			int rot = m_reg[OP_ROTATE()];
 			int end = OP_ENDMASK();
+<<<<<<< HEAD
 			UINT32 source = m_reg[OP_RS()];
 			int rd = OP_RD();
 
@@ -929,6 +1279,19 @@ void tms32082_mp_device::execute_reg_long_imm()
 			UINT32 compmask = endmask & shiftmask;
 
 			UINT32 res = 0;
+=======
+			uint32_t source = m_reg[OP_RS()];
+			int rd = OP_RD();
+
+			uint32_t endmask = end ? SHIFT_MASK[end ? end : 32] : m_reg[OP_ROTATE()+1];
+			if (inv) endmask = ~endmask;
+
+			int shift = r ? 32-rot : rot;
+			uint32_t shiftmask = SHIFT_MASK[shift ? shift : 32];
+			uint32_t compmask = endmask & shiftmask;
+
+			uint32_t res;
+>>>>>>> upstream/master
 			if (r)      // right
 			{
 				res = ROTATE_R(source, rot) & compmask;
@@ -950,6 +1313,7 @@ void tms32082_mp_device::execute_reg_long_imm()
 			int inv = (m_ir & (1 << 11));
 			int rot = m_reg[OP_ROTATE()];
 			int end = OP_ENDMASK();
+<<<<<<< HEAD
 			UINT32 source = m_reg[OP_RS()];
 			int rd = OP_RD();
 
@@ -961,6 +1325,19 @@ void tms32082_mp_device::execute_reg_long_imm()
 			UINT32 compmask = endmask & ~shiftmask;
 
 			UINT32 res = 0;
+=======
+			uint32_t source = m_reg[OP_RS()];
+			int rd = OP_RD();
+
+			uint32_t endmask = end ? SHIFT_MASK[end ? end : 32] : m_reg[OP_ROTATE()+1];
+			if (inv) endmask = ~endmask;
+
+			int shift = r ? 32-rot : rot;
+			uint32_t shiftmask = SHIFT_MASK[shift ? shift : 32];
+			uint32_t compmask = endmask & ~shiftmask;
+
+			uint32_t res;
+>>>>>>> upstream/master
 			if (r)      // right
 			{
 				res = ROTATE_R(source, rot) & compmask;
@@ -980,7 +1357,11 @@ void tms32082_mp_device::execute_reg_long_imm()
 		{
 			int rd = OP_RD();
 			int rs = OP_RS();
+<<<<<<< HEAD
 			UINT32 src1 = has_imm ? imm32 : m_reg[OP_SRC1()];
+=======
+			uint32_t src1 = has_imm ? imm32 : m_reg[OP_SRC1()];
+>>>>>>> upstream/master
 
 			if (rd)
 				m_reg[rd] = src1 & m_reg[rs];
@@ -992,7 +1373,11 @@ void tms32082_mp_device::execute_reg_long_imm()
 		{
 			int rd = OP_RD();
 			int rs = OP_RS();
+<<<<<<< HEAD
 			UINT32 src1 = has_imm ? imm32 : m_reg[OP_SRC1()];
+=======
+			uint32_t src1 = has_imm ? imm32 : m_reg[OP_SRC1()];
+>>>>>>> upstream/master
 
 			if (rd)
 				m_reg[rd] = src1 & ~(m_reg[rs]);
@@ -1042,8 +1427,13 @@ void tms32082_mp_device::execute_reg_long_imm()
 			int base = OP_BASE();
 			int rd = OP_RD();
 
+<<<<<<< HEAD
 			UINT32 address = m_reg[base] + (has_imm ? imm32 : m_reg[OP_SRC1()]);
 			UINT32 r = m_program->read_byte(address);
+=======
+			uint32_t address = m_reg[base] + (has_imm ? imm32 : m_reg[OP_SRC1()]);
+			uint32_t r = m_program->read_byte(address);
+>>>>>>> upstream/master
 			if (r & 0x80) r |= 0xffffff00;
 
 			if (rd)
@@ -1065,8 +1455,13 @@ void tms32082_mp_device::execute_reg_long_imm()
 			int base = OP_BASE();
 			int rd = OP_RD();
 
+<<<<<<< HEAD
 			UINT32 address = m_reg[base] + ((has_imm ? imm32 : m_reg[OP_SRC1()]) << shift);
 			UINT32 r = m_program->read_word(address);
+=======
+			uint32_t address = m_reg[base] + ((has_imm ? imm32 : m_reg[OP_SRC1()]) << shift);
+			uint32_t r = m_program->read_word(address);
+>>>>>>> upstream/master
 			if (r & 0x8000) r |= 0xffff0000;
 
 			if (rd)
@@ -1087,8 +1482,13 @@ void tms32082_mp_device::execute_reg_long_imm()
 			int base = OP_BASE();
 			int rd = OP_RD();
 
+<<<<<<< HEAD
 			UINT32 address = m_reg[base] + ((has_imm ? imm32 : m_reg[OP_SRC1()]) << shift);
 			UINT32 r = m_program->read_dword(address);
+=======
+			uint32_t address = m_reg[base] + ((has_imm ? imm32 : m_reg[OP_SRC1()]) << shift);
+			uint32_t r = m_program->read_dword(address);
+>>>>>>> upstream/master
 
 			if (rd)
 				m_reg[rd] = r;
@@ -1108,8 +1508,13 @@ void tms32082_mp_device::execute_reg_long_imm()
 			int base = OP_BASE();
 			int rd = OP_RD();
 
+<<<<<<< HEAD
 			UINT32 address = m_reg[base] + ((has_imm ? imm32 : m_reg[OP_SRC1()]) << shift);
 			UINT64 r = m_program->read_qword(address);
+=======
+			uint32_t address = m_reg[base] + ((has_imm ? imm32 : m_reg[OP_SRC1()]) << shift);
+			uint64_t r = m_program->read_qword(address);
+>>>>>>> upstream/master
 
 			if (rd)
 				m_fpair[rd >> 1] = r;
@@ -1128,8 +1533,13 @@ void tms32082_mp_device::execute_reg_long_imm()
 			int base = OP_BASE();
 			int rd = OP_RD();
 
+<<<<<<< HEAD
 			UINT32 address = m_reg[base] + (has_imm ? imm32 : m_reg[OP_SRC1()]);
 			UINT32 r = (UINT8)(m_program->read_byte(address));
+=======
+			uint32_t address = m_reg[base] + (has_imm ? imm32 : m_reg[OP_SRC1()]);
+			uint32_t r = (uint8_t)(m_program->read_byte(address));
+>>>>>>> upstream/master
 
 			if (rd)
 				m_reg[rd] = r;
@@ -1149,8 +1559,13 @@ void tms32082_mp_device::execute_reg_long_imm()
 			int base = OP_BASE();
 			int rd = OP_RD();
 
+<<<<<<< HEAD
 			UINT32 address = m_reg[base] + ((has_imm ? imm32 : m_reg[OP_SRC1()]) << shift);
 			UINT32 r = (UINT16)(m_program->read_word(address));
+=======
+			uint32_t address = m_reg[base] + ((has_imm ? imm32 : m_reg[OP_SRC1()]) << shift);
+			uint32_t r = (uint16_t)(m_program->read_word(address));
+>>>>>>> upstream/master
 
 			if (rd)
 				m_reg[rd] = r;
@@ -1169,8 +1584,13 @@ void tms32082_mp_device::execute_reg_long_imm()
 
 			int base = OP_BASE();
 
+<<<<<<< HEAD
 			UINT32 address = m_reg[base] + (has_imm ? imm32 : m_reg[OP_SRC1()]);
 			m_program->write_byte(address, (UINT8)(m_reg[OP_RD()]));
+=======
+			uint32_t address = m_reg[base] + (has_imm ? imm32 : m_reg[OP_SRC1()]);
+			m_program->write_byte(address, (uint8_t)(m_reg[OP_RD()]));
+>>>>>>> upstream/master
 
 			if (m && base)
 				m_reg[base] = address;
@@ -1187,8 +1607,13 @@ void tms32082_mp_device::execute_reg_long_imm()
 
 			int base = OP_BASE();
 
+<<<<<<< HEAD
 			UINT32 address = m_reg[base] + ((has_imm ? imm32 : m_reg[OP_SRC1()]) << shift);
 			m_program->write_word(address, (UINT16)(m_reg[OP_RD()]));
+=======
+			uint32_t address = m_reg[base] + ((has_imm ? imm32 : m_reg[OP_SRC1()]) << shift);
+			m_program->write_word(address, (uint16_t)(m_reg[OP_RD()]));
+>>>>>>> upstream/master
 
 			if (m && base)
 				m_reg[base] = address;
@@ -1205,7 +1630,11 @@ void tms32082_mp_device::execute_reg_long_imm()
 
 			int base = OP_BASE();
 
+<<<<<<< HEAD
 			UINT32 address = m_reg[base] + ((has_imm ? imm32 : m_reg[OP_SRC1()]) << shift);
+=======
+			uint32_t address = m_reg[base] + ((has_imm ? imm32 : m_reg[OP_SRC1()]) << shift);
+>>>>>>> upstream/master
 			m_program->write_dword(address, m_reg[OP_RD()]);
 
 			if (m && base)
@@ -1222,7 +1651,11 @@ void tms32082_mp_device::execute_reg_long_imm()
 			if (link)
 				m_reg[link] = m_fetchpc + 4;
 
+<<<<<<< HEAD
 			UINT32 address = m_reg[base] + (has_imm ? imm32 : m_reg[OP_SRC1()]);
+=======
+			uint32_t address = m_reg[base] + (has_imm ? imm32 : m_reg[OP_SRC1()]);
+>>>>>>> upstream/master
 
 			m_pc = m_fetchpc;
 			delay_slot();
@@ -1248,8 +1681,13 @@ void tms32082_mp_device::execute_reg_long_imm()
 		case 0xa1:          // cmp
 		{
 			int rd = OP_RD();
+<<<<<<< HEAD
 			UINT32 src1 = has_imm ? imm32 : m_reg[OP_SRC1()];
 			UINT32 src2 = m_reg[OP_RS()];
+=======
+			uint32_t src1 = has_imm ? imm32 : m_reg[OP_SRC1()];
+			uint32_t src2 = m_reg[OP_RS()];
+>>>>>>> upstream/master
 
 			if (rd)
 				m_reg[rd] = calculate_cmp(src1, src2);
@@ -1354,10 +1792,17 @@ void tms32082_mp_device::execute_reg_long_imm()
 						m_fpair[rd >> 1] = d2u(source);
 						break;
 					case 2:
+<<<<<<< HEAD
 						m_reg[rd] = (INT32)(source);
 						break;
 					case 3:
 						m_reg[rd] = (UINT32)(source);
+=======
+						m_reg[rd] = (int32_t)(source);
+						break;
+					case 3:
+						m_reg[rd] = (uint32_t)(source);
+>>>>>>> upstream/master
 						break;
 				}
 			}
@@ -1393,7 +1838,11 @@ void tms32082_mp_device::execute_reg_long_imm()
 			float src1 = u2f(m_reg[OP_SRC1()]);
 			float src2 = u2f(m_reg[OP_RS()]);
 
+<<<<<<< HEAD
 			float res = (src1 * src2) + (z ? 0.0f : m_acc[acc]);
+=======
+			float res = (src1 * src2) + (z ? 0.0f : m_facc[acc]);
+>>>>>>> upstream/master
 
 			// parallel load/store op
 			if (!(ls_bit1 == 0 && ls_bit2 == 0))
@@ -1436,7 +1885,11 @@ void tms32082_mp_device::execute_reg_long_imm()
 			float src1 = u2f(m_reg[OP_SRC1()]);
 			float src2 = u2f(m_reg[OP_RS()]);
 
+<<<<<<< HEAD
 			float res = (z ? 0.0f : m_acc[acc]) - (src1 * src2);
+=======
+			float res = (z ? 0.0f : m_facc[acc]) - (src1 * src2);
+>>>>>>> upstream/master
 
 			// parallel load/store op
 			if (!(ls_bit1 == 0 && ls_bit2 == 0))
@@ -1487,7 +1940,11 @@ void tms32082_mp_device::execute_reg_long_imm()
 					{
 						float s1 = u2f(has_imm ? imm32 : m_reg[src1]);
 						float s2 = u2f(m_reg[rs]);
+<<<<<<< HEAD
 						UINT64 res = d2u((double)(s1 + s2));
+=======
+						uint64_t res = d2u((double)(s1 + s2));
+>>>>>>> upstream/master
 						m_fpair[rd >> 1] = res;
 						break;
 					}
@@ -1495,7 +1952,11 @@ void tms32082_mp_device::execute_reg_long_imm()
 					{
 						float s1 = u2f(has_imm ? imm32 : m_reg[src1]);
 						double s2 = u2d(m_fpair[rs >> 1]);
+<<<<<<< HEAD
 						UINT64 res = d2u((double) s1 + s2);
+=======
+						uint64_t res = d2u((double) s1 + s2);
+>>>>>>> upstream/master
 						m_fpair[rd >> 1] = res;
 						break;
 					}
@@ -1503,7 +1964,11 @@ void tms32082_mp_device::execute_reg_long_imm()
 					{
 						double s1 = u2d(m_fpair[src1 >> 1]);
 						float s2 = u2f(m_reg[rs]);
+<<<<<<< HEAD
 						UINT64 res = d2u(s1 + (double) s2);
+=======
+						uint64_t res = d2u(s1 + (double) s2);
+>>>>>>> upstream/master
 						m_fpair[rd >> 1] = res;
 						break;
 					}
@@ -1511,7 +1976,11 @@ void tms32082_mp_device::execute_reg_long_imm()
 					{
 						double s1 = u2d(m_fpair[src1 >> 1]);
 						double s2 = u2d(m_fpair[rs >> 1]);
+<<<<<<< HEAD
 						UINT64 res = d2u((double)(s1 + s2));
+=======
+						uint64_t res = d2u((double)(s1 + s2));
+>>>>>>> upstream/master
 						m_fpair[rd >> 1] = res;
 						break;
 					}
@@ -1545,7 +2014,11 @@ void tms32082_mp_device::execute_reg_long_imm()
 					{
 						float s1 = u2f(has_imm ? imm32 : m_reg[src1]);
 						float s2 = u2f(m_reg[rs]);
+<<<<<<< HEAD
 						UINT64 res = d2u((double)(s1 - s2));
+=======
+						uint64_t res = d2u((double)(s1 - s2));
+>>>>>>> upstream/master
 						m_fpair[rd >> 1] = res;
 						break;
 					}
@@ -1553,7 +2026,11 @@ void tms32082_mp_device::execute_reg_long_imm()
 					{
 						float s1 = u2f(has_imm ? imm32 : m_reg[src1]);
 						double s2 = u2d(m_fpair[rs >> 1]);
+<<<<<<< HEAD
 						UINT64 res = d2u((double) s1 - s2);
+=======
+						uint64_t res = d2u((double) s1 - s2);
+>>>>>>> upstream/master
 						m_fpair[rd >> 1] = res;
 						break;
 					}
@@ -1561,7 +2038,11 @@ void tms32082_mp_device::execute_reg_long_imm()
 					{
 						double s1 = u2d(m_fpair[src1 >> 1]);
 						float s2 = u2f(m_reg[rs]);
+<<<<<<< HEAD
 						UINT64 res = d2u(s1 - (double) s2);
+=======
+						uint64_t res = d2u(s1 - (double) s2);
+>>>>>>> upstream/master
 						m_fpair[rd >> 1] = res;
 						break;
 					}
@@ -1569,7 +2050,11 @@ void tms32082_mp_device::execute_reg_long_imm()
 					{
 						double s1 = u2d(m_fpair[src1 >> 1]);
 						double s2 = u2d(m_fpair[rs >> 1]);
+<<<<<<< HEAD
 						UINT64 res = d2u((double)(s1 - s2));
+=======
+						uint64_t res = d2u((double)(s1 - s2));
+>>>>>>> upstream/master
 						m_fpair[rd >> 1] = res;
 						break;
 					}
@@ -1603,7 +2088,11 @@ void tms32082_mp_device::execute_reg_long_imm()
 					{
 						float s1 = u2f(has_imm ? imm32 : m_reg[src1]);
 						float s2 = u2f(m_reg[rs]);
+<<<<<<< HEAD
 						UINT64 res = d2u((double)(s1 * s2));
+=======
+						uint64_t res = d2u((double)(s1 * s2));
+>>>>>>> upstream/master
 						m_fpair[rd >> 1] = res;
 						break;
 					}
@@ -1611,7 +2100,11 @@ void tms32082_mp_device::execute_reg_long_imm()
 					{
 						float s1 = u2f(has_imm ? imm32 : m_reg[src1]);
 						double s2 = u2d(m_fpair[rs >> 1]);
+<<<<<<< HEAD
 						UINT64 res = d2u((double)s1 * s2);
+=======
+						uint64_t res = d2u((double)s1 * s2);
+>>>>>>> upstream/master
 						m_fpair[rd >> 1] = res;
 						break;
 					}
@@ -1619,7 +2112,11 @@ void tms32082_mp_device::execute_reg_long_imm()
 					{
 						double s1 = u2d(m_fpair[src1 >> 1]);
 						float s2 = u2f(m_reg[rs]);
+<<<<<<< HEAD
 						UINT64 res = d2u(s1 * (double) s2);
+=======
+						uint64_t res = d2u(s1 * (double) s2);
+>>>>>>> upstream/master
 						m_fpair[rd >> 1] = res;
 						break;
 					}
@@ -1627,18 +2124,30 @@ void tms32082_mp_device::execute_reg_long_imm()
 					{
 						double s1 = u2d(m_fpair[src1 >> 1]);
 						double s2 = u2d(m_fpair[rs >> 1]);
+<<<<<<< HEAD
 						UINT64 res = d2u(s1 * s2);
+=======
+						uint64_t res = d2u(s1 * s2);
+>>>>>>> upstream/master
 						m_fpair[rd >> 1] = res;
 						break;
 					}
 					case 0x2a:          // I x I -> I
 					{
+<<<<<<< HEAD
 						m_reg[rd] = (INT32)(m_reg[rs]) * (INT32)(has_imm ? imm32 : m_reg[OP_SRC1()]);
+=======
+						m_reg[rd] = (int32_t)(m_reg[rs]) * (int32_t)(has_imm ? imm32 : m_reg[OP_SRC1()]);
+>>>>>>> upstream/master
 						break;
 					}
 					case 0x3f:          // U x U -> U
 					{
+<<<<<<< HEAD
 						m_reg[rd] = (UINT32)(m_reg[rs]) * (UINT32)(has_imm ? imm32 : m_reg[OP_SRC1()]);
+=======
+						m_reg[rd] = (uint32_t)(m_reg[rs]) * (uint32_t)(has_imm ? imm32 : m_reg[OP_SRC1()]);
+>>>>>>> upstream/master
 						break;
 					}
 					default:
@@ -1663,7 +2172,15 @@ void tms32082_mp_device::execute_reg_long_imm()
 				double src1 = has_imm ? (double)u2f(imm32) : (p1 ? u2d(m_fpair[rs1 >> 1]) : (double)u2f(m_reg[rs1]));
 				double src2 = p2 ? u2d(m_fpair[rs2 >> 1]) : (double)u2f(m_reg[rs2]);
 
+<<<<<<< HEAD
 				double res = src1 / src2;
+=======
+				double res;
+				if (src2 != 0.0)
+					res = src1 / src2;
+				else
+					res = 0.0f;
+>>>>>>> upstream/master
 
 				if (pd)
 					m_fpair[rd >> 1] = d2u(res);
@@ -1693,10 +2210,17 @@ void tms32082_mp_device::execute_reg_long_imm()
 					s = u2d(m_fpair[src1 >> 1]);
 					break;
 				case 2:
+<<<<<<< HEAD
 					s = has_imm ? (double)((INT32)(imm32)) : (double)(INT32)(m_reg[src1]);
 					break;
 				case 3:
 					s = has_imm ? (double)((UINT32)(imm32)) : (double)(UINT32)(m_reg[src1]);
+=======
+					s = has_imm ? (double)((int32_t)(imm32)) : (double)(int32_t)(m_reg[src1]);
+					break;
+				case 3:
+					s = has_imm ? (double)((uint32_t)(imm32)) : (double)(uint32_t)(m_reg[src1]);
+>>>>>>> upstream/master
 					break;
 			}
 
@@ -1710,6 +2234,7 @@ void tms32082_mp_device::execute_reg_long_imm()
 						m_reg[rd] = f2u((float)(s));
 						break;
 					case 1:
+<<<<<<< HEAD
 						m_fpair[rd] = d2u(s);
 						break;
 					case 2:
@@ -1717,6 +2242,15 @@ void tms32082_mp_device::execute_reg_long_imm()
 						break;
 					case 3:
 						m_reg[rd] = (UINT32)(s);
+=======
+						m_fpair[rd >> 1] = d2u(s);
+						break;
+					case 2:
+						m_reg[rd] = (int32_t)(s);
+						break;
+					case 3:
+						m_reg[rd] = (uint32_t)(s);
+>>>>>>> upstream/master
 						break;
 				}
 			}
@@ -1737,7 +2271,11 @@ void tms32082_mp_device::execute_reg_long_imm()
 
 			if (rd)
 			{
+<<<<<<< HEAD
 				UINT32 flags = 0;
+=======
+				uint32_t flags = 0;
+>>>>>>> upstream/master
 				flags |= (src1 == src2) ? (1 << 20) : 0;
 				flags |= (src1 != src2) ? (1 << 21) : 0;
 				flags |= (src1 >  src2) ? (1 << 22) : 0;
@@ -1767,7 +2305,15 @@ void tms32082_mp_device::execute_reg_long_imm()
 
 			if (rd)
 			{
+<<<<<<< HEAD
 				double res = sqrt(source);
+=======
+				double res;
+				if (source >= 0.0f)
+					res = sqrt(source);
+				else
+					res = 0.0;
+>>>>>>> upstream/master
 
 				if (pd)
 					m_fpair[rd >> 1] = d2u(res);
@@ -1779,7 +2325,11 @@ void tms32082_mp_device::execute_reg_long_imm()
 
 		case 0xf2:          // rmo
 		{
+<<<<<<< HEAD
 			UINT32 source = m_reg[OP_RS()];
+=======
+			uint32_t source = m_reg[OP_RS()];
+>>>>>>> upstream/master
 			int rd = OP_RD();
 
 			int bit = 32;

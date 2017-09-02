@@ -14,6 +14,7 @@
 
 
 //**************************************************************************
+<<<<<<< HEAD
 //  ADDRESS_MAPS
 //**************************************************************************
 
@@ -25,6 +26,8 @@ ADDRESS_MAP_END
 
 
 //**************************************************************************
+=======
+>>>>>>> upstream/master
 //  DRIVER DEVICE
 //**************************************************************************
 
@@ -33,6 +36,7 @@ ADDRESS_MAP_END
 //-------------------------------------------------
 
 driver_device::driver_device(const machine_config &mconfig, device_type type, const char *tag)
+<<<<<<< HEAD
 	: device_t(mconfig, type, "Driver Device", tag, NULL, 0, "", __FILE__),
 		device_memory_interface(mconfig, *this),
 		m_space_config("generic", ENDIANNESS_LITTLE, 8, 32, 0, NULL, *ADDRESS_MAP_NAME(generic)),
@@ -43,6 +47,13 @@ driver_device::driver_device(const machine_config &mconfig, device_type type, co
 {
 	memset(m_latched_value, 0, sizeof(m_latched_value));
 	memset(m_latch_read, 0, sizeof(m_latch_read));
+=======
+	: device_t(mconfig, type, tag, nullptr, 0),
+		m_system(nullptr),
+		m_flip_screen_x(0),
+		m_flip_screen_y(0)
+{
+>>>>>>> upstream/master
 }
 
 
@@ -56,6 +67,7 @@ driver_device::~driver_device()
 
 
 //-------------------------------------------------
+<<<<<<< HEAD
 //  static_set_game - set the game in the device
 //  configuration
 //-------------------------------------------------
@@ -77,6 +89,28 @@ void driver_device::static_set_game(device_t &device, const game_driver &game)
 	driver.m_searchpath = game.name;
 	for (int parent = driver_list::clone(game); parent != -1; parent = driver_list::clone(parent))
 		driver.m_searchpath.append(";").append(driver_list::driver(parent).name);
+=======
+//  set_game_driver - set the game in the device
+//  configuration
+//-------------------------------------------------
+
+void driver_device::set_game_driver(const game_driver &game)
+{
+	assert(!m_system);
+
+	// set the system
+	m_system = &game;
+
+	// and set the search path to include all parents
+	m_searchpath = game.name;
+	std::set<game_driver const *> seen;
+	for (int parent = driver_list::clone(game); parent != -1; parent = driver_list::clone(parent))
+	{
+		if (!seen.insert(&driver_list::driver(parent)).second)
+			throw emu_fatalerror("driver_device::set_game_driver(%s): parent/clone relationships form a loop", game.name);
+		m_searchpath.append(";").append(driver_list::driver(parent).name);
+	}
+>>>>>>> upstream/master
 }
 
 
@@ -176,13 +210,33 @@ void driver_device::video_reset()
 //  game's ROMs
 //-------------------------------------------------
 
+<<<<<<< HEAD
 const rom_entry *driver_device::device_rom_region() const
 {
+=======
+const tiny_rom_entry *driver_device::device_rom_region() const
+{
+	assert(m_system);
+>>>>>>> upstream/master
 	return m_system->rom;
 }
 
 
 //-------------------------------------------------
+<<<<<<< HEAD
+=======
+//  device_add_mconfig - add machine configuration
+//-------------------------------------------------
+
+void driver_device::device_add_mconfig(machine_config &config)
+{
+	assert(m_system);
+	m_system->machine_config(config, this, nullptr);
+}
+
+
+//-------------------------------------------------
+>>>>>>> upstream/master
 //  device_input_ports - return a pointer to the
 //  game's input ports
 //-------------------------------------------------
@@ -201,6 +255,7 @@ ioport_constructor driver_device::device_input_ports() const
 void driver_device::device_start()
 {
 	// reschedule ourselves to be last
+<<<<<<< HEAD
 	device_iterator iter(*this);
 	for (device_t *test = iter.first(); test != NULL; test = iter.next())
 		if (test != this && !test->started())
@@ -212,6 +267,17 @@ void driver_device::device_start()
 
 	// finish image devices init process
 	image_postdevice_init(machine());
+=======
+	for (device_t &test : device_iterator(*this))
+		if (&test != this && !test.started())
+			throw device_missing_dependencies();
+
+	// call the game-specific init
+	m_system->driver_init(machine());
+
+	// finish image devices init process
+	machine().image().postdevice_init();
+>>>>>>> upstream/master
 
 	// start the various pieces
 	driver_start();
@@ -232,8 +298,11 @@ void driver_device::device_start()
 		video_start();
 
 	// save generic states
+<<<<<<< HEAD
 	save_item(NAME(m_latch_clear_value));
 	save_item(NAME(m_latched_value));
+=======
+>>>>>>> upstream/master
 	save_item(NAME(m_flip_screen_x));
 	save_item(NAME(m_flip_screen_y));
 }
@@ -267,6 +336,7 @@ void driver_device::device_reset_after_children()
 }
 
 
+<<<<<<< HEAD
 //-------------------------------------------------
 //  memory_space_config - return a description of
 //  any address spaces owned by this device
@@ -278,6 +348,8 @@ const address_space_config *driver_device::memory_space_config(address_spacenum 
 }
 
 
+=======
+>>>>>>> upstream/master
 
 //**************************************************************************
 //  INTERRUPT ENABLE AND VECTOR HELPERS
@@ -287,7 +359,11 @@ const address_space_config *driver_device::memory_space_config(address_spacenum 
 //  irq_pulse_clear - clear a "pulsed" IRQ line
 //-------------------------------------------------
 
+<<<<<<< HEAD
 void driver_device::irq_pulse_clear(void *ptr, INT32 param)
+=======
+void driver_device::irq_pulse_clear(void *ptr, s32 param)
+>>>>>>> upstream/master
 {
 	device_execute_interface *exec = reinterpret_cast<device_execute_interface *>(ptr);
 	int irqline = param;
@@ -377,6 +453,7 @@ INTERRUPT_GEN_MEMBER( driver_device::irq7_line_pulse )  { generic_pulse_irq_line
 INTERRUPT_GEN_MEMBER( driver_device::irq7_line_assert ) { device.execute().set_input_line(7, ASSERT_LINE); }
 
 
+<<<<<<< HEAD
 
 //**************************************************************************
 //  WATCHDOG READ/WRITE HELPERS
@@ -476,6 +553,8 @@ WRITE8_MEMBER( driver_device::soundlatch4_clear_byte_w ) { soundlatch_clear(3); 
 
 
 
+=======
+>>>>>>> upstream/master
 //**************************************************************************
 //  GENERIC FLIP SCREEN HANDLING
 //**************************************************************************
@@ -495,7 +574,11 @@ void driver_device::updateflip()
 //  flip_screen_set - set global flip
 //-------------------------------------------------
 
+<<<<<<< HEAD
 void driver_device::flip_screen_set(UINT32 on)
+=======
+void driver_device::flip_screen_set(u32 on)
+>>>>>>> upstream/master
 {
 	// normalize to all 1
 	if (on)
@@ -515,7 +598,11 @@ void driver_device::flip_screen_set(UINT32 on)
 //  do not call updateflip.
 //-------------------------------------------------
 
+<<<<<<< HEAD
 void driver_device::flip_screen_set_no_update(UINT32 on)
+=======
+void driver_device::flip_screen_set_no_update(u32 on)
+>>>>>>> upstream/master
 {
 	// flip_screen_y is not updated on purpose
 	// this function is for drivers which
@@ -531,7 +618,11 @@ void driver_device::flip_screen_set_no_update(UINT32 on)
 //  flip_screen_x_set - set global horizontal flip
 //-------------------------------------------------
 
+<<<<<<< HEAD
 void driver_device::flip_screen_x_set(UINT32 on)
+=======
+void driver_device::flip_screen_x_set(u32 on)
+>>>>>>> upstream/master
 {
 	// normalize to all 1
 	if (on)
@@ -550,7 +641,11 @@ void driver_device::flip_screen_x_set(UINT32 on)
 //  flip_screen_y_set - set global vertical flip
 //-------------------------------------------------
 
+<<<<<<< HEAD
 void driver_device::flip_screen_y_set(UINT32 on)
+=======
+void driver_device::flip_screen_y_set(u32 on)
+>>>>>>> upstream/master
 {
 	// normalize to all 1
 	if (on)
@@ -565,6 +660,7 @@ void driver_device::flip_screen_y_set(UINT32 on)
 }
 
 
+<<<<<<< HEAD
 
 //**************************************************************************
 //  MISC READ/WRITE HANDLERS
@@ -582,4 +678,21 @@ READ8_MEMBER( driver_device::fatal_generic_read )
 WRITE8_MEMBER( driver_device::fatal_generic_write )
 {
 	throw emu_fatalerror("Attempted to write to generic address space (offs %X = %02X)\n", offset, data);
+=======
+/***************************************************************************
+PORT READING HELPERS
+***************************************************************************/
+
+/*-------------------------------------------------
+custom_port_read - act like input_port_read
+but it is a custom port, it is useful for
+e.g. input ports which expect the same port
+repeated both in the upper and lower half
+-------------------------------------------------*/
+
+CUSTOM_INPUT_MEMBER(driver_device::custom_port_read)
+{
+	const char *tag = (const char *)param;
+	return ioport(tag)->read();
+>>>>>>> upstream/master
 }

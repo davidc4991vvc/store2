@@ -95,12 +95,21 @@ bool rx50img_format::supports_save() const
 	return true;
 }
 
+<<<<<<< HEAD
 void rx50img_format::find_size(io_generic *io, UINT8 &track_count, UINT8 &head_count, UINT8 &sector_count)
 {
 	head_count = 1;
 
 	UINT32 expected_size = 0;
 	UINT64 size = io_generic_size(io);
+=======
+void rx50img_format::find_size(io_generic *io, uint8_t &track_count, uint8_t &head_count, uint8_t &sector_count)
+{
+	head_count = 1;
+
+	uint32_t expected_size = 0;
+	uint64_t size = io_generic_size(io);
+>>>>>>> upstream/master
 
 	track_count = 80;
 	sector_count = 10;
@@ -124,9 +133,15 @@ void rx50img_format::find_size(io_generic *io, UINT8 &track_count, UINT8 &head_c
 	track_count = head_count = sector_count = 0;
 }
 
+<<<<<<< HEAD
 int rx50img_format::identify(io_generic *io, UINT32 form_factor)
 {
 	UINT8 track_count, head_count, sector_count;
+=======
+int rx50img_format::identify(io_generic *io, uint32_t form_factor)
+{
+	uint8_t track_count, head_count, sector_count;
+>>>>>>> upstream/master
 	find_size(io, track_count, head_count, sector_count);
 
 	if(track_count)
@@ -135,14 +150,24 @@ int rx50img_format::identify(io_generic *io, UINT32 form_factor)
 }
 
 	//  /* Sectors are numbered 1 to 10 */
+<<<<<<< HEAD
 bool rx50img_format::load(io_generic *io, UINT32 form_factor, floppy_image *image)
 {
 	UINT8 track_count, head_count, sector_count;
+=======
+bool rx50img_format::load(io_generic *io, uint32_t form_factor, floppy_image *image)
+{
+	uint8_t track_count, head_count, sector_count;
+>>>>>>> upstream/master
 	find_size(io, track_count, head_count, sector_count);
 	if(track_count == 0)
 		return false;
 
+<<<<<<< HEAD
 	UINT8 sectdata[10*512];
+=======
+	uint8_t sectdata[10*512];
+>>>>>>> upstream/master
 	desc_s sectors[10];
 	for(int i=0; i<sector_count; i++) {
 		sectors[i].data = sectdata + 512*i;
@@ -193,7 +218,11 @@ bool rx50img_format::save(io_generic *io, floppy_image *image)
 	  }
 	}
 */
+<<<<<<< HEAD
 	UINT8 sectdata[11*512];
+=======
+	uint8_t sectdata[11*512];
+>>>>>>> upstream/master
 	int track_size = sector_count*512;
 
 	for(int track=0; track < track_count; track++) {
@@ -216,8 +245,13 @@ const floppy_format_type FLOPPY_RX50IMG_FORMAT = &floppy_image_format_creator<rx
 // The BIOS can also * read * VT-180 disks and access MS-DOS 160 k disks (R + W)
 // ( 40 tracks; single sided with 9 or 8 sectors per track )
 static LEGACY_FLOPPY_OPTIONS_START( dec100_floppy )
+<<<<<<< HEAD
     LEGACY_FLOPPY_OPTION( dec100_floppy, "td0", "Teledisk floppy disk image", td0_dsk_identify, td0_dsk_construct, td0_dsk_destruct, NULL )
     LEGACY_FLOPPY_OPTION( dec100_floppy, "img", "DEC Rainbow 100", basicdsk_identify_default, basicdsk_construct_default,    NULL,
+=======
+    LEGACY_FLOPPY_OPTION( dec100_floppy, "td0", "Teledisk floppy disk image", td0_dsk_identify, td0_dsk_construct, td0_dsk_destruct, nullptr )
+    LEGACY_FLOPPY_OPTION( dec100_floppy, "img", "DEC Rainbow 100", basicdsk_identify_default, basicdsk_construct_default,    nullptr,
+>>>>>>> upstream/master
         HEADS([1])
         TRACKS(40/[80])
         SECTORS(8/9/[10])

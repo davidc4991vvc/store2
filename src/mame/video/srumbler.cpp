@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 // license:???
+=======
+// license:BSD-3-Clause
+>>>>>>> upstream/master
 // copyright-holders:Paul Leaman
 /***************************************************************************
 
@@ -20,7 +24,11 @@
 
 TILE_GET_INFO_MEMBER(srumbler_state::get_fg_tile_info)
 {
+<<<<<<< HEAD
 	UINT8 attr = m_foregroundram[2*tile_index];
+=======
+	uint8_t attr = m_foregroundram[2*tile_index];
+>>>>>>> upstream/master
 	SET_TILE_INFO_MEMBER(0,
 			m_foregroundram[2*tile_index + 1] + ((attr & 0x03) << 8),
 			(attr & 0x3c) >> 2,
@@ -29,7 +37,11 @@ TILE_GET_INFO_MEMBER(srumbler_state::get_fg_tile_info)
 
 TILE_GET_INFO_MEMBER(srumbler_state::get_bg_tile_info)
 {
+<<<<<<< HEAD
 	UINT8 attr = m_backgroundram[2*tile_index];
+=======
+	uint8_t attr = m_backgroundram[2*tile_index];
+>>>>>>> upstream/master
 	SET_TILE_INFO_MEMBER(1,
 			m_backgroundram[2*tile_index + 1] + ((attr & 0x07) << 8),
 			(attr & 0xe0) >> 5,
@@ -47,8 +59,13 @@ TILE_GET_INFO_MEMBER(srumbler_state::get_bg_tile_info)
 
 void srumbler_state::video_start()
 {
+<<<<<<< HEAD
 	m_fg_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(srumbler_state::get_fg_tile_info),this),TILEMAP_SCAN_COLS,8,8,64,32);
 	m_bg_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(srumbler_state::get_bg_tile_info),this),TILEMAP_SCAN_COLS,    16,16,64,64);
+=======
+	m_fg_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(srumbler_state::get_fg_tile_info),this),TILEMAP_SCAN_COLS,8,8,64,32);
+	m_bg_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(srumbler_state::get_bg_tile_info),this),TILEMAP_SCAN_COLS,    16,16,64,64);
+>>>>>>> upstream/master
 
 	m_fg_tilemap->set_transparent_pen(3);
 
@@ -87,8 +104,13 @@ WRITE8_MEMBER(srumbler_state::_4009_w)
 	/* bits 4-5 used during attract mode, unknown */
 
 	/* bits 6-7 coin counters */
+<<<<<<< HEAD
 	coin_counter_w(machine(), 0,data & 0x40);
 	coin_counter_w(machine(), 1,data & 0x80);
+=======
+	machine().bookkeeping().coin_counter_w(0,data & 0x40);
+	machine().bookkeeping().coin_counter_w(1,data & 0x80);
+>>>>>>> upstream/master
 }
 
 
@@ -110,7 +132,11 @@ WRITE8_MEMBER(srumbler_state::scroll_w)
 
 void srumbler_state::draw_sprites(bitmap_ind16 &bitmap, const rectangle &cliprect)
 {
+<<<<<<< HEAD
 	UINT8 *buffered_spriteram = m_spriteram->buffer();
+=======
+	uint8_t *buffered_spriteram = m_spriteram->buffer();
+>>>>>>> upstream/master
 	int offs;
 
 	/* Draw the sprites. */
@@ -155,7 +181,11 @@ void srumbler_state::draw_sprites(bitmap_ind16 &bitmap, const rectangle &cliprec
 }
 
 
+<<<<<<< HEAD
 UINT32 srumbler_state::screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+=======
+uint32_t srumbler_state::screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+>>>>>>> upstream/master
 {
 	m_bg_tilemap->draw(screen, bitmap, cliprect, TILEMAP_DRAW_LAYER1,0);
 	draw_sprites(bitmap,cliprect);

@@ -1,11 +1,23 @@
 // license:BSD-3-Clause
 // copyright-holders:Luca Elia, David Haywood
+<<<<<<< HEAD
+=======
+#ifndef MAME_VIDEO_KANEKO_TMAP_H
+#define MAME_VIDEO_KANEKO_TMAP_H
+
+#pragma once
+
+>>>>>>> upstream/master
 
 
 class kaneko_view2_tilemap_device : public device_t
 {
 public:
+<<<<<<< HEAD
 	kaneko_view2_tilemap_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
+=======
+	kaneko_view2_tilemap_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
+>>>>>>> upstream/master
 
 	// static configuration
 	static void static_set_gfxdecode_tag(device_t &device, const char *tag);
@@ -13,6 +25,7 @@ public:
 	static void set_offset(device_t &device, int dx, int dy, int xdim, int ydim);
 	static void set_invert_flip(device_t &device, int invert_flip); // for fantasia (bootleg)
 
+<<<<<<< HEAD
 	// set when creating device
 	int m_tilebase;
 	int m_dx, m_dy, m_xdim, m_ydim;
@@ -26,6 +39,10 @@ public:
 
 	void get_tile_info(tile_data &tileinfo, tilemap_memory_index tile_index, int _N_);
 	void kaneko16_vram_w(offs_t offset, UINT16 data, UINT16 mem_mask, int _N_);
+=======
+	void get_tile_info(tile_data &tileinfo, tilemap_memory_index tile_index, int _N_);
+	void kaneko16_vram_w(offs_t offset, uint16_t data, uint16_t mem_mask, int _N_);
+>>>>>>> upstream/master
 
 	// call to do the rendering etc.
 	template<class _BitmapClass>
@@ -68,13 +85,19 @@ public:
 
 
 protected:
+<<<<<<< HEAD
 	virtual void device_start();
 	virtual void device_reset();
+=======
+	virtual void device_start() override;
+	virtual void device_reset() override;
+>>>>>>> upstream/master
 
 private:
 	TILE_GET_INFO_MEMBER(get_tile_info_0);
 	TILE_GET_INFO_MEMBER(get_tile_info_1);
 	required_device<gfxdecode_device> m_gfxdecode;
+<<<<<<< HEAD
 };
 
 
@@ -82,3 +105,25 @@ extern const device_type KANEKO_TMAP;
 
 #define MCFG_KANEKO_TMAP_GFXDECODE(_gfxtag) \
 	kaneko_view2_tilemap_device::static_set_gfxdecode_tag(*device, "^" _gfxtag);
+=======
+
+	// set when creating device
+	int m_tilebase;
+	int m_dx, m_dy, m_xdim, m_ydim;
+	int m_invert_flip;
+
+	std::unique_ptr<uint16_t[]> m_vram[2];
+	std::unique_ptr<uint16_t[]> m_vscroll[2];
+	std::unique_ptr<uint16_t[]> m_regs;
+	tilemap_t* m_tmap[2];
+	uint16_t m_vram_tile_addition[2]; // galsnew
+};
+
+
+DECLARE_DEVICE_TYPE(KANEKO_TMAP, kaneko_view2_tilemap_device)
+
+#define MCFG_KANEKO_TMAP_GFXDECODE(_gfxtag) \
+	kaneko_view2_tilemap_device::static_set_gfxdecode_tag(*device, "^" _gfxtag);
+
+#endif // MAME_VIDEO_KANEKO_TMAP_H
+>>>>>>> upstream/master

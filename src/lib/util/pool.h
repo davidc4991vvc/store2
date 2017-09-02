@@ -37,7 +37,11 @@
 ***************************************************************************/
 
 /* pool types are UINT32s */
+<<<<<<< HEAD
 typedef UINT32 object_type;
+=======
+typedef uint32_t object_type;
+>>>>>>> upstream/master
 
 /* opaque type representing a pool of objects */
 struct object_pool;
@@ -57,7 +61,11 @@ struct object_pool_iterator;
 /* allocate a new object pool */
 object_pool *pool_alloc_lib(void (*fail)(const char *message));
 
+<<<<<<< HEAD
 /* register a new object type; returns TRUE if the type already existed and was overridden */
+=======
+/* register a new object type; returns true if the type already existed and was overridden */
+>>>>>>> upstream/master
 void pool_type_register(object_pool *pool, object_type type, const char *friendly, void (*destructor)(void *, size_t));
 
 /* free all allocated objects in a pool */
@@ -77,7 +85,11 @@ void *pool_object_add_file_line(object_pool *pool, object_type type, void *objec
 void *pool_object_remove(object_pool *pool, void *object, int destruct);
 
 /* does an object exist in the pool? */
+<<<<<<< HEAD
 int pool_object_exists(object_pool *pool, object_type type, void *object);
+=======
+bool pool_object_exists(object_pool *pool, object_type type, void *object);
+>>>>>>> upstream/master
 
 
 
@@ -87,7 +99,11 @@ int pool_object_exists(object_pool *pool, object_type type, void *object);
 object_pool_iterator *pool_iterate_begin(object_pool *pool, object_type type);
 
 /* get the next object in the object pool */
+<<<<<<< HEAD
 int pool_iterate_next(object_pool_iterator *iter, void **objectptr, size_t *sizeptr, object_type *typeptr);
+=======
+bool pool_iterate_next(object_pool_iterator *iter, void **objectptr, size_t *sizeptr, object_type *typeptr);
+>>>>>>> upstream/master
 
 /* finish iterating over objects in an object pool */
 void pool_iterate_end(object_pool_iterator *iter);
@@ -110,7 +126,11 @@ char *pool_strdup_file_line(object_pool *pool, const char *str, const char *file
 /* ----- miscellaneous ----- */
 
 /* internal unit tests */
+<<<<<<< HEAD
 int test_memory_pools(void);
+=======
+bool test_memory_pools(void);
+>>>>>>> upstream/master
 
 
 #endif /* __POOL_H__ */

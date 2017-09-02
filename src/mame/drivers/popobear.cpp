@@ -80,7 +80,13 @@ Component Side   A   B   Solder Side
 #include "emu.h"
 #include "cpu/m68000/m68000.h"
 #include "sound/okim6295.h"
+<<<<<<< HEAD
 #include "sound/2413intf.h"
+=======
+#include "sound/ym2413.h"
+#include "screen.h"
+#include "speaker.h"
+>>>>>>> upstream/master
 
 class popobear_state : public driver_device
 {
@@ -104,11 +110,19 @@ public:
 	required_device<gfxdecode_device> m_gfxdecode;
 	required_device<palette_device> m_palette;
 
+<<<<<<< HEAD
 	required_shared_ptr<UINT16> m_spr;
 	required_shared_ptr<UINT16> m_vram;
 	required_shared_ptr<UINT16> m_vregs;
 
 	std::vector<UINT16> m_vram_rearranged;
+=======
+	required_shared_ptr<uint16_t> m_spr;
+	required_shared_ptr<uint16_t> m_vram;
+	required_shared_ptr<uint16_t> m_vregs;
+
+	std::vector<uint16_t> m_vram_rearranged;
+>>>>>>> upstream/master
 	int m_tilemap_base[4];
 	tilemap_t    *m_bg_tilemap[4];
 
@@ -121,8 +135,13 @@ public:
 	DECLARE_WRITE8_MEMBER(irq_ack_w);
 	DECLARE_WRITE16_MEMBER(vram_w);
 
+<<<<<<< HEAD
 	virtual void video_start();
 	UINT32 screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
+=======
+	virtual void video_start() override;
+	uint32_t screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
+>>>>>>> upstream/master
 	void draw_sprites(bitmap_ind16 &bitmap,const rectangle &cliprect);
 
 	TIMER_DEVICE_CALLBACK_MEMBER(irq);
@@ -215,12 +234,21 @@ void popobear_state::video_start()
 {
 	m_vram_rearranged.resize(0x100000 / 2);
 
+<<<<<<< HEAD
 	m_gfxdecode->gfx(0)->set_source(reinterpret_cast<UINT8 *>(&m_vram_rearranged[0]));
 
 	m_bg_tilemap[0] = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(popobear_state::get_bg0_tile_info),this), TILEMAP_SCAN_ROWS, 8, 8, 128, 64);
 	m_bg_tilemap[1] = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(popobear_state::get_bg1_tile_info),this), TILEMAP_SCAN_ROWS, 8, 8, 128, 64);
 	m_bg_tilemap[2] = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(popobear_state::get_bg2_tile_info),this), TILEMAP_SCAN_ROWS, 8, 8, 128, 64);
 	m_bg_tilemap[3] = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(popobear_state::get_bg3_tile_info),this), TILEMAP_SCAN_ROWS, 8, 8, 128, 64);
+=======
+	m_gfxdecode->gfx(0)->set_source(reinterpret_cast<uint8_t *>(&m_vram_rearranged[0]));
+
+	m_bg_tilemap[0] = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(popobear_state::get_bg0_tile_info),this), TILEMAP_SCAN_ROWS, 8, 8, 128, 64);
+	m_bg_tilemap[1] = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(popobear_state::get_bg1_tile_info),this), TILEMAP_SCAN_ROWS, 8, 8, 128, 64);
+	m_bg_tilemap[2] = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(popobear_state::get_bg2_tile_info),this), TILEMAP_SCAN_ROWS, 8, 8, 128, 64);
+	m_bg_tilemap[3] = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(popobear_state::get_bg3_tile_info),this), TILEMAP_SCAN_ROWS, 8, 8, 128, 64);
+>>>>>>> upstream/master
 
 	m_bg_tilemap[0]->set_transparent_pen(0);
 	m_bg_tilemap[1]->set_transparent_pen(0);
@@ -236,7 +264,11 @@ void popobear_state::video_start()
 
 void popobear_state::draw_sprites(bitmap_ind16 &bitmap,const rectangle &cliprect)
 {
+<<<<<<< HEAD
 	UINT8* vram = reinterpret_cast<UINT8 *>(m_spr.target());
+=======
+	uint8_t* vram = reinterpret_cast<uint8_t *>(m_spr.target());
+>>>>>>> upstream/master
 	int i;
 
 	/*
@@ -256,7 +288,11 @@ void popobear_state::draw_sprites(bitmap_ind16 &bitmap,const rectangle &cliprect
 		/* 0x*29 = 32 x 32 */
 		for(i = 0x800-8;i >= 0; i-=8)
 		{
+<<<<<<< HEAD
 			UINT16 *sprdata = &m_spr[(0x7f800 + i) / 2];
+=======
+			uint16_t *sprdata = &m_spr[(0x7f800 + i) / 2];
+>>>>>>> upstream/master
 
 			int param = sprdata[0];
 			int pri = (param & 0x0f00)>>8;
@@ -321,7 +357,11 @@ void popobear_state::draw_sprites(bitmap_ind16 &bitmap,const rectangle &cliprect
 
 				for(int xi=0;xi<width;xi++)
 				{
+<<<<<<< HEAD
 					UINT8 pix = vram[BYTE_XOR_BE(spr_num)];
+=======
+					uint8_t pix = vram[BYTE_XOR_BE(spr_num)];
+>>>>>>> upstream/master
 					int x_draw = (x_dir) ? x+((width-1) - xi) : x+xi;
 
 					if(cliprect.contains(x_draw, y_draw))
@@ -345,7 +385,11 @@ void popobear_state::draw_sprites(bitmap_ind16 &bitmap,const rectangle &cliprect
 	}
 }
 
+<<<<<<< HEAD
 UINT32 popobear_state::screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+=======
+uint32_t popobear_state::screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+>>>>>>> upstream/master
 {
 	bitmap.fill(0, cliprect);
 	int line;
@@ -357,7 +401,11 @@ UINT32 popobear_state::screen_update(screen_device &screen, bitmap_ind16 &bitmap
 	clip = visarea;
 
 	//popmessage("%04x",m_vregs[0/2]);
+<<<<<<< HEAD
 	UINT16* vreg = m_vregs;
+=======
+	uint16_t* vreg = m_vregs;
+>>>>>>> upstream/master
 
 //  popmessage("%04x %04x %04x %04x %04x %04x %04x - %04x - %04x %04x",vreg[0x00],vreg[0x01],vreg[0x02],vreg[0x03],vreg[0x04],vreg[0x05],vreg[0x06], vreg[0x0b],vreg[0x0e],vreg[0x0f]);
 
@@ -403,8 +451,13 @@ UINT32 popobear_state::screen_update(screen_device &screen, bitmap_ind16 &bitmap
 
 		for (line = 0; line < 240;line++)
 		{
+<<<<<<< HEAD
 			UINT16 val = m_vram[scrollbase/2 + line];
 			UINT16 upper = (m_vram[scrollbase2/2 + line]&0xff00)>>8;
+=======
+			uint16_t val = m_vram[scrollbase/2 + line];
+			uint16_t upper = (m_vram[scrollbase2/2 + line]&0xff00)>>8;
+>>>>>>> upstream/master
 
 			clip.min_y = clip.max_y = line;
 
@@ -428,8 +481,13 @@ UINT32 popobear_state::screen_update(screen_device &screen, bitmap_ind16 &bitmap
 
 		for (line = 0; line < 240;line++)
 		{
+<<<<<<< HEAD
 			UINT16 val = m_vram[scrollbase/2 + line];
 			UINT16 upper = (m_vram[scrollbase2/2 + line]&0x00ff)>>0;
+=======
+			uint16_t val = m_vram[scrollbase/2 + line];
+			uint16_t upper = (m_vram[scrollbase2/2 + line]&0x00ff)>>0;
+>>>>>>> upstream/master
 
 			clip.min_y = clip.max_y = line;
 
@@ -632,7 +690,11 @@ TIMER_DEVICE_CALLBACK_MEMBER(popobear_state::irq)
 		m_maincpu->set_input_line(2, ASSERT_LINE);
 }
 
+<<<<<<< HEAD
 static MACHINE_CONFIG_START( popobear, popobear_state )
+=======
+static MACHINE_CONFIG_START( popobear )
+>>>>>>> upstream/master
 	MCFG_CPU_ADD("maincpu", M68000, XTAL_42MHz/4)  // XTAL CORRECT, DIVISOR GUESSED
 	MCFG_CPU_PROGRAM_MAP(popobear_mem)
 	// levels 2,3,5 look interesting
@@ -659,7 +721,11 @@ static MACHINE_CONFIG_START( popobear, popobear_state )
 	MCFG_SOUND_ADD("ymsnd", YM2413, XTAL_42MHz/16)  // XTAL CORRECT, DIVISOR GUESSED
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 1.0)
 
+<<<<<<< HEAD
 	MCFG_OKIM6295_ADD("oki", XTAL_42MHz/32, OKIM6295_PIN7_LOW)  // XTAL CORRECT, DIVISOR GUESSED
+=======
+	MCFG_OKIM6295_ADD("oki", XTAL_42MHz/32, PIN7_LOW)  // XTAL CORRECT, DIVISOR GUESSED
+>>>>>>> upstream/master
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 1.0)
 MACHINE_CONFIG_END
 
@@ -677,4 +743,8 @@ ROM_START( popobear )
 	ROM_LOAD( "popobear_ta-a-901.u9", 0x00000, 0x40000,  CRC(f1e94926) SHA1(f4d6f5b5811d90d0069f6efbb44d725ff0d07e1c) )
 ROM_END
 
+<<<<<<< HEAD
 GAME( 2000, popobear,    0, popobear,    popobear, driver_device,    0, ROT0,  "BMC", "PoPo Bear",  MACHINE_IMPERFECT_SOUND | MACHINE_IMPERFECT_GRAPHICS | MACHINE_SUPPORTS_SAVE )
+=======
+GAME( 2000, popobear,    0, popobear,    popobear, popobear_state,    0, ROT0,  "BMC", "PoPo Bear",  MACHINE_IMPERFECT_SOUND | MACHINE_IMPERFECT_GRAPHICS | MACHINE_SUPPORTS_SAVE )
+>>>>>>> upstream/master

@@ -14,8 +14,13 @@
 #error Dont include this file directly; include emu.h instead.
 #endif
 
+<<<<<<< HEAD
 #ifndef __TIMER_H__
 #define __TIMER_H__
+=======
+#ifndef MAME_EMU_TIMER_H
+#define MAME_EMU_TIMER_H
+>>>>>>> upstream/master
 
 
 
@@ -24,7 +29,11 @@
 //**************************************************************************
 
 // macros for a timer callback functions
+<<<<<<< HEAD
 #define TIMER_DEVICE_CALLBACK_MEMBER(name)  void name(timer_device &timer, void *ptr, INT32 param)
+=======
+#define TIMER_DEVICE_CALLBACK_MEMBER(name)  void name(timer_device &timer, void *ptr, s32 param)
+>>>>>>> upstream/master
 
 //**************************************************************************
 //  TIMER DEVICE CONFIGURATION MACROS
@@ -32,6 +41,7 @@
 
 #define MCFG_TIMER_ADD_NONE(_tag) \
 	MCFG_DEVICE_ADD(_tag, TIMER, 0) \
+<<<<<<< HEAD
 	timer_device::static_configure_generic(*device, timer_device_expired_delegate());
 #define MCFG_TIMER_DRIVER_ADD(_tag, _class, _callback) \
 	MCFG_DEVICE_ADD(_tag, TIMER, 0) \
@@ -51,11 +61,36 @@
 #define MCFG_TIMER_DEVICE_ADD_SCANLINE(_tag, _devtag, _class, _callback, _screen, _first_vpos, _increment) \
 	MCFG_DEVICE_ADD(_tag, TIMER, 0) \
 	timer_device::static_configure_scanline(*device, timer_device_expired_delegate(&_class::_callback, #_class "::" #_callback, _devtag, (_class *)0), _screen, _first_vpos, _increment);
+=======
+	timer_device::static_configure_generic(*device, timer_device::expired_delegate());
+#define MCFG_TIMER_DRIVER_ADD(_tag, _class, _callback) \
+	MCFG_DEVICE_ADD(_tag, TIMER, 0) \
+	timer_device::static_configure_generic(*device, timer_device::expired_delegate(&_class::_callback, #_class "::" #_callback, nullptr, (_class *)nullptr));
+#define MCFG_TIMER_DEVICE_ADD(_tag, _devtag, _class, _callback) \
+	MCFG_DEVICE_ADD(_tag, TIMER, 0) \
+	timer_device::static_configure_generic(*device, timer_device::expired_delegate(&_class::_callback, #_class "::" #_callback, _devtag, (_class *)nullptr));
+#define MCFG_TIMER_DRIVER_ADD_PERIODIC(_tag, _class, _callback, _period) \
+	MCFG_DEVICE_ADD(_tag, TIMER, 0) \
+	timer_device::static_configure_periodic(*device, timer_device::expired_delegate(&_class::_callback, #_class "::" #_callback, nullptr, (_class *)nullptr), _period);
+#define MCFG_TIMER_DEVICE_ADD_PERIODIC(_tag, _devtag, _class, _callback, _period) \
+	MCFG_DEVICE_ADD(_tag, TIMER, 0) \
+	timer_device::static_configure_periodic(*device, timer_device::expired_delegate(&_class::_callback, #_class "::" #_callback, _devtag, (_class *)nullptr), _period);
+#define MCFG_TIMER_DRIVER_ADD_SCANLINE(_tag, _class, _callback, _screen, _first_vpos, _increment) \
+	MCFG_DEVICE_ADD(_tag, TIMER, 0) \
+	timer_device::static_configure_scanline(*device, timer_device::expired_delegate(&_class::_callback, #_class "::" #_callback, nullptr, (_class *)nullptr), _screen, _first_vpos, _increment);
+#define MCFG_TIMER_DEVICE_ADD_SCANLINE(_tag, _devtag, _class, _callback, _screen, _first_vpos, _increment) \
+	MCFG_DEVICE_ADD(_tag, TIMER, 0) \
+	timer_device::static_configure_scanline(*device, timer_device::expired_delegate(&_class::_callback, #_class "::" #_callback, _devtag, (_class *)nullptr), _screen, _first_vpos, _increment);
+>>>>>>> upstream/master
 #define MCFG_TIMER_MODIFY(_tag) \
 	MCFG_DEVICE_MODIFY(_tag)
 
 #define MCFG_TIMER_DRIVER_CALLBACK(_class, _callback) \
+<<<<<<< HEAD
 	timer_device::static_set_callback(*device, timer_device_expired_delegate(&_class::_callback, #_class "::" #_callback, NULL, (_class *)0));
+=======
+	timer_device::static_set_callback(*device, timer_device::expired_delegate(&_class::_callback, #_class "::" #_callback, nullptr, (_class *)nullptr));
+>>>>>>> upstream/master
 #define MCFG_TIMER_START_DELAY(_start_delay) \
 	timer_device::static_set_start_delay(*device, _start_delay);
 #define MCFG_TIMER_PARAM(_param) \
@@ -68,6 +103,7 @@
 //  TYPE DEFINITIONS
 //**************************************************************************
 
+<<<<<<< HEAD
 // forward declarations
 class emu_timer;
 class timer_device;
@@ -75,11 +111,14 @@ class timer_device;
 // a timer callbacks look like this
 typedef device_delegate<void (timer_device &, void *, INT32)> timer_device_expired_delegate;
 
+=======
+>>>>>>> upstream/master
 // ======================> timer_device
 
 class timer_device : public device_t
 {
 public:
+<<<<<<< HEAD
 	// construction/destruction
 	timer_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
 
@@ -88,6 +127,19 @@ public:
 	static void static_configure_periodic(device_t &device, timer_device_expired_delegate callback, const attotime &period);
 	static void static_configure_scanline(device_t &device, timer_device_expired_delegate callback, const char *screen, int first_vpos, int increment);
 	static void static_set_callback(device_t &device, timer_device_expired_delegate callback);
+=======
+	// a timer callbacks look like this
+	typedef device_delegate<void (timer_device &, void *, s32)> expired_delegate;
+
+	// construction/destruction
+	timer_device(const machine_config &mconfig, const char *tag, device_t *owner, u32 clock);
+
+	// inline configuration helpers
+	static void static_configure_generic(device_t &device, expired_delegate callback);
+	static void static_configure_periodic(device_t &device, expired_delegate callback, const attotime &period);
+	static void static_configure_scanline(device_t &device, expired_delegate callback, const char *screen, int first_vpos, int increment);
+	static void static_set_callback(device_t &device, expired_delegate callback);
+>>>>>>> upstream/master
 	static void static_set_start_delay(device_t &device, const attotime &delay);
 	static void static_set_param(device_t &device, int param);
 	static void static_set_ptr(device_t &device, void *ptr);
@@ -98,6 +150,7 @@ public:
 	bool enabled() const { return m_timer->enabled(); }
 
 	// property setters
+<<<<<<< HEAD
 	void set_param(int param) { assert(m_type == TIMER_TYPE_GENERIC); m_timer->set_param(param); }
 	void set_ptr(void *ptr) { m_ptr = ptr; }
 	void enable(bool enable = true) { m_timer->enable(enable); }
@@ -105,6 +158,15 @@ public:
 	// adjustments
 	void reset() { adjust(attotime::never, 0, attotime::never); }
 	void adjust(const attotime &duration, INT32 param = 0, const attotime &period = attotime::never) { assert(m_type == TIMER_TYPE_GENERIC); m_timer->adjust(duration, param, period); }
+=======
+	void set_param(int param) const { assert(m_type == TIMER_TYPE_GENERIC); m_timer->set_param(param); }
+	void set_ptr(void *ptr) { m_ptr = ptr; }
+	void enable(bool enable = true) const { m_timer->enable(enable); }
+
+	// adjustments
+	void reset() { adjust(attotime::never, 0, attotime::never); }
+	void adjust(const attotime &duration, s32 param = 0, const attotime &period = attotime::never) const { assert(m_type == TIMER_TYPE_GENERIC); m_timer->adjust(duration, param, period); }
+>>>>>>> upstream/master
 
 	// timing information
 	attotime time_elapsed() const { return m_timer->elapsed(); }
@@ -114,10 +176,17 @@ public:
 
 private:
 	// device-level overrides
+<<<<<<< HEAD
 	virtual void device_validity_check(validity_checker &valid) const;
 	virtual void device_start();
 	virtual void device_reset();
 	virtual void device_timer(emu_timer &timer, device_timer_id id, int param, void *ptr);
+=======
+	virtual void device_validity_check(validity_checker &valid) const override;
+	virtual void device_start() override;
+	virtual void device_reset() override;
+	virtual void device_timer(emu_timer &timer, device_timer_id id, int param, void *ptr) override;
+>>>>>>> upstream/master
 
 	// timer types
 	enum timer_type
@@ -129,19 +198,32 @@ private:
 
 	// configuration data
 	timer_type              m_type;             // type of timer
+<<<<<<< HEAD
 	timer_device_expired_delegate   m_callback;         // the timer's callback function
+=======
+	expired_delegate   m_callback;         // the timer's callback function
+>>>>>>> upstream/master
 	void *                  m_ptr;              // the pointer parameter passed to the timer callback
 
 	// periodic timers only
 	attotime                m_start_delay;      // delay before the timer fires for the first time
 	attotime                m_period;           // period of repeated timer firings
+<<<<<<< HEAD
 	INT32                   m_param;            // the integer parameter passed to the timer callback
+=======
+	s32                     m_param;            // the integer parameter passed to the timer callback
+>>>>>>> upstream/master
 
 	// scanline timers only
 	const char *            m_screen_tag;       // the tag of the screen this timer tracks
 	screen_device *         m_screen;           // pointer to the screen device
+<<<<<<< HEAD
 	UINT32                  m_first_vpos;       // the first vertical scanline position the timer fires on
 	UINT32                  m_increment;        // the number of scanlines between firings
+=======
+	u32                     m_first_vpos;       // the first vertical scanline position the timer fires on
+	u32                     m_increment;        // the number of scanlines between firings
+>>>>>>> upstream/master
 
 	// internal state
 	emu_timer *             m_timer;            // the backing timer
@@ -154,7 +236,14 @@ private:
 //  GLOBAL VARIABLES
 //**************************************************************************
 
+<<<<<<< HEAD
 extern const device_type TIMER;
 
 
 #endif  /* __TIMER_H__ */
+=======
+DECLARE_DEVICE_TYPE(TIMER, timer_device)
+
+
+#endif // MAME_EMU_TIMER_H
+>>>>>>> upstream/master

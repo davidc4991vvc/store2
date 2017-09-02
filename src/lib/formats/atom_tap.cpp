@@ -43,6 +43,10 @@
 #include <assert.h>
 
 #include "atom_tap.h"
+<<<<<<< HEAD
+=======
+#include "csw_cas.h"
+>>>>>>> upstream/master
 #include "uef_cas.h"
 /***************************************************************************
     PARAMETERS
@@ -69,9 +73,15 @@ static const struct CassetteModulation atom_tap_modulation =
     cassette_image_read_uint8 - read tape data
 -------------------------------------------------*/
 
+<<<<<<< HEAD
 static UINT8 cassette_image_read_uint8(cassette_image *cassette, UINT64 offset)
 {
 	UINT8 data;
+=======
+static uint8_t cassette_image_read_uint8(cassette_image *cassette, uint64_t offset)
+{
+	uint8_t data;
+>>>>>>> upstream/master
 	cassette_image_read(cassette, &data, offset, 1);
 	return data;
 }
@@ -80,7 +90,11 @@ static UINT8 cassette_image_read_uint8(cassette_image *cassette, UINT64 offset)
     atom_tap_identify - identify cassette
 -------------------------------------------------*/
 
+<<<<<<< HEAD
 static casserr_t atom_tap_identify(cassette_image *cassette, struct CassetteOptions *opts)
+=======
+static cassette_image::error atom_tap_identify(cassette_image *cassette, struct CassetteOptions *opts)
+>>>>>>> upstream/master
 {
 	return cassette_modulation_identify( cassette, &atom_tap_modulation, opts);
 }
@@ -92,23 +106,39 @@ static casserr_t atom_tap_identify(cassette_image *cassette, struct CassetteOpti
 #define MODULATE(_value) \
 	for (int i = 0; i < (_value ? 8 : 4); i++) { \
 		err = cassette_put_modulated_data_bit(cassette, 0, time_index, _value, &atom_tap_modulation, &time_displacement);\
+<<<<<<< HEAD
 		if (err) return err;\
+=======
+		if (err != cassette_image::error::SUCCESS) return err;\
+>>>>>>> upstream/master
 		time_index += time_displacement;\
 	}
 
 #define BIT(x,n) (((x)>>(n))&1)
 
+<<<<<<< HEAD
 static casserr_t atom_tap_load(cassette_image *cassette)
 {
 	casserr_t err;
 	UINT64 image_size = cassette_image_size(cassette);
 	UINT64 image_pos = 0;
+=======
+static cassette_image::error atom_tap_load(cassette_image *cassette)
+{
+	cassette_image::error err;
+	uint64_t image_size = cassette_image_size(cassette);
+	uint64_t image_pos = 0;
+>>>>>>> upstream/master
 	double time_index = 0.0;
 	double time_displacement;
 
 	while (image_pos < image_size)
 	{
+<<<<<<< HEAD
 		UINT8 data = cassette_image_read_uint8(cassette, image_pos);
+=======
+		uint8_t data = cassette_image_read_uint8(cassette, image_pos);
+>>>>>>> upstream/master
 
 		/* start bit */
 		MODULATE(0);
@@ -126,7 +156,11 @@ static casserr_t atom_tap_load(cassette_image *cassette)
 		image_pos++;
 	}
 
+<<<<<<< HEAD
 	return CASSETTE_ERROR_SUCCESS;
+=======
+	return cassette_image::error::SUCCESS;
+>>>>>>> upstream/master
 }
 
 /*-------------------------------------------------
@@ -138,10 +172,18 @@ const struct CassetteFormat atom_tap_format =
 	"tap",
 	atom_tap_identify,
 	atom_tap_load,
+<<<<<<< HEAD
 	NULL
+=======
+	nullptr
+>>>>>>> upstream/master
 };
 
 CASSETTE_FORMATLIST_START( atom_cassette_formats )
 	CASSETTE_FORMAT(atom_tap_format)
+<<<<<<< HEAD
+=======
+	CASSETTE_FORMAT(csw_cassette_format)
+>>>>>>> upstream/master
 	CASSETTE_FORMAT(uef_cassette_format)
 CASSETTE_FORMATLIST_END

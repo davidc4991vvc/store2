@@ -6,6 +6,10 @@
 
 ***************************************************************************/
 
+<<<<<<< HEAD
+=======
+#include "machine/gen_latch.h"
+>>>>>>> upstream/master
 #include "sound/sn76496.h"
 
 class lasso_state : public driver_device
@@ -26,6 +30,7 @@ public:
 		m_sn_1(*this, "sn76489.1"),
 		m_sn_2(*this, "sn76489.2"),
 		m_gfxdecode(*this, "gfxdecode"),
+<<<<<<< HEAD
 		m_palette(*this, "palette") { }
 
 	/* memory pointers */
@@ -37,12 +42,31 @@ public:
 	optional_shared_ptr<UINT8> m_bitmap_ram;    /* 0x2000 bytes for a 256 x 256 x 1 bitmap */
 	optional_shared_ptr<UINT8> m_last_colors;
 	optional_shared_ptr<UINT8> m_track_scroll;
+=======
+		m_palette(*this, "palette"),
+		m_soundlatch(*this, "soundlatch") { }
+
+	/* memory pointers */
+	required_shared_ptr<uint8_t> m_videoram;
+	required_shared_ptr<uint8_t> m_colorram;
+	required_shared_ptr<uint8_t> m_spriteram;
+	required_shared_ptr<uint8_t> m_back_color;
+	optional_shared_ptr<uint8_t> m_chip_data;
+	optional_shared_ptr<uint8_t> m_bitmap_ram;    /* 0x2000 bytes for a 256 x 256 x 1 bitmap */
+	optional_shared_ptr<uint8_t> m_last_colors;
+	optional_shared_ptr<uint8_t> m_track_scroll;
+>>>>>>> upstream/master
 
 	/* video-related */
 	tilemap_t  *m_bg_tilemap;
 	tilemap_t  *m_track_tilemap;
+<<<<<<< HEAD
 	UINT8    m_gfxbank;     /* used by lasso, chameleo, wwjgtin and pinbo */
 	UINT8    m_track_enable;    /* used by wwjgtin */
+=======
+	uint8_t    m_gfxbank;     /* used by lasso, chameleo, wwjgtin and pinbo */
+	uint8_t    m_track_enable;    /* used by wwjgtin */
+>>>>>>> upstream/master
 
 	/* devices */
 	required_device<cpu_device> m_maincpu;
@@ -51,6 +75,10 @@ public:
 	optional_device<sn76489_device> m_sn_2;
 	required_device<gfxdecode_device> m_gfxdecode;
 	required_device<palette_device> m_palette;
+<<<<<<< HEAD
+=======
+	required_device<generic_latch_8_device> m_soundlatch;
+>>>>>>> upstream/master
 
 	DECLARE_WRITE8_MEMBER(sound_command_w);
 	DECLARE_READ8_MEMBER(sound_status_r);
@@ -65,18 +93,30 @@ public:
 	TILE_GET_INFO_MEMBER(lasso_get_bg_tile_info);
 	TILE_GET_INFO_MEMBER(wwjgtin_get_track_tile_info);
 	TILE_GET_INFO_MEMBER(pinbo_get_bg_tile_info);
+<<<<<<< HEAD
 	virtual void machine_start();
 	virtual void machine_reset();
 	virtual void video_start();
+=======
+	virtual void machine_start() override;
+	virtual void machine_reset() override;
+	virtual void video_start() override;
+>>>>>>> upstream/master
 	DECLARE_PALETTE_INIT(lasso);
 	DECLARE_MACHINE_START(wwjgtin);
 	DECLARE_MACHINE_RESET(wwjgtin);
 	DECLARE_VIDEO_START(wwjgtin);
 	DECLARE_PALETTE_INIT(wwjgtin);
 	DECLARE_VIDEO_START(pinbo);
+<<<<<<< HEAD
 	UINT32 screen_update_lasso(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
 	UINT32 screen_update_chameleo(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
 	UINT32 screen_update_wwjgtin(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
+=======
+	uint32_t screen_update_lasso(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
+	uint32_t screen_update_chameleo(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
+	uint32_t screen_update_wwjgtin(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
+>>>>>>> upstream/master
 	rgb_t get_color( int data );
 	void wwjgtin_set_last_four_colors();
 	void draw_sprites( bitmap_ind16 &bitmap, const rectangle &cliprect, int reverse );

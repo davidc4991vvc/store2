@@ -3,6 +3,7 @@
 #include "emu.h"
 #include "crossblaim.h"
 
+<<<<<<< HEAD
 const device_type MSX_CART_CROSSBLAIM = &device_creator<msx_cart_crossblaim>;
 
 
@@ -14,10 +15,24 @@ msx_cart_crossblaim::msx_cart_crossblaim(const machine_config &mconfig, const ch
 	for (int i = 0; i < 4; i++)
 	{
 		m_bank_base[i] = NULL;
+=======
+DEFINE_DEVICE_TYPE(MSX_CART_CROSSBLAIM, msx_cart_crossblaim_device, "msx_cart_crossblaim", "MSX Cartridge Cross Blaim")
+
+
+msx_cart_crossblaim_device::msx_cart_crossblaim_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: device_t(mconfig, MSX_CART_CROSSBLAIM, tag, owner, clock)
+	, msx_cart_interface(mconfig, *this)
+	, m_selected_bank(1)
+{
+	for (auto & elem : m_bank_base)
+	{
+		elem = nullptr;
+>>>>>>> upstream/master
 	}
 }
 
 
+<<<<<<< HEAD
 void msx_cart_crossblaim::device_start()
 {
 	save_item(NAME(m_selected_bank));
@@ -35,19 +50,46 @@ void msx_cart_crossblaim::setup_bank()
 
 
 void msx_cart_crossblaim::restore_banks()
+=======
+void msx_cart_crossblaim_device::device_start()
+{
+	save_item(NAME(m_selected_bank));
+
+	machine().save().register_postload(save_prepost_delegate(FUNC(msx_cart_crossblaim_device::restore_banks), this));
+}
+
+
+void msx_cart_crossblaim_device::setup_bank()
+{
+	m_bank_base[0] = ( m_selected_bank & 2 ) ? nullptr : get_rom_base() + ( m_selected_bank & 0x03 ) * 0x4000;
+	m_bank_base[2] = get_rom_base() + ( m_selected_bank & 0x03 ) * 0x4000;
+	m_bank_base[3] = ( m_selected_bank & 2 ) ? nullptr : get_rom_base() + ( m_selected_bank & 0x03 ) * 0x4000;
+}
+
+
+void msx_cart_crossblaim_device::restore_banks()
+>>>>>>> upstream/master
 {
 	m_bank_base[1] = get_rom_base();
 	setup_bank();
 }
 
 
+<<<<<<< HEAD
 void msx_cart_crossblaim::device_reset()
+=======
+void msx_cart_crossblaim_device::device_reset()
+>>>>>>> upstream/master
 {
 	m_selected_bank = 1;
 }
 
 
+<<<<<<< HEAD
 void msx_cart_crossblaim::initialize_cartridge()
+=======
+void msx_cart_crossblaim_device::initialize_cartridge()
+>>>>>>> upstream/master
 {
 	if (get_rom_size() != 0x10000)
 	{
@@ -58,11 +100,19 @@ void msx_cart_crossblaim::initialize_cartridge()
 }
 
 
+<<<<<<< HEAD
 READ8_MEMBER(msx_cart_crossblaim::read_cart)
 {
 	UINT8 *bank_base = m_bank_base[offset >> 14];
 
 	if (bank_base != NULL)
+=======
+READ8_MEMBER(msx_cart_crossblaim_device::read_cart)
+{
+	uint8_t *bank_base = m_bank_base[offset >> 14];
+
+	if (bank_base != nullptr)
+>>>>>>> upstream/master
 	{
 		return bank_base[offset & 0x3fff];
 	}
@@ -71,7 +121,11 @@ READ8_MEMBER(msx_cart_crossblaim::read_cart)
 }
 
 
+<<<<<<< HEAD
 WRITE8_MEMBER(msx_cart_crossblaim::write_cart)
+=======
+WRITE8_MEMBER(msx_cart_crossblaim_device::write_cart)
+>>>>>>> upstream/master
 {
 	m_selected_bank = data & 3;
 	if (m_selected_bank == 0)

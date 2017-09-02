@@ -2,7 +2,11 @@
 // copyright-holders:Manuel Abadia
 /***************************************************************************
 
+<<<<<<< HEAD
   video.c
+=======
+  ajax.cpp
+>>>>>>> upstream/master
 
   Functions to emulate the video hardware of the machine.
 
@@ -72,7 +76,11 @@ K051316_CB_MEMBER(ajax_state::zoom_callback)
 
 ***************************************************************************/
 
+<<<<<<< HEAD
 UINT32 ajax_state::screen_update_ajax(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+=======
+uint32_t ajax_state::screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+>>>>>>> upstream/master
 {
 	m_k052109->tilemap_update();
 

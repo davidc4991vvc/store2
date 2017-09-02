@@ -1,6 +1,7 @@
 // LockedStream.cpp
 
 #include "StdAfx.h"
+<<<<<<< HEAD
 
 #include "LockedStream.h"
 
@@ -21,3 +22,5 @@ STDMETHODIMP CLockedSequentialInStreamImp::Read(void *data, UInt32 size, UInt32 
     *processedSize = realProcessedSize;
   return result;
 }
+=======
+>>>>>>> upstream/master

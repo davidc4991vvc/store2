@@ -8,10 +8,13 @@
 //
 //============================================================
 
+<<<<<<< HEAD
 #if (!defined(NO_MEM_TRACKING))
 #define NO_MEM_TRACKING
 #endif
 
+=======
+>>>>>>> upstream/master
 #include "debug_module.h"
 #include "modules/osdmodule.h"
 
@@ -19,8 +22,14 @@
 
 #include <vector>
 
+<<<<<<< HEAD
 #include <QtGui/QtGui>
 #include <QtGui/QApplication>
+=======
+#include <QtWidgets/QApplication>
+#include <QtCore/QAbstractEventDispatcher>
+#include <QtCore/QAbstractNativeEventFilter>
+>>>>>>> upstream/master
 
 #include "emu.h"
 #include "config.h"
@@ -36,11 +45,21 @@
 #include "qt/deviceinformationwindow.h"
 
 class debug_qt : public osd_module, public debug_module
+<<<<<<< HEAD
+=======
+#if defined(WIN32) && !defined(SDLMAME_WIN32)
+, public QAbstractNativeEventFilter
+#endif
+>>>>>>> upstream/master
 {
 public:
 	debug_qt()
 	: osd_module(OSD_DEBUG_PROVIDER, "qt"), debug_module(),
+<<<<<<< HEAD
 		m_machine(NULL)
+=======
+		m_machine(nullptr)
+>>>>>>> upstream/master
 	{
 	}
 
@@ -52,7 +71,13 @@ public:
 	virtual void init_debugger(running_machine &machine);
 	virtual void wait_for_debugger(device_t &device, bool firststop);
 	virtual void debugger_update();
+<<<<<<< HEAD
 
+=======
+#if defined(WIN32) && !defined(SDLMAME_WIN32)
+	virtual bool nativeEventFilter(const QByteArray &eventType, void *message, long *) Q_DECL_OVERRIDE;
+#endif
+>>>>>>> upstream/master
 private:
 	running_machine *m_machine;
 };
@@ -62,10 +87,17 @@ private:
 //============================================================
 
 int qtArgc = 0;
+<<<<<<< HEAD
 char** qtArgv = NULL;
 
 bool oneShot = true;
 static MainWindow* mainQtWindow = NULL;
+=======
+char** qtArgv = nullptr;
+
+bool oneShot = true;
+static MainWindow* mainQtWindow = nullptr;
+>>>>>>> upstream/master
 
 //============================================================
 //  XML configuration save/load
@@ -75,6 +107,7 @@ static MainWindow* mainQtWindow = NULL;
 std::vector<WindowQtConfig*> xmlConfigurations;
 
 
+<<<<<<< HEAD
 static void xml_configuration_load(running_machine &machine, int config_type, xml_data_node *parentnode)
 {
 	// We only care about game files
@@ -83,6 +116,16 @@ static void xml_configuration_load(running_machine &machine, int config_type, xm
 
 	// Might not have any data
 	if (parentnode == NULL)
+=======
+static void xml_configuration_load(running_machine &machine, config_type cfg_type, util::xml::data_node const *parentnode)
+{
+	// We only care about game files
+	if (cfg_type != config_type::GAME)
+		return;
+
+	// Might not have any data
+	if (parentnode == nullptr)
+>>>>>>> upstream/master
 		return;
 
 	for (int i = 0; i < xmlConfigurations.size(); i++)
@@ -90,10 +133,17 @@ static void xml_configuration_load(running_machine &machine, int config_type, xm
 	xmlConfigurations.clear();
 
 	// Configuration load
+<<<<<<< HEAD
 	xml_data_node* wnode = NULL;
 	for (wnode = xml_get_sibling(parentnode->child, "window"); wnode != NULL; wnode = xml_get_sibling(wnode->next, "window"))
 	{
 		WindowQtConfig::WindowType type = (WindowQtConfig::WindowType)xml_get_attribute_int(wnode, "type", WindowQtConfig::WIN_TYPE_UNKNOWN);
+=======
+	util::xml::data_node const * wnode = nullptr;
+	for (wnode = parentnode->get_child("window"); wnode != nullptr; wnode = wnode->get_next_sibling("window"))
+	{
+		WindowQtConfig::WindowType type = (WindowQtConfig::WindowType)wnode->get_attribute_int("type", WindowQtConfig::WIN_TYPE_UNKNOWN);
+>>>>>>> upstream/master
 		switch (type)
 		{
 			case WindowQtConfig::WIN_TYPE_MAIN:               xmlConfigurations.push_back(new MainWindowQtConfig()); break;
@@ -105,15 +155,26 @@ static void xml_configuration_load(running_machine &machine, int config_type, xm
 			case WindowQtConfig::WIN_TYPE_DEVICE_INFORMATION: xmlConfigurations.push_back(new DeviceInformationWindowQtConfig()); break;
 			default: continue;
 		}
+<<<<<<< HEAD
 		xmlConfigurations.back()->recoverFromXmlNode(wnode);
+=======
+		xmlConfigurations.back()->recoverFromXmlNode(*wnode);
+>>>>>>> upstream/master
 	}
 }
 
 
+<<<<<<< HEAD
 static void xml_configuration_save(running_machine &machine, int config_type, xml_data_node *parentnode)
 {
 	// We only write to game configurations
 	if (config_type != CONFIG_TYPE_GAME)
+=======
+static void xml_configuration_save(running_machine &machine, config_type cfg_type, util::xml::data_node *parentnode)
+{
+	// We only write to game configurations
+	if (cfg_type != config_type::GAME)
+>>>>>>> upstream/master
 		return;
 
 	for (int i = 0; i < xmlConfigurations.size(); i++)
@@ -121,6 +182,7 @@ static void xml_configuration_save(running_machine &machine, int config_type, xm
 		WindowQtConfig* config = xmlConfigurations[i];
 
 		// Create an xml node
+<<<<<<< HEAD
 		xml_data_node *debugger_node;
 		debugger_node = xml_add_child(parentnode, "window", NULL);
 		if (debugger_node == NULL)
@@ -128,6 +190,14 @@ static void xml_configuration_save(running_machine &machine, int config_type, xm
 
 		// Insert the appropriate information
 		config->addToXmlDataNode(debugger_node);
+=======
+		util::xml::data_node *const debugger_node = parentnode->add_child("window", nullptr);
+		if (debugger_node == nullptr)
+			continue;
+
+		// Insert the appropriate information
+		config->addToXmlDataNode(*debugger_node);
+>>>>>>> upstream/master
 	}
 }
 
@@ -193,7 +263,11 @@ static void setup_additional_startup_windows(running_machine& machine, std::vect
 	{
 		WindowQtConfig* config = configList[i];
 
+<<<<<<< HEAD
 		WindowQt* foo = NULL;
+=======
+		WindowQt* foo = nullptr;
+>>>>>>> upstream/master
 		switch (config->m_type)
 		{
 			case WindowQtConfig::WIN_TYPE_MEMORY:
@@ -234,16 +308,33 @@ static void bring_main_window_to_front()
 
 #if defined(WIN32) && !defined(SDLMAME_WIN32)
 bool winwindow_qt_filter(void *message);
+<<<<<<< HEAD
+=======
+
+bool debug_qt::nativeEventFilter(const QByteArray &eventType, void *message, long *)
+{
+	winwindow_qt_filter(message);
+	return false;
+}
+>>>>>>> upstream/master
 #endif
 
 void debug_qt::init_debugger(running_machine &machine)
 {
+<<<<<<< HEAD
 	if (qApp == NULL)
+=======
+	if (qApp == nullptr)
+>>>>>>> upstream/master
 	{
 		// If you're starting from scratch, create a new qApp
 		new QApplication(qtArgc, qtArgv);
 #if defined(WIN32) && !defined(SDLMAME_WIN32)
+<<<<<<< HEAD
 		QAbstractEventDispatcher::instance()->setEventFilter((QAbstractEventDispatcher::EventFilter)&winwindow_qt_filter);
+=======
+		QAbstractEventDispatcher::instance()->installNativeEventFilter(this);
+>>>>>>> upstream/master
 #endif
 	}
 	else
@@ -260,10 +351,16 @@ void debug_qt::init_debugger(running_machine &machine)
 
 	m_machine = &machine;
 	// Setup the configuration XML saving and loading
+<<<<<<< HEAD
 	config_register(machine,
 					"debugger",
 					config_saveload_delegate(FUNC(xml_configuration_load), &machine),
 					config_saveload_delegate(FUNC(xml_configuration_save), &machine));
+=======
+	machine.configuration().config_register("debugger",
+					config_load_delegate(&xml_configuration_load, &machine),
+					config_save_delegate(&xml_configuration_save, &machine));
+>>>>>>> upstream/master
 }
 
 
@@ -310,7 +407,11 @@ void debug_qt::wait_for_debugger(device_t &device, bool firststop)
 	mainQtWindow->setProcessor(&device);
 
 	// Run our own QT event loop
+<<<<<<< HEAD
 	osd_sleep(50000);
+=======
+	osd_sleep(osd_ticks_per_second() / 1000 * 50);
+>>>>>>> upstream/master
 	qApp->processEvents(QEventLoop::AllEvents, 1);
 
 	// Refresh everyone if requested

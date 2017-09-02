@@ -2,6 +2,10 @@
  * jdmerge.c
  *
  * Copyright (C) 1994-1996, Thomas G. Lane.
+<<<<<<< HEAD
+=======
+ * Modified 2013-2015 by Guido Vollbeding.
+>>>>>>> upstream/master
  * This file is part of the Independent JPEG Group's software.
  * For conditions of distribution and use, see the accompanying README file.
  *
@@ -23,7 +27,11 @@
  * multiplications needed for color conversion.
  *
  * This file currently provides implementations for the following cases:
+<<<<<<< HEAD
  *	YCbCr => RGB color conversion only.
+=======
+ *	YCC => RGB color conversion only (YCbCr or BG_YCC).
+>>>>>>> upstream/master
  *	Sampling ratios of 2h1v or 2h2v.
  *	No scaling needed at upsample time.
  *	Corner-aligned (non-CCIR601) sampling alignment.
@@ -75,12 +83,20 @@ typedef my_upsampler * my_upsample_ptr;
 
 
 /*
+<<<<<<< HEAD
  * Initialize tables for YCC->RGB colorspace conversion.
+=======
+ * Initialize tables for YCbCr->RGB and BG_YCC->RGB colorspace conversion.
+>>>>>>> upstream/master
  * This is taken directly from jdcolor.c; see that file for more info.
  */
 
 LOCAL(void)
 build_ycc_rgb_table (j_decompress_ptr cinfo)
+<<<<<<< HEAD
+=======
+/* Normal case, sYCC */
+>>>>>>> upstream/master
 {
   my_upsample_ptr upsample = (my_upsample_ptr) cinfo->upsample;
   int i;
@@ -103,6 +119,7 @@ build_ycc_rgb_table (j_decompress_ptr cinfo)
   for (i = 0, x = -CENTERJSAMPLE; i <= MAXJSAMPLE; i++, x++) {
     /* i is the actual input pixel value, in the range 0..MAXJSAMPLE */
     /* The Cb or Cr value we are thinking of is x = i - CENTERJSAMPLE */
+<<<<<<< HEAD
     /* Cr=>R value is nearest int to 1.40200 * x */
     upsample->Cr_r_tab[i] = (int)
 		    RIGHT_SHIFT(FIX(1.40200) * x + ONE_HALF, SCALEBITS);
@@ -114,6 +131,59 @@ build_ycc_rgb_table (j_decompress_ptr cinfo)
     /* Cb=>G value is scaled-up -0.34414 * x */
     /* We also add in ONE_HALF so that need not do it in inner loop */
     upsample->Cb_g_tab[i] = (- FIX(0.34414)) * x + ONE_HALF;
+=======
+    /* Cr=>R value is nearest int to 1.402 * x */
+    upsample->Cr_r_tab[i] = (int)
+		    RIGHT_SHIFT(FIX(1.402) * x + ONE_HALF, SCALEBITS);
+    /* Cb=>B value is nearest int to 1.772 * x */
+    upsample->Cb_b_tab[i] = (int)
+		    RIGHT_SHIFT(FIX(1.772) * x + ONE_HALF, SCALEBITS);
+    /* Cr=>G value is scaled-up -0.714136286 * x */
+    upsample->Cr_g_tab[i] = (- FIX(0.714136286)) * x;
+    /* Cb=>G value is scaled-up -0.344136286 * x */
+    /* We also add in ONE_HALF so that need not do it in inner loop */
+    upsample->Cb_g_tab[i] = (- FIX(0.344136286)) * x + ONE_HALF;
+  }
+}
+
+
+LOCAL(void)
+build_bg_ycc_rgb_table (j_decompress_ptr cinfo)
+/* Wide gamut case, bg-sYCC */
+{
+  my_upsample_ptr upsample = (my_upsample_ptr) cinfo->upsample;
+  int i;
+  INT32 x;
+  SHIFT_TEMPS
+
+  upsample->Cr_r_tab = (int *)
+    (*cinfo->mem->alloc_small) ((j_common_ptr) cinfo, JPOOL_IMAGE,
+				(MAXJSAMPLE+1) * SIZEOF(int));
+  upsample->Cb_b_tab = (int *)
+    (*cinfo->mem->alloc_small) ((j_common_ptr) cinfo, JPOOL_IMAGE,
+				(MAXJSAMPLE+1) * SIZEOF(int));
+  upsample->Cr_g_tab = (INT32 *)
+    (*cinfo->mem->alloc_small) ((j_common_ptr) cinfo, JPOOL_IMAGE,
+				(MAXJSAMPLE+1) * SIZEOF(INT32));
+  upsample->Cb_g_tab = (INT32 *)
+    (*cinfo->mem->alloc_small) ((j_common_ptr) cinfo, JPOOL_IMAGE,
+				(MAXJSAMPLE+1) * SIZEOF(INT32));
+
+  for (i = 0, x = -CENTERJSAMPLE; i <= MAXJSAMPLE; i++, x++) {
+    /* i is the actual input pixel value, in the range 0..MAXJSAMPLE */
+    /* The Cb or Cr value we are thinking of is x = i - CENTERJSAMPLE */
+    /* Cr=>R value is nearest int to 2.804 * x */
+    upsample->Cr_r_tab[i] = (int)
+		    RIGHT_SHIFT(FIX(2.804) * x + ONE_HALF, SCALEBITS);
+    /* Cb=>B value is nearest int to 3.544 * x */
+    upsample->Cb_b_tab[i] = (int)
+		    RIGHT_SHIFT(FIX(3.544) * x + ONE_HALF, SCALEBITS);
+    /* Cr=>G value is scaled-up -1.428272572 * x */
+    upsample->Cr_g_tab[i] = (- FIX(1.428272572)) * x;
+    /* Cb=>G value is scaled-up -0.688272572 * x */
+    /* We also add in ONE_HALF so that need not do it in inner loop */
+    upsample->Cb_g_tab[i] = (- FIX(0.688272572)) * x + ONE_HALF;
+>>>>>>> upstream/master
   }
 }
 
@@ -250,6 +320,7 @@ h2v1_merged_upsample (j_decompress_ptr cinfo,
     /* Do the chroma part of the calculation */
     cb = GETJSAMPLE(*inptr1++);
     cr = GETJSAMPLE(*inptr2++);
+<<<<<<< HEAD
     cred = Crrtab[cr];
     cgreen = (int) RIGHT_SHIFT(Cbgtab[cb] + Crgtab[cr], SCALEBITS);
     cblue = Cbbtab[cb];
@@ -263,12 +334,28 @@ h2v1_merged_upsample (j_decompress_ptr cinfo,
     outptr[RGB_RED] =   range_limit[y + cred];
     outptr[RGB_GREEN] = range_limit[y + cgreen];
     outptr[RGB_BLUE] =  range_limit[y + cblue];
+=======
+    cred   = Crrtab[cr];
+    cgreen = (int) RIGHT_SHIFT(Cbgtab[cb] + Crgtab[cr], SCALEBITS);
+    cblue  = Cbbtab[cb];
+    /* Fetch 2 Y values and emit 2 pixels */
+    y  = GETJSAMPLE(*inptr0++);
+    outptr[RGB_RED]   = range_limit[y + cred];
+    outptr[RGB_GREEN] = range_limit[y + cgreen];
+    outptr[RGB_BLUE]  = range_limit[y + cblue];
+    outptr += RGB_PIXELSIZE;
+    y  = GETJSAMPLE(*inptr0++);
+    outptr[RGB_RED]   = range_limit[y + cred];
+    outptr[RGB_GREEN] = range_limit[y + cgreen];
+    outptr[RGB_BLUE]  = range_limit[y + cblue];
+>>>>>>> upstream/master
     outptr += RGB_PIXELSIZE;
   }
   /* If image width is odd, do the last output column separately */
   if (cinfo->output_width & 1) {
     cb = GETJSAMPLE(*inptr1);
     cr = GETJSAMPLE(*inptr2);
+<<<<<<< HEAD
     cred = Crrtab[cr];
     cgreen = (int) RIGHT_SHIFT(Cbgtab[cb] + Crgtab[cr], SCALEBITS);
     cblue = Cbbtab[cb];
@@ -276,6 +363,15 @@ h2v1_merged_upsample (j_decompress_ptr cinfo,
     outptr[RGB_RED] =   range_limit[y + cred];
     outptr[RGB_GREEN] = range_limit[y + cgreen];
     outptr[RGB_BLUE] =  range_limit[y + cblue];
+=======
+    cred   = Crrtab[cr];
+    cgreen = (int) RIGHT_SHIFT(Cbgtab[cb] + Crgtab[cr], SCALEBITS);
+    cblue  = Cbbtab[cb];
+    y  = GETJSAMPLE(*inptr0);
+    outptr[RGB_RED]   = range_limit[y + cred];
+    outptr[RGB_GREEN] = range_limit[y + cgreen];
+    outptr[RGB_BLUE]  = range_limit[y + cblue];
+>>>>>>> upstream/master
   }
 }
 
@@ -314,6 +410,7 @@ h2v2_merged_upsample (j_decompress_ptr cinfo,
     /* Do the chroma part of the calculation */
     cb = GETJSAMPLE(*inptr1++);
     cr = GETJSAMPLE(*inptr2++);
+<<<<<<< HEAD
     cred = Crrtab[cr];
     cgreen = (int) RIGHT_SHIFT(Cbgtab[cb] + Crgtab[cr], SCALEBITS);
     cblue = Cbbtab[cb];
@@ -337,12 +434,38 @@ h2v2_merged_upsample (j_decompress_ptr cinfo,
     outptr1[RGB_RED] =   range_limit[y + cred];
     outptr1[RGB_GREEN] = range_limit[y + cgreen];
     outptr1[RGB_BLUE] =  range_limit[y + cblue];
+=======
+    cred   = Crrtab[cr];
+    cgreen = (int) RIGHT_SHIFT(Cbgtab[cb] + Crgtab[cr], SCALEBITS);
+    cblue  = Cbbtab[cb];
+    /* Fetch 4 Y values and emit 4 pixels */
+    y  = GETJSAMPLE(*inptr00++);
+    outptr0[RGB_RED]   = range_limit[y + cred];
+    outptr0[RGB_GREEN] = range_limit[y + cgreen];
+    outptr0[RGB_BLUE]  = range_limit[y + cblue];
+    outptr0 += RGB_PIXELSIZE;
+    y  = GETJSAMPLE(*inptr00++);
+    outptr0[RGB_RED]   = range_limit[y + cred];
+    outptr0[RGB_GREEN] = range_limit[y + cgreen];
+    outptr0[RGB_BLUE]  = range_limit[y + cblue];
+    outptr0 += RGB_PIXELSIZE;
+    y  = GETJSAMPLE(*inptr01++);
+    outptr1[RGB_RED]   = range_limit[y + cred];
+    outptr1[RGB_GREEN] = range_limit[y + cgreen];
+    outptr1[RGB_BLUE]  = range_limit[y + cblue];
+    outptr1 += RGB_PIXELSIZE;
+    y  = GETJSAMPLE(*inptr01++);
+    outptr1[RGB_RED]   = range_limit[y + cred];
+    outptr1[RGB_GREEN] = range_limit[y + cgreen];
+    outptr1[RGB_BLUE]  = range_limit[y + cblue];
+>>>>>>> upstream/master
     outptr1 += RGB_PIXELSIZE;
   }
   /* If image width is odd, do the last output column separately */
   if (cinfo->output_width & 1) {
     cb = GETJSAMPLE(*inptr1);
     cr = GETJSAMPLE(*inptr2);
+<<<<<<< HEAD
     cred = Crrtab[cr];
     cgreen = (int) RIGHT_SHIFT(Cbgtab[cb] + Crgtab[cr], SCALEBITS);
     cblue = Cbbtab[cb];
@@ -354,6 +477,19 @@ h2v2_merged_upsample (j_decompress_ptr cinfo,
     outptr1[RGB_RED] =   range_limit[y + cred];
     outptr1[RGB_GREEN] = range_limit[y + cgreen];
     outptr1[RGB_BLUE] =  range_limit[y + cblue];
+=======
+    cred   = Crrtab[cr];
+    cgreen = (int) RIGHT_SHIFT(Cbgtab[cb] + Crgtab[cr], SCALEBITS);
+    cblue  = Cbbtab[cb];
+    y  = GETJSAMPLE(*inptr00);
+    outptr0[RGB_RED]   = range_limit[y + cred];
+    outptr0[RGB_GREEN] = range_limit[y + cgreen];
+    outptr0[RGB_BLUE]  = range_limit[y + cblue];
+    y  = GETJSAMPLE(*inptr01);
+    outptr1[RGB_RED]   = range_limit[y + cred];
+    outptr1[RGB_GREEN] = range_limit[y + cgreen];
+    outptr1[RGB_BLUE]  = range_limit[y + cblue];
+>>>>>>> upstream/master
   }
 }
 
@@ -374,7 +510,11 @@ jinit_merged_upsampler (j_decompress_ptr cinfo)
   upsample = (my_upsample_ptr)
     (*cinfo->mem->alloc_small) ((j_common_ptr) cinfo, JPOOL_IMAGE,
 				SIZEOF(my_upsampler));
+<<<<<<< HEAD
   cinfo->upsample = (struct jpeg_upsampler *) upsample;
+=======
+  cinfo->upsample = &upsample->pub;
+>>>>>>> upstream/master
   upsample->pub.start_pass = start_pass_merged_upsample;
   upsample->pub.need_context_rows = FALSE;
 
@@ -394,7 +534,14 @@ jinit_merged_upsampler (j_decompress_ptr cinfo)
     upsample->spare_row = NULL;
   }
 
+<<<<<<< HEAD
   build_ycc_rgb_table(cinfo);
+=======
+  if (cinfo->jpeg_color_space == JCS_BG_YCC)
+    build_bg_ycc_rgb_table(cinfo);
+  else
+    build_ycc_rgb_table(cinfo);
+>>>>>>> upstream/master
 }
 
 #endif /* UPSAMPLE_MERGING_SUPPORTED */

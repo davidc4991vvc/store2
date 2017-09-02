@@ -15,6 +15,7 @@
 */
 
 #include "emu.h"
+<<<<<<< HEAD
 #include "sidvoice.h"
 #include "sidenvel.h"
 #include "sid.h"
@@ -36,6 +37,32 @@ static void MixerInit(int threeVoiceAmplify)
 {
 	long si;
 	UINT16 ui;
+=======
+#include "sid.h"
+
+#include "sidenvel.h"
+
+
+namespace {
+
+std::unique_ptr<float[]> filterTable;
+std::unique_ptr<float[]> bandPassParam;
+#define lowPassParam filterTable
+float filterResTable[16];
+
+#define maxLogicalVoices 4
+
+const int mix16monoMiddleIndex = 256*maxLogicalVoices/2;
+uint16_t mix16mono[256*maxLogicalVoices];
+
+uint16_t zero16bit=0;  /* either signed or unsigned */
+//uint32_t splitBufferLen;
+
+void MixerInit(int threeVoiceAmplify)
+{
+	long si;
+	uint16_t ui;
+>>>>>>> upstream/master
 	long ampDiv = maxLogicalVoices;
 
 	if (threeVoiceAmplify)
@@ -46,14 +73,21 @@ static void MixerInit(int threeVoiceAmplify)
 	/* Mixing formulas are optimized by sample input value. */
 
 	si = (-128*maxLogicalVoices) * 256;
+<<<<<<< HEAD
 	for (ui = 0; ui < sizeof(mix16mono)/sizeof(UINT16); ui++ )
 	{
 		mix16mono[ui] = (UINT16)(si/ampDiv) + zero16bit;
+=======
+	for (ui = 0; ui < sizeof(mix16mono)/sizeof(uint16_t); ui++ )
+	{
+		mix16mono[ui] = (uint16_t)(si/ampDiv) + zero16bit;
+>>>>>>> upstream/master
 		si+=256;
 	}
 
 }
 
+<<<<<<< HEAD
 
 INLINE void syncEm(SID6581_t *This)
 {
@@ -93,11 +127,55 @@ INLINE void syncEm(SID6581_t *This)
 		optr3.waveStep.l = 0;
 #else
 		This->optr3.waveStep = (This->optr3.waveStepPnt = 0);
+=======
+} // anonymous namespace
+
+
+inline void SID6581_t::syncEm()
+{
+	bool const sync1(optr1.modulator->cycleLenCount <= 0);
+	bool const sync2(optr2.modulator->cycleLenCount <= 0);
+	bool const sync3(optr3.modulator->cycleLenCount <= 0);
+
+	optr1.cycleLenCount--;
+	optr2.cycleLenCount--;
+	optr3.cycleLenCount--;
+
+	if (optr1.sync && sync1)
+	{
+		optr1.cycleLenCount = 0;
+		optr1.outProc = &sidOperator::wave_calc_normal;
+#if defined(DIRECT_FIXPOINT)
+		optr1.waveStep.l = 0;
+#else
+		optr1.waveStep = optr1.waveStepPnt = 0;
+#endif
+	}
+	if (optr2.sync && sync2)
+	{
+		optr2.cycleLenCount = 0;
+		optr2.outProc = &sidOperator::wave_calc_normal;
+#if defined(DIRECT_FIXPOINT)
+		optr2.waveStep.l = 0;
+#else
+		optr2.waveStep = optr2.waveStepPnt = 0;
+#endif
+	}
+	if (optr3.sync && sync3)
+	{
+		optr3.cycleLenCount = 0;
+		optr3.outProc = &sidOperator::wave_calc_normal;
+#if defined(DIRECT_FIXPOINT)
+		optr3.waveStep.l = 0;
+#else
+		optr3.waveStep = optr3.waveStepPnt = 0;
+>>>>>>> upstream/master
 #endif
 	}
 }
 
 
+<<<<<<< HEAD
 void sidEmuFillBuffer(SID6581_t *This, stream_sample_t *buffer, UINT32 bufferLen )
 {
 //void* fill16bitMono( SID6581_t *This, void* buffer, UINT32 numberOfSamples )
@@ -115,6 +193,25 @@ void sidEmuFillBuffer(SID6581_t *This, stream_sample_t *buffer, UINT32 bufferLen
 //                        +(*sampleEmuRout)()
 		)];
 		syncEm(This);
+=======
+void SID6581_t::fill_buffer(stream_sample_t *buffer, uint32_t bufferLen)
+{
+//void* SID6581_t::fill16bitMono(void* buffer, uint32_t numberOfSamples)
+
+	for ( ; bufferLen > 0; bufferLen-- )
+	{
+		*buffer++ = (int16_t) mix16mono[unsigned(mix16monoMiddleIndex
+								+(*optr1.outProc)(&optr1)
+								+(*optr2.outProc)(&optr2)
+								+(optr3.outProc(&optr3)&optr3_outputmask)
+/* hack for digi sounds
+   does n't seam to come from a tone operator
+   ghostbusters and goldrunner everything except volume zeroed */
+							+(masterVolume<<2)
+//                        +(*sampleEmuRout)()
+		)];
+		syncEm();
+>>>>>>> upstream/master
 	}
 }
 
@@ -123,6 +220,7 @@ void sidEmuFillBuffer(SID6581_t *This, stream_sample_t *buffer, UINT32 bufferLen
 
 /* Reset. */
 
+<<<<<<< HEAD
 int sidEmuReset(SID6581_t *This)
 {
 	sidClearOperator( &This->optr1 );
@@ -148,13 +246,44 @@ int sidEmuReset(SID6581_t *This)
 	sidEmuSet2( &This->optr3 );
 
 	return TRUE;
+=======
+bool SID6581_t::reset()
+{
+	optr1.clear();
+	enveEmuResetOperator( &optr1 );
+	optr2.clear();
+	enveEmuResetOperator( &optr2 );
+	optr3.clear();
+	enveEmuResetOperator( &optr3 );
+	optr3_outputmask = ~0;  /* on */
+
+	//sampleEmuReset();
+
+	filter.Type = filter.CurType = 0;
+	filter.Value = 0;
+	filter.Dy = filter.ResDy = 0;
+
+	optr1.set();
+	optr2.set();
+	optr3.set();
+
+	optr1.set2();
+	optr2.set2();
+	optr3.set2();
+
+	return true;
+>>>>>>> upstream/master
 }
 
 
 static void filterTableInit(running_machine &machine)
 {
 	int sample_rate = machine.sample_rate();
+<<<<<<< HEAD
 	UINT16 uk;
+=======
+	uint16_t uk;
+>>>>>>> upstream/master
 	/* Parameter calculation has not been moved to a separate function */
 	/* by purpose. */
 	const float filterRefFreq = 44100.0f;
@@ -168,8 +297,13 @@ static void filterTableInit(running_machine &machine)
 	float resDyMin;
 	float resDy;
 
+<<<<<<< HEAD
 	filterTable = auto_alloc_array(machine, float, 0x800);
 	bandPassParam = auto_alloc_array(machine, float, 0x800);
+=======
+	filterTable = std::make_unique<float[]>(0x800);
+	bandPassParam = std::make_unique<float[]>(0x800);
+>>>>>>> upstream/master
 
 	uk = 0;
 	for ( rk = 0; rk < 0x800; rk++ )
@@ -210,6 +344,7 @@ static void filterTableInit(running_machine &machine)
 	filterResTable[15] = resDyMax;
 }
 
+<<<<<<< HEAD
 void sid6581_init (SID6581_t *This)
 {
 	This->optr1.sid=This;
@@ -329,12 +464,138 @@ int sid6581_port_r (running_machine &machine, SID6581_t *This, int offset)
 {
 	int data;
 /* SIDPLAY reads last written at a sid address value */
+=======
+void SID6581_t::init()
+{
+	optr1.sid = this;
+	optr2.sid = this;
+	optr3.sid = this;
+
+	optr1.modulator = &optr3;
+	optr3.carrier = &optr1;
+	optr1.filtVoiceMask = 1;
+
+	optr2.modulator = &optr1;
+	optr1.carrier = &optr2;
+	optr2.filtVoiceMask = 2;
+
+	optr3.modulator = &optr2;
+	optr2.carrier = &optr3;
+	optr3.filtVoiceMask = 4;
+
+
+	PCMsid = uint32_t(PCMfreq * (16777216.0 / clock));
+	PCMsidNoise = uint32_t((clock * 256.0) / PCMfreq);
+
+	filter.Enabled = true;
+
+	sidInitMixerEngine(device->machine());
+	filterTableInit(device->machine());
+
+	sidInitWaveformTables(type);
+
+	enveEmuInit(PCMfreq, true);
+
+	MixerInit(0);
+
+	reset();
+}
+
+
+void SID6581_t::port_w(int offset, int data)
+{
+	offset &= 0x1f;
+	switch (offset)
+	{
+	case 0x19:
+	case 0x1a:
+	case 0x1b:
+	case 0x1c:
+	case 0x1d:
+	case 0x1e:
+	case 0x1f:
+		break;
+
+	case 0x15:
+	case 0x16:
+	case 0x17:
+	case 0x18:
+		mixer_channel->update();
+		reg[offset] = data;
+		masterVolume = reg[0x18] & 15;
+		masterVolumeAmplIndex = masterVolume << 8;
+
+		if ((reg[0x18] & 0x80) && !(reg[0x17] & optr3.filtVoiceMask))
+			optr3_outputmask = 0;     /* off */
+		else
+			optr3_outputmask = ~0;  /* on */
+
+		filter.Type = reg[0x18] & 0x70;
+		if (filter.Type != filter.CurType)
+		{
+			filter.CurType = filter.Type;
+			optr1.filtLow = optr1.filtRef = 0;
+			optr2.filtLow = optr2.filtRef = 0;
+			optr3.filtLow = optr3.filtRef = 0;
+		}
+		if (filter.Enabled )
+		{
+			filter.Value = 0x7ff & ((reg[0x15] & 7) | (uint16_t(reg[0x16]) << 3));
+			if (filter.Type == 0x20)
+				filter.Dy = bandPassParam ? bandPassParam[filter.Value] : 0.0f;
+			else
+				filter.Dy = lowPassParam ? lowPassParam[filter.Value] : 0.0f;
+			filter.ResDy = filterResTable[reg[0x17] >> 4] - filter.Dy;
+			if (filter.ResDy < 1.0f)
+				filter.ResDy = 1.0f;
+		}
+
+		optr1.set();
+		optr3.set();
+		optr2.set();
+
+		// relies on sidEmuSet also for other channels!
+		optr1.set2();
+		optr2.set2();
+		optr3.set2();
+		break;
+
+	default:
+		mixer_channel->update();
+		reg[offset] = data;
+
+		if (offset < 7)
+			optr1.reg[offset] = data;
+		else if (offset < 14)
+			optr2.reg[offset - 7] = data;
+		else if (offset < 21)
+			optr3.reg[offset - 14] = data;
+
+		optr1.set();
+		optr3.set();
+		optr2.set();
+
+		// relies on sidEmuSet also for other channels!
+		optr1.set2();
+		optr2.set2();
+		optr3.set2();
+		break;
+	}
+}
+
+
+int SID6581_t::port_r(running_machine &machine, int offset)
+{
+	/* SIDPLAY reads last written at a sid address value */
+	int data;
+>>>>>>> upstream/master
 	offset &= 0x1f;
 	switch (offset)
 	{
 	case 0x1d:
 	case 0x1e:
 	case 0x1f:
+<<<<<<< HEAD
 	data=0xff;
 	break;
 	case 0x1b:
@@ -347,6 +608,20 @@ int sid6581_port_r (running_machine &machine, SID6581_t *This, int offset)
 	break;
 	default:
 	data=This->reg[offset];
+=======
+		data = 0xff;
+		break;
+	case 0x1b:
+		mixer_channel->update();
+		data = optr3.output;
+		break;
+	case 0x1c:
+		mixer_channel->update();
+		data = optr3.enveVol;
+		break;
+	default:
+		data = reg[offset];
+>>>>>>> upstream/master
 	}
 	return data;
 }

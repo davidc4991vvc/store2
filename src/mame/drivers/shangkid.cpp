@@ -51,6 +51,7 @@ Games by Nihon Game/Culture Brain:
 */
 
 #include "emu.h"
+<<<<<<< HEAD
 #include "cpu/z80/z80.h"
 #include "sound/ay8910.h"
 #include "sound/dac.h"
@@ -83,20 +84,108 @@ WRITE8_MEMBER(shangkid_state::cpu_reset_w)
 WRITE8_MEMBER(shangkid_state::sound_enable_w)
 {
 	m_bbx_sound_enable = data;
+=======
+#include "includes/shangkid.h"
+
+#include "cpu/z80/z80.h"
+#include "machine/74259.h"
+#include "sound/ay8910.h"
+#include "sound/dac.h"
+#include "sound/volt_reg.h"
+#include "screen.h"
+#include "speaker.h"
+
+
+/***************************************************************************************/
+
+WRITE_LINE_MEMBER(shangkid_state::sound_enable_w)
+{
+	if (!state)
+		m_aysnd->reset();
+}
+
+WRITE_LINE_MEMBER(shangkid_state::int_enable_1_w)
+{
+	m_int_enable[0] = state;
+	if (!m_int_enable[0])
+		m_maincpu->set_input_line(0, CLEAR_LINE);
+}
+
+WRITE_LINE_MEMBER(shangkid_state::int_enable_2_w)
+{
+	m_int_enable[1] = state;
+	if (!m_int_enable[1])
+		m_bbx->set_input_line(0, CLEAR_LINE);
+}
+
+WRITE_LINE_MEMBER(shangkid_state::nmi_enable_1_w)
+{
+	m_nmi_enable[0] = state;
+	if (!m_int_enable[0])
+		m_maincpu->set_input_line(INPUT_LINE_NMI, CLEAR_LINE);
+}
+
+WRITE_LINE_MEMBER(shangkid_state::nmi_enable_2_w)
+{
+	m_nmi_enable[1] = state;
+	if (!m_nmi_enable[1])
+		m_bbx->set_input_line(INPUT_LINE_NMI, CLEAR_LINE);
+}
+
+WRITE_LINE_MEMBER(shangkid_state::irq_1_w)
+{
+	if (state && m_int_enable[0])
+		m_maincpu->set_input_line(0, ASSERT_LINE);
+}
+
+WRITE_LINE_MEMBER(shangkid_state::irq_2_w)
+{
+	if (state && m_int_enable[1])
+		m_bbx->set_input_line(0, ASSERT_LINE);
+}
+
+WRITE8_MEMBER(shangkid_state::nmiq_1_w)
+{
+	if (m_nmi_enable[0])
+		m_maincpu->set_input_line(INPUT_LINE_NMI, ASSERT_LINE);
+}
+
+WRITE8_MEMBER(shangkid_state::nmiq_2_w)
+{
+	if (m_nmi_enable[1])
+		m_bbx->set_input_line(INPUT_LINE_NMI, ASSERT_LINE);
+}
+
+WRITE_LINE_MEMBER(shangkid_state::coin_counter_1_w)
+{
+	machine().bookkeeping().coin_counter_w(0, state);
+}
+
+WRITE_LINE_MEMBER(shangkid_state::coin_counter_2_w)
+{
+	machine().bookkeeping().coin_counter_w(1, state);
+>>>>>>> upstream/master
 }
 
 WRITE8_MEMBER(shangkid_state::chinhero_ay8910_porta_w)
 {
+<<<<<<< HEAD
 	if( m_bbx_sound_enable )
 	{
 		if( data == 0x01 )
 			/* 0->1 transition triggers interrupt on Sound CPU */
 			m_audiocpu->set_input_line(0, HOLD_LINE );
 	}
+=======
+	if (BIT(data, 0))
+		/* 0->1 transition triggers interrupt on Sound CPU */
+		m_audiocpu->set_input_line(0, HOLD_LINE );
+>>>>>>> upstream/master
 }
 
 WRITE8_MEMBER(shangkid_state::shangkid_ay8910_porta_w)
 {
+<<<<<<< HEAD
 	if( m_bbx_sound_enable )
 	{
 		if( data == 0x01 )
@@ -105,6 +194,13 @@ WRITE8_MEMBER(shangkid_state::shangkid_ay8910_porta_w)
 	}
 	else
 		membank("bank2")->set_entry(data ? 0 : 1);
+=======
+	if (BIT(data, 0))
+		/* 0->1 transition triggers interrupt on Sound CPU */
+		m_audiocpu->set_input_line(0, HOLD_LINE );
+
+	membank("bank2")->set_entry((data & 0xfe) ? 0 : 1);
+>>>>>>> upstream/master
 }
 
 WRITE8_MEMBER(shangkid_state::ay8910_portb_w)
@@ -121,12 +217,26 @@ READ8_MEMBER(shangkid_state::soundlatch_r)
 
 /***************************************************************************************/
 
+<<<<<<< HEAD
+=======
+DRIVER_INIT_MEMBER(shangkid_state,dynamski)
+{
+	save_item(NAME(m_int_enable[0]));
+}
+
+>>>>>>> upstream/master
 DRIVER_INIT_MEMBER(shangkid_state,chinhero)
 {
 	m_gfx_type = 0;
 
+<<<<<<< HEAD
 	save_item(NAME(m_bbx_sound_enable));
 	save_item(NAME(m_sound_latch));
+=======
+	save_item(NAME(m_sound_latch));
+	save_item(NAME(m_int_enable));
+	save_item(NAME(m_nmi_enable));
+>>>>>>> upstream/master
 }
 
 DRIVER_INIT_MEMBER(shangkid_state,shangkid)
@@ -137,12 +247,19 @@ DRIVER_INIT_MEMBER(shangkid_state,shangkid)
 	membank("bank1")->configure_entries(0, 2, memregion("maincpu")->base() + 0x8000, 0x8000);
 	membank("bank2")->configure_entries(0, 2, memregion("audiocpu")->base() + 0x0000, 0x10000);
 
+<<<<<<< HEAD
 	save_item(NAME(m_bbx_sound_enable));
 	save_item(NAME(m_sound_latch));
+=======
+	save_item(NAME(m_sound_latch));
+	save_item(NAME(m_int_enable));
+	save_item(NAME(m_nmi_enable));
+>>>>>>> upstream/master
 }
 
 /***************************************************************************************/
 
+<<<<<<< HEAD
 MACHINE_RESET_MEMBER(shangkid_state,chinhero)
 {
 	m_bbx->set_input_line(INPUT_LINE_HALT, 1 );
@@ -153,6 +270,10 @@ MACHINE_RESET_MEMBER(shangkid_state,shangkid)
 	m_bbx->set_input_line(INPUT_LINE_HALT, 1 );
 
 	membank("bank1")->set_entry(0);
+=======
+MACHINE_RESET_MEMBER(shangkid_state,shangkid)
+{
+>>>>>>> upstream/master
 	membank("bank2")->set_entry(0);
 }
 
@@ -238,6 +359,7 @@ GFXDECODE_END
 
 static ADDRESS_MAP_START( chinhero_main_map, AS_PROGRAM, 8, shangkid_state )
 	AM_RANGE(0x0000, 0x9fff) AM_ROM
+<<<<<<< HEAD
 	AM_RANGE(0xa000, 0xa000) AM_WRITENOP /* ? */
 	AM_RANGE(0xb000, 0xb000) AM_WRITE(bbx_enable_w)
 	AM_RANGE(0xb001, 0xb001) AM_WRITE(sound_enable_w)
@@ -245,6 +367,11 @@ static ADDRESS_MAP_START( chinhero_main_map, AS_PROGRAM, 8, shangkid_state )
 	AM_RANGE(0xb003, 0xb003) AM_WRITENOP        /* BBX interrupt-related */
 	AM_RANGE(0xb004, 0xb004) AM_WRITE(cpu_reset_w)
 	AM_RANGE(0xb006, 0xb006) AM_WRITENOP        /* coin counter */
+=======
+	AM_RANGE(0xa000, 0xa000) AM_WRITE(nmiq_1_w)
+	AM_RANGE(0xa800, 0xa800) AM_WRITE(nmiq_2_w)
+	AM_RANGE(0xb000, 0xb007) AM_DEVWRITE("mainlatch", ls259_device, write_d0)
+>>>>>>> upstream/master
 	AM_RANGE(0xb800, 0xb800) AM_READ_PORT("DSW")
 	AM_RANGE(0xb801, 0xb801) AM_READ_PORT("SYSTEM")
 	AM_RANGE(0xb802, 0xb802) AM_READ_PORT("P2")
@@ -258,6 +385,7 @@ ADDRESS_MAP_END
 static ADDRESS_MAP_START( shangkid_main_map, AS_PROGRAM, 8, shangkid_state )
 	AM_RANGE(0x0000, 0x7fff) AM_ROM
 	AM_RANGE(0x8000, 0x9fff) AM_ROMBANK("bank1")
+<<<<<<< HEAD
 	AM_RANGE(0xa000, 0xa000) AM_WRITENOP /* ? */
 	AM_RANGE(0xb000, 0xb000) AM_WRITE(bbx_enable_w)
 	AM_RANGE(0xb001, 0xb001) AM_WRITE(sound_enable_w)
@@ -266,6 +394,11 @@ static ADDRESS_MAP_START( shangkid_main_map, AS_PROGRAM, 8, shangkid_state )
 	AM_RANGE(0xb004, 0xb004) AM_WRITE(cpu_reset_w)
 	AM_RANGE(0xb006, 0xb006) AM_WRITENOP        /* coin counter */
 	AM_RANGE(0xb007, 0xb007) AM_WRITE(maincpu_bank_w)
+=======
+	AM_RANGE(0xa000, 0xa000) AM_WRITE(nmiq_1_w)
+	AM_RANGE(0xa800, 0xa800) AM_WRITE(nmiq_2_w)
+	AM_RANGE(0xb000, 0xb007) AM_DEVWRITE("mainlatch", ls259_device, write_d0)
+>>>>>>> upstream/master
 	AM_RANGE(0xb800, 0xb800) AM_READ_PORT("DSW")
 	AM_RANGE(0xb801, 0xb801) AM_READ_PORT("SYSTEM")
 	AM_RANGE(0xb802, 0xb802) AM_READ_PORT("P2")
@@ -280,6 +413,7 @@ ADDRESS_MAP_END
 
 static ADDRESS_MAP_START( chinhero_bbx_map, AS_PROGRAM, 8, shangkid_state )
 	AM_RANGE(0x0000, 0x9fff) AM_ROM
+<<<<<<< HEAD
 	AM_RANGE(0xa000, 0xa000) AM_WRITENOP /* ? */
 	AM_RANGE(0xb000, 0xb000) AM_WRITE(bbx_enable_w)
 	AM_RANGE(0xb001, 0xb001) AM_WRITE(sound_enable_w)
@@ -287,6 +421,11 @@ static ADDRESS_MAP_START( chinhero_bbx_map, AS_PROGRAM, 8, shangkid_state )
 	AM_RANGE(0xb003, 0xb003) AM_WRITENOP        /* BBX interrupt-related */
 	AM_RANGE(0xb004, 0xb004) AM_WRITE(cpu_reset_w)
 	AM_RANGE(0xb006, 0xb006) AM_WRITENOP        /* coin counter */
+=======
+	AM_RANGE(0xa000, 0xa000) AM_WRITE(nmiq_1_w)
+	AM_RANGE(0xa800, 0xa800) AM_WRITE(nmiq_2_w)
+	AM_RANGE(0xb000, 0xb007) AM_DEVWRITE("mainlatch", ls259_device, write_d0)
+>>>>>>> upstream/master
 	AM_RANGE(0xb800, 0xb800) AM_READ_PORT("DSW")
 	AM_RANGE(0xb801, 0xb801) AM_READ_PORT("SYSTEM")
 	AM_RANGE(0xb802, 0xb802) AM_READ_PORT("P2")
@@ -298,6 +437,7 @@ ADDRESS_MAP_END
 
 static ADDRESS_MAP_START( shangkid_bbx_map, AS_PROGRAM, 8, shangkid_state )
 	AM_RANGE(0x0000, 0x9fff) AM_ROM
+<<<<<<< HEAD
 	AM_RANGE(0xa000, 0xa000) AM_WRITENOP /* ? */
 	AM_RANGE(0xb000, 0xb000) AM_WRITE(bbx_enable_w)
 	AM_RANGE(0xb001, 0xb001) AM_WRITE(sound_enable_w)
@@ -306,6 +446,11 @@ static ADDRESS_MAP_START( shangkid_bbx_map, AS_PROGRAM, 8, shangkid_state )
 	AM_RANGE(0xb004, 0xb004) AM_WRITE(cpu_reset_w)
 	AM_RANGE(0xb006, 0xb006) AM_WRITENOP        /* coin counter */
 	AM_RANGE(0xb007, 0xb007) AM_WRITE(maincpu_bank_w)
+=======
+	AM_RANGE(0xa000, 0xa000) AM_WRITE(nmiq_1_w)
+	AM_RANGE(0xa800, 0xa800) AM_WRITE(nmiq_2_w)
+	AM_RANGE(0xb000, 0xb007) AM_DEVWRITE("mainlatch", ls259_device, write_d0)
+>>>>>>> upstream/master
 	AM_RANGE(0xb800, 0xb800) AM_READ_PORT("DSW")
 	AM_RANGE(0xb801, 0xb801) AM_READ_PORT("SYSTEM")
 	AM_RANGE(0xb802, 0xb802) AM_READ_PORT("P2")
@@ -329,38 +474,73 @@ ADDRESS_MAP_END
 
 static ADDRESS_MAP_START( chinhero_sound_map, AS_PROGRAM, 8, shangkid_state )
 	AM_RANGE(0x0000, 0xdfff) AM_ROM
+<<<<<<< HEAD
 	AM_RANGE(0xe000, 0xefff) AM_RAM
+=======
+	AM_RANGE(0xe000, 0xe7ff) AM_RAM AM_MIRROR(0x0800)
+>>>>>>> upstream/master
 ADDRESS_MAP_END
 
 static ADDRESS_MAP_START( shangkid_sound_map, AS_PROGRAM, 8, shangkid_state )
 	AM_RANGE(0x0000, 0xdfff) AM_ROMBANK("bank2") /* sample player writes to ROM area */
+<<<<<<< HEAD
 	AM_RANGE(0xe000, 0xefff) AM_RAM
+=======
+	AM_RANGE(0xe000, 0xe7ff) AM_RAM AM_MIRROR(0x0800)
+>>>>>>> upstream/master
 ADDRESS_MAP_END
 
 static ADDRESS_MAP_START( sound_portmap, AS_IO, 8, shangkid_state )
 	ADDRESS_MAP_GLOBAL_MASK(0xff)
+<<<<<<< HEAD
 	AM_RANGE(0x00, 0x00) AM_READ(soundlatch_r) AM_DEVWRITE("dac", dac_device, write_unsigned8)
+=======
+	AM_RANGE(0x00, 0x00) AM_READ(soundlatch_r) AM_DEVWRITE("dac", dac_byte_interface, write)
+>>>>>>> upstream/master
 ADDRESS_MAP_END
 
 /***************************************************************************************/
 
+<<<<<<< HEAD
 static MACHINE_CONFIG_START( chinhero, shangkid_state )
+=======
+static MACHINE_CONFIG_START( chinhero )
+>>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", Z80, XTAL_18_432MHz/6) /* verified on pcb */
 	MCFG_CPU_PROGRAM_MAP(chinhero_main_map)
+<<<<<<< HEAD
 	MCFG_CPU_VBLANK_INT_DRIVER("screen", shangkid_state,  irq0_line_hold)
+=======
+>>>>>>> upstream/master
 
 	MCFG_CPU_ADD("bbx", Z80, XTAL_18_432MHz/6) /* verified on pcb */
 	MCFG_CPU_PROGRAM_MAP(chinhero_bbx_map)
 	MCFG_CPU_IO_MAP(chinhero_bbx_portmap)
+<<<<<<< HEAD
 	MCFG_CPU_VBLANK_INT_DRIVER("screen", shangkid_state,  irq0_line_hold)
+=======
+>>>>>>> upstream/master
 
 	MCFG_CPU_ADD("audiocpu", Z80, XTAL_18_432MHz/6) /* verified on pcb */
 	MCFG_CPU_PROGRAM_MAP(chinhero_sound_map)
 	MCFG_CPU_IO_MAP(sound_portmap)
 
+<<<<<<< HEAD
 	MCFG_MACHINE_RESET_OVERRIDE(shangkid_state,chinhero)
+=======
+	MCFG_DEVICE_ADD("mainlatch", LS259, 0)
+	MCFG_ADDRESSABLE_LATCH_Q0_OUT_CB(INPUTLINE("bbx", INPUT_LINE_RESET)) MCFG_DEVCB_INVERT // RESET2
+	MCFG_ADDRESSABLE_LATCH_Q1_OUT_CB(INPUTLINE("audiocpu", INPUT_LINE_RESET)) MCFG_DEVCB_INVERT // RESET3
+	MCFG_DEVCB_CHAIN_OUTPUT(WRITELINE(shangkid_state, sound_enable_w))
+	MCFG_ADDRESSABLE_LATCH_Q2_OUT_CB(WRITELINE(shangkid_state, int_enable_1_w)) // INTE1
+	MCFG_ADDRESSABLE_LATCH_Q3_OUT_CB(WRITELINE(shangkid_state, int_enable_2_w)) // INTE2
+	MCFG_ADDRESSABLE_LATCH_Q4_OUT_CB(WRITELINE(shangkid_state, nmi_enable_1_w)) // NMIE1
+	MCFG_ADDRESSABLE_LATCH_Q5_OUT_CB(WRITELINE(shangkid_state, nmi_enable_2_w)) // NMIE2
+	MCFG_ADDRESSABLE_LATCH_Q6_OUT_CB(WRITELINE(shangkid_state, coin_counter_1_w))
+	MCFG_ADDRESSABLE_LATCH_Q7_OUT_CB(WRITELINE(shangkid_state, coin_counter_2_w))
+>>>>>>> upstream/master
 
 	MCFG_QUANTUM_TIME(attotime::from_hz(600))
 
@@ -372,6 +552,7 @@ static MACHINE_CONFIG_START( chinhero, shangkid_state )
 	MCFG_SCREEN_VISIBLE_AREA(16, 319-16, 0, 223)
 	MCFG_SCREEN_UPDATE_DRIVER(shangkid_state, screen_update_shangkid)
 	MCFG_SCREEN_PALETTE("palette")
+<<<<<<< HEAD
 
 	MCFG_GFXDECODE_ADD("gfxdecode", "palette", chinhero)
 	MCFG_PALETTE_ADD_RRRRGGGGBBBB_PROMS("palette", 256)
@@ -382,11 +563,30 @@ static MACHINE_CONFIG_START( chinhero, shangkid_state )
 
 	MCFG_DAC_ADD("dac")
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 0.50)
+=======
+	MCFG_SCREEN_VBLANK_CALLBACK(WRITELINE(shangkid_state, irq_1_w))
+	MCFG_DEVCB_CHAIN_OUTPUT(WRITELINE(shangkid_state, irq_2_w))
+
+	MCFG_GFXDECODE_ADD("gfxdecode", "palette", chinhero)
+	MCFG_PALETTE_ADD_RRRRGGGGBBBB_PROMS("palette", "proms", 256)
+	MCFG_VIDEO_START_OVERRIDE(shangkid_state,shangkid)
+
+	/* sound hardware */
+	MCFG_SPEAKER_STANDARD_MONO("speaker")
+
+	MCFG_SOUND_ADD("dac", DAC_8BIT_R2R, 0) MCFG_SOUND_ROUTE(ALL_OUTPUTS, "speaker", 0.25) // unknown DAC
+	MCFG_DEVICE_ADD("vref", VOLTAGE_REGULATOR, 0) MCFG_VOLTAGE_REGULATOR_OUTPUT(5.0)
+	MCFG_SOUND_ROUTE_EX(0, "dac", 1.0, DAC_VREF_POS_INPUT) MCFG_SOUND_ROUTE_EX(0, "dac", -1.0, DAC_VREF_NEG_INPUT)
+>>>>>>> upstream/master
 
 	MCFG_SOUND_ADD("aysnd", AY8910, XTAL_18_432MHz/12) /* verified on pcb */
 	MCFG_AY8910_PORT_A_WRITE_CB(WRITE8(shangkid_state, chinhero_ay8910_porta_w))
 	MCFG_AY8910_PORT_B_WRITE_CB(WRITE8(shangkid_state, ay8910_portb_w))
+<<<<<<< HEAD
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 0.10)
+=======
+	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "speaker", 0.1)
+>>>>>>> upstream/master
 MACHINE_CONFIG_END
 
 
@@ -403,6 +603,14 @@ static MACHINE_CONFIG_DERIVED( shangkid, chinhero )
 	MCFG_CPU_MODIFY("audiocpu")
 	MCFG_CPU_PROGRAM_MAP(shangkid_sound_map)
 
+<<<<<<< HEAD
+=======
+	MCFG_DEVICE_MODIFY("mainlatch")
+	// Q1 should *not* reset the AY-3-8910 here, or else banking writes will be lost!
+	MCFG_ADDRESSABLE_LATCH_Q1_OUT_CB(INPUTLINE("audiocpu", INPUT_LINE_RESET)) MCFG_DEVCB_INVERT
+	MCFG_ADDRESSABLE_LATCH_Q7_OUT_CB(MEMBANK("bank1"))
+
+>>>>>>> upstream/master
 	MCFG_MACHINE_RESET_OVERRIDE(shangkid_state,shangkid)
 
 	/* video hardware */
@@ -421,8 +629,12 @@ static ADDRESS_MAP_START( dynamski_map, AS_PROGRAM, 8, shangkid_state )
 	AM_RANGE(0xc800, 0xcbff) AM_RAM
 	AM_RANGE(0xd000, 0xd3ff) AM_RAM
 	AM_RANGE(0xd800, 0xdbff) AM_RAM
+<<<<<<< HEAD
 	AM_RANGE(0xe000, 0xe000) AM_WRITENOP /* IRQ disable */
 	AM_RANGE(0xe001, 0xe002) AM_RAM /* screen flip */
+=======
+	AM_RANGE(0xe000, 0xe007) AM_DEVWRITE("mainlatch", ls259_device, write_d0)
+>>>>>>> upstream/master
 	AM_RANGE(0xe800, 0xe800) AM_READ_PORT("SYSTEM")
 	AM_RANGE(0xe801, 0xe801) AM_READ_PORT("P1")
 	AM_RANGE(0xe802, 0xe802) AM_READ_PORT("P2")
@@ -436,13 +648,25 @@ static ADDRESS_MAP_START( dynamski_portmap, AS_IO, 8, shangkid_state )
 	AM_RANGE(0x00, 0x01) AM_DEVWRITE("aysnd", ay8910_device, data_address_w)
 ADDRESS_MAP_END
 
+<<<<<<< HEAD
 static MACHINE_CONFIG_START( dynamski, shangkid_state )
+=======
+static MACHINE_CONFIG_START( dynamski )
+>>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", Z80, 3000000) /* ? */
 	MCFG_CPU_PROGRAM_MAP(dynamski_map)
 	MCFG_CPU_IO_MAP(dynamski_portmap)
+<<<<<<< HEAD
 	MCFG_CPU_VBLANK_INT_DRIVER("screen", shangkid_state,  irq0_line_hold)
+=======
+
+	MCFG_DEVICE_ADD("mainlatch", LS259, 0)
+	MCFG_ADDRESSABLE_LATCH_Q0_OUT_CB(WRITELINE(shangkid_state, int_enable_1_w))
+	MCFG_ADDRESSABLE_LATCH_Q1_OUT_CB(NOOP) // screen flip?
+	MCFG_ADDRESSABLE_LATCH_Q2_OUT_CB(NOOP) // screen flip?
+>>>>>>> upstream/master
 
 	/* video hardware */
 	MCFG_SCREEN_ADD("screen", RASTER)
@@ -452,6 +676,10 @@ static MACHINE_CONFIG_START( dynamski, shangkid_state )
 	MCFG_SCREEN_VISIBLE_AREA(0, 255+32, 16, 255-16)
 	MCFG_SCREEN_UPDATE_DRIVER(shangkid_state, screen_update_dynamski)
 	MCFG_SCREEN_PALETTE("palette")
+<<<<<<< HEAD
+=======
+	MCFG_SCREEN_VBLANK_CALLBACK(WRITELINE(shangkid_state, irq_1_w))
+>>>>>>> upstream/master
 
 	MCFG_GFXDECODE_ADD("gfxdecode", "palette", dynamski)
 	MCFG_PALETTE_ADD("palette", 16*4+16*4)
@@ -459,10 +687,17 @@ static MACHINE_CONFIG_START( dynamski, shangkid_state )
 	MCFG_PALETTE_INIT_OWNER(shangkid_state,dynamski)
 
 	/* sound hardware */
+<<<<<<< HEAD
 	MCFG_SPEAKER_STANDARD_MONO("mono")
 
 	MCFG_SOUND_ADD("aysnd", AY8910, 2000000)
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 0.10)
+=======
+	MCFG_SPEAKER_STANDARD_MONO("speaker")
+
+	MCFG_SOUND_ADD("aysnd", AY8910, 2000000)
+	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "speaker", 0.1)
+>>>>>>> upstream/master
 MACHINE_CONFIG_END
 
 /***************************************************************************************/
@@ -589,9 +824,16 @@ static INPUT_PORTS_START( shangkid )
 	PORT_BIT( 0x40, IP_ACTIVE_HIGH, IPT_UNUSED )
 	PORT_BIT( 0x80, IP_ACTIVE_LOW, IPT_UNUSED ) /* busy flag? */
 
+<<<<<<< HEAD
 	PORT_START("P1")
 	PORT_BIT( 0x01, IP_ACTIVE_HIGH, IPT_BUTTON1 ) /* kick */
 	PORT_BIT( 0x02, IP_ACTIVE_HIGH, IPT_BUTTON2 ) /* punch */
+=======
+	// button order is trusted from practice layout and service mode
+	PORT_START("P1")
+	PORT_BIT( 0x01, IP_ACTIVE_HIGH, IPT_BUTTON2 ) PORT_PLAYER(1) PORT_NAME("P1 Kick")
+	PORT_BIT( 0x02, IP_ACTIVE_HIGH, IPT_BUTTON1 ) PORT_PLAYER(1) PORT_NAME("P1 Punch")
+>>>>>>> upstream/master
 	PORT_BIT( 0x04, IP_ACTIVE_HIGH, IPT_UNUSED )
 	PORT_BIT( 0x08, IP_ACTIVE_HIGH, IPT_UNUSED )
 	PORT_BIT( 0x10, IP_ACTIVE_HIGH, IPT_JOYSTICK_LEFT )
@@ -600,8 +842,13 @@ static INPUT_PORTS_START( shangkid )
 	PORT_BIT( 0x80, IP_ACTIVE_HIGH, IPT_JOYSTICK_DOWN )
 
 	PORT_START("P2")
+<<<<<<< HEAD
 	PORT_BIT( 0x01, IP_ACTIVE_HIGH, IPT_BUTTON1 ) PORT_PLAYER(2) /* kick */
 	PORT_BIT( 0x02, IP_ACTIVE_HIGH, IPT_BUTTON2 ) PORT_PLAYER(2) /* punch */
+=======
+	PORT_BIT( 0x01, IP_ACTIVE_HIGH, IPT_BUTTON2 ) PORT_PLAYER(2) PORT_NAME("P2 Kick")
+	PORT_BIT( 0x02, IP_ACTIVE_HIGH, IPT_BUTTON1 ) PORT_PLAYER(2) PORT_NAME("P2 Punch")
+>>>>>>> upstream/master
 	PORT_BIT( 0x04, IP_ACTIVE_HIGH, IPT_UNUSED )
 	PORT_BIT( 0x08, IP_ACTIVE_HIGH, IPT_UNUSED )
 	PORT_BIT( 0x10, IP_ACTIVE_HIGH, IPT_JOYSTICK_LEFT ) PORT_PLAYER(2)
@@ -614,6 +861,7 @@ static INPUT_PORTS_START( shangkid )
 	**  RV1 - Music
 	**  RV2 - Sound Effects
 	*/
+<<<<<<< HEAD
 	PORT_DIPNAME( 0x01, 0x00, DEF_STR( Unknown ) )
 	PORT_DIPSETTING(    0x01, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
@@ -625,14 +873,34 @@ static INPUT_PORTS_START( shangkid )
 	PORT_DIPSETTING(    0x0c, DEF_STR( 3C_1C ) )
 	PORT_DIPSETTING(    0x08, DEF_STR( 2C_1C ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( Unknown ) ) /* 1C_1C; no coin counter */
+=======
+	PORT_DIPNAME( 0x01, 0x00, DEF_STR( Unknown ) ) PORT_DIPLOCATION("SW1:1")
+	PORT_DIPSETTING(    0x01, DEF_STR( Off ) )
+	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
+	PORT_DIPNAME( 0x02, 0x02, DEF_STR( Cabinet ) ) PORT_DIPLOCATION("SW1:2")
+	PORT_DIPSETTING(    0x02, DEF_STR( Upright ) )
+	PORT_DIPSETTING(    0x00, DEF_STR( Cocktail ) )
+	PORT_DIPNAME( 0x1c, 0x04, DEF_STR( Coinage ) ) PORT_DIPLOCATION("SW1:3,4,5")
+	PORT_DIPSETTING(    0x10, DEF_STR( 4C_1C ) )
+	PORT_DIPSETTING(    0x0c, DEF_STR( 3C_1C ) )
+	PORT_DIPSETTING(    0x08, DEF_STR( 2C_1C ) )
+	PORT_DIPSETTING(    0x00, "1 Coin/1 Credit without coin counter" )
+>>>>>>> upstream/master
 	PORT_DIPSETTING(    0x04, DEF_STR( 1C_1C ) )
 	PORT_DIPSETTING(    0x14, DEF_STR( 1C_2C ) )
 	PORT_DIPSETTING(    0x18, DEF_STR( 1C_3C ) )
 	PORT_DIPSETTING(    0x1c, DEF_STR( 1C_5C ) )
+<<<<<<< HEAD
 	PORT_DIPNAME( 0x20, 0x00, DEF_STR( Demo_Sounds ) )
 	PORT_DIPSETTING(    0x20, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
 	PORT_DIPNAME( 0xc0, 0x00, DEF_STR( Difficulty ) )
+=======
+	PORT_DIPNAME( 0x20, 0x00, DEF_STR( Demo_Sounds ) ) PORT_DIPLOCATION("SW1:6")
+	PORT_DIPSETTING(    0x20, DEF_STR( Off ) )
+	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
+	PORT_DIPNAME( 0xc0, 0x00, DEF_STR( Difficulty ) ) PORT_DIPLOCATION("SW1:7,8")
+>>>>>>> upstream/master
 	PORT_DIPSETTING(    0x00, DEF_STR( Easy ) )
 	PORT_DIPSETTING(    0x40, DEF_STR( Medium ) )
 	PORT_DIPSETTING(    0x80, DEF_STR( Hard ) )
@@ -1003,6 +1271,7 @@ ROM_START( dynamski )
 ROM_END
 
 
+<<<<<<< HEAD
 GAME( 1984, dynamski, 0,        dynamski, dynamski, driver_device, 0,        ROT90, "Taiyo", "Dynamic Ski", MACHINE_NO_COCKTAIL | MACHINE_SUPPORTS_SAVE )
 GAME( 1984, chinhero, 0,        chinhero, chinhero, shangkid_state, chinhero, ROT90, "Taiyo", "Chinese Hero", MACHINE_SUPPORTS_SAVE ) // by Nihon Game?
 GAME( 1984, chinhero2,chinhero, chinhero, chinhero, shangkid_state, chinhero, ROT90, "Taiyo", "Chinese Hero (older, set 1)", MACHINE_SUPPORTS_SAVE )
@@ -1010,3 +1279,12 @@ GAME( 1984, chinhero3,chinhero, chinhero, chinhero, shangkid_state, chinhero, RO
 GAME( 1984, chinherot,chinhero, chinhero, chinhero, shangkid_state, chinhero, ROT90, "Taiyo (Taito license)", "Chinese Heroe (Taito)", MACHINE_SUPPORTS_SAVE )
 GAME( 1985, shangkid, 0,        shangkid, shangkid, shangkid_state, shangkid, ROT0,  "Taiyo (Data East license)", "Shanghai Kid", MACHINE_NO_COCKTAIL | MACHINE_SUPPORTS_SAVE )
 GAME( 1985, hiryuken, shangkid, shangkid, shangkid, shangkid_state, shangkid, ROT0,  "Taiyo (Taito license)", "Hokuha Syourin Hiryu no Ken", MACHINE_NO_COCKTAIL | MACHINE_SUPPORTS_SAVE )
+=======
+GAME( 1984, dynamski,  0,        dynamski, dynamski, shangkid_state, dynamski, ROT90, "Taiyo",                     "Dynamic Ski",                 MACHINE_NO_COCKTAIL | MACHINE_SUPPORTS_SAVE )
+GAME( 1984, chinhero,  0,        chinhero, chinhero, shangkid_state, chinhero, ROT90, "Taiyo",                     "Chinese Hero",                MACHINE_SUPPORTS_SAVE ) // by Nihon Game?
+GAME( 1984, chinhero2, chinhero, chinhero, chinhero, shangkid_state, chinhero, ROT90, "Taiyo",                     "Chinese Hero (older, set 1)", MACHINE_SUPPORTS_SAVE )
+GAME( 1984, chinhero3, chinhero, chinhero, chinhero, shangkid_state, chinhero, ROT90, "Taiyo",                     "Chinese Hero (older, set 2)", MACHINE_SUPPORTS_SAVE )
+GAME( 1984, chinherot, chinhero, chinhero, chinhero, shangkid_state, chinhero, ROT90, "Taiyo (Taito license)",     "Chinese Heroe (Taito)",       MACHINE_SUPPORTS_SAVE )
+GAME( 1985, shangkid,  0,        shangkid, shangkid, shangkid_state, shangkid, ROT0,  "Taiyo (Data East license)", "Shanghai Kid",                MACHINE_NO_COCKTAIL | MACHINE_SUPPORTS_SAVE )
+GAME( 1985, hiryuken,  shangkid, shangkid, shangkid, shangkid_state, shangkid, ROT0,  "Taiyo (Taito license)",     "Hokuha Syourin Hiryu no Ken", MACHINE_NO_COCKTAIL | MACHINE_SUPPORTS_SAVE )
+>>>>>>> upstream/master

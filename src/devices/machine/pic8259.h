@@ -24,8 +24,13 @@
 
 ***************************************************************************/
 
+<<<<<<< HEAD
 #ifndef __PIC8259_H__
 #define __PIC8259_H__
+=======
+#ifndef MAME_MACHINE_PIC8259_H
+#define MAME_MACHINE_PIC8259_H
+>>>>>>> upstream/master
 
 
 /***************************************************************************
@@ -42,6 +47,7 @@
 class pic8259_device : public device_t
 {
 public:
+<<<<<<< HEAD
 	pic8259_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
 
 	template<class _Object> static devcb_base &static_set_out_int_callback(device_t &device, _Object object) { return downcast<pic8259_device &>(device).m_out_int_func.set_callback(object); }
@@ -51,6 +57,17 @@ public:
 	DECLARE_READ8_MEMBER( read );
 	DECLARE_WRITE8_MEMBER( write );
 	UINT32 acknowledge();
+=======
+	pic8259_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
+
+	template <class Object> static devcb_base &static_set_out_int_callback(device_t &device, Object &&cb) { return downcast<pic8259_device &>(device).m_out_int_func.set_callback(std::forward<Object>(cb)); }
+	template <class Object> static devcb_base &static_set_sp_en_callback(device_t &device, Object &&cb) { return downcast<pic8259_device &>(device).m_sp_en_func.set_callback(std::forward<Object>(cb)); }
+	template <class Object> static devcb_base &static_set_read_slave_ack_callback(device_t &device, Object &&cb) { return downcast<pic8259_device &>(device).m_read_slave_ack_func.set_callback(std::forward<Object>(cb)); }
+
+	DECLARE_READ8_MEMBER( read );
+	DECLARE_WRITE8_MEMBER( write );
+	uint32_t acknowledge();
+>>>>>>> upstream/master
 
 	DECLARE_WRITE_LINE_MEMBER( ir0_w ) { set_irq_line(0, state); }
 	DECLARE_WRITE_LINE_MEMBER( ir1_w ) { set_irq_line(1, state); }
@@ -63,6 +80,7 @@ public:
 
 	IRQ_CALLBACK_MEMBER(inta_cb);
 
+<<<<<<< HEAD
 	// used by m92.c until we can figure out how to hook it up in a way that doesn't break nbbatman (probably need correct IRQ timing / clears for the sprites IRQs
 	int HACK_get_base_vector() { return m_base;  }
 
@@ -74,11 +92,22 @@ protected:
 
 private:
 	static const device_timer_id TIMER_CHECK_IRQ = 0;
+=======
+protected:
+	// device-level overrides
+	virtual void device_start() override;
+	virtual void device_reset() override;
+	virtual void device_timer(emu_timer &timer, device_timer_id id, int param, void *ptr) override;
+
+private:
+	static constexpr device_timer_id TIMER_CHECK_IRQ = 0;
+>>>>>>> upstream/master
 
 	inline void set_timer() { timer_set(attotime::zero, TIMER_CHECK_IRQ); }
 	void set_irq_line(int irq, int state);
 
 
+<<<<<<< HEAD
 	enum pic8259_state_t
 	{
 		STATE_ICW1,
@@ -86,12 +115,22 @@ private:
 		STATE_ICW3,
 		STATE_ICW4,
 		STATE_READY
+=======
+	enum class state_t : u8
+	{
+		ICW1,
+		ICW2,
+		ICW3,
+		ICW4,
+		READY
+>>>>>>> upstream/master
 	};
 
 	devcb_write_line m_out_int_func;
 	devcb_read_line m_sp_en_func;
 	devcb_read8 m_read_slave_ack_func;
 
+<<<<<<< HEAD
 	pic8259_state_t m_state;
 
 	UINT8 m_isr;
@@ -127,3 +166,40 @@ private:
 extern const device_type PIC8259;
 
 #endif /* __PIC8259_H__ */
+=======
+	state_t m_state;
+
+	uint8_t m_isr;
+	uint8_t m_irr;
+	uint8_t m_prio;
+	uint8_t m_imr;
+	uint8_t m_irq_lines;
+
+	uint8_t m_input;
+	uint8_t m_ocw3;
+
+	uint8_t m_master;
+	/* ICW1 state */
+	uint8_t m_level_trig_mode;
+	uint8_t m_vector_size;
+	uint8_t m_cascade;
+	uint8_t m_icw4_needed;
+	uint32_t m_vector_addr_low;
+	/* ICW2 state */
+	uint8_t m_base;
+	uint8_t m_vector_addr_high;
+
+	/* ICW3 state */
+	uint8_t m_slave;
+
+	/* ICW4 state */
+	uint8_t m_nested;
+	uint8_t m_mode;
+	uint8_t m_auto_eoi;
+	uint8_t m_is_x86;
+};
+
+DECLARE_DEVICE_TYPE(PIC8259, pic8259_device)
+
+#endif // MAME_MACHINE_PIC8259_H
+>>>>>>> upstream/master

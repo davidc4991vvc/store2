@@ -97,7 +97,11 @@ WRITE8_MEMBER(vectrex_state::vectrex_via_w)
 			m_refresh->adjust(period, 0, period);
 		else
 			m_refresh->adjust(
+<<<<<<< HEAD
 									min(period, m_refresh->remaining()),
+=======
+									std::min(period, m_refresh->remaining()),
+>>>>>>> upstream/master
 									0,
 									period);
 		break;
@@ -121,7 +125,11 @@ TIMER_CALLBACK_MEMBER(vectrex_state::vectrex_refresh)
 }
 
 
+<<<<<<< HEAD
 UINT32 vectrex_state::screen_update_vectrex(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect)
+=======
+uint32_t vectrex_state::screen_update_vectrex(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect)
+>>>>>>> upstream/master
 {
 	int i;
 
@@ -223,7 +231,11 @@ TIMER_CALLBACK_MEMBER(vectrex_state::update_signal)
 	m_vector_start_time = machine().time();
 
 	if (ptr)
+<<<<<<< HEAD
 		* (UINT8 *) ptr = param;
+=======
+		* (uint8_t *) ptr = param;
+>>>>>>> upstream/master
 }
 
 
@@ -265,7 +277,11 @@ void vectrex_state::vectrex_multiplexer(int mux)
 	timer_set(attotime::from_nsec(ANALOG_DELAY), TIMER_UPDATE_SIGNAL, m_via_out[PORTA], &m_analog[mux]);
 
 	if (mux == A_AUDIO)
+<<<<<<< HEAD
 		m_dac->write_unsigned8(m_via_out[PORTA]);
+=======
+		m_dac->write(m_via_out[PORTA] ^ 0x80); // not gate shown on schematic
+>>>>>>> upstream/master
 }
 
 

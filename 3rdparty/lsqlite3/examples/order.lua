@@ -1,5 +1,9 @@
 
+<<<<<<< HEAD
 require("lsqlite3")
+=======
+local sqlite3 = require("lsqlite3")
+>>>>>>> upstream/master
 
 local db = assert( sqlite3:open_memory() )
 

@@ -1,7 +1,12 @@
 // license:BSD-3-Clause
 // copyright-holders:hap, Mariusz Wojcieszek
 /* Brazilian bootleg board from 1989. Forte II Games, Industria Brasileira.
+<<<<<<< HEAD
 MAME driver by Mariusz Wojcieszek & hap, based on information from Alexandre.
+=======
+MAME driver by Mariusz Wojcieszek & hap, based on
+information from Alexandre Souza (a.k.a. "Tabajara").
+>>>>>>> upstream/master
 
 Hardware is based on MSX1, excluding i8255 PPI:
  64KB RAM, largely unused
@@ -12,12 +17,34 @@ Hardware is based on MSX1, excluding i8255 PPI:
  (no dipswitches)
 
 Games:
+<<<<<<< HEAD
 Pesadelo (means Nightmare in Portuguese), 1989 bootleg of Knightmare (Majou
 Densetsu in Japan) (C) 1986 Konami, originally released exclusively on MSX.
 This arcade conversion has been made a bit harder, eg. bonus power-ups deplete
 three times quicker, and the game starts at a later, more difficult level.
 A rough translation of the text after inserting a coin: Coins won't accumulate,
 insert a new coin after the game is over if you want another play.
+=======
+Pesadelo (means 'nightmare' in Portuguese), 1989 bootleg of Knightmare (Majou
+Densetsu in Japan) (C) 1986 Konami, originally released exclusively on MSX.
+This arcade conversion has been made a bit harder, eg. bonus power-ups deplete
+three times quicker, and the game starts at a later, more difficult level.
+A precise translation of the Brazilian Portuguese text displayed
+upon inserting a coin is:
+
+  NIGHTMARE DIFFICULTY-LEVEL 2 DOES NOT ACCUMULATE
+  CREDITS , ONLY INSERT A NEW
+  COIN AFTER THE END OF THE GAME
+  IN ORDER TO START THE GAME PRESS
+  THE FIRE BUTTON.
+
+               GOOD LUCK!
+
+If the coin detector is activated for a few seconds, an error message
+meaning STUCK COIN shows up blinking and beeping:
+
+               FICHA PRESA
+>>>>>>> upstream/master
 
 According to Alexandre, there are more games for this board, but not
 found/dumped yet. */
@@ -26,6 +53,11 @@ found/dumped yet. */
 #include "cpu/z80/z80.h"
 #include "video/tms9928a.h"
 #include "sound/ay8910.h"
+<<<<<<< HEAD
+=======
+#include "screen.h"
+#include "speaker.h"
+>>>>>>> upstream/master
 
 
 class forte2_state : public driver_device
@@ -33,6 +65,7 @@ class forte2_state : public driver_device
 public:
 	forte2_state(const machine_config &mconfig, device_type type, const char *tag)
 		: driver_device(mconfig, type, tag),
+<<<<<<< HEAD
 		m_maincpu(*this, "maincpu") { }
 
 	UINT8 m_input_mask;
@@ -43,6 +76,20 @@ public:
 	virtual void machine_start();
 	virtual void machine_reset();
 	required_device<cpu_device> m_maincpu;
+=======
+		m_maincpu(*this, "maincpu")
+	{ }
+
+	required_device<cpu_device> m_maincpu;
+
+	uint8_t m_input_mask;
+
+	DECLARE_READ8_MEMBER(forte2_ay8910_read_input);
+	DECLARE_WRITE8_MEMBER(forte2_ay8910_set_input_mask);
+	DECLARE_DRIVER_INIT(pesadelo);
+	virtual void machine_start() override;
+	virtual void machine_reset() override;
+>>>>>>> upstream/master
 };
 
 
@@ -78,7 +125,11 @@ INPUT_PORTS_END
 
 READ8_MEMBER(forte2_state::forte2_ay8910_read_input)
 {
+<<<<<<< HEAD
 	return ioport("IN0")->read() | (m_input_mask&0x3f);
+=======
+	return ioport("IN0")->read() | (m_input_mask & 0x3f);
+>>>>>>> upstream/master
 }
 
 WRITE8_MEMBER(forte2_state::forte2_ay8910_set_input_mask)
@@ -87,11 +138,14 @@ WRITE8_MEMBER(forte2_state::forte2_ay8910_set_input_mask)
 	m_input_mask = data;
 }
 
+<<<<<<< HEAD
 WRITE_LINE_MEMBER(forte2_state::vdp_interrupt)
 {
 	m_maincpu->set_input_line(0, (state ? HOLD_LINE : CLEAR_LINE));
 }
 
+=======
+>>>>>>> upstream/master
 void forte2_state::machine_reset()
 {
 	m_input_mask = 0xff;
@@ -104,7 +158,11 @@ void forte2_state::machine_start()
 }
 
 
+<<<<<<< HEAD
 static MACHINE_CONFIG_START( pesadelo, forte2_state )
+=======
+static MACHINE_CONFIG_START( pesadelo )
+>>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", Z80, XTAL_3_579545MHz)
@@ -112,6 +170,7 @@ static MACHINE_CONFIG_START( pesadelo, forte2_state )
 	MCFG_CPU_IO_MAP(io_mem)
 
 	/* video hardware */
+<<<<<<< HEAD
 	MCFG_DEVICE_ADD( "tms9928a", TMS9928A, XTAL_10_738635MHz / 2 )
 	MCFG_TMS9928A_VRAM_SIZE(0x4000)
 	MCFG_TMS9928A_OUT_INT_LINE_CB(WRITELINE(forte2_state, vdp_interrupt))
@@ -121,6 +180,17 @@ static MACHINE_CONFIG_START( pesadelo, forte2_state )
 	/* sound hardware */
 	MCFG_SPEAKER_STANDARD_MONO("mono")
 	MCFG_SOUND_ADD("aysnd", AY8910, (float)XTAL_3_579545MHz/2)
+=======
+	MCFG_DEVICE_ADD("tms9928a", TMS9928A, XTAL_10_738635MHz/2)
+	MCFG_TMS9928A_VRAM_SIZE(0x4000)
+	MCFG_TMS9928A_OUT_INT_LINE_CB(INPUTLINE("maincpu", INPUT_LINE_IRQ0))
+	MCFG_TMS9928A_SCREEN_ADD_NTSC("screen")
+	MCFG_SCREEN_UPDATE_DEVICE("tms9928a", tms9928a_device, screen_update)
+
+	/* sound hardware */
+	MCFG_SPEAKER_STANDARD_MONO("mono")
+	MCFG_SOUND_ADD("aysnd", AY8910, XTAL_3_579545MHz/2)
+>>>>>>> upstream/master
 	MCFG_AY8910_PORT_A_READ_CB(READ8(forte2_state, forte2_ay8910_read_input))
 	MCFG_AY8910_PORT_B_WRITE_CB(WRITE8(forte2_state, forte2_ay8910_set_input_mask))
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 0.50)
@@ -128,17 +198,26 @@ MACHINE_CONFIG_END
 
 DRIVER_INIT_MEMBER(forte2_state,pesadelo)
 {
+<<<<<<< HEAD
 	int i;
 	UINT8 *mem = memregion("maincpu")->base();
 	int memsize = memregion("maincpu")->bytes();
 
 	// data swap
 	for ( i = 0; i < memsize; i++ )
+=======
+	uint8_t *mem = memregion("maincpu")->base();
+	int memsize = memregion("maincpu")->bytes();
+
+	// data swap
+	for (int i = 0; i < memsize; i++)
+>>>>>>> upstream/master
 	{
 		mem[i] = BITSWAP8(mem[i],3,5,6,7,0,4,2,1);
 	}
 
 	// address line swap
+<<<<<<< HEAD
 	dynamic_buffer buf(memsize);
 	memcpy(&buf[0], mem, memsize);
 	for ( i = 0; i < memsize; i++ )
@@ -146,6 +225,14 @@ DRIVER_INIT_MEMBER(forte2_state,pesadelo)
 		mem[BITSWAP16(i,11,9,8,13,14,15,12,7,6,5,4,3,2,1,0,10)] = buf[i];
 	}
 
+=======
+	std::vector<uint8_t> buf(memsize);
+	memcpy(&buf[0], mem, memsize);
+	for (int i = 0; i < memsize; i++)
+	{
+		mem[BITSWAP16(i,11,9,8,13,14,15,12,7,6,5,4,3,2,1,0,10)] = buf[i];
+	}
+>>>>>>> upstream/master
 }
 
 ROM_START( pesadelo )

@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 // license:LGPL-2.1+
+=======
+// license:BSD-3-Clause
+>>>>>>> upstream/master
 // copyright-holders:Tomasz Slanina,Pierpaolo Prazzoli,hap,Roberto Fresca
 /**********************************************************
 
@@ -57,8 +61,16 @@
 
 #include "emu.h"
 #include "cpu/i8085/i8085.h"
+<<<<<<< HEAD
 #include "sound/dac.h"
 #include "machine/nvram.h"
+=======
+#include "machine/nvram.h"
+#include "sound/dac.h"
+#include "sound/volt_reg.h"
+#include "screen.h"
+#include "speaker.h"
+>>>>>>> upstream/master
 
 #include "wldarrow.lh"
 #include "mdrawpkr.lh"
@@ -69,6 +81,7 @@ class meyc8080_state : public driver_device
 {
 public:
 	meyc8080_state(const machine_config &mconfig, device_type type, const char *tag)
+<<<<<<< HEAD
 		: driver_device(mconfig, type, tag),
 		m_videoram_0(*this, "vram0"),
 		m_videoram_1(*this, "vram1"),
@@ -79,6 +92,19 @@ public:
 	required_shared_ptr<UINT8> m_videoram_0;
 	required_shared_ptr<UINT8> m_videoram_1;
 	required_shared_ptr<UINT8> m_videoram_2;
+=======
+		: driver_device(mconfig, type, tag)
+		, m_videoram_0(*this, "vram0")
+		, m_videoram_1(*this, "vram1")
+		, m_videoram_2(*this, "vram2")
+		, m_maincpu(*this, "maincpu")
+		, m_dac(*this, "dac")
+	{ }
+
+	required_shared_ptr<uint8_t> m_videoram_0;
+	required_shared_ptr<uint8_t> m_videoram_1;
+	required_shared_ptr<uint8_t> m_videoram_2;
+>>>>>>> upstream/master
 
 	DECLARE_WRITE8_MEMBER(lights_1_w);
 	DECLARE_WRITE8_MEMBER(lights_2_w);
@@ -87,9 +113,15 @@ public:
 	DECLARE_WRITE8_MEMBER(meyc8080_dac_2_w);
 	DECLARE_WRITE8_MEMBER(meyc8080_dac_3_w);
 	DECLARE_WRITE8_MEMBER(meyc8080_dac_4_w);
+<<<<<<< HEAD
 	UINT32 screen_update_meyc8080(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect);
 	required_device<cpu_device> m_maincpu;
 	required_device<dac_device> m_dac;
+=======
+	uint32_t screen_update_meyc8080(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect);
+	required_device<cpu_device> m_maincpu;
+	required_device<dac_byte_interface> m_dac;
+>>>>>>> upstream/master
 };
 
 
@@ -99,7 +131,11 @@ public:
  *
  *************************************/
 
+<<<<<<< HEAD
 UINT32 meyc8080_state::screen_update_meyc8080(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect)
+=======
+uint32_t meyc8080_state::screen_update_meyc8080(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect)
+>>>>>>> upstream/master
 {
 	offs_t offs;
 
@@ -107,6 +143,7 @@ UINT32 meyc8080_state::screen_update_meyc8080(screen_device &screen, bitmap_rgb3
 	{
 		int i;
 
+<<<<<<< HEAD
 		UINT8 y = offs >> 5;
 		UINT8 x = offs << 3;
 
@@ -119,6 +156,20 @@ UINT32 meyc8080_state::screen_update_meyc8080(screen_device &screen, bitmap_rgb3
 		UINT8 data_r = data0;
 		UINT8 data_g = (data2 & ~data0) | (data2 & data1) | (~data2 & ~data1 & data0);
 		UINT8 data_b = data0 ^ data1;
+=======
+		uint8_t y = offs >> 5;
+		uint8_t x = offs << 3;
+
+		uint8_t data0 = m_videoram_0[offs];
+		uint8_t data1 = m_videoram_1[offs];
+		uint8_t data2 = m_videoram_2[offs];
+
+		/* weird equations, but it matches every flyer screenshot -
+		   perhaphs they used a look-up PROM? */
+		uint8_t data_r = data0;
+		uint8_t data_g = (data2 & ~data0) | (data2 & data1) | (~data2 & ~data1 & data0);
+		uint8_t data_b = data0 ^ data1;
+>>>>>>> upstream/master
 
 		for (i = 0; i < 8; i++)
 		{
@@ -179,11 +230,19 @@ WRITE8_MEMBER(meyc8080_state::lights_1_w)
   xxxx ----   Seems unused...
 
 */
+<<<<<<< HEAD
 	output_set_lamp_value(0, (data) & 1);       /* Lamp 0 */
 	output_set_lamp_value(1, (data >> 1) & 1);  /* Lamp 1 */
 	output_set_lamp_value(2, (data >> 2) & 1);  /* Lamp 2 */
 	output_set_lamp_value(3, (data >> 3) & 1);  /* Lamp 3 */
 	output_set_lamp_value(4, (data >> 4) & 1);  /* Lamp 4 */
+=======
+	output().set_lamp_value(0, (data) & 1);       /* Lamp 0 */
+	output().set_lamp_value(1, (data >> 1) & 1);  /* Lamp 1 */
+	output().set_lamp_value(2, (data >> 2) & 1);  /* Lamp 2 */
+	output().set_lamp_value(3, (data >> 3) & 1);  /* Lamp 3 */
+	output().set_lamp_value(4, (data >> 4) & 1);  /* Lamp 4 */
+>>>>>>> upstream/master
 
 	logerror("lights 1: %02x\n", data);
 }
@@ -226,6 +285,7 @@ WRITE8_MEMBER(meyc8080_state::lights_2_w)
   xxx- ----   Unknown.
 
 */
+<<<<<<< HEAD
 	output_set_lamp_value(5, (data) & 1);       /* Lamp 5 */
 	output_set_lamp_value(6, (data >> 1) & 1);  /* Lamp 6 */
 	output_set_lamp_value(7, (data >> 2) & 1);  /* Lamp 7 */
@@ -233,6 +293,15 @@ WRITE8_MEMBER(meyc8080_state::lights_2_w)
 	output_set_lamp_value(9, (data >> 4) & 1);  /* Lamp 9 */
 
 	output_set_lamp_value(10, (data >> 5) & 1); /* Lamp 10 (Game-Over) */
+=======
+	output().set_lamp_value(5, (data) & 1);       /* Lamp 5 */
+	output().set_lamp_value(6, (data >> 1) & 1);  /* Lamp 6 */
+	output().set_lamp_value(7, (data >> 2) & 1);  /* Lamp 7 */
+	output().set_lamp_value(8, (data >> 3) & 1);  /* Lamp 8 */
+	output().set_lamp_value(9, (data >> 4) & 1);  /* Lamp 9 */
+
+	output().set_lamp_value(10, (data >> 5) & 1); /* Lamp 10 (Game-Over) */
+>>>>>>> upstream/master
 
 	logerror("lights 2: %02x\n", data);
 }
@@ -251,12 +320,21 @@ WRITE8_MEMBER(meyc8080_state::counters_w)
   xxxx ----   Seems unused...
 
 */
+<<<<<<< HEAD
 	coin_counter_w(machine(), 0, ~data & 0x01); /* Coin1 */
 	coin_counter_w(machine(), 1, ~data & 0x04); /* Bets */
 	coin_counter_w(machine(), 2, ~data & 0x02); /* Payout */
 
 	/* Only Draw Poker (2-11) (mdrawpkra) */
 	coin_counter_w(machine(), 3, ~data & 0x08); /* Manual Keyout */
+=======
+	machine().bookkeeping().coin_counter_w(0, ~data & 0x01); /* Coin1 */
+	machine().bookkeeping().coin_counter_w(1, ~data & 0x04); /* Bets */
+	machine().bookkeeping().coin_counter_w(2, ~data & 0x02); /* Payout */
+
+	/* Only Draw Poker (2-11) (mdrawpkra) */
+	machine().bookkeeping().coin_counter_w(3, ~data & 0x08); /* Manual Keyout */
+>>>>>>> upstream/master
 
 	logerror("counters: %02x\n", ~data);
 }
@@ -276,25 +354,41 @@ WRITE8_MEMBER(meyc8080_state::counters_w)
 
 WRITE8_MEMBER(meyc8080_state::meyc8080_dac_1_w)
 {
+<<<<<<< HEAD
 	m_dac->write_unsigned8(0x00);
+=======
+	m_dac->write(0);
+>>>>>>> upstream/master
 }
 
 
 WRITE8_MEMBER(meyc8080_state::meyc8080_dac_2_w)
 {
+<<<<<<< HEAD
 	m_dac->write_unsigned8(0x55);
+=======
+	m_dac->write(1);
+>>>>>>> upstream/master
 }
 
 
 WRITE8_MEMBER(meyc8080_state::meyc8080_dac_3_w)
 {
+<<<<<<< HEAD
 	m_dac->write_unsigned8(0xaa);
+=======
+	m_dac->write(2);
+>>>>>>> upstream/master
 }
 
 
 WRITE8_MEMBER(meyc8080_state::meyc8080_dac_4_w)
 {
+<<<<<<< HEAD
 	m_dac->write_unsigned8(0xff);
+=======
+	m_dac->write(3);
+>>>>>>> upstream/master
 }
 
 
@@ -575,7 +669,11 @@ INPUT_PORTS_END
  *
  *************************************/
 
+<<<<<<< HEAD
 static MACHINE_CONFIG_START( meyc8080, meyc8080_state )
+=======
+static MACHINE_CONFIG_START( meyc8080 )
+>>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", I8080, XTAL_20MHz / 10) // divider guessed
@@ -592,9 +690,16 @@ static MACHINE_CONFIG_START( meyc8080, meyc8080_state )
 	MCFG_SCREEN_UPDATE_DRIVER(meyc8080_state, screen_update_meyc8080)
 
 	/* audio hardware */
+<<<<<<< HEAD
 	MCFG_SPEAKER_STANDARD_MONO("mono")
 	MCFG_DAC_ADD("dac")
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 1.0)
+=======
+	MCFG_SPEAKER_STANDARD_MONO("speaker")
+	MCFG_SOUND_ADD("dac", DAC_2BIT_R2R, 0) MCFG_SOUND_ROUTE(ALL_OUTPUTS, "speaker", 0.66) // unknown DAC
+	MCFG_DEVICE_ADD("vref", VOLTAGE_REGULATOR, 0) MCFG_VOLTAGE_REGULATOR_OUTPUT(5.0)
+	MCFG_SOUND_ROUTE_EX(0, "dac", 1.0, DAC_VREF_POS_INPUT) MCFG_SOUND_ROUTE_EX(0, "dac", -1.0, DAC_VREF_NEG_INPUT)
+>>>>>>> upstream/master
 
 MACHINE_CONFIG_END
 
@@ -727,8 +832,16 @@ ROM_END
  *
  *************************************/
 
+<<<<<<< HEAD
 /*    YEAR  NAME       PARENT    MACHINE   INPUT      INIT  ROT    COMPANY              FULLNAME                                    FLAGS                                      LAYOUT  */
 GAMEL(1982, wldarrow,  0,        meyc8080, wldarrow, driver_device,  0,    ROT0, "Meyco Games, Inc.", "Wild Arrow (color, Standard V4.8)",         MACHINE_IMPERFECT_SOUND | MACHINE_SUPPORTS_SAVE, layout_wldarrow ) // B&W version not dumped yet
 GAMEL(1984, mdrawpkr,  0,        meyc8080, mdrawpkr, driver_device,  0,    ROT0, "Meyco Games, Inc.", "Draw Poker - Joker's Wild (Standard)",      MACHINE_IMPERFECT_SOUND | MACHINE_SUPPORTS_SAVE, layout_mdrawpkr ) // year not shown, but it is in mdrawpkra
 GAMEL(1984, mdrawpkra, mdrawpkr, meyc8080, mdrawpkra, driver_device, 0,    ROT0, "Meyco Games, Inc.", "Draw Poker - Joker's Wild (02-11)",         MACHINE_IMPERFECT_SOUND | MACHINE_SUPPORTS_SAVE, layout_mdrawpkr )
 GAMEL(1983, casbjack,  0,        meyc8080, casbjack, driver_device,  0,    ROT0, "Meyco Games, Inc.", "Casino Black Jack (color, Standard 00-05)", MACHINE_IMPERFECT_SOUND | MACHINE_SUPPORTS_SAVE, layout_meybjack ) // B&W version not dumped yet
+=======
+//    YEAR  NAME       PARENT    MACHINE   INPUT      STATE           INIT  ROT   COMPANY              FULLNAME                                     FLAGS                                            LAYOUT
+GAMEL(1982, wldarrow,  0,        meyc8080, wldarrow,  meyc8080_state, 0,    ROT0, "Meyco Games, Inc.", "Wild Arrow (color, Standard V4.8)",         MACHINE_IMPERFECT_SOUND | MACHINE_SUPPORTS_SAVE, layout_wldarrow ) // B&W version not dumped yet
+GAMEL(1984, mdrawpkr,  0,        meyc8080, mdrawpkr,  meyc8080_state, 0,    ROT0, "Meyco Games, Inc.", "Draw Poker - Joker's Wild (Standard)",      MACHINE_IMPERFECT_SOUND | MACHINE_SUPPORTS_SAVE, layout_mdrawpkr ) // year not shown, but it is in mdrawpkra
+GAMEL(1984, mdrawpkra, mdrawpkr, meyc8080, mdrawpkra, meyc8080_state, 0,    ROT0, "Meyco Games, Inc.", "Draw Poker - Joker's Wild (02-11)",         MACHINE_IMPERFECT_SOUND | MACHINE_SUPPORTS_SAVE, layout_mdrawpkr )
+GAMEL(1983, casbjack,  0,        meyc8080, casbjack,  meyc8080_state, 0,    ROT0, "Meyco Games, Inc.", "Casino Black Jack (color, Standard 00-05)", MACHINE_IMPERFECT_SOUND | MACHINE_SUPPORTS_SAVE, layout_meybjack ) // B&W version not dumped yet
+>>>>>>> upstream/master

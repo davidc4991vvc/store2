@@ -247,12 +247,23 @@ maybe some sprite placement issues
 ***************************************************************************/
 
 #include "emu.h"
+<<<<<<< HEAD
+=======
+#include "includes/lethal.h"
+
+>>>>>>> upstream/master
 #include "cpu/m6809/m6809.h"
 #include "cpu/m6809/hd6309.h"
 #include "cpu/z80/z80.h"
 #include "machine/eepromser.h"
 #include "sound/k054539.h"
+<<<<<<< HEAD
 #include "includes/lethal.h"
+=======
+#include "screen.h"
+#include "speaker.h"
+
+>>>>>>> upstream/master
 
 #define MAIN_CLOCK      XTAL_24MHz
 #define SOUND_CLOCK     XTAL_18_432MHz
@@ -287,9 +298,16 @@ INTERRUPT_GEN_MEMBER(lethal_state::lethalen_interrupt)
 		device.execute().set_input_line(HD6309_IRQ_LINE, HOLD_LINE);
 }
 
+<<<<<<< HEAD
 WRITE8_MEMBER(lethal_state::sound_cmd_w)
 {
 	soundlatch_byte_w(space, 0, data);
+=======
+READ8_MEMBER(lethal_state::sound_irq_r)
+{
+	m_soundcpu->set_input_line(0, HOLD_LINE);
+	return 0x00;
+>>>>>>> upstream/master
 }
 
 WRITE8_MEMBER(lethal_state::sound_irq_w)
@@ -297,11 +315,14 @@ WRITE8_MEMBER(lethal_state::sound_irq_w)
 	m_soundcpu->set_input_line(0, HOLD_LINE);
 }
 
+<<<<<<< HEAD
 READ8_MEMBER(lethal_state::sound_status_r)
 {
 	return 0xf;
 }
 
+=======
+>>>>>>> upstream/master
 WRITE8_MEMBER(lethal_state::le_bankswitch_w)
 {
 	membank("bank1")->set_entry(data);
@@ -346,7 +367,11 @@ static ADDRESS_MAP_START( le_main, AS_PROGRAM, 8, lethal_state )
 	AM_RANGE(0x4000, 0x403f) AM_DEVWRITE("k056832", k056832_device, write)
 	AM_RANGE(0x4040, 0x404f) AM_DEVWRITE("k056832", k056832_device, b_w)
 	AM_RANGE(0x4080, 0x4080) AM_READNOP     // watchdog
+<<<<<<< HEAD
 	AM_RANGE(0x4090, 0x4090) AM_READNOP
+=======
+	AM_RANGE(0x4090, 0x4090) AM_READWRITE(sound_irq_r, sound_irq_w)
+>>>>>>> upstream/master
 	AM_RANGE(0x40a0, 0x40a0) AM_READNOP
 	AM_RANGE(0x40c4, 0x40c4) AM_WRITE(control2_w)
 	AM_RANGE(0x40c8, 0x40d0) AM_WRITE(lethalen_palette_control) // PCU1-PCU3 on the schematics
@@ -364,9 +389,13 @@ static ADDRESS_MAP_START( bank4000_map, AS_PROGRAM, 8, lethal_state )
 	// VRD = 0 or 1, CBNK = 0
 	AM_RANGE(0x0840, 0x084f) AM_MIRROR(0x8000) AM_DEVREADWRITE("k053244", k05324x_device, k053244_r, k053244_w)
 	AM_RANGE(0x0880, 0x089f) AM_MIRROR(0x8000) AM_DEVREADWRITE("k054000", k054000_device, read, write)
+<<<<<<< HEAD
 	AM_RANGE(0x08c6, 0x08c6) AM_MIRROR(0x8000) AM_WRITE(sound_cmd_w)
 	AM_RANGE(0x08c7, 0x08c7) AM_MIRROR(0x8000) AM_WRITE(sound_irq_w)
 	AM_RANGE(0x08ca, 0x08ca) AM_MIRROR(0x8000) AM_READ(sound_status_r)
+=======
+	AM_RANGE(0x08c0, 0x08cf) AM_DEVICE("k054321", k054321_device, main_map)
+>>>>>>> upstream/master
 	AM_RANGE(0x1000, 0x17ff) AM_MIRROR(0x8000) AM_DEVREADWRITE("k053244", k05324x_device, k053245_r, k053245_w)
 
 	// VRD = 0, CBNK = 0
@@ -386,9 +415,13 @@ static ADDRESS_MAP_START( le_sound, AS_PROGRAM, 8, lethal_state )
 	AM_RANGE(0x0000, 0xefff) AM_ROM
 	AM_RANGE(0xf000, 0xf7ff) AM_RAM
 	AM_RANGE(0xf800, 0xfa2f) AM_DEVREADWRITE("k054539", k054539_device, read, write)
+<<<<<<< HEAD
 	AM_RANGE(0xfc00, 0xfc00) AM_WRITE(soundlatch2_byte_w)
 	AM_RANGE(0xfc02, 0xfc02) AM_READ(soundlatch_byte_r)
 	AM_RANGE(0xfc03, 0xfc03) AM_READNOP
+=======
+	AM_RANGE(0xfc00, 0xfc03) AM_DEVICE("k054321", k054321_device, sound_map)
+>>>>>>> upstream/master
 ADDRESS_MAP_END
 
 static INPUT_PORTS_START( lethalen )
@@ -481,8 +514,13 @@ void lethal_state::machine_start()
 
 void lethal_state::machine_reset()
 {
+<<<<<<< HEAD
 	for (int i = 0; i < 4; i++)
 		m_layer_colorbase[i] = 0;
+=======
+	for (auto & elem : m_layer_colorbase)
+		elem = 0;
+>>>>>>> upstream/master
 
 	m_sprite_colorbase = 0;
 	m_back_colorbase = 0;
@@ -490,7 +528,11 @@ void lethal_state::machine_reset()
 	m_bank4000->set_bank(0);
 }
 
+<<<<<<< HEAD
 static MACHINE_CONFIG_START( lethalen, lethal_state )
+=======
+static MACHINE_CONFIG_START( lethalen )
+>>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", HD6309, MAIN_CLOCK/2)    /* verified on pcb */
@@ -509,8 +551,11 @@ static MACHINE_CONFIG_START( lethalen, lethal_state )
 
 	MCFG_EEPROM_SERIAL_ER5911_8BIT_ADD("eeprom")
 
+<<<<<<< HEAD
 	MCFG_GFXDECODE_ADD("gfxdecode", "palette", empty)
 
+=======
+>>>>>>> upstream/master
 	/* video hardware */
 	MCFG_SCREEN_ADD("screen", RASTER)
 	MCFG_SCREEN_REFRESH_RATE(59.62)  /* verified on pcb */
@@ -526,8 +571,12 @@ static MACHINE_CONFIG_START( lethalen, lethal_state )
 
 	MCFG_DEVICE_ADD("k056832", K056832, 0)
 	MCFG_K056832_CB(lethal_state, tile_callback)
+<<<<<<< HEAD
 	MCFG_K056832_CONFIG("gfx1", 0, K056832_BPP_8LE, 1, 0, "none")
 	MCFG_K056832_GFXDECODE("gfxdecode")
+=======
+	MCFG_K056832_CONFIG("gfx1", K056832_BPP_8LE, 1, 0, "none")
+>>>>>>> upstream/master
 	MCFG_K056832_PALETTE("palette")
 
 	MCFG_DEVICE_ADD("k053244", K053244, 0)
@@ -541,6 +590,11 @@ static MACHINE_CONFIG_START( lethalen, lethal_state )
 	/* sound hardware */
 	MCFG_SPEAKER_STANDARD_STEREO("lspeaker", "rspeaker")
 
+<<<<<<< HEAD
+=======
+	MCFG_K054321_ADD("k054321", ":lspeaker", ":rspeaker")
+
+>>>>>>> upstream/master
 	MCFG_DEVICE_ADD("k054539", K054539, XTAL_18_432MHz)
 	MCFG_K054539_TIMER_HANDLER(INPUTLINE("soundcpu", INPUT_LINE_NMI))
 	MCFG_SOUND_ROUTE(0, "lspeaker", 1.0)
@@ -577,7 +631,11 @@ ROM_START( lethalen )   // US version UAE
 	ROM_REGION( 0x200000, "k054539", 0 )    /* K054539 samples */
 	ROM_LOAD( "191a03", 0x000000, 0x200000, CRC(9b13fbe8) SHA1(19b02dbd9d6da54045b0ba4dfe7b282c72745c9c))
 
+<<<<<<< HEAD
 	ROM_REGION16_BE( 0x80, "eeprom", 0 )
+=======
+	ROM_REGION( 0x80, "eeprom", 0 )
+>>>>>>> upstream/master
 	ROM_LOAD( "lethalenue.nv", 0x0000, 0x0080, CRC(6e7224e6) SHA1(86dea9262d55e58b573d397d0fea437c58728707) )
 ROM_END
 
@@ -602,7 +660,11 @@ ROM_START( lethalenub ) // US version UAB
 	ROM_REGION( 0x200000, "k054539", 0 )    /* K054539 samples */
 	ROM_LOAD( "191a03", 0x000000, 0x200000, CRC(9b13fbe8) SHA1(19b02dbd9d6da54045b0ba4dfe7b282c72745c9c))
 
+<<<<<<< HEAD
 	ROM_REGION16_BE( 0x80, "eeprom", 0 )
+=======
+	ROM_REGION( 0x80, "eeprom", 0 )
+>>>>>>> upstream/master
 	ROM_LOAD( "lethalenub.nv", 0x0000, 0x0080, CRC(14c6c6e5) SHA1(8a498b5322266df25fb24d1b7bd7937de459d207) )
 ROM_END
 
@@ -627,7 +689,11 @@ ROM_START( lethalenua ) // US version UAA
 	ROM_REGION( 0x200000, "k054539", 0 )    /* K054539 samples */
 	ROM_LOAD( "191a03", 0x000000, 0x200000, CRC(9b13fbe8) SHA1(19b02dbd9d6da54045b0ba4dfe7b282c72745c9c))
 
+<<<<<<< HEAD
 	ROM_REGION16_BE( 0x80, "eeprom", 0 )
+=======
+	ROM_REGION( 0x80, "eeprom", 0 )
+>>>>>>> upstream/master
 	ROM_LOAD( "lethalenua.nv", 0x0000, 0x0080, CRC(f71ad1c3) SHA1(04c7052d0895797af8a06183b8a877795bf2dbb3) )
 ROM_END
 
@@ -652,7 +718,11 @@ ROM_START( lethalenux ) // US version ?, proto / hack?, very different to other 
 	ROM_REGION( 0x200000, "k054539", 0 )    /* K054539 samples */
 	ROM_LOAD( "191a03", 0x000000, 0x200000, CRC(9b13fbe8) SHA1(19b02dbd9d6da54045b0ba4dfe7b282c72745c9c))
 
+<<<<<<< HEAD
 	ROM_REGION16_BE( 0x80, "eeprom", 0 )
+=======
+	ROM_REGION( 0x80, "eeprom", 0 )
+>>>>>>> upstream/master
 	ROM_LOAD( "lethalenux.nv", 0x0000, 0x0080, CRC(5d69c39d) SHA1(e468df829ee5094792289f9166d7e39b638ab70d) )
 ROM_END
 
@@ -677,7 +747,11 @@ ROM_START( lethaleneab )    // Euro ver. EAB
 	ROM_REGION( 0x200000, "k054539", 0 )    /* K054539 samples */
 	ROM_LOAD( "191a03", 0x000000, 0x200000, CRC(9b13fbe8) SHA1(19b02dbd9d6da54045b0ba4dfe7b282c72745c9c))
 
+<<<<<<< HEAD
 	ROM_REGION16_BE( 0x80, "eeprom", 0 )
+=======
+	ROM_REGION( 0x80, "eeprom", 0 )
+>>>>>>> upstream/master
 	ROM_LOAD( "lethaleneab.nv", 0x0000, 0x0080, CRC(4e9bb34d) SHA1(9502583bc9f5f6fc5bba333869398b24bf154b73) )
 ROM_END
 
@@ -702,7 +776,11 @@ ROM_START( lethaleneae )    // Euro ver. EAE
 	ROM_REGION( 0x200000, "k054539", 0 )    /* K054539 samples */
 	ROM_LOAD( "191a03", 0x000000, 0x200000, CRC(9b13fbe8) SHA1(19b02dbd9d6da54045b0ba4dfe7b282c72745c9c))
 
+<<<<<<< HEAD
 	ROM_REGION16_BE( 0x80, "eeprom", 0 )
+=======
+	ROM_REGION( 0x80, "eeprom", 0 )
+>>>>>>> upstream/master
 	ROM_LOAD( "lethaleneae.nv", 0x0000, 0x0080, CRC(eb369a67) SHA1(6c67294669614e96de5efb38372dbed435ee04d3) )
 ROM_END
 
@@ -727,6 +805,7 @@ ROM_START( lethalenj )  // Japan version JAD
 	ROM_REGION( 0x200000, "k054539", 0 )    /* K054539 samples */
 	ROM_LOAD( "191a03", 0x000000, 0x200000, CRC(9b13fbe8) SHA1(19b02dbd9d6da54045b0ba4dfe7b282c72745c9c))
 
+<<<<<<< HEAD
 	ROM_REGION16_BE( 0x80, "eeprom", 0 )
 	ROM_LOAD( "lethalenj.nv", 0x0000, 0x0080, CRC(20b28f2f) SHA1(53d212f2c006729a01dfdb49cb36b67b9425172e) )
 ROM_END
@@ -741,3 +820,47 @@ GAME( 1992, lethaleneab,lethalen, lethalen, lethalene, driver_device, 0, ORIENTA
 
 // different mirror / display setup
 GAME( 1992, lethalenj,  lethalen, lethalej, lethalenj, driver_device, 0, ORIENTATION_FLIP_X, "Konami", "Lethal Enforcers (ver JAD, 12/04/92 17:16)", MACHINE_IMPERFECT_GRAPHICS | MACHINE_SUPPORTS_SAVE ) // writes JC to eeprom?!
+=======
+	ROM_REGION( 0x80, "eeprom", 0 )
+	ROM_LOAD( "lethalenj.nv", 0x0000, 0x0080, CRC(20b28f2f) SHA1(53d212f2c006729a01dfdb49cb36b67b9425172e) )
+ROM_END
+
+ROM_START( lethaleneaa )    // Euro ver. EAA
+	ROM_REGION( 0x40000, "maincpu", 0 ) /* main program */
+	ROM_LOAD( "191_a01.u4", 0x00000, 0x40000, CRC(c6f4d712) SHA1(92938b823f057b5185a2ada7878efa4bf7e6c682) ) // handwritten label
+
+	ROM_REGION( 0x10000, "soundcpu", 0 )    /* Z80 sound program */
+	ROM_LOAD( "191a02.f4", 0x00000, 0x10000, CRC(72b843cc) SHA1(b44b2f039358c26fa792d740639b66a5c8bf78e7) )
+
+	ROM_REGION( 0x400000, "gfx1", 0 )   /* tilemaps */
+	ROM_LOAD32_WORD( "191a08", 0x000002, 0x100000, CRC(555bd4db) SHA1(d2e55796b4ab2306ae549fa9e7288e41eaa8f3de) )
+	ROM_LOAD32_WORD( "191a10", 0x000000, 0x100000, CRC(2fa9bf51) SHA1(1e4ec56b41dfd8744347a7b5799e3ebce0939adc) )
+	ROM_LOAD32_WORD( "191a07", 0x200002, 0x100000, CRC(1dad184c) SHA1(b2c4a8e48084005056aef2c8eaccb3d2eca71b73) )
+	ROM_LOAD32_WORD( "191a09", 0x200000, 0x100000, CRC(e2028531) SHA1(63ccce7855d829763e9e248a6c3eb6ea89ab17ee) )
+
+	ROM_REGION( 0x400000, "k053244", ROMREGION_ERASE00 )   /* sprites */
+	ROM_LOAD32_WORD( "191a05", 0x000000, 0x100000, CRC(f2e3b58b) SHA1(0bbc2fe87a4fd00b5073a884bcfebcf9c2c402ad) )
+	ROM_LOAD32_WORD( "191a04", 0x000002, 0x100000, CRC(5c3eeb2b) SHA1(33ea8b3968b78806334b5a0aab3a2c24e45c604e) )
+	ROM_LOAD32_WORD( "191a06", 0x200000, 0x100000, CRC(ee11fc08) SHA1(ec6dd684e8261b181d65b8bf1b9e97da5c4468f7) )
+
+	ROM_REGION( 0x200000, "k054539", 0 )    /* K054539 samples */
+	ROM_LOAD( "191a03", 0x000000, 0x200000, CRC(9b13fbe8) SHA1(19b02dbd9d6da54045b0ba4dfe7b282c72745c9c))
+
+	ROM_REGION( 0x80, "eeprom", 0 )
+	ROM_LOAD( "lethaleneaa.nv", 0x0000, 0x0080, CRC(a85d64ee) SHA1(68ab906c46c6a7dee2a7673d1d516e34d56c9ae3) )
+ROM_END
+
+// date strings are at 0x3fd00 in the main program rom
+
+GAME( 1992, lethalen,   0,        lethalen, lethalen,  lethal_state, 0, ORIENTATION_FLIP_Y, "Konami", "Lethal Enforcers (ver UAE, 11/19/92 15:04)", MACHINE_IMPERFECT_GRAPHICS | MACHINE_SUPPORTS_SAVE ) // writes UE to eeprom
+GAME( 1992, lethalenub, lethalen, lethalen, lethalen,  lethal_state, 0, ORIENTATION_FLIP_Y, "Konami", "Lethal Enforcers (ver UAB, 09/01/92 11:12)", MACHINE_IMPERFECT_GRAPHICS | MACHINE_SUPPORTS_SAVE ) // writes UB to eeprom
+GAME( 1992, lethalenua, lethalen, lethalen, lethalen,  lethal_state, 0, ORIENTATION_FLIP_Y, "Konami", "Lethal Enforcers (ver UAA, 08/17/92 21:38)", MACHINE_IMPERFECT_GRAPHICS | MACHINE_SUPPORTS_SAVE ) // writes UA to eeprom
+GAME( 1992, lethalenux, lethalen, lethalen, lethalen,  lethal_state, 0, ORIENTATION_FLIP_Y, "Konami", "Lethal Enforcers (ver unknown, US, 08/06/92 15:11, hacked/proto?)", MACHINE_IMPERFECT_GRAPHICS | MACHINE_SUPPORTS_SAVE ) // writes UA to eeprom but earlier than suspected UAA set, might be a proto, might be hacked, fails rom test, definitely a good dump, another identical set was found in Italy
+
+GAME( 1992, lethaleneae,lethalen, lethalen, lethalene, lethal_state, 0, ORIENTATION_FLIP_Y, "Konami", "Lethal Enforcers (ver EAE, 11/19/92 16:24)", MACHINE_IMPERFECT_GRAPHICS | MACHINE_SUPPORTS_SAVE ) // writes EE to eeprom
+GAME( 1992, lethaleneab,lethalen, lethalen, lethalene, lethal_state, 0, ORIENTATION_FLIP_Y, "Konami", "Lethal Enforcers (ver EAB, 10/14/92 19:53)", MACHINE_IMPERFECT_GRAPHICS | MACHINE_SUPPORTS_SAVE ) // writes EC to eeprom, so might actually be EC
+GAME( 1992, lethaleneaa,lethalen, lethalen, lethalene, lethal_state, 0, ORIENTATION_FLIP_Y, "Konami", "Lethal Enforcers (ver EAA, 09/09/92 09:44)", MACHINE_IMPERFECT_GRAPHICS | MACHINE_SUPPORTS_SAVE ) // writes EA to eeprom
+
+// different mirror / display setup
+GAME( 1992, lethalenj,  lethalen, lethalej, lethalenj, lethal_state, 0, ORIENTATION_FLIP_X, "Konami", "Lethal Enforcers (ver JAD, 12/04/92 17:16)", MACHINE_IMPERFECT_GRAPHICS | MACHINE_SUPPORTS_SAVE ) // writes JC to eeprom?!
+>>>>>>> upstream/master

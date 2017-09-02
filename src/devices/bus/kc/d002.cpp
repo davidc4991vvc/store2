@@ -11,6 +11,14 @@
 #include "emu.h"
 #include "d002.h"
 
+<<<<<<< HEAD
+=======
+#include "ram.h"
+#include "rom.h"
+#include "d004.h"
+
+
+>>>>>>> upstream/master
 /***************************************************************************
     IMPLEMENTATION
 ***************************************************************************/
@@ -59,6 +67,7 @@ WRITE_LINE_MEMBER(kc_d002_device::out_halt_w)
 	m_slot->m_out_halt_cb(state);
 }
 
+<<<<<<< HEAD
 static MACHINE_CONFIG_FRAGMENT( kc_d002 )
 	MCFG_DEVICE_ADD("m0", KCCART_SLOT, 0)
 	MCFG_DEVICE_SLOT_INTERFACE(kc85_cart, NULL, false)
@@ -93,12 +102,18 @@ static MACHINE_CONFIG_FRAGMENT( kc_d002 )
 	MCFG_KCEXP_SLOT_OUT_NMI_CB(WRITELINE(kc_d002_device, out_nmi_w))
 	MCFG_KCEXP_SLOT_OUT_HALT_CB(WRITELINE(kc_d002_device, out_halt_w))
 MACHINE_CONFIG_END
+=======
+>>>>>>> upstream/master
 
 //**************************************************************************
 //  GLOBAL VARIABLES
 //**************************************************************************
 
+<<<<<<< HEAD
 const device_type KC_D002 = &device_creator<kc_d002_device>;
+=======
+DEFINE_DEVICE_TYPE(KC_D002, kc_d002_device, "kc_d002", "D002 Bus Driver")
+>>>>>>> upstream/master
 
 //**************************************************************************
 //  LIVE DEVICE
@@ -108,10 +123,19 @@ const device_type KC_D002 = &device_creator<kc_d002_device>;
 //  kc_d002_device - constructor
 //-------------------------------------------------
 
+<<<<<<< HEAD
 kc_d002_device::kc_d002_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
 		: device_t(mconfig, KC_D002, "D002 Bus Driver", tag, owner, clock, "kc_d002", __FILE__),
 		device_kcexp_interface( mconfig, *this ), m_slot(nullptr)
 	{
+=======
+kc_d002_device::kc_d002_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: device_t(mconfig, KC_D002, tag, owner, clock)
+	, device_kcexp_interface(mconfig, *this)
+	, m_slot(nullptr)
+	, m_expansions(*this, { "m0", "m4", "m8", "mc", "exp" })
+{
+>>>>>>> upstream/master
 }
 
 //-------------------------------------------------
@@ -121,12 +145,15 @@ kc_d002_device::kc_d002_device(const machine_config &mconfig, const char *tag, d
 void kc_d002_device::device_start()
 {
 	m_slot = dynamic_cast<kcexp_slot_device *>(owner());
+<<<<<<< HEAD
 
 	m_expansions[0] = downcast<kcexp_slot_device *>(subdevice("m0"));
 	m_expansions[1] = downcast<kcexp_slot_device *>(subdevice("m4"));
 	m_expansions[2] = downcast<kcexp_slot_device *>(subdevice("m8"));
 	m_expansions[3] = downcast<kcexp_slot_device *>(subdevice("mc"));
 	m_expansions[4] = downcast<kcexp_slot_device *>(subdevice("exp"));
+=======
+>>>>>>> upstream/master
 }
 
 //-------------------------------------------------
@@ -138,6 +165,7 @@ void kc_d002_device::device_reset()
 }
 
 //-------------------------------------------------
+<<<<<<< HEAD
 //  device_mconfig_additions
 //-------------------------------------------------
 
@@ -145,6 +173,45 @@ machine_config_constructor kc_d002_device::device_mconfig_additions() const
 {
 	return MACHINE_CONFIG_NAME( kc_d002 );
 }
+=======
+//  device_add_mconfig - add device configuration
+//-------------------------------------------------
+
+MACHINE_CONFIG_MEMBER( kc_d002_device::device_add_mconfig )
+	MCFG_DEVICE_ADD("m0", KCCART_SLOT, 0)
+	MCFG_DEVICE_SLOT_INTERFACE(kc85_cart, nullptr, false)
+	MCFG_KCCART_SLOT_NEXT_SLOT("m4")
+	MCFG_KCCART_SLOT_OUT_IRQ_CB(WRITELINE(kc_d002_device, out_irq_w))
+	MCFG_KCCART_SLOT_OUT_NMI_CB(WRITELINE(kc_d002_device, out_nmi_w))
+	MCFG_KCCART_SLOT_OUT_HALT_CB(WRITELINE(kc_d002_device, out_halt_w))
+	MCFG_DEVICE_ADD("m4", KCCART_SLOT, 0)
+	MCFG_DEVICE_SLOT_INTERFACE(kc85_cart, nullptr, false)
+	MCFG_KCCART_SLOT_NEXT_SLOT("m8")
+	MCFG_KCCART_SLOT_OUT_IRQ_CB(WRITELINE(kc_d002_device, out_irq_w))
+	MCFG_KCCART_SLOT_OUT_NMI_CB(WRITELINE(kc_d002_device, out_nmi_w))
+	MCFG_KCCART_SLOT_OUT_HALT_CB(WRITELINE(kc_d002_device, out_halt_w))
+	MCFG_DEVICE_ADD("m8", KCCART_SLOT, 0)
+	MCFG_DEVICE_SLOT_INTERFACE(kc85_cart, nullptr, false)
+	MCFG_KCCART_SLOT_NEXT_SLOT("mc")
+	MCFG_KCCART_SLOT_OUT_IRQ_CB(WRITELINE(kc_d002_device, out_irq_w))
+	MCFG_KCCART_SLOT_OUT_NMI_CB(WRITELINE(kc_d002_device, out_nmi_w))
+	MCFG_KCCART_SLOT_OUT_HALT_CB(WRITELINE(kc_d002_device, out_halt_w))
+	MCFG_DEVICE_ADD("mc", KCCART_SLOT, 0)
+	MCFG_DEVICE_SLOT_INTERFACE(kc85_cart, nullptr, false)
+	MCFG_KCCART_SLOT_NEXT_SLOT("exp")
+	MCFG_KCCART_SLOT_OUT_IRQ_CB(WRITELINE(kc_d002_device, out_irq_w))
+	MCFG_KCCART_SLOT_OUT_NMI_CB(WRITELINE(kc_d002_device, out_nmi_w))
+	MCFG_KCCART_SLOT_OUT_HALT_CB(WRITELINE(kc_d002_device, out_halt_w))
+
+	// expansion interface
+	MCFG_DEVICE_ADD("exp", KCCART_SLOT, 0)
+	MCFG_DEVICE_SLOT_INTERFACE(kc85_exp, nullptr, false)
+	MCFG_KCEXP_SLOT_NEXT_SLOT(nullptr)
+	MCFG_KCEXP_SLOT_OUT_IRQ_CB(WRITELINE(kc_d002_device, out_irq_w))
+	MCFG_KCEXP_SLOT_OUT_NMI_CB(WRITELINE(kc_d002_device, out_nmi_w))
+	MCFG_KCEXP_SLOT_OUT_HALT_CB(WRITELINE(kc_d002_device, out_halt_w))
+MACHINE_CONFIG_END
+>>>>>>> upstream/master
 
 //-------------------------------------------------
 //  input_ports - device-specific input ports
@@ -159,31 +226,53 @@ ioport_constructor kc_d002_device::device_input_ports() const
 //  read
 //-------------------------------------------------
 
+<<<<<<< HEAD
 void kc_d002_device::read(offs_t offset, UINT8 &data)
 {
 	for (int i=0; i<5; i++)
 		m_expansions[i]->read(offset, data);
+=======
+void kc_d002_device::read(offs_t offset, uint8_t &data)
+{
+	for (auto & elem : m_expansions)
+		elem->read(offset, data);
+>>>>>>> upstream/master
 }
 
 //-------------------------------------------------
 //  write
 //-------------------------------------------------
 
+<<<<<<< HEAD
 void kc_d002_device::write(offs_t offset, UINT8 data)
 {
 	for (int i=0; i<5; i++)
 		m_expansions[i]->write(offset, data);
+=======
+void kc_d002_device::write(offs_t offset, uint8_t data)
+{
+	for (auto & elem : m_expansions)
+		elem->write(offset, data);
+>>>>>>> upstream/master
 }
 
 //-------------------------------------------------
 //  IO read
 //-------------------------------------------------
 
+<<<<<<< HEAD
 void kc_d002_device::io_read(offs_t offset, UINT8 &data)
 {
 	if ((offset & 0xff) == 0x80)
 	{
 		UINT8 slot_id = (offset>>8) & 0xff;
+=======
+void kc_d002_device::io_read(offs_t offset, uint8_t &data)
+{
+	if ((offset & 0xff) == 0x80)
+	{
+		uint8_t slot_id = (offset>>8) & 0xff;
+>>>>>>> upstream/master
 
 		if ((slot_id & 0xf0) == ioport("ID")->read() && !(slot_id & 0x03))
 			data = m_expansions[(slot_id>>2) & 3]->module_id_r();
@@ -192,8 +281,13 @@ void kc_d002_device::io_read(offs_t offset, UINT8 &data)
 	}
 	else
 	{
+<<<<<<< HEAD
 		for (int i=0; i<5; i++)
 			m_expansions[i]->io_read(offset, data);
+=======
+		for (auto & elem : m_expansions)
+			elem->io_read(offset, data);
+>>>>>>> upstream/master
 	}
 }
 
@@ -201,11 +295,19 @@ void kc_d002_device::io_read(offs_t offset, UINT8 &data)
 //  IO write
 //-------------------------------------------------
 
+<<<<<<< HEAD
 void kc_d002_device::io_write(offs_t offset, UINT8 data)
 {
 	if ((offset & 0xff) == 0x80)
 	{
 		UINT8 slot_id = (offset>>8) & 0xff;
+=======
+void kc_d002_device::io_write(offs_t offset, uint8_t data)
+{
+	if ((offset & 0xff) == 0x80)
+	{
+		uint8_t slot_id = (offset>>8) & 0xff;
+>>>>>>> upstream/master
 
 		if ((slot_id & 0xf0) == ioport("ID")->read() && !(slot_id & 0x03))
 			m_expansions[(slot_id>>2) & 3]->control_w(data);
@@ -214,8 +316,13 @@ void kc_d002_device::io_write(offs_t offset, UINT8 data)
 	}
 	else
 	{
+<<<<<<< HEAD
 		for (int i=0; i<5; i++)
 			m_expansions[i]->io_write(offset, data);
+=======
+		for (auto & elem : m_expansions)
+			elem->io_write(offset, data);
+>>>>>>> upstream/master
 	}
 
 }

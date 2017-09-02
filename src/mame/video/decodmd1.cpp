@@ -7,10 +7,19 @@
  *    Z80 @ 4MHz
  */
 
+<<<<<<< HEAD
 #include "decodmd1.h"
 #include "rendlay.h"
 
 const device_type DECODMD1 = &device_creator<decodmd_type1_device>;
+=======
+#include "emu.h"
+#include "decodmd1.h"
+#include "rendlay.h"
+#include "screen.h"
+
+DEFINE_DEVICE_TYPE(DECODMD1, decodmd_type1_device, "decodmd1", "Data East Pinball Dot Matrix Display Type 1")
+>>>>>>> upstream/master
 
 READ8_MEMBER( decodmd_type1_device::latch_r )
 {
@@ -38,7 +47,10 @@ WRITE8_MEMBER( decodmd_type1_device::ctrl_w )
 	if((m_ctrl & 0x02) && !(data & 0x02))
 	{
 		m_rombank1->set_entry(0);
+<<<<<<< HEAD
 		m_bank = 0;
+=======
+>>>>>>> upstream/master
 		set_busy(B_SET,0);
 		m_rowselect = 0;
 		m_blank = 0;
@@ -81,7 +93,11 @@ READ8_MEMBER( decodmd_type1_device::dmd_port_r )
 
 WRITE8_MEMBER( decodmd_type1_device::dmd_port_w )
 {
+<<<<<<< HEAD
 	UINT8 bit;
+=======
+	uint8_t bit;
+>>>>>>> upstream/master
 
 	switch(offset & 0x84)
 	{
@@ -100,6 +116,7 @@ WRITE8_MEMBER( decodmd_type1_device::dmd_port_w )
 		break;
 	case 0x84:
 		bit = data & 0x01;
+<<<<<<< HEAD
 		switch(offset & 0xdc)
 		{
 		case 0x84:  // Bank bit 0
@@ -134,14 +151,53 @@ WRITE8_MEMBER( decodmd_type1_device::dmd_port_w )
 			set_busy(B_SET,bit);
 			break;
 		}
+=======
+		m_bitlatch->write_bit((offset & 0x40) >> 4 | (offset & 0x18) >> 3, bit);
+>>>>>>> upstream/master
 		break;
 	}
 }
 
+<<<<<<< HEAD
 void decodmd_type1_device::output_data()
 {
 	UINT8 ptr = 0;
 	UINT32 row = m_rowselect;
+=======
+WRITE_LINE_MEMBER(decodmd_type1_device::blank_w)
+{
+	m_blank = state;
+	if (state)
+		output_data();
+}
+
+WRITE_LINE_MEMBER(decodmd_type1_device::status_w)
+{
+	m_status = state;
+}
+
+WRITE_LINE_MEMBER(decodmd_type1_device::rowdata_w)
+{
+	m_rowdata = state;
+}
+
+WRITE_LINE_MEMBER(decodmd_type1_device::rowclock_w)
+{
+	if (!state && m_rowclock)  // on negative edge
+		m_rowselect = (m_rowselect << 1) | m_rowdata;
+	m_rowclock = state;
+}
+
+WRITE_LINE_MEMBER(decodmd_type1_device::test_w)
+{
+	set_busy(B_SET, state);
+}
+
+void decodmd_type1_device::output_data()
+{
+	uint8_t ptr = 0;
+	uint32_t row = m_rowselect;
+>>>>>>> upstream/master
 
 	if(row == 0)
 		m_frameswap = !m_frameswap;
@@ -167,9 +223,15 @@ void decodmd_type1_device::output_data()
 	m_prevrow = m_rowselect;
 }
 
+<<<<<<< HEAD
 void decodmd_type1_device::set_busy(UINT8 input, UINT8 val)
 {
 	UINT8 newval = (m_busy_lines & ~input) | (val ? input : 0);
+=======
+void decodmd_type1_device::set_busy(uint8_t input, uint8_t val)
+{
+	uint8_t newval = (m_busy_lines & ~input) | (val ? input : 0);
+>>>>>>> upstream/master
 
 	if(~newval & m_busy_lines & B_CLR)
 		m_busy = 0;
@@ -202,7 +264,11 @@ static ADDRESS_MAP_START( decodmd1_io_map, AS_IO, 8, decodmd_type1_device )
 	AM_RANGE(0x00, 0xff) AM_READWRITE(dmd_port_r, dmd_port_w)
 ADDRESS_MAP_END
 
+<<<<<<< HEAD
 static MACHINE_CONFIG_FRAGMENT( decodmd1 )
+=======
+MACHINE_CONFIG_MEMBER( decodmd_type1_device::device_add_mconfig )
+>>>>>>> upstream/master
 	/* basic machine hardware */
 	MCFG_CPU_ADD("dmdcpu", Z80, XTAL_8MHz / 2)
 	MCFG_CPU_PROGRAM_MAP(decodmd1_map)
@@ -210,19 +276,28 @@ static MACHINE_CONFIG_FRAGMENT( decodmd1 )
 
 	MCFG_QUANTUM_TIME(attotime::from_hz(50))
 
+<<<<<<< HEAD
 	MCFG_TIMER_DRIVER_ADD_PERIODIC("nmi_timer",decodmd_type1_device,dmd_nmi,attotime::from_hz(2000))  // seems a lot
+=======
+	MCFG_TIMER_DRIVER_ADD_PERIODIC("nmi_timer", decodmd_type1_device, dmd_nmi, attotime::from_hz(2000))  // seems a lot
+>>>>>>> upstream/master
 
 	MCFG_DEFAULT_LAYOUT(layout_lcd)
 
 	MCFG_SCREEN_ADD("dmd",LCD)
 	MCFG_SCREEN_SIZE(128, 16)
 	MCFG_SCREEN_VISIBLE_AREA(0, 128-1, 0, 16-1)
+<<<<<<< HEAD
 	MCFG_SCREEN_UPDATE_DRIVER(decodmd_type1_device,screen_update)
+=======
+	MCFG_SCREEN_UPDATE_DRIVER(decodmd_type1_device, screen_update)
+>>>>>>> upstream/master
 	MCFG_SCREEN_REFRESH_RATE(50)
 
 	MCFG_RAM_ADD(RAM_TAG)
 	MCFG_RAM_DEFAULT_SIZE("8K")
 
+<<<<<<< HEAD
 MACHINE_CONFIG_END
 
 machine_config_constructor decodmd_type1_device::device_mconfig_additions() const
@@ -236,6 +311,25 @@ decodmd_type1_device::decodmd_type1_device(const machine_config &mconfig, const 
 		m_rombank1(*this,"dmdbank1"),
 		m_rombank2(*this,"dmdbank2"),
 		m_ram(*this,RAM_TAG)
+=======
+	MCFG_DEVICE_ADD("bitlatch", HC259, 0) // U4
+	MCFG_ADDRESSABLE_LATCH_PARALLEL_OUT_CB(MEMBANK("dmdbank1")) MCFG_DEVCB_MASK(0x07) MCFG_DEVCB_INVERT
+	MCFG_ADDRESSABLE_LATCH_Q3_OUT_CB(WRITELINE(decodmd_type1_device, blank_w))
+	MCFG_ADDRESSABLE_LATCH_Q4_OUT_CB(WRITELINE(decodmd_type1_device, status_w))
+	MCFG_ADDRESSABLE_LATCH_Q5_OUT_CB(WRITELINE(decodmd_type1_device, rowdata_w))
+	MCFG_ADDRESSABLE_LATCH_Q6_OUT_CB(WRITELINE(decodmd_type1_device, rowclock_w))
+	MCFG_ADDRESSABLE_LATCH_Q7_OUT_CB(WRITELINE(decodmd_type1_device, test_w))
+MACHINE_CONFIG_END
+
+
+decodmd_type1_device::decodmd_type1_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: device_t(mconfig, DECODMD1, tag, owner, clock),
+		m_cpu(*this, "dmdcpu"),
+		m_rombank1(*this, "dmdbank1"),
+		m_rombank2(*this, "dmdbank2"),
+		m_ram(*this, RAM_TAG),
+		m_bitlatch(*this, "bitlatch")
+>>>>>>> upstream/master
 {}
 
 void decodmd_type1_device::device_start()
@@ -245,12 +339,21 @@ void decodmd_type1_device::device_start()
 
 void decodmd_type1_device::device_reset()
 {
+<<<<<<< HEAD
 	UINT8* ROM;
 	UINT8* RAM = m_ram->pointer();
 	m_rom = memregion(m_gfxtag);
 
 	memset(RAM,0,0x2000);
 	memset(m_pixels,0,0x200);
+=======
+	uint8_t* ROM;
+	uint8_t* RAM = m_ram->pointer();
+	m_rom = memregion(m_gfxtag);
+
+	memset(RAM,0,0x2000);
+	memset(m_pixels,0,0x200*sizeof(uint32_t));
+>>>>>>> upstream/master
 
 	ROM = m_rom->base();
 	m_rombank1->configure_entries(0, 8, &ROM[0x0000], 0x4000);
@@ -258,7 +361,10 @@ void decodmd_type1_device::device_reset()
 	m_rombank1->set_entry(0);
 	m_rombank2->set_entry(0);
 	m_status = 0;
+<<<<<<< HEAD
 	m_bank = 0;
+=======
+>>>>>>> upstream/master
 	m_busy = 0;
 	set_busy(B_CLR|B_SET,0);
 	m_rowselect = 0;
@@ -272,12 +378,21 @@ void decodmd_type1_device::static_set_gfxregion(device_t &device, const char *ta
 	cpuboard.m_gfxtag = tag;
 }
 
+<<<<<<< HEAD
 UINT32 decodmd_type1_device::screen_update( screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect )
 {
 	UINT8 ptr = 0;
 	UINT8 x,y,dot;
 	UINT32 data1,data2,data3,data4;
 	UINT32 col;
+=======
+uint32_t decodmd_type1_device::screen_update( screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect )
+{
+	uint8_t ptr = 0;
+	uint8_t x,y,dot;
+	uint32_t data1,data2,data3,data4;
+	uint32_t col;
+>>>>>>> upstream/master
 
 	if(m_frameswap)
 		ptr = 0x80;
@@ -297,14 +412,22 @@ UINT32 decodmd_type1_device::screen_update( screen_device &screen, bitmap_rgb32 
 				else if (data1 & 0x01) // both are the same, so either high intensity or none at all
 					col = rgb_t(0xff,0xaa,0x00);
 				else
+<<<<<<< HEAD
 					col = rgb_t::black;
+=======
+					col = rgb_t::black();
+>>>>>>> upstream/master
 				bitmap.pix32(y,x+dot) = col;
 				if((data2 & 0x01) != (data4 & 0x01))
 					col = rgb_t(0x7f,0x55,0x00);
 				else if (data2 & 0x01) // both are the same, so either high intensity or none at all
 					col = rgb_t(0xff,0xaa,0x00);
 				else
+<<<<<<< HEAD
 					col = rgb_t::black;
+=======
+					col = rgb_t::black();
+>>>>>>> upstream/master
 				bitmap.pix32(y,x+dot+1) = col;
 				data1 >>= 1;
 				data2 >>= 1;

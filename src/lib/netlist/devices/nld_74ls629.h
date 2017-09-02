@@ -28,6 +28,7 @@
 #ifndef NLD_74LS629_H_
 #define NLD_74LS629_H_
 
+<<<<<<< HEAD
 #include "nl_base.h"
 #include "analog/nld_twoterm.h"
 
@@ -71,5 +72,17 @@ NETLIB_DEVICE(SN74LS629_dip,
 
 NETLIB_NAMESPACE_DEVICES_END()
 
+=======
+#include "../nl_setup.h"
+
+#define SN74LS629(name, p_cap)                                                  \
+		NET_REGISTER_DEV(SN74LS629, name)                                       \
+		NETDEV_PARAMI(name, CAP, p_cap)
+
+#define SN74LS629_DIP(name, p_cap1, p_cap2)                                     \
+		NET_REGISTER_DEV(SN74LS629_DIP, name)                                   \
+		NETDEV_PARAMI(name, 1.CAP, p_cap1)                                      \
+		NETDEV_PARAMI(name, 2.CAP, p_cap2)
+>>>>>>> upstream/master
 
 #endif /* NLD_74LS629_H_ */

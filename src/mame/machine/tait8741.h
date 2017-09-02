@@ -1,8 +1,15 @@
 // license:BSD-3-Clause
 // copyright-holders:Jarek Parchanski
+<<<<<<< HEAD
 #ifndef __TAITO8741__
 #define __TAITO8741__
 
+=======
+#ifndef MAME_MACHINE_TAITO8741_H
+#define MAME_MACHINE_TAITO8741_H
+
+#pragma once
+>>>>>>> upstream/master
 
 /****************************************************************************
   gladiatr and Great Swordsman set.
@@ -38,6 +45,7 @@
 
 class taito8741_4pack_device : public device_t
 {
+<<<<<<< HEAD
 	struct I8741 {
 		int number;
 		UINT8 toData;    /* to host data      */
@@ -66,6 +74,17 @@ public:
 	template<class _Object> static devcb_base &set_port_handler_3_callback(device_t &device, _Object object) { return downcast<taito8741_4pack_device &>(device).m_port_handler_3_r.set_callback(object); }
 
 	static void static_set_mode(device_t &device, int num, UINT8 mode) { downcast<taito8741_4pack_device &>(device).m_taito8741[num].mode = mode; }
+=======
+public:
+	taito8741_4pack_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
+
+	template <class Object> static devcb_base &set_port_handler_0_callback(device_t &device, Object &&cb) { return downcast<taito8741_4pack_device &>(device).m_port_handler_0_r.set_callback(std::forward<Object>(cb)); }
+	template <class Object> static devcb_base &set_port_handler_1_callback(device_t &device, Object &&cb) { return downcast<taito8741_4pack_device &>(device).m_port_handler_1_r.set_callback(std::forward<Object>(cb)); }
+	template <class Object> static devcb_base &set_port_handler_2_callback(device_t &device, Object &&cb) { return downcast<taito8741_4pack_device &>(device).m_port_handler_2_r.set_callback(std::forward<Object>(cb)); }
+	template <class Object> static devcb_base &set_port_handler_3_callback(device_t &device, Object &&cb) { return downcast<taito8741_4pack_device &>(device).m_port_handler_3_r.set_callback(std::forward<Object>(cb)); }
+
+	static void static_set_mode(device_t &device, int num, uint8_t mode) { downcast<taito8741_4pack_device &>(device).m_taito8741[num].mode = mode; }
+>>>>>>> upstream/master
 	static void static_set_connect(device_t &device, int num, int conn) { downcast<taito8741_4pack_device &>(device).m_taito8741[num].connect = conn; }
 
 	DECLARE_READ8_MEMBER( read_0 ) { if(offset&1) return status_r(0); else return data_r(0); }
@@ -84,6 +103,7 @@ public:
 	void data_w(int num, int data);
 	void command_w(int num, int data);
 
+<<<<<<< HEAD
 	UINT8 port_read(int num, int offset);
 
 protected:
@@ -96,6 +116,38 @@ private:
 	int hostdata_r(I8741 *st);
 	int hostcmd_r(I8741 *st);
 	void serial_rx(I8741 *st,UINT8 *data);
+=======
+	uint8_t port_read(int num, int offset);
+
+protected:
+	// device-level overrides
+	virtual void device_start() override;
+	virtual void device_reset() override;
+
+private:
+	struct I8741 {
+		int number;
+		uint8_t toData;    /* to host data      */
+		uint8_t fromData;  /* from host data    */
+		uint8_t fromCmd;   /* from host command */
+		uint8_t status;    /* b0 = rd ready,b1 = wd full,b2 = cmd ?? */
+		uint8_t mode;
+		uint8_t phase;
+		uint8_t txd[8];
+		uint8_t rxd[8];
+		uint8_t parallelselect;
+		uint8_t txpoint;
+		int connect;
+		uint8_t pending4a;
+		int serial_out;
+		int coins;
+	};
+
+	void hostdata_w(I8741 *st,int data);
+	int hostdata_r(I8741 *st);
+	int hostcmd_r(I8741 *st);
+	void serial_rx(I8741 *st,uint8_t *data);
+>>>>>>> upstream/master
 
 	// internal state
 	I8741       m_taito8741[4];
@@ -107,6 +159,7 @@ private:
 };
 
 
+<<<<<<< HEAD
 extern const device_type TAITO8741_4PACK;
 
 
@@ -187,3 +240,8 @@ extern const device_type JOSVOLLY8741_4PACK;
 
 
 #endif
+=======
+DECLARE_DEVICE_TYPE(TAITO8741_4PACK, taito8741_4pack_device)
+
+#endif // MAME_MACHINE_TAITO8741_H
+>>>>>>> upstream/master

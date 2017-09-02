@@ -65,7 +65,11 @@ static const char *const s_mnemonic[] =
 enum e_operand
 {
 		O_NONE,
+<<<<<<< HEAD
 	O_A,        /* currect register set register A */
+=======
+	O_A,        /* current register set register A */
+>>>>>>> upstream/master
 	O_C8,       /* current register set byte */
 	O_C16,      /* current register set word */
 	O_C32,      /* current register set long word */
@@ -1433,6 +1437,7 @@ static const char *const s_cond[16] =
 };
 
 
+<<<<<<< HEAD
 CPU_DISASSEMBLE( tlcs900 )
 {
 	const tlcs900inst *dasm;
@@ -1440,6 +1445,14 @@ CPU_DISASSEMBLE( tlcs900 )
 	char buf[32];
 	UINT8   op, op1;
 	UINT32  imm;
+=======
+CPU_DISASSEMBLE(tlcs900)
+{
+	const tlcs900inst *dasm;
+	std::string buf;
+	uint8_t   op, op1;
+	uint32_t  imm;
+>>>>>>> upstream/master
 	int     flags = 0;
 	int     pos = 0;
 
@@ -1450,56 +1463,92 @@ CPU_DISASSEMBLE( tlcs900 )
 	/* Check for extended addressing modes */
 	switch( dasm->mnemonic )
 	{
+<<<<<<< HEAD
 		default:
 				break;
 	case M_80:
 		sprintf( buf, "%s", s_reg32[op & 0x07] );
+=======
+	default:
+		break;
+
+	case M_80:
+		buf = string_format("%s", s_reg32[op & 0x07]);
+>>>>>>> upstream/master
 		op = oprom[ pos++ ];
 		dasm = &mnemonic_80[ op ];
 		break;
 
 	case M_88:
 		imm = oprom[ pos++ ];
+<<<<<<< HEAD
 		sprintf( buf, "%s+0x%02x", s_reg32[op & 0x07], imm );
+=======
+		buf = string_format("%s+0x%02x", s_reg32[op & 0x07], imm);
+>>>>>>> upstream/master
 		op = oprom[ pos++ ];
 		dasm = &mnemonic_88[ op ];
 		break;
 
 	case M_90:
+<<<<<<< HEAD
 		sprintf( buf, "%s", s_reg32[op & 0x07] );
+=======
+		buf = string_format("%s", s_reg32[op & 0x07]);
+>>>>>>> upstream/master
 		op = oprom[ pos++ ];
 		dasm = &mnemonic_90[ op ];
 		break;
 
 	case M_98:
 		imm = oprom[ pos++ ];
+<<<<<<< HEAD
 		sprintf( buf, "%s+0x%02x", s_reg32[op & 0x07], imm );
+=======
+		buf = string_format("%s+0x%02x", s_reg32[op & 0x07], imm);
+>>>>>>> upstream/master
 		op = oprom[ pos++ ];
 		dasm = &mnemonic_98[ op ];
 		break;
 
 	case M_A0:
+<<<<<<< HEAD
 		sprintf( buf, "%s", s_reg32[op & 0x07] );
+=======
+		buf = string_format("%s", s_reg32[op & 0x07]);
+>>>>>>> upstream/master
 		op = oprom[ pos++ ];
 		dasm = &mnemonic_a0[ op ];
 		break;
 
 	case M_A8:
 		imm = oprom[ pos++ ];
+<<<<<<< HEAD
 		sprintf( buf, "%s+0x%02x", s_reg32[op & 0x07], imm );
+=======
+		buf = string_format("%s+0x%02x", s_reg32[op & 0x07], imm);
+>>>>>>> upstream/master
 		op = oprom[ pos++ ];
 		dasm = &mnemonic_a0[ op ];
 		break;
 
 	case M_B0:
+<<<<<<< HEAD
 		sprintf( buf, "%s", s_reg32[op & 0x07] );
+=======
+		buf = string_format("%s", s_reg32[op & 0x07]);
+>>>>>>> upstream/master
 		op = oprom[ pos++ ];
 		dasm = &mnemonic_b0[ op ];
 		break;
 
 	case M_B8:
 		imm = oprom[ pos++ ];
+<<<<<<< HEAD
 		sprintf( buf, "%s+0x%02x", s_reg32[op & 0x07], imm );
+=======
+		buf = string_format("%s+0x%02x", s_reg32[op & 0x07], imm);
+>>>>>>> upstream/master
 		op = oprom[ pos++ ];
 		dasm = &mnemonic_b8[ op ];
 		break;
@@ -1509,20 +1558,35 @@ CPU_DISASSEMBLE( tlcs900 )
 		{
 		case 0x00:  /* 0xC0 */
 			imm = oprom[ pos++ ];
+<<<<<<< HEAD
 			sprintf( buf, "0x%02x", imm );
+=======
+			buf = string_format("0x%02x", imm);
+>>>>>>> upstream/master
 			break;
 
 		case 0x01:  /* 0xC1 */
 			imm = oprom[ pos++ ];
+<<<<<<< HEAD
 			imm = imm | ( oprom[ pos++ ] << 8 );
 			sprintf( buf, "0x%04x", imm );
+=======
+			imm = imm | (oprom[ pos++ ] << 8);
+			buf = string_format("0x%04x", imm);
+>>>>>>> upstream/master
 			break;
 
 		case 0x02:  /* 0xC2 */
 			imm = oprom[ pos++ ];
+<<<<<<< HEAD
 			imm = imm | ( oprom[ pos++ ] << 8 );
 			imm = imm | ( oprom[ pos++ ] << 16 );
 			sprintf( buf, "0x%06x", imm );
+=======
+			imm = imm | (oprom[ pos++ ] << 8);
+			imm = imm | (oprom[ pos++ ] << 16);
+			buf = string_format("0x%06x", imm);
+>>>>>>> upstream/master
 			break;
 
 		case 0x03:  /* 0xC3 */
@@ -1530,18 +1594,31 @@ CPU_DISASSEMBLE( tlcs900 )
 			switch( imm & 0x03 )
 			{
 			case 0x00:
+<<<<<<< HEAD
 				sprintf( buf, "%s", s_allreg32[imm] );
+=======
+				buf = string_format("%s", s_allreg32[imm]);
+>>>>>>> upstream/master
 				break;
 
 			case 0x01:
 				op = imm;
 				imm = oprom[ pos++ ];
+<<<<<<< HEAD
 				imm = imm | ( oprom[ pos++ ] << 8 );
 				sprintf( buf, "%s+0x%04x", s_allreg32[op], imm );
 				break;
 
 			case 0x02:
 				sprintf( buf, "unknown" );
+=======
+				imm = imm | (oprom[ pos++ ] << 8);
+				buf = string_format("%s+0x%04x", s_allreg32[op], imm);
+				break;
+
+			case 0x02:
+				buf = string_format("unknown");
+>>>>>>> upstream/master
 				break;
 
 			case 0x03:
@@ -1550,19 +1627,32 @@ CPU_DISASSEMBLE( tlcs900 )
 				case 0x03:
 					op = oprom[ pos++ ];
 					op1 = oprom[ pos++ ];
+<<<<<<< HEAD
 					sprintf( buf, "%s+%s", s_allreg32[op], s_allreg8[op1] );
+=======
+					buf = string_format("%s+%s", s_allreg32[op], s_allreg8[op1]);
+>>>>>>> upstream/master
 					break;
 
 				case 0x07:
 					op = oprom[ pos++ ];
 					op1 = oprom[ pos++ ];
+<<<<<<< HEAD
 					sprintf( buf, "%s+%s", s_allreg32[op], s_allreg16[op1] );
+=======
+					buf = string_format("%s+%s", s_allreg32[op], s_allreg16[op1]);
+>>>>>>> upstream/master
 					break;
 
 				case 0x13:
 					imm = oprom[ pos++ ];
+<<<<<<< HEAD
 					imm = imm | ( oprom[ pos++ ] << 8 );
 					sprintf( buf, "0x%06x", pc + pos + (INT16)imm );
+=======
+					imm = imm | (oprom[ pos++ ] << 8);
+					buf = string_format("0x%06x", pc + pos + (int16_t)imm);
+>>>>>>> upstream/master
 					break;
 				}
 				break;
@@ -1571,12 +1661,20 @@ CPU_DISASSEMBLE( tlcs900 )
 
 		case 0x04:  /* 0xC4 */
 			imm = oprom[ pos++ ];
+<<<<<<< HEAD
 			sprintf( buf, "-%s", s_allreg32[imm] );
+=======
+			buf = string_format("-%s", s_allreg32[imm]);
+>>>>>>> upstream/master
 			break;
 
 		case 0x05:  /* 0xC5 */
 			imm = oprom[ pos++ ];
+<<<<<<< HEAD
 			sprintf( buf, "%s+", s_allreg32[imm] );
+=======
+			buf = string_format("%s+", s_allreg32[imm]);
+>>>>>>> upstream/master
 			break;
 		}
 		op = oprom[ pos++ ];
@@ -1586,12 +1684,20 @@ CPU_DISASSEMBLE( tlcs900 )
 	case oC8:
 		if ( op & 0x08 )
 		{
+<<<<<<< HEAD
 			sprintf( buf, "%s", s_reg8[ op & 0x07 ] );
+=======
+			buf = string_format("%s", s_reg8[ op & 0x07 ]);
+>>>>>>> upstream/master
 		}
 		else
 		{
 			imm = oprom[ pos++ ];
+<<<<<<< HEAD
 			sprintf( buf, "%s", s_allreg8[imm] );
+=======
+			buf = string_format("%s", s_allreg8[imm]);
+>>>>>>> upstream/master
 		}
 		op = oprom[ pos++ ];
 		dasm = &mnemonic_c8[ op ];
@@ -1602,20 +1708,35 @@ CPU_DISASSEMBLE( tlcs900 )
 		{
 		case 0x00:  /* 0xD0 */
 			imm = oprom[ pos++ ];
+<<<<<<< HEAD
 			sprintf( buf, "0x%02x", imm );
+=======
+			buf = string_format("0x%02x", imm);
+>>>>>>> upstream/master
 			break;
 
 		case 0x01:  /* 0xD1 */
 			imm = oprom[ pos++ ];
+<<<<<<< HEAD
 			imm = imm | ( oprom[ pos++ ] << 8 );
 			sprintf( buf, "0x%04x", imm );
+=======
+			imm = imm | (oprom[ pos++ ] << 8);
+			buf = string_format("0x%04x", imm);
+>>>>>>> upstream/master
 			break;
 
 		case 0x02:  /* 0xD2 */
 			imm = oprom[ pos++ ];
+<<<<<<< HEAD
 			imm = imm | ( oprom[ pos++ ] << 8 );
 			imm = imm | ( oprom[ pos++ ] << 16 );
 			sprintf( buf, "0x%06x", imm );
+=======
+			imm = imm | (oprom[ pos++ ] << 8);
+			imm = imm | (oprom[ pos++ ] << 16);
+			buf = string_format("0x%06x", imm);
+>>>>>>> upstream/master
 			break;
 
 		case 0x03:  /* 0xD3 */
@@ -1623,18 +1744,31 @@ CPU_DISASSEMBLE( tlcs900 )
 			switch( imm & 0x03 )
 			{
 			case 0x00:
+<<<<<<< HEAD
 				sprintf( buf, "%s", s_allreg32[imm] );
+=======
+				buf = string_format("%s", s_allreg32[imm]);
+>>>>>>> upstream/master
 				break;
 
 			case 0x01:
 				op = imm;
 				imm = oprom[ pos++ ];
+<<<<<<< HEAD
 				imm = imm | ( oprom[ pos++ ] << 8 );
 				sprintf( buf, "%s+0x%04x", s_allreg32[op], imm );
 				break;
 
 			case 0x02:
 				sprintf( buf, "unknown" );
+=======
+				imm = imm | (oprom[ pos++ ] << 8);
+				buf = string_format("%s+0x%04x", s_allreg32[op], imm);
+				break;
+
+			case 0x02:
+				buf = string_format("unknown");
+>>>>>>> upstream/master
 				break;
 
 			case 0x03:
@@ -1643,19 +1777,32 @@ CPU_DISASSEMBLE( tlcs900 )
 				case 0x03:
 					op = oprom[ pos++ ];
 					op1 = oprom[ pos++ ];
+<<<<<<< HEAD
 					sprintf( buf, "%s+%s", s_allreg32[op], s_allreg8[op1] );
+=======
+					buf = string_format("%s+%s", s_allreg32[op], s_allreg8[op1]);
+>>>>>>> upstream/master
 					break;
 
 				case 0x07:
 					op = oprom[ pos++ ];
 					op1 = oprom[ pos++ ];
+<<<<<<< HEAD
 					sprintf( buf, "%s+%s", s_allreg32[op], s_allreg16[op1] );
+=======
+					buf = string_format("%s+%s", s_allreg32[op], s_allreg16[op1]);
+>>>>>>> upstream/master
 					break;
 
 				case 0x13:
 					imm = oprom[ pos++ ];
+<<<<<<< HEAD
 					imm = imm | ( oprom[ pos++ ] << 8 );
 					sprintf( buf, "0x%06x", pc + pos + (INT16)imm );
+=======
+					imm = imm | (oprom[ pos++ ] << 8);
+					buf = string_format("0x%06x", pc + pos + (int16_t)imm);
+>>>>>>> upstream/master
 					break;
 				}
 				break;
@@ -1664,12 +1811,20 @@ CPU_DISASSEMBLE( tlcs900 )
 
 		case 0x04:  /* 0xD4 */
 			imm = oprom[ pos++ ];
+<<<<<<< HEAD
 			sprintf( buf, "-%s", s_allreg32[imm] );
+=======
+			buf = string_format("-%s", s_allreg32[imm]);
+>>>>>>> upstream/master
 			break;
 
 		case 0x05:  /* 0xD5 */
 			imm = oprom[ pos++ ];
+<<<<<<< HEAD
 			sprintf( buf, "%s+", s_allreg32[imm] );
+=======
+			buf = string_format("%s+", s_allreg32[imm]);
+>>>>>>> upstream/master
 			break;
 		}
 		op = oprom[ pos++ ];
@@ -1679,12 +1834,20 @@ CPU_DISASSEMBLE( tlcs900 )
 	case oD8:
 		if ( op & 0x08 )
 		{
+<<<<<<< HEAD
 			sprintf( buf, "%s", s_reg16[ op & 0x07 ] );
+=======
+			buf = string_format("%s", s_reg16[ op & 0x07 ]);
+>>>>>>> upstream/master
 		}
 		else
 		{
 			imm = oprom[ pos++ ];
+<<<<<<< HEAD
 			sprintf( buf, "%s", s_allreg16[imm] );
+=======
+			buf = string_format("%s", s_allreg16[imm]);
+>>>>>>> upstream/master
 		}
 
 		op = oprom[ pos++ ];
@@ -1696,20 +1859,35 @@ CPU_DISASSEMBLE( tlcs900 )
 		{
 		case 0x00:  /* 0xE0 */
 			imm = oprom[ pos++ ];
+<<<<<<< HEAD
 			sprintf( buf, "0x%02x", imm );
+=======
+			buf = string_format("0x%02x", imm);
+>>>>>>> upstream/master
 			break;
 
 		case 0x01:  /* 0xE1 */
 			imm = oprom[ pos++ ];
+<<<<<<< HEAD
 			imm = imm | ( oprom[ pos++ ] << 8 );
 			sprintf( buf, "0x%04x", imm );
+=======
+			imm = imm | (oprom[ pos++ ] << 8);
+			buf = string_format("0x%04x", imm);
+>>>>>>> upstream/master
 			break;
 
 		case 0x02:  /* 0xE2 */
 			imm = oprom[ pos++ ];
+<<<<<<< HEAD
 			imm = imm | ( oprom[ pos++ ] << 8 );
 			imm = imm | ( oprom[ pos++ ] << 16 );
 			sprintf( buf, "0x%06x", imm );
+=======
+			imm = imm | (oprom[ pos++ ] << 8);
+			imm = imm | (oprom[ pos++ ] << 16);
+			buf = string_format("0x%06x", imm);
+>>>>>>> upstream/master
 			break;
 
 		case 0x03:  /* 0xE3 */
@@ -1717,18 +1895,31 @@ CPU_DISASSEMBLE( tlcs900 )
 			switch( imm & 0x03 )
 			{
 			case 0x00:
+<<<<<<< HEAD
 				sprintf( buf, "%s", s_allreg32[imm] );
+=======
+				buf = string_format("%s", s_allreg32[imm]);
+>>>>>>> upstream/master
 				break;
 
 			case 0x01:
 				op = imm;
 				imm = oprom[ pos++ ];
+<<<<<<< HEAD
 				imm = imm | ( oprom[ pos++ ] << 8 );
 				sprintf( buf, "%s+0x%04x", s_allreg32[op], imm );
 				break;
 
 			case 0x02:
 				sprintf( buf, "unknown" );
+=======
+				imm = imm | (oprom[ pos++ ] << 8);
+				buf = string_format("%s+0x%04x", s_allreg32[op], imm);
+				break;
+
+			case 0x02:
+				buf = string_format("unknown");
+>>>>>>> upstream/master
 				break;
 
 			case 0x03:
@@ -1737,19 +1928,32 @@ CPU_DISASSEMBLE( tlcs900 )
 				case 0x03:
 					op = oprom[ pos++ ];
 					op1 = oprom[ pos++ ];
+<<<<<<< HEAD
 					sprintf( buf, "%s+%s", s_allreg32[op], s_allreg8[op1] );
+=======
+					buf = string_format("%s+%s", s_allreg32[op], s_allreg8[op1]);
+>>>>>>> upstream/master
 					break;
 
 				case 0x07:
 					op = oprom[ pos++ ];
 					op1 = oprom[ pos++ ];
+<<<<<<< HEAD
 					sprintf( buf, "%s+%s", s_allreg32[op], s_allreg16[op1] );
+=======
+					buf = string_format("%s+%s", s_allreg32[op], s_allreg16[op1]);
+>>>>>>> upstream/master
 					break;
 
 				case 0x13:
 					imm = oprom[ pos++ ];
+<<<<<<< HEAD
 					imm = imm | ( oprom[ pos++ ] << 8 );
 					sprintf( buf, "0x%06x", pc + pos + (INT16)imm );
+=======
+					imm = imm | (oprom[ pos++ ] << 8);
+					buf = string_format("0x%06x", pc + pos + (int16_t)imm);
+>>>>>>> upstream/master
 					break;
 				}
 				break;
@@ -1758,12 +1962,20 @@ CPU_DISASSEMBLE( tlcs900 )
 
 		case 0x04:  /* 0xE4 */
 			imm = oprom[ pos++ ];
+<<<<<<< HEAD
 			sprintf( buf, "-%s", s_allreg32[imm] );
+=======
+			buf = string_format("-%s", s_allreg32[imm]);
+>>>>>>> upstream/master
 			break;
 
 		case 0x05:  /* 0xE5 */
 			imm = oprom[ pos++ ];
+<<<<<<< HEAD
 			sprintf( buf, "%s+", s_allreg32[imm] );
+=======
+			buf = string_format("%s+", s_allreg32[imm]);
+>>>>>>> upstream/master
 			break;
 		}
 		op = oprom[ pos++ ];
@@ -1773,12 +1985,20 @@ CPU_DISASSEMBLE( tlcs900 )
 	case M_E8:
 		if ( op & 0x08 )
 		{
+<<<<<<< HEAD
 			sprintf( buf, "%s", s_reg32[ op & 0x07 ] );
+=======
+			buf = string_format("%s", s_reg32[ op & 0x07 ]);
+>>>>>>> upstream/master
 		}
 		else
 		{
 			imm = oprom[ pos++ ];
+<<<<<<< HEAD
 			sprintf( buf, "%s", s_allreg32[imm] );
+=======
+			buf = string_format("%s", s_allreg32[imm]);
+>>>>>>> upstream/master
 		}
 		op = oprom[ pos++ ];
 		dasm = &mnemonic_e8[ op ];
@@ -1789,20 +2009,35 @@ CPU_DISASSEMBLE( tlcs900 )
 		{
 		case 0x00:  /* 0xF0 */
 			imm = oprom[ pos++ ];
+<<<<<<< HEAD
 			sprintf( buf, "0x%02x", imm );
+=======
+			buf = string_format("0x%02x", imm);
+>>>>>>> upstream/master
 			break;
 
 		case 0x01:  /* 0xF1 */
 			imm = oprom[ pos++ ];
+<<<<<<< HEAD
 			imm = imm | ( oprom[ pos++ ] << 8 );
 			sprintf( buf, "0x%04x", imm );
+=======
+			imm = imm | (oprom[ pos++ ] << 8);
+			buf = string_format("0x%04x", imm);
+>>>>>>> upstream/master
 			break;
 
 		case 0x02:  /* 0xF2 */
 			imm = oprom[ pos++ ];
+<<<<<<< HEAD
 			imm = imm | ( oprom[ pos++ ] << 8 );
 			imm = imm | ( oprom[ pos++ ] << 16 );
 			sprintf( buf, "0x%06x", imm );
+=======
+			imm = imm | (oprom[ pos++ ] << 8);
+			imm = imm | (oprom[ pos++ ] << 16);
+			buf = string_format("0x%06x", imm);
+>>>>>>> upstream/master
 			break;
 
 		case 0x03:  /* 0xF3 */
@@ -1810,18 +2045,31 @@ CPU_DISASSEMBLE( tlcs900 )
 			switch( imm & 0x03 )
 			{
 			case 0x00:
+<<<<<<< HEAD
 				sprintf( buf, "%s", s_allreg32[imm] );
+=======
+				buf = string_format("%s", s_allreg32[imm]);
+>>>>>>> upstream/master
 				break;
 
 			case 0x01:
 				op = imm;
 				imm = oprom[ pos++ ];
+<<<<<<< HEAD
 				imm = imm | ( oprom[ pos++ ] << 8 );
 				sprintf( buf, "%s+0x%04x", s_allreg32[op], imm );
 				break;
 
 			case 0x02:
 				sprintf( buf, "unknown" );
+=======
+				imm = imm | (oprom[ pos++ ] << 8);
+				buf = string_format("%s+0x%04x", s_allreg32[op], imm);
+				break;
+
+			case 0x02:
+				buf = string_format("unknown");
+>>>>>>> upstream/master
 				break;
 
 			case 0x03:
@@ -1830,19 +2078,32 @@ CPU_DISASSEMBLE( tlcs900 )
 				case 0x03:
 					op = oprom[ pos++ ];
 					op1 = oprom[ pos++ ];
+<<<<<<< HEAD
 					sprintf( buf, "%s+%s", s_allreg32[op], s_allreg8[op1] );
+=======
+					buf = string_format("%s+%s", s_allreg32[op], s_allreg8[op1]);
+>>>>>>> upstream/master
 					break;
 
 				case 0x07:
 					op = oprom[ pos++ ];
 					op1 = oprom[ pos++ ];
+<<<<<<< HEAD
 					sprintf( buf, "%s+%s", s_allreg32[op], s_allreg16[op1] );
+=======
+					buf = string_format("%s+%s", s_allreg32[op], s_allreg16[op1]);
+>>>>>>> upstream/master
 					break;
 
 				case 0x13:
 					imm = oprom[ pos++ ];
+<<<<<<< HEAD
 					imm = imm | ( oprom[ pos++ ] << 8 );
 					sprintf( buf, "0x%06x", pc + pos + (INT16)imm );
+=======
+					imm = imm | (oprom[ pos++ ] << 8);
+					buf = string_format("0x%06x", pc + pos + (int16_t)imm);
+>>>>>>> upstream/master
 					break;
 				}
 				break;
@@ -1851,12 +2112,20 @@ CPU_DISASSEMBLE( tlcs900 )
 
 		case 0x04:  /* 0xF4 */
 			imm = oprom[ pos++ ];
+<<<<<<< HEAD
 			sprintf( buf, "-%s", s_allreg32[imm] );
+=======
+			buf = string_format("-%s", s_allreg32[imm]);
+>>>>>>> upstream/master
 			break;
 
 		case 0x05:  /* 0xF5 */
 			imm = oprom[ pos++ ];
+<<<<<<< HEAD
 			sprintf( buf, "%s+", s_allreg32[imm] );
+=======
+			buf = string_format("%s+", s_allreg32[imm]);
+>>>>>>> upstream/master
 			break;
 		}
 		op = oprom[ pos++ ];
@@ -1864,6 +2133,7 @@ CPU_DISASSEMBLE( tlcs900 )
 		break;
 	}
 
+<<<<<<< HEAD
 	dst += sprintf( dst, "%s", s_mnemonic[ dasm->mnemonic ] );
 
 	switch( dasm->mnemonic )
@@ -1871,6 +2141,15 @@ CPU_DISASSEMBLE( tlcs900 )
 		default:
 				/* maybe assert */
 				break;
+=======
+	util::stream_format(stream, "%s", s_mnemonic[ dasm->mnemonic ]);
+
+	switch( dasm->mnemonic )
+	{
+	default:
+		/* maybe assert */
+		break;
+>>>>>>> upstream/master
 	case M_CALL:
 	case M_CALR:
 		flags = DASMFLAG_STEP_OVER;
@@ -1888,6 +2167,7 @@ CPU_DISASSEMBLE( tlcs900 )
 				break;
 
 	case O_A:
+<<<<<<< HEAD
 		dst += sprintf( dst, " A" );
 		break;
 
@@ -1909,6 +2189,29 @@ CPU_DISASSEMBLE( tlcs900 )
 
 	case O_CC:
 		dst += sprintf( dst, " %s", s_cond[op & 0x0F] );
+=======
+		util::stream_format(stream, " A");
+		break;
+
+	case O_C8:
+		util::stream_format(stream, " %s", s_reg8[op & 0x07]);
+		break;
+
+	case O_C16:
+		util::stream_format(stream, " %s", s_reg16[op & 0x07]);
+		break;
+
+	case O_C32:
+		util::stream_format(stream, " %s", s_reg32[op & 0x07]);
+		break;
+
+	case O_MC16:
+		util::stream_format(stream, " %s", s_mulreg16[op & 0x07]);
+		break;
+
+	case O_CC:
+		util::stream_format(stream, " %s", s_cond[op & 0x0F]);
+>>>>>>> upstream/master
 		break;
 
 	case O_CR8:
@@ -1916,6 +2219,7 @@ CPU_DISASSEMBLE( tlcs900 )
 		switch( imm )
 		{
 		case 0x22:
+<<<<<<< HEAD
 			dst += sprintf( dst, " DMAM0" );
 			break;
 		case 0x26:
@@ -1929,6 +2233,21 @@ CPU_DISASSEMBLE( tlcs900 )
 			break;
 		default:
 			dst += sprintf( dst, " unknown" );
+=======
+			util::stream_format(stream, " DMAM0");
+			break;
+		case 0x26:
+			util::stream_format(stream, " DMAM1");
+			break;
+		case 0x2a:
+			util::stream_format(stream, " DMAM2");
+			break;
+		case 0x2e:
+			util::stream_format(stream, " DMAM3");
+			break;
+		default:
+			util::stream_format(stream, " unknown");
+>>>>>>> upstream/master
 			break;
 		}
 		break;
@@ -1938,6 +2257,7 @@ CPU_DISASSEMBLE( tlcs900 )
 		switch( imm )
 		{
 		case 0x20:
+<<<<<<< HEAD
 			dst += sprintf( dst, " DMAC0" );
 			break;
 		case 0x24:
@@ -1951,6 +2271,21 @@ CPU_DISASSEMBLE( tlcs900 )
 			break;
 		default:
 			dst += sprintf( dst, " unknown" );
+=======
+			util::stream_format(stream, " DMAC0");
+			break;
+		case 0x24:
+			util::stream_format(stream, " DMAC1");
+			break;
+		case 0x28:
+			util::stream_format(stream, " DMAC2");
+			break;
+		case 0x2c:
+			util::stream_format(stream, " DMAC3");
+			break;
+		default:
+			util::stream_format(stream, " unknown");
+>>>>>>> upstream/master
 			break;
 		}
 		break;
@@ -1960,6 +2295,7 @@ CPU_DISASSEMBLE( tlcs900 )
 		switch( imm )
 		{
 		case 0x00:
+<<<<<<< HEAD
 			dst += sprintf( dst, " DMAS0" );
 			break;
 		case 0x04:
@@ -1985,17 +2321,49 @@ CPU_DISASSEMBLE( tlcs900 )
 			break;
 		default:
 			dst += sprintf( dst, " unknown" );
+=======
+			util::stream_format(stream, " DMAS0");
+			break;
+		case 0x04:
+			util::stream_format(stream, " DMAS1");
+			break;
+		case 0x08:
+			util::stream_format(stream, " DMAS2");
+			break;
+		case 0x0c:
+			util::stream_format(stream, " DMAS3");
+			break;
+		case 0x10:
+			util::stream_format(stream, " DMAD0");
+			break;
+		case 0x14:
+			util::stream_format(stream, " DMAD1");
+			break;
+		case 0x18:
+			util::stream_format(stream, " DMAD2");
+			break;
+		case 0x1c:
+			util::stream_format(stream, " DMAD3");
+			break;
+		default:
+			util::stream_format(stream, " unknown");
+>>>>>>> upstream/master
 			break;
 		}
 		break;
 
 	case O_D8:
 		imm = oprom[ pos++ ];
+<<<<<<< HEAD
 		dst += sprintf( dst, " 0x%06x", ( pc + pos + (INT8)imm ) & 0xFFFFFF );
+=======
+		util::stream_format(stream, " 0x%06x", ( pc + pos + (int8_t)imm ) & 0xFFFFFF);
+>>>>>>> upstream/master
 		break;
 
 	case O_D16:
 		imm = oprom[ pos++ ];
+<<<<<<< HEAD
 		imm = imm | ( oprom[ pos++ ] << 8 );
 		dst += sprintf( dst, " 0x%06x", ( pc + pos + (INT16)imm ) & 0xFFFFFF );
 		break;
@@ -2006,32 +2374,66 @@ CPU_DISASSEMBLE( tlcs900 )
 
 	case O_I3:
 		dst += sprintf( dst, " %d", op & 0x07 );
+=======
+		imm = imm | (oprom[ pos++ ] << 8);
+		util::stream_format(stream, " 0x%06x", ( pc + pos + (int16_t)imm ) & 0xFFFFFF);
+		break;
+
+	case O_F:
+		util::stream_format(stream, " F");
+		break;
+
+	case O_I3:
+		util::stream_format(stream, " %d", op & 0x07);
+>>>>>>> upstream/master
 		break;
 
 	case O_I8:
 		imm = oprom[ pos++ ];
+<<<<<<< HEAD
 		dst += sprintf( dst, " 0x%02x", imm );
+=======
+		util::stream_format(stream, " 0x%02x", imm);
+>>>>>>> upstream/master
 		break;
 
 	case O_I16:
 		imm = oprom[ pos++ ];
+<<<<<<< HEAD
 		imm = imm | ( oprom[ pos++ ] << 8 );
 		dst += sprintf( dst, " 0x%04x", imm );
+=======
+		imm = imm | (oprom[ pos++ ] << 8);
+		util::stream_format(stream, " 0x%04x", imm);
+>>>>>>> upstream/master
 		break;
 
 	case O_I24:
 		imm = oprom[ pos++ ];
+<<<<<<< HEAD
 		imm = imm | ( oprom[ pos++ ] << 8 );
 		imm = imm | ( oprom[ pos++ ] << 16 );
 		dst += sprintf( dst, " 0x%06x", imm );
+=======
+		imm = imm | (oprom[ pos++ ] << 8);
+		imm = imm | (oprom[ pos++ ] << 16);
+		util::stream_format(stream, " 0x%06x", imm);
+>>>>>>> upstream/master
 		break;
 
 	case O_I32:
 		imm = oprom[ pos++ ];
+<<<<<<< HEAD
 		imm = imm | ( oprom[ pos++ ] << 8 );
 		imm = imm | ( oprom[ pos++ ] << 16 );
 		imm = imm | ( oprom[ pos++ ] << 24 );
 		dst += sprintf( dst, "0x%08x", imm );
+=======
+		imm = imm | (oprom[ pos++ ] << 8);
+		imm = imm | (oprom[ pos++ ] << 16);
+		imm = imm | (oprom[ pos++ ] << 24);
+		util::stream_format(stream, "0x%08x", imm);
+>>>>>>> upstream/master
 		break;
 
 	case O_M:
@@ -2040,21 +2442,33 @@ CPU_DISASSEMBLE( tlcs900 )
 		case M_CALL:
 		case M_JP:
 		case M_LDA:
+<<<<<<< HEAD
 			dst += sprintf( dst, " %s", buf );
 			break;
 		default:
 			dst += sprintf( dst, " (%s)", buf );
+=======
+			util::stream_format(stream, " %s", buf);
+			break;
+		default:
+			util::stream_format(stream, " (%s)", buf);
+>>>>>>> upstream/master
 			break;
 		}
 		break;
 
 	case O_M8:
 		imm = oprom[ pos++ ];
+<<<<<<< HEAD
 		dst += sprintf( dst, " (0x%02x)", imm );
+=======
+		util::stream_format(stream, " (0x%02x)", imm);
+>>>>>>> upstream/master
 		break;
 
 	case O_M16:
 		imm = oprom[ pos++ ];
+<<<<<<< HEAD
 		imm = imm | ( oprom[ pos++ ] << 8 );
 		dst += sprintf( dst, " (0x%04x)", imm );
 		break;
@@ -2065,6 +2479,18 @@ CPU_DISASSEMBLE( tlcs900 )
 
 	case O_SR:
 		dst += sprintf( dst, " SR" );
+=======
+		imm = imm | (oprom[ pos++ ] << 8);
+		util::stream_format(stream, " (0x%04x)", imm);
+		break;
+
+	case O_R:
+		util::stream_format(stream, " %s", buf);
+		break;
+
+	case O_SR:
+		util::stream_format(stream, " SR");
+>>>>>>> upstream/master
 		break;
 	}
 
@@ -2074,6 +2500,7 @@ CPU_DISASSEMBLE( tlcs900 )
 				break;
 
 		case O_A:
+<<<<<<< HEAD
 		dst += sprintf( dst, ",A" );
 		break;
 
@@ -2095,6 +2522,29 @@ CPU_DISASSEMBLE( tlcs900 )
 
 	case O_CC:
 		dst += sprintf( dst, ",%s", s_cond[op & 0x0F] );
+=======
+		util::stream_format(stream, ",A");
+		break;
+
+	case O_C8:
+		util::stream_format(stream, ",%s", s_reg8[op & 0x07]);
+		break;
+
+	case O_C16:
+		util::stream_format(stream, ",%s", s_reg16[op & 0x07]);
+		break;
+
+	case O_C32:
+		util::stream_format(stream, ",%s", s_reg32[op & 0x07]);
+		break;
+
+	case O_MC16:
+		util::stream_format(stream, ",%s", s_mulreg16[op & 0x07]);
+		break;
+
+	case O_CC:
+		util::stream_format(stream, ",%s", s_cond[op & 0x0F]);
+>>>>>>> upstream/master
 		break;
 
 	case O_CR8:
@@ -2102,6 +2552,7 @@ CPU_DISASSEMBLE( tlcs900 )
 		switch( imm )
 		{
 		case 0x22:
+<<<<<<< HEAD
 			dst += sprintf( dst, ",DMAM0" );
 			break;
 		case 0x26:
@@ -2115,6 +2566,21 @@ CPU_DISASSEMBLE( tlcs900 )
 			break;
 		default:
 			dst += sprintf( dst, ",unknown" );
+=======
+			util::stream_format(stream, ",DMAM0");
+			break;
+		case 0x26:
+			util::stream_format(stream, ",DMAM1");
+			break;
+		case 0x2a:
+			util::stream_format(stream, ",DMAM2");
+			break;
+		case 0x2e:
+			util::stream_format(stream, ",DMAM3");
+			break;
+		default:
+			util::stream_format(stream, ",unknown");
+>>>>>>> upstream/master
 			break;
 		}
 		break;
@@ -2124,6 +2590,7 @@ CPU_DISASSEMBLE( tlcs900 )
 		switch( imm )
 		{
 		case 0x20:
+<<<<<<< HEAD
 			dst += sprintf( dst, ",DMAC0" );
 			break;
 		case 0x24:
@@ -2137,6 +2604,21 @@ CPU_DISASSEMBLE( tlcs900 )
 			break;
 		default:
 			dst += sprintf( dst, ",unknown" );
+=======
+			util::stream_format(stream, ",DMAC0");
+			break;
+		case 0x24:
+			util::stream_format(stream, ",DMAC1");
+			break;
+		case 0x28:
+			util::stream_format(stream, ",DMAC2");
+			break;
+		case 0x2c:
+			util::stream_format(stream, ",DMAC3");
+			break;
+		default:
+			util::stream_format(stream, ",unknown");
+>>>>>>> upstream/master
 			break;
 		}
 		break;
@@ -2146,6 +2628,7 @@ CPU_DISASSEMBLE( tlcs900 )
 		switch( imm )
 		{
 		case 0x00:
+<<<<<<< HEAD
 			dst += sprintf( dst, ",DMAS0" );
 			break;
 		case 0x04:
@@ -2171,17 +2654,49 @@ CPU_DISASSEMBLE( tlcs900 )
 			break;
 		default:
 			dst += sprintf( dst, ",unknown" );
+=======
+			util::stream_format(stream, ",DMAS0");
+			break;
+		case 0x04:
+			util::stream_format(stream, ",DMAS1");
+			break;
+		case 0x08:
+			util::stream_format(stream, ",DMAS2");
+			break;
+		case 0x0c:
+			util::stream_format(stream, ",DMAS3");
+			break;
+		case 0x10:
+			util::stream_format(stream, ",DMAD0");
+			break;
+		case 0x14:
+			util::stream_format(stream, ",DMAD1");
+			break;
+		case 0x18:
+			util::stream_format(stream, ",DMAD2");
+			break;
+		case 0x1c:
+			util::stream_format(stream, ",DMAD3");
+			break;
+		default:
+			util::stream_format(stream, ",unknown");
+>>>>>>> upstream/master
 			break;
 		}
 		break;
 
 	case O_D8:
 		imm = oprom[ pos++ ];
+<<<<<<< HEAD
 		dst += sprintf( dst, ",0x%06x", ( pc + pos + (INT8)imm ) & 0xFFFFFF );
+=======
+		util::stream_format(stream, ",0x%06x", ( pc + pos + (int8_t)imm ) & 0xFFFFFF);
+>>>>>>> upstream/master
 		break;
 
 	case O_D16:
 		imm = oprom[ pos++ ];
+<<<<<<< HEAD
 		imm = imm | ( oprom[ pos++ ] << 8 );
 		dst += sprintf( dst, ",0x%06x", ( pc + pos + (INT16)imm ) & 0xFFFFFF );
 		break;
@@ -2192,32 +2707,66 @@ CPU_DISASSEMBLE( tlcs900 )
 
 	case O_I3:
 		dst += sprintf( dst, ",%d", op & 0x07 );
+=======
+		imm = imm | (oprom[ pos++ ] << 8);
+		util::stream_format(stream, ",0x%06x", ( pc + pos + (int16_t)imm ) & 0xFFFFFF);
+		break;
+
+	case O_F:
+		util::stream_format(stream, ",F'");
+		break;
+
+	case O_I3:
+		util::stream_format(stream, ",%d", op & 0x07);
+>>>>>>> upstream/master
 		break;
 
 	case O_I8:
 		imm = oprom[ pos++ ];
+<<<<<<< HEAD
 		dst += sprintf( dst, ",0x%02x", imm );
+=======
+		util::stream_format(stream, ",0x%02x", imm);
+>>>>>>> upstream/master
 		break;
 
 	case O_I16:
 		imm = oprom[ pos++ ];
+<<<<<<< HEAD
 		imm = imm | ( oprom[ pos++ ] << 8 );
 		dst += sprintf( dst, ",0x%04x", imm );
+=======
+		imm = imm | (oprom[ pos++ ] << 8);
+		util::stream_format(stream, ",0x%04x", imm);
+>>>>>>> upstream/master
 		break;
 
 	case O_I24:
 		imm = oprom[ pos++ ];
+<<<<<<< HEAD
 		imm = imm | ( oprom[ pos++ ] << 8 );
 		imm = imm | ( oprom[ pos++ ] << 16 );
 		dst += sprintf( dst, ",0x%06x", imm );
+=======
+		imm = imm | (oprom[ pos++ ] << 8);
+		imm = imm | (oprom[ pos++ ] << 16);
+		util::stream_format(stream, ",0x%06x", imm);
+>>>>>>> upstream/master
 		break;
 
 	case O_I32:
 		imm = oprom[ pos++ ];
+<<<<<<< HEAD
 		imm = imm | ( oprom[ pos++ ] << 8 );
 		imm = imm | ( oprom[ pos++ ] << 16 );
 		imm = imm | ( oprom[ pos++ ] << 24 );
 		dst += sprintf( dst, ",0x%08x", imm );
+=======
+		imm = imm | (oprom[ pos++ ] << 8);
+		imm = imm | (oprom[ pos++ ] << 16);
+		imm = imm | (oprom[ pos++ ] << 24);
+		util::stream_format(stream, ",0x%08x", imm);
+>>>>>>> upstream/master
 		break;
 
 	case O_M:
@@ -2226,21 +2775,33 @@ CPU_DISASSEMBLE( tlcs900 )
 		case M_CALL:
 		case M_JP:
 		case M_LDA:
+<<<<<<< HEAD
 			dst += sprintf( dst, ",%s", buf );
 			break;
 		default:
 			dst += sprintf( dst, ",(%s)", buf );
+=======
+			util::stream_format(stream, ",%s", buf);
+			break;
+		default:
+			util::stream_format(stream, ",(%s)", buf);
+>>>>>>> upstream/master
 			break;
 		}
 		break;
 
 	case O_M8:
 		imm = oprom[ pos++ ];
+<<<<<<< HEAD
 		dst += sprintf( dst, ",(0x%02x)", imm );
+=======
+		util::stream_format(stream, ",(0x%02x)", imm);
+>>>>>>> upstream/master
 		break;
 
 	case O_M16:
 		imm = oprom[ pos++ ];
+<<<<<<< HEAD
 		imm = imm | ( oprom[ pos++ ] << 8 );
 		dst += sprintf( dst, ",(0x%04x)", imm );
 		break;
@@ -2251,6 +2812,18 @@ CPU_DISASSEMBLE( tlcs900 )
 
 	case O_SR:
 		dst += sprintf( dst, ",SR" );
+=======
+		imm = imm | (oprom[ pos++ ] << 8);
+		util::stream_format(stream, ",(0x%04x)", imm);
+		break;
+
+	case O_R:
+		util::stream_format(stream, ",%s", buf);
+		break;
+
+	case O_SR:
+		util::stream_format(stream, ",SR");
+>>>>>>> upstream/master
 		break;
 	}
 

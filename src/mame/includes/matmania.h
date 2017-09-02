@@ -1,6 +1,14 @@
 // license:BSD-3-Clause
 // copyright-holders:Brad Oliver
 
+<<<<<<< HEAD
+=======
+#include "machine/taito68705interface.h"
+
+#include "machine/gen_latch.h"
+#include "screen.h"
+
+>>>>>>> upstream/master
 class matmania_state : public driver_device
 {
 public:
@@ -21,6 +29,7 @@ public:
 		m_mcu(*this, "mcu"),
 		m_gfxdecode(*this, "gfxdecode"),
 		m_screen(*this, "screen"),
+<<<<<<< HEAD
 		m_palette(*this, "palette")
 	{ }
 
@@ -35,10 +44,28 @@ public:
 	required_shared_ptr<UINT8> m_pageselect;
 	required_shared_ptr<UINT8> m_spriteram;
 	required_shared_ptr<UINT8> m_paletteram;
+=======
+		m_palette(*this, "palette"),
+		m_soundlatch(*this, "soundlatch")
+	{ }
+
+	/* memory pointers */
+	required_shared_ptr<uint8_t> m_videoram;
+	required_shared_ptr<uint8_t> m_videoram2;
+	required_shared_ptr<uint8_t> m_videoram3;
+	required_shared_ptr<uint8_t> m_colorram;
+	required_shared_ptr<uint8_t> m_colorram2;
+	required_shared_ptr<uint8_t> m_colorram3;
+	required_shared_ptr<uint8_t> m_scroll;
+	required_shared_ptr<uint8_t> m_pageselect;
+	required_shared_ptr<uint8_t> m_spriteram;
+	required_shared_ptr<uint8_t> m_paletteram;
+>>>>>>> upstream/master
 
 	/* devices */
 	required_device<cpu_device> m_maincpu;
 	required_device<cpu_device> m_audiocpu;
+<<<<<<< HEAD
 	optional_device<cpu_device> m_mcu;
 	required_device<gfxdecode_device> m_gfxdecode;
 	required_device<screen_device> m_screen;
@@ -85,4 +112,24 @@ public:
 	DECLARE_MACHINE_RESET(maniach);
 	UINT32 screen_update_matmania(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
 	UINT32 screen_update_maniach(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
+=======
+	optional_device<taito68705_mcu_device> m_mcu;
+	required_device<gfxdecode_device> m_gfxdecode;
+	required_device<screen_device> m_screen;
+	required_device<palette_device> m_palette;
+	required_device<generic_latch_8_device> m_soundlatch;
+
+	/* video-related */
+	std::unique_ptr<bitmap_ind16> m_tmpbitmap;
+	std::unique_ptr<bitmap_ind16> m_tmpbitmap2;
+
+	DECLARE_READ8_MEMBER(maniach_mcu_status_r);
+	DECLARE_WRITE8_MEMBER(matmania_sh_command_w);
+	DECLARE_WRITE8_MEMBER(maniach_sh_command_w);
+	DECLARE_WRITE8_MEMBER(matmania_paletteram_w);
+	virtual void video_start() override;
+	DECLARE_PALETTE_INIT(matmania);
+	uint32_t screen_update_matmania(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
+	uint32_t screen_update_maniach(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
+>>>>>>> upstream/master
 };

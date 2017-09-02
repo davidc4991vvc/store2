@@ -21,7 +21,11 @@
 
 TILE_GET_INFO_MEMBER(xybots_state::get_alpha_tile_info)
 {
+<<<<<<< HEAD
 	UINT16 data = tilemap.basemem_read(tile_index);
+=======
+	uint16_t data = m_alpha_tilemap->basemem_read(tile_index);
+>>>>>>> upstream/master
 	int code = data & 0x3ff;
 	int color = (data >> 12) & 7;
 	int opaque = data & 0x8000;
@@ -31,7 +35,11 @@ TILE_GET_INFO_MEMBER(xybots_state::get_alpha_tile_info)
 
 TILE_GET_INFO_MEMBER(xybots_state::get_playfield_tile_info)
 {
+<<<<<<< HEAD
 	UINT16 data = tilemap.basemem_read(tile_index);
+=======
+	uint16_t data = m_playfield_tilemap->basemem_read(tile_index);
+>>>>>>> upstream/master
 	int code = data & 0x1fff;
 	int color = (data >> 11) & 0x0f;
 	SET_TILE_INFO_MEMBER(0, code, color, (data >> 15) & 1);
@@ -91,7 +99,11 @@ VIDEO_START_MEMBER(xybots_state,xybots)
  *
  *************************************/
 
+<<<<<<< HEAD
 UINT32 xybots_state::screen_update_xybots(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+=======
+uint32_t xybots_state::screen_update_xybots(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+>>>>>>> upstream/master
 {
 	// start drawing
 	m_mob->draw_async(cliprect);
@@ -101,11 +113,19 @@ UINT32 xybots_state::screen_update_xybots(screen_device &screen, bitmap_ind16 &b
 
 	// draw and merge the MO
 	bitmap_ind16 &mobitmap = m_mob->bitmap();
+<<<<<<< HEAD
 	for (const sparse_dirty_rect *rect = m_mob->first_dirty_rect(cliprect); rect != NULL; rect = rect->next())
 		for (int y = rect->min_y; y <= rect->max_y; y++)
 		{
 			UINT16 *mo = &mobitmap.pix16(y);
 			UINT16 *pf = &bitmap.pix16(y);
+=======
+	for (const sparse_dirty_rect *rect = m_mob->first_dirty_rect(cliprect); rect != nullptr; rect = rect->next())
+		for (int y = rect->min_y; y <= rect->max_y; y++)
+		{
+			uint16_t *mo = &mobitmap.pix16(y);
+			uint16_t *pf = &bitmap.pix16(y);
+>>>>>>> upstream/master
 			for (int x = rect->min_x; x <= rect->max_x; x++)
 				if (mo[x] != 0xffff)
 				{

@@ -1,5 +1,9 @@
 /*
+<<<<<<< HEAD
 ** $Id: lfunc.h,v 2.14 2014/06/19 18:27:20 roberto Exp $
+=======
+** $Id: lfunc.h,v 2.15 2015/01/13 15:49:11 roberto Exp $
+>>>>>>> upstream/master
 ** Auxiliary functions to manipulate prototypes and closures
 ** See Copyright Notice in lua.h
 */
@@ -23,6 +27,16 @@
 
 
 /*
+<<<<<<< HEAD
+=======
+** maximum number of upvalues in a closure (both C and Lua). (Value
+** must fit in a VM register.)
+*/
+#define MAXUPVAL	255
+
+
+/*
+>>>>>>> upstream/master
 ** Upvalues for Lua closures
 */
 struct UpVal {

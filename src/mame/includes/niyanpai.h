@@ -1,7 +1,15 @@
 // license:BSD-3-Clause
 // copyright-holders:Takahiro Nogi
+<<<<<<< HEAD
 #include "sound/dac.h"
 #include "machine/tmp68301.h"
+=======
+
+#include "machine/tmp68301.h"
+#include "screen.h"
+#include "audio/nichisnd.h"
+
+>>>>>>> upstream/master
 #define VRAM_MAX    3
 
 class niyanpai_state : public driver_device
@@ -16,15 +24,21 @@ public:
 		: driver_device(mconfig, type, tag) ,
 		m_maincpu(*this, "maincpu"),
 		m_tmp68301(*this, "tmp68301"),
+<<<<<<< HEAD
 		m_dac1(*this, "dac1"),
 		m_dac2(*this, "dac2"),
+=======
+>>>>>>> upstream/master
 		m_screen(*this, "screen"),
 		m_palette(*this, "palette") { }
 
 	required_device<cpu_device> m_maincpu;
 	required_device<tmp68301_device> m_tmp68301;
+<<<<<<< HEAD
 	required_device<dac_device> m_dac1;
 	required_device<dac_device> m_dac2;
+=======
+>>>>>>> upstream/master
 	required_device<screen_device> m_screen;
 	required_device<palette_device> m_palette;
 
@@ -47,21 +61,34 @@ public:
 	int m_nb19010_busyctr;
 	int m_nb19010_busyflag;
 	bitmap_ind16 m_tmpbitmap[VRAM_MAX];
+<<<<<<< HEAD
 	UINT16 *m_videoram[VRAM_MAX];
 	UINT16 *m_videoworkram[VRAM_MAX];
 	UINT16 *m_palette_ptr;
 	UINT8 *m_clut[VRAM_MAX];
+=======
+	std::unique_ptr<uint16_t[]> m_videoram[VRAM_MAX];
+	std::unique_ptr<uint16_t[]> m_videoworkram[VRAM_MAX];
+	std::unique_ptr<uint16_t[]> m_palette_ptr;
+	std::unique_ptr<uint8_t[]> m_clut[VRAM_MAX];
+>>>>>>> upstream/master
 	int m_flipscreen_old[VRAM_MAX];
 	emu_timer *m_blitter_timer;
 
 	// musobana and derived machine configs
 	int m_musobana_inputport;
 	int m_musobana_outcoin_flag;
+<<<<<<< HEAD
 	UINT8 m_motor_on;
 
 	// common
 	DECLARE_WRITE8_MEMBER(soundbank_w);
 	DECLARE_WRITE8_MEMBER(soundlatch_clear_w);
+=======
+	uint8_t m_motor_on;
+
+	// common
+>>>>>>> upstream/master
 	DECLARE_READ16_MEMBER(dipsw_r);
 	DECLARE_READ16_MEMBER(palette_r);
 	DECLARE_WRITE16_MEMBER(palette_w);
@@ -86,6 +113,7 @@ public:
 	DECLARE_CUSTOM_INPUT_MEMBER(musobana_outcoin_flag_r);
 
 	DECLARE_DRIVER_INIT(niyanpai);
+<<<<<<< HEAD
 	virtual void video_start();
 	DECLARE_MACHINE_START(musobana);
 
@@ -94,6 +122,16 @@ public:
 	void blitter_w(int vram, int offset, UINT8 data);
 	void clutsel_w(int vram, UINT8 data);
 	void clut_w(int vram, int offset, UINT8 data);
+=======
+	virtual void video_start() override;
+	DECLARE_MACHINE_START(musobana);
+
+	uint32_t screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
+	int blitter_r(int vram, int offset);
+	void blitter_w(int vram, int offset, uint8_t data);
+	void clutsel_w(int vram, uint8_t data);
+	void clut_w(int vram, int offset, uint8_t data);
+>>>>>>> upstream/master
 	void vramflip(int vram);
 	void update_pixel(int vram, int x, int y);
 	void gfxdraw(int vram);
@@ -101,5 +139,9 @@ public:
 	INTERRUPT_GEN_MEMBER(interrupt);
 
 protected:
+<<<<<<< HEAD
 	virtual void device_timer(emu_timer &timer, device_timer_id id, int param, void *ptr);
+=======
+	virtual void device_timer(emu_timer &timer, device_timer_id id, int param, void *ptr) override;
+>>>>>>> upstream/master
 };

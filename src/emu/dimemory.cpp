@@ -9,6 +9,7 @@
 ***************************************************************************/
 
 #include "emu.h"
+<<<<<<< HEAD
 #include "validity.h"
 
 
@@ -18,6 +19,8 @@
 
 #define DETECT_OVERLAPPING_MEMORY   (0)
 
+=======
+>>>>>>> upstream/master
 
 
 //**************************************************************************
@@ -44,12 +47,31 @@ address_space_config::address_space_config()
 		m_addrbus_shift(0),
 		m_logaddr_width(0),
 		m_page_shift(0),
+<<<<<<< HEAD
 		m_internal_map(NULL),
 		m_default_map(NULL)
 {
 }
 
 address_space_config::address_space_config(const char *name, endianness_t endian, UINT8 datawidth, UINT8 addrwidth, INT8 addrshift, address_map_constructor internal, address_map_constructor defmap)
+=======
+		m_is_octal(false),
+		m_internal_map(nullptr),
+		m_default_map(nullptr)
+{
+}
+
+/*!
+ @param name
+ @param endian CPU endianness
+ @param datawidth CPU parallelism bits
+ @param addrwidth address bits
+ @param addrshift
+ @param internal
+ @param defmap
+ */
+address_space_config::address_space_config(const char *name, endianness_t endian, u8 datawidth, u8 addrwidth, s8 addrshift, address_map_constructor internal, address_map_constructor defmap)
+>>>>>>> upstream/master
 	: m_name(name),
 		m_endianness(endian),
 		m_databus_width(datawidth),
@@ -57,12 +79,20 @@ address_space_config::address_space_config(const char *name, endianness_t endian
 		m_addrbus_shift(addrshift),
 		m_logaddr_width(addrwidth),
 		m_page_shift(0),
+<<<<<<< HEAD
+=======
+		m_is_octal(false),
+>>>>>>> upstream/master
 		m_internal_map(internal),
 		m_default_map(defmap)
 {
 }
 
+<<<<<<< HEAD
 address_space_config::address_space_config(const char *name, endianness_t endian, UINT8 datawidth, UINT8 addrwidth, INT8 addrshift, UINT8 logwidth, UINT8 pageshift, address_map_constructor internal, address_map_constructor defmap)
+=======
+address_space_config::address_space_config(const char *name, endianness_t endian, u8 datawidth, u8 addrwidth, s8 addrshift, u8 logwidth, u8 pageshift, address_map_constructor internal, address_map_constructor defmap)
+>>>>>>> upstream/master
 	: m_name(name),
 		m_endianness(endian),
 		m_databus_width(datawidth),
@@ -70,12 +100,20 @@ address_space_config::address_space_config(const char *name, endianness_t endian
 		m_addrbus_shift(addrshift),
 		m_logaddr_width(logwidth),
 		m_page_shift(pageshift),
+<<<<<<< HEAD
+=======
+		m_is_octal(false),
+>>>>>>> upstream/master
 		m_internal_map(internal),
 		m_default_map(defmap)
 {
 }
 
+<<<<<<< HEAD
 address_space_config::address_space_config(const char *name, endianness_t endian, UINT8 datawidth, UINT8 addrwidth, INT8 addrshift, address_map_delegate internal, address_map_delegate defmap)
+=======
+address_space_config::address_space_config(const char *name, endianness_t endian, u8 datawidth, u8 addrwidth, s8 addrshift, address_map_delegate internal, address_map_delegate defmap)
+>>>>>>> upstream/master
 	: m_name(name),
 		m_endianness(endian),
 		m_databus_width(datawidth),
@@ -83,6 +121,7 @@ address_space_config::address_space_config(const char *name, endianness_t endian
 		m_addrbus_shift(addrshift),
 		m_logaddr_width(addrwidth),
 		m_page_shift(0),
+<<<<<<< HEAD
 		m_internal_map(NULL),
 		m_default_map(NULL),
 		m_internal_map_delegate(internal),
@@ -91,6 +130,17 @@ address_space_config::address_space_config(const char *name, endianness_t endian
 }
 
 address_space_config::address_space_config(const char *name, endianness_t endian, UINT8 datawidth, UINT8 addrwidth, INT8 addrshift, UINT8 logwidth, UINT8 pageshift, address_map_delegate internal, address_map_delegate defmap)
+=======
+		m_is_octal(false),
+		m_internal_map(nullptr),
+		m_default_map(nullptr),
+		m_internal_map_delegate(std::move(internal)),
+		m_default_map_delegate(std::move(defmap))
+{
+}
+
+address_space_config::address_space_config(const char *name, endianness_t endian, u8 datawidth, u8 addrwidth, s8 addrshift, u8 logwidth, u8 pageshift, address_map_delegate internal, address_map_delegate defmap)
+>>>>>>> upstream/master
 	: m_name(name),
 		m_endianness(endian),
 		m_databus_width(datawidth),
@@ -98,10 +148,18 @@ address_space_config::address_space_config(const char *name, endianness_t endian
 		m_addrbus_shift(addrshift),
 		m_logaddr_width(logwidth),
 		m_page_shift(pageshift),
+<<<<<<< HEAD
 		m_internal_map(NULL),
 		m_default_map(NULL),
 		m_internal_map_delegate(internal),
 		m_default_map_delegate(defmap)
+=======
+		m_is_octal(false),
+		m_internal_map(nullptr),
+		m_default_map(nullptr),
+		m_internal_map_delegate(std::move(internal)),
+		m_default_map_delegate(std::move(defmap))
+>>>>>>> upstream/master
 {
 }
 
@@ -117,11 +175,16 @@ address_space_config::address_space_config(const char *name, endianness_t endian
 device_memory_interface::device_memory_interface(const machine_config &mconfig, device_t &device)
 	: device_interface(device, "memory")
 {
+<<<<<<< HEAD
 	memset(m_address_map, 0, sizeof(m_address_map));
 	memset(m_addrspace, 0, sizeof(m_addrspace));
 
 	// configure the fast accessor
 	device.m_memory = this;
+=======
+	// configure the fast accessor
+	device.interfaces().m_memory = this;
+>>>>>>> upstream/master
 }
 
 
@@ -139,18 +202,27 @@ device_memory_interface::~device_memory_interface()
 //  to connect an address map to a device
 //-------------------------------------------------
 
+<<<<<<< HEAD
 void device_memory_interface::static_set_addrmap(device_t &device, address_spacenum spacenum, address_map_constructor map)
+=======
+void device_memory_interface::static_set_addrmap(device_t &device, int spacenum, address_map_constructor map)
+>>>>>>> upstream/master
 {
 	device_memory_interface *memory;
 	if (!device.interface(memory))
 		throw emu_fatalerror("MCFG_DEVICE_ADDRESS_MAP called on device '%s' with no memory interface", device.tag());
+<<<<<<< HEAD
 	if (spacenum >= ARRAY_LENGTH(memory->m_address_map))
 		throw emu_fatalerror("MCFG_DEVICE_ADDRESS_MAP called on device '%s' with out-of-range space number %d", device.tag(), spacenum);
 	memory->m_address_map[spacenum] = map;
+=======
+	memory->set_addrmap(spacenum, map);
+>>>>>>> upstream/master
 }
 
 
 //-------------------------------------------------
+<<<<<<< HEAD
 //  set_address_space - connect an address space
 //  to a device
 //-------------------------------------------------
@@ -173,10 +245,21 @@ bool device_memory_interface::memory_translate(address_spacenum spacenum, int in
 {
 	// by default it maps directly
 	return true;
+=======
+//  set_addrmap - connect an address map to a device
+//-------------------------------------------------
+
+void device_memory_interface::set_addrmap(int spacenum, address_map_constructor map)
+{
+	if (spacenum >= int(m_address_map.size()))
+		m_address_map.resize(spacenum+1, nullptr);
+	m_address_map[spacenum] = map;
+>>>>>>> upstream/master
 }
 
 
 //-------------------------------------------------
+<<<<<<< HEAD
 //  memory_read - perform internal memory
 //  operations that bypass the memory system;
 //  designed to be overridden by the actual device
@@ -188,10 +271,37 @@ bool device_memory_interface::memory_read(address_spacenum spacenum, offs_t offs
 {
 	// by default, we don't do anything
 	return false;
+=======
+//  dump - dump memory tables to the given file in
+//  human-readable format
+//-------------------------------------------------
+
+void device_memory_interface::dump(FILE *file) const
+{
+	for (auto const &space : m_addrspace)
+		if (space) {
+			fprintf(file,
+					"\n\n"
+					"====================================================\n"
+					"Device '%s' %s address space read handler dump\n"
+					"====================================================\n",
+					device().tag(), space->name());
+			space->dump_map(file, read_or_write::READ);
+
+			fprintf(file,
+					"\n\n"
+					"====================================================\n"
+					"Device '%s' %s address space write handler dump\n"
+					"====================================================\n",
+					device().tag(), space->name());
+			space->dump_map(file, read_or_write::WRITE);
+		}
+>>>>>>> upstream/master
 }
 
 
 //-------------------------------------------------
+<<<<<<< HEAD
 //  memory_write - perform internal memory
 //  operations that bypass the memory system;
 //  designed to be overridden by the actual device
@@ -203,10 +313,23 @@ bool device_memory_interface::memory_write(address_spacenum spacenum, offs_t off
 {
 	// by default, we don't do anything
 	return false;
+=======
+//  memory_translate - translate from logical to
+//  phyiscal addresses; designed to be overridden
+//  by the actual device implementation if address
+//  translation is supported
+//-------------------------------------------------
+
+bool device_memory_interface::memory_translate(int spacenum, int intention, offs_t &address)
+{
+	// by default it maps directly
+	return true;
+>>>>>>> upstream/master
 }
 
 
 //-------------------------------------------------
+<<<<<<< HEAD
 //  memory_readop - perform internal memory
 //  operations that bypass the memory system;
 //  designed to be overridden by the actual device
@@ -219,6 +342,20 @@ bool device_memory_interface::memory_readop(offs_t offset, int size, UINT64 &val
 {
 	// by default, we don't do anything
 	return false;
+=======
+//  interface_config_complete - perform final
+//  memory configuration setup
+//-------------------------------------------------
+
+void device_memory_interface::interface_config_complete()
+{
+	const space_config_vector r = memory_space_config();
+	for (const auto &entry : r) {
+		if (entry.first >= int(m_address_config.size()))
+			m_address_config.resize(entry.first + 1);
+		m_address_config[entry.first] = entry.second;
+	}
+>>>>>>> upstream/master
 }
 
 
@@ -229,6 +366,7 @@ bool device_memory_interface::memory_readop(offs_t offset, int size, UINT64 &val
 
 void device_memory_interface::interface_validity_check(validity_checker &valid) const
 {
+<<<<<<< HEAD
 	bool detected_overlap = DETECT_OVERLAPPING_MEMORY ? false : true;
 
 	// loop over all address spaces
@@ -350,6 +488,18 @@ void device_memory_interface::interface_validity_check(validity_checker &valid) 
 
 			// release the address map
 			global_free(map);
+=======
+	// loop over all address spaces
+	for (int spacenum = 0; spacenum < int(m_address_config.size()); ++spacenum)
+	{
+		if (space_config(spacenum))
+		{
+			// construct the map
+			::address_map addrmap(const_cast<device_t &>(device()), spacenum);
+
+			// let the map check itself
+			addrmap.map_validity_check(valid, spacenum);
+>>>>>>> upstream/master
 		}
 	}
 }

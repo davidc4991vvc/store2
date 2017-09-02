@@ -18,13 +18,19 @@ public:
 	required_device<gfxdecode_device> m_gfxdecode;
 	required_device<palette_device> m_palette;
 
+<<<<<<< HEAD
 	required_shared_ptr<UINT8> m_bulletsram;
 	required_shared_ptr<UINT8> m_videoram;
+=======
+	required_shared_ptr<uint8_t> m_bulletsram;
+	required_shared_ptr<uint8_t> m_videoram;
+>>>>>>> upstream/master
 
 	int m_nmi_enable;
 	int m_sound_enable;
 	tilemap_t *m_bg_tilemap;
 
+<<<<<<< HEAD
 	DECLARE_WRITE8_MEMBER(led_w);
 	DECLARE_READ8_MEMBER(in0_r);
 	DECLARE_READ8_MEMBER(in1_r);
@@ -37,6 +43,21 @@ public:
 	DECLARE_WRITE8_MEMBER(irq_ack_w);
 	DECLARE_WRITE8_MEMBER(coincounter_w);
 	DECLARE_WRITE8_MEMBER(coinlockout_w);
+=======
+	DECLARE_WRITE_LINE_MEMBER(led0_w);
+	DECLARE_WRITE_LINE_MEMBER(led1_w);
+	DECLARE_READ8_MEMBER(in0_r);
+	DECLARE_READ8_MEMBER(in1_r);
+	DECLARE_READ8_MEMBER(dsw_r);
+	DECLARE_WRITE_LINE_MEMBER(interrupt_enable_w);
+	DECLARE_WRITE_LINE_MEMBER(demo_interrupt_enable_w);
+	DECLARE_WRITE_LINE_MEMBER(sh_expl_w);
+	DECLARE_WRITE_LINE_MEMBER(sh_engine_w);
+	DECLARE_WRITE_LINE_MEMBER(sh_fire_w);
+	DECLARE_WRITE8_MEMBER(irq_ack_w);
+	DECLARE_WRITE_LINE_MEMBER(coincounter_w);
+	DECLARE_WRITE_LINE_MEMBER(coinlockout_w);
+>>>>>>> upstream/master
 	DECLARE_WRITE8_MEMBER(videoram_w);
 
 
@@ -45,10 +66,18 @@ public:
 
 	TILE_GET_INFO_MEMBER(get_bg_tile_info);
 
+<<<<<<< HEAD
 	virtual void machine_start();
 	virtual void video_start();
 	DECLARE_PALETTE_INIT(tankbatt);
 
 	UINT32 screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
+=======
+	virtual void machine_start() override;
+	virtual void video_start() override;
+	DECLARE_PALETTE_INIT(tankbatt);
+
+	uint32_t screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
+>>>>>>> upstream/master
 	void draw_bullets(bitmap_ind16 &bitmap, const rectangle &cliprect);
 };

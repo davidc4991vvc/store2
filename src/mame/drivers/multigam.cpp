@@ -7,7 +7,11 @@
     uses NES emulation by Brad Olivier
 
     Hardware is based around Nintendo NES. After coin up, it allows to play one of
+<<<<<<< HEAD
     35 NES games (choosen from text menu). Manufacturer is unknown, code for title
+=======
+    35 NES games (chosen from text menu). Manufacturer is unknown, code for title
+>>>>>>> upstream/master
     screen and game selection contains string:
     "Programed by SANG  HO  ENG. K. B. KIM 1986/1/ 1"
 
@@ -108,8 +112,14 @@ Eproms are 27512,27010,274001
 
 #include "emu.h"
 #include "cpu/m6502/n2a03.h"
+<<<<<<< HEAD
 #include "sound/dac.h"
 #include "video/ppu2c0x.h"
+=======
+#include "video/ppu2c0x.h"
+#include "screen.h"
+#include "speaker.h"
+>>>>>>> upstream/master
 
 
 class multigam_state : public driver_device
@@ -118,6 +128,7 @@ public:
 	multigam_state(const machine_config &mconfig, device_type type, const char *tag)
 		: driver_device(mconfig, type, tag),
 		m_maincpu(*this, "maincpu"),
+<<<<<<< HEAD
 		m_ppu(*this, "ppu") { }
 
 	required_device<cpu_device> m_maincpu;
@@ -132,31 +143,71 @@ public:
 	UINT32 m_in_1_shift;
 	UINT32 m_in_dsw;
 	UINT32 m_in_dsw_shift;
+=======
+		m_ppu(*this, "ppu"),
+		m_p1(*this, "P1"),
+		m_p2(*this, "P2"),
+		m_dsw(*this, "DSW") { }
+
+	required_device<cpu_device> m_maincpu;
+	required_device<ppu2c0x_device> m_ppu;
+	required_ioport m_p1;
+	required_ioport m_p2;
+	optional_ioport m_dsw;
+
+	std::unique_ptr<uint8_t[]> m_nt_ram;
+	std::unique_ptr<uint8_t[]> m_vram;
+	uint8_t* m_nt_page[4];
+	uint32_t m_in_0;
+	uint32_t m_in_1;
+	uint32_t m_in_0_shift;
+	uint32_t m_in_1_shift;
+	uint32_t m_in_dsw;
+	uint32_t m_in_dsw_shift;
+>>>>>>> upstream/master
 	int m_game_gfx_bank;
 	int m_multigam3_mmc3_scanline_counter;
 	int m_multigam3_mmc3_scanline_latch;
 	int m_multigam3_mmc3_banks[2];
 	int m_multigam3_mmc3_4screen;
 	int m_multigam3_mmc3_last_bank;
+<<<<<<< HEAD
 	UINT8* m_multigmc_mmc3_6000_ram;
 	UINT8* m_multigam3_mmc3_prg_base;
 	int m_multigam3_mmc3_prg_size;
 	int m_multigam3_mmc3_chr_bank_base;
 	int m_multigam3_mmc3_command;
 	UINT8* m_mapper02_prg_base;
+=======
+	std::unique_ptr<uint8_t[]> m_multigmc_mmc3_6000_ram;
+	uint8_t* m_multigam3_mmc3_prg_base;
+	int m_multigam3_mmc3_prg_size;
+	int m_multigam3_mmc3_chr_bank_base;
+	int m_multigam3_mmc3_command;
+	uint8_t* m_mapper02_prg_base;
+>>>>>>> upstream/master
 	int m_mapper02_prg_size;
 	int m_mmc1_shiftreg;
 	int m_mmc1_shiftcount;
 	int m_mmc1_rom_mask;
+<<<<<<< HEAD
 	UINT8* m_mmc1_prg_base;
+=======
+	uint8_t* m_mmc1_prg_base;
+>>>>>>> upstream/master
 	int m_mmc1_prg_size;
 	int m_mmc1_chr_bank_base;
 	int m_mmc1_reg_write_enable;
 	int m_size16k;
 	int m_switchlow;
 	int m_vrom4k;
+<<<<<<< HEAD
 	UINT8 m_supergm3_prg_bank;
 	UINT8 m_supergm3_chr_bank;
+=======
+	uint8_t m_supergm3_prg_bank;
+	uint8_t m_supergm3_chr_bank;
+>>>>>>> upstream/master
 	DECLARE_CUSTOM_INPUT_MEMBER(multigam_inputs_r);
 	DECLARE_WRITE8_MEMBER(multigam_nt_w);
 	DECLARE_READ8_MEMBER(multigam_nt_r);
@@ -179,13 +230,20 @@ public:
 	DECLARE_DRIVER_INIT(multigmt);
 	DECLARE_DRIVER_INIT(multigam);
 	DECLARE_DRIVER_INIT(multigm3);
+<<<<<<< HEAD
 	virtual void machine_start();
 	virtual void machine_reset();
 	virtual void video_start();
+=======
+	virtual void machine_start() override;
+	virtual void machine_reset() override;
+	virtual void video_start() override;
+>>>>>>> upstream/master
 	DECLARE_PALETTE_INIT(multigam);
 	DECLARE_MACHINE_START(multigm3);
 	DECLARE_MACHINE_RESET(multigm3);
 	DECLARE_MACHINE_START(supergm3);
+<<<<<<< HEAD
 	UINT32 screen_update_multigam(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
 	TIMER_CALLBACK_MEMBER(mmc1_resync_callback);
 	void set_videorom_bank( int start, int count, int bank, int bank_size_in_kb);
@@ -195,6 +253,17 @@ public:
 	void multigam_init_mmc1(UINT8 *prg_base, int prg_size, int chr_bank_base);
 	void supergm3_set_bank();
 	void multigm3_decrypt(UINT8* mem, int memsize, const UINT8* decode_nibble);
+=======
+	uint32_t screen_update_multigam(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
+	TIMER_CALLBACK_MEMBER(mmc1_resync_callback);
+	void set_videorom_bank( int start, int count, int bank, int bank_size_in_kb);
+	void set_videoram_bank( int start, int count, int bank, int bank_size_in_kb);
+	void multigam_init_mmc3(uint8_t *prg_base, int prg_size, int chr_bank_base);
+	void multigam_init_mapper02(uint8_t* prg_base, int prg_size);
+	void multigam_init_mmc1(uint8_t *prg_base, int prg_size, int chr_bank_base);
+	void supergm3_set_bank();
+	void multigm3_decrypt(uint8_t* mem, int memsize, const uint8_t* decode_nibble);
+>>>>>>> upstream/master
 	void multigam3_mmc3_scanline_cb(int scanline, int vblank, int blanked);
 	void ppu_irq(int *ppu_regs);
 };
@@ -212,6 +281,7 @@ void multigam_state::set_mirroring(int mirroring)
 	switch(mirroring)
 	{
 	case PPU_MIRROR_LOW:
+<<<<<<< HEAD
 		m_nt_page[0] = m_nt_page[1] = m_nt_page[2] = m_nt_page[3] = m_nt_ram;
 		break;
 	case PPU_MIRROR_HIGH:
@@ -235,6 +305,31 @@ void multigam_state::set_mirroring(int mirroring)
 		m_nt_page[1] = m_nt_ram + 0x400;
 		m_nt_page[2] = m_nt_ram + 0x800;
 		m_nt_page[3] = m_nt_ram + 0xc00;
+=======
+		m_nt_page[0] = m_nt_page[1] = m_nt_page[2] = m_nt_page[3] = m_nt_ram.get();
+		break;
+	case PPU_MIRROR_HIGH:
+		m_nt_page[0] = m_nt_page[1] = m_nt_page[2] = m_nt_page[3] = m_nt_ram.get() + 0x400;
+		break;
+	case PPU_MIRROR_HORZ:
+		m_nt_page[0] = m_nt_ram.get();
+		m_nt_page[1] = m_nt_ram.get();
+		m_nt_page[2] = m_nt_ram.get() + 0x400;
+		m_nt_page[3] = m_nt_ram.get() + 0x400;
+		break;
+	case PPU_MIRROR_VERT:
+		m_nt_page[0] = m_nt_ram.get();
+		m_nt_page[1] = m_nt_ram.get() + 0x400;
+		m_nt_page[2] = m_nt_ram.get();
+		m_nt_page[3] = m_nt_ram.get() + 0x400;
+		break;
+	case PPU_MIRROR_NONE:
+	default:
+		m_nt_page[0] = m_nt_ram.get();
+		m_nt_page[1] = m_nt_ram.get() + 0x400;
+		m_nt_page[2] = m_nt_ram.get() + 0x800;
+		m_nt_page[3] = m_nt_ram.get() + 0xc00;
+>>>>>>> upstream/master
 		break;
 	}
 }
@@ -274,7 +369,11 @@ void multigam_state::set_videoram_bank( int start, int count, int bank, int bank
 	/* count determines the size of the area mapped in KB */
 	for (i = 0; i < count; i++, offset += 0x400)
 	{
+<<<<<<< HEAD
 		membank(banknames[i + start])->set_base(m_vram + offset);
+=======
+		membank(banknames[i + start])->set_base(m_vram.get() + offset);
+>>>>>>> upstream/master
 	}
 }
 
@@ -313,11 +412,19 @@ WRITE8_MEMBER(multigam_state::multigam_IN0_w)
 	m_in_0_shift = 0;
 	m_in_1_shift = 0;
 
+<<<<<<< HEAD
 	m_in_0 = ioport("P1")->read();
 	m_in_1 = ioport("P2")->read();
 
 	m_in_dsw_shift = 0;
 	m_in_dsw = read_safe(ioport("DSW"), 0);
+=======
+	m_in_0 = m_p1->read();
+	m_in_1 = m_p2->read();
+
+	m_in_dsw_shift = 0;
+	m_in_dsw = m_dsw.read_safe(0);
+>>>>>>> upstream/master
 }
 
 READ8_MEMBER(multigam_state::multigam_IN1_r)
@@ -343,8 +450,13 @@ CUSTOM_INPUT_MEMBER(multigam_state::multigam_inputs_r)
 WRITE8_MEMBER(multigam_state::multigam_switch_prg_rom)
 {
 	/* switch PRG rom */
+<<<<<<< HEAD
 	UINT8* dst = memregion("maincpu")->base();
 	UINT8* src = memregion("user1")->base();
+=======
+	uint8_t* dst = memregion("maincpu")->base();
+	uint8_t* src = memregion("user1")->base();
+>>>>>>> upstream/master
 
 	if (data & 0x80)
 	{
@@ -451,7 +563,11 @@ WRITE8_MEMBER(multigam_state::multigam3_mmc3_rom_switch_w)
 			if (m_multigam3_mmc3_last_bank != (data & 0xc0))
 			{
 				int bank;
+<<<<<<< HEAD
 				UINT8 *prg = memregion("maincpu")->base();
+=======
+				uint8_t *prg = memregion("maincpu")->base();
+>>>>>>> upstream/master
 
 				/* reset the banks */
 				if (m_multigam3_mmc3_command & 0x40)
@@ -481,7 +597,11 @@ WRITE8_MEMBER(multigam_state::multigam3_mmc3_rom_switch_w)
 
 		case 0x0001:
 			{
+<<<<<<< HEAD
 				UINT8 cmd = m_multigam3_mmc3_command & 0x07;
+=======
+				uint8_t cmd = m_multigam3_mmc3_command & 0x07;
+>>>>>>> upstream/master
 				int page = (m_multigam3_mmc3_command & 0x80) >> 5;
 				int bank;
 
@@ -504,7 +624,11 @@ WRITE8_MEMBER(multigam_state::multigam3_mmc3_rom_switch_w)
 
 					case 6: /* program banking */
 					{
+<<<<<<< HEAD
 						UINT8 *prg = memregion("maincpu")->base();
+=======
+						uint8_t *prg = memregion("maincpu")->base();
+>>>>>>> upstream/master
 						if (m_multigam3_mmc3_command & 0x40)
 						{
 							/* high bank */
@@ -529,7 +653,11 @@ WRITE8_MEMBER(multigam_state::multigam3_mmc3_rom_switch_w)
 					case 7: /* program banking */
 						{
 							/* mid bank */
+<<<<<<< HEAD
 							UINT8 *prg = memregion("maincpu")->base();
+=======
+							uint8_t *prg = memregion("maincpu")->base();
+>>>>>>> upstream/master
 
 							m_multigam3_mmc3_banks[1] = data & bankmask;
 							bank = m_multigam3_mmc3_banks[1] * 0x2000;
@@ -554,7 +682,11 @@ WRITE8_MEMBER(multigam_state::multigam3_mmc3_rom_switch_w)
 		case 0x2001: /* enable ram at $6000 */
 			if (data & 0x80)
 			{
+<<<<<<< HEAD
 				membank("bank10")->set_base(m_multigmc_mmc3_6000_ram);
+=======
+				membank("bank10")->set_base(m_multigmc_mmc3_6000_ram.get());
+>>>>>>> upstream/master
 			}
 			else
 			{
@@ -576,15 +708,24 @@ WRITE8_MEMBER(multigam_state::multigam3_mmc3_rom_switch_w)
 
 		case 0x6000: /* disable irqs */
 			machine().device("maincpu")->execute().set_input_line(M6502_IRQ_LINE, CLEAR_LINE);
+<<<<<<< HEAD
 			m_ppu->set_scanline_callback(ppu2c0x_scanline_delegate());
 		break;
 
 		case 0x6001: /* enable irqs */
 			m_ppu->set_scanline_callback(ppu2c0x_scanline_delegate(FUNC(multigam_state::multigam3_mmc3_scanline_cb),this));
+=======
+			m_ppu->set_scanline_callback(ppu2c0x_device::scanline_delegate());
+		break;
+
+		case 0x6001: /* enable irqs */
+			m_ppu->set_scanline_callback(ppu2c0x_device::scanline_delegate(FUNC(multigam_state::multigam3_mmc3_scanline_cb),this));
+>>>>>>> upstream/master
 		break;
 	}
 }
 
+<<<<<<< HEAD
 void multigam_state::multigam_init_mmc3(UINT8 *prg_base, int prg_size, int chr_bank_base)
 {
 	UINT8* dst = memregion("maincpu")->base();
@@ -592,6 +733,15 @@ void multigam_state::multigam_init_mmc3(UINT8 *prg_base, int prg_size, int chr_b
 	// Tom & Jerry in Super Game III enables 6000 ram, but does not read/write it
 	// however, it expects ROM from 6000 there (code jumps to $6xxx)
 	memcpy(m_multigmc_mmc3_6000_ram, dst + 0x6000, 0x2000);
+=======
+void multigam_state::multigam_init_mmc3(uint8_t *prg_base, int prg_size, int chr_bank_base)
+{
+	uint8_t* dst = memregion("maincpu")->base();
+
+	// Tom & Jerry in Super Game III enables 6000 ram, but does not read/write it
+	// however, it expects ROM from 6000 there (code jumps to $6xxx)
+	memcpy(m_multigmc_mmc3_6000_ram.get(), dst + 0x6000, 0x2000);
+>>>>>>> upstream/master
 
 	memcpy(&dst[0x8000], prg_base + (prg_size - 0x4000), 0x4000);
 	memcpy(&dst[0xc000], prg_base + (prg_size - 0x4000), 0x4000);
@@ -631,8 +781,13 @@ WRITE8_MEMBER(multigam_state::multigm3_switch_gfx_rom)
 WRITE8_MEMBER(multigam_state::multigm3_switch_prg_rom)
 {
 	/* switch PRG rom */
+<<<<<<< HEAD
 	UINT8* dst = memregion("maincpu")->base();
 	UINT8* src = memregion("user1")->base();
+=======
+	uint8_t* dst = memregion("maincpu")->base();
+	uint8_t* src = memregion("user1")->base();
+>>>>>>> upstream/master
 
 	if (data == 0xa8)
 	{
@@ -692,20 +847,34 @@ ADDRESS_MAP_END
 
 WRITE8_MEMBER(multigam_state::multigam3_mapper02_rom_switch_w)
 {
+<<<<<<< HEAD
 	UINT8* mem = memregion("maincpu")->base();
+=======
+	uint8_t* mem = memregion("maincpu")->base();
+>>>>>>> upstream/master
 	int bankmask = (m_mapper02_prg_size/0x4000) - 1;
 	memcpy(mem + 0x8000, m_mapper02_prg_base + 0x4000*(data & bankmask), 0x4000);
 }
 
+<<<<<<< HEAD
 void multigam_state::multigam_init_mapper02(UINT8* prg_base, int prg_size)
 {
 	UINT8* mem = memregion("maincpu")->base();
+=======
+void multigam_state::multigam_init_mapper02(uint8_t* prg_base, int prg_size)
+{
+	uint8_t* mem = memregion("maincpu")->base();
+>>>>>>> upstream/master
 	memcpy(mem + 0x8000, prg_base + prg_size - 0x8000, 0x8000);
 	m_maincpu->space(AS_PROGRAM).install_write_handler(0x8000, 0xffff, write8_delegate(FUNC(multigam_state::multigam3_mapper02_rom_switch_w),this));
 
 	m_mapper02_prg_base = prg_base;
 	m_mapper02_prg_size = prg_size;
+<<<<<<< HEAD
 	m_ppu->set_scanline_callback(ppu2c0x_scanline_delegate());
+=======
+	m_ppu->set_scanline_callback(ppu2c0x_device::scanline_delegate());
+>>>>>>> upstream/master
 }
 
 /******************************************************
@@ -818,7 +987,11 @@ WRITE8_MEMBER(multigam_state::mmc1_rom_switch_w)
 			case 3: /* program banking */
 				{
 					int bank = (m_mmc1_shiftreg & m_mmc1_rom_mask) * 0x4000;
+<<<<<<< HEAD
 					UINT8 *prg = memregion("maincpu")->base();
+=======
+					uint8_t *prg = memregion("maincpu")->base();
+>>>>>>> upstream/master
 
 					if (!m_size16k)
 					{
@@ -848,9 +1021,15 @@ WRITE8_MEMBER(multigam_state::mmc1_rom_switch_w)
 	}
 }
 
+<<<<<<< HEAD
 void multigam_state::multigam_init_mmc1(UINT8 *prg_base, int prg_size, int chr_bank_base)
 {
 	UINT8* dst = memregion("maincpu")->base();
+=======
+void multigam_state::multigam_init_mmc1(uint8_t *prg_base, int prg_size, int chr_bank_base)
+{
+	uint8_t* dst = memregion("maincpu")->base();
+>>>>>>> upstream/master
 
 	memcpy(&dst[0x8000], prg_base + (prg_size - 0x8000), 0x8000);
 
@@ -862,7 +1041,11 @@ void multigam_state::multigam_init_mmc1(UINT8 *prg_base, int prg_size, int chr_b
 	m_mmc1_prg_size = prg_size;
 	m_mmc1_chr_bank_base = chr_bank_base;
 
+<<<<<<< HEAD
 	m_ppu->set_scanline_callback(ppu2c0x_scanline_delegate());
+=======
+	m_ppu->set_scanline_callback(ppu2c0x_device::scanline_delegate());
+>>>>>>> upstream/master
 }
 
 
@@ -890,7 +1073,11 @@ void multigam_state::multigam_init_mmc1(UINT8 *prg_base, int prg_size, int chr_b
 
 void multigam_state::supergm3_set_bank()
 {
+<<<<<<< HEAD
 	UINT8* mem = memregion("maincpu")->base();
+=======
+	uint8_t* mem = memregion("maincpu")->base();
+>>>>>>> upstream/master
 
 	// video bank
 	if (m_supergm3_chr_bank == 0x10 ||
@@ -899,7 +1086,11 @@ void multigam_state::supergm3_set_bank()
 		// VRAM
 		m_ppu->space(AS_PROGRAM).install_read_bank(0x0000, 0x1fff, "bank1");
 		m_ppu->space(AS_PROGRAM).install_write_bank(0x0000, 0x1fff, "bank1");
+<<<<<<< HEAD
 		membank("bank1")->set_base(m_vram);
+=======
+		membank("bank1")->set_base(m_vram.get());
+>>>>>>> upstream/master
 
 		if (m_supergm3_chr_bank == 0x40)
 			set_mirroring(PPU_MIRROR_VERT);
@@ -925,7 +1116,11 @@ void multigam_state::supergm3_set_bank()
 		// title screen
 		memcpy(mem + 0x8000, mem + 0x18000, 0x8000);
 		membank("bank10")->set_base(mem + 0x6000);
+<<<<<<< HEAD
 		m_ppu->set_scanline_callback(ppu2c0x_scanline_delegate());
+=======
+		m_ppu->set_scanline_callback(ppu2c0x_device::scanline_delegate());
+>>>>>>> upstream/master
 	}
 	else if ((m_supergm3_prg_bank & 0x40) == 0)
 	{
@@ -1011,7 +1206,11 @@ static INPUT_PORTS_START( multigam_common )
 	PORT_BIT( 0x80, IP_ACTIVE_HIGH, IPT_JOYSTICK_RIGHT ) PORT_PLAYER(2)
 
 	PORT_START("IN0")
+<<<<<<< HEAD
 	PORT_BIT( 0x01, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, multigam_state,multigam_inputs_r, NULL)
+=======
+	PORT_BIT( 0x01, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, multigam_state,multigam_inputs_r, nullptr)
+>>>>>>> upstream/master
 	PORT_BIT( 0x02, IP_ACTIVE_HIGH, IPT_COIN1 )
 INPUT_PORTS_END
 
@@ -1128,7 +1327,11 @@ void multigam_state::video_start()
 {
 }
 
+<<<<<<< HEAD
 UINT32 multigam_state::screen_update_multigam(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+=======
+uint32_t multigam_state::screen_update_multigam(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+>>>>>>> upstream/master
 {
 	/* render the ppu */
 	m_ppu->render(bitmap, 0, 0, 0, 0);
@@ -1158,11 +1361,19 @@ MACHINE_RESET_MEMBER(multigam_state,multigm3)
 
 void multigam_state::machine_start()
 {
+<<<<<<< HEAD
 	m_nt_ram = auto_alloc_array(machine(), UINT8, 0x1000);
 	m_nt_page[0] = m_nt_ram;
 	m_nt_page[1] = m_nt_ram + 0x400;
 	m_nt_page[2] = m_nt_ram + 0x800;
 	m_nt_page[3] = m_nt_ram + 0xc00;
+=======
+	m_nt_ram = std::make_unique<uint8_t[]>(0x1000);
+	m_nt_page[0] = m_nt_ram.get();
+	m_nt_page[1] = m_nt_ram.get() + 0x400;
+	m_nt_page[2] = m_nt_ram.get() + 0x800;
+	m_nt_page[3] = m_nt_ram.get() + 0xc00;
+>>>>>>> upstream/master
 
 	m_ppu->space(AS_PROGRAM).install_readwrite_handler(0x2000, 0x3eff, read8_delegate(FUNC(multigam_state::multigam_nt_r),this), write8_delegate(FUNC(multigam_state::multigam_nt_w),this));
 	m_ppu->space(AS_PROGRAM).install_read_bank(0x0000, 0x1fff, "bank1");
@@ -1171,11 +1382,19 @@ void multigam_state::machine_start()
 
 MACHINE_START_MEMBER(multigam_state,multigm3)
 {
+<<<<<<< HEAD
 	m_nt_ram = auto_alloc_array(machine(), UINT8, 0x1000);
 	m_nt_page[0] = m_nt_ram;
 	m_nt_page[1] = m_nt_ram + 0x400;
 	m_nt_page[2] = m_nt_ram + 0x800;
 	m_nt_page[3] = m_nt_ram + 0xc00;
+=======
+	m_nt_ram = std::make_unique<uint8_t[]>(0x1000);
+	m_nt_page[0] = m_nt_ram.get();
+	m_nt_page[1] = m_nt_ram.get() + 0x400;
+	m_nt_page[2] = m_nt_ram.get() + 0x800;
+	m_nt_page[3] = m_nt_ram.get() + 0xc00;
+>>>>>>> upstream/master
 
 	m_ppu->space(AS_PROGRAM).install_readwrite_handler(0x2000, 0x3eff, read8_delegate(FUNC(multigam_state::multigam_nt_r),this), write8_delegate(FUNC(multigam_state::multigam_nt_w),this));
 
@@ -1193,6 +1412,7 @@ MACHINE_START_MEMBER(multigam_state,multigm3)
 
 MACHINE_START_MEMBER(multigam_state,supergm3)
 {
+<<<<<<< HEAD
 	m_nt_ram = auto_alloc_array(machine(), UINT8, 0x1000);
 	m_nt_page[0] = m_nt_ram;
 	m_nt_page[1] = m_nt_ram + 0x400;
@@ -1208,6 +1428,23 @@ MACHINE_START_MEMBER(multigam_state,supergm3)
 static MACHINE_CONFIG_START( multigam, multigam_state )
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", N2A03, N2A03_DEFAULTCLOCK)
+=======
+	m_nt_ram = std::make_unique<uint8_t[]>(0x1000);
+	m_nt_page[0] = m_nt_ram.get();
+	m_nt_page[1] = m_nt_ram.get() + 0x400;
+	m_nt_page[2] = m_nt_ram.get() + 0x800;
+	m_nt_page[3] = m_nt_ram.get() + 0xc00;
+
+	m_ppu->space(AS_PROGRAM).install_readwrite_handler(0x2000, 0x3eff, read8_delegate(FUNC(multigam_state::multigam_nt_r),this), write8_delegate(FUNC(multigam_state::multigam_nt_w),this));
+
+	m_vram = std::make_unique<uint8_t[]>(0x2000);
+	m_multigmc_mmc3_6000_ram = std::make_unique<uint8_t[]>(0x2000);
+}
+
+static MACHINE_CONFIG_START( multigam )
+	/* basic machine hardware */
+	MCFG_CPU_ADD("maincpu", N2A03, NTSC_APU_CLOCK)
+>>>>>>> upstream/master
 	MCFG_CPU_PROGRAM_MAP(multigam_map)
 
 
@@ -1267,7 +1504,11 @@ ROM_START( multigam )
 	ROM_LOAD( "8.bin", 0x00000, 0x20000, CRC(509c0e94) SHA1(9e87c74e76afe6c3a7ba194439434f54e2c879eb) )
 	ROM_LOAD( "9.bin", 0x20000, 0x20000, CRC(48416f20) SHA1(f461fcbff6d2fa4774d64c26475089d1aeea7fb5) )
 	ROM_LOAD( "10.bin", 0x40000, 0x20000, CRC(869d1661) SHA1(ac155bd24ebfea8e064859e1a05317001286f9ae) )
+<<<<<<< HEAD
 	ROM_FILL( 0x60000, 0x20000, 0x00 )
+=======
+	ROM_FILL( 0x60000, 0x20000, 0x0000 )
+>>>>>>> upstream/master
 ROM_END
 
 ROM_START( multigmb )
@@ -1286,7 +1527,11 @@ ROM_START( multigmb )
 	ROM_LOAD( "8.bin", 0x00000, 0x20000, CRC(509c0e94) SHA1(9e87c74e76afe6c3a7ba194439434f54e2c879eb) )
 	ROM_LOAD( "9.bin", 0x20000, 0x20000, CRC(48416f20) SHA1(f461fcbff6d2fa4774d64c26475089d1aeea7fb5) )
 	ROM_LOAD( "10.bin", 0x40000, 0x20000, CRC(869d1661) SHA1(ac155bd24ebfea8e064859e1a05317001286f9ae) )
+<<<<<<< HEAD
 	ROM_FILL( 0x60000, 0x20000, 0x00 )
+=======
+	ROM_FILL( 0x60000, 0x20000, 0x0000 )
+>>>>>>> upstream/master
 ROM_END
 
 ROM_START( multigm2 )
@@ -1325,7 +1570,11 @@ ROM_START( multigm3 )
 	ROM_REGION( 0x80000, "gfx1", 0 )
 	ROM_LOAD( "mg3-7.bin", 0x00000, 0x20000, CRC(d8308cdb) SHA1(7bfb864611c32cf3740cfd650bfe275513d511d7) )
 	ROM_LOAD( "mg3-8.bin", 0x20000, 0x20000, CRC(b4a53b9d) SHA1(63d8901149d0d9b69f28bfc096f7932448542032) )
+<<<<<<< HEAD
 	ROM_FILL( 0x40000, 0x20000, 0x00 )
+=======
+	ROM_FILL( 0x40000, 0x20000, 0x0000 )
+>>>>>>> upstream/master
 	ROM_LOAD( "mg3-9.bin", 0x60000, 0x20000, CRC(a0ae2b4b) SHA1(5e026ad8a6b2a8120e386471d5178625bda04525) )
 ROM_END
 
@@ -1388,7 +1637,11 @@ DRIVER_INIT_MEMBER(multigam_state,multigam)
 	multigam_switch_prg_rom(space, 0x0, 0x01);
 }
 
+<<<<<<< HEAD
 void multigam_state::multigm3_decrypt(UINT8* mem, int memsize, const UINT8* decode_nibble)
+=======
+void multigam_state::multigm3_decrypt(uint8_t* mem, int memsize, const uint8_t* decode_nibble)
+>>>>>>> upstream/master
 {
 	int i;
 	for (i = 0; i < memsize; i++)
@@ -1401,12 +1654,20 @@ DRIVER_INIT_MEMBER(multigam_state,multigm3)
 {
 	address_space &space = m_maincpu->space(AS_PROGRAM);
 
+<<<<<<< HEAD
 	const UINT8 decode[16]  = { 0x09, 0x08, 0x07, 0x06, 0x05, 0x04, 0x03, 0x02, 0x01, 0x00, 0x0f, 0x0e, 0x0d, 0x0c, 0x0b, 0x0a };
+=======
+	const uint8_t decode[16]  = { 0x09, 0x08, 0x07, 0x06, 0x05, 0x04, 0x03, 0x02, 0x01, 0x00, 0x0f, 0x0e, 0x0d, 0x0c, 0x0b, 0x0a };
+>>>>>>> upstream/master
 
 	multigm3_decrypt(memregion("maincpu")->base(), memregion("maincpu")->bytes(), decode );
 	multigm3_decrypt(memregion("user1")->base(), memregion("user1")->bytes(), decode );
 
+<<<<<<< HEAD
 	m_multigmc_mmc3_6000_ram = auto_alloc_array(machine(), UINT8, 0x2000);
+=======
+	m_multigmc_mmc3_6000_ram = std::make_unique<uint8_t[]>(0x2000);
+>>>>>>> upstream/master
 
 	multigam_switch_prg_rom(space, 0x0, 0x01);
 }
@@ -1415,8 +1676,13 @@ DRIVER_INIT_MEMBER(multigam_state,multigmt)
 {
 	address_space &space = m_maincpu->space(AS_PROGRAM);
 
+<<<<<<< HEAD
 	dynamic_buffer buf(0x80000);
 	UINT8 *rom;
+=======
+	std::vector<uint8_t> buf(0x80000);
+	uint8_t *rom;
+>>>>>>> upstream/master
 	int size;
 	int i;
 	int addr;
@@ -1455,5 +1721,10 @@ GAME( 1992, multigmb, multigam, multigam, multigam, multigam_state, multigam, RO
 GAME( 1992, multigm2, 0,        multigm3, multigm2, multigam_state, multigm3, ROT0, "Seo Jin",   "Multi Game 2", 0 )
 GAME( 1992, multigm3, 0,        multigm3, multigm3, multigam_state, multigm3, ROT0, "Seo Jin",   "Multi Game III", 0 )
 GAME( 1992, multigmt, 0,        multigmt, multigmt, multigam_state, multigmt, ROT0, "Tung Sheng Electronics", "Multi Game (Tung Sheng Electronics)", 0 )
+<<<<<<< HEAD
 GAME( 1994, sgmt1,    0,        supergm3, sgmt1,    driver_device, 0,         ROT0, "<unknown>", "Super Game Mega Type 1", 0 )
 GAME( 1996, supergm3, 0,        supergm3, supergm3, driver_device, 0,         ROT0, "<unknown>", "Super Game III", 0 )
+=======
+GAME( 1994, sgmt1,    0,        supergm3, sgmt1,    multigam_state, 0,        ROT0, "<unknown>", "Super Game Mega Type 1", 0 )
+GAME( 1996, supergm3, 0,        supergm3, supergm3, multigam_state, 0,        ROT0, "<unknown>", "Super Game III", 0 )
+>>>>>>> upstream/master

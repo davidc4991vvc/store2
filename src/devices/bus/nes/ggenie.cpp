@@ -15,8 +15,12 @@
 
 #include "emu.h"
 #include "ggenie.h"
+<<<<<<< HEAD
 #include "includes/nes.h"
 
+=======
+#include "bus/nes/nes_carts.h"
+>>>>>>> upstream/master
 
 #ifdef NES_PCB_DEBUG
 #define VERBOSE 1
@@ -31,6 +35,7 @@
 //  constructor
 //-------------------------------------------------
 
+<<<<<<< HEAD
 const device_type NES_GGENIE = &device_creator<nes_ggenie_device>;
 
 
@@ -39,6 +44,16 @@ nes_ggenie_device::nes_ggenie_device(const machine_config &mconfig, const char *
 						m_ggslot(*this, "gg_slot"),
 	m_gg_bypass(0)
 				{
+=======
+DEFINE_DEVICE_TYPE(NES_GGENIE, nes_ggenie_device, "nes_ggenie", "NES Cart Game Genie PCB")
+
+
+nes_ggenie_device::nes_ggenie_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: nes_nrom_device(mconfig, NES_GGENIE, tag, owner, clock)
+	, m_ggslot(*this, "gg_slot")
+	, m_gg_bypass(0)
+{
+>>>>>>> upstream/master
 }
 
 
@@ -48,7 +63,11 @@ void nes_ggenie_device::device_start()
 	save_item(NAME(m_gg_bypass));
 }
 
+<<<<<<< HEAD
 void nes_ggenie_device::pcb_start(running_machine &machine, UINT8 *ciram_ptr, bool cart_mounted)
+=======
+void nes_ggenie_device::pcb_start(running_machine &machine, uint8_t *ciram_ptr, bool cart_mounted)
+>>>>>>> upstream/master
 {
 	device_nes_cart_interface::pcb_start(machine, ciram_ptr, cart_mounted);
 	if (m_ggslot->m_cart)
@@ -170,7 +189,11 @@ READ8_MEMBER(nes_ggenie_device::read_h)
 {
 	if (m_gg_bypass && m_ggslot->m_cart)
 	{
+<<<<<<< HEAD
 		UINT8 rom_value = m_ggslot->m_cart->hi_access_rom(offset);
+=======
+		uint8_t rom_value = m_ggslot->m_cart->hi_access_rom(offset);
+>>>>>>> upstream/master
 
 		// check if GG code has to act on this address
 		for (int i = 0; i < 3; i++)
@@ -254,6 +277,7 @@ READ8_MEMBER(nes_ggenie_device::nt_r)
 	return m_nt_access[page][offset & 0x3ff];
 }
 
+<<<<<<< HEAD
 //-------------------------------------------------
 //  MACHINE_CONFIG_FRAGMENT( sub_slot )
 //-------------------------------------------------
@@ -273,3 +297,14 @@ machine_config_constructor nes_ggenie_device::device_mconfig_additions() const
 {
 	return MACHINE_CONFIG_NAME( sub_slot );
 }
+=======
+
+//-------------------------------------------------
+//  device_add_mconfig - add device configuration
+//-------------------------------------------------
+
+MACHINE_CONFIG_MEMBER( nes_ggenie_device::device_add_mconfig )
+	MCFG_NES_CARTRIDGE_ADD("gg_slot", nes_cart, nullptr)
+	MCFG_NES_CARTRIDGE_NOT_MANDATORY
+MACHINE_CONFIG_END
+>>>>>>> upstream/master

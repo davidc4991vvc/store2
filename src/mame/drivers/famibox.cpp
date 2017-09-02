@@ -62,8 +62,14 @@ Notes/ToDo:
 #include "emu.h"
 #include "video/ppu2c0x.h"
 #include "cpu/m6502/n2a03.h"
+<<<<<<< HEAD
 #include "sound/dac.h"
 #include "debugger.h"
+=======
+#include "debugger.h"
+#include "screen.h"
+#include "speaker.h"
+>>>>>>> upstream/master
 
 
 class famibox_state : public driver_device
@@ -78,6 +84,7 @@ public:
 	required_device<cpu_device> m_maincpu;
 	required_device<ppu2c0x_device> m_ppu;
 
+<<<<<<< HEAD
 	UINT8* m_nt_ram;
 	UINT8* m_nt_page[4];
 
@@ -96,6 +103,26 @@ public:
 
 	emu_timer*  m_gameplay_timer;
 	UINT8       m_money_reg;
+=======
+	std::unique_ptr<uint8_t[]> m_nt_ram;
+	uint8_t* m_nt_page[4];
+
+	uint32_t m_in_0;
+	uint32_t m_in_1;
+	uint32_t m_in_0_shift;
+	uint32_t m_in_1_shift;
+
+	uint8_t       m_exception_mask;
+	uint8_t       m_exception_cause;
+
+	emu_timer*  m_attract_timer;
+	uint8_t       m_attract_timer_period;
+
+	uint32_t      m_coins;
+
+	emu_timer*  m_gameplay_timer;
+	uint8_t       m_money_reg;
+>>>>>>> upstream/master
 
 	DECLARE_WRITE8_MEMBER(famibox_nt_w);
 	DECLARE_READ8_MEMBER(famibox_nt_r);
@@ -108,6 +135,7 @@ public:
 	DECLARE_CUSTOM_INPUT_MEMBER(famibox_coin_r);
 	DECLARE_INPUT_CHANGED_MEMBER(famibox_keyswitch_changed);
 	DECLARE_INPUT_CHANGED_MEMBER(coin_inserted);
+<<<<<<< HEAD
 	virtual void machine_start();
 	virtual void machine_reset();
 	virtual void video_start();
@@ -117,6 +145,16 @@ public:
 	TIMER_CALLBACK_MEMBER(famicombox_gameplay_timer_callback);
 	void set_mirroring(int mirroring);
 	void famicombox_bankswitch(UINT8 bank);
+=======
+	virtual void machine_start() override;
+	virtual void machine_reset() override;
+	virtual void video_start() override;
+	DECLARE_PALETTE_INIT(famibox);
+	uint32_t screen_update_famibox(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
+	TIMER_CALLBACK_MEMBER(famicombox_attract_timer_callback);
+	TIMER_CALLBACK_MEMBER(famicombox_gameplay_timer_callback);
+	void famicombox_bankswitch(uint8_t bank);
+>>>>>>> upstream/master
 	void famicombox_reset();
 	void ppu_irq(int *ppu_regs);
 };
@@ -224,11 +262,19 @@ READ8_MEMBER(famibox_state::famibox_IN1_r)
    System
 
 *******************************************************/
+<<<<<<< HEAD
 void famibox_state::famicombox_bankswitch(UINT8 bank)
 {
 	struct
 	{
 		UINT8 bank;
+=======
+void famibox_state::famicombox_bankswitch(uint8_t bank)
+{
+	struct
+	{
+		uint8_t bank;
+>>>>>>> upstream/master
 		const char* memory_region;
 		offs_t bank1_offset;
 		offs_t bank2_offset;
@@ -254,6 +300,7 @@ void famibox_state::famicombox_bankswitch(UINT8 bank)
 	};
 
 
+<<<<<<< HEAD
 	for (int i = 0; i < ARRAY_LENGTH(famicombox_banks); i++ )
 	{
 		if ( bank == famicombox_banks[i].bank ||
@@ -262,6 +309,16 @@ void famibox_state::famicombox_bankswitch(UINT8 bank)
 			membank("cpubank1")->set_base(memregion(famicombox_banks[i].memory_region)->base() + famicombox_banks[i].bank1_offset);
 			membank("cpubank2")->set_base(memregion(famicombox_banks[i].memory_region)->base() + famicombox_banks[i].bank2_offset);
 			membank("ppubank1")->set_base(memregion(famicombox_banks[i].memory_region)->base() + famicombox_banks[i].ppubank_offset);
+=======
+	for (auto & famicombox_bank : famicombox_banks)
+	{
+		if ( bank == famicombox_bank.bank ||
+				famicombox_bank.bank == 0 )
+		{
+			membank("cpubank1")->set_base(memregion(famicombox_bank.memory_region)->base() + famicombox_bank.bank1_offset);
+			membank("cpubank2")->set_base(memregion(famicombox_bank.memory_region)->base() + famicombox_bank.bank2_offset);
+			membank("ppubank1")->set_base(memregion(famicombox_bank.memory_region)->base() + famicombox_bank.ppubank_offset);
+>>>>>>> upstream/master
 			break;
 		}
 	}
@@ -305,7 +362,11 @@ READ8_MEMBER(famibox_state::famibox_system_r)
 	{
 		case 0: /* device which caused exception */
 			{
+<<<<<<< HEAD
 				UINT8 ret = m_exception_cause;
+=======
+				uint8_t ret = m_exception_cause;
+>>>>>>> upstream/master
 				m_exception_cause = 0xff;
 				return ret;
 			}
@@ -339,7 +400,11 @@ WRITE8_MEMBER(famibox_state::famibox_system_w)
 			{
 				if (m_attract_timer->start() != attotime::never)
 				{
+<<<<<<< HEAD
 					m_attract_timer->adjust(attotime::from_seconds((INT32)((double)1.0/6.8274*m_attract_timer_period)), 0, attotime::never);
+=======
+					m_attract_timer->adjust(attotime::from_seconds((int32_t)((double)1.0/6.8274*m_attract_timer_period)), 0, attotime::never);
+>>>>>>> upstream/master
 				}
 			}
 			break;
@@ -478,7 +543,11 @@ static INPUT_PORTS_START( famibox )
 	PORT_DIPSETTING(    0x08, "Key position 4" )
 	PORT_DIPSETTING(    0x10, "Key position 5" )
 	PORT_DIPSETTING(    0x20, "Key position 6" )
+<<<<<<< HEAD
 	PORT_BIT( 0x40, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, famibox_state,famibox_coin_r, NULL)
+=======
+	PORT_BIT( 0x40, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, famibox_state,famibox_coin_r, nullptr)
+>>>>>>> upstream/master
 
 	PORT_START("COIN")
 	PORT_BIT( 0x01, IP_ACTIVE_HIGH, IPT_COIN1 ) PORT_CHANGED_MEMBER(DEVICE_SELF, famibox_state,coin_inserted, 0)
@@ -505,7 +574,11 @@ void famibox_state::video_start()
 {
 }
 
+<<<<<<< HEAD
 UINT32 famibox_state::screen_update_famibox(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+=======
+uint32_t famibox_state::screen_update_famibox(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+>>>>>>> upstream/master
 {
 	/* render the ppu */
 	m_ppu->render(bitmap, 0, 0, 0, 0);
@@ -523,11 +596,19 @@ void famibox_state::machine_reset()
 
 void famibox_state::machine_start()
 {
+<<<<<<< HEAD
 	m_nt_ram = auto_alloc_array(machine(), UINT8, 0x1000);
 	m_nt_page[0] = m_nt_ram;
 	m_nt_page[1] = m_nt_ram + 0x400;
 	m_nt_page[2] = m_nt_ram + 0x800;
 	m_nt_page[3] = m_nt_ram + 0xc00;
+=======
+	m_nt_ram = std::make_unique<uint8_t[]>(0x1000);
+	m_nt_page[0] = m_nt_ram.get();
+	m_nt_page[1] = m_nt_ram.get() + 0x400;
+	m_nt_page[2] = m_nt_ram.get() + 0x800;
+	m_nt_page[3] = m_nt_ram.get() + 0xc00;
+>>>>>>> upstream/master
 
 	m_ppu->space(AS_PROGRAM).install_readwrite_handler(0x2000, 0x3eff, read8_delegate(FUNC(famibox_state::famibox_nt_r), this), write8_delegate(FUNC(famibox_state::famibox_nt_w), this));
 	m_ppu->space(AS_PROGRAM).install_read_bank(0x0000, 0x1fff, "ppubank1");
@@ -544,9 +625,15 @@ void famibox_state::machine_start()
 	m_coins = 0;
 }
 
+<<<<<<< HEAD
 static MACHINE_CONFIG_START( famibox, famibox_state )
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", N2A03, N2A03_DEFAULTCLOCK)
+=======
+static MACHINE_CONFIG_START( famibox )
+	/* basic machine hardware */
+	MCFG_CPU_ADD("maincpu", N2A03, NTSC_APU_CLOCK)
+>>>>>>> upstream/master
 	MCFG_CPU_PROGRAM_MAP(famibox_map)
 
 	/* video hardware */
@@ -607,4 +694,8 @@ ROM_START(famibox)
 
 ROM_END
 
+<<<<<<< HEAD
 GAME( 1986,  famibox,      0,  famibox,  famibox, driver_device,  0, ROT0, "Nintendo", "FamicomBox", MACHINE_IMPERFECT_GRAPHICS | MACHINE_IMPERFECT_SOUND)
+=======
+GAME( 1986,  famibox,      0,  famibox,  famibox, famibox_state,  0, ROT0, "Nintendo", "FamicomBox", MACHINE_IMPERFECT_GRAPHICS | MACHINE_IMPERFECT_SOUND)
+>>>>>>> upstream/master

@@ -16,11 +16,21 @@
 
 */
 
+<<<<<<< HEAD
 #include "rp5c01.h"
 
 
 // device type definition
 const device_type RP5C01 = &device_creator<rp5c01_device>;
+=======
+#include "emu.h"
+#include "rp5c01.h"
+
+
+// device type definitions
+DEFINE_DEVICE_TYPE(RP5C01, rp5c01_device, "rp5c01", "Ricoh RP5C01 RTC")
+DEFINE_DEVICE_TYPE(TC8521, tc8521_device, "tc8521", "Toshiba TC8521 RTC")
+>>>>>>> upstream/master
 
 
 //**************************************************************************
@@ -167,8 +177,18 @@ inline void rp5c01_device::check_alarm()
 //  rp5c01_device - constructor
 //-------------------------------------------------
 
+<<<<<<< HEAD
 rp5c01_device::rp5c01_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
 	: device_t(mconfig, RP5C01, "RP5C01", tag, owner, clock, "rp5c01", __FILE__),
+=======
+rp5c01_device::rp5c01_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: rp5c01_device(mconfig, RP5C01, tag, owner, clock)
+{
+}
+
+rp5c01_device::rp5c01_device(const machine_config &mconfig, device_type type, const char *tag, device_t *owner, uint32_t clock)
+	: device_t(mconfig, type, tag, owner, clock),
+>>>>>>> upstream/master
 		device_rtc_interface(mconfig, *this),
 		device_nvram_interface(mconfig, *this),
 		m_out_alarm_cb(*this),
@@ -201,6 +221,15 @@ void rp5c01_device::device_start()
 		m_16hz_timer->adjust(attotime::from_hz(clock() / 1024), 0, attotime::from_hz(clock() / 1024));
 	}
 
+<<<<<<< HEAD
+=======
+	memset(m_reg, 0, sizeof(m_reg));
+	memset(m_ram, 0, sizeof(m_ram));
+
+	// 24 hour mode
+	m_reg[MODE01][REGISTER_12_24_SELECT] = 1;
+
+>>>>>>> upstream/master
 	// state saving
 	save_item(NAME(m_reg[MODE00]));
 	save_item(NAME(m_reg[MODE01]));
@@ -214,6 +243,7 @@ void rp5c01_device::device_start()
 
 
 //-------------------------------------------------
+<<<<<<< HEAD
 //  device_reset - device-specific reset
 //-------------------------------------------------
 
@@ -231,6 +261,8 @@ void rp5c01_device::device_reset()
 
 
 //-------------------------------------------------
+=======
+>>>>>>> upstream/master
 //  device_timer - handler timer events
 //-------------------------------------------------
 
@@ -316,7 +348,11 @@ void rp5c01_device::nvram_write(emu_file &file)
 
 READ8_MEMBER( rp5c01_device::read )
 {
+<<<<<<< HEAD
 	UINT8 data = 0;
+=======
+	uint8_t data = 0;
+>>>>>>> upstream/master
 	offset &= 0x0f;
 
 	switch (offset)
@@ -426,3 +462,15 @@ WRITE8_MEMBER( rp5c01_device::write )
 		break;
 	}
 }
+<<<<<<< HEAD
+=======
+
+//-------------------------------------------------
+//  tc8521_device - constructor
+//-------------------------------------------------
+
+tc8521_device::tc8521_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: rp5c01_device(mconfig, TC8521, tag, owner, clock)
+{
+}
+>>>>>>> upstream/master

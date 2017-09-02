@@ -1,6 +1,11 @@
 /*
+<<<<<<< HEAD
  * Copyright 2011-2015 Branimir Karadzic. All rights reserved.
  * License: http://www.opensource.org/licenses/BSD-2-Clause
+=======
+ * Copyright 2011-2017 Branimir Karadzic. All rights reserved.
+ * License: https://github.com/bkaradzic/bgfx#license-bsd-2-clause
+>>>>>>> upstream/master
  */
 
 #include "entry_p.h"
@@ -29,7 +34,11 @@ namespace entry
 			, m_my(0)
 			, m_scroll(0)
 		{
+<<<<<<< HEAD
 			memset(s_translateKey, 0, sizeof(s_translateKey));
+=======
+			bx::memSet(s_translateKey, 0, sizeof(s_translateKey));
+>>>>>>> upstream/master
 			s_translateKey[27]             = Key::Esc;
 			s_translateKey[uint8_t('\n')]  =
 			s_translateKey[uint8_t('\r')]  = Key::Return;

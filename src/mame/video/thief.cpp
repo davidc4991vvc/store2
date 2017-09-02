@@ -53,7 +53,11 @@ WRITE8_MEMBER(thief_state::thief_color_map_w){
     ----xx--    green
     ------xx    red
 */
+<<<<<<< HEAD
 	static const UINT8 intensity[4] = {0x00,0x55,0xAA,0xFF};
+=======
+	static const uint8_t intensity[4] = {0x00,0x55,0xAA,0xFF};
+>>>>>>> upstream/master
 	int r = intensity[(data & 0x03) >> 0];
 	int g = intensity[(data & 0x0C) >> 2];
 	int b = intensity[(data & 0x30) >> 4];
@@ -72,15 +76,25 @@ WRITE8_MEMBER(thief_state::thief_color_plane_w){
 }
 
 READ8_MEMBER(thief_state::thief_videoram_r){
+<<<<<<< HEAD
 	UINT8 *videoram = m_videoram;
 	UINT8 *source = &videoram[offset];
+=======
+	uint8_t *videoram = m_videoram.get();
+	uint8_t *source = &videoram[offset];
+>>>>>>> upstream/master
 	if( m_video_control&0x02 ) source+=0x2000*4; /* foreground/background */
 	return source[m_read_mask*0x2000];
 }
 
 WRITE8_MEMBER(thief_state::thief_videoram_w){
+<<<<<<< HEAD
 	UINT8 *videoram = m_videoram;
 	UINT8 *dest = &videoram[offset];
+=======
+	uint8_t *videoram = m_videoram.get();
+	uint8_t *dest = &videoram[offset];
+>>>>>>> upstream/master
 	if( m_video_control&0x02 )
 		dest+=0x2000*4; /* foreground/background */
 	if( m_write_mask&0x1 ) dest[0x2000*0] = data;
@@ -94,6 +108,7 @@ WRITE8_MEMBER(thief_state::thief_videoram_w){
 void thief_state::video_start(){
 	memset( &m_coprocessor, 0x00, sizeof(m_coprocessor) );
 
+<<<<<<< HEAD
 	m_videoram = auto_alloc_array_clear(machine(), UINT8, 0x2000*4*2 );
 
 	m_coprocessor.image_ram = auto_alloc_array(machine(), UINT8, 0x2000 );
@@ -105,6 +120,19 @@ UINT32 thief_state::screen_update_thief(screen_device &screen, bitmap_ind16 &bit
 	UINT32 offs;
 	int flipscreen = m_video_control&1;
 	const UINT8 *source = videoram;
+=======
+	m_videoram = make_unique_clear<uint8_t[]>(0x2000*4*2 );
+
+	m_coprocessor.image_ram = std::make_unique<uint8_t[]>(0x2000 );
+	m_coprocessor.context_ram = std::make_unique<uint8_t[]>(0x400 );
+}
+
+uint32_t thief_state::screen_update_thief(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect){
+	uint8_t *videoram = m_videoram.get();
+	uint32_t offs;
+	int flipscreen = m_video_control&1;
+	const uint8_t *source = videoram;
+>>>>>>> upstream/master
 
 	if (m_tms->screen_reset())
 	{
@@ -147,7 +175,11 @@ UINT32 thief_state::screen_update_thief(screen_device &screen, bitmap_ind16 &bit
 
 /***************************************************************************/
 
+<<<<<<< HEAD
 UINT16 thief_state::fetch_image_addr( coprocessor_t &thief_coprocessor )
+=======
+uint16_t thief_state::fetch_image_addr( coprocessor_t &thief_coprocessor )
+>>>>>>> upstream/master
 {
 	int addr = thief_coprocessor.param[IMAGE_ADDR_LO]+256*thief_coprocessor.param[IMAGE_ADDR_HI];
 	/* auto-increment */
@@ -161,6 +193,7 @@ UINT16 thief_state::fetch_image_addr( coprocessor_t &thief_coprocessor )
 WRITE8_MEMBER(thief_state::thief_blit_w){
 	coprocessor_t &thief_coprocessor = m_coprocessor;
 	int i, offs, xoffset, dy;
+<<<<<<< HEAD
 	UINT8 *gfx_rom = memregion( "gfx1" )->base();
 	UINT8 x = thief_coprocessor.param[SCREEN_XPOS];
 	UINT8 y = thief_coprocessor.param[SCREEN_YPOS];
@@ -169,6 +202,16 @@ WRITE8_MEMBER(thief_state::thief_blit_w){
 	UINT8 attributes = thief_coprocessor.param[BLIT_ATTRIBUTES];
 
 	UINT8 old_data;
+=======
+	uint8_t *gfx_rom = memregion( "gfx1" )->base();
+	uint8_t x = thief_coprocessor.param[SCREEN_XPOS];
+	uint8_t y = thief_coprocessor.param[SCREEN_YPOS];
+	uint8_t width = thief_coprocessor.param[BLIT_WIDTH];
+	uint8_t height = thief_coprocessor.param[BLIT_HEIGHT];
+	uint8_t attributes = thief_coprocessor.param[BLIT_ATTRIBUTES];
+
+	uint8_t old_data;
+>>>>>>> upstream/master
 	int xor_blit = data;
 		/* making the xor behavior selectable fixes score display,
 		but causes minor glitches on the playfield */
@@ -238,7 +281,11 @@ READ8_MEMBER(thief_state::thief_coprocessor_r){
 				return thief_coprocessor.image_ram[addr];
 			}
 			else {
+<<<<<<< HEAD
 				UINT8 *gfx_rom = memregion( "gfx1" )->base();
+=======
+				uint8_t *gfx_rom = memregion( "gfx1" )->base();
+>>>>>>> upstream/master
 				addr -= 0x2000;
 				if( addr<0x6000 ) return gfx_rom[addr];
 			}

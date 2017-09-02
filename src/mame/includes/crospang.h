@@ -6,6 +6,10 @@
 
 *************************************************************************/
 
+<<<<<<< HEAD
+=======
+#include "machine/gen_latch.h"
+>>>>>>> upstream/master
 #include "video/decospr.h"
 
 class crospang_state : public driver_device
@@ -16,6 +20,7 @@ public:
 		m_fg_videoram(*this, "fg_videoram"),
 		m_bg_videoram(*this, "bg_videoram"),
 		m_spriteram(*this, "spriteram"),
+<<<<<<< HEAD
 		m_sprgen(*this, "spritegen"),
 		m_maincpu(*this, "maincpu"),
 		m_gfxdecode(*this, "gfxdecode") { }
@@ -25,6 +30,17 @@ public:
 	required_shared_ptr<UINT16> m_bg_videoram;
 	required_shared_ptr<UINT16> m_spriteram;
 	optional_device<decospr_device> m_sprgen;
+=======
+		m_maincpu(*this, "maincpu"),
+		m_sprgen(*this, "spritegen"),
+		m_gfxdecode(*this, "gfxdecode"),
+		m_soundlatch(*this, "soundlatch") { }
+
+	/* memory pointers */
+	required_shared_ptr<uint16_t> m_fg_videoram;
+	required_shared_ptr<uint16_t> m_bg_videoram;
+	required_shared_ptr<uint16_t> m_spriteram;
+>>>>>>> upstream/master
 
 	/* video-related */
 	tilemap_t   *m_bg_layer;
@@ -32,7 +48,15 @@ public:
 	int       m_bestri_tilebank;
 
 	/* devices */
+<<<<<<< HEAD
 	DECLARE_WRITE16_MEMBER(crospang_soundlatch_w);
+=======
+	required_device<cpu_device> m_maincpu;
+	required_device<decospr_device> m_sprgen;
+	required_device<gfxdecode_device> m_gfxdecode;
+	required_device<generic_latch_8_device> m_soundlatch;
+
+>>>>>>> upstream/master
 	DECLARE_WRITE16_MEMBER(bestri_tilebank_w);
 	DECLARE_WRITE16_MEMBER(bestri_bg_scrolly_w);
 	DECLARE_WRITE16_MEMBER(bestri_fg_scrolly_w);
@@ -47,6 +71,7 @@ public:
 	DECLARE_DRIVER_INIT(crospang);
 	TILE_GET_INFO_MEMBER(get_bg_tile_info);
 	TILE_GET_INFO_MEMBER(get_fg_tile_info);
+<<<<<<< HEAD
 	virtual void machine_start();
 	virtual void machine_reset();
 	virtual void video_start();
@@ -54,4 +79,11 @@ public:
 	void tumblepb_gfx1_rearrange();
 	required_device<cpu_device> m_maincpu;
 	required_device<gfxdecode_device> m_gfxdecode;
+=======
+	virtual void machine_start() override;
+	virtual void machine_reset() override;
+	virtual void video_start() override;
+	uint32_t screen_update_crospang(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
+	void tumblepb_gfx1_rearrange();
+>>>>>>> upstream/master
 };

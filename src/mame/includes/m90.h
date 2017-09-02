@@ -13,28 +13,49 @@ public:
 		m_soundcpu(*this, "soundcpu"),
 		m_audio(*this, "m72"),
 		m_gfxdecode(*this, "gfxdecode"),
+<<<<<<< HEAD
 		m_palette(*this, "palette") { }
 
 	required_shared_ptr<UINT16> m_video_data;
 	optional_shared_ptr<UINT16> m_spriteram;
+=======
+		m_palette(*this, "palette"),
+		m_soundlatch(*this, "soundlatch") { }
+
+	required_shared_ptr<uint16_t> m_video_data;
+	optional_shared_ptr<uint16_t> m_spriteram;
+>>>>>>> upstream/master
 
 	required_device<cpu_device> m_maincpu;
 	required_device<cpu_device> m_soundcpu;
 	optional_device<m72_audio_device> m_audio;
 	required_device<gfxdecode_device> m_gfxdecode;
 	required_device<palette_device> m_palette;
+<<<<<<< HEAD
 
 	UINT16 m_video_control_data[8];
+=======
+	required_device<generic_latch_8_device> m_soundlatch;
+
+	uint16_t m_video_control_data[8];
+>>>>>>> upstream/master
 	tilemap_t *m_pf1_layer;
 	tilemap_t *m_pf2_layer;
 	tilemap_t *m_pf1_wide_layer;
 	tilemap_t *m_pf2_wide_layer;
+<<<<<<< HEAD
 	UINT8 m_last_pf1;
 	UINT8 m_last_pf2;
 	DECLARE_WRITE16_MEMBER(m90_coincounter_w);
 	DECLARE_WRITE16_MEMBER(quizf1_bankswitch_w);
 	DECLARE_WRITE16_MEMBER(dynablsb_sound_command_w);
 	DECLARE_WRITE16_MEMBER(unknown_w);
+=======
+	uint8_t m_last_pf1;
+	uint8_t m_last_pf2;
+	DECLARE_WRITE16_MEMBER(m90_coincounter_w);
+	DECLARE_WRITE16_MEMBER(quizf1_bankswitch_w);
+>>>>>>> upstream/master
 	DECLARE_WRITE16_MEMBER(m90_video_control_w);
 	DECLARE_WRITE16_MEMBER(m90_video_w);
 	DECLARE_DRIVER_INIT(bomblord);
@@ -51,6 +72,7 @@ public:
 	TILE_GET_INFO_MEMBER(dynablsb_get_pf1w_tile_info);
 	TILE_GET_INFO_MEMBER(dynablsb_get_pf2_tile_info);
 	TILE_GET_INFO_MEMBER(dynablsb_get_pf2w_tile_info);
+<<<<<<< HEAD
 	virtual void machine_start();
 	virtual void video_start();
 	DECLARE_VIDEO_START(bomblord);
@@ -58,6 +80,15 @@ public:
 	UINT32 screen_update_m90(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
 	UINT32 screen_update_bomblord(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
 	UINT32 screen_update_dynablsb(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
+=======
+	virtual void machine_start() override;
+	virtual void video_start() override;
+	DECLARE_VIDEO_START(bomblord);
+	DECLARE_VIDEO_START(dynablsb);
+	uint32_t screen_update_m90(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
+	uint32_t screen_update_bomblord(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
+	uint32_t screen_update_dynablsb(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
+>>>>>>> upstream/master
 	INTERRUPT_GEN_MEMBER(fake_nmi);
 	INTERRUPT_GEN_MEMBER(bomblord_fake_nmi);
 	INTERRUPT_GEN_MEMBER(m90_interrupt);

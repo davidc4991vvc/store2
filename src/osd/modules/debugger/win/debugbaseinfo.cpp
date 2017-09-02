@@ -6,6 +6,10 @@
 //
 //============================================================
 
+<<<<<<< HEAD
+=======
+#include "emu.h"
+>>>>>>> upstream/master
 #include "debugbaseinfo.h"
 
 
@@ -25,7 +29,11 @@ void debugbase_info::smart_set_window_bounds(HWND wnd, HWND parent, RECT const &
 
 	// first get the current bounds, relative to the parent
 	GetWindowRect(wnd, &curbounds);
+<<<<<<< HEAD
 	if (parent != NULL)
+=======
+	if (parent != nullptr)
+>>>>>>> upstream/master
 	{
 		RECT parentbounds;
 		GetWindowRect(parent, &parentbounds);
@@ -44,7 +52,11 @@ void debugbase_info::smart_set_window_bounds(HWND wnd, HWND parent, RECT const &
 
 	// if we need to, reposition the window
 	if (flags != (SWP_NOMOVE | SWP_NOSIZE))
+<<<<<<< HEAD
 		SetWindowPos(wnd, NULL,
+=======
+		SetWindowPos(wnd, nullptr,
+>>>>>>> upstream/master
 					bounds.left, bounds.top,
 					bounds.right - bounds.left, bounds.bottom - bounds.top,
 					SWP_NOACTIVATE | SWP_NOOWNERZORDER | SWP_NOZORDER | flags);

@@ -6,12 +6,20 @@
 
 **********************************************************************/
 
+<<<<<<< HEAD
 #pragma once
 
 #ifndef __VIC20_FE3__
 #define __VIC20_FE3__
 
 #include "emu.h"
+=======
+#ifndef MAME_BUS_VIC20_FE3_H
+#define MAME_BUS_VIC20_FE3_H
+
+#pragma once
+
+>>>>>>> upstream/master
 #include "exp.h"
 #include "machine/intelfsh.h"
 
@@ -21,13 +29,20 @@
 //  TYPE DEFINITIONS
 //**************************************************************************
 
+<<<<<<< HEAD
 // ======================> vic20_final_expansion_3_t
 
 class vic20_final_expansion_3_t :  public device_t,
+=======
+// ======================> vic20_final_expansion_3_device
+
+class vic20_final_expansion_3_device :  public device_t,
+>>>>>>> upstream/master
 									public device_vic20_expansion_card_interface
 {
 public:
 	// construction/destruction
+<<<<<<< HEAD
 	vic20_final_expansion_3_t(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
 
 	// optional information overrides
@@ -42,6 +57,22 @@ protected:
 	// device_vic20_expansion_card_interface overrides
 	virtual UINT8 vic20_cd_r(address_space &space, offs_t offset, UINT8 data, int ram1, int ram2, int ram3, int blk1, int blk2, int blk3, int blk5, int io2, int io3);
 	virtual void vic20_cd_w(address_space &space, offs_t offset, UINT8 data, int ram1, int ram2, int ram3, int blk1, int blk2, int blk3, int blk5, int io2, int io3);
+=======
+	vic20_final_expansion_3_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
+
+protected:
+	// device-level overrides
+	virtual void device_start() override;
+	virtual void device_reset() override;
+
+	// optional information overrides
+	virtual const tiny_rom_entry *device_rom_region() const override;
+	virtual void device_add_mconfig(machine_config &config) override;
+
+	// device_vic20_expansion_card_interface overrides
+	virtual uint8_t vic20_cd_r(address_space &space, offs_t offset, uint8_t data, int ram1, int ram2, int ram3, int blk1, int blk2, int blk3, int blk5, int io2, int io3) override;
+	virtual void vic20_cd_w(address_space &space, offs_t offset, uint8_t data, int ram1, int ram2, int ram3, int blk1, int blk2, int blk3, int blk5, int io2, int io3) override;
+>>>>>>> upstream/master
 
 private:
 	enum
@@ -74,6 +105,7 @@ private:
 	};
 
 	offs_t get_address(int bank, int block, offs_t offset);
+<<<<<<< HEAD
 	UINT8 read_register(offs_t offset);
 	void write_register(offs_t offset, UINT8 data);
 
@@ -82,13 +114,29 @@ private:
 
 	UINT8 m_reg1;
 	UINT8 m_reg2;
+=======
+	uint8_t read_register(offs_t offset);
+	void write_register(offs_t offset, uint8_t data);
+
+	required_device<amd_29f040_device> m_flash_rom;
+	optional_shared_ptr<uint8_t> m_ram;
+
+	uint8_t m_reg1;
+	uint8_t m_reg2;
+>>>>>>> upstream/master
 	int m_lockbit;
 };
 
 
 // device type definition
+<<<<<<< HEAD
 extern const device_type VIC20_FE3;
 
 
 
 #endif
+=======
+DECLARE_DEVICE_TYPE(VIC20_FE3, vic20_final_expansion_3_device)
+
+#endif // MAME_BUS_VIC20_FE3_H
+>>>>>>> upstream/master

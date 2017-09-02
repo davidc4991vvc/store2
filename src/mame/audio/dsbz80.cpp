@@ -11,6 +11,10 @@
 
 #include "emu.h"
 #include "audio/dsbz80.h"
+<<<<<<< HEAD
+=======
+#include "machine/clock.h"
+>>>>>>> upstream/master
 
 #define Z80_TAG "mpegcpu"
 
@@ -20,6 +24,7 @@ static ADDRESS_MAP_START( dsbz80_map, AS_PROGRAM, 8, dsbz80_device )
 ADDRESS_MAP_END
 
 static ADDRESS_MAP_START( dsbz80io_map, AS_IO, 8, dsbz80_device )
+<<<<<<< HEAD
 	AM_RANGE(0xe0, 0xe0) AM_MIRROR(0xff00) AM_WRITE(mpeg_trigger_w)
 	AM_RANGE(0xe2, 0xe4) AM_MIRROR(0xff00) AM_READWRITE(mpeg_pos_r, mpeg_start_w)
 	AM_RANGE(0xe5, 0xe7) AM_MIRROR(0xff00) AM_WRITE(mpeg_end_w)
@@ -36,10 +41,24 @@ MACHINE_CONFIG_FRAGMENT( dsbz80 )
 	MCFG_CPU_IO_MAP(dsbz80io_map)
 MACHINE_CONFIG_END
 
+=======
+	ADDRESS_MAP_GLOBAL_MASK(0xff)
+	AM_RANGE(0xe0, 0xe0) AM_WRITE(mpeg_trigger_w)
+	AM_RANGE(0xe2, 0xe4) AM_READWRITE(mpeg_pos_r, mpeg_start_w)
+	AM_RANGE(0xe5, 0xe7) AM_WRITE(mpeg_end_w)
+	AM_RANGE(0xe8, 0xe8) AM_WRITE(mpeg_volume_w)
+	AM_RANGE(0xe9, 0xe9) AM_WRITE(mpeg_stereo_w)
+	AM_RANGE(0xf0, 0xf0) AM_DEVREADWRITE("uart", i8251_device, data_r, data_w)
+	AM_RANGE(0xf1, 0xf1) AM_DEVREADWRITE("uart", i8251_device, status_r, control_w)
+ADDRESS_MAP_END
+
+
+>>>>>>> upstream/master
 //**************************************************************************
 //  GLOBAL VARIABLES
 //**************************************************************************
 
+<<<<<<< HEAD
 const device_type DSBZ80 = &device_creator<dsbz80_device>;
 
 
@@ -52,6 +71,27 @@ machine_config_constructor dsbz80_device::device_mconfig_additions() const
 {
 	return MACHINE_CONFIG_NAME( dsbz80 );
 }
+=======
+DEFINE_DEVICE_TYPE(DSBZ80, dsbz80_device, "dsbz80_device", "Sega Z80-based Digital Sound Board")
+
+
+//-------------------------------------------------
+//  device_add_mconfig - add device configuration
+//-------------------------------------------------
+
+MACHINE_CONFIG_MEMBER( dsbz80_device::device_add_mconfig )
+	MCFG_CPU_ADD(Z80_TAG, Z80, 4000000)     /* unknown clock, but probably pretty slow considering the z80 does like nothing */
+	MCFG_CPU_PROGRAM_MAP(dsbz80_map)
+	MCFG_CPU_IO_MAP(dsbz80io_map)
+
+	MCFG_DEVICE_ADD("uart", I8251, 4000000)
+	MCFG_I8251_RXRDY_HANDLER(INPUTLINE(Z80_TAG, INPUT_LINE_IRQ0))
+	MCFG_I8251_TXD_HANDLER(WRITELINE(dsbz80_device, output_txd))
+
+	MCFG_CLOCK_ADD("uart_clock", 500000) // 16 times 31.25MHz (standard Sega/MIDI sound data rate)
+	MCFG_CLOCK_SIGNAL_HANDLER(DEVWRITELINE("uart", i8251_device, write_rxc))
+MACHINE_CONFIG_END
+>>>>>>> upstream/master
 
 //**************************************************************************
 //  LIVE DEVICE
@@ -61,10 +101,19 @@ machine_config_constructor dsbz80_device::device_mconfig_additions() const
 //  dsbz80_device - constructor
 //-------------------------------------------------
 
+<<<<<<< HEAD
 dsbz80_device::dsbz80_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock) :
 	device_t(mconfig, DSBZ80, "Sega Z80-based Digital Sound Board", tag, owner, clock, "dsbz80", __FILE__),
 	device_sound_interface(mconfig, *this),
 	m_ourcpu(*this, Z80_TAG)
+=======
+dsbz80_device::dsbz80_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock) :
+	device_t(mconfig, DSBZ80, tag, owner, clock),
+	device_sound_interface(mconfig, *this),
+	m_ourcpu(*this, Z80_TAG),
+	m_uart(*this, "uart"),
+	m_rxd_handler(*this)
+>>>>>>> upstream/master
 {
 }
 
@@ -74,7 +123,12 @@ dsbz80_device::dsbz80_device(const machine_config &mconfig, const char *tag, dev
 
 void dsbz80_device::device_start()
 {
+<<<<<<< HEAD
 	UINT8 *rom_base = machine().root_device().memregion("mpeg")->base();
+=======
+	m_rxd_handler.resolve_safe();
+	uint8_t *rom_base = machine().root_device().memregion("mpeg")->base();
+>>>>>>> upstream/master
 	decoder = new mpeg_audio(rom_base, mpeg_audio::L2, false, 0);
 	machine().sound().stream_alloc(*this, 0, 2, 32000);
 }
@@ -85,12 +139,16 @@ void dsbz80_device::device_start()
 
 void dsbz80_device::device_reset()
 {
+<<<<<<< HEAD
 	m_dsb_latch = 0;
 	status = 1;
+=======
+>>>>>>> upstream/master
 	start = end = 0;
 	audio_pos = audio_avail = 0;
 	memset(audio_buf, 0, sizeof(audio_buf));
 	mp_state = 0;
+<<<<<<< HEAD
 }
 
 WRITE8_MEMBER(dsbz80_device::latch_w)
@@ -107,6 +165,21 @@ READ8_MEMBER(dsbz80_device::latch_r)
 //  printf("DSB Z80 read %02x\n", m_dsb_latch);
 	status &= ~2;
 	return m_dsb_latch;
+=======
+
+	m_uart->write_cts(0);
+}
+
+WRITE_LINE_MEMBER(dsbz80_device::write_txd)
+{
+	m_uart->write_rxd(state);
+}
+
+WRITE_LINE_MEMBER(dsbz80_device::output_txd)
+{
+	// not used by swa
+	m_rxd_handler(state);
+>>>>>>> upstream/master
 }
 
 WRITE8_MEMBER(dsbz80_device::mpeg_trigger_w)
@@ -228,6 +301,7 @@ WRITE8_MEMBER(dsbz80_device::mpeg_stereo_w)
 	mp_pan = data & 3;  // 0 = stereo, 1 = left on both channels, 2 = right on both channels
 }
 
+<<<<<<< HEAD
 READ8_MEMBER(dsbz80_device::status_r)
 {
 	// bit 0 = ??? (must be 1 for most games)
@@ -237,6 +311,8 @@ READ8_MEMBER(dsbz80_device::status_r)
 	return status;
 }
 
+=======
+>>>>>>> upstream/master
 void dsbz80_device::sound_stream_update(sound_stream &stream, stream_sample_t **inputs, stream_sample_t **outputs, int samples)
 {
 	stream_sample_t *out_l = outputs[0];

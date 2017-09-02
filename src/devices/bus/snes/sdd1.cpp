@@ -20,15 +20,25 @@
 
 // Input Manager
 
+<<<<<<< HEAD
 void SDD1_IM::IM_prepareDecomp(UINT32 in_buf)
+=======
+void sns_rom_sdd1_device::SDD1_IM::IM_prepareDecomp(uint32_t in_buf)
+>>>>>>> upstream/master
 {
 	m_byte_ptr = in_buf;
 	m_bit_count = 4;
 }
 
+<<<<<<< HEAD
 UINT8 SDD1_IM::IM_getCodeword(UINT8 *ROM, UINT32 *mmc, const UINT8 code_len)
 {
 	UINT8 codeword = ROM[SSD1_ADD(m_byte_ptr)] << m_bit_count;
+=======
+uint8_t sns_rom_sdd1_device::SDD1_IM::IM_getCodeword(uint8_t *ROM, uint32_t *mmc, const uint8_t code_len)
+{
+	uint8_t codeword = ROM[SSD1_ADD(m_byte_ptr)] << m_bit_count;
+>>>>>>> upstream/master
 
 	++m_bit_count;
 
@@ -49,9 +59,15 @@ UINT8 SDD1_IM::IM_getCodeword(UINT8 *ROM, UINT32 *mmc, const UINT8 code_len)
 
 // GCD
 
+<<<<<<< HEAD
 void SDD1_GCD::GCD_getRunCount(UINT8 *ROM, UINT32 *mmc, UINT8 code_num, UINT8* MPScount, UINT8* LPSind)
 {
 	const UINT8 run_count[] =
+=======
+void sns_rom_sdd1_device::SDD1_GCD::GCD_getRunCount(uint8_t *ROM, uint32_t *mmc, uint8_t code_num, uint8_t* MPScount, uint8_t* LPSind)
+{
+	static constexpr uint8_t run_count[] =
+>>>>>>> upstream/master
 	{
 		0x00, 0x00, 0x01, 0x00, 0x03, 0x01, 0x02, 0x00,
 		0x07, 0x03, 0x05, 0x01, 0x06, 0x02, 0x04, 0x00,
@@ -87,7 +103,11 @@ void SDD1_GCD::GCD_getRunCount(UINT8 *ROM, UINT32 *mmc, UINT8 code_num, UINT8* M
 		0x70, 0x30, 0x50, 0x10, 0x60, 0x20, 0x40, 0x00,
 	};
 
+<<<<<<< HEAD
 	UINT8 codeword = m_IM->IM_getCodeword(ROM, mmc, code_num);
+=======
+	uint8_t codeword = m_IM->IM_getCodeword(ROM, mmc, code_num);
+>>>>>>> upstream/master
 
 	if (codeword & 0x80)
 	{
@@ -102,15 +122,25 @@ void SDD1_GCD::GCD_getRunCount(UINT8 *ROM, UINT32 *mmc, UINT8 code_num, UINT8* M
 
 // BG
 
+<<<<<<< HEAD
 void SDD1_BG::BG_prepareDecomp()
+=======
+void sns_rom_sdd1_device::SDD1_BG::BG_prepareDecomp()
+>>>>>>> upstream/master
 {
 	m_MPScount = 0;
 	m_LPSind = 0;
 }
 
+<<<<<<< HEAD
 UINT8 SDD1_BG::BG_getBit(UINT8 *ROM, UINT32 *mmc, UINT8* endOfRun)
 {
 	UINT8 bit;
+=======
+uint8_t sns_rom_sdd1_device::SDD1_BG::BG_getBit(uint8_t *ROM, uint32_t *mmc, uint8_t* endOfRun)
+{
+	uint8_t bit;
+>>>>>>> upstream/master
 
 	if (!(m_MPScount || m_LPSind))
 	{
@@ -144,12 +174,21 @@ UINT8 SDD1_BG::BG_getBit(UINT8 *ROM, UINT32 *mmc, UINT8* endOfRun)
 
 struct SDD1_PEM_state
 {
+<<<<<<< HEAD
 	UINT8 code_num;
 	UINT8 nextIfMPS;
 	UINT8 nextIfLPS;
 };
 
 static const SDD1_PEM_state PEM_evolution_table[33] =
+=======
+	uint8_t code_num;
+	uint8_t nextIfMPS;
+	uint8_t nextIfLPS;
+};
+
+static constexpr SDD1_PEM_state PEM_evolution_table[33] =
+>>>>>>> upstream/master
 {
 	{ 0,25,25},
 	{ 0, 2, 1},
@@ -186,6 +225,7 @@ static const SDD1_PEM_state PEM_evolution_table[33] =
 	{ 7,24,22}
 };
 
+<<<<<<< HEAD
 void SDD1_PEM::PEM_prepareDecomp()
 {
 	for (int i = 0; i < 32; i++)
@@ -204,6 +244,26 @@ UINT8 SDD1_PEM::PEM_getBit(UINT8 *ROM, UINT32 *mmc, UINT8 context)
 	UINT8 currStatus = pContInfo->status;
 	const SDD1_PEM_state* pState = &(PEM_evolution_table[currStatus]);
 	UINT8 currentMPS = pContInfo->MPS;
+=======
+void sns_rom_sdd1_device::SDD1_PEM::PEM_prepareDecomp()
+{
+	for (auto & elem : m_contextInfo)
+	{
+		elem.status = 0;
+		elem.MPS = 0;
+	}
+}
+
+uint8_t sns_rom_sdd1_device::SDD1_PEM::PEM_getBit(uint8_t *ROM, uint32_t *mmc, uint8_t context)
+{
+	uint8_t endOfRun;
+	uint8_t bit;
+
+	SDD1_PEM_ContextInfo *pContInfo = &(m_contextInfo)[context];
+	uint8_t currStatus = pContInfo->status;
+	const SDD1_PEM_state* pState = &(PEM_evolution_table[currStatus]);
+	uint8_t currentMPS = pContInfo->MPS;
+>>>>>>> upstream/master
 
 	bit = m_BG[pState->code_num]->BG_getBit(ROM, mmc, &endOfRun);
 
@@ -228,9 +288,15 @@ UINT8 SDD1_PEM::PEM_getBit(UINT8 *ROM, UINT32 *mmc, UINT8 context)
 
 // CM
 
+<<<<<<< HEAD
 void SDD1_CM::CM_prepareDecomp(UINT8 *ROM, UINT32 *mmc, UINT32 first_byte)
 {
 	INT32 i = 0;
+=======
+void sns_rom_sdd1_device::SDD1_CM::CM_prepareDecomp(uint8_t *ROM, uint32_t *mmc, uint32_t first_byte)
+{
+	int32_t i = 0;
+>>>>>>> upstream/master
 	m_bitplanesInfo = ROM[SSD1_ADD(first_byte)] & 0xc0;
 	m_contextBitsInfo = ROM[SSD1_ADD(first_byte)] & 0x30;
 	m_bit_number = 0;
@@ -252,11 +318,19 @@ void SDD1_CM::CM_prepareDecomp(UINT8 *ROM, UINT32 *mmc, UINT32 first_byte)
 	}
 }
 
+<<<<<<< HEAD
 UINT8 SDD1_CM::CM_getBit(UINT8 *ROM, UINT32 *mmc)
 {
 	UINT8 currContext;
 	UINT16 *context_bits;
 	UINT8 bit = 0;
+=======
+uint8_t sns_rom_sdd1_device::SDD1_CM::CM_getBit(uint8_t *ROM, uint32_t *mmc)
+{
+	uint8_t currContext;
+	uint16_t *context_bits;
+	uint8_t bit;
+>>>>>>> upstream/master
 
 	switch (m_bitplanesInfo)
 	{
@@ -309,17 +383,28 @@ UINT8 SDD1_CM::CM_getBit(UINT8 *ROM, UINT32 *mmc)
 
 // OL
 
+<<<<<<< HEAD
 void SDD1_OL::OL_prepareDecomp(UINT8 *ROM, UINT32 *mmc, UINT32 first_byte, UINT16 out_len, UINT8 *out_buf)
+=======
+void sns_rom_sdd1_device::SDD1_OL::OL_prepareDecomp(uint8_t *ROM, uint32_t *mmc, uint32_t first_byte, uint16_t out_len, uint8_t *out_buf)
+>>>>>>> upstream/master
 {
 	m_bitplanesInfo = ROM[SSD1_ADD(first_byte)] & 0xc0;
 	m_length = out_len;
 	m_buffer = out_buf;
 }
 
+<<<<<<< HEAD
 void SDD1_OL::OL_launch(UINT8 *ROM, UINT32 *mmc)
 {
 	UINT8 i;
 	UINT8 register1 = 0, register2 = 0;
+=======
+void sns_rom_sdd1_device::SDD1_OL::OL_launch(uint8_t *ROM, uint32_t *mmc)
+{
+	uint8_t i;
+	uint8_t register1, register2 = 0;
+>>>>>>> upstream/master
 
 	switch (m_bitplanesInfo)
 	{
@@ -366,6 +451,7 @@ void SDD1_OL::OL_launch(UINT8 *ROM, UINT32 *mmc)
 
 // S-DD1
 
+<<<<<<< HEAD
 SDD1_emu::SDD1_emu(running_machine &machine)
 		: m_machine(machine)
 {
@@ -386,6 +472,28 @@ SDD1_emu::SDD1_emu(running_machine &machine)
 }
 
 void SDD1_emu::SDD1emu_decompress(UINT8 *ROM, UINT32 *mmc, UINT32 in_buf, UINT16 out_len, UINT8 *out_buf)
+=======
+sns_rom_sdd1_device::SDD1_emu::SDD1_emu(running_machine &machine)
+		: m_machine(machine)
+{
+	m_IM = std::make_unique<SDD1_IM>();
+	m_GCD = std::make_unique<SDD1_GCD>(m_IM.get());
+	m_BG0 = std::make_unique<SDD1_BG>(m_GCD.get(), 0);
+	m_BG1 = std::make_unique<SDD1_BG>(m_GCD.get(), 1);
+	m_BG2 = std::make_unique<SDD1_BG>(m_GCD.get(), 2);
+	m_BG3 = std::make_unique<SDD1_BG>(m_GCD.get(), 3);
+	m_BG4 = std::make_unique<SDD1_BG>(m_GCD.get(), 4);
+	m_BG5 = std::make_unique<SDD1_BG>(m_GCD.get(), 5);
+	m_BG6 = std::make_unique<SDD1_BG>(m_GCD.get(), 6);
+	m_BG7 = std::make_unique<SDD1_BG>(m_GCD.get(), 7);
+	m_PEM = std::make_unique<SDD1_PEM>(m_BG0.get(), m_BG1.get(), m_BG2.get(), m_BG3.get(),
+											m_BG4.get(), m_BG5.get(), m_BG6.get(), m_BG7.get());
+	m_CM = std::make_unique<SDD1_CM>(m_PEM.get());
+	m_OL = std::make_unique<SDD1_OL>(m_CM.get());
+}
+
+void sns_rom_sdd1_device::SDD1_emu::SDD1emu_decompress(uint8_t *ROM, uint32_t *mmc, uint32_t in_buf, uint16_t out_len, uint8_t *out_buf)
+>>>>>>> upstream/master
 {
 	m_IM->IM_prepareDecomp(in_buf);
 	m_BG0->BG_prepareDecomp();
@@ -408,6 +516,7 @@ void SDD1_emu::SDD1emu_decompress(UINT8 *ROM, UINT32 *mmc, UINT32 in_buf, UINT16
 //  sns_rom_sdd1_device - constructor
 //-------------------------------------------------
 
+<<<<<<< HEAD
 const device_type SNS_LOROM_SDD1 = &device_creator<sns_rom_sdd1_device>;
 
 
@@ -421,14 +530,35 @@ sns_rom_sdd1_device::sns_rom_sdd1_device(const machine_config &mconfig, const ch
 					: device_t(mconfig, SNS_LOROM_SDD1, "SNES Cart + S-DD1", tag, owner, clock, "sns_rom_sdd1", __FILE__),
 						device_sns_cart_interface( mconfig, *this ), m_sdd1_enable(0), m_xfer_enable(0), m_sdd1emu(nullptr)
 				{
+=======
+DEFINE_DEVICE_TYPE(SNS_LOROM_SDD1, sns_rom_sdd1_device, "sns_rom_sdd1", "SNES Cart + S-DD1")
+
+
+sns_rom_sdd1_device::sns_rom_sdd1_device(const machine_config &mconfig, device_type type, const char *tag, device_t *owner, uint32_t clock)
+	: device_t(mconfig, type, tag, owner, clock)
+	, device_sns_cart_interface(mconfig, *this)
+	, m_sdd1_enable(0), m_xfer_enable(0), m_sdd1emu(nullptr)
+{
+}
+
+sns_rom_sdd1_device::sns_rom_sdd1_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: sns_rom_sdd1_device(mconfig, SNS_LOROM_SDD1, tag, owner, clock)
+{
+>>>>>>> upstream/master
 }
 
 
 void sns_rom_sdd1_device::device_start()
 {
+<<<<<<< HEAD
 	m_sdd1emu = auto_alloc(machine(), SDD1_emu(machine()));
 
 	m_buffer.data = (UINT8*)auto_alloc_array(machine(), UINT8, 0x10000);
+=======
+	m_sdd1emu = std::make_unique<SDD1_emu>(machine());
+
+	m_buffer.data = std::make_unique<uint8_t[]>(0x10000);
+>>>>>>> upstream/master
 	m_buffer.ready = 0;
 
 	save_item(NAME(m_sdd1_enable));
@@ -441,7 +571,11 @@ void sns_rom_sdd1_device::device_start()
 		save_item(NAME(m_dma[i].size), i);
 	}
 
+<<<<<<< HEAD
 	save_pointer(NAME(m_buffer.data), 0x10000);
+=======
+	save_pointer(NAME(m_buffer.data.get()), 0x10000);
+>>>>>>> upstream/master
 	save_item(NAME(m_buffer.offset));
 	save_item(NAME(m_buffer.size));
 	save_item(NAME(m_buffer.ready));
@@ -459,10 +593,17 @@ void sns_rom_sdd1_device::device_reset()
 	m_mmc[2] = 2 << 20;
 	m_mmc[3] = 3 << 20;
 
+<<<<<<< HEAD
 	for(int i = 0; i < 8; i++)
 	{
 		m_dma[i].addr = 0;
 		m_dma[i].size = 0;
+=======
+	for(auto & elem : m_dma)
+	{
+		elem.addr = 0;
+		elem.size = 0;
+>>>>>>> upstream/master
 	}
 }
 
@@ -472,7 +613,11 @@ void sns_rom_sdd1_device::device_reset()
 
 READ8_MEMBER( sns_rom_sdd1_device::chip_read )
 {
+<<<<<<< HEAD
 	UINT16 addr = offset & 0xffff;
+=======
+	uint16_t addr = offset & 0xffff;
+>>>>>>> upstream/master
 
 	switch (addr)
 	{
@@ -493,11 +638,19 @@ READ8_MEMBER( sns_rom_sdd1_device::chip_read )
 
 WRITE8_MEMBER( sns_rom_sdd1_device::chip_write )
 {
+<<<<<<< HEAD
 	UINT16 addr = offset & 0xffff;
 
 	if ((addr & 0x4380) == 0x4300)
 	{
 		UINT8 channel = (addr >> 4) & 7;
+=======
+	uint16_t addr = offset & 0xffff;
+
+	if ((addr & 0x4380) == 0x4300)
+	{
+		uint8_t channel = (addr >> 4) & 7;
+>>>>>>> upstream/master
 		switch(addr & 0xf)
 		{
 			case 2:
@@ -545,7 +698,11 @@ WRITE8_MEMBER( sns_rom_sdd1_device::chip_write )
 
 }
 
+<<<<<<< HEAD
 UINT8 sns_rom_sdd1_device::read_helper(UINT32 addr)
+=======
+uint8_t sns_rom_sdd1_device::read_helper(uint32_t addr)
+>>>>>>> upstream/master
 {
 	if (m_sdd1_enable & m_xfer_enable)
 	{
@@ -557,7 +714,11 @@ UINT8 sns_rom_sdd1_device::read_helper(UINT32 addr)
 				// S-DD1 always uses fixed transfer mode, so address will not change during transfer
 				if ((addr + 0xc00000) == m_dma[i].addr)
 				{
+<<<<<<< HEAD
 					UINT8 data;
+=======
+					uint8_t data;
+>>>>>>> upstream/master
 					if (!m_buffer.ready)
 					{
 						// first byte read for channel performs full decompression.
@@ -567,13 +728,21 @@ UINT8 sns_rom_sdd1_device::read_helper(UINT32 addr)
 
 						// SDD1_emu calls this function; it needs to access uncompressed data;
 						// so temporarily disable decompression mode for decompress() call.
+<<<<<<< HEAD
 						m_sdd1emu->SDD1emu_decompress(m_rom, m_mmc, addr, m_buffer.size, m_buffer.data);
+=======
+						m_sdd1emu->SDD1emu_decompress(m_rom, m_mmc, addr, m_buffer.size, m_buffer.data.get());
+>>>>>>> upstream/master
 
 						m_buffer.ready = 1;
 					}
 
 					// fetch a decompressed byte; once buffer is depleted, disable channel and invalidate buffer
+<<<<<<< HEAD
 					data = m_buffer.data[(UINT16)m_buffer.offset++];
+=======
+					data = m_buffer.data[(uint16_t)m_buffer.offset++];
+>>>>>>> upstream/master
 					if (m_buffer.offset >= m_buffer.size)
 					{
 						m_buffer.ready = 0;

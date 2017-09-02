@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 // license:???
+=======
+// license:BSD-3-Clause
+>>>>>>> upstream/master
 // copyright-holders:Stefan Jokisch
 /***************************************************************************
 
@@ -20,6 +24,11 @@ TODO:
 
 #include "emu.h"
 #include "cpu/m6502/m6502.h"
+<<<<<<< HEAD
+=======
+#include "machine/74259.h"
+#include "screen.h"
+>>>>>>> upstream/master
 
 #define MASTER_CLOCK    XTAL_12_096MHz
 #define PIXEL_CLOCK     (MASTER_CLOCK / 2)
@@ -41,6 +50,10 @@ public:
 		m_gfxdecode(*this, "gfxdecode"),
 		m_screen(*this, "screen"),
 		m_palette(*this, "palette"),
+<<<<<<< HEAD
+=======
+		m_outlatch(*this, "outlatch"),
+>>>>>>> upstream/master
 		m_playfield_ram(*this, "playfield_ram") { }
 
 	/* devices */
@@ -48,6 +61,7 @@ public:
 	required_device<gfxdecode_device> m_gfxdecode;
 	required_device<screen_device> m_screen;
 	required_device<palette_device> m_palette;
+<<<<<<< HEAD
 
 	/* memory pointers */
 	required_shared_ptr<UINT8> m_playfield_ram;
@@ -64,6 +78,26 @@ public:
 	UINT8    m_potmask;
 	UINT8    m_potsense;
 
+=======
+	required_device<f9334_device> m_outlatch;
+
+	/* memory pointers */
+	required_shared_ptr<uint8_t> m_playfield_ram;
+
+	/* video-related */
+	tilemap_t  *m_tmap;
+	uint8_t    m_pitcher_vert;
+	uint8_t    m_pitcher_horz;
+	uint8_t    m_pitcher_pic;
+	uint8_t    m_ball_vert;
+	uint8_t    m_ball_horz;
+
+	/* misc */
+	uint8_t    m_potmask;
+	uint8_t    m_potsense;
+
+	emu_timer *m_pot_assert_timer[64];
+>>>>>>> upstream/master
 	emu_timer *m_pot_clear_timer;
 	emu_timer *m_quarter_timer;
 
@@ -77,22 +111,39 @@ public:
 	DECLARE_WRITE8_MEMBER(pitcher_vert_w);
 	DECLARE_WRITE8_MEMBER(pitcher_horz_w);
 	DECLARE_WRITE8_MEMBER(misc_w);
+<<<<<<< HEAD
+=======
+	DECLARE_WRITE_LINE_MEMBER(lamp_w);
+>>>>>>> upstream/master
 
 	TILEMAP_MAPPER_MEMBER(get_memory_offset);
 	TILE_GET_INFO_MEMBER(get_tile_info);
 
+<<<<<<< HEAD
 	virtual void machine_start();
 	virtual void machine_reset();
 	virtual void video_start();
 	DECLARE_PALETTE_INIT(flyball);
 
 	UINT32 screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
+=======
+	virtual void machine_start() override;
+	virtual void machine_reset() override;
+	virtual void video_start() override;
+	DECLARE_PALETTE_INIT(flyball);
+
+	uint32_t screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
+>>>>>>> upstream/master
 
 	TIMER_CALLBACK_MEMBER(joystick_callback);
 	TIMER_CALLBACK_MEMBER(quarter_callback);
 
 protected:
+<<<<<<< HEAD
 	virtual void device_timer(emu_timer &timer, device_timer_id id, int param, void *ptr);
+=======
+	virtual void device_timer(emu_timer &timer, device_timer_id id, int param, void *ptr) override;
+>>>>>>> upstream/master
 };
 
 
@@ -113,7 +164,11 @@ TILEMAP_MAPPER_MEMBER(flyball_state::get_memory_offset)
 
 TILE_GET_INFO_MEMBER(flyball_state::get_tile_info)
 {
+<<<<<<< HEAD
 	UINT8 data = m_playfield_ram[tile_index];
+=======
+	uint8_t data = m_playfield_ram[tile_index];
+>>>>>>> upstream/master
 	int flags = ((data & 0x40) ? TILE_FLIPX : 0) | ((data & 0x80) ? TILE_FLIPY : 0);
 	int code = data & 63;
 
@@ -126,11 +181,19 @@ TILE_GET_INFO_MEMBER(flyball_state::get_tile_info)
 
 void flyball_state::video_start()
 {
+<<<<<<< HEAD
 	m_tmap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(flyball_state::get_tile_info),this), tilemap_mapper_delegate(FUNC(flyball_state::get_memory_offset),this), 8, 16, 32, 16);
 }
 
 
 UINT32 flyball_state::screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+=======
+	m_tmap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(flyball_state::get_tile_info),this), tilemap_mapper_delegate(FUNC(flyball_state::get_memory_offset),this), 8, 16, 32, 16);
+}
+
+
+uint32_t flyball_state::screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+>>>>>>> upstream/master
 {
 	int pitcherx = m_pitcher_horz;
 	int pitchery = m_pitcher_vert - 31;
@@ -171,7 +234,11 @@ void flyball_state::device_timer(emu_timer &timer, device_timer_id id, int param
 		break;
 
 	default:
+<<<<<<< HEAD
 		assert_always(FALSE, "Unknown id in flyball_state::device_timer");
+=======
+		assert_always(false, "Unknown id in flyball_state::device_timer");
+>>>>>>> upstream/master
 	}
 }
 
@@ -205,7 +272,11 @@ TIMER_CALLBACK_MEMBER(flyball_state::quarter_callback)
 
 	for (i = 0; i < 64; i++)
 		if (potsense[i] != 0)
+<<<<<<< HEAD
 			timer_set(m_screen->time_until_pos(scanline + i), TIMER_POT_ASSERT, potsense[i]);
+=======
+			m_pot_assert_timer[potsense[i]]->adjust(m_screen->time_until_pos(scanline + i), potsense[i]);
+>>>>>>> upstream/master
 
 	scanline += 0x40;
 	scanline &= 0xff;
@@ -271,6 +342,7 @@ WRITE8_MEMBER(flyball_state::pitcher_horz_w)
 
 WRITE8_MEMBER(flyball_state::misc_w)
 {
+<<<<<<< HEAD
 	int bit = ~data & 1;
 
 	switch (offset)
@@ -294,6 +366,15 @@ WRITE8_MEMBER(flyball_state::misc_w)
 		/* bat hit */
 		break;
 	}
+=======
+	// address and data lines passed through inverting buffers
+	m_outlatch->write_d0(space, ~offset, ~data);
+}
+
+WRITE_LINE_MEMBER(flyball_state::lamp_w)
+{
+	output().set_led_value(0, state);
+>>>>>>> upstream/master
 }
 
 
@@ -424,13 +505,24 @@ PALETTE_INIT_MEMBER(flyball_state, flyball)
 void flyball_state::machine_start()
 {
 	/* address bits 0 through 8 are inverted */
+<<<<<<< HEAD
 	UINT8 *ROM = memregion("maincpu")->base();
 	int len = memregion("maincpu")->bytes();
 	dynamic_buffer buf(len);
+=======
+	uint8_t *ROM = memregion("maincpu")->base();
+	int len = memregion("maincpu")->bytes();
+	std::vector<uint8_t> buf(len);
+>>>>>>> upstream/master
 	for (int i = 0; i < len; i++)
 		buf[i ^ 0x1ff] = ROM[i];
 	memcpy(ROM, &buf[0], len);
 
+<<<<<<< HEAD
+=======
+	for (int i = 0; i < 64; i++)
+		m_pot_assert_timer[i] = timer_alloc(TIMER_POT_ASSERT);
+>>>>>>> upstream/master
 	m_pot_clear_timer = timer_alloc(TIMER_POT_CLEAR);
 	m_quarter_timer = timer_alloc(TIMER_QUARTER);
 
@@ -457,13 +549,28 @@ void flyball_state::machine_reset()
 }
 
 
+<<<<<<< HEAD
 static MACHINE_CONFIG_START( flyball, flyball_state )
+=======
+static MACHINE_CONFIG_START( flyball )
+>>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", M6502, MASTER_CLOCK/16)
 	MCFG_CPU_PROGRAM_MAP(flyball_map)
 	MCFG_CPU_VBLANK_INT_DRIVER("screen", flyball_state, nmi_line_pulse)
 
+<<<<<<< HEAD
+=======
+	MCFG_DEVICE_ADD("outlatch", F9334, 0) // F7
+	MCFG_ADDRESSABLE_LATCH_Q7_OUT_CB(WRITELINE(flyball_state, lamp_w)) // 1 player lamp
+	MCFG_ADDRESSABLE_LATCH_Q6_OUT_CB(NOOP) // crowd very loud
+	MCFG_ADDRESSABLE_LATCH_Q5_OUT_CB(NOOP) // footstep off-on
+	MCFG_ADDRESSABLE_LATCH_Q4_OUT_CB(NOOP) // crowd off-on
+	MCFG_ADDRESSABLE_LATCH_Q3_OUT_CB(NOOP) // crowd soft-loud
+	MCFG_ADDRESSABLE_LATCH_Q2_OUT_CB(NOOP) // bat hit
+
+>>>>>>> upstream/master
 	/* video hardware */
 	MCFG_SCREEN_ADD("screen", RASTER)
 	MCFG_SCREEN_REFRESH_RATE(60)
@@ -537,5 +644,10 @@ ROM_END
  *
  *************************************/
 
+<<<<<<< HEAD
 GAME( 1976, flyball,  0,       flyball, flyball, driver_device, 0, 0, "Atari", "Flyball (rev 2)", MACHINE_NO_SOUND | MACHINE_SUPPORTS_SAVE )
 GAME( 1976, flyball1, flyball, flyball, flyball, driver_device, 0, 0, "Atari", "Flyball (rev 1)", MACHINE_NO_SOUND | MACHINE_SUPPORTS_SAVE )
+=======
+GAME( 1976, flyball,  0,       flyball, flyball, flyball_state, 0, 0, "Atari", "Flyball (rev 2)", MACHINE_NO_SOUND | MACHINE_SUPPORTS_SAVE )
+GAME( 1976, flyball1, flyball, flyball, flyball, flyball_state, 0, 0, "Atari", "Flyball (rev 1)", MACHINE_NO_SOUND | MACHINE_SUPPORTS_SAVE )
+>>>>>>> upstream/master

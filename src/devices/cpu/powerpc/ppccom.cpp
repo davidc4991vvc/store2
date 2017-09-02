@@ -26,9 +26,15 @@
     CONSTANTS
 ***************************************************************************/
 
+<<<<<<< HEAD
 #define DOUBLE_SIGN     (U64(0x8000000000000000))
 #define DOUBLE_EXP      (U64(0x7ff0000000000000))
 #define DOUBLE_FRAC     (U64(0x000fffffffffffff))
+=======
+#define DOUBLE_SIGN     (0x8000000000000000U)
+#define DOUBLE_EXP      (0x7ff0000000000000U)
+#define DOUBLE_FRAC     (0x000fffffffffffffU)
+>>>>>>> upstream/master
 #define DOUBLE_ZERO     (0)
 
 
@@ -38,7 +44,11 @@
 ***************************************************************************/
 
 /* lookup table for FP modes */
+<<<<<<< HEAD
 static const UINT8 fpmode_source[4] =
+=======
+static const uint8_t fpmode_source[4] =
+>>>>>>> upstream/master
 {
 	uml::ROUND_ROUND,
 	uml::ROUND_TRUNC,
@@ -47,7 +57,11 @@ static const UINT8 fpmode_source[4] =
 };
 
 /* flag lookup table for SZ */
+<<<<<<< HEAD
 static const UINT8 sz_cr_table_source[32] =
+=======
+static const uint8_t sz_cr_table_source[32] =
+>>>>>>> upstream/master
 {
 	/* ..... */ 0x4,
 	/* ....C */ 0x4,
@@ -84,7 +98,11 @@ static const UINT8 sz_cr_table_source[32] =
 };
 
 /* flag lookup table for CMP */
+<<<<<<< HEAD
 static const UINT8 cmp_cr_table_source[32] =
+=======
+static const uint8_t cmp_cr_table_source[32] =
+>>>>>>> upstream/master
 {
 	/* ..... */ 0x4,
 	/* ....C */ 0x4,
@@ -121,7 +139,11 @@ static const UINT8 cmp_cr_table_source[32] =
 };
 
 /* flag lookup table for CMPL */
+<<<<<<< HEAD
 static const UINT8 cmpl_cr_table_source[32] =
+=======
+static const uint8_t cmpl_cr_table_source[32] =
+>>>>>>> upstream/master
 {
 	/* ..... */ 0x4,
 	/* ....C */ 0x8,
@@ -158,7 +180,11 @@ static const UINT8 cmpl_cr_table_source[32] =
 };
 
 /* flag lookup table for FCMP */
+<<<<<<< HEAD
 static const UINT8 fcmp_cr_table_source[32] =
+=======
+static const uint8_t fcmp_cr_table_source[32] =
+>>>>>>> upstream/master
 {
 	/* ..... */ 0x4,
 	/* ....C */ 0x8,
@@ -195,6 +221,7 @@ static const UINT8 fcmp_cr_table_source[32] =
 };
 
 
+<<<<<<< HEAD
 const device_type PPC601 = &device_creator<ppc601_device>;
 const device_type PPC602 = &device_creator<ppc602_device>;
 const device_type PPC603 = &device_creator<ppc603_device>;
@@ -214,28 +241,70 @@ ppc_device::ppc_device(const machine_config &mconfig, device_type type, const ch
 	, m_core(NULL)
 	, m_bus_freq_multiplier(1)
 	, m_vtlb(NULL)
+=======
+DEFINE_DEVICE_TYPE(PPC601,    ppc601_device,    "ppc601",     "PowerPC 601")
+DEFINE_DEVICE_TYPE(PPC602,    ppc602_device,    "ppc602",     "PowerPC 602")
+DEFINE_DEVICE_TYPE(PPC603,    ppc603_device,    "ppc603",     "PowerPC 603")
+DEFINE_DEVICE_TYPE(PPC603E,   ppc603e_device,   "ppc603e",    "PowerPC 603E")
+DEFINE_DEVICE_TYPE(PPC603R,   ppc603r_device,   "ppc603r",    "PowerPC 603R")
+DEFINE_DEVICE_TYPE(PPC604,    ppc604_device,    "ppc604",     "PowerPC 604")
+DEFINE_DEVICE_TYPE(MPC8240,   mpc8240_device,   "mpc8240",    "PowerPC MPC8240")
+DEFINE_DEVICE_TYPE(PPC403GA,  ppc403ga_device,  "ppc403ga",   "PowerPC 403GA")
+DEFINE_DEVICE_TYPE(PPC403GCX, ppc403gcx_device, "ppc403gcx",  "PowerPC 403GCX")
+DEFINE_DEVICE_TYPE(PPC405GP,  ppc405gp_device,  "ppc405gp",   "PowerPC 405GP")
+
+
+ppc_device::ppc_device(const machine_config &mconfig, device_type type, const char *tag, device_t *owner, uint32_t clock, int address_bits, int data_bits, powerpc_flavor flavor, uint32_t cap, uint32_t tb_divisor, address_map_constructor internal_map)
+	: cpu_device(mconfig, type, tag, owner, clock)
+	, device_vtlb_interface(mconfig, *this, AS_PROGRAM)
+	, m_program_config("program", ENDIANNESS_BIG, data_bits, address_bits, 0, internal_map)
+	, c_bus_frequency(0)
+	, m_core(nullptr)
+	, m_bus_freq_multiplier(1)
+>>>>>>> upstream/master
 	, m_flavor(flavor)
 	, m_cap(cap)
 	, m_tb_divisor(tb_divisor)
 	, m_cache(CACHE_SIZE + sizeof(internal_ppc_state))
+<<<<<<< HEAD
 	, m_drcuml(NULL)
 	, m_drcfe(NULL)
+=======
+	, m_drcuml(nullptr)
+	, m_drcfe(nullptr)
+>>>>>>> upstream/master
 	, m_drcoptions(0)
 {
 	m_program_config.m_logaddr_width = 32;
 	m_program_config.m_page_shift = POWERPC_MIN_PAGE_SHIFT;
+<<<<<<< HEAD
 }
 
 //ppc403_device::ppc403_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
+=======
+
+	// configure the virtual TLB
+	set_vtlb_dynamic_entries(POWERPC_TLB_ENTRIES);
+	if (m_cap & PPCCAP_603_MMU)
+		set_vtlb_fixed_entries(PPC603_FIXED_TLB_ENTRIES);
+}
+
+//ppc403_device::ppc403_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+>>>>>>> upstream/master
 //  : ppc_device(mconfig, PPC403, "PPC403", tag, owner, clock, "ppc403", 32?, 64?)
 //{
 //}
 //
+<<<<<<< HEAD
 //ppc405_device::ppc405_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
+=======
+//ppc405_device::ppc405_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+>>>>>>> upstream/master
 //  : ppc_device(mconfig, PPC405, "PPC405", tag, owner, clock, "ppc405", 32?, 64?)
 //{
 //}
 
+<<<<<<< HEAD
 ppc603_device::ppc603_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
 	: ppc_device(mconfig, PPC603, "PowerPC 603", tag, owner, clock, "ppc603", 32, 64, PPC_MODEL_603, PPCCAP_OEA | PPCCAP_VEA | PPCCAP_FPU | PPCCAP_MISALIGNED | PPCCAP_603_MMU, 4, NULL)
 {
@@ -268,6 +337,40 @@ ppc601_device::ppc601_device(const machine_config &mconfig, const char *tag, dev
 
 ppc604_device::ppc604_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
 	: ppc_device(mconfig, PPC604, "PowerPC 604", tag, owner, clock, "ppc604", 32, 64, PPC_MODEL_604, PPCCAP_OEA | PPCCAP_VEA | PPCCAP_FPU | PPCCAP_MISALIGNED | PPCCAP_604_MMU, 4, NULL)
+=======
+ppc603_device::ppc603_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: ppc_device(mconfig, PPC603, tag, owner, clock, 32, 64, PPC_MODEL_603, PPCCAP_OEA | PPCCAP_VEA | PPCCAP_FPU | PPCCAP_MISALIGNED | PPCCAP_603_MMU, 4, nullptr)
+{
+}
+
+ppc603e_device::ppc603e_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: ppc_device(mconfig, PPC603E, tag, owner, clock, 32, 64, PPC_MODEL_603E, PPCCAP_OEA | PPCCAP_VEA | PPCCAP_FPU | PPCCAP_MISALIGNED | PPCCAP_603_MMU, 4, nullptr)
+{
+}
+
+ppc603r_device::ppc603r_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: ppc_device(mconfig, PPC603R, tag, owner, clock, 32, 64, PPC_MODEL_603R, PPCCAP_OEA | PPCCAP_VEA | PPCCAP_FPU | PPCCAP_MISALIGNED | PPCCAP_603_MMU, 4, nullptr)
+{
+}
+
+ppc602_device::ppc602_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: ppc_device(mconfig, PPC602, tag, owner, clock, 32, 64, PPC_MODEL_602, PPCCAP_OEA | PPCCAP_VEA | PPCCAP_FPU | PPCCAP_MISALIGNED | PPCCAP_603_MMU, 4, nullptr)
+{
+}
+
+mpc8240_device::mpc8240_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: ppc_device(mconfig, MPC8240, tag, owner, clock, 32, 64, PPC_MODEL_MPC8240, PPCCAP_OEA | PPCCAP_VEA | PPCCAP_FPU | PPCCAP_MISALIGNED | PPCCAP_603_MMU, 4/* unknown */, nullptr)
+{
+}
+
+ppc601_device::ppc601_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: ppc_device(mconfig, PPC601, tag, owner, clock, 32, 64, PPC_MODEL_601, PPCCAP_OEA | PPCCAP_VEA | PPCCAP_FPU | PPCCAP_MISALIGNED | PPCCAP_MFIOC | PPCCAP_601BAT, 0/* no TB */, nullptr)
+{
+}
+
+ppc604_device::ppc604_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: ppc_device(mconfig, PPC604, tag, owner, clock, 32, 64, PPC_MODEL_604, PPCCAP_OEA | PPCCAP_VEA | PPCCAP_FPU | PPCCAP_MISALIGNED | PPCCAP_604_MMU, 4, nullptr)
+>>>>>>> upstream/master
 {
 }
 
@@ -275,6 +378,7 @@ static ADDRESS_MAP_START( internal_ppc4xx, AS_PROGRAM, 32, ppc4xx_device )
 	AM_RANGE(0x40000000, 0x4000000f) AM_READWRITE8(ppc4xx_spu_r, ppc4xx_spu_w, 0xffffffff)
 ADDRESS_MAP_END
 
+<<<<<<< HEAD
 ppc4xx_device::ppc4xx_device(const machine_config &mconfig, device_type type, const char *name, const char *tag, device_t *owner, UINT32 clock, const char *shortname, powerpc_flavor flavor, UINT32 cap, UINT32 tb_divisor)
 	: ppc_device(mconfig, type, name, tag, owner, clock, shortname, 31, 32, flavor, cap, tb_divisor, ADDRESS_MAP_NAME(internal_ppc4xx))
 {
@@ -293,6 +397,33 @@ ppc403gcx_device::ppc403gcx_device(const machine_config &mconfig, const char *ta
 ppc405gp_device::ppc405gp_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
 	: ppc4xx_device(mconfig, PPC405GP, "PowerPC 405GP", tag, owner, clock, "ppc405gp", PPC_MODEL_405GP, PPCCAP_4XX | PPCCAP_VEA, 1)
 {
+=======
+ppc4xx_device::ppc4xx_device(const machine_config &mconfig, device_type type, const char *tag, device_t *owner, uint32_t clock, powerpc_flavor flavor, uint32_t cap, uint32_t tb_divisor)
+	: ppc_device(mconfig, type, tag, owner, clock, 31, 32, flavor, cap, tb_divisor, ADDRESS_MAP_NAME(internal_ppc4xx))
+{
+}
+
+ppc403ga_device::ppc403ga_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: ppc4xx_device(mconfig, PPC403GA, tag, owner, clock, PPC_MODEL_403GA, PPCCAP_4XX, 1)
+{
+}
+
+ppc403gcx_device::ppc403gcx_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: ppc4xx_device(mconfig, PPC403GCX, tag, owner, clock, PPC_MODEL_403GCX, PPCCAP_4XX, 1)
+{
+}
+
+ppc405gp_device::ppc405gp_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: ppc4xx_device(mconfig, PPC405GP, tag, owner, clock, PPC_MODEL_405GP, PPCCAP_4XX | PPCCAP_VEA, 1)
+{
+}
+
+device_memory_interface::space_config_vector ppc_device::memory_space_config() const
+{
+	return space_config_vector {
+		std::make_pair(AS_PROGRAM, &m_program_config)
+	};
+>>>>>>> upstream/master
 }
 
 
@@ -306,10 +437,17 @@ ppc405gp_device::ppc405gp_device(const machine_config &mconfig, const char *tag,
     of access and the protection bits
 -------------------------------------------------*/
 
+<<<<<<< HEAD
 INLINE int page_access_allowed(int transtype, UINT8 key, UINT8 protbits)
 {
 	if (key == 0)
 		return (transtype == TRANSLATE_WRITE) ? (protbits != 3) : TRUE;
+=======
+static inline bool page_access_allowed(int transtype, uint8_t key, uint8_t protbits)
+{
+	if (key == 0)
+		return (transtype == TRANSLATE_WRITE) ? (protbits != 3) : true;
+>>>>>>> upstream/master
 	else
 		return (transtype == TRANSLATE_WRITE) ? (protbits == 2) : (protbits != 0);
 }
@@ -319,7 +457,11 @@ INLINE int page_access_allowed(int transtype, UINT8 key, UINT8 protbits)
     get_cr - return the current CR value
 -------------------------------------------------*/
 
+<<<<<<< HEAD
 inline UINT32 ppc_device::get_cr()
+=======
+inline uint32_t ppc_device::get_cr()
+>>>>>>> upstream/master
 {
 	return  ((m_core->cr[0] & 0x0f) << 28) |
 			((m_core->cr[1] & 0x0f) << 24) |
@@ -336,7 +478,11 @@ inline UINT32 ppc_device::get_cr()
     set_cr - set the current CR value
 -------------------------------------------------*/
 
+<<<<<<< HEAD
 inline void ppc_device::set_cr(UINT32 value)
+=======
+inline void ppc_device::set_cr(uint32_t value)
+>>>>>>> upstream/master
 {
 	m_core->cr[0] = value >> 28;
 	m_core->cr[1] = value >> 24;
@@ -353,7 +499,11 @@ inline void ppc_device::set_cr(UINT32 value)
     get_xer - return the current XER value
 -------------------------------------------------*/
 
+<<<<<<< HEAD
 inline UINT32 ppc_device::get_xer()
+=======
+inline uint32_t ppc_device::get_xer()
+>>>>>>> upstream/master
 {
 	return m_core->spr[SPR_XER] | (m_core->xerso << 31);
 }
@@ -363,7 +513,11 @@ inline UINT32 ppc_device::get_xer()
     set_xer - set the current XER value
 -------------------------------------------------*/
 
+<<<<<<< HEAD
 inline void ppc_device::set_xer(UINT32 value)
+=======
+inline void ppc_device::set_xer(uint32_t value)
+>>>>>>> upstream/master
 {
 	m_core->spr[SPR_XER] = value & ~XER_SO;
 	m_core->xerso = value >> 31;
@@ -375,7 +529,11 @@ inline void ppc_device::set_xer(UINT32 value)
     value
 -------------------------------------------------*/
 
+<<<<<<< HEAD
 inline UINT64 ppc_device::get_timebase()
+=======
+inline uint64_t ppc_device::get_timebase()
+>>>>>>> upstream/master
 {
 	if (!m_tb_divisor)
 	{
@@ -390,7 +548,11 @@ inline UINT64 ppc_device::get_timebase()
     set_timebase - set the timebase
 -------------------------------------------------*/
 
+<<<<<<< HEAD
 inline void ppc_device::set_timebase(UINT64 newtb)
+=======
+inline void ppc_device::set_timebase(uint64_t newtb)
+>>>>>>> upstream/master
 {
 	m_tb_zero_cycles = total_cycles() - newtb * m_tb_divisor;
 }
@@ -401,10 +563,17 @@ inline void ppc_device::set_timebase(UINT64 newtb)
     decrementer value
 -------------------------------------------------*/
 
+<<<<<<< HEAD
 inline UINT32 ppc_device::get_decrementer()
 {
 	INT64 cycles_until_zero = m_dec_zero_cycles - total_cycles();
 	cycles_until_zero = MAX(cycles_until_zero, 0);
+=======
+inline uint32_t ppc_device::get_decrementer()
+{
+	int64_t cycles_until_zero = m_dec_zero_cycles - total_cycles();
+	cycles_until_zero = std::max<int64_t>(cycles_until_zero, 0);
+>>>>>>> upstream/master
 
 	if (!m_tb_divisor)
 	{
@@ -419,10 +588,17 @@ inline UINT32 ppc_device::get_decrementer()
     set_decrementer - set the decremeter
 -------------------------------------------------*/
 
+<<<<<<< HEAD
 inline void ppc_device::set_decrementer(UINT32 newdec)
 {
 	UINT64 cycles_until_done = ((UINT64)newdec + 1) * m_tb_divisor;
 	UINT32 curdec = get_decrementer();
+=======
+inline void ppc_device::set_decrementer(uint32_t newdec)
+{
+	uint64_t cycles_until_done = ((uint64_t)newdec + 1) * m_tb_divisor;
+	uint32_t curdec = get_decrementer();
+>>>>>>> upstream/master
 
 	if (!m_tb_divisor)
 	{
@@ -431,16 +607,27 @@ inline void ppc_device::set_decrementer(UINT32 newdec)
 
 	if (PRINTF_DECREMENTER)
 	{
+<<<<<<< HEAD
 		UINT64 total = total_cycles();
 		osd_printf_debug("set_decrementer: olddec=%08X newdec=%08X divisor=%d totalcyc=%08X%08X timer=%08X%08X\n",
 				curdec, newdec, m_tb_divisor,
 				(UINT32)(total >> 32), (UINT32)total, (UINT32)(cycles_until_done >> 32), (UINT32)cycles_until_done);
+=======
+		uint64_t total = total_cycles();
+		osd_printf_debug("set_decrementer: olddec=%08X newdec=%08X divisor=%d totalcyc=%08X%08X timer=%08X%08X\n",
+				curdec, newdec, m_tb_divisor,
+				(uint32_t)(total >> 32), (uint32_t)total, (uint32_t)(cycles_until_done >> 32), (uint32_t)cycles_until_done);
+>>>>>>> upstream/master
 	}
 
 	m_dec_zero_cycles = total_cycles() + cycles_until_done;
 	m_decrementer_int_timer->adjust(cycles_to_attotime(cycles_until_done));
 
+<<<<<<< HEAD
 	if ((INT32)curdec >= 0 && (INT32)newdec < 0)
+=======
+	if ((int32_t)curdec >= 0 && (int32_t)newdec < 0)
+>>>>>>> upstream/master
 		m_core->irq_pending |= 0x02;
 }
 
@@ -450,9 +637,15 @@ inline void ppc_device::set_decrementer(UINT32 newdec)
     is_nan_double - is a double value a NaN
 -------------------------------------------------*/
 
+<<<<<<< HEAD
 INLINE int is_nan_double(double x)
 {
 	UINT64 xi = *(UINT64*)&x;
+=======
+static inline int is_nan_double(double x)
+{
+	uint64_t xi = *(uint64_t*)&x;
+>>>>>>> upstream/master
 	return( ((xi & DOUBLE_EXP) == DOUBLE_EXP) &&
 			((xi & DOUBLE_FRAC) != DOUBLE_ZERO) );
 }
@@ -464,12 +657,21 @@ INLINE int is_nan_double(double x)
     quiet NaN
 -------------------------------------------------*/
 
+<<<<<<< HEAD
 INLINE int is_qnan_double(double x)
 {
 	UINT64 xi = *(UINT64*)&x;
 	return( ((xi & DOUBLE_EXP) == DOUBLE_EXP) &&
 			((xi & U64(0x0007fffffffffff)) == U64(0x000000000000000)) &&
 			((xi & U64(0x000800000000000)) == U64(0x000800000000000)) );
+=======
+static inline int is_qnan_double(double x)
+{
+	uint64_t xi = *(uint64_t*)&x;
+	return( ((xi & DOUBLE_EXP) == DOUBLE_EXP) &&
+			((xi & 0x0007fffffffffffU) == 0x000000000000000U) &&
+			((xi & 0x000800000000000U) == 0x000800000000000U) );
+>>>>>>> upstream/master
 }
 
 
@@ -479,12 +681,21 @@ INLINE int is_qnan_double(double x)
     signaling NaN
 -------------------------------------------------*/
 
+<<<<<<< HEAD
 INLINE int is_snan_double(double x)
 {
 	UINT64 xi = *(UINT64*)&x;
 	return( ((xi & DOUBLE_EXP) == DOUBLE_EXP) &&
 			((xi & DOUBLE_FRAC) != DOUBLE_ZERO) &&
 			((xi & U64(0x0008000000000000)) == DOUBLE_ZERO) );
+=======
+static inline int is_snan_double(double x)
+{
+	uint64_t xi = *(uint64_t*)&x;
+	return( ((xi & DOUBLE_EXP) == DOUBLE_EXP) &&
+			((xi & DOUBLE_FRAC) != DOUBLE_ZERO) &&
+			((xi & 0x0008000000000000U) == DOUBLE_ZERO) );
+>>>>>>> upstream/master
 }
 #endif
 
@@ -494,9 +705,15 @@ INLINE int is_snan_double(double x)
     infinity
 -------------------------------------------------*/
 
+<<<<<<< HEAD
 INLINE int is_infinity_double(double x)
 {
 	UINT64 xi = *(UINT64*)&x;
+=======
+static inline int is_infinity_double(double x)
+{
+	uint64_t xi = *(uint64_t*)&x;
+>>>>>>> upstream/master
 	return( ((xi & DOUBLE_EXP) == DOUBLE_EXP) &&
 			((xi & DOUBLE_FRAC) == DOUBLE_ZERO) );
 }
@@ -507,10 +724,17 @@ INLINE int is_infinity_double(double x)
     normalized
 -------------------------------------------------*/
 
+<<<<<<< HEAD
 INLINE int is_normalized_double(double x)
 {
 	UINT64 exp;
 	UINT64 xi = *(UINT64*)&x;
+=======
+static inline int is_normalized_double(double x)
+{
+	uint64_t exp;
+	uint64_t xi = *(uint64_t*)&x;
+>>>>>>> upstream/master
 	exp = (xi & DOUBLE_EXP) >> 52;
 
 	return (exp >= 1) && (exp <= 2046);
@@ -522,9 +746,15 @@ INLINE int is_normalized_double(double x)
     denormalized
 -------------------------------------------------*/
 
+<<<<<<< HEAD
 INLINE int is_denormalized_double(double x)
 {
 	UINT64 xi = *(UINT64*)&x;
+=======
+static inline int is_denormalized_double(double x)
+{
+	uint64_t xi = *(uint64_t*)&x;
+>>>>>>> upstream/master
 	return( ((xi & DOUBLE_EXP) == 0) &&
 			((xi & DOUBLE_FRAC) != DOUBLE_ZERO) );
 }
@@ -534,9 +764,15 @@ INLINE int is_denormalized_double(double x)
     sign_double - return sign of a double value
 -------------------------------------------------*/
 
+<<<<<<< HEAD
 INLINE int sign_double(double x)
 {
 	UINT64 xi = *(UINT64*)&x;
+=======
+static inline int sign_double(double x)
+{
+	uint64_t xi = *(uint64_t*)&x;
+>>>>>>> upstream/master
 	return ((xi & DOUBLE_SIGN) != 0);
 }
 
@@ -557,11 +793,19 @@ void ppc_device::device_start()
 	m_core = (internal_ppc_state *)m_cache.alloc_near(sizeof(internal_ppc_state));
 	memset(m_core, 0, sizeof(internal_ppc_state));
 
+<<<<<<< HEAD
 	m_entry = NULL;
 	m_nocode = NULL;
 	m_out_of_cycles = NULL;
 	m_tlb_mismatch = NULL;
 	m_swap_tgpr = NULL;
+=======
+	m_entry = nullptr;
+	m_nocode = nullptr;
+	m_out_of_cycles = nullptr;
+	m_tlb_mismatch = nullptr;
+	m_swap_tgpr = nullptr;
+>>>>>>> upstream/master
 	memset(m_lsw, 0, sizeof(m_lsw));
 	memset(m_stsw, 0, sizeof(m_stsw));
 	memset(m_read8, 0, sizeof(m_read8));
@@ -708,9 +952,12 @@ void ppc_device::device_start()
 	if (!(m_cap & PPCCAP_4XX) && space_config()->m_endianness != ENDIANNESS_NATIVE)
 		m_codexor = 4;
 
+<<<<<<< HEAD
 	/* allocate the virtual TLB */
 	m_vtlb = vtlb_alloc(this, AS_PROGRAM, (m_cap & PPCCAP_603_MMU) ? PPC603_FIXED_TLB_ENTRIES : 0, POWERPC_TLB_ENTRIES);
 
+=======
+>>>>>>> upstream/master
 	/* allocate a timer for the compare interrupt */
 	if ((m_cap & PPCCAP_OEA) && (m_tb_divisor))
 		m_decrementer_int_timer = machine().scheduler().timer_alloc(timer_expired_delegate(FUNC(ppc_device::decrementer_int_callback), this));
@@ -875,14 +1122,24 @@ void ppc_device::device_start()
 	state_add(PPC_FPSCR, "FPSCR", m_core->fpscr).formatstr("%08X");
 
 	state_add(STATE_GENPC, "GENPC", m_core->pc).noshow();
+<<<<<<< HEAD
+=======
+	state_add(STATE_GENPCBASE, "CURPC", m_core->pc).noshow();
+>>>>>>> upstream/master
 	state_add(STATE_GENSP, "GENSP", m_core->r[31]).noshow();
 	state_add(STATE_GENFLAGS, "GENFLAGS", m_debugger_temp).noshow().formatstr("%1s");
 
 	m_icountptr = &m_core->icount;
 
+<<<<<<< HEAD
 	UINT32 flags = 0;
 	/* initialize the UML generator */
 	m_drcuml = auto_alloc(machine(), drcuml_state(*this, m_cache, flags, 8, 32, 2));
+=======
+	uint32_t flags = 0;
+	/* initialize the UML generator */
+	m_drcuml = std::make_unique<drcuml_state>(*this, m_cache, flags, 8, 32, 2);
+>>>>>>> upstream/master
 
 	/* add symbols for our stuff */
 	m_drcuml->symbol_add(&m_core->pc, sizeof(m_core->pc), "pc");
@@ -928,7 +1185,11 @@ void ppc_device::device_start()
 	m_drcuml->symbol_add(&m_fcmp_cr_table, sizeof(m_fcmp_cr_table), "fcmp_cr_table");
 
 	/* initialize the front-end helper */
+<<<<<<< HEAD
 	m_drcfe = auto_alloc(machine(), ppc_frontend(this, COMPILE_BACKWARDS_BYTES, COMPILE_FORWARDS_BYTES, SINGLE_INSTRUCTION_MODE ? 1 : COMPILE_MAX_SEQUENCE));
+=======
+	m_drcfe = std::make_unique<ppc_frontend>(this, COMPILE_BACKWARDS_BYTES, COMPILE_FORWARDS_BYTES, SINGLE_INSTRUCTION_MODE ? 1 : COMPILE_MAX_SEQUENCE);
+>>>>>>> upstream/master
 
 	/* compute the register parameters */
 	for (int regnum = 0; regnum < 32; regnum++)
@@ -948,10 +1209,31 @@ void ppc_device::device_start()
 			m_regmap[1] = uml::I6;
 		if (beinfo.direct_iregs > 7)
 			m_regmap[2] = uml::I7;
+<<<<<<< HEAD
 	}
 
 	/* mark the cache dirty so it is updated on next execute */
 	m_cache_dirty = TRUE;
+=======
+
+
+		if (beinfo.direct_fregs > 3)
+			m_fdregmap[0] = uml::F3;
+		if (beinfo.direct_fregs > 4)
+			m_fdregmap[1] = uml::F4;
+		if (beinfo.direct_fregs > 5)
+			m_fdregmap[2] = uml::F5;
+		if (beinfo.direct_fregs > 6)
+			m_fdregmap[3] = uml::F6;
+		if (beinfo.direct_fregs > 7)
+			m_fdregmap[30] = uml::F7;
+		if (beinfo.direct_fregs > 8)
+			m_fdregmap[31] = uml::F8;
+	}
+
+	/* mark the cache dirty so it is updated on next execute */
+	m_cache_dirty = true;
+>>>>>>> upstream/master
 }
 
 void ppc_device::state_export(const device_state_entry &entry)
@@ -971,7 +1253,11 @@ void ppc_device::state_export(const device_state_entry &entry)
 			break;
 
 		case PPC_TBL:
+<<<<<<< HEAD
 			m_debugger_temp = (UINT32)get_timebase();
+=======
+			m_debugger_temp = (uint32_t)get_timebase();
+>>>>>>> upstream/master
 			break;
 
 		case PPC_DEC:
@@ -993,11 +1279,19 @@ void ppc_device::state_import(const device_state_entry &entry)
 			break;
 
 		case PPC_TBL:
+<<<<<<< HEAD
 			set_timebase((get_timebase() & ~U64(0x00ffffff00000000)) | m_debugger_temp);
 			break;
 
 		case PPC_TBH:
 			set_timebase((get_timebase() & ~U64(0x00000000ffffffff)) | ((UINT64)(m_debugger_temp & 0x00ffffff) << 32));
+=======
+			set_timebase((get_timebase() & ~u64(0x00ffffff00000000U)) | m_debugger_temp);
+			break;
+
+		case PPC_TBH:
+			set_timebase((get_timebase() & ~u64(0x00000000ffffffffU)) | ((uint64_t)(m_debugger_temp & 0x00ffffff) << 32));
+>>>>>>> upstream/master
 			break;
 
 		case PPC_DEC:
@@ -1007,11 +1301,16 @@ void ppc_device::state_import(const device_state_entry &entry)
 }
 
 
+<<<<<<< HEAD
 void ppc_device::state_string_export(const device_state_entry &entry, std::string &str)
+=======
+void ppc_device::state_string_export(const device_state_entry &entry, std::string &str) const
+>>>>>>> upstream/master
 {
 	switch (entry.index())
 	{
 		case PPC_F0:
+<<<<<<< HEAD
 			strprintf(str, "%12f", m_core->f[0]);
 			break;
 
@@ -1137,6 +1436,133 @@ void ppc_device::state_string_export(const device_state_entry &entry, std::strin
 
 		case PPC_F31:
 			strprintf(str, "%12f", m_core->f[31]);
+=======
+			str = string_format("%12f", m_core->f[0]);
+			break;
+
+		case PPC_F1:
+			str = string_format("%12f", m_core->f[1]);
+			break;
+
+		case PPC_F2:
+			str = string_format("%12f", m_core->f[2]);
+			break;
+
+		case PPC_F3:
+			str = string_format("%12f", m_core->f[3]);
+			break;
+
+		case PPC_F4:
+			str = string_format("%12f", m_core->f[4]);
+			break;
+
+		case PPC_F5:
+			str = string_format("%12f", m_core->f[5]);
+			break;
+
+		case PPC_F6:
+			str = string_format("%12f", m_core->f[6]);
+			break;
+
+		case PPC_F7:
+			str = string_format("%12f", m_core->f[7]);
+			break;
+
+		case PPC_F8:
+			str = string_format("%12f", m_core->f[8]);
+			break;
+
+		case PPC_F9:
+			str = string_format("%12f", m_core->f[9]);
+			break;
+
+		case PPC_F10:
+			str = string_format("%12f", m_core->f[10]);
+			break;
+
+		case PPC_F11:
+			str = string_format("%12f", m_core->f[11]);
+			break;
+
+		case PPC_F12:
+			str = string_format("%12f", m_core->f[12]);
+			break;
+
+		case PPC_F13:
+			str = string_format("%12f", m_core->f[13]);
+			break;
+
+		case PPC_F14:
+			str = string_format("%12f", m_core->f[14]);
+			break;
+
+		case PPC_F15:
+			str = string_format("%12f", m_core->f[15]);
+			break;
+
+		case PPC_F16:
+			str = string_format("%12f", m_core->f[16]);
+			break;
+
+		case PPC_F17:
+			str = string_format("%12f", m_core->f[17]);
+			break;
+
+		case PPC_F18:
+			str = string_format("%12f", m_core->f[18]);
+			break;
+
+		case PPC_F19:
+			str = string_format("%12f", m_core->f[19]);
+			break;
+
+		case PPC_F20:
+			str = string_format("%12f", m_core->f[20]);
+			break;
+
+		case PPC_F21:
+			str = string_format("%12f", m_core->f[21]);
+			break;
+
+		case PPC_F22:
+			str = string_format("%12f", m_core->f[22]);
+			break;
+
+		case PPC_F23:
+			str = string_format("%12f", m_core->f[23]);
+			break;
+
+		case PPC_F24:
+			str = string_format("%12f", m_core->f[24]);
+			break;
+
+		case PPC_F25:
+			str = string_format("%12f", m_core->f[25]);
+			break;
+
+		case PPC_F26:
+			str = string_format("%12f", m_core->f[26]);
+			break;
+
+		case PPC_F27:
+			str = string_format("%12f", m_core->f[27]);
+			break;
+
+		case PPC_F28:
+			str = string_format("%12f", m_core->f[28]);
+			break;
+
+		case PPC_F29:
+			str = string_format("%12f", m_core->f[29]);
+			break;
+
+		case PPC_F30:
+			str = string_format("%12f", m_core->f[30]);
+			break;
+
+		case PPC_F31:
+			str = string_format("%12f", m_core->f[31]);
+>>>>>>> upstream/master
 			break;
 	}
 }
@@ -1148,6 +1574,7 @@ void ppc_device::state_string_export(const device_state_entry &entry, std::strin
 
 void ppc_device::device_stop()
 {
+<<<<<<< HEAD
 	if (m_vtlb != NULL)
 		vtlb_free(m_vtlb);
 	m_vtlb = NULL;
@@ -1155,6 +1582,8 @@ void ppc_device::device_stop()
 	/* clean up the DRC */
 	auto_free(machine(), m_drcfe);
 	auto_free(machine(), m_drcuml);
+=======
+>>>>>>> upstream/master
 }
 
 
@@ -1176,7 +1605,11 @@ void ppc_device::device_reset()
 		m_dec_zero_cycles = total_cycles();
 		if (m_tb_divisor)
 		{
+<<<<<<< HEAD
 			decrementer_int_callback(NULL, 0);
+=======
+			decrementer_int_callback(nullptr, 0);
+>>>>>>> upstream/master
 		}
 	}
 
@@ -1203,18 +1636,29 @@ void ppc_device::device_reset()
 	m_core->irq_pending = 0;
 
 	/* flush the TLB */
+<<<<<<< HEAD
 	vtlb_flush_dynamic(m_vtlb);
+=======
+>>>>>>> upstream/master
 	if (m_cap & PPCCAP_603_MMU)
 	{
 		for (int tlbindex = 0; tlbindex < PPC603_FIXED_TLB_ENTRIES; tlbindex++)
 		{
+<<<<<<< HEAD
 			vtlb_load(m_vtlb, tlbindex, 0, 0, 0);
+=======
+			vtlb_load(tlbindex, 0, 0, 0);
+>>>>>>> upstream/master
 		}
 	}
 
 	/* Mark the cache dirty */
 	m_core->mode = 0;
+<<<<<<< HEAD
 	m_cache_dirty = TRUE;
+=======
+	m_cache_dirty = true;
+>>>>>>> upstream/master
 }
 
 
@@ -1223,12 +1667,20 @@ void ppc_device::device_reset()
     CPU
 -------------------------------------------------*/
 
+<<<<<<< HEAD
 offs_t ppc_device::disasm_disassemble(char *buffer, offs_t pc, const UINT8 *oprom, const UINT8 *opram, UINT32 options)
 {
 	extern offs_t ppc_dasm_one(char *buffer, UINT32 pc, UINT32 op);
 	UINT32 op = *(UINT32 *)oprom;
 	op = BIG_ENDIANIZE_INT32(op);
 	return ppc_dasm_one(buffer, pc, op);
+=======
+offs_t ppc_device::disasm_disassemble(std::ostream &stream, offs_t pc, const uint8_t *oprom, const uint8_t *opram, uint32_t options)
+{
+	uint32_t op = *(uint32_t *)oprom;
+	op = big_endianize_int32(op);
+	return ppc_dasm_one(stream, pc, op);
+>>>>>>> upstream/master
 }
 
 
@@ -1257,13 +1709,21 @@ void ppc_device::ppccom_dcstore_callback()
     filling
 -------------------------------------------------*/
 
+<<<<<<< HEAD
 UINT32 ppc_device::ppccom_translate_address_internal(int intention, offs_t &address)
+=======
+uint32_t ppc_device::ppccom_translate_address_internal(int intention, offs_t &address)
+>>>>>>> upstream/master
 {
 	int transpriv = ((intention & TRANSLATE_USER_MASK) == 0);   // 1 for supervisor, 0 for user
 	int transtype = intention & TRANSLATE_TYPE_MASK;
 	offs_t hash, hashbase, hashmask;
 	int batbase, batnum, hashnum;
+<<<<<<< HEAD
 	UINT32 segreg;
+=======
+	uint32_t segreg;
+>>>>>>> upstream/master
 
 	/* 4xx case: "TLB" really just caches writes and checks compare registers */
 	if (m_cap & PPCCAP_4XX)
@@ -1300,8 +1760,13 @@ UINT32 ppc_device::ppccom_translate_address_internal(int intention, offs_t &addr
 	{
 		for (batnum = 0; batnum < 4; batnum++)
 		{
+<<<<<<< HEAD
 			UINT32 upper = m_core->spr[SPROEA_IBAT0U + 2*batnum + 0];
 			UINT32 lower = m_core->spr[SPROEA_IBAT0U + 2*batnum + 1];
+=======
+			uint32_t upper = m_core->spr[SPROEA_IBAT0U + 2*batnum + 0];
+			uint32_t lower = m_core->spr[SPROEA_IBAT0U + 2*batnum + 1];
+>>>>>>> upstream/master
 			int privbit = ((intention & TRANSLATE_USER_MASK) == 0) ? 3 : 2;
 
 //            printf("bat %d upper = %08x privbit %d\n", batnum, upper, privbit);
@@ -1309,9 +1774,15 @@ UINT32 ppc_device::ppccom_translate_address_internal(int intention, offs_t &addr
 			// is this pair valid?
 			if (lower & 0x40)
 			{
+<<<<<<< HEAD
 				UINT32 mask = ((lower & 0x3f) << 17) ^ 0xfffe0000;
 				UINT32 addrout;
 				UINT32 key = (upper >> privbit) & 1;
+=======
+				uint32_t mask = ((lower & 0x3f) << 17) ^ 0xfffe0000;
+				uint32_t addrout;
+				uint32_t key = (upper >> privbit) & 1;
+>>>>>>> upstream/master
 
 				/* check for a hit against this bucket */
 				if ((address & mask) == (upper & mask))
@@ -1336,17 +1807,29 @@ UINT32 ppc_device::ppccom_translate_address_internal(int intention, offs_t &addr
 
 		for (batnum = 0; batnum < 4; batnum++)
 		{
+<<<<<<< HEAD
 			UINT32 upper = m_core->spr[batbase + 2*batnum + 0];
+=======
+			uint32_t upper = m_core->spr[batbase + 2*batnum + 0];
+>>>>>>> upstream/master
 
 			/* check user/supervisor valid bit */
 			if ((upper >> transpriv) & 0x01)
 			{
+<<<<<<< HEAD
 				UINT32 mask = (~upper << 15) & 0xfffe0000;
+=======
+				uint32_t mask = (~upper << 15) & 0xfffe0000;
+>>>>>>> upstream/master
 
 				/* check for a hit against this bucket */
 				if ((address & mask) == (upper & mask))
 				{
+<<<<<<< HEAD
 					UINT32 lower = m_core->spr[batbase + 2*batnum + 1];
+=======
+					uint32_t lower = m_core->spr[batbase + 2*batnum + 1];
+>>>>>>> upstream/master
 
 					/* verify protection; if we fail, return false and indicate a protection violation */
 					if (!page_access_allowed(transtype, 1, lower & 3))
@@ -1389,7 +1872,11 @@ UINT32 ppc_device::ppccom_translate_address_internal(int intention, offs_t &addr
 	/* if we're simulating the 603 MMU, fill in the data and stop here */
 	if (m_cap & PPCCAP_603_MMU)
 	{
+<<<<<<< HEAD
 		UINT32 entry = vtlb_table(m_vtlb)[address >> 12];
+=======
+		uint32_t entry = vtlb_table()[address >> 12];
+>>>>>>> upstream/master
 		m_core->mmu603_cmp = 0x80000000 | ((segreg & 0xffffff) << 7) | (0 << 6) | ((address >> 22) & 0x3f);
 		m_core->mmu603_hash[0] = hashbase | ((hash << 6) & hashmask);
 		m_core->mmu603_hash[1] = hashbase | ((~hash << 6) & hashmask);
@@ -1405,19 +1892,32 @@ UINT32 ppc_device::ppccom_translate_address_internal(int intention, offs_t &addr
 	for (hashnum = 0; hashnum < 2; hashnum++)
 	{
 		offs_t ptegaddr = hashbase | ((hash << 6) & hashmask);
+<<<<<<< HEAD
 		UINT32 *ptegptr = (UINT32 *)m_program->get_read_ptr(ptegaddr);
 
 		/* should only have valid memory here, but make sure */
 		if (ptegptr != NULL)
 		{
 			UINT32 targetupper = 0x80000000 | ((segreg & 0xffffff) << 7) | (hashnum << 6) | ((address >> 22) & 0x3f);
+=======
+		uint32_t *ptegptr = (uint32_t *)m_program->get_read_ptr(ptegaddr);
+
+		/* should only have valid memory here, but make sure */
+		if (ptegptr != nullptr)
+		{
+			uint32_t targetupper = 0x80000000 | ((segreg & 0xffffff) << 7) | (hashnum << 6) | ((address >> 22) & 0x3f);
+>>>>>>> upstream/master
 			int ptenum;
 
 			/* scan PTEs */
 			for (ptenum = 0; ptenum < 8; ptenum++)
 				if (ptegptr[BYTE_XOR_BE(ptenum * 2)] == targetupper)
 				{
+<<<<<<< HEAD
 					UINT32 pteglower = ptegptr[BYTE_XOR_BE(ptenum * 2 + 1)];
+=======
+					uint32_t pteglower = ptegptr[BYTE_XOR_BE(ptenum * 2 + 1)];
+>>>>>>> upstream/master
 
 					/* verify protection; if we fail, return false and indicate a protection violation */
 					if (!page_access_allowed(transtype, (segreg >> (29 + transpriv)) & 1, pteglower & 3))
@@ -1452,11 +1952,19 @@ UINT32 ppc_device::ppccom_translate_address_internal(int intention, offs_t &addr
     from logical to physical
 -------------------------------------------------*/
 
+<<<<<<< HEAD
 bool ppc_device::memory_translate(address_spacenum spacenum, int intention, offs_t &address)
 {
 	/* only applies to the program address space */
 	if (spacenum != AS_PROGRAM)
 		return TRUE;
+=======
+bool ppc_device::memory_translate(int spacenum, int intention, offs_t &address)
+{
+	/* only applies to the program address space */
+	if (spacenum != AS_PROGRAM)
+		return true;
+>>>>>>> upstream/master
 
 	/* translation is successful if the internal routine returns 0 or 1 */
 	return (ppccom_translate_address_internal(intention, address) <= 1);
@@ -1469,7 +1977,11 @@ bool ppc_device::memory_translate(address_spacenum spacenum, int intention, offs
 
 void ppc_device::ppccom_tlb_fill()
 {
+<<<<<<< HEAD
 	vtlb_fill(m_vtlb, m_core->param0, m_core->param1);
+=======
+	vtlb_fill(m_core->param0, m_core->param1);
+>>>>>>> upstream/master
 }
 
 
@@ -1480,7 +1992,11 @@ void ppc_device::ppccom_tlb_fill()
 
 void ppc_device::ppccom_tlb_flush()
 {
+<<<<<<< HEAD
 	vtlb_flush_dynamic(m_vtlb);
+=======
+	vtlb_flush_dynamic();
+>>>>>>> upstream/master
 }
 
 
@@ -1490,13 +2006,41 @@ void ppc_device::ppccom_tlb_flush()
 ***************************************************************************/
 
 /*-------------------------------------------------
+<<<<<<< HEAD
+=======
+    ppccom_get_dsisr - gets the DSISR value for a
+    failing TLB lookup's data access exception.
+-------------------------------------------------*/
+
+void ppc_device::ppccom_get_dsisr()
+{
+	int intent = 0;
+
+	if (m_core->param1 & 1)
+	{
+		intent = TRANSLATE_WRITE;
+	}
+	else
+	{
+		intent = TRANSLATE_READ;
+	}
+
+	m_core->param1 = ppccom_translate_address_internal(intent, m_core->param0);
+}
+
+/*-------------------------------------------------
+>>>>>>> upstream/master
     ppccom_execute_tlbie - execute a TLBIE
     instruction
 -------------------------------------------------*/
 
 void ppc_device::ppccom_execute_tlbie()
 {
+<<<<<<< HEAD
 	vtlb_flush_address(m_vtlb, m_core->param0);
+=======
+	vtlb_flush_address(m_core->param0);
+>>>>>>> upstream/master
 }
 
 
@@ -1507,7 +2051,11 @@ void ppc_device::ppccom_execute_tlbie()
 
 void ppc_device::ppccom_execute_tlbia()
 {
+<<<<<<< HEAD
 	vtlb_flush_dynamic(m_vtlb);
+=======
+	vtlb_flush_dynamic();
+>>>>>>> upstream/master
 }
 
 
@@ -1518,12 +2066,21 @@ void ppc_device::ppccom_execute_tlbia()
 
 void ppc_device::ppccom_execute_tlbl()
 {
+<<<<<<< HEAD
 	UINT32 address = m_core->param0;
 	int isitlb = m_core->param1;
 	vtlb_entry flags = 0;
 	int entrynum;
 
 	/* determine entry number; we use rand() for associativity */
+=======
+	uint32_t address = m_core->param0;
+	int isitlb = m_core->param1;
+	vtlb_entry flags;
+	int entrynum;
+
+	/* determine entry number; we use machine().rand() for associativity */
+>>>>>>> upstream/master
 	entrynum = ((address >> 12) & 0x1f) | (machine().rand() & 0x20) | (isitlb ? 0x40 : 0);
 
 	/* determine the flags */
@@ -1534,7 +2091,11 @@ void ppc_device::ppccom_execute_tlbl()
 		flags |= VTLB_FETCH_ALLOWED;
 
 	/* load the entry */
+<<<<<<< HEAD
 	vtlb_load(m_vtlb, entrynum, 1, address, (m_core->spr[SPR603_RPA] & 0xfffff000) | flags);
+=======
+	vtlb_load(entrynum, 1, address, (m_core->spr[SPR603_RPA] & 0xfffff000) | flags);
+>>>>>>> upstream/master
 }
 
 
@@ -1755,10 +2316,17 @@ void ppc_device::ppccom_execute_mtspr()
 
 			/* timebase */
 			case SPR603_TBL_W:
+<<<<<<< HEAD
 				set_timebase((get_timebase() & ~U64(0xffffffff00000000)) | m_core->param1);
 				return;
 			case SPR603_TBU_W:
 				set_timebase((get_timebase() & ~U64(0x00000000ffffffff)) | ((UINT64)m_core->param1 << 32));
+=======
+				set_timebase((get_timebase() & ~u64(0xffffffff00000000U)) | m_core->param1);
+				return;
+			case SPR603_TBU_W:
+				set_timebase((get_timebase() & ~u64(0x00000000ffffffffU)) | ((uint64_t)m_core->param1 << 32));
+>>>>>>> upstream/master
 				return;
 		}
 	}
@@ -1766,7 +2334,11 @@ void ppc_device::ppccom_execute_mtspr()
 	/* handle 4XX SPRs */
 	if (m_cap & PPCCAP_4XX)
 	{
+<<<<<<< HEAD
 		UINT32 oldval = m_core->spr[m_core->param0];
+=======
+		uint32_t oldval = m_core->spr[m_core->param0];
+>>>>>>> upstream/master
 		switch (m_core->param0)
 		{
 			/* write-through no-ops */
@@ -1794,9 +2366,15 @@ void ppc_device::ppccom_execute_mtspr()
 			case SPR4XX_TCR:
 				m_core->spr[SPR4XX_TCR] = m_core->param1 | (oldval & PPC4XX_TCR_WRC_MASK);
 				if ((oldval ^ m_core->spr[SPR4XX_TCR]) & PPC4XX_TCR_FIE)
+<<<<<<< HEAD
 					ppc4xx_fit_callback(NULL, FALSE);
 				if ((oldval ^ m_core->spr[SPR4XX_TCR]) & PPC4XX_TCR_PIE)
 					ppc4xx_pit_callback(NULL, FALSE);
+=======
+					ppc4xx_fit_callback(nullptr, false);
+				if ((oldval ^ m_core->spr[SPR4XX_TCR]) & PPC4XX_TCR_PIE)
+					ppc4xx_pit_callback(nullptr, false);
+>>>>>>> upstream/master
 				return;
 
 			/* timer status register */
@@ -1809,15 +2387,26 @@ void ppc_device::ppccom_execute_mtspr()
 			case SPR4XX_PIT:
 				m_core->spr[SPR4XX_PIT] = m_core->param1;
 				m_pit_reload = m_core->param1;
+<<<<<<< HEAD
 				ppc4xx_pit_callback(NULL, FALSE);
+=======
+				ppc4xx_pit_callback(nullptr, false);
+>>>>>>> upstream/master
 				return;
 
 			/* timebase */
 			case SPR4XX_TBLO:
+<<<<<<< HEAD
 				set_timebase((get_timebase() & ~U64(0x00ffffff00000000)) | m_core->param1);
 				return;
 			case SPR4XX_TBHI:
 				set_timebase((get_timebase() & ~U64(0x00000000ffffffff)) | ((UINT64)(m_core->param1 & 0x00ffffff) << 32));
+=======
+				set_timebase((get_timebase() & ~u64(0x00ffffff00000000U)) | m_core->param1);
+				return;
+			case SPR4XX_TBHI:
+				set_timebase((get_timebase() & ~u64(0x00000000ffffffffU)) | ((uint64_t)(m_core->param1 & 0x00ffffff) << 32));
+>>>>>>> upstream/master
 				return;
 		}
 	}
@@ -1896,7 +2485,11 @@ void ppc_device::ppccom_execute_mfdcr()
 
 void ppc_device::ppccom_execute_mtdcr()
 {
+<<<<<<< HEAD
 	UINT8 oldval;
+=======
+	uint8_t oldval;
+>>>>>>> upstream/master
 
 	/* handle various DCRs */
 	switch (m_core->param0)
@@ -1991,7 +2584,11 @@ void ppc_device::ppccom_execute_mtdcr()
 
 void ppc_device::ppccom_update_fprf()
 {
+<<<<<<< HEAD
 	UINT32 fprf;
+=======
+	uint32_t fprf;
+>>>>>>> upstream/master
 	double f = m_core->f[m_core->param0];
 
 	if (is_qnan_double(f))
@@ -2043,13 +2640,21 @@ void ppc_device::ppccom_update_fprf()
 
 TIMER_CALLBACK_MEMBER( ppc_device::decrementer_int_callback )
 {
+<<<<<<< HEAD
 	UINT64 cycles_until_next;
+=======
+	uint64_t cycles_until_next;
+>>>>>>> upstream/master
 
 	/* set the decrementer IRQ state */
 	m_core->irq_pending |= 0x02;
 
 	/* advance by another full rev */
+<<<<<<< HEAD
 	m_dec_zero_cycles += (UINT64)m_tb_divisor << 32;
+=======
+	m_dec_zero_cycles += (uint64_t)m_tb_divisor << 32;
+>>>>>>> upstream/master
 	cycles_until_next = m_dec_zero_cycles - total_cycles();
 	m_decrementer_int_timer->adjust(cycles_to_attotime(cycles_until_next));
 }
@@ -2112,10 +2717,17 @@ void ppc4xx_device::execute_set_input(int inputnum, int state)
     IRQ line management
 -------------------------------------------------*/
 
+<<<<<<< HEAD
 void ppc_device::ppc4xx_set_irq_line(UINT32 bitmask, int state)
 {
 	UINT32 oldstate = m_irqstate;
 	UINT32 levelmask;
+=======
+void ppc_device::ppc4xx_set_irq_line(uint32_t bitmask, int state)
+{
+	uint32_t oldstate = m_irqstate;
+	uint32_t levelmask;
+>>>>>>> upstream/master
 
 	/* set or clear the appropriate bit */
 	if (state != CLEAR_LINE)
@@ -2141,9 +2753,15 @@ void ppc_device::ppc4xx_set_irq_line(UINT32 bitmask, int state)
 	/* update the IRQ status */
 	m_core->irq_pending = ((m_dcr[DCR4XX_EXISR] & m_dcr[DCR4XX_EXIER]) != 0);
 	if ((m_core->spr[SPR4XX_TCR] & PPC4XX_TCR_FIE) && (m_core->spr[SPR4XX_TSR] & PPC4XX_TSR_FIS))
+<<<<<<< HEAD
 		m_core->irq_pending = TRUE;
 	if ((m_core->spr[SPR4XX_TCR] & PPC4XX_TCR_PIE) && (m_core->spr[SPR4XX_TSR] & PPC4XX_TSR_PIS))
 		m_core->irq_pending = TRUE;
+=======
+		m_core->irq_pending = true;
+	if ((m_core->spr[SPR4XX_TCR] & PPC4XX_TCR_PIE) && (m_core->spr[SPR4XX_TSR] & PPC4XX_TSR_PIS))
+		m_core->irq_pending = true;
+>>>>>>> upstream/master
 }
 
 
@@ -2152,7 +2770,11 @@ void ppc_device::ppc4xx_set_irq_line(UINT32 bitmask, int state)
     IRQ line state getter
 -------------------------------------------------*/
 
+<<<<<<< HEAD
 int ppc_device::ppc4xx_get_irq_line(UINT32 bitmask)
+=======
+int ppc_device::ppc4xx_get_irq_line(uint32_t bitmask)
+>>>>>>> upstream/master
 {
 	return (m_irqstate & bitmask) ? ASSERT_LINE : CLEAR_LINE;
 }
@@ -2204,16 +2826,26 @@ void ppc_device::ppc4xx_dma_update_irq_states()
     to do so
 -------------------------------------------------*/
 
+<<<<<<< HEAD
 int ppc_device::ppc4xx_dma_decrement_count(int dmachan)
 {
 	UINT32 *dmaregs = &m_dcr[8 * dmachan];
+=======
+bool ppc_device::ppc4xx_dma_decrement_count(int dmachan)
+{
+	uint32_t *dmaregs = &m_dcr[8 * dmachan];
+>>>>>>> upstream/master
 
 	/* decrement the counter */
 	dmaregs[DCR4XX_DMACT0]--;
 
 	/* if non-zero, we keep going */
 	if ((dmaregs[DCR4XX_DMACT0] & 0xffff) != 0)
+<<<<<<< HEAD
 		return FALSE;
+=======
+		return false;
+>>>>>>> upstream/master
 
 	// if chained mode
 	if (dmaregs[DCR4XX_DMACR0] & PPC4XX_DMACR_CH)
@@ -2237,11 +2869,19 @@ int ppc_device::ppc4xx_dma_decrement_count(int dmachan)
 
 		ppc4xx_dma_update_irq_states();
 
+<<<<<<< HEAD
 		INT64 numdata = dmaregs[DCR4XX_DMACT0];
 		if (numdata == 0)
 			numdata = 65536;
 
 		INT64 time = (numdata * 1000000) / m_buffered_dma_rate[dmachan];
+=======
+		int64_t numdata = dmaregs[DCR4XX_DMACT0];
+		if (numdata == 0)
+			numdata = 65536;
+
+		int64_t time = (numdata * 1000000) / m_buffered_dma_rate[dmachan];
+>>>>>>> upstream/master
 
 		m_buffered_dma_timer[dmachan]->adjust(attotime::from_usec(time), dmachan);
 	}
@@ -2252,9 +2892,15 @@ int ppc_device::ppc4xx_dma_decrement_count(int dmachan)
 	//  m_dcr[DCR4XX_DMASR] |= 1 << (27 - dmachan);
 		ppc4xx_dma_update_irq_states();
 
+<<<<<<< HEAD
 		m_buffered_dma_timer[dmachan]->adjust(attotime::never, FALSE);
 	}
 	return TRUE;
+=======
+		m_buffered_dma_timer[dmachan]->adjust(attotime::never, false);
+	}
+	return true;
+>>>>>>> upstream/master
 }
 
 
@@ -2267,10 +2913,17 @@ TIMER_CALLBACK_MEMBER( ppc_device::ppc4xx_buffered_dma_callback )
 {
 	int dmachan = param;
 
+<<<<<<< HEAD
 	static const UINT8 dma_transfer_width[4] = { 1, 2, 4, 16 };
 	UINT32 *dmaregs = &m_dcr[8 * dmachan];
 	INT32 destinc;
 	UINT8 width;
+=======
+	static const uint8_t dma_transfer_width[4] = { 1, 2, 4, 16 };
+	uint32_t *dmaregs = &m_dcr[8 * dmachan];
+	int32_t destinc;
+	uint8_t width;
+>>>>>>> upstream/master
 
 	width = dma_transfer_width[(dmaregs[DCR4XX_DMACR0] & PPC4XX_DMACR_PW_MASK) >> 26];
 	destinc = (dmaregs[DCR4XX_DMACR0] & PPC4XX_DMACR_DAI) ? width : 0;
@@ -2285,7 +2938,11 @@ TIMER_CALLBACK_MEMBER( ppc_device::ppc4xx_buffered_dma_callback )
 			case 1:
 			do
 			{
+<<<<<<< HEAD
 				UINT8 data = 0;
+=======
+				uint8_t data = 0;
+>>>>>>> upstream/master
 				if (!m_ext_dma_read_cb[dmachan].isnull())
 					data = (m_ext_dma_read_cb[dmachan])(*m_program, 1, 0xffffffff);
 				m_program->write_byte(dmaregs[DCR4XX_DMADA0], data);
@@ -2297,7 +2954,11 @@ TIMER_CALLBACK_MEMBER( ppc_device::ppc4xx_buffered_dma_callback )
 			case 2:
 			do
 			{
+<<<<<<< HEAD
 				UINT16 data = 0;
+=======
+				uint16_t data = 0;
+>>>>>>> upstream/master
 				if (!m_ext_dma_read_cb[dmachan].isnull())
 					data = (m_ext_dma_read_cb[dmachan])(*m_program, 2, 0xffffffff);
 				m_program->write_word(dmaregs[DCR4XX_DMADA0], data);
@@ -2309,7 +2970,11 @@ TIMER_CALLBACK_MEMBER( ppc_device::ppc4xx_buffered_dma_callback )
 			case 4:
 			do
 			{
+<<<<<<< HEAD
 				UINT32 data = 0;
+=======
+				uint32_t data = 0;
+>>>>>>> upstream/master
 				if (!m_ext_dma_read_cb[dmachan].isnull())
 					data = (m_ext_dma_read_cb[dmachan])(*m_program, 4, 0xffffffff);
 				m_program->write_dword(dmaregs[DCR4XX_DMADA0], data);
@@ -2329,7 +2994,11 @@ TIMER_CALLBACK_MEMBER( ppc_device::ppc4xx_buffered_dma_callback )
 			case 1:
 			do
 			{
+<<<<<<< HEAD
 				UINT8 data = m_program->read_byte(dmaregs[DCR4XX_DMADA0]);
+=======
+				uint8_t data = m_program->read_byte(dmaregs[DCR4XX_DMADA0]);
+>>>>>>> upstream/master
 				if (!m_ext_dma_write_cb[dmachan].isnull())
 					(m_ext_dma_write_cb[dmachan])(*m_program, 1, data, 0xffffffff);
 				dmaregs[DCR4XX_DMADA0] += destinc;
@@ -2340,7 +3009,11 @@ TIMER_CALLBACK_MEMBER( ppc_device::ppc4xx_buffered_dma_callback )
 			case 2:
 			do
 			{
+<<<<<<< HEAD
 				UINT16 data = m_program->read_word(dmaregs[DCR4XX_DMADA0]);
+=======
+				uint16_t data = m_program->read_word(dmaregs[DCR4XX_DMADA0]);
+>>>>>>> upstream/master
 				if (!m_ext_dma_write_cb[dmachan].isnull())
 					(m_ext_dma_write_cb[dmachan])(*m_program, 2, data, 0xffffffff);
 				dmaregs[DCR4XX_DMADA0] += destinc;
@@ -2351,7 +3024,11 @@ TIMER_CALLBACK_MEMBER( ppc_device::ppc4xx_buffered_dma_callback )
 			case 4:
 			do
 			{
+<<<<<<< HEAD
 				UINT32 data = m_program->read_dword(dmaregs[DCR4XX_DMADA0]);
+=======
+				uint32_t data = m_program->read_dword(dmaregs[DCR4XX_DMADA0]);
+>>>>>>> upstream/master
 				if (!m_ext_dma_write_cb[dmachan].isnull())
 					(m_ext_dma_write_cb[dmachan])(*m_program, 4, data, 0xffffffff);
 				dmaregs[DCR4XX_DMADA0] += destinc;
@@ -2367,6 +3044,7 @@ TIMER_CALLBACK_MEMBER( ppc_device::ppc4xx_buffered_dma_callback )
     to send to a peripheral
 -------------------------------------------------*/
 
+<<<<<<< HEAD
 int ppc_device::ppc4xx_dma_fetch_transmit_byte(int dmachan, UINT8 *byte)
 {
 	UINT32 *dmaregs = &m_dcr[8 * dmachan];
@@ -2378,11 +3056,28 @@ int ppc_device::ppc4xx_dma_fetch_transmit_byte(int dmachan, UINT8 *byte)
 	/* if no transfers remaining, fail */
 	if ((dmaregs[DCR4XX_DMACT0] & 0xffff) == 0)
 		return FALSE;
+=======
+bool ppc_device::ppc4xx_dma_fetch_transmit_byte(int dmachan, uint8_t *byte)
+{
+	uint32_t *dmaregs = &m_dcr[8 * dmachan];
+
+	/* if the channel is not enabled, fail */
+	if (!(dmaregs[DCR4XX_DMACR0] & PPC4XX_DMACR_CE))
+		return false;
+
+	/* if no transfers remaining, fail */
+	if ((dmaregs[DCR4XX_DMACT0] & 0xffff) == 0)
+		return false;
+>>>>>>> upstream/master
 
 	/* fetch the data */
 	*byte = m_program->read_byte(dmaregs[DCR4XX_DMADA0]++);
 	ppc4xx_dma_decrement_count(dmachan);
+<<<<<<< HEAD
 	return TRUE;
+=======
+	return true;
+>>>>>>> upstream/master
 }
 
 
@@ -2391,6 +3086,7 @@ int ppc_device::ppc4xx_dma_fetch_transmit_byte(int dmachan, UINT8 *byte)
     transmitted by a peripheral
 -------------------------------------------------*/
 
+<<<<<<< HEAD
 int ppc_device::ppc4xx_dma_handle_receive_byte(int dmachan, UINT8 byte)
 {
 	UINT32 *dmaregs = &m_dcr[8 * dmachan];
@@ -2402,11 +3098,28 @@ int ppc_device::ppc4xx_dma_handle_receive_byte(int dmachan, UINT8 byte)
 	/* if no transfers remaining, fail */
 	if ((dmaregs[DCR4XX_DMACT0] & 0xffff) == 0)
 		return FALSE;
+=======
+bool ppc_device::ppc4xx_dma_handle_receive_byte(int dmachan, uint8_t byte)
+{
+	uint32_t *dmaregs = &m_dcr[8 * dmachan];
+
+	/* if the channel is not enabled, fail */
+	if (!(dmaregs[DCR4XX_DMACR0] & PPC4XX_DMACR_CE))
+		return false;
+
+	/* if no transfers remaining, fail */
+	if ((dmaregs[DCR4XX_DMACT0] & 0xffff) == 0)
+		return false;
+>>>>>>> upstream/master
 
 	/* store the data */
 	m_program->write_byte(dmaregs[DCR4XX_DMADA0]++, byte);
 	ppc4xx_dma_decrement_count(dmachan);
+<<<<<<< HEAD
 	return TRUE;
+=======
+	return true;
+>>>>>>> upstream/master
 }
 
 
@@ -2417,10 +3130,17 @@ int ppc_device::ppc4xx_dma_handle_receive_byte(int dmachan, UINT8 byte)
 
 void ppc_device::ppc4xx_dma_exec(int dmachan)
 {
+<<<<<<< HEAD
 	static const UINT8 dma_transfer_width[4] = { 1, 2, 4, 16 };
 	UINT32 *dmaregs = &m_dcr[8 * dmachan];
 	INT32 destinc, srcinc;
 	UINT8 width;
+=======
+	static const uint8_t dma_transfer_width[4] = { 1, 2, 4, 16 };
+	uint32_t *dmaregs = &m_dcr[8 * dmachan];
+	int32_t destinc, srcinc;
+	uint8_t width;
+>>>>>>> upstream/master
 
 	/* skip if not enabled */
 	if (!(dmaregs[DCR4XX_DMACR0] & PPC4XX_DMACR_CE))
@@ -2439,11 +3159,19 @@ void ppc_device::ppc4xx_dma_exec(int dmachan)
 			{
 				/* buffered DMA with external peripheral */
 
+<<<<<<< HEAD
 				INT64 numdata = dmaregs[DCR4XX_DMACT0];
 				if (numdata == 0)
 					numdata = 65536;
 
 				INT64 time;
+=======
+				int64_t numdata = dmaregs[DCR4XX_DMACT0];
+				if (numdata == 0)
+					numdata = 65536;
+
+				int64_t time;
+>>>>>>> upstream/master
 				if (numdata > 100)
 				{
 					time = (numdata * 1000000) / m_buffered_dma_rate[dmachan];
@@ -2539,15 +3267,26 @@ TIMER_CALLBACK_MEMBER( ppc_device::ppc4xx_fit_callback )
 	/* update ourself for the next interval if we are enabled */
 	if (m_core->spr[SPR4XX_TCR] & PPC4XX_TCR_FIE)
 	{
+<<<<<<< HEAD
 		UINT32 timebase = get_timebase();
 		UINT32 interval = 0x200 << (4 * ((m_core->spr[SPR4XX_TCR] & PPC4XX_TCR_FP_MASK) >> 24));
 		UINT32 target = (timebase + interval) & ~(interval - 1);
 		m_fit_timer->adjust(cycles_to_attotime((target + 1 - timebase) / m_tb_divisor), TRUE);
+=======
+		uint32_t timebase = get_timebase();
+		uint32_t interval = 0x200 << (4 * ((m_core->spr[SPR4XX_TCR] & PPC4XX_TCR_FP_MASK) >> 24));
+		uint32_t target = (timebase + interval) & ~(interval - 1);
+		m_fit_timer->adjust(cycles_to_attotime((target + 1 - timebase) / m_tb_divisor), true);
+>>>>>>> upstream/master
 	}
 
 	/* otherwise, turn ourself off */
 	else
+<<<<<<< HEAD
 		m_fit_timer->adjust(attotime::never, FALSE);
+=======
+		m_fit_timer->adjust(attotime::never, false);
+>>>>>>> upstream/master
 }
 
 
@@ -2568,15 +3307,26 @@ TIMER_CALLBACK_MEMBER( ppc_device::ppc4xx_pit_callback )
 	   forced to update, or we are in auto-reload mode */
 	if ((m_core->spr[SPR4XX_TCR] & PPC4XX_TCR_PIE) && m_pit_reload != 0 && (!param || (m_core->spr[SPR4XX_TCR] & PPC4XX_TCR_ARE)))
 	{
+<<<<<<< HEAD
 		UINT32 timebase = get_timebase();
 		UINT32 interval = m_pit_reload;
 		UINT32 target = timebase + interval;
 		m_pit_timer->adjust(cycles_to_attotime((target + 1 - timebase) / m_tb_divisor), TRUE);
+=======
+		uint32_t timebase = get_timebase();
+		uint32_t interval = m_pit_reload;
+		uint32_t target = timebase + interval;
+		m_pit_timer->adjust(cycles_to_attotime((target + 1 - timebase) / m_tb_divisor), true);
+>>>>>>> upstream/master
 	}
 
 	/* otherwise, turn ourself off */
 	else
+<<<<<<< HEAD
 		m_pit_timer->adjust(attotime::never, FALSE);
+=======
+		m_pit_timer->adjust(attotime::never, false);
+>>>>>>> upstream/master
 }
 
 
@@ -2617,9 +3367,15 @@ void ppc_device::ppc4xx_spu_update_irq_states()
     ppc4xx_spu_rx_data - serial port data receive
 -------------------------------------------------*/
 
+<<<<<<< HEAD
 void ppc_device::ppc4xx_spu_rx_data(UINT8 data)
 {
 	UINT32 new_rxin;
+=======
+void ppc_device::ppc4xx_spu_rx_data(uint8_t data)
+{
+	uint32_t new_rxin;
+>>>>>>> upstream/master
 
 	/* fail if we are going to overflow */
 	new_rxin = (m_spu.rxin + 1) % ARRAY_LENGTH(m_spu.rxbuffer);
@@ -2639,7 +3395,11 @@ void ppc_device::ppc4xx_spu_rx_data(UINT8 data)
 
 void ppc_device::ppc4xx_spu_timer_reset()
 {
+<<<<<<< HEAD
 	UINT8 enabled = (m_spu.regs[SPU4XX_RX_COMMAND] | m_spu.regs[SPU4XX_TX_COMMAND]) & 0x80;
+=======
+	uint8_t enabled = (m_spu.regs[SPU4XX_RX_COMMAND] | m_spu.regs[SPU4XX_TX_COMMAND]) & 0x80;
+>>>>>>> upstream/master
 
 	/* if we're enabled, reset at the current baud rate */
 	if (enabled)
@@ -2697,7 +3457,11 @@ TIMER_CALLBACK_MEMBER( ppc_device::ppc4xx_spu_callback )
 		if (m_spu.rxout != m_spu.rxin)
 		{
 			int operation = (m_spu.regs[SPU4XX_RX_COMMAND] >> 5) & 3;
+<<<<<<< HEAD
 			UINT8 rxbyte;
+=======
+			uint8_t rxbyte;
+>>>>>>> upstream/master
 
 			/* consume the byte and advance the out pointer */
 			rxbyte = m_spu.rxbuffer[m_spu.rxout];
@@ -2734,7 +3498,11 @@ updateirq:
 
 READ8_MEMBER( ppc4xx_device::ppc4xx_spu_r )
 {
+<<<<<<< HEAD
 	UINT8 result = 0xff;
+=======
+	uint8_t result = 0xff;
+>>>>>>> upstream/master
 
 	switch (offset)
 	{
@@ -2760,7 +3528,11 @@ READ8_MEMBER( ppc4xx_device::ppc4xx_spu_r )
 
 WRITE8_MEMBER( ppc4xx_device::ppc4xx_spu_w )
 {
+<<<<<<< HEAD
 	UINT8 oldstate, newstate;
+=======
+	uint8_t oldstate, newstate;
+>>>>>>> upstream/master
 
 	if (PRINTF_SPU)
 		printf("spu_w(%d) = %02X\n", offset, data);
@@ -2832,7 +3604,11 @@ void ppc4xx_device::ppc4xx_spu_set_tx_handler(write8_delegate callback)
     specific serial byte receive
 -------------------------------------------------*/
 
+<<<<<<< HEAD
 void ppc4xx_device::ppc4xx_spu_receive_byte(UINT8 byteval)
+=======
+void ppc4xx_device::ppc4xx_spu_receive_byte(uint8_t byteval)
+>>>>>>> upstream/master
 {
 	ppc4xx_spu_rx_data(byteval);
 }

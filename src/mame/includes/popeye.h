@@ -1,5 +1,11 @@
+<<<<<<< HEAD
 // license:???
 // copyright-holders:Marc Lafontaine, Couriersud
+=======
+// license:BSD-3-Clause
+// copyright-holders:Nicola Salmoria, Couriersud
+// thanks-to: Marc Lafontaine
+>>>>>>> upstream/master
 class popeye_state : public driver_device
 {
 public:
@@ -10,10 +16,16 @@ public:
 		m_spriteram(*this, "spriteram"),
 		m_videoram(*this, "videoram"),
 		m_colorram(*this, "colorram"),
+<<<<<<< HEAD
+=======
+		m_color_prom(*this, "proms"),
+		m_color_prom_spr(*this, "sprpal"),
+>>>>>>> upstream/master
 		m_maincpu(*this, "maincpu"),
 		m_gfxdecode(*this, "gfxdecode"),
 		m_palette(*this, "palette") { }
 
+<<<<<<< HEAD
 	UINT8 m_prot0;
 	UINT8 m_prot1;
 	UINT8 m_prot_shift;
@@ -29,6 +41,26 @@ public:
 	UINT8 m_bitmap_type;
 	tilemap_t *m_fg_tilemap;
 	UINT8 m_lastflip;
+=======
+	uint8_t m_prot0;
+	uint8_t m_prot1;
+	uint8_t m_prot_shift;
+	uint8_t m_dswbit;
+	required_shared_ptr<uint8_t> m_background_pos;
+	required_shared_ptr<uint8_t> m_palettebank;
+	required_shared_ptr<uint8_t> m_spriteram;
+	required_shared_ptr<uint8_t> m_videoram;
+	required_shared_ptr<uint8_t> m_colorram;
+	required_region_ptr<uint8_t> m_color_prom;
+	required_region_ptr<uint8_t> m_color_prom_spr;
+
+	std::unique_ptr<uint8_t[]> m_bitmapram;
+	std::unique_ptr<bitmap_ind16> m_tmpbitmap2;
+	uint8_t m_invertmask;
+	uint8_t m_bitmap_type;
+	tilemap_t *m_fg_tilemap;
+	uint8_t m_lastflip;
+>>>>>>> upstream/master
 	int   m_field;
 
 	DECLARE_READ8_MEMBER(protection_r);
@@ -42,6 +74,7 @@ public:
 	DECLARE_DRIVER_INIT(skyskipr);
 	DECLARE_DRIVER_INIT(popeye);
 	TILE_GET_INFO_MEMBER(get_fg_tile_info);
+<<<<<<< HEAD
 	virtual void video_start();
 	DECLARE_PALETTE_INIT(popeye);
 	DECLARE_VIDEO_START(popeye);
@@ -50,6 +83,17 @@ public:
 	INTERRUPT_GEN_MEMBER(popeye_interrupt);
 	DECLARE_CUSTOM_INPUT_MEMBER( pop_field_r );
 	void convert_color_prom(const UINT8 *color_prom);
+=======
+	virtual void video_start() override;
+	DECLARE_PALETTE_INIT(popeye);
+	DECLARE_VIDEO_START(popeye);
+	DECLARE_PALETTE_INIT(popeyebl);
+	DECLARE_PALETTE_INIT(skyskipr);
+	uint32_t screen_update_popeye(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
+	INTERRUPT_GEN_MEMBER(popeye_interrupt);
+	DECLARE_CUSTOM_INPUT_MEMBER( pop_field_r );
+	void convert_color_prom(const uint8_t *color_prom);
+>>>>>>> upstream/master
 	void set_background_palette(int bank);
 	void draw_background(bitmap_ind16 &bitmap, const rectangle &cliprect);
 	void draw_sprites(bitmap_ind16 &bitmap, const rectangle &cliprect);

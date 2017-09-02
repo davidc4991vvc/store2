@@ -31,6 +31,7 @@ public:
 	required_device<eeprom_serial_93cxx_device> m_eeprom;
 	required_device<okim6295_device> m_okimusic;
 	/* memory pointers */
+<<<<<<< HEAD
 	UINT16 *  m_pf1_rowscroll;
 	UINT16 *  m_pf2_rowscroll;
 	required_shared_ptr<UINT32> m_mainram;
@@ -38,6 +39,15 @@ public:
 	optional_device<decospr_device> m_sprgen;
 	required_device<palette_device> m_palette;
 	UINT16 *m_spriteram;
+=======
+	std::unique_ptr<uint16_t[]>  m_pf1_rowscroll;
+	std::unique_ptr<uint16_t[]>  m_pf2_rowscroll;
+	required_shared_ptr<uint32_t> m_mainram;
+	required_shared_ptr<uint32_t> m_systemram;
+	optional_device<decospr_device> m_sprgen;
+	required_device<palette_device> m_palette;
+	std::unique_ptr<uint16_t[]> m_spriteram;
+>>>>>>> upstream/master
 	size_t m_spriteram_size;
 	DECO16IC_BANK_CB_MEMBER(bank_callback);
 	DECOSPR_PRIORITY_CB_MEMBER(pri_callback);
@@ -62,7 +72,12 @@ public:
 	DECLARE_DRIVER_INIT(prtytime);
 	DECLARE_DRIVER_INIT(osman);
 	DECLARE_DRIVER_INIT(chainrec);
+<<<<<<< HEAD
 	virtual void video_start();
 	UINT32 screen_update_simpl156(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
+=======
+	virtual void video_start() override;
+	uint32_t screen_update_simpl156(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
+>>>>>>> upstream/master
 	INTERRUPT_GEN_MEMBER(simpl156_vbl_interrupt);
 };

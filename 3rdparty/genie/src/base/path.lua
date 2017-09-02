@@ -6,6 +6,7 @@
 
 
 --
+<<<<<<< HEAD
 -- Get the absolute file path from a relative path. The requested
 -- file path doesn't actually need to exist.
 --
@@ -43,6 +44,8 @@
 	
 
 --
+=======
+>>>>>>> upstream/master
 -- Retrieve the filename portion of a path, without any extension.
 --
 
@@ -70,7 +73,11 @@
 	end
 
 --
+<<<<<<< HEAD
 -- Retrieve the directory portion of a path, or an empty string if 
+=======
+-- Retrieve the directory portion of a path, or an empty string if
+>>>>>>> upstream/master
 -- the path does not include a directory.
 --
 
@@ -111,9 +118,15 @@
 			return ""
 		end
 	end
+<<<<<<< HEAD
 	
 	
 	
+=======
+
+
+
+>>>>>>> upstream/master
 --
 -- Retrieve the filename portion of a path.
 --
@@ -126,6 +139,7 @@
 			return p
 		end
 	end
+<<<<<<< HEAD
 	
 	
 --
@@ -150,13 +164,31 @@
 		
 		src = src .. "/"
 		dst = dst .. "/"
+=======
+
+
+
+--
+-- Returns the common base directory of two paths.
+--
+
+	function path.getcommonbasedir(a, b)
+		a = path.getdirectory(a)..'/'
+		b = path.getdirectory(b)..'/'
+>>>>>>> upstream/master
 
 		-- find the common leading directories
 		local idx = 0
 		while (true) do
+<<<<<<< HEAD
 			local tst = src:find("/", idx + 1, true)
 			if tst then
 				if src:sub(1,tst) == dst:sub(1,tst) then
+=======
+			local tst = a:find('/', idx + 1, true)
+			if tst then
+				if a:sub(1,tst) == b:sub(1,tst) then
+>>>>>>> upstream/master
 					idx = tst
 				else
 					break
@@ -165,6 +197,7 @@
 				break
 			end
 		end
+<<<<<<< HEAD
 		
 		-- if they have nothing in common return absolute path
 		local first = src:find("/", 0, true)
@@ -191,6 +224,39 @@
 		return result:sub(1, -2)
 	end
 	
+=======
+		-- idx is the index of the last sep before path string 'a' ran out or didn't match.
+		local result = ''
+		if idx > 1 then
+			result = a:sub(1, idx - 1)	-- Remove the trailing slash to be consistent with other functions.
+		end
+		return result
+	end
+
+
+--
+-- Returns true if the filename has a particular extension.
+--
+-- @param fname
+--    The file name to test.
+-- @param extensions
+--    The extension(s) to test. Maybe be a string or table.
+--
+
+	function path.hasextension(fname, extensions)
+		local fext = path.getextension(fname):lower()
+		if type(extensions) == "table" then
+			for _, extension in pairs(extensions) do
+				if fext == extension then
+					return true
+				end
+			end
+			return false
+		else
+			return (fext == extensions)
+		end
+	end
+>>>>>>> upstream/master
 
 --
 -- Returns true if the filename represents a C/C++ source code file. This check
@@ -199,6 +265,7 @@
 --
 
 	function path.iscfile(fname)
+<<<<<<< HEAD
 		local extensions = { ".c", ".s", ".m" }
 		local ext = path.getextension(fname):lower()
 		return table.contains(extensions, ext)
@@ -223,6 +290,60 @@
 	end
 
 
+=======
+		return path.hasextension(fname, { ".c", ".m" })
+	end
+
+	function path.iscppfile(fname)
+		return path.hasextension(fname, { ".cc", ".cpp", ".cxx", ".c", ".m", ".mm" })
+	end
+
+	function path.iscxfile(fname)
+		return path.hasextension(fname, ".cx")
+	end
+
+	function path.isobjcfile(fname)
+		return path.hasextension(fname, { ".m", ".mm" })
+	end
+
+	function path.iscppheader(fname)
+		return path.hasextension(fname, { ".h", ".hh", ".hpp", ".hxx" })
+	end
+
+	function path.isappxmanifest(fname)
+		return path.hasextension(fname, ".appxmanifest")
+	end
+
+	function path.isnatvis(fname)
+		return path.hasextension(fname, ".natvis")
+	end
+
+	function path.isasmfile(fname)
+		return path.hasextension(fname, { ".asm", ".s", ".S" })
+	end
+
+	function path.isvalafile(fname)
+		return path.hasextension(fname, ".vala")
+	end
+
+	function path.isswiftfile(fname)
+		return path.hasextension(fname, ".swift")
+	end
+
+	function path.issourcefile(fname)
+		return path.iscfile(fname)
+			or path.iscppfile(fname)
+			or path.iscxfile(fname)
+			or path.isasmfile(fname)
+			or path.isvalafile(fname)
+			or path.isswiftfile(fname)
+	end
+
+	function path.issourcefilevs(fname)
+		return path.hasextension(fname, { ".cc", ".cpp", ".cxx", ".c" })
+			or path.iscxfile(fname)
+	end
+>>>>>>> upstream/master
 
 --
 -- Returns true if the filename represents a Windows resource file. This check
@@ -230,15 +351,34 @@
 --
 
 	function path.isresourcefile(fname)
+<<<<<<< HEAD
 		local extensions = { ".rc" }
+=======
+		return path.hasextension(fname, ".rc")
+	end
+
+
+--
+-- Returns true if the filename represents a Windows image file. 
+--
+
+	function path.isimagefile(fname)
+		local extensions = { ".png" }
+>>>>>>> upstream/master
 		local ext = path.getextension(fname):lower()
 		return table.contains(extensions, ext)
 	end
 
+<<<<<<< HEAD
 	
 --
 -- Join one or more pieces of a path together into a single path.
 -- 
+=======
+--
+-- Join one or more pieces of a path together into a single path.
+--
+>>>>>>> upstream/master
 -- @param ...
 --    One or more path strings.
 -- @return
@@ -251,7 +391,11 @@
 		if numargs == 0 then
 			return "";
 		end
+<<<<<<< HEAD
 		
+=======
+
+>>>>>>> upstream/master
 		local allparts = {}
 		for i = numargs, 1, -1 do
 			local part = select(i, ...)
@@ -260,14 +404,22 @@
 				while part:endswith("/") do
 					part = part:sub(1, -2)
 				end
+<<<<<<< HEAD
 				
+=======
+
+>>>>>>> upstream/master
 				table.insert(allparts, 1, part)
 				if path.isabsolute(part) then
 					break
 				end
 			end
 		end
+<<<<<<< HEAD
 		
+=======
+
+>>>>>>> upstream/master
 		return table.concat(allparts, "/")
 	end
 
@@ -282,8 +434,13 @@
 		p = path.getrelative(newbase, p)
 		return p
 	end
+<<<<<<< HEAD
 	
 	
+=======
+
+
+>>>>>>> upstream/master
 --
 -- Convert the separators in a path from one form to another. If `sep`
 -- is nil, then a platform-specific separator is used.
@@ -328,11 +485,19 @@
 		-- have competing star replacements to worry about
 		pattern = pattern:gsub("%*%*", "\001")
 		pattern = pattern:gsub("%*", "\002")
+<<<<<<< HEAD
 		
 		-- Replace the placeholders with their Lua patterns
 		pattern = pattern:gsub("\001", ".*")
 		pattern = pattern:gsub("\002", "[^/]*")
 		
+=======
+
+		-- Replace the placeholders with their Lua patterns
+		pattern = pattern:gsub("\001", ".*")
+		pattern = pattern:gsub("\002", "[^/]*")
+
+>>>>>>> upstream/master
 		return pattern
 	end
 
@@ -354,3 +519,37 @@
 
 		return p
 	end
+<<<<<<< HEAD
+=======
+
+--
+-- Takes a path which is relative to one location and makes it relative
+-- to another location instead.
+--
+
+	function path.rebase(p, oldbase, newbase)
+		p = path.getabsolute(path.join(oldbase, p))
+		p = path.getrelative(newbase, p)
+		return p
+	end
+
+
+
+--
+-- Replace the file extension.
+--
+
+	function path.replaceextension(p, newext)
+		local ext = path.getextension(p)
+
+		if not ext then
+			return p
+		end
+
+		if #newext > 0 and not newext:findlast(".", true) then
+			newext = "."..newext
+		end
+
+		return p:match("^(.*)"..ext.."$")..newext
+	end
+>>>>>>> upstream/master

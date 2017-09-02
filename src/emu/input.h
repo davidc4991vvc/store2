@@ -14,8 +14,13 @@
 #error Dont include this file directly; include emu.h instead.
 #endif
 
+<<<<<<< HEAD
 #ifndef __INPUT_H__
 #define __INPUT_H__
+=======
+#ifndef MAME_EMU_INPUT_H
+#define MAME_EMU_INPUT_H
+>>>>>>> upstream/master
 
 
 //**************************************************************************
@@ -23,6 +28,7 @@
 //**************************************************************************
 
 // relative devices return ~512 units per onscreen pixel
+<<<<<<< HEAD
 const INT32 INPUT_RELATIVE_PER_PIXEL = 512;
 
 // absolute devices return values between -65536 and +65536
@@ -36,6 +42,21 @@ const int INPUT_MAX_HATS = 4;
 const int INPUT_MAX_ADD_SWITCH = 16;
 const int INPUT_MAX_ADD_ABSOLUTE = 16;
 const int INPUT_MAX_ADD_RELATIVE = 16;
+=======
+constexpr s32 INPUT_RELATIVE_PER_PIXEL = 512;
+
+// absolute devices return values between -65536 and +65536
+constexpr s32 INPUT_ABSOLUTE_MIN = -65536;
+constexpr s32 INPUT_ABSOLUTE_MAX = 65536;
+
+// maximum number of axis/buttons/hats with ITEM_IDs for use by osd layer
+constexpr int INPUT_MAX_AXIS = 8;
+constexpr int INPUT_MAX_BUTTONS = 32;
+constexpr int INPUT_MAX_HATS = 4;
+constexpr int INPUT_MAX_ADD_SWITCH = 16;
+constexpr int INPUT_MAX_ADD_ABSOLUTE = 16;
+constexpr int INPUT_MAX_ADD_RELATIVE = 16;
+>>>>>>> upstream/master
 
 
 // device classes
@@ -51,11 +72,19 @@ enum input_device_class
 	DEVICE_CLASS_INTERNAL,
 	DEVICE_CLASS_MAXIMUM
 };
+<<<<<<< HEAD
 DECLARE_ENUM_OPERATORS(input_device_class)
 
 
 // device index
 const int DEVICE_INDEX_MAXIMUM = 0xff;
+=======
+DECLARE_ENUM_INCDEC_OPERATORS(input_device_class)
+
+
+// device index
+constexpr int DEVICE_INDEX_MAXIMUM = 0xff;
+>>>>>>> upstream/master
 
 
 // input item classes
@@ -141,6 +170,14 @@ enum input_item_id
 	ITEM_ID_F13,
 	ITEM_ID_F14,
 	ITEM_ID_F15,
+<<<<<<< HEAD
+=======
+	ITEM_ID_F16,
+	ITEM_ID_F17,
+	ITEM_ID_F18,
+	ITEM_ID_F19,
+	ITEM_ID_F20,
+>>>>>>> upstream/master
 	ITEM_ID_ESC,
 	ITEM_ID_TILDE,
 	ITEM_ID_MINUS,
@@ -184,6 +221,13 @@ enum input_item_id
 	ITEM_ID_PLUS_PAD,
 	ITEM_ID_DEL_PAD,
 	ITEM_ID_ENTER_PAD,
+<<<<<<< HEAD
+=======
+	ITEM_ID_BS_PAD,
+	ITEM_ID_TAB_PAD,
+	ITEM_ID_00_PAD,
+	ITEM_ID_000_PAD,
+>>>>>>> upstream/master
 	ITEM_ID_PRTSCR,
 	ITEM_ID_PAUSE,
 	ITEM_ID_LSHIFT,
@@ -199,9 +243,12 @@ enum input_item_id
 	ITEM_ID_RWIN,
 	ITEM_ID_MENU,
 	ITEM_ID_CANCEL,
+<<<<<<< HEAD
 	ITEM_ID_KANA,
 	ITEM_ID_CONVERT,
 	ITEM_ID_NONCONVERT,
+=======
+>>>>>>> upstream/master
 
 	// standard mouse/joystick/gun IDs
 	ITEM_ID_XAXIS,
@@ -332,7 +379,11 @@ enum input_item_id
 	// absolute maximum ID
 	ITEM_ID_ABSOLUTE_MAXIMUM = 0xfff
 };
+<<<<<<< HEAD
 DECLARE_ENUM_OPERATORS(input_item_id)
+=======
+DECLARE_ENUM_INCDEC_OPERATORS(input_item_id)
+>>>>>>> upstream/master
 
 
 
@@ -340,6 +391,7 @@ DECLARE_ENUM_OPERATORS(input_item_id)
 //  TYPE DEFINITIONS
 //**************************************************************************
 
+<<<<<<< HEAD
 // forward declarations
 class input_device_item;
 class input_device;
@@ -396,6 +448,10 @@ private:
 	std::string             m_origstring;           // originally parsed string
 };
 
+=======
+// controller alias table typedef
+typedef std::map<std::string, std::string> devicemap_table_type;
+>>>>>>> upstream/master
 
 // ======================> input_code
 
@@ -415,7 +471,10 @@ public:
 	}
 	input_code(const input_code &src)
 		: m_internal(src.m_internal) { }
+<<<<<<< HEAD
 	input_code(input_device &device, input_item_id itemid);
+=======
+>>>>>>> upstream/master
 
 	// operators
 	bool operator==(const input_code &rhs) const { return m_internal == rhs.m_internal; }
@@ -438,7 +497,11 @@ public:
 
 private:
 	// internal state
+<<<<<<< HEAD
 	UINT32      m_internal;
+=======
+	u32 m_internal;
+>>>>>>> upstream/master
 };
 
 
@@ -487,6 +550,7 @@ private:
 };
 
 
+<<<<<<< HEAD
 // ======================> input_device_item
 
 // a single item on an input device
@@ -630,6 +694,8 @@ private:
 };
 
 
+=======
+>>>>>>> upstream/master
 // ======================> input_manager
 
 // global machine-level information about devices
@@ -638,6 +704,7 @@ class input_manager
 public:
 	// construction/destruction
 	input_manager(running_machine &machine);
+<<<<<<< HEAD
 
 	// getters
 	running_machine &machine() const { return m_machine; }
@@ -645,6 +712,16 @@ public:
 
 	// input code readers
 	INT32 code_value(input_code code);
+=======
+	~input_manager();
+
+	// getters
+	running_machine &machine() const { return m_machine; }
+	input_class &device_class(input_device_class devclass) { assert(devclass >= DEVICE_CLASS_FIRST_VALID && devclass <= DEVICE_CLASS_LAST_VALID); return *m_class[devclass]; }
+
+	// input code readers
+	s32 code_value(input_code code);
+>>>>>>> upstream/master
 	bool code_pressed(input_code code) { return code_value(code) != 0; }
 	bool code_pressed_once(input_code code);
 
@@ -658,6 +735,7 @@ public:
 	input_device *device_from_code(input_code code) const;
 	input_device_item *item_from_code(input_code code) const;
 	input_code code_from_itemid(input_item_id itemid) const;
+<<<<<<< HEAD
 	const char *code_name(std::string &str, input_code code) const;
 	const char *code_to_token(std::string &str, input_code code) const;
 	input_code code_from_token(const char *_token);
@@ -668,16 +746,38 @@ public:
 
 	// input sequence polling
 	void seq_poll_start(input_item_class itemclass, const input_seq *startseq = NULL);
+=======
+	std::string code_name(input_code code) const;
+	std::string code_to_token(input_code code) const;
+	input_code code_from_token(const char *_token);
+	const char *standard_token(input_item_id itemid) const;
+
+	// input sequence readers
+	bool seq_pressed(const input_seq &seq);
+	s32 seq_axis_value(const input_seq &seq, input_item_class &itemclass);
+
+	// input sequence polling
+	void seq_poll_start(input_item_class itemclass, const input_seq *startseq = nullptr);
+>>>>>>> upstream/master
 	bool seq_poll();
 	const input_seq &seq_poll_final() const { return m_poll_seq; }
 
 	// input sequence helpers
+<<<<<<< HEAD
 	const char *seq_name(std::string &str, const input_seq &seq) const;
 	const char *seq_to_tokens(std::string &str, const input_seq &seq) const;
 	void seq_from_tokens(input_seq &seq, const char *_token);
 
 	// misc
 	bool set_global_joystick_map(const char *mapstring);
+=======
+	std::string seq_name(const input_seq &seq) const;
+	std::string seq_to_tokens(const input_seq &seq) const;
+	void seq_from_tokens(input_seq &seq, const char *_token);
+
+	// misc
+	bool map_device_to_controller(const devicemap_table_type *devicemap_table = nullptr);
+>>>>>>> upstream/master
 
 private:
 	// internal helpers
@@ -689,11 +789,15 @@ private:
 	input_code          m_switch_memory[64];
 
 	// classes
+<<<<<<< HEAD
 	input_class         m_keyboard_class;
 	input_class         m_mouse_class;
 	input_class         m_joystick_class;
 	input_class         m_lightgun_class;
 	input_class *       m_class[DEVICE_CLASS_MAXIMUM];
+=======
+	std::array<std::unique_ptr<input_class>, DEVICE_CLASS_MAXIMUM> m_class;
+>>>>>>> upstream/master
 
 	// sequence polling state
 	input_seq           m_poll_seq;
@@ -762,6 +866,14 @@ private:
 #define KEYCODE_F13_INDEXED(n) input_code(DEVICE_CLASS_KEYBOARD, n, ITEM_CLASS_SWITCH, ITEM_MODIFIER_NONE, ITEM_ID_F13)
 #define KEYCODE_F14_INDEXED(n) input_code(DEVICE_CLASS_KEYBOARD, n, ITEM_CLASS_SWITCH, ITEM_MODIFIER_NONE, ITEM_ID_F14)
 #define KEYCODE_F15_INDEXED(n) input_code(DEVICE_CLASS_KEYBOARD, n, ITEM_CLASS_SWITCH, ITEM_MODIFIER_NONE, ITEM_ID_F15)
+<<<<<<< HEAD
+=======
+#define KEYCODE_F16_INDEXED(n) input_code(DEVICE_CLASS_KEYBOARD, n, ITEM_CLASS_SWITCH, ITEM_MODIFIER_NONE, ITEM_ID_F16)
+#define KEYCODE_F17_INDEXED(n) input_code(DEVICE_CLASS_KEYBOARD, n, ITEM_CLASS_SWITCH, ITEM_MODIFIER_NONE, ITEM_ID_F17)
+#define KEYCODE_F18_INDEXED(n) input_code(DEVICE_CLASS_KEYBOARD, n, ITEM_CLASS_SWITCH, ITEM_MODIFIER_NONE, ITEM_ID_F18)
+#define KEYCODE_F19_INDEXED(n) input_code(DEVICE_CLASS_KEYBOARD, n, ITEM_CLASS_SWITCH, ITEM_MODIFIER_NONE, ITEM_ID_F19)
+#define KEYCODE_F20_INDEXED(n) input_code(DEVICE_CLASS_KEYBOARD, n, ITEM_CLASS_SWITCH, ITEM_MODIFIER_NONE, ITEM_ID_F20)
+>>>>>>> upstream/master
 #define KEYCODE_ESC_INDEXED(n) input_code(DEVICE_CLASS_KEYBOARD, n, ITEM_CLASS_SWITCH, ITEM_MODIFIER_NONE, ITEM_ID_ESC)
 #define KEYCODE_TILDE_INDEXED(n) input_code(DEVICE_CLASS_KEYBOARD, n, ITEM_CLASS_SWITCH, ITEM_MODIFIER_NONE, ITEM_ID_TILDE)
 #define KEYCODE_MINUS_INDEXED(n) input_code(DEVICE_CLASS_KEYBOARD, n, ITEM_CLASS_SWITCH, ITEM_MODIFIER_NONE, ITEM_ID_MINUS)
@@ -805,6 +917,13 @@ private:
 #define KEYCODE_PLUS_PAD_INDEXED(n) input_code(DEVICE_CLASS_KEYBOARD, n, ITEM_CLASS_SWITCH, ITEM_MODIFIER_NONE, ITEM_ID_PLUS_PAD)
 #define KEYCODE_DEL_PAD_INDEXED(n) input_code(DEVICE_CLASS_KEYBOARD, n, ITEM_CLASS_SWITCH, ITEM_MODIFIER_NONE, ITEM_ID_DEL_PAD)
 #define KEYCODE_ENTER_PAD_INDEXED(n) input_code(DEVICE_CLASS_KEYBOARD, n, ITEM_CLASS_SWITCH, ITEM_MODIFIER_NONE, ITEM_ID_ENTER_PAD)
+<<<<<<< HEAD
+=======
+#define KEYCODE_BS_PAD_INDEXED(n) input_code(DEVICE_CLASS_KEYBOARD, n, ITEM_CLASS_SWITCH, ITEM_MODIFIER_NONE, ITEM_ID_BS_PAD)
+#define KEYCODE_TAB_PAD_INDEXED(n) input_code(DEVICE_CLASS_KEYBOARD, n, ITEM_CLASS_SWITCH, ITEM_MODIFIER_NONE, ITEM_ID_TAB_PAD)
+#define KEYCODE_00_PAD_INDEXED(n) input_code(DEVICE_CLASS_KEYBOARD, n, ITEM_CLASS_SWITCH, ITEM_MODIFIER_NONE, ITEM_ID_00_PAD)
+#define KEYCODE_000_PAD_INDEXED(n) input_code(DEVICE_CLASS_KEYBOARD, n, ITEM_CLASS_SWITCH, ITEM_MODIFIER_NONE, ITEM_ID_000_PAD)
+>>>>>>> upstream/master
 #define KEYCODE_PRTSCR_INDEXED(n) input_code(DEVICE_CLASS_KEYBOARD, n, ITEM_CLASS_SWITCH, ITEM_MODIFIER_NONE, ITEM_ID_PRTSCR)
 #define KEYCODE_PAUSE_INDEXED(n) input_code(DEVICE_CLASS_KEYBOARD, n, ITEM_CLASS_SWITCH, ITEM_MODIFIER_NONE, ITEM_ID_PAUSE)
 #define KEYCODE_LSHIFT_INDEXED(n) input_code(DEVICE_CLASS_KEYBOARD, n, ITEM_CLASS_SWITCH, ITEM_MODIFIER_NONE, ITEM_ID_LSHIFT)
@@ -820,9 +939,12 @@ private:
 #define KEYCODE_RWIN_INDEXED(n) input_code(DEVICE_CLASS_KEYBOARD, n, ITEM_CLASS_SWITCH, ITEM_MODIFIER_NONE, ITEM_ID_RWIN)
 #define KEYCODE_MENU_INDEXED(n) input_code(DEVICE_CLASS_KEYBOARD, n, ITEM_CLASS_SWITCH, ITEM_MODIFIER_NONE, ITEM_ID_MENU)
 #define KEYCODE_CANCEL_INDEXED(n) input_code(DEVICE_CLASS_KEYBOARD, n, ITEM_CLASS_SWITCH, ITEM_MODIFIER_NONE, ITEM_ID_CANCEL)
+<<<<<<< HEAD
 #define KEYCODE_KANA_INDEXED(n) input_code(DEVICE_CLASS_KEYBOARD, n, ITEM_CLASS_SWITCH, ITEM_MODIFIER_NONE, ITEM_ID_KANA)
 #define KEYCODE_CONVERT_INDEXED(n) input_code(DEVICE_CLASS_KEYBOARD, n, ITEM_CLASS_SWITCH, ITEM_MODIFIER_NONE, ITEM_ID_CONVERT)
 #define KEYCODE_NONCONVERT_INDEXED(n) input_code(DEVICE_CLASS_KEYBOARD, n, ITEM_CLASS_SWITCH, ITEM_MODIFIER_NONE, ITEM_ID_NONCONVERT)
+=======
+>>>>>>> upstream/master
 
 #define KEYCODE_A KEYCODE_A_INDEXED(0)
 #define KEYCODE_B KEYCODE_B_INDEXED(0)
@@ -875,6 +997,14 @@ private:
 #define KEYCODE_F13 KEYCODE_F13_INDEXED(0)
 #define KEYCODE_F14 KEYCODE_F14_INDEXED(0)
 #define KEYCODE_F15 KEYCODE_F15_INDEXED(0)
+<<<<<<< HEAD
+=======
+#define KEYCODE_F16 KEYCODE_F16_INDEXED(0)
+#define KEYCODE_F17 KEYCODE_F17_INDEXED(0)
+#define KEYCODE_F18 KEYCODE_F18_INDEXED(0)
+#define KEYCODE_F19 KEYCODE_F19_INDEXED(0)
+#define KEYCODE_F20 KEYCODE_F20_INDEXED(0)
+>>>>>>> upstream/master
 #define KEYCODE_ESC KEYCODE_ESC_INDEXED(0)
 #define KEYCODE_TILDE KEYCODE_TILDE_INDEXED(0)
 #define KEYCODE_MINUS KEYCODE_MINUS_INDEXED(0)
@@ -918,6 +1048,13 @@ private:
 #define KEYCODE_PLUS_PAD KEYCODE_PLUS_PAD_INDEXED(0)
 #define KEYCODE_DEL_PAD KEYCODE_DEL_PAD_INDEXED(0)
 #define KEYCODE_ENTER_PAD KEYCODE_ENTER_PAD_INDEXED(0)
+<<<<<<< HEAD
+=======
+#define KEYCODE_BS_PAD KEYCODE_BS_PAD_INDEXED(0)
+#define KEYCODE_TAB_PAD KEYCODE_TAB_PAD_INDEXED(0)
+#define KEYCODE_00_PAD KEYCODE_00_PAD_INDEXED(0)
+#define KEYCODE_000_PAD KEYCODE_000_PAD_INDEXED(0)
+>>>>>>> upstream/master
 #define KEYCODE_PRTSCR KEYCODE_PRTSCR_INDEXED(0)
 #define KEYCODE_PAUSE KEYCODE_PAUSE_INDEXED(0)
 #define KEYCODE_LSHIFT KEYCODE_LSHIFT_INDEXED(0)
@@ -933,9 +1070,12 @@ private:
 #define KEYCODE_RWIN KEYCODE_RWIN_INDEXED(0)
 #define KEYCODE_MENU KEYCODE_MENU_INDEXED(0)
 #define KEYCODE_CANCEL KEYCODE_CANCEL_INDEXED(0)
+<<<<<<< HEAD
 #define KEYCODE_KANA KEYCODE_KANA_INDEXED(0)
 #define KEYCODE_CONVERT KEYCODE_CONVERT_INDEXED(0)
 #define KEYCODE_NONCONVERT KEYCODE_NONCONVERT_INDEXED(0)
+=======
+>>>>>>> upstream/master
 
 // mouse axes as relative devices
 #define MOUSECODE_X_INDEXED(n) input_code(DEVICE_CLASS_MOUSE, n, ITEM_CLASS_RELATIVE, ITEM_MODIFIER_NONE, ITEM_ID_XAXIS)
@@ -1138,6 +1278,7 @@ private:
 
 
 
+<<<<<<< HEAD
 //**************************************************************************
 //  GLOBAL VARIABLES
 //**************************************************************************
@@ -1167,3 +1308,6 @@ inline running_machine &input_class::machine() const { return m_manager.machine(
 
 
 #endif  // __INPUT_H__
+=======
+#endif  // MAME_EMU_INPUT_H
+>>>>>>> upstream/master

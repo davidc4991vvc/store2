@@ -15,7 +15,11 @@ Video hardware driver by Uki
 
 PALETTE_INIT_MEMBER(ikki_state, ikki)
 {
+<<<<<<< HEAD
 	const UINT8 *color_prom = memregion("proms")->base();
+=======
+	const uint8_t *color_prom = memregion("proms")->base();
+>>>>>>> upstream/master
 	int i;
 
 	/* create a lookup table for the palette */
@@ -34,7 +38,11 @@ PALETTE_INIT_MEMBER(ikki_state, ikki)
 	/* sprites lookup table */
 	for (i = 0; i < 0x200; i++)
 	{
+<<<<<<< HEAD
 		UINT16 ctabentry = color_prom[i] ^ 0xff;
+=======
+		uint16_t ctabentry = color_prom[i] ^ 0xff;
+>>>>>>> upstream/master
 
 		if (((i & 0x07) == 0x07) && (ctabentry == 0))
 		{
@@ -49,7 +57,11 @@ PALETTE_INIT_MEMBER(ikki_state, ikki)
 	/* bg lookup table */
 	for (i = 0x200; i < 0x400; i++)
 	{
+<<<<<<< HEAD
 		UINT8 ctabentry = color_prom[i];
+=======
+		uint8_t ctabentry = color_prom[i];
+>>>>>>> upstream/master
 		palette.set_pen_indirect(i, ctabentry);
 	}
 }
@@ -62,7 +74,11 @@ WRITE8_MEMBER(ikki_state::ikki_scrn_ctrl_w)
 
 void ikki_state::draw_sprites( bitmap_ind16 &bitmap, const rectangle &cliprect )
 {
+<<<<<<< HEAD
 	UINT8 *spriteram = m_spriteram;
+=======
+	uint8_t *spriteram = m_spriteram;
+>>>>>>> upstream/master
 	int y;
 	offs_t offs;
 
@@ -104,7 +120,11 @@ void ikki_state::draw_sprites( bitmap_ind16 &bitmap, const rectangle &cliprect )
 
 		for (x = cliprect.min_x; x <= cliprect.max_x; x++)
 		{
+<<<<<<< HEAD
 			UINT16 pen = m_sprite_bitmap.pix16(y, x);
+=======
+			uint16_t pen = m_sprite_bitmap.pix16(y, x);
+>>>>>>> upstream/master
 
 			if (m_palette->pen_indirect(pen) != 0x100)
 				bitmap.pix16(y, x) = pen;
@@ -120,10 +140,17 @@ void ikki_state::video_start()
 }
 
 
+<<<<<<< HEAD
 UINT32 ikki_state::screen_update_ikki(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
 {
 	offs_t offs;
 	UINT8 *VIDEOATTR = memregion("user1")->base();
+=======
+uint32_t ikki_state::screen_update_ikki(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+{
+	offs_t offs;
+	uint8_t *VIDEOATTR = memregion("user1")->base();
+>>>>>>> upstream/master
 
 	/* draw bg layer */
 

@@ -11,11 +11,19 @@
 ***************************************************************************/
 
 #include "emu.h"
+<<<<<<< HEAD
 #include "debugger.h"
 #include "ccpu.h"
 
 
 const device_type CCPU = &device_creator<ccpu_cpu_device>;
+=======
+#include "ccpu.h"
+#include "debugger.h"
+
+
+DEFINE_DEVICE_TYPE(CCPU, ccpu_cpu_device, "ccpu", "Cinematronics CPU")
+>>>>>>> upstream/master
 
 
 /***************************************************************************
@@ -49,7 +57,11 @@ const device_type CCPU = &device_creator<ccpu_cpu_device>;
 
 #define STANDARD_ACC_OP(resexp,cmpval) \
 do { \
+<<<<<<< HEAD
 	UINT16 result = resexp; \
+=======
+	uint16_t result = resexp; \
+>>>>>>> upstream/master
 	SET_A0;                      /* set the A0 bit based on the previous 'A' value */ \
 	SET_CMP_VAL(cmpval);          /* set the compare values to the previous accumulator and the cmpval */ \
 	SET_NC(result);               /* set the NC flag based on the unmasked result */ \
@@ -62,8 +74,13 @@ do { \
     INITIALIZATION AND SHUTDOWN
 ***************************************************************************/
 
+<<<<<<< HEAD
 ccpu_cpu_device::ccpu_cpu_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
 	: cpu_device(mconfig, CCPU, "Cinematronics CPU", tag, owner, clock, "ccpu", __FILE__)
+=======
+ccpu_cpu_device::ccpu_cpu_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: cpu_device(mconfig, CCPU, tag, owner, clock)
+>>>>>>> upstream/master
 	, m_program_config("program", ENDIANNESS_BIG, 8, 15, 0)
 	, m_data_config("data", ENDIANNESS_BIG, 16, 32, -1)
 	, m_io_config("io", ENDIANNESS_BIG, 8, 5, 0)
@@ -72,6 +89,17 @@ ccpu_cpu_device::ccpu_cpu_device(const machine_config &mconfig, const char *tag,
 {
 }
 
+<<<<<<< HEAD
+=======
+device_memory_interface::space_config_vector ccpu_cpu_device::memory_space_config() const
+{
+	return space_config_vector {
+		std::make_pair(AS_PROGRAM, &m_program_config),
+		std::make_pair(AS_DATA,    &m_data_config),
+		std::make_pair(AS_IO,      &m_io_config)
+	};
+}
+>>>>>>> upstream/master
 
 READ8_MEMBER( ccpu_cpu_device::read_jmi )
 {
@@ -83,7 +111,11 @@ READ8_MEMBER( ccpu_cpu_device::read_jmi )
 
 void ccpu_cpu_device::wdt_timer_trigger()
 {
+<<<<<<< HEAD
 	m_waiting = FALSE;
+=======
+	m_waiting = false;
+>>>>>>> upstream/master
 	m_watchdog++;
 	if (m_watchdog >= 3)
 		m_PC = 0;
@@ -121,6 +153,10 @@ void ccpu_cpu_device::device_start()
 	save_item(NAME(m_drflag));
 	save_item(NAME(m_waiting));
 	save_item(NAME(m_watchdog));
+<<<<<<< HEAD
+=======
+	save_item(NAME(m_extinput));
+>>>>>>> upstream/master
 
 	// Register state for debugger
 	state_add( CCPU_PC, "PC", m_PC).formatstr("%04X");
@@ -132,24 +168,41 @@ void ccpu_cpu_device::device_start()
 	state_add( CCPU_X,  "X",  m_X).mask(0xfff).formatstr("%03X");
 	state_add( CCPU_Y,  "Y",  m_Y).mask(0xfff).formatstr("%03X");
 	state_add( CCPU_T,  "T",  m_T).mask(0xfff).formatstr("%03X");
+<<<<<<< HEAD
 	state_add(STATE_GENPC, "curpc", m_PC).noshow();
+=======
+	state_add(STATE_GENPC, "GENPC", m_PC).noshow();
+	state_add(STATE_GENPCBASE, "CURPC", m_PC).noshow();
+>>>>>>> upstream/master
 	state_add(STATE_GENFLAGS, "GENFLAGS", m_flags).formatstr("%6s").noshow();
 
 	m_icountptr = &m_icount;
 }
 
 
+<<<<<<< HEAD
 void ccpu_cpu_device::state_string_export(const device_state_entry &entry, std::string &str)
+=======
+void ccpu_cpu_device::state_string_export(const device_state_entry &entry, std::string &str) const
+>>>>>>> upstream/master
 {
 	switch (entry.index())
 	{
 		case STATE_GENFLAGS:
+<<<<<<< HEAD
 			strprintf(str, "%c%c%c%c%c%c",
+=======
+			str = string_format("%c%c%c%c%c%c",
+>>>>>>> upstream/master
 					TEST_A0 ? '0' : 'o',
 					TEST_NC ? 'N' : 'n',
 					TEST_LT ? 'L' : 'l',
 					TEST_EQ ? 'E' : 'e',
+<<<<<<< HEAD
 					m_external_input() ? 'M' : 'm',
+=======
+					m_extinput ? 'M' : 'm',
+>>>>>>> upstream/master
 					TEST_DR ? 'D' : 'd');
 			break;
 	}
@@ -178,7 +231,11 @@ void ccpu_cpu_device::device_reset()
 	m_miflag = m_nextmiflag = m_nextnextmiflag = 0;
 	m_drflag = 0;
 
+<<<<<<< HEAD
 	m_waiting = FALSE;
+=======
+	m_waiting = false;
+>>>>>>> upstream/master
 	m_watchdog = 0;
 }
 
@@ -198,16 +255,29 @@ void ccpu_cpu_device::execute_run()
 
 	do
 	{
+<<<<<<< HEAD
 		UINT16 tempval;
 		UINT8 opcode;
+=======
+		uint16_t tempval;
+		uint8_t opcode;
+>>>>>>> upstream/master
 
 		/* update the delayed MI flag */
 		m_miflag = m_nextmiflag;
 		m_nextmiflag = m_nextnextmiflag;
 
 		/* fetch the opcode */
+<<<<<<< HEAD
 		debugger_instruction_hook(this, m_PC);
 		opcode = READOP(m_PC++);
+=======
+		opcode = READOP(m_PC);
+		if (opcode == 0x51 || opcode == 0x59)
+			m_extinput = m_external_input();
+		debugger_instruction_hook(this, m_PC);
+		m_PC++;
+>>>>>>> upstream/master
 
 		switch (opcode)
 		{
@@ -286,7 +356,11 @@ void ccpu_cpu_device::execute_run()
 
 			/* JMIB/JEHB */
 			case 0x51:
+<<<<<<< HEAD
 				if (m_external_input()) { m_PC = ((m_PC - 1) & 0xf000) + m_J; CYCLES(2); }
+=======
+				if (m_extinput) { m_PC = ((m_PC - 1) & 0xf000) + m_J; CYCLES(2); }
+>>>>>>> upstream/master
 				NEXT_ACC_B; CYCLES(2);
 				break;
 
@@ -333,7 +407,11 @@ void ccpu_cpu_device::execute_run()
 
 			/* JMI/JEH */
 			case 0x59:
+<<<<<<< HEAD
 				if (m_external_input()) { m_PC = ((m_PC - 1) & 0xf000) + m_J; CYCLES(2); }
+=======
+				if (m_extinput) { m_PC = ((m_PC - 1) & 0xf000) + m_J; CYCLES(2); }
+>>>>>>> upstream/master
 				NEXT_ACC_A; CYCLES(2);
 				break;
 
@@ -432,7 +510,11 @@ void ccpu_cpu_device::execute_run()
 				m_I = (m_P << 4) + (opcode & 0x0f);
 				tempval = RDMEM(m_I);
 				{
+<<<<<<< HEAD
 					UINT16 result = *m_acc + (tempval ^ 0xfff) + 1;
+=======
+					uint16_t result = *m_acc + (tempval ^ 0xfff) + 1;
+>>>>>>> upstream/master
 					SET_A0;
 					SET_CMP_VAL(tempval);
 					SET_NC(result);
@@ -464,11 +546,19 @@ void ccpu_cpu_device::execute_run()
 			/* DV */
 			case 0xe0:
 				{
+<<<<<<< HEAD
 					INT16 stopX = (INT16)(m_A << 4) >> 4;
 					INT16 stopY = (INT16)(m_B << 4) >> 4;
 
 					stopX = ((INT16)(stopX - m_X) >> m_T) + m_X;
 					stopY = ((INT16)(stopY - m_Y) >> m_T) + m_Y;
+=======
+					int16_t stopX = (int16_t)(m_A << 4) >> 4;
+					int16_t stopY = (int16_t)(m_B << 4) >> 4;
+
+					stopX = ((int16_t)(stopX - m_X) >> m_T) + m_X;
+					stopY = ((int16_t)(stopY - m_Y) >> m_T) + m_Y;
+>>>>>>> upstream/master
 
 					m_vector_callback(m_X, m_Y, stopX, stopY, m_T);
 
@@ -510,10 +600,17 @@ void ccpu_cpu_device::execute_run()
 				{
 					if (m_A & 1)
 					{
+<<<<<<< HEAD
 						UINT16 result;
 						m_cmpacc = m_B;
 						m_A = (m_A >> 1) | ((m_B << 11) & 0x800);
 						m_B = ((INT16)(m_B << 4) >> 5) & 0xfff;
+=======
+						uint16_t result;
+						m_cmpacc = m_B;
+						m_A = (m_A >> 1) | ((m_B << 11) & 0x800);
+						m_B = ((int16_t)(m_B << 4) >> 5) & 0xfff;
+>>>>>>> upstream/master
 						result = m_B + tempval;
 						SET_NC(result);
 						SET_MI(result);
@@ -521,20 +618,34 @@ void ccpu_cpu_device::execute_run()
 					}
 					else
 					{
+<<<<<<< HEAD
 						UINT16 result;
 						m_cmpacc = m_A;
 						result = m_A + tempval;
 						m_A = (m_A >> 1) | ((m_B << 11) & 0x800);
 						m_B = ((INT16)(m_B << 4) >> 5) & 0xfff;
+=======
+						uint16_t result;
+						m_cmpacc = m_A;
+						result = m_A + tempval;
+						m_A = (m_A >> 1) | ((m_B << 11) & 0x800);
+						m_B = ((int16_t)(m_B << 4) >> 5) & 0xfff;
+>>>>>>> upstream/master
 						SET_NC(result);
 						SET_MI(result);
 					}
 				}
 				else
 				{
+<<<<<<< HEAD
 					UINT16 result;
 					m_cmpacc = m_B;
 					m_B = ((INT16)(m_B << 4) >> 5) & 0xfff;
+=======
+					uint16_t result;
+					m_cmpacc = m_B;
+					m_B = ((int16_t)(m_B << 4) >> 5) & 0xfff;
+>>>>>>> upstream/master
 					result = m_B + tempval;
 					SET_NC(result);
 					SET_MI(result);
@@ -563,7 +674,11 @@ void ccpu_cpu_device::execute_run()
 			/* FRM */
 			case 0xe5:
 			case 0xf5:
+<<<<<<< HEAD
 				m_waiting = TRUE;
+=======
+				m_waiting = true;
+>>>>>>> upstream/master
 				NEXT_ACC_A;
 				m_icount = -1;
 
@@ -618,7 +733,11 @@ void ccpu_cpu_device::execute_run()
 			/* SHR */
 			case 0xeb:
 			case 0xfb:
+<<<<<<< HEAD
 				tempval = ((m_acc == &m_A) ? (m_A >> 1) : ((INT16)(m_B << 4) >> 5)) & 0xfff;
+=======
+				tempval = ((m_acc == &m_A) ? (m_A >> 1) : ((int16_t)(m_B << 4) >> 5)) & 0xfff;
+>>>>>>> upstream/master
 				tempval |= (*m_acc + (0xb0b | (opcode & 0xf0))) & 0x1000;
 				STANDARD_ACC_OP(tempval, 0xb0b | (opcode & 0xf0));
 				NEXT_ACC_A; CYCLES(1);
@@ -636,7 +755,11 @@ void ccpu_cpu_device::execute_run()
 			/* ASR */
 			case 0xed:
 			case 0xfd:
+<<<<<<< HEAD
 				tempval = ((INT16)(*m_acc << 4) >> 5) & 0xfff;
+=======
+				tempval = ((int16_t)(*m_acc << 4) >> 5) & 0xfff;
+>>>>>>> upstream/master
 				STANDARD_ACC_OP(tempval, 0xd0d | (opcode & 0xf0));
 				NEXT_ACC_A; CYCLES(1);
 				break;
@@ -647,10 +770,17 @@ void ccpu_cpu_device::execute_run()
 				if (m_acc == &m_A)
 				{
 					tempval = (m_A >> 1) | ((m_B << 11) & 0x800);
+<<<<<<< HEAD
 					m_B = ((INT16)(m_B << 4) >> 5) & 0xfff;
 				}
 				else
 					tempval = ((INT16)(m_B << 4) >> 5) & 0xfff;
+=======
+					m_B = ((int16_t)(m_B << 4) >> 5) & 0xfff;
+				}
+				else
+					tempval = ((int16_t)(m_B << 4) >> 5) & 0xfff;
+>>>>>>> upstream/master
 				tempval |= (*m_acc + (0xe0e | (opcode & 0xf0))) & 0x1000;
 				STANDARD_ACC_OP(tempval, 0xe0e | (opcode & 0xf0));
 				NEXT_ACC_A; CYCLES(1);
@@ -673,8 +803,13 @@ void ccpu_cpu_device::execute_run()
 
 			/* IV */
 			case 0xf0:
+<<<<<<< HEAD
 				m_X = (INT16)(m_A << 4) >> 4;
 				m_Y = (INT16)(m_B << 4) >> 4;
+=======
+				m_X = (int16_t)(m_A << 4) >> 4;
+				m_Y = (int16_t)(m_B << 4) >> 4;
+>>>>>>> upstream/master
 				NEXT_ACC_A; CYCLES(1);
 				break;
 		}
@@ -682,8 +817,15 @@ void ccpu_cpu_device::execute_run()
 }
 
 
+<<<<<<< HEAD
 offs_t ccpu_cpu_device::disasm_disassemble(char *buffer, offs_t pc, const UINT8 *oprom, const UINT8 *opram, UINT32 options)
 {
 	extern CPU_DISASSEMBLE( ccpu );
 	return CPU_DISASSEMBLE_NAME(ccpu)(this, buffer, pc, oprom, opram, options);
+=======
+offs_t ccpu_cpu_device::disasm_disassemble(std::ostream &stream, offs_t pc, const uint8_t *oprom, const uint8_t *opram, uint32_t options)
+{
+	extern CPU_DISASSEMBLE( ccpu );
+	return CPU_DISASSEMBLE_NAME(ccpu)(this, stream, pc, oprom, opram, options);
+>>>>>>> upstream/master
 }

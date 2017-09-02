@@ -4,11 +4,16 @@
 
     eminline.h
 
+<<<<<<< HEAD
     Definitions for inline functions that can be overriden by OSD-
+=======
+    Definitions for inline functions that can be overridden by OSD-
+>>>>>>> upstream/master
     specific code.
 
 ***************************************************************************/
 
+<<<<<<< HEAD
 #ifndef __EMINLINE__
 #define __EMINLINE__
 
@@ -86,6 +91,19 @@ _osd_exchange64(INT64 volatile *ptr, INT64 exchange)
 #endif /* __ppc64__ || __PPC64__ */
 
 #endif
+=======
+#ifndef MAME_OSD_EMINLINE_H
+#define MAME_OSD_EMINLINE_H
+
+#pragma once
+
+#include "osdcomm.h"
+#include "osdcore.h"
+
+#if !defined(MAME_NOASM)
+
+#if defined(__GNUC__)
+>>>>>>> upstream/master
 
 #if defined(__i386__) || defined(__x86_64__)
 #include "eigccx86.h"
@@ -95,9 +113,13 @@ _osd_exchange64(INT64 volatile *ptr, INT64 exchange)
 #error "no matching assembler implementations found - please compile with NOASM=1"
 #endif
 
+<<<<<<< HEAD
 #else
 
 #if defined(_MSC_VER)
+=======
+#elif defined(_MSC_VER)
+>>>>>>> upstream/master
 
 #if (defined(_M_IX86) || defined(_M_X64))
 #include "eivcx86.h"
@@ -105,6 +127,7 @@ _osd_exchange64(INT64 volatile *ptr, INT64 exchange)
 
 #include "eivc.h"
 
+<<<<<<< HEAD
 INT32 win_compare_exchange32(INT32 volatile *ptr, INT32 compare, INT32 exchange);
 INT32 win_atomic_exchange32(INT32 volatile *ptr, INT32 exchange);
 INT32 win_atomic_add32(INT32 volatile *ptr, INT32 delta);
@@ -132,14 +155,20 @@ INT64 win_compare_exchange64(INT64 volatile *ptr, INT64 compare, INT64 exchange)
 #ifndef atomic_add32
 #define atomic_add32 win_atomic_add32
 #endif /* atomic_add32 */
+=======
+>>>>>>> upstream/master
 #else
 
 #error "no matching assembler implementations found - please compile with NOASM=1"
 
 #endif
 
+<<<<<<< HEAD
 #endif
 #endif
+=======
+#endif // !defined(MAME_NOASM)
+>>>>>>> upstream/master
 
 
 /***************************************************************************
@@ -152,9 +181,15 @@ INT64 win_compare_exchange64(INT64 volatile *ptr, INT64 compare, INT64 exchange)
 -------------------------------------------------*/
 
 #ifndef mul_32x32
+<<<<<<< HEAD
 INLINE INT64 mul_32x32(INT32 a, INT32 b)
 {
 	return (INT64)a * (INT64)b;
+=======
+inline int64_t mul_32x32(int32_t a, int32_t b)
+{
+	return int64_t(a) * int64_t(b);
+>>>>>>> upstream/master
 }
 #endif
 
@@ -166,9 +201,15 @@ INLINE INT64 mul_32x32(INT32 a, INT32 b)
 -------------------------------------------------*/
 
 #ifndef mulu_32x32
+<<<<<<< HEAD
 INLINE UINT64 mulu_32x32(UINT32 a, UINT32 b)
 {
 	return (UINT64)a * (UINT64)b;
+=======
+inline uint64_t mulu_32x32(uint32_t a, uint32_t b)
+{
+	return uint64_t(a) * uint64_t(b);
+>>>>>>> upstream/master
 }
 #endif
 
@@ -180,9 +221,15 @@ INLINE UINT64 mulu_32x32(UINT32 a, UINT32 b)
 -------------------------------------------------*/
 
 #ifndef mul_32x32_hi
+<<<<<<< HEAD
 INLINE INT32 mul_32x32_hi(INT32 a, INT32 b)
 {
 	return (UINT32)(((INT64)a * (INT64)b) >> 32);
+=======
+inline int32_t mul_32x32_hi(int32_t a, int32_t b)
+{
+	return uint32_t((int64_t(a) * int64_t(b)) >> 32);
+>>>>>>> upstream/master
 }
 #endif
 
@@ -194,9 +241,15 @@ INLINE INT32 mul_32x32_hi(INT32 a, INT32 b)
 -------------------------------------------------*/
 
 #ifndef mulu_32x32_hi
+<<<<<<< HEAD
 INLINE UINT32 mulu_32x32_hi(UINT32 a, UINT32 b)
 {
 	return (UINT32)(((UINT64)a * (UINT64)b) >> 32);
+=======
+inline uint32_t mulu_32x32_hi(uint32_t a, uint32_t b)
+{
+	return uint32_t((uint64_t(a) * uint64_t(b)) >> 32);
+>>>>>>> upstream/master
 }
 #endif
 
@@ -209,9 +262,15 @@ INLINE UINT32 mulu_32x32_hi(UINT32 a, UINT32 b)
 -------------------------------------------------*/
 
 #ifndef mul_32x32_shift
+<<<<<<< HEAD
 INLINE INT32 mul_32x32_shift(INT32 a, INT32 b, UINT8 shift)
 {
 	return (INT32)(((INT64)a * (INT64)b) >> shift);
+=======
+inline int32_t mul_32x32_shift(int32_t a, int32_t b, uint8_t shift)
+{
+	return int32_t((int64_t(a) * int64_t(b)) >> shift);
+>>>>>>> upstream/master
 }
 #endif
 
@@ -224,9 +283,15 @@ INLINE INT32 mul_32x32_shift(INT32 a, INT32 b, UINT8 shift)
 -------------------------------------------------*/
 
 #ifndef mulu_32x32_shift
+<<<<<<< HEAD
 INLINE UINT32 mulu_32x32_shift(UINT32 a, UINT32 b, UINT8 shift)
 {
 	return (UINT32)(((UINT64)a * (UINT64)b) >> shift);
+=======
+inline uint32_t mulu_32x32_shift(uint32_t a, uint32_t b, uint8_t shift)
+{
+	return uint32_t((uint64_t(a) * uint64_t(b)) >> shift);
+>>>>>>> upstream/master
 }
 #endif
 
@@ -237,9 +302,15 @@ INLINE UINT32 mulu_32x32_shift(UINT32 a, UINT32 b, UINT8 shift)
 -------------------------------------------------*/
 
 #ifndef div_64x32
+<<<<<<< HEAD
 INLINE INT32 div_64x32(INT64 a, INT32 b)
 {
 	return a / (INT64)b;
+=======
+inline int32_t div_64x32(int64_t a, int32_t b)
+{
+	return a / int64_t(b);
+>>>>>>> upstream/master
 }
 #endif
 
@@ -250,9 +321,15 @@ INLINE INT32 div_64x32(INT64 a, INT32 b)
 -------------------------------------------------*/
 
 #ifndef divu_64x32
+<<<<<<< HEAD
 INLINE UINT32 divu_64x32(UINT64 a, UINT32 b)
 {
 	return a / (UINT64)b;
+=======
+inline uint32_t divu_64x32(uint64_t a, uint32_t b)
+{
+	return a / uint64_t(b);
+>>>>>>> upstream/master
 }
 #endif
 
@@ -264,10 +341,17 @@ INLINE UINT32 divu_64x32(UINT64 a, UINT32 b)
 -------------------------------------------------*/
 
 #ifndef div_64x32_rem
+<<<<<<< HEAD
 INLINE INT32 div_64x32_rem(INT64 a, INT32 b, INT32 *remainder)
 {
 	INT32 res = div_64x32(a, b);
 	*remainder = a - ((INT64)b * res);
+=======
+inline int32_t div_64x32_rem(int64_t a, int32_t b, int32_t *remainder)
+{
+	int32_t const res = div_64x32(a, b);
+	*remainder = a - (int64_t(b) * res);
+>>>>>>> upstream/master
 	return res;
 }
 #endif
@@ -280,10 +364,17 @@ INLINE INT32 div_64x32_rem(INT64 a, INT32 b, INT32 *remainder)
 -------------------------------------------------*/
 
 #ifndef divu_64x32_rem
+<<<<<<< HEAD
 INLINE UINT32 divu_64x32_rem(UINT64 a, UINT32 b, UINT32 *remainder)
 {
 	UINT32 res = divu_64x32(a, b);
 	*remainder = a - ((UINT64)b * res);
+=======
+inline uint32_t divu_64x32_rem(uint64_t a, uint32_t b, uint32_t *remainder)
+{
+	uint32_t const res = divu_64x32(a, b);
+	*remainder = a - (uint64_t(b) * res);
+>>>>>>> upstream/master
 	return res;
 }
 #endif
@@ -296,9 +387,15 @@ INLINE UINT32 divu_64x32_rem(UINT64 a, UINT32 b, UINT32 *remainder)
 -------------------------------------------------*/
 
 #ifndef div_32x32_shift
+<<<<<<< HEAD
 INLINE INT32 div_32x32_shift(INT32 a, INT32 b, UINT8 shift)
 {
 	return ((INT64)a << shift) / (INT64)b;
+=======
+inline int32_t div_32x32_shift(int32_t a, int32_t b, uint8_t shift)
+{
+	return (int64_t(a) << shift) / int64_t(b);
+>>>>>>> upstream/master
 }
 #endif
 
@@ -310,9 +407,15 @@ INLINE INT32 div_32x32_shift(INT32 a, INT32 b, UINT8 shift)
 -------------------------------------------------*/
 
 #ifndef divu_32x32_shift
+<<<<<<< HEAD
 INLINE UINT32 divu_32x32_shift(UINT32 a, UINT32 b, UINT8 shift)
 {
 	return ((UINT64)a << shift) / (UINT64)b;
+=======
+inline uint32_t divu_32x32_shift(uint32_t a, uint32_t b, uint8_t shift)
+{
+	return (uint64_t(a) << shift) / uint64_t(b);
+>>>>>>> upstream/master
 }
 #endif
 
@@ -323,7 +426,11 @@ INLINE UINT32 divu_32x32_shift(UINT32 a, UINT32 b, UINT8 shift)
 -------------------------------------------------*/
 
 #ifndef mod_64x32
+<<<<<<< HEAD
 INLINE INT32 mod_64x32(INT64 a, INT32 b)
+=======
+inline int32_t mod_64x32(int64_t a, int32_t b)
+>>>>>>> upstream/master
 {
 	return a - (b * div_64x32(a, b));
 }
@@ -336,7 +443,11 @@ INLINE INT32 mod_64x32(INT64 a, INT32 b)
 -------------------------------------------------*/
 
 #ifndef modu_64x32
+<<<<<<< HEAD
 INLINE UINT32 modu_64x32(UINT64 a, UINT32 b)
+=======
+inline uint32_t modu_64x32(uint64_t a, uint32_t b)
+>>>>>>> upstream/master
 {
 	return a - (b * divu_64x32(a, b));
 }
@@ -349,7 +460,11 @@ INLINE UINT32 modu_64x32(UINT64 a, UINT32 b)
 -------------------------------------------------*/
 
 #ifndef recip_approx
+<<<<<<< HEAD
 INLINE float recip_approx(float value)
+=======
+inline float recip_approx(float value)
+>>>>>>> upstream/master
 {
 	return 1.0f / value;
 }
@@ -367,10 +482,17 @@ INLINE float recip_approx(float value)
 -------------------------------------------------*/
 
 #ifndef count_leading_zeros
+<<<<<<< HEAD
 INLINE UINT8 count_leading_zeros(UINT32 val)
 {
 	UINT8 count;
 	for (count = 0; (INT32)val >= 0; count++) val <<= 1;
+=======
+inline uint8_t count_leading_zeros(uint32_t val)
+{
+	uint8_t count;
+	for (count = 0; int32_t(val) >= 0; count++) val <<= 1;
+>>>>>>> upstream/master
 	return count;
 }
 #endif
@@ -382,15 +504,23 @@ INLINE UINT8 count_leading_zeros(UINT32 val)
 -------------------------------------------------*/
 
 #ifndef count_leading_ones
+<<<<<<< HEAD
 INLINE UINT8 count_leading_ones(UINT32 val)
 {
 	UINT8 count;
 	for (count = 0; (INT32)val < 0; count++) val <<= 1;
+=======
+inline uint8_t count_leading_ones(uint32_t val)
+{
+	uint8_t count;
+	for (count = 0; (int32_t)val < 0; count++) val <<= 1;
+>>>>>>> upstream/master
 	return count;
 }
 #endif
 
 
+<<<<<<< HEAD
 
 /***************************************************************************
     INLINE SYNCHRONIZATION FUNCTIONS
@@ -545,6 +675,8 @@ INLINE INT32 atomic_decrement32(INT32 volatile *ptr)
 
 
 
+=======
+>>>>>>> upstream/master
 /***************************************************************************
     INLINE TIMING FUNCTIONS
 ***************************************************************************/
@@ -557,10 +689,18 @@ INLINE INT32 atomic_decrement32(INT32 volatile *ptr)
 -------------------------------------------------*/
 
 #ifndef get_profile_ticks
+<<<<<<< HEAD
 INLINE INT64 get_profile_ticks(void)
+=======
+inline int64_t get_profile_ticks()
+>>>>>>> upstream/master
 {
 	return osd_ticks();
 }
 #endif
 
+<<<<<<< HEAD
 #endif /* __EMINLINE__ */
+=======
+#endif // MAME_OSD_EMINLINE_H
+>>>>>>> upstream/master

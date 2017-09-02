@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 LIBJPEG_8.0 {
+=======
+LIBJPEG_9.0 {
+>>>>>>> upstream/master
   global:
     *;
 };

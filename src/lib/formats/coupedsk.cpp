@@ -64,9 +64,15 @@ bool mgt_format::supports_save() const
 	return true;
 }
 
+<<<<<<< HEAD
 int mgt_format::identify(io_generic *io, UINT32 form_factor)
 {
 	UINT64 size = io_generic_size(io);
+=======
+int mgt_format::identify(io_generic *io, uint32_t form_factor)
+{
+	uint64_t size = io_generic_size(io);
+>>>>>>> upstream/master
 
 	if(/*size == 737280 || */ size == 819200)
 		return 50;
@@ -74,12 +80,21 @@ int mgt_format::identify(io_generic *io, UINT32 form_factor)
 	return 0;
 }
 
+<<<<<<< HEAD
 bool mgt_format::load(io_generic *io, UINT32 form_factor, floppy_image *image)
 {
 	UINT64 size = io_generic_size(io);
 	int sector_count = size == 737280 ? 9 : 10;
 
 	UINT8 sectdata[10*512];
+=======
+bool mgt_format::load(io_generic *io, uint32_t form_factor, floppy_image *image)
+{
+	uint64_t size = io_generic_size(io);
+	int sector_count = size == 737280 ? 9 : 10;
+
+	uint8_t sectdata[10*512];
+>>>>>>> upstream/master
 	desc_s sectors[10];
 	for(int i=0; i<sector_count; i++) {
 		sectors[i].data = sectdata + 512*i;
@@ -109,7 +124,11 @@ bool mgt_format::save(io_generic *io, floppy_image *image)
 	else if(sector_count < 9)
 		sector_count = 9;
 
+<<<<<<< HEAD
 	UINT8 sectdata[10*512];
+=======
+	uint8_t sectdata[10*512];
+>>>>>>> upstream/master
 	int track_size = sector_count*512;
 
 	for(int head=0; head < 2; head++) {

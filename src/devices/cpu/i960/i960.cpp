@@ -1,8 +1,13 @@
 // license:BSD-3-Clause
 // copyright-holders:Farfetch'd, R. Belmont
 #include "emu.h"
+<<<<<<< HEAD
 #include "debugger.h"
 #include "i960.h"
+=======
+#include "i960.h"
+#include "debugger.h"
+>>>>>>> upstream/master
 
 CPU_DISASSEMBLE( i960  );
 
@@ -13,6 +18,7 @@ CPU_DISASSEMBLE( i960  );
 #endif
 
 
+<<<<<<< HEAD
 const device_type I960 = &device_creator<i960_cpu_device>;
 
 
@@ -20,29 +26,65 @@ i960_cpu_device::i960_cpu_device(const machine_config &mconfig, const char *tag,
 	: cpu_device(mconfig, I960, "i960kb", tag, owner, clock, "i960kb", __FILE__)
 	, m_program_config("program", ENDIANNESS_LITTLE, 32, 32, 0), m_rcache_pos(0), m_SAT(0), m_PRCB(0), m_PC(0), m_AC(0), m_IP(0), m_PIP(0), m_ICR(0), m_bursting(0), m_immediate_irq(0),
 	m_immediate_vector(0), m_immediate_pri(0), m_program(nullptr), m_direct(nullptr), m_icount(0)
+=======
+DEFINE_DEVICE_TYPE(I960, i960_cpu_device, "i960kb", "i960KB")
+
+
+i960_cpu_device::i960_cpu_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: cpu_device(mconfig, I960, tag, owner, clock)
+	, m_program_config("program", ENDIANNESS_LITTLE, 32, 32, 0)
+	, m_rcache_pos(0), m_SAT(0), m_PRCB(0), m_PC(0), m_AC(0), m_IP(0), m_PIP(0), m_ICR(0), m_bursting(0), m_immediate_irq(0)
+	, m_immediate_vector(0), m_immediate_pri(0), m_program(nullptr), m_direct(nullptr), m_icount(0)
+>>>>>>> upstream/master
 {
 }
 
 
+<<<<<<< HEAD
 UINT32 i960_cpu_device::i960_read_dword_unaligned(UINT32 address)
 {
 	if (address & 3)
+=======
+device_memory_interface::space_config_vector i960_cpu_device::memory_space_config() const
+{
+	return space_config_vector {
+		std::make_pair(AS_PROGRAM, &m_program_config)
+	};
+}
+
+
+uint32_t i960_cpu_device::i960_read_dword_unaligned(uint32_t address)
+{
+	if (!DWORD_ALIGNED(address))
+>>>>>>> upstream/master
 		return m_program->read_byte(address) | m_program->read_byte(address+1)<<8 | m_program->read_byte(address+2)<<16 | m_program->read_byte(address+3)<<24;
 	else
 		return m_program->read_dword(address);
 }
 
+<<<<<<< HEAD
 UINT16 i960_cpu_device::i960_read_word_unaligned(UINT32 address)
 {
 	if (address & 1)
+=======
+uint16_t i960_cpu_device::i960_read_word_unaligned(uint32_t address)
+{
+	if (!WORD_ALIGNED(address))
+>>>>>>> upstream/master
 		return m_program->read_byte(address) | m_program->read_byte(address+1)<<8;
 	else
 		return m_program->read_word(address);
 }
 
+<<<<<<< HEAD
 void i960_cpu_device::i960_write_dword_unaligned(UINT32 address, UINT32 data)
 {
 	if (address & 3)
+=======
+void i960_cpu_device::i960_write_dword_unaligned(uint32_t address, uint32_t data)
+{
+	if (!DWORD_ALIGNED(address))
+>>>>>>> upstream/master
 	{
 		m_program->write_byte(address, data & 0xff);
 		m_program->write_byte(address+1, (data>>8)&0xff);
@@ -55,9 +97,15 @@ void i960_cpu_device::i960_write_dword_unaligned(UINT32 address, UINT32 data)
 	}
 }
 
+<<<<<<< HEAD
 void i960_cpu_device::i960_write_word_unaligned(UINT32 address, UINT16 data)
 {
 	if (address & 1)
+=======
+void i960_cpu_device::i960_write_word_unaligned(uint32_t address, uint16_t data)
+{
+	if (!WORD_ALIGNED(address))
+>>>>>>> upstream/master
 	{
 		m_program->write_byte(address, data & 0xff);
 		m_program->write_byte(address+1, (data>>8)&0xff);
@@ -68,9 +116,15 @@ void i960_cpu_device::i960_write_word_unaligned(UINT32 address, UINT16 data)
 	}
 }
 
+<<<<<<< HEAD
 void i960_cpu_device::send_iac(UINT32 adr)
 {
 	UINT32 iac[4];
+=======
+void i960_cpu_device::send_iac(uint32_t adr)
+{
+	uint32_t iac[4];
+>>>>>>> upstream/master
 	iac[0] = m_program->read_dword(adr);
 	iac[1] = m_program->read_dword(adr+4);
 	iac[2] = m_program->read_dword(adr+8);
@@ -87,11 +141,19 @@ void i960_cpu_device::send_iac(UINT32 adr)
 	}
 }
 
+<<<<<<< HEAD
 UINT32 i960_cpu_device::get_ea(UINT32 opcode)
 {
 	int abase = (opcode >> 14) & 0x1f;
 	if(!(opcode & 0x00001000)) { // MEMA
 		UINT32 offset = opcode & 0x1fff;
+=======
+uint32_t i960_cpu_device::get_ea(uint32_t opcode)
+{
+	int abase = (opcode >> 14) & 0x1f;
+	if(!(opcode & 0x00001000)) { // MEMA
+		uint32_t offset = opcode & 0x1fff;
+>>>>>>> upstream/master
 		if(!(opcode & 0x2000))
 			return offset;
 		else
@@ -100,12 +162,26 @@ UINT32 i960_cpu_device::get_ea(UINT32 opcode)
 		int index = opcode & 0x1f;
 		int scale = (opcode >> 7) & 0x7;
 		int mode  = (opcode >> 10) & 0xf;
+<<<<<<< HEAD
 		UINT32 ret;
+=======
+		uint32_t ret;
+>>>>>>> upstream/master
 
 		switch(mode) {
 		case 0x4:
 			return m_r[abase];
 
+<<<<<<< HEAD
+=======
+		case 0x5:   // address of this instruction + the offset dword + 8
+			// which in reality is "address of next instruction + the offset dword"
+			ret = m_direct->read_dword(m_IP);
+			m_IP += 4;
+			ret += m_IP;
+			return ret;
+
+>>>>>>> upstream/master
 		case 0x7:
 			return m_r[abase] + (m_r[index] << scale);
 
@@ -135,7 +211,11 @@ UINT32 i960_cpu_device::get_ea(UINT32 opcode)
 	}
 }
 
+<<<<<<< HEAD
 UINT32 i960_cpu_device::get_1_ri(UINT32 opcode)
+=======
+uint32_t i960_cpu_device::get_1_ri(uint32_t opcode)
+>>>>>>> upstream/master
 {
 	if(!(opcode & 0x00000800))
 		return m_r[opcode & 0x1f];
@@ -143,7 +223,11 @@ UINT32 i960_cpu_device::get_1_ri(UINT32 opcode)
 		return opcode & 0x1f;
 }
 
+<<<<<<< HEAD
 UINT32 i960_cpu_device::get_2_ri(UINT32 opcode)
+=======
+uint32_t i960_cpu_device::get_2_ri(uint32_t opcode)
+>>>>>>> upstream/master
 {
 	if(!(opcode & 0x00001000))
 		return m_r[(opcode>>14) & 0x1f];
@@ -151,15 +235,26 @@ UINT32 i960_cpu_device::get_2_ri(UINT32 opcode)
 		return (opcode>>14) & 0x1f;
 }
 
+<<<<<<< HEAD
 UINT64 i960_cpu_device::get_2_ri64(UINT32 opcode)
 {
 	if(!(opcode & 0x00001000))
 		return m_r[(opcode>>14) & 0x1f] | ((UINT64)m_r[((opcode>>14) & 0x1f)+1]<<32);
+=======
+uint64_t i960_cpu_device::get_2_ri64(uint32_t opcode)
+{
+	if(!(opcode & 0x00001000))
+		return m_r[(opcode>>14) & 0x1f] | ((uint64_t)m_r[((opcode>>14) & 0x1f)+1]<<32);
+>>>>>>> upstream/master
 	else
 		return (opcode>>14) & 0x1f;
 }
 
+<<<<<<< HEAD
 void i960_cpu_device::set_ri(UINT32 opcode, UINT32 val)
+=======
+void i960_cpu_device::set_ri(uint32_t opcode, uint32_t val)
+>>>>>>> upstream/master
 {
 	if(!(opcode & 0x00002000))
 		m_r[(opcode>>19) & 0x1f] = val;
@@ -168,7 +263,11 @@ void i960_cpu_device::set_ri(UINT32 opcode, UINT32 val)
 	}
 }
 
+<<<<<<< HEAD
 void i960_cpu_device::set_ri2(UINT32 opcode, UINT32 val, UINT32 val2)
+=======
+void i960_cpu_device::set_ri2(uint32_t opcode, uint32_t val, uint32_t val2)
+>>>>>>> upstream/master
 {
 	if(!(opcode & 0x00002000))
 	{
@@ -180,7 +279,11 @@ void i960_cpu_device::set_ri2(UINT32 opcode, UINT32 val, UINT32 val2)
 	}
 }
 
+<<<<<<< HEAD
 void i960_cpu_device::set_ri64(UINT32 opcode, UINT64 val)
+=======
+void i960_cpu_device::set_ri64(uint32_t opcode, uint64_t val)
+>>>>>>> upstream/master
 {
 	if(!(opcode & 0x00002000)) {
 		m_r[(opcode>>19) & 0x1f] = val;
@@ -189,7 +292,11 @@ void i960_cpu_device::set_ri64(UINT32 opcode, UINT64 val)
 		fatalerror("I960: %x: set_ri64 on literal?\n", m_PIP);
 }
 
+<<<<<<< HEAD
 double i960_cpu_device::get_1_rif(UINT32 opcode)
+=======
+double i960_cpu_device::get_1_rif(uint32_t opcode)
+>>>>>>> upstream/master
 {
 	if(!(opcode & 0x00000800))
 		return u2f(m_r[opcode & 0x1f]);
@@ -203,7 +310,11 @@ double i960_cpu_device::get_1_rif(UINT32 opcode)
 	}
 }
 
+<<<<<<< HEAD
 double i960_cpu_device::get_2_rif(UINT32 opcode)
+=======
+double i960_cpu_device::get_2_rif(uint32_t opcode)
+>>>>>>> upstream/master
 {
 	if(!(opcode & 0x00001000))
 		return u2f(m_r[(opcode>>14) & 0x1f]);
@@ -217,7 +328,11 @@ double i960_cpu_device::get_2_rif(UINT32 opcode)
 	}
 }
 
+<<<<<<< HEAD
 void i960_cpu_device::set_rif(UINT32 opcode, double val)
+=======
+void i960_cpu_device::set_rif(uint32_t opcode, double val)
+>>>>>>> upstream/master
 {
 	if(!(opcode & 0x00002000))
 		m_r[(opcode>>19) & 0x1f] = f2u(val);
@@ -227,11 +342,19 @@ void i960_cpu_device::set_rif(UINT32 opcode, double val)
 		fatalerror("I960: %x: set_rif on literal?\n", m_PIP);
 }
 
+<<<<<<< HEAD
 double i960_cpu_device::get_1_rifl(UINT32 opcode)
 {
 	if(!(opcode & 0x00000800)) {
 		UINT64 v = m_r[opcode & 0x1e];
 		v |= ((UINT64)(m_r[(opcode & 0x1e)+1]))<<32;
+=======
+double i960_cpu_device::get_1_rifl(uint32_t opcode)
+{
+	if(!(opcode & 0x00000800)) {
+		uint64_t v = m_r[opcode & 0x1e];
+		v |= ((uint64_t)(m_r[(opcode & 0x1e)+1]))<<32;
+>>>>>>> upstream/master
 		return u2d(v);
 	} else {
 		int idx = opcode & 0x1f;
@@ -243,11 +366,19 @@ double i960_cpu_device::get_1_rifl(UINT32 opcode)
 	}
 }
 
+<<<<<<< HEAD
 double i960_cpu_device::get_2_rifl(UINT32 opcode)
 {
 	if(!(opcode & 0x00001000)) {
 		UINT64 v = m_r[(opcode >> 14) & 0x1e];
 		v |= ((UINT64)(m_r[((opcode>>14) & 0x1e)+1]))<<32;
+=======
+double i960_cpu_device::get_2_rifl(uint32_t opcode)
+{
+	if(!(opcode & 0x00001000)) {
+		uint64_t v = m_r[(opcode >> 14) & 0x1e];
+		v |= ((uint64_t)(m_r[((opcode>>14) & 0x1e)+1]))<<32;
+>>>>>>> upstream/master
 		return u2d(v);
 	} else {
 		int idx = (opcode>>14) & 0x1f;
@@ -259,10 +390,17 @@ double i960_cpu_device::get_2_rifl(UINT32 opcode)
 	}
 }
 
+<<<<<<< HEAD
 void i960_cpu_device::set_rifl(UINT32 opcode, double val)
 {
 	if(!(opcode & 0x00002000)) {
 		UINT64 v = d2u(val);
+=======
+void i960_cpu_device::set_rifl(uint32_t opcode, double val)
+{
+	if(!(opcode & 0x00002000)) {
+		uint64_t v = d2u(val);
+>>>>>>> upstream/master
 		m_r[(opcode>>19) & 0x1e] = v;
 		m_r[((opcode>>19) & 0x1e)+1] = v>>32;
 	} else if(!(opcode & 0x00e00000))
@@ -271,7 +409,11 @@ void i960_cpu_device::set_rifl(UINT32 opcode, double val)
 		fatalerror("I960: %x: set_rifl on literal?\n", m_PIP);
 }
 
+<<<<<<< HEAD
 UINT32 i960_cpu_device::get_1_ci(UINT32 opcode)
+=======
+uint32_t i960_cpu_device::get_1_ci(uint32_t opcode)
+>>>>>>> upstream/master
 {
 	if(!(opcode & 0x00002000))
 		return m_r[(opcode >> 19) & 0x1f];
@@ -279,30 +421,50 @@ UINT32 i960_cpu_device::get_1_ci(UINT32 opcode)
 		return (opcode >> 19) & 0x1f;
 }
 
+<<<<<<< HEAD
 UINT32 i960_cpu_device::get_2_ci(UINT32 opcode)
+=======
+uint32_t i960_cpu_device::get_2_ci(uint32_t opcode)
+>>>>>>> upstream/master
 {
 	return m_r[(opcode >> 14) & 0x1f];
 }
 
+<<<<<<< HEAD
 UINT32 i960_cpu_device::get_disp(UINT32 opcode)
 {
 	UINT32 disp;
+=======
+uint32_t i960_cpu_device::get_disp(uint32_t opcode)
+{
+	uint32_t disp;
+>>>>>>> upstream/master
 	disp = opcode & 0xffffff;
 	if(disp & 0x00800000)
 		disp |= 0xff000000;
 	return disp-4;
 }
 
+<<<<<<< HEAD
 UINT32 i960_cpu_device::get_disp_s(UINT32 opcode)
 {
 	UINT32 disp;
+=======
+uint32_t i960_cpu_device::get_disp_s(uint32_t opcode)
+{
+	uint32_t disp;
+>>>>>>> upstream/master
 	disp = opcode & 0x1fff;
 	if(disp & 0x00001000)
 		disp |= 0xffffe000;
 	return disp-4;
 }
 
+<<<<<<< HEAD
 void i960_cpu_device::cmp_s(INT32 v1, INT32 v2)
+=======
+void i960_cpu_device::cmp_s(int32_t v1, int32_t v2)
+>>>>>>> upstream/master
 {
 	m_AC &= ~7;
 	if(v1<v2)
@@ -313,7 +475,11 @@ void i960_cpu_device::cmp_s(INT32 v1, INT32 v2)
 		m_AC |= 1;
 }
 
+<<<<<<< HEAD
 void i960_cpu_device::cmp_u(UINT32 v1, UINT32 v2)
+=======
+void i960_cpu_device::cmp_u(uint32_t v1, uint32_t v2)
+>>>>>>> upstream/master
 {
 	m_AC &= ~7;
 	if(v1<v2)
@@ -324,7 +490,11 @@ void i960_cpu_device::cmp_u(UINT32 v1, UINT32 v2)
 		m_AC |= 1;
 }
 
+<<<<<<< HEAD
 void i960_cpu_device::concmp_s(INT32 v1, INT32 v2)
+=======
+void i960_cpu_device::concmp_s(int32_t v1, int32_t v2)
+>>>>>>> upstream/master
 {
 	m_AC &= ~7;
 	if(v1 <= v2)
@@ -333,7 +503,11 @@ void i960_cpu_device::concmp_s(INT32 v1, INT32 v2)
 		m_AC |= 1;
 }
 
+<<<<<<< HEAD
 void i960_cpu_device::concmp_u(UINT32 v1, UINT32 v2)
+=======
+void i960_cpu_device::concmp_u(uint32_t v1, uint32_t v2)
+>>>>>>> upstream/master
 {
 	m_AC &= ~7;
 	if(v1 <= v2)
@@ -353,6 +527,7 @@ void i960_cpu_device::cmp_d(double v1, double v2)
 		m_AC |= 1;
 }
 
+<<<<<<< HEAD
 void i960_cpu_device::bxx(UINT32 opcode, int mask)
 {
 	if(m_AC & mask) {
@@ -368,6 +543,32 @@ void i960_cpu_device::bxx_s(UINT32 opcode, int mask)
 }
 
 void i960_cpu_device::test(UINT32 opcode, int mask)
+=======
+void i960_cpu_device::bxx(uint32_t opcode, int mask)
+{
+	if(m_AC & mask) {
+		m_IP += get_disp(opcode);
+		m_IP &= ~3;
+	}
+}
+
+void i960_cpu_device::fxx(uint32_t opcode, int mask)
+{
+	if(m_AC & mask) {
+		fatalerror("Taking the fault on a FAULT insn not yet supported\n");
+	}
+}
+
+void i960_cpu_device::bxx_s(uint32_t opcode, int mask)
+{
+	if(m_AC & mask) {
+		m_IP += get_disp_s(opcode);
+		m_IP &= ~3;
+	}
+}
+
+void i960_cpu_device::test(uint32_t opcode, int mask)
+>>>>>>> upstream/master
 {
 	if(m_AC & mask)
 		m_r[(opcode>>19) & 0x1f] = 1;
@@ -382,7 +583,11 @@ void i960_cpu_device::take_interrupt(int vector, int lvl)
 	int int_tab =  m_program->read_dword(m_PRCB+20);    // interrupt table
 	int int_SP  =  m_program->read_dword(m_PRCB+24);    // interrupt stack
 	int SP;
+<<<<<<< HEAD
 	UINT32 IRQV;
+=======
+	uint32_t IRQV;
+>>>>>>> upstream/master
 
 	IRQV = m_program->read_dword(int_tab + 36 + (vector-8)*4);
 
@@ -419,7 +624,11 @@ void i960_cpu_device::check_irqs()
 	int pending_pri;
 	int lvl, irq, take = -1;
 	int vword;
+<<<<<<< HEAD
 	static const UINT32 lvlmask[4] = { 0x000000ff, 0x0000ff00, 0x00ff0000, 0xff000000 };
+=======
+	static const uint32_t lvlmask[4] = { 0x000000ff, 0x0000ff00, 0x00ff0000, 0xff000000 };
+>>>>>>> upstream/master
 
 	pending_pri = m_program->read_dword(int_tab);       // read pending priorities
 
@@ -477,10 +686,17 @@ void i960_cpu_device::check_irqs()
 	}
 }
 
+<<<<<<< HEAD
 void i960_cpu_device::do_call(UINT32 adr, int type, UINT32 stack)
 {
 	int i;
 	UINT32 FP;
+=======
+void i960_cpu_device::do_call(uint32_t adr, int type, uint32_t stack)
+{
+	int i;
+	uint32_t FP;
+>>>>>>> upstream/master
 
 	// call and callx take 9 cycles base
 	m_icount -= 9;
@@ -499,7 +715,11 @@ void i960_cpu_device::do_call(UINT32 adr, int type, UINT32 stack)
 	}
 	else    // a cache entry is available, use it
 	{
+<<<<<<< HEAD
 		memcpy(&m_rcache[m_rcache_pos][0], m_r, 0x10 * sizeof(UINT32));
+=======
+		memcpy(&m_rcache[m_rcache_pos][0], m_r, 0x10 * sizeof(uint32_t));
+>>>>>>> upstream/master
 		m_rcache_frame_addr[m_rcache_pos] = m_r[I960_FP] & ~0x3f;
 	}
 	m_rcache_pos++;
@@ -542,7 +762,11 @@ void i960_cpu_device::do_ret_0()
 	}
 	else
 	{
+<<<<<<< HEAD
 		memcpy(m_r, m_rcache[m_rcache_pos], 0x10*sizeof(UINT32));
+=======
+		memcpy(m_r, m_rcache[m_rcache_pos], 0x10*sizeof(uint32_t));
+>>>>>>> upstream/master
 	}
 
 //  osd_printf_debug("RET (type %d): FP %x, %x => %x, rcache_pos %d\n", type, m_r[I960_FP], m_IP, m_r[I960_RIP], m_rcache_pos);
@@ -551,7 +775,11 @@ void i960_cpu_device::do_ret_0()
 
 void i960_cpu_device::do_ret()
 {
+<<<<<<< HEAD
 	UINT32 x, y;
+=======
+	uint32_t x, y;
+>>>>>>> upstream/master
 	m_icount -= 7;
 	switch(m_r[I960_PFP] & 7) {
 	case 0:
@@ -575,9 +803,15 @@ void i960_cpu_device::do_ret()
 	}
 }
 
+<<<<<<< HEAD
 void i960_cpu_device::execute_op(UINT32 opcode)
 {
 	UINT32 t1, t2;
+=======
+void i960_cpu_device::execute_op(uint32_t opcode)
+{
+	uint32_t t1, t2;
+>>>>>>> upstream/master
 	double t1f, t2f;
 
 	switch(opcode >> 24) {
@@ -642,6 +876,51 @@ void i960_cpu_device::execute_op(UINT32 opcode)
 			bxx(opcode, 7);
 			break;
 
+<<<<<<< HEAD
+=======
+		case 0x18: // faultno
+			m_icount--;
+			if(!(m_AC & 7)) {
+				m_IP += get_disp(opcode);
+			}
+			break;
+
+		case 0x19: // faultg
+			m_icount--;
+			fxx(opcode, 1);
+			break;
+
+		case 0x1a: // faulte
+			m_icount--;
+			fxx(opcode, 2);
+			break;
+
+		case 0x1b: // faultge
+			m_icount--;
+			fxx(opcode, 3);
+			break;
+
+		case 0x1c: // faultl
+			m_icount--;
+			fxx(opcode, 4);
+			break;
+
+		case 0x1d: // faultne
+			m_icount--;
+			fxx(opcode, 5);
+			break;
+
+		case 0x1e: // faultle
+			m_icount--;
+			fxx(opcode, 6);
+			break;
+
+		case 0x1f: // faulto
+			m_icount--;
+			fxx(opcode, 7);
+			break;
+
+>>>>>>> upstream/master
 		case 0x20: // testno
 			m_icount--;
 			if(!(m_AC & 7))
@@ -960,11 +1239,19 @@ void i960_cpu_device::execute_op(UINT32 opcode)
 				m_icount--;
 				t1 = get_1_ri(opcode);
 				t2 = get_2_ri(opcode);
+<<<<<<< HEAD
 				if(((INT32)t2) < 0) {
 					if(t2 & ((1<<t1)-1))
 						set_ri(opcode, (((INT32)t2)>>t1)+1);
 					else
 						set_ri(opcode, ((INT32)t2)>>t1);
+=======
+				if(((int32_t)t2) < 0) {
+					if(t2 & ((1<<t1)-1))
+						set_ri(opcode, (((int32_t)t2)>>t1)+1);
+					else
+						set_ri(opcode, ((int32_t)t2)>>t1);
+>>>>>>> upstream/master
 				} else
 					set_ri(opcode, t2>>t1);
 				break;
@@ -973,7 +1260,11 @@ void i960_cpu_device::execute_op(UINT32 opcode)
 				m_icount--;
 				t1 = get_1_ri(opcode);
 				t2 = get_2_ri(opcode);
+<<<<<<< HEAD
 				set_ri(opcode, ((INT32)t2)>>t1);
+=======
+				set_ri(opcode, ((int32_t)t2)>>t1);
+>>>>>>> upstream/master
 				break;
 
 			case 0xc: // shlo
@@ -1069,6 +1360,23 @@ void i960_cpu_device::execute_op(UINT32 opcode)
 				set_ri(opcode, t2-1);
 				break;
 
+<<<<<<< HEAD
+=======
+			case 0xc: // scanbyte
+				m_icount -= 2;
+				m_AC &= ~7;     // clear CC
+				t1 = get_1_ri(opcode);
+				t2 = get_2_ri(opcode);
+				if ((t1 & 0xff000000) == (t2 & 0xff000000) ||
+					(t1 & 0x00ff0000) == (t2 & 0x00ff0000) ||
+					(t1 & 0x0000ff00) == (t2 & 0x0000ff00) ||
+					(t1 & 0x000000ff) == (t2 & 0x000000ff))
+				{
+					m_AC |= 2;
+				}
+				break;
+
+>>>>>>> upstream/master
 			case 0xe: // chkbit
 				m_icount -= 2;
 				t1 = get_1_ri(opcode) & 0x1f;
@@ -1088,7 +1396,11 @@ void i960_cpu_device::execute_op(UINT32 opcode)
 			switch((opcode >> 7) & 0xf) {
 			case 0x0:   // addc
 				{
+<<<<<<< HEAD
 					UINT64 res;
+=======
+					uint64_t res;
+>>>>>>> upstream/master
 
 					m_icount -= 2;
 					t1 = get_1_ri(opcode);
@@ -1098,7 +1410,11 @@ void i960_cpu_device::execute_op(UINT32 opcode)
 
 					m_AC &= ~0x3;   // clear C and V
 					// set carry
+<<<<<<< HEAD
 					m_AC |= ((res) & (((UINT64)1) << 32)) ? 0x2 : 0;
+=======
+					m_AC |= ((res) & (((uint64_t)1) << 32)) ? 0x2 : 0;
+>>>>>>> upstream/master
 					// set overflow
 					m_AC |= (((res) ^ (t1)) & ((res) ^ (t2)) & 0x80000000) ? 1: 0;
 				}
@@ -1106,7 +1422,11 @@ void i960_cpu_device::execute_op(UINT32 opcode)
 
 			case 0x2:   // subc
 				{
+<<<<<<< HEAD
 					UINT64 res;
+=======
+					uint64_t res;
+>>>>>>> upstream/master
 
 					m_icount -= 2;
 					t1 = get_1_ri(opcode);
@@ -1116,7 +1436,11 @@ void i960_cpu_device::execute_op(UINT32 opcode)
 
 					m_AC &= ~0x3;   // clear C and V
 					// set carry
+<<<<<<< HEAD
 					m_AC |= ((res) & (((UINT64)1) << 32)) ? 0x2 : 0;
+=======
+					m_AC |= ((res) & (((uint64_t)1) << 32)) ? 0x2 : 0;
+>>>>>>> upstream/master
 					// set overflow
 					m_AC |= (((t2) ^ (t1)) & ((t2) ^ (res)) & 0x80000000) ? 1 : 0;
 				}
@@ -1149,7 +1473,11 @@ void i960_cpu_device::execute_op(UINT32 opcode)
 					t1 = opcode & 0x1f;
 					m_r[t2] = m_r[t2+1] = t1;
 				} else
+<<<<<<< HEAD
 					memcpy(m_r+t2, m_r+(opcode & 0x1f), 2*sizeof(UINT32));
+=======
+					memcpy(m_r+t2, m_r+(opcode & 0x1f), 2*sizeof(uint32_t));
+>>>>>>> upstream/master
 				break;
 
 			default:
@@ -1166,7 +1494,11 @@ void i960_cpu_device::execute_op(UINT32 opcode)
 					t1 = opcode & 0x1f;
 					m_r[t2] = m_r[t2+1] = m_r[t2+2]= t1;
 				} else
+<<<<<<< HEAD
 					memcpy(m_r+t2, m_r+(opcode & 0x1f), 3*sizeof(UINT32));
+=======
+					memcpy(m_r+t2, m_r+(opcode & 0x1f), 3*sizeof(uint32_t));
+>>>>>>> upstream/master
 				break;
 
 			default:
@@ -1183,7 +1515,11 @@ void i960_cpu_device::execute_op(UINT32 opcode)
 					t1 = opcode & 0x1f;
 					m_r[t2] = m_r[t2+1] = m_r[t2+2] = m_r[t2+3] = t1;
 				} else
+<<<<<<< HEAD
 					memcpy(m_r+t2, m_r+(opcode & 0x1f), 4*sizeof(UINT32));
+=======
+					memcpy(m_r+t2, m_r+(opcode & 0x1f), 4*sizeof(uint32_t));
+>>>>>>> upstream/master
 				break;
 
 			default:
@@ -1229,7 +1565,11 @@ void i960_cpu_device::execute_op(UINT32 opcode)
 			switch((opcode >> 7) & 0xf) {
 			case 0x0: // spanbit
 				{
+<<<<<<< HEAD
 					UINT32 res = 0xffffffff;
+=======
+					uint32_t res = 0xffffffff;
+>>>>>>> upstream/master
 					int i;
 
 					m_icount -= 10;
@@ -1253,7 +1593,11 @@ void i960_cpu_device::execute_op(UINT32 opcode)
 
 			case 0x1: // scanbit
 				{
+<<<<<<< HEAD
 					UINT32 res = 0xffffffff;
+=======
+					uint32_t res = 0xffffffff;
+>>>>>>> upstream/master
 					int i;
 
 					m_icount -= 10;
@@ -1305,6 +1649,20 @@ void i960_cpu_device::execute_op(UINT32 opcode)
 
 		case 0x66:
 			switch((opcode >> 7) & 0xf) {
+<<<<<<< HEAD
+=======
+			case 0x0: // calls
+				t1 = get_1_ri(opcode);
+				t2 = m_program->read_dword(m_SAT + 152);    // get pointer to system procedure table
+				t2 = m_program->read_dword(t2 + 48 + (t1 * 4));
+				if ((t2 & 3) != 0)
+				{
+					fatalerror("I960: system calls that jump into supervisor mode aren't yet supported\n");
+				}
+				do_call(t2, 0, m_r[I960_SP]);
+				break;
+
+>>>>>>> upstream/master
 			case 0xd: // flushreg
 				if (m_rcache_pos > 4)
 				{
@@ -1316,7 +1674,11 @@ void i960_cpu_device::execute_op(UINT32 opcode)
 
 					for (i = 0; i < 0x10; i++)
 					{
+<<<<<<< HEAD
 						m_program->write_dword(m_rcache_frame_addr[t1] + (i * sizeof(UINT32)), m_rcache[t1][i]);
+=======
+						m_program->write_dword(m_rcache_frame_addr[t1] + (i * sizeof(uint32_t)), m_rcache[t1][i]);
+>>>>>>> upstream/master
 					}
 				}
 				m_rcache_pos = 0;
@@ -1334,13 +1696,21 @@ void i960_cpu_device::execute_op(UINT32 opcode)
 				t1 = get_1_ri(opcode);
 				t2 = get_2_ri(opcode);
 
+<<<<<<< HEAD
 				set_ri64(opcode, (INT64)t1 * (INT64)t2);
+=======
+				set_ri64(opcode, (int64_t)t1 * (int64_t)t2);
+>>>>>>> upstream/master
 				break;
 
 			case 0x1: // ediv
 				m_icount -= 37;
 				{
+<<<<<<< HEAD
 					UINT64 src1, src2;
+=======
+					uint64_t src1, src2;
+>>>>>>> upstream/master
 
 					src1 = get_1_ri(opcode);
 					src2 = get_2_ri64(opcode);
@@ -1352,27 +1722,43 @@ void i960_cpu_device::execute_op(UINT32 opcode)
 			case 0x4: // cvtir
 				m_icount -= 30;
 				t1 = get_1_ri(opcode);
+<<<<<<< HEAD
 				set_rif(opcode, (double)(INT32)t1);
+=======
+				set_rif(opcode, (double)(int32_t)t1);
+>>>>>>> upstream/master
 				break;
 
 			case 0x5: // cvtilr
 				m_icount -= 30;
 				t1 = get_1_ri(opcode);
+<<<<<<< HEAD
 				set_rifl(opcode, (double)(INT32)t1);
+=======
+				set_rifl(opcode, (double)(int32_t)t1);
+>>>>>>> upstream/master
 				break;
 
 			case 0x6: // scalerl
 				m_icount -= 30;
 				t1 = get_1_ri(opcode);
 				t2f = get_2_rifl(opcode);
+<<<<<<< HEAD
 				set_rifl(opcode, t2f * pow(2.0, (double)(INT32)t1));
+=======
+				set_rifl(opcode, t2f * pow(2.0, (double)(int32_t)t1));
+>>>>>>> upstream/master
 				break;
 
 			case 0x7: // scaler
 				m_icount -= 30;
 				t1 = get_1_ri(opcode);
 				t2f = get_2_rif(opcode);
+<<<<<<< HEAD
 			set_rif(opcode, t2f * pow(2.0, (double)(INT32)t1));
+=======
+			set_rif(opcode, t2f * pow(2.0, (double)(int32_t)t1));
+>>>>>>> upstream/master
 				break;
 
 			default:
@@ -1424,7 +1810,11 @@ void i960_cpu_device::execute_op(UINT32 opcode)
 
 			case 0xb: // roundr
 				{
+<<<<<<< HEAD
 					INT32 st1 = get_1_rif(opcode);
+=======
+					int32_t st1 = get_1_rif(opcode);
+>>>>>>> upstream/master
 					m_icount -= 69;
 					set_rif(opcode, (double)st1);
 				}
@@ -1495,7 +1885,11 @@ void i960_cpu_device::execute_op(UINT32 opcode)
 
 			case 0xb: // roundrl
 				{
+<<<<<<< HEAD
 					INT32 st1 = get_1_rifl(opcode);
+=======
+					int32_t st1 = get_1_rifl(opcode);
+>>>>>>> upstream/master
 					m_icount -= 70;
 					set_rifl(opcode, (double)st1);
 				}
@@ -1539,19 +1933,31 @@ void i960_cpu_device::execute_op(UINT32 opcode)
 					case 2: t2f = ceil(t1f); break;
 					case 3: t2f = t1f; break;
 				}
+<<<<<<< HEAD
 				set_ri(opcode, (INT32)t2f);
+=======
+				set_ri(opcode, (int32_t)t2f);
+>>>>>>> upstream/master
 				break;
 
 			case 0x2: // cvtzri
 				m_icount -= 43;
 				t1f = get_1_rif(opcode);
+<<<<<<< HEAD
 				set_ri(opcode, (INT32)t1f);
+=======
+				set_ri(opcode, (int32_t)t1f);
+>>>>>>> upstream/master
 				break;
 
 			case 0x3: // cvtzril
 				m_icount -= 44;
 				t1f = get_1_rif(opcode);
+<<<<<<< HEAD
 				set_ri64(opcode, (INT64)t1f);
+=======
+				set_ri64(opcode, (int64_t)t1f);
+>>>>>>> upstream/master
 				break;
 
 			case 0x9: // movr
@@ -1582,11 +1988,16 @@ void i960_cpu_device::execute_op(UINT32 opcode)
 			switch((opcode >> 7) & 0xf) {
 			case 0x1: // movre
 				{
+<<<<<<< HEAD
 					UINT32 *src=0, *dst=0;
+=======
+					uint32_t *src=nullptr, *dst=nullptr;
+>>>>>>> upstream/master
 
 					m_icount -= 8;
 
 					if(!(opcode & 0x00000800)) {
+<<<<<<< HEAD
 						src = (UINT32 *)&m_r[opcode & 0x1e];
 					} else {
 						int idx = opcode & 0x1f;
@@ -1598,6 +2009,19 @@ void i960_cpu_device::execute_op(UINT32 opcode)
 						dst = (UINT32 *)&m_r[(opcode>>19) & 0x1e];
 					} else if(!(opcode & 0x00e00000))
 						dst = (UINT32 *)&m_fp[(opcode>>19) & 3];
+=======
+						src = (uint32_t *)&m_r[opcode & 0x1e];
+					} else {
+						int idx = opcode & 0x1f;
+						if(idx < 4)
+							src = (uint32_t *)&m_fp[idx];
+					}
+
+					if(!(opcode & 0x00002000)) {
+						dst = (uint32_t *)&m_r[(opcode>>19) & 0x1e];
+					} else if(!(opcode & 0x00e00000))
+						dst = (uint32_t *)&m_fp[(opcode>>19) & 3];
+>>>>>>> upstream/master
 
 					dst[0] = src[0];
 					dst[1] = src[1];
@@ -1656,13 +2080,18 @@ void i960_cpu_device::execute_op(UINT32 opcode)
 				m_icount -= 18;
 				t1 = get_1_ri(opcode);
 				t2 = get_2_ri(opcode);
+<<<<<<< HEAD
 				set_ri(opcode, ((INT32)t2)*((INT32)t1));
+=======
+				set_ri(opcode, ((int32_t)t2)*((int32_t)t1));
+>>>>>>> upstream/master
 				break;
 
 			case 0x8: // remi
 				m_icount -= 37;
 				t1 = get_1_ri(opcode);
 				t2 = get_2_ri(opcode);
+<<<<<<< HEAD
 				set_ri(opcode, ((INT32)t2)%((INT32)t1));
 				break;
 
@@ -1671,6 +2100,16 @@ void i960_cpu_device::execute_op(UINT32 opcode)
 				m_icount -= 37;
 				src1 = (INT32)get_1_ri(opcode);
 				src2 = (INT32)get_2_ri(opcode);
+=======
+				set_ri(opcode, ((int32_t)t2)%((int32_t)t1));
+				break;
+
+			case 0x9:{// modi
+				int32_t src1, src2, dst;
+				m_icount -= 37;
+				src1 = (int32_t)get_1_ri(opcode);
+				src2 = (int32_t)get_2_ri(opcode);
+>>>>>>> upstream/master
 				dst = src2 - ((src2/src1)*src1);
 				if(((src2*src1) < 0) && (dst != 0))
 					dst += src1;
@@ -1682,7 +2121,11 @@ void i960_cpu_device::execute_op(UINT32 opcode)
 				m_icount -= 37;
 				t1 = get_1_ri(opcode);
 				t2 = get_2_ri(opcode);
+<<<<<<< HEAD
 				set_ri(opcode, ((INT32)t2)/((INT32)t1));
+=======
+				set_ri(opcode, ((int32_t)t2)/((int32_t)t1));
+>>>>>>> upstream/master
 				break;
 
 			default:
@@ -1898,7 +2341,11 @@ void i960_cpu_device::execute_op(UINT32 opcode)
 
 		case 0xc0: // ldib
 			m_icount -= 4;
+<<<<<<< HEAD
 			m_r[(opcode>>19)&0x1f] = (INT8)m_program->read_byte(get_ea(opcode));
+=======
+			m_r[(opcode>>19)&0x1f] = (int8_t)m_program->read_byte(get_ea(opcode));
+>>>>>>> upstream/master
 			break;
 
 		case 0xc2: // stib
@@ -1908,7 +2355,11 @@ void i960_cpu_device::execute_op(UINT32 opcode)
 
 		case 0xc8: // ldis
 			m_icount -= 4;
+<<<<<<< HEAD
 			m_r[(opcode>>19)&0x1f] = (INT16)i960_read_word_unaligned(get_ea(opcode));
+=======
+			m_r[(opcode>>19)&0x1f] = (int16_t)i960_read_word_unaligned(get_ea(opcode));
+>>>>>>> upstream/master
 			break;
 
 		case 0xca: // stis
@@ -1924,7 +2375,11 @@ void i960_cpu_device::execute_op(UINT32 opcode)
 
 void i960_cpu_device::execute_run()
 {
+<<<<<<< HEAD
 	UINT32 opcode;
+=======
+	uint32_t opcode;
+>>>>>>> upstream/master
 
 	check_irqs();
 	while(m_icount > 0) {
@@ -1946,7 +2401,11 @@ void i960_cpu_device::execute_set_input(int irqline, int state)
 	int cpu_pri = (m_PC>>16)&0x1f;
 	int vector =0;
 	int priority;
+<<<<<<< HEAD
 	UINT32 pend, word, wordofs;
+=======
+	uint32_t pend, word, wordofs;
+>>>>>>> upstream/master
 
 	// We support the 4 external IRQ lines in "normal" mode only.
 	// The i960's interrupt support is a bit more complete than that,
@@ -2029,6 +2488,10 @@ void i960_cpu_device::device_start()
 	save_item(NAME(m_immediate_irq));
 	save_item(NAME(m_immediate_vector));
 	save_item(NAME(m_immediate_pri));
+<<<<<<< HEAD
+=======
+	save_item(NAME(m_bursting));
+>>>>>>> upstream/master
 
 	state_add( I960_SAT,  "sat", m_SAT).formatstr("%08X");
 	state_add( I960_PRCB, "prcb", m_PRCB).formatstr("%08X");
@@ -2070,6 +2533,10 @@ void i960_cpu_device::device_start()
 	state_add( I960_G15,  "fp", m_r[31]).formatstr("%08X");
 
 	state_add( STATE_GENPC, "GENPC", m_IP).noshow();
+<<<<<<< HEAD
+=======
+	state_add( STATE_GENPCBASE, "CURPC", m_IP).noshow();
+>>>>>>> upstream/master
 	state_add( STATE_GENFLAGS, "GENFLAGS", m_AC).noshow().formatstr("%2s");
 
 	m_immediate_vector = 0;
@@ -2081,7 +2548,11 @@ void i960_cpu_device::device_start()
 	m_icountptr = &m_icount;
 }
 
+<<<<<<< HEAD
 void i960_cpu_device::state_string_export(const device_state_entry &entry, std::string &str)
+=======
+void i960_cpu_device::state_string_export(const device_state_entry &entry, std::string &str) const
+>>>>>>> upstream/master
 {
 	static const char *const conditions[8] =
 	{
@@ -2091,7 +2562,11 @@ void i960_cpu_device::state_string_export(const device_state_entry &entry, std::
 	switch (entry.index())
 	{
 		case STATE_GENFLAGS:
+<<<<<<< HEAD
 			strprintf(str, "%s", conditions[m_AC & 7]);
+=======
+			str = string_format("%s", conditions[m_AC & 7]);
+>>>>>>> upstream/master
 			break;
 	}
 }
@@ -2116,8 +2591,15 @@ void i960_cpu_device::device_reset()
 }
 
 
+<<<<<<< HEAD
 offs_t i960_cpu_device::disasm_disassemble(char *buffer, offs_t pc, const UINT8 *oprom, const UINT8 *opram, UINT32 options)
 {
 	extern CPU_DISASSEMBLE( i960 );
 	return CPU_DISASSEMBLE_NAME(i960)(this, buffer, pc, oprom, opram, options);
+=======
+offs_t i960_cpu_device::disasm_disassemble(std::ostream &stream, offs_t pc, const uint8_t *oprom, const uint8_t *opram, uint32_t options)
+{
+	extern CPU_DISASSEMBLE( i960 );
+	return CPU_DISASSEMBLE_NAME(i960)(this, stream, pc, oprom, opram, options);
+>>>>>>> upstream/master
 }

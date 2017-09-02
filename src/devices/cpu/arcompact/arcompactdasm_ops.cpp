@@ -11,6 +11,7 @@
 
 #include "arcompactdasm_ops.h"
 
+<<<<<<< HEAD
 char *output;
 
 static void ATTR_PRINTF(1,2) print(const char *fmt, ...)
@@ -26,6 +27,10 @@ static void ATTR_PRINTF(1,2) print(const char *fmt, ...)
 
 #define GET_01_01_01_BRANCH_ADDR \
 	INT32 address = (op & 0x00fe0000) >> 17; \
+=======
+#define GET_01_01_01_BRANCH_ADDR \
+	int32_t address = (op & 0x00fe0000) >> 17; \
+>>>>>>> upstream/master
 	address |= ((op & 0x00008000) >> 15) << 7; \
 	if (address & 0x80) address = -0x80 + (address & 0x7f); \
 	op &= ~ 0x00fe800f;
@@ -57,7 +62,11 @@ static void ATTR_PRINTF(1,2) print(const char *fmt, ...)
 		int s_temp = (op & 0x00000fc0) >> 6; op &= ~0x00000fc0; \
 		int S = s_temp | (S_temp<<6);
 #define COMMON32_GET_CONDITION \
+<<<<<<< HEAD
 		UINT8 condition = op & 0x0000001f;  op &= ~0x0000001f;
+=======
+		uint8_t condition = op & 0x0000001f;  op &= ~0x0000001f;
+>>>>>>> upstream/master
 
 
 #define COMMON16_GET_breg \
@@ -110,13 +119,21 @@ int arcompact_handle00_00_dasm(DASM_OPS_32)
 	int size = 4;
 	// Branch Conditionally
 	// 0000 0sss ssss sss0 SSSS SSSS SSNQ QQQQ
+<<<<<<< HEAD
 	INT32 address = (op & 0x07fe0000) >> 17;
+=======
+	int32_t address = (op & 0x07fe0000) >> 17;
+>>>>>>> upstream/master
 	address |= ((op & 0x0000ffc0) >> 6) << 10;
 	if (address & 0x80000) address = -0x80000 + (address & 0x7ffff);
 	int n = (op & 0x00000020) >> 5; op &= ~0x00000020;
 	COMMON32_GET_CONDITION
 
+<<<<<<< HEAD
 	output  += sprintf( output, "B%s(%s) %08x", delaybit[n], conditions[condition], PC_ALIGNED32 + (address * 2));
+=======
+	util::stream_format(stream, "B%s(%s) %08x", delaybit[n], conditions[condition], PC_ALIGNED32 + (address * 2));
+>>>>>>> upstream/master
 	return size;
 }
 
@@ -125,15 +142,24 @@ int arcompact_handle00_01_dasm(DASM_OPS_32)
 	int size = 4;
 	// Branch Unconditionally Far
 	// 0000 0sss ssss sss1 SSSS SSSS SSNR TTTT
+<<<<<<< HEAD
 	INT32 address = (op & 0x07fe0000) >> 17;
+=======
+	int32_t address = (op & 0x07fe0000) >> 17;
+>>>>>>> upstream/master
 	address |= ((op & 0x0000ffc0) >> 6) << 10;
 	address |= ((op & 0x0000000f) >> 0) << 20;
 	if (address & 0x800000) address = -0x800000 + (address & 0x7fffff);
 	int n = (op & 0x00000020) >> 5; op &= ~0x00000020;
 	int res =  (op & 0x00000010) >> 4; op &= ~0x00000010;
 
+<<<<<<< HEAD
 	output  += sprintf( output, "B%s %08x", delaybit[n], PC_ALIGNED32 + (address * 2) );
 	if (res)  output += sprintf(output, "(reserved bit set)");
+=======
+	util::stream_format(stream, "B%s %08x", delaybit[n], PC_ALIGNED32 + (address * 2));
+	if (res)  util::stream_format(stream, "(reserved bit set)");
+>>>>>>> upstream/master
 
 	return size;
 }
@@ -144,14 +170,22 @@ int arcompact_handle01_00_00dasm(DASM_OPS_32)
 
 	// Branch and Link Conditionally
 	// 00001 sssssssss 00 SSSSSSSSSS N QQQQQ
+<<<<<<< HEAD
 	INT32 address =   (op & 0x07fc0000) >> 17;
+=======
+	int32_t address =   (op & 0x07fc0000) >> 17;
+>>>>>>> upstream/master
 	address |=        ((op & 0x0000ffc0) >> 6) << 10;
 	if (address & 0x800000) address = -0x800000 + (address&0x7fffff);
 	int n = (op & 0x00000020) >> 5; op &= ~0x00000020;
 
 	COMMON32_GET_CONDITION
 
+<<<<<<< HEAD
 	output  += sprintf( output, "BL%s(%s) %08x", delaybit[n], conditions[condition], PC_ALIGNED32 + (address *2) );
+=======
+	util::stream_format(stream, "BL%s(%s) %08x", delaybit[n], conditions[condition], PC_ALIGNED32 + (address *2));
+>>>>>>> upstream/master
 	return size;
 }
 
@@ -160,15 +194,24 @@ int arcompact_handle01_00_01dasm(DASM_OPS_32)
 	int size = 4;
 	// Branch and Link Unconditionally Far
 	// 00001 sssssssss 10  SSSSSSSSSS N R TTTT
+<<<<<<< HEAD
 	INT32 address =   (op & 0x07fc0000) >> 17;
+=======
+	int32_t address =   (op & 0x07fc0000) >> 17;
+>>>>>>> upstream/master
 	address |=        ((op & 0x0000ffc0) >> 6) << 10;
 	address |=        ((op & 0x0000000f) >> 0) << 20;
 	if (address & 0x800000) address = -0x800000 + (address&0x7fffff);
 	int n = (op & 0x00000020) >> 5; op &= ~0x00000020;
 	int res =  (op & 0x00000010) >> 4; op &= ~0x00000010;
 
+<<<<<<< HEAD
 	output  += sprintf( output, "BL%s %08x", delaybit[n], PC_ALIGNED32 + (address *2) );
 	if (res)  output += sprintf(output, "(reserved bit set)");
+=======
+	util::stream_format(stream, "BL%s %08x", delaybit[n], PC_ALIGNED32 + (address *2));
+	if (res)  util::stream_format(stream, "(reserved bit set)");
+>>>>>>> upstream/master
 
 	return size;
 }
@@ -192,26 +235,46 @@ int arcompact_01_01_00_helper(DASM_OPS_32, const char* optext)
 
 	if ((breg != LIMM_REG) && (creg != LIMM_REG))
 	{
+<<<<<<< HEAD
 		print("%s%s %s, %s to 0x%08x", optext, delaybit[n], regnames[breg], regnames[creg], PC_ALIGNED32 + (address * 2) );
 	}
 	else
 	{
 		UINT32 limm;
+=======
+		util::stream_format( stream, "%s%s %s, %s to 0x%08x", optext, delaybit[n], regnames[breg], regnames[creg], PC_ALIGNED32 + (address * 2) );
+	}
+	else
+	{
+		uint32_t limm;
+>>>>>>> upstream/master
 		GET_LIMM_32;
 		size = 8;
 
 		if ((breg == LIMM_REG) && (creg != LIMM_REG))
 		{
+<<<<<<< HEAD
 			print("%s%s 0x%08x, %s to 0x%08x", optext, delaybit[n], limm, regnames[creg], PC_ALIGNED32 + (address * 2) );
 		}
 		else if ((creg == LIMM_REG) && (breg != LIMM_REG))
 		{
 			print("%s%s %s, 0x%08x to 0x%08x", optext, delaybit[n], regnames[breg], limm, PC_ALIGNED32 + (address * 2) );
+=======
+			util::stream_format( stream, "%s%s 0x%08x, %s to 0x%08x", optext, delaybit[n], limm, regnames[creg], PC_ALIGNED32 + (address * 2) );
+		}
+		else if ((creg == LIMM_REG) && (breg != LIMM_REG))
+		{
+			util::stream_format( stream, "%s%s %s, 0x%08x to 0x%08x", optext, delaybit[n], regnames[breg], limm, PC_ALIGNED32 + (address * 2) );
+>>>>>>> upstream/master
 		}
 		else
 		{
 			// b and c are LIMM? invalid??
+<<<<<<< HEAD
 			print("%s%s 0x%08x, 0x%08x (illegal?) to 0x%08x", optext, delaybit[n], limm, limm, PC_ALIGNED32 + (address * 2) );
+=======
+			util::stream_format( stream, "%s%s 0x%08x, 0x%08x (illegal?) to 0x%08x", optext, delaybit[n], limm, limm, PC_ALIGNED32 + (address * 2) );
+>>>>>>> upstream/master
 
 		}
 	}
@@ -247,7 +310,11 @@ int arcompact_01_01_01_helper(DASM_OPS_32, const char* optext)
 
 	op &= ~0x07007fe0;
 
+<<<<<<< HEAD
 	print("%s%s %s, 0x%02x %08x (%08x)", optext, delaybit[n], regnames[breg], u, PC_ALIGNED32 + (address * 2), op & ~0xf8fe800f);
+=======
+	util::stream_format(stream, "%s%s %s, 0x%02x %08x (%08x)", optext, delaybit[n], regnames[breg], u, PC_ALIGNED32 + (address * 2), op & ~0xf8fe800f);
+>>>>>>> upstream/master
 
 	return size;
 }
@@ -283,13 +350,18 @@ int arcompact_handle02_dasm(DASM_OPS_32)
 
 	int sdat = s | (S << 8); // todo - signed
 
+<<<<<<< HEAD
 	UINT32 limm = 0;
+=======
+	uint32_t limm = 0;
+>>>>>>> upstream/master
 	if (breg == LIMM_REG)
 	{
 		GET_LIMM_32;
 		size = 8;
 	}
 
+<<<<<<< HEAD
 	output  += sprintf( output, "LD");
 	output  += sprintf( output, "%s", datasize[Z]);
 	output  += sprintf( output, "%s", dataextend[X]);
@@ -302,6 +374,20 @@ int arcompact_handle02_dasm(DASM_OPS_32)
 	else output  += sprintf( output, "%s, ", regnames[breg]);
 	output  += sprintf( output, "%03x", sdat);
 	output  += sprintf( output, "]");
+=======
+	util::stream_format(stream, "LD");
+	util::stream_format(stream, "%s", datasize[Z]);
+	util::stream_format(stream, "%s", dataextend[X]);
+	util::stream_format(stream, "%s", addressmode[a]);
+	util::stream_format(stream, "%s", cachebit[D]);
+	util::stream_format(stream, " ");
+	util::stream_format(stream, "%s <- ", regnames[areg]);
+	util::stream_format(stream, "[");
+	if (breg == LIMM_REG) util::stream_format(stream, "(%08x), ", limm);
+	else util::stream_format(stream, "%s, ", regnames[breg]);
+	util::stream_format(stream, "%03x", sdat);
+	util::stream_format(stream, "]");
+>>>>>>> upstream/master
 
 	return size;
 }
@@ -309,7 +395,11 @@ int arcompact_handle02_dasm(DASM_OPS_32)
 int arcompact_handle03_dasm(DASM_OPS_32)
 {
 	int size = 4;
+<<<<<<< HEAD
 	UINT32 limm = 0;
+=======
+	uint32_t limm = 0;
+>>>>>>> upstream/master
 	int got_limm = 0;
 	// bitpos
 	// 1111 1111 1111 1111 0000 0000 0000 0000
@@ -336,6 +426,7 @@ int arcompact_handle03_dasm(DASM_OPS_32)
 	}
 
 
+<<<<<<< HEAD
 	output  += sprintf( output, "ST");
 	output  += sprintf( output, "%s", datasize[Z]);
 	output  += sprintf( output, "%s", addressmode[a]);
@@ -347,6 +438,19 @@ int arcompact_handle03_dasm(DASM_OPS_32)
 	else output  += sprintf( output, "%s, ", regnames[breg]);
 	output  += sprintf( output, "%03x", sdat);
 	output  += sprintf( output, "] <- ");
+=======
+	util::stream_format(stream, "ST");
+	util::stream_format(stream, "%s", datasize[Z]);
+	util::stream_format(stream, "%s", addressmode[a]);
+	util::stream_format(stream, "%s", cachebit[D]);
+	util::stream_format(stream, " ");
+
+	util::stream_format(stream, "[");
+	if (breg == LIMM_REG) util::stream_format(stream, "(%08x), ", limm);
+	else util::stream_format(stream, "%s, ", regnames[breg]);
+	util::stream_format(stream, "%03x", sdat);
+	util::stream_format(stream, "] <- ");
+>>>>>>> upstream/master
 
 	if (creg == LIMM_REG)
 	{
@@ -355,15 +459,26 @@ int arcompact_handle03_dasm(DASM_OPS_32)
 			GET_LIMM_32;
 			size = 8;
 		}
+<<<<<<< HEAD
 		output += sprintf(output, "(%08x)", limm);
+=======
+		util::stream_format(stream, "(%08x)", limm);
+>>>>>>> upstream/master
 
 	}
 	else
 	{
+<<<<<<< HEAD
 		output += sprintf(output, "%s", regnames[creg]);
 	}
 
 	if (R) output  += sprintf( output, "(reserved bit set)");
+=======
+		util::stream_format(stream, "%s", regnames[creg]);
+	}
+
+	if (R) util::stream_format(stream, "(reserved bit set)");
+>>>>>>> upstream/master
 
 
 	return size;
@@ -374,7 +489,11 @@ int arcompact_handle04_p00_helper_dasm(DASM_OPS_32, const char* optext, int igno
 	//           PP
 	// 0010 0bbb 00ii iiii FBBB CCCC CCAA AAAA
 	int size = 4;
+<<<<<<< HEAD
 	UINT32 limm = 0;
+=======
+	uint32_t limm = 0;
+>>>>>>> upstream/master
 	int got_limm = 0;
 
 	COMMON32_GET_breg;
@@ -382,9 +501,15 @@ int arcompact_handle04_p00_helper_dasm(DASM_OPS_32, const char* optext, int igno
 	COMMON32_GET_creg
 	COMMON32_GET_areg
 
+<<<<<<< HEAD
 	output += sprintf(output, "%s", optext);
 	output += sprintf(output, "%s", flagbit[F]);
 	//  output  += sprintf( output, " p(%d)", p);
+=======
+	util::stream_format(stream, "%s", optext);
+	util::stream_format(stream, "%s", flagbit[F]);
+	//  util::stream_format(stream, " p(%d)", p);
+>>>>>>> upstream/master
 
 
 	if ((!b_reserved) && (breg == LIMM_REG))
@@ -407,6 +532,7 @@ int arcompact_handle04_p00_helper_dasm(DASM_OPS_32, const char* optext, int igno
 
 	if (ignore_dst == 0)
 	{
+<<<<<<< HEAD
 		if (areg != LIMM_REG)  output += sprintf(output, " %s <-", regnames[areg]);
 		else output += sprintf(output, " <no dst> <-");
 	}
@@ -418,11 +544,25 @@ int arcompact_handle04_p00_helper_dasm(DASM_OPS_32, const char* optext, int igno
 	{
 		if (areg != LIMM_REG) output += sprintf(output, " <invalid %d> <-", areg);
 		else  output += sprintf(output, " <mulres> <-");
+=======
+		if (areg != LIMM_REG)  util::stream_format(stream, " %s <-", regnames[areg]);
+		else util::stream_format(stream, " <no dst> <-");
+	}
+	else if (ignore_dst == 1) // certain opcode types ignore the 'a' field entirely, it should be set to 0.
+	{
+			if (areg) util::stream_format(stream, " <reserved %d> <-", areg);
+	}
+	else if (ignore_dst == 2) // for multiply operations areg should always be set to LIMM
+	{
+		if (areg != LIMM_REG) util::stream_format(stream, " <invalid %d> <-", areg);
+		else  util::stream_format(stream, " <mulres> <-");
+>>>>>>> upstream/master
 	}
 
 	if (!b_reserved)
 	{
 		if (breg == LIMM_REG)
+<<<<<<< HEAD
 			output += sprintf(output, " 0x%08x,", limm);
 		else
 			output += sprintf(output, " %s,", regnames[breg]);
@@ -436,6 +576,21 @@ int arcompact_handle04_p00_helper_dasm(DASM_OPS_32, const char* optext, int igno
 		output += sprintf(output, " 0x%08x", limm);
 	else
 		output += sprintf(output, " %s", regnames[creg]);
+=======
+			util::stream_format(stream, " 0x%08x,", limm);
+		else
+			util::stream_format(stream, " %s,", regnames[breg]);
+	}
+	else
+	{
+		if (breg) util::stream_format(stream, "<reserved %d>,", breg);
+	}
+
+	if (creg == LIMM_REG)
+		util::stream_format(stream, " 0x%08x", limm);
+	else
+		util::stream_format(stream, " %s", regnames[creg]);
+>>>>>>> upstream/master
 
 	return size;
 }
@@ -446,7 +601,11 @@ int arcompact_handle04_p01_helper_dasm(DASM_OPS_32, const char* optext, int igno
 	//           PP
 	// 0010 0bbb 01ii iiii FBBB uuuu uuAA AAAA
 	int size = 4;
+<<<<<<< HEAD
 	UINT32 limm = 0;
+=======
+	uint32_t limm = 0;
+>>>>>>> upstream/master
 //  int got_limm = 0;
 
 	COMMON32_GET_breg;
@@ -454,9 +613,15 @@ int arcompact_handle04_p01_helper_dasm(DASM_OPS_32, const char* optext, int igno
 	COMMON32_GET_u6
 	COMMON32_GET_areg
 
+<<<<<<< HEAD
 	output += sprintf(output, "%s", optext);
 	output += sprintf(output, "%s", flagbit[F]);
 	//  output  += sprintf( output, " p(%d)", p);
+=======
+	util::stream_format(stream, "%s", optext);
+	util::stream_format(stream, "%s", flagbit[F]);
+	//  util::stream_format(stream, " p(%d)", p);
+>>>>>>> upstream/master
 
 
 	if ((!b_reserved) && (breg == LIMM_REG))
@@ -470,6 +635,7 @@ int arcompact_handle04_p01_helper_dasm(DASM_OPS_32, const char* optext, int igno
 
 	if (ignore_dst == 0)
 	{
+<<<<<<< HEAD
 		if (areg != LIMM_REG)  output += sprintf(output, " %s <-", regnames[areg]);
 		else output += sprintf(output, " <no dst> <-");
 	}
@@ -481,11 +647,25 @@ int arcompact_handle04_p01_helper_dasm(DASM_OPS_32, const char* optext, int igno
 	{
 		if (areg != LIMM_REG) output += sprintf(output, " <invalid %d> <-", areg);
 		else  output += sprintf(output, " <mulres> <-");
+=======
+		if (areg != LIMM_REG)  util::stream_format(stream, " %s <-", regnames[areg]);
+		else util::stream_format(stream, " <no dst> <-");
+	}
+	else if (ignore_dst == 1) // certain opcode types ignore the 'a' field entirely, it should be set to 0.
+	{
+			if (areg) util::stream_format(stream, " <reserved %d> <-", areg);
+	}
+	else if (ignore_dst == 2) // for multiply operations areg should always be set to LIMM
+	{
+		if (areg != LIMM_REG) util::stream_format(stream, " <invalid %d> <-", areg);
+		else  util::stream_format(stream, " <mulres> <-");
+>>>>>>> upstream/master
 	}
 
 	if (!b_reserved)
 	{
 		if (breg == LIMM_REG)
+<<<<<<< HEAD
 			output += sprintf(output, " 0x%08x,", limm);
 		else
 			output += sprintf(output, " %s,", regnames[breg]);
@@ -496,6 +676,18 @@ int arcompact_handle04_p01_helper_dasm(DASM_OPS_32, const char* optext, int igno
 	}
 
 	output += sprintf(output, " 0x%02x", u);
+=======
+			util::stream_format(stream, " 0x%08x,", limm);
+		else
+			util::stream_format(stream, " %s,", regnames[breg]);
+	}
+	else
+	{
+		if (breg) util::stream_format(stream, "<reserved %d>,", breg);
+	}
+
+	util::stream_format(stream, " 0x%02x", u);
+>>>>>>> upstream/master
 
 	return size;
 }
@@ -504,16 +696,26 @@ int arcompact_handle04_p01_helper_dasm(DASM_OPS_32, const char* optext, int igno
 int arcompact_handle04_p10_helper_dasm(DASM_OPS_32, const char* optext, int b_reserved)
 {
 	int size = 4;
+<<<<<<< HEAD
 	UINT32 limm = 0;
+=======
+	uint32_t limm;
+>>>>>>> upstream/master
 	//int got_limm = 0;
 
 	COMMON32_GET_breg;
 	COMMON32_GET_F
 	COMMON32_GET_s12;
 
+<<<<<<< HEAD
 	output += sprintf(output, "%s", optext);
 	output += sprintf(output, "%s", flagbit[F]);
 	//  output  += sprintf( output, " p(%d)", p);
+=======
+	util::stream_format(stream, "%s", optext);
+	util::stream_format(stream, "%s", flagbit[F]);
+	//  util::stream_format(stream, " p(%d)", p);
+>>>>>>> upstream/master
 
 
 	if (!b_reserved)
@@ -523,27 +725,46 @@ int arcompact_handle04_p10_helper_dasm(DASM_OPS_32, const char* optext, int b_re
 			GET_LIMM_32;
 			size = 8;
 			//got_limm = 1;
+<<<<<<< HEAD
 			output += sprintf(output, " 0x%08x ", limm);
+=======
+			util::stream_format(stream, " 0x%08x ", limm);
+>>>>>>> upstream/master
 
 		}
 		else
 		{
+<<<<<<< HEAD
 			output += sprintf(output, " %s, ", regnames[breg]);
+=======
+			util::stream_format(stream, " %s, ", regnames[breg]);
+>>>>>>> upstream/master
 		}
 	}
 	else
 	{
+<<<<<<< HEAD
 		if (breg) output += sprintf(output, "reserved(%s), ", regnames[breg]);
 	}
 
 	output += sprintf(output, "S(%02x)", S);
+=======
+		if (breg) util::stream_format(stream, "reserved(%s), ", regnames[breg]);
+	}
+
+	util::stream_format(stream, "S(%02x)", S);
+>>>>>>> upstream/master
 	return size;
 }
 
 int arcompact_handle04_p11_m0_helper_dasm(DASM_OPS_32, const char* optext, int b_reserved)
 {
 	int size = 4;
+<<<<<<< HEAD
 	UINT32 limm = 0;
+=======
+	uint32_t limm = 0;
+>>>>>>> upstream/master
 	int got_limm = 0;
 
 	COMMON32_GET_breg;
@@ -551,9 +772,15 @@ int arcompact_handle04_p11_m0_helper_dasm(DASM_OPS_32, const char* optext, int b
 	COMMON32_GET_CONDITION;
 	COMMON32_GET_creg
 
+<<<<<<< HEAD
 	output += sprintf(output, "%s", optext);
 	output += sprintf(output, "%s", flagbit[F]);
 	//  output  += sprintf( output, " p(%d)", p);
+=======
+	util::stream_format(stream, "%s", optext);
+	util::stream_format(stream, "%s", flagbit[F]);
+	//  util::stream_format(stream, " p(%d)", p);
+>>>>>>> upstream/master
 
 	if (!b_reserved)
 	{
@@ -562,21 +789,37 @@ int arcompact_handle04_p11_m0_helper_dasm(DASM_OPS_32, const char* optext, int b
 			GET_LIMM_32;
 			size = 8;
 			got_limm = 1;
+<<<<<<< HEAD
 			output += sprintf(output, " 0x%08x ", limm);
+=======
+			util::stream_format(stream, " 0x%08x ", limm);
+>>>>>>> upstream/master
 
 		}
 		else
 		{
+<<<<<<< HEAD
 			output += sprintf(output, " %s, ", regnames[breg]);
+=======
+			util::stream_format(stream, " %s, ", regnames[breg]);
+>>>>>>> upstream/master
 		}
 	}
 	else
 	{
+<<<<<<< HEAD
 		if (breg) output += sprintf(output, "reserved(%s), ", regnames[breg]);
 	}
 
 
 	output += sprintf(output, " Cond<%s> ", conditions[condition]);
+=======
+		if (breg) util::stream_format(stream, "reserved(%s), ", regnames[breg]);
+	}
+
+
+	util::stream_format(stream, " Cond<%s> ", conditions[condition]);
+>>>>>>> upstream/master
 
 
 	if (creg == LIMM_REG)
@@ -586,11 +829,19 @@ int arcompact_handle04_p11_m0_helper_dasm(DASM_OPS_32, const char* optext, int b
 			GET_LIMM_32;
 			size = 8;
 		}
+<<<<<<< HEAD
 		output += sprintf(output, " 0x%08x ", limm);
 	}
 	else
 	{
 		output += sprintf(output, "C(%s)", regnames[creg]);
+=======
+		util::stream_format(stream, " 0x%08x ", limm);
+	}
+	else
+	{
+		util::stream_format(stream, "C(%s)", regnames[creg]);
+>>>>>>> upstream/master
 	}
 
 	return size;
@@ -599,7 +850,11 @@ int arcompact_handle04_p11_m0_helper_dasm(DASM_OPS_32, const char* optext, int b
 int arcompact_handle04_p11_m1_helper_dasm(DASM_OPS_32, const char* optext, int b_reserved)
 {
 	int size = 4;
+<<<<<<< HEAD
 	UINT32 limm = 0;
+=======
+	uint32_t limm;
+>>>>>>> upstream/master
 	//int got_limm = 0;
 
 	COMMON32_GET_breg;
@@ -607,9 +862,15 @@ int arcompact_handle04_p11_m1_helper_dasm(DASM_OPS_32, const char* optext, int b
 	COMMON32_GET_CONDITION;
 	COMMON32_GET_u6
 
+<<<<<<< HEAD
 	output += sprintf(output, "%s", optext);
 	output += sprintf(output, "%s", flagbit[F]);
 	//  output  += sprintf( output, " p(%d)", p);
+=======
+	util::stream_format(stream, "%s", optext);
+	util::stream_format(stream, "%s", flagbit[F]);
+	//  util::stream_format(stream, " p(%d)", p);
+>>>>>>> upstream/master
 
 	if (!b_reserved)
 	{
@@ -618,16 +879,25 @@ int arcompact_handle04_p11_m1_helper_dasm(DASM_OPS_32, const char* optext, int b
 			GET_LIMM_32;
 			size = 8;
 			//got_limm = 1;
+<<<<<<< HEAD
 			output += sprintf(output, " 0x%08x ", limm);
+=======
+			util::stream_format(stream, " 0x%08x ", limm);
+>>>>>>> upstream/master
 
 		}
 		else
 		{
+<<<<<<< HEAD
 			output += sprintf(output, " %s, ", regnames[breg]);
+=======
+			util::stream_format(stream, " %s, ", regnames[breg]);
+>>>>>>> upstream/master
 		}
 	}
 	else
 	{
+<<<<<<< HEAD
 		if (breg) output += sprintf(output, "reserved(%s), ", regnames[breg]);
 	}
 
@@ -636,6 +906,16 @@ int arcompact_handle04_p11_m1_helper_dasm(DASM_OPS_32, const char* optext, int b
 
 
 	output += sprintf(output, "U(%02x)", u);
+=======
+		if (breg) util::stream_format(stream, "reserved(%s), ", regnames[breg]);
+	}
+
+
+	util::stream_format(stream, " Cond<%s> ", conditions[condition]);
+
+
+	util::stream_format(stream, "U(%02x)", u);
+>>>>>>> upstream/master
 
 	return size;
 }
@@ -853,23 +1133,36 @@ int arcompact_handle04_28_dasm(DASM_OPS_32) // LPcc (loop setup)
 
 	if (p == 0x00)
 	{
+<<<<<<< HEAD
 		print("<illegal LPcc, p = 0x00)");
 	}
 	else if (p == 0x01)
 	{
 		print("<illegal LPcc, p = 0x01)");
+=======
+		util::stream_format(stream, "<illegal LPcc, p = 0x00)");
+	}
+	else if (p == 0x01)
+	{
+		util::stream_format(stream, "<illegal LPcc, p = 0x01)");
+>>>>>>> upstream/master
 	}
 	else if (p == 0x02) // Loop unconditional
 	{ // 0010 0RRR 1010 1000 0RRR ssss ssSS SSSS
 		COMMON32_GET_s12
 		if (S & 0x800) S = -0x800 + (S&0x7ff);
 
+<<<<<<< HEAD
 		output += sprintf(output, "LP (start %08x, end %08x)", pc + 4, pc + S*2);
+=======
+		util::stream_format(stream, "LP (start %08x, end %08x)", pc + 4, pc + S*2);
+>>>>>>> upstream/master
 	}
 	else if (p == 0x03) // Loop conditional
 	{ // 0010 0RRR 1110 1000 0RRR uuuu uu1Q QQQQ
 		COMMON32_GET_u6
 		COMMON32_GET_CONDITION
+<<<<<<< HEAD
 		output += sprintf(output, "LP<%s> (start %08x, end %08x)", conditions[condition], pc + 4, PC_ALIGNED32 + u*2);
 
 		int unused = (op & 0x00000020)>>5;
@@ -878,6 +1171,16 @@ int arcompact_handle04_28_dasm(DASM_OPS_32) // LPcc (loop setup)
 	}
 
 	if (breg) output += sprintf(output, "(reseved B bits set %02x)", breg);
+=======
+		util::stream_format(stream, "LP<%s> (start %08x, end %08x)", conditions[condition], pc + 4, PC_ALIGNED32 + u*2);
+
+		int unused = (op & 0x00000020)>>5;
+		if (unused==0)  util::stream_format(stream, "(unused bit not set)");
+
+	}
+
+	if (breg) util::stream_format(stream, "(reseved B bits set %02x)", breg);
+>>>>>>> upstream/master
 
 	return 4;
 }
@@ -886,12 +1189,21 @@ int arcompact_handle04_28_dasm(DASM_OPS_32) // LPcc (loop setup)
 		if ((auxreg >= 0) && (auxreg < 0x420)) \
 		{ \
 			if (strcmp(auxregnames[auxreg],"unusedreg")) \
+<<<<<<< HEAD
 				output += sprintf(output, "[%s]", auxregnames[auxreg]); \
 			else \
 				output  += sprintf( output, "[%03x]", auxreg); \
 		} \
 		else \
 			output  += sprintf( output, "[%03x]", auxreg);
+=======
+				util::stream_format(stream, "[%s]", auxregnames[auxreg]); \
+			else \
+				util::stream_format(stream, "[%03x]", auxreg); \
+		} \
+		else \
+			util::stream_format(stream, "[%03x]", auxreg);
+>>>>>>> upstream/master
 int arcompact_handle04_2a_dasm(DASM_OPS_32)  // Load FROM Auxiliary register TO register
 {
 	//           pp        F
@@ -902,26 +1214,44 @@ int arcompact_handle04_2a_dasm(DASM_OPS_32)  // Load FROM Auxiliary register TO 
 
 
 	int size = 4;
+<<<<<<< HEAD
 	UINT32 limm = 0;
+=======
+	uint32_t limm = 0;
+>>>>>>> upstream/master
 	int got_limm = 0;
 
 	COMMON32_GET_p;
 	COMMON32_GET_breg;
 	COMMON32_GET_F
 
+<<<<<<< HEAD
 	output  += sprintf( output, "LR");
 	if (F) output  += sprintf( output, ".<F set, illegal>");
 //  output  += sprintf( output, " p(%d)", p);
+=======
+	util::stream_format(stream, "LR");
+	if (F) util::stream_format(stream, ".<F set, illegal>");
+//  util::stream_format(stream, " p(%d)", p);
+>>>>>>> upstream/master
 
 
 
 	if (breg == LIMM_REG)
 	{
+<<<<<<< HEAD
 		output  += sprintf( output, "<no dest>" ); // illegal encoding?
 	}
 	else
 	{
 		output += sprintf(output, " %s, ", regnames[breg]);
+=======
+		util::stream_format(stream, "<no dest>"); // illegal encoding?
+	}
+	else
+	{
+		util::stream_format(stream, " %s, ", regnames[breg]);
+>>>>>>> upstream/master
 	}
 
 
@@ -939,15 +1269,26 @@ int arcompact_handle04_2a_dasm(DASM_OPS_32)  // Load FROM Auxiliary register TO 
 				size = 8;
 			}
 
+<<<<<<< HEAD
 			output  += sprintf( output, "(%08x) ", limm );
+=======
+			util::stream_format(stream, "(%08x) ", limm);
+>>>>>>> upstream/master
 
 		}
 		else
 		{
+<<<<<<< HEAD
 			output  += sprintf( output, "C(%s) ", regnames[creg]);
 		}
 
 		if (ares) output  += sprintf( output, "reserved(%02x) ", ares );
+=======
+			util::stream_format(stream, "C(%s) ", regnames[creg]);
+		}
+
+		if (ares) util::stream_format(stream, "reserved(%02x) ", ares);
+>>>>>>> upstream/master
 	}
 	else if (p == 1)
 	{
@@ -957,7 +1298,11 @@ int arcompact_handle04_2a_dasm(DASM_OPS_32)  // Load FROM Auxiliary register TO 
 		int auxreg = u;
 		PRINT_AUX_REGNAME
 
+<<<<<<< HEAD
 		if (ares) output  += sprintf( output, "reserved(%02x) ", ares );
+=======
+		if (ares) util::stream_format(stream, "reserved(%02x) ", ares);
+>>>>>>> upstream/master
 	}
 	else if (p == 2)
 	{
@@ -969,7 +1314,11 @@ int arcompact_handle04_2a_dasm(DASM_OPS_32)  // Load FROM Auxiliary register TO 
 	}
 	else if (p == 3)
 	{
+<<<<<<< HEAD
 		output  += sprintf( output, " <mode 3, illegal>");
+=======
+		util::stream_format(stream, " <mode 3, illegal>");
+>>>>>>> upstream/master
 	}
 
 	return size;
@@ -981,16 +1330,26 @@ int arcompact_handle04_2b_dasm(DASM_OPS_32)  // Store TO Auxiliary register FROM
 	// rather than using the lPcc opcode
 
 	int size = 4;
+<<<<<<< HEAD
 	UINT32 limm = 0;
+=======
+	uint32_t limm = 0;
+>>>>>>> upstream/master
 	int got_limm = 0;
 
 	COMMON32_GET_p;
 	COMMON32_GET_breg;
 	COMMON32_GET_F
 
+<<<<<<< HEAD
 	output  += sprintf( output, "SR");
 	if (F) output  += sprintf( output, ".<F set, illegal>");
 //  output  += sprintf( output, " p(%d)", p);
+=======
+	util::stream_format(stream, "SR");
+	if (F) util::stream_format(stream, ".<F set, illegal>");
+//  util::stream_format(stream, " p(%d)", p);
+>>>>>>> upstream/master
 
 
 
@@ -999,12 +1358,20 @@ int arcompact_handle04_2b_dasm(DASM_OPS_32)  // Store TO Auxiliary register FROM
 		GET_LIMM_32;
 		size = 8;
 		got_limm = 1;
+<<<<<<< HEAD
 		output  += sprintf( output, " %08x -> ", limm );
+=======
+		util::stream_format(stream, " %08x -> ", limm);
+>>>>>>> upstream/master
 
 	}
 	else
 	{
+<<<<<<< HEAD
 		output += sprintf(output, " %s -> ", regnames[breg]);
+=======
+		util::stream_format(stream, " %s -> ", regnames[breg]);
+>>>>>>> upstream/master
 	}
 
 
@@ -1022,17 +1389,29 @@ int arcompact_handle04_2b_dasm(DASM_OPS_32)  // Store TO Auxiliary register FROM
 				size = 8;
 			}
 
+<<<<<<< HEAD
 			output  += sprintf( output, "[%08x]", limm );
+=======
+			util::stream_format(stream, "[%08x]", limm);
+>>>>>>> upstream/master
 
 		}
 		else
 		{
+<<<<<<< HEAD
 			output  += sprintf( output, "[%s]", regnames[creg]);
+=======
+			util::stream_format(stream, "[%s]", regnames[creg]);
+>>>>>>> upstream/master
 
 
 		}
 
+<<<<<<< HEAD
 		if (ares) output  += sprintf( output, " (reserved %02x) ", ares );
+=======
+		if (ares) util::stream_format(stream, " (reserved %02x) ", ares);
+>>>>>>> upstream/master
 
 
 	}
@@ -1044,7 +1423,11 @@ int arcompact_handle04_2b_dasm(DASM_OPS_32)  // Store TO Auxiliary register FROM
 		int auxreg = u;
 		PRINT_AUX_REGNAME
 
+<<<<<<< HEAD
 		if (ares) output  += sprintf( output, " (reserved %02x) ", ares );
+=======
+		if (ares) util::stream_format(stream, " (reserved %02x) ", ares);
+>>>>>>> upstream/master
 
 
 	}
@@ -1059,7 +1442,11 @@ int arcompact_handle04_2b_dasm(DASM_OPS_32)  // Store TO Auxiliary register FROM
 	}
 	else if (p == 3)
 	{
+<<<<<<< HEAD
 		output  += sprintf( output, " <mode 3, illegal>");
+=======
+		util::stream_format(stream, " <mode 3, illegal>");
+>>>>>>> upstream/master
 	}
 
 	return size;}
@@ -1082,6 +1469,7 @@ int arcompact_handle04_2f_helper_dasm(DASM_OPS_32, const char* optext)
 	COMMON32_GET_breg;
 	COMMON32_GET_F
 
+<<<<<<< HEAD
 	output  += sprintf( output, "%s", optext);
 	output  += sprintf( output, "%s", flagbit[F]);
 //  output  += sprintf( output, " p(%d)", p);
@@ -1089,11 +1477,24 @@ int arcompact_handle04_2f_helper_dasm(DASM_OPS_32, const char* optext)
 	if (breg == LIMM_REG)
 	{
 		output += sprintf(output, " <no dst>, ");
+=======
+	util::stream_format(stream, "%s", optext);
+	util::stream_format(stream, "%s", flagbit[F]);
+//  util::stream_format(stream, " p(%d)", p);
+
+	if (breg == LIMM_REG)
+	{
+		util::stream_format(stream, " <no dst>, ");
+>>>>>>> upstream/master
 		// if using the 'EX' opcode this is illegal
 	}
 	else
 	{
+<<<<<<< HEAD
 		output += sprintf(output, " %s, ", regnames[breg]);
+=======
+		util::stream_format(stream, " %s, ", regnames[breg]);
+>>>>>>> upstream/master
 	}
 
 	if (p == 0)
@@ -1102,21 +1503,33 @@ int arcompact_handle04_2f_helper_dasm(DASM_OPS_32, const char* optext)
 
 		if (creg == LIMM_REG)
 		{
+<<<<<<< HEAD
 			UINT32 limm;
 			GET_LIMM_32;
 			size = 8;
 			output  += sprintf( output, "(%08x) ", limm );
+=======
+			uint32_t limm;
+			GET_LIMM_32;
+			size = 8;
+			util::stream_format(stream, "(%08x) ", limm);
+>>>>>>> upstream/master
 
 		}
 		else
 		{
+<<<<<<< HEAD
 			output  += sprintf( output, "C(%s) ", regnames[creg]);
+=======
+			util::stream_format(stream, "C(%s) ", regnames[creg]);
+>>>>>>> upstream/master
 		}
 	}
 	else if (p == 1)
 	{
 		COMMON32_GET_u6
 
+<<<<<<< HEAD
 		output  += sprintf( output, "U(0x%02x) ", u);
 	}
 	else if (p == 2)
@@ -1126,6 +1539,17 @@ int arcompact_handle04_2f_helper_dasm(DASM_OPS_32, const char* optext)
 	else if (p == 3)
 	{
 		output  += sprintf( output, "<04_2f illegal p=11>");
+=======
+		util::stream_format(stream, "U(0x%02x) ", u);
+	}
+	else if (p == 2)
+	{
+		util::stream_format(stream, "<04_2f illegal p=10>");
+	}
+	else if (p == 3)
+	{
+		util::stream_format(stream, "<04_2f illegal p=11>");
+>>>>>>> upstream/master
 	}
 
 	return size;
@@ -1150,11 +1574,19 @@ int arcompact_handle04_2f_0b_dasm(DASM_OPS_32)  { return arcompact_handle04_2f_h
 int arcompact_handle04_2f_0c_dasm(DASM_OPS_32)  { return arcompact_handle04_2f_helper_dasm(DASM_PARAMS, "EX"); } // EX
 
 
+<<<<<<< HEAD
 int arcompact_handle04_2f_3f_01_dasm(DASM_OPS_32)  { print("SLEEP (%08x)", op); return 4;}
 int arcompact_handle04_2f_3f_02_dasm(DASM_OPS_32)  { print("SWI / TRAP0 (%08x)", op); return 4;}
 int arcompact_handle04_2f_3f_03_dasm(DASM_OPS_32)  { print("SYNC (%08x)", op); return 4;}
 int arcompact_handle04_2f_3f_04_dasm(DASM_OPS_32)  { print("RTIE (%08x)", op); return 4;}
 int arcompact_handle04_2f_3f_05_dasm(DASM_OPS_32)  { print("BRK (%08x)", op); return 4;}
+=======
+int arcompact_handle04_2f_3f_01_dasm(DASM_OPS_32)  { util::stream_format( stream, "SLEEP (%08x)", op); return 4; }
+int arcompact_handle04_2f_3f_02_dasm(DASM_OPS_32)  { util::stream_format( stream, "SWI / TRAP0 (%08x)", op); return 4; }
+int arcompact_handle04_2f_3f_03_dasm(DASM_OPS_32)  { util::stream_format( stream, "SYNC (%08x)", op); return 4; }
+int arcompact_handle04_2f_3f_04_dasm(DASM_OPS_32)  { util::stream_format( stream, "RTIE (%08x)", op); return 4; }
+int arcompact_handle04_2f_3f_05_dasm(DASM_OPS_32)  { util::stream_format( stream, "BRK (%08x)", op); return 4; }
+>>>>>>> upstream/master
 
 
 
@@ -1167,12 +1599,21 @@ int arcompact_handle04_2f_3f_05_dasm(DASM_OPS_32)  { print("BRK (%08x)", op); re
 int arcompact_handle04_3x_helper_dasm(DASM_OPS_32, int dsize, int extend)
 {
 	int size = 4;
+<<<<<<< HEAD
 	UINT32 limm=0;
 	int got_limm = 0;
 
 	output += sprintf(output, "LD");
 	output += sprintf(output, "%s", datasize[dsize]);
 	output += sprintf(output, "%s", dataextend[extend]);
+=======
+	uint32_t limm=0;
+	int got_limm = 0;
+
+	util::stream_format(stream, "LD");
+	util::stream_format(stream, "%s", datasize[dsize]);
+	util::stream_format(stream, "%s", dataextend[extend]);
+>>>>>>> upstream/master
 
 	int mode = (op & 0x00c00000) >> 22; op &= ~0x00c00000;
 	COMMON32_GET_breg;
@@ -1180,22 +1621,37 @@ int arcompact_handle04_3x_helper_dasm(DASM_OPS_32, int dsize, int extend)
 	COMMON32_GET_creg
 	COMMON32_GET_areg
 
+<<<<<<< HEAD
 	output += sprintf(output, "%s", addressmode[mode]);
 	output += sprintf(output, "%s", cachebit[D]);
 
 	output  += sprintf( output, " %s. ", regnames[areg]);
+=======
+	util::stream_format(stream, "%s", addressmode[mode]);
+	util::stream_format(stream, "%s", cachebit[D]);
+
+	util::stream_format(stream, " %s. ", regnames[areg]);
+>>>>>>> upstream/master
 
 	if (breg == LIMM_REG)
 	{
 		GET_LIMM_32;
 		size = 8;
 		got_limm = 1;
+<<<<<<< HEAD
 		output  += sprintf( output, "[%08x, ", limm );
+=======
+		util::stream_format(stream, "[%08x, ", limm);
+>>>>>>> upstream/master
 
 	}
 	else
 	{
+<<<<<<< HEAD
 		output += sprintf(output, "[%s, ", regnames[breg]);
+=======
+		util::stream_format(stream, "[%s, ", regnames[breg]);
+>>>>>>> upstream/master
 	}
 
 	if (creg == LIMM_REG)
@@ -1205,12 +1661,20 @@ int arcompact_handle04_3x_helper_dasm(DASM_OPS_32, int dsize, int extend)
 			GET_LIMM_32;
 			size = 8;
 		}
+<<<<<<< HEAD
 		output  += sprintf( output, "(%08x)]", limm );
+=======
+		util::stream_format(stream, "(%08x)]", limm);
+>>>>>>> upstream/master
 
 	}
 	else
 	{
+<<<<<<< HEAD
 		output  += sprintf( output, "%s]", regnames[creg]);
+=======
+		util::stream_format(stream, "%s]", regnames[creg]);
+>>>>>>> upstream/master
 	}
 
 
@@ -1270,12 +1734,21 @@ int arcompact_handle05_2f_0x_helper_dasm(DASM_OPS_32, const char* optext)
 	COMMON32_GET_breg;
 	COMMON32_GET_F
 
+<<<<<<< HEAD
 	output  += sprintf( output, "%s", optext);
 	output  += sprintf( output, "%s", flagbit[F]);
 //  output  += sprintf( output, " p(%d)", p);
 
 
 	output += sprintf(output, " %s, ", regnames[breg]);
+=======
+	util::stream_format(stream, "%s", optext);
+	util::stream_format(stream, "%s", flagbit[F]);
+//  util::stream_format(stream, " p(%d)", p);
+
+
+	util::stream_format(stream, " %s, ", regnames[breg]);
+>>>>>>> upstream/master
 
 	if (p == 0)
 	{
@@ -1283,20 +1756,32 @@ int arcompact_handle05_2f_0x_helper_dasm(DASM_OPS_32, const char* optext)
 
 		if (creg == LIMM_REG)
 		{
+<<<<<<< HEAD
 			UINT32 limm;
 			GET_LIMM_32;
 			size = 8;
 			output  += sprintf( output, "(%08x) ", limm );
+=======
+			uint32_t limm;
+			GET_LIMM_32;
+			size = 8;
+			util::stream_format(stream, "(%08x) ", limm);
+>>>>>>> upstream/master
 
 		}
 		else
 		{
+<<<<<<< HEAD
 			output  += sprintf( output, "C(%s) ", regnames[creg]);
+=======
+			util::stream_format(stream, "C(%s) ", regnames[creg]);
+>>>>>>> upstream/master
 		}
 	}
 	else if (p == 1)
 	{
 		COMMON32_GET_u6
+<<<<<<< HEAD
 		output  += sprintf( output, "U(0x%02x) ", u);
 	}
 	else if (p == 2)
@@ -1306,6 +1791,17 @@ int arcompact_handle05_2f_0x_helper_dasm(DASM_OPS_32, const char* optext)
 	else if (p == 3)
 	{
 		output  += sprintf( output, "<05_2f illegal p=11>");
+=======
+		util::stream_format(stream, "U(0x%02x) ", u);
+	}
+	else if (p == 2)
+	{
+		util::stream_format(stream, "<05_2f illegal p=10>");
+	}
+	else if (p == 3)
+	{
+		util::stream_format(stream, "<05_2f illegal p=11>");
+>>>>>>> upstream/master
 	}
 
 	return size;
@@ -1325,37 +1821,61 @@ int arcompact_handle05_2f_08_dasm(DASM_OPS_32)  { return arcompact_handle05_2f_0
 
 int arcompact_handle06_dasm(DASM_OPS_32)
 {
+<<<<<<< HEAD
 	print("op a,b,c (06 ARC ext) (%08x)", op );
+=======
+	util::stream_format( stream, "op a,b,c (06 ARC ext) (%08x)", op );
+>>>>>>> upstream/master
 	return 4;
 }
 
 int arcompact_handle07_dasm(DASM_OPS_32)
 {
+<<<<<<< HEAD
 	print("op a,b,c (07 User ext) (%08x)", op );
+=======
+	util::stream_format( stream, "op a,b,c (07 User ext) (%08x)", op );
+>>>>>>> upstream/master
 	return 4;
 }
 
 int arcompact_handle08_dasm(DASM_OPS_32)
 {
+<<<<<<< HEAD
 	print("op a,b,c (08 User ext) (%08x)", op );
+=======
+	util::stream_format( stream, "op a,b,c (08 User ext) (%08x)", op );
+>>>>>>> upstream/master
 	return 4;
 }
 
 int arcompact_handle09_dasm(DASM_OPS_32)
 {
+<<<<<<< HEAD
 	print("op a,b,c (09 Market ext) (%08x)", op );
+=======
+	util::stream_format( stream, "op a,b,c (09 Market ext) (%08x)", op );
+>>>>>>> upstream/master
 	return 4;
 }
 
 int arcompact_handle0a_dasm(DASM_OPS_32)
 {
+<<<<<<< HEAD
 	print("op a,b,c (0a Market ext) (%08x)",  op );
+=======
+	util::stream_format( stream, "op a,b,c (0a Market ext) (%08x)",  op );
+>>>>>>> upstream/master
 	return 4;
 }
 
 int arcompact_handle0b_dasm(DASM_OPS_32)
 {
+<<<<<<< HEAD
 	print("op a,b,c (0b Market ext) (%08x)",  op );
+=======
+	util::stream_format( stream, "op a,b,c (0b Market ext) (%08x)",  op );
+>>>>>>> upstream/master
 	return 4;
 }
 
@@ -1374,8 +1894,13 @@ int arcompact_handle0c_helper_dasm(DASM_OPS_16, const char* optext, int format)
 	REG_16BIT_RANGE(creg);
 
 
+<<<<<<< HEAD
 	if (format==0) print("%s %s <- [%s, %s]", optext, regnames[areg], regnames[breg], regnames[creg]);
 	else print("%s %s <- %s, %s", optext, regnames[areg], regnames[breg], regnames[creg]);
+=======
+	if (format==0) util::stream_format(stream, "%s %s <- [%s, %s]", optext, regnames[areg], regnames[breg], regnames[creg]);
+	else util::stream_format(stream, "%s %s <- %s, %s", optext, regnames[areg], regnames[breg], regnames[creg]);
+>>>>>>> upstream/master
 
 	return 2;
 }
@@ -1413,7 +1938,11 @@ int arcompact_handle0d_helper_dasm(DASM_OPS_16, const char* optext)
 	REG_16BIT_RANGE(breg);
 	REG_16BIT_RANGE(creg);
 
+<<<<<<< HEAD
 	print("%s %s <- [%s, 0x%02x]", optext, regnames[creg], regnames[breg], u);
+=======
+	util::stream_format(stream, "%s %s <- [%s, 0x%02x]", optext, regnames[creg], regnames[breg], u);
+>>>>>>> upstream/master
 	return 2;
 }
 
@@ -1451,6 +1980,7 @@ int arcompact_handle0e_0x_helper_dasm(DASM_OPS_16, const char* optext, int revop
 
 	if (h == LIMM_REG)
 	{
+<<<<<<< HEAD
 		UINT32 limm;
 		GET_LIMM;
 		size = 6;
@@ -1461,6 +1991,18 @@ int arcompact_handle0e_0x_helper_dasm(DASM_OPS_16, const char* optext, int revop
 	{
 		if (!revop) print("%s %s <- %s", optext, regnames[breg], regnames[h]);
 		else print("%s %s <- %s", optext, regnames[h], regnames[breg]);
+=======
+		uint32_t limm;
+		GET_LIMM;
+		size = 6;
+		if (!revop) util::stream_format( stream, "%s %s <- 0x%08x", optext, regnames[breg], limm);
+		else util::stream_format( stream, "%s 0x%08x <- %s", optext, limm, regnames[breg]);
+	}
+	else
+	{
+		if (!revop) util::stream_format( stream, "%s %s <- %s", optext, regnames[breg], regnames[h]);
+		else util::stream_format( stream, "%s %s <- %s", optext, regnames[h], regnames[breg]);
+>>>>>>> upstream/master
 
 	}
 
@@ -1497,7 +2039,11 @@ int arcompact_handle0f_00_0x_helper_dasm(DASM_OPS_16, const char* optext)
 	COMMON16_GET_breg;
 	REG_16BIT_RANGE(breg);
 
+<<<<<<< HEAD
 	print("%s %s", optext, regnames[breg]);
+=======
+	util::stream_format( stream, "%s %s", optext, regnames[breg]);
+>>>>>>> upstream/master
 
 	return 2;
 
@@ -1515,12 +2061,21 @@ int arcompact_handle0f_00_06_dasm(DASM_OPS_16)  { return arcompact_handle0f_00_0
 
 
 // Zero parameters (ZOP)
+<<<<<<< HEAD
 int arcompact_handle0f_00_07_00_dasm(DASM_OPS_16)  { print("NOP_S"); return 2;}
 int arcompact_handle0f_00_07_01_dasm(DASM_OPS_16)  { print("UNIMP_S"); return 2;} // Unimplemented Instruction, same as illegal, but recommended to fill blank space
 int arcompact_handle0f_00_07_04_dasm(DASM_OPS_16)  { print("JEQ_S [blink]"); return 2;}
 int arcompact_handle0f_00_07_05_dasm(DASM_OPS_16)  { print("JNE_S [blink]"); return 2;}
 int arcompact_handle0f_00_07_06_dasm(DASM_OPS_16)  { print("J_S [blink]"); return 2;}
 int arcompact_handle0f_00_07_07_dasm(DASM_OPS_16)  { print("J_S.D [blink]"); return 2;}
+=======
+int arcompact_handle0f_00_07_00_dasm(DASM_OPS_16)  { util::stream_format( stream, "NOP_S"); return 2; }
+int arcompact_handle0f_00_07_01_dasm(DASM_OPS_16)  { util::stream_format( stream, "UNIMP_S"); return 2; } // Unimplemented Instruction, same as illegal, but recommended to fill blank space
+int arcompact_handle0f_00_07_04_dasm(DASM_OPS_16)  { util::stream_format( stream, "JEQ_S [blink]"); return 2; }
+int arcompact_handle0f_00_07_05_dasm(DASM_OPS_16)  { util::stream_format( stream, "JNE_S [blink]"); return 2; }
+int arcompact_handle0f_00_07_06_dasm(DASM_OPS_16)  { util::stream_format( stream, "J_S [blink]"); return 2; }
+int arcompact_handle0f_00_07_07_dasm(DASM_OPS_16)  { util::stream_format( stream, "J_S.D [blink]"); return 2; }
+>>>>>>> upstream/master
 
 
 
@@ -1536,9 +2091,15 @@ int arcompact_handle0f_0x_helper_dasm(DASM_OPS_16, const char* optext, int nodst
 	REG_16BIT_RANGE(breg);
 	REG_16BIT_RANGE(creg);
 
+<<<<<<< HEAD
 	if (nodst==0) print("%s %s <- %s", optext, regnames[breg], regnames[creg]);
 	else if (nodst==1) print("%s <no dst>, %s, %s", optext, regnames[breg], regnames[creg]);
 	else if (nodst==2) print("%s <mulres>, %s, %s", optext, regnames[breg], regnames[creg]);
+=======
+	if (nodst==0) util::stream_format(stream, "%s %s <- %s", optext, regnames[breg], regnames[creg]);
+	else if (nodst==1) util::stream_format(stream, "%s <no dst>, %s, %s", optext, regnames[breg], regnames[creg]);
+	else if (nodst==2) util::stream_format(stream, "%s <mulres>, %s, %s", optext, regnames[breg], regnames[creg]);
+>>>>>>> upstream/master
 
 	return 2;
 }
@@ -1571,7 +2132,11 @@ int arcompact_handle0f_1d_dasm(DASM_OPS_16)  { return arcompact_handle0f_0x_help
 int arcompact_handle0f_1e_dasm(DASM_OPS_16)  // special
 { // 0111 1uuu uuu1 1110
 	int u = (op & 0x07e0)>>5;
+<<<<<<< HEAD
 	print("TRAP_S %02x",u);
+=======
+	util::stream_format( stream, "TRAP_S %02x",u);
+>>>>>>> upstream/master
 	return 2;
 }
 
@@ -1581,11 +2146,19 @@ int arcompact_handle0f_1f_dasm(DASM_OPS_16)  // special
 
 	if (u == 0x003f)
 	{
+<<<<<<< HEAD
 		print("BRK_S");
 	}
 	else
 	{
 		print("<illegal BRK_S %02x>",u);
+=======
+		util::stream_format(stream, "BRK_S");
+	}
+	else
+	{
+		util::stream_format(stream, "<illegal BRK_S %02x>",u);
+>>>>>>> upstream/master
 	}
 	return 2;
 }
@@ -1604,8 +2177,13 @@ int arcompact_handle_ld_helper_dasm(DASM_OPS_16, const char* optext, int shift, 
 
 	u <<= shift;
 
+<<<<<<< HEAD
 	if (!swap) print("%s %s, [%s, 0x%02x] (%04x)", optext, regnames[creg], regnames[breg], u, op);
 	else  print("%s [%s, 0x%02x], %s (%04x)", optext, regnames[breg], u, regnames[creg], op);
+=======
+	if (!swap) util::stream_format(stream, "%s %s, [%s, 0x%02x] (%04x)", optext, regnames[creg], regnames[breg], u, op);
+	else  util::stream_format(stream, "%s [%s, 0x%02x], %s (%04x)", optext, regnames[breg], u, regnames[creg], op);
+>>>>>>> upstream/master
 	return 2;
 
 }
@@ -1656,7 +2234,11 @@ int arcompact_handle_l7_0x_helper_dasm(DASM_OPS_16, const char* optext)
 
 	REG_16BIT_RANGE(breg);
 
+<<<<<<< HEAD
 	print("%s %s, 0x%02x", optext, regnames[breg], u);
+=======
+	util::stream_format(stream, "%s %s, 0x%02x", optext, regnames[breg], u);
+>>>>>>> upstream/master
 
 	return 2;
 
@@ -1714,12 +2296,21 @@ int arcompact_handle18_0x_helper_dasm(DASM_OPS_16, const char* optext, int st, i
 
 	REG_16BIT_RANGE(breg);
 
+<<<<<<< HEAD
 	output  += sprintf( output, "%s %s ", optext, regnames[breg]);
 	if (st==1) output  += sprintf( output, "-> ");
 	else output  += sprintf( output, "<- ");
 
 	if (format==0) output  += sprintf( output, "[SP, 0x%02x]", u*4);
 	else  output  += sprintf( output, "SP, 0x%02x", u*4);
+=======
+	util::stream_format(stream, "%s %s ", optext, regnames[breg]);
+	if (st==1) util::stream_format(stream, "-> ");
+	else util::stream_format(stream, "<- ");
+
+	if (format==0) util::stream_format(stream, "[SP, 0x%02x]", u*4);
+	else  util::stream_format(stream, "SP, 0x%02x", u*4);
+>>>>>>> upstream/master
 
 
 	return 2;
@@ -1756,7 +2347,11 @@ int arcompact_handle18_05_00_dasm(DASM_OPS_16)
 	int u;
 	COMMON16_GET_u5;
 
+<<<<<<< HEAD
 	print("ADD_S SP, SP, 0x%02x", u*4);
+=======
+	util::stream_format( stream, "ADD_S SP, SP, 0x%02x", u*4);
+>>>>>>> upstream/master
 	return 2;
 
 }
@@ -1766,7 +2361,11 @@ int arcompact_handle18_05_01_dasm(DASM_OPS_16)
 	int u;
 	COMMON16_GET_u5;
 
+<<<<<<< HEAD
 	print("SUB_S SP, SP, 0x%02x", u*4);
+=======
+	util::stream_format( stream, "SUB_S SP, SP, 0x%02x", u*4);
+>>>>>>> upstream/master
 	return 2;
 }
 
@@ -1777,7 +2376,11 @@ int arcompact_handle18_06_01_dasm(DASM_OPS_16)
 	COMMON16_GET_breg
 	REG_16BIT_RANGE(breg)
 
+<<<<<<< HEAD
 	print("POP_S %s", regnames[breg]);
+=======
+	util::stream_format(stream, "POP_S %s", regnames[breg]);
+>>>>>>> upstream/master
 
 	return 2;
 }
@@ -1788,9 +2391,15 @@ int arcompact_handle18_06_11_dasm(DASM_OPS_16)
 	op &= ~0x0700; // all bits now used
 
 	if (res)
+<<<<<<< HEAD
 		print("POP_S [BLINK] (Reserved Bits set %04x)", op);
 	else
 		print("POP_S [BLINK]");
+=======
+		util::stream_format(stream, "POP_S [BLINK] (Reserved Bits set %04x)", op);
+	else
+		util::stream_format(stream, "POP_S [BLINK]");
+>>>>>>> upstream/master
 
 	return 2;
 }
@@ -1802,7 +2411,11 @@ int arcompact_handle18_07_01_dasm(DASM_OPS_16)
 	COMMON16_GET_breg
 	REG_16BIT_RANGE(breg)
 
+<<<<<<< HEAD
 	print("PUSH_S %s", regnames[breg]);
+=======
+	util::stream_format(stream, "PUSH_S %s", regnames[breg]);
+>>>>>>> upstream/master
 
 	return 2;
 }
@@ -1814,9 +2427,15 @@ int arcompact_handle18_07_11_dasm(DASM_OPS_16)
 	op &= ~0x0700; // all bits now used
 
 	if (res)
+<<<<<<< HEAD
 		print("PUSH_S [BLINK] (Reserved Bits set %04x)", op);
 	else
 		print("PUSH_S [BLINK]");
+=======
+		util::stream_format(stream, "PUSH_S [BLINK] (Reserved Bits set %04x)", op);
+	else
+		util::stream_format(stream, "PUSH_S [BLINK]");
+>>>>>>> upstream/master
 
 	return 2;
 }
@@ -1831,6 +2450,7 @@ int arcompact_handle19_0x_helper_dasm(DASM_OPS_16, const char* optext, int shift
 	s <<= shift;
 
 
+<<<<<<< HEAD
 	output  += sprintf( output, "%s %s, ", optext, regnames[0]);
 	if (format == 0)
 	{
@@ -1839,6 +2459,16 @@ int arcompact_handle19_0x_helper_dasm(DASM_OPS_16, const char* optext, int shift
 	else
 	{
 		output  += sprintf( output, "GP, %03x", s);
+=======
+	util::stream_format(stream, "%s %s, ", optext, regnames[0]);
+	if (format == 0)
+	{
+		util::stream_format(stream, "[GP, %03x]", s);
+	}
+	else
+	{
+		util::stream_format(stream, "GP, %03x", s);
+>>>>>>> upstream/master
 	}
 
 	return 2;
@@ -1856,7 +2486,11 @@ int arcompact_handle1a_dasm(DASM_OPS_16)
 	COMMON16_GET_u8;
 	REG_16BIT_RANGE(breg);
 
+<<<<<<< HEAD
 	print("MOV_S %s, [PCL, %03x]", regnames[breg], u*4);
+=======
+	util::stream_format(stream, "MOV_S %s, [PCL, %03x]", regnames[breg], u*4);
+>>>>>>> upstream/master
 
 	return 2;
 }
@@ -1868,7 +2502,11 @@ int arcompact_handle1b_dasm(DASM_OPS_16)
 	COMMON16_GET_u8;
 	REG_16BIT_RANGE(breg);
 
+<<<<<<< HEAD
 	print("MOV_S %s <- 0x%02x", regnames[breg], u);
+=======
+	util::stream_format(stream, "MOV_S %s <- 0x%02x", regnames[breg], u);
+>>>>>>> upstream/master
 	return 2;
 }
 
@@ -1879,7 +2517,11 @@ int arcompact_handle1c_00_dasm(DASM_OPS_16)
 	COMMON16_GET_u7;
 	REG_16BIT_RANGE(breg);
 
+<<<<<<< HEAD
 	print("ADD_S %s <- %s, %02x", regnames[breg], regnames[breg], u);
+=======
+	util::stream_format(stream, "ADD_S %s <- %s, %02x", regnames[breg], regnames[breg], u);
+>>>>>>> upstream/master
 	return 2;
 }
 
@@ -1890,7 +2532,11 @@ int arcompact_handle1c_01_dasm(DASM_OPS_16)
 	COMMON16_GET_u7;
 	REG_16BIT_RANGE(breg);
 
+<<<<<<< HEAD
 	print("CMP_S %s, %02x", regnames[breg], u);
+=======
+	util::stream_format(stream, "CMP_S %s, %02x", regnames[breg], u);
+>>>>>>> upstream/master
 	return 2;
 }
 
@@ -1903,7 +2549,11 @@ int arcompact_handle1d_helper_dasm(DASM_OPS_16, const char* optext)
 	int s = (op & 0x007f) >> 0; op &= ~0x007f;
 	if (s & 0x40) s = -0x40 + (s & 0x3f);
 
+<<<<<<< HEAD
 	print("%s %s, 0 to 0x%08x", optext, regnames[breg], PC_ALIGNED32 + s*2);
+=======
+	util::stream_format(stream, "%s %s, 0 to 0x%08x", optext, regnames[breg], PC_ALIGNED32 + s*2);
+>>>>>>> upstream/master
 	return 2;
 }
 
@@ -1917,7 +2567,11 @@ int arcompact_handle1e_0x_helper_dasm(DASM_OPS_16, const char* optext)
 	int s = (op & 0x01ff) >> 0; op &= ~0x01ff;
 	if (s & 0x100) s = -0x100 + (s & 0xff);
 
+<<<<<<< HEAD
 	print("%s %08x", optext, PC_ALIGNED32 + s*2);
+=======
+	util::stream_format(stream, "%s %08x", optext, PC_ALIGNED32 + s*2);
+>>>>>>> upstream/master
 	return 2;
 }
 
@@ -1932,7 +2586,11 @@ int arcompact_handle1e_03_0x_helper_dasm(DASM_OPS_16, const char* optext)
 	int s = (op & 0x003f) >> 0; op &= ~0x003f;
 	if (s & 0x020) s = -0x20 + (s & 0x1f);
 
+<<<<<<< HEAD
 	print("%s %08x", optext, PC_ALIGNED32 + s*2);
+=======
+	util::stream_format(stream, "%s %08x", optext, PC_ALIGNED32 + s*2);
+>>>>>>> upstream/master
 	return 2;
 }
 
@@ -1950,7 +2608,11 @@ int arcompact_handle1f_dasm(DASM_OPS_16)
 	int s = (op & 0x07ff) >> 0; op &= ~0x07ff;
 	if (s & 0x400) s = -0x400 + (s & 0x3ff);
 
+<<<<<<< HEAD
 	print("BL_S %08x", PC_ALIGNED32 + (s*4));
+=======
+	util::stream_format(stream, "BL_S %08x", PC_ALIGNED32 + (s*4));
+>>>>>>> upstream/master
 	return 2;
 }
 
@@ -1960,6 +2622,7 @@ int arcompact_handle1f_dasm(DASM_OPS_16)
 *                                                                                                                                   *
 ************************************************************************************************************************************/
 
+<<<<<<< HEAD
 int arcompact_handle01_01_00_06_dasm(DASM_OPS_32)  { print("<illegal 01_01_00_06> (%08x)", op); return 4; }
 int arcompact_handle01_01_00_07_dasm(DASM_OPS_32)  { print("<illegal 01_01_00_07> (%08x)", op); return 4; }
 int arcompact_handle01_01_00_08_dasm(DASM_OPS_32)  { print("<illegal 01_01_00_08> (%08x)", op); return 4; }
@@ -2368,3 +3031,413 @@ int arcompact_handle18_07_1c_dasm(DASM_OPS_16)  { print("<illegal 0x18_07_1c> (%
 int arcompact_handle18_07_1d_dasm(DASM_OPS_16)  { print("<illegal 0x18_07_1d> (%04x)",  op); return 2;}
 int arcompact_handle18_07_1e_dasm(DASM_OPS_16)  { print("<illegal 0x18_07_1e> (%04x)",  op); return 2;}
 int arcompact_handle18_07_1f_dasm(DASM_OPS_16)  { print("<illegal 0x18_07_1f> (%04x)",  op); return 2;}
+=======
+int arcompact_handle01_01_00_06_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 01_01_00_06> (%08x)", op); return 4; }
+int arcompact_handle01_01_00_07_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 01_01_00_07> (%08x)", op); return 4; }
+int arcompact_handle01_01_00_08_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 01_01_00_08> (%08x)", op); return 4; }
+int arcompact_handle01_01_00_09_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 01_01_00_09> (%08x)", op); return 4; }
+int arcompact_handle01_01_00_0a_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 01_01_00_0a> (%08x)", op); return 4; }
+int arcompact_handle01_01_00_0b_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 01_01_00_0b> (%08x)", op); return 4; }
+int arcompact_handle01_01_00_0c_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 01_01_00_0c> (%08x)", op); return 4; }
+int arcompact_handle01_01_00_0d_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 01_01_00_0d> (%08x)", op); return 4; }
+
+int arcompact_handle01_01_01_06_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 01_01_01_06> (%08x)", op); return 4; }
+int arcompact_handle01_01_01_07_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 01_01_01_07> (%08x)", op); return 4; }
+int arcompact_handle01_01_01_08_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 01_01_01_08> (%08x)", op); return 4; }
+int arcompact_handle01_01_01_09_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 01_01_01_09> (%08x)", op); return 4; }
+int arcompact_handle01_01_01_0a_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 01_01_01_0a> (%08x)", op); return 4; }
+int arcompact_handle01_01_01_0b_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 01_01_01_0b> (%08x)", op); return 4; }
+int arcompact_handle01_01_01_0c_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 01_01_01_0c> (%08x)", op); return 4; }
+int arcompact_handle01_01_01_0d_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 01_01_01_0d> (%08x)", op); return 4; }
+
+
+int arcompact_handle04_1e_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 0x04_1e> (%08x)", op); return 4; }
+int arcompact_handle04_1f_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 0x04_1f> (%08x)", op); return 4; }
+
+int arcompact_handle04_24_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 0x04_24> (%08x)", op); return 4; }
+int arcompact_handle04_25_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 0x04_25> (%08x)", op); return 4; }
+int arcompact_handle04_26_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 0x04_26> (%08x)", op); return 4; }
+int arcompact_handle04_27_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 0x04_27> (%08x)", op); return 4; }
+
+int arcompact_handle04_2c_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 0x04_2c> (%08x)", op); return 4; }
+int arcompact_handle04_2d_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 0x04_2d> (%08x)", op); return 4; }
+int arcompact_handle04_2e_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 0x04_2e> (%08x)", op); return 4; }
+
+int arcompact_handle04_2f_0d_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 0x04_2f_0d> (%08x)", op); return 4; }
+int arcompact_handle04_2f_0e_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 0x04_2f_0e> (%08x)", op); return 4; }
+int arcompact_handle04_2f_0f_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 0x04_2f_0f> (%08x)", op); return 4; }
+int arcompact_handle04_2f_10_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 0x04_2f_10> (%08x)", op); return 4; }
+int arcompact_handle04_2f_11_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 0x04_2f_11> (%08x)", op); return 4; }
+int arcompact_handle04_2f_12_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 0x04_2f_12> (%08x)", op); return 4; }
+int arcompact_handle04_2f_13_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 0x04_2f_13> (%08x)", op); return 4; }
+int arcompact_handle04_2f_14_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 0x04_2f_14> (%08x)", op); return 4; }
+int arcompact_handle04_2f_15_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 0x04_2f_15> (%08x)", op); return 4; }
+int arcompact_handle04_2f_16_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 0x04_2f_16> (%08x)", op); return 4; }
+int arcompact_handle04_2f_17_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 0x04_2f_17> (%08x)", op); return 4; }
+int arcompact_handle04_2f_18_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 0x04_2f_18> (%08x)", op); return 4; }
+int arcompact_handle04_2f_19_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 0x04_2f_19> (%08x)", op); return 4; }
+int arcompact_handle04_2f_1a_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 0x04_2f_1a> (%08x)", op); return 4; }
+int arcompact_handle04_2f_1b_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 0x04_2f_1b> (%08x)", op); return 4; }
+int arcompact_handle04_2f_1c_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 0x04_2f_1c> (%08x)", op); return 4; }
+int arcompact_handle04_2f_1d_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 0x04_2f_1d> (%08x)", op); return 4; }
+int arcompact_handle04_2f_1e_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 0x04_2f_1e> (%08x)", op); return 4; }
+int arcompact_handle04_2f_1f_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 0x04_2f_1f> (%08x)", op); return 4; }
+int arcompact_handle04_2f_20_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 0x04_2f_20> (%08x)", op); return 4; }
+int arcompact_handle04_2f_21_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 0x04_2f_21> (%08x)", op); return 4; }
+int arcompact_handle04_2f_22_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 0x04_2f_22> (%08x)", op); return 4; }
+int arcompact_handle04_2f_23_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 0x04_2f_23> (%08x)", op); return 4; }
+int arcompact_handle04_2f_24_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 0x04_2f_24> (%08x)", op); return 4; }
+int arcompact_handle04_2f_25_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 0x04_2f_25> (%08x)", op); return 4; }
+int arcompact_handle04_2f_26_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 0x04_2f_26> (%08x)", op); return 4; }
+int arcompact_handle04_2f_27_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 0x04_2f_27> (%08x)", op); return 4; }
+int arcompact_handle04_2f_28_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 0x04_2f_28> (%08x)", op); return 4; }
+int arcompact_handle04_2f_29_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 0x04_2f_29> (%08x)", op); return 4; }
+int arcompact_handle04_2f_2a_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 0x04_2f_2a> (%08x)", op); return 4; }
+int arcompact_handle04_2f_2b_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 0x04_2f_2b> (%08x)", op); return 4; }
+int arcompact_handle04_2f_2c_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 0x04_2f_2c> (%08x)", op); return 4; }
+int arcompact_handle04_2f_2d_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 0x04_2f_2d> (%08x)", op); return 4; }
+int arcompact_handle04_2f_2e_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 0x04_2f_2e> (%08x)", op); return 4; }
+int arcompact_handle04_2f_2f_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 0x04_2f_2f> (%08x)", op); return 4; }
+int arcompact_handle04_2f_30_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 0x04_2f_30> (%08x)", op); return 4; }
+int arcompact_handle04_2f_31_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 0x04_2f_31> (%08x)", op); return 4; }
+int arcompact_handle04_2f_32_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 0x04_2f_32> (%08x)", op); return 4; }
+int arcompact_handle04_2f_33_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 0x04_2f_33> (%08x)", op); return 4; }
+int arcompact_handle04_2f_34_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 0x04_2f_34> (%08x)", op); return 4; }
+int arcompact_handle04_2f_35_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 0x04_2f_35> (%08x)", op); return 4; }
+int arcompact_handle04_2f_36_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 0x04_2f_36> (%08x)", op); return 4; }
+int arcompact_handle04_2f_37_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 0x04_2f_37> (%08x)", op); return 4; }
+int arcompact_handle04_2f_38_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 0x04_2f_38> (%08x)", op); return 4; }
+int arcompact_handle04_2f_39_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 0x04_2f_39> (%08x)", op); return 4; }
+int arcompact_handle04_2f_3a_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 0x04_2f_3a> (%08x)", op); return 4; }
+int arcompact_handle04_2f_3b_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 0x04_2f_3b> (%08x)", op); return 4; }
+int arcompact_handle04_2f_3c_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 0x04_2f_3c> (%08x)", op); return 4; }
+int arcompact_handle04_2f_3d_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 0x04_2f_3d> (%08x)", op); return 4; }
+int arcompact_handle04_2f_3e_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 0x04_2f_3e> (%08x)", op); return 4; }
+
+
+
+int arcompact_handle05_2f_09_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 0x05_2f_09> (%08x)", op); return 4; }
+int arcompact_handle05_2f_0a_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 0x05_2f_0a> (%08x)", op); return 4; }
+int arcompact_handle05_2f_0b_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 0x05_2f_0b> (%08x)", op); return 4; }
+int arcompact_handle05_2f_0c_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 0x05_2f_0c> (%08x)", op); return 4; }
+int arcompact_handle05_2f_0d_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 0x05_2f_0d> (%08x)", op); return 4; }
+int arcompact_handle05_2f_0e_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 0x05_2f_0e> (%08x)", op); return 4; }
+int arcompact_handle05_2f_0f_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 0x05_2f_0f> (%08x)", op); return 4; }
+int arcompact_handle05_2f_10_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 0x05_2f_10> (%08x)", op); return 4; }
+int arcompact_handle05_2f_11_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 0x05_2f_11> (%08x)", op); return 4; }
+int arcompact_handle05_2f_12_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 0x05_2f_12> (%08x)", op); return 4; }
+int arcompact_handle05_2f_13_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 0x05_2f_13> (%08x)", op); return 4; }
+int arcompact_handle05_2f_14_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 0x05_2f_14> (%08x)", op); return 4; }
+int arcompact_handle05_2f_15_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 0x05_2f_15> (%08x)", op); return 4; }
+int arcompact_handle05_2f_16_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 0x05_2f_16> (%08x)", op); return 4; }
+int arcompact_handle05_2f_17_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 0x05_2f_17> (%08x)", op); return 4; }
+int arcompact_handle05_2f_18_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 0x05_2f_18> (%08x)", op); return 4; }
+int arcompact_handle05_2f_19_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 0x05_2f_19> (%08x)", op); return 4; }
+int arcompact_handle05_2f_1a_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 0x05_2f_1a> (%08x)", op); return 4; }
+int arcompact_handle05_2f_1b_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 0x05_2f_1b> (%08x)", op); return 4; }
+int arcompact_handle05_2f_1c_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 0x05_2f_1c> (%08x)", op); return 4; }
+int arcompact_handle05_2f_1d_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 0x05_2f_1d> (%08x)", op); return 4; }
+int arcompact_handle05_2f_1e_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 0x05_2f_1e> (%08x)", op); return 4; }
+int arcompact_handle05_2f_1f_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 0x05_2f_1f> (%08x)", op); return 4; }
+int arcompact_handle05_2f_20_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 0x05_2f_20> (%08x)", op); return 4; }
+int arcompact_handle05_2f_21_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 0x05_2f_21> (%08x)", op); return 4; }
+int arcompact_handle05_2f_22_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 0x05_2f_22> (%08x)", op); return 4; }
+int arcompact_handle05_2f_23_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 0x05_2f_23> (%08x)", op); return 4; }
+int arcompact_handle05_2f_24_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 0x05_2f_24> (%08x)", op); return 4; }
+int arcompact_handle05_2f_25_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 0x05_2f_25> (%08x)", op); return 4; }
+int arcompact_handle05_2f_26_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 0x05_2f_26> (%08x)", op); return 4; }
+int arcompact_handle05_2f_27_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 0x05_2f_27> (%08x)", op); return 4; }
+int arcompact_handle05_2f_28_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 0x05_2f_28> (%08x)", op); return 4; }
+int arcompact_handle05_2f_29_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 0x05_2f_29> (%08x)", op); return 4; }
+int arcompact_handle05_2f_2a_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 0x05_2f_2a> (%08x)", op); return 4; }
+int arcompact_handle05_2f_2b_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 0x05_2f_2b> (%08x)", op); return 4; }
+int arcompact_handle05_2f_2c_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 0x05_2f_2c> (%08x)", op); return 4; }
+int arcompact_handle05_2f_2d_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 0x05_2f_2d> (%08x)", op); return 4; }
+int arcompact_handle05_2f_2e_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 0x05_2f_2e> (%08x)", op); return 4; }
+int arcompact_handle05_2f_2f_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 0x05_2f_2f> (%08x)", op); return 4; }
+int arcompact_handle05_2f_30_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 0x05_2f_30> (%08x)", op); return 4; }
+int arcompact_handle05_2f_31_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 0x05_2f_31> (%08x)", op); return 4; }
+int arcompact_handle05_2f_32_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 0x05_2f_32> (%08x)", op); return 4; }
+int arcompact_handle05_2f_33_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 0x05_2f_33> (%08x)", op); return 4; }
+int arcompact_handle05_2f_34_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 0x05_2f_34> (%08x)", op); return 4; }
+int arcompact_handle05_2f_35_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 0x05_2f_35> (%08x)", op); return 4; }
+int arcompact_handle05_2f_36_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 0x05_2f_36> (%08x)", op); return 4; }
+int arcompact_handle05_2f_37_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 0x05_2f_37> (%08x)", op); return 4; }
+int arcompact_handle05_2f_38_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 0x05_2f_38> (%08x)", op); return 4; }
+int arcompact_handle05_2f_39_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 0x05_2f_39> (%08x)", op); return 4; }
+int arcompact_handle05_2f_3a_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 0x05_2f_3a> (%08x)", op); return 4; }
+int arcompact_handle05_2f_3b_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 0x05_2f_3b> (%08x)", op); return 4; }
+int arcompact_handle05_2f_3c_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 0x05_2f_3c> (%08x)", op); return 4; }
+int arcompact_handle05_2f_3d_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 0x05_2f_3d> (%08x)", op); return 4; }
+int arcompact_handle05_2f_3e_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 0x05_2f_3e> (%08x)", op); return 4; }
+
+
+int arcompact_handle04_2f_3f_00_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 0x04_2f_3f_00> (%08x)", op); return 4; }
+int arcompact_handle04_2f_3f_06_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 0x04_2f_3f_06> (%08x)", op); return 4; }
+int arcompact_handle04_2f_3f_07_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 0x04_2f_3f_07> (%08x)", op); return 4; }
+int arcompact_handle04_2f_3f_08_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 0x04_2f_3f_08> (%08x)", op); return 4; }
+int arcompact_handle04_2f_3f_09_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 0x04_2f_3f_09> (%08x)", op); return 4; }
+int arcompact_handle04_2f_3f_0a_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 0x04_2f_3f_0a> (%08x)", op); return 4; }
+int arcompact_handle04_2f_3f_0b_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 0x04_2f_3f_0b> (%08x)", op); return 4; }
+int arcompact_handle04_2f_3f_0c_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 0x04_2f_3f_0c> (%08x)", op); return 4; }
+int arcompact_handle04_2f_3f_0d_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 0x04_2f_3f_0d> (%08x)", op); return 4; }
+int arcompact_handle04_2f_3f_0e_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 0x04_2f_3f_0e> (%08x)", op); return 4; }
+int arcompact_handle04_2f_3f_0f_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 0x04_2f_3f_0f> (%08x)", op); return 4; }
+int arcompact_handle04_2f_3f_10_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 0x04_2f_3f_10> (%08x)", op); return 4; }
+int arcompact_handle04_2f_3f_11_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 0x04_2f_3f_11> (%08x)", op); return 4; }
+int arcompact_handle04_2f_3f_12_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 0x04_2f_3f_12> (%08x)", op); return 4; }
+int arcompact_handle04_2f_3f_13_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 0x04_2f_3f_13> (%08x)", op); return 4; }
+int arcompact_handle04_2f_3f_14_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 0x04_2f_3f_14> (%08x)", op); return 4; }
+int arcompact_handle04_2f_3f_15_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 0x04_2f_3f_15> (%08x)", op); return 4; }
+int arcompact_handle04_2f_3f_16_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 0x04_2f_3f_16> (%08x)", op); return 4; }
+int arcompact_handle04_2f_3f_17_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 0x04_2f_3f_17> (%08x)", op); return 4; }
+int arcompact_handle04_2f_3f_18_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 0x04_2f_3f_18> (%08x)", op); return 4; }
+int arcompact_handle04_2f_3f_19_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 0x04_2f_3f_19> (%08x)", op); return 4; }
+int arcompact_handle04_2f_3f_1a_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 0x04_2f_3f_1a> (%08x)", op); return 4; }
+int arcompact_handle04_2f_3f_1b_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 0x04_2f_3f_1b> (%08x)", op); return 4; }
+int arcompact_handle04_2f_3f_1c_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 0x04_2f_3f_1c> (%08x)", op); return 4; }
+int arcompact_handle04_2f_3f_1d_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 0x04_2f_3f_1d> (%08x)", op); return 4; }
+int arcompact_handle04_2f_3f_1e_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 0x04_2f_3f_1e> (%08x)", op); return 4; }
+int arcompact_handle04_2f_3f_1f_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 0x04_2f_3f_1f> (%08x)", op); return 4; }
+int arcompact_handle04_2f_3f_20_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 0x04_2f_3f_20> (%08x)", op); return 4; }
+int arcompact_handle04_2f_3f_21_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 0x04_2f_3f_21> (%08x)", op); return 4; }
+int arcompact_handle04_2f_3f_22_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 0x04_2f_3f_22> (%08x)", op); return 4; }
+int arcompact_handle04_2f_3f_23_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 0x04_2f_3f_23> (%08x)", op); return 4; }
+int arcompact_handle04_2f_3f_24_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 0x04_2f_3f_24> (%08x)", op); return 4; }
+int arcompact_handle04_2f_3f_25_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 0x04_2f_3f_25> (%08x)", op); return 4; }
+int arcompact_handle04_2f_3f_26_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 0x04_2f_3f_26> (%08x)", op); return 4; }
+int arcompact_handle04_2f_3f_27_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 0x04_2f_3f_27> (%08x)", op); return 4; }
+int arcompact_handle04_2f_3f_28_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 0x04_2f_3f_28> (%08x)", op); return 4; }
+int arcompact_handle04_2f_3f_29_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 0x04_2f_3f_29> (%08x)", op); return 4; }
+int arcompact_handle04_2f_3f_2a_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 0x04_2f_3f_2a> (%08x)", op); return 4; }
+int arcompact_handle04_2f_3f_2b_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 0x04_2f_3f_2b> (%08x)", op); return 4; }
+int arcompact_handle04_2f_3f_2c_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 0x04_2f_3f_2c> (%08x)", op); return 4; }
+int arcompact_handle04_2f_3f_2d_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 0x04_2f_3f_2d> (%08x)", op); return 4; }
+int arcompact_handle04_2f_3f_2e_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 0x04_2f_3f_2e> (%08x)", op); return 4; }
+int arcompact_handle04_2f_3f_2f_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 0x04_2f_3f_2f> (%08x)", op); return 4; }
+int arcompact_handle04_2f_3f_30_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 0x04_2f_3f_30> (%08x)", op); return 4; }
+int arcompact_handle04_2f_3f_31_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 0x04_2f_3f_31> (%08x)", op); return 4; }
+int arcompact_handle04_2f_3f_32_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 0x04_2f_3f_32> (%08x)", op); return 4; }
+int arcompact_handle04_2f_3f_33_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 0x04_2f_3f_33> (%08x)", op); return 4; }
+int arcompact_handle04_2f_3f_34_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 0x04_2f_3f_34> (%08x)", op); return 4; }
+int arcompact_handle04_2f_3f_35_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 0x04_2f_3f_35> (%08x)", op); return 4; }
+int arcompact_handle04_2f_3f_36_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 0x04_2f_3f_36> (%08x)", op); return 4; }
+int arcompact_handle04_2f_3f_37_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 0x04_2f_3f_37> (%08x)", op); return 4; }
+int arcompact_handle04_2f_3f_38_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 0x04_2f_3f_38> (%08x)", op); return 4; }
+int arcompact_handle04_2f_3f_39_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 0x04_2f_3f_39> (%08x)", op); return 4; }
+int arcompact_handle04_2f_3f_3a_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 0x04_2f_3f_3a> (%08x)", op); return 4; }
+int arcompact_handle04_2f_3f_3b_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 0x04_2f_3f_3b> (%08x)", op); return 4; }
+int arcompact_handle04_2f_3f_3c_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 0x04_2f_3f_3c> (%08x)", op); return 4; }
+int arcompact_handle04_2f_3f_3d_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 0x04_2f_3f_3d> (%08x)", op); return 4; }
+int arcompact_handle04_2f_3f_3e_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 0x04_2f_3f_3e> (%08x)", op); return 4; }
+int arcompact_handle04_2f_3f_3f_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 0x04_2f_3f_3f> (%08x)", op); return 4; }
+
+int arcompact_handle05_2f_3f_00_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 0x05_2f_3f_00> (%08x)", op); return 4; }
+int arcompact_handle05_2f_3f_01_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 0x05_2f_3f_01> (%08x)", op); return 4; }
+int arcompact_handle05_2f_3f_02_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 0x05_2f_3f_02> (%08x)", op); return 4; }
+int arcompact_handle05_2f_3f_03_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 0x05_2f_3f_03> (%08x)", op); return 4; }
+int arcompact_handle05_2f_3f_04_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 0x05_2f_3f_04> (%08x)", op); return 4; }
+int arcompact_handle05_2f_3f_05_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 0x05_2f_3f_05> (%08x)", op); return 4; }
+int arcompact_handle05_2f_3f_06_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 0x05_2f_3f_06> (%08x)", op); return 4; }
+int arcompact_handle05_2f_3f_07_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 0x05_2f_3f_07> (%08x)", op); return 4; }
+int arcompact_handle05_2f_3f_08_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 0x05_2f_3f_08> (%08x)", op); return 4; }
+int arcompact_handle05_2f_3f_09_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 0x05_2f_3f_09> (%08x)", op); return 4; }
+int arcompact_handle05_2f_3f_0a_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 0x05_2f_3f_0a> (%08x)", op); return 4; }
+int arcompact_handle05_2f_3f_0b_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 0x05_2f_3f_0b> (%08x)", op); return 4; }
+int arcompact_handle05_2f_3f_0c_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 0x05_2f_3f_0c> (%08x)", op); return 4; }
+int arcompact_handle05_2f_3f_0d_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 0x05_2f_3f_0d> (%08x)", op); return 4; }
+int arcompact_handle05_2f_3f_0e_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 0x05_2f_3f_0e> (%08x)", op); return 4; }
+int arcompact_handle05_2f_3f_0f_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 0x05_2f_3f_0f> (%08x)", op); return 4; }
+int arcompact_handle05_2f_3f_10_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 0x05_2f_3f_10> (%08x)", op); return 4; }
+int arcompact_handle05_2f_3f_11_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 0x05_2f_3f_11> (%08x)", op); return 4; }
+int arcompact_handle05_2f_3f_12_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 0x05_2f_3f_12> (%08x)", op); return 4; }
+int arcompact_handle05_2f_3f_13_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 0x05_2f_3f_13> (%08x)", op); return 4; }
+int arcompact_handle05_2f_3f_14_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 0x05_2f_3f_14> (%08x)", op); return 4; }
+int arcompact_handle05_2f_3f_15_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 0x05_2f_3f_15> (%08x)", op); return 4; }
+int arcompact_handle05_2f_3f_16_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 0x05_2f_3f_16> (%08x)", op); return 4; }
+int arcompact_handle05_2f_3f_17_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 0x05_2f_3f_17> (%08x)", op); return 4; }
+int arcompact_handle05_2f_3f_18_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 0x05_2f_3f_18> (%08x)", op); return 4; }
+int arcompact_handle05_2f_3f_19_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 0x05_2f_3f_19> (%08x)", op); return 4; }
+int arcompact_handle05_2f_3f_1a_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 0x05_2f_3f_1a> (%08x)", op); return 4; }
+int arcompact_handle05_2f_3f_1b_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 0x05_2f_3f_1b> (%08x)", op); return 4; }
+int arcompact_handle05_2f_3f_1c_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 0x05_2f_3f_1c> (%08x)", op); return 4; }
+int arcompact_handle05_2f_3f_1d_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 0x05_2f_3f_1d> (%08x)", op); return 4; }
+int arcompact_handle05_2f_3f_1e_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 0x05_2f_3f_1e> (%08x)", op); return 4; }
+int arcompact_handle05_2f_3f_1f_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 0x05_2f_3f_1f> (%08x)", op); return 4; }
+int arcompact_handle05_2f_3f_20_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 0x05_2f_3f_20> (%08x)", op); return 4; }
+int arcompact_handle05_2f_3f_21_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 0x05_2f_3f_21> (%08x)", op); return 4; }
+int arcompact_handle05_2f_3f_22_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 0x05_2f_3f_22> (%08x)", op); return 4; }
+int arcompact_handle05_2f_3f_23_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 0x05_2f_3f_23> (%08x)", op); return 4; }
+int arcompact_handle05_2f_3f_24_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 0x05_2f_3f_24> (%08x)", op); return 4; }
+int arcompact_handle05_2f_3f_25_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 0x05_2f_3f_25> (%08x)", op); return 4; }
+int arcompact_handle05_2f_3f_26_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 0x05_2f_3f_26> (%08x)", op); return 4; }
+int arcompact_handle05_2f_3f_27_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 0x05_2f_3f_27> (%08x)", op); return 4; }
+int arcompact_handle05_2f_3f_28_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 0x05_2f_3f_28> (%08x)", op); return 4; }
+int arcompact_handle05_2f_3f_29_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 0x05_2f_3f_29> (%08x)", op); return 4; }
+int arcompact_handle05_2f_3f_2a_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 0x05_2f_3f_2a> (%08x)", op); return 4; }
+int arcompact_handle05_2f_3f_2b_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 0x05_2f_3f_2b> (%08x)", op); return 4; }
+int arcompact_handle05_2f_3f_2c_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 0x05_2f_3f_2c> (%08x)", op); return 4; }
+int arcompact_handle05_2f_3f_2d_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 0x05_2f_3f_2d> (%08x)", op); return 4; }
+int arcompact_handle05_2f_3f_2e_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 0x05_2f_3f_2e> (%08x)", op); return 4; }
+int arcompact_handle05_2f_3f_2f_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 0x05_2f_3f_2f> (%08x)", op); return 4; }
+int arcompact_handle05_2f_3f_30_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 0x05_2f_3f_30> (%08x)", op); return 4; }
+int arcompact_handle05_2f_3f_31_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 0x05_2f_3f_31> (%08x)", op); return 4; }
+int arcompact_handle05_2f_3f_32_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 0x05_2f_3f_32> (%08x)", op); return 4; }
+int arcompact_handle05_2f_3f_33_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 0x05_2f_3f_33> (%08x)", op); return 4; }
+int arcompact_handle05_2f_3f_34_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 0x05_2f_3f_34> (%08x)", op); return 4; }
+int arcompact_handle05_2f_3f_35_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 0x05_2f_3f_35> (%08x)", op); return 4; }
+int arcompact_handle05_2f_3f_36_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 0x05_2f_3f_36> (%08x)", op); return 4; }
+int arcompact_handle05_2f_3f_37_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 0x05_2f_3f_37> (%08x)", op); return 4; }
+int arcompact_handle05_2f_3f_38_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 0x05_2f_3f_38> (%08x)", op); return 4; }
+int arcompact_handle05_2f_3f_39_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 0x05_2f_3f_39> (%08x)", op); return 4; }
+int arcompact_handle05_2f_3f_3a_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 0x05_2f_3f_3a> (%08x)", op); return 4; }
+int arcompact_handle05_2f_3f_3b_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 0x05_2f_3f_3b> (%08x)", op); return 4; }
+int arcompact_handle05_2f_3f_3c_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 0x05_2f_3f_3c> (%08x)", op); return 4; }
+int arcompact_handle05_2f_3f_3d_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 0x05_2f_3f_3d> (%08x)", op); return 4; }
+int arcompact_handle05_2f_3f_3e_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 0x05_2f_3f_3e> (%08x)", op); return 4; }
+int arcompact_handle05_2f_3f_3f_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 0x05_2f_3f_3f> (%08x)", op); return 4; }
+
+
+
+
+int arcompact_handle04_38_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 0x04_38> (%08x)", op); return 4; }
+int arcompact_handle04_39_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 0x04_39> (%08x)", op); return 4; }
+int arcompact_handle04_3a_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 0x04_3a> (%08x)", op); return 4; }
+int arcompact_handle04_3b_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 0x04_3b> (%08x)", op); return 4; }
+int arcompact_handle04_3c_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 0x04_3c> (%08x)", op); return 4; }
+int arcompact_handle04_3d_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 0x04_3d> (%08x)", op); return 4; }
+int arcompact_handle04_3e_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 0x04_3e> (%08x)", op); return 4; }
+int arcompact_handle04_3f_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 0x04_3f> (%08x)", op); return 4; }
+
+
+int arcompact_handle05_09_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 0x05_09> (%08x)", op); return 4; }
+int arcompact_handle05_0c_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 0x05_0c> (%08x)", op); return 4; }
+int arcompact_handle05_0d_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 0x05_0d> (%08x)", op); return 4; }
+int arcompact_handle05_0e_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 0x05_0e> (%08x)", op); return 4; }
+int arcompact_handle05_0f_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 0x05_0f> (%08x)", op); return 4; }
+int arcompact_handle05_10_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 0x05_10> (%08x)", op); return 4; }
+int arcompact_handle05_11_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 0x05_11> (%08x)", op); return 4; }
+int arcompact_handle05_12_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 0x05_12> (%08x)", op); return 4; }
+int arcompact_handle05_13_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 0x05_13> (%08x)", op); return 4; }
+int arcompact_handle05_14_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 0x05_14> (%08x)", op); return 4; }
+int arcompact_handle05_15_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 0x05_15> (%08x)", op); return 4; }
+int arcompact_handle05_16_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 0x05_16> (%08x)", op); return 4; }
+int arcompact_handle05_17_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 0x05_17> (%08x)", op); return 4; }
+int arcompact_handle05_18_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 0x05_18> (%08x)", op); return 4; }
+int arcompact_handle05_19_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 0x05_19> (%08x)", op); return 4; }
+int arcompact_handle05_1a_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 0x05_1a> (%08x)", op); return 4; }
+int arcompact_handle05_1b_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 0x05_1b> (%08x)", op); return 4; }
+int arcompact_handle05_1c_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 0x05_1c> (%08x)", op); return 4; }
+int arcompact_handle05_1d_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 0x05_1d> (%08x)", op); return 4; }
+int arcompact_handle05_1e_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 0x05_1e> (%08x)", op); return 4; }
+int arcompact_handle05_1f_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 0x05_1f> (%08x)", op); return 4; }
+int arcompact_handle05_20_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 0x05_20> (%08x)", op); return 4; }
+int arcompact_handle05_21_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 0x05_21> (%08x)", op); return 4; }
+int arcompact_handle05_22_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 0x05_22> (%08x)", op); return 4; }
+int arcompact_handle05_23_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 0x05_23> (%08x)", op); return 4; }
+int arcompact_handle05_24_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 0x05_24> (%08x)", op); return 4; }
+int arcompact_handle05_25_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 0x05_25> (%08x)", op); return 4; }
+int arcompact_handle05_26_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 0x05_26> (%08x)", op); return 4; }
+int arcompact_handle05_27_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 0x05_27> (%08x)", op); return 4; }
+
+int arcompact_handle05_2a_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 0x05_2a> (%08x)", op); return 4; }
+int arcompact_handle05_2b_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 0x05_2b> (%08x)", op); return 4; }
+int arcompact_handle05_2c_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 0x05_2c> (%08x)", op); return 4; }
+int arcompact_handle05_2d_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 0x05_2d> (%08x)", op); return 4; }
+int arcompact_handle05_2e_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 0x05_2e> (%08x)", op); return 4; }
+
+int arcompact_handle05_30_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 0x05_30> (%08x)", op); return 4; }
+int arcompact_handle05_31_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 0x05_31> (%08x)", op); return 4; }
+int arcompact_handle05_32_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 0x05_32> (%08x)", op); return 4; }
+int arcompact_handle05_33_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 0x05_33> (%08x)", op); return 4; }
+int arcompact_handle05_34_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 0x05_34> (%08x)", op); return 4; }
+int arcompact_handle05_35_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 0x05_35> (%08x)", op); return 4; }
+int arcompact_handle05_36_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 0x05_36> (%08x)", op); return 4; }
+int arcompact_handle05_37_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 0x05_37> (%08x)", op); return 4; }
+int arcompact_handle05_38_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 0x05_38> (%08x)", op); return 4; }
+int arcompact_handle05_39_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 0x05_39> (%08x)", op); return 4; }
+int arcompact_handle05_3a_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 0x05_3a> (%08x)", op); return 4; }
+int arcompact_handle05_3b_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 0x05_3b> (%08x)", op); return 4; }
+int arcompact_handle05_3c_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 0x05_3c> (%08x)", op); return 4; }
+int arcompact_handle05_3d_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 0x05_3d> (%08x)", op); return 4; }
+int arcompact_handle05_3e_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 0x05_3e> (%08x)", op); return 4; }
+int arcompact_handle05_3f_dasm(DASM_OPS_32)  { util::stream_format(stream, "<illegal 0x05_3f> (%08x)", op); return 4; }
+
+int arcompact_handle0f_00_04_dasm(DASM_OPS_16)  { util::stream_format(stream, "<illegal 0x0f_00_00> (%08x)", op); return 2; }
+int arcompact_handle0f_00_05_dasm(DASM_OPS_16)  { util::stream_format(stream, "<illegal 0x0f_00_00> (%08x)", op); return 2; }
+int arcompact_handle0f_00_07_02_dasm(DASM_OPS_16)  { util::stream_format(stream, "<illegal 0x0f_00_07_02> (%08x)", op); return 2; }
+int arcompact_handle0f_00_07_03_dasm(DASM_OPS_16)  { util::stream_format(stream, "<illegal 0x0f_00_07_03> (%08x)", op); return 2; }
+int arcompact_handle0f_01_dasm(DASM_OPS_16)  { util::stream_format(stream, "<illegal 0x0f_01> (%08x)", op); return 2; }
+int arcompact_handle0f_03_dasm(DASM_OPS_16)  { util::stream_format(stream, "<illegal 0x0f_03> (%08x)", op); return 2; }
+int arcompact_handle0f_08_dasm(DASM_OPS_16)  { util::stream_format(stream, "<illegal 0x0f_08> (%08x)", op); return 2; }
+int arcompact_handle0f_09_dasm(DASM_OPS_16)  { util::stream_format(stream, "<illegal 0x0f_09> (%08x)", op); return 2; }
+int arcompact_handle0f_0a_dasm(DASM_OPS_16)  { util::stream_format(stream, "<illegal 0x0f_0a> (%08x)", op); return 2; }
+int arcompact_handle0f_17_dasm(DASM_OPS_16)  { util::stream_format(stream, "<illegal 0x0f_17> (%08x)", op); return 2; }
+
+int arcompact_handle18_05_02_dasm(DASM_OPS_16)  { util::stream_format(stream, "<illegal 0x18_05_02> (%04x)", op); return 2; }
+int arcompact_handle18_05_03_dasm(DASM_OPS_16)  { util::stream_format(stream, "<illegal 0x18_05_03> (%04x)", op); return 2; }
+int arcompact_handle18_05_04_dasm(DASM_OPS_16)  { util::stream_format(stream, "<illegal 0x18_05_04> (%04x)", op); return 2; }
+int arcompact_handle18_05_05_dasm(DASM_OPS_16)  { util::stream_format(stream, "<illegal 0x18_05_05> (%04x)", op); return 2; }
+int arcompact_handle18_05_06_dasm(DASM_OPS_16)  { util::stream_format(stream, "<illegal 0x18_05_06> (%04x)", op); return 2; }
+int arcompact_handle18_05_07_dasm(DASM_OPS_16)  { util::stream_format(stream, "<illegal 0x18_05_07> (%04x)", op); return 2; }
+int arcompact_handle18_06_00_dasm(DASM_OPS_16)  { util::stream_format(stream, "<illegal 0x18_06_00> (%04x)", op); return 2; }
+int arcompact_handle18_06_02_dasm(DASM_OPS_16)  { util::stream_format(stream, "<illegal 0x18_06_02> (%04x)", op); return 2; }
+int arcompact_handle18_06_03_dasm(DASM_OPS_16)  { util::stream_format(stream, "<illegal 0x18_06_03> (%04x)", op); return 2; }
+int arcompact_handle18_06_04_dasm(DASM_OPS_16)  { util::stream_format(stream, "<illegal 0x18_06_04> (%04x)", op); return 2; }
+int arcompact_handle18_06_05_dasm(DASM_OPS_16)  { util::stream_format(stream, "<illegal 0x18_06_05> (%04x)", op); return 2; }
+int arcompact_handle18_06_06_dasm(DASM_OPS_16)  { util::stream_format(stream, "<illegal 0x18_06_06> (%04x)", op); return 2; }
+int arcompact_handle18_06_07_dasm(DASM_OPS_16)  { util::stream_format(stream, "<illegal 0x18_06_07> (%04x)", op); return 2; }
+int arcompact_handle18_06_08_dasm(DASM_OPS_16)  { util::stream_format(stream, "<illegal 0x18_06_08> (%04x)", op); return 2; }
+int arcompact_handle18_06_09_dasm(DASM_OPS_16)  { util::stream_format(stream, "<illegal 0x18_06_09> (%04x)", op); return 2; }
+int arcompact_handle18_06_0a_dasm(DASM_OPS_16)  { util::stream_format(stream, "<illegal 0x18_06_0a> (%04x)", op); return 2; }
+int arcompact_handle18_06_0b_dasm(DASM_OPS_16)  { util::stream_format(stream, "<illegal 0x18_06_0b> (%04x)", op); return 2; }
+int arcompact_handle18_06_0c_dasm(DASM_OPS_16)  { util::stream_format(stream, "<illegal 0x18_06_0c> (%04x)", op); return 2; }
+int arcompact_handle18_06_0d_dasm(DASM_OPS_16)  { util::stream_format(stream, "<illegal 0x18_06_0d> (%04x)", op); return 2; }
+int arcompact_handle18_06_0e_dasm(DASM_OPS_16)  { util::stream_format(stream, "<illegal 0x18_06_0e> (%04x)", op); return 2; }
+int arcompact_handle18_06_0f_dasm(DASM_OPS_16)  { util::stream_format(stream, "<illegal 0x18_06_0f> (%04x)", op); return 2; }
+int arcompact_handle18_06_10_dasm(DASM_OPS_16)  { util::stream_format(stream, "<illegal 0x18_06_10> (%04x)", op); return 2; }
+int arcompact_handle18_06_12_dasm(DASM_OPS_16)  { util::stream_format(stream, "<illegal 0x18_06_12> (%04x)", op); return 2; }
+int arcompact_handle18_06_13_dasm(DASM_OPS_16)  { util::stream_format(stream, "<illegal 0x18_06_13> (%04x)", op); return 2; }
+int arcompact_handle18_06_14_dasm(DASM_OPS_16)  { util::stream_format(stream, "<illegal 0x18_06_14> (%04x)", op); return 2; }
+int arcompact_handle18_06_15_dasm(DASM_OPS_16)  { util::stream_format(stream, "<illegal 0x18_06_15> (%04x)", op); return 2; }
+int arcompact_handle18_06_16_dasm(DASM_OPS_16)  { util::stream_format(stream, "<illegal 0x18_06_16> (%04x)", op); return 2; }
+int arcompact_handle18_06_17_dasm(DASM_OPS_16)  { util::stream_format(stream, "<illegal 0x18_06_17> (%04x)", op); return 2; }
+int arcompact_handle18_06_18_dasm(DASM_OPS_16)  { util::stream_format(stream, "<illegal 0x18_06_18> (%04x)", op); return 2; }
+int arcompact_handle18_06_19_dasm(DASM_OPS_16)  { util::stream_format(stream, "<illegal 0x18_06_19> (%04x)", op); return 2; }
+int arcompact_handle18_06_1a_dasm(DASM_OPS_16)  { util::stream_format(stream, "<illegal 0x18_06_1a> (%04x)", op); return 2; }
+int arcompact_handle18_06_1b_dasm(DASM_OPS_16)  { util::stream_format(stream, "<illegal 0x18_06_1b> (%04x)", op); return 2; }
+int arcompact_handle18_06_1c_dasm(DASM_OPS_16)  { util::stream_format(stream, "<illegal 0x18_06_1c> (%04x)", op); return 2; }
+int arcompact_handle18_06_1d_dasm(DASM_OPS_16)  { util::stream_format(stream, "<illegal 0x18_06_1d> (%04x)", op); return 2; }
+int arcompact_handle18_06_1e_dasm(DASM_OPS_16)  { util::stream_format(stream, "<illegal 0x18_06_1e> (%04x)", op); return 2; }
+int arcompact_handle18_06_1f_dasm(DASM_OPS_16)  { util::stream_format(stream, "<illegal 0x18_06_1f> (%04x)", op); return 2; }
+int arcompact_handle18_07_00_dasm(DASM_OPS_16)  { util::stream_format(stream, "<illegal 0x18_07_00> (%04x)", op); return 2; }
+int arcompact_handle18_07_02_dasm(DASM_OPS_16)  { util::stream_format(stream, "<illegal 0x18_07_02> (%04x)", op); return 2; }
+int arcompact_handle18_07_03_dasm(DASM_OPS_16)  { util::stream_format(stream, "<illegal 0x18_07_03> (%04x)", op); return 2; }
+int arcompact_handle18_07_04_dasm(DASM_OPS_16)  { util::stream_format(stream, "<illegal 0x18_07_04> (%04x)", op); return 2; }
+int arcompact_handle18_07_05_dasm(DASM_OPS_16)  { util::stream_format(stream, "<illegal 0x18_07_05> (%04x)", op); return 2; }
+int arcompact_handle18_07_06_dasm(DASM_OPS_16)  { util::stream_format(stream, "<illegal 0x18_07_06> (%04x)", op); return 2; }
+int arcompact_handle18_07_07_dasm(DASM_OPS_16)  { util::stream_format(stream, "<illegal 0x18_07_07> (%04x)", op); return 2; }
+int arcompact_handle18_07_08_dasm(DASM_OPS_16)  { util::stream_format(stream, "<illegal 0x18_07_08> (%04x)", op); return 2; }
+int arcompact_handle18_07_09_dasm(DASM_OPS_16)  { util::stream_format(stream, "<illegal 0x18_07_09> (%04x)", op); return 2; }
+int arcompact_handle18_07_0a_dasm(DASM_OPS_16)  { util::stream_format(stream, "<illegal 0x18_07_0a> (%04x)", op); return 2; }
+int arcompact_handle18_07_0b_dasm(DASM_OPS_16)  { util::stream_format(stream, "<illegal 0x18_07_0b> (%04x)", op); return 2; }
+int arcompact_handle18_07_0c_dasm(DASM_OPS_16)  { util::stream_format(stream, "<illegal 0x18_07_0c> (%04x)", op); return 2; }
+int arcompact_handle18_07_0d_dasm(DASM_OPS_16)  { util::stream_format(stream, "<illegal 0x18_07_0d> (%04x)", op); return 2; }
+int arcompact_handle18_07_0e_dasm(DASM_OPS_16)  { util::stream_format(stream, "<illegal 0x18_07_0e> (%04x)", op); return 2; }
+int arcompact_handle18_07_0f_dasm(DASM_OPS_16)  { util::stream_format(stream, "<illegal 0x18_07_0f> (%04x)", op); return 2; }
+int arcompact_handle18_07_10_dasm(DASM_OPS_16)  { util::stream_format(stream, "<illegal 0x18_07_10> (%04x)", op); return 2; }
+int arcompact_handle18_07_12_dasm(DASM_OPS_16)  { util::stream_format(stream, "<illegal 0x18_07_12> (%04x)", op); return 2; }
+int arcompact_handle18_07_13_dasm(DASM_OPS_16)  { util::stream_format(stream, "<illegal 0x18_07_13> (%04x)", op); return 2; }
+int arcompact_handle18_07_14_dasm(DASM_OPS_16)  { util::stream_format(stream, "<illegal 0x18_07_14> (%04x)", op); return 2; }
+int arcompact_handle18_07_15_dasm(DASM_OPS_16)  { util::stream_format(stream, "<illegal 0x18_07_15> (%04x)", op); return 2; }
+int arcompact_handle18_07_16_dasm(DASM_OPS_16)  { util::stream_format(stream, "<illegal 0x18_07_16> (%04x)", op); return 2; }
+int arcompact_handle18_07_17_dasm(DASM_OPS_16)  { util::stream_format(stream, "<illegal 0x18_07_17> (%04x)", op); return 2; }
+int arcompact_handle18_07_18_dasm(DASM_OPS_16)  { util::stream_format(stream, "<illegal 0x18_07_18> (%04x)", op); return 2; }
+int arcompact_handle18_07_19_dasm(DASM_OPS_16)  { util::stream_format(stream, "<illegal 0x18_07_19> (%04x)", op); return 2; }
+int arcompact_handle18_07_1a_dasm(DASM_OPS_16)  { util::stream_format(stream, "<illegal 0x18_07_1a> (%04x)", op); return 2; }
+int arcompact_handle18_07_1b_dasm(DASM_OPS_16)  { util::stream_format(stream, "<illegal 0x18_07_1b> (%04x)", op); return 2; }
+int arcompact_handle18_07_1c_dasm(DASM_OPS_16)  { util::stream_format(stream, "<illegal 0x18_07_1c> (%04x)", op); return 2; }
+int arcompact_handle18_07_1d_dasm(DASM_OPS_16)  { util::stream_format(stream, "<illegal 0x18_07_1d> (%04x)", op); return 2; }
+int arcompact_handle18_07_1e_dasm(DASM_OPS_16)  { util::stream_format(stream, "<illegal 0x18_07_1e> (%04x)", op); return 2; }
+int arcompact_handle18_07_1f_dasm(DASM_OPS_16)  { util::stream_format(stream, "<illegal 0x18_07_1f> (%04x)", op); return 2; }
+>>>>>>> upstream/master

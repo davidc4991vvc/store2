@@ -7,10 +7,19 @@
 ****************************************************************************/
 
 #include "emu.h"
+<<<<<<< HEAD
 #include "cpu/tms32010/tms32010.h"
 #include "sound/dac.h"
 #include "machine/atarigen.h"
 #include "includes/harddriv.h"
+=======
+#include "includes/harddriv.h"
+#include "machine/atarigen.h"
+
+#include "cpu/tms32010/tms32010.h"
+#include "sound/volt_reg.h"
+#include "speaker.h"
+>>>>>>> upstream/master
 
 
 #define BIO_FREQUENCY       (1000000 / 50)
@@ -25,11 +34,20 @@
 //  harddriv_sound_board_device - constructor
 //-------------------------------------------------
 
+<<<<<<< HEAD
 const device_type HARDDRIV_SOUND_BOARD_DEVICE = &device_creator<harddriv_sound_board_device>;
 
 harddriv_sound_board_device::harddriv_sound_board_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock) :
 	device_t(mconfig, HARDDRIV_SOUND_BOARD_DEVICE, "Hard Drivin' Sound Board", tag, owner, clock, "harddriv_sound", __FILE__),
 	m_soundcpu(*this, "soundcpu"),
+=======
+DEFINE_DEVICE_TYPE(HARDDRIV_SOUND_BOARD, harddriv_sound_board_device, "harddriv_sound", "Hard Drivin' Sound Board")
+
+harddriv_sound_board_device::harddriv_sound_board_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock) :
+	device_t(mconfig, HARDDRIV_SOUND_BOARD, tag, owner, clock),
+	m_soundcpu(*this, "soundcpu"),
+	m_latch(*this, "latch"),
+>>>>>>> upstream/master
 	m_dac(*this, "dac"),
 	m_sounddsp(*this, "sounddsp"),
 	m_sounddsp_ram(*this, "sounddsp_ram"),
@@ -38,7 +56,10 @@ harddriv_sound_board_device::harddriv_sound_board_device(const machine_config &m
 	m_mainflag(0),
 	m_sounddata(0),
 	m_maindata(0),
+<<<<<<< HEAD
 	m_dacmute(0),
+=======
+>>>>>>> upstream/master
 	m_cramen(0),
 	m_irq68k(0),
 	m_sound_rom_offs(0),
@@ -191,6 +212,7 @@ READ16_MEMBER(harddriv_sound_board_device::hdsnd68k_status_r)
 
 WRITE16_MEMBER(harddriv_sound_board_device::hdsnd68k_latches_w)
 {
+<<<<<<< HEAD
 	/* bit 3 selects the value; data is ignored */
 	data = (offset >> 3) & 1;
 
@@ -226,6 +248,44 @@ WRITE16_MEMBER(harddriv_sound_board_device::hdsnd68k_latches_w)
 		case 7: /* LED */
 			break;
 	}
+=======
+	// bit 3 selects the value; data is ignored
+	// low 3 bits select the function
+	m_latch->write_bit(offset & 7, (offset >> 3) & 1);
+}
+
+
+WRITE_LINE_MEMBER(harddriv_sound_board_device::speech_write_w)
+{
+	// data == 0 means high, 1 means low
+	logerror("%06X:SPWR=%d\n", m_soundcpu->pcbase(), state);
+}
+
+
+WRITE_LINE_MEMBER(harddriv_sound_board_device::speech_reset_w)
+{
+	// data == 0 means low, 1 means high
+	logerror("%06X:SPRES=%d\n", m_soundcpu->pcbase(), state);
+}
+
+
+WRITE_LINE_MEMBER(harddriv_sound_board_device::speech_rate_w)
+{
+	// data == 0 means 8kHz, 1 means 10kHz
+	logerror("%06X:SPRATE=%d\n", m_soundcpu->pcbase(), state);
+}
+
+
+WRITE_LINE_MEMBER(harddriv_sound_board_device::cram_enable_w)
+{
+	// data == 0 means disable 68k access to COM320, 1 means enable
+	m_cramen = state;
+}
+
+
+WRITE_LINE_MEMBER(harddriv_sound_board_device::led_w)
+{
+>>>>>>> upstream/master
 }
 
 
@@ -299,15 +359,26 @@ WRITE16_MEMBER(harddriv_sound_board_device::hdsnd68k_320com_w)
  *
  *************************************/
 
+<<<<<<< HEAD
 READ16_MEMBER(harddriv_sound_board_device::hdsnddsp_get_bio)
 {
 	UINT64 cycles_since_last_bio = m_sounddsp->total_cycles() - m_last_bio_cycles;
 	INT32 cycles_until_bio = CYCLES_PER_BIO - cycles_since_last_bio;
+=======
+READ_LINE_MEMBER(harddriv_sound_board_device::hdsnddsp_get_bio)
+{
+	uint64_t cycles_since_last_bio = m_sounddsp->total_cycles() - m_last_bio_cycles;
+	int32_t cycles_until_bio = CYCLES_PER_BIO - cycles_since_last_bio;
+>>>>>>> upstream/master
 
 	/* if we're not at the next BIO yet, advance us there */
 	if (cycles_until_bio > 0)
 	{
+<<<<<<< HEAD
 		space.device().execute().adjust_icount(-cycles_until_bio);
+=======
+		m_sounddsp->adjust_icount(-cycles_until_bio);
+>>>>>>> upstream/master
 		m_last_bio_cycles += CYCLES_PER_BIO;
 	}
 	else
@@ -325,9 +396,14 @@ READ16_MEMBER(harddriv_sound_board_device::hdsnddsp_get_bio)
 
 WRITE16_MEMBER(harddriv_sound_board_device::hdsnddsp_dac_w)
 {
+<<<<<<< HEAD
 	/* DAC L */
 	if (!m_dacmute)
 		m_dac->write_signed16(data ^ 0x8000);
+=======
+	/* /DACL */
+	m_dac->write((data >> 4) ^ 0x800); // schematics show d0-3 are ignored & the msb is inverted
+>>>>>>> upstream/master
 }
 
 
@@ -341,7 +417,10 @@ WRITE16_MEMBER(harddriv_sound_board_device::hdsnddsp_comport_w)
 WRITE16_MEMBER(harddriv_sound_board_device::hdsnddsp_mute_w)
 {
 	/* mute DAC audio, D0=1 */
+<<<<<<< HEAD
 /*  m_dacmute = data & 1;     -- NOT STUFFED */
+=======
+>>>>>>> upstream/master
 	logerror("%06X:mute DAC=%d\n", space.device().safe_pcbase(), data);
 }
 
@@ -413,7 +492,11 @@ ADDRESS_MAP_END
 /* $000 - 08F  TMS32010 Internal Data RAM in Data Address Space */
 
 static ADDRESS_MAP_START( driversnd_dsp_io_map, AS_IO, 16, harddriv_sound_board_device )
+<<<<<<< HEAD
 	AM_RANGE(0, 0) AM_READWRITE(hdsnddsp_rom_r, hdsnddsp_dac_w)
+=======
+	AM_RANGE(0, 0) AM_READ(hdsnddsp_rom_r) AM_WRITE(hdsnddsp_dac_w)
+>>>>>>> upstream/master
 	AM_RANGE(1, 1) AM_READ(hdsnddsp_comram_r)
 	AM_RANGE(2, 2) AM_READ(hdsnddsp_compare_r)
 	AM_RANGE(1, 2) AM_WRITENOP
@@ -421,20 +504,43 @@ static ADDRESS_MAP_START( driversnd_dsp_io_map, AS_IO, 16, harddriv_sound_board_
 	AM_RANGE(4, 4) AM_WRITE(hdsnddsp_mute_w)
 	AM_RANGE(5, 5) AM_WRITE(hdsnddsp_gen68kirq_w)
 	AM_RANGE(6, 7) AM_WRITE(hdsnddsp_soundaddr_w)
+<<<<<<< HEAD
 	AM_RANGE(TMS32010_BIO, TMS32010_BIO) AM_READ(hdsnddsp_get_bio)
 ADDRESS_MAP_END
 
 
 static MACHINE_CONFIG_FRAGMENT( harddriv_snd )
+=======
+ADDRESS_MAP_END
+
+
+//-------------------------------------------------
+// device_add_mconfig - add device configuration
+//-------------------------------------------------
+
+MACHINE_CONFIG_MEMBER( harddriv_sound_board_device::device_add_mconfig )
+>>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("soundcpu", M68000, XTAL_16MHz/2)
 	MCFG_CPU_PROGRAM_MAP(driversnd_68k_map)
 
+<<<<<<< HEAD
+=======
+	MCFG_DEVICE_ADD("latch", LS259, 0) // 80R
+	MCFG_ADDRESSABLE_LATCH_Q0_OUT_CB(WRITELINE(harddriv_sound_board_device, speech_write_w)) // SPWR - 5220 write strobe
+	MCFG_ADDRESSABLE_LATCH_Q1_OUT_CB(WRITELINE(harddriv_sound_board_device, speech_reset_w)) // SPRES - 5220 hard reset
+	MCFG_ADDRESSABLE_LATCH_Q2_OUT_CB(WRITELINE(harddriv_sound_board_device, speech_rate_w)) // SPRATE
+	MCFG_ADDRESSABLE_LATCH_Q3_OUT_CB(WRITELINE(harddriv_sound_board_device, cram_enable_w)) // CRAMEN
+	MCFG_ADDRESSABLE_LATCH_Q4_OUT_CB(INPUTLINE("sounddsp", INPUT_LINE_HALT)) MCFG_DEVCB_INVERT // RES320
+	MCFG_ADDRESSABLE_LATCH_Q7_OUT_CB(WRITELINE(harddriv_sound_board_device, led_w))
+
+>>>>>>> upstream/master
 	MCFG_CPU_ADD("sounddsp", TMS32010, XTAL_20MHz)
 	MCFG_CPU_PROGRAM_MAP(driversnd_dsp_program_map)
 	/* Data Map is internal to the CPU */
 	MCFG_CPU_IO_MAP(driversnd_dsp_io_map)
+<<<<<<< HEAD
 
 	/* sound hardware */
 	MCFG_SPEAKER_STANDARD_MONO("mono")
@@ -452,3 +558,14 @@ machine_config_constructor harddriv_sound_board_device::device_mconfig_additions
 {
 	return MACHINE_CONFIG_NAME( harddriv_snd );
 }
+=======
+	MCFG_TMS32010_BIO_IN_CB(READLINE(harddriv_sound_board_device, hdsnddsp_get_bio))
+
+	/* sound hardware */
+	MCFG_SPEAKER_STANDARD_MONO("speaker")
+
+	MCFG_SOUND_ADD("dac", AM6012, 0) MCFG_SOUND_ROUTE(ALL_OUTPUTS, "speaker", 0.5) // ls374d.75e + ls374d.90e + am6012
+	MCFG_DEVICE_ADD("vref", VOLTAGE_REGULATOR, 0) MCFG_VOLTAGE_REGULATOR_OUTPUT(5.0)
+	MCFG_SOUND_ROUTE_EX(0, "dac", 1.0, DAC_VREF_POS_INPUT) MCFG_SOUND_ROUTE_EX(0, "dac", -1.0, DAC_VREF_NEG_INPUT)
+MACHINE_CONFIG_END
+>>>>>>> upstream/master

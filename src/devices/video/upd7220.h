@@ -29,12 +29,19 @@
 
 **********************************************************************/
 
+<<<<<<< HEAD
 #pragma once
 
 #ifndef __UPD7220__
 #define __UPD7220__
 
 #include "emu.h"
+=======
+#ifndef MAME_VIDEO_UPD7220_H
+#define MAME_VIDEO_UPD7220_H
+
+#pragma once
+>>>>>>> upstream/master
 
 
 
@@ -42,6 +49,7 @@
 //  INTERFACE CONFIGURATION MACROS
 //**************************************************************************
 
+<<<<<<< HEAD
 #define UPD7220_DISPLAY_PIXELS_MEMBER(_name) void _name(bitmap_rgb32 &bitmap, int y, int x, UINT32 address)
 #define UPD7220_DRAW_TEXT_LINE_MEMBER(_name) void _name(bitmap_rgb32 &bitmap, UINT32 addr, int y, int wd, int pitch, int lr, int cursor_on, int cursor_addr)
 
@@ -51,6 +59,17 @@
 
 #define MCFG_UPD7220_DRAW_TEXT_CALLBACK_OWNER(_class, _method) \
 	upd7220_device::static_set_draw_text_callback(*device, upd7220_draw_text_delegate(&_class::_method, #_class "::" #_method, downcast<_class *>(owner)));
+=======
+#define UPD7220_DISPLAY_PIXELS_MEMBER(_name) void _name(bitmap_rgb32 &bitmap, int y, int x, uint32_t address)
+#define UPD7220_DRAW_TEXT_LINE_MEMBER(_name) void _name(bitmap_rgb32 &bitmap, uint32_t addr, int y, int wd, int pitch, int lr, int cursor_on, int cursor_addr)
+
+
+#define MCFG_UPD7220_DISPLAY_PIXELS_CALLBACK_OWNER(_class, _method) \
+	upd7220_device::static_set_display_pixels_callback(*device, upd7220_device::display_pixels_delegate(&_class::_method, #_class "::" #_method, downcast<_class *>(owner)));
+
+#define MCFG_UPD7220_DRAW_TEXT_CALLBACK_OWNER(_class, _method) \
+	upd7220_device::static_set_draw_text_callback(*device, upd7220_device::draw_text_delegate(&_class::_method, #_class "::" #_method, downcast<_class *>(owner)));
+>>>>>>> upstream/master
 
 #define MCFG_UPD7220_DRQ_CALLBACK(_write) \
 	devcb = &upd7220_device::set_drq_wr_callback(*device, DEVCB_##_write);
@@ -70,9 +89,12 @@
 //  TYPE DEFINITIONS
 //**************************************************************************
 
+<<<<<<< HEAD
 typedef device_delegate<void (bitmap_rgb32 &bitmap, int y, int x, UINT32 address)> upd7220_display_pixels_delegate;
 typedef device_delegate<void (bitmap_rgb32 &bitmap, UINT32 addr, int y, int wd, int pitch, int lr, int cursor_on, int cursor_addr)> upd7220_draw_text_delegate;
 
+=======
+>>>>>>> upstream/master
 
 // ======================> upd7220_device
 
@@ -81,6 +103,7 @@ class upd7220_device :  public device_t,
 						public device_video_interface
 {
 public:
+<<<<<<< HEAD
 	// construction/destruction
 	upd7220_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
 
@@ -91,6 +114,21 @@ public:
 	template<class _Object> static devcb_base &set_hsync_wr_callback(device_t &device, _Object object) { return downcast<upd7220_device &>(device).m_write_hsync.set_callback(object); }
 	template<class _Object> static devcb_base &set_vsync_wr_callback(device_t &device, _Object object) { return downcast<upd7220_device &>(device).m_write_vsync.set_callback(object); }
 	template<class _Object> static devcb_base &set_blank_wr_callback(device_t &device, _Object object) { return downcast<upd7220_device &>(device).m_write_blank.set_callback(object); }
+=======
+	typedef device_delegate<void (bitmap_rgb32 &bitmap, int y, int x, uint32_t address)> display_pixels_delegate;
+	typedef device_delegate<void (bitmap_rgb32 &bitmap, uint32_t addr, int y, int wd, int pitch, int lr, int cursor_on, int cursor_addr)> draw_text_delegate;
+
+	// construction/destruction
+	upd7220_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
+
+	static void static_set_display_pixels_callback(device_t &device, display_pixels_delegate &&cb) { downcast<upd7220_device &>(device).m_display_cb = std::move(cb); }
+	static void static_set_draw_text_callback(device_t &device, draw_text_delegate &&cb) { downcast<upd7220_device &>(device).m_draw_text_cb = std::move(cb); }
+
+	template <class Object> static devcb_base &set_drq_wr_callback(device_t &device, Object &&cb) { return downcast<upd7220_device &>(device).m_write_drq.set_callback(std::forward<Object>(cb)); }
+	template <class Object> static devcb_base &set_hsync_wr_callback(device_t &device, Object &&cb) { return downcast<upd7220_device &>(device).m_write_hsync.set_callback(std::forward<Object>(cb)); }
+	template <class Object> static devcb_base &set_vsync_wr_callback(device_t &device, Object &&cb) { return downcast<upd7220_device &>(device).m_write_vsync.set_callback(std::forward<Object>(cb)); }
+	template <class Object> static devcb_base &set_blank_wr_callback(device_t &device, Object &&cb) { return downcast<upd7220_device &>(device).m_write_blank.set_callback(std::forward<Object>(cb)); }
+>>>>>>> upstream/master
 
 	DECLARE_READ8_MEMBER( read );
 	DECLARE_WRITE8_MEMBER( write );
@@ -101,6 +139,7 @@ public:
 	DECLARE_WRITE_LINE_MEMBER( ext_sync_w );
 	DECLARE_WRITE_LINE_MEMBER( lpen_w );
 
+<<<<<<< HEAD
 	DECLARE_WRITE8_MEMBER( bank_w );
 	DECLARE_READ8_MEMBER( vram_r );
 	DECLARE_WRITE8_MEMBER( vram_w );
@@ -114,6 +153,17 @@ protected:
 	virtual void device_start();
 	virtual void device_reset();
 	virtual void device_timer(emu_timer &timer, device_timer_id id, int param, void *ptr);
+=======
+	uint32_t screen_update(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect);
+	virtual const tiny_rom_entry *device_rom_region() const override;
+	virtual space_config_vector memory_space_config() const override;
+
+protected:
+	// device-level overrides
+	virtual void device_start() override;
+	virtual void device_reset() override;
+	virtual void device_timer(emu_timer &timer, device_timer_id id, int param, void *ptr) override;
+>>>>>>> upstream/master
 
 private:
 	enum
@@ -123,6 +173,7 @@ private:
 		TIMER_BLANK
 	};
 
+<<<<<<< HEAD
 	inline UINT8 readbyte(offs_t address);
 	inline void writebyte(offs_t address, UINT8 data);
 	inline UINT16 readword(offs_t address);
@@ -132,21 +183,42 @@ private:
 	inline void fifo_set_direction(int dir);
 	inline void queue(UINT8 data, int flag);
 	inline void dequeue(UINT8 *data, int *flag);
+=======
+	inline uint8_t readbyte(offs_t address);
+	inline void writebyte(offs_t address, uint8_t data);
+	inline uint16_t readword(offs_t address);
+	inline void writeword(offs_t address, uint16_t data);
+	inline void fifo_clear();
+	inline int fifo_param_count();
+	inline void fifo_set_direction(int dir);
+	inline void queue(uint8_t data, int flag);
+	inline void dequeue(uint8_t *data, int *flag);
+>>>>>>> upstream/master
 	inline void update_vsync_timer(int state);
 	inline void update_hsync_timer(int state);
 	inline void update_blank_timer(int state);
 	inline void recompute_parameters();
 	inline void reset_figs_param();
+<<<<<<< HEAD
 	inline void read_vram(UINT8 type, UINT8 mod);
 	inline void write_vram(UINT8 type, UINT8 mod);
 	inline void get_text_partition(int index, UINT32 *sad, UINT16 *len, int *im, int *wd);
 	inline void get_graphics_partition(int index, UINT32 *sad, UINT16 *len, int *im, int *wd);
 
 	void draw_pixel(int x, int y, int xi, UINT16 tile_data);
+=======
+	inline void read_vram(uint8_t type, uint8_t mod);
+	inline void write_vram(uint8_t type, uint8_t mod);
+	inline void get_text_partition(int index, uint32_t *sad, uint16_t *len, int *im, int *wd);
+	inline void get_graphics_partition(int index, uint32_t *sad, uint16_t *len, int *im, int *wd);
+
+	void draw_pixel(int x, int y, int xi, uint16_t tile_data);
+>>>>>>> upstream/master
 	void draw_line(int x, int y);
 	void draw_rectangle(int x, int y);
 	void draw_arc(int x, int y);
 	void draw_char(int x, int y);
+<<<<<<< HEAD
 	int translate_command(UINT8 data);
 	void process_fifo();
 	void continue_command();
@@ -156,12 +228,24 @@ private:
 
 	upd7220_display_pixels_delegate     m_display_cb;
 	upd7220_draw_text_delegate          m_draw_text_cb;
+=======
+	int translate_command(uint8_t data);
+	void process_fifo();
+	void continue_command();
+	void update_text(bitmap_rgb32 &bitmap, const rectangle &cliprect);
+	void draw_graphics_line(bitmap_rgb32 &bitmap, uint32_t addr, int y, int wd, int pitch);
+	void update_graphics(bitmap_rgb32 &bitmap, const rectangle &cliprect, int force_bitmap);
+
+	display_pixels_delegate     m_display_cb;
+	draw_text_delegate          m_draw_text_cb;
+>>>>>>> upstream/master
 
 	devcb_write_line   m_write_drq;
 	devcb_write_line   m_write_hsync;
 	devcb_write_line   m_write_vsync;
 	devcb_write_line   m_write_blank;
 
+<<<<<<< HEAD
 	UINT16 m_mask;                  // mask register
 	UINT8 m_pitch;                  // number of word addresses in display memory in the horizontal direction
 	UINT32 m_ead;                   // execute word address
@@ -177,11 +261,32 @@ private:
 	int m_param_ptr;                // parameter pointer
 
 	UINT8 m_fifo[16];               // FIFO data queue
+=======
+	uint16_t m_mask;                  // mask register
+	uint8_t m_pitch;                  // number of word addresses in display memory in the horizontal direction
+	uint32_t m_ead;                   // execute word address
+	uint16_t m_dad;                   // dot address within the word
+	uint32_t m_lad;                   // light pen address
+
+	uint8_t m_ra[16];                 // parameter RAM
+	int m_ra_addr;                  // parameter RAM address
+
+	uint8_t m_sr;                     // status register
+	uint8_t m_cr;                     // command register
+	uint8_t m_pr[17];                 // parameter byte register
+	int m_param_ptr;                // parameter pointer
+
+	uint8_t m_fifo[16];               // FIFO data queue
+>>>>>>> upstream/master
 	int m_fifo_flag[16];            // FIFO flag queue
 	int m_fifo_ptr;                 // FIFO pointer
 	int m_fifo_dir;                 // FIFO direction
 
+<<<<<<< HEAD
 	UINT8 m_mode;                   // mode of operation
+=======
+	uint8_t m_mode;                   // mode of operation
+>>>>>>> upstream/master
 
 	int m_de;                       // display enabled
 	int m_m;                        // 0 = accept external vertical sync (slave mode) / 1 = generate & output vertical sync (master mode)
@@ -204,6 +309,7 @@ private:
 	int m_disp;                     // display zoom factor
 	int m_gchr;                     // zoom factor for graphics character writing and area filling
 
+<<<<<<< HEAD
 	UINT8 m_bitmap_mod;
 
 	struct {
@@ -215,6 +321,19 @@ private:
 		UINT16 m_d1;                // figs param 4:
 		UINT16 m_d2;                // figs param 5:
 		UINT16 m_dm;                // figs param 6:
+=======
+	uint8_t m_bitmap_mod;
+
+	struct {
+		uint8_t m_dir;                // figs param 0: drawing direction
+		uint8_t m_figure_type;        // figs param 1: figure type
+		uint16_t m_dc;                // figs param 2:
+		uint8_t  m_gd;                // mixed mode only
+		uint16_t m_d;                 // figs param 3:
+		uint16_t m_d1;                // figs param 4:
+		uint16_t m_d2;                // figs param 5:
+		uint16_t m_dm;                // figs param 6:
+>>>>>>> upstream/master
 	} m_figs;
 
 	// timers
@@ -227,8 +346,14 @@ private:
 
 
 // device type definition
+<<<<<<< HEAD
 extern const device_type UPD7220;
 
 
 
 #endif
+=======
+DECLARE_DEVICE_TYPE(UPD7220, upd7220_device)
+
+#endif // MAME_VIDEO_UPD7220_H
+>>>>>>> upstream/master

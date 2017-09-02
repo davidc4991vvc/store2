@@ -1,8 +1,15 @@
 // license:BSD-3-Clause
 // copyright-holders:David Haywood
+<<<<<<< HEAD
 #pragma once
 #ifndef __K054338_H__
 #define __K054338_H__
+=======
+#ifndef MAME_VIDEO_K054338_H
+#define MAME_VIDEO_K054338_H
+
+#pragma once
+>>>>>>> upstream/master
 
 #include "k055555.h"
 
@@ -25,8 +32,12 @@ class k054338_device : public device_t,
 						public device_video_interface
 {
 public:
+<<<<<<< HEAD
 	k054338_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
 	~k054338_device() {}
+=======
+	k054338_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
+>>>>>>> upstream/master
 
 	// static configuration
 	static void set_mixer_tag(device_t &device, const char  *tag) { downcast<k054338_device &>(device).m_k055555_tag = tag; }
@@ -38,7 +49,11 @@ public:
 	DECLARE_READ16_MEMBER( word_r );        // CLTC
 
 	int register_r(int reg);
+<<<<<<< HEAD
 	void update_all_shadows(int rushingheroes_hack, palette_device *palette);          // called at the beginning of SCREEN_UPDATE()
+=======
+	void update_all_shadows(int rushingheroes_hack, palette_device &palette);          // called at the beginning of SCREEN_UPDATE()
+>>>>>>> upstream/master
 	void fill_solid_bg(bitmap_rgb32 &bitmap, const rectangle &cliprect);             // solid backcolor fill
 	void fill_backcolor(bitmap_rgb32 &bitmap, const rectangle &cliprect, const pen_t *pal_ptr, int mode);  // solid or gradient fill using k055555
 	int  set_alpha_level(int pblend);                         // blend style 0-2
@@ -47,12 +62,21 @@ public:
 
 protected:
 	// device-level overrides
+<<<<<<< HEAD
 	virtual void device_start();
 	virtual void device_reset();
 
 private:
 	// internal state
 	UINT16      m_regs[32];
+=======
+	virtual void device_start() override;
+	virtual void device_reset() override;
+
+private:
+	// internal state
+	uint16_t      m_regs[32];
+>>>>>>> upstream/master
 	int         m_shd_rgb[9];
 	int         m_alpha_inv;
 	const char  *m_k055555_tag;
@@ -60,7 +84,11 @@ private:
 	k055555_device *m_k055555;  /* used to fill BG color */
 };
 
+<<<<<<< HEAD
 extern const device_type K054338;
+=======
+DECLARE_DEVICE_TYPE(K054338, k054338_device)
+>>>>>>> upstream/master
 
 
 #define MCFG_K054338_MIXER(_tag) \
@@ -71,4 +99,8 @@ extern const device_type K054338;
 
 #define MCFG_K054338_SET_SCREEN MCFG_VIDEO_SET_SCREEN
 
+<<<<<<< HEAD
 #endif
+=======
+#endif // MAME_VIDEO_K054338_H
+>>>>>>> upstream/master

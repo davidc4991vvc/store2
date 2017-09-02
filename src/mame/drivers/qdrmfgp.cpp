@@ -1,5 +1,10 @@
+<<<<<<< HEAD
 // license:???
 // copyright-holders:Eisuke Watanabe
+=======
+// license:BSD-3-Clause
+// copyright-holders:Hau
+>>>>>>> upstream/master
 /***************************************************************************
 
 Quiz Do Re Mi Fa Grand Prix (Japan)     (GQ460) (c)1994 Konami
@@ -16,7 +21,11 @@ TODO:
   command
 
 --
+<<<<<<< HEAD
 driver by Eisuke Watanabe
+=======
+driver by Hau
+>>>>>>> upstream/master
 
 Note:
 GP1 HDD data contents:
@@ -25,11 +34,21 @@ GP1 HDD data contents:
 ***************************************************************************/
 
 #include "emu.h"
+<<<<<<< HEAD
 #include "cpu/m68000/m68000.h"
 #include "machine/ataintf.h"
 #include "sound/k054539.h"
 #include "machine/nvram.h"
 #include "includes/qdrmfgp.h"
+=======
+#include "includes/qdrmfgp.h"
+
+#include "cpu/m68000/m68000.h"
+#include "machine/ataintf.h"
+#include "machine/nvram.h"
+#include "sound/k054539.h"
+#include "speaker.h"
+>>>>>>> upstream/master
 
 
 #define IDE_HACK    1
@@ -137,7 +156,11 @@ WRITE16_MEMBER(qdrmfgp_state::gp2_control_w)
 
 READ16_MEMBER(qdrmfgp_state::v_rom_r)
 {
+<<<<<<< HEAD
 	UINT8 *mem8 = memregion("gfx1")->base();
+=======
+	uint8_t *mem8 = memregion("gfx1")->base();
+>>>>>>> upstream/master
 	int bank = m_k056832->word_r(space, 0x34/2, 0xffff);
 
 	offset += bank * 0x800 * 4;
@@ -429,7 +452,11 @@ static INPUT_PORTS_START( qdrmfgp )
 	PORT_DIPSETTING(      0x0000, DEF_STR( Very_Hard ) )
 
 	PORT_START("SENSOR")
+<<<<<<< HEAD
 	PORT_BIT( 0x0003, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, qdrmfgp_state,battery_sensor_r, NULL)   /* battery power sensor */
+=======
+	PORT_BIT( 0x0003, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, qdrmfgp_state,battery_sensor_r, nullptr)   /* battery power sensor */
+>>>>>>> upstream/master
 	PORT_BIT( 0x0004, IP_ACTIVE_LOW, IPT_SERVICE2 )
 	PORT_BIT( 0x0008, IP_ACTIVE_LOW, IPT_SERVICE3 )
 	PORT_BIT( 0xfff0, IP_ACTIVE_LOW, IPT_UNUSED )
@@ -509,7 +536,11 @@ static INPUT_PORTS_START( qdrmfgp2 )
 	PORT_DIPSETTING(      0x0000, DEF_STR( Very_Hard ) )
 
 	PORT_START("SENSOR")
+<<<<<<< HEAD
 	PORT_BIT( 0x0003, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, qdrmfgp_state,battery_sensor_r, NULL)   /* battery power sensor */
+=======
+	PORT_BIT( 0x0003, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, qdrmfgp_state,battery_sensor_r, nullptr)   /* battery power sensor */
+>>>>>>> upstream/master
 	PORT_BIT( 0x0004, IP_ACTIVE_LOW, IPT_SERVICE2 )
 	PORT_BIT( 0x0008, IP_ACTIVE_LOW, IPT_SERVICE3 )
 	PORT_BIT( 0xfff0, IP_ACTIVE_LOW, IPT_UNUSED )
@@ -552,7 +583,12 @@ MACHINE_START_MEMBER(qdrmfgp_state,qdrmfgp)
 MACHINE_START_MEMBER(qdrmfgp_state,qdrmfgp2)
 {
 	/* sound irq (CCU? 240Hz) */
+<<<<<<< HEAD
 	machine().scheduler().timer_pulse(attotime::from_hz(XTAL_18_432MHz/76800), timer_expired_delegate(FUNC(qdrmfgp_state::gp2_timer_callback),this));
+=======
+	m_gp2_timer = machine().scheduler().timer_alloc(timer_expired_delegate(FUNC(qdrmfgp_state::gp2_timer_callback), this));
+	m_gp2_timer->adjust(attotime::from_hz(XTAL_18_432MHz/76800), 0, attotime::from_hz(XTAL_18_432MHz/76800));
+>>>>>>> upstream/master
 
 	MACHINE_START_CALL_MEMBER( qdrmfgp );
 }
@@ -571,7 +607,11 @@ void qdrmfgp_state::machine_reset()
  *  Machine driver
  *
  *************************************/
+<<<<<<< HEAD
 static MACHINE_CONFIG_START( qdrmfgp, qdrmfgp_state )
+=======
+static MACHINE_CONFIG_START( qdrmfgp )
+>>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", M68000, XTAL_32MHz/2) /*  16.000 MHz */
@@ -581,7 +621,11 @@ static MACHINE_CONFIG_START( qdrmfgp, qdrmfgp_state )
 	MCFG_MACHINE_START_OVERRIDE(qdrmfgp_state,qdrmfgp)
 	MCFG_NVRAM_ADD_1FILL("nvram")
 
+<<<<<<< HEAD
 	MCFG_ATA_INTERFACE_ADD("ata", ata_devices, "hdd", NULL, true)
+=======
+	MCFG_ATA_INTERFACE_ADD("ata", ata_devices, "hdd", nullptr, true)
+>>>>>>> upstream/master
 	MCFG_ATA_INTERFACE_IRQ_HANDLER(WRITELINE(qdrmfgp_state, ide_interrupt))
 
 	/* video hardware */
@@ -598,12 +642,18 @@ static MACHINE_CONFIG_START( qdrmfgp, qdrmfgp_state )
 
 	MCFG_VIDEO_START_OVERRIDE(qdrmfgp_state,qdrmfgp)
 
+<<<<<<< HEAD
 	MCFG_GFXDECODE_ADD("gfxdecode", "palette", empty)
 
 	MCFG_DEVICE_ADD("k056832", K056832, 0)
 	MCFG_K056832_CB(qdrmfgp_state, qdrmfgp_tile_callback)
 	MCFG_K056832_CONFIG("gfx1", 0, K056832_BPP_4dj, 1, 0, "none")
 	MCFG_K056832_GFXDECODE("gfxdecode")
+=======
+	MCFG_DEVICE_ADD("k056832", K056832, 0)
+	MCFG_K056832_CB(qdrmfgp_state, qdrmfgp_tile_callback)
+	MCFG_K056832_CONFIG("gfx1", K056832_BPP_4dj, 1, 0, "none")
+>>>>>>> upstream/master
 	MCFG_K056832_PALETTE("palette")
 
 	MCFG_DEVICE_ADD("k053252", K053252, XTAL_32MHz/4)
@@ -618,7 +668,11 @@ static MACHINE_CONFIG_START( qdrmfgp, qdrmfgp_state )
 	MCFG_SOUND_ROUTE(1, "rspeaker", 1.0)
 MACHINE_CONFIG_END
 
+<<<<<<< HEAD
 static MACHINE_CONFIG_START( qdrmfgp2, qdrmfgp_state )
+=======
+static MACHINE_CONFIG_START( qdrmfgp2 )
+>>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", M68000, XTAL_32MHz/2) /*  16.000 MHz */
@@ -628,7 +682,11 @@ static MACHINE_CONFIG_START( qdrmfgp2, qdrmfgp_state )
 	MCFG_MACHINE_START_OVERRIDE(qdrmfgp_state,qdrmfgp2)
 	MCFG_NVRAM_ADD_1FILL("nvram")
 
+<<<<<<< HEAD
 	MCFG_ATA_INTERFACE_ADD("ata", ata_devices, "hdd", NULL, true)
+=======
+	MCFG_ATA_INTERFACE_ADD("ata", ata_devices, "hdd", nullptr, true)
+>>>>>>> upstream/master
 	MCFG_ATA_INTERFACE_IRQ_HANDLER(WRITELINE(qdrmfgp_state, gp2_ide_interrupt))
 
 	/* video hardware */
@@ -645,12 +703,18 @@ static MACHINE_CONFIG_START( qdrmfgp2, qdrmfgp_state )
 
 	MCFG_VIDEO_START_OVERRIDE(qdrmfgp_state,qdrmfgp2)
 
+<<<<<<< HEAD
 	MCFG_GFXDECODE_ADD("gfxdecode", "palette", empty)
 
 	MCFG_DEVICE_ADD("k056832", K056832, 0)
 	MCFG_K056832_CB(qdrmfgp_state, qdrmfgp2_tile_callback)
 	MCFG_K056832_CONFIG("gfx1", 0, K056832_BPP_4dj, 1, 0, "none")
 	MCFG_K056832_GFXDECODE("gfxdecode")
+=======
+	MCFG_DEVICE_ADD("k056832", K056832, 0)
+	MCFG_K056832_CB(qdrmfgp_state, qdrmfgp2_tile_callback)
+	MCFG_K056832_CONFIG("gfx1", K056832_BPP_4dj, 1, 0, "none")
+>>>>>>> upstream/master
 	MCFG_K056832_PALETTE("palette")
 
 	MCFG_DEVICE_ADD("k053252", K053252, XTAL_32MHz/4)
@@ -712,6 +776,12 @@ ROM_END
  *
  *************************************/
 
+<<<<<<< HEAD
 /*     year  rom       clone     machine   inputs    init */
 GAME(  1994, qdrmfgp,  0,        qdrmfgp,  qdrmfgp, driver_device,  0,        ROT0, "Konami", "Quiz Do Re Mi Fa Grand Prix (Japan)", 0 )
 GAME(  1995, qdrmfgp2, 0,        qdrmfgp2, qdrmfgp2, driver_device, 0,        ROT0, "Konami", "Quiz Do Re Mi Fa Grand Prix 2 - Shin-Kyoku Nyuukadayo (Japan)", 0 )
+=======
+/*     year  rom       clone     machine   inputs    state          init */
+GAME(  1994, qdrmfgp,  0,        qdrmfgp,  qdrmfgp,  qdrmfgp_state, 0,        ROT0, "Konami", "Quiz Do Re Mi Fa Grand Prix (Japan)", 0 )
+GAME(  1995, qdrmfgp2, 0,        qdrmfgp2, qdrmfgp2, qdrmfgp_state, 0,        ROT0, "Konami", "Quiz Do Re Mi Fa Grand Prix 2 - Shin-Kyoku Nyuukadayo (Japan)", 0 )
+>>>>>>> upstream/master

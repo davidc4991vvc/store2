@@ -9,13 +9,18 @@
 #define NLD_FOURTERM_H_
 
 
+<<<<<<< HEAD
 #include "nl_base.h"
 #include "nld_twoterm.h"
+=======
+#include "../nl_setup.h"
+>>>>>>> upstream/master
 
 // ----------------------------------------------------------------------------------------
 // Macros
 // ----------------------------------------------------------------------------------------
 
+<<<<<<< HEAD
 #define VCCS(_name)                                                            \
 		NET_REGISTER_DEV(VCCS, _name)
 
@@ -192,5 +197,18 @@ protected:
 
 NETLIB_NAMESPACE_DEVICES_END()
 
+=======
+#define VCCS(name)                                                            \
+		NET_REGISTER_DEV(VCCS, name)
+
+#define CCCS(name)                                                            \
+		NET_REGISTER_DEV(CCCS, name)
+
+#define VCVS(name)                                                            \
+		NET_REGISTER_DEV(VCVS, name)
+
+#define LVCCS(name)                                                           \
+		NET_REGISTER_DEV(LVCCS, name)
+>>>>>>> upstream/master
 
 #endif /* NLD_FOURTERM_H_ */

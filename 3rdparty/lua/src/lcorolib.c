@@ -1,5 +1,9 @@
 /*
+<<<<<<< HEAD
 ** $Id: lcorolib.c,v 1.9 2014/11/02 19:19:04 roberto Exp $
+=======
+** $Id: lcorolib.c,v 1.10 2016/04/11 19:19:55 roberto Exp $
+>>>>>>> upstream/master
 ** Coroutine Library
 ** See Copyright Notice in lua.h
 */
@@ -75,7 +79,11 @@ static int luaB_auxwrap (lua_State *L) {
   lua_State *co = lua_tothread(L, lua_upvalueindex(1));
   int r = auxresume(L, co, lua_gettop(L));
   if (r < 0) {
+<<<<<<< HEAD
     if (lua_isstring(L, -1)) {  /* error object is a string? */
+=======
+    if (lua_type(L, -1) == LUA_TSTRING) {  /* error object is a string? */
+>>>>>>> upstream/master
       luaL_where(L, 1);  /* add extra info */
       lua_insert(L, -2);
       lua_concat(L, 2);

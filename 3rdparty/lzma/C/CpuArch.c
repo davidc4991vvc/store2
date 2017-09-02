@@ -1,5 +1,11 @@
 /* CpuArch.c -- CPU specific code
+<<<<<<< HEAD
 2010-10-26: Igor Pavlov : Public domain */
+=======
+2016-02-25: Igor Pavlov : Public domain */
+
+#include "Precomp.h"
+>>>>>>> upstream/master
 
 #include "CpuArch.h"
 
@@ -9,6 +15,13 @@
 #define USE_ASM
 #endif
 
+<<<<<<< HEAD
+=======
+#if !defined(USE_ASM) && _MSC_VER >= 1500
+#include <intrin.h>
+#endif
+
+>>>>>>> upstream/master
 #if defined(USE_ASM) && !defined(MY_CPU_AMD64)
 static UInt32 CheckFlag(UInt32 flag)
 {
@@ -39,7 +52,12 @@ static UInt32 CheckFlag(UInt32 flag)
     "push %%EDX\n\t"
     "popf\n\t"
     "andl %%EAX, %0\n\t":
+<<<<<<< HEAD
     "=c" (flag) : "c" (flag));
+=======
+    "=c" (flag) : "c" (flag) :
+    "%eax", "%edx");
+>>>>>>> upstream/master
   #endif
   return flag;
 }
@@ -48,7 +66,11 @@ static UInt32 CheckFlag(UInt32 flag)
 #define CHECK_CPUID_IS_SUPPORTED
 #endif
 
+<<<<<<< HEAD
 static void MyCPUID(UInt32 function, UInt32 *a, UInt32 *b, UInt32 *c, UInt32 *d)
+=======
+void MyCPUID(UInt32 function, UInt32 *a, UInt32 *b, UInt32 *c, UInt32 *d)
+>>>>>>> upstream/master
 {
   #ifdef USE_ASM
 
@@ -72,6 +94,7 @@ static void MyCPUID(UInt32 function, UInt32 *a, UInt32 *b, UInt32 *c, UInt32 *d)
 
   #else
 
+<<<<<<< HEAD
 	#ifdef __PIC__
 	__asm__ __volatile__ (
 	"mov %%ebx, %%edi;"
@@ -94,6 +117,32 @@ static void MyCPUID(UInt32 function, UInt32 *a, UInt32 *b, UInt32 *c, UInt32 *d)
   
 	#endif
 
+=======
+  __asm__ __volatile__ (
+  #if defined(MY_CPU_AMD64) && defined(__PIC__)
+    "mov %%rbx, %%rdi;"
+    "cpuid;"
+    "xchg %%rbx, %%rdi;"
+    : "=a" (*a) ,
+      "=D" (*b) ,
+  #elif defined(MY_CPU_X86) && defined(__PIC__)
+    "mov %%ebx, %%edi;"
+    "cpuid;"
+    "xchgl %%ebx, %%edi;"
+    : "=a" (*a) ,
+      "=D" (*b) ,
+  #else
+    "cpuid"
+    : "=a" (*a) ,
+      "=b" (*b) ,
+  #endif
+      "=c" (*c) ,
+      "=d" (*d)
+    : "0" (function)) ;
+
+  #endif
+  
+>>>>>>> upstream/master
   #else
 
   int CPUInfo[4];
@@ -114,7 +163,11 @@ Bool x86cpuid_CheckAndRead(Cx86cpuid *p)
   return True;
 }
 
+<<<<<<< HEAD
 static UInt32 kVendors[][3] =
+=======
+static const UInt32 kVendors[][3] =
+>>>>>>> upstream/master
 {
   { 0x756E6547, 0x49656E69, 0x6C65746E},
   { 0x68747541, 0x69746E65, 0x444D4163},
@@ -135,27 +188,56 @@ int x86cpuid_GetFirm(const Cx86cpuid *p)
   return -1;
 }
 
+<<<<<<< HEAD
 Bool CPU_Is_InOrder(void)
+=======
+Bool CPU_Is_InOrder()
+>>>>>>> upstream/master
 {
   Cx86cpuid p;
   int firm;
   UInt32 family, model;
   if (!x86cpuid_CheckAndRead(&p))
     return True;
+<<<<<<< HEAD
   family = x86cpuid_GetFamily(&p);
   model = x86cpuid_GetModel(&p);
   firm = x86cpuid_GetFirm(&p);
   switch (firm)
   {
     case CPU_FIRM_INTEL: return (family < 6 || (family == 6 && model == 0x100C));
+=======
+
+  family = x86cpuid_GetFamily(p.ver);
+  model = x86cpuid_GetModel(p.ver);
+  
+  firm = x86cpuid_GetFirm(&p);
+
+  switch (firm)
+  {
+    case CPU_FIRM_INTEL: return (family < 6 || (family == 6 && (
+        /* In-Order Atom CPU */
+           model == 0x1C  /* 45 nm, N4xx, D4xx, N5xx, D5xx, 230, 330 */
+        || model == 0x26  /* 45 nm, Z6xx */
+        || model == 0x27  /* 32 nm, Z2460 */
+        || model == 0x35  /* 32 nm, Z2760 */
+        || model == 0x36  /* 32 nm, N2xxx, D2xxx */
+        )));
+>>>>>>> upstream/master
     case CPU_FIRM_AMD: return (family < 5 || (family == 5 && (model < 6 || model == 0xA)));
     case CPU_FIRM_VIA: return (family < 6 || (family == 6 && model < 0xF));
   }
   return True;
 }
 
+<<<<<<< HEAD
 #if !defined(MY_CPU_AMD64) && defined(_WIN32_7Z)
 static Bool CPU_Sys_Is_SSE_Supported(void)
+=======
+#if !defined(MY_CPU_AMD64) && defined(_WIN32)
+#include <windows.h>
+static Bool CPU_Sys_Is_SSE_Supported()
+>>>>>>> upstream/master
 {
   OSVERSIONINFO vi;
   vi.dwOSVersionInfoSize = sizeof(vi);
@@ -168,7 +250,11 @@ static Bool CPU_Sys_Is_SSE_Supported(void)
 #define CHECK_SYS_SSE_SUPPORT
 #endif
 
+<<<<<<< HEAD
 Bool CPU_Is_Aes_Supported(void)
+=======
+Bool CPU_Is_Aes_Supported()
+>>>>>>> upstream/master
 {
   Cx86cpuid p;
   CHECK_SYS_SSE_SUPPORT

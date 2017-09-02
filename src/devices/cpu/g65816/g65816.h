@@ -1,9 +1,16 @@
 // license:BSD-3-Clause
 // copyright-holders:Karl Stenerud
+<<<<<<< HEAD
 #pragma once
 
 #ifndef __G65816_H__
 #define __G65816_H__
+=======
+#ifndef MAME_CPU_G65816_G65816_H
+#define MAME_CPU_G65816_G65816_H
+
+#pragma once
+>>>>>>> upstream/master
 
 #include "g65816cm.h"
 
@@ -45,6 +52,7 @@ enum
 #define G65816_INT_NMI G65816_LINE_NMI
 
 
+<<<<<<< HEAD
 /* Registers - used by g65816_set_reg() and g65816_get_reg() */
 enum
 {
@@ -55,16 +63,23 @@ enum
 };
 
 
+=======
+>>>>>>> upstream/master
 class g65816_device : public cpu_device
 {
 public:
 	// construction/destruction
+<<<<<<< HEAD
 	g65816_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
 	g65816_device(const machine_config &mconfig, device_type type, const char *name, const char *tag, device_t *owner, UINT32 clock, const char *shortname, const char *source, int cpu_type, address_map_constructor internal = NULL);
+=======
+	g65816_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
+>>>>>>> upstream/master
 
 	void set_read_vector_callback(read8_delegate read_vector);
 
 protected:
+<<<<<<< HEAD
 	// device-level overrides
 	virtual void device_start();
 	virtual void device_reset();
@@ -88,40 +103,102 @@ protected:
 	virtual UINT32 disasm_min_opcode_bytes() const { return 1; }
 	virtual UINT32 disasm_max_opcode_bytes() const { return 4; }
 	virtual offs_t disasm_disassemble(char *buffer, offs_t pc, const UINT8 *oprom, const UINT8 *opram, UINT32 options);
+=======
+	/* Registers - used by g65816_set_reg() and g65816_get_reg() */
+	enum
+	{
+		G65816_PC=1, G65816_S, G65816_P, G65816_A, G65816_X, G65816_Y,
+		G65816_PB, G65816_DB, G65816_D, G65816_E,
+		G65816_NMI_STATE, G65816_IRQ_STATE,
+		_5A22_FASTROM
+	};
+
+	g65816_device(const machine_config &mconfig, device_type type, const char *tag, device_t *owner, uint32_t clock, int cpu_type, address_map_constructor internal);
+
+	// device-level overrides
+	virtual void device_start() override;
+	virtual void device_reset() override;
+
+	// device_execute_interface overrides
+	virtual uint32_t execute_min_cycles() const override { return 1; }
+	virtual uint32_t execute_max_cycles() const override { return 20; }
+	virtual uint32_t execute_input_lines() const override { return 5; }
+	virtual void execute_run() override;
+	virtual void execute_set_input(int inputnum, int state) override;
+
+	// device_memory_interface overrides
+	virtual space_config_vector memory_space_config() const override;
+
+	// device_state_interface overrides
+	virtual void state_import(const device_state_entry &entry) override;
+	virtual void state_export(const device_state_entry &entry) override;
+	virtual void state_string_export(const device_state_entry &entry, std::string &str) const override;
+
+	// device_disasm_interface overrides
+	virtual uint32_t disasm_min_opcode_bytes() const override { return 1; }
+	virtual uint32_t disasm_max_opcode_bytes() const override { return 4; }
+	virtual offs_t disasm_disassemble(std::ostream &stream, offs_t pc, const uint8_t *oprom, const uint8_t *opram, uint32_t options) override;
+>>>>>>> upstream/master
 
 	address_space_config m_program_config;
 
 	typedef void (g65816_device::*opcode_func) ();
+<<<<<<< HEAD
 	typedef uint (g65816_device::*get_reg_func)(int regnum);
 	typedef void (g65816_device::*set_reg_func)(int regnum, uint val);
+=======
+	typedef unsigned (g65816_device::*get_reg_func)(int regnum);
+	typedef void (g65816_device::*set_reg_func)(int regnum, unsigned val);
+>>>>>>> upstream/master
 	typedef void (g65816_device::*set_line_func)(int line, int state);
 	typedef int (g65816_device::*execute_func)(int cycles);
 
 	static const opcode_func g65816i_opcodes_M0X0[];
+<<<<<<< HEAD
 	uint g65816i_get_reg_M0X0(int regnum);
 	void g65816i_set_reg_M0X0(int regnum, uint val);
+=======
+	unsigned g65816i_get_reg_M0X0(int regnum);
+	void g65816i_set_reg_M0X0(int regnum, unsigned val);
+>>>>>>> upstream/master
 	void g65816i_set_line_M0X0(int line, int state);
 	int  g65816i_execute_M0X0(int cycles);
 
 	static const opcode_func g65816i_opcodes_M0X1[];
+<<<<<<< HEAD
 	uint g65816i_get_reg_M0X1(int regnum);
 	void g65816i_set_reg_M0X1(int regnum, uint val);
+=======
+	unsigned g65816i_get_reg_M0X1(int regnum);
+	void g65816i_set_reg_M0X1(int regnum, unsigned val);
+>>>>>>> upstream/master
 	void g65816i_set_line_M0X1(int line, int state);
 	int  g65816i_execute_M0X1(int cycles);
 
 	static const opcode_func g65816i_opcodes_M1X0[];
+<<<<<<< HEAD
 	uint g65816i_get_reg_M1X0(int regnum);
 	void g65816i_set_reg_M1X0(int regnum, uint val);
+=======
+	unsigned g65816i_get_reg_M1X0(int regnum);
+	void g65816i_set_reg_M1X0(int regnum, unsigned val);
+>>>>>>> upstream/master
 	void g65816i_set_line_M1X0(int line, int state);
 	int  g65816i_execute_M1X0(int cycles);
 
 	static const opcode_func g65816i_opcodes_M1X1[];
+<<<<<<< HEAD
 	uint g65816i_get_reg_M1X1(int regnum);
 	void g65816i_set_reg_M1X1(int regnum, uint val);
+=======
+	unsigned g65816i_get_reg_M1X1(int regnum);
+	void g65816i_set_reg_M1X1(int regnum, unsigned val);
+>>>>>>> upstream/master
 	void g65816i_set_line_M1X1(int line, int state);
 	int  g65816i_execute_M1X1(int cycles);
 
 	static const opcode_func g65816i_opcodes_E[];
+<<<<<<< HEAD
 	uint g65816i_get_reg_E(int regnum);
 	void g65816i_set_reg_E(int regnum, uint val);
 	void g65816i_set_line_E(int line, int state);
@@ -129,6 +206,15 @@ protected:
 
 	void g65816i_set_execution_mode(uint mode);
 	int bus_5A22_cycle_burst(uint addr);
+=======
+	unsigned g65816i_get_reg_E(int regnum);
+	void g65816i_set_reg_E(int regnum, unsigned val);
+	void g65816i_set_line_E(int line, int state);
+	int  g65816i_execute_E(int cycles);
+
+	void g65816i_set_execution_mode(unsigned mode);
+	int bus_5A22_cycle_burst(unsigned addr);
+>>>>>>> upstream/master
 	unsigned g65816_get_pc();
 	void g65816_set_pc(unsigned val);
 	unsigned g65816_get_sp();
@@ -136,6 +222,7 @@ protected:
 	unsigned g65816_get_reg(int regnum);
 	void g65816_set_reg(int regnum, unsigned value);
 	void g65816_restore_state();
+<<<<<<< HEAD
 	uint g65816i_read_8_normal(uint address);
 	uint g65816i_read_8_immediate(uint address);
 	uint g65816i_read_8_direct(uint address);
@@ -191,12 +278,70 @@ protected:
 	uint EA_AXI();
 	uint EA_S();
 	uint EA_SIY();
+=======
+	unsigned g65816i_read_8_normal(unsigned address);
+	unsigned g65816i_read_8_immediate(unsigned address);
+	unsigned g65816i_read_8_direct(unsigned address);
+	unsigned g65816i_read_8_vector(unsigned address);
+	void g65816i_write_8_normal(unsigned address, unsigned value);
+	void g65816i_write_8_direct(unsigned address, unsigned value);
+	unsigned g65816i_read_16_normal(unsigned address);
+	unsigned g65816i_read_16_immediate(unsigned address);
+	unsigned g65816i_read_16_direct(unsigned address);
+	unsigned g65816i_read_16_vector(unsigned address);
+	void g65816i_write_16_normal(unsigned address, unsigned value);
+	void g65816i_write_16_direct(unsigned address, unsigned value);
+	unsigned g65816i_read_24_normal(unsigned address);
+	unsigned g65816i_read_24_immediate(unsigned address);
+	unsigned g65816i_read_24_direct(unsigned address);
+	void g65816i_push_8(unsigned value);
+	unsigned g65816i_pull_8();
+	void g65816i_push_16(unsigned value);
+	unsigned g65816i_pull_16();
+	void g65816i_push_24(unsigned value);
+	unsigned g65816i_pull_24();
+	void g65816i_jump_16(unsigned address);
+	void g65816i_jump_24(unsigned address);
+	void g65816i_branch_8(unsigned offset);
+	void g65816i_branch_16(unsigned offset);
+	void g65816i_set_flag_mx(unsigned value);
+	void g65816i_set_flag_e(unsigned value);
+	void g65816i_set_flag_i(unsigned value);
+	unsigned g65816i_get_reg_p();
+	void g65816i_set_reg_p(unsigned value);
+	void g65816i_interrupt_hardware(unsigned vector);
+	void g65816i_interrupt_software(unsigned vector);
+	void g65816i_interrupt_nmi();
+	void g65816i_check_maskable_interrupt();
+	unsigned EA_IMM8();
+	unsigned EA_IMM16();
+	unsigned EA_IMM24();
+	unsigned EA_D();
+	unsigned EA_A();
+	unsigned EA_AL();
+	unsigned EA_DX();
+	unsigned EA_DY();
+	unsigned EA_AX();
+	unsigned EA_ALX();
+	unsigned EA_AY();
+	unsigned EA_DI();
+	unsigned EA_DLI();
+	unsigned EA_AI();
+	unsigned EA_ALI();
+	unsigned EA_DXI();
+	unsigned EA_DIY();
+	unsigned EA_DLIY();
+	unsigned EA_AXI();
+	unsigned EA_S();
+	unsigned EA_SIY();
+>>>>>>> upstream/master
 
 	static const get_reg_func s_g65816_get_reg[5];
 	static const set_reg_func s_g65816_set_reg[5];
 	static const set_line_func s_g65816_set_line[5];
 	static const execute_func s_g65816_execute[5];
 
+<<<<<<< HEAD
 	uint m_a;             /* Accumulator */
 	uint m_b;             /* holds high byte of accumulator */
 	uint m_x;             /* Index Register X */
@@ -224,11 +369,41 @@ protected:
 	address_space *m_program;
 	read8_delegate m_read_vector; /* Read vector override */
 	uint m_stopped;       /* Sets how the CPU is stopped */
+=======
+	unsigned m_a;             /* Accumulator */
+	unsigned m_b;             /* holds high byte of accumulator */
+	unsigned m_x;             /* Index Register X */
+	unsigned m_y;             /* Index Register Y */
+	unsigned m_s;             /* Stack Pointer */
+	unsigned m_pc;            /* Program Counter */
+	unsigned m_ppc;           /* Previous Program Counter */
+	unsigned m_pb;            /* Program Bank (shifted left 16) */
+	unsigned m_db;            /* Data Bank (shifted left 16) */
+	unsigned m_d;             /* Direct Register */
+	unsigned m_flag_e;        /* Emulation Mode Flag */
+	unsigned m_flag_m;        /* Memory/Accumulator Select Flag */
+	unsigned m_flag_x;        /* Index Select Flag */
+	unsigned m_flag_n;        /* Negative Flag */
+	unsigned m_flag_v;        /* Overflow Flag */
+	unsigned m_flag_d;        /* Decimal Mode Flag */
+	unsigned m_flag_i;        /* Interrupt Mask Flag */
+	unsigned m_flag_z;        /* Zero Flag (inverted) */
+	unsigned m_flag_c;        /* Carry Flag */
+	unsigned m_line_irq;      /* Status of the IRQ line */
+	unsigned m_line_nmi;      /* Status of the NMI line */
+	unsigned m_fastROM;       /* SNES specific */
+	unsigned m_ir;            /* Instruction Register */
+	unsigned m_irq_delay;     /* delay 1 instruction before checking irq */
+	address_space *m_program;
+	read8_delegate m_read_vector; /* Read vector override */
+	unsigned m_stopped;       /* Sets how the CPU is stopped */
+>>>>>>> upstream/master
 	const opcode_func* m_opcodes;
 	get_reg_func m_get_reg;
 	set_reg_func m_set_reg;
 	set_line_func m_set_line;
 	execute_func m_execute;
+<<<<<<< HEAD
 	uint m_source;
 	uint m_destination;
 	int m_ICount;
@@ -242,6 +417,21 @@ protected:
 	UINT16 m_wrdiv;
 	UINT8 m_dvdd;
 	UINT16 m_rddiv;
+=======
+	unsigned m_source;
+	unsigned m_destination;
+	int m_ICount;
+	int m_cpu_type;
+	uint8_t m_rw8_cycles, m_rw16_cycles, m_rw24_cycles;
+	uint32_t m_debugger_temp;
+
+	/* 5A22 specific registers */
+	uint8_t m_wrmpya, m_wrmpyb;
+	uint16_t m_rdmpy;
+	uint16_t m_wrdiv;
+	uint8_t m_dvdd;
+	uint16_t m_rddiv;
+>>>>>>> upstream/master
 
 	void g65816i_00_M0X0();
 	void g65816i_01_M0X0();
@@ -1529,7 +1719,11 @@ protected:
 class _5a22_device : public g65816_device
 {
 public:
+<<<<<<< HEAD
 	_5a22_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
+=======
+	_5a22_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
+>>>>>>> upstream/master
 
 	DECLARE_WRITE8_MEMBER( wrmpya_w );
 	DECLARE_WRITE8_MEMBER( wrmpyb_w );
@@ -1546,6 +1740,7 @@ public:
 
 protected:
 	// device-level overrides
+<<<<<<< HEAD
 	virtual void device_start();
 	virtual void device_reset();
 
@@ -1561,6 +1756,19 @@ extern const device_type _5A22;
 
 #define CPU_TYPE_G65816 0
 #define CPU_TYPE_5A22 1
+=======
+	virtual void device_start() override;
+	virtual void device_reset() override;
+
+	// device_state_interface overrides
+	virtual void state_import(const device_state_entry &entry) override;
+	virtual void state_export(const device_state_entry &entry) override;
+};
+
+
+DECLARE_DEVICE_TYPE(G65816, g65816_device)
+DECLARE_DEVICE_TYPE(_5A22,  _5a22_device)
+>>>>>>> upstream/master
 
 
 /* ======================================================================== */

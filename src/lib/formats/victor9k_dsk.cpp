@@ -119,18 +119,31 @@ const char *victor9k_format::extensions() const
 	return "img";
 }
 
+<<<<<<< HEAD
 int victor9k_format::find_size(io_generic *io, UINT32 form_factor)
 {
 	UINT64 size = io_generic_size(io);
 	for(int i=0; formats[i].sector_count; i++) {
 		const format &f = formats[i];
 		if(size == (UINT32) f.sector_count*f.sector_base_size*f.head_count)
+=======
+int victor9k_format::find_size(io_generic *io, uint32_t form_factor)
+{
+	uint64_t size = io_generic_size(io);
+	for(int i=0; formats[i].sector_count; i++) {
+		const format &f = formats[i];
+		if(size == (uint32_t) f.sector_count*f.sector_base_size*f.head_count)
+>>>>>>> upstream/master
 			return i;
 	}
 	return -1;
 }
 
+<<<<<<< HEAD
 int victor9k_format::identify(io_generic *io, UINT32 form_factor)
+=======
+int victor9k_format::identify(io_generic *io, uint32_t form_factor)
+>>>>>>> upstream/master
 {
 	int type = find_size(io, form_factor);
 
@@ -140,7 +153,11 @@ int victor9k_format::identify(io_generic *io, UINT32 form_factor)
 	return 0;
 }
 
+<<<<<<< HEAD
 void victor9k_format::log_boot_sector(UINT8 *data)
+=======
+void victor9k_format::log_boot_sector(uint8_t *data)
+>>>>>>> upstream/master
 {
 	// System disc ID
 	osd_printf_verbose("System disc: %s\n", ((data[0] == 0xff) && (data[1] == 0x00)) ? "yes" : "no");
@@ -237,7 +254,11 @@ floppy_image_format_t::desc_e* victor9k_format::get_sector_desc(const format &f,
 	return desc;
 }
 
+<<<<<<< HEAD
 void victor9k_format::build_sector_description(const format &f, UINT8 *sectdata, UINT32 sect_offs, desc_s *sectors, int sector_count) const
+=======
+void victor9k_format::build_sector_description(const format &f, uint8_t *sectdata, uint32_t sect_offs, desc_s *sectors, int sector_count) const
+>>>>>>> upstream/master
 {
 	for (int i = 0; i < sector_count; i++) {
 		sectors[i].data = sectdata + sect_offs;
@@ -248,7 +269,11 @@ void victor9k_format::build_sector_description(const format &f, UINT8 *sectdata,
 	}
 }
 
+<<<<<<< HEAD
 bool victor9k_format::load(io_generic *io, UINT32 form_factor, floppy_image *image)
+=======
+bool victor9k_format::load(io_generic *io, uint32_t form_factor, floppy_image *image)
+>>>>>>> upstream/master
 {
 	int type = find_size(io, form_factor);
 	if(type == -1)
@@ -256,8 +281,13 @@ bool victor9k_format::load(io_generic *io, UINT32 form_factor, floppy_image *ima
 
 	const format &f = formats[type];
 
+<<<<<<< HEAD
 	UINT64 size = io_generic_size(io);
 	dynamic_buffer img;
+=======
+	uint64_t size = io_generic_size(io);
+	std::vector<uint8_t> img;
+>>>>>>> upstream/master
 	img.resize(size);
 
 	io_generic_read(io, &img[0], 0, size);
@@ -332,7 +362,11 @@ const victor9k_format::format victor9k_format::formats[] = {
 	{}
 };
 
+<<<<<<< HEAD
 const UINT32 victor9k_format::cell_size[9] =
+=======
+const uint32_t victor9k_format::cell_size[9] =
+>>>>>>> upstream/master
 {
 	1789, 1896, 2009, 2130, 2272, 2428, 2613, 2847, 2961
 };
@@ -387,7 +421,11 @@ const int victor9k_format::speed_zone[2][80] =
 
 const int victor9k_format::rpm[9] =
 {
+<<<<<<< HEAD
 	252, 267, 283, 300, 320, 342, 368, 401, 417
+=======
+	252, 267, 283, 300, 321, 342, 368, 401, 417
+>>>>>>> upstream/master
 };
 
 bool victor9k_format::save(io_generic *io, floppy_image *image)
@@ -398,7 +436,11 @@ bool victor9k_format::save(io_generic *io, floppy_image *image)
 		for(int track=0; track < f.track_count; track++) {
 			int sector_count = sectors_per_track[head][track];
 			int track_size = compute_track_size(f, head, track);
+<<<<<<< HEAD
 			UINT8 sectdata[40*512];
+=======
+			uint8_t sectdata[40*512];
+>>>>>>> upstream/master
 			desc_s sectors[40];
 			int offset = get_image_offset(f, head, track);
 
@@ -413,8 +455,13 @@ bool victor9k_format::save(io_generic *io, floppy_image *image)
 
 void victor9k_format::extract_sectors(floppy_image *image, const format &f, desc_s *sdesc, int track, int head, int sector_count)
 {
+<<<<<<< HEAD
 	UINT8 bitstream[500000/8];
 	UINT8 sectdata[50000];
+=======
+	uint8_t bitstream[500000/8];
+	uint8_t sectdata[50000];
+>>>>>>> upstream/master
 	desc_xs sectors[256];
 	int track_size;
 
@@ -429,7 +476,11 @@ void victor9k_format::extract_sectors(floppy_image *image, const format &f, desc
 			memset((void *)ds.data, 0, ds.size);
 		else if(xs.size < ds.size) {
 			memcpy((void *)ds.data, xs.data, xs.size);
+<<<<<<< HEAD
 			memset((UINT8 *)ds.data + xs.size, 0, xs.size - ds.size);
+=======
+			memset((uint8_t *)ds.data + xs.size, 0, xs.size - ds.size);
+>>>>>>> upstream/master
 		} else
 			memcpy((void *)ds.data, xs.data, ds.size);
 	}

@@ -24,6 +24,7 @@
 #ifndef NLD_7450_H_
 #define NLD_7450_H_
 
+<<<<<<< HEAD
 #include "nld_signal.h"
 
 #define TTL_7450_ANDORINVERT(_name, _I1, _I2, _I3, _I4)                             \
@@ -54,5 +55,18 @@ NETLIB_DEVICE(7450_dip,
 );
 
 NETLIB_NAMESPACE_DEVICES_END()
+=======
+#include "../nl_setup.h"
+
+#define TTL_7450_ANDORINVERT(name, cI1, cI2, cI3, cI4)                          \
+		NET_REGISTER_DEV(TTL_7450_ANDORINVERT, name)                            \
+		NET_CONNECT(name, A, cI1)                                               \
+		NET_CONNECT(name, B, cI2)                                               \
+		NET_CONNECT(name, C, cI3)                                               \
+		NET_CONNECT(name, D, cI4)
+
+#define TTL_7450_DIP(name)                                                      \
+		NET_REGISTER_DEV(TTL_7450_DIP, name)
+>>>>>>> upstream/master
 
 #endif /* NLD_7450_H_ */

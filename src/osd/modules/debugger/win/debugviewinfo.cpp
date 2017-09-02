@@ -6,11 +6,19 @@
 //
 //============================================================
 
+<<<<<<< HEAD
+=======
+#include "emu.h"
+>>>>>>> upstream/master
 #include "debugviewinfo.h"
 
 #include "debugwininfo.h"
 #include "uimetrics.h"
+<<<<<<< HEAD
 
+=======
+#include "debugger.h"
+>>>>>>> upstream/master
 #include "debug/debugcpu.h"
 
 #include "strconv.h"
@@ -41,14 +49,22 @@ bool debugview_info::s_window_class_registered = false;
 debugview_info::debugview_info(debugger_windows_interface &debugger, debugwin_info &owner, HWND parent, debug_view_type type) :
 	debugbase_info(debugger),
 	m_owner(owner),
+<<<<<<< HEAD
 	m_view(NULL),
 	m_wnd(NULL),
 	m_hscroll(NULL),
 	m_vscroll(NULL)
+=======
+	m_view(nullptr),
+	m_wnd(nullptr),
+	m_hscroll(nullptr),
+	m_vscroll(nullptr)
+>>>>>>> upstream/master
 {
 	register_window_class();
 
 	// create the child view
+<<<<<<< HEAD
 	m_wnd = CreateWindowEx(DEBUG_VIEW_STYLE_EX, TEXT("MAMEDebugView"), NULL, DEBUG_VIEW_STYLE,
 			0, 0, 100, 100, parent, NULL, GetModuleHandleUni(), this);
 	if (m_wnd == NULL)
@@ -60,16 +76,34 @@ debugview_info::debugview_info(debugger_windows_interface &debugger, debugwin_in
 	m_vscroll = CreateWindowEx(VSCROLL_STYLE_EX, TEXT("SCROLLBAR"), NULL, VSCROLL_STYLE,
 			0, 0, CW_USEDEFAULT, 100, m_wnd, NULL, GetModuleHandleUni(), this);
 	if ((m_hscroll == NULL) || (m_vscroll == NULL))
+=======
+	m_wnd = CreateWindowEx(DEBUG_VIEW_STYLE_EX, TEXT("MAMEDebugView"), nullptr, DEBUG_VIEW_STYLE,
+			0, 0, 100, 100, parent, nullptr, GetModuleHandleUni(), this);
+	if (m_wnd == nullptr)
+		goto cleanup;
+
+	// create the scroll bars
+	m_hscroll = CreateWindowEx(HSCROLL_STYLE_EX, TEXT("SCROLLBAR"), nullptr, HSCROLL_STYLE,
+			0, 0, 100, CW_USEDEFAULT, m_wnd, nullptr, GetModuleHandleUni(), this);
+	m_vscroll = CreateWindowEx(VSCROLL_STYLE_EX, TEXT("SCROLLBAR"), nullptr, VSCROLL_STYLE,
+			0, 0, CW_USEDEFAULT, 100, m_wnd, nullptr, GetModuleHandleUni(), this);
+	if ((m_hscroll == nullptr) || (m_vscroll == nullptr))
+>>>>>>> upstream/master
 		goto cleanup;
 
 	// create the debug view
 	m_view = machine().debug_view().alloc_view(type, &debugview_info::static_update, this);
+<<<<<<< HEAD
 	if (m_view == NULL)
+=======
+	if (m_view == nullptr)
+>>>>>>> upstream/master
 		goto cleanup;
 
 	return;
 
 cleanup:
+<<<<<<< HEAD
 	if (m_hscroll != NULL)
 		DestroyWindow(m_hscroll);
 	m_hscroll = NULL;
@@ -82,12 +116,30 @@ cleanup:
 	if (m_view != NULL)
 		machine().debug_view().free_view(*m_view);
 	m_view = NULL;
+=======
+	if (m_hscroll != nullptr)
+		DestroyWindow(m_hscroll);
+	m_hscroll = nullptr;
+	if (m_vscroll != nullptr)
+		DestroyWindow(m_vscroll);
+	m_vscroll = nullptr;
+	if (m_wnd != nullptr)
+		DestroyWindow(m_wnd);
+	m_wnd = nullptr;
+	if (m_view != nullptr)
+		machine().debug_view().free_view(*m_view);
+	m_view = nullptr;
+>>>>>>> upstream/master
 }
 
 
 debugview_info::~debugview_info()
 {
+<<<<<<< HEAD
 	if (m_wnd != NULL)
+=======
+	if (m_wnd != nullptr)
+>>>>>>> upstream/master
 		DestroyWindow(m_wnd);
 	if (m_view)
 		machine().debug_view().free_view(*m_view);
@@ -100,12 +152,17 @@ bool debugview_info::is_valid() const
 }
 
 
+<<<<<<< HEAD
 UINT32 debugview_info::prefwidth() const
+=======
+uint32_t debugview_info::prefwidth() const
+>>>>>>> upstream/master
 {
 	return (m_view->total_size().x * metrics().debug_font_width()) + metrics().vscroll_width();
 }
 
 
+<<<<<<< HEAD
 UINT32 debugview_info::maxwidth()
 {
 	UINT32 max = m_view->total_size().x;
@@ -118,6 +175,20 @@ UINT32 debugview_info::maxwidth()
 			max = chars;
 	}
 	if (cursource != NULL)
+=======
+uint32_t debugview_info::maxwidth()
+{
+	uint32_t max = m_view->total_size().x;
+	debug_view_source const *const cursource = m_view->source();
+	for (const debug_view_source &source : m_view->source_list())
+	{
+		m_view->set_source(source);
+		uint32_t const chars = m_view->total_size().x;
+		if (max < chars)
+			max = chars;
+	}
+	if (cursource != nullptr)
+>>>>>>> upstream/master
 		m_view->set_source(*cursource);
 	return (max * metrics().debug_font_width()) + metrics().vscroll_width();
 }
@@ -179,10 +250,17 @@ void debugview_info::send_pagedown()
 
 char const *debugview_info::source_name() const
 {
+<<<<<<< HEAD
 	if (m_view != NULL)
 	{
 		debug_view_source const *const source = m_view->source();
 		if (source != NULL)
+=======
+	if (m_view != nullptr)
+	{
+		debug_view_source const *const source = m_view->source();
+		if (source != nullptr)
+>>>>>>> upstream/master
 			return source->name();
 	}
 	return "";
@@ -191,6 +269,7 @@ char const *debugview_info::source_name() const
 
 device_t *debugview_info::source_device() const
 {
+<<<<<<< HEAD
 	if (m_view != NULL)
 	{
 		debug_view_source const *const source = m_view->source();
@@ -198,15 +277,31 @@ device_t *debugview_info::source_device() const
 			return source->device();
 	}
 	return NULL;
+=======
+	if (m_view != nullptr)
+	{
+		debug_view_source const *const source = m_view->source();
+		if (source != nullptr)
+			return source->device();
+	}
+	return nullptr;
+>>>>>>> upstream/master
 }
 
 
 bool debugview_info::source_is_visible_cpu() const
 {
+<<<<<<< HEAD
 	if (m_view != NULL)
 	{
 		const debug_view_source *const source = m_view->source();
 		return (source != NULL) && (debug_cpu_get_visible_cpu(machine()) == source->device());
+=======
+	if (m_view != nullptr)
+	{
+		const debug_view_source *const source = m_view->source();
+		return (source != nullptr) && (machine().debugger().cpu().get_visible_cpu() == source->device());
+>>>>>>> upstream/master
 	}
 	return false;
 }
@@ -214,10 +309,17 @@ bool debugview_info::source_is_visible_cpu() const
 
 bool debugview_info::set_source_index(int index)
 {
+<<<<<<< HEAD
 	if (m_view != NULL)
 	{
 		const debug_view_source *const source = m_view->source_list().find(index);
 		if (source != NULL)
+=======
+	if (m_view != nullptr)
+	{
+		const debug_view_source *const source = m_view->source_list().find(index);
+		if (source != nullptr)
+>>>>>>> upstream/master
 		{
 			m_view->set_source(*source);
 			return true;
@@ -229,10 +331,17 @@ bool debugview_info::set_source_index(int index)
 
 bool debugview_info::set_source_for_device(device_t &device)
 {
+<<<<<<< HEAD
 	if (m_view != NULL)
 	{
 		const debug_view_source *const source = m_view->source_for_device(&device);
 		if (source != NULL)
+=======
+	if (m_view != nullptr)
+	{
+		const debug_view_source *const source = m_view->source_for_device(&device);
+		if (source != nullptr)
+>>>>>>> upstream/master
 		{
 			m_view->set_source(*source);
 			return true;
@@ -244,8 +353,13 @@ bool debugview_info::set_source_for_device(device_t &device)
 
 bool debugview_info::set_source_for_visible_cpu()
 {
+<<<<<<< HEAD
 	device_t *const curcpu = debug_cpu_get_visible_cpu(machine());
 	if (curcpu != NULL)
+=======
+	device_t *const curcpu = machine().debugger().cpu().get_visible_cpu();
+	if (curcpu != nullptr)
+>>>>>>> upstream/master
 		return set_source_for_device(*curcpu);
 	else
 		return false;
@@ -255,24 +369,40 @@ bool debugview_info::set_source_for_visible_cpu()
 HWND debugview_info::create_source_combobox(HWND parent, LONG_PTR userdata)
 {
 	// create a combo box
+<<<<<<< HEAD
 	HWND const result = CreateWindowEx(COMBO_BOX_STYLE_EX, TEXT("COMBOBOX"), NULL, COMBO_BOX_STYLE,
 			0, 0, 100, 1000, parent, NULL, GetModuleHandleUni(), NULL);
+=======
+	HWND const result = CreateWindowEx(COMBO_BOX_STYLE_EX, TEXT("COMBOBOX"), nullptr, COMBO_BOX_STYLE,
+			0, 0, 100, 1000, parent, nullptr, GetModuleHandleUni(), nullptr);
+>>>>>>> upstream/master
 	SetWindowLongPtr(result, GWLP_USERDATA, userdata);
 	SendMessage(result, WM_SETFONT, (WPARAM)metrics().debug_font(), (LPARAM)FALSE);
 
 	// populate the combobox
 	debug_view_source const *const cursource = m_view->source();
 	int maxlength = 0;
+<<<<<<< HEAD
 	for (debug_view_source const *source = m_view->first_source(); source != NULL; source = source->next())
+=======
+	for (debug_view_source const *source = m_view->first_source(); source != nullptr; source = source->next())
+>>>>>>> upstream/master
 	{
 		int const length = strlen(source->name());
 		if (length > maxlength)
 			maxlength = length;
+<<<<<<< HEAD
 		TCHAR *t_name = tstring_from_utf8(source->name());
 		SendMessage(result, CB_ADDSTRING, 0, (LPARAM)t_name);
 		osd_free(t_name);
 	}
 	if (cursource != NULL)
+=======
+		auto t_name = osd::text::to_tstring(source->name());
+		SendMessage(result, CB_ADDSTRING, 0, (LPARAM)t_name.c_str());
+	}
+	if (cursource != nullptr)
+>>>>>>> upstream/master
 	{
 		SendMessage(result, CB_SETCURSEL, m_view->source_list().indexof(*cursource), 0);
 		SendMessage(result, CB_SETDROPPEDWIDTH, ((maxlength + 2) * metrics().debug_font_width()) + metrics().vscroll_width(), 0);
@@ -293,10 +423,17 @@ void debugview_info::draw_contents(HDC windc)
 
 	// create a compatible DC and an offscreen bitmap
 	HDC const dc = CreateCompatibleDC(windc);
+<<<<<<< HEAD
 	if (dc == NULL)
 		return;
 	HBITMAP const bitmap = CreateCompatibleBitmap(windc, client.right, client.bottom);
 	if (bitmap == NULL)
+=======
+	if (dc == nullptr)
+		return;
+	HBITMAP const bitmap = CreateCompatibleBitmap(windc, client.right, client.bottom);
+	if (bitmap == nullptr)
+>>>>>>> upstream/master
 	{
 		DeleteDC(dc);
 		return;
@@ -310,14 +447,22 @@ void debugview_info::draw_contents(HDC windc)
 	SetBkMode(dc, TRANSPARENT);
 
 	// iterate over rows and columns
+<<<<<<< HEAD
 	for (UINT32 row = 0; row < visarea.y; row++)
+=======
+	for (uint32_t row = 0; row < visarea.y; row++)
+>>>>>>> upstream/master
 	{
 		// loop twice; once to fill the background and once to draw the text
 		for (int iter = 0; iter < 2; iter++)
 		{
 			COLORREF fgcolor;
 			COLORREF bgcolor = RGB(0xff,0xff,0xff);
+<<<<<<< HEAD
 			HBRUSH bgbrush = NULL;
+=======
+			HBRUSH bgbrush = nullptr;
+>>>>>>> upstream/master
 			int last_attrib = -1;
 			TCHAR buffer[256];
 			int count = 0;
@@ -333,7 +478,11 @@ void debugview_info::draw_contents(HDC windc)
 				bgbrush = CreateSolidBrush(bgcolor);
 
 			// iterate over columns
+<<<<<<< HEAD
 			for (UINT32 col = 0; col < visarea.x; col++)
+=======
+			for (uint32_t col = 0; col < visarea.x; col++)
+>>>>>>> upstream/master
 			{
 				// if the attribute changed, adjust the colors
 				if (viewdata[col].attrib != last_attrib)
@@ -362,7 +511,11 @@ void debugview_info::draw_contents(HDC windc)
 						if (iter == 0)
 							FillRect(dc, &bounds, bgbrush);
 						else
+<<<<<<< HEAD
 							ExtTextOut(dc, bounds.left, bounds.top, 0, NULL, buffer, count, NULL);
+=======
+							ExtTextOut(dc, bounds.left, bounds.top, 0, nullptr, buffer, count, nullptr);
+>>>>>>> upstream/master
 						bounds.left = bounds.right;
 						count = 0;
 					}
@@ -389,7 +542,11 @@ void debugview_info::draw_contents(HDC windc)
 				if (iter == 0)
 					FillRect(dc, &bounds, bgbrush);
 				else
+<<<<<<< HEAD
 					ExtTextOut(dc, bounds.left, bounds.top, 0, NULL, buffer, count, NULL);
+=======
+					ExtTextOut(dc, bounds.left, bounds.top, 0, nullptr, buffer, count, nullptr);
+>>>>>>> upstream/master
 			}
 
 			// erase to the end of the line
@@ -476,9 +633,15 @@ void debugview_info::update()
 
 	// if we hid the scrollbars, make sure we reset the top/left corners
 	if (topleft.y + visiblesize.y > totalsize.y)
+<<<<<<< HEAD
 		topleft.y = MAX(totalsize.y - visiblesize.y, 0);
 	if (topleft.x + visiblesize.x > totalsize.x)
 		topleft.x = MAX(totalsize.x - visiblesize.x, 0);
+=======
+		topleft.y = std::max(totalsize.y - visiblesize.y, 0);
+	if (topleft.x + visiblesize.x > totalsize.x)
+		topleft.x = std::max(totalsize.x - visiblesize.x, 0);
+>>>>>>> upstream/master
 
 	// fill out the scroll info struct for the vertical scrollbar
 	scrollinfo.cbSize = sizeof(scrollinfo);
@@ -505,7 +668,11 @@ void debugview_info::update()
 	m_view->set_visible_position(topleft);
 
 	// invalidate the bounds
+<<<<<<< HEAD
 	InvalidateRect(m_wnd, NULL, FALSE);
+=======
+	InvalidateRect(m_wnd, nullptr, FALSE);
+>>>>>>> upstream/master
 
 	// adjust the bounds of the scrollbars and show/hide them
 	if (m_vscroll)
@@ -523,7 +690,11 @@ void debugview_info::update()
 }
 
 
+<<<<<<< HEAD
 UINT32 debugview_info::process_scroll(WORD type, HWND wnd)
+=======
+uint32_t debugview_info::process_scroll(WORD type, HWND wnd)
+>>>>>>> upstream/master
 {
 	// get the current info
 	SCROLLINFO scrollinfo;
@@ -532,10 +703,17 @@ UINT32 debugview_info::process_scroll(WORD type, HWND wnd)
 	GetScrollInfo(wnd, SB_CTL, &scrollinfo);
 
 	// by default we stay put
+<<<<<<< HEAD
 	INT32 result = scrollinfo.nPos;
 
 	// determine the maximum value
 	INT32 const maxval = (scrollinfo.nMax > scrollinfo.nPage) ? (scrollinfo.nMax - scrollinfo.nPage + 1) : 0;
+=======
+	int32_t result = scrollinfo.nPos;
+
+	// determine the maximum value
+	int32_t const maxval = (scrollinfo.nMax > scrollinfo.nPage) ? (scrollinfo.nMax - scrollinfo.nPage + 1) : 0;
+>>>>>>> upstream/master
 
 	// handle the message
 	switch (type)
@@ -580,7 +758,11 @@ UINT32 debugview_info::process_scroll(WORD type, HWND wnd)
 	scrollinfo.nPos = result;
 	SetScrollInfo(wnd, SB_CTL, &scrollinfo, TRUE);
 
+<<<<<<< HEAD
 	return (UINT32)result;
+=======
+	return (uint32_t)result;
+>>>>>>> upstream/master
 }
 
 
@@ -774,11 +956,19 @@ LRESULT CALLBACK debugview_info::static_view_proc(HWND wnd, UINT message, WPARAM
 		return 0;
 	}
 
+<<<<<<< HEAD
 	debugview_info *const info = (debugview_info *)(FPTR)GetWindowLongPtr(wnd, GWLP_USERDATA);
 	if (info == NULL)
 		return DefWindowProc(wnd, message, wparam, lparam);
 
 	assert((info->m_wnd == wnd) || (info->m_wnd == NULL));
+=======
+	debugview_info *const info = (debugview_info *)(uintptr_t)GetWindowLongPtr(wnd, GWLP_USERDATA);
+	if (info == nullptr)
+		return DefWindowProc(wnd, message, wparam, lparam);
+
+	assert((info->m_wnd == wnd) || (info->m_wnd == nullptr));
+>>>>>>> upstream/master
 	return info->view_proc(message, wparam, lparam);
 }
 
@@ -793,10 +983,17 @@ void debugview_info::register_window_class()
 		wc.lpszClassName    = TEXT("MAMEDebugView");
 		wc.hInstance        = GetModuleHandleUni();
 		wc.lpfnWndProc      = &debugview_info::static_view_proc;
+<<<<<<< HEAD
 		wc.hCursor          = LoadCursor(NULL, IDC_ARROW);
 		wc.hIcon            = LoadIcon(wc.hInstance, MAKEINTRESOURCE(2));
 		wc.lpszMenuName     = NULL;
 		wc.hbrBackground    = NULL;
+=======
+		wc.hCursor          = LoadCursor(nullptr, IDC_ARROW);
+		wc.hIcon            = LoadIcon(wc.hInstance, MAKEINTRESOURCE(2));
+		wc.lpszMenuName     = nullptr;
+		wc.hbrBackground    = nullptr;
+>>>>>>> upstream/master
 		wc.style            = 0;
 		wc.cbClsExtra       = 0;
 		wc.cbWndExtra       = 0;

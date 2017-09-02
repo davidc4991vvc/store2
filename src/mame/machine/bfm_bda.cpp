@@ -10,12 +10,20 @@
 #include "emu.h"
 #include "bfm_bda.h"
 
+<<<<<<< HEAD
 const device_type BFM_BDA = &device_creator<bfm_bda_t>;
+=======
+DEFINE_DEVICE_TYPE(BFM_BDA, bfm_bda_device, "bfm_bda", "BFM BDA VFD controller")
+>>>>>>> upstream/master
 
 
 //I currently use the BDA character set, until a suitable image can be programmed
 
+<<<<<<< HEAD
 static const UINT16 BDAcharset[]=
+=======
+static const uint16_t BDAcharset[]=
+>>>>>>> upstream/master
 {           // FEDC BA98 7654 3210
 	0xA626, // 1010 0110 0010 0110 @.
 	0xE027, // 1110 0000 0010 0111 A.
@@ -83,12 +91,18 @@ static const UINT16 BDAcharset[]=
 	0x4406, // 0100 0100 0000 0110 ?
 };
 
+<<<<<<< HEAD
 bfm_bda_t::bfm_bda_t(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
 	: device_t(mconfig, BFM_BDA, "BFM BDA VFD controller", tag, owner, clock, "bfm_bda", __FILE__),
+=======
+bfm_bda_device::bfm_bda_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: device_t(mconfig, BFM_BDA, tag, owner, clock),
+>>>>>>> upstream/master
 	m_port_val(0)
 {
 }
 
+<<<<<<< HEAD
 void bfm_bda_t::static_set_value(device_t &device, int val)
 {
 	bfm_bda_t &BDA = downcast<bfm_bda_t &>(device);
@@ -96,6 +110,15 @@ void bfm_bda_t::static_set_value(device_t &device, int val)
 }
 
 void bfm_bda_t::device_start()
+=======
+void bfm_bda_device::static_set_value(device_t &device, int val)
+{
+	bfm_bda_device &BDA = downcast<bfm_bda_device &>(device);
+	BDA.m_port_val = val;
+}
+
+void bfm_bda_device::device_start()
+>>>>>>> upstream/master
 {
 	save_item(NAME(m_cursor));
 	save_item(NAME(m_cursor_pos));
@@ -120,7 +143,11 @@ void bfm_bda_t::device_start()
 	device_reset();
 }
 
+<<<<<<< HEAD
 void bfm_bda_t::device_reset()
+=======
+void bfm_bda_device::device_reset()
+>>>>>>> upstream/master
 {
 	m_cursor = 0;
 	m_cursor_pos = 0;
@@ -144,11 +171,16 @@ void bfm_bda_t::device_reset()
 	memset(m_attrs, 0, sizeof(m_attrs));
 }
 
+<<<<<<< HEAD
 UINT16 bfm_bda_t::set_display(UINT16 segin)
+=======
+uint16_t bfm_bda_device::set_display(uint16_t segin)
+>>>>>>> upstream/master
 {
 	return BITSWAP16(segin,8,12,11,7,6,4,10,3,14,15,0,13,9,5,1,2);
 }
 
+<<<<<<< HEAD
 void bfm_bda_t::device_post_load()
 {
 	for (int i =0; i<16; i++)
@@ -158,6 +190,17 @@ void bfm_bda_t::device_post_load()
 }
 
 void bfm_bda_t::update_display()
+=======
+void bfm_bda_device::device_post_load()
+{
+	for (int i =0; i<16; i++)
+	{
+		machine().output().set_indexed_value("vfd", (m_port_val*16) + i, m_outputs[i]);
+	}
+}
+
+void bfm_bda_device::update_display()
+>>>>>>> upstream/master
 {
 	for (int i =0; i<16; i++)
 	{
@@ -169,6 +212,7 @@ void bfm_bda_t::update_display()
 		{
 			m_outputs[i] = 0;
 		}
+<<<<<<< HEAD
 		output_set_indexed_value("vfd", (m_port_val*16) + i, m_outputs[i]);
 	}
 }
@@ -178,6 +222,17 @@ void bfm_bda_t::blank(int data)
 	switch ( data & 0x03 ) // TODO: wrong case values???
 	{
 		case 0x00:  // clear blanking
+=======
+		machine().output().set_indexed_value("vfd", (m_port_val*16) + i, m_outputs[i]);
+	}
+}
+///////////////////////////////////////////////////////////////////////////
+void bfm_bda_device::blank(int data)
+{
+	switch ( data & 0x03 ) // TODO: wrong case values???
+	{
+	case 0x00:  // clear blanking
+>>>>>>> upstream/master
 		{
 			for (int i = 0; i < 15; i++)
 			{
@@ -185,7 +240,11 @@ void bfm_bda_t::blank(int data)
 			}
 		}
 		break;
+<<<<<<< HEAD
 		case 0x01:  // blank inside window
+=======
+	case 0x01:  // blank inside window
+>>>>>>> upstream/master
 		if ( m_window_size > 0 )
 		{
 			for (int i = m_window_start; i < m_window_end ; i++)
@@ -194,7 +253,11 @@ void bfm_bda_t::blank(int data)
 			}
 		}
 		break;
+<<<<<<< HEAD
 		case 0x02:  // blank outside window
+=======
+	case 0x02:  // blank outside window
+>>>>>>> upstream/master
 		if ( m_window_size > 0 )
 		{
 			if ( m_window_start > 0 )
@@ -215,7 +278,11 @@ void bfm_bda_t::blank(int data)
 		}
 		break;
 
+<<<<<<< HEAD
 		case 0x03:  //blank all
+=======
+	case 0x03:  //blank all
+>>>>>>> upstream/master
 		{
 			for (int i = 0; i < 15; i++)
 			{
@@ -226,7 +293,11 @@ void bfm_bda_t::blank(int data)
 	}
 }
 
+<<<<<<< HEAD
 int bfm_bda_t::write_char(int data)
+=======
+int bfm_bda_device::write_char(int data)
+>>>>>>> upstream/master
 {
 	int change = 0;
 	if ( m_user_def )
@@ -276,7 +347,11 @@ int bfm_bda_t::write_char(int data)
 		{
 			switch ( data & 0xF0 )
 			{
+<<<<<<< HEAD
 				case 0x80:  // 0x80 - 0x8F Set display blanking
+=======
+			case 0x80:  // 0x80 - 0x8F Set display blanking
+>>>>>>> upstream/master
 				if (data==0x84)// futaba setup
 				{
 					m_blank_flag = 1;
@@ -288,7 +363,11 @@ int bfm_bda_t::write_char(int data)
 				}
 				break;
 
+<<<<<<< HEAD
 				case 0x90:  // 0x90 - 0x9F Set cursor pos
+=======
+			case 0x90:  // 0x90 - 0x9F Set cursor pos
+>>>>>>> upstream/master
 				m_cursor_pos = data & 0x0F;
 				m_scroll_active = 0;
 				if ( m_display_mode == 2 )
@@ -297,6 +376,7 @@ int bfm_bda_t::write_char(int data)
 				}
 				break;
 
+<<<<<<< HEAD
 				case 0xA0:  // 0xA0 - 0xAF Set display mode
 				m_display_mode = data &0x03;
 				break;
@@ -309,6 +389,20 @@ int bfm_bda_t::write_char(int data)
 					break;
 
 					case 0x01:  // clr inside window
+=======
+			case 0xA0:  // 0xA0 - 0xAF Set display mode
+				m_display_mode = data &0x03;
+				break;
+
+			case 0xB0:  // 0xB0 - 0xBF Clear display area
+
+				switch ( data & 0x03 )
+				{
+				case 0x00:  // clr nothing
+					break;
+
+				case 0x01:  // clr inside window
+>>>>>>> upstream/master
 					if ( m_window_size > 0 )
 					{
 						memset(m_chars+m_window_start,0,m_window_size);
@@ -317,7 +411,11 @@ int bfm_bda_t::write_char(int data)
 
 					break;
 
+<<<<<<< HEAD
 					case 0x02:  // clr outside window
+=======
+				case 0x02:  // clr outside window
+>>>>>>> upstream/master
 					if ( m_window_size > 0 )
 					{
 						if ( m_window_start > 0 )
@@ -338,7 +436,13 @@ int bfm_bda_t::write_char(int data)
 							}
 						}
 					}
+<<<<<<< HEAD
 					case 0x03:  // clr entire display
+=======
+					break;
+
+				case 0x03:  // clr entire display
+>>>>>>> upstream/master
 					{
 						memset(m_chars, 0, sizeof(m_chars));
 						memset(m_attrs, 0, sizeof(m_attrs));
@@ -346,6 +450,7 @@ int bfm_bda_t::write_char(int data)
 				}
 				break;
 
+<<<<<<< HEAD
 				case 0xC0:  // 0xC0 - 0xCF Set flash rate
 				m_flash_rate = data & 0x0F;
 				break;
@@ -355,11 +460,26 @@ int bfm_bda_t::write_char(int data)
 				break;
 
 				case 0xE0:  // 0xE0 - 0xEF Set window start pos
+=======
+			case 0xC0:  // 0xC0 - 0xCF Set flash rate
+				m_flash_rate = data & 0x0F;
+				break;
+
+			case 0xD0:  // 0xD0 - 0xDF Set Flash control
+				m_flash_control = data & 0x03;
+				break;
+
+			case 0xE0:  // 0xE0 - 0xEF Set window start pos
+>>>>>>> upstream/master
 				m_window_start = data &0x0F;
 				m_window_size  = (m_window_end - m_window_start)+1;
 				break;
 
+<<<<<<< HEAD
 				case 0xF0:  // 0xF0 - 0xFF Set window end pos
+=======
+			case 0xF0:  // 0xF0 - 0xFF Set window end pos
+>>>>>>> upstream/master
 				m_window_end   = data &0x0F;
 				m_window_size  = (m_window_end - m_window_start)+1;
 				m_scroll_active = 0;
@@ -381,13 +501,21 @@ int bfm_bda_t::write_char(int data)
 }
 ///////////////////////////////////////////////////////////////////////////
 
+<<<<<<< HEAD
 void bfm_bda_t::setdata(int segdata, int data)
+=======
+void bfm_bda_device::setdata(int segdata, int data)
+>>>>>>> upstream/master
 {
 	int move = 0;
 	int change =0;
 	switch ( data )
 	{
+<<<<<<< HEAD
 		case 0x25:  // flash
+=======
+	case 0x25:  // flash
+>>>>>>> upstream/master
 		if(m_chars[m_pcursor_pos] & (1<<8))
 		{
 			move++;
@@ -398,11 +526,19 @@ void bfm_bda_t::setdata(int segdata, int data)
 		}
 		break;
 
+<<<<<<< HEAD
 		case 0x26:  // undefined
 		break;
 
 		case 0x2C:  // semicolon
 		case 0x2E:  // decimal point
+=======
+	case 0x26:  // undefined
+		break;
+
+	case 0x2C:  // semicolon
+	case 0x2E:  // decimal point
+>>>>>>> upstream/master
 
 		if( m_chars[m_pcursor_pos] & (1<<12))
 		{
@@ -414,6 +550,7 @@ void bfm_bda_t::setdata(int segdata, int data)
 		}
 		break;
 
+<<<<<<< HEAD
 		case 0x3B:  // dummy char
 		move++;
 		break;
@@ -423,6 +560,17 @@ void bfm_bda_t::setdata(int segdata, int data)
 		break;
 
 		default:
+=======
+	case 0x3B:  // dummy char
+		move++;
+		break;
+
+	case 0x3A:
+		m_user_def = 2;
+		break;
+
+	default:
+>>>>>>> upstream/master
 		move++;
 		change++;
 	}
@@ -443,6 +591,7 @@ void bfm_bda_t::setdata(int segdata, int data)
 		{
 		case 0: // rotate left
 
+<<<<<<< HEAD
 		m_cursor_pos &= 0x0F;
 
 		if ( change )
@@ -452,10 +601,22 @@ void bfm_bda_t::setdata(int segdata, int data)
 		m_cursor_pos++;
 		if ( m_cursor_pos >= 16 ) m_cursor_pos = 0;
 		break;
+=======
+			m_cursor_pos &= 0x0F;
+
+			if ( change )
+			{
+				m_chars[m_cursor_pos] = segdata;
+			}
+			m_cursor_pos++;
+			if ( m_cursor_pos >= 16 ) m_cursor_pos = 0;
+			break;
+>>>>>>> upstream/master
 
 
 		case 1: // Rotate right
 
+<<<<<<< HEAD
 		m_cursor_pos &= 0x0F;
 
 		if ( change )
@@ -503,6 +664,55 @@ void bfm_bda_t::setdata(int segdata, int data)
 			}
 		}
 		break;
+=======
+			m_cursor_pos &= 0x0F;
+
+			if ( change )
+			{
+				m_chars[m_cursor_pos] = segdata;
+			}
+			m_cursor_pos--;
+			if ( m_cursor_pos < 0  ) m_cursor_pos = 15;
+			break;
+
+		case 2: // Scroll left
+
+			if ( m_cursor_pos < m_window_end )
+			{
+				m_scroll_active = 0;
+				if ( change )
+				{
+					m_chars[m_cursor_pos] = segdata;
+				}
+				m_cursor_pos++;
+			}
+			else
+			{
+				if ( move )
+				{
+					if  ( m_scroll_active )
+					{
+						int i = m_window_start;
+						while ( i < m_window_end )
+						{
+							m_chars[i] = m_chars[i+1];
+							i++;
+						}
+					}
+					else   m_scroll_active = 1;
+				}
+
+				if ( change )
+				{
+					m_chars[m_window_end] = segdata;
+				}
+				else
+				{
+					m_chars[m_window_end] = 0;
+				}
+			}
+			break;
+>>>>>>> upstream/master
 
 		case 3: // Scroll right
 
@@ -545,7 +755,11 @@ void bfm_bda_t::setdata(int segdata, int data)
 	}
 }
 
+<<<<<<< HEAD
 void bfm_bda_t::shift_data(int data)
+=======
+void bfm_bda_device::shift_data(int data)
+>>>>>>> upstream/master
 {
 	m_shift_data <<= 1;
 

@@ -6,6 +6,10 @@
 
 **********************************************************************/
 
+<<<<<<< HEAD
+=======
+#include "emu.h"
+>>>>>>> upstream/master
 #include "wangpc.h"
 
 
@@ -13,8 +17,13 @@
 //  DEVICE DEFINITIONS
 //**************************************************************************
 
+<<<<<<< HEAD
 const device_type WANGPC_BUS = &device_creator<wangpcbus_device>;
 const device_type WANGPC_BUS_SLOT = &device_creator<wangpcbus_slot_device>;
+=======
+DEFINE_DEVICE_TYPE(WANGPC_BUS,      wangpcbus_device,      "wangpcbus",      "Wang PC bus")
+DEFINE_DEVICE_TYPE(WANGPC_BUS_SLOT, wangpcbus_slot_device, "wangpcbus_slot", "Wang PC bus slot")
+>>>>>>> upstream/master
 
 
 
@@ -26,8 +35,13 @@ const device_type WANGPC_BUS_SLOT = &device_creator<wangpcbus_slot_device>;
 //  wangpcbus_slot_device - constructor
 //-------------------------------------------------
 
+<<<<<<< HEAD
 wangpcbus_slot_device::wangpcbus_slot_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock) :
 	device_t(mconfig, WANGPC_BUS_SLOT, "Wang PC bus slot", tag, owner, clock, "wangpcbus_slot", __FILE__),
+=======
+wangpcbus_slot_device::wangpcbus_slot_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock) :
+	device_t(mconfig, WANGPC_BUS_SLOT, tag, owner, clock),
+>>>>>>> upstream/master
 	device_slot_interface(mconfig, *this),
 	m_bus(nullptr),
 	m_sid(0)
@@ -57,8 +71,13 @@ void wangpcbus_slot_device::device_start()
 //  wangpcbus_device - constructor
 //-------------------------------------------------
 
+<<<<<<< HEAD
 wangpcbus_device::wangpcbus_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock) :
 	device_t(mconfig, WANGPC_BUS, "Wang PC bus", tag, owner, clock, "wangpcbus", __FILE__),
+=======
+wangpcbus_device::wangpcbus_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock) :
+	device_t(mconfig, WANGPC_BUS, tag, owner, clock),
+>>>>>>> upstream/master
 	m_write_irq2(*this),
 	m_write_irq3(*this),
 	m_write_irq4(*this),
@@ -112,7 +131,11 @@ void wangpcbus_device::add_card(device_wangpcbus_card_interface *card, int sid)
 
 READ16_MEMBER( wangpcbus_device::mrdc_r )
 {
+<<<<<<< HEAD
 	UINT16 data = 0xffff;
+=======
+	uint16_t data = 0xffff;
+>>>>>>> upstream/master
 
 	device_wangpcbus_card_interface *entry = m_device_list.first();
 
@@ -148,7 +171,11 @@ WRITE16_MEMBER( wangpcbus_device::amwc_w )
 
 READ16_MEMBER( wangpcbus_device::sad_r )
 {
+<<<<<<< HEAD
 	UINT16 data = 0xffff;
+=======
+	uint16_t data = 0xffff;
+>>>>>>> upstream/master
 
 	device_wangpcbus_card_interface *entry = m_device_list.first();
 
@@ -182,9 +209,15 @@ WRITE16_MEMBER( wangpcbus_device::sad_w )
 //  dack_r - DMA read
 //-------------------------------------------------
 
+<<<<<<< HEAD
 UINT8 wangpcbus_device::dack_r(address_space &space, int line)
 {
 	UINT8 retVal = 0xff;
+=======
+uint8_t wangpcbus_device::dack_r(address_space &space, int line)
+{
+	uint8_t retVal = 0xff;
+>>>>>>> upstream/master
 	device_wangpcbus_card_interface *entry = m_device_list.first();
 
 	while (entry)
@@ -206,7 +239,11 @@ UINT8 wangpcbus_device::dack_r(address_space &space, int line)
 //  dack_w - DMA write
 //-------------------------------------------------
 
+<<<<<<< HEAD
 void wangpcbus_device::dack_w(address_space &space, int line, UINT8 data)
+=======
+void wangpcbus_device::dack_w(address_space &space, int line, uint8_t data)
+>>>>>>> upstream/master
 {
 	device_wangpcbus_card_interface *entry = m_device_list.first();
 

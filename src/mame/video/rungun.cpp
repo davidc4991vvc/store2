@@ -18,7 +18,12 @@
 /* TTL text plane stuff */
 TILE_GET_INFO_MEMBER(rungun_state::ttl_get_tile_info)
 {
+<<<<<<< HEAD
 	UINT8 *lvram = (UINT8 *)m_ttl_vram;
+=======
+	uint32_t base_addr = (uintptr_t)tilemap.user_data();
+	uint8_t *lvram = (uint8_t *)m_ttl_vram.get() + base_addr;
+>>>>>>> upstream/master
 	int attr, code;
 
 	attr = (lvram[BYTE_XOR_LE(tile_index<<2)] & 0xf0) >> 4;
@@ -34,11 +39,16 @@ K055673_CB_MEMBER(rungun_state::sprite_callback)
 
 READ16_MEMBER(rungun_state::rng_ttl_ram_r)
 {
+<<<<<<< HEAD
 	return m_ttl_vram[offset];
+=======
+	return m_ttl_vram[offset+(m_video_mux_bank*0x1000)];
+>>>>>>> upstream/master
 }
 
 WRITE16_MEMBER(rungun_state::rng_ttl_ram_w)
 {
+<<<<<<< HEAD
 	COMBINE_DATA(&m_ttl_vram[offset]);
 }
 
@@ -47,15 +57,40 @@ WRITE16_MEMBER(rungun_state::rng_936_videoram_w)
 {
 	COMBINE_DATA(&m_936_videoram[offset]);
 	m_936_tilemap->mark_tile_dirty(offset / 2);
+=======
+	COMBINE_DATA(&m_ttl_vram[offset+(m_video_mux_bank*0x1000)]);
+	m_ttl_tilemap[m_video_mux_bank]->mark_tile_dirty(offset / 2);
+}
+
+/* 53936 (PSAC2) rotation/zoom plane */
+READ16_MEMBER(rungun_state::rng_psac2_videoram_r)
+{
+	return m_psac2_vram[offset+(m_video_mux_bank*0x80000)];
+}
+
+WRITE16_MEMBER(rungun_state::rng_psac2_videoram_w)
+{
+	COMBINE_DATA(&m_psac2_vram[offset+(m_video_mux_bank*0x80000)]);
+	m_936_tilemap[m_video_mux_bank]->mark_tile_dirty(offset / 2);
+>>>>>>> upstream/master
 }
 
 TILE_GET_INFO_MEMBER(rungun_state::get_rng_936_tile_info)
 {
+<<<<<<< HEAD
 	int tileno, colour, flipx;
 
 	tileno = m_936_videoram[tile_index * 2 + 1] & 0x3fff;
 	flipx = (m_936_videoram[tile_index * 2 + 1] & 0xc000) >> 14;
 	colour = 0x10 + (m_936_videoram[tile_index * 2] & 0x000f);
+=======
+	uint32_t base_addr = (uintptr_t)tilemap.user_data();
+	int tileno, colour, flipx;
+
+	tileno = m_psac2_vram[tile_index * 2 + 1 + base_addr] & 0x3fff;
+	flipx = (m_psac2_vram[tile_index * 2 + 1 + base_addr] & 0xc000) >> 14;
+	colour = 0x10 + (m_psac2_vram[tile_index * 2 + base_addr] & 0x000f);
+>>>>>>> upstream/master
 
 	SET_TILE_INFO_MEMBER(0, tileno, colour, TILE_FLIPYX(flipx));
 }
@@ -76,17 +111,27 @@ void rungun_state::video_start()
 
 	int gfx_index;
 
+<<<<<<< HEAD
 	m_936_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(rungun_state::get_rng_936_tile_info),this), TILEMAP_SCAN_ROWS, 16, 16, 128, 128);
 	m_936_tilemap->set_transparent_pen(0);
 
 	/* find first empty slot to decode gfx */
 	for (gfx_index = 0; gfx_index < MAX_GFX_ELEMENTS; gfx_index++)
 		if (m_gfxdecode->gfx(gfx_index) == 0)
+=======
+	m_ttl_vram = std::make_unique<uint16_t[]>(0x1000*2);
+	m_psac2_vram = std::make_unique<uint16_t[]>(0x80000*2);
+
+	/* find first empty slot to decode gfx */
+	for (gfx_index = 0; gfx_index < MAX_GFX_ELEMENTS; gfx_index++)
+		if (m_gfxdecode->gfx(gfx_index) == nullptr)
+>>>>>>> upstream/master
 			break;
 
 	assert(gfx_index != MAX_GFX_ELEMENTS);
 
 	// decode the ttl layer's gfx
+<<<<<<< HEAD
 	m_gfxdecode->set_gfx(gfx_index, global_alloc(gfx_element(m_palette, charlayout, memregion("gfx3")->base(), 0, m_palette->entries() / 16, 0)));
 	m_ttl_gfx_index = gfx_index;
 
@@ -111,3 +156,86 @@ UINT32 rungun_state::screen_update_rng(screen_device &screen, bitmap_ind16 &bitm
 	m_ttl_tilemap->draw(screen, bitmap, cliprect, 0, 0);
 	return 0;
 }
+=======
+	m_gfxdecode->set_gfx(gfx_index, std::make_unique<gfx_element>(m_palette, charlayout, memregion("gfx3")->base(), 0, m_palette->entries() / 16, 0));
+	m_ttl_gfx_index = gfx_index;
+
+	// create the tilemaps
+	for(uint32_t screen_num = 0;screen_num < 2;screen_num++)
+	{
+		m_ttl_tilemap[screen_num] = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(rungun_state::ttl_get_tile_info),this), TILEMAP_SCAN_ROWS, 8, 8, 64, 32);
+		m_ttl_tilemap[screen_num]->set_user_data((void *)(uintptr_t)(screen_num * 0x2000));
+		m_ttl_tilemap[screen_num]->set_transparent_pen(0);
+
+		m_936_tilemap[screen_num] = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(rungun_state::get_rng_936_tile_info),this), TILEMAP_SCAN_ROWS, 16, 16, 128, 128);
+		m_936_tilemap[screen_num]->set_user_data((void *)(uintptr_t)(screen_num * 0x80000));
+		m_936_tilemap[screen_num]->set_transparent_pen(0);
+
+	}
+	m_sprite_colorbase = 0x20;
+
+	m_screen->register_screen_bitmap(m_rng_dual_demultiplex_left_temp);
+	m_screen->register_screen_bitmap(m_rng_dual_demultiplex_right_temp);
+}
+
+uint32_t rungun_state::screen_update_rng(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+{
+	bitmap.fill(m_palette->black_pen(), cliprect);
+	screen.priority().fill(0, cliprect);
+	m_current_display_bank = machine().first_screen()->frame_number() & 1;
+	if(m_single_screen_mode == true)
+		m_current_display_bank = 0;
+
+	if(m_video_priority_mode == false)
+	{
+		m_k053936->zoom_draw(screen, bitmap, cliprect, m_936_tilemap[m_current_display_bank], 0, 0, 1);
+		m_k055673->k053247_sprites_draw(bitmap, cliprect);
+	}
+	else
+	{
+		m_k055673->k053247_sprites_draw(bitmap, cliprect);
+		m_k053936->zoom_draw(screen, bitmap, cliprect, m_936_tilemap[m_current_display_bank], 0, 0, 1);
+	}
+
+	m_ttl_tilemap[m_current_display_bank]->draw(screen, bitmap, cliprect, 0, 0);
+
+	return 0;
+}
+
+
+// the 60hz signal gets split between 2 screens
+uint32_t rungun_state::screen_update_rng_dual_left(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+{
+	int m_current_display_bank = machine().first_screen()->frame_number() & 1;
+
+	if (!m_current_display_bank)
+		screen_update_rng(screen, m_rng_dual_demultiplex_left_temp, cliprect);
+	else
+		screen_update_rng(screen, m_rng_dual_demultiplex_right_temp, cliprect);
+
+	copybitmap( bitmap, m_rng_dual_demultiplex_left_temp, 0, 0, 0, 0, cliprect);
+	return 0;
+}
+
+// this depends upon the fisrt screen being updated, and the bitmap being copied to the temp bitmap
+uint32_t rungun_state::screen_update_rng_dual_right(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+{
+	copybitmap( bitmap, m_rng_dual_demultiplex_right_temp, 0, 0, 0, 0, cliprect);
+	return 0;
+}
+
+void rungun_state::sprite_dma_trigger(void)
+{
+	address_space &space = m_maincpu->space(AS_PROGRAM);
+	uint32_t src_address;
+
+	if(m_single_screen_mode == true)
+		src_address = 1*0x2000;
+	else
+		src_address = m_current_display_bank*0x2000;
+
+	// TODO: size could be programmable somehow.
+	for(int i=0;i<0x1000;i+=2)
+		m_k055673->k053247_word_w(space,i/2,m_banked_ram[(i + src_address) /2],0xffff);
+}
+>>>>>>> upstream/master

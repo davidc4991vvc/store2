@@ -30,12 +30,25 @@
 #include "cpu/m6502/m6502.h"
 #include "video/vector.h"
 #include "video/avgdvg.h"
+<<<<<<< HEAD
 #include "machine/timekpr.h"
 #include "machine/nvram.h"
 #include "machine/6532riot.h"
 #include "sound/pokey.h"
 #include "sound/tms5220.h"
 #include "sound/2151intf.h"
+=======
+#include "machine/74259.h"
+#include "machine/timekpr.h"
+#include "machine/nvram.h"
+#include "machine/watchdog.h"
+#include "machine/6532riot.h"
+#include "sound/pokey.h"
+#include "sound/tms5220.h"
+#include "sound/ym2151.h"
+#include "screen.h"
+#include "speaker.h"
+>>>>>>> upstream/master
 
 
 
@@ -47,17 +60,28 @@ public:
 		m_tms(*this, "tms"),
 		m_shared_ram(*this, "shared_ram"),
 		m_maincpu(*this, "maincpu"),
+<<<<<<< HEAD
 		m_dsp(*this, "dsp") { }
 
 	required_device<tms5220_device> m_tms;
 	int m_control_num;
 	required_shared_ptr<UINT16> m_shared_ram;
 	UINT8 m_nvram[0x800];
+=======
+		m_dsp(*this, "dsp"),
+		m_mainlatch(*this, "mainlatch") { }
+
+	required_device<tms5220_device> m_tms;
+	int m_control_num;
+	required_shared_ptr<uint16_t> m_shared_ram;
+	uint8_t m_nvram[0x800];
+>>>>>>> upstream/master
 	int m_dsp_BIO;
 	int m_dsp_idle;
 	DECLARE_WRITE16_MEMBER(tomcat_adcon_w);
 	DECLARE_READ16_MEMBER(tomcat_adcread_r);
 	DECLARE_READ16_MEMBER(tomcat_inputs_r);
+<<<<<<< HEAD
 	DECLARE_WRITE16_MEMBER(tomcat_led1on_w);
 	DECLARE_WRITE16_MEMBER(tomcat_led2on_w);
 	DECLARE_WRITE16_MEMBER(tomcat_led2off_w);
@@ -86,6 +110,28 @@ public:
 	virtual void machine_start();
 	required_device<cpu_device> m_maincpu;
 	required_device<cpu_device> m_dsp;
+=======
+	DECLARE_WRITE16_MEMBER(main_latch_w);
+	DECLARE_WRITE_LINE_MEMBER(led1_w);
+	DECLARE_WRITE_LINE_MEMBER(led2_w);
+	DECLARE_WRITE_LINE_MEMBER(lnkmode_w);
+	DECLARE_WRITE_LINE_MEMBER(err_w);
+	DECLARE_WRITE_LINE_MEMBER(ack_w);
+	DECLARE_WRITE_LINE_MEMBER(txbuff_w);
+	DECLARE_WRITE_LINE_MEMBER(sndres_w);
+	DECLARE_WRITE_LINE_MEMBER(mres_w);
+	DECLARE_WRITE16_MEMBER(tomcat_irqclr_w);
+	DECLARE_READ16_MEMBER(tomcat_inputs2_r);
+	DECLARE_READ16_MEMBER(tomcat_320bio_r);
+	DECLARE_READ8_MEMBER(tomcat_nvram_r);
+	DECLARE_WRITE8_MEMBER(tomcat_nvram_w);
+	DECLARE_READ_LINE_MEMBER(dsp_BIO_r);
+	DECLARE_WRITE8_MEMBER(soundlatches_w);
+	virtual void machine_start() override;
+	required_device<cpu_device> m_maincpu;
+	required_device<cpu_device> m_dsp;
+	required_device<ls259_device> m_mainlatch;
+>>>>>>> upstream/master
 };
 
 
@@ -107,13 +153,18 @@ READ16_MEMBER(tomcat_state::tomcat_adcread_r)
 
 READ16_MEMBER(tomcat_state::tomcat_inputs_r)
 {
+<<<<<<< HEAD
 	UINT16 result = 0;
+=======
+	uint16_t result = 0;
+>>>>>>> upstream/master
 	if (ACCESSING_BITS_8_15)
 		result |= ioport("IN0")->read() << 8;
 
 	return result;
 }
 
+<<<<<<< HEAD
 WRITE16_MEMBER(tomcat_state::tomcat_led1on_w)
 {
 	set_led_status(machine(), 1, 1);
@@ -201,6 +252,63 @@ WRITE16_MEMBER(tomcat_state::tomcat_mresh_w)
 	// Release reset of TMS320
 	m_dsp_BIO = 0;
 	m_dsp->set_input_line(INPUT_LINE_RESET, CLEAR_LINE);
+=======
+WRITE16_MEMBER(tomcat_state::main_latch_w)
+{
+	// A1-A3 = address, A4 = data
+	m_mainlatch->write_bit(offset & 7, BIT(offset, 3));
+}
+
+WRITE_LINE_MEMBER(tomcat_state::led1_w)
+{
+	// Low = ON, High = OFF
+	output().set_led_value(1, !state);
+}
+
+WRITE_LINE_MEMBER(tomcat_state::led2_w)
+{
+	// Low = ON, High = OFF
+	output().set_led_value(2, !state);
+}
+
+WRITE_LINE_MEMBER(tomcat_state::lnkmode_w)
+{
+	// Link Mode
+	// When Low: Master does not respond to Interrupts
+}
+
+WRITE_LINE_MEMBER(tomcat_state::err_w)
+{
+	// Link Error Flag
+}
+
+WRITE_LINE_MEMBER(tomcat_state::ack_w)
+{
+	// Link ACK Flag
+}
+
+WRITE_LINE_MEMBER(tomcat_state::txbuff_w)
+{
+	// Link Buffer Control
+	// When High: Turn off TX (Link) Buffer
+}
+
+WRITE_LINE_MEMBER(tomcat_state::sndres_w)
+{
+	// Sound Reset
+	// When Low: Reset Sound System
+	// When High: Release reset of sound system
+}
+
+WRITE_LINE_MEMBER(tomcat_state::mres_w)
+{
+	// 320 Reset
+	// When Low: Reset TMS320
+	// When High: Release reset of TMS320
+	if (state)
+		m_dsp_BIO = 0;
+	m_dsp->set_input_line(INPUT_LINE_RESET, state ? CLEAR_LINE : ASSERT_LINE);
+>>>>>>> upstream/master
 }
 
 WRITE16_MEMBER(tomcat_state::tomcat_irqclr_w)
@@ -231,9 +339,15 @@ READ16_MEMBER(tomcat_state::tomcat_320bio_r)
 	return 0;
 }
 
+<<<<<<< HEAD
 READ16_MEMBER(tomcat_state::dsp_BIO_r)
 {
 	if ( space.device().safe_pc() == 0x0001 )
+=======
+READ_LINE_MEMBER(tomcat_state::dsp_BIO_r)
+{
+	if ( m_dsp->pc() == 0x0001 )
+>>>>>>> upstream/master
 	{
 		if ( m_dsp_idle == 0 )
 		{
@@ -242,7 +356,11 @@ READ16_MEMBER(tomcat_state::dsp_BIO_r)
 		}
 		return !m_dsp_BIO;
 	}
+<<<<<<< HEAD
 	else if ( space.device().safe_pc() == 0x0003 )
+=======
+	else if ( m_dsp->pc() == 0x0003 )
+>>>>>>> upstream/master
 	{
 		if ( m_dsp_BIO == 1 )
 		{
@@ -263,6 +381,7 @@ READ16_MEMBER(tomcat_state::dsp_BIO_r)
 	}
 }
 
+<<<<<<< HEAD
 READ16_MEMBER(tomcat_state::tomcat_shared_ram_r)
 {
 	return m_shared_ram[offset];
@@ -273,6 +392,8 @@ WRITE16_MEMBER(tomcat_state::tomcat_shared_ram_w)
 	COMBINE_DATA(&m_shared_ram[offset]);
 }
 
+=======
+>>>>>>> upstream/master
 READ8_MEMBER(tomcat_state::tomcat_nvram_r)
 {
 	return m_nvram[offset];
@@ -288,6 +409,7 @@ static ADDRESS_MAP_START( tomcat_map, AS_PROGRAM, 16, tomcat_state )
 	AM_RANGE(0x402000, 0x402001) AM_READ(tomcat_adcread_r) AM_WRITE(tomcat_adcon_w)
 	AM_RANGE(0x404000, 0x404001) AM_READ(tomcat_inputs_r) AM_DEVWRITE("avg", avg_tomcat_device, go_word_w)
 	AM_RANGE(0x406000, 0x406001) AM_DEVWRITE("avg", avg_tomcat_device, reset_word_w)
+<<<<<<< HEAD
 	AM_RANGE(0x408000, 0x408001) AM_READWRITE(tomcat_inputs2_r, watchdog_reset16_w)
 	AM_RANGE(0x40a000, 0x40a001) AM_READWRITE(tomcat_320bio_r, tomcat_irqclr_w)
 	AM_RANGE(0x40e000, 0x40e001) AM_WRITE(tomcat_led1on_w)
@@ -308,18 +430,31 @@ static ADDRESS_MAP_START( tomcat_map, AS_PROGRAM, 16, tomcat_state )
 	AM_RANGE(0x40e01e, 0x40e01f) AM_WRITE(tomcat_txbuffh_w)
 	AM_RANGE(0x800000, 0x803fff) AM_RAM AM_SHARE("vectorram")
 	AM_RANGE(0xffa000, 0xffbfff) AM_READWRITE(tomcat_shared_ram_r, tomcat_shared_ram_w)
+=======
+	AM_RANGE(0x408000, 0x408001) AM_READ(tomcat_inputs2_r) AM_DEVWRITE("watchdog", watchdog_timer_device, reset16_w)
+	AM_RANGE(0x40a000, 0x40a001) AM_READWRITE(tomcat_320bio_r, tomcat_irqclr_w)
+	AM_RANGE(0x40e000, 0x40e01f) AM_WRITE(main_latch_w)
+	AM_RANGE(0x800000, 0x803fff) AM_RAM AM_SHARE("vectorram")
+	AM_RANGE(0xffa000, 0xffbfff) AM_RAM AM_SHARE("shared_ram")
+>>>>>>> upstream/master
 	AM_RANGE(0xffc000, 0xffcfff) AM_RAM
 	AM_RANGE(0xffd000, 0xffdfff) AM_DEVREADWRITE8("m48t02", timekeeper_device, read, write, 0xff00)
 	AM_RANGE(0xffd000, 0xffdfff) AM_READWRITE8(tomcat_nvram_r, tomcat_nvram_w, 0x00ff)
 ADDRESS_MAP_END
 
 static ADDRESS_MAP_START( dsp_map, AS_PROGRAM, 16, tomcat_state )
+<<<<<<< HEAD
 	AM_RANGE(0x0000, 0x1fff) AM_RAM AM_SHARE("shared_ram")
 ADDRESS_MAP_END
 
 static ADDRESS_MAP_START( dsp_io_map, AS_IO, 16, tomcat_state )
 	AM_RANGE(TMS32010_BIO, TMS32010_BIO) AM_READ(dsp_BIO_r)
 ADDRESS_MAP_END
+=======
+	AM_RANGE(0x0000, 0x0fff) AM_RAM AM_SHARE("shared_ram")
+ADDRESS_MAP_END
+
+>>>>>>> upstream/master
 
 WRITE8_MEMBER(tomcat_state::soundlatches_w)
 {
@@ -349,7 +484,11 @@ ADDRESS_MAP_END
 
 static INPUT_PORTS_START( tomcat )
 	PORT_START("IN0")   /* INPUTS */
+<<<<<<< HEAD
 	PORT_BIT( 0x01, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER("avg", avg_tomcat_device, done_r, NULL)
+=======
+	PORT_BIT( 0x01, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER("avg", avg_tomcat_device, done_r, nullptr)
+>>>>>>> upstream/master
 	PORT_BIT( 0x02, IP_ACTIVE_LOW,  IPT_UNUSED ) // SPARE
 	PORT_BIT( 0x04, IP_ACTIVE_LOW,  IPT_BUTTON5 ) // DIAGNOSTIC
 	PORT_SERVICE( 0x08, IP_ACTIVE_LOW )
@@ -367,10 +506,17 @@ INPUT_PORTS_END
 
 void tomcat_state::machine_start()
 {
+<<<<<<< HEAD
 	((UINT16*)m_shared_ram)[0x0000] = 0xf600;
 	((UINT16*)m_shared_ram)[0x0001] = 0x0000;
 	((UINT16*)m_shared_ram)[0x0002] = 0xf600;
 	((UINT16*)m_shared_ram)[0x0003] = 0x0000;
+=======
+	((uint16_t*)m_shared_ram)[0x0000] = 0xf600;
+	((uint16_t*)m_shared_ram)[0x0001] = 0x0000;
+	((uint16_t*)m_shared_ram)[0x0002] = 0xf600;
+	((uint16_t*)m_shared_ram)[0x0003] = 0x0000;
+>>>>>>> upstream/master
 
 	machine().device<nvram_device>("nvram")->set_base(m_nvram, 0x800);
 
@@ -382,7 +528,11 @@ void tomcat_state::machine_start()
 	m_dsp_BIO = 0;
 }
 
+<<<<<<< HEAD
 static MACHINE_CONFIG_START( tomcat, tomcat_state )
+=======
+static MACHINE_CONFIG_START( tomcat )
+>>>>>>> upstream/master
 	MCFG_CPU_ADD("maincpu", M68010, XTAL_12MHz / 2)
 	MCFG_CPU_PROGRAM_MAP(tomcat_map)
 	MCFG_CPU_PERIODIC_INT_DRIVER(tomcat_state, irq1_line_assert,  5*60)
@@ -390,7 +540,11 @@ static MACHINE_CONFIG_START( tomcat, tomcat_state )
 
 	MCFG_CPU_ADD("dsp", TMS32010, XTAL_16MHz)
 	MCFG_CPU_PROGRAM_MAP( dsp_map)
+<<<<<<< HEAD
 	MCFG_CPU_IO_MAP( dsp_io_map)
+=======
+	MCFG_TMS32010_BIO_IN_CB(READLINE(tomcat_state, dsp_BIO_r))
+>>>>>>> upstream/master
 
 	MCFG_CPU_ADD("soundcpu", M6502, XTAL_14_31818MHz / 8 )
 	MCFG_DEVICE_DISABLE()
@@ -414,8 +568,25 @@ static MACHINE_CONFIG_START( tomcat, tomcat_state )
 
 	MCFG_QUANTUM_TIME(attotime::from_hz(4000))
 
+<<<<<<< HEAD
 	MCFG_NVRAM_ADD_0FILL("nvram")
 
+=======
+	MCFG_DEVICE_ADD("mainlatch", LS259, 0)
+	MCFG_ADDRESSABLE_LATCH_Q0_OUT_CB(WRITELINE(tomcat_state, led1_w))
+	MCFG_ADDRESSABLE_LATCH_Q1_OUT_CB(WRITELINE(tomcat_state, led2_w))
+	MCFG_ADDRESSABLE_LATCH_Q2_OUT_CB(WRITELINE(tomcat_state, mres_w))
+	MCFG_ADDRESSABLE_LATCH_Q3_OUT_CB(WRITELINE(tomcat_state, sndres_w))
+	MCFG_ADDRESSABLE_LATCH_Q4_OUT_CB(WRITELINE(tomcat_state, lnkmode_w))
+	MCFG_ADDRESSABLE_LATCH_Q5_OUT_CB(WRITELINE(tomcat_state, err_w))
+	MCFG_ADDRESSABLE_LATCH_Q6_OUT_CB(WRITELINE(tomcat_state, ack_w))
+	MCFG_ADDRESSABLE_LATCH_Q7_OUT_CB(WRITELINE(tomcat_state, txbuff_w))
+
+	MCFG_NVRAM_ADD_0FILL("nvram")
+
+	MCFG_WATCHDOG_ADD("watchdog")
+
+>>>>>>> upstream/master
 	MCFG_M48T02_ADD( "m48t02" )
 
 	MCFG_VECTOR_ADD("vector")
@@ -454,4 +625,8 @@ ROM_START( tomcat )
 	ROM_LOAD( "136021-105.1l",   0x0000, 0x0100, CRC(82fc3eb2) SHA1(184231c7baef598294860a7d2b8a23798c5c7da6) ) /* AVG PROM */
 ROM_END
 
+<<<<<<< HEAD
 GAME( 1985, tomcat, 0, tomcat, tomcat, driver_device, 0, ROT0, "Atari", "TomCat (prototype)", MACHINE_SUPPORTS_SAVE )
+=======
+GAME( 1985, tomcat, 0,        tomcat, tomcat, tomcat_state, 0, ROT0, "Atari", "TomCat (prototype)", MACHINE_SUPPORTS_SAVE )
+>>>>>>> upstream/master

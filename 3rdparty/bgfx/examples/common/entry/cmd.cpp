@@ -1,4 +1,5 @@
 /*
+<<<<<<< HEAD
  * Copyright 2010-2015 Branimir Karadzic. All rights reserved.
  * License: http://www.opensource.org/licenses/BSD-2-Clause
  */
@@ -11,6 +12,15 @@
 #include <bx/allocator.h>
 #include <bx/hash.h>
 #include <bx/tokenizecmd.h>
+=======
+ * Copyright 2010-2017 Branimir Karadzic. All rights reserved.
+ * License: https://github.com/bkaradzic/bgfx#license-bsd-2-clause
+ */
+
+#include <bx/allocator.h>
+#include <bx/hash.h>
+#include <bx/commandline.h>
+>>>>>>> upstream/master
 
 #include "dbg.h"
 #include "cmd.h"
@@ -33,7 +43,11 @@ struct CmdContext
 
 	void add(const char* _name, ConsoleFn _fn, void* _userData)
 	{
+<<<<<<< HEAD
 		uint32_t cmd = bx::hashMurmur2A(_name, (uint32_t)strlen(_name) );
+=======
+		uint32_t cmd = bx::hashMurmur2A(_name, (uint32_t)bx::strnlen(_name) );
+>>>>>>> upstream/master
 		BX_CHECK(m_lookup.end() == m_lookup.find(cmd), "Command \"%s\" already exist.", _name);
 		Func fn = { _fn, _userData };
 		m_lookup.insert(stl::make_pair(cmd, fn) );
@@ -51,7 +65,11 @@ struct CmdContext
 			if (argc > 0)
 			{
 				int err = -1;
+<<<<<<< HEAD
 				uint32_t cmd = bx::hashMurmur2A(argv[0], (uint32_t)strlen(argv[0]) );
+=======
+				uint32_t cmd = bx::hashMurmur2A(argv[0], (uint32_t)bx::strnlen(argv[0]) );
+>>>>>>> upstream/master
 				CmdLookup::iterator it = m_lookup.find(cmd);
 				if (it != m_lookup.end() )
 				{

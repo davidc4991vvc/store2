@@ -15,9 +15,17 @@
 ***************************************************************************/
 
 #include "emu.h"
+<<<<<<< HEAD
 #include "cpu/z80/z80.h"
 #include "includes/crbaloon.h"
 
+=======
+#include "includes/crbaloon.h"
+
+#include "cpu/z80/z80.h"
+#include "screen.h"
+
+>>>>>>> upstream/master
 
 /*************************************
  *
@@ -52,7 +60,11 @@ void crbaloon_state::pc3092_reset(void)
 
 void crbaloon_state::pc3092_update()
 {
+<<<<<<< HEAD
 	flip_screen_set((m_pc3092_data[1] & 0x01) ? TRUE : FALSE);
+=======
+	flip_screen_set((m_pc3092_data[1] & 0x01) ? true : false);
+>>>>>>> upstream/master
 }
 
 
@@ -68,7 +80,11 @@ WRITE8_MEMBER(crbaloon_state::pc3092_w)
 
 CUSTOM_INPUT_MEMBER(crbaloon_state::pc3092_r)
 {
+<<<<<<< HEAD
 	UINT32 ret;
+=======
+	uint32_t ret;
+>>>>>>> upstream/master
 
 	/* enable coin & start input? Wild guess!!! */
 	if (m_pc3092_data[1] & 0x02)
@@ -114,10 +130,17 @@ void crbaloon_state::pc3259_update(void)
 
 READ8_MEMBER(crbaloon_state::pc3259_r)
 {
+<<<<<<< HEAD
 	UINT8 ret = 0;
 	UINT8 reg = offset >> 2;
 
 	UINT16 collision_address = crbaloon_get_collision_address();
+=======
+	uint8_t ret = 0;
+	uint8_t reg = offset >> 2;
+
+	uint16_t collision_address = crbaloon_get_collision_address();
+>>>>>>> upstream/master
 	int collided = (collision_address != 0xffff);
 
 	switch (reg)
@@ -157,6 +180,7 @@ WRITE8_MEMBER(crbaloon_state::port_sound_w)
 {
 	/* D0 - interrupt enable - also goes to PC3259 as /HTCTRL */
 	m_irq_mask = data & 0x01;
+<<<<<<< HEAD
 	crbaloon_set_clear_collision_address((data & 0x01) ? TRUE : FALSE);
 
 	/* D1 - SOUND STOP */
@@ -176,6 +200,27 @@ WRITE8_MEMBER(crbaloon_state::port_sound_w)
 
 	/* D6 - unlabeled - laugh enable */
 	crbaloon_audio_set_laugh_enable(space, 0, (data & 0x40) ? TRUE : FALSE);
+=======
+	crbaloon_set_clear_collision_address((data & 0x01) ? true : false);
+
+	/* D1 - SOUND STOP */
+	machine().sound().system_enable((data & 0x02) ? true : false);
+
+	/* D2 - unlabeled - music enable */
+	crbaloon_audio_set_music_enable(space, 0, (data & 0x04) ? true : false);
+
+	/* D3 - EXPLOSION */
+	crbaloon_audio_set_explosion_enable((data & 0x08) ? true : false);
+
+	/* D4 - BREATH */
+	crbaloon_audio_set_breath_enable((data & 0x10) ? true : false);
+
+	/* D5 - APPEAR */
+	crbaloon_audio_set_appear_enable((data & 0x20) ? true : false);
+
+	/* D6 - unlabeled - laugh enable */
+	crbaloon_audio_set_laugh_enable(space, 0, (data & 0x40) ? true : false);
+>>>>>>> upstream/master
 
 	/* D7 - unlabeled - goes to PC3259 pin 16 */
 
@@ -211,7 +256,11 @@ static ADDRESS_MAP_START( main_io_map, AS_IO, 8, crbaloon_state )
 	ADDRESS_MAP_GLOBAL_MASK(0xf)
 	AM_RANGE(0x00, 0x00) AM_MIRROR(0x0c) AM_READ_PORT("DSW0")
 	AM_RANGE(0x01, 0x01) AM_MIRROR(0x0c) AM_READ_PORT("IN0")
+<<<<<<< HEAD
 	AM_RANGE(0x02, 0x02) AM_MIRROR(0x0c) AM_MASK(0x0c) AM_READ(pc3259_r)
+=======
+	AM_RANGE(0x02, 0x02) AM_SELECT(0x0c) AM_READ(pc3259_r)
+>>>>>>> upstream/master
 	AM_RANGE(0x03, 0x03) AM_MIRROR(0x0c) AM_READ_PORT("IN1")
 
 	AM_RANGE(0x00, 0x00) AM_WRITENOP    /* not connected */
@@ -291,7 +340,11 @@ static INPUT_PORTS_START( crbaloon )
 	PORT_BIT( 0x02, IP_ACTIVE_LOW, IPT_BUTTON1 ) PORT_NAME("Name Reset")
 	PORT_BIT( 0x04, IP_ACTIVE_LOW, IPT_SERVICE1 )
 	PORT_BIT( 0x08, IP_ACTIVE_LOW, IPT_TILT )
+<<<<<<< HEAD
 	PORT_BIT( 0xf0, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, crbaloon_state,pc3092_r, NULL)
+=======
+	PORT_BIT( 0xf0, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_CUSTOM_MEMBER(DEVICE_SELF, crbaloon_state,pc3092_r, nullptr)
+>>>>>>> upstream/master
 
 	PORT_START("PC3092")
 	PORT_BIT( 0x01, IP_ACTIVE_LOW, IPT_START1 )
@@ -357,7 +410,11 @@ INTERRUPT_GEN_MEMBER(crbaloon_state::vblank_irq)
 }
 
 
+<<<<<<< HEAD
 static MACHINE_CONFIG_START( crbaloon, crbaloon_state )
+=======
+static MACHINE_CONFIG_START( crbaloon )
+>>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", Z80, CRBALOON_MASTER_XTAL / 3)
@@ -434,5 +491,10 @@ ROM_END
  *
  *************************************/
 
+<<<<<<< HEAD
 GAME( 1980, crbaloon, 0,        crbaloon, crbaloon, driver_device, 0, ROT90, "Taito Corporation", "Crazy Balloon (set 1)", MACHINE_IMPERFECT_SOUND | MACHINE_SUPPORTS_SAVE )
 GAME( 1980, crbaloon2,crbaloon, crbaloon, crbaloon, driver_device, 0, ROT90, "Taito Corporation", "Crazy Balloon (set 2)", MACHINE_IMPERFECT_SOUND | MACHINE_SUPPORTS_SAVE )
+=======
+GAME( 1980, crbaloon, 0,        crbaloon, crbaloon, crbaloon_state, 0, ROT90, "Taito Corporation", "Crazy Balloon (set 1)", MACHINE_IMPERFECT_SOUND | MACHINE_SUPPORTS_SAVE )
+GAME( 1980, crbaloon2,crbaloon, crbaloon, crbaloon, crbaloon_state, 0, ROT90, "Taito Corporation", "Crazy Balloon (set 2)", MACHINE_IMPERFECT_SOUND | MACHINE_SUPPORTS_SAVE )
+>>>>>>> upstream/master

@@ -1,5 +1,10 @@
+<<<<<<< HEAD
 // license:BSD-3-Clause
 // copyright-holders:Curt Coder
+=======
+// license:GPL-2.0+
+// copyright-holders:Curt Coder,Christian Bauer
+>>>>>>> upstream/master
 /***************************************************************************
 
     MOS 6566/6567/6569 Video Interface Chip II (VIC-II) emulation
@@ -77,12 +82,20 @@
 
 ***************************************************************************/
 
+<<<<<<< HEAD
 #pragma once
 
 #ifndef __MOS6566__
 #define __MOS6566__
 
 #include "emu.h"
+=======
+#ifndef MAME_VIDEO_MOS6566_H
+#define MAME_VIDEO_MOS6566_H
+
+#pragma once
+
+>>>>>>> upstream/master
 
 
 
@@ -211,6 +224,7 @@ class mos6566_device :  public device_t,
 {
 public:
 	// construction/destruction
+<<<<<<< HEAD
 	mos6566_device(const machine_config &mconfig, device_type type, const char *name, const char *tag, device_t *owner, UINT32 clock, UINT32 variant, const char *shortname, const char *source);
 	mos6566_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
 
@@ -221,6 +235,17 @@ public:
 	template<class _Object> static devcb_base &set_k_wr_callback(device_t &device, _Object object) { return downcast<mos6566_device &>(device).m_write_k.set_callback(object); }
 
 	virtual const address_space_config *memory_space_config(address_spacenum spacenum = AS_0) const;
+=======
+	mos6566_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
+
+	static void static_set_cpu_tag(device_t &device, const char *tag) { downcast<mos6566_device &>(device).m_cpu.set_tag(tag); }
+	template <class Object> static devcb_base &set_irq_wr_callback(device_t &device, Object &&cb) { return downcast<mos6566_device &>(device).m_write_irq.set_callback(std::forward<Object>(cb)); }
+	template <class Object> static devcb_base &set_ba_wr_callback(device_t &device, Object &&cb) { return downcast<mos6566_device &>(device).m_write_ba.set_callback(std::forward<Object>(cb)); }
+	template <class Object> static devcb_base &set_aec_wr_callback(device_t &device, Object &&cb) { return downcast<mos6566_device &>(device).m_write_aec.set_callback(std::forward<Object>(cb)); }
+	template <class Object> static devcb_base &set_k_wr_callback(device_t &device, Object &&cb) { return downcast<mos6566_device &>(device).m_write_k.set_callback(std::forward<Object>(cb)); }
+
+	virtual space_config_vector memory_space_config() const override;
+>>>>>>> upstream/master
 
 	DECLARE_READ8_MEMBER( read );
 	DECLARE_WRITE8_MEMBER( write );
@@ -231,9 +256,15 @@ public:
 	DECLARE_READ_LINE_MEMBER( ba_r )   { return m_ba; }   // bus available
 	DECLARE_READ_LINE_MEMBER( aec_r )  { return m_aec; }  // address enable control
 
+<<<<<<< HEAD
 	UINT8 bus_r() { return m_last_data; }
 
 	UINT32 screen_update(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect);
+=======
+	uint8_t bus_r() { return m_last_data; }
+
+	uint32_t screen_update(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect);
+>>>>>>> upstream/master
 
 protected:
 	enum
@@ -251,6 +282,7 @@ protected:
 		TYPE_8569   // PAL-N VIC-IIe (C128)
 	};
 
+<<<<<<< HEAD
 	// device-level overrides
 	virtual void device_start();
 	virtual void device_reset();
@@ -261,14 +293,27 @@ protected:
 
 	const address_space_config      m_videoram_space_config;
 	const address_space_config      m_colorram_space_config;
+=======
+	mos6566_device(const machine_config &mconfig, device_type type, const char *tag, device_t *owner, uint32_t clock, uint32_t variant);
+
+	// device-level overrides
+	virtual void device_start() override;
+	virtual void device_reset() override;
+	virtual void execute_run() override;
+>>>>>>> upstream/master
 
 	inline void set_interrupt( int mask );
 	inline void clear_interrupt( int mask );
 	inline void set_ba(int state);
 	inline void set_aec(int state);
 	inline void bad_line_ba();
+<<<<<<< HEAD
 	inline UINT8 read_videoram(offs_t offset);
 	inline UINT8 read_colorram(offs_t offset);
+=======
+	inline uint8_t read_videoram(offs_t offset);
+	inline uint8_t read_colorram(offs_t offset);
+>>>>>>> upstream/master
 	inline void idle_access();
 	inline void spr_ba(int num);
 	inline void spr_ptr_access( int num );
@@ -282,11 +327,25 @@ protected:
 	inline void matrix_access();
 	inline void graphics_access();
 	inline void draw_background();
+<<<<<<< HEAD
 	inline void draw_mono( UINT16 p, UINT8 c0, UINT8 c1 );
 	inline void draw_multi( UINT16 p, UINT8 c0, UINT8 c1, UINT8 c2, UINT8 c3 );
 	void draw_graphics();
 	void draw_sprites();
 
+=======
+	inline void draw_mono( uint16_t p, uint8_t c0, uint8_t c1 );
+	inline void draw_multi( uint16_t p, uint8_t c0, uint8_t c1, uint8_t c2, uint8_t c3 );
+	void draw_graphics();
+	void draw_sprites();
+
+	int m_icount;
+	const int m_variant;
+
+	const address_space_config      m_videoram_space_config;
+	const address_space_config      m_colorram_space_config;
+
+>>>>>>> upstream/master
 	devcb_write_line       m_write_irq;
 	devcb_write_line       m_write_ba;
 	devcb_write_line       m_write_aec;
@@ -297,6 +356,7 @@ protected:
 	int m_phi0;
 	int m_ba;
 	int m_aec;
+<<<<<<< HEAD
 	UINT8 m_aec_delay;
 	int m_rdy_cycles;
 
@@ -365,6 +425,76 @@ protected:
 	/* Cycles */
 	UINT64 m_first_ba_cycle;
 	UINT8 m_device_suspended;
+=======
+	uint8_t m_aec_delay;
+	int m_rdy_cycles;
+
+	uint8_t m_reg[0x80];
+
+	int m_on;                               /* rastering of the screen */
+
+	uint16_t m_chargenaddr, m_videoaddr, m_bitmapaddr;
+
+	bitmap_rgb32 m_bitmap;
+
+	uint16_t m_colors[4], m_spritemulti[4];
+
+	int m_rasterline;
+	uint8_t m_cycle;
+	uint16_t m_raster_x;
+	uint16_t m_graphic_x;
+	uint8_t m_last_data;
+	int m_lp;
+
+	/* convert multicolor byte to background/foreground for sprite collision */
+	uint16_t m_expandx[256];
+	uint16_t m_expandx_multi[256];
+
+	/* Display */
+	uint16_t m_dy_start;
+	uint16_t m_dy_stop;
+
+	/* GFX */
+	uint8_t m_draw_this_line;
+	uint8_t m_is_bad_line;
+	uint8_t m_bad_lines_enabled;
+	uint8_t m_display_state;
+	uint8_t m_char_data;
+	uint8_t m_gfx_data;
+	uint8_t m_color_data;
+	uint8_t m_last_char_data;
+	uint8_t m_matrix_line[40];                        // Buffer for video line, read in Bad Lines
+	uint8_t m_color_line[40];                     // Buffer for color line, read in Bad Lines
+	uint8_t m_vblanking;
+	uint16_t m_ml_index;
+	uint8_t m_rc;
+	uint16_t m_vc;
+	uint16_t m_vc_base;
+	uint8_t m_ref_cnt;
+
+	/* Sprites */
+	uint8_t m_spr_coll_buf[0x400];                    // Buffer for sprite-sprite collisions and priorities
+	uint8_t m_fore_coll_buf[0x400];                   // Buffer for foreground-sprite collisions and priorities
+	uint8_t m_spr_draw_data[8][4];                    // Sprite data for drawing
+	uint8_t m_spr_exp_y;
+	uint8_t m_spr_dma_on;
+	uint8_t m_spr_draw;
+	uint8_t m_spr_disp_on;
+	uint16_t m_spr_ptr[8];
+	uint8_t m_spr_data[8][4];
+	uint16_t m_mc_base[8];                        // Sprite data counter bases
+	uint16_t m_mc[8];                         // Sprite data counters
+
+	/* Border */
+	uint8_t m_border_on;
+	uint8_t m_ud_border_on;
+	uint8_t m_border_on_sample[5];
+	uint8_t m_border_color_sample[0x400 / 8];         // Samples of border color at each "displayed" cycle
+
+	/* Cycles */
+	uint64_t m_first_ba_cycle;
+	uint8_t m_device_suspended;
+>>>>>>> upstream/master
 };
 
 
@@ -374,8 +504,15 @@ class mos6567_device :  public mos6566_device
 {
 public:
 	// construction/destruction
+<<<<<<< HEAD
 	mos6567_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
 	mos6567_device(const machine_config &mconfig, device_type type, const char *name, const char *tag, device_t *owner, UINT32 clock, UINT32 variant, const char *shortname, const char *source);
+=======
+	mos6567_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
+
+protected:
+	mos6567_device(const machine_config &mconfig, device_type type, const char *tag, device_t *owner, uint32_t clock, uint32_t variant);
+>>>>>>> upstream/master
 };
 
 
@@ -385,7 +522,11 @@ class mos8562_device :  public mos6567_device
 {
 public:
 	// construction/destruction
+<<<<<<< HEAD
 	mos8562_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
+=======
+	mos8562_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
+>>>>>>> upstream/master
 };
 
 
@@ -395,11 +536,20 @@ class mos8564_device :  public mos6567_device
 {
 public:
 	// construction/destruction
+<<<<<<< HEAD
 	mos8564_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
 
 	// device_execute_interface overrides
 	virtual UINT64 execute_clocks_to_cycles(UINT64 clocks) const { return (clocks / 8); }
 	virtual UINT64 execute_cycles_to_clocks(UINT64 cycles) const { return (cycles * 8); }
+=======
+	mos8564_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
+
+protected:
+	// device_execute_interface overrides
+	virtual uint64_t execute_clocks_to_cycles(uint64_t clocks) const override { return (clocks / 8); }
+	virtual uint64_t execute_cycles_to_clocks(uint64_t cycles) const override { return (cycles * 8); }
+>>>>>>> upstream/master
 };
 
 
@@ -409,11 +559,21 @@ class mos6569_device :  public mos6566_device
 {
 public:
 	// construction/destruction
+<<<<<<< HEAD
 	mos6569_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
 	mos6569_device(const machine_config &mconfig, device_type type, const char *name, const char *tag, device_t *owner, UINT32 clock, UINT32 variant, const char *shortname, const char *source);
 
 	// device-level overrides
 	virtual void execute_run();
+=======
+	mos6569_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
+
+protected:
+	mos6569_device(const machine_config &mconfig, device_type type, const char *tag, device_t *owner, uint32_t clock, uint32_t variant);
+
+	// device-level overrides
+	virtual void execute_run() override;
+>>>>>>> upstream/master
 };
 
 
@@ -423,7 +583,11 @@ class mos8565_device :  public mos6569_device
 {
 public:
 	// construction/destruction
+<<<<<<< HEAD
 	mos8565_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
+=======
+	mos8565_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
+>>>>>>> upstream/master
 };
 
 
@@ -433,15 +597,25 @@ class mos8566_device :  public mos6569_device
 {
 public:
 	// construction/destruction
+<<<<<<< HEAD
 	mos8566_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
 
 	// device_execute_interface overrides
 	virtual UINT64 execute_clocks_to_cycles(UINT64 clocks) const { return (clocks / 8); }
 	virtual UINT64 execute_cycles_to_clocks(UINT64 cycles) const { return (cycles * 8); }
+=======
+	mos8566_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
+
+protected:
+	// device_execute_interface overrides
+	virtual uint64_t execute_clocks_to_cycles(uint64_t clocks) const override { return (clocks / 8); }
+	virtual uint64_t execute_cycles_to_clocks(uint64_t cycles) const override { return (cycles * 8); }
+>>>>>>> upstream/master
 };
 
 
 // device type definitions
+<<<<<<< HEAD
 extern const device_type MOS6566;
 extern const device_type MOS6567;
 extern const device_type MOS8562;
@@ -453,3 +627,14 @@ extern const device_type MOS8566;
 
 
 #endif
+=======
+DECLARE_DEVICE_TYPE(MOS6566, mos6566_device)
+DECLARE_DEVICE_TYPE(MOS6567, mos6567_device)
+DECLARE_DEVICE_TYPE(MOS8562, mos8562_device)
+DECLARE_DEVICE_TYPE(MOS8564, mos8564_device)
+DECLARE_DEVICE_TYPE(MOS6569, mos6569_device)
+DECLARE_DEVICE_TYPE(MOS8565, mos8565_device)
+DECLARE_DEVICE_TYPE(MOS8566, mos8566_device)
+
+#endif // MAME_VIDEO_MOS6566_H
+>>>>>>> upstream/master

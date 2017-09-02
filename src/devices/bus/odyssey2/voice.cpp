@@ -14,12 +14,17 @@
 
 #include "emu.h"
 #include "voice.h"
+<<<<<<< HEAD
+=======
+#include "speaker.h"
+>>>>>>> upstream/master
 
 
 //-------------------------------------------------
 //  o2_voice_device - constructor
 //-------------------------------------------------
 
+<<<<<<< HEAD
 const device_type O2_ROM_VOICE = &device_creator<o2_voice_device>;
 
 
@@ -28,6 +33,16 @@ o2_voice_device::o2_voice_device(const machine_config &mconfig, const char *tag,
 					m_speech(*this, "sp0256_speech"),
 					m_subslot(*this, "subslot"),
 					m_lrq_state(0)
+=======
+DEFINE_DEVICE_TYPE(O2_ROM_VOICE, o2_voice_device, "o2_voice", "Odyssey 2 The Voice Passthrough Cart")
+
+
+o2_voice_device::o2_voice_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: o2_rom_device(mconfig, O2_ROM_VOICE, tag, owner, clock)
+	, m_speech(*this, "sp0256_speech")
+	, m_subslot(*this, "subslot")
+	, m_lrq_state(0)
+>>>>>>> upstream/master
 {
 }
 
@@ -37,11 +52,20 @@ void o2_voice_device::device_start()
 	save_item(NAME(m_lrq_state));
 }
 
+<<<<<<< HEAD
 //-------------------------------------------------
 //  MACHINE_CONFIG_FRAGMENT( sub_slot )
 //-------------------------------------------------
 
 static MACHINE_CONFIG_FRAGMENT( o2voice )
+=======
+
+//-------------------------------------------------
+//  device_add_mconfig - add device configuration
+//-------------------------------------------------
+
+MACHINE_CONFIG_MEMBER( o2_voice_device::device_add_mconfig )
+>>>>>>> upstream/master
 	MCFG_SPEAKER_STANDARD_MONO("mono")
 
 	MCFG_SOUND_ADD("sp0256_speech", SP0256, 3120000)
@@ -49,6 +73,7 @@ static MACHINE_CONFIG_FRAGMENT( o2voice )
 	// The Voice uses a speaker with its own volume control so the relative volumes to use are subjective, these sound good
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 1.00)
 
+<<<<<<< HEAD
 	MCFG_O2_CARTRIDGE_ADD("subslot", o2_cart, NULL)
 MACHINE_CONFIG_END
 
@@ -64,6 +89,12 @@ machine_config_constructor o2_voice_device::device_mconfig_additions() const
 }
 
 
+=======
+	MCFG_O2_CARTRIDGE_ADD("subslot", o2_cart, nullptr)
+MACHINE_CONFIG_END
+
+
+>>>>>>> upstream/master
 ROM_START( o2voice )
 	ROM_REGION( 0x10000, "sp0256_speech", 0 )
 	// SP0256B-019 Speech chip w/2KiB mask rom
@@ -84,7 +115,11 @@ ROM_START( o2voice )
 	ROM_LOAD( "spr128-004.bin",   0x8000, 0x4000, CRC(e79dfb75) SHA1(37f33d79ffd1739d7c2f226b010a1eac28d74ca0) )
 ROM_END
 
+<<<<<<< HEAD
 const rom_entry *o2_voice_device::device_rom_region() const
+=======
+const tiny_rom_entry *o2_voice_device::device_rom_region() const
+>>>>>>> upstream/master
 {
 	return ROM_NAME( o2voice );
 }

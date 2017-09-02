@@ -44,6 +44,7 @@ More notes about Funny Strip protection issues at the bottom of source file (DRI
 ***************************************************************************/
 
 #include "emu.h"
+<<<<<<< HEAD
 #include "cpu/z80/z80.h"
 #include "cpu/m68000/m68000.h"
 #include "sound/2203intf.h"
@@ -87,6 +88,36 @@ WRITE16_MEMBER(splash_state::coin_w)
 				break;
 		}
 	}
+=======
+#include "includes/splash.h"
+
+#include "cpu/z80/z80.h"
+#include "cpu/m68000/m68000.h"
+#include "machine/74259.h"
+#include "sound/2203intf.h"
+#include "sound/3812intf.h"
+#include "screen.h"
+#include "speaker.h"
+
+WRITE_LINE_MEMBER(splash_state::coin1_lockout_w)
+{
+	machine().bookkeeping().coin_lockout_w(0, !state);
+}
+
+WRITE_LINE_MEMBER(splash_state::coin2_lockout_w)
+{
+	machine().bookkeeping().coin_lockout_w(1, !state);
+}
+
+WRITE_LINE_MEMBER(splash_state::coin1_counter_w)
+{
+	machine().bookkeeping().coin_counter_w(0, state);
+}
+
+WRITE_LINE_MEMBER(splash_state::coin2_counter_w)
+{
+	machine().bookkeeping().coin_counter_w(1, state);
+>>>>>>> upstream/master
 }
 
 static ADDRESS_MAP_START( splash_map, AS_PROGRAM, 16, splash_state )
@@ -96,8 +127,13 @@ static ADDRESS_MAP_START( splash_map, AS_PROGRAM, 16, splash_state )
 	AM_RANGE(0x840002, 0x840003) AM_READ_PORT("DSW2")
 	AM_RANGE(0x840004, 0x840005) AM_READ_PORT("P1")
 	AM_RANGE(0x840006, 0x840007) AM_READ_PORT("P2")
+<<<<<<< HEAD
 	AM_RANGE(0x84000e, 0x84000f) AM_WRITE(splash_sh_irqtrigger_w)                       /* Sound command */
 	AM_RANGE(0x84000a, 0x84003b) AM_WRITE(coin_w)                                /* Coin Counters + Coin Lockout */
+=======
+	AM_RANGE(0x84000a, 0x84000b) AM_SELECT(0x000070) AM_DEVWRITE8_MOD("outlatch", ls259_device, write_d0, rshift<3>, 0xff00)
+	AM_RANGE(0x84000e, 0x84000f) AM_DEVWRITE8("soundlatch", generic_latch_8_device, write, 0x00ff)
+>>>>>>> upstream/master
 	AM_RANGE(0x880000, 0x8817ff) AM_RAM_WRITE(vram_w) AM_SHARE("videoram")   /* Video RAM */
 	AM_RANGE(0x881800, 0x881803) AM_RAM AM_SHARE("vregs")                           /* Scroll registers */
 	AM_RANGE(0x881804, 0x881fff) AM_RAM                                                 /* Work RAM */
@@ -111,6 +147,14 @@ WRITE8_MEMBER(splash_state::splash_adpcm_data_w)
 	m_adpcm_data = data;
 }
 
+<<<<<<< HEAD
+=======
+WRITE8_MEMBER(splash_state::splash_adpcm_control_w)
+{
+	m_msm->reset_w(!BIT(data, 0));
+}
+
+>>>>>>> upstream/master
 WRITE_LINE_MEMBER(splash_state::splash_msm5205_int)
 {
 	m_msm->data_w(m_adpcm_data >> 4);
@@ -120,8 +164,13 @@ WRITE_LINE_MEMBER(splash_state::splash_msm5205_int)
 static ADDRESS_MAP_START( splash_sound_map, AS_PROGRAM, 8, splash_state )
 	AM_RANGE(0x0000, 0xd7ff) AM_ROM                                     /* ROM */
 	AM_RANGE(0xd800, 0xd800) AM_WRITE(splash_adpcm_data_w)              /* ADPCM data for the MSM5205 chip */
+<<<<<<< HEAD
 //  AM_RANGE(0xe000, 0xe000) AM_WRITENOP                                /* ??? */
 	AM_RANGE(0xe800, 0xe800) AM_READ(soundlatch_byte_r)                     /* Sound latch */
+=======
+	AM_RANGE(0xe000, 0xe000) AM_WRITE(splash_adpcm_control_w)
+	AM_RANGE(0xe800, 0xe800) AM_DEVREAD("soundlatch", generic_latch_8_device, read)  /* Sound latch */
+>>>>>>> upstream/master
 	AM_RANGE(0xf000, 0xf001) AM_DEVREADWRITE("ymsnd", ym3812_device, read, write) /* YM3812 */
 	AM_RANGE(0xf800, 0xffff) AM_RAM                                     /* RAM */
 ADDRESS_MAP_END
@@ -169,8 +218,13 @@ static ADDRESS_MAP_START( roldfrog_map, AS_PROGRAM, 16, splash_state )
 	AM_RANGE(0x840002, 0x840003) AM_READ_PORT("DSW2")
 	AM_RANGE(0x840004, 0x840005) AM_READ_PORT("P1")
 	AM_RANGE(0x840006, 0x840007) AM_READ_PORT("P2")
+<<<<<<< HEAD
 	AM_RANGE(0x84000e, 0x84000f) AM_WRITE(roldf_sh_irqtrigger_w)                        /* Sound command */
 	AM_RANGE(0x84000a, 0x84003b) AM_WRITE(coin_w)                                /* Coin Counters + Coin Lockout */
+=======
+	AM_RANGE(0x84000a, 0x84000b) AM_SELECT(0x000070) AM_DEVWRITE8_MOD("outlatch", ls259_device, write_d0, rshift<3>, 0xff00)
+	AM_RANGE(0x84000e, 0x84000f) AM_DEVWRITE8("soundlatch", generic_latch_8_device, write, 0x00ff)
+>>>>>>> upstream/master
 	AM_RANGE(0x880000, 0x8817ff) AM_RAM_WRITE(vram_w) AM_SHARE("videoram")   /* Video RAM */
 	AM_RANGE(0x881800, 0x881803) AM_RAM AM_SHARE("vregs")                           /* Scroll registers */
 	AM_RANGE(0x881804, 0x881fff) AM_RAM                                                 /* Work RAM */
@@ -196,6 +250,7 @@ READ8_MEMBER(splash_state::roldfrog_unk_r)
 static ADDRESS_MAP_START( roldfrog_sound_io_map, AS_IO, 8, splash_state )
 	ADDRESS_MAP_GLOBAL_MASK(0xff)
 	AM_RANGE(0x10, 0x11) AM_DEVREADWRITE("ymsnd", ym2203_device, read, write)
+<<<<<<< HEAD
 	AM_RANGE(0x40, 0x40) AM_NOP
 	AM_RANGE(0x31, 0x31) AM_WRITE(sound_bank_w)
 	AM_RANGE(0x37, 0x37) AM_WRITE(roldfrog_vblank_ack_w )
@@ -205,16 +260,32 @@ static ADDRESS_MAP_START( roldfrog_sound_io_map, AS_IO, 8, splash_state )
 ADDRESS_MAP_END
 
 READ16_MEMBER(splash_state::spr_read)
+=======
+	AM_RANGE(0x31, 0x31) AM_WRITE(sound_bank_w)
+	AM_RANGE(0x37, 0x37) AM_WRITE(roldfrog_vblank_ack_w )
+	AM_RANGE(0x40, 0x40) AM_DEVWRITE("soundlatch", generic_latch_8_device, acknowledge_w)
+	AM_RANGE(0x70, 0x70) AM_DEVREAD("soundlatch", generic_latch_8_device, read)
+
+	AM_RANGE(0x20, 0x23) AM_READ(roldfrog_unk_r)
+ADDRESS_MAP_END
+
+READ16_MEMBER(funystrp_state::spr_read)
+>>>>>>> upstream/master
 {
 	return m_spriteram[offset]|0xff00;
 }
 
+<<<<<<< HEAD
 WRITE16_MEMBER(splash_state::spr_write)
+=======
+WRITE16_MEMBER(funystrp_state::spr_write)
+>>>>>>> upstream/master
 {
 	COMBINE_DATA(&m_spriteram[offset]);
 	m_spriteram[offset]|=0xff00; /* 8 bit, expected 0xffnn when read as 16 bit */
 }
 
+<<<<<<< HEAD
 WRITE16_MEMBER(splash_state::funystrp_sh_irqtrigger_w)
 {
 	soundlatch_byte_w(space, 0, data>>8);
@@ -227,17 +298,41 @@ static ADDRESS_MAP_START( funystrp_map, AS_PROGRAM, 16, splash_state )
 	AM_RANGE(0x800000, 0x83ffff) AM_RAM AM_SHARE("pixelram")                        /* Pixel Layer */
 	AM_RANGE(0x84000a, 0x84000b) AM_WRITE(coin_w)                                /* Coin Counters + Coin Lockout */
 	AM_RANGE(0x84000e, 0x84000f) AM_WRITE(funystrp_sh_irqtrigger_w)                       /* Sound command */
+=======
+WRITE8_MEMBER(funystrp_state::eeprom_w)
+{
+	m_eeprom->cs_write(BIT(data, 4));
+	m_eeprom->di_write(BIT(data, 6));
+	m_eeprom->clk_write(BIT(data, 5));
+}
+
+static ADDRESS_MAP_START( funystrp_map, AS_PROGRAM, 16, funystrp_state )
+	AM_RANGE(0x000000, 0x07ffff) AM_ROM                                                 /* ROM */
+	AM_RANGE(0x100000, 0x1fffff) AM_RAM                                                 /* protection? RAM */
+	AM_RANGE(0x800000, 0x83ffff) AM_RAM AM_SHARE("pixelram")                        /* Pixel Layer */
+>>>>>>> upstream/master
 	AM_RANGE(0x840000, 0x840001) AM_READ_PORT("DSW1")
 	AM_RANGE(0x840002, 0x840003) AM_READ_PORT("DSW2")
 	AM_RANGE(0x840004, 0x840005) AM_READ_PORT("P1")
 	AM_RANGE(0x840006, 0x840007) AM_READ_PORT("P2")
 	AM_RANGE(0x840008, 0x840009) AM_READ_PORT("SYSTEM")
+<<<<<<< HEAD
 	AM_RANGE(0x880000, 0x8817ff) AM_RAM_WRITE(vram_w) AM_SHARE("videoram")   /* Video RAM */
 	AM_RANGE(0x881800, 0x881803) AM_RAM AM_SHARE("vregs")                           /* Scroll registers */
 	AM_RANGE(0x881804, 0x881fff) AM_WRITENOP
 	AM_RANGE(0x8c0000, 0x8c0fff) AM_RAM_DEVWRITE("palette", palette_device, write) AM_SHARE("palette")/* Palette is xRRRRxGGGGxBBBBx */
 	AM_RANGE(0xd00000, 0xd01fff) AM_READWRITE(spr_read, spr_write) AM_SHARE("spriteram")        /* Sprite RAM */
 	AM_RANGE(0xfe0000, 0xffffff) AM_RAM  AM_MASK(0xffff) /* there's fe0000 <-> ff0000 compare */                /* Work RAM */
+=======
+	AM_RANGE(0x84000a, 0x84000b) AM_WRITE8(eeprom_w, 0xff00) AM_READNOP
+	AM_RANGE(0x84000e, 0x84000f) AM_DEVWRITE8("soundlatch", generic_latch_8_device, write, 0xff00)
+	AM_RANGE(0x880000, 0x8817ff) AM_RAM_WRITE(vram_w) AM_SHARE("videoram")   /* Video RAM */
+	AM_RANGE(0x881800, 0x881803) AM_RAM AM_SHARE("vregs")                           /* Scroll registers */
+	AM_RANGE(0x881804, 0x881fff) AM_RAM
+	AM_RANGE(0x8c0000, 0x8c0fff) AM_RAM_DEVWRITE("palette", palette_device, write) AM_SHARE("palette")/* Palette is xRRRRxGGGGxBBBBx */
+	AM_RANGE(0xd00000, 0xd01fff) AM_READWRITE(spr_read, spr_write) AM_SHARE("spriteram")        /* Sprite RAM */
+	AM_RANGE(0xfe0000, 0xfeffff) AM_RAM AM_MIRROR(0x10000) /* there's fe0000 <-> ff0000 compare */                /* Work RAM */
+>>>>>>> upstream/master
 ADDRESS_MAP_END
 
 static ADDRESS_MAP_START( funystrp_sound_map, AS_PROGRAM, 8, splash_state )
@@ -246,52 +341,83 @@ static ADDRESS_MAP_START( funystrp_sound_map, AS_PROGRAM, 8, splash_state )
 	AM_RANGE(0x8000, 0xffff) AM_ROM AM_ROMBANK("sound_bank")
 ADDRESS_MAP_END
 
+<<<<<<< HEAD
 READ8_MEMBER(splash_state::int_source_r)
+=======
+READ8_MEMBER(funystrp_state::int_source_r)
+>>>>>>> upstream/master
 {
 	return ~m_msm_source;
 }
 
+<<<<<<< HEAD
 WRITE8_MEMBER(splash_state::msm1_data_w)
+=======
+WRITE8_MEMBER(funystrp_state::msm1_data_w)
+>>>>>>> upstream/master
 {
 	m_msm_data1=data;
 	m_msm_source&=~1;
 	m_msm_toggle1=0;
 }
 
+<<<<<<< HEAD
 WRITE8_MEMBER(splash_state::msm1_interrupt_w)
+=======
+WRITE8_MEMBER(funystrp_state::msm1_interrupt_w)
+>>>>>>> upstream/master
 {
 	m_snd_interrupt_enable1=~data;
 }
 
+<<<<<<< HEAD
 WRITE8_MEMBER(splash_state::msm2_interrupt_w)
+=======
+WRITE8_MEMBER(funystrp_state::msm2_interrupt_w)
+>>>>>>> upstream/master
 {
 	m_snd_interrupt_enable2=~data;
 }
 
+<<<<<<< HEAD
 WRITE8_MEMBER(splash_state::msm2_data_w)
+=======
+WRITE8_MEMBER(funystrp_state::msm2_data_w)
+>>>>>>> upstream/master
 {
 	m_msm_data2=data;
 	m_msm_source&=~2;
 	m_msm_toggle2=0;
 }
 
+<<<<<<< HEAD
 static ADDRESS_MAP_START( funystrp_sound_io_map, AS_IO, 8, splash_state )
+=======
+static ADDRESS_MAP_START( funystrp_sound_io_map, AS_IO, 8, funystrp_state )
+>>>>>>> upstream/master
 	ADDRESS_MAP_GLOBAL_MASK(0xff)
 	AM_RANGE(0x00, 0x00) AM_WRITE(msm1_data_w)
 	AM_RANGE(0x01, 0x01) AM_WRITE(msm2_data_w)
 	AM_RANGE(0x02, 0x02) AM_WRITE(sound_bank_w)
+<<<<<<< HEAD
 	AM_RANGE(0x03, 0x03) AM_READ(soundlatch_byte_r)
+=======
+	AM_RANGE(0x03, 0x03) AM_DEVREAD("soundlatch", generic_latch_8_device, read)
+>>>>>>> upstream/master
 	AM_RANGE(0x04, 0x04) AM_READ(int_source_r)
 	AM_RANGE(0x06, 0x06) AM_WRITE(msm1_interrupt_w)
 	AM_RANGE(0x07, 0x07) AM_WRITE(msm2_interrupt_w)
 ADDRESS_MAP_END
 
+<<<<<<< HEAD
 MACHINE_RESET_MEMBER(splash_state,funystrp)
 {
 	m_adpcm_data = 0;
 	m_ret = 0x100;
 }
 
+=======
+>>>>>>> upstream/master
 
 static INPUT_PORTS_START( splash )
 	PORT_START("DSW1")
@@ -439,9 +565,17 @@ static INPUT_PORTS_START( funystrp )
 	PORT_BIT( 0x80, IP_ACTIVE_LOW, IPT_START2 )
 
 	PORT_START("SYSTEM")
+<<<<<<< HEAD
 	PORT_DIPNAME( 0xffff, 0x0000, "Clear EEPROM" )
 	PORT_DIPSETTING(    0x0000, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0xffff, DEF_STR( On ) )
+=======
+	PORT_BIT( 0x01, IP_ACTIVE_HIGH, IPT_SPECIAL ) PORT_READ_LINE_DEVICE_MEMBER("eeprom", eeprom_serial_93cxx_device, do_read)
+	PORT_DIPNAME( 0x02, 0x02, "Clear EEPROM" )
+	PORT_DIPSETTING(    0x02, DEF_STR( Off ) )
+	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
+	PORT_BIT( 0xfc, IP_ACTIVE_LOW, IPT_UNUSED )
+>>>>>>> upstream/master
 
 INPUT_PORTS_END
 
@@ -484,7 +618,11 @@ MACHINE_RESET_MEMBER(splash_state,splash)
 	m_ret = 0x100;
 }
 
+<<<<<<< HEAD
 static MACHINE_CONFIG_START( splash, splash_state )
+=======
+static MACHINE_CONFIG_START( splash )
+>>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", M68000, XTAL_24MHz/2)       /* 12MHz (24/2) */
@@ -495,6 +633,15 @@ static MACHINE_CONFIG_START( splash, splash_state )
 	MCFG_CPU_PROGRAM_MAP(splash_sound_map)
 	MCFG_CPU_PERIODIC_INT_DRIVER(splash_state, nmi_line_pulse, 60*64)   /* needed for the msm5205 to play the samples */
 
+<<<<<<< HEAD
+=======
+	MCFG_DEVICE_ADD("outlatch", LS259, 0) // A8
+	MCFG_ADDRESSABLE_LATCH_Q0_OUT_CB(WRITELINE(splash_state, coin1_lockout_w))
+	MCFG_ADDRESSABLE_LATCH_Q1_OUT_CB(WRITELINE(splash_state, coin2_lockout_w))
+	MCFG_ADDRESSABLE_LATCH_Q2_OUT_CB(WRITELINE(splash_state, coin1_counter_w))
+	MCFG_ADDRESSABLE_LATCH_Q3_OUT_CB(WRITELINE(splash_state, coin2_counter_w))
+
+>>>>>>> upstream/master
 	/* video hardware */
 	MCFG_SCREEN_ADD("screen", RASTER)
 	MCFG_SCREEN_REFRESH_RATE(58)
@@ -514,12 +661,22 @@ static MACHINE_CONFIG_START( splash, splash_state )
 	/* sound hardware */
 	MCFG_SPEAKER_STANDARD_MONO("mono")
 
+<<<<<<< HEAD
+=======
+	MCFG_GENERIC_LATCH_8_ADD("soundlatch")
+	MCFG_GENERIC_LATCH_DATA_PENDING_CB(INPUTLINE("audiocpu", 0))
+
+>>>>>>> upstream/master
 	MCFG_SOUND_ADD("ymsnd", YM3812, XTAL_30MHz/8)       /* 3.75MHz (30/8) */
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 0.80)
 
 	MCFG_SOUND_ADD("msm", MSM5205, XTAL_384kHz)
 	MCFG_MSM5205_VCLK_CB(WRITELINE(splash_state, splash_msm5205_int)) /* IRQ handler */
+<<<<<<< HEAD
 	MCFG_MSM5205_PRESCALER_SELECTOR(MSM5205_S48_4B)      /* 8KHz */     /* Sample rate = 384kHz/48 */
+=======
+	MCFG_MSM5205_PRESCALER_SELECTOR(S48_4B)      /* 8KHz */     /* Sample rate = 384kHz/48 */
+>>>>>>> upstream/master
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 0.80)
 MACHINE_CONFIG_END
 
@@ -537,7 +694,11 @@ INTERRUPT_GEN_MEMBER(splash_state::roldfrog_interrupt)
 	roldfrog_update_irq();
 }
 
+<<<<<<< HEAD
 static MACHINE_CONFIG_START( roldfrog, splash_state )
+=======
+static MACHINE_CONFIG_START( roldfrog )
+>>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", M68000, XTAL_24MHz/2)       /* 12 MHz - verified */
@@ -549,6 +710,15 @@ static MACHINE_CONFIG_START( roldfrog, splash_state )
 	MCFG_CPU_IO_MAP(roldfrog_sound_io_map)
 	MCFG_CPU_VBLANK_INT_DRIVER("screen", splash_state,  roldfrog_interrupt)
 
+<<<<<<< HEAD
+=======
+	MCFG_DEVICE_ADD("outlatch", LS259, 0)
+	MCFG_ADDRESSABLE_LATCH_Q1_OUT_CB(WRITELINE(splash_state, coin1_lockout_w))
+	MCFG_DEVCB_CHAIN_OUTPUT(WRITELINE(splash_state, coin2_lockout_w))
+	MCFG_ADDRESSABLE_LATCH_Q2_OUT_CB(WRITELINE(splash_state, coin1_counter_w))
+	MCFG_ADDRESSABLE_LATCH_Q3_OUT_CB(WRITELINE(splash_state, coin2_counter_w))
+
+>>>>>>> upstream/master
 	/* video hardware */
 	MCFG_SCREEN_ADD("screen", RASTER)
 	MCFG_SCREEN_REFRESH_RATE(60)
@@ -568,6 +738,13 @@ static MACHINE_CONFIG_START( roldfrog, splash_state )
 	/* sound hardware */
 	MCFG_SPEAKER_STANDARD_MONO("mono")
 
+<<<<<<< HEAD
+=======
+	MCFG_GENERIC_LATCH_8_ADD("soundlatch")
+	MCFG_GENERIC_LATCH_DATA_PENDING_CB(INPUTLINE("audiocpu", INPUT_LINE_NMI))
+	MCFG_GENERIC_LATCH_SEPARATE_ACKNOWLEDGE(true)
+
+>>>>>>> upstream/master
 	MCFG_SOUND_ADD("ymsnd", YM2203, XTAL_24MHz / 8)
 	MCFG_YM2203_IRQ_HANDLER(WRITELINE(splash_state, ym_irq))
 	MCFG_SOUND_ROUTE(0, "mono", 0.20)
@@ -576,7 +753,11 @@ static MACHINE_CONFIG_START( roldfrog, splash_state )
 	MCFG_SOUND_ROUTE(3, "mono", 1.0)
 MACHINE_CONFIG_END
 
+<<<<<<< HEAD
 WRITE_LINE_MEMBER(splash_state::adpcm_int1)
+=======
+WRITE_LINE_MEMBER(funystrp_state::adpcm_int1)
+>>>>>>> upstream/master
 {
 	if (m_snd_interrupt_enable1  || m_msm_toggle1 == 1)
 	{
@@ -591,7 +772,11 @@ WRITE_LINE_MEMBER(splash_state::adpcm_int1)
 	}
 }
 
+<<<<<<< HEAD
 WRITE_LINE_MEMBER(splash_state::adpcm_int2)
+=======
+WRITE_LINE_MEMBER(funystrp_state::adpcm_int2)
+>>>>>>> upstream/master
 {
 	if (m_snd_interrupt_enable2 || m_msm_toggle2 == 1)
 	{
@@ -607,7 +792,11 @@ WRITE_LINE_MEMBER(splash_state::adpcm_int2)
 }
 
 
+<<<<<<< HEAD
 MACHINE_START_MEMBER(splash_state, funystrp)
+=======
+void funystrp_state::machine_start()
+>>>>>>> upstream/master
 {
 	save_item(NAME(m_funystrp_val));
 	save_item(NAME(m_funystrp_ff3cc7_val));
@@ -621,30 +810,48 @@ MACHINE_START_MEMBER(splash_state, funystrp)
 	save_item(NAME(m_snd_interrupt_enable2));
 }
 
+<<<<<<< HEAD
 static MACHINE_CONFIG_START( funystrp, splash_state )
+=======
+static MACHINE_CONFIG_START( funystrp )
+>>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", M68000, XTAL_24MHz/2)       /* 12 MHz (24/2) */
 	MCFG_CPU_PROGRAM_MAP(funystrp_map)
+<<<<<<< HEAD
 	MCFG_CPU_VBLANK_INT_DRIVER("screen", splash_state,  irq6_line_hold)
+=======
+	MCFG_CPU_VBLANK_INT_DRIVER("screen", funystrp_state, irq6_line_hold)
+>>>>>>> upstream/master
 
 	MCFG_CPU_ADD("audiocpu", Z80, XTAL_24MHz/4)     /* 6MHz (24/4) */
 	MCFG_CPU_PROGRAM_MAP(funystrp_sound_map)
 	MCFG_CPU_IO_MAP(funystrp_sound_io_map)
 
+<<<<<<< HEAD
+=======
+	MCFG_EEPROM_SERIAL_93C46_ADD("eeprom")
+
+>>>>>>> upstream/master
 	/* video hardware */
 	MCFG_SCREEN_ADD("screen", RASTER)
 	MCFG_SCREEN_REFRESH_RATE(60)
 	MCFG_SCREEN_VBLANK_TIME(ATTOSECONDS_IN_USEC(2500) /* not accurate */)
 	MCFG_SCREEN_SIZE(64*8, 64*8)
 	MCFG_SCREEN_VISIBLE_AREA(0*8, 48*8-1, 2*8, 32*8-1)
+<<<<<<< HEAD
 	MCFG_SCREEN_UPDATE_DRIVER(splash_state, screen_update_funystrp)
+=======
+	MCFG_SCREEN_UPDATE_DRIVER(funystrp_state, screen_update_funystrp)
+>>>>>>> upstream/master
 	MCFG_SCREEN_PALETTE("palette")
 
 	MCFG_GFXDECODE_ADD("gfxdecode", "palette", splash)
 	MCFG_PALETTE_ADD("palette", 2048)
 	MCFG_PALETTE_FORMAT(xRRRRRGGGGGBBBBB)
 
+<<<<<<< HEAD
 	MCFG_MACHINE_START_OVERRIDE(splash_state, funystrp )
 	MCFG_MACHINE_RESET_OVERRIDE(splash_state, funystrp )
 
@@ -659,6 +866,22 @@ static MACHINE_CONFIG_START( funystrp, splash_state )
 	MCFG_SOUND_ADD("msm2", MSM5205, XTAL_400kHz)
 	MCFG_MSM5205_VCLK_CB(WRITELINE(splash_state, adpcm_int2))         /* interrupt function */
 	MCFG_MSM5205_PRESCALER_SELECTOR(MSM5205_S96_4B)  /* 1 / 96 */       /* Sample rate = 400kHz/96 */
+=======
+	/* sound hardware */
+	MCFG_SPEAKER_STANDARD_MONO("mono")
+
+	MCFG_GENERIC_LATCH_8_ADD("soundlatch")
+	MCFG_GENERIC_LATCH_DATA_PENDING_CB(INPUTLINE("audiocpu", INPUT_LINE_NMI))
+
+	MCFG_SOUND_ADD("msm1", MSM5205, XTAL_400kHz)
+	MCFG_MSM5205_VCLK_CB(WRITELINE(funystrp_state, adpcm_int1))         /* interrupt function */
+	MCFG_MSM5205_PRESCALER_SELECTOR(S48_4B)  /* 1 / 48 */       /* Sample rate = 400kHz/64 */
+	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 0.80)
+
+	MCFG_SOUND_ADD("msm2", MSM5205, XTAL_400kHz)
+	MCFG_MSM5205_VCLK_CB(WRITELINE(funystrp_state, adpcm_int2))         /* interrupt function */
+	MCFG_MSM5205_PRESCALER_SELECTOR(S96_4B)  /* 1 / 96 */       /* Sample rate = 400kHz/96 */
+>>>>>>> upstream/master
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 0.80)
 MACHINE_CONFIG_END
 
@@ -993,6 +1216,37 @@ ROM_START( puckpepl )
 	ROM_LOAD( "pp34.u51", 0x060000, 0x020000, CRC(93f2d483) SHA1(eb6981b0228acb1ec92325924d0aa295f9e2cfe1) )
 ROM_END
 
+<<<<<<< HEAD
+=======
+/*
+
+Ring & Ball (?)
+
+Came from a dead board, silkscreen ring&ball/a by microhard
+
+u87 & u111 program
+u51
+u53 empty socket might be missing
+u130 sound (z80)
+
+no idea on this one...
+
+*/
+
+ROM_START( ringball )
+	ROM_REGION( 0x080000, "maincpu", 0 )    /* 68000 code + gfx */
+	// TODO: encrypted, there's a device with scratched part between 68k and roms. u87 looks to have standard 68k vectors with scrambled bits.
+	ROM_LOAD( "u87.bin",      0x000000, 0x040000, CRC(f8f21cfd) SHA1(c258689fc79195945db21663d2df0a33a4412618) )
+	ROM_LOAD( "u111.bin",     0x040000, 0x040000, CRC(11e246b0) SHA1(b056bcaa52ab2898f470a29b0a5c2f3594e2522b) ) // actually "u101"?
+
+	ROM_REGION( 0x080000, "audiocpu", 0 )   /* Z80 code + sound data */
+	ROM_LOAD( "u130.bin",     0x000000, 0x080000, CRC(892202ea) SHA1(10b5933b136a6595f739510d380d12c4cefd9f09) )
+
+	ROM_REGION( 0x100000, "gfx1", 0 )
+	ROM_LOAD( "u51.bin",      0x000000, 0x080000, CRC(32c01844) SHA1(ad461c47cd270414c442325751eca0d6c1ea9e2d) )
+	ROM_LOAD( "u53.bin",      0x080000, 0x080000, NO_DUMP ) // empty on this PCB, GFXs doesn't seem enough for a complete game?
+ROM_END
+>>>>>>> upstream/master
 
 /* DRIVER INITs */
 
@@ -1010,7 +1264,11 @@ DRIVER_INIT_MEMBER(splash_state,splash10)
 
 DRIVER_INIT_MEMBER(splash_state,roldfrog)
 {
+<<<<<<< HEAD
 	UINT8 * ROM = (UINT8 *)memregion("audiocpu")->base();
+=======
+	uint8_t * ROM = (uint8_t *)memregion("audiocpu")->base();
+>>>>>>> upstream/master
 	membank("sound_bank")->configure_entries(0, 16, &ROM[0x10000], 0x8000);
 
 	m_bitmap_type = 1;
@@ -1019,7 +1277,11 @@ DRIVER_INIT_MEMBER(splash_state,roldfrog)
 
 DRIVER_INIT_MEMBER(splash_state,rebus)
 {
+<<<<<<< HEAD
 	UINT16 *ROM = (UINT16 *)memregion("maincpu")->base();
+=======
+	uint16_t *ROM = (uint16_t *)memregion("maincpu")->base();
+>>>>>>> upstream/master
 
 	m_bitmap_type = 1;
 	m_sprite_attr2_shift = 0;
@@ -1047,7 +1309,11 @@ DRIVER_INIT_MEMBER(splash_state,rebus)
 
 
 
+<<<<<<< HEAD
 READ16_MEMBER(splash_state::funystrp_protection_r)
+=======
+READ16_MEMBER(funystrp_state::protection_r)
+>>>>>>> upstream/master
 {
 	int pc = space.device().safe_pc();
 
@@ -1328,7 +1594,11 @@ READ16_MEMBER(splash_state::funystrp_protection_r)
 	return 0;
 }
 
+<<<<<<< HEAD
 WRITE16_MEMBER(splash_state::funystrp_protection_w)
+=======
+WRITE16_MEMBER(funystrp_state::protection_w)
+>>>>>>> upstream/master
 {
 	int ofst = (0x100000/2)+offset;
 
@@ -1358,11 +1628,16 @@ WRITE16_MEMBER(splash_state::funystrp_protection_w)
 	}
 }
 
+<<<<<<< HEAD
 DRIVER_INIT_MEMBER(splash_state,funystrp)
+=======
+DRIVER_INIT_MEMBER(funystrp_state,funystrp)
+>>>>>>> upstream/master
 {
 	m_bitmap_type = 0;
 	m_sprite_attr2_shift = 0;
 
+<<<<<<< HEAD
 	UINT16 *ROM = (UINT16 *)memregion("audiocpu")->base();
 
 	membank("sound_bank")->configure_entries(0, 16, &ROM[0x00000], 0x8000);
@@ -1380,3 +1655,23 @@ GAME( 1993, roldfroga,roldfrog, roldfrog, splash, splash_state,   roldfrog, ROT0
 GAME( 1995, rebus,    0,        roldfrog, splash, splash_state,   rebus,    ROT0, "Microhard", "Rebus", MACHINE_NOT_WORKING | MACHINE_UNEMULATED_PROTECTION | MACHINE_NO_SOUND | MACHINE_SUPPORTS_SAVE )
 GAME( 199?, funystrp, 0,        funystrp, funystrp, splash_state, funystrp, ROT0, "Microhard / MagicGames", "Funny Strip", MACHINE_NOT_WORKING | MACHINE_UNEMULATED_PROTECTION | MACHINE_SUPPORTS_SAVE )
 GAME( 199?, puckpepl, funystrp, funystrp, funystrp, splash_state, funystrp, ROT0, "Microhard", "Puck People", MACHINE_NOT_WORKING | MACHINE_UNEMULATED_PROTECTION | MACHINE_SUPPORTS_SAVE )
+=======
+	uint16_t *ROM = (uint16_t *)memregion("audiocpu")->base();
+
+	membank("sound_bank")->configure_entries(0, 16, &ROM[0x00000], 0x8000);
+
+	m_maincpu->space(AS_PROGRAM).install_write_handler(0x100000, 0x1fffff, write16_delegate(FUNC(funystrp_state::protection_w), this));
+	m_maincpu->space(AS_PROGRAM).install_read_handler(0x100000, 0x1fffff, read16_delegate(FUNC(funystrp_state::protection_r),this));
+}
+
+GAME( 1992, splash,   0,        splash,   splash,   splash_state, splash,   ROT0, "Gaelco / OMK Software",  "Splash! (Ver. 1.2 World)", MACHINE_SUPPORTS_SAVE )
+GAME( 1992, splash10, splash,   splash,   splash,   splash_state, splash10, ROT0, "Gaelco / OMK Software",  "Splash! (Ver. 1.0 World)", MACHINE_SUPPORTS_SAVE )
+GAME( 1992, paintlad, splash,   splash,   splash,   splash_state, splash,   ROT0, "Gaelco / OMK Software",  "Painted Lady (Splash) (Ver. 1.3 US)", MACHINE_SUPPORTS_SAVE )
+
+GAME( 1993, roldfrog, 0,        roldfrog, splash,   splash_state, roldfrog, ROT0, "Microhard",              "The Return of Lady Frog (set 1)", MACHINE_SUPPORTS_SAVE )
+GAME( 1993, roldfroga,roldfrog, roldfrog, splash,   splash_state, roldfrog, ROT0, "Microhard",              "The Return of Lady Frog (set 2)", MACHINE_SUPPORTS_SAVE )
+GAME( 1995, rebus,    0,        roldfrog, splash,   splash_state, rebus,    ROT0, "Microhard",              "Rebus", MACHINE_NOT_WORKING | MACHINE_UNEMULATED_PROTECTION | MACHINE_NO_SOUND | MACHINE_SUPPORTS_SAVE )
+GAME( 199?, funystrp, 0,        funystrp, funystrp, funystrp_state, funystrp, ROT0, "Microhard / MagicGames", "Funny Strip", MACHINE_NOT_WORKING | MACHINE_UNEMULATED_PROTECTION | MACHINE_SUPPORTS_SAVE )
+GAME( 199?, puckpepl, funystrp, funystrp, funystrp, funystrp_state, funystrp, ROT0, "Microhard",              "Puck People", MACHINE_NOT_WORKING | MACHINE_UNEMULATED_PROTECTION | MACHINE_SUPPORTS_SAVE )
+GAME( 199?, ringball, funystrp, funystrp, funystrp, funystrp_state, funystrp, ROT0, "Microhard",              "Ring & Ball (unknown title)", MACHINE_NOT_WORKING | MACHINE_UNEMULATED_PROTECTION | MACHINE_SUPPORTS_SAVE ) // Wouldn't surprise me if in-game is actually called King & Bell ...
+>>>>>>> upstream/master

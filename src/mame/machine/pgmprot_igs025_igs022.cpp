@@ -20,6 +20,10 @@
 
 #include "emu.h"
 #include "includes/pgm.h"
+<<<<<<< HEAD
+=======
+#include "machine/pgmprot_igs025_igs022.h"
+>>>>>>> upstream/master
 
 /* The IGS022 is an MCU which performs encrypted DMA used by
  - The Killing Blade
@@ -36,12 +40,20 @@
 void pgm_022_025_state::pgm_dw3_decrypt()
 {
 	int i;
+<<<<<<< HEAD
 	UINT16 *src = (UINT16 *) (memregion("maincpu")->base()+0x100000);
+=======
+	uint16_t *src = (uint16_t *) (memregion("maincpu")->base()+0x100000);
+>>>>>>> upstream/master
 
 	int rom_size = 0x100000;
 
 	for(i=0; i<rom_size/2; i++) {
+<<<<<<< HEAD
 		UINT16 x = src[i];
+=======
+		uint16_t x = src[i];
+>>>>>>> upstream/master
 
 		if((i & 0x005460) == 0x001400 || (i & 0x005450) == 0x001040)
 			x ^= 0x0100;
@@ -56,12 +68,20 @@ void pgm_022_025_state::pgm_dw3_decrypt()
 void pgm_022_025_state::pgm_killbld_decrypt()
 {
 	int i;
+<<<<<<< HEAD
 	UINT16 *src = (UINT16 *) (memregion("maincpu")->base()+0x100000);
+=======
+	uint16_t *src = (uint16_t *) (memregion("maincpu")->base()+0x100000);
+>>>>>>> upstream/master
 
 	int rom_size = 0x200000;
 
 	for(i=0; i<rom_size/2; i++) {
+<<<<<<< HEAD
 		UINT16 x = src[i];
+=======
+		uint16_t x = src[i];
+>>>>>>> upstream/master
 
 		if((i & 0x006d00) == 0x000400 || (i & 0x006c80) == 0x000880)
 			x ^= 0x0008;
@@ -74,7 +94,11 @@ void pgm_022_025_state::pgm_killbld_decrypt()
 }
 
 // these were all xored by a table at $178B2A
+<<<<<<< HEAD
 static const UINT8 killbld_source_data[0x0c][0xec] =  // offsets to these tables stored at $155ed0
+=======
+static const uint8_t killbld_source_data[0x0c][0xec] =  // offsets to these tables stored at $155ed0
+>>>>>>> upstream/master
 {
 	{ // region 16, $178772
 		0x5e, 0x09, 0xb3, 0x39, 0x60, 0x71, 0x71, 0x53, 0x11, 0xe5, 0x26, 0x34, 0x4c, 0x8c, 0x90, 0xee,
@@ -188,7 +212,11 @@ static const UINT8 killbld_source_data[0x0c][0xec] =  // offsets to these tables
 
 // all tables xored with data from $149c4c
 // tables are the same as olds and drgw2
+<<<<<<< HEAD
 static const UINT8 dw3_source_data[0x08][0xec] =
+=======
+static const uint8_t dw3_source_data[0x08][0xec] =
+>>>>>>> upstream/master
 {
 	{ 0, },
 	{ // region 1, $14c21a
@@ -332,6 +360,12 @@ MACHINE_RESET_MEMBER(pgm_022_025_state, dw3)
 	MACHINE_RESET_CALL_MEMBER(pgm);
 }
 
+<<<<<<< HEAD
+=======
+
+
+
+>>>>>>> upstream/master
 void pgm_022_025_state::igs025_to_igs022_callback( void )
 {
 //  printf("igs025_to_igs022_callback\n");
@@ -370,7 +404,11 @@ static ADDRESS_MAP_START( killbld_mem, AS_PROGRAM, 16, pgm_022_025_state )
 ADDRESS_MAP_END
 
 
+<<<<<<< HEAD
 MACHINE_CONFIG_START( pgm_022_025, pgm_022_025_state )
+=======
+MACHINE_CONFIG_START( pgm_022_025 )
+>>>>>>> upstream/master
 	MCFG_FRAGMENT_ADD(pgmbase)
 
 	MCFG_CPU_MODIFY("maincpu")

@@ -65,7 +65,11 @@
 
 PALETTE_INIT_MEMBER(pacman_state,pacman)
 {
+<<<<<<< HEAD
 	const UINT8 *color_prom = memregion("proms")->base();
+=======
+	const uint8_t *color_prom = memregion("proms")->base();
+>>>>>>> upstream/master
 	static const int resistances[3] = { 1000, 470, 220 };
 	double rweights[3], gweights[3], bweights[2];
 	int i;
@@ -108,7 +112,11 @@ PALETTE_INIT_MEMBER(pacman_state,pacman)
 	/* allocate the colortable */
 	for (i = 0; i < 64*4; i++)
 	{
+<<<<<<< HEAD
 		UINT8 ctabentry = color_prom[i] & 0x0f;
+=======
+		uint8_t ctabentry = color_prom[i] & 0x0f;
+>>>>>>> upstream/master
 
 		/* first palette bank */
 		palette.set_pen_indirect(i, ctabentry);
@@ -173,7 +181,11 @@ VIDEO_START_MEMBER(pacman_state,pacman)
 	/* one pixel to the left to get a more correct placement */
 	m_xoffsethack = 1;
 
+<<<<<<< HEAD
 	m_bg_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(pacman_state::pacman_get_tile_info),this), tilemap_mapper_delegate(FUNC(pacman_state::pacman_scan_rows),this),  8, 8, 36, 28 );
+=======
+	m_bg_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(pacman_state::pacman_get_tile_info),this), tilemap_mapper_delegate(FUNC(pacman_state::pacman_scan_rows),this),  8, 8, 36, 28 );
+>>>>>>> upstream/master
 }
 
 VIDEO_START_MEMBER(pacman_state,birdiy)
@@ -195,24 +207,41 @@ WRITE8_MEMBER(pacman_state::pacman_colorram_w)
 	m_bg_tilemap->mark_tile_dirty(offset );
 }
 
+<<<<<<< HEAD
 WRITE8_MEMBER(pacman_state::pacman_flipscreen_w)
 {
 	m_flipscreen = data & 1;
+=======
+WRITE_LINE_MEMBER(pacman_state::flipscreen_w)
+{
+	m_flipscreen = state;
+>>>>>>> upstream/master
 	m_bg_tilemap->set_flip(m_flipscreen * ( TILEMAP_FLIPX + TILEMAP_FLIPY ) );
 }
 
 
+<<<<<<< HEAD
 UINT32 pacman_state::screen_update_pacman(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+=======
+uint32_t pacman_state::screen_update_pacman(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+>>>>>>> upstream/master
 {
 	if (m_bgpriority != 0)
 		bitmap.fill(0, cliprect);
 	else
 		m_bg_tilemap->draw(screen, bitmap, cliprect, TILEMAP_DRAW_OPAQUE,0);
 
+<<<<<<< HEAD
 	if( m_spriteram != NULL )
 	{
 		UINT8 *spriteram = m_spriteram;
 		UINT8 *spriteram_2 = m_spriteram2;
+=======
+	if( m_spriteram != nullptr )
+	{
+		uint8_t *spriteram = m_spriteram;
+		uint8_t *spriteram_2 = m_spriteram2;
+>>>>>>> upstream/master
 		int offs;
 
 		rectangle spriteclip(2*8, 34*8-1, 0*8, 28*8-1);
@@ -224,7 +253,11 @@ UINT32 pacman_state::screen_update_pacman(screen_device &screen, bitmap_ind16 &b
 		{
 			int color;
 			int sx,sy;
+<<<<<<< HEAD
 			UINT8 fx,fy;
+=======
+			uint8_t fx,fy;
+>>>>>>> upstream/master
 
 			if(m_inv_spr)
 			{
@@ -263,7 +296,11 @@ UINT32 pacman_state::screen_update_pacman(screen_device &screen, bitmap_ind16 &b
 		{
 			int color;
 			int sx,sy;
+<<<<<<< HEAD
 			UINT8 fx,fy;
+=======
+			uint8_t fx,fy;
+>>>>>>> upstream/master
 
 			if(m_inv_spr)
 			{
@@ -291,7 +328,11 @@ UINT32 pacman_state::screen_update_pacman(screen_device &screen, bitmap_ind16 &b
 			m_gfxdecode->gfx(1)->transmask(bitmap,spriteclip,
 					( spriteram[offs] >> 2 ) | (m_spritebank << 6),
 					color,
+<<<<<<< HEAD
 					fy,fx,          //FIXME: flipping bits are really supposed to be inverted here?
+=======
+					fx,fy,
+>>>>>>> upstream/master
 					sx - 256,sy + m_xoffsethack,
 					m_palette->transpen_mask(*m_gfxdecode->gfx(1), color & 0x3f, 0));
 		}
@@ -322,6 +363,7 @@ VIDEO_START_MEMBER(pacman_state,pengo)
 	m_inv_spr = 0;
 	m_xoffsethack = 0;
 
+<<<<<<< HEAD
 	m_bg_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(pacman_state::pacman_get_tile_info),this), tilemap_mapper_delegate(FUNC(pacman_state::pacman_scan_rows),this),  8, 8, 36, 28 );
 }
 
@@ -351,6 +393,28 @@ WRITE8_MEMBER(pacman_state::pengo_gfxbank_w)
 		m_charbank = data & 1;
 		m_bg_tilemap->mark_all_dirty();
 	}
+=======
+	m_bg_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(pacman_state::pacman_get_tile_info),this), tilemap_mapper_delegate(FUNC(pacman_state::pacman_scan_rows),this),  8, 8, 36, 28 );
+}
+
+WRITE_LINE_MEMBER(pacman_state::pengo_palettebank_w)
+{
+	m_palettebank = state;
+	m_bg_tilemap->mark_all_dirty();
+}
+
+WRITE_LINE_MEMBER(pacman_state::pengo_colortablebank_w)
+{
+	m_colortablebank = state;
+	m_bg_tilemap->mark_all_dirty();
+}
+
+WRITE_LINE_MEMBER(pacman_state::pengo_gfxbank_w)
+{
+	m_spritebank = state;
+	m_charbank = state;
+	m_bg_tilemap->mark_all_dirty();
+>>>>>>> upstream/master
 }
 
 
@@ -385,15 +449,26 @@ VIDEO_START_MEMBER(pacman_state,s2650games)
 	m_inv_spr = 0;
 	m_xoffsethack = 1;
 
+<<<<<<< HEAD
 	m_bg_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(pacman_state::s2650_get_tile_info),this),TILEMAP_SCAN_ROWS,8,8,32,32 );
+=======
+	m_bg_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(pacman_state::s2650_get_tile_info),this),TILEMAP_SCAN_ROWS,8,8,32,32 );
+>>>>>>> upstream/master
 
 	m_bg_tilemap->set_scroll_cols(32);
 }
 
+<<<<<<< HEAD
 UINT32 pacman_state::screen_update_s2650games(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
 {
 	UINT8 *spriteram = m_spriteram;
 	UINT8 *spriteram_2 = m_spriteram2;
+=======
+uint32_t pacman_state::screen_update_s2650games(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+{
+	uint8_t *spriteram = m_spriteram;
+	uint8_t *spriteram_2 = m_spriteram2;
+>>>>>>> upstream/master
 	int offs;
 
 	m_bg_tilemap->draw(screen, bitmap, cliprect, 0,0);
@@ -553,7 +628,11 @@ VIDEO_START_MEMBER(pacman_state,jrpacman)
 	m_inv_spr = 0;
 	m_xoffsethack = 1;
 
+<<<<<<< HEAD
 	m_bg_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(pacman_state::jrpacman_get_tile_info),this),tilemap_mapper_delegate(FUNC(pacman_state::jrpacman_scan_rows),this),8,8,36,54 );
+=======
+	m_bg_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(pacman_state::jrpacman_get_tile_info),this),tilemap_mapper_delegate(FUNC(pacman_state::jrpacman_scan_rows),this),8,8,36,54 );
+>>>>>>> upstream/master
 
 	m_bg_tilemap->set_transparent_pen(0 );
 	m_bg_tilemap->set_scroll_cols(36 );
@@ -565,6 +644,7 @@ WRITE8_MEMBER(pacman_state::jrpacman_videoram_w)
 	jrpacman_mark_tile_dirty(offset);
 }
 
+<<<<<<< HEAD
 WRITE8_MEMBER(pacman_state::jrpacman_charbank_w)
 {
 	if (m_charbank != (data & 1))
@@ -577,6 +657,17 @@ WRITE8_MEMBER(pacman_state::jrpacman_charbank_w)
 WRITE8_MEMBER(pacman_state::jrpacman_spritebank_w)
 {
 	m_spritebank = (data & 1);
+=======
+WRITE_LINE_MEMBER(pacman_state::jrpacman_charbank_w)
+{
+	m_charbank = state;
+	m_bg_tilemap->mark_all_dirty();
+}
+
+WRITE_LINE_MEMBER(pacman_state::jrpacman_spritebank_w)
+{
+	m_spritebank = state;
+>>>>>>> upstream/master
 }
 
 WRITE8_MEMBER(pacman_state::jrpacman_scroll_w)
@@ -588,7 +679,13 @@ WRITE8_MEMBER(pacman_state::jrpacman_scroll_w)
 	}
 }
 
+<<<<<<< HEAD
 WRITE8_MEMBER(pacman_state::jrpacman_bgpriority_w)
 {
 	m_bgpriority = (data & 1);
+=======
+WRITE_LINE_MEMBER(pacman_state::jrpacman_bgpriority_w)
+{
+	m_bgpriority = state;
+>>>>>>> upstream/master
 }

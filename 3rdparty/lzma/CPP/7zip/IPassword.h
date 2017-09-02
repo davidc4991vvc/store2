@@ -3,8 +3,13 @@
 #ifndef __IPASSWORD_H
 #define __IPASSWORD_H
 
+<<<<<<< HEAD
 #include "../Common/MyUnknown.h"
 #include "../Common/Types.h"
+=======
+#include "../Common/MyTypes.h"
+#include "../Common/MyUnknown.h"
+>>>>>>> upstream/master
 
 #include "IDecl.h"
 
@@ -21,4 +26,7 @@ PASSWORD_INTERFACE(ICryptoGetTextPassword2, 0x11)
 };
 
 #endif
+<<<<<<< HEAD
 
+=======
+>>>>>>> upstream/master

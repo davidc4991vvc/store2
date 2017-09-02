@@ -8,7 +8,10 @@
 
 #import "debugosx.h"
 
+<<<<<<< HEAD
 #include "emu.h"
+=======
+>>>>>>> upstream/master
 #include "debug/debugcpu.h"
 
 #import <Cocoa/Cocoa.h>
@@ -21,6 +24,23 @@
 extern NSString *const MAMEHideDebuggerNotification;
 extern NSString *const MAMEShowDebuggerNotification;
 extern NSString *const MAMEAuxiliaryDebugWindowWillCloseNotification;
+<<<<<<< HEAD
+=======
+extern NSString *const MAMESaveDebuggerConfigurationNotification;
+
+
+// for compatibility with the Qt debugger
+enum
+{
+	MAME_DEBUGGER_WINDOW_TYPE_CONSOLE = 1,
+	MAME_DEBUGGER_WINDOW_TYPE_MEMORY_VIEWER,
+	MAME_DEBUGGER_WINDOW_TYPE_DISASSEMBLY_VIEWER,
+	MAME_DEBUGGER_WINDOW_TYPE_ERROR_LOG_VIEWER,
+	MAME_DEBUGGER_WINDOW_TYPE_POINTS_VIEWER,
+	MAME_DEBUGGER_WINDOW_TYPE_DEVICES_VIEWER,
+	MAME_DEBUGGER_WINDOW_TYPE_DEVICE_INFO_VIEWER
+};
+>>>>>>> upstream/master
 
 
 @interface MAMEDebugWindowHandler : NSObject <NSWindowDelegate>
@@ -38,6 +58,10 @@ extern NSString *const MAMEAuxiliaryDebugWindowWillCloseNotification;
 
 - (void)activate;
 
+<<<<<<< HEAD
+=======
+- (IBAction)debugBreak:(id)sender;
+>>>>>>> upstream/master
 - (IBAction)debugRun:(id)sender;
 - (IBAction)debugRunAndHide:(id)sender;
 - (IBAction)debugRunToNextCPU:(id)sender;
@@ -55,6 +79,13 @@ extern NSString *const MAMEAuxiliaryDebugWindowWillCloseNotification;
 
 - (void)showDebugger:(NSNotification *)notification;
 - (void)hideDebugger:(NSNotification *)notification;
+<<<<<<< HEAD
+=======
+- (void)saveConfig:(NSNotification *)notification;
+
+- (void)saveConfigurationToNode:(util::xml::data_node *)node;
+- (void)restoreConfigurationFromNode:(util::xml::data_node const *)node;
+>>>>>>> upstream/master
 
 @end
 
@@ -99,4 +130,10 @@ extern NSString *const MAMEAuxiliaryDebugWindowWillCloseNotification;
 - (BOOL)control:(NSControl *)control textShouldBeginEditing:(NSText *)fieldEditor;
 - (BOOL)control:(NSControl *)control textView:(NSTextView *)textView doCommandBySelector:(SEL)command;
 
+<<<<<<< HEAD
+=======
+- (void)saveConfigurationToNode:(util::xml::data_node *)node;
+- (void)restoreConfigurationFromNode:(util::xml::data_node const *)node;
+
+>>>>>>> upstream/master
 @end

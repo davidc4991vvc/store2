@@ -2,7 +2,11 @@
  * jcmaster.c
  *
  * Copyright (C) 1991-1997, Thomas G. Lane.
+<<<<<<< HEAD
  * Modified 2003-2011 by Guido Vollbeding.
+=======
+ * Modified 2003-2013 by Guido Vollbeding.
+>>>>>>> upstream/master
  * This file is part of the Independent JPEG Group's software.
  * For conditions of distribution and use, see the accompanying README file.
  *
@@ -222,8 +226,11 @@ initial_setup (j_compress_ptr cinfo, boolean transcode_only)
 {
   int ci, ssize;
   jpeg_component_info *compptr;
+<<<<<<< HEAD
   long samplesperrow;
   JDIMENSION jd_samplesperrow;
+=======
+>>>>>>> upstream/master
 
   if (transcode_only)
     jpeg_calc_trans_dimensions(cinfo);
@@ -251,7 +258,11 @@ initial_setup (j_compress_ptr cinfo, boolean transcode_only)
 
   /* Sanity check on image dimensions */
   if (cinfo->jpeg_height <= 0 || cinfo->jpeg_width <= 0 ||
+<<<<<<< HEAD
       cinfo->num_components <= 0 || cinfo->input_components <= 0)
+=======
+      cinfo->num_components <= 0)
+>>>>>>> upstream/master
     ERREXIT(cinfo, JERR_EMPTY_IMAGE);
 
   /* Make sure image isn't bigger than I can handle */
@@ -259,6 +270,7 @@ initial_setup (j_compress_ptr cinfo, boolean transcode_only)
       (long) cinfo->jpeg_width > (long) JPEG_MAX_DIMENSION)
     ERREXIT1(cinfo, JERR_IMAGE_TOO_BIG, (unsigned int) JPEG_MAX_DIMENSION);
 
+<<<<<<< HEAD
   /* Width of an input scanline must be representable as JDIMENSION. */
   samplesperrow = (long) cinfo->image_width * (long) cinfo->input_components;
   jd_samplesperrow = (JDIMENSION) samplesperrow;
@@ -267,6 +279,10 @@ initial_setup (j_compress_ptr cinfo, boolean transcode_only)
 
   /* For now, precision must match compiled-in value... */
   if (cinfo->data_precision != BITS_IN_JSAMPLE)
+=======
+  /* Only 8 to 12 bits data precision are supported for DCT based JPEG */
+  if (cinfo->data_precision < 8 || cinfo->data_precision > 12)
+>>>>>>> upstream/master
     ERREXIT1(cinfo, JERR_BAD_PRECISION, cinfo->data_precision);
 
   /* Check that number of components won't exceed internal array sizes */
@@ -339,8 +355,15 @@ initial_setup (j_compress_ptr cinfo, boolean transcode_only)
       jdiv_round_up((long) cinfo->jpeg_height *
 		    (long) (compptr->v_samp_factor * compptr->DCT_v_scaled_size),
 		    (long) (cinfo->max_v_samp_factor * cinfo->block_size));
+<<<<<<< HEAD
     /* Mark component needed (this flag isn't actually used for compression) */
     compptr->component_needed = TRUE;
+=======
+    /* Don't need quantization scale after DCT,
+     * until color conversion says otherwise.
+     */
+    compptr->component_needed = FALSE;
+>>>>>>> upstream/master
   }
 
   /* Compute number of fully interleaved MCU rows (number of times that
@@ -811,7 +834,11 @@ jinit_c_master_control (j_compress_ptr cinfo, boolean transcode_only)
   master = (my_master_ptr)
       (*cinfo->mem->alloc_small) ((j_common_ptr) cinfo, JPOOL_IMAGE,
 				  SIZEOF(my_comp_master));
+<<<<<<< HEAD
   cinfo->master = (struct jpeg_comp_master *) master;
+=======
+  cinfo->master = &master->pub;
+>>>>>>> upstream/master
   master->pub.prepare_for_pass = prepare_for_pass;
   master->pub.pass_startup = pass_startup;
   master->pub.finish_pass = finish_pass_master;
@@ -833,10 +860,21 @@ jinit_c_master_control (j_compress_ptr cinfo, boolean transcode_only)
     cinfo->num_scans = 1;
   }
 
+<<<<<<< HEAD
   if ((cinfo->progressive_mode || cinfo->block_size < DCTSIZE) &&
       !cinfo->arith_code)			/*  TEMPORARY HACK ??? */
     /* assume default tables no good for progressive or downscale mode */
     cinfo->optimize_coding = TRUE;
+=======
+  if (cinfo->optimize_coding)
+    cinfo->arith_code = FALSE; /* disable arithmetic coding */
+  else if (! cinfo->arith_code &&
+	   (cinfo->progressive_mode ||
+	    (cinfo->block_size > 1 && cinfo->block_size < DCTSIZE)))
+    /* TEMPORARY HACK ??? */
+    /* assume default tables no good for progressive or reduced AC mode */
+    cinfo->optimize_coding = TRUE; /* force Huffman optimization */
+>>>>>>> upstream/master
 
   /* Initialize my private state */
   if (transcode_only) {

@@ -25,8 +25,11 @@ CPUS["M6809"] = true
 CPUS["M680X0"] = true
 CPUS["TMS9900"] = true
 CPUS["COP400"] = true
+<<<<<<< HEAD
 CPUS["SH2"] = true
 CPUS["SH4"] = true
+=======
+>>>>>>> upstream/master
 
 --------------------------------------------------
 -- Specify all the sound cores necessary for the
@@ -45,6 +48,7 @@ SOUNDS["HC55516"] = true
 SOUNDS["YM3812"] = true
 SOUNDS["CEM3394"] = true
 SOUNDS["VOTRAX"] = true
+<<<<<<< HEAD
 SOUNDS["YMZ770"] = true
 SOUNDS["YMF278B"] = true
 SOUNDS["YMZ280B"] = true
@@ -54,14 +58,20 @@ SOUNDS["YM2608"] = true
 if _OPTIONS["WINUI"] == "1" then
 SOUNDS["VLM5030"] = true
 end
+=======
+SOUNDS["VOLT_REG"] = true
+>>>>>>> upstream/master
 
 --------------------------------------------------
 -- specify available video cores
 --------------------------------------------------
 
+<<<<<<< HEAD
 VIDEOS["BUFSPRITE"] = true
 VIDEOS["EPIC12"] = true
 
+=======
+>>>>>>> upstream/master
 --------------------------------------------------
 -- specify available machine cores
 --------------------------------------------------
@@ -70,6 +80,7 @@ MACHINES["6821PIA"] = true
 MACHINES["TTL74148"] = true
 MACHINES["TTL74153"] = true
 MACHINES["TTL7474"] = true
+<<<<<<< HEAD
 MACHINES["RIOT6532"] = true
 MACHINES["PIT8253"] = true
 MACHINES["Z80CTC"] = true
@@ -78,6 +89,17 @@ MACHINES["BANKDEV"] = true
 MACHINES["EEPROMDEV"] = true
 MACHINES["SERFLASH"] = true
 MACHINES["RTC9701"] = true
+=======
+MACHINES["TTL74259"] = true
+MACHINES["RIOT6532"] = true
+MACHINES["PIT8253"] = true
+MACHINES["Z80CTC"] = true
+MACHINES["Z80PIO"] = true
+MACHINES["68681"] = true
+MACHINES["BANKDEV"] = true
+MACHINES["GEN_LATCH"] = true
+MACHINES["WATCHDOG"] = true
+>>>>>>> upstream/master
 
 
 --------------------------------------------------
@@ -92,6 +114,7 @@ BUSES["CENTRONICS"] = true
 -- in tiny.lst
 --------------------------------------------------
 
+<<<<<<< HEAD
 function createMAMEProjects(_target, _subtarget, _name)
 	project (_name)
 	targetsubdir(_target .."_" .. _subtarget)
@@ -118,16 +141,24 @@ function createMAMEProjects(_target, _subtarget, _name)
 	end
 end
 
+=======
+>>>>>>> upstream/master
 function createProjects_mame_tiny(_target, _subtarget)
 	project ("mame_tiny")
 	targetsubdir(_target .."_" .. _subtarget)
 	kind (LIBTYPE)
 	uuid (os.uuid("drv-mame-tiny"))
+<<<<<<< HEAD
 	
 	options {
 		"ForceCPP",
 	}
 	
+=======
+	addprojectflags()
+	precompiledheaders()
+
+>>>>>>> upstream/master
 	includedirs {
 		MAME_DIR .. "src/osd",
 		MAME_DIR .. "src/emu",
@@ -181,8 +212,11 @@ files{
 	MAME_DIR .. "src/mame/audio/williams.cpp",
 	MAME_DIR .. "src/mame/audio/williams.h",
 	MAME_DIR .. "src/mame/video/williams.cpp",
+<<<<<<< HEAD
 	MAME_DIR .. "src/mame/audio/gorf.cpp",
 	MAME_DIR .. "src/mame/audio/wow.cpp",
+=======
+>>>>>>> upstream/master
 	MAME_DIR .. "src/mame/drivers/gaelco.cpp",
 	MAME_DIR .. "src/mame/includes/gaelco.h",
 	MAME_DIR .. "src/mame/video/gaelco.cpp",
@@ -191,6 +225,7 @@ files{
 	MAME_DIR .. "src/mame/includes/wrally.h",
 	MAME_DIR .. "src/mame/machine/wrally.cpp",
 	MAME_DIR .. "src/mame/video/wrally.cpp",
+<<<<<<< HEAD
 	MAME_DIR .. "src/mame/drivers/looping.cpp",
 	MAME_DIR .. "src/mame/drivers/supertnk.cpp",
 }
@@ -239,13 +274,23 @@ files {
 		layoutbuildtask("mame/layout", "seawolf2"),
 		layoutbuildtask("mame/layout", "gorf"),
 	}	
+=======
+	MAME_DIR .. "src/mame/machine/gaelco_ds5002fp.cpp",
+	MAME_DIR .. "src/mame/machine/gaelco_ds5002fp.h",
+	MAME_DIR .. "src/mame/drivers/looping.cpp",
+	MAME_DIR .. "src/mame/drivers/supertnk.cpp",
+}
+>>>>>>> upstream/master
 end
 
 function linkProjects_mame_tiny(_target, _subtarget)
 	links {
 		"mame_tiny",
+<<<<<<< HEAD
 		"psikyo",
 		"misc",
 		"shared",
+=======
+>>>>>>> upstream/master
 	}
 end

@@ -10,17 +10,28 @@
 
 #include "emu.h"
 
+<<<<<<< HEAD
 #define VERBOSE 0
 
+=======
+>>>>>>> upstream/master
 
 //**************************************************************************
 //  DEVICE DEFINITIONS
 //**************************************************************************
 
+<<<<<<< HEAD
 const device_type PALETTE = &device_creator<palette_device>;
 
 palette_device::palette_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
 	: device_t(mconfig, PALETTE, "palette", tag, owner, clock, "palette", __FILE__),
+=======
+DEFINE_DEVICE_TYPE(PALETTE, palette_device, "palette", "palette")
+
+palette_device::palette_device(const machine_config &mconfig, const char *tag, device_t *owner, u32 clock)
+	: device_t(mconfig, PALETTE, tag, owner, clock),
+		device_palette_interface(mconfig, *this),
+>>>>>>> upstream/master
 		m_entries(0),
 		m_indirect_entries(0),
 		m_enable_shadows(0),
@@ -29,6 +40,7 @@ palette_device::palette_device(const machine_config &mconfig, const char *tag, d
 		m_membits_supplied(false),
 		m_endianness(),
 		m_endianness_supplied(false),
+<<<<<<< HEAD
 		m_raw_to_rgb(raw_to_rgb_converter()),
 		m_palette(NULL),
 		m_pens(NULL),
@@ -39,6 +51,11 @@ palette_device::palette_device(const machine_config &mconfig, const char *tag, d
 		m_white_pen(0),
 		m_black_pen(0),
 		m_init(palette_init_delegate())
+=======
+		m_prom_region(*this, finder_base::DUMMY_TAG),
+		m_init(palette_init_delegate()),
+		m_raw_to_rgb(raw_to_rgb_converter())
+>>>>>>> upstream/master
 {
 }
 
@@ -75,13 +92,21 @@ void palette_device::static_set_endianness(device_t &device, endianness_t endian
 }
 
 
+<<<<<<< HEAD
 void palette_device::static_set_entries(device_t &device, int entries)
+=======
+void palette_device::static_set_entries(device_t &device, u32 entries)
+>>>>>>> upstream/master
 {
 	downcast<palette_device &>(device).m_entries = entries;
 }
 
 
+<<<<<<< HEAD
 void palette_device::static_set_indirect_entries(device_t &device, int entries)
+=======
+void palette_device::static_set_indirect_entries(device_t &device, u32 entries)
+>>>>>>> upstream/master
 {
 	downcast<palette_device &>(device).m_indirect_entries = entries;
 }
@@ -99,6 +124,7 @@ void palette_device::static_enable_hilights(device_t &device)
 }
 
 
+<<<<<<< HEAD
 
 //**************************************************************************
 //  INDIRECTION (AKA COLORTABLES)
@@ -274,6 +300,11 @@ void palette_device::set_shadow_dRGB32(int mode, int dr, int dg, int db, bool no
 		else
 			stable.base[i] = final.as_rgb15();
 	}
+=======
+void palette_device::static_set_prom_region(device_t &device, const char *region)
+{
+	downcast<palette_device &>(device).m_prom_region.set_tag(region);
+>>>>>>> upstream/master
 }
 
 
@@ -301,6 +332,7 @@ inline void palette_device::update_for_write(offs_t byte_offset, int bytes_modif
 	offs_t base = byte_offset / bpe;
 	for (int index = 0; index < count; index++)
 	{
+<<<<<<< HEAD
 		UINT32 data = m_paletteram.read(base + index);
 		if (m_paletteram_ext.base() != NULL)
 			data |= m_paletteram_ext.read(base + index) << (8 * bpe);
@@ -309,6 +341,12 @@ inline void palette_device::update_for_write(offs_t byte_offset, int bytes_modif
 			set_indirect_color(base + index, m_raw_to_rgb(data));
 		else
 			m_palette->entry_set_color(base + index, m_raw_to_rgb(data));
+=======
+		if (indirect)
+			set_indirect_color(base + index, m_raw_to_rgb(read_entry(base + index)));
+		else
+			set_pen_color(base + index, m_raw_to_rgb(read_entry(base + index)));
+>>>>>>> upstream/master
 	}
 }
 
@@ -410,7 +448,11 @@ void palette_device::device_start()
 
 	// find the memory, if present
 	const memory_share *share = memshare(tag());
+<<<<<<< HEAD
 	if (share != NULL)
+=======
+	if (share != nullptr)
+>>>>>>> upstream/master
 	{
 		// find the extended (split) memory, if present
 		std::string tag_ext = std::string(tag()).append("_ext");
@@ -421,7 +463,11 @@ void palette_device::device_start()
 
 		// determine bytes per entry and configure
 		int bytes_per_entry = m_raw_to_rgb.bytes_per_entry();
+<<<<<<< HEAD
 		if (share_ext == NULL)
+=======
+		if (share_ext == nullptr)
+>>>>>>> upstream/master
 			m_paletteram.set(*share, bytes_per_entry);
 		else
 		{
@@ -435,7 +481,11 @@ void palette_device::device_start()
 			// forcing width only makes sense when narrower than the native bus width
 			assert_always(m_membits < share->bitwidth(), "Improper use of MCFG_PALETTE_MEMBITS");
 			m_paletteram.set_membits(m_membits);
+<<<<<<< HEAD
 			if (share_ext != NULL)
+=======
+			if (share_ext != nullptr)
+>>>>>>> upstream/master
 				m_paletteram_ext.set_membits(m_membits);
 		}
 
@@ -443,11 +493,16 @@ void palette_device::device_start()
 		if (m_endianness_supplied)
 		{
 			// forcing endianness only makes sense when the RAM is narrower than the palette format and not split
+<<<<<<< HEAD
 			assert_always((share_ext == NULL && m_paletteram.membits() / 8 < bytes_per_entry), "Improper use of MCFG_PALETTE_ENDIANNESS");
+=======
+			assert_always((share_ext == nullptr && m_paletteram.membits() / 8 < bytes_per_entry), "Improper use of MCFG_PALETTE_ENDIANNESS");
+>>>>>>> upstream/master
 			m_paletteram.set_endianness(m_endianness);
 		}
 	}
 
+<<<<<<< HEAD
 	// reset all our data
 	screen_device *device = machine().first_screen();
 	m_format = (device != NULL) ? device->format() : BITMAP_FORMAT_INVALID;
@@ -730,6 +785,11 @@ void palette_device::configure_rgb_shadows(int mode, float factor)
 		else
 			stable.base[rgb555] = final.as_rgb15();
 	}
+=======
+	// call the initialization helper if present
+	if (!m_init.isnull())
+		m_init(*this);
+>>>>>>> upstream/master
 }
 
 
@@ -744,16 +804,23 @@ void palette_device::configure_rgb_shadows(int mode, float factor)
 
 void palette_device::palette_init_all_black(palette_device &palette)
 {
+<<<<<<< HEAD
 	int i;
 
 	for (i = 0; i < palette.entries(); i++)
 	{
 		palette.set_pen_color(i,rgb_t::black); // black
+=======
+	for (int i = 0; i < palette.entries(); i++)
+	{
+		palette.set_pen_color(i, rgb_t::black());
+>>>>>>> upstream/master
 	}
 }
 
 
 /*-------------------------------------------------
+<<<<<<< HEAD
     black_and_white - basic 2-color black & white
 -------------------------------------------------*/
 
@@ -794,10 +861,20 @@ void palette_device::palette_init_monochrome_green(palette_device &palette)
 {
 	palette.set_pen_color(0, rgb_t::black); // black
 	palette.set_pen_color(1, rgb_t(0x00, 0xff, 0x00)); // green
+=======
+    monochrome - 2-color black & white
+-------------------------------------------------*/
+
+void palette_device::palette_init_monochrome(palette_device &palette)
+{
+	palette.set_pen_color(0, rgb_t::black());
+	palette.set_pen_color(1, rgb_t::white());
+>>>>>>> upstream/master
 }
 
 
 /*-------------------------------------------------
+<<<<<<< HEAD
     monochrome_green_highlight - 3-color black & green
 -------------------------------------------------*/
 
@@ -806,10 +883,20 @@ void palette_device::palette_init_monochrome_green_highlight(palette_device &pal
 	palette.set_pen_color(0, rgb_t::black); // black
 	palette.set_pen_color(1, rgb_t(0x00, 0xc0, 0x00)); // green
 	palette.set_pen_color(2, rgb_t(0x00, 0xff, 0x00)); // green
+=======
+    monochrome_inverted - 2-color white & black
+-------------------------------------------------*/
+
+void palette_device::palette_init_monochrome_inverted(palette_device &palette)
+{
+	palette.set_pen_color(0, rgb_t::white());
+	palette.set_pen_color(1, rgb_t::black());
+>>>>>>> upstream/master
 }
 
 
 /*-------------------------------------------------
+<<<<<<< HEAD
     monochrome_yellow - 2-color black & yellow
 -------------------------------------------------*/
 
@@ -817,6 +904,16 @@ void palette_device::palette_init_monochrome_yellow(palette_device &palette)
 {
 	palette.set_pen_color(0, rgb_t::black); // black
 	palette.set_pen_color(1, rgb_t(0xff, 0xff, 0x00)); // yellow
+=======
+    monochrome_highlight - 3-color
+-------------------------------------------------*/
+
+void palette_device::palette_init_monochrome_highlight(palette_device &palette)
+{
+	palette.set_pen_color(0, rgb_t::black());
+	palette.set_pen_color(1, rgb_t(0xc0, 0xc0, 0xc0));
+	palette.set_pen_color(2, rgb_t::white());
+>>>>>>> upstream/master
 }
 
 
@@ -898,6 +995,7 @@ void palette_device::palette_init_3bit_bgr(palette_device &palette)
 
 void palette_device::palette_init_RRRRGGGGBBBB_proms(palette_device &palette)
 {
+<<<<<<< HEAD
 	const UINT8 *color_prom = machine().root_device().memregion("proms")->base();
 	int i;
 
@@ -927,6 +1025,39 @@ void palette_device::palette_init_RRRRGGGGBBBB_proms(palette_device &palette)
 		b = 0x0e * bit0 + 0x1f * bit1 + 0x43 * bit2 + 0x8f * bit3;
 
 		palette.set_pen_color(i,rgb_t(r,g,b));
+=======
+	if (!m_prom_region.found())
+		throw emu_fatalerror("Unable to find color PROM region '%s'.", m_prom_region.finder_tag());
+
+	const u8 *colors = m_prom_region->base();
+
+	for (int i = 0; i < palette.entries(); i++)
+	{
+		int bit0, bit1, bit2, bit3;
+
+		// red component
+		bit0 = (colors[i] >> 0) & 0x01;
+		bit1 = (colors[i] >> 1) & 0x01;
+		bit2 = (colors[i] >> 2) & 0x01;
+		bit3 = (colors[i] >> 3) & 0x01;
+		int r = 0x0e * bit0 + 0x1f * bit1 + 0x43 * bit2 + 0x8f * bit3;
+
+		// green component
+		bit0 = (colors[i + palette.entries()] >> 0) & 0x01;
+		bit1 = (colors[i + palette.entries()] >> 1) & 0x01;
+		bit2 = (colors[i + palette.entries()] >> 2) & 0x01;
+		bit3 = (colors[i + palette.entries()] >> 3) & 0x01;
+		int g = 0x0e * bit0 + 0x1f * bit1 + 0x43 * bit2 + 0x8f * bit3;
+
+		// blue component
+		bit0 = (colors[i + 2*palette.entries()] >> 0) & 0x01;
+		bit1 = (colors[i + 2*palette.entries()] >> 1) & 0x01;
+		bit2 = (colors[i + 2*palette.entries()] >> 2) & 0x01;
+		bit3 = (colors[i + 2*palette.entries()] >> 3) & 0x01;
+		int b = 0x0e * bit0 + 0x1f * bit1 + 0x43 * bit2 + 0x8f * bit3;
+
+		palette.set_pen_color(i, rgb_t(r,g,b));
+>>>>>>> upstream/master
 	}
 }
 
@@ -971,6 +1102,7 @@ void palette_device::palette_init_RRRRRGGGGGGBBBBB(palette_device &palette)
 		palette.set_pen_color(i, rgbexpand<5,6,5>(i, 11, 5, 0));
 }
 
+<<<<<<< HEAD
 rgb_t raw_to_rgb_converter::IRRRRRGGGGGBBBBB_decoder(UINT32 raw)
 {
 	UINT8 i = (raw >> 15) & 1;
@@ -1001,5 +1133,37 @@ rgb_t raw_to_rgb_converter::xRGBRRRRGGGGBBBB_bit4_decoder(UINT32 raw)
 	UINT8 r = pal5bit(((raw >> 8) & 0x0f) | ((raw >> 10) & 0x10));
 	UINT8 g = pal5bit(((raw >> 4) & 0x0f) | ((raw >> 9)  & 0x10));
 	UINT8 b = pal5bit(((raw >> 0) & 0x0f) | ((raw >> 8)  & 0x10));
+=======
+rgb_t raw_to_rgb_converter::IRRRRRGGGGGBBBBB_decoder(u32 raw)
+{
+	u8 const i = (raw >> 15) & 1;
+	u8 const r = pal6bit(((raw >> 9) & 0x3e) | i);
+	u8 const g = pal6bit(((raw >> 4) & 0x3e) | i);
+	u8 const b = pal6bit(((raw << 1) & 0x3e) | i);
+	return rgb_t(r, g, b);
+}
+
+rgb_t raw_to_rgb_converter::RRRRGGGGBBBBRGBx_decoder(u32 raw)
+{
+	u8 const r = pal5bit(((raw >> 11) & 0x1e) | ((raw >> 3) & 0x01));
+	u8 const g = pal5bit(((raw >> 7) & 0x1e) | ((raw >> 2) & 0x01));
+	u8 const b = pal5bit(((raw >> 3) & 0x1e) | ((raw >> 1) & 0x01));
+	return rgb_t(r, g, b);
+}
+
+rgb_t raw_to_rgb_converter::xRGBRRRRGGGGBBBB_bit0_decoder(u32 raw)
+{
+	u8 const r = pal5bit(((raw >> 7) & 0x1e) | ((raw >> 14) & 0x01));
+	u8 const g = pal5bit(((raw >> 3) & 0x1e) | ((raw >> 13) & 0x01));
+	u8 const b = pal5bit(((raw << 1) & 0x1e) | ((raw >> 12) & 0x01));
+	return rgb_t(r, g, b);
+}
+
+rgb_t raw_to_rgb_converter::xRGBRRRRGGGGBBBB_bit4_decoder(u32 raw)
+{
+	u8 const r = pal5bit(((raw >> 8) & 0x0f) | ((raw >> 10) & 0x10));
+	u8 const g = pal5bit(((raw >> 4) & 0x0f) | ((raw >> 9)  & 0x10));
+	u8 const b = pal5bit(((raw >> 0) & 0x0f) | ((raw >> 8)  & 0x10));
+>>>>>>> upstream/master
 	return rgb_t(r, g, b);
 }

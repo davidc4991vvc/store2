@@ -1,12 +1,24 @@
 // license:BSD-3-Clause
 // copyright-holders:Olivier Galibert
+<<<<<<< HEAD
 #ifndef __MIE_H__
 #define __MIE_H__
+=======
+#ifndef MAME_MACHINE_MIE_H
+#define MAME_MACHINE_MIE_H
+
+#pragma once
+
+#include "machine/mapledev.h"
+>>>>>>> upstream/master
 
 #include "cpu/z80/z80.h"
 #include "machine/eepromser.h"
 #include "machine/jvshost.h"
+<<<<<<< HEAD
 #include "machine/mapledev.h"
+=======
+>>>>>>> upstream/master
 
 #define MCFG_MIE_ADD(_tag, _clock, _host_tag, _host_port, g0, g1, g2, g3, g4, g5, g6, g7) \
 	MCFG_MAPLE_DEVICE_ADD(_tag "_maple", MIE, _clock, _host_tag, _host_port) \
@@ -28,15 +40,22 @@ class mie_jvs_device;
 class mie_device : public maple_device
 {
 public:
+<<<<<<< HEAD
 	mie_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
+=======
+	mie_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
+>>>>>>> upstream/master
 
 	static void static_set_gpio_name(device_t &device, int entry, const char *name);
 	static void static_set_jvs_name(device_t &device, const char *name);
 
+<<<<<<< HEAD
 	// optional information overrides
 	virtual const rom_entry *device_rom_region() const;
 	virtual machine_config_constructor device_mconfig_additions() const;
 
+=======
+>>>>>>> upstream/master
 	DECLARE_READ8_MEMBER(control_r);
 	DECLARE_WRITE8_MEMBER(control_w);
 	DECLARE_READ8_MEMBER(lreg_r);
@@ -69,19 +88,34 @@ public:
 	DECLARE_READ8_MEMBER(read_00);
 	DECLARE_READ8_MEMBER(read_78xx);
 
+<<<<<<< HEAD
 	IRQ_CALLBACK_MEMBER(irq_callback);
 
 	void maple_w(const UINT32 *data, UINT32 in_size);
 	virtual void maple_reset();
+=======
+	void maple_w(const uint32_t *data, uint32_t in_size) override;
+	virtual void maple_reset() override;
+>>>>>>> upstream/master
 
 protected:
 	const char *gpio_name[8];
 	const char *jvs_name;
 
 	// device-level overrides
+<<<<<<< HEAD
 	virtual void device_start();
 	virtual void device_reset();
 	virtual void device_timer(emu_timer &timer, device_timer_id id, int param, void *ptr);
+=======
+	virtual void device_start() override;
+	virtual void device_reset() override;
+	virtual void device_timer(emu_timer &timer, device_timer_id id, int param, void *ptr) override;
+
+	// optional information overrides
+	virtual const tiny_rom_entry *device_rom_region() const override;
+	virtual void device_add_mconfig(machine_config &config) override;
+>>>>>>> upstream/master
 
 private:
 	enum { TBUF_SIZE = 8 };
@@ -93,7 +127,11 @@ private:
 		CTRL_EMP  = 0x000100, // Empty flag
 		CTRL_PERR = 0x000200, // Parity error
 		CTRL_BFOV = 0x000800, // Set when overflow, cleared to 0 when starting send/receive
+<<<<<<< HEAD
 		CTRL_RXB  = 0x001000, // Recieving
+=======
+		CTRL_RXB  = 0x001000, // Receiving
+>>>>>>> upstream/master
 		CTRL_RFB  = 0x002000, // Receive done
 		CTRL_TFB  = 0x004000, // Transmit done
 		CTRL_HRES = 0x008000  // Reset pattern received
@@ -105,6 +143,7 @@ private:
 	mie_jvs_device *jvs;
 	ioport_port *gpio_port[8];
 
+<<<<<<< HEAD
 	UINT32 tbuf[TBUF_SIZE];
 	UINT32 control, lreg, jvs_rpos;
 	UINT8 gpiodir, gpio_val[8];
@@ -114,6 +153,18 @@ private:
 
 	void raise_irq(int level);
 	void recalc_irq();
+=======
+	uint32_t tbuf[TBUF_SIZE];
+	uint32_t control, lreg, jvs_rpos;
+	uint8_t gpiodir, gpio_val[8];
+	uint8_t irq_enable, irq_pending, maple_irqlevel;
+	uint8_t jvs_control, jvs_dest;
+	uint8_t jvs_lcr;
+
+	void raise_irq(int level);
+	void recalc_irq();
+	IRQ_CALLBACK_MEMBER(irq_callback);
+>>>>>>> upstream/master
 };
 
 // Trampoline class, required for device discovery
@@ -123,11 +174,22 @@ public:
 	friend class mie_device;
 
 	// construction/destruction
+<<<<<<< HEAD
 	mie_jvs_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
+=======
+	mie_jvs_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
+>>>>>>> upstream/master
 };
 
 
 // device type definition
+<<<<<<< HEAD
 extern const device_type MIE, MIE_JVS;
 
 #endif /* __MIE_H__ */
+=======
+DECLARE_DEVICE_TYPE(MIE,     mie_device)
+DECLARE_DEVICE_TYPE(MIE_JVS, mie_jvs_device)
+
+#endif // MAME_MACHINE_MIE_H
+>>>>>>> upstream/master

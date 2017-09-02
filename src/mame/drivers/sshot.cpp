@@ -164,6 +164,10 @@ Given CS numbers this is released after the other GunChamp
 
 #include "emu.h"
 #include "cpu/scmp/scmp.h"
+<<<<<<< HEAD
+=======
+#include "screen.h"
+>>>>>>> upstream/master
 
 #include "gunchamps.lh"
 
@@ -177,14 +181,23 @@ public:
 		m_maincpu(*this, "maincpu"),
 		m_gfxdecode(*this, "gfxdecode") { }
 
+<<<<<<< HEAD
 	required_shared_ptr<UINT8> m_videoram;
+=======
+	required_shared_ptr<uint8_t> m_videoram;
+>>>>>>> upstream/master
 	tilemap_t   *m_tilemap;
 	DECLARE_WRITE8_MEMBER(supershot_vidram_w);
 	DECLARE_WRITE8_MEMBER(supershot_output0_w);
 	DECLARE_WRITE8_MEMBER(supershot_output1_w);
 	TILE_GET_INFO_MEMBER(get_supershot_text_tile_info);
+<<<<<<< HEAD
 	virtual void video_start();
 	UINT32 screen_update_supershot(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
+=======
+	virtual void video_start() override;
+	uint32_t screen_update_supershot(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
+>>>>>>> upstream/master
 	required_device<cpu_device> m_maincpu;
 	required_device<gfxdecode_device> m_gfxdecode;
 };
@@ -198,16 +211,27 @@ public:
 
 TILE_GET_INFO_MEMBER(supershot_state::get_supershot_text_tile_info)
 {
+<<<<<<< HEAD
 	UINT8 code = m_videoram[tile_index];
+=======
+	uint8_t code = m_videoram[tile_index];
+>>>>>>> upstream/master
 	SET_TILE_INFO_MEMBER(0, code, 0, 0);
 }
 
 void supershot_state::video_start()
 {
+<<<<<<< HEAD
 	m_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(supershot_state::get_supershot_text_tile_info),this), TILEMAP_SCAN_ROWS, 8, 8, 32, 32);
 }
 
 UINT32 supershot_state::screen_update_supershot(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+=======
+	m_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(supershot_state::get_supershot_text_tile_info),this), TILEMAP_SCAN_ROWS, 8, 8, 32, 32);
+}
+
+uint32_t supershot_state::screen_update_supershot(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+>>>>>>> upstream/master
 {
 	m_tilemap->draw(screen, bitmap, cliprect, 0, 0);
 	return 0;
@@ -292,10 +316,17 @@ static INPUT_PORTS_START( supershot )
 	PORT_BIT( 0xff, 0x80, IPT_LIGHTGUN_Y ) PORT_CROSSHAIR(Y, 1.0, 0.0, 0) PORT_SENSITIVITY(70) PORT_KEYDELTA(10) PORT_PLAYER(1)
 
 	PORT_START("IN0")
+<<<<<<< HEAD
 	PORT_BIT( 0xf4, IP_ACTIVE_HIGH, IPT_UNUSED )
 	PORT_BIT( 0x08, IP_ACTIVE_HIGH, IPT_BUTTON1 )
 	PORT_BIT( 0x02, IP_ACTIVE_HIGH, IPT_COIN1 )
 	PORT_BIT( 0x01, IP_ACTIVE_HIGH, IPT_START )
+=======
+	PORT_BIT( 0x01, IP_ACTIVE_HIGH, IPT_START1 )
+	PORT_BIT( 0x02, IP_ACTIVE_HIGH, IPT_COIN1 )
+	PORT_BIT( 0x08, IP_ACTIVE_HIGH, IPT_BUTTON1 )
+	PORT_BIT( 0xf4, IP_ACTIVE_HIGH, IPT_UNUSED )
+>>>>>>> upstream/master
 
 	PORT_START("DSW")
 	PORT_DIPUNUSED( 0x01, 0x00 )
@@ -336,7 +367,11 @@ static GFXDECODE_START( supershot )
 	GFXDECODE_ENTRY( "gfx", 0, supershot_charlayout,   0, 1  )
 GFXDECODE_END
 
+<<<<<<< HEAD
 static MACHINE_CONFIG_START( supershot, supershot_state )
+=======
+static MACHINE_CONFIG_START( supershot )
+>>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", SCMP, XTAL_11_289MHz/4)
@@ -352,7 +387,11 @@ static MACHINE_CONFIG_START( supershot, supershot_state )
 	MCFG_SCREEN_PALETTE("palette")
 
 	MCFG_GFXDECODE_ADD("gfxdecode", "palette", supershot)
+<<<<<<< HEAD
 	MCFG_PALETTE_ADD_BLACK_AND_WHITE("palette")
+=======
+	MCFG_PALETTE_ADD_MONOCHROME("palette")
+>>>>>>> upstream/master
 
 	/* sound hardware */
 	//...
@@ -395,5 +434,10 @@ ROM_START( gunchamps )
 ROM_END
 
 
+<<<<<<< HEAD
 GAME( 1979, sshot,     0,        supershot, supershot, driver_device, 0, ROT0, "Model Racing", "Super Shot", MACHINE_IMPERFECT_GRAPHICS | MACHINE_NO_SOUND )
 GAMEL(1980, gunchamps, gunchamp, supershot, supershot, driver_device, 0, ROT0, "Model Racing", "Gun Champ (newer, Super Shot hardware)", MACHINE_IMPERFECT_GRAPHICS | MACHINE_NO_SOUND | MACHINE_NOT_WORKING, layout_gunchamps )
+=======
+GAME( 1979, sshot,     0,        supershot, supershot, supershot_state, 0, ROT0, "Model Racing", "Super Shot",                             MACHINE_IMPERFECT_GRAPHICS | MACHINE_NO_SOUND )
+GAMEL(1980, gunchamps, gunchamp, supershot, supershot, supershot_state, 0, ROT0, "Model Racing", "Gun Champ (newer, Super Shot hardware)", MACHINE_IMPERFECT_GRAPHICS | MACHINE_NO_SOUND | MACHINE_NOT_WORKING, layout_gunchamps )
+>>>>>>> upstream/master

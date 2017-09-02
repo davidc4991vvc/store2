@@ -18,10 +18,19 @@ Other:  BMC B816140 (CPLD)
 #include "emu.h"
 #include "cpu/m68000/m68000.h"
 #include "video/ramdac.h"
+<<<<<<< HEAD
 #include "sound/2413intf.h"
 #include "sound/okim6295.h"
 #include "machine/nvram.h"
 #include "machine/ticket.h"
+=======
+#include "sound/ym2413.h"
+#include "sound/okim6295.h"
+#include "machine/nvram.h"
+#include "machine/ticket.h"
+#include "screen.h"
+#include "speaker.h"
+>>>>>>> upstream/master
 
 class bmcpokr_state : public driver_device
 {
@@ -40,11 +49,16 @@ public:
 		m_layerctrl(*this, "layerctrl"),
 		m_gfxdecode(*this, "gfxdecode"),
 		m_palette(*this, "palette")
+<<<<<<< HEAD
 		{ }
+=======
+	{ }
+>>>>>>> upstream/master
 
 	// Devices
 	required_device<cpu_device> m_maincpu;
 	required_device<ticket_dispenser_device> m_hopper;
+<<<<<<< HEAD
 	required_shared_ptr<UINT16> m_videoram_1;
 	required_shared_ptr<UINT16> m_videoram_2;
 	required_shared_ptr<UINT16> m_scrollram_1;
@@ -53,17 +67,35 @@ public:
 	required_shared_ptr<UINT16> m_pixram;
 	required_shared_ptr<UINT16> m_priority;
 	required_shared_ptr<UINT16> m_layerctrl;
+=======
+	required_shared_ptr<uint16_t> m_videoram_1;
+	required_shared_ptr<uint16_t> m_videoram_2;
+	required_shared_ptr<uint16_t> m_scrollram_1;
+	required_shared_ptr<uint16_t> m_scrollram_2;
+	required_shared_ptr<uint16_t> m_scrollram_3;
+	required_shared_ptr<uint16_t> m_pixram;
+	required_shared_ptr<uint16_t> m_priority;
+	required_shared_ptr<uint16_t> m_layerctrl;
+>>>>>>> upstream/master
 	required_device<gfxdecode_device> m_gfxdecode;
 	required_device<palette_device> m_palette;
 
 	// Protection
+<<<<<<< HEAD
 	UINT16 m_prot_val;
+=======
+	uint16_t m_prot_val;
+>>>>>>> upstream/master
 	DECLARE_READ16_MEMBER(prot_r);
 	DECLARE_WRITE16_MEMBER(prot_w);
 	DECLARE_READ16_MEMBER(unk_r);
 
 	// I/O
+<<<<<<< HEAD
 	UINT16 m_mux;
+=======
+	uint16_t m_mux;
+>>>>>>> upstream/master
 	DECLARE_WRITE16_MEMBER(mux_w);
 	DECLARE_READ16_MEMBER(dsw_r);
 	DECLARE_CUSTOM_INPUT_MEMBER(hopper_r);
@@ -71,7 +103,11 @@ public:
 	DECLARE_READ16_MEMBER(mjmaglmp_key_r);
 
 	// Interrrupts
+<<<<<<< HEAD
 	UINT16 m_irq_enable;
+=======
+	uint16_t m_irq_enable;
+>>>>>>> upstream/master
 	DECLARE_WRITE16_MEMBER(irq_enable_w);
 	DECLARE_WRITE16_MEMBER(irq_ack_w);
 	TIMER_DEVICE_CALLBACK_MEMBER(interrupt);
@@ -81,6 +117,7 @@ public:
 	tilemap_t *m_tilemap_2;
 	TILE_GET_INFO_MEMBER(get_t1_tile_info);
 	TILE_GET_INFO_MEMBER(get_t2_tile_info);
+<<<<<<< HEAD
 	TILE_GET_INFO_MEMBER(get_t3_tile_info);
 	DECLARE_WRITE16_MEMBER(videoram_1_w);
 	DECLARE_WRITE16_MEMBER(videoram_2_w);
@@ -94,6 +131,20 @@ public:
 	virtual void video_start();
 	void draw_layer(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect, int layer);
 	UINT32 screen_update_bmcpokr(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
+=======
+	DECLARE_WRITE16_MEMBER(videoram_1_w);
+	DECLARE_WRITE16_MEMBER(videoram_2_w);
+
+	std::unique_ptr<bitmap_ind16> m_pixbitmap;
+	void pixbitmap_redraw();
+	uint16_t m_pixpal;
+	DECLARE_WRITE16_MEMBER(pixram_w);
+	DECLARE_WRITE16_MEMBER(pixpal_w);
+
+	virtual void video_start() override;
+	void draw_layer(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect, int layer);
+	uint32_t screen_update_bmcpokr(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
+>>>>>>> upstream/master
 
 	void save_state()
 	{
@@ -125,20 +176,33 @@ WRITE16_MEMBER(bmcpokr_state::videoram_2_w)
 
 TILE_GET_INFO_MEMBER(bmcpokr_state::get_t1_tile_info)
 {
+<<<<<<< HEAD
 	UINT16 data = m_videoram_1[tile_index];
+=======
+	uint16_t data = m_videoram_1[tile_index];
+>>>>>>> upstream/master
 	SET_TILE_INFO_MEMBER(0, data, 0, (data & 0x8000) ? TILE_FLIPX : 0);
 }
 
 TILE_GET_INFO_MEMBER(bmcpokr_state::get_t2_tile_info)
 {
+<<<<<<< HEAD
 	UINT16 data = m_videoram_2[tile_index];
+=======
+	uint16_t data = m_videoram_2[tile_index];
+>>>>>>> upstream/master
 	SET_TILE_INFO_MEMBER(0, data, 0, (data & 0x8000) ? TILE_FLIPX : 0);
 }
 
 void bmcpokr_state::video_start()
 {
+<<<<<<< HEAD
 	m_tilemap_1 = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(bmcpokr_state::get_t1_tile_info),this),TILEMAP_SCAN_ROWS,8,8,128,128);
 	m_tilemap_2 = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(bmcpokr_state::get_t2_tile_info),this),TILEMAP_SCAN_ROWS,8,8,128,128);
+=======
+	m_tilemap_1 = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(bmcpokr_state::get_t1_tile_info),this),TILEMAP_SCAN_ROWS,8,8,128,128);
+	m_tilemap_2 = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(bmcpokr_state::get_t2_tile_info),this),TILEMAP_SCAN_ROWS,8,8,128,128);
+>>>>>>> upstream/master
 
 	m_tilemap_1->set_transparent_pen(0);
 	m_tilemap_2->set_transparent_pen(0);
@@ -149,7 +213,11 @@ void bmcpokr_state::video_start()
 	m_tilemap_1->set_scroll_cols(1);
 	m_tilemap_2->set_scroll_cols(1);
 
+<<<<<<< HEAD
 	m_pixbitmap  = auto_bitmap_ind16_alloc(machine(), 0x400, 0x200);
+=======
+	m_pixbitmap  = std::make_unique<bitmap_ind16>(0x400, 0x200);
+>>>>>>> upstream/master
 
 	save_state();
 }
@@ -163,9 +231,15 @@ WRITE16_MEMBER(bmcpokr_state::pixram_w)
 	int x = (offset & 0xff) << 2;
 	int y = (offset >> 8);
 
+<<<<<<< HEAD
 	UINT16 pixpal = (m_pixpal & 0xf) * 0x10;
 
 	UINT16 pen;
+=======
+	uint16_t pixpal = (m_pixpal & 0xf) * 0x10;
+
+	uint16_t pen;
+>>>>>>> upstream/master
 	if (ACCESSING_BITS_8_15)
 	{
 		pen = (data >> 12) & 0xf; m_pixbitmap->pix16(y, x + 0) = pen ? pixpal + pen : 0;
@@ -180,14 +254,23 @@ WRITE16_MEMBER(bmcpokr_state::pixram_w)
 
 void bmcpokr_state::pixbitmap_redraw()
 {
+<<<<<<< HEAD
 	UINT16 pixpal = (m_pixpal & 0xf) * 0x10;
+=======
+	uint16_t pixpal = (m_pixpal & 0xf) * 0x10;
+>>>>>>> upstream/master
 	int offset = 0;
 	for (int y = 0; y < 512; y++)
 	{
 		for (int x = 0; x < 1024; x += 4)
 		{
+<<<<<<< HEAD
 			UINT16 data = m_pixram[offset++];
 			UINT16 pen;
+=======
+			uint16_t data = m_pixram[offset++];
+			uint16_t pen;
+>>>>>>> upstream/master
 			pen = (data >> 12) & 0xf; m_pixbitmap->pix16(y, x + 0) = pen ? pixpal + pen : 0;
 			pen = (data >>  8) & 0xf; m_pixbitmap->pix16(y, x + 1) = pen ? pixpal + pen : 0;
 			pen = (data >>  4) & 0xf; m_pixbitmap->pix16(y, x + 2) = pen ? pixpal + pen : 0;
@@ -198,7 +281,11 @@ void bmcpokr_state::pixbitmap_redraw()
 
 WRITE16_MEMBER(bmcpokr_state::pixpal_w)
 {
+<<<<<<< HEAD
 	UINT16 old = m_pixpal;
+=======
+	uint16_t old = m_pixpal;
+>>>>>>> upstream/master
 	if (old != COMBINE_DATA(&m_pixpal))
 		pixbitmap_redraw();
 }
@@ -208,14 +295,23 @@ WRITE16_MEMBER(bmcpokr_state::pixpal_w)
 void bmcpokr_state::draw_layer(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect, int layer)
 {
 	tilemap_t *tmap;
+<<<<<<< HEAD
 	UINT16 *scroll;
 	UINT16 ctrl;
+=======
+	uint16_t *scroll;
+	uint16_t ctrl;
+>>>>>>> upstream/master
 
 	switch (layer)
 	{
 		case 1:     tmap = m_tilemap_1; scroll = m_scrollram_1; ctrl = (m_layerctrl[0] >> 8) & 0xff; break;
 		case 2:     tmap = m_tilemap_2; scroll = m_scrollram_2; ctrl = (m_layerctrl[0] >> 0) & 0xff; break;
+<<<<<<< HEAD
 		default:    tmap = 0;           scroll = m_scrollram_3; ctrl = (m_layerctrl[1] >> 8) & 0xff; break;
+=======
+		default:    tmap = nullptr;           scroll = m_scrollram_3; ctrl = (m_layerctrl[1] >> 8) & 0xff; break;
+>>>>>>> upstream/master
 	}
 
 	if (ctrl == 0x00)
@@ -256,7 +352,11 @@ void bmcpokr_state::draw_layer(screen_device &screen, bitmap_ind16 &bitmap, cons
 	}
 }
 
+<<<<<<< HEAD
 UINT32 bmcpokr_state::screen_update_bmcpokr(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+=======
+uint32_t bmcpokr_state::screen_update_bmcpokr(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+>>>>>>> upstream/master
 {
 	int layers_ctrl = -1;
 
@@ -328,8 +428,13 @@ WRITE16_MEMBER(bmcpokr_state::mux_w)
 	if (ACCESSING_BITS_0_7)
 	{
 		m_hopper->write(space, 0,   (data & 0x0001) ? 0x80 : 0x00); // hopper motor
+<<<<<<< HEAD
 		coin_counter_w(machine(), 1, data & 0x0002);                // coin-in / key-in
 		coin_counter_w(machine(), 2, data & 0x0004);                // pay-out
+=======
+		machine().bookkeeping().coin_counter_w(1, data & 0x0002);                // coin-in / key-in
+		machine().bookkeeping().coin_counter_w(2, data & 0x0004);                // pay-out
+>>>>>>> upstream/master
 		//                           data & 0x0060                  // DSW mux
 		//                           data & 0x0080                  // ? always on
 	}
@@ -433,7 +538,11 @@ READ16_MEMBER(bmcpokr_state::mjmaglmp_dsw_r)
 
 READ16_MEMBER(bmcpokr_state::mjmaglmp_key_r)
 {
+<<<<<<< HEAD
 	UINT16 key = 0x3f;
+=======
+	uint16_t key = 0x3f;
+>>>>>>> upstream/master
 	switch ((m_mux >> 4) & 7)
 	{
 		case 0: key = ioport("KEY1")->read(); break;
@@ -502,7 +611,11 @@ static INPUT_PORTS_START( bmcpokr )
 	PORT_BIT( 0x0040, IP_ACTIVE_LOW, IPT_GAMBLE_DEAL   ) PORT_CONDITION("DSW4",0x80,EQUALS,0x80) // n.a.            [START, ESC in service mode]
 	PORT_BIT( 0x0080, IP_ACTIVE_LOW, IPT_GAMBLE_TAKE   ) PORT_CONDITION("DSW4",0x80,EQUALS,0x80) // SCORE
 	PORT_BIT( 0x0100, IP_ACTIVE_LOW, IPT_POKER_BET     ) PORT_CONDITION("DSW4",0x80,EQUALS,0x80) // BET             [BET, credit -1]
+<<<<<<< HEAD
 	PORT_BIT( 0x0200, IP_ACTIVE_HIGH,IPT_SPECIAL       ) PORT_CUSTOM_MEMBER(DEVICE_SELF, bmcpokr_state,hopper_r, NULL)  // HP [HOPPER, credit -100]
+=======
+	PORT_BIT( 0x0200, IP_ACTIVE_HIGH,IPT_SPECIAL       ) PORT_CUSTOM_MEMBER(DEVICE_SELF, bmcpokr_state,hopper_r, nullptr)  // HP [HOPPER, credit -100]
+>>>>>>> upstream/master
 	PORT_SERVICE_NO_TOGGLE( 0x0400, IP_ACTIVE_LOW      ) PORT_CONDITION("DSW4",0x80,EQUALS,0x80) // ACCOUNT         [SERVICE MODE]
 	PORT_BIT( 0x0800, IP_ACTIVE_LOW, IPT_GAMBLE_KEYOUT ) PORT_CONDITION("DSW4",0x80,EQUALS,0x80) // KEY-OUT         [KEY-OUT, no hopper]
 	PORT_BIT( 0x1000, IP_ACTIVE_LOW, IPT_GAMBLE_D_UP   ) PORT_CONDITION("DSW4",0x80,EQUALS,0x80) // DOUBLE-UP
@@ -520,7 +633,11 @@ static INPUT_PORTS_START( bmcpokr )
 	PORT_BIT( 0x0040, IP_ACTIVE_LOW, IPT_GAMBLE_DEAL   )                PORT_CONDITION("DSW4",0x80,EQUALS,0x00) // n.a.            [START, ESC in service mode]
 	PORT_BIT( 0x0080, IP_ACTIVE_LOW, IPT_JOYSTICK_LEFT ) PORT_PLAYER(2) PORT_CONDITION("DSW4",0x80,EQUALS,0x00) // <Left>2 (3rd)
 	PORT_BIT( 0x0100, IP_ACTIVE_LOW, IPT_POKER_BET     )                PORT_CONDITION("DSW4",0x80,EQUALS,0x00) // <Down>1 (2nd)   [BET, credit -1]
+<<<<<<< HEAD
 //  PORT_BIT( 0x0200, IP_ACTIVE_HIGH,IPT_SPECIAL       ) PORT_CUSTOM_MEMBER(DEVICE_SELF, bmcpokr_state,hopper_r, NULL)  // HP [HOPPER, credit -100]
+=======
+//  PORT_BIT( 0x0200, IP_ACTIVE_HIGH,IPT_SPECIAL       ) PORT_CUSTOM_MEMBER(DEVICE_SELF, bmcpokr_state,hopper_r, nullptr)  // HP [HOPPER, credit -100]
+>>>>>>> upstream/master
 	PORT_SERVICE_NO_TOGGLE( 0x0400, IP_ACTIVE_LOW      )                PORT_CONDITION("DSW4",0x80,EQUALS,0x00) // A2              [SERVICE MODE]
 	PORT_BIT( 0x0800, IP_ACTIVE_LOW, IPT_GAMBLE_KEYOUT )                PORT_CONDITION("DSW4",0x80,EQUALS,0x00) // C2              [KEY-OUT, no hopper]
 	PORT_BIT( 0x1000, IP_ACTIVE_LOW, IPT_GAMBLE_D_UP   )                PORT_CONDITION("DSW4",0x80,EQUALS,0x00) // S1              [START, ESC in service mode]
@@ -622,7 +739,11 @@ static INPUT_PORTS_START( mjmaglmp )
 	PORT_BIT( 0x0040, IP_ACTIVE_LOW, IPT_COIN2          ) // NOTE
 	PORT_BIT( 0x0080, IP_ACTIVE_LOW, IPT_GAMBLE_KEYOUT  ) // KEY DOWN
 	PORT_BIT( 0x0100, IP_ACTIVE_LOW, IPT_OTHER ) PORT_NAME("Pay Out") PORT_CODE(KEYCODE_O) // PAY
+<<<<<<< HEAD
 	PORT_BIT( 0x0200, IP_ACTIVE_HIGH,IPT_SPECIAL        ) PORT_CUSTOM_MEMBER(DEVICE_SELF, bmcpokr_state,hopper_r, NULL)  // HOPPER
+=======
+	PORT_BIT( 0x0200, IP_ACTIVE_HIGH,IPT_SPECIAL        ) PORT_CUSTOM_MEMBER(DEVICE_SELF, bmcpokr_state,hopper_r, nullptr)  // HOPPER
+>>>>>>> upstream/master
 	PORT_SERVICE_NO_TOGGLE( 0x0400, IP_ACTIVE_LOW       ) // ACCOUNT
 	PORT_BIT( 0x0800, IP_ACTIVE_LOW, IPT_SERVICE1       ) PORT_NAME("Reset") // RESET
 	PORT_BIT( 0x1000, IP_ACTIVE_LOW, IPT_UNKNOWN        ) // (unused)
@@ -794,11 +915,19 @@ TIMER_DEVICE_CALLBACK_MEMBER(bmcpokr_state::interrupt)
 		if (m_irq_enable & (1<<6)) m_maincpu->set_input_line(6, ASSERT_LINE);
 }
 
+<<<<<<< HEAD
 static ADDRESS_MAP_START( ramdac_map, AS_0, 8, bmcpokr_state )
 	AM_RANGE(0x000, 0x3ff) AM_DEVREADWRITE("ramdac",ramdac_device,ramdac_pal_r,ramdac_rgb666_w)
 ADDRESS_MAP_END
 
 static MACHINE_CONFIG_START( bmcpokr, bmcpokr_state )
+=======
+static ADDRESS_MAP_START( ramdac_map, 0, 8, bmcpokr_state )
+	AM_RANGE(0x000, 0x3ff) AM_DEVREADWRITE("ramdac",ramdac_device,ramdac_pal_r,ramdac_rgb666_w)
+ADDRESS_MAP_END
+
+static MACHINE_CONFIG_START( bmcpokr )
+>>>>>>> upstream/master
 	MCFG_CPU_ADD("maincpu", M68000, XTAL_42MHz / 4) // 68000 @10.50MHz (42/4)
 	MCFG_CPU_PROGRAM_MAP(bmcpokr_mem)
 	MCFG_TIMER_DRIVER_ADD_SCANLINE("scantimer", bmcpokr_state, interrupt, "screen", 0, 1)
@@ -826,7 +955,11 @@ static MACHINE_CONFIG_START( bmcpokr, bmcpokr_state )
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "lspeaker", 0.50)
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "rspeaker", 0.50)
 
+<<<<<<< HEAD
 	MCFG_OKIM6295_ADD("oki", XTAL_42MHz / 40, OKIM6295_PIN7_HIGH)   // M6295 @1.05MHz (42/40), pin 7 not verified
+=======
+	MCFG_OKIM6295_ADD("oki", XTAL_42MHz / 40, PIN7_HIGH)   // M6295 @1.05MHz (42/40), pin 7 not verified
+>>>>>>> upstream/master
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "lspeaker", 0.50)
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "rspeaker", 0.50)
 MACHINE_CONFIG_END
@@ -948,5 +1081,10 @@ ROM_START( mjmaglmp )
 	ROM_LOAD( "ja-a-901.u6", 0x00000, 0x40000, CRC(25f36d00) SHA1(c182348340ca67ad69d1a67c58b47d6371a725c9) )
 ROM_END
 
+<<<<<<< HEAD
 GAME( 1999, bmcpokr,  0, bmcpokr,  bmcpokr,  driver_device, 0, ROT0, "BMC", "Dongfang Shenlong",             MACHINE_SUPPORTS_SAVE )
 GAME( 2000, mjmaglmp, 0, mjmaglmp, mjmaglmp, driver_device, 0, ROT0, "BMC", "Mahjong Magic Lamp (v. JAA02)", MACHINE_SUPPORTS_SAVE )
+=======
+GAME( 1999, bmcpokr,  0, bmcpokr,  bmcpokr,  bmcpokr_state, 0, ROT0, "BMC", "Dongfang Shenlong",             MACHINE_SUPPORTS_SAVE )
+GAME( 2000, mjmaglmp, 0, mjmaglmp, mjmaglmp, bmcpokr_state, 0, ROT0, "BMC", "Mahjong Magic Lamp (v. JAA02)", MACHINE_SUPPORTS_SAVE )
+>>>>>>> upstream/master

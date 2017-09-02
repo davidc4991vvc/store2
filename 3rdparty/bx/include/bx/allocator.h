@@ -1,6 +1,11 @@
 /*
+<<<<<<< HEAD
  * Copyright 2010-2015 Branimir Karadzic. All rights reserved.
  * License: http://www.opensource.org/licenses/BSD-2-Clause
+=======
+ * Copyright 2010-2017 Branimir Karadzic. All rights reserved.
+ * License: https://github.com/bkaradzic/bx#license-bsd-2-clause
+>>>>>>> upstream/master
  */
 
 #ifndef BX_ALLOCATOR_H_HEADER_GUARD
@@ -8,6 +13,7 @@
 
 #include "bx.h"
 
+<<<<<<< HEAD
 #include <memory.h>
 #include <string.h> //::memmove
 #include <new>
@@ -16,6 +22,10 @@
 #	include <malloc.h>
 #endif // BX_CONFIG_ALLOCATOR_CRT
 
+=======
+#include <new>
+
+>>>>>>> upstream/master
 #if BX_CONFIG_ALLOCATOR_DEBUG
 #	define BX_ALLOC(_allocator, _size)                         bx::alloc(_allocator, _size, 0, __FILE__, __LINE__)
 #	define BX_REALLOC(_allocator, _ptr, _size)                 bx::realloc(_allocator, _ptr, _size, 0, __FILE__, __LINE__)
@@ -46,6 +56,7 @@
 
 namespace bx
 {
+<<<<<<< HEAD
 	/// Aligns pointer to nearest next aligned address. _align must be power of two.
 	inline void* alignPtr(void* _ptr, size_t _extra, size_t _align = BX_CONFIG_ALLOCATOR_NATURAL_ALIGNMENT)
 	{
@@ -205,4 +216,103 @@ namespace bx
 
 } // namespace bx
 
+=======
+	/// Abstract allocator interface.
+	///
+	struct BX_NO_VTABLE AllocatorI
+	{
+		///
+		virtual ~AllocatorI() = 0;
+
+		/// Allocates, resizes memory block, or frees memory.
+		///
+		/// @param[in] _ptr If _ptr is NULL new block will be allocated.
+		/// @param[in] _size If _ptr is set, and _size is 0, memory will be freed.
+		/// @param[in] _align Alignment.
+		/// @param[in] _file Debug file path info.
+		/// @param[in] _line Debug file line info.
+		virtual void* realloc(void* _ptr, size_t _size, size_t _align, const char* _file, uint32_t _line) = 0;
+	};
+
+	/// Check if pointer is aligned. _align must be power of two.
+	bool isAligned(const void* _ptr, size_t _align);
+
+	/// Aligns pointer to nearest next aligned address. _align must be power of two.
+	void* alignPtr(
+		  void* _ptr
+		, size_t _extra
+		, size_t _align = BX_CONFIG_ALLOCATOR_NATURAL_ALIGNMENT
+		);
+
+	/// Allocate memory.
+	void* alloc(
+		  AllocatorI* _allocator
+		, size_t _size
+		, size_t _align = 0
+		, const char* _file = NULL
+		, uint32_t _line = 0
+		);
+
+	/// Free memory.
+	void free(
+		  AllocatorI* _allocator
+		, void* _ptr
+		, size_t _align = 0
+		, const char* _file = NULL
+		, uint32_t _line = 0
+		);
+
+	/// Resize memory block.
+	void* realloc(
+		  AllocatorI* _allocator
+		, void* _ptr
+		, size_t _size
+		, size_t _align = 0
+		, const char* _file = NULL
+		, uint32_t _line = 0
+		);
+
+	/// Allocate memory with specific alignment.
+	void* alignedAlloc(
+		  AllocatorI* _allocator
+		, size_t _size
+		, size_t _align
+		, const char* _file = NULL
+		, uint32_t _line = 0
+		);
+
+	/// Free memory that was allocated with aligned allocator.
+	void alignedFree(
+		  AllocatorI* _allocator
+		, void* _ptr
+		, size_t /*_align*/
+		, const char* _file = NULL
+		, uint32_t _line = 0
+		);
+
+	/// Resize memory block that was allocated with aligned allocator.
+	void* alignedRealloc(
+		  AllocatorI* _allocator
+		, void* _ptr
+		, size_t _size
+		, size_t _align
+		, const char* _file = NULL
+		, uint32_t _line = 0
+		);
+
+	/// Delete object with specific allocator.
+	template <typename ObjectT>
+	void deleteObject(
+		  AllocatorI* _allocator
+		, ObjectT* _object
+		, size_t _align = 0
+		, const char* _file = NULL
+		, uint32_t _line = 0
+		);
+
+} // namespace bx
+
+#include "inline/allocator.inl"
+
+>>>>>>> upstream/master
 #endif // BX_ALLOCATOR_H_HEADER_GUARD

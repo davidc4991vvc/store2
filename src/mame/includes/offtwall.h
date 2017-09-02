@@ -17,10 +17,15 @@ public:
 		: atarigen_state(mconfig, type, tag),
 			m_jsa(*this, "jsa"),
 			m_vad(*this, "vad"),
+<<<<<<< HEAD
+=======
+			m_mainram(*this, "mainram"),
+>>>>>>> upstream/master
 			m_bankrom_base(*this, "bankrom_base") { }
 
 	required_device<atari_jsa_iii_device> m_jsa;
 	required_device<atari_vad_device> m_vad;
+<<<<<<< HEAD
 
 	UINT16 *m_bankswitch_base;
 	required_shared_ptr<UINT16> m_bankrom_base;
@@ -29,6 +34,17 @@ public:
 	UINT16 *m_spritecache_count;
 	UINT16 *m_unknown_verify_base;
 	virtual void update_interrupts();
+=======
+	required_shared_ptr<uint16_t> m_mainram;
+
+	uint16_t *m_bankswitch_base;
+	required_shared_ptr<uint16_t> m_bankrom_base;
+	uint32_t m_bank_offset;
+
+	uint16_t *m_spritecache_count;
+	uint16_t *m_unknown_verify_base;
+	virtual void update_interrupts() override;
+>>>>>>> upstream/master
 	DECLARE_WRITE16_MEMBER(io_latch_w);
 	DECLARE_READ16_MEMBER(bankswitch_r);
 	DECLARE_READ16_MEMBER(bankrom_r);
@@ -40,7 +56,11 @@ public:
 	DECLARE_MACHINE_START(offtwall);
 	DECLARE_MACHINE_RESET(offtwall);
 	DECLARE_VIDEO_START(offtwall);
+<<<<<<< HEAD
 	UINT32 screen_update_offtwall(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
+=======
+	uint32_t screen_update_offtwall(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
+>>>>>>> upstream/master
 
 	static const atari_motion_objects_config s_mob_config;
 };

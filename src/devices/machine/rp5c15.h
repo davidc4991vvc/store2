@@ -18,12 +18,21 @@
 
 **********************************************************************/
 
+<<<<<<< HEAD
 #pragma once
 
 #ifndef __RP5C15__
 #define __RP5C15__
 
 #include "emu.h"
+=======
+#ifndef MAME_MACHINE_RP5C15_H
+#define MAME_MACHINE_RP5C15_H
+
+#pragma once
+
+#include "dirtc.h"
+>>>>>>> upstream/master
 
 
 
@@ -48,6 +57,7 @@ class rp5c15_device :   public device_t,
 {
 public:
 	// construction/destruction
+<<<<<<< HEAD
 	rp5c15_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
 
 	template<class _Object> static devcb_base &set_out_alarm_callback(device_t &device, _Object object) { return downcast<rp5c15_device &>(device).m_out_alarm_cb.set_callback(object); }
@@ -66,6 +76,24 @@ protected:
 	// device_rtc_interface overrides
 	virtual bool rtc_feature_leap_year() { return true; }
 	virtual void rtc_clock_updated(int year, int month, int day, int day_of_week, int hour, int minute, int second);
+=======
+	rp5c15_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
+
+	template <class Object> static devcb_base &set_out_alarm_callback(device_t &device, Object &&cb) { return downcast<rp5c15_device &>(device).m_out_alarm_cb.set_callback(std::forward<Object>(cb)); }
+	template <class Object> static devcb_base &set_out_clkout_callback(device_t &device, Object &&cb) { return downcast<rp5c15_device &>(device).m_out_clkout_cb.set_callback(std::forward<Object>(cb)); }
+
+	DECLARE_READ8_MEMBER( read );
+	DECLARE_WRITE8_MEMBER( write );
+
+protected:
+	// device-level overrides
+	virtual void device_start() override;
+	virtual void device_timer(emu_timer &timer, device_timer_id id, int param, void *ptr) override;
+
+	// device_rtc_interface overrides
+	virtual bool rtc_feature_leap_year() const override { return true; }
+	virtual void rtc_clock_updated(int year, int month, int day, int day_of_week, int hour, int minute, int second) override;
+>>>>>>> upstream/master
 
 private:
 	inline void set_alarm_line();
@@ -80,11 +108,19 @@ private:
 	devcb_write_line        m_out_alarm_cb;
 	devcb_write_line        m_out_clkout_cb;
 
+<<<<<<< HEAD
 	UINT8 m_reg[2][13];         // clock registers
 	UINT8 m_ram[13];            // RAM
 
 	UINT8 m_mode;               // mode register
 	UINT8 m_reset;              // reset register
+=======
+	uint8_t m_reg[2][13];         // clock registers
+	uint8_t m_ram[13];            // RAM
+
+	uint8_t m_mode;               // mode register
+	uint8_t m_reset;              // reset register
+>>>>>>> upstream/master
 	int m_alarm;                // alarm output
 	int m_alarm_on;             // alarm condition
 	int m_1hz;                  // 1 Hz condition
@@ -99,8 +135,14 @@ private:
 
 
 // device type definition
+<<<<<<< HEAD
 extern const device_type RP5C15;
 
 
 
 #endif
+=======
+DECLARE_DEVICE_TYPE(RP5C15, rp5c15_device)
+
+#endif // MAME_MACHINE_RP5C15_H
+>>>>>>> upstream/master

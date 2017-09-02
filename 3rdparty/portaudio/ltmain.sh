@@ -1,9 +1,17 @@
 
+<<<<<<< HEAD
 # libtool (GNU libtool) 2.4
 # Written by Gordon Matzigkeit <gord@gnu.ai.mit.edu>, 1996
 
 # Copyright (C) 1996, 1997, 1998, 1999, 2000, 2001, 2003, 2004, 2005, 2006,
 # 2007, 2008, 2009, 2010 Free Software Foundation, Inc.
+=======
+# libtool (GNU libtool) 2.4.2
+# Written by Gordon Matzigkeit <gord@gnu.ai.mit.edu>, 1996
+
+# Copyright (C) 1996, 1997, 1998, 1999, 2000, 2001, 2003, 2004, 2005, 2006,
+# 2007, 2008, 2009, 2010, 2011 Free Software Foundation, Inc.
+>>>>>>> upstream/master
 # This is free software; see the source for copying conditions.  There is NO
 # warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 
@@ -41,6 +49,10 @@
 #       --quiet, --silent    don't print informational messages
 #       --no-quiet, --no-silent
 #                            print informational messages (default)
+<<<<<<< HEAD
+=======
+#       --no-warn            don't display warning messages
+>>>>>>> upstream/master
 #       --tag=TAG            use configuration variables from tag TAG
 #   -v, --verbose            print more informational messages than default
 #       --no-verbose         don't print the extra informational messages
@@ -69,7 +81,11 @@
 #         compiler:		$LTCC
 #         compiler flags:		$LTCFLAGS
 #         linker:		$LD (gnu? $with_gnu_ld)
+<<<<<<< HEAD
 #         $progname:	(GNU libtool) 2.4 Debian-2.4-2ubuntu1
+=======
+#         $progname:	(GNU libtool) 2.4.2 Debian-2.4.2-1.7ubuntu1
+>>>>>>> upstream/master
 #         automake:	$automake_version
 #         autoconf:	$autoconf_version
 #
@@ -79,9 +95,15 @@
 
 PROGRAM=libtool
 PACKAGE=libtool
+<<<<<<< HEAD
 VERSION="2.4 Debian-2.4-2ubuntu1"
 TIMESTAMP=""
 package_revision=1.3293
+=======
+VERSION="2.4.2 Debian-2.4.2-1.7ubuntu1"
+TIMESTAMP=""
+package_revision=1.3337
+>>>>>>> upstream/master
 
 # Be Bourne compatible
 if test -n "${ZSH_VERSION+set}" && (emulate sh) >/dev/null 2>&1; then
@@ -136,15 +158,21 @@ progpath="$0"
 
 : ${CP="cp -f"}
 test "${ECHO+set}" = set || ECHO=${as_echo-'printf %s\n'}
+<<<<<<< HEAD
 : ${EGREP="/bin/grep -E"}
 : ${FGREP="/bin/grep -F"}
 : ${GREP="/bin/grep"}
 : ${LN_S="ln -s"}
+=======
+>>>>>>> upstream/master
 : ${MAKE="make"}
 : ${MKDIR="mkdir"}
 : ${MV="mv -f"}
 : ${RM="rm -f"}
+<<<<<<< HEAD
 : ${SED="/bin/sed"}
+=======
+>>>>>>> upstream/master
 : ${SHELL="${CONFIG_SHELL-/bin/sh}"}
 : ${Xsed="$SED -e 1s/^X//"}
 
@@ -387,7 +415,11 @@ case $progpath in
      ;;
   *)
      save_IFS="$IFS"
+<<<<<<< HEAD
      IFS=:
+=======
+     IFS=${PATH_SEPARATOR-:}
+>>>>>>> upstream/master
      for progdir in $PATH; do
        IFS="$save_IFS"
        test -x "$progdir/$progname" && break
@@ -771,8 +803,13 @@ func_help ()
 	s*\$LTCFLAGS*'"$LTCFLAGS"'*
 	s*\$LD*'"$LD"'*
 	s/\$with_gnu_ld/'"$with_gnu_ld"'/
+<<<<<<< HEAD
 	s/\$automake_version/'"`(automake --version) 2>/dev/null |$SED 1q`"'/
 	s/\$autoconf_version/'"`(autoconf --version) 2>/dev/null |$SED 1q`"'/
+=======
+	s/\$automake_version/'"`(${AUTOMAKE-automake} --version) 2>/dev/null |$SED 1q`"'/
+	s/\$autoconf_version/'"`(${AUTOCONF-autoconf} --version) 2>/dev/null |$SED 1q`"'/
+>>>>>>> upstream/master
 	p
 	d
      }
@@ -1052,6 +1089,10 @@ opt_finish=false
 opt_help=false
 opt_help_all=false
 opt_silent=:
+<<<<<<< HEAD
+=======
+opt_warning=:
+>>>>>>> upstream/master
 opt_verbose=:
 opt_silent=false
 opt_verbose=false
@@ -1120,6 +1161,13 @@ esac
 			opt_silent=false
 func_append preserve_args " $opt"
 			;;
+<<<<<<< HEAD
+=======
+      --no-warning|--no-warn)
+			opt_warning=false
+func_append preserve_args " $opt"
+			;;
+>>>>>>> upstream/master
       --no-verbose)
 			opt_verbose=false
 func_append preserve_args " $opt"
@@ -2059,7 +2107,11 @@ func_mode_compile ()
     *.[cCFSifmso] | \
     *.ada | *.adb | *.ads | *.asm | \
     *.c++ | *.cc | *.ii | *.class | *.cpp | *.cxx | \
+<<<<<<< HEAD
     *.[fF][09]? | *.for | *.java | *.obj | *.sx | *.cu | *.cup)
+=======
+    *.[fF][09]? | *.for | *.java | *.go | *.obj | *.sx | *.cu | *.cup)
+>>>>>>> upstream/master
       func_xform "$libobj"
       libobj=$func_xform_result
       ;;
@@ -3201,11 +3253,20 @@ func_mode_install ()
 
       # Set up the ranlib parameters.
       oldlib="$destdir/$name"
+<<<<<<< HEAD
+=======
+      func_to_tool_file "$oldlib" func_convert_file_msys_to_w32
+      tool_oldlib=$func_to_tool_file_result
+>>>>>>> upstream/master
 
       func_show_eval "$install_prog \$file \$oldlib" 'exit $?'
 
       if test -n "$stripme" && test -n "$old_striplib"; then
+<<<<<<< HEAD
 	func_show_eval "$old_striplib $oldlib" 'exit $?'
+=======
+	func_show_eval "$old_striplib $tool_oldlib" 'exit $?'
+>>>>>>> upstream/master
       fi
 
       # Do each command in the postinstall commands.
@@ -3470,7 +3531,11 @@ static const void *lt_preloaded_setup() {
 	  # linked before any other PIC object.  But we must not use
 	  # pic_flag when linking with -static.  The problem exists in
 	  # FreeBSD 2.2.6 and is fixed in FreeBSD 3.1.
+<<<<<<< HEAD
 	  *-*-freebsd2*|*-*-freebsd3.0*|*-*-freebsdelf3.0*)
+=======
+	  *-*-freebsd2.*|*-*-freebsd3.0*|*-*-freebsdelf3.0*)
+>>>>>>> upstream/master
 	    pic_flag_for_symtable=" $pic_flag -DFREEBSD_WORKAROUND" ;;
 	  *-*-hpux*)
 	    pic_flag_for_symtable=" $pic_flag"  ;;
@@ -3982,6 +4047,7 @@ func_exec_program_core ()
 # launches target application with the remaining arguments.
 func_exec_program ()
 {
+<<<<<<< HEAD
   for lt_wr_arg
   do
     case \$lt_wr_arg in
@@ -3990,6 +4056,19 @@ func_exec_program ()
     esac
     shift
   done
+=======
+  case \" \$* \" in
+  *\\ --lt-*)
+    for lt_wr_arg
+    do
+      case \$lt_wr_arg in
+      --lt-*) ;;
+      *) set x \"\$@\" \"\$lt_wr_arg\"; shift;;
+      esac
+      shift
+    done ;;
+  esac
+>>>>>>> upstream/master
   func_exec_program_core \${1+\"\$@\"}
 }
 
@@ -5057,9 +5136,21 @@ void lt_dump_script (FILE* f)
 {
 EOF
 	    func_emit_wrapper yes |
+<<<<<<< HEAD
               $SED -e 's/\([\\"]\)/\\\1/g' \
 	           -e 's/^/  fputs ("/' -e 's/$/\\n", f);/'
 
+=======
+	      $SED -n -e '
+s/^\(.\{79\}\)\(..*\)/\1\
+\2/
+h
+s/\([\\"]\)/\\\1/g
+s/$/\\n/
+s/\([^\n]*\).*/  fputs ("\1", f);/p
+g
+D'
+>>>>>>> upstream/master
             cat <<"EOF"
 }
 EOF
@@ -5643,7 +5734,12 @@ func_mode_link ()
 	continue
 	;;
 
+<<<<<<< HEAD
       -mt|-mthreads|-kthread|-Kthread|-pthread|-pthreads|--thread-safe|-threads)
+=======
+      -mt|-mthreads|-kthread|-Kthread|-pthread|-pthreads|--thread-safe \
+      |-threads|-fopenmp|-openmp|-mp|-xopenmp|-omp|-qsmp=*)
+>>>>>>> upstream/master
 	func_append compiler_flags " $arg"
 	func_append compile_command " $arg"
 	func_append finalize_command " $arg"
@@ -6150,7 +6246,12 @@ func_mode_link ()
 	lib=
 	found=no
 	case $deplib in
+<<<<<<< HEAD
 	-mt|-mthreads|-kthread|-Kthread|-pthread|-pthreads|--thread-safe|-threads)
+=======
+	-mt|-mthreads|-kthread|-Kthread|-pthread|-pthreads|--thread-safe \
+        |-threads|-fopenmp|-openmp|-mp|-xopenmp|-omp|-qsmp=*)
+>>>>>>> upstream/master
 	  if test "$linkmode,$pass" = "prog,link"; then
 	    compile_deplibs="$deplib $compile_deplibs"
 	    finalize_deplibs="$deplib $finalize_deplibs"
@@ -6834,7 +6935,11 @@ func_mode_link ()
 	         test "$hardcode_direct_absolute" = no; then
 		add="$dir/$linklib"
 	      elif test "$hardcode_minus_L" = yes; then
+<<<<<<< HEAD
 		add_dir="-L$dir"
+=======
+		add_dir="-L$absdir"
+>>>>>>> upstream/master
 		# Try looking first in the location we're being installed to.
 		if test -n "$inst_prefix_dir"; then
 		  case $libdir in
@@ -7319,6 +7424,10 @@ func_mode_link ()
 	  # which has an extra 1 added just for fun
 	  #
 	  case $version_type in
+<<<<<<< HEAD
+=======
+	  # correct linux to gnu/linux during the next big refactor
+>>>>>>> upstream/master
 	  darwin|linux|osf|windows|none)
 	    func_arith $number_major + $number_minor
 	    current=$func_arith_result
@@ -7438,7 +7547,11 @@ func_mode_link ()
 	  versuffix="$major.$revision"
 	  ;;
 
+<<<<<<< HEAD
 	linux)
+=======
+	linux) # correct to gnu/linux during the next big refactor
+>>>>>>> upstream/master
 	  func_arith $current - $age
 	  major=.$func_arith_result
 	  versuffix="$major.$age.$revision"
@@ -8026,6 +8139,14 @@ EOF
 
       # Test again, we may have decided not to build it any more
       if test "$build_libtool_libs" = yes; then
+<<<<<<< HEAD
+=======
+	# Remove ${wl} instances when linking with ld.
+	# FIXME: should test the right _cmds variable.
+	case $archive_cmds in
+	  *\$LD\ *) wl= ;;
+        esac
+>>>>>>> upstream/master
 	if test "$hardcode_into_libs" = yes; then
 	  # Hardcode the library paths
 	  hardcode_libdirs=
@@ -8056,7 +8177,11 @@ EOF
 	    elif test -n "$runpath_var"; then
 	      case "$perm_rpath " in
 	      *" $libdir "*) ;;
+<<<<<<< HEAD
 	      *) func_apped perm_rpath " $libdir" ;;
+=======
+	      *) func_append perm_rpath " $libdir" ;;
+>>>>>>> upstream/master
 	      esac
 	    fi
 	  done
@@ -8064,11 +8189,15 @@ EOF
 	  if test -n "$hardcode_libdir_separator" &&
 	     test -n "$hardcode_libdirs"; then
 	    libdir="$hardcode_libdirs"
+<<<<<<< HEAD
 	    if test -n "$hardcode_libdir_flag_spec_ld"; then
 	      eval dep_rpath=\"$hardcode_libdir_flag_spec_ld\"
 	    else
 	      eval dep_rpath=\"$hardcode_libdir_flag_spec\"
 	    fi
+=======
+	    eval "dep_rpath=\"$hardcode_libdir_flag_spec\""
+>>>>>>> upstream/master
 	  fi
 	  if test -n "$runpath_var" && test -n "$perm_rpath"; then
 	    # We should set the runpath_var.
@@ -9158,6 +9287,11 @@ EOF
 	    esac
 	  done
 	fi
+<<<<<<< HEAD
+=======
+	func_to_tool_file "$oldlib" func_convert_file_msys_to_w32
+	tool_oldlib=$func_to_tool_file_result
+>>>>>>> upstream/master
 	eval cmds=\"$old_archive_cmds\"
 
 	func_len " $cmds"
@@ -9267,7 +9401,12 @@ EOF
 	      *.la)
 		func_basename "$deplib"
 		name="$func_basename_result"
+<<<<<<< HEAD
 		eval libdir=`${SED} -n -e 's/^libdir=\(.*\)$/\1/p' $deplib`
+=======
+		func_resolve_sysroot "$deplib"
+		eval libdir=`${SED} -n -e 's/^libdir=\(.*\)$/\1/p' $func_resolve_sysroot_result`
+>>>>>>> upstream/master
 		test -z "$libdir" && \
 		  func_fatal_error "\`$deplib' is not a valid libtool archive"
 		func_append newdependency_libs " ${lt_sysroot:+=}$libdir/$name"

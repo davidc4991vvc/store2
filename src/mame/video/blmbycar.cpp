@@ -32,6 +32,10 @@ Note:   if MAME_DEBUG is defined, pressing Z with:
 
 #include "emu.h"
 #include "includes/blmbycar.h"
+<<<<<<< HEAD
+=======
+#include "screen.h"
+>>>>>>> upstream/master
 
 
 /***************************************************************************
@@ -55,8 +59,13 @@ Note:   if MAME_DEBUG is defined, pressing Z with:
 
 TILE_GET_INFO_MEMBER(blmbycar_state::get_tile_info_0)
 {
+<<<<<<< HEAD
 	UINT16 code = m_vram_0[tile_index * 2 + 0];
 	UINT16 attr = m_vram_0[tile_index * 2 + 1];
+=======
+	uint16_t code = m_vram_0[tile_index * 2 + 0];
+	uint16_t attr = m_vram_0[tile_index * 2 + 1];
+>>>>>>> upstream/master
 	SET_TILE_INFO_MEMBER(0,
 			code,
 			attr & 0x1f,
@@ -67,8 +76,13 @@ TILE_GET_INFO_MEMBER(blmbycar_state::get_tile_info_0)
 
 TILE_GET_INFO_MEMBER(blmbycar_state::get_tile_info_1)
 {
+<<<<<<< HEAD
 	UINT16 code = m_vram_1[tile_index * 2 + 0];
 	UINT16 attr = m_vram_1[tile_index * 2 + 1];
+=======
+	uint16_t code = m_vram_1[tile_index * 2 + 0];
+	uint16_t attr = m_vram_1[tile_index * 2 + 1];
+>>>>>>> upstream/master
 	SET_TILE_INFO_MEMBER(0,
 			code,
 			attr & 0x1f,
@@ -78,13 +92,21 @@ TILE_GET_INFO_MEMBER(blmbycar_state::get_tile_info_1)
 }
 
 
+<<<<<<< HEAD
 WRITE16_MEMBER(blmbycar_state::blmbycar_vram_0_w)
+=======
+WRITE16_MEMBER(blmbycar_state::vram_0_w)
+>>>>>>> upstream/master
 {
 	COMBINE_DATA(&m_vram_0[offset]);
 	m_tilemap_0->mark_tile_dirty(offset / 2);
 }
 
+<<<<<<< HEAD
 WRITE16_MEMBER(blmbycar_state::blmbycar_vram_1_w)
+=======
+WRITE16_MEMBER(blmbycar_state::vram_1_w)
+>>>>>>> upstream/master
 {
 	COMBINE_DATA(&m_vram_1[offset]);
 	m_tilemap_1->mark_tile_dirty(offset / 2);
@@ -101,8 +123,13 @@ WRITE16_MEMBER(blmbycar_state::blmbycar_vram_1_w)
 
 void blmbycar_state::video_start()
 {
+<<<<<<< HEAD
 	m_tilemap_0 = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(blmbycar_state::get_tile_info_0),this), TILEMAP_SCAN_ROWS, 16, 16, DIM_NX, DIM_NY );
 	m_tilemap_1 = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(blmbycar_state::get_tile_info_1),this), TILEMAP_SCAN_ROWS, 16, 16, DIM_NX, DIM_NY );
+=======
+	m_tilemap_0 = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(blmbycar_state::get_tile_info_0),this), TILEMAP_SCAN_ROWS, 16, 16, DIM_NX, DIM_NY );
+	m_tilemap_1 = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(blmbycar_state::get_tile_info_1),this), TILEMAP_SCAN_ROWS, 16, 16, DIM_NX, DIM_NY );
+>>>>>>> upstream/master
 
 	m_tilemap_0->set_scroll_rows(1);
 	m_tilemap_0->set_scroll_cols(1);
@@ -141,7 +168,11 @@ void blmbycar_state::video_start()
 
 void blmbycar_state::draw_sprites( screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect )
 {
+<<<<<<< HEAD
 	UINT16 *source, *finish;
+=======
+	uint16_t *source, *finish;
+>>>>>>> upstream/master
 
 	source = m_spriteram + 0x6 / 2;              // !
 	finish = m_spriteram + m_spriteram.bytes() / 2 - 8 / 2;
@@ -192,7 +223,11 @@ void blmbycar_state::draw_sprites( screen_device &screen, bitmap_ind16 &bitmap, 
 
 ***************************************************************************/
 
+<<<<<<< HEAD
 UINT32 blmbycar_state::screen_update_blmbycar(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+=======
+uint32_t blmbycar_state::screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+>>>>>>> upstream/master
 {
 	int i, layers_ctrl = -1;
 

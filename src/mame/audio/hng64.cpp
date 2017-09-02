@@ -39,7 +39,14 @@ so levels 0,1,2,5 are unmasked, vectors get set during the sound CPU init code.
 */
 
 
+<<<<<<< HEAD
 #include "includes/hng64.h"
+=======
+#include "emu.h"
+#include "includes/hng64.h"
+#include "speaker.h"
+
+>>>>>>> upstream/master
 
 // save the sound program?
 #define DUMP_SOUNDPRG  0
@@ -65,6 +72,7 @@ WRITE32_MEMBER(hng64_state::hng64_soundram_w)
 {
 	//logerror("hng64_soundram_w %08x: %08x %08x\n", offset, data, mem_mask);
 
+<<<<<<< HEAD
 	UINT32 mem_mask32 = mem_mask;
 	UINT32 data32 = data;
 
@@ -79,6 +87,22 @@ WRITE32_MEMBER(hng64_state::hng64_soundram_w)
 	data = FLIPENDIAN_INT16(data);
 	mem_mask = mem_mask32 & 0xffff;
 	mem_mask = FLIPENDIAN_INT16(mem_mask);
+=======
+	uint32_t mem_mask32 = mem_mask;
+	uint32_t data32 = data;
+
+	/* swap data around.. keep the v53 happy */
+	data = data32 >> 16;
+	data = flipendian_int16(data);
+	mem_mask = mem_mask32 >> 16;
+	mem_mask = flipendian_int16(mem_mask);
+	COMBINE_DATA(&m_soundram[offset * 2 + 0]);
+
+	data = data32 & 0xffff;
+	data = flipendian_int16(data);
+	mem_mask = mem_mask32 & 0xffff;
+	mem_mask = flipendian_int16(mem_mask);
+>>>>>>> upstream/master
 	COMBINE_DATA(&m_soundram[offset * 2 + 1]);
 
 	if (DUMP_SOUNDPRG)
@@ -92,7 +116,11 @@ WRITE32_MEMBER(hng64_state::hng64_soundram_w)
 			fp=fopen(filename, "w+b");
 			if (fp)
 			{
+<<<<<<< HEAD
 				fwrite((UINT8*)m_soundram, 0x80000*4, 1, fp);
+=======
+				fwrite((uint8_t*)m_soundram.get(), 0x80000*4, 1, fp);
+>>>>>>> upstream/master
 				fclose(fp);
 			}
 		}
@@ -102,15 +130,26 @@ WRITE32_MEMBER(hng64_state::hng64_soundram_w)
 
 READ32_MEMBER(hng64_state::hng64_soundram_r)
 {
+<<<<<<< HEAD
 	UINT16 datalo = m_soundram[offset * 2 + 0];
 	UINT16 datahi = m_soundram[offset * 2 + 1];
 
 	return FLIPENDIAN_INT16(datahi) | (FLIPENDIAN_INT16(datalo) << 16);
+=======
+	uint16_t datalo = m_soundram[offset * 2 + 0];
+	uint16_t datahi = m_soundram[offset * 2 + 1];
+
+	return flipendian_int16(datahi) | (flipendian_int16(datalo) << 16);
+>>>>>>> upstream/master
 }
 
 WRITE32_MEMBER( hng64_state::hng64_soundcpu_enable_w )
 {
+<<<<<<< HEAD
 	if (mem_mask&0xffff0000)
+=======
+	if (ACCESSING_BITS_16_31)
+>>>>>>> upstream/master
 	{
 		int cmd = data >> 16;
 		// I guess it's only one of the bits, the commands are inverse of each other
@@ -132,9 +171,15 @@ WRITE32_MEMBER( hng64_state::hng64_soundcpu_enable_w )
 		}
 	}
 
+<<<<<<< HEAD
 	if (mem_mask&0x0000ffff)
 	{
 			logerror("unknown hng64_soundcpu_enable_w %08x %08x\n", data, mem_mask);
+=======
+	if (ACCESSING_BITS_0_15)
+	{
+		logerror("unknown hng64_soundcpu_enable_w %08x %08x\n", data, mem_mask);
+>>>>>>> upstream/master
 	}
 }
 
@@ -145,7 +190,11 @@ WRITE32_MEMBER( hng64_state::hng64_soundcpu_enable_w )
 
 void hng64_state::reset_sound()
 {
+<<<<<<< HEAD
 	UINT8 *RAM = (UINT8*)m_soundram;
+=======
+	uint8_t *RAM = (uint8_t*)m_soundram.get();
+>>>>>>> upstream/master
 	membank("bank0")->set_base(&RAM[0x1f0000]);
 	membank("bank1")->set_base(&RAM[0x1f0000]);
 	membank("bank2")->set_base(&RAM[0x1f0000]);
@@ -222,7 +271,11 @@ WRITE16_MEMBER(hng64_state::hng64_sound_bank_w)
 
 	// the 2 early games don't do this.. maybe all banks actuallly default to that region tho?
 	// the sound code on those games seems buggier anyway.
+<<<<<<< HEAD
 	UINT8 *RAM = (UINT8*)m_soundram;
+=======
+	uint8_t *RAM = (uint8_t*)m_soundram.get();
+>>>>>>> upstream/master
 
 	int bank = data & 0x1f;
 
@@ -383,7 +436,11 @@ WRITE_LINE_MEMBER(hng64_state::tcu_tm2_cb)
 
 
 
+<<<<<<< HEAD
 MACHINE_CONFIG_FRAGMENT( hng64_audio )
+=======
+MACHINE_CONFIG_START( hng64_audio )
+>>>>>>> upstream/master
 	MCFG_CPU_ADD("audiocpu", V53A, 32000000/2)              // V53A, 16? mhz!
 	MCFG_CPU_PROGRAM_MAP(hng_sound_map)
 	MCFG_CPU_IO_MAP(hng_sound_io)

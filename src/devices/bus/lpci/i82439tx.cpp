@@ -13,6 +13,7 @@
     IMPLEMENTATION
 ***************************************************************************/
 
+<<<<<<< HEAD
 const device_type I82439TX = &device_creator<i82439tx_device>;
 
 
@@ -21,12 +22,26 @@ i82439tx_device::i82439tx_device(const machine_config &mconfig, const char *tag,
 	pci_device_interface( mconfig, *this ),
 	m_cpu_tag( NULL ),
 	m_region_tag( NULL ),
+=======
+DEFINE_DEVICE_TYPE(I82439TX, i82439tx_device, "i82439tx", "Intel 82439TX")
+
+
+i82439tx_device::i82439tx_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: northbridge_device(mconfig, I82439TX, tag, owner, clock),
+	pci_device_interface(mconfig, *this),
+	m_cpu_tag(nullptr),
+	m_region_tag(nullptr),
+>>>>>>> upstream/master
 	m_space(nullptr),
 	m_rom(nullptr)
 {
 }
 
+<<<<<<< HEAD
 void i82439tx_device::i82439tx_configure_memory(UINT8 val, offs_t begin, offs_t end)
+=======
+void i82439tx_device::i82439tx_configure_memory(uint8_t val, offs_t begin, offs_t end)
+>>>>>>> upstream/master
 {
 	switch (val & 0x03)
 	{
@@ -53,9 +68,15 @@ void i82439tx_device::i82439tx_configure_memory(UINT8 val, offs_t begin, offs_t 
     PCI INTERFACE
 ***************************************************************************/
 
+<<<<<<< HEAD
 UINT32 i82439tx_device::pci_read(pci_bus_device *pcibus, int function, int offset, UINT32 mem_mask)
 {
 	UINT32 result = 0;
+=======
+uint32_t i82439tx_device::pci_read(pci_bus_device *pcibus, int function, int offset, uint32_t mem_mask)
+{
+	uint32_t result;
+>>>>>>> upstream/master
 
 	if (function != 0)
 		return 0;
@@ -88,6 +109,13 @@ UINT32 i82439tx_device::pci_read(pci_bus_device *pcibus, int function, int offse
 		case 0x44:  /* reserved */
 		case 0x48:  /* reserved */
 		case 0x4C:  /* reserved */
+<<<<<<< HEAD
+=======
+			logerror("i82439tx_pci_read(): Unemulated PCI read 0x%02X, returning 0\n", offset);
+			result = 0;
+			break;
+
+>>>>>>> upstream/master
 		case 0x50:
 		case 0x54:
 		case 0x58:
@@ -142,7 +170,11 @@ UINT32 i82439tx_device::pci_read(pci_bus_device *pcibus, int function, int offse
 	return result;
 }
 
+<<<<<<< HEAD
 void i82439tx_device::pci_write(pci_bus_device *pcibus, int function, int offset, UINT32 data, UINT32 mem_mask)
+=======
+void i82439tx_device::pci_write(pci_bus_device *pcibus, int function, int offset, uint32_t data, uint32_t mem_mask)
+>>>>>>> upstream/master
 {
 	if (function != 0)
 		return;
@@ -167,12 +199,56 @@ void i82439tx_device::pci_write(pci_bus_device *pcibus, int function, int offset
 			/* read only */
 			break;
 
+<<<<<<< HEAD
 		case 0x04:  /* PCI command register */
 		case 0x0C:
 		case 0x50:
 		case 0x54:
 		case 0x58:
 		case 0x5C:
+=======
+		case 0x58:
+			if ((mem_mask & 0x0000f000))
+				i82439tx_configure_memory(data >> 12, 0xf0000, 0xfffff);
+			if ((mem_mask & 0x000f0000))
+				i82439tx_configure_memory(data >> 16, 0xc0000, 0xc3fff);
+			if ((mem_mask & 0x00f00000))
+				i82439tx_configure_memory(data >> 20, 0xc4000, 0xc7fff);
+			if ((mem_mask & 0x0f000000))
+				i82439tx_configure_memory(data >> 24, 0xc8000, 0xccfff);
+			if ((mem_mask & 0xf0000000))
+				i82439tx_configure_memory(data >> 28, 0xcc000, 0xcffff);
+			COMBINE_DATA(&m_regs[(offset - 0x50) / 4]);
+			break;
+
+		case 0x5C:
+			if ((mem_mask & 0x0000000f))
+				i82439tx_configure_memory(data >> 0, 0xd0000, 0xd3fff);
+			if ((mem_mask & 0x000000f0))
+				i82439tx_configure_memory(data >> 4, 0xd4000, 0xd7fff);
+			if ((mem_mask & 0x00000f00))
+				i82439tx_configure_memory(data >> 8, 0xd8000, 0xdbfff);
+			if ((mem_mask & 0x0000f000))
+				i82439tx_configure_memory(data >> 12, 0xdc000, 0xdffff);
+			if ((mem_mask & 0x000f0000))
+				i82439tx_configure_memory(data >> 16, 0xe0000, 0xe3fff);
+			if ((mem_mask & 0x00f00000))
+				i82439tx_configure_memory(data >> 20, 0xe4000, 0xe7fff);
+			if ((mem_mask & 0x0f000000))
+				i82439tx_configure_memory(data >> 24, 0xe8000, 0xecfff);
+			if ((mem_mask & 0xf0000000))
+				i82439tx_configure_memory(data >> 28, 0xec000, 0xeffff);
+			COMBINE_DATA(&m_regs[(offset - 0x50) / 4]);
+			break;
+
+		case 0x04:  /* PCI command register */
+		case 0x0C:
+			logerror("i82439tx_pci_write(): Unemulated PCI write 0x%02X = 0x%04X\n", offset, data);
+			break;
+
+		case 0x50:
+		case 0x54:
+>>>>>>> upstream/master
 		case 0x60:
 		case 0x64:
 		case 0x68:
@@ -213,6 +289,7 @@ void i82439tx_device::pci_write(pci_bus_device *pcibus, int function, int offset
 		case 0xF4:
 		case 0xF8:
 		case 0xFC:
+<<<<<<< HEAD
 			switch(offset)
 			{
 				case 0x58:
@@ -248,6 +325,8 @@ void i82439tx_device::pci_write(pci_bus_device *pcibus, int function, int offset
 					break;
 			}
 
+=======
+>>>>>>> upstream/master
 			assert(((offset - 0x50) / 4) >= 0 && ((offset - 0x50) / 4) < ARRAY_LENGTH(m_regs));
 			COMBINE_DATA(&m_regs[(offset - 0x50) / 4]);
 			break;
@@ -266,7 +345,11 @@ void i82439tx_device::device_start()
 	northbridge_device::device_start();
 	/* get address space we are working on */
 	device_t *cpu = machine().device(m_cpu_tag);
+<<<<<<< HEAD
 	assert(cpu != NULL);
+=======
+	assert(cpu != nullptr);
+>>>>>>> upstream/master
 
 	m_space = &cpu->memory().space(AS_PROGRAM);
 

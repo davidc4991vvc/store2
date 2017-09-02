@@ -32,6 +32,7 @@
 void victory_state::video_start()
 {
 	/* allocate bitmapram */
+<<<<<<< HEAD
 	m_rram = auto_alloc_array(machine(), UINT8, 0x4000);
 	m_gram = auto_alloc_array(machine(), UINT8, 0x4000);
 	m_bram = auto_alloc_array(machine(), UINT8, 0x4000);
@@ -39,6 +40,15 @@ void victory_state::video_start()
 	/* allocate bitmaps */
 	m_bgbitmap = auto_alloc_array(machine(), UINT8, 256 * 256);
 	m_fgbitmap = auto_alloc_array(machine(), UINT8, 256 * 256);
+=======
+	m_rram = std::make_unique<uint8_t[]>(0x4000);
+	m_gram = std::make_unique<uint8_t[]>(0x4000);
+	m_bram = std::make_unique<uint8_t[]>(0x4000);
+
+	/* allocate bitmaps */
+	m_bgbitmap = std::make_unique<uint8_t[]>(256 * 256);
+	m_fgbitmap = std::make_unique<uint8_t[]>(256 * 256);
+>>>>>>> upstream/master
 
 	/* reset globals */
 	m_vblank_irq = 0;
@@ -47,6 +57,7 @@ void victory_state::video_start()
 	m_scrollx = m_scrolly = 0;
 	m_video_control = 0;
 	memset(&m_micro, 0, sizeof(m_micro));
+<<<<<<< HEAD
 	m_micro.timer = machine().scheduler().timer_alloc(FUNC_NULL);
 
 	/* register for state saving */
@@ -54,6 +65,16 @@ void victory_state::video_start()
 	save_pointer(NAME(m_rram), 0x4000);
 	save_pointer(NAME(m_gram), 0x4000);
 	save_pointer(NAME(m_bram), 0x4000);
+=======
+	m_micro.timer = machine().scheduler().timer_alloc(timer_expired_delegate());
+	m_bgcoll_irq_timer = machine().scheduler().timer_alloc(timer_expired_delegate(FUNC(victory_state::bgcoll_irq_callback), this));
+
+	/* register for state saving */
+	save_item(NAME(m_paletteram));
+	save_pointer(NAME(m_rram.get()), 0x4000);
+	save_pointer(NAME(m_gram.get()), 0x4000);
+	save_pointer(NAME(m_bram.get()), 0x4000);
+>>>>>>> upstream/master
 	save_item(NAME(m_vblank_irq));
 	save_item(NAME(m_fgcoll));
 	save_item(NAME(m_fgcollx));
@@ -121,7 +142,11 @@ void victory_state::set_palette()
 
 	for (offs = 0; offs < 0x40; offs++)
 	{
+<<<<<<< HEAD
 		UINT16 data = m_paletteram[offs];
+=======
+		uint16_t data = m_paletteram[offs];
+>>>>>>> upstream/master
 
 		m_palette->set_pen_color(offs, pal3bit(data >> 6), pal3bit(data >> 0), pal3bit(data >> 3));
 	}
@@ -510,7 +535,11 @@ Registers:
  *
  *************************************/
 
+<<<<<<< HEAD
 INLINE void count_states(struct micro_t &micro, int states)
+=======
+static inline void count_states(struct micro_t &micro, int states)
+>>>>>>> upstream/master
 {
 	attotime state_time = MICRO_STATE_CLOCK_PERIOD * states;
 
@@ -609,7 +638,11 @@ int victory_state::command3()
 		{
 			int srcoffs = micro.i++ & 0x3fff;
 			int dstoffs = (sy++ & 0xff) * 32 + micro.xp / 8;
+<<<<<<< HEAD
 			UINT8 src;
+=======
+			uint8_t src;
+>>>>>>> upstream/master
 
 			/* non-collision-detect case */
 			if (!(micro.cmd & 0x08) || m_fgcoll)
@@ -776,7 +809,11 @@ int victory_state::command5()
         case 7: 1011 -> X++, Y      1111 -> X++, Y++
 
 */
+<<<<<<< HEAD
 	static const INT8 inctable[8][4] =
+=======
+	static const int8_t inctable[8][4] =
+>>>>>>> upstream/master
 	{
 		{  1, 0, 1,-1 },
 		{  0,-1, 1,-1 },
@@ -792,8 +829,13 @@ int victory_state::command5()
 	int yinc = inctable[(micro.cmd >> 4) & 7][1];
 	int xincc = inctable[(micro.cmd >> 4) & 7][2];
 	int yincc = inctable[(micro.cmd >> 4) & 7][3];
+<<<<<<< HEAD
 	UINT8 x = micro.xp;
 	UINT8 y = micro.yp;
+=======
+	uint8_t x = micro.xp;
+	uint8_t y = micro.yp;
+>>>>>>> upstream/master
 	int acc = 0x80;
 	int i = micro.i >> 8;
 	int c;
@@ -1021,10 +1063,17 @@ void victory_state::update_background()
 
 			for (row = 0; row < 8; row++)
 			{
+<<<<<<< HEAD
 				UINT8 pix2 = m_charram[0x0000 + 8 * code + row];
 				UINT8 pix1 = m_charram[0x0800 + 8 * code + row];
 				UINT8 pix0 = m_charram[0x1000 + 8 * code + row];
 				UINT8 *dst = &m_bgbitmap[(y * 8 + row) * 256 + x * 8];
+=======
+				uint8_t pix2 = m_charram[0x0000 + 8 * code + row];
+				uint8_t pix1 = m_charram[0x0800 + 8 * code + row];
+				uint8_t pix0 = m_charram[0x1000 + 8 * code + row];
+				uint8_t *dst = &m_bgbitmap[(y * 8 + row) * 256 + x * 8];
+>>>>>>> upstream/master
 
 				*dst++ = ((pix2 & 0x80) >> 5) | ((pix1 & 0x80) >> 6) | ((pix0 & 0x80) >> 7);
 				*dst++ = ((pix2 & 0x40) >> 4) | ((pix1 & 0x40) >> 5) | ((pix0 & 0x40) >> 6);
@@ -1051,14 +1100,24 @@ void victory_state::update_foreground()
 
 	for (y = 0; y < 256; y++)
 	{
+<<<<<<< HEAD
 		UINT8 *dst = &m_fgbitmap[y * 256];
+=======
+		uint8_t *dst = &m_fgbitmap[y * 256];
+>>>>>>> upstream/master
 
 		/* assemble the RGB bits for each 8-pixel chunk */
 		for (x = 0; x < 256; x += 8)
 		{
+<<<<<<< HEAD
 			UINT8 g = m_gram[y * 32 + x / 8];
 			UINT8 b = m_bram[y * 32 + x / 8];
 			UINT8 r = m_rram[y * 32 + x / 8];
+=======
+			uint8_t g = m_gram[y * 32 + x / 8];
+			uint8_t b = m_bram[y * 32 + x / 8];
+			uint8_t r = m_rram[y * 32 + x / 8];
+>>>>>>> upstream/master
 
 			*dst++ = ((r & 0x80) >> 5) | ((b & 0x80) >> 6) | ((g & 0x80) >> 7);
 			*dst++ = ((r & 0x40) >> 4) | ((b & 0x40) >> 5) | ((g & 0x40) >> 6);
@@ -1089,7 +1148,11 @@ TIMER_CALLBACK_MEMBER(victory_state::bgcoll_irq_callback)
  *
  *************************************/
 
+<<<<<<< HEAD
 UINT32 victory_state::screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+=======
+uint32_t victory_state::screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+>>>>>>> upstream/master
 {
 	int bgcollmask = (m_video_control & 4) ? 4 : 7;
 	int count = 0;
@@ -1105,10 +1168,17 @@ UINT32 victory_state::screen_update(screen_device &screen, bitmap_ind16 &bitmap,
 	/* blend the bitmaps and do collision detection */
 	for (y = 0; y < 256; y++)
 	{
+<<<<<<< HEAD
 		UINT16 *scanline = &bitmap.pix16(y);
 		UINT8 sy = m_scrolly + y;
 		UINT8 *fg = &m_fgbitmap[y * 256];
 		UINT8 *bg = &m_bgbitmap[sy * 256];
+=======
+		uint16_t *scanline = &bitmap.pix16(y);
+		uint8_t sy = m_scrolly + y;
+		uint8_t *fg = &m_fgbitmap[y * 256];
+		uint8_t *bg = &m_bgbitmap[sy * 256];
+>>>>>>> upstream/master
 
 		/* do the blending */
 		for (x = 0; x < 256; x++)
@@ -1117,7 +1187,11 @@ UINT32 victory_state::screen_update(screen_device &screen, bitmap_ind16 &bitmap,
 			int bpix = bg[(x + m_scrollx) & 255];
 			scanline[x] = bpix | (fpix << 3);
 			if (fpix && (bpix & bgcollmask) && count++ < 128)
+<<<<<<< HEAD
 				machine().scheduler().timer_set(screen.time_until_pos(y, x), timer_expired_delegate(FUNC(victory_state::bgcoll_irq_callback),this), x | (y << 8));
+=======
+				m_bgcoll_irq_timer->adjust(screen.time_until_pos(y, x), x | (y << 8));
+>>>>>>> upstream/master
 		}
 	}
 

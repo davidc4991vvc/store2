@@ -25,7 +25,11 @@ CPU_DISASSEMBLE( ssem );
 // The de facto snapshot format for other SSEM simulators stores the data physically in that format as well.
 // Therefore, in MESS, every 32-bit word has its bits reversed, too, and as a result the values must be
 // un-reversed before being used.
+<<<<<<< HEAD
 INLINE UINT32 reverse(UINT32 v)
+=======
+static inline uint32_t reverse(uint32_t v)
+>>>>>>> upstream/master
 {
 	// Taken from http://www-graphics.stanford.edu/~seander/bithacks.html#ReverseParallel
 	// swap odd and even bits
@@ -42,9 +46,15 @@ INLINE UINT32 reverse(UINT32 v)
 	return v;
 }
 
+<<<<<<< HEAD
 inline UINT32 ssem_device::program_read32(UINT32 address)
 {
 	UINT32 v = 0;
+=======
+inline uint32_t ssem_device::program_read32(uint32_t address)
+{
+	uint32_t v = 0;
+>>>>>>> upstream/master
 	// The MAME core does not have a good way of specifying a minimum datum size that is more than
 	// 8 bits in width.  The minimum datum width on the SSEM is 32 bits, so we need to quadruple
 	// the address value to get the appropriate byte index.
@@ -58,9 +68,15 @@ inline UINT32 ssem_device::program_read32(UINT32 address)
 	return reverse(v);
 }
 
+<<<<<<< HEAD
 inline void ssem_device::program_write32(UINT32 address, UINT32 data)
 {
 	UINT32 v = reverse(data);
+=======
+inline void ssem_device::program_write32(uint32_t address, uint32_t data)
+{
+	uint32_t v = reverse(data);
+>>>>>>> upstream/master
 
 	// The MAME core does not have a good way of specifying a minimum datum size that is more than
 	// 8 bits in width.  The minimum datum width on the SSEM is 32 bits, so we need to quadruple
@@ -76,12 +92,17 @@ inline void ssem_device::program_write32(UINT32 address, UINT32 data)
 
 /*****************************************************************************/
 
+<<<<<<< HEAD
 const device_type SSEMCPU = &device_creator<ssem_device>;
+=======
+DEFINE_DEVICE_TYPE(SSEMCPU, ssem_device, "ssem_cpu", "SSEM CPU")
+>>>>>>> upstream/master
 
 //-------------------------------------------------
 //  ssem_device - constructor
 //-------------------------------------------------
 
+<<<<<<< HEAD
 ssem_device::ssem_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
 	: cpu_device(mconfig, SSEMCPU, "SSEMCPU", tag, owner, clock, "ssem_cpu", __FILE__),
 		m_program_config("program", ENDIANNESS_LITTLE, 8, 16),
@@ -90,6 +111,16 @@ ssem_device::ssem_device(const machine_config &mconfig, const char *tag, device_
 		m_a(0),
 		m_halt(0),
 		m_icount(0)
+=======
+ssem_device::ssem_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: cpu_device(mconfig, SSEMCPU, tag, owner, clock)
+	, m_program_config("program", ENDIANNESS_LITTLE, 8, 16)
+	, m_pc(1)
+	, m_shifted_pc(1<<2)
+	, m_a(0)
+	, m_halt(0)
+	, m_icount(0)
+>>>>>>> upstream/master
 {
 	// Allocate & setup
 }
@@ -101,6 +132,10 @@ void ssem_device::device_start()
 
 	// register our state for the debugger
 	state_add(STATE_GENPC,     "GENPC",     m_pc).noshow();
+<<<<<<< HEAD
+=======
+	state_add(STATE_GENPCBASE, "CURPC",     m_pc).noshow();
+>>>>>>> upstream/master
 	state_add(STATE_GENFLAGS,  "GENFLAGS",  m_halt).callimport().callexport().formatstr("%1s").noshow();
 	state_add(SSEM_PC,         "PC",        m_shifted_pc).mask(0xffff);
 	state_add(SSEM_A,          "A",         m_a).mask(0xffffffff);
@@ -130,6 +165,7 @@ void ssem_device::device_reset()
 
 //-------------------------------------------------
 //  memory_space_config - return the configuration
+<<<<<<< HEAD
 //  of the specified address space, or NULL if
 //  the space doesn't exist
 //-------------------------------------------------
@@ -141,6 +177,17 @@ const address_space_config *ssem_device::memory_space_config(address_spacenum sp
 		return &m_program_config;
 	}
 	return NULL;
+=======
+//  of the specified address space, or nullptr if
+//  the space doesn't exist
+//-------------------------------------------------
+
+device_memory_interface::space_config_vector ssem_device::memory_space_config() const
+{
+	return space_config_vector {
+		std::make_pair(AS_PROGRAM, &m_program_config)
+	};
+>>>>>>> upstream/master
 }
 
 
@@ -149,12 +196,20 @@ const address_space_config *ssem_device::memory_space_config(address_spacenum sp
 //  for the debugger
 //-------------------------------------------------
 
+<<<<<<< HEAD
 void ssem_device::state_string_export(const device_state_entry &entry, std::string &str)
+=======
+void ssem_device::state_string_export(const device_state_entry &entry, std::string &str) const
+>>>>>>> upstream/master
 {
 	switch (entry.index())
 	{
 		case STATE_GENFLAGS:
+<<<<<<< HEAD
 			strprintf(str, "%c", m_halt ? 'H' : '.');
+=======
+			str = string_format("%c", m_halt ? 'H' : '.');
+>>>>>>> upstream/master
 			break;
 	}
 }
@@ -165,7 +220,11 @@ void ssem_device::state_string_export(const device_state_entry &entry, std::stri
 //  of the shortest instruction, in bytes
 //-------------------------------------------------
 
+<<<<<<< HEAD
 UINT32 ssem_device::disasm_min_opcode_bytes() const
+=======
+uint32_t ssem_device::disasm_min_opcode_bytes() const
+>>>>>>> upstream/master
 {
 	return 4;
 }
@@ -176,7 +235,11 @@ UINT32 ssem_device::disasm_min_opcode_bytes() const
 //  of the longest instruction, in bytes
 //-------------------------------------------------
 
+<<<<<<< HEAD
 UINT32 ssem_device::disasm_max_opcode_bytes() const
+=======
+uint32_t ssem_device::disasm_max_opcode_bytes() const
+>>>>>>> upstream/master
 {
 	return 4;
 }
@@ -187,10 +250,17 @@ UINT32 ssem_device::disasm_max_opcode_bytes() const
 //  helper function
 //-------------------------------------------------
 
+<<<<<<< HEAD
 offs_t ssem_device::disasm_disassemble(char *buffer, offs_t pc, const UINT8 *oprom, const UINT8 *opram, UINT32 options)
 {
 	extern CPU_DISASSEMBLE( ssem );
 	return CPU_DISASSEMBLE_NAME(ssem)(this, buffer, pc, oprom, opram, options);
+=======
+offs_t ssem_device::disasm_disassemble(std::ostream &stream, offs_t pc, const uint8_t *oprom, const uint8_t *opram, uint32_t options)
+{
+	extern CPU_DISASSEMBLE( ssem );
+	return CPU_DISASSEMBLE_NAME(ssem)(this, stream, pc, oprom, opram, options);
+>>>>>>> upstream/master
 }
 
 
@@ -203,7 +273,11 @@ offs_t ssem_device::disasm_disassemble(char *buffer, offs_t pc, const UINT8 *opr
 //  cycles it takes for one instruction to execute
 //-------------------------------------------------
 
+<<<<<<< HEAD
 UINT32 ssem_device::execute_min_cycles() const
+=======
+uint32_t ssem_device::execute_min_cycles() const
+>>>>>>> upstream/master
 {
 	return 1;
 }
@@ -214,7 +288,11 @@ UINT32 ssem_device::execute_min_cycles() const
 //  cycles it takes for one instruction to execute
 //-------------------------------------------------
 
+<<<<<<< HEAD
 UINT32 ssem_device::execute_max_cycles() const
+=======
+uint32_t ssem_device::execute_max_cycles() const
+>>>>>>> upstream/master
 {
 	return 1;
 }
@@ -225,7 +303,11 @@ UINT32 ssem_device::execute_max_cycles() const
 //  input/interrupt lines
 //-------------------------------------------------
 
+<<<<<<< HEAD
 UINT32 ssem_device::execute_input_lines() const
+=======
+uint32_t ssem_device::execute_input_lines() const
+>>>>>>> upstream/master
 {
 	return 0;
 }
@@ -248,7 +330,11 @@ void ssem_device::execute_set_input(int inputnum, int state)
 
 void ssem_device::execute_run()
 {
+<<<<<<< HEAD
 	UINT32 op;
+=======
+	uint32_t op;
+>>>>>>> upstream/master
 
 	m_pc &= 0x1f;
 	m_shifted_pc = m_pc << 2;
@@ -278,12 +364,20 @@ void ssem_device::execute_run()
 				break;
 			case 1:
 				// JRP: Add the value at the specified address to the Program Counter.
+<<<<<<< HEAD
 				m_pc += (INT32)program_read32(ADDR);
+=======
+				m_pc += (int32_t)program_read32(ADDR);
+>>>>>>> upstream/master
 				m_shifted_pc = m_pc << 2;
 				break;
 			case 2:
 				// LDN: Load the accumulator with the two's-complement negation of the value at the specified address.
+<<<<<<< HEAD
 				m_a = (UINT32)(0 - (INT32)program_read32(ADDR));
+=======
+				m_a = (uint32_t)(0 - (int32_t)program_read32(ADDR));
+>>>>>>> upstream/master
 				break;
 			case 3:
 				// STO: Store the value in the accumulator at the specified address.
@@ -296,7 +390,11 @@ void ssem_device::execute_run()
 				break;
 			case 6:
 				// CMP: If the accumulator is less than zero, skip the next opcode.
+<<<<<<< HEAD
 				if((INT32)(m_a) < 0)
+=======
+				if((int32_t)(m_a) < 0)
+>>>>>>> upstream/master
 				{
 					m_pc++;
 					m_shifted_pc = m_pc << 2;

@@ -1,5 +1,6 @@
 // license:BSD-3-Clause
 // copyright-holders:Aaron Giles
+<<<<<<< HEAD
 /* channel_data structure holds info about each 6844 DMA channel */
 struct m6844_channel_data
 {
@@ -37,6 +38,17 @@ class exidy440_sound_device : public device_t,
 {
 public:
 	exidy440_sound_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
+=======
+#ifndef MAME_AUDIO_EXIDY440_H
+#define MAME_AUDIO_EXIDY440_H
+
+#pragma once
+
+class exidy440_sound_device : public device_t, public device_sound_interface
+{
+public:
+	exidy440_sound_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
+>>>>>>> upstream/master
 	~exidy440_sound_device() {}
 
 	DECLARE_READ8_MEMBER( sound_command_r );
@@ -47,6 +59,7 @@ public:
 	DECLARE_WRITE8_MEMBER( m6844_w );
 	DECLARE_WRITE8_MEMBER( sound_banks_w );
 
+<<<<<<< HEAD
 	void exidy440_sound_command(UINT8 param);
 	UINT8 exidy440_sound_command_ack();
 
@@ -69,15 +82,77 @@ private:
 	UINT8 m_sound_volume[0x10];
 	INT32 *m_mixer_buffer_left;
 	INT32 *m_mixer_buffer_right;
+=======
+	void exidy440_sound_command(uint8_t param);
+	uint8_t exidy440_sound_command_ack();
+
+protected:
+	// device-level overrides
+	virtual void device_start() override;
+	virtual void device_stop() override;
+
+	// sound stream update overrides
+	virtual void sound_stream_update(sound_stream &stream, stream_sample_t **inputs, stream_sample_t **outputs, int samples) override;
+
+private:
+	/* channel_data structure holds info about each 6844 DMA channel */
+	struct m6844_channel_data
+	{
+		int active;
+		int address;
+		int counter;
+		uint8_t control;
+		int start_address;
+		int start_counter;
+	};
+
+
+	/* channel_data structure holds info about each active sound channel */
+	struct sound_channel_data
+	{
+		int16_t *base;
+		int offset;
+		int remaining;
+	};
+
+
+	/* sound_cache_entry structure contains info on each decoded sample */
+	struct sound_cache_entry
+	{
+		struct sound_cache_entry *next;
+		int address;
+		int length;
+		int bits;
+		int frequency;
+		int16_t data[1];
+	};
+
+
+	// internal state
+	uint8_t m_sound_command;
+	uint8_t m_sound_command_ack;
+
+	uint8_t m_sound_banks[4];
+	//uint8_t m_m6844_data[0x20];
+	uint8_t m_sound_volume[0x10];
+	std::unique_ptr<int32_t[]> m_mixer_buffer_left;
+	std::unique_ptr<int32_t[]> m_mixer_buffer_right;
+>>>>>>> upstream/master
 	sound_cache_entry *m_sound_cache;
 	sound_cache_entry *m_sound_cache_end;
 	sound_cache_entry *m_sound_cache_max;
 
 	/* 6844 description */
 	m6844_channel_data m_m6844_channel[4];
+<<<<<<< HEAD
 	UINT8 m_m6844_priority;
 	UINT8 m_m6844_interrupt;
 	UINT8 m_m6844_chain;
+=======
+	uint8_t m_m6844_priority;
+	uint8_t m_m6844_interrupt;
+	uint8_t m_m6844_chain;
+>>>>>>> upstream/master
 
 	/* sound interface parameters */
 	sound_stream *m_stream;
@@ -95,6 +170,7 @@ private:
 	void stop_cvsd(int ch);
 
 	void reset_sound_cache();
+<<<<<<< HEAD
 	INT16 *add_to_sound_cache(UINT8 *input, int address, int length, int bits, int frequency);
 	INT16 *find_or_add_to_sound_cache(int address, int length, int bits, int frequency);
 
@@ -108,3 +184,20 @@ private:
 extern const device_type EXIDY440;
 
 MACHINE_CONFIG_EXTERN( exidy440_audio );
+=======
+	int16_t *add_to_sound_cache(uint8_t *input, int address, int length, int bits, int frequency);
+	int16_t *find_or_add_to_sound_cache(int address, int length, int bits, int frequency);
+
+	void decode_and_filter_cvsd(uint8_t *data, int bytes, int maskbits, int frequency, int16_t *dest);
+	void fir_filter(int32_t *input, int16_t *output, int count);
+
+	void add_and_scale_samples(int ch, int32_t *dest, int samples, int volume);
+	void mix_to_16(int length, stream_sample_t *dest_left, stream_sample_t *dest_right);
+};
+
+DECLARE_DEVICE_TYPE(EXIDY440, exidy440_sound_device)
+
+MACHINE_CONFIG_EXTERN( exidy440_audio );
+
+#endif // MAME_AUDIO_EXIDY440_H
+>>>>>>> upstream/master

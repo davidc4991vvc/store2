@@ -38,7 +38,11 @@
 
 PALETTE_INIT_MEMBER(exerion_state, exerion)
 {
+<<<<<<< HEAD
 	const UINT8 *color_prom = memregion("proms")->base();
+=======
+	const uint8_t *color_prom = memregion("proms")->base();
+>>>>>>> upstream/master
 	static const int resistances_rg[3] = { 1000, 470, 220 };
 	static const int resistances_b [2] = { 470, 220 };
 	double rweights[3], gweights[3], bweights[2];
@@ -82,7 +86,11 @@ PALETTE_INIT_MEMBER(exerion_state, exerion)
 	/* fg chars and sprites */
 	for (i = 0; i < 0x200; i++)
 	{
+<<<<<<< HEAD
 		UINT8 ctabentry = 0x10 | (color_prom[(i & 0x1c0) | ((i & 3) << 4) | ((i >> 2) & 0x0f)] & 0x0f);
+=======
+		uint8_t ctabentry = 0x10 | (color_prom[(i & 0x1c0) | ((i & 3) << 4) | ((i >> 2) & 0x0f)] & 0x0f);
+>>>>>>> upstream/master
 		palette.set_pen_indirect(i, ctabentry);
 	}
 
@@ -90,7 +98,11 @@ PALETTE_INIT_MEMBER(exerion_state, exerion)
 	/* using another PROM */
 	for (i = 0x200; i < 0x300; i++)
 	{
+<<<<<<< HEAD
 		UINT8 ctabentry = color_prom[i] & 0x0f;
+=======
+		uint8_t ctabentry = color_prom[i] & 0x0f;
+>>>>>>> upstream/master
 		palette.set_pen_indirect(i, ctabentry);
 	}
 }
@@ -106,18 +118,34 @@ PALETTE_INIT_MEMBER(exerion_state, exerion)
 void exerion_state::video_start()
 {
 	int i;
+<<<<<<< HEAD
 	UINT8 *gfx;
+=======
+	uint8_t *gfx;
+>>>>>>> upstream/master
 
 	/* get pointers to the mixing and lookup PROMs */
 	m_background_mixer = memregion("proms")->base() + 0x320;
 
 	/* allocate memory for the decoded background graphics */
+<<<<<<< HEAD
 	m_background_gfx[0] = auto_alloc_array(machine(), UINT16, 256 * 256 * 4);
 	m_background_gfx[1] = m_background_gfx[0] + 256 * 256;
 	m_background_gfx[2] = m_background_gfx[1] + 256 * 256;
 	m_background_gfx[3] = m_background_gfx[2] + 256 * 256;
 
 	save_pointer(NAME(m_background_gfx[0]), 256 * 256 * 4);
+=======
+	m_background_gfx[0] = std::make_unique<uint16_t[]>(256 * 256);
+	m_background_gfx[1] = std::make_unique<uint16_t[]>(256 * 256);
+	m_background_gfx[2] = std::make_unique<uint16_t[]>(256 * 256);
+	m_background_gfx[3] = std::make_unique<uint16_t[]>(256 * 256);
+
+	save_pointer(NAME(m_background_gfx[0].get()), 256 * 256);
+	save_pointer(NAME(m_background_gfx[1].get()), 256 * 256);
+	save_pointer(NAME(m_background_gfx[2].get()), 256 * 256);
+	save_pointer(NAME(m_background_gfx[3].get()), 256 * 256);
+>>>>>>> upstream/master
 
 	/*---------------------------------
 	 * Decode the background graphics
@@ -139,8 +167,13 @@ void exerion_state::video_start()
 	{
 		int y;
 
+<<<<<<< HEAD
 		UINT8 *src = gfx + i * 0x2000;
 		UINT16 *dst = m_background_gfx[i];
+=======
+		uint8_t *src = gfx + i * 0x2000;
+		uint16_t *dst = m_background_gfx[i].get();
+>>>>>>> upstream/master
 
 		for (y = 0; y < 0x100; y++)
 		{
@@ -148,8 +181,13 @@ void exerion_state::video_start()
 
 			for (x = 0; x < 0x80; x += 4)
 			{
+<<<<<<< HEAD
 				UINT8 data = *src++;
 				UINT16 val;
+=======
+				uint8_t data = *src++;
+				uint16_t val;
+>>>>>>> upstream/master
 
 				val = ((data >> 3) & 2) | ((data >> 0) & 1);
 				if (val) val |= 0x100 >> i;
@@ -214,8 +252,13 @@ READ8_MEMBER(exerion_state::exerion_video_timing_r)
 	/* bit 0 is the SNMI signal, which is the negated value of H6, if H7=1 & H8=1 & VBLANK=0, otherwise 1 */
 	/* bit 1 is VBLANK */
 
+<<<<<<< HEAD
 	UINT16 hcounter = m_screen->hpos() + EXERION_HCOUNT_START;
 	UINT8 snmi = 1;
+=======
+	uint16_t hcounter = m_screen->hpos() + EXERION_HCOUNT_START;
+	uint8_t snmi = 1;
+>>>>>>> upstream/master
 
 	if (((hcounter & 0x180) == 0x180) && !m_screen->vblank())
 		snmi = !((hcounter >> 6) & 0x01);
@@ -237,10 +280,17 @@ void exerion_state::draw_background( bitmap_ind16 &bitmap, const rectangle &clip
 	/* loop over all visible scanlines */
 	for (y = cliprect.min_y; y <= cliprect.max_y; y++)
 	{
+<<<<<<< HEAD
 		UINT16 *src0 = &m_background_gfx[0][m_background_latches[1] * 256];
 		UINT16 *src1 = &m_background_gfx[1][m_background_latches[3] * 256];
 		UINT16 *src2 = &m_background_gfx[2][m_background_latches[5] * 256];
 		UINT16 *src3 = &m_background_gfx[3][m_background_latches[7] * 256];
+=======
+		uint16_t *src0 = &m_background_gfx[0][m_background_latches[1] * 256];
+		uint16_t *src1 = &m_background_gfx[1][m_background_latches[3] * 256];
+		uint16_t *src2 = &m_background_gfx[2][m_background_latches[5] * 256];
+		uint16_t *src3 = &m_background_gfx[3][m_background_latches[7] * 256];
+>>>>>>> upstream/master
 		int xoffs0 = m_background_latches[0];
 		int xoffs1 = m_background_latches[2];
 		int xoffs2 = m_background_latches[4];
@@ -253,8 +303,13 @@ void exerion_state::draw_background( bitmap_ind16 &bitmap, const rectangle &clip
 		int stop1 = m_background_latches[9] >> 4;
 		int stop2 = m_background_latches[10] >> 4;
 		int stop3 = m_background_latches[11] >> 4;
+<<<<<<< HEAD
 		UINT8 *mixer = &m_background_mixer[(m_background_latches[12] << 4) & 0xf0];
 		UINT16 scanline[VISIBLE_X_MAX];
+=======
+		uint8_t *mixer = &m_background_mixer[(m_background_latches[12] << 4) & 0xf0];
+		uint16_t scanline[VISIBLE_X_MAX];
+>>>>>>> upstream/master
 		pen_t pen_base = 0x200 + ((m_background_latches[12] >> 4) << 4);
 
 		/* the cocktail flip flag controls whether we count up or down in X */
@@ -272,8 +327,13 @@ void exerion_state::draw_background( bitmap_ind16 &bitmap, const rectangle &clip
 			/* draw the rest of the scanline fully */
 			for (x = cliprect.min_x; x <= cliprect.max_x; x++)
 			{
+<<<<<<< HEAD
 				UINT16 combined = 0;
 				UINT8 lookupval;
+=======
+				uint16_t combined = 0;
+				uint8_t lookupval;
+>>>>>>> upstream/master
 
 				/* the output enable is controlled by the carries on the start/stop counters */
 				/* they are only active when the start has carried but the stop hasn't */
@@ -309,8 +369,13 @@ void exerion_state::draw_background( bitmap_ind16 &bitmap, const rectangle &clip
 			/* draw the rest of the scanline fully */
 			for (x = cliprect.min_x; x <= cliprect.max_x; x++)
 			{
+<<<<<<< HEAD
 				UINT16 combined = 0;
 				UINT8 lookupval;
+=======
+				uint16_t combined = 0;
+				uint8_t lookupval;
+>>>>>>> upstream/master
 
 				/* the output enable is controlled by the carries on the start/stop counters */
 				/* they are only active when the start has carried but the stop hasn't */
@@ -334,7 +399,11 @@ void exerion_state::draw_background( bitmap_ind16 &bitmap, const rectangle &clip
 		}
 
 		/* draw the scanline */
+<<<<<<< HEAD
 		draw_scanline16(bitmap, cliprect.min_x, y, cliprect.width(), &scanline[cliprect.min_x], NULL);
+=======
+		draw_scanline16(bitmap, cliprect.min_x, y, cliprect.width(), &scanline[cliprect.min_x], nullptr);
+>>>>>>> upstream/master
 	}
 }
 
@@ -345,7 +414,11 @@ void exerion_state::draw_background( bitmap_ind16 &bitmap, const rectangle &clip
  *
  *************************************/
 
+<<<<<<< HEAD
 UINT32 exerion_state::screen_update_exerion(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+=======
+uint32_t exerion_state::screen_update_exerion(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+>>>>>>> upstream/master
 {
 	int sx, sy, offs, i;
 
@@ -385,12 +458,21 @@ UINT32 exerion_state::screen_update_exerion(screen_device &screen, bitmap_ind16 
 			else
 				code &= ~0x10, code2 |= 0x10;
 
+<<<<<<< HEAD
 				gfx->transmask(bitmap,cliprect, code2, color, xflip, yflip, x, y + gfx->height(),
 					m_palette->transpen_mask(*gfx, color, 0x10));
 		}
 
 			gfx->transmask(bitmap,cliprect, code, color, xflip, yflip, x, y,
 				m_palette->transpen_mask(*gfx, color, 0x10));
+=======
+			gfx->transmask(bitmap,cliprect, code2, color, xflip, yflip, x, y + gfx->height(),
+							m_palette->transpen_mask(*gfx, color, 0x10));
+		}
+
+		gfx->transmask(bitmap,cliprect, code, color, xflip, yflip, x, y,
+						m_palette->transpen_mask(*gfx, color, 0x10));
+>>>>>>> upstream/master
 
 		if (doubled) i += 4;
 	}

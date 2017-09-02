@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 // license:???
+=======
+// license:BSD-3-Clause
+>>>>>>> upstream/master
 // copyright-holders:Sebastien Volpe, Tomasz Slanina, David Haywood
 /*
     Super Real Mahjong P6 (JPN Ver.)
@@ -71,6 +75,12 @@ Dumped 06/15/2000
 #include "emu.h"
 #include "cpu/m68000/m68000.h"
 #include "sound/nile.h"
+<<<<<<< HEAD
+=======
+#include "screen.h"
+#include "speaker.h"
+
+>>>>>>> upstream/master
 
 class srmp6_state : public driver_device
 {
@@ -85,6 +95,7 @@ public:
 		m_gfxdecode(*this, "gfxdecode"),
 		m_palette(*this, "palette") { }
 
+<<<<<<< HEAD
 	UINT16* m_tileram;
 	required_shared_ptr<UINT16> m_sprram;
 	required_shared_ptr<UINT16> m_chrram;
@@ -95,6 +106,18 @@ public:
 
 	int m_brightness;
 	UINT16 m_input_select;
+=======
+	std::unique_ptr<uint16_t[]> m_tileram;
+	required_shared_ptr<uint16_t> m_sprram;
+	required_shared_ptr<uint16_t> m_chrram;
+	optional_shared_ptr<uint16_t> m_dmaram;
+	required_shared_ptr<uint16_t> m_video_regs;
+
+	std::unique_ptr<uint16_t[]> m_sprram_old;
+
+	int m_brightness;
+	uint16_t m_input_select;
+>>>>>>> upstream/master
 
 	unsigned short m_lastb;
 	unsigned short m_lastb2;
@@ -109,11 +132,19 @@ public:
 	DECLARE_WRITE16_MEMBER(paletteram_w);
 	DECLARE_READ16_MEMBER(srmp6_irq_ack_r);
 	DECLARE_DRIVER_INIT(INIT);
+<<<<<<< HEAD
 	virtual void machine_start();
 	virtual void video_start();
 	UINT32 screen_update_srmp6(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect);
 	void update_palette();
 	UINT32 process(UINT8 b,UINT32 dst_offset);
+=======
+	virtual void machine_start() override;
+	virtual void video_start() override;
+	uint32_t screen_update_srmp6(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect);
+	void update_palette();
+	uint32_t process(uint8_t b,uint32_t dst_offset);
+>>>>>>> upstream/master
 	required_device<cpu_device> m_maincpu;
 	required_device<gfxdecode_device> m_gfxdecode;
 	required_device<palette_device> m_palette;
@@ -135,7 +166,11 @@ static const gfx_layout tiles8x8_layout =
 
 void srmp6_state::update_palette()
 {
+<<<<<<< HEAD
 	INT8 r, g ,b;
+=======
+	int8_t r, g ,b;
+>>>>>>> upstream/master
 	int brg = m_brightness - 0x60;
 	int i;
 
@@ -167,12 +202,21 @@ void srmp6_state::update_palette()
 
 void srmp6_state::video_start()
 {
+<<<<<<< HEAD
 	m_tileram = auto_alloc_array_clear(machine(), UINT16, 0x100000*16/2);
 	m_dmaram.allocate(0x100/2);
 	m_sprram_old = auto_alloc_array_clear(machine(), UINT16, 0x80000/2);
 
 	/* create the char set (gfx will then be updated dynamically from RAM) */
 	m_gfxdecode->set_gfx(0, global_alloc(gfx_element(m_palette, tiles8x8_layout, (UINT8*)m_tileram, 0, m_palette->entries() / 256, 0)));
+=======
+	m_tileram = make_unique_clear<uint16_t[]>(0x100000*16/2);
+	m_dmaram.allocate(0x100/2);
+	m_sprram_old = make_unique_clear<uint16_t[]>(0x80000/2);
+
+	/* create the char set (gfx will then be updated dynamically from RAM) */
+	m_gfxdecode->set_gfx(0, std::make_unique<gfx_element>(m_palette, tiles8x8_layout, (uint8_t*)m_tileram.get(), 0, m_palette->entries() / 256, 0));
+>>>>>>> upstream/master
 	m_gfxdecode->gfx(0)->set_granularity(256);
 
 	m_brightness = 0x60;
@@ -182,6 +226,7 @@ void srmp6_state::video_start()
 static int xixi=0;
 #endif
 
+<<<<<<< HEAD
 UINT32 srmp6_state::screen_update_srmp6(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect)
 {
 	int alpha;
@@ -193,6 +238,19 @@ UINT32 srmp6_state::screen_update_srmp6(screen_device &screen, bitmap_rgb32 &bit
 	{
 		INT16  a;
 		UINT16 b;
+=======
+uint32_t srmp6_state::screen_update_srmp6(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect)
+{
+	int alpha;
+	int x,y,tileno,height,width,xw,yw,sprite,xb,yb;
+	uint16_t *sprite_list = m_sprram_old.get();
+	uint16_t mainlist_offset = 0;
+
+	union
+	{
+		int16_t  a;
+		uint16_t b;
+>>>>>>> upstream/master
 	} temp;
 
 	bitmap.fill(0, cliprect);
@@ -215,10 +273,17 @@ UINT32 srmp6_state::screen_update_srmp6(screen_device &screen, bitmap_rgb32 &bit
 	/* Main spritelist is 0x0000 - 0x1fff in spriteram, sublists follow */
 	while (mainlist_offset<0x2000/2)
 	{
+<<<<<<< HEAD
 		UINT16 *sprite_sublist = &m_sprram_old[sprite_list[mainlist_offset+1]<<3];
 		UINT16 sublist_length=sprite_list[mainlist_offset+0]&0x7fff; //+1 ?
 		INT16 global_x,global_y, flip_x, flip_y;
 		UINT16 global_pal;
+=======
+		uint16_t *sprite_sublist = &m_sprram_old[sprite_list[mainlist_offset+1]<<3];
+		uint16_t sublist_length=sprite_list[mainlist_offset+0]&0x7fff; //+1 ?
+		int16_t global_x,global_y, flip_x, flip_y;
+		uint16_t global_pal;
+>>>>>>> upstream/master
 
 		/* end of list marker */
 		if (sprite_list[mainlist_offset+0] == 0x8000)
@@ -292,12 +357,20 @@ UINT32 srmp6_state::screen_update_srmp6(screen_device &screen, bitmap_rgb32 &bit
 		mainlist_offset+=8;
 	}
 
+<<<<<<< HEAD
 	memcpy(m_sprram_old, m_sprram, 0x80000);
+=======
+	memcpy(m_sprram_old.get(), m_sprram, 0x80000);
+>>>>>>> upstream/master
 
 	if(machine().input().code_pressed_once(KEYCODE_Q))
 	{
 		FILE *p=fopen("tileram.bin","wb");
+<<<<<<< HEAD
 		fwrite(m_tileram, 1, 0x100000*16, p);
+=======
+		fwrite(m_tileram.get(), 1, 0x100000*16, p);
+>>>>>>> upstream/master
 		fclose(p);
 	}
 
@@ -382,11 +455,19 @@ READ16_MEMBER(srmp6_state::video_regs_r)
 
 
 /* DMA RLE stuff - the same as CPS3 */
+<<<<<<< HEAD
 UINT32 srmp6_state::process(UINT8 b,UINT32 dst_offset)
 {
 	int l=0;
 
 	UINT8 *tram=(UINT8*)m_tileram;
+=======
+uint32_t srmp6_state::process(uint8_t b,uint32_t dst_offset)
+{
+	int l=0;
+
+	uint8_t *tram=(uint8_t*)m_tileram.get();
+>>>>>>> upstream/master
 
 	if (m_lastb == m_lastb2)  //rle
 	{
@@ -419,15 +500,26 @@ UINT32 srmp6_state::process(UINT8 b,UINT32 dst_offset)
 
 WRITE16_MEMBER(srmp6_state::srmp6_dma_w)
 {
+<<<<<<< HEAD
 	UINT16* dmaram = m_dmaram;
+=======
+	uint16_t* dmaram = m_dmaram;
+>>>>>>> upstream/master
 
 	COMBINE_DATA(&dmaram[offset]);
 	if (offset==13 && dmaram[offset]==0x40)
 	{
+<<<<<<< HEAD
 		const UINT8 *rom = memregion("nile")->base();
 		UINT32 srctab=2*((((UINT32)dmaram[5])<<16)|dmaram[4]);
 		UINT32 srcdata=2*((((UINT32)dmaram[11])<<16)|dmaram[10]);
 		UINT32 len=4*(((((UINT32)dmaram[7]&3)<<16)|dmaram[6])+1); //??? WRONG!
+=======
+		const uint8_t *rom = memregion("nile")->base();
+		uint32_t srctab=2*((((uint32_t)dmaram[5])<<16)|dmaram[4]);
+		uint32_t srcdata=2*((((uint32_t)dmaram[11])<<16)|dmaram[10]);
+		uint32_t len=4*(((((uint32_t)dmaram[7]&3)<<16)|dmaram[6])+1); //??? WRONG!
+>>>>>>> upstream/master
 		int tempidx=0;
 
 		/* show params */
@@ -455,16 +547,28 @@ WRITE16_MEMBER(srmp6_state::srmp6_dma_w)
 		while(1)
 		{
 			int i;
+<<<<<<< HEAD
 			UINT8 ctrl=rom[srcdata];
+=======
+			uint8_t ctrl=rom[srcdata];
+>>>>>>> upstream/master
 			++srcdata;
 
 			for(i=0;i<8;++i)
 			{
+<<<<<<< HEAD
 				UINT8 p=rom[srcdata];
 
 				if(ctrl&0x80)
 				{
 					UINT8 real_byte;
+=======
+				uint8_t p=rom[srcdata];
+
+				if(ctrl&0x80)
+				{
+					uint8_t real_byte;
+>>>>>>> upstream/master
 					real_byte = rom[srctab+p*2];
 					tempidx+=process(real_byte,tempidx);
 					real_byte = rom[srctab+p*2+1];//px[DMA_XOR((current_table_address+p*2+1))];
@@ -497,7 +601,11 @@ READ16_MEMBER(srmp6_state::tileram_r)
 
 WRITE16_MEMBER(srmp6_state::tileram_w)
 {
+<<<<<<< HEAD
 	//UINT16 tmp;
+=======
+	//uint16_t tmp;
+>>>>>>> upstream/master
 	COMBINE_DATA(&m_chrram[offset]);
 
 	/* are the DMA registers enabled some other way, or always mapped here, over RAM? */
@@ -510,7 +618,11 @@ WRITE16_MEMBER(srmp6_state::tileram_w)
 
 WRITE16_MEMBER(srmp6_state::paletteram_w)
 {
+<<<<<<< HEAD
 	INT8 r, g, b;
+=======
+	int8_t r, g, b;
+>>>>>>> upstream/master
 	int brg = m_brightness - 0x60;
 
 	m_palette->write(space, offset, data, mem_mask);
@@ -620,8 +732,13 @@ static INPUT_PORTS_START( srmp6 )
 	PORT_BIT( 0x0010, IP_ACTIVE_LOW, IPT_MAHJONG_PON )
 	PORT_BIT( 0x0180, IP_ACTIVE_LOW, IPT_UNUSED )
 
+<<<<<<< HEAD
 	PORT_START("DSW")   /* 16-bit DSW1+DSW2 */
 	PORT_DIPNAME( 0x0007, 0x0007, DEF_STR( Coinage ) )      // DSW1
+=======
+	PORT_START("DSW")   /* 16-bit DSW1 (0x0000) +DSW2 (0x0700) */
+	PORT_DIPNAME( 0x0007, 0x0007, DEF_STR( Coinage ) )      PORT_DIPLOCATION("DSW1:1,2,3")
+>>>>>>> upstream/master
 	PORT_DIPSETTING(      0x0000, DEF_STR( 5C_1C ) )
 	PORT_DIPSETTING(      0x0001, DEF_STR( 4C_1C ) )
 	PORT_DIPSETTING(      0x0002, DEF_STR( 3C_1C ) )
@@ -630,6 +747,7 @@ static INPUT_PORTS_START( srmp6 )
 	PORT_DIPSETTING(      0x0006, DEF_STR( 1C_2C ) )
 	PORT_DIPSETTING(      0x0005, DEF_STR( 1C_3C ) )
 	PORT_DIPSETTING(      0x0004, DEF_STR( 1C_4C ) )
+<<<<<<< HEAD
 	PORT_DIPNAME( 0x0008, 0x0008, DEF_STR( Unused ) )
 	PORT_DIPSETTING(      0x0008, DEF_STR( Off ) )
 	PORT_DIPSETTING(      0x0000, DEF_STR( On ) )
@@ -646,6 +764,24 @@ static INPUT_PORTS_START( srmp6 )
 	PORT_DIPSETTING(      0x0000, DEF_STR( Off ) )
 	PORT_DIPSETTING(      0x0080, DEF_STR( On ) )
 	PORT_DIPNAME( 0x0700, 0x0700, DEF_STR( Difficulty ) )   // DSW2
+=======
+	PORT_DIPNAME( 0x0008, 0x0008, DEF_STR( Unused ) )       PORT_DIPLOCATION("DSW1:4")
+	PORT_DIPSETTING(      0x0008, DEF_STR( Off ) )
+	PORT_DIPSETTING(      0x0000, DEF_STR( On ) )
+	PORT_DIPNAME( 0x0010, 0x0010, DEF_STR( Unused ) )       PORT_DIPLOCATION("DSW1:5")
+	PORT_DIPSETTING(      0x0010, DEF_STR( Off ) )
+	PORT_DIPSETTING(      0x0000, DEF_STR( On ) )
+	PORT_DIPNAME( 0x0020, 0x0020, DEF_STR( Unused ) )       PORT_DIPLOCATION("DSW1:6")
+	PORT_DIPSETTING(      0x0020, DEF_STR( Off ) )
+	PORT_DIPSETTING(      0x0000, DEF_STR( On ) )
+	PORT_DIPNAME( 0x0040, 0x0000, "Re-Clothe" )             PORT_DIPLOCATION("DSW1:7")
+	PORT_DIPSETTING(      0x0000, DEF_STR( Off ) )
+	PORT_DIPSETTING(      0x0040, DEF_STR( On ) )
+	PORT_DIPNAME( 0x0080, 0x0080, "Nudity" )                PORT_DIPLOCATION("DSW1:8")
+	PORT_DIPSETTING(      0x0000, DEF_STR( Off ) )
+	PORT_DIPSETTING(      0x0080, DEF_STR( On ) )
+	PORT_DIPNAME( 0x0700, 0x0700, DEF_STR( Difficulty ) )   PORT_DIPLOCATION("DSW2:1,2,3")
+>>>>>>> upstream/master
 	PORT_DIPSETTING(      0x0000, "8" )
 	PORT_DIPSETTING(      0x0100, "7" )
 	PORT_DIPSETTING(      0x0200, "6" )
@@ -654,6 +790,7 @@ static INPUT_PORTS_START( srmp6 )
 	PORT_DIPSETTING(      0x0500, "2" )
 	PORT_DIPSETTING(      0x0600, "1" )
 	PORT_DIPSETTING(      0x0700, "4" )
+<<<<<<< HEAD
 	PORT_DIPNAME( 0x0800, 0x0000, "Kuitan" )
 	PORT_DIPSETTING(      0x0000, DEF_STR( Off ) )
 	PORT_DIPSETTING(      0x0800, DEF_STR( On ) )
@@ -667,13 +804,32 @@ static INPUT_PORTS_START( srmp6 )
 	PORT_DIPSETTING(      0x4000, DEF_STR( Off ) )
 	PORT_DIPSETTING(      0x0000, DEF_STR( On ) )
 	PORT_SERVICE( 0x8000, IP_ACTIVE_LOW )
+=======
+	PORT_DIPNAME( 0x0800, 0x0000, "Kuitan" )                PORT_DIPLOCATION("DSW2:4")
+	PORT_DIPSETTING(      0x0000, DEF_STR( Off ) )
+	PORT_DIPSETTING(      0x0800, DEF_STR( On ) )
+	PORT_DIPNAME( 0x1000, 0x1000, DEF_STR( Continues ) )    PORT_DIPLOCATION("DSW2:5")
+	PORT_DIPSETTING(      0x0000, DEF_STR( Off ) )
+	PORT_DIPSETTING(      0x1000, DEF_STR( On ) )
+	PORT_DIPNAME( 0x2000, 0x2000, DEF_STR( Demo_Sounds ) )  PORT_DIPLOCATION("DSW2:6")
+	PORT_DIPSETTING(      0x0000, DEF_STR( Off ) )
+	PORT_DIPSETTING(      0x2000, DEF_STR( On ) )
+	PORT_DIPNAME( 0x4000, 0x4000, DEF_STR( Flip_Screen ) )  PORT_DIPLOCATION("DSW2:7")
+	PORT_DIPSETTING(      0x4000, DEF_STR( Off ) )
+	PORT_DIPSETTING(      0x0000, DEF_STR( On ) )
+	PORT_SERVICE_DIPLOC( 0x8000, IP_ACTIVE_LOW, "DSW2:8" )  PORT_DIPLOCATION("DSW2:8")
+>>>>>>> upstream/master
 INPUT_PORTS_END
 
 /***************************************************************************
     Machine driver
 ***************************************************************************/
 
+<<<<<<< HEAD
 static MACHINE_CONFIG_START( srmp6, srmp6_state )
+=======
+static MACHINE_CONFIG_START( srmp6 )
+>>>>>>> upstream/master
 
 	MCFG_CPU_ADD("maincpu", M68000, 16000000)
 	MCFG_CPU_PROGRAM_MAP(srmp6_map)
@@ -730,4 +886,8 @@ ROM_END
     Game driver(s)
 ***************************************************************************/
 
+<<<<<<< HEAD
 GAME( 1995, srmp6, 0, srmp6, srmp6, driver_device, 0, ROT0, "Seta", "Super Real Mahjong P6 (Japan)", MACHINE_IMPERFECT_GRAPHICS | MACHINE_IMPERFECT_SOUND)
+=======
+GAME( 1995, srmp6, 0, srmp6, srmp6, srmp6_state, 0, ROT0, "Seta", "Super Real Mahjong P6 (Japan)", MACHINE_IMPERFECT_GRAPHICS | MACHINE_IMPERFECT_SOUND)
+>>>>>>> upstream/master

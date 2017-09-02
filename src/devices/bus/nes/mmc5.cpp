@@ -19,7 +19,11 @@
 #include "mmc5.h"
 
 #include "cpu/m6502/m6502.h"
+<<<<<<< HEAD
 #include "video/ppu2c0x.h"      // this has to be included so that IRQ functions can access PPU_BOTTOM_VISIBLE_SCANLINE
+=======
+#include "video/ppu2c0x.h"      // this has to be included so that IRQ functions can access ppu2c0x_device::BOTTOM_VISIBLE_SCANLINE
+>>>>>>> upstream/master
 #include "sound/nes_apu.h"  // temp hack to pass the additional sound regs to APU...
 
 
@@ -41,6 +45,7 @@ static const int m_mmc5_attrib[4] = {0x00, 0x55, 0xaa, 0xff};
 //  constructor
 //-------------------------------------------------
 
+<<<<<<< HEAD
 const device_type NES_EXROM = &device_creator<nes_exrom_device>;
 
 
@@ -50,6 +55,17 @@ nes_exrom_device::nes_exrom_device(const machine_config &mconfig, const char *ta
 	m_prg_mode(0), m_chr_mode(0), m_wram_protect_1(0), m_wram_protect_2(0), m_exram_control(0), m_wram_base(0), m_last_chr(0), m_ex1_chr(0),
 	m_split_chr(0), m_ex1_bank(0), m_high_chr(0), m_split_scr(0), m_split_rev(0), m_split_ctrl(0), m_split_yst(0), m_split_bank(0), m_vcount(0)
 				{
+=======
+DEFINE_DEVICE_TYPE(NES_EXROM, nes_exrom_device, "nes_exrom", "NES Cart ExROM (MMC-5) PCB")
+
+
+nes_exrom_device::nes_exrom_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: nes_nrom_device(mconfig, NES_EXROM, tag, owner, clock), m_irq_count(0)
+	, m_irq_status(0), m_irq_enable(0), m_mult1(0), m_mult2(0), m_mmc5_scanline(0), m_vrom_page_a(0), m_vrom_page_b(0), m_floodtile(0), m_floodattr(0)
+	, m_prg_mode(0), m_chr_mode(0), m_wram_protect_1(0), m_wram_protect_2(0), m_exram_control(0), m_wram_base(0), m_last_chr(0), m_ex1_chr(0)
+	, m_split_chr(0), m_ex1_bank(0), m_high_chr(0), m_split_scr(0), m_split_rev(0), m_split_ctrl(0), m_split_yst(0), m_split_bank(0), m_vcount(0)
+{
+>>>>>>> upstream/master
 }
 
 
@@ -122,8 +138,13 @@ void nes_exrom_device::pcb_reset()
 	m_ex1_bank = 0;
 	m_vcount = 0;
 
+<<<<<<< HEAD
 	for (int i = 0; i < 12; i++)
 		m_vrom_bank[i] = 0x3ff;
+=======
+	for (auto & elem : m_vrom_bank)
+		elem = 0x3ff;
+>>>>>>> upstream/master
 
 	m_prg_regs[0] = 0xfc;
 	m_prg_regs[1] = 0xfd;
@@ -245,7 +266,11 @@ void nes_exrom_device::hblank_irq(int scanline, int vblank, int blanked )
 	// "In Frame" flag
 	if (scanline == 0)
 		m_irq_status |= 0x40;
+<<<<<<< HEAD
 	else if (scanline > PPU_BOTTOM_VISIBLE_SCANLINE)
+=======
+	else if (scanline > ppu2c0x_device::BOTTOM_VISIBLE_SCANLINE)
+>>>>>>> upstream/master
 		m_irq_status &= ~0x40;
 }
 
@@ -279,11 +304,19 @@ inline bool nes_exrom_device::in_split()
 	if (tile < 34)
 	{
 		if (!m_split_rev && tile < m_split_ctrl)
+<<<<<<< HEAD
 			return TRUE;
 		if (m_split_rev && tile >= m_split_ctrl)
 			return TRUE;
 	}
 	return FALSE;
+=======
+			return true;
+		if (m_split_rev && tile >= m_split_ctrl)
+			return true;
+	}
+	return false;
+>>>>>>> upstream/master
 }
 
 READ8_MEMBER(nes_exrom_device::nt_r)
@@ -359,9 +392,15 @@ WRITE8_MEMBER(nes_exrom_device::nt_w)
 	}
 }
 
+<<<<<<< HEAD
 inline UINT8 nes_exrom_device::base_chr_r(int bank, UINT32 offset)
 {
 	UINT32 helper = 0;
+=======
+inline uint8_t nes_exrom_device::base_chr_r(int bank, uint32_t offset)
+{
+	uint32_t helper = 0;
+>>>>>>> upstream/master
 
 	switch (m_chr_mode)
 	{
@@ -385,6 +424,7 @@ inline UINT8 nes_exrom_device::base_chr_r(int bank, UINT32 offset)
 	return m_vrom[helper & (m_vrom_size - 1)];
 }
 
+<<<<<<< HEAD
 inline UINT8 nes_exrom_device::split_chr_r(UINT32 offset)
 {
 	UINT32 helper = (m_split_bank * 0x1000) + (offset & 0x3f8) + (m_split_yst & 7);
@@ -394,6 +434,17 @@ inline UINT8 nes_exrom_device::split_chr_r(UINT32 offset)
 inline UINT8 nes_exrom_device::bg_ex1_chr_r(UINT32 offset)
 {
 	UINT32 helper = (m_ex1_bank * 0x1000) + (offset & 0xfff);
+=======
+inline uint8_t nes_exrom_device::split_chr_r(uint32_t offset)
+{
+	uint32_t helper = (m_split_bank * 0x1000) + (offset & 0x3f8) + (m_split_yst & 7);
+	return m_vrom[helper & (m_vrom_size - 1)];
+}
+
+inline uint8_t nes_exrom_device::bg_ex1_chr_r(uint32_t offset)
+{
+	uint32_t helper = (m_ex1_bank * 0x1000) + (offset & 0xfff);
+>>>>>>> upstream/master
 	return m_vrom[helper & (m_vrom_size - 1)];
 }
 
@@ -468,8 +519,13 @@ WRITE8_MEMBER(nes_exrom_device::write_l)
 
 	if ((offset >= 0x1000) && (offset <= 0x1015))
 	{
+<<<<<<< HEAD
 		// SOUND
 		nesapu_device *m_sound = machine().device<nesapu_device>("maincpu::nessound");
+=======
+		// SOUND (this is a hack, it should have extra channels, not pass to the existing APU!!!)
+		nesapu_device *m_sound = machine().device<nesapu_device>("maincpu:nesapu");
+>>>>>>> upstream/master
 		m_sound->write(space, offset & 0x1f, data);
 		return;
 	}

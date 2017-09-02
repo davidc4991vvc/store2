@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 // license:???
+=======
+// license:BSD-3-Clause
+>>>>>>> upstream/master
 // copyright-holders:Stefan Jokisch
 /*************************************************************************
 
@@ -6,6 +10,10 @@
 
 *************************************************************************/
 
+<<<<<<< HEAD
+=======
+#include "machine/watchdog.h"
+>>>>>>> upstream/master
 #include "sound/discrete.h"
 
 /* Discrete Sound Input Nodes */
@@ -16,6 +24,10 @@ public:
 	poolshrk_state(const machine_config &mconfig, device_type type, const char *tag)
 		: driver_device(mconfig, type, tag),
 		m_maincpu(*this, "maincpu"),
+<<<<<<< HEAD
+=======
+		m_watchdog(*this, "watchdog"),
+>>>>>>> upstream/master
 		m_gfxdecode(*this, "gfxdecode"),
 		m_palette(*this, "palette"),
 		m_discrete(*this, "discrete"),
@@ -24,13 +36,23 @@ public:
 		m_vpos_ram(*this, "vpos_ram") { }
 
 	required_device<cpu_device> m_maincpu;
+<<<<<<< HEAD
+=======
+	required_device<watchdog_timer_device> m_watchdog;
+>>>>>>> upstream/master
 	required_device<gfxdecode_device> m_gfxdecode;
 	required_device<palette_device> m_palette;
 	required_device<discrete_device> m_discrete;
 
+<<<<<<< HEAD
 	required_shared_ptr<UINT8> m_playfield_ram;
 	required_shared_ptr<UINT8> m_hpos_ram;
 	required_shared_ptr<UINT8> m_vpos_ram;
+=======
+	required_shared_ptr<uint8_t> m_playfield_ram;
+	required_shared_ptr<uint8_t> m_hpos_ram;
+	required_shared_ptr<uint8_t> m_vpos_ram;
+>>>>>>> upstream/master
 
 	tilemap_t* m_bg_tilemap;
 	int m_da_latch;
@@ -48,10 +70,17 @@ public:
 	TILE_GET_INFO_MEMBER(get_tile_info);
 
 	DECLARE_DRIVER_INIT(poolshrk);
+<<<<<<< HEAD
 	virtual void video_start();
 	DECLARE_PALETTE_INIT(poolshrk);
 
 	UINT32 screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
+=======
+	virtual void video_start() override;
+	DECLARE_PALETTE_INIT(poolshrk);
+
+	uint32_t screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
+>>>>>>> upstream/master
 };
 
 

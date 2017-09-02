@@ -10,9 +10,18 @@
 ***************************************************************************/
 
 #include "emu.h"
+<<<<<<< HEAD
 #include "machine/eepromser.h"
 #include "includes/gaelco2.h"
 
+=======
+#include "includes/gaelco2.h"
+
+#include "machine/eepromser.h"
+#include "chd.h"
+
+
+>>>>>>> upstream/master
 /***************************************************************************
 
     Split even/odd bytes from ROMs in 16 bit mode to different memory areas
@@ -24,10 +33,17 @@ void gaelco2_state::gaelco2_ROM16_split_gfx(const char *src_reg, const char *dst
 	int i;
 
 	/* get a pointer to the source data */
+<<<<<<< HEAD
 	UINT8 *src = (UINT8 *)memregion(src_reg)->base();
 
 	/* get a pointer to the destination data */
 	UINT8 *dst = (UINT8 *)memregion(dst_reg)->base();
+=======
+	uint8_t *src = (uint8_t *)memregion(src_reg)->base();
+
+	/* get a pointer to the destination data */
+	uint8_t *dst = (uint8_t *)memregion(dst_reg)->base();
+>>>>>>> upstream/master
 
 	/* fill destination areas with the proper data */
 	for (i = 0; i < length/2; i++){
@@ -132,12 +148,36 @@ DRIVER_INIT_MEMBER(gaelco2_state,snowboar)
 	gaelco2_ROM16_split_gfx("gfx2", "gfx1", 0x0800000, 0x0400000, 0x0800000, 0x0c00000);
 }
 
+<<<<<<< HEAD
+=======
+
+/***************************************************************************
+
+    MCU communication
+
+***************************************************************************/
+
+WRITE8_MEMBER(gaelco2_state::shareram_w)
+{
+	// why isn't there an AM_SOMETHING macro for this?
+	reinterpret_cast<u8 *>(m_shareram.target())[BYTE_XOR_BE(offset)] = data;
+}
+
+READ8_MEMBER(gaelco2_state::shareram_r)
+{
+	// why isn't there an AM_SOMETHING macro for this?
+	return reinterpret_cast<u8 const *>(m_shareram.target())[BYTE_XOR_BE(offset)];
+}
+
+
+>>>>>>> upstream/master
 /***************************************************************************
 
     Coin counters/lockouts
 
 ***************************************************************************/
 
+<<<<<<< HEAD
 WRITE16_MEMBER(gaelco2_state::gaelco2_coin_w)
 {
 	/* Coin Lockouts */
@@ -169,6 +209,42 @@ WRITE16_MEMBER(gaelco2_state::touchgo_coin_w)
 		coin_counter_w(machine(), 2, data & 0x04);
 		coin_counter_w(machine(), 3, data & 0x08);
 	}
+=======
+WRITE16_MEMBER(gaelco2_state::wrally2_latch_w)
+{
+	m_mainlatch->write_bit(offset >> 2, BIT(data, 0));
+}
+
+WRITE_LINE_MEMBER(gaelco2_state::coin1_counter_w)
+{
+	machine().bookkeeping().coin_counter_w(0, state);
+}
+
+WRITE_LINE_MEMBER(gaelco2_state::coin2_counter_w)
+{
+	machine().bookkeeping().coin_counter_w(1, state);
+}
+
+WRITE_LINE_MEMBER(gaelco2_state::coin3_counter_w)
+{
+	machine().bookkeeping().coin_counter_w(2, state);
+}
+
+WRITE_LINE_MEMBER(gaelco2_state::coin4_counter_w)
+{
+	machine().bookkeeping().coin_counter_w(3, state);
+}
+
+WRITE16_MEMBER(gaelco2_state::alighunt_coin_w)
+{
+	/* Coin Lockouts */
+	machine().bookkeeping().coin_lockout_w(0, ~data & 0x01);
+	machine().bookkeeping().coin_lockout_w(1, ~data & 0x02);
+
+	/* Coin Counters */
+	machine().bookkeeping().coin_counter_w(0, data & 0x04);
+	machine().bookkeeping().coin_counter_w(1, data & 0x08);
+>>>>>>> upstream/master
 }
 
 /***************************************************************************
@@ -220,11 +296,16 @@ TIMER_DEVICE_CALLBACK_MEMBER(bang_state::bang_irq)
 
 CUSTOM_INPUT_MEMBER(wrally2_state::wrally2_analog_bit_r)
 {
+<<<<<<< HEAD
 	int which = (FPTR)param;
+=======
+	int which = (uintptr_t)param;
+>>>>>>> upstream/master
 	return (m_analog_ports[which] >> 7) & 0x01;
 }
 
 
+<<<<<<< HEAD
 WRITE16_MEMBER(wrally2_state::wrally2_adc_clk)
 {
 	/* a zero/one combo is written here to clock the next analog port bit */
@@ -254,10 +335,32 @@ WRITE16_MEMBER(wrally2_state::wrally2_adc_cs)
 	}
 	else
 		logerror("%06X:analog_port_latch_w(%02X) = %08X & %08X\n", space.device().safe_pc(), offset, data, mem_mask);
+=======
+WRITE_LINE_MEMBER(wrally2_state::wrally2_adc_clk)
+{
+	/* a zero/one combo is written here to clock the next analog port bit */
+	if (!state)
+	{
+		m_analog_ports[0] <<= 1;
+		m_analog_ports[1] <<= 1;
+	}
+}
+
+
+WRITE_LINE_MEMBER(wrally2_state::wrally2_adc_cs)
+{
+	/* a zero is written here to read the analog ports, and a one is written when finished */
+	if (!state)
+	{
+		m_analog_ports[0] = m_analog0->read();
+		m_analog_ports[1] = m_analog1->read();
+	}
+>>>>>>> upstream/master
 }
 
 /***************************************************************************
 
+<<<<<<< HEAD
     EEPROM (93C66)
 
 ***************************************************************************/
@@ -300,11 +403,93 @@ READ16_MEMBER(gaelco2_state::snowboar_protection_r)
 {
 	logerror("%06x: protection read from %04x\n", space.device().safe_pc(), offset*2);
 	return 0x0000;
+=======
+    Protection
+
+***************************************************************************/
+
+static uint32_t rol(uint32_t x, unsigned int c)
+{
+	return (x << c) | (x >> (32 - c));
+}
+
+static uint16_t get_lo(uint32_t x)
+{
+	return ((x & 0x00000010) <<  1) |
+			((x & 0x00000800) <<  3) |
+			((x & 0x40000000) >> 27) |
+			((x & 0x00000005) <<  6) |
+			((x & 0x00000008) <<  8) |
+			rol(x & 0x00800040, 9)   |
+			((x & 0x04000000) >> 16) |
+			((x & 0x00008000) >> 14) |
+			((x & 0x00002000) >> 11) |
+			((x & 0x00020000) >> 10) |
+			((x & 0x00100000) >>  8) |
+			((x & 0x00044000) >>  5) |
+			((x & 0x00000020) >>  1);
+}
+
+static uint16_t get_hi(uint32_t x)
+{
+	return ((x & 0x00001400) >>  0) |
+			((x & 0x10000000) >> 26) |
+			((x & 0x02000000) >> 24) |
+			((x & 0x08000000) >> 21) |
+			((x & 0x00000002) << 12) |
+			((x & 0x01000000) >> 19) |
+			((x & 0x20000000) >> 18) |
+			((x & 0x80000000) >> 16) |
+			((x & 0x00200000) >> 13) |
+			((x & 0x00010000) >> 12) |
+			((x & 0x00080000) >> 10) |
+			((x & 0x00000200) >>  9) |
+			((x & 0x00400000) >>  8) |
+			((x & 0x00000080) >>  4) |
+			((x & 0x00000100) >>  1);
+}
+
+static uint16_t get_out(uint16_t x)
+{
+	return ((x & 0xc840) <<  0) |
+			((x & 0x0080) <<  2) |
+			((x & 0x0004) <<  3) |
+			((x & 0x0008) <<  5) |
+			((x & 0x0010) <<  8) |
+			((x & 0x0002) <<  9) |
+			((x & 0x0001) << 13) |
+			((x & 0x0200) >>  9) |
+			((x & 0x1400) >>  8) |
+			((x & 0x0100) >>  7) |
+			((x & 0x2000) >>  6) |
+			((x & 0x0020) >>  2);
+}
+
+uint16_t mangle(uint32_t x)
+{
+	uint16_t a = get_lo(x);
+	uint16_t b = get_hi(x);
+	return get_out(((a ^ 0x0010) - (b ^ 0x0024)) ^ 0x5496);
+}
+
+READ16_MEMBER(gaelco2_state::snowboar_protection_r)
+{
+	uint16_t ret  = mangle(snowboard_latch);
+	ret = ((ret & 0xff00) >> 8) | ((ret & 0x00ff) << 8);
+	return ret;
+
+>>>>>>> upstream/master
 }
 
 WRITE16_MEMBER(gaelco2_state::snowboar_protection_w)
 {
 	COMBINE_DATA(&m_snowboar_protection[offset]);
+<<<<<<< HEAD
+=======
+
+	snowboard_latch = (snowboard_latch << 16) | data;
+
+>>>>>>> upstream/master
 	logerror("%06x: protection write %04x to %04x\n", space.device().safe_pc(), data, offset*2);
 
 }

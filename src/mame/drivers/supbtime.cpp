@@ -23,11 +23,23 @@ down hardware (it doesn't write any good sound data btw, mostly zeros).
 ***************************************************************************/
 
 #include "emu.h"
+<<<<<<< HEAD
 #include "cpu/m68000/m68000.h"
 #include "cpu/h6280/h6280.h"
 #include "sound/2151intf.h"
 #include "sound/okim6295.h"
 #include "includes/supbtime.h"
+=======
+#include "includes/supbtime.h"
+
+#include "cpu/m68000/m68000.h"
+#include "cpu/h6280/h6280.h"
+#include "sound/ym2151.h"
+#include "sound/okim6295.h"
+#include "screen.h"
+#include "speaker.h"
+
+>>>>>>> upstream/master
 
 /******************************************************************************/
 
@@ -42,7 +54,13 @@ READ16_MEMBER(supbtime_state::supbtime_controls_r)
 		case 8:
 			return ioport("COIN")->read();
 		case 10: /* ?  Not used for anything */
+<<<<<<< HEAD
 		case 12:
+=======
+			return 0;
+		case 12:
+			m_maincpu->set_input_line(M68K_IRQ_6, CLEAR_LINE);
+>>>>>>> upstream/master
 			return 0;
 	}
 
@@ -50,12 +68,15 @@ READ16_MEMBER(supbtime_state::supbtime_controls_r)
 	return ~0;
 }
 
+<<<<<<< HEAD
 WRITE16_MEMBER(supbtime_state::sound_w)
 {
 	soundlatch_byte_w(space, 0, data & 0xff);
 	m_audiocpu->set_input_line(0, HOLD_LINE);
 }
 
+=======
+>>>>>>> upstream/master
 /******************************************************************************/
 
 static ADDRESS_MAP_START( supbtime_map, AS_PROGRAM, 16, supbtime_state )
@@ -67,7 +88,11 @@ static ADDRESS_MAP_START( supbtime_map, AS_PROGRAM, 16, supbtime_state )
 	AM_RANGE(0x140000, 0x1407ff) AM_RAM_DEVWRITE("palette", palette_device, write) AM_SHARE("palette")
 	AM_RANGE(0x180000, 0x18000f) AM_READ(supbtime_controls_r)
 	AM_RANGE(0x18000a, 0x18000d) AM_WRITENOP
+<<<<<<< HEAD
 	AM_RANGE(0x1a0000, 0x1a0001) AM_WRITE(sound_w)
+=======
+	AM_RANGE(0x1a0000, 0x1a0001) AM_DEVWRITE8("soundlatch", generic_latch_8_device, write, 0x00ff)
+>>>>>>> upstream/master
 	AM_RANGE(0x300000, 0x30000f) AM_DEVREADWRITE("tilegen1", deco16ic_device, pf_control_r, pf_control_w)
 	AM_RANGE(0x320000, 0x321fff) AM_DEVREADWRITE("tilegen1", deco16ic_device, pf1_data_r, pf1_data_w)
 	AM_RANGE(0x322000, 0x323fff) AM_DEVREADWRITE("tilegen1", deco16ic_device, pf2_data_r, pf2_data_w)
@@ -77,7 +102,11 @@ ADDRESS_MAP_END
 
 static ADDRESS_MAP_START( chinatwn_map, AS_PROGRAM, 16, supbtime_state )
 	AM_RANGE(0x000000, 0x03ffff) AM_ROM
+<<<<<<< HEAD
 	AM_RANGE(0x100000, 0x100001) AM_WRITE(sound_w)
+=======
+	AM_RANGE(0x100000, 0x100001) AM_DEVWRITE8("soundlatch", generic_latch_8_device, write, 0x00ff)
+>>>>>>> upstream/master
 	AM_RANGE(0x120000, 0x1207ff) AM_RAM AM_SHARE("spriteram")
 	AM_RANGE(0x140000, 0x1407ff) AM_RAM_DEVWRITE("palette", palette_device, write) AM_SHARE("palette")
 	AM_RANGE(0x180000, 0x18000f) AM_READ(supbtime_controls_r)
@@ -100,7 +129,11 @@ static ADDRESS_MAP_START( sound_map, AS_PROGRAM, 8, supbtime_state )
 	AM_RANGE(0x110000, 0x110001) AM_DEVREADWRITE("ymsnd", ym2151_device, read, write)
 	AM_RANGE(0x120000, 0x120001) AM_DEVREADWRITE("oki", okim6295_device, read, write)
 	AM_RANGE(0x130000, 0x130001) AM_NOP /* This board only has 1 oki chip */
+<<<<<<< HEAD
 	AM_RANGE(0x140000, 0x140001) AM_READ(soundlatch_byte_r)
+=======
+	AM_RANGE(0x140000, 0x140001) AM_DEVREAD("soundlatch", generic_latch_8_device, read)
+>>>>>>> upstream/master
 	AM_RANGE(0x1f0000, 0x1f1fff) AM_RAMBANK("bank8")
 	AM_RANGE(0x1fec00, 0x1fec01) AM_DEVWRITE("audiocpu", h6280_device, timer_w)
 	AM_RANGE(0x1ff400, 0x1ff403) AM_DEVWRITE("audiocpu", h6280_device, irq_status_w)
@@ -312,12 +345,20 @@ void supbtime_state::machine_start()
 {
 }
 
+<<<<<<< HEAD
 static MACHINE_CONFIG_START( supbtime, supbtime_state )
+=======
+static MACHINE_CONFIG_START( supbtime )
+>>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", M68000, 14000000)
 	MCFG_CPU_PROGRAM_MAP(supbtime_map)
+<<<<<<< HEAD
 	MCFG_CPU_VBLANK_INT_DRIVER("screen", supbtime_state,  irq6_line_hold)
+=======
+	MCFG_CPU_VBLANK_INT_DRIVER("screen", supbtime_state,  irq6_line_assert)
+>>>>>>> upstream/master
 
 	MCFG_CPU_ADD("audiocpu", H6280, 32220000/8) /* Custom chip 45, audio section crystal is 32.220 MHz */
 	MCFG_CPU_PROGRAM_MAP(sound_map)
@@ -349,32 +390,56 @@ static MACHINE_CONFIG_START( supbtime, supbtime_state )
 	MCFG_DECO16IC_PF12_8X8_BANK(0)
 	MCFG_DECO16IC_PF12_16X16_BANK(1)
 	MCFG_DECO16IC_GFXDECODE("gfxdecode")
+<<<<<<< HEAD
 	MCFG_DECO16IC_PALETTE("palette")
+=======
+>>>>>>> upstream/master
 
 	MCFG_DEVICE_ADD("spritegen", DECO_SPRITE, 0)
 	MCFG_DECO_SPRITE_GFX_REGION(2)
 	MCFG_DECO_SPRITE_GFXDECODE("gfxdecode")
+<<<<<<< HEAD
 	MCFG_DECO_SPRITE_PALETTE("palette")
+=======
+>>>>>>> upstream/master
 
 	/* sound hardware */
 	MCFG_SPEAKER_STANDARD_MONO("mono")
 
+<<<<<<< HEAD
+=======
+	MCFG_GENERIC_LATCH_8_ADD("soundlatch")
+	MCFG_GENERIC_LATCH_DATA_PENDING_CB(INPUTLINE("audiocpu", 0))
+
+>>>>>>> upstream/master
 	MCFG_YM2151_ADD("ymsnd", 32220000/9)
 	MCFG_YM2151_IRQ_HANDLER(INPUTLINE("audiocpu", 1)) /* IRQ 2 */
 	MCFG_SOUND_ROUTE(0, "mono", 0.45)
 	MCFG_SOUND_ROUTE(1, "mono", 0.45)
 
+<<<<<<< HEAD
 	MCFG_OKIM6295_ADD("oki", 1023924, OKIM6295_PIN7_HIGH) // clock frequency & pin 7 not verified
+=======
+	MCFG_OKIM6295_ADD("oki", 1023924, PIN7_HIGH) // clock frequency & pin 7 not verified
+>>>>>>> upstream/master
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 0.50)
 MACHINE_CONFIG_END
 
 
+<<<<<<< HEAD
 static MACHINE_CONFIG_START( chinatwn, supbtime_state )
+=======
+static MACHINE_CONFIG_START( chinatwn )
+>>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", M68000, 14000000)
 	MCFG_CPU_PROGRAM_MAP(chinatwn_map)
+<<<<<<< HEAD
 	MCFG_CPU_VBLANK_INT_DRIVER("screen", supbtime_state,  irq6_line_hold)
+=======
+	MCFG_CPU_VBLANK_INT_DRIVER("screen", supbtime_state,  irq6_line_assert)
+>>>>>>> upstream/master
 
 	MCFG_CPU_ADD("audiocpu", H6280, 32220000/8) /* Custom chip 45, audio section crystal is 32.220 MHz */
 	MCFG_CPU_PROGRAM_MAP(sound_map)
@@ -405,22 +470,38 @@ static MACHINE_CONFIG_START( chinatwn, supbtime_state )
 	MCFG_DECO16IC_PF12_8X8_BANK(0)
 	MCFG_DECO16IC_PF12_16X16_BANK(1)
 	MCFG_DECO16IC_GFXDECODE("gfxdecode")
+<<<<<<< HEAD
 	MCFG_DECO16IC_PALETTE("palette")
+=======
+>>>>>>> upstream/master
 
 	MCFG_DEVICE_ADD("spritegen", DECO_SPRITE, 0)
 	MCFG_DECO_SPRITE_GFX_REGION(2)
 	MCFG_DECO_SPRITE_GFXDECODE("gfxdecode")
+<<<<<<< HEAD
 	MCFG_DECO_SPRITE_PALETTE("palette")
+=======
+>>>>>>> upstream/master
 
 	/* sound hardware */
 	MCFG_SPEAKER_STANDARD_MONO("mono")
 
+<<<<<<< HEAD
+=======
+	MCFG_GENERIC_LATCH_8_ADD("soundlatch")
+	MCFG_GENERIC_LATCH_DATA_PENDING_CB(INPUTLINE("audiocpu", 0))
+
+>>>>>>> upstream/master
 	MCFG_YM2151_ADD("ymsnd", 32220000/9)
 	MCFG_YM2151_IRQ_HANDLER(INPUTLINE("audiocpu", 1)) /* IRQ 2 */
 	MCFG_SOUND_ROUTE(0, "mono", 0.45)
 	MCFG_SOUND_ROUTE(1, "mono", 0.45)
 
+<<<<<<< HEAD
 	MCFG_OKIM6295_ADD("oki", 1023924, OKIM6295_PIN7_HIGH) // clock frequency & pin 7 not verified
+=======
+	MCFG_OKIM6295_ADD("oki", 1023924, PIN7_HIGH) // clock frequency & pin 7 not verified
+>>>>>>> upstream/master
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 0.50)
 MACHINE_CONFIG_END
 
@@ -505,7 +586,14 @@ ROM_END
 
 /******************************************************************************/
 
+<<<<<<< HEAD
 GAME( 1990, supbtime, 0,        supbtime, supbtime, driver_device, 0, ROT0, "Data East Corporation", "Super Burger Time (World, set 1)", MACHINE_SUPPORTS_SAVE )
 GAME( 1990, supbtimea,supbtime, supbtime, supbtime, driver_device, 0, ROT0, "Data East Corporation", "Super Burger Time (World, set 2)", MACHINE_SUPPORTS_SAVE )
 GAME( 1990, supbtimej,supbtime, supbtime, supbtime, driver_device, 0, ROT0, "Data East Corporation", "Super Burger Time (Japan)", MACHINE_SUPPORTS_SAVE )
 GAME( 1991, chinatwn, 0,        chinatwn, chinatwn, driver_device, 0, ROT0, "Data East Corporation", "China Town (Japan)", MACHINE_SUPPORTS_SAVE )
+=======
+GAME( 1990, supbtime, 0,        supbtime, supbtime, supbtime_state, 0, ROT0, "Data East Corporation", "Super Burger Time (World, set 1)", MACHINE_SUPPORTS_SAVE )
+GAME( 1990, supbtimea,supbtime, supbtime, supbtime, supbtime_state, 0, ROT0, "Data East Corporation", "Super Burger Time (World, set 2)", MACHINE_SUPPORTS_SAVE )
+GAME( 1990, supbtimej,supbtime, supbtime, supbtime, supbtime_state, 0, ROT0, "Data East Corporation", "Super Burger Time (Japan)", MACHINE_SUPPORTS_SAVE )
+GAME( 1991, chinatwn, 0,        chinatwn, chinatwn, supbtime_state, 0, ROT0, "Data East Corporation", "China Town (Japan)", MACHINE_SUPPORTS_SAVE )
+>>>>>>> upstream/master

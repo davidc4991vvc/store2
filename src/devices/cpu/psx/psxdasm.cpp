@@ -9,7 +9,14 @@
 #include "psx.h"
 #include "gte.h"
 
+<<<<<<< HEAD
 static char *make_signed_hex_str_16( UINT32 value )
+=======
+#include "psxdefs.h"
+
+
+static char *make_signed_hex_str_16( uint32_t value )
+>>>>>>> upstream/master
 {
 	static char s_hex[ 20 ];
 
@@ -122,6 +129,7 @@ static const char *const s_gtelm[] =
 	" lm=s16", " lm=u15"
 };
 
+<<<<<<< HEAD
 static char *effective_address( psxcpu_state *state, UINT32 pc, UINT32 op )
 {
 	static char s_address[ 20 ];
@@ -130,16 +138,33 @@ static char *effective_address( psxcpu_state *state, UINT32 pc, UINT32 op )
 	{
 		sprintf( s_address, "%s(%s) ; 0x%08x", make_signed_hex_str_16( INS_IMMEDIATE( op ) ), s_cpugenreg[ INS_RS( op ) ],
 			(UINT32)( state->r( INS_RS( op ) ) + (INT16)INS_IMMEDIATE( op ) ) );
+=======
+static char *effective_address( psxcpu_state *state, uint32_t pc, uint32_t op )
+{
+	static char s_address[ 30 ];
+
+	if( state != nullptr && state->pc() == pc )
+	{
+		sprintf( s_address, "%s(%s) ; 0x%08x", make_signed_hex_str_16( INS_IMMEDIATE( op ) ), s_cpugenreg[ INS_RS( op ) ],
+			(uint32_t)( state->r( INS_RS( op ) ) + (int16_t)INS_IMMEDIATE( op ) ) );
+>>>>>>> upstream/master
 		return s_address;
 	}
 	sprintf( s_address, "%s(%s)", make_signed_hex_str_16( INS_IMMEDIATE( op ) ), s_cpugenreg[ INS_RS( op ) ] );
 	return s_address;
 }
 
+<<<<<<< HEAD
 static UINT32 relative_address( psxcpu_state *state, UINT32 pc, UINT32 op )
 {
 	UINT32 nextpc = pc + 4;
 	if( state != NULL && state->pc() == pc && state->delayr() == PSXCPU_DELAYR_PC )
+=======
+static uint32_t relative_address( psxcpu_state *state, uint32_t pc, uint32_t op )
+{
+	uint32_t nextpc = pc + 4;
+	if( state != nullptr && state->pc() == pc && state->delayr() == PSXCPU_DELAYR_PC )
+>>>>>>> upstream/master
 	{
 		nextpc = state->delayv();
 	}
@@ -147,25 +172,43 @@ static UINT32 relative_address( psxcpu_state *state, UINT32 pc, UINT32 op )
 	return nextpc + ( PSXCPU_WORD_EXTEND( INS_IMMEDIATE( op ) ) << 2 );
 }
 
+<<<<<<< HEAD
 static UINT32 jump_address( psxcpu_state *state, UINT32 pc, UINT32 op )
 {
 	UINT32 nextpc = pc + 4;
 	if( state != NULL && state->pc() == pc && state->delayr() == PSXCPU_DELAYR_PC )
+=======
+static uint32_t jump_address( psxcpu_state *state, uint32_t pc, uint32_t op )
+{
+	uint32_t nextpc = pc + 4;
+	if( state != nullptr && state->pc() == pc && state->delayr() == PSXCPU_DELAYR_PC )
+>>>>>>> upstream/master
 	{
 		nextpc = state->delayv();
 	}
 	return ( nextpc & 0xf0000000 ) + ( INS_TARGET( op ) << 2 );
 }
 
+<<<<<<< HEAD
 static UINT32 fetch_op( const UINT8 *opram )
+=======
+static uint32_t fetch_op( const uint8_t *opram )
+>>>>>>> upstream/master
 {
 	return ( opram[ 3 ] << 24 ) | ( opram[ 2 ] << 16 ) | ( opram[ 1 ] << 8 ) | ( opram[ 0 ] << 0 );
 }
 
+<<<<<<< HEAD
 static char *upper_address( UINT32 op, const UINT8 *opram )
 {
 	static char s_address[ 20 ];
 	UINT32 nextop = fetch_op( opram );
+=======
+static char *upper_address( uint32_t op, const uint8_t *opram )
+{
+	static char s_address[ 20 ];
+	uint32_t nextop = fetch_op( opram );
+>>>>>>> upstream/master
 
 	if( INS_OP( nextop ) == OP_ORI && INS_RT( op ) == INS_RS( nextop ) )
 	{
@@ -173,7 +216,11 @@ static char *upper_address( UINT32 op, const UINT8 *opram )
 	}
 	else if( INS_OP( nextop ) == OP_ADDIU && INS_RT( op ) == INS_RS( nextop ) )
 	{
+<<<<<<< HEAD
 		sprintf( s_address, "$%04x ; 0x%08x", INS_IMMEDIATE( op ), ( INS_IMMEDIATE( op ) << 16 ) + (INT16) INS_IMMEDIATE( nextop ) );
+=======
+		sprintf( s_address, "$%04x ; 0x%08x", INS_IMMEDIATE( op ), ( INS_IMMEDIATE( op ) << 16 ) + (int16_t) INS_IMMEDIATE( nextop ) );
+>>>>>>> upstream/master
 	}
 	else
 	{
@@ -183,17 +230,29 @@ static char *upper_address( UINT32 op, const UINT8 *opram )
 	return s_address;
 }
 
+<<<<<<< HEAD
 unsigned DasmPSXCPU( psxcpu_state *state, char *buffer, UINT32 pc, const UINT8 *opram )
 {
 	UINT32 op;
 	const UINT8 *oldopram;
 	UINT32 flags = 0;
+=======
+unsigned DasmPSXCPU( psxcpu_state *state, std::ostream &stream, uint32_t pc, const uint8_t *opram )
+{
+	uint32_t op;
+	const uint8_t *oldopram;
+	uint32_t flags = 0;
+>>>>>>> upstream/master
 
 	oldopram = opram;
 	op = fetch_op( opram );
 	opram += 4;
 
+<<<<<<< HEAD
 	sprintf( buffer, "dw      $%08x", op );
+=======
+	std::streampos current_pos = stream.tellp();
+>>>>>>> upstream/master
 
 	switch( INS_OP( op ) )
 	{
@@ -204,6 +263,7 @@ unsigned DasmPSXCPU( psxcpu_state *state, char *buffer, UINT32 pc, const UINT8 *
 			if( op == 0 )
 			{
 				/* the standard nop is "sll     zero,zero,$0000" */
+<<<<<<< HEAD
 				sprintf( buffer, "nop" );
 			}
 			else
@@ -228,12 +288,39 @@ unsigned DasmPSXCPU( psxcpu_state *state, char *buffer, UINT32 pc, const UINT8 *
 			break;
 		case FUNCT_JR:
 			sprintf( buffer, "jr      %s", s_cpugenreg[ INS_RS( op ) ] );
+=======
+				util::stream_format( stream, "nop" );
+			}
+			else
+			{
+				util::stream_format( stream, "sll     %s,%s,$%02x", s_cpugenreg[ INS_RD( op ) ], s_cpugenreg[ INS_RT( op ) ], INS_SHAMT( op ) );
+			}
+			break;
+		case FUNCT_SRL:
+			util::stream_format( stream, "srl     %s,%s,$%02x", s_cpugenreg[ INS_RD( op ) ], s_cpugenreg[ INS_RT( op ) ], INS_SHAMT( op ) );
+			break;
+		case FUNCT_SRA:
+			util::stream_format( stream, "sra     %s,%s,$%02x", s_cpugenreg[ INS_RD( op ) ], s_cpugenreg[ INS_RT( op ) ], INS_SHAMT( op ) );
+			break;
+		case FUNCT_SLLV:
+			util::stream_format( stream, "sllv    %s,%s,%s", s_cpugenreg[ INS_RD( op ) ], s_cpugenreg[ INS_RT( op ) ], s_cpugenreg[ INS_RS( op ) ] );
+			break;
+		case FUNCT_SRLV:
+			util::stream_format( stream, "srlv    %s,%s,%s", s_cpugenreg[ INS_RD( op ) ], s_cpugenreg[ INS_RT( op ) ], s_cpugenreg[ INS_RS( op ) ] );
+			break;
+		case FUNCT_SRAV:
+			util::stream_format( stream, "srav    %s,%s,%s", s_cpugenreg[ INS_RD( op ) ], s_cpugenreg[ INS_RT( op ) ], s_cpugenreg[ INS_RS( op ) ] );
+			break;
+		case FUNCT_JR:
+			util::stream_format( stream, "jr      %s", s_cpugenreg[ INS_RS( op ) ] );
+>>>>>>> upstream/master
 			if( INS_RS( op ) == 31 )
 			{
 				flags = DASMFLAG_STEP_OUT;
 			}
 			break;
 		case FUNCT_JALR:
+<<<<<<< HEAD
 			sprintf( buffer, "jalr    %s,%s", s_cpugenreg[ INS_RD( op ) ], s_cpugenreg[ INS_RS( op ) ] );
 			flags = DASMFLAG_STEP_OVER | DASMFLAG_STEP_OVER_EXTRA( 1 );
 			break;
@@ -298,6 +385,72 @@ unsigned DasmPSXCPU( psxcpu_state *state, char *buffer, UINT32 pc, const UINT8 *
 			break;
 		case FUNCT_SLTU:
 			sprintf( buffer, "sltu    %s,%s,%s", s_cpugenreg[ INS_RD( op ) ], s_cpugenreg[ INS_RS( op ) ], s_cpugenreg[ INS_RT( op ) ] );
+=======
+			util::stream_format( stream, "jalr    %s,%s", s_cpugenreg[ INS_RD( op ) ], s_cpugenreg[ INS_RS( op ) ] );
+			flags = DASMFLAG_STEP_OVER | DASMFLAG_STEP_OVER_EXTRA( 1 );
+			break;
+		case FUNCT_SYSCALL:
+			util::stream_format( stream, "syscall $%05x", INS_CODE( op ) );
+			flags = DASMFLAG_STEP_OVER;
+			break;
+		case FUNCT_BREAK:
+			util::stream_format( stream, "break   $%05x", INS_CODE( op ) );
+			flags = DASMFLAG_STEP_OVER;
+			break;
+		case FUNCT_MFHI:
+			util::stream_format( stream, "mfhi    %s", s_cpugenreg[ INS_RD( op ) ] );
+			break;
+		case FUNCT_MTHI:
+			util::stream_format( stream, "mthi    %s", s_cpugenreg[ INS_RS( op ) ] );
+			break;
+		case FUNCT_MFLO:
+			util::stream_format( stream, "mflo    %s", s_cpugenreg[ INS_RD( op ) ] );
+			break;
+		case FUNCT_MTLO:
+			util::stream_format( stream, "mtlo    %s", s_cpugenreg[ INS_RS( op ) ] );
+			break;
+		case FUNCT_MULT:
+			util::stream_format( stream, "mult    %s,%s", s_cpugenreg[ INS_RS( op ) ], s_cpugenreg[ INS_RT( op ) ] );
+			break;
+		case FUNCT_MULTU:
+			util::stream_format( stream, "multu   %s,%s", s_cpugenreg[ INS_RS( op ) ], s_cpugenreg[ INS_RT( op ) ] );
+			break;
+		case FUNCT_DIV:
+			util::stream_format( stream, "div     %s,%s", s_cpugenreg[ INS_RS( op ) ], s_cpugenreg[ INS_RT( op ) ] );
+			break;
+		case FUNCT_DIVU:
+			util::stream_format( stream, "divu    %s,%s", s_cpugenreg[ INS_RS( op ) ], s_cpugenreg[ INS_RT( op ) ] );
+			break;
+		case FUNCT_ADD:
+			util::stream_format( stream, "add     %s,%s,%s", s_cpugenreg[ INS_RD( op ) ], s_cpugenreg[ INS_RS( op ) ], s_cpugenreg[ INS_RT( op ) ] );
+			break;
+		case FUNCT_ADDU:
+			util::stream_format( stream, "addu    %s,%s,%s", s_cpugenreg[ INS_RD( op ) ], s_cpugenreg[ INS_RS( op ) ], s_cpugenreg[ INS_RT( op ) ] );
+			break;
+		case FUNCT_SUB:
+			util::stream_format( stream, "sub     %s,%s,%s", s_cpugenreg[ INS_RD( op ) ], s_cpugenreg[ INS_RS( op ) ], s_cpugenreg[ INS_RT( op ) ] );
+			break;
+		case FUNCT_SUBU:
+			util::stream_format( stream, "subu    %s,%s,%s", s_cpugenreg[ INS_RD( op ) ], s_cpugenreg[ INS_RS( op ) ], s_cpugenreg[ INS_RT( op ) ] );
+			break;
+		case FUNCT_AND:
+			util::stream_format( stream, "and     %s,%s,%s", s_cpugenreg[ INS_RD( op ) ], s_cpugenreg[ INS_RS( op ) ], s_cpugenreg[ INS_RT( op ) ] );
+			break;
+		case FUNCT_OR:
+			util::stream_format( stream, "or      %s,%s,%s", s_cpugenreg[ INS_RD( op ) ], s_cpugenreg[ INS_RS( op ) ], s_cpugenreg[ INS_RT( op ) ] );
+			break;
+		case FUNCT_XOR:
+			util::stream_format( stream, "xor     %s,%s,%s", s_cpugenreg[ INS_RD( op ) ], s_cpugenreg[ INS_RS( op ) ], s_cpugenreg[ INS_RT( op ) ] );
+			break;
+		case FUNCT_NOR:
+			util::stream_format( stream, "nor     %s,%s,%s", s_cpugenreg[ INS_RD( op ) ], s_cpugenreg[ INS_RS( op ) ], s_cpugenreg[ INS_RT( op ) ] );
+			break;
+		case FUNCT_SLT:
+			util::stream_format( stream, "slt     %s,%s,%s", s_cpugenreg[ INS_RD( op ) ], s_cpugenreg[ INS_RS( op ) ], s_cpugenreg[ INS_RT( op ) ] );
+			break;
+		case FUNCT_SLTU:
+			util::stream_format( stream, "sltu    %s,%s,%s", s_cpugenreg[ INS_RD( op ) ], s_cpugenreg[ INS_RS( op ) ], s_cpugenreg[ INS_RT( op ) ] );
+>>>>>>> upstream/master
 			break;
 		}
 		break;
@@ -307,28 +460,45 @@ unsigned DasmPSXCPU( psxcpu_state *state, char *buffer, UINT32 pc, const UINT8 *
 		case RT_BLTZ:
 			if( INS_RT( op ) == RT_BLTZAL )
 			{
+<<<<<<< HEAD
 				sprintf( buffer, "bltzal  %s,$%08x", s_cpugenreg[ INS_RS( op ) ], relative_address( state, pc, op ) );
+=======
+				util::stream_format( stream, "bltzal  %s,$%08x", s_cpugenreg[ INS_RS( op ) ], relative_address( state, pc, op ) );
+>>>>>>> upstream/master
 				flags = DASMFLAG_STEP_OVER | DASMFLAG_STEP_OVER_EXTRA( 1 );
 			}
 			else
 			{
+<<<<<<< HEAD
 				sprintf( buffer, "bltz    %s,$%08x", s_cpugenreg[ INS_RS( op ) ], relative_address( state, pc, op ) );
+=======
+				util::stream_format( stream, "bltz    %s,$%08x", s_cpugenreg[ INS_RS( op ) ], relative_address( state, pc, op ) );
+>>>>>>> upstream/master
 			}
 			break;
 		case RT_BGEZ:
 			if( INS_RT( op ) == RT_BGEZAL )
 			{
+<<<<<<< HEAD
 				sprintf( buffer, "bgezal  %s,$%08x", s_cpugenreg[ INS_RS( op ) ], relative_address( state, pc, op ) );
+=======
+				util::stream_format( stream, "bgezal  %s,$%08x", s_cpugenreg[ INS_RS( op ) ], relative_address( state, pc, op ) );
+>>>>>>> upstream/master
 				flags = DASMFLAG_STEP_OVER | DASMFLAG_STEP_OVER_EXTRA( 1 );
 			}
 			else
 			{
+<<<<<<< HEAD
 				sprintf( buffer, "bgez    %s,$%08x", s_cpugenreg[ INS_RS( op ) ], relative_address( state, pc, op ) );
+=======
+				util::stream_format( stream, "bgez    %s,$%08x", s_cpugenreg[ INS_RS( op ) ], relative_address( state, pc, op ) );
+>>>>>>> upstream/master
 			}
 			break;
 		}
 		break;
 	case OP_J:
+<<<<<<< HEAD
 		sprintf( buffer, "j       $%08x", jump_address( state, pc, op ) );
 		break;
 	case OP_JAL:
@@ -370,11 +540,55 @@ unsigned DasmPSXCPU( psxcpu_state *state, char *buffer, UINT32 pc, const UINT8 *
 		break;
 	case OP_LUI:
 		sprintf( buffer, "lui     %s,%s", s_cpugenreg[ INS_RT( op ) ], upper_address( op, opram ) );
+=======
+		util::stream_format( stream, "j       $%08x", jump_address( state, pc, op ) );
+		break;
+	case OP_JAL:
+		util::stream_format( stream, "jal     $%08x", jump_address( state, pc, op ) );
+		flags = DASMFLAG_STEP_OVER | DASMFLAG_STEP_OVER_EXTRA( 1 );
+		break;
+	case OP_BEQ:
+		util::stream_format( stream, "beq     %s,%s,$%08x", s_cpugenreg[ INS_RS( op ) ], s_cpugenreg[ INS_RT( op ) ], relative_address( state, pc, op ) );
+		break;
+	case OP_BNE:
+		util::stream_format( stream, "bne     %s,%s,$%08x", s_cpugenreg[ INS_RS( op ) ], s_cpugenreg[ INS_RT( op ) ], relative_address( state, pc, op ) );
+		break;
+	case OP_BLEZ:
+		util::stream_format( stream, "blez    %s,%s,$%08x", s_cpugenreg[ INS_RS( op ) ], s_cpugenreg[ INS_RT( op ) ], relative_address( state, pc, op ) );
+		break;
+	case OP_BGTZ:
+		util::stream_format( stream, "bgtz    %s,%s,$%08x", s_cpugenreg[ INS_RS( op ) ], s_cpugenreg[ INS_RT( op ) ], relative_address( state, pc, op ) );
+		break;
+	case OP_ADDI:
+		util::stream_format( stream, "addi    %s,%s,%s", s_cpugenreg[ INS_RT( op ) ], s_cpugenreg[ INS_RS( op ) ], make_signed_hex_str_16( INS_IMMEDIATE( op ) ) );
+		break;
+	case OP_ADDIU:
+		util::stream_format( stream, "addiu   %s,%s,%s", s_cpugenreg[ INS_RT( op ) ], s_cpugenreg[ INS_RS( op ) ], make_signed_hex_str_16( INS_IMMEDIATE( op ) ) );
+		break;
+	case OP_SLTI:
+		util::stream_format( stream, "slti    %s,%s,%s", s_cpugenreg[ INS_RT( op ) ], s_cpugenreg[ INS_RS( op ) ], make_signed_hex_str_16( INS_IMMEDIATE( op ) ) );
+		break;
+	case OP_SLTIU:
+		util::stream_format( stream, "sltiu   %s,%s,%s", s_cpugenreg[ INS_RT( op ) ], s_cpugenreg[ INS_RS( op ) ], make_signed_hex_str_16( INS_IMMEDIATE( op ) ) );
+		break;
+	case OP_ANDI:
+		util::stream_format( stream, "andi    %s,%s,$%04x", s_cpugenreg[ INS_RT( op ) ], s_cpugenreg[ INS_RS( op ) ], INS_IMMEDIATE( op ) );
+		break;
+	case OP_ORI:
+		util::stream_format( stream, "ori     %s,%s,$%04x", s_cpugenreg[ INS_RT( op ) ], s_cpugenreg[ INS_RS( op ) ], INS_IMMEDIATE( op ) );
+		break;
+	case OP_XORI:
+		util::stream_format( stream, "xori    %s,%s,$%04x", s_cpugenreg[ INS_RT( op ) ], s_cpugenreg[ INS_RS( op ) ], INS_IMMEDIATE( op ) );
+		break;
+	case OP_LUI:
+		util::stream_format( stream, "lui     %s,%s", s_cpugenreg[ INS_RT( op ) ], upper_address( op, opram ) );
+>>>>>>> upstream/master
 		break;
 	case OP_COP0:
 		switch( INS_RS( op ) )
 		{
 		case RS_MFC:
+<<<<<<< HEAD
 			sprintf( buffer, "mfc0    %s,%s",  s_cpugenreg[ INS_RT( op ) ], s_cp0genreg[ INS_RD( op ) ] );
 			break;
 		case RS_CFC:
@@ -385,16 +599,35 @@ unsigned DasmPSXCPU( psxcpu_state *state, char *buffer, UINT32 pc, const UINT8 *
 			break;
 		case RS_CTC:
 			sprintf( buffer, "!ctc0    %s,%s",  s_cpugenreg[ INS_RT( op ) ], s_cp0ctlreg[ INS_RD( op ) ] );
+=======
+			util::stream_format( stream, "mfc0    %s,%s",  s_cpugenreg[ INS_RT( op ) ], s_cp0genreg[ INS_RD( op ) ] );
+			break;
+		case RS_CFC:
+			util::stream_format( stream, "!cfc0    %s,%s",  s_cpugenreg[ INS_RT( op ) ], s_cp0ctlreg[ INS_RD( op ) ] );
+			break;
+		case RS_MTC:
+			util::stream_format( stream, "mtc0    %s,%s",  s_cpugenreg[ INS_RT( op ) ], s_cp0genreg[ INS_RD( op ) ] );
+			break;
+		case RS_CTC:
+			util::stream_format( stream, "!ctc0    %s,%s",  s_cpugenreg[ INS_RT( op ) ], s_cp0ctlreg[ INS_RD( op ) ] );
+>>>>>>> upstream/master
 			break;
 		case RS_BC:
 		case RS_BC_ALT:
 			switch( INS_BC( op ) )
 			{
 			case BC_BCF:
+<<<<<<< HEAD
 				sprintf( buffer, "bc0f    $%08x", relative_address( state, pc, op ) );
 				break;
 			case BC_BCT:
 				sprintf( buffer, "bc0t    $%08x", relative_address( state, pc, op ) );
+=======
+				util::stream_format( stream, "bc0f    $%08x", relative_address( state, pc, op ) );
+				break;
+			case BC_BCT:
+				util::stream_format( stream, "bc0t    $%08x", relative_address( state, pc, op ) );
+>>>>>>> upstream/master
 				break;
 			}
 			break;
@@ -402,6 +635,7 @@ unsigned DasmPSXCPU( psxcpu_state *state, char *buffer, UINT32 pc, const UINT8 *
 			switch( INS_CO( op ) )
 			{
 			case 1:
+<<<<<<< HEAD
 				sprintf( buffer, "cop0    $%07x", INS_COFUN( op ) );
 
 				switch( INS_CF( op ) )
@@ -420,6 +654,27 @@ unsigned DasmPSXCPU( psxcpu_state *state, char *buffer, UINT32 pc, const UINT8 *
 					break;
 				case CF_RFE:
 					sprintf( buffer, "rfe" );
+=======
+				switch( INS_CF( op ) )
+				{
+				case CF_TLBR:
+					util::stream_format( stream, "!tlbr" );
+					break;
+				case CF_TLBWI:
+					util::stream_format( stream, "!tlbwi" );
+					break;
+				case CF_TLBWR:
+					util::stream_format( stream, "!tlbwr" );
+					break;
+				case CF_TLBP:
+					util::stream_format( stream, "!tlbp" );
+					break;
+				case CF_RFE:
+					util::stream_format( stream, "rfe" );
+					break;
+				default:
+					util::stream_format(stream, "cop0    $%07x", INS_COFUN(op));
+>>>>>>> upstream/master
 					break;
 				}
 				break;
@@ -431,6 +686,7 @@ unsigned DasmPSXCPU( psxcpu_state *state, char *buffer, UINT32 pc, const UINT8 *
 		switch( INS_RS( op ) )
 		{
 		case RS_MFC:
+<<<<<<< HEAD
 			sprintf( buffer, "mfc1    %s,%s",  s_cpugenreg[ INS_RT( op ) ], s_cp1genreg[ INS_RD( op ) ] );
 			break;
 		case RS_CFC:
@@ -441,16 +697,35 @@ unsigned DasmPSXCPU( psxcpu_state *state, char *buffer, UINT32 pc, const UINT8 *
 			break;
 		case RS_CTC:
 			sprintf( buffer, "ctc1    %s,%s",  s_cpugenreg[ INS_RT( op ) ], s_cp1ctlreg[ INS_RD( op ) ] );
+=======
+			util::stream_format( stream, "mfc1    %s,%s",  s_cpugenreg[ INS_RT( op ) ], s_cp1genreg[ INS_RD( op ) ] );
+			break;
+		case RS_CFC:
+			util::stream_format( stream, "cfc1    %s,%s",  s_cpugenreg[ INS_RT( op ) ], s_cp1ctlreg[ INS_RD( op ) ] );
+			break;
+		case RS_MTC:
+			util::stream_format( stream, "mtc1    %s,%s",  s_cpugenreg[ INS_RT( op ) ], s_cp1genreg[ INS_RD( op ) ] );
+			break;
+		case RS_CTC:
+			util::stream_format( stream, "ctc1    %s,%s",  s_cpugenreg[ INS_RT( op ) ], s_cp1ctlreg[ INS_RD( op ) ] );
+>>>>>>> upstream/master
 			break;
 		case RS_BC:
 		case RS_BC_ALT:
 			switch( INS_BC( op ) )
 			{
 			case BC_BCF:
+<<<<<<< HEAD
 				sprintf( buffer, "bc1f    $%08x", relative_address( state, pc, op ) );
 				break;
 			case BC_BCT:
 				sprintf( buffer, "bc1t    $%08x", relative_address( state, pc, op ) );
+=======
+				util::stream_format( stream, "bc1f    $%08x", relative_address( state, pc, op ) );
+				break;
+			case BC_BCT:
+				util::stream_format( stream, "bc1t    $%08x", relative_address( state, pc, op ) );
+>>>>>>> upstream/master
 				break;
 			}
 			break;
@@ -458,7 +733,11 @@ unsigned DasmPSXCPU( psxcpu_state *state, char *buffer, UINT32 pc, const UINT8 *
 			switch( INS_CO( op ) )
 			{
 			case 1:
+<<<<<<< HEAD
 				sprintf( buffer, "cop1    $%07x", INS_COFUN( op ) );
+=======
+				util::stream_format( stream, "cop1    $%07x", INS_COFUN( op ) );
+>>>>>>> upstream/master
 				break;
 			}
 			break;
@@ -468,6 +747,7 @@ unsigned DasmPSXCPU( psxcpu_state *state, char *buffer, UINT32 pc, const UINT8 *
 		switch( INS_RS( op ) )
 		{
 		case RS_MFC:
+<<<<<<< HEAD
 			sprintf( buffer, "mfc2    %s,%s",  s_cpugenreg[ INS_RT( op ) ], s_cp2genreg[ INS_RD( op ) ] );
 			break;
 		case RS_CFC:
@@ -478,16 +758,35 @@ unsigned DasmPSXCPU( psxcpu_state *state, char *buffer, UINT32 pc, const UINT8 *
 			break;
 		case RS_CTC:
 			sprintf( buffer, "ctc2    %s,%s",  s_cpugenreg[ INS_RT( op ) ], s_cp2ctlreg[ INS_RD( op ) ] );
+=======
+			util::stream_format( stream, "mfc2    %s,%s",  s_cpugenreg[ INS_RT( op ) ], s_cp2genreg[ INS_RD( op ) ] );
+			break;
+		case RS_CFC:
+			util::stream_format( stream, "cfc2    %s,%s",  s_cpugenreg[ INS_RT( op ) ], s_cp2ctlreg[ INS_RD( op ) ] );
+			break;
+		case RS_MTC:
+			util::stream_format( stream, "mtc2    %s,%s",  s_cpugenreg[ INS_RT( op ) ], s_cp2genreg[ INS_RD( op ) ] );
+			break;
+		case RS_CTC:
+			util::stream_format( stream, "ctc2    %s,%s",  s_cpugenreg[ INS_RT( op ) ], s_cp2ctlreg[ INS_RD( op ) ] );
+>>>>>>> upstream/master
 			break;
 		case RS_BC:
 		case RS_BC_ALT:
 			switch( INS_BC( op ) )
 			{
 			case BC_BCF:
+<<<<<<< HEAD
 				sprintf( buffer, "bc2f    $%08x", relative_address( state, pc, op ) );
 				break;
 			case BC_BCT:
 				sprintf( buffer, "bc2t    $%08x", relative_address( state, pc, op ) );
+=======
+				util::stream_format( stream, "bc2f    $%08x", relative_address( state, pc, op ) );
+				break;
+			case BC_BCT:
+				util::stream_format( stream, "bc2t    $%08x", relative_address( state, pc, op ) );
+>>>>>>> upstream/master
 				break;
 			}
 			break;
@@ -495,12 +794,16 @@ unsigned DasmPSXCPU( psxcpu_state *state, char *buffer, UINT32 pc, const UINT8 *
 			switch( INS_CO( op ) )
 			{
 			case 1:
+<<<<<<< HEAD
 				sprintf( buffer, "cop2    $%07x", INS_COFUN( op ) );
 
+=======
+>>>>>>> upstream/master
 				switch( GTE_FUNCT( op ) )
 				{
 				case 0x00: // drop through to RTPS
 				case 0x01:
+<<<<<<< HEAD
 					sprintf( buffer, "rtps%s%s", s_gtesf[ GTE_SF( op ) ], s_gtelm[ GTE_LM( op ) ] );
 					break;
 				case 0x06:
@@ -567,6 +870,77 @@ unsigned DasmPSXCPU( psxcpu_state *state, char *buffer, UINT32 pc, const UINT8 *
 					break;
 				case 0x3f:
 					sprintf( buffer, "ncct%s%s", s_gtesf[ GTE_SF( op ) ], s_gtelm[ GTE_LM( op ) ] );
+=======
+					util::stream_format( stream, "rtps%s%s", s_gtesf[ GTE_SF( op ) ], s_gtelm[ GTE_LM( op ) ] );
+					break;
+				case 0x06:
+					util::stream_format( stream, "nclip" );
+					break;
+				case 0x0c:
+					util::stream_format( stream, "op%s%s", s_gtesf[ GTE_SF( op ) ], s_gtelm[ GTE_LM( op ) ] );
+					break;
+				case 0x10:
+					util::stream_format( stream, "dpcs%s%s", s_gtesf[ GTE_SF( op ) ], s_gtelm[ GTE_LM( op ) ] );
+					break;
+				case 0x11:
+					util::stream_format( stream, "intpl%s%s", s_gtesf[ GTE_SF( op ) ], s_gtelm[ GTE_LM( op ) ] );
+					break;
+				case 0x12:
+					util::stream_format( stream, "mvmva%s%s %s + %s * %s", s_gtesf[ GTE_SF( op ) ], s_gtelm[ GTE_LM( op ) ],
+						s_gtecv[ GTE_CV( op ) ], s_gtemx[ GTE_MX( op ) ], s_gtev[ GTE_V( op ) ] );
+					break;
+				case 0x13:
+					util::stream_format( stream, "ncds%s%s", s_gtesf[ GTE_SF( op ) ], s_gtelm[ GTE_LM( op ) ] );
+					break;
+				case 0x14:
+					util::stream_format( stream, "cdp%s%s", s_gtesf[ GTE_SF( op ) ], s_gtelm[ GTE_LM( op ) ] );
+					break;
+				case 0x16:
+					util::stream_format( stream, "ncdt%s%s", s_gtesf[ GTE_SF( op ) ], s_gtelm[ GTE_LM( op ) ] );
+					break;
+				case 0x1b:
+					util::stream_format( stream, "nccs%s%s", s_gtesf[ GTE_SF( op ) ], s_gtelm[ GTE_LM( op ) ] );
+					break;
+				case 0x1c:
+					util::stream_format( stream, "cc%s%s", s_gtesf[ GTE_SF( op ) ], s_gtelm[ GTE_LM( op ) ] );
+					break;
+				case 0x1e:
+					util::stream_format( stream, "ncs%s%s", s_gtesf[ GTE_SF( op ) ], s_gtelm[ GTE_LM( op ) ] );
+					break;
+				case 0x20:
+					util::stream_format( stream, "nct%s%s", s_gtesf[ GTE_SF( op ) ], s_gtelm[ GTE_LM( op ) ] );
+					break;
+				case 0x28:
+					util::stream_format( stream, "sqr%s%s", s_gtesf[ GTE_SF( op ) ], s_gtelm[ GTE_LM( op ) ] );
+					break;
+				case 0x1a: // end of NCDT
+				case 0x29:
+					util::stream_format( stream, "dpcl%s%s", s_gtesf[ GTE_SF( op ) ], s_gtelm[ GTE_LM( op ) ] );
+					break;
+				case 0x2a:
+					util::stream_format( stream, "dpct%s%s", s_gtesf[ GTE_SF( op ) ], s_gtelm[ GTE_LM( op ) ] );
+					break;
+				case 0x2d:
+					util::stream_format( stream, "avsz3" );
+					break;
+				case 0x2e:
+					util::stream_format( stream, "avsz4" );
+					break;
+				case 0x30:
+					util::stream_format( stream, "rtpt%s%s", s_gtesf[ GTE_SF( op ) ], s_gtelm[ GTE_LM( op ) ] );
+					break;
+				case 0x3d:
+					util::stream_format( stream, "gpf%s%s", s_gtesf[ GTE_SF( op ) ], s_gtelm[ GTE_LM( op ) ] );
+					break;
+				case 0x3e:
+					util::stream_format( stream, "gpl%s%s", s_gtesf[ GTE_SF( op ) ], s_gtelm[ GTE_LM( op ) ] );
+					break;
+				case 0x3f:
+					util::stream_format( stream, "ncct%s%s", s_gtesf[ GTE_SF( op ) ], s_gtelm[ GTE_LM( op ) ] );
+					break;
+				default:
+					util::stream_format(stream, "cop2    $%07x", INS_COFUN(op));
+>>>>>>> upstream/master
 					break;
 				}
 			}
@@ -577,6 +951,7 @@ unsigned DasmPSXCPU( psxcpu_state *state, char *buffer, UINT32 pc, const UINT8 *
 		switch( INS_RS( op ) )
 		{
 		case RS_MFC:
+<<<<<<< HEAD
 			sprintf( buffer, "mfc3    %s,%s",  s_cpugenreg[ INS_RT( op ) ], s_cp3genreg[ INS_RD( op ) ] );
 			break;
 		case RS_CFC:
@@ -587,16 +962,35 @@ unsigned DasmPSXCPU( psxcpu_state *state, char *buffer, UINT32 pc, const UINT8 *
 			break;
 		case RS_CTC:
 			sprintf( buffer, "ctc3    %s,%s",  s_cpugenreg[ INS_RT( op ) ], s_cp3ctlreg[ INS_RD( op ) ] );
+=======
+			util::stream_format( stream, "mfc3    %s,%s",  s_cpugenreg[ INS_RT( op ) ], s_cp3genreg[ INS_RD( op ) ] );
+			break;
+		case RS_CFC:
+			util::stream_format( stream, "cfc3    %s,%s",  s_cpugenreg[ INS_RT( op ) ], s_cp3ctlreg[ INS_RD( op ) ] );
+			break;
+		case RS_MTC:
+			util::stream_format( stream, "mtc3    %s,%s",  s_cpugenreg[ INS_RT( op ) ], s_cp3genreg[ INS_RD( op ) ] );
+			break;
+		case RS_CTC:
+			util::stream_format( stream, "ctc3    %s,%s",  s_cpugenreg[ INS_RT( op ) ], s_cp3ctlreg[ INS_RD( op ) ] );
+>>>>>>> upstream/master
 			break;
 		case RS_BC:
 		case RS_BC_ALT:
 			switch( INS_BC( op ) )
 			{
 			case BC_BCF:
+<<<<<<< HEAD
 				sprintf( buffer, "bc3f    $%08x", relative_address( state, pc, op ) );
 				break;
 			case BC_BCT:
 				sprintf( buffer, "bc3t    $%08x", relative_address( state, pc, op ) );
+=======
+				util::stream_format( stream, "bc3f    $%08x", relative_address( state, pc, op ) );
+				break;
+			case BC_BCT:
+				util::stream_format( stream, "bc3t    $%08x", relative_address( state, pc, op ) );
+>>>>>>> upstream/master
 				break;
 			}
 			break;
@@ -604,13 +998,18 @@ unsigned DasmPSXCPU( psxcpu_state *state, char *buffer, UINT32 pc, const UINT8 *
 			switch( INS_CO( op ) )
 			{
 			case 1:
+<<<<<<< HEAD
 				sprintf( buffer, "cop3    $%07x", INS_COFUN( op ) );
+=======
+				util::stream_format( stream, "cop3    $%07x", INS_COFUN( op ) );
+>>>>>>> upstream/master
 				break;
 			}
 			break;
 		}
 		break;
 	case OP_LB:
+<<<<<<< HEAD
 		sprintf( buffer, "lb      %s,%s", s_cpugenreg[ INS_RT( op ) ], effective_address( state, pc, op ) );
 		break;
 	case OP_LH:
@@ -677,4 +1076,80 @@ unsigned DasmPSXCPU( psxcpu_state *state, char *buffer, UINT32 pc, const UINT8 *
 CPU_DISASSEMBLE( psxcpu_generic )
 {
 	return DasmPSXCPU( NULL, buffer, pc, opram );
+=======
+		util::stream_format( stream, "lb      %s,%s", s_cpugenreg[ INS_RT( op ) ], effective_address( state, pc, op ) );
+		break;
+	case OP_LH:
+		util::stream_format( stream, "lh      %s,%s", s_cpugenreg[ INS_RT( op ) ], effective_address( state, pc, op ) );
+		break;
+	case OP_LWL:
+		util::stream_format( stream, "lwl     %s,%s", s_cpugenreg[ INS_RT( op ) ], effective_address( state, pc, op ) );
+		break;
+	case OP_LW:
+		util::stream_format( stream, "lw      %s,%s", s_cpugenreg[ INS_RT( op ) ], effective_address( state, pc, op ) );
+		break;
+	case OP_LBU:
+		util::stream_format( stream, "lbu     %s,%s", s_cpugenreg[ INS_RT( op ) ], effective_address( state, pc, op ) );
+		break;
+	case OP_LHU:
+		util::stream_format( stream, "lhu     %s,%s", s_cpugenreg[ INS_RT( op ) ], effective_address( state, pc, op ) );
+		break;
+	case OP_LWR:
+		util::stream_format( stream, "lwr     %s,%s", s_cpugenreg[ INS_RT( op ) ], effective_address( state, pc, op ) );
+		break;
+	case OP_SB:
+		util::stream_format( stream, "sb      %s,%s", s_cpugenreg[ INS_RT( op ) ], effective_address( state, pc, op ) );
+		break;
+	case OP_SH:
+		util::stream_format( stream, "sh      %s,%s", s_cpugenreg[ INS_RT( op ) ], effective_address( state, pc, op ) );
+		break;
+	case OP_SWL:
+		util::stream_format( stream, "swl     %s,%s", s_cpugenreg[ INS_RT( op ) ], effective_address( state, pc, op ) );
+		break;
+	case OP_SW:
+		util::stream_format( stream, "sw      %s,%s", s_cpugenreg[ INS_RT( op ) ], effective_address( state, pc, op ) );
+		break;
+	case OP_SWR:
+		util::stream_format( stream, "swr     %s,%s", s_cpugenreg[ INS_RT( op ) ], effective_address( state, pc, op ) );
+		break;
+	case OP_LWC0:
+		util::stream_format( stream, "lwc0    %s,%s", s_cp0genreg[ INS_RT( op ) ], effective_address( state, pc, op ) );
+		break;
+	case OP_LWC1:
+		util::stream_format( stream, "lwc1    %s,%s", s_cp1genreg[ INS_RT( op ) ], effective_address( state, pc, op ) );
+		break;
+	case OP_LWC2:
+		util::stream_format( stream, "lwc2    %s,%s", s_cp2genreg[ INS_RT( op ) ], effective_address( state, pc, op ) );
+		break;
+	case OP_LWC3:
+		util::stream_format( stream, "lwc3    %s,%s", s_cp2genreg[ INS_RT( op ) ], effective_address( state, pc, op ) );
+		break;
+	case OP_SWC0:
+		util::stream_format( stream, "swc0    %s,%s", s_cp0genreg[ INS_RT( op ) ], effective_address( state, pc, op ) );
+		break;
+	case OP_SWC1:
+		util::stream_format( stream, "swc1    %s,%s", s_cp1genreg[ INS_RT( op ) ], effective_address( state, pc, op ) );
+		break;
+	case OP_SWC2:
+		util::stream_format( stream, "swc2    %s,%s", s_cp2genreg[ INS_RT( op ) ], effective_address( state, pc, op ) );
+		break;
+	case OP_SWC3:
+		util::stream_format( stream, "swc3    %s,%s", s_cp2genreg[ INS_RT( op ) ], effective_address( state, pc, op ) );
+		break;
+	}
+
+	// fall back if we have not emitted anything
+	if (current_pos == stream.tellp())
+	{
+		util::stream_format(stream, "dw      $%08x", op);
+	}
+
+	return ( opram - oldopram ) | flags | DASMFLAG_SUPPORTED;
+}
+
+
+CPU_DISASSEMBLE( psxcpu_generic )
+{
+	return DasmPSXCPU( nullptr, stream, pc, opram );
+>>>>>>> upstream/master
 }

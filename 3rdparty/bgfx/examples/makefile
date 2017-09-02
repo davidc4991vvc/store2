@@ -1,6 +1,11 @@
 #
+<<<<<<< HEAD
 # Copyright 2011-2015 Branimir Karadzic. All rights reserved.
 # License: http://www.opensource.org/licenses/BSD-2-Clause
+=======
+# Copyright 2011-2017 Branimir Karadzic. All rights reserved.
+# License: https://github.com/bkaradzic/bgfx#license-bsd-2-clause
+>>>>>>> upstream/master
 #
 
 rebuild:
@@ -27,6 +32,7 @@ rebuild:
 	@make -s --no-print-directory rebuild -C 21-deferred
 	@make -s --no-print-directory rebuild -C 23-vectordisplay
 	@make -s --no-print-directory rebuild -C 24-nbody
+<<<<<<< HEAD
 	@make -s --no-print-directory rebuild -C common/font
 	@make -s --no-print-directory rebuild -C common/imgui
 	@make -s --no-print-directory rebuild -C common/nanovg
@@ -50,3 +56,16 @@ metal:
 	@make -s --no-print-directory TARGET=5 -C 21-deferred
 	@make -s --no-print-directory TARGET=5 -C 23-vectordisplay
 	@make -s --no-print-directory TARGET=5 -C 24-nbody
+=======
+#	@make -s --no-print-directory rebuild -C 25-c99
+#	@make -s --no-print-directory rebuild -C 26-occlusion
+	@make -s --no-print-directory rebuild -C 27-terrain
+	@make -s --no-print-directory rebuild -C 28-wireframe
+	@make -s --no-print-directory rebuild -C 30-picking
+	@make -s --no-print-directory rebuild -C 31-rsm
+	@make -s --no-print-directory rebuild -C common/debugdraw
+	@make -s --no-print-directory rebuild -C common/font
+	@make -s --no-print-directory rebuild -C common/imgui
+	@make -s --no-print-directory rebuild -C common/nanovg
+	@make -s --no-print-directory rebuild -C common/ps
+>>>>>>> upstream/master

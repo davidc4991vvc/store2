@@ -10,13 +10,18 @@
 #ifndef NLD_SWITCHES_H_
 #define NLD_SWITCHES_H_
 
+<<<<<<< HEAD
 #include "nl_base.h"
 #include "nld_twoterm.h"
+=======
+#include "../nl_setup.h"
+>>>>>>> upstream/master
 
 // ----------------------------------------------------------------------------------------
 // Macros
 // ----------------------------------------------------------------------------------------
 
+<<<<<<< HEAD
 #define SWITCH(_name)                                                              \
 		NET_REGISTER_DEV(SWITCH, _name)
 
@@ -42,5 +47,12 @@ NETLIB_DEVICE_WITH_PARAMS(switch2,
 );
 
 NETLIB_NAMESPACE_DEVICES_END()
+=======
+#define SWITCH(name)                                                              \
+		NET_REGISTER_DEV(SWITCH, name)
+
+#define SWITCH2(name)                                                              \
+		NET_REGISTER_DEV(SWITCH2, name)
+>>>>>>> upstream/master
 
 #endif /* NLD_SWITCHES_H_ */

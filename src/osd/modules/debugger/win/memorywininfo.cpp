@@ -6,6 +6,10 @@
 //
 //============================================================
 
+<<<<<<< HEAD
+=======
+#include "emu.h"
+>>>>>>> upstream/master
 #include "memorywininfo.h"
 
 #include "debugviewinfo.h"
@@ -16,14 +20,23 @@
 
 
 memorywin_info::memorywin_info(debugger_windows_interface &debugger) :
+<<<<<<< HEAD
 	editwin_info(debugger, false, "Memory", NULL),
 	m_combownd(NULL)
+=======
+	editwin_info(debugger, false, "Memory", nullptr),
+	m_combownd(nullptr)
+>>>>>>> upstream/master
 {
 	if (!window())
 		return;
 
 	m_views[0].reset(global_alloc(memoryview_info(debugger, *this, window())));
+<<<<<<< HEAD
 	if ((m_views[0] == NULL) || !m_views[0]->is_valid())
+=======
+	if ((m_views[0] == nullptr) || !m_views[0]->is_valid())
+>>>>>>> upstream/master
 	{
 		m_views[0].reset();
 		return;
@@ -35,6 +48,12 @@ memorywin_info::memorywin_info(debugger_windows_interface &debugger) :
 	AppendMenu(optionsmenu, MF_ENABLED, ID_2_BYTE_CHUNKS, TEXT("2-byte chunks\tCtrl+2"));
 	AppendMenu(optionsmenu, MF_ENABLED, ID_4_BYTE_CHUNKS, TEXT("4-byte chunks\tCtrl+4"));
 	AppendMenu(optionsmenu, MF_ENABLED, ID_8_BYTE_CHUNKS, TEXT("8-byte chunks\tCtrl+8"));
+<<<<<<< HEAD
+=======
+	AppendMenu(optionsmenu, MF_ENABLED, ID_FLOATING_POINT_32BIT, TEXT("32 bit floating point\tCtrl+9"));
+	AppendMenu(optionsmenu, MF_ENABLED, ID_FLOATING_POINT_64BIT, TEXT("64 bit floating point"));
+	AppendMenu(optionsmenu, MF_ENABLED, ID_FLOATING_POINT_80BIT, TEXT("80 bit floating point"));
+>>>>>>> upstream/master
 	AppendMenu(optionsmenu, MF_DISABLED | MF_SEPARATOR, 0, TEXT(""));
 	AppendMenu(optionsmenu, MF_ENABLED, ID_LOGICAL_ADDRESSES, TEXT("Logical Addresses\tCtrl+L"));
 	AppendMenu(optionsmenu, MF_ENABLED, ID_PHYSICAL_ADDRESSES, TEXT("Physical Addresses\tCtrl+Y"));
@@ -97,6 +116,13 @@ bool memorywin_info::handle_key(WPARAM wparam, LPARAM lparam)
 			SendMessage(window(), WM_COMMAND, ID_8_BYTE_CHUNKS, 0);
 			return true;
 
+<<<<<<< HEAD
+=======
+		case '9':
+			SendMessage(window(), WM_COMMAND, ID_FLOATING_POINT_32BIT, 0);
+			return true;
+
+>>>>>>> upstream/master
 		case 'L':
 			SendMessage(window(), WM_COMMAND, ID_LOGICAL_ADDRESSES, 0);
 			return true;
@@ -172,10 +198,20 @@ void memorywin_info::update_menu()
 
 	memoryview_info *const memview = downcast<memoryview_info *>(m_views[0].get());
 	HMENU const menu = GetMenu(window());
+<<<<<<< HEAD
 	CheckMenuItem(menu, ID_1_BYTE_CHUNKS, MF_BYCOMMAND | (memview->bytes_per_chunk() == 1 ? MF_CHECKED : MF_UNCHECKED));
 	CheckMenuItem(menu, ID_2_BYTE_CHUNKS, MF_BYCOMMAND | (memview->bytes_per_chunk() == 2 ? MF_CHECKED : MF_UNCHECKED));
 	CheckMenuItem(menu, ID_4_BYTE_CHUNKS, MF_BYCOMMAND | (memview->bytes_per_chunk() == 4 ? MF_CHECKED : MF_UNCHECKED));
 	CheckMenuItem(menu, ID_8_BYTE_CHUNKS, MF_BYCOMMAND | (memview->bytes_per_chunk() == 8 ? MF_CHECKED : MF_UNCHECKED));
+=======
+	CheckMenuItem(menu, ID_1_BYTE_CHUNKS, MF_BYCOMMAND | (memview->data_format() == 1 ? MF_CHECKED : MF_UNCHECKED));
+	CheckMenuItem(menu, ID_2_BYTE_CHUNKS, MF_BYCOMMAND | (memview->data_format() == 2 ? MF_CHECKED : MF_UNCHECKED));
+	CheckMenuItem(menu, ID_4_BYTE_CHUNKS, MF_BYCOMMAND | (memview->data_format() == 4 ? MF_CHECKED : MF_UNCHECKED));
+	CheckMenuItem(menu, ID_8_BYTE_CHUNKS, MF_BYCOMMAND | (memview->data_format() == 8 ? MF_CHECKED : MF_UNCHECKED));
+	CheckMenuItem(menu, ID_FLOATING_POINT_32BIT, MF_BYCOMMAND | (memview->data_format() == 9 ? MF_CHECKED : MF_UNCHECKED));
+	CheckMenuItem(menu, ID_FLOATING_POINT_64BIT, MF_BYCOMMAND | (memview->data_format() == 10 ? MF_CHECKED : MF_UNCHECKED));
+	CheckMenuItem(menu, ID_FLOATING_POINT_80BIT, MF_BYCOMMAND | (memview->data_format() == 11 ? MF_CHECKED : MF_UNCHECKED));
+>>>>>>> upstream/master
 	CheckMenuItem(menu, ID_LOGICAL_ADDRESSES, MF_BYCOMMAND | (memview->physical() ? MF_UNCHECKED : MF_CHECKED));
 	CheckMenuItem(menu, ID_PHYSICAL_ADDRESSES, MF_BYCOMMAND | (memview->physical() ? MF_CHECKED : MF_UNCHECKED));
 	CheckMenuItem(menu, ID_REVERSE_VIEW, MF_BYCOMMAND | (memview->reverse() ? MF_CHECKED : MF_UNCHECKED));
@@ -209,6 +245,7 @@ bool memorywin_info::handle_command(WPARAM wparam, LPARAM lparam)
 		switch (LOWORD(wparam))
 		{
 		case ID_1_BYTE_CHUNKS:
+<<<<<<< HEAD
 			memview->set_bytes_per_chunk(1);
 			return true;
 
@@ -222,6 +259,33 @@ bool memorywin_info::handle_command(WPARAM wparam, LPARAM lparam)
 
 		case ID_8_BYTE_CHUNKS:
 			memview->set_bytes_per_chunk(8);
+=======
+			memview->set_data_format(1);
+			return true;
+
+		case ID_2_BYTE_CHUNKS:
+			memview->set_data_format(2);
+			return true;
+
+		case ID_4_BYTE_CHUNKS:
+			memview->set_data_format(4);
+			return true;
+
+		case ID_8_BYTE_CHUNKS:
+			memview->set_data_format(8);
+			return true;
+
+		case ID_FLOATING_POINT_32BIT:
+			memview->set_data_format(9);
+			return true;
+
+		case ID_FLOATING_POINT_64BIT:
+			memview->set_data_format(10);
+			return true;
+
+		case ID_FLOATING_POINT_80BIT:
+			memview->set_data_format(11);
+>>>>>>> upstream/master
 			return true;
 
 		case ID_LOGICAL_ADDRESSES:
@@ -260,7 +324,11 @@ void memorywin_info::draw_contents(HDC dc)
 }
 
 
+<<<<<<< HEAD
 void memorywin_info::process_string(char const *string)
+=======
+void memorywin_info::process_string(const std::string &string)
+>>>>>>> upstream/master
 {
 	// set the string to the memory view
 	downcast<memoryview_info *>(m_views[0].get())->set_expression(string);

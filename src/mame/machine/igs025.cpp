@@ -16,12 +16,18 @@
 #include "igs025.h"
 
 
+<<<<<<< HEAD
 igs025_device::igs025_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
 	: device_t(mconfig, IGS025, "IGS025", tag, owner, clock, "igs_025_022", __FILE__)
+=======
+igs025_device::igs025_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: device_t(mconfig, IGS025, tag, owner, clock)
+>>>>>>> upstream/master
 {
 	m_execute_external =  igs025_execute_external(FUNC(igs025_device::no_callback_setup), this);
 }
 
+<<<<<<< HEAD
 void igs025_device::device_config_complete()
 {
 }
@@ -30,6 +36,8 @@ void igs025_device::device_validity_check(validity_checker &valid) const
 {
 }
 
+=======
+>>>>>>> upstream/master
 void igs025_device::no_callback_setup()
 {
 	printf("igs025 trigger external callback with no external callback setup\n");
@@ -198,7 +206,11 @@ WRITE16_MEMBER(igs025_device::olds_w )
 			case 0x26:
 			case 0x27:
 				m_kb_ptr++;
+<<<<<<< HEAD
 //				killbld_protection_calculate_hold(m_kb_cmd & 0x0f, data & 0xff);
+=======
+				killbld_protection_calculate_hold(m_kb_cmd & 0x0f, data & 0xff);
+>>>>>>> upstream/master
 			break;
 
 		//  default:
@@ -255,6 +267,7 @@ WRITE16_MEMBER(igs025_device::drgw2_d80000_protection_w )
 /* READ */
 /****************************************/
 
+<<<<<<< HEAD
 READ16_MEMBER(igs025_device::olds_r)
 {
 	if (offset)
@@ -281,6 +294,8 @@ READ16_MEMBER(igs025_device::olds_r)
 	return 0;
 }
 
+=======
+>>>>>>> upstream/master
 READ16_MEMBER(igs025_device::killbld_igs025_prot_r)
 {
 	if (offset)
@@ -365,7 +380,11 @@ void igs025_device::killbld_protection_calculate_hold(int y, int z)
 
 void igs025_device::killbld_protection_calculate_hilo()
 {
+<<<<<<< HEAD
 	UINT8 source;
+=======
+	uint8_t source;
+>>>>>>> upstream/master
 
 	m_kb_prot_hilo_select++;
 
@@ -386,8 +405,12 @@ void igs025_device::killbld_protection_calculate_hilo()
 }
 
 
+<<<<<<< HEAD
 
 
 
 
 const device_type IGS025 = &device_creator<igs025_device>;
+=======
+DEFINE_DEVICE_TYPE(IGS025, igs025_device, "igs025", "IGS025")
+>>>>>>> upstream/master

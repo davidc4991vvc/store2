@@ -30,7 +30,11 @@ TODO:
 //**************************************************************************
 
 // device type definition
+<<<<<<< HEAD
 const device_type MB_VCU = &device_creator<mb_vcu_device>;
+=======
+DEFINE_DEVICE_TYPE(MB_VCU, mb_vcu_device, "mb_vcu", "Mazer Blazer custom VCU")
+>>>>>>> upstream/master
 
 //-------------------------------------------------
 //  static_set_palette_tag: Set the tag of the
@@ -43,12 +47,20 @@ void mb_vcu_device::static_set_palette_tag(device_t &device, const char *tag)
 }
 
 
+<<<<<<< HEAD
 static ADDRESS_MAP_START( mb_vcu_vram, AS_0, 8, mb_vcu_device )
+=======
+static ADDRESS_MAP_START( mb_vcu_vram, 0, 8, mb_vcu_device )
+>>>>>>> upstream/master
 	AM_RANGE(0x00000,0x7ffff) AM_RAM // enough for a 256x256x4 x 2 pages of framebuffer with 4 layers (TODO: doubled for simplicity)
 ADDRESS_MAP_END
 
 
+<<<<<<< HEAD
 static ADDRESS_MAP_START( mb_vcu_pal_ram, AS_1, 8, mb_vcu_device )
+=======
+static ADDRESS_MAP_START( mb_vcu_pal_ram, 1, 8, mb_vcu_device )
+>>>>>>> upstream/master
 	AM_RANGE(0x0000, 0x00ff) AM_RAM
 	AM_RANGE(0x0200, 0x02ff) AM_RAM
 	AM_RANGE(0x0400, 0x04ff) AM_RAM
@@ -91,6 +103,7 @@ WRITE8_MEMBER( mb_vcu_device::mb_vcu_paletteram_w )
 //  any address spaces owned by this device
 //-------------------------------------------------
 
+<<<<<<< HEAD
 const address_space_config *mb_vcu_device::memory_space_config(address_spacenum spacenum) const
 {
 	switch (spacenum)
@@ -99,6 +112,14 @@ const address_space_config *mb_vcu_device::memory_space_config(address_spacenum 
 		case AS_1: return &m_paletteram_space_config;
 		default: return NULL;
 	}
+=======
+device_memory_interface::space_config_vector mb_vcu_device::memory_space_config() const
+{
+	return space_config_vector {
+		std::make_pair(0, &m_videoram_space_config),
+		std::make_pair(1, &m_paletteram_space_config)
+	};
+>>>>>>> upstream/master
 }
 
 //**************************************************************************
@@ -109,36 +130,60 @@ const address_space_config *mb_vcu_device::memory_space_config(address_spacenum 
 //  read_byte - read a byte at the given address
 //-------------------------------------------------
 
+<<<<<<< HEAD
 inline UINT8 mb_vcu_device::read_byte(offs_t address)
 {
 	return space(AS_0).read_byte(address);
+=======
+inline uint8_t mb_vcu_device::read_byte(offs_t address)
+{
+	return space(0).read_byte(address);
+>>>>>>> upstream/master
 }
 
 //-------------------------------------------------
 //  write_byte - write a byte at the given address
 //-------------------------------------------------
 
+<<<<<<< HEAD
 inline void mb_vcu_device::write_byte(offs_t address, UINT8 data)
 {
 	space(AS_0).write_byte(address, data);
+=======
+inline void mb_vcu_device::write_byte(offs_t address, uint8_t data)
+{
+	space(0).write_byte(address, data);
+>>>>>>> upstream/master
 }
 
 //-------------------------------------------------
 //  read_byte - read a byte at the given i/o
 //-------------------------------------------------
 
+<<<<<<< HEAD
 inline UINT8 mb_vcu_device::read_io(offs_t address)
 {
 	return space(AS_1).read_byte(address);
+=======
+inline uint8_t mb_vcu_device::read_io(offs_t address)
+{
+	return space(1).read_byte(address);
+>>>>>>> upstream/master
 }
 
 //-------------------------------------------------
 //  write_byte - write a byte at the given i/o
 //-------------------------------------------------
 
+<<<<<<< HEAD
 inline void mb_vcu_device::write_io(offs_t address, UINT8 data)
 {
 	space(AS_1).write_byte(address, data);
+=======
+inline void mb_vcu_device::write_io(offs_t address, uint8_t data)
+{
+	space(1).write_byte(address, data);
+>>>>>>> upstream/master
 }
 
 
@@ -150,6 +195,7 @@ inline void mb_vcu_device::write_io(offs_t address, UINT8 data)
 //  mb_vcu_device - constructor
 //-------------------------------------------------
 
+<<<<<<< HEAD
 mb_vcu_device::mb_vcu_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
 	: device_t(mconfig, MB_VCU, "Mazer Blazer custom VCU", tag, owner, clock, "mb_vcu", __FILE__),
 		device_memory_interface(mconfig, *this),
@@ -158,6 +204,16 @@ mb_vcu_device::mb_vcu_device(const machine_config &mconfig, const char *tag, dev
 		m_paletteram_space_config("palram", ENDIANNESS_LITTLE, 8, 16, 0, NULL, *ADDRESS_MAP_NAME(mb_vcu_pal_ram)),
 		m_cpu(*this),
 		m_palette(*this)
+=======
+mb_vcu_device::mb_vcu_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: device_t(mconfig, MB_VCU, tag, owner, clock)
+	, device_memory_interface(mconfig, *this)
+	, device_video_interface(mconfig, *this)
+	, m_videoram_space_config("videoram", ENDIANNESS_LITTLE, 8, 19, 0, nullptr, *ADDRESS_MAP_NAME(mb_vcu_vram))
+	, m_paletteram_space_config("palram", ENDIANNESS_LITTLE, 8, 16, 0, nullptr, *ADDRESS_MAP_NAME(mb_vcu_pal_ram))
+	, m_cpu(*this, finder_base::DUMMY_TAG)
+	, m_palette(*this, finder_base::DUMMY_TAG)
+>>>>>>> upstream/master
 {
 }
 
@@ -178,8 +234,13 @@ void mb_vcu_device::device_validity_check(validity_checker &valid) const
 void mb_vcu_device::device_start()
 {
 	// TODO: m_screen_tag
+<<<<<<< HEAD
 	m_ram = auto_alloc_array_clear(machine(), UINT8, 0x800);
 	m_palram = auto_alloc_array_clear(machine(), UINT8, 0x100);
+=======
+	m_ram = make_unique_clear<uint8_t[]>(0x800);
+	m_palram = make_unique_clear<uint8_t[]>(0x100);
+>>>>>>> upstream/master
 
 	{
 		static const int resistances_r[2]  = { 4700, 2200 };
@@ -193,8 +254,13 @@ void mb_vcu_device::device_start()
 	}
 
 	save_item(NAME(m_status));
+<<<<<<< HEAD
 	save_pointer(NAME(m_ram), 0x800);
 	save_pointer(NAME(m_palram), 0x100);
+=======
+	save_pointer(NAME(m_ram.get()), 0x800);
+	save_pointer(NAME(m_palram.get()), 0x100);
+>>>>>>> upstream/master
 	save_item(NAME(m_param_offset_latch));
 	save_item(NAME(m_xpos));
 	save_item(NAME(m_ypos));
@@ -230,7 +296,11 @@ void mb_vcu_device::device_reset()
 //**************************************************************************
 //  READ/WRITE HANDLERS
 //**************************************************************************
+<<<<<<< HEAD
 //  UINT8 *pcg = memregion("sub2")->base();
+=======
+//  uint8_t *pcg = memregion("sub2")->base();
+>>>>>>> upstream/master
 
 READ8_MEMBER( mb_vcu_device::read_ram )
 {
@@ -280,6 +350,7 @@ READ8_MEMBER( mb_vcu_device::load_gfx )
 {
 	int xi,yi;
 	int dstx,dsty;
+<<<<<<< HEAD
 	UINT8 dot;
 	int bits = 0;
 	UINT8 pen = 0;
@@ -287,6 +358,17 @@ READ8_MEMBER( mb_vcu_device::load_gfx )
 
 //  cur_layer = (m_mode & 0x3);
 	cur_layer = 0;
+=======
+	uint8_t dot;
+	int bits = 0;
+	uint8_t pen = 0;
+	uint8_t cur_layer;
+
+//	printf("%02x %02x\n",m_mode >> 2,m_mode & 3);
+	
+//  cur_layer = (m_mode & 0x3);
+	cur_layer = (m_mode & 2) >> 1;
+>>>>>>> upstream/master
 
 	switch(m_mode >> 2)
 	{
@@ -377,7 +459,14 @@ READ8_MEMBER( mb_vcu_device::load_gfx )
 	return 0; // open bus?
 }
 
+<<<<<<< HEAD
 /*
+=======
+
+/*
+Read-Modify-Write operation, not fully understood
+
+>>>>>>> upstream/master
 ---0 -111 (0x07) write to i/o?
 ---0 -011 (0x03) read to i/o?
 ---1 -011 (0x13) read to vram?
@@ -386,9 +475,16 @@ READ8_MEMBER( mb_vcu_device::load_set_clr )
 {
 	int xi,yi;
 	int dstx,dsty;
+<<<<<<< HEAD
 //  UINT8 dot;
 	int bits = 0;
 	if(m_mode == 0x13 || m_mode == 0x03)
+=======
+//  uint8_t dot;
+	int bits = 0;
+	#if 0
+	if(m_mode == 0x13) //|| m_mode == 0x03)
+>>>>>>> upstream/master
 	{
 		printf("[0] %02x ",m_ram[m_param_offset_latch]);
 		printf("X: %04x ",m_xpos);
@@ -401,11 +497,21 @@ READ8_MEMBER( mb_vcu_device::load_set_clr )
 		printf("VB:%02x ",m_vbank);
 		printf("\n");
 	}
+<<<<<<< HEAD
 
+=======
+	#endif
+	
+>>>>>>> upstream/master
 	switch(m_mode)
 	{
 		case 0x13:
 		case 0x03:
+<<<<<<< HEAD
+=======
+		{
+			
+>>>>>>> upstream/master
 			for (yi = 0; yi < m_pix_ysize; yi++)
 			{
 				for (xi = 0; xi < m_pix_xsize; xi++)
@@ -415,6 +521,14 @@ READ8_MEMBER( mb_vcu_device::load_set_clr )
 
 					if(dstx < 256 && dsty < 256)
 					{
+<<<<<<< HEAD
+=======
+						if(m_mode == 0x03)
+							write_byte(dstx|dsty<<8|0<<16|(m_vbank)<<18, 0xf);
+//						else
+//							write_byte(dstx|dsty<<8|1<<16|(m_vbank)<<18, 0xf);
+
+>>>>>>> upstream/master
 						#if 0
 						dot = m_cpu->space(AS_PROGRAM).read_byte(((offset + (bits >> 3)) & 0x1fff) + 0x4000) >> (6-(bits & 7));
 						dot&= 3;
@@ -443,6 +557,10 @@ READ8_MEMBER( mb_vcu_device::load_set_clr )
 				}
 			}
 			break;
+<<<<<<< HEAD
+=======
+		}
+>>>>>>> upstream/master
 
 		case 0x07:
 			for(int i=0;i<m_pix_xsize;i++)
@@ -497,18 +615,31 @@ WRITE8_MEMBER( mb_vcu_device::vbank_w )
 //  update_screen -
 //-------------------------------------------------
 
+<<<<<<< HEAD
 UINT32 mb_vcu_device::screen_update(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect)
 {
 	int x,y;
 	UINT8 dot;
 
 	bitmap.fill(0x100,cliprect);
+=======
+uint32_t mb_vcu_device::screen_update(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect)
+{
+	int x,y;
+	uint8_t dot;
+
+	bitmap.fill(m_palette->pen(0x100),cliprect);
+>>>>>>> upstream/master
 
 	for(y=0;y<256;y++)
 	{
 		for(x=0;x<256;x++)
 		{
+<<<<<<< HEAD
 			dot = read_byte((x >> 0)|(y<<8)|0<<16|(m_vbank ^ 1)<<18);
+=======
+			dot = read_byte((x >> 0)|(y<<8)|1<<16|(m_vbank ^ 1)<<18);
+>>>>>>> upstream/master
 			//if(dot != 0xf)
 			{
 				dot|= m_vregs[1] << 4;
@@ -518,11 +649,15 @@ UINT32 mb_vcu_device::screen_update(screen_device &screen, bitmap_rgb32 &bitmap,
 		}
 	}
 
+<<<<<<< HEAD
 	#if 0
+=======
+>>>>>>> upstream/master
 	for(y=0;y<256;y++)
 	{
 		for(x=0;x<256;x++)
 		{
+<<<<<<< HEAD
 			dot = read_byte((x >> 0)|(y<<8)|3<<16);
 
 			if(dot != 0xf)
@@ -554,26 +689,47 @@ UINT32 mb_vcu_device::screen_update(screen_device &screen, bitmap_rgb32 &bitmap,
 		for(x=0;x<256;x++)
 		{
 			dot = read_byte((x >> 0)|(y<<8)|1<<16);
+=======
+			dot = read_byte((x >> 0)|(y<<8)|0<<16|(m_vbank ^ 1)<<18);
+>>>>>>> upstream/master
 
 			if(dot != 0xf)
 			{
 				dot|= m_vregs[1] << 4;
 
+<<<<<<< HEAD
 				bitmap.pix32(y,x) = machine().pens[dot];
 			}
 		}
 	}
 	#endif
+=======
+				bitmap.pix32(y,x) = m_palette->pen(dot);
+			}
+		}
+	}
+>>>>>>> upstream/master
 
 	return 0;
 }
 
 void mb_vcu_device::screen_eof(void)
 {
+<<<<<<< HEAD
 	//for(int i=0;i<0x10000;i++)
 	{
 		//write_byte(i|0x00000|m_vbank<<18,0x0f);
 		//write_byte(i|0x10000|m_vbank<<18,0x0f);
 		//write_byte(i|0x30000|m_vbank<<18,0x0f);
 	}
+=======
+	#if 0
+	for(int i=0;i<0x10000;i++)
+	{
+		write_byte(i|0x00000|m_vbank<<18,0x0f);
+		//write_byte(i|0x10000|m_vbank<<18,0x0f);
+		//write_byte(i|0x30000|m_vbank<<18,0x0f);
+	}
+	#endif
+>>>>>>> upstream/master
 }

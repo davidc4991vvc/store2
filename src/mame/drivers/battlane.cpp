@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 // license:???
+=======
+// license:BSD-3-Clause
+>>>>>>> upstream/master
 // copyright-holders:Paul Leaman
 /***************************************************************************
 
@@ -12,9 +16,19 @@
 ***************************************************************************/
 
 #include "emu.h"
+<<<<<<< HEAD
 #include "cpu/m6809/m6809.h"
 #include "sound/3526intf.h"
 #include "includes/battlane.h"
+=======
+#include "includes/battlane.h"
+
+#include "cpu/m6809/m6809.h"
+#include "sound/3526intf.h"
+#include "screen.h"
+#include "speaker.h"
+
+>>>>>>> upstream/master
 
 /*************************************
  *
@@ -266,7 +280,11 @@ void battlane_state::machine_reset()
 	m_cpu_control = 0;
 }
 
+<<<<<<< HEAD
 static MACHINE_CONFIG_START( battlane, battlane_state )
+=======
+static MACHINE_CONFIG_START( battlane )
+>>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", M6809, 1500000)        /* 1.5 MHz ? */
@@ -296,7 +314,11 @@ static MACHINE_CONFIG_START( battlane, battlane_state )
 	MCFG_SPEAKER_STANDARD_MONO("mono")
 
 	MCFG_SOUND_ADD("ymsnd", YM3526, 3000000)
+<<<<<<< HEAD
 	MCFG_YM3526_IRQ_HANDLER(DEVWRITELINE("maincpu", m6809_device, firq_line))
+=======
+	MCFG_YM3526_IRQ_HANDLER(INPUTLINE("maincpu", M6809_FIRQ_LINE))
+>>>>>>> upstream/master
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 1.0)
 MACHINE_CONFIG_END
 
@@ -398,6 +420,12 @@ ROM_END
  *
  *************************************/
 
+<<<<<<< HEAD
 GAME( 1986, battlane,  0,        battlane, battlane, driver_device, 0, ROT90, "Technos Japan (Taito license)", "Battle Lane! Vol. 5 (set 1)", MACHINE_SUPPORTS_SAVE )
 GAME( 1986, battlane2, battlane, battlane, battlane, driver_device, 0, ROT90, "Technos Japan (Taito license)", "Battle Lane! Vol. 5 (set 2)", MACHINE_SUPPORTS_SAVE )
 GAME( 1986, battlane3, battlane, battlane, battlane, driver_device, 0, ROT90, "Technos Japan (Taito license)", "Battle Lane! Vol. 5 (set 3)", MACHINE_SUPPORTS_SAVE )
+=======
+GAME( 1986, battlane,  0,        battlane, battlane, battlane_state, 0, ROT90, "Technos Japan (Taito license)", "Battle Lane! Vol. 5 (set 1)", MACHINE_SUPPORTS_SAVE )
+GAME( 1986, battlane2, battlane, battlane, battlane, battlane_state, 0, ROT90, "Technos Japan (Taito license)", "Battle Lane! Vol. 5 (set 2)", MACHINE_SUPPORTS_SAVE )
+GAME( 1986, battlane3, battlane, battlane, battlane, battlane_state, 0, ROT90, "Technos Japan (Taito license)", "Battle Lane! Vol. 5 (set 3)", MACHINE_SUPPORTS_SAVE )
+>>>>>>> upstream/master

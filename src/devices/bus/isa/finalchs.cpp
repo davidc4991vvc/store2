@@ -46,11 +46,14 @@ static ADDRESS_MAP_START(finalchs_mem , AS_PROGRAM, 8, isa8_finalchs_device)
 	AM_RANGE( 0x8000, 0xffff ) AM_ROM
 ADDRESS_MAP_END
 
+<<<<<<< HEAD
 static MACHINE_CONFIG_FRAGMENT( finalchs_config )
 	MCFG_CPU_ADD("maincpu",M65C02,5000000)
 	MCFG_CPU_PROGRAM_MAP(finalchs_mem)
 MACHINE_CONFIG_END
 
+=======
+>>>>>>> upstream/master
 ROM_START(finalchs)
 	ROM_REGION(0x10000,"maincpu",0)
 	ROM_LOAD("finalchs.bin", 0x8000, 0x8000, CRC(c8e72dff) SHA1(f422b19a806cef4fadd580caefaaf8c32b644098))
@@ -69,6 +72,7 @@ WRITE8_MEMBER( isa8_finalchs_device::finalchs_w )
 //  GLOBAL VARIABLES
 //**************************************************************************
 
+<<<<<<< HEAD
 const device_type ISA8_FINALCHS = &device_creator<isa8_finalchs_device>;
 
 //-------------------------------------------------
@@ -80,6 +84,18 @@ machine_config_constructor isa8_finalchs_device::device_mconfig_additions() cons
 {
 	return MACHINE_CONFIG_NAME( finalchs_config );
 }
+=======
+DEFINE_DEVICE_TYPE(ISA8_FINALCHS, isa8_finalchs_device, "isa_finalchs", "Final Chess Card")
+
+//-------------------------------------------------
+//  device_add_mconfig - add device configuration
+//-------------------------------------------------
+
+MACHINE_CONFIG_MEMBER( isa8_finalchs_device::device_add_mconfig )
+	MCFG_CPU_ADD("maincpu",M65C02,5000000)
+	MCFG_CPU_PROGRAM_MAP(finalchs_mem)
+MACHINE_CONFIG_END
+>>>>>>> upstream/master
 
 //**************************************************************************
 //  LIVE DEVICE
@@ -89,10 +105,18 @@ machine_config_constructor isa8_finalchs_device::device_mconfig_additions() cons
 //  isa8_finalchs_device - constructor
 //-------------------------------------------------
 
+<<<<<<< HEAD
 isa8_finalchs_device::isa8_finalchs_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
 		: device_t(mconfig, ISA8_FINALCHS, "Final Chess Card", tag, owner, clock, "finalchs", __FILE__),
 		device_isa8_card_interface( mconfig, *this ), m_FCH_latch_data(0)
 	{
+=======
+isa8_finalchs_device::isa8_finalchs_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: device_t(mconfig, ISA8_FINALCHS, tag, owner, clock)
+	, device_isa8_card_interface(mconfig, *this)
+	, m_FCH_latch_data(0)
+{
+>>>>>>> upstream/master
 }
 
 //-------------------------------------------------
@@ -104,8 +128,12 @@ void isa8_finalchs_device::device_start()
 	set_isa_device();
 	//the included setup program allows any port from 0x100 to 0x1F0 to be selected, at increments of 0x10
 	//picked the following at random until we get dips hooked up
+<<<<<<< HEAD
 	m_isa->install_device(0x160, 0x0161, 0, 0, read8_delegate(FUNC(isa8_finalchs_device::finalchs_r), this), write8_delegate(FUNC(isa8_finalchs_device::finalchs_w), this));
 //  timer_pulse(machine, ATTOTIME_IN_HZ(1), NULL, 0, cause_M6502_irq);
+=======
+	m_isa->install_device(0x160, 0x0161, read8_delegate(FUNC(isa8_finalchs_device::finalchs_r), this), write8_delegate(FUNC(isa8_finalchs_device::finalchs_w), this));
+>>>>>>> upstream/master
 }
 
 //-------------------------------------------------
@@ -121,7 +149,11 @@ void isa8_finalchs_device::device_reset()
 //  rom_region - device-specific ROM region
 //-------------------------------------------------
 
+<<<<<<< HEAD
 const rom_entry *isa8_finalchs_device::device_rom_region() const
+=======
+const tiny_rom_entry *isa8_finalchs_device::device_rom_region() const
+>>>>>>> upstream/master
 {
 	return ROM_NAME( finalchs );
 }

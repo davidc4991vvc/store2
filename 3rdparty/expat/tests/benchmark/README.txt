@@ -13,4 +13,8 @@ The command line arguments are:
 Returns:
 
   The time (in seconds) it takes to parse the test file,
+<<<<<<< HEAD
   averaged over the number of iterations.
+=======
+  averaged over the number of iterations.@
+>>>>>>> upstream/master

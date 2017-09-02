@@ -38,10 +38,17 @@ enum
     DEVICE INTERFACE
 ***************************************************************************/
 
+<<<<<<< HEAD
 const device_type MOS6530 = &device_creator<mos6530_device>;
 
 mos6530_device::mos6530_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
 	: device_t(mconfig, MOS6530, "MOS6530 RRIOT", tag, owner, clock, "mos6530", __FILE__),
+=======
+DEFINE_DEVICE_TYPE(MOS6530, mos6530_device, "mos6530", "MOS 6530 RRIOT")
+
+mos6530_device::mos6530_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: device_t(mconfig, MOS6530, tag, owner, clock),
+>>>>>>> upstream/master
 		m_in_pa_cb(*this),
 		m_out_pa_cb(*this),
 		m_in_pb_cb(*this),
@@ -118,7 +125,11 @@ void mos6530_device::device_reset()
 
 void mos6530_device::update_irqstate()
 {
+<<<<<<< HEAD
 	UINT8 out = m_port[1].m_out;
+=======
+	uint8_t out = m_port[1].m_out;
+>>>>>>> upstream/master
 
 	if (m_irqenable)
 		out = ((m_irqstate & TIMER_FLAG) ? 0x00 : 0x80) | (out & 0x7F);
@@ -131,7 +142,11 @@ void mos6530_device::update_irqstate()
     get_timer - return the current timer value
 -------------------------------------------------*/
 
+<<<<<<< HEAD
 UINT8 mos6530_device::get_timer()
+=======
+uint8_t mos6530_device::get_timer()
+>>>>>>> upstream/master
 {
 	/* if idle, return 0 */
 	if (m_timerstate == TIMER_IDLE)
@@ -198,9 +213,15 @@ WRITE8_MEMBER( mos6530_device::write )
 	/* if A2 == 1, we are writing to the timer */
 	if (offset & 0x04)
 	{
+<<<<<<< HEAD
 		static const UINT8 timershift[4] = { 0, 3, 6, 10 };
 		attotime curtime = space.machine().time();
 		INT64 target;
+=======
+		static const uint8_t timershift[4] = { 0, 3, 6, 10 };
+		attotime curtime = space.machine().time();
+		int64_t target;
+>>>>>>> upstream/master
 
 		/* A0-A1 contain the timer divisor */
 		m_timershift = timershift[offset & 3];
@@ -235,7 +256,11 @@ WRITE8_MEMBER( mos6530_device::write )
 		/* if A0 == 0, we are writing to the port's output */
 		else
 		{
+<<<<<<< HEAD
 			UINT8 olddata = port->m_out;
+=======
+			uint8_t olddata = port->m_out;
+>>>>>>> upstream/master
 			port->m_out = data;
 
 			if ((offset & 2) && m_irqenable)
@@ -259,7 +284,11 @@ WRITE8_MEMBER( mos6530_device::write )
 
 READ8_MEMBER( mos6530_device::read )
 {
+<<<<<<< HEAD
 	UINT8 val = 0;
+=======
+	uint8_t val;
+>>>>>>> upstream/master
 
 	/* if A2 == 1 and A0 == 1, we are reading interrupt flags */
 	if ((offset & 0x05) == 0x05)
@@ -297,7 +326,11 @@ READ8_MEMBER( mos6530_device::read )
 		/* if A0 == 0, we are reading the port as an input */
 		else
 		{
+<<<<<<< HEAD
 			UINT8 out = port->m_out;
+=======
+			uint8_t out = port->m_out;
+>>>>>>> upstream/master
 
 			if ((offset & 2) && m_irqenable)
 				out = ((m_irqstate & TIMER_FLAG) ? 0x00 : 0x80) | (out & 0x7F);
@@ -321,7 +354,11 @@ READ8_MEMBER( mos6530_device::read )
     value
 -------------------------------------------------*/
 
+<<<<<<< HEAD
 void mos6530_device::porta_in_set(UINT8 data, UINT8 mask)
+=======
+void mos6530_device::porta_in_set(uint8_t data, uint8_t mask)
+>>>>>>> upstream/master
 {
 	m_port[0].m_in = (m_port[0].m_in & ~mask) | (data & mask);
 }
@@ -332,7 +369,11 @@ void mos6530_device::porta_in_set(UINT8 data, UINT8 mask)
     value
 -------------------------------------------------*/
 
+<<<<<<< HEAD
 void mos6530_device::portb_in_set(UINT8 data, UINT8 mask)
+=======
+void mos6530_device::portb_in_set(uint8_t data, uint8_t mask)
+>>>>>>> upstream/master
 {
 	m_port[1].m_in = (m_port[1].m_in & ~mask) | (data & mask);
 }
@@ -343,7 +384,11 @@ void mos6530_device::portb_in_set(UINT8 data, UINT8 mask)
     value
 -------------------------------------------------*/
 
+<<<<<<< HEAD
 UINT8 mos6530_device::porta_in_get()
+=======
+uint8_t mos6530_device::porta_in_get()
+>>>>>>> upstream/master
 {
 	return m_port[0].m_in;
 }
@@ -354,7 +399,11 @@ UINT8 mos6530_device::porta_in_get()
     value
 -------------------------------------------------*/
 
+<<<<<<< HEAD
 UINT8 mos6530_device::portb_in_get()
+=======
+uint8_t mos6530_device::portb_in_get()
+>>>>>>> upstream/master
 {
 	return m_port[1].m_in;
 }
@@ -365,7 +414,11 @@ UINT8 mos6530_device::portb_in_get()
     value
 -------------------------------------------------*/
 
+<<<<<<< HEAD
 UINT8 mos6530_device::porta_out_get()
+=======
+uint8_t mos6530_device::porta_out_get()
+>>>>>>> upstream/master
 {
 	return m_port[0].m_out;
 }
@@ -376,7 +429,11 @@ UINT8 mos6530_device::porta_out_get()
     value
 -------------------------------------------------*/
 
+<<<<<<< HEAD
 UINT8 mos6530_device::portb_out_get()
+=======
+uint8_t mos6530_device::portb_out_get()
+>>>>>>> upstream/master
 {
 	return m_port[1].m_out;
 }

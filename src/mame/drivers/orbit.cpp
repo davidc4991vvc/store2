@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 // license:???
+=======
+// license:BSD-3-Clause
+>>>>>>> upstream/master
 // copyright-holders:Stefan Jokisch
 /***************************************************************************
 
@@ -20,9 +24,18 @@ Atari Orbit Driver
 ***************************************************************************/
 
 #include "emu.h"
+<<<<<<< HEAD
 #include "cpu/m6800/m6800.h"
 #include "includes/orbit.h"
 #include "sound/discrete.h"
+=======
+#include "includes/orbit.h"
+
+#include "cpu/m6800/m6800.h"
+#include "machine/watchdog.h"
+#include "sound/discrete.h"
+#include "speaker.h"
+>>>>>>> upstream/master
 
 
 #define MASTER_CLOCK        XTAL_12_096MHz
@@ -36,7 +49,11 @@ Atari Orbit Driver
 TIMER_DEVICE_CALLBACK_MEMBER(orbit_state::nmi_32v)
 {
 	int scanline = param;
+<<<<<<< HEAD
 	int nmistate = (scanline & 32) && (m_misc_flags & 4);
+=======
+	int nmistate = (scanline & 32) && m_latch->q2_r();
+>>>>>>> upstream/master
 	m_maincpu->set_input_line(INPUT_LINE_NMI, nmistate ? ASSERT_LINE : CLEAR_LINE);
 }
 
@@ -61,6 +78,7 @@ INTERRUPT_GEN_MEMBER(orbit_state::orbit_interrupt)
  *
  *************************************/
 
+<<<<<<< HEAD
 void orbit_state::update_misc_flags(address_space &space, UINT8 val)
 {
 	m_misc_flags = val;
@@ -92,6 +110,25 @@ WRITE8_MEMBER(orbit_state::orbit_misc_w)
 		update_misc_flags(space, m_misc_flags | (1 << bit));
 	else
 		update_misc_flags(space, m_misc_flags & ~(1 << bit));
+=======
+
+WRITE_LINE_MEMBER(orbit_state::coin_lockout_w)
+{
+	machine().bookkeeping().coin_lockout_w(0, !state);
+	machine().bookkeeping().coin_lockout_w(1, !state);
+}
+
+
+WRITE_LINE_MEMBER(orbit_state::heat_rst_led_w)
+{
+	output().set_led_value(0, state);
+}
+
+
+WRITE_LINE_MEMBER(orbit_state::hyper_led_w)
+{
+	output().set_led_value(1, state);
+>>>>>>> upstream/master
 }
 
 
@@ -115,9 +152,15 @@ static ADDRESS_MAP_START( orbit_map, AS_PROGRAM, 8, orbit_state )
 	AM_RANGE(0x3800, 0x3800) AM_MIRROR(0x00ff) AM_WRITE(orbit_note_w)
 	AM_RANGE(0x3900, 0x3900) AM_MIRROR(0x00ff) AM_WRITE(orbit_noise_amp_w)
 	AM_RANGE(0x3a00, 0x3a00) AM_MIRROR(0x00ff) AM_WRITE(orbit_note_amp_w)
+<<<<<<< HEAD
 	AM_RANGE(0x3c00, 0x3c0f) AM_MIRROR(0x00f0) AM_WRITE(orbit_misc_w)
 	AM_RANGE(0x3e00, 0x3e00) AM_MIRROR(0x00ff) AM_WRITE(orbit_noise_rst_w)
 	AM_RANGE(0x3f00, 0x3f00) AM_MIRROR(0x00ff) AM_WRITE(watchdog_reset_w)
+=======
+	AM_RANGE(0x3c00, 0x3c0f) AM_MIRROR(0x00f0) AM_DEVWRITE("latch", f9334_device, write_a0)
+	AM_RANGE(0x3e00, 0x3e00) AM_MIRROR(0x00ff) AM_WRITE(orbit_noise_rst_w)
+	AM_RANGE(0x3f00, 0x3f00) AM_MIRROR(0x00ff) AM_DEVWRITE("watchdog", watchdog_timer_device, reset_w)
+>>>>>>> upstream/master
 	AM_RANGE(0x6000, 0x7fff) AM_ROM
 ADDRESS_MAP_END
 
@@ -271,13 +314,19 @@ GFXDECODE_END
 
 void orbit_state::machine_start()
 {
+<<<<<<< HEAD
 	save_item(NAME(m_misc_flags));
+=======
+>>>>>>> upstream/master
 	save_item(NAME(m_flip_screen));
 }
 
 void orbit_state::machine_reset()
 {
+<<<<<<< HEAD
 	update_misc_flags(generic_space(), 0);
+=======
+>>>>>>> upstream/master
 	m_flip_screen = 0;
 }
 
@@ -288,7 +337,11 @@ void orbit_state::machine_reset()
  *
  *************************************/
 
+<<<<<<< HEAD
 static MACHINE_CONFIG_START( orbit, orbit_state )
+=======
+static MACHINE_CONFIG_START( orbit )
+>>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", M6800, MASTER_CLOCK / 16)
@@ -297,6 +350,24 @@ static MACHINE_CONFIG_START( orbit, orbit_state )
 
 	MCFG_TIMER_DRIVER_ADD_SCANLINE("32v", orbit_state, nmi_32v, "screen", 0, 32)
 
+<<<<<<< HEAD
+=======
+	MCFG_DEVICE_ADD("latch", F9334, 0) // M6
+	/* BIT0 => UNUSED       */
+	/* BIT1 => LOCKOUT      */
+	/* BIT2 => NMI ENABLE   */
+	/* BIT3 => HEAT RST LED */
+	/* BIT4 => PANEL BUS OC */
+	/* BIT5 => PANEL STROBE */
+	/* BIT6 => HYPER LED    */
+	/* BIT7 => WARNING SND  */
+	MCFG_ADDRESSABLE_LATCH_Q1_OUT_CB(WRITELINE(orbit_state, coin_lockout_w))
+	MCFG_ADDRESSABLE_LATCH_Q3_OUT_CB(WRITELINE(orbit_state, heat_rst_led_w))
+	MCFG_ADDRESSABLE_LATCH_Q6_OUT_CB(WRITELINE(orbit_state, hyper_led_w))
+	MCFG_ADDRESSABLE_LATCH_Q7_OUT_CB(DEVWRITELINE("discrete", discrete_device, write_line<ORBIT_WARNING_EN>))
+
+	MCFG_WATCHDOG_ADD("watchdog")
+>>>>>>> upstream/master
 
 	/* video hardware */
 	MCFG_SCREEN_ADD("screen", RASTER)
@@ -306,7 +377,11 @@ static MACHINE_CONFIG_START( orbit, orbit_state )
 
 	MCFG_GFXDECODE_ADD("gfxdecode", "palette", orbit)
 
+<<<<<<< HEAD
 	MCFG_PALETTE_ADD_BLACK_AND_WHITE("palette")
+=======
+	MCFG_PALETTE_ADD_MONOCHROME("palette")
+>>>>>>> upstream/master
 
 	/* sound hardware */
 	MCFG_SPEAKER_STANDARD_STEREO("lspeaker", "rspeaker")
@@ -361,4 +436,8 @@ ROM_END
  *
  *************************************/
 
+<<<<<<< HEAD
 GAME( 1978, orbit, 0, orbit, orbit, driver_device, 0, 0, "Atari", "Orbit", MACHINE_SUPPORTS_SAVE )
+=======
+GAME( 1978, orbit, 0, orbit, orbit, orbit_state, 0, 0, "Atari", "Orbit", MACHINE_SUPPORTS_SAVE )
+>>>>>>> upstream/master

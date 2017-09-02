@@ -28,6 +28,7 @@
 //  constructor
 //-------------------------------------------------
 
+<<<<<<< HEAD
 const device_type NES_NITRA = &device_creator<nes_nitra_device>;
 const device_type NES_KS7057 = &device_creator<nes_ks7057_device>;
 const device_type NES_SBROS11 = &device_creator<nes_sbros11_device>;
@@ -237,6 +238,223 @@ nes_bmc_830118c_device::nes_bmc_830118c_device(const machine_config &mconfig, co
 
 nes_pjoy84_device::nes_pjoy84_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
 					: nes_txrom_device(mconfig, NES_PJOY84, "NES Cart Powerjoy 84 PCB", tag, owner, clock, "nes_pjoy84", __FILE__)
+=======
+DEFINE_DEVICE_TYPE(NES_NITRA,         nes_nitra_device,         "nes_nitra",         "NES Cart Nitra PCB")
+DEFINE_DEVICE_TYPE(NES_KS7057,        nes_ks7057_device,        "nes_ks7057",        "NES Cart KS-7057 PCB")
+DEFINE_DEVICE_TYPE(NES_SBROS11,       nes_sbros11_device,       "nes_smb11",         "NES Cart SMB 11 PCB")
+DEFINE_DEVICE_TYPE(NES_MALISB,        nes_malisb_device,        "nes_malisb",        "NES Cart Mali Spash Bomb PCB")
+DEFINE_DEVICE_TYPE(NES_FAMILY4646,    nes_family4646_device,    "nes_family4646",    "NES Cart BMC-FAMILY04646 PCB")
+DEFINE_DEVICE_TYPE(NES_PIKAY2K,       nes_pikay2k_device,       "nes_pikay2k",       "NES Cart PIKACHU Y2K PCB")
+DEFINE_DEVICE_TYPE(NES_8237,          nes_8237_device,          "nes_8237",          "NES Cart UNL-8237 PCB")
+DEFINE_DEVICE_TYPE(NES_SG_LIONK,      nes_sglionk_device,       "nes_sglionk",       "NES Cart SuperGame Lion King PCB")
+DEFINE_DEVICE_TYPE(NES_SG_BOOG,       nes_sgboog_device,        "nes_sgbooger",      "NES Cart SuperGame BoogerMan PCB")
+DEFINE_DEVICE_TYPE(NES_KASING,        nes_kasing_device,        "nes_kasing",        "NES Cart Kasing PCB")
+DEFINE_DEVICE_TYPE(NES_KAY,           nes_kay_device,           "nes_kay",           "NES Cart KAY PCB")
+DEFINE_DEVICE_TYPE(NES_H2288,         nes_h2288_device,         "nes_h2288",         "NES Cart H-2288 PCB")
+DEFINE_DEVICE_TYPE(NES_6035052,       nes_6035052_device,       "nes_6035052",       "NES Cart UNL-603-5052 PCB")
+DEFINE_DEVICE_TYPE(NES_TXC_TW,        nes_txc_tw_device,        "nes_txc_tw",        "NES Cart TXC Thunder Warrior PCB")
+DEFINE_DEVICE_TYPE(NES_KOF97,         nes_kof97_device,         "nes_kof97",         "NES Cart KoF 97 PCB")
+DEFINE_DEVICE_TYPE(NES_KOF96,         nes_kof96_device,         "nes_kof96",         "NES Cart KoF 96 PCB")
+DEFINE_DEVICE_TYPE(NES_SF3,           nes_sf3_device,           "nes_sf3",           "NES Cart Super Fighter III PCB")
+DEFINE_DEVICE_TYPE(NES_GOUDER,        nes_gouder_device,        "nes_gouder",        "NES Cart Gouder PCB")
+DEFINE_DEVICE_TYPE(NES_SA9602B,       nes_sa9602b_device,       "nes_sa9602b",       "NES Cart SA-9602B PCB")
+DEFINE_DEVICE_TYPE(NES_SACHEN_SHERO,  nes_sachen_shero_device,  "nes_shero",         "NES Cart Street Hero PCB")
+//DEFINE_DEVICE_TYPE(NES_A9746,         nes_a9746_device,         "nes_bmc_a9746",     "NES Cart A-9746 PCB")
+
+DEFINE_DEVICE_TYPE(NES_FK23C,         nes_fk23c_device,         "nes_kf23c",         "NES Cart KF23C PCB")
+DEFINE_DEVICE_TYPE(NES_FK23CA,        nes_fk23ca_device,        "nes_kf23ca",        "NES Cart KF23CA PCB")
+DEFINE_DEVICE_TYPE(NES_S24IN1SC03,    nes_s24in1sc03_device,    "nes_s24in1c03",     "NES Cart Super 24 in 1 SC-03 PCB")
+DEFINE_DEVICE_TYPE(NES_BMC_15IN1,     nes_bmc_15in1_device,     "nes_bmc_15in1",     "NES Cart BMC 15 in 1 PCB")
+DEFINE_DEVICE_TYPE(NES_BMC_SBIG7,     nes_bmc_sbig7_device,     "nes_bmc_sbig7",     "NES Cart BMC Super BIG 7 in 1 PCB")
+DEFINE_DEVICE_TYPE(NES_BMC_HIK8,      nes_bmc_hik8_device,      "nes_bmc_hik8",      "NES Cart BMC HIK 8 in 1 PCB")
+DEFINE_DEVICE_TYPE(NES_BMC_HIK4,      nes_bmc_hik4_device,      "nes_bmc_hik4",      "NES Cart BMC HIK 4 in 1 PCB")
+DEFINE_DEVICE_TYPE(NES_BMC_MARIO7IN1, nes_bmc_mario7in1_device, "nes_bmc_mario7in1", "NES Cart BMC Mario 7 in 1 PCB")
+DEFINE_DEVICE_TYPE(NES_BMC_GOLD7IN1,  nes_bmc_gold7in1_device,  "nes_bmc_gold7in1",  "NES Cart BMC Golden 7 in 1 PCB")
+DEFINE_DEVICE_TYPE(NES_BMC_GC6IN1,    nes_bmc_gc6in1_device,    "nes_bmc_gc6in1",    "NES Cart BMC Golden Card 6 in 1 PCB")
+DEFINE_DEVICE_TYPE(NES_BMC_411120C,   nes_bmc_411120c_device,   "nes_bmc_411120c",   "NES Cart BMC 411120C PCB")
+DEFINE_DEVICE_TYPE(NES_BMC_830118C,   nes_bmc_830118c_device,   "nes_bmc_830118c",   "NES Cart BMC 830118C PCB")
+DEFINE_DEVICE_TYPE(NES_PJOY84,        nes_pjoy84_device,        "nes_pjoy84",        "NES Cart Powerjoy 84 PCB")
+DEFINE_DEVICE_TYPE(NES_COOLBOY,       nes_coolboy_device,       "nes_coolboy",       "NES Cart CoolBoy PCB")
+
+
+nes_nitra_device::nes_nitra_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: nes_txrom_device(mconfig, NES_NITRA, tag, owner, clock)
+{
+}
+
+nes_ks7057_device::nes_ks7057_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: nes_txrom_device(mconfig, NES_KS7057, tag, owner, clock)
+{
+}
+
+nes_sbros11_device::nes_sbros11_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: nes_txrom_device(mconfig, NES_SBROS11, tag, owner, clock)
+{
+}
+
+nes_malisb_device::nes_malisb_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: nes_txrom_device(mconfig, NES_MALISB, tag, owner, clock)
+{
+}
+
+nes_family4646_device::nes_family4646_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: nes_txrom_device(mconfig, NES_FAMILY4646, tag, owner, clock)
+{
+}
+
+nes_pikay2k_device::nes_pikay2k_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: nes_txrom_device(mconfig, NES_PIKAY2K, tag, owner, clock)
+{
+}
+
+nes_8237_device::nes_8237_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: nes_txrom_device(mconfig, NES_8237, tag, owner, clock), m_cd_enable(0)
+{
+}
+
+nes_sglionk_device::nes_sglionk_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: nes_txrom_device(mconfig, NES_SG_LIONK, tag, owner, clock), m_reg(0), m_reg_enabled(0)
+{
+}
+
+nes_sgboog_device::nes_sgboog_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: nes_txrom_device(mconfig, NES_SG_BOOG, tag, owner, clock), m_mode(0)
+{
+}
+
+nes_kasing_device::nes_kasing_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: nes_txrom_device(mconfig, NES_KASING, tag, owner, clock), m_reg(0)
+{
+}
+
+nes_kay_device::nes_kay_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: nes_txrom_device(mconfig, NES_KAY, tag, owner, clock), m_low_reg(0)
+{
+}
+
+nes_h2288_device::nes_h2288_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: nes_txrom_device(mconfig, NES_H2288, tag, owner, clock)
+{
+}
+
+nes_6035052_device::nes_6035052_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: nes_txrom_device(mconfig, NES_6035052, tag, owner, clock), m_prot(0)
+{
+}
+
+nes_txc_tw_device::nes_txc_tw_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: nes_txrom_device(mconfig, NES_TXC_TW, tag, owner, clock)
+{
+}
+
+nes_kof97_device::nes_kof97_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: nes_txrom_device(mconfig, NES_KOF97, tag, owner, clock)
+{
+}
+
+nes_kof96_device::nes_kof96_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: nes_txrom_device(mconfig, NES_KOF96, tag, owner, clock)
+{
+}
+
+nes_sf3_device::nes_sf3_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: nes_txrom_device(mconfig, NES_SF3, tag, owner, clock)
+{
+}
+
+nes_gouder_device::nes_gouder_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: nes_txrom_device(mconfig, NES_GOUDER, tag, owner, clock)
+{
+}
+
+nes_sa9602b_device::nes_sa9602b_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: nes_txrom_device(mconfig, NES_SA9602B, tag, owner, clock), m_reg(0), m_prg_chip(0)
+{
+}
+
+nes_sachen_shero_device::nes_sachen_shero_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: nes_txrom_device(mconfig, NES_SACHEN_SHERO, tag, owner, clock), m_reg(0)
+{
+}
+
+//nes_a9746_device::nes_a9746_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+//    : nes_txrom_device(mconfig, NES_A9746, tag, owner, clock)
+//{
+//}
+
+nes_fk23c_device::nes_fk23c_device(const machine_config &mconfig, device_type type, const char *tag, device_t *owner, uint32_t clock)
+	: nes_txrom_device(mconfig, type, tag, owner, clock), m_mmc_cmd1(0)
+{
+}
+
+nes_fk23c_device::nes_fk23c_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: nes_fk23c_device(mconfig, NES_FK23C, tag, owner, clock)
+{
+}
+
+nes_fk23ca_device::nes_fk23ca_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: nes_fk23c_device(mconfig, NES_FK23CA, tag, owner, clock)
+{
+}
+
+nes_s24in1sc03_device::nes_s24in1sc03_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: nes_txrom_device(mconfig, NES_S24IN1SC03, tag, owner, clock)
+{
+}
+
+nes_bmc_15in1_device::nes_bmc_15in1_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: nes_txrom_device(mconfig, NES_BMC_15IN1, tag, owner, clock)
+{
+}
+
+nes_bmc_sbig7_device::nes_bmc_sbig7_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: nes_txrom_device(mconfig, NES_BMC_SBIG7, tag, owner, clock)
+{
+}
+
+nes_bmc_hik8_device::nes_bmc_hik8_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: nes_txrom_device(mconfig, NES_BMC_HIK8, tag, owner, clock), m_count(0)
+{
+}
+
+nes_bmc_hik4_device::nes_bmc_hik4_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: nes_txrom_device(mconfig, NES_BMC_HIK4, tag, owner, clock)
+{
+}
+
+nes_bmc_mario7in1_device::nes_bmc_mario7in1_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: nes_txrom_device(mconfig, NES_BMC_MARIO7IN1, tag, owner, clock), m_reg_written(0)
+{
+}
+
+nes_bmc_gold7in1_device::nes_bmc_gold7in1_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: nes_txrom_device(mconfig, NES_BMC_GOLD7IN1, tag, owner, clock), m_reg_written(0)
+{
+}
+
+nes_bmc_gc6in1_device::nes_bmc_gc6in1_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: nes_txrom_device(mconfig, NES_BMC_GC6IN1, tag, owner, clock)
+{
+}
+
+nes_bmc_411120c_device::nes_bmc_411120c_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: nes_txrom_device(mconfig, NES_BMC_411120C, tag, owner, clock), m_reg(0)
+{
+}
+
+nes_bmc_830118c_device::nes_bmc_830118c_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: nes_txrom_device(mconfig, NES_BMC_830118C, tag, owner, clock), m_reg(0)
+{
+}
+
+nes_pjoy84_device::nes_pjoy84_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: nes_txrom_device(mconfig, NES_PJOY84, tag, owner, clock)
+{
+}
+
+nes_coolboy_device::nes_coolboy_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: nes_txrom_device(mconfig, NES_COOLBOY, tag, owner, clock)
+>>>>>>> upstream/master
 {
 }
 
@@ -850,7 +1068,11 @@ WRITE8_MEMBER(nes_8237_device::write_l)
 
 WRITE8_MEMBER(nes_8237_device::write_h)
 {
+<<<<<<< HEAD
 	static const UINT8 conv_table[8] = {0, 2, 6, 1, 7, 3, 4, 5};
+=======
+	static const uint8_t conv_table[8] = {0, 2, 6, 1, 7, 3, 4, 5};
+>>>>>>> upstream/master
 	LOG_MMC(("unl_8237 write_h, offset: %04x, data: %02x\n", offset, data));
 
 	switch (offset & 0x7000)
@@ -919,7 +1141,11 @@ WRITE8_MEMBER(nes_sglionk_device::write_m)
 
 WRITE8_MEMBER(nes_sglionk_device::write_h)
 {
+<<<<<<< HEAD
 	static const UINT8 conv_table[8] = {0, 3, 1, 5, 6, 7, 2, 4};
+=======
+	static const uint8_t conv_table[8] = {0, 3, 1, 5, 6, 7, 2, 4};
+>>>>>>> upstream/master
 	LOG_MMC(("sglionk write_h, offset: %04x, data: %02x\n", offset, data));
 
 	if (offset < 0x6000)
@@ -1007,7 +1233,11 @@ void nes_sgboog_device::set_prg(int prg_base, int prg_mask)
 	else
 	{
 		// here standard MMC3 bankswitch
+<<<<<<< HEAD
 		UINT8 prg_flip = (m_latch & 0x40) ? 2 : 0;
+=======
+		uint8_t prg_flip = (m_latch & 0x40) ? 2 : 0;
+>>>>>>> upstream/master
 
 		prg_cb(0, prg_base | (m_mmc_prg_bank[0 ^ prg_flip] & prg_mask));
 		prg_cb(1, prg_base | (m_mmc_prg_bank[1] & prg_mask));
@@ -1065,7 +1295,11 @@ WRITE8_MEMBER(nes_sgboog_device::write_m)
 
 WRITE8_MEMBER(nes_sgboog_device::write_h)
 {
+<<<<<<< HEAD
 	static const UINT8 conv_table[8] = {0,2,5,3,6,1,7,4};
+=======
+	static const uint8_t conv_table[8] = {0,2,5,3,6,1,7,4};
+>>>>>>> upstream/master
 	LOG_MMC(("sgboog write_h, offset: %04x, data: %02x\n", offset, data));
 
 	if (m_mode)
@@ -1255,7 +1489,11 @@ void nes_kay_device::prg_cb(int start, int bank)
 
 void nes_kay_device::chr_cb(int start, int bank, int source)
 {
+<<<<<<< HEAD
 	UINT8 chr_page = (m_latch & 0x80) >> 5;
+=======
+	uint8_t chr_page = (m_latch & 0x80) >> 5;
+>>>>>>> upstream/master
 
 	if ((start & 0x04) == chr_page)
 		bank |= 0x100;
@@ -1318,8 +1556,13 @@ WRITE8_MEMBER(nes_h2288_device::write_l)
 		m_reg[offset & 1] = data;
 		if (m_reg[0] & 0x40)
 		{
+<<<<<<< HEAD
 			UINT8 helper1 = (m_reg[0] & 0x05) | ((m_reg[0] >> 2) & 0x0a);
 			UINT8 helper2 = BIT(m_reg[0], 1);
+=======
+			uint8_t helper1 = (m_reg[0] & 0x05) | ((m_reg[0] >> 2) & 0x0a);
+			uint8_t helper2 = BIT(m_reg[0], 1);
+>>>>>>> upstream/master
 			prg16_89ab(helper1 & ~helper2);
 			prg16_cdef(helper1 |  helper2);
 		}
@@ -1347,7 +1590,11 @@ READ8_MEMBER(nes_h2288_device::read_l)
 
 WRITE8_MEMBER(nes_h2288_device::write_h)
 {
+<<<<<<< HEAD
 	static const UINT8 conv_table[8] = {0, 3, 1, 5, 6, 7, 2, 4};
+=======
+	static const uint8_t conv_table[8] = {0, 3, 1, 5, 6, 7, 2, 4};
+>>>>>>> upstream/master
 	LOG_MMC(("h2288 write_h, offset: %04x, data: %02x\n", offset, data));
 
 	switch (offset & 0x6001)
@@ -1425,7 +1672,11 @@ void nes_txc_tw_device::prg_cb(int start, int bank)
 
  -------------------------------------------------*/
 
+<<<<<<< HEAD
 inline UINT8 kof97_unscramble( UINT8 data )
+=======
+inline uint8_t kof97_unscramble( uint8_t data )
+>>>>>>> upstream/master
 {
 	return ((data >> 1) & 0x01) | ((data >> 4) & 0x02) | ((data << 2) & 0x04) | ((data >> 0) & 0xd8) | ((data << 3) & 0x20);
 }
@@ -1471,7 +1722,11 @@ void nes_kof96_device::prg_cb(int start, int bank)
 
 void nes_kof96_device::chr_cb(int start, int bank, int source)
 {
+<<<<<<< HEAD
 	UINT8 chr_page = (m_latch & 0x80) >> 5;
+=======
+	uint8_t chr_page = (m_latch & 0x80) >> 5;
+>>>>>>> upstream/master
 
 	if ((start & 0x04) == chr_page)
 		bank |= 0x100;
@@ -1481,7 +1736,11 @@ void nes_kof96_device::chr_cb(int start, int bank, int source)
 
 WRITE8_MEMBER(nes_kof96_device::write_l)
 {
+<<<<<<< HEAD
 	UINT8 new_bank;
+=======
+	uint8_t new_bank;
+>>>>>>> upstream/master
 	LOG_MMC(("kof96 write_l, offset: %04x, data: %02x\n", offset, data));
 	offset += 0x100;
 
@@ -1587,7 +1846,11 @@ WRITE8_MEMBER(nes_kof96_device::write_h)
 
  -------------------------------------------------*/
 
+<<<<<<< HEAD
 void nes_sf3_device::set_chr(UINT8 chr_source, int chr_base, int chr_mask)
+=======
+void nes_sf3_device::set_chr(uint8_t chr_source, int chr_base, int chr_mask)
+>>>>>>> upstream/master
 {
 	chr4_0(chr_base | ((m_mmc_vrom_bank[0] >> 1) & chr_mask), chr_source);
 	chr2_4(chr_base | (m_mmc_vrom_bank[1] & chr_mask), chr_source);
@@ -1596,7 +1859,11 @@ void nes_sf3_device::set_chr(UINT8 chr_source, int chr_base, int chr_mask)
 
 WRITE8_MEMBER(nes_sf3_device::write_h)
 {
+<<<<<<< HEAD
 	UINT8 cmd;
+=======
+	uint8_t cmd;
+>>>>>>> upstream/master
 	LOG_MMC(("sf3 write_h, offset: %04x, data: %02x\n", offset, data));
 
 	switch (offset & 0x6001)
@@ -1639,7 +1906,11 @@ WRITE8_MEMBER(nes_sf3_device::write_h)
 
 WRITE8_MEMBER(nes_gouder_device::write_l)
 {
+<<<<<<< HEAD
 	static const UINT8 conv_table[256] =
+=======
+	static const uint8_t conv_table[256] =
+>>>>>>> upstream/master
 	{
 		0x59,0x59,0x59,0x59,0x59,0x59,0x59,0x59,0x59,0x49,0x19,0x09,0x59,0x49,0x19,0x09,
 		0x59,0x59,0x59,0x59,0x59,0x59,0x59,0x59,0x51,0x41,0x11,0x01,0x51,0x41,0x11,0x01,
@@ -1825,7 +2096,11 @@ void nes_fk23c_device::chr_cb(int start, int bank, int source)
 
 void nes_fk23c_device::prg_cb(int start, int bank)
 {
+<<<<<<< HEAD
 	UINT8 mask = (0x3f >> (m_reg[0] & 0x03));
+=======
+	uint8_t mask = (0x3f >> (m_reg[0] & 0x03));
+>>>>>>> upstream/master
 
 	if ((m_reg[0] & 0x07) < 3)
 	{
@@ -1949,7 +2224,11 @@ WRITE8_MEMBER(nes_fk23c_device::write_h)
 
 void nes_s24in1sc03_device::prg_cb(int start, int bank)
 {
+<<<<<<< HEAD
 	static const UINT8 masks[8] = {0x3f, 0x1f, 0x0f, 0x01, 0x03, 0x00, 0x00, 0x00};
+=======
+	static const uint8_t masks[8] = {0x3f, 0x1f, 0x0f, 0x01, 0x03, 0x00, 0x00, 0x00};
+>>>>>>> upstream/master
 	int prg_base = m_reg[1] << 1;
 	int prg_mask = masks[m_reg[0] & 0x07];
 
@@ -1959,7 +2238,11 @@ void nes_s24in1sc03_device::prg_cb(int start, int bank)
 
 void nes_s24in1sc03_device::chr_cb(int start, int bank, int source)
 {
+<<<<<<< HEAD
 	UINT8 chr = BIT(m_reg[0], 5) ? CHRRAM : CHRROM;
+=======
+	uint8_t chr = BIT(m_reg[0], 5) ? CHRRAM : CHRROM;
+>>>>>>> upstream/master
 	int chr_base = (m_reg[2] << 3) & 0xf00;
 
 	chr1_x(start, chr_base | bank, chr);
@@ -2033,7 +2316,11 @@ WRITE8_MEMBER(nes_bmc_15in1_device::write_m)
 
 WRITE8_MEMBER(nes_bmc_sbig7_device::write_h)
 {
+<<<<<<< HEAD
 	UINT8 page;
+=======
+	uint8_t page;
+>>>>>>> upstream/master
 	LOG_MMC(("bmc_sbig7 write_h, offset: %04x, data: %02x\n", offset, data));
 
 	switch (offset & 0x6001)
@@ -2158,7 +2445,11 @@ WRITE8_MEMBER(nes_bmc_hik4_device::write_m)
 
 WRITE8_MEMBER(nes_bmc_mario7in1_device::write_m)
 {
+<<<<<<< HEAD
 	UINT8 helper1, helper2;
+=======
+	uint8_t helper1, helper2;
+>>>>>>> upstream/master
 	LOG_MMC(("bmc_mario7in1 write_m, offset: %04x, data: %02x\n", offset, data));
 
 	/* mid writes only work when WRAM is enabled. not sure if I should
@@ -2200,7 +2491,11 @@ WRITE8_MEMBER(nes_bmc_mario7in1_device::write_m)
 
 WRITE8_MEMBER(nes_bmc_gold7in1_device::write_m)
 {
+<<<<<<< HEAD
 	UINT8 helper1, helper2;
+=======
+	uint8_t helper1, helper2;
+>>>>>>> upstream/master
 	LOG_MMC(("bmc_gold7in1 write_m, offset: %04x, data: %02x\n", offset, data));
 
 	if ((m_wram_protect & 0x80) && !m_reg_written)
@@ -2261,7 +2556,11 @@ void nes_bmc_gc6in1_device::chr_cb(int start, int bank, int source)
 
 WRITE8_MEMBER(nes_bmc_gc6in1_device::write_l)
 {
+<<<<<<< HEAD
 	UINT8 bank;
+=======
+	uint8_t bank;
+>>>>>>> upstream/master
 	LOG_MMC(("bmc_gc6in1 write_l, offset: %04x, data: %02x\n", offset, data));
 	offset += 0x100;
 
@@ -2290,8 +2589,13 @@ WRITE8_MEMBER(nes_bmc_gc6in1_device::write_l)
 
 WRITE8_MEMBER(nes_bmc_gc6in1_device::write_h)
 {
+<<<<<<< HEAD
 	UINT8 cmd;
 	static const UINT8 conv_table[8] = {0, 6, 3, 7, 5, 2, 4, 1};
+=======
+	uint8_t cmd;
+	static const uint8_t conv_table[8] = {0, 6, 3, 7, 5, 2, 4, 1};
+>>>>>>> upstream/master
 	LOG_MMC(("bmc_gc6in1 write_h, offset: %04x, data: %02x\n", offset, data));
 
 	if (!m_reg[2])
@@ -2436,7 +2740,11 @@ WRITE8_MEMBER(nes_bmc_830118c_device::write_m)
 
 void nes_pjoy84_device::prg_cb(int start, int bank)
 {
+<<<<<<< HEAD
 	UINT8 flip = (m_latch & 0x40) ? 2 : 0;
+=======
+	uint8_t flip = (m_latch & 0x40) ? 2 : 0;
+>>>>>>> upstream/master
 
 	if (!(m_reg[3] & 0x03))
 		prg8_x(start, bank);
@@ -2495,6 +2803,41 @@ WRITE8_MEMBER(nes_pjoy84_device::write_m)
 	}
 }
 
+<<<<<<< HEAD
+=======
+/*-------------------------------------------------
+
+ COOLBOY
+
+ Games: several multigame carts
+
+ In MESS: Not Supported.
+
+ -------------------------------------------------*/
+
+void nes_coolboy_device::prg_cb(int start, int bank)
+{
+	bank = (bank & 3) | ((bank & 8) >> 1) | ((bank & 4) << 1);
+	prg8_x(start, bank);
+}
+
+void nes_coolboy_device::chr_cb(int start, int bank, int source)
+{
+	bank = (bank & 0xdd) | ((bank & 0x20) >> 4) | ((bank & 2) << 4);
+	chr1_x(start, bank, source);
+}
+
+WRITE8_MEMBER(nes_coolboy_device::write_m)
+{
+	LOG_MMC(("coolboy write_m, offset: %04x, data: %02x\n", offset, data));
+
+	m_reg[offset & 0x03] = data;
+	//set_base_mask();
+	set_chr(m_chr_source, m_chr_base, m_chr_mask);
+	set_prg(m_prg_base, m_prg_mask);
+}
+
+>>>>>>> upstream/master
 #ifdef UNUSED_FUNCTION
 /*-------------------------------------------------
 
@@ -2525,9 +2868,15 @@ void nes_a9746_device::pcb_reset()
 	mmc3_common_initialize(0x7f, 0xff, 0);
 }
 
+<<<<<<< HEAD
 void nes_a9746_device::update_banks(UINT8 value)
 {
 	UINT8 bank = BITSWAP8(value & 0x3c,7,6,0,1,2,3,4,5);
+=======
+void nes_a9746_device::update_banks(uint8_t value)
+{
+	uint8_t bank = BITSWAP8(value & 0x3c,7,6,0,1,2,3,4,5);
+>>>>>>> upstream/master
 
 	switch (m_reg[0])
 	{

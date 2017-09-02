@@ -43,8 +43,13 @@
 ****************************************************************************/
 
 #include "emu.h"
+<<<<<<< HEAD
 #include "debugger.h"
 #include "v30mz.h"
+=======
+#include "v30mz.h"
+#include "debugger.h"
+>>>>>>> upstream/master
 
 
 enum SREGS { ES=0, CS, SS, DS };
@@ -75,7 +80,11 @@ enum BREGS {
 #define CF      (m_CarryVal!=0)
 #define SF      (m_SignVal<0)
 #define ZF      (m_ZeroVal==0)
+<<<<<<< HEAD
 #define PF      m_parity_table[(UINT8)m_ParityVal]
+=======
+#define PF      m_parity_table[(uint8_t)m_ParityVal]
+>>>>>>> upstream/master
 #define AF      (m_AuxVal!=0)
 #define OF      (m_OverVal!=0)
 #define MD      (m_MF!=0)
@@ -94,11 +103,19 @@ enum BREGS {
 
 /***************************************************************************/
 
+<<<<<<< HEAD
 const device_type V30MZ = &device_creator<v30mz_cpu_device>;
 
 
 v30mz_cpu_device::v30mz_cpu_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
 	: cpu_device(mconfig, V30MZ, "V30MZ", tag, owner, clock, "v30mz", __FILE__)
+=======
+DEFINE_DEVICE_TYPE(V30MZ, v30mz_cpu_device, "v30mz", "V30MZ")
+
+
+v30mz_cpu_device::v30mz_cpu_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: cpu_device(mconfig, V30MZ, tag, owner, clock)
+>>>>>>> upstream/master
 	, m_program_config("program", ENDIANNESS_LITTLE, 8, 20, 0)
 	, m_io_config("io", ENDIANNESS_LITTLE, 8, 16, 0)
 	, m_ip(0)
@@ -109,23 +126,38 @@ v30mz_cpu_device::v30mz_cpu_device(const machine_config &mconfig, const char *ta
 	static const BREGS reg_name[8]={ AL, CL, DL, BL, AH, CH, DH, BH };
 
 	/* Set up parity lookup table. */
+<<<<<<< HEAD
 	for (UINT16 i = 0;i < 256; i++)
 	{
 		UINT16 c = 0;
 		for (UINT16 j = i; j > 0; j >>= 1)
+=======
+	for (uint16_t i = 0;i < 256; i++)
+	{
+		uint16_t c = 0;
+		for (uint16_t j = i; j > 0; j >>= 1)
+>>>>>>> upstream/master
 		{
 			if (j & 1) c++;
 		}
 		m_parity_table[i] = !(c & 1);
 	}
 
+<<<<<<< HEAD
 	for (UINT16 i = 0; i < 256; i++)
+=======
+	for (uint16_t i = 0; i < 256; i++)
+>>>>>>> upstream/master
 	{
 		m_Mod_RM.reg.b[i] = reg_name[(i & 0x38) >> 3];
 		m_Mod_RM.reg.w[i] = (WREGS) ( (i & 0x38) >> 3) ;
 	}
 
+<<<<<<< HEAD
 	for (UINT16 i = 0xc0; i < 0x100; i++)
+=======
+	for (uint16_t i = 0xc0; i < 0x100; i++)
+>>>>>>> upstream/master
 	{
 		m_Mod_RM.RM.w[i] = (WREGS)( i & 7 );
 		m_Mod_RM.RM.b[i] = (BREGS)reg_name[i & 7];
@@ -134,6 +166,17 @@ v30mz_cpu_device::v30mz_cpu_device(const machine_config &mconfig, const char *ta
 	memset(&m_regs, 0x00, sizeof(m_regs));
 }
 
+<<<<<<< HEAD
+=======
+device_memory_interface::space_config_vector v30mz_cpu_device::memory_space_config() const
+{
+	return space_config_vector {
+		std::make_pair(AS_PROGRAM, &m_program_config),
+		std::make_pair(AS_IO,      &m_io_config)
+	};
+}
+
+>>>>>>> upstream/master
 
 void v30mz_cpu_device::device_start()
 {
@@ -178,25 +221,44 @@ void v30mz_cpu_device::device_start()
 	state_add( NEC_DS, "DS", m_sregs[DS] ).callimport().callexport().formatstr("%04X");
 	state_add( NEC_VECTOR, "V", m_int_vector).callimport().callexport().formatstr("%02X");
 
+<<<<<<< HEAD
 	state_add(STATE_GENPC, "curpc", m_pc).callimport().callexport().formatstr("%05X");
+=======
+	state_add(STATE_GENPC, "GENPC", m_pc).callexport().formatstr("%05X");
+	state_add(STATE_GENPCBASE, "CURPC", m_pc).callexport().formatstr("%05X");
+>>>>>>> upstream/master
 	state_add(STATE_GENFLAGS, "GENFLAGS", m_TF).callimport().callexport().formatstr("%16s").noshow();
 
 	m_icountptr = &m_icount;
 }
 
 
+<<<<<<< HEAD
 void v30mz_cpu_device::state_string_export(const device_state_entry &entry, std::string &str)
+=======
+void v30mz_cpu_device::state_string_export(const device_state_entry &entry, std::string &str) const
+>>>>>>> upstream/master
 {
 	switch (entry.index())
 	{
 		case STATE_GENPC:
+<<<<<<< HEAD
 			strprintf(str, "%08X", pc());
+=======
+		case STATE_GENPCBASE:
+			str = string_format("%08X", ( m_sregs[CS] << 4 ) + m_ip);
+>>>>>>> upstream/master
 			break;
 
 		case STATE_GENFLAGS:
 			{
+<<<<<<< HEAD
 				UINT16 flags = CompressFlags();
 				strprintf(str, "%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c",
+=======
+				uint16_t flags = CompressFlags();
+				str = string_format("%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c",
+>>>>>>> upstream/master
 					flags & 0x8000 ? 'M':'.',
 					flags & 0x4000 ? '?':'.',
 					flags & 0x2000 ? '?':'.',
@@ -262,77 +324,129 @@ void v30mz_cpu_device::device_reset()
 }
 
 
+<<<<<<< HEAD
 inline UINT32 v30mz_cpu_device::pc()
+=======
+inline uint32_t v30mz_cpu_device::pc()
+>>>>>>> upstream/master
 {
 	m_pc = ( m_sregs[CS] << 4 ) + m_ip;
 	return m_pc;
 }
 
 
+<<<<<<< HEAD
 inline UINT8 v30mz_cpu_device::read_byte(UINT32 addr)
+=======
+inline uint8_t v30mz_cpu_device::read_byte(uint32_t addr)
+>>>>>>> upstream/master
 {
 	return m_program->read_byte(addr);
 }
 
 
+<<<<<<< HEAD
 inline UINT16 v30mz_cpu_device::read_word(UINT32 addr)
+=======
+inline uint16_t v30mz_cpu_device::read_word(uint32_t addr)
+>>>>>>> upstream/master
 {
 	return m_program->read_byte(addr) | ( m_program->read_byte(addr+1) << 8 );
 }
 
 
+<<<<<<< HEAD
 inline void v30mz_cpu_device::write_byte(UINT32 addr, UINT8 data)
+=======
+inline void v30mz_cpu_device::write_byte(uint32_t addr, uint8_t data)
+>>>>>>> upstream/master
 {
 	m_program->write_byte(addr, data);
 }
 
 
+<<<<<<< HEAD
 inline void v30mz_cpu_device::write_word(UINT32 addr, UINT16 data)
+=======
+inline void v30mz_cpu_device::write_word(uint32_t addr, uint16_t data)
+>>>>>>> upstream/master
 {
 	m_program->write_byte( addr, data & 0xff );
 	m_program->write_byte( addr + 1, data >> 8 );
 }
 
 
+<<<<<<< HEAD
 inline UINT8 v30mz_cpu_device::read_port(UINT16 port)
+=======
+inline uint8_t v30mz_cpu_device::read_port(uint16_t port)
+>>>>>>> upstream/master
 {
 	return m_io->read_byte(port);
 }
 
 
+<<<<<<< HEAD
 inline void v30mz_cpu_device::write_port(UINT16 port, UINT8 data)
+=======
+inline void v30mz_cpu_device::write_port(uint16_t port, uint8_t data)
+>>>>>>> upstream/master
 {
 	m_io->write_byte(port, data);
 }
 
 
+<<<<<<< HEAD
 inline UINT8 v30mz_cpu_device::fetch_op()
 {
 	UINT8 data = m_direct->read_byte( pc() );
+=======
+inline uint8_t v30mz_cpu_device::fetch_op()
+{
+	uint8_t data = m_direct->read_byte( pc() );
+>>>>>>> upstream/master
 	m_ip++;
 	return data;
 }
 
 
+<<<<<<< HEAD
 inline UINT8 v30mz_cpu_device::fetch()
 {
 	UINT8 data = m_direct->read_byte( pc() );
+=======
+inline uint8_t v30mz_cpu_device::fetch()
+{
+	uint8_t data = m_direct->read_byte( pc() );
+>>>>>>> upstream/master
 	m_ip++;
 	return data;
 }
 
 
+<<<<<<< HEAD
 inline UINT16 v30mz_cpu_device::fetch_word()
 {
 	UINT16 data = fetch();
+=======
+inline uint16_t v30mz_cpu_device::fetch_word()
+{
+	uint16_t data = fetch();
+>>>>>>> upstream/master
 	data |= ( fetch() << 8 );
 	return data;
 }
 
 
+<<<<<<< HEAD
 inline UINT8 v30mz_cpu_device::repx_op()
 {
 	UINT8 next = fetch_op();
+=======
+inline uint8_t v30mz_cpu_device::repx_op()
+{
+	uint8_t next = fetch_op();
+>>>>>>> upstream/master
 	bool seg_prefix = false;
 	int seg = 0;
 
@@ -369,19 +483,31 @@ inline UINT8 v30mz_cpu_device::repx_op()
 }
 
 
+<<<<<<< HEAD
 inline void v30mz_cpu_device::CLK(UINT32 cycles)
+=======
+inline void v30mz_cpu_device::CLK(uint32_t cycles)
+>>>>>>> upstream/master
 {
 	m_icount -= cycles;
 }
 
 
+<<<<<<< HEAD
 inline void v30mz_cpu_device::CLKM(UINT32 cycles_reg, UINT32 cycles_mem)
+=======
+inline void v30mz_cpu_device::CLKM(uint32_t cycles_reg, uint32_t cycles_mem)
+>>>>>>> upstream/master
 {
 	m_icount -= ( m_modrm >= 0xc0 ) ? cycles_reg : cycles_mem;
 }
 
 
+<<<<<<< HEAD
 inline UINT32 v30mz_cpu_device::default_base(int seg)
+=======
+inline uint32_t v30mz_cpu_device::default_base(int seg)
+>>>>>>> upstream/master
 {
 	if ( m_seg_prefix && (seg==DS || seg==SS) )
 	{
@@ -394,7 +520,11 @@ inline UINT32 v30mz_cpu_device::default_base(int seg)
 }
 
 
+<<<<<<< HEAD
 inline UINT32 v30mz_cpu_device::get_ea()
+=======
+inline uint32_t v30mz_cpu_device::get_ea()
+>>>>>>> upstream/master
 {
 	switch( m_modrm & 0xc7 )
 	{
@@ -432,6 +562,7 @@ inline UINT32 v30mz_cpu_device::get_ea()
 		break;
 
 	case 0x40:
+<<<<<<< HEAD
 		m_eo = m_regs.w[BW] + m_regs.w[IX] + (INT8)fetch();
 		m_ea = default_base(DS) + m_eo;
 		break;
@@ -461,47 +592,110 @@ inline UINT32 v30mz_cpu_device::get_ea()
 		break;
 	case 0x47:
 		m_eo = m_regs.w[BW] + (INT8)fetch();
+=======
+		m_eo = m_regs.w[BW] + m_regs.w[IX] + (int8_t)fetch();
+		m_ea = default_base(DS) + m_eo;
+		break;
+	case 0x41:
+		m_eo = m_regs.w[BW] + m_regs.w[IY] + (int8_t)fetch();
+		m_ea = default_base(DS) + m_eo;
+		break;
+	case 0x42:
+		m_eo = m_regs.w[BP] + m_regs.w[IX] + (int8_t)fetch();
+		m_ea = default_base(SS) + m_eo;
+		break;
+	case 0x43:
+		m_eo = m_regs.w[BP] + m_regs.w[IY] + (int8_t)fetch();
+		m_ea = default_base(SS) + m_eo;
+		break;
+	case 0x44:
+		m_eo = m_regs.w[IX] + (int8_t)fetch();
+		m_ea = default_base(DS) + m_eo;
+		break;
+	case 0x45:
+		m_eo = m_regs.w[IY] + (int8_t)fetch();
+		m_ea = default_base(DS) + m_eo;
+		break;
+	case 0x46:
+		m_eo = m_regs.w[BP] + (int8_t)fetch();
+		m_ea = default_base(SS) + m_eo;
+		break;
+	case 0x47:
+		m_eo = m_regs.w[BW] + (int8_t)fetch();
+>>>>>>> upstream/master
 		m_ea = default_base(DS) + m_eo;
 		break;
 
 	case 0x80:
 		m_e16 = fetch_word();
+<<<<<<< HEAD
 		m_eo = m_regs.w[BW] + m_regs.w[IX] + (INT16)m_e16;
+=======
+		m_eo = m_regs.w[BW] + m_regs.w[IX] + (int16_t)m_e16;
+>>>>>>> upstream/master
 		m_ea = default_base(DS) + m_eo;
 		break;
 	case 0x81:
 		m_e16 = fetch_word();
+<<<<<<< HEAD
 		m_eo = m_regs.w[BW] + m_regs.w[IY] + (INT16)m_e16;
+=======
+		m_eo = m_regs.w[BW] + m_regs.w[IY] + (int16_t)m_e16;
+>>>>>>> upstream/master
 		m_ea = default_base(DS) + m_eo;
 		break;
 	case 0x82:
 		m_e16 = fetch_word();
+<<<<<<< HEAD
 		m_eo = m_regs.w[BP] + m_regs.w[IX] + (INT16)m_e16;
+=======
+		m_eo = m_regs.w[BP] + m_regs.w[IX] + (int16_t)m_e16;
+>>>>>>> upstream/master
 		m_ea = default_base(SS) + m_eo;
 		break;
 	case 0x83:
 		m_e16 = fetch_word();
+<<<<<<< HEAD
 		m_eo = m_regs.w[BP] + m_regs.w[IY] + (INT16)m_e16;
+=======
+		m_eo = m_regs.w[BP] + m_regs.w[IY] + (int16_t)m_e16;
+>>>>>>> upstream/master
 		m_ea = default_base(SS) + m_eo;
 		break;
 	case 0x84:
 		m_e16 = fetch_word();
+<<<<<<< HEAD
 		m_eo = m_regs.w[IX] + (INT16)m_e16;
+=======
+		m_eo = m_regs.w[IX] + (int16_t)m_e16;
+>>>>>>> upstream/master
 		m_ea = default_base(DS) + m_eo;
 		break;
 	case 0x85:
 		m_e16 = fetch_word();
+<<<<<<< HEAD
 		m_eo = m_regs.w[IY] + (INT16)m_e16;
+=======
+		m_eo = m_regs.w[IY] + (int16_t)m_e16;
+>>>>>>> upstream/master
 		m_ea = default_base(DS) + m_eo;
 		break;
 	case 0x86:
 		m_e16 = fetch_word();
+<<<<<<< HEAD
 		m_eo = m_regs.w[BP] + (INT16)m_e16;
+=======
+		m_eo = m_regs.w[BP] + (int16_t)m_e16;
+>>>>>>> upstream/master
 		m_ea = default_base(SS) + m_eo;
 		break;
 	case 0x87:
 		m_e16 = fetch_word();
+<<<<<<< HEAD
 		m_eo = m_regs.w[BW] + (INT16)m_e16;
+=======
+		m_eo = m_regs.w[BW] + (int16_t)m_e16;
+>>>>>>> upstream/master
 		m_ea = default_base(DS) + m_eo;
 		break;
 	}
@@ -510,7 +704,11 @@ inline UINT32 v30mz_cpu_device::get_ea()
 }
 
 
+<<<<<<< HEAD
 inline void v30mz_cpu_device::PutbackRMByte(UINT8 data)
+=======
+inline void v30mz_cpu_device::PutbackRMByte(uint8_t data)
+>>>>>>> upstream/master
 {
 	if ( m_modrm >= 0xc0 )
 	{
@@ -523,7 +721,11 @@ inline void v30mz_cpu_device::PutbackRMByte(UINT8 data)
 }
 
 
+<<<<<<< HEAD
 inline void v30mz_cpu_device::PutbackRMWord(UINT16 data)
+=======
+inline void v30mz_cpu_device::PutbackRMWord(uint16_t data)
+>>>>>>> upstream/master
 {
 	if ( m_modrm >= 0xc0 )
 	{
@@ -543,12 +745,20 @@ inline void v30mz_cpu_device::PutImmRMWord()
 	}
 	else
 	{
+<<<<<<< HEAD
 		UINT32 addr = get_ea();
+=======
+		uint32_t addr = get_ea();
+>>>>>>> upstream/master
 		write_word( addr, fetch_word() );
 	}
 }
 
+<<<<<<< HEAD
 inline void v30mz_cpu_device::PutRMWord(UINT16 val)
+=======
+inline void v30mz_cpu_device::PutRMWord(uint16_t val)
+>>>>>>> upstream/master
 {
 	if ( m_modrm >= 0xc0 )
 	{
@@ -561,7 +771,11 @@ inline void v30mz_cpu_device::PutRMWord(UINT16 val)
 }
 
 
+<<<<<<< HEAD
 inline void v30mz_cpu_device::PutRMByte(UINT8 val)
+=======
+inline void v30mz_cpu_device::PutRMByte(uint8_t val)
+>>>>>>> upstream/master
 {
 	if ( m_modrm >= 0xc0 )
 	{
@@ -582,7 +796,11 @@ inline void v30mz_cpu_device::PutImmRMByte()
 	}
 	else
 	{
+<<<<<<< HEAD
 		UINT32 addr = get_ea();
+=======
+		uint32_t addr = get_ea();
+>>>>>>> upstream/master
 		write_byte( addr, fetch() );
 	}
 }
@@ -635,31 +853,51 @@ inline void v30mz_cpu_device::DEF_axd16()
 
 
 
+<<<<<<< HEAD
 inline void v30mz_cpu_device::RegByte(UINT8 data)
+=======
+inline void v30mz_cpu_device::RegByte(uint8_t data)
+>>>>>>> upstream/master
 {
 	m_regs.b[ m_Mod_RM.reg.b[ m_modrm ] ] = data;
 }
 
 
+<<<<<<< HEAD
 inline void v30mz_cpu_device::RegWord(UINT16 data)
+=======
+inline void v30mz_cpu_device::RegWord(uint16_t data)
+>>>>>>> upstream/master
 {
 	m_regs.w[ m_Mod_RM.reg.w[ m_modrm ] ] = data;
 }
 
 
+<<<<<<< HEAD
 inline UINT8 v30mz_cpu_device::RegByte()
+=======
+inline uint8_t v30mz_cpu_device::RegByte()
+>>>>>>> upstream/master
 {
 	return m_regs.b[ m_Mod_RM.reg.b[ m_modrm ] ];
 }
 
 
+<<<<<<< HEAD
 inline UINT16 v30mz_cpu_device::RegWord()
+=======
+inline uint16_t v30mz_cpu_device::RegWord()
+>>>>>>> upstream/master
 {
 	return m_regs.w[ m_Mod_RM.reg.w[ m_modrm ] ];
 }
 
 
+<<<<<<< HEAD
 inline UINT16 v30mz_cpu_device::GetRMWord()
+=======
+inline uint16_t v30mz_cpu_device::GetRMWord()
+>>>>>>> upstream/master
 {
 	if ( m_modrm >= 0xc0 )
 	{
@@ -672,15 +910,25 @@ inline UINT16 v30mz_cpu_device::GetRMWord()
 }
 
 
+<<<<<<< HEAD
 inline UINT16 v30mz_cpu_device::GetnextRMWord()
 {
 	UINT32 addr = ( m_ea & 0xf0000 ) | ( ( m_ea + 2 ) & 0xffff );
+=======
+inline uint16_t v30mz_cpu_device::GetnextRMWord()
+{
+	uint32_t addr = ( m_ea & 0xf0000 ) | ( ( m_ea + 2 ) & 0xffff );
+>>>>>>> upstream/master
 
 	return read_word( addr );
 }
 
 
+<<<<<<< HEAD
 inline UINT8 v30mz_cpu_device::GetRMByte()
+=======
+inline uint8_t v30mz_cpu_device::GetRMByte()
+>>>>>>> upstream/master
 {
 	if ( m_modrm >= 0xc0 )
 	{
@@ -693,26 +941,42 @@ inline UINT8 v30mz_cpu_device::GetRMByte()
 }
 
 
+<<<<<<< HEAD
 inline void v30mz_cpu_device::PutMemB(int seg, UINT16 offset, UINT8 data)
+=======
+inline void v30mz_cpu_device::PutMemB(int seg, uint16_t offset, uint8_t data)
+>>>>>>> upstream/master
 {
 	write_byte( default_base( seg ) + offset, data);
 }
 
 
+<<<<<<< HEAD
 inline void v30mz_cpu_device::PutMemW(int seg, UINT16 offset, UINT16 data)
+=======
+inline void v30mz_cpu_device::PutMemW(int seg, uint16_t offset, uint16_t data)
+>>>>>>> upstream/master
 {
 	PutMemB( seg, offset, data & 0xff);
 	PutMemB( seg, offset+1, data >> 8);
 }
 
 
+<<<<<<< HEAD
 inline UINT8 v30mz_cpu_device::GetMemB(int seg, UINT16 offset)
+=======
+inline uint8_t v30mz_cpu_device::GetMemB(int seg, uint16_t offset)
+>>>>>>> upstream/master
 {
 	return read_byte( default_base(seg) + offset );
 }
 
 
+<<<<<<< HEAD
 inline UINT16 v30mz_cpu_device::GetMemW(int seg, UINT16 offset)
+=======
+inline uint16_t v30mz_cpu_device::GetMemW(int seg, uint16_t offset)
+>>>>>>> upstream/master
 {
 	return GetMemB(seg, offset) | ( GetMemB(seg, offset + 1) << 8 );
 }
@@ -720,36 +984,61 @@ inline UINT16 v30mz_cpu_device::GetMemW(int seg, UINT16 offset)
 
 // Setting flags
 
+<<<<<<< HEAD
 inline void v30mz_cpu_device::set_CFB(UINT32 x)
+=======
+inline void v30mz_cpu_device::set_CFB(uint32_t x)
+>>>>>>> upstream/master
 {
 	m_CarryVal = x & 0x100;
 }
 
+<<<<<<< HEAD
 inline void v30mz_cpu_device::set_CFW(UINT32 x)
+=======
+inline void v30mz_cpu_device::set_CFW(uint32_t x)
+>>>>>>> upstream/master
 {
 	m_CarryVal = x & 0x10000;
 }
 
+<<<<<<< HEAD
 inline void v30mz_cpu_device::set_AF(UINT32 x,UINT32 y,UINT32 z)
+=======
+inline void v30mz_cpu_device::set_AF(uint32_t x,uint32_t y,uint32_t z)
+>>>>>>> upstream/master
 {
 	m_AuxVal = (x ^ (y ^ z)) & 0x10;
 }
 
+<<<<<<< HEAD
 inline void v30mz_cpu_device::set_SF(UINT32 x)
+=======
+inline void v30mz_cpu_device::set_SF(uint32_t x)
+>>>>>>> upstream/master
 {
 	m_SignVal = x;
 }
 
+<<<<<<< HEAD
 inline void v30mz_cpu_device::set_ZF(UINT32 x)
+=======
+inline void v30mz_cpu_device::set_ZF(uint32_t x)
+>>>>>>> upstream/master
 {
 	m_ZeroVal = x;
 }
 
+<<<<<<< HEAD
 inline void v30mz_cpu_device::set_PF(UINT32 x)
+=======
+inline void v30mz_cpu_device::set_PF(uint32_t x)
+>>>>>>> upstream/master
 {
 	m_ParityVal = x;
 }
 
+<<<<<<< HEAD
 inline void v30mz_cpu_device::set_SZPF_Byte(UINT32 x)
 {
 	m_SignVal = m_ZeroVal = m_ParityVal = (INT8)x;
@@ -761,27 +1050,56 @@ inline void v30mz_cpu_device::set_SZPF_Word(UINT32 x)
 }
 
 inline void v30mz_cpu_device::set_OFW_Add(UINT32 x,UINT32 y,UINT32 z)
+=======
+inline void v30mz_cpu_device::set_SZPF_Byte(uint32_t x)
+{
+	m_SignVal = m_ZeroVal = m_ParityVal = (int8_t)x;
+}
+
+inline void v30mz_cpu_device::set_SZPF_Word(uint32_t x)
+{
+	m_SignVal = m_ZeroVal = m_ParityVal = (int16_t)x;
+}
+
+inline void v30mz_cpu_device::set_OFW_Add(uint32_t x,uint32_t y,uint32_t z)
+>>>>>>> upstream/master
 {
 	m_OverVal = (x ^ y) & (x ^ z) & 0x8000;
 }
 
+<<<<<<< HEAD
 inline void v30mz_cpu_device::set_OFB_Add(UINT32 x,UINT32 y,UINT32 z)
+=======
+inline void v30mz_cpu_device::set_OFB_Add(uint32_t x,uint32_t y,uint32_t z)
+>>>>>>> upstream/master
 {
 	m_OverVal = (x ^ y) & (x ^ z) & 0x80;
 }
 
+<<<<<<< HEAD
 inline void v30mz_cpu_device::set_OFW_Sub(UINT32 x,UINT32 y,UINT32 z)
+=======
+inline void v30mz_cpu_device::set_OFW_Sub(uint32_t x,uint32_t y,uint32_t z)
+>>>>>>> upstream/master
 {
 	m_OverVal = (z ^ y) & (z ^ x) & 0x8000;
 }
 
+<<<<<<< HEAD
 inline void v30mz_cpu_device::set_OFB_Sub(UINT32 x,UINT32 y,UINT32 z)
+=======
+inline void v30mz_cpu_device::set_OFB_Sub(uint32_t x,uint32_t y,uint32_t z)
+>>>>>>> upstream/master
 {
 	m_OverVal = (z ^ y) & (z ^ x) & 0x80;
 }
 
 
+<<<<<<< HEAD
 inline UINT16 v30mz_cpu_device::CompressFlags()
+=======
+inline uint16_t v30mz_cpu_device::CompressFlags() const
+>>>>>>> upstream/master
 {
 	return (CF ? 1 : 0)
 		| (PF ? 4 : 0)
@@ -795,7 +1113,11 @@ inline UINT16 v30mz_cpu_device::CompressFlags()
 		| (MD << 15);
 }
 
+<<<<<<< HEAD
 inline void v30mz_cpu_device::ExpandFlags(UINT16 f)
+=======
+inline void v30mz_cpu_device::ExpandFlags(uint16_t f)
+>>>>>>> upstream/master
 {
 	m_CarryVal = (f) & 1;
 	m_ParityVal = !((f) & 4);
@@ -841,7 +1163,11 @@ inline void v30mz_cpu_device::i_outsw()
 
 inline void v30mz_cpu_device::i_movsb()
 {
+<<<<<<< HEAD
 	UINT8 tmp = GetMemB( DS, m_regs.w[IX] );
+=======
+	uint8_t tmp = GetMemB( DS, m_regs.w[IX] );
+>>>>>>> upstream/master
 	PutMemB( ES, m_regs.w[IY], tmp);
 	m_regs.w[IY] += -2 * m_DF + 1;
 	m_regs.w[IX] += -2 * m_DF + 1;
@@ -850,7 +1176,11 @@ inline void v30mz_cpu_device::i_movsb()
 
 inline void v30mz_cpu_device::i_movsw()
 {
+<<<<<<< HEAD
 	UINT16 tmp = GetMemW( DS, m_regs.w[IX] );
+=======
+	uint16_t tmp = GetMemW( DS, m_regs.w[IX] );
+>>>>>>> upstream/master
 	PutMemW( ES, m_regs.w[IY], tmp );
 	m_regs.w[IY] += -4 * m_DF + 2;
 	m_regs.w[IX] += -4 * m_DF + 2;
@@ -926,7 +1256,11 @@ inline void v30mz_cpu_device::i_scasw()
 
 inline void v30mz_cpu_device::i_popf()
 {
+<<<<<<< HEAD
 	UINT32 tmp = POP();
+=======
+	uint32_t tmp = POP();
+>>>>>>> upstream/master
 
 	ExpandFlags(tmp);
 	CLK(3);
@@ -939,7 +1273,11 @@ inline void v30mz_cpu_device::i_popf()
 
 inline void v30mz_cpu_device::ADDB()
 {
+<<<<<<< HEAD
 	UINT32 res = m_dst + m_src;
+=======
+	uint32_t res = m_dst + m_src;
+>>>>>>> upstream/master
 
 	set_CFB(res);
 	set_OFB_Add(res,m_src,m_dst);
@@ -951,7 +1289,11 @@ inline void v30mz_cpu_device::ADDB()
 
 inline void v30mz_cpu_device::ADDW()
 {
+<<<<<<< HEAD
 	UINT32 res = m_dst + m_src;
+=======
+	uint32_t res = m_dst + m_src;
+>>>>>>> upstream/master
 
 	set_CFW(res);
 	set_OFW_Add(res,m_src,m_dst);
@@ -963,7 +1305,11 @@ inline void v30mz_cpu_device::ADDW()
 
 inline void v30mz_cpu_device::SUBB()
 {
+<<<<<<< HEAD
 	UINT32 res = m_dst - m_src;
+=======
+	uint32_t res = m_dst - m_src;
+>>>>>>> upstream/master
 
 	set_CFB(res);
 	set_OFB_Sub(res,m_src,m_dst);
@@ -975,7 +1321,11 @@ inline void v30mz_cpu_device::SUBB()
 
 inline void v30mz_cpu_device::SUBW()
 {
+<<<<<<< HEAD
 	UINT32 res = m_dst - m_src;
+=======
+	uint32_t res = m_dst - m_src;
+>>>>>>> upstream/master
 
 	set_CFW(res);
 	set_OFW_Sub(res,m_src,m_dst);
@@ -1083,7 +1433,11 @@ inline void v30mz_cpu_device::RORC_WORD()
 	m_dst >>= 1;
 }
 
+<<<<<<< HEAD
 inline void v30mz_cpu_device::SHL_BYTE(UINT8 c)
+=======
+inline void v30mz_cpu_device::SHL_BYTE(uint8_t c)
+>>>>>>> upstream/master
 {
 	m_icount -= c;
 	m_dst <<= c;
@@ -1092,7 +1446,11 @@ inline void v30mz_cpu_device::SHL_BYTE(UINT8 c)
 	PutbackRMByte(m_dst);
 }
 
+<<<<<<< HEAD
 inline void v30mz_cpu_device::SHL_WORD(UINT8 c)
+=======
+inline void v30mz_cpu_device::SHL_WORD(uint8_t c)
+>>>>>>> upstream/master
 {
 	m_icount -= c;
 	m_dst <<= c;
@@ -1101,7 +1459,11 @@ inline void v30mz_cpu_device::SHL_WORD(UINT8 c)
 	PutbackRMWord(m_dst);
 }
 
+<<<<<<< HEAD
 inline void v30mz_cpu_device::SHR_BYTE(UINT8 c)
+=======
+inline void v30mz_cpu_device::SHR_BYTE(uint8_t c)
+>>>>>>> upstream/master
 {
 	m_icount -= c;
 	m_dst >>= c-1;
@@ -1111,7 +1473,11 @@ inline void v30mz_cpu_device::SHR_BYTE(UINT8 c)
 	PutbackRMByte(m_dst);
 }
 
+<<<<<<< HEAD
 inline void v30mz_cpu_device::SHR_WORD(UINT8 c)
+=======
+inline void v30mz_cpu_device::SHR_WORD(uint8_t c)
+>>>>>>> upstream/master
 {
 	m_icount -= c;
 	m_dst >>= c-1;
@@ -1121,20 +1487,34 @@ inline void v30mz_cpu_device::SHR_WORD(UINT8 c)
 	PutbackRMWord(m_dst);
 }
 
+<<<<<<< HEAD
 inline void v30mz_cpu_device::SHRA_BYTE(UINT8 c)
 {
 	m_icount -= c;
 	m_dst = ((INT8)m_dst) >> (c-1);
+=======
+inline void v30mz_cpu_device::SHRA_BYTE(uint8_t c)
+{
+	m_icount -= c;
+	m_dst = ((int8_t)m_dst) >> (c-1);
+>>>>>>> upstream/master
 	m_CarryVal = m_dst & 0x1;
 	m_dst = m_dst >> 1;
 	set_SZPF_Byte(m_dst);
 	PutbackRMByte(m_dst);
 }
 
+<<<<<<< HEAD
 inline void v30mz_cpu_device::SHRA_WORD(UINT8 c)
 {
 	m_icount -= c;
 	m_dst = ((INT16)m_dst) >> (c-1);
+=======
+inline void v30mz_cpu_device::SHRA_WORD(uint8_t c)
+{
+	m_icount -= c;
+	m_dst = ((int16_t)m_dst) >> (c-1);
+>>>>>>> upstream/master
 	m_CarryVal = m_dst & 0x1;
 	m_dst = m_dst >> 1;
 	set_SZPF_Word(m_dst);
@@ -1142,19 +1522,32 @@ inline void v30mz_cpu_device::SHRA_WORD(UINT8 c)
 }
 
 
+<<<<<<< HEAD
 inline void v30mz_cpu_device::XchgAWReg(UINT8 reg)
 {
 	UINT16 tmp = m_regs.w[reg];
+=======
+inline void v30mz_cpu_device::XchgAWReg(uint8_t reg)
+{
+	uint16_t tmp = m_regs.w[reg];
+>>>>>>> upstream/master
 
 	m_regs.w[reg] = m_regs.w[AW];
 	m_regs.w[AW] = tmp;
 }
 
 
+<<<<<<< HEAD
 inline void v30mz_cpu_device::IncWordReg(UINT8 reg)
 {
 	UINT32 tmp = m_regs.w[reg];
 	UINT32 tmp1 = tmp+1;
+=======
+inline void v30mz_cpu_device::IncWordReg(uint8_t reg)
+{
+	uint32_t tmp = m_regs.w[reg];
+	uint32_t tmp1 = tmp+1;
+>>>>>>> upstream/master
 
 	m_OverVal = (tmp == 0x7fff);
 	set_AF(tmp1,tmp,1);
@@ -1163,10 +1556,17 @@ inline void v30mz_cpu_device::IncWordReg(UINT8 reg)
 }
 
 
+<<<<<<< HEAD
 inline void v30mz_cpu_device::DecWordReg(UINT8 reg)
 {
 	UINT32 tmp = m_regs.w[reg];
 	UINT32 tmp1 = tmp-1;
+=======
+inline void v30mz_cpu_device::DecWordReg(uint8_t reg)
+{
+	uint32_t tmp = m_regs.w[reg];
+	uint32_t tmp1 = tmp-1;
+>>>>>>> upstream/master
 
 	m_OverVal = (tmp == 0x8000);
 	set_AF(tmp1,tmp,1);
@@ -1175,16 +1575,26 @@ inline void v30mz_cpu_device::DecWordReg(UINT8 reg)
 }
 
 
+<<<<<<< HEAD
 inline void v30mz_cpu_device::PUSH(UINT16 data)
+=======
+inline void v30mz_cpu_device::PUSH(uint16_t data)
+>>>>>>> upstream/master
 {
 	m_regs.w[SP] -= 2;
 	write_word( ( m_sregs[SS] << 4 ) + m_regs.w[SP], data );
 }
 
 
+<<<<<<< HEAD
 inline UINT16 v30mz_cpu_device::POP()
 {
 	UINT16 data = read_word( ( m_sregs[SS] << 4 ) + m_regs.w[SP] );
+=======
+inline uint16_t v30mz_cpu_device::POP()
+{
+	uint16_t data = read_word( ( m_sregs[SS] << 4 ) + m_regs.w[SP] );
+>>>>>>> upstream/master
 
 	m_regs.w[SP] += 2;
 	return data;
@@ -1193,7 +1603,11 @@ inline UINT16 v30mz_cpu_device::POP()
 
 inline void v30mz_cpu_device::JMP(bool cond)
 {
+<<<<<<< HEAD
 	int rel  = (int)((INT8)fetch());
+=======
+	int rel  = (int)((int8_t)fetch());
+>>>>>>> upstream/master
 
 	if (cond)
 	{
@@ -1204,11 +1618,19 @@ inline void v30mz_cpu_device::JMP(bool cond)
 }
 
 
+<<<<<<< HEAD
 inline void v30mz_cpu_device::ADJ4(INT8 param1,INT8 param2)
 {
 	if (AF || ((m_regs.b[AL] & 0xf) > 9))
 	{
 		UINT16 tmp;
+=======
+inline void v30mz_cpu_device::ADJ4(int8_t param1,int8_t param2)
+{
+	if (AF || ((m_regs.b[AL] & 0xf) > 9))
+	{
+		uint16_t tmp;
+>>>>>>> upstream/master
 		tmp = m_regs.b[AL] + param1;
 		m_regs.b[AL] = tmp;
 		m_AuxVal = 1;
@@ -1223,7 +1645,11 @@ inline void v30mz_cpu_device::ADJ4(INT8 param1,INT8 param2)
 }
 
 
+<<<<<<< HEAD
 inline void v30mz_cpu_device::ADJB(INT8 param1, INT8 param2)
+=======
+inline void v30mz_cpu_device::ADJB(int8_t param1, int8_t param2)
+>>>>>>> upstream/master
 {
 	if (AF || ((m_regs.b[AL] & 0xf) > 9))
 	{
@@ -1255,8 +1681,13 @@ void v30mz_cpu_device::interrupt(int int_num)
 		m_pending_irq &= ~INT_IRQ;
 	}
 
+<<<<<<< HEAD
 	UINT16 dest_off = read_word( int_num * 4 + 0 );
 	UINT16 dest_seg = read_word( int_num * 4 + 2 );
+=======
+	uint16_t dest_off = read_word( int_num * 4 + 0 );
+	uint16_t dest_seg = read_word( int_num * 4 + 2 );
+>>>>>>> upstream/master
 
 	PUSH(m_sregs[CS]);
 	PUSH(m_ip);
@@ -1294,10 +1725,17 @@ void v30mz_cpu_device::execute_set_input( int inptnum, int state )
 }
 
 
+<<<<<<< HEAD
 offs_t v30mz_cpu_device::disasm_disassemble(char *buffer, offs_t pc, const UINT8 *oprom, const UINT8 *opram, UINT32 options)
 {
 	extern CPU_DISASSEMBLE( nec );
 	return CPU_DISASSEMBLE_NAME(nec)(this, buffer, pc, oprom, opram, options);
+=======
+offs_t v30mz_cpu_device::disasm_disassemble(std::ostream &stream, offs_t pc, const uint8_t *oprom, const uint8_t *opram, uint32_t options)
+{
+	extern CPU_DISASSEMBLE( nec );
+	return CPU_DISASSEMBLE_NAME(nec)(this, stream, pc, oprom, opram, options);
+>>>>>>> upstream/master
 }
 
 
@@ -1353,7 +1791,11 @@ void v30mz_cpu_device::execute_run()
 
 		debugger_instruction_hook( this, pc() );
 
+<<<<<<< HEAD
 		UINT8 op = fetch_op();
+=======
+		uint8_t op = fetch_op();
+>>>>>>> upstream/master
 
 		switch(op)
 		{
@@ -1458,7 +1900,11 @@ void v30mz_cpu_device::execute_run()
 
 			case 0x0f: // i_pre_nec
 				{
+<<<<<<< HEAD
 					UINT32 tmp, tmp2;
+=======
+					uint32_t tmp, tmp2;
+>>>>>>> upstream/master
 
 					switch ( fetch() )
 					{
@@ -1579,8 +2025,13 @@ void v30mz_cpu_device::execute_run()
 					case 0x20:
 						{
 							int count = (m_regs.b[CL]+1)/2;
+<<<<<<< HEAD
 							UINT16 di = m_regs.w[IY];
 							UINT16 si = m_regs.w[IX];
+=======
+							uint16_t di = m_regs.w[IY];
+							uint16_t si = m_regs.w[IX];
+>>>>>>> upstream/master
 							if (m_seg_prefix)
 							{
 								logerror("%s: %06x: Warning: seg_prefix defined for add4s\n", tag(), pc());
@@ -1610,8 +2061,13 @@ void v30mz_cpu_device::execute_run()
 					case 0x22:
 						{
 							int count = (m_regs.b[CL]+1)/2;
+<<<<<<< HEAD
 							UINT16 di = m_regs.w[IY];
 							UINT16 si = m_regs.w[IX];
+=======
+							uint16_t di = m_regs.w[IY];
+							uint16_t si = m_regs.w[IX];
+>>>>>>> upstream/master
 							if (m_seg_prefix)
 							{
 								logerror("%s: %06x: Warning: seg_prefix defined for sub4s\n", tag(), pc());
@@ -1650,8 +2106,13 @@ void v30mz_cpu_device::execute_run()
 					case 0x26:
 						{
 							int count = (m_regs.b[CL]+1)/2;
+<<<<<<< HEAD
 							UINT16 di = m_regs.w[IY];
 							UINT16 si = m_regs.w[IX];
+=======
+							uint16_t di = m_regs.w[IY];
+							uint16_t si = m_regs.w[IX];
+>>>>>>> upstream/master
 							if (m_seg_prefix)
 							{
 								logerror("%s: %06x: Warning: seg_prefix defined for cmp4s\n", tag(), pc());
@@ -2230,7 +2691,11 @@ void v30mz_cpu_device::execute_run()
 
 			case 0x60: // i_pusha
 				{
+<<<<<<< HEAD
 					UINT32 tmp = m_regs.w[SP];
+=======
+					uint32_t tmp = m_regs.w[SP];
+>>>>>>> upstream/master
 
 					PUSH(m_regs.w[AW]);
 					PUSH(m_regs.w[CW]);
@@ -2258,7 +2723,11 @@ void v30mz_cpu_device::execute_run()
 
 			case 0x62: // i_chkind
 				{
+<<<<<<< HEAD
 					UINT32 low,high,tmp;
+=======
+					uint32_t low,high,tmp;
+>>>>>>> upstream/master
 					m_modrm = fetch();
 					low = GetRMWord();
 					high = GetnextRMWord();
@@ -2278,8 +2747,13 @@ void v30mz_cpu_device::execute_run()
 
 			case 0x64: // i_repnc
 				{
+<<<<<<< HEAD
 					UINT8 next = repx_op();
 					UINT16 c = m_regs.w[CW];
+=======
+					uint8_t next = repx_op();
+					uint16_t c = m_regs.w[CW];
+>>>>>>> upstream/master
 
 					switch (next)
 					{
@@ -2309,8 +2783,13 @@ void v30mz_cpu_device::execute_run()
 
 			case 0x65: // i_repc
 				{
+<<<<<<< HEAD
 					UINT8 next = repx_op();
 					UINT16 c = m_regs.w[CW];
+=======
+					uint8_t next = repx_op();
+					uint16_t c = m_regs.w[CW];
+>>>>>>> upstream/master
 
 					switch (next)
 					{
@@ -2345,28 +2824,48 @@ void v30mz_cpu_device::execute_run()
 
 			case 0x69: // i_imul_d16
 				{
+<<<<<<< HEAD
 					UINT32 tmp;
 					DEF_r16w();
 					tmp = fetch_word();
 					m_dst = (INT32)((INT16)m_src)*(INT32)((INT16)tmp);
 					m_CarryVal = m_OverVal = (((INT32)m_dst) >> 15 != 0) && (((INT32)m_dst) >> 15 != -1);
+=======
+					uint32_t tmp;
+					DEF_r16w();
+					tmp = fetch_word();
+					m_dst = (int32_t)((int16_t)m_src)*(int32_t)((int16_t)tmp);
+					m_CarryVal = m_OverVal = (((int32_t)m_dst) >> 15 != 0) && (((int32_t)m_dst) >> 15 != -1);
+>>>>>>> upstream/master
 					RegWord(m_dst);
 					CLKM(3,4);
 				}
 				break;
 
 			case 0x6a: // i_push_d8
+<<<<<<< HEAD
 				PUSH( (UINT16)((INT16)((INT8)fetch())) );
+=======
+				PUSH( (uint16_t)((int16_t)((int8_t)fetch())) );
+>>>>>>> upstream/master
 				CLK(1);
 				break;
 
 			case 0x6b: // i_imul_d8
 				{
+<<<<<<< HEAD
 					UINT32 src2;
 					DEF_r16w();
 					src2= (UINT16)((INT16)((INT8)fetch()));
 					m_dst = (INT32)((INT16)m_src)*(INT32)((INT16)src2);
 					m_CarryVal = m_OverVal = (((INT32)m_dst) >> 15 != 0) && (((INT32)m_dst) >> 15 != -1);
+=======
+					uint32_t src2;
+					DEF_r16w();
+					src2= (uint16_t)((int16_t)((int8_t)fetch()));
+					m_dst = (int32_t)((int16_t)m_src)*(int32_t)((int16_t)src2);
+					m_CarryVal = m_OverVal = (((int32_t)m_dst) >> 15 != 0) && (((int32_t)m_dst) >> 15 != -1);
+>>>>>>> upstream/master
 					RegWord(m_dst);
 					CLKM(3,4);
 				}
@@ -2499,7 +2998,11 @@ void v30mz_cpu_device::execute_run()
 			case 0x82: // i_82pre
 				m_modrm = fetch();
 				m_dst = GetRMByte();
+<<<<<<< HEAD
 				m_src = (INT8)fetch();
+=======
+				m_src = (int8_t)fetch();
+>>>>>>> upstream/master
 				if (m_modrm >=0xc0 )             { CLK(1); }
 				else if ((m_modrm & 0x38)==0x38) { CLK(2); }
 				else                             { CLK(3); }
@@ -2520,7 +3023,11 @@ void v30mz_cpu_device::execute_run()
 			case 0x83: // i_83pre
 				m_modrm = fetch();
 				m_dst = GetRMWord();
+<<<<<<< HEAD
 				m_src = ((INT16)((INT8)fetch()));
+=======
+				m_src = ((int16_t)((int8_t)fetch()));
+>>>>>>> upstream/master
 				if ( m_modrm >= 0xc0 )               { CLK(1); }
 				else if (( m_modrm & 0x38 ) == 0x38) { CLK(2); }
 				else                                 { CLK(3); }
@@ -2688,8 +3195,13 @@ void v30mz_cpu_device::execute_run()
 
 			case 0x9a: // i_call_far
 				{
+<<<<<<< HEAD
 					UINT16 tmp = fetch_word();
 					UINT16 tmp2 = fetch_word();
+=======
+					uint16_t tmp = fetch_word();
+					uint16_t tmp2 = fetch_word();
+>>>>>>> upstream/master
 					PUSH(m_sregs[CS]);
 					PUSH(m_ip);
 					m_ip = tmp;
@@ -2713,7 +3225,11 @@ void v30mz_cpu_device::execute_run()
 
 			case 0x9e: // i_sahf
 				{
+<<<<<<< HEAD
 					UINT32 tmp = (CompressFlags() & 0xff00) | (m_regs.b[AH] & 0xd5);
+=======
+					uint32_t tmp = (CompressFlags() & 0xff00) | (m_regs.b[AH] & 0xd5);
+>>>>>>> upstream/master
 					ExpandFlags(tmp);
 					CLK(4);
 				}
@@ -2727,7 +3243,11 @@ void v30mz_cpu_device::execute_run()
 
 			case 0xa0: // i_mov_aldisp
 				{
+<<<<<<< HEAD
 					UINT32 addr = fetch_word();
+=======
+					uint32_t addr = fetch_word();
+>>>>>>> upstream/master
 					m_regs.b[AL] = GetMemB(DS, addr);
 					CLK(1);
 				}
@@ -2735,7 +3255,11 @@ void v30mz_cpu_device::execute_run()
 
 			case 0xa1: // i_mov_axdisp
 				{
+<<<<<<< HEAD
 					UINT32 addr = fetch_word();
+=======
+					uint32_t addr = fetch_word();
+>>>>>>> upstream/master
 					m_regs.b[AL] = GetMemB(DS, addr);
 					m_regs.b[AH] = GetMemB(DS, addr+1);
 					CLK(1);
@@ -2744,7 +3268,11 @@ void v30mz_cpu_device::execute_run()
 
 			case 0xa2: // i_mov_dispal
 				{
+<<<<<<< HEAD
 					UINT32 addr = fetch_word();
+=======
+					uint32_t addr = fetch_word();
+>>>>>>> upstream/master
 					PutMemB(DS, addr, m_regs.b[AL]);
 					CLK(1);
 				}
@@ -2752,7 +3280,11 @@ void v30mz_cpu_device::execute_run()
 
 			case 0xa3: // i_mov_dispax
 				{
+<<<<<<< HEAD
 					UINT32 addr = fetch_word();
+=======
+					uint32_t addr = fetch_word();
+>>>>>>> upstream/master
 					PutMemB(DS, addr, m_regs.b[AL]);
 					PutMemB(DS, addr+1, m_regs.b[AH]);
 					CLK(1);
@@ -2905,7 +3437,11 @@ void v30mz_cpu_device::execute_run()
 
 			case 0xc0: // i_rotshft_bd8
 				{
+<<<<<<< HEAD
 					UINT8 c;
+=======
+					uint8_t c;
+>>>>>>> upstream/master
 					m_modrm = fetch();
 					m_src = GetRMByte();
 					m_dst = m_src;
@@ -2930,7 +3466,11 @@ void v30mz_cpu_device::execute_run()
 
 			case 0xc1: // i_rotshft_wd8
 				{
+<<<<<<< HEAD
 					UINT8 c;
+=======
+					uint8_t c;
+>>>>>>> upstream/master
 					m_modrm = fetch();
 					m_src = GetRMWord();
 					m_dst = m_src;
@@ -2956,7 +3496,11 @@ void v30mz_cpu_device::execute_run()
 
 			case 0xc2: // i_ret_d16
 				{
+<<<<<<< HEAD
 					UINT32 count = fetch_word();
+=======
+					uint32_t count = fetch_word();
+>>>>>>> upstream/master
 					m_ip = POP();
 					m_regs.w[SP] += count;
 					CLK(6);
@@ -2997,8 +3541,13 @@ void v30mz_cpu_device::execute_run()
 
 			case 0xc8: // i_enter
 				{
+<<<<<<< HEAD
 					UINT16 nb = fetch();
 					UINT32 level;
+=======
+					uint16_t nb = fetch();
+					uint32_t level;
+>>>>>>> upstream/master
 
 					CLK(8);
 					nb |= fetch() << 8;
@@ -3027,7 +3576,11 @@ void v30mz_cpu_device::execute_run()
 
 			case 0xca: // i_retf_d16
 				{
+<<<<<<< HEAD
 					UINT32 count = fetch_word();
+=======
+					uint32_t count = fetch_word();
+>>>>>>> upstream/master
 					m_ip = POP();
 					m_sregs[CS] = POP();
 					m_regs.w[SP] += count;
@@ -3106,7 +3659,11 @@ void v30mz_cpu_device::execute_run()
 
 			case 0xd2: // i_rotshft_bcl
 				{
+<<<<<<< HEAD
 					UINT8 c;
+=======
+					uint8_t c;
+>>>>>>> upstream/master
 
 					m_modrm = fetch();
 					m_src = GetRMByte();
@@ -3132,7 +3689,11 @@ void v30mz_cpu_device::execute_run()
 
 			case 0xd3: // i_rotshft_wcl
 				{
+<<<<<<< HEAD
 					UINT8 c;
+=======
+					uint8_t c;
+>>>>>>> upstream/master
 
 					m_modrm = fetch();
 					m_src = GetRMWord();
@@ -3192,7 +3753,11 @@ void v30mz_cpu_device::execute_run()
 
 			case 0xe0: // i_loopne
 				{
+<<<<<<< HEAD
 					INT8 disp = (INT8)fetch();
+=======
+					int8_t disp = (int8_t)fetch();
+>>>>>>> upstream/master
 
 					m_regs.w[CW]--;
 					if (!ZF && m_regs.w[CW])
@@ -3206,7 +3771,11 @@ void v30mz_cpu_device::execute_run()
 
 			case 0xe1: // i_loope
 				{
+<<<<<<< HEAD
 					INT8 disp = (INT8)fetch();
+=======
+					int8_t disp = (int8_t)fetch();
+>>>>>>> upstream/master
 
 					m_regs.w[CW]--;
 					if (ZF && m_regs.w[CW])
@@ -3220,7 +3789,11 @@ void v30mz_cpu_device::execute_run()
 
 			case 0xe2: // i_loop
 				{
+<<<<<<< HEAD
 					INT8 disp = (INT8)fetch();
+=======
+					int8_t disp = (int8_t)fetch();
+>>>>>>> upstream/master
 
 					m_regs.w[CW]--;
 					if (m_regs.w[CW])
@@ -3234,7 +3807,11 @@ void v30mz_cpu_device::execute_run()
 
 			case 0xe3: // i_jcxz
 				{
+<<<<<<< HEAD
 					INT8 disp = (INT8)fetch();
+=======
+					int8_t disp = (int8_t)fetch();
+>>>>>>> upstream/master
 
 					if (m_regs.w[CW] == 0)
 					{
@@ -3252,7 +3829,11 @@ void v30mz_cpu_device::execute_run()
 
 			case 0xe5: // i_inax
 				{
+<<<<<<< HEAD
 					UINT8 port = fetch();
+=======
+					uint8_t port = fetch();
+>>>>>>> upstream/master
 
 					m_regs.b[AL] = read_port(port);
 					m_regs.b[AH] = read_port(port+1);
@@ -3267,7 +3848,11 @@ void v30mz_cpu_device::execute_run()
 
 			case 0xe7: // i_outax
 				{
+<<<<<<< HEAD
 					UINT8 port = fetch();
+=======
+					uint8_t port = fetch();
+>>>>>>> upstream/master
 
 					write_port(port, m_regs.b[AL]);
 					write_port(port+1, m_regs.b[AH]);
@@ -3278,7 +3863,11 @@ void v30mz_cpu_device::execute_run()
 
 			case 0xe8: // i_call_d16
 				{
+<<<<<<< HEAD
 					INT16 tmp = (INT16)fetch_word();
+=======
+					int16_t tmp = (int16_t)fetch_word();
+>>>>>>> upstream/master
 
 					PUSH(m_ip);
 					m_ip = m_ip + tmp;
@@ -3288,7 +3877,11 @@ void v30mz_cpu_device::execute_run()
 
 			case 0xe9: // i_jmp_d16
 				{
+<<<<<<< HEAD
 					INT16 offset = (INT16)fetch_word();
+=======
+					int16_t offset = (int16_t)fetch_word();
+>>>>>>> upstream/master
 					m_ip += offset;
 					CLK(4);
 				}
@@ -3296,8 +3889,13 @@ void v30mz_cpu_device::execute_run()
 
 			case 0xea: // i_jmp_far
 				{
+<<<<<<< HEAD
 					UINT16 tmp = fetch_word();
 					UINT16 tmp1 = fetch_word();
+=======
+					uint16_t tmp = fetch_word();
+					uint16_t tmp1 = fetch_word();
+>>>>>>> upstream/master
 
 					m_sregs[CS] = tmp1;
 					m_ip = tmp;
@@ -3307,14 +3905,22 @@ void v30mz_cpu_device::execute_run()
 
 			case 0xeb: // i_jmp_d8
 				{
+<<<<<<< HEAD
 					int tmp = (int)((INT8)fetch());
+=======
+					int tmp = (int)((int8_t)fetch());
+>>>>>>> upstream/master
 
 					CLK(4);
 					if (tmp==-2 && m_no_interrupt==0 && (m_pending_irq==0) && m_icount>0)
 					{
 						m_icount%=12; /* cycle skip */
 					}
+<<<<<<< HEAD
 					m_ip = (UINT16)(m_ip+tmp);
+=======
+					m_ip = (uint16_t)(m_ip+tmp);
+>>>>>>> upstream/master
 				}
 				break;
 
@@ -3325,7 +3931,11 @@ void v30mz_cpu_device::execute_run()
 
 			case 0xed: // i_inaxdx
 				{
+<<<<<<< HEAD
 					UINT32 port = m_regs.w[DW];
+=======
+					uint32_t port = m_regs.w[DW];
+>>>>>>> upstream/master
 
 					m_regs.b[AL] = read_port(port);
 					m_regs.b[AH] = read_port(port+1);
@@ -3340,7 +3950,11 @@ void v30mz_cpu_device::execute_run()
 
 			case 0xef: // i_outdxax
 				{
+<<<<<<< HEAD
 					UINT32 port = m_regs.w[DW];
+=======
+					uint32_t port = m_regs.w[DW];
+>>>>>>> upstream/master
 
 					write_port(port, m_regs.b[AL]);
 					write_port(port+1, m_regs.b[AH]);
@@ -3357,8 +3971,13 @@ void v30mz_cpu_device::execute_run()
 
 			case 0xf2: // i_repne
 				{
+<<<<<<< HEAD
 					UINT8 next = repx_op();
 					UINT16 c = m_regs.w[CW];
+=======
+					uint8_t next = repx_op();
+					uint16_t c = m_regs.w[CW];
+>>>>>>> upstream/master
 
 					switch (next)
 					{
@@ -3387,8 +4006,13 @@ void v30mz_cpu_device::execute_run()
 
 			case 0xf3: // i_repe
 				{
+<<<<<<< HEAD
 					UINT8 next = repx_op();
 					UINT16 c = m_regs.w[CW];
+=======
+					uint8_t next = repx_op();
+					uint16_t c = m_regs.w[CW];
+>>>>>>> upstream/master
 
 					switch (next)
 					{
@@ -3427,9 +4051,15 @@ void v30mz_cpu_device::execute_run()
 
 			case 0xf6: // i_f6pre
 				{
+<<<<<<< HEAD
 					UINT32 tmp;
 					UINT32 uresult,uresult2;
 					INT32 result,result2;
+=======
+					uint32_t tmp;
+					uint32_t uresult,uresult2;
+					int32_t result,result2;
+>>>>>>> upstream/master
 
 					m_modrm = fetch();
 					tmp = GetRMByte();
@@ -3457,13 +4087,22 @@ void v30mz_cpu_device::execute_run()
 						break;
 					case 0x20:  /* MULU */
 						uresult = m_regs.b[AL] * tmp;
+<<<<<<< HEAD
 						m_regs.w[AW] = (UINT16)uresult;
+=======
+						m_regs.w[AW] = (uint16_t)uresult;
+>>>>>>> upstream/master
 						m_CarryVal = m_OverVal = (m_regs.b[AH]!=0) ? 1 : 0;
 						CLKM(3,4);
 						break;
 					case 0x28:  /* MUL */
+<<<<<<< HEAD
 						result = (INT16)((INT8)m_regs.b[AL])*(INT16)((INT8)tmp);
 						m_regs.w[AW] = (UINT16)result;
+=======
+						result = (int16_t)((int8_t)m_regs.b[AL])*(int16_t)((int8_t)tmp);
+						m_regs.w[AW] = (uint16_t)result;
+>>>>>>> upstream/master
 						m_CarryVal = m_OverVal = (m_regs.b[AH]!=0) ? 1 : 0;
 						CLKM(3,4);
 						break;
@@ -3491,9 +4130,15 @@ void v30mz_cpu_device::execute_run()
 					case 0x38:  /* DIV */
 						if (tmp)
 						{
+<<<<<<< HEAD
 							result = (INT16)m_regs.w[AW];
 							result2 = result % (INT16)((INT8)tmp);
 							if ((result /= (INT16)((INT8)tmp)) > 0xff)
+=======
+							result = (int16_t)m_regs.w[AW];
+							result2 = result % (int16_t)((int8_t)tmp);
+							if ((result /= (int16_t)((int8_t)tmp)) > 0xff)
+>>>>>>> upstream/master
 							{
 								interrupt(0);
 							}
@@ -3516,9 +4161,15 @@ void v30mz_cpu_device::execute_run()
 
 			case 0xf7: // i_f7pre
 				{
+<<<<<<< HEAD
 					UINT32 tmp,tmp2;
 					UINT32 uresult,uresult2;
 					INT32 result,result2;
+=======
+					uint32_t tmp,tmp2;
+					uint32_t uresult,uresult2;
+					int32_t result,result2;
+>>>>>>> upstream/master
 
 					m_modrm = fetch();
 					tmp = GetRMWord();
@@ -3548,12 +4199,20 @@ void v30mz_cpu_device::execute_run()
 					case 0x20:  /* MULU */
 						uresult = m_regs.w[AW]*tmp;
 						m_regs.w[AW] = uresult & 0xffff;
+<<<<<<< HEAD
 						m_regs.w[DW] = ((UINT32)uresult)>>16;
+=======
+						m_regs.w[DW] = ((uint32_t)uresult)>>16;
+>>>>>>> upstream/master
 						m_CarryVal = m_OverVal = (m_regs.w[DW] != 0) ? 1 : 0;
 						CLKM(3,4);
 						break;
 					case 0x28:  /* MUL */
+<<<<<<< HEAD
 						result = (INT32)((INT16)m_regs.w[AW]) * (INT32)((INT16)tmp);
+=======
+						result = (int32_t)((int16_t)m_regs.w[AW]) * (int32_t)((int16_t)tmp);
+>>>>>>> upstream/master
 						m_regs.w[AW] = result & 0xffff;
 						m_regs.w[DW] = result >> 16;
 						m_CarryVal = m_OverVal = (m_regs.w[DW] != 0) ? 1 : 0;
@@ -3562,7 +4221,11 @@ void v30mz_cpu_device::execute_run()
 					case 0x30:  /* DIVU */
 						if (tmp)
 						{
+<<<<<<< HEAD
 							uresult = (((UINT32)m_regs.w[DW]) << 16) | m_regs.w[AW];
+=======
+							uresult = (((uint32_t)m_regs.w[DW]) << 16) | m_regs.w[AW];
+>>>>>>> upstream/master
 							uresult2 = uresult % tmp;
 							if ((uresult /= tmp) > 0xffff)
 							{
@@ -3583,9 +4246,15 @@ void v30mz_cpu_device::execute_run()
 					case 0x38:  /* DIV */
 						if (tmp)
 						{
+<<<<<<< HEAD
 							result = ((UINT32)m_regs.w[DW] << 16) + m_regs.w[AW];
 							result2 = result % (INT32)((INT16)tmp);
 							if ((result /= (INT32)((INT16)tmp)) > 0xffff)
+=======
+							result = ((uint32_t)m_regs.w[DW] << 16) + m_regs.w[AW];
+							result2 = result % (int32_t)((int16_t)tmp);
+							if ((result /= (int32_t)((int16_t)tmp)) > 0xffff)
+>>>>>>> upstream/master
 							{
 								interrupt(0);
 							}
@@ -3638,7 +4307,11 @@ void v30mz_cpu_device::execute_run()
 
 			case 0xfe: // i_fepre
 				{
+<<<<<<< HEAD
 					UINT32 tmp, tmp1;
+=======
+					uint32_t tmp, tmp1;
+>>>>>>> upstream/master
 					m_modrm = fetch();
 					tmp = GetRMByte();
 					switch ( m_modrm & 0x38 )
@@ -3668,7 +4341,11 @@ void v30mz_cpu_device::execute_run()
 
 			case 0xff: // i_ffpre
 				{
+<<<<<<< HEAD
 					UINT32 tmp, tmp1;
+=======
+					uint32_t tmp, tmp1;
+>>>>>>> upstream/master
 					m_modrm = fetch();
 					tmp = GetRMWord();
 					switch ( m_modrm & 0x38 )

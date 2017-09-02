@@ -16,7 +16,11 @@
 //  CONSTANTS
 //**************************************************************************
 
+<<<<<<< HEAD
 const device_type SCORE7 = &device_creator<score7_cpu_device>;
+=======
+DEFINE_DEVICE_TYPE(SCORE7, score7_cpu_device, "score7", "S+core 7")
+>>>>>>> upstream/master
 
 
 //**************************************************************************
@@ -52,11 +56,19 @@ const score7_cpu_device::op_handler score7_cpu_device::s_opcode16_table[8] =
 //  score7_cpu_device - constructor
 //-------------------------------------------------
 
+<<<<<<< HEAD
 score7_cpu_device::score7_cpu_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
 	: cpu_device(mconfig, SCORE7, "S+core 7", tag, owner, clock, "score7", __FILE__),
 		m_program_config("program", ENDIANNESS_LITTLE, 32, 32, 0),
 		m_pc(0),
 		m_ppc(0)
+=======
+score7_cpu_device::score7_cpu_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: cpu_device(mconfig, SCORE7, tag, owner, clock)
+	, m_program_config("program", ENDIANNESS_LITTLE, 32, 32, 0)
+	, m_pc(0)
+	, m_ppc(0)
+>>>>>>> upstream/master
 {
 	memset(m_gpr, 0x00, sizeof(m_gpr));
 	memset(m_cr, 0x00, sizeof(m_cr));
@@ -80,6 +92,7 @@ void score7_cpu_device::device_start()
 	// register state for debugger
 	state_add(SCORE_PC  , "PC"  , m_pc).callimport().callexport().formatstr("%08X");
 
+<<<<<<< HEAD
 	std::string tmp_string;
 
 	for(int i=0; i<0x20; i++)
@@ -90,13 +103,29 @@ void score7_cpu_device::device_start()
 
 	for(int i=0; i<3; i++)
 		state_add(SCORE_SR + i, strformat(tmp_string, "sr%d", i).c_str(), m_sr[i]).callimport().callexport().formatstr("%08X");
+=======
+	for(int i=0; i<0x20; i++)
+		state_add(SCORE_GPR + i, string_format("r%d", i).c_str(), m_gpr[i]).callimport().callexport().formatstr("%08X");
+
+	for(int i=0; i<0x20; i++)
+		state_add(SCORE_CR + i, string_format("cr%d", i).c_str(), m_cr[i]).callimport().callexport().formatstr("%08X");
+
+	for(int i=0; i<3; i++)
+		state_add(SCORE_SR + i, string_format("sr%d", i).c_str(), m_sr[i]).callimport().callexport().formatstr("%08X");
+>>>>>>> upstream/master
 
 	state_add(SCORE_CEH, "ceh", REG_CEH).callimport().callexport().formatstr("%08X");
 	state_add(SCORE_CEL, "cel", REG_CEL).callimport().callexport().formatstr("%08X");
 
+<<<<<<< HEAD
 	state_add(STATE_GENPC, "curpc", m_pc).callimport().callexport().formatstr("%08X").noshow();
 	state_add(STATE_GENPCBASE, "curpcbase", m_ppc).callimport().callexport().formatstr("%8X").noshow();
 	state_add(STATE_GENFLAGS, "GENFLAGS",  m_ppc).formatstr("%5s").noshow();
+=======
+	state_add(STATE_GENPC, "GENPC", m_pc).formatstr("%08X").noshow();
+	state_add(STATE_GENPCBASE, "CURPC", m_ppc).formatstr("%8X").noshow();
+	state_add(STATE_GENFLAGS, "GENFLAGS", REG_CR).callexport().formatstr("%5s").noshow();
+>>>>>>> upstream/master
 
 	// save state
 	save_item(NAME(m_pc));
@@ -132,12 +161,20 @@ void score7_cpu_device::device_reset()
 //  for the debugger
 //-------------------------------------------------
 
+<<<<<<< HEAD
 void score7_cpu_device::state_string_export(const device_state_entry &entry, std::string &str)
+=======
+void score7_cpu_device::state_string_export(const device_state_entry &entry, std::string &str) const
+>>>>>>> upstream/master
 {
 	switch (entry.index())
 	{
 		case STATE_GENFLAGS:
+<<<<<<< HEAD
 			strprintf(str, "%s%s%s%s%s",
+=======
+			str = string_format("%s%s%s%s%s",
+>>>>>>> upstream/master
 				REG_CR & FLAG_V ? "V" : ".",
 				REG_CR & FLAG_C ? "C" : ".",
 				REG_CR & FLAG_Z ? "Z" : ".",
@@ -151,6 +188,7 @@ void score7_cpu_device::state_string_export(const device_state_entry &entry, std
 
 //-------------------------------------------------
 //  memory_space_config - return the configuration
+<<<<<<< HEAD
 //  of the specified address space, or NULL if
 //  the space doesn't exist
 //-------------------------------------------------
@@ -158,6 +196,17 @@ void score7_cpu_device::state_string_export(const device_state_entry &entry, std
 const address_space_config * score7_cpu_device::memory_space_config(address_spacenum spacenum) const
 {
 	return  (spacenum == AS_PROGRAM) ? &m_program_config: NULL;
+=======
+//  of the specified address space, or nullptr if
+//  the space doesn't exist
+//-------------------------------------------------
+
+device_memory_interface::space_config_vector score7_cpu_device::memory_space_config() const
+{
+	return space_config_vector {
+		std::make_pair(AS_PROGRAM, &m_program_config)
+	};
+>>>>>>> upstream/master
 }
 
 
@@ -170,6 +219,7 @@ void score7_cpu_device::execute_run()
 {
 	do
 	{
+<<<<<<< HEAD
 		debugger_instruction_hook(this, m_pc);
 
 		m_ppc = m_pc;
@@ -177,6 +227,14 @@ void score7_cpu_device::execute_run()
 		check_irq();
 
 		UINT32 op = fetch();
+=======
+		m_ppc = m_pc;
+		debugger_instruction_hook(this, m_pc);
+
+		check_irq();
+
+		uint32_t op = fetch();
+>>>>>>> upstream/master
 
 		switch(((op>>30) & 2) | ((op>>15) & 1))
 		{
@@ -234,7 +292,11 @@ void score7_cpu_device::execute_set_input(int inputnum, int state)
 //**************************************************************************
 
 
+<<<<<<< HEAD
 bool score7_cpu_device::check_condition_branch(UINT8 bc)
+=======
+bool score7_cpu_device::check_condition_branch(uint8_t bc)
+>>>>>>> upstream/master
 {
 	if ((bc & 0x0f) == 14)          // CNT>0, CNT--
 	{
@@ -249,7 +311,11 @@ bool score7_cpu_device::check_condition_branch(UINT8 bc)
 		return check_condition(bc);
 }
 
+<<<<<<< HEAD
 bool score7_cpu_device::check_condition(UINT8 bc)
+=======
+bool score7_cpu_device::check_condition(uint8_t bc)
+>>>>>>> upstream/master
 {
 	switch(bc & 0x0f)
 	{
@@ -274,6 +340,7 @@ bool score7_cpu_device::check_condition(UINT8 bc)
 	return false;
 }
 
+<<<<<<< HEAD
 INT32 score7_cpu_device::sign_extend(UINT32 data, UINT8 len)
 {
 	data &= (1 << len) - 1;
@@ -282,36 +349,70 @@ INT32 score7_cpu_device::sign_extend(UINT32 data, UINT8 len)
 }
 
 UINT32 score7_cpu_device::fetch()
+=======
+int32_t score7_cpu_device::sign_extend(uint32_t data, uint8_t len)
+{
+	data &= (1 << len) - 1;
+	uint32_t sign = 1 << (len - 1);
+	return (data ^ sign) - sign;
+}
+
+uint32_t score7_cpu_device::fetch()
+>>>>>>> upstream/master
 {
 	return m_direct->read_dword(m_pc & ~3);
 }
 
+<<<<<<< HEAD
 UINT8 score7_cpu_device::read_byte(offs_t offset)
+=======
+uint8_t score7_cpu_device::read_byte(offs_t offset)
+>>>>>>> upstream/master
 {
 	return m_program->read_byte(offset);
 }
 
+<<<<<<< HEAD
 UINT16 score7_cpu_device::read_word(offs_t offset)
+=======
+uint16_t score7_cpu_device::read_word(offs_t offset)
+>>>>>>> upstream/master
 {
 	return m_program->read_word(offset & ~1);
 }
 
+<<<<<<< HEAD
 UINT32 score7_cpu_device::read_dword(offs_t offset)
+=======
+uint32_t score7_cpu_device::read_dword(offs_t offset)
+>>>>>>> upstream/master
 {
 	return m_program->read_dword(offset & ~3);
 }
 
+<<<<<<< HEAD
 void score7_cpu_device::write_byte(offs_t offset, UINT8 data)
+=======
+void score7_cpu_device::write_byte(offs_t offset, uint8_t data)
+>>>>>>> upstream/master
 {
 	m_program->write_byte(offset, data);
 }
 
+<<<<<<< HEAD
 void score7_cpu_device::write_word(offs_t offset, UINT16 data)
+=======
+void score7_cpu_device::write_word(offs_t offset, uint16_t data)
+>>>>>>> upstream/master
 {
 	m_program->write_word(offset & ~1, data);
 }
 
+<<<<<<< HEAD
 void score7_cpu_device::write_dword(offs_t offset, UINT32 data)
+=======
+void score7_cpu_device::write_dword(offs_t offset, uint32_t data)
+>>>>>>> upstream/master
 {
 	m_program->write_dword(offset & ~3, data);
 }
@@ -333,7 +434,11 @@ void score7_cpu_device::check_irq()
 	}
 }
 
+<<<<<<< HEAD
 void score7_cpu_device::gen_exception(int cause, UINT32 param)
+=======
+void score7_cpu_device::gen_exception(int cause, uint32_t param)
+>>>>>>> upstream/master
 {
 	debugger_exception_hook(this, cause);
 
@@ -379,11 +484,19 @@ void score7_cpu_device::gen_exception(int cause, UINT32 param)
 
 void score7_cpu_device::op_specialform()
 {
+<<<<<<< HEAD
 	UINT8 ra = GET_S_RA(m_op);
 	UINT8 rb = GET_S_RB(m_op);
 	UINT8 rd = GET_S_RD(m_op);
 	UINT8 cu = GET_S_CU(m_op);
 	UINT32 r;
+=======
+	uint8_t ra = GET_S_RA(m_op);
+	uint8_t rb = GET_S_RB(m_op);
+	uint8_t rd = GET_S_RD(m_op);
+	uint8_t cu = GET_S_CU(m_op);
+	uint32_t r;
+>>>>>>> upstream/master
 
 	switch(GET_S_FUNC6(m_op))
 	{
@@ -602,18 +715,30 @@ void score7_cpu_device::op_specialform()
 			break;
 		case 0x20:  // mul
 		{
+<<<<<<< HEAD
 			INT64 a = (INT32)m_gpr[ra];
 			INT64 b = (INT32)m_gpr[rb];
 			UINT64 d = a * b;
+=======
+			int64_t a = (int32_t)m_gpr[ra];
+			int64_t b = (int32_t)m_gpr[rb];
+			uint64_t d = a * b;
+>>>>>>> upstream/master
 			REG_CEL = d & 0xffffffff;
 			REG_CEH = (d >> 32) & 0xffffffff;
 			break;
 		}
 		case 0x21:  // mulu
 		{
+<<<<<<< HEAD
 			UINT64 a = (UINT32)m_gpr[ra];
 			UINT64 b = (UINT32)m_gpr[rb];
 			UINT64 d = a * b;
+=======
+			uint64_t a = (uint32_t)m_gpr[ra];
+			uint64_t b = (uint32_t)m_gpr[rb];
+			uint64_t d = a * b;
+>>>>>>> upstream/master
 			REG_CEL = d & 0xffffffff;
 			REG_CEH = (d >> 32) & 0xffffffff;
 			break;
@@ -621,8 +746,13 @@ void score7_cpu_device::op_specialform()
 		case 0x22:  // div
 			if (m_gpr[rb])
 			{
+<<<<<<< HEAD
 				INT32 a = (INT32)m_gpr[ra];
 				INT32 b = (INT32)m_gpr[rb];
+=======
+				int32_t a = (int32_t)m_gpr[ra];
+				int32_t b = (int32_t)m_gpr[rb];
+>>>>>>> upstream/master
 				REG_CEL = a / b;
 				REG_CEH = a % b;
 			}
@@ -634,8 +764,13 @@ void score7_cpu_device::op_specialform()
 		case 0x23:  // divu
 			if (m_gpr[rb])
 			{
+<<<<<<< HEAD
 				UINT32 a = (UINT32)m_gpr[ra];
 				UINT32 b = (UINT32)m_gpr[rb];
+=======
+				uint32_t a = (uint32_t)m_gpr[ra];
+				uint32_t b = (uint32_t)m_gpr[rb];
+>>>>>>> upstream/master
 				REG_CEL = a / b;
 				REG_CEH = a % b;
 			}
@@ -757,11 +892,19 @@ void score7_cpu_device::op_specialform()
 
 void score7_cpu_device::op_iform1()
 {
+<<<<<<< HEAD
 	UINT8 rd = GET_I_RD(m_op);
 	UINT32 imm16 = GET_I_IMM16(m_op);
 	INT32 simm16 = sign_extend(imm16, 16);
 	UINT8 cu = GET_I_CU(m_op);
 	UINT32 r;
+=======
+	uint8_t rd = GET_I_RD(m_op);
+	uint32_t imm16 = GET_I_IMM16(m_op);
+	int32_t simm16 = sign_extend(imm16, 16);
+	uint8_t cu = GET_I_CU(m_op);
+	uint32_t r;
+>>>>>>> upstream/master
 
 	switch(GET_I_FUNC3(m_op))
 	{
@@ -771,8 +914,13 @@ void score7_cpu_device::op_iform1()
 			{
 				CHECK_Z(r);
 				CHECK_N(r);
+<<<<<<< HEAD
 				CHECK_V_ADD(m_gpr[rd], (UINT32)simm16, r);
 				CHECK_C_ADD(m_gpr[rd], (UINT32)simm16);
+=======
+				CHECK_V_ADD(m_gpr[rd], (uint32_t)simm16, r);
+				CHECK_C_ADD(m_gpr[rd], (uint32_t)simm16);
+>>>>>>> upstream/master
 			}
 			m_gpr[rd] = r;
 			break;
@@ -782,8 +930,13 @@ void score7_cpu_device::op_iform1()
 				r = m_gpr[rd] - simm16;
 				CHECK_Z(r);
 				CHECK_N(r);
+<<<<<<< HEAD
 				CHECK_V_SUB(m_gpr[rd], (UINT32)simm16, r);
 				CHECK_C_SUB(m_gpr[rd], (UINT32)simm16);
+=======
+				CHECK_V_SUB(m_gpr[rd], (uint32_t)simm16, r);
+				CHECK_C_SUB(m_gpr[rd], (uint32_t)simm16);
+>>>>>>> upstream/master
 			}
 			break;
 		case 4: // andi
@@ -820,8 +973,13 @@ void score7_cpu_device::op_jump()
 
 void score7_cpu_device::op_rixform1()
 {
+<<<<<<< HEAD
 	UINT8 ra = GET_RIX_RA(m_op);
 	UINT8 rd = GET_RIX_RD(m_op);
+=======
+	uint8_t ra = GET_RIX_RA(m_op);
+	uint8_t rd = GET_RIX_RD(m_op);
+>>>>>>> upstream/master
 
 	// pre-increment
 	m_gpr[ra] += sign_extend(GET_RIX_IMM12(m_op), 12);
@@ -859,7 +1017,11 @@ void score7_cpu_device::op_branch()
 {
 	if (check_condition_branch(GET_BC_BC(m_op)))
 	{
+<<<<<<< HEAD
 		INT32 disp = sign_extend(GET_BC_DISP19(m_op), 19) << 1;
+=======
+		int32_t disp = sign_extend(GET_BC_DISP19(m_op), 19) << 1;
+>>>>>>> upstream/master
 		if (GET_BC_LK(m_op))
 			REG_LNK = m_pc;
 
@@ -869,11 +1031,19 @@ void score7_cpu_device::op_branch()
 
 void score7_cpu_device::op_iform2()
 {
+<<<<<<< HEAD
 	UINT8 rd = GET_I_RD(m_op);
 	UINT32 imm16 = GET_I_IMM16(m_op) << 16;
 	INT32 simm16 = (INT32)imm16;
 	UINT8 cu = GET_I_CU(m_op);
 	UINT32 r;
+=======
+	uint8_t rd = GET_I_RD(m_op);
+	uint32_t imm16 = GET_I_IMM16(m_op) << 16;
+	int32_t simm16 = (int32_t)imm16;
+	uint8_t cu = GET_I_CU(m_op);
+	uint32_t r;
+>>>>>>> upstream/master
 
 	switch(GET_I_FUNC3(m_op))
 	{
@@ -928,8 +1098,13 @@ void score7_cpu_device::op_crform()
 	if ((REG_PSR & 0x08) && !(REG_PSR & 0x10000000))
 		return;
 
+<<<<<<< HEAD
 	UINT8 cr = GET_CR_CR(m_op);
 	UINT8 rd = GET_CR_RD(m_op);
+=======
+	uint8_t cr = GET_CR_CR(m_op);
+	uint8_t rd = GET_CR_RD(m_op);
+>>>>>>> upstream/master
 
 	switch(GET_CR_OP(m_op))
 	{
@@ -954,8 +1129,13 @@ void score7_cpu_device::op_crform()
 
 void score7_cpu_device::op_rixform2()
 {
+<<<<<<< HEAD
 	UINT8 ra = GET_RIX_RA(m_op);
 	UINT8 rd = GET_RIX_RD(m_op);
+=======
+	uint8_t ra = GET_RIX_RA(m_op);
+	uint8_t rd = GET_RIX_RD(m_op);
+>>>>>>> upstream/master
 
 	switch(GET_RIX_FUNC3(m_op))
 	{
@@ -991,27 +1171,47 @@ void score7_cpu_device::op_rixform2()
 
 void score7_cpu_device::op_addri()
 {
+<<<<<<< HEAD
 	UINT8 ra = GET_RI_RA(m_op);
 	UINT8 rd = GET_RI_RD(m_op);
 	INT32 simm14 = sign_extend(GET_RI_IMM14(m_op), 14);
 	UINT8 cu = GET_RI_CU(m_op);
 
 	UINT32 r = m_gpr[ra] + simm14;
+=======
+	uint8_t ra = GET_RI_RA(m_op);
+	uint8_t rd = GET_RI_RD(m_op);
+	int32_t simm14 = sign_extend(GET_RI_IMM14(m_op), 14);
+	uint8_t cu = GET_RI_CU(m_op);
+
+	uint32_t r = m_gpr[ra] + simm14;
+>>>>>>> upstream/master
 	if (cu)
 	{
 		CHECK_Z(r);
 		CHECK_N(r);
+<<<<<<< HEAD
 		CHECK_V_ADD(m_gpr[ra], (UINT32)simm14, r);
 		CHECK_C_ADD(m_gpr[ra], (UINT32)simm14);
+=======
+		CHECK_V_ADD(m_gpr[ra], (uint32_t)simm14, r);
+		CHECK_C_ADD(m_gpr[ra], (uint32_t)simm14);
+>>>>>>> upstream/master
 	}
 	m_gpr[rd] = r;
 }
 
 void score7_cpu_device::op_andri()
 {
+<<<<<<< HEAD
 	UINT8 ra = GET_RI_RA(m_op);
 	UINT8 rd = GET_RI_RD(m_op);
 	UINT32 imm14 = GET_RI_IMM14(m_op);
+=======
+	uint8_t ra = GET_RI_RA(m_op);
+	uint8_t rd = GET_RI_RD(m_op);
+	uint32_t imm14 = GET_RI_IMM14(m_op);
+>>>>>>> upstream/master
 
 	m_gpr[rd] = m_gpr[ra] & imm14;
 
@@ -1024,9 +1224,15 @@ void score7_cpu_device::op_andri()
 
 void score7_cpu_device::op_orri()
 {
+<<<<<<< HEAD
 	UINT8 ra = GET_RI_RA(m_op);
 	UINT8 rd = GET_RI_RD(m_op);
 	UINT32 imm14 = GET_RI_IMM14(m_op);
+=======
+	uint8_t ra = GET_RI_RA(m_op);
+	uint8_t rd = GET_RI_RD(m_op);
+	uint32_t imm14 = GET_RI_IMM14(m_op);
+>>>>>>> upstream/master
 
 	m_gpr[rd] = m_gpr[ra] | imm14;
 
@@ -1039,72 +1245,120 @@ void score7_cpu_device::op_orri()
 
 void score7_cpu_device::op_lw()
 {
+<<<<<<< HEAD
 	UINT8 rd = GET_LS_RD(m_op);
 	UINT8 ra = GET_LS_RA(m_op);
 	INT32 simm15 = sign_extend(GET_LS_IMM15(m_op), 15);
+=======
+	uint8_t rd = GET_LS_RD(m_op);
+	uint8_t ra = GET_LS_RA(m_op);
+	int32_t simm15 = sign_extend(GET_LS_IMM15(m_op), 15);
+>>>>>>> upstream/master
 
 	m_gpr[rd] = read_dword(m_gpr[ra] + simm15);
 }
 
 void score7_cpu_device::op_lh()
 {
+<<<<<<< HEAD
 	UINT8 rd = GET_LS_RD(m_op);
 	UINT8 ra = GET_LS_RA(m_op);
 	INT32 simm15 = sign_extend(GET_LS_IMM15(m_op), 15);
+=======
+	uint8_t rd = GET_LS_RD(m_op);
+	uint8_t ra = GET_LS_RA(m_op);
+	int32_t simm15 = sign_extend(GET_LS_IMM15(m_op), 15);
+>>>>>>> upstream/master
 
 	m_gpr[rd] = sign_extend(read_word(m_gpr[ra] + simm15), 16);
 }
 
 void score7_cpu_device::op_lhu()
 {
+<<<<<<< HEAD
 	UINT8 rd = GET_LS_RD(m_op);
 	UINT8 ra = GET_LS_RA(m_op);
 	INT32 simm15 = sign_extend(GET_LS_IMM15(m_op), 15);
+=======
+	uint8_t rd = GET_LS_RD(m_op);
+	uint8_t ra = GET_LS_RA(m_op);
+	int32_t simm15 = sign_extend(GET_LS_IMM15(m_op), 15);
+>>>>>>> upstream/master
 
 	m_gpr[rd] = read_word(m_gpr[ra] + simm15);
 }
 
 void score7_cpu_device::op_lb()
 {
+<<<<<<< HEAD
 	UINT8 rd = GET_LS_RD(m_op);
 	UINT8 ra = GET_LS_RA(m_op);
 	INT32 simm15 = sign_extend(GET_LS_IMM15(m_op), 15);
+=======
+	uint8_t rd = GET_LS_RD(m_op);
+	uint8_t ra = GET_LS_RA(m_op);
+	int32_t simm15 = sign_extend(GET_LS_IMM15(m_op), 15);
+>>>>>>> upstream/master
 
 	m_gpr[rd] = sign_extend(read_byte(m_gpr[ra] + simm15), 8);
 }
 
 void score7_cpu_device::op_sw()
 {
+<<<<<<< HEAD
 	UINT8 rd = GET_LS_RD(m_op);
 	UINT8 ra = GET_LS_RA(m_op);
 	INT32 simm15 = sign_extend(GET_LS_IMM15(m_op), 15);
+=======
+	uint8_t rd = GET_LS_RD(m_op);
+	uint8_t ra = GET_LS_RA(m_op);
+	int32_t simm15 = sign_extend(GET_LS_IMM15(m_op), 15);
+>>>>>>> upstream/master
 
 	write_dword(m_gpr[ra] + simm15, m_gpr[rd]);
 }
 
 void score7_cpu_device::op_sh()
 {
+<<<<<<< HEAD
 	UINT8 rd = GET_LS_RD(m_op);
 	UINT8 ra = GET_LS_RA(m_op);
 	INT32 simm15 = sign_extend(GET_LS_IMM15(m_op), 15);
+=======
+	uint8_t rd = GET_LS_RD(m_op);
+	uint8_t ra = GET_LS_RA(m_op);
+	int32_t simm15 = sign_extend(GET_LS_IMM15(m_op), 15);
+>>>>>>> upstream/master
 
 	write_word(m_gpr[ra] + simm15, m_gpr[rd] & 0xffff);
 }
 
 void score7_cpu_device::op_lbu()
 {
+<<<<<<< HEAD
 	UINT8 rd = GET_LS_RD(m_op);
 	UINT8 ra = GET_LS_RA(m_op);
 	INT32 simm15 = sign_extend(GET_LS_IMM15(m_op), 15);
+=======
+	uint8_t rd = GET_LS_RD(m_op);
+	uint8_t ra = GET_LS_RA(m_op);
+	int32_t simm15 = sign_extend(GET_LS_IMM15(m_op), 15);
+>>>>>>> upstream/master
 
 	m_gpr[rd] = read_byte(m_gpr[ra] + simm15);
 }
 
 void score7_cpu_device::op_sb()
 {
+<<<<<<< HEAD
 	UINT8 rd = GET_LS_RD(m_op);
 	UINT8 ra = GET_LS_RA(m_op);
 	INT32 simm15 = sign_extend(GET_LS_IMM15(m_op), 15);
+=======
+	uint8_t rd = GET_LS_RD(m_op);
+	uint8_t ra = GET_LS_RA(m_op);
+	int32_t simm15 = sign_extend(GET_LS_IMM15(m_op), 15);
+>>>>>>> upstream/master
 
 	write_byte(m_gpr[ra] + simm15, m_gpr[rd] & 0xff);
 }
@@ -1126,8 +1380,13 @@ void score7_cpu_device::op_cenew()
 
 void score7_cpu_device::op_rform1()
 {
+<<<<<<< HEAD
 	UINT8 rd = GET_R_RD(m_op);
 	UINT8 ra = GET_R_RA(m_op);
+=======
+	uint8_t rd = GET_R_RD(m_op);
+	uint8_t ra = GET_R_RA(m_op);
+>>>>>>> upstream/master
 
 	switch(GET_R_FUNC4(m_op))
 	{
@@ -1163,9 +1422,15 @@ void score7_cpu_device::op_rform1()
 
 void score7_cpu_device::op_rform2()
 {
+<<<<<<< HEAD
 	UINT8 rd = GET_R_RD(m_op);
 	UINT8 ra = GET_R_RA(m_op);
 	UINT32 r;
+=======
+	uint8_t rd = GET_R_RD(m_op);
+	uint8_t ra = GET_R_RA(m_op);
+	uint32_t r;
+>>>>>>> upstream/master
 
 	switch(GET_R_FUNC4(m_op))
 	{
@@ -1269,8 +1534,13 @@ void score7_cpu_device::op_ldiu()
 
 void score7_cpu_device::op_iform1a()
 {
+<<<<<<< HEAD
 	UINT8 rd = GET_I16_RD(m_op);
 	UINT8 imm5 = GET_I16_IMM5(m_op);
+=======
+	uint8_t rd = GET_I16_RD(m_op);
+	uint8_t imm5 = GET_I16_IMM5(m_op);
+>>>>>>> upstream/master
 
 	switch(GET_I16_FUNC3(m_op))
 	{
@@ -1311,8 +1581,13 @@ void score7_cpu_device::op_iform1a()
 
 void score7_cpu_device::op_iform1b()
 {
+<<<<<<< HEAD
 	UINT8 rd = GET_I16_RD(m_op);
 	UINT16 imm5 = GET_I16_IMM5(m_op);
+=======
+	uint8_t rd = GET_I16_RD(m_op);
+	uint16_t imm5 = GET_I16_IMM5(m_op);
+>>>>>>> upstream/master
 
 	switch(GET_I16_FUNC3(m_op))
 	{

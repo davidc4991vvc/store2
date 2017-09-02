@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 // license:???
+=======
+// license:BSD-3-Clause
+>>>>>>> upstream/master
 // copyright-holders:Pierpaolo Prazzoli,Grazvydas Ignotas
 /*
  * Samsung SSP1601 DSP emulator
@@ -17,9 +21,16 @@
  */
 
 #include "emu.h"
+<<<<<<< HEAD
 #include "debugger.h"
 #include "ssp1601.h"
 
+=======
+#include "ssp1601.h"
+
+#include "debugger.h"
+
+>>>>>>> upstream/master
 
 /* detect ops with unimplemented/invalid fields.
  * Useful for homebrew or if a new VR revision pops up. */
@@ -101,14 +112,22 @@
 }
 
 #define OP_CMPA(x) { \
+<<<<<<< HEAD
 	UINT32 t = rA32 - ((x) << 16); \
+=======
+	uint32_t t = rA32 - ((x) << 16); \
+>>>>>>> upstream/master
 	rST &= ~(SSP_FLAG_L|SSP_FLAG_Z|SSP_FLAG_V|SSP_FLAG_N); \
 	if (!t) rST |= SSP_FLAG_Z; \
 	else    rST |= (t>>16)&SSP_FLAG_N; \
 }
 
 #define OP_CMPA32(x) { \
+<<<<<<< HEAD
 	UINT32 t = rA32 - (x); \
+=======
+	uint32_t t = rA32 - (x); \
+>>>>>>> upstream/master
 	rST &= ~(SSP_FLAG_L|SSP_FLAG_Z|SSP_FLAG_V|SSP_FLAG_N); \
 	if (!t) rST |= SSP_FLAG_Z; \
 	else    rST |= (t>>16)&SSP_FLAG_N; \
@@ -189,21 +208,45 @@
 #endif
 
 
+<<<<<<< HEAD
 const device_type SSP1601 = &device_creator<ssp1601_device>;
 
 
 ssp1601_device::ssp1601_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
 	: cpu_device(mconfig, SSP1601, "SSP1601", tag, owner, clock, "ssp1601", __FILE__)
+=======
+DEFINE_DEVICE_TYPE(SSP1601, ssp1601_device, "ssp1601", "SSP1601")
+
+
+ssp1601_device::ssp1601_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: cpu_device(mconfig, SSP1601, tag, owner, clock)
+>>>>>>> upstream/master
 	, m_program_config("program", ENDIANNESS_BIG, 16, 16, -1)
 	, m_io_config("io", ENDIANNESS_BIG, 16, 4, 0)
 {
 }
 
+<<<<<<< HEAD
 
 offs_t ssp1601_device::disasm_disassemble(char *buffer, offs_t pc, const UINT8 *oprom, const UINT8 *opram, UINT32 options)
 {
 	extern CPU_DISASSEMBLE( ssp1601 );
 	return CPU_DISASSEMBLE_NAME(ssp1601)(this, buffer, pc, oprom, opram, options);
+=======
+device_memory_interface::space_config_vector ssp1601_device::memory_space_config() const
+{
+	return space_config_vector {
+		std::make_pair(AS_PROGRAM, &m_program_config),
+		std::make_pair(AS_IO,      &m_io_config)
+	};
+}
+
+
+offs_t ssp1601_device::disasm_disassemble(std::ostream &stream, offs_t pc, const uint8_t *oprom, const uint8_t *opram, uint32_t options)
+{
+	extern CPU_DISASSEMBLE( ssp1601 );
+	return CPU_DISASSEMBLE_NAME(ssp1601)(this, stream, pc, oprom, opram, options);
+>>>>>>> upstream/master
 }
 
 
@@ -217,39 +260,63 @@ void ssp1601_device::update_P()
 	rP.d = (m1 * m2 * 2);
 }
 
+<<<<<<< HEAD
 UINT32 ssp1601_device::read_unknown(int reg)
+=======
+uint32_t ssp1601_device::read_unknown(int reg)
+>>>>>>> upstream/master
 {
 	logerror("%s:%i FIXME\n", __FILE__, __LINE__);
 	return 0;
 }
 
+<<<<<<< HEAD
 void ssp1601_device::write_unknown(int reg, UINT32 d)
+=======
+void ssp1601_device::write_unknown(int reg, uint32_t d)
+>>>>>>> upstream/master
 {
 	logerror("%s:%i FIXME\n", __FILE__, __LINE__);
 }
 
 /* map EXT regs to virtual I/O range of 0x00-0x0f */
+<<<<<<< HEAD
 UINT32 ssp1601_device::read_ext(int reg)
+=======
+uint32_t ssp1601_device::read_ext(int reg)
+>>>>>>> upstream/master
 {
 	reg &= 7;
 	return m_io->read_word((reg << 1));
 }
 
+<<<<<<< HEAD
 void ssp1601_device::write_ext(int reg, UINT32 d)
+=======
+void ssp1601_device::write_ext(int reg, uint32_t d)
+>>>>>>> upstream/master
 {
 	reg &= 7;
 	m_io->write_word((reg << 1), d);
 }
 
 // 4
+<<<<<<< HEAD
 void ssp1601_device::write_ST(int reg, UINT32 d)
+=======
+void ssp1601_device::write_ST(int reg, uint32_t d)
+>>>>>>> upstream/master
 {
 	CHECK_ST(d);
 	rST = d;
 }
 
 // 5
+<<<<<<< HEAD
 UINT32 ssp1601_device::read_STACK(int reg)
+=======
+uint32_t ssp1601_device::read_STACK(int reg)
+>>>>>>> upstream/master
 {
 	--rSTACK;
 	if ((signed short)rSTACK < 0) {
@@ -259,7 +326,11 @@ UINT32 ssp1601_device::read_STACK(int reg)
 	return m_stack[rSTACK];
 }
 
+<<<<<<< HEAD
 void ssp1601_device::write_STACK(int reg, UINT32 d)
+=======
+void ssp1601_device::write_STACK(int reg, uint32_t d)
+>>>>>>> upstream/master
 {
 	if (rSTACK >= 6) {
 		logerror(__FILE__ " FIXME: stack overflow! (%i) @ %04x\n", rSTACK, GET_PPC_OFFS());
@@ -269,33 +340,53 @@ void ssp1601_device::write_STACK(int reg, UINT32 d)
 }
 
 // 6
+<<<<<<< HEAD
 UINT32 ssp1601_device::read_PC(int reg)
+=======
+uint32_t ssp1601_device::read_PC(int reg)
+>>>>>>> upstream/master
 {
 	return rPC;
 }
 
+<<<<<<< HEAD
 void ssp1601_device::write_PC(int reg, UINT32 d)
+=======
+void ssp1601_device::write_PC(int reg, uint32_t d)
+>>>>>>> upstream/master
 {
 	rPC = d;
 	m_g_cycles--;
 }
 
 // 7
+<<<<<<< HEAD
 UINT32 ssp1601_device::read_P(int reg)
+=======
+uint32_t ssp1601_device::read_P(int reg)
+>>>>>>> upstream/master
 {
 	update_P();
 	return rP.w.h;
 }
 
 // 15
+<<<<<<< HEAD
 UINT32 ssp1601_device::read_AL(int reg)
+=======
+uint32_t ssp1601_device::read_AL(int reg)
+>>>>>>> upstream/master
 {
 	/* apparently reading AL causes some effect on EXT bus, VR depends on that.. */
 	read_ext(reg);
 	return rAL;
 }
 
+<<<<<<< HEAD
 void ssp1601_device::write_AL(int reg, UINT32 d)
+=======
+void ssp1601_device::write_AL(int reg, uint32_t d)
+>>>>>>> upstream/master
 {
 	write_ext(reg, d);
 	rAL = d;
@@ -343,11 +434,19 @@ const ssp1601_device::write_func_t ssp1601_device::reg_write_handlers[16] =
 //
 #define ptr1_read(op) ptr1_read_(op&3,(op>>6)&4,(op<<1)&0x18)
 
+<<<<<<< HEAD
 UINT32 ssp1601_device::ptr1_read_(int ri, int isj2, int modi3)
 {
 	//int t = (op&3) | ((op>>6)&4) | ((op<<1)&0x18);
 	UINT32 mask, add = 0, t = ri | isj2 | modi3;
 	unsigned char *rp = NULL;
+=======
+uint32_t ssp1601_device::ptr1_read_(int ri, int isj2, int modi3)
+{
+	//int t = (op&3) | ((op>>6)&4) | ((op<<1)&0x18);
+	uint32_t mask, add = 0, t = ri | isj2 | modi3;
+	unsigned char *rp = nullptr;
+>>>>>>> upstream/master
 	switch (t)
 	{
 		// mod=0 (00)
@@ -404,7 +503,11 @@ modulo:
 	return t;
 }
 
+<<<<<<< HEAD
 void ssp1601_device::ptr1_write(int op, UINT32 d)
+=======
+void ssp1601_device::ptr1_write(int op, uint32_t d)
+>>>>>>> upstream/master
 {
 	int t = (op&3) | ((op>>6)&4) | ((op<<1)&0x18);
 	switch (t)
@@ -449,9 +552,15 @@ void ssp1601_device::ptr1_write(int op, UINT32 d)
 	}
 }
 
+<<<<<<< HEAD
 UINT32 ssp1601_device::ptr2_read(int op)
 {
 	int mv = 0, t = (op&3) | ((op>>6)&4) | ((op<<1)&0x18);
+=======
+uint32_t ssp1601_device::ptr2_read(int op)
+{
+	int mv, t = (op&3) | ((op>>6)&4) | ((op<<1)&0x18);
+>>>>>>> upstream/master
 	switch (t)
 	{
 		// mod=0 (00)
@@ -504,9 +613,15 @@ void ssp1601_device::device_start()
 		m_r[i] = 0;
 	}
 	memset( m_RAM, 0, sizeof(m_RAM));
+<<<<<<< HEAD
 	for ( int i = 0; i < 6; i++ )
 	{
 		m_stack[i] = 0;
+=======
+	for (auto & elem : m_stack)
+	{
+		elem = 0;
+>>>>>>> upstream/master
 	}
 	m_ppc.d = 0;
 	m_g_cycles = 0;
@@ -540,20 +655,37 @@ void ssp1601_device::device_start()
 	state_add( SSP_PR7,    "R7",     m_r[7]).formatstr("%02X");
 
 	state_add(STATE_GENPC, "GENPC", rPC).noshow();
+<<<<<<< HEAD
 	state_add(STATE_GENFLAGS, "GENFLAGS", rST).formatstr("%4s").noshow();
 	state_add(STATE_GENPCBASE, "GENPCBASE", PPC).noshow();
+=======
+	state_add(STATE_GENPCBASE, "CURPC", PPC).noshow();
+	state_add(STATE_GENFLAGS, "GENFLAGS", rST).formatstr("%4s").noshow();
+>>>>>>> upstream/master
 
 	m_icountptr = &m_g_cycles;
 }
 
 
+<<<<<<< HEAD
 void ssp1601_device::state_string_export(const device_state_entry &entry, std::string &str)
+=======
+void ssp1601_device::state_string_export(const device_state_entry &entry, std::string &str) const
+>>>>>>> upstream/master
 {
 	switch (entry.index())
 	{
 		case STATE_GENFLAGS:
+<<<<<<< HEAD
 			strprintf(str, "%c%c%c%c", (rST&SSP_FLAG_N) ? 'N' : '.', (rST&SSP_FLAG_V) ? 'V' : '.',
 				(rST&SSP_FLAG_Z)?'Z':'.', (rST&SSP_FLAG_L)?'L':'.'
+=======
+			str = string_format("%c%c%c%c",
+					(rST&SSP_FLAG_N) ? 'N' : '.',
+					(rST&SSP_FLAG_V) ? 'V' : '.',
+					(rST&SSP_FLAG_Z) ? 'Z' : '.',
+					(rST&SSP_FLAG_L) ? 'L' : '.'
+>>>>>>> upstream/master
 			);
 			break;
 	}
@@ -573,7 +705,11 @@ void ssp1601_device::execute_run()
 	while (m_g_cycles > 0)
 	{
 		int op;
+<<<<<<< HEAD
 		UINT32 tmpv;
+=======
+		uint32_t tmpv;
+>>>>>>> upstream/master
 
 		PPC = rPC;
 

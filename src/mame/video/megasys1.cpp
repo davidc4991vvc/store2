@@ -143,13 +143,21 @@ No? No? c2108   Sprite Bank
 
 
 
+<<<<<<< HEAD
 84100 44100 c2200 Sprite Control
+=======
+84100 44100 c2200 Sprite Control ( m_sprite_flag )
+>>>>>>> upstream/master
 
             fedc ba9- ---- ---- ? (unused?)
             ---- ---8 ---- ---- Enable Sprite Splitting In 2 Groups:
                                 Some Sprite Appear Over, Some Below The Layers
             ---- ---- 765- ---- ? (unused?)
+<<<<<<< HEAD
             ---- ---- ---4 ---- Enable Effect (?)
+=======
+            ---- ---- ---4 ---- Enable Effect (don't clear sprite framebuffer)
+>>>>>>> upstream/master
             ---- ---- ---- 3210 Effect Number (?)
 
 I think bit 4 enables some sort of color cycling for sprites having priority
@@ -196,6 +204,7 @@ actual code sent to the hardware.
 #include "emu.h"
 #include "includes/megasys1.h"
 
+<<<<<<< HEAD
 #ifdef MAME_DEBUG
 
 #define SHOW_WRITE_ERROR(_format_,_offset_,_data_)\
@@ -217,10 +226,13 @@ actual code sent to the hardware.
 
 #endif
 
+=======
+>>>>>>> upstream/master
 
 
 VIDEO_START_MEMBER(megasys1_state,megasys1)
 {
+<<<<<<< HEAD
 	int i;
 
 	m_spriteram = &m_ram[0x8000/2];
@@ -270,10 +282,22 @@ VIDEO_START_MEMBER(megasys1_state,megasys1)
 		m_8x8_scroll_factor[1] = 4; m_16x16_scroll_factor[1] = 4;
 	}
 
+=======
+	m_spriteram = &m_ram[0x8000/2];
+
+	m_buffer_objectram = std::make_unique<uint16_t[]>(0x2000);
+	m_buffer_spriteram16 = std::make_unique<uint16_t[]>(0x2000);
+	m_buffer2_objectram = std::make_unique<uint16_t[]>(0x2000);
+	m_buffer2_spriteram16 = std::make_unique<uint16_t[]>(0x2000);
+
+	m_active_layers = m_sprite_bank = m_screen_flag = m_sprite_flag = 0;
+
+>>>>>>> upstream/master
 	m_hardware_type_z = 0;
 	if (strcmp(machine().system().name, "lomakai") == 0 ||
 		strcmp(machine().system().name, "makaiden") == 0)
 		m_hardware_type_z = 1;
+<<<<<<< HEAD
 }
 
 /***************************************************************************
@@ -315,6 +339,20 @@ WRITE16_MEMBER(megasys1_state::megasys1_scrollram_2_w){ scrollram_w(offset, data
 
 
 
+=======
+
+	m_screen->register_screen_bitmap(m_sprite_buffer_bitmap);
+
+	save_pointer(NAME(m_buffer_objectram.get()), 0x2000);
+	save_pointer(NAME(m_buffer_spriteram16.get()), 0x2000);
+	save_pointer(NAME(m_buffer2_objectram.get()), 0x2000);
+	save_pointer(NAME(m_buffer2_spriteram16.get()), 0x2000);
+	save_item(NAME(m_screen_flag));
+	save_item(NAME(m_active_layers));
+	save_item(NAME(m_sprite_flag));
+}
+
+>>>>>>> upstream/master
 /***************************************************************************
 
                             Video registers access
@@ -322,6 +360,7 @@ WRITE16_MEMBER(megasys1_state::megasys1_scrollram_2_w){ scrollram_w(offset, data
 ***************************************************************************/
 
 
+<<<<<<< HEAD
 /*      Tilemap Size (PagesX x PagesY)
 
         Reg. Value          16          8       <- Tile Size
@@ -539,10 +578,155 @@ WRITE16_MEMBER(megasys1_state::megasys1_vregs_C_w)
 							break;
 
 		default:        SHOW_WRITE_ERROR("vreg %04X <- %04X", offset * 2, data);
+=======
+WRITE16_MEMBER(megasys1_state::active_layers_w)
+{
+	COMBINE_DATA(&m_active_layers);
+	m_screen->update_partial(m_screen->vpos());
+}
+
+WRITE16_MEMBER(megasys1_state::sprite_bank_w)
+{
+	COMBINE_DATA(&m_sprite_bank);
+}
+
+READ16_MEMBER(megasys1_state::sprite_flag_r)
+{
+	return m_sprite_flag;
+}
+
+WRITE16_MEMBER(megasys1_state::sprite_flag_w)
+{
+	COMBINE_DATA(&m_sprite_flag);
+}
+
+WRITE16_MEMBER(megasys1_state::screen_flag_w)
+{
+	COMBINE_DATA(&m_screen_flag);
+
+	if (m_audiocpu.found())
+	{
+		if (m_screen_flag & 0x10)
+			m_audiocpu->set_input_line(INPUT_LINE_RESET, ASSERT_LINE);
+		else
+			m_audiocpu->set_input_line(INPUT_LINE_RESET, CLEAR_LINE);
+	}
+}
+
+WRITE16_MEMBER(megasys1_state::soundlatch_w)
+{
+	m_soundlatch->write(space, 0, data, mem_mask);
+	m_audiocpu->set_input_line(4, HOLD_LINE);
+}
+
+WRITE16_MEMBER(megasys1_state::soundlatch_z_w)
+{
+	m_soundlatch_z->write(space, 0, data & 0xff);
+	m_audiocpu->set_input_line(5, HOLD_LINE);
+}
+
+WRITE16_MEMBER(megasys1_state::soundlatch_c_w)
+{
+	// Cybattler reads sound latch on irq 2
+	m_soundlatch->write(space, 0, data, mem_mask);
+	m_audiocpu->set_input_line(2, HOLD_LINE);
+}
+
+WRITE16_MEMBER(megasys1_state::monkelf_scroll0_w)
+{
+	// code in routine $280 does this. protection?
+	if (offset == 0)
+		data = data - (((data & 0x0f) > 0x0d) ? 0x10 : 0);
+	m_tmap[0]->scroll_w(space, offset, data, mem_mask);
+}
+
+WRITE16_MEMBER(megasys1_state::monkelf_scroll1_w)
+{
+	// code in routine $280 does this. protection?
+	if (offset == 0)
+		data = data - (((data & 0x0f) > 0x0b) ? 0x10 : 0);
+	m_tmap[1]->scroll_w(space, offset, data, mem_mask);
+}
+
+
+/***************************************************************************
+
+                            Sprites Drawing
+
+***************************************************************************/
+
+
+/*   Draw sprites in the given bitmap.
+
+ Sprite Data:
+
+    Offset      Data
+
+    00-07                       ?
+    08      fed- ---- ---- ---- ?
+            ---c ---- ---- ---- mosaic sol.
+            ---- ba98 ---- ---- mosaic
+            ---- ---- 7--- ---- y flip
+            ---- ---- -6-- ---- x flip
+            ---- ---- --45 ---- ?
+            ---- ---- ---- 3210 color code (bit 3 = priority)
+    0A      X position
+    0C      Y position
+    0E      Code                                            */
+
+
+void megasys1_state::mix_sprite_bitmap(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+{
+	gfx_element *decodegfx = m_gfxdecode->gfx(0);
+	uint16_t colorbase = decodegfx->colorbase();
+
+	for (int y = cliprect.min_y;y <= cliprect.max_y;y++)
+	{
+		uint16_t* srcline = &m_sprite_buffer_bitmap.pix16(y);
+		uint16_t* dstline = &bitmap.pix16(y);
+		uint8_t *prio = &screen.priority().pix8(y);
+
+		for (int x = cliprect.min_x;x <= cliprect.max_x;x++)
+		{
+			uint16_t pixel = srcline[x];
+
+			if ((pixel & 0xf) != 0xf)
+			{
+				int priority = (pixel & 0x4000) >> 14;
+				priority = (priority) ? 0x0c : 0x0a;
+
+				if ((priority & (1 << (prio[x] & 0x1f))) == 0)
+				{
+					uint8_t coldat = pixel & 0x3fff;
+					dstline[x] = coldat + colorbase;
+
+				}
+			}
+		}
+	}
+}
+
+void megasys1_state::partial_clear_sprite_bitmap(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect, uint8_t param)
+{
+	for (int y = cliprect.min_y;y <= cliprect.max_y;y++)
+	{
+		uint16_t* srcline = &m_sprite_buffer_bitmap.pix16(y);
+
+		for (int x = cliprect.min_x;x <= cliprect.max_x;x++)
+		{
+			uint16_t pixel = srcline[x];
+			srcline[x] = pixel & 0x7fff; // wipe our 'drawn here' marker otherwise trails will always have priority over new sprites, which is incorrect.
+
+			// guess, very unclear from the video refernece we have, used when removing p47 trails
+			if (((pixel & 0xf0) >> 4) < param)
+				srcline[x] = 0x7fff;
+		}
+>>>>>>> upstream/master
 	}
 }
 
 
+<<<<<<< HEAD
 
 /* Used by MS1-D only */
 WRITE16_MEMBER(megasys1_state::megasys1_vregs_D_w)
@@ -602,6 +786,57 @@ WRITE16_MEMBER(megasys1_state::megasys1_vregs_D_w)
 void megasys1_state::draw_sprites(screen_device &screen, bitmap_ind16 &bitmap,const rectangle &cliprect)
 {
 	int color,code,sx,sy,flipx,flipy,attr,sprite,offs,color_mask;
+=======
+inline void megasys1_state::draw_16x16_priority_sprite(screen_device &screen, bitmap_ind16 &bitmap,const rectangle &cliprect, int32_t code, int32_t color, int32_t sx, int32_t sy, int32_t flipx, int32_t flipy, uint8_t mosaic, uint8_t mosaicsol, int32_t priority)
+{
+//  if (sy >= nScreenHeight || sy < -15 || sx >= nScreenWidth || sx < -15) return;
+	gfx_element *decodegfx = m_gfxdecode->gfx(0);
+	sy = sy + 16;
+
+	const uint8_t* gfx = decodegfx->get_data(code);
+
+	flipy = (flipy) ? 0x0f : 0;
+	flipx = (flipx) ? 0x0f : 0;
+
+	color = color * 16;
+
+
+	for (int32_t y = 0; y < 16; y++, sy++, sx-=16)
+	{
+	//  uint16_t *dest = &bitmap.pix16(sy)+ sx;
+	//  uint8_t *prio = &screen.priority().pix8(sy) + sx;
+		uint16_t* dest = &m_sprite_buffer_bitmap.pix16(sy)+ sx;
+
+		for (int32_t x = 0; x < 16; x++, sx++)
+		{
+			if (sx < cliprect.min_x || sy < cliprect.min_y || sx > cliprect.max_x || sy > cliprect.max_y) continue;
+
+			int32_t pxl;
+
+			if (mosaicsol) {
+				pxl = gfx[(((y ^ flipy) |  mosaic) * 16) + ((x ^ flipx) |  mosaic)];
+			} else {
+				pxl = gfx[(((y ^ flipy) & ~mosaic) * 16) + ((x ^ flipx) & ~mosaic)];
+			}
+
+			if (pxl != 0x0f) {
+				if (!(dest[x] & 0x8000)) {
+					dest[x] = (pxl+color) | (priority << 14);
+
+					dest[x] |= 0x8000;
+				}
+			}
+		}
+	}
+
+}
+
+void megasys1_state::draw_sprites(screen_device &screen, bitmap_ind16 &bitmap,const rectangle &cliprect)
+{
+	int color,code,sx,sy,flipx,flipy,attr,sprite;
+
+
+>>>>>>> upstream/master
 
 /* objram: 0x100*4 entries      spritedata: 0x80 entries */
 
@@ -609,6 +844,7 @@ void megasys1_state::draw_sprites(screen_device &screen, bitmap_ind16 &bitmap,co
 
 	if (m_hardware_type_z == 0)  /* standard sprite hardware */
 	{
+<<<<<<< HEAD
 		color_mask = (m_sprite_flag & 0x100) ? 0x07 : 0x0f;
 
 		for (offs = (0x800-8)/2;offs >= 0;offs -= 8/2)
@@ -654,12 +890,78 @@ void megasys1_state::draw_sprites(screen_device &screen, bitmap_ind16 &bitmap,co
 	else
 	{
 		UINT16 *spriteram16 = m_spriteram;
+=======
+		if (!(m_sprite_flag&0x10))
+			m_sprite_buffer_bitmap.fill(0x7fff, cliprect);
+		else
+		{
+			// P47 sprite trails effect.. not quite right tho
+			// I think the low 4 bits are used to clear specific pens?
+			// when the hardware wants to clear the trails from the screen
+			// it increases the value from 0x00 to 0x0e
+			//printf("m_sprite_flag %02x\n", m_sprite_flag);
+			partial_clear_sprite_bitmap(screen, bitmap, cliprect, m_sprite_flag&0x0f);
+		}
+
+		int32_t color_mask = (m_sprite_flag & 0x100) ? 0x07 : 0x0f;
+
+		uint16_t *objectram = (uint16_t*)m_buffer2_objectram.get();
+		uint16_t *spriteram = (uint16_t*)m_buffer2_spriteram16.get();
+
+		for (int32_t offs = (0x800-8)/2; offs >= 0; offs -= 4)
+		{
+			for (int32_t sprite = 0; sprite < 4 ; sprite ++)
+			{
+				uint16_t *objectdata = &objectram[offs + (0x800/2) * sprite];
+				uint16_t *spritedata = &spriteram[(objectdata[0] & 0x7f) * 8];
+
+				int32_t attr = spritedata[4];
+				if (((attr & 0xc0) >> 6) != sprite) continue;
+
+				int32_t sx = (spritedata[5] + objectdata[1]) & 0x1ff;
+				int32_t sy = (spritedata[6] + objectdata[2]) & 0x1ff;
+
+				if (sx > 255) sx -= 512;
+				if (sy > 255) sy -= 512;
+
+				int32_t code  = spritedata[7] + objectdata[3];
+				int32_t color = attr & color_mask;
+
+				int32_t flipx = attr & 0x40;
+				int32_t flipy = attr & 0x80;
+				//int32_t pri  = (attr & 0x08) ? 0x0c : 0x0a;
+				int32_t pri  = (attr & 0x08)>>3;
+				int32_t mosaic = (attr & 0x0f00)>>8;
+				int32_t mossol = (attr & 0x1000)>>8;
+
+				code = (code & 0xfff) + ((m_sprite_bank & 1) << 12);
+
+				if (m_screen_flag & 1)
+				{
+					flipx = !flipx;
+					flipy = !flipy;
+					sx = 240 - sx;
+					sy = 240 - sy;
+				}
+
+				draw_16x16_priority_sprite(screen,bitmap,cliprect,code, color, sx, sy - 16, flipx, flipy, mosaic, mossol, pri);
+			}
+		}
+	}   /* non Z hw */
+	else
+	{
+		uint16_t *spriteram16 = m_spriteram;
+>>>>>>> upstream/master
 
 		/* MS1-Z just draws Sprite Data, and in reverse order */
 
 		for (sprite = 0x80-1;sprite >= 0;sprite--)
 		{
+<<<<<<< HEAD
 			UINT16 *spritedata = &spriteram16[ sprite * 0x10/2];
+=======
+			uint16_t *spritedata = &spriteram16[ sprite * 0x10/2];
+>>>>>>> upstream/master
 
 			attr = spritedata[ 8/2 ];
 
@@ -681,7 +983,11 @@ void megasys1_state::draw_sprites(screen_device &screen, bitmap_ind16 &bitmap,co
 				sx = 240-sx;        sy = 240-sy;
 			}
 
+<<<<<<< HEAD
 			m_gfxdecode->gfx(2)->prio_transpen(bitmap,cliprect,
+=======
+			m_gfxdecode->gfx(0)->prio_transpen(bitmap,cliprect,
+>>>>>>> upstream/master
 					code,
 					color,
 					flipx, flipy,
@@ -726,6 +1032,7 @@ struct priority
 
 */
 
+<<<<<<< HEAD
 static const struct priority priorities[] =
 {
 	{   "chimerab",
@@ -734,6 +1041,8 @@ static const struct priority priorities[] =
 	},
 	{   0   }   // end of list: use the prom's data
 };
+=======
+>>>>>>> upstream/master
 
 
 /*
@@ -779,6 +1088,7 @@ static const struct priority priorities[] =
     the bottom layer's opaque pens, but above its transparent
     pens.
 */
+<<<<<<< HEAD
 void megasys1_state::megasys1_priority_create()
 {
 	const UINT8 *color_prom = memregion("proms")->base();
@@ -804,6 +1114,14 @@ void megasys1_state::megasys1_priority_create()
 	}
 
 	/* Otherwise, perform the conversion from the prom itself */
+=======
+void megasys1_state::priority_create()
+{
+	const uint8_t *color_prom = memregion("proms")->base();
+	int pri_code, offset, i, order;
+
+	/* convert PROM to something we can use */
+>>>>>>> upstream/master
 
 	for (pri_code = 0; pri_code < 0x10 ; pri_code++)    // 16 priority codes
 	{
@@ -941,7 +1259,11 @@ void megasys1_state::megasys1_priority_create()
 
 PALETTE_INIT_MEMBER(megasys1_state,megasys1)
 {
+<<<<<<< HEAD
 	megasys1_priority_create();
+=======
+	priority_create();
+>>>>>>> upstream/master
 }
 
 
@@ -953,9 +1275,15 @@ PALETTE_INIT_MEMBER(megasys1_state,megasys1)
 ***************************************************************************/
 
 
+<<<<<<< HEAD
 UINT32 megasys1_state::screen_update_megasys1(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
 {
 	int i,flag,pri,primask;
+=======
+uint32_t megasys1_state::screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+{
+	int i, flag, pri, primask;
+>>>>>>> upstream/master
 	int active_layers;
 
 	if (m_hardware_type_z)
@@ -982,12 +1310,17 @@ UINT32 megasys1_state::screen_update_megasys1(screen_device &screen, bitmap_ind1
 
 		/* see what layers are really active (layers 4 & f will do no harm) */
 		for (i = 0;i < 5;i++)
+<<<<<<< HEAD
 			reallyactive |= 1 << ((pri >> (4*i)) & 0x0f);
+=======
+			reallyactive |= 1 << ((pri >> (4 * i)) & 0x0f);
+>>>>>>> upstream/master
 
 		active_layers = m_active_layers & reallyactive;
 		active_layers |= 1 << ((pri & 0xf0000) >> 16);  // bottom layer can't be disabled
 	}
 
+<<<<<<< HEAD
 	machine().tilemap().set_flip_all((m_screen_flag & 1) ? (TILEMAP_FLIPY | TILEMAP_FLIPX) : 0 );
 
 	for (i = 0;i < 3;i++)
@@ -998,6 +1331,14 @@ UINT32 megasys1_state::screen_update_megasys1(screen_device &screen, bitmap_ind1
 
 			m_tmap[i]->set_scrollx(0,m_scrollx[i]);
 			m_tmap[i]->set_scrolly(0,m_scrolly[i]);
+=======
+	for (i = 0; i < 3; i++)
+	{
+		if (m_tmap[i].found())
+		{
+			m_tmap[i]->set_flip((m_screen_flag & 1) ? (TILEMAP_FLIPY | TILEMAP_FLIPX) : 0);
+			m_tmap[i]->enable(active_layers & (1 << i));
+>>>>>>> upstream/master
 		}
 	}
 
@@ -1013,6 +1354,7 @@ UINT32 megasys1_state::screen_update_megasys1(screen_device &screen, bitmap_ind1
 
 		switch (layer)
 		{
+<<<<<<< HEAD
 			case 0:
 			case 1:
 			case 2:
@@ -1040,26 +1382,78 @@ UINT32 megasys1_state::screen_update_megasys1(screen_device &screen, bitmap_ind1
 					if (layer == 3) primask |= 3;
 
 				break;
+=======
+		case 0:
+		case 1:
+		case 2:
+			if (m_tmap[layer].found() && (active_layers & (1 << layer)))
+			{
+				m_tmap[layer]->draw(screen, bitmap, cliprect, flag, primask);
+				flag = 0;
+			}
+			break;
+		case 3:
+		case 4:
+			if (flag != 0)
+			{
+				flag = 0;
+				bitmap.fill(0, cliprect);
+			}
+
+			if (m_sprite_flag & 0x100)  /* sprites are split */
+			{
+				/* following tilemaps will obscure this sprites layer */
+				primask |= 1 << (layer - 3);
+			}
+			else
+				/* following tilemaps will obscure all sprites */
+				if (layer == 3) primask |= 3;
+
+			break;
+>>>>>>> upstream/master
 		}
 	}
 
 	if (active_layers & 0x08)
+<<<<<<< HEAD
 		draw_sprites(screen,bitmap,cliprect);
 	return 0;
 }
 
 void megasys1_state::screen_eof_megasys1(screen_device &screen, bool state)
+=======
+	{
+		draw_sprites(screen, bitmap, cliprect);
+
+		if (m_hardware_type_z == 0)
+			mix_sprite_bitmap(screen, bitmap, cliprect);
+
+	}
+
+	return 0;
+}
+
+WRITE_LINE_MEMBER(megasys1_state::screen_vblank)
+>>>>>>> upstream/master
 {
 	// rising edge
 	if (state)
 	{
 		/* Sprite are TWO frames ahead, like NMK16 HW. */
 	//m_objectram
+<<<<<<< HEAD
 		memcpy(m_buffer2_objectram,m_buffer_objectram, 0x2000);
 		memcpy(m_buffer_objectram, m_objectram, 0x2000);
 	//spriteram16
 		memcpy(m_buffer2_spriteram16, m_buffer_spriteram16, 0x2000);
 		memcpy(m_buffer_spriteram16, m_spriteram, 0x2000);
+=======
+		memcpy(m_buffer2_objectram.get(),m_buffer_objectram.get(), 0x2000);
+		memcpy(m_buffer_objectram.get(), m_objectram, 0x2000);
+	//spriteram16
+		memcpy(m_buffer2_spriteram16.get(), m_buffer_spriteram16.get(), 0x2000);
+		memcpy(m_buffer_spriteram16.get(), m_spriteram, 0x2000);
+>>>>>>> upstream/master
 	}
 
 }

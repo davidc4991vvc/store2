@@ -9,8 +9,16 @@
 ***************************************************************************/
 
 #include "emu.h"
+<<<<<<< HEAD
 #include "dvbpoints.h"
 
+=======
+#include "debugger.h"
+#include "dvbpoints.h"
+
+#include <iomanip>
+
+>>>>>>> upstream/master
 
 
 // Sorting functors for the qsort function
@@ -99,8 +107,13 @@ static const int tableBreaks[] = { 5, 9, 31, 45, 63, 80 };
 //-------------------------------------------------
 
 debug_view_breakpoints::debug_view_breakpoints(running_machine &machine, debug_view_osd_update_func osdupdate, void *osdprivate)
+<<<<<<< HEAD
 	: debug_view(machine, DVT_BREAK_POINTS, osdupdate, osdprivate),
 		m_sortType(cIndexAscending)
+=======
+	: debug_view(machine, DVT_BREAK_POINTS, osdupdate, osdprivate)
+	, m_sortType(cIndexAscending)
+>>>>>>> upstream/master
 {
 	// fail if no available sources
 	enumerate_sources();
@@ -129,12 +142,20 @@ void debug_view_breakpoints::enumerate_sources()
 	m_source_list.reset();
 
 	// iterate over devices with disassembly interfaces
+<<<<<<< HEAD
 	disasm_interface_iterator iter(machine().root_device());
 	for (device_disasm_interface *dasm = iter.first(); dasm != NULL; dasm = iter.next())
 	{
 		std::string name;
 		strprintf(name, "%s '%s'", dasm->device().name(), dasm->device().tag());
 		m_source_list.append(*global_alloc(debug_view_source(name.c_str(), &dasm->device())));
+=======
+	for (device_disasm_interface &dasm : disasm_interface_iterator(machine().root_device()))
+	{
+		std::string name;
+		name = string_format("%s '%s'", dasm.device().name(), dasm.device().tag());
+		m_source_list.append(*global_alloc(debug_view_source(name.c_str(), &dasm.device())));
+>>>>>>> upstream/master
 	}
 
 	// reset the source to a known good entry
@@ -187,6 +208,7 @@ void debug_view_breakpoints::view_click(const int button, const debug_view_xy& p
 }
 
 
+<<<<<<< HEAD
 void debug_view_breakpoints::pad_astring_to_length(std::string& str, int len)
 {
 	int diff = len - str.length();
@@ -197,17 +219,32 @@ void debug_view_breakpoints::pad_astring_to_length(std::string& str, int len)
 			strcatprintf(buffer, " ");
 		strcatprintf(str, "%s", buffer.c_str());
 	}
+=======
+void debug_view_breakpoints::pad_ostream_to_length(std::ostream& str, int len)
+{
+	auto const current = str.tellp();
+	if (current < decltype(current)(len))
+		str << std::setw(decltype(current)(len) - current) << "";
+>>>>>>> upstream/master
 }
 
 
 void debug_view_breakpoints::gather_breakpoints()
 {
 	m_buffer.resize(0);
+<<<<<<< HEAD
 	for (const debug_view_source *source = m_source_list.first(); source != NULL; source = source->next())
 	{
 		// Collect
 		device_debug &debugInterface = *source->device()->debug();
 		for (device_debug::breakpoint *bp = debugInterface.breakpoint_first(); bp != NULL; bp = bp->next())
+=======
+	for (const debug_view_source &source : m_source_list)
+	{
+		// Collect
+		device_debug &debugInterface = *source.device()->debug();
+		for (device_debug::breakpoint *bp = debugInterface.breakpoint_first(); bp != nullptr; bp = bp->next())
+>>>>>>> upstream/master
 			m_buffer.push_back(bp);
 	}
 
@@ -234,13 +271,20 @@ void debug_view_breakpoints::view_update()
 		m_total.y = 10;
 
 	// Draw
+<<<<<<< HEAD
 	debug_view_char *dest = &m_viewdata[0];
 	std::string         linebuf;
+=======
+	debug_view_char     *dest = &m_viewdata[0];
+	util::ovectorstream linebuf;
+	linebuf.reserve(ARRAY_LENGTH(tableBreaks) - 1);
+>>>>>>> upstream/master
 
 	// Header
 	if (m_visible.y > 0)
 	{
 		linebuf.clear();
+<<<<<<< HEAD
 		linebuf.append("ID");
 		if (m_sortType == &cIndexAscending) linebuf.push_back('\\');
 		else if (m_sortType == &cIndexDescending) linebuf.push_back('/');
@@ -269,6 +313,38 @@ void debug_view_breakpoints::view_update()
 		for (UINT32 i = m_topleft.x; i < (m_topleft.x + m_visible.x); i++, dest++)
 		{
 			dest->byte = (i < linebuf.length()) ? linebuf[i] : ' ';
+=======
+		linebuf.rdbuf()->clear();
+		linebuf << "ID";
+		if (m_sortType == &cIndexAscending) linebuf.put('\\');
+		else if (m_sortType == &cIndexDescending) linebuf.put('/');
+		pad_ostream_to_length(linebuf, tableBreaks[0]);
+		linebuf << "En";
+		if (m_sortType == &cEnabledAscending) linebuf.put('\\');
+		else if (m_sortType == &cEnabledDescending) linebuf.put('/');
+		pad_ostream_to_length(linebuf, tableBreaks[1]);
+		linebuf << "CPU";
+		if (m_sortType == &cCpuAscending) linebuf.put('\\');
+		else if (m_sortType == &cCpuDescending) linebuf.put('/');
+		pad_ostream_to_length(linebuf, tableBreaks[2]);
+		linebuf << "Address";
+		if (m_sortType == &cAddressAscending) linebuf.put('\\');
+		else if (m_sortType == &cAddressDescending) linebuf.put('/');
+		pad_ostream_to_length(linebuf, tableBreaks[3]);
+		linebuf << "Condition";
+		if (m_sortType == &cConditionAscending) linebuf.put('\\');
+		else if (m_sortType == &cConditionDescending) linebuf.put('/');
+		pad_ostream_to_length(linebuf, tableBreaks[4]);
+		linebuf << "Action";
+		if (m_sortType == &cActionAscending) linebuf.put('\\');
+		else if (m_sortType == &cActionDescending) linebuf.put('/');
+		pad_ostream_to_length(linebuf, tableBreaks[5]);
+
+		auto const &text(linebuf.vec());
+		for (u32 i = m_topleft.x; i < (m_topleft.x + m_visible.x); i++, dest++)
+		{
+			dest->byte = (i < text.size()) ? text[i] : ' ';
+>>>>>>> upstream/master
 			dest->attrib = DCA_ANCILLARY;
 		}
 	}
@@ -282,6 +358,7 @@ void debug_view_breakpoints::view_update()
 			device_debug::breakpoint *const bp = m_buffer[bpi];
 
 			linebuf.clear();
+<<<<<<< HEAD
 			strcatprintf(linebuf, "%2X", bp->index());
 			pad_astring_to_length(linebuf, tableBreaks[0]);
 			linebuf.push_back(bp->enabled() ? 'X' : 'O');
@@ -299,6 +376,27 @@ void debug_view_breakpoints::view_update()
 			for (UINT32 i = m_topleft.x; i < (m_topleft.x + m_visible.x); i++, dest++)
 			{
 				dest->byte = (i < linebuf.length()) ? linebuf[i] : ' ';
+=======
+			linebuf.rdbuf()->clear();
+			util::stream_format(linebuf, "%2X", bp->index());
+			pad_ostream_to_length(linebuf, tableBreaks[0]);
+			linebuf.put(bp->enabled() ? 'X' : 'O');
+			pad_ostream_to_length(linebuf, tableBreaks[1]);
+			linebuf << bp->debugInterface()->device().tag();
+			pad_ostream_to_length(linebuf, tableBreaks[2]);
+			util::stream_format(linebuf, "%0*X", bp->debugInterface()->logaddrchars(), bp->address());
+			pad_ostream_to_length(linebuf, tableBreaks[3]);
+			if (strcmp(bp->condition(), "1"))
+				linebuf << bp->condition();
+			pad_ostream_to_length(linebuf, tableBreaks[4]);
+			linebuf << bp->action();
+			pad_ostream_to_length(linebuf, tableBreaks[5]);
+
+			auto const &text(linebuf.vec());
+			for (u32 i = m_topleft.x; i < (m_topleft.x + m_visible.x); i++, dest++)
+			{
+				dest->byte = (i < text.size()) ? text[i] : ' ';
+>>>>>>> upstream/master
 				dest->attrib = DCA_NORMAL;
 
 				// Color disabled breakpoints red
@@ -309,7 +407,11 @@ void debug_view_breakpoints::view_update()
 		else
 		{
 			// Fill the remaining vertical space
+<<<<<<< HEAD
 			for (UINT32 i = m_topleft.x; i < (m_topleft.x + m_visible.x); i++, dest++)
+=======
+			for (u32 i = m_topleft.x; i < (m_topleft.x + m_visible.x); i++, dest++)
+>>>>>>> upstream/master
 			{
 				dest->byte = ' ';
 				dest->attrib = DCA_NORMAL;

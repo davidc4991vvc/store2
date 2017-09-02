@@ -29,12 +29,20 @@
 
 **********************************************************************/
 
+<<<<<<< HEAD
 #pragma once
 
 #ifndef __Z8536__
 #define __Z8536__
 
 #include "emu.h"
+=======
+#ifndef MAME_MACHINE_Z8536_H
+#define MAME_MACHINE_Z8536_H
+
+#pragma once
+
+>>>>>>> upstream/master
 #include "cpu/z80/z80daisy.h"
 
 
@@ -77,6 +85,7 @@ class z8536_device :  public device_t,
 {
 public:
 	// construction/destruction
+<<<<<<< HEAD
 	z8536_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
 
 	template<class _Object> static devcb_base &set_irq_wr_callback(device_t &device, _Object object) { return downcast<z8536_device &>(device).m_write_irq.set_callback(object); }
@@ -86,6 +95,17 @@ public:
 	template<class _Object> static devcb_base &set_pb_wr_callback(device_t &device, _Object object) { return downcast<z8536_device &>(device).m_write_pb.set_callback(object); }
 	template<class _Object> static devcb_base &set_pc_rd_callback(device_t &device, _Object object) { return downcast<z8536_device &>(device).m_read_pc.set_callback(object); }
 	template<class _Object> static devcb_base &set_pc_wr_callback(device_t &device, _Object object) { return downcast<z8536_device &>(device).m_write_pc.set_callback(object); }
+=======
+	z8536_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
+
+	template <class Object> static devcb_base &set_irq_wr_callback(device_t &device, Object &&cb) { return downcast<z8536_device &>(device).m_write_irq.set_callback(std::forward<Object>(cb)); }
+	template <class Object> static devcb_base &set_pa_rd_callback(device_t &device, Object &&cb) { return downcast<z8536_device &>(device).m_read_pa.set_callback(std::forward<Object>(cb)); }
+	template <class Object> static devcb_base &set_pa_wr_callback(device_t &device, Object &&cb) { return downcast<z8536_device &>(device).m_write_pa.set_callback(std::forward<Object>(cb)); }
+	template <class Object> static devcb_base &set_pb_rd_callback(device_t &device, Object &&cb) { return downcast<z8536_device &>(device).m_read_pb.set_callback(std::forward<Object>(cb)); }
+	template <class Object> static devcb_base &set_pb_wr_callback(device_t &device, Object &&cb) { return downcast<z8536_device &>(device).m_write_pb.set_callback(std::forward<Object>(cb)); }
+	template <class Object> static devcb_base &set_pc_rd_callback(device_t &device, Object &&cb) { return downcast<z8536_device &>(device).m_read_pc.set_callback(std::forward<Object>(cb)); }
+	template <class Object> static devcb_base &set_pc_wr_callback(device_t &device, Object &&cb) { return downcast<z8536_device &>(device).m_write_pc.set_callback(std::forward<Object>(cb)); }
+>>>>>>> upstream/master
 
 	DECLARE_READ8_MEMBER( read );
 	DECLARE_WRITE8_MEMBER( write );
@@ -117,6 +137,7 @@ public:
 
 protected:
 	// device-level overrides
+<<<<<<< HEAD
 	virtual void device_start();
 	virtual void device_reset();
 	virtual void device_timer(emu_timer &timer, device_timer_id id, int param, void *ptr);
@@ -125,6 +146,16 @@ protected:
 	virtual int z80daisy_irq_state();
 	virtual int z80daisy_irq_ack();
 	virtual void z80daisy_irq_reti();
+=======
+	virtual void device_start() override;
+	virtual void device_reset() override;
+	virtual void device_timer(emu_timer &timer, device_timer_id id, int param, void *ptr) override;
+
+	// device_z80daisy_interface overrides
+	virtual int z80daisy_irq_state() override;
+	virtual int z80daisy_irq_ack() override;
+	virtual void z80daisy_irq_reti() override;
+>>>>>>> upstream/master
 
 private:
 	enum
@@ -146,9 +177,15 @@ private:
 	// ports
 	enum
 	{
+<<<<<<< HEAD
 		PORT_C = 0,
 		PORT_B,
 		PORT_A,
+=======
+		PORT_A = 0,
+		PORT_B,
+		PORT_C,
+>>>>>>> upstream/master
 		CONTROL
 	};
 
@@ -297,10 +334,17 @@ private:
 	void get_interrupt_vector();
 	void check_interrupt();
 
+<<<<<<< HEAD
 	UINT8 read_register(offs_t offset);
 	UINT8 read_register(offs_t offset, UINT8 mask);
 	void write_register(offs_t offset, UINT8 data);
 	void write_register(offs_t offset, UINT8 data, UINT8 mask);
+=======
+	uint8_t read_register(offs_t offset);
+	uint8_t read_register(offs_t offset, uint8_t mask);
+	void write_register(offs_t offset, uint8_t data);
+	void write_register(offs_t offset, uint8_t data, uint8_t mask);
+>>>>>>> upstream/master
 
 	bool counter_enabled(device_timer_id id);
 	bool counter_external_output(device_timer_id id);
@@ -330,6 +374,7 @@ private:
 
 	// register state
 	int m_state;
+<<<<<<< HEAD
 	UINT8 m_register[48];
 	UINT8 m_pointer;
 
@@ -342,12 +387,32 @@ private:
 	// timers
 	emu_timer *m_timer;
 	UINT16 m_counter[3];
+=======
+	uint8_t m_register[48];
+	uint8_t m_pointer;
+
+	// input/output port state
+	uint8_t m_input[3];
+	uint8_t m_output[3];
+	uint8_t m_buffer[3];
+	uint8_t m_match[3];
+
+	// timers
+	emu_timer *m_timer;
+	uint16_t m_counter[3];
+>>>>>>> upstream/master
 };
 
 
 // device type definition
+<<<<<<< HEAD
 extern const device_type Z8536;
 
 
 
 #endif
+=======
+DECLARE_DEVICE_TYPE(Z8536, z8536_device)
+
+#endif // MAME_MACHINE_Z8536_H
+>>>>>>> upstream/master

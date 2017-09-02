@@ -6,12 +6,20 @@
 
 ***************************************************************************/
 
+<<<<<<< HEAD
 #pragma once
 
 #ifndef __A1BUS_H__
 #define __A1BUS_H__
 
 #include "emu.h"
+=======
+#ifndef MAME_BUS_A1BUS_A1BUS_H
+#define MAME_BUS_A1BUS_A1BUS_H
+
+#pragma once
+
+>>>>>>> upstream/master
 
 //**************************************************************************
 //  INTERFACE CONFIGURATION MACROS
@@ -49,6 +57,7 @@ class a1bus_slot_device : public device_t,
 {
 public:
 	// construction/destruction
+<<<<<<< HEAD
 	a1bus_slot_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
 	a1bus_slot_device(const machine_config &mconfig, device_type type, const char *name, const char *tag, device_t *owner, UINT32 clock, const char *shortname, const char *source);
 
@@ -58,12 +67,29 @@ public:
 	// inline configuration
 	static void static_set_a1bus_slot(device_t &device, const char *tag, const char *slottag);
 protected:
+=======
+	a1bus_slot_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
+
+	// inline configuration
+	static void static_set_a1bus_slot(device_t &device, const char *tag, const char *slottag);
+
+protected:
+	a1bus_slot_device(const machine_config &mconfig, device_type type, const char *tag, device_t *owner, uint32_t clock);
+
+	// device-level overrides
+	virtual void device_start() override;
+
+>>>>>>> upstream/master
 	// configuration
 	const char *m_a1bus_tag, *m_a1bus_slottag;
 };
 
 // device type definition
+<<<<<<< HEAD
 extern const device_type A1BUS_SLOT;
+=======
+DECLARE_DEVICE_TYPE(A1BUS_SLOT, a1bus_slot_device)
+>>>>>>> upstream/master
 
 
 class device_a1bus_card_interface;
@@ -72,6 +98,7 @@ class a1bus_device : public device_t
 {
 public:
 	// construction/destruction
+<<<<<<< HEAD
 	a1bus_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
 	a1bus_device(const machine_config &mconfig, device_type type, const char *name, const char *tag, device_t *owner, UINT32 clock, const char *shortname, const char *source);
 
@@ -79,6 +106,14 @@ public:
 	static void static_set_cputag(device_t &device, const char *tag);
 	template<class _Object> static devcb_base &set_out_irq_callback(device_t &device, _Object object) { return downcast<a1bus_device &>(device).m_out_irq_cb.set_callback(object); }
 	template<class _Object> static devcb_base &set_out_nmi_callback(device_t &device, _Object object) { return downcast<a1bus_device &>(device).m_out_nmi_cb.set_callback(object); }
+=======
+	a1bus_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
+
+	// inline configuration
+	static void static_set_cputag(device_t &device, const char *tag);
+	template <class Object> static devcb_base &set_out_irq_callback(device_t &device, Object &&cb) { return downcast<a1bus_device &>(device).m_out_irq_cb.set_callback(std::forward<Object>(cb)); }
+	template <class Object> static devcb_base &set_out_nmi_callback(device_t &device, Object &&cb) { return downcast<a1bus_device &>(device).m_out_nmi_cb.set_callback(std::forward<Object>(cb)); }
+>>>>>>> upstream/master
 
 	void add_a1bus_card(device_a1bus_card_interface *card);
 	device_a1bus_card_interface *get_a1bus_card();
@@ -87,15 +122,27 @@ public:
 	void set_nmi_line(int state);
 
 	void install_device(offs_t start, offs_t end, read8_delegate rhandler, write8_delegate whandler);
+<<<<<<< HEAD
 	void install_bank(offs_t start, offs_t end, offs_t mask, offs_t mirror, const char *tag, UINT8 *data);
+=======
+	void install_bank(offs_t start, offs_t end, const char *tag, uint8_t *data);
+>>>>>>> upstream/master
 
 	DECLARE_WRITE_LINE_MEMBER( irq_w );
 	DECLARE_WRITE_LINE_MEMBER( nmi_w );
 
 protected:
+<<<<<<< HEAD
 	// device-level overrides
 	virtual void device_start();
 	virtual void device_reset();
+=======
+	a1bus_device(const machine_config &mconfig, device_type type, const char *tag, device_t *owner, uint32_t clock);
+
+	// device-level overrides
+	virtual void device_start() override;
+	virtual void device_reset() override;
+>>>>>>> upstream/master
 
 	// internal state
 	cpu_device   *m_maincpu;
@@ -109,7 +156,11 @@ protected:
 
 
 // device type definition
+<<<<<<< HEAD
 extern const device_type A1BUS;
+=======
+DECLARE_DEVICE_TYPE(A1BUS, a1bus_device)
+>>>>>>> upstream/master
 
 // ======================> device_a1bus_card_interface
 
@@ -119,7 +170,10 @@ class device_a1bus_card_interface : public device_slot_card_interface
 	friend class a1bus_device;
 public:
 	// construction/destruction
+<<<<<<< HEAD
 	device_a1bus_card_interface(const machine_config &mconfig, device_t &device);
+=======
+>>>>>>> upstream/master
 	virtual ~device_a1bus_card_interface();
 
 	device_a1bus_card_interface *next() const { return m_next; }
@@ -132,14 +186,29 @@ public:
 	void lower_slot_nmi() { m_a1bus->set_nmi_line(CLEAR_LINE); }
 
 	void install_device(offs_t start, offs_t end, read8_delegate rhandler, write8_delegate whandler);
+<<<<<<< HEAD
 	void install_bank(offs_t start, offs_t end, offs_t mask, offs_t mirror, char *tag, UINT8 *data);
 
 	// inline configuration
 	static void static_set_a1bus_tag(device_t &device, const char *tag, const char *slottag);
 public:
+=======
+	void install_bank(offs_t start, offs_t end, char *tag, uint8_t *data);
+
+	// inline configuration
+	static void static_set_a1bus_tag(device_t &device, const char *tag, const char *slottag);
+
+protected:
+	device_a1bus_card_interface(const machine_config &mconfig, device_t &device);
+
+>>>>>>> upstream/master
 	a1bus_device  *m_a1bus;
 	const char *m_a1bus_tag, *m_a1bus_slottag;
 	device_a1bus_card_interface *m_next;
 };
 
+<<<<<<< HEAD
 #endif  /* __A1BUS_H__ */
+=======
+#endif  // MAME_BUS_A1BUS_A1BUS_H
+>>>>>>> upstream/master

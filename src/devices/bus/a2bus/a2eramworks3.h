@@ -8,10 +8,16 @@
 
 *********************************************************************/
 
+<<<<<<< HEAD
 #ifndef __A2EAUX_RAMWORKS3__
 #define __A2EAUX_RAMWORKS3__
 
 #include "emu.h"
+=======
+#ifndef MAME_BUS_A2BUS_A2ERAMWORKS3_H
+#define MAME_BUS_A2BUS_A2ERAMWORKS3_H
+
+>>>>>>> upstream/master
 #include "a2eauxslot.h"
 
 //**************************************************************************
@@ -24,6 +30,7 @@ class a2eaux_ramworks3_device:
 {
 public:
 	// construction/destruction
+<<<<<<< HEAD
 	a2eaux_ramworks3_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
 	a2eaux_ramworks3_device(const machine_config &mconfig, device_type type, const char *name, const char *tag, device_t *owner, UINT32 clock, const char *shortname, const char *source);
 
@@ -40,10 +47,35 @@ protected:
 
 private:
 	UINT8 m_ram[8*1024*1024];
+=======
+	a2eaux_ramworks3_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
+
+protected:
+	a2eaux_ramworks3_device(const machine_config &mconfig, device_type type, const char *tag, device_t *owner, uint32_t clock);
+
+	virtual void device_start() override;
+	virtual void device_reset() override;
+
+	virtual uint8_t read_auxram(uint16_t offset) override;
+	virtual void write_auxram(uint16_t offset, uint8_t data) override;
+	virtual uint8_t *get_vram_ptr() override;
+	virtual uint8_t *get_auxbank_ptr() override;
+	virtual bool allow_dhr() override { return true; }
+	virtual void write_c07x(address_space &space, uint8_t offset, uint8_t data) override;
+
+private:
+	uint8_t m_ram[8*1024*1024];
+>>>>>>> upstream/master
 	int m_bank;
 };
 
 // device type definition
+<<<<<<< HEAD
 extern const device_type A2EAUX_RAMWORKS3;
 
 #endif  /* __A2EAUX_RAMWORKS3__ */
+=======
+DECLARE_DEVICE_TYPE(A2EAUX_RAMWORKS3, a2eaux_ramworks3_device)
+
+#endif // MAME_BUS_A2BUS_A2ERAMWORKS3_H
+>>>>>>> upstream/master

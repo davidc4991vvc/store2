@@ -45,7 +45,11 @@
 //****************************************************************************
 
 // device type definition
+<<<<<<< HEAD
 const device_type NAMCO_C45_ROAD = &device_creator<namco_c45_road_device>;
+=======
+DEFINE_DEVICE_TYPE(NAMCO_C45_ROAD, namco_c45_road_device, "namco_c45_road", "Namco C45 Road")
+>>>>>>> upstream/master
 
 
 const gfx_layout namco_c45_road_device::tilelayout =
@@ -76,8 +80,13 @@ ADDRESS_MAP_END
 //  namco_c45_road_device -- constructor
 //-------------------------------------------------
 
+<<<<<<< HEAD
 namco_c45_road_device::namco_c45_road_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
 	: device_t(mconfig, NAMCO_C45_ROAD, "Namco C45 Road", tag, owner, clock, "namco_c45_road", __FILE__),
+=======
+namco_c45_road_device::namco_c45_road_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: device_t(mconfig, NAMCO_C45_ROAD, tag, owner, clock),
+>>>>>>> upstream/master
 		device_gfx_interface(mconfig, *this, gfxinfo),
 		device_memory_interface(mconfig, *this),
 		m_space_config("c45", ENDIANNESS_BIG, 16, 17, 0, address_map_delegate(FUNC(namco_c45_road_device::map), this)),
@@ -133,7 +142,11 @@ WRITE16_MEMBER( namco_c45_road_device::tilemap_w )
 WRITE16_MEMBER( namco_c45_road_device::tileram_w )
 {
 	COMBINE_DATA(&m_tileram[offset]);
+<<<<<<< HEAD
 	m_gfx[0]->mark_dirty(offset / WORDS_PER_ROAD_TILE);
+=======
+	gfx(0)->mark_dirty(offset / WORDS_PER_ROAD_TILE);
+>>>>>>> upstream/master
 }
 
 
@@ -161,7 +174,11 @@ void namco_c45_road_device::draw(bitmap_ind16 &bitmap, const rectangle &cliprect
 
 		// skip if we don't have a valid source increment
 		unsigned sourcey = m_lineram[0x200/2 + y + 15] + yscroll;
+<<<<<<< HEAD
 		const UINT16 *source_gfx = &source_bitmap.pix(sourcey & (ROAD_TILEMAP_HEIGHT - 1));
+=======
+		const uint16_t *source_gfx = &source_bitmap.pix(sourcey & (ROAD_TILEMAP_HEIGHT - 1));
+>>>>>>> upstream/master
 		unsigned dsourcex = (ROAD_TILEMAP_WIDTH << 16) / zoomx;
 		if (dsourcex == 0)
 			continue;
@@ -194,15 +211,25 @@ void namco_c45_road_device::draw(bitmap_ind16 &bitmap, const rectangle &cliprect
 		// TBA: work out palette mapping for Final Lap, Suzuka
 
 		// BUT: support transparent color for Thunder Ceptor
+<<<<<<< HEAD
 		UINT16 *dest = &bitmap.pix(y);
+=======
+		uint16_t *dest = &bitmap.pix(y);
+>>>>>>> upstream/master
 		if (m_transparent_color != ~0)
 		{
 			while (numpixels-- > 0)
 			{
 				int pen = source_gfx[sourcex >> 16];
+<<<<<<< HEAD
 				if (m_palette->pen_indirect(pen) != m_transparent_color)
 				{
 					if (m_clut != NULL)
+=======
+				if (palette().pen_indirect(pen) != m_transparent_color)
+				{
+					if (m_clut != nullptr)
+>>>>>>> upstream/master
 						pen = (pen & ~0xff) | m_clut[pen & 0xff];
 					dest[screenx] = pen;
 				}
@@ -215,7 +242,11 @@ void namco_c45_road_device::draw(bitmap_ind16 &bitmap, const rectangle &cliprect
 			while (numpixels-- > 0)
 			{
 				int pen = source_gfx[sourcex >> 16];
+<<<<<<< HEAD
 				if (m_clut != NULL)
+=======
+				if (m_clut != nullptr)
+>>>>>>> upstream/master
 					pen = (pen & ~0xff) | m_clut[pen & 0xff];
 				dest[screenx++] = pen;
 				sourcex += dsourcex;
@@ -231,7 +262,12 @@ void namco_c45_road_device::draw(bitmap_ind16 &bitmap, const rectangle &cliprect
 
 void namco_c45_road_device::device_start()
 {
+<<<<<<< HEAD
 	m_clut = memregion("clut")->base();
+=======
+	if (memregion("clut") != nullptr)
+		m_clut = memregion("clut")->base();
+>>>>>>> upstream/master
 
 	// create a tilemap for the road
 	m_tilemap = &machine().tilemap().create(*this, tilemap_get_info_delegate(FUNC(namco_c45_road_device::get_road_info), this),
@@ -244,9 +280,17 @@ void namco_c45_road_device::device_start()
 //  any address spaces owned by this device
 //-------------------------------------------------
 
+<<<<<<< HEAD
 const address_space_config *namco_c45_road_device::memory_space_config(address_spacenum spacenum) const
 {
 	return (spacenum == AS_0) ? &m_space_config : NULL;
+=======
+device_memory_interface::space_config_vector namco_c45_road_device::memory_space_config() const
+{
+	return space_config_vector {
+		std::make_pair(0, &m_space_config)
+	};
+>>>>>>> upstream/master
 }
 
 
@@ -258,7 +302,11 @@ TILE_GET_INFO_MEMBER( namco_c45_road_device::get_road_info )
 {
 	// ------xx xxxxxxxx tile number
 	// xxxxxx-- -------- palette select
+<<<<<<< HEAD
 	UINT16 data = m_tmapram[tile_index];
+=======
+	uint16_t data = m_tmapram[tile_index];
+>>>>>>> upstream/master
 	int tile = data & 0x3ff;
 	int color = data >> 10;
 	SET_TILE_INFO_MEMBER(0, tile, color, 0);

@@ -21,10 +21,17 @@
 //
 //
 
+<<<<<<< HEAD
 static const int block_size = 128;
 static const int card_size = block_size * 1024;
 
 const device_type PSXCARD = &device_creator<psxcard_device>;
+=======
+static constexpr int block_size = 128;
+static constexpr int card_size = block_size * 1024;
+
+DEFINE_DEVICE_TYPE(PSXCARD, psxcard_device, "psxcard", "Sony PSX Memory Card")
+>>>>>>> upstream/master
 
 enum transfer_states
 {
@@ -41,8 +48,13 @@ enum transfer_states
 	state_end
 };
 
+<<<<<<< HEAD
 psxcard_device::psxcard_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
 	: device_t(mconfig, PSXCARD, "Sony PSX Memory Card", tag, owner, clock, "psxcard", __FILE__),
+=======
+psxcard_device::psxcard_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: device_t(mconfig, PSXCARD, tag, owner, clock),
+>>>>>>> upstream/master
 	device_image_interface(mconfig, *this),
 	pkt_ptr(0),
 	pkt_sz(0),
@@ -104,16 +116,23 @@ void psxcard_device::device_reset()
 	m_owner->ack();
 }
 
+<<<<<<< HEAD
 void psxcard_device::device_config_complete()
 {
 	update_names(PSXCARD, "memcard", "mc");
 }
 
+=======
+>>>>>>> upstream/master
 //
 //
 //
 
+<<<<<<< HEAD
 bool psxcard_device::transfer(UINT8 to, UINT8 *from)
+=======
+bool psxcard_device::transfer(uint8_t to, uint8_t *from)
+>>>>>>> upstream/master
 {
 	bool ret=true;
 
@@ -300,11 +319,16 @@ unsigned char psxcard_device::checksum_data(const unsigned char *buf, const unsi
 	return chk;
 }
 
+<<<<<<< HEAD
 bool psxcard_device::call_load()
+=======
+image_init_result psxcard_device::call_load()
+>>>>>>> upstream/master
 {
 	if(m_disabled)
 	{
 		logerror("psxcard: port disabled\n");
+<<<<<<< HEAD
 		return IMAGE_INIT_FAIL;
 	}
 
@@ -316,12 +340,29 @@ bool psxcard_device::call_load()
 bool psxcard_device::call_create(int format_type, option_resolution *format_options)
 {
 	UINT8 block[block_size];
+=======
+		return image_init_result::FAIL;
+	}
+
+	if(length() != card_size)
+		return image_init_result::FAIL;
+	return image_init_result::PASS;
+}
+
+image_init_result psxcard_device::call_create(int format_type, util::option_resolution *format_options)
+{
+	uint8_t block[block_size];
+>>>>>>> upstream/master
 	int i, ret;
 
 	if(m_disabled)
 	{
 		logerror("psxcard: port disabled\n");
+<<<<<<< HEAD
 		return IMAGE_INIT_FAIL;
+=======
+		return image_init_result::FAIL;
+>>>>>>> upstream/master
 	}
 
 	memset(block, '\0', block_size);
@@ -329,9 +370,15 @@ bool psxcard_device::call_create(int format_type, option_resolution *format_opti
 	{
 		ret = fwrite(block, block_size);
 		if(ret != block_size)
+<<<<<<< HEAD
 			return IMAGE_INIT_FAIL;
 	}
 	return IMAGE_INIT_PASS;
+=======
+			return image_init_result::FAIL;
+	}
+	return image_init_result::PASS;
+>>>>>>> upstream/master
 }
 
 void psxcard_device::do_card()

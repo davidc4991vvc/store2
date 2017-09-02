@@ -143,7 +143,11 @@ Model No. S2000-B
 Graphics: HM86171
      OSC: 25.000MHz, 12.000MHz & 4.9152MHz
    Sound: OKI M6295
+<<<<<<< HEAD
    Other: XILINX XC9536XL (socketted)
+=======
+   Other: XILINX XC9536XL (socketed)
+>>>>>>> upstream/master
 
 HM86171-120 - HMC 28 pin DIP Color Palette RAMDAC
    ULN2003A - 16 pin DIP Seven Darlington Arrays
@@ -195,7 +199,11 @@ Model No. S2000C SALTIRE
   +----------+-------+-------------------------------+
 
 Basically the same as the VCG-1 SALTIRE below, but the
+<<<<<<< HEAD
 XILINX chip is socketted and no H1 or H2 connector.
+=======
+XILINX chip is socketed and no H1 or H2 connector.
+>>>>>>> upstream/master
 
 ------------------------------------------------------------
 
@@ -274,11 +282,22 @@ MH86171 Color Palette RAMDAC
 
 #include "emu.h"
 #include "cpu/z80/z80.h"
+<<<<<<< HEAD
 #include "sound/okim6295.h"
 #include "video/ramdac.h"
 
 #include "pirpok2.lh"
 #include "machine/nvram.h"
+=======
+#include "machine/nvram.h"
+#include "sound/okim6295.h"
+#include "video/ramdac.h"
+#include "screen.h"
+#include "speaker.h"
+
+#include "pirpok2.lh"
+
+>>>>>>> upstream/master
 
 class sfbonus_state : public driver_device
 {
@@ -294,12 +313,19 @@ public:
 		m_2801_regs(*this, "2801_regs"),
 		m_2c01_regs(*this, "2c01_regs"),
 		m_3000_regs(*this, "3000_regs"),
+<<<<<<< HEAD
 		m_3800_regs(*this, "3800_regs")  { }
+=======
+		m_3800_regs(*this, "3800_regs")
+	{
+	}
+>>>>>>> upstream/master
 
 	required_device<cpu_device> m_maincpu;
 	required_device<gfxdecode_device> m_gfxdecode;
 	required_device<palette_device> m_palette;
 
+<<<<<<< HEAD
 	required_shared_ptr<UINT8> m_nvram;
 	required_shared_ptr<UINT8> m_1800_regs;
 	required_shared_ptr<UINT8> m_vregs;
@@ -309,17 +335,37 @@ public:
 	required_shared_ptr<UINT8> m_3800_regs;
 
 	bitmap_ind16 *m_temp_reel_bitmap;
+=======
+	required_shared_ptr<uint8_t> m_nvram;
+	required_shared_ptr<uint8_t> m_1800_regs;
+	required_shared_ptr<uint8_t> m_vregs;
+	required_shared_ptr<uint8_t> m_2801_regs;
+	required_shared_ptr<uint8_t> m_2c01_regs;
+	required_shared_ptr<uint8_t> m_3000_regs;
+	required_shared_ptr<uint8_t> m_3800_regs;
+
+	std::unique_ptr<bitmap_ind16> m_temp_reel_bitmap;
+>>>>>>> upstream/master
 	tilemap_t *m_tilemap;
 	tilemap_t *m_reel_tilemap;
 	tilemap_t *m_reel2_tilemap;
 	tilemap_t *m_reel3_tilemap;
 	tilemap_t *m_reel4_tilemap;
+<<<<<<< HEAD
 	UINT8 *m_tilemap_ram;
 	UINT8 *m_reel_ram;
 	UINT8 *m_reel2_ram;
 	UINT8 *m_reel3_ram;
 	UINT8 *m_reel4_ram;
 	UINT8* m_videoram;
+=======
+	std::unique_ptr<uint8_t[]> m_tilemap_ram;
+	std::unique_ptr<uint8_t[]> m_reel_ram;
+	std::unique_ptr<uint8_t[]> m_reel2_ram;
+	std::unique_ptr<uint8_t[]> m_reel3_ram;
+	std::unique_ptr<uint8_t[]> m_reel4_ram;
+	std::unique_ptr<uint8_t[]> m_videoram;
+>>>>>>> upstream/master
 
 	DECLARE_WRITE8_MEMBER(sfbonus_videoram_w);
 	DECLARE_WRITE8_MEMBER(sfbonus_bank_w);
@@ -449,6 +495,7 @@ public:
 	DECLARE_DRIVER_INIT(tighookv);
 	DECLARE_DRIVER_INIT(robadv);
 	DECLARE_DRIVER_INIT(pirpok2d);
+<<<<<<< HEAD
 	void sfbonus_bitswap(UINT8 xor0, UINT8 b00, UINT8 b01, UINT8 b02, UINT8 b03, UINT8 b04, UINT8 b05, UINT8 b06,UINT8 b07,
 						UINT8 xor1, UINT8 b10, UINT8 b11, UINT8 b12, UINT8 b13, UINT8 b14, UINT8 b15, UINT8 b16,UINT8 b17,
 						UINT8 xor2, UINT8 b20, UINT8 b21, UINT8 b22, UINT8 b23, UINT8 b24, UINT8 b25, UINT8 b26,UINT8 b27,
@@ -457,15 +504,32 @@ public:
 						UINT8 xor5, UINT8 b50, UINT8 b51, UINT8 b52, UINT8 b53, UINT8 b54, UINT8 b55, UINT8 b56,UINT8 b57,
 						UINT8 xor6, UINT8 b60, UINT8 b61, UINT8 b62, UINT8 b63, UINT8 b64, UINT8 b65, UINT8 b66,UINT8 b67,
 						UINT8 xor7, UINT8 b70, UINT8 b71, UINT8 b72, UINT8 b73, UINT8 b74, UINT8 b75, UINT8 b76,UINT8 b77 );
+=======
+	void sfbonus_bitswap(uint8_t xor0, uint8_t b00, uint8_t b01, uint8_t b02, uint8_t b03, uint8_t b04, uint8_t b05, uint8_t b06,uint8_t b07,
+						uint8_t xor1, uint8_t b10, uint8_t b11, uint8_t b12, uint8_t b13, uint8_t b14, uint8_t b15, uint8_t b16,uint8_t b17,
+						uint8_t xor2, uint8_t b20, uint8_t b21, uint8_t b22, uint8_t b23, uint8_t b24, uint8_t b25, uint8_t b26,uint8_t b27,
+						uint8_t xor3, uint8_t b30, uint8_t b31, uint8_t b32, uint8_t b33, uint8_t b34, uint8_t b35, uint8_t b36,uint8_t b37,
+						uint8_t xor4, uint8_t b40, uint8_t b41, uint8_t b42, uint8_t b43, uint8_t b44, uint8_t b45, uint8_t b46,uint8_t b47,
+						uint8_t xor5, uint8_t b50, uint8_t b51, uint8_t b52, uint8_t b53, uint8_t b54, uint8_t b55, uint8_t b56,uint8_t b57,
+						uint8_t xor6, uint8_t b60, uint8_t b61, uint8_t b62, uint8_t b63, uint8_t b64, uint8_t b65, uint8_t b66,uint8_t b67,
+						uint8_t xor7, uint8_t b70, uint8_t b71, uint8_t b72, uint8_t b73, uint8_t b74, uint8_t b75, uint8_t b76,uint8_t b77 );
+>>>>>>> upstream/master
 	TILE_GET_INFO_MEMBER(get_sfbonus_tile_info);
 	TILE_GET_INFO_MEMBER(get_sfbonus_reel_tile_info);
 	TILE_GET_INFO_MEMBER(get_sfbonus_reel2_tile_info);
 	TILE_GET_INFO_MEMBER(get_sfbonus_reel3_tile_info);
 	TILE_GET_INFO_MEMBER(get_sfbonus_reel4_tile_info);
+<<<<<<< HEAD
 	virtual void machine_reset();
 	virtual void video_start();
 	void draw_reel_layer(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect, int category);
 	UINT32 screen_update_sfbonus(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
+=======
+	virtual void machine_reset() override;
+	virtual void video_start() override;
+	void draw_reel_layer(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect, int category);
+	uint32_t screen_update_sfbonus(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
+>>>>>>> upstream/master
 };
 
 
@@ -907,6 +971,7 @@ WRITE8_MEMBER(sfbonus_state::sfbonus_videoram_w)
 
 void sfbonus_state::video_start()
 {
+<<<<<<< HEAD
 	m_temp_reel_bitmap = auto_bitmap_ind16_alloc(machine(),1024,512);
 
 	m_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(sfbonus_state::get_sfbonus_tile_info),this),TILEMAP_SCAN_ROWS,8,8, 128, 64);
@@ -914,6 +979,15 @@ void sfbonus_state::video_start()
 	m_reel2_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(sfbonus_state::get_sfbonus_reel2_tile_info),this),TILEMAP_SCAN_ROWS,8,32, 64, 16);
 	m_reel3_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(sfbonus_state::get_sfbonus_reel3_tile_info),this),TILEMAP_SCAN_ROWS,8,32, 64, 16);
 	m_reel4_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(sfbonus_state::get_sfbonus_reel4_tile_info),this),TILEMAP_SCAN_ROWS,8,32, 64, 16);
+=======
+	m_temp_reel_bitmap = std::make_unique<bitmap_ind16>(1024,512);
+
+	m_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(sfbonus_state::get_sfbonus_tile_info),this),TILEMAP_SCAN_ROWS,8,8, 128, 64);
+	m_reel_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(sfbonus_state::get_sfbonus_reel_tile_info),this),TILEMAP_SCAN_ROWS,8,32, 64, 16);
+	m_reel2_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(sfbonus_state::get_sfbonus_reel2_tile_info),this),TILEMAP_SCAN_ROWS,8,32, 64, 16);
+	m_reel3_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(sfbonus_state::get_sfbonus_reel3_tile_info),this),TILEMAP_SCAN_ROWS,8,32, 64, 16);
+	m_reel4_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(sfbonus_state::get_sfbonus_reel4_tile_info),this),TILEMAP_SCAN_ROWS,8,32, 64, 16);
+>>>>>>> upstream/master
 
 	m_tilemap->set_transparent_pen(0);
 	m_reel_tilemap->set_transparent_pen(255);
@@ -937,9 +1011,15 @@ void sfbonus_state::draw_reel_layer(screen_device &screen, bitmap_ind16 &bitmap,
 	int i;
 	int startclipmin;
 	const rectangle &visarea = screen.visible_area();
+<<<<<<< HEAD
 	UINT8* selectbase = &m_videoram[0x600];
 	UINT8* bg_scroll = &m_videoram[0x000];
 	UINT8* reels_rowscroll = &m_videoram[0x400];
+=======
+	uint8_t* selectbase = &m_videoram[0x600];
+	uint8_t* bg_scroll = &m_videoram[0x000];
+	uint8_t* reels_rowscroll = &m_videoram[0x400];
+>>>>>>> upstream/master
 	int globalyscrollreels = (m_vregs[6] | m_vregs[7]<<8);
 	int globalxscrollreels = (m_vregs[4] | m_vregs[5]<<8);
 	globalyscrollreels += 8;
@@ -1066,11 +1146,19 @@ void sfbonus_state::draw_reel_layer(screen_device &screen, bitmap_ind16 &bitmap,
 
 }
 
+<<<<<<< HEAD
 UINT32 sfbonus_state::screen_update_sfbonus(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
 {
 	int globalyscroll = (m_vregs[2] | m_vregs[3]<<8);
 	int globalxscroll = (m_vregs[0] | m_vregs[1]<<8);
 	UINT8* front_rowscroll = &m_videoram[0x200];
+=======
+uint32_t sfbonus_state::screen_update_sfbonus(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+{
+	int globalyscroll = (m_vregs[2] | m_vregs[3]<<8);
+	int globalxscroll = (m_vregs[0] | m_vregs[1]<<8);
+	uint8_t* front_rowscroll = &m_videoram[0x200];
+>>>>>>> upstream/master
 	ioport_constructor ipt;
 	int i;
 
@@ -1091,8 +1179,13 @@ UINT32 sfbonus_state::screen_update_sfbonus(screen_device &screen, bitmap_ind16 
 		{
 			for (x=0;x<512;x++)
 			{
+<<<<<<< HEAD
 				UINT16* src = &m_temp_reel_bitmap->pix16(y, x);
 				UINT16* dst = &bitmap.pix16(y, x);
+=======
+				uint16_t* src = &m_temp_reel_bitmap->pix16(y, x);
+				uint16_t* dst = &bitmap.pix16(y, x);
+>>>>>>> upstream/master
 
 				if ((src[0]&0x100)==0x000)
 					dst[0] = src[0];
@@ -1117,8 +1210,13 @@ UINT32 sfbonus_state::screen_update_sfbonus(screen_device &screen, bitmap_ind16 
 		{
 			for (x=0;x<512;x++)
 			{
+<<<<<<< HEAD
 				UINT16* src = &m_temp_reel_bitmap->pix16(y, x);
 				UINT16* dst = &bitmap.pix16(y, x);
+=======
+				uint16_t* src = &m_temp_reel_bitmap->pix16(y, x);
+				uint16_t* dst = &bitmap.pix16(y, x);
+>>>>>>> upstream/master
 
 				if ((src[0]&0x100)==0x100)
 					dst[0] = src[0]-0x100;
@@ -1180,22 +1278,40 @@ UINT32 sfbonus_state::screen_update_sfbonus(screen_device &screen, bitmap_ind16 
 		|| (ipt == INPUT_PORTS_NAME(amcoe2_poker)))
 	{
 		// based on pirpok2
+<<<<<<< HEAD
 		output_set_lamp_value(0, (m_1800_regs[6] & 0x1) >> 0);
 		output_set_lamp_value(1, (m_1800_regs[6] & 0x4) >> 2);
 		output_set_lamp_value(2, (m_1800_regs[5] & 0x4) >> 2);
 		output_set_lamp_value(3, (m_1800_regs[5] & 0x1) >> 0);
 		output_set_lamp_value(4, (m_1800_regs[4] & 0x4) >> 2);
 		output_set_lamp_value(5, (m_1800_regs[4] & 0x1) >> 0);
+=======
+		output().set_lamp_value(0, (m_1800_regs[6] & 0x1) >> 0);
+		output().set_lamp_value(1, (m_1800_regs[6] & 0x4) >> 2);
+		output().set_lamp_value(2, (m_1800_regs[5] & 0x4) >> 2);
+		output().set_lamp_value(3, (m_1800_regs[5] & 0x1) >> 0);
+		output().set_lamp_value(4, (m_1800_regs[4] & 0x4) >> 2);
+		output().set_lamp_value(5, (m_1800_regs[4] & 0x1) >> 0);
+>>>>>>> upstream/master
 	}
 	else if ((ipt == INPUT_PORTS_NAME(amcoe1_reels3)) || (ipt == INPUT_PORTS_NAME(amcoe1_reels4))
 		|| (ipt == INPUT_PORTS_NAME(amcoe1_poker)))
 	{
+<<<<<<< HEAD
 		output_set_lamp_value(0, (m_1800_regs[0] & 0x2) >> 1);
 		output_set_lamp_value(1, (m_1800_regs[4] & 0x2) >> 1);
 		output_set_lamp_value(2, (m_1800_regs[3] & 0x2) >> 1);
 		output_set_lamp_value(3, (m_1800_regs[6] & 0x4) >> 2);
 		output_set_lamp_value(4, (m_1800_regs[4] & 0x4) >> 2);
 		output_set_lamp_value(5, (m_1800_regs[3] & 0x4) >> 2);
+=======
+		output().set_lamp_value(0, (m_1800_regs[0] & 0x2) >> 1);
+		output().set_lamp_value(1, (m_1800_regs[4] & 0x2) >> 1);
+		output().set_lamp_value(2, (m_1800_regs[3] & 0x2) >> 1);
+		output().set_lamp_value(3, (m_1800_regs[6] & 0x4) >> 2);
+		output().set_lamp_value(4, (m_1800_regs[4] & 0x4) >> 2);
+		output().set_lamp_value(5, (m_1800_regs[3] & 0x4) >> 2);
+>>>>>>> upstream/master
 	}
 
 	return 0;
@@ -1210,8 +1326,13 @@ ADDRESS_MAP_END
 
 WRITE8_MEMBER(sfbonus_state::sfbonus_bank_w)
 {
+<<<<<<< HEAD
 	UINT8 *ROM = memregion("maincpu")->base();
 	UINT8 bank;
+=======
+	uint8_t *ROM = memregion("maincpu")->base();
+	uint8_t bank;
+>>>>>>> upstream/master
 
 	bank = data & 7;
 
@@ -1344,18 +1465,30 @@ GFXDECODE_END
 
 void sfbonus_state::machine_reset()
 {
+<<<<<<< HEAD
 	UINT8 *ROM = memregion("maincpu")->base();
+=======
+	uint8_t *ROM = memregion("maincpu")->base();
+>>>>>>> upstream/master
 
 	membank("bank1")->set_base(&ROM[0]);
 }
 
 
+<<<<<<< HEAD
 static ADDRESS_MAP_START( ramdac_map, AS_0, 8, sfbonus_state )
+=======
+static ADDRESS_MAP_START( ramdac_map, 0, 8, sfbonus_state )
+>>>>>>> upstream/master
 	AM_RANGE(0x000, 0x3ff) AM_DEVREADWRITE("ramdac",ramdac_device,ramdac_pal_r,ramdac_rgb666_w)
 ADDRESS_MAP_END
 
 
+<<<<<<< HEAD
 static MACHINE_CONFIG_START( sfbonus, sfbonus_state )
+=======
+static MACHINE_CONFIG_START( sfbonus )
+>>>>>>> upstream/master
 	MCFG_CPU_ADD("maincpu", Z80, 6000000) // custom packaged z80 CPU ?? Mhz
 	MCFG_CPU_PROGRAM_MAP(sfbonus_map)
 	MCFG_CPU_IO_MAP(sfbonus_io)
@@ -1382,7 +1515,11 @@ static MACHINE_CONFIG_START( sfbonus, sfbonus_state )
 
 	/* Parrot 3 seems fine at 1 Mhz, but Double Challenge isn't? */
 	MCFG_SPEAKER_STANDARD_MONO("mono")
+<<<<<<< HEAD
 	MCFG_OKIM6295_ADD("oki", 1000000, OKIM6295_PIN7_HIGH) // clock frequency & pin 7 not verified
+=======
+	MCFG_OKIM6295_ADD("oki", 1000000, PIN7_HIGH) // clock frequency & pin 7 not verified
+>>>>>>> upstream/master
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 1.00)
 MACHINE_CONFIG_END
 
@@ -5843,6 +5980,7 @@ ROM_START( amclink )
 	ROM_REGION( 0x100000, "gfx2", ROMREGION_ERASE00 )
 ROM_END
 
+<<<<<<< HEAD
 //ROM_REGION( 0x80000, "user1", 0 ) /* Z80 Code */
 //ROM_LOAD( "dummy.rom", 0x00000, 0x40000, CRC(1) SHA1(1) )
 
@@ -5931,6 +6069,53 @@ void sfbonus_state::sfbonus_bitswap(
 	for(i = 0; i < memregion("maincpu")->bytes(); i++)
 	{
 		UINT8 x = ROM[i];
+=======
+DRIVER_INIT_MEMBER(sfbonus_state,sfbonus_common)
+{
+	m_tilemap_ram = std::make_unique<uint8_t[]>(0x4000);
+	memset(m_tilemap_ram.get(), 0xff, 0x4000);
+	save_pointer(NAME(m_tilemap_ram.get()), 0x4000);
+
+	m_reel_ram = std::make_unique<uint8_t[]>(0x0800);
+	memset(m_reel_ram.get(), 0xff ,0x0800);
+	save_pointer(NAME(m_reel_ram.get()), 0x0800);
+
+	m_reel2_ram = std::make_unique<uint8_t[]>(0x0800);
+	memset(m_reel2_ram.get(), 0xff, 0x0800);
+	save_pointer(NAME(m_reel2_ram.get()), 0x0800);
+
+	m_reel3_ram = std::make_unique<uint8_t[]>(0x0800);
+	memset(m_reel3_ram.get(), 0xff, 0x0800);
+	save_pointer(NAME(m_reel3_ram.get()), 0x0800);
+
+	m_reel4_ram = std::make_unique<uint8_t[]>(0x0800);
+	memset(m_reel4_ram.get(), 0xff, 0x0800);
+	save_pointer(NAME(m_reel4_ram.get()), 0x0800);
+
+	m_videoram = std::make_unique<uint8_t[]>(0x10000);
+
+	memset(m_videoram.get(), 0xff, 0x10000);
+
+	save_pointer(NAME(m_videoram.get()), 0x10000);
+}
+
+void sfbonus_state::sfbonus_bitswap(
+						uint8_t xor0, uint8_t b00, uint8_t b01, uint8_t b02, uint8_t b03, uint8_t b04, uint8_t b05, uint8_t b06,uint8_t b07,
+						uint8_t xor1, uint8_t b10, uint8_t b11, uint8_t b12, uint8_t b13, uint8_t b14, uint8_t b15, uint8_t b16,uint8_t b17,
+						uint8_t xor2, uint8_t b20, uint8_t b21, uint8_t b22, uint8_t b23, uint8_t b24, uint8_t b25, uint8_t b26,uint8_t b27,
+						uint8_t xor3, uint8_t b30, uint8_t b31, uint8_t b32, uint8_t b33, uint8_t b34, uint8_t b35, uint8_t b36,uint8_t b37,
+						uint8_t xor4, uint8_t b40, uint8_t b41, uint8_t b42, uint8_t b43, uint8_t b44, uint8_t b45, uint8_t b46,uint8_t b47,
+						uint8_t xor5, uint8_t b50, uint8_t b51, uint8_t b52, uint8_t b53, uint8_t b54, uint8_t b55, uint8_t b56,uint8_t b57,
+						uint8_t xor6, uint8_t b60, uint8_t b61, uint8_t b62, uint8_t b63, uint8_t b64, uint8_t b65, uint8_t b66,uint8_t b67,
+						uint8_t xor7, uint8_t b70, uint8_t b71, uint8_t b72, uint8_t b73, uint8_t b74, uint8_t b75, uint8_t b76,uint8_t b77 )
+{
+	int i;
+	uint8_t *ROM = memregion("maincpu")->base();
+
+	for(i = 0; i < memregion("maincpu")->bytes(); i++)
+	{
+		uint8_t x = ROM[i];
+>>>>>>> upstream/master
 
 		switch(i & 7)
 		{
@@ -6348,8 +6533,11 @@ GAME( 2006, version4o,   version4, sfbonus,    amcoe1_reels3, sfbonus_state,    
 // Known sets but no roms dumped at all for these:
 // Merry Circus
 // Devil Island - 14 Liner version
+<<<<<<< HEAD
 // Fruit Bonus 2010 (or is this on the older goldstar.c style hardware)
 
+=======
+>>>>>>> upstream/master
 
 // ?? what is this
 GAME( 200?, amclink,     0,        sfbonus,    amcoe1_reels3, sfbonus_state,    sfbonus_common,  ROT0,  "Amcoe", "Amcoe Link Control Box (Version 2.2)", MACHINE_NOT_WORKING)

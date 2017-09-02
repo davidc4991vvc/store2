@@ -44,6 +44,7 @@ enum
 
 
 
+<<<<<<< HEAD
 const device_type MM58274C = &device_creator<mm58274c_device>;
 
 
@@ -51,6 +52,15 @@ mm58274c_device::mm58274c_device(const machine_config &mconfig, const char *tag,
 				: device_t(mconfig, MM58274C, "National Semiconductor MM58274C", tag, owner, clock, "mm58274c", __FILE__),
 					m_mode24(0),
 					m_day1(0)
+=======
+DEFINE_DEVICE_TYPE(MM58274C, mm58274c_device, "mm58274c", "National Semiconductor MM58274C RTC")
+
+
+mm58274c_device::mm58274c_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: device_t(mconfig, MM58274C, tag, owner, clock)
+	, m_mode24(0)
+	, m_day1(0)
+>>>>>>> upstream/master
 {
 }
 
@@ -66,6 +76,12 @@ void mm58274c_device::device_start()
 	m_interrupt_timer = machine().scheduler().timer_alloc(timer_expired_delegate(FUNC(mm58274c_device::rtc_interrupt_cb),this));
 
 	// register for state saving
+<<<<<<< HEAD
+=======
+	save_item(NAME(m_mode24));
+	save_item(NAME(m_day1));
+
+>>>>>>> upstream/master
 	save_item(NAME(m_status));
 	save_item(NAME(m_control));
 	save_item(NAME(m_clk_set));

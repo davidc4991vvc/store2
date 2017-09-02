@@ -43,6 +43,7 @@ filter_getinfoproc filter_lookup(const char *name);
 
 /* ----------------------------------------------------------------------- */
 
+<<<<<<< HEAD
 INT64 filter_get_info_int(filter_getinfoproc get_info, UINT32 state);
 void *filter_get_info_ptr(filter_getinfoproc get_info, UINT32 state);
 void *filter_get_info_fct(filter_getinfoproc get_info, UINT32 state);
@@ -62,5 +63,26 @@ extern void filter_thombas128_getinfo(UINT32 state, union filterinfo *info);
 extern void filter_thomcrypt_getinfo(UINT32 state, union filterinfo *info);
 extern void filter_bml3bas_getinfo(UINT32 state, union filterinfo *info);
 
+=======
+int64_t filter_get_info_int(filter_getinfoproc get_info, uint32_t state);
+void *filter_get_info_ptr(filter_getinfoproc get_info, uint32_t state);
+void *filter_get_info_fct(filter_getinfoproc get_info, uint32_t state);
+const char *filter_get_info_string(filter_getinfoproc get_info, uint32_t state);
+
+/* ----------------------------------------------------------------------- */
+
+extern void filter_eoln_getinfo(uint32_t state, union filterinfo *info);
+extern void filter_cocobas_getinfo(uint32_t state, union filterinfo *info);
+extern void filter_dragonbas_getinfo(uint32_t state, union filterinfo *info);
+extern void filter_macbinary_getinfo(uint32_t state, union filterinfo *info);
+extern void filter_vzsnapshot_getinfo(uint32_t state, union filterinfo *info);
+extern void filter_vzbas_getinfo(uint32_t state, union filterinfo *info);
+extern void filter_thombas5_getinfo(uint32_t state, union filterinfo *info);
+extern void filter_thombas7_getinfo(uint32_t state, union filterinfo *info);
+extern void filter_thombas128_getinfo(uint32_t state, union filterinfo *info);
+extern void filter_thomcrypt_getinfo(uint32_t state, union filterinfo *info);
+extern void filter_bml3bas_getinfo(uint32_t state, union filterinfo *info);
+extern void filter_hp9845data_getinfo(uint32_t state, union filterinfo *info);
+>>>>>>> upstream/master
 
 #endif /* FILTER_H */

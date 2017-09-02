@@ -97,6 +97,7 @@ Game is V30 based, with rom banking (2Mb)
 *************************************************************************************************/
 
 #include "emu.h"
+<<<<<<< HEAD
 #include "cpu/nec/nec.h"
 #include "cpu/i86/i186.h"
 #include "sound/okim6376.h"
@@ -104,6 +105,20 @@ Game is V30 based, with rom banking (2Mb)
 #include "fashion.lh"
 #include "video/ramdac.h"
 
+=======
+
+#include "cpu/i86/i186.h"
+#include "cpu/nec/nec.h"
+#include "machine/nvram.h"
+#include "sound/okim6376.h"
+#include "video/ramdac.h"
+
+#include "screen.h"
+#include "speaker.h"
+
+#include "fashion.lh"
+
+>>>>>>> upstream/master
 
 class highvdeo_state : public driver_device
 {
@@ -115,10 +130,17 @@ public:
 		m_okim6376(*this, "oki"),
 		m_palette(*this, "palette") { }
 
+<<<<<<< HEAD
 	required_shared_ptr<UINT16> m_blit_ram;
 	UINT16 m_vblank_bit;
 	UINT16 m_brasil_prot_latch;
 	UINT16 m_grancapi_prot_latch;
+=======
+	required_shared_ptr<uint16_t> m_blit_ram;
+	uint16_t m_vblank_bit;
+	uint16_t m_brasil_prot_latch;
+	uint16_t m_grancapi_prot_latch;
+>>>>>>> upstream/master
 	DECLARE_READ16_MEMBER(read0_r);
 	DECLARE_READ16_MEMBER(read1_r);
 	DECLARE_READ16_MEMBER(read2_r);
@@ -147,8 +169,13 @@ public:
 	DECLARE_DRIVER_INIT(ciclone);
 	DECLARE_DRIVER_INIT(record);
 	DECLARE_VIDEO_START(tourvisn);
+<<<<<<< HEAD
 	UINT32 screen_update_tourvisn(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect);
 	UINT32 screen_update_brasil(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect);
+=======
+	uint32_t screen_update_tourvisn(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect);
+	uint32_t screen_update_brasil(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect);
+>>>>>>> upstream/master
 	INTERRUPT_GEN_MEMBER(vblank_irq);
 	INTERRUPT_GEN_MEMBER(vblank_irq_80186);
 	required_device<cpu_device> m_maincpu;
@@ -163,7 +190,11 @@ VIDEO_START_MEMBER(highvdeo_state,tourvisn)
 {
 }
 
+<<<<<<< HEAD
 UINT32 highvdeo_state::screen_update_tourvisn(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect)
+=======
+uint32_t highvdeo_state::screen_update_tourvisn(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect)
+>>>>>>> upstream/master
 {
 	int x,y,count;
 
@@ -173,7 +204,11 @@ UINT32 highvdeo_state::screen_update_tourvisn(screen_device &screen, bitmap_rgb3
 	{
 		for(x=0;x<(screen.visible_area().max_x+1)/2;x++)
 		{
+<<<<<<< HEAD
 			UINT32 color;
+=======
+			uint32_t color;
+>>>>>>> upstream/master
 
 			color = ((m_blit_ram[count]) & 0x00ff)>>0;
 
@@ -193,7 +228,11 @@ UINT32 highvdeo_state::screen_update_tourvisn(screen_device &screen, bitmap_rgb3
 }
 
 /*Later HW, RGB565 instead of RAM-based pens (+ ramdac).*/
+<<<<<<< HEAD
 UINT32 highvdeo_state::screen_update_brasil(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect)
+=======
+uint32_t highvdeo_state::screen_update_brasil(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect)
+>>>>>>> upstream/master
 {
 	int x,y,count;
 
@@ -203,10 +242,17 @@ UINT32 highvdeo_state::screen_update_brasil(screen_device &screen, bitmap_rgb32 
 	{
 		for(x=0;x<400;x++)
 		{
+<<<<<<< HEAD
 			UINT32 color;
 			UINT32 b;
 			UINT32 g;
 			UINT32 r;
+=======
+			uint32_t color;
+			uint32_t b;
+			uint32_t g;
+			uint32_t r;
+>>>>>>> upstream/master
 
 			color = (m_blit_ram[count]) & 0xffff;
 
@@ -243,8 +289,13 @@ READ16_MEMBER(highvdeo_state::read2_r)
 
 WRITE16_MEMBER(highvdeo_state::tv_vcf_bankselect_w)
 {
+<<<<<<< HEAD
 	UINT32 bankaddress;
 	UINT8 *ROM = memregion("user1")->base();
+=======
+	uint32_t bankaddress;
+	uint8_t *ROM = memregion("user1")->base();
+>>>>>>> upstream/master
 
 	/* bits 0, 1 select the ROM bank */
 	bankaddress = (data & 0x03) * 0x40000;
@@ -286,12 +337,21 @@ WRITE16_MEMBER(highvdeo_state::write1_w)
     ---x ----  Hold5 lamp.
     --x- ----  Start lamp.
 */
+<<<<<<< HEAD
 	output_set_lamp_value(1, (data & 1));           /* Lamp 1 - HOLD 1 */
 	output_set_lamp_value(2, (data >> 1) & 1);      /* Lamp 2 - HOLD 2 */
 	output_set_lamp_value(3, (data >> 2) & 1);      /* Lamp 3 - HOLD 3 */
 	output_set_lamp_value(4, (data >> 3) & 1);      /* Lamp 4 - HOLD 4 */
 	output_set_lamp_value(5, (data >> 4) & 1);      /* Lamp 5 - HOLD 5 */
 	output_set_lamp_value(6, (data >> 5) & 1);      /* Lamp 6 - START  */
+=======
+	output().set_lamp_value(1, (data & 1));           /* Lamp 1 - HOLD 1 */
+	output().set_lamp_value(2, (data >> 1) & 1);      /* Lamp 2 - HOLD 2 */
+	output().set_lamp_value(3, (data >> 2) & 1);      /* Lamp 3 - HOLD 3 */
+	output().set_lamp_value(4, (data >> 3) & 1);      /* Lamp 4 - HOLD 4 */
+	output().set_lamp_value(5, (data >> 4) & 1);      /* Lamp 5 - HOLD 5 */
+	output().set_lamp_value(6, (data >> 5) & 1);      /* Lamp 6 - START  */
+>>>>>>> upstream/master
 
 //  popmessage("%04x %04x",t1,t3);
 }
@@ -403,14 +463,24 @@ WRITE16_MEMBER(highvdeo_state::nyj_write2_w)
     xxx- ----  Unknown.
 */
 //  popmessage("%04x",data);
+<<<<<<< HEAD
 	coin_counter_w(machine(), 0, ~data & 0x0f); // Coins (all)
 	coin_counter_w(machine(), 1, ~data & 0x10); // Notes (all)
+=======
+	machine().bookkeeping().coin_counter_w(0, ~data & 0x0f); // Coins (all)
+	machine().bookkeeping().coin_counter_w(1, ~data & 0x10); // Notes (all)
+>>>>>>> upstream/master
 }
 
 WRITE16_MEMBER(highvdeo_state::tv_tcf_bankselect_w)
 {
+<<<<<<< HEAD
 	UINT32 bankaddress;
 	UINT8 *ROM = memregion("user1")->base();
+=======
+	uint32_t bankaddress;
+	uint8_t *ROM = memregion("user1")->base();
+>>>>>>> upstream/master
 
 	/* bits 0, 1, 2 select the ROM bank */
 	bankaddress = (data & 0x07) * 0x40000;
@@ -470,8 +540,13 @@ WRITE16_MEMBER(highvdeo_state::write2_w)
 
 	for(i=0;i<4;i++)
 	{
+<<<<<<< HEAD
 		coin_counter_w(machine(), i,data & 0x20);
 		coin_lockout_w(machine(), i,~data & 0x08);
+=======
+		machine().bookkeeping().coin_counter_w(i,data & 0x20);
+		machine().bookkeeping().coin_lockout_w(i,~data & 0x08);
+>>>>>>> upstream/master
 	}
 }
 
@@ -508,7 +583,11 @@ ADDRESS_MAP_END
 
 READ16_MEMBER(highvdeo_state::brasil_status_r)
 {
+<<<<<<< HEAD
 	static UINT16 resetpulse;
+=======
+	static uint16_t resetpulse;
+>>>>>>> upstream/master
 
 	switch(offset*2)
 	{
@@ -525,8 +604,13 @@ READ16_MEMBER(highvdeo_state::brasil_status_r)
 /*bankaddress might be incorrect.*/
 WRITE16_MEMBER(highvdeo_state::brasil_status_w)
 {
+<<<<<<< HEAD
 	UINT32 bankaddress;
 	UINT8 *ROM = memregion("user1")->base();
+=======
+	uint32_t bankaddress;
+	uint8_t *ROM = memregion("user1")->base();
+>>>>>>> upstream/master
 
 	switch(data & 3) //data & 7?
 	{
@@ -544,7 +628,11 @@ WRITE16_MEMBER(highvdeo_state::brasil_status_w)
 
 READ16_MEMBER(highvdeo_state::grancapi_status_r)
 {
+<<<<<<< HEAD
 	static UINT16 resetpulse;
+=======
+	static uint16_t resetpulse;
+>>>>>>> upstream/master
 
 	switch(offset*2)
 	{
@@ -561,8 +649,13 @@ READ16_MEMBER(highvdeo_state::grancapi_status_r)
 /*bankaddress might be incorrect.*/
 WRITE16_MEMBER(highvdeo_state::grancapi_status_w)
 {
+<<<<<<< HEAD
 	UINT32 bankaddress;
 	UINT8 *ROM = memregion("user1")->base();
+=======
+	uint32_t bankaddress;
+	uint8_t *ROM = memregion("user1")->base();
+>>>>>>> upstream/master
 
 	switch(data & 3) //data & 7?
 	{
@@ -580,7 +673,11 @@ WRITE16_MEMBER(highvdeo_state::grancapi_status_w)
 
 READ16_MEMBER(highvdeo_state::magicbom_status_r)
 {
+<<<<<<< HEAD
 	static UINT16 resetpulse;
+=======
+	static uint16_t resetpulse;
+>>>>>>> upstream/master
 
 	switch(offset*2)
 	{
@@ -1114,12 +1211,20 @@ INTERRUPT_GEN_MEMBER(highvdeo_state::vblank_irq_80186)
 	device.execute().set_input_line(INPUT_LINE_NMI, PULSE_LINE);
 }
 
+<<<<<<< HEAD
 static ADDRESS_MAP_START( ramdac_map, AS_0, 8, highvdeo_state )
+=======
+static ADDRESS_MAP_START( ramdac_map, 0, 8, highvdeo_state )
+>>>>>>> upstream/master
 	AM_RANGE(0x000, 0x3ff) AM_DEVREADWRITE("ramdac",ramdac_device,ramdac_pal_r,ramdac_rgb666_w)
 ADDRESS_MAP_END
 
 
+<<<<<<< HEAD
 static MACHINE_CONFIG_START( tv_vcf, highvdeo_state )
+=======
+static MACHINE_CONFIG_START( tv_vcf )
+>>>>>>> upstream/master
 	MCFG_CPU_ADD("maincpu", V30, XTAL_12MHz/2 ) // ?
 	MCFG_CPU_PROGRAM_MAP(tv_vcf_map)
 	MCFG_CPU_IO_MAP(tv_vcf_io)
@@ -1197,7 +1302,11 @@ static MACHINE_CONFIG_DERIVED( ciclone, tv_tcf )
 	MCFG_CPU_VBLANK_INT_DRIVER("screen", highvdeo_state,  vblank_irq_80186)
 MACHINE_CONFIG_END
 
+<<<<<<< HEAD
 static MACHINE_CONFIG_START( brasil, highvdeo_state )
+=======
+static MACHINE_CONFIG_START( brasil )
+>>>>>>> upstream/master
 	MCFG_CPU_ADD("maincpu", I80186, 20000000 )  // fashion doesn't like 20/2 Mhz
 	MCFG_CPU_PROGRAM_MAP(brasil_map)
 	MCFG_CPU_IO_MAP(brasil_io)
@@ -1223,7 +1332,11 @@ static MACHINE_CONFIG_START( brasil, highvdeo_state )
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 1.0)
 MACHINE_CONFIG_END
 
+<<<<<<< HEAD
 static MACHINE_CONFIG_START( grancapi, highvdeo_state )
+=======
+static MACHINE_CONFIG_START( grancapi )
+>>>>>>> upstream/master
 	MCFG_CPU_ADD("maincpu", I80186, 20000000 )
 	MCFG_CPU_PROGRAM_MAP(brasil_map)
 	MCFG_CPU_IO_MAP(grancapi_io)
@@ -1249,7 +1362,11 @@ static MACHINE_CONFIG_START( grancapi, highvdeo_state )
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 1.0)
 MACHINE_CONFIG_END
 
+<<<<<<< HEAD
 static MACHINE_CONFIG_START( magicbom, highvdeo_state )
+=======
+static MACHINE_CONFIG_START( magicbom )
+>>>>>>> upstream/master
 	MCFG_CPU_ADD("maincpu", I80186, 20000000 )
 	MCFG_CPU_PROGRAM_MAP(brasil_map)
 	MCFG_CPU_IO_MAP(magicbom_io)
@@ -1408,6 +1525,24 @@ ROM_START( girotutt )
 	ROM_LOAD( "t41.bin", 0x00000, 0x80000, CRC(6f694406) SHA1(ec8b8baba0ee1bfe8986ce978412ee4de06f1906) )
 ROM_END
 
+<<<<<<< HEAD
+=======
+
+ROM_START( galeone )
+	ROM_REGION( 0x100000, "user1", 0 ) /* V30 Code */
+	ROM_LOAD16_BYTE( "model.A8-vers.1.0.ic8", 0x00001, 0x40000, CRC(b9e1e7ce) SHA1(4e036285b26dc0a313e76259b7e67c8d55322c84) )
+	ROM_RELOAD(0x80001,0x40000)
+	ROM_LOAD16_BYTE( "model.A7-vers.1.0.ic7", 0x00000, 0x40000, CRC(1940b738) SHA1(81e40de8df4dc838342bf966658110989a233731) )
+	ROM_RELOAD(0x80000,0x40000)
+
+	ROM_REGION( 0x040000, "boot_prg", 0 ) /* copy for program code */
+	ROM_COPY( "user1", 0x040000, 0x000000, 0x40000 )
+
+	ROM_REGION( 0x080000, "oki", 0 ) /* M6376 Samples */
+	ROM_LOAD( "model.GA-vers.1.ic25", 0x00000, 0x80000, CRC(4c2c2cc1) SHA1(20da29b2f1dd1f86ec23d9dbdaa9470878e900e2) )
+ROM_END
+
+>>>>>>> upstream/master
 /*
 CPU
 
@@ -1481,7 +1616,11 @@ ROM_END
 /*Ciclone*/
 READ16_MEMBER(highvdeo_state::ciclone_status_r)
 {
+<<<<<<< HEAD
 	static UINT16 resetpulse;
+=======
+	static uint16_t resetpulse;
+>>>>>>> upstream/master
 	switch(offset*2)
 	{
 		case 0:
@@ -1559,8 +1698,13 @@ WRITE16_MEMBER(highvdeo_state::fashion_output_w)
 
 	for(i=0;i<4;i++)
 	{
+<<<<<<< HEAD
 		coin_counter_w(machine(), i,data & 0x20);
 		coin_lockout_w(machine(), i,~data & 0x01);
+=======
+		machine().bookkeeping().coin_counter_w(i,data & 0x20);
+		machine().bookkeeping().coin_lockout_w(i,~data & 0x01);
+>>>>>>> upstream/master
 	}
 }
 
@@ -1608,7 +1752,11 @@ ROM_END
 
 READ16_MEMBER(highvdeo_state::record_status_r)
 {
+<<<<<<< HEAD
 	static UINT16 resetpulse;
+=======
+	static uint16_t resetpulse;
+>>>>>>> upstream/master
 	switch(offset*2)
 	{
 		case 0:
@@ -1626,6 +1774,7 @@ DRIVER_INIT_MEMBER(highvdeo_state, record)
 }
 
 
+<<<<<<< HEAD
 GAMEL( 2000, tour4000,  0,      tv_vcf,   tv_vcf,  driver_device,   0,       ROT0,  "High Video", "Tour 4000",         0, layout_fashion )
 GAMEL( 2000, cfever40,  0,      tv_vcf,   tv_vcf,  driver_device,   0,       ROT0,  "High Video", "Casino Fever 4.0",  0, layout_fashion )
 GAMEL( 2000, cfever50,  0,      tv_vcf,   tv_vcf,  driver_device,   0,       ROT0,  "High Video", "Casino Fever 5.0",  0, layout_fashion )
@@ -1642,3 +1791,22 @@ GAMEL( 2000, fashion,   brasil, brasil,   fashion, highvdeo_state,  fashion, ROT
 GAMEL( 2000, grancapi,  0,      grancapi, brasil,  driver_device,   0,       ROT0,  "High Video", "Gran Capitan (Version 3)", MACHINE_NOT_WORKING, layout_fashion )
 GAMEL( 2000, magicbom,  0,      magicbom, fashion, highvdeo_state,  fashion, ROT0,  "High Video", "Magic Bomb (Version 1)",   MACHINE_NOT_WORKING, layout_fashion )
 GAMEL( 2000, record,    0,      newmcard, tv_tcf,  highvdeo_state,  record,  ROT0,  "High Video", "Record (Version 1)",       0,                layout_fashion )
+=======
+GAMEL( 2000, tour4000,  0,      tv_vcf,   tv_vcf,  highvdeo_state,  0,       ROT0,  "High Video",     "Tour 4000",                0,                   layout_fashion )
+GAMEL( 2000, cfever40,  0,      tv_vcf,   tv_vcf,  highvdeo_state,  0,       ROT0,  "High Video",     "Casino Fever 4.0",         0,                   layout_fashion )
+GAMEL( 2000, cfever50,  0,      tv_vcf,   tv_vcf,  highvdeo_state,  0,       ROT0,  "High Video",     "Casino Fever 5.0",         0,                   layout_fashion )
+GAMEL( 2000, tour4010,  0,      tv_ncf,   tv_ncf,  highvdeo_state,  0,       ROT0,  "High Video",     "Tour 4010",                0,                   layout_fashion )
+GAMEL( 2000, cfever51,  0,      tv_ncf,   tv_ncf,  highvdeo_state,  0,       ROT0,  "High Video",     "Casino Fever 5.1",         0,                   layout_fashion )
+GAMEL( 2000, cfever61,  0,      tv_ncf,   tv_ncf,  highvdeo_state,  0,       ROT0,  "High Video",     "Casino Fever 6.1",         0,                   layout_fashion )
+GAMEL( 2000, nyjoker,   0,      nyjoker,  nyjoker, highvdeo_state,  0,       ROT0,  "High Video",     "New York Joker",           0,                   layout_fashion )
+GAMEL( 2000, cfever1k,  0,      tv_tcf,   tv_tcf,  highvdeo_state,  0,       ROT0,  "High Video",     "Casino Fever 1k",          0,                   layout_fashion )
+GAMEL( 2000, girotutt,  0,      tv_tcf,   tv_tcf,  highvdeo_state,  0,       ROT0,  "High Video",     "GiroTutto",                0,                   layout_fashion )
+GAMEL( 2000, galeone,   0,      nyjoker,  nyjoker, highvdeo_state,  0,       ROT0,  "San Remo Games", "Il Galeone",               0,                   layout_fashion )
+GAMEL( 2000, ciclone,   0,      ciclone,  tv_tcf,  highvdeo_state,  ciclone, ROT0,  "High Video",     "Ciclone",                  0,                   layout_fashion )
+GAMEL( 2000, newmcard,  0,      newmcard, tv_tcf,  highvdeo_state,  0,       ROT0,  "High Video",     "New Magic Card",           0,                   layout_fashion )
+GAMEL( 2000, brasil,    0,      brasil,   brasil,  highvdeo_state,  0,       ROT0,  "High Video",     "Bra$il (Version 3)",       0,                   layout_fashion )
+GAMEL( 2000, fashion,   brasil, brasil,   fashion, highvdeo_state,  fashion, ROT0,  "High Video",     "Fashion (Version 2.14)",   0,                   layout_fashion )
+GAMEL( 2000, grancapi,  0,      grancapi, brasil,  highvdeo_state,  0,       ROT0,  "High Video",     "Gran Capitan (Version 3)", MACHINE_NOT_WORKING, layout_fashion )
+GAMEL( 2000, magicbom,  0,      magicbom, fashion, highvdeo_state,  fashion, ROT0,  "High Video",     "Magic Bomb (Version 1)",   MACHINE_NOT_WORKING, layout_fashion )
+GAMEL( 2000, record,    0,      newmcard, tv_tcf,  highvdeo_state,  record,  ROT0,  "High Video",     "Record (Version 1)",       0,                   layout_fashion )
+>>>>>>> upstream/master

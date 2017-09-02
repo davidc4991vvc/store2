@@ -21,6 +21,7 @@ public:
 		m_palette(*this, "palette") { }
 
 	/* memory pointers */
+<<<<<<< HEAD
 	required_shared_ptr<UINT16> m_fof_100000;
 	required_shared_ptr<UINT16> m_fof_600000;
 	required_shared_ptr<UINT16> m_fof_700000;
@@ -31,6 +32,18 @@ public:
 	required_shared_ptr<UINT16> m_fof_mid_tileram;
 	required_shared_ptr<UINT16> m_fof_txt_tileram;
 	required_shared_ptr<UINT16> m_spriteram;
+=======
+	required_shared_ptr<uint16_t> m_fof_100000;
+	required_shared_ptr<uint16_t> m_fof_600000;
+	required_shared_ptr<uint16_t> m_fof_700000;
+	required_shared_ptr<uint16_t> m_fof_800000;
+	required_shared_ptr<uint16_t> m_fof_900000;
+	required_shared_ptr<uint16_t> m_fof_a00000;
+	required_shared_ptr<uint16_t> m_fof_bak_tileram;
+	required_shared_ptr<uint16_t> m_fof_mid_tileram;
+	required_shared_ptr<uint16_t> m_fof_txt_tileram;
+	required_shared_ptr<uint16_t> m_spriteram;
+>>>>>>> upstream/master
 
 	/* video-related */
 	tilemap_t  *m_fof_bak_tilemap;
@@ -39,7 +52,11 @@ public:
 
 	/* misc */
 	int      m_bbprot_kludge;
+<<<<<<< HEAD
 	UINT16   m_fof_700000_data;
+=======
+	uint16_t   m_fof_700000_data;
+>>>>>>> upstream/master
 	DECLARE_READ16_MEMBER(fitfight_700000_r);
 	DECLARE_READ16_MEMBER(histryma_700000_r);
 	DECLARE_READ16_MEMBER(bbprot_700000_r);
@@ -62,10 +79,17 @@ public:
 	TILE_GET_INFO_MEMBER(get_fof_bak_tile_info);
 	TILE_GET_INFO_MEMBER(get_fof_mid_tile_info);
 	TILE_GET_INFO_MEMBER(get_fof_txt_tile_info);
+<<<<<<< HEAD
 	virtual void machine_start();
 	virtual void machine_reset();
 	virtual void video_start();
 	UINT32 screen_update_fitfight(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
+=======
+	virtual void machine_start() override;
+	virtual void machine_reset() override;
+	virtual void video_start() override;
+	uint32_t screen_update_fitfight(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
+>>>>>>> upstream/master
 	INTERRUPT_GEN_MEMBER(snd_irq);
 	void draw_sprites( bitmap_ind16 &bitmap, const rectangle &cliprect, int layer );
 	required_device<cpu_device> m_maincpu;

@@ -13,6 +13,7 @@
 
 
 /* IRQ Handler */
+<<<<<<< HEAD
 static void IRQHandler(void *param,int irq)
 {
 	ymf262_device *ymf262 = (ymf262_device *) param;
@@ -20,6 +21,9 @@ static void IRQHandler(void *param,int irq)
 }
 
 void ymf262_device::_IRQHandler(int irq)
+=======
+void ymf262_device::irq_handler(int irq)
+>>>>>>> upstream/master
 {
 	if (!m_irq_handler.isnull())
 		m_irq_handler(irq);
@@ -41,6 +45,7 @@ void ymf262_device::device_timer(emu_timer &timer, device_timer_id id, int param
 }
 
 
+<<<<<<< HEAD
 static void timer_handler(void *param, int c, const attotime &period)
 {
 	ymf262_device *ymf262 = (ymf262_device *) param;
@@ -48,6 +53,9 @@ static void timer_handler(void *param, int c, const attotime &period)
 }
 
 void ymf262_device::_timer_handler(int c, const attotime &period)
+=======
+void ymf262_device::timer_handler(int c, const attotime &period)
+>>>>>>> upstream/master
 {
 	if( period == attotime::zero )
 	{   /* Reset FM Timer */
@@ -59,6 +67,7 @@ void ymf262_device::_timer_handler(int c, const attotime &period)
 	}
 }
 
+<<<<<<< HEAD
 void ymf262_update_request(void *param, int interval)
 {
 	ymf262_device *ymf262 = (ymf262_device *) param;
@@ -70,6 +79,8 @@ void ymf262_device::_ymf262_update_request()
 	m_stream->update();
 }
 
+=======
+>>>>>>> upstream/master
 
 
 //-------------------------------------------------
@@ -82,6 +93,17 @@ void ymf262_device::sound_stream_update(sound_stream &stream, stream_sample_t **
 }
 
 //-------------------------------------------------
+<<<<<<< HEAD
+=======
+//  device_post_load - device-specific post load
+//-------------------------------------------------
+void ymf262_device::device_post_load()
+{
+	ymf262_post_load(m_chip);
+}
+
+//-------------------------------------------------
+>>>>>>> upstream/master
 //  device_start - device-specific startup
 //-------------------------------------------------
 
@@ -93,14 +115,24 @@ void ymf262_device::device_start()
 
 	/* stream system initialize */
 	m_chip = ymf262_init(this,clock(),rate);
+<<<<<<< HEAD
 	assert_always(m_chip != NULL, "Error creating YMF262 chip");
+=======
+	assert_always(m_chip != nullptr, "Error creating YMF262 chip");
+>>>>>>> upstream/master
 
 	m_stream = machine().sound().stream_alloc(*this,0,4,rate);
 
 	/* YMF262 setup */
+<<<<<<< HEAD
 	ymf262_set_timer_handler (m_chip, timer_handler, this);
 	ymf262_set_irq_handler   (m_chip, IRQHandler, this);
 	ymf262_set_update_handler(m_chip, ymf262_update_request, this);
+=======
+	ymf262_set_timer_handler (m_chip, &ymf262_device::static_timer_handler, this);
+	ymf262_set_irq_handler   (m_chip, &ymf262_device::static_irq_handler, this);
+	ymf262_set_update_handler(m_chip, &ymf262_device::static_update_request, this);
+>>>>>>> upstream/master
 
 	m_timer[0] = timer_alloc(0);
 	m_timer[1] = timer_alloc(1);
@@ -135,6 +167,7 @@ WRITE8_MEMBER( ymf262_device::write )
 	ymf262_write(m_chip, offset & 3, data);
 }
 
+<<<<<<< HEAD
 const device_type YMF262 = &device_creator<ymf262_device>;
 
 ymf262_device::ymf262_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
@@ -151,5 +184,16 @@ ymf262_device::ymf262_device(const machine_config &mconfig, const char *tag, dev
 //-------------------------------------------------
 
 void ymf262_device::device_config_complete()
+=======
+DEFINE_DEVICE_TYPE(YMF262, ymf262_device, "ymf262", "YMF262 OPL3")
+
+ymf262_device::ymf262_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: device_t(mconfig, YMF262, tag, owner, clock)
+	, device_sound_interface(mconfig, *this)
+	, m_stream(nullptr)
+	, m_timer{ nullptr, nullptr }
+	, m_chip(nullptr)
+	, m_irq_handler(*this)
+>>>>>>> upstream/master
 {
 }

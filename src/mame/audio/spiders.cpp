@@ -1,5 +1,10 @@
+<<<<<<< HEAD
 // license:???
 // copyright-holders:Derrick Renaud
+=======
+// license:BSD-3-Clause
+// copyright-holders:Derrick Renaud,Hans Andersson
+>>>>>>> upstream/master
 /***************************************************************************
 
     Sigma Spiders hardware
@@ -9,10 +14,19 @@ To Do: add filters
 ***************************************************************************/
 
 #include "emu.h"
+<<<<<<< HEAD
 #include "sound/discrete.h"
 #include "machine/6821pia.h"
 #include "includes/spiders.h"
 
+=======
+#include "includes/spiders.h"
+
+#include "machine/6821pia.h"
+#include "sound/discrete.h"
+#include "speaker.h"
+
+>>>>>>> upstream/master
 
 /* Discrete Sound Input Nodes */
 #define SPIDERS_WEB_SOUND_DATA      NODE_01
@@ -203,7 +217,11 @@ WRITE8_MEMBER(spiders_state::spiders_audio_ctrl_w)
 }
 
 
+<<<<<<< HEAD
 MACHINE_CONFIG_FRAGMENT( spiders_audio )
+=======
+MACHINE_CONFIG_START( spiders_audio )
+>>>>>>> upstream/master
 
 	MCFG_SPEAKER_STANDARD_MONO("mono")
 	MCFG_SOUND_ADD("discrete", DISCRETE, 0)

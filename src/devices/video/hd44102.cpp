@@ -9,15 +9,24 @@
 #include "emu.h"
 #include "hd44102.h"
 
+<<<<<<< HEAD
+=======
+//#define VERBOSE 1
+#include "logmacro.h"
+
+>>>>>>> upstream/master
 
 
 //**************************************************************************
 //  MACROS / CONSTANTS
 //**************************************************************************
 
+<<<<<<< HEAD
 #define LOG 0
 
 
+=======
+>>>>>>> upstream/master
 #define CONTROL_DISPLAY_OFF         0x38
 #define CONTROL_DISPLAY_ON          0x39
 #define CONTROL_COUNT_DOWN_MODE     0x3a
@@ -34,7 +43,11 @@
 
 
 // device type definition
+<<<<<<< HEAD
 const device_type HD44102 = &device_creator<hd44102_device>;
+=======
+DEFINE_DEVICE_TYPE(HD44102, hd44102_device, "hd44102", "Hitachi HD44102 LCD Controller")
+>>>>>>> upstream/master
 
 
 //**************************************************************************
@@ -67,8 +80,13 @@ inline void hd44102_device::count_up_or_down()
 //  hd44102_device - constructor
 //-------------------------------------------------
 
+<<<<<<< HEAD
 hd44102_device::hd44102_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
 	: device_t(mconfig, HD44102, "HD44102", tag, owner, clock, "hd44102", __FILE__),
+=======
+hd44102_device::hd44102_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: device_t(mconfig, HD44102, tag, owner, clock),
+>>>>>>> upstream/master
 		device_video_interface(mconfig, *this),
 		m_cs2(0),
 		m_page(0),
@@ -127,7 +145,11 @@ void hd44102_device::device_reset()
 
 READ8_MEMBER( hd44102_device::read )
 {
+<<<<<<< HEAD
 	UINT8 data = 0;
+=======
+	uint8_t data = 0;
+>>>>>>> upstream/master
 
 	if (m_cs2)
 	{
@@ -172,31 +194,48 @@ WRITE8_MEMBER( hd44102_device::control_w )
 	switch (data)
 	{
 	case CONTROL_DISPLAY_OFF:
+<<<<<<< HEAD
 		if (LOG) logerror("HD44102 '%s' Display Off\n", tag());
+=======
+		LOG("HD44102 Display Off\n");
+>>>>>>> upstream/master
 
 		m_status |= STATUS_DISPLAY_OFF;
 		break;
 
 	case CONTROL_DISPLAY_ON:
+<<<<<<< HEAD
 		if (LOG) logerror("HD44102 '%s' Display On\n", tag());
+=======
+		LOG("HD44102 Display On\n");
+>>>>>>> upstream/master
 
 		m_status &= ~STATUS_DISPLAY_OFF;
 		break;
 
 	case CONTROL_COUNT_DOWN_MODE:
+<<<<<<< HEAD
 		if (LOG) logerror("HD44102 '%s' Count Down Mode\n", tag());
+=======
+		LOG("HD44102 Count Down Mode\n");
+>>>>>>> upstream/master
 
 		m_status &= ~STATUS_COUNT_UP;
 		break;
 
 	case CONTROL_COUNT_UP_MODE:
+<<<<<<< HEAD
 		if (LOG) logerror("HD44102 '%s' Count Up Mode\n", tag());
+=======
+		LOG("HD44102 Count Up Mode\n");
+>>>>>>> upstream/master
 
 		m_status |= STATUS_COUNT_UP;
 		break;
 
 	default:
 		{
+<<<<<<< HEAD
 		int x = (data & CONTROL_X_ADDRESS_MASK) >> 6;
 		int y = data & CONTROL_Y_ADDRESS_MASK;
 
@@ -217,6 +256,28 @@ WRITE8_MEMBER( hd44102_device::control_w )
 			m_x = x;
 			m_y = y;
 		}
+=======
+			const int x = (data & CONTROL_X_ADDRESS_MASK) >> 6;
+			const int y = data & CONTROL_Y_ADDRESS_MASK;
+
+			if ((data & CONTROL_Y_ADDRESS_MASK) == CONTROL_DISPLAY_START_PAGE)
+			{
+				LOG("HD44102 Display Start Page %u\n", x);
+
+				m_page = x;
+			}
+			else if (y > 49)
+			{
+				logerror("HD44102 Invalid Address X %u Y %u (%02x)!\n", data, x, y);
+			}
+			else
+			{
+				LOG("HD44102 Address X %u Y %u (%02x)\n", data, x, y);
+
+				m_x = x;
+				m_y = y;
+			}
+>>>>>>> upstream/master
 		}
 	}
 }
@@ -228,7 +289,11 @@ WRITE8_MEMBER( hd44102_device::control_w )
 
 READ8_MEMBER( hd44102_device::data_r )
 {
+<<<<<<< HEAD
 	UINT8 data = m_output;
+=======
+	uint8_t data = m_output;
+>>>>>>> upstream/master
 
 	m_output = m_ram[m_x][m_y];
 
@@ -264,7 +329,11 @@ WRITE_LINE_MEMBER( hd44102_device::cs2_w )
 //  update_screen - update screen
 //-------------------------------------------------
 
+<<<<<<< HEAD
 UINT32 hd44102_device::screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+=======
+uint32_t hd44102_device::screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+>>>>>>> upstream/master
 {
 	for (int y = 0; y < 50; y++)
 	{
@@ -272,7 +341,11 @@ UINT32 hd44102_device::screen_update(screen_device &screen, bitmap_ind16 &bitmap
 
 		for (int x = 0; x < 32; x++)
 		{
+<<<<<<< HEAD
 			UINT8 data = m_ram[z / 8][y];
+=======
+			uint8_t data = m_ram[z / 8][y];
+>>>>>>> upstream/master
 
 			int sy = m_sy + z;
 			int sx = m_sx + y;

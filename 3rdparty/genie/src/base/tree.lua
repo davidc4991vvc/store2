@@ -43,7 +43,15 @@
 		if p == "." then
 			return tr
 		end
+<<<<<<< HEAD
 		
+=======
+
+		if p == "/" then
+			return tr
+		end
+
+>>>>>>> upstream/master
 		-- Look for the immediate parent for this new node, creating it if necessary.
 		-- Recurses to create as much of the tree as necessary.
 		local parentnode = tree.add(tr, path.getdirectory(p), onaddfunc)
@@ -53,7 +61,11 @@
 		if childname == ".." then
 			return parentnode
 		end
+<<<<<<< HEAD
 		
+=======
+
+>>>>>>> upstream/master
 		-- Create the child if necessary. If two children with the same name appear
 		-- at the same level, make sure they have the same path to prevent conflicts
 		-- i.e. ../Common and ../../Common can both appear at the top of the tree
@@ -66,7 +78,11 @@
 				onaddfunc(childnode)
 			end
 		end
+<<<<<<< HEAD
 		
+=======
+
+>>>>>>> upstream/master
 		return childnode
 	end
 
@@ -176,6 +192,7 @@
 
 		-- process an individual node
 		donode = function(node, fn, depth)
+<<<<<<< HEAD
 			if node.isremoved then 
 				return 
 			end
@@ -184,24 +201,48 @@
 				fn.onnode(node, depth) 
 			end
 			
+=======
+			if node.isremoved then
+				return
+			end
+
+			if fn.onnode then
+				fn.onnode(node, depth)
+			end
+
+>>>>>>> upstream/master
 			if #node.children > 0 then
 				if fn.onbranchenter then
 					fn.onbranchenter(node, depth)
 				end
+<<<<<<< HEAD
 				if fn.onbranch then 
 					fn.onbranch(node, depth) 
+=======
+				if fn.onbranch then
+					fn.onbranch(node, depth)
+>>>>>>> upstream/master
 				end
 				dochildren(node, fn, depth + 1)
 				if fn.onbranchexit then
 					fn.onbranchexit(node, depth)
 				end
 			else
+<<<<<<< HEAD
 				if fn.onleaf then 
 					fn.onleaf(node, depth) 
 				end
 			end
 		end
 		
+=======
+				if fn.onleaf then
+					fn.onleaf(node, depth)
+				end
+			end
+		end
+
+>>>>>>> upstream/master
 		-- this goofy iterator allows nodes to be removed during the traversal
 		dochildren = function(parent, fn, depth)
 			local i = 1
@@ -213,7 +254,11 @@
 				end
 			end
 		end
+<<<<<<< HEAD
 		
+=======
+
+>>>>>>> upstream/master
 		-- set a default initial traversal depth, if one wasn't set
 		if not initialdepth then
 			initialdepth = 0

@@ -40,6 +40,7 @@ public:
 	{
 	}
 
+<<<<<<< HEAD
 	UINT32 *m_bios_ram;
 	UINT32 *m_bios_ext1_ram;
 	UINT32 *m_bios_ext2_ram;
@@ -49,6 +50,17 @@ public:
 	UINT32 *m_isa_ram2;
 	UINT8 m_mtxc_config_reg[256];
 	UINT8 m_piix4_config_reg[4][256];
+=======
+	std::unique_ptr<uint32_t[]> m_bios_ram;
+	std::unique_ptr<uint32_t[]> m_bios_ext1_ram;
+	std::unique_ptr<uint32_t[]> m_bios_ext2_ram;
+	std::unique_ptr<uint32_t[]> m_bios_ext3_ram;
+	std::unique_ptr<uint32_t[]> m_bios_ext4_ram;
+	std::unique_ptr<uint32_t[]> m_isa_ram1;
+	std::unique_ptr<uint32_t[]> m_isa_ram2;
+	uint8_t m_mtxc_config_reg[256];
+	uint8_t m_piix4_config_reg[4][256];
+>>>>>>> upstream/master
 
 	DECLARE_WRITE32_MEMBER( isa_ram1_w );
 	DECLARE_WRITE32_MEMBER( isa_ram2_w );
@@ -59,15 +71,24 @@ public:
 	DECLARE_WRITE32_MEMBER( bios_ext4_ram_w );
 
 	DECLARE_WRITE32_MEMBER( bios_ram_w );
+<<<<<<< HEAD
 	virtual void machine_start();
 	virtual void machine_reset();
+=======
+	virtual void machine_start() override;
+	virtual void machine_reset() override;
+>>>>>>> upstream/master
 	void intel82439tx_init();
 };
 
 
 // Intel 82439TX System Controller (MTXC)
 
+<<<<<<< HEAD
 static UINT8 mtxc_config_r(device_t *busdevice, device_t *device, int function, int reg)
+=======
+static uint8_t mtxc_config_r(device_t *busdevice, device_t *device, int function, int reg)
+>>>>>>> upstream/master
 {
 	midqslvr_state *state = busdevice->machine().driver_data<midqslvr_state>();
 //  osd_printf_debug("MTXC: read %d, %02X\n", function, reg);
@@ -78,7 +99,11 @@ static UINT8 mtxc_config_r(device_t *busdevice, device_t *device, int function, 
 	return state->m_mtxc_config_reg[reg];
 }
 
+<<<<<<< HEAD
 static void mtxc_config_w(device_t *busdevice, device_t *device, int function, int reg, UINT8 data)
+=======
+static void mtxc_config_w(device_t *busdevice, device_t *device, int function, int reg, uint8_t data)
+>>>>>>> upstream/master
 {
 	midqslvr_state *state = busdevice->machine().driver_data<midqslvr_state>();
 	printf("MTXC: write %d, %02X, %02X\n",  function, reg, data);
@@ -108,7 +133,11 @@ static void mtxc_config_w(device_t *busdevice, device_t *device, int function, i
 		case 0x59: // PAM0
 		{
 			if (data & 0x10)        // enable RAM access to region 0xf0000 - 0xfffff
+<<<<<<< HEAD
 				state->membank("bios_bank")->set_base(state->m_bios_ram);
+=======
+				state->membank("bios_bank")->set_base(state->m_bios_ram.get());
+>>>>>>> upstream/master
 			else                    // disable RAM access (reads go to BIOS ROM)
 				state->membank("bios_bank")->set_base(state->memregion("bios")->base() + 0x70000);
 			break;
@@ -116,12 +145,20 @@ static void mtxc_config_w(device_t *busdevice, device_t *device, int function, i
 		case 0x5a: // PAM1
 		{
 			if (data & 0x1)
+<<<<<<< HEAD
 				state->membank("video_bank1")->set_base(state->m_isa_ram1);
+=======
+				state->membank("video_bank1")->set_base(state->m_isa_ram1.get());
+>>>>>>> upstream/master
 			else
 				state->membank("video_bank1")->set_base(state->memregion("video_bios")->base() + 0);
 
 			if (data & 0x10)
+<<<<<<< HEAD
 				state->membank("video_bank2")->set_base(state->m_isa_ram2);
+=======
+				state->membank("video_bank2")->set_base(state->m_isa_ram2.get());
+>>>>>>> upstream/master
 			else
 				state->membank("video_bank2")->set_base(state->memregion("video_bios")->base() + 0x4000);
 
@@ -130,12 +167,20 @@ static void mtxc_config_w(device_t *busdevice, device_t *device, int function, i
 		case 0x5e: // PAM5
 		{
 			if (data & 0x1)
+<<<<<<< HEAD
 				state->membank("bios_ext1")->set_base(state->m_bios_ext1_ram);
+=======
+				state->membank("bios_ext1")->set_base(state->m_bios_ext1_ram.get());
+>>>>>>> upstream/master
 			else
 				state->membank("bios_ext1")->set_base(state->memregion("bios")->base() + 0x60000);
 
 			if (data & 0x10)
+<<<<<<< HEAD
 				state->membank("bios_ext2")->set_base(state->m_bios_ext2_ram);
+=======
+				state->membank("bios_ext2")->set_base(state->m_bios_ext2_ram.get());
+>>>>>>> upstream/master
 			else
 				state->membank("bios_ext2")->set_base(state->memregion("bios")->base() + 0x64000);
 
@@ -144,12 +189,20 @@ static void mtxc_config_w(device_t *busdevice, device_t *device, int function, i
 		case 0x5f: // PAM6
 		{
 			if (data & 0x1)
+<<<<<<< HEAD
 				state->membank("bios_ext3")->set_base(state->m_bios_ext3_ram);
+=======
+				state->membank("bios_ext3")->set_base(state->m_bios_ext3_ram.get());
+>>>>>>> upstream/master
 			else
 				state->membank("bios_ext3")->set_base(state->memregion("bios")->base() + 0x68000);
 
 			if (data & 0x10)
+<<<<<<< HEAD
 				state->membank("bios_ext4")->set_base(state->m_bios_ext4_ram);
+=======
+				state->membank("bios_ext4")->set_base(state->m_bios_ext4_ram.get());
+>>>>>>> upstream/master
 			else
 				state->membank("bios_ext4")->set_base(state->memregion("bios")->base() + 0x6c000);
 
@@ -170,9 +223,15 @@ void midqslvr_state::intel82439tx_init()
 	m_mtxc_config_reg[0x65] = 0x02;
 }
 
+<<<<<<< HEAD
 static UINT32 intel82439tx_pci_r(device_t *busdevice, device_t *device, int function, int reg, UINT32 mem_mask)
 {
 	UINT32 r = 0;
+=======
+static uint32_t intel82439tx_pci_r(device_t *busdevice, device_t *device, int function, int reg, uint32_t mem_mask)
+{
+	uint32_t r = 0;
+>>>>>>> upstream/master
 	if (ACCESSING_BITS_24_31)
 	{
 		r |= mtxc_config_r(busdevice, device, function, reg + 3) << 24;
@@ -192,7 +251,11 @@ static UINT32 intel82439tx_pci_r(device_t *busdevice, device_t *device, int func
 	return r;
 }
 
+<<<<<<< HEAD
 static void intel82439tx_pci_w(device_t *busdevice, device_t *device, int function, int reg, UINT32 data, UINT32 mem_mask)
+=======
+static void intel82439tx_pci_w(device_t *busdevice, device_t *device, int function, int reg, uint32_t data, uint32_t mem_mask)
+>>>>>>> upstream/master
 {
 	if (ACCESSING_BITS_24_31)
 	{
@@ -214,7 +277,11 @@ static void intel82439tx_pci_w(device_t *busdevice, device_t *device, int functi
 
 // Intel 82371AB PCI-to-ISA / IDE bridge (PIIX4)
 
+<<<<<<< HEAD
 static UINT8 piix4_config_r(device_t *busdevice, device_t *device, int function, int reg)
+=======
+static uint8_t piix4_config_r(device_t *busdevice, device_t *device, int function, int reg)
+>>>>>>> upstream/master
 {
 	midqslvr_state *state = busdevice->machine().driver_data<midqslvr_state>();
 	address_space &space = state->m_maincpu->space( AS_PROGRAM );
@@ -226,14 +293,22 @@ static UINT8 piix4_config_r(device_t *busdevice, device_t *device, int function,
 
 	if(reg == 0xe)
 	{
+<<<<<<< HEAD
 		const UINT8 header_type_val[4] = { 0x80, 0x00, 0x00, 0x00 };
+=======
+		const uint8_t header_type_val[4] = { 0x80, 0x00, 0x00, 0x00 };
+>>>>>>> upstream/master
 		return header_type_val[function];
 	}
 
 	if((reg & 0xfc) == 0x8)
 	{
 		/* TODO: reg 8 indicates Revision ID */
+<<<<<<< HEAD
 		const UINT32 class_code_val[4] = { 0x06010000, 0x01018000, 0x0c030000, 0x06800000 };
+=======
+		const uint32_t class_code_val[4] = { 0x06010000, 0x01018000, 0x0c030000, 0x06800000 };
+>>>>>>> upstream/master
 
 		return (((class_code_val[function]) >> (reg & 3)*8) & 0xff);
 	}
@@ -243,7 +318,11 @@ static UINT8 piix4_config_r(device_t *busdevice, device_t *device, int function,
 	return state->m_piix4_config_reg[function][reg];
 }
 
+<<<<<<< HEAD
 static void piix4_config_w(device_t *busdevice, device_t *device, int function, int reg, UINT8 data)
+=======
+static void piix4_config_w(device_t *busdevice, device_t *device, int function, int reg, uint8_t data)
+>>>>>>> upstream/master
 {
 	midqslvr_state *state = busdevice->machine().driver_data<midqslvr_state>();
 	printf("PIIX4: write %d, %02X, %02X\n", function, reg, data);
@@ -253,9 +332,15 @@ static void piix4_config_w(device_t *busdevice, device_t *device, int function, 
 	state->m_piix4_config_reg[function][reg] = data;
 }
 
+<<<<<<< HEAD
 static UINT32 intel82371ab_pci_r(device_t *busdevice, device_t *device, int function, int reg, UINT32 mem_mask)
 {
 	UINT32 r = 0;
+=======
+static uint32_t intel82371ab_pci_r(device_t *busdevice, device_t *device, int function, int reg, uint32_t mem_mask)
+{
+	uint32_t r = 0;
+>>>>>>> upstream/master
 	if (ACCESSING_BITS_24_31)
 	{
 		r |= piix4_config_r(busdevice, device, function, reg + 3) << 24;
@@ -275,7 +360,11 @@ static UINT32 intel82371ab_pci_r(device_t *busdevice, device_t *device, int func
 	return r;
 }
 
+<<<<<<< HEAD
 static void intel82371ab_pci_w(device_t *busdevice, device_t *device, int function, int reg, UINT32 data, UINT32 mem_mask)
+=======
+static void intel82371ab_pci_w(device_t *busdevice, device_t *device, int function, int reg, uint32_t data, uint32_t mem_mask)
+>>>>>>> upstream/master
 {
 	if (ACCESSING_BITS_24_31)
 	{
@@ -300,7 +389,11 @@ WRITE32_MEMBER(midqslvr_state::isa_ram1_w)
 {
 	if (m_mtxc_config_reg[0x5a] & 0x2)      // write to RAM if this region is write-enabled
 	{
+<<<<<<< HEAD
 		COMBINE_DATA(m_isa_ram1 + offset);
+=======
+		COMBINE_DATA(m_isa_ram1.get() + offset);
+>>>>>>> upstream/master
 	}
 }
 
@@ -308,7 +401,11 @@ WRITE32_MEMBER(midqslvr_state::isa_ram2_w)
 {
 	if (m_mtxc_config_reg[0x5a] & 0x2)      // write to RAM if this region is write-enabled
 	{
+<<<<<<< HEAD
 		COMBINE_DATA(m_isa_ram2 + offset);
+=======
+		COMBINE_DATA(m_isa_ram2.get() + offset);
+>>>>>>> upstream/master
 	}
 }
 
@@ -316,7 +413,11 @@ WRITE32_MEMBER(midqslvr_state::bios_ext1_ram_w)
 {
 	if (m_mtxc_config_reg[0x5e] & 0x2)      // write to RAM if this region is write-enabled
 	{
+<<<<<<< HEAD
 		COMBINE_DATA(m_bios_ext1_ram + offset);
+=======
+		COMBINE_DATA(m_bios_ext1_ram.get() + offset);
+>>>>>>> upstream/master
 	}
 }
 
@@ -325,7 +426,11 @@ WRITE32_MEMBER(midqslvr_state::bios_ext2_ram_w)
 {
 	if (m_mtxc_config_reg[0x5e] & 0x20)     // write to RAM if this region is write-enabled
 	{
+<<<<<<< HEAD
 		COMBINE_DATA(m_bios_ext2_ram + offset);
+=======
+		COMBINE_DATA(m_bios_ext2_ram.get() + offset);
+>>>>>>> upstream/master
 	}
 }
 
@@ -334,7 +439,11 @@ WRITE32_MEMBER(midqslvr_state::bios_ext3_ram_w)
 {
 	if (m_mtxc_config_reg[0x5f] & 0x2)      // write to RAM if this region is write-enabled
 	{
+<<<<<<< HEAD
 		COMBINE_DATA(m_bios_ext3_ram + offset);
+=======
+		COMBINE_DATA(m_bios_ext3_ram.get() + offset);
+>>>>>>> upstream/master
 	}
 }
 
@@ -343,7 +452,11 @@ WRITE32_MEMBER(midqslvr_state::bios_ext4_ram_w)
 {
 	if (m_mtxc_config_reg[0x5f] & 0x20)     // write to RAM if this region is write-enabled
 	{
+<<<<<<< HEAD
 		COMBINE_DATA(m_bios_ext4_ram + offset);
+=======
+		COMBINE_DATA(m_bios_ext4_ram.get() + offset);
+>>>>>>> upstream/master
 	}
 }
 
@@ -352,7 +465,11 @@ WRITE32_MEMBER(midqslvr_state::bios_ram_w)
 {
 	if (m_mtxc_config_reg[0x59] & 0x20)     // write to RAM if this region is write-enabled
 	{
+<<<<<<< HEAD
 		COMBINE_DATA(m_bios_ram + offset);
+=======
+		COMBINE_DATA(m_bios_ram.get() + offset);
+>>>>>>> upstream/master
 	}
 }
 
@@ -385,6 +502,7 @@ ADDRESS_MAP_END
 
 void midqslvr_state::machine_start()
 {
+<<<<<<< HEAD
 	m_bios_ram = auto_alloc_array(machine(), UINT32, 0x10000/4);
 	m_bios_ext1_ram = auto_alloc_array(machine(), UINT32, 0x4000/4);
 	m_bios_ext2_ram = auto_alloc_array(machine(), UINT32, 0x4000/4);
@@ -392,6 +510,15 @@ void midqslvr_state::machine_start()
 	m_bios_ext4_ram = auto_alloc_array(machine(), UINT32, 0x4000/4);
 	m_isa_ram1 = auto_alloc_array(machine(), UINT32, 0x4000/4);
 	m_isa_ram2 = auto_alloc_array(machine(), UINT32, 0x4000/4);
+=======
+	m_bios_ram = std::make_unique<uint32_t[]>(0x10000/4);
+	m_bios_ext1_ram = std::make_unique<uint32_t[]>(0x4000/4);
+	m_bios_ext2_ram = std::make_unique<uint32_t[]>(0x4000/4);
+	m_bios_ext3_ram = std::make_unique<uint32_t[]>(0x4000/4);
+	m_bios_ext4_ram = std::make_unique<uint32_t[]>(0x4000/4);
+	m_isa_ram1 = std::make_unique<uint32_t[]>(0x4000/4);
+	m_isa_ram2 = std::make_unique<uint32_t[]>(0x4000/4);
+>>>>>>> upstream/master
 	intel82439tx_init();
 
 }
@@ -407,7 +534,11 @@ void midqslvr_state::machine_reset()
 	membank("video_bank2")->set_base(memregion("video_bios")->base() + 0x4000);
 }
 
+<<<<<<< HEAD
 static MACHINE_CONFIG_START( midqslvr, midqslvr_state )
+=======
+static MACHINE_CONFIG_START( midqslvr )
+>>>>>>> upstream/master
 	MCFG_CPU_ADD("maincpu", PENTIUM, 333000000) // actually Celeron 333
 	MCFG_CPU_PROGRAM_MAP(midqslvr_map)
 	MCFG_CPU_IO_MAP(midqslvr_io)
@@ -416,10 +547,17 @@ static MACHINE_CONFIG_START( midqslvr, midqslvr_state )
 	MCFG_FRAGMENT_ADD( pcat_common )
 
 	MCFG_PCI_BUS_LEGACY_ADD("pcibus", 0)
+<<<<<<< HEAD
 	MCFG_PCI_BUS_LEGACY_DEVICE( 0, NULL, intel82439tx_pci_r, intel82439tx_pci_w)
 	MCFG_PCI_BUS_LEGACY_DEVICE(31, NULL, intel82371ab_pci_r, intel82371ab_pci_w)
 
 	MCFG_IDE_CONTROLLER_ADD("ide", ata_devices, "hdd", NULL, true)
+=======
+	MCFG_PCI_BUS_LEGACY_DEVICE( 0, nullptr, intel82439tx_pci_r, intel82439tx_pci_w)
+	MCFG_PCI_BUS_LEGACY_DEVICE(31, nullptr, intel82371ab_pci_r, intel82371ab_pci_w)
+
+	MCFG_IDE_CONTROLLER_ADD("ide", ata_devices, "hdd", nullptr, true)
+>>>>>>> upstream/master
 	MCFG_ATA_INTERFACE_IRQ_HANDLER(DEVWRITELINE("pic8259_2", pic8259_device, ir6_w))
 
 	/* video hardware */
@@ -498,6 +636,7 @@ ROM_START( ultarctcup )
 ROM_END
 
 // there are almost certainly multiple versions of these; updates were offered on floppy disk.  The version numbers for the existing CHDs are unknown.
+<<<<<<< HEAD
 GAME(1999, hydrthnd,    0,        midqslvr, at_keyboard, driver_device, 0, ROT0, "Midway Games", "Hydro Thunder", MACHINE_IS_SKELETON)
 
 GAME(2000, offrthnd,    0,        midqslvr, at_keyboard, driver_device, 0, ROT0, "Midway Games", "Offroad Thunder", MACHINE_IS_SKELETON)
@@ -506,3 +645,13 @@ GAME(2001, arctthnd,    0,        midqslvr, at_keyboard, driver_device, 0, ROT0,
 
 GAME(2001, ultarctc,    0,        midqslvr, at_keyboard, driver_device, 0, ROT0, "Midway Games", "Ultimate Arctic Thunder", MACHINE_IS_SKELETON)
 GAME(2004, ultarctcup,  ultarctc, midqslvr, at_keyboard, driver_device, 0, ROT0, "Midway Games", "Ultimate Arctic Thunder Update CD ver 1.950 (5/3/04)", MACHINE_IS_SKELETON)
+=======
+GAME(1999, hydrthnd,    0,        midqslvr, at_keyboard, midqslvr_state, 0, ROT0, "Midway Games", "Hydro Thunder", MACHINE_IS_SKELETON)
+
+GAME(2000, offrthnd,    0,        midqslvr, at_keyboard, midqslvr_state, 0, ROT0, "Midway Games", "Offroad Thunder", MACHINE_IS_SKELETON)
+
+GAME(2001, arctthnd,    0,        midqslvr, at_keyboard, midqslvr_state, 0, ROT0, "Midway Games", "Arctic Thunder (v1.002)", MACHINE_IS_SKELETON)
+
+GAME(2001, ultarctc,    0,        midqslvr, at_keyboard, midqslvr_state, 0, ROT0, "Midway Games", "Ultimate Arctic Thunder", MACHINE_IS_SKELETON)
+GAME(2004, ultarctcup,  ultarctc, midqslvr, at_keyboard, midqslvr_state, 0, ROT0, "Midway Games", "Ultimate Arctic Thunder Update CD ver 1.950 (5/3/04)", MACHINE_IS_SKELETON)
+>>>>>>> upstream/master

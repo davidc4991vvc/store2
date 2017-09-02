@@ -319,11 +319,20 @@
 #include "machine/konppc.h"
 #include "machine/timekpr.h"
 #include "machine/ds2401.h"
+<<<<<<< HEAD
+=======
+#include "machine/watchdog.h"
+>>>>>>> upstream/master
 #include "sound/rf5c400.h"
 #include "sound/k056800.h"
 #include "video/voodoo.h"
 #include "video/k037122.h"
 #include "rendlay.h"
+<<<<<<< HEAD
+=======
+#include "screen.h"
+#include "speaker.h"
+>>>>>>> upstream/master
 
 
 class hornet_state : public driver_device
@@ -351,21 +360,40 @@ public:
 		m_dsw(*this, "DSW"),
 		m_eepromout(*this, "EEPROMOUT"),
 		m_analog1(*this, "ANALOG1"),
+<<<<<<< HEAD
 		m_analog2(*this, "ANALOG2")
+=======
+		m_analog2(*this, "ANALOG2"),
+		m_user3_ptr(*this, "user3"),
+		m_user5_ptr(*this, "user5"),
+		m_lan_ds2401(*this, "lan_serial_id"),
+		m_watchdog(*this, "watchdog")
+>>>>>>> upstream/master
 	{ }
 
 	// TODO: Needs verification on real hardware
 	static const int m_sound_timer_usec = 2800;
 
+<<<<<<< HEAD
 	required_shared_ptr<UINT32> m_workram;
 	required_shared_ptr<UINT32> m_sharc_dataram0;
 	optional_shared_ptr<UINT32> m_sharc_dataram1;
+=======
+	required_shared_ptr<uint32_t> m_workram;
+	required_shared_ptr<uint32_t> m_sharc_dataram0;
+	optional_shared_ptr<uint32_t> m_sharc_dataram1;
+>>>>>>> upstream/master
 	required_device<ppc4xx_device> m_maincpu;
 	required_device<cpu_device> m_audiocpu;
 	required_device<k056800_device> m_k056800;
 	optional_device<cpu_device> m_gn680;
+<<<<<<< HEAD
 	required_device<cpu_device> m_dsp;
 	optional_device<cpu_device> m_dsp2;
+=======
+	required_device<adsp21062_device> m_dsp;
+	optional_device<adsp21062_device> m_dsp2;
+>>>>>>> upstream/master
 	optional_device<k037122_device> m_k037122_1;
 	optional_device<k037122_device> m_k037122_2;
 	required_device<adc12138_device> m_adc12138;
@@ -373,6 +401,7 @@ public:
 	optional_device<eeprom_serial_93cxx_device> m_lan_eeprom;
 	required_ioport m_in0, m_in1, m_in2, m_dsw;
 	optional_ioport m_eepromout, m_analog1, m_analog2;
+<<<<<<< HEAD
 
 	emu_timer *m_sound_irq_timer;
 	UINT8 m_led_reg0;
@@ -382,6 +411,21 @@ public:
 	UINT16 m_gn680_latch;
 	UINT16 m_gn680_ret0;
 	UINT16 m_gn680_ret1;
+=======
+	optional_region_ptr<uint8_t> m_user3_ptr;
+	optional_region_ptr<uint8_t> m_user5_ptr;
+	optional_device<ds2401_device> m_lan_ds2401;
+	required_device<watchdog_timer_device> m_watchdog;
+
+	emu_timer *m_sound_irq_timer;
+	uint8_t m_led_reg0;
+	uint8_t m_led_reg1;
+	std::unique_ptr<uint8_t[]> m_jvs_sdata;
+	uint32_t m_jvs_sdata_ptr;
+	uint16_t m_gn680_latch;
+	uint16_t m_gn680_ret0;
+	uint16_t m_gn680_ret1;
+>>>>>>> upstream/master
 
 	DECLARE_READ32_MEMBER(hornet_k037122_sram_r);
 	DECLARE_WRITE32_MEMBER(hornet_k037122_sram_w);
@@ -409,6 +453,7 @@ public:
 	DECLARE_WRITE16_MEMBER(soundtimer_count_w);
 	ADC12138_IPT_CONVERT_CB(adc12138_input_callback);
 	DECLARE_WRITE8_MEMBER(jamma_jvs_w);
+<<<<<<< HEAD
 
 	DECLARE_DRIVER_INIT(hornet);
 	DECLARE_DRIVER_INIT(hornet_2board);
@@ -420,6 +465,24 @@ public:
 	TIMER_CALLBACK_MEMBER(sound_irq);
 	int jvs_encode_data(UINT8 *in, int length);
 	int jvs_decode_data(UINT8 *in, UINT8 *out, int length);
+=======
+	DECLARE_READ8_MEMBER(comm_eeprom_r);
+	DECLARE_WRITE8_MEMBER(comm_eeprom_w);
+
+	DECLARE_DRIVER_INIT(hornet);
+	DECLARE_DRIVER_INIT(hornet_2board);
+	DECLARE_DRIVER_INIT(gradius4);
+	DECLARE_DRIVER_INIT(nbapbp);
+	DECLARE_DRIVER_INIT(terabrst);
+	virtual void machine_start() override;
+	virtual void machine_reset() override;
+	DECLARE_MACHINE_RESET(hornet_2board);
+	uint32_t screen_update_hornet(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect);
+	uint32_t screen_update_hornet_2board(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect);
+	TIMER_CALLBACK_MEMBER(sound_irq);
+	int jvs_encode_data(uint8_t *in, int length);
+	int jvs_decode_data(uint8_t *in, uint8_t *out, int length);
+>>>>>>> upstream/master
 	void jamma_jvs_cmd_exec();
 };
 
@@ -472,11 +535,19 @@ WRITE_LINE_MEMBER(hornet_state::voodoo_vblank_1)
 {
 }
 
+<<<<<<< HEAD
 UINT32 hornet_state::screen_update_hornet(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect)
 {
 	device_t *voodoo = machine().device("voodoo0");
 
 	voodoo_update(voodoo, bitmap, cliprect);
+=======
+uint32_t hornet_state::screen_update_hornet(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect)
+{
+	voodoo_device* voodoo = (voodoo_device*)machine().device("voodoo0");
+
+	voodoo->voodoo_update(bitmap, cliprect);
+>>>>>>> upstream/master
 
 	m_k037122_1->tile_draw(screen, bitmap, cliprect);
 
@@ -485,20 +556,34 @@ UINT32 hornet_state::screen_update_hornet(screen_device &screen, bitmap_rgb32 &b
 	return 0;
 }
 
+<<<<<<< HEAD
 UINT32 hornet_state::screen_update_hornet_2board(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect)
 {
 	if (strcmp(screen.tag(), ":lscreen") == 0)
 	{
 		device_t *voodoo = machine().device("voodoo0");
 		voodoo_update(voodoo, bitmap, cliprect);
+=======
+uint32_t hornet_state::screen_update_hornet_2board(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect)
+{
+	if (strcmp(screen.tag(), ":lscreen") == 0)
+	{
+		voodoo_device *voodoo = (voodoo_device*)machine().device("voodoo0");
+		voodoo->voodoo_update(bitmap, cliprect);
+>>>>>>> upstream/master
 
 		/* TODO: tilemaps per screen */
 		m_k037122_1->tile_draw(screen, bitmap, cliprect);
 	}
 	else if (strcmp(screen.tag(), ":rscreen") == 0)
 	{
+<<<<<<< HEAD
 		device_t *voodoo = machine().device("voodoo1");
 		voodoo_update(voodoo, bitmap, cliprect);
+=======
+		voodoo_device *voodoo = (voodoo_device*)machine().device("voodoo1");
+		voodoo->voodoo_update(bitmap, cliprect);
+>>>>>>> upstream/master
 
 		/* TODO: tilemaps per screen */
 		m_k037122_2->tile_draw(screen, bitmap, cliprect);
@@ -513,7 +598,11 @@ UINT32 hornet_state::screen_update_hornet_2board(screen_device &screen, bitmap_r
 
 READ8_MEMBER(hornet_state::sysreg_r)
 {
+<<<<<<< HEAD
 	UINT8 r = 0;
+=======
+	uint8_t r = 0;
+>>>>>>> upstream/master
 
 	switch (offset)
 	{
@@ -538,8 +627,11 @@ READ8_MEMBER(hornet_state::sysreg_r)
 			    0x01 = ADDO (ADC DO)
 			*/
 			r = 0xf0;
+<<<<<<< HEAD
 			if (m_lan_eeprom)
 				r |= m_lan_eeprom->do_read() << 3;
+=======
+>>>>>>> upstream/master
 			r |= m_adc12138->do_r(space, 0) | (m_adc12138->eoc_r(space, 0) << 2);
 			break;
 
@@ -577,8 +669,11 @@ WRITE8_MEMBER(hornet_state::sysreg_w)
 			    0x02 = LAMP1
 			    0x01 = LAMP0
 			*/
+<<<<<<< HEAD
 			if (m_eepromout)
 				m_eepromout->write(data, 0xff);
+=======
+>>>>>>> upstream/master
 			osd_printf_debug("System register 0 = %02X\n", data);
 			break;
 
@@ -621,7 +716,11 @@ WRITE8_MEMBER(hornet_state::sysreg_w)
 			    0x80 = WDTCLK
 			*/
 			if (data & 0x80)
+<<<<<<< HEAD
 				machine().watchdog_reset();
+=======
+				m_watchdog->watchdog_reset();
+>>>>>>> upstream/master
 			break;
 
 		case 7: /* CG Control Register */
@@ -643,6 +742,23 @@ WRITE8_MEMBER(hornet_state::sysreg_w)
 
 /*****************************************************************************/
 
+<<<<<<< HEAD
+=======
+READ8_MEMBER(hornet_state::comm_eeprom_r)
+{
+	uint8_t r = 0;
+	r |= (m_lan_eeprom->do_read() & 1) << 1;
+	r |= m_lan_ds2401->read() & 1;
+	return r;
+}
+
+WRITE8_MEMBER(hornet_state::comm_eeprom_w)
+{
+	m_eepromout->write(data, 0xff);
+	m_lan_ds2401->write((data >> 4) & 1);
+}
+
+>>>>>>> upstream/master
 WRITE32_MEMBER(hornet_state::comm1_w)
 {
 	printf("comm1_w: %08X, %08X, %08X\n", offset, data, mem_mask);
@@ -651,8 +767,13 @@ WRITE32_MEMBER(hornet_state::comm1_w)
 WRITE32_MEMBER(hornet_state::comm_rombank_w)
 {
 	int bank = data >> 24;
+<<<<<<< HEAD
 	UINT8 *usr3 = memregion("user3")->base();
 	if (usr3 != NULL)
+=======
+	uint8_t *usr3 = memregion("user3")->base();
+	if (usr3 != nullptr)
+>>>>>>> upstream/master
 		membank("bank1")->set_entry(bank & 0x7f);
 }
 
@@ -721,6 +842,10 @@ static ADDRESS_MAP_START( hornet_map, AS_PROGRAM, 32, hornet_state )
 	AM_RANGE(0x7d010000, 0x7d01ffff) AM_WRITE8(sysreg_w, 0xffffffff)
 	AM_RANGE(0x7d020000, 0x7d021fff) AM_DEVREADWRITE8("m48t58", timekeeper_device, read, write, 0xffffffff)  /* M48T58Y RTC/NVRAM */
 	AM_RANGE(0x7d030000, 0x7d03000f) AM_DEVREADWRITE8("k056800", k056800_device, host_r, host_w, 0xffffffff)
+<<<<<<< HEAD
+=======
+	AM_RANGE(0x7d040004, 0x7d040007) AM_READWRITE8(comm_eeprom_r, comm_eeprom_w, 0xffffffff)
+>>>>>>> upstream/master
 	AM_RANGE(0x7d042000, 0x7d043fff) AM_RAM             /* COMM BOARD 0 */
 	AM_RANGE(0x7d044000, 0x7d044007) AM_READ(comm0_unk_r)
 	AM_RANGE(0x7d048000, 0x7d048003) AM_WRITE(comm1_w)
@@ -908,9 +1033,15 @@ static INPUT_PORTS_START( sscope2 )
 
 	// LAN board EEPROM
 	PORT_START( "EEPROMOUT" )
+<<<<<<< HEAD
 	PORT_BIT( 0x10, IP_ACTIVE_HIGH, IPT_OUTPUT ) PORT_WRITE_LINE_DEVICE_MEMBER("lan_eeprom", eeprom_serial_93cxx_device, di_write)
 	PORT_BIT( 0x20, IP_ACTIVE_HIGH, IPT_OUTPUT ) PORT_WRITE_LINE_DEVICE_MEMBER("lan_eeprom", eeprom_serial_93cxx_device, clk_write)
 	PORT_BIT( 0x40, IP_ACTIVE_HIGH, IPT_OUTPUT ) PORT_WRITE_LINE_DEVICE_MEMBER("lan_eeprom", eeprom_serial_93cxx_device, cs_write)
+=======
+	PORT_BIT( 0x80, IP_ACTIVE_HIGH, IPT_OUTPUT ) PORT_WRITE_LINE_DEVICE_MEMBER("lan_eeprom", eeprom_serial_93cxx_device, di_write)
+	PORT_BIT( 0x40, IP_ACTIVE_HIGH, IPT_OUTPUT ) PORT_WRITE_LINE_DEVICE_MEMBER("lan_eeprom", eeprom_serial_93cxx_device, clk_write)
+	PORT_BIT( 0x20, IP_ACTIVE_HIGH, IPT_OUTPUT ) PORT_WRITE_LINE_DEVICE_MEMBER("lan_eeprom", eeprom_serial_93cxx_device, cs_write)
+>>>>>>> upstream/master
 INPUT_PORTS_END
 
 
@@ -928,17 +1059,29 @@ INPUT_PORTS_END
 void hornet_state::machine_start()
 {
 	m_jvs_sdata_ptr = 0;
+<<<<<<< HEAD
 	m_jvs_sdata = auto_alloc_array_clear(machine(), UINT8, 1024);
+=======
+	m_jvs_sdata = make_unique_clear<uint8_t[]>(1024);
+>>>>>>> upstream/master
 
 	/* set conservative DRC options */
 	m_maincpu->ppcdrc_set_options(PPCDRC_COMPATIBLE_OPTIONS);
 
 	/* configure fast RAM regions for DRC */
+<<<<<<< HEAD
 	m_maincpu->ppcdrc_add_fastram(0x00000000, 0x003fffff, FALSE, m_workram);
 
 	save_item(NAME(m_led_reg0));
 	save_item(NAME(m_led_reg1));
 	save_pointer(NAME(m_jvs_sdata), 1024);
+=======
+	m_maincpu->ppcdrc_add_fastram(0x00000000, 0x003fffff, false, m_workram);
+
+	save_item(NAME(m_led_reg0));
+	save_item(NAME(m_led_reg1));
+	save_pointer(NAME(m_jvs_sdata.get()), 1024);
+>>>>>>> upstream/master
 	save_item(NAME(m_jvs_sdata_ptr));
 
 	m_sound_irq_timer = machine().scheduler().timer_alloc(timer_expired_delegate(FUNC(hornet_state::sound_irq), this));
@@ -946,18 +1089,37 @@ void hornet_state::machine_start()
 
 void hornet_state::machine_reset()
 {
+<<<<<<< HEAD
 	UINT8 *usr3 = memregion("user3")->base();
 	UINT8 *usr5 = memregion("user5")->base();
 	if (usr3 != NULL)
 	{
 		membank("bank1")->configure_entries(0, memregion("user3")->bytes() / 0x10000, usr3, 0x10000);
+=======
+	memory_region* comm_region = memregion("user3");
+	if (comm_region != nullptr)
+	{
+		uint8_t* comm_rom = comm_region->base();
+		membank("bank1")->configure_entries(0, comm_region->bytes() / 0x10000, comm_rom, 0x10000);
+>>>>>>> upstream/master
 		membank("bank1")->set_entry(0);
 	}
 
 	m_dsp->set_input_line(INPUT_LINE_RESET, ASSERT_LINE);
+<<<<<<< HEAD
 
 	if (usr5)
 		membank("bank5")->set_base(usr5);
+=======
+	if (m_dsp2 != nullptr)
+		m_dsp2->set_input_line(INPUT_LINE_RESET, ASSERT_LINE);
+
+	if (m_user5_ptr)
+	{
+		membank("bank5")->set_base(m_user5_ptr);
+		membank("bank6")->set_base(m_user5_ptr);
+	}
+>>>>>>> upstream/master
 }
 
 ADC12138_IPT_CONVERT_CB(hornet_state::adc12138_input_callback)
@@ -965,14 +1127,23 @@ ADC12138_IPT_CONVERT_CB(hornet_state::adc12138_input_callback)
 	int value = 0;
 	switch (input)
 	{
+<<<<<<< HEAD
 		case 0: value = (m_analog1) ? m_analog1->read() : 0; break;
 		case 1: value = (m_analog2) ? m_analog2->read() : 0; break;
+=======
+		case 0: value = m_analog1.read_safe(0); break;
+		case 1: value = m_analog2.read_safe(0); break;
+>>>>>>> upstream/master
 	}
 
 	return (double)(value) / 2047.0;
 }
 
+<<<<<<< HEAD
 static MACHINE_CONFIG_START( hornet, hornet_state )
+=======
+static MACHINE_CONFIG_START( hornet )
+>>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", PPC403GA, XTAL_64MHz/2)   /* PowerPC 403GA 32MHz */
@@ -988,6 +1159,11 @@ static MACHINE_CONFIG_START( hornet, hornet_state )
 
 	MCFG_QUANTUM_TIME(attotime::from_hz(6000))
 
+<<<<<<< HEAD
+=======
+	MCFG_WATCHDOG_ADD("watchdog")
+
+>>>>>>> upstream/master
 //  PCB description at top doesn't mention any EEPROM on the base board...
 //  MCFG_EEPROM_SERIAL_93C46_ADD("eeprom")
 
@@ -1010,10 +1186,14 @@ static MACHINE_CONFIG_START( hornet, hornet_state )
 
 	MCFG_PALETTE_ADD("palette", 65536)
 
+<<<<<<< HEAD
 	MCFG_GFXDECODE_ADD("gfxdecode", "palette", empty)
 
 	MCFG_K037122_ADD("k037122_1", "screen", 0)
 	MCFG_K037122_GFXDECODE("gfxdecode")
+=======
+	MCFG_K037122_ADD("k037122_1", "screen")
+>>>>>>> upstream/master
 	MCFG_K037122_PALETTE("palette")
 
 	MCFG_K056800_ADD("k056800", XTAL_16_9344MHz)
@@ -1032,6 +1212,7 @@ static MACHINE_CONFIG_START( hornet, hornet_state )
 
 	MCFG_DEVICE_ADD("konppc", KONPPC, 0)
 	MCFG_KONPPC_CGBOARD_NUMBER(1)
+<<<<<<< HEAD
 	MCFG_KONPPC_CGBOARD_TYPE(CGBOARD_TYPE_HORNET)
 MACHINE_CONFIG_END
 
@@ -1056,12 +1237,18 @@ MACHINE_RESET_MEMBER(hornet_state,hornet_2board)
 	}
 }
 
+=======
+	MCFG_KONPPC_CGBOARD_TYPE(HORNET)
+MACHINE_CONFIG_END
+
+>>>>>>> upstream/master
 static MACHINE_CONFIG_DERIVED( hornet_2board, hornet )
 
 	MCFG_CPU_ADD("dsp2", ADSP21062, XTAL_36MHz)
 	MCFG_SHARC_BOOT_MODE(BOOT_MODE_EPROM)
 	MCFG_CPU_DATA_MAP(sharc1_map)
 
+<<<<<<< HEAD
 	MCFG_MACHINE_RESET_OVERRIDE(hornet_state,hornet_2board)
 
 
@@ -1072,6 +1259,14 @@ static MACHINE_CONFIG_DERIVED( hornet_2board, hornet )
 
 	MCFG_K037122_ADD("k037122_2", "rscreen", 1)
 	MCFG_K037122_GFXDECODE("gfxdecode")
+=======
+
+	MCFG_DEVICE_REMOVE("k037122_1")
+	MCFG_K037122_ADD("k037122_1", "lscreen")
+	MCFG_K037122_PALETTE("palette")
+
+	MCFG_K037122_ADD("k037122_2", "rscreen")
+>>>>>>> upstream/master
 	MCFG_K037122_PALETTE("palette")
 
 	MCFG_DEVICE_REMOVE("voodoo0")
@@ -1114,10 +1309,17 @@ static MACHINE_CONFIG_DERIVED( hornet_2board, hornet )
 	MCFG_DEVICE_REMOVE("konppc")
 	MCFG_DEVICE_ADD("konppc", KONPPC, 0)
 	MCFG_KONPPC_CGBOARD_NUMBER(2)
+<<<<<<< HEAD
 	MCFG_KONPPC_CGBOARD_TYPE(CGBOARD_TYPE_HORNET)
 MACHINE_CONFIG_END
 
 static MACHINE_CONFIG_DERIVED( terabrst, hornet_2board )
+=======
+	MCFG_KONPPC_CGBOARD_TYPE(HORNET)
+MACHINE_CONFIG_END
+
+static MACHINE_CONFIG_DERIVED( terabrst, hornet )
+>>>>>>> upstream/master
 
 	MCFG_CPU_ADD("gn680", M68000, XTAL_32MHz/2)   /* 16MHz */
 	MCFG_CPU_PROGRAM_MAP(gn680_memmap)
@@ -1161,14 +1363,22 @@ WRITE8_MEMBER(hornet_state::jamma_jvs_w)
 		jamma_jvs_cmd_exec();
 }
 
+<<<<<<< HEAD
 int hornet_state::jvs_encode_data(UINT8 *in, int length)
+=======
+int hornet_state::jvs_encode_data(uint8_t *in, int length)
+>>>>>>> upstream/master
 {
 	int inptr = 0;
 	int sum = 0;
 
 	while (inptr < length)
 	{
+<<<<<<< HEAD
 		UINT8 b = in[inptr++];
+=======
+		uint8_t b = in[inptr++];
+>>>>>>> upstream/master
 		if (b == 0xe0)
 		{
 			sum += 0xd0 + 0xdf;
@@ -1190,17 +1400,28 @@ int hornet_state::jvs_encode_data(UINT8 *in, int length)
 	return sum;
 }
 
+<<<<<<< HEAD
 int hornet_state::jvs_decode_data(UINT8 *in, UINT8 *out, int length)
+=======
+int hornet_state::jvs_decode_data(uint8_t *in, uint8_t *out, int length)
+>>>>>>> upstream/master
 {
 	int outptr = 0;
 	int inptr = 0;
 
 	while (inptr < length)
 	{
+<<<<<<< HEAD
 		UINT8 b = in[inptr++];
 		if (b == 0xd0)
 		{
 			UINT8 b2 = in[inptr++];
+=======
+		uint8_t b = in[inptr++];
+		if (b == 0xd0)
+		{
+			uint8_t b2 = in[inptr++];
+>>>>>>> upstream/master
 			out[outptr++] = b2 + 1;
 		}
 		else
@@ -1214,8 +1435,13 @@ int hornet_state::jvs_decode_data(UINT8 *in, UINT8 *out, int length)
 
 void hornet_state::jamma_jvs_cmd_exec()
 {
+<<<<<<< HEAD
 	UINT8 byte_num;
 	UINT8 data[1024], rdata[1024];
+=======
+	uint8_t byte_num;
+	uint8_t data[1024], rdata[1024];
+>>>>>>> upstream/master
 #if 0
 	int length;
 #endif
@@ -1306,6 +1532,27 @@ DRIVER_INIT_MEMBER(hornet_state,hornet_2board)
 	m_maincpu->ppc4xx_spu_set_tx_handler(write8_delegate(FUNC(hornet_state::jamma_jvs_w), this));
 }
 
+<<<<<<< HEAD
+=======
+DRIVER_INIT_MEMBER(hornet_state, gradius4)
+{
+	DRIVER_INIT_CALL(hornet);
+	m_dsp->enable_recompiler();
+}
+
+DRIVER_INIT_MEMBER(hornet_state, nbapbp)
+{
+	DRIVER_INIT_CALL(hornet);
+	m_dsp->enable_recompiler();
+}
+
+DRIVER_INIT_MEMBER(hornet_state, terabrst)
+{
+	DRIVER_INIT_CALL(hornet);
+	m_dsp->enable_recompiler();
+}
+
+>>>>>>> upstream/master
 /*****************************************************************************/
 
 ROM_START(sscope)
@@ -1406,8 +1653,13 @@ ROM_START(sscope2)
 	ROM_LOAD32_WORD_SWAP("931a04.bin", 0x000000, 0x200000, CRC(4f5917e6) SHA1(a63a107f1d6d9756e4ab0965d72ea446f0692814) )
 
 	ROM_REGION32_BE(0x800000, "user3", 0)   /* Comm board roms */
+<<<<<<< HEAD
 	ROM_LOAD("931a19.bin", 0x000000, 0x400000, CRC(8b25a6f1) SHA1(41f9c2046a6aae1e9f5f3ffa3e0ffb15eba46211) )
 	ROM_LOAD("931a20.bin", 0x400000, 0x400000, CRC(ecf665f6) SHA1(5a73e87435560a7bb2d0f9be7fba12254b18708d) )
+=======
+	ROM_LOAD("931a19.bin", 0x000000, 0x400000, BAD_DUMP CRC(8b25a6f1) SHA1(41f9c2046a6aae1e9f5f3ffa3e0ffb15eba46211) )
+	ROM_LOAD("931a20.bin", 0x400000, 0x400000, BAD_DUMP CRC(ecf665f6) SHA1(5a73e87435560a7bb2d0f9be7fba12254b18708d) )
+>>>>>>> upstream/master
 
 	ROM_REGION(0x800000, "user5", ROMREGION_ERASE00)    /* CG Board texture roms */
 
@@ -1423,10 +1675,17 @@ ROM_START(sscope2)
 	ROM_LOAD( "m48t58y-70pc1", 0x000000, 0x002000, CRC(d4e69d7a) SHA1(1e29eecf4886e5e098a388dedd5f3901c2bb65e5) )
 
 	ROM_REGION(0x8, "lan_serial_id", 0)     /* LAN Board DS2401 */
+<<<<<<< HEAD
 	ROM_LOAD( "ds2401.8b", 0x000000, 0x000008, NO_DUMP )
 
 	ROM_REGION(0x80, "lan_eeprom", 0)       /* LAN Board AT93C46 */
 	ROM_LOAD( "at93c46.16g", 0x000000, 0x000080, NO_DUMP )
+=======
+	ROM_LOAD( "ds2401.8b", 0x000000, 0x000008, BAD_DUMP CRC(bae36d0b) SHA1(4dd5915888d5718356b40bbe897f2470e410176a) ) // hand built
+
+	ROM_REGION16_BE(0x80, "lan_eeprom", 0)       /* LAN Board AT93C46 */
+	ROM_LOAD( "at93c46.16g", 0x000000, 0x000080, BAD_DUMP CRC(cc63c213) SHA1(fb20e56fb73a887dc7b6db49efd1f8a18b959152) ) // hand built
+>>>>>>> upstream/master
 ROM_END
 
 ROM_START(gradius4)
@@ -1483,6 +1742,37 @@ ROM_START(nbapbp)
 	ROM_LOAD( "m48t58y-70pc1", 0x000000, 0x002000, CRC(3cff1b1d) SHA1(bed0fc657a785be0c69bb21ad52365635c83d751) )
 ROM_END
 
+<<<<<<< HEAD
+=======
+ROM_START(nbapbpa) // only the PowerPC program rom present in the archive
+	ROM_REGION32_BE(0x400000, "user1", 0)   /* PowerPC program */
+	ROM_LOAD16_WORD_SWAP( "778b01.27p",   0x200000, 0x200000, CRC(8dca96b5) SHA1(7dfa38c4be6c3547ee9c7ad104282510e205ab37) )
+	ROM_RELOAD(0x000000, 0x200000)
+
+	ROM_REGION32_BE(0x800000, "user2", 0)   /* Data roms */
+	ROM_LOAD32_WORD_SWAP( "778a04.16t",   0x000000, 0x400000, CRC(62c70132) SHA1(405aed149fc51e0adfa3ace3c644e47d53cf1ee3) )
+	ROM_LOAD32_WORD_SWAP( "778a05.14t",   0x000002, 0x400000, CRC(03249803) SHA1(f632a5f1dfa0a8500407214df0ec8d98ce09bc2b) )
+
+	ROM_REGION32_BE(0x1000000, "user5", 0)  /* CG Board texture roms */
+	ROM_LOAD32_WORD_SWAP( "778a14.32u",   0x000002, 0x400000, CRC(db0c278d) SHA1(bb9884b6cdcdb707fff7e56e92e2ede062abcfd3) )
+	ROM_LOAD32_WORD_SWAP( "778a13.24u",   0x000000, 0x400000, CRC(47fda9cc) SHA1(4aae01c1f1861b4b12a3f9de6b39eb4d11a9736b) )
+	ROM_LOAD32_WORD_SWAP( "778a16.32v",   0x800002, 0x400000, CRC(6c0f46ea) SHA1(c6b9fbe14e13114a91a5925a0b46496260539687) )
+	ROM_LOAD32_WORD_SWAP( "778a15.24v",   0x800000, 0x400000, CRC(d176ad0d) SHA1(2be755dfa3f60379d396734809bbaaaad49e0db5) )
+
+	ROM_REGION(0x80000, "audiocpu", 0)      /* 68K Program */
+	ROM_LOAD16_WORD_SWAP( "778a08.7s",    0x000000, 0x080000, CRC(6259b4bf) SHA1(d0c38870495c9a07984b4b85e736d6477dd44832) )
+
+	ROM_REGION16_LE(0x1000000, "rfsnd", 0)       /* PCM sample roms */
+	ROM_LOAD( "778a09.16p",   0x000000, 0x400000, CRC(e8c6fd93) SHA1(dd378b67b3b7dd932e4b39fbf4321e706522247f) )
+	ROM_LOAD( "778a10.14p",   0x400000, 0x400000, CRC(c6a0857b) SHA1(976734ba56460fcc090619fbba043a3d888c4f4e) )
+	ROM_LOAD( "778a11.12p",   0x800000, 0x400000, CRC(40199382) SHA1(bee268adf9b6634a4f6bb39278ecd02f2bdcb1f4) )
+	ROM_LOAD( "778a12.9p",    0xc00000, 0x400000, CRC(27d0c724) SHA1(48e48cbaea6db0de8c3471a2eda6faaa16eed46e) )
+
+	ROM_REGION(0x2000, "m48t58",0)
+	ROM_LOAD( "m48t58y-70pc1", 0x000000, 0x002000, BAD_DUMP CRC(3cff1b1d) SHA1(bed0fc657a785be0c69bb21ad52365635c83d751) )
+ROM_END
+
+>>>>>>> upstream/master
 ROM_START(terabrst)
 	ROM_REGION32_BE(0x400000, "user1", 0)   /* PowerPC program */
 		ROM_LOAD32_WORD_SWAP( "715l02.25p",   0x000000, 0x200000, CRC(79586f19) SHA1(8dcfed5d101ebe49d958a7a38d5472323f75dd1d) )
@@ -1539,10 +1829,18 @@ ROM_END
 
 /*************************************************************************/
 
+<<<<<<< HEAD
 GAME(  1998, gradius4,  0,        hornet,           hornet,  hornet_state, hornet,        ROT0, "Konami", "Gradius 4: Fukkatsu", MACHINE_IMPERFECT_SOUND | MACHINE_SUPPORTS_SAVE )
 GAME(  1998, nbapbp,    0,        hornet,           hornet,  hornet_state, hornet,        ROT0, "Konami", "NBA Play By Play", MACHINE_IMPERFECT_SOUND | MACHINE_SUPPORTS_SAVE )
 GAMEL( 1998, terabrst,  0,        terabrst,         hornet,  hornet_state, hornet_2board, ROT0, "Konami", "Teraburst (1998/07/17 ver UEL)", MACHINE_NOT_WORKING | MACHINE_IMPERFECT_SOUND | MACHINE_SUPPORTS_SAVE, layout_dualhsxs )
 GAMEL( 1998, terabrsta, terabrst, terabrst,         hornet,  hornet_state, hornet_2board, ROT0, "Konami", "Teraburst (1998/02/25 ver AAA)", MACHINE_NOT_WORKING | MACHINE_IMPERFECT_SOUND | MACHINE_SUPPORTS_SAVE, layout_dualhsxs )
+=======
+GAME(  1998, gradius4,  0,        hornet,           hornet,  hornet_state, gradius4,      ROT0, "Konami", "Gradius IV: Fukkatsu (ver JAC)", MACHINE_IMPERFECT_SOUND | MACHINE_SUPPORTS_SAVE )
+GAME(  1998, nbapbp,    0,        hornet,           hornet,  hornet_state, nbapbp,        ROT0, "Konami", "NBA Play By Play (ver JAA)", MACHINE_IMPERFECT_SOUND | MACHINE_SUPPORTS_SAVE )
+GAME(  1998, nbapbpa,   nbapbp,   hornet,           hornet,  hornet_state, nbapbp,        ROT0, "Konami", "NBA Play By Play (ver AAB)", MACHINE_IMPERFECT_SOUND | MACHINE_SUPPORTS_SAVE )
+GAME(  1998, terabrst,  0,        terabrst,         hornet,  hornet_state, terabrst,      ROT0, "Konami", "Teraburst (1998/07/17 ver UEL)", MACHINE_NOT_WORKING | MACHINE_IMPERFECT_SOUND | MACHINE_SUPPORTS_SAVE )
+GAME(  1998, terabrsta, terabrst, terabrst,         hornet,  hornet_state, terabrst,      ROT0, "Konami", "Teraburst (1998/02/25 ver AAA)", MACHINE_NOT_WORKING | MACHINE_IMPERFECT_SOUND | MACHINE_SUPPORTS_SAVE )
+>>>>>>> upstream/master
 
 // The region comes from the Timekeeper NVRAM, without a valid default all sets except 'xxD, Ver 1.33' will init their NVRAM to UAx versions, the xxD set seems to incorrectly init it to JXD, which isn't a valid
 // version, and thus can't be booted.  If you copy the NVRAM from another already initialized set, it will boot as UAD.
@@ -1552,4 +1850,8 @@ GAMEL( 2000, sscopec,   sscope,   hornet_2board,    sscope,  hornet_state, horne
 GAMEL( 2000, sscopeb,   sscope,   hornet_2board,    sscope,  hornet_state, hornet_2board, ROT0, "Konami", "Silent Scope (ver xxB, Ver 1.20)", MACHINE_IMPERFECT_SOUND | MACHINE_NOT_WORKING | MACHINE_SUPPORTS_SAVE, layout_dualhsxs )
 GAMEL( 2000, sscopea,   sscope,   hornet_2board,    sscope,  hornet_state, hornet_2board, ROT0, "Konami", "Silent Scope (ver xxA, Ver 1.00)", MACHINE_IMPERFECT_SOUND | MACHINE_NOT_WORKING | MACHINE_SUPPORTS_SAVE, layout_dualhsxs )
 
+<<<<<<< HEAD
 GAMEL( 2000, sscope2,   0,        sscope2,          sscope2, hornet_state, hornet_2board, ROT0, "Konami", "Silent Scope 2", MACHINE_IMPERFECT_SOUND | MACHINE_NOT_WORKING | MACHINE_SUPPORTS_SAVE, layout_dualhsxs )
+=======
+GAMEL( 2000, sscope2,   0,        sscope2,          sscope2, hornet_state, hornet_2board, ROT0, "Konami", "Silent Scope 2 : Dark Silhouette (ver UAD)", MACHINE_IMPERFECT_SOUND | MACHINE_NOT_WORKING | MACHINE_SUPPORTS_SAVE, layout_dualhsxs )
+>>>>>>> upstream/master

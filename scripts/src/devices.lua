@@ -19,21 +19,37 @@ function devicesProject(_target, _subtarget)
 	uuid (os.uuid("optional-" .. _target .."_" .. _subtarget))
 	kind (LIBTYPE)
 	targetsubdir(_target .."_" .. _subtarget)
+<<<<<<< HEAD
 	options {
 		"ArchiveSplit",
 	}
+=======
+
+	if (_OPTIONS["targetos"] ~= "asmjs") then
+		options {
+			"ArchiveSplit",
+		}
+	end
+
+	addprojectflags()
+	precompiledheaders()
+>>>>>>> upstream/master
 
 	includedirs {
 		MAME_DIR .. "src/osd",
 		MAME_DIR .. "src/emu",
 		MAME_DIR .. "src/devices",
+<<<<<<< HEAD
 		MAME_DIR .. "src/lib/netlist",
+=======
+>>>>>>> upstream/master
 		MAME_DIR .. "src/mame", -- used for sound amiga
 		MAME_DIR .. "src/lib",
 		MAME_DIR .. "src/lib/util",
 		MAME_DIR .. "3rdparty",
 		GEN_DIR  .. "emu",
 		GEN_DIR  .. "emu/layout",
+<<<<<<< HEAD
 	}
 	if _OPTIONS["with-bundled-expat"] then
 		includedirs {
@@ -45,6 +61,12 @@ function devicesProject(_target, _subtarget)
 			MAME_DIR .. "3rdparty/lua/src",
 		}
 	end
+=======
+		ext_includedir("expat"),
+		ext_includedir("flac"),
+		MAME_DIR .. "3rdparty/asio/include",
+	}
+>>>>>>> upstream/master
 
 	dofile(path.join("src", "cpu.lua"))
 
@@ -54,6 +76,7 @@ function devicesProject(_target, _subtarget)
 
 	dofile(path.join("src", "machine.lua"))
 
+<<<<<<< HEAD
 if (_OPTIONS["SOURCES"] == nil) then
 	project ("bus")
 	uuid ("5d782c89-cf7e-4cfe-8f9f-0d4bfc16c91d")
@@ -90,12 +113,20 @@ if (_OPTIONS["SOURCES"] == nil) then
 else
 	dofile(path.join("src", "bus.lua"))
 end
+=======
+	dofile(path.join("src", "bus.lua"))
+>>>>>>> upstream/master
 
 if #disasm_files > 0 then
 	project ("dasm")
 	uuid ("f2d28b0a-6da5-4f78-b629-d834aa00429d")
 	kind (LIBTYPE)
 	targetsubdir(_target .."_" .. _subtarget)
+<<<<<<< HEAD
+=======
+	addprojectflags()
+	precompiledheaders()
+>>>>>>> upstream/master
 
 	includedirs {
 		MAME_DIR .. "src/osd",
@@ -104,6 +135,7 @@ if #disasm_files > 0 then
 		MAME_DIR .. "src/lib",
 		MAME_DIR .. "src/lib/util",
 		MAME_DIR .. "3rdparty",
+<<<<<<< HEAD
 		GEN_DIR  .. "emu",
 	}
 	if _OPTIONS["with-bundled-expat"] then
@@ -116,6 +148,12 @@ if #disasm_files > 0 then
 			MAME_DIR .. "3rdparty/lua/src",
 		}
 	end
+=======
+		MAME_DIR .. "3rdparty/asio/include",
+		GEN_DIR  .. "emu",
+		ext_includedir("expat"),
+	}
+>>>>>>> upstream/master
 
 	files {
 		disasm_files

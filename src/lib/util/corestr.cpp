@@ -22,8 +22,13 @@ int core_stricmp(const char *s1, const char *s2)
 {
 	for (;;)
 	{
+<<<<<<< HEAD
 		int c1 = tolower((UINT8)*s1++);
 		int c2 = tolower((UINT8)*s2++);
+=======
+		int c1 = tolower((uint8_t)*s1++);
+		int c2 = tolower((uint8_t)*s2++);
+>>>>>>> upstream/master
 		if (c1 == 0 || c1 != c2)
 			return c1 - c2;
 	}
@@ -39,8 +44,13 @@ int core_strnicmp(const char *s1, const char *s2, size_t n)
 	size_t i;
 	for (i = 0; i < n; i++)
 	{
+<<<<<<< HEAD
 		int c1 = tolower((UINT8)*s1++);
 		int c2 = tolower((UINT8)*s2++);
+=======
+		int c1 = tolower((uint8_t)*s1++);
+		int c2 = tolower((uint8_t)*s2++);
+>>>>>>> upstream/master
 		if (c1 == 0 || c1 != c2)
 			return c1 - c2;
 	}
@@ -107,6 +117,7 @@ int core_strwildcmp(const char *sp1, const char *sp2)
 	return core_stricmp(s1, s2);
 }
 
+<<<<<<< HEAD
 
 /*-------------------------------------------------
     core_strdup - string duplication via osd_malloc
@@ -217,6 +228,35 @@ char *core_i64_format(UINT64 value, UINT8 mindigits, bool is_octal)
 {
 	return is_octal ? core_i64_oct_format(value,mindigits) : core_i64_hex_format(value,mindigits);
 }
+=======
+bool core_iswildstr(const char *sp)
+{
+	for ( ; sp && *sp; sp++)
+	{
+		if (('?' == *sp) || ('*' == *sp))
+			return true;
+	}
+	return false;
+}
+
+
+/*-------------------------------------------------
+    core_strdup - string duplication via malloc
+-------------------------------------------------*/
+
+char *core_strdup(const char *str)
+{
+	char *cpy = nullptr;
+	if (str != nullptr)
+	{
+		cpy = (char *)malloc(strlen(str) + 1);
+		if (cpy != nullptr)
+			strcpy(cpy, str);
+	}
+	return cpy;
+}
+
+>>>>>>> upstream/master
 
 /*-------------------------------------------------
     std::string helpers
@@ -224,6 +264,7 @@ char *core_i64_format(UINT64 value, UINT8 mindigits, bool is_octal)
 
 #include <algorithm>
 
+<<<<<<< HEAD
 int strvprintf(std::string &str, const char *format, va_list args)
 {
 	char tempbuf[4096];
@@ -254,6 +295,8 @@ std::string strformat(std::string &str, const char *format, ...)
 	return retVal;
 }
 
+=======
+>>>>>>> upstream/master
 int strcatvprintf(std::string &str, const char *format, va_list args)
 {
 	char tempbuf[4096];
@@ -264,6 +307,7 @@ int strcatvprintf(std::string &str, const char *format, va_list args)
 	return result;
 }
 
+<<<<<<< HEAD
 int strcatprintf(std::string &str, const char *format, ...)
 {
 	va_list ap;
@@ -273,6 +317,8 @@ int strcatprintf(std::string &str, const char *format, ...)
 	return retVal;
 }
 
+=======
+>>>>>>> upstream/master
 void strdelchr(std::string& str, char chr)
 {
 	for (size_t i = 0; i < str.length(); i++)
@@ -287,6 +333,7 @@ void strdelchr(std::string& str, char chr)
 
 void strreplacechr(std::string& str, char ch, char newch)
 {
+<<<<<<< HEAD
 	for (size_t i = 0; i < str.length(); i++)
 	{
 		if (str[i] == ch) str[i] = newch;
@@ -314,18 +361,89 @@ std::string strtrimspace(std::string& str)
 	return str;
 }
 
+=======
+	for (auto & elem : str)
+	{
+		if (elem == ch) elem = newch;
+	}
+}
+
+static std::string internal_strtrimspace(std::string& str, bool right_only)
+{
+	// identify the start
+	std::string::iterator start = str.begin();
+	if (!right_only)
+	{
+		start = std::find_if(
+			str.begin(),
+			str.end(),
+			[](char c) { return !isspace(uint8_t(c)); });
+	}
+
+	// identify the end
+	std::string::iterator end = std::find_if(
+		str.rbegin(),
+		std::string::reverse_iterator(start),
+		[](char c) { return !isspace(uint8_t(c)); }).base();
+
+	// extract the string
+	str = end > start
+		? str.substr(start - str.begin(), end - start)
+		: "";
+	return str;
+}
+
+std::string strtrimspace(std::string& str)
+{
+	return internal_strtrimspace(str, false);
+}
+
+std::string strtrimrightspace(std::string& str)
+{
+	return internal_strtrimspace(str, true);
+}
+
+>>>>>>> upstream/master
 std::string strmakeupper(std::string& str)
 {
 	std::transform(str.begin(), str.end(), str.begin(), ::toupper);
 	return str;
 }
 
+<<<<<<< HEAD
+=======
+/**
+ * @fn  std::string strmakelower(std::string& str)
+ *
+ * @brief   Strmakelowers the given string.
+ *
+ * @param [in,out]  str The string.
+ *
+ * @return  A std::string.
+ */
+
+>>>>>>> upstream/master
 std::string strmakelower(std::string& str)
 {
 	std::transform(str.begin(), str.end(), str.begin(), ::tolower);
 	return str;
 }
 
+<<<<<<< HEAD
+=======
+/**
+ * @fn  int strreplace(std::string &str, const std::string& search, const std::string& replace)
+ *
+ * @brief   Strreplaces.
+ *
+ * @param [in,out]  str The string.
+ * @param   search      The search.
+ * @param   replace     The replace.
+ *
+ * @return  An int.
+ */
+
+>>>>>>> upstream/master
 int strreplace(std::string &str, const std::string& search, const std::string& replace)
 {
 	int searchlen = search.length();
@@ -338,4 +456,8 @@ int strreplace(std::string &str, const std::string& search, const std::string& r
 		str.erase(curindex, searchlen).insert(curindex, replace);
 	}
 	return matches;
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> upstream/master

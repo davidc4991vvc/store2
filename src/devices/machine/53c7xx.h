@@ -8,6 +8,7 @@
 
 *********************************************************************/
 
+<<<<<<< HEAD
 #ifndef _NCR53C7XX_H_
 #define _NCR53C7XX_H_
 
@@ -57,6 +58,15 @@
 #define DSTAT_SSI           0x08
 #define DSTAT_ABRT          0x10
 #define DSTAT_DFE           0x80
+=======
+#ifndef MAME_MACHINE_53C7XX_H
+#define MAME_MACHINE_53C7XX_H
+
+#pragma once
+
+#include "machine/nscsi_bus.h"
+
+>>>>>>> upstream/master
 
 #define MCFG_NCR53C7XX_IRQ_HANDLER(_devcb) \
 	devcb = &ncr53c7xx_device::set_irq_handler(*device, DEVCB_##_devcb);
@@ -67,6 +77,7 @@
 #define MCFG_NCR53C7XX_HOST_READ(_devcb) \
 	devcb = &ncr53c7xx_device::set_host_read(*device, DEVCB_##_devcb);
 
+<<<<<<< HEAD
 class ncr53c7xx_device : public nscsi_device,
 							public device_execute_interface
 {
@@ -78,6 +89,18 @@ public:
 	template<class _Object> static devcb_base &set_irq_handler(device_t &device, _Object object) { return downcast<ncr53c7xx_device &>(device).m_irq_handler.set_callback(object); }
 	template<class _Object> static devcb_base &set_host_write(device_t &device, _Object object) { return downcast<ncr53c7xx_device &>(device).m_host_write.set_callback(object); }
 	template<class _Object> static devcb_base &set_host_read(device_t &device, _Object object) { return downcast<ncr53c7xx_device &>(device).m_host_read.set_callback(object); }
+=======
+class ncr53c7xx_device : public nscsi_device, public device_execute_interface
+{
+public:
+	// construction/destruction
+	ncr53c7xx_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
+
+	// static configuration helpers
+	template <class Object> static devcb_base &set_irq_handler(device_t &device, Object &&cb) { return downcast<ncr53c7xx_device &>(device).m_irq_handler.set_callback(std::forward<Object>(cb)); }
+	template <class Object> static devcb_base &set_host_write(device_t &device, Object &&cb) { return downcast<ncr53c7xx_device &>(device).m_host_write.set_callback(std::forward<Object>(cb)); }
+	template <class Object> static devcb_base &set_host_read(device_t &device, Object &&cb) { return downcast<ncr53c7xx_device &>(device).m_host_read.set_callback(std::forward<Object>(cb)); }
+>>>>>>> upstream/master
 
 	// our API
 	DECLARE_READ32_MEMBER(read);
@@ -85,10 +108,17 @@ public:
 
 protected:
 	// device-level overrides
+<<<<<<< HEAD
 	virtual void device_start();
 	virtual void device_reset();
 	virtual void device_timer(emu_timer &timer, device_timer_id id, int param, void *ptr);
 	virtual void execute_run();
+=======
+	virtual void device_start() override;
+	virtual void device_reset() override;
+	virtual void device_timer(emu_timer &timer, device_timer_id id, int param, void *ptr) override;
+	virtual void execute_run() override;
+>>>>>>> upstream/master
 
 	int m_icount;
 
@@ -137,7 +167,11 @@ private:
 	void update_irqs();
 	void set_scsi_state(int state);
 	void delay(const attotime &delay);
+<<<<<<< HEAD
 	void scsi_ctrl_changed();
+=======
+	void scsi_ctrl_changed() override;
+>>>>>>> upstream/master
 	void send_byte();
 	void recv_byte();
 	void step(bool timeout);
@@ -178,6 +212,7 @@ private:
 
 
 	// SCSI registers
+<<<<<<< HEAD
 	UINT8   m_scntl[2];
 	UINT8   m_sdid;
 	UINT8   m_sien;
@@ -204,14 +239,47 @@ private:
 	UINT8   m_dien;
 	UINT8   m_dwt;
 	UINT8   m_dcntl;
+=======
+	uint8_t   m_scntl[2];
+	uint8_t   m_sdid;
+	uint8_t   m_sien;
+	uint8_t   m_scid;
+	uint8_t   m_sxfer;
+	uint8_t   m_sodl;
+	uint8_t   m_socl;
+	uint8_t   m_sfbr;
+	uint8_t   m_sidl;
+	uint8_t   m_sbdl;
+	uint8_t   m_sbcl;
+	uint8_t   m_dstat;
+	uint8_t   m_sstat[3];
+	uint8_t   m_ctest[8];
+	uint32_t  m_temp;
+	uint8_t   m_dfifo;
+	uint8_t   m_istat;
+	uint32_t  m_dbc;
+	uint8_t   m_dcmd;
+	uint32_t  m_dnad;
+	uint32_t  m_dsp;
+	uint32_t  m_dsps;
+	uint8_t   m_dmode;
+	uint8_t   m_dien;
+	uint8_t   m_dwt;
+	uint8_t   m_dcntl;
+>>>>>>> upstream/master
 
 
 	// other state
 	int     m_scsi_state;
 	bool    m_connected;
 	bool    m_finished;
+<<<<<<< HEAD
 	UINT8   m_last_data;
 	UINT32  m_xfr_phase;
+=======
+	uint8_t   m_last_data;
+	uint32_t  m_xfr_phase;
+>>>>>>> upstream/master
 	emu_timer *m_tm;
 
 	int     m_scripts_state;
@@ -225,5 +293,11 @@ private:
 };
 
 // device type definition
+<<<<<<< HEAD
 extern const device_type NCR53C7XX;
 #endif
+=======
+DECLARE_DEVICE_TYPE(NCR53C7XX, ncr53c7xx_device)
+
+#endif // MAME_MACHINE_53C7XX_H
+>>>>>>> upstream/master

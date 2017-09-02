@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 // license:???
+=======
+// license:BSD-3-Clause
+>>>>>>> upstream/master
 // copyright-holders:Frank Palazzolo, Stefan Jokisch
 /***************************************************************************
 
@@ -27,7 +31,11 @@ PALETTE_INIT_MEMBER(starshp1_state, starshp1)
 {
 	int i;
 
+<<<<<<< HEAD
 	static const UINT16 colortable_source[] =
+=======
+	static const uint16_t colortable_source[] =
+>>>>>>> upstream/master
 	{
 		0, 3,       /* 0x00 - 0x01 - alpha numerics */
 		0, 2,       /* 0x02 - 0x03 - sprites (Z=0) */
@@ -46,7 +54,11 @@ PALETTE_INIT_MEMBER(starshp1_state, starshp1)
 
 TILE_GET_INFO_MEMBER(starshp1_state::get_tile_info)
 {
+<<<<<<< HEAD
 	UINT8 code = m_playfield_ram[tile_index];
+=======
+	uint8_t code = m_playfield_ram[tile_index];
+>>>>>>> upstream/master
 
 	SET_TILE_INFO_MEMBER(0, code & 0x3f, 0, 0);
 }
@@ -54,17 +66,29 @@ TILE_GET_INFO_MEMBER(starshp1_state::get_tile_info)
 
 void starshp1_state::video_start()
 {
+<<<<<<< HEAD
 	UINT16 val = 0;
 
 	int i;
 
 	m_bg_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(starshp1_state::get_tile_info),this), TILEMAP_SCAN_ROWS,  16, 8, 32, 32);
+=======
+	uint16_t val = 0;
+
+	int i;
+
+	m_bg_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(starshp1_state::get_tile_info),this), TILEMAP_SCAN_ROWS,  16, 8, 32, 32);
+>>>>>>> upstream/master
 
 	m_bg_tilemap->set_transparent_pen(0);
 
 	m_bg_tilemap->set_scrollx(0, -8);
 
+<<<<<<< HEAD
 	m_LSFR = auto_alloc_array(machine(), UINT16, 0x10000);
+=======
+	m_LSFR = std::make_unique<uint16_t[]>(0x10000);
+>>>>>>> upstream/master
 
 	for (i = 0; i < 0x10000; i++)
 	{
@@ -96,7 +120,11 @@ READ8_MEMBER(starshp1_state::starshp1_rng_r)
 	if (y > height - 1)
 		y = height - 1;
 
+<<<<<<< HEAD
 	return m_LSFR[x + (UINT16) (512 * y)];
+=======
+	return m_LSFR[x + (uint16_t) (512 * y)];
+>>>>>>> upstream/master
 }
 
 
@@ -119,6 +147,7 @@ WRITE8_MEMBER(starshp1_state::starshp1_ssadd_w)
 WRITE8_MEMBER(starshp1_state::starshp1_sspic_w)
 {
 	/*
+<<<<<<< HEAD
 	 * Some mysterious game code at address $2CCE is causing
 	 * erratic images in the target explosion sequence. The
 	 * following condition is a hack to filter these images.
@@ -126,6 +155,15 @@ WRITE8_MEMBER(starshp1_state::starshp1_sspic_w)
 
 	if (data != 0x87)
 		m_ship_picture = data;
+=======
+	 * Some mysterious game code at address $2CCE is causes
+	 * erratic images in the target explosion sequence. But
+	 * This is the way the actual game worked!
+	 */
+
+	m_ship_picture = data;
+
+>>>>>>> upstream/master
 }
 
 
@@ -153,9 +191,15 @@ void starshp1_state::draw_starfield(bitmap_ind16 &bitmap)
 
 	for (y = 0; y < bitmap.height(); y++)
 	{
+<<<<<<< HEAD
 		const UINT16* p = m_LSFR + (UINT16) (512 * y);
 
 		UINT16* pLine = &bitmap.pix16(y);
+=======
+		const uint16_t* p = m_LSFR.get() + (uint16_t) (512 * y);
+
+		uint16_t* pLine = &bitmap.pix16(y);
+>>>>>>> upstream/master
 
 		for (x = 0; x < bitmap.width(); x++)
 			if ((p[x] & 0x5b56) == 0x5b44)
@@ -250,9 +294,15 @@ void starshp1_state::draw_circle_line(bitmap_ind16 &bitmap, int x, int y, int l)
 {
 	if (y >= 0 && y <= bitmap.height() - 1)
 	{
+<<<<<<< HEAD
 		const UINT16* p = m_LSFR + (UINT16) (512 * y);
 
 		UINT16* pLine = &bitmap.pix16(y);
+=======
+		const uint16_t* p = m_LSFR.get() + (uint16_t) (512 * y);
+
+		uint16_t* pLine = &bitmap.pix16(y);
+>>>>>>> upstream/master
 
 		int h1 = x - 2 * l;
 		int h2 = x + 2 * l;
@@ -310,7 +360,11 @@ int starshp1_state::spaceship_collision(bitmap_ind16 &bitmap, const rectangle &r
 
 	for (y = rect.min_y; y <= rect.max_y; y++)
 	{
+<<<<<<< HEAD
 		const UINT16* pLine = &m_helper.pix16(y);
+=======
+		const uint16_t* pLine = &m_helper.pix16(y);
+>>>>>>> upstream/master
 
 		for (x = rect.min_x; x <= rect.max_x; x++)
 			if (pLine[x] != 0)
@@ -344,7 +398,11 @@ int starshp1_state::circle_collision(const rectangle &rect)
 }
 
 
+<<<<<<< HEAD
 UINT32 starshp1_state::screen_update_starshp1(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+=======
+uint32_t starshp1_state::screen_update_starshp1(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+>>>>>>> upstream/master
 {
 	set_pens();
 
@@ -373,7 +431,11 @@ UINT32 starshp1_state::screen_update_starshp1(screen_device &screen, bitmap_ind1
 }
 
 
+<<<<<<< HEAD
 void starshp1_state::screen_eof_starshp1(screen_device &screen, bool state)
+=======
+WRITE_LINE_MEMBER(starshp1_state::screen_vblank_starshp1)
+>>>>>>> upstream/master
 {
 	// rising edge
 	if (state)

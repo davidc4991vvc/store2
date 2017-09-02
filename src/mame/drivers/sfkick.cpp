@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 // license:LGPL-2.1+
+=======
+// license:BSD-3-Clause
+>>>>>>> upstream/master
 // copyright-holders:Tomasz Slanina
 /*
   Super Free Kick / Spinkick by HEC (Haesung Enterprise Co.)
@@ -6,7 +10,11 @@
     driver by Tomasz Slanina
 
   Hacked MSX2 home computer hardware. Romset contains
+<<<<<<< HEAD
   modifed ( (c) strings removed and patched boot sequence)
+=======
+  modified ( (c) strings removed and patched boot sequence)
+>>>>>>> upstream/master
   MSX2 bios. Yamaha VDP v9938 is hidden in huge epoxy block.
   There's also an additional Z80 to drive sound.
 
@@ -44,20 +52,135 @@ Board # CBK1029
 
 CN1: 40 PIN Connector (Epoxy Block )
 CN2: 8  PIN Connector (Epoxy Block)
+<<<<<<< HEAD
 1UP: 4 PIN Connector (Analog Controls ?)
 2UP: 4 PIN Connector (Analog Controls ?)
+=======
+1UP: 4 PIN Connector (Analog Controls)
+2UP: 4 PIN Connector (Analog Controls)
+>>>>>>> upstream/master
 
 Z8400A (x2)
 UM82C55A-PC
 YM2203C
 
+<<<<<<< HEAD
+=======
+Documentation as per manual:
+
+            Main Jamma Connector
+    Solder Side    |        Parts Side
+------------------------------------------------------------------
+           GND | A | 1 | GND
+           GND | B | 2 | GND
+            +5 | C | 3 | +5
+            +5 | D | 4 | +5
+               | E | 5 |
+           +12 | F | 6 | +12
+----- KEY -----| H | 7 |----- KEY -----
+               | J | 8 |
+               | K | 9 |
+   Speaker (-) | L | 10| Speaker (+)
+               | M | 11|
+   Video Green | N | 12| Video Red
+    Video Sync | P | 13| Video Blue
+ Player 1 Left | R | 14| Player 2 Right
+Player 1 Right | S | 15| Player 2 Left
+ Coin Switch 2 | T | 16| Coin Switch 1
+Player 2 Start | U | 17| Player 1 Start
+               | V | 18|
+               | W | 19|
+               | X | 20|
+               | Y | 21|
+Player 2 Shoot | Z | 22| Player 1 Shoot
+               | a | 23|
+               | b | 24|
+               | c | 25|
+               | d | 26|
+           GND | e | 27| GND
+           GND | f | 28| GND
+
+         ____
+        /    \
+       | Dial |
+        \____/
+       /|   |\
+     /  |   | \
+ Blue Red Black Yellow
+  /     |   |    \
+Left  +5v  GND   Right
+
+
+DIPSW-1
+------------------------------------------------------------------
+    DipSwitch Title   | Function | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 |
+------------------------------------------------------------------
+    Cabinet Style     | Upright  |off|                           |
+                      | Cocktail |on |                           |
+------------------------------------------------------------------
+    Stage Select      |   Off    |   |off|                       |
+                      |   On     |   |on |                       |
+------------------------------------------------------------------
+    Freeze Screen     |   Off    |       |off|                   |
+                      |   On     |       |on |                   |
+------------------------------------------------------------------
+   Test / Game Mode   |   Game   |           |off|               |
+                      |   Test   |           |on |               |
+------------------------------------------------------------------
+    Allow Continue    |   Off    |               |off|           |
+                      |   On     |               |on |           |
+------------------------------------------------------------------
+                      | 1cn/1cr  |                   |off|off|off|
+                      | 1cn/2cr  |                   |on |off|off|
+                      | 1cn/3cr  |                   |off|on |off|
+        Coinage       | 1cn/5cr  |                   |on |on |off|
+                      | 2cn/1cr  |                   |off|off|on |
+                      | 2cn/3cr  |                   |on |off|on |
+                      | 3cn/1cr  |                   |off|on |on |
+                      | 3cn/2cr  |                   |on |on |on |
+------------------------------------------------------------------
+
+DIPSW-2
+------------------------------------------------------------------
+    DipSwitch Title   | Function | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 |
+------------------------------------------------------------------
+      No Comment      |   N/A    |off|                           |
+------------------------------------------------------------------
+     Demo Sounds      |   Yes    |   |off|                       |
+                      |   No     |   |on |                       |
+------------------------------------------------------------------
+                      |    1     |       |off|off|               |
+    Players Count     |    2     |       |on |off|               |
+                      |    3     |       |off|on |               |
+                      |    5     |       |on |on |               |
+-----------------------------------------------------------------
+                      |   None   |               |off|off|       |
+         Bonus        |Every 20K |               |on |off|       |
+                      |20K & 50K |               |off|on |       |
+                      |Every 50K |               |on |on |       |
+------------------------------------------------------------------
+                      |   Easy   |                       |off|off|
+      Difficulty      |  Normal  |                       |on |off|
+                      |   Hard   |                       |off|on |
+                      |  V.Hard  |                       |on |on |
+------------------------------------------------------------------
+
+>>>>>>> upstream/master
 */
 
 #include "emu.h"
 #include "cpu/z80/z80.h"
 #include "video/v9938.h"
+<<<<<<< HEAD
 #include "machine/i8255.h"
 #include "sound/2203intf.h"
+=======
+#include "machine/gen_latch.h"
+#include "machine/i8255.h"
+#include "sound/2203intf.h"
+#include "screen.h"
+#include "speaker.h"
+>>>>>>> upstream/master
 
 
 class sfkick_state : public driver_device
@@ -87,7 +210,11 @@ public:
 		m_dsw2(*this, "DSW2")
 	{ }
 
+<<<<<<< HEAD
 	UINT8 *m_main_mem;
+=======
+	std::unique_ptr<uint8_t[]> m_main_mem;
+>>>>>>> upstream/master
 	int m_bank_cfg;
 	int m_bank[8];
 	int m_input_mux;
@@ -100,11 +227,18 @@ public:
 	DECLARE_WRITE8_MEMBER(ppi_port_a_w);
 	DECLARE_WRITE8_MEMBER(ppi_port_c_w);
 	DECLARE_DRIVER_INIT(sfkick);
+<<<<<<< HEAD
 	virtual void machine_reset();
 	void sfkick_remap_banks();
 	void sfkick_bank_set(int num, int data);
 	DECLARE_WRITE_LINE_MEMBER(irqhandler);
 	DECLARE_WRITE_LINE_MEMBER(sfkick_vdp_interrupt);
+=======
+	virtual void machine_reset() override;
+	void sfkick_remap_banks();
+	void sfkick_bank_set(int num, int data);
+	DECLARE_WRITE_LINE_MEMBER(irqhandler);
+>>>>>>> upstream/master
 	required_device<cpu_device> m_maincpu;
 	required_device<cpu_device> m_soundcpu;
 	required_memory_region m_region_bios;
@@ -137,8 +271,13 @@ READ8_MEMBER(sfkick_state::ppi_port_b_r)
 		case 0: return m_in0->read();
 		case 1: return m_in1->read();
 		case 2: return BITSWAP8(m_dial->read(),4,5,6,7,3,2,1,0);
+<<<<<<< HEAD
 		case 3: return m_dsw2->read();
 		case 4: return m_dsw1->read();
+=======
+		case 3: return m_dsw1->read();
+		case 4: return m_dsw2->read();
+>>>>>>> upstream/master
 	}
 	return 0xff;
 }
@@ -150,7 +289,11 @@ void sfkick_state::sfkick_remap_banks()
 	{
 		case 0: /* bios */
 		{
+<<<<<<< HEAD
 			UINT8 *mem = m_region_bios->base();
+=======
+			uint8_t *mem = m_region_bios->base();
+>>>>>>> upstream/master
 			m_bank1->set_base(mem);
 			m_bank2->set_base(mem+0x2000);
 		}
@@ -158,7 +301,11 @@ void sfkick_state::sfkick_remap_banks()
 
 		case 1: /* ext rom */
 		{
+<<<<<<< HEAD
 			UINT8 *mem = m_region_extrom->base();
+=======
+			uint8_t *mem = m_region_extrom->base();
+>>>>>>> upstream/master
 			m_bank1->set_base(mem+0x4000);
 			m_bank2->set_base(mem+0x6000);
 		}
@@ -166,7 +313,11 @@ void sfkick_state::sfkick_remap_banks()
 
 		case 2: /* banked */
 		{
+<<<<<<< HEAD
 			UINT8 *mem = m_region_banked->base();
+=======
+			uint8_t *mem = m_region_banked->base();
+>>>>>>> upstream/master
 			m_bank1->set_base(mem+0x2000*m_bank[0]);
 			m_bank2->set_base(mem+0x2000*m_bank[1]);
 		}
@@ -174,7 +325,11 @@ void sfkick_state::sfkick_remap_banks()
 
 		case 3: /* unknown */
 		{
+<<<<<<< HEAD
 			UINT8 *mem = m_region_banked->base();
+=======
+			uint8_t *mem = m_region_banked->base();
+>>>>>>> upstream/master
 			m_bank1->set_base(mem+0x18000);
 			m_bank2->set_base(mem+0x18000);
 		}
@@ -186,7 +341,11 @@ void sfkick_state::sfkick_remap_banks()
 	{
 		case 0: /* bios - upper part */
 		{
+<<<<<<< HEAD
 			UINT8 *mem = m_region_bios->base();
+=======
+			uint8_t *mem = m_region_bios->base();
+>>>>>>> upstream/master
 			m_bank3->set_base(mem+0x4000);
 			m_bank4->set_base(mem+0x6000);
 		}
@@ -195,7 +354,11 @@ void sfkick_state::sfkick_remap_banks()
 		case 1:  /* unknown */
 		case 3:
 		{
+<<<<<<< HEAD
 			UINT8 *mem = m_region_banked->base();
+=======
+			uint8_t *mem = m_region_banked->base();
+>>>>>>> upstream/master
 			m_bank3->set_base(mem+0x18000);
 			m_bank4->set_base(mem+0x18000);
 		}
@@ -203,7 +366,11 @@ void sfkick_state::sfkick_remap_banks()
 
 		case 2: /* banked */
 		{
+<<<<<<< HEAD
 			UINT8 *mem = m_region_banked->base();
+=======
+			uint8_t *mem = m_region_banked->base();
+>>>>>>> upstream/master
 			m_bank3->set_base(mem+0x2000*m_bank[2]);
 			m_bank4->set_base(mem+0x2000*m_bank[3]);
 		}
@@ -215,7 +382,11 @@ void sfkick_state::sfkick_remap_banks()
 	{
 		case 0: /* cartridge */
 		{
+<<<<<<< HEAD
 			UINT8 *mem = m_region_cartridge->base();
+=======
+			uint8_t *mem = m_region_cartridge->base();
+>>>>>>> upstream/master
 			m_bank5->set_base(mem+0x4000);
 			m_bank6->set_base(mem+0x6000);
 		}
@@ -224,7 +395,11 @@ void sfkick_state::sfkick_remap_banks()
 		case 1: /* unknown */
 		case 3:
 		{
+<<<<<<< HEAD
 			UINT8 *mem = m_region_banked->base();
+=======
+			uint8_t *mem = m_region_banked->base();
+>>>>>>> upstream/master
 			m_bank5->set_base(mem+0x18000);
 			m_bank6->set_base(mem+0x18000);
 		}
@@ -232,7 +407,11 @@ void sfkick_state::sfkick_remap_banks()
 
 		case 2: /* banked */
 		{
+<<<<<<< HEAD
 			UINT8 *mem = m_region_banked->base();
+=======
+			uint8_t *mem = m_region_banked->base();
+>>>>>>> upstream/master
 			m_bank5->set_base(mem+0x2000*m_bank[4]);
 			m_bank6->set_base(mem+0x2000*m_bank[5]);
 		}
@@ -245,7 +424,11 @@ void sfkick_state::sfkick_remap_banks()
 		case 0: /* unknown */
 		case 1:
 		{
+<<<<<<< HEAD
 			UINT8 *mem = m_region_banked->base();
+=======
+			uint8_t *mem = m_region_banked->base();
+>>>>>>> upstream/master
 			m_bank7->set_base(mem+0x18000);
 			m_bank8->set_base(mem+0x18000);
 		}
@@ -253,7 +436,11 @@ void sfkick_state::sfkick_remap_banks()
 
 		case 2: /* banked */
 		{
+<<<<<<< HEAD
 			UINT8 *mem = m_region_banked->base();
+=======
+			uint8_t *mem = m_region_banked->base();
+>>>>>>> upstream/master
 			m_bank7->set_base(mem+0x2000*m_bank[6]);
 			m_bank8->set_base(mem+0x2000*m_bank[7]);
 		}
@@ -261,8 +448,13 @@ void sfkick_state::sfkick_remap_banks()
 
 		case 3: /* RAM */
 		{
+<<<<<<< HEAD
 			m_bank7->set_base(m_main_mem);
 			m_bank8->set_base(m_main_mem+0x2000);
+=======
+			m_bank7->set_base(m_main_mem.get());
+			m_bank8->set_base(m_main_mem.get()+0x2000);
+>>>>>>> upstream/master
 		}
 		break;
 	}
@@ -372,7 +564,11 @@ ADDRESS_MAP_END
 static ADDRESS_MAP_START( sfkick_io_map, AS_IO, 8, sfkick_state )
 	ADDRESS_MAP_UNMAP_HIGH
 	ADDRESS_MAP_GLOBAL_MASK(0xff)
+<<<<<<< HEAD
 	AM_RANGE( 0xa0, 0xa7) AM_WRITE(soundlatch_byte_w )
+=======
+	AM_RANGE( 0xa0, 0xa7) AM_DEVWRITE("soundlatch", generic_latch_8_device, write)
+>>>>>>> upstream/master
 	AM_RANGE( 0x98, 0x9b) AM_DEVREADWRITE( "v9938", v9938_device, read, write)
 	AM_RANGE( 0xa8, 0xab) AM_DEVREADWRITE("ppi8255", i8255_device, read, write)
 	AM_RANGE( 0xb4, 0xb5) AM_RAM /* loopback ? req by sfkicka (MSX Bios leftover)*/
@@ -385,7 +581,11 @@ ADDRESS_MAP_END
 
 static ADDRESS_MAP_START( sfkick_sound_io_map, AS_IO, 8, sfkick_state )
 	ADDRESS_MAP_GLOBAL_MASK(0xff)
+<<<<<<< HEAD
 	AM_RANGE(0x00, 0x00) AM_READ(soundlatch_byte_r)
+=======
+	AM_RANGE(0x00, 0x00) AM_DEVREAD("soundlatch", generic_latch_8_device, read)
+>>>>>>> upstream/master
 	AM_RANGE(0x04, 0x05) AM_DEVREADWRITE("ym1", ym2203_device, read, write)
 ADDRESS_MAP_END
 
@@ -411,6 +611,7 @@ static INPUT_PORTS_START( sfkick )
 	PORT_BIT( 0xff, 0x00, IPT_DIAL ) PORT_SENSITIVITY(25) PORT_KEYDELTA(-20)
 
 	PORT_START("DSW1") /* bitswapped at read! 76543210 -> 45673210 */
+<<<<<<< HEAD
 	PORT_DIPNAME(   0x82, 0x02, DEF_STR( Unknown ) )  /* unknown, code @ $98a8 */
 	PORT_DIPSETTING(      0x00, "3" )
 	PORT_DIPSETTING(      0x02, "2" )
@@ -446,6 +647,24 @@ static INPUT_PORTS_START( sfkick )
 	PORT_DIPSETTING(    0x40, DEF_STR( No ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( Yes ) )
 	PORT_DIPNAME(   0x8c, 0x8c, DEF_STR( Coinage ) )
+=======
+	PORT_DIPNAME( 0x10, 0x10, DEF_STR( Cabinet ) )  PORT_DIPLOCATION("SW1:1")
+	PORT_DIPSETTING(    0x10, DEF_STR( Upright ) )
+	PORT_DIPSETTING(    0x00, DEF_STR( Cocktail ) )
+	PORT_DIPNAME( 0x01, 0x01,  "Stage Select" ) PORT_DIPLOCATION("SW1:2") /* How does this work?? */
+	PORT_DIPSETTING(    0x01, DEF_STR( Off ) )
+	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
+	PORT_DIPNAME( 0x20, 0x20,  "Freeze" )   PORT_DIPLOCATION("SW1:3")
+	PORT_DIPSETTING(    0x20, DEF_STR( Off ) )
+	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
+	PORT_DIPNAME( 0x02, 0x02,  "Test Mode" )    PORT_DIPLOCATION("SW1:4")
+	PORT_DIPSETTING(    0x02, DEF_STR( Off ) )
+	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
+	PORT_DIPNAME( 0x40, 0x00, DEF_STR( Allow_Continue ) )   PORT_DIPLOCATION("SW1:5")
+	PORT_DIPSETTING(    0x40, DEF_STR( No ) )
+	PORT_DIPSETTING(    0x00, DEF_STR( Yes ) )
+	PORT_DIPNAME( 0x8c, 0x8c, DEF_STR( Coinage ) )  PORT_DIPLOCATION("SW1:6,8,7")
+>>>>>>> upstream/master
 	PORT_DIPSETTING(    0x04, DEF_STR( 3C_1C ) )
 	PORT_DIPSETTING(    0x84, DEF_STR( 2C_1C ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( 3C_2C ) )
@@ -454,12 +673,38 @@ static INPUT_PORTS_START( sfkick )
 	PORT_DIPSETTING(    0x88, DEF_STR( 1C_2C ) )
 	PORT_DIPSETTING(    0x0c, DEF_STR( 1C_3C ) )
 	PORT_DIPSETTING(    0x08, DEF_STR( 1C_5C ) )
+<<<<<<< HEAD
 INPUT_PORTS_END
 
 WRITE_LINE_MEMBER(sfkick_state::sfkick_vdp_interrupt)
 {
 	m_maincpu->set_input_line(0, (state ? HOLD_LINE : CLEAR_LINE));
 }
+=======
+
+	PORT_START("DSW2") /* bitswapped at read! 76543210 -> 45673210 */
+	PORT_DIPUNUSED_DIPLOC( 0x10, IP_ACTIVE_LOW, "SW2:1" ) /* Manual states "No Comment" */
+	PORT_DIPNAME( 0x20, 0x20, DEF_STR( Demo_Sounds ) )  PORT_DIPLOCATION("SW2:2")
+	PORT_DIPSETTING(    0x00, DEF_STR( Off ) )
+	PORT_DIPSETTING(    0x20, DEF_STR( On ) )
+	PORT_DIPNAME( 0x41, 0x01, DEF_STR( Lives ) )    PORT_DIPLOCATION("SW2:3,4")
+	PORT_DIPSETTING(    0x41, "1" )
+	PORT_DIPSETTING(    0x40, "2" )
+	PORT_DIPSETTING(    0x01, "3" )
+	PORT_DIPSETTING(    0x00, "5" )
+	PORT_DIPNAME( 0x82, 0x02, DEF_STR( Bonus_Life ) )   PORT_DIPLOCATION("SW2:5,6")
+	PORT_DIPSETTING(    0x80, "Every 20,000" )
+	PORT_DIPSETTING(    0x02, "20,000 & 50,000" )
+	PORT_DIPSETTING(    0x00, "Every 50,000" )
+	PORT_DIPSETTING(    0x82, DEF_STR( None ) )
+	PORT_DIPNAME( 0x0c, 0x08, DEF_STR( Difficulty ) )   PORT_DIPLOCATION("SW2:7,8")
+	PORT_DIPSETTING(    0x0c, DEF_STR( Easy ) )
+	PORT_DIPSETTING(    0x08, DEF_STR( Normal ) )
+	PORT_DIPSETTING(    0x04, DEF_STR( Hard ) )
+	PORT_DIPSETTING(    0x00, DEF_STR( Hardest ) )
+INPUT_PORTS_END
+
+>>>>>>> upstream/master
 
 void sfkick_state::machine_reset()
 {
@@ -480,7 +725,11 @@ WRITE_LINE_MEMBER(sfkick_state::irqhandler)
 	m_soundcpu->set_input_line_and_vector(0, state ? ASSERT_LINE : CLEAR_LINE, 0xff);
 }
 
+<<<<<<< HEAD
 static MACHINE_CONFIG_START( sfkick, sfkick_state )
+=======
+static MACHINE_CONFIG_START( sfkick )
+>>>>>>> upstream/master
 
 	MCFG_CPU_ADD("maincpu",Z80,MASTER_CLOCK/6)
 	MCFG_CPU_PROGRAM_MAP(sfkick_map)
@@ -493,7 +742,11 @@ static MACHINE_CONFIG_START( sfkick, sfkick_state )
 	MCFG_CPU_IO_MAP(sfkick_sound_io_map)
 
 	MCFG_V9938_ADD("v9938", "screen", 0x80000, MASTER_CLOCK)
+<<<<<<< HEAD
 	MCFG_V99X8_INTERRUPT_CALLBACK(WRITELINE(sfkick_state,sfkick_vdp_interrupt))
+=======
+	MCFG_V99X8_INTERRUPT_CALLBACK(INPUTLINE("maincpu", 0))
+>>>>>>> upstream/master
 	MCFG_V99X8_SCREEN_ADD_NTSC("screen", "v9938", MASTER_CLOCK)
 
 	MCFG_DEVICE_ADD("ppi8255", I8255A, 0)
@@ -502,8 +755,17 @@ static MACHINE_CONFIG_START( sfkick, sfkick_state )
 	MCFG_I8255_OUT_PORTC_CB(WRITE8(sfkick_state, ppi_port_c_w))
 
 	MCFG_SPEAKER_STANDARD_MONO("mono")
+<<<<<<< HEAD
 	MCFG_SOUND_ADD("ym1", YM2203, MASTER_CLOCK/6)
 	MCFG_YM2203_IRQ_HANDLER(WRITELINE(sfkick_state, irqhandler))
+=======
+
+	MCFG_GENERIC_LATCH_8_ADD("soundlatch")
+
+	MCFG_SOUND_ADD("ym1", YM2203, MASTER_CLOCK/6)
+	MCFG_YM2203_IRQ_HANDLER(WRITELINE(sfkick_state, irqhandler))
+
+>>>>>>> upstream/master
 	MCFG_SOUND_ROUTE(0, "mono", 0.25)
 	MCFG_SOUND_ROUTE(1, "mono", 0.25)
 	MCFG_SOUND_ROUTE(2, "mono", 0.25)
@@ -513,7 +775,11 @@ MACHINE_CONFIG_END
 
 DRIVER_INIT_MEMBER(sfkick_state,sfkick)
 {
+<<<<<<< HEAD
 	m_main_mem=auto_alloc_array(machine(), UINT8, 0x4000);
+=======
+	m_main_mem=std::make_unique<uint8_t[]>(0x4000);
+>>>>>>> upstream/master
 }
 
 

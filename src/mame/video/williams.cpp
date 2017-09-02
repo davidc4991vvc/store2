@@ -1,5 +1,10 @@
+<<<<<<< HEAD
 // license:???
 // copyright-holders:Michael Soderstrom, Marc LaFontaine, Aaron Giles
+=======
+// license:BSD-3-Clause
+// copyright-holders:Aaron Giles
+>>>>>>> upstream/master
 /***************************************************************************
 
     Williams 6809 system
@@ -14,13 +19,23 @@
     Defender and Stargate simply draw graphics to the framebuffer directly
     with no extra intervention.
 
+<<<<<<< HEAD
     Later games added a pair of "special chips" (SC-01) to the board which
+=======
+    Later games added a pair of "special chips" (Special Chip 1, and Special
+    Chip 2, abbreviated for clarity as SC1 and SC2) to the board which
+>>>>>>> upstream/master
     are special purpose blitters. During their operation they HALT the
     main CPU so that they can control the busses. The operation of the
     chips is described in detail below.
 
+<<<<<<< HEAD
     The original SC-01 had a bug that forced an XOR of the width and height
     values with 4. This was fixed in the SC-02, which was used on  several
+=======
+    The original SC1 had a bug that forced an XOR of the width and height
+    values with 4. This was fixed in the SC2, which was used on several
+>>>>>>> upstream/master
     later games.
 
     Beginning with Sinistar, additional video tweaks were added.
@@ -57,7 +72,11 @@
     were added to the ROM boards of the later games. Splat!, Blaster, Mystic
     Marathon and Joust 2 used Special Chip 2s. The only difference that I've
     seen is that SC1s have a small bug. When you tell the SC1 the size of
+<<<<<<< HEAD
     the data to move, you have to exclusive-or the width and height with 2.
+=======
+    the data to move, you have to exclusive-or the width and height with 4.
+>>>>>>> upstream/master
     The SC2s eliminate this bug.
 
     The blitters were accessed at memory location $CA00-CA06.
@@ -91,7 +110,65 @@
     Bits 6 and 7 only blit every other pixel of the image. Bit 6 says even only,
     while bit 7 says odd only.
 
+<<<<<<< HEAD
 ***************************************************************************/
+=======
+******************************************************************************
+    Special Chip 1 and 2 aka VLSI VL2001/2001A Pinout:
+                               _______    _______
+                             _|*      \__/       |_
+                     /E <-  |_|1               40|_| ?-> /WINH
+                             _|                  |_
+                    TCF <-  |_|2               39|_|  -> A15
+                             _|                  |_
+                  /HTCF <-? |_|3               38|_|  -> A14
+                             _|                  |_
+                     D7 <>  |_|4               37|_|  -> A13
+                             _|                  |_
+                  /HALT ->  |_|5               36|_|  <- /RESET
+                             _|                  |_
+                  /BABS ->  |_|6               35|_|  == /4MHZ
+                             _|                  |_
+                     D6 <>  |_|7               34|_|  -> A12
+                             _|                  |_
+                     D5 <>  |_|8               33|_|  -> A11
+                             _|                  |_
+                     D4 <>  |_|9     5     V   32|_|  -> A10
+                             _|      4     T     |_
+ (not bonded, pcb GND) N/C  |_|10    1  V  I   31|_|  -> A9
+                             _|      0  L        |_
+                     D3 <>  |_|11    -  2      30|_|  -> A8
+                             _|      0  0  8     |_
+                     D2 <>  |_|12    9  0  2   29|_|  -- VCC(+5v)
+                             _|      8  1  2     |_
+                     D1 <>  |_|13    6     0   28|_|  <> A0
+                             _|      6           |_
+                    U/L ->  |_|14              27|_|  <> A1
+                             _|                  |_
+(not bonded, pcb +12v) N/C  |_|15              26|_|  <> A2
+                             _|                  |_
+                    GND --  |_|16              25|_|  <- /CS
+                             _|                  |_
+                     D0 <>  |_|17              24|_|  N/C (not bonded, pcb GND)
+                             _|                  |_
+                    R/W <>? |_|18              23|_|  -> A7
+                             _|                  |_
+                     A3 <-  |_|19              22|_|  -> A6
+                             _|                  |_
+                     A4 <-  |_|20              21|_|  -> A5
+                              |__________________|
+
+The full silkscreen markings of SC1 (under the "Special Chip 1" sticker, if it is present) are:
+          VTI  8220
+            VL2001
+          5410-09866
+
+The full silkscreen markings of SC2 (under the "Special Chip 2" sticker, if it is present) are:
+<VTi Logo> 242
+          VL2001A
+          5410-09958
+******************************************************************************/
+>>>>>>> upstream/master
 
 #include "emu.h"
 #include "video/resnet.h"
@@ -114,7 +191,11 @@ void williams_state::state_save_register()
 
 VIDEO_START_MEMBER(williams_state,williams)
 {
+<<<<<<< HEAD
 	blitter_init(m_blitter_config, NULL);
+=======
+	blitter_init(m_blitter_config, nullptr);
+>>>>>>> upstream/master
 	create_palette_lookup();
 	state_save_register();
 }
@@ -132,10 +213,17 @@ VIDEO_START_MEMBER(blaster_state,blaster)
 
 VIDEO_START_MEMBER(williams2_state,williams2)
 {
+<<<<<<< HEAD
 	blitter_init(m_blitter_config, NULL);
 
 	/* create the tilemap */
 	m_bg_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(williams2_state::get_tile_info),this), TILEMAP_SCAN_COLS,  24,16, 128,16);
+=======
+	blitter_init(m_blitter_config, nullptr);
+
+	/* create the tilemap */
+	m_bg_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(williams2_state::get_tile_info),this), TILEMAP_SCAN_COLS,  24,16, 128,16);
+>>>>>>> upstream/master
 	m_bg_tilemap->set_scrolldx(2, 0);
 
 	state_save_register();
@@ -151,7 +239,11 @@ VIDEO_START_MEMBER(williams2_state,williams2)
  *
  *************************************/
 
+<<<<<<< HEAD
 UINT32 williams_state::screen_update_williams(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect)
+=======
+uint32_t williams_state::screen_update_williams(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect)
+>>>>>>> upstream/master
 {
 	rgb_t pens[16];
 	int x, y;
@@ -163,8 +255,13 @@ UINT32 williams_state::screen_update_williams(screen_device &screen, bitmap_rgb3
 	/* loop over rows */
 	for (y = cliprect.min_y; y <= cliprect.max_y; y++)
 	{
+<<<<<<< HEAD
 		UINT8 *source = &m_videoram[y];
 		UINT32 *dest = &bitmap.pix32(y);
+=======
+		uint8_t *source = &m_videoram[y];
+		uint32_t *dest = &bitmap.pix32(y);
+>>>>>>> upstream/master
 
 		/* loop over columns */
 		for (x = cliprect.min_x & ~1; x <= cliprect.max_x; x += 2)
@@ -178,7 +275,11 @@ UINT32 williams_state::screen_update_williams(screen_device &screen, bitmap_rgb3
 }
 
 
+<<<<<<< HEAD
 UINT32 blaster_state::screen_update_blaster(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect)
+=======
+uint32_t blaster_state::screen_update_blaster(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect)
+>>>>>>> upstream/master
 {
 	rgb_t pens[16];
 	int x, y;
@@ -195,8 +296,13 @@ UINT32 blaster_state::screen_update_blaster(screen_device &screen, bitmap_rgb32 
 	for (y = cliprect.min_y; y <= cliprect.max_y; y++)
 	{
 		int erase_behind = m_blaster_video_control & m_blaster_scanline_control[y] & 2;
+<<<<<<< HEAD
 		UINT8 *source = &m_videoram[y];
 		UINT32 *dest = &bitmap.pix32(y);
+=======
+		uint8_t *source = &m_videoram[y];
+		uint32_t *dest = &bitmap.pix32(y);
+>>>>>>> upstream/master
 
 		/* latch a new color0 pen? */
 		if (m_blaster_video_control & m_blaster_scanline_control[y] & 1)
@@ -220,7 +326,11 @@ UINT32 blaster_state::screen_update_blaster(screen_device &screen, bitmap_rgb32 
 }
 
 
+<<<<<<< HEAD
 UINT32 williams2_state::screen_update_williams2(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect)
+=======
+uint32_t williams2_state::screen_update_williams2(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect)
+>>>>>>> upstream/master
 {
 	rgb_t pens[16];
 	int x, y;
@@ -235,8 +345,13 @@ UINT32 williams2_state::screen_update_williams2(screen_device &screen, bitmap_rg
 	/* loop over rows */
 	for (y = cliprect.min_y; y <= cliprect.max_y; y++)
 	{
+<<<<<<< HEAD
 		UINT8 *source = &m_videoram[y];
 		UINT32 *dest = &bitmap.pix32(y);
+=======
+		uint8_t *source = &m_videoram[y];
+		uint32_t *dest = &bitmap.pix32(y);
+>>>>>>> upstream/master
 
 		/* loop over columns */
 		for (x = cliprect.min_x & ~1; x <= cliprect.max_x; x += 2)
@@ -276,7 +391,11 @@ void williams_state::create_palette_lookup()
 			2, resistances_b,  weights_b, 0, 0);
 
 	/* build a palette lookup */
+<<<<<<< HEAD
 	m_palette_lookup = auto_alloc_array(machine(), rgb_t, 256);
+=======
+	m_palette_lookup = std::make_unique<rgb_t[]>(256);
+>>>>>>> upstream/master
 	for (i = 0; i < 256; i++)
 	{
 		int r = combine_3_weights(weights_r, BIT(i,0), BIT(i,1), BIT(i,2));
@@ -290,12 +409,20 @@ void williams_state::create_palette_lookup()
 
 WRITE8_MEMBER(williams2_state::williams2_paletteram_w)
 {
+<<<<<<< HEAD
 	static const UINT8 ztable[16] =
+=======
+	static const uint8_t ztable[16] =
+>>>>>>> upstream/master
 	{
 		0x0, 0x3, 0x4, 0x5, 0x6, 0x7, 0x8,  0x9,
 		0xa, 0xb, 0xc, 0xd, 0xe, 0xf, 0x10, 0x11
 	};
+<<<<<<< HEAD
 	UINT8 entry_lo, entry_hi, i, r, g, b;
+=======
+	uint8_t entry_lo, entry_hi, i, r, g, b;
+>>>>>>> upstream/master
 
 	/* set the new value */
 	m_generic_paletteram_8[offset] = data;
@@ -432,7 +559,11 @@ WRITE8_MEMBER(williams2_state::williams2_xscroll_high_w)
 WRITE8_MEMBER(blaster_state::blaster_remap_select_w)
 {
 	m_blitter_remap_index = data;
+<<<<<<< HEAD
 	m_blitter_remap = m_blitter_remap_lookup + data * 256;
+=======
+	m_blitter_remap = m_blitter_remap_lookup.get() + data * 256;
+>>>>>>> upstream/master
 }
 
 
@@ -449,15 +580,22 @@ WRITE8_MEMBER(blaster_state::blaster_video_control_w)
  *
  *************************************/
 
+<<<<<<< HEAD
 void williams_state::blitter_init(int blitter_config, const UINT8 *remap_prom)
 {
 	static const UINT8 dummy_table[] = { 0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15 };
+=======
+void williams_state::blitter_init(int blitter_config, const uint8_t *remap_prom)
+{
+	static const uint8_t dummy_table[] = { 0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15 };
+>>>>>>> upstream/master
 	int i,j;
 
 	/* by default, there is no clipping window - this will be touched only by games that have one */
 	m_blitter_window_enable = 0;
 
 	/* switch off the video config */
+<<<<<<< HEAD
 	m_blitter_xor = (blitter_config == WILLIAMS_BLITTER_SC01) ? 4 : 0;
 
 	/* create the remap table; if no PROM, make an identity remap table */
@@ -467,6 +605,17 @@ void williams_state::blitter_init(int blitter_config, const UINT8 *remap_prom)
 	for (i = 0; i < 256; i++)
 	{
 		const UINT8 *table = remap_prom ? (remap_prom + (i & 0x7f) * 16) : dummy_table;
+=======
+	m_blitter_xor = (blitter_config == WILLIAMS_BLITTER_SC1) ? 4 : 0;
+
+	/* create the remap table; if no PROM, make an identity remap table */
+	m_blitter_remap_lookup = std::make_unique<uint8_t[]>(256 * 256);
+	m_blitter_remap_index = 0;
+	m_blitter_remap = m_blitter_remap_lookup.get();
+	for (i = 0; i < 256; i++)
+	{
+		const uint8_t *table = remap_prom ? (remap_prom + (i & 0x7f) * 16) : dummy_table;
+>>>>>>> upstream/master
 		for (j = 0; j < 256; j++)
 			m_blitter_remap_lookup[i * 256 + j] = (table[j >> 4] << 4) | table[j & 0x0f];
 	}

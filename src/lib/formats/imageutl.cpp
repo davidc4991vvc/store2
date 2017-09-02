@@ -97,7 +97,11 @@ static int is_delim(char c)
     an extension list
 -------------------------------------------------*/
 
+<<<<<<< HEAD
 static int image_internal_find_extension(const char *extension_list, const char *target_extension)
+=======
+static bool image_internal_find_extension(const char *extension_list, const char *target_extension)
+>>>>>>> upstream/master
 {
 	/* this version allows target_extension to be delimited with a comma */
 	int pos = 0;
@@ -116,7 +120,11 @@ static int image_internal_find_extension(const char *extension_list, const char 
 
 		/* check to see if it was found */
 		if (is_delim(extension_list[pos + i]) && is_delim(target_extension[i]))
+<<<<<<< HEAD
 			return TRUE;
+=======
+			return true;
+>>>>>>> upstream/master
 
 		/* move to next position in the buffer */
 		pos += i;
@@ -127,7 +135,11 @@ static int image_internal_find_extension(const char *extension_list, const char 
 	}
 
 	/* not found */
+<<<<<<< HEAD
 	return FALSE;
+=======
+	return false;
+>>>>>>> upstream/master
 }
 
 
@@ -137,11 +149,19 @@ static int image_internal_find_extension(const char *extension_list, const char 
     list
 -------------------------------------------------*/
 
+<<<<<<< HEAD
 int image_find_extension(const char *extension_list, const char *target_extension)
 {
 	/* the internal function allows something that we do not */
 	if (strchr(target_extension, ','))
 		return FALSE;
+=======
+bool image_find_extension(const char *extension_list, const char *target_extension)
+{
+	/* the internal function allows something that we do not */
+	if (strchr(target_extension, ','))
+		return false;
+>>>>>>> upstream/master
 
 	/* special case to allow ext to be in the form '.EXT' */
 	if (*target_extension == '.')
@@ -167,8 +187,13 @@ void image_specify_extension(char *buffer, size_t buffer_len, const char *extens
 	/* determine the length of the buffer */
 	len = strlen(buffer);
 
+<<<<<<< HEAD
 	/* be aware that extension can be NULL */
 	if (extension != NULL)
+=======
+	/* be aware that extension can be nullptr */
+	if (extension != nullptr)
+>>>>>>> upstream/master
 	{
 		while(extension[extension_pos] != '\0')
 		{

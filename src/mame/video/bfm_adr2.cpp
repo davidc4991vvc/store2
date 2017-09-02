@@ -93,10 +93,19 @@ E000-FFFF  | R | D D D D D D D D | 8K ROM
 ***************************************************************************/
 
 #include "emu.h"
+<<<<<<< HEAD
 #include "cpu/m6809/m6809.h"
 #include "machine/bfm_bd1.h"  // vfd
 #include "video/bfm_adr2.h"
 #include "rendlay.h"
+=======
+#include "video/bfm_adr2.h"
+
+#include "cpu/m6809/m6809.h"
+#include "machine/bfm_bd1.h"  // vfd
+#include "rendlay.h"
+#include "screen.h"
+>>>>>>> upstream/master
 
 #ifdef MAME_DEBUG
 #define VERBOSE 1
@@ -115,6 +124,7 @@ E000-FFFF  | R | D D D D D D D D | 8K ROM
 
 
 
+<<<<<<< HEAD
 const device_type BFM_ADDER2 = &device_creator<bfm_adder2_device>;
 
 bfm_adder2_device::bfm_adder2_device( const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock )
@@ -122,6 +132,34 @@ bfm_adder2_device::bfm_adder2_device( const machine_config &mconfig, const char 
 		m_cpu(*this, "adder2"),
 		m_gfxdecode(*this, "gfxdecode"),
 		m_palette(*this, "palette")
+=======
+static const gfx_layout charlayout =
+{
+	8,8,          // 8 * 8 characters
+	8192,         // 8192  characters
+	4,        // 4     bits per pixel
+	{ 0,1,2,3 },
+	{ 0*4, 1*4, 2*4, 3*4, 4*4, 5*4, 6*4, 7*4 },
+	{ 0*8*4, 1*8*4, 2*8*4, 3*8*4, 4*8*4, 5*8*4, 6*8*4, 7*8*4 },
+	8*8*4
+};
+
+// this is a strange beast !!!!
+//
+// characters are grouped by 64 (512 pixels)
+// there are max 128 of these groups
+
+static GFXDECODE_START( adder2 )
+	GFXDECODE_ENTRY( ":gfx1",  0, charlayout, 0, 16 )
+GFXDECODE_END
+
+DEFINE_DEVICE_TYPE(BFM_ADDER2, bfm_adder2_device, "bfm_adder2", "BFM ADDER2")
+
+bfm_adder2_device::bfm_adder2_device( const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock )
+	: device_t(mconfig, BFM_ADDER2, tag, owner, clock)
+	, device_gfx_interface(mconfig, *this, GFXDECODE_NAME(adder2), "palette")
+	, m_cpu(*this, "adder2")
+>>>>>>> upstream/master
 {
 }
 
@@ -184,7 +222,11 @@ void bfm_adder2_device::device_reset()
 	m_adder2_data_to_sc2       = 0;
 
 	{
+<<<<<<< HEAD
 		UINT8 *rom = machine().root_device().memregion("adder2")->base();
+=======
+		uint8_t *rom = machine().root_device().memregion("adder2")->base();
+>>>>>>> upstream/master
 
 		membank("bank2")->configure_entries(0, 4, &rom[0x00000], 0x08000);
 
@@ -194,7 +236,11 @@ void bfm_adder2_device::device_reset()
 
 void bfm_adder2_device::device_start()
 {
+<<<<<<< HEAD
 	if (!m_palette->started())
+=======
+	if (!palette().device().started())
+>>>>>>> upstream/master
 		throw device_missing_dependencies();
 
 	adder2_decode_char_roms();
@@ -211,6 +257,7 @@ void bfm_adder2_device::device_start()
 	save_item(NAME(m_adder_ram));
 	save_item(NAME(m_adder_screen_ram));
 
+<<<<<<< HEAD
 	m_tilemap0 = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(bfm_adder2_device::get_tile0_info),this), TILEMAP_SCAN_ROWS,  8, 8, 50, 35);
 
 	m_tilemap1 = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(bfm_adder2_device::get_tile1_info),this), TILEMAP_SCAN_ROWS,  8, 8, 50, 35);
@@ -235,6 +282,32 @@ void bfm_adder2_device::device_start()
 
 // video update ///////////////////////////////////////////////////////////
 UINT32 bfm_adder2_device::update_screen(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+=======
+	m_tilemap0 = &machine().tilemap().create(*this, tilemap_get_info_delegate(FUNC(bfm_adder2_device::get_tile0_info),this), TILEMAP_SCAN_ROWS,  8, 8, 50, 35);
+
+	m_tilemap1 = &machine().tilemap().create(*this, tilemap_get_info_delegate(FUNC(bfm_adder2_device::get_tile1_info),this), TILEMAP_SCAN_ROWS,  8, 8, 50, 35);
+
+	palette().set_pen_color(0,rgb_t(0x00,0x00,0x00));
+	palette().set_pen_color(1,rgb_t(0x00,0x00,0xFF));
+	palette().set_pen_color(2,rgb_t(0x00,0xFF,0x00));
+	palette().set_pen_color(3,rgb_t(0x00,0xFF,0xFF));
+	palette().set_pen_color(4,rgb_t(0xFF,0x00,0x00));
+	palette().set_pen_color(5,rgb_t(0xFF,0x00,0xFF));
+	palette().set_pen_color(6,rgb_t(0xFF,0xFF,0x00));
+	palette().set_pen_color(7,rgb_t(0xFF,0xFF,0xFF));
+	palette().set_pen_color(8,rgb_t(0x80,0x80,0x80));
+	palette().set_pen_color(9,rgb_t(0x00,0x00,0x80));
+	palette().set_pen_color(10,rgb_t(0x00,0x80,0x00));
+	palette().set_pen_color(11,rgb_t(0x00,0x80,0x80));
+	palette().set_pen_color(12,rgb_t(0x80,0x00,0x00));
+	palette().set_pen_color(13,rgb_t(0x80,0x00,0x80));
+	palette().set_pen_color(14,rgb_t(0x80,0x80,0x00));
+	palette().set_pen_color(15,rgb_t(0x80,0x80,0x80));
+}
+
+// video update ///////////////////////////////////////////////////////////
+uint32_t bfm_adder2_device::update_screen(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+>>>>>>> upstream/master
 {
 	const rectangle visible1(0, 400-1,  0,  280-1);  //minx,maxx, miny,maxy
 
@@ -271,14 +344,22 @@ WRITE8_MEMBER( bfm_adder2_device::screen_ram_w )
 	if ( offset > 102 && offset < 102+1+16 )
 	{ // format xxxrrggb ////////////////////////////////////////////////////
 		int pal;
+<<<<<<< HEAD
 		UINT8 r,g,b;
+=======
+		uint8_t r,g,b;
+>>>>>>> upstream/master
 
 		pal = offset-102-1;
 
 		r = ((data & 0x18)>>3) *  85;  // 00011000b = 0x18
 		g = ((data & 0x06)>>1) *  85;  // 00000110b = 0x06
 		b = ((data & 0x01)   ) * 255;
+<<<<<<< HEAD
 		m_palette->set_pen_color(pal, rgb_t(r,g,b));
+=======
+		palette().set_pen_color(pal, rgb_t(r,g,b));
+>>>>>>> upstream/master
 	}
 
 	if ( m_adder2_screen_page_reg & SL_ACCESS )
@@ -430,7 +511,11 @@ WRITE8_MEMBER(bfm_adder2_device::vid_uart_ctrl_w)
 
 READ8_MEMBER(bfm_adder2_device::vid_uart_rx_r)
 {
+<<<<<<< HEAD
 	UINT8 data = m_adder2_data;
+=======
+	uint8_t data = m_adder2_data;
+>>>>>>> upstream/master
 	m_adder2_data_to_sc2 = 0;   // clr flag, data from adder available
 
 	//LOG_SERIAL(("radder:  %02X(%c)\n",data, data ));
@@ -459,11 +544,19 @@ READ8_MEMBER(bfm_adder2_device::vid_uart_ctrl_r)
 
 void bfm_adder2_device::adder2_decode_char_roms()
 {
+<<<<<<< HEAD
 	UINT8 *p = machine().root_device().memregion("gfx1")->base();
 
 	if ( p )
 	{
 		dynamic_buffer s( 0x40000 );
+=======
+	uint8_t *p = machine().root_device().memregion("gfx1")->base();
+
+	if ( p )
+	{
+		std::vector<uint8_t> s( 0x40000 );
+>>>>>>> upstream/master
 		{
 			int x, y;
 
@@ -476,7 +569,11 @@ void bfm_adder2_device::adder2_decode_char_roms()
 				x = 0;
 				while ( x < 64 )
 				{
+<<<<<<< HEAD
 					UINT8 *src = &s[(y*256*8)+(x*4)];
+=======
+					uint8_t *src = &s[(y*256*8)+(x*4)];
+>>>>>>> upstream/master
 
 					*p++ = src[0*256+0];*p++ = src[0*256+1];*p++ = src[0*256+2];*p++ = src[0*256+3];
 					*p++ = src[1*256+0];*p++ = src[1*256+1];*p++ = src[1*256+2];*p++ = src[1*256+3];
@@ -519,6 +616,7 @@ static ADDRESS_MAP_START( adder2_memmap, AS_PROGRAM, 8, bfm_adder2_device )
 	AM_RANGE(0xE000, 0xFFFF) AM_ROM  AM_REGION(":adder2", 0xE000)                         // 8k  ROM
 ADDRESS_MAP_END
 
+<<<<<<< HEAD
 static const gfx_layout charlayout =
 {
 	8,8,          // 8 * 8 characters
@@ -542,6 +640,14 @@ GFXDECODE_END
 ///////////////////////////////////////////////////////////////////////////
 
 static MACHINE_CONFIG_FRAGMENT( adder2 )
+=======
+
+//-------------------------------------------------
+//  device_add_mconfig - add device configuration
+//-------------------------------------------------
+
+MACHINE_CONFIG_MEMBER( bfm_adder2_device::device_add_mconfig )
+>>>>>>> upstream/master
 	MCFG_SCREEN_ADD("screen", RASTER)
 	MCFG_SCREEN_SIZE( 400, 280)
 	MCFG_SCREEN_VISIBLE_AREA(  0, 400-1, 0, 280-1)
@@ -550,12 +656,16 @@ static MACHINE_CONFIG_FRAGMENT( adder2 )
 	MCFG_SCREEN_UPDATE_DEVICE(DEVICE_SELF, bfm_adder2_device, update_screen)
 
 	MCFG_PALETTE_ADD("palette", 16)
+<<<<<<< HEAD
 	MCFG_GFXDECODE_ADD("gfxdecode", "palette", adder2)
+=======
+>>>>>>> upstream/master
 
 	MCFG_CPU_ADD("adder2", M6809, ADDER_CLOCK/4 )  // adder2 board 6809 CPU at 2 Mhz
 	MCFG_CPU_PROGRAM_MAP(adder2_memmap)             // setup adder2 board memorymap
 	MCFG_DEVICE_VBLANK_INT_DEVICE("screen", DEVICE_SELF, bfm_adder2_device, adder2_vbl)        // board has a VBL IRQ
 MACHINE_CONFIG_END
+<<<<<<< HEAD
 
 //-------------------------------------------------
 //  machine_config_additions - device-specific
@@ -566,3 +676,5 @@ machine_config_constructor bfm_adder2_device::device_mconfig_additions() const
 {
 	return MACHINE_CONFIG_NAME( adder2 );
 }
+=======
+>>>>>>> upstream/master

@@ -12,9 +12,16 @@
 /***************************************************************************
     bsktball_nmion_w
 ***************************************************************************/
+<<<<<<< HEAD
 WRITE8_MEMBER(bsktball_state::bsktball_nmion_w)
 {
 	m_nmi_on = offset & 0x01;
+=======
+
+WRITE_LINE_MEMBER(bsktball_state::nmion_w)
+{
+	m_nmi_on = state;
+>>>>>>> upstream/master
 }
 
 /***************************************************************************
@@ -36,6 +43,7 @@ TIMER_DEVICE_CALLBACK_MEMBER(bsktball_state::bsktball_scanline)
     bsktball_ld_w
 ***************************************************************************/
 
+<<<<<<< HEAD
 WRITE8_MEMBER(bsktball_state::bsktball_ld1_w)
 {
 	m_ld1 = (offset & 0x01);
@@ -44,6 +52,16 @@ WRITE8_MEMBER(bsktball_state::bsktball_ld1_w)
 WRITE8_MEMBER(bsktball_state::bsktball_ld2_w)
 {
 	m_ld2 = (offset & 0x01);
+=======
+WRITE_LINE_MEMBER(bsktball_state::ld1_w)
+{
+	m_ld1 = state;
+}
+
+WRITE_LINE_MEMBER(bsktball_state::ld2_w)
+{
+	m_ld2 = state;
+>>>>>>> upstream/master
 }
 
 
@@ -156,6 +174,7 @@ READ8_MEMBER(bsktball_state::bsktball_in0_r)
 /***************************************************************************
     bsktball_led_w
 ***************************************************************************/
+<<<<<<< HEAD
 WRITE8_MEMBER(bsktball_state::bsktball_led1_w)
 {
 	set_led_status(machine(), 0, offset & 0x01);
@@ -164,4 +183,15 @@ WRITE8_MEMBER(bsktball_state::bsktball_led1_w)
 WRITE8_MEMBER(bsktball_state::bsktball_led2_w)
 {
 	set_led_status(machine(), 1, offset & 0x01);
+=======
+
+WRITE_LINE_MEMBER(bsktball_state::led1_w)
+{
+	output().set_led_value(0, state);
+}
+
+WRITE_LINE_MEMBER(bsktball_state::led2_w)
+{
+	output().set_led_value(1, state);
+>>>>>>> upstream/master
 }

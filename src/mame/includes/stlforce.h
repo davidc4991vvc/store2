@@ -1,6 +1,10 @@
 // license:BSD-3-Clause
 // copyright-holders:David Haywood
+<<<<<<< HEAD
 #include "sound/okim6295.h"
+=======
+
+>>>>>>> upstream/master
 #include "machine/eepromser.h"
 
 class stlforce_state : public driver_device
@@ -9,7 +13,10 @@ public:
 	stlforce_state(const machine_config &mconfig, device_type type, const char *tag)
 		: driver_device(mconfig, type, tag),
 		m_maincpu(*this, "maincpu"),
+<<<<<<< HEAD
 		m_oki(*this, "oki"),
+=======
+>>>>>>> upstream/master
 		m_eeprom(*this, "eeprom"),
 		m_gfxdecode(*this, "gfxdecode"),
 		m_palette(*this, "palette"),
@@ -21,14 +28,22 @@ public:
 		m_mlow_scrollram(*this, "mlow_scrollram"),
 		m_mhigh_scrollram(*this, "mhigh_scrollram"),
 		m_vidattrram(*this, "vidattrram"),
+<<<<<<< HEAD
 		m_spriteram(*this, "spriteram") { }
 
 	required_device<cpu_device> m_maincpu;
 	required_device<okim6295_device> m_oki;
+=======
+		m_spriteram(*this, "spriteram"),
+		m_okibank(*this, "okibank") { }
+
+	required_device<cpu_device> m_maincpu;
+>>>>>>> upstream/master
 	required_device<eeprom_serial_93cxx_device> m_eeprom;
 	required_device<gfxdecode_device> m_gfxdecode;
 	required_device<palette_device> m_palette;
 
+<<<<<<< HEAD
 	required_shared_ptr<UINT16> m_bg_videoram;
 	required_shared_ptr<UINT16> m_mlow_videoram;
 	required_shared_ptr<UINT16> m_mhigh_videoram;
@@ -38,6 +53,19 @@ public:
 	required_shared_ptr<UINT16> m_mhigh_scrollram;
 	required_shared_ptr<UINT16> m_vidattrram;
 	required_shared_ptr<UINT16> m_spriteram;
+=======
+	required_shared_ptr<uint16_t> m_bg_videoram;
+	required_shared_ptr<uint16_t> m_mlow_videoram;
+	required_shared_ptr<uint16_t> m_mhigh_videoram;
+	required_shared_ptr<uint16_t> m_tx_videoram;
+	required_shared_ptr<uint16_t> m_bg_scrollram;
+	required_shared_ptr<uint16_t> m_mlow_scrollram;
+	required_shared_ptr<uint16_t> m_mhigh_scrollram;
+	required_shared_ptr<uint16_t> m_vidattrram;
+	required_shared_ptr<uint16_t> m_spriteram;
+
+	optional_memory_bank m_okibank;
+>>>>>>> upstream/master
 
 	tilemap_t *m_bg_tilemap;
 	tilemap_t *m_mlow_tilemap;
@@ -46,16 +74,26 @@ public:
 
 	int m_sprxoffs;
 
+<<<<<<< HEAD
 	DECLARE_WRITE16_MEMBER(stlforce_bg_videoram_w);
 	DECLARE_WRITE16_MEMBER(stlforce_mlow_videoram_w);
 	DECLARE_WRITE16_MEMBER(stlforce_mhigh_videoram_w);
 	DECLARE_WRITE16_MEMBER(stlforce_tx_videoram_w);
 	DECLARE_WRITE16_MEMBER(eeprom_w);
 	DECLARE_WRITE16_MEMBER(oki_bank_w);
+=======
+	DECLARE_WRITE16_MEMBER(bg_videoram_w);
+	DECLARE_WRITE16_MEMBER(mlow_videoram_w);
+	DECLARE_WRITE16_MEMBER(mhigh_videoram_w);
+	DECLARE_WRITE16_MEMBER(tx_videoram_w);
+	DECLARE_WRITE8_MEMBER(eeprom_w);
+	DECLARE_WRITE8_MEMBER(oki_bank_w);
+>>>>>>> upstream/master
 
 	DECLARE_DRIVER_INIT(twinbrat);
 	DECLARE_DRIVER_INIT(stlforce);
 
+<<<<<<< HEAD
 	TILE_GET_INFO_MEMBER(get_stlforce_bg_tile_info);
 	TILE_GET_INFO_MEMBER(get_stlforce_mlow_tile_info);
 	TILE_GET_INFO_MEMBER(get_stlforce_mhigh_tile_info);
@@ -63,5 +101,14 @@ public:
 
 	virtual void video_start();
 	UINT32 screen_update_stlforce(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
+=======
+	TILE_GET_INFO_MEMBER(get_bg_tile_info);
+	TILE_GET_INFO_MEMBER(get_mlow_tile_info);
+	TILE_GET_INFO_MEMBER(get_mhigh_tile_info);
+	TILE_GET_INFO_MEMBER(get_tx_tile_info);
+
+	virtual void video_start() override;
+	uint32_t screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
+>>>>>>> upstream/master
 	void draw_sprites(bitmap_ind16 &bitmap, const rectangle &cliprect );
 };

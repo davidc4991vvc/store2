@@ -22,14 +22,24 @@ public:
 	required_device<gfxdecode_device> m_gfxdecode;
 
 	/* memory pointers */
+<<<<<<< HEAD
 	required_shared_ptr<UINT8> m_vram_fg;
 	required_shared_ptr<UINT8> m_vram_bg;
+=======
+	required_shared_ptr<uint8_t> m_vram_fg;
+	required_shared_ptr<uint8_t> m_vram_bg;
+>>>>>>> upstream/master
 
 	/* video-related */
 	tilemap_t *m_bg_tilemap;
 	tilemap_t *m_fg_tilemap;
+<<<<<<< HEAD
 	UINT8 m_gfxbank;
 	UINT8 m_scrollx;
+=======
+	uint8_t m_gfxbank;
+	uint8_t m_scrollx;
+>>>>>>> upstream/master
 
 	DECLARE_READ8_MEMBER(sensors1_r);
 	DECLARE_READ8_MEMBER(sensors2_r);
@@ -48,8 +58,15 @@ public:
 	TILE_GET_INFO_MEMBER(get_fg_tile_info);
 	TILE_GET_INFO_MEMBER(get_bg_tile_info);
 	DECLARE_PALETTE_INIT(kopunch);
+<<<<<<< HEAD
 	UINT32 screen_update_kopunch(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
 
 	virtual void machine_start();
 	virtual void video_start();
+=======
+	uint32_t screen_update_kopunch(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
+
+	virtual void machine_start() override;
+	virtual void video_start() override;
+>>>>>>> upstream/master
 };

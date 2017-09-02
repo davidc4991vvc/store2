@@ -3,10 +3,34 @@
 #ifndef __STREAM_OBJECTS_H
 #define __STREAM_OBJECTS_H
 
+<<<<<<< HEAD
 #include "../../Common/Buffer.h"
 #include "../../Common/MyCom.h"
 #include "../IStream.h"
 
+=======
+#include "../../Common/MyBuffer.h"
+#include "../../Common/MyCom.h"
+#include "../../Common/MyVector.h"
+
+#include "../IStream.h"
+
+class CBufferInStream:
+  public IInStream,
+  public CMyUnknownImp
+{
+  UInt64 _pos;
+public:
+  CByteBuffer Buf;
+  void Init() { _pos = 0; }
+ 
+  MY_UNKNOWN_IMP2(ISequentialInStream, IInStream)
+
+  STDMETHOD(Read)(void *data, UInt32 size, UInt32 *processedSize);
+  STDMETHOD(Seek)(Int64 offset, UInt32 seekOrigin, UInt64 *newPosition);
+};
+
+>>>>>>> upstream/master
 struct CReferenceBuf:
   public IUnknown,
   public CMyUnknownImp
@@ -31,13 +55,27 @@ public:
     _pos = 0;
     _ref = ref;
   }
+<<<<<<< HEAD
   void Init(CReferenceBuf *ref) { Init(ref->Buf, ref->Buf.GetCapacity(), ref); }
 
   MY_UNKNOWN_IMP1(IInStream)
+=======
+  void Init(CReferenceBuf *ref) { Init(ref->Buf, ref->Buf.Size(), ref); }
+
+  MY_UNKNOWN_IMP2(ISequentialInStream, IInStream)
+>>>>>>> upstream/master
   STDMETHOD(Read)(void *data, UInt32 size, UInt32 *processedSize);
   STDMETHOD(Seek)(Int64 offset, UInt32 seekOrigin, UInt64 *newPosition);
 };
 
+<<<<<<< HEAD
+=======
+void Create_BufInStream_WithReference(const void *data, size_t size, IUnknown *ref, ISequentialInStream **stream);
+void Create_BufInStream_WithNewBuffer(const void *data, size_t size, ISequentialInStream **stream);
+inline void Create_BufInStream_WithNewBuffer(const CByteBuffer &buf, ISequentialInStream **stream)
+  { Create_BufInStream_WithNewBuffer(buf, buf.Size(), stream); }
+
+>>>>>>> upstream/master
 class CByteDynBuffer
 {
   size_t _capacity;
@@ -46,11 +84,19 @@ public:
   CByteDynBuffer(): _capacity(0), _buf(0) {};
   // there is no copy constructor. So don't copy this object.
   ~CByteDynBuffer() { Free(); }
+<<<<<<< HEAD
   void Free();
   size_t GetCapacity() const { return  _capacity; }
   operator Byte*() const { return _buf; };
   operator const Byte*() const { return _buf; };
   bool EnsureCapacity(size_t capacity);
+=======
+  void Free() throw();
+  size_t GetCapacity() const { return _capacity; }
+  operator Byte*() const { return _buf; }
+  operator const Byte*() const { return _buf; }
+  bool EnsureCapacity(size_t capacity) throw();
+>>>>>>> upstream/master
 };
 
 class CDynBufSeqOutStream:
@@ -68,7 +114,11 @@ public:
   Byte *GetBufPtrForWriting(size_t addSize);
   void UpdateSize(size_t addSize) { _size += addSize; }
 
+<<<<<<< HEAD
   MY_UNKNOWN_IMP
+=======
+  MY_UNKNOWN_IMP1(ISequentialOutStream)
+>>>>>>> upstream/master
   STDMETHOD(Write)(const void *data, UInt32 size, UInt32 *processedSize);
 };
 
@@ -88,7 +138,11 @@ public:
   }
   size_t GetPos() const { return _pos; }
 
+<<<<<<< HEAD
   MY_UNKNOWN_IMP
+=======
+  MY_UNKNOWN_IMP1(ISequentialOutStream)
+>>>>>>> upstream/master
   STDMETHOD(Write)(const void *data, UInt32 size, UInt32 *processedSize);
 };
 
@@ -103,7 +157,11 @@ public:
   void Init() { _size = 0; }
   UInt64 GetSize() const { return _size; }
 
+<<<<<<< HEAD
   MY_UNKNOWN_IMP
+=======
+  MY_UNKNOWN_IMP1(ISequentialOutStream)
+>>>>>>> upstream/master
   STDMETHOD(Write)(const void *data, UInt32 size, UInt32 *processedSize);
 };
 
@@ -123,9 +181,15 @@ protected:
 public:
   CCachedInStream(): _tags(0), _data(0) {}
   virtual ~CCachedInStream() { Free(); } // the destructor must be virtual (release calls it) !!!
+<<<<<<< HEAD
   void Free();
   bool Alloc(unsigned blockSizeLog, unsigned numBlocksLog);
   void Init(UInt64 size);
+=======
+  void Free() throw();
+  bool Alloc(unsigned blockSizeLog, unsigned numBlocksLog) throw();
+  void Init(UInt64 size) throw();
+>>>>>>> upstream/master
 
   MY_UNKNOWN_IMP2(ISequentialInStream, IInStream)
   STDMETHOD(Read)(void *data, UInt32 size, UInt32 *processedSize);

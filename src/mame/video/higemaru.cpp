@@ -23,7 +23,11 @@ WRITE8_MEMBER(higemaru_state::higemaru_colorram_w)
 
 PALETTE_INIT_MEMBER(higemaru_state, higemaru)
 {
+<<<<<<< HEAD
 	const UINT8 *color_prom = memregion("proms")->base();
+=======
+	const uint8_t *color_prom = memregion("proms")->base();
+>>>>>>> upstream/master
 	int i;
 
 	/* create a lookup table for the palette */
@@ -59,14 +63,22 @@ PALETTE_INIT_MEMBER(higemaru_state, higemaru)
 	/* characters use colors 0-15 */
 	for (i = 0; i < 0x80; i++)
 	{
+<<<<<<< HEAD
 		UINT8 ctabentry = color_prom[i] & 0x0f;
+=======
+		uint8_t ctabentry = color_prom[i] & 0x0f;
+>>>>>>> upstream/master
 		palette.set_pen_indirect(i, ctabentry);
 	}
 
 	/* sprites use colors 16-31 */
 	for (i = 0x80; i < 0x180; i++)
 	{
+<<<<<<< HEAD
 		UINT8 ctabentry = (color_prom[i + 0x80] & 0x0f) | 0x10;
+=======
+		uint8_t ctabentry = (color_prom[i + 0x80] & 0x0f) | 0x10;
+>>>>>>> upstream/master
 		palette.set_pen_indirect(i, ctabentry);
 	}
 }
@@ -77,8 +89,13 @@ WRITE8_MEMBER(higemaru_state::higemaru_c800_w)
 		logerror("c800 = %02x\n",data);
 
 	/* bits 0 and 1 are coin counters */
+<<<<<<< HEAD
 	coin_counter_w(machine(), 0,data & 2);
 	coin_counter_w(machine(), 1,data & 1);
+=======
+	machine().bookkeeping().coin_counter_w(0,data & 2);
+	machine().bookkeeping().coin_counter_w(1,data & 1);
+>>>>>>> upstream/master
 
 	/* bit 7 flips screen */
 	if (flip_screen() != (data & 0x80))
@@ -98,12 +115,20 @@ TILE_GET_INFO_MEMBER(higemaru_state::get_bg_tile_info)
 
 void higemaru_state::video_start()
 {
+<<<<<<< HEAD
 	m_bg_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(higemaru_state::get_bg_tile_info),this), TILEMAP_SCAN_ROWS, 8, 8, 32, 32);
+=======
+	m_bg_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(higemaru_state::get_bg_tile_info),this), TILEMAP_SCAN_ROWS, 8, 8, 32, 32);
+>>>>>>> upstream/master
 }
 
 void higemaru_state::draw_sprites( bitmap_ind16 &bitmap, const rectangle &cliprect )
 {
+<<<<<<< HEAD
 	UINT8 *spriteram = m_spriteram;
+=======
+	uint8_t *spriteram = m_spriteram;
+>>>>>>> upstream/master
 	int offs;
 
 	for (offs = m_spriteram.bytes() - 16; offs >= 0; offs -= 16)
@@ -139,7 +164,11 @@ void higemaru_state::draw_sprites( bitmap_ind16 &bitmap, const rectangle &clipre
 	}
 }
 
+<<<<<<< HEAD
 UINT32 higemaru_state::screen_update_higemaru(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+=======
+uint32_t higemaru_state::screen_update_higemaru(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+>>>>>>> upstream/master
 {
 	m_bg_tilemap->draw(screen, bitmap, cliprect, 0, 0);
 	draw_sprites(bitmap, cliprect);

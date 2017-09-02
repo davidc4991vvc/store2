@@ -12,9 +12,16 @@
 
 ***************************************************************************/
 
+<<<<<<< HEAD
 #include "lpc210x.h"
 
 const device_type LPC2103 = &device_creator<lpc210x_device>;
+=======
+#include "emu.h"
+#include "lpc210x.h"
+
+DEFINE_DEVICE_TYPE(LPC2103, lpc210x_device, "lpc2103", "NXP LPC2103")
+>>>>>>> upstream/master
 
 static ADDRESS_MAP_START( lpc2103_map, AS_PROGRAM, 32, lpc210x_device )
 	AM_RANGE(0x00000000, 0x00007fff) AM_READWRITE(flash_r, flash_w) // 32kb internal FLASH rom
@@ -39,9 +46,15 @@ static ADDRESS_MAP_START( lpc2103_map, AS_PROGRAM, 32, lpc210x_device )
 ADDRESS_MAP_END
 
 
+<<<<<<< HEAD
 lpc210x_device::lpc210x_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
 	: arm7_cpu_device(mconfig, LPC2103, "LPC2103", tag, owner, clock, "lpc2103", __FILE__, 4, eARM_ARCHFLAGS_T, ENDIANNESS_LITTLE),
 		m_program_config("program", ENDIANNESS_LITTLE, 32, 32, 0, ADDRESS_MAP_NAME(lpc2103_map))
+=======
+lpc210x_device::lpc210x_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: arm7_cpu_device(mconfig, LPC2103, tag, owner, clock, 4, ARCHFLAG_T, ENDIANNESS_LITTLE)
+	, m_program_config("program", ENDIANNESS_LITTLE, 32, 32, 0, ADDRESS_MAP_NAME(lpc2103_map))
+>>>>>>> upstream/master
 {
 }
 
@@ -52,7 +65,11 @@ READ32_MEMBER(lpc210x_device::arm_E01FC088_r)
 
 READ32_MEMBER(lpc210x_device::flash_r)
 {
+<<<<<<< HEAD
 	UINT32 ret = (m_flash[offset * 4 + 3] << 24) |
+=======
+	uint32_t ret = (m_flash[offset * 4 + 3] << 24) |
+>>>>>>> upstream/master
 					(m_flash[offset * 4 + 2] << 16) |
 					(m_flash[offset * 4 + 1] << 8) |
 					(m_flash[offset * 4 + 0] << 0);
@@ -65,6 +82,7 @@ WRITE32_MEMBER(lpc210x_device::flash_w)
 }
 
 
+<<<<<<< HEAD
 const address_space_config *lpc210x_device::memory_space_config(address_spacenum spacenum) const
 {
 	switch(spacenum)
@@ -72,6 +90,13 @@ const address_space_config *lpc210x_device::memory_space_config(address_spacenum
 	case AS_PROGRAM:           return &m_program_config;
 	default:                   return NULL;
 	}
+=======
+device_memory_interface::space_config_vector lpc210x_device::memory_space_config() const
+{
+	return space_config_vector {
+		std::make_pair(AS_PROGRAM, &m_program_config)
+	};
+>>>>>>> upstream/master
 }
 
 
@@ -245,7 +270,11 @@ WRITE32_MEMBER( lpc210x_device::pll_w )
 
 /* Timers */
 
+<<<<<<< HEAD
 UINT32 lpc210x_device::read_timer(address_space &space, int timer, int offset, UINT32 mem_mask)
+=======
+uint32_t lpc210x_device::read_timer(address_space &space, int timer, int offset, uint32_t mem_mask)
+>>>>>>> upstream/master
 {
 	switch (offset*4)
 	{
@@ -260,7 +289,11 @@ UINT32 lpc210x_device::read_timer(address_space &space, int timer, int offset, U
 }
 
 
+<<<<<<< HEAD
 void lpc210x_device::write_timer(address_space &space, int timer, int offset, UINT32 data, UINT32 mem_mask)
+=======
+void lpc210x_device::write_timer(address_space &space, int timer, int offset, uint32_t data, uint32_t mem_mask)
+>>>>>>> upstream/master
 {
 	switch (offset * 4)
 	{
@@ -276,6 +309,7 @@ void lpc210x_device::write_timer(address_space &space, int timer, int offset, UI
 
 
 
+<<<<<<< HEAD
 static MACHINE_CONFIG_FRAGMENT( lpc210x )
 MACHINE_CONFIG_END
 
@@ -283,3 +317,7 @@ machine_config_constructor lpc210x_device::device_mconfig_additions() const
 {
 	return MACHINE_CONFIG_NAME( lpc210x );
 }
+=======
+MACHINE_CONFIG_MEMBER( lpc210x_device::device_add_mconfig )
+MACHINE_CONFIG_END
+>>>>>>> upstream/master

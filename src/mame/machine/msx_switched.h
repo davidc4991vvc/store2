@@ -4,6 +4,7 @@
 #define __MSX_SWITCHED_H
 
 
+<<<<<<< HEAD
 class msx_switched_device : public device_t
 {
 public:
@@ -16,6 +17,13 @@ public:
 
 protected:
 	virtual void device_start();
+=======
+class msx_switched_interface
+{
+public:
+	virtual DECLARE_READ8_MEMBER(switched_read) = 0;
+	virtual DECLARE_WRITE8_MEMBER(switched_write) = 0;
+>>>>>>> upstream/master
 };
 
 #endif

@@ -1,9 +1,16 @@
 // license:BSD-3-Clause
 // copyright-holders:Olivier Galibert
+<<<<<<< HEAD
 #pragma once
 
 #ifndef __M5074X_H__
 #define __M5074X_H__
+=======
+#ifndef MAME_CPU_M6502_M5074X_H
+#define MAME_CPU_M6502_M5074X_H
+
+#pragma once
+>>>>>>> upstream/master
 
 #include "m740.h"
 
@@ -71,9 +78,12 @@ class m5074x_device :  public m740_device
 	};
 
 public:
+<<<<<<< HEAD
 	// construction/destruction
 	m5074x_device(const machine_config &mconfig, device_type type, const char *name, const char *tag, device_t *owner, UINT32 clock, address_map_constructor internal_map, const char *shortname, const char *source);
 
+=======
+>>>>>>> upstream/master
 	const address_space_config m_program_config;
 
 	template<class _Object> static devcb_base &set_p0_rd_callback(device_t &device, _Object object) { return downcast<m5074x_device &>(device).read_p0.set_callback(object); }
@@ -93,6 +103,7 @@ public:
 	DECLARE_READ8_MEMBER(tmrirq_r);
 	DECLARE_WRITE8_MEMBER(tmrirq_w);
 
+<<<<<<< HEAD
 	bool are_port_bits_output(UINT8 port, UINT8 mask) { return ((m_ddrs[port] & mask) == mask) ? true : false; }
 
 protected:
@@ -105,15 +116,40 @@ protected:
 
 	void send_port(address_space &space, UINT8 offset, UINT8 data);
 	UINT8 read_port(UINT8 offset);
+=======
+	bool are_port_bits_output(uint8_t port, uint8_t mask) { return ((m_ddrs[port] & mask) == mask) ? true : false; }
+
+protected:
+	// construction/destruction
+	m5074x_device(const machine_config &mconfig, device_type type, const char *tag, device_t *owner, uint32_t clock, address_map_constructor internal_map);
+
+	// device-level overrides
+	virtual void device_start() override;
+	virtual void device_reset() override;
+	virtual void device_timer(emu_timer &timer, device_timer_id id, int param, void *ptr) override;
+	virtual void execute_set_input(int inputnum, int state) override;
+	virtual space_config_vector memory_space_config() const override;
+
+	void send_port(address_space &space, uint8_t offset, uint8_t data);
+	uint8_t read_port(uint8_t offset);
+>>>>>>> upstream/master
 
 	void recalc_irqs();
 	void recalc_timer(int timer);
 
+<<<<<<< HEAD
 	UINT8 m_ports[6], m_ddrs[6];
 	UINT8 m_intctrl, m_tmrctrl;
 	UINT8 m_tmr12pre, m_tmr1, m_tmr2, m_tmrxpre, m_tmrx;
 	UINT8 m_tmr1latch, m_tmr2latch, m_tmrxlatch;
 	UINT8 m_last_all_ints;
+=======
+	uint8_t m_ports[6], m_ddrs[6];
+	uint8_t m_intctrl, m_tmrctrl;
+	uint8_t m_tmr12pre, m_tmr1, m_tmr2, m_tmrxpre, m_tmrx;
+	uint8_t m_tmr1latch, m_tmr2latch, m_tmrxlatch;
+	uint8_t m_last_all_ints;
+>>>>>>> upstream/master
 
 private:
 	emu_timer *m_timers[NUM_TIMERS];
@@ -122,17 +158,25 @@ private:
 class m50740_device : public m5074x_device
 {
 public:
+<<<<<<< HEAD
 	m50740_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
 	m50740_device(const machine_config &mconfig, device_type type, const char *name, const char *tag, device_t *owner, UINT32 clock, const char *shortname, const char *source);
 
 protected:
 
 private:
+=======
+	m50740_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
+
+protected:
+	m50740_device(const machine_config &mconfig, device_type type, const char *tag, device_t *owner, uint32_t clock);
+>>>>>>> upstream/master
 };
 
 class m50741_device : public m5074x_device
 {
 public:
+<<<<<<< HEAD
 	m50741_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
 	m50741_device(const machine_config &mconfig, device_type type, const char *name, const char *tag, device_t *owner, UINT32 clock, const char *shortname, const char *source);
 
@@ -145,3 +189,15 @@ extern const device_type M50740;
 extern const device_type M50741;
 
 #endif
+=======
+	m50741_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
+
+protected:
+	m50741_device(const machine_config &mconfig, device_type type, const char *tag, device_t *owner, uint32_t clock);
+};
+
+DECLARE_DEVICE_TYPE(M50740, m50740_device)
+DECLARE_DEVICE_TYPE(M50741, m50741_device)
+
+#endif // MAME_CPU_M6502_M5074X_H
+>>>>>>> upstream/master

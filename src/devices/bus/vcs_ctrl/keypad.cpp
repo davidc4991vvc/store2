@@ -6,6 +6,10 @@
 
 **********************************************************************/
 
+<<<<<<< HEAD
+=======
+#include "emu.h"
+>>>>>>> upstream/master
 #include "keypad.h"
 
 
@@ -14,7 +18,11 @@
 //  DEVICE DEFINITIONS
 //**************************************************************************
 
+<<<<<<< HEAD
 const device_type VCS_KEYPAD = &device_creator<vcs_keypad_device>;
+=======
+DEFINE_DEVICE_TYPE(VCS_KEYPAD, vcs_keypad_device, "vcs_keypad", "Atari / CBM Keypad")
+>>>>>>> upstream/master
 
 
 static INPUT_PORTS_START( vcs_keypad )
@@ -53,10 +61,18 @@ ioport_constructor vcs_keypad_device::device_input_ports() const
 //  vcs_keypad_device - constructor
 //-------------------------------------------------
 
+<<<<<<< HEAD
 vcs_keypad_device::vcs_keypad_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock) :
 	device_t(mconfig, VCS_KEYPAD, "Atari / CBM Keypad", tag, owner, clock, "vcs_keypad", __FILE__),
 	device_vcs_control_port_interface(mconfig, *this),
 	m_keypad(*this, "KEYPAD"), m_column(0)
+=======
+vcs_keypad_device::vcs_keypad_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock) :
+	device_t(mconfig, VCS_KEYPAD, tag, owner, clock),
+	device_vcs_control_port_interface(mconfig, *this),
+	m_keypad(*this, "KEYPAD"),
+	m_column(0)
+>>>>>>> upstream/master
 {
 }
 
@@ -76,7 +92,11 @@ void vcs_keypad_device::device_start()
 //  vcs_joy_w - joystick write
 //-------------------------------------------------
 
+<<<<<<< HEAD
 UINT8 vcs_keypad_device::vcs_joy_r()
+=======
+uint8_t vcs_keypad_device::vcs_joy_r()
+>>>>>>> upstream/master
 {
 	for ( int i = 0; i < 4; i++ )
 	{
@@ -95,12 +115,20 @@ UINT8 vcs_keypad_device::vcs_joy_r()
 	return 0xff;
 }
 
+<<<<<<< HEAD
 void vcs_keypad_device::vcs_joy_w( UINT8 data )
+=======
+void vcs_keypad_device::vcs_joy_w( uint8_t data )
+>>>>>>> upstream/master
 {
 	m_column = data & 0x0F;
 }
 
+<<<<<<< HEAD
 UINT8 vcs_keypad_device::vcs_pot_x_r()
+=======
+uint8_t vcs_keypad_device::vcs_pot_x_r()
+>>>>>>> upstream/master
 {
 	for ( int i = 0; i < 4; i++ )
 	{
@@ -119,7 +147,11 @@ UINT8 vcs_keypad_device::vcs_pot_x_r()
 	return 0;
 }
 
+<<<<<<< HEAD
 UINT8 vcs_keypad_device::vcs_pot_y_r()
+=======
+uint8_t vcs_keypad_device::vcs_pot_y_r()
+>>>>>>> upstream/master
 {
 	for ( int i = 0; i < 4; i++ )
 	{

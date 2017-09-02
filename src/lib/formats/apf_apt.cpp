@@ -47,7 +47,11 @@ e. A checksum byte (8-bit addition)
 /* 500 microsecond of bit 0 and 1000 microsecond of bit 1 */
 static int apf_image_size;
 
+<<<<<<< HEAD
 static int apf_put_samples(INT16 *buffer, int sample_pos, int count, int level)
+=======
+static int apf_put_samples(int16_t *buffer, int sample_pos, int count, int level)
+>>>>>>> upstream/master
 {
 	if (buffer)
 	{
@@ -58,7 +62,11 @@ static int apf_put_samples(INT16 *buffer, int sample_pos, int count, int level)
 	return count;
 }
 
+<<<<<<< HEAD
 static int apf_output_bit(INT16 *buffer, int sample_pos, bool bit)
+=======
+static int apf_output_bit(int16_t *buffer, int sample_pos, bool bit)
+>>>>>>> upstream/master
 {
 	int samples = 0;
 
@@ -76,10 +84,17 @@ static int apf_output_bit(INT16 *buffer, int sample_pos, bool bit)
 	return samples;
 }
 
+<<<<<<< HEAD
 static int apf_output_byte(INT16 *buffer, int sample_pos, UINT8 byte)
 {
 	int samples = 0;
 	UINT8 i;
+=======
+static int apf_output_byte(int16_t *buffer, int sample_pos, uint8_t byte)
+{
+	int samples = 0;
+	uint8_t i;
+>>>>>>> upstream/master
 
 	/* data */
 	for (i = 0; i<8; i++)
@@ -88,12 +103,21 @@ static int apf_output_byte(INT16 *buffer, int sample_pos, UINT8 byte)
 	return samples;
 }
 
+<<<<<<< HEAD
 static int apf_apt_handle_cassette(INT16 *buffer, const UINT8 *bytes)
 {
 	UINT32 sample_count = 0;
 	UINT32 i;
 	UINT8 cksm = 0;
 	UINT32 temp = 0;
+=======
+static int apf_apt_handle_cassette(int16_t *buffer, const uint8_t *bytes)
+{
+	uint32_t sample_count = 0;
+	uint32_t i;
+	uint8_t cksm = 0;
+	uint32_t temp = 0;
+>>>>>>> upstream/master
 
 	// silence
 	sample_count += apf_put_samples(buffer, 0, 12000, 0);
@@ -121,11 +145,19 @@ static int apf_apt_handle_cassette(INT16 *buffer, const UINT8 *bytes)
 	return sample_count;
 }
 
+<<<<<<< HEAD
 static int apf_cpf_handle_cassette(INT16 *buffer, const UINT8 *bytes)
 {
 	UINT32 sample_count = 0;
 	UINT32 i;
 	UINT8 cksm = 0;
+=======
+static int apf_cpf_handle_cassette(int16_t *buffer, const uint8_t *bytes)
+{
+	uint32_t sample_count = 0;
+	uint32_t i;
+	uint8_t cksm = 0;
+>>>>>>> upstream/master
 
 	// silence
 	sample_count += apf_put_samples(buffer, 0, 12000, 0);
@@ -154,12 +186,20 @@ static int apf_cpf_handle_cassette(INT16 *buffer, const UINT8 *bytes)
    Generate samples for the tape image
 ********************************************************************/
 
+<<<<<<< HEAD
 static int apf_apt_fill_wave(INT16 *buffer, int length, UINT8 *bytes)
+=======
+static int apf_apt_fill_wave(int16_t *buffer, int length, uint8_t *bytes)
+>>>>>>> upstream/master
 {
 	return apf_apt_handle_cassette(buffer, bytes);
 }
 
+<<<<<<< HEAD
 static int apf_cpf_fill_wave(INT16 *buffer, int length, UINT8 *bytes)
+=======
+static int apf_cpf_fill_wave(int16_t *buffer, int length, uint8_t *bytes)
+>>>>>>> upstream/master
 {
 	return apf_cpf_handle_cassette(buffer, bytes);
 }
@@ -168,6 +208,7 @@ static int apf_cpf_fill_wave(INT16 *buffer, int length, UINT8 *bytes)
    Calculate the number of samples needed for this tape image
 ********************************************************************/
 
+<<<<<<< HEAD
 static int apf_apt_calculate_size_in_samples(const UINT8 *bytes, int length)
 {
 	apf_image_size = length;
@@ -180,6 +221,20 @@ static int apf_cpf_calculate_size_in_samples(const UINT8 *bytes, int length)
 	apf_image_size = length;
 
 	return apf_cpf_handle_cassette(NULL, bytes);
+=======
+static int apf_apt_calculate_size_in_samples(const uint8_t *bytes, int length)
+{
+	apf_image_size = length;
+
+	return apf_apt_handle_cassette(nullptr, bytes);
+}
+
+static int apf_cpf_calculate_size_in_samples(const uint8_t *bytes, int length)
+{
+	apf_image_size = length;
+
+	return apf_cpf_handle_cassette(nullptr, bytes);
+>>>>>>> upstream/master
 }
 
 //*********************************************************************************
@@ -195,12 +250,20 @@ static const struct CassetteLegacyWaveFiller apf_cpf_fill_intf =
 	0                                       /* trailer_samples */
 };
 
+<<<<<<< HEAD
 static casserr_t apf_cpf_identify(cassette_image *cassette, struct CassetteOptions *opts)
+=======
+static cassette_image::error apf_cpf_identify(cassette_image *cassette, struct CassetteOptions *opts)
+>>>>>>> upstream/master
 {
 	return cassette_legacy_identify(cassette, opts, &apf_cpf_fill_intf);
 }
 
+<<<<<<< HEAD
 static casserr_t apf_cpf_load(cassette_image *cassette)
+=======
+static cassette_image::error apf_cpf_load(cassette_image *cassette)
+>>>>>>> upstream/master
 {
 	return cassette_legacy_construct(cassette, &apf_cpf_fill_intf);
 }
@@ -210,7 +273,11 @@ static const struct CassetteFormat apf_cpf_format =
 	"cas,cpf",
 	apf_cpf_identify,
 	apf_cpf_load,
+<<<<<<< HEAD
 	NULL
+=======
+	nullptr
+>>>>>>> upstream/master
 };
 
 //*********************************************************************************
@@ -226,12 +293,20 @@ static const struct CassetteLegacyWaveFiller apf_apt_fill_intf =
 	0                                       /* trailer_samples */
 };
 
+<<<<<<< HEAD
 static casserr_t apf_apt_identify(cassette_image *cassette, struct CassetteOptions *opts)
+=======
+static cassette_image::error apf_apt_identify(cassette_image *cassette, struct CassetteOptions *opts)
+>>>>>>> upstream/master
 {
 	return cassette_legacy_identify(cassette, opts, &apf_apt_fill_intf);
 }
 
+<<<<<<< HEAD
 static casserr_t apf_apt_load(cassette_image *cassette)
+=======
+static cassette_image::error apf_apt_load(cassette_image *cassette)
+>>>>>>> upstream/master
 {
 	return cassette_legacy_construct(cassette, &apf_apt_fill_intf);
 }
@@ -241,7 +316,11 @@ static const struct CassetteFormat apf_apt_format =
 	"apt",
 	apf_apt_identify,
 	apf_apt_load,
+<<<<<<< HEAD
 	NULL
+=======
+	nullptr
+>>>>>>> upstream/master
 };
 
 //*********************************************************************************

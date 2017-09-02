@@ -1,5 +1,9 @@
 /*
+<<<<<<< HEAD
  * Copyright 2011-2015 Branimir Karadzic. All rights reserved.
+=======
+ * Copyright 2011-2017 Branimir Karadzic. All rights reserved.
+>>>>>>> upstream/master
  * License: https://github.com/bkaradzic/bgfx/blob/master/LICENSE
  */
 

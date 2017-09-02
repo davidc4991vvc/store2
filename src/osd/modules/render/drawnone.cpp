@@ -2,17 +2,25 @@
 // copyright-holders:Aaron Giles
 //============================================================
 //
+<<<<<<< HEAD
 //  drawnone.c - stub "nothing" drawer
+=======
+//  drawnone.cpp - stub "nothing" drawer
+>>>>>>> upstream/master
 //
 //============================================================
 
 // standard windows headers
+<<<<<<< HEAD
 #define WIN32_LEAN_AND_MEAN
+=======
+>>>>>>> upstream/master
 #include <windows.h>
 
 // MAME headers
 #include "emu.h"
 
+<<<<<<< HEAD
 // MAMEOS headers
 #include "window.h"
 
@@ -95,6 +103,9 @@ void renderer_none::destroy()
 }
 
 
+=======
+#include "drawnone.h"
+>>>>>>> upstream/master
 
 //============================================================
 //  drawnone_window_get_primitives
@@ -102,6 +113,7 @@ void renderer_none::destroy()
 
 render_primitive_list *renderer_none::get_primitives()
 {
+<<<<<<< HEAD
 	RECT client;
 	GetClientRect(window().m_hwnd, &client);
 	window().target()->set_bounds(rect_width(&client), rect_height(&client), window().aspect());
@@ -117,4 +129,22 @@ render_primitive_list *renderer_none::get_primitives()
 int renderer_none::draw(const int update)
 {
 	return 0;
+=======
+	auto win = try_getwindow();
+	if (win == nullptr)
+		return nullptr;
+
+	RECT client;
+#if defined(OSD_WINDOWS)
+	GetClientRect(std::static_pointer_cast<win_window_info>(win)->platform_window(), &client);
+#elif defined(OSD_UWP)
+	auto bounds = std::static_pointer_cast<uwp_window_info>(win)->platform_window()->Bounds;
+	client.left = bounds.Left;
+	client.right = bounds.Right;
+	client.top = bounds.Top;
+	client.bottom = bounds.Bottom;
+#endif
+	win->target()->set_bounds(rect_width(&client), rect_height(&client), win->pixel_aspect());
+	return &win->target()->get_primitives();
+>>>>>>> upstream/master
 }

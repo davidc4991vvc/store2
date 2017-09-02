@@ -37,11 +37,19 @@
 #if TILEMAPS
 TILE_GET_INFO_MEMBER(suna8_state::get_tile_info)
 {
+<<<<<<< HEAD
 	UINT8 code, attr;
 
 	if (machine().input().code_pressed(KEYCODE_X))
 	{
 		UINT8 *rom = memregion("maincpu")->base() + 0x10000 + 0x4000 * m_trombank;
+=======
+	uint8_t code, attr;
+
+	if (machine().input().code_pressed(KEYCODE_X))
+	{
+		uint8_t *rom = memregion("maincpu")->base() + 0x10000 + 0x4000 * m_trombank;
+>>>>>>> upstream/master
 		code = rom[ 2 * tile_index + 0 ];
 		attr = rom[ 2 * tile_index + 1 ];
 	}
@@ -96,7 +104,11 @@ WRITE8_MEMBER( suna8_state::brickzn_banked_paletteram_w )
 		return;
 
 	int r,g,b;
+<<<<<<< HEAD
 	UINT16 rgb;
+=======
+	uint16_t rgb;
+>>>>>>> upstream/master
 
 	offset += m_palettebank * 0x200;
 	m_banked_paletteram[offset] = data;
@@ -179,7 +191,11 @@ VIDEO_START_MEMBER(suna8_state,suna8_starfigh)          { suna8_vh_start_common(
 #define PIXEL_OP_REBASE_TRANSPEN_PRIORITY_MASK(DEST, PRIORITY, SOURCE)              \
 do                                                                                  \
 {                                                                                   \
+<<<<<<< HEAD
 	UINT32 srcdata = (SOURCE);                                                      \
+=======
+	uint32_t srcdata = (SOURCE);                                                      \
+>>>>>>> upstream/master
 	if (srcdata != trans_pen)                                                       \
 	{                                                                               \
 		if ((PRIORITY) == 0)                                                        \
@@ -192,12 +208,21 @@ class mygfx_element : public gfx_element
 {
 public:
 	void prio_mask_transpen(bitmap_ind16 &dest, const rectangle &cliprect,
+<<<<<<< HEAD
 			UINT32 code, UINT32 color, int flipx, int flipy, INT32 destx, INT32 desty,
 			bitmap_ind8 &priority, UINT32 trans_pen)
 	{
 		color = colorbase() + granularity() * (color % colors());
 		code %= elements();
 		DRAWGFX_CORE(UINT16, PIXEL_OP_REBASE_TRANSPEN_PRIORITY_MASK, UINT8);
+=======
+			uint32_t code, uint32_t color, int flipx, int flipy, int32_t destx, int32_t desty,
+			bitmap_ind8 &priority, uint32_t trans_pen)
+	{
+		color = colorbase() + granularity() * (color % colors());
+		code %= elements();
+		DRAWGFX_CORE(uint16_t, PIXEL_OP_REBASE_TRANSPEN_PRIORITY_MASK, uint8_t);
+>>>>>>> upstream/master
 	}
 };
 
@@ -246,7 +271,11 @@ public:
 
 void suna8_state::draw_sprites(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect, int start, int end, int which)
 {
+<<<<<<< HEAD
 	UINT8 *spriteram = m_spriteram + which * 0x2000 * 2;
+=======
+	uint8_t *spriteram = m_spriteram + which * 0x2000 * 2;
+>>>>>>> upstream/master
 
 	int mx = 0; // multisprite x counter
 
@@ -469,7 +498,11 @@ void suna8_state::draw_sprites(screen_device &screen, bitmap_ind16 &bitmap, cons
 
 void suna8_state::draw_text_sprites(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect, int start, int end, int ypos, bool write_mask)
 {
+<<<<<<< HEAD
 	UINT8 *spriteram = m_spriteram;
+=======
+	uint8_t *spriteram = m_spriteram;
+>>>>>>> upstream/master
 
 	int max_x = m_screen->width() - 8;
 	int max_y = m_screen->height() - 8;
@@ -547,7 +580,11 @@ void suna8_state::draw_text_sprites(screen_device &screen, bitmap_ind16 &bitmap,
 
 ***************************************************************************/
 
+<<<<<<< HEAD
 UINT32 suna8_state::screen_update_suna8(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+=======
+uint32_t suna8_state::screen_update_suna8(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+>>>>>>> upstream/master
 {
 	// see hardhead, hardhea2 test mode (press button 2 for both players)
 	bitmap.fill(0xff, cliprect);

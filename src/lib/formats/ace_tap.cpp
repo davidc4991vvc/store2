@@ -26,7 +26,11 @@ static int cas_size;
 /*******************************************************************
    Generate one high-low cycle of sample data
 ********************************************************************/
+<<<<<<< HEAD
 INLINE int ace_tap_cycle(INT16 *buffer, int sample_pos, int high, int low)
+=======
+static inline int ace_tap_cycle(int16_t *buffer, int sample_pos, int high, int low)
+>>>>>>> upstream/master
 {
 	int i = 0;
 
@@ -48,7 +52,11 @@ INLINE int ace_tap_cycle(INT16 *buffer, int sample_pos, int high, int low)
 }
 
 
+<<<<<<< HEAD
 INLINE int ace_tap_silence(INT16 *buffer, int sample_pos, int samples)
+=======
+static inline int ace_tap_silence(int16_t *buffer, int sample_pos, int samples)
+>>>>>>> upstream/master
 {
 	int i = 0;
 
@@ -64,7 +72,11 @@ INLINE int ace_tap_silence(INT16 *buffer, int sample_pos, int samples)
 }
 
 
+<<<<<<< HEAD
 INLINE int ace_tap_byte(INT16 *buffer, int sample_pos, UINT8 data)
+=======
+static inline int ace_tap_byte(int16_t *buffer, int sample_pos, uint8_t data)
+>>>>>>> upstream/master
 {
 	int i, samples;
 
@@ -82,7 +94,11 @@ INLINE int ace_tap_byte(INT16 *buffer, int sample_pos, UINT8 data)
 }
 
 
+<<<<<<< HEAD
 static int ace_handle_tap(INT16 *buffer, const UINT8 *casdata)
+=======
+static int ace_handle_tap(int16_t *buffer, const uint8_t *casdata)
+>>>>>>> upstream/master
 {
 	int data_pos, sample_count;
 
@@ -97,7 +113,11 @@ static int ace_handle_tap(INT16 *buffer, const UINT8 *casdata)
 
 	while( data_pos < cas_size )
 	{
+<<<<<<< HEAD
 		UINT16  block_size;
+=======
+		uint16_t  block_size;
+>>>>>>> upstream/master
 		int     i;
 
 		/* Handle a block of tape data */
@@ -138,7 +158,11 @@ static int ace_handle_tap(INT16 *buffer, const UINT8 *casdata)
 /*******************************************************************
    Generate samples for the tape image
 ********************************************************************/
+<<<<<<< HEAD
 static int ace_tap_fill_wave(INT16 *buffer, int sample_count, UINT8 *bytes)
+=======
+static int ace_tap_fill_wave(int16_t *buffer, int sample_count, uint8_t *bytes)
+>>>>>>> upstream/master
 {
 	return ace_handle_tap( buffer, bytes );
 }
@@ -147,11 +171,19 @@ static int ace_tap_fill_wave(INT16 *buffer, int sample_count, UINT8 *bytes)
 /*******************************************************************
    Calculate the number of samples needed for this tape image
 ********************************************************************/
+<<<<<<< HEAD
 static int ace_tap_to_wav_size(const UINT8 *casdata, int caslen)
 {
 	cas_size = caslen;
 
 	return ace_handle_tap( NULL, casdata );
+=======
+static int ace_tap_to_wav_size(const uint8_t *casdata, int caslen)
+{
+	cas_size = caslen;
+
+	return ace_handle_tap( nullptr, casdata );
+>>>>>>> upstream/master
 }
 
 
@@ -167,13 +199,21 @@ static const struct CassetteLegacyWaveFiller ace_legacy_fill_wave =
 };
 
 
+<<<<<<< HEAD
 static casserr_t ace_tap_identify(cassette_image *cassette, struct CassetteOptions *opts)
+=======
+static cassette_image::error ace_tap_identify(cassette_image *cassette, struct CassetteOptions *opts)
+>>>>>>> upstream/master
 {
 	return cassette_legacy_identify(cassette, opts, &ace_legacy_fill_wave);
 }
 
 
+<<<<<<< HEAD
 static casserr_t ace_tap_load(cassette_image *cassette)
+=======
+static cassette_image::error ace_tap_load(cassette_image *cassette)
+>>>>>>> upstream/master
 {
 	return cassette_legacy_construct(cassette, &ace_legacy_fill_wave);
 }
@@ -184,7 +224,11 @@ static const struct CassetteFormat ace_tap_format =
 	"tap",
 	ace_tap_identify,
 	ace_tap_load,
+<<<<<<< HEAD
 	NULL
+=======
+	nullptr
+>>>>>>> upstream/master
 };
 
 

@@ -79,11 +79,23 @@ Notes:
 ***************************************************************************/
 
 #include "emu.h"
+<<<<<<< HEAD
 #include "cpu/z80/z80.h"
 #include "sound/okim6295.h"
 #include "sound/k051649.h"
 #include "includes/konamipt.h"
 #include "includes/hexion.h"
+=======
+#include "includes/hexion.h"
+#include "includes/konamipt.h"
+
+#include "cpu/z80/z80.h"
+#include "machine/watchdog.h"
+#include "sound/okim6295.h"
+#include "sound/k051649.h"
+
+#include "speaker.h"
+>>>>>>> upstream/master
 
 
 WRITE8_MEMBER(hexion_state::coincntr_w)
@@ -91,8 +103,13 @@ WRITE8_MEMBER(hexion_state::coincntr_w)
 //logerror("%04x: coincntr_w %02x\n",space.device().safe_pc(),data);
 
 	/* bits 0/1 = coin counters */
+<<<<<<< HEAD
 	coin_counter_w(machine(), 0,data & 0x01);
 	coin_counter_w(machine(), 1,data & 0x02);
+=======
+	machine().bookkeeping().coin_counter_w(0,data & 0x01);
+	machine().bookkeeping().coin_counter_w(1,data & 0x02);
+>>>>>>> upstream/master
 
 	/* bit 5 = flip screen */
 	flip_screen_set(data & 0x20);
@@ -134,7 +151,11 @@ static ADDRESS_MAP_START( hexion_map, AS_PROGRAM, 8, hexion_state )
 	AM_RANGE(0xf480, 0xf480) AM_WRITE(bankswitch_w)
 	AM_RANGE(0xf4c0, 0xf4c0) AM_WRITE(coincntr_w)
 	AM_RANGE(0xf500, 0xf500) AM_WRITE(gfxrom_select_w)
+<<<<<<< HEAD
 	AM_RANGE(0xf540, 0xf540) AM_READ(watchdog_reset_r)
+=======
+	AM_RANGE(0xf540, 0xf540) AM_DEVREAD("watchdog", watchdog_timer_device, reset_r)
+>>>>>>> upstream/master
 ADDRESS_MAP_END
 
 static ADDRESS_MAP_START( hexionb_map, AS_PROGRAM, 8, hexion_state )
@@ -160,7 +181,11 @@ static ADDRESS_MAP_START( hexionb_map, AS_PROGRAM, 8, hexion_state )
 	AM_RANGE(0xf480, 0xf480) AM_WRITE(bankswitch_w)
 	AM_RANGE(0xf4c0, 0xf4c0) AM_WRITE(coincntr_w)
 	AM_RANGE(0xf500, 0xf500) AM_WRITE(gfxrom_select_w)
+<<<<<<< HEAD
 	AM_RANGE(0xf540, 0xf540) AM_READ(watchdog_reset_r)
+=======
+	AM_RANGE(0xf540, 0xf540) AM_DEVREAD("watchdog", watchdog_timer_device, reset_r)
+>>>>>>> upstream/master
 	AM_RANGE(0xf5c0, 0xf5c0) AM_DEVWRITE("oki2", okim6295_device, write)
 ADDRESS_MAP_END
 
@@ -235,12 +260,20 @@ TIMER_DEVICE_CALLBACK_MEMBER(hexion_state::scanline)
 }
 
 
+<<<<<<< HEAD
 static MACHINE_CONFIG_START( hexion, hexion_state )
+=======
+static MACHINE_CONFIG_START( hexion )
+>>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", Z80, XTAL_24MHz/4) /* Z80B 6 MHz @ 17F, xtal verified, divider not verified */
 	MCFG_CPU_PROGRAM_MAP(hexion_map)
 	MCFG_TIMER_DRIVER_ADD_SCANLINE("scantimer", hexion_state, scanline, "screen", 0, 1)
+<<<<<<< HEAD
+=======
+	MCFG_WATCHDOG_ADD("watchdog")
+>>>>>>> upstream/master
 
 	MCFG_DEVICE_ADD("k053252", K053252, XTAL_24MHz/2) /* K053252, X0-010(?) @8D, xtal verified, divider not verified */
 	MCFG_K053252_INT1_ACK_CB(WRITELINE(hexion_state, irq_ack_w))
@@ -256,12 +289,20 @@ static MACHINE_CONFIG_START( hexion, hexion_state )
 	MCFG_SCREEN_PALETTE("palette")
 
 	MCFG_GFXDECODE_ADD("gfxdecode", "palette", hexion)
+<<<<<<< HEAD
 	MCFG_PALETTE_ADD_RRRRGGGGBBBB_PROMS("palette", 256)
+=======
+	MCFG_PALETTE_ADD_RRRRGGGGBBBB_PROMS("palette", "proms", 256)
+>>>>>>> upstream/master
 
 	/* sound hardware */
 	MCFG_SPEAKER_STANDARD_MONO("mono")
 
+<<<<<<< HEAD
 	MCFG_OKIM6295_ADD("oki", 1056000, OKIM6295_PIN7_HIGH) /* MSM6295GS @ 5E, clock frequency & pin 7 not verified */
+=======
+	MCFG_OKIM6295_ADD("oki", 1056000, PIN7_HIGH) /* MSM6295GS @ 5E, clock frequency & pin 7 not verified */
+>>>>>>> upstream/master
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 0.5)
 
 	MCFG_K051649_ADD("k051649", XTAL_24MHz/16) /* KONAMI 051649 // 2212P003 // JAPAN 8910EAJ @ 1D, xtal verified, divider not verified */
@@ -274,7 +315,11 @@ static MACHINE_CONFIG_DERIVED( hexionb, hexion )
 
 	MCFG_DEVICE_REMOVE("k051649")
 
+<<<<<<< HEAD
 	MCFG_OKIM6295_ADD("oki2", 1056000, OKIM6295_PIN7_HIGH) // clock frequency & pin 7 not verified
+=======
+	MCFG_OKIM6295_ADD("oki2", 1056000, PIN7_HIGH) // clock frequency & pin 7 not verified
+>>>>>>> upstream/master
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 0.5)
 MACHINE_CONFIG_END
 
@@ -332,5 +377,10 @@ ROM_START( hexionb )
 	//PAL20L10 @U31
 ROM_END
 
+<<<<<<< HEAD
 GAME( 1992, hexion, 0,      hexion, hexion, driver_device, 0, ROT0, "Konami",                     "Hexion (Japan ver JAB)", 0 )
 GAME( 1992, hexionb,hexion, hexionb,hexion, driver_device, 0, ROT0, "bootleg (Impeuropex Corp.)", "Hexion (Asia ver AAA, bootleg)", 0 ) // we're missing an original Asia AAA
+=======
+GAME( 1992, hexion, 0,      hexion, hexion, hexion_state, 0, ROT0, "Konami",                     "Hexion (Japan ver JAB)",         0 )
+GAME( 1992, hexionb,hexion, hexionb,hexion, hexion_state, 0, ROT0, "bootleg (Impeuropex Corp.)", "Hexion (Asia ver AAA, bootleg)", 0 ) // we're missing an original Asia AAA
+>>>>>>> upstream/master

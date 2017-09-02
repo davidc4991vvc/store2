@@ -40,7 +40,11 @@ Changes by Martin M. (pfloyd@gmx.net) 14.10.2001:
 
 PALETTE_INIT_MEMBER(megazone_state, megazone)
 {
+<<<<<<< HEAD
 	const UINT8 *color_prom = memregion("proms")->base();
+=======
+	const uint8_t *color_prom = memregion("proms")->base();
+>>>>>>> upstream/master
 	static const int resistances_rg[3] = { 1000, 470, 220 };
 	static const int resistances_b [2] = { 470, 220 };
 	double rweights[3], gweights[3], bweights[2];
@@ -84,32 +88,54 @@ PALETTE_INIT_MEMBER(megazone_state, megazone)
 	/* sprites */
 	for (i = 0; i < 0x100; i++)
 	{
+<<<<<<< HEAD
 		UINT8 ctabentry = color_prom[i] & 0x0f;
+=======
+		uint8_t ctabentry = color_prom[i] & 0x0f;
+>>>>>>> upstream/master
 		palette.set_pen_indirect(i, ctabentry);
 	}
 
 	/* characters */
 	for (i = 0x100; i < 0x200; i++)
 	{
+<<<<<<< HEAD
 		UINT8 ctabentry = (color_prom[i] & 0x0f) | 0x10;
+=======
+		uint8_t ctabentry = (color_prom[i] & 0x0f) | 0x10;
+>>>>>>> upstream/master
 		palette.set_pen_indirect(i, ctabentry);
 	}
 }
 
+<<<<<<< HEAD
 WRITE8_MEMBER(megazone_state::megazone_flipscreen_w)
 {
 	m_flipscreen = data & 1;
+=======
+WRITE_LINE_MEMBER(megazone_state::flipscreen_w)
+{
+	m_flipscreen = state;
+>>>>>>> upstream/master
 }
 
 void megazone_state::video_start()
 {
+<<<<<<< HEAD
 	m_tmpbitmap = auto_bitmap_ind16_alloc(machine(), 256, 256);
+=======
+	m_tmpbitmap = std::make_unique<bitmap_ind16>(256, 256);
+>>>>>>> upstream/master
 
 	save_item(NAME(*m_tmpbitmap));
 }
 
 
+<<<<<<< HEAD
 UINT32 megazone_state::screen_update_megazone(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+=======
+uint32_t megazone_state::screen_update_megazone(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+>>>>>>> upstream/master
 {
 	int offs;
 	int x, y;
@@ -162,7 +188,11 @@ UINT32 megazone_state::screen_update_megazone(screen_device &screen, bitmap_ind1
 
 	/* Draw the sprites. */
 	{
+<<<<<<< HEAD
 		UINT8 *spriteram = m_spriteram;
+=======
+		uint8_t *spriteram = m_spriteram;
+>>>>>>> upstream/master
 		for (offs = m_spriteram.bytes() - 4; offs >= 0; offs -= 4)
 		{
 			int sx = spriteram[offs + 3];

@@ -46,7 +46,11 @@ static const char *const s_mnemonics[] =
 };
 
 // number of bits per opcode parameter, 99 means (XY) parameter, negative means reversed bit-order
+<<<<<<< HEAD
 static const INT8 s_bits[] =
+=======
+static const s8 s_bits[] =
+>>>>>>> upstream/master
 {
 	0,
 	0, 0, 0, 0, 0, 4,
@@ -65,7 +69,11 @@ static const INT8 s_bits[] =
 #define _OVER DASMFLAG_STEP_OVER
 #define _OUT  DASMFLAG_STEP_OUT
 
+<<<<<<< HEAD
 static const UINT32 s_flags[] =
+=======
+static const u32 s_flags[] =
+>>>>>>> upstream/master
 {
 	0,
 	0, 0, 0, 0, 0, 0,
@@ -81,6 +89,7 @@ static const UINT32 s_flags[] =
 	0
 };
 
+<<<<<<< HEAD
 // next program counter in sequence (relative)
 static const INT8 s_next_pc[0x40] =
 {
@@ -92,6 +101,10 @@ static const INT8 s_next_pc[0x40] =
 
 
 static const UINT8 hmcs40_mnemonic[0x400] =
+=======
+
+static const u8 hmcs40_mnemonic[0x400] =
+>>>>>>> upstream/master
 {
 /*  0      1      2      3      4      5      6      7      8      9      A      B      C      D      E      F  */
 	/* 0x000 */
@@ -111,7 +124,11 @@ static const UINT8 hmcs40_mnemonic[0x400] =
 	0,     0,     0,     0,     0,     0,     0,     0,     0,     0,     0,     0,     0,     0,     0,     0,
 	/* 0x0c0 */
 	mLAR,  mLAR,  mLAR,  mLAR,  mLAR,  mLAR,  mLAR,  mLAR,  0,     0,     0,     0,     0,     0,     0,     0,
+<<<<<<< HEAD
 	mSEDD, mSEDD, mSEDD, mSEDD, mSEDD, mSEDD, mSEDD, mSEDD, mSEDD, mSEDD, mSEDD, mSEDD, mSEDD, mSEDD, mSEDD, mSEDD,
+=======
+	mSEDD, mSEDD, mSEDD, mSEDD, 0,     0,     0,     0,     0,     0,     0,     0,     0,     0,     0,     0,
+>>>>>>> upstream/master
 	mLBR,  mLBR,  mLBR,  mLBR,  mLBR,  mLBR,  mLBR,  mLBR,  0,     0,     0,     0,     0,     0,     0,     0,
 	mXAMR, mXAMR, mXAMR, mXAMR, mXAMR, mXAMR, mXAMR, mXAMR, mXAMR, mXAMR, mXAMR, mXAMR, mXAMR, mXAMR, mXAMR, mXAMR,
 
@@ -155,7 +172,11 @@ static const UINT8 hmcs40_mnemonic[0x400] =
 	0,     0,     0,     0,     0,     0,     0,     0,     0,     0,     0,     0,     0,     0,     0,     0,
 	/* 0x2c0 */
 	mLRA,  mLRA,  mLRA,  mLRA,  mLRA,  mLRA,  mLRA,  mLRA,  0,     0,     0,     0,     0,     0,     0,     0,
+<<<<<<< HEAD
 	mREDD, mREDD, mREDD, mREDD, mREDD, mREDD, mREDD, mREDD, mREDD, mREDD, mREDD, mREDD, mREDD, mREDD, mREDD, mREDD,
+=======
+	mREDD, mREDD, mREDD, mREDD, 0,     0,     0,     0,     0,     0,     0,     0,     0,     0,     0,     0,
+>>>>>>> upstream/master
 	mLRB,  mLRB,  mLRB,  mLRB,  mLRB,  mLRB,  mLRB,  mLRB,  0,     0,     0,     0,     0,     0,     0,     0,
 	0,     0,     0,     0,     0,     0,     0,     0,     0,     0,     0,     0,     0,     0,     0,     0,
 
@@ -186,14 +207,21 @@ static const UINT8 hmcs40_mnemonic[0x400] =
 
 CPU_DISASSEMBLE(hmcs40)
 {
+<<<<<<< HEAD
 	UINT16 op = (oprom[0] | oprom[1] << 8) & 0x3ff;
 	char *dst = buffer;
 	UINT8 instr = hmcs40_mnemonic[op];
 	INT8 bits = s_bits[instr];
+=======
+	u16 op = (oprom[0] | oprom[1] << 8) & 0x3ff;
+	u8 instr = hmcs40_mnemonic[op];
+	s8 bits = s_bits[instr];
+>>>>>>> upstream/master
 
 	// special case for (XY) opcode
 	if (bits == 99)
 	{
+<<<<<<< HEAD
 		dst += sprintf(dst, "%s", s_mnemonics[instr]);
 
 		if (op & 1)
@@ -204,11 +232,27 @@ CPU_DISASSEMBLE(hmcs40)
 	else
 	{
 		dst += sprintf(dst, "%-6s ", s_mnemonics[instr]);
+=======
+		util::stream_format(stream, "%s", s_mnemonics[instr]);
+
+		if (op & 1)
+			stream << "X";
+		if (op & 2)
+			stream << "Y";
+	}
+	else
+	{
+		util::stream_format(stream, "%-6s ", s_mnemonics[instr]);
+>>>>>>> upstream/master
 
 		// opcode parameter
 		if (bits != 0)
 		{
+<<<<<<< HEAD
 			UINT8 param = op;
+=======
+			u8 param = op;
+>>>>>>> upstream/master
 
 			// reverse bits
 			if (bits < 0)
@@ -221,6 +265,7 @@ CPU_DISASSEMBLE(hmcs40)
 			param &= ((1 << bits) - 1);
 
 			if (bits > 5)
+<<<<<<< HEAD
 				dst += sprintf(dst, "$%02X", param);
 			else
 				dst += sprintf(dst, "%d", param);
@@ -229,4 +274,13 @@ CPU_DISASSEMBLE(hmcs40)
 
 	int pos = s_next_pc[pc & 0x3f] & DASMFLAG_LENGTHMASK;
 	return pos | s_flags[instr] | DASMFLAG_SUPPORTED;
+=======
+				util::stream_format(stream, "$%02X", param);
+			else
+				util::stream_format(stream, "%d", param);
+		}
+	}
+
+	return 1 | s_flags[instr] | DASMFLAG_SUPPORTED;
+>>>>>>> upstream/master
 }

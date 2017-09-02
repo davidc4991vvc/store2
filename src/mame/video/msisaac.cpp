@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 // license:???
+=======
+// license:GPL-2.0+
+>>>>>>> upstream/master
 // copyright-holders:Jarek Burczynski
 /*
 *   Video Driver for Metal Soldier Isaac II (1985)
@@ -53,9 +57,15 @@ TILE_GET_INFO_MEMBER(msisaac_state::get_bg2_tile_info)
 
 void msisaac_state::video_start()
 {
+<<<<<<< HEAD
 	m_bg_tilemap  = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(msisaac_state::get_bg_tile_info),this), TILEMAP_SCAN_ROWS, 8, 8, 32, 32);
 	m_bg2_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(msisaac_state::get_bg2_tile_info),this), TILEMAP_SCAN_ROWS, 8, 8, 32, 32);
 	m_fg_tilemap  = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(msisaac_state::get_fg_tile_info),this), TILEMAP_SCAN_ROWS, 8, 8, 32, 32);
+=======
+	m_bg_tilemap  = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(msisaac_state::get_bg_tile_info),this), TILEMAP_SCAN_ROWS, 8, 8, 32, 32);
+	m_bg2_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(msisaac_state::get_bg2_tile_info),this), TILEMAP_SCAN_ROWS, 8, 8, 32, 32);
+	m_fg_tilemap  = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(msisaac_state::get_fg_tile_info),this), TILEMAP_SCAN_ROWS, 8, 8, 32, 32);
+>>>>>>> upstream/master
 
 	m_bg2_tilemap->set_transparent_pen(0);
 	m_fg_tilemap->set_transparent_pen(0);
@@ -151,8 +161,13 @@ WRITE8_MEMBER(msisaac_state::msisaac_fg_videoram_w)
 ***************************************************************************/
 void msisaac_state::draw_sprites( bitmap_ind16 &bitmap, const rectangle &cliprect )
 {
+<<<<<<< HEAD
 	const UINT8 *source = m_spriteram + 32 * 4 - 4;
 	const UINT8 *finish = m_spriteram; /* ? */
+=======
+	const uint8_t *source = m_spriteram + 32 * 4 - 4;
+	const uint8_t *finish = m_spriteram; /* ? */
+>>>>>>> upstream/master
 
 	while (source >= finish)
 	{
@@ -169,7 +184,11 @@ void msisaac_state::draw_sprites( bitmap_ind16 &bitmap, const rectangle &cliprec
 
 		if (attributes & 4)
 		{
+<<<<<<< HEAD
 			//color = rand() & 15;
+=======
+			//color = machine().rand() & 15;
+>>>>>>> upstream/master
 			gfx = m_gfxdecode->gfx(3);
 		}
 
@@ -231,7 +250,11 @@ void msisaac_state::draw_sprites( bitmap_ind16 &bitmap, const rectangle &cliprec
 	}
 }
 
+<<<<<<< HEAD
 UINT32 msisaac_state::screen_update_msisaac(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+=======
+uint32_t msisaac_state::screen_update_msisaac(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+>>>>>>> upstream/master
 {
 	m_bg_tilemap->draw(screen, bitmap, cliprect, 0, 0);
 	m_bg2_tilemap->draw(screen, bitmap, cliprect, 0, 0);

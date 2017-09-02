@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 // license:???
+=======
+// license:GPL-2.0+
+>>>>>>> upstream/master
 // copyright-holders:Jarek Burczynski
 /*
 *   Video Driver for Forty-Love
@@ -8,6 +12,7 @@
 #include "includes/40love.h"
 
 
+<<<<<<< HEAD
 /*
 *   color prom decoding
 */
@@ -48,6 +53,8 @@ PALETTE_INIT_MEMBER(fortyl_state, fortyl)
 	}
 }
 
+=======
+>>>>>>> upstream/master
 /***************************************************************************
 
   Callbacks for the TileMap code
@@ -78,7 +85,11 @@ TILE_GET_INFO_MEMBER(fortyl_state::get_bg_tile_info)
 
 	SET_TILE_INFO_MEMBER(0,
 			code,
+<<<<<<< HEAD
 			tile_attrib & 0x07,
+=======
+			(tile_attrib & 0x07) | ((m_color_bank == true) ? 0x20 : 0),
+>>>>>>> upstream/master
 			0);
 }
 
@@ -103,6 +114,7 @@ void fortyl_state::redraw_pixels()
 
 void fortyl_state::video_start()
 {
+<<<<<<< HEAD
 	m_pixram1 = auto_alloc_array_clear(machine(), UINT8, 0x4000);
 	m_pixram2 = auto_alloc_array_clear(machine(), UINT8, 0x4000);
 
@@ -110,6 +122,15 @@ void fortyl_state::video_start()
 	m_tmp_bitmap2 = auto_bitmap_ind16_alloc(machine(), 256, 256);
 
 	m_bg_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(fortyl_state::get_bg_tile_info),this), TILEMAP_SCAN_ROWS, 8, 8, 64, 32);
+=======
+	m_pixram1 = make_unique_clear<uint8_t[]>(0x4000);
+	m_pixram2 = make_unique_clear<uint8_t[]>(0x4000);
+
+	m_tmp_bitmap1 = std::make_unique<bitmap_ind16>(256, 256);
+	m_tmp_bitmap2 = std::make_unique<bitmap_ind16>(256, 256);
+
+	m_bg_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(fortyl_state::get_bg_tile_info),this), TILEMAP_SCAN_ROWS, 8, 8, 64, 32);
+>>>>>>> upstream/master
 
 	m_xoffset = 128;    // this never changes
 
@@ -118,8 +139,13 @@ void fortyl_state::video_start()
 
 	save_item(NAME(m_flipscreen));
 	save_item(NAME(m_pix_color));
+<<<<<<< HEAD
 	save_pointer(NAME(m_pixram1), 0x4000);
 	save_pointer(NAME(m_pixram2), 0x4000);
+=======
+	save_pointer(NAME(m_pixram1.get()), 0x4000);
+	save_pointer(NAME(m_pixram2.get()), 0x4000);
+>>>>>>> upstream/master
 	save_item(NAME(*m_tmp_bitmap1));
 	save_item(NAME(*m_tmp_bitmap2));
 	save_item(NAME(m_pixram_sel));
@@ -149,12 +175,38 @@ void fortyl_state::fortyl_set_scroll_x( int offset )
 	m_bg_tilemap->set_scrollx(offset / 2, x);
 }
 
+<<<<<<< HEAD
+=======
+/*!
+ @brief various video related outputs
+ --x- ---- Screen disable bit
+ ---- x--- Global screen color bank
+ ---- -x-- Pix RAM color bank select
+ ---- ---x Flip Screen set
+ */
+>>>>>>> upstream/master
 WRITE8_MEMBER(fortyl_state::fortyl_pixram_sel_w)
 {
 	int offs;
 	int f = data & 0x01;
+<<<<<<< HEAD
 
 	m_pixram_sel = (data & 0x04) >> 2;
+=======
+	bool cur_col_bank = bool(data & 8);
+
+	if(data & 0xd2)
+		popmessage("pixram sel = %02x, contact MAMEdev",data);
+
+	m_pixram_sel = (data & 0x04) >> 2;
+	m_screen_disable = bool(data & 0x20); // Undoukai
+
+	if(cur_col_bank != m_color_bank)
+	{
+		m_color_bank = cur_col_bank;
+		redraw_pixels();
+	}
+>>>>>>> upstream/master
 
 	if (m_flipscreen != f)
 	{
@@ -197,9 +249,15 @@ void fortyl_state::fortyl_plot_pix( int offset )
 	{
 		c = ((d2 >> i) & 1) + ((d1 >> i) & 1) * 2;
 		if (m_pixram_sel)
+<<<<<<< HEAD
 			m_tmp_bitmap2->pix16(y, x + i) = m_pix_color[c];
 		else
 			m_tmp_bitmap1->pix16(y, x + i) = m_pix_color[c];
+=======
+			m_tmp_bitmap2->pix16(y, x + i) = m_pix_color[c] | ((m_color_bank == true) ? 0x200 : 0);
+		else
+			m_tmp_bitmap1->pix16(y, x + i) = m_pix_color[c] | ((m_color_bank == true) ? 0x200 : 0);
+>>>>>>> upstream/master
 	}
 }
 
@@ -267,8 +325,13 @@ spriteram format (4 bytes per sprite):
 
 void fortyl_state::draw_sprites( bitmap_ind16 &bitmap, const rectangle &cliprect )
 {
+<<<<<<< HEAD
 	UINT8 *spriteram = m_spriteram;
 	UINT8 *spriteram_2 = m_spriteram2;
+=======
+	uint8_t *spriteram = m_spriteram;
+	uint8_t *spriteram_2 = m_spriteram2;
+>>>>>>> upstream/master
 	int offs;
 
 	/* spriteram #1 */
@@ -287,7 +350,11 @@ void fortyl_state::draw_sprites( bitmap_ind16 &bitmap, const rectangle &cliprect
 		code = (spriteram[offs + 1] & 0x3f) + ((spriteram[offs + 2] & 0x18) << 3);
 		flipx = ((spriteram[offs + 1] & 0x40) >> 6) ^ m_flipscreen;
 		flipy = ((spriteram[offs + 1] & 0x80) >> 7) ^ m_flipscreen;
+<<<<<<< HEAD
 		color = (spriteram[offs + 2] & 0x07) + 0x08;
+=======
+		color = (spriteram[offs + 2] & 0x07) + 0x08; // TODO: color bank here too? Check Undoukai
+>>>>>>> upstream/master
 
 		if (spriteram[offs + 2] & 0xe0)
 			color = machine().rand() & 0xf;
@@ -347,8 +414,19 @@ void fortyl_state::draw_pixram( bitmap_ind16 &bitmap, const rectangle &cliprect 
 		copybitmap(bitmap, *m_tmp_bitmap2, f, f, m_xoffset, 0, cliprect);
 }
 
+<<<<<<< HEAD
 UINT32 fortyl_state::screen_update_fortyl(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
 {
+=======
+uint32_t fortyl_state::screen_update_fortyl(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+{
+	if(m_screen_disable == true)
+	{
+		bitmap.fill(m_palette->black_pen(), cliprect);
+		return 0;
+	}
+
+>>>>>>> upstream/master
 	draw_pixram(bitmap, cliprect);
 
 	m_bg_tilemap->set_scrolldy(- m_video_ctrl[1] + 1, - m_video_ctrl[1] - 1 );

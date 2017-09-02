@@ -7,12 +7,20 @@
  *
  */
 
+<<<<<<< HEAD
 #pragma once
 
 #ifndef __PSXGTE_H__
 #define __PSXGTE_H__
 
 #include "emu.h"
+=======
+#ifndef MAME_CPU_PSX_GTE_H
+#define MAME_CPU_PSX_GTE_H
+
+#pragma once
+
+>>>>>>> upstream/master
 
 #define GTE_SF( op ) ( ( op >> 19 ) & 1 )
 #define GTE_MX( op ) ( ( op >> 17 ) & 3 )
@@ -24,6 +32,7 @@
 class gte
 {
 public:
+<<<<<<< HEAD
 	PAIR m_cp2cr[ 32 ];
 	PAIR m_cp2dr[ 32 ];
 
@@ -32,11 +41,26 @@ public:
 	UINT32 getcp2cr( UINT32 pc, int reg );
 	void setcp2cr( UINT32 pc, int reg, UINT32 value );
 	int docop2( UINT32 pc, int gteop );
+=======
+	gte() : m_sf(0), m_mac0(0), m_mac1(0), m_mac2(0), m_mac3(0)
+	{
+	}
+
+	PAIR m_cp2cr[ 32 ];
+	PAIR m_cp2dr[ 32 ];
+
+	uint32_t getcp2dr( uint32_t pc, int reg );
+	void setcp2dr( uint32_t pc, int reg, uint32_t value );
+	uint32_t getcp2cr( uint32_t pc, int reg );
+	void setcp2cr( uint32_t pc, int reg, uint32_t value );
+	int docop2( uint32_t pc, int gteop );
+>>>>>>> upstream/master
 
 protected:
 	class int44
 	{
 	public:
+<<<<<<< HEAD
 		int44( INT64 value ) :
 			m_value( value ),
 			m_positive_overflow( value > S64( 0x7ffffffffff ) ),
@@ -45,15 +69,31 @@ protected:
 		}
 
 		int44( INT64 value, bool positive_overflow, bool negative_overflow ) :
+=======
+		int44( int64_t value ) :
+			m_value( value ),
+			m_positive_overflow( value > 0x7ffffffffff ),
+			m_negative_overflow( value < -0x80000000000 )
+		{
+		}
+
+		int44( int64_t value, bool positive_overflow, bool negative_overflow ) :
+>>>>>>> upstream/master
 			m_value( value ),
 			m_positive_overflow( positive_overflow ),
 			m_negative_overflow( negative_overflow )
 		{
 		}
 
+<<<<<<< HEAD
 		int44 operator+( INT64 add )
 		{
 			INT64 value = ( ( m_value + add ) << 20 ) >> 20;
+=======
+		int44 operator+( int64_t add )
+		{
+			int64_t value = ( ( m_value + add ) << 20 ) >> 20;
+>>>>>>> upstream/master
 
 			return int44( value,
 				m_positive_overflow || ( value < 0 && m_value >= 0 && add >= 0 ),
@@ -70,17 +110,26 @@ protected:
 			return m_negative_overflow;
 		}
 
+<<<<<<< HEAD
 		INT64 value()
+=======
+		int64_t value()
+>>>>>>> upstream/master
 		{
 			return m_value;
 		}
 
 	private:
+<<<<<<< HEAD
 		INT64 m_value;
+=======
+		int64_t m_value;
+>>>>>>> upstream/master
 		bool m_positive_overflow;
 		bool m_negative_overflow;
 	};
 
+<<<<<<< HEAD
 	INT32 LIM( INT32 value, INT32 max, INT32 min, UINT32 flag );
 	INT32 BOUNDS( int44 a, int max_flag, int min_flag );
 	INT32 A1( int44 a );
@@ -108,3 +157,32 @@ protected:
 };
 
 #endif
+=======
+	int32_t LIM( int32_t value, int32_t max, int32_t min, uint32_t flag );
+	int32_t BOUNDS( int44 a, int max_flag, int min_flag );
+	int32_t A1( int44 a );
+	int32_t A2( int44 a );
+	int32_t A3( int44 a );
+	int32_t Lm_B1( int32_t a, int lm );
+	int32_t Lm_B2( int32_t a, int lm );
+	int32_t Lm_B3( int32_t a, int lm );
+	int32_t Lm_B3_sf( int64_t value, int sf, int lm );
+	int32_t Lm_C1( int32_t a );
+	int32_t Lm_C2( int32_t a );
+	int32_t Lm_C3( int32_t a );
+	int32_t Lm_D( int64_t a, int sf );
+	uint32_t Lm_E( uint32_t result );
+	int64_t F( int64_t a );
+	int32_t Lm_G1( int64_t a );
+	int32_t Lm_G2( int64_t a );
+	int32_t Lm_H( int64_t value, int sf );
+
+	int m_sf;
+	int64_t m_mac0;
+	int64_t m_mac1;
+	int64_t m_mac2;
+	int64_t m_mac3;
+};
+
+#endif // MAME_CPU_PSX_GTE_H
+>>>>>>> upstream/master

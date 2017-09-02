@@ -8,6 +8,7 @@
 
 ***************************************************************************/
 
+<<<<<<< HEAD
 #pragma once
 
 #ifndef __EMUOPTS_H__
@@ -38,6 +39,16 @@ enum
 	OPTION_PRIORITY_DRIVER_INI
 };
 
+=======
+#ifndef MAME_EMU_EMUOPTS_H
+#define MAME_EMU_EMUOPTS_H
+
+#pragma once
+
+#include "options.h"
+
+#define OPTION_PRIORITY_CMDLINE     OPTION_PRIORITY_HIGH + 1
+>>>>>>> upstream/master
 // core options
 #define OPTION_SYSTEMNAME           core_options::unadorned(0)
 #define OPTION_SOFTWARENAME         core_options::unadorned(1)
@@ -45,12 +56,18 @@ enum
 // core configuration options
 #define OPTION_READCONFIG           "readconfig"
 #define OPTION_WRITECONFIG          "writeconfig"
+<<<<<<< HEAD
 #ifdef DRIVER_SWITCH
 #define OPTION_DRIVER_CONFIG        "driver_config"
 #define OPTION_DISABLE_MECHANICAL_DRIVER   "disable_mechanical_driver"
 #endif /* DRIVER_SWITCH */
 
 // core search path options
+=======
+
+// core search path options
+#define OPTION_HOMEPATH             "homepath"
+>>>>>>> upstream/master
 #define OPTION_MEDIAPATH            "rompath"
 #define OPTION_HASHPATH             "hashpath"
 #define OPTION_SAMPLEPATH           "samplepath"
@@ -60,10 +77,16 @@ enum
 #define OPTION_FONTPATH             "fontpath"
 #define OPTION_CHEATPATH            "cheatpath"
 #define OPTION_CROSSHAIRPATH        "crosshairpath"
+<<<<<<< HEAD
 #define OPTION_LANGPATH             "langpath"
 #ifdef USE_IPS
 #define OPTION_IPSPATH              "ipspath"
 #endif /* USE_IPS */
+=======
+#define OPTION_PLUGINSPATH          "pluginspath"
+#define OPTION_LANGUAGEPATH         "languagepath"
+#define OPTION_SWPATH               "swpath"
+>>>>>>> upstream/master
 
 // core directory options
 #define OPTION_CFG_DIRECTORY        "cfg_directory"
@@ -73,6 +96,7 @@ enum
 #define OPTION_SNAPSHOT_DIRECTORY   "snapshot_directory"
 #define OPTION_DIFF_DIRECTORY       "diff_directory"
 #define OPTION_COMMENT_DIRECTORY    "comment_directory"
+<<<<<<< HEAD
 #ifdef USE_HISCORE
 #define OPTION_HISCORE_DIRECTORY    "hiscore_directory"
 #endif /* USE_HISCORE */
@@ -84,17 +108,26 @@ enum
 #ifdef USE_HISCORE
 #define OPTION_HISCORE_FILE         "hiscore_file"
 #endif /* USE_HISCORE */
+=======
+>>>>>>> upstream/master
 
 // core state/playback options
 #define OPTION_STATE                "state"
 #define OPTION_AUTOSAVE             "autosave"
 #define OPTION_PLAYBACK             "playback"
 #define OPTION_RECORD               "record"
+<<<<<<< HEAD
 #define OPTION_MNGWRITE             "mngwrite"
 #define OPTION_AVIWRITE             "aviwrite"
 #ifdef MAME_DEBUG
 #define OPTION_DUMMYWRITE           "dummywrite"
 #endif
+=======
+#define OPTION_RECORD_TIMECODE      "record_timecode"
+#define OPTION_EXIT_AFTER_PLAYBACK  "exit_after_playback"
+#define OPTION_MNGWRITE             "mngwrite"
+#define OPTION_AVIWRITE             "aviwrite"
+>>>>>>> upstream/master
 #define OPTION_WAVWRITE             "wavwrite"
 #define OPTION_SNAPNAME             "snapname"
 #define OPTION_SNAPSIZE             "snapsize"
@@ -112,6 +145,19 @@ enum
 #define OPTION_SPEED                "speed"
 #define OPTION_REFRESHSPEED         "refreshspeed"
 
+<<<<<<< HEAD
+=======
+// core render options
+#define OPTION_KEEPASPECT           "keepaspect"
+#define OPTION_UNEVENSTRETCH        "unevenstretch"
+#define OPTION_UNEVENSTRETCHX       "unevenstretchx"
+#define OPTION_UNEVENSTRETCHY       "unevenstretchy"
+#define OPTION_AUTOSTRETCHXY        "autostretchxy"
+#define OPTION_INTOVERSCAN          "intoverscan"
+#define OPTION_INTSCALEX            "intscalex"
+#define OPTION_INTSCALEY            "intscaley"
+
+>>>>>>> upstream/master
 // core rotation options
 #define OPTION_ROTATE               "rotate"
 #define OPTION_ROR                  "ror"
@@ -135,12 +181,17 @@ enum
 #define OPTION_GAMMA                "gamma"
 #define OPTION_PAUSE_BRIGHTNESS     "pause_brightness"
 #define OPTION_EFFECT               "effect"
+<<<<<<< HEAD
 #ifdef USE_SCALE_EFFECTS
 #define OPTION_SCALE_EFFECT         "scale_effect"
 #endif /* USE_SCALE_EFFECTS */
 
 // core vector options
 #define OPTION_ANTIALIAS            "antialias"
+=======
+
+// core vector options
+>>>>>>> upstream/master
 #define OPTION_BEAM_WIDTH_MIN       "beam_width_min"
 #define OPTION_BEAM_WIDTH_MAX       "beam_width_max"
 #define OPTION_BEAM_INTENSITY_WEIGHT   "beam_intensity_weight"
@@ -196,6 +247,10 @@ enum
 #define OPTION_CHEAT                "cheat"
 #define OPTION_SKIP_GAMEINFO        "skip_gameinfo"
 #define OPTION_UI_FONT              "uifont"
+<<<<<<< HEAD
+=======
+#define OPTION_UI                   "ui"
+>>>>>>> upstream/master
 #define OPTION_RAMSIZE              "ramsize"
 
 // core comm options
@@ -211,6 +266,7 @@ enum
 #define OPTION_AUTOBOOT_DELAY       "autoboot_delay"
 #define OPTION_AUTOBOOT_SCRIPT      "autoboot_script"
 
+<<<<<<< HEAD
 #ifdef PLAYBACK_END_PAUSE
 #define OPTION_PLAYBACK_END_PAUSE   "playback_end_pause"
 #endif /* PLAYBACK_END_PAUSE */
@@ -244,11 +300,24 @@ enum
 #define OPTION_LANGUAGE             "language"
 #define OPTION_USE_LANG_LIST        "use_lang_list"
 
+=======
+#define OPTION_CONSOLE              "console"
+#define OPTION_PLUGINS              "plugins"
+#define OPTION_PLUGIN               "plugin"
+#define OPTION_NO_PLUGIN            "noplugin"
+
+#define OPTION_LANGUAGE             "language"
+
+#define OPTION_HTTP                 "http"
+#define OPTION_HTTP_PORT            "http_port"
+#define OPTION_HTTP_ROOT            "http_root"
+>>>>>>> upstream/master
 
 //**************************************************************************
 //  TYPE DEFINITIONS
 //**************************************************************************
 
+<<<<<<< HEAD
 // forward references
 struct game_driver;
 
@@ -271,12 +340,118 @@ public:
 	const char *software_name() const { return value(OPTION_SOFTWARENAME); }
 	const game_driver *system() const;
 	void set_system_name(const char *name);
+=======
+class game_driver;
+class device_slot_interface;
+class emu_options;
+
+class slot_option
+{
+public:
+	slot_option(emu_options &host, const char *default_value);
+	slot_option(const slot_option &that) = delete;
+	slot_option(slot_option &&that) = default;
+
+	// accessors
+	const std::string &value() const;
+	std::string specified_value() const;
+	const std::string &bios() const { return m_specified_bios; }
+	const std::string &default_card_software() const { return m_default_card_software; }
+	bool specified() const { return m_specified; }
+	core_options::entry::shared_ptr option_entry() const { return m_entry.lock(); }
+
+	// seters
+	void specify(const std::string &text, bool peg_priority = true);
+	void specify(std::string &&text, bool peg_priority = true);
+	void set_bios(std::string &&text);
+	void set_default_card_software(std::string &&s);
+
+	// instantiates an option entry (don't call outside of emuopts.cpp)
+	core_options::entry::shared_ptr setup_option_entry(const char *name);
+
+private:
+	void possibly_changed(const std::string &old_value);
+
+	emu_options &                   m_host;
+	bool                            m_specified;
+	std::string                     m_specified_value;
+	std::string                     m_specified_bios;
+	std::string                     m_default_card_software;
+	std::string                     m_default_value;
+	core_options::entry::weak_ptr   m_entry;
+};
+
+
+class image_option
+{
+public:
+	image_option(emu_options &host, const std::string &canonical_instance_name);
+	image_option(const image_option &that) = delete;
+	image_option(image_option &&that) = default;
+
+	// accessors
+	const std::string &canonical_instance_name() const { return m_canonical_instance_name; }
+	const std::string &value() const { return m_value; }
+	core_options::entry::shared_ptr option_entry() const { return m_entry.lock(); }
+
+	// mutators
+	void specify(const std::string &value, bool peg_priority = true);
+	void specify(std::string &&value, bool peg_priority = true);
+
+	// instantiates an option entry (don't call outside of emuopts.cpp)
+	core_options::entry::shared_ptr setup_option_entry(std::vector<std::string> &&names);
+
+private:
+	emu_options &                   m_host;
+	std::string                     m_canonical_instance_name;
+	std::string                     m_value;
+	core_options::entry::weak_ptr   m_entry;
+};
+
+
+class emu_options : public core_options
+{
+	friend class slot_option;
+	friend class image_option;
+public:
+	enum ui_option
+	{
+		UI_CABINET,
+		UI_SIMPLE
+	};
+
+	enum class option_support
+	{
+		FULL,                   // full option support
+		GENERAL_AND_SYSTEM,     // support for general options and system (no softlist)
+		GENERAL_ONLY            // only support for general options
+	};
+
+	// construction/destruction
+	emu_options(option_support support = option_support::FULL);
+	~emu_options();
+
+	// mutation
+	void set_system_name(const std::string &new_system_name);
+	void set_system_name(std::string &&new_system_name);
+	void set_software(std::string &&new_software);
+
+	// core options
+	const game_driver *system() const { return m_system; }
+	const char *system_name() const;
+	const std::string &attempted_system_name() const { return m_attempted_system_name; }
+	const std::string &software_name() const { return m_software_name; }
+>>>>>>> upstream/master
 
 	// core configuration options
 	bool read_config() const { return bool_value(OPTION_READCONFIG); }
 	bool write_config() const { return bool_value(OPTION_WRITECONFIG); }
 
 	// core search path options
+<<<<<<< HEAD
+=======
+	const char *home_path() const { return value(OPTION_HOMEPATH); }
+>>>>>>> upstream/master
 	const char *media_path() const { return value(OPTION_MEDIAPATH); }
 	const char *hash_path() const { return value(OPTION_HASHPATH); }
 	const char *sample_path() const { return value(OPTION_SAMPLEPATH); }
@@ -286,6 +461,12 @@ public:
 	const char *font_path() const { return value(OPTION_FONTPATH); }
 	const char *cheat_path() const { return value(OPTION_CHEATPATH); }
 	const char *crosshair_path() const { return value(OPTION_CROSSHAIRPATH); }
+<<<<<<< HEAD
+=======
+	const char *plugins_path() const { return value(OPTION_PLUGINSPATH); }
+	const char *language_path() const { return value(OPTION_LANGUAGEPATH); }
+	const char *sw_path() const { return value(OPTION_SWPATH); }
+>>>>>>> upstream/master
 
 	// core directory options
 	const char *cfg_directory() const { return value(OPTION_CFG_DIRECTORY); }
@@ -301,11 +482,18 @@ public:
 	bool autosave() const { return bool_value(OPTION_AUTOSAVE); }
 	const char *playback() const { return value(OPTION_PLAYBACK); }
 	const char *record() const { return value(OPTION_RECORD); }
+<<<<<<< HEAD
 	const char *mng_write() const { return value(OPTION_MNGWRITE); }
 	const char *avi_write() const { return value(OPTION_AVIWRITE); }
 #ifdef MAME_DEBUG
 	bool dummy_write() const { return bool_value(OPTION_DUMMYWRITE); }
 #endif
+=======
+	bool record_timecode() const { return bool_value(OPTION_RECORD_TIMECODE); }
+	bool exit_after_playback() const { return bool_value(OPTION_EXIT_AFTER_PLAYBACK); }
+	const char *mng_write() const { return value(OPTION_MNGWRITE); }
+	const char *avi_write() const { return value(OPTION_AVIWRITE); }
+>>>>>>> upstream/master
 	const char *wav_write() const { return value(OPTION_WAVWRITE); }
 	const char *snap_name() const { return value(OPTION_SNAPNAME); }
 	const char *snap_size() const { return value(OPTION_SNAPSIZE); }
@@ -323,6 +511,19 @@ public:
 	float speed() const { return float_value(OPTION_SPEED); }
 	bool refresh_speed() const { return m_refresh_speed; }
 
+<<<<<<< HEAD
+=======
+	// core render options
+	bool keep_aspect() const { return bool_value(OPTION_KEEPASPECT); }
+	bool uneven_stretch() const { return bool_value(OPTION_UNEVENSTRETCH); }
+	bool uneven_stretch_x() const { return bool_value(OPTION_UNEVENSTRETCHX); }
+	bool uneven_stretch_y() const { return bool_value(OPTION_UNEVENSTRETCHY); }
+	bool auto_stretch_xy() const { return bool_value(OPTION_AUTOSTRETCHXY); }
+	bool int_overscan() const { return bool_value(OPTION_INTOVERSCAN); }
+	int int_scale_x() const { return int_value(OPTION_INTSCALEX); }
+	int int_scale_y() const { return int_value(OPTION_INTSCALEY); }
+
+>>>>>>> upstream/master
 	// core rotation options
 	bool rotate() const { return bool_value(OPTION_ROTATE); }
 	bool ror() const { return bool_value(OPTION_ROR); }
@@ -348,7 +549,10 @@ public:
 	const char *effect() const { return value(OPTION_EFFECT); }
 
 	// core vector options
+<<<<<<< HEAD
 	bool antialias() const { return bool_value(OPTION_ANTIALIAS); }
+=======
+>>>>>>> upstream/master
 	float beam_width_min() const { return float_value(OPTION_BEAM_WIDTH_MIN); }
 	float beam_width_max() const { return float_value(OPTION_BEAM_WIDTH_MAX); }
 	float beam_intensity_weight() const { return float_value(OPTION_BEAM_INTENSITY_WEIGHT); }
@@ -402,6 +606,10 @@ public:
 	bool cheat() const { return bool_value(OPTION_CHEAT); }
 	bool skip_gameinfo() const { return bool_value(OPTION_SKIP_GAMEINFO); }
 	const char *ui_font() const { return value(OPTION_UI_FONT); }
+<<<<<<< HEAD
+=======
+	ui_option ui() const { return m_ui; }
+>>>>>>> upstream/master
 	const char *ram_size() const { return value(OPTION_RAMSIZE); }
 
 	// core comm options
@@ -410,6 +618,10 @@ public:
 	const char *comm_remotehost() const { return value(OPTION_COMM_REMOTE_HOST); }
 	const char *comm_remoteport() const { return value(OPTION_COMM_REMOTE_PORT); }
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> upstream/master
 	bool confirm_quit() const { return bool_value(OPTION_CONFIRM_QUIT); }
 	bool ui_mouse() const { return bool_value(OPTION_UI_MOUSE); }
 
@@ -417,6 +629,7 @@ public:
 	int autoboot_delay() const { return int_value(OPTION_AUTOBOOT_DELAY); }
 	const char *autoboot_script() const { return value(OPTION_AUTOBOOT_SCRIPT); }
 
+<<<<<<< HEAD
 	// FIXME: Couriersud: This should be in image_device_exit
 	void remove_device_options();
 
@@ -446,3 +659,74 @@ private:
 
 
 #endif  /* __EMUOPTS_H__ */
+=======
+	bool console() const { return bool_value(OPTION_CONSOLE); }
+
+	bool plugins() const { return bool_value(OPTION_PLUGINS); }
+
+	const char *plugin() const { return value(OPTION_PLUGIN); }
+	const char *no_plugin() const { return value(OPTION_NO_PLUGIN); }
+
+	const char *language() const { return value(OPTION_LANGUAGE); }
+
+	// Web server specific options
+	bool  http() const { return bool_value(OPTION_HTTP); }
+	short http_port() const { return int_value(OPTION_HTTP_PORT); }
+	const char *http_root() const { return value(OPTION_HTTP_ROOT); }
+
+	// slots and devices - the values for these are stored outside of the core_options
+	// structure
+	const ::slot_option &slot_option(const std::string &device_name) const;
+	::slot_option &slot_option(const std::string &device_name);
+	const ::slot_option *find_slot_option(const std::string &device_name) const;
+	::slot_option *find_slot_option(const std::string &device_name);
+	bool has_slot_option(const std::string &device_name) const { return find_slot_option(device_name) ? true : false; }
+	const ::image_option &image_option(const std::string &device_name) const;
+	::image_option &image_option(const std::string &device_name);
+
+protected:
+	virtual void command_argument_processed() override;
+
+private:
+	struct software_options
+	{
+		std::unordered_map<std::string, std::string>    slot;
+		std::unordered_map<std::string, std::string>    image;
+	};
+
+	// slot/image/softlist calculus
+	software_options evaluate_initial_softlist_options(const std::string &software_identifier);
+	void update_slot_and_image_options();
+	bool add_and_remove_slot_options();
+	bool add_and_remove_image_options();
+	void reevaluate_default_card_software();
+	std::string get_default_card_software(device_slot_interface &slot);
+
+	// static list of options entries
+	static const options_entry                          s_option_entries[];
+
+	// the basics
+	option_support                                      m_support;
+	const game_driver *                                 m_system;
+
+	// slots and devices
+	std::unordered_map<std::string, ::slot_option>      m_slot_options;
+	std::unordered_map<std::string, ::image_option>     m_image_options_cannonical;
+	std::unordered_map<std::string, ::image_option *>   m_image_options;
+
+	// cached options, for scenarios where parsing core_options is too slow
+	int                                                 m_coin_impulse;
+	bool                                                m_joystick_contradictory;
+	bool                                                m_sleep;
+	bool                                                m_refresh_speed;
+	ui_option                                           m_ui;
+
+	// special option; the system name we tried to specify
+	std::string                                         m_attempted_system_name;
+
+	// special option; the software set name that we did specify
+	std::string                                         m_software_name;
+};
+
+#endif  // MAME_EMU_EMUOPTS_H
+>>>>>>> upstream/master

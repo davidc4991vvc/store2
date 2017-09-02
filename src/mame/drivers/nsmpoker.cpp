@@ -58,12 +58,22 @@
 
 *******************************************************************************/
 
+<<<<<<< HEAD
 
 #define MASTER_CLOCK    XTAL_22_1184MHz
 
 #include "emu.h"
 #include "cpu/tms9900/tms9995.h"
 #include "sound/ay8910.h"
+=======
+#include "emu.h"
+#include "cpu/tms9900/tms9995.h"
+#include "sound/ay8910.h"
+#include "screen.h"
+
+
+#define MASTER_CLOCK    XTAL_22_1184MHz
+>>>>>>> upstream/master
 
 
 class nsmpoker_state : public driver_device
@@ -76,6 +86,7 @@ public:
 		m_maincpu(*this, "maincpu"),
 		m_gfxdecode(*this, "gfxdecode") { }
 
+<<<<<<< HEAD
 	required_shared_ptr<UINT8> m_videoram;
 	required_shared_ptr<UINT8> m_colorram;
 	tilemap_t *m_bg_tilemap;
@@ -88,6 +99,19 @@ public:
 	DECLARE_PALETTE_INIT(nsmpoker);
 	virtual void machine_reset();
 	UINT32 screen_update_nsmpoker(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
+=======
+	required_shared_ptr<uint8_t> m_videoram;
+	required_shared_ptr<uint8_t> m_colorram;
+	tilemap_t *m_bg_tilemap;
+	DECLARE_WRITE8_MEMBER(nsmpoker_videoram_w);
+	DECLARE_WRITE8_MEMBER(nsmpoker_colorram_w);
+	DECLARE_READ8_MEMBER(debug_r);
+	TILE_GET_INFO_MEMBER(get_bg_tile_info);
+	virtual void video_start() override;
+	DECLARE_PALETTE_INIT(nsmpoker);
+	virtual void machine_reset() override;
+	uint32_t screen_update_nsmpoker(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
+>>>>>>> upstream/master
 	INTERRUPT_GEN_MEMBER(nsmpoker_interrupt);
 	required_device<cpu_device> m_maincpu;
 	required_device<gfxdecode_device> m_gfxdecode;
@@ -132,11 +156,19 @@ TILE_GET_INFO_MEMBER(nsmpoker_state::get_bg_tile_info)
 
 void nsmpoker_state::video_start()
 {
+<<<<<<< HEAD
 	m_bg_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(nsmpoker_state::get_bg_tile_info),this), TILEMAP_SCAN_ROWS, 8, 8, 32, 32);
 }
 
 
 UINT32 nsmpoker_state::screen_update_nsmpoker(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+=======
+	m_bg_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(nsmpoker_state::get_bg_tile_info),this), TILEMAP_SCAN_ROWS, 8, 8, 32, 32);
+}
+
+
+uint32_t nsmpoker_state::screen_update_nsmpoker(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+>>>>>>> upstream/master
 {
 	m_bg_tilemap->draw(screen, bitmap, cliprect, 0, 0);
 	return 0;
@@ -400,14 +432,22 @@ GFXDECODE_END
 void nsmpoker_state::machine_reset()
 {
 	// Disable auto wait state generation by raising the READY line on reset
+<<<<<<< HEAD
 	static_cast<tms9995_device*>(machine().device("maincpu"))->set_ready(ASSERT_LINE);
+=======
+	static_cast<tms9995_device*>(machine().device("maincpu"))->ready_line(ASSERT_LINE);
+>>>>>>> upstream/master
 }
 
 /*************************
 *    Machine Drivers     *
 *************************/
 
+<<<<<<< HEAD
 static MACHINE_CONFIG_START( nsmpoker, nsmpoker_state )
+=======
+static MACHINE_CONFIG_START( nsmpoker )
+>>>>>>> upstream/master
 
 	// CPU TMS9995, standard variant; no line connections
 	MCFG_TMS99xx_ADD("maincpu", TMS9995, MASTER_CLOCK/2, nsmpoker_map, nsmpoker_portmap)
@@ -457,5 +497,10 @@ ROM_END
 *      Game Drivers      *
 *************************/
 
+<<<<<<< HEAD
 /*    YEAR  NAME      PARENT  MACHINE   INPUT     INIT  ROT    COMPANY   FULLNAME              FLAGS */
 GAME( 198?, nsmpoker, 0,      nsmpoker, nsmpoker, driver_device, 0,    ROT0, "NSM",    "NSM Poker (TMS9995)", MACHINE_NO_SOUND | MACHINE_NOT_WORKING )
+=======
+//    YEAR  NAME      PARENT  MACHINE   INPUT     STATE           INIT  ROT   COMPANY   FULLNAME               FLAGS
+GAME( 198?, nsmpoker, 0,      nsmpoker, nsmpoker, nsmpoker_state, 0,    ROT0, "NSM",    "NSM Poker (TMS9995)", MACHINE_NO_SOUND | MACHINE_NOT_WORKING )
+>>>>>>> upstream/master

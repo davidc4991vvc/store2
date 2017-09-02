@@ -11,7 +11,11 @@
 static int cas_size;
 
 
+<<<<<<< HEAD
 INLINE int kim1_output_signal( INT16 *buffer, int sample_pos, int high )
+=======
+static inline int kim1_output_signal( int16_t *buffer, int sample_pos, int high )
+>>>>>>> upstream/master
 {
 	int sample_count, i, j;
 
@@ -62,7 +66,11 @@ INLINE int kim1_output_signal( INT16 *buffer, int sample_pos, int high )
 }
 
 
+<<<<<<< HEAD
 INLINE int kim1_output_byte( INT16 *buffer, int sample_pos, UINT8 byte )
+=======
+static inline int kim1_output_byte( int16_t *buffer, int sample_pos, uint8_t byte )
+>>>>>>> upstream/master
 {
 	int i;
 	int sample_count = 0;
@@ -78,11 +86,19 @@ INLINE int kim1_output_byte( INT16 *buffer, int sample_pos, UINT8 byte )
 }
 
 
+<<<<<<< HEAD
 static int kim1_handle_kim(INT16 *buffer, const UINT8 *casdata)
 {
 	static const UINT8 encoding[16] = { 0x30, 0x31, 0x32, 0x33, 0x34, 0x35, 0x36, 0x37, 0x38, 0x39, 0x41, 0x42, 0x43, 0x44, 0x45, 0x46 };
 	int i, data_pos, sample_count;
 	UINT16 size, address, file_id, checksum;
+=======
+static int kim1_handle_kim(int16_t *buffer, const uint8_t *casdata)
+{
+	static const uint8_t encoding[16] = { 0x30, 0x31, 0x32, 0x33, 0x34, 0x35, 0x36, 0x37, 0x38, 0x39, 0x41, 0x42, 0x43, 0x44, 0x45, 0x46 };
+	int i, data_pos, sample_count;
+	uint16_t size, address, file_id, checksum;
+>>>>>>> upstream/master
 
 	if ( cas_size < 9 ) return -1;
 	if ( memcmp( casdata, "KIM1", 4 ) ) return -1;
@@ -115,7 +131,11 @@ static int kim1_handle_kim(INT16 *buffer, const UINT8 *casdata)
 	/* Output the data */
 	while( data_pos < cas_size && data_pos < ( size + 9 ) )
 	{
+<<<<<<< HEAD
 		UINT8 data = casdata[data_pos];
+=======
+		uint8_t data = casdata[data_pos];
+>>>>>>> upstream/master
 
 		sample_count += kim1_output_byte( buffer, sample_count, encoding[ data >> 4 ] );
 		sample_count += kim1_output_byte( buffer, sample_count, encoding[ data & 0x0f ] );
@@ -143,7 +163,11 @@ static int kim1_handle_kim(INT16 *buffer, const UINT8 *casdata)
 /*******************************************************************
    Generate samples for the tape image
 ********************************************************************/
+<<<<<<< HEAD
 static int kim1_kim_fill_wave(INT16 *buffer, int sample_count, UINT8 *bytes)
+=======
+static int kim1_kim_fill_wave(int16_t *buffer, int sample_count, uint8_t *bytes)
+>>>>>>> upstream/master
 {
 	return kim1_handle_kim( buffer, bytes );
 }
@@ -152,11 +176,19 @@ static int kim1_kim_fill_wave(INT16 *buffer, int sample_count, UINT8 *bytes)
 /*******************************************************************
    Calculate the number of samples needed for this tape image
 ********************************************************************/
+<<<<<<< HEAD
 static int kim1_kim_to_wav_size(const UINT8 *casdata, int caslen)
 {
 	cas_size = caslen;
 
 	return kim1_handle_kim( NULL, casdata );
+=======
+static int kim1_kim_to_wav_size(const uint8_t *casdata, int caslen)
+{
+	cas_size = caslen;
+
+	return kim1_handle_kim( nullptr, casdata );
+>>>>>>> upstream/master
 }
 
 static const struct CassetteLegacyWaveFiller kim1_kim_legacy_fill_wave =
@@ -171,13 +203,21 @@ static const struct CassetteLegacyWaveFiller kim1_kim_legacy_fill_wave =
 };
 
 
+<<<<<<< HEAD
 static casserr_t kim1_kim_identify(cassette_image *cassette, struct CassetteOptions *opts)
+=======
+static cassette_image::error kim1_kim_identify(cassette_image *cassette, struct CassetteOptions *opts)
+>>>>>>> upstream/master
 {
 	return cassette_legacy_identify(cassette, opts, &kim1_kim_legacy_fill_wave);
 }
 
 
+<<<<<<< HEAD
 static casserr_t kim1_kim_load(cassette_image *cassette)
+=======
+static cassette_image::error kim1_kim_load(cassette_image *cassette)
+>>>>>>> upstream/master
 {
 	return cassette_legacy_construct(cassette, &kim1_kim_legacy_fill_wave);
 }
@@ -188,7 +228,11 @@ static const struct CassetteFormat kim1_kim_format =
 	"kim,kim1",
 	kim1_kim_identify,
 	kim1_kim_load,
+<<<<<<< HEAD
 	NULL
+=======
+	nullptr
+>>>>>>> upstream/master
 };
 
 

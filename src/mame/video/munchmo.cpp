@@ -6,7 +6,11 @@
 
 PALETTE_INIT_MEMBER(munchmo_state, munchmo)
 {
+<<<<<<< HEAD
 	const UINT8 *color_prom = memregion("proms")->base();
+=======
+	const u8 *color_prom = memregion("proms")->base();
+>>>>>>> upstream/master
 	int i;
 
 	for (i = 0; i < palette.entries(); i++)
@@ -32,6 +36,7 @@ PALETTE_INIT_MEMBER(munchmo_state, munchmo)
 	}
 }
 
+<<<<<<< HEAD
 WRITE8_MEMBER(munchmo_state::mnchmobl_palette_bank_w)
 {
 	m_palette_bank = data & 0x3;
@@ -40,12 +45,31 @@ WRITE8_MEMBER(munchmo_state::mnchmobl_palette_bank_w)
 WRITE8_MEMBER(munchmo_state::mnchmobl_flipscreen_w)
 {
 	m_flipscreen = data;
+=======
+WRITE_LINE_MEMBER(munchmo_state::palette_bank_0_w)
+{
+	m_palette_bank = (state ? 1 : 0) | (m_palette_bank & 2);
+}
+
+WRITE_LINE_MEMBER(munchmo_state::palette_bank_1_w)
+{
+	m_palette_bank = (state ? 2 : 0) | (m_palette_bank & 1);
+}
+
+WRITE_LINE_MEMBER(munchmo_state::flipscreen_w)
+{
+	m_flipscreen = state;
+>>>>>>> upstream/master
 }
 
 
 void munchmo_state::video_start()
 {
+<<<<<<< HEAD
 	m_tmpbitmap = auto_bitmap_ind16_alloc(machine(), 512, 512);
+=======
+	m_tmpbitmap = std::make_unique<bitmap_ind16>(512, 512);
+>>>>>>> upstream/master
 }
 
 void munchmo_state::draw_status( bitmap_ind16 &bitmap, const rectangle &cliprect )
@@ -56,7 +80,11 @@ void munchmo_state::draw_status( bitmap_ind16 &bitmap, const rectangle &cliprect
 	for (row = 0; row < 4; row++)
 	{
 		int sy, sx = (row & 1) * 8;
+<<<<<<< HEAD
 		const UINT8 *source = m_status_vram + (~row & 1) * 32;
+=======
+		const u8 *source = m_status_vram + (~row & 1) * 32;
+>>>>>>> upstream/master
 		if (row <= 1)
 		{
 			source += 2 * 32;
@@ -80,7 +108,11 @@ void munchmo_state::draw_background( bitmap_ind16 &bitmap, const rectangle &clip
     ROM B1.2C contains 256 tilemaps defining 4x4 configurations of
     the tiles in ROM B2.2B
 */
+<<<<<<< HEAD
 	UINT8 *rom = memregion("gfx2")->base();
+=======
+	u8 *rom = memregion("gfx2")->base();
+>>>>>>> upstream/master
 	gfx_element *gfx = m_gfxdecode->gfx(1);
 	int offs;
 
@@ -105,7 +137,11 @@ void munchmo_state::draw_background( bitmap_ind16 &bitmap, const rectangle &clip
 	}
 
 	{
+<<<<<<< HEAD
 		int scrollx = -(m_vreg[6] *2 + (m_vreg[7] >> 7)) - 64 - 128 - 16;
+=======
+		int scrollx = -(m_vreg[2] *2 + (m_vreg[3] >> 7)) - 64 - 128 - 16;
+>>>>>>> upstream/master
 		int scrolly = 0;
 
 		copyscrollbitmap(bitmap, *m_tmpbitmap, 1, &scrollx, 1, &scrolly, cliprect);
@@ -114,14 +150,23 @@ void munchmo_state::draw_background( bitmap_ind16 &bitmap, const rectangle &clip
 
 void munchmo_state::draw_sprites( bitmap_ind16 &bitmap, const rectangle &cliprect )
 {
+<<<<<<< HEAD
 	int scroll = m_vreg[6];
 	int flags = m_vreg[7];                           /*   XB?????? */
+=======
+	int scroll = m_vreg[2];
+	int flags = m_vreg[3];                           /*   XB?????? */
+>>>>>>> upstream/master
 	int xadjust = - 128 - 16 - ((flags & 0x80) ? 1 : 0);
 	int bank = (flags & 0x40) ? 1 : 0;
 	gfx_element *gfx = m_gfxdecode->gfx(2 + bank);
 	int color_base = m_palette_bank * 4 + 3;
 	int i, j;
+<<<<<<< HEAD
 	int firstsprite = m_vreg[4] & 0x3f;
+=======
+	int firstsprite = m_vreg[0] & 0x3f;
+>>>>>>> upstream/master
 	for (i = firstsprite; i < firstsprite + 0x40; i++)
 	{
 		for (j = 0; j < 8; j++)
@@ -146,7 +191,11 @@ void munchmo_state::draw_sprites( bitmap_ind16 &bitmap, const rectangle &cliprec
 	}
 }
 
+<<<<<<< HEAD
 UINT32 munchmo_state::screen_update_mnchmobl(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+=======
+u32 munchmo_state::screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+>>>>>>> upstream/master
 {
 	draw_background(bitmap, cliprect);
 	draw_sprites(bitmap, cliprect);

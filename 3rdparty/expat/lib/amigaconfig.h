@@ -7,9 +7,12 @@
 /* Define to 1 if you have the `bcopy' function. */
 #define HAVE_BCOPY 1
 
+<<<<<<< HEAD
 /* Define to 1 if you have the <check.h> header file. */
 #undef HAVE_CHECK_H
 
+=======
+>>>>>>> upstream/master
 /* Define to 1 if you have the `memmove' function. */
 #define HAVE_MEMMOVE 1
 

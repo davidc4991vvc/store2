@@ -68,7 +68,11 @@ void blockout_state::video_start()
 
 void blockout_state::update_pixels( int x, int y )
 {
+<<<<<<< HEAD
 	UINT16 front, back;
+=======
+	uint16_t front, back;
+>>>>>>> upstream/master
 	int color;
 	const rectangle &visarea = m_screen->visible_area();
 
@@ -103,7 +107,11 @@ WRITE16_MEMBER(blockout_state::blockout_videoram_w)
 
 
 
+<<<<<<< HEAD
 UINT32 blockout_state::screen_update_blockout(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+=======
+uint32_t blockout_state::screen_update_blockout(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+>>>>>>> upstream/master
 {
 	int x, y;
 	pen_t color = 512;

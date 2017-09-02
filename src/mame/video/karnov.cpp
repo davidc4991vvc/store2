@@ -9,6 +9,7 @@
 #include "emu.h"
 #include "includes/karnov.h"
 
+<<<<<<< HEAD
 /***************************************************************************
 
   Convert the color PROMs into a more useable format.
@@ -67,6 +68,8 @@ PALETTE_INIT_MEMBER(karnov_state, karnov)
 	}
 }
 
+=======
+>>>>>>> upstream/master
 void karnov_state::karnov_flipscreen_w( int data )
 {
 	m_flipscreen = data;
@@ -124,7 +127,11 @@ void karnov_state::draw_background( bitmap_ind16 &bitmap, const rectangle &clipr
 
 /******************************************************************************/
 
+<<<<<<< HEAD
 UINT32 karnov_state::screen_update_karnov(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+=======
+uint32_t karnov_state::screen_update_karnov(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+>>>>>>> upstream/master
 {
 	draw_background(bitmap, cliprect);
 	m_spritegen->draw_sprites(bitmap, cliprect, m_spriteram->buffer(), 0x800, 0);
@@ -160,8 +167,13 @@ WRITE16_MEMBER(karnov_state::karnov_playfield_swap_w)
 VIDEO_START_MEMBER(karnov_state,karnov)
 {
 	/* Allocate bitmap & tilemap */
+<<<<<<< HEAD
 	m_bitmap_f = auto_bitmap_ind16_alloc(machine(), 512, 512);
 	m_fix_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(karnov_state::get_fix_tile_info),this), TILEMAP_SCAN_ROWS, 8, 8, 32, 32);
+=======
+	m_bitmap_f = std::make_unique<bitmap_ind16>(512, 512);
+	m_fix_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(karnov_state::get_fix_tile_info),this), TILEMAP_SCAN_ROWS, 8, 8, 32, 32);
+>>>>>>> upstream/master
 
 	save_item(NAME(*m_bitmap_f));
 
@@ -171,8 +183,13 @@ VIDEO_START_MEMBER(karnov_state,karnov)
 VIDEO_START_MEMBER(karnov_state,wndrplnt)
 {
 	/* Allocate bitmap & tilemap */
+<<<<<<< HEAD
 	m_bitmap_f = auto_bitmap_ind16_alloc(machine(), 512, 512);
 	m_fix_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(karnov_state::get_fix_tile_info),this), TILEMAP_SCAN_COLS, 8, 8, 32, 32);
+=======
+	m_bitmap_f = std::make_unique<bitmap_ind16>(512, 512);
+	m_fix_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(karnov_state::get_fix_tile_info),this), TILEMAP_SCAN_COLS, 8, 8, 32, 32);
+>>>>>>> upstream/master
 
 	save_item(NAME(*m_bitmap_f));
 

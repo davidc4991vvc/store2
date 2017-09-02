@@ -105,7 +105,11 @@ void real_profiler_state::reset(bool enabled)
 	else
 	{
 		// magic value to indicate disabled
+<<<<<<< HEAD
 		m_filoptr = NULL;
+=======
+		m_filoptr = nullptr;
+>>>>>>> upstream/master
 	}
 }
 
@@ -156,10 +160,13 @@ void real_profiler_state::update_text(running_machine &machine)
 		{ PROFILER_BLIT,             "OSD Blitting" },
 		{ PROFILER_SOUND,            "Sound Generation" },
 		{ PROFILER_TIMER_CALLBACK,   "Timer Callbacks" },
+<<<<<<< HEAD
 #ifdef USE_HISCORE
 		//MKCHAMP - INCLUDING THE HISCORE ENGINE TO THE PROFILER
 		{ PROFILER_HISCORE,          "Hiscore" },
 #endif /* USE_HISCORE */
+=======
+>>>>>>> upstream/master
 		{ PROFILER_INPUT,            "Input Processing" },
 		{ PROFILER_MOVIE_REC,        "Movie Recording" },
 		{ PROFILER_LOGERROR,         "Error Logging" },
@@ -177,26 +184,45 @@ void real_profiler_state::update_text(running_machine &machine)
 	};
 
 	// compute the total time for all bits, not including profiler or idle
+<<<<<<< HEAD
 	UINT64 computed = 0;
+=======
+	u64 computed = 0;
+>>>>>>> upstream/master
 	profile_type curtype;
 	for (curtype = PROFILER_DEVICE_FIRST; curtype < PROFILER_PROFILER; ++curtype)
 		computed += m_data[curtype];
 
 	// save that result in normalize, and continue adding the rest
+<<<<<<< HEAD
 	UINT64 normalize = computed;
+=======
+	u64 normalize = computed;
+>>>>>>> upstream/master
 	for ( ; curtype < PROFILER_TOTAL; ++curtype)
 		computed += m_data[curtype];
 
 	// this becomes the total; if we end up with 0 for anything, we were just started, so return empty
+<<<<<<< HEAD
 	UINT64 total = computed;
 	m_text.clear();
 	if (total == 0 || normalize == 0)
 	{
+=======
+	u64 total = computed;
+	if (total == 0 || normalize == 0)
+	{
+		m_text.clear();
+>>>>>>> upstream/master
 		return;
 	}
 
 	// loop over all types and generate the string
 	device_iterator iter(machine.root_device());
+<<<<<<< HEAD
+=======
+	std::ostringstream stream;
+>>>>>>> upstream/master
 	for (curtype = PROFILER_DEVICE_FIRST; curtype < PROFILER_TOTAL; ++curtype)
 	{
 		// determine the accumulated time for this type
@@ -206,6 +232,7 @@ void real_profiler_state::update_text(running_machine &machine)
 		if (computed != 0)
 		{
 			// start with the un-normalized percentage
+<<<<<<< HEAD
 			strcatprintf(m_text, "%02d%% ", (int)((computed * 100 + total / 2) / total));
 
 			// followed by the normalized percentage for everything but profiler and idle
@@ -220,14 +247,38 @@ void real_profiler_state::update_text(running_machine &machine)
 					if (names[nameindex].type == curtype)
 					{
 						m_text.append(names[nameindex].string);
+=======
+			util::stream_format(stream, "%02d%% ", (int)((computed * 100 + total / 2) / total));
+
+			// followed by the normalized percentage for everything but profiler and idle
+			if (curtype < PROFILER_PROFILER)
+				util::stream_format(stream, "%02d%% ", (int)((computed * 100 + normalize / 2) / normalize));
+
+			// and then the text
+			if (curtype >= PROFILER_DEVICE_FIRST && curtype <= PROFILER_DEVICE_MAX)
+				util::stream_format(stream, "'%s'", iter.byindex(curtype - PROFILER_DEVICE_FIRST)->tag());
+			else
+				for (auto & name : names)
+					if (name.type == curtype)
+					{
+						stream << name.string;
+>>>>>>> upstream/master
 						break;
 					}
 
 			// followed by a carriage return
+<<<<<<< HEAD
 			m_text.append("\n");
+=======
+			stream << '\n';
+>>>>>>> upstream/master
 		}
 	}
 
 	// reset data set to 0
 	memset(m_data, 0, sizeof(m_data));
+<<<<<<< HEAD
+=======
+	m_text = stream.str();
+>>>>>>> upstream/master
 }

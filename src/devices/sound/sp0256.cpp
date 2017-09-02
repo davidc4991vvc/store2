@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 // license:GPL-2.0+
+=======
+// license:BSD-3-Clause
+>>>>>>> upstream/master
 // copyright-holders:Joseph Zbiciak,Tim Lindner
 /*
    GI SP0256 Narrator Speech Processor
@@ -11,6 +15,7 @@
    - Support for non bit-flipped ROMs
    - SPB-640 perpherial/RAM bus
 
+<<<<<<< HEAD
  Copyright Joseph Zbiciak, all rights reserved.
  Copyright tim lindner, all rights reserved.
 
@@ -24,6 +29,8 @@
    intvnut@gmail.com (Joseph Zbiciak), tlindner@macmess.org (tim lindner)
  - This entire notice must remain in the source code.
 
+=======
+>>>>>>> upstream/master
  Note: Bit flipping.
     This emulation flips the bits on every byte of the memory map during
     the sp0256_start() call.
@@ -36,6 +43,18 @@
 #include "emu.h"
 #include "sp0256.h"
 
+<<<<<<< HEAD
+=======
+#define LOG_GENERAL (1U << 0)
+#define LOG_FIFO    (1U << 1)
+
+//#define VERBOSE (LOG_GENERAL | LOG_FIFO)
+#include "logmacro.h"
+
+#define LOGFIFO(...) LOGMASKED(LOG_FIFO, __VA_ARGS__)
+
+
+>>>>>>> upstream/master
 #define CLOCK_DIVIDER (7*6*8)
 #define HIGH_QUALITY
 
@@ -46,6 +65,7 @@
 
 #define FIFO_ADDR    (0x1800 << 3)      /* SP0256 address of SPB260 speech FIFO.   */
 
+<<<<<<< HEAD
 #define VERBOSE 0
 #define DEBUG_FIFO 0
 
@@ -89,18 +109,35 @@ static const INT16 qtbl[128] =
 
 // device type definition
 const device_type SP0256 = &device_creator<sp0256_device>;
+=======
+
+// device type definition
+DEFINE_DEVICE_TYPE(SP0256, sp0256_device, "sp0256", "GI SP0256 Narrator Speech Processor")
+>>>>>>> upstream/master
 
 
 //**************************************************************************
 //  LIVE DEVICE
 //**************************************************************************
 
+<<<<<<< HEAD
 sp0256_device::sp0256_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
 				: device_t(mconfig, SP0256, "SP0256", tag, owner, clock, "sp0256", __FILE__),
 					device_sound_interface(mconfig, *this),
 					m_rom(*this, DEVICE_SELF),
 					m_drq_cb(*this),
 					m_sby_cb(*this)
+=======
+sp0256_device::sp0256_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: device_t(mconfig, SP0256, tag, owner, clock)
+	, device_sound_interface(mconfig, *this)
+	, m_rom(*this, DEVICE_SELF)
+	, m_stream(nullptr)
+	, m_drq_cb(*this)
+	, m_sby_cb(*this)
+	, m_scratch()
+	, m_lrq_timer(nullptr)
+>>>>>>> upstream/master
 {
 }
 
@@ -125,8 +162,13 @@ void sp0256_device::device_start()
 	/* -------------------------------------------------------------------- */
 	/*  Allocate a scratch buffer for generating ~10kHz samples.             */
 	/* -------------------------------------------------------------------- */
+<<<<<<< HEAD
 	m_scratch = auto_alloc_array(machine(), INT16, SCBUF_SIZE);
 	save_pointer(NAME(m_scratch), SCBUF_SIZE);
+=======
+	m_scratch = std::make_unique<int16_t[]>(SCBUF_SIZE);
+	save_pointer(NAME(m_scratch.get()), SCBUF_SIZE);
+>>>>>>> upstream/master
 
 	m_sc_head = m_sc_tail = 0;
 
@@ -204,7 +246,11 @@ void sp0256_device::device_reset()
 	m_silent   = 1;
 	m_sby_line = 0;
 	m_drq_cb(1);
+<<<<<<< HEAD
 	SET_SBY(1)
+=======
+	SET_SBY(1);
+>>>>>>> upstream/master
 
 	m_lrq = 0;
 	m_lrq_timer->adjust(attotime::from_ticks(50, m_clock));
@@ -215,7 +261,11 @@ void sp0256_device::device_reset()
 /* ======================================================================== */
 /*  LIMIT            -- Limiter function for digital sample output.         */
 /* ======================================================================== */
+<<<<<<< HEAD
 INLINE INT16 limit(INT16 s)
+=======
+inline int16_t sp0256_device::lpc12_t::limit(int16_t s)
+>>>>>>> upstream/master
 {
 #ifdef HIGH_QUALITY /* Higher quality than the original, but who cares? */
 	if (s >  8191) return  8191;
@@ -230,11 +280,17 @@ INLINE INT16 limit(INT16 s)
 /* ======================================================================== */
 /*  LPC12_UPDATE     -- Update the 12-pole filter, outputting samples.      */
 /* ======================================================================== */
+<<<<<<< HEAD
 INLINE int lpc12_update(struct lpc12_t *f, int num_samp, INT16 *out, UINT32 *optr)
 {
 	int i, j;
 	INT16 samp;
 	int do_int;
+=======
+inline int sp0256_device::lpc12_t::update(int num_samp, int16_t *out, uint32_t *optr)
+{
+	int i;
+>>>>>>> upstream/master
 	int oidx = *optr;
 
 	/* -------------------------------------------------------------------- */
@@ -246,6 +302,7 @@ INLINE int lpc12_update(struct lpc12_t *f, int num_samp, INT16 *out, UINT32 *opt
 		/* ---------------------------------------------------------------- */
 		/*  Generate a series of periodic impulses, or random noise.        */
 		/* ---------------------------------------------------------------- */
+<<<<<<< HEAD
 		do_int = 0;
 		samp   = 0;
 		if (f->per)
@@ -284,6 +341,43 @@ INLINE int lpc12_update(struct lpc12_t *f, int num_samp, INT16 *out, UINT32 *opt
 
 			if (bit) { samp =  f->amp; }
 			else     { samp = -f->amp; }
+=======
+		bool do_int = false;
+		uint16_t samp = 0;
+		if (per)
+		{
+			if (cnt <= 0)
+			{
+				cnt += per;
+				samp = amp;
+				rpt--;
+				do_int = interp;
+
+				for (int j = 0; j < 6; j++)
+					z_data[j][1] = z_data[j][0] = 0;
+			}
+			else
+			{
+				samp = 0;
+				cnt--;
+			}
+		}
+		else
+		{
+			if (--cnt <= 0)
+			{
+				do_int = interp;
+				cnt = PER_NOISE;
+				rpt--;
+				for (int j = 0; j < 6; j++)
+					z_data[j][0] = z_data[j][1] = 0;
+			}
+
+			const bool bit(rng & 1);
+			rng = (rng >> 1) ^ (bit ? 0x4001 : 0);
+
+			samp = bit ? amp : -amp;
+>>>>>>> upstream/master
 		}
 
 		/* ---------------------------------------------------------------- */
@@ -291,6 +385,7 @@ INLINE int lpc12_update(struct lpc12_t *f, int num_samp, INT16 *out, UINT32 *opt
 		/* ---------------------------------------------------------------- */
 		if (do_int)
 		{
+<<<<<<< HEAD
 			f->r[0] += f->r[14];
 			f->r[1] += f->r[15];
 
@@ -298,13 +393,25 @@ INLINE int lpc12_update(struct lpc12_t *f, int num_samp, INT16 *out, UINT32 *opt
 			f->per   = f->r[1];
 
 			do_int   = 0;
+=======
+			r[0] += r[14];
+			r[1] += r[15];
+
+			amp   = (r[0] & 0x1F) << (((r[0] & 0xE0) >> 5) + 0);
+			per   = r[1];
+>>>>>>> upstream/master
 		}
 
 		/* ---------------------------------------------------------------- */
 		/*  Stop if we expire our repeat counter and return the actual      */
 		/*  number of samples we did.                                       */
 		/* ---------------------------------------------------------------- */
+<<<<<<< HEAD
 		if (f->rpt <= 0) break;
+=======
+		if (rpt <= 0)
+			break;
+>>>>>>> upstream/master
 
 		/* ---------------------------------------------------------------- */
 		/*  Each 2nd order stage looks like one of these.  The App. Manual  */
@@ -334,6 +441,7 @@ INLINE int lpc12_update(struct lpc12_t *f, int num_samp, INT16 *out, UINT32 *opt
 		/*                +-----------[B]<---------+                        */
 		/*                                                                  */
 		/* ---------------------------------------------------------------- */
+<<<<<<< HEAD
 		for (j = 0; j < 6; j++)
 		{
 			samp += (((int)f->b_coef[j] * (int)f->z_data[j][1]) >> 9);
@@ -341,12 +449,25 @@ INLINE int lpc12_update(struct lpc12_t *f, int num_samp, INT16 *out, UINT32 *opt
 
 			f->z_data[j][1] = f->z_data[j][0];
 			f->z_data[j][0] = samp;
+=======
+		for (int j = 0; j < 6; j++)
+		{
+			samp += (int(b_coef[j]) * int(z_data[j][1])) >> 9;
+			samp += (int(f_coef[j]) * int(z_data[j][0])) >> 8;
+
+			z_data[j][1] = z_data[j][0];
+			z_data[j][0] = samp;
+>>>>>>> upstream/master
 		}
 
 #ifdef HIGH_QUALITY /* Higher quality than the original, but who cares? */
 		out[oidx++ & SCBUF_MASK] = limit(samp) << 2;
 #else
+<<<<<<< HEAD
 		out[oidx++ & SCBUF_MASK] = (limit(samp >> 4) << 8);
+=======
+		out[oidx++ & SCBUF_MASK] = limit(samp >> 4) << 8;
+>>>>>>> upstream/master
 #endif
 	}
 
@@ -355,6 +476,7 @@ INLINE int lpc12_update(struct lpc12_t *f, int num_samp, INT16 *out, UINT32 *opt
 	return i;
 }
 
+<<<<<<< HEAD
 static const int stage_map[6] = { 0, 1, 2, 3, 4, 5 };
 
 /* ======================================================================== */
@@ -364,32 +486,84 @@ INLINE void lpc12_regdec(struct lpc12_t *f)
 {
 	int i;
 
+=======
+/* ======================================================================== */
+/*  LPC12_REGDEC -- Decode the register set in the filter bank.             */
+/* ======================================================================== */
+inline void sp0256_device::lpc12_t::regdec()
+{
+>>>>>>> upstream/master
 	/* -------------------------------------------------------------------- */
 	/*  Decode the Amplitude and Period registers.  Force the 'cnt' to 0    */
 	/*  to get an initial impulse.  We compensate elsewhere by setting      */
 	/*  the repeat count to "repeat + 1".                                   */
 	/* -------------------------------------------------------------------- */
+<<<<<<< HEAD
 	f->amp = (f->r[0] & 0x1F) << (((f->r[0] & 0xE0) >> 5) + 0);
 	f->cnt = 0;
 	f->per = f->r[1];
+=======
+	amp = (r[0] & 0x1F) << (((r[0] & 0xE0) >> 5) + 0);
+	cnt = 0;
+	per = r[1];
+>>>>>>> upstream/master
 
 	/* -------------------------------------------------------------------- */
 	/*  Decode the filter coefficients from the quant table.                */
 	/* -------------------------------------------------------------------- */
+<<<<<<< HEAD
 	for (i = 0; i < 6; i++)
 	{
 		#define IQ(x) (((x) & 0x80) ? qtbl[0x7F & -(x)] : -qtbl[(x)])
 
 		f->b_coef[stage_map[i]] = IQ(f->r[2 + 2*i]);
 		f->f_coef[stage_map[i]] = IQ(f->r[3 + 2*i]);
+=======
+	for (int i = 0; i < 6; i++)
+	{
+		/* ======================================================================== */
+		/*  qtbl  -- Coefficient Quantization Table.  This comes from a             */
+		/*              SP0250 data sheet, and should be correct for SP0256.        */
+		/* ======================================================================== */
+		static constexpr int16_t qtbl[128] =
+		{
+			0,      9,      17,     25,     33,     41,     49,     57,
+			65,     73,     81,     89,     97,     105,    113,    121,
+			129,    137,    145,    153,    161,    169,    177,    185,
+			193,    201,    209,    217,    225,    233,    241,    249,
+			257,    265,    273,    281,    289,    297,    301,    305,
+			309,    313,    317,    321,    325,    329,    333,    337,
+			341,    345,    349,    353,    357,    361,    365,    369,
+			373,    377,    381,    385,    389,    393,    397,    401,
+			405,    409,    413,    417,    421,    425,    427,    429,
+			431,    433,    435,    437,    439,    441,    443,    445,
+			447,    449,    451,    453,    455,    457,    459,    461,
+			463,    465,    467,    469,    471,    473,    475,    477,
+			479,    481,    482,    483,    484,    485,    486,    487,
+			488,    489,    490,    491,    492,    493,    494,    495,
+			496,    497,    498,    499,    500,    501,    502,    503,
+			504,    505,    506,    507,    508,    509,    510,    511
+		};
+
+		static constexpr int stage_map[6] = { 0, 1, 2, 3, 4, 5 };
+
+		auto IQ = [] (uint8_t x) { return (x & 0x80) ? qtbl[0x7F & -x] : -qtbl[x]; };
+
+		b_coef[stage_map[i]] = IQ(r[2 + 2*i]);
+		f_coef[stage_map[i]] = IQ(r[3 + 2*i]);
+>>>>>>> upstream/master
 	}
 
 	/* -------------------------------------------------------------------- */
 	/*  Set the Interp flag based on whether we have interpolation parms    */
 	/* -------------------------------------------------------------------- */
+<<<<<<< HEAD
 	f->interp = f->r[14] || f->r[15];
 
 	return;
+=======
+	interp = r[14] || r[15];
+>>>>>>> upstream/master
 }
 
 /* ======================================================================== */
@@ -425,7 +599,11 @@ INLINE void lpc12_regdec(struct lpc12_t *f)
 
 enum { AM = 0, PR, B0, F0, B1, F1, B2, F2, B3, F3, B4, F4, B5, F5, IA, IP };
 
+<<<<<<< HEAD
 static const UINT16 sp0256_datafmt[] =
+=======
+static const uint16_t sp0256_datafmt[] =
+>>>>>>> upstream/master
 {
 	/* -------------------------------------------------------------------- */
 	/*  OPCODE 1111: PAUSE                                                  */
@@ -699,7 +877,11 @@ static const UINT16 sp0256_datafmt[] =
 	/*  176 */  CR( 5,  0,  IP, 0,  0,  0,  0),     /*  Per. Intr.  */
 };
 
+<<<<<<< HEAD
 static const INT16 sp0256_df_idx[16 * 8] =
+=======
+static const int16_t sp0256_df_idx[16 * 8] =
+>>>>>>> upstream/master
 {
 	/*  OPCODE 0000 */      -1, -1,     -1, -1,     -1, -1,     -1, -1,
 	/*  OPCODE 1000 */      -1, -1,     -1, -1,     -1, -1,     -1, -1,
@@ -722,7 +904,11 @@ static const INT16 sp0256_df_idx[16 * 8] =
 /* ======================================================================== */
 /*  BITREV32       -- Bit-reverse a 32-bit number.                            */
 /* ======================================================================== */
+<<<<<<< HEAD
 INLINE UINT32 bitrev32(UINT32 val)
+=======
+static inline uint32_t bitrev32(uint32_t val)
+>>>>>>> upstream/master
 {
 	val = ((val & 0xFFFF0000) >> 16) | ((val & 0x0000FFFF) << 16);
 	val = ((val & 0xFF00FF00) >>  8) | ((val & 0x00FF00FF) <<  8);
@@ -736,7 +922,11 @@ INLINE UINT32 bitrev32(UINT32 val)
 /* ======================================================================== */
 /*  BITREV8       -- Bit-reverse a 8-bit number.                            */
 /* ======================================================================== */
+<<<<<<< HEAD
 INLINE UINT8 bitrev8(UINT8 val)
+=======
+static inline uint8_t bitrev8(uint8_t val)
+>>>>>>> upstream/master
 {
 	val = ((val & 0xF0) >>  4) | ((val & 0x0F) <<  4);
 	val = ((val & 0xCC) >>  2) | ((val & 0x33) <<  2);
@@ -748,7 +938,11 @@ INLINE UINT8 bitrev8(UINT8 val)
 /* ======================================================================== */
 /*  BITREVBUFF       -- Bit-reverse a buffer.                               */
 /* ======================================================================== */
+<<<<<<< HEAD
 void sp0256_device::bitrevbuff(UINT8 *buffer, unsigned int start, unsigned int length)
+=======
+void sp0256_device::bitrevbuff(uint8_t *buffer, unsigned int start, unsigned int length)
+>>>>>>> upstream/master
 {
 	for (unsigned int i = start; i < length; i++ )
 		buffer[i] = bitrev8(buffer[i]);
@@ -757,10 +951,17 @@ void sp0256_device::bitrevbuff(UINT8 *buffer, unsigned int start, unsigned int l
 /* ======================================================================== */
 /*  SP0256_GETB  -- Get up to 8 bits at the current PC.                     */
 /* ======================================================================== */
+<<<<<<< HEAD
 UINT32 sp0256_device::getb( int len )
 {
 	UINT32 data = 0;
 	UINT32 d0, d1;
+=======
+uint32_t sp0256_device::getb( int len )
+{
+	uint32_t data;
+	uint32_t d0, d1;
+>>>>>>> upstream/master
 
 	/* -------------------------------------------------------------------- */
 	/*  Fetch data from the FIFO or from the MASK                           */
@@ -772,8 +973,13 @@ UINT32 sp0256_device::getb( int len )
 
 		data = ((d1 << 10) | d0) >> m_fifo_bitp;
 
+<<<<<<< HEAD
 		LOG_FIFO(("sp0256: RD_FIFO %.3X %d.%d %d\n", data & ((1 << len) - 1),
 				m_fifo_tail, m_fifo_bitp, m_fifo_head));
+=======
+		LOGFIFO("sp0256: RD_FIFO %.3X %d.%d %d\n", data & ((1 << len) - 1),
+				m_fifo_tail, m_fifo_bitp, m_fifo_head);
+>>>>>>> upstream/master
 
 		/* ---------------------------------------------------------------- */
 		/*  Note the PC doesn't advance when we execute from FIFO.          */
@@ -819,11 +1025,19 @@ UINT32 sp0256_device::getb( int len )
 /* ======================================================================== */
 void sp0256_device::micro()
 {
+<<<<<<< HEAD
 	UINT8  immed4;
 	UINT8  opcode;
 	UINT16 cr;
 	int ctrl_xfer = 0;
 	int repeat    = 0;
+=======
+	uint8_t  immed4;
+	uint8_t  opcode;
+	uint16_t cr;
+	int ctrl_xfer;
+	int repeat;
+>>>>>>> upstream/master
 	int i, idx0, idx1;
 
 	/* -------------------------------------------------------------------- */
@@ -858,7 +1072,11 @@ void sp0256_device::micro()
 			for (i = 0; i < 16; i++)
 				m_filt.r[i] = 0;
 
+<<<<<<< HEAD
 			SET_SBY(1)
+=======
+			SET_SBY(1);
+>>>>>>> upstream/master
 
 			return;
 		}
@@ -872,11 +1090,19 @@ void sp0256_device::micro()
 		repeat = 0;
 		ctrl_xfer = 0;
 
+<<<<<<< HEAD
 		LOG(("$%.4X.%.1X: OPCODE %d%d%d%d.%d%d\n",
 				(m_pc >> 3) - 1, m_pc & 7,
 				!!(opcode & 1), !!(opcode & 2),
 				!!(opcode & 4), !!(opcode & 8),
 				!!(m_mode&4), !!(m_mode&2)));
+=======
+		LOG("$%.4X.%.1X: OPCODE %d%d%d%d.%d%d\n",
+				(m_pc >> 3) - 1, m_pc & 7,
+				!!(opcode & 1), !!(opcode & 2),
+				!!(opcode & 4), !!(opcode & 8),
+				!!(m_mode&4), !!(m_mode&2));
+>>>>>>> upstream/master
 
 		/* ---------------------------------------------------------------- */
 		/*  Handle the special cases for specific opcodes.                  */
@@ -899,7 +1125,11 @@ void sp0256_device::micro()
 				/*  Otherwise, this is an RTS / HLT.                        */
 				/* -------------------------------------------------------- */
 				{
+<<<<<<< HEAD
 					UINT32 btrg;
+=======
+					uint32_t btrg;
+>>>>>>> upstream/master
 
 					/* ---------------------------------------------------- */
 					/*  Figure out our branch target.                       */
@@ -995,7 +1225,11 @@ void sp0256_device::micro()
 		/* ---------------------------------------------------------------- */
 		if (ctrl_xfer)
 		{
+<<<<<<< HEAD
 			LOG(("jumping to $%.4X.%.1X: ", m_pc >> 3, m_pc & 7));
+=======
+			LOG("jumping to $%.4X.%.1X: ", m_pc >> 3, m_pc & 7);
+>>>>>>> upstream/master
 
 			/* ------------------------------------------------------------ */
 			/*  Set our "FIFO Selected" flag based on whether we're going   */
@@ -1003,7 +1237,11 @@ void sp0256_device::micro()
 			/* ------------------------------------------------------------ */
 			m_fifo_sel = m_pc == FIFO_ADDR;
 
+<<<<<<< HEAD
 			LOG(("%s ", m_fifo_sel ? "FIFO" : "ROM"));
+=======
+			LOG("%s ", m_fifo_sel ? "FIFO" : "ROM");
+>>>>>>> upstream/master
 
 			/* ------------------------------------------------------------ */
 			/*  Control transfers to the FIFO cause it to discard the       */
@@ -1011,14 +1249,22 @@ void sp0256_device::micro()
 			/* ------------------------------------------------------------ */
 			if (m_fifo_sel && m_fifo_bitp)
 			{
+<<<<<<< HEAD
 				LOG(("bitp = %d -> Flush", m_fifo_bitp));
+=======
+				LOG("bitp = %d -> Flush", m_fifo_bitp);
+>>>>>>> upstream/master
 
 				/* Discard partially-read decle. */
 				if (m_fifo_tail < m_fifo_head) m_fifo_tail++;
 				m_fifo_bitp = 0;
 			}
 
+<<<<<<< HEAD
 			LOG(("\n"));
+=======
+			LOG("\n");
+>>>>>>> upstream/master
 
 			continue;
 		}
@@ -1030,7 +1276,11 @@ void sp0256_device::micro()
 		if (!repeat) continue;
 
 		m_filt.rpt = repeat + 1;
+<<<<<<< HEAD
 		LOG(("repeat = %d\n", repeat));
+=======
+		LOG("repeat = %d\n", repeat);
+>>>>>>> upstream/master
 
 		i = (opcode << 3) | (m_mode & 6);
 		idx0 = sp0256_df_idx[i++];
@@ -1044,7 +1294,11 @@ void sp0256_device::micro()
 		for (i = idx0; i <= idx1; i++)
 		{
 			int len, shf, delta, field, prm, clra, clr5;
+<<<<<<< HEAD
 			INT8 value;
+=======
+			int8_t value;
+>>>>>>> upstream/master
 
 			/* ------------------------------------------------------------ */
 			/*  Get the control word and pull out some important fields.    */
@@ -1060,8 +1314,13 @@ void sp0256_device::micro()
 			field = cr & CR_FIELD;
 			value = 0;
 
+<<<<<<< HEAD
 			LOG(("$%.4X.%.1X: len=%2d shf=%2d prm=%2d d=%d f=%d ",
 						m_pc >> 3, m_pc & 7, len, shf, prm, !!delta, !!field));
+=======
+			LOG("$%.4X.%.1X: len=%2d shf=%2d prm=%2d d=%d f=%d ",
+						m_pc >> 3, m_pc & 7, len, shf, prm, !!delta, !!field);
+>>>>>>> upstream/master
 			/* ------------------------------------------------------------ */
 			/*  Clear any registers that were requested to be cleared.      */
 			/* ------------------------------------------------------------ */
@@ -1085,7 +1344,11 @@ void sp0256_device::micro()
 			}
 			else
 			{
+<<<<<<< HEAD
 				LOG((" (no update)\n"));
+=======
+				LOG(" (no update)\n");
+>>>>>>> upstream/master
 				continue;
 			}
 
@@ -1103,9 +1366,15 @@ void sp0256_device::micro()
 			if (shf)
 				value <<= shf;
 
+<<<<<<< HEAD
 			LOG(("v=%.2X (%c%.2X)  ", value & 0xFF,
 						value & 0x80 ? '-' : '+',
 						0xFF & (value & 0x80 ? -value : value)));
+=======
+			LOG("v=%.2X (%c%.2X)  ", value & 0xFF,
+						value & 0x80 ? '-' : '+',
+						0xFF & (value & 0x80 ? -value : value));
+>>>>>>> upstream/master
 
 			m_silent = 0;
 
@@ -1114,12 +1383,20 @@ void sp0256_device::micro()
 			/* ------------------------------------------------------------ */
 			if (field)
 			{
+<<<<<<< HEAD
 				LOG(("--field-> r[%2d] = %.2X -> ", prm, m_filt.r[prm]));
+=======
+				LOG("--field-> r[%2d] = %.2X -> ", prm, m_filt.r[prm]);
+>>>>>>> upstream/master
 
 				m_filt.r[prm] &= ~(~0 << shf); /* Clear the old bits.     */
 				m_filt.r[prm] |= value;        /* Merge in the new bits.  */
 
+<<<<<<< HEAD
 				LOG(("%.2X\n", m_filt.r[prm]));
+=======
+				LOG("%.2X\n", m_filt.r[prm]);
+>>>>>>> upstream/master
 
 				continue;
 			}
@@ -1129,11 +1406,19 @@ void sp0256_device::micro()
 			/* ------------------------------------------------------------ */
 			if (delta)
 			{
+<<<<<<< HEAD
 				LOG(("--delta-> r[%2d] = %.2X -> ", prm, m_filt.r[prm]));
 
 				m_filt.r[prm] += value;
 
 				LOG(("%.2X\n", m_filt.r[prm]));
+=======
+				LOG("--delta-> r[%2d] = %.2X -> ", prm, m_filt.r[prm]);
+
+				m_filt.r[prm] += value;
+
+				LOG("%.2X\n", m_filt.r[prm]);
+>>>>>>> upstream/master
 
 				continue;
 			}
@@ -1142,7 +1427,11 @@ void sp0256_device::micro()
 			/*  Otherwise, just write the new value.                        */
 			/* ------------------------------------------------------------ */
 			m_filt.r[prm] = value;
+<<<<<<< HEAD
 			LOG(("--value-> r[%2d] = %.2X\n", prm, m_filt.r[prm]));
+=======
+			LOG("--value-> r[%2d] = %.2X\n", prm, m_filt.r[prm]);
+>>>>>>> upstream/master
 		}
 
 		/* ---------------------------------------------------------------- */
@@ -1157,7 +1446,11 @@ void sp0256_device::micro()
 		/* ---------------------------------------------------------------- */
 		/*  Now that we've updated the registers, go decode them.           */
 		/* ---------------------------------------------------------------- */
+<<<<<<< HEAD
 		lpc12_regdec(&m_filt);
+=======
+		m_filt.regdec();
+>>>>>>> upstream/master
 
 		/* ---------------------------------------------------------------- */
 		/*  Break out since we now have a repeat count.                     */
@@ -1175,7 +1468,11 @@ WRITE8_MEMBER( sp0256_device::ald_w )
 	/* ---------------------------------------------------------------- */
 	if (!m_lrq)
 	{
+<<<<<<< HEAD
 		LOG(("sp0256: Droped ALD write\n"));
+=======
+		LOG("sp0256: Dropped ALD write\n");
+>>>>>>> upstream/master
 		return;
 	}
 
@@ -1187,7 +1484,11 @@ WRITE8_MEMBER( sp0256_device::ald_w )
 	m_lrq = 0;
 	m_ald = (0xff & data) << 4;
 	m_drq_cb(0);
+<<<<<<< HEAD
 	SET_SBY(0)
+=======
+	SET_SBY(0);
+>>>>>>> upstream/master
 
 	return;
 }
@@ -1257,7 +1558,11 @@ WRITE16_MEMBER( sp0256_device::spb640_w )
 		/* ---------------------------------------------------------------- */
 		if ((m_fifo_head - m_fifo_tail) >= 64)
 		{
+<<<<<<< HEAD
 			LOG(("spb640: Dropped FIFO write\n"));
+=======
+			LOG("spb640: Dropped FIFO write\n");
+>>>>>>> upstream/master
 			return;
 		}
 
@@ -1265,8 +1570,13 @@ WRITE16_MEMBER( sp0256_device::spb640_w )
 		/*  FIFO up the lower 10 bits of the data.                          */
 		/* ---------------------------------------------------------------- */
 
+<<<<<<< HEAD
 		LOG(("spb640: WR_FIFO %.3X %d.%d %d\n", data & 0x3ff,
 				m_fifo_tail, m_fifo_bitp, m_fifo_head));
+=======
+		LOG("spb640: WR_FIFO %.3X %d.%d %d\n", data & 0x3ff,
+				m_fifo_tail, m_fifo_bitp, m_fifo_head);
+>>>>>>> upstream/master
 
 		m_fifo[m_fifo_head++ & 63] = data & 0x3ff;
 
@@ -1356,8 +1666,12 @@ void sp0256_device::sound_stream_update(sound_stream &stream, stream_sample_t **
 			}
 			else
 			{
+<<<<<<< HEAD
 				did_samp += lpc12_update(&m_filt, do_samp,
 											m_scratch, &m_sc_head);
+=======
+				did_samp += m_filt.update(do_samp, m_scratch.get(), &m_sc_head);
+>>>>>>> upstream/master
 			}
 
 			m_sc_head &= SCBUF_MASK;

@@ -14,10 +14,18 @@ Notes:
     Eshb has some junk in the IO TEST screen.  Maybe a bad dump?
 
 Todo:
+<<<<<<< HEAD
     - LD TROUBLE message pops up after each cycle in attract.  NMI-related?
     - Convert to tilemaps (see next ToDo for feasibility).
     - Apparently some tiles blink (in at least two different ways).
     - 0xfe and 0xff are pretty obviously not NMI enables.  They're likely LED's.  Do the NMI right (somehow).
+=======
+    - LD TROUBLE appears at POST. Sync/timing issue?
+    - Performance spike after some time of gameplay, CPU comms gets corrupt?
+    - How to init NVRAM? Current defaults definitely aren't.
+    - Wrong overlay colors;
+    - Convert to tilemaps (see next ToDo for feasibility).
+>>>>>>> upstream/master
     - Rumor has it there's an analog beep hanging off 0xf5?  Implement it and finish off 0xf5 bits.
     - NVRAM range 0xe000-0xe800 might be too large.  It doesn't seem to write past 0xe600...
     - Maybe some of the IPT_UNKNOWNs do something?
@@ -28,11 +36,17 @@ Todo:
 #include "cpu/z80/z80.h"
 #include "machine/ldv1000.h"
 #include "machine/nvram.h"
+<<<<<<< HEAD
+=======
+#include "sound/beep.h"
+#include "speaker.h"
+>>>>>>> upstream/master
 
 
 class esh_state : public driver_device
 {
 public:
+<<<<<<< HEAD
 	enum
 	{
 		TIMER_IRQ_STOP
@@ -51,12 +65,31 @@ public:
 	required_shared_ptr<UINT8> m_tile_ram;
 	required_shared_ptr<UINT8> m_tile_control_ram;
 	UINT8 m_ld_video_visible;
+=======
+	esh_state(const machine_config &mconfig, device_type type, const char *tag)
+		: driver_device(mconfig, type, tag),
+			m_laserdisc(*this, "laserdisc"),
+			m_screen(*this, "screen"),
+			m_tile_ram(*this, "tile_ram"),
+			m_tile_control_ram(*this, "tile_ctrl_ram"),
+			m_maincpu(*this, "maincpu"),
+			m_gfxdecode(*this, "gfxdecode"),
+			m_beep(*this, "beeper"),
+			m_palette(*this, "palette")  { }
+
+	required_device<pioneer_ldv1000_device> m_laserdisc;
+	required_device<screen_device> m_screen;
+	required_shared_ptr<uint8_t> m_tile_ram;
+	required_shared_ptr<uint8_t> m_tile_control_ram;
+	bool m_ld_video_visible;
+>>>>>>> upstream/master
 	DECLARE_READ8_MEMBER(ldp_read);
 	DECLARE_WRITE8_MEMBER(ldp_write);
 	DECLARE_WRITE8_MEMBER(misc_write);
 	DECLARE_WRITE8_MEMBER(led_writes);
 	DECLARE_WRITE8_MEMBER(nmi_line_w);
 	DECLARE_DRIVER_INIT(esh);
+<<<<<<< HEAD
 	virtual void machine_start();
 	DECLARE_PALETTE_INIT(esh);
 	UINT32 screen_update_esh(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect);
@@ -67,6 +100,21 @@ public:
 
 protected:
 	virtual void device_timer(emu_timer &timer, device_timer_id id, int param, void *ptr);
+=======
+	bool m_nmi_enable;
+	virtual void machine_start() override;
+	DECLARE_PALETTE_INIT(esh);
+	uint32_t screen_update_esh(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect);
+	INTERRUPT_GEN_MEMBER(vblank_callback_esh);
+	DECLARE_WRITE_LINE_MEMBER(ld_command_strobe_cb);
+	required_device<cpu_device> m_maincpu;
+	required_device<gfxdecode_device> m_gfxdecode;
+	required_device<beep_device> m_beep;
+	required_device<palette_device> m_palette;
+
+protected:
+	//virtual void device_timer(emu_timer &timer, device_timer_id id, int param, void *ptr) override;
+>>>>>>> upstream/master
 };
 
 
@@ -75,13 +123,26 @@ protected:
 
 
 /* VIDEO GOODS */
+<<<<<<< HEAD
 UINT32 esh_state::screen_update_esh(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect)
 {
 	int charx, chary;
+=======
+uint32_t esh_state::screen_update_esh(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect)
+{
+	int charx, chary;
+	const uint8_t pal_bank = m_ld_video_visible == true ? 0x10 : 0x00;
+	const uint32_t trans_mask = m_ld_video_visible == true ? 0 : -1;
+	gfx_element *gfx;// = m_gfxdecode->gfx(0);
+>>>>>>> upstream/master
 
 	/* clear */
 	bitmap.fill(0, cliprect);
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> upstream/master
 	/* Draw tiles */
 	for (charx = 0; charx < 32; charx++)
 	{
@@ -91,6 +152,7 @@ UINT32 esh_state::screen_update_esh(screen_device &screen, bitmap_rgb32 &bitmap,
 
 			int palIndex  = (m_tile_control_ram[current_screen_character] & 0x0f);
 			int tileOffs  = (m_tile_control_ram[current_screen_character] & 0x10) >> 4;
+<<<<<<< HEAD
 			//int blinkLine = (m_tile_control_ram[current_screen_character] & 0x40) >> 6;
 			//int blinkChar = (m_tile_control_ram[current_screen_character] & 0x80) >> 7;
 
@@ -98,6 +160,36 @@ UINT32 esh_state::screen_update_esh(screen_device &screen, bitmap_rgb32 &bitmap,
 					m_tile_ram[current_screen_character] + (0x100 * tileOffs),
 					palIndex,
 					0, 0, charx*8, chary*8, 0);
+=======
+			bool blinkLine = bool((m_tile_control_ram[current_screen_character] & 0x40) >> 6);
+			bool blinkChar = bool((m_tile_control_ram[current_screen_character] & 0x80) >> 7);
+
+
+			// TODO: blink timing
+			if(blinkChar == true && m_screen->frame_number() & 8)
+			{
+				if(trans_mask == 0)
+					continue;
+
+				for(int yi=0;yi<8;yi++)
+					for(int xi=0;xi<8;xi++)
+						bitmap.pix32(yi+chary*8, xi+charx*8) = m_palette->pen(palIndex * 8 + pal_bank * 0x100);
+
+				continue;
+			}
+
+			if(blinkLine == true && m_screen->frame_number() & 8)
+				gfx = m_gfxdecode->gfx(1);
+			else
+				gfx = m_gfxdecode->gfx(0);
+
+
+			gfx->transpen(bitmap,cliprect,
+				m_tile_ram[current_screen_character] + (0x100 * tileOffs),
+				palIndex + pal_bank,
+				0, 0, charx*8, chary*8, trans_mask);
+
+>>>>>>> upstream/master
 		}
 	}
 
@@ -122,11 +214,19 @@ WRITE8_MEMBER(esh_state::misc_write)
 {
 	/* Bit 0 unknown */
 
+<<<<<<< HEAD
 	if (data & 0x02)
 		logerror("BEEP!\n");
 
 	/* Bit 2 unknown */
 	m_ld_video_visible = !((data & 0x08) >> 3);
+=======
+//  if (data & 0x02)
+//      logerror("BEEP!\n");
+	m_beep->set_state(BIT(data, 1)); // polarity unknown
+	/* Bit 2 unknown */
+	m_ld_video_visible = bool(!((data & 0x08) >> 3));
+>>>>>>> upstream/master
 
 	/* Bits 4-7 unknown */
 	/* They cycle through a repeating pattern though */
@@ -165,6 +265,7 @@ WRITE8_MEMBER(esh_state::led_writes)
 
 WRITE8_MEMBER(esh_state::nmi_line_w)
 {
+<<<<<<< HEAD
 	if (data == 0x00)
 		m_maincpu->set_input_line(INPUT_LINE_NMI, ASSERT_LINE);
 	if (data == 0x01)
@@ -172,6 +273,17 @@ WRITE8_MEMBER(esh_state::nmi_line_w)
 
 	if (data != 0x00 && data != 0x01)
 		logerror("NMI line got a weird value!\n");
+=======
+	// 0 -> 1 transition enables this, else disabled?
+	m_nmi_enable = (data & 1) == 1;
+	//if (data == 0x00)
+	//  m_maincpu->set_input_line(INPUT_LINE_NMI, ASSERT_LINE);
+	//if (data == 0x01)
+	//  m_maincpu->set_input_line(INPUT_LINE_NMI, CLEAR_LINE);
+
+	if (data & 0xfe)
+		logerror("NMI line unknown bit set %02x\n",data);
+>>>>>>> upstream/master
 }
 
 
@@ -206,7 +318,11 @@ static INPUT_PORTS_START( esh )
 	PORT_BIT( 0x02, IP_ACTIVE_LOW, IPT_COIN2 )
 	PORT_BIT( 0x04, IP_ACTIVE_LOW, IPT_START1 )
 	PORT_BIT( 0x08, IP_ACTIVE_LOW, IPT_START2 )
+<<<<<<< HEAD
 	PORT_BIT( 0x10, IP_ACTIVE_LOW, IPT_OTHER ) PORT_NAME( "TEST" ) PORT_CODE( KEYCODE_T )
+=======
+	PORT_SERVICE( 0x10, IP_ACTIVE_LOW )
+>>>>>>> upstream/master
 	PORT_BIT( 0x20, IP_ACTIVE_LOW, IPT_UNKNOWN )
 	PORT_BIT( 0x40, IP_ACTIVE_LOW, IPT_UNKNOWN )
 	PORT_BIT( 0x80, IP_ACTIVE_LOW, IPT_UNKNOWN )
@@ -244,10 +360,17 @@ INPUT_PORTS_END
 
 PALETTE_INIT_MEMBER(esh_state, esh)
 {
+<<<<<<< HEAD
 	const UINT8 *color_prom = memregion("proms")->base();
 	int i;
 
 	/* Oddly enough, the top 4 bits of each byte is 0 */
+=======
+	const uint8_t *color_prom = memregion("proms")->base();
+	int i;
+
+	/* Oddly enough, the top 4 bits of each byte is 0 <- ??? */
+>>>>>>> upstream/master
 	for (i = 0; i < palette.entries(); i++)
 	{
 		int r,g,b;
@@ -259,6 +382,7 @@ PALETTE_INIT_MEMBER(esh_state, esh)
 		bit0 = (color_prom[i+0x100] >> 0) & 0x01;
 		bit1 = (color_prom[i+0x100] >> 1) & 0x01;
 		bit2 = (color_prom[i+0x100] >> 2) & 0x01;
+<<<<<<< HEAD
 		r = (0x97 * bit2) + (0x47 * bit1) + (0x21 * bit0);
 
 		/* green component */
@@ -272,12 +396,36 @@ PALETTE_INIT_MEMBER(esh_state, esh)
 		bit1 = (color_prom[i+0x100] >> 5) & 0x01;
 		bit2 = (color_prom[i+0x100] >> 6) & 0x01;
 		b = (0x97 * bit2) + (0x47 * bit1) + (0x21 * bit0);
+=======
+		r = 0x21 * bit0 + 0x47 * bit1 + 0x97 * bit2;
+
+		/* green component */
+		bit0 = 0; //(color_prom[i+0x100] >> 0) & 0x01;
+		bit1 = (color_prom[i+0x100] >> 3) & 0x01;
+		bit2 = (color_prom[i+0x100] >> 4) & 0x01;
+		g = 0x21 * bit0 + 0x47 * bit1 + 0x97 * bit2;
+
+		/* blue component */
+		// TODO: actually opaque flag
+		if((color_prom[i+0x100] >> 7) & 1)
+			b = 0xff;
+		else
+		{
+			bit0 = 0; //(color_prom[i+0x100] >> 5) & 0x01;
+			bit1 = (color_prom[i+0x100] >> 5) & 0x01;
+			bit2 = (color_prom[i+0x100] >> 6) & 0x01;
+			b = 0x21 * bit0 + 0x47 * bit1 + 0x97 * bit2;
+		}
+>>>>>>> upstream/master
 
 		palette.set_pen_color(i,rgb_t(r,g,b));
 	}
 
+<<<<<<< HEAD
 	/* make color 0 transparent */
 	palette.set_pen_color(0, rgb_t(0,0,0,0));
+=======
+>>>>>>> upstream/master
 }
 
 static const gfx_layout esh_gfx_layout =
@@ -285,7 +433,11 @@ static const gfx_layout esh_gfx_layout =
 	8,8,
 	RGN_FRAC(1,3),
 	3,
+<<<<<<< HEAD
 	{ RGN_FRAC(0,3), RGN_FRAC(1,3), RGN_FRAC(2,3) },
+=======
+	{ RGN_FRAC(2,3), RGN_FRAC(1,3), RGN_FRAC(0,3) },
+>>>>>>> upstream/master
 	{ 0,1,2,3,4,5,6,7 },
 	{ 0*8, 1*8, 2*8, 3*8, 4*8, 5*8, 6*8, 7*8 },
 	8*8
@@ -293,6 +445,7 @@ static const gfx_layout esh_gfx_layout =
 
 static GFXDECODE_START( esh )
 	GFXDECODE_ENTRY("gfx1", 0, esh_gfx_layout, 0x0, 0x20)
+<<<<<<< HEAD
 GFXDECODE_END
 
 void esh_state::device_timer(emu_timer &timer, device_timer_id id, int param, void *ptr)
@@ -312,6 +465,22 @@ INTERRUPT_GEN_MEMBER(esh_state::vblank_callback_esh)
 	// IRQ
 	device.execute().set_input_line(0, ASSERT_LINE);
 	timer_set(attotime::from_usec(50), TIMER_IRQ_STOP);
+=======
+	GFXDECODE_ENTRY("gfx2", 0, esh_gfx_layout, 0x0, 0x20)
+GFXDECODE_END
+
+INTERRUPT_GEN_MEMBER(esh_state::vblank_callback_esh)
+{
+	// IRQ
+	device.execute().set_input_line(0, HOLD_LINE);
+}
+
+// TODO: 0xfe NMI enabled after writing to LD command port, NMI reads LD port.
+WRITE_LINE_MEMBER(esh_state::ld_command_strobe_cb)
+{
+	if(m_nmi_enable)
+		m_maincpu->set_input_line(INPUT_LINE_NMI, state ? ASSERT_LINE : CLEAR_LINE);
+>>>>>>> upstream/master
 }
 
 void esh_state::machine_start()
@@ -320,8 +489,12 @@ void esh_state::machine_start()
 
 
 /* DRIVER */
+<<<<<<< HEAD
 static MACHINE_CONFIG_START( esh, esh_state )
 
+=======
+static MACHINE_CONFIG_START( esh )
+>>>>>>> upstream/master
 	/* main cpu */
 	MCFG_CPU_ADD("maincpu", Z80, PCB_CLOCK/6)                       /* The denominator is a Daphne guess based on PacMan's hardware */
 	MCFG_CPU_PROGRAM_MAP(z80_0_mem)
@@ -330,8 +503,13 @@ static MACHINE_CONFIG_START( esh, esh_state )
 
 	MCFG_NVRAM_ADD_0FILL("nvram")
 
+<<<<<<< HEAD
 
 	MCFG_LASERDISC_LDV1000_ADD("laserdisc")
+=======
+	MCFG_LASERDISC_LDV1000_ADD("laserdisc")
+	MCFG_LASERDISC_LDV1000_COMMAND_STROBE_CB(WRITELINE(esh_state, ld_command_strobe_cb))
+>>>>>>> upstream/master
 	MCFG_LASERDISC_OVERLAY_DRIVER(256, 256, esh_state, screen_update_esh)
 	MCFG_LASERDISC_OVERLAY_PALETTE("palette")
 
@@ -349,9 +527,22 @@ static MACHINE_CONFIG_START( esh, esh_state )
 	MCFG_SOUND_MODIFY("laserdisc")
 	MCFG_SOUND_ROUTE(0, "lspeaker", 1.0)
 	MCFG_SOUND_ROUTE(1, "rspeaker", 1.0)
+<<<<<<< HEAD
 MACHINE_CONFIG_END
 
 
+=======
+	MCFG_SPEAKER_STANDARD_MONO("mono")
+	MCFG_SOUND_ADD("beeper", BEEP, 2000)
+	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 0.25)
+MACHINE_CONFIG_END
+
+// we just disable even lines so we can simulate line blinking
+#define ROM_INTERLACED_GFX \
+	ROM_REGION( 0x3000, "gfx2", 0 ) \
+	ROM_COPY( "gfx1", 0, 0, 0x3000 ) \
+	ROMX_FILL( 0, 0x3000, 0x00, ROM_SKIP(1) )
+>>>>>>> upstream/master
 ROM_START( esh )
 	/* Main program CPU */
 	ROM_REGION( 0x4000, "maincpu", 0 )
@@ -364,6 +555,11 @@ ROM_START( esh )
 	ROM_LOAD( "b.l3", 0x1000, 0x1000, CRC(9366dde7) SHA1(891db65384d47d13355b2eea37f57c34bc775c8f) )
 	ROM_LOAD( "c.k3", 0x2000, 0x1000, CRC(a936ef01) SHA1(bcacb281ccb72ceb57fb6a79380cc3a9688743c4) )
 
+<<<<<<< HEAD
+=======
+	ROM_INTERLACED_GFX
+
+>>>>>>> upstream/master
 	/* Color (+other) PROMs */
 	ROM_REGION( 0x400, "proms", 0 )
 	ROM_LOAD( "rgb.j1", 0x000, 0x200, CRC(1e9f795f) SHA1(61a58694929fa39b2412bc9244e5681d65a0eacb) )
@@ -371,7 +567,11 @@ ROM_START( esh )
 	ROM_LOAD( "v.c6",   0x300, 0x100, CRC(7157ba22) SHA1(07355f30efe46196d216356eda48a59fc622e43f) )
 
 	DISK_REGION( "laserdisc" )
+<<<<<<< HEAD
 	DISK_IMAGE_READONLY( "esh", 0, NO_DUMP )
+=======
+	DISK_IMAGE_READONLY( "esh_ver2_en", 0, SHA1(c04709d95fd92259f013ec1cd28e3e36a163abe1) )
+>>>>>>> upstream/master
 ROM_END
 
 ROM_START( esha )
@@ -386,6 +586,11 @@ ROM_START( esha )
 	ROM_LOAD( "b.l3", 0x1000, 0x1000, CRC(9366dde7) SHA1(891db65384d47d13355b2eea37f57c34bc775c8f) )
 	ROM_LOAD( "c.k3", 0x2000, 0x1000, CRC(a936ef01) SHA1(bcacb281ccb72ceb57fb6a79380cc3a9688743c4) )
 
+<<<<<<< HEAD
+=======
+	ROM_INTERLACED_GFX
+
+>>>>>>> upstream/master
 	/* Color (+other) PROMs */
 	ROM_REGION( 0x400, "proms", 0 )
 	ROM_LOAD( "rgb.j1", 0x000, 0x200, CRC(1e9f795f) SHA1(61a58694929fa39b2412bc9244e5681d65a0eacb) )
@@ -393,7 +598,11 @@ ROM_START( esha )
 	ROM_LOAD( "v.c6",   0x300, 0x100, CRC(7157ba22) SHA1(07355f30efe46196d216356eda48a59fc622e43f) )
 
 	DISK_REGION( "laserdisc" )
+<<<<<<< HEAD
 	DISK_IMAGE_READONLY( "esh", 0, NO_DUMP )
+=======
+	DISK_IMAGE_READONLY( "esh_ver2_en", 0, SHA1(c04709d95fd92259f013ec1cd28e3e36a163abe1) )
+>>>>>>> upstream/master
 ROM_END
 
 ROM_START( eshb )
@@ -408,6 +617,11 @@ ROM_START( eshb )
 	ROM_LOAD( "b.l3", 0x1000, 0x1000, CRC(9366dde7) SHA1(891db65384d47d13355b2eea37f57c34bc775c8f) )
 	ROM_LOAD( "c.k3", 0x2000, 0x1000, CRC(a936ef01) SHA1(bcacb281ccb72ceb57fb6a79380cc3a9688743c4) )
 
+<<<<<<< HEAD
+=======
+	ROM_INTERLACED_GFX
+
+>>>>>>> upstream/master
 	/* Color (+other) PROMs */
 	ROM_REGION( 0x400, "proms", 0 )
 	ROM_LOAD( "rgb.j1", 0x000, 0x200, CRC(1e9f795f) SHA1(61a58694929fa39b2412bc9244e5681d65a0eacb) )
@@ -415,7 +629,11 @@ ROM_START( eshb )
 	ROM_LOAD( "v.c6",   0x300, 0x100, CRC(7157ba22) SHA1(07355f30efe46196d216356eda48a59fc622e43f) )
 
 	DISK_REGION( "laserdisc" )
+<<<<<<< HEAD
 	DISK_IMAGE_READONLY( "esh", 0, NO_DUMP )
+=======
+	DISK_IMAGE_READONLY( "esh_ver2_en", 0, SHA1(c04709d95fd92259f013ec1cd28e3e36a163abe1) )
+>>>>>>> upstream/master
 ROM_END
 
 
@@ -423,7 +641,14 @@ DRIVER_INIT_MEMBER(esh_state,esh)
 {
 }
 
+<<<<<<< HEAD
 /*    YEAR  NAME  PARENT       MACHINE  INPUT    INIT     MONITOR  COMPANY          FULLNAME                     FLAGS */
 GAME( 1983, esh,      0,       esh,     esh, esh_state,     esh,     ROT0,    "Funai/Gakken",  "Esh's Aurunmilla (set 1)",  MACHINE_NOT_WORKING|MACHINE_NO_SOUND)
 GAME( 1983, esha,     esh,     esh,     esh, esh_state,     esh,     ROT0,    "Funai/Gakken",  "Esh's Aurunmilla (set 2)",  MACHINE_NOT_WORKING|MACHINE_NO_SOUND)
 GAME( 1983, eshb,     esh,     esh,     esh, esh_state,     esh,     ROT0,    "Funai/Gakken",  "Esh's Aurunmilla (set 3)",  MACHINE_NOT_WORKING|MACHINE_NO_SOUND)
+=======
+//    YEAR  NAME   PARENT   MACHINE  INPUT  STATE      INIT     MONITOR  COMPANY          FULLNAME                     FLAGS
+GAME( 1983, esh,   0,       esh,     esh,   esh_state, esh,     ROT0,    "Funai/Gakken",  "Esh's Aurunmilla (set 1)",  MACHINE_NOT_WORKING|MACHINE_IMPERFECT_COLORS)
+GAME( 1983, esha,  esh,     esh,     esh,   esh_state, esh,     ROT0,    "Funai/Gakken",  "Esh's Aurunmilla (set 2)",  MACHINE_NOT_WORKING|MACHINE_IMPERFECT_COLORS)
+GAME( 1983, eshb,  esh,     esh,     esh,   esh_state, esh,     ROT0,    "Funai/Gakken",  "Esh's Aurunmilla (set 3)",  MACHINE_NOT_WORKING|MACHINE_IMPERFECT_COLORS)
+>>>>>>> upstream/master

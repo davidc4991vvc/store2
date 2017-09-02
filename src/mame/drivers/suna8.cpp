@@ -8,7 +8,11 @@
 
 
 Main  CPU:      Encrypted Z80 (Epoxy Module)
+<<<<<<< HEAD
 Sound CPU:      Z80 [Music]  +  Z80 [8 Bit PCM, Optional]
+=======
+Sound CPU:      Z80 [Music]  +  Z80 [4 Bit PCM, Optional]
+>>>>>>> upstream/master
 Sound Chips:    AY8910  +  YM3812/YM2203  + DAC x 4 [Optional] + Samples [Optional]
 
 
@@ -36,6 +40,7 @@ Notes:
 ***************************************************************************/
 
 #include "emu.h"
+<<<<<<< HEAD
 #include "cpu/z80/z80.h"
 #include "sound/ay8910.h"
 #include "sound/2203intf.h"
@@ -43,6 +48,19 @@ Notes:
 #include "sound/dac.h"
 #include "sound/samples.h"
 #include "includes/suna8.h"
+=======
+#include "includes/suna8.h"
+
+#include "cpu/z80/z80.h"
+#include "machine/watchdog.h"
+#include "sound/2203intf.h"
+#include "sound/3812intf.h"
+#include "sound/ay8910.h"
+#include "sound/dac.h"
+#include "sound/volt_reg.h"
+#include "speaker.h"
+
+>>>>>>> upstream/master
 
 #define SUNA8_MASTER_CLOCK      XTAL_24MHz
 
@@ -60,12 +78,20 @@ Notes:
 
 DRIVER_INIT_MEMBER(suna8_state,hardhead)
 {
+<<<<<<< HEAD
 	UINT8 *rom = memregion("maincpu")->base();
+=======
+	uint8_t *rom = memregion("maincpu")->base();
+>>>>>>> upstream/master
 	int i;
 
 	for (i = 0; i < 0x8000; i++)
 	{
+<<<<<<< HEAD
 		static const UINT8 swaptable[8] =
+=======
+		static const uint8_t swaptable[8] =
+>>>>>>> upstream/master
 		{
 			1,1,0,1,1,1,1,0
 		};
@@ -90,27 +116,47 @@ DRIVER_INIT_MEMBER(suna8_state,hardhedb)
                                 Brick Zone
 ***************************************************************************/
 
+<<<<<<< HEAD
 UINT8 *suna8_state::brickzn_decrypt()
 {
 	UINT8   *RAM    =   memregion("maincpu")->base();
 	size_t  size    =   memregion("maincpu")->bytes();
 	UINT8   *decrypt = auto_alloc_array(machine(), UINT8, size);
+=======
+uint8_t *suna8_state::brickzn_decrypt()
+{
+	uint8_t   *RAM    =   memregion("maincpu")->base();
+	size_t  size    =   memregion("maincpu")->bytes();
+	uint8_t   *decrypt = auto_alloc_array(machine(), uint8_t, size);
+>>>>>>> upstream/master
 	int i;
 
 	/* Opcodes and data */
 	for (i = 0; i < 0x50000; i++)
 	{
+<<<<<<< HEAD
 		static const UINT8 opcode_swaptable[8] =
 		{
 			1,1,1,0,0,1,1,0
 		};
 		static const UINT8 data_swaptable[16] =
+=======
+		static const uint8_t opcode_swaptable[8] =
+		{
+			1,1,1,0,0,1,1,0
+		};
+		static const uint8_t data_swaptable[16] =
+>>>>>>> upstream/master
 		{
 			1,1,1,0,0,1,1,1,1,0,1,1,1,1,1,1
 		};
 		int opcode_swap = opcode_swaptable[((i & 0x00c) >> 2) | ((i & 0x040) >> 4)];
 		int data_swap = (i >= 0x8000) ? 0 : data_swaptable[(i & 0x003) | ((i & 0x008) >> 1) | ((i & 0x400) >> 7)];
+<<<<<<< HEAD
 		UINT8 x = RAM[i];
+=======
+		uint8_t x = RAM[i];
+>>>>>>> upstream/master
 
 		if (data_swap)
 		{
@@ -214,10 +260,17 @@ DRIVER_INIT_MEMBER(suna8_state,brickzn11)
 
 DRIVER_INIT_MEMBER(suna8_state,hardhea2)
 {
+<<<<<<< HEAD
 	UINT8   *RAM    =   memregion("maincpu")->base();
 	size_t  size    =   memregion("maincpu")->bytes();
 	UINT8   *decrypt =  auto_alloc_array(machine(), UINT8, size);
 	UINT8 x;
+=======
+	uint8_t   *RAM    =   memregion("maincpu")->base();
+	size_t  size    =   memregion("maincpu")->bytes();
+	uint8_t   *decrypt =  auto_alloc_array(machine(), uint8_t, size);
+	uint8_t x;
+>>>>>>> upstream/master
 	int i;
 
 	m_bank0d->set_base(decrypt);
@@ -240,7 +293,11 @@ rom13:  0?, 1y, 2n, 3n      ?,?,?,? (palettes)
         8?, 9n?,an, bn      y,y,?,? (player anims)
         cn, dy, en, fn      y,y,n,n
 */
+<<<<<<< HEAD
 		static const UINT8 swaptable[0x50] =
+=======
+		static const uint8_t swaptable[0x50] =
+>>>>>>> upstream/master
 		{
 			1,1,1,1,0,0,1,1,    0,0,0,0,0,0,0,0,    // 8000-ffff not used
 			1,1,0,0,0,0,0,0,0,0,0,0,1,1,0,0,
@@ -259,12 +316,20 @@ rom13:  0?, 1y, 2n, 3n      ?,?,?,? (palettes)
 	/* Opcodes */
 	for (i = 0; i < 0x8000; i++)
 	{
+<<<<<<< HEAD
 		static const UINT8 swaptable[32] =
+=======
+		static const uint8_t swaptable[32] =
+>>>>>>> upstream/master
 		{
 			1,1,1,1,1,1,1,1,1,1,0,1,1,1,1,1,
 			1,1,0,1,1,1,1,1,1,1,1,1,0,1,0,0
 		};
+<<<<<<< HEAD
 		static const UINT8 xortable[32] =
+=======
+		static const uint8_t xortable[32] =
+>>>>>>> upstream/master
 		{
 			0x04,0x04,0x00,0x04,0x00,0x04,0x00,0x00,0x04,0x45,0x00,0x04,0x00,0x04,0x00,0x00,
 			0x04,0x45,0x00,0x04,0x00,0x04,0x00,0x00,0x04,0x04,0x00,0x04,0x00,0x04,0x00,0x00
@@ -283,16 +348,34 @@ rom13:  0?, 1y, 2n, 3n      ?,?,?,? (palettes)
 	/* Data */
 	for (i = 0; i < 0x8000; i++)
 	{
+<<<<<<< HEAD
 		static const UINT8 swaptable[8] = { 1,1,0,1,0,1,1,0 };
+=======
+		static const uint8_t swaptable[8] = { 1,1,0,1,0,1,1,0 };
+>>>>>>> upstream/master
 
 		if (swaptable[(i & 0x7000) >> 12])
 			RAM[i] = BITSWAP8(RAM[i], 5,6,7,4,3,2,1,0) ^ 0x41;
 	}
 
 	m_bank1->configure_entries(0, 16, memregion("maincpu")->base() + 0x10000, 0x4000);
+<<<<<<< HEAD
 	membank("bank2")->configure_entries(0, 2, auto_alloc_array(machine(), UINT8, 0x2000 * 2), 0x2000);
 }
 
+=======
+	membank("bank2")->configure_entries(0, 2, auto_alloc_array(machine(), uint8_t, 0x2000 * 2), 0x2000);
+}
+
+DRIVER_INIT_MEMBER(suna8_state, hardhea2b)
+{
+	// no address scramble?
+	// code/data split in first ROM?
+
+	m_bank1->configure_entries(0, 16, memregion("maincpu")->base() + 0x10000, 0x4000);
+	membank("bank2")->configure_entries(0, 2, auto_alloc_array(machine(), uint8_t, 0x2000 * 2), 0x2000);
+}
+>>>>>>> upstream/master
 
 /***************************************************************************
                                 Star Fighter
@@ -300,10 +383,17 @@ rom13:  0?, 1y, 2n, 3n      ?,?,?,? (palettes)
 
 DRIVER_INIT_MEMBER(suna8_state,starfigh)
 {
+<<<<<<< HEAD
 	UINT8   *RAM    =   memregion("maincpu")->base();
 	size_t  size    =   memregion("maincpu")->bytes();
 	UINT8   *decrypt =  auto_alloc_array(machine(), UINT8, size);
 	UINT8 x;
+=======
+	uint8_t   *RAM    =   memregion("maincpu")->base();
+	size_t  size    =   memregion("maincpu")->bytes();
+	uint8_t   *decrypt =  auto_alloc_array(machine(), uint8_t, size);
+	uint8_t x;
+>>>>>>> upstream/master
 	int i;
 
 	m_bank0d->set_base(decrypt);
@@ -312,7 +402,11 @@ DRIVER_INIT_MEMBER(suna8_state,starfigh)
 	memcpy(decrypt, RAM, size);
 	for (i = 0; i < 0x50000; i++)
 	{
+<<<<<<< HEAD
 		static const UINT8 swaptable[0x50] =
+=======
+		static const uint8_t swaptable[0x50] =
+>>>>>>> upstream/master
 		{
 			1,1,1,1,    1,1,0,0,    0,0,0,0,    0,0,0,0,    // 8000-ffff not used
 			0,0,0,0,    0,0,0,0,    0,0,0,0,    0,0,0,0,
@@ -331,12 +425,20 @@ DRIVER_INIT_MEMBER(suna8_state,starfigh)
 	/* Opcodes */
 	for (i = 0; i < 0x8000; i++)
 	{
+<<<<<<< HEAD
 		static const UINT8 swaptable[32] =
+=======
+		static const uint8_t swaptable[32] =
+>>>>>>> upstream/master
 		{
 			0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,
 			0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 		};
+<<<<<<< HEAD
 		static const UINT8 xortable[32] =
+=======
+		static const uint8_t xortable[32] =
+>>>>>>> upstream/master
 		{
 			0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x01,0x01,0x41,0x01,0x00,0x00,0x00,0x00,
 			0x01,0x01,0x41,0x01,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00
@@ -355,7 +457,11 @@ DRIVER_INIT_MEMBER(suna8_state,starfigh)
 	/* Data */
 	for (i = 0; i < 0x8000; i++)
 	{
+<<<<<<< HEAD
 		static const UINT8 swaptable[8] = { 1,1,0,1,0,1,1,0 };
+=======
+		static const uint8_t swaptable[8] = { 1,1,0,1,0,1,1,0 };
+>>>>>>> upstream/master
 
 		if (swaptable[(i & 0x7000) >> 12])
 			RAM[i] = BITSWAP8(RAM[i], 5,6,7,4,3,2,1,0) ^ 0x45;
@@ -385,10 +491,17 @@ DRIVER_INIT_MEMBER(suna8_state,starfigh)
 
 DRIVER_INIT_MEMBER(suna8_state,sparkman)
 {
+<<<<<<< HEAD
 	UINT8   *RAM    =   memregion("maincpu")->base();
 	size_t  size    =   memregion("maincpu")->bytes();
 	UINT8   *decrypt =  auto_alloc_array(machine(), UINT8, size);
 	UINT8 x;
+=======
+	uint8_t   *RAM    =   memregion("maincpu")->base();
+	size_t  size    =   memregion("maincpu")->bytes();
+	uint8_t   *decrypt =  auto_alloc_array(machine(), uint8_t, size);
+	uint8_t x;
+>>>>>>> upstream/master
 	int i;
 
 	m_bank0d->set_base(decrypt);
@@ -397,7 +510,11 @@ DRIVER_INIT_MEMBER(suna8_state,sparkman)
 	memcpy(decrypt, RAM, size);
 	for (i = 0; i < 0x50000; i++)
 	{
+<<<<<<< HEAD
 		static const UINT8 swaptable[0x50] =
+=======
+		static const uint8_t swaptable[0x50] =
+>>>>>>> upstream/master
 		{
 			1,1,1,1,    0,0,1,1,    0,0,0,0,    0,0,0,0,    // 8000-ffff not used
 			0,0,0,0,    0,0,0,0,    0,0,0,0,    0,0,0,0,
@@ -416,12 +533,20 @@ DRIVER_INIT_MEMBER(suna8_state,sparkman)
 	/* Opcodes */
 	for (i = 0; i < 0x8000; i++)
 	{
+<<<<<<< HEAD
 		static const UINT8 swaptable[32] =
+=======
+		static const uint8_t swaptable[32] =
+>>>>>>> upstream/master
 		{
 			0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,1,
 			0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0
 		};
+<<<<<<< HEAD
 		static const UINT8 xortable[32] =
+=======
+		static const uint8_t xortable[32] =
+>>>>>>> upstream/master
 		{
 			0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,
 			0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x40,0x00,0x00,0x00,0x00,0x00
@@ -440,7 +565,11 @@ DRIVER_INIT_MEMBER(suna8_state,sparkman)
 	/* Data */
 	for (i = 0; i < 0x8000; i++)
 	{
+<<<<<<< HEAD
 		static const UINT8 swaptable[8] = { 1,1,1,0,1,1,0,1 };
+=======
+		static const uint8_t swaptable[8] = { 1,1,1,0,1,1,0,1 };
+>>>>>>> upstream/master
 
 		if (swaptable[(i & 0x7000) >> 12])
 			RAM[i] = BITSWAP8(RAM[i], 5,6,7,4,3,2,1,0) ^ 0x44;
@@ -475,7 +604,11 @@ DRIVER_INIT_MEMBER(suna8_state,sparkman)
 
 READ8_MEMBER(suna8_state::hardhead_protection_r)
 {
+<<<<<<< HEAD
 	UINT8 protection_val = m_protection_val;
+=======
+	uint8_t protection_val = m_protection_val;
+>>>>>>> upstream/master
 
 	if (protection_val & 0x80)
 		return  ((~offset & 0x20)           ?   0x20 : 0) |
@@ -542,8 +675,13 @@ WRITE8_MEMBER(suna8_state::hardhead_bankswitch_w)
 WRITE8_MEMBER(suna8_state::hardhead_flipscreen_w)
 {
 	flip_screen_set(data & 0x04);
+<<<<<<< HEAD
 	coin_lockout_w ( machine(), 0,  data & 0x08);
 	coin_lockout_w ( machine(), 1,  data & 0x10);
+=======
+	machine().bookkeeping().coin_lockout_w(0, data & 0x08);
+	machine().bookkeeping().coin_lockout_w(1, data & 0x10);
+>>>>>>> upstream/master
 }
 
 static ADDRESS_MAP_START( hardhead_map, AS_PROGRAM, 8, suna8_state )
@@ -552,8 +690,13 @@ static ADDRESS_MAP_START( hardhead_map, AS_PROGRAM, 8, suna8_state )
 	AM_RANGE(0xc000, 0xd7ff) AM_RAM                             // RAM
 	AM_RANGE(0xd800, 0xd9ff) AM_RAM_DEVWRITE("palette", palette_device, write) AM_SHARE("palette") // Palette
 	AM_RANGE(0xda00, 0xda00) AM_RAM_READ(hardhead_ip_r) AM_SHARE("hardhead_ip") // Input Port Select
+<<<<<<< HEAD
 	AM_RANGE(0xda80, 0xda80) AM_READ(soundlatch2_byte_r) AM_WRITE(hardhead_bankswitch_w )   // ROM Banking
 	AM_RANGE(0xdb00, 0xdb00) AM_WRITE(soundlatch_byte_w         )   // To Sound CPU
+=======
+	AM_RANGE(0xda80, 0xda80) AM_DEVREAD("soundlatch2", generic_latch_8_device, read) AM_WRITE(hardhead_bankswitch_w )   // ROM Banking
+	AM_RANGE(0xdb00, 0xdb00) AM_DEVWRITE("soundlatch", generic_latch_8_device, write)   // To Sound CPU
+>>>>>>> upstream/master
 	AM_RANGE(0xdb80, 0xdb80) AM_WRITE(hardhead_flipscreen_w )   // Flip Screen + Coin Lockout
 	AM_RANGE(0xdc00, 0xdc00) AM_NOP                             // <- R (after bank select)
 	AM_RANGE(0xdc80, 0xdc80) AM_NOP                             // <- R (after bank select)
@@ -588,8 +731,13 @@ WRITE8_MEMBER(suna8_state::rranger_bankswitch_w)
 	m_bank1->set_entry(bank);
 
 	flip_screen_set(data & 0x20);
+<<<<<<< HEAD
 	coin_lockout_w ( machine(), 0,  data & 0x40);
 	coin_lockout_w ( machine(), 1,  data & 0x80);
+=======
+	machine().bookkeeping().coin_lockout_w(0, data & 0x40);
+	machine().bookkeeping().coin_lockout_w(1, data & 0x80);
+>>>>>>> upstream/master
 }
 
 /*
@@ -602,7 +750,11 @@ WRITE8_MEMBER(suna8_state::rranger_bankswitch_w)
 */
 READ8_MEMBER(suna8_state::rranger_soundstatus_r)
 {
+<<<<<<< HEAD
 	soundlatch2_byte_r(space, offset);
+=======
+	m_soundlatch2->read(space, offset);
+>>>>>>> upstream/master
 	return 0x02;
 }
 
@@ -616,7 +768,11 @@ WRITE8_MEMBER(suna8_state::sranger_prot_w)
 static ADDRESS_MAP_START( rranger_map, AS_PROGRAM, 8, suna8_state )
 	AM_RANGE(0x0000, 0x7fff) AM_ROM                             // ROM
 	AM_RANGE(0x8000, 0xbfff) AM_ROMBANK("bank1")                        // Banked ROM
+<<<<<<< HEAD
 	AM_RANGE(0xc000, 0xc000) AM_READWRITE(watchdog_reset_r, soundlatch_byte_w)  // To Sound CPU
+=======
+	AM_RANGE(0xc000, 0xc000) AM_DEVREAD("watchdog", watchdog_timer_device, reset_r) AM_DEVWRITE("soundlatch", generic_latch_8_device, write)  // To Sound CPU
+>>>>>>> upstream/master
 	AM_RANGE(0xc002, 0xc002) AM_WRITE(rranger_bankswitch_w  )   // ROM Banking
 	AM_RANGE(0xc002, 0xc002) AM_READ_PORT("P1")                 // P1 (Inputs)
 	AM_RANGE(0xc003, 0xc003) AM_READ_PORT("P2")                 // P2
@@ -649,7 +805,11 @@ ADDRESS_MAP_END
 */
 READ8_MEMBER(suna8_state::brickzn_cheats_r)
 {
+<<<<<<< HEAD
 	static UINT8 bit2 = 0;
+=======
+	static uint8_t bit2 = 0;
+>>>>>>> upstream/master
 	bit2 = 1 - bit2;    // see code at 2b48
 	return
 		(ioport("CHEATS")->read() & (~(1 << 2))) |
@@ -700,9 +860,15 @@ WRITE8_MEMBER(suna8_state::brickzn_rombank_w)
 */
 WRITE8_MEMBER(suna8_state::brickzn_leds_w)
 {
+<<<<<<< HEAD
 	set_led_status(machine(), 0, data & 0x01);
 	set_led_status(machine(), 1, data & 0x02);
 	coin_counter_w(machine(), 0, data & 0x04);
+=======
+	output().set_led_value(0, data & 0x01);
+	output().set_led_value(1, data & 0x02);
+	machine().bookkeeping().coin_counter_w(0, data & 0x04);
+>>>>>>> upstream/master
 
 	logerror("CPU #0 - PC %04X: leds = %02X\n",space.device().safe_pc(),data);
 	if (data & ~0x07)   logerror("CPU #0 - PC %04X: unknown leds bits: %02X\n",space.device().safe_pc(),data);
@@ -724,7 +890,11 @@ static ADDRESS_MAP_START( brickzn11_map, AS_PROGRAM, 8, suna8_state )
 	AM_RANGE(0x0000, 0x7fff) AM_ROM                             // ROM
 	AM_RANGE(0x8000, 0xbfff) AM_ROMBANK("bank1")                // Banked ROM
 
+<<<<<<< HEAD
 	AM_RANGE(0xc000, 0xc000) AM_WRITE(soundlatch_byte_w     )   // To Sound CPU
+=======
+	AM_RANGE(0xc000, 0xc000) AM_DEVWRITE("soundlatch", generic_latch_8_device, write)   // To Sound CPU
+>>>>>>> upstream/master
 	AM_RANGE(0xc040, 0xc040) AM_WRITE(brickzn_sprbank_w     )   // Sprite RAM Bank + Flip Screen + Protection
 	AM_RANGE(0xc060, 0xc060) AM_WRITE(brickzn_rombank_w     )   // ROM Bank
 	AM_RANGE(0xc080, 0xc080) AM_WRITE(brickzn_leds_w        )   // Leds
@@ -773,9 +943,15 @@ WRITE8_MEMBER(suna8_state::brickzn_multi_w)
 		    56  coin in         OK?
 		    70  monster hit     NO?     58?
 		*/
+<<<<<<< HEAD
 		UINT8 remap = (m_remap_sound ? BITSWAP8(data, 7,6,3,4,5,2,1,0) : data);
 
 		soundlatch_byte_w(space, 0, remap);
+=======
+		uint8_t remap = (m_remap_sound ? BITSWAP8(data, 7,6,3,4,5,2,1,0) : data);
+
+		m_soundlatch->write(space, 0, remap);
+>>>>>>> upstream/master
 
 		logerror("CPU #0 - PC %04X: soundlatch = %02X (->%02X)\n",space.device().safe_pc(),data,remap);
 	}
@@ -877,7 +1053,11 @@ static ADDRESS_MAP_START( brickzn_map, AS_PROGRAM, 8, suna8_state )
 	AM_RANGE(0xe000, 0xffff) AM_READWRITE(suna8_banked_spriteram_r, suna8_banked_spriteram_w)   // Sprites (Banked)
 ADDRESS_MAP_END
 
+<<<<<<< HEAD
 static ADDRESS_MAP_START( decrypted_opcodes_map, AS_DECRYPTED_OPCODES, 8, suna8_state )
+=======
+static ADDRESS_MAP_START( decrypted_opcodes_map, AS_OPCODES, 8, suna8_state )
+>>>>>>> upstream/master
 	AM_RANGE(0x0000, 0x7fff) AM_ROMBANK("bank0d")
 	AM_RANGE(0x8000, 0xbfff) AM_ROMBANK("bank1d")
 ADDRESS_MAP_END
@@ -910,9 +1090,15 @@ WRITE8_MEMBER(suna8_state::hardhea2_flipscreen_w)
 
 WRITE8_MEMBER(suna8_state::hardhea2_leds_w)
 {
+<<<<<<< HEAD
 	set_led_status(machine(), 0, data & 0x01);
 	set_led_status(machine(), 1, data & 0x02);
 	coin_counter_w(machine(), 0, data & 0x04);
+=======
+	output().set_led_value(0, data & 0x01);
+	output().set_led_value(1, data & 0x02);
+	machine().bookkeeping().coin_counter_w(0, data & 0x04);
+>>>>>>> upstream/master
 	if (data & ~0x07)   logerror("CPU #0 - PC %04X: unknown leds bits: %02X\n",space.device().safe_pc(),data);
 }
 
@@ -981,7 +1167,11 @@ static ADDRESS_MAP_START( hardhea2_map, AS_PROGRAM, 8, suna8_state )
 	AM_RANGE(0xc380, 0xc380) AM_WRITE(hardhea2_nmi_w                )   // ? NMI related ?
 	AM_RANGE(0xc400, 0xc400) AM_WRITE(hardhea2_leds_w               )   // Leds + Coin Counter
 	AM_RANGE(0xc480, 0xc480) AM_WRITENOP    // ~ROM Bank
+<<<<<<< HEAD
 	AM_RANGE(0xc500, 0xc500) AM_WRITE(soundlatch_byte_w             )   // To Sound CPU
+=======
+	AM_RANGE(0xc500, 0xc500) AM_DEVWRITE("soundlatch", generic_latch_8_device, write)   // To Sound CPU
+>>>>>>> upstream/master
 
 	// *** Protection
 	AM_RANGE(0xc50f, 0xc50f) AM_WRITE(hardhea2_spritebank_1_w )
@@ -1025,7 +1215,11 @@ WRITE8_MEMBER(suna8_state::starfigh_rombank_latch_w)
 WRITE8_MEMBER(suna8_state::starfigh_sound_latch_w)
 {
 	if ( !(m_rombank_latch & 0x20) )
+<<<<<<< HEAD
 		soundlatch_byte_w(space, 0, data);
+=======
+		m_soundlatch->write(space, 0, data);
+>>>>>>> upstream/master
 }
 
 /*
@@ -1066,9 +1260,15 @@ WRITE8_MEMBER(suna8_state::starfigh_spritebank_w)
 */
 WRITE8_MEMBER(suna8_state::starfigh_leds_w)
 {
+<<<<<<< HEAD
 	set_led_status(machine(), 0,     data & 0x01);
 	set_led_status(machine(), 1,     data & 0x02);
 	coin_counter_w(machine(), 0,     data & 0x04);
+=======
+	output().set_led_value(0,     data & 0x01);
+	output().set_led_value(1,     data & 0x02);
+	machine().bookkeeping().coin_counter_w(0,     data & 0x04);
+>>>>>>> upstream/master
 	m_gfxbank       =               (data & 0x08) ? 4 : 0;
 	if (data & ~0x0f)   logerror("CPU #0 - PC %04X: unknown leds bits: %02X\n",space.device().safe_pc(),data);
 
@@ -1180,8 +1380,13 @@ WRITE8_MEMBER(suna8_state::suna8_wram_w)
 */
 WRITE8_MEMBER(suna8_state::sparkman_rombank_w)
 {
+<<<<<<< HEAD
 	set_led_status(machine(), 0,     data & 0x01);
 	set_led_status(machine(), 1,     data & 0x02);
+=======
+	output().set_led_value(0,     data & 0x01);
+	output().set_led_value(1,     data & 0x02);
+>>>>>>> upstream/master
 
 	if (data & ~0x03)   logerror("CPU #0 - PC %04X: unknown leds bits: %02X\n",space.device().safe_pc(),data);
 
@@ -1201,7 +1406,11 @@ WRITE8_MEMBER(suna8_state::sparkman_rombank_w)
 */
 WRITE8_MEMBER(suna8_state::sparkman_coin_counter_w)
 {
+<<<<<<< HEAD
 	coin_counter_w(machine(), 0, data & 0x01);
+=======
+	machine().bookkeeping().coin_counter_w(0, data & 0x01);
+>>>>>>> upstream/master
 }
 
 // To do: implement this, affects the duration of copyright screen
@@ -1253,8 +1462,13 @@ static ADDRESS_MAP_START( hardhead_sound_map, AS_PROGRAM, 8, suna8_state )
 	AM_RANGE(0xa002, 0xa003) AM_DEVWRITE("aysnd", ay8910_device, address_data_w)
 	AM_RANGE(0xc000, 0xc7ff) AM_RAM // RAM
 	AM_RANGE(0xc800, 0xc800) AM_DEVREAD("ymsnd", ym3812_device, status_port_r)   // ? unsure
+<<<<<<< HEAD
 	AM_RANGE(0xd000, 0xd000) AM_WRITE(soundlatch2_byte_w                )   //
 	AM_RANGE(0xd800, 0xd800) AM_READ(soundlatch_byte_r              )   // From Main CPU
+=======
+	AM_RANGE(0xd000, 0xd000) AM_DEVWRITE("soundlatch2", generic_latch_8_device, write)   //
+	AM_RANGE(0xd800, 0xd800) AM_DEVREAD("soundlatch", generic_latch_8_device, read)   // From Main CPU
+>>>>>>> upstream/master
 ADDRESS_MAP_END
 
 
@@ -1273,8 +1487,13 @@ static ADDRESS_MAP_START( rranger_sound_map, AS_PROGRAM, 8, suna8_state )
 	AM_RANGE(0xa000, 0xa001) AM_DEVWRITE("ym1", ym2203_device, write)   // Samples + Music
 	AM_RANGE(0xa002, 0xa003) AM_DEVWRITE("ym2", ym2203_device, write)   // Music + FX
 	AM_RANGE(0xc000, 0xc7ff) AM_RAM // RAM
+<<<<<<< HEAD
 	AM_RANGE(0xd000, 0xd000) AM_WRITE(soundlatch2_byte_w                )   // To Sound CPU
 	AM_RANGE(0xd800, 0xd800) AM_READ(soundlatch_byte_r                  )   // From Main CPU
+=======
+	AM_RANGE(0xd000, 0xd000) AM_DEVWRITE("soundlatch2", generic_latch_8_device, write)   // To Sound CPU
+	AM_RANGE(0xd800, 0xd800) AM_DEVREAD("soundlatch", generic_latch_8_device, read)   // From Main CPU
+>>>>>>> upstream/master
 ADDRESS_MAP_END
 
 
@@ -1287,8 +1506,13 @@ static ADDRESS_MAP_START( brickzn_sound_map, AS_PROGRAM, 8, suna8_state )
 	AM_RANGE(0xc000, 0xc001) AM_DEVWRITE("ymsnd", ym3812_device, write)
 	AM_RANGE(0xc002, 0xc003) AM_DEVWRITE("aysnd", ay8910_device, address_data_w)
 	AM_RANGE(0xe000, 0xe7ff) AM_RAM // RAM
+<<<<<<< HEAD
 	AM_RANGE(0xf000, 0xf000) AM_WRITE(soundlatch2_byte_w                )   // To PCM CPU
 	AM_RANGE(0xf800, 0xf800) AM_READ(soundlatch_byte_r                  )   // From Main CPU
+=======
+	AM_RANGE(0xf000, 0xf000) AM_DEVWRITE("soundlatch2", generic_latch_8_device, write)   // To PCM CPU
+	AM_RANGE(0xf800, 0xf800) AM_DEVREAD("soundlatch", generic_latch_8_device, read)   // From Main CPU
+>>>>>>> upstream/master
 ADDRESS_MAP_END
 
 
@@ -1299,6 +1523,7 @@ static ADDRESS_MAP_START( brickzn_pcm_map, AS_PROGRAM, 8, suna8_state )
 ADDRESS_MAP_END
 
 
+<<<<<<< HEAD
 WRITE8_MEMBER(suna8_state::brickzn_pcm_w)
 {
 	static const char *const dacs[] = { "dac1", "dac2", "dac3", "dac4" };
@@ -1310,6 +1535,15 @@ static ADDRESS_MAP_START( brickzn_pcm_io_map, AS_IO, 8, suna8_state )
 	ADDRESS_MAP_GLOBAL_MASK(0xff)
 	AM_RANGE(0x00, 0x00) AM_READ(soundlatch2_byte_r     )   // From Sound CPU
 	AM_RANGE(0x00, 0x03) AM_WRITE(brickzn_pcm_w     )   // 4 x DAC
+=======
+static ADDRESS_MAP_START( brickzn_pcm_io_map, AS_IO, 8, suna8_state )
+	ADDRESS_MAP_GLOBAL_MASK(0xff)
+	AM_RANGE(0x00, 0x00) AM_DEVREAD("soundlatch2", generic_latch_8_device, read)   // From Sound CPU
+	AM_RANGE(0x00, 0x00) AM_DEVWRITE("ldac", dac_byte_interface, write)
+	AM_RANGE(0x01, 0x01) AM_DEVWRITE("rdac", dac_byte_interface, write)
+	AM_RANGE(0x02, 0x02) AM_DEVWRITE("ldac2", dac_byte_interface, write)
+	AM_RANGE(0x03, 0x03) AM_DEVWRITE("rdac2", dac_byte_interface, write)
+>>>>>>> upstream/master
 ADDRESS_MAP_END
 
 /***************************************************************************
@@ -1686,8 +1920,13 @@ static INPUT_PORTS_START( starfigh )
 	PORT_DIPSETTING(    0x38, DEF_STR( Easiest ) )
 	PORT_DIPSETTING(    0x30, DEF_STR( Very_Easy) )
 	PORT_DIPSETTING(    0x28, DEF_STR( Easy ) )
+<<<<<<< HEAD
 	PORT_DIPSETTING(    0x20, "Moderate" )
 	PORT_DIPSETTING(    0x18, DEF_STR( Normal ) )
+=======
+	PORT_DIPSETTING(    0x20, DEF_STR( Normal ) )
+	PORT_DIPSETTING(    0x18, "Moderate" )
+>>>>>>> upstream/master
 	PORT_DIPSETTING(    0x10, DEF_STR( Harder ) )
 	PORT_DIPSETTING(    0x08, DEF_STR( Very_Hard ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( Hardest ) )
@@ -1706,7 +1945,11 @@ static INPUT_PORTS_START( starfigh )
 	PORT_DIPNAME( 0x04, 0x04, "Play Together" )     PORT_DIPLOCATION("SW2:3")
 	PORT_DIPSETTING(    0x00, DEF_STR( No ) )
 	PORT_DIPSETTING(    0x04, DEF_STR( Yes ) )
+<<<<<<< HEAD
 	PORT_DIPNAME( 0x38, 0x30, DEF_STR( Bonus_Life ) )   PORT_DIPLOCATION("SW2:4,5,6")
+=======
+	PORT_DIPNAME( 0x38, 0x18, DEF_STR( Bonus_Life ) )   PORT_DIPLOCATION("SW2:4,5,6")
+>>>>>>> upstream/master
 	PORT_DIPSETTING(    0x30, "10K" )
 	PORT_DIPSETTING(    0x28, "30K" )
 	PORT_DIPSETTING(    0x18, "50K, Every 50K" )
@@ -1859,7 +2102,11 @@ GFXDECODE_END
 /* 1 x 24 MHz crystal */
 
 
+<<<<<<< HEAD
 static MACHINE_CONFIG_START( hardhead, suna8_state )
+=======
+static MACHINE_CONFIG_START( hardhead )
+>>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", Z80, SUNA8_MASTER_CLOCK / 4)    /* verified on pcb */
@@ -1890,20 +2137,38 @@ static MACHINE_CONFIG_START( hardhead, suna8_state )
 	MCFG_VIDEO_START_OVERRIDE(suna8_state,suna8_text)
 
 	/* sound hardware */
+<<<<<<< HEAD
 	MCFG_SPEAKER_STANDARD_MONO("mono")
 
 	MCFG_SOUND_ADD("ymsnd", YM3812, SUNA8_MASTER_CLOCK / 8)     /* verified on pcb */
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 1.0)
+=======
+	MCFG_SPEAKER_STANDARD_MONO("speaker")
+
+	MCFG_GENERIC_LATCH_8_ADD("soundlatch")
+	MCFG_GENERIC_LATCH_8_ADD("soundlatch2")
+
+	MCFG_SOUND_ADD("ymsnd", YM3812, SUNA8_MASTER_CLOCK / 8)     /* verified on pcb */
+	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "speaker", 1.0)
+>>>>>>> upstream/master
 
 	MCFG_SOUND_ADD("aysnd", AY8910, SUNA8_MASTER_CLOCK / 16)    /* verified on pcb */
 	MCFG_AY8910_PORT_A_WRITE_CB(WRITE8(suna8_state, suna8_play_samples_w))
 	MCFG_AY8910_PORT_B_WRITE_CB(WRITE8(suna8_state, suna8_samples_number_w))
+<<<<<<< HEAD
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 0.30)
+=======
+	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "speaker", 0.3)
+>>>>>>> upstream/master
 
 	MCFG_SOUND_ADD("samples", SAMPLES, 0)
 	MCFG_SAMPLES_CHANNELS(1)
 	MCFG_SAMPLES_START_CB(suna8_state, sh_start)
+<<<<<<< HEAD
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 0.50)
+=======
+	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "speaker", 0.5)
+>>>>>>> upstream/master
 MACHINE_CONFIG_END
 
 
@@ -1914,7 +2179,11 @@ MACHINE_CONFIG_END
 /* 1 x 24 MHz crystal */
 
 /* 2203 + 8910 */
+<<<<<<< HEAD
 static MACHINE_CONFIG_START( rranger, suna8_state )
+=======
+static MACHINE_CONFIG_START( rranger )
+>>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", Z80, SUNA8_MASTER_CLOCK / 4)                    /* ? */
@@ -1927,6 +2196,11 @@ static MACHINE_CONFIG_START( rranger, suna8_state )
 	MCFG_CPU_PROGRAM_MAP(rranger_sound_map)
 	MCFG_CPU_PERIODIC_INT_DRIVER(suna8_state, irq0_line_hold, 4*60) /* NMI = retn */
 
+<<<<<<< HEAD
+=======
+	MCFG_WATCHDOG_ADD("watchdog")
+
+>>>>>>> upstream/master
 	/* video hardware */
 	MCFG_SCREEN_ADD("screen", RASTER)
 	MCFG_SCREEN_REFRESH_RATE(59.1)
@@ -1944,20 +2218,38 @@ static MACHINE_CONFIG_START( rranger, suna8_state )
 	MCFG_VIDEO_START_OVERRIDE(suna8_state,suna8_text)
 
 	/* sound hardware */
+<<<<<<< HEAD
 	MCFG_SPEAKER_STANDARD_MONO("mono")
+=======
+	MCFG_SPEAKER_STANDARD_MONO("speaker")
+
+	MCFG_GENERIC_LATCH_8_ADD("soundlatch")
+	MCFG_GENERIC_LATCH_8_ADD("soundlatch2")
+>>>>>>> upstream/master
 
 	MCFG_SOUND_ADD("ym1", YM2203, SUNA8_MASTER_CLOCK / 16)  /* verified on pcb */
 	MCFG_AY8910_PORT_A_WRITE_CB(WRITE8(suna8_state, rranger_play_samples_w))
 	MCFG_AY8910_PORT_B_WRITE_CB(WRITE8(suna8_state, suna8_samples_number_w))
+<<<<<<< HEAD
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 0.90)
 
 	MCFG_SOUND_ADD("ym2", YM2203, SUNA8_MASTER_CLOCK / 16)  /* verified on pcb */
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 0.90)
+=======
+	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "speaker", 0.9)
+
+	MCFG_SOUND_ADD("ym2", YM2203, SUNA8_MASTER_CLOCK / 16)  /* verified on pcb */
+	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "speaker", 0.9)
+>>>>>>> upstream/master
 
 	MCFG_SOUND_ADD("samples", SAMPLES, 0)
 	MCFG_SAMPLES_CHANNELS(1)
 	MCFG_SAMPLES_START_CB(suna8_state, sh_start)
+<<<<<<< HEAD
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 0.50)
+=======
+	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "speaker", 0.5)
+>>>>>>> upstream/master
 MACHINE_CONFIG_END
 
 
@@ -1977,7 +2269,11 @@ MACHINE_RESET_MEMBER(suna8_state,brickzn)
 		m_bank1d->set_entry(0);
 }
 
+<<<<<<< HEAD
 static MACHINE_CONFIG_START( brickzn11, suna8_state )
+=======
+static MACHINE_CONFIG_START( brickzn11 )
+>>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", Z80, SUNA8_MASTER_CLOCK / 4)        /* SUNA PROTECTION BLOCK */
@@ -2010,6 +2306,7 @@ static MACHINE_CONFIG_START( brickzn11, suna8_state )
 	MCFG_VIDEO_START_OVERRIDE(suna8_state,suna8_brickzn)
 
 	/* sound hardware */
+<<<<<<< HEAD
 	MCFG_SPEAKER_STANDARD_MONO("mono")
 
 	MCFG_SOUND_ADD("ymsnd", YM3812, SUNA8_MASTER_CLOCK / 8)     // 3MHz (measured)
@@ -2030,6 +2327,29 @@ static MACHINE_CONFIG_START( brickzn11, suna8_state )
 
 	MCFG_DAC_ADD("dac4")
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 0.17)
+=======
+	MCFG_SPEAKER_STANDARD_MONO("speaker")
+
+	MCFG_GENERIC_LATCH_8_ADD("soundlatch")
+	MCFG_GENERIC_LATCH_8_ADD("soundlatch2")
+
+	MCFG_SOUND_ADD("ymsnd", YM3812, SUNA8_MASTER_CLOCK / 8)     // 3MHz (measured)
+	MCFG_YM3812_IRQ_HANDLER(INPUTLINE("audiocpu", 0))
+	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "speaker", 1.0)
+
+	MCFG_SOUND_ADD("aysnd", AY8910, SUNA8_MASTER_CLOCK / 16)    // 1.5MHz (measured)
+	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "speaker", 0.33)
+
+	MCFG_SOUND_ADD("ldac", DAC_4BIT_R2R, 0) MCFG_SOUND_ROUTE(ALL_OUTPUTS, "speaker", 0.17) // unknown DAC
+	MCFG_SOUND_ADD("rdac", DAC_4BIT_R2R, 0) MCFG_SOUND_ROUTE(ALL_OUTPUTS, "speaker", 0.17) // unknown DAC
+	MCFG_SOUND_ADD("ldac2", DAC_4BIT_R2R, 0) MCFG_SOUND_ROUTE(ALL_OUTPUTS, "speaker", 0.17) // unknown DAC
+	MCFG_SOUND_ADD("rdac2", DAC_4BIT_R2R, 0) MCFG_SOUND_ROUTE(ALL_OUTPUTS, "speaker", 0.17) // unknown DAC
+	MCFG_DEVICE_ADD("vref", VOLTAGE_REGULATOR, 0) MCFG_VOLTAGE_REGULATOR_OUTPUT(5.0)
+	MCFG_SOUND_ROUTE_EX(0, "ldac", 1.0, DAC_VREF_POS_INPUT) MCFG_SOUND_ROUTE_EX(0, "ldac", -1.0, DAC_VREF_NEG_INPUT)
+	MCFG_SOUND_ROUTE_EX(0, "rdac", 1.0, DAC_VREF_POS_INPUT) MCFG_SOUND_ROUTE_EX(0, "rdac", -1.0, DAC_VREF_NEG_INPUT)
+	MCFG_SOUND_ROUTE_EX(0, "ldac2", 1.0, DAC_VREF_POS_INPUT) MCFG_SOUND_ROUTE_EX(0, "ldac2", -1.0, DAC_VREF_NEG_INPUT)
+	MCFG_SOUND_ROUTE_EX(0, "rdac2", 1.0, DAC_VREF_POS_INPUT) MCFG_SOUND_ROUTE_EX(0, "rdac2", -1.0, DAC_VREF_NEG_INPUT)
+>>>>>>> upstream/master
 MACHINE_CONFIG_END
 
 static MACHINE_CONFIG_DERIVED( brickzn, brickzn11 )
@@ -2077,12 +2397,26 @@ static MACHINE_CONFIG_DERIVED( hardhea2, brickzn )
 	MCFG_PALETTE_ENDIANNESS(ENDIANNESS_BIG)
 MACHINE_CONFIG_END
 
+<<<<<<< HEAD
+=======
+static MACHINE_CONFIG_DERIVED( hardhea2b, hardhea2 )
+	MCFG_DEVICE_REMOVE("maincpu")
+
+	MCFG_CPU_ADD("maincpu", Z80, SUNA8_MASTER_CLOCK / 4)        //bootleg clock not verified (?)
+	MCFG_CPU_PROGRAM_MAP(hardhea2_map)
+MACHINE_CONFIG_END
+
+>>>>>>> upstream/master
 
 /***************************************************************************
                                 Star Fighter
 ***************************************************************************/
 
+<<<<<<< HEAD
 static MACHINE_CONFIG_START( starfigh, suna8_state )
+=======
+static MACHINE_CONFIG_START( starfigh )
+>>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", Z80, SUNA8_MASTER_CLOCK / 4)                    /* ? */
@@ -2113,20 +2447,38 @@ static MACHINE_CONFIG_START( starfigh, suna8_state )
 	MCFG_VIDEO_START_OVERRIDE(suna8_state,suna8_starfigh)
 
 	/* sound hardware */
+<<<<<<< HEAD
 	MCFG_SPEAKER_STANDARD_MONO("mono")
 
 	MCFG_SOUND_ADD("ymsnd", YM3812, SUNA8_MASTER_CLOCK / 8)
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 1.0)
+=======
+	MCFG_SPEAKER_STANDARD_MONO("speaker")
+
+	MCFG_GENERIC_LATCH_8_ADD("soundlatch")
+	MCFG_GENERIC_LATCH_8_ADD("soundlatch2")
+
+	MCFG_SOUND_ADD("ymsnd", YM3812, SUNA8_MASTER_CLOCK / 8)
+	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "speaker", 1.0)
+>>>>>>> upstream/master
 
 	MCFG_SOUND_ADD("aysnd", AY8910, SUNA8_MASTER_CLOCK / 16)
 	MCFG_AY8910_PORT_A_WRITE_CB(WRITE8(suna8_state, suna8_play_samples_w))
 	MCFG_AY8910_PORT_B_WRITE_CB(WRITE8(suna8_state, suna8_samples_number_w))
+<<<<<<< HEAD
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 0.50)
+=======
+	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "speaker", 0.5)
+>>>>>>> upstream/master
 
 	MCFG_SOUND_ADD("samples", SAMPLES, 0)
 	MCFG_SAMPLES_CHANNELS(1)
 	MCFG_SAMPLES_START_CB(suna8_state, sh_start)
+<<<<<<< HEAD
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 0.50)
+=======
+	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "speaker", 0.5)
+>>>>>>> upstream/master
 MACHINE_CONFIG_END
 
 
@@ -2134,7 +2486,11 @@ MACHINE_CONFIG_END
                                 Spark Man
 ***************************************************************************/
 
+<<<<<<< HEAD
 static MACHINE_CONFIG_START( sparkman, suna8_state )
+=======
+static MACHINE_CONFIG_START( sparkman )
+>>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", Z80, SUNA8_MASTER_CLOCK / 4)                    /* ? */
@@ -2164,20 +2520,38 @@ static MACHINE_CONFIG_START( sparkman, suna8_state )
 	MCFG_VIDEO_START_OVERRIDE(suna8_state,suna8_sparkman)
 
 	/* sound hardware */
+<<<<<<< HEAD
 	MCFG_SPEAKER_STANDARD_MONO("mono")
 
 	MCFG_SOUND_ADD("ymsnd", YM3812, SUNA8_MASTER_CLOCK / 8)
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 1.0)
+=======
+	MCFG_SPEAKER_STANDARD_MONO("speaker")
+
+	MCFG_GENERIC_LATCH_8_ADD("soundlatch")
+	MCFG_GENERIC_LATCH_8_ADD("soundlatch2")
+
+	MCFG_SOUND_ADD("ymsnd", YM3812, SUNA8_MASTER_CLOCK / 8)
+	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "speaker", 1.0)
+>>>>>>> upstream/master
 
 	MCFG_SOUND_ADD("aysnd", AY8910, SUNA8_MASTER_CLOCK / 16)
 	MCFG_AY8910_PORT_A_WRITE_CB(WRITE8(suna8_state, suna8_play_samples_w))  // two sample roms
 	MCFG_AY8910_PORT_B_WRITE_CB(WRITE8(suna8_state, suna8_samples_number_w))
+<<<<<<< HEAD
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 0.30)
+=======
+	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "speaker", 0.3)
+>>>>>>> upstream/master
 
 	MCFG_SOUND_ADD("samples", SAMPLES, 0)
 	MCFG_SAMPLES_CHANNELS(1)
 	MCFG_SAMPLES_START_CB(suna8_state, sh_start)
+<<<<<<< HEAD
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 0.50)
+=======
+	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "speaker", 0.5)
+>>>>>>> upstream/master
 MACHINE_CONFIG_END
 
 
@@ -2810,6 +3184,36 @@ ROM_START( hardhea2 )
 	ROM_LOAD( "hrd-hd8",  0x70000, 0x10000, CRC(359597a4) SHA1(ae024dd61c5d12813a661abe8ea63ae6112ddc9c) )
 ROM_END
 
+<<<<<<< HEAD
+=======
+ROM_START( hardhea2b )
+	ROM_REGION( 0x50000, "maincpu", 0 )     /* Main Z80 Code */
+	ROM_LOAD( "9.F5",  0x00000, 0x10000, CRC(3f31ece3) SHA1(224e9bc60a71ede9d194e9c696c2259a55f16e7d) )
+	ROM_LOAD( "10.H5", 0x10000, 0x10000, CRC(98b34813) SHA1(8aa9cab73480e4526d30880f99332e7cb716ce81) )
+	ROM_LOAD( "11.I5", 0x20000, 0x10000, CRC(12af8f8e) SHA1(1b33a060b70900042fdae00f7dec325228d566f5) )
+	ROM_LOAD( "12.F7", 0x30000, 0x10000, CRC(35d13212) SHA1(2fd03077b89ec9e55d2758b7f9cada970f0bdd91) )
+	ROM_LOAD( "13.H7", 0x40000, 0x10000, CRC(044f956f) SHA1(9361d383b14fc0f4f718d46db7fcac56647405a6) )
+
+	ROM_REGION( 0x10000, "audiocpu", 0 )        /* Music Z80 Code */
+	ROM_LOAD( "14.C6", 0x00000, 0x08000, CRC(79a3be51) SHA1(30bc67cd3a936615c6931f8e15953425dff59611) )
+
+	ROM_REGION( 0x10000, "pcm", 0 )     /* PCM Z80 Code */
+	ROM_LOAD( "15.M10", 0x00000, 0x10000, CRC(bcbd88c3) SHA1(79782d598d9d764de70c54fc07ff9bf0f7d13d62) )
+
+	ROM_REGION( 0x80000, "gfx1", ROMREGION_INVERT ) /* Sprites */
+	ROM_LOAD( "1.N1",  0x00000, 0x10000, CRC(7e7b7a58) SHA1(1a74260dda64aafcb046c8add92a54655bbc74e4) )
+	ROM_LOAD( "2.O1",  0x10000, 0x10000, CRC(303ec802) SHA1(533c29d9bb54415410c5d3c5af234b8b040190de) )
+	ROM_LOAD( "3.Q1",  0x20000, 0x10000, CRC(3353b2c7) SHA1(a3ec0fc2a97e7e0bc72fafd5897cb1dd4cd32197) )
+	ROM_LOAD( "4.N3",  0x30000, 0x10000, CRC(dbc1f9c1) SHA1(720c729d7825635584632d033b4b46eea2fb1291) )
+	ROM_LOAD( "5.N4",  0x40000, 0x10000, CRC(f738c0af) SHA1(7dda657acd1d6fb7064e8dbd5ce386e9eae3d36a) )
+	ROM_LOAD( "6.O4",  0x50000, 0x10000, CRC(bf90d3ca) SHA1(2d0533d93fc5155fe879c1890bc7bc4581308e16) )
+	ROM_LOAD( "7.Q4",  0x60000, 0x10000, CRC(992ce8cb) SHA1(21c0dd227138ec64003c7cb090855ec27d41719e) )
+	ROM_LOAD( "8.N6",  0x70000, 0x10000, CRC(359597a4) SHA1(ae024dd61c5d12813a661abe8ea63ae6112ddc9c) )
+ROM_END
+
+
+
+>>>>>>> upstream/master
 
 /***************************************************************************
 
@@ -3008,6 +3412,10 @@ GAME( 1989, sparkmana, sparkman, sparkman, sparkman, suna8_state, sparkman,  ROT
 GAME( 1990, starfigh,  0,        starfigh, starfigh, suna8_state, starfigh,  ROT90, "SunA",                       "Star Fighter (v1)",           MACHINE_IMPERFECT_GRAPHICS )
 
 GAME( 1991, hardhea2,  0,        hardhea2, hardhea2, suna8_state, hardhea2,  ROT0,  "SunA",                       "Hard Head 2 (v2.0)",          0 )
+<<<<<<< HEAD
+=======
+GAME( 1991, hardhea2b, hardhea2, hardhea2b,hardhea2, suna8_state, hardhea2b, ROT0,  "bootleg",                    "Hard Head 2 (v2.0, bootleg)", MACHINE_NOT_WORKING )
+>>>>>>> upstream/master
 
 GAME( 1992, brickzn,   0,        brickzn,  brickznv6,suna8_state, brickzn,   ROT90, "SunA",                       "Brick Zone (v6.0, Joystick)", 0 )
 GAME( 1992, brickznv5, brickzn,  brickzn,  brickzn,  suna8_state, brickznv5, ROT90, "SunA",                       "Brick Zone (v5.0, Joystick)", 0 )

@@ -118,27 +118,50 @@ How does the Super Famicom Box operates
 ***************************************************************************/
 
 #include "emu.h"
+<<<<<<< HEAD
 #include "cpu/z180/z180.h"
 #include "machine/s3520cf.h"
 #include "video/mb90082.h"
 #include "includes/snes.h"
 #include "rendlay.h"
+=======
+#include "includes/snes.h"
+
+#include "cpu/z180/z180.h"
+#include "machine/s3520cf.h"
+#include "video/mb90082.h"
+#include "rendlay.h"
+#include "speaker.h"
+
+>>>>>>> upstream/master
 
 class sfcbox_state : public snes_state
 {
 public:
 	sfcbox_state(const machine_config &mconfig, device_type type, const char *tag)
+<<<<<<< HEAD
 		: snes_state(mconfig, type, tag),
 		m_bios(*this, "bios"),
 		m_mb90082(*this,"mb90082"),
 		m_s3520cf(*this, "s3520cf")
 		{ }
+=======
+		: snes_state(mconfig, type, tag)
+		, m_bios(*this, "bios")
+		, m_mb90082(*this,"mb90082")
+		, m_s3520cf(*this, "s3520cf")
+	{ }
+>>>>>>> upstream/master
 
 	required_device<cpu_device> m_bios;
 	required_device<mb90082_device> m_mb90082;
 	required_device<s3520cf_device> m_s3520cf;
 
+<<<<<<< HEAD
 	UINT32 screen_update(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect);
+=======
+	uint32_t screen_update(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect);
+>>>>>>> upstream/master
 
 	DECLARE_READ8_MEMBER( port_81_r );
 	DECLARE_READ8_MEMBER( port_83_r );
@@ -147,13 +170,22 @@ public:
 	DECLARE_WRITE8_MEMBER( port_83_w );
 	DECLARE_WRITE8_MEMBER( snes_map_0_w );
 	DECLARE_WRITE8_MEMBER( snes_map_1_w );
+<<<<<<< HEAD
 	virtual void machine_start();
 	virtual void machine_reset();
+=======
+	virtual void machine_start() override;
+	virtual void machine_reset() override;
+>>>>>>> upstream/master
 	DECLARE_READ8_MEMBER(spc_ram_100_r);
 	DECLARE_WRITE8_MEMBER(spc_ram_100_w);
 };
 
+<<<<<<< HEAD
 UINT32 sfcbox_state::screen_update( screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect )
+=======
+uint32_t sfcbox_state::screen_update( screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect )
+>>>>>>> upstream/master
 {
 	m_mb90082->screen_update(screen,bitmap,cliprect);
 	return 0;
@@ -219,7 +251,11 @@ READ8_MEMBER( sfcbox_state::port_81_r )
     ---- --x-   SNES Transfer ACK from SNES  (Bit3 of WRIO/RDIO on SNES side)
     ---- ---x   Int0 Request (Coin-Input, Low for 44ms..80ms) (0=IRQ, 1=No)
 */
+<<<<<<< HEAD
 	UINT8 res;
+=======
+	uint8_t res;
+>>>>>>> upstream/master
 
 	res = (m_screen->vblank() & 1) << 7;
 	res = 1 << 6;
@@ -442,7 +478,11 @@ void sfcbox_state::machine_reset()
 	m_soundcpu->set_input_line(INPUT_LINE_RESET, ASSERT_LINE);
 }
 
+<<<<<<< HEAD
 static MACHINE_CONFIG_START( sfcbox, sfcbox_state )
+=======
+static MACHINE_CONFIG_START( sfcbox )
+>>>>>>> upstream/master
 
 	/* base snes hardware */
 	MCFG_CPU_ADD("maincpu", _5A22, 3580000*6)   /* 2.68Mhz, also 3.58Mhz */
@@ -571,8 +611,16 @@ ROM_START( pss64 )
 ROM_END
 
 
+<<<<<<< HEAD
 GAME( 1994, sfcbox,      0,     sfcbox,      snes, snes_state,    snes,    ROT0, "Nintendo",                   "Super Famicom Box BIOS", MACHINE_IS_BIOS_ROOT | MACHINE_NOT_WORKING )
 GAME( 1994, pss61, sfcbox, sfcbox, snes, snes_state, snes, ROT0, "Nintendo", "Super Mario Kart / Super Mario Collection / Star Fox (Super Famicom Box)", MACHINE_NOT_WORKING )
 GAME( 1994, pss62, sfcbox, sfcbox, snes, snes_state, snes, ROT0, "T&E Soft / I'Max", "New Super 3D Golf Simulation - Waialae No Kiseki / Super Mahjong 2 (Super Famicom Box)", MACHINE_NOT_WORKING )
 GAME( 1994, pss63, sfcbox, sfcbox, snes, snes_state, snes, ROT0, "Nintendo / BPS", "Super Donkey Kong / Super Tetris 2 + Bombliss (Super Famicom Box)", MACHINE_NOT_WORKING )
 GAME( 199?, pss64, sfcbox, sfcbox, snes, snes_state, snes, ROT0, "Nintendo / Hudson Soft", "Super Donkey Kong / Super Bomberman 2 (Super Famicom Box)", MACHINE_NOT_WORKING )
+=======
+GAME( 1994, sfcbox, 0,      sfcbox, snes, sfcbox_state, snes, ROT0, "Nintendo",               "Super Famicom Box BIOS", MACHINE_IS_BIOS_ROOT | MACHINE_NOT_WORKING )
+GAME( 1994, pss61,  sfcbox, sfcbox, snes, sfcbox_state, snes, ROT0, "Nintendo",               "Super Mario Kart / Super Mario Collection / Star Fox (Super Famicom Box)", MACHINE_NOT_WORKING )
+GAME( 1994, pss62,  sfcbox, sfcbox, snes, sfcbox_state, snes, ROT0, "T&E Soft / I'Max",       "New Super 3D Golf Simulation - Waialae No Kiseki / Super Mahjong 2 (Super Famicom Box)", MACHINE_NOT_WORKING )
+GAME( 1994, pss63,  sfcbox, sfcbox, snes, sfcbox_state, snes, ROT0, "Nintendo / BPS",         "Super Donkey Kong / Super Tetris 2 + Bombliss (Super Famicom Box)", MACHINE_NOT_WORKING )
+GAME( 199?, pss64,  sfcbox, sfcbox, snes, sfcbox_state, snes, ROT0, "Nintendo / Hudson Soft", "Super Donkey Kong / Super Bomberman 2 (Super Famicom Box)", MACHINE_NOT_WORKING )
+>>>>>>> upstream/master

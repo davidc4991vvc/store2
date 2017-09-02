@@ -42,6 +42,7 @@
 
 **********************************************************************/
 
+<<<<<<< HEAD
 #pragma once
 
 #ifndef __EP64_EXPANSION_BUS__
@@ -49,6 +50,14 @@
 
 #include "emu.h"
 #include "audio/dave.h"
+=======
+#ifndef MAME_BUS_EP64_EXP_H
+#define MAME_BUS_EP64_EXP_H
+
+#pragma once
+
+#include "sound/dave.h"
+>>>>>>> upstream/master
 
 
 
@@ -97,12 +106,21 @@ class ep64_expansion_bus_slot_device : public device_t,
 
 public:
 	// construction/destruction
+<<<<<<< HEAD
 	ep64_expansion_bus_slot_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
 
 	static void static_set_dave_tag(device_t &device, const char* tag) { downcast<ep64_expansion_bus_slot_device &>(device).m_dave.set_tag(tag); }
 	template<class _Object> static devcb_base &set_irq_wr_callback(device_t &device, _Object object) { return downcast<ep64_expansion_bus_slot_device &>(device).m_write_irq.set_callback(object); }
 	template<class _Object> static devcb_base &set_nmi_wr_callback(device_t &device, _Object object) { return downcast<ep64_expansion_bus_slot_device &>(device).m_write_nmi.set_callback(object); }
 	template<class _Object> static devcb_base &set_wait_wr_callback(device_t &device, _Object object) { return downcast<ep64_expansion_bus_slot_device &>(device).m_write_wait.set_callback(object); }
+=======
+	ep64_expansion_bus_slot_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
+
+	static void static_set_dave_tag(device_t &device, const char* tag) { downcast<ep64_expansion_bus_slot_device &>(device).m_dave.set_tag(tag); }
+	template <class Object> static devcb_base &set_irq_wr_callback(device_t &device, Object &&cb) { return downcast<ep64_expansion_bus_slot_device &>(device).m_write_irq.set_callback(std::forward<Object>(cb)); }
+	template <class Object> static devcb_base &set_nmi_wr_callback(device_t &device, Object &&cb) { return downcast<ep64_expansion_bus_slot_device &>(device).m_write_nmi.set_callback(std::forward<Object>(cb)); }
+	template <class Object> static devcb_base &set_wait_wr_callback(device_t &device, Object &&cb) { return downcast<ep64_expansion_bus_slot_device &>(device).m_write_wait.set_callback(std::forward<Object>(cb)); }
+>>>>>>> upstream/master
 
 	DECLARE_WRITE_LINE_MEMBER( irq_w ) { m_write_irq(state); }
 	DECLARE_WRITE_LINE_MEMBER( nmi_w ) { m_write_nmi(state); }
@@ -113,8 +131,13 @@ public:
 
 protected:
 	// device-level overrides
+<<<<<<< HEAD
 	virtual void device_start();
 	virtual void device_reset();
+=======
+	virtual void device_start() override;
+	virtual void device_reset() override;
+>>>>>>> upstream/master
 
 private:
 	devcb_write_line m_write_irq;
@@ -131,21 +154,36 @@ private:
 
 class device_ep64_expansion_bus_card_interface : public device_slot_card_interface
 {
+<<<<<<< HEAD
 public:
 	// construction/destruction
 	device_ep64_expansion_bus_card_interface(const machine_config &mconfig, device_t &device);
 
 protected:
+=======
+protected:
+	// construction/destruction
+	device_ep64_expansion_bus_card_interface(const machine_config &mconfig, device_t &device);
+
+>>>>>>> upstream/master
 	ep64_expansion_bus_slot_device  *m_slot;
 };
 
 
 // device type definition
+<<<<<<< HEAD
 extern const device_type EP64_EXPANSION_BUS_SLOT;
+=======
+DECLARE_DEVICE_TYPE(EP64_EXPANSION_BUS_SLOT, ep64_expansion_bus_slot_device)
+>>>>>>> upstream/master
 
 
 SLOT_INTERFACE_EXTERN( ep64_expansion_bus_cards );
 
 
+<<<<<<< HEAD
 
 #endif
+=======
+#endif // MAME_BUS_EP64_EXP_H
+>>>>>>> upstream/master

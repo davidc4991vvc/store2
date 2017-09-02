@@ -47,7 +47,11 @@ void nes_state::machine_start()
 	// NES has 2KB of internal RAM which can be used to fill the 4x1KB banks of PPU RAM at $2000-$2fff
 	// Line A10 is exposed to the carts, so that games can change CIRAM mapping in PPU (we emulate this with the set_nt_mirroring
 	// function). CIRAM can also be disabled by the game (if e.g. VROM or cart RAM has to be used in PPU...
+<<<<<<< HEAD
 	m_ciram = auto_alloc_array(machine(), UINT8, 0x800);
+=======
+	m_ciram = std::make_unique<uint8_t[]>(0x800);
+>>>>>>> upstream/master
 	// other pointers got set in the loading routine, because they 'belong' to the cart itself
 
 	m_io_disksel = ioport("FLIPDISK");
@@ -67,16 +71,27 @@ void nes_state::machine_start()
 
 		m_ppu->space(AS_PROGRAM).install_readwrite_handler(0, 0x1fff, read8_delegate(FUNC(device_nes_cart_interface::chr_r),m_cartslot->m_cart), write8_delegate(FUNC(device_nes_cart_interface::chr_w),m_cartslot->m_cart));
 		m_ppu->space(AS_PROGRAM).install_readwrite_handler(0x2000, 0x3eff, read8_delegate(FUNC(device_nes_cart_interface::nt_r),m_cartslot->m_cart), write8_delegate(FUNC(device_nes_cart_interface::nt_w),m_cartslot->m_cart));
+<<<<<<< HEAD
 		m_ppu->set_scanline_callback(ppu2c0x_scanline_delegate(FUNC(device_nes_cart_interface::scanline_irq),m_cartslot->m_cart));
 		m_ppu->set_hblank_callback(ppu2c0x_hblank_delegate(FUNC(device_nes_cart_interface::hblank_irq),m_cartslot->m_cart));
 		m_ppu->set_latch(ppu2c0x_latch_delegate(FUNC(device_nes_cart_interface::ppu_latch),m_cartslot->m_cart));
+=======
+		m_ppu->set_scanline_callback(ppu2c0x_device::scanline_delegate(FUNC(device_nes_cart_interface::scanline_irq),m_cartslot->m_cart));
+		m_ppu->set_hblank_callback(ppu2c0x_device::hblank_delegate(FUNC(device_nes_cart_interface::hblank_irq),m_cartslot->m_cart));
+		m_ppu->set_latch(ppu2c0x_device::latch_delegate(FUNC(device_nes_cart_interface::ppu_latch),m_cartslot->m_cart));
+>>>>>>> upstream/master
 
 		// install additional handlers (read_h, read_ex, write_ex)
 		if (m_cartslot->get_pcb_id() == STD_EXROM || m_cartslot->get_pcb_id() == STD_NROM368 || m_cartslot->get_pcb_id() == STD_DISKSYS
 			|| m_cartslot->get_pcb_id() == GG_NROM || m_cartslot->get_pcb_id() == CAMERICA_ALADDIN || m_cartslot->get_pcb_id() == SUNSOFT_DCS
 			|| m_cartslot->get_pcb_id() == BANDAI_DATACH || m_cartslot->get_pcb_id() == BANDAI_KARAOKE || m_cartslot->get_pcb_id() == BTL_2A03_PURITANS || m_cartslot->get_pcb_id() == AVE_MAXI15
+<<<<<<< HEAD
 			|| m_cartslot->get_pcb_id() == KAISER_KS7022 || m_cartslot->get_pcb_id() == KAISER_KS7031 || m_cartslot->get_pcb_id() == BMC_VT5201
 			|| m_cartslot->get_pcb_id() == UNL_LH32 || m_cartslot->get_pcb_id() == UNL_LH10 || m_cartslot->get_pcb_id() == UNL_2708
+=======
+			|| m_cartslot->get_pcb_id() == KAISER_KS7022 || m_cartslot->get_pcb_id() == KAISER_KS7031 || m_cartslot->get_pcb_id() == KAISER_KS7037 || m_cartslot->get_pcb_id() == BMC_VT5201
+			|| m_cartslot->get_pcb_id() == UNL_LH32 || m_cartslot->get_pcb_id() == UNL_LH10 || m_cartslot->get_pcb_id() == UNL_2708 || m_cartslot->get_pcb_id() == UNL_RT01
+>>>>>>> upstream/master
 			|| m_cartslot->get_pcb_id() == UNL_43272 || m_cartslot->get_pcb_id() == BMC_G63IN1 || m_cartslot->get_pcb_id() == BMC_8157
 			|| m_cartslot->get_pcb_id() == BMC_GOLD150 || m_cartslot->get_pcb_id() == BMC_CH001
 			|| m_cartslot->get_pcb_id() == BMC_70IN1 || m_cartslot->get_pcb_id() == BMC_800IN1)
@@ -98,13 +113,21 @@ void nes_state::machine_start()
 			space.install_write_handler(0x4020, 0x40ff, write8_delegate(FUNC(nes_cart_slot_device::write_ex), (nes_cart_slot_device *)m_cartslot));
 		}
 
+<<<<<<< HEAD
 		m_cartslot->pcb_start(m_ciram);
+=======
+		m_cartslot->pcb_start(m_ciram.get());
+>>>>>>> upstream/master
 		m_cartslot->m_cart->pcb_reg_postload(machine());
 	}
 
 	// register saves
 	save_item(NAME(m_last_frame_flip));
+<<<<<<< HEAD
 	save_pointer(NAME(m_ciram), 0x800);
+=======
+	save_pointer(NAME(m_ciram.get()), 0x800);
+>>>>>>> upstream/master
 }
 
 
@@ -112,23 +135,39 @@ void nes_state::machine_start()
 //  INPUTS
 //-------------------------------------------------
 
+<<<<<<< HEAD
 READ8_MEMBER(nes_state::nes_in0_r)
 {
 	UINT8 ret = 0x40;
+=======
+READ8_MEMBER(nes_base_state::nes_in0_r)
+{
+	uint8_t ret = 0x40;
+>>>>>>> upstream/master
 	ret |= m_ctrl1->read_bit0();
 	ret |= m_ctrl1->read_bit34();
 	return ret;
 }
 
+<<<<<<< HEAD
 READ8_MEMBER(nes_state::nes_in1_r)
 {
 	UINT8 ret = 0x40;
+=======
+READ8_MEMBER(nes_base_state::nes_in1_r)
+{
+	uint8_t ret = 0x40;
+>>>>>>> upstream/master
 	ret |= m_ctrl2->read_bit0();
 	ret |= m_ctrl2->read_bit34();
 	return ret;
 }
 
+<<<<<<< HEAD
 WRITE8_MEMBER(nes_state::nes_in0_w)
+=======
+WRITE8_MEMBER(nes_base_state::nes_in0_w)
+>>>>>>> upstream/master
 {
 	m_ctrl1->write(data);
 	m_ctrl2->write(data);
@@ -137,7 +176,11 @@ WRITE8_MEMBER(nes_state::nes_in0_w)
 
 READ8_MEMBER(nes_state::fc_in0_r)
 {
+<<<<<<< HEAD
 	UINT8 ret = 0x40;
+=======
+	uint8_t ret = 0x40;
+>>>>>>> upstream/master
 	// bit 0 to controller port
 	ret |= m_ctrl1->read_bit0();
 
@@ -158,7 +201,11 @@ READ8_MEMBER(nes_state::fc_in0_r)
 
 READ8_MEMBER(nes_state::fc_in1_r)
 {
+<<<<<<< HEAD
 	UINT8 ret = 0x40;
+=======
+	uint8_t ret = 0x40;
+>>>>>>> upstream/master
 	// bit 0 to controller port
 	ret |= m_ctrl2->read_bit0();
 
@@ -194,10 +241,17 @@ DRIVER_INIT_MEMBER(nes_state,famicom)
 NESCTRL_BRIGHTPIXEL_CB(nes_state::bright_pixel)
 {
 	// get the pixel at the gun position
+<<<<<<< HEAD
 	UINT32 pix = m_ppu->get_pixel(x, y);
 
 	// get the color base from the ppu
 	UINT32 color_base = m_ppu->get_colorbase();
+=======
+	uint32_t pix = m_ppu->get_pixel(x, y);
+
+	// get the color base from the ppu
+	uint32_t color_base = m_ppu->get_colorbase();
+>>>>>>> upstream/master
 
 	// check if the cursor is over a bright pixel
 	if ((pix == color_base + 0x20) || (pix == color_base + 0x30) ||

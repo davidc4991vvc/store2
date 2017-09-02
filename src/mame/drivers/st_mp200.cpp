@@ -16,10 +16,21 @@ ToDo:
 *********************************************************************************************/
 
 
+<<<<<<< HEAD
 #include "machine/genpin.h"
 #include "cpu/m6800/m6800.h"
 #include "machine/6821pia.h"
 #include "sound/s14001a.h"
+=======
+#include "emu.h"
+#include "machine/genpin.h"
+
+#include "cpu/m6800/m6800.h"
+#include "machine/6821pia.h"
+#include "sound/s14001a.h"
+#include "speaker.h"
+
+>>>>>>> upstream/master
 #include "st_mp200.lh"
 
 #define S14001_CLOCK                (25e5)
@@ -64,21 +75,37 @@ public:
 	TIMER_DEVICE_CALLBACK_MEMBER(timer_x);
 	TIMER_DEVICE_CALLBACK_MEMBER(u11_timer);
 private:
+<<<<<<< HEAD
 	UINT8 m_u10a;
 	UINT8 m_u10b;
 	UINT8 m_u11a;
 	UINT8 m_u11b;
+=======
+	uint8_t m_u10a;
+	uint8_t m_u10b;
+	uint8_t m_u11a;
+	uint8_t m_u11b;
+>>>>>>> upstream/master
 	bool m_u10_ca2;
 	bool m_u10_cb2;
 	bool m_u11_cb2;
 	bool m_timer_x;
 	bool m_u11_timer;
+<<<<<<< HEAD
 	bool m_su; // speech unit fitted yes/no
 	bool m_7d; // 7-digit display yes/no
 	UINT8 m_digit;
 	UINT8 m_counter;
 	UINT8 m_segment[5];
 	virtual void machine_reset();
+=======
+	bool m_7d; // 7-digit display yes/no
+	uint8_t m_digit;
+	uint8_t m_counter;
+	uint8_t m_segment[5];
+	virtual void machine_start() override;
+	virtual void machine_reset() override;
+>>>>>>> upstream/master
 	required_device<m6800_cpu_device> m_maincpu;
 	optional_device<s14001a_device> m_s14001a;
 	required_device<pia6821_device> m_pia_u10;
@@ -320,9 +347,15 @@ WRITE_LINE_MEMBER( st_mp200_state::u10_ca2_w )
 
 WRITE_LINE_MEMBER( st_mp200_state::u10_cb2_w )
 {
+<<<<<<< HEAD
 	if (m_su)
 	{
 		if (m_s14001a->bsy_r())
+=======
+	if (m_s14001a)
+	{
+		if (m_s14001a->busy_r())
+>>>>>>> upstream/master
 			m_pia_u11->cb1_w(0);
 		else
 			m_pia_u11->cb1_w(state);
@@ -331,6 +364,7 @@ WRITE_LINE_MEMBER( st_mp200_state::u10_cb2_w )
 
 WRITE_LINE_MEMBER( st_mp200_state::u11_ca2_w )
 {
+<<<<<<< HEAD
 	output_set_value("led0", !state);
 
 	if ((m_su) & (state))
@@ -347,6 +381,24 @@ WRITE_LINE_MEMBER( st_mp200_state::u11_ca2_w )
 			m_s14001a->set_volume(((m_u10a & 0x38) >> 3) + 1);
 
 			UINT8 clock_divisor = 16 - (m_u10a & 0x07);
+=======
+	output().set_value("led0", !state);
+
+	if (m_s14001a && state)
+	{
+		if (BIT(m_u10a, 7))
+		{
+			m_s14001a->data_w(generic_space(), 0, m_u10a & 0x3f);
+			m_s14001a->start_w(1);
+			m_s14001a->start_w(0);
+		}
+		else if (BIT(m_u10a, 6))
+		{
+			m_s14001a->force_update();
+			m_s14001a->set_output_gain(0, ((m_u10a >> 3 & 0xf) + 1) / 16.0);
+
+			uint8_t clock_divisor = 16 - (m_u10a & 0x07);
+>>>>>>> upstream/master
 
 			m_s14001a->set_clock(S14001_CLOCK / clock_divisor / 8);
 		}
@@ -390,7 +442,11 @@ WRITE8_MEMBER( st_mp200_state::u10_a_w )
 
 READ8_MEMBER( st_mp200_state::u10_b_r )
 {
+<<<<<<< HEAD
 	UINT8 data = 0;
+=======
+	uint8_t data = 0;
+>>>>>>> upstream/master
 
 	if (BIT(m_u10a, 0))
 		data |= m_io_x0->read();
@@ -439,6 +495,7 @@ WRITE8_MEMBER( st_mp200_state::u11_a_w )
 	if (!m_u10_ca2)
 	{
 		if (m_7d && BIT(data, 1))
+<<<<<<< HEAD
 		{
 			m_digit = 6;
 		}
@@ -475,6 +532,30 @@ WRITE8_MEMBER( st_mp200_state::u11_a_w )
 			output_set_digit_value(20+m_digit, patterns[m_segment[2]]);
 			output_set_digit_value(30+m_digit, patterns[m_segment[3]]);
 			output_set_digit_value(40+m_digit, patterns[m_segment[4]]);
+=======
+			m_digit = 6;
+		else if (BIT(data, 2))
+			m_digit = 5;
+		else if (BIT(data, 3))
+			m_digit = 4;
+		else if (BIT(data, 4))
+			m_digit = 3;
+		else if (BIT(data, 5))
+			m_digit = 2;
+		else if (BIT(data, 6))
+			m_digit = 1;
+		else if (BIT(data, 7))
+			m_digit = 0;
+
+		if (BIT(data, 0) && (m_counter > 8))
+		{
+			static const uint8_t patterns[16] = { 0x3f,0x06,0x5b,0x4f,0x66,0x6d,0x7d,0x07,0x7f,0x6f,0,0,0,0,0,0 }; // MC14543
+			output().set_digit_value(m_digit, patterns[m_segment[0]]);
+			output().set_digit_value(10+m_digit, patterns[m_segment[1]]);
+			output().set_digit_value(20+m_digit, patterns[m_segment[2]]);
+			output().set_digit_value(30+m_digit, patterns[m_segment[3]]);
+			output().set_digit_value(40+m_digit, patterns[m_segment[4]]);
+>>>>>>> upstream/master
 		}
 	}
 }
@@ -534,6 +615,13 @@ WRITE8_MEMBER( st_mp200_state::u11_b_w )
 	}
 }
 
+<<<<<<< HEAD
+=======
+void st_mp200_state::machine_start()
+{
+}
+
+>>>>>>> upstream/master
 void st_mp200_state::machine_reset()
 {
 	m_u10a = 0;
@@ -546,19 +634,28 @@ void st_mp200_state::machine_reset()
 DRIVER_INIT_MEMBER( st_mp200_state, st_mp200 )
 {
 	m_7d = 1;
+<<<<<<< HEAD
 	m_su = 0;
+=======
+>>>>>>> upstream/master
 }
 
 DRIVER_INIT_MEMBER( st_mp200_state, st_mp201 )
 {
 	m_7d = 1;
+<<<<<<< HEAD
 	m_su = 1;
+=======
+>>>>>>> upstream/master
 }
 
 DRIVER_INIT_MEMBER( st_mp200_state, st_mp202 )
 {
 	m_7d = 0;
+<<<<<<< HEAD
 	m_su = 0;
+=======
+>>>>>>> upstream/master
 }
 
 // zero-cross detection
@@ -575,7 +672,11 @@ TIMER_DEVICE_CALLBACK_MEMBER( st_mp200_state::u11_timer )
 	m_pia_u11->ca1_w(m_u11_timer);
 }
 
+<<<<<<< HEAD
 static MACHINE_CONFIG_START( st_mp200, st_mp200_state )
+=======
+static MACHINE_CONFIG_START( st_mp200 )
+>>>>>>> upstream/master
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", M6800, 1000000) // no xtal, just 2 chips forming a random oscillator
 	MCFG_CPU_PROGRAM_MAP(st_mp200_map)
@@ -596,8 +697,13 @@ static MACHINE_CONFIG_START( st_mp200, st_mp200_state )
 	MCFG_PIA_WRITEPB_HANDLER(WRITE8(st_mp200_state, u10_b_w))
 	MCFG_PIA_CA2_HANDLER(WRITELINE(st_mp200_state, u10_ca2_w))
 	MCFG_PIA_CB2_HANDLER(WRITELINE(st_mp200_state, u10_cb2_w))
+<<<<<<< HEAD
 	MCFG_PIA_IRQA_HANDLER(DEVWRITELINE("maincpu", m6800_cpu_device, irq_line))
 	MCFG_PIA_IRQB_HANDLER(DEVWRITELINE("maincpu", m6800_cpu_device, irq_line))
+=======
+	MCFG_PIA_IRQA_HANDLER(INPUTLINE("maincpu", M6800_IRQ_LINE))
+	MCFG_PIA_IRQB_HANDLER(INPUTLINE("maincpu", M6800_IRQ_LINE))
+>>>>>>> upstream/master
 	MCFG_TIMER_DRIVER_ADD_PERIODIC("timer_x", st_mp200_state, timer_x, attotime::from_hz(120)) // mains freq*2
 
 	MCFG_DEVICE_ADD("pia_u11", PIA6821, 0)
@@ -606,15 +712,24 @@ static MACHINE_CONFIG_START( st_mp200, st_mp200_state )
 	MCFG_PIA_WRITEPB_HANDLER(WRITE8(st_mp200_state, u11_b_w))
 	MCFG_PIA_CA2_HANDLER(WRITELINE(st_mp200_state, u11_ca2_w))
 	MCFG_PIA_CB2_HANDLER(WRITELINE(st_mp200_state, u11_cb2_w))
+<<<<<<< HEAD
 	MCFG_PIA_IRQA_HANDLER(DEVWRITELINE("maincpu", m6800_cpu_device, irq_line))
 	MCFG_PIA_IRQB_HANDLER(DEVWRITELINE("maincpu", m6800_cpu_device, irq_line))
+=======
+	MCFG_PIA_IRQA_HANDLER(INPUTLINE("maincpu", M6800_IRQ_LINE))
+	MCFG_PIA_IRQB_HANDLER(INPUTLINE("maincpu", M6800_IRQ_LINE))
+>>>>>>> upstream/master
 	MCFG_TIMER_DRIVER_ADD_PERIODIC("timer_d", st_mp200_state, u11_timer, attotime::from_hz(634)) // 555 timer*2
 MACHINE_CONFIG_END
 
 static MACHINE_CONFIG_DERIVED( st_mp201, st_mp200 )
 	MCFG_SPEAKER_STANDARD_MONO("mono")
 	MCFG_SOUND_ADD("speech", S14001A, S14001_CLOCK)
+<<<<<<< HEAD
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 0.50)
+=======
+	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 1.00)
+>>>>>>> upstream/master
 MACHINE_CONFIG_END
 
 
@@ -925,6 +1040,7 @@ ROM_START(st_game)
 ROM_END
 
 // 6-digit
+<<<<<<< HEAD
 GAME(1979,  meteorp,    0,          st_mp200,   mp200, st_mp200_state,   st_mp202,   ROT0, "Stern", "Meteor (Stern)", MACHINE_IS_SKELETON_MECHANICAL)
 GAME(1980,  galaxypi,   0,          st_mp200,   mp200, st_mp200_state,   st_mp202,   ROT0, "Stern", "Galaxy", MACHINE_IS_SKELETON_MECHANICAL)
 GAME(1980,  ali,        0,          st_mp200,   mp200, st_mp200_state,   st_mp202,   ROT0, "Stern", "Ali", MACHINE_IS_SKELETON_MECHANICAL)
@@ -953,3 +1069,33 @@ GAME(1982,  orbitor1,   0,          st_mp201,   mp200, st_mp200_state,   st_mp20
 GAME(1985,  gamatron,   flight2k,   st_mp200,   mp200, st_mp200_state,   st_mp200,   ROT0, "Pinstar", "Gamatron", MACHINE_IS_SKELETON_MECHANICAL)
 GAME(1978,  blkshpsq,   0,          st_mp200,   mp200, st_mp200_state,   st_mp202,   ROT0, "Astro", "Black Sheep Squadron", MACHINE_IS_SKELETON_MECHANICAL)
 GAME(198?,  st_game,    0,          st_mp200,   mp200, st_mp200_state,   st_mp200,   ROT0, "<unknown>", "unknown pinball game", MACHINE_IS_SKELETON_MECHANICAL)
+=======
+GAME(1979,  meteorp,    0,          st_mp200,   mp200, st_mp200_state,   st_mp202,   ROT0, "Stern",     "Meteor (Stern)",         MACHINE_IS_SKELETON_MECHANICAL)
+GAME(1980,  galaxypi,   0,          st_mp200,   mp200, st_mp200_state,   st_mp202,   ROT0, "Stern",     "Galaxy",                 MACHINE_IS_SKELETON_MECHANICAL)
+GAME(1980,  ali,        0,          st_mp200,   mp200, st_mp200_state,   st_mp202,   ROT0, "Stern",     "Ali",                    MACHINE_IS_SKELETON_MECHANICAL)
+
+// 7-digit
+GAME(1980,  biggame,    0,          st_mp200,   mp200, st_mp200_state,   st_mp200,   ROT0, "Stern",     "Big Game",               MACHINE_IS_SKELETON_MECHANICAL)
+GAME(1980,  cheetah,    0,          st_mp200,   mp200, st_mp200_state,   st_mp200,   ROT0, "Stern",     "Cheetah",                MACHINE_IS_SKELETON_MECHANICAL)
+GAME(1980,  quicksil,   0,          st_mp200,   mp200, st_mp200_state,   st_mp200,   ROT0, "Stern",     "Quicksilver",            MACHINE_IS_SKELETON_MECHANICAL)
+GAME(1980,  seawitch,   0,          st_mp200,   mp200, st_mp200_state,   st_mp200,   ROT0, "Stern",     "Seawitch",               MACHINE_IS_SKELETON_MECHANICAL)
+GAME(1980,  nineball,   0,          st_mp200,   mp200, st_mp200_state,   st_mp200,   ROT0, "Stern",     "Nine Ball",              MACHINE_IS_SKELETON_MECHANICAL)
+GAME(1981,  lightnin,   0,          st_mp201,   mp200, st_mp200_state,   st_mp201,   ROT0, "Stern",     "Lightning",              MACHINE_IS_SKELETON_MECHANICAL)
+GAME(1980,  stargzr,    0,          st_mp200,   mp200, st_mp200_state,   st_mp200,   ROT0, "Stern",     "Stargazer",              MACHINE_IS_SKELETON_MECHANICAL)
+GAME(1981,  spltsecp,   0,          st_mp201,   mp200, st_mp200_state,   st_mp201,   ROT0, "Stern",     "Split Second (Pinball)", MACHINE_IS_SKELETON_MECHANICAL)
+GAME(1981,  catacomp,   0,          st_mp201,   mp200, st_mp200_state,   st_mp201,   ROT0, "Stern",     "Catacomb (Pinball)",     MACHINE_IS_SKELETON_MECHANICAL)
+GAME(1982,  dragfist,   0,          st_mp200,   mp200, st_mp200_state,   st_mp200,   ROT0, "Stern",     "Dragonfist",             MACHINE_IS_SKELETON_MECHANICAL)
+GAME(1984,  lazrlord,   0,          st_mp200,   mp200, st_mp200_state,   st_mp200,   ROT0, "Stern",     "Lazer Lord",             MACHINE_IS_SKELETON_MECHANICAL)
+
+// hang after boot
+GAME(1980,  flight2k,   0,          st_mp201,   mp200, st_mp200_state,   st_mp201,   ROT0, "Stern",     "Flight 2000",            MACHINE_IS_SKELETON_MECHANICAL)
+GAME(1981,  freefall,   0,          st_mp201,   mp200, st_mp200_state,   st_mp201,   ROT0, "Stern",     "Freefall",               MACHINE_IS_SKELETON_MECHANICAL)
+GAME(1981,  viperp,     0,          st_mp200,   mp200, st_mp200_state,   st_mp200,   ROT0, "Stern",     "Viper (Pinball)",        MACHINE_IS_SKELETON_MECHANICAL)
+GAME(1981,  ironmaid,   0,          st_mp200,   mp200, st_mp200_state,   st_mp200,   ROT0, "Stern",     "Iron Maiden",            MACHINE_IS_SKELETON_MECHANICAL)
+GAME(1982,  orbitor1,   0,          st_mp201,   mp200, st_mp200_state,   st_mp201,   ROT0, "Stern",     "Orbitor 1",              MACHINE_IS_SKELETON_MECHANICAL)
+
+// other manufacturer
+GAME(1985,  gamatron,   flight2k,   st_mp200,   mp200, st_mp200_state,   st_mp200,   ROT0, "Pinstar",   "Gamatron",               MACHINE_IS_SKELETON_MECHANICAL)
+GAME(1978,  blkshpsq,   0,          st_mp200,   mp200, st_mp200_state,   st_mp202,   ROT0, "Astro",     "Black Sheep Squadron",   MACHINE_IS_SKELETON_MECHANICAL)
+GAME(198?,  st_game,    0,          st_mp200,   mp200, st_mp200_state,   st_mp200,   ROT0, "<unknown>", "unknown pinball game",   MACHINE_IS_SKELETON_MECHANICAL)
+>>>>>>> upstream/master

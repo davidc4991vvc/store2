@@ -1,9 +1,20 @@
 // license:BSD-3-Clause
 // copyright-holders:Luca Elia, David Haywood
+<<<<<<< HEAD
 
 typedef device_delegate<int (UINT16 code, UINT8 color)> gfxbank_cb_delegate;
 
 #define SETA001_SPRITE_GFXBANK_CB_MEMBER(_name) int _name(UINT16 code, UINT8 color)
+=======
+#ifndef MAME_VIDEO_SETA001_H
+#define MAME_VIDEO_SETA001_H
+
+#pragma once
+
+typedef device_delegate<int (uint16_t code, uint8_t color)> gfxbank_cb_delegate;
+
+#define SETA001_SPRITE_GFXBANK_CB_MEMBER(_name) int _name(uint16_t code, uint8_t color)
+>>>>>>> upstream/master
 
 #define MCFG_SETA001_SPRITE_GFXBANK_CB(_class, _method) \
 	seta001_device::set_gfxbank_callback(*device, gfxbank_cb_delegate(&_class::_method, #_class "::" #_method, downcast<_class *>(owner)));
@@ -11,11 +22,18 @@ typedef device_delegate<int (UINT16 code, UINT8 color)> gfxbank_cb_delegate;
 class seta001_device : public device_t
 {
 public:
+<<<<<<< HEAD
 	seta001_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
 
 	// static configuration
 	static void static_set_gfxdecode_tag(device_t &device, const char *tag);
 	static void static_set_palette_tag(device_t &device, const char *tag);
+=======
+	seta001_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
+
+	// static configuration
+	static void static_set_gfxdecode_tag(device_t &device, const char *tag);
+>>>>>>> upstream/master
 	static void set_gfxbank_callback(device_t &device, gfxbank_cb_delegate callback) { downcast<seta001_device &>(device).m_gfxbank_cb = callback; }
 
 	DECLARE_WRITE8_MEMBER( spritebgflag_w8 );
@@ -55,15 +73,23 @@ public:
 	int is_flipped() { return ((m_spritectrl[ 0 ] & 0x40) >> 6); };
 
 protected:
+<<<<<<< HEAD
 	virtual void device_start();
 	virtual void device_reset();
+=======
+	virtual void device_start() override;
+	virtual void device_reset() override;
+>>>>>>> upstream/master
 
 private:
 
 	void draw_background( bitmap_ind16 &bitmap, const rectangle &cliprect, int bank_size, int setac_type);
 	void draw_foreground( screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect, int bank_size);
 	required_device<gfxdecode_device> m_gfxdecode;
+<<<<<<< HEAD
 	required_device<palette_device> m_palette;
+=======
+>>>>>>> upstream/master
 
 	gfxbank_cb_delegate m_gfxbank_cb;
 
@@ -77,6 +103,7 @@ private:
 	int m_transpen;
 
 	// live state
+<<<<<<< HEAD
 	UINT8 m_bgflag;
 	UINT8 m_spritectrl[4];
 	UINT8 m_spriteylow[0x300]; // 0x200 low y + 0x100 bg stuff
@@ -85,9 +112,23 @@ private:
 };
 
 extern const device_type SETA001_SPRITE;
+=======
+	uint8_t m_bgflag;
+	uint8_t m_spritectrl[4];
+	uint8_t m_spriteylow[0x300]; // 0x200 low y + 0x100 bg stuff
+	uint8_t m_spritecodelow[0x2000]; // tnzs.c stuff only uses half?
+	uint8_t m_spritecodehigh[0x2000]; // ^
+};
+
+DECLARE_DEVICE_TYPE(SETA001_SPRITE, seta001_device)
+>>>>>>> upstream/master
 
 #define MCFG_SETA001_SPRITE_GFXDECODE(_gfxtag) \
 	seta001_device::static_set_gfxdecode_tag(*device, "^" _gfxtag);
 
+<<<<<<< HEAD
 #define MCFG_SETA001_SPRITE_PALETTE(_palette_tag) \
 	seta001_device::static_set_palette_tag(*device, "^" _palette_tag);
+=======
+#endif // MAME_VIDEO_SETA001_H
+>>>>>>> upstream/master

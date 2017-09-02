@@ -6,6 +6,7 @@
 
 *********************************************************************/
 
+<<<<<<< HEAD
 #pragma once
 
 #ifndef __ABC99__
@@ -15,6 +16,17 @@
 #include "cpu/mcs48/mcs48.h"
 #include "abckb.h"
 #include "sound/speaker.h"
+=======
+#ifndef MAME_BUS_ABCKB_ABC99_H
+#define MAME_BUS_ABCKB_ABC99_H
+
+#pragma once
+
+#include "abckb.h"
+
+#include "cpu/mcs48/mcs48.h"
+#include "sound/spkrdev.h"
+>>>>>>> upstream/master
 
 
 
@@ -29,6 +41,7 @@ class abc99_device :  public device_t,
 {
 public:
 	// construction/destruction
+<<<<<<< HEAD
 	abc99_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
 
 	// optional information overrides
@@ -38,23 +51,43 @@ public:
 
 	// abc_keyboard_interface overrides
 	virtual void txd_w(int state);
+=======
+	abc99_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
+
+	// abc_keyboard_interface overrides
+	virtual void txd_w(int state) override;
+>>>>>>> upstream/master
 
 	DECLARE_INPUT_CHANGED_MEMBER( keyboard_reset );
 
 	DECLARE_WRITE8_MEMBER( z2_led_w );
+<<<<<<< HEAD
 	DECLARE_WRITE8_MEMBER( z2_p1_w );
 	DECLARE_READ8_MEMBER( z2_p2_r );
 	DECLARE_READ8_MEMBER( z2_t0_r );
 	DECLARE_READ8_MEMBER( z2_t1_r );
+=======
+>>>>>>> upstream/master
 	DECLARE_READ8_MEMBER( z5_p1_r );
 	DECLARE_WRITE8_MEMBER( z5_p2_w );
 	DECLARE_READ8_MEMBER( z5_t1_r );
 
 protected:
 	// device-level overrides
+<<<<<<< HEAD
 	virtual void device_start();
 	virtual void device_reset();
 	virtual void device_timer(emu_timer &timer, device_timer_id id, int param, void *ptr);
+=======
+	virtual void device_start() override;
+	virtual void device_reset() override;
+	virtual void device_timer(emu_timer &timer, device_timer_id id, int param, void *ptr) override;
+
+	// optional information overrides
+	virtual const tiny_rom_entry *device_rom_region() const override;
+	virtual void device_add_mconfig(machine_config &config) override;
+	virtual ioport_constructor device_input_ports() const override;
+>>>>>>> upstream/master
 
 private:
 	enum
@@ -84,6 +117,14 @@ private:
 	inline void key_down(int state);
 	inline void scan_mouse();
 
+<<<<<<< HEAD
+=======
+	DECLARE_WRITE8_MEMBER( z2_p1_w );
+	DECLARE_READ8_MEMBER( z2_p2_r );
+	DECLARE_READ_LINE_MEMBER( z2_t0_r );
+	DECLARE_READ_LINE_MEMBER( z2_t1_r );
+
+>>>>>>> upstream/master
 	emu_timer *m_serial_timer;
 	emu_timer *m_mouse_timer;
 
@@ -107,8 +148,15 @@ private:
 
 
 // device type definition
+<<<<<<< HEAD
 extern const device_type ABC99;
 
 
 
 #endif
+=======
+DECLARE_DEVICE_TYPE(ABC99, abc99_device)
+
+
+#endif // MAME_BUS_ABCKB_ABC99_H
+>>>>>>> upstream/master

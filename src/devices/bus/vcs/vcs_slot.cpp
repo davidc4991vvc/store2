@@ -22,7 +22,11 @@
 //  GLOBAL VARIABLES
 //**************************************************************************
 
+<<<<<<< HEAD
 const device_type VCS_CART_SLOT = &device_creator<vcs_cart_slot_device>;
+=======
+DEFINE_DEVICE_TYPE(VCS_CART_SLOT, vcs_cart_slot_device, "vcs_cart_slot", "Atari VCS 2600 Cartridge Slot")
+>>>>>>> upstream/master
 
 
 //-------------------------------------------------
@@ -31,7 +35,11 @@ const device_type VCS_CART_SLOT = &device_creator<vcs_cart_slot_device>;
 
 device_vcs_cart_interface::device_vcs_cart_interface(const machine_config &mconfig, device_t &device)
 	: device_slot_card_interface(mconfig, device),
+<<<<<<< HEAD
 		m_rom(NULL),
+=======
+		m_rom(nullptr),
+>>>>>>> upstream/master
 		m_rom_size(0)
 {
 }
@@ -49,9 +57,15 @@ device_vcs_cart_interface::~device_vcs_cart_interface()
 //  rom_alloc - alloc the space for the cart
 //-------------------------------------------------
 
+<<<<<<< HEAD
 void device_vcs_cart_interface::rom_alloc(UINT32 size, const char *tag)
 {
 	if (m_rom == NULL)
+=======
+void device_vcs_cart_interface::rom_alloc(uint32_t size, const char *tag)
+{
+	if (m_rom == nullptr)
+>>>>>>> upstream/master
 	{
 		m_rom = device().machine().memory().region_alloc(std::string(tag).append(A26SLOT_ROM_REGION_TAG).c_str(), size, 1, ENDIANNESS_LITTLE)->base();
 		m_rom_size = size;
@@ -62,7 +76,11 @@ void device_vcs_cart_interface::rom_alloc(UINT32 size, const char *tag)
 //  ram_alloc - alloc the space for the on-cart RAM
 //-------------------------------------------------
 
+<<<<<<< HEAD
 void device_vcs_cart_interface::ram_alloc(UINT32 size)
+=======
+void device_vcs_cart_interface::ram_alloc(uint32_t size)
+>>>>>>> upstream/master
 {
 	m_ram.resize(size);
 	device().save_item(NAME(m_ram));
@@ -77,10 +95,17 @@ void device_vcs_cart_interface::ram_alloc(UINT32 size)
 //-------------------------------------------------
 //  vcs_cart_slot_device - constructor
 //-------------------------------------------------
+<<<<<<< HEAD
 vcs_cart_slot_device::vcs_cart_slot_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock) :
 						device_t(mconfig, VCS_CART_SLOT, "Atari VCS 2600 Cartridge Slot", tag, owner, clock, "vcs_cart_slot", __FILE__),
 						device_image_interface(mconfig, *this),
 						device_slot_interface(mconfig, *this), m_cart(nullptr), m_type(0)
+=======
+vcs_cart_slot_device::vcs_cart_slot_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock) :
+	device_t(mconfig, VCS_CART_SLOT, tag, owner, clock),
+	device_image_interface(mconfig, *this),
+	device_slot_interface(mconfig, *this), m_cart(nullptr), m_type(0)
+>>>>>>> upstream/master
 {
 }
 
@@ -102,6 +127,7 @@ void vcs_cart_slot_device::device_start()
 	m_cart = dynamic_cast<device_vcs_cart_interface *>(get_card_device());
 }
 
+<<<<<<< HEAD
 //-------------------------------------------------
 //  device_config_complete - perform any
 //  operations now that the configuration is
@@ -114,6 +140,8 @@ void vcs_cart_slot_device::device_config_complete()
 	update_names();
 }
 
+=======
+>>>>>>> upstream/master
 
 
 /*-------------------------------------------------
@@ -162,10 +190,17 @@ static const vcs_slot slot_list[] =
 
 static int vcs_get_pcb_id(const char *slot)
 {
+<<<<<<< HEAD
 	for (int i = 0; i < ARRAY_LENGTH(slot_list); i++)
 	{
 		if (!core_stricmp(slot_list[i].slot_option, slot))
 			return slot_list[i].pcb_id;
+=======
+	for (auto & elem : slot_list)
+	{
+		if (!core_stricmp(elem.slot_option, slot))
+			return elem.pcb_id;
+>>>>>>> upstream/master
 	}
 
 	return 0;
@@ -173,15 +208,23 @@ static int vcs_get_pcb_id(const char *slot)
 
 static const char *vcs_get_slot(int type)
 {
+<<<<<<< HEAD
 	for (int i = 0; i < ARRAY_LENGTH(slot_list); i++)
 	{
 		if (slot_list[i].pcb_id == type)
 			return slot_list[i].slot_option;
+=======
+	for (auto & elem : slot_list)
+	{
+		if (elem.pcb_id == type)
+			return elem.slot_option;
+>>>>>>> upstream/master
 	}
 
 	return "a26_4k";
 }
 
+<<<<<<< HEAD
 bool vcs_cart_slot_device::call_load()
 {
 	if (m_cart)
@@ -190,6 +233,16 @@ bool vcs_cart_slot_device::call_load()
 		UINT32 len;
 
 		if (software_entry() != NULL)
+=======
+image_init_result vcs_cart_slot_device::call_load()
+{
+	if (m_cart)
+	{
+		uint8_t *ROM;
+		uint32_t len;
+
+		if (loaded_through_softlist())
+>>>>>>> upstream/master
 			len = get_software_region_length("rom");
 		else
 			len = length();
@@ -213,12 +266,17 @@ bool vcs_cart_slot_device::call_load()
 
 			default:
 				seterror(IMAGE_ERROR_UNSUPPORTED, "Invalid rom file size" );
+<<<<<<< HEAD
 				return IMAGE_INIT_FAIL;
+=======
+				return image_init_result::FAIL;
+>>>>>>> upstream/master
 		}
 
 		m_cart->rom_alloc(len, tag());
 		ROM = m_cart->get_rom_base();
 
+<<<<<<< HEAD
 		if (software_entry() != NULL)
 		{
 			const char *pcb_name;
@@ -226,6 +284,15 @@ bool vcs_cart_slot_device::call_load()
 			memcpy(ROM, get_software_region("rom"), len);
 
 			if ((pcb_name = get_feature("slot")) != NULL)
+=======
+		if (loaded_through_softlist())
+		{
+			const char *pcb_name;
+			bool has_ram = get_software_region("ram") ? true : false;
+			memcpy(ROM, get_software_region("rom"), len);
+
+			if ((pcb_name = get_feature("slot")) != nullptr)
+>>>>>>> upstream/master
 				m_type = vcs_get_pcb_id(pcb_name);
 			else
 			{
@@ -308,12 +375,21 @@ bool vcs_cart_slot_device::call_load()
 
 		// pass a pointer to the now allocated ROM for the DPC chip
 		if (m_type == A26_DPC)
+<<<<<<< HEAD
 			m_cart->setup_addon_ptr((UINT8 *)m_cart->get_rom_base() + 0x2000);
 
 		return IMAGE_INIT_PASS;
 	}
 
 	return IMAGE_INIT_PASS;
+=======
+			m_cart->setup_addon_ptr((uint8_t *)m_cart->get_rom_base() + 0x2000);
+
+		return image_init_result::PASS;
+	}
+
+	return image_init_result::PASS;
+>>>>>>> upstream/master
 }
 
 
@@ -328,6 +404,7 @@ void vcs_cart_slot_device::call_unload()
 
 
 /*-------------------------------------------------
+<<<<<<< HEAD
  call softlist load
  -------------------------------------------------*/
 
@@ -343,6 +420,12 @@ bool vcs_cart_slot_device::call_softlist_load(software_list_device &swlist, cons
  -------------------------------------------------*/
 
 int vcs_cart_slot_device::detect_modeDC(UINT8 *cart, UINT32 len)
+=======
+  detection helper routines
+ -------------------------------------------------*/
+
+bool vcs_cart_slot_device::detect_modeDC(const uint8_t *cart, uint32_t len)
+>>>>>>> upstream/master
 {
 	int numfound = 0;
 	// signature is also in 'video reflex'.. maybe figure out that controller port someday...
@@ -363,7 +446,11 @@ int vcs_cart_slot_device::detect_modeDC(UINT8 *cart, UINT32 len)
 	return 0;
 }
 
+<<<<<<< HEAD
 int vcs_cart_slot_device::detect_modeF6(UINT8 *cart, UINT32 len)
+=======
+bool vcs_cart_slot_device::detect_modeF6(const uint8_t *cart, uint32_t len)
+>>>>>>> upstream/master
 {
 	int numfound = 0;
 	static const unsigned char signature[3] = { 0x8d, 0xf6, 0xff };
@@ -383,7 +470,11 @@ int vcs_cart_slot_device::detect_modeF6(UINT8 *cart, UINT32 len)
 	return 0;
 }
 
+<<<<<<< HEAD
 int vcs_cart_slot_device::detect_snowhite(UINT8 *cart, UINT32 len)
+=======
+bool vcs_cart_slot_device::detect_snowhite(const uint8_t *cart, uint32_t len)
+>>>>>>> upstream/master
 {
 	static const unsigned char snowwhite[] = { 0x10, 0xd0, 0xff, 0xff }; // Snow White Proto
 
@@ -392,7 +483,11 @@ int vcs_cart_slot_device::detect_snowhite(UINT8 *cart, UINT32 len)
 	return 0;
 }
 
+<<<<<<< HEAD
 int vcs_cart_slot_device::detect_mode3E(UINT8 *cart, UINT32 len)
+=======
+bool vcs_cart_slot_device::detect_mode3E(const uint8_t *cart, uint32_t len)
+>>>>>>> upstream/master
 {
 	// this one is a little hacky... looks for STY $3e, which is unique to
 	// 'not boulderdash', but is the only example I have (cow)
@@ -415,7 +510,11 @@ int vcs_cart_slot_device::detect_mode3E(UINT8 *cart, UINT32 len)
 	return 0;
 }
 
+<<<<<<< HEAD
 int vcs_cart_slot_device::detect_modeSS(UINT8 *cart, UINT32 len)
+=======
+bool vcs_cart_slot_device::detect_modeSS(const uint8_t *cart, uint32_t len)
+>>>>>>> upstream/master
 {
 	int numfound = 0;
 	static const unsigned char signature[5] = { 0xbd, 0xe5, 0xff, 0x95, 0x81 };
@@ -435,7 +534,11 @@ int vcs_cart_slot_device::detect_modeSS(UINT8 *cart, UINT32 len)
 	return 0;
 }
 
+<<<<<<< HEAD
 int vcs_cart_slot_device::detect_modeFE(UINT8 *cart, UINT32 len)
+=======
+bool vcs_cart_slot_device::detect_modeFE(const uint8_t *cart, uint32_t len)
+>>>>>>> upstream/master
 {
 	int numfound = 0;
 	static const unsigned char signatures[][5] =  {
@@ -463,7 +566,11 @@ int vcs_cart_slot_device::detect_modeFE(UINT8 *cart, UINT32 len)
 	return 0;
 }
 
+<<<<<<< HEAD
 int vcs_cart_slot_device::detect_modeE0(UINT8 *cart, UINT32 len)
+=======
+bool vcs_cart_slot_device::detect_modeE0(const uint8_t *cart, uint32_t len)
+>>>>>>> upstream/master
 {
 	int numfound = 0;
 	static const unsigned char signatures[][3] =  {
@@ -493,7 +600,11 @@ int vcs_cart_slot_device::detect_modeE0(UINT8 *cart, UINT32 len)
 	return 0;
 }
 
+<<<<<<< HEAD
 int vcs_cart_slot_device::detect_modeCV(UINT8 *cart, UINT32 len)
+=======
+bool vcs_cart_slot_device::detect_modeCV(const uint8_t *cart, uint32_t len)
+>>>>>>> upstream/master
 {
 	int numfound = 0;
 	static const unsigned char signatures[][3] = {
@@ -519,7 +630,11 @@ int vcs_cart_slot_device::detect_modeCV(UINT8 *cart, UINT32 len)
 	return 0;
 }
 
+<<<<<<< HEAD
 int vcs_cart_slot_device::detect_modeFV(UINT8 *cart, UINT32 len)
+=======
+bool vcs_cart_slot_device::detect_modeFV(const uint8_t *cart, uint32_t len)
+>>>>>>> upstream/master
 {
 	int numfound = 0;
 	static const unsigned char signatures[][3] = { { 0x2c, 0xd0, 0xff } };
@@ -542,7 +657,11 @@ int vcs_cart_slot_device::detect_modeFV(UINT8 *cart, UINT32 len)
 	return 0;
 }
 
+<<<<<<< HEAD
 int vcs_cart_slot_device::detect_modeJVP(UINT8 *cart, UINT32 len)
+=======
+bool vcs_cart_slot_device::detect_modeJVP(const uint8_t *cart, uint32_t len)
+>>>>>>> upstream/master
 {
 	int numfound = 0;
 	static const unsigned char signatures[][4] = {
@@ -568,7 +687,11 @@ int vcs_cart_slot_device::detect_modeJVP(UINT8 *cart, UINT32 len)
 	return 0;
 }
 
+<<<<<<< HEAD
 int vcs_cart_slot_device::detect_modeE7(UINT8 *cart, UINT32 len)
+=======
+bool vcs_cart_slot_device::detect_modeE7(const uint8_t *cart, uint32_t len)
+>>>>>>> upstream/master
 {
 	int numfound = 0;
 	static const unsigned char signatures[][3] = {
@@ -594,7 +717,11 @@ int vcs_cart_slot_device::detect_modeE7(UINT8 *cart, UINT32 len)
 	return 0;
 }
 
+<<<<<<< HEAD
 int vcs_cart_slot_device::detect_modeUA(UINT8 *cart, UINT32 len)
+=======
+bool vcs_cart_slot_device::detect_modeUA(const uint8_t *cart, uint32_t len)
+>>>>>>> upstream/master
 {
 	int numfound = 0;
 	static const unsigned char signature[3] = { 0x8d, 0x40, 0x02 };
@@ -614,7 +741,11 @@ int vcs_cart_slot_device::detect_modeUA(UINT8 *cart, UINT32 len)
 	return 0;
 }
 
+<<<<<<< HEAD
 int vcs_cart_slot_device::detect_8K_mode3F(UINT8 *cart, UINT32 len)
+=======
+bool vcs_cart_slot_device::detect_8K_mode3F(const uint8_t *cart, uint32_t len)
+>>>>>>> upstream/master
 {
 	int numfound = 0;
 	static const unsigned char signature1[4] = { 0xa9, 0x01, 0x85, 0x3f };
@@ -640,7 +771,11 @@ int vcs_cart_slot_device::detect_8K_mode3F(UINT8 *cart, UINT32 len)
 	return 0;
 }
 
+<<<<<<< HEAD
 int vcs_cart_slot_device::detect_32K_mode3F(UINT8 *cart, UINT32 len)
+=======
+bool vcs_cart_slot_device::detect_32K_mode3F(const uint8_t *cart, uint32_t len)
+>>>>>>> upstream/master
 {
 	int numfound = 0;
 	static const unsigned char signature[4] = { 0xa9, 0x0e, 0x85, 0x3f };
@@ -660,7 +795,11 @@ int vcs_cart_slot_device::detect_32K_mode3F(UINT8 *cart, UINT32 len)
 	return 0;
 }
 
+<<<<<<< HEAD
 int vcs_cart_slot_device::detect_super_chip(UINT8 *cart, UINT32 len)
+=======
+bool vcs_cart_slot_device::detect_super_chip(const uint8_t *cart, uint32_t len)
+>>>>>>> upstream/master
 {
 	static const unsigned char signatures[][5] = {
 									{ 0xa2, 0x7f, 0x9d, 0x00, 0xf0 }, // dig dug
@@ -671,9 +810,15 @@ int vcs_cart_slot_device::detect_super_chip(UINT8 *cart, UINT32 len)
 	{
 		for (int i = 0; i < len - sizeof signatures[0]; i++)
 		{
+<<<<<<< HEAD
 			for (int j = 0; j < (sizeof signatures/sizeof signatures[0]); j++)
 			{
 				if (!memcmp(&cart[i], &signatures[j], sizeof signatures[0]))
+=======
+			for (auto & signature : signatures)
+			{
+				if (!memcmp(&cart[i], &signature, sizeof signatures[0]))
+>>>>>>> upstream/master
 				{
 					return 1;
 				}
@@ -702,7 +847,11 @@ int vcs_cart_slot_device::detect_super_chip(UINT8 *cart, UINT32 len)
  -------------------------------------------------*/
 
 // 4in1 & 8in1 are not currently detected from fullpath...
+<<<<<<< HEAD
 int vcs_cart_slot_device::identify_cart_type(UINT8 *ROM, UINT32 len)
+=======
+int vcs_cart_slot_device::identify_cart_type(const uint8_t *ROM, uint32_t len)
+>>>>>>> upstream/master
 {
 	int type = 0xff;
 
@@ -781,6 +930,7 @@ int vcs_cart_slot_device::identify_cart_type(UINT8 *ROM, UINT32 len)
  get default card software
  -------------------------------------------------*/
 
+<<<<<<< HEAD
 void vcs_cart_slot_device::get_default_card_software(std::string &result)
 {
 	if (open_image_file(mconfig().options()))
@@ -791,16 +941,35 @@ void vcs_cart_slot_device::get_default_card_software(std::string &result)
 		int type;
 
 		core_fread(m_file, &rom[0], len);
+=======
+std::string vcs_cart_slot_device::get_default_card_software(get_default_card_software_hook &hook) const
+{
+	if (hook.image_file())
+	{
+		const char *slot_string;
+		uint32_t len = hook.image_file()->size();
+		std::vector<uint8_t> rom(len);
+		int type;
+
+		hook.image_file()->read(&rom[0], len);
+>>>>>>> upstream/master
 
 		type = identify_cart_type(&rom[0], len);
 		slot_string = vcs_get_slot(type);
 
+<<<<<<< HEAD
 		clear();
 
 		result.assign(slot_string);
 	}
 	else
 		software_get_default_slot(result, "a26_4k");
+=======
+		return std::string(slot_string);
+	}
+	else
+		return software_get_default_slot("a26_4k");
+>>>>>>> upstream/master
 }
 
 
@@ -840,6 +1009,7 @@ WRITE8_MEMBER(vcs_cart_slot_device::write_ram)
 	if (m_cart)
 		m_cart->write_ram(space, offset, data, mem_mask);
 }
+<<<<<<< HEAD
 
 
 /*-------------------------------------------------
@@ -853,3 +1023,5 @@ DIRECT_UPDATE_MEMBER(vcs_cart_slot_device::cart_opbase)
 	else
 		return address;
 }
+=======
+>>>>>>> upstream/master

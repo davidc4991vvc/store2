@@ -8,18 +8,35 @@
 
 *********************************************************************/
 
+<<<<<<< HEAD
 #ifndef __DEBUGCON_H__
 #define __DEBUGCON_H__
 
 #include "textbuf.h"
 
+=======
+#ifndef MAME_EMU_DEBUG_DEBUGCON_H
+#define MAME_EMU_DEBUG_DEBUGCON_H
+
+#pragma once
+
+#include "textbuf.h"
+
+#include <functional>
+
+>>>>>>> upstream/master
 
 /***************************************************************************
     CONSTANTS
 ***************************************************************************/
 
+<<<<<<< HEAD
 #define MAX_COMMAND_LENGTH                  512
 #define MAX_COMMAND_PARAMS                  16
+=======
+#define MAX_COMMAND_LENGTH                  4096
+#define MAX_COMMAND_PARAMS                  128
+>>>>>>> upstream/master
 
 /* flags for command parsing */
 #define CMDFLAG_NONE                        (0x0000)
@@ -65,6 +82,7 @@
 ***************************************************************************/
 
 /* CMDERR is an error code for command evaluation */
+<<<<<<< HEAD
 typedef UINT32 CMDERR;
 
 
@@ -93,3 +111,71 @@ void                debug_errorlog_write_line(const running_machine &machine, co
 text_buffer *       debug_errorlog_get_textbuf(void);
 
 #endif
+=======
+typedef u32 CMDERR;
+
+class debugger_console
+{
+public:
+	debugger_console(running_machine &machine);
+
+	/* command handling */
+	CMDERR          execute_command(const std::string &command, bool echo);
+	CMDERR          validate_command(const char *command);
+	void            register_command(const char *command, u32 flags, int ref, int minparams, int maxparams, std::function<void(int, const std::vector<std::string> &)> handler);
+
+	/* console management */
+	void            vprintf(util::format_argument_pack<std::ostream> const &args);
+	void            vprintf(util::format_argument_pack<std::ostream> &&args);
+	void            vprintf_wrap(int wrapcol, util::format_argument_pack<std::ostream> const &args);
+	void            vprintf_wrap(int wrapcol, util::format_argument_pack<std::ostream> &&args);
+	text_buffer *   get_console_textbuf() const { return m_console_textbuf; }
+
+	/* errorlog management */
+	void            errorlog_write_line(const char *line);
+	text_buffer *   get_errorlog_textbuf() const { return m_errorlog_textbuf; }
+
+	/* convenience templates */
+	template <typename Format, typename... Params>
+	inline void printf(Format &&fmt, Params &&...args)
+	{
+		vprintf(util::make_format_argument_pack(std::forward<Format>(fmt), std::forward<Params>(args)...));
+	}
+	template <typename Format, typename... Params>
+	inline void printf_wrap(int wrapcol, Format &&fmt, Params &&...args)
+	{
+		vprintf_wrap(wrapcol, util::make_format_argument_pack(std::forward<Format>(fmt), std::forward<Params>(args)...));
+	}
+
+	static const char * cmderr_to_string(CMDERR error);
+
+private:
+	void exit();
+
+	void trim_parameter(char **paramptr, bool keep_quotes);
+	CMDERR internal_execute_command(bool execute, int params, char **param);
+	CMDERR internal_parse_command(const std::string &original_command, bool execute);
+
+	struct debug_command
+	{
+		debug_command * next;
+		char            command[32];
+		const char *    params;
+		const char *    help;
+		std::function<void(int, const std::vector<std::string> &)> handler;
+		u32             flags;
+		int             ref;
+		int             minparams;
+		int             maxparams;
+	};
+
+	running_machine &m_machine;
+
+	text_buffer     *m_console_textbuf;
+	text_buffer     *m_errorlog_textbuf;
+
+	debug_command   *m_commandlist;
+};
+
+#endif // MAME_EMU_DEBUG_DEBUGCON_H
+>>>>>>> upstream/master

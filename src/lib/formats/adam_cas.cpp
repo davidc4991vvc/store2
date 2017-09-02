@@ -50,19 +50,33 @@ Data is phase encoded, with 70us bit cells with a transition at 31us for a 1 and
 ****************************************************************/
 
 
+<<<<<<< HEAD
 static casserr_t coladam_ddp_identify ( cassette_image *cass, struct CassetteOptions *opts )
+=======
+static cassette_image::error coladam_ddp_identify ( cassette_image *cass, struct CassetteOptions *opts )
+>>>>>>> upstream/master
 {
 	opts -> bits_per_sample = 16;
 	opts -> channels = 2;
 	opts -> sample_frequency = 44100;
+<<<<<<< HEAD
 	return CASSETTE_ERROR_SUCCESS;
+=======
+	return cassette_image::error::SUCCESS;
+>>>>>>> upstream/master
 }
 
 
 // Store byte of data
+<<<<<<< HEAD
 casserr_t coladam_put_byte(cassette_image *cass, int channel, double *time_index, int byte, int *prev_sign)
 {
 	casserr_t err = CASSETTE_ERROR_SUCCESS;
+=======
+cassette_image::error coladam_put_byte(cassette_image *cass, int channel, double *time_index, int byte, int *prev_sign)
+{
+	cassette_image::error err = cassette_image::error::SUCCESS;
+>>>>>>> upstream/master
 	for (int i = 0; i < 8; i++)
 	{
 		if(byte & 0x80)
@@ -83,11 +97,19 @@ casserr_t coladam_put_byte(cassette_image *cass, int channel, double *time_index
 	return err;
 }
 
+<<<<<<< HEAD
 casserr_t coladam_put_block(cassette_image *cass, int channel, double *time_index, int *prev_sign, int block_index, UINT8 *buffer, int layout_type)
 {
 	int i, checksum_16=0;
 	UINT8 header[] = { 0x16, 0x48, 0x45, 0x00, block_index, 0xff, (0xff - block_index), 0x00, 0x80, 0xf4 };
 	casserr_t err;
+=======
+cassette_image::error coladam_put_block(cassette_image *cass, int channel, double *time_index, int *prev_sign, int block_index, uint8_t *buffer, int layout_type)
+{
+	int i, checksum_16=0;
+	uint8_t header[] = { 0x16, 0x48, 0x45, 0x00, static_cast<uint8_t>(block_index), 0xff, static_cast<uint8_t>(0xff - block_index), 0x00, 0x80, 0xf4 };
+	cassette_image::error err;
+>>>>>>> upstream/master
 	if (layout_type == TYPE_GW)
 	{
 		header[1] = 0x47;
@@ -126,12 +148,21 @@ casserr_t coladam_put_block(cassette_image *cass, int channel, double *time_inde
 }
 
 
+<<<<<<< HEAD
 static casserr_t coladam_ddp_load( cassette_image *cass )
 {
 	double time = 0.;
 	int i, block, prev_sign=-1;
 	UINT8 buffer[0x400];
 	casserr_t err = CASSETTE_ERROR_SUCCESS;
+=======
+static cassette_image::error coladam_ddp_load( cassette_image *cass )
+{
+	double time = 0.;
+	int i, block, prev_sign=-1;
+	uint8_t buffer[0x400];
+	cassette_image::error err = cassette_image::error::SUCCESS;
+>>>>>>> upstream/master
 
 	// It would appear that data packs that originally had the type GW data layout and headers work fine when converted to type
 	// HE. Thus we set all tapes to type HE.
@@ -204,7 +235,11 @@ static casserr_t coladam_ddp_load( cassette_image *cass )
 
 
 static const struct CassetteFormat coladam_ddp =
+<<<<<<< HEAD
 { "ddp", coladam_ddp_identify, coladam_ddp_load, NULL /* no save */ };
+=======
+{ "ddp", coladam_ddp_identify, coladam_ddp_load, nullptr /* no save */ };
+>>>>>>> upstream/master
 
 CASSETTE_FORMATLIST_START(coleco_adam_cassette_formats)
 	CASSETTE_FORMAT(coladam_ddp)

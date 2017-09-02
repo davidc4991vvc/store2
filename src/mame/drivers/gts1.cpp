@@ -66,6 +66,10 @@ ToDo:
 *****************************************************************************************************/
 
 
+<<<<<<< HEAD
+=======
+#include "emu.h"
+>>>>>>> upstream/master
 #include "machine/genpin.h"
 #include "machine/ra17xx.h"
 #include "machine/r10696.h"
@@ -87,7 +91,11 @@ public:
 	gts1_state(const machine_config &mconfig, device_type type, const char *tag)
 		: genpin_class(mconfig, type, tag)
 		, m_maincpu(*this, "maincpu")
+<<<<<<< HEAD
 		, m_switches(*this, "X")
+=======
+		, m_switches(*this, "X.%u", 0)
+>>>>>>> upstream/master
 	{ }
 
 	DECLARE_DRIVER_INIT(gts1);
@@ -104,6 +112,7 @@ public:
 	DECLARE_READ8_MEMBER (gts1_io_r);
 	DECLARE_WRITE8_MEMBER(gts1_io_w);
 	DECLARE_READ8_MEMBER (gts1_pa_r);
+<<<<<<< HEAD
 	DECLARE_WRITE8_MEMBER(gts1_pa_w);
 	DECLARE_WRITE8_MEMBER(gts1_pb_w);
 private:
@@ -116,6 +125,19 @@ private:
 	bool m_nvram_wr;            //!< NVRWAM write (W/R line)
 	UINT16 m_6351_addr;         //!< ROM MM6351 address (12 bits)
 	UINT16 m_z30_out;           //!< 4-to-16 decoder outputs
+=======
+	DECLARE_WRITE8_MEMBER(gts1_do_w);
+private:
+	virtual void machine_reset() override;
+	required_device<cpu_device> m_maincpu;
+	required_ioport_array<5> m_switches;
+	uint8_t m_strobe;             //!< switches strobe lines (5 lower bits used)
+	uint8_t m_nvram_addr;         //!< NVRAM address
+	bool m_nvram_e2;            //!< NVRWAM enable (E2 line)
+	bool m_nvram_wr;            //!< NVRWAM write (W/R line)
+	uint16_t m_6351_addr;         //!< ROM MM6351 address (12 bits)
+	uint16_t m_z30_out;           //!< 4-to-16 decoder outputs
+>>>>>>> upstream/master
 };
 
 static ADDRESS_MAP_START( gts1_map, AS_PROGRAM, 8, gts1_state )
@@ -134,8 +156,11 @@ static ADDRESS_MAP_START( gts1_io, AS_IO, 8, gts1_state )
 	AM_RANGE(0x0060, 0x006f) AM_DEVREADWRITE ( "u2", r10696_device, io_r, io_w ) // (U2) NVRAM io chip
 	AM_RANGE(0x00d0, 0x00df) AM_DEVREADWRITE ( "u6", r10788_device, io_r, io_w ) // (U6) display chip
 	AM_RANGE(0x0000, 0x00ff) AM_READ ( gts1_io_r ) AM_WRITE( gts1_io_w )         // catch undecoded I/O accesss
+<<<<<<< HEAD
 	AM_RANGE(0x0100, 0x0100) AM_READ ( gts1_pa_r ) AM_WRITE( gts1_pa_w )         // CPU I/O port A (input/output)
 	AM_RANGE(0x0101, 0x0101) AM_WRITE( gts1_pb_w )                               // CPU I/O port B (output only)
+=======
+>>>>>>> upstream/master
 ADDRESS_MAP_END
 
 static INPUT_PORTS_START( gts1_dips )
@@ -342,7 +367,11 @@ DRIVER_INIT_MEMBER(gts1_state,gts1)
 
 READ8_MEMBER (gts1_state::gts1_solenoid_r)
 {
+<<<<<<< HEAD
 	UINT8 data = 0;
+=======
+	uint8_t data = 0;
+>>>>>>> upstream/master
 	LOG(("%s: solenoid[%02x] -> %x\n", __FUNCTION__, offset, data));
 	return data;
 }
@@ -387,8 +416,13 @@ WRITE8_MEMBER(gts1_state::gts1_solenoid_w)
 		break;
 	case 14:    // RAM control W/R
 		LOG(("%s: RAM control W/R <- %x\n", __FUNCTION__, data));
+<<<<<<< HEAD
 		break;
 		m_nvram_wr = (data & 1) ? true : false;
+=======
+		m_nvram_wr = (data & 1) ? true : false;
+		break;
+>>>>>>> upstream/master
 	case 15:    // spare
 		LOG(("%s: spare [%x] <- %x\n", __FUNCTION__, offset, data));
 		break;
@@ -397,7 +431,11 @@ WRITE8_MEMBER(gts1_state::gts1_solenoid_w)
 
 READ8_MEMBER (gts1_state::gts1_switches_r)
 {
+<<<<<<< HEAD
 	UINT8 data = 1;
+=======
+	uint8_t data = 1;
+>>>>>>> upstream/master
 	if (offset >= 8 && offset < 16) {
 		const int bit = offset - 8;
 		for (int i = 0; i < 5; i++) {
@@ -439,7 +477,11 @@ WRITE8_MEMBER(gts1_state::gts1_display_w)
 #define _f (1 << 5)
 #define _g (1 << 6)
 #define _h (1 << 7)
+<<<<<<< HEAD
 	static const UINT8 ttl7448_mod[16] = {
+=======
+	static const uint8_t ttl7448_mod[16] = {
+>>>>>>> upstream/master
 	/* 0 */  _a | _b | _c | _d | _e | _f,
 	/* 1 */  _h,
 	/* 2 */  _a | _b | _d | _e | _g,
@@ -457,12 +499,21 @@ WRITE8_MEMBER(gts1_state::gts1_display_w)
 	/* e */  _d | _e | _f | _g,
 	/* f */  0
 	};
+<<<<<<< HEAD
 	UINT8 a = ttl7448_mod[(data >> 0) & 15];
 	UINT8 b = ttl7448_mod[(data >> 4) & 15];
 	// LOG(("%s: offset:%d data:%02x a:%02x b:%02x\n", __FUNCTION__, offset, data, a, b));
 	if ((offset % 8) < 7) {
 		output_set_indexed_value("digit8_", offset, a);
 		output_set_indexed_value("digit8_", offset + 16, b);
+=======
+	uint8_t a = ttl7448_mod[(data >> 0) & 15];
+	uint8_t b = ttl7448_mod[(data >> 4) & 15];
+	// LOG(("%s: offset:%d data:%02x a:%02x b:%02x\n", __FUNCTION__, offset, data, a, b));
+	if ((offset % 8) < 7) {
+		output().set_indexed_value("digit8_", offset, a);
+		output().set_indexed_value("digit8_", offset + 16, b);
+>>>>>>> upstream/master
 	} else {
 		/*
 		 * For the 4 7-seg displays the segment h is turned back into
@@ -472,9 +523,15 @@ WRITE8_MEMBER(gts1_state::gts1_display_w)
 			a = _b | _c;
 		if (b & _h)
 			b = _b | _c;
+<<<<<<< HEAD
 		output_set_indexed_value("digit7_", offset, a);
 		// FIXME: there is nothing on outputs 22, 23, 30 and 31?
 		output_set_indexed_value("digit7_", offset + 16, b);
+=======
+		output().set_indexed_value("digit7_", offset, a);
+		// FIXME: there is nothing on outputs 22, 23, 30 and 31?
+		output().set_indexed_value("digit7_", offset + 16, b);
+>>>>>>> upstream/master
 	}
 #undef _a
 #undef _b
@@ -493,14 +550,23 @@ WRITE8_MEMBER(gts1_state::gts1_display_w)
  */
 READ8_MEMBER (gts1_state::gts1_nvram_r)
 {
+<<<<<<< HEAD
 	UINT8 data = 0x0f;
+=======
+	uint8_t data = 0x0f;
+>>>>>>> upstream/master
 	switch (offset)
 	{
 		case 0: // group A
 			// FIXME: Schematics says TO Z5
 			if (!m_nvram_wr && m_nvram_e2) {
+<<<<<<< HEAD
 				UINT8* nvram = memregion("nvram")->base();
 				assert(nvram != NULL);
+=======
+				uint8_t* nvram = memregion("nvram")->base();
+				assert(nvram != nullptr);
+>>>>>>> upstream/master
 				data = nvram[m_nvram_addr];
 				LOG(("%s: nvram[%02x] -> %x\n", __FUNCTION__, m_nvram_addr, data));
 			}
@@ -531,8 +597,13 @@ WRITE8_MEMBER(gts1_state::gts1_nvram_w)
 		case 2: // group C - data bits 3:0 of NVRAM
 			if (m_nvram_wr && m_nvram_e2) {
 				LOG(("%s: nvram[%02x] <- %x\n", __FUNCTION__, m_nvram_addr, data & 15));
+<<<<<<< HEAD
 				UINT8* nvram = memregion("nvram")->base();
 				assert(nvram != NULL);
+=======
+				uint8_t* nvram = memregion("nvram")->base();
+				assert(nvram != nullptr);
+>>>>>>> upstream/master
 				nvram[m_nvram_addr] = data & 15;
 			}
 			break;
@@ -546,11 +617,19 @@ WRITE8_MEMBER(gts1_state::gts1_nvram_w)
  */
 READ8_MEMBER (gts1_state::gts1_lamp_apm_r)
 {
+<<<<<<< HEAD
 	UINT8 data = 0x0f;
 	switch (offset) {
 		case 0: // group A switches S01-S04, S09-S12, S17-S20
 			if (m_z30_out & 1) {
 				UINT8 dsw0 = ioport("DSW0")->read();
+=======
+	uint8_t data = 0x0f;
+	switch (offset) {
+		case 0: // group A switches S01-S04, S09-S12, S17-S20
+			if (m_z30_out & 1) {
+				uint8_t dsw0 = ioport("DSW0")->read();
+>>>>>>> upstream/master
 				if (0 == BIT(dsw0,0)) // S01
 					data &= ~(1 << 3);
 				if (0 == BIT(dsw0,1)) // S02
@@ -561,7 +640,11 @@ READ8_MEMBER (gts1_state::gts1_lamp_apm_r)
 					data &= ~(1 << 0);
 			}
 			if (m_z30_out & 2) {
+<<<<<<< HEAD
 				UINT8 dsw1 = ioport("DSW1")->read();
+=======
+				uint8_t dsw1 = ioport("DSW1")->read();
+>>>>>>> upstream/master
 				if (0 == BIT(dsw1,0)) // S09
 					data &= ~(1 << 0);
 				if (0 == BIT(dsw1,1)) // S10
@@ -572,7 +655,11 @@ READ8_MEMBER (gts1_state::gts1_lamp_apm_r)
 					data &= ~(1 << 3);
 			}
 			if (m_z30_out & 4) {
+<<<<<<< HEAD
 				UINT8 dsw2 = ioport("DSW2")->read();
+=======
+				uint8_t dsw2 = ioport("DSW2")->read();
+>>>>>>> upstream/master
 				if (0 == BIT(dsw2,0)) // S17
 					data &= ~(1 << 0);
 				if (0 == BIT(dsw2,1)) // S18
@@ -585,7 +672,11 @@ READ8_MEMBER (gts1_state::gts1_lamp_apm_r)
 			break;
 		case 1: // group B switches S05-S08, S09-S12, S17-S20
 			if (m_z30_out & 1) {
+<<<<<<< HEAD
 				UINT8 dsw0 = ioport("DSW0")->read();
+=======
+				uint8_t dsw0 = ioport("DSW0")->read();
+>>>>>>> upstream/master
 				if (0 == BIT(dsw0,4)) // S05
 					data &= ~(1 << 3);
 				if (0 == BIT(dsw0,5)) // S06
@@ -596,7 +687,11 @@ READ8_MEMBER (gts1_state::gts1_lamp_apm_r)
 					data &= ~(1 << 0);
 			}
 			if (m_z30_out & 2) {
+<<<<<<< HEAD
 				UINT8 dsw1 = ioport("DSW1")->read();
+=======
+				uint8_t dsw1 = ioport("DSW1")->read();
+>>>>>>> upstream/master
 				if (0 == BIT(dsw1,4)) // S13
 					data &= ~(1 << 0);
 				if (0 == BIT(dsw1,5)) // S14
@@ -607,7 +702,11 @@ READ8_MEMBER (gts1_state::gts1_lamp_apm_r)
 					data &= ~(1 << 3);
 			}
 			if (m_z30_out & 4) {
+<<<<<<< HEAD
 				UINT8 dsw2 = ioport("DSW2")->read();
+=======
+				uint8_t dsw2 = ioport("DSW2")->read();
+>>>>>>> upstream/master
 				if (0 == BIT(dsw2,4)) // S21
 					data &= ~(1 << 0);
 				if (0 == BIT(dsw2,5)) // S22
@@ -650,7 +749,11 @@ WRITE8_MEMBER(gts1_state::gts1_lamp_apm_w)
 
 READ8_MEMBER (gts1_state::gts1_io_r)
 {
+<<<<<<< HEAD
 	const UINT8 data = 0x0f;
+=======
+	const uint8_t data = 0x0f;
+>>>>>>> upstream/master
 	LOG(("%s: unmapped io[%02x] -> %x\n", __FUNCTION__, offset, data));
 	return data;
 }
@@ -663,12 +766,18 @@ WRITE8_MEMBER(gts1_state::gts1_io_w)
 READ8_MEMBER (gts1_state::gts1_pa_r)
 {
 	// return ROM nibble
+<<<<<<< HEAD
 	UINT8 *ROM = memregion("maincpu")->base();
 	UINT8 data = ROM[0x2000 + m_6351_addr] & 0x0f;
+=======
+	uint8_t *ROM = memregion("maincpu")->base();
+	uint8_t data = ROM[0x2000 + m_6351_addr] & 0x0f;
+>>>>>>> upstream/master
 	LOG(("%s: ROM[%03x]:%02x\n", __FUNCTION__, m_6351_addr, data));
 	return data;
 }
 
+<<<<<<< HEAD
 WRITE8_MEMBER(gts1_state::gts1_pa_w)
 {
 	// write address lines 7-4
@@ -690,6 +799,24 @@ static MACHINE_CONFIG_START( gts1, gts1_state )
 	MCFG_CPU_PROGRAM_MAP(gts1_map)
 	MCFG_CPU_DATA_MAP(gts1_data)
 	MCFG_CPU_IO_MAP(gts1_io)
+=======
+WRITE8_MEMBER(gts1_state::gts1_do_w)
+{
+	// write address lines (DO1-4 to A0-3, DIO1-4 to A4-7)
+	m_6351_addr = (m_6351_addr & 0x300) | data;
+	LOG(("%s: ROM addr:%02x\n", __FUNCTION__, m_6351_addr));
+}
+
+
+static MACHINE_CONFIG_START( gts1 )
+	/* basic machine hardware */
+	MCFG_CPU_ADD("maincpu", PPS4_2, XTAL_3_579545MHz)  // divided by 18 in the CPU
+	MCFG_CPU_PROGRAM_MAP(gts1_map)
+	MCFG_CPU_DATA_MAP(gts1_data)
+	MCFG_CPU_IO_MAP(gts1_io)
+	MCFG_PPS4_DISCRETE_INPUT_A_CB(READ8(gts1_state, gts1_pa_r))
+	MCFG_PPS4_DISCRETE_OUTPUT_CB(WRITE8(gts1_state, gts1_do_w))
+>>>>>>> upstream/master
 
 	MCFG_NVRAM_ADD_0FILL("nvram")
 
@@ -697,11 +824,19 @@ static MACHINE_CONFIG_START( gts1, gts1_state )
 	MCFG_DEVICE_ADD( "u5", RA17XX, 0 )
 	MCFG_RA17XX_READ ( READ8 (gts1_state,gts1_switches_r) )
 	MCFG_RA17XX_WRITE( WRITE8(gts1_state,gts1_switches_w) )
+<<<<<<< HEAD
+=======
+	MCFG_RA17XX_CPU("maincpu")
+>>>>>>> upstream/master
 
 	/* A1752CF 2048 x 8 ROM (800-fff), 128 x 4 RAM (80-ff) and 16 I/O lines (40 ... 4f) */
 	MCFG_DEVICE_ADD( "u4", RA17XX, 0 )
 	MCFG_RA17XX_READ ( READ8 (gts1_state,gts1_solenoid_r) )
 	MCFG_RA17XX_WRITE( WRITE8(gts1_state,gts1_solenoid_w) )
+<<<<<<< HEAD
+=======
+	MCFG_RA17XX_CPU("maincpu")
+>>>>>>> upstream/master
 
 	/* 10696 General Purpose Input/Output */
 	MCFG_DEVICE_ADD( "u2", R10696, 0 )
@@ -975,10 +1110,17 @@ ROM_START(sys1test)
 ROM_END
 
 
+<<<<<<< HEAD
 GAME(1977,  gts1,       0,          gts1,   gts1,     gts1_state,   gts1,   ROT0,   "Gottlieb",     "System 1", MACHINE_IS_BIOS_ROOT)
 
 //Exact same roms as gts1 with added hardware we'll likely need roms for to emulate properly
 GAME(1979,  gts1s,      gts1,       gts1,   gts1,     gts1_state,   gts1,   ROT0,   "Gottlieb",     "System 1 with sound board", MACHINE_IS_BIOS_ROOT)
+=======
+GAME(1977,  gts1,       0,          gts1,   gts1,     gts1_state,   gts1,   ROT0,   "Gottlieb",     "System 1", MACHINE_IS_BIOS_ROOT | MACHINE_NOT_WORKING)
+
+//Exact same roms as gts1 with added hardware we'll likely need roms for to emulate properly
+GAME(1979,  gts1s,      gts1,       gts1,   gts1,     gts1_state,   gts1,   ROT0,   "Gottlieb",     "System 1 with sound board", MACHINE_IS_BIOS_ROOT | MACHINE_NOT_WORKING )
+>>>>>>> upstream/master
 GAME(19??,  sys1test,   gts1,       gts1,   gts1,     gts1_state,   gts1,   ROT0,   "Gottlieb",     "System 1 Test prom",                   MACHINE_IS_SKELETON_MECHANICAL)
 
 // chimes

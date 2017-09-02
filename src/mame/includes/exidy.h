@@ -8,6 +8,10 @@
 
 #include "sound/dac.h"
 #include "sound/samples.h"
+<<<<<<< HEAD
+=======
+#include "screen.h"
+>>>>>>> upstream/master
 
 #define EXIDY_MASTER_CLOCK              (XTAL_11_289MHz)
 #define EXIDY_CPU_CLOCK                 (EXIDY_MASTER_CLOCK / 16)
@@ -52,12 +56,17 @@ public:
 
 
 	required_device<cpu_device> m_maincpu;
+<<<<<<< HEAD
 	optional_device<dac_device> m_dac;
+=======
+	optional_device<dac_bit_interface> m_dac;
+>>>>>>> upstream/master
 	optional_device<samples_device> m_samples;
 	required_device<gfxdecode_device> m_gfxdecode;
 	required_device<screen_device> m_screen;
 	required_device<palette_device> m_palette;
 
+<<<<<<< HEAD
 	required_shared_ptr<UINT8> m_videoram;
 	required_shared_ptr<UINT8> m_sprite1_xpos;
 	required_shared_ptr<UINT8> m_sprite1_ypos;
@@ -73,6 +82,23 @@ public:
 	UINT8 m_collision_invert;
 	int m_is_2bpp;
 	UINT8 m_int_condition;
+=======
+	required_shared_ptr<uint8_t> m_videoram;
+	required_shared_ptr<uint8_t> m_sprite1_xpos;
+	required_shared_ptr<uint8_t> m_sprite1_ypos;
+	required_shared_ptr<uint8_t> m_sprite2_xpos;
+	required_shared_ptr<uint8_t> m_sprite2_ypos;
+	required_shared_ptr<uint8_t> m_spriteno;
+	required_shared_ptr<uint8_t> m_sprite_enable;
+	required_shared_ptr<uint8_t> m_color_latch;
+	required_shared_ptr<uint8_t> m_characterram;
+
+	uint8_t m_last_dial;
+	uint8_t m_collision_mask;
+	uint8_t m_collision_invert;
+	int m_is_2bpp;
+	uint8_t m_int_condition;
+>>>>>>> upstream/master
 	bitmap_ind16 m_background_bitmap;
 	bitmap_ind16 m_motion_object_1_vid;
 	bitmap_ind16 m_motion_object_2_vid;
@@ -94,6 +120,7 @@ public:
 	DECLARE_DRIVER_INIT(spectar);
 	DECLARE_DRIVER_INIT(phantoma);
 
+<<<<<<< HEAD
 	virtual void video_start();
 	DECLARE_MACHINE_START(teetert);
 
@@ -102,6 +129,16 @@ public:
 	INTERRUPT_GEN_MEMBER(exidy_vblank_interrupt);
 
 	void exidy_video_config(UINT8 _collision_mask, UINT8 _collision_invert, int _is_2bpp);
+=======
+	virtual void video_start() override;
+	DECLARE_MACHINE_START(teetert);
+
+	uint32_t screen_update_exidy(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
+
+	INTERRUPT_GEN_MEMBER(exidy_vblank_interrupt);
+
+	void exidy_video_config(uint8_t _collision_mask, uint8_t _collision_invert, int _is_2bpp);
+>>>>>>> upstream/master
 	inline void latch_condition(int collision);
 	inline void set_1_color(int index, int which);
 	void set_colors();
@@ -112,6 +149,7 @@ public:
 
 	/* Targ and Spectar samples */
 	int m_max_freq;
+<<<<<<< HEAD
 	UINT8 m_port_1_last;
 	UINT8 m_port_2_last;
 	UINT8 m_tone_freq;
@@ -121,13 +159,29 @@ public:
 	DECLARE_WRITE8_MEMBER(targ_audio_2_w);
 	DECLARE_WRITE8_MEMBER(spectar_audio_2_w);
 	void adjust_sample(UINT8 freq);
+=======
+	uint8_t m_port_1_last;
+	uint8_t m_port_2_last;
+	uint8_t m_tone_freq;
+	uint8_t m_tone_active;
+	uint8_t m_tone_pointer;
+	DECLARE_WRITE8_MEMBER(targ_audio_1_w);
+	DECLARE_WRITE8_MEMBER(targ_audio_2_w);
+	DECLARE_WRITE8_MEMBER(spectar_audio_2_w);
+	void adjust_sample(uint8_t freq);
+>>>>>>> upstream/master
 	void common_audio_start(int freq);
 	SAMPLES_START_CB_MEMBER(spectar_audio_start);
 	SAMPLES_START_CB_MEMBER(targ_audio_start);
 
 protected:
+<<<<<<< HEAD
 	virtual void device_timer(emu_timer &timer, device_timer_id id, int param, void *ptr);
 };
 
 MACHINE_CONFIG_EXTERN( spectar_audio );
 MACHINE_CONFIG_EXTERN( targ_audio );
+=======
+	virtual void device_timer(emu_timer &timer, device_timer_id id, int param, void *ptr) override;
+};
+>>>>>>> upstream/master

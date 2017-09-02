@@ -25,8 +25,13 @@ public:
 	required_device<tilemap_device> m_alpha_tilemap;
 	required_device<atari_motion_objects_device> m_mob;
 
+<<<<<<< HEAD
 	UINT16          m_h256;
 	virtual void update_interrupts();
+=======
+	uint16_t          m_h256;
+	virtual void update_interrupts() override;
+>>>>>>> upstream/master
 	DECLARE_READ16_MEMBER(special_port1_r);
 	DECLARE_DRIVER_INIT(xybots);
 	TILE_GET_INFO_MEMBER(get_alpha_tile_info);
@@ -34,7 +39,11 @@ public:
 	DECLARE_MACHINE_START(xybots);
 	DECLARE_MACHINE_RESET(xybots);
 	DECLARE_VIDEO_START(xybots);
+<<<<<<< HEAD
 	UINT32 screen_update_xybots(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
+=======
+	uint32_t screen_update_xybots(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
+>>>>>>> upstream/master
 
 	static const atari_motion_objects_config s_mob_config;
 };

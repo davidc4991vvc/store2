@@ -17,12 +17,21 @@
 
 **********************************************************************/
 
+<<<<<<< HEAD
 #pragma once
 
 #ifndef __DM9368__
 #define __DM9368__
 
 #include "emu.h"
+=======
+#ifndef MAME_VIDEO_DM9368_H
+#define MAME_VIDEO_DM9368_H
+
+#pragma once
+
+#include "dioutput.h"
+>>>>>>> upstream/master
 
 
 
@@ -46,16 +55,26 @@ class dm9368_device :   public device_t,
 {
 public:
 	// construction/destruction
+<<<<<<< HEAD
 	dm9368_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
 
 	void a_w(UINT8 data);
+=======
+	dm9368_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
+
+	void a_w(uint8_t data);
+>>>>>>> upstream/master
 
 	DECLARE_WRITE_LINE_MEMBER( rbi_w ) { m_rbi = state; }
 	DECLARE_READ_LINE_MEMBER( rbo_r ) { return m_rbo; }
 
 protected:
 	// device-level overrides
+<<<<<<< HEAD
 	virtual void device_start();
+=======
+	virtual void device_start() override;
+>>>>>>> upstream/master
 
 private:
 	devcb_write_line   m_write_rbo;
@@ -63,13 +82,23 @@ private:
 	int m_rbi;
 	int m_rbo;
 
+<<<<<<< HEAD
 	static const UINT8 m_segment_data[];
+=======
+	static const uint8_t s_segment_data[16];
+>>>>>>> upstream/master
 };
 
 
 // device type definition
+<<<<<<< HEAD
 extern const device_type DM9368;
 
 
 
 #endif
+=======
+DECLARE_DEVICE_TYPE(DM9368, dm9368_device)
+
+#endif // MAME_VIDEO_DM9368_H
+>>>>>>> upstream/master

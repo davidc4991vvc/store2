@@ -1,10 +1,19 @@
 // license:BSD-3-Clause
 // copyright-holders:David Haywood
+<<<<<<< HEAD
+=======
+
+>>>>>>> upstream/master
 /*************************************************************************
 
     Success Joe / Ashita no Joe
 
 *************************************************************************/
+<<<<<<< HEAD
+=======
+
+#include "machine/gen_latch.h"
+>>>>>>> upstream/master
 #include "sound/msm5205.h"
 
 class ashnojoe_state : public driver_device
@@ -20,6 +29,7 @@ public:
 		m_tileram_7(*this, "tileram_7"),
 		m_tileram(*this, "tileram"),
 		m_tilemap_reg(*this, "tilemap_reg"),
+<<<<<<< HEAD
 		m_audiocpu(*this, "audiocpu"),
 		m_maincpu(*this, "maincpu"),
 		m_msm(*this, "msm"),
@@ -35,6 +45,24 @@ public:
 	required_shared_ptr<UINT16> m_tileram_7;
 	required_shared_ptr<UINT16> m_tileram;
 	required_shared_ptr<UINT16> m_tilemap_reg;
+=======
+		m_maincpu(*this, "maincpu"),
+		m_audiocpu(*this, "audiocpu"),
+		m_msm(*this, "msm"),
+		m_gfxdecode(*this, "gfxdecode"),
+		m_soundlatch(*this, "soundlatch") { }
+
+	/* memory pointers */
+	uint16_t *    m_tileram_1;
+	required_shared_ptr<uint16_t> m_tileram_3;
+	required_shared_ptr<uint16_t> m_tileram_4;
+	required_shared_ptr<uint16_t> m_tileram_5;
+	required_shared_ptr<uint16_t> m_tileram_2;
+	required_shared_ptr<uint16_t> m_tileram_6;
+	required_shared_ptr<uint16_t> m_tileram_7;
+	required_shared_ptr<uint16_t> m_tileram;
+	required_shared_ptr<uint16_t> m_tilemap_reg;
+>>>>>>> upstream/master
 
 	/* video-related */
 	tilemap_t     *m_joetilemap;
@@ -46,6 +74,7 @@ public:
 	tilemap_t     *m_joetilemap7;
 
 	/* sound-related */
+<<<<<<< HEAD
 	UINT8       m_adpcm_byte;
 	int         m_soundlatch_status;
 	int         m_msm5205_vclk_toggle;
@@ -56,6 +85,20 @@ public:
 	DECLARE_WRITE16_MEMBER(ashnojoe_soundlatch_w);
 	DECLARE_WRITE8_MEMBER(adpcm_w);
 	DECLARE_READ8_MEMBER(sound_latch_r);
+=======
+	uint8_t       m_adpcm_byte;
+	int         m_msm5205_vclk_toggle;
+
+	/* devices */
+	required_device<cpu_device> m_maincpu;
+	required_device<cpu_device> m_audiocpu;
+	required_device<msm5205_device> m_msm;
+	required_device<gfxdecode_device> m_gfxdecode;
+	required_device<generic_latch_8_device> m_soundlatch;
+
+	DECLARE_READ16_MEMBER(fake_4a00a_r);
+	DECLARE_WRITE8_MEMBER(adpcm_w);
+>>>>>>> upstream/master
 	DECLARE_READ8_MEMBER(sound_latch_status_r);
 	DECLARE_WRITE16_MEMBER(ashnojoe_tileram_w);
 	DECLARE_WRITE16_MEMBER(ashnojoe_tileram2_w);
@@ -76,6 +119,7 @@ public:
 	TILE_GET_INFO_MEMBER(get_joe_tile_info_5);
 	TILE_GET_INFO_MEMBER(get_joe_tile_info_6);
 	TILE_GET_INFO_MEMBER(get_joe_tile_info_7);
+<<<<<<< HEAD
 	virtual void machine_start();
 	virtual void machine_reset();
 	virtual void video_start();
@@ -85,4 +129,11 @@ public:
 	required_device<cpu_device> m_maincpu;
 	required_device<msm5205_device> m_msm;
 	required_device<gfxdecode_device> m_gfxdecode;
+=======
+	virtual void machine_start() override;
+	virtual void machine_reset() override;
+	virtual void video_start() override;
+	uint32_t screen_update_ashnojoe(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
+	DECLARE_WRITE_LINE_MEMBER(ashnojoe_vclk_cb);
+>>>>>>> upstream/master
 };

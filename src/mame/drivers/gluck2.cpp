@@ -189,6 +189,7 @@
 
 *******************************************************************************/
 
+<<<<<<< HEAD
 
 #define MASTER_CLOCK    XTAL_10MHz
 #define SND_CLOCK       XTAL_3_579545MHz
@@ -199,6 +200,20 @@
 #include "sound/2413intf.h"
 #include "video/mc6845.h"
 #include "machine/nvram.h"
+=======
+#include "emu.h"
+#include "cpu/m6502/m6502.h"
+#include "machine/nvram.h"
+#include "sound/ay8910.h"
+#include "sound/ym2413.h"
+#include "video/mc6845.h"
+#include "screen.h"
+#include "speaker.h"
+
+
+#define MASTER_CLOCK    XTAL_10MHz
+#define SND_CLOCK       XTAL_3_579545MHz
+>>>>>>> upstream/master
 
 
 class gluck2_state : public driver_device
@@ -214,8 +229,13 @@ public:
 	required_device<cpu_device> m_maincpu;
 	required_device<gfxdecode_device> m_gfxdecode;
 
+<<<<<<< HEAD
 	required_shared_ptr<UINT8> m_videoram;
 	required_shared_ptr<UINT8> m_colorram;
+=======
+	required_shared_ptr<uint8_t> m_videoram;
+	required_shared_ptr<uint8_t> m_colorram;
+>>>>>>> upstream/master
 
 	tilemap_t *m_bg_tilemap;
 
@@ -224,10 +244,16 @@ public:
 	DECLARE_WRITE8_MEMBER(counters_w);
 	TILE_GET_INFO_MEMBER(get_tile_info);
 
+<<<<<<< HEAD
 	virtual void video_start();
 	DECLARE_PALETTE_INIT(gluck2);
 
 	UINT32 screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
+=======
+	virtual void video_start() override;
+
+	uint32_t screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
+>>>>>>> upstream/master
 };
 
 
@@ -268,17 +294,26 @@ TILE_GET_INFO_MEMBER(gluck2_state::get_tile_info)
 
 void gluck2_state::video_start()
 {
+<<<<<<< HEAD
 	m_bg_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(gluck2_state::get_tile_info),this), TILEMAP_SCAN_ROWS, 8, 8, 32, 32);
 }
 
 
 UINT32 gluck2_state::screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+=======
+	m_bg_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(gluck2_state::get_tile_info),this), TILEMAP_SCAN_ROWS, 8, 8, 32, 32);
+}
+
+
+uint32_t gluck2_state::screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+>>>>>>> upstream/master
 {
 	m_bg_tilemap->draw(screen, bitmap, cliprect, 0, 0);
 	return 0;
 }
 
 
+<<<<<<< HEAD
 PALETTE_INIT_MEMBER(gluck2_state, gluck2)
 {
 	const UINT8 *color_prom = memregion("proms")->base();
@@ -316,6 +351,8 @@ PALETTE_INIT_MEMBER(gluck2_state, gluck2)
 }
 
 
+=======
+>>>>>>> upstream/master
 /**********************************************
 *                R/W Handlers                 *
 **********************************************/
@@ -332,9 +369,15 @@ WRITE8_MEMBER(gluck2_state::counters_w)
 */
 	data = data ^ 0xff; // inverted
 
+<<<<<<< HEAD
 	coin_counter_w(machine(), 0, data & 0x10);  /* coins */
 	coin_counter_w(machine(), 1, data & 0x02);  /* notes */
 	coin_counter_w(machine(), 2, data & 0x04);  /* payout */
+=======
+	machine().bookkeeping().coin_counter_w(0, data & 0x10);  /* coins */
+	machine().bookkeeping().coin_counter_w(1, data & 0x02);  /* notes */
+	machine().bookkeeping().coin_counter_w(2, data & 0x04);  /* payout */
+>>>>>>> upstream/master
 }
 
 
@@ -513,7 +556,11 @@ GFXDECODE_END
 *              Machine Drivers               *
 *********************************************/
 
+<<<<<<< HEAD
 static MACHINE_CONFIG_START( gluck2, gluck2_state )
+=======
+static MACHINE_CONFIG_START( gluck2 )
+>>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", M6502, MASTER_CLOCK/16) /* guess */
@@ -536,8 +583,12 @@ static MACHINE_CONFIG_START( gluck2, gluck2_state )
 	MCFG_SCREEN_PALETTE("palette")
 
 	MCFG_GFXDECODE_ADD("gfxdecode", "palette", gluck2)
+<<<<<<< HEAD
 	MCFG_PALETTE_ADD("palette", 0x100)
 	MCFG_PALETTE_INIT_OWNER(gluck2_state, gluck2)
+=======
+	MCFG_PALETTE_ADD_RRRRGGGGBBBB_PROMS("palette", "proms", 256)
+>>>>>>> upstream/master
 
 	MCFG_MC6845_ADD("crtc", MC6845, "screen", MASTER_CLOCK/16) /* guess */
 	MCFG_MC6845_SHOW_BORDER_AREA(false)
@@ -584,5 +635,10 @@ ROM_END
 *                Game Drivers                *
 *********************************************/
 
+<<<<<<< HEAD
 /*    YEAR  NAME      PARENT  MACHINE   INPUT     STATE          INIT   ROT    COMPANY          FULLNAME       FLAGS... */
 GAME( 1992, gluck2,   0,      gluck2,   gluck2,   driver_device, 0,     ROT0, "Yung Yu / CYE", "Good Luck II", MACHINE_SUPPORTS_SAVE )
+=======
+//    YEAR  NAME      PARENT  MACHINE   INPUT     STATE         INIT   ROT    COMPANY          FULLNAME       FLAGS...
+GAME( 1992, gluck2,   0,      gluck2,   gluck2,   gluck2_state, 0,     ROT0, "Yung Yu / CYE", "Good Luck II", MACHINE_SUPPORTS_SAVE )
+>>>>>>> upstream/master

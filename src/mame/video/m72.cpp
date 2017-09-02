@@ -2,6 +2,10 @@
 // copyright-holders:Nicola Salmoria
 #include "emu.h"
 #include "includes/m72.h"
+<<<<<<< HEAD
+=======
+#include "cpu/nec/v25.h"
+>>>>>>> upstream/master
 
 /***************************************************************************
 
@@ -9,7 +13,11 @@
 
 ***************************************************************************/
 
+<<<<<<< HEAD
 inline void m72_state::m72_m81_get_tile_info(tile_data &tileinfo,int tile_index,const UINT16 *vram,int gfxnum)
+=======
+inline void m72_state::m72_m81_get_tile_info(tile_data &tileinfo,int tile_index,const uint16_t *vram,int gfxnum)
+>>>>>>> upstream/master
 {
 	int code,attr,color,pri;
 
@@ -37,7 +45,11 @@ inline void m72_state::m72_m81_get_tile_info(tile_data &tileinfo,int tile_index,
 	tileinfo.group = pri;
 }
 
+<<<<<<< HEAD
 inline void m72_state::m82_m84_get_tile_info(tile_data &tileinfo,int tile_index,const UINT16 *vram,int gfxnum)
+=======
+inline void m72_state::m82_m84_get_tile_info(tile_data &tileinfo,int tile_index,const uint16_t *vram,int gfxnum)
+>>>>>>> upstream/master
 {
 	int code,attr,color,pri;
 
@@ -105,16 +117,27 @@ void m72_state::register_savestate()
 	save_item(NAME(m_scrolly1));
 	save_item(NAME(m_scrollx2));
 	save_item(NAME(m_scrolly2));
+<<<<<<< HEAD
 	save_pointer(NAME(m_buffered_spriteram), m_spriteram.bytes()/2);
+=======
+	save_pointer(NAME(m_buffered_spriteram.get()), m_spriteram.bytes()/2);
+>>>>>>> upstream/master
 }
 
 
 VIDEO_START_MEMBER(m72_state,m72)
 {
+<<<<<<< HEAD
 	m_bg_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(m72_state::get_bg_tile_info),this),TILEMAP_SCAN_ROWS,8,8,64,64);
 	m_fg_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(m72_state::get_fg_tile_info),this),TILEMAP_SCAN_ROWS,8,8,64,64);
 
 	m_buffered_spriteram = auto_alloc_array(machine(), UINT16, m_spriteram.bytes()/2);
+=======
+	m_bg_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(m72_state::get_bg_tile_info),this),TILEMAP_SCAN_ROWS,8,8,64,64);
+	m_fg_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(m72_state::get_fg_tile_info),this),TILEMAP_SCAN_ROWS,8,8,64,64);
+
+	m_buffered_spriteram = std::make_unique<uint16_t[]>(m_spriteram.bytes()/2);
+>>>>>>> upstream/master
 
 	m_fg_tilemap->set_transmask(0,0xffff,0x0001);
 	m_fg_tilemap->set_transmask(1,0x00ff,0xff01);
@@ -128,7 +151,11 @@ VIDEO_START_MEMBER(m72_state,m72)
 	//m_bg_tilemap->set_transmask(2,0x001f,0xffe0); // needed for nspiritj japan warning to look correct
 	// not sure what is needed to be able to see the imgfghto warning message
 
+<<<<<<< HEAD
 	memset(m_buffered_spriteram,0,m_spriteram.bytes());
+=======
+	memset(m_buffered_spriteram.get(),0,m_spriteram.bytes());
+>>>>>>> upstream/master
 
 	m_fg_tilemap->set_scrolldx(0,0);
 	m_fg_tilemap->set_scrolldy(-128,-128);
@@ -182,11 +209,19 @@ TILEMAP_MAPPER_MEMBER(m72_state::m82_scan_rows)
 
 VIDEO_START_MEMBER(m72_state,m82)
 {
+<<<<<<< HEAD
 	m_fg_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(m72_state::rtype2_get_fg_tile_info),this),TILEMAP_SCAN_ROWS,8,8,64,64);
 	m_bg_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(m72_state::rtype2_get_bg_tile_info),this),TILEMAP_SCAN_ROWS,8,8,64,64);
 // The tilemap can be 256x64, but seems to be used at 128x64 (scroll wraparound).
 // The layout ramains 256x64, the right half is just not displayed.
 	m_bg_tilemap_large = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(m72_state::rtype2_get_bg_tile_info),this),tilemap_mapper_delegate(FUNC(m72_state::m82_scan_rows),this),8,8,128,64);
+=======
+	m_fg_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(m72_state::rtype2_get_fg_tile_info),this),TILEMAP_SCAN_ROWS,8,8,64,64);
+	m_bg_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(m72_state::rtype2_get_bg_tile_info),this),TILEMAP_SCAN_ROWS,8,8,64,64);
+// The tilemap can be 256x64, but seems to be used at 128x64 (scroll wraparound).
+// The layout ramains 256x64, the right half is just not displayed.
+	m_bg_tilemap_large = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(m72_state::rtype2_get_bg_tile_info),this),tilemap_mapper_delegate(FUNC(m72_state::m82_scan_rows),this),8,8,128,64);
+>>>>>>> upstream/master
 
 	m_fg_tilemap->set_transmask(0,0xffff,0x0001);
 	m_fg_tilemap->set_transmask(1,0x00ff,0xff01);
@@ -209,8 +244,13 @@ VIDEO_START_MEMBER(m72_state,m82)
 	m_bg_tilemap_large->set_scrolldx(4,0);
 	m_bg_tilemap_large->set_scrolldy(-128,-128);
 
+<<<<<<< HEAD
 	m_buffered_spriteram = auto_alloc_array(machine(), UINT16, m_spriteram.bytes()/2);
 	memset(m_buffered_spriteram,0,m_spriteram.bytes());
+=======
+	m_buffered_spriteram = std::make_unique<uint16_t[]>(m_spriteram.bytes()/2);
+	memset(m_buffered_spriteram.get(),0,m_spriteram.bytes());
+>>>>>>> upstream/master
 
 	register_savestate();
 	save_item(NAME(m_m82_rowscroll));
@@ -221,10 +261,17 @@ VIDEO_START_MEMBER(m72_state,m82)
 // M84
 VIDEO_START_MEMBER(m72_state,rtype2)
 {
+<<<<<<< HEAD
 	m_bg_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(m72_state::rtype2_get_bg_tile_info),this),TILEMAP_SCAN_ROWS,8,8,64,64);
 	m_fg_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(m72_state::rtype2_get_fg_tile_info),this),TILEMAP_SCAN_ROWS,8,8,64,64);
 
 	m_buffered_spriteram = auto_alloc_array(machine(), UINT16, m_spriteram.bytes()/2);
+=======
+	m_bg_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(m72_state::rtype2_get_bg_tile_info),this),TILEMAP_SCAN_ROWS,8,8,64,64);
+	m_fg_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(m72_state::rtype2_get_fg_tile_info),this),TILEMAP_SCAN_ROWS,8,8,64,64);
+
+	m_buffered_spriteram = std::make_unique<uint16_t[]>(m_spriteram.bytes()/2);
+>>>>>>> upstream/master
 
 	m_fg_tilemap->set_transmask(0,0xffff,0x0001);
 	m_fg_tilemap->set_transmask(1,0x00ff,0xff01);
@@ -234,7 +281,11 @@ VIDEO_START_MEMBER(m72_state,rtype2)
 	m_bg_tilemap->set_transmask(1,0x00ff,0xff00);
 	m_bg_tilemap->set_transmask(2,0x0001,0xfffe);
 
+<<<<<<< HEAD
 	memset(m_buffered_spriteram,0,m_spriteram.bytes());
+=======
+	memset(m_buffered_spriteram.get(),0,m_spriteram.bytes());
+>>>>>>> upstream/master
 
 	m_fg_tilemap->set_scrolldx(4,0);
 	m_fg_tilemap->set_scrolldy(-128,16);
@@ -265,9 +316,12 @@ VIDEO_START_MEMBER(m72_state,poundfor)
 	m_bg_tilemap->set_scrolldx(6,0);
 	m_fg_tilemap->set_scrolldy(-128,-128);
 	m_bg_tilemap->set_scrolldy(-128,-128);
+<<<<<<< HEAD
 
 	save_item(NAME(m_prev));
 	save_item(NAME(m_diff));
+=======
+>>>>>>> upstream/master
 }
 
 
@@ -344,8 +398,20 @@ WRITE16_MEMBER(m72_state::videoram2_w)
 
 WRITE16_MEMBER(m72_state::irq_line_w)
 {
+<<<<<<< HEAD
 	COMBINE_DATA(&m_raster_irq_position);
 //  printf("m_raster_irq_position %04x\n", m_raster_irq_position);
+=======
+	// KNA70H015(11): ISET
+	m_raster_irq_position = data & 0x1ff;
+//  printf("m_raster_irq_position %04x\n", m_raster_irq_position);
+
+	// bchopper title screen jumps around, as does ingame at times, if this isn't done here
+	if (m_upd71059c.found())
+		m_upd71059c->ir2_w(0);
+	else
+		m_maincpu->set_input_line(NEC_INPUT_LINE_INTP2, CLEAR_LINE);
+>>>>>>> upstream/master
 }
 
 WRITE16_MEMBER(m72_state::scrollx1_w)
@@ -375,6 +441,7 @@ WRITE16_MEMBER(m72_state::scrolly2_w)
 WRITE16_MEMBER(m72_state::dmaon_w)
 {
 	if (ACCESSING_BITS_0_7)
+<<<<<<< HEAD
 		memcpy(m_buffered_spriteram, m_spriteram, m_spriteram.bytes());
 }
 
@@ -423,6 +490,61 @@ WRITE16_MEMBER(m72_state::rtype2_port02_w)
 
 		/* other bits unknown */
 	}
+=======
+		memcpy(m_buffered_spriteram.get(), m_spriteram, m_spriteram.bytes());
+}
+
+
+WRITE8_MEMBER(m72_state::port02_w)
+{
+	if (data & 0xe0) logerror("write %02x to port 02\n",data);
+
+	/* bits 0/1 are coin counters */
+	machine().bookkeeping().coin_counter_w(0,data & 0x01);
+	machine().bookkeeping().coin_counter_w(1,data & 0x02);
+
+	/* bit 2 is flip screen (handled both by software and hardware) */
+	flip_screen_set(((data & 0x04) >> 2) ^ ((~ioport("DSW")->read() >> 8) & 1));
+
+	/* bit 3 is display disable */
+	m_video_off = data & 0x08;
+
+	/* bit 4 resets sound CPU (active low) */
+	if (data & 0x10)
+		m_soundcpu->set_input_line(INPUT_LINE_RESET, CLEAR_LINE);
+	else
+		m_soundcpu->set_input_line(INPUT_LINE_RESET, ASSERT_LINE);
+
+	/* bit 5 = "bank"? */
+}
+
+WRITE8_MEMBER(m72_state::rtype2_port02_w)
+{
+	if (data & 0xe0) logerror("write %02x to port 02\n",data);
+
+	/* bits 0/1 are coin counters */
+	machine().bookkeeping().coin_counter_w(0,data & 0x01);
+	machine().bookkeeping().coin_counter_w(1,data & 0x02);
+
+	/* bit 2 is flip screen (handled both by software and hardware) */
+	flip_screen_set(((data & 0x04) >> 2) ^ ((~ioport("DSW")->read() >> 8) & 1));
+
+	/* bit 3 is display disable */
+	m_video_off = data & 0x08;
+
+	/* other bits unknown */
+}
+
+WRITE8_MEMBER(m72_state::poundfor_port02_w)
+{
+	// bit 5 resets both uPD4701A?
+	m_upd4701[0]->resetx_w(BIT(data, 5));
+	m_upd4701[0]->resety_w(BIT(data, 5));
+	m_upd4701[1]->resetx_w(BIT(data, 5));
+	m_upd4701[1]->resety_w(BIT(data, 5));
+
+	rtype2_port02_w(space, 0, data & 0xbf);
+>>>>>>> upstream/master
 }
 
 
@@ -454,7 +576,11 @@ WRITE16_MEMBER(m72_state::m82_tm_ctrl_w)
 
 void m72_state::draw_sprites(bitmap_ind16 &bitmap,const rectangle &cliprect)
 {
+<<<<<<< HEAD
 	UINT16 *spriteram = m_buffered_spriteram;
+=======
+	uint16_t *spriteram = m_buffered_spriteram.get();
+>>>>>>> upstream/master
 	int offs;
 
 	offs = 0;
@@ -507,7 +633,11 @@ void m72_state::draw_sprites(bitmap_ind16 &bitmap,const rectangle &cliprect)
 
 void m72_state::majtitle_draw_sprites(bitmap_ind16 &bitmap,const rectangle &cliprect)
 {
+<<<<<<< HEAD
 	UINT16 *spriteram16_2 = m_spriteram2;
+=======
+	uint16_t *spriteram16_2 = m_spriteram2;
+>>>>>>> upstream/master
 	int offs;
 
 	for (offs = 0;offs < m_spriteram.bytes();offs += 4)
@@ -555,7 +685,11 @@ void m72_state::majtitle_draw_sprites(bitmap_ind16 &bitmap,const rectangle &clip
 	}
 }
 
+<<<<<<< HEAD
 UINT32 m72_state::screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+=======
+uint32_t m72_state::screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+>>>>>>> upstream/master
 {
 	if (m_video_off)
 	{
@@ -577,7 +711,11 @@ UINT32 m72_state::screen_update(screen_device &screen, bitmap_ind16 &bitmap, con
 	return 0;
 }
 
+<<<<<<< HEAD
 UINT32 m72_state::screen_update_m81(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+=======
+uint32_t m72_state::screen_update_m81(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+>>>>>>> upstream/master
 {
 	// on M81 the FG data always comes from the Ax roms
 	// the source of the BG data however depends on Jumper J3
@@ -589,7 +727,11 @@ UINT32 m72_state::screen_update_m81(screen_device &screen, bitmap_ind16 &bitmap,
 }
 
 
+<<<<<<< HEAD
 UINT32 m72_state::screen_update_m82(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+=======
+uint32_t m72_state::screen_update_m82(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+>>>>>>> upstream/master
 {
 	int i;
 

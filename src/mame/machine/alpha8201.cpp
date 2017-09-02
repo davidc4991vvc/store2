@@ -271,20 +271,34 @@ Notes:
 
 ***************************************************************************/
 
+<<<<<<< HEAD
+=======
+#include "emu.h"
+>>>>>>> upstream/master
 #include "cpu/hmcs40/hmcs40.h"
 #include "alpha8201.h"
 
 /**************************************************************************/
 
+<<<<<<< HEAD
 const device_type ALPHA_8201 = &device_creator<alpha_8201_device>;
+=======
+DEFINE_DEVICE_TYPE(ALPHA_8201, alpha_8201_device, "alpha8201", "ALPHA-8201")
+>>>>>>> upstream/master
 
 //-------------------------------------------------
 //  alpha_8201_device - constructor
 //-------------------------------------------------
 
+<<<<<<< HEAD
 alpha_8201_device::alpha_8201_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
 	: device_t(mconfig, ALPHA_8201, "ALPHA-8201", tag, owner, clock, "alpha8201", __FILE__),
 	m_mcu(*this, "mcu")
+=======
+alpha_8201_device::alpha_8201_device(const machine_config &mconfig, const char *tag, device_t *owner, u32 clock)
+	: device_t(mconfig, ALPHA_8201, tag, owner, clock)
+	, m_mcu(*this, "mcu")
+>>>>>>> upstream/master
 {
 }
 
@@ -295,7 +309,11 @@ alpha_8201_device::alpha_8201_device(const machine_config &mconfig, const char *
 
 void alpha_8201_device::device_start()
 {
+<<<<<<< HEAD
 	m_shared_ram = auto_alloc_array_clear(machine(), UINT8, 0x400);
+=======
+	m_shared_ram = make_unique_clear<u8[]>(0x400);
+>>>>>>> upstream/master
 
 	// zerofill
 	m_bus = 0;
@@ -304,15 +322,27 @@ void alpha_8201_device::device_start()
 	memset(m_mcu_r, 0, sizeof(m_mcu_r));
 
 	// register for savestates
+<<<<<<< HEAD
 	save_pointer(NAME(m_shared_ram), 0x400);
+=======
+	save_pointer(NAME(m_shared_ram.get()), 0x400);
+>>>>>>> upstream/master
 	save_item(NAME(m_bus));
 	save_item(NAME(m_mcu_address));
 	save_item(NAME(m_mcu_d));
 	save_item(NAME(m_mcu_r));
 }
 
+<<<<<<< HEAD
 // machine config additions
 static MACHINE_CONFIG_FRAGMENT(alpha8201)
+=======
+//-------------------------------------------------
+//  device_add_mconfig - add device configuration
+//-------------------------------------------------
+
+MACHINE_CONFIG_MEMBER(alpha_8201_device::device_add_mconfig)
+>>>>>>> upstream/master
 
 	MCFG_CPU_ADD("mcu", HD44801, DERIVED_CLOCK(1,1)) // 8H
 	MCFG_HMCS40_READ_R_CB(0, READ8(alpha_8201_device, mcu_data_r))
@@ -324,12 +354,15 @@ static MACHINE_CONFIG_FRAGMENT(alpha8201)
 	MCFG_HMCS40_WRITE_D_CB(WRITE16(alpha_8201_device, mcu_d_w))
 MACHINE_CONFIG_END
 
+<<<<<<< HEAD
 machine_config_constructor alpha_8201_device::device_mconfig_additions() const
 {
 	return MACHINE_CONFIG_NAME(alpha8201);
 }
 
 
+=======
+>>>>>>> upstream/master
 //-------------------------------------------------
 //  device_reset - device-specific reset
 //-------------------------------------------------
@@ -364,14 +397,22 @@ void alpha_8201_device::mcu_update_address()
 
 READ8_MEMBER(alpha_8201_device::mcu_data_r)
 {
+<<<<<<< HEAD
 	UINT8 ret = 0;
+=======
+	u8 ret = 0;
+>>>>>>> upstream/master
 
 	if (m_bus && ~m_mcu_d & 4)
 		ret = m_shared_ram[m_mcu_address];
 	else
 		logerror("%s: MCU side invalid read\n", tag());
 
+<<<<<<< HEAD
 	if (offset == HMCS40_PORT_R0X)
+=======
+	if (offset == hmcs40_cpu_device::PORT_R0X)
+>>>>>>> upstream/master
 		ret >>= 4;
 	return ret & 0xf;
 }
@@ -404,7 +445,11 @@ WRITE16_MEMBER(alpha_8201_device::mcu_d_w)
 WRITE_LINE_MEMBER(alpha_8201_device::bus_dir_w)
 {
 	// set RAM bus direction to 0: external, 1: MCU side
+<<<<<<< HEAD
 	// selects one of two 74LS245 (octal bus transceiver) for databus, addressbus via
+=======
+	// selects one of two 74LS245 (octal bus transceiver) for databus, address bus via
+>>>>>>> upstream/master
 	// a couple of 74LS157 (2-input multiplexer)
 	m_bus = (state) ? 1 : 0;
 	mcu_writeram();

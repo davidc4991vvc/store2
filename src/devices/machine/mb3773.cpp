@@ -16,19 +16,33 @@
 #include "mb3773.h"
 
 
+<<<<<<< HEAD
+=======
+#define WATCHDOG_DEBUG ( 0 )
+
+>>>>>>> upstream/master
 //**************************************************************************
 //  LIVE DEVICE
 //**************************************************************************
 
 // device type definition
+<<<<<<< HEAD
 const device_type MB3773 = &device_creator<mb3773_device>;
+=======
+DEFINE_DEVICE_TYPE(MB3773, mb3773_device, "mb3773", "MB3773 Power Supply Monitor")
+>>>>>>> upstream/master
 
 //-------------------------------------------------
 //  mb3773_device - constructor
 //-------------------------------------------------
 
+<<<<<<< HEAD
 mb3773_device::mb3773_device( const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock )
 	: device_t(mconfig, MB3773, "MB3773 Power Supply Monitor", tag, owner, clock, "mb3773", __FILE__), m_watchdog_timer(nullptr), m_ck(0)
+=======
+mb3773_device::mb3773_device( const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock )
+	: device_t(mconfig, MB3773, tag, owner, clock), m_watchdog_timer(nullptr), m_ck(0)
+>>>>>>> upstream/master
 {
 }
 
@@ -57,7 +71,17 @@ void mb3773_device::device_reset()
 
 void mb3773_device::device_timer(emu_timer &timer, device_timer_id id, int param, void *ptr)
 {
+<<<<<<< HEAD
 	machine().schedule_soft_reset();
+=======
+	logerror("Reset caused by watchdog\n");
+
+#if WATCHDOG_DEBUG
+	machine().debug_break();
+#else
+	machine().schedule_soft_reset();
+#endif
+>>>>>>> upstream/master
 }
 
 void mb3773_device::reset_timer()

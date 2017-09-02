@@ -19,13 +19,20 @@
 #include "machine/pckeybrd.h"
 #include "machine/idectrl.h"
 #include "video/pc_vga.h"
+<<<<<<< HEAD
 #include "sound/dac.h"
 #include "machine/pcshare.h"
+=======
+#include "machine/pcshare.h"
+#include "bus/isa/isa.h"
+#include "bus/isa/sblaster.h"
+>>>>>>> upstream/master
 
 class fruitpc_state : public pcat_base_state
 {
 public:
 	fruitpc_state(const machine_config &mconfig, device_type type, const char *tag)
+<<<<<<< HEAD
 		: pcat_base_state(mconfig, type, tag),
 			m_inp1(*this, "INP1"),
 			m_inp2(*this, "INP2"),
@@ -33,15 +40,31 @@ public:
 			m_inp4(*this, "INP4")
 			{ }
 
+=======
+		: pcat_base_state(mconfig, type, tag)
+		, m_isabus(*this, "isa")
+		, m_inp1(*this, "INP1")
+		, m_inp2(*this, "INP2")
+		, m_inp3(*this, "INP3")
+		, m_inp4(*this, "INP4")
+	{ }
+
+	required_device<isa8_device> m_isabus;
+>>>>>>> upstream/master
 	required_ioport m_inp1;
 	required_ioport m_inp2;
 	required_ioport m_inp3;
 	required_ioport m_inp4;
 
+<<<<<<< HEAD
 	DECLARE_DRIVER_INIT(fruitpc);
 	DECLARE_READ8_MEMBER(fruit_inp_r);
 	virtual void machine_start();
 	virtual void machine_reset();
+=======
+	DECLARE_READ8_MEMBER(fruit_inp_r);
+	DECLARE_WRITE8_MEMBER(dma8237_1_dack_w);
+>>>>>>> upstream/master
 };
 
 READ8_MEMBER(fruitpc_state::fruit_inp_r)
@@ -80,10 +103,13 @@ static ADDRESS_MAP_START( fruitpc_io, AS_IO, 32, fruitpc_state )
 	AM_RANGE(0x03f0, 0x03f7) AM_DEVREADWRITE16("ide", ide_controller_device, read_cs1, write_cs1, 0xffffffff)
 ADDRESS_MAP_END
 
+<<<<<<< HEAD
 #define AT_KEYB_HELPER(bit, text, key1) \
 	PORT_BIT( bit, IP_ACTIVE_HIGH, IPT_KEYPAD) PORT_NAME(text) PORT_CODE(key1)
 
 
+=======
+>>>>>>> upstream/master
 static INPUT_PORTS_START( fruitpc )
 	PORT_START("INP1")
 	PORT_BIT( 0x0001, IP_ACTIVE_LOW, IPT_COIN1 )
@@ -109,6 +135,7 @@ static INPUT_PORTS_START( fruitpc )
 	PORT_BIT( 0x00ff, IP_ACTIVE_LOW, IPT_UNKNOWN )
 INPUT_PORTS_END
 
+<<<<<<< HEAD
 void fruitpc_state::machine_start()
 {
 }
@@ -118,6 +145,25 @@ void fruitpc_state::machine_reset()
 }
 
 static MACHINE_CONFIG_START( fruitpc, fruitpc_state )
+=======
+//TODO: use atmb device
+WRITE8_MEMBER( fruitpc_state::dma8237_1_dack_w ){ m_isabus->dack_w(1, data); }
+
+static SLOT_INTERFACE_START( fruitpc_isa8_cards )
+	SLOT_INTERFACE("sb15",  ISA8_SOUND_BLASTER_1_5)
+SLOT_INTERFACE_END
+
+static DEVICE_INPUT_DEFAULTS_START( fruitpc_sb_def )
+	DEVICE_INPUT_DEFAULTS("CONFIG", 0x03, 0x01)
+DEVICE_INPUT_DEFAULTS_END
+
+static MACHINE_CONFIG_START( fruitpc_sb_conf )
+	MCFG_DEVICE_MODIFY("pc_joy")
+	MCFG_DEVICE_SLOT_INTERFACE(pc_joysticks, nullptr, true) // remove joystick
+MACHINE_CONFIG_END
+
+static MACHINE_CONFIG_START( fruitpc )
+>>>>>>> upstream/master
 	MCFG_CPU_ADD("maincpu", I486, 66000000) // ST STPCD0166BTC3 66 MHz 486 CPU
 	MCFG_CPU_PROGRAM_MAP(fruitpc_map)
 	MCFG_CPU_IO_MAP(fruitpc_io)
@@ -125,12 +171,17 @@ static MACHINE_CONFIG_START( fruitpc, fruitpc_state )
 
 	MCFG_FRAGMENT_ADD( pcat_common )
 
+<<<<<<< HEAD
 	MCFG_IDE_CONTROLLER_ADD("ide", ata_devices, "hdd", NULL, true)
+=======
+	MCFG_IDE_CONTROLLER_ADD("ide", ata_devices, "hdd", nullptr, true)
+>>>>>>> upstream/master
 	MCFG_ATA_INTERFACE_IRQ_HANDLER(DEVWRITELINE("pic8259_2", pic8259_device, ir6_w))
 
 	/* video hardware */
 	MCFG_FRAGMENT_ADD( pcvideo_vga )
 
+<<<<<<< HEAD
 	/* sound hardware */
 	MCFG_SPEAKER_STANDARD_STEREO("lspeaker","rspeaker")
 MACHINE_CONFIG_END
@@ -139,6 +190,28 @@ DRIVER_INIT_MEMBER(fruitpc_state,fruitpc)
 {
 }
 
+=======
+	MCFG_DEVICE_MODIFY("dma8237_1")
+	MCFG_I8237_OUT_IOW_1_CB(WRITE8(fruitpc_state, dma8237_1_dack_w))
+
+	MCFG_DEVICE_ADD("isa", ISA8, 0)
+	MCFG_ISA8_CPU(":maincpu")
+	MCFG_ISA_OUT_IRQ2_CB(DEVWRITELINE("pic8259_2", pic8259_device, ir2_w))
+	MCFG_ISA_OUT_IRQ3_CB(DEVWRITELINE("pic8259_1", pic8259_device, ir3_w))
+	MCFG_ISA_OUT_IRQ4_CB(DEVWRITELINE("pic8259_1", pic8259_device, ir4_w))
+	MCFG_ISA_OUT_IRQ5_CB(DEVWRITELINE("pic8259_1", pic8259_device, ir5_w))
+	MCFG_ISA_OUT_IRQ6_CB(DEVWRITELINE("pic8259_1", pic8259_device, ir6_w))
+	MCFG_ISA_OUT_IRQ7_CB(DEVWRITELINE("pic8259_1", pic8259_device, ir7_w))
+	MCFG_ISA_OUT_DRQ1_CB(DEVWRITELINE("dma8237_1", am9517a_device, dreq1_w))
+	MCFG_ISA_OUT_DRQ2_CB(DEVWRITELINE("dma8237_1", am9517a_device, dreq2_w))
+	MCFG_ISA_OUT_DRQ3_CB(DEVWRITELINE("dma8237_1", am9517a_device, dreq3_w))
+
+	MCFG_ISA8_SLOT_ADD("isa", "isa1", fruitpc_isa8_cards, "sb15", true)
+	MCFG_DEVICE_CARD_DEVICE_INPUT_DEFAULTS("sb15", fruitpc_sb_def)
+	MCFG_DEVICE_CARD_MACHINE_CONFIG("sb15", fruitpc_sb_conf)
+MACHINE_CONFIG_END
+
+>>>>>>> upstream/master
 ROM_START( fruitpc )
 	ROM_REGION( 0x20000, "bios", 0 )
 	ROM_LOAD( "at-gs001.bin", 0x000000, 0x020000, CRC(7dec34d0) SHA1(81d194d67fef9f6531bd3cd1ee0baacb5c2558bf) )
@@ -147,7 +220,11 @@ ROM_START( fruitpc )
 	DISK_IMAGE( "fruit", 0,SHA1(df250ff06a97fa141a4144034f7035ac2947c53c) )
 ROM_END
 
+<<<<<<< HEAD
 GAME( 2006, fruitpc,  0, fruitpc, fruitpc, fruitpc_state,  fruitpc, ROT0, "<unknown>", "Fruit Land", MACHINE_NO_SOUND|MACHINE_IMPERFECT_GRAPHICS )
+=======
+GAME( 2006, fruitpc,  0, fruitpc, fruitpc, fruitpc_state,  0, ROT0, "<unknown>", "Fruit Land", MACHINE_IMPERFECT_GRAPHICS )
+>>>>>>> upstream/master
 
 // this doesn't really belong here, but is some kind of x86 pc-like hardware, exact CPU type etc. unknown
 // hardware ia by Paokai, motherboard has logos, large chip with logo too, http://www.paokai.com.tw/
@@ -159,4 +236,8 @@ ROM_START( gogostrk )
 	DISK_IMAGE( "ggs-5-2-07", 0,SHA1(f214fd39ec8ac02f008823f4b179ea6c6835e1b8) )
 ROM_END
 
+<<<<<<< HEAD
 GAME( 2007, gogostrk, 0, fruitpc, fruitpc, fruitpc_state,  fruitpc, ROT0, "American Alpha / Paokai", "Go Go Strike", MACHINE_NOT_WORKING ) // motherboard is dated 2006, if the CF card string is a date it's 2007
+=======
+GAME( 2007, gogostrk, 0, fruitpc, fruitpc, fruitpc_state, 0, ROT0, "American Alpha / Paokai", "Go Go Strike", MACHINE_NOT_WORKING ) // motherboard is dated 2006, if the CF card string is a date it's 2007
+>>>>>>> upstream/master

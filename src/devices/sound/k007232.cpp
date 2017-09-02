@@ -145,6 +145,7 @@ static const float kdaca_fn[][2] = {
 /*************************************************************/
 
 
+<<<<<<< HEAD
 const device_type K007232 = &device_creator<k007232_device>;
 
 k007232_device::k007232_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
@@ -152,6 +153,15 @@ k007232_device::k007232_device(const machine_config &mconfig, const char *tag, d
 		device_sound_interface(mconfig, *this),
 		m_rom(*this, DEVICE_SELF),
 		m_port_write_handler(*this)
+=======
+DEFINE_DEVICE_TYPE(K007232, k007232_device, "k007232", "K007232 PCM Controller")
+
+k007232_device::k007232_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: device_t(mconfig, K007232, tag, owner, clock)
+	, device_sound_interface(mconfig, *this)
+	, m_rom(*this, DEVICE_SELF)
+	, m_port_write_handler(*this)
+>>>>>>> upstream/master
 {
 }
 
@@ -162,7 +172,11 @@ k007232_device::k007232_device(const machine_config &mconfig, const char *tag, d
 void k007232_device::device_start()
 {
 	/* Set up the chips */
+<<<<<<< HEAD
 	m_pcmlimit  = region()->bytes();
+=======
+	m_pcmlimit = m_rom.bytes();
+>>>>>>> upstream/master
 
 	m_port_write_handler.resolve();
 
@@ -179,8 +193,13 @@ void k007232_device::device_start()
 	m_vol[1][0] = 0;
 	m_vol[1][1] = 255;  /* channel B output to output B */
 
+<<<<<<< HEAD
 	for (int i = 0; i < 0x10; i++)
 		m_wreg[i] = 0;
+=======
+	for (auto & elem : m_wreg)
+		elem = 0;
+>>>>>>> upstream/master
 
 	m_stream = machine().sound().stream_alloc(*this, 0 , 2, clock()/128);
 
@@ -310,7 +329,11 @@ WRITE8_MEMBER( k007232_device::write )
 READ8_MEMBER( k007232_device::read )
 {
 	int r = offset;
+<<<<<<< HEAD
 	int  ch = 0;
+=======
+	int  ch;
+>>>>>>> upstream/master
 
 	if( r == 0x0005 || r == 0x000b ){
 	ch = r/0x0006;

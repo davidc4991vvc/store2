@@ -1,11 +1,17 @@
 /*
+<<<<<<< HEAD
  * Copyright 2010-2015 Branimir Karadzic. All rights reserved.
  * License: http://www.opensource.org/licenses/BSD-2-Clause
+=======
+ * Copyright 2010-2017 Branimir Karadzic. All rights reserved.
+ * License: https://github.com/bkaradzic/bx#license-bsd-2-clause
+>>>>>>> upstream/master
  */
 
 #ifndef BX_OS_H_HEADER_GUARD
 #define BX_OS_H_HEADER_GUARD
 
+<<<<<<< HEAD
 #include "bx.h"
 #include "debug.h"
 
@@ -60,6 +66,10 @@
 #	include <unistd.h> // getcwd
 #endif // BX_COMPILER_MSVC
 
+=======
+#include "debug.h"
+
+>>>>>>> upstream/master
 #if BX_PLATFORM_OSX
 #	define BX_DL_EXT "dylib"
 #elif BX_PLATFORM_WINDOWS
@@ -70,6 +80,7 @@
 
 namespace bx
 {
+<<<<<<< HEAD
 	inline void sleep(uint32_t _ms)
 	{
 #if BX_PLATFORM_WINDOWS || BX_PLATFORM_XBOX360
@@ -265,6 +276,66 @@ namespace bx
 		return ::getcwd(_buffer, _size);
 #endif // BX_COMPILER_
 	}
+=======
+	struct FileInfo
+	{
+		enum Enum
+		{
+			Regular,
+			Directory,
+
+			Count
+		};
+
+		uint64_t m_size;
+		Enum m_type;
+	};
+
+	///
+	void sleep(uint32_t _ms);
+
+	///
+	void yield();
+
+	///
+	uint32_t getTid();
+
+	///
+	size_t getProcessMemoryUsed();
+
+	///
+	void* dlopen(const char* _filePath);
+
+	///
+	void dlclose(void* _handle);
+
+	///
+	void* dlsym(void* _handle, const char* _symbol);
+
+	///
+	bool getenv(const char* _name, char* _out, uint32_t* _inOutSize);
+
+	///
+	void setenv(const char* _name, const char* _value);
+
+	///
+	void unsetenv(const char* _name);
+
+	///
+	int chdir(const char* _path);
+
+	///
+	char* pwd(char* _buffer, uint32_t _size);
+
+	///
+	bool getTempPath(char* _out, uint32_t* _inOutSize);
+
+	///
+	bool stat(const char* _filePath, FileInfo& _fileInfo);
+
+	///
+	void* exec(const char* const* _argv);
+>>>>>>> upstream/master
 
 } // namespace bx
 

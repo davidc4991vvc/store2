@@ -42,7 +42,11 @@ RSC=rc.exe
 # PROP Ignore_Export_Lib 0
 # PROP Target_Dir ""
 # ADD BASE CPP /nologo /W3 /GX /O2 /D "WIN32" /D "NDEBUG" /D "_CONSOLE" /D "_MBCS" /YX /FD /c
+<<<<<<< HEAD
 # ADD CPP /nologo /MD /W3 /GX /O2 /D "NDEBUG" /D "WIN32" /D "_CONSOLE" /D "_UNICODE" /D "UNICODE" /FAs /YX /FD /c
+=======
+# ADD CPP /nologo /MD /W4 /WX /GX /O2 /D "NDEBUG" /D "WIN32" /D "_CONSOLE" /D "_UNICODE" /D "UNICODE" /FAcs /Yu"Precomp.h" /FD /c
+>>>>>>> upstream/master
 # ADD BASE RSC /l 0x419 /d "NDEBUG"
 # ADD RSC /l 0x419 /d "NDEBUG"
 BSC32=bscmake.exe
@@ -50,7 +54,11 @@ BSC32=bscmake.exe
 # ADD BSC32 /nologo
 LINK32=link.exe
 # ADD BASE LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /nologo /subsystem:console /machine:I386
+<<<<<<< HEAD
 # ADD LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /nologo /subsystem:console /machine:I386 /out:"Release/7zDec.exe" /opt:NOWIN98
+=======
+# ADD LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /nologo /subsystem:console /machine:I386 /out:"c:\util\7zDec.exe" /opt:NOWIN98
+>>>>>>> upstream/master
 # SUBTRACT LINK32 /pdb:none
 
 !ELSEIF  "$(CFG)" == "7z - Win32 Debug"
@@ -67,7 +75,11 @@ LINK32=link.exe
 # PROP Ignore_Export_Lib 0
 # PROP Target_Dir ""
 # ADD BASE CPP /nologo /W3 /Gm /GX /ZI /Od /D "WIN32" /D "_DEBUG" /D "_CONSOLE" /D "_MBCS" /YX /FD /GZ /c
+<<<<<<< HEAD
 # ADD CPP /nologo /W4 /Gm /GX /ZI /Od /D "_DEBUG" /D "_SZ_ALLOC_DEBUG2" /D "_SZ_NO_INT_64_A" /D "WIN32" /D "_CONSOLE" /D "_UNICODE" /D "UNICODE" /YX /FD /GZ /c
+=======
+# ADD CPP /nologo /W4 /WX /Gm /GX /ZI /Od /D "_DEBUG" /D "_SZ_ALLOC_DEBUG2" /D "_SZ_NO_INT_64_A" /D "WIN32" /D "_CONSOLE" /D "_UNICODE" /D "UNICODE" /Yu"Precomp.h" /FD /GZ /c
+>>>>>>> upstream/master
 # ADD BASE RSC /l 0x419 /d "_DEBUG"
 # ADD RSC /l 0x419 /d "_DEBUG"
 BSC32=bscmake.exe
@@ -75,7 +87,11 @@ BSC32=bscmake.exe
 # ADD BSC32 /nologo
 LINK32=link.exe
 # ADD BASE LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /nologo /subsystem:console /debug /machine:I386 /pdbtype:sept
+<<<<<<< HEAD
 # ADD LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /nologo /subsystem:console /debug /machine:I386 /out:"Debug/7zDec.exe" /pdbtype:sept
+=======
+# ADD LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /nologo /subsystem:console /debug /machine:I386 /out:"c:\util\7zDec.exe" /pdbtype:sept
+>>>>>>> upstream/master
 
 !ENDIF 
 
@@ -100,6 +116,13 @@ SOURCE=..\..\7zAlloc.h
 # End Source File
 # Begin Source File
 
+<<<<<<< HEAD
+=======
+SOURCE=..\..\7zArcIn.c
+# End Source File
+# Begin Source File
+
+>>>>>>> upstream/master
 SOURCE=..\..\7zBuf.c
 # End Source File
 # Begin Source File
@@ -133,11 +156,19 @@ SOURCE=..\..\7zFile.h
 # End Source File
 # Begin Source File
 
+<<<<<<< HEAD
 SOURCE=..\..\7zIn.c
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\7zStream.c
+=======
+SOURCE=..\..\7zStream.c
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\7zTypes.h
+>>>>>>> upstream/master
 # End Source File
 # Begin Source File
 
@@ -161,6 +192,13 @@ SOURCE=..\..\Bra86.c
 # End Source File
 # Begin Source File
 
+<<<<<<< HEAD
+=======
+SOURCE=..\..\BraIA64.c
+# End Source File
+# Begin Source File
+
+>>>>>>> upstream/master
 SOURCE=..\..\CpuArch.c
 # End Source File
 # Begin Source File
@@ -169,6 +207,17 @@ SOURCE=..\..\CpuArch.h
 # End Source File
 # Begin Source File
 
+<<<<<<< HEAD
+=======
+SOURCE=..\..\Delta.c
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\Delta.h
+# End Source File
+# Begin Source File
+
+>>>>>>> upstream/master
 SOURCE=..\..\Lzma2Dec.c
 # End Source File
 # Begin Source File
@@ -190,7 +239,10 @@ SOURCE=..\..\Ppmd.h
 # Begin Source File
 
 SOURCE=..\..\Ppmd7.c
+<<<<<<< HEAD
 # SUBTRACT CPP /YX
+=======
+>>>>>>> upstream/master
 # End Source File
 # Begin Source File
 
@@ -199,11 +251,31 @@ SOURCE=..\..\Ppmd7.h
 # Begin Source File
 
 SOURCE=..\..\Ppmd7Dec.c
+<<<<<<< HEAD
 # SUBTRACT CPP /YX
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\Types.h
+=======
+# End Source File
+# End Group
+# Begin Group "Spec"
+
+# PROP Default_Filter ""
+# Begin Source File
+
+SOURCE=..\..\Compiler.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\Precomp.c
+# ADD CPP /Yc"Precomp.h"
+# End Source File
+# Begin Source File
+
+SOURCE=.\Precomp.h
+>>>>>>> upstream/master
 # End Source File
 # End Group
 # Begin Source File

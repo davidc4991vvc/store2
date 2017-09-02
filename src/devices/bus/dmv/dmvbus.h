@@ -6,8 +6,15 @@
 
 *********************************************************************/
 
+<<<<<<< HEAD
 #ifndef __DMV_CART_H__
 #define __DMV_CART_H__
+=======
+#ifndef MAME_BUS_DMV_DMVBUS_H
+#define MAME_BUS_DMV_DMVBUS_H
+
+#pragma once
+>>>>>>> upstream/master
 
 /***************************************************************************
     TYPE DEFINITIONS
@@ -19,6 +26,7 @@ class device_dmvslot_interface : public device_slot_card_interface
 {
 public:
 	// construction/destruction
+<<<<<<< HEAD
 	device_dmvslot_interface(const machine_config &mconfig, device_t &device);
 	virtual ~device_dmvslot_interface();
 
@@ -30,6 +38,18 @@ public:
 	// slot 1
 	virtual void ram_read(UINT8 cas, offs_t offset, UINT8 &data) { }
 	virtual void ram_write(UINT8 cas, offs_t offset, UINT8 data) { }
+=======
+	virtual ~device_dmvslot_interface();
+
+	virtual bool read(offs_t offset, uint8_t &data) { return false; }
+	virtual bool write(offs_t offset, uint8_t data) { return false; }
+	virtual void io_read(address_space &space, int ifsel, offs_t offset, uint8_t &data) { }
+	virtual void io_write(address_space &space, int ifsel, offs_t offset, uint8_t data) { }
+
+	// slot 1
+	virtual void ram_read(uint8_t cas, offs_t offset, uint8_t &data) { }
+	virtual void ram_write(uint8_t cas, offs_t offset, uint8_t data) { }
+>>>>>>> upstream/master
 
 	// slot 7 and 7A
 	virtual bool av16bit() { return false; }
@@ -45,6 +65,12 @@ public:
 	virtual void irq4_w(int state) { }
 	virtual void irq5_w(int state) { }
 	virtual void irq6_w(int state) { }
+<<<<<<< HEAD
+=======
+
+protected:
+	device_dmvslot_interface(const machine_config &mconfig, device_t &device);
+>>>>>>> upstream/master
 };
 
 
@@ -55,6 +81,7 @@ class dmvcart_slot_device : public device_t,
 {
 public:
 	// construction/destruction
+<<<<<<< HEAD
 	dmvcart_slot_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
 	virtual ~dmvcart_slot_device();
 
@@ -74,6 +101,27 @@ public:
 	virtual void ram_write(UINT8 cas, offs_t offset, UINT8 data);
 	virtual void io_read(address_space &space, int ifsel, offs_t offset, UINT8 &data);
 	virtual void io_write(address_space &space, int ifsel, offs_t offset, UINT8 data);
+=======
+	dmvcart_slot_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
+	virtual ~dmvcart_slot_device();
+
+	template <class Object> static devcb_base &set_prog_read_callback(device_t &device, Object &&cb) { return downcast<dmvcart_slot_device &>(device).m_prog_read_cb.set_callback(std::forward<Object>(cb)); }
+	template <class Object> static devcb_base &set_prog_write_callback(device_t &device, Object &&cb) { return downcast<dmvcart_slot_device &>(device).m_prog_write_cb.set_callback(std::forward<Object>(cb)); }
+	template <class Object> static devcb_base &set_out_int_callback(device_t &device, Object &&cb) { return downcast<dmvcart_slot_device &>(device).m_out_int_cb.set_callback(std::forward<Object>(cb)); }
+	template <class Object> static devcb_base &set_out_irq_callback(device_t &device, Object &&cb) { return downcast<dmvcart_slot_device &>(device).m_out_irq_cb.set_callback(std::forward<Object>(cb)); }
+	template <class Object> static devcb_base &set_out_thold_callback(device_t &device, Object &&cb) { return downcast<dmvcart_slot_device &>(device).m_out_thold_cb.set_callback(std::forward<Object>(cb)); }
+
+	// device-level overrides
+	virtual void device_start() override;
+
+	// reading and writing
+	virtual bool read(offs_t offset, uint8_t &data);
+	virtual bool write(offs_t offset, uint8_t data);
+	virtual void ram_read(uint8_t cas, offs_t offset, uint8_t &data);
+	virtual void ram_write(uint8_t cas, offs_t offset, uint8_t data);
+	virtual void io_read(address_space &space, int ifsel, offs_t offset, uint8_t &data);
+	virtual void io_write(address_space &space, int ifsel, offs_t offset, uint8_t data);
+>>>>>>> upstream/master
 	virtual void hold_w(int state);
 	virtual void switch16_w(int state);
 	virtual void timint_w(int state);
@@ -99,7 +147,11 @@ public:
 
 
 // device type definition
+<<<<<<< HEAD
 extern const device_type DMVCART_SLOT;
+=======
+DECLARE_DEVICE_TYPE(DMVCART_SLOT, dmvcart_slot_device)
+>>>>>>> upstream/master
 
 
 /***************************************************************************
@@ -119,4 +171,8 @@ extern const device_type DMVCART_SLOT;
 #define MCFG_DMVCART_SLOT_OUT_THOLD_CB(_devcb) \
 	devcb = &dmvcart_slot_device::set_out_thold_callback(*device, DEVCB_##_devcb);
 
+<<<<<<< HEAD
 #endif /* __DMV_CART_H__ */
+=======
+#endif // MAME_BUS_DMV_DMVBUS_H
+>>>>>>> upstream/master

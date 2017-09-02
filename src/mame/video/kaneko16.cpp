@@ -10,6 +10,10 @@
 
 #include "emu.h"
 #include "includes/kaneko16.h"
+<<<<<<< HEAD
+=======
+#include "screen.h"
+>>>>>>> upstream/master
 
 
 WRITE16_MEMBER(kaneko16_state::kaneko16_display_enable)
@@ -29,11 +33,19 @@ VIDEO_START_MEMBER(kaneko16_state,kaneko16)
    the times. To do it right, each pixel should be drawn with pen 0
    of the bottomost tile that covers it (which is pretty tricky to do) */
 template<class _BitmapClass>
+<<<<<<< HEAD
 void kaneko16_state::kaneko16_fill_bitmap(palette_device* palette, _BitmapClass &bitmap, const rectangle &cliprect)
 {
 	int pen = 0;
 
 	if (m_kaneko_spr)
+=======
+void kaneko16_state::kaneko16_fill_bitmap(_BitmapClass &bitmap, const rectangle &cliprect)
+{
+	int pen = 0;
+
+	if (m_kaneko_spr.found())
+>>>>>>> upstream/master
 	{
 		if (m_kaneko_spr->get_sprite_type() == 1)
 		{
@@ -49,7 +61,11 @@ void kaneko16_state::kaneko16_fill_bitmap(palette_device* palette, _BitmapClass 
 	}
 	else
 	{
+<<<<<<< HEAD
 		const pen_t *pal = palette->pens();
+=======
+		const pen_t *pal = m_palette->pens();
+>>>>>>> upstream/master
 		bitmap.fill(pal[pen], cliprect);
 	}
 }
@@ -58,12 +74,17 @@ void kaneko16_state::kaneko16_fill_bitmap(palette_device* palette, _BitmapClass 
 
 
 template<class _BitmapClass>
+<<<<<<< HEAD
 UINT32 kaneko16_state::screen_update_common(screen_device &screen, _BitmapClass &bitmap, const rectangle &cliprect)
+=======
+uint32_t kaneko16_state::screen_update_common(screen_device &screen, _BitmapClass &bitmap, const rectangle &cliprect)
+>>>>>>> upstream/master
 {
 	int i;
 
 	screen.priority().fill(0, cliprect);
 
+<<<<<<< HEAD
 	if (m_view2_0) m_view2_0->kaneko16_prepare(bitmap, cliprect);
 	if (m_view2_1) m_view2_1->kaneko16_prepare(bitmap, cliprect);
 
@@ -71,6 +92,17 @@ UINT32 kaneko16_state::screen_update_common(screen_device &screen, _BitmapClass 
 	{
 		if (m_view2_0) m_view2_0->render_tilemap_chip(screen,bitmap,cliprect,i);
 		if (m_view2_1) m_view2_1->render_tilemap_chip_alt(screen,bitmap,cliprect,i, m_VIEW2_2_pri);
+=======
+	if (m_view2[0].found()) m_view2[0]->kaneko16_prepare(bitmap, cliprect);
+	if (m_view2[1].found()) m_view2[1]->kaneko16_prepare(bitmap, cliprect);
+
+	for ( i = 0; i < 8; i++ )
+	{
+		if (m_view2[0].found())
+			m_view2[0]->render_tilemap_chip(screen,bitmap,cliprect,i);
+		if (m_view2[1].found())
+			m_view2[1]->render_tilemap_chip_alt(screen,bitmap,cliprect,i, m_VIEW2_2_pri);
+>>>>>>> upstream/master
 	}
 
 	return 0;
@@ -80,9 +112,15 @@ UINT32 kaneko16_state::screen_update_common(screen_device &screen, _BitmapClass 
 
 
 
+<<<<<<< HEAD
 UINT32 kaneko16_state::screen_update_kaneko16(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
 {
 	kaneko16_fill_bitmap(m_palette, bitmap,cliprect);
+=======
+uint32_t kaneko16_state::screen_update_kaneko16(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+{
+	kaneko16_fill_bitmap(bitmap,cliprect);
+>>>>>>> upstream/master
 
 	// if the display is disabled, do nothing?
 	if (!m_disp_enable) return 0;
@@ -112,12 +150,21 @@ PALETTE_INIT_MEMBER(kaneko16_berlwall_state,berlwall)
 
 VIDEO_START_MEMBER(kaneko16_berlwall_state,berlwall)
 {
+<<<<<<< HEAD
 	UINT8 *RAM  =   memregion("gfx3")->base();
 
 	/* Render the hi-color static backgrounds held in the ROMs */
 
 	for (int screen = 0; screen < 32; screen++)
 		m_bg15_bitmap[screen].allocate(256, 256);
+=======
+	uint8_t *RAM  =   memregion("gfx3")->base();
+
+	/* Render the hi-color static backgrounds held in the ROMs */
+
+	for (auto & elem : m_bg15_bitmap)
+		elem.allocate(256, 256);
+>>>>>>> upstream/master
 
 /*
     8aba is used as background color
@@ -218,8 +265,13 @@ void kaneko16_berlwall_state::kaneko16_render_15bpp_bitmap(bitmap_rgb32 &bitmap,
 	}
 
 	const pen_t *pal = m_bgpalette->pens();
+<<<<<<< HEAD
 	UINT16* srcbitmap;
 	UINT32* dstbitmap;
+=======
+	uint16_t* srcbitmap;
+	uint32_t* dstbitmap;
+>>>>>>> upstream/master
 
 	for (int y = cliprect.min_y; y <= cliprect.max_y; y++)
 	{
@@ -230,7 +282,11 @@ void kaneko16_berlwall_state::kaneko16_render_15bpp_bitmap(bitmap_rgb32 &bitmap,
 
 		for (int x = cliprect.min_x; x <= cliprect.max_x; x++)
 		{
+<<<<<<< HEAD
 			UINT16 pix;
+=======
+			uint16_t pix;
+>>>>>>> upstream/master
 
 			if (!flip)  pix = srcbitmap[        (x - scrollx) & 0xff  ];
 			else        pix = srcbitmap[ 255 - ((x - scrollx) & 0xff) ];
@@ -240,7 +296,11 @@ void kaneko16_berlwall_state::kaneko16_render_15bpp_bitmap(bitmap_rgb32 &bitmap,
 	}
 }
 
+<<<<<<< HEAD
 UINT32 kaneko16_berlwall_state::screen_update_berlwall(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect)
+=======
+uint32_t kaneko16_berlwall_state::screen_update_berlwall(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect)
+>>>>>>> upstream/master
 {
 	// berlwall uses a 15bpp bitmap as a bg, not a solid fill
 	kaneko16_render_15bpp_bitmap(bitmap,cliprect);

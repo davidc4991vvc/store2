@@ -1,14 +1,22 @@
 // license:BSD-3-Clause
 // copyright-holders:Juergen Buchmueller
+<<<<<<< HEAD
 #pragma once
 
 #ifndef __TMS36XX_H__
 #define __TMS36XX_H__
+=======
+#ifndef MAME_SOUND_TMS36XX_H
+#define MAME_SOUND_TMS36XX_H
+
+#pragma once
+>>>>>>> upstream/master
 
 //**************************************************************************
 //  INTERFACE CONFIGURATION MACROS
 //**************************************************************************
 
+<<<<<<< HEAD
 #define MCFG_TMS36XX_ADD(_tag, _clock) \
 	MCFG_DEVICE_ADD(_tag, TMS36XX, _clock)
 #define MCFG_TMS36XX_REPLACE(_tag, _clock) \
@@ -16,6 +24,16 @@
 
 #define MCFG_TMS36XX_TYPE(_type) \
 	tms36xx_device::set_subtype(*device, _type);
+=======
+#define MCFG_TMS36XX_ADD(tag, clock) \
+		MCFG_DEVICE_ADD((tag), TMS36XX, (clock))
+
+#define MCFG_TMS36XX_REPLACE(tag, clock) \
+		MCFG_DEVICE_REPLACE((tag), TMS36XX, (clock))
+
+#define MCFG_TMS36XX_TYPE(type) \
+		tms36xx_device::set_subtype(*device, (tms36xx_device::subtype::type));
+>>>>>>> upstream/master
 
 #define MCFG_TMS36XX_DECAY_TIMES(_dec0, _dec1, _dec2, _dec3, _dec4, _dec5) \
 	tms36xx_device::set_decays(*device, _dec0, _dec1, _dec2, _dec3, _dec4, _dec5);
@@ -28,6 +46,7 @@
 //  TYPE DEFINITIONS
 //**************************************************************************
 
+<<<<<<< HEAD
 // subtypes
 #define MM6221AA    21      // Phoenix (fixed melodies)
 #define TMS3615     15      // Naughty Boy, Pleiads (13 notes, one output)
@@ -35,6 +54,8 @@
 
 #define TMS36XX_VMIN    0x0000
 #define TMS36XX_VMAX    0x7fff
+=======
+>>>>>>> upstream/master
 
 
 // ======================> tms36xx_device
@@ -43,14 +64,28 @@ class tms36xx_device : public device_t,
 						public device_sound_interface
 {
 public:
+<<<<<<< HEAD
 	tms36xx_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
 	~tms36xx_device() { }
 
 	static void set_subtype(device_t &device, int type)
+=======
+	enum class subtype
+	{
+		MM6221AA    = 21,     // Phoenix (fixed melodies)
+		TMS3615     = 15,     // Naughty Boy, Pleiads (13 notes, one output)
+		TMS3617     = 17      // Monster Bash (13 notes, six outputs)
+	};
+
+	tms36xx_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
+
+	static void set_subtype(device_t &device, subtype type)
+>>>>>>> upstream/master
 	{
 		tms36xx_device &dev = downcast<tms36xx_device &>(device);
 		switch (type)
 		{
+<<<<<<< HEAD
 		case MM6221AA:
 			dev.m_subtype = "MM6221AA";
 			break;
@@ -62,6 +97,19 @@ public:
 			break;
 		default:
 			fatalerror("Invalid TMS36XX type: %d\n", type);
+=======
+		case subtype::MM6221AA:
+			dev.m_subtype = "MM6221AA";
+			break;
+		case subtype::TMS3615:
+			dev.m_subtype = "TMS3615";
+			break;
+		case subtype::TMS3617:
+			dev.m_subtype = "TMS3617";
+			break;
+		default:
+			fatalerror("Invalid TMS36XX type: %d\n", int(type));
+>>>>>>> upstream/master
 			break;
 		}
 	}
@@ -81,11 +129,22 @@ public:
 	}
 
 protected:
+<<<<<<< HEAD
 	// device-level overrides
 	virtual void device_start();
 
 	// sound stream update overrides
 	virtual void sound_stream_update(sound_stream &stream, stream_sample_t **inputs, stream_sample_t **outputs, int samples);
+=======
+	static constexpr unsigned TMS36XX_VMIN = 0x0000;
+	static constexpr unsigned TMS36XX_VMAX = 0x7fff;
+
+	// device-level overrides
+	virtual void device_start() override;
+
+	// sound stream update overrides
+	virtual void sound_stream_update(sound_stream &stream, stream_sample_t **inputs, stream_sample_t **outputs, int samples) override;
+>>>>>>> upstream/master
 
 public:
 	// MM6221AA interface functions
@@ -124,7 +183,11 @@ private:
 	int m_counter[12];    // tone frequency counter
 	int m_frequency[12];  // tone frequency
 	int m_output;         // output signal bits
+<<<<<<< HEAD
 	int m_enable;         // mask which harmoics
+=======
+	int m_enable;         // mask which harmonics
+>>>>>>> upstream/master
 
 	int m_tune_num;       // tune currently playing
 	int m_tune_ofs;       // note currently playing
@@ -132,6 +195,13 @@ private:
 };
 
 extern const device_type TMS36XX;
+<<<<<<< HEAD
 
 
 #endif /* __TMS36XX_H__ */
+=======
+DECLARE_DEVICE_TYPE(TMS36XX, tms36xx_device)
+
+
+#endif // MAME_SOUND_TMS36XX_H
+>>>>>>> upstream/master

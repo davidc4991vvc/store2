@@ -37,6 +37,7 @@
 //  mathbox_device - constructor
 //-------------------------------------------------
 
+<<<<<<< HEAD
 const device_type MATHBOX = &device_creator<mathbox_device>;
 
 mathbox_device::mathbox_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
@@ -51,6 +52,12 @@ mathbox_device::mathbox_device(const machine_config &mconfig, const char *tag, d
 //-------------------------------------------------
 
 void mathbox_device::device_config_complete()
+=======
+DEFINE_DEVICE_TYPE(MATHBOX, mathbox_device, "mathbox", "Atari MATHBOX")
+
+mathbox_device::mathbox_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: device_t(mconfig, MATHBOX, tag, owner, clock)
+>>>>>>> upstream/master
 {
 }
 
@@ -72,14 +79,23 @@ void mathbox_device::device_start()
 void mathbox_device::device_reset()
 {
 	m_result = 0;
+<<<<<<< HEAD
 	memset(m_reg, 0, sizeof(INT16)*16);
+=======
+	memset(m_reg, 0, sizeof(int16_t)*16);
+>>>>>>> upstream/master
 }
 
 
 WRITE8_MEMBER( mathbox_device::go_w )
 {
+<<<<<<< HEAD
 	INT32 mb_temp;  /* temp 32-bit multiply results */
 	INT16 mb_q;     /* temp used in division */
+=======
+	int32_t mb_temp;  /* temp 32-bit multiply results */
+	int16_t mb_q;     /* temp used in division */
+>>>>>>> upstream/master
 	int msb;
 
 	LOG(("math box command %02x data %02x  ", offset, data));
@@ -122,17 +138,29 @@ WRITE8_MEMBER( mathbox_device::go_w )
 
 		REG5 = (REG5 & 0x00ff) | (data << 8);
 
+<<<<<<< HEAD
 		REGf = (INT16)0xffff;
+=======
+		REGf = (int16_t)0xffff;
+>>>>>>> upstream/master
 		REG4 -= REG2;
 		REG5 -= REG3;
 
 	step_048:
 
+<<<<<<< HEAD
 		mb_temp = ((INT32) REG0) * ((INT32) REG4);
 		REGc = mb_temp >> 16;
 		REGe = mb_temp & 0xffff;
 
 		mb_temp = ((INT32) -REG1) * ((INT32) REG5);
+=======
+		mb_temp = ((int32_t) REG0) * ((int32_t) REG4);
+		REGc = mb_temp >> 16;
+		REGe = mb_temp & 0xffff;
+
+		mb_temp = ((int32_t) -REG1) * ((int32_t) REG5);
+>>>>>>> upstream/master
 		REG7 = mb_temp >> 16;
 		mb_q = mb_temp & 0xffff;
 
@@ -156,11 +184,19 @@ WRITE8_MEMBER( mathbox_device::go_w )
 
 	case 0x12:
 
+<<<<<<< HEAD
 		mb_temp = ((INT32) REG1) * ((INT32) REG4);
 		REGc = mb_temp >> 16;
 		REG9 = mb_temp & 0xffff;
 
 		mb_temp = ((INT32) REG0) * ((INT32) REG5);
+=======
+		mb_temp = ((int32_t) REG1) * ((int32_t) REG4);
+		REGc = mb_temp >> 16;
+		REG9 = mb_temp & 0xffff;
+
+		mb_temp = ((int32_t) REG0) * ((int32_t) REG5);
+>>>>>>> upstream/master
 		REG8 = mb_temp >> 16;
 		mb_q = mb_temp & 0xffff;
 

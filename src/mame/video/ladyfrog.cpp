@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 // license:LGPL-2.1+
+=======
+// license:BSD-3-Clause
+>>>>>>> upstream/master
 // copyright-holders:Tomasz Slanina
 /***************************************************************************
 
@@ -126,8 +130,13 @@ void ladyfrog_state::draw_sprites( bitmap_ind16 &bitmap, const rectangle &clipre
 
 VIDEO_START_MEMBER(ladyfrog_state,ladyfrog_common)
 {
+<<<<<<< HEAD
 	m_spriteram = auto_alloc_array(machine(), UINT8, 160);
 	m_bg_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(ladyfrog_state::get_tile_info),this), TILEMAP_SCAN_ROWS, 8, 8, 32, 32);
+=======
+	m_spriteram = std::make_unique<uint8_t[]>(160);
+	m_bg_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(ladyfrog_state::get_tile_info),this), TILEMAP_SCAN_ROWS, 8, 8, 32, 32);
+>>>>>>> upstream/master
 
 	m_paletteram.resize(0x200);
 	m_paletteram_ext.resize(0x200);
@@ -137,7 +146,11 @@ VIDEO_START_MEMBER(ladyfrog_state,ladyfrog_common)
 	m_bg_tilemap->set_scroll_cols(32);
 	m_bg_tilemap->set_scrolldy(15, 15);
 
+<<<<<<< HEAD
 	save_pointer(NAME(m_spriteram), 160);
+=======
+	save_pointer(NAME(m_spriteram.get()), 160);
+>>>>>>> upstream/master
 	save_item(NAME(m_paletteram));
 	save_item(NAME(m_paletteram_ext));
 }
@@ -156,7 +169,11 @@ VIDEO_START_MEMBER(ladyfrog_state,toucheme)
 }
 
 
+<<<<<<< HEAD
 UINT32 ladyfrog_state::screen_update_ladyfrog(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+=======
+uint32_t ladyfrog_state::screen_update_ladyfrog(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+>>>>>>> upstream/master
 {
 	m_bg_tilemap->draw(screen, bitmap, cliprect, 0, 0);
 	draw_sprites(bitmap, cliprect);

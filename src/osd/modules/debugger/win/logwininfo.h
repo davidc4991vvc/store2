@@ -19,6 +19,16 @@ class logwin_info : public debugwin_info
 public:
 	logwin_info(debugger_windows_interface &debugger);
 	virtual ~logwin_info();
+<<<<<<< HEAD
+=======
+
+protected:
+	enum
+	{
+		ID_CLEAR_LOG = 1
+	};
+	virtual bool handle_command(WPARAM wparam, LPARAM lparam) override;
+>>>>>>> upstream/master
 };
 
 #endif

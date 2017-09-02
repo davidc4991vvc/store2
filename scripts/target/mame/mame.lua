@@ -11,13 +11,25 @@
 
 dofile("arcade.lua")
 dofile("mess.lua")
+<<<<<<< HEAD
+=======
+dofile("virtual.lua")
+>>>>>>> upstream/master
 
 function createProjects_mame_mame(_target, _subtarget)
 	createProjects_mame_arcade(_target, _subtarget)
 	createProjects_mame_mess(_target, _subtarget)
+<<<<<<< HEAD
+=======
+	createProjects_mame_virtual(_target, _subtarget)
+>>>>>>> upstream/master
 end
 
 function linkProjects_mame_mame(_target, _subtarget)
 	linkProjects_mame_arcade(_target, _subtarget)
 	linkProjects_mame_mess(_target, _subtarget)
+<<<<<<< HEAD
+=======
+	linkProjects_mame_virtual(_target, _subtarget)
+>>>>>>> upstream/master
 end

@@ -7,14 +7,22 @@
     6502 with Z register and some more stuff
 
 ***************************************************************************/
+<<<<<<< HEAD
 
 #ifndef __M65CE02_H__
 #define __M65CE02_H__
+=======
+#ifndef MAME_CPU_M6502_M65CE02_H
+#define MAME_CPU_M6502_M65CE02_H
+
+#pragma once
+>>>>>>> upstream/master
 
 #include "m65c02.h"
 
 class m65ce02_device : public m65c02_device {
 public:
+<<<<<<< HEAD
 	m65ce02_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
 	m65ce02_device(const machine_config &mconfig, device_type type, const char *name, const char *tag, device_t *owner, UINT32 clock, const char *shortname, const char *source);
 
@@ -35,6 +43,29 @@ protected:
 	virtual void state_import(const device_state_entry &entry);
 	virtual void state_export(const device_state_entry &entry);
 	virtual void state_string_export(const device_state_entry &entry, std::string &str);
+=======
+	m65ce02_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
+
+	static const disasm_entry disasm_entries[0x100];
+
+	virtual offs_t disasm_disassemble(std::ostream &stream, offs_t pc, const uint8_t *oprom, const uint8_t *opram, uint32_t options) override;
+	virtual void do_exec_full() override;
+	virtual void do_exec_partial() override;
+
+protected:
+	m65ce02_device(const machine_config &mconfig, device_type type, const char *tag, device_t *owner, uint32_t clock);
+
+	uint16_t  TMP3;                   /* temporary internal values */
+	uint8_t   Z;                      /* Z index register */
+	uint16_t  B;                      /* Zero page base address (always xx00) */
+
+	virtual void init() override;
+	virtual void device_start() override;
+	virtual void device_reset() override;
+	virtual void state_import(const device_state_entry &entry) override;
+	virtual void state_export(const device_state_entry &entry) override;
+	virtual void state_string_export(const device_state_entry &entry, std::string &str) const override;
+>>>>>>> upstream/master
 
 	inline void dec_SP_ce() { if(P & F_E) SP = set_l(SP, SP-1); else SP--; }
 	inline void inc_SP_ce() { if(P & F_E) SP = set_l(SP, SP+1); else SP++; }
@@ -148,6 +179,12 @@ enum {
 	M65CE02_B
 };
 
+<<<<<<< HEAD
 extern const device_type M65CE02;
 
 #endif
+=======
+DECLARE_DEVICE_TYPE(M65CE02, m65ce02_device)
+
+#endif // MAME_CPU_M6502_M65CE02_H
+>>>>>>> upstream/master

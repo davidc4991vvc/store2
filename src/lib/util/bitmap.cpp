@@ -17,6 +17,7 @@
 
 
 //**************************************************************************
+<<<<<<< HEAD
 //  CONSTANTS
 //**************************************************************************
 
@@ -28,10 +29,13 @@ const UINT32 BITMAP_ROWBYTES_ALIGN = 128;
 
 
 //**************************************************************************
+=======
+>>>>>>> upstream/master
 //  INLINE HELPERS
 //**************************************************************************
 
 //-------------------------------------------------
+<<<<<<< HEAD
 //  compute_rowpixels - compute an aligned
 //  rowpixels value
 //-------------------------------------------------
@@ -40,19 +44,36 @@ inline INT32 bitmap_t::compute_rowpixels(int width, int xslop)
 {
 	int rowpixels_align = BITMAP_ROWBYTES_ALIGN / (m_bpp / 8);
 	return ((width + 2 * xslop + (rowpixels_align - 1)) / rowpixels_align) * rowpixels_align;
+=======
+//  compute_rowpixels - compute a rowpixels value
+//-------------------------------------------------
+
+inline int32_t bitmap_t::compute_rowpixels(int width, int xslop)
+{
+	return width + 2 * xslop;
+>>>>>>> upstream/master
 }
 
 
 //-------------------------------------------------
+<<<<<<< HEAD
 //  compute_base - compute an aligned bitmap base
 //  address with the given slop values
+=======
+//  compute_base - compute a bitmap base address
+//  with the given slop values
+>>>>>>> upstream/master
 //-------------------------------------------------
 
 inline void bitmap_t::compute_base(int xslop, int yslop)
 {
+<<<<<<< HEAD
 	m_base = m_alloc + (m_rowpixels * yslop + xslop) * (m_bpp / 8);
 	UINT64 aligned_base = ((reinterpret_cast<UINT64>(m_base) + (BITMAP_OVERALL_ALIGN - 1)) / BITMAP_OVERALL_ALIGN) * BITMAP_OVERALL_ALIGN;
 	m_base = reinterpret_cast<void *>(aligned_base);
+=======
+	m_base = m_alloc.get() + (m_rowpixels * yslop + xslop) * (m_bpp / 8);
+>>>>>>> upstream/master
 }
 
 
@@ -61,6 +82,7 @@ inline void bitmap_t::compute_base(int xslop, int yslop)
 //  BITMAP ALLOCATION/CONFIGURATION
 //**************************************************************************
 
+<<<<<<< HEAD
 //-------------------------------------------------
 //  bitmap_t - basic constructor
 //-------------------------------------------------
@@ -71,11 +93,51 @@ bitmap_t::bitmap_t(bitmap_format format, int bpp, int width, int height, int xsl
 		m_format(format),
 		m_bpp(bpp),
 		m_palette(NULL)
+=======
+bitmap_t::bitmap_t(bitmap_t &&that)
+	: m_alloc(std::move(that.m_alloc))
+	, m_allocbytes(that.m_allocbytes)
+	, m_base(that.m_base)
+	, m_rowpixels(that.m_rowpixels)
+	, m_width(that.m_width)
+	, m_height(that.m_height)
+	, m_format(that.m_format)
+	, m_bpp(that.m_bpp)
+	, m_palette(nullptr)
+	, m_cliprect(that.m_cliprect)
+{
+	set_palette(that.m_palette);
+	that.reset();
+}
+
+/**
+ * @fn  bitmap_t::bitmap_t(bitmap_format format, uint8_t bpp, int width, int height, int xslop, int yslop)
+ *
+ * @brief   -------------------------------------------------
+ *            bitmap_t - basic constructor
+ *          -------------------------------------------------.
+ *
+ * @param   format  Describes the format to use.
+ * @param   bpp     The bits per pixel.
+ * @param   width   The width.
+ * @param   height  The height.
+ * @param   xslop   The xslop.
+ * @param   yslop   The yslop.
+ */
+
+bitmap_t::bitmap_t(bitmap_format format, uint8_t bpp, int width, int height, int xslop, int yslop)
+	: m_alloc()
+	, m_allocbytes(0)
+	, m_format(format)
+	, m_bpp(bpp)
+	, m_palette(nullptr)
+>>>>>>> upstream/master
 {
 	// allocate intializes all other fields
 	allocate(width, height, xslop, yslop);
 }
 
+<<<<<<< HEAD
 
 bitmap_t::bitmap_t(bitmap_format format, int bpp, void *base, int width, int height, int rowpixels)
 	: m_alloc(NULL),
@@ -103,16 +165,77 @@ bitmap_t::bitmap_t(bitmap_format format, int bpp, bitmap_t &source, const rectan
 		m_bpp(bpp),
 		m_palette(NULL),
 		m_cliprect(0, subrect.width() - 1, 0, subrect.height() - 1)
+=======
+/**
+ * @fn  bitmap_t::bitmap_t(bitmap_format format, uint8_t bpp, void *base, int width, int height, int rowpixels)
+ *
+ * @brief   Constructor.
+ *
+ * @param   format          Describes the format to use.
+ * @param   bpp             The bits per pixel.
+ * @param [in,out]  base    If non-null, the base.
+ * @param   width           The width.
+ * @param   height          The height.
+ * @param   rowpixels       The rowpixels.
+ */
+
+bitmap_t::bitmap_t(bitmap_format format, uint8_t bpp, void *base, int width, int height, int rowpixels)
+	: m_alloc()
+	, m_allocbytes(0)
+	, m_base(base)
+	, m_rowpixels(rowpixels)
+	, m_width(width)
+	, m_height(height)
+	, m_format(format)
+	, m_bpp(bpp)
+	, m_palette(nullptr)
+	, m_cliprect(0, width - 1, 0, height - 1)
+{
+}
+
+/**
+ * @fn  bitmap_t::bitmap_t(bitmap_format format, uint8_t bpp, bitmap_t &source, const rectangle &subrect)
+ *
+ * @brief   Constructor.
+ *
+ * @param   format          Describes the format to use.
+ * @param   bpp             The bits per pixel.
+ * @param [in,out]  source  Source for the.
+ * @param   subrect         The subrect.
+ */
+
+bitmap_t::bitmap_t(bitmap_format format, uint8_t bpp, bitmap_t &source, const rectangle &subrect)
+	: m_alloc()
+	, m_allocbytes(0)
+	, m_base(source.raw_pixptr(subrect.min_y, subrect.min_x))
+	, m_rowpixels(source.m_rowpixels)
+	, m_width(subrect.width())
+	, m_height(subrect.height())
+	, m_format(format)
+	, m_bpp(bpp)
+	, m_palette(nullptr)
+	, m_cliprect(0, subrect.width() - 1, 0, subrect.height() - 1)
+>>>>>>> upstream/master
 {
 	assert(format == source.m_format);
 	assert(bpp == source.m_bpp);
 	assert(source.cliprect().contains(subrect));
 }
 
+<<<<<<< HEAD
 
 //-------------------------------------------------
 //  ~bitmap_t - basic destructor
 //-------------------------------------------------
+=======
+/**
+ * @fn  bitmap_t::~bitmap_t()
+ *
+ * @brief   -------------------------------------------------
+ *            ~bitmap_t - basic destructor
+ *          -------------------------------------------------.
+ */
+>>>>>>> upstream/master
 
 bitmap_t::~bitmap_t()
 {
@@ -120,12 +243,44 @@ bitmap_t::~bitmap_t()
 	reset();
 }
 
+<<<<<<< HEAD
 
 //-------------------------------------------------
 //  allocate -- (re)allocate memory for the bitmap
 //  at the given size, destroying anything that
 //  already exists
 //-------------------------------------------------
+=======
+bitmap_t &bitmap_t::operator=(bitmap_t &&that)
+{
+	m_alloc = std::move(that.m_alloc);
+	m_allocbytes = that.m_allocbytes;
+	m_base = that.m_base;
+	m_rowpixels = that.m_rowpixels;
+	m_width = that.m_width;
+	m_height = that.m_height;
+	m_format = that.m_format;
+	m_bpp = that.m_bpp;
+	set_palette(that.m_palette);
+	m_cliprect = that.m_cliprect;
+	that.reset();
+	return *this;
+}
+
+/**
+ * @fn  void bitmap_t::allocate(int width, int height, int xslop, int yslop)
+ *
+ * @brief   -------------------------------------------------
+ *            allocate -- (re)allocate memory for the bitmap at the given size, destroying
+ *            anything that already exists
+ *          -------------------------------------------------.
+ *
+ * @param   width   The width.
+ * @param   height  The height.
+ * @param   xslop   The xslop.
+ * @param   yslop   The yslop.
+ */
+>>>>>>> upstream/master
 
 void bitmap_t::allocate(int width, int height, int xslop, int yslop)
 {
@@ -147,22 +302,45 @@ void bitmap_t::allocate(int width, int height, int xslop, int yslop)
 
 	// allocate memory for the bitmap itself
 	m_allocbytes = m_rowpixels * (m_height + 2 * yslop) * m_bpp / 8;
+<<<<<<< HEAD
 	m_allocbytes += BITMAP_OVERALL_ALIGN - 1;
 	m_alloc = new UINT8[m_allocbytes];
 
 	// clear to 0 by default
 	memset(m_alloc, 0, m_allocbytes);
+=======
+	m_alloc.reset(new uint8_t[m_allocbytes]);
+
+	// clear to 0 by default
+	memset(m_alloc.get(), 0, m_allocbytes);
+>>>>>>> upstream/master
 
 	// compute the base
 	compute_base(xslop, yslop);
 }
 
+<<<<<<< HEAD
 
 //-------------------------------------------------
 //  resize -- resize a bitmap, reusing existing
 //  memory if the new size is smaller than the
 //  current size
 //-------------------------------------------------
+=======
+/**
+ * @fn  void bitmap_t::resize(int width, int height, int xslop, int yslop)
+ *
+ * @brief   -------------------------------------------------
+ *            resize -- resize a bitmap, reusing existing memory if the new size is smaller than
+ *            the current size
+ *          -------------------------------------------------.
+ *
+ * @param   width   The width.
+ * @param   height  The height.
+ * @param   xslop   The xslop.
+ * @param   yslop   The yslop.
+ */
+>>>>>>> upstream/master
 
 void bitmap_t::resize(int width, int height, int xslop, int yslop)
 {
@@ -175,8 +353,12 @@ void bitmap_t::resize(int width, int height, int xslop, int yslop)
 
 	// determine how much memory we need for the new bitmap
 	int new_rowpixels = compute_rowpixels(width, xslop);
+<<<<<<< HEAD
 	UINT32 new_allocbytes = new_rowpixels * (height + 2 * yslop) * m_bpp / 8;
 	new_allocbytes += BITMAP_OVERALL_ALIGN - 1;
+=======
+	uint32_t new_allocbytes = new_rowpixels * (height + 2 * yslop) * m_bpp / 8;
+>>>>>>> upstream/master
 
 	// if we need more memory, just realloc
 	if (new_allocbytes > m_allocbytes)
@@ -197,19 +379,35 @@ void bitmap_t::resize(int width, int height, int xslop, int yslop)
 	compute_base(xslop, yslop);
 }
 
+<<<<<<< HEAD
 
 //-------------------------------------------------
 //  reset -- reset to an invalid bitmap, deleting
 //  all allocated stuff
 //-------------------------------------------------
+=======
+/**
+ * @fn  void bitmap_t::reset()
+ *
+ * @brief   -------------------------------------------------
+ *            reset -- reset to an invalid bitmap, deleting all allocated stuff
+ *          -------------------------------------------------.
+ */
+>>>>>>> upstream/master
 
 void bitmap_t::reset()
 {
 	// delete any existing stuff
+<<<<<<< HEAD
 	set_palette(NULL);
 	delete[] m_alloc;
 	m_alloc = NULL;
 	m_base = NULL;
+=======
+	set_palette(nullptr);
+	m_alloc.reset();
+	m_base = nullptr;
+>>>>>>> upstream/master
 
 	// reset all fields
 	m_rowpixels = 0;
@@ -218,11 +416,26 @@ void bitmap_t::reset()
 	m_cliprect.set(0, -1, 0, -1);
 }
 
+<<<<<<< HEAD
 
 //-------------------------------------------------
 //  wrap -- wrap an array of memory; the target
 //  bitmap does not own the memory
 //-------------------------------------------------
+=======
+/**
+ * @fn  void bitmap_t::wrap(void *base, int width, int height, int rowpixels)
+ *
+ * @brief   -------------------------------------------------
+ *            wrap -- wrap an array of memory; the target bitmap does not own the memory
+ *          -------------------------------------------------.
+ *
+ * @param [in,out]  base    If non-null, the base.
+ * @param   width           The width.
+ * @param   height          The height.
+ * @param   rowpixels       The rowpixels.
+ */
+>>>>>>> upstream/master
 
 void bitmap_t::wrap(void *base, int width, int height, int rowpixels)
 {
@@ -237,12 +450,26 @@ void bitmap_t::wrap(void *base, int width, int height, int rowpixels)
 	m_cliprect.set(0, m_width - 1, 0, m_height - 1);
 }
 
+<<<<<<< HEAD
 
 //-------------------------------------------------
 //  wrap -- wrap a subrectangle of an existing
 //  bitmap by copying its fields; the target
 //  bitmap does not own the memory
 //-------------------------------------------------
+=======
+/**
+ * @fn  void bitmap_t::wrap(const bitmap_t &source, const rectangle &subrect)
+ *
+ * @brief   -------------------------------------------------
+ *            wrap -- wrap a subrectangle of an existing bitmap by copying its fields; the target
+ *            bitmap does not own the memory
+ *          -------------------------------------------------.
+ *
+ * @param   source  Source for the.
+ * @param   subrect The subrect.
+ */
+>>>>>>> upstream/master
 
 void bitmap_t::wrap(const bitmap_t &source, const rectangle &subrect)
 {
@@ -262,15 +489,28 @@ void bitmap_t::wrap(const bitmap_t &source, const rectangle &subrect)
 	m_cliprect.set(0, m_width - 1, 0, m_height - 1);
 }
 
+<<<<<<< HEAD
 
 //-------------------------------------------------
 //  set_palette -- associate a palette with a
 //  bitmap
 //-------------------------------------------------
+=======
+/**
+ * @fn  void bitmap_t::set_palette(palette_t *palette)
+ *
+ * @brief   -------------------------------------------------
+ *            set_palette -- associate a palette with a bitmap
+ *          -------------------------------------------------.
+ *
+ * @param [in,out]  palette If non-null, the palette.
+ */
+>>>>>>> upstream/master
 
 void bitmap_t::set_palette(palette_t *palette)
 {
 	// first dereference any existing palette
+<<<<<<< HEAD
 	if (m_palette != NULL)
 	{
 		m_palette->deref();
@@ -279,18 +519,43 @@ void bitmap_t::set_palette(palette_t *palette)
 
 	// then reference any new palette
 	if (palette != NULL)
+=======
+	if (m_palette != nullptr)
+	{
+		m_palette->deref();
+		m_palette = nullptr;
+	}
+
+	// then reference any new palette
+	if (palette != nullptr)
+>>>>>>> upstream/master
 	{
 		palette->ref();
 		m_palette = palette;
 	}
 }
 
+<<<<<<< HEAD
 
 //-------------------------------------------------
 //  fill -- fill a bitmap with a solid color
 //-------------------------------------------------
 
 void bitmap_t::fill(UINT32 color, const rectangle &cliprect)
+=======
+/**
+ * @fn  void bitmap_t::fill(uint32_t color, const rectangle &cliprect)
+ *
+ * @brief   -------------------------------------------------
+ *            fill -- fill a bitmap with a solid color
+ *          -------------------------------------------------.
+ *
+ * @param   color       The color.
+ * @param   cliprect    The cliprect.
+ */
+
+void bitmap_t::fill(uint32_t color, const rectangle &cliprect)
+>>>>>>> upstream/master
 {
 	// if we have a cliprect, intersect with that
 	rectangle fill = cliprect;
@@ -303,20 +568,33 @@ void bitmap_t::fill(UINT32 color, const rectangle &cliprect)
 	{
 		case 8:
 			// 8bpp always uses memset
+<<<<<<< HEAD
 			for (INT32 y = fill.min_y; y <= fill.max_y; y++)
 				memset(raw_pixptr(y, fill.min_x), (UINT8)color, fill.width());
+=======
+			for (int32_t y = fill.min_y; y <= fill.max_y; y++)
+				memset(raw_pixptr(y, fill.min_x), (uint8_t)color, fill.width());
+>>>>>>> upstream/master
 			break;
 
 		case 16:
 			// 16bpp can use memset if the bytes are equal
+<<<<<<< HEAD
 			if ((UINT8)(color >> 8) == (UINT8)color)
 			{
 				for (INT32 y = fill.min_y; y <= fill.max_y; y++)
 					memset(raw_pixptr(y, fill.min_x), (UINT8)color, fill.width() * 2);
+=======
+			if ((uint8_t)(color >> 8) == (uint8_t)color)
+			{
+				for (int32_t y = fill.min_y; y <= fill.max_y; y++)
+					memset(raw_pixptr(y, fill.min_x), (uint8_t)color, fill.width() * 2);
+>>>>>>> upstream/master
 			}
 			else
 			{
 				// Fill the first line the hard way
+<<<<<<< HEAD
 				UINT16 *destrow = &pixt<UINT16>(fill.min_y);
 				for (INT32 x = fill.min_x; x <= fill.max_x; x++)
 					destrow[x] = (UINT16)color;
@@ -326,6 +604,17 @@ void bitmap_t::fill(UINT32 color, const rectangle &cliprect)
 				for (INT32 y = fill.min_y + 1; y <= fill.max_y; y++)
 				{
 					destrow = &pixt<UINT16>(y, fill.min_x);
+=======
+				uint16_t *destrow = &pixt<uint16_t>(fill.min_y);
+				for (int32_t x = fill.min_x; x <= fill.max_x; x++)
+					destrow[x] = (uint16_t)color;
+
+				// For the other lines, just copy the first one
+				void *destrow0 = &pixt<uint16_t>(fill.min_y, fill.min_x);
+				for (int32_t y = fill.min_y + 1; y <= fill.max_y; y++)
+				{
+					destrow = &pixt<uint16_t>(y, fill.min_x);
+>>>>>>> upstream/master
 					memcpy(destrow, destrow0, fill.width() * 2);
 				}
 			}
@@ -333,14 +622,22 @@ void bitmap_t::fill(UINT32 color, const rectangle &cliprect)
 
 		case 32:
 			// 32bpp can use memset if the bytes are equal
+<<<<<<< HEAD
 			if ((UINT8)(color >> 8) == (UINT8)color && (UINT16)(color >> 16) == (UINT16)color)
 			{
 				for (INT32 y = fill.min_y; y <= fill.max_y; y++)
 					memset(&pixt<UINT32>(y, fill.min_x), (UINT8)color, fill.width() * 4);
+=======
+			if ((uint8_t)(color >> 8) == (uint8_t)color && (uint16_t)(color >> 16) == (uint16_t)color)
+			{
+				for (int32_t y = fill.min_y; y <= fill.max_y; y++)
+					memset(&pixt<uint32_t>(y, fill.min_x), (uint8_t)color, fill.width() * 4);
+>>>>>>> upstream/master
 			}
 			else
 			{
 				// Fill the first line the hard way
+<<<<<<< HEAD
 				UINT32 *destrow  = &pixt<UINT32>(fill.min_y);
 				for (INT32 x = fill.min_x; x <= fill.max_x; x++)
 					destrow[x] = (UINT32)color;
@@ -350,6 +647,17 @@ void bitmap_t::fill(UINT32 color, const rectangle &cliprect)
 				for (INT32 y = fill.min_y + 1; y <= fill.max_y; y++)
 				{
 					destrow = &pixt<UINT32>(y, fill.min_x);
+=======
+				uint32_t *destrow  = &pixt<uint32_t>(fill.min_y);
+				for (int32_t x = fill.min_x; x <= fill.max_x; x++)
+					destrow[x] = (uint32_t)color;
+
+				// For the other lines, just copy the first one
+				uint32_t *destrow0 = &pixt<uint32_t>(fill.min_y, fill.min_x);
+				for (int32_t y = fill.min_y + 1; y <= fill.max_y; y++)
+				{
+					destrow = &pixt<uint32_t>(y, fill.min_x);
+>>>>>>> upstream/master
 					memcpy(destrow, destrow0, fill.width() * 4);
 				}
 			}
@@ -357,14 +665,22 @@ void bitmap_t::fill(UINT32 color, const rectangle &cliprect)
 
 		case 64:
 			// 64bpp can use memset if the bytes are equal
+<<<<<<< HEAD
 			if ((UINT8)(color >> 8) == (UINT8)color && (UINT16)(color >> 16) == (UINT16)color)
 			{
 				for (INT32 y = fill.min_y; y <= fill.max_y; y++)
 					memset(&pixt<UINT64>(y, fill.min_x), (UINT8)color, fill.width() * 8);
+=======
+			if ((uint8_t)(color >> 8) == (uint8_t)color && (uint16_t)(color >> 16) == (uint16_t)color)
+			{
+				for (int32_t y = fill.min_y; y <= fill.max_y; y++)
+					memset(&pixt<uint64_t>(y, fill.min_x), (uint8_t)color, fill.width() * 8);
+>>>>>>> upstream/master
 			}
 			else
 			{
 				// Fill the first line the hard way
+<<<<<<< HEAD
 				UINT64 *destrow  = &pixt<UINT64>(fill.min_y);
 				for (INT32 x = fill.min_x; x <= fill.max_x; x++)
 					destrow[x] = (UINT64)color;
@@ -374,6 +690,17 @@ void bitmap_t::fill(UINT32 color, const rectangle &cliprect)
 				for (INT32 y = fill.min_y + 1; y <= fill.max_y; y++)
 				{
 					destrow = &pixt<UINT64>(y, fill.min_x);
+=======
+				uint64_t *destrow  = &pixt<uint64_t>(fill.min_y);
+				for (int32_t x = fill.min_x; x <= fill.max_x; x++)
+					destrow[x] = (uint64_t)color;
+
+				// For the other lines, just copy the first one
+				uint64_t *destrow0 = &pixt<uint64_t>(fill.min_y, fill.min_x);
+				for (int32_t y = fill.min_y + 1; y <= fill.max_y; y++)
+				{
+					destrow = &pixt<uint64_t>(y, fill.min_x);
+>>>>>>> upstream/master
 					memcpy(destrow, destrow0, fill.width() * 8);
 				}
 			}

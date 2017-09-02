@@ -1,6 +1,7 @@
 // license:BSD-3-Clause
 // copyright-holders:David Haywood
 /* Tecmo Mixer */
+<<<<<<< HEAD
 
 
 
@@ -11,6 +12,20 @@ public:
 	tecmo_mix_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
 
 	void mix_bitmaps(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect, palette_device* palette, bitmap_ind16* bitmap_bg, bitmap_ind16* bitmap_fg, bitmap_ind16* bitmap_tx, bitmap_ind16* bitmap_sp);
+=======
+#ifndef MAME_VIDEO_TECMO_MIX_H
+#define MAME_VIDEO_TECMO_MIX_H
+
+#pragma once
+
+
+class tecmo_mix_device : public device_t, public device_video_interface
+{
+public:
+	tecmo_mix_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
+
+	void mix_bitmaps(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect, palette_device &palette, bitmap_ind16* bitmap_bg, bitmap_ind16* bitmap_fg, bitmap_ind16* bitmap_tx, bitmap_ind16* bitmap_sp);
+>>>>>>> upstream/master
 	static void set_mixer_shifts(device_t &device, int sprpri_shift, int sprbln_shift, int sprcol_shift);
 	static void set_blendcols(device_t &device, int bgblend_comp, int fgblend_comp, int txblend_comp, int spblend_comp);
 	static void set_regularcols(device_t &device, int bgregular_comp, int fgregular_comp, int txregular_comp, int spregular_comp);
@@ -19,8 +34,13 @@ public:
 	static void set_bgpen(device_t &device, int bgpen);
 
 protected:
+<<<<<<< HEAD
 	virtual void device_start();
 	virtual void device_reset();
+=======
+	virtual void device_start() override;
+	virtual void device_reset() override;
+>>>>>>> upstream/master
 
 	// mixer shifts
 	int m_sprpri_shift;
@@ -46,12 +66,19 @@ protected:
 	int m_bgpen;
 
 private:
+<<<<<<< HEAD
 
 
 
 };
 
 extern const device_type TECMO_MIXER;
+=======
+	uint32_t sum_colors(const pen_t *pal, int c1_idx, int c2_idx);
+};
+
+DECLARE_DEVICE_TYPE(TECMO_MIXER, tecmo_mix_device)
+>>>>>>> upstream/master
 
 
 
@@ -64,7 +91,11 @@ extern const device_type TECMO_MIXER;
 #define MCFG_TECMO_MIXER_REGULARCOLS(_bgregular_comp, _fgregular_comp, _txregular_comp, _spregular_comp) \
 	tecmo_mix_device::set_regularcols(*device, _bgregular_comp, _fgregular_comp, _txregular_comp, _spregular_comp);
 
+<<<<<<< HEAD
 #define MCFG_TECMO_MIXER_BLENDSOUCE(_spblend_source, _fgblend_source) \
+=======
+#define MCFG_TECMO_MIXER_BLENDSOURCE(_spblend_source, _fgblend_source) \
+>>>>>>> upstream/master
 	tecmo_mix_device::set_blendsource(*device, _spblend_source, _fgblend_source);
 
 #define MCFG_TECMO_MIXER_REVSPRITETILE \
@@ -72,3 +103,8 @@ extern const device_type TECMO_MIXER;
 
 #define MCFG_TECMO_MIXER_BGPEN(_bgpen) \
 	tecmo_mix_device::set_bgpen(*device, _bgpen);
+<<<<<<< HEAD
+=======
+
+#endif // MAME_VIDEO_TECMO_MIX_H
+>>>>>>> upstream/master

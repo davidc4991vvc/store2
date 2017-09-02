@@ -5,6 +5,10 @@
  *   Xerox AltoII disk interface
  *
  *****************************************************************************/
+<<<<<<< HEAD
+=======
+#include "emu.h"
+>>>>>>> upstream/master
 #include "alto2cpu.h"
 
 #define GET_KADDR_SECTOR(kaddr)         X_RDBITS(kaddr,16, 0, 3)            //!< get sector number from address register
@@ -61,6 +65,7 @@
 #define GET_KCOM_SENDADR(kcom)          X_RDBITS(kcom,16,5,5)               //!< get send address flag from controller command (hardware command register)
 #define PUT_KCOM_SENDADR(kcom,val)      X_WRBITS(kcom,16,5,5,val)           //!< put send address flag into controller command (hardware command register)
 
+<<<<<<< HEAD
 #if defined(ALTO2_FAKE_STATUS_H) && (ALTO2_FAKE_STATUS_H > 0)
 #define STATUS_DP0  48
 #define STATUS_DP1  78
@@ -77,6 +82,8 @@
 } while (0)
 #endif
 
+=======
+>>>>>>> upstream/master
 /** @brief completion codes (only for documentation, since this is microcode defined) */
 enum {
 	STATUS_COMPLETION_GOOD,
@@ -362,7 +369,11 @@ void alto2_cpu_device::kwd_timing(int bitclk, int datin, int block)
 	diablo_hd_device* dhd = m_drive[m_dsk.drive];
 	int wddone = m_dsk.wddone;      // get previous state of word-done
 	int i;
+<<<<<<< HEAD
 	UINT8 s0, s1;
+=======
+	uint8_t s0, s1;
+>>>>>>> upstream/master
 
 	LOG((this,LOG_DISK,9,"   *** KWD timing bitclk:%d datin:%d block:%d\n", bitclk, datin, block));
 	if (0 == m_dsk.seclate)
@@ -769,8 +780,11 @@ void alto2_cpu_device::kwd_timing(int bitclk, int datin, int block)
 		dhd->set_egate(m_dsk.egate = 1);
 		dhd->set_wrgate(m_dsk.wrgate = 1);
 		dhd->set_rdgate(m_dsk.rdgate = 1);
+<<<<<<< HEAD
 		FAKE_STATUS(m_dsk.drive, STATUS_WGATE, '-');
 		FAKE_STATUS(m_dsk.drive, STATUS_RGATE, '-');
+=======
+>>>>>>> upstream/master
 	} else {
 		if (m_dsk.krwc & RWC_WRITE) {
 			if (m_dsk.ok_to_run) {
@@ -789,7 +803,10 @@ void alto2_cpu_device::kwd_timing(int bitclk, int datin, int block)
 				// assert erase and write gates
 				dhd->set_egate(m_dsk.egate = 0);
 				dhd->set_wrgate(m_dsk.wrgate = 0);
+<<<<<<< HEAD
 				FAKE_STATUS(m_dsk.drive, STATUS_WGATE, 'W');
+=======
+>>>>>>> upstream/master
 			}
 		} else {
 #if ALTO2_DEBUG
@@ -799,7 +816,10 @@ void alto2_cpu_device::kwd_timing(int bitclk, int datin, int block)
 #endif
 			// assert read gate
 			dhd->set_rdgate(m_dsk.rdgate = 0);
+<<<<<<< HEAD
 			FAKE_STATUS(m_dsk.drive, STATUS_RGATE, 'R');
+=======
+>>>>>>> upstream/master
 		}
 	}
 
@@ -814,7 +834,11 @@ void alto2_cpu_device::kwd_timing(int bitclk, int datin, int block)
  * @param ptr some unused pointer
  * @param arg contains the seclate value
  */
+<<<<<<< HEAD
 void alto2_cpu_device::disk_seclate(void* ptr, INT32 arg)
+=======
+void alto2_cpu_device::disk_seclate(void* ptr, int32_t arg)
+>>>>>>> upstream/master
 {
 	(void)ptr;
 	LOG((this,LOG_DISK,2,"   SECLATE -> %d\n", arg));
@@ -827,7 +851,11 @@ void alto2_cpu_device::disk_seclate(void* ptr, INT32 arg)
  * @param ptr some unused pointer
  * @param arg contains the ok_to_run value
  */
+<<<<<<< HEAD
 void alto2_cpu_device::disk_ok_to_run(void* ptr, INT32 arg)
+=======
+void alto2_cpu_device::disk_ok_to_run(void* ptr, int32_t arg)
+>>>>>>> upstream/master
 {
 	(void)ptr;
 	LOG((this,LOG_DISK,2,"   OK TO RUN -> %d\n", arg));
@@ -855,7 +883,11 @@ void alto2_cpu_device::disk_ok_to_run(void* ptr, INT32 arg)
  * @param ptr some unused pointer
  * @param arg contains the drive, cylinder, and restore flag
  */
+<<<<<<< HEAD
 void alto2_cpu_device::disk_strobon(void* ptr, INT32 arg)
+=======
+void alto2_cpu_device::disk_strobon(void* ptr, int32_t arg)
+>>>>>>> upstream/master
 {
 	(void)ptr;
 	int unit = arg % 2;
@@ -869,7 +901,11 @@ void alto2_cpu_device::disk_strobon(void* ptr, INT32 arg)
 	dhd->set_restore(restore);
 	// This is really monoflop 52a generating a very short 0 pulse
 	for (int strobe = 0; strobe < 2; strobe++) {
+<<<<<<< HEAD
 		UINT8 s0, s1;
+=======
+		uint8_t s0, s1;
+>>>>>>> upstream/master
 		dhd->set_strobe(strobe);    // pulse the strobe signal to the unit
 
 		int lai = dhd->get_log_addx_interlock_0();
@@ -920,12 +956,19 @@ void alto2_cpu_device::disk_strobon(void* ptr, INT32 arg)
 	} else {
 		m_dsk.strobon_timer->reset();
 	}
+<<<<<<< HEAD
 	FAKE_STATUS(unit, STATUS_CYL, dhd->get_cylinder());
 	FAKE_STATUS(unit, STATUS_HEAD, dhd->get_head());
 }
 
 /** @brief timer callback to change the READY monoflop 31a */
 void alto2_cpu_device::disk_ready_mf31a(void* ptr, INT32 arg)
+=======
+}
+
+/** @brief timer callback to change the READY monoflop 31a */
+void alto2_cpu_device::disk_ready_mf31a(void* ptr, int32_t arg)
+>>>>>>> upstream/master
 {
 	diablo_hd_device* dhd = m_drive[m_dsk.drive];
 	m_dsk.ready_mf31a = arg & dhd->get_ready_0();
@@ -960,7 +1003,11 @@ void alto2_cpu_device::disk_block(int task)
 void alto2_cpu_device::bs_early_read_kstat()
 {
 	diablo_hd_device* dhd = m_drive[m_dsk.drive];
+<<<<<<< HEAD
 	UINT16 r;
+=======
+	uint16_t r;
+>>>>>>> upstream/master
 
 	/* KSTAT[4-7] bus is open */
 	PUT_KSTAT_DONE(m_dsk.kstat, 017);
@@ -1006,7 +1053,11 @@ void alto2_cpu_device::bs_early_read_kstat()
  */
 void alto2_cpu_device::bs_early_read_kdata()
 {
+<<<<<<< HEAD
 	UINT16 r;
+=======
+	uint16_t r;
+>>>>>>> upstream/master
 	/* get the current word from the drive */
 	r = m_dsk.datain;
 	LOG((this,LOG_DISK,1,"   <-KDATA (%#o)\n", r));
@@ -1026,7 +1077,11 @@ void alto2_cpu_device::f1_late_strobe()
 		LOG((this,LOG_DISK,1,"   STROBE (SENDADR:1)\n"));
 		/* Set the STROBON flag and start the STROBON monoflop */
 		m_dsk.strobe = 1;
+<<<<<<< HEAD
 		disk_strobon(0,
+=======
+		disk_strobon(nullptr,
+>>>>>>> upstream/master
 			4 * GET_KADDR_CYLINDER(m_dsk.kaddr) +
 			2 * GET_KADDR_RESTORE(m_dsk.kaddr) +
 			m_dsk.drive);
@@ -1067,7 +1122,11 @@ void alto2_cpu_device::f1_late_load_kstat()
 	 * Q    Q' inverted to BUS[13] on <-KSTAT
 	 */
 	for (int i = 0; i < 2; i++) {
+<<<<<<< HEAD
 		UINT8 s0, s1;
+=======
+		uint8_t s0, s1;
+>>>>>>> upstream/master
 		s0 = m_dsk.ff_44b;
 		s1 = i ? JKFF_CLK : JKFF_0;
 		if (!GET_KSTAT_CKSUM(m_bus))
@@ -1182,7 +1241,10 @@ void alto2_cpu_device::f1_late_increcno()
 		break;
 	}
 	// TODO: show disk indicator
+<<<<<<< HEAD
 	FAKE_STATUS(m_dsk.drive, STATUS_KWRC, "HPLD"[m_dsk.krecno]);
+=======
+>>>>>>> upstream/master
 }
 
 /**
@@ -1196,7 +1258,11 @@ void alto2_cpu_device::f1_late_increcno()
 void alto2_cpu_device::f1_late_clrstat()
 {
 	diablo_hd_device* dhd = m_drive[m_dsk.drive];
+<<<<<<< HEAD
 	UINT8 s0, s1;
+=======
+	uint8_t s0, s1;
+>>>>>>> upstream/master
 
 	/* clears the LAI clocked flip-flop 44a
 	 * JK flip-flop 44a (LAI' clocked)
@@ -1297,7 +1363,11 @@ void alto2_cpu_device::f1_late_clrstat()
  */
 void alto2_cpu_device::f1_late_load_kcom()
 {
+<<<<<<< HEAD
 	UINT16 change = m_dsk.kcom ^ m_bus;
+=======
+	uint16_t change = m_dsk.kcom ^ m_bus;
+>>>>>>> upstream/master
 	m_dsk.kcom = m_bus;
 	LOG((this,LOG_DISK,2,"   KCOM<-; BUS %06o\n", m_dsk.kcom));
 	LOG((this,LOG_DISK,2,"       XFEROFF    : %d\n", GET_KCOM_XFEROFF(m_dsk.kcom)));
@@ -1308,7 +1378,11 @@ void alto2_cpu_device::f1_late_load_kcom()
 	if (GET_KCOM_WDINHIB(change)) {
 		// WDALLOW going 0: should asynchronously reset 43a and 53a and set 53b
 		if (m_task == task_kwd) {
+<<<<<<< HEAD
 			UINT8 s0, s1;
+=======
+			uint8_t s0, s1;
+>>>>>>> upstream/master
 			/**
 			 * JK flip-flop 53b (word task)
 			 * <PRE>
@@ -1425,7 +1499,11 @@ void alto2_cpu_device::f1_late_load_kadr()
 void alto2_cpu_device::f2_late_init()
 {
 	// INIT = current task == KWD and WDINIT
+<<<<<<< HEAD
 	UINT16 r = (m_task == task_kwd && m_dsk.wdinit0) ? 037 : 0;
+=======
+	uint16_t r = (m_task == task_kwd && m_dsk.wdinit0) ? 037 : 0;
+>>>>>>> upstream/master
 	LOG((this,LOG_DISK,1,"   INIT; %sbranch (%#o | %#o)\n", r ? "" : "no ", m_next2, r));
 	m_next2 |= r;
 	m_dsk.wdinit0 = 0;
@@ -1455,8 +1533,13 @@ void alto2_cpu_device::f2_late_init()
  */
 void alto2_cpu_device::f2_late_rwc()
 {
+<<<<<<< HEAD
 	UINT16 r;
 	UINT16 init = (m_task == task_kwd && m_dsk.wdinit0) ? 037 : 0;
+=======
+	uint16_t r;
+	uint16_t init = (m_task == task_kwd && m_dsk.wdinit0) ? 037 : 0;
+>>>>>>> upstream/master
 
 	switch (m_dsk.krwc & 3) {
 	case 0:     // read
@@ -1508,8 +1591,13 @@ void alto2_cpu_device::f2_late_rwc()
  */
 void alto2_cpu_device::f2_late_recno()
 {
+<<<<<<< HEAD
 	UINT16 r = m_dsk.krecno;
 	UINT16 init = (m_task == task_kwd && m_dsk.wdinit0) ? 037 : 0;
+=======
+	uint16_t r = m_dsk.krecno;
+	uint16_t init = (m_task == task_kwd && m_dsk.wdinit0) ? 037 : 0;
+>>>>>>> upstream/master
 	LOG((this,LOG_DISK,1,"   RECNO; %sbranch recno:%d (%#o|%#o|%#o)\n", (r | init) ? "" : "no ", m_dsk.krecno, m_next2, r, init));
 	m_next2 |= r | init;
 	m_dsk.wdinit0 = 0;
@@ -1522,8 +1610,13 @@ void alto2_cpu_device::f2_late_recno()
  */
 void alto2_cpu_device::f2_late_xfrdat()
 {
+<<<<<<< HEAD
 	UINT16 r = GET_KADR_NOXFER(m_dsk.kadr) ? 0 : 1;
 	UINT16 init = (m_task == task_kwd && m_dsk.wdinit0) ? 037 : 0;
+=======
+	uint16_t r = GET_KADR_NOXFER(m_dsk.kadr) ? 0 : 1;
+	uint16_t init = (m_task == task_kwd && m_dsk.wdinit0) ? 037 : 0;
+>>>>>>> upstream/master
 	LOG((this,LOG_DISK,1,"   XFRDAT; %sbranch (%#o|%#o|%#o)\n", (r | init) ? "" : "no ", m_next2, r, init));
 	m_next2 |= r | init;
 	m_dsk.wdinit0 = 0;
@@ -1537,8 +1630,13 @@ void alto2_cpu_device::f2_late_xfrdat()
 void alto2_cpu_device::f2_late_swrnrdy()
 {
 	diablo_hd_device* dhd = m_drive[m_dsk.drive];
+<<<<<<< HEAD
 	UINT16 r = dhd->get_seek_read_write_0();
 	UINT16 init = (m_task == task_kwd && m_dsk.wdinit0) ? 037 : 0;
+=======
+	uint16_t r = dhd->get_seek_read_write_0();
+	uint16_t init = (m_task == task_kwd && m_dsk.wdinit0) ? 037 : 0;
+>>>>>>> upstream/master
 
 	LOG((this,LOG_DISK,1,"   SWRNRDY; %sbranch (%#o|%#o|%#o)\n", (r | init) ? "" : "no ", m_next2, r, init));
 	m_next2 |= r | init;
@@ -1552,8 +1650,13 @@ void alto2_cpu_device::f2_late_swrnrdy()
  */
 void alto2_cpu_device::f2_late_nfer()
 {
+<<<<<<< HEAD
 	UINT16 r = m_dsk.kfer ? 0 : 1;
 	UINT16 init = (m_task == task_kwd && m_dsk.wdinit0) ? 037 : 0;
+=======
+	uint16_t r = m_dsk.kfer ? 0 : 1;
+	uint16_t init = (m_task == task_kwd && m_dsk.wdinit0) ? 037 : 0;
+>>>>>>> upstream/master
 
 	LOG((this,LOG_DISK,1,"   NFER; %sbranch (%#o|%#o|%#o)\n", (r | init) ? "" : "no ", m_next2, r, init));
 	m_next2 |= r | init;
@@ -1581,8 +1684,13 @@ void alto2_cpu_device::f2_late_nfer()
  */
 void alto2_cpu_device::f2_late_strobon()
 {
+<<<<<<< HEAD
 	UINT16 r = m_dsk.strobe;
 	UINT16 init = (m_task == task_kwd && m_dsk.wdinit0) ? 037 : 0;
+=======
+	uint16_t r = m_dsk.strobe;
+	uint16_t init = (m_task == task_kwd && m_dsk.wdinit0) ? 037 : 0;
+>>>>>>> upstream/master
 
 	LOG((this,LOG_DISK,2,"   STROBON; %sbranch (%#o|%#o|%#o)\n", (r | init) ? "" : "no ", m_next2, r, init));
 	m_next2 |= r | init;
@@ -1595,12 +1703,20 @@ void alto2_cpu_device::f2_late_strobon()
  * @param id timer id
  * @param arg bit number
  */
+<<<<<<< HEAD
 void alto2_cpu_device::disk_bitclk(void* ptr, INT32 arg)
+=======
+void alto2_cpu_device::disk_bitclk(void* ptr, int32_t arg)
+>>>>>>> upstream/master
 {
 	(void)ptr;
 	diablo_hd_device* dhd = m_drive[m_dsk.drive];
 	int clk = arg & 1;
+<<<<<<< HEAD
 	int bit = 0;
+=======
+	int bit;
+>>>>>>> upstream/master
 
 	/**
 	 * The source for BITCLK and DATAIN depends on disk controller part #65
@@ -1643,6 +1759,7 @@ void alto2_cpu_device::disk_bitclk(void* ptr, INT32 arg)
 		kwd_timing(clk, bit, 0);
 	}
 
+<<<<<<< HEAD
 #if USE_BITCLK_TIMER
 	/* more bits to clock? */
 	if (++arg < dhd->bits_per_sector()) {
@@ -1651,6 +1768,8 @@ void alto2_cpu_device::disk_bitclk(void* ptr, INT32 arg)
 		m_dsk.bitclk_timer->reset();
 	}
 #else
+=======
+>>>>>>> upstream/master
 	if (++arg < dhd->bits_per_sector()) {
 		m_bitclk_time += m_dsk.bitclk_time[m_dsk.drive];
 		m_bitclk_index = arg;
@@ -1658,7 +1777,10 @@ void alto2_cpu_device::disk_bitclk(void* ptr, INT32 arg)
 		// stop the bitclock timer
 		m_bitclk_time = -1;
 	}
+<<<<<<< HEAD
 #endif
+=======
+>>>>>>> upstream/master
 }
 
 /**
@@ -1670,18 +1792,26 @@ void alto2_cpu_device::next_sector(int unit)
 {
 	diablo_hd_device* dhd = m_drive[unit];
 	LOG((this,LOG_DISK,0,"%s dhd=%p\n", __FUNCTION__, dhd));
+<<<<<<< HEAD
 	// get bit time in pico seconds
 	m_dsk.bitclk_time[unit] = static_cast<int>(dhd->bit_time().as_attoseconds() / 1000000);
 #if USE_BITCLK_TIMER
 	LOG((this,LOG_DISK,0,"   unit #%d stop bitclk\n", unit));
 	m_dsk.bitclk_timer->enable(false);
 #else
+=======
+	// get bit time in attoseconds
+	m_dsk.bitclk_time[unit] = dhd->bit_time().as_attoseconds();
+>>>>>>> upstream/master
 	if (m_bitclk_time >= 0) {
 		LOG((this,LOG_DISK,0,"   unit #%d stop bitclk\n", unit));
 		m_bitclk_time = -1;
 		m_bitclk_index = -1;
 	}
+<<<<<<< HEAD
 #endif
+=======
+>>>>>>> upstream/master
 
 	/* KSTAT[0-3] update the current sector in the kstat field */
 	PUT_KSTAT_SECTOR(m_dsk.kstat, dhd->get_sector());
@@ -1692,12 +1822,15 @@ void alto2_cpu_device::next_sector(int unit)
 
 	LOG((this,LOG_DISK,1,"   unit #%d sector %d start\n", unit, GET_KSTAT_SECTOR(m_dsk.kstat)));
 
+<<<<<<< HEAD
 #if USE_BITCLK_TIMER
 	// HACK: no command, no bit clock
 	if (debug_read_mem(0521))
 		/* start a timer chain for the bit clock */
 		disk_bitclk(0, 0);
 #else
+=======
+>>>>>>> upstream/master
 	// TODO: verify current sector == requested sector and only then run the bitclk?
 	// HACK: no command, no bit clock
 	if (debug_read_mem(0521))
@@ -1706,6 +1839,7 @@ void alto2_cpu_device::next_sector(int unit)
 		m_bitclk_time = 0;
 		m_bitclk_index = 0;
 	}
+<<<<<<< HEAD
 #endif
 #if defined(ALTO2_FAKE_STATUS_H) && (ALTO2_FAKE_STATUS_H > 0)
 	if (debug_read_mem(0521) && unit == GET_KADDR_DRIVE(debug_read_mem(0523)))
@@ -1714,6 +1848,8 @@ void alto2_cpu_device::next_sector(int unit)
 		FAKE_STATUS(unit, STATUS_PAGE, dhd->get_page());
 	}
 #endif
+=======
+>>>>>>> upstream/master
 }
 
 /**
@@ -1799,10 +1935,13 @@ void alto2_cpu_device::init_disk()
 
 	m_dsk.kcom = 066000;
 
+<<<<<<< HEAD
 #if USE_BITCLK_TIMER
 	m_dsk.bitclk_timer = machine().scheduler().timer_alloc(timer_expired_delegate(FUNC(alto2_cpu_device::disk_bitclk),this));
 #endif
 
+=======
+>>>>>>> upstream/master
 	m_dsk.strobon_timer = machine().scheduler().timer_alloc(timer_expired_delegate(FUNC(alto2_cpu_device::disk_strobon),this));
 	m_dsk.strobon_timer->reset();
 
@@ -1851,12 +1990,17 @@ void alto2_cpu_device::reset_disk()
 	m_dsk.strobe = 0;
 	m_dsk.strobon_timer->reset();
 	m_dsk.bitclk = 0;
+<<<<<<< HEAD
 #if USE_BITCLK_TIMER
 	m_dsk.bitclk_timer->reset();
 #else
 	m_dsk.bitclk_time[0] = static_cast<int>(attotime::from_nsec(300).as_attoseconds() / 1000000);
 	m_dsk.bitclk_time[1] = static_cast<int>(attotime::from_nsec(300).as_attoseconds() / 1000000);
 #endif
+=======
+	m_dsk.bitclk_time[0] = attotime::from_nsec(300).as_attoseconds();
+	m_dsk.bitclk_time[1] = attotime::from_nsec(300).as_attoseconds();
+>>>>>>> upstream/master
 	m_dsk.datin = 0;
 	m_dsk.bitcount = 0;
 	m_dsk.seclate = 0;
@@ -1880,6 +2024,7 @@ void alto2_cpu_device::reset_disk()
 	m_dsk.ff_44b = JKFF_0;
 	m_dsk.ff_45a = JKFF_0;
 	m_dsk.ff_45b = JKFF_0;
+<<<<<<< HEAD
 
 #if defined(ALTO2_FAKE_STATUS_H) && (ALTO2_FAKE_STATUS_H > 0)
 	for (int unit = 0; unit < 2; unit++) {
@@ -1892,4 +2037,6 @@ void alto2_cpu_device::reset_disk()
 		FAKE_STATUS(unit, STATUS_PAGE, 0);
 	}
 #endif
+=======
+>>>>>>> upstream/master
 }

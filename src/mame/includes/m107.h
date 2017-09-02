@@ -6,18 +6,29 @@
 
 *************************************************************************/
 
+<<<<<<< HEAD
 #include "machine/pic8259.h"
+=======
+#include "machine/gen_latch.h"
+#include "machine/pic8259.h"
+#include "screen.h"
+>>>>>>> upstream/master
 
 struct pf_layer_info
 {
 	tilemap_t *     tmap;
+<<<<<<< HEAD
 	UINT16          vram_base;
+=======
+	uint16_t          vram_base;
+>>>>>>> upstream/master
 };
 
 class m107_state : public driver_device
 {
 public:
 	m107_state(const machine_config &mconfig, device_type type, const char *tag)
+<<<<<<< HEAD
 		: driver_device(mconfig, type, tag),
 			m_maincpu(*this, "maincpu"),
 			m_soundcpu(*this, "soundcpu"),
@@ -28,12 +39,28 @@ public:
 			m_vram_data(*this, "vram_data"),
 			m_upd71059c(*this, "upd71059c")
 			{ }
+=======
+		: driver_device(mconfig, type, tag)
+		, m_maincpu(*this, "maincpu")
+		, m_soundcpu(*this, "soundcpu")
+		, m_gfxdecode(*this, "gfxdecode")
+		, m_screen(*this, "screen")
+		, m_palette(*this, "palette")
+		, m_upd71059c(*this, "upd71059c")
+		, m_soundlatch(*this, "soundlatch")
+		, m_spriteram(*this, "spriteram")
+		, m_vram_data(*this, "vram_data")
+		, m_user1_ptr(*this, "user1")
+	{
+	}
+>>>>>>> upstream/master
 
 	required_device<cpu_device> m_maincpu;
 	required_device<cpu_device> m_soundcpu;
 	required_device<gfxdecode_device> m_gfxdecode;
 	required_device<screen_device> m_screen;
 	required_device<palette_device> m_palette;
+<<<<<<< HEAD
 
 	required_shared_ptr<UINT16> m_spriteram;
 	required_shared_ptr<UINT16> m_vram_data;
@@ -56,6 +83,26 @@ public:
 	DECLARE_READ16_MEMBER(soundlatch_r);
 	DECLARE_WRITE16_MEMBER(sound_irq_ack_w);
 	DECLARE_WRITE16_MEMBER(sound_status_w);
+=======
+	required_device<pic8259_device> m_upd71059c;
+	required_device<generic_latch_8_device> m_soundlatch;
+
+	required_shared_ptr<uint16_t> m_spriteram;
+	required_shared_ptr<uint16_t> m_vram_data;
+	optional_region_ptr<uint8_t> m_user1_ptr;
+
+	// driver init
+	uint8_t m_spritesystem;
+
+	uint8_t m_sprite_display;
+	uint16_t m_raster_irq_position;
+	pf_layer_info m_pf_layer[4];
+	uint16_t m_control[0x10];
+	std::unique_ptr<uint16_t[]> m_buffered_spriteram;
+
+	DECLARE_WRITE8_MEMBER(coincounter_w);
+	DECLARE_WRITE8_MEMBER(bankswitch_w);
+>>>>>>> upstream/master
 	DECLARE_WRITE16_MEMBER(sound_reset_w);
 	DECLARE_WRITE16_MEMBER(wpksoc_output_w);
 	DECLARE_WRITE16_MEMBER(vram_w);
@@ -69,10 +116,17 @@ public:
 	DECLARE_DRIVER_INIT(firebarr);
 	DECLARE_DRIVER_INIT(dsoccr94);
 	DECLARE_DRIVER_INIT(wpksoc);
+<<<<<<< HEAD
 	virtual void machine_start();
 	virtual void video_start();
 
 	UINT32 screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
+=======
+	virtual void machine_start() override;
+	virtual void video_start() override;
+
+	uint32_t screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
+>>>>>>> upstream/master
 	void draw_sprites(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
 	void update_scroll_positions();
 	void tilemap_draw(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect, int laynum, int category,int opaque);

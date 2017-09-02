@@ -13,7 +13,10 @@
 
 #include "debugbaseinfo.h"
 
+<<<<<<< HEAD
 #include "emu.h"
+=======
+>>>>>>> upstream/master
 #include "debug/debugvw.h"
 
 
@@ -27,15 +30,24 @@ public:
 
 	bool owns_window(HWND wnd) const { return m_wnd == wnd; }
 
+<<<<<<< HEAD
 	UINT32 prefwidth() const;
 	UINT32 maxwidth();
+=======
+	uint32_t prefwidth() const;
+	uint32_t maxwidth();
+>>>>>>> upstream/master
 	void get_bounds(RECT &bounds) const;
 	void set_bounds(RECT const &newbounds);
 
 	void send_vscroll(int delta);
 	void send_pageup();
 	void send_pagedown();
+<<<<<<< HEAD
 	void set_focus() { SetFocus(m_wnd); }
+=======
+	void set_focus() const { SetFocus(m_wnd); }
+>>>>>>> upstream/master
 
 	debug_view_type type() const { return m_view->type(); }
 	debug_view_xy total_size() const { return m_view->total_size(); }
@@ -57,7 +69,11 @@ protected:
 private:
 	void draw_contents(HDC windc);
 	void update();
+<<<<<<< HEAD
 	UINT32 process_scroll(WORD type, HWND wnd);
+=======
+	uint32_t process_scroll(WORD type, HWND wnd);
+>>>>>>> upstream/master
 	LRESULT view_proc(UINT message, WPARAM wparam, LPARAM lparam);
 
 	static void static_update(debug_view &view, void *osdprivate);

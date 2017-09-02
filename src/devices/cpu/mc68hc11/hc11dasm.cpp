@@ -1152,6 +1152,7 @@ static const M68HC11_OPCODE opcode_table_page4[256] =
 
 /*****************************************************************************/
 
+<<<<<<< HEAD
 static char *output;
 static const UINT8 *rombase;
 
@@ -1165,18 +1166,30 @@ static void ATTR_PRINTF(1,2) print(const char *fmt, ...)
 }
 
 static UINT8 fetch(void)
+=======
+static const uint8_t *rombase;
+
+static uint8_t fetch(void)
+>>>>>>> upstream/master
 {
 	return *rombase++;
 }
 
+<<<<<<< HEAD
 static UINT16 fetch16(void)
 {
 	UINT16 w;
+=======
+static uint16_t fetch16(void)
+{
+	uint16_t w;
+>>>>>>> upstream/master
 	w = (rombase[0] << 8) | rombase[1];
 	rombase+=2;
 	return w;
 }
 
+<<<<<<< HEAD
 static UINT32 decode_opcode(UINT32 pc, const M68HC11_OPCODE *op_table)
 {
 	UINT8 imm8, mask;
@@ -1184,6 +1197,15 @@ static UINT32 decode_opcode(UINT32 pc, const M68HC11_OPCODE *op_table)
 	UINT16 imm16;
 	UINT8 op2;
 	UINT32 flags = 0;
+=======
+static uint32_t decode_opcode(std::ostream &stream, uint32_t pc, const M68HC11_OPCODE *op_table)
+{
+	uint8_t imm8, mask;
+	int8_t rel8;
+	uint16_t imm16;
+	uint8_t op2;
+	uint32_t flags = 0;
+>>>>>>> upstream/master
 
 	if (!strcmp(op_table->mnemonic, "jsr") || !strcmp(op_table->mnemonic, "bsr"))
 		flags = DASMFLAG_STEP_OVER;
@@ -1194,80 +1216,133 @@ static UINT32 decode_opcode(UINT32 pc, const M68HC11_OPCODE *op_table)
 	{
 		case EA_IMM8:
 			imm8 = fetch();
+<<<<<<< HEAD
 			print("%s 0x%02X", op_table->mnemonic, imm8);
+=======
+			util::stream_format(stream, "%s 0x%02X", op_table->mnemonic, imm8);
+>>>>>>> upstream/master
 			break;
 
 		case EA_IMM16:
 			imm16 = fetch16();
+<<<<<<< HEAD
 			print("%s 0x%04X", op_table->mnemonic, imm16);
+=======
+			util::stream_format(stream, "%s 0x%04X", op_table->mnemonic, imm16);
+>>>>>>> upstream/master
 			break;
 
 		case EA_DIRECT:
 			imm8 = fetch();
+<<<<<<< HEAD
 			print("%s (0x%04X)", op_table->mnemonic, imm8);
+=======
+			util::stream_format(stream, "%s (0x%04X)", op_table->mnemonic, imm8);
+>>>>>>> upstream/master
 			break;
 
 		case EA_EXT:
 			imm16 = fetch16();
+<<<<<<< HEAD
 			print("%s (0x%04X)", op_table->mnemonic, imm16);
+=======
+			util::stream_format(stream, "%s (0x%04X)", op_table->mnemonic, imm16);
+>>>>>>> upstream/master
 			break;
 
 		case EA_IND_X:
 			imm8 = fetch();
+<<<<<<< HEAD
 			print("%s (X+0x%02X)", op_table->mnemonic, imm8);
+=======
+			util::stream_format(stream, "%s (X+0x%02X)", op_table->mnemonic, imm8);
+>>>>>>> upstream/master
 			break;
 
 		case EA_REL:
 			rel8 = fetch();
+<<<<<<< HEAD
 			print("%s [0x%04X]", op_table->mnemonic, pc+2+rel8);
+=======
+			util::stream_format(stream, "%s [0x%04X]", op_table->mnemonic, pc+2+rel8);
+>>>>>>> upstream/master
 			break;
 
 		case EA_DIRECT_IMM8:
 			imm8 = fetch();
 			mask = fetch();
+<<<<<<< HEAD
 			print("%s (0x%04X), 0x%02X", op_table->mnemonic, imm8, mask);
+=======
+			util::stream_format(stream, "%s (0x%04X), 0x%02X", op_table->mnemonic, imm8, mask);
+>>>>>>> upstream/master
 			break;
 
 		case EA_IND_X_IMM8:
 			imm8 = fetch();
 			mask = fetch();
+<<<<<<< HEAD
 			print("%s (X+0x%02X), 0x%02X", op_table->mnemonic, imm8, mask);
+=======
+			util::stream_format(stream, "%s (X+0x%02X), 0x%02X", op_table->mnemonic, imm8, mask);
+>>>>>>> upstream/master
 			break;
 
 		case EA_DIRECT_IMM8_REL:
 			imm8 = fetch();
 			mask = fetch();
 			rel8 = fetch();
+<<<<<<< HEAD
 			print("%s (0x%04X), 0x%02X, [0x%04X]", op_table->mnemonic, imm8, mask, pc+4+rel8);
+=======
+			util::stream_format(stream, "%s (0x%04X), 0x%02X, [0x%04X]", op_table->mnemonic, imm8, mask, pc+4+rel8);
+>>>>>>> upstream/master
 			break;
 
 		case EA_IND_X_IMM8_REL:
 			imm8 = fetch();
 			mask = fetch();
 			rel8 = fetch();
+<<<<<<< HEAD
 			print("%s (X+0x%02X), 0x%02X, [0x%04X]", op_table->mnemonic, imm8, mask, pc+4+rel8);
+=======
+			util::stream_format(stream, "%s (X+0x%02X), 0x%02X, [0x%04X]", op_table->mnemonic, imm8, mask, pc+4+rel8);
+>>>>>>> upstream/master
 			break;
 
 		case EA_IND_Y:
 			imm8 = fetch();
+<<<<<<< HEAD
 			print("%s (Y+0x%02X)", op_table->mnemonic, imm8);
+=======
+			util::stream_format(stream, "%s (Y+0x%02X)", op_table->mnemonic, imm8);
+>>>>>>> upstream/master
 			break;
 
 		case EA_IND_Y_IMM8:
 			imm8 = fetch();
 			mask = fetch();
+<<<<<<< HEAD
 			print("%s (Y+0x%02X), 0x%02X", op_table->mnemonic, imm8, mask);
+=======
+			util::stream_format(stream, "%s (Y+0x%02X), 0x%02X", op_table->mnemonic, imm8, mask);
+>>>>>>> upstream/master
 			break;
 
 		case EA_IND_Y_IMM8_REL:
 			imm8 = fetch();
 			mask = fetch();
 			rel8 = fetch();
+<<<<<<< HEAD
 			print("%s (Y+0x%02X), 0x%02X, [0x%04X]", op_table->mnemonic, imm8, mask, pc+2+rel8);
+=======
+			util::stream_format(stream, "%s (Y+0x%02X), 0x%02X, [0x%04X]", op_table->mnemonic, imm8, mask, pc+2+rel8);
+>>>>>>> upstream/master
 			break;
 
 		case PAGE2:
 			op2 = fetch();
+<<<<<<< HEAD
 			return decode_opcode(pc, &opcode_table_page2[op2]);
 
 		case PAGE3:
@@ -1280,10 +1355,25 @@ static UINT32 decode_opcode(UINT32 pc, const M68HC11_OPCODE *op_table)
 
 		default:
 			print("%s", op_table->mnemonic);
+=======
+			return decode_opcode(stream, pc, &opcode_table_page2[op2]);
+
+		case PAGE3:
+			op2 = fetch();
+			return decode_opcode(stream, pc, &opcode_table_page3[op2]);
+
+		case PAGE4:
+			op2 = fetch();
+			return decode_opcode(stream, pc, &opcode_table_page4[op2]);
+
+		default:
+			util::stream_format(stream, "%s", op_table->mnemonic);
+>>>>>>> upstream/master
 	}
 	return flags;
 }
 
+<<<<<<< HEAD
 CPU_DISASSEMBLE( hc11 )
 {
 	UINT32 flags = 0;
@@ -1294,6 +1384,17 @@ CPU_DISASSEMBLE( hc11 )
 
 	opcode = fetch();
 	flags = decode_opcode(pc, &opcode_table[opcode]);
+=======
+CPU_DISASSEMBLE(hc11)
+{
+	uint32_t flags;
+	uint8_t opcode;
+
+	rombase = oprom;
+
+	opcode = fetch();
+	flags = decode_opcode(stream, pc, &opcode_table[opcode]);
+>>>>>>> upstream/master
 
 	return (rombase-oprom) | flags | DASMFLAG_SUPPORTED;
 }

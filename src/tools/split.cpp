@@ -32,16 +32,27 @@
     hash over a buffer and return a string
 -------------------------------------------------*/
 
+<<<<<<< HEAD
 static void compute_hash_as_string(std::string &buffer, void *data, UINT32 length)
 {
 	char expanded[SHA1_DIGEST_SIZE * 2];
 	UINT8 sha1digest[SHA1_DIGEST_SIZE];
+=======
+static void compute_hash_as_string(std::string &buffer, void *data, uint32_t length)
+{
+	char expanded[SHA1_DIGEST_SIZE * 2];
+	uint8_t sha1digest[SHA1_DIGEST_SIZE];
+>>>>>>> upstream/master
 	struct sha1_ctx sha1;
 	int ch;
 
 	// compute the SHA1
 	sha1_init(&sha1);
+<<<<<<< HEAD
 	sha1_update(&sha1, length, (const UINT8 *)data);
+=======
+	sha1_update(&sha1, length, (const uint8_t *)data);
+>>>>>>> upstream/master
 	sha1_final(&sha1);
 	sha1_digest(&sha1, sizeof(sha1digest), sha1digest);
 
@@ -61,6 +72,7 @@ static void compute_hash_as_string(std::string &buffer, void *data, UINT32 lengt
     split_file - split a file into multiple parts
 -------------------------------------------------*/
 
+<<<<<<< HEAD
 static int split_file(const char *filename, const char *basename, UINT32 splitsize)
 {
 	std::string outfilename, basefilename, splitfilename;
@@ -70,6 +82,17 @@ static int split_file(const char *filename, const char *basename, UINT32 splitsi
 	int index, partnum;
 	UINT64 totallength;
 	file_error filerr;
+=======
+static int split_file(const char *filename, const char *basename, uint32_t splitsize)
+{
+	std::string outfilename, basefilename, splitfilename;
+	util::core_file::ptr outfile, infile, splitfile;
+	std::string computedhash;
+	void *splitbuffer = nullptr;
+	int index, partnum;
+	uint64_t totallength;
+	osd_file::error filerr;
+>>>>>>> upstream/master
 	int error = 1;
 
 	// convert split size to MB
@@ -81,21 +104,34 @@ static int split_file(const char *filename, const char *basename, UINT32 splitsi
 	splitsize *= 1024 * 1024;
 
 	// open the file for read
+<<<<<<< HEAD
 	filerr = core_fopen(filename, OPEN_FLAG_READ, &infile);
 	if (filerr != FILERR_NONE)
+=======
+	filerr = util::core_file::open(filename, OPEN_FLAG_READ, infile);
+	if (filerr != osd_file::error::NONE)
+>>>>>>> upstream/master
 	{
 		fprintf(stderr, "Fatal error: unable to open file '%s'\n", filename);
 		goto cleanup;
 	}
 
 	// get the total length
+<<<<<<< HEAD
 	totallength = core_fsize(infile);
+=======
+	totallength = infile->size();
+>>>>>>> upstream/master
 	if (totallength < splitsize)
 	{
 		fprintf(stderr, "Fatal error: file is smaller than the split size\n");
 		goto cleanup;
 	}
+<<<<<<< HEAD
 	if ((UINT64)splitsize * MAX_PARTS < totallength)
+=======
+	if ((uint64_t)splitsize * MAX_PARTS < totallength)
+>>>>>>> upstream/master
 	{
 		fprintf(stderr, "Fatal error: too many splits (maximum is %d)\n", MAX_PARTS);
 		goto cleanup;
@@ -103,7 +139,11 @@ static int split_file(const char *filename, const char *basename, UINT32 splitsi
 
 	// allocate a buffer for reading
 	splitbuffer = malloc(splitsize);
+<<<<<<< HEAD
 	if (splitbuffer == NULL)
+=======
+	if (splitbuffer == nullptr)
+>>>>>>> upstream/master
 	{
 		fprintf(stderr, "Fatal error: unable to allocate memory for the split\n");
 		goto cleanup;
@@ -119,16 +159,26 @@ static int split_file(const char *filename, const char *basename, UINT32 splitsi
 	splitfilename.assign(basename).append(".split");
 
 	// create the split file
+<<<<<<< HEAD
 	filerr = core_fopen(splitfilename.c_str(), OPEN_FLAG_WRITE | OPEN_FLAG_CREATE | OPEN_FLAG_NO_BOM, &splitfile);
 	if (filerr != FILERR_NONE)
+=======
+	filerr = util::core_file::open(splitfilename, OPEN_FLAG_WRITE | OPEN_FLAG_CREATE | OPEN_FLAG_NO_BOM, splitfile);
+	if (filerr != osd_file::error::NONE)
+>>>>>>> upstream/master
 	{
 		fprintf(stderr, "Fatal error: unable to create split file '%s'\n", splitfilename.c_str());
 		goto cleanup;
 	}
 
 	// write the basics out
+<<<<<<< HEAD
 	core_fprintf(splitfile, "splitfile=%s\n", basefilename.c_str());
 	core_fprintf(splitfile, "splitsize=%d\n", splitsize);
+=======
+	splitfile->printf("splitfile=%s\n", basefilename.c_str());
+	splitfile->printf("splitsize=%d\n", splitsize);
+>>>>>>> upstream/master
 
 	printf("Split file is '%s'\n", splitfilename.c_str());
 	printf("Splitting file %s into chunks of %dMB...\n", basefilename.c_str(), splitsize / (1024 * 1024));
@@ -136,12 +186,20 @@ static int split_file(const char *filename, const char *basename, UINT32 splitsi
 	// now iterate until done
 	for (partnum = 0; partnum < 1000; partnum++)
 	{
+<<<<<<< HEAD
 		UINT32 actual, length;
+=======
+		uint32_t actual, length;
+>>>>>>> upstream/master
 
 		printf("Reading part %d...", partnum);
 
 		// read as much as we can from the file
+<<<<<<< HEAD
 		length = core_fread(infile, splitbuffer, splitsize);
+=======
+		length = infile->read(splitbuffer, splitsize);
+>>>>>>> upstream/master
 		if (length == 0)
 			break;
 
@@ -149,6 +207,7 @@ static int split_file(const char *filename, const char *basename, UINT32 splitsi
 		compute_hash_as_string(computedhash, splitbuffer, length);
 
 		// write that info to the split file
+<<<<<<< HEAD
 		core_fprintf(splitfile, "hash=%s file=%s.%03d\n", computedhash.c_str(), basefilename.c_str(), partnum);
 
 		// compute the full filename for this guy
@@ -157,6 +216,16 @@ static int split_file(const char *filename, const char *basename, UINT32 splitsi
 		// create it
 		filerr = core_fopen(outfilename.c_str(), OPEN_FLAG_WRITE | OPEN_FLAG_CREATE, &outfile);
 		if (filerr != FILERR_NONE)
+=======
+		splitfile->printf("hash=%s file=%s.%03d\n", computedhash.c_str(), basefilename.c_str(), partnum);
+
+		// compute the full filename for this guy
+		outfilename = string_format("%s.%03d", basename, partnum);
+
+		// create it
+		filerr = util::core_file::open(outfilename, OPEN_FLAG_WRITE | OPEN_FLAG_CREATE, outfile);
+		if (filerr != osd_file::error::NONE)
+>>>>>>> upstream/master
 		{
 			printf("\n");
 			fprintf(stderr, "Fatal error: unable to create output file '%s'\n", outfilename.c_str());
@@ -166,15 +235,23 @@ static int split_file(const char *filename, const char *basename, UINT32 splitsi
 		printf(" writing %s.%03d...", basefilename.c_str(), partnum);
 
 		// write the data
+<<<<<<< HEAD
 		actual = core_fwrite(outfile, splitbuffer, length);
+=======
+		actual = outfile->write(splitbuffer, length);
+>>>>>>> upstream/master
 		if (actual != length)
 		{
 			printf("\n");
 			fprintf(stderr, "Fatal error: Error writing output file (out of space?)\n");
 			goto cleanup;
 		}
+<<<<<<< HEAD
 		core_fclose(outfile);
 		outfile = NULL;
+=======
+		outfile.reset();
+>>>>>>> upstream/master
 
 		printf(" done\n");
 
@@ -188,6 +265,7 @@ static int split_file(const char *filename, const char *basename, UINT32 splitsi
 	error = 0;
 
 cleanup:
+<<<<<<< HEAD
 	if (splitfile != NULL)
 	{
 		core_fclose(splitfile);
@@ -203,6 +281,23 @@ cleanup:
 			remove(outfilename.c_str());
 	}
 	if (splitbuffer != NULL)
+=======
+	if (splitfile)
+	{
+		splitfile.reset();
+		if (error != 0)
+			remove(splitfilename.c_str());
+	}
+	if (infile)
+		infile.reset();
+	if (outfile)
+	{
+		outfile.reset();
+		if (error != 0)
+			remove(outfilename.c_str());
+	}
+	if (splitbuffer != nullptr)
+>>>>>>> upstream/master
 		free(splitbuffer);
 	return error;
 }
@@ -218,24 +313,40 @@ static int join_file(const char *filename, const char *outname, int write_output
 	std::string expectedhash, computedhash;
 	std::string outfilename, infilename;
 	std::string basepath;
+<<<<<<< HEAD
 	core_file *outfile = NULL, *infile = NULL, *splitfile = NULL;
 	void *splitbuffer = NULL;
 	file_error filerr;
 	UINT32 splitsize;
+=======
+	util::core_file::ptr outfile, infile, splitfile;
+	void *splitbuffer = nullptr;
+	osd_file::error filerr;
+	uint32_t splitsize;
+>>>>>>> upstream/master
 	char buffer[256];
 	int error = 1;
 	int index;
 
 	// open the file for read
+<<<<<<< HEAD
 	filerr = core_fopen(filename, OPEN_FLAG_READ, &splitfile);
 	if (filerr != FILERR_NONE)
+=======
+	filerr = util::core_file::open(filename, OPEN_FLAG_READ, splitfile);
+	if (filerr != osd_file::error::NONE)
+>>>>>>> upstream/master
 	{
 		fprintf(stderr, "Fatal error: unable to open file '%s'\n", filename);
 		goto cleanup;
 	}
 
 	// read the first line and verify this is a split file
+<<<<<<< HEAD
 	if (!core_fgets(buffer, sizeof(buffer), splitfile) || strncmp(buffer, "splitfile=", 10) != 0)
+=======
+	if (!splitfile->gets(buffer, sizeof(buffer)) || strncmp(buffer, "splitfile=", 10) != 0)
+>>>>>>> upstream/master
 	{
 		fprintf(stderr, "Fatal error: corrupt or incomplete split file at line:\n%s\n", buffer);
 		goto cleanup;
@@ -252,13 +363,21 @@ static int join_file(const char *filename, const char *outname, int write_output
 		basepath.clear();
 
 	// override the output filename if specified, otherwise prepend the path
+<<<<<<< HEAD
 	if (outname != NULL)
+=======
+	if (outname != nullptr)
+>>>>>>> upstream/master
 		outfilename.assign(outname);
 	else
 		outfilename.insert(0, basepath);
 
 	// read the split size
+<<<<<<< HEAD
 	if (!core_fgets(buffer, sizeof(buffer), splitfile) || sscanf(buffer, "splitsize=%d", &splitsize) != 1)
+=======
+	if (!splitfile->gets(buffer, sizeof(buffer)) || sscanf(buffer, "splitsize=%d", &splitsize) != 1)
+>>>>>>> upstream/master
 	{
 		fprintf(stderr, "Fatal error: corrupt or incomplete split file at line:\n%s\n", buffer);
 		goto cleanup;
@@ -268,18 +387,30 @@ static int join_file(const char *filename, const char *outname, int write_output
 	if (write_output)
 	{
 		// don't overwrite the original!
+<<<<<<< HEAD
 		filerr = core_fopen(outfilename.c_str(), OPEN_FLAG_READ, &outfile);
 		if (filerr == FILERR_NONE)
 		{
 			core_fclose(outfile);
 			outfile = NULL;
+=======
+		filerr = util::core_file::open(outfilename, OPEN_FLAG_READ, outfile);
+		if (filerr == osd_file::error::NONE)
+		{
+			outfile.reset();
+>>>>>>> upstream/master
 			fprintf(stderr, "Fatal error: output file '%s' already exists\n", outfilename.c_str());
 			goto cleanup;
 		}
 
 		// open the output for write
+<<<<<<< HEAD
 		filerr = core_fopen(outfilename.c_str(), OPEN_FLAG_WRITE | OPEN_FLAG_CREATE, &outfile);
 		if (filerr != FILERR_NONE)
+=======
+		filerr = util::core_file::open(outfilename, OPEN_FLAG_WRITE | OPEN_FLAG_CREATE, outfile);
+		if (filerr != osd_file::error::NONE)
+>>>>>>> upstream/master
 		{
 			fprintf(stderr, "Fatal error: unable to create file '%s'\n", outfilename.c_str());
 			goto cleanup;
@@ -289,9 +420,15 @@ static int join_file(const char *filename, const char *outname, int write_output
 	printf("%s file '%s'...\n", write_output ? "Joining" : "Verifying", outfilename.c_str());
 
 	// now iterate through each file
+<<<<<<< HEAD
 	while (core_fgets(buffer, sizeof(buffer), splitfile))
 	{
 		UINT32 length, actual;
+=======
+	while (splitfile->gets(buffer, sizeof(buffer)))
+	{
+		uint32_t length, actual;
+>>>>>>> upstream/master
 
 		// make sure the hash and filename are in the right place
 		if (strncmp(buffer, "hash=", 5) != 0 || strncmp(buffer + 5 + SHA1_DIGEST_SIZE * 2, " file=", 6) != 0)
@@ -307,8 +444,13 @@ static int join_file(const char *filename, const char *outname, int write_output
 
 		// read the file's contents
 		infilename.insert(0, basepath);
+<<<<<<< HEAD
 		filerr = core_fload(infilename.c_str(), &splitbuffer, &length);
 		if (filerr != FILERR_NONE)
+=======
+		filerr = util::core_file::load(infilename.c_str(), &splitbuffer, length);
+		if (filerr != osd_file::error::NONE)
+>>>>>>> upstream/master
 		{
 			printf("\n");
 			fprintf(stderr, "Fatal error: unable to load file '%s'\n", infilename.c_str());
@@ -331,7 +473,11 @@ static int join_file(const char *filename, const char *outname, int write_output
 		{
 			printf(" writing...");
 
+<<<<<<< HEAD
 			actual = core_fwrite(outfile, splitbuffer, length);
+=======
+			actual = outfile->write(splitbuffer, length);
+>>>>>>> upstream/master
 			if (actual != length)
 			{
 				printf("\n");
@@ -345,8 +491,13 @@ static int join_file(const char *filename, const char *outname, int write_output
 			printf(" verified\n");
 
 		// release allocated memory
+<<<<<<< HEAD
 		osd_free(splitbuffer);
 		splitbuffer = NULL;
+=======
+		free(splitbuffer);
+		splitbuffer = nullptr;
+>>>>>>> upstream/master
 	}
 	if (write_output)
 		printf("File re-created successfully\n");
@@ -357,6 +508,7 @@ static int join_file(const char *filename, const char *outname, int write_output
 	error = 0;
 
 cleanup:
+<<<<<<< HEAD
 	if (splitfile != NULL)
 		core_fclose(splitfile);
 	if (infile != NULL)
@@ -369,6 +521,20 @@ cleanup:
 	}
 	if (splitbuffer != NULL)
 		osd_free(splitbuffer);
+=======
+	if (splitfile)
+		splitfile.reset();
+	if (infile)
+		infile.reset();
+	if (outfile)
+	{
+		outfile.reset();
+		if (error != 0)
+			remove(outfilename.c_str());
+	}
+	if (splitbuffer != nullptr)
+		free(splitbuffer);
+>>>>>>> upstream/master
 	return error;
 }
 
@@ -398,7 +564,11 @@ int main(int argc, char *argv[])
 	{
 		if (argc != 3 && argc != 4)
 			goto usage;
+<<<<<<< HEAD
 		result = join_file(argv[2], (argc >= 4) ? argv[3] : NULL, TRUE);
+=======
+		result = join_file(argv[2], (argc >= 4) ? argv[3] : nullptr, true);
+>>>>>>> upstream/master
 	}
 
 	/* verify command */
@@ -406,7 +576,11 @@ int main(int argc, char *argv[])
 	{
 		if (argc != 3)
 			goto usage;
+<<<<<<< HEAD
 		result = join_file(argv[2], NULL, FALSE);
+=======
+		result = join_file(argv[2], nullptr, false);
+>>>>>>> upstream/master
 	}
 	else
 		goto usage;

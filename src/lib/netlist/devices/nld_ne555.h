@@ -1,5 +1,6 @@
 // license:GPL-2.0+
 // copyright-holders:Couriersud
+<<<<<<< HEAD
 /*
  * nld_NE555.h
  *
@@ -15,10 +16,13 @@
  *  Naming conventions follow Texas Instruments datasheet
  *
  */
+=======
+>>>>>>> upstream/master
 
 #ifndef NLD_NE555_H_
 #define NLD_NE555_H_
 
+<<<<<<< HEAD
 #include "nl_base.h"
 #include "analog/nld_twoterm.h"
 
@@ -51,5 +55,14 @@ NETLIB_DEVICE(NE555,
 NETLIB_DEVICE_DERIVED_PURE(NE555_dip, NE555);
 
 NETLIB_NAMESPACE_DEVICES_END()
+=======
+#include "../nl_setup.h"
+
+#define NE555(name)                                                             \
+		NET_REGISTER_DEV(NE555, name)
+
+#define NE555_DIP(name)                                                         \
+		NET_REGISTER_DEV(NE555_DIP, name)
+>>>>>>> upstream/master
 
 #endif /* NLD_NE555_H_ */

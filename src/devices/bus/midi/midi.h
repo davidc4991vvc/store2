@@ -1,9 +1,17 @@
 // license:BSD-3-Clause
 // copyright-holders:R. Belmont
+<<<<<<< HEAD
 #ifndef __BUS_MIDI_H__
 #define __BUS_MIDI_H__
 
 #include "emu.h"
+=======
+#ifndef MAME_BUS_MIDI_MIDI_H
+#define MAME_BUS_MIDI_MIDI_H
+
+#pragma once
+
+>>>>>>> upstream/master
 
 #define MCFG_MIDI_PORT_ADD(_tag, _slot_intf, _def_slot) \
 	MCFG_DEVICE_ADD(_tag, MIDI_PORT, 0) \
@@ -20,19 +28,32 @@ class midi_port_device : public device_t,
 	friend class device_midi_port_interface;
 
 public:
+<<<<<<< HEAD
 	midi_port_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
 	virtual ~midi_port_device();
 
 	// static configuration helpers
 	template<class _Object> static devcb_base &set_rx_handler(device_t &device, _Object object) { return downcast<midi_port_device &>(device).m_rxd_handler.set_callback(object); }
+=======
+	midi_port_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
+	virtual ~midi_port_device();
+
+	// static configuration helpers
+	template <class Object> static devcb_base &set_rx_handler(device_t &device, Object &&cb) { return downcast<midi_port_device &>(device).m_rxd_handler.set_callback(std::forward<Object>(cb)); }
+>>>>>>> upstream/master
 
 	DECLARE_WRITE_LINE_MEMBER( write_txd );
 
 	DECLARE_READ_LINE_MEMBER( rx_r ) { return m_rxd; }
 
 protected:
+<<<<<<< HEAD
 	virtual void device_start();
 	virtual void device_config_complete();
+=======
+	virtual void device_start() override;
+	virtual void device_config_complete() override;
+>>>>>>> upstream/master
 
 	int m_rxd;
 
@@ -47,6 +68,7 @@ class device_midi_port_interface : public device_slot_card_interface
 	friend class midi_port_device;
 
 public:
+<<<<<<< HEAD
 	device_midi_port_interface(const machine_config &mconfig, device_t &device);
 	virtual ~device_midi_port_interface();
 
@@ -54,12 +76,30 @@ public:
 	DECLARE_WRITE_LINE_MEMBER( output_rxd ) { m_port->m_rxd = state; m_port->m_rxd_handler(state); }
 
 protected:
+=======
+	virtual ~device_midi_port_interface();
+
+	virtual DECLARE_WRITE_LINE_MEMBER( input_txd ) { }
+	DECLARE_WRITE_LINE_MEMBER( output_rxd ) { m_port->m_rxd = state; m_port->m_rxd_handler(state); }
+
+protected:
+	device_midi_port_interface(const machine_config &mconfig, device_t &device);
+
+>>>>>>> upstream/master
 	midi_port_device *m_port;
 };
 
 extern const device_type MIDI_PORT;
+<<<<<<< HEAD
+=======
+DECLARE_DEVICE_TYPE(MIDI_PORT, midi_port_device)
+>>>>>>> upstream/master
 
 SLOT_INTERFACE_EXTERN(midiin_slot);
 SLOT_INTERFACE_EXTERN(midiout_slot);
 
+<<<<<<< HEAD
 #endif
+=======
+#endif // MAME_BUS_MIDI_MIDI_H
+>>>>>>> upstream/master

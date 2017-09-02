@@ -37,9 +37,15 @@ const char *dip_format::extensions() const
 	return "dip";
 }
 
+<<<<<<< HEAD
 int dip_format::identify(io_generic *io, UINT32 form_factor)
 {
 	UINT64 size = io_generic_size(io);
+=======
+int dip_format::identify(io_generic *io, uint32_t form_factor)
+{
+	uint64_t size = io_generic_size(io);
+>>>>>>> upstream/master
 
 	if (size == 0x134000 + 0x100)
 		return 100;
@@ -47,7 +53,11 @@ int dip_format::identify(io_generic *io, UINT32 form_factor)
 	return 0;
 }
 
+<<<<<<< HEAD
 bool dip_format::load(io_generic *io, UINT32 form_factor, floppy_image *image)
+=======
+bool dip_format::load(io_generic *io, uint32_t form_factor, floppy_image *image)
+>>>>>>> upstream/master
 {
 	int heads, tracks, spt, bps;
 
@@ -61,10 +71,17 @@ bool dip_format::load(io_generic *io, UINT32 form_factor, floppy_image *image)
 	int cell_count = form_factor == floppy_image::FF_35 ? 200000 : 166666;
 
 	int ssize;
+<<<<<<< HEAD
 	for (ssize = 0; (128 << ssize) < bps; ssize++);
 
 	desc_pc_sector sects[256];
 	UINT8 sect_data[65536];
+=======
+	for (ssize = 0; (128 << ssize) < bps; ssize++) {};
+
+	desc_pc_sector sects[256];
+	uint8_t sect_data[65536];
+>>>>>>> upstream/master
 
 	for (int track = 0; track < tracks; track++)
 		for (int head = 0; head < heads; head++)

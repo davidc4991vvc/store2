@@ -15,7 +15,11 @@
 //  GLOBAL VARIABLES
 //**************************************************************************
 
+<<<<<<< HEAD
 const device_type VBOY_CART_SLOT = &device_creator<vboy_cart_slot_device>;
+=======
+DEFINE_DEVICE_TYPE(VBOY_CART_SLOT, vboy_cart_slot_device, "vboy_cart_slot", "Nintendo Virtual Boy Cartridge Slot")
+>>>>>>> upstream/master
 
 //**************************************************************************
 //    vboy cartridges Interface
@@ -27,7 +31,11 @@ const device_type VBOY_CART_SLOT = &device_creator<vboy_cart_slot_device>;
 
 device_vboy_cart_interface::device_vboy_cart_interface(const machine_config &mconfig, device_t &device)
 	: device_slot_card_interface(mconfig, device),
+<<<<<<< HEAD
 		m_rom(NULL),
+=======
+		m_rom(nullptr),
+>>>>>>> upstream/master
 		m_rom_size(0),
 		m_rom_mask(0)
 {
@@ -46,11 +54,19 @@ device_vboy_cart_interface::~device_vboy_cart_interface()
 //  rom_alloc - alloc the space for the cart
 //-------------------------------------------------
 
+<<<<<<< HEAD
 void device_vboy_cart_interface::rom_alloc(UINT32 size, const char *tag)
 {
 	if (m_rom == NULL)
 	{
 		m_rom = (UINT32 *)device().machine().memory().region_alloc(std::string(tag).append(VBOYSLOT_ROM_REGION_TAG).c_str(), size, 4, ENDIANNESS_LITTLE)->base();
+=======
+void device_vboy_cart_interface::rom_alloc(uint32_t size, const char *tag)
+{
+	if (m_rom == nullptr)
+	{
+		m_rom = (uint32_t *)device().machine().memory().region_alloc(std::string(tag).append(VBOYSLOT_ROM_REGION_TAG).c_str(), size, 4, ENDIANNESS_LITTLE)->base();
+>>>>>>> upstream/master
 		m_rom_size = size/4;
 		m_rom_mask = m_rom_size - 1;
 	}
@@ -61,9 +77,15 @@ void device_vboy_cart_interface::rom_alloc(UINT32 size, const char *tag)
 //  ram_alloc - alloc the space for the ram
 //-------------------------------------------------
 
+<<<<<<< HEAD
 void device_vboy_cart_interface::eeprom_alloc(UINT32 size)
 {
 	m_eeprom.resize(size/sizeof(UINT32));
+=======
+void device_vboy_cart_interface::eeprom_alloc(uint32_t size)
+{
+	m_eeprom.resize(size/sizeof(uint32_t));
+>>>>>>> upstream/master
 }
 
 
@@ -74,11 +96,20 @@ void device_vboy_cart_interface::eeprom_alloc(UINT32 size)
 //-------------------------------------------------
 //  vboy_cart_slot_device - constructor
 //-------------------------------------------------
+<<<<<<< HEAD
 vboy_cart_slot_device::vboy_cart_slot_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock) :
 						device_t(mconfig, VBOY_CART_SLOT, "Nintendo Virtual Boy Cartridge Slot", tag, owner, clock, "vboy_cart_slot", __FILE__),
 						device_image_interface(mconfig, *this),
 						device_slot_interface(mconfig, *this),
 						m_type(VBOY_STD), m_cart(nullptr)
+=======
+vboy_cart_slot_device::vboy_cart_slot_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock) :
+	device_t(mconfig, VBOY_CART_SLOT, tag, owner, clock),
+	device_image_interface(mconfig, *this),
+	device_slot_interface(mconfig, *this),
+	m_type(VBOY_STD),
+	m_cart(nullptr)
+>>>>>>> upstream/master
 {
 }
 
@@ -100,6 +131,7 @@ void vboy_cart_slot_device::device_start()
 	m_cart = dynamic_cast<device_vboy_cart_interface *>(get_card_device());
 }
 
+<<<<<<< HEAD
 //-------------------------------------------------
 //  device_config_complete - perform any
 //  operations now that the configuration is
@@ -112,6 +144,8 @@ void vboy_cart_slot_device::device_config_complete()
 	update_names();
 }
 
+=======
+>>>>>>> upstream/master
 
 //-------------------------------------------------
 //  vboy PCB
@@ -132,10 +166,17 @@ static const vboy_slot slot_list[] =
 
 static int vboy_get_pcb_id(const char *slot)
 {
+<<<<<<< HEAD
 	for (int i = 0; i < ARRAY_LENGTH(slot_list); i++)
 	{
 		if (!core_stricmp(slot_list[i].slot_option, slot))
 			return slot_list[i].pcb_id;
+=======
+	for (auto & elem : slot_list)
+	{
+		if (!core_stricmp(elem.slot_option, slot))
+			return elem.pcb_id;
+>>>>>>> upstream/master
 	}
 
 	return 0;
@@ -158,6 +199,7 @@ static const char *vboy_get_slot(int type)
  call load
  -------------------------------------------------*/
 
+<<<<<<< HEAD
 bool vboy_cart_slot_device::call_load()
 {
 	if (m_cart)
@@ -165,11 +207,24 @@ bool vboy_cart_slot_device::call_load()
 		UINT8 *ROM;
 		UINT32 len = (software_entry() == NULL) ? length() : get_software_region_length("rom");
 		bool has_eeprom = (software_entry() != NULL) && get_software_region("eeprom");
+=======
+image_init_result vboy_cart_slot_device::call_load()
+{
+	if (m_cart)
+	{
+		uint8_t *ROM;
+		uint32_t len = !loaded_through_softlist() ? length() : get_software_region_length("rom");
+		bool has_eeprom = loaded_through_softlist() && get_software_region("eeprom");
+>>>>>>> upstream/master
 
 		if (len > 0x200000)
 		{
 			seterror(IMAGE_ERROR_UNSPECIFIED, "Unsupported cartridge size");
+<<<<<<< HEAD
 			return IMAGE_INIT_FAIL;
+=======
+			return image_init_result::FAIL;
+>>>>>>> upstream/master
 		}
 
 		// always alloc 0x200000 so to be able to directly map the region
@@ -178,9 +233,15 @@ bool vboy_cart_slot_device::call_load()
 		if (has_eeprom)
 			m_cart->eeprom_alloc(get_software_region_length("eeprom"));
 
+<<<<<<< HEAD
 		ROM = (UINT8 *)m_cart->get_rom_base();
 
 		if (software_entry() == NULL)
+=======
+		ROM = (uint8_t *)m_cart->get_rom_base();
+
+		if (!loaded_through_softlist())
+>>>>>>> upstream/master
 			fread(ROM, len);
 		else
 			memcpy(ROM, get_software_region("rom"), len);
@@ -189,7 +250,11 @@ bool vboy_cart_slot_device::call_load()
 		if (len < 0x100000) { memcpy(ROM + 0x080000, ROM, 0x080000); }
 		if (len < 0x200000) { memcpy(ROM + 0x100000, ROM, 0x100000); }
 
+<<<<<<< HEAD
 		if (software_entry() == NULL)
+=======
+		if (!loaded_through_softlist())
+>>>>>>> upstream/master
 			m_type = vboy_get_pcb_id("vb_rom");
 		else
 		{
@@ -200,10 +265,17 @@ bool vboy_cart_slot_device::call_load()
 
 		//printf("Type: %s\n", vboy_get_slot(m_type));
 
+<<<<<<< HEAD
 		return IMAGE_INIT_PASS;
 	}
 
 	return IMAGE_INIT_PASS;
+=======
+		return image_init_result::PASS;
+	}
+
+	return image_init_result::PASS;
+>>>>>>> upstream/master
 }
 
 
@@ -218,6 +290,7 @@ void vboy_cart_slot_device::call_unload()
 }
 
 /*-------------------------------------------------
+<<<<<<< HEAD
  call softlist load
  -------------------------------------------------*/
 
@@ -236,6 +309,14 @@ bool vboy_cart_slot_device::call_softlist_load(software_list_device &swlist, con
 void vboy_cart_slot_device::get_default_card_software(std::string &result)
 {
 	software_get_default_slot(result, "vb_rom");
+=======
+ get default card software
+ -------------------------------------------------*/
+
+std::string vboy_cart_slot_device::get_default_card_software(get_default_card_software_hook &hook) const
+{
+	return software_get_default_slot("vb_rom");
+>>>>>>> upstream/master
 }
 
 /*-------------------------------------------------

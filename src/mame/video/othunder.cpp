@@ -2,6 +2,10 @@
 // copyright-holders:David Graves
 #include "emu.h"
 #include "includes/othunder.h"
+<<<<<<< HEAD
+=======
+#include "screen.h"
+>>>>>>> upstream/master
 
 
 void othunder_state::video_start()
@@ -9,7 +13,11 @@ void othunder_state::video_start()
 	/* Up to $800/8 big sprites, requires 0x100 * sizeof(*spritelist)
 	   Multiply this by 32 to give room for the number of small sprites,
 	   which are what actually get put in the structure. */
+<<<<<<< HEAD
 	m_spritelist = auto_alloc_array(machine(), struct othunder_tempsprite, 0x2000);
+=======
+	m_spritelist = std::make_unique<tempsprite[]>(0x2000);
+>>>>>>> upstream/master
 }
 
 
@@ -63,11 +71,19 @@ spriteram is being tested, take no notice of that.]
 ********************************************************/
 
 
+<<<<<<< HEAD
 void othunder_state::draw_sprites( screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect, const int *primasks, int y_offs )
 {
 	UINT16 *spritemap = (UINT16 *)memregion("user1")->base();
 	UINT16 tile_mask = (m_gfxdecode->gfx(0)->elements()) - 1;
 	UINT16 *spriteram16 = m_spriteram;
+=======
+void othunder_state::draw_sprites(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect, const int *primasks, int y_offs)
+{
+	uint16_t *spritemap = (uint16_t *)memregion("user1")->base();
+	uint16_t tile_mask = (m_gfxdecode->gfx(0)->elements()) - 1;
+	uint16_t *spriteram16 = m_spriteram;
+>>>>>>> upstream/master
 	int offs, data, tilenum, color, flipx, flipy;
 	int x, y, priority, curx, cury;
 	int sprites_flipscreen = 0;
@@ -77,7 +93,11 @@ void othunder_state::draw_sprites( screen_device &screen, bitmap_ind16 &bitmap, 
 
 	/* pdrawgfx() needs us to draw sprites front to back, so we have to build a list
 	   while processing sprite ram and then draw them all at the end */
+<<<<<<< HEAD
 	struct othunder_tempsprite *sprite_ptr = m_spritelist;
+=======
+	struct tempsprite *sprite_ptr = m_spritelist.get();
+>>>>>>> upstream/master
 
 	for (offs = (m_spriteram.bytes() / 2) - 4; offs >= 0; offs -= 4)
 	{
@@ -179,8 +199,13 @@ void othunder_state::draw_sprites( screen_device &screen, bitmap_ind16 &bitmap, 
 logerror("Sprite number %04x had %02x invalid chunks\n",tilenum,bad_chunks);
 	}
 
+<<<<<<< HEAD
 	/* this happens only if primsks != NULL */
 	while (sprite_ptr != m_spritelist)
+=======
+	/* this happens only if primsks != nullptr */
+	while (sprite_ptr != m_spritelist.get())
+>>>>>>> upstream/master
 	{
 		sprite_ptr--;
 
@@ -199,7 +224,11 @@ logerror("Sprite number %04x had %02x invalid chunks\n",tilenum,bad_chunks);
                 SCREEN REFRESH
 **************************************************************/
 
+<<<<<<< HEAD
 UINT32 othunder_state::screen_update_othunder(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+=======
+uint32_t othunder_state::screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+>>>>>>> upstream/master
 {
 	int layer[3];
 

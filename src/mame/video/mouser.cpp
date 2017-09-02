@@ -20,7 +20,11 @@
 
 PALETTE_INIT_MEMBER(mouser_state, mouser)
 {
+<<<<<<< HEAD
 	const UINT8 *color_prom = memregion("proms")->base();
+=======
+	const uint8_t *color_prom = memregion("proms")->base();
+>>>>>>> upstream/master
 	int i;
 
 	for (i = 0; i < palette.entries(); i++)
@@ -47,6 +51,7 @@ PALETTE_INIT_MEMBER(mouser_state, mouser)
 	}
 }
 
+<<<<<<< HEAD
 WRITE8_MEMBER(mouser_state::mouser_flip_screen_x_w)
 {
 	flip_screen_x_set(~data & 1);
@@ -60,6 +65,21 @@ WRITE8_MEMBER(mouser_state::mouser_flip_screen_y_w)
 UINT32 mouser_state::screen_update_mouser(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
 {
 	UINT8 *spriteram = m_spriteram;
+=======
+WRITE_LINE_MEMBER(mouser_state::flip_screen_x_w)
+{
+	flip_screen_x_set(!state);
+}
+
+WRITE_LINE_MEMBER(mouser_state::flip_screen_y_w)
+{
+	flip_screen_y_set(!state);
+}
+
+uint32_t mouser_state::screen_update_mouser(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+{
+	uint8_t *spriteram = m_spriteram;
+>>>>>>> upstream/master
 	int offs;
 	int sx, sy;
 	int flipx, flipy;

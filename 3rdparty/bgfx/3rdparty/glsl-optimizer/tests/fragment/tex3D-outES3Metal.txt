@@ -1,4 +1,8 @@
 #include <metal_stdlib>
+<<<<<<< HEAD
+=======
+#pragma clang diagnostic ignored "-Wparentheses-equality"
+>>>>>>> upstream/master
 using namespace metal;
 struct xlatMtlShaderInput {
   float3 uv;

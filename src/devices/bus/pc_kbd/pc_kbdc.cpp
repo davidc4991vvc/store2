@@ -14,7 +14,10 @@ The following basic program can be useful for identifying scancodes:
 
 
 #include "emu.h"
+<<<<<<< HEAD
 #include "emuopts.h"
+=======
+>>>>>>> upstream/master
 #include "pc_kbdc.h"
 
 
@@ -22,7 +25,11 @@ The following basic program can be useful for identifying scancodes:
 //  GLOBAL VARIABLES
 //**************************************************************************
 
+<<<<<<< HEAD
 const device_type PC_KBDC_SLOT = &device_creator<pc_kbdc_slot_device>;
+=======
+DEFINE_DEVICE_TYPE(PC_KBDC_SLOT, pc_kbdc_slot_device, "pc_kbdc_slot", "PC keyboard port")
+>>>>>>> upstream/master
 
 //**************************************************************************
 //  LIVE DEVICE
@@ -31,9 +38,15 @@ const device_type PC_KBDC_SLOT = &device_creator<pc_kbdc_slot_device>;
 //-------------------------------------------------
 //  pc_kbdc_slot_device - constructor
 //-------------------------------------------------
+<<<<<<< HEAD
 pc_kbdc_slot_device::pc_kbdc_slot_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock) :
 		device_t(mconfig, PC_KBDC_SLOT, "PC_KBDC_SLOT", tag, owner, clock, "pc_kbdc_slot", __FILE__),
 		device_slot_interface(mconfig, *this),
+=======
+pc_kbdc_slot_device::pc_kbdc_slot_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock) :
+	device_t(mconfig, PC_KBDC_SLOT, tag, owner, clock),
+	device_slot_interface(mconfig, *this),
+>>>>>>> upstream/master
 	m_kbdc_device(nullptr)
 {
 }
@@ -64,12 +77,17 @@ void pc_kbdc_slot_device::device_start()
 //  GLOBAL VARIABLES
 //**************************************************************************
 
+<<<<<<< HEAD
 const device_type PC_KBDC = &device_creator<pc_kbdc_device>;
+=======
+DEFINE_DEVICE_TYPE(PC_KBDC, pc_kbdc_device, "pc_kbdc", "PC KBDC")
+>>>>>>> upstream/master
 
 
 //-------------------------------------------------
 //  pc_kbdc_device - constructor
 //-------------------------------------------------
+<<<<<<< HEAD
 pc_kbdc_device::pc_kbdc_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock) :
 		device_t(mconfig, PC_KBDC, "PC_KBDC", tag, owner, clock, "pc_kbdc", __FILE__),
 		m_out_clock_cb(*this),
@@ -79,6 +97,17 @@ pc_kbdc_device::pc_kbdc_device(const machine_config &mconfig, const char *tag, d
 		m_kb_clock_state(1),
 		m_kb_data_state(1),
 		m_keyboard( NULL )
+=======
+pc_kbdc_device::pc_kbdc_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock) :
+	device_t(mconfig, PC_KBDC, tag, owner, clock),
+	m_out_clock_cb(*this),
+	m_out_data_cb(*this),
+	m_clock_state(-1),
+	m_data_state(-1), m_mb_clock_state(0), m_mb_data_state(0),
+	m_kb_clock_state(1),
+	m_kb_data_state(1),
+	m_keyboard( nullptr )
+>>>>>>> upstream/master
 {
 }
 
@@ -194,9 +223,15 @@ WRITE_LINE_MEMBER( pc_kbdc_device::data_write_from_kb )
 //-------------------------------------------------
 
 device_pc_kbd_interface::device_pc_kbd_interface(const machine_config &mconfig, device_t &device)
+<<<<<<< HEAD
 	: device_slot_card_interface(mconfig, device),
 		m_pc_kbdc(NULL),
 		m_pc_kbdc_tag(NULL), m_next(nullptr)
+=======
+	: device_slot_card_interface(mconfig, device)
+	, m_pc_kbdc(nullptr)
+	, m_pc_kbdc_tag(nullptr)
+>>>>>>> upstream/master
 {
 }
 

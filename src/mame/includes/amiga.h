@@ -9,8 +9,15 @@ Ernesto Corvi & Mariusz Wojcieszek
 
 ***************************************************************************/
 
+<<<<<<< HEAD
 #ifndef __AMIGA_H__
 #define __AMIGA_H__
+=======
+#ifndef MAME_INCLUDES_AMIGA_H
+#define MAME_INCLUDES_AMIGA_H
+
+#pragma once
+>>>>>>> upstream/master
 
 #include "cpu/m68000/m68000.h"
 #include "machine/bankdev.h"
@@ -21,7 +28,13 @@ Ernesto Corvi & Mariusz Wojcieszek
 #include "machine/msm6242.h"
 #include "machine/akiko.h"
 #include "machine/i2cmem.h"
+<<<<<<< HEAD
 #include "sound/amiga.h"
+=======
+#include "machine/8364_paula.h"
+#include "video/amigaaga.h"
+#include "screen.h"
+>>>>>>> upstream/master
 
 
 /*************************************
@@ -39,8 +52,13 @@ Ernesto Corvi & Mariusz Wojcieszek
 /* registers in 32-bit natural order. This means we need to XOR the register */
 /* address with 1 on little-endian systems. */
 #define CUSTOM_REG(x)           (state->m_custom_regs[BYTE_XOR_BE(x)])
+<<<<<<< HEAD
 #define CUSTOM_REG_SIGNED(x)    ((INT16)CUSTOM_REG(x))
 #define CUSTOM_REG_LONG(x)      (*(UINT32 *)&state->m_custom_regs[x])
+=======
+#define CUSTOM_REG_SIGNED(x)    ((int16_t)CUSTOM_REG(x))
+#define CUSTOM_REG_LONG(x)      (*(uint32_t *)&state->m_custom_regs[x])
+>>>>>>> upstream/master
 
 /*
     A = Angus
@@ -335,7 +353,11 @@ public:
 	m_cia_1(*this, "cia_1"),
 	m_rs232(*this, "rs232"),
 	m_centronics(*this, "centronics"),
+<<<<<<< HEAD
 	m_sound(*this, "amiga"),
+=======
+	m_paula(*this, "amiga"),
+>>>>>>> upstream/master
 	m_fdc(*this, "fdc"),
 	m_screen(*this, "screen"),
 	m_palette(*this, "palette"),
@@ -346,8 +368,12 @@ public:
 	m_potgo_port(*this, "potgo"),
 	m_pot0dat_port(*this, "POT0DAT"),
 	m_pot1dat_port(*this, "POT1DAT"),
+<<<<<<< HEAD
 	m_p1joy_port(*this, "p1_joy"),
 	m_p2joy_port(*this, "p2_joy"),
+=======
+	m_joy_ports(*this, "p%u_joy", 1),
+>>>>>>> upstream/master
 	m_p1_mouse_x(*this, "p1_mouse_x"),
 	m_p1_mouse_y(*this, "p1_mouse_y"),
 	m_p2_mouse_x(*this, "p2_mouse_x"),
@@ -374,16 +400,26 @@ public:
 	{ }
 
 	/* chip RAM access */
+<<<<<<< HEAD
 	UINT16 chip_ram_r(offs_t byteoffs)
 	{
 		return EXPECTED(byteoffs < m_chip_ram.bytes()) ? m_chip_ram.read(byteoffs >> 1) : 0xffff;
 	}
 	void chip_ram_w(offs_t byteoffs, UINT16 data)
+=======
+	uint16_t chip_ram_r(offs_t byteoffs)
+	{
+		return EXPECTED(byteoffs < m_chip_ram.bytes()) ? m_chip_ram.read(byteoffs >> 1) : 0xffff;
+	}
+
+	void chip_ram_w(offs_t byteoffs, uint16_t data)
+>>>>>>> upstream/master
 	{
 		if (EXPECTED(byteoffs < m_chip_ram.bytes()))
 			m_chip_ram.write(byteoffs >> 1, data);
 	}
 
+<<<<<<< HEAD
 	/* sprite states */
 	UINT8 m_sprite_comparitor_enable_mask;
 	UINT8 m_sprite_dma_reload_mask;
@@ -400,6 +436,35 @@ public:
 	UINT16 m_copper_waitmask;
 	UINT16 m_copper_pending_offset;
 	UINT16 m_copper_pending_data;
+=======
+	DECLARE_READ16_MEMBER(chip_ram_r)
+	{
+		return chip_ram_r(offset & ~1) & mem_mask;
+	}
+
+	DECLARE_WRITE16_MEMBER(chip_ram_w)
+	{
+		uint16_t val = chip_ram_r(offset & ~1) & ~mem_mask;
+		chip_ram_w(offset & ~1, val | data);
+	}
+
+	/* sprite states */
+	uint8_t m_sprite_comparitor_enable_mask;
+	uint8_t m_sprite_dma_reload_mask;
+	uint8_t m_sprite_dma_live_mask;
+	uint8_t m_sprite_ctl_written;
+	uint32_t m_sprite_shiftreg[8];
+	uint8_t m_sprite_remain[8];
+
+	/* copper states */
+	uint32_t m_copper_pc;
+	uint8_t m_copper_waiting;
+	uint8_t m_copper_waitblit;
+	uint16_t m_copper_waitval;
+	uint16_t m_copper_waitmask;
+	uint16_t m_copper_pending_offset;
+	uint16_t m_copper_pending_data;
+>>>>>>> upstream/master
 #if GUESS_COPPER_OFFSET
 	int m_wait_offset;
 #endif
@@ -409,17 +474,30 @@ public:
 	rgb_t m_ham_color;
 
 	/* misc states */
+<<<<<<< HEAD
 	UINT16 m_genlock_color;
 
 	/* separate 6 in-order bitplanes into 2 x 3-bit bitplanes in two nibbles */
 	UINT8 m_separate_bitplanes[2][64];
+=======
+	uint16_t m_genlock_color;
+
+	/* separate 6 in-order bitplanes into 2 x 3-bit bitplanes in two nibbles */
+	uint8_t m_separate_bitplanes[2][64];
+>>>>>>> upstream/master
 
 	/* aga */
 	int m_aga_diwhigh_written;
 	rgb_t m_aga_palette[256];
+<<<<<<< HEAD
 	UINT64 m_aga_bpldat[8];
 	UINT16 m_aga_sprdata[8][4];
 	UINT16 m_aga_sprdatb[8][4];
+=======
+	uint64_t m_aga_bpldat[8];
+	uint16_t m_aga_sprdata[8][4];
+	uint16_t m_aga_sprdatb[8][4];
+>>>>>>> upstream/master
 	int m_aga_sprite_fetched_words;
 	int m_aga_sprite_dma_used_words[8];
 
@@ -429,8 +507,13 @@ public:
 
 	void render_scanline(bitmap_ind16 &bitmap, int scanline);
 	void aga_render_scanline(bitmap_rgb32 &bitmap, int scanline);
+<<<<<<< HEAD
 	UINT32 screen_update_amiga(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
 	UINT32 screen_update_amiga_aga(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect);
+=======
+	uint32_t screen_update_amiga(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
+	uint32_t screen_update_amiga_aga(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect);
+>>>>>>> upstream/master
 	void update_screenmode();
 
 	TIMER_CALLBACK_MEMBER( scanline_callback );
@@ -467,6 +550,11 @@ public:
 	DECLARE_READ16_MEMBER( custom_chip_r );
 	DECLARE_WRITE16_MEMBER( custom_chip_w );
 
+<<<<<<< HEAD
+=======
+	DECLARE_WRITE_LINE_MEMBER( paula_int_w );
+
+>>>>>>> upstream/master
 	DECLARE_READ16_MEMBER( rom_mirror_r );
 	DECLARE_READ32_MEMBER( rom_mirror32_r );
 
@@ -494,16 +582,30 @@ public:
 
 	emu_timer *m_blitter_timer;
 
+<<<<<<< HEAD
 	UINT16 m_agnus_id;
 	UINT16 m_denise_id;
 
 	UINT16 m_custom_regs[256];
 
 	void custom_chip_w(UINT16 offset, UINT16 data, UINT16 mem_mask = 0xffff)
+=======
+	uint16_t m_agnus_id;
+	uint16_t m_denise_id;
+
+	uint16_t m_custom_regs[256];
+
+	void custom_chip_w(uint16_t offset, uint16_t data, uint16_t mem_mask = 0xffff)
+>>>>>>> upstream/master
 	{
 		custom_chip_w(m_maincpu->space(AS_PROGRAM), offset, data, mem_mask);
 	}
 
+<<<<<<< HEAD
+=======
+	void blitter_setup();
+
+>>>>>>> upstream/master
 protected:
 	// agnus/alice chip id
 	enum
@@ -529,11 +631,19 @@ protected:
 	};
 
 	// driver_device overrides
+<<<<<<< HEAD
 	virtual void machine_start();
 	virtual void machine_reset();
 
 	// device_t overrides
 	virtual void device_timer(emu_timer &timer, device_timer_id id, int param, void *ptr);
+=======
+	virtual void machine_start() override;
+	virtual void machine_reset() override;
+
+	// device_t overrides
+	virtual void device_timer(emu_timer &timer, device_timer_id id, int param, void *ptr) override;
+>>>>>>> upstream/master
 
 	void custom_chip_reset();
 
@@ -546,11 +656,19 @@ protected:
 
 	virtual void vblank();
 
+<<<<<<< HEAD
 	virtual void potgo_w(UINT16 data) {};
 
 	// joystick/mouse
 	virtual UINT16 joy0dat_r();
 	virtual UINT16 joy1dat_r();
+=======
+	virtual void potgo_w(uint16_t data) {};
+
+	// joystick/mouse
+	virtual uint16_t joy0dat_r();
+	virtual uint16_t joy1dat_r();
+>>>>>>> upstream/master
 
 	// serial
 	virtual void rs232_tx(int state);
@@ -561,8 +679,13 @@ protected:
 	required_device<mos8520_device> m_cia_1;
 	optional_device<rs232_port_device> m_rs232;
 	optional_device<centronics_device> m_centronics;
+<<<<<<< HEAD
 	required_device<amiga_sound_device> m_sound;
 	optional_device<amiga_fdc> m_fdc;
+=======
+	required_device<paula_8364_device> m_paula;
+	optional_device<amiga_fdc_device> m_fdc;
+>>>>>>> upstream/master
 	required_device<screen_device> m_screen;
 	optional_device<palette_device> m_palette;
 	required_device<address_map_bank_device> m_overlay;
@@ -575,8 +698,12 @@ protected:
 	optional_ioport m_potgo_port;
 	optional_ioport m_pot0dat_port;
 	optional_ioport m_pot1dat_port;
+<<<<<<< HEAD
 	optional_ioport m_p1joy_port;
 	optional_ioport m_p2joy_port;
+=======
+	optional_ioport_array<2> m_joy_ports;
+>>>>>>> upstream/master
 	optional_ioport m_p1_mouse_x;
 	optional_ioport m_p1_mouse_y;
 	optional_ioport m_p2_mouse_x;
@@ -584,7 +711,11 @@ protected:
 	optional_ioport m_hvpos;
 
 	memory_array m_chip_ram;
+<<<<<<< HEAD
 	UINT32 m_chip_ram_mask;
+=======
+	uint32_t m_chip_ram_mask;
+>>>>>>> upstream/master
 
 	int m_cia_0_irq;
 	int m_cia_1_irq;
@@ -626,8 +757,13 @@ private:
 	// pot counters
 	int m_pot0x, m_pot1x, m_pot0y, m_pot1y;
 
+<<<<<<< HEAD
 	UINT16 m_pot0dat;
 	UINT16 m_pot1dat;
+=======
+	uint16_t m_pot0dat;
+	uint16_t m_pot1dat;
+>>>>>>> upstream/master
 
 	int m_centronics_busy;
 	int m_centronics_perror;
@@ -635,6 +771,10 @@ private:
 
 	emu_timer *m_irq_timer;
 	emu_timer *m_serial_timer;
+<<<<<<< HEAD
+=======
+	emu_timer *m_scanline_timer;
+>>>>>>> upstream/master
 
 	bool m_gayle_reset;
 
@@ -647,8 +787,13 @@ private:
 	bitmap_ind16 m_flickerfixer;
 	bitmap_ind32 m_flickerfixer32;
 
+<<<<<<< HEAD
 	UINT16 m_rx_shift;
 	UINT16 m_tx_shift;
+=======
+	uint16_t m_rx_shift;
+	uint16_t m_tx_shift;
+>>>>>>> upstream/master
 
 	int m_rx_state;
 	int m_tx_state;
@@ -661,9 +806,15 @@ private:
 
 	void serial_adjust();
 	void serial_shift();
+<<<<<<< HEAD
 	void rx_write(amiga_state *state, int level);
 
 	UINT32 amiga_gethvpos();
+=======
+	void rx_write(int level);
+
+	uint32_t amiga_gethvpos();
+>>>>>>> upstream/master
 };
 
 
@@ -674,20 +825,33 @@ extern const char *const amiga_custom_names[0x100];
 
 /*----------- defined in video/amiga.c -----------*/
 
+<<<<<<< HEAD
 extern const UINT16 amiga_expand_byte[256];
 
 void amiga_copper_setpc(running_machine &machine, UINT32 pc);
 int amiga_copper_execute_next(running_machine &machine, int xpos);
 
 void amiga_set_genlock_color(running_machine &machine, UINT16 color);
+=======
+extern const uint16_t amiga_expand_byte[256];
+
+void amiga_copper_setpc(running_machine &machine, uint32_t pc);
+int amiga_copper_execute_next(running_machine &machine, int xpos);
+
+void amiga_set_genlock_color(running_machine &machine, uint16_t color);
+>>>>>>> upstream/master
 void amiga_sprite_dma_reset(running_machine &machine, int which);
 void amiga_sprite_enable_comparitor(running_machine &machine, int which, int enable);
 
 MACHINE_CONFIG_EXTERN( pal_video );
 MACHINE_CONFIG_EXTERN( ntsc_video );
 
+<<<<<<< HEAD
 /*----------- defined in video/amigaaga.c -----------*/
 
 void amiga_aga_palette_write(running_machine &machine, int color_reg, UINT16 data);
 
 #endif /* __AMIGA_H__ */
+=======
+#endif // MAME_INCLUDES_AMIGA_H
+>>>>>>> upstream/master

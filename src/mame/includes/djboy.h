@@ -6,6 +6,10 @@
 
 *************************************************************************/
 
+<<<<<<< HEAD
+=======
+#include "machine/gen_latch.h"
+>>>>>>> upstream/master
 #include "video/kan_pand.h"
 
 #define PROT_OUTPUT_BUFFER_SIZE 8
@@ -23,6 +27,7 @@ public:
 		m_beast(*this, "beast"),
 		m_pandora(*this, "pandora"),
 		m_gfxdecode(*this, "gfxdecode"),
+<<<<<<< HEAD
 		m_palette(*this, "palette")
 		{ }
 
@@ -49,6 +54,35 @@ public:
 	UINT8       m_beast_p1;
 	UINT8       m_beast_p2;
 	UINT8       m_beast_p3;
+=======
+		m_palette(*this, "palette"),
+		m_soundlatch(*this, "soundlatch")
+		{ }
+
+	/* memory pointers */
+	required_shared_ptr<uint8_t> m_videoram;
+	required_shared_ptr<uint8_t> m_paletteram;
+
+	/* ROM banking */
+	uint8_t       m_bankxor;
+
+	/* video-related */
+	tilemap_t   *m_background;
+	uint8_t       m_videoreg;
+	uint8_t       m_scrollx;
+	uint8_t       m_scrolly;
+
+	/* Kaneko BEAST state */
+	uint8_t       m_data_to_beast;
+	uint8_t       m_data_to_z80;
+	uint8_t       m_beast_to_z80_full;
+	uint8_t       m_z80_to_beast_full;
+	uint8_t       m_beast_int0_l;
+	uint8_t       m_beast_p0;
+	uint8_t       m_beast_p1;
+	uint8_t       m_beast_p2;
+	uint8_t       m_beast_p3;
+>>>>>>> upstream/master
 
 	/* devices */
 	required_device<cpu_device> m_maincpu;
@@ -58,6 +92,10 @@ public:
 	required_device<kaneko_pandora_device> m_pandora;
 	required_device<gfxdecode_device> m_gfxdecode;
 	required_device<palette_device> m_palette;
+<<<<<<< HEAD
+=======
+	required_device<generic_latch_8_device> m_soundlatch;
+>>>>>>> upstream/master
 
 	DECLARE_WRITE8_MEMBER(beast_data_w);
 	DECLARE_READ8_MEMBER(beast_data_r);
@@ -83,10 +121,18 @@ public:
 	DECLARE_DRIVER_INIT(djboy);
 	DECLARE_DRIVER_INIT(djboyj);
 	TILE_GET_INFO_MEMBER(get_bg_tile_info);
+<<<<<<< HEAD
 	virtual void machine_start();
 	virtual void machine_reset();
 	virtual void video_start();
 	UINT32 screen_update_djboy(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
 	void screen_eof_djboy(screen_device &screen, bool state);
+=======
+	virtual void machine_start() override;
+	virtual void machine_reset() override;
+	virtual void video_start() override;
+	uint32_t screen_update_djboy(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
+	DECLARE_WRITE_LINE_MEMBER(screen_vblank_djboy);
+>>>>>>> upstream/master
 	TIMER_DEVICE_CALLBACK_MEMBER(djboy_scanline);
 };

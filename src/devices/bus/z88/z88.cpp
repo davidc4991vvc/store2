@@ -10,7 +10,10 @@
 
 #include "emu.h"
 #include "z88.h"
+<<<<<<< HEAD
 #include "emuopts.h"
+=======
+>>>>>>> upstream/master
 
 
 /***************************************************************************
@@ -23,7 +26,11 @@
 //  GLOBAL VARIABLES
 //**************************************************************************
 
+<<<<<<< HEAD
 const device_type Z88CART_SLOT = &device_creator<z88cart_slot_device>;
+=======
+DEFINE_DEVICE_TYPE(Z88CART_SLOT, z88cart_slot_device, "z88cart_slot", "Z88 Cartridge Slot")
+>>>>>>> upstream/master
 
 
 //**************************************************************************
@@ -56,11 +63,20 @@ device_z88cart_interface::~device_z88cart_interface()
 //-------------------------------------------------
 //  z88cart_slot_device - constructor
 //-------------------------------------------------
+<<<<<<< HEAD
 z88cart_slot_device::z88cart_slot_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock) :
 		device_t(mconfig, Z88CART_SLOT, "Z88 Cartridge Slot", tag, owner, clock, "z88cart_slot", __FILE__),
 		device_image_interface(mconfig, *this),
 		device_slot_interface(mconfig, *this),
 		m_out_flp_cb(*this), m_cart(nullptr), m_flp_timer(nullptr)
+=======
+z88cart_slot_device::z88cart_slot_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock) :
+	device_t(mconfig, Z88CART_SLOT, tag, owner, clock),
+	device_image_interface(mconfig, *this),
+	device_slot_interface(mconfig, *this),
+	m_out_flp_cb(*this),
+	m_cart(nullptr), m_flp_timer(nullptr)
+>>>>>>> upstream/master
 {
 }
 
@@ -87,6 +103,7 @@ void z88cart_slot_device::device_start()
 	m_flp_timer->reset();
 }
 
+<<<<<<< HEAD
 //-------------------------------------------------
 //  device_config_complete - perform any
 //  operations now that the configuration is
@@ -99,6 +116,8 @@ void z88cart_slot_device::device_config_complete()
 	update_names();
 }
 
+=======
+>>>>>>> upstream/master
 
 //-------------------------------------------------
 //  device_timer - handler timer events
@@ -117,6 +136,7 @@ void z88cart_slot_device::device_timer(emu_timer &timer, device_timer_id id, int
     call load
 -------------------------------------------------*/
 
+<<<<<<< HEAD
 bool z88cart_slot_device::call_load()
 {
 	if (m_cart)
@@ -127,6 +147,18 @@ bool z88cart_slot_device::call_load()
 		if (cart_base != NULL)
 		{
 			if (software_entry() == NULL)
+=======
+image_init_result z88cart_slot_device::call_load()
+{
+	if (m_cart)
+	{
+		offs_t read_length;
+		uint8_t *cart_base = m_cart->get_cart_base();
+
+		if (cart_base != nullptr)
+		{
+			if (!loaded_through_softlist())
+>>>>>>> upstream/master
 			{
 				read_length = length();
 				fread(cart_base + (m_cart->get_cart_size() - read_length), read_length);
@@ -138,7 +170,11 @@ bool z88cart_slot_device::call_load()
 			}
 		}
 		else
+<<<<<<< HEAD
 			return IMAGE_INIT_FAIL;
+=======
+			return image_init_result::FAIL;
+>>>>>>> upstream/master
 	}
 
 	// open the flap
@@ -147,7 +183,11 @@ bool z88cart_slot_device::call_load()
 	// setup the timer for close the flap
 	m_flp_timer->adjust(CLOSE_FLAP_TIME);
 
+<<<<<<< HEAD
 	return IMAGE_INIT_PASS;
+=======
+	return image_init_result::PASS;
+>>>>>>> upstream/master
 }
 
 
@@ -158,7 +198,15 @@ bool z88cart_slot_device::call_load()
 void z88cart_slot_device::call_unload()
 {
 	if (m_cart)
+<<<<<<< HEAD
 		memset(m_cart->get_cart_base(), 0xff, m_cart->get_cart_size());
+=======
+	{
+		auto cart_size = m_cart->get_cart_size();
+		if (cart_size>0)
+			memset(m_cart->get_cart_base(), 0xff, cart_size);
+	}
+>>>>>>> upstream/master
 
 	// open the flap
 	m_out_flp_cb(ASSERT_LINE);
@@ -169,6 +217,7 @@ void z88cart_slot_device::call_unload()
 
 
 /*-------------------------------------------------
+<<<<<<< HEAD
     call softlist load
 -------------------------------------------------*/
 
@@ -185,6 +234,14 @@ bool z88cart_slot_device::call_softlist_load(software_list_device &swlist, const
 void z88cart_slot_device::get_default_card_software(std::string &result)
 {
 	software_get_default_slot(result, "128krom");
+=======
+    get default card software
+-------------------------------------------------*/
+
+std::string z88cart_slot_device::get_default_card_software(get_default_card_software_hook &hook) const
+{
+	return software_get_default_slot("128krom");
+>>>>>>> upstream/master
 }
 
 
@@ -210,3 +267,19 @@ WRITE8_MEMBER(z88cart_slot_device::write)
 	if (m_cart)
 		m_cart->write(space, offset, data);
 }
+<<<<<<< HEAD
+=======
+
+
+/*-------------------------------------------------
+    get_cart_base
+-------------------------------------------------*/
+
+uint8_t* z88cart_slot_device::get_cart_base()
+{
+	if (m_cart)
+		return m_cart->get_cart_base();
+	else
+		return nullptr;
+}
+>>>>>>> upstream/master

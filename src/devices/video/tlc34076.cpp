@@ -35,15 +35,25 @@
 //**************************************************************************
 
 // device type definition
+<<<<<<< HEAD
 const device_type TLC34076 = &device_creator<tlc34076_device>;
+=======
+DEFINE_DEVICE_TYPE(TLC34076, tlc34076_device, "tlc34076", "TI TLC34076 VIP")
+>>>>>>> upstream/master
 
 
 //-------------------------------------------------
 //  tlc34076_device - constructor
 //-------------------------------------------------
+<<<<<<< HEAD
 tlc34076_device::tlc34076_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
 	:   device_t(mconfig, TLC34076, "TLC34076 VIP", tag, owner, clock, "tlc34076", __FILE__),
 		m_dacbits(6)
+=======
+tlc34076_device::tlc34076_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: device_t(mconfig, TLC34076, tag, owner, clock)
+	, m_dacbits(6)
+>>>>>>> upstream/master
 {
 }
 
@@ -138,7 +148,11 @@ const rgb_t *tlc34076_device::get_pens()
 
 READ8_MEMBER( tlc34076_device::read )
 {
+<<<<<<< HEAD
 	UINT8 result;
+=======
+	uint8_t result;
+>>>>>>> upstream/master
 
 	/* keep in range */
 	offset &= 0x0f;
@@ -173,7 +187,11 @@ READ8_MEMBER( tlc34076_device::read )
 
 WRITE8_MEMBER( tlc34076_device::write )
 {
+<<<<<<< HEAD
 //  UINT8 oldval;
+=======
+//  uint8_t oldval;
+>>>>>>> upstream/master
 
 	/* keep in range */
 	offset &= 0x0f;

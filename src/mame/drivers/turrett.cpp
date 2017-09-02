@@ -9,9 +9,18 @@
 ****************************************************************************/
 
 #include "emu.h"
+<<<<<<< HEAD
 #include "cpu/mips/r3000.h"
 #include "machine/ataintf.h"
 #include "includes/turrett.h"
+=======
+#include "includes/turrett.h"
+
+#include "cpu/mips/r3000.h"
+#include "machine/ataintf.h"
+#include "machine/idehd.h"
+#include "speaker.h"
+>>>>>>> upstream/master
 
 
 
@@ -34,12 +43,21 @@
 void turrett_state::machine_start()
 {
 	// Allocate memory for the two 256kx16 banks of video RAM
+<<<<<<< HEAD
 	m_video_ram[0] = (UINT16*)auto_alloc_array(machine(), UINT16, VRAM_BANK_WORDS);
 	m_video_ram[1] = (UINT16*)auto_alloc_array(machine(), UINT16, VRAM_BANK_WORDS);
 
 	// Register our state for saving
 	save_pointer(NAME(m_video_ram[0]), VRAM_BANK_WORDS);
 	save_pointer(NAME(m_video_ram[1]), VRAM_BANK_WORDS);
+=======
+	m_video_ram[0] = std::make_unique<uint16_t[]>(VRAM_BANK_WORDS);
+	m_video_ram[1] = std::make_unique<uint16_t[]>(VRAM_BANK_WORDS);
+
+	// Register our state for saving
+	save_pointer(NAME(m_video_ram[0].get()), VRAM_BANK_WORDS);
+	save_pointer(NAME(m_video_ram[1].get()), VRAM_BANK_WORDS);
+>>>>>>> upstream/master
 	save_item(NAME(m_inputs_active));
 	save_item(NAME(m_last_pixel));
 	save_item(NAME(m_video_ctrl));
@@ -98,7 +116,11 @@ static ADDRESS_MAP_START( cpu_map, AS_PROGRAM, 32, turrett_state )
 ADDRESS_MAP_END
 
 
+<<<<<<< HEAD
 static ADDRESS_MAP_START( turrett_sound_map, AS_0, 16, turrett_state )
+=======
+static ADDRESS_MAP_START( turrett_sound_map, 0, 16, turrett_state )
+>>>>>>> upstream/master
 	AM_RANGE(0x0000000, 0x7ffffff) AM_RAM AM_SHARE("bank_a")
 	AM_RANGE(0x8000000, 0xfffffff) AM_RAM AM_SHARE("bank_b")
 ADDRESS_MAP_END
@@ -125,7 +147,11 @@ static INPUT_PORTS_START( turrett )
 	PORT_BIT( 0x08, IP_ACTIVE_LOW, IPT_SERVICE )    PORT_CHANGED_MEMBER(DEVICE_SELF, turrett_state, ipt_change, (void *)0x00000800)
 	PORT_BIT( 0x10, IP_ACTIVE_LOW, IPT_COIN1 )      PORT_CHANGED_MEMBER(DEVICE_SELF, turrett_state, ipt_change, (void *)0x00001000)
 	PORT_BIT( 0x20, IP_ACTIVE_LOW, IPT_COIN2 )      PORT_CHANGED_MEMBER(DEVICE_SELF, turrett_state, ipt_change, (void *)0x00002000)
+<<<<<<< HEAD
 	PORT_BIT( 0x40, IP_ACTIVE_LOW, IPT_START )      PORT_CHANGED_MEMBER(DEVICE_SELF, turrett_state, ipt_change, (void *)0x00004000)
+=======
+	PORT_BIT( 0x40, IP_ACTIVE_LOW, IPT_START1 )     PORT_CHANGED_MEMBER(DEVICE_SELF, turrett_state, ipt_change, (void *)0x00004000)
+>>>>>>> upstream/master
 	PORT_BIT( 0x80, IP_ACTIVE_LOW, IPT_UNKNOWN )    PORT_CHANGED_MEMBER(DEVICE_SELF, turrett_state, ipt_change, (void *)0x00008000)
 
 	PORT_START("PORT DX")
@@ -181,9 +207,15 @@ WRITE32_MEMBER( turrett_state::int_w )
 }
 
 
+<<<<<<< HEAD
 UINT32 turrett_state::update_inputs(void)
 {
 	UINT32 val = 0;
+=======
+uint32_t turrett_state::update_inputs(void)
+{
+	uint32_t val = 0;
+>>>>>>> upstream/master
 
 	// TODO: Prioritise?
 	if (m_inputs_active)
@@ -200,8 +232,13 @@ UINT32 turrett_state::update_inputs(void)
 		}
 		else if (m_inputs_active & 0x0000ff00)
 		{
+<<<<<<< HEAD
 			UINT32 data = ioport("PORT CX")->read();
 			UINT32 bits = m_inputs_active >> 8;
+=======
+			uint32_t data = ioport("PORT CX")->read();
+			uint32_t bits = m_inputs_active >> 8;
+>>>>>>> upstream/master
 
 			val = 0xc0;
 
@@ -218,8 +255,13 @@ UINT32 turrett_state::update_inputs(void)
 		}
 		else if (m_inputs_active & 0x00ff0000)
 		{
+<<<<<<< HEAD
 			UINT32 data = ioport("PORT DX")->read();
 			UINT32 bits = m_inputs_active >> 16;
+=======
+			uint32_t data = ioport("PORT DX")->read();
+			uint32_t bits = m_inputs_active >> 16;
+>>>>>>> upstream/master
 
 			val = 0xd0;
 
@@ -254,7 +296,11 @@ UINT32 turrett_state::update_inputs(void)
 
 INPUT_CHANGED_MEMBER( turrett_state::ipt_change )
 {
+<<<<<<< HEAD
 	int p = (FPTR)param;
+=======
+	int p = (uintptr_t)param;
+>>>>>>> upstream/master
 
 	if (newval != oldval)
 	{
@@ -315,19 +361,32 @@ INTERRUPT_GEN_MEMBER( turrett_state::adc )
 /// HACK: The game expects a different LBA mapping to the standard HDD.
 /// The reason for this is unknown.
 
+<<<<<<< HEAD
 #include "machine/idehd.h"
 
 extern const device_type TURRETT_HARDDISK;
+=======
+DECLARE_DEVICE_TYPE(TURRETT_HARDDISK, turrett_hdd)
+>>>>>>> upstream/master
 
 class turrett_hdd : public ide_hdd_device
 {
 public:
+<<<<<<< HEAD
 	turrett_hdd(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
 		: ide_hdd_device(mconfig, TURRETT_HARDDISK, "HDD Turrett Tower", tag, owner, clock, "turrett_hdd", __FILE__)
 	{
 	}
 
 	virtual UINT32 lba_address()
+=======
+	turrett_hdd(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+		: ide_hdd_device(mconfig, TURRETT_HARDDISK, tag, owner, clock)
+	{
+	}
+
+	virtual uint32_t lba_address() override
+>>>>>>> upstream/master
 	{
 		if (m_device_head & IDE_DEVICE_HEAD_L)
 			return (((m_device_head & IDE_DEVICE_HEAD_HS) << 24) | (m_cylinder_high << 16) | (m_cylinder_low << 8) | m_sector_number) - 63;
@@ -336,7 +395,11 @@ public:
 	}
 };
 
+<<<<<<< HEAD
 const device_type TURRETT_HARDDISK = &device_creator<turrett_hdd>;
+=======
+DEFINE_DEVICE_TYPE(TURRETT_HARDDISK, turrett_hdd, "turrett_hdd", "Turret Tower HDD")
+>>>>>>> upstream/master
 
 SLOT_INTERFACE_START(turrett_devices)
 	SLOT_INTERFACE("hdd", TURRETT_HARDDISK)
@@ -348,7 +411,11 @@ SLOT_INTERFACE_END
  *
  *************************************/
 
+<<<<<<< HEAD
 static MACHINE_CONFIG_START( turrett, turrett_state )
+=======
+static MACHINE_CONFIG_START( turrett )
+>>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", R3041, R3041_CLOCK)
@@ -359,7 +426,11 @@ static MACHINE_CONFIG_START( turrett, turrett_state )
 	MCFG_CPU_VBLANK_INT_DRIVER("screen", turrett_state, vblank)
 	MCFG_CPU_PERIODIC_INT_DRIVER(turrett_state, adc, 60)
 
+<<<<<<< HEAD
 	MCFG_ATA_INTERFACE_ADD("ata", turrett_devices, "hdd", NULL, true)
+=======
+	MCFG_ATA_INTERFACE_ADD("ata", turrett_devices, "hdd", nullptr, true)
+>>>>>>> upstream/master
 
 	/* video hardware */
 	MCFG_SCREEN_ADD("screen", RASTER)
@@ -375,7 +446,11 @@ static MACHINE_CONFIG_START( turrett, turrett_state )
 	MCFG_SPEAKER_STANDARD_STEREO("lspeaker", "rspeaker")
 
 	MCFG_DEVICE_ADD("ttsound", TURRETT, R3041_CLOCK) // ?
+<<<<<<< HEAD
 	MCFG_DEVICE_ADDRESS_MAP(AS_0, turrett_sound_map)
+=======
+	MCFG_DEVICE_ADDRESS_MAP(0, turrett_sound_map)
+>>>>>>> upstream/master
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "lspeaker", 1.0)
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "rspeaker", 1.0)
 MACHINE_CONFIG_END
@@ -411,4 +486,8 @@ ROM_END
  *
  *************************************/
 
+<<<<<<< HEAD
 GAME( 2001, turrett, 0, turrett, turrett, driver_device, 0, ROT0, "Dell Electronics (Namco license)", "Turret Tower", 0 )
+=======
+GAME( 2001, turrett, 0, turrett, turrett, turrett_state, 0, ROT0, "Dell Electronics (Namco license)", "Turret Tower", 0 )
+>>>>>>> upstream/master

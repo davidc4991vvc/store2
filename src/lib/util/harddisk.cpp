@@ -44,12 +44,18 @@ hard_disk_file *hard_disk_open(chd_file *chd)
 	chd_error err;
 
 	/* punt if no CHD */
+<<<<<<< HEAD
 	if (chd == NULL)
 		return NULL;
+=======
+	if (chd == nullptr)
+		return nullptr;
+>>>>>>> upstream/master
 
 	/* read the hard disk metadata */
 	err = chd->read_metadata(HARD_DISK_METADATA_TAG, 0, metadata);
 	if (err != CHDERR_NONE)
+<<<<<<< HEAD
 		return NULL;
 
 	/* parse the metadata */
@@ -60,6 +66,18 @@ hard_disk_file *hard_disk_open(chd_file *chd)
 	file = (hard_disk_file *)malloc(sizeof(hard_disk_file));
 	if (file == NULL)
 		return NULL;
+=======
+		return nullptr;
+
+	/* parse the metadata */
+	if (sscanf(metadata.c_str(), HARD_DISK_METADATA_FORMAT, &cylinders, &heads, &sectors, &sectorbytes) != 4)
+		return nullptr;
+
+	/* allocate memory for the hard disk file */
+	file = (hard_disk_file *)malloc(sizeof(hard_disk_file));
+	if (file == nullptr)
+		return nullptr;
+>>>>>>> upstream/master
 
 	/* fill in the data */
 	file->chd = chd;
@@ -97,6 +115,19 @@ chd_file *hard_disk_get_chd(hard_disk_file *file)
     a hard disk
 -------------------------------------------------*/
 
+<<<<<<< HEAD
+=======
+/**
+ * @fn  hard_disk_info *hard_disk_get_info(hard_disk_file *file)
+ *
+ * @brief   Hard disk get information.
+ *
+ * @param [in,out]  file    If non-null, the file.
+ *
+ * @return  null if it fails, else a hard_disk_info*.
+ */
+
+>>>>>>> upstream/master
 hard_disk_info *hard_disk_get_info(hard_disk_file *file)
 {
 	return &file->info;
@@ -108,7 +139,23 @@ hard_disk_info *hard_disk_get_info(hard_disk_file *file)
     disk
 -------------------------------------------------*/
 
+<<<<<<< HEAD
 UINT32 hard_disk_read(hard_disk_file *file, UINT32 lbasector, void *buffer)
+=======
+/**
+ * @fn  uint32_t hard_disk_read(hard_disk_file *file, uint32_t lbasector, void *buffer)
+ *
+ * @brief   Hard disk read.
+ *
+ * @param [in,out]  file    If non-null, the file.
+ * @param   lbasector       The lbasector.
+ * @param [in,out]  buffer  If non-null, the buffer.
+ *
+ * @return  An uint32_t.
+ */
+
+uint32_t hard_disk_read(hard_disk_file *file, uint32_t lbasector, void *buffer)
+>>>>>>> upstream/master
 {
 	chd_error err = file->chd->read_units(lbasector, buffer);
 	return (err == CHDERR_NONE);
@@ -120,7 +167,23 @@ UINT32 hard_disk_read(hard_disk_file *file, UINT32 lbasector, void *buffer)
     disk
 -------------------------------------------------*/
 
+<<<<<<< HEAD
 UINT32 hard_disk_write(hard_disk_file *file, UINT32 lbasector, const void *buffer)
+=======
+/**
+ * @fn  uint32_t hard_disk_write(hard_disk_file *file, uint32_t lbasector, const void *buffer)
+ *
+ * @brief   Hard disk write.
+ *
+ * @param [in,out]  file    If non-null, the file.
+ * @param   lbasector       The lbasector.
+ * @param   buffer          The buffer.
+ *
+ * @return  An uint32_t.
+ */
+
+uint32_t hard_disk_write(hard_disk_file *file, uint32_t lbasector, const void *buffer)
+>>>>>>> upstream/master
 {
 	chd_error err = file->chd->write_units(lbasector, buffer);
 	return (err == CHDERR_NONE);

@@ -11,11 +11,36 @@
 
 ***************************************************************************/
 
+<<<<<<< HEAD
 #include "sblaster.h"
 #include "sound/speaker.h"
 #include "sound/262intf.h"
 #include "sound/dac.h"
 #include "machine/pic8259.h"
+=======
+#include "emu.h"
+#include "sblaster.h"
+
+#include "machine/pic8259.h"
+#include "sound/262intf.h"
+#include "sound/spkrdev.h"
+#include "sound/volt_reg.h"
+
+#include "speaker.h"
+
+#define SIXTEENBIT  0x01
+#define STEREO      0x02
+#define SIGNED      0x04
+#define ADPCM2      0x08
+#define ADPCM3      0x10
+#define ADPCM4      0x20
+
+#define IRQ_DMA8    0x01
+#define IRQ_DMA16   0x02
+#define IRQ_MPU     0x04
+#define IRQ_ALL     0xff
+
+>>>>>>> upstream/master
 
 /*
   adlib (YM3812/OPL2 chip), part of many many soundcards (soundblaster)
@@ -61,6 +86,7 @@ static const int m_cmd_fifo_length[256] =
 
 static const int protection_magic[4] = { 0x96, 0xa5, 0x69, 0x5a };
 
+<<<<<<< HEAD
 static MACHINE_CONFIG_FRAGMENT( sblaster1_0_config )
 	MCFG_SPEAKER_STANDARD_STEREO("lspeaker", "rspeaker")
 	MCFG_SOUND_ADD("ym3812", YM3812, ym3812_StdClock)
@@ -126,6 +152,11 @@ MACHINE_CONFIG_END
 READ8_MEMBER( sb8_device::ym3812_16_r )
 {
 	UINT8 retVal = 0xff;
+=======
+READ8_MEMBER( sb8_device::ym3812_16_r )
+{
+	uint8_t retVal = 0xff;
+>>>>>>> upstream/master
 	switch(offset)
 	{
 		case 0 : retVal = m_ym3812->status_port_r( space, offset ); break;
@@ -149,15 +180,20 @@ READ8_MEMBER( isa8_sblaster1_0_device::saa1099_16_r )
 
 WRITE8_MEMBER( isa8_sblaster1_0_device::saa1099_1_16_w )
 {
+<<<<<<< HEAD
 	switch(offset)
 	{
 		case 0 : m_saa1099_1->data_w( space, offset, data ); break;
 		case 1 : m_saa1099_1->control_w( space, offset, data ); break;
 	}
+=======
+	m_saa1099_1->write(space, offset, data);
+>>>>>>> upstream/master
 }
 
 WRITE8_MEMBER( isa8_sblaster1_0_device::saa1099_2_16_w )
 {
+<<<<<<< HEAD
 	switch(offset)
 	{
 		case 0 : m_saa1099_2->data_w( space, offset, data ); break;
@@ -166,6 +202,12 @@ WRITE8_MEMBER( isa8_sblaster1_0_device::saa1099_2_16_w )
 }
 
 void sb_device::queue(UINT8 data)
+=======
+	m_saa1099_2->write(space, offset, data);
+}
+
+void sb_device::queue(uint8_t data)
+>>>>>>> upstream/master
 {
 	if (m_dsp.fifo_ptr < 15)
 	{
@@ -180,7 +222,11 @@ void sb_device::queue(UINT8 data)
 	}
 }
 
+<<<<<<< HEAD
 void sb_device::queue_r(UINT8 data)
+=======
+void sb_device::queue_r(uint8_t data)
+>>>>>>> upstream/master
 {
 	m_dsp.rbuf_status |= 0x80;
 
@@ -197,9 +243,15 @@ void sb_device::queue_r(UINT8 data)
 	}
 }
 
+<<<<<<< HEAD
 UINT8 sb_device::dequeue_r()
 {
 	UINT8 data = m_dsp.fifo_r[0];
+=======
+uint8_t sb_device::dequeue_r()
+{
+	uint8_t data = m_dsp.fifo_r[0];
+>>>>>>> upstream/master
 
 	if (m_dsp.fifo_r_ptr > 0)
 	{
@@ -281,7 +333,11 @@ READ8_MEMBER( sb_device::dsp_data_r )
 
 	if (m_uart_midi)
 	{
+<<<<<<< HEAD
 		UINT8 rv = m_recvring[m_recv_read++];
+=======
+		uint8_t rv = m_recvring[m_recv_read++];
+>>>>>>> upstream/master
 		if (m_recv_read >= MIDI_RING_SIZE)
 		{
 			m_recv_read = 0;
@@ -366,7 +422,11 @@ WRITE8_MEMBER(sb_device::dsp_rbuf_status_w)
 	logerror("Soundblaster DSP Read Buffer status undocumented write\n");
 }
 
+<<<<<<< HEAD
 void sb_device::process_fifo(UINT8 cmd)
+=======
+void sb_device::process_fifo(uint8_t cmd)
+>>>>>>> upstream/master
 {
 	if (m_cmd_fifo_length[cmd] == -1)
 	{
@@ -519,7 +579,11 @@ void sb_device::process_fifo(UINT8 cmd)
 				m_dsp.adc_length = 1;
 				m_dsp.wbuf_status = 0x80;
 				m_dsp.dma_no_irq = true;
+<<<<<<< HEAD
 				m_dack_out = (UINT8)(m_dsp.prot_value & 0xff);
+=======
+				m_dack_out = (uint8_t)(m_dsp.prot_value & 0xff);
+>>>>>>> upstream/master
 				drq_w(1);
 				break;
 
@@ -708,6 +772,7 @@ WRITE8_MEMBER(sb_device::dsp_cmd_w)
 	process_fifo(m_dsp.fifo[0]);
 }
 
+<<<<<<< HEAD
 void sb_device::adpcm_decode(UINT8 sample, int size)
 {
 	const UINT8 adpcm_2_table[] =  {0, 1, 1, 3, 2, 6, 4, 12, 8, 24, 16, 48};
@@ -725,12 +790,36 @@ void sb_device::adpcm_decode(UINT8 sample, int size)
 									2,  6, 10, 14, 18, 22, 26, 30,
 									4, 12, 20, 28, 36, 44, 52, 60};
 	const UINT8 step_4_table[]  =  {0,  0,  0,  0,  0,  8,  8,  8,
+=======
+void sb_device::adpcm_decode(uint8_t sample, int size)
+{
+	const uint8_t adpcm_2_table[] =  {0, 1, 1, 3, 2, 6, 4, 12, 8, 24, 16, 48};
+	const uint8_t step_2_table[] =   {0, 2, 0, 4, 2, 6, 4,  8, 6, 10,  8, 10};
+
+	const uint8_t adpcm_3_table[] =  {0,  1,  2,  3,  1,  3,  5,  7,
+									2,  6, 10, 14,  4, 12, 20, 28,
+									8, 24, 40, 56};
+	const uint8_t step_3_table[] =   {0,  0,  0,  4,  0,  4,  4,  8,
+									4,  8,  8, 12,  8, 12, 12, 16,
+									12, 16, 16, 16};
+
+	const uint8_t adpcm_4_table[] =  {0,  1,  2,  3,  4,  5,  6,  7,
+									1,  3,  5,  7,  9, 11, 13, 15,
+									2,  6, 10, 14, 18, 22, 26, 30,
+									4, 12, 20, 28, 36, 44, 52, 60};
+	const uint8_t step_4_table[]  =  {0,  0,  0,  0,  0,  8,  8,  8,
+>>>>>>> upstream/master
 									0,  8,  8,  8,  8, 16, 16, 16,
 									8, 16, 16, 16, 16, 24, 24, 24,
 									16, 24, 24, 24, 24, 24, 24, 24};
 
+<<<<<<< HEAD
 	INT16 dec_sample = m_dsp.adpcm_ref;
 	UINT8 index;
+=======
+	int16_t dec_sample = m_dsp.adpcm_ref;
+	uint8_t index;
+>>>>>>> upstream/master
 	switch(size)
 	{
 		case 2:
@@ -755,13 +844,22 @@ void sb_device::adpcm_decode(UINT8 sample, int size)
 	else if(dec_sample < 0)
 		dec_sample = 0;
 	m_dsp.adpcm_ref = dec_sample;
+<<<<<<< HEAD
 	m_dacl->write_unsigned8(m_dsp.adpcm_ref);
 	m_dacr->write_unsigned8(m_dsp.adpcm_ref);
+=======
+	m_ldac->write(m_dsp.adpcm_ref << 8);
+	m_rdac->write(m_dsp.adpcm_ref << 8);
+>>>>>>> upstream/master
 }
 
 READ8_MEMBER( sb16_device::mpu401_r )
 {
+<<<<<<< HEAD
 	UINT8 res;
+=======
+	uint8_t res;
+>>>>>>> upstream/master
 
 	irq_w(0, IRQ_MPU);
 	if(offset == 0) // data
@@ -835,8 +933,13 @@ void sb16_device::mixer_set()
 	ymf262_device *ymf = subdevice<ymf262_device>("ymf262");
 	float lmain = m_mixer.main_vol[0]/248.0;
 	float rmain = m_mixer.main_vol[1]/248.0;
+<<<<<<< HEAD
 	m_dacl->set_output_gain(ALL_OUTPUTS, lmain*(m_mixer.dac_vol[0]/248.0f));
 	m_dacr->set_output_gain(ALL_OUTPUTS, rmain*(m_mixer.dac_vol[1]/248.0f));
+=======
+	m_ldac->set_output_gain(ALL_OUTPUTS, lmain*(m_mixer.dac_vol[0]/248.0f));
+	m_rdac->set_output_gain(ALL_OUTPUTS, rmain*(m_mixer.dac_vol[1]/248.0f));
+>>>>>>> upstream/master
 	ymf->set_output_gain(0, lmain*(m_mixer.fm_vol[0]/248.0f));
 	ymf->set_output_gain(1, rmain*(m_mixer.fm_vol[1]/248.0f));
 	ymf->set_output_gain(2, lmain*(m_mixer.fm_vol[0]/248.0f));
@@ -1069,6 +1172,7 @@ WRITE8_MEMBER( sb16_device::mixer_w )
 	return;
 }
 
+<<<<<<< HEAD
 //**************************************************************************
 //  GLOBAL VARIABLES
 //**************************************************************************
@@ -1113,13 +1217,227 @@ sb_device::sb_device(const machine_config &mconfig, device_type type, const char
 
 sb8_device::sb8_device(const machine_config &mconfig, device_type type, const char *tag, device_t *owner, UINT32 clock, const char *name, const char *shortname, const char *source) :
 	sb_device(mconfig, type, tag, owner, clock, name, shortname, source),
+=======
+void sb8_device::drq_w(int state)
+{
+	switch(m_config->read() & 0x0c)
+	{
+		case 0:
+		default:
+			m_isa->drq1_w(state);
+			break;
+		case 4:
+			m_isa->drq3_w(state);
+			break;
+	}
+}
+
+void sb8_device::irq_w(int state, int source)
+{
+	switch(m_config->read() & 0x03)
+	{
+		case 0:
+		default:
+			m_isa->irq5_w(state);
+			break;
+		case 1:
+			m_isa->irq7_w(state);
+			break;
+	}
+}
+
+// TODO: sb16 irq/drq is software set
+void sb16_device::drq_w(int state)
+{
+	switch(m_config->read() & 0x0c)
+	{
+		case 0:
+		default:
+			m_isa->drq1_w(state);
+			break;
+		case 4:
+			m_isa->drq3_w(state);
+			break;
+	}
+}
+
+void sb16_device::irq_w(int state, int source)
+{
+	if(state)
+		m_dsp.irq_active |= source;
+	else
+		m_dsp.irq_active &= ~source;
+
+	switch(m_config->read() & 0x03)
+	{
+		case 0:
+		default:
+			m_isa->irq5_w(m_dsp.irq_active != 0);
+			break;
+		case 1:
+			m_isa->irq7_w(m_dsp.irq_active != 0);
+			break;
+	}
+}
+
+void sb16_device::drq16_w(int state)
+{
+	switch(m_config->read() & 0xc0)
+	{
+		case 0:
+		default:
+			m_isa->drq5_w(state);
+			break;
+		case 0x40:
+			m_isa->drq6_w(state);
+			break;
+		case 0x80:
+			m_isa->drq7_w(state);
+			break;
+	}
+}
+
+static INPUT_PORTS_START( sb8 )
+	PORT_START("CONFIG")
+	PORT_CONFNAME(0x03, 0x00, "Default IRQ")
+	PORT_CONFSETTING( 0x00, "IRQ5")
+	PORT_CONFSETTING( 0x01, "IRQ7")
+	PORT_CONFNAME(0x0c, 0x00, "Default DMA")
+	PORT_CONFSETTING( 0x00, "DMA1")
+	PORT_CONFSETTING( 0x04, "DMA3")
+	//PORT_CONFNAME(0x30, 0x00, "Default Port Base")
+	//PORT_CONFSETTING( 0x00, "220")
+	//PORT_CONFSETTING( 0x10, "240")
+	//PORT_CONFSETTING( 0x20, "260")
+INPUT_PORTS_END
+
+static INPUT_PORTS_START( sb16 )
+	PORT_INCLUDE(sb8)
+	PORT_MODIFY("CONFIG")
+	PORT_CONFNAME(0xc0, 0x00, "Default DMA16")
+	PORT_CONFSETTING( 0x00, "DMA5")
+	PORT_CONFSETTING( 0x40, "DMA6")
+	PORT_CONFSETTING( 0x80, "DMA7")
+INPUT_PORTS_END
+
+ioport_constructor sb8_device::device_input_ports() const
+{
+	return INPUT_PORTS_NAME(sb8);
+}
+
+ioport_constructor sb16_device::device_input_ports() const
+{
+	return INPUT_PORTS_NAME(sb16);
+}
+
+//**************************************************************************
+//  GLOBAL VARIABLES
+//**************************************************************************
+
+DEFINE_DEVICE_TYPE(ISA8_SOUND_BLASTER_1_0, isa8_sblaster1_0_device, "isa_sblaster1_0", "Sound Blaster 1.0")
+DEFINE_DEVICE_TYPE(ISA8_SOUND_BLASTER_1_5, isa8_sblaster1_5_device, "isa_sblaster1_5", "Sound Blaster 1.5")
+DEFINE_DEVICE_TYPE(ISA16_SOUND_BLASTER_16, isa16_sblaster16_device, "isa_sblaster_16", "Sound Blaster 16")
+
+//-------------------------------------------------
+//  device_add_mconfig - add device configuration
+//-------------------------------------------------
+
+MACHINE_CONFIG_MEMBER( isa8_sblaster1_0_device::device_add_mconfig )
+	MCFG_SPEAKER_STANDARD_STEREO("lspeaker", "rspeaker")
+	MCFG_SOUND_ADD("ym3812", YM3812, ym3812_StdClock)
+	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "lspeaker", 3.00)
+	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "rspeaker", 3.00)
+	MCFG_SAA1099_ADD("saa1099.1", 7159090)
+	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "lspeaker", 0.50)
+	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "rspeaker", 0.50)
+	MCFG_SAA1099_ADD("saa1099.2", 7159090)
+	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "lspeaker", 0.50)
+	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "rspeaker", 0.50)
+
+	MCFG_SOUND_ADD("ldac", DAC_16BIT_R2R, 0) MCFG_SOUND_ROUTE(ALL_OUTPUTS, "lspeaker", 0.5) // unknown DAC
+	MCFG_SOUND_ADD("rdac", DAC_16BIT_R2R, 0) MCFG_SOUND_ROUTE(ALL_OUTPUTS, "rspeaker", 0.5) // unknown DAC
+	MCFG_DEVICE_ADD("vref", VOLTAGE_REGULATOR, 0) MCFG_VOLTAGE_REGULATOR_OUTPUT(5.0)
+	MCFG_SOUND_ROUTE_EX(0, "ldac", 1.0, DAC_VREF_POS_INPUT) MCFG_SOUND_ROUTE_EX(0, "ldac", -1.0, DAC_VREF_NEG_INPUT)
+	MCFG_SOUND_ROUTE_EX(0, "rdac", 1.0, DAC_VREF_POS_INPUT) MCFG_SOUND_ROUTE_EX(0, "rdac", -1.0, DAC_VREF_NEG_INPUT)
+
+	MCFG_PC_JOY_ADD("pc_joy")
+	MCFG_MIDI_PORT_ADD("mdin", midiin_slot, "midiin")
+	MCFG_MIDI_RX_HANDLER(DEVWRITELINE(DEVICE_SELF, sb_device, midi_rx_w))
+
+	MCFG_MIDI_PORT_ADD("mdout", midiout_slot, "midiout")
+MACHINE_CONFIG_END
+
+MACHINE_CONFIG_MEMBER( isa8_sblaster1_5_device::device_add_mconfig )
+	MCFG_SPEAKER_STANDARD_STEREO("lspeaker", "rspeaker")
+	MCFG_SOUND_ADD("ym3812", YM3812, ym3812_StdClock)
+	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "lspeaker", 1.00)
+	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "rspeaker", 1.00)
+	/* no CM/S support (empty sockets) */
+
+	MCFG_SOUND_ADD("ldac", DAC_16BIT_R2R, 0) MCFG_SOUND_ROUTE(ALL_OUTPUTS, "lspeaker", 0.5) // unknown DAC
+	MCFG_SOUND_ADD("rdac", DAC_16BIT_R2R, 0) MCFG_SOUND_ROUTE(ALL_OUTPUTS, "rspeaker", 0.5) // unknown DAC
+	MCFG_DEVICE_ADD("vref", VOLTAGE_REGULATOR, 0) MCFG_VOLTAGE_REGULATOR_OUTPUT(5.0)
+	MCFG_SOUND_ROUTE_EX(0, "ldac", 1.0, DAC_VREF_POS_INPUT) MCFG_SOUND_ROUTE_EX(0, "ldac", -1.0, DAC_VREF_NEG_INPUT)
+	MCFG_SOUND_ROUTE_EX(0, "rdac", 1.0, DAC_VREF_POS_INPUT) MCFG_SOUND_ROUTE_EX(0, "rdac", -1.0, DAC_VREF_NEG_INPUT)
+
+	MCFG_PC_JOY_ADD("pc_joy")
+	MCFG_MIDI_PORT_ADD("mdin", midiin_slot, "midiin")
+	MCFG_MIDI_RX_HANDLER(DEVWRITELINE(DEVICE_SELF, sb_device, midi_rx_w))
+
+	MCFG_MIDI_PORT_ADD("mdout", midiout_slot, "midiout")
+MACHINE_CONFIG_END
+
+MACHINE_CONFIG_MEMBER( isa16_sblaster16_device::device_add_mconfig )
+	MCFG_SPEAKER_STANDARD_STEREO("lspeaker", "rspeaker")
+	MCFG_SOUND_ADD("ymf262", YMF262, ymf262_StdClock)
+	MCFG_SOUND_ROUTE(0, "lspeaker", 1.00)
+	MCFG_SOUND_ROUTE(1, "rspeaker", 1.00)
+	MCFG_SOUND_ROUTE(2, "lspeaker", 1.00)
+	MCFG_SOUND_ROUTE(3, "rspeaker", 1.00)
+
+	MCFG_SOUND_ADD("ldac", DAC_16BIT_R2R, 0) MCFG_SOUND_ROUTE(ALL_OUTPUTS, "lspeaker", 0.5) // unknown DAC
+	MCFG_SOUND_ADD("rdac", DAC_16BIT_R2R, 0) MCFG_SOUND_ROUTE(ALL_OUTPUTS, "rspeaker", 0.5) // unknown DAC
+	MCFG_DEVICE_ADD("vref", VOLTAGE_REGULATOR, 0) MCFG_VOLTAGE_REGULATOR_OUTPUT(5.0)
+	MCFG_SOUND_ROUTE_EX(0, "ldac", 1.0, DAC_VREF_POS_INPUT) MCFG_SOUND_ROUTE_EX(0, "ldac", -1.0, DAC_VREF_NEG_INPUT)
+	MCFG_SOUND_ROUTE_EX(0, "rdac", 1.0, DAC_VREF_POS_INPUT) MCFG_SOUND_ROUTE_EX(0, "rdac", -1.0, DAC_VREF_NEG_INPUT)
+
+	MCFG_PC_JOY_ADD("pc_joy")
+	MCFG_MIDI_PORT_ADD("mdin", midiin_slot, "midiin")
+	MCFG_MIDI_RX_HANDLER(DEVWRITELINE(DEVICE_SELF, sb_device, midi_rx_w))
+
+	MCFG_MIDI_PORT_ADD("mdout", midiout_slot, "midiout")
+MACHINE_CONFIG_END
+
+//**************************************************************************
+//  LIVE DEVICE
+//**************************************************************************
+
+sb_device::sb_device(const machine_config &mconfig, device_type type, const char *tag, device_t *owner, uint32_t clock) :
+	device_t(mconfig, type, tag, owner, clock),
+	device_serial_interface(mconfig, *this),
+	m_ldac(*this, "ldac"),
+	m_rdac(*this, "rdac"),
+	m_joy(*this, "pc_joy"),
+	m_mdout(*this, "mdout"),
+	m_config(*this, "CONFIG"), m_dack_out(0), m_onebyte_midi(false), m_uart_midi(false), m_uart_irq(false), m_mpu_midi(false), m_rx_waiting(0), m_tx_waiting(0), m_xmit_read(0), m_xmit_write(0), m_recv_read(0), m_recv_write(0), m_tx_busy(false), m_timer(nullptr)
+{
+}
+
+sb8_device::sb8_device(const machine_config &mconfig, device_type type, const char *tag, device_t *owner, uint32_t clock) :
+	sb_device(mconfig, type, tag, owner, clock),
+>>>>>>> upstream/master
 	device_isa8_card_interface(mconfig, *this),
 	m_ym3812(*this, "ym3812")
 {
 }
 
+<<<<<<< HEAD
 sb16_device::sb16_device(const machine_config &mconfig, device_type type, const char *tag, device_t *owner, UINT32 clock, const char *name, const char *shortname, const char *source) :
 	sb_device(mconfig, type, tag, owner, clock, name, shortname, source),
+=======
+sb16_device::sb16_device(const machine_config &mconfig, device_type type, const char *tag, device_t *owner, uint32_t clock) :
+	sb_device(mconfig, type, tag, owner, clock),
+>>>>>>> upstream/master
 	device_isa16_card_interface(mconfig, *this)
 {
 }
@@ -1128,13 +1446,19 @@ sb16_device::sb16_device(const machine_config &mconfig, device_type type, const 
 //  isa8_sblaster_device - constructor
 //-------------------------------------------------
 
+<<<<<<< HEAD
 isa8_sblaster1_0_device::isa8_sblaster1_0_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock) :
 	sb8_device(mconfig, ISA8_SOUND_BLASTER_1_0, tag, owner, clock, "Sound Blaster 1.0", "isa_sblaster1_0", __FILE__),
+=======
+isa8_sblaster1_0_device::isa8_sblaster1_0_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock) :
+	sb8_device(mconfig, ISA8_SOUND_BLASTER_1_0, tag, owner, clock),
+>>>>>>> upstream/master
 	m_saa1099_1(*this, "saa1099.1"),
 	m_saa1099_2(*this, "saa1099.2")
 {
 }
 
+<<<<<<< HEAD
 isa8_sblaster1_5_device::isa8_sblaster1_5_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock) :
 	sb8_device(mconfig, ISA8_SOUND_BLASTER_1_5, tag, owner, clock, "Sound Blaster 1.5", "isa_sblaster1_5", __FILE__)
 {
@@ -1142,6 +1466,15 @@ isa8_sblaster1_5_device::isa8_sblaster1_5_device(const machine_config &mconfig, 
 
 isa16_sblaster16_device::isa16_sblaster16_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock) :
 	sb16_device(mconfig, ISA16_SOUND_BLASTER_16, tag, owner, clock, "Sound Blaster 16", "isa_sblaster_16", __FILE__)
+=======
+isa8_sblaster1_5_device::isa8_sblaster1_5_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock) :
+	sb8_device(mconfig, ISA8_SOUND_BLASTER_1_5, tag, owner, clock)
+{
+}
+
+isa16_sblaster16_device::isa16_sblaster16_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock) :
+	sb16_device(mconfig, ISA16_SOUND_BLASTER_16, tag, owner, clock)
+>>>>>>> upstream/master
 {
 }
 
@@ -1151,15 +1484,24 @@ isa16_sblaster16_device::isa16_sblaster16_device(const machine_config &mconfig, 
 
 void sb8_device::device_start()
 {
+<<<<<<< HEAD
 	m_isa->install_device(0x0200, 0x0207, 0, 0, read8_delegate(FUNC(pc_joy_device::joy_port_r), subdevice<pc_joy_device>("pc_joy")), write8_delegate(FUNC(pc_joy_device::joy_port_w), subdevice<pc_joy_device>("pc_joy")));
 	m_isa->install_device(0x0226, 0x0227, 0, 0, read8_delegate(FUNC(sb_device::dsp_reset_r), this), write8_delegate(FUNC(sb_device::dsp_reset_w), this));
 	m_isa->install_device(0x022a, 0x022b, 0, 0, read8_delegate(FUNC(sb_device::dsp_data_r), this), write8_delegate(FUNC(sb_device::dsp_data_w), this) );
 	m_isa->install_device(0x022c, 0x022d, 0, 0, read8_delegate(FUNC(sb_device::dsp_wbuf_status_r), this), write8_delegate(FUNC(sb_device::dsp_cmd_w), this) );
 	m_isa->install_device(0x022e, 0x022f, 0, 0, read8_delegate(FUNC(sb_device::dsp_rbuf_status_r), this), write8_delegate(FUNC(sb_device::dsp_rbuf_status_w), this) );
+=======
+	m_isa->install_device(0x0200, 0x0207, read8_delegate(FUNC(pc_joy_device::joy_port_r), subdevice<pc_joy_device>("pc_joy")), write8_delegate(FUNC(pc_joy_device::joy_port_w), subdevice<pc_joy_device>("pc_joy")));
+	m_isa->install_device(0x0226, 0x0227, read8_delegate(FUNC(sb_device::dsp_reset_r), this), write8_delegate(FUNC(sb_device::dsp_reset_w), this));
+	m_isa->install_device(0x022a, 0x022b, read8_delegate(FUNC(sb_device::dsp_data_r), this), write8_delegate(FUNC(sb_device::dsp_data_w), this) );
+	m_isa->install_device(0x022c, 0x022d, read8_delegate(FUNC(sb_device::dsp_wbuf_status_r), this), write8_delegate(FUNC(sb_device::dsp_cmd_w), this) );
+	m_isa->install_device(0x022e, 0x022f, read8_delegate(FUNC(sb_device::dsp_rbuf_status_r), this), write8_delegate(FUNC(sb_device::dsp_rbuf_status_w), this) );
+>>>>>>> upstream/master
 	if(m_dsp.version >= 0x0301)
 	{
 		ymf262_device *ymf262 = subdevice<ymf262_device>("ymf262");
 
+<<<<<<< HEAD
 		m_isa->install_device(0x0388, 0x038b, 0, 0, read8_delegate(FUNC(ymf262_device::read), ymf262), write8_delegate(FUNC(ymf262_device::write), ymf262));
 		m_isa->install_device(0x0220, 0x0223, 0, 0, read8_delegate(FUNC(ymf262_device::read), ymf262), write8_delegate(FUNC(ymf262_device::write), ymf262));
 		m_isa->install_device(0x0228, 0x0229, 0, 0, read8_delegate(FUNC(ymf262_device::read), ymf262), write8_delegate(FUNC(ymf262_device::write), ymf262));
@@ -1186,15 +1528,34 @@ void sb8_device::device_start()
 	save_item(NAME(m_recv_read));
 	save_item(NAME(m_recv_write));
 	save_item(NAME(m_tx_busy));
+=======
+		m_isa->install_device(0x0388, 0x038b, read8_delegate(FUNC(ymf262_device::read), ymf262), write8_delegate(FUNC(ymf262_device::write), ymf262));
+		m_isa->install_device(0x0220, 0x0223, read8_delegate(FUNC(ymf262_device::read), ymf262), write8_delegate(FUNC(ymf262_device::write), ymf262));
+		m_isa->install_device(0x0228, 0x0229, read8_delegate(FUNC(ymf262_device::read), ymf262), write8_delegate(FUNC(ymf262_device::write), ymf262));
+	}
+	else
+	{
+		m_isa->install_device(0x0388, 0x0389, read8_delegate( FUNC(sb8_device::ym3812_16_r), this ), write8_delegate( FUNC(sb8_device::ym3812_16_w), this ) );
+		m_isa->install_device(0x0228, 0x0229, read8_delegate( FUNC(sb8_device::ym3812_16_r), this ), write8_delegate( FUNC(sb8_device::ym3812_16_w), this ) );
+	}
+
+	sb_device::device_start();
+>>>>>>> upstream/master
 }
 
 void isa8_sblaster1_0_device::device_start()
 {
 	set_isa_device();
 	// 1.0 always has the SAA1099s for CMS back-compatibility
+<<<<<<< HEAD
 	m_isa->install_device(0x0220, 0x0221, 0, 0, read8_delegate( FUNC(isa8_sblaster1_0_device::saa1099_16_r), this ), write8_delegate( FUNC(isa8_sblaster1_0_device::saa1099_1_16_w), this ) );
 	m_isa->install_device(0x0222, 0x0223, 0, 0, read8_delegate( FUNC(isa8_sblaster1_0_device::saa1099_16_r), this ), write8_delegate( FUNC(isa8_sblaster1_0_device::saa1099_2_16_w), this ) );
 	m_isa->set_dma_channel(1, this, FALSE);
+=======
+	m_isa->install_device(0x0220, 0x0221, read8_delegate( FUNC(isa8_sblaster1_0_device::saa1099_16_r), this ), write8_delegate( FUNC(isa8_sblaster1_0_device::saa1099_1_16_w), this ) );
+	m_isa->install_device(0x0222, 0x0223, read8_delegate( FUNC(isa8_sblaster1_0_device::saa1099_16_r), this ), write8_delegate( FUNC(isa8_sblaster1_0_device::saa1099_2_16_w), this ) );
+	m_isa->set_dma_channel(1, this, false);
+>>>>>>> upstream/master
 	m_dsp.version = 0x0105;
 	sb8_device::device_start();
 }
@@ -1203,7 +1564,11 @@ void isa8_sblaster1_5_device::device_start()
 {
 	set_isa_device();
 	/* 1.5 makes CM/S support optional (empty sockets, but they work if the user populates them!) */
+<<<<<<< HEAD
 	m_isa->set_dma_channel(1, this, FALSE);
+=======
+	m_isa->set_dma_channel(1, this, false);
+>>>>>>> upstream/master
 	m_dsp.version = 0x0200;
 	sb8_device::device_start();
 }
@@ -1211,6 +1576,7 @@ void isa8_sblaster1_5_device::device_start()
 void sb16_device::device_start()
 {
 	ymf262_device *ymf262 = subdevice<ymf262_device>("ymf262");
+<<<<<<< HEAD
 
 	m_isa->install_device(0x0200, 0x0207, 0, 0, read8_delegate(FUNC(pc_joy_device::joy_port_r), subdevice<pc_joy_device>("pc_joy")), write8_delegate(FUNC(pc_joy_device::joy_port_w), subdevice<pc_joy_device>("pc_joy")));
 	m_isa->install_device(0x0224, 0x0225, 0, 0, read8_delegate(FUNC(sb16_device::mixer_r), this), write8_delegate(FUNC(sb16_device::mixer_w), this));
@@ -1224,6 +1590,18 @@ void sb16_device::device_start()
 	m_isa->install_device(0x0228, 0x0229, 0, 0, read8_delegate(FUNC(ymf262_device::read), ymf262), write8_delegate(FUNC(ymf262_device::write), ymf262));
 
 	m_timer = timer_alloc(0, NULL);
+=======
+	m_isa->install_device(0x0200, 0x0207, read8_delegate(FUNC(pc_joy_device::joy_port_r), subdevice<pc_joy_device>("pc_joy")), write8_delegate(FUNC(pc_joy_device::joy_port_w), subdevice<pc_joy_device>("pc_joy")));
+	m_isa->install_device(0x0226, 0x0227, read8_delegate(FUNC(sb_device::dsp_reset_r), this), write8_delegate(FUNC(sb_device::dsp_reset_w), this));
+	m_isa->install_device(0x022a, 0x022b, read8_delegate(FUNC(sb_device::dsp_data_r), this), write8_delegate(FUNC(sb_device::dsp_data_w), this) );
+	m_isa->install_device(0x022c, 0x022d, read8_delegate(FUNC(sb_device::dsp_wbuf_status_r), this), write8_delegate(FUNC(sb_device::dsp_cmd_w), this) );
+	m_isa->install_device(0x022e, 0x022f, read8_delegate(FUNC(sb_device::dsp_rbuf_status_r), this), write8_delegate(FUNC(sb_device::dsp_rbuf_status_w), this) );
+	m_isa->install_device(0x0224, 0x0225, read8_delegate(FUNC(sb16_device::mixer_r), this), write8_delegate(FUNC(sb16_device::mixer_w), this));
+	m_isa->install_device(0x0330, 0x0331, read8_delegate(FUNC(sb16_device::mpu401_r), this), write8_delegate(FUNC(sb16_device::mpu401_w), this));
+	m_isa->install_device(0x0388, 0x038b, read8_delegate(FUNC(ymf262_device::read), ymf262), write8_delegate(FUNC(ymf262_device::write), ymf262));
+	m_isa->install_device(0x0220, 0x0223, read8_delegate(FUNC(ymf262_device::read), ymf262), write8_delegate(FUNC(ymf262_device::write), ymf262));
+	m_isa->install_device(0x0228, 0x0229, read8_delegate(FUNC(ymf262_device::read), ymf262), write8_delegate(FUNC(ymf262_device::write), ymf262));
+>>>>>>> upstream/master
 
 	save_item(NAME(m_mixer.data));
 	save_item(NAME(m_mixer.status));
@@ -1241,17 +1619,83 @@ void sb16_device::device_start()
 	save_item(NAME(m_mixer.agc));
 	save_item(NAME(m_mixer.treble));
 	save_item(NAME(m_mixer.bass));
+<<<<<<< HEAD
+=======
+
+	sb_device::device_start();
+>>>>>>> upstream/master
 }
 
 void isa16_sblaster16_device::device_start()
 {
 	set_isa_device();
+<<<<<<< HEAD
 	m_isa->set_dma_channel(1, this, FALSE);
 	m_isa->set_dma_channel(5, this, FALSE);
+=======
+	m_isa->set_dma_channel(1, this, false);
+	m_isa->set_dma_channel(5, this, false);
+>>>>>>> upstream/master
 	m_dsp.version = 0x0405; // diagnose.exe rejects anything lower than 0x0402
 	sb16_device::device_start();
 }
 
+<<<<<<< HEAD
+=======
+void sb_device::device_start()
+{
+	m_timer = timer_alloc(0, nullptr);
+
+	save_item(NAME(m_dack_out));
+	save_item(NAME(m_onebyte_midi));
+	save_item(NAME(m_uart_midi));
+	save_item(NAME(m_uart_irq));
+	save_item(NAME(m_mpu_midi));
+	save_item(NAME(m_rx_waiting));
+	save_item(NAME(m_tx_waiting));
+	save_item(NAME(m_recvring));
+	save_item(NAME(m_xmitring));
+	save_item(NAME(m_xmit_read));
+	save_item(NAME(m_xmit_write));
+	save_item(NAME(m_recv_read));
+	save_item(NAME(m_recv_write));
+	save_item(NAME(m_tx_busy));
+
+	save_item(NAME(m_dsp.reset_latch));
+	save_item(NAME(m_dsp.rbuf_status));
+	save_item(NAME(m_dsp.wbuf_status));
+	save_item(NAME(m_dsp.fifo));
+	save_item(NAME(m_dsp.fifo_ptr));
+	save_item(NAME(m_dsp.fifo_r));
+	save_item(NAME(m_dsp.fifo_r_ptr));
+
+	save_item(NAME(m_dsp.test_reg));
+	save_item(NAME(m_dsp.speaker_on));
+	save_item(NAME(m_dsp.dma_no_irq));
+	save_item(NAME(m_dsp.prot_count));
+	save_item(NAME(m_dsp.prot_value));
+	save_item(NAME(m_dsp.frequency));
+	save_item(NAME(m_dsp.adc_freq));
+	save_item(NAME(m_dsp.dma_length));
+	save_item(NAME(m_dsp.dma_transferred));
+	save_item(NAME(m_dsp.adc_length));
+	save_item(NAME(m_dsp.adc_transferred));
+	save_item(NAME(m_dsp.dma_autoinit));
+	save_item(NAME(m_dsp.data));
+	save_item(NAME(m_dsp.d_wptr));
+	save_item(NAME(m_dsp.d_rptr));
+	save_item(NAME(m_dsp.dma_timer_started));
+	save_item(NAME(m_dsp.dma_throttled));
+	save_item(NAME(m_dsp.flags));
+	save_item(NAME(m_dsp.irq_active));
+	save_item(NAME(m_dsp.adpcm_new_ref));
+	save_item(NAME(m_dsp.adpcm_ref));
+	save_item(NAME(m_dsp.adpcm_step));
+	save_item(NAME(m_dsp.adpcm_count));
+
+}
+
+>>>>>>> upstream/master
 //-------------------------------------------------
 //  device_reset - device-specific reset
 //-------------------------------------------------
@@ -1266,10 +1710,20 @@ void sb_device::device_reset()
 	m_dsp.wbuf_status = 0;
 	m_dsp.rbuf_status = 0;
 	m_dsp.frequency = 8000; // per stereo-fx
+<<<<<<< HEAD
+=======
+	m_dsp.flags = 0;
+>>>>>>> upstream/master
 	m_dsp.irq_active = 0;
 	m_dsp.dma_no_irq = false;
 	mixer_reset();
 
+<<<<<<< HEAD
+=======
+	m_ldac->write(0x8000);
+	m_rdac->write(0x8000);
+
+>>>>>>> upstream/master
 	m_onebyte_midi = false;
 	m_uart_midi = false;
 	m_uart_irq = false;
@@ -1284,7 +1738,11 @@ void sb_device::device_reset()
 	set_rate(31250);
 }
 
+<<<<<<< HEAD
 UINT8 sb_device::dack_r(int line)
+=======
+uint8_t sb_device::dack_r(int line)
+>>>>>>> upstream/master
 {
 	m_dsp.adc_transferred++;
 	if(m_dsp.adc_transferred >= m_dsp.adc_length)
@@ -1308,7 +1766,11 @@ UINT8 sb_device::dack_r(int line)
 	return m_dack_out;
 }
 
+<<<<<<< HEAD
 UINT16 sb16_device::dack16_r(int line)
+=======
+uint16_t sb16_device::dack16_r(int line)
+>>>>>>> upstream/master
 {
 	m_dsp.adc_transferred += 2;
 	if (m_dsp.adc_transferred >= m_dsp.adc_length)
@@ -1327,7 +1789,11 @@ UINT16 sb16_device::dack16_r(int line)
 	return m_dack_out;
 }
 
+<<<<<<< HEAD
 void sb16_device::dack16_w(int line, UINT16 data)
+=======
+void sb16_device::dack16_w(int line, uint16_t data)
+>>>>>>> upstream/master
 {
 	// set the transfer timer on the 1st byte
 	if (!m_dsp.dma_timer_started)
@@ -1370,7 +1836,11 @@ void sb16_device::dack16_w(int line, UINT16 data)
 }
 
 /* TODO: this mustn't be instant! */
+<<<<<<< HEAD
 void sb_device::dack_w(int line, UINT8 data)
+=======
+void sb_device::dack_w(int line, uint8_t data)
+>>>>>>> upstream/master
 {
 //    printf("dack_w: line %x data %02x\n", line, data);
 //  if(data != 0x80)
@@ -1417,6 +1887,7 @@ void sb_device::dack_w(int line, UINT8 data)
 
 void sb_device::device_timer(emu_timer &timer, device_timer_id tid, int param, void *ptr)
 {
+<<<<<<< HEAD
 //    printf("DMA timer expire\n");
 	if (tid)
 	{
@@ -1446,12 +1917,41 @@ void sb_device::device_timer(emu_timer &timer, device_timer_id tid, int param, v
 			m_dacl->write_unsigned8(m_dsp.data[m_dsp.d_rptr] + 128);
 			m_dsp.data[m_dsp.d_rptr++] = 0x00;
 			m_dacr->write_unsigned8(m_dsp.data[m_dsp.d_rptr] + 128);
+=======
+	if (tid)
+		return;
+
+//    printf("DMA timer expire\n");
+	uint16_t lsample, rsample;
+	switch (m_dsp.flags) {
+		case 0: // 8-bit unsigned mono
+			m_ldac->write(m_dsp.data[m_dsp.d_rptr] << 8);
+			m_rdac->write(m_dsp.data[m_dsp.d_rptr] << 8);
+			m_dsp.data[m_dsp.d_rptr++] = 0x80;
+			break;
+		case SIGNED: // 8-bit signed mono
+			m_ldac->write((m_dsp.data[m_dsp.d_rptr] ^ 0x80) << 8);
+			m_rdac->write((m_dsp.data[m_dsp.d_rptr] ^ 0x80) << 8);
+			m_dsp.data[m_dsp.d_rptr++] = 0x00;
+			break;
+		case STEREO: // 8-bit unsigned stereo
+			m_ldac->write(m_dsp.data[m_dsp.d_rptr] << 8);
+			m_dsp.data[m_dsp.d_rptr++] = 0x80;
+			m_rdac->write(m_dsp.data[m_dsp.d_rptr] << 8);
+			m_dsp.data[m_dsp.d_rptr++] = 0x80;
+			break;
+		case SIGNED | STEREO: // 8-bit signed stereo
+			m_ldac->write((m_dsp.data[m_dsp.d_rptr] ^ 0x80) << 8);
+			m_dsp.data[m_dsp.d_rptr++] = 0x00;
+			m_rdac->write((m_dsp.data[m_dsp.d_rptr] ^ 0x80) << 8);
+>>>>>>> upstream/master
 			m_dsp.data[m_dsp.d_rptr++] = 0x00;
 			break;
 		case SIXTEENBIT: // 16-bit unsigned mono
 			lsample = m_dsp.data[m_dsp.d_rptr] | (m_dsp.data[m_dsp.d_rptr+1] << 8);
 			m_dsp.data[m_dsp.d_rptr++] = 0x00;
 			m_dsp.data[m_dsp.d_rptr++] = 0x80;
+<<<<<<< HEAD
 			m_dacl->write_unsigned16(lsample);
 			m_dacr->write_unsigned16(lsample);
 			break;
@@ -1461,6 +1961,17 @@ void sb_device::device_timer(emu_timer &timer, device_timer_id tid, int param, v
 			m_dsp.data[m_dsp.d_rptr++] = 0x00;
 			m_dacl->write_unsigned16(lsample + 32768);
 			m_dacr->write_unsigned16(lsample + 32768);
+=======
+			m_ldac->write(lsample);
+			m_rdac->write(lsample);
+			break;
+		case SIXTEENBIT | SIGNED: // 16-bit signed mono
+			lsample = m_dsp.data[m_dsp.d_rptr] | ((m_dsp.data[m_dsp.d_rptr+1] ^ 0x80) << 8);
+			m_dsp.data[m_dsp.d_rptr++] = 0x00;
+			m_dsp.data[m_dsp.d_rptr++] = 0x00;
+			m_ldac->write(lsample);
+			m_rdac->write(lsample);
+>>>>>>> upstream/master
 			break;
 		case SIXTEENBIT | STEREO: // 16-bit unsigned stereo
 			lsample = m_dsp.data[m_dsp.d_rptr] | (m_dsp.data[m_dsp.d_rptr+1] << 8);
@@ -1470,6 +1981,7 @@ void sb_device::device_timer(emu_timer &timer, device_timer_id tid, int param, v
 			rsample = m_dsp.data[m_dsp.d_rptr] | (m_dsp.data[m_dsp.d_rptr+1] << 8);
 			m_dsp.data[m_dsp.d_rptr++] = 0x00;
 			m_dsp.data[m_dsp.d_rptr++] = 0x80;
+<<<<<<< HEAD
 			m_dacl->write_unsigned16(lsample);
 			m_dacr->write_unsigned16(rsample);
 			break;
@@ -1483,14 +1995,34 @@ void sb_device::device_timer(emu_timer &timer, device_timer_id tid, int param, v
 			m_dsp.data[m_dsp.d_rptr++] = 0x00;
 			m_dacl->write_unsigned16(lsample + 32768);
 			m_dacr->write_unsigned16(rsample + 32768);
+=======
+			m_ldac->write(lsample);
+			m_rdac->write(rsample);
+			break;
+		case SIXTEENBIT | SIGNED | STEREO: // 16-bit signed stereo
+			lsample = m_dsp.data[m_dsp.d_rptr] | ((m_dsp.data[m_dsp.d_rptr+1] ^ 0x80) << 8);
+			m_dsp.data[m_dsp.d_rptr++] = 0x00;
+			m_dsp.data[m_dsp.d_rptr++] = 0x00;
+			m_dsp.d_rptr %= 128;
+			rsample = m_dsp.data[m_dsp.d_rptr] | ((m_dsp.data[m_dsp.d_rptr+1] ^ 0x80) << 8);
+			m_dsp.data[m_dsp.d_rptr++] = 0x00;
+			m_dsp.data[m_dsp.d_rptr++] = 0x00;
+			m_ldac->write(lsample);
+			m_rdac->write(rsample);
+>>>>>>> upstream/master
 			break;
 		case ADPCM2:
 			if(m_dsp.adpcm_new_ref)
 			{
 				m_dsp.adpcm_ref = m_dsp.data[m_dsp.d_rptr++];
 				m_dsp.adpcm_new_ref = false;
+<<<<<<< HEAD
 				m_dacl->write_unsigned8(m_dsp.adpcm_ref);
 				m_dacr->write_unsigned8(m_dsp.adpcm_ref);
+=======
+				m_ldac->write(m_dsp.adpcm_ref << 8);
+				m_rdac->write(m_dsp.adpcm_ref << 8);
+>>>>>>> upstream/master
 				break;
 			}
 			lsample = m_dsp.data[m_dsp.d_rptr];
@@ -1517,8 +2049,13 @@ void sb_device::device_timer(emu_timer &timer, device_timer_id tid, int param, v
 			{
 				m_dsp.adpcm_ref = m_dsp.data[m_dsp.d_rptr++];
 				m_dsp.adpcm_new_ref = false;
+<<<<<<< HEAD
 				m_dacl->write_unsigned8(m_dsp.adpcm_ref);
 				m_dacr->write_unsigned8(m_dsp.adpcm_ref);
+=======
+				m_ldac->write(m_dsp.adpcm_ref << 8);
+				m_rdac->write(m_dsp.adpcm_ref << 8);
+>>>>>>> upstream/master
 				break;
 			}
 			lsample = m_dsp.data[m_dsp.d_rptr];
@@ -1542,8 +2079,13 @@ void sb_device::device_timer(emu_timer &timer, device_timer_id tid, int param, v
 			{
 				m_dsp.adpcm_ref = m_dsp.data[m_dsp.d_rptr++];
 				m_dsp.adpcm_new_ref = false;
+<<<<<<< HEAD
 				m_dacl->write_unsigned8(m_dsp.adpcm_ref);
 				m_dacr->write_unsigned8(m_dsp.adpcm_ref);
+=======
+				m_ldac->write(m_dsp.adpcm_ref << 8);
+				m_rdac->write(m_dsp.adpcm_ref << 8);
+>>>>>>> upstream/master
 				break;
 			}
 			lsample = m_dsp.data[m_dsp.d_rptr];
@@ -1581,7 +2123,11 @@ void sb_device::device_timer(emu_timer &timer, device_timer_id tid, int param, v
 void sb_device::rcv_complete()    // Rx completed receiving byte
 {
 	receive_register_extract();
+<<<<<<< HEAD
 	UINT8 data = get_received_char();
+=======
+	uint8_t data = get_received_char();
+>>>>>>> upstream/master
 
 	// in UART MIDI mode, we set the DMA8 IRQ on receiving a character
 	if (m_uart_midi)
@@ -1606,7 +2152,11 @@ void sb_device::rcv_complete()    // Rx completed receiving byte
 void sb16_device::rcv_complete()    // Rx completed receiving byte
 {
 	receive_register_extract();
+<<<<<<< HEAD
 	UINT8 data = get_received_char();
+=======
+	uint8_t data = get_received_char();
+>>>>>>> upstream/master
 
 	// for UART or MPU, add character to the receive queue
 	if (m_uart_midi || m_mpu_midi)
@@ -1659,7 +2209,11 @@ void sb_device::tra_callback()    // Tx send bit
 	m_mdout->write_txd(bit);
 }
 
+<<<<<<< HEAD
 void sb_device::xmit_char(UINT8 data)
+=======
+void sb_device::xmit_char(uint8_t data)
+>>>>>>> upstream/master
 {
 //  printf("SB: xmit %02x\n", data);
 

@@ -51,6 +51,7 @@ TODO:
 ***************************************************************************/
 
 #include "emu.h"
+<<<<<<< HEAD
 #include "cpu/m6809/m6809.h"
 #include "sound/ay8910.h"
 #include "includes/sonson.h"
@@ -77,6 +78,33 @@ WRITE8_MEMBER(sonson_state::sonson_coin1_counter_w)
 WRITE8_MEMBER(sonson_state::sonson_coin2_counter_w)
 {
 	coin_counter_w(machine(), 1, data & 1);
+=======
+#include "includes/sonson.h"
+
+#include "cpu/m6809/m6809.h"
+#include "machine/74259.h"
+#include "machine/gen_latch.h"
+#include "sound/ay8910.h"
+#include "screen.h"
+#include "speaker.h"
+
+
+WRITE_LINE_MEMBER(sonson_state::sh_irqtrigger_w)
+{
+	// setting bit 0 low then high triggers IRQ on the sound CPU
+	if (state)
+		m_audiocpu->set_input_line(M6809_FIRQ_LINE, HOLD_LINE);
+}
+
+WRITE_LINE_MEMBER(sonson_state::coin1_counter_w)
+{
+	machine().bookkeeping().coin_counter_w(0, state);
+}
+
+WRITE_LINE_MEMBER(sonson_state::coin2_counter_w)
+{
+	machine().bookkeeping().coin_counter_w(1, state);
+>>>>>>> upstream/master
 }
 
 static ADDRESS_MAP_START( main_map, AS_PROGRAM, 8, sonson_state )
@@ -91,11 +119,16 @@ static ADDRESS_MAP_START( main_map, AS_PROGRAM, 8, sonson_state )
 	AM_RANGE(0x3005, 0x3005) AM_READ_PORT("DSW1")
 	AM_RANGE(0x3006, 0x3006) AM_READ_PORT("DSW2")
 	AM_RANGE(0x3008, 0x3008) AM_WRITENOP    // might be Y scroll, but the game always sets it to 0
+<<<<<<< HEAD
 	AM_RANGE(0x3010, 0x3010) AM_WRITE(soundlatch_byte_w)
 	AM_RANGE(0x3018, 0x3018) AM_WRITE(sonson_flipscreen_w)
 	AM_RANGE(0x3019, 0x3019) AM_WRITE(sonson_sh_irqtrigger_w)
 	AM_RANGE(0x301e, 0x301e) AM_WRITE(sonson_coin2_counter_w)
 	AM_RANGE(0x301f, 0x301f) AM_WRITE(sonson_coin1_counter_w)
+=======
+	AM_RANGE(0x3010, 0x3010) AM_DEVWRITE("soundlatch", generic_latch_8_device, write)
+	AM_RANGE(0x3018, 0x301f) AM_DEVWRITE("mainlatch", ls259_device, write_d0)
+>>>>>>> upstream/master
 	AM_RANGE(0x4000, 0xffff) AM_ROM
 ADDRESS_MAP_END
 
@@ -103,7 +136,11 @@ static ADDRESS_MAP_START( sound_map, AS_PROGRAM, 8, sonson_state )
 	AM_RANGE(0x0000, 0x07ff) AM_RAM
 	AM_RANGE(0x2000, 0x2001) AM_DEVWRITE("ay1", ay8910_device, address_data_w)
 	AM_RANGE(0x4000, 0x4001) AM_DEVWRITE("ay2", ay8910_device, address_data_w)
+<<<<<<< HEAD
 	AM_RANGE(0xa000, 0xa000) AM_READ(soundlatch_byte_r)
+=======
+	AM_RANGE(0xa000, 0xa000) AM_DEVREAD("soundlatch", generic_latch_8_device, read)
+>>>>>>> upstream/master
 	AM_RANGE(0xe000, 0xffff) AM_ROM
 ADDRESS_MAP_END
 
@@ -165,7 +202,11 @@ static INPUT_PORTS_START( sonson )
 	PORT_DIPSETTING(    0x20, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
 	PORT_SERVICE( 0x40, IP_ACTIVE_LOW ) PORT_DIPLOCATION("SW1:7")
+<<<<<<< HEAD
 		PORT_DIPNAME( 0X80, 0x80, DEF_STR( Flip_Screen )) PORT_DIPLOCATION("SW1:8")
+=======
+		PORT_DIPNAME( 0x80, 0x80, DEF_STR( Flip_Screen )) PORT_DIPLOCATION("SW1:8")
+>>>>>>> upstream/master
 	PORT_DIPSETTING(    0x80, DEF_STR( Off ) )
 	PORT_DIPSETTING(    0x00, DEF_STR( On ) )
 
@@ -227,6 +268,7 @@ GFXDECODE_END
 
 
 
+<<<<<<< HEAD
 void sonson_state::machine_start()
 {
 	save_item(NAME(m_last_irq));
@@ -238,6 +280,9 @@ void sonson_state::machine_reset()
 }
 
 static MACHINE_CONFIG_START( sonson, sonson_state )
+=======
+static MACHINE_CONFIG_START( sonson )
+>>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", M6809, XTAL_12MHz/8)   /* 1.5 MHz */
@@ -248,6 +293,14 @@ static MACHINE_CONFIG_START( sonson, sonson_state )
 	MCFG_CPU_PROGRAM_MAP(sound_map)
 	MCFG_CPU_PERIODIC_INT_DRIVER(sonson_state, irq0_line_hold, 4*60)    /* FIRQs are triggered by the main CPU */
 
+<<<<<<< HEAD
+=======
+	MCFG_DEVICE_ADD("mainlatch", LS259, 0) // A9
+	MCFG_ADDRESSABLE_LATCH_Q0_OUT_CB(WRITELINE(sonson_state, flipscreen_w))
+	MCFG_ADDRESSABLE_LATCH_Q1_OUT_CB(WRITELINE(sonson_state, sh_irqtrigger_w))
+	MCFG_ADDRESSABLE_LATCH_Q6_OUT_CB(WRITELINE(sonson_state, coin2_counter_w))
+	MCFG_ADDRESSABLE_LATCH_Q7_OUT_CB(WRITELINE(sonson_state, coin1_counter_w))
+>>>>>>> upstream/master
 
 	/* video hardware */
 	MCFG_SCREEN_ADD("screen", RASTER)
@@ -266,6 +319,11 @@ static MACHINE_CONFIG_START( sonson, sonson_state )
 	/* sound hardware */
 	MCFG_SPEAKER_STANDARD_MONO("mono")
 
+<<<<<<< HEAD
+=======
+	MCFG_GENERIC_LATCH_8_ADD("soundlatch")
+
+>>>>>>> upstream/master
 	MCFG_SOUND_ADD("ay1", AY8910, XTAL_12MHz/8)   /* 1.5 MHz */
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 0.30)
 
@@ -343,5 +401,10 @@ ROM_START( sonsonj )
 ROM_END
 
 
+<<<<<<< HEAD
 GAME( 1984, sonson,  0,      sonson, sonson, driver_device, 0, ROT0, "Capcom", "Son Son", MACHINE_SUPPORTS_SAVE )
 GAME( 1984, sonsonj, sonson, sonson, sonson, driver_device, 0, ROT0, "Capcom", "Son Son (Japan)", MACHINE_SUPPORTS_SAVE )
+=======
+GAME( 1984, sonson,  0,      sonson, sonson, sonson_state, 0, ROT0, "Capcom", "Son Son",         MACHINE_SUPPORTS_SAVE )
+GAME( 1984, sonsonj, sonson, sonson, sonson, sonson_state, 0, ROT0, "Capcom", "Son Son (Japan)", MACHINE_SUPPORTS_SAVE )
+>>>>>>> upstream/master

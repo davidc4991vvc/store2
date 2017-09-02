@@ -1,6 +1,11 @@
 /*
+<<<<<<< HEAD
  * Copyright 2011-2015 Branimir Karadzic. All rights reserved.
  * License: http://www.opensource.org/licenses/BSD-2-Clause
+=======
+ * Copyright 2011-2017 Branimir Karadzic. All rights reserved.
+ * License: https://github.com/bkaradzic/bgfx#license-bsd-2-clause
+>>>>>>> upstream/master
  */
 
 #ifndef BGFX_SHADER_DX9BC_H
@@ -187,6 +192,11 @@ namespace bgfx
 
 	struct Dx9bcSubOperand
 	{
+<<<<<<< HEAD
+=======
+		Dx9bcSubOperand() { /* not pod */ }
+
+>>>>>>> upstream/master
 		Dx9bcOperandType::Enum type;
 		uint32_t regIndex;
 		uint8_t swizzleBits;
@@ -194,6 +204,11 @@ namespace bgfx
 
 	struct Dx9bcOperand
 	{
+<<<<<<< HEAD
+=======
+		Dx9bcOperand() { /* not pod */ }
+
+>>>>>>> upstream/master
 		Dx9bcOperandType::Enum type;
 		uint32_t regIndex;
 
@@ -214,6 +229,11 @@ namespace bgfx
 
 	struct Dx9bcInstruction
 	{
+<<<<<<< HEAD
+=======
+		Dx9bcInstruction() { /* not pod */ }
+
+>>>>>>> upstream/master
 		Dx9bcOpcode::Enum opcode;
 		uint16_t length;
 		uint8_t numOperands;
@@ -226,12 +246,18 @@ namespace bgfx
 		int32_t value[4];
 	};
 
+<<<<<<< HEAD
 	int32_t read(bx::ReaderI* _reader, Dx9bcInstruction& _instruction);
 	int32_t write(bx::WriterI* _writer, const Dx9bcInstruction& _instruction);
+=======
+	int32_t read(bx::ReaderI* _reader, Dx9bcInstruction& _instruction, bx::Error* _err);
+	int32_t write(bx::WriterI* _writer, const Dx9bcInstruction& _instruction, bx::Error* _err);
+>>>>>>> upstream/master
 	int32_t toString(char* _out, int32_t _size, const Dx9bcInstruction& _instruction);
 
 	struct Dx9bcShader
 	{
+<<<<<<< HEAD
 		stl::vector<uint8_t> byteCode;
 	};
 
@@ -240,10 +266,25 @@ namespace bgfx
 
 	struct Dx9bc
 	{
+=======
+		Dx9bcShader() { /* not pod */ }
+
+		stl::vector<uint8_t> byteCode;
+	};
+
+	int32_t read(bx::ReaderSeekerI* _reader, Dx9bcShader& _shader, bx::Error* _err);
+	int32_t write(bx::WriterI* _writer, const Dx9bcShader& _shader, bx::Error* _err);
+
+	struct Dx9bc
+	{
+		Dx9bc() { /* not pod */ }
+
+>>>>>>> upstream/master
 		uint32_t version;
 		Dx9bcShader shader;
 	};
 
+<<<<<<< HEAD
 	int32_t read(bx::ReaderSeekerI* _reader, Dx9bc& _dx9bc);
 	int32_t write(bx::WriterSeekerI* _writer, const Dx9bc& _dx9bc);
 
@@ -252,6 +293,16 @@ namespace bgfx
 
 	typedef void (*Dx9bcFilterFn)(Dx9bcInstruction& _instruction, void* _userData);
 	void filter(Dx9bcShader& _dst, const Dx9bcShader& _src, Dx9bcFilterFn _fn, void* _userData);
+=======
+	int32_t read(bx::ReaderSeekerI* _reader, Dx9bc& _dx9bc, bx::Error* _err);
+	int32_t write(bx::WriterSeekerI* _writer, const Dx9bc& _dx9bc, bx::Error* _err);
+
+	typedef bool (*Dx9bcParseFn)(uint32_t _offset, const Dx9bcInstruction& _instruction, void* _userData);
+	void parse(const Dx9bcShader& _src, Dx9bcParseFn _fn, void* _userData, bx::Error* _err = NULL);
+
+	typedef void (*Dx9bcFilterFn)(Dx9bcInstruction& _instruction, void* _userData);
+	void filter(Dx9bcShader& _dst, const Dx9bcShader& _src, Dx9bcFilterFn _fn, void* _userData, bx::Error* _err = NULL);
+>>>>>>> upstream/master
 
 } // namespace bgfx
 

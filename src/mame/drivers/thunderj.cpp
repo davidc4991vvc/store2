@@ -37,9 +37,17 @@
 
 
 #include "emu.h"
+<<<<<<< HEAD
 #include "cpu/m68000/m68000.h"
 #include "machine/atarigen.h"
 #include "includes/thunderj.h"
+=======
+#include "includes/thunderj.h"
+#include "cpu/m68000/m68000.h"
+#include "machine/eeprompar.h"
+#include "machine/watchdog.h"
+#include "speaker.h"
+>>>>>>> upstream/master
 
 
 
@@ -100,7 +108,11 @@ WRITE16_MEMBER(thunderj_state::latch_w)
 		if (m_alpha_tile_bank != ((data >> 2) & 7))
 		{
 			m_screen->update_partial(m_screen->vpos());
+<<<<<<< HEAD
 			m_vad->alpha()->mark_all_dirty();
+=======
+			m_vad->alpha().mark_all_dirty();
+>>>>>>> upstream/master
 			m_alpha_tile_bank = (data >> 2) & 7;
 		}
 	}
@@ -116,14 +128,24 @@ WRITE16_MEMBER(thunderj_state::latch_w)
 
 static ADDRESS_MAP_START( main_map, AS_PROGRAM, 16, thunderj_state )
 	AM_RANGE(0x000000, 0x09ffff) AM_ROM
+<<<<<<< HEAD
 	AM_RANGE(0x0e0000, 0x0e0fff) AM_DEVREADWRITE8("eeprom", atari_eeprom_device, read, write, 0x00ff)
 	AM_RANGE(0x160000, 0x16ffff) AM_RAM AM_SHARE("share1")
 	AM_RANGE(0x1f0000, 0x1fffff) AM_DEVWRITE("eeprom", atari_eeprom_device, unlock_write)
+=======
+	AM_RANGE(0x0e0000, 0x0e0fff) AM_DEVREADWRITE8("eeprom", eeprom_parallel_28xx_device, read, write, 0x00ff)
+	AM_RANGE(0x160000, 0x16ffff) AM_RAM AM_SHARE("share1")
+	AM_RANGE(0x1f0000, 0x1fffff) AM_DEVWRITE("eeprom", eeprom_parallel_28xx_device, unlock_write)
+>>>>>>> upstream/master
 	AM_RANGE(0x260000, 0x26000f) AM_READ_PORT("260000")
 	AM_RANGE(0x260010, 0x260011) AM_READ_PORT("260010")
 	AM_RANGE(0x260012, 0x260013) AM_READ(special_port2_r)
 	AM_RANGE(0x260030, 0x260031) AM_DEVREAD8("jsa", atari_jsa_ii_device, main_response_r, 0x00ff)
+<<<<<<< HEAD
 	AM_RANGE(0x2e0000, 0x2e0001) AM_WRITE(watchdog_reset16_w)
+=======
+	AM_RANGE(0x2e0000, 0x2e0001) AM_DEVWRITE("watchdog", watchdog_timer_device, reset16_w)
+>>>>>>> upstream/master
 	AM_RANGE(0x360010, 0x360011) AM_WRITE(latch_w)
 	AM_RANGE(0x360020, 0x360021) AM_DEVWRITE("jsa", atari_jsa_ii_device, sound_reset_w)
 	AM_RANGE(0x360030, 0x360031) AM_DEVWRITE8("jsa", atari_jsa_ii_device, main_command_w, 0x00ff)
@@ -245,7 +267,11 @@ GFXDECODE_END
  *
  *************************************/
 
+<<<<<<< HEAD
 static MACHINE_CONFIG_START( thunderj, thunderj_state )
+=======
+static MACHINE_CONFIG_START( thunderj )
+>>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", M68000, ATARI_CLOCK_14MHz/2)
@@ -257,7 +283,14 @@ static MACHINE_CONFIG_START( thunderj, thunderj_state )
 	MCFG_MACHINE_START_OVERRIDE(thunderj_state,thunderj)
 	MCFG_MACHINE_RESET_OVERRIDE(thunderj_state,thunderj)
 
+<<<<<<< HEAD
 	MCFG_ATARI_EEPROM_2816_ADD("eeprom")
+=======
+	MCFG_EEPROM_2816_ADD("eeprom")
+	MCFG_EEPROM_28XX_LOCK_AFTER_WRITE(true)
+
+	MCFG_WATCHDOG_ADD("watchdog")
+>>>>>>> upstream/master
 
 	/* perfect synchronization due to shared RAM */
 	MCFG_QUANTUM_PERFECT_CPU("maincpu")
@@ -317,9 +350,14 @@ ROM_START( thunderj )
 	ROM_LOAD16_BYTE( "136076-1012.17n",    0x00001, 0x10000, CRC(53e5e638) SHA1(75593e5d328ede105b8db64005dd5d1c5cae11ed) )
 	ROM_COPY( "maincpu", 0x60000, 0x60000, 0x20000 )
 
+<<<<<<< HEAD
 	ROM_REGION( 0x14000, "jsa:cpu", 0 ) /* 64k + 16k for 6502 code */
 	ROM_LOAD( "136076-2015.1b", 0x10000, 0x4000, CRC(d8feb7fb) SHA1(684ebf2f0c0df742c98e7f45f74de86a11c8d6e8) ) /* Rev 2 program rom */
 	ROM_CONTINUE(               0x04000, 0xc000 )
+=======
+	ROM_REGION( 0x10000, "jsa:cpu", 0 ) /* 64k for 6502 code */
+	ROM_LOAD( "136076-2015.1b", 0x00000, 0x10000, CRC(d8feb7fb) SHA1(684ebf2f0c0df742c98e7f45f74de86a11c8d6e8) ) /* Rev 2 program rom */
+>>>>>>> upstream/master
 
 	ROM_REGION( 0x100000, "gfx1", ROMREGION_INVERT )
 	ROM_LOAD( "136076-1021.5s",   0x000000, 0x10000, CRC(d8432766) SHA1(04e7d820974c0890fde1257b4710cf7b520d7d48) ) /* graphics, plane 0 */
@@ -394,9 +432,14 @@ ROM_START( thunderja )
 	ROM_LOAD16_BYTE( "136076-1012.17n",    0x00001, 0x10000, CRC(53e5e638) SHA1(75593e5d328ede105b8db64005dd5d1c5cae11ed) )
 	ROM_COPY( "maincpu", 0x60000, 0x60000, 0x20000 )
 
+<<<<<<< HEAD
 	ROM_REGION( 0x14000, "jsa:cpu", 0 ) /* 64k + 16k for 6502 code */
 	ROM_LOAD( "136076-2015.1b", 0x10000, 0x4000, CRC(d8feb7fb) SHA1(684ebf2f0c0df742c98e7f45f74de86a11c8d6e8) ) /* Rev 2 program rom */
 	ROM_CONTINUE(               0x04000, 0xc000 )
+=======
+	ROM_REGION( 0x10000, "jsa:cpu", 0 ) /* 64k for 6502 code */
+	ROM_LOAD( "136076-2015.1b", 0x00000, 0x10000, CRC(d8feb7fb) SHA1(684ebf2f0c0df742c98e7f45f74de86a11c8d6e8) ) /* Rev 2 program rom */
+>>>>>>> upstream/master
 
 	ROM_REGION( 0x100000, "gfx1", ROMREGION_INVERT )
 	ROM_LOAD( "136076-1021.5s",   0x000000, 0x10000, CRC(d8432766) SHA1(04e7d820974c0890fde1257b4710cf7b520d7d48) ) /* graphics, plane 0 */

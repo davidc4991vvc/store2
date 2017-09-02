@@ -1,6 +1,11 @@
 /*
+<<<<<<< HEAD
  * Copyright 2011-2015 Branimir Karadzic. All rights reserved.
  * License: http://www.opensource.org/licenses/BSD-2-Clause
+=======
+ * Copyright 2011-2017 Branimir Karadzic. All rights reserved.
+ * License: https://github.com/bkaradzic/bgfx#license-bsd-2-clause
+>>>>>>> upstream/master
  */
 
 #ifndef BOUNDS_H_HEADER_GUARD
@@ -12,21 +17,71 @@ struct Aabb
 	float m_max[3];
 };
 
+<<<<<<< HEAD
+=======
+struct Cylinder
+{
+	float m_pos[3];
+	float m_end[3];
+	float m_radius;
+};
+
+struct Disk
+{
+	float m_center[3];
+	float m_normal[3];
+	float m_radius;
+};
+
+>>>>>>> upstream/master
 struct Obb
 {
 	float m_mtx[16];
 };
 
+<<<<<<< HEAD
+=======
+struct Plane
+{
+	float m_normal[3];
+	float m_dist;
+};
+
+struct Ray
+{
+	float m_pos[3];
+	float m_dir[3];
+};
+
+>>>>>>> upstream/master
 struct Sphere
 {
 	float m_center[3];
 	float m_radius;
 };
 
+<<<<<<< HEAD
+=======
+struct Tris
+{
+	float m_v0[3];
+	float m_v1[3];
+	float m_v2[3];
+};
+
+struct Intersection
+{
+	float m_pos[3];
+	float m_normal[3];
+	float m_dist;
+};
+
+>>>>>>> upstream/master
 /// Convert axis aligned bounding box to oriented bounding box.
 void aabbToObb(Obb& _obb, const Aabb& _aabb);
 
 /// Convert sphere to axis aligned bounding box.
+<<<<<<< HEAD
 void sphereToAabb(Aabb& _aabb, const Sphere& _sphere);
 
 /// Calculate surface area of axis aligned bounding box.
@@ -37,13 +92,40 @@ void calcAabb(Aabb& _aabb, const void* _vertices, uint32_t _numVertices, uint32_
 
 /// Transform vertices and calculate axis aligned bounding box.
 void calcAabb(Aabb& _aabb, const float* _mtx, const void* _vertices, uint32_t _numVertices, uint32_t _stride);
+=======
+void toAabb(Aabb& _aabb, const Sphere& _sphere);
+
+/// Convert disk to axis aligned bounding box.
+void toAabb(Aabb& _aabb, const Disk& _disk);
+
+/// Convert cylinder to axis aligned bounding box.
+void toAabb(Aabb& _aabb, const Cylinder& _cylinder);
+
+/// Calculate axis aligned bounding box.
+void toAabb(Aabb& _aabb, const void* _vertices, uint32_t _numVertices, uint32_t _stride);
+
+/// Transform vertices and calculate axis aligned bounding box.
+void toAabb(Aabb& _aabb, const float* _mtx, const void* _vertices, uint32_t _numVertices, uint32_t _stride);
+>>>>>>> upstream/master
 
 /// Expand AABB.
 void aabbExpand(Aabb& _aabb, float _factor);
 
+<<<<<<< HEAD
 /// Returns 0 is two AABB don't overlap, otherwise returns flags of overlap
 /// test.
 uint32_t aabbOverlapTest(Aabb& _aabb0, Aabb& _aabb1);
+=======
+/// Expand AABB with xyz.
+void aabbExpand(Aabb& _aabb, const float* _pos);
+
+/// Calculate surface area of axis aligned bounding box.
+float calcAreaAabb(const Aabb& _aabb);
+
+/// Returns 0 is two AABB don't overlap, otherwise returns flags of overlap
+/// test.
+uint32_t aabbOverlapTest(const Aabb& _aabb0, const Aabb& _aabb1);
+>>>>>>> upstream/master
 
 /// Calculate oriented bounding box.
 void calcObb(Obb& _obb, const void* _vertices, uint32_t _numVertices, uint32_t _stride, uint32_t _steps = 17);
@@ -54,4 +136,34 @@ void calcMaxBoundingSphere(Sphere& _sphere, const void* _vertices, uint32_t _num
 /// Calculate minimum bounding sphere.
 void calcMinBoundingSphere(Sphere& _sphere, const void* _vertices, uint32_t _numVertices, uint32_t _stride, float _step = 0.01f);
 
+<<<<<<< HEAD
+=======
+/// Returns 6 (near, far, left, right, top, bottom) planes representing frustum planes.
+void buildFrustumPlanes(Plane* _planes, const float* _viewProj);
+
+/// Returns point from 3 intersecting planes.
+void intersectPlanes(float _result[3], const Plane& _pa, const Plane& _pb, const Plane& _pc);
+
+/// Make screen space ray from x, y coordinate and inverse view-projection matrix.
+Ray makeRay(float _x, float _y, const float* _invVp);
+
+/// Intersect ray / aabb.
+bool intersect(const Ray& _ray, const Aabb& _aabb, Intersection* _intersection = NULL);
+
+/// Intersect ray / cylinder.
+bool intersect(const Ray& _ray, const Cylinder& _cylinder, bool _capsule, Intersection* _intersection = NULL);
+
+/// Intersect ray / disk.
+bool intersect(const Ray& _ray, const Disk& _disk, Intersection* _intersection = NULL);
+
+/// Intersect ray / plane.
+bool intersect(const Ray& _ray, const Plane& _plane, Intersection* _intersection = NULL);
+
+/// Intersect ray / sphere.
+bool intersect(const Ray& _ray, const Sphere& _sphere, Intersection* _intersection = NULL);
+
+/// Intersect ray / triangle.
+bool intersect(const Ray& _ray, const Tris& _triangle, Intersection* _intersection = NULL);
+
+>>>>>>> upstream/master
 #endif // BOUNDS_H_HEADER_GUARD

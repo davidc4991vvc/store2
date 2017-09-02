@@ -1,7 +1,17 @@
 // license:BSD-3-Clause
 // copyright-holders:Fabio Priuli
+<<<<<<< HEAD
 #ifndef __SNS_SLOT_H
 #define __SNS_SLOT_H
+=======
+#ifndef MAME_BUS_SNES_SNES_SLOT_H
+#define MAME_BUS_SNES_SNES_SLOT_H
+
+#pragma once
+
+#include "softlist_dev.h"
+
+>>>>>>> upstream/master
 
 /***************************************************************************
  TYPE DEFINITIONS
@@ -99,13 +109,17 @@ class device_sns_cart_interface : public device_slot_card_interface
 {
 public:
 	// construction/destruction
+<<<<<<< HEAD
 	device_sns_cart_interface(const machine_config &mconfig, device_t &device);
+=======
+>>>>>>> upstream/master
 	virtual ~device_sns_cart_interface();
 
 	// reading and writing
 	virtual DECLARE_READ8_MEMBER(read_l) { return 0xff; }   // ROM access in range [00-7f]
 	virtual DECLARE_READ8_MEMBER(read_h) { return 0xff; }   // ROM access in range [80-ff]
 	virtual DECLARE_READ8_MEMBER(read_ram) { if (!m_nvram.empty()) return m_nvram[offset & (m_nvram.size()-1)]; else return 0xff; }   // NVRAM access
+<<<<<<< HEAD
 	virtual DECLARE_WRITE8_MEMBER(write_l) {}   // used by carts with subslots
 	virtual DECLARE_WRITE8_MEMBER(write_h) {}   // used by carts with subslots
 	virtual DECLARE_WRITE8_MEMBER(write_ram) { if (!m_nvram.empty()) m_nvram[offset & (m_nvram.size()-1)] = data; } // NVRAM access
@@ -138,6 +152,43 @@ public:
 	dynamic_buffer m_rtc_ram;  // temp pointer to save RTC ram to nvram (will disappear when RTCs become devices)
 
 	UINT8 rom_bank_map[256];    // 32K chunks of rom
+=======
+	virtual DECLARE_WRITE8_MEMBER(write_l) { }   // used by carts with subslots
+	virtual DECLARE_WRITE8_MEMBER(write_h) { }   // used by carts with subslots
+	virtual DECLARE_WRITE8_MEMBER(write_ram) { if (!m_nvram.empty()) m_nvram[offset & (m_nvram.size()-1)] = data; } // NVRAM access
+	virtual DECLARE_READ8_MEMBER(chip_read) { return 0xff; }
+	virtual DECLARE_WRITE8_MEMBER(chip_write) { }
+	virtual void speedup_addon_bios_access() {}
+
+	void rom_alloc(uint32_t size, const char *tag);
+	void nvram_alloc(uint32_t size);
+	void rtc_ram_alloc(uint32_t size);
+	void addon_bios_alloc(uint32_t size);
+	uint8_t* get_rom_base() { return m_rom; }
+	uint8_t* get_nvram_base() { return &m_nvram[0]; }
+	uint8_t* get_addon_bios_base() { return &m_bios[0]; }
+	uint8_t* get_rtc_ram_base() { return &m_rtc_ram[0]; }
+	uint32_t get_rom_size() { return m_rom_size; }
+	uint32_t get_nvram_size() { return m_nvram.size(); }
+	uint32_t get_addon_bios_size() { return m_bios.size(); }
+	uint32_t get_rtc_ram_size() { return m_rtc_ram.size(); }
+
+	void rom_map_setup(uint32_t size);
+	void save_nvram()   { device().save_item(NAME(m_nvram)); }
+	void save_rtc_ram() { device().save_item(NAME(m_rtc_ram)); }
+
+protected:
+	device_sns_cart_interface(const machine_config &mconfig, device_t &device);
+
+	// internal state
+	uint8_t *m_rom;
+	uint32_t m_rom_size;
+	std::vector<uint8_t> m_nvram;
+	std::vector<uint8_t> m_bios;
+	std::vector<uint8_t> m_rtc_ram;  // temp pointer to save RTC ram to nvram (will disappear when RTCs become devices)
+
+	uint8_t rom_bank_map[256];    // 32K chunks of rom
+>>>>>>> upstream/master
 };
 
 
@@ -149,6 +200,7 @@ class base_sns_cart_slot_device : public device_t,
 {
 public:
 	// construction/destruction
+<<<<<<< HEAD
 	base_sns_cart_slot_device(const machine_config &mconfig, device_type type, const char *name, const char *tag, device_t *owner, UINT32 clock, const char *shortname, const char *source);
 	virtual ~base_sns_cart_slot_device();
 
@@ -167,10 +219,29 @@ public:
 
 	void setup_nvram();
 	void internal_header_logging(UINT8 *ROM, UINT32 len);
+=======
+	virtual ~base_sns_cart_slot_device();
+
+	// device-level overrides
+	virtual void device_start() override;
+
+	// image-level overrides
+	virtual image_init_result call_load() override;
+	virtual void call_unload() override;
+	virtual const software_list_loader &get_software_list_loader() const override { return rom_software_list_loader::instance(); }
+
+	void get_cart_type_addon(const uint8_t *ROM, uint32_t len, int &type, int &addon) const;
+	uint32_t snes_skip_header(const uint8_t *ROM, uint32_t snes_rom_size) const;
+	int get_type() { return m_type; }
+
+	void setup_nvram();
+	void internal_header_logging(uint8_t *ROM, uint32_t len);
+>>>>>>> upstream/master
 
 	void save_ram() { if (m_cart && m_cart->get_nvram_size()) m_cart->save_nvram();
 					if (m_cart && m_cart->get_rtc_ram_size()) m_cart->save_rtc_ram(); }
 
+<<<<<<< HEAD
 	virtual iodevice_t image_type() const { return IO_CARTSLOT; }
 	virtual bool is_readable()  const { return 1; }
 	virtual bool is_writeable() const { return 0; }
@@ -181,6 +252,17 @@ public:
 
 	// slot interface overrides
 	virtual void get_default_card_software(std::string &result);
+=======
+	virtual iodevice_t image_type() const override { return IO_CARTSLOT; }
+	virtual bool is_readable()  const override { return 1; }
+	virtual bool is_writeable() const override { return 0; }
+	virtual bool is_creatable() const override { return 0; }
+	virtual bool must_be_loaded() const override { return 1; }
+	virtual bool is_reset_on_load() const override { return 1; }
+
+	// slot interface overrides
+	virtual std::string get_default_card_software(get_default_card_software_hook &hook) const override;
+>>>>>>> upstream/master
 
 	// reading and writing
 	virtual DECLARE_READ8_MEMBER(read_l);
@@ -207,10 +289,17 @@ public:
 
 	int m_type;
 	device_sns_cart_interface*      m_cart;
+<<<<<<< HEAD
+=======
+
+protected:
+	base_sns_cart_slot_device(const machine_config &mconfig, device_type type, const char *tag, device_t *owner, uint32_t clock);
+>>>>>>> upstream/master
 };
 
 // ======================> sns_cart_slot_device
 
+<<<<<<< HEAD
 class sns_cart_slot_device :  public base_sns_cart_slot_device
 {
 public:
@@ -218,10 +307,20 @@ public:
 	sns_cart_slot_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
 	virtual const char *image_interface() const { return "snes_cart"; }
 	virtual const char *file_extensions() const { return "sfc"; }
+=======
+class sns_cart_slot_device : public base_sns_cart_slot_device
+{
+public:
+	// construction/destruction
+	sns_cart_slot_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
+	virtual const char *image_interface() const override { return "snes_cart"; }
+	virtual const char *file_extensions() const override { return "sfc"; }
+>>>>>>> upstream/master
 };
 
 // ======================> sns_sufami_cart_slot_device
 
+<<<<<<< HEAD
 class sns_sufami_cart_slot_device :  public base_sns_cart_slot_device
 {
 public:
@@ -230,6 +329,16 @@ public:
 	virtual const char *image_interface() const { return "st_cart"; }
 	virtual const char *file_extensions() const { return "st"; }
 	virtual bool must_be_loaded() const { return 0; }
+=======
+class sns_sufami_cart_slot_device : public base_sns_cart_slot_device
+{
+public:
+	// construction/destruction
+	sns_sufami_cart_slot_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
+	virtual const char *image_interface() const override { return "st_cart"; }
+	virtual const char *file_extensions() const override { return "st"; }
+	virtual bool must_be_loaded() const override { return 0; }
+>>>>>>> upstream/master
 };
 
 // ======================> sns_sufami_cart_slot_device
@@ -238,17 +347,30 @@ class sns_bsx_cart_slot_device :  public base_sns_cart_slot_device
 {
 public:
 	// construction/destruction
+<<<<<<< HEAD
 	sns_bsx_cart_slot_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
 	virtual const char *image_interface() const { return "bspack"; }
 	virtual const char *file_extensions() const { return "bs"; }
 	virtual bool must_be_loaded() const { return 0; }
+=======
+	sns_bsx_cart_slot_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
+	virtual const char *image_interface() const override { return "bspack"; }
+	virtual const char *file_extensions() const override { return "bs"; }
+	virtual bool must_be_loaded() const override { return 0; }
+>>>>>>> upstream/master
 };
 
 
 // device type definition
+<<<<<<< HEAD
 extern const device_type SNS_CART_SLOT;
 extern const device_type SNS_SUFAMI_CART_SLOT;
 extern const device_type SNS_BSX_CART_SLOT;
+=======
+DECLARE_DEVICE_TYPE(SNS_CART_SLOT,        sns_cart_slot_device)
+DECLARE_DEVICE_TYPE(SNS_SUFAMI_CART_SLOT, sns_sufami_cart_slot_device)
+DECLARE_DEVICE_TYPE(SNS_BSX_CART_SLOT,    sns_bsx_cart_slot_device)
+>>>>>>> upstream/master
 
 
 /***************************************************************************
@@ -271,4 +393,8 @@ extern const device_type SNS_BSX_CART_SLOT;
 	MCFG_DEVICE_SLOT_INTERFACE(_slot_intf, _def_slot, false)
 
 
+<<<<<<< HEAD
 #endif
+=======
+#endif // MAME_BUS_SNES_SNES_SLOT_H
+>>>>>>> upstream/master

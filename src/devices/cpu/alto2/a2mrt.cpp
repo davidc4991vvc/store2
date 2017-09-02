@@ -5,6 +5,10 @@
  *   Xerox AltoII memory refresh task
  *
  *****************************************************************************/
+<<<<<<< HEAD
+=======
+#include "emu.h"
+>>>>>>> upstream/master
 #include "alto2cpu.h"
 
 //! f1_mrt_block early: block the display word task
@@ -26,12 +30,18 @@ void alto2_cpu_device::activate_mrt()
 	}
 }
 
+<<<<<<< HEAD
 	//! memory refresh task slots initialization
 void alto2_cpu_device::init_mrt(int task)
 {
 	set_f1(task, f1_block,      &alto2_cpu_device::f1_early_mrt_block, 0);
 	/* auto block */
 	m_active_callback[task] = &alto2_cpu_device::activate_mrt;
+=======
+//! memory refresh task slots initialization
+void alto2_cpu_device::init_mrt(int task)
+{
+>>>>>>> upstream/master
 }
 
 void alto2_cpu_device::exit_mrt()

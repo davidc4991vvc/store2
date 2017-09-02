@@ -30,12 +30,20 @@
 
 ***************************************************************************/
 
+<<<<<<< HEAD
 #pragma once
 
 #ifndef __INS8154_H__
 #define __INS8154_H__
 
 #include "emu.h"
+=======
+#ifndef MAME_MACHINE_INS8154_H
+#define MAME_MACHINE_INS8154_H
+
+#pragma once
+
+>>>>>>> upstream/master
 
 
 
@@ -68,6 +76,7 @@ class ins8154_device :  public device_t
 {
 public:
 	// construction/destruction
+<<<<<<< HEAD
 	ins8154_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
 
 	template<class _Object> static devcb_base &set_in_a_callback(device_t &device, _Object object) { return downcast<ins8154_device &>(device).m_in_a_cb.set_callback(object); }
@@ -75,6 +84,15 @@ public:
 	template<class _Object> static devcb_base &set_in_b_callback(device_t &device, _Object object) { return downcast<ins8154_device &>(device).m_in_b_cb.set_callback(object); }
 	template<class _Object> static devcb_base &set_out_b_callback(device_t &device, _Object object) { return downcast<ins8154_device &>(device).m_out_b_cb.set_callback(object); }
 	template<class _Object> static devcb_base &set_out_irq_callback(device_t &device, _Object object) { return downcast<ins8154_device &>(device).m_out_irq_cb.set_callback(object); }
+=======
+	ins8154_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
+
+	template <class Object> static devcb_base &set_in_a_callback(device_t &device, Object &&cb) { return downcast<ins8154_device &>(device).m_in_a_cb.set_callback(std::forward<Object>(cb)); }
+	template <class Object> static devcb_base &set_out_a_callback(device_t &device, Object &&cb) { return downcast<ins8154_device &>(device).m_out_a_cb.set_callback(std::forward<Object>(cb)); }
+	template <class Object> static devcb_base &set_in_b_callback(device_t &device, Object &&cb) { return downcast<ins8154_device &>(device).m_in_b_cb.set_callback(std::forward<Object>(cb)); }
+	template <class Object> static devcb_base &set_out_b_callback(device_t &device, Object &&cb) { return downcast<ins8154_device &>(device).m_out_b_cb.set_callback(std::forward<Object>(cb)); }
+	template <class Object> static devcb_base &set_out_irq_callback(device_t &device, Object &&cb) { return downcast<ins8154_device &>(device).m_out_irq_cb.set_callback(std::forward<Object>(cb)); }
+>>>>>>> upstream/master
 
 	DECLARE_READ8_MEMBER( ins8154_r );
 	DECLARE_WRITE8_MEMBER( ins8154_w );
@@ -84,10 +102,17 @@ public:
 
 protected:
 	// device-level overrides
+<<<<<<< HEAD
 	virtual void device_start();
 	virtual void device_reset();
 	virtual void device_post_load() { }
 	virtual void device_clock_changed() { }
+=======
+	virtual void device_start() override;
+	virtual void device_reset() override;
+	virtual void device_post_load() override { }
+	virtual void device_clock_changed() override { }
+>>>>>>> upstream/master
 
 private:
 
@@ -99,6 +124,7 @@ private:
 	devcb_write_line    m_out_irq_cb;
 
 	/* registers */
+<<<<<<< HEAD
 	UINT8 m_in_a;  /* Input Latch Port A */
 	UINT8 m_in_b;  /* Input Latch Port B */
 	UINT8 m_out_a; /* Output Latch Port A */
@@ -106,10 +132,25 @@ private:
 	UINT8 m_mdr;   /* Mode Definition Register */
 	UINT8 m_odra;  /* Output Definition Register Port A */
 	UINT8 m_odrb;  /* Output Definition Register Port B */
+=======
+	uint8_t m_in_a;  /* Input Latch Port A */
+	uint8_t m_in_b;  /* Input Latch Port B */
+	uint8_t m_out_a; /* Output Latch Port A */
+	uint8_t m_out_b; /* Output Latch Port B */
+	uint8_t m_mdr;   /* Mode Definition Register */
+	uint8_t m_odra;  /* Output Definition Register Port A */
+	uint8_t m_odrb;  /* Output Definition Register Port B */
+>>>>>>> upstream/master
 };
 
 
 // device type definition
+<<<<<<< HEAD
 extern const device_type INS8154;
 
 #endif /* __INS8154_H__ */
+=======
+DECLARE_DEVICE_TYPE(INS8154, ins8154_device)
+
+#endif // MAME_MACHINE_INS8154_H
+>>>>>>> upstream/master

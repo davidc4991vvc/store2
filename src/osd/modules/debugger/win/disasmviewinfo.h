@@ -25,7 +25,11 @@ public:
 	disasm_right_column right_column() const;
 	offs_t selected_address() const;
 
+<<<<<<< HEAD
 	void set_expression(const char *expression);
+=======
+	void set_expression(const std::string &expression);
+>>>>>>> upstream/master
 	void set_right_column(disasm_right_column contents);
 };
 

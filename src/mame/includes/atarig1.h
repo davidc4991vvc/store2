@@ -6,8 +6,14 @@
 
 *************************************************************************/
 
+<<<<<<< HEAD
 #include "machine/atarigen.h"
 #include "audio/atarijsa.h"
+=======
+#include "audio/atarijsa.h"
+#include "machine/atarigen.h"
+#include "video/atarirle.h"
+>>>>>>> upstream/master
 #include "cpu/m68000/m68000.h"
 
 class atarig1_state : public atarigen_state
@@ -30,6 +36,7 @@ public:
 
 	bool            m_is_pitfight;
 
+<<<<<<< HEAD
 	UINT8           m_which_input;
 	required_shared_ptr<UINT16> m_mo_command;
 
@@ -48,6 +55,25 @@ public:
 	virtual void update_interrupts();
 	virtual void scanline_update(screen_device &screen, int scanline);
 	DECLARE_WRITE16_MEMBER(mo_control_w);
+=======
+	uint8_t           m_which_input;
+	required_shared_ptr<uint16_t> m_mo_command;
+
+	uint16_t *        m_bslapstic_base;
+	std::unique_ptr<uint8_t[]>          m_bslapstic_bank0;
+	uint8_t           m_bslapstic_bank;
+	bool            m_bslapstic_primed;
+
+	int             m_pfscroll_xoffset;
+	uint16_t          m_current_control;
+	uint8_t           m_playfield_tile_bank;
+	uint16_t          m_playfield_xscroll;
+	uint16_t          m_playfield_yscroll;
+
+	virtual void device_post_load() override;
+	virtual void update_interrupts() override;
+	virtual void scanline_update(screen_device &screen, int scanline) override;
+>>>>>>> upstream/master
 	DECLARE_WRITE16_MEMBER(mo_command_w);
 	DECLARE_READ16_MEMBER(special_port0_r);
 	DECLARE_WRITE16_MEMBER(a2d_select_w);
@@ -56,9 +82,12 @@ public:
 	void update_bank(int bank);
 	DECLARE_DRIVER_INIT(hydrap);
 	DECLARE_DRIVER_INIT(hydra);
+<<<<<<< HEAD
 	DECLARE_DRIVER_INIT(pitfight9);
 	DECLARE_DRIVER_INIT(pitfight7);
 	DECLARE_DRIVER_INIT(pitfightj);
+=======
+>>>>>>> upstream/master
 	DECLARE_DRIVER_INIT(pitfight);
 	DECLARE_DRIVER_INIT(pitfightb);
 	TILE_GET_INFO_MEMBER(get_alpha_tile_info);
@@ -66,8 +95,13 @@ public:
 	DECLARE_MACHINE_START(atarig1);
 	DECLARE_MACHINE_RESET(atarig1);
 	DECLARE_VIDEO_START(atarig1);
+<<<<<<< HEAD
 	UINT32 screen_update_atarig1(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
 private:
 	void init_common(offs_t slapstic_base, int slapstic, bool is_pitfight);
+=======
+	uint32_t screen_update_atarig1(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
+private:
+>>>>>>> upstream/master
 	void pitfightb_cheap_slapstic_init();
 };

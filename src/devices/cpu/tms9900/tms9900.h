@@ -8,10 +8,18 @@
     See tms9900.c for documentation
 */
 
+<<<<<<< HEAD
 #ifndef __TMS9900_H__
 #define __TMS9900_H__
 
 #include "emu.h"
+=======
+#ifndef MAME_CPU_TMS9900_TMS9900_H
+#define MAME_CPU_TMS9900_TMS9900_H
+
+#pragma once
+
+>>>>>>> upstream/master
 #include "debugger.h"
 #include "tms99com.h"
 
@@ -42,10 +50,13 @@ static const char opname[][5] =
 class tms99xx_device : public cpu_device
 {
 public:
+<<<<<<< HEAD
 	tms99xx_device(const machine_config &mconfig, device_type type,  const char *name,
 				const char *tag, int databus_width, int prg_addr_bits, int cru_addr_bits,
 				device_t *owner, UINT32 clock, const char *shortname, const char *source);
 
+=======
+>>>>>>> upstream/master
 	~tms99xx_device();
 
 	// READY input line. When asserted (high), the memory is ready for data exchange.
@@ -66,14 +77,26 @@ public:
 	template<class _Object> static devcb_base &static_set_dbin_callback(device_t &device, _Object object) { return downcast<tms99xx_device &>(device).m_dbin_line.set_callback(object); }
 
 protected:
+<<<<<<< HEAD
 	// device-level overrides
 	virtual void        device_start();
 	virtual void        device_stop();
 	virtual void        device_reset();
+=======
+	tms99xx_device(const machine_config &mconfig, device_type type,
+				const char *tag, int databus_width, int prg_addr_bits, int cru_addr_bits,
+				device_t *owner, uint32_t clock);
+
+	// device-level overrides
+	virtual void        device_start() override;
+	virtual void        device_stop() override;
+	virtual void        device_reset() override;
+>>>>>>> upstream/master
 
 	virtual void        resolve_lines();
 
 	// device_execute_interface overrides
+<<<<<<< HEAD
 	virtual UINT32      execute_min_cycles() const;
 	virtual UINT32      execute_max_cycles() const;
 	virtual UINT32      execute_input_lines() const;
@@ -86,25 +109,49 @@ protected:
 	virtual offs_t      disasm_disassemble(char *buffer, offs_t pc, const UINT8 *oprom, const UINT8 *opram, UINT32 options);
 
 	const address_space_config* memory_space_config(address_spacenum spacenum) const;
+=======
+	virtual uint32_t      execute_min_cycles() const override;
+	virtual uint32_t      execute_max_cycles() const override;
+	virtual uint32_t      execute_input_lines() const override;
+	virtual void        execute_set_input(int irqline, int state) override;
+	virtual void        execute_run() override;
+
+	// device_disasm_interface overrides
+	virtual uint32_t      disasm_min_opcode_bytes() const override;
+	virtual uint32_t      disasm_max_opcode_bytes() const override;
+	virtual offs_t      disasm_disassemble(std::ostream &stream, offs_t pc, const uint8_t *oprom, const uint8_t *opram, uint32_t options) override;
+
+	virtual space_config_vector memory_space_config() const override;
+>>>>>>> upstream/master
 
 	// Let these methods be overloaded by the TMS9980.
 	virtual void        mem_read(void);
 	virtual void        mem_write(void);
 	virtual void        acquire_instruction(void);
+<<<<<<< HEAD
 	void                decode(UINT16 inst);
+=======
+	void                decode(uint16_t inst);
+>>>>>>> upstream/master
 
 	const address_space_config  m_program_config;
 	const address_space_config  m_io_config;
 	address_space*          m_prgspace;
 	address_space*          m_cru;
 
+<<<<<<< HEAD
 	virtual UINT16  read_workspace_register_debug(int reg);
 	virtual void    write_workspace_register_debug(int reg, UINT16 data);
+=======
+	virtual uint16_t  read_workspace_register_debug(int reg);
+	virtual void    write_workspace_register_debug(int reg, uint16_t data);
+>>>>>>> upstream/master
 
 	// Cycle counter
 	int     m_icount;
 
 	// TMS9900 hardware registers
+<<<<<<< HEAD
 	UINT16  WP;     // Workspace pointer
 	UINT16  PC;     // Program counter
 	UINT16  ST;     // Status register
@@ -120,6 +167,23 @@ protected:
 
 	// Decoded command
 	UINT16  m_command;
+=======
+	uint16_t  WP;     // Workspace pointer
+	uint16_t  PC;     // Program counter
+	uint16_t  ST;     // Status register
+
+	// Internal register
+	uint16_t  IR;     // Instruction register
+
+	// Stored address
+	uint16_t  m_address;
+
+	// Stores the recently read word or the word to be written
+	uint16_t  m_current_value;
+
+	// Decoded command
+	uint16_t  m_command;
+>>>>>>> upstream/master
 
 	// Is it a byte operation? Only format 1 commands with the byte flag set
 	// and CRU commands with less than 9 bits to transfer are byte operations.
@@ -133,9 +197,12 @@ protected:
 	// single-bit accesses. (Needed for TMS9980)
 	int     m_pass;
 
+<<<<<<< HEAD
 	// Data bus width. Needed for TMS9980.
 	int     m_databus_width;
 
+=======
+>>>>>>> upstream/master
 	// Check the READY line?
 	bool    m_check_ready;
 
@@ -143,8 +210,13 @@ protected:
 	int     m_mem_phase;
 
 	// Max address
+<<<<<<< HEAD
 	const UINT16  m_prgaddr_mask;
 	const UINT16  m_cruaddr_mask;
+=======
+	const uint16_t  m_prgaddr_mask;
+	const uint16_t  m_cruaddr_mask;
+>>>>>>> upstream/master
 
 	bool    m_load_state;
 	bool    m_irq_state;
@@ -200,7 +272,11 @@ protected:
 	// full range 0000-fffe for its CRU operations.
 	//
 	// We could realize this via the CRU access as well, but the data bus access
+<<<<<<< HEAD
 	// is not that simple to emulate. For the sake of homogenity between the
+=======
+	// is not that simple to emulate. For the sake of homogeneity between the
+>>>>>>> upstream/master
 	// chip emulations we use a dedicated callback.
 	devcb_write8   m_external_operation;
 
@@ -222,11 +298,19 @@ private:
 	bool    m_hold_state;
 
 	// State / debug management
+<<<<<<< HEAD
 	UINT16  m_state_any;
 	static const char* s_statename[];
 	void    state_import(const device_state_entry &entry);
 	void    state_export(const device_state_entry &entry);
 	void    state_string_export(const device_state_entry &entry, std::string &str);
+=======
+	uint16_t  m_state_any;
+	static const char* s_statename[];
+	virtual void state_import(const device_state_entry &entry) override;
+	virtual void state_export(const device_state_entry &entry) override;
+	virtual void state_string_export(const device_state_entry &entry, std::string &str) const override;
+>>>>>>> upstream/master
 
 	// Interrupt handling
 	void service_interrupt();
@@ -237,7 +321,11 @@ private:
 	void build_command_lookup_table();
 
 	// Sequence of micro-operations
+<<<<<<< HEAD
 	typedef const UINT8* microprogram;
+=======
+	typedef const uint8_t* microprogram;
+>>>>>>> upstream/master
 
 	// Method pointer
 	typedef void (tms99xx_device::*ophandler)(void);
@@ -245,7 +333,11 @@ private:
 	// Opcode list entry
 	struct tms_instruction
 	{
+<<<<<<< HEAD
 		UINT16              opcode;
+=======
+		uint16_t              opcode;
+>>>>>>> upstream/master
 		int                 id;
 		int                 format;
 		microprogram        prog;       // Microprogram
@@ -254,6 +346,7 @@ private:
 	// Lookup table entry
 	struct lookup_entry
 	{
+<<<<<<< HEAD
 		lookup_entry *next_digit;
 		const tms_instruction *entry;
 	};
@@ -263,6 +356,14 @@ private:
 
 	// List of allocated tables (used for easy clean-up on exit)
 	lookup_entry*   m_lotables[32];
+=======
+		std::unique_ptr<lookup_entry[]> next_digit;
+		int index; // pointing to the static instruction list
+	};
+
+	// Pointer to the lookup table
+	std::unique_ptr<lookup_entry[]>   m_command_lookup_table;
+>>>>>>> upstream/master
 
 	// List of pointers for micro-operations
 	static const tms99xx_device::ophandler s_microoperation[];
@@ -301,7 +402,11 @@ private:
 	void    alu_abs(void);
 	void    alu_x(void);
 	void    alu_b(void);
+<<<<<<< HEAD
 	void    alu_bl(void);
+=======
+	//void    alu_bl(void);
+>>>>>>> upstream/master
 	void    alu_blwp(void);
 	void    alu_ldcr(void);
 	void    alu_stcr(void);
@@ -321,18 +426,32 @@ private:
 
 	void    abort_operation(void);
 
+<<<<<<< HEAD
 	// Micro-operation
 	UINT8   m_op;
 
+=======
+>>>>>>> upstream/master
 	// Micro-operation program counter (as opposed to the program counter PC)
 	int     MPC;
 
 	// Current microprogram
+<<<<<<< HEAD
 	const UINT8*    m_program;
 
 	// Calling microprogram (used when data derivation is called)
 	const UINT8*    m_caller;
 	int             m_caller_MPC;
+=======
+	int     m_program_index;
+
+	// Calling microprogram (used when data derivation is called)
+	int     m_caller_index;
+	int     m_caller_MPC;
+
+	// Index of the interrupt program
+	int     m_interrupt_mp_index;
+>>>>>>> upstream/master
 
 	// State of the micro-operation. Needed for repeated ALU calls.
 	int     m_state;
@@ -353,6 +472,7 @@ private:
 	bool m_destination_even;
 
 	// Intermediate storage for the source operand
+<<<<<<< HEAD
 	UINT16 m_source_address;
 	UINT16 m_source_value;
 	UINT16  m_address_saved;
@@ -362,30 +482,58 @@ private:
 
 	// Stores the recently read register contents
 	UINT16  m_register_contents;
+=======
+	uint16_t m_source_address;
+	uint16_t m_source_value;
+	uint16_t  m_address_saved;
+
+	// Another copy of the address
+	uint16_t  m_address_copy;
+
+	// Stores the recently read register contents
+	uint16_t  m_register_contents;
+>>>>>>> upstream/master
 
 	// Stores the register number for the next register access
 	int     m_regnumber;
 
 	// CRU support: Stores the CRU address
+<<<<<<< HEAD
 	UINT16  m_cru_address;
+=======
+	uint16_t  m_cru_address;
+>>>>>>> upstream/master
 
 	// CRU support: Stores the number of bits to be transferred
 	int     m_count;
 
 	// Copy of the value
+<<<<<<< HEAD
 	UINT16  m_value_copy;
 
 	// Another internal register, storing intermediate values
 	// Using 32 bits to support MPY
 	UINT32  m_value;
+=======
+	uint16_t  m_value_copy;
+
+	// Another internal register, storing intermediate values
+	// Using 32 bits to support MPY
+	uint32_t  m_value;
+>>>>>>> upstream/master
 
 	// For two-argument commands. Indicates whether this is the second operand.
 	bool    m_get_destination;
 
 	// Status register update
 	inline void set_status_bit(int bit, bool state);
+<<<<<<< HEAD
 	inline void compare_and_set_lae(UINT16 value1, UINT16 value2);
 	void set_status_parity(UINT8 value);
+=======
+	inline void compare_and_set_lae(uint16_t value1, uint16_t value2);
+	void set_status_parity(uint8_t value);
+>>>>>>> upstream/master
 };
 
 /*****************************************************************************/
@@ -393,11 +541,21 @@ private:
 class tms9900_device : public tms99xx_device
 {
 public:
+<<<<<<< HEAD
 	tms9900_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
+=======
+	tms9900_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
+>>>>>>> upstream/master
 };
 
 
 // device type definition
+<<<<<<< HEAD
 extern const device_type TMS9900;
 
 #endif /* __TMS9900_H__ */
+=======
+DECLARE_DEVICE_TYPE(TMS9900, tms9900_device)
+
+#endif // MAME_CPU_TMS9900_TMS9900_H
+>>>>>>> upstream/master

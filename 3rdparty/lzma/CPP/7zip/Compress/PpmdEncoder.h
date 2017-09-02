@@ -41,7 +41,12 @@ class CEncoder :
   CPpmd7 _ppmd;
   CEncProps _props;
 public:
+<<<<<<< HEAD
   MY_UNKNOWN_IMP2(
+=======
+  MY_UNKNOWN_IMP3(
+      ICompressCoder,
+>>>>>>> upstream/master
       ICompressSetCoderProperties,
       ICompressWriteCoderProperties)
   STDMETHOD(Code)(ISequentialInStream *inStream, ISequentialOutStream *outStream,

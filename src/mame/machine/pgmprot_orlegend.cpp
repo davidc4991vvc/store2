@@ -14,10 +14,17 @@
 
 #include "emu.h"
 #include "includes/pgm.h"
+<<<<<<< HEAD
 
 void pgm_asic3_state::asic3_compute_hold(int y, int z)
 {
 	int mode;
+=======
+#include "machine/pgmprot_orlegend.h"
+
+void pgm_asic3_state::asic3_compute_hold(int y, int z)
+{
+>>>>>>> upstream/master
 	unsigned short old = m_asic3_hold;
 
 	m_asic3_hold = ((old << 1) | (old >> 15));
@@ -27,6 +34,7 @@ void pgm_asic3_state::asic3_compute_hold(int y, int z)
 	m_asic3_hold ^= BIT(m_asic3_x, 2) << 10;
 	m_asic3_hold ^= BIT(old, 5);
 
+<<<<<<< HEAD
 	if (!strcmp(machine().system().name,"orlegend111c") ||
 		!strcmp(machine().system().name,"orlegendca"))
 		mode = ioport("Region")->read();
@@ -51,16 +59,38 @@ void pgm_asic3_state::asic3_compute_hold(int y, int z)
 		break;
 
 		case 4: // Taiwan
+=======
+	switch (ioport("Region")->read()) // The mode is dependent on the region
+	{
+		case 0:
+		case 1:
+			m_asic3_hold ^= BIT(old, 10) ^ BIT(old, 8) ^ (BIT(m_asic3_x, 0) << 1) ^ (BIT(m_asic3_x, 1) << 6) ^ (BIT(m_asic3_x, 3) << 14);
+		break;
+
+		case 2:
+			m_asic3_hold ^= BIT(old, 10) ^ BIT(old, 8) ^ (BIT(m_asic3_x, 0) << 4) ^ (BIT(m_asic3_x, 1) << 6) ^ (BIT(m_asic3_x, 3) << 12);
+		break;
+
+		case 3:
+			m_asic3_hold ^= BIT(old,  7) ^ BIT(old, 6) ^ (BIT(m_asic3_x, 0) << 4) ^ (BIT(m_asic3_x, 1) << 6) ^ (BIT(m_asic3_x, 3) << 12);
+		break;
+
+		case 4: // orlegend111t
+>>>>>>> upstream/master
 			m_asic3_hold ^= BIT(old,  7) ^ BIT(old, 6) ^ (BIT(m_asic3_x, 0) << 3) ^ (BIT(m_asic3_x, 1) << 8) ^ (BIT(m_asic3_x, 3) << 14);
 		break;
 	}
 }
+<<<<<<< HEAD
 
+=======
+>>>>>>> upstream/master
 READ16_MEMBER(pgm_asic3_state::pgm_asic3_r)
 {
 	switch (m_asic3_reg)
 	{
 		case 0x00: // region is supplied by the protection device
+<<<<<<< HEAD
 		{
 			if (!strcmp(machine().system().name,"orlegend111c") ||
 				!strcmp(machine().system().name,"orlegendca"))
@@ -70,11 +100,15 @@ READ16_MEMBER(pgm_asic3_state::pgm_asic3_r)
 			else
 				return (m_asic3_latch[0] & 0xf7) | ((2 << 3) & 0x08);
 		}
+=======
+			return (m_asic3_latch[0] & 0xf7) | ((ioport("Region")->read() << 3) & 0x08);
+>>>>>>> upstream/master
 
 		case 0x01:
 			return m_asic3_latch[1];
 
 		case 0x02: // region is supplied by the protection device
+<<<<<<< HEAD
 		{
 			if (!strcmp(machine().system().name,"orlegend111c") ||
 				!strcmp(machine().system().name,"orlegendca"))
@@ -84,6 +118,9 @@ READ16_MEMBER(pgm_asic3_state::pgm_asic3_r)
 			else
 				return (m_asic3_latch[2] & 0x7f) | ((2 << 6) & 0x80);
 		}
+=======
+			return (m_asic3_latch[2] & 0x7f) | ((ioport("Region")->read() << 6) & 0x80);
+>>>>>>> upstream/master
 
 		case 0x03:
 			return BITSWAP8(m_asic3_hold, 5,2,9,7,10,13,12,15);
@@ -186,7 +223,11 @@ WRITE16_MEMBER(pgm_asic3_state::pgm_asic3_w)
 
 /* Oriental Legend INIT */
 
+<<<<<<< HEAD
 DRIVER_INIT_MEMBER(pgm_asic3_state,orld111c)
+=======
+DRIVER_INIT_MEMBER(pgm_asic3_state,orlegend)
+>>>>>>> upstream/master
 {
 	pgm_basic_init();
 
@@ -207,6 +248,7 @@ DRIVER_INIT_MEMBER(pgm_asic3_state,orld111c)
 	save_item(NAME(m_asic3_hold));
 }
 
+<<<<<<< HEAD
 DRIVER_INIT_MEMBER(pgm_asic3_state,orlegend)
 {
 	UINT16 *mem16 = (UINT16 *)memregion("maincpu")->base();
@@ -239,11 +281,14 @@ DRIVER_INIT_MEMBER(pgm_asic3_state,orlegendk)
 	mem16[0x146452/2]=0x4e71;
 }
 
+=======
+>>>>>>> upstream/master
 
 INPUT_PORTS_START( orlegend )
 	PORT_INCLUDE ( pgm )
 
 	PORT_MODIFY("Region")
+<<<<<<< HEAD
 	PORT_DIPNAME( 0x0007,  0x0005, DEF_STR( Region ) )
 	PORT_CONFSETTING(      0x0000, DEF_STR( Taiwan ) )
 	PORT_CONFSETTING(      0x0001, DEF_STR( China ) )
@@ -289,11 +334,33 @@ INPUT_PORTS_START( orld111t )
 	PORT_CONFSETTING(      0x0004, DEF_STR( Hong_Kong ) )
 	PORT_CONFSETTING(      0x0005, DEF_STR( World ) )
 INPUT_PORTS_END
+=======
+	PORT_DIPNAME( 0x0003, 0x0000, DEF_STR( Region ) )
+	PORT_CONFSETTING(      0x0000, DEF_STR( World ) )
+	PORT_CONFSETTING(      0x0001, "World (duplicate)" ) // again?
+	PORT_CONFSETTING(      0x0002, DEF_STR( Korea ) )
+	PORT_CONFSETTING(      0x0003, DEF_STR( China ) )
+INPUT_PORTS_END
+
+INPUT_PORTS_START( orlegendt )
+	PORT_INCLUDE ( pgm )
+
+	PORT_MODIFY("Region")
+	PORT_DIPNAME( 0x0007, 0x0004, DEF_STR( Region ) )
+	PORT_CONFSETTING(      0x0000, "Invalid 00?" )
+	PORT_CONFSETTING(      0x0001, "Invalid 01?" )
+	PORT_CONFSETTING(      0x0002, "Invalid 02?" )
+	PORT_CONFSETTING(      0x0003, "Invalid 03?" )
+	PORT_CONFSETTING(      0x0004, DEF_STR( Taiwan ) )
+INPUT_PORTS_END
+
+>>>>>>> upstream/master
 
 INPUT_PORTS_START( orlegendk )
 	PORT_INCLUDE ( pgm )
 
 	PORT_MODIFY("Region")
+<<<<<<< HEAD
 	PORT_DIPNAME( 0x0007,  0x0003, DEF_STR( Region ) )
 	PORT_CONFSETTING(      0x0000, DEF_STR( Taiwan ) )
 	PORT_CONFSETTING(      0x0001, DEF_STR( China ) )
@@ -323,4 +390,17 @@ MACHINE_CONFIG_START( pgm_asic3, pgm_asic3_state )
 	MCFG_FRAGMENT_ADD(pgmbase)
 
 	MCFG_MACHINE_RESET_OVERRIDE(pgm_asic3_state, pgm_asic3_reset)
+=======
+	PORT_DIPNAME( 0x0007, 0x0002, DEF_STR( Region ) )
+	PORT_CONFSETTING(      0x0000, "Invalid 00?" )
+	PORT_CONFSETTING(      0x0001, "Invalid 01?" )
+	PORT_CONFSETTING(      0x0002, DEF_STR( Korea ) )
+	PORT_CONFSETTING(      0x0003, "Invalid 03?" )
+	PORT_CONFSETTING(      0x0004, "Invalid 04?" )
+INPUT_PORTS_END
+
+
+MACHINE_CONFIG_START( pgm_asic3 )
+	MCFG_FRAGMENT_ADD(pgmbase)
+>>>>>>> upstream/master
 MACHINE_CONFIG_END

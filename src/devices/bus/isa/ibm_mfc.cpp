@@ -18,9 +18,17 @@
 
 #include "emu.h"
 #include "ibm_mfc.h"
+<<<<<<< HEAD
 #include "cpu/z80/z80.h"
 #include "machine/clock.h"
 #include "machine/pit8253.h"
+=======
+
+#include "cpu/z80/z80.h"
+#include "machine/clock.h"
+#include "machine/pit8253.h"
+#include "speaker.h"
+>>>>>>> upstream/master
 
 
 //-------------------------------------------------
@@ -61,7 +69,11 @@ enum
 //  Globals
 //-------------------------------------------------
 
+<<<<<<< HEAD
 const device_type ISA8_IBM_MFC = &device_creator<isa8_ibm_mfc_device>;
+=======
+DEFINE_DEVICE_TYPE(ISA8_IBM_MFC, isa8_ibm_mfc_device, "ibm_mfc", "IBM PC Music Feature Card")
+>>>>>>> upstream/master
 
 
 //-------------------------------------------------
@@ -267,6 +279,7 @@ WRITE_LINE_MEMBER(isa8_ibm_mfc_device::ibm_mfc_ym_irq)
 
 
 //-------------------------------------------------
+<<<<<<< HEAD
 //  Machine config
 //-------------------------------------------------
 
@@ -308,12 +321,18 @@ MACHINE_CONFIG_END
 
 
 //-------------------------------------------------
+=======
+>>>>>>> upstream/master
 //  ISA interface
 //-------------------------------------------------
 
 READ8_MEMBER( isa8_ibm_mfc_device::ibm_mfc_r )
 {
+<<<<<<< HEAD
 	UINT8 val = 0xff;
+=======
+	uint8_t val;
+>>>>>>> upstream/master
 
 	switch (offset)
 	{
@@ -408,6 +427,7 @@ ROM_END
 
 
 //-------------------------------------------------
+<<<<<<< HEAD
 //  machine_config_additions - device-specific
 //  machine configurations
 //-------------------------------------------------
@@ -416,6 +436,46 @@ machine_config_constructor isa8_ibm_mfc_device::device_mconfig_additions() const
 {
 	return MACHINE_CONFIG_NAME( ibm_mfc );
 }
+=======
+//  device_add_mconfig - add device configuration
+//-------------------------------------------------
+
+MACHINE_CONFIG_MEMBER( isa8_ibm_mfc_device::device_add_mconfig )
+	MCFG_CPU_ADD("ibm_mfc", Z80, XTAL_11_8MHz / 2)
+	MCFG_CPU_PROGRAM_MAP(prg_map)
+	MCFG_CPU_IO_MAP(io_map)
+
+	MCFG_DEVICE_ADD("d71055c_0", I8255, 0)
+	MCFG_I8255_IN_PORTA_CB(READ8(isa8_ibm_mfc_device, ppi0_i_a))
+	MCFG_I8255_OUT_PORTB_CB(WRITE8(isa8_ibm_mfc_device, ppi0_o_b))
+	MCFG_I8255_IN_PORTC_CB(READ8(isa8_ibm_mfc_device, ppi0_i_c))
+	MCFG_I8255_OUT_PORTC_CB(WRITE8(isa8_ibm_mfc_device, ppi0_o_c))
+
+	MCFG_DEVICE_ADD("d71055c_1", I8255, 0)
+	MCFG_I8255_OUT_PORTA_CB(WRITE8(isa8_ibm_mfc_device, ppi1_o_a))
+	MCFG_I8255_IN_PORTB_CB(READ8(isa8_ibm_mfc_device, ppi1_i_b))
+	MCFG_I8255_OUT_PORTC_CB(WRITE8(isa8_ibm_mfc_device, ppi1_o_c))
+
+	MCFG_DEVICE_ADD("d71051", I8251, 0)
+
+	MCFG_DEVICE_ADD("usart_clock", CLOCK, XTAL_4MHz / 8) // 500KHz
+	MCFG_CLOCK_SIGNAL_HANDLER(WRITELINE(isa8_ibm_mfc_device, write_usart_clock))
+
+	MCFG_DEVICE_ADD("d8253", PIT8253, 0)
+	MCFG_PIT8253_CLK0(XTAL_4MHz / 8)
+	MCFG_PIT8253_OUT0_HANDLER(WRITELINE(isa8_ibm_mfc_device, d8253_out0))
+	MCFG_PIT8253_CLK1(0)
+	MCFG_PIT8253_OUT1_HANDLER(WRITELINE(isa8_ibm_mfc_device, d8253_out1))
+	MCFG_PIT8253_CLK2(XTAL_4MHz / 2)
+	MCFG_PIT8253_OUT2_HANDLER(DEVWRITELINE("d8253", pit8253_device, write_clk1))
+
+	MCFG_SPEAKER_STANDARD_STEREO("ymleft", "ymright")
+	MCFG_YM2151_ADD("ym2151", XTAL_4MHz)
+	MCFG_YM2151_IRQ_HANDLER(WRITELINE(isa8_ibm_mfc_device, ibm_mfc_ym_irq))
+	MCFG_SOUND_ROUTE(0, "ymleft", 1.00)
+	MCFG_SOUND_ROUTE(1, "ymright", 1.00)
+MACHINE_CONFIG_END
+>>>>>>> upstream/master
 
 
 //-------------------------------------------------
@@ -433,7 +493,11 @@ ioport_constructor isa8_ibm_mfc_device::device_input_ports() const
 //  internal ROM region
 //-------------------------------------------------
 
+<<<<<<< HEAD
 const rom_entry *isa8_ibm_mfc_device::device_rom_region() const
+=======
+const tiny_rom_entry *isa8_ibm_mfc_device::device_rom_region() const
+>>>>>>> upstream/master
 {
 	return ROM_NAME( ibm_mfc );
 }
@@ -447,6 +511,7 @@ const rom_entry *isa8_ibm_mfc_device::device_rom_region() const
 //  isa8_ibm_mfc_device - constructor
 //-------------------------------------------------
 
+<<<<<<< HEAD
 isa8_ibm_mfc_device::isa8_ibm_mfc_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock) :
 		device_t(mconfig, ISA8_IBM_MFC, "IBM PC Music Feature Card", tag, owner, clock, "ibm_mfc", __FILE__),
 		device_isa8_card_interface(mconfig, *this), m_tcr(0), m_pc_ppi_c(0), m_z80_ppi_c(0), m_pc_irq_state(0), m_z80_irq_state(0),
@@ -456,6 +521,18 @@ isa8_ibm_mfc_device::isa8_ibm_mfc_device(const machine_config &mconfig, const ch
 		m_d71051(*this, "d71051"),
 		m_d71055c_0(*this, "d71055c_0"),
 		m_d71055c_1(*this, "d71055c_1")
+=======
+isa8_ibm_mfc_device::isa8_ibm_mfc_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock) :
+	device_t(mconfig, ISA8_IBM_MFC, tag, owner, clock),
+	device_isa8_card_interface(mconfig, *this),
+	m_tcr(0), m_pc_ppi_c(0), m_z80_ppi_c(0), m_pc_irq_state(0), m_z80_irq_state(0),
+	m_cpu(*this, "ibm_mfc"),
+	m_ym2151(*this, "ym2151"),
+	m_d8253(*this, "d8253"),
+	m_d71051(*this, "d71051"),
+	m_d71055c_0(*this, "d71055c_0"),
+	m_d71055c_1(*this, "d71055c_1")
+>>>>>>> upstream/master
 {
 }
 
@@ -467,7 +544,11 @@ isa8_ibm_mfc_device::isa8_ibm_mfc_device(const machine_config &mconfig, const ch
 void isa8_ibm_mfc_device::device_start()
 {
 	set_isa_device();
+<<<<<<< HEAD
 	m_isa->install_device(0x2a20, 0x2a20 + 15, 0, 0, read8_delegate(FUNC(isa8_ibm_mfc_device::ibm_mfc_r), this), write8_delegate(FUNC(isa8_ibm_mfc_device::ibm_mfc_w), this));
+=======
+	m_isa->install_device(0x2a20, 0x2a20 + 15, read8_delegate(FUNC(isa8_ibm_mfc_device::ibm_mfc_r), this), write8_delegate(FUNC(isa8_ibm_mfc_device::ibm_mfc_w), this));
+>>>>>>> upstream/master
 }
 
 

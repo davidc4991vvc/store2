@@ -13,7 +13,12 @@
 #include "hosenkan.h"
 
 #include "cpu/m6502/m6502.h"
+<<<<<<< HEAD
 #include "video/ppu2c0x.h"      // this has to be included so that IRQ functions can access PPU_BOTTOM_VISIBLE_SCANLINE
+=======
+#include "video/ppu2c0x.h"      // this has to be included so that IRQ functions can access ppu2c0x_device::BOTTOM_VISIBLE_SCANLINE
+#include "screen.h"
+>>>>>>> upstream/master
 
 
 #ifdef NES_PCB_DEBUG
@@ -29,6 +34,7 @@
 //  constructor
 //-------------------------------------------------
 
+<<<<<<< HEAD
 const device_type NES_HOSENKAN = &device_creator<nes_hosenkan_device>;
 
 
@@ -40,6 +46,19 @@ nes_hosenkan_device::nes_hosenkan_device(const machine_config &mconfig, const ch
 	m_irq_enable(0),
 	m_latch(0)
 				{
+=======
+DEFINE_DEVICE_TYPE(NES_HOSENKAN, nes_hosenkan_device, "nes_hosenkan", "NES Cart HOSENKAN PCB")
+
+
+nes_hosenkan_device::nes_hosenkan_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: nes_nrom_device(mconfig, NES_HOSENKAN, tag, owner, clock)
+	, m_irq_count(0)
+	, m_irq_count_latch(0)
+	, m_irq_clear(0)
+	, m_irq_enable(0)
+	, m_latch(0)
+{
+>>>>>>> upstream/master
 }
 
 
@@ -88,7 +107,11 @@ void nes_hosenkan_device::pcb_reset()
 // same as MMC3!
 void nes_hosenkan_device::hblank_irq( int scanline, int vblank, int blanked )
 {
+<<<<<<< HEAD
 	if (scanline < PPU_BOTTOM_VISIBLE_SCANLINE)
+=======
+	if (scanline < ppu2c0x_device::BOTTOM_VISIBLE_SCANLINE)
+>>>>>>> upstream/master
 	{
 		int prior_count = m_irq_count;
 		if ((m_irq_count == 0) || m_irq_clear)

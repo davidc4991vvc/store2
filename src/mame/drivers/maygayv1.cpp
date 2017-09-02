@@ -127,6 +127,7 @@ Find lamps/reels after UPD changes.
 ***************************************************************************/
 
 #include "emu.h"
+<<<<<<< HEAD
 #include "cpu/m68000/m68000.h"
 #include "video/awpvid.h"
 #include "cpu/mcs51/mcs51.h"
@@ -136,6 +137,21 @@ Find lamps/reels after UPD changes.
 #include "sound/2413intf.h"
 #include "sound/upd7759.h"
 #include "machine/nvram.h"
+=======
+#include "video/awpvid.h"
+
+#include "cpu/m68000/m68000.h"
+#include "cpu/mcs51/mcs51.h"
+#include "machine/6821pia.h"
+#include "machine/i8279.h"
+#include "machine/mc68681.h"
+#include "machine/nvram.h"
+#include "sound/upd7759.h"
+#include "sound/ym2413.h"
+
+#include "screen.h"
+#include "speaker.h"
+>>>>>>> upstream/master
 
 
 /*************************************
@@ -192,16 +208,27 @@ enum
 #define VCR0_DUTY_MASK      0xe000
 #define VCR0_DUTY_SHIFT     13
 
+<<<<<<< HEAD
 static const UINT32 banks[4] = { 0, 0x40000/2, 0x20000/2, 0x60000/2 };
+=======
+static const uint32_t banks[4] = { 0, 0x40000/2, 0x20000/2, 0x60000/2 };
+>>>>>>> upstream/master
 
 #define DRAM_BANK_SEL       (banks[(VREG(DSBA) >> 7) & 3])
 
 struct i82716_t
 {
+<<<<<<< HEAD
 	UINT16  r[16];
 	UINT16  *dram;
 
 	UINT8   *line_buf;  // there's actually two
+=======
+	uint16_t  r[16];
+	std::unique_ptr<uint16_t[]>  dram;
+
+	std::unique_ptr<uint8_t[]>   line_buf;  // there's actually two
+>>>>>>> upstream/master
 };
 
 
@@ -225,8 +252,13 @@ public:
 	int m_lamp_strobe;
 	int m_old_lamp_strobe;
 	int m_vsync_latch_preset;
+<<<<<<< HEAD
 	UINT8 m_p1;
 	UINT8 m_p3;
+=======
+	uint8_t m_p1;
+	uint8_t m_p3;
+>>>>>>> upstream/master
 	int m_d68681_val;
 	i82716_t m_i82716;
 	DECLARE_WRITE16_MEMBER(i82716_w);
@@ -242,11 +274,19 @@ public:
 	DECLARE_WRITE8_MEMBER(lamp_data_w);
 	DECLARE_READ8_MEMBER(kbd_r);
 	DECLARE_DRIVER_INIT(screenpl);
+<<<<<<< HEAD
 	virtual void machine_start();
 	virtual void machine_reset();
 	virtual void video_start();
 	UINT32 screen_update_maygayv1(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
 	void screen_eof_maygayv1(screen_device &screen, bool state);
+=======
+	virtual void machine_start() override;
+	virtual void machine_reset() override;
+	virtual void video_start() override;
+	uint32_t screen_update_maygayv1(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
+	DECLARE_WRITE_LINE_MEMBER(screen_vblank_maygayv1);
+>>>>>>> upstream/master
 	INTERRUPT_GEN_MEMBER(vsync_interrupt);
 	DECLARE_WRITE8_MEMBER(data_from_i8031);
 	DECLARE_READ8_MEMBER(data_to_i8031);
@@ -303,11 +343,19 @@ void maygayv1_state::video_start()
 }
 
 
+<<<<<<< HEAD
 UINT32 maygayv1_state::screen_update_maygayv1(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
 {
 	i82716_t &i82716 = m_i82716;
 	UINT16 *atable = &i82716.dram[VREG(ATBA)];
 	UINT16 *otable = &i82716.dram[VREG(ODTBA) & 0xfc00];  // both must be bank 0
+=======
+uint32_t maygayv1_state::screen_update_maygayv1(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+{
+	i82716_t &i82716 = m_i82716;
+	uint16_t *atable = &i82716.dram[VREG(ATBA)];
+	uint16_t *otable = &i82716.dram[VREG(ODTBA) & 0xfc00];  // both must be bank 0
+>>>>>>> upstream/master
 
 	int sl, sx;
 	int slmask = 0xffff;     // TODO: Save if using scanline callbacks
@@ -327,16 +375,27 @@ UINT32 maygayv1_state::screen_update_maygayv1(screen_device &screen, bitmap_ind1
 	for (sl = cliprect.min_x; sl <= cliprect.max_y; ++sl)
 	{
 		int obj;
+<<<<<<< HEAD
 		UINT16 aflags = atable[sl];
 		UINT16 slmask_old = slmask;
 
 		UINT16 *bmp_ptr = &bitmap.pix16(sl);
+=======
+		uint16_t aflags = atable[sl];
+		uint16_t slmask_old = slmask;
+
+		uint16_t *bmp_ptr = &bitmap.pix16(sl);
+>>>>>>> upstream/master
 
 		slmask = 0xffff ^ (slmask ^ aflags);
 
 		/* Clear the frame buffer on each line to BG colour (palette entry 2) */
 		/* 4bpp only ! */
+<<<<<<< HEAD
 		memset(i82716.line_buf, 0x22, 512);
+=======
+		memset(i82716.line_buf.get(), 0x22, 512);
+>>>>>>> upstream/master
 
 		/* Parse the list of 16 objects */
 		for (obj = 0; obj < 16; ++obj)
@@ -346,11 +405,19 @@ UINT32 maygayv1_state::screen_update_maygayv1(screen_device &screen, bitmap_ind1
 			// Draw on this line?
 			if ( !BIT(slmask, obj) )
 			{
+<<<<<<< HEAD
 				UINT32  objbase, trans, width;
 				INT32   x, xpos;
 				UINT16  w0, w1, w2;
 				UINT16  *objptr;
 				UINT8 *bmpptr; // ?
+=======
+				uint32_t  objbase, trans, width;
+				int32_t   x, xpos;
+				uint16_t  w0, w1, w2;
+				uint16_t  *objptr;
+				uint8_t *bmpptr; // ?
+>>>>>>> upstream/master
 
 				/* Get object table entry words */
 				w0 = otable[offs];
@@ -396,6 +463,7 @@ UINT32 maygayv1_state::screen_update_maygayv1(screen_device &screen, bitmap_ind1
 				objptr = &i82716.dram[objbase + ((4 * width) * otable[offs + 3])];
 
 				// endian alert
+<<<<<<< HEAD
 				bmpptr = (UINT8*)objptr;
 
 				// 4bpp
@@ -405,6 +473,17 @@ UINT32 maygayv1_state::screen_update_maygayv1(screen_device &screen, bitmap_ind1
 					{
 						UINT8 p1 = *bmpptr & 0xf;
 						UINT8 p2 = *bmpptr >> 4;
+=======
+				bmpptr = (uint8_t*)objptr;
+
+				// 4bpp
+				for (x = xpos; x < std::min(xbound, int(xpos + width * 8)); ++x)
+				{
+					if (x >= 0)
+					{
+						uint8_t p1 = *bmpptr & 0xf;
+						uint8_t p2 = *bmpptr >> 4;
+>>>>>>> upstream/master
 
 						if (!trans || p1)
 							i82716.line_buf[x] = p1;
@@ -423,7 +502,11 @@ UINT32 maygayv1_state::screen_update_maygayv1(screen_device &screen, bitmap_ind1
 		// Write it out
 		for (sx = cliprect.min_x; sx < cliprect.max_x; sx += 2)
 		{
+<<<<<<< HEAD
 			UINT8 pix = i82716.line_buf[sx / 2];
+=======
+			uint8_t pix = i82716.line_buf[sx / 2];
+>>>>>>> upstream/master
 
 			bmp_ptr[sx + 0] = pix & 0xf;
 			bmp_ptr[sx + 1] = pix >> 4;
@@ -433,7 +516,11 @@ UINT32 maygayv1_state::screen_update_maygayv1(screen_device &screen, bitmap_ind1
 	return 0;
 }
 
+<<<<<<< HEAD
 void maygayv1_state::screen_eof_maygayv1(screen_device &screen, bool state)
+=======
+WRITE_LINE_MEMBER(maygayv1_state::screen_vblank_maygayv1)
+>>>>>>> upstream/master
 {
 	// rising edge
 	if (state)
@@ -456,11 +543,19 @@ void maygayv1_state::screen_eof_maygayv1(screen_device &screen, bool state)
 		if (!(VREG(VCR0) & VCR0_DEI))
 		{
 			int i;
+<<<<<<< HEAD
 			UINT16 *palbase = &i82716.dram[VREG(CTBA)];
 
 			for (i = 0; i < 16; ++i)
 			{
 				UINT16 entry = *palbase++;
+=======
+			uint16_t *palbase = &i82716.dram[VREG(CTBA)];
+
+			for (i = 0; i < 16; ++i)
+			{
+				uint16_t entry = *palbase++;
+>>>>>>> upstream/master
 				m_palette->set_pen_color(entry & 0xf, pal4bit(entry >> 12), pal4bit(entry >> 8), pal4bit(entry >> 4));
 			}
 		}
@@ -523,7 +618,11 @@ WRITE8_MEMBER( maygayv1_state::lamp_data_w )
 
 		for (int i = 0; i < 8; i++)
 		{
+<<<<<<< HEAD
 			output_set_lamp_value((8*m_lamp_strobe)+i, ((data  & (1 << i)) !=0));
+=======
+			output().set_lamp_value((8*m_lamp_strobe)+i, ((data  & (1 << i)) !=0));
+>>>>>>> upstream/master
 		}
 		m_old_lamp_strobe = m_lamp_strobe;
 	}
@@ -643,7 +742,11 @@ static ADDRESS_MAP_START( sound_prg, AS_PROGRAM, 8, maygayv1_state )
 ADDRESS_MAP_END
 
 static ADDRESS_MAP_START( sound_data, AS_DATA, 8, maygayv1_state )
+<<<<<<< HEAD
 	AM_RANGE(0x0000, 0xffff) AM_RAM // nothing?
+=======
+	AM_RANGE(0x0000, 0x1ff) AM_RAM // nothing?
+>>>>>>> upstream/master
 ADDRESS_MAP_END
 
 static ADDRESS_MAP_START( sound_io, AS_IO, 8, maygayv1_state )
@@ -838,6 +941,7 @@ WRITE8_MEMBER(maygayv1_state::b_writ)
 void maygayv1_state::machine_start()
 {
 	i82716_t &i82716 = m_i82716;
+<<<<<<< HEAD
 	i82716.dram = auto_alloc_array(machine(), UINT16, 0x80000/2);   // ???
 	i82716.line_buf = auto_alloc_array(machine(), UINT8, 512);
 
@@ -845,13 +949,23 @@ void maygayv1_state::machine_start()
 
 	m_soundcpu->i8051_set_serial_tx_callback(write8_delegate(FUNC(maygayv1_state::data_from_i8031),this));
 	m_soundcpu->i8051_set_serial_rx_callback(read8_delegate(FUNC(maygayv1_state::data_to_i8031),this));
+=======
+	i82716.dram = std::make_unique<uint16_t[]>(0x80000/2);   // ???
+	i82716.line_buf = std::make_unique<uint8_t[]>(512);
+
+	save_pointer(NAME(i82716.dram.get()), 0x40000);
+>>>>>>> upstream/master
 }
 
 void maygayv1_state::machine_reset()
 {
 	i82716_t &i82716 = m_i82716;
 	// ?
+<<<<<<< HEAD
 	memset(i82716.dram, 0, 0x40000);
+=======
+	memset(i82716.dram.get(), 0, 0x40000);
+>>>>>>> upstream/master
 	i82716.r[RWBA] = 0x0200;
 }
 
@@ -863,7 +977,11 @@ INTERRUPT_GEN_MEMBER(maygayv1_state::vsync_interrupt)
 }
 
 
+<<<<<<< HEAD
 static MACHINE_CONFIG_START( maygayv1, maygayv1_state )
+=======
+static MACHINE_CONFIG_START( maygayv1 )
+>>>>>>> upstream/master
 	MCFG_CPU_ADD("maincpu", M68000, MASTER_CLOCK / 2)
 	MCFG_CPU_PROGRAM_MAP(main_map)
 	MCFG_CPU_VBLANK_INT_DRIVER("screen", maygayv1_state,  vsync_interrupt)
@@ -872,6 +990,11 @@ static MACHINE_CONFIG_START( maygayv1, maygayv1_state )
 	MCFG_CPU_PROGRAM_MAP(sound_prg)
 	MCFG_CPU_DATA_MAP(sound_data)
 	MCFG_CPU_IO_MAP(sound_io)
+<<<<<<< HEAD
+=======
+	MCFG_MCS51_SERIAL_TX_CB(WRITE8(maygayv1_state, data_from_i8031))
+	MCFG_MCS51_SERIAL_RX_CB(READ8(maygayv1_state, data_to_i8031))
+>>>>>>> upstream/master
 
 	/* U25 ST 2 9148 EF68B21P */
 	MCFG_DEVICE_ADD("pia", PIA6821, 0)
@@ -889,7 +1012,11 @@ static MACHINE_CONFIG_START( maygayv1, maygayv1_state )
 	MCFG_SCREEN_SIZE(640, 300)
 	MCFG_SCREEN_VISIBLE_AREA(0, 640 - 1, 0, 300 - 1)
 	MCFG_SCREEN_UPDATE_DRIVER(maygayv1_state, screen_update_maygayv1)
+<<<<<<< HEAD
 	MCFG_SCREEN_VBLANK_DRIVER(maygayv1_state, screen_eof_maygayv1)
+=======
+	MCFG_SCREEN_VBLANK_CALLBACK(WRITELINE(maygayv1_state, screen_vblank_maygayv1))
+>>>>>>> upstream/master
 	MCFG_SCREEN_PALETTE("palette")
 
 	MCFG_PALETTE_ADD("palette", 16)

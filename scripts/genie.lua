@@ -1,18 +1,49 @@
 -- license:BSD-3-Clause
 -- copyright-holders:MAMEdev Team
+<<<<<<< HEAD
 
 newoption {
     trigger = 'build-dir',
     description = 'Build directory name',
+=======
+STANDALONE = false
+
+-- Big project specific
+premake.make.makefile_ignore = true
+premake._checkgenerate = false
+
+newoption {
+	trigger = 'build-dir',
+	description = 'Build directory name',
+>>>>>>> upstream/master
 }
 
 premake.check_paths = true
 premake.make.override = { "TARGET" }
+<<<<<<< HEAD
 MAME_DIR = (path.getabsolute("..") .. "/")
 MAME_DIR = string.gsub(MAME_DIR, "(%s)", "\\%1")
 local MAME_BUILD_DIR = (MAME_DIR .. _OPTIONS["build-dir"] .. "/")
 local naclToolchain = ""
 
+=======
+
+premake.xcode.parameters = { 'CLANG_CXX_LANGUAGE_STANDARD = "c++14"', 'CLANG_CXX_LIBRARY = "libc++"' }
+
+MAME_DIR = (path.getabsolute("..") .. "/")
+--MAME_DIR = string.gsub(MAME_DIR, "(%s)", "\\%1")
+local MAME_BUILD_DIR = (MAME_DIR .. _OPTIONS["build-dir"] .. "/")
+local naclToolchain = ""
+
+newoption {
+	trigger = "precompile",
+	description = "Precompiled headers generation.",
+	allowed = {
+		{ "0",   "Disabled"     },
+		{ "1",   "Enabled"      },
+	}
+}
+>>>>>>> upstream/master
 
 function backtick(cmd)
 	result = string.gsub(string.gsub(os.outputof(cmd), "\r?\n$", ""), " $", "")
@@ -29,6 +60,7 @@ function str_to_version(str)
 		val = val + tonumber(word) * cnt
 		cnt = cnt / 100
 	end
+<<<<<<< HEAD
     return val
 end
 
@@ -46,11 +78,58 @@ function findfunction(x)
   else
     return nil, "expected function, not "..type(f)
   end
+=======
+	return val
+end
+
+function findfunction(x)
+	assert(type(x) == "string")
+	local f=_G
+	for v in x:gmatch("[^%.]+") do
+	if type(f) ~= "table" then
+		return nil, "looking for '"..v.."' expected table, not "..type(f)
+	end
+	f=f[v]
+	end
+	if type(f) == "function" then
+	return f
+	else
+	return nil, "expected function, not "..type(f)
+	end
+>>>>>>> upstream/master
 end
 
 function layoutbuildtask(_folder, _name)
 	return { MAME_DIR .. "src/".._folder.."/".. _name ..".lay" ,    GEN_DIR .. _folder .. "/".._name..".lh",
+<<<<<<< HEAD
 		{  MAME_DIR .. "scripts/build/file2str.py" }, {"@echo Converting src/".._folder.."/".._name..".lay...",    PYTHON .. " $(1) $(<) $(@) layout_".._name }};
+=======
+		{  MAME_DIR .. "scripts/build/complay.py" }, {"@echo Compressing src/".._folder.."/".._name..".lay...",    PYTHON .. " $(1) $(<) $(@) layout_".._name }};
+end
+
+function precompiledheaders()
+	if _OPTIONS["precompile"]==nil or (_OPTIONS["precompile"]~=nil and _OPTIONS["precompile"]=="1") then
+		configuration { "not xcode4" }
+			pchheader("emu.h")
+		configuration { }
+	end
+end
+
+function addprojectflags()
+	local version = str_to_version(_OPTIONS["gcc_version"])
+	if _OPTIONS["gcc"]~=nil and string.find(_OPTIONS["gcc"], "gcc") then
+		if version >= 50100 then
+			buildoptions_cpp {
+				"-Wsuggest-override",
+			}
+		end
+		if version >= 60000 then
+			buildoptions_cpp {
+				"-flifetime-dse=1",
+			}
+		end
+	end
+>>>>>>> upstream/master
 end
 
 CPUS = {}
@@ -58,6 +137,10 @@ SOUNDS  = {}
 MACHINES  = {}
 VIDEOS = {}
 BUSES  = {}
+<<<<<<< HEAD
+=======
+FORMATS  = {}
+>>>>>>> upstream/master
 
 newoption {
 	trigger = "with-tools",
@@ -70,6 +153,14 @@ newoption {
 }
 
 newoption {
+<<<<<<< HEAD
+=======
+	trigger = "with-benchmarks",
+	description = "Enable building benchmarks.",
+}
+
+newoption {
+>>>>>>> upstream/master
 	trigger = "osd",
 	description = "Choose OSD layer implementation",
 }
@@ -78,13 +169,18 @@ newoption {
 	trigger = "targetos",
 	description = "Choose target OS",
 	allowed = {
+<<<<<<< HEAD
 		{ "android-arm",   "Android - ARM"          },
 		{ "android-mips",  "Android - MIPS"         },
 		{ "android-x86",   "Android - x86"          },
+=======
+		{ "android",       "Android"                },
+>>>>>>> upstream/master
 		{ "asmjs",         "Emscripten/asm.js"      },
 		{ "freebsd",       "FreeBSD"                },
 		{ "netbsd",        "NetBSD"                 },
 		{ "openbsd",       "OpenBSD"                },
+<<<<<<< HEAD
 		{ "nacl",          "Native Client"          },
 		{ "nacl-arm",      "Native Client - ARM"    },
 		{ "pnacl",         "Native Client - PNaCl"  },
@@ -95,10 +191,23 @@ newoption {
 		{ "os2",           "OS/2 eComStation"       },
 		{ "haiku",         "Haiku"                  },
 		{ "solaris",       "Solaris SunOS"          },
+=======
+		{ "pnacl",         "Native Client - PNaCl"  },
+		{ "linux",         "Linux"                  },
+		{ "ios",           "iOS"                    },
+		{ "macosx",        "OSX"                    },
+		{ "windows",       "Windows"                },
+		{ "haiku",         "Haiku"                  },
+		{ "solaris",       "Solaris SunOS"          },
+		{ "steamlink",     "Steam Link"             },
+		{ "rpi",           "Raspberry Pi"           },
+		{ "ci20",          "Creator-Ci20"           },
+>>>>>>> upstream/master
 	},
 }
 
 newoption {
+<<<<<<< HEAD
     trigger = 'with-bundled-expat',
     description = 'Build bundled Expat library',
 }
@@ -136,13 +245,21 @@ newoption {
 newoption {
     trigger = 'with-bundled-portaudio',
     description = 'Build bundled PortAudio library',
+=======
+	trigger = 'with-bundled-sdl2',
+	description = 'Build bundled SDL2 library',
+>>>>>>> upstream/master
 }
 
 newoption {
 	trigger = "distro",
 	description = "Choose distribution",
 	allowed = {
+<<<<<<< HEAD
 		{ "generic", 		   "generic"         	},
+=======
+		{ "generic",           "generic"            },
+>>>>>>> upstream/master
 		{ "debian-stable",     "debian-stable"      },
 		{ "ubuntu-intrepid",   "ubuntu-intrepid"    },
 	},
@@ -179,6 +296,14 @@ newoption {
 }
 
 newoption {
+<<<<<<< HEAD
+=======
+	trigger = "TOOLCHAIN",
+	description = "Toolchain prefix"
+}
+
+newoption {
+>>>>>>> upstream/master
 	trigger = "PROFILE",
 	description = "Enable profiling.",
 }
@@ -252,6 +377,7 @@ newoption {
 }
 
 newoption {
+<<<<<<< HEAD
 	trigger = "USE_BGFX",
 	description = "Use of BGFX.",
 	allowed = {
@@ -265,6 +391,12 @@ newoption {
 	description = "Generate deprecation warnings during compilation.",
 	allowed = {
 		{ "0",   "Disabled" 	},
+=======
+	trigger = "DEPRECATED",
+	description = "Generate deprecation warnings during compilation.",
+	allowed = {
+		{ "0",   "Disabled"     },
+>>>>>>> upstream/master
 		{ "1",   "Enabled"      },
 	}
 }
@@ -273,7 +405,11 @@ newoption {
 	trigger = "LTO",
 	description = "Clang link time optimization.",
 	allowed = {
+<<<<<<< HEAD
 		{ "0",   "Disabled" 	},
+=======
+		{ "0",   "Disabled"     },
+>>>>>>> upstream/master
 		{ "1",   "Enabled"      },
 	}
 }
@@ -282,7 +418,11 @@ newoption {
 	trigger = "SSE2",
 	description = "SSE2 optimized code and SSE2 code generation.",
 	allowed = {
+<<<<<<< HEAD
 		{ "0",   "Disabled" 	},
+=======
+		{ "0",   "Disabled"     },
+>>>>>>> upstream/master
 		{ "1",   "Enabled"      },
 	}
 }
@@ -291,7 +431,11 @@ newoption {
 	trigger = "SSE3",
 	description = "SSE3 optimized code and SSE3 code generation.",
 	allowed = {
+<<<<<<< HEAD
 		{ "0",   "Disabled" 	},
+=======
+		{ "0",   "Disabled"     },
+>>>>>>> upstream/master
 		{ "1",   "Enabled"      },
 	}
 }
@@ -300,6 +444,7 @@ newoption {
 	trigger = "OPENMP",
 	description = "OpenMP optimized code.",
 	allowed = {
+<<<<<<< HEAD
 		{ "0",   "Disabled" 	},
 		{ "1",   "Enabled"      },
 	}
@@ -310,6 +455,9 @@ newoption {
 	description = "Compile c++ code as C++11.",
 	allowed = {
 		{ "0",   "Disabled" 	},
+=======
+		{ "0",   "Disabled"     },
+>>>>>>> upstream/master
 		{ "1",   "Enabled"      },
 	}
 }
@@ -318,6 +466,7 @@ newoption {
 	trigger = "FASTDEBUG",
 	description = "Fast DEBUG.",
 	allowed = {
+<<<<<<< HEAD
 		{ "0",   "Disabled" 	},
 		{ "1",   "Enabled"      },
 	}
@@ -328,6 +477,9 @@ newoption {
 	description = "Filter dependency files.",
 	allowed = {
 		{ "0",   "Disabled" 	},
+=======
+		{ "0",   "Disabled"     },
+>>>>>>> upstream/master
 		{ "1",   "Enabled"      },
 	}
 }
@@ -336,7 +488,11 @@ newoption {
 	trigger = "SEPARATE_BIN",
 	description = "Use separate bin folders.",
 	allowed = {
+<<<<<<< HEAD
 		{ "0",   "Disabled" 	},
+=======
+		{ "0",   "Disabled"     },
+>>>>>>> upstream/master
 		{ "1",   "Enabled"      },
 	}
 }
@@ -350,7 +506,11 @@ newoption {
 	trigger = "SHADOW_CHECK",
 	description = "Shadow checks.",
 	allowed = {
+<<<<<<< HEAD
 		{ "0",   "Disabled" 	},
+=======
+		{ "0",   "Disabled"     },
+>>>>>>> upstream/master
 		{ "1",   "Enabled"      },
 	}
 }
@@ -359,7 +519,11 @@ newoption {
 	trigger = "STRIP_SYMBOLS",
 	description = "Symbols stripping.",
 	allowed = {
+<<<<<<< HEAD
 		{ "0",   "Disabled" 	},
+=======
+		{ "0",   "Disabled"     },
+>>>>>>> upstream/master
 		{ "1",   "Enabled"      },
 	}
 }
@@ -369,7 +533,11 @@ newoption {
 	trigger = "SHLIB",
 	description = "Generate shared libs.",
 	allowed = {
+<<<<<<< HEAD
 		{ "0",   "Static libs" 	},
+=======
+		{ "0",   "Static libs"  },
+>>>>>>> upstream/master
 		{ "1",   "Shared libs"  },
 	}
 }
@@ -380,6 +548,7 @@ newoption {
 }
 
 newoption {
+<<<<<<< HEAD
 	trigger = "FORCE_VERSION_COMPILE",
 	description = "Force compiling of version.c file.",
 	allowed = {
@@ -515,6 +684,33 @@ newoption {
 	trigger = "USE_SHOW_UNAVAILABLE_FOLDER",
 	description = "",
 }
+=======
+	trigger = "PLATFORM",
+	description = "Target machine platform (x86,arm,...)",
+}
+
+newoption {
+	trigger = "DEBUG_DIR",
+	description = "Default directory for debugger.",
+}
+
+newoption {
+	trigger = "DEBUG_ARGS",
+	description = "Arguments for running debug build.",
+}
+
+newoption {
+	trigger = "WEBASSEMBLY",
+	description = "Produce WebAssembly output when building with Emscripten.",
+}
+
+newoption {
+	trigger = "PROJECT",
+	description = "Select projects to be built. Will look into project folder for files.",
+}
+
+dofile ("extlib.lua")
+>>>>>>> upstream/master
 
 if _OPTIONS["SHLIB"]=="1" then
 	LIBTYPE = "SharedLib"
@@ -544,9 +740,14 @@ if _OPTIONS["NOASM"]=="1" and not _OPTIONS["FORCE_DRC_C_BACKEND"] then
 	_OPTIONS["FORCE_DRC_C_BACKEND"] = "1"
 end
 
+<<<<<<< HEAD
 USE_BGFX = 1
 if(_OPTIONS["USE_BGFX"]~=nil) then
 	USE_BGFX = tonumber(_OPTIONS["USE_BGFX"])
+=======
+if(_OPTIONS["TOOLCHAIN"] == nil) then
+	_OPTIONS['TOOLCHAIN'] = ""
+>>>>>>> upstream/master
 end
 
 GEN_DIR = MAME_BUILD_DIR .. "generated/"
@@ -557,24 +758,50 @@ if (_OPTIONS["subtarget"] == nil) then return false end
 if (_OPTIONS["target"] == _OPTIONS["subtarget"]) then
 	solution (_OPTIONS["target"])
 else
+<<<<<<< HEAD
 	solution (_OPTIONS["target"] .. _OPTIONS["subtarget"])
 end
 
+=======
+	if (_OPTIONS["subtarget"]=="mess") then
+		solution (_OPTIONS["subtarget"])
+	else
+		solution (_OPTIONS["target"] .. _OPTIONS["subtarget"])
+	end
+end
+
+
+>>>>>>> upstream/master
 configurations {
 	"Debug",
 	"Release",
 }
 
+<<<<<<< HEAD
 platforms {
 	"x32",
 	"x64",
 	"Native", -- for targets where bitness is not specified
 }
+=======
+if _ACTION == "xcode4" then
+	platforms {
+		"x64",
+	}
+else
+	platforms {
+		"x32",
+		"x64",
+		"Native", -- for targets where bitness is not specified
+	}
+end
+>>>>>>> upstream/master
 
 language "C++"
 
 flags {
 	"StaticRuntime",
+<<<<<<< HEAD
 	"NoPCH",
 }
 
@@ -583,6 +810,18 @@ configuration { "vs*" }
 		"ExtraWarnings",
 		"NoEditAndContinue",
 		"EnableMinimalRebuild",
+=======
+}
+
+configuration { "vs*" }
+	buildoptions {
+		"/bigobj",
+	}
+	flags {
+		"NoPCH",
+		"ExtraWarnings",
+		"NoEditAndContinue",
+>>>>>>> upstream/master
 	}
 	if not _OPTIONS["NOWERROR"] then
 		flags{
@@ -594,6 +833,10 @@ configuration { "vs*" }
 configuration { "Debug", "vs*" }
 	flags {
 		"Symbols",
+<<<<<<< HEAD
+=======
+		"NoIncrementalLink",
+>>>>>>> upstream/master
 	}
 
 configuration { "Release", "vs*" }
@@ -601,6 +844,7 @@ configuration { "Release", "vs*" }
 		"Optimize",
 	}
 
+<<<<<<< HEAD
 configuration {}
 
 local AWK = ""
@@ -631,6 +875,25 @@ if (_OPTIONS["FILTER_DEPS"]=="1") and (AWK~='') then
 		AWK .. " -f ../../../../../scripts/depfilter.awk $(@:%.o=%.d) > $(@:%.o=%.dep)",
 		"mv $(@:%.o=%.dep) $(@:%.o=%.d)",
 	}
+=======
+-- Force VS2015/17 targets to use bundled SDL2
+if string.sub(_ACTION,1,4) == "vs20" and _OPTIONS["osd"]=="sdl" then
+	if _OPTIONS["with-bundled-sdl2"]==nil then
+		_OPTIONS["with-bundled-sdl2"] = "1"
+	end
+end
+-- Build SDL2 for Android
+if _OPTIONS["targetos"] == "android" then
+	_OPTIONS["with-bundled-sdl2"] = "1"
+end
+
+configuration {}
+
+if _OPTIONS["osd"] == "uwp" then
+	windowstargetplatformversion("10.0.14393.0")
+	windowstargetplatformminversion("10.0.14393.0")
+	premake._filelevelconfig = true
+>>>>>>> upstream/master
 end
 
 msgcompile ("Compiling $(subst ../,,$<)...")
@@ -643,13 +906,29 @@ msglinking ("Linking $(notdir $@)...")
 
 msgarchiving ("Archiving $(notdir $@)...")
 
+<<<<<<< HEAD
 messageskip { "SkipCreatingMessage", "SkipBuildingMessage", "SkipCleaningMessage" }
 
 if (_OPTIONS["SOURCES"] == nil) then
+=======
+msgprecompile ("Precompiling $(subst ../,,$<)...")
+
+messageskip { "SkipCreatingMessage", "SkipBuildingMessage", "SkipCleaningMessage" }
+
+if (_OPTIONS["PROJECT"] ~= nil) then
+	PROJECT_DIR = path.join(path.getabsolute(".."),"projects",_OPTIONS["PROJECT"]) .. "/"
+	if (not os.isfile(path.join("..", "projects", _OPTIONS["PROJECT"], "scripts", "target", _OPTIONS["target"],_OPTIONS["subtarget"] .. ".lua"))) then
+		error("File definition for TARGET=" .. _OPTIONS["target"] .. " SUBTARGET=" .. _OPTIONS["subtarget"] .. " does not exist")
+	end
+	dofile (path.join(".." ,"projects", _OPTIONS["PROJECT"], "scripts", "target", _OPTIONS["target"],_OPTIONS["subtarget"] .. ".lua"))
+end
+if (_OPTIONS["SOURCES"] == nil and _OPTIONS["PROJECT"] == nil) then
+>>>>>>> upstream/master
 	if (not os.isfile(path.join("target", _OPTIONS["target"],_OPTIONS["subtarget"] .. ".lua"))) then
 		error("File definition for TARGET=" .. _OPTIONS["target"] .. " SUBTARGET=" .. _OPTIONS["subtarget"] .. " does not exist")
 	end
 	dofile (path.join("target", _OPTIONS["target"],_OPTIONS["subtarget"] .. ".lua"))
+<<<<<<< HEAD
 else
 	OUT_STR = os.outputof( PYTHON .. " " .. MAME_DIR .. "scripts/build/makedep.py " .. MAME_DIR .. " " .. _OPTIONS["SOURCES"] .. " target " .. _OPTIONS["subtarget"])
 	load(OUT_STR)()
@@ -661,13 +940,21 @@ if _OPTIONS["CPP11"]~="1" then
 		"nullptr=NULL" -- getting ready for C++11
 	}
 end
+=======
+end
+
+configuration { "gmake or ninja" }
+>>>>>>> upstream/master
 	flags {
 		"SingleOutputDir",
 	}
 
 dofile ("toolchain.lua")
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> upstream/master
 if _OPTIONS["targetos"]=="windows" then
 	configuration { "x64" }
 		defines {
@@ -680,6 +967,7 @@ end
 if (_ACTION == nil) then return false end
 
 -- define PTR64 if we are a 64-bit target
+<<<<<<< HEAD
 configuration { "x64" }
 	defines { "PTR64=1" }
 
@@ -701,12 +989,23 @@ configuration { "vs*" }
 		"INLINE=static inline",
 	}
 
+=======
+configuration { "x64 or android-*64"}
+	defines { "PTR64=1" }
+
+>>>>>>> upstream/master
 -- define MAME_DEBUG if we are a debugging build
 configuration { "Debug" }
 	defines {
 		"MAME_DEBUG",
 		"MAME_PROFILER",
+<<<<<<< HEAD
 	}
+=======
+--      "BGFX_CONFIG_DEBUG=1",
+	}
+
+>>>>>>> upstream/master
 if _OPTIONS["FASTDEBUG"]=="1" then
 	defines {
 		"MAME_DEBUG_FAST"
@@ -728,8 +1027,13 @@ configuration { "Release" }
 
 configuration { }
 
+<<<<<<< HEAD
 -- CR/LF setup: use both on win32/os2, CR only on everything else
 if _OPTIONS["targetos"]=="windows" or _OPTIONS["targetos"]=="os2" then
+=======
+-- CR/LF setup: use on win32, CR only on everything else
+if _OPTIONS["targetos"]=="windows" then
+>>>>>>> upstream/master
 	defines {
 		"CRLF=3",
 	}
@@ -793,6 +1097,7 @@ else
 	end
 end
 
+<<<<<<< HEAD
 -- need to ensure FLAC functions are statically linked
 if _OPTIONS["with-bundled-flac"] then
 	defines {
@@ -817,6 +1122,19 @@ if not _OPTIONS["with-bundled-sqlite3"] then
 		"USE_SYSTEM_SQLITE",
 	}
 	end
+=======
+if _OPTIONS["with-system-jpeg"]~=nil then
+	defines {
+		"XMD_H",
+	}
+end
+
+if not _OPTIONS["with-system-flac"]~=nil then
+	defines {
+		"FLAC__NO_DLL",
+	}
+end
+>>>>>>> upstream/master
 
 if _OPTIONS["NOASM"]=="1" then
 	defines {
@@ -838,6 +1156,7 @@ if not _OPTIONS["FORCE_DRC_C_BACKEND"] then
 	end
 end
 
+<<<<<<< HEAD
 -- define USE_SYSTEM_JPEGLIB if library shipped with MAME is not used
 --ifneq ($(BUILD_JPEGLIB),1)
 --DEFS += -DUSE_SYSTEM_JPEGLIB
@@ -901,6 +1220,48 @@ end
 	if not ("pnacl" == _OPTIONS["gcc"]) then
 		buildoptions {
 			"--pipe",
+=======
+	defines {
+		"LUA_COMPAT_ALL",
+		"LUA_COMPAT_5_1",
+		"LUA_COMPAT_5_2",
+	}
+
+	if _ACTION == "gmake" or _ACTION == "ninja" then
+
+	--we compile C-only to C99 standard with GNU extensions
+
+	buildoptions_c {
+		"-std=gnu99",
+	}
+
+local version = str_to_version(_OPTIONS["gcc_version"])
+if string.find(_OPTIONS["gcc"], "clang") and ((version < 30500) or (_OPTIONS["targetos"]=="macosx" and (version <= 60000))) then
+	buildoptions_cpp {
+		"-x c++",
+		"-std=c++1y",
+	}
+
+	buildoptions_objcpp {
+		"-x objective-c++",
+		"-std=c++1y",
+	}
+else
+	buildoptions_cpp {
+		"-x c++",
+		"-std=c++14",
+	}
+
+	buildoptions_objcpp {
+		"-x objective-c++",
+		"-std=c++14",
+	}
+end
+-- this speeds it up a bit by piping between the preprocessor/compiler/assembler
+	if not ("pnacl" == _OPTIONS["gcc"]) then
+		buildoptions {
+			"-pipe",
+>>>>>>> upstream/master
 		}
 	end
 -- add -g if we need symbols, and ensure we have frame pointers
@@ -955,6 +1316,7 @@ if _OPTIONS["SYMBOLS"]~=nil and _OPTIONS["SYMBOLS"]~="0" then
 	}
 end
 
+<<<<<<< HEAD
 --# add the optimization flag
 	buildoptions {
 		"-O".. _OPTIONS["OPTIMIZE"],
@@ -962,6 +1324,9 @@ end
 	}
 
 	-- add the error warning flag
+=======
+-- add the error warning flag
+>>>>>>> upstream/master
 if _OPTIONS["NOWERROR"]==nil then
 	buildoptions {
 		"-Werror",
@@ -971,6 +1336,7 @@ end
 -- if we are optimizing, include optimization options
 if _OPTIONS["OPTIMIZE"] then
 	buildoptions {
+<<<<<<< HEAD
 		"-fno-strict-aliasing"
 	}
 	if _OPTIONS["ARCHOPTS"] then
@@ -978,6 +1344,11 @@ if _OPTIONS["OPTIMIZE"] then
 			_OPTIONS["ARCHOPTS"]
 		}
 	end
+=======
+		"-O".. _OPTIONS["OPTIMIZE"],
+		"-fno-strict-aliasing"
+	}
+>>>>>>> upstream/master
 	if _OPTIONS["OPT_FLAGS"] then
 		buildoptions {
 			_OPTIONS["OPT_FLAGS"]
@@ -985,6 +1356,7 @@ if _OPTIONS["OPTIMIZE"] then
 	end
 	if _OPTIONS["LTO"]=="1" then
 		buildoptions {
+<<<<<<< HEAD
 -- windows native mingw GCC 5.2 fails with -flto=x with x > 1. bug unfixed as of this date
 			"-flto=1",
 			"-fuse-linker-plugin",
@@ -1009,11 +1381,71 @@ if _OPTIONS["OPTIMIZE"] then
 			"-flto-compression-level=9", -- lto didn't work with anything < 9 on linux with < 12G RAM
 --			"-flto-report", -- if you get an error in lto after [WPA] stage, but before [LTRANS] stage, you need more memory!
 --			"-fmem-report-wpa","-fmem-report","-fpre-ipa-mem-report","-fpost-ipa-mem-report","-flto-report-wpa","-fmem-report",
+=======
+-- windows native mingw GCC 5.2 fails with -flto=x with x > 1. bug unfixed as of this commit
+			"-flto=1",
+-- if ld fails, just buy more RAM or uncomment this!
+--          "-Wl,-no-keep-memory",
+			"-Wl,-v",
+-- silence redefine warnings from discrete.c.
+			"-Wl,-allow-multiple-definition",
+			"-fuse-linker-plugin",
+-- these next flags allow MAME to compile in GCC 5.2. odr warnings should be fixed as LTO randomly crashes otherwise
+-- some GCC 4.9.x on Windows do not have -Wodr and -flto-odr-type-merging enabled. adjust accordingly...
+-- no-fat-lto-objects is faster to compile and uses less memory, but you can't mix with a non-lto .o/.a without rebuilding
+			"-fno-fat-lto-objects",
+			"-flto-odr-type-merging",
+			"-Wodr",
+			"-flto-compression-level=0", -- lto doesn't work with anything <9 on linux with < 12G RAM, much slower if <> 0
+--          "-flto-report", -- if you get an error in lto after [WPA] stage, but before [LTRANS] stage, you need more memory!
+--          "-fmem-report-wpa","-fmem-report","-fpre-ipa-mem-report","-fpost-ipa-mem-report","-flto-report-wpa","-fmem-report",
+-- this six flag combo lets MAME compile with LTO=1 on linux with no errors and ~2% speed boost, but compile time is much longer
+-- if you are going to wait on lto, you might as well enable these for GCC
+--          "-fdevirtualize-at-ltrans","-fgcse-sm","-fgcse-las",
+--          "-fipa-pta","-fipa-icf","-fvariable-expansion-in-unroller",
+		}
+-- same flags are needed by linker
+		linkoptions {
+			"-flto=1",
+--          "-Wl,-no-keep-memory",
+			"-Wl,-v",
+			"-Wl,-allow-multiple-definition",
+			"-fuse-linker-plugin",
+			"-fno-fat-lto-objects",
+			"-flto-odr-type-merging",
+			"-Wodr",
+			"-flto-compression-level=0", -- lto doesn't work with anything <9 on linux with < 12G RAM, much slower if <> 0
+--          "-flto-report", -- if you get an error in lto after [WPA] stage, but before [LTRANS] stage, you need more memory!
+--          "-fmem-report-wpa","-fmem-report","-fpre-ipa-mem-report","-fpost-ipa-mem-report","-flto-report-wpa","-fmem-report",
+-- this six flag combo lets MAME compile with LTO=1 on linux with no errors and ~2% speed boost, but compile time is much longer
+-- if you are going to wait on lto, you might as well enable these for GCC
+--          "-fdevirtualize-at-ltrans","-fgcse-sm","-fgcse-las",
+--          "-fipa-pta","-fipa-icf","-fvariable-expansion-in-unroller",
+
+>>>>>>> upstream/master
 		}
 
 	end
 end
 
+<<<<<<< HEAD
+=======
+configuration { "mingw-clang" }
+	buildoptions {
+		"-O1", -- without this executable crash often
+	}
+configuration {  }
+
+if _OPTIONS["ARCHOPTS"] then
+	buildoptions {
+		_OPTIONS["ARCHOPTS"]
+	}
+	linkoptions {
+		_OPTIONS["ARCHOPTS"]
+	}
+end
+
+>>>>>>> upstream/master
 if _OPTIONS["SHLIB"] then
 	buildoptions {
 		"-fPIC"
@@ -1072,6 +1504,7 @@ if _OPTIONS["MAP"] then
 	end
 end
 
+<<<<<<< HEAD
 -- mamep additional defines
 if _OPTIONS["USE_SCALE_EFFECTS"]=="1" then
 	defines {
@@ -1199,6 +1632,8 @@ if _OPTIONS["subtarget"]=="ncp" then
 	}
 end
 
+=======
+>>>>>>> upstream/master
 
 -- add a basic set of warnings
 	buildoptions {
@@ -1223,7 +1658,11 @@ if _OPTIONS["targetos"]~="freebsd" then
 end
 
 -- warnings only applicable to OBJ-C compiles
+<<<<<<< HEAD
 	buildoptions_objc {
+=======
+	buildoptions_objcpp {
+>>>>>>> upstream/master
 		"-Wpointer-arith",
 	}
 
@@ -1243,6 +1682,7 @@ end
 
 
 		local version = str_to_version(_OPTIONS["gcc_version"])
+<<<<<<< HEAD
 		if string.find(_OPTIONS["gcc"], "clang") then
 			buildoptions {
 				"-Wno-cast-align",
@@ -1319,6 +1759,68 @@ end
 --ifeq ($(findstring arm,$(UNAME)),arm)
 --	CCOMFLAGS += -Wno-cast-align
 --endif
+=======
+		if string.find(_OPTIONS["gcc"], "clang") or string.find(_OPTIONS["gcc"], "pnacl") or string.find(_OPTIONS["gcc"], "asmjs") or string.find(_OPTIONS["gcc"], "android") then
+			if (version < 30400) then
+				print("Clang version 3.4 or later needed")
+				os.exit(-1)
+			end
+			buildoptions {
+				"-Wno-cast-align",
+				"-Wno-tautological-compare",
+				"-Wno-unused-value",
+				"-Wno-constant-logical-operand",
+				"-Wno-missing-braces", -- clang is not as permissive as GCC about std::array initialization
+				"-fdiagnostics-show-note-include-stack",
+			}
+			if (version >= 30500) then
+				buildoptions {
+					"-Wno-unknown-warning-option",
+					"-Wno-extern-c-compat",
+					"-Wno-unknown-attributes",
+					"-Wno-ignored-qualifiers"
+				}
+			end
+		else
+			if (version < 50000) then
+				print("GCC version 5.0 or later needed")
+				os.exit(-1)
+			end
+				buildoptions {
+					"-Wno-unused-result", -- needed for fgets,fread on linux
+					-- array bounds checking seems to be buggy in 4.8.1 (try it on video/stvvdp1.c and video/model1.c without -Wno-array-bounds)
+					"-Wno-array-bounds",
+				}
+		end
+	end
+
+if (_OPTIONS["PLATFORM"]=="alpha") then
+	defines {
+		"PTR64=1",
+	}
+end
+
+if (_OPTIONS["PLATFORM"]=="arm") then
+	buildoptions {
+		"-Wno-cast-align",
+	}
+end
+
+if (_OPTIONS["PLATFORM"]=="arm64") then
+	buildoptions {
+		"-Wno-cast-align",
+	}
+	defines {
+		"PTR64=1",
+	}
+end
+
+if (_OPTIONS["PLATFORM"]=="mips64") then
+	defines {
+		"PTR64=1",
+	}
+end
+>>>>>>> upstream/master
 
 local subdir
 if (_OPTIONS["target"] == _OPTIONS["subtarget"]) then
@@ -1335,16 +1837,25 @@ configuration { "asmjs" }
 	buildoptions {
 		"-std=gnu89",
 		"-Wno-implicit-function-declaration",
+<<<<<<< HEAD
 	}
 	buildoptions_cpp {
 		"-x c++",
 		"-std=gnu++98",
+=======
+		"-s USE_SDL_TTF=2",
+	}
+	buildoptions_cpp {
+		"-x c++",
+		"-std=c++14",
+>>>>>>> upstream/master
 	}
 	archivesplit_size "20"
 
 configuration { "android*" }
 	buildoptions {
 		"-Wno-undef",
+<<<<<<< HEAD
 	}
 	buildoptions_cpp {
 		"-x c++",
@@ -1352,6 +1863,26 @@ configuration { "android*" }
 	}
 	archivesplit_size "20"
 
+=======
+		"-Wno-typedef-redefinition",
+		"-Wno-unknown-warning-option",
+		"-Wno-incompatible-ms-struct",
+	}
+	buildoptions_cpp {
+		"-x c++",
+		"-std=c++14",
+		"-Wno-extern-c-compat",
+		"-Wno-tautological-constant-out-of-range-compare",
+		"-Wno-tautological-pointer-compare",
+	}
+	archivesplit_size "20"
+
+configuration { "android-arm64" }
+	buildoptions {
+		"-Wno-asm-operand-widths",
+	}
+
+>>>>>>> upstream/master
 configuration { "pnacl" }
 	buildoptions {
 		"-std=gnu89",
@@ -1359,6 +1890,7 @@ configuration { "pnacl" }
 	}
 	buildoptions_cpp {
 		"-x c++",
+<<<<<<< HEAD
 		"-std=gnu++98",
 	}
 	archivesplit_size "20"
@@ -1373,6 +1905,16 @@ configuration { "nacl*" }
 configuration { "linux-*" }
 		links {
 			"dl",
+=======
+		"-std=c++14",
+	}
+	archivesplit_size "20"
+
+configuration { "linux-* or rpi or ci20"}
+		links {
+			"dl",
+			"rt",
+>>>>>>> upstream/master
 		}
 		if _OPTIONS["distro"]=="debian-stable" then
 			defines
@@ -1382,12 +1924,53 @@ configuration { "linux-*" }
 		end
 
 
+<<<<<<< HEAD
 configuration { "osx*" }
+=======
+
+configuration { "steamlink" }
+	links {
+		"dl",
+		"EGL",
+		"GLESv2",
+		"SDL2",
+	}
+	defines {
+		"EGL_API_FB",
+	}
+
+configuration { "rpi" }
+	links {
+		"SDL2",
+		"fontconfig",
+		"X11",
+		"GLESv2",
+		"EGL",
+		"bcm_host",
+		"vcos",
+		"vchiq_arm",
+		"pthread",
+	}
+
+
+configuration { "ci20" }
+	links {
+		"SDL2",
+		"asound",
+		"fontconfig",
+		"freetype",
+		"pthread",
+	}
+
+
+configuration { "osx* or xcode4" }
+>>>>>>> upstream/master
 		links {
 			"pthread",
 		}
 
 configuration { "mingw*" }
+<<<<<<< HEAD
 		buildoptions {
 			"-Wno-format-security",
 			"-Wno-unused-but-set-variable",
@@ -1397,6 +1980,17 @@ configuration { "mingw*" }
 		linkoptions {
 			"-static-libgcc",
 			"-static-libstdc++",
+=======
+		local version = str_to_version(_OPTIONS["gcc_version"])
+		if not (_OPTIONS["gcc"]~=nil and string.find(_OPTIONS["gcc"], "clang")) or version < 40000
+		then
+			linkoptions {
+				"-static",
+			}
+		end
+		linkoptions {
+			"-Wl,--start-group",
+>>>>>>> upstream/master
 		}
 		links {
 			"user32",
@@ -1404,8 +1998,27 @@ configuration { "mingw*" }
 			"advapi32",
 			"shlwapi",
 			"wsock32",
+<<<<<<< HEAD
 		}
 
+=======
+			"ws2_32",
+			"psapi",
+			"iphlpapi",
+			"shell32",
+			"userenv",
+		}
+
+configuration { "mingw-clang" }
+	local version = str_to_version(_OPTIONS["gcc_version"])
+	if _OPTIONS["gcc"]~=nil and string.find(_OPTIONS["gcc"], "clang") and ((version < 30900)) then
+		linkoptions {
+			"-pthread",
+		}
+	end
+
+
+>>>>>>> upstream/master
 configuration { "vs*" }
 		defines {
 			"XML_STATIC",
@@ -1413,16 +2026,36 @@ configuration { "vs*" }
 			"_WIN32",
 			"_CRT_NONSTDC_NO_DEPRECATE",
 			"_CRT_SECURE_NO_DEPRECATE",
+<<<<<<< HEAD
 		}
+=======
+			"_CRT_STDIO_LEGACY_WIDE_SPECIFIERS",
+		}
+-- Windows Store/Phone projects already link against the available libraries.
+if _OPTIONS["vs"]==nil or not (string.startswith(_OPTIONS["vs"], "winstore8") or string.startswith(_OPTIONS["vs"], "winphone8")) then
+>>>>>>> upstream/master
 		links {
 			"user32",
 			"winmm",
 			"advapi32",
 			"shlwapi",
 			"wsock32",
+<<<<<<< HEAD
 		}
 
 		buildoptions {
+=======
+			"ws2_32",
+			"psapi",
+			"iphlpapi",
+			"shell32",
+			"userenv",
+		}
+end
+
+		buildoptions {
+			"/WX",     -- Treats all compiler warnings as errors.
+>>>>>>> upstream/master
 			"/wd4025", -- warning C4025: 'number' : based pointer passed to function with variable arguments: parameter number
 			"/wd4003", -- warning C4003: not enough actual parameters for macro 'xxx'
 			"/wd4018", -- warning C4018: 'x' : signed/unsigned mismatch
@@ -1469,7 +2102,11 @@ configuration { "vs*" }
 			"/wd4365", -- warning C4365: 'action' : conversion from 'type_1' to 'type_2', signed/unsigned mismatch
 			"/wd4389", -- warning C4389: 'operator' : signed/unsigned mismatch
 			"/wd4245", -- warning C4245: 'conversion' : conversion from 'type1' to 'type2', signed/unsigned mismatch
+<<<<<<< HEAD
 			"/wd4388", -- warning C4388:
+=======
+			"/wd4388", -- warning C4388: signed/unsigned mismatch
+>>>>>>> upstream/master
 			"/wd4267", -- warning C4267: 'var' : conversion from 'size_t' to 'type', possible loss of data
 			"/wd4005", -- warning C4005: The macro identifier is defined twice. The compiler uses the second macro definition
 			"/wd4350", -- warning C4350: behavior change: 'member1' called instead of 'member2'
@@ -1478,14 +2115,22 @@ configuration { "vs*" }
 			"/wd4060", -- warning C4060: switch statement contains no 'case' or 'default' labels
 			"/wd4065", -- warning C4065: switch statement contains 'default' but no 'case' labels
 			"/wd4640", -- warning C4640: 'instance' : construction of local static object is not thread-safe
+<<<<<<< HEAD
 			"/wd4290", -- warning C4290:
 			"/wd4355", -- warning C4355: 'this' : used in base member initializer list
 			"/wd4800", -- warning C4800: 'type' : forcing value to bool 'true' or 'false' (performance warning)
 			"/wd4371", -- warning C4371:
+=======
+			"/wd4290", -- warning C4290: C++ exception specification ignored except to indicate a function is not __declspec(nothrow)
+			"/wd4355", -- warning C4355: 'this' : used in base member initializer list
+			"/wd4800", -- warning C4800: 'type' : forcing value to bool 'true' or 'false' (performance warning)
+			"/wd4371", -- warning C4371: layout of class may have changed from a previous version of the compiler due to better packing of member 'member'
+>>>>>>> upstream/master
 			"/wd4548", -- warning C4548: expression before comma has no effect; expected expression with side-effect
 		}
 if _OPTIONS["vs"]=="intel-15" then
 		buildoptions {
+<<<<<<< HEAD
 			"/Qwd9",    			-- remark #9: nested comment is not allowed
 			"/Qwd82",   			-- remark #82: storage class is not first
 			"/Qwd111",  			-- remark #111: statement is unreachable
@@ -1518,6 +2163,40 @@ if _OPTIONS["vs"]=="intel-15" then
 			-- these occur on a release build, while we can increase the size limits instead some of the files do require extreme amounts
 			"/Qwd11074",			-- remark #11074: Inlining inhibited by limit max-size  / remark #11074: Inlining inhibited by limit max-total-size
 			"/Qwd11075",			-- remark #11075: To get full report use -Qopt-report:4 -Qopt-report-phase ipo
+=======
+			"/Qwd9",                -- remark #9: nested comment is not allowed
+			"/Qwd82",               -- remark #82: storage class is not first
+			"/Qwd111",              -- remark #111: statement is unreachable
+			"/Qwd128",              -- remark #128: loop is not reachable
+			"/Qwd177",              -- remark #177: function "xxx" was declared but never referenced
+			"/Qwd181",              -- remark #181: argument of type "UINT32={unsigned int}" is incompatible with format "%d", expecting argument of type "int"
+			"/Qwd185",              -- remark #185: dynamic initialization in unreachable code
+			"/Qwd280",              -- remark #280: selector expression is constant
+			"/Qwd344",              -- remark #344: typedef name has already been declared (with same type)
+			"/Qwd411",              -- remark #411: class "xxx" defines no constructor to initialize the following
+			"/Qwd869",              -- remark #869: parameter "xxx" was never referenced
+			"/Qwd2545",             -- remark #2545: empty dependent statement in "else" clause of if - statement
+			"/Qwd2553",             -- remark #2553: nonstandard second parameter "TCHAR={WCHAR = { __wchar_t } } **" of "main", expected "char *[]" or "char **" extern "C" int _tmain(int argc, TCHAR **argv)
+			"/Qwd2557",             -- remark #2557: comparison between signed and unsigned operands
+			"/Qwd3280",             -- remark #3280: declaration hides member "attotime::seconds" (declared at line 126) static attotime from_seconds(INT32 seconds) { return attotime(seconds, 0); }
+
+			"/Qwd170",              -- error #170: pointer points outside of underlying object
+			"/Qwd188",              -- error #188: enumerated type mixed with another type
+
+			"/Qwd63",               -- warning #63: shift count is too large
+			"/Qwd177",              -- warning #177: label "xxx" was declared but never referenced
+			"/Qwd186",              -- warning #186: pointless comparison of unsigned integer with zero
+			"/Qwd488",              -- warning #488: template parameter "_FunctionClass" is not used in declaring the parameter types of function template "device_delegate<_Signature>::device_delegate<_FunctionClass>(delegate<_Signature>:
+			"/Qwd1478",             -- warning #1478: function "xxx" (declared at line yyy of "zzz") was declared deprecated
+			"/Qwd1879",             -- warning #1879: unimplemented pragma ignored
+			"/Qwd3291",             -- warning #3291: invalid narrowing conversion from "double" to "int"
+			"/Qwd1195",             -- error #1195: conversion from integer to smaller pointer
+			"/Qwd47",               -- error #47: incompatible redefinition of macro "xxx"
+			"/Qwd265",              -- error #265: floating-point operation result is out of range
+			-- these occur on a release build, while we can increase the size limits instead some of the files do require extreme amounts
+			"/Qwd11074",            -- remark #11074: Inlining inhibited by limit max-size  / remark #11074: Inlining inhibited by limit max-total-size
+			"/Qwd11075",            -- remark #11075: To get full report use -Qopt-report:4 -Qopt-report-phase ipo
+>>>>>>> upstream/master
 		}
 end
 
@@ -1527,8 +2206,14 @@ end
 		includedirs {
 			MAME_DIR .. "3rdparty/dxsdk/Include"
 		}
+<<<<<<< HEAD
 configuration { "vs2015" }
 		buildoptions {
+=======
+configuration { "vs201*" }
+		buildoptions {
+			"/wd4334", -- warning C4334: '<<': result of 32-bit shift implicitly converted to 64 bits (was 64-bit shift intended?)
+>>>>>>> upstream/master
 			"/wd4456", -- warning C4456: declaration of 'xxx' hides previous local declaration
 			"/wd4457", -- warning C4457: declaration of 'xxx' hides function parameter
 			"/wd4458", -- warning C4458: declaration of 'xxx' hides class member
@@ -1538,6 +2223,7 @@ configuration { "vs2015" }
 			"/wd4463", -- warning C4463: overflow; assigning 1 to bit-field that can only hold values from -1 to 0
 			"/wd4297", -- warning C4297: 'xxx::~xxx': function assumed not to throw an exception but does
 			"/wd4319", -- warning C4319: 'operator' : zero extending 'type' to 'type' of greater size
+<<<<<<< HEAD
 		}
 configuration { "vs2010" }
 		buildoptions {
@@ -1554,13 +2240,41 @@ configuration { "winphone8* or winstore8*" }
 		"d3d11",
 		"dxgi"
 	}
+=======
+			"/wd4592", -- warning C4592: symbol will be dynamically initialized (implementation limitation)
+		}
+configuration { "winphone8* or winstore8*" }
+>>>>>>> upstream/master
 	linkoptions {
 		"/ignore:4264" -- LNK4264: archiving object file compiled with /ZW into a static library; note that when authoring Windows Runtime types it is not recommended to link with a static library that contains Windows Runtime metadata
 	}
 
 
+<<<<<<< HEAD
 configuration { }
 
+=======
+-- adding this till we sort out asserts in debug mode
+configuration { "Debug", "gmake" }
+	buildoptions_cpp {
+		"-Wno-terminate",
+	}
+
+configuration { }
+
+if (_OPTIONS["SOURCES"] ~= nil) then
+	local str = _OPTIONS["SOURCES"]
+	for word in string.gmatch(str, '([^,]+)') do
+		if (not os.isfile(path.join(MAME_DIR ,word))) then
+			print("File " .. word.. " does not exist")
+			os.exit()
+		end
+	end
+	OUT_STR = os.outputof( PYTHON .. " " .. MAME_DIR .. "scripts/build/makedep.py " .. MAME_DIR .. " " .. _OPTIONS["SOURCES"] .. " target " .. _OPTIONS["subtarget"])
+	load(OUT_STR)()
+	os.outputof( PYTHON .. " " .. MAME_DIR .. "scripts/build/makedep.py " .. MAME_DIR .. " " .. _OPTIONS["SOURCES"] .. " drivers " .. _OPTIONS["subtarget"] .. " > ".. GEN_DIR  .. _OPTIONS["target"] .. "/" .. _OPTIONS["subtarget"]..".flt")
+end
+>>>>>>> upstream/master
 
 group "libs"
 
@@ -1568,10 +2282,21 @@ if (not os.isfile(path.join("src", "osd",  _OPTIONS["osd"] .. ".lua"))) then
 	error("Unsupported value '" .. _OPTIONS["osd"] .. "' for OSD")
 end
 dofile(path.join("src", "osd", _OPTIONS["osd"] .. ".lua"))
+<<<<<<< HEAD
 if _OPTIONS["osd"] == "windows" and _OPTIONS["WINUI"] == "1" then
 	dofile(path.join("src", "osd", "winui.lua"))
 end
 dofile(path.join("src", "lib.lua"))
+=======
+dofile(path.join("src", "lib.lua"))
+if (MACHINES["NETLIST"]~=null or _OPTIONS["with-tools"]) then
+dofile(path.join("src", "netlist.lua"))
+end
+--if (STANDALONE~=true) then
+dofile(path.join("src", "formats.lua"))
+formatsProject(_OPTIONS["target"],_OPTIONS["subtarget"])
+--end
+>>>>>>> upstream/master
 
 group "3rdparty"
 dofile(path.join("src", "3rdparty.lua"))
@@ -1581,10 +2306,18 @@ group "core"
 
 dofile(path.join("src", "emu.lua"))
 
+<<<<<<< HEAD
+=======
+if (STANDALONE~=true) then
+	dofile(path.join("src", "mame", "frontend.lua"))
+end
+
+>>>>>>> upstream/master
 group "devices"
 dofile(path.join("src", "devices.lua"))
 devicesProject(_OPTIONS["target"],_OPTIONS["subtarget"])
 
+<<<<<<< HEAD
 group "drivers"
 findfunction("createProjects_" .. _OPTIONS["target"] .. "_" .. _OPTIONS["subtarget"])(_OPTIONS["target"], _OPTIONS["subtarget"])
 
@@ -1603,6 +2336,30 @@ end
 if (_OPTIONS["STRIP_SYMBOLS"]=="1") then
 	strip()
 end
+=======
+if (STANDALONE~=true) then
+	group "drivers"
+	findfunction("createProjects_" .. _OPTIONS["target"] .. "_" .. _OPTIONS["subtarget"])(_OPTIONS["target"], _OPTIONS["subtarget"])
+end
+
+group "emulator"
+dofile(path.join("src", "main.lua"))
+if (_OPTIONS["SOURCES"] == nil) then
+	if (_OPTIONS["target"] == _OPTIONS["subtarget"]) then
+		startproject (_OPTIONS["target"])
+	else
+		if (_OPTIONS["subtarget"]=="mess") then
+			startproject (_OPTIONS["subtarget"])
+		else
+			startproject (_OPTIONS["target"] .. _OPTIONS["subtarget"])
+		end
+	end
+else
+	startproject (_OPTIONS["subtarget"])
+end
+mainProject(_OPTIONS["target"],_OPTIONS["subtarget"])
+strip()
+>>>>>>> upstream/master
 
 if _OPTIONS["with-tools"] then
 	group "tools"
@@ -1613,3 +2370,11 @@ if _OPTIONS["with-tests"] then
 	group "tests"
 	dofile(path.join("src", "tests.lua"))
 end
+<<<<<<< HEAD
+=======
+
+if _OPTIONS["with-benchmarks"] then
+	group "benchmarks"
+	dofile(path.join("src", "benchmarks.lua"))
+end
+>>>>>>> upstream/master

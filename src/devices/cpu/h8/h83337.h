@@ -18,6 +18,7 @@
 
 ***************************************************************************/
 
+<<<<<<< HEAD
 #ifndef __H83337_H__
 #define __H83337_H__
 
@@ -33,6 +34,25 @@ class h83337_device : public h8_device {
 public:
 	h83337_device(const machine_config &mconfig, device_type type, const char *name, const char *tag, device_t *owner, UINT32 clock, const char *shortname, const char *source);
 	h83337_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
+=======
+#ifndef MAME_CPU_H8_H83337_H
+#define MAME_CPU_H8_H83337_H
+
+#pragma once
+
+#include "h8.h"
+#include "h8_intc.h"
+#include "h8_adc.h"
+#include "h8_port.h"
+#include "h8_timer8.h"
+#include "h8_timer16.h"
+#include "h8_sci.h"
+#include "h8_watchdog.h"
+
+class h83337_device : public h8_device {
+public:
+	h83337_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
+>>>>>>> upstream/master
 
 	DECLARE_READ8_MEMBER(wscr_r);
 	DECLARE_WRITE8_MEMBER(wscr_w);
@@ -44,6 +64,11 @@ public:
 	DECLARE_WRITE8_MEMBER(mdcr_w);
 
 protected:
+<<<<<<< HEAD
+=======
+	h83337_device(const machine_config &mconfig, device_type type, const char *tag, device_t *owner, uint32_t clock, uint32_t start);
+
+>>>>>>> upstream/master
 	required_device<h8_intc_device> intc;
 	required_device<h8_adc_device> adc;
 	required_device<h8_port_device> port1;
@@ -61,6 +86,7 @@ protected:
 	required_device<h8_timer16_channel_device> timer16_0;
 	required_device<h8_sci_device> sci0;
 	required_device<h8_sci_device> sci1;
+<<<<<<< HEAD
 
 	UINT8 syscr;
 	UINT32 ram_start;
@@ -75,15 +101,37 @@ protected:
 	virtual void device_start();
 	virtual void device_reset();
 	virtual void execute_set_input(int inputnum, int state);
+=======
+	required_device<h8_watchdog_device> watchdog;
+
+	uint8_t syscr;
+	uint32_t ram_start;
+
+	virtual void update_irq_filter() override;
+	virtual void interrupt_taken() override;
+	virtual void irq_setup() override;
+	virtual void internal_update(uint64_t current_time) override;
+	virtual void device_add_mconfig(machine_config &config) override;
+	DECLARE_ADDRESS_MAP(map, 16);
+
+	virtual void device_start() override;
+	virtual void device_reset() override;
+	virtual void execute_set_input(int inputnum, int state) override;
+>>>>>>> upstream/master
 };
 
 class h83334_device : public h83337_device {
 public:
+<<<<<<< HEAD
 	h83334_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
+=======
+	h83334_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
+>>>>>>> upstream/master
 };
 
 class h83336_device : public h83337_device {
 public:
+<<<<<<< HEAD
 	h83336_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
 };
 
@@ -92,3 +140,13 @@ extern const device_type H83336;
 extern const device_type H83337;
 
 #endif
+=======
+	h83336_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
+};
+
+DECLARE_DEVICE_TYPE(H83334, h83334_device)
+DECLARE_DEVICE_TYPE(H83336, h83336_device)
+DECLARE_DEVICE_TYPE(H83337, h83337_device)
+
+#endif // MAME_CPU_H8_H83337_H
+>>>>>>> upstream/master

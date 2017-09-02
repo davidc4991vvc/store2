@@ -16,6 +16,10 @@
 
 */
 
+<<<<<<< HEAD
+=======
+#include "emu.h"
+>>>>>>> upstream/master
 #include "cpm.h"
 
 
@@ -32,7 +36,11 @@
 //  DEVICE DEFINITIONS
 //**************************************************************************
 
+<<<<<<< HEAD
 const device_type C64_CPM = &device_creator<c64_cpm_cartridge_device>;
+=======
+DEFINE_DEVICE_TYPE(C64_CPM, c64_cpm_cartridge_device, "c64_cpm", "C64 CP/M cartridge")
+>>>>>>> upstream/master
 
 
 //-------------------------------------------------
@@ -54,16 +62,24 @@ ADDRESS_MAP_END
 
 
 //-------------------------------------------------
+<<<<<<< HEAD
 //  MACHINE_CONFIG_FRAGMENT( c64_cpm )
 //-------------------------------------------------
 
 static MACHINE_CONFIG_FRAGMENT( c64_cpm )
+=======
+//  device_add_mconfig - add device configuration
+//-------------------------------------------------
+
+MACHINE_CONFIG_MEMBER( c64_cpm_cartridge_device::device_add_mconfig )
+>>>>>>> upstream/master
 	MCFG_CPU_ADD(Z80_TAG, Z80, 3000000)
 	MCFG_CPU_PROGRAM_MAP(z80_mem)
 	MCFG_CPU_IO_MAP(z80_io)
 MACHINE_CONFIG_END
 
 
+<<<<<<< HEAD
 //-------------------------------------------------
 //  machine_config_additions - device-specific
 //  machine configurations
@@ -75,6 +91,8 @@ machine_config_constructor c64_cpm_cartridge_device::device_mconfig_additions() 
 }
 
 
+=======
+>>>>>>> upstream/master
 
 //**************************************************************************
 //  INLINE HELPERS
@@ -129,8 +147,13 @@ inline void c64_cpm_cartridge_device::update_signals()
 //  c64_cpm_cartridge_device - constructor
 //-------------------------------------------------
 
+<<<<<<< HEAD
 c64_cpm_cartridge_device::c64_cpm_cartridge_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock) :
 	device_t(mconfig, C64_CPM, "C64 CP/M cartridge", tag, owner, clock, "c64_cpm", __FILE__),
+=======
+c64_cpm_cartridge_device::c64_cpm_cartridge_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock) :
+	device_t(mconfig, C64_CPM, tag, owner, clock),
+>>>>>>> upstream/master
 	device_c64_expansion_card_interface(mconfig, *this),
 	m_maincpu(*this, Z80_TAG),
 	m_enabled(0),
@@ -168,7 +191,11 @@ void c64_cpm_cartridge_device::device_reset()
 //  c64_cd_w - cartridge data write
 //-------------------------------------------------
 
+<<<<<<< HEAD
 void c64_cpm_cartridge_device::c64_cd_w(address_space &space, offs_t offset, UINT8 data, int sphi2, int ba, int roml, int romh, int io1, int io2)
+=======
+void c64_cpm_cartridge_device::c64_cd_w(address_space &space, offs_t offset, uint8_t data, int sphi2, int ba, int roml, int romh, int io1, int io2)
+>>>>>>> upstream/master
 {
 	if (!io1)
 	{
@@ -202,7 +229,11 @@ int c64_cpm_cartridge_device::c64_game_r(offs_t offset, int sphi2, int ba, int r
 
 READ8_MEMBER( c64_cpm_cartridge_device::dma_r )
 {
+<<<<<<< HEAD
 	UINT8 data = 0xff;
+=======
+	uint8_t data = 0xff;
+>>>>>>> upstream/master
 
 	if (m_enabled)
 	{

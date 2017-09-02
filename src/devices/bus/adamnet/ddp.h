@@ -6,6 +6,7 @@
 
 **********************************************************************/
 
+<<<<<<< HEAD
 #pragma once
 
 #ifndef __ADAM_DDP__
@@ -14,6 +15,15 @@
 #include "emu.h"
 #include "adamnet.h"
 #include "cpu/m6800/m6800.h"
+=======
+#ifndef MAME_BUS_ADAMNET_DDP_H
+#define MAME_BUS_ADAMNET_DDP_H
+
+#pragma once
+
+#include "adamnet.h"
+#include "cpu/m6800/m6801.h"
+>>>>>>> upstream/master
 #include "formats/adam_cas.h"
 #include "imagedev/cassette.h"
 
@@ -30,11 +40,15 @@ class adam_digital_data_pack_device :  public device_t,
 {
 public:
 	// construction/destruction
+<<<<<<< HEAD
 	adam_digital_data_pack_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
 
 	// optional information overrides
 	virtual const rom_entry *device_rom_region() const;
 	virtual machine_config_constructor device_mconfig_additions() const;
+=======
+	adam_digital_data_pack_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
+>>>>>>> upstream/master
 
 	// not really public
 	DECLARE_WRITE8_MEMBER( p1_w );
@@ -44,10 +58,21 @@ public:
 
 protected:
 	// device-level overrides
+<<<<<<< HEAD
 	virtual void device_start();
 
 	// device_adamnet_card_interface overrides
 	virtual void adamnet_reset_w(int state);
+=======
+	virtual void device_start() override;
+
+	// optional information overrides
+	virtual const tiny_rom_entry *device_rom_region() const override;
+	virtual void device_add_mconfig(machine_config &config) override;
+
+	// device_adamnet_card_interface overrides
+	virtual void adamnet_reset_w(int state) override;
+>>>>>>> upstream/master
 
 	required_device<cpu_device> m_maincpu;
 	required_device<cassette_image_device> m_ddp0;
@@ -60,8 +85,14 @@ protected:
 
 
 // device type definition
+<<<<<<< HEAD
 extern const device_type ADAM_DDP;
 
 
 
 #endif
+=======
+DECLARE_DEVICE_TYPE(ADAM_DDP, adam_digital_data_pack_device)
+
+#endif // MAME_BUS_ADAMNET_DDP_H
+>>>>>>> upstream/master

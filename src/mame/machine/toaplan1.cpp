@@ -1,5 +1,9 @@
 // license:BSD-3-Clause
+<<<<<<< HEAD
 // copyright-holders:Darren Olafson, Quench
+=======
+// copyright-holders:Darren Olafson, Quench,Stephane Humbert
+>>>>>>> upstream/master
 /***************************************************************************
                 ToaPlan game hardware from 1988-1991
                 ------------------------------------
@@ -12,6 +16,7 @@
 #include "includes/toaplan1.h"
 
 
+<<<<<<< HEAD
 
 /* List of possible regions for coinage (for games with unemulated sound CPU) */
 enum {
@@ -38,6 +43,8 @@ static const UINT8 toaplan1_credits_for_coin[TOAPLAN1_REGION_OTHER+1][2][4] =
 };
 
 
+=======
+>>>>>>> upstream/master
 INTERRUPT_GEN_MEMBER(toaplan1_state::toaplan1_interrupt)
 {
 	if (m_intenable)
@@ -72,7 +79,11 @@ READ16_MEMBER(toaplan1_state::demonwld_dsp_r)
 {
 	/* DSP can read data from main CPU RAM via DSP IO port 1 */
 
+<<<<<<< HEAD
 	UINT16 input_data = 0;
+=======
+	uint16_t input_data = 0;
+>>>>>>> upstream/master
 
 	switch (m_main_ram_seg) {
 		case 0xc00000: {address_space &mainspace = m_maincpu->space(AS_PROGRAM);
@@ -121,7 +132,11 @@ WRITE16_MEMBER(toaplan1_state::demonwld_dsp_bio_w)
 	}
 }
 
+<<<<<<< HEAD
 READ16_MEMBER(toaplan1_state::demonwld_BIO_r)
+=======
+READ_LINE_MEMBER(toaplan1_state::demonwld_BIO_r)
+>>>>>>> upstream/master
 {
 	return m_dsp_BIO;
 }
@@ -179,6 +194,7 @@ READ16_MEMBER(toaplan1_state::samesame_port_6_word_r)
 	return (0x80 | ioport("TJUMP")->read()) & 0xff;
 }
 
+<<<<<<< HEAD
 READ16_MEMBER(toaplan1_state::vimana_system_port_r)
 {
 	static const UINT8 vimana_region[16] =
@@ -282,6 +298,8 @@ WRITE16_MEMBER(toaplan1_state::vimana_mcu_w)
 	}
 }
 
+=======
+>>>>>>> upstream/master
 READ16_MEMBER(toaplan1_state::toaplan1_shared_r)
 {
 	return m_sharedram[offset] & 0xff;
@@ -311,6 +329,7 @@ WRITE16_MEMBER(toaplan1_state::toaplan1_reset_sound_w)
 }
 
 
+<<<<<<< HEAD
 WRITE8_MEMBER(toaplan1_rallybik_state::rallybik_coin_w)
 {
 	switch (data) {
@@ -326,6 +345,29 @@ WRITE8_MEMBER(toaplan1_rallybik_state::rallybik_coin_w)
 	}
 }
 
+=======
+WRITE_LINE_MEMBER(toaplan1_rallybik_state::coin_counter_1_w)
+{
+	machine().bookkeeping().coin_counter_w(0, state);
+}
+
+WRITE_LINE_MEMBER(toaplan1_rallybik_state::coin_counter_2_w)
+{
+	machine().bookkeeping().coin_counter_w(1, state);
+}
+
+WRITE_LINE_MEMBER(toaplan1_rallybik_state::coin_lockout_1_w)
+{
+	machine().bookkeeping().coin_lockout_w(0, !state);
+}
+
+WRITE_LINE_MEMBER(toaplan1_rallybik_state::coin_lockout_2_w)
+{
+	machine().bookkeeping().coin_lockout_w(1, !state);
+}
+
+
+>>>>>>> upstream/master
 WRITE8_MEMBER(toaplan1_state::toaplan1_coin_w)
 {
 	logerror("Z80 writing %02x to coin control\n",data);
@@ -334,6 +376,7 @@ WRITE8_MEMBER(toaplan1_state::toaplan1_coin_w)
 	/* Are some outputs for lights ? (no space on JAMMA for it though) */
 
 	switch (data) {
+<<<<<<< HEAD
 		case 0xee: coin_counter_w(machine(), 1,1); coin_counter_w(machine(), 1,0); break; /* Count slot B */
 		case 0xed: coin_counter_w(machine(), 0,1); coin_counter_w(machine(), 0,0); break; /* Count slot A */
 	/* The following are coin counts after coin-lock active (faulty coin-lock ?) */
@@ -352,6 +395,26 @@ WRITE8_MEMBER(toaplan1_state::toaplan1_coin_w)
 		case 0x02: coin_lockout_w(machine(), 1,1); break;   /* Lock coin slot B */
 		case 0x01: coin_lockout_w(machine(), 0,1); break;   /* Lock coin slot A */
 		case 0x00: coin_lockout_global_w(machine(), 1); break;  /* Lock all coin slots */
+=======
+		case 0xee: machine().bookkeeping().coin_counter_w(1,1); machine().bookkeeping().coin_counter_w(1,0); break; /* Count slot B */
+		case 0xed: machine().bookkeeping().coin_counter_w(0,1); machine().bookkeeping().coin_counter_w(0,0); break; /* Count slot A */
+	/* The following are coin counts after coin-lock active (faulty coin-lock ?) */
+		case 0xe2: machine().bookkeeping().coin_counter_w(1,1); machine().bookkeeping().coin_counter_w(1,0); machine().bookkeeping().coin_lockout_w(1,1); break;
+		case 0xe1: machine().bookkeeping().coin_counter_w(0,1); machine().bookkeeping().coin_counter_w(0,0); machine().bookkeeping().coin_lockout_w(0,1); break;
+
+		case 0xec: machine().bookkeeping().coin_lockout_global_w(0); break;  /* ??? count games played */
+		case 0xe8: break;   /* ??? Maximum credits reached with coin/credit ratio */
+		case 0xe4: break;   /* ??? Reset coin system */
+
+		case 0x0c: machine().bookkeeping().coin_lockout_global_w(0); break;  /* Unlock all coin slots */
+		case 0x08: machine().bookkeeping().coin_lockout_w(2,0); break;   /* Unlock coin slot C */
+		case 0x09: machine().bookkeeping().coin_lockout_w(0,0); break;   /* Unlock coin slot A */
+		case 0x0a: machine().bookkeeping().coin_lockout_w(1,0); break;   /* Unlock coin slot B */
+
+		case 0x02: machine().bookkeeping().coin_lockout_w(1,1); break;   /* Lock coin slot B */
+		case 0x01: machine().bookkeeping().coin_lockout_w(0,1); break;   /* Lock coin slot A */
+		case 0x00: machine().bookkeeping().coin_lockout_global_w(1); break;  /* Lock all coin slots */
+>>>>>>> upstream/master
 		default:   logerror("PC:%04x  Writing unknown data (%04x) to coin count/lockout port\n",space.device().safe_pcbase(),data); break;
 	}
 }
@@ -376,8 +439,12 @@ WRITE_LINE_MEMBER(toaplan1_state::toaplan1_reset_callback)
 MACHINE_RESET_MEMBER(toaplan1_state,toaplan1)
 {
 	m_intenable = 0;
+<<<<<<< HEAD
 	m_coin_count = 0;
 	coin_lockout_global_w(machine(), 0);
+=======
+	machine().bookkeeping().coin_lockout_global_w(0);
+>>>>>>> upstream/master
 }
 
 /* zerowing, fireshrk, outzone */
@@ -398,9 +465,12 @@ MACHINE_RESET_MEMBER(toaplan1_state,demonwld)
 MACHINE_RESET_MEMBER(toaplan1_state,vimana)
 {
 	MACHINE_RESET_CALL_MEMBER(toaplan1);
+<<<<<<< HEAD
 	m_vimana_coins[0] = m_vimana_coins[1] = 0;
 	m_vimana_credits = 0;
 	m_vimana_latch = 0;
+=======
+>>>>>>> upstream/master
 	m_maincpu->set_reset_callback(write_line_delegate(FUNC(toaplan1_state::toaplan1_reset_callback),this));
 }
 
@@ -408,7 +478,10 @@ MACHINE_RESET_MEMBER(toaplan1_state,vimana)
 void toaplan1_state::toaplan1_driver_savestate()
 {
 	save_item(NAME(m_intenable));
+<<<<<<< HEAD
 	save_item(NAME(m_coin_count));
+=======
+>>>>>>> upstream/master
 }
 
 void toaplan1_state::demonwld_driver_savestate()
@@ -421,6 +494,7 @@ void toaplan1_state::demonwld_driver_savestate()
 	machine().save().register_postload(save_prepost_delegate(FUNC(toaplan1_state::demonwld_restore_dsp), this));
 }
 
+<<<<<<< HEAD
 void toaplan1_state::vimana_driver_savestate()
 {
 	save_item(NAME(m_vimana_coins[0]));
@@ -428,3 +502,5 @@ void toaplan1_state::vimana_driver_savestate()
 	save_item(NAME(m_vimana_credits));
 	save_item(NAME(m_vimana_latch));
 }
+=======
+>>>>>>> upstream/master

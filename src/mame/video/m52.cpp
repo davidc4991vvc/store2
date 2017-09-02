@@ -21,11 +21,19 @@
 
 PALETTE_INIT_MEMBER(m52_state, m52)
 {
+<<<<<<< HEAD
 	const UINT8 *color_prom = memregion("proms")->base();
 	const UINT8 *char_pal = color_prom + 0x000;
 	const UINT8 *back_pal = color_prom + 0x200;
 	const UINT8 *sprite_pal = color_prom + 0x220;
 	const UINT8 *sprite_table = color_prom + 0x240;
+=======
+	const uint8_t *color_prom = memregion("proms")->base();
+	const uint8_t *char_pal = color_prom + 0x000;
+	const uint8_t *back_pal = color_prom + 0x200;
+	const uint8_t *sprite_pal = color_prom + 0x220;
+	const uint8_t *sprite_table = color_prom + 0x240;
+>>>>>>> upstream/master
 	static const int resistances_3[3] = { 1000, 470, 220 };
 	static const int resistances_2[2]  = { 470, 220 };
 	double weights_r[3], weights_g[3], weights_b[3], scale;
@@ -40,7 +48,11 @@ PALETTE_INIT_MEMBER(m52_state, m52)
 	/* character palette */
 	for (i = 0; i < 512; i++)
 	{
+<<<<<<< HEAD
 		UINT8 promval = char_pal[i];
+=======
+		uint8_t promval = char_pal[i];
+>>>>>>> upstream/master
 		int r = combine_3_weights(weights_r, BIT(promval,0), BIT(promval,1), BIT(promval,2));
 		int g = combine_3_weights(weights_g, BIT(promval,3), BIT(promval,4), BIT(promval,5));
 		int b = combine_2_weights(weights_b, BIT(promval,6), BIT(promval,7));
@@ -51,7 +63,11 @@ PALETTE_INIT_MEMBER(m52_state, m52)
 	/* background palette */
 	for (i = 0; i < 32; i++)
 	{
+<<<<<<< HEAD
 		UINT8 promval = back_pal[i];
+=======
+		uint8_t promval = back_pal[i];
+>>>>>>> upstream/master
 		int r = combine_3_weights(weights_r, BIT(promval,0), BIT(promval,1), BIT(promval,2));
 		int g = combine_3_weights(weights_g, BIT(promval,3), BIT(promval,4), BIT(promval,5));
 		int b = combine_2_weights(weights_b, BIT(promval,6), BIT(promval,7));
@@ -68,7 +84,11 @@ PALETTE_INIT_MEMBER(m52_state, m52)
 	/* sprite palette */
 	for (i = 0; i < 32; i++)
 	{
+<<<<<<< HEAD
 		UINT8 promval = sprite_pal[i];
+=======
+		uint8_t promval = sprite_pal[i];
+>>>>>>> upstream/master
 		int r = combine_2_weights(weights_r, BIT(promval,6), BIT(promval,7));
 		int g = combine_3_weights(weights_g, BIT(promval,3), BIT(promval,4), BIT(promval,5));
 		int b = combine_3_weights(weights_b, BIT(promval,0), BIT(promval,1), BIT(promval,2));
@@ -83,7 +103,11 @@ PALETTE_INIT_MEMBER(m52_state, m52)
 	/* sprite lookup table */
 	for (i = 0; i < 16 * 4; i++)
 	{
+<<<<<<< HEAD
 		UINT8 promval = sprite_table[(i & 3) | ((i & ~3) << 1)];
+=======
+		uint8_t promval = sprite_table[(i & 3) | ((i & ~3) << 1)];
+>>>>>>> upstream/master
 		palette.set_pen_indirect(512 + i, 512 + 32 + promval);
 	}
 
@@ -117,8 +141,13 @@ PALETTE_INIT_MEMBER(m52_state, m52)
 
 TILE_GET_INFO_MEMBER(m52_state::get_tile_info)
 {
+<<<<<<< HEAD
 	UINT8 video = m_videoram[tile_index];
 	UINT8 color = m_colorram[tile_index];
+=======
+	uint8_t video = m_videoram[tile_index];
+	uint8_t color = m_colorram[tile_index];
+>>>>>>> upstream/master
 
 	int flag = 0;
 	int code = 0;
@@ -148,7 +177,11 @@ TILE_GET_INFO_MEMBER(m52_state::get_tile_info)
 
 void m52_state::video_start()
 {
+<<<<<<< HEAD
 	m_bg_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(m52_state::get_tile_info),this), TILEMAP_SCAN_ROWS,  8, 8, 32, 32);
+=======
+	m_bg_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(m52_state::get_tile_info),this), TILEMAP_SCAN_ROWS,  8, 8, 32, 32);
+>>>>>>> upstream/master
 
 	m_bg_tilemap->set_transparent_pen(0);
 	m_bg_tilemap->set_scrolldx(127, 127);
@@ -273,8 +306,13 @@ WRITE8_MEMBER(m52_state::m52_flipscreen_w)
 	/* screen flip is handled both by software and hardware */
 	flip_screen_set((data & 0x01) ^ (~ioport("DSW2")->read() & 0x01));
 
+<<<<<<< HEAD
 	coin_counter_w(machine(), 0, data & 0x02);
 	coin_counter_w(machine(), 1, data & 0x20);
+=======
+	machine().bookkeeping().coin_counter_w(0, data & 0x02);
+	machine().bookkeeping().coin_counter_w(1, data & 0x20);
+>>>>>>> upstream/master
 }
 
 WRITE8_MEMBER(m52_state::alpha1v_flipscreen_w)
@@ -348,7 +386,11 @@ void m52_state::draw_background(bitmap_ind16 &bitmap, const rectangle &cliprect,
  *
  *************************************/
 
+<<<<<<< HEAD
 UINT32 m52_state::screen_update_m52(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+=======
+uint32_t m52_state::screen_update_m52(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+>>>>>>> upstream/master
 {
 	int offs;
 

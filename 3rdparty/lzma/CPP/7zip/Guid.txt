@@ -3,6 +3,7 @@
 00 IProgress.h
 
   05  IProgress
+<<<<<<< HEAD
 
 01 IFolderArchive.h
 
@@ -14,6 +15,27 @@
   0C  Agent.h::IArchiveFolderInternal
   0D
   0E  IInFolderArchive
+=======
+  // 050002  IProgress2
+
+01 IFolderArchive.h
+
+  // 05  IArchiveFolder   // old 
+  // 06  IInFolderArchive // old
+  07  IFileExtractCallback.h::IFolderArchiveExtractCallback
+  08  IFileExtractCallback.h::IFolderArchiveExtractCallback2
+  // 0A  IOutFolderArchive
+  0B  IFolderArchiveUpdateCallback
+  0C  Agent.h::IArchiveFolderInternal
+  0D  IArchiveFolder
+  0E  IInFolderArchive
+  0F  IOutFolderArchive
+  10  IFolderArchiveUpdateCallback2
+  11  IFolderScanProgress
+  
+  20  IFileExtractCallback.h::IGetProp
+  30  IFileExtractCallback.h::IFolderExtractToStreamCallback
+>>>>>>> upstream/master
 
 03 IStream.h
 
@@ -22,7 +44,13 @@
   03  IInStream
   04  IOutStream
   06  IStreamGetSize
+<<<<<<< HEAD
   07  IOutStreamFlush
+=======
+  07  IOutStreamFinish
+  08  IStreamGetProps
+  09  IStreamGetProps2
+>>>>>>> upstream/master
 
 
 04 ICoder.h
@@ -36,12 +64,29 @@
   23  ICompressWriteCoderProperties
   24  ICompressGetInStreamProcessedSize
   25  ICompressSetCoderMt
+<<<<<<< HEAD
   30  ICompressGetSubStreamSize
   31  ICompressSetInStream
   32  ICompressSetOutStream
   33  ICompressSetInStreamSize
   34  ICompressSetOutStreamSize
   35  ICompressSetBufSize
+=======
+  26  ICompressSetFinishMode
+
+  30  ICompressGetSubStreamSize
+  31  ICompressSetInStream
+  32  ICompressSetOutStream
+//  33  ICompressSetInStreamSize
+  34  ICompressSetOutStreamSize
+  35  ICompressSetBufSize
+  36  ICompressInitEncoder
+  37  ICompressSetInStream2
+//  38  ICompressSetOutStream2
+//  39  SetInStreamSize2
+//  3A  SetOutStreamSize2
+
+>>>>>>> upstream/master
   40  ICompressFilter
   60  ICompressCodecsInfo
   61  ISetCompressCodecsInfo
@@ -50,6 +95,11 @@
   8C  ICryptoResetInitVector
   90  ICryptoSetPassword
   A0  ICryptoSetCRC
+<<<<<<< HEAD
+=======
+  C0  IHasher
+  C1  IHashers
+>>>>>>> upstream/master
 
 
 05 IPassword.h
@@ -61,17 +111,38 @@
 06 IArchive.h
 
   03  ISetProperties
+<<<<<<< HEAD
 
   10  IArchiveOpenCallback
   20  IArchiveExtractCallback
+=======
+  04  IArchiveKeepModeForNextOpen
+  05  IArchiveAllowTail
+
+  10  IArchiveOpenCallback
+  
+  20  IArchiveExtractCallback
+  21  IArchiveExtractCallbackMessage
+  
+>>>>>>> upstream/master
   30  IArchiveOpenVolumeCallback
   40  IInArchiveGetStream
   50  IArchiveOpenSetSubArchiveName
   60  IInArchive
   61  IArchiveOpenSeq
+<<<<<<< HEAD
 
   80  IArchiveUpdateCallback
   82  IArchiveUpdateCallback2
+=======
+  70  IArchiveGetRawProps
+  71  IArchiveGetRootProps
+
+  80  IArchiveUpdateCallback
+  82  IArchiveUpdateCallback2
+  83  IArchiveUpdateCallbackFile
+
+>>>>>>> upstream/master
   A0  IOutArchive
 
 
@@ -96,7 +167,16 @@
   0F 
   10 IFolderArcProps
   11 IGetFolderArcProps
+<<<<<<< HEAD
   12 IFolderOperations
+=======
+  12 // IFolderOperations
+  13 IFolderOperations
+  14 IFolderCalcItemFullSize
+  15 IFolderCompare
+  16 IFolderGetItemName
+  17 IFolderAltStreams
+>>>>>>> upstream/master
 
 
 09 IFolder.h :: FOLDER_MANAGER_INTERFACE
@@ -129,6 +209,17 @@ Handler GUIDs:
   0C xz
   0D ppmd
 
+<<<<<<< HEAD
+=======
+  C7 Ext
+  C8 VMDK
+  C9 VDI
+  CA Qcow
+  CB GPT
+  CC Rar5
+  CD IHex
+  CE Hxs
+>>>>>>> upstream/master
   CF TE
   D0 UEFIc
   D1 UEFIs
@@ -163,6 +254,7 @@ Handler GUIDs:
   EE Tar
   EF GZip
 
+<<<<<<< HEAD
 {23170F69-40C1-278A-1000-000100030000} CAgentArchiveHandle
 {23170F69-40C1-278A-1000-000100020000} ContextMenu.h::CZipContextMenu
 
@@ -172,3 +264,14 @@ Handler GUIDs:
 
 {23170F69-40C1-2790-id} Codec Decoders
 {23170F69-40C1-2791-id} Codec Encoders
+=======
+{23170F69-40C1-278A-1000-000100020000} ContextMenu.h::CZipContextMenu
+
+// {23170F69-40C1-278A-1000-000100030000} // CAgentArchiveHandler
+// {23170F69-40C1-278B- old codecs clsids
+// {23170F69-40C1-278D-1000-000100020000} OptionsDialog.h::CLSID_CSevenZipOptions
+
+{23170F69-40C1-2790-id} Codec Decoders
+{23170F69-40C1-2791-id} Codec Encoders
+{23170F69-40C1-2792-id} Hashers
+>>>>>>> upstream/master

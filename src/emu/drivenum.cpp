@@ -2,7 +2,11 @@
 // copyright-holders:Aaron Giles
 /***************************************************************************
 
+<<<<<<< HEAD
     drivenum.c
+=======
+    drivenum.cpp
+>>>>>>> upstream/master
 
     Driver enumeration helpers.
 
@@ -10,6 +14,7 @@
 
 #include "emu.h"
 #include "drivenum.h"
+<<<<<<< HEAD
 #include "softlist.h"
 #include <ctype.h>
 
@@ -113,6 +118,13 @@ void driver_switch::assign_drivers(emu_options &opts)
 	qsort(driver_list::s_drivers_sorted, n, sizeof(*driver_list::s_drivers_sorted), driver_list::driver_sort_callback);
 }
 #endif /* DRIVER_SWITCH */
+=======
+#include "softlist_dev.h"
+
+#include <ctype.h>
+
+
+>>>>>>> upstream/master
 
 //**************************************************************************
 //  DRIVER LIST
@@ -134,6 +146,7 @@ driver_list::driver_list()
 int driver_list::find(const char *name)
 {
 	// if no name, bail
+<<<<<<< HEAD
 	if (name == NULL)
 		return -1;
 
@@ -145,6 +158,17 @@ int driver_list::find(const char *name)
 	// binary search to find it
 	const game_driver **result = reinterpret_cast<const game_driver **>(bsearch(&driverptr, s_drivers_sorted, s_driver_count, sizeof(*s_drivers_sorted), driver_sort_callback));
 	return (result == NULL) ? -1 : result - s_drivers_sorted;
+=======
+	if (!name)
+		return -1;
+
+	// binary search to find it
+	game_driver const *const *const begin = s_drivers_sorted;
+	game_driver const *const *const end = begin + s_driver_count;
+	auto const cmp = [] (game_driver const *driver, char const *name) { return core_stricmp(driver->name, name) < 0; };
+	game_driver const *const *const result = std::lower_bound(begin, end, name, cmp);
+	return ((result == end) || core_stricmp((*result)->name, name)) ? -1 : std::distance(begin, result);
+>>>>>>> upstream/master
 }
 
 
@@ -156,6 +180,7 @@ int driver_list::find(const char *name)
 bool driver_list::matches(const char *wildstring, const char *string)
 {
 	// can only match internal drivers if the wildstring starts with an underscore
+<<<<<<< HEAD
 	if (string[0] == '_' && (wildstring == NULL || wildstring[0] != '_'))
 		return false;
 
@@ -174,6 +199,13 @@ int driver_list::driver_sort_callback(const void *elem1, const void *elem2)
 	const game_driver * const *item1 = reinterpret_cast<const game_driver * const *>(elem1);
 	const game_driver * const *item2 = reinterpret_cast<const game_driver * const *>(elem2);
 	return core_stricmp((*item1)->name, (*item2)->name);
+=======
+	if (string[0] == '_' && (wildstring == nullptr || wildstring[0] != '_'))
+		return false;
+
+	// match everything else normally
+	return (wildstring == nullptr || core_strwildcmp(wildstring, string) == 0);
+>>>>>>> upstream/master
 }
 
 
@@ -191,7 +223,11 @@ int driver_list::penalty_compare(const char *source, const char *target)
 	for ( ; *source && *target; target++)
 	{
 		// do a case insensitive match
+<<<<<<< HEAD
 		bool match = (tolower((UINT8)*source) == tolower((UINT8)*target));
+=======
+		bool const match(tolower(u8(*source)) == tolower(u8(*target)));
+>>>>>>> upstream/master
 
 		// if we matched, advance the source
 		if (match)
@@ -228,6 +264,7 @@ int driver_list::penalty_compare(const char *source, const char *target)
 //-------------------------------------------------
 
 driver_enumerator::driver_enumerator(emu_options &options)
+<<<<<<< HEAD
 	: m_current(-1),
 		m_filtered_count(0),
 		m_options(options),
@@ -236,11 +273,20 @@ driver_enumerator::driver_enumerator(emu_options &options)
 {
 	memset(&m_included[0], 0, s_driver_count);
 	memset(&m_config[0], 0, s_driver_count*sizeof(m_config[0]));
+=======
+	: m_current(-1)
+	, m_filtered_count(0)
+	, m_options(options)
+	, m_included(s_driver_count)
+	, m_config(CONFIG_CACHE_COUNT)
+{
+>>>>>>> upstream/master
 	include_all();
 }
 
 
 driver_enumerator::driver_enumerator(emu_options &options, const char *string)
+<<<<<<< HEAD
 	: m_current(-1),
 		m_filtered_count(0),
 		m_options(options),
@@ -249,11 +295,16 @@ driver_enumerator::driver_enumerator(emu_options &options, const char *string)
 {
 	memset(&m_included[0], 0, s_driver_count);
 	memset(&m_config[0], 0, s_driver_count*sizeof(m_config[0]));
+=======
+	: driver_enumerator(options)
+{
+>>>>>>> upstream/master
 	filter(string);
 }
 
 
 driver_enumerator::driver_enumerator(emu_options &options, const game_driver &driver)
+<<<<<<< HEAD
 	: m_current(-1),
 		m_filtered_count(0),
 		m_options(options),
@@ -262,6 +313,10 @@ driver_enumerator::driver_enumerator(emu_options &options, const game_driver &dr
 {
 	memset(&m_included[0], 0, s_driver_count);
 	memset(&m_config[0], 0, s_driver_count*sizeof(m_config[0]));
+=======
+	: driver_enumerator(options)
+{
+>>>>>>> upstream/master
 	filter(driver);
 }
 
@@ -281,6 +336,7 @@ driver_enumerator::~driver_enumerator()
 //  driver, allocating on demand if needed
 //-------------------------------------------------
 
+<<<<<<< HEAD
 machine_config &driver_enumerator::config(int index, emu_options &options) const
 {
 	assert(index >= 0 && index < s_driver_count);
@@ -301,6 +357,18 @@ machine_config &driver_enumerator::config(int index, emu_options &options) const
 		m_config_cache.append(*global_alloc(config_entry(*config, index)));
 	}
 	return *m_config[index];
+=======
+std::shared_ptr<machine_config> const &driver_enumerator::config(std::size_t index, emu_options &options) const
+{
+	assert(index < s_driver_count);
+
+	// if we don't have it cached, add it
+	std::shared_ptr<machine_config> &config = m_config[index];
+	if (!config)
+		config = std::make_shared<machine_config>(*s_drivers_sorted[index], options);
+
+	return config;
+>>>>>>> upstream/master
 }
 
 
@@ -309,13 +377,21 @@ machine_config &driver_enumerator::config(int index, emu_options &options) const
 //  given string
 //-------------------------------------------------
 
+<<<<<<< HEAD
 int driver_enumerator::filter(const char *filterstring)
+=======
+std::size_t driver_enumerator::filter(const char *filterstring)
+>>>>>>> upstream/master
 {
 	// reset the count
 	exclude_all();
 
 	// match name against each driver in the list
+<<<<<<< HEAD
 	for (int index = 0; index < s_driver_count; index++)
+=======
+	for (std::size_t index = 0; index < s_driver_count; index++)
+>>>>>>> upstream/master
 		if (matches(filterstring, s_drivers_sorted[index]->name))
 			include(index);
 
@@ -328,13 +404,21 @@ int driver_enumerator::filter(const char *filterstring)
 //  given driver
 //-------------------------------------------------
 
+<<<<<<< HEAD
 int driver_enumerator::filter(const game_driver &driver)
+=======
+std::size_t driver_enumerator::filter(const game_driver &driver)
+>>>>>>> upstream/master
 {
 	// reset the count
 	exclude_all();
 
 	// match name against each driver in the list
+<<<<<<< HEAD
 	for (int index = 0; index < s_driver_count; index++)
+=======
+	for (std::size_t index = 0; index < s_driver_count; index++)
+>>>>>>> upstream/master
 		if (s_drivers_sorted[index] == &driver)
 			include(index);
 
@@ -348,6 +432,7 @@ int driver_enumerator::filter(const game_driver &driver)
 
 void driver_enumerator::include_all()
 {
+<<<<<<< HEAD
 	memset(&m_included[0], 1, sizeof(m_included[0]) * s_driver_count);
 	m_filtered_count = s_driver_count;
 
@@ -355,6 +440,13 @@ void driver_enumerator::include_all()
 	int empty = find("___empty");
 	assert(empty != -1);
 	m_included[empty] = 0;
+=======
+	std::fill(m_included.begin(), m_included.end(), true);
+	m_filtered_count = m_included.size();
+
+	// always exclude the empty driver
+	exclude(find("___empty"));
+>>>>>>> upstream/master
 }
 
 
@@ -365,6 +457,7 @@ void driver_enumerator::include_all()
 
 bool driver_enumerator::next()
 {
+<<<<<<< HEAD
 	// always advance one
 	release_current();
 	m_current++;
@@ -379,6 +472,16 @@ bool driver_enumerator::next()
 
 	// return true if we end up in range
 	return (m_current >= 0 && m_current < s_driver_count);
+=======
+	release_current();
+
+	// always advance one
+	// if we have a filter, scan forward to the next match
+	for (m_current++; (m_current < s_driver_count) && !m_included[m_current]; m_current++) { }
+
+	// return true if we end up in range
+	return (m_current >= 0) && (m_current < s_driver_count);
+>>>>>>> upstream/master
 }
 
 
@@ -389,6 +492,7 @@ bool driver_enumerator::next()
 
 bool driver_enumerator::next_excluded()
 {
+<<<<<<< HEAD
 	// always advance one
 	release_current();
 	m_current++;
@@ -403,6 +507,16 @@ bool driver_enumerator::next_excluded()
 
 	// return true if we end up in range
 	return (m_current >= 0 && m_current < s_driver_count);
+=======
+	release_current();
+
+	// always advance one
+	// if we have a filter, scan forward to the next match
+	for (m_current++; (m_current < s_driver_count) && m_included[m_current]; m_current++) { }
+
+	// return true if we end up in range
+	return (m_current >= 0) && (m_current < s_driver_count);
+>>>>>>> upstream/master
 }
 
 
@@ -411,12 +525,20 @@ bool driver_enumerator::next_excluded()
 //  an array of game_driver pointers
 //-------------------------------------------------
 
+<<<<<<< HEAD
 void driver_enumerator::find_approximate_matches(const char *string, int count, int *results)
+=======
+void driver_enumerator::find_approximate_matches(const char *string, std::size_t count, int *results)
+>>>>>>> upstream/master
 {
 #undef rand
 
 	// if no name, pick random entries
+<<<<<<< HEAD
 	if (string == NULL || string[0] == 0)
+=======
+	if (!string || !string[0])
+>>>>>>> upstream/master
 	{
 		// seed the RNG first
 		srand(osd_ticks());
@@ -430,7 +552,11 @@ void driver_enumerator::find_approximate_matches(const char *string, int count, 
 		assert(arrayindex == m_filtered_count);
 
 		// shuffle
+<<<<<<< HEAD
 		for (int shufnum = 0; shufnum < 4 * s_driver_count; shufnum++)
+=======
+		for (int shufnum = 0; shufnum < (4 * s_driver_count); shufnum++)
+>>>>>>> upstream/master
 		{
 			int item1 = rand() % m_filtered_count;
 			int item2 = rand() % m_filtered_count;
@@ -442,6 +568,7 @@ void driver_enumerator::find_approximate_matches(const char *string, int count, 
 		// copy out the first few entries
 		for (int matchnum = 0; matchnum < count; matchnum++)
 			results[matchnum] = templist[matchnum % m_filtered_count];
+<<<<<<< HEAD
 		return;
 	}
 
@@ -485,6 +612,51 @@ void driver_enumerator::find_approximate_matches(const char *string, int count, 
 				penalty[matchnum] = curpenalty;
 			}
 		}
+=======
+	}
+	else
+	{
+		// allocate memory to track the penalty value
+		std::vector<int> penalty(count);
+
+		// initialize everyone's states
+		for (int matchnum = 0; matchnum < count; matchnum++)
+		{
+			penalty[matchnum] = 9999;
+			results[matchnum] = -1;
+		}
+
+		// scan the entire drivers array
+		for (int index = 0; index < s_driver_count; index++)
+		{
+			// skip things that can't run
+			if (m_included[index])
+			{
+				// pick the best match between driver name and description
+				int curpenalty = penalty_compare(string, s_drivers_sorted[index]->type.fullname());
+				int tmp = penalty_compare(string, s_drivers_sorted[index]->name);
+				curpenalty = (std::min)(curpenalty, tmp);
+
+				// insert into the sorted table of matches
+				for (int matchnum = count - 1; matchnum >= 0; matchnum--)
+				{
+					// stop if we're worse than the current entry
+					if (curpenalty >= penalty[matchnum])
+						break;
+
+					// as long as this isn't the last entry, bump this one down
+					if (matchnum < count - 1)
+					{
+						penalty[matchnum + 1] = penalty[matchnum];
+						results[matchnum + 1] = results[matchnum];
+					}
+					results[matchnum] = index;
+					penalty[matchnum] = curpenalty;
+				}
+			}
+		}
+	}
+>>>>>>> upstream/master
 }
 
 
@@ -497,6 +669,7 @@ void driver_enumerator::find_approximate_matches(const char *string, int count, 
 void driver_enumerator::release_current() const
 {
 	// skip if no current entry
+<<<<<<< HEAD
 	if (m_current < 0 || m_current >= s_driver_count)
 		return;
 
@@ -508,4 +681,17 @@ void driver_enumerator::release_current() const
 	software_list_device_iterator deviter(m_config[m_current]->root_device());
 	for (software_list_device *swlistdev = deviter.first(); swlistdev != NULL; swlistdev = deviter.next())
 		swlistdev->release();
+=======
+	if ((m_current >= 0) && (m_current < s_driver_count))
+	{
+		// skip if we haven't cached a config
+		auto const cached = m_config.find(m_current);
+		if (cached != m_config.end())
+		{
+			// iterate over software lists in this entry and reset
+			for (software_list_device &swlistdev : software_list_device_iterator(cached->second->root_device()))
+				swlistdev.release();
+		}
+	}
+>>>>>>> upstream/master
 }

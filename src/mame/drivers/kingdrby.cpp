@@ -72,6 +72,7 @@ sg1_b.e1       4096     0x92ef3c13      D2732D
 *******************************************************************************************/
 
 #include "emu.h"
+<<<<<<< HEAD
 #include "cpu/z80/z80.h"
 #include "video/mc6845.h"
 #include "machine/i8255.h"
@@ -79,6 +80,19 @@ sg1_b.e1       4096     0x92ef3c13      D2732D
 #include "sound/okim6295.h"
 #include "sound/2203intf.h"
 #include "machine/nvram.h"
+=======
+
+#include "cpu/z80/z80.h"
+#include "machine/i8255.h"
+#include "machine/nvram.h"
+#include "sound/2203intf.h"
+#include "sound/ay8910.h"
+#include "sound/okim6295.h"
+#include "video/mc6845.h"
+#include "screen.h"
+#include "speaker.h"
+
+>>>>>>> upstream/master
 #include "kingdrby.lh"
 
 
@@ -94,6 +108,7 @@ public:
 		m_gfxdecode(*this, "gfxdecode"),
 		m_palette(*this, "palette") { }
 
+<<<<<<< HEAD
 	UINT8 m_sound_cmd;
 	required_shared_ptr<UINT8> m_vram;
 	required_shared_ptr<UINT8> m_attr;
@@ -104,6 +119,18 @@ public:
 	UINT8 m_p2_hopper;
 	UINT8 m_mux_data;
 	required_shared_ptr<UINT8> m_spriteram;
+=======
+	uint8_t m_sound_cmd;
+	required_shared_ptr<uint8_t> m_vram;
+	required_shared_ptr<uint8_t> m_attr;
+	tilemap_t *m_sc0_tilemap;
+	tilemap_t *m_sc0w_tilemap;
+	tilemap_t *m_sc1_tilemap;
+	uint8_t m_p1_hopper;
+	uint8_t m_p2_hopper;
+	uint8_t m_mux_data;
+	required_shared_ptr<uint8_t> m_spriteram;
+>>>>>>> upstream/master
 	DECLARE_WRITE8_MEMBER(sc0_vram_w);
 	DECLARE_WRITE8_MEMBER(sc0_attr_w);
 	DECLARE_WRITE8_MEMBER(led_array_w);
@@ -118,10 +145,17 @@ public:
 	DECLARE_WRITE8_MEMBER(outportb_w);
 	TILE_GET_INFO_MEMBER(get_sc0_tile_info);
 	TILE_GET_INFO_MEMBER(get_sc1_tile_info);
+<<<<<<< HEAD
 	virtual void video_start();
 	DECLARE_PALETTE_INIT(kingdrby);
 	DECLARE_PALETTE_INIT(kingdrbb);
 	UINT32 screen_update_kingdrby(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
+=======
+	virtual void video_start() override;
+	DECLARE_PALETTE_INIT(kingdrby);
+	DECLARE_PALETTE_INIT(kingdrbb);
+	uint32_t screen_update_kingdrby(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
+>>>>>>> upstream/master
 	void draw_sprites(bitmap_ind16 &bitmap, const rectangle &cliprect);
 	required_device<cpu_device> m_soundcpu;
 	required_device<gfxdecode_device> m_gfxdecode;
@@ -183,14 +217,24 @@ TILE_GET_INFO_MEMBER(kingdrby_state::get_sc1_tile_info)
 
 void kingdrby_state::video_start()
 {
+<<<<<<< HEAD
 	m_sc0_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(kingdrby_state::get_sc0_tile_info),this),TILEMAP_SCAN_ROWS,8,8,32,24);
 	m_sc1_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(kingdrby_state::get_sc1_tile_info),this),TILEMAP_SCAN_ROWS,8,8,32,24);
 	m_sc0w_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(kingdrby_state::get_sc0_tile_info),this),TILEMAP_SCAN_ROWS,8,8,32,32);
+=======
+	m_sc0_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(kingdrby_state::get_sc0_tile_info),this),TILEMAP_SCAN_ROWS,8,8,32,24);
+	m_sc1_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(kingdrby_state::get_sc1_tile_info),this),TILEMAP_SCAN_ROWS,8,8,32,24);
+	m_sc0w_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(kingdrby_state::get_sc0_tile_info),this),TILEMAP_SCAN_ROWS,8,8,32,32);
+>>>>>>> upstream/master
 
 	m_sc1_tilemap->set_transparent_pen(0);
 }
 
+<<<<<<< HEAD
 static const UINT8 hw_sprite[16] =
+=======
+static const uint8_t hw_sprite[16] =
+>>>>>>> upstream/master
 {
 	0x34, 0x34, 0x34, 0x34, 0x34, 0x34, 0x34, 0x22,
 	0x22, 0x22, 0x22, 0x22, 0x22, 0x11, 0x22, 0x22
@@ -198,7 +242,11 @@ static const UINT8 hw_sprite[16] =
 
 void kingdrby_state::draw_sprites(bitmap_ind16 &bitmap, const rectangle &cliprect)
 {
+<<<<<<< HEAD
 	UINT8 *spriteram = m_spriteram;
+=======
+	uint8_t *spriteram = m_spriteram;
+>>>>>>> upstream/master
 	int count = 0;
 
 	/*sprites not fully understood.*/
@@ -240,7 +288,11 @@ void kingdrby_state::draw_sprites(bitmap_ind16 &bitmap, const rectangle &cliprec
 	}
 }
 
+<<<<<<< HEAD
 UINT32 kingdrby_state::screen_update_kingdrby(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+=======
+uint32_t kingdrby_state::screen_update_kingdrby(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+>>>>>>> upstream/master
 {
 	const rectangle &visarea = screen.visible_area();
 	rectangle clip;
@@ -303,7 +355,11 @@ WRITE8_MEMBER(kingdrby_state::sound_cmd_w)
 	m_soundcpu->set_input_line(INPUT_LINE_NMI, PULSE_LINE);
 	m_sound_cmd = data;
 	/* soundlatch is unneeded since we are already using perfect interleave. */
+<<<<<<< HEAD
 	// soundlatch_byte_w(space,0, data);
+=======
+	// m_soundlatch->write(space,0, data);
+>>>>>>> upstream/master
 }
 
 
@@ -324,8 +380,13 @@ READ8_MEMBER(kingdrby_state::input_mux_r)
 
 READ8_MEMBER(kingdrby_state::key_matrix_r)
 {
+<<<<<<< HEAD
 	UINT16 p1_val,p2_val;
 	UINT8 p1_res,p2_res;
+=======
+	uint16_t p1_val,p2_val;
+	uint8_t p1_res,p2_res;
+>>>>>>> upstream/master
 
 	p1_val = ioport("KEY_1P")->read();
 	p2_val = ioport("KEY_2P")->read();
@@ -379,7 +440,11 @@ READ8_MEMBER(kingdrby_state::sound_cmd_r)
 	return m_sound_cmd;
 }
 
+<<<<<<< HEAD
 static const UINT8 led_map[16] =
+=======
+static const uint8_t led_map[16] =
+>>>>>>> upstream/master
 	{ 0x3f,0x06,0x5b,0x4f,0x66,0x6d,0x7c,0x07,0x7f,0x67,0x77,0x7c,0x39,0x5e,0x79,0x00 };
 
 WRITE8_MEMBER(kingdrby_state::led_array_w)
@@ -391,8 +456,13 @@ WRITE8_MEMBER(kingdrby_state::led_array_w)
 	they goes from 0 to 5, to indicate the number.
 	If one player bets something, the other led will toggle between p1 and p2 bets.
 	*/
+<<<<<<< HEAD
 	output_set_digit_value(0xf + offset, led_map[(data & 0xf0) >> 4]);
 	output_set_digit_value(0x0 + offset, led_map[(data & 0x0f) >> 0]);
+=======
+	output().set_digit_value(0xf + offset, led_map[(data & 0xf0) >> 4]);
+	output().set_digit_value(0x0 + offset, led_map[(data & 0x0f) >> 0]);
+>>>>>>> upstream/master
 
 }
 
@@ -866,7 +936,11 @@ GFXDECODE_END
 
 PALETTE_INIT_MEMBER(kingdrby_state,kingdrby)
 {
+<<<<<<< HEAD
 	const UINT8 *color_prom = memregion("proms")->base();
+=======
+	const uint8_t *color_prom = memregion("proms")->base();
+>>>>>>> upstream/master
 	int bit0, bit1, bit2 , r, g, b;
 	int i;
 
@@ -892,8 +966,13 @@ PALETTE_INIT_MEMBER(kingdrby_state,kingdrby)
 
 PALETTE_INIT_MEMBER(kingdrby_state,kingdrbb)
 {
+<<<<<<< HEAD
 	UINT8 *raw_prom = memregion("raw_prom")->base();
 	UINT8 *prom = memregion("proms")->base();
+=======
+	uint8_t *raw_prom = memregion("raw_prom")->base();
+	uint8_t *prom = memregion("proms")->base();
+>>>>>>> upstream/master
 	int bit0, bit1, bit2 , r, g, b;
 	int i;
 
@@ -922,7 +1001,11 @@ PALETTE_INIT_MEMBER(kingdrby_state,kingdrbb)
 	}
 }
 
+<<<<<<< HEAD
 static MACHINE_CONFIG_START( kingdrby, kingdrby_state )
+=======
+static MACHINE_CONFIG_START( kingdrby )
+>>>>>>> upstream/master
 	MCFG_CPU_ADD("master", Z80, CLK_2)
 	MCFG_CPU_PROGRAM_MAP(master_map)
 	MCFG_CPU_IO_MAP(master_io_map)
@@ -1008,7 +1091,11 @@ static MACHINE_CONFIG_DERIVED( cowrace, kingdrbb )
 	MCFG_GFXDECODE_MODIFY("gfxdecode", cowrace)
 	MCFG_PALETTE_MODIFY("palette")
 	MCFG_PALETTE_INIT_OWNER(kingdrby_state,kingdrby)
+<<<<<<< HEAD
 	MCFG_OKIM6295_ADD("oki", 1056000, OKIM6295_PIN7_HIGH) // clock frequency & pin 7 not verified
+=======
+	MCFG_OKIM6295_ADD("oki", 1056000, PIN7_HIGH) // clock frequency & pin 7 not verified
+>>>>>>> upstream/master
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 0.80)
 
 	MCFG_SOUND_REPLACE("aysnd", YM2203, 3000000)
@@ -1188,7 +1275,14 @@ ROM_START( kingdrbb2 )
 ROM_END
 
 
+<<<<<<< HEAD
 GAMEL( 1981, kingdrby,  0,        kingdrby, kingdrby, driver_device, 0, ROT0, "Tazmi",                        "King Derby (1981)",           MACHINE_IMPERFECT_GRAPHICS | MACHINE_IMPERFECT_COLORS | MACHINE_IMPERFECT_SOUND, layout_kingdrby )
 GAME ( 1986, kingdrbb,  kingdrby, kingdrbb, kingdrbb, driver_device, 0, ROT0, "bootleg (Casino Electronics)", "King Derby (Taiwan bootleg)", MACHINE_IMPERFECT_GRAPHICS | MACHINE_IMPERFECT_COLORS )
 GAMEL( 198?, kingdrbb2, kingdrby, kingdrby, kingdrby, driver_device, 0, ROT0, "bootleg",                      "King Derby (bootleg set 2)",  MACHINE_IMPERFECT_GRAPHICS | MACHINE_IMPERFECT_COLORS | MACHINE_IMPERFECT_SOUND, layout_kingdrby )
 GAME ( 2000, cowrace,   kingdrby, cowrace,  kingdrbb, driver_device, 0, ROT0, "bootleg (Gate In)",            "Cow Race (King Derby hack)",  MACHINE_NOT_WORKING | MACHINE_WRONG_COLORS )
+=======
+GAMEL( 1981, kingdrby,  0,        kingdrby, kingdrby, kingdrby_state, 0, ROT0, "Tazmi",                        "King Derby (1981)",           MACHINE_IMPERFECT_GRAPHICS | MACHINE_IMPERFECT_COLORS | MACHINE_IMPERFECT_SOUND, layout_kingdrby )
+GAME ( 1986, kingdrbb,  kingdrby, kingdrbb, kingdrbb, kingdrby_state, 0, ROT0, "bootleg (Casino Electronics)", "King Derby (Taiwan bootleg)", MACHINE_IMPERFECT_GRAPHICS | MACHINE_IMPERFECT_COLORS )
+GAMEL( 198?, kingdrbb2, kingdrby, kingdrby, kingdrby, kingdrby_state, 0, ROT0, "bootleg",                      "King Derby (bootleg set 2)",  MACHINE_IMPERFECT_GRAPHICS | MACHINE_IMPERFECT_COLORS | MACHINE_IMPERFECT_SOUND, layout_kingdrby )
+GAME ( 2000, cowrace,   kingdrby, cowrace,  kingdrbb, kingdrby_state, 0, ROT0, "bootleg (Gate In)",            "Cow Race (King Derby hack)",  MACHINE_NOT_WORKING | MACHINE_WRONG_COLORS )
+>>>>>>> upstream/master

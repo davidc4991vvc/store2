@@ -7,14 +7,23 @@
 
 **********************************************************************/
 
+<<<<<<< HEAD
+=======
+#include "emu.h"
+>>>>>>> upstream/master
 #include "arkpaddle.h"
 
 //**************************************************************************
 //  DEVICE DEFINITIONS
 //**************************************************************************
 
+<<<<<<< HEAD
 const device_type NES_ARKPADDLE = &device_creator<nes_vaus_device>;
 const device_type NES_ARKPADDLE_FC = &device_creator<nes_vausfc_device>;
+=======
+DEFINE_DEVICE_TYPE(NES_ARKPADDLE,    nes_vaus_device,   "nes_vaus",   "NES Arkanoid Vaus Controller")
+DEFINE_DEVICE_TYPE(NES_ARKPADDLE_FC, nes_vausfc_device, "nes_vausfc", "FC Arkanoid Vaus Controller")
+>>>>>>> upstream/master
 
 
 static INPUT_PORTS_START( arkanoid_paddle )
@@ -44,6 +53,7 @@ ioport_constructor nes_vaus_device::device_input_ports() const
 //  nes_vaus_device - constructor
 //-------------------------------------------------
 
+<<<<<<< HEAD
 nes_vaus_device::nes_vaus_device(const machine_config &mconfig, device_type type, const char *name, const char *tag, device_t *owner, UINT32 clock, const char *shortname, const char *source)
 					: device_t(mconfig, type, name, tag, owner, clock, shortname, source),
 						device_nes_control_port_interface(mconfig, *this),
@@ -62,6 +72,24 @@ nes_vaus_device::nes_vaus_device(const machine_config &mconfig, const char *tag,
 
 nes_vausfc_device::nes_vausfc_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock) :
 					nes_vaus_device(mconfig, NES_ARKPADDLE_FC, "FC Arkanoid Vaus Controller", tag, owner, clock, "nes_vausfc", __FILE__)
+=======
+nes_vaus_device::nes_vaus_device(const machine_config &mconfig, device_type type, const char *tag, device_t *owner, uint32_t clock)
+	: device_t(mconfig, type, tag, owner, clock)
+	, device_nes_control_port_interface(mconfig, *this)
+	, m_paddle(*this, "PADDLE")
+	, m_button(*this, "BUTTON")
+	, m_start_conv(0), m_latch(0)
+{
+}
+
+nes_vaus_device::nes_vaus_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: nes_vaus_device(mconfig, NES_ARKPADDLE, tag, owner, clock)
+{
+}
+
+nes_vausfc_device::nes_vausfc_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: nes_vaus_device(mconfig, NES_ARKPADDLE_FC, tag, owner, clock)
+>>>>>>> upstream/master
 {
 }
 
@@ -92,18 +120,30 @@ void nes_vaus_device::device_reset()
 //  read
 //-------------------------------------------------
 
+<<<<<<< HEAD
 UINT8 nes_vaus_device::read_bit34()
 {
 	UINT8 ret = (m_button->read() << 3);
+=======
+uint8_t nes_vaus_device::read_bit34()
+{
+	uint8_t ret = (m_button->read() << 3);
+>>>>>>> upstream/master
 	ret |= (m_latch & 0x80) >> 3;
 	m_latch <<= 1;
 	m_latch &= 0xff;
 	return ret;
 }
 
+<<<<<<< HEAD
 UINT8 nes_vausfc_device::read_exp(offs_t offset)
 {
 	UINT8 ret = 0;
+=======
+uint8_t nes_vausfc_device::read_exp(offs_t offset)
+{
+	uint8_t ret;
+>>>>>>> upstream/master
 	if (offset == 0)    //$4016
 		ret = m_button->read() << 1;
 	else    //$4017
@@ -119,12 +159,20 @@ UINT8 nes_vausfc_device::read_exp(offs_t offset)
 //  write
 //-------------------------------------------------
 
+<<<<<<< HEAD
 void nes_vaus_device::write(UINT8 data)
+=======
+void nes_vaus_device::write(uint8_t data)
+>>>>>>> upstream/master
 {
 	int old = m_start_conv;
 
 	if (data == 0 && old == 1)
+<<<<<<< HEAD
 		m_latch = (UINT8) (m_paddle->read() ^ 0xff);
+=======
+		m_latch = (uint8_t) (m_paddle->read() ^ 0xff);
+>>>>>>> upstream/master
 
 	m_start_conv = data;
 }

@@ -6,12 +6,20 @@
 
 **********************************************************************/
 
+<<<<<<< HEAD
 #pragma once
 
 #ifndef __C8050_FLOPPY__
 #define __C8050_FLOPPY__
 
 #include "emu.h"
+=======
+#ifndef MAME_BUS_IEEE488_C8050FDC_H
+#define MAME_BUS_IEEE488_C8050FDC_H
+
+#pragma once
+
+>>>>>>> upstream/master
 #include "formats/d80_dsk.h"
 #include "formats/d82_dsk.h"
 #include "imagedev/floppy.h"
@@ -24,6 +32,7 @@
 //**************************************************************************
 
 #define MCFG_C8050_SYNC_CALLBACK(_write) \
+<<<<<<< HEAD
 	devcb = &c8050_fdc_t::set_sync_wr_callback(*device, DEVCB_##_write);
 
 #define MCFG_C8050_READY_CALLBACK(_write) \
@@ -34,6 +43,18 @@
 
 #define MCFG_C8050_ERROR_CALLBACK(_write) \
 	devcb = &c8050_fdc_t::set_error_wr_callback(*device, DEVCB_##_write);
+=======
+	devcb = &c8050_fdc_device::set_sync_wr_callback(*device, DEVCB_##_write);
+
+#define MCFG_C8050_READY_CALLBACK(_write) \
+	devcb = &c8050_fdc_device::set_ready_wr_callback(*device, DEVCB_##_write);
+
+#define MCFG_C8050_BRDY_CALLBACK(_write) \
+	devcb = &c8050_fdc_device::set_brdy_wr_callback(*device, DEVCB_##_write);
+
+#define MCFG_C8050_ERROR_CALLBACK(_write) \
+	devcb = &c8050_fdc_device::set_error_wr_callback(*device, DEVCB_##_write);
+>>>>>>> upstream/master
 
 
 
@@ -41,6 +62,7 @@
 //  TYPE DEFINITIONS
 //**************************************************************************
 
+<<<<<<< HEAD
 // ======================> c8050_fdc_t
 
 class c8050_fdc_t :  public device_t
@@ -53,6 +75,20 @@ public:
 	template<class _Object> static devcb_base &set_ready_wr_callback(device_t &device, _Object object) { return downcast<c8050_fdc_t &>(device).m_write_ready.set_callback(object); }
 	template<class _Object> static devcb_base &set_brdy_wr_callback(device_t &device, _Object object) { return downcast<c8050_fdc_t &>(device).m_write_brdy.set_callback(object); }
 	template<class _Object> static devcb_base &set_error_wr_callback(device_t &device, _Object object) { return downcast<c8050_fdc_t &>(device).m_write_error.set_callback(object); }
+=======
+// ======================> c8050_fdc_device
+
+class c8050_fdc_device :  public device_t
+{
+public:
+	// construction/destruction
+	c8050_fdc_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
+
+	template <class Object> static devcb_base &set_sync_wr_callback(device_t &device, Object &&cb) { return downcast<c8050_fdc_device &>(device).m_write_sync.set_callback(std::forward<Object>(cb)); }
+	template <class Object> static devcb_base &set_ready_wr_callback(device_t &device, Object &&cb) { return downcast<c8050_fdc_device &>(device).m_write_ready.set_callback(std::forward<Object>(cb)); }
+	template <class Object> static devcb_base &set_brdy_wr_callback(device_t &device, Object &&cb) { return downcast<c8050_fdc_device &>(device).m_write_brdy.set_callback(std::forward<Object>(cb)); }
+	template <class Object> static devcb_base &set_error_wr_callback(device_t &device, Object &&cb) { return downcast<c8050_fdc_device &>(device).m_write_error.set_callback(std::forward<Object>(cb)); }
+>>>>>>> upstream/master
 
 	DECLARE_READ8_MEMBER( read );
 	DECLARE_WRITE8_MEMBER( write );
@@ -77,12 +113,21 @@ public:
 
 protected:
 	// device-level overrides
+<<<<<<< HEAD
 	virtual void device_start();
 	virtual void device_reset();
 	virtual void device_timer(emu_timer &timer, device_timer_id id, int param, void *ptr);
 
 	// optional information overrides
 	virtual const rom_entry *device_rom_region() const;
+=======
+	virtual void device_start() override;
+	virtual void device_reset() override;
+	virtual void device_timer(emu_timer &timer, device_timer_id id, int param, void *ptr) override;
+
+	// optional information overrides
+	virtual const tiny_rom_entry *device_rom_region() const override;
+>>>>>>> upstream/master
 
 	void stp_w(floppy_image_device *floppy, int mtr, int &old_stp, int stp);
 
@@ -106,6 +151,7 @@ protected:
 		int odd_hd;
 
 		attotime edge;
+<<<<<<< HEAD
 		UINT16 shift_reg;
 		int bit_counter;
 		UINT8 e;
@@ -113,6 +159,15 @@ protected:
 
 		UINT8 pi;
 		UINT16 shift_reg_write;
+=======
+		uint16_t shift_reg;
+		int bit_counter;
+		uint8_t e;
+		offs_t i;
+
+		uint8_t pi;
+		uint16_t shift_reg_write;
+>>>>>>> upstream/master
 	};
 
 	devcb_write_line m_write_sync;
@@ -136,7 +191,11 @@ protected:
 	int m_mode_sel;
 	int m_rw_sel;
 	int m_odd_hd;
+<<<<<<< HEAD
 	UINT8 m_pi;
+=======
+	uint8_t m_pi;
+>>>>>>> upstream/master
 
 	live_info cur_live, checkpoint_live;
 	fdc_pll_t cur_pll, checkpoint_pll;
@@ -163,8 +222,14 @@ protected:
 
 
 // device type definition
+<<<<<<< HEAD
 extern const device_type C8050_FDC;
 
 
 
 #endif
+=======
+DECLARE_DEVICE_TYPE(C8050_FDC, c8050_fdc_device)
+
+#endif // MAME_BUS_IEEE488_C8050FDC_H
+>>>>>>> upstream/master

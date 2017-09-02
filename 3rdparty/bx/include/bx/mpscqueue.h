@@ -1,24 +1,42 @@
 /*
+<<<<<<< HEAD
  * Copyright 2010-2015 Branimir Karadzic. All rights reserved.
  * License: http://www.opensource.org/licenses/BSD-2-Clause
+=======
+ * Copyright 2010-2017 Branimir Karadzic. All rights reserved.
+ * License: https://github.com/bkaradzic/bx#license-bsd-2-clause
+>>>>>>> upstream/master
  */
 
 #ifndef BX_MPSCQUEUE_H_HEADER_GUARD
 #define BX_MPSCQUEUE_H_HEADER_GUARD
 
+<<<<<<< HEAD
+=======
+#include "mutex.h"
+>>>>>>> upstream/master
 #include "spscqueue.h"
 
 namespace bx
 {
+<<<<<<< HEAD
 	template <typename Ty>
 	class MpScUnboundedQueue
 	{
 		BX_CLASS(MpScUnboundedQueue
+=======
+	///
+	template <typename Ty>
+	class MpScUnboundedQueueT
+	{
+		BX_CLASS(MpScUnboundedQueueT
+>>>>>>> upstream/master
 			, NO_COPY
 			, NO_ASSIGNMENT
 			);
 
 	public:
+<<<<<<< HEAD
 		MpScUnboundedQueue()
 		{
 		}
@@ -48,6 +66,29 @@ namespace bx
 		SpScUnboundedQueue<Ty> m_queue;
 	};
 
+=======
+		///
+		MpScUnboundedQueueT();
+
+		///
+		~MpScUnboundedQueueT();
+
+		///
+		void push(Ty* _ptr); // producer only
+
+		///
+		Ty* peek(); // consumer only
+
+		///
+		Ty* pop(); // consumer only
+
+	private:
+		Mutex m_write;
+		SpScUnboundedQueueT<Ty> m_queue;
+	};
+
+	///
+>>>>>>> upstream/master
 	template <typename Ty>
 	class MpScUnboundedBlockingQueue
 	{
@@ -57,6 +98,7 @@ namespace bx
 			);
 
 	public:
+<<<<<<< HEAD
 		MpScUnboundedBlockingQueue()
 		{
 		}
@@ -79,9 +121,30 @@ namespace bx
 
 	private:
 		MpScUnboundedQueue<Ty> m_queue;
+=======
+		///
+		MpScUnboundedBlockingQueue();
+
+		///
+		~MpScUnboundedBlockingQueue();
+
+		///
+		void push(Ty* _ptr); // producer only
+
+		///
+		Ty* pop(); // consumer only
+
+	private:
+		MpScUnboundedQueueT<Ty> m_queue;
+>>>>>>> upstream/master
 		Semaphore m_sem;
 	};
 
 } // namespace bx
 
+<<<<<<< HEAD
+=======
+#include "inline/mpscqueue.inl"
+
+>>>>>>> upstream/master
 #endif // BX_MPSCQUEUE_H_HEADER_GUARD

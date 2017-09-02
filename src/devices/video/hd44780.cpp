@@ -13,14 +13,25 @@
 #include "emu.h"
 #include "video/hd44780.h"
 
+<<<<<<< HEAD
 #define LOG          0
+=======
+//#define VERBOSE 1
+#include "logmacro.h"
+
+>>>>>>> upstream/master
 
 //**************************************************************************
 //  DEVICE DEFINITIONS
 //**************************************************************************
 
+<<<<<<< HEAD
 const device_type HD44780 = &device_creator<hd44780_device>;
 const device_type KS0066_F05 = &device_creator<ks0066_f05_device>;
+=======
+DEFINE_DEVICE_TYPE(HD44780,    hd44780_device,    "hd44780_a00", "Hitachi HD44780 A00 LCD Controller")
+DEFINE_DEVICE_TYPE(KS0066_F05, ks0066_f05_device, "ks0066_f05",  "Samsung KS0066 F05 LCD Controller")
+>>>>>>> upstream/master
 
 
 //-------------------------------------------------
@@ -45,13 +56,19 @@ ROM_END
 //  hd44780_device - constructor
 //-------------------------------------------------
 
+<<<<<<< HEAD
 hd44780_device::hd44780_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock) :
 	device_t(mconfig, HD44780, "HD44780 A00", tag, owner, clock, "hd44780_a00", __FILE__),
 	m_pixel_update_func(NULL)
+=======
+hd44780_device::hd44780_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: hd44780_device(mconfig, HD44780, tag, owner, clock)
+>>>>>>> upstream/master
 {
 	set_charset_type(CHARSET_HD44780_A00);
 }
 
+<<<<<<< HEAD
 hd44780_device::hd44780_device(const machine_config &mconfig, device_type type, const char *name, const char *tag, device_t *owner, UINT32 clock, const char *shortname, const char *source) :
 	device_t(mconfig, type, name, tag, owner, clock, shortname, source),
 	m_pixel_update_func(NULL)
@@ -60,6 +77,17 @@ hd44780_device::hd44780_device(const machine_config &mconfig, device_type type, 
 
 ks0066_f05_device::ks0066_f05_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock) :
 	hd44780_device(mconfig, KS0066_F05, "KS0066 F05", tag, owner, clock, "ks0066_f05", __FILE__)
+=======
+hd44780_device::hd44780_device(const machine_config &mconfig, device_type type, const char *tag, device_t *owner, uint32_t clock)
+	: device_t(mconfig, type, tag, owner, clock)
+	, m_cgrom(nullptr)
+	, m_cgrom_region(*this, DEVICE_SELF)
+{
+}
+
+ks0066_f05_device::ks0066_f05_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock) :
+	hd44780_device(mconfig, KS0066_F05, tag, owner, clock)
+>>>>>>> upstream/master
 {
 	set_charset_type(CHARSET_KS0066_F05);
 }
@@ -69,7 +97,11 @@ ks0066_f05_device::ks0066_f05_device(const machine_config &mconfig, const char *
 //  rom_region - device-specific ROM region
 //-------------------------------------------------
 
+<<<<<<< HEAD
 const rom_entry *hd44780_device::device_rom_region() const
+=======
+const tiny_rom_entry *hd44780_device::device_rom_region() const
+>>>>>>> upstream/master
 {
 	switch (m_charset_type)
 	{
@@ -77,7 +109,11 @@ const rom_entry *hd44780_device::device_rom_region() const
 		case CHARSET_KS0066_F05:    return ROM_NAME( ks0066_f05 );
 	}
 
+<<<<<<< HEAD
 	return NULL;
+=======
+	return nullptr;
+>>>>>>> upstream/master
 }
 
 //-------------------------------------------------
@@ -86,10 +122,16 @@ const rom_entry *hd44780_device::device_rom_region() const
 
 void hd44780_device::device_start()
 {
+<<<<<<< HEAD
 	if (region())
 		m_cgrom = region()->base();
 	else
 		m_cgrom = memregion("cgrom")->base();
+=======
+	m_cgrom = m_cgrom_region.found() ? m_cgrom_region : memregion("cgrom")->base();
+
+	m_pixel_update_cb.bind_relative_to(*owner());
+>>>>>>> upstream/master
 
 	m_busy_timer = timer_alloc(TIMER_BUSY);
 	m_blink_timer = timer_alloc(TIMER_BLINKING);
@@ -178,7 +220,11 @@ void hd44780_device::set_charset_type(int type)
 	m_charset_type = type;
 }
 
+<<<<<<< HEAD
 void hd44780_device::set_busy_flag(UINT16 usec)
+=======
+void hd44780_device::set_busy_flag(uint16_t usec)
+>>>>>>> upstream/master
 {
 	m_busy_flag = true;
 	m_busy_timer->adjust( attotime::from_usec( usec ) );
@@ -233,6 +279,7 @@ void hd44780_device::update_nibble(int rs, int rw)
 	m_nibble = !m_nibble;
 }
 
+<<<<<<< HEAD
 inline void hd44780_device::pixel_update(bitmap_ind16 &bitmap, UINT8 line, UINT8 pos, UINT8 y, UINT8 x, int state)
 {
 	if (m_pixel_update_func != NULL)
@@ -242,6 +289,17 @@ inline void hd44780_device::pixel_update(bitmap_ind16 &bitmap, UINT8 line, UINT8
 	else
 	{
 		UINT8 line_height = (m_char_size == 8) ? m_char_size : m_char_size + 1;
+=======
+inline void hd44780_device::pixel_update(bitmap_ind16 &bitmap, uint8_t line, uint8_t pos, uint8_t y, uint8_t x, int state)
+{
+	if (!m_pixel_update_cb.isnull())
+	{
+		m_pixel_update_cb(bitmap, line, pos, y, x, state);
+	}
+	else
+	{
+		uint8_t line_height = (m_char_size == 8) ? m_char_size : m_char_size + 1;
+>>>>>>> upstream/master
 
 		if (m_lines <= 2)
 		{
@@ -274,21 +332,35 @@ inline void hd44780_device::pixel_update(bitmap_ind16 &bitmap, UINT8 line, UINT8
 //  device interface
 //**************************************************************************
 
+<<<<<<< HEAD
 const UINT8 *hd44780_device::render()
+=======
+const uint8_t *hd44780_device::render()
+>>>>>>> upstream/master
 {
 	memset(m_render_buf, 0, sizeof(m_render_buf));
 
 	if (m_display_on)
 	{
+<<<<<<< HEAD
 		UINT8 line_size = 80 / m_num_line;
+=======
+		uint8_t line_size = 80 / m_num_line;
+>>>>>>> upstream/master
 
 		for (int line = 0; line < m_num_line; line++)
 		{
 			for (int pos = 0; pos < line_size; pos++)
 			{
+<<<<<<< HEAD
 				UINT16 char_pos = line * 0x40 + ((pos + m_disp_shift) % line_size);
 
 				int char_base = 0;
+=======
+				uint16_t char_pos = line * 0x40 + ((pos + m_disp_shift) % line_size);
+
+				int char_base;
+>>>>>>> upstream/master
 				if (m_ddram[char_pos] < 0x10)
 				{
 					// draw CGRAM characters
@@ -303,8 +375,13 @@ const UINT8 *hd44780_device::render()
 					char_base = m_ddram[char_pos] * 0x10;
 				}
 
+<<<<<<< HEAD
 				const UINT8 * charset = (m_ddram[char_pos] < 0x10) ? m_cgram : m_cgrom;
 				UINT8 *dest = m_render_buf + 16 * (line * line_size + pos);
+=======
+				const uint8_t * charset = (m_ddram[char_pos] < 0x10) ? m_cgram : m_cgrom;
+				uint8_t *dest = m_render_buf + 16 * (line * line_size + pos);
+>>>>>>> upstream/master
 				memcpy (dest, charset + char_base, m_char_size);
 
 				if (char_pos == m_ac)
@@ -323,18 +400,31 @@ const UINT8 *hd44780_device::render()
 	return m_render_buf;
 }
 
+<<<<<<< HEAD
 UINT32 hd44780_device::screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
 {
 	bitmap.fill(0, cliprect);
 	const UINT8 *img = render();
 
 	UINT8 line_size = 80 / m_num_line;
+=======
+uint32_t hd44780_device::screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+{
+	bitmap.fill(0, cliprect);
+	const uint8_t *img = render();
+
+	uint8_t line_size = 80 / m_num_line;
+>>>>>>> upstream/master
 
 	for (int line = 0; line < m_num_line; line++)
 	{
 		for (int pos = 0; pos < line_size; pos++)
 		{
+<<<<<<< HEAD
 			const UINT8 *src = img + 16 * (line * line_size + pos);
+=======
+			const uint8_t *src = img + 16 * (line * line_size + pos);
+>>>>>>> upstream/master
 			for (int y = 0; y < m_char_size; y++)
 				for (int x = 0; x < 5; x++)
 					pixel_update(bitmap, line, pos, y, x, BIT(src[y], 4 - x));
@@ -393,7 +483,11 @@ WRITE8_MEMBER(hd44780_device::control_write)
 		correct_ac();
 		set_busy_flag(37);
 
+<<<<<<< HEAD
 		if (LOG) logerror("HD44780 '%s': set DDRAM address %x\n", tag(), m_ac);
+=======
+		LOG("HD44780: set DDRAM address %x\n", m_ac);
+>>>>>>> upstream/master
 		return;
 	}
 	else if (BIT(m_ir, 6))
@@ -403,7 +497,11 @@ WRITE8_MEMBER(hd44780_device::control_write)
 		m_ac = m_ir & 0x3f;
 		set_busy_flag(37);
 
+<<<<<<< HEAD
 		if (LOG) logerror("HD44780 '%s': set CGRAM address %x\n", tag(), m_ac);
+=======
+		LOG("HD44780: set CGRAM address %x\n", m_ac);
+>>>>>>> upstream/master
 		return;
 	}
 	else if (BIT(m_ir, 5))
@@ -421,7 +519,11 @@ WRITE8_MEMBER(hd44780_device::control_write)
 		correct_ac();
 		set_busy_flag(37);
 
+<<<<<<< HEAD
 		if (LOG) logerror("HD44780 '%s': char size 5x%d, data len %d, lines %d\n", tag(), m_char_size, m_data_len, m_num_line);
+=======
+		LOG("HD44780: char size 5x%d, data len %d, lines %d\n", m_char_size, m_data_len, m_num_line);
+>>>>>>> upstream/master
 		return;
 	}
 	else if (BIT(m_ir, 4))
@@ -429,7 +531,11 @@ WRITE8_MEMBER(hd44780_device::control_write)
 		// cursor or display shift
 		int direction = (BIT(m_ir, 2)) ? +1 : -1;
 
+<<<<<<< HEAD
 		if (LOG) logerror("HD44780 '%s': %s shift %d\n", tag(), BIT(m_ir, 3) ? "display" : "cursor", direction);
+=======
+		LOG("HD44780: %s shift %d\n", BIT(m_ir, 3) ? "display" : "cursor", direction);
+>>>>>>> upstream/master
 
 		if (BIT(m_ir, 3))
 			shift_display(direction);
@@ -446,7 +552,11 @@ WRITE8_MEMBER(hd44780_device::control_write)
 		m_blink_on   = BIT(m_ir, 0);
 		set_busy_flag(37);
 
+<<<<<<< HEAD
 		if (LOG) logerror("HD44780 '%s': display %d, cursor %d, blink %d\n", tag(), m_display_on, m_cursor_on, m_blink_on);
+=======
+		LOG("HD44780: display %d, cursor %d, blink %d\n", m_display_on, m_cursor_on, m_blink_on);
+>>>>>>> upstream/master
 	}
 	else if (BIT(m_ir, 2))
 	{
@@ -455,12 +565,20 @@ WRITE8_MEMBER(hd44780_device::control_write)
 		m_shift_on  = BIT(m_ir, 0);
 		set_busy_flag(37);
 
+<<<<<<< HEAD
 		if (LOG) logerror("HD44780 '%s': entry mode set: direction %d, shift %d\n", tag(), m_direction, m_shift_on);
+=======
+		LOG("HD44780: entry mode set: direction %d, shift %d\n", m_direction, m_shift_on);
+>>>>>>> upstream/master
 	}
 	else if (BIT(m_ir, 1))
 	{
 		// return home
+<<<<<<< HEAD
 		if (LOG) logerror("HD44780 '%s': return home\n", tag());
+=======
+		LOG("HD44780: return home\n");
+>>>>>>> upstream/master
 
 		m_ac         = 0;
 		m_active_ram = DDRAM;
@@ -471,7 +589,11 @@ WRITE8_MEMBER(hd44780_device::control_write)
 	else if (BIT(m_ir, 0))
 	{
 		// clear display
+<<<<<<< HEAD
 		if (LOG) logerror("HD44780 '%s': clear display\n", tag());
+=======
+		LOG("HD44780: clear display\n");
+>>>>>>> upstream/master
 
 		m_ac         = 0;
 		m_active_ram = DDRAM;
@@ -488,7 +610,11 @@ READ8_MEMBER(hd44780_device::control_read)
 {
 	if (m_data_len == 4)
 	{
+<<<<<<< HEAD
 		if (!space.debugger_access())
+=======
+		if (!machine().side_effect_disabled())
+>>>>>>> upstream/master
 			update_nibble(0, 1);
 
 		if (m_nibble)
@@ -506,7 +632,11 @@ WRITE8_MEMBER(hd44780_device::data_write)
 {
 	if (m_busy_flag)
 	{
+<<<<<<< HEAD
 		logerror("HD44780 '%s': Ignoring data write %02x due of busy flag\n", tag(), data);
+=======
+		logerror("HD44780: Ignoring data write %02x due of busy flag\n", data);
+>>>>>>> upstream/master
 		return;
 	}
 
@@ -529,7 +659,11 @@ WRITE8_MEMBER(hd44780_device::data_write)
 		m_dr = data;
 	}
 
+<<<<<<< HEAD
 	if (LOG) logerror("HD44780 '%s': %sRAM write %x %x '%c'\n", tag(), m_active_ram == DDRAM ? "DD" : "CG", m_ac, m_dr, isprint(m_dr) ? m_dr : '.');
+=======
+	LOG("HD44780: %sRAM write %x %x '%c'\n", m_active_ram == DDRAM ? "DD" : "CG", m_ac, m_dr, isprint(m_dr) ? m_dr : '.');
+>>>>>>> upstream/master
 
 	if (m_active_ram == DDRAM)
 		m_ddram[m_ac] = m_dr;
@@ -544,6 +678,7 @@ WRITE8_MEMBER(hd44780_device::data_write)
 
 READ8_MEMBER(hd44780_device::data_read)
 {
+<<<<<<< HEAD
 	UINT8 data = (m_active_ram == DDRAM) ? m_ddram[m_ac] : m_cgram[m_ac];
 
 	if (LOG) logerror("HD44780 '%s': %sRAM read %x %c\n", tag(), m_active_ram == DDRAM ? "DD" : "CG", m_ac, data);
@@ -551,6 +686,15 @@ READ8_MEMBER(hd44780_device::data_read)
 	if (m_data_len == 4)
 	{
 		if (!space.debugger_access())
+=======
+	uint8_t data = (m_active_ram == DDRAM) ? m_ddram[m_ac] : m_cgram[m_ac];
+
+	LOG("HD44780: %sRAM read %x %c\n", m_active_ram == DDRAM ? "DD" : "CG", m_ac, data);
+
+	if (m_data_len == 4)
+	{
+		if (!machine().side_effect_disabled())
+>>>>>>> upstream/master
 			update_nibble(1, 1);
 
 		if (m_nibble)
@@ -559,7 +703,11 @@ READ8_MEMBER(hd44780_device::data_read)
 			data = (data << 4) & 0xf0;
 	}
 
+<<<<<<< HEAD
 	if (!space.debugger_access())
+=======
+	if (!machine().side_effect_disabled())
+>>>>>>> upstream/master
 	{
 		update_ac(m_direction);
 		set_busy_flag(41);

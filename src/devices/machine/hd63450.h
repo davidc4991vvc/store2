@@ -3,8 +3,16 @@
 /*
     Hitachi HD63450 DMA Controller
 */
+<<<<<<< HEAD
 
 #include "emu.h"
+=======
+#ifndef MAME_MACHINE_HD63450_H
+#define MAME_MACHINE_HD63450_H
+
+#pragma once
+
+>>>>>>> upstream/master
 
 
 #define MCFG_HD63450_DMA_END_CB(_devcb) \
@@ -46,6 +54,7 @@
 #define MCFG_HD63450_BURST_CLOCKS(_clk1, _clk2, _clk3, _clk4) \
 	hd63450_device::set_burst_clocks(*device, _clk1, _clk2, _clk3, _clk4);
 
+<<<<<<< HEAD
 struct hd63450_regs
 {  // offsets in bytes
 	unsigned char csr;  // [00] Channel status register (R/W)
@@ -84,6 +93,23 @@ public:
 	template<class _Object> static devcb_base &set_dma_write_1_callback(device_t &device, _Object object) { return downcast<hd63450_device &>(device).m_dma_write_1.set_callback(object); }
 	template<class _Object> static devcb_base &set_dma_write_2_callback(device_t &device, _Object object) { return downcast<hd63450_device &>(device).m_dma_write_2.set_callback(object); }
 	template<class _Object> static devcb_base &set_dma_write_3_callback(device_t &device, _Object object) { return downcast<hd63450_device &>(device).m_dma_write_3.set_callback(object); }
+=======
+class hd63450_device : public device_t
+{
+public:
+	hd63450_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
+
+	template <class Object> static devcb_base &set_dma_end_callback(device_t &device, Object &&cb) { return downcast<hd63450_device &>(device).m_dma_end.set_callback(std::forward<Object>(cb)); }
+	template <class Object> static devcb_base &set_dma_error_callback(device_t &device, Object &&cb) { return downcast<hd63450_device &>(device).m_dma_error.set_callback(std::forward<Object>(cb)); }
+	template <class Object> static devcb_base &set_dma_read_0_callback(device_t &device, Object &&cb) { return downcast<hd63450_device &>(device).m_dma_read_0.set_callback(std::forward<Object>(cb)); }
+	template <class Object> static devcb_base &set_dma_read_1_callback(device_t &device, Object &&cb) { return downcast<hd63450_device &>(device).m_dma_read_1.set_callback(std::forward<Object>(cb)); }
+	template <class Object> static devcb_base &set_dma_read_2_callback(device_t &device, Object &&cb) { return downcast<hd63450_device &>(device).m_dma_read_2.set_callback(std::forward<Object>(cb)); }
+	template <class Object> static devcb_base &set_dma_read_3_callback(device_t &device, Object &&cb) { return downcast<hd63450_device &>(device).m_dma_read_3.set_callback(std::forward<Object>(cb)); }
+	template <class Object> static devcb_base &set_dma_write_0_callback(device_t &device, Object &&cb) { return downcast<hd63450_device &>(device).m_dma_write_0.set_callback(std::forward<Object>(cb)); }
+	template <class Object> static devcb_base &set_dma_write_1_callback(device_t &device, Object &&cb) { return downcast<hd63450_device &>(device).m_dma_write_1.set_callback(std::forward<Object>(cb)); }
+	template <class Object> static devcb_base &set_dma_write_2_callback(device_t &device, Object &&cb) { return downcast<hd63450_device &>(device).m_dma_write_2.set_callback(std::forward<Object>(cb)); }
+	template <class Object> static devcb_base &set_dma_write_3_callback(device_t &device, Object &&cb) { return downcast<hd63450_device &>(device).m_dma_write_3.set_callback(std::forward<Object>(cb)); }
+>>>>>>> upstream/master
 
 	static void set_cpu_tag(device_t &device, const char *tag) { downcast<hd63450_device &>(device).m_cpu_tag = tag; }
 	static void set_our_clocks(device_t &device, const attotime &clk1, const attotime &clk2, const attotime &clk3, const attotime &clk4)
@@ -117,10 +143,39 @@ public:
 
 protected:
 	// device-level overrides
+<<<<<<< HEAD
 	virtual void device_start();
 	virtual void device_reset();
 
 private:
+=======
+	virtual void device_start() override;
+	virtual void device_reset() override;
+
+private:
+	struct hd63450_regs
+	{  // offsets in bytes
+		unsigned char csr;  // [00] Channel status register (R/W)
+		unsigned char cer;  // [01] Channel error register (R)
+		unsigned char dcr;  // [04] Device control register (R/W)
+		unsigned char ocr;  // [05] Operation control register (R/W)
+		unsigned char scr;  // [06] Sequence control register (R/W)
+		unsigned char ccr;  // [07] Channel control register (R/W)
+		unsigned short mtc;  // [0a,0b]  Memory Transfer Counter (R/W)
+		unsigned long mar;  // [0c-0f]  Memory Address Register (R/W)
+		unsigned long dar;  // [14-17]  Device Address Register (R/W)
+		unsigned short btc;  // [1a,1b]  Base Transfer Counter (R/W)
+		unsigned long bar;  // [1c-1f]  Base Address Register (R/W)
+		unsigned char niv;  // [25]  Normal Interrupt Vector (R/W)
+		unsigned char eiv;  // [27]  Error Interrupt Vector (R/W)
+		unsigned char mfc;  // [29]  Memory Function Code (R/W)
+		unsigned char cpr;  // [2d]  Channel Priority Register (R/W)
+		unsigned char dfc;  // [31]  Device Function Code (R/W)
+		unsigned char bfc;  // [39]  Base Function Code (R/W)
+		unsigned char gcr;  // [3f]  General Control Register (R/W)
+	};
+
+>>>>>>> upstream/master
 	devcb_write8 m_dma_end;
 	devcb_write8 m_dma_error;
 	devcb_read8 m_dma_read_0;
@@ -152,4 +207,10 @@ private:
 	void dma_transfer_start(int channel);
 };
 
+<<<<<<< HEAD
 extern const device_type HD63450;
+=======
+DECLARE_DEVICE_TYPE(HD63450, hd63450_device)
+
+#endif // MAME_MACHINE_HD63450_H
+>>>>>>> upstream/master

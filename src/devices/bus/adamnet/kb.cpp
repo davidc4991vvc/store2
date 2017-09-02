@@ -6,6 +6,10 @@
 
 **********************************************************************/
 
+<<<<<<< HEAD
+=======
+#include "emu.h"
+>>>>>>> upstream/master
 #include "kb.h"
 
 
@@ -22,7 +26,11 @@
 //  DEVICE DEFINITIONS
 //**************************************************************************
 
+<<<<<<< HEAD
 const device_type ADAM_KB = &device_creator<adam_keyboard_device>;
+=======
+DEFINE_DEVICE_TYPE(ADAM_KB, adam_keyboard_device, "adam_kb", "Adam keyboard")
+>>>>>>> upstream/master
 
 
 //-------------------------------------------------
@@ -39,7 +47,11 @@ ROM_END
 //  rom_region - device-specific ROM region
 //-------------------------------------------------
 
+<<<<<<< HEAD
 const rom_entry *adam_keyboard_device::device_rom_region() const
+=======
+const tiny_rom_entry *adam_keyboard_device::device_rom_region() const
+>>>>>>> upstream/master
 {
 	return ROM_NAME( adam_kb );
 }
@@ -69,10 +81,17 @@ ADDRESS_MAP_END
 
 
 //-------------------------------------------------
+<<<<<<< HEAD
 //  MACHINE_DRIVER( adam_kb )
 //-------------------------------------------------
 
 static MACHINE_CONFIG_FRAGMENT( adam_kb )
+=======
+//  device_add_mconfig - add device configuration
+//-------------------------------------------------
+
+MACHINE_CONFIG_MEMBER( adam_keyboard_device::device_add_mconfig )
+>>>>>>> upstream/master
 	MCFG_CPU_ADD(M6801_TAG, M6801, XTAL_4MHz)
 	MCFG_CPU_PROGRAM_MAP(adam_kb_mem)
 	MCFG_CPU_IO_MAP(adam_kb_io)
@@ -80,6 +99,7 @@ MACHINE_CONFIG_END
 
 
 //-------------------------------------------------
+<<<<<<< HEAD
 //  machine_config_additions - device-specific
 //  machine configurations
 //-------------------------------------------------
@@ -91,6 +111,8 @@ machine_config_constructor adam_keyboard_device::device_mconfig_additions() cons
 
 
 //-------------------------------------------------
+=======
+>>>>>>> upstream/master
 //  INPUT_PORTS( adam_kb )
 //-------------------------------------------------
 
@@ -222,6 +244,7 @@ ioport_constructor adam_keyboard_device::device_input_ports() const
 //  adam_keyboard_device - constructor
 //-------------------------------------------------
 
+<<<<<<< HEAD
 adam_keyboard_device::adam_keyboard_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
 	: device_t(mconfig, ADAM_KB, "Adam keyboard", tag, owner, clock, "adam_kb", __FILE__),
 		device_adamnet_card_interface(mconfig, *this),
@@ -240,6 +263,14 @@ adam_keyboard_device::adam_keyboard_device(const machine_config &mconfig, const 
 		m_y11(*this, "Y11"),
 		m_y12(*this, "Y12"),
 		m_key_y(0x1ff)
+=======
+adam_keyboard_device::adam_keyboard_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock) :
+	device_t(mconfig, ADAM_KB, tag, owner, clock),
+	device_adamnet_card_interface(mconfig, *this),
+	m_maincpu(*this, M6801_TAG),
+	m_y(*this, "Y%u", 0),
+	m_key_y(0x1ff)
+>>>>>>> upstream/master
 {
 }
 
@@ -286,6 +317,7 @@ READ8_MEMBER( adam_keyboard_device::p1_r )
 
 	*/
 
+<<<<<<< HEAD
 	UINT8 data = 0xff;
 
 	if (!BIT(m_key_y, 0)) data &= m_y0->read();
@@ -301,6 +333,14 @@ READ8_MEMBER( adam_keyboard_device::p1_r )
 	if (!BIT(m_key_y, 10)) data &= m_y10->read();
 	if (!BIT(m_key_y, 11)) data &= m_y11->read();
 	if (!BIT(m_key_y, 12)) data &= m_y12->read();
+=======
+	uint8_t data = 0xff;
+
+	for (int i = 0; i < 13; i++)
+	{
+		if (!BIT(m_key_y, i)) data &= m_y[i]->read();
+	}
+>>>>>>> upstream/master
 
 	return data;
 }
@@ -324,7 +364,11 @@ READ8_MEMBER( adam_keyboard_device::p2_r )
 
 	*/
 
+<<<<<<< HEAD
 	UINT8 data = M6801_MODE_7;
+=======
+	uint8_t data = M6801_MODE_7;
+>>>>>>> upstream/master
 
 	// NET RXD
 	data |= m_bus->rxd_r(this) << 3;

@@ -50,6 +50,7 @@ enum
 };
 
 
+<<<<<<< HEAD
 const device_type NILE = &device_creator<nile_device>;
 
 nile_device::nile_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
@@ -57,6 +58,15 @@ nile_device::nile_device(const machine_config &mconfig, const char *tag, device_
 		device_sound_interface(mconfig, *this),
 		m_stream(NULL),
 		m_sound_ram(NULL),
+=======
+DEFINE_DEVICE_TYPE(NILE, nile_device, "nile", "Seta ST-0026 NiLe")
+
+nile_device::nile_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: device_t(mconfig, NILE, tag, owner, clock),
+		device_sound_interface(mconfig, *this),
+		m_stream(nullptr),
+		m_sound_ram(*this, DEVICE_SELF),
+>>>>>>> upstream/master
 		m_ctrl(0)
 {
 }
@@ -68,7 +78,10 @@ nile_device::nile_device(const machine_config &mconfig, const char *tag, device_
 
 void nile_device::device_start()
 {
+<<<<<<< HEAD
 	m_sound_ram = region()->base();
+=======
+>>>>>>> upstream/master
 	m_stream = stream_alloc(0, 2, 44100);
 }
 
@@ -80,12 +93,21 @@ void nile_device::device_start()
 
 void nile_device::sound_stream_update(sound_stream &stream, stream_sample_t **inputs, stream_sample_t **outputs, int samples)
 {
+<<<<<<< HEAD
 	UINT8 *sound_ram = m_sound_ram;
 	int v, i, snum;
 	UINT16 *slot;
 	INT32 mix[48000*2];
 	INT32 *mixp;
 	INT16 sample;
+=======
+	uint8_t *sound_ram = &m_sound_ram[0];
+	int v, i, snum;
+	uint16_t *slot;
+	int32_t mix[48000*2];
+	int32_t *mixp;
+	int16_t sample;
+>>>>>>> upstream/master
 	int sptr, eptr, freq, lsptr, leptr;
 
 	lsptr=leptr=0;
@@ -111,8 +133,13 @@ void nile_device::sound_stream_update(sound_stream &stream, stream_sample_t **in
 			{
 				sample = sound_ram[sptr + m_vpos[v]]<<8;
 
+<<<<<<< HEAD
 				*mixp++ += (sample * (INT32)slot[NILE_REG_VOL_R]) >> 16;
 				*mixp++ += (sample * (INT32)slot[NILE_REG_VOL_L]) >> 16;
+=======
+				*mixp++ += (sample * (int32_t)slot[NILE_REG_VOL_R]) >> 16;
+				*mixp++ += (sample * (int32_t)slot[NILE_REG_VOL_L]) >> 16;
+>>>>>>> upstream/master
 
 				m_frac[v] += freq;
 				m_vpos[v] += m_frac[v]>>16;
@@ -165,7 +192,11 @@ void nile_device::sound_stream_update(sound_stream &stream, stream_sample_t **in
 
 WRITE16_MEMBER( nile_device::nile_sndctrl_w )
 {
+<<<<<<< HEAD
 	UINT16 ctrl=m_ctrl;
+=======
+	uint16_t ctrl=m_ctrl;
+>>>>>>> upstream/master
 
 	m_stream->update();
 

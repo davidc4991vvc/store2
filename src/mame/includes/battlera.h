@@ -1,8 +1,17 @@
 // license:BSD-3-Clause
 // copyright-holders:Bryan McPhail
+<<<<<<< HEAD
 #include "sound/msm5205.h"
 #include "video/huc6260.h"
 #include "video/huc6270.h"
+=======
+
+#include "machine/gen_latch.h"
+#include "sound/msm5205.h"
+#include "video/huc6260.h"
+#include "video/huc6270.h"
+#include "screen.h"
+>>>>>>> upstream/master
 
 #define MAIN_CLOCK      21477270
 
@@ -15,7 +24,12 @@ public:
 		m_audiocpu(*this, "audiocpu"),
 		m_msm(*this, "msm"),
 		m_screen(*this, "screen"),
+<<<<<<< HEAD
 		m_huc6260(*this, "huc6260")
+=======
+		m_huc6260(*this, "huc6260"),
+		m_soundlatch(*this, "soundlatch")
+>>>>>>> upstream/master
 		{ }
 
 	required_device<cpu_device> m_maincpu;
@@ -23,6 +37,10 @@ public:
 	required_device<msm5205_device> m_msm;
 	required_device<screen_device> m_screen;
 	required_device<huc6260_device> m_huc6260;
+<<<<<<< HEAD
+=======
+	required_device<generic_latch_8_device> m_soundlatch;
+>>>>>>> upstream/master
 
 	int m_control_port_select;
 	int m_msm5205next;
@@ -35,7 +53,13 @@ public:
 	DECLARE_WRITE8_MEMBER(adpcm_reset_w);
 	DECLARE_WRITE_LINE_MEMBER(adpcm_int);
 
+<<<<<<< HEAD
 	virtual void machine_start();
 
 	UINT32 screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
+=======
+	virtual void machine_start() override;
+
+	uint32_t screen_update(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect);
+>>>>>>> upstream/master
 };

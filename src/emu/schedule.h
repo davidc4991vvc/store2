@@ -14,8 +14,13 @@
 #error Dont include this file directly; include emu.h instead.
 #endif
 
+<<<<<<< HEAD
 #ifndef __SCHEDULE_H__
 #define __SCHEDULE_H__
+=======
+#ifndef MAME_EMU_SCHEDULE_H
+#define MAME_EMU_SCHEDULE_H
+>>>>>>> upstream/master
 
 
 //**************************************************************************
@@ -33,19 +38,26 @@
 #define PERIOD_OF_555_MONOSTABLE(r,c)       attotime::from_nsec(PERIOD_OF_555_MONOSTABLE_NSEC(r,c))
 #define PERIOD_OF_555_ASTABLE(r1,r2,c)      attotime::from_nsec(PERIOD_OF_555_ASTABLE_NSEC(r1,r2,c))
 
+<<<<<<< HEAD
 #define TIMER_CALLBACK(name)            void name(running_machine &machine, void *ptr, int param)
 #define TIMER_CALLBACK_MEMBER(name)     void name(void *ptr, INT32 param)
+=======
+>>>>>>> upstream/master
 
 //**************************************************************************
 //  TYPE DEFINITIONS
 //**************************************************************************
 
 // timer callbacks look like this
+<<<<<<< HEAD
 typedef delegate<void (void *, INT32)> timer_expired_delegate;
 
 // old-skool callbacks are like this
 typedef void (*timer_expired_func)(running_machine &machine, void *ptr, INT32 param);
 
+=======
+typedef named_delegate<void (void *, s32)> timer_expired_delegate;
+>>>>>>> upstream/master
 
 // ======================> emu_timer
 
@@ -68,7 +80,11 @@ class emu_timer
 public:
 	// getters
 	emu_timer *next() const { return m_next; }
+<<<<<<< HEAD
 	running_machine &machine() const { assert(m_machine != NULL); return *m_machine; }
+=======
+	running_machine &machine() const { assert(m_machine != nullptr); return *m_machine; }
+>>>>>>> upstream/master
 	bool enabled() const { return m_enabled; }
 	int param() const { return m_param; }
 	void *ptr() const { return m_ptr; }
@@ -80,7 +96,11 @@ public:
 
 	// control
 	void reset(const attotime &duration = attotime::never) { adjust(duration, m_param, m_period); }
+<<<<<<< HEAD
 	void adjust(attotime start_delay, INT32 param = 0, const attotime &periodicity = attotime::never);
+=======
+	void adjust(attotime start_delay, s32 param = 0, const attotime &periodicity = attotime::never);
+>>>>>>> upstream/master
 
 	// timing queries
 	attotime elapsed() const;
@@ -99,7 +119,11 @@ private:
 	emu_timer *         m_next;         // next timer in order in the list
 	emu_timer *         m_prev;         // previous timer in order in the list
 	timer_expired_delegate m_callback;  // callback function
+<<<<<<< HEAD
 	INT32               m_param;        // integer parameter
+=======
+	s32                 m_param;        // integer parameter
+>>>>>>> upstream/master
 	void *              m_ptr;          // pointer parameter
 	bool                m_enabled;      // is the timer enabled?
 	bool                m_temporary;    // is the timer temporary?
@@ -138,6 +162,7 @@ public:
 	void suspend_resume_changed() { m_suspend_changes_pending = true; }
 
 	// timers, specified by callback/name
+<<<<<<< HEAD
 	emu_timer *timer_alloc(timer_expired_delegate callback, void *ptr = NULL);
 	void timer_set(const attotime &duration, timer_expired_delegate callback, int param = 0, void *ptr = NULL);
 	void timer_pulse(const attotime &period, timer_expired_delegate callback, int param = 0, void *ptr = NULL);
@@ -154,6 +179,15 @@ public:
 	// timers, specified by device/id; generally devices should use the device_t methods instead
 	emu_timer *timer_alloc(device_t &device, device_timer_id id = 0, void *ptr = NULL);
 	void timer_set(const attotime &duration, device_t &device, device_timer_id id = 0, int param = 0, void *ptr = NULL);
+=======
+	emu_timer *timer_alloc(timer_expired_delegate callback, void *ptr = nullptr);
+	void timer_set(const attotime &duration, timer_expired_delegate callback, int param = 0, void *ptr = nullptr);
+	void synchronize(timer_expired_delegate callback = timer_expired_delegate(), int param = 0, void *ptr = nullptr) { timer_set(attotime::zero, callback, param, ptr); }
+
+	// timers, specified by device/id; generally devices should use the device_t methods instead
+	emu_timer *timer_alloc(device_t &device, device_timer_id id = 0, void *ptr = nullptr);
+	void timer_set(const attotime &duration, device_t &device, device_timer_id id = 0, int param = 0, void *ptr = nullptr);
+>>>>>>> upstream/master
 
 	// debugging
 	void dump_timers() const;
@@ -163,7 +197,11 @@ public:
 
 private:
 	// callbacks
+<<<<<<< HEAD
 	void timed_trigger(void *ptr, INT32 param);
+=======
+	void timed_trigger(void *ptr, s32 param);
+>>>>>>> upstream/master
 	void presave();
 	void postload();
 
@@ -213,4 +251,8 @@ private:
 };
 
 
+<<<<<<< HEAD
 #endif  // __SCHEDULE_H__ */
+=======
+#endif  // MAME_EMU_SCHEDULE_H
+>>>>>>> upstream/master

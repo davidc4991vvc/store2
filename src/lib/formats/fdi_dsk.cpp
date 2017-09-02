@@ -86,18 +86,29 @@ struct fdidsk_tag
 	int version;
 	int heads;                              /* number of physical heads */
 	int tracks;                             /* number of physical tracks */
+<<<<<<< HEAD
 	UINT32 track_offset[MAX_TRACKS];        /* offset within data for each track */
 	UINT8 track_type[MAX_TRACKS];
+=======
+	uint32_t track_offset[MAX_TRACKS];        /* offset within data for each track */
+	uint8_t track_type[MAX_TRACKS];
+>>>>>>> upstream/master
 };
 
 struct fdi_track
 {
+<<<<<<< HEAD
 	UINT8 type;
 	UINT8 size;
+=======
+	uint8_t type;
+	uint8_t size;
+>>>>>>> upstream/master
 };
 
 struct fdi_header
 {
+<<<<<<< HEAD
 	UINT8 signature[27];
 	UINT8 creator[32];
 	UINT8 comment[80];
@@ -111,11 +122,27 @@ struct fdi_header
 	UINT8 tpi;
 	UINT8 headwidth;
 	UINT8 reserved[2];
+=======
+	uint8_t signature[27];
+	uint8_t creator[32];
+	uint8_t comment[80];
+	uint8_t eof;
+	uint8_t version[2];
+	uint8_t ltrack[2];
+	uint8_t lhead;
+	uint8_t type;
+	uint8_t rotspeed;
+	uint8_t flags;
+	uint8_t tpi;
+	uint8_t headwidth;
+	uint8_t reserved[2];
+>>>>>>> upstream/master
 	struct fdi_track track[MAX_TRACKS];
 };
 
 struct fdi_pulse_track_header
 {
+<<<<<<< HEAD
 	UINT8 numpulses[4];
 	UINT8 averagesz[3];
 	UINT8 minsize[3];
@@ -125,13 +152,28 @@ struct fdi_pulse_track_header
 //  UINT8 mindata[minsize];
 //  UINT8 maxdata[maxsize];
 //  UINT8 indexdata[indexsize];
+=======
+	uint8_t numpulses[4];
+	uint8_t averagesz[3];
+	uint8_t minsize[3];
+	uint8_t maxsize[3];
+	uint8_t indexsize[3];
+//  uint8_t averagedt[averagesz];
+//  uint8_t mindata[minsize];
+//  uint8_t maxdata[maxsize];
+//  uint8_t indexdata[indexsize];
+>>>>>>> upstream/master
 };
 
 /***************************************************************************
     INLINE FUNCTIONS
 ***************************************************************************/
 
+<<<<<<< HEAD
 INLINE struct fdidsk_tag *get_tag(floppy_image_legacy *floppy)
+=======
+static inline struct fdidsk_tag *get_tag(floppy_image_legacy *floppy)
+>>>>>>> upstream/master
 {
 	return (fdidsk_tag *)floppy_tag(floppy);
 }
@@ -155,22 +197,38 @@ static int fdi_get_sectors_per_track(floppy_image_legacy *floppy, int head, int 
 	return 0;
 }
 
+<<<<<<< HEAD
 static floperr_t fdi_get_sector_length(floppy_image_legacy *floppy, int head, int track, int sector, UINT32 *sector_length)
+=======
+static floperr_t fdi_get_sector_length(floppy_image_legacy *floppy, int head, int track, int sector, uint32_t *sector_length)
+>>>>>>> upstream/master
 {
 	return FLOPPY_ERROR_SUCCESS;
 }
 /*
+<<<<<<< HEAD
 static UINT32 fdi_get_sector_offset(floppy_image_legacy* floppy, int head, int track, int sector)
+=======
+static uint32_t fdi_get_sector_offset(floppy_image_legacy* floppy, int head, int track, int sector)
+>>>>>>> upstream/master
 {
     return 0;
 }
 */
+<<<<<<< HEAD
 static floperr_t fdi_get_indexed_sector_info(floppy_image_legacy *floppy, int head, int track, int sector_index, int *cylinder, int *side, int *sector, UINT32 *sector_length, unsigned long *flags)
+=======
+static floperr_t fdi_get_indexed_sector_info(floppy_image_legacy *floppy, int head, int track, int sector_index, int *cylinder, int *side, int *sector, uint32_t *sector_length, unsigned long *flags)
+>>>>>>> upstream/master
 {
 	return FLOPPY_ERROR_UNSUPPORTED;
 }
 
+<<<<<<< HEAD
 static floperr_t fdi_read_track(floppy_image_legacy *floppy, int head, int track, UINT64 offset, void *buffer, size_t buflen)
+=======
+static floperr_t fdi_read_track(floppy_image_legacy *floppy, int head, int track, uint64_t offset, void *buffer, size_t buflen)
+>>>>>>> upstream/master
 {
 	return FLOPPY_ERROR_UNSUPPORTED;
 }
@@ -201,7 +259,11 @@ static floperr_t fdi_write_indexed_sector(floppy_image_legacy *floppy, int head,
 
 FLOPPY_IDENTIFY( fdi_dsk_identify )
 {
+<<<<<<< HEAD
 	UINT8 header[25];
+=======
+	uint8_t header[25];
+>>>>>>> upstream/master
 
 	floppy_image_read(floppy, header, 0, 25);
 
@@ -261,7 +323,11 @@ FLOPPY_CONSTRUCT( fdi_dsk_construct )
 
 	for (int track = 0; track < tag->tracks; track++)
 	{
+<<<<<<< HEAD
 		UINT8 type = header.track[track].type;
+=======
+		uint8_t type = header.track[track].type;
+>>>>>>> upstream/master
 		int size = header.track[track].size * 256;
 
 		if (LOG) LOG_FORMATS("FDI track %d type %02x size %d offset %d\n", track, type, size, offset);

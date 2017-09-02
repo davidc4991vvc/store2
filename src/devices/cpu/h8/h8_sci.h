@@ -9,8 +9,15 @@
 
 ***************************************************************************/
 
+<<<<<<< HEAD
 #ifndef __H8_SCI_H__
 #define __H8_SCI_H__
+=======
+#ifndef MAME_CPU_H8_H8_SCI_H
+#define MAME_CPU_H8_H8_SCI_H
+
+#pragma once
+>>>>>>> upstream/master
 
 #include "h8.h"
 #include "h8_intc.h"
@@ -30,7 +37,11 @@
 
 class h8_sci_device : public device_t {
 public:
+<<<<<<< HEAD
 	h8_sci_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
+=======
+	h8_sci_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
+>>>>>>> upstream/master
 
 	void set_info(const char *intc, int eri, int rxi, int txi, int tei);
 	void set_external_clock_period(const attotime &_period);
@@ -52,10 +63,17 @@ public:
 	DECLARE_WRITE_LINE_MEMBER(rx_w);
 	DECLARE_WRITE_LINE_MEMBER(clk_w);
 
+<<<<<<< HEAD
 	template<class _Object> static devcb_base &set_tx_cb(device_t &device, _Object object) { return downcast<h8_sci_device &>(device).tx_cb.set_callback(object); }
 	template<class _Object> static devcb_base &set_clk_cb(device_t &device, _Object object) { return downcast<h8_sci_device &>(device).clk_cb.set_callback(object); }
 
 	UINT64 internal_update(UINT64 current_time);
+=======
+	template <class Object> static devcb_base &set_tx_cb(device_t &device, Object &&cb) { return downcast<h8_sci_device &>(device).tx_cb.set_callback(std::forward<Object>(cb)); }
+	template <class Object> static devcb_base &set_clk_cb(device_t &device, Object &&cb) { return downcast<h8_sci_device &>(device).clk_cb.set_callback(std::forward<Object>(cb)); }
+
+	uint64_t internal_update(uint64_t current_time);
+>>>>>>> upstream/master
 
 protected:
 	enum {
@@ -121,6 +139,7 @@ protected:
 	int tx_state, rx_state, tx_bit, rx_bit, clock_state, clock_mode, tx_parity, rx_parity, ext_clock_counter;
 	bool clock_value, ext_clock_value, rx_value;
 
+<<<<<<< HEAD
 	UINT8 rdr, tdr, smr, scr, ssr, brr, rsr, tsr;
 	UINT64 clock_base, divider;
 
@@ -128,6 +147,16 @@ protected:
 	virtual void device_start();
 	virtual void device_reset();
 	virtual void device_timer(emu_timer &timer, device_timer_id id, int param, void *ptr);
+=======
+	uint8_t rdr, tdr, smr, scr, ssr, brr, rsr, tsr;
+	uint64_t clock_base, divider;
+
+	std::string last_clock_message;
+
+	virtual void device_start() override;
+	virtual void device_reset() override;
+	virtual void device_timer(emu_timer &timer, device_timer_id id, int param, void *ptr) override;
+>>>>>>> upstream/master
 
 	void clock_start(int mode);
 	void clock_stop(int mode);
@@ -142,6 +171,12 @@ protected:
 	bool has_recv_error() const;
 };
 
+<<<<<<< HEAD
 extern const device_type H8_SCI;
 
 #endif
+=======
+DECLARE_DEVICE_TYPE(H8_SCI, h8_sci_device)
+
+#endif // MAME_CPU_H8_H8_SCI_H
+>>>>>>> upstream/master

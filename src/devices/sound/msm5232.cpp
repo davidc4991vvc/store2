@@ -1,7 +1,13 @@
+<<<<<<< HEAD
 // license:???
 // copyright-holders:Jarek Burczynski, Hiromitsu Shioya
 #include "emu.h"
 
+=======
+// license:GPL-2.0+
+// copyright-holders:Jarek Burczynski, Hiromitsu Shioya
+#include "emu.h"
+>>>>>>> upstream/master
 #include "msm5232.h"
 
 #define CLOCK_RATE_DIVIDER 16
@@ -11,12 +17,23 @@
     8 channel tone generator
 */
 
+<<<<<<< HEAD
 const device_type MSM5232 = &device_creator<msm5232_device>;
 
 msm5232_device::msm5232_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock)
 	: device_t(mconfig, MSM5232, "MSM5232", tag, owner, clock, "msm5232", __FILE__),
 		device_sound_interface(mconfig, *this), m_stream(nullptr), m_noise_cnt(0), m_noise_step(0), m_noise_rng(0), m_noise_clocks(0), m_UpdateStep(0), m_control1(0), m_control2(0), m_gate(0), m_chip_clock(0), m_rate(0),
 		m_gate_handler_cb(*this)
+=======
+DEFINE_DEVICE_TYPE(MSM5232, msm5232_device, "msm5232", "MSM5232")
+
+msm5232_device::msm5232_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: device_t(mconfig, MSM5232, tag, owner, clock)
+	, device_sound_interface(mconfig, *this)
+	, m_stream(nullptr)
+	, m_noise_cnt(0), m_noise_step(0), m_noise_rng(0), m_noise_clocks(0), m_UpdateStep(0), m_control1(0), m_control2(0), m_gate(0), m_chip_clock(0), m_rate(0)
+	, m_gate_handler_cb(*this)
+>>>>>>> upstream/master
 {
 }
 
@@ -84,8 +101,13 @@ void msm5232_device::device_reset()
 
 	for (i=0; i<8; i++)
 	{
+<<<<<<< HEAD
 		write(machine().driver_data()->generic_space(),i,0x80);
 		write(machine().driver_data()->generic_space(),i,0x00);
+=======
+		write(machine().dummy_space(), i, 0x80);
+		write(machine().dummy_space(), i, 0x00);
+>>>>>>> upstream/master
 	}
 	m_noise_cnt     = 0;
 	m_noise_rng     = 1;
@@ -148,7 +170,11 @@ void msm5232_device::static_set_capacitors(device_t &device, double cap1, double
 /* Chip has 88x12bits ROM   (addressing (in hex) from 0x00 to 0x57) */
 #define ROM(counter,bindiv) (counter|(bindiv<<9))
 
+<<<<<<< HEAD
 static const UINT16 MSM5232_ROM[88]={
+=======
+static const uint16_t MSM5232_ROM[88]={
+>>>>>>> upstream/master
 /* higher values are Programmable Counter data (9 bits) */
 /* lesser values are Binary Counter shift data (3 bits) */
 
@@ -249,7 +275,11 @@ void msm5232_device::init_tables()
 
 #if 0
 {
+<<<<<<< HEAD
 	/* rate tables (in miliseconds) */
+=======
+	/* rate tables (in milliseconds) */
+>>>>>>> upstream/master
 	static const int ATBL[8] = { 2,4,8,16, 32,64, 32,64};
 	static const int DTBL[16]= { 40,80,160,320, 640,1280, 640,1280,
 							333,500,1000,2000, 4000,8000, 4000,8000};
@@ -370,7 +400,11 @@ WRITE8_MEMBER( msm5232_device::write )
 				if ( m_voi[ch].pitch != (data&0x7f) )
 				{
 					int n;
+<<<<<<< HEAD
 					UINT16 pg;
+=======
+					uint16_t pg;
+>>>>>>> upstream/master
 
 					m_voi[ch].pitch = data&0x7f;
 

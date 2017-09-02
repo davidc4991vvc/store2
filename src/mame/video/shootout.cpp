@@ -7,11 +7,19 @@
 
 #include "emu.h"
 #include "includes/shootout.h"
+<<<<<<< HEAD
+=======
+#include "screen.h"
+>>>>>>> upstream/master
 
 
 PALETTE_INIT_MEMBER(shootout_state, shootout)
 {
+<<<<<<< HEAD
 	const UINT8 *color_prom = memregion("proms")->base();
+=======
+	const uint8_t *color_prom = memregion("proms")->base();
+>>>>>>> upstream/master
 	int i;
 
 
@@ -79,20 +87,35 @@ WRITE8_MEMBER(shootout_state::textram_w)
 
 void shootout_state::video_start()
 {
+<<<<<<< HEAD
 	m_background = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(shootout_state::get_bg_tile_info),this), TILEMAP_SCAN_ROWS, 8, 8, 32, 32);
 	m_foreground = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(shootout_state::get_fg_tile_info),this), TILEMAP_SCAN_ROWS, 8, 8, 32, 32);
 	m_foreground->set_transparent_pen(0 );
 
 	save_item(NAME(m_bFlicker));
+=======
+	m_background = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(shootout_state::get_bg_tile_info),this), TILEMAP_SCAN_ROWS, 8, 8, 32, 32);
+	m_foreground = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(shootout_state::get_fg_tile_info),this), TILEMAP_SCAN_ROWS, 8, 8, 32, 32);
+	m_foreground->set_transparent_pen(0 );
+
+	save_item(NAME(m_ccnt_old_val));
+>>>>>>> upstream/master
 }
 
 void shootout_state::draw_sprites(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect, int bank_bits )
 {
 	gfx_element *gfx = m_gfxdecode->gfx(1);
+<<<<<<< HEAD
 	const UINT8 *source = m_spriteram+127*4;
 	int count;
 
 	m_bFlicker = !m_bFlicker;
+=======
+	const uint8_t *source = m_spriteram+127*4;
+	int count;
+
+	bool m_bFlicker = (screen.frame_number () & 1) != 0;
+>>>>>>> upstream/master
 
 	for( count=0; count<128; count++ )
 	{
@@ -164,7 +187,11 @@ void shootout_state::draw_sprites(screen_device &screen, bitmap_ind16 &bitmap, c
 	}
 }
 
+<<<<<<< HEAD
 UINT32 shootout_state::screen_update_shootout(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+=======
+uint32_t shootout_state::screen_update_shootout(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+>>>>>>> upstream/master
 {
 	screen.priority().fill(0, cliprect);
 
@@ -174,7 +201,11 @@ UINT32 shootout_state::screen_update_shootout(screen_device &screen, bitmap_ind1
 	return 0;
 }
 
+<<<<<<< HEAD
 UINT32 shootout_state::screen_update_shootouj(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+=======
+uint32_t shootout_state::screen_update_shootouj(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+>>>>>>> upstream/master
 {
 	screen.priority().fill(0, cliprect);
 

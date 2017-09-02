@@ -1,5 +1,9 @@
 /*
+<<<<<<< HEAD
  * $Id: pa_dither.c 1418 2009-10-12 21:00:53Z philburk $
+=======
+ * $Id$
+>>>>>>> upstream/master
  * Portable Audio I/O Library triangular dither generator
  *
  * Based on the Open Source API proposed by Ross Bencina

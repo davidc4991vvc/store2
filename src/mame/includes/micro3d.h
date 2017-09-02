@@ -5,6 +5,13 @@
      Microprose Games 3D hardware
 
 *************************************************************************/
+<<<<<<< HEAD
+=======
+#ifndef MAME_INCLUDES_MICRO3D_H
+#define MAME_INCLUDES_MICRO3D_H
+
+#pragma once
+>>>>>>> upstream/master
 
 #include "cpu/tms34010/tms34010.h"
 #include "cpu/mcs51/mcs51.h"
@@ -19,7 +26,11 @@
 
 struct micro3d_vtx
 {
+<<<<<<< HEAD
 	INT32 x, y, z;
+=======
+	int32_t x, y, z;
+>>>>>>> upstream/master
 };
 
 enum planes
@@ -32,6 +43,7 @@ enum planes
 		CLIP_Y_MAX
 };
 
+<<<<<<< HEAD
 enum dac_registers {
 	VCF,
 	VCQ,
@@ -39,6 +51,8 @@ enum dac_registers {
 	PAN
 };
 
+=======
+>>>>>>> upstream/master
 class micro3d_sound_device;
 
 class micro3d_state : public driver_device
@@ -88,6 +102,7 @@ public:
 	optional_ioport m_joystick_y;
 	optional_ioport m_throttle;
 
+<<<<<<< HEAD
 	required_shared_ptr<UINT16> m_shared_ram;
 	UINT8               m_m68681_tx0;
 
@@ -97,10 +112,21 @@ public:
 
 	/* TI UART */
 	UINT8               m_ti_uart[9];
+=======
+	required_shared_ptr<uint16_t> m_shared_ram;
+	uint8_t               m_m68681_tx0;
+
+	/* Sound */
+	uint8_t               m_sound_port_latch[4];
+
+	/* TI UART */
+	uint8_t               m_ti_uart[9];
+>>>>>>> upstream/master
 	int                 m_ti_uart_mode_cycle;
 	int                 m_ti_uart_sync_cycle;
 
 	/* ADC */
+<<<<<<< HEAD
 	UINT8               m_adc_val;
 
 	/* Hardware version-check latch for BOTSS 1.1a */
@@ -139,6 +165,46 @@ public:
 	UINT32              m_draw_dpram[1024];
 	UINT16              *m_frame_buffers[2];
 	UINT16              *m_tmp_buffer;
+=======
+	uint8_t               m_adc_val;
+
+	/* Hardware version-check latch for BOTSS 1.1a */
+	uint8_t               m_botss_latch;
+
+	/* MAC */
+	required_shared_ptr<uint32_t> m_mac_sram;
+	uint32_t              m_sram_r_addr;
+	uint32_t              m_sram_w_addr;
+	uint32_t              m_vtx_addr;
+	uint32_t              m_mrab11;
+	uint32_t              m_mac_stat;
+	uint32_t              m_mac_inst;
+
+	/* 2D video */
+	required_shared_ptr<uint16_t> m_sprite_vram;
+	uint16_t              m_creg;
+	uint16_t              m_xfer3dk;
+
+	/* 3D pipeline */
+	uint32_t              m_pipe_data;
+	uint32_t              m_pipeline_state;
+	int32_t               m_vtx_fifo[512];
+	uint32_t              m_fifo_idx;
+	uint32_t              m_draw_cmd;
+	int                 m_draw_state;
+	int32_t               m_x_min;
+	int32_t               m_x_max;
+	int32_t               m_y_min;
+	int32_t               m_y_max;
+	int32_t               m_z_min;
+	int32_t               m_z_max;
+	int32_t               m_x_mid;
+	int32_t               m_y_mid;
+	int                 m_dpram_bank;
+	uint32_t              m_draw_dpram[1024];
+	std::unique_ptr<uint16_t[]>              m_frame_buffers[2];
+	std::unique_ptr<uint16_t[]>              m_tmp_buffer;
+>>>>>>> upstream/master
 	int                 m_drawing_buffer;
 	int                 m_display_buffer;
 
@@ -173,9 +239,15 @@ public:
 	DECLARE_READ8_MEMBER(micro3d_sound_io_r);
 	DECLARE_DRIVER_INIT(micro3d);
 	DECLARE_DRIVER_INIT(botss);
+<<<<<<< HEAD
 	virtual void machine_reset();
 	virtual void video_start();
 	virtual void video_reset();
+=======
+	virtual void machine_reset() override;
+	virtual void video_start() override;
+	virtual void video_reset() override;
+>>>>>>> upstream/master
 	INTERRUPT_GEN_MEMBER(micro3d_vblank);
 	TIMER_CALLBACK_MEMBER(mac_done_callback);
 	TIMER_CALLBACK_MEMBER(adc_done_callback);
@@ -192,6 +264,7 @@ public:
 	/* 3D graphics */
 	int inside(micro3d_vtx *v, enum planes plane);
 	micro3d_vtx intersect(micro3d_vtx *v1, micro3d_vtx *v2, enum planes plane);
+<<<<<<< HEAD
 	inline void write_span(UINT32 y, UINT32 x);
 	void draw_line(UINT32 x1, UINT32 y1, UINT32 x2, UINT32 y2);
 	void rasterise_spans(UINT32 min_y, UINT32 max_y, UINT32 attr);
@@ -267,3 +340,17 @@ private:
 };
 
 extern const device_type MICRO3D;
+=======
+	inline void write_span(uint32_t y, uint32_t x);
+	void draw_line(uint32_t x1, uint32_t y1, uint32_t x2, uint32_t y2);
+	void rasterise_spans(uint32_t min_y, uint32_t max_y, uint32_t attr);
+	int clip_triangle(micro3d_vtx *v, micro3d_vtx *vout, int num_vertices, enum planes plane);
+	void draw_triangles(uint32_t attr);
+
+
+protected:
+	virtual void device_timer(emu_timer &timer, device_timer_id id, int param, void *ptr) override;
+};
+
+#endif // MAME_INCLUDES_MICRO3D_H
+>>>>>>> upstream/master

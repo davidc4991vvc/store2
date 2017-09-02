@@ -162,7 +162,11 @@
 //  GLOBAL VARIABLES
 //**************************************************************************
 
+<<<<<<< HEAD
 const device_type DMVCART_SLOT = &device_creator<dmvcart_slot_device>;
+=======
+DEFINE_DEVICE_TYPE(DMVCART_SLOT, dmvcart_slot_device, "dmvcart_slot", "Decision Mate V cartridge slot")
+>>>>>>> upstream/master
 
 //**************************************************************************
 //    DMV cartridge interface
@@ -194,6 +198,7 @@ device_dmvslot_interface::~device_dmvslot_interface()
 //-------------------------------------------------
 //  dmvcart_slot_device - constructor
 //-------------------------------------------------
+<<<<<<< HEAD
 dmvcart_slot_device::dmvcart_slot_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock) :
 		device_t(mconfig, DMVCART_SLOT, "Decision Mate V cartridge slot", tag, owner, clock, "dmvcart_slot", __FILE__),
 		device_slot_interface(mconfig, *this),
@@ -202,6 +207,16 @@ dmvcart_slot_device::dmvcart_slot_device(const machine_config &mconfig, const ch
 		m_out_int_cb(*this),
 		m_out_irq_cb(*this),
 		m_out_thold_cb(*this), m_cart(nullptr)
+=======
+dmvcart_slot_device::dmvcart_slot_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock) :
+	device_t(mconfig, DMVCART_SLOT, tag, owner, clock),
+	device_slot_interface(mconfig, *this),
+	m_prog_read_cb(*this),
+	m_prog_write_cb(*this),
+	m_out_int_cb(*this),
+	m_out_irq_cb(*this),
+	m_out_thold_cb(*this), m_cart(nullptr)
+>>>>>>> upstream/master
 {
 }
 
@@ -234,7 +249,11 @@ void dmvcart_slot_device::device_start()
     read
 -------------------------------------------------*/
 
+<<<<<<< HEAD
 bool dmvcart_slot_device::read(offs_t offset, UINT8 &data)
+=======
+bool dmvcart_slot_device::read(offs_t offset, uint8_t &data)
+>>>>>>> upstream/master
 {
 	if (m_cart)
 		return m_cart->read(offset, data);
@@ -245,7 +264,11 @@ bool dmvcart_slot_device::read(offs_t offset, UINT8 &data)
     write
 -------------------------------------------------*/
 
+<<<<<<< HEAD
 bool dmvcart_slot_device::write(offs_t offset, UINT8 data)
+=======
+bool dmvcart_slot_device::write(offs_t offset, uint8_t data)
+>>>>>>> upstream/master
 {
 	if (m_cart)
 		return m_cart->write(offset, data);
@@ -256,7 +279,11 @@ bool dmvcart_slot_device::write(offs_t offset, UINT8 data)
     read
 -------------------------------------------------*/
 
+<<<<<<< HEAD
 void dmvcart_slot_device::ram_read(UINT8 cas, offs_t offset, UINT8 &data)
+=======
+void dmvcart_slot_device::ram_read(uint8_t cas, offs_t offset, uint8_t &data)
+>>>>>>> upstream/master
 {
 	if (m_cart)
 		m_cart->ram_read(cas, offset, data);
@@ -266,7 +293,11 @@ void dmvcart_slot_device::ram_read(UINT8 cas, offs_t offset, UINT8 &data)
     write
 -------------------------------------------------*/
 
+<<<<<<< HEAD
 void dmvcart_slot_device::ram_write(UINT8 cas, offs_t offset, UINT8 data)
+=======
+void dmvcart_slot_device::ram_write(uint8_t cas, offs_t offset, uint8_t data)
+>>>>>>> upstream/master
 {
 	if (m_cart)
 		return m_cart->ram_write(cas, offset, data);
@@ -276,7 +307,11 @@ void dmvcart_slot_device::ram_write(UINT8 cas, offs_t offset, UINT8 data)
     IO read
 -------------------------------------------------*/
 
+<<<<<<< HEAD
 void dmvcart_slot_device::io_read(address_space &space, int ifsel, offs_t offset, UINT8 &data)
+=======
+void dmvcart_slot_device::io_read(address_space &space, int ifsel, offs_t offset, uint8_t &data)
+>>>>>>> upstream/master
 {
 	if (m_cart)
 		m_cart->io_read(space, ifsel, offset, data);
@@ -287,7 +322,11 @@ void dmvcart_slot_device::io_read(address_space &space, int ifsel, offs_t offset
    IO write
 -------------------------------------------------*/
 
+<<<<<<< HEAD
 void dmvcart_slot_device::io_write(address_space &space, int ifsel, offs_t offset, UINT8 data)
+=======
+void dmvcart_slot_device::io_write(address_space &space, int ifsel, offs_t offset, uint8_t data)
+>>>>>>> upstream/master
 {
 	if (m_cart)
 		m_cart->io_write(space, ifsel, offset, data);

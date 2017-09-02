@@ -42,7 +42,11 @@ RSC=rc.exe
 # PROP Intermediate_Dir "Release"
 # PROP Target_Dir ""
 # ADD BASE CPP /nologo /W3 /GX /O2 /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_MBCS" /YX /FD /c
+<<<<<<< HEAD
 # ADD CPP /nologo /W3 /GX /O2 /D "NDEBUG" /D "WIN32" /D "_WINDOWS" /D "_UNICODE" /D "UNICODE" /YX /FD /c
+=======
+# ADD CPP /nologo /W4 /WX /GX /O2 /D "NDEBUG" /D "WIN32" /D "_WINDOWS" /D "_UNICODE" /D "UNICODE" /Yu"Precomp.h" /FD /c
+>>>>>>> upstream/master
 # ADD BASE MTL /nologo /D "NDEBUG" /mktyplib203 /win32
 # ADD MTL /nologo /D "NDEBUG" /mktyplib203 /win32
 # ADD BASE RSC /l 0x419 /d "NDEBUG"
@@ -68,7 +72,11 @@ LINK32=link.exe
 # PROP Ignore_Export_Lib 0
 # PROP Target_Dir ""
 # ADD BASE CPP /nologo /W3 /Gm /GX /ZI /Od /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_MBCS" /YX /FD /GZ /c
+<<<<<<< HEAD
 # ADD CPP /nologo /W3 /Gm /GX /ZI /Od /D "_DEBUG" /D "WIN32" /D "_WINDOWS" /D "_UNICODE" /D "UNICODE" /YX /FD /GZ /c
+=======
+# ADD CPP /nologo /W4 /WX /Gm /GX /ZI /Od /D "_DEBUG" /D "WIN32" /D "_WINDOWS" /D "_UNICODE" /D "UNICODE" /Yu"Precomp.h" /FD /GZ /c
+>>>>>>> upstream/master
 # ADD BASE MTL /nologo /D "_DEBUG" /mktyplib203 /win32
 # ADD MTL /nologo /D "_DEBUG" /mktyplib203 /win32
 # ADD BASE RSC /l 0x419 /d "_DEBUG"
@@ -103,6 +111,13 @@ SOURCE=..\..\7zAlloc.h
 # End Source File
 # Begin Source File
 
+<<<<<<< HEAD
+=======
+SOURCE=..\..\7zArcIn.c
+# End Source File
+# Begin Source File
+
+>>>>>>> upstream/master
 SOURCE=..\..\7zBuf.c
 # End Source File
 # Begin Source File
@@ -135,11 +150,19 @@ SOURCE=..\..\7zFile.h
 # End Source File
 # Begin Source File
 
+<<<<<<< HEAD
 SOURCE=..\..\7zIn.c
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\7zStream.c
+=======
+SOURCE=..\..\7zStream.c
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\7zTypes.h
+>>>>>>> upstream/master
 # End Source File
 # Begin Source File
 
@@ -163,6 +186,13 @@ SOURCE=..\..\Bra86.c
 # End Source File
 # Begin Source File
 
+<<<<<<< HEAD
+=======
+SOURCE=..\..\BraIA64.c
+# End Source File
+# Begin Source File
+
+>>>>>>> upstream/master
 SOURCE=..\..\CpuArch.c
 # End Source File
 # Begin Source File
@@ -171,6 +201,25 @@ SOURCE=..\..\CpuArch.h
 # End Source File
 # Begin Source File
 
+<<<<<<< HEAD
+=======
+SOURCE=..\..\Delta.c
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\Delta.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\DllSecur.c
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\DllSecur.h
+# End Source File
+# Begin Source File
+
+>>>>>>> upstream/master
 SOURCE=..\..\Lzma2Dec.c
 # End Source File
 # Begin Source File
@@ -185,9 +234,24 @@ SOURCE=..\..\LzmaDec.c
 
 SOURCE=..\..\LzmaDec.h
 # End Source File
+<<<<<<< HEAD
 # Begin Source File
 
 SOURCE=..\..\Types.h
+=======
+# End Group
+# Begin Group "Spec"
+
+# PROP Default_Filter ""
+# Begin Source File
+
+SOURCE=.\Precomp.c
+# ADD CPP /Yc"Precomp.h"
+# End Source File
+# Begin Source File
+
+SOURCE=.\Precomp.h
+>>>>>>> upstream/master
 # End Source File
 # End Group
 # Begin Source File

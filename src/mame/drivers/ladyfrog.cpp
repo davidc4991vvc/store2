@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 // license:LGPL-2.1+
+=======
+// license:BSD-3-Clause
+>>>>>>> upstream/master
 // copyright-holders:Tomasz Slanina
 /*
 Lady Frog (c) 1990 Mondial Games
@@ -49,9 +53,18 @@ Notes:
 */
 
 #include "emu.h"
+<<<<<<< HEAD
 #include "cpu/z80/z80.h"
 #include "sound/ay8910.h"
 #include "includes/ladyfrog.h"
+=======
+#include "includes/ladyfrog.h"
+
+#include "cpu/z80/z80.h"
+#include "sound/ay8910.h"
+#include "screen.h"
+#include "speaker.h"
+>>>>>>> upstream/master
 
 
 READ8_MEMBER(ladyfrog_state::from_snd_r)
@@ -81,7 +94,11 @@ TIMER_CALLBACK_MEMBER(ladyfrog_state::nmi_callback)
 
 WRITE8_MEMBER(ladyfrog_state::sound_command_w)
 {
+<<<<<<< HEAD
 	soundlatch_byte_w(space, 0, data);
+=======
+	m_soundlatch->write(space, 0, data);
+>>>>>>> upstream/master
 	machine().scheduler().synchronize(timer_expired_delegate(FUNC(ladyfrog_state::nmi_callback),this), data);
 }
 
@@ -139,7 +156,11 @@ static ADDRESS_MAP_START( ladyfrog_sound_map, AS_PROGRAM, 8, ladyfrog_state )
 	AM_RANGE(0xca00, 0xca00) AM_WRITENOP
 	AM_RANGE(0xcb00, 0xcb00) AM_WRITENOP
 	AM_RANGE(0xcc00, 0xcc00) AM_WRITENOP
+<<<<<<< HEAD
 	AM_RANGE(0xd000, 0xd000) AM_READ(soundlatch_byte_r) AM_WRITE(to_main_w)
+=======
+	AM_RANGE(0xd000, 0xd000) AM_DEVREAD("soundlatch", generic_latch_8_device, read) AM_WRITE(to_main_w)
+>>>>>>> upstream/master
 	AM_RANGE(0xd200, 0xd200) AM_READNOP AM_WRITE(nmi_enable_w)
 	AM_RANGE(0xd400, 0xd400) AM_WRITE(nmi_disable_w)
 	AM_RANGE(0xd600, 0xd600) AM_WRITENOP
@@ -278,7 +299,11 @@ void ladyfrog_state::machine_reset()
 	m_snd_data = 0;
 }
 
+<<<<<<< HEAD
 static MACHINE_CONFIG_START( ladyfrog, ladyfrog_state )
+=======
+static MACHINE_CONFIG_START( ladyfrog )
+>>>>>>> upstream/master
 
 	/* basic machine hardware */
 	MCFG_CPU_ADD("maincpu", Z80,8000000/2)
@@ -308,6 +333,11 @@ static MACHINE_CONFIG_START( ladyfrog, ladyfrog_state )
 	/* sound hardware */
 	MCFG_SPEAKER_STANDARD_MONO("mono")
 
+<<<<<<< HEAD
+=======
+	MCFG_GENERIC_LATCH_8_ADD("soundlatch")
+
+>>>>>>> upstream/master
 	MCFG_SOUND_ADD("aysnd", AY8910, 8000000/4)
 	MCFG_AY8910_PORT_A_WRITE_CB(WRITE8(ladyfrog_state, unk_w))
 	MCFG_AY8910_PORT_B_WRITE_CB(WRITE8(ladyfrog_state, unk_w))
@@ -365,7 +395,31 @@ ROM_START( toucheme )
 	ROM_LOAD( "8.ic10",   0x20000, 0x10000, CRC(fc6808bf) SHA1(f1f1b75a79dfdb500012f9b52c6364f0a13dce2d) )
 ROM_END
 
+<<<<<<< HEAD
 GAME( 1990, ladyfrog, 0, ladyfrog, ladyfrog, driver_device, 0, ORIENTATION_SWAP_XY, "Mondial Games", "Lady Frog", MACHINE_SUPPORTS_SAVE )
 
 // toucheme art style is similar to ladyfrog, so it's probably the same manufacturer
 GAME( 19??, toucheme, 0, toucheme, toucheme, driver_device, 0, ORIENTATION_SWAP_XY, "<unknown>",     "Touche Me", MACHINE_SUPPORTS_SAVE )
+=======
+ROM_START( touchemea )
+	ROM_REGION( 0x10000, "maincpu", 0 )
+	ROM_LOAD( "2.ic107",   0x0000, 0x10000, CRC(4e72312d) SHA1(a7d178608f05c87a53c650298b903bcf34b3b755) ) // sldh
+
+	ROM_REGION( 0x10000, "audiocpu", 0 )
+	ROM_LOAD( "1.ic115",   0x0000, 0x8000, CRC(902589aa) SHA1(d60088fc31a67fec91f908f671af77bb87a5e59c) )
+
+	ROM_REGION( 0x60000, "gfx1", ROMREGION_INVERT )
+	ROM_LOAD( "3.ic32",   0x30000, 0x10000, CRC(223b4435) SHA1(fb5a4096012093bae5fda213a5de317e63a88ec3) )
+	ROM_LOAD( "4.ic33",   0x40000, 0x10000, CRC(96dcc2f3) SHA1(9c61f8161771e40ca41b6e102bc04583dc97cd0d) )
+	ROM_LOAD( "5.ic34",   0x50000, 0x10000, CRC(b8667a6b) SHA1(288a5cbd8fc01b24822e89fbc1e6d7f45c181483) )
+	ROM_LOAD( "6.ic8",    0x00000, 0x10000, CRC(d257382f) SHA1(9c459b90c9ddfe90de4a252f29a7bee809412b46) )
+	ROM_LOAD( "7.ic9",    0x10000, 0x10000, CRC(feb1b974) SHA1(ffd4527472cdf655fbebebf4d3abb61962e54457) )
+	ROM_LOAD( "8.ic10",   0x20000, 0x10000, CRC(fc6808bf) SHA1(f1f1b75a79dfdb500012f9b52c6364f0a13dce2d) )
+ROM_END
+
+GAME( 1990, ladyfrog, 0, ladyfrog, ladyfrog, ladyfrog_state, 0, ORIENTATION_SWAP_XY, "Mondial Games", "Lady Frog", MACHINE_SUPPORTS_SAVE )
+
+// toucheme art style is similar to ladyfrog, so it's probably the same manufacturer
+GAME( 19??, toucheme,  0,        toucheme, toucheme, ladyfrog_state, 0, ORIENTATION_SWAP_XY, "<unknown>",     "Touche Me (set 1)",         MACHINE_SUPPORTS_SAVE )
+GAME( 19??, touchemea, toucheme, toucheme, toucheme, ladyfrog_state, 0, ORIENTATION_SWAP_XY, "<unknown>",     "Touche Me (set 2, harder)", MACHINE_SUPPORTS_SAVE )
+>>>>>>> upstream/master

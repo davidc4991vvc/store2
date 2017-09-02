@@ -16,7 +16,11 @@
     Related sound programs (not implemented yet):
 
     Zero Team                 "START UP PROGRAM V1.02 (C)1986 SEIBU KAIHATSU INC."
+<<<<<<< HEAD
     Legionaire                "START UP PROGRAM V1.02 (C)1986 SEIBU KAIHATSU INC." (YM2151 substituted for YM3812)
+=======
+    Legionnaire               "START UP PROGRAM V1.02 (C)1986 SEIBU KAIHATSU INC." (YM2151 substituted for YM3812)
+>>>>>>> upstream/master
     Raiden 2                  "START UP PROGRAM V1.02 (C)1986 SEIBU KAIHATSU INC." (YM2151 substituted for YM3812, plus extra MSM6205)
     Raiden DX                 "START UP PROGRAM V1.02 (C)1986 SEIBU KAIHATSU INC." (YM2151 substituted for YM3812, plus extra MSM6205)
     Cup Soccer                "START UP PROGRAM V1.02 (C)1986 SEIBU KAIHATSU INC." (YM2151 substituted for YM3812, plus extra MSM6205)
@@ -24,6 +28,7 @@
     * = encrypted
 
 ***************************************************************************/
+<<<<<<< HEAD
 
 #include "cpu/z80/z80.h"
 #include "sound/3812intf.h"
@@ -39,19 +44,49 @@ ADDRESS_MAP_EXTERN(seibu2_raiden2_sound_map, 8);
 ADDRESS_MAP_EXTERN(seibu_newzeroteam_sound_map, 8);
 ADDRESS_MAP_EXTERN(seibu3_sound_map, 8);
 ADDRESS_MAP_EXTERN(seibu3_adpcm_sound_map, 8);
+=======
+#ifndef MAME_AUDIO_SEIBU_H
+#define MAME_AUDIO_SEIBU_H
+
+#pragma once
+
+#include "cpu/z80/z80.h"
+#include "sound/okiadpcm.h"
+
+ADDRESS_MAP_EXTERN(seibu_sound_map, 8);
+>>>>>>> upstream/master
 
 class seibu_sound_device : public device_t
 {
 public:
+<<<<<<< HEAD
 	seibu_sound_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
 	~seibu_sound_device() {}
 
 	DECLARE_READ16_MEMBER( main_word_r );
 	DECLARE_WRITE16_MEMBER( main_word_w );
+=======
+	seibu_sound_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
+	~seibu_sound_device() {}
+
+	// static configuration
+	static void static_set_cpu_tag(device_t &device, const char *tag);
+	static void static_set_rombank_tag(device_t &device, const char *tag);
+	template<class _Object> static devcb_base &set_ym_read_callback(device_t &device, _Object object)  { return downcast<seibu_sound_device &>(device).m_ym_read_cb.set_callback(object); }
+	template<class _Object> static devcb_base &set_ym_write_callback(device_t &device, _Object object) { return downcast<seibu_sound_device &>(device).m_ym_write_cb.set_callback(object); }
+
+	DECLARE_READ8_MEMBER( main_r );
+	DECLARE_WRITE8_MEMBER( main_w );
+>>>>>>> upstream/master
 	DECLARE_WRITE16_MEMBER( main_mustb_w );
 	DECLARE_WRITE8_MEMBER( irq_clear_w );
 	DECLARE_WRITE8_MEMBER( rst10_ack_w );
 	DECLARE_WRITE8_MEMBER( rst18_ack_w );
+<<<<<<< HEAD
+=======
+	DECLARE_READ8_MEMBER( ym_r );
+	DECLARE_WRITE8_MEMBER( ym_w );
+>>>>>>> upstream/master
 	DECLARE_WRITE8_MEMBER( bank_w );
 	DECLARE_WRITE8_MEMBER( coin_w );
 	WRITE_LINE_MEMBER( fm_irqhandler );
@@ -60,13 +95,17 @@ public:
 	DECLARE_WRITE8_MEMBER( main_data_w );
 	DECLARE_WRITE8_MEMBER( pending_w );
 
+<<<<<<< HEAD
 	static void apply_decrypt(UINT8 *rom, UINT8 *opcodes, int length);
 	void set_encryption(int mode);
 	UINT8 *get_custom_decrypt();
+=======
+>>>>>>> upstream/master
 	void update_irq_lines(int param);
 
 protected:
 	// device-level overrides
+<<<<<<< HEAD
 	virtual void device_start();
 	virtual void device_reset();
 
@@ -82,6 +121,26 @@ protected:
 	int m_sub2main_pending;
 	UINT8 m_rst10_irq;
 	UINT8 m_rst18_irq;
+=======
+	virtual void device_start() override;
+	virtual void device_reset() override;
+
+private:
+	// device callbacks
+	devcb_read8 m_ym_read_cb;
+	devcb_write8 m_ym_write_cb;
+
+	// internal state
+	required_device<cpu_device> m_sound_cpu;
+	optional_region_ptr<uint8_t> m_sound_rom;
+	optional_memory_bank m_rom_bank;
+	uint8_t m_main2sub[2];
+	uint8_t m_sub2main[2];
+	int m_main2sub_pending;
+	int m_sub2main_pending;
+	uint8_t m_rst10_irq;
+	uint8_t m_rst18_irq;
+>>>>>>> upstream/master
 
 	enum
 	{
@@ -93,8 +152,31 @@ protected:
 	};
 };
 
+<<<<<<< HEAD
 extern const device_type SEIBU_SOUND;
 
+=======
+DECLARE_DEVICE_TYPE(SEIBU_SOUND, seibu_sound_device)
+
+
+// SEI80BU (Z80 program decryption)
+
+class sei80bu_device : public device_t, public device_rom_interface
+{
+public:
+	sei80bu_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
+
+	DECLARE_READ8_MEMBER(data_r);
+	DECLARE_READ8_MEMBER(opcode_r);
+
+protected:
+	// device-level overrides
+	virtual void device_start() override { }
+	virtual void rom_bank_updated() override { }
+};
+
+DECLARE_DEVICE_TYPE(SEI80BU, sei80bu_device)
+>>>>>>> upstream/master
 
 // Seibu ADPCM device
 
@@ -102,17 +184,25 @@ class seibu_adpcm_device : public device_t,
 									public device_sound_interface
 {
 public:
+<<<<<<< HEAD
 	seibu_adpcm_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
 	~seibu_adpcm_device() {}
 
 	static void set_adpcm_rom_tag(device_t &device, const char *tag) { downcast<seibu_adpcm_device &>(device).m_rom_tag = tag; }
 
 	void decrypt(const char *region);
+=======
+	seibu_adpcm_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
+	~seibu_adpcm_device() {}
+
+	void decrypt();
+>>>>>>> upstream/master
 	DECLARE_WRITE8_MEMBER( adr_w );
 	DECLARE_WRITE8_MEMBER( ctl_w );
 
 protected:
 	// device-level overrides
+<<<<<<< HEAD
 	virtual void device_start();
 
 	// sound stream update overrides
@@ -137,6 +227,28 @@ extern const device_type SEIBU_ADPCM;
 #define MCFG_SEIBU_ADPCM_ROMREGION(_tag) \
 	seibu_adpcm_device::set_adpcm_rom_tag(*device, _tag);
 
+=======
+	virtual void device_start() override;
+
+	// sound stream update overrides
+	virtual void sound_stream_update(sound_stream &stream, stream_sample_t **inputs, stream_sample_t **outputs, int samples) override;
+
+private:
+	// internal state
+	oki_adpcm_state m_adpcm;
+	sound_stream *m_stream;
+	uint32_t m_current;
+	uint32_t m_end;
+	uint8_t m_nibble;
+	uint8_t m_playing;
+	required_region_ptr<uint8_t> m_base;
+};
+
+DECLARE_DEVICE_TYPE(SEIBU_ADPCM, seibu_adpcm_device)
+
+/**************************************************************************/
+
+>>>>>>> upstream/master
 #define SEIBU_COIN_INPUTS                                           \
 	PORT_START("COIN")                                              \
 	PORT_BIT( 0x01, IP_ACTIVE_HIGH, IPT_COIN1 ) PORT_IMPULSE(4)     \
@@ -159,6 +271,7 @@ extern const device_type SEIBU_ADPCM;
 	PORT_BIT( 0x40, IP_ACTIVE_LOW, IPT_UNUSED )                     \
 	PORT_BIT( 0x80, IP_ACTIVE_LOW, IPT_UNUSED )
 
+<<<<<<< HEAD
 
 #define SEIBU_SOUND_SYSTEM_CPU(freq)                                \
 	MCFG_CPU_ADD("audiocpu", Z80, freq)                             \
@@ -286,3 +399,20 @@ extern const device_type SEIBU_ADPCM;
 	MCFG_SOUND_ROUTE(ALL_OUTPUTS, "mono", 0.40)
 
 /**************************************************************************/
+=======
+#define MCFG_SEIBU_SOUND_CPU(_audiocputag) \
+	seibu_sound_device::static_set_cpu_tag(*device, "^" _audiocputag);
+
+#define MCFG_SEIBU_SOUND_ROMBANK(_banktag) \
+	seibu_sound_device::static_set_rombank_tag(*device, "^" _banktag);
+
+#define MCFG_SEIBU_SOUND_YM_READ_CB(_devcb) \
+	devcb = &seibu_sound_device::set_ym_read_callback(*device, DEVCB_##_devcb);
+
+#define MCFG_SEIBU_SOUND_YM_WRITE_CB(_devcb) \
+	devcb = &seibu_sound_device::set_ym_write_callback(*device, DEVCB_##_devcb);
+
+/**************************************************************************/
+
+#endif // MAME_AUDIO_SEIBU_H
+>>>>>>> upstream/master

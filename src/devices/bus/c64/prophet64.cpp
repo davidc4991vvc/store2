@@ -6,6 +6,10 @@
 
 **********************************************************************/
 
+<<<<<<< HEAD
+=======
+#include "emu.h"
+>>>>>>> upstream/master
 #include "prophet64.h"
 
 
@@ -14,7 +18,11 @@
 //  DEVICE DEFINITIONS
 //**************************************************************************
 
+<<<<<<< HEAD
 const device_type C64_PROPHET64 = &device_creator<c64_prophet64_cartridge_device>;
+=======
+DEFINE_DEVICE_TYPE(C64_PROPHET64, c64_prophet64_cartridge_device, "c64_prophet64", "PROPHET64")
+>>>>>>> upstream/master
 
 
 
@@ -26,8 +34,13 @@ const device_type C64_PROPHET64 = &device_creator<c64_prophet64_cartridge_device
 //  c64_prophet64_cartridge_device - constructor
 //-------------------------------------------------
 
+<<<<<<< HEAD
 c64_prophet64_cartridge_device::c64_prophet64_cartridge_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock) :
 	device_t(mconfig, C64_PROPHET64, "PROPHET64", tag, owner, clock, "c64_prophet64", __FILE__),
+=======
+c64_prophet64_cartridge_device::c64_prophet64_cartridge_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock) :
+	device_t(mconfig, C64_PROPHET64, tag, owner, clock),
+>>>>>>> upstream/master
 	device_c64_expansion_card_interface(mconfig, *this),
 	m_bank(0)
 {
@@ -60,7 +73,11 @@ void c64_prophet64_cartridge_device::device_reset()
 //  c64_cd_r - cartridge data read
 //-------------------------------------------------
 
+<<<<<<< HEAD
 UINT8 c64_prophet64_cartridge_device::c64_cd_r(address_space &space, offs_t offset, UINT8 data, int sphi2, int ba, int roml, int romh, int io1, int io2)
+=======
+uint8_t c64_prophet64_cartridge_device::c64_cd_r(address_space &space, offs_t offset, uint8_t data, int sphi2, int ba, int roml, int romh, int io1, int io2)
+>>>>>>> upstream/master
 {
 	if (!roml)
 	{
@@ -76,7 +93,11 @@ UINT8 c64_prophet64_cartridge_device::c64_cd_r(address_space &space, offs_t offs
 //  c64_cd_w - cartridge data write
 //-------------------------------------------------
 
+<<<<<<< HEAD
 void c64_prophet64_cartridge_device::c64_cd_w(address_space &space, offs_t offset, UINT8 data, int sphi2, int ba, int roml, int romh, int io1, int io2)
+=======
+void c64_prophet64_cartridge_device::c64_cd_w(address_space &space, offs_t offset, uint8_t data, int sphi2, int ba, int roml, int romh, int io1, int io2)
+>>>>>>> upstream/master
 {
 	if (!io2)
 	{

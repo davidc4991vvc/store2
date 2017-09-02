@@ -16,7 +16,12 @@ Framebuffer todo:
 
 
 #include "emu.h"
+<<<<<<< HEAD
 #include "includes/stv.h"
+=======
+#include "includes/saturn.h" // FIXME: this is a dependency from devices on MAME
+
+>>>>>>> upstream/master
 
 #define VDP1_LOG 0
 
@@ -24,14 +29,24 @@ Framebuffer todo:
 enum { FRAC_SHIFT = 16 };
 
 struct spoint {
+<<<<<<< HEAD
 	INT32 x, y;
 	INT32 u, v;
+=======
+	int32_t x, y;
+	int32_t u, v;
+>>>>>>> upstream/master
 };
 
 struct shaded_point
 {
+<<<<<<< HEAD
 	INT32 x,y;
 	INT32 r,g,b;
+=======
+	int32_t x,y;
+	int32_t r,g,b;
+>>>>>>> upstream/master
 };
 
 #define RGB_R(_color)   (_color & 0x1f)
@@ -40,7 +55,11 @@ struct shaded_point
 
 #define SWAP_INT32(_a,_b) \
 	{ \
+<<<<<<< HEAD
 		INT32 t; \
+=======
+		int32_t t; \
+>>>>>>> upstream/master
 		t = _a; \
 		_a = _b; \
 		_b = t; \
@@ -48,7 +67,11 @@ struct shaded_point
 
 #define SWAP_INT32PTR(_p1, _p2) \
 	{ \
+<<<<<<< HEAD
 		INT32 *p; \
+=======
+		int32_t *p; \
+>>>>>>> upstream/master
 		p = _p1; \
 		_p1 = _p2; \
 		_p2 = p; \
@@ -161,7 +184,11 @@ READ16_MEMBER( saturn_state::saturn_vdp1_regs_r )
 		/* MODR register, read register for the other VDP1 regs
 		   (Shienryu SS version abuses of this during intro) */
 		case 0x16/2:
+<<<<<<< HEAD
 			UINT16 modr;
+=======
+			uint16_t modr;
+>>>>>>> upstream/master
 
 			modr = 0x1000; //vdp1 VER
 			modr |= (STV_VDP1_PTM >> 1) << 8; // PTM1
@@ -174,7 +201,11 @@ READ16_MEMBER( saturn_state::saturn_vdp1_regs_r )
 
 			return modr;
 		default:
+<<<<<<< HEAD
 			if(!space.debugger_access())
+=======
+			if(!machine().side_effect_disabled())
+>>>>>>> upstream/master
 				printf ("cpu %s (PC=%08X) VDP1: Read from Registers, Offset %04x\n", space.device().tag(), space.device().safe_pc(), offset*2);
 			break;
 	}
@@ -208,7 +239,11 @@ void saturn_state::stv_clear_framebuffer( int which_framebuffer )
 	}
 
 	if ( VDP1_LOG ) logerror( "Clearing %d framebuffer\n", m_vdp1.framebuffer_current_draw );
+<<<<<<< HEAD
 //  memset( m_vdp1.framebuffer[ which_framebuffer ], m_vdp1.ewdr, 1024 * 256 * sizeof(UINT16) * 2 );
+=======
+//  memset( m_vdp1.framebuffer[ which_framebuffer ], m_vdp1.ewdr, 1024 * 256 * sizeof(uint16_t) * 2 );
+>>>>>>> upstream/master
 }
 
 
@@ -337,7 +372,11 @@ READ32_MEMBER ( saturn_state::saturn_vdp1_vram_r )
 
 WRITE32_MEMBER ( saturn_state::saturn_vdp1_vram_w )
 {
+<<<<<<< HEAD
 	UINT8 *vdp1 = m_vdp1.gfx_decode;
+=======
+	uint8_t *vdp1 = m_vdp1.gfx_decode.get();
+>>>>>>> upstream/master
 
 	COMBINE_DATA (&m_vdp1_vram[offset]);
 
@@ -398,7 +437,11 @@ WRITE32_MEMBER ( saturn_state::saturn_vdp1_framebuffer0_w )
 
 READ32_MEMBER ( saturn_state::saturn_vdp1_framebuffer0_r )
 {
+<<<<<<< HEAD
 	UINT32 result = 0;
+=======
+	uint32_t result = 0;
+>>>>>>> upstream/master
 	//popmessage ("STV VDP1 Framebuffer 0 READ offset %08x",offset);
 	if ( STV_VDP1_TVM & 1 )
 	{
@@ -514,7 +557,11 @@ void saturn_state::stv_clear_gouraud_shading(void)
 	memset( &stv_gouraud_shading, 0, sizeof( stv_gouraud_shading ) );
 }
 
+<<<<<<< HEAD
 UINT8 saturn_state::stv_read_gouraud_table( void )
+=======
+uint8_t saturn_state::stv_read_gouraud_table( void )
+>>>>>>> upstream/master
 {
 	int gaddr;
 
@@ -533,7 +580,11 @@ UINT8 saturn_state::stv_read_gouraud_table( void )
 	}
 }
 
+<<<<<<< HEAD
 INLINE INT32 _shading( INT32 color, INT32 correction )
+=======
+static inline int32_t _shading( int32_t color, int32_t correction )
+>>>>>>> upstream/master
 {
 	correction = (correction >> 16) & 0x1f;
 	color += (correction - 16);
@@ -544,9 +595,15 @@ INLINE INT32 _shading( INT32 color, INT32 correction )
 	return color;
 }
 
+<<<<<<< HEAD
 UINT16 saturn_state::stv_vdp1_apply_gouraud_shading( int x, int y, UINT16 pix )
 {
 	INT32 r,g,b, msb;
+=======
+uint16_t saturn_state::stv_vdp1_apply_gouraud_shading( int x, int y, uint16_t pix )
+{
+	int32_t r,g,b, msb;
+>>>>>>> upstream/master
 
 	msb = pix & 0x8000;
 
@@ -574,9 +631,15 @@ UINT16 saturn_state::stv_vdp1_apply_gouraud_shading( int x, int y, UINT16 pix )
 	return msb | b << 10 | g << 5 | r;
 }
 
+<<<<<<< HEAD
 void saturn_state::stv_vdp1_setup_shading_for_line(INT32 y, INT32 x1, INT32 x2,
 											INT32 r1, INT32 g1, INT32 b1,
 											INT32 r2, INT32 g2, INT32 b2)
+=======
+void saturn_state::stv_vdp1_setup_shading_for_line(int32_t y, int32_t x1, int32_t x2,
+											int32_t r1, int32_t g1, int32_t b1,
+											int32_t r2, int32_t g2, int32_t b2)
+>>>>>>> upstream/master
 {
 	int xx1 = x1>>FRAC_SHIFT;
 	int xx2 = x2>>FRAC_SHIFT;
@@ -592,8 +655,13 @@ void saturn_state::stv_vdp1_setup_shading_for_line(INT32 y, INT32 x1, INT32 x2,
 
 	if ( (y >= 0) && (y < 512) )
 	{
+<<<<<<< HEAD
 		INT32  dx;
 		INT32   gbd, ggd, grd;
+=======
+		int32_t  dx;
+		int32_t   gbd, ggd, grd;
+>>>>>>> upstream/master
 
 		dx = xx2 - xx1;
 
@@ -629,11 +697,19 @@ void saturn_state::stv_vdp1_setup_shading_for_line(INT32 y, INT32 x1, INT32 x2,
 }
 
 void saturn_state::stv_vdp1_setup_shading_for_slope(
+<<<<<<< HEAD
 							INT32 x1, INT32 x2, INT32 sl1, INT32 sl2, INT32 *nx1, INT32 *nx2,
 							INT32 r1, INT32 r2, INT32 slr1, INT32 slr2, INT32 *nr1, INT32 *nr2,
 							INT32 g1, INT32 g2, INT32 slg1, INT32 slg2, INT32 *ng1, INT32 *ng2,
 							INT32 b1, INT32 b2, INT32 slb1, INT32 slb2, INT32 *nb1, INT32 *nb2,
 							INT32 _y1, INT32 y2)
+=======
+							int32_t x1, int32_t x2, int32_t sl1, int32_t sl2, int32_t *nx1, int32_t *nx2,
+							int32_t r1, int32_t r2, int32_t slr1, int32_t slr2, int32_t *nr1, int32_t *nr2,
+							int32_t g1, int32_t g2, int32_t slg1, int32_t slg2, int32_t *ng1, int32_t *ng2,
+							int32_t b1, int32_t b2, int32_t slb1, int32_t slb2, int32_t *nb1, int32_t *nb2,
+							int32_t _y1, int32_t y2)
+>>>>>>> upstream/master
 {
 	if(x1 > x2 || (x1==x2 && sl1 > sl2)) {
 		SWAP_INT32(x1,x2);
@@ -677,6 +753,7 @@ void saturn_state::stv_vdp1_setup_shading_for_slope(
 
 void saturn_state::stv_vdp1_setup_shading(const struct spoint* q, const rectangle &cliprect)
 {
+<<<<<<< HEAD
 	INT32 x1, x2, delta, cury, limy;
 	INT32 r1, g1, b1, r2, g2, b2;
 	INT32 sl1, slg1, slb1, slr1;
@@ -684,6 +761,15 @@ void saturn_state::stv_vdp1_setup_shading(const struct spoint* q, const rectangl
 	int pmin, pmax, i, ps1, ps2;
 	struct shaded_point p[8];
 	UINT16 gd[4];
+=======
+	int32_t x1, x2, delta, cury, limy;
+	int32_t r1, g1, b1, r2, g2, b2;
+	int32_t sl1, slg1, slb1, slr1;
+	int32_t sl2, slg2, slb2, slr2;
+	int pmin, pmax, i, ps1, ps2;
+	struct shaded_point p[8];
+	uint16_t gd[4];
+>>>>>>> upstream/master
 
 	if ( stv_read_gouraud_table() == 0 ) return;
 
@@ -864,7 +950,11 @@ void saturn_state::drawpixel_poly(int x, int y, int patterndata, int offsetcnt)
 
 void saturn_state::drawpixel_8bpp_trans(int x, int y, int patterndata, int offsetcnt)
 {
+<<<<<<< HEAD
 	UINT16 pix;
+=======
+	uint16_t pix;
+>>>>>>> upstream/master
 
 	pix = m_vdp1.gfx_decode[patterndata+offsetcnt];
 	if ( pix & 0xff )
@@ -875,7 +965,11 @@ void saturn_state::drawpixel_8bpp_trans(int x, int y, int patterndata, int offse
 
 void saturn_state::drawpixel_4bpp_notrans(int x, int y, int patterndata, int offsetcnt)
 {
+<<<<<<< HEAD
 	UINT16 pix;
+=======
+	uint16_t pix;
+>>>>>>> upstream/master
 
 	pix = m_vdp1.gfx_decode[patterndata+offsetcnt/2];
 	pix = offsetcnt&1 ? (pix & 0x0f) : ((pix & 0xf0)>>4);
@@ -884,7 +978,11 @@ void saturn_state::drawpixel_4bpp_notrans(int x, int y, int patterndata, int off
 
 void saturn_state::drawpixel_4bpp_trans(int x, int y, int patterndata, int offsetcnt)
 {
+<<<<<<< HEAD
 	UINT16 pix;
+=======
+	uint16_t pix;
+>>>>>>> upstream/master
 
 	pix = m_vdp1.gfx_decode[patterndata+offsetcnt/2];
 	pix = offsetcnt&1 ? (pix & 0x0f) : ((pix & 0xf0)>>4);
@@ -1081,10 +1179,17 @@ void saturn_state::stv_vdp1_set_drawpixel( void )
 
 
 void saturn_state::vdp1_fill_slope(const rectangle &cliprect, int patterndata, int xsize,
+<<<<<<< HEAD
 							INT32 x1, INT32 x2, INT32 sl1, INT32 sl2, INT32 *nx1, INT32 *nx2,
 							INT32 u1, INT32 u2, INT32 slu1, INT32 slu2, INT32 *nu1, INT32 *nu2,
 							INT32 v1, INT32 v2, INT32 slv1, INT32 slv2, INT32 *nv1, INT32 *nv2,
 							INT32 _y1, INT32 y2)
+=======
+							int32_t x1, int32_t x2, int32_t sl1, int32_t sl2, int32_t *nx1, int32_t *nx2,
+							int32_t u1, int32_t u2, int32_t slu1, int32_t slu2, int32_t *nu1, int32_t *nu2,
+							int32_t v1, int32_t v2, int32_t slv1, int32_t slv2, int32_t *nv1, int32_t *nv2,
+							int32_t _y1, int32_t y2)
+>>>>>>> upstream/master
 {
 	if(_y1 > cliprect.max_y)
 		return;
@@ -1115,7 +1220,11 @@ void saturn_state::vdp1_fill_slope(const rectangle &cliprect, int patterndata, i
 	}
 
 	if(x1 > x2 || (x1==x2 && sl1 > sl2)) {
+<<<<<<< HEAD
 		INT32 t, *tp;
+=======
+		int32_t t, *tp;
+>>>>>>> upstream/master
 		t = x1;
 		x1 = x2;
 		x2 = t;
@@ -1149,11 +1258,19 @@ void saturn_state::vdp1_fill_slope(const rectangle &cliprect, int patterndata, i
 
 	while(_y1 < y2) {
 		if(_y1 >= cliprect.min_y) {
+<<<<<<< HEAD
 			INT32 slux = 0, slvx = 0;
 			int xx1 = x1>>FRAC_SHIFT;
 			int xx2 = x2>>FRAC_SHIFT;
 			INT32 u = u1;
 			INT32 v = v1;
+=======
+			int32_t slux = 0, slvx = 0;
+			int xx1 = x1>>FRAC_SHIFT;
+			int xx2 = x2>>FRAC_SHIFT;
+			int32_t u = u1;
+			int32_t v = v1;
+>>>>>>> upstream/master
 			if(xx1 != xx2) {
 				int delta = xx2-xx1;
 				slux = (u2-u1)/delta;
@@ -1194,8 +1311,13 @@ void saturn_state::vdp1_fill_slope(const rectangle &cliprect, int patterndata, i
 	*nv2 = v2;
 }
 
+<<<<<<< HEAD
 void saturn_state::vdp1_fill_line(const rectangle &cliprect, int patterndata, int xsize, INT32 y,
 							INT32 x1, INT32 x2, INT32 u1, INT32 u2, INT32 v1, INT32 v2)
+=======
+void saturn_state::vdp1_fill_line(const rectangle &cliprect, int patterndata, int xsize, int32_t y,
+							int32_t x1, int32_t x2, int32_t u1, int32_t u2, int32_t v1, int32_t v2)
+>>>>>>> upstream/master
 {
 	int xx1 = x1>>FRAC_SHIFT;
 	int xx2 = x2>>FRAC_SHIFT;
@@ -1204,9 +1326,15 @@ void saturn_state::vdp1_fill_line(const rectangle &cliprect, int patterndata, in
 		return;
 
 	if(xx1 <= cliprect.max_x || xx2 >= cliprect.min_x) {
+<<<<<<< HEAD
 		INT32 slux = 0, slvx = 0;
 		INT32 u = u1;
 		INT32 v = v1;
+=======
+		int32_t slux = 0, slvx = 0;
+		int32_t u = u1;
+		int32_t v = v1;
+>>>>>>> upstream/master
 		if(xx1 != xx2) {
 			int delta = xx2-xx1;
 			slux = (u2-u1)/delta;
@@ -1232,7 +1360,11 @@ void saturn_state::vdp1_fill_line(const rectangle &cliprect, int patterndata, in
 
 void saturn_state::vdp1_fill_quad(const rectangle &cliprect, int patterndata, int xsize, const struct spoint *q)
 {
+<<<<<<< HEAD
 	INT32 sl1, sl2, slu1, slu2, slv1, slv2, cury, limy, x1, x2, u1, u2, v1, v2, delta;
+=======
+	int32_t sl1, sl2, slu1, slu2, slv1, slv2, cury, limy, x1, x2, u1, u2, v1, v2, delta;
+>>>>>>> upstream/master
 	int pmin, pmax, i, ps1, ps2;
 	struct spoint p[8];
 
@@ -1369,12 +1501,20 @@ void saturn_state::vdp1_fill_quad(const rectangle &cliprect, int patterndata, in
 
 int saturn_state::x2s(int v)
 {
+<<<<<<< HEAD
 	return (INT32)(INT16)v + m_vdp1.local_x;
+=======
+	return (int32_t)(int16_t)v + m_vdp1.local_x;
+>>>>>>> upstream/master
 }
 
 int saturn_state::y2s(int v)
 {
+<<<<<<< HEAD
 	return (INT32)(INT16)v + m_vdp1.local_y;
+=======
+	return (int32_t)(int16_t)v + m_vdp1.local_y;
+>>>>>>> upstream/master
 }
 
 void saturn_state::stv_vdp1_draw_line(const rectangle &cliprect)
@@ -1544,14 +1684,22 @@ void saturn_state::stv_vdp1_draw_scaled_sprite(const rectangle &cliprect)
 	x = stv2_current_sprite.CMDXA;
 	y = stv2_current_sprite.CMDYA;
 
+<<<<<<< HEAD
 	screen_width = (INT16)stv2_current_sprite.CMDXB;
+=======
+	screen_width = (int16_t)stv2_current_sprite.CMDXB;
+>>>>>>> upstream/master
 	if ( (screen_width < 0) && zoompoint)
 	{
 		screen_width = -screen_width;
 		direction |= 1;
 	}
 
+<<<<<<< HEAD
 	screen_height = (INT16)stv2_current_sprite.CMDYB;
+=======
+	screen_height = (int16_t)stv2_current_sprite.CMDYB;
+>>>>>>> upstream/master
 	if ( (screen_height < 0) && zoompoint )
 	{
 		screen_height_negative = 1;
@@ -1669,13 +1817,20 @@ void saturn_state::stv_vdp1_draw_scaled_sprite(const rectangle &cliprect)
 
 void saturn_state::stv_vdp1_draw_normal_sprite(const rectangle &cliprect, int sprite_type)
 {
+<<<<<<< HEAD
 	//UINT16 *destline;
 	//saturn_state *state = machine.driver_data<saturn_state>();
+=======
+>>>>>>> upstream/master
 	int y, ysize, drawypos;
 	int x, xsize, drawxpos;
 	int direction;
 	int patterndata;
+<<<<<<< HEAD
 	UINT8 shading;
+=======
+	uint8_t shading;
+>>>>>>> upstream/master
 	int su, u, dux, duy;
 	int maxdrawypos, maxdrawxpos;
 
@@ -1734,8 +1889,13 @@ void saturn_state::stv_vdp1_draw_normal_sprite(const rectangle &cliprect, int sp
 		xsize -= (cliprect.min_x - x);
 		x = cliprect.min_x;
 	}
+<<<<<<< HEAD
 	maxdrawypos = MIN(y+ysize-1,cliprect.max_y);
 	maxdrawxpos = MIN(x+xsize-1,cliprect.max_x);
+=======
+	maxdrawypos = std::min(y+ysize-1,cliprect.max_y);
+	maxdrawxpos = std::min(x+xsize-1,cliprect.max_x);
+>>>>>>> upstream/master
 	for (drawypos = y; drawypos <= maxdrawypos; drawypos++ )
 	{
 		//destline = m_vdp1.framebuffer_draw_lines[drawypos];
@@ -1754,6 +1914,11 @@ TIMER_CALLBACK_MEMBER(saturn_state::vdp1_draw_end )
 	/* set CEF to 1*/
 	CEF_1;
 
+<<<<<<< HEAD
+=======
+	// TODO: temporary for Batman Forever, presumably anonymous timer not behaving well.
+	#if 0
+>>>>>>> upstream/master
 	if(!(m_scu.ism & IRQ_VDP1_END))
 	{
 		m_maincpu->set_input_line_and_vector(0x2, HOLD_LINE, 0x4d);
@@ -1761,6 +1926,10 @@ TIMER_CALLBACK_MEMBER(saturn_state::vdp1_draw_end )
 	}
 	else
 		m_scu.ist |= (IRQ_VDP1_END);
+<<<<<<< HEAD
+=======
+	#endif
+>>>>>>> upstream/master
 }
 
 
@@ -1977,9 +2146,15 @@ void saturn_state::stv_vdp1_process_list( void )
 					break;
 
 				case 0x000a:
+<<<<<<< HEAD
 					if (VDP1_LOG) logerror ("Sprite List Local Co-Ordinate Set (%d %d)\n",(INT16)stv2_current_sprite.CMDXA,(INT16)stv2_current_sprite.CMDYA);
 					m_vdp1.local_x = (INT16)stv2_current_sprite.CMDXA;
 					m_vdp1.local_y = (INT16)stv2_current_sprite.CMDYA;
+=======
+					if (VDP1_LOG) logerror ("Sprite List Local Co-Ordinate Set (%d %d)\n",(int16_t)stv2_current_sprite.CMDXA,(int16_t)stv2_current_sprite.CMDYA);
+					m_vdp1.local_x = (int16_t)stv2_current_sprite.CMDXA;
+					m_vdp1.local_y = (int16_t)stv2_current_sprite.CMDYA;
+>>>>>>> upstream/master
 					break;
 
 				default:
@@ -2099,9 +2274,15 @@ void saturn_state::video_update_vdp1( void )
 
 void saturn_state::stv_vdp1_state_save_postload( void )
 {
+<<<<<<< HEAD
 	UINT8 *vdp1 = m_vdp1.gfx_decode;
 	int offset;
 	UINT32 data;
+=======
+	uint8_t *vdp1 = m_vdp1.gfx_decode.get();
+	int offset;
+	uint32_t data;
+>>>>>>> upstream/master
 
 	m_vdp1.framebuffer_mode = -1;
 	m_vdp1.framebuffer_double_interlace = -1;
@@ -2121,6 +2302,7 @@ void saturn_state::stv_vdp1_state_save_postload( void )
 
 int saturn_state::stv_vdp1_start ( void )
 {
+<<<<<<< HEAD
 	m_vdp1_regs = auto_alloc_array_clear(machine(), UINT16, 0x020/2 );
 	m_vdp1_vram = auto_alloc_array_clear(machine(), UINT32, 0x100000/4 );
 	m_vdp1.gfx_decode = auto_alloc_array(machine(), UINT8, 0x100000 );
@@ -2132,6 +2314,19 @@ int saturn_state::stv_vdp1_start ( void )
 
 	m_vdp1.framebuffer_display_lines = auto_alloc_array(machine(), UINT16 *, 512);
 	m_vdp1.framebuffer_draw_lines = auto_alloc_array(machine(), UINT16 *, 512);
+=======
+	m_vdp1_regs = make_unique_clear<uint16_t[]>(0x020/2 );
+	m_vdp1_vram = make_unique_clear<uint32_t[]>(0x100000/4 );
+	m_vdp1.gfx_decode = std::make_unique<uint8_t[]>(0x100000 );
+
+	stv_vdp1_shading_data = std::make_unique<struct stv_vdp1_poly_scanline_data>();
+
+	m_vdp1.framebuffer[0] = std::make_unique<uint16_t[]>(1024 * 256 * 2 ); /* *2 is for double interlace */
+	m_vdp1.framebuffer[1] = std::make_unique<uint16_t[]>(1024 * 256 * 2 );
+
+	m_vdp1.framebuffer_display_lines = auto_alloc_array(machine(), uint16_t *, 512);
+	m_vdp1.framebuffer_draw_lines = auto_alloc_array(machine(), uint16_t *, 512);
+>>>>>>> upstream/master
 
 	m_vdp1.framebuffer_width = m_vdp1.framebuffer_height = 0;
 	m_vdp1.framebuffer_mode = -1;
@@ -2147,8 +2342,13 @@ int saturn_state::stv_vdp1_start ( void )
 	m_vdp1.user_cliprect.set(0, 512, 0, 256);
 
 	// save state
+<<<<<<< HEAD
 	save_pointer(NAME(m_vdp1_regs), 0x020/2);
 	save_pointer(NAME(m_vdp1_vram), 0x100000/4);
+=======
+	save_pointer(NAME(m_vdp1_regs.get()), 0x020/2);
+	save_pointer(NAME(m_vdp1_vram.get()), 0x100000/4);
+>>>>>>> upstream/master
 	save_item(NAME(m_vdp1.fbcr_accessed));
 	save_item(NAME(m_vdp1.framebuffer_current_display));
 	save_item(NAME(m_vdp1.framebuffer_current_draw));

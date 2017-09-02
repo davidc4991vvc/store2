@@ -17,12 +17,21 @@
 
 **********************************************************************/
 
+<<<<<<< HEAD
 #pragma once
 
 #ifndef __E0516__
 #define __E0516__
 
 #include "emu.h"
+=======
+#ifndef MAME_MACHINE_E0516_H
+#define MAME_MACHINE_E0516_H
+
+#pragma once
+
+#include "dirtc.h"
+>>>>>>> upstream/master
 
 
 
@@ -41,12 +50,20 @@
 
 // ======================> e0516_device
 
+<<<<<<< HEAD
 class e0516_device :  public device_t,
 						public device_rtc_interface
 {
 public:
 	// construction/destruction
 	e0516_device(const machine_config &mconfig, const char *tag, device_t *owner, UINT32 clock);
+=======
+class e0516_device : public device_t, public device_rtc_interface
+{
+public:
+	// construction/destruction
+	e0516_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
+>>>>>>> upstream/master
 
 	DECLARE_WRITE_LINE_MEMBER( cs_w );
 	DECLARE_WRITE_LINE_MEMBER( clk_w );
@@ -55,9 +72,17 @@ public:
 
 protected:
 	// device-level overrides
+<<<<<<< HEAD
 	virtual void device_start();
 	virtual void device_reset();
 	virtual void device_timer(emu_timer &timer, device_timer_id id, int param, void *ptr);
+=======
+	virtual void device_start() override;
+	virtual void device_timer(emu_timer &timer, device_timer_id id, int param, void *ptr) override;
+
+	// device_rtc_interface overrides
+	virtual void rtc_clock_updated(int year, int month, int day, int day_of_week, int hour, int minute, int second) override;
+>>>>>>> upstream/master
 
 private:
 	int m_cs;                       // chip select
@@ -75,8 +100,14 @@ private:
 
 
 // device type definition
+<<<<<<< HEAD
 extern const device_type E0516;
 
 
 
 #endif
+=======
+DECLARE_DEVICE_TYPE(E0516, e0516_device)
+
+#endif // MAME_MACHINE_E0516_H
+>>>>>>> upstream/master

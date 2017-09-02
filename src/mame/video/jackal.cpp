@@ -1,11 +1,20 @@
+<<<<<<< HEAD
 // license:???
 // copyright-holders:Kenneth Lin
+=======
+// license:BSD-3-Clause
+// copyright-holders:Curt Coder
+// thanks-to:Kenneth Lin (original driver author)
+>>>>>>> upstream/master
 /***************************************************************************
 
   video.c
 
+<<<<<<< HEAD
   Written by Kenneth Lin (kenneth_lin@ai.vancouver.bc.ca)
 
+=======
+>>>>>>> upstream/master
   Functions to emulate the video hardware of the machine.
 
 ***************************************************************************/
@@ -16,24 +25,40 @@
 
 PALETTE_INIT_MEMBER(jackal_state, jackal)
 {
+<<<<<<< HEAD
 	const UINT8 *color_prom = memregion("proms")->base();
+=======
+	const uint8_t *color_prom = memregion("proms")->base();
+>>>>>>> upstream/master
 	int i;
 
 	for (i = 0; i < 0x100; i++)
 	{
+<<<<<<< HEAD
 		UINT16 ctabentry = i | 0x100;
+=======
+		uint16_t ctabentry = i | 0x100;
+>>>>>>> upstream/master
 		palette.set_pen_indirect(i, ctabentry);
 	}
 
 	for (i = 0x100; i < 0x200; i++)
 	{
+<<<<<<< HEAD
 		UINT16 ctabentry = color_prom[i - 0x100] & 0x0f;
+=======
+		uint16_t ctabentry = color_prom[i - 0x100] & 0x0f;
+>>>>>>> upstream/master
 		palette.set_pen_indirect(i, ctabentry);
 	}
 
 	for (i = 0x200; i < 0x300; i++)
 	{
+<<<<<<< HEAD
 		UINT16 ctabentry = (color_prom[i - 0x100] & 0x0f) | 0x10;
+=======
+		uint16_t ctabentry = (color_prom[i - 0x100] & 0x0f) | 0x10;
+>>>>>>> upstream/master
 		palette.set_pen_indirect(i, ctabentry);
 	}
 }
@@ -46,7 +71,11 @@ void jackal_state::jackal_mark_tile_dirty( int offset )
 
 TILE_GET_INFO_MEMBER(jackal_state::get_bg_tile_info)
 {
+<<<<<<< HEAD
 	UINT8 *RAM = memregion("master")->base();
+=======
+	uint8_t *RAM = memregion("master")->base();
+>>>>>>> upstream/master
 
 	int attr = RAM[0x2000 + tile_index];
 	int code = RAM[0x2400 + tile_index] + ((attr & 0xc0) << 2) + ((attr & 0x30) << 6);
@@ -58,12 +87,20 @@ TILE_GET_INFO_MEMBER(jackal_state::get_bg_tile_info)
 
 void jackal_state::video_start()
 {
+<<<<<<< HEAD
 	m_bg_tilemap = &machine().tilemap().create(m_gfxdecode, tilemap_get_info_delegate(FUNC(jackal_state::get_bg_tile_info),this), TILEMAP_SCAN_ROWS, 8, 8, 32, 32);
+=======
+	m_bg_tilemap = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(FUNC(jackal_state::get_bg_tile_info),this), TILEMAP_SCAN_ROWS, 8, 8, 32, 32);
+>>>>>>> upstream/master
 }
 
 void jackal_state::draw_background( screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect )
 {
+<<<<<<< HEAD
 	UINT8 *RAM = memregion("master")->base();
+=======
+	uint8_t *RAM = memregion("master")->base();
+>>>>>>> upstream/master
 	int i;
 
 	m_scrollram = &RAM[0x0020];
@@ -98,7 +135,11 @@ void jackal_state::draw_background( screen_device &screen, bitmap_ind16 &bitmap,
 
 #define DRAW_SPRITE(bank, code, sx, sy)  m_gfxdecode->gfx(bank)->transpen(bitmap,cliprect, code, color, flipx, flipy, sx, sy, 0);
 
+<<<<<<< HEAD
 void jackal_state::draw_sprites_region( bitmap_ind16 &bitmap, const rectangle &cliprect, const UINT8 *sram, int length, int bank )
+=======
+void jackal_state::draw_sprites_region( bitmap_ind16 &bitmap, const rectangle &cliprect, const uint8_t *sram, int length, int bank )
+>>>>>>> upstream/master
 {
 	int offs;
 
@@ -184,8 +225,13 @@ void jackal_state::draw_sprites_region( bitmap_ind16 &bitmap, const rectangle &c
 
 void jackal_state::draw_sprites( bitmap_ind16 &bitmap, const rectangle &cliprect )
 {
+<<<<<<< HEAD
 	UINT8 *RAM = memregion("master")->base();
 	UINT8 *sr, *ss;
+=======
+	uint8_t *RAM = memregion("master")->base();
+	uint8_t *sr, *ss;
+>>>>>>> upstream/master
 
 	if (m_videoctrl[0x03] & 0x08)
 	{
@@ -202,7 +248,11 @@ void jackal_state::draw_sprites( bitmap_ind16 &bitmap, const rectangle &cliprect
 	draw_sprites_region(bitmap, cliprect, sr, 0x500, 1);
 }
 
+<<<<<<< HEAD
 UINT32 jackal_state::screen_update_jackal(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+=======
+uint32_t jackal_state::screen_update_jackal(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+>>>>>>> upstream/master
 {
 	draw_background(screen, bitmap, cliprect);
 	draw_sprites(bitmap, cliprect);

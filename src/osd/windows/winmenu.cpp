@@ -7,7 +7,10 @@
 //============================================================
 
 // standard windows headers
+<<<<<<< HEAD
 #define WIN32_LEAN_AND_MEAN
+=======
+>>>>>>> upstream/master
 #include <windows.h>
 
 #include "emu.h"

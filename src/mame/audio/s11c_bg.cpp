@@ -7,6 +7,7 @@
  *      Author: bsr
  */
 
+<<<<<<< HEAD
 #include "s11c_bg.h"
 
 
@@ -20,6 +21,24 @@ s11c_bg_device::s11c_bg_device(const machine_config &mconfig, const char *tag, d
 		m_dac1(*this,"dac1"),
 		m_pia40(*this,"pia40"),
 		m_cpubank(*this,"bgbank")
+=======
+#include "emu.h"
+#include "s11c_bg.h"
+#include "sound/dac.h"
+#include "sound/volt_reg.h"
+
+
+DEFINE_DEVICE_TYPE(S11C_BG, s11c_bg_device, "s11c_bg", "Williams System 11C Background Music")
+
+s11c_bg_device::s11c_bg_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock)
+	: device_t(mconfig, S11C_BG,tag,owner,clock)
+	, device_mixer_interface(mconfig, *this)
+	, m_cpu(*this, "bgcpu")
+	, m_ym2151(*this, "ym2151")
+	, m_hc55516(*this, "hc55516_bg")
+	, m_pia40(*this, "pia40")
+	, m_cpubank(*this, "bgbank")
+>>>>>>> upstream/master
 {
 }
 
@@ -33,11 +52,14 @@ static ADDRESS_MAP_START( s11c_bg_map, AS_PROGRAM, 8, s11c_bg_device )
 	AM_RANGE(0x8000, 0xffff) AM_ROMBANK("bgbank")
 ADDRESS_MAP_END
 
+<<<<<<< HEAD
 WRITE8_MEMBER( s11c_bg_device::pia40_pa_w )
 {
 	m_dac1->write_unsigned8(data);
 }
 
+=======
+>>>>>>> upstream/master
 WRITE_LINE_MEMBER( s11c_bg_device::pia40_cb2_w)
 {
 //  m_pia34->cb1_w(state);  // To Widget MCB1 through CPU Data interface
@@ -48,6 +70,7 @@ WRITE8_MEMBER( s11c_bg_device::pia40_pb_w )
 //  m_pia34->portb_w(data);
 }
 
+<<<<<<< HEAD
 WRITE_LINE_MEMBER( s11c_bg_device::pia40_ca2_w)
 {
 	if(state == ASSERT_LINE)
@@ -55,20 +78,32 @@ WRITE_LINE_MEMBER( s11c_bg_device::pia40_ca2_w)
 }
 
 void s11c_bg_device::ctrl_w(UINT8 data)
+=======
+void s11c_bg_device::ctrl_w(uint8_t data)
+>>>>>>> upstream/master
 {
 	m_pia40->cb1_w(data);
 }
 
+<<<<<<< HEAD
 void s11c_bg_device::data_w(UINT8 data)
+=======
+void s11c_bg_device::data_w(uint8_t data)
+>>>>>>> upstream/master
 {
 	m_pia40->portb_w(data);
 }
 
+<<<<<<< HEAD
 MACHINE_CONFIG_FRAGMENT( s11c_bg )
+=======
+MACHINE_CONFIG_MEMBER( s11c_bg_device::device_add_mconfig )
+>>>>>>> upstream/master
 	MCFG_CPU_ADD("bgcpu", M6809E, XTAL_8MHz) // MC68B09E (note: schematics show this as 8mhz/2, but games crash very quickly with that speed?)
 	MCFG_CPU_PROGRAM_MAP(s11c_bg_map)
 	MCFG_QUANTUM_TIME(attotime::from_hz(50))
 
+<<<<<<< HEAD
 	MCFG_SPEAKER_STANDARD_MONO("bg")
 	MCFG_YM2151_ADD("ym2151", 3580000)
 	MCFG_YM2151_IRQ_HANDLER(WRITELINE(s11c_bg_device, ym2151_irq_w))
@@ -94,13 +129,39 @@ machine_config_constructor s11c_bg_device::device_mconfig_additions() const
 	return MACHINE_CONFIG_NAME( s11c_bg );
 }
 
+=======
+	MCFG_YM2151_ADD("ym2151", 3580000)
+	MCFG_YM2151_IRQ_HANDLER(WRITELINE(s11c_bg_device, ym2151_irq_w))
+	MCFG_SOUND_ROUTE(ALL_OUTPUTS, DEVICE_SELF_OWNER, 0.25)
+
+	MCFG_SOUND_ADD("dac", MC1408, 0) MCFG_SOUND_ROUTE(ALL_OUTPUTS, DEVICE_SELF_OWNER, 0.25)
+	MCFG_DEVICE_ADD("vref", VOLTAGE_REGULATOR, 0) MCFG_VOLTAGE_REGULATOR_OUTPUT(5.0)
+	MCFG_SOUND_ROUTE_EX(0, "dac", 1.0, DAC_VREF_POS_INPUT) MCFG_SOUND_ROUTE_EX(0, "dac", -1.0, DAC_VREF_NEG_INPUT)
+
+	MCFG_SOUND_ADD("hc55516_bg", HC55516, 0)
+	MCFG_SOUND_ROUTE(ALL_OUTPUTS, DEVICE_SELF_OWNER, 0.5)
+
+	MCFG_DEVICE_ADD("pia40", PIA6821, 0)
+	MCFG_PIA_WRITEPA_HANDLER(DEVWRITE8("dac", dac_byte_interface, write))
+	MCFG_PIA_WRITEPB_HANDLER(WRITE8(s11c_bg_device, pia40_pb_w))
+	MCFG_PIA_CA2_HANDLER(DEVWRITELINE("ym2151", ym2151_device, reset_w))
+	MCFG_PIA_CB2_HANDLER(WRITELINE(s11c_bg_device, pia40_cb2_w))
+	MCFG_PIA_IRQA_HANDLER(INPUTLINE("bgcpu", M6809_FIRQ_LINE))
+	MCFG_PIA_IRQB_HANDLER(INPUTLINE("bgcpu", INPUT_LINE_NMI))
+MACHINE_CONFIG_END
+
+>>>>>>> upstream/master
 void s11c_bg_device::device_start()
 {
 }
 
 void s11c_bg_device::device_reset()
 {
+<<<<<<< HEAD
 	UINT8* ROM;
+=======
+	uint8_t* ROM;
+>>>>>>> upstream/master
 
 	m_rom = memregion(m_regiontag);
 	ROM = m_rom->base();
@@ -110,7 +171,11 @@ void s11c_bg_device::device_reset()
 	m_cpu->set_input_line(INPUT_LINE_RESET,PULSE_LINE);
 }
 
+<<<<<<< HEAD
 void s11c_bg_device::static_set_gfxregion(device_t &device, const char *tag)
+=======
+void s11c_bg_device::static_set_romregion(device_t &device, const char *tag)
+>>>>>>> upstream/master
 {
 	s11c_bg_device &cpuboard = downcast<s11c_bg_device &>(device);
 	cpuboard.m_regiontag = tag;
@@ -138,6 +203,10 @@ WRITE8_MEMBER( s11c_bg_device::bg_speech_digit_w )
 
 WRITE8_MEMBER( s11c_bg_device::bgbank_w )
 {
+<<<<<<< HEAD
 	UINT8 bank = ((data & 0x04) >> 2) | ((data & 0x03) << 1);
+=======
+	uint8_t bank = ((data & 0x04) >> 2) | ((data & 0x03) << 1);
+>>>>>>> upstream/master
 	m_cpubank->set_entry(bank);
 }
